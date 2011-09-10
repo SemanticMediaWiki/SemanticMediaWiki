@@ -22,7 +22,7 @@ class SMWQueryParser {
 	protected $m_categoryprefix; // cache label of category namespace . ':'
 	protected $m_conceptprefix; // cache label of concept namespace . ':'
 	protected $m_categoryPrefixCannonical; // cache canonnical label of category namespace . ':'
-	protected $m_conceptPrefixCannonical; // cache canonnical label of concept namespace . ':'	
+	protected $m_conceptPrefixCannonical; // cache canonnical label of concept namespace . ':'
 	protected $m_queryfeatures; // query features to be supported, format similar to $smwgQFeatures
 
 	public function __construct( $queryfeatures = false ) {
@@ -31,8 +31,8 @@ class SMWQueryParser {
 		$this->m_categoryprefix = $wgContLang->getNsText( NS_CATEGORY ) . ':';
 		$this->m_conceptprefix = $wgContLang->getNsText( SMW_NS_CONCEPT ) . ':';
 		$this->m_categoryPrefixCannonical = 'Category:';
-		$this->m_conceptPrefixCannonical = 'Concept:';		
-		
+		$this->m_conceptPrefixCannonical = 'Concept:';
+
 		$this->m_defaultns = null;
 		$this->m_queryfeatures = $queryfeatures === false ? $smwgQFeatures : $queryfeatures;
 	}
@@ -305,6 +305,7 @@ class SMWQueryParser {
 
 		foreach ( $propertynames as $name ) {
 			if ( $typeid != '_wpg' ) { // non-final property in chain was no wikipage: not allowed
+				// FIXME: $prevname is undefined
 				$this->m_errors[] = wfMsgForContent( 'smw_valuesubquery', $prevname );
 				return null; ///TODO: read some more chunks and try to finish [[ ]]
 			}
@@ -432,7 +433,7 @@ class SMWQueryParser {
 			}
 			if ( ( count( $list ) == 2 ) && ( $list[1] == '+' ) ) { // try namespace restriction
 				global $wgContLang;
-				
+
 				$idx = $wgContLang->getNsIndex( str_replace( ' ', '_', $list[0] ) );
 
 				if ( $idx !== false ) {

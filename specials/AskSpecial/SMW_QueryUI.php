@@ -93,7 +93,7 @@ abstract class SMWQueryUI extends SpecialPage {
 		}
 
 		// Make sure locally collected output data is pushed to the output:
-		SMWOutputs::commitToOutputPage( $wgOut ); 
+		SMWOutputs::commitToOutputPage( $wgOut );
 	}
 
 	/**
@@ -1413,7 +1413,7 @@ EOT;
 	 * @global boolean $smwgQSortingSupport
 	 * @global WebRequest $wgRequest
 	 * @return string
-	 * 
+	 *
 	 * @todo This code is not used anywhere in SMW.
 	 */
 	protected function getSortingFormBox() {
@@ -1447,7 +1447,7 @@ EOT;
 			$this->setUrlArgs( $urlArgs );
 		}
 
-		$hidden .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" size="25" />' . "\n";
+		$hidden =  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" size="25" />' . "\n";
 		$hidden .= ' <select name="order_num">' . "\n";
 		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
 		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n</select>\n";

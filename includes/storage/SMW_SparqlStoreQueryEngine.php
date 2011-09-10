@@ -98,7 +98,7 @@ class SMWSparqlFalseCondition extends SMWSparqlCondition {
 }
 
 /**
- * Represents a condition that matches everything. Weak conditions (see 
+ * Represents a condition that matches everything. Weak conditions (see
  * SMWSparqlCondition::$weakConditions) might be still be included to
  * enable ordering (selecting sufficient data to order by).
  *
@@ -544,8 +544,8 @@ class SMWSparqlStoreQueryEngine {
 				if ( $matchElement instanceof SMWExpNsResource ) {
 					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 				}
-
-				if ( ( $singletonMatchElement !== null ) && 
+				// FIXME: $singletonMatchElementName is undefined
+				if ( ( $singletonMatchElement !== null ) &&
 				     ( $singletonMatchElementName !== $matchElementName ) ) {
 					return new SMWSparqlFalseCondition();
 				}
@@ -669,7 +669,7 @@ class SMWSparqlStoreQueryEngine {
 		if ( array_key_exists( $diProperty->getKey(), $this->m_sortkeys ) ) {
 			$innerOrderByProperty = $diProperty;
 		} else {
-			$innerOrderByProperty = null; 
+			$innerOrderByProperty = null;
 		}
 
 		//*** Prepare inner condition ***//
@@ -799,7 +799,7 @@ class SMWSparqlStoreQueryEngine {
 			case SMW_CMP_LESS: $comparator = '<'; break;
 			case SMW_CMP_GRTR: $comparator = '>'; break;
 			case SMW_CMP_LEQ:  $comparator = '<='; break;
-			case SMW_CMP_GEQ:  $comparator = '>='; break;							
+			case SMW_CMP_GEQ:  $comparator = '>='; break;
 			case SMW_CMP_NEQ:  $comparator = '!='; break;
 			case SMW_CMP_LIKE: $comparator = 'regex'; break;
 			case SMW_CMP_NLKE: $comparator = '!regex'; break;
@@ -822,7 +822,7 @@ class SMWSparqlStoreQueryEngine {
 				                              $dataItem->getString() ) . '$';
 				$result = new SMWSparqlFilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
 				$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
-			} else { 
+			} else {
 				$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
 			}
 		} else {

@@ -2,7 +2,7 @@
 
 /**
  * File holding the SMWRDFXMLSerializer class that provides basic functions for
- * serialising OWL data in RDF/XML syntax. 
+ * serialising OWL data in RDF/XML syntax.
  *
  * @file SMW_Serializer.php
  * @ingroup SMW
@@ -12,7 +12,7 @@
 
 /**
  * Class for serializing exported data (encoded as SMWExpData object) in
- * RDF/XML. 
+ * RDF/XML.
  *
  * @ingroup SMW
  */
@@ -20,7 +20,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	/**
 	 * True if the $pre_ns_buffer contains the beginning of a namespace
 	 * declaration block to which further declarations for the current
-	 * context can be appended. 
+	 * context can be appended.
 	 */
 	protected $namespace_block_started;
 	/**
@@ -70,7 +70,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 		$this->post_ns_buffer .= "\t<!-- Created by Semantic MediaWiki, http://semantic-mediawiki.org/ -->\n";
 		$this->post_ns_buffer .= '</rdf:RDF>';
 	}
-	
+
 	public function serializeDeclaration( $uri, $typename ) {
 		$this->post_ns_buffer .= "\t<$typename rdf:about=\"$uri\" />\n";
 	}
@@ -91,7 +91,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 		$this->namespace_block_started = false;
 		return $result;
 	}
-	
+
 	protected function serializeNamespace( $shortname, $uri ) {
 		if ( $this->namespaces_are_global ) {
 			$this->global_namespaces[$shortname] = true;
@@ -197,7 +197,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	protected function serializeExpResource( SMWExpNsResource $expResourceProperty, SMWExpResource $expResource, $indent, $isClassTypeProp ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 		if ( !$expResource->isBlankNode() ) {
-			if ( ( $expResource instanceof SMWExpNsResource ) && ( $expResource->getNamespaceID() == 'wiki' ) ) { 
+			if ( ( $expResource instanceof SMWExpNsResource ) && ( $expResource->getNamespaceID() == 'wiki' ) ) {
 				// very common case, reduce bandwidth
 				$this->post_ns_buffer .= ' rdf:resource="&wiki;' . $expResource->getLocalName() . '"';
 			} else {
@@ -229,14 +229,15 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 				$this->serializeExpResource( $expResourceProperty, $expElement, $indent );
 			}
 			if ( $isClassTypeProp ) {
+				// FIXME: $expResource is undefined
 				$this->requireDeclaration( $expResource, SMW_SERIALIZER_DECL_CLASS );
 			}
 		}
 		$this->post_ns_buffer .= "$indent</" . $expResourceProperty->getQName() . ">\n";
 	}
-	
+
 	/**
-	 * Escape a string in the special form that is required for values in 
+	 * Escape a string in the special form that is required for values in
 	 * DTD entity declarations in XML. Namely, this require the percent sign
 	 * to be replaced.
 	 *
@@ -250,7 +251,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	/**
 	 * Escape a string as required for using it in XML attribute values.
 	 *
-	 * @param $string string to be escaped 
+	 * @param $string string to be escaped
 	 * @return string
 	 */
 	protected function makeAttributeValueString( $string ) {

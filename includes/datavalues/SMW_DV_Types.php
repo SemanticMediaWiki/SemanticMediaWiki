@@ -81,8 +81,8 @@ class SMWTypesValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( ( $dataItem instanceof SMWDIUri ) && ( $dataItem->getScheme() == 'http' ) && 
-		     ( $dataItem->getHierpart() == '//semantic-mediawiki.org/swivt/1.0' ) && 
+		if ( ( $dataItem instanceof SMWDIUri ) && ( $dataItem->getScheme() == 'http' ) &&
+		     ( $dataItem->getHierpart() == '//semantic-mediawiki.org/swivt/1.0' ) &&
 		     ( $dataItem->getQuery() == '' ) ) {
 			$this->m_isAlias = false;
 			$this->m_typeId = $dataItem->getFragment();
@@ -106,12 +106,12 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linked = null ) {
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return htmlspecialchars( $this->m_caption );
 		} else {
 			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );
-			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_caption ) );
+			return $linked->makeLinkObj( $title, htmlspecialchars( $this->m_caption ) );
 		}
 	}
 
@@ -134,15 +134,15 @@ class SMWTypesValue extends SMWDataValue {
 			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_realLabel ) );
 		}
 	}
-	
+
 	/**
 	 * Gets the title text for the types special page.
 	 * Takes care of compatibility changes in MW 1.17 and 1.18.
 	 * 1.17 introduces SpecialPageFactory
 	 * 1.18 deprecates SpecialPage::getLocalNameFor
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getSpecialPageTitleText() {
@@ -161,7 +161,7 @@ class SMWTypesValue extends SMWDataValue {
 
 	/**
 	 * This class uses type ids as DB keys.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getDBkey() {
@@ -181,7 +181,7 @@ class SMWTypesValue extends SMWDataValue {
 	/**
 	 * Is this an alias for another datatype in SMW? This information is used to
 	 * explain entries in Special:Types that are found since they have pages.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isAlias() {

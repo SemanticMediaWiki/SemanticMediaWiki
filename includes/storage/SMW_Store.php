@@ -1,10 +1,10 @@
 <?php
 /**
  * Basic abstract classes for SMW's storage abstraction layer.
- * 
+ *
  * @file
  * @ingroup SMWStore
- * 
+ *
  * @author Markus Krötzsch
  */
 
@@ -12,7 +12,7 @@
  * This group contains all parts of SMW that relate to storing and retrieving
  * semantic data. SMW components that relate to semantic querying only have
  * their own group.
- * 
+ *
  * @defgroup SMWStore SMWStore
  * @ingroup SMW
  */
@@ -21,9 +21,9 @@
  * Small data container class for describing filtering conditions on the string
  * label of some entity. States that a given string should either be prefix,
  * postfix, or some arbitrary part of labels.
- * 
+ *
  * @ingroup SMWStore
- * 
+ *
  * @author Markus Krötzsch
  */
 class SMWStringCondition {
@@ -56,9 +56,9 @@ class SMWStringCondition {
  * to their more complex structure.
  * Options that should not be used or where default values should be used
  * can be left as initialised.
- * 
+ *
  * @ingroup SMWStore
- * 
+ *
  * @author Markus Krötzsch
  */
 class SMWRequestOptions {
@@ -110,7 +110,7 @@ class SMWRequestOptions {
 
 	/**
 	 * Set a new string condition applied to labels of results (if available).
-	 * 
+	 *
 	 * @param $string string to match
 	 * @param $condition integer type of condition, one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
 	 */
@@ -133,10 +133,10 @@ class SMWRequestOptions {
  * semantic store. Besides the relevant interface, this class provides default
  * implementations for some optional methods, which inform the caller that
  * these methods are not implemented.
- * 
+ *
  * @ingroup SMWStore
- * 
- * @author Markus Krötzsch 
+ *
+ * @author Markus Krötzsch
  */
 abstract class SMWStore {
 
@@ -187,7 +187,7 @@ abstract class SMWStore {
 	/**
 	 * Get an array of all properties for which the given subject has some
 	 * value. The result is an array of SMWDIProperty objects.
-	 * 
+	 *
 	 * @param $subject SMWDIWikiPage denoting the subject
 	 * @param $requestoptions SMWRequestOptions optionally defining further options
 	 */
@@ -213,7 +213,7 @@ abstract class SMWStore {
 	 */
 	public function getWikiPageSortKey( SMWDIWikiPage $wikiPage ) {
 		$sortkeyDataItems = $this->getPropertyValues( $wikiPage, new SMWDIProperty( '_SKEY' ) );
-		
+
 		if ( count( $sortkeyDataItems ) > 0 ) {
 			return end( $sortkeyDataItems )->getString();
 		} else {
@@ -241,7 +241,7 @@ abstract class SMWStore {
 			throw new InvalidArgumentException( 'SMWStore::getRedirectTarget() expects an object of type SMWDIProperty or SMWDIWikiPage.' );
 		}
 
-		$redirectDataItems = $this->getPropertyValues( $wikiPage, new SMWDIProperty( '_REDI' ) );
+		$redirectDataItems = $this->getPropertyValues( $wikipage, new SMWDIProperty( '_REDI' ) );
 		if ( count( $redirectDataItems ) > 0 ) {
 			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
 				return new SMWDIProperty( end( $redirectDataItems )->getDBkey() );
@@ -280,7 +280,7 @@ abstract class SMWStore {
 	 * for one particular subject.
 	 *
 	 * @param $data SMWSemanticData
-	 */	
+	 */
 	public function updateData( SMWSemanticData $data ) {
 		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $data ) );
 
@@ -307,7 +307,7 @@ abstract class SMWStore {
 
 	/**
 	 * Clear all semantic data specified for some page.
-	 * 
+	 *
 	 * @param SMWDIWikiPage $di
 	 */
 	public function clearData( SMWDIWikiPage $di ) {
@@ -348,9 +348,9 @@ abstract class SMWStore {
 	 * result is an array of arrays, each containing a property title and a
 	 * count. The expected order is alphabetical w.r.t. to property title
 	 * texts.
-	 * 
+	 *
 	 * @param SMWRequestOptions $requestoptions
-	 * 
+	 *
 	 * @return array
 	 */
 	public abstract function getPropertiesSpecial( $requestoptions = null );
@@ -360,9 +360,9 @@ abstract class SMWStore {
 	 * are not used on any page. Stores might restrict here to those
 	 * properties that have been given a type if they have no efficient
 	 * means of accessing the set of all pages in the property namespace.
-	 * 
+	 *
 	 * @param SMWRequestOptions $requestoptions
-	 * 
+	 *
 	 * @return array of SMWDIProperty
 	 */
 	public abstract function getUnusedPropertiesSpecial( $requestoptions = null );
@@ -372,9 +372,9 @@ abstract class SMWStore {
 	 * have any page describing them. Stores that have no efficient way of
 	 * accessing the set of all existing pages can extend this list to all
 	 * properties that are used but do not have a type assigned to them.
-	 * 
+	 *
 	 * @param SMWRequestOptions $requestoptions
-	 * 
+	 *
 	 * @return array of array( SMWDIProperty, int )
 	 */
 	public abstract function getWantedPropertiesSpecial( $requestoptions = null );
@@ -385,7 +385,7 @@ abstract class SMWStore {
 	 * - 'PROPUSES': Number of property instances (value assignments) in the datatbase
 	 * - 'USEDPROPS': Number of properties that are used with at least one value
 	 * - 'DECLPROPS': Number of properties that have been declared (i.e. assigned a type)
-	 * 
+	 *
 	 * @return array
 	 */
 	public abstract function getStatistics();
@@ -406,7 +406,7 @@ abstract class SMWStore {
 	 * timeouts during long operations. All output must be valid in an HTML
 	 * context, but should preferrably be plain text, possibly with some
 	 * linebreaks and weak markup.
-	 * 
+	 *
 	 * @param boolean $verbose
 	 */
 	public abstract function setup( $verbose = true );
@@ -414,7 +414,7 @@ abstract class SMWStore {
 	/**
 	 * Drop (delete) all storage structures created by setup(). This will
 	 * delete all semantic data and possibly leave the wiki uninitialised.
-	 * 
+	 *
 	 * @param boolean $verbose
 	 */
 	public abstract function drop( $verbose = true );
@@ -438,12 +438,12 @@ abstract class SMWStore {
 	 * The optional parameter $usejobs indicates whether updates should be
 	 * processed later using MediaWiki jobs, instead of doing all updates
 	 * immediately. The default is TRUE.
-	 * 
+	 *
 	 * @param $index integer
 	 * @param $count integer
 	 * @param $namespaces mixed array or false
 	 * @param $usejobs boolean
-	 * 
+	 *
 	 * @return decimal between 0 and 1 to indicate the overall progress of the refreshing
 	 */
 	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true );

@@ -1,19 +1,19 @@
 <?php
 /**
  * 4Store specific adjustments for SMWSparqlDatabase
- * 
+ *
  * @file
  * @ingroup SMWSparql
- * 
+ *
  * @author Markus Krötzsch
  */
 
 /**
  * Specific modifications of the SPARQL database implementation for 4Store.
- * 
+ *
  * @since 1.6
  * @ingroup SMWSparql
- * 
+ *
  * @author Markus Krötzsch
  */
 class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
@@ -88,7 +88,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
 	 * method does not throw anything, then an empty result with an error
 	 * code is returned.
-	 * 
+	 *
 	 * This method is specific to 4Store since it uses POST parameters that
 	 * are not given in the specification.
 	 *
@@ -97,6 +97,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	 */
 	public function doHttpPost( $payload ) {
 		if ( $this->m_dataEndpoint == '' ) {
+			// FIXME: $error is undefined
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified', $error );
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );
