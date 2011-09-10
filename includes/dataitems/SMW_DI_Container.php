@@ -104,7 +104,7 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	 */
 	protected function throwImmutableException() {
 		if ( $this->m_immutable ) {
-			throw SMWDataItemException( 'Changing the SMWSemanticData object that belongs to a data item of type SMWDIContainer is not allowed. Data items are immutable.' );
+			throw new SMWDataItemException( 'Changing the SMWSemanticData object that belongs to a data item of type SMWDIContainer is not allowed. Data items are immutable.' );
 		}
 	}
 }
@@ -158,7 +158,7 @@ class SMWDIContainer extends SMWDataItem {
 
 	/**
 	 * Get a hash string for this data item.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getHash() {
@@ -188,7 +188,7 @@ class SMWDIContainer extends SMWDataItem {
 		/// TODO May issue an E_NOTICE when problems occur; catch this
 		$data = unserialize( $serialization );
 		if ( !( $data instanceof SMWContainerSemanticData ) ) {
-			throw SMWDataItemException( "Could not unserialize SMWDIContainer from the given string." );
+			throw new SMWDataItemException( "Could not unserialize SMWDIContainer from the given string." );
 		}
 		return new SMWDIContainer( $data );
 	}

@@ -37,7 +37,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	global $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups;
 	global $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
 	global $wgResourceModules, $smwgScriptPath;
-	
+
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
@@ -82,8 +82,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	// Set up autoloading; essentially all classes should be autoloaded!
 	$wgAutoloadClasses['SMWParserExtensions']       = $smwgIP . 'includes/SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . 'includes/SMW_Infolink.php';
-	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
-	$wgAutoloadClasses['SMWDataValueFactory']   	= $incDir . 'SMW_DataValueFactory.php';
+	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $smwgIP . 'includes/SMW_CompatibilityHelpers.php';
+	$wgAutoloadClasses['SMWDataValueFactory']   	= $smwgIP . 'includes/SMW_DataValueFactory.php';
 // 	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . 'includes/SMW_Factbox.php';
 	$wgAutoloadClasses['SMWParseData']              = $smwgIP . 'includes/SMW_ParseData.php';
 	$wgAutoloadClasses['SMWOutputs']                = $smwgIP . 'includes/SMW_Outputs.php';
@@ -127,7 +127,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWTimeValue']           	= $dvDir . 'SMW_DV_Time.php';
 //	$wgAutoloadClasses['SMWBoolValue']           	= $dvDir . 'SMW_DV_Bool.php';
 //	$wgAutoloadClasses['SMWConceptValue']        	= $dvDir . 'SMW_DV_Concept.php';
-//	$wgAutoloadClasses['SMWImportValue']         	= $dvDir . 'SMW_DV_Import.php';	
+//	$wgAutoloadClasses['SMWImportValue']         	= $dvDir . 'SMW_DV_Import.php';
 
 	// Some files refer to classes of the full SMW distribution. Give them a fallback to load:
 	$wgAutoloadClasses['SMWRecordValue']         =  $dvDir . 'SMW_DV_Error.php';
@@ -136,8 +136,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWImportValue']         =  $dvDir . 'SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWTypeListValue']       =  $dvDir . 'SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWTemperatureValue']    =  $dvDir . 'SMW_DV_Error.php';
-	
-	
+
+
 	// Export
 //	$expDir = $smwgIP . 'includes/export/';
 //	$wgAutoloadClasses['SMWExporter']               = $expDir . 'SMW_Exporter.php';
@@ -151,8 +151,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
 	$wgAutoloadClasses['SMWSet']               		= $phDir . 'SMW_Set.php';
-	$wgAutoloadClasses['SMWDeclare']              	= $phDir . 'SMW_Declare.php';	
-	
+	$wgAutoloadClasses['SMWDeclare']              	= $phDir . 'SMW_Declare.php';
+
 	// Stores & queries
 // 	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';
 // 	$wgAutoloadClasses['SMWQueryParser']            = $smwgIP . 'includes/SMW_QueryParser.php';
@@ -174,11 +174,11 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWSQLStoreLight']          = $smwgIP . 'includes/storage/SMW_SQLStoreLight.php';
 	$wgAutoloadClasses['SMWSQLStore2Table']         = $smwgIP . 'includes/storage/SMW_SQLStore2Table.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $smwgIP . 'includes/storage/SMW_SQLHelpers.php';
-	
+
 	// To ensure SMW remains compatible with pre 1.16.
 	if ( !class_exists( 'Html' ) ) {
 		$wgAutoloadClasses['Html'] = $smwgIP . 'compat/Html.php';
-	}	
+	}
 
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
 	$wgAutoloadClasses['SMWQueryPage']              = $smwgIP . 'specials/QueryPages/SMW_QueryPage.php';
@@ -451,7 +451,7 @@ function smwfInitContentLanguage( $langcode ) {
  * This hook registers parser functions and hooks to the given parser. It is
  * called during SMW initialisation. Note that parser hooks are something different
  * than MW hooks in general, which explains the two-level registration.
- * 
+ *
  * @since 1.5.3
  */
 function smwfRegisterParserFunctions( Parser &$parser ) {

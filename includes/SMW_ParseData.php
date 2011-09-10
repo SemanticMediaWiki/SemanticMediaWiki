@@ -348,7 +348,7 @@ class SMWParseData {
 			}
 		}
 
-		$sortkey = $parser->mDefaultSort ? $parser->mDefaultSort : 
+		$sortkey = $parser->mDefaultSort ? $parser->mDefaultSort :
 		            str_replace( '_', ' ', self::getSMWData( $parser )->getSubject()->getDBkey() );
 		$pskey = new SMWDIProperty( '_SKEY' );
 		try {
@@ -356,7 +356,7 @@ class SMWParseData {
 		} catch (SMWStringLengthException $e) { // cut it down to a reasonable length; no further bytes should be needed for sorting
 			$sortkey = substr( $sortkey, 0, $e->getMaxLength() );
 			$sortkeyDi = new SMWDIString( $sortkey );
-		} 
+		}
 		self::getSMWData( $parser )->addPropertyObjectValue( $pskey, $sortkeyDi );
 
 		return true;
@@ -461,7 +461,7 @@ class SMWParseData {
 		} catch ( SMWDataItemException $e ) {
 			// we rely on MW timestamp format above -- if it ever changes,
 			// exceptions might possibly occur but this should not prevent editing
-			trigger_error( $e.getMessage(), E_USER_NOTICE );
+			trigger_error( $e->getMessage(), E_USER_NOTICE );
 			return null;
 		}
 	}
