@@ -2,7 +2,7 @@
 
 /**
  * Global functions used for setting up the Semantic MediaWiki extension.
- *
+ * 
  * @file SMW_Setup.php
  * @ingroup SMW
  */
@@ -81,7 +81,7 @@ function smwfRegisterHooks() {
 	$wgHooks['AdminLinks'][]          = 'smwfAddToAdminLinks';
 	$wgHooks['ParserFirstCallInit'][] = 'SMWSMWDoc::staticInit';
 	$wgHooks['LanguageGetMagic'][]    = 'SMWSMWDoc::staticMagic';
-
+	
 	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
 		// For MediaWiki 1.17 alpha and later.
 		$wgHooks['ExtensionTypes'][] = 'smwfAddSemanticExtensionType';
@@ -90,11 +90,10 @@ function smwfRegisterHooks() {
 		$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfOldAddSemanticExtensionType';
 	}
 
-	/* Hooks related to Pageschemas extension. TODO: Should be moved to separate file. */
-	$wgHooks['PageSchemasGetObject'][]            = 'smwfCreatePageSchemasObject' ; // Hook for returning PageSchema(extension) object from a given xml
+	/* Hooks related to Pageschemas extension. TODO: Should be moved to separate file. */ 
+	$wgHooks['PageSchemasGetObject'][]            = 'smwfCreatePageSchemasObject' ; // Hook for returning PageSchema(extension) object from a given xml 
 	$wgHooks['PageSchemasGeneratePages'][]        = 'smwfGeneratePages' ; // Hook for creating Pages
-	$wgHooks['getHtmlTextForFieldInputs'][]       = 'smwfgetHtmlTextForPS' ; // Hook for retuning html text to PS schema
-	$wgHooks['getFilledHtmlTextForFieldInputs'][] = 'smwfgetFilledHtmlTextForPS' ; //Hook for retuning html text to PS schema
+	$wgHooks['PageSchemasGetFieldHTML'][]         = 'smwfGetFieldHTMLForPS' ; // Hook for retuning html text to PS schema
 	$wgHooks['PageSchemasGetFieldXML'][]          = 'smwfGetFieldXMLForPS';
 	$wgHooks['PSParseFieldElements'][]            = 'smwfParseFieldElements' ; // Hook for creating Pages
 	$wgHooks['PageSchemasGetPageList'][]          = 'smwfGetPageList' ; //Hook for  creating Pages
@@ -112,18 +111,18 @@ function smwfRegisterResourceLoaderModules() {
 		'remoteBasePath' => $smwgScriptPath,
 		'group' => 'ext.smw'
 	);
-
+	
 	$wgResourceModules['ext.smw'] = $moduleTemplate + array(
 		'scripts' => array(
 			'resources/ext.smw.js',
 			'resources/ext.smw.compat.js',
 		),
 	);
-
+	
 	$wgResourceModules['ext.smw.style'] = $moduleTemplate + array(
 		'styles' => 'skins/SMW_custom.css'
 	);
-
+	
 	$wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
 		'scripts' => 'skins/SMW_tooltip.js',
 		'dependencies' => array(
@@ -165,7 +164,7 @@ function smwfRegisterResourceLoaderModules() {
 		);
 		$wgResourceModules['jquery.ui.dialog'] = $moduleTemplate + array(
 			'scripts' => 'libs/jquery-ui/jquery.ui.dialog.min.js',
-			'dependencies' => array( 'jquery.ui.core', 'jquery.ui.widget', 'jquery.ui.position',
+			'dependencies' => array( 'jquery.ui.core', 'jquery.ui.widget', 'jquery.ui.position', 
 				'jquery.ui.button' /*, 'jquery.ui.draggable', 'jquery.ui.mouse', 'jquery.ui.resizable'*/ )
 		);
 	}
@@ -264,7 +263,7 @@ function smwfRegisterClasses() {
 	// Parameter classes
 	$parDir = $smwgIP . 'includes/params/';
 	$wgAutoloadClasses['SMWParamFormat']			= $parDir . 'SMW_ParamFormat.php';
-
+	
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
 	$wgAutoloadClasses['SMWAsk']                    = $phDir . 'SMW_Ask.php';
@@ -275,7 +274,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSetRecurringEvent']      = $phDir . 'SMW_SetRecurringEvent.php';
 	$wgAutoloadClasses['SMWDeclare']                = $phDir . 'SMW_Declare.php';
 	$wgAutoloadClasses['SMWSMWDoc']                 = $phDir . 'SMW_SMWDoc.php';
-
+	
 	// Stores & queries
 	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';
 	$wgAutoloadClasses['SMWQueryParser']            = $smwgIP . 'includes/SMW_QueryParser.php';
@@ -614,13 +613,13 @@ function smwfParseFieldElements( $field_xml, &$text_object ) {
 	foreach ( $field_xml->children() as $tag => $child ) {
 		if ( $tag == "semanticmediawiki_Property" ) {
 			$text = "";
-			$text = PageSchemas::tableMessageRowHTML( "paramAttr", "SemanticMediaWiki", (string)$tag );
-			$propName = $child->attributes()->name;
-			//this means object has already been initialized by some other extension.
-			$text .= PageSchemas::tableMessageRowHTML( "paramAttrMsg", "name", (string)$propName );
-			foreach ( $child->children() as $prop => $value ) {
-				$text .= PageSchemas::tableMessageRowHTML("paramAttrMsg", $prop, (string)$value );
-			}
+			$text = PageSchemas::tableMessageRowHTML( "paramAttr", "SemanticMediaWiki", (string)$tag );										
+			$propName = $child->attributes()->name;			    
+			//this means object has already been initialized by some other extension.				
+			$text .= PageSchemas::tableMessageRowHTML( "paramAttrMsg", "name", (string)$propName );									
+			foreach ( $child->children() as $prop => $value ) {																			
+				$text .= PageSchemas::tableMessageRowHTML("paramAttrMsg", $prop, (string)$value );					
+			}				
 			$text_object['smw']=$text;
 		}
 	}
@@ -632,7 +631,7 @@ function smwfGetPageList( $psSchemaObj , &$genPageList ) {
 	foreach ( $template_all as $template ) {
 		$field_all = $template->getFields();
 		$field_count = 0; //counts the number of fields
-		foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type
+		foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type 
 			$field_count++;
 			$smw_array = $field->getObject('semanticmediawiki_Property');   //this returns an array with property values filled
 			$prop_array = $smw_array['smw'];
@@ -675,73 +674,53 @@ function smwfGetFieldXMLForPS( $request, &$xmlArray ) {
 	return true;
 }
 
-function smwfgetFilledHtmlTextForPS( $pageSchemaObj, &$text_extensions ){
+function smwfGetFieldHTMLForPS( $field, &$text_extensions ) {
 	global $smwgContLang;
 	$datatype_labels = $smwgContLang->getDatatypeLabels();
-	$html_text = "";
-	$template_all = $pageSchemaObj->getTemplates();
-	$html_text_array = array();
-	foreach ( $template_all as $template ) {
-		$field_all = $template->getFields();
-		$field_count = 0; //counts the number of fields
-		foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type
-			$field_count++;
-			$smw_array = $field->getObject('semanticmediawiki_Property');   //this returns an array with property values filled
-			$prop_array = $smw_array['smw'];
-			if($prop_array != null){
-				$html_text .= '<fieldset style="background: #DEF;"><legend>Property</legend>';
-				$html_text .= '<p> Property Name: <input size="15" name="smw_property_name_starter" value="'.$prop_array['name'].'" >Type:	';
-			$select_body = "";
-			foreach ( $datatype_labels as $label ) {
-				if( $label == $prop_array['Type'] ){
-					$select_body .= "	" . '<option selected>'.$label.'</option>' . "\n";
-				}else{
-					$select_body .= "	" . Xml::element( 'option', null, $label ) . "\n";
-				}
-			}
-			$html_text .= Xml::tags( 'select', array( 'id' => 'property_dropdown', 'name' => 'smw_property_type_starter','value' =>$prop_array['Type'] ), $select_body );
-			$html_text .= '	</p>
-	<p>If you want this property to only be allowed to have certain values, enter the list of allowed values, separated by commas (if a value contains a comma, replace it with "\,"):</p>';
-			$allowed_val_string = "";
-				foreach( $prop_array['allowed_value_array'] as $allowed_value ){
-					$allowed_val_string .= $allowed_value.', ';
-				}
-
-			$html_text .= '<p><input name="smw_values_starter" size="80" value="'.$allowed_val_string.'" ></p></fieldset>';
-			$html_text_array[] = $html_text;
-			}
-		}
+	if ( !is_null( $field ) ) {
+		$smw_array = $field->getObject('semanticmediawiki_Property'); //this returns an array with property values filled
+		$prop_array = $smw_array['smw'];
+	} else {
+		$prop_array = array();
 	}
-	$text_extensions['smw'] = $html_text_array;
-	return true;
-
-}
-function smwfgetHtmlTextForPS( &$js_extensions ,&$text_extensions ) {
-	global $smwgContLang;
-	$datatype_labels = $smwgContLang->getDatatypeLabels();
-	$html_text = "";
-	$html_text .= '<fieldset style="background: #DEF;"><legend>Property</legend>
-	<p> Property Name: <input size="15" name="smw_property_name_starter">Type:	';
+	$html_text = '<p>Property name: <input size="15" name="smw_property_name_num" value="'.$prop_array['name'].'" >' . "\n";
 	$select_body = "";
 	foreach ( $datatype_labels as $label ) {
-		$select_body .= "	" . Xml::element( 'option', null, $label ) . "\n";
+		$optionAttrs = array();
+		if ( $label == $prop_array['Type'] ) {
+			$optionAttrs['selected'] = 'selected';
+		}
+		$select_body .= "\t" . Xml::element( 'option', $optionAttrs, $label ) . "\n";
 	}
-	$html_text .= Xml::tags( 'select', array( 'id' => 'property_dropdown', 'name' => 'smw_property_type_starter' ), $select_body );
-    $html_text .= '	</p>
-	<p>If you want this property to only be allowed to have certain values, enter the list of allowed values, separated by commas (if a value contains a comma, replace it with "\,"):</p>
-	<p><input value="" name="smw_values_starter" size="80"></p></fieldset>';
+	$propertyDropdownAttrs = array( 'id' => 'property_dropdown', 'name' => 'smw_property_type_num' );
+	if ( array_key_exists( 'Type', $prop_array ) ) {
+		$propertyDropdownAttrs['value'] = $prop_array['Type'];
+	}
+	$html_text .= "Type: " . Xml::tags( 'select', $propertyDropdownAttrs, $select_body ) . "</p>\n";
+	$html_text .= '<p>If you want this property to only be allowed to have certain values, enter the list of allowed values, separated by commas (if a value contains a comma, replace it with "\,"):</p>';
+	$allowedValsInputAttrs = array(
+		'size' => 80
+	);
+	if ( array_key_exists( 'allowed_value_array', $prop_array ) ) {
+		$allowed_val_string = implode( ', ', $prop_array['allowed_value_array'] );
+	} else {
+		$allowed_val_string = '';
+	}
+	$html_text .= '<p>' . Html::input( 'smw_values_num', $allowed_val_string, 'text', $allowedValsInputAttrs ) . "</p>\n";
 
-	$text_extensions['smw'] = $html_text;
+	$text_extensions['smw'] = array( 'Property', '#DEF', $html_text );
+
 	return true;
 }
+
 function smwfGeneratePages( $psSchemaObj, $toGenPageList ) {
 	$template_all = $psSchemaObj->getTemplates();
 	foreach ( $template_all as $template ) {
 		$field_all = $template->getFields();
 		$field_count = 0; //counts the number of fields
-		foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type
+		foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type 
 			$field_count++;
-			$smw_array = $field->getObject('semanticmediawiki_Property');   //this returns an array with property values filled
+			$smw_array = $field->getObject('semanticmediawiki_Property'); //this returns an array with property values filled
 			$prop_array = $smw_array['smw'];
 			if($prop_array != null){
 				$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
@@ -754,34 +733,35 @@ function smwfGeneratePages( $psSchemaObj, $toGenPageList ) {
 	}
 	return true;
 }
+
 function smwfCreatePropertyText( $property_type, $allowed_value_array ) {
-		global $smwgContLang;
-		$prop_labels = $smwgContLang->getPropertyLabels();
-		$type_tag = "[[{$prop_labels['_TYPE']}::$property_type]]";
-		$text = wfMsgForContent( 'ps-property-isproperty', $type_tag );
-		if ( $allowed_value_array != null) {
-			// replace the comma substitution character that has no chance of
-			// being included in the values list - namely, the ASCII beep
-			$text .= "\n\n" . wfMsgExt( 'ps-property-allowedvals', array( 'parsemag', 'content' ), count( $allowed_value_array ) );
-			foreach ( $allowed_value_array as $i => $value ) {
-				// replace beep back with comma, trim
-				$value = str_replace( "\a",',' , trim( $value ) );
-				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
-					$prop_labels = $smwgContLang->getPropertyLabels();
-					$text .= "\n* [[" . $prop_labels['_PVAL'] . "::$value]]";
-				} else {
-					$spec_props = $smwgContLang->getSpecialPropertiesArray();
-					$text .= "\n* [[" . $spec_props[SMW_SP_POSSIBLE_VALUE] . "::$value]]";
-				}
+	global $smwgContLang;
+	$prop_labels = $smwgContLang->getPropertyLabels();
+	$type_tag = "[[{$prop_labels['_TYPE']}::$property_type]]";
+	$text = wfMsgForContent( 'ps-property-isproperty', $type_tag );
+	if ( $allowed_value_array != null) {
+		// replace the comma substitution character that has no chance of
+		// being included in the values list - namely, the ASCII beep
+		$text .= "\n\n" . wfMsgExt( 'ps-property-allowedvals', array( 'parsemag', 'content' ), count( $allowed_value_array ) );
+		foreach ( $allowed_value_array as $i => $value ) {
+			// replace beep back with comma, trim
+			$value = str_replace( "\a",',' , trim( $value ) );
+			if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
+				$prop_labels = $smwgContLang->getPropertyLabels();
+				$text .= "\n* [[" . $prop_labels['_PVAL'] . "::$value]]";
+			} else {
+				$spec_props = $smwgContLang->getSpecialPropertiesArray();
+				$text .= "\n* [[" . $spec_props[SMW_SP_POSSIBLE_VALUE] . "::$value]]";
 			}
 		}
-		return $text;
 	}
+	return $text;
+}
+
 function smwfCreateProperty( $prop_name, $prop_type, $allowed_value_array ) {
 	global $wgUser;
 	$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_name );
 	$text = smwfCreatePropertyText( $prop_type, $allowed_value_array );
-	#$text = "This is a property of type [[Has type:Number]].";
 	$jobs = array();
 	$params = array();
 	$params['user_id'] = $wgUser->getId();
@@ -792,14 +772,14 @@ function smwfCreateProperty( $prop_name, $prop_type, $allowed_value_array ) {
 }
 
 /**
-* Function to return the Property based on the xml passed from the PageSchema extension
+* Function to return the Property based on the xml passed from the PageSchema extension 
 */
 function smwfCreatePageSchemasObject( $objectName, $xmlForField, &$object ) {
 	$smw_array = array();
 	if ( $objectName == "semanticmediawiki_Property" ) {
 		foreach ( $xmlForField->children() as $tag => $child ) {
 			if ( $tag == $objectName ) {
-				$propName = $child->attributes()->name;
+				$propName = $child->attributes()->name;    
 				//this means object has already been initialized by some other extension.
 				$smw_array['name']=(string)$propName;
 				$allowed_value_array = array();
@@ -872,7 +852,7 @@ function smwfInitContentLanguage( $langcode ) {
  * This hook registers parser functions and hooks to the given parser. It is
  * called during SMW initialisation. Note that parser hooks are something different
  * than MW hooks in general, which explains the two-level registration.
- *
+ * 
  * @since 1.5.3
  */
 function smwfRegisterParserFunctions( Parser &$parser ) {
