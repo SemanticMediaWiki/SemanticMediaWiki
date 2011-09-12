@@ -90,14 +90,12 @@ function smwfRegisterHooks() {
 		$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfOldAddSemanticExtensionType';
 	}
 
-	/* Hooks related to Pageschemas extension. TODO: Should be moved to separate file. */ 
-	$wgHooks['PageSchemasGetObject'][]            = 'smwfCreatePageSchemasObject' ; // Hook for returning PageSchema(extension) object from a given xml 
-	$wgHooks['PageSchemasGeneratePages'][]        = 'smwfGeneratePages' ; // Hook for creating Pages
-	$wgHooks['PageSchemasGetFieldHTML'][]         = 'smwfGetFieldHTMLForPS' ; // Hook for retuning html text to PS schema
-	$wgHooks['PageSchemasGetFieldXML'][]          = 'smwfGetFieldXMLForPS';
-	$wgHooks['PSParseFieldElements'][]            = 'smwfParseFieldElements' ; // Hook for creating Pages
-	$wgHooks['PageSchemasGetPageList'][]          = 'smwfGetPageList' ; //Hook for  creating Pages
-	/* End: Hooks related to Pageschemas extension */
+	$wgHooks['PageSchemasGetObject'][]            = 'SMWPageSchemas::createPageSchemasObject';
+	$wgHooks['PageSchemasGeneratePages'][]        = 'SMWPageSchemas::generatePages';
+	$wgHooks['PageSchemasGetFieldHTML'][]         = 'SMWPageSchemas::getFieldHTML';
+	$wgHooks['PageSchemasGetFieldXML'][]          = 'SMWPageSchemas::getFieldXML';
+	$wgHooks['PSParseFieldElements'][]            = 'SMWPageSchemas::parseFieldElements';
+	$wgHooks['PageSchemasGetPageList'][]          = 'SMWPageSchemas::getPageList';
 }
 
 /**
@@ -342,6 +340,9 @@ function smwfRegisterClasses() {
 	//$wgAutoloadClasses['ApiSMWQuery']             	= $smwgIP . 'includes/api/ApiSMWQuery.php';
 	//$wgAPIModules['smwquery'] = 'ApiSMWQuery';
 	$wgAutoloadClasses['ApiSMWInfo']    = $smwgIP . 'includes/api/ApiSMWInfo.php';
+
+	// Other extensions
+	$wgAutoloadClasses['SMWPageSchemas'] = $smwgIP . 'includes/SMW_PageSchemas.php';
 }
 
 /**
