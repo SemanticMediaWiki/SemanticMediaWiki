@@ -63,6 +63,19 @@ $magicWords['br'] = array(
 	'declare' => array( 0, 'disklêriañ' ),
 );
 
+/** German (Deutsch) */
+$magicWords['de'] = array(
+	'ask' => array( 0, 'frage' ),
+	'show' => array( 0, 'zeige' ),
+	'info' => array( 0, 'informiere' ),
+	'concept' => array( 0, 'konzept' ),
+	'set' => array( 0, 'setze' ),
+	'set_recurring_event' => array( 0, 'setze_wiederholung' ),
+	'declare' => array( 0, 'deklariere' ),
+	'SMW_NOFACTBOX' => array( 0, '__KEINEFAKTENANZEIGE__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__FAKTENANZEIGE__' ),
+);
+
 /** Spanish (Español) */
 $magicWords['es'] = array(
 	'ask' => array( 0, 'preguntar', 'pregunta', 'ask' ),
@@ -72,6 +85,16 @@ $magicWords['es'] = array(
 	'set' => array( 0, 'establecer', 'determinar', 'set' ),
 	'set_recurring_event' => array( 0, 'establecer_evento_recurrente', 'determinar_evento_recurrente', 'set_recurring_event' ),
 	'declare' => array( 0, 'declarar', 'declara', 'declare' ),
+);
+
+/** Indonesian (Bahasa Indonesia) */
+$magicWords['id'] = array(
+	'ask' => array( 0, 'tanya' ),
+	'show' => array( 0, 'tampilkan' ),
+	'info' => array( 0, 'info' ),
+	'concept' => array( 0, 'konsep' ),
+	'set' => array( 0, 'tetapkan' ),
+	'declare' => array( 0, 'deklarasi' ),
 );
 
 /** Igbo (Igbo) */
@@ -117,10 +140,11 @@ $magicWords['mr'] = array(
 
 /** Nedersaksisch (Nedersaksisch) */
 $magicWords['nds-nl'] = array(
-	'concept' => array( 0, 'concep', 'concept' ),
-	'set_recurring_event' => array( 0, 'herhaolende_gebeurtenisse_instellen', 'herhalende_gebeurtenis_instellen', 'set_recurring_event' ),
-	'SMW_NOFACTBOX' => array( 0, '__GIENFEITENKAODER__', '__GEENFEITENKADER__', '__NOFACTBOX__' ),
-	'SMW_SHOWFACTBOX' => array( 0, '__FEITENKAODERWEERGEVEN__', '__FEITENKADERWEERGEVEN__', '__SHOWFACTBOX__' ),
+	'concept' => array( 0, 'konsept' ),
+	'set_recurring_event' => array( 0, 'herhaolende_gebeurtenisse_instellen', 'herhalende_gebeurtenis_instellen' ),
+	'declare' => array( 0, 'deklareren' ),
+	'SMW_NOFACTBOX' => array( 0, '__GIENFEITENKAODER__', '__GEENFEITENKADER__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__FEITENKAODERWEERGEVEN__', '__FEITENKADERWEERGEVEN__' ),
 );
 
 /** Dutch (Nederlands) */
@@ -134,6 +158,15 @@ $magicWords['nl'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__FEITENKADERWEERGEVEN__' ),
 );
 
+/** Polish (Polski) */
+$magicWords['pl'] = array(
+	'ask' => array( 0, 'pytanie' ),
+	'show' => array( 0, 'pokaż' ),
+	'info' => array( 0, 'informacja' ),
+	'set' => array( 0, 'ustaw' ),
+	'declare' => array( 0, 'zadeklaruj' ),
+);
+
 /** Pashto (پښتو) */
 $magicWords['ps'] = array(
 	'ask' => array( 0, 'پوښتل', 'ask' ),
@@ -141,7 +174,7 @@ $magicWords['ps'] = array(
 	'info' => array( 0, 'مالومات', 'info' ),
 );
 
-/** Serbian Cyrillic ekavian (‪Српски (ћирилица)‬) */
+/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬) */
 $magicWords['sr-ec'] = array(
 	'ask' => array( 0, 'питај' ),
 	'show' => array( 0, 'прикажи' ),
@@ -159,7 +192,7 @@ $magicWords['sv'] = array(
 	'concept' => array( 0, 'koncept', 'concept' ),
 );
 
-/** Татарча (Татарча) */
+/** Tatar (Cyrillic script) (Татарча) */
 $magicWords['tt-cyrl'] = array(
 	'ask' => array( 0, 'сорау' ),
 	'show' => array( 0, 'күрсәт' ),
