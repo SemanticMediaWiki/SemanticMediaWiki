@@ -37,6 +37,8 @@ define( 'CONCEPT_CACHE_NONE', 0 ); // show all concepts even without any cache
 // Constants for identifying javascripts as used in SMWOutputs.
 /// @deprecated Use module 'ext.smw.tooltips', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the latest.
 define( 'SMW_HEADER_TOOLTIP', 2 );
+/// @deprecated Module removed. Vanishes in SMW 1.7 at the latest.
+define( 'SMW_HEADER_SORTTABLE', 3 );
 /// @deprecated Use module 'ext.smw.style', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the latest.
 define( 'SMW_HEADER_STYLE', 4 );
 
