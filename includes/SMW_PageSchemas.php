@@ -86,19 +86,31 @@ class SMWPageSchemas {
 		} else {
 			$prop_array = array();
 		}
-		$html_text = '<p>Property name: <input size="15" name="smw_property_name_num" value="'.$prop_array['name'].'" >' . "\n";
+		$html_text = '<p>Property name: ';
+		if ( array_key_exists( 'name', $prop_array ) ) {
+			$propName = $prop_array['name'];
+		} else {
+			$propName = null;
+		}
+		$html_text .= Html::input( 'smw_property_name_num', $propName, array( 'size' => 15 ) ) . "\n";
+		if ( array_key_exists( 'Type', $prop_array ) ) {
+			$propType = $prop_array['Type'];
+		} else {
+			$propType = null;
+		}
 		$select_body = "";
 		foreach ( $datatype_labels as $label ) {
 			$optionAttrs = array();
-			if ( $label == $prop_array['Type'] ) {
+			if ( $label == $propType) {
 				$optionAttrs['selected'] = 'selected';
 			}
 			$select_body .= "\t" . Xml::element( 'option', $optionAttrs, $label ) . "\n";
 		}
-		$propertyDropdownAttrs = array( 'id' => 'property_dropdown', 'name' => 'smw_property_type_num' );
-		if ( array_key_exists( 'Type', $prop_array ) ) {
-			$propertyDropdownAttrs['value'] = $prop_array['Type'];
-		}
+		$propertyDropdownAttrs = array(
+			'id' => 'property_dropdown',
+			'name' => 'smw_property_type_num',
+			'value' => $propType
+		);
 		$html_text .= "Type: " . Xml::tags( 'select', $propertyDropdownAttrs, $select_body ) . "</p>\n";
 		$html_text .= '<p>If you want this property to only be allowed to have certain values, enter the list of allowed values, separated by commas (if a value contains a comma, replace it with "\,"):</p>';
 		$allowedValsInputAttrs = array(
