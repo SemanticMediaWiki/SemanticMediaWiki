@@ -53,9 +53,11 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	);
 
 	// Initialize base namespace for URIs in data exports:
-	if ( $namespace === null ) { // fallback (bad because data URL will change depending on client URL)
-		wfWarn( 'You should be providing the domain name to enableSemantics()' );
-		$namespace = parse_url( $wgServer, PHP_URL_HOST );
+	if ( $namespace === null ) { 
+		die ( 'You should be providing the domain name to enableSemantics()' );
+		// fallback (bad because data URL will change depending on client URL)
+//		wfWarn( 'You should be providing the domain name to enableSemantics()' );
+//		$namespace = parse_url( $wgServer, PHP_URL_HOST );
 	}
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
 		// The dot tells that the domain is not complete. It will be completed
