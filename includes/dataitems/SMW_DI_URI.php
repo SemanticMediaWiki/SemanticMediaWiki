@@ -67,7 +67,7 @@ class SMWDIUri extends SMWDataItem {
 
 	/// @todo This should be changed to the spelling getUri().
 	public function getURI() {
-		return $this->m_scheme . ':' . $this->m_hierpart .
+		return $this->m_scheme . '://' . $this->m_hierpart .
 			( $this->m_query ? '?' . $this->m_query : '' ) . 
 			( $this->m_fragment ? '#' . $this->m_fragment : '' );
 	}
