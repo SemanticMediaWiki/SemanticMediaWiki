@@ -67,9 +67,15 @@ class SMWDIUri extends SMWDataItem {
 
 	/// @todo This should be changed to the spelling getUri().
 	public function getURI() {
-		return $this->m_scheme . '://' . $this->m_hierpart .
-			( $this->m_query ? '?' . $this->m_query : '' ) . 
-			( $this->m_fragment ? '#' . $this->m_fragment : '' );
+		$schemesWithDoubleslesh = array(
+			'http', 'https', 'ftp'
+		);
+		
+		return $this->m_scheme . ':'
+			. ( in_array( $this->m_scheme, $schemesWithDoubleslesh ) ? '//' : '' )
+			. $this->m_hierpart
+			. ( $this->m_query ? '?' . $this->m_query : '' )
+			. ( $this->m_fragment ? '#' . $this->m_fragment : '' );
 	}
 
 	public function getScheme() {
