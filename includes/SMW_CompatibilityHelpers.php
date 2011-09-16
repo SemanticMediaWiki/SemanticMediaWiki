@@ -48,7 +48,7 @@ class SMWCompatibilityHelpers {
 				if ( $typeid == '__typ' && $dbkeys[0]{0} == '_' ) { // b/c: old data stored as type ids
 					return SMWTypesValue::getTypeUriFromTypeId( $dbkeys[0] );
 				} else {
-					return SMWDIUri::doUnserialize( $dbkeys[0]);
+					return SMWDIUri::doUnserialize( $dbkeys[0] );
 				}
 			case SMWDataItem::TYPE_TIME:
 				$timedate = explode( 'T', $dbkeys[0], 2 );

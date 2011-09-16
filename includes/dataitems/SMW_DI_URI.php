@@ -71,11 +71,13 @@ class SMWDIUri extends SMWDataItem {
 			'http', 'https', 'ftp'
 		);
 		
-		return $this->m_scheme . ':'
+		$uri = $this->m_scheme . ':'
 			. ( in_array( $this->m_scheme, $schemesWithDoubleslesh ) ? '//' : '' )
 			. $this->m_hierpart
 			. ( $this->m_query ? '?' . $this->m_query : '' )
 			. ( $this->m_fragment ? '#' . $this->m_fragment : '' );
+
+		return $uri;
 	}
 
 	public function getScheme() {
@@ -125,6 +127,9 @@ class SMWDIUri extends SMWDataItem {
 			$hierpart = $parts[0];
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		}
+		
+		$hierpart = ltrim( $hierpart, '/' );
+		
 		return new SMWDIUri( $scheme, $hierpart, $query, $fragment );
 	}
 

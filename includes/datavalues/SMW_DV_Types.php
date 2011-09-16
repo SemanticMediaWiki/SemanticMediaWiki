@@ -34,7 +34,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public static function getTypeUriFromTypeId( $typeId ) {
-		return new SMWDIUri( 'http', '//semantic-mediawiki.org/swivt/1.0', '', $typeId );
+		return new SMWDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
 	}
 
 	protected function parseUserValue( $value ) {
@@ -82,7 +82,7 @@ class SMWTypesValue extends SMWDataValue {
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( ( $dataItem instanceof SMWDIUri ) && ( $dataItem->getScheme() == 'http' ) &&
-		     ( $dataItem->getHierpart() == '//semantic-mediawiki.org/swivt/1.0' ) &&
+		     ( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
 		     ( $dataItem->getQuery() == '' ) ) {
 			$this->m_isAlias = false;
 			$this->m_typeId = $dataItem->getFragment();

@@ -141,7 +141,7 @@ class SMWURIValue extends SMWDataValue {
 
 		// Now create the URI data item:
 		try {
-			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, $this->m_typeid);
+			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, $this->m_typeid );
 		} catch ( SMWDataItemException $e ) {
 			$this->addError( wfMsgForContent( 'smw_baduri', $this->m_wikitext ) );
 			$this->m_dataitem = new SMWDIUri( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
@@ -244,11 +244,13 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	public function getURL() {
 		global $wgUrlProtocols;
+		
 		foreach ( $wgUrlProtocols as $prot ) {
 			if ( ( $prot == $this->m_dataitem->getScheme() . ':' ) || ( $prot == $this->m_dataitem->getScheme() . '://' ) ) {
 				return $this->m_dataitem->getURI();
 			}
 		}
+		
 		return '';
 	}
 
