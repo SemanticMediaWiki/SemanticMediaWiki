@@ -45,6 +45,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	smwfRegisterSpecialPages();
 
 	$wgAPIModules['smwinfo'] = 'ApiSMWInfo';
+	$wgAPIModules['ask'] = 'ApiAsk';
+	$wgAPIModules['askargs'] = 'ApiAskArgs';
 
 	$wgFooterIcons['poweredby']['semanticmediawiki'] = array(
 		'src' => null,
@@ -339,9 +341,10 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWRefreshJob'] = $smwgIP . 'includes/jobs/SMW_RefreshJob.php';
 
 	// API modules
-	//$wgAutoloadClasses['ApiSMWQuery']             	= $smwgIP . 'includes/api/ApiSMWQuery.php';
-	//$wgAPIModules['smwquery'] = 'ApiSMWQuery';
-	$wgAutoloadClasses['ApiSMWInfo']    = $smwgIP . 'includes/api/ApiSMWInfo.php';
+	$wgAutoloadClasses['ApiSMWQuery'] = $smwgIP . 'includes/api/ApiSMWQuery.php';
+	$wgAutoloadClasses['ApiAsk'] = $smwgIP . 'includes/api/ApiAsk.php';
+	$wgAutoloadClasses['ApiAskArgs'] = $smwgIP . 'includes/api/ApiAskArgs.php';
+	$wgAutoloadClasses['ApiSMWInfo'] = $smwgIP . 'includes/api/ApiSMWInfo.php';
 
 	// Other extensions
 	$wgAutoloadClasses['SMWPageSchemas'] = $smwgIP . 'includes/SMW_PageSchemas.php';

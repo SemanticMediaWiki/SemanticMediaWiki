@@ -34,9 +34,14 @@ abstract class ApiSMWQuery extends ApiBase {
 	 * 
 	 * @return SMWQuery
 	 */
-	protected function getQuery( $queryString ) {
-		// SMWQueryProcessor::processFunctionParams( $rawparams, $queryString, $m_params, $m_printouts);
-		return SMWQueryProcessor::createQuery( $queryString, SMWQueryProcessor::getProcessedParams( $this->parameters ), SMWQueryProcessor::SPECIAL_PAGE );
+	protected function getQuery( $queryString, array $printeouts ) {
+		return SMWQueryProcessor::createQuery(
+			$queryString,
+			SMWQueryProcessor::getProcessedParams( $this->parameters ),
+			SMWQueryProcessor::SPECIAL_PAGE,
+			'',
+			$printeouts
+		);
 	}
 	
 	/**
@@ -46,11 +51,12 @@ abstract class ApiSMWQuery extends ApiBase {
 	 * @return SMWQueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		 smwfGetStore()->getQueryResult( $query );
+		 return smwfGetStore()->getQueryResult( $query );
 	}
 	
 	protected function addQueryResult( SMWQueryResult $queryResult ) {
 		// TODO: create general SMWQueryResult serialization method that can then also be used for JSON printer
+		$this->getResult()->addValue( 'result', null, $queryResult->serializeToArray() );
 	}
 	
 	public function getPossibleErrors() {

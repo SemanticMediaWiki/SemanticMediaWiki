@@ -17,6 +17,8 @@ class ApiAsk extends ApiSMWQuery {
 	public function execute() {
 		$params = $this->extractRequestParams();
 		$this->requireParameters( $params, array( 'query' ) );
+
+		// SMWQueryProcessor::processFunctionParams( $rawparams, $queryString, $m_params, $m_printouts);
 		
 		$queryResult = $this->getQueryResult( $this->getQuery( $params['query'] ) );
 		$this->addQueryResult( $queryResult );

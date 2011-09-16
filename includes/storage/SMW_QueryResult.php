@@ -226,6 +226,27 @@ class SMWQueryResult {
 		
 		return $result;
 	}
+	
+	public function serializeToArray() {
+		$results = array();
+		
+		foreach ( $this->mResults as /* SMWDIWikiPage */ $diWikiPage ) {
+			switch ( $diWikiPage->getDIType() ) {
+				case SMWDataItem::TYPE_NUMBER:
+					$result = $diWikiPage->getNumber();
+					break;
+				case SMWDataItem::TYPE_GEO:
+					$result = $diWikiPage->getCoordinateSet();
+					break;
+				default:
+					$result = $diWikiPage->getSerialization();
+			}
+			
+			$results[$diWikiPage->getSerialization()] = $result;
+		}
+		
+		return $results;
+	}
 
 }
 
@@ -497,5 +518,5 @@ class SMWResultArray {
 		
 		return $options;
 	}
-
+	
 }

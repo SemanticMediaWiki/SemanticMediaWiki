@@ -18,10 +18,26 @@ class ApiAskArgs extends ApiSMWQuery {
 	public function execute() {
 		$params = $this->extractRequestParams();
 		$this->requireParameters( $params, array( 'conditions' ) );
+		$this->parameters = $params['parameters'];
 		
-		$query = $this->getQuery(  ); // TODO
+		$query = $this->getQuery( 
+			implode( array_map( array( __CLASS__, 'wrapCondition' ), $params['conditions'] ) ),
+			array_map( array( __CLASS__, 'printeoutFromString' ), $params['printeouts'] )
+		);
 		
 		$this->addQueryResult( $this->getQueryResult( $query ) );
+	}
+	
+	public static function wrapCondition( $c ) {
+		return "[[$c]]"; 
+	}
+	
+	public static function printeoutFromString( $printeout ) {
+		return new SMWPrintRequest(
+			SMWPrintRequest::PRINT_PROP,
+			$printeout,
+			SMWPropertyValue::makeUserProperty( $printeout )
+		);
 	}
 
 	public function getAllowedParams() {
@@ -64,7 +80,7 @@ class ApiAskArgs extends ApiSMWQuery {
 
 	protected function getExamples() {
 		return array(
-			'api.php?action=askargs&conditions=Modification date::+&printeouts=Modification date&parameters=|sort%3DModification date|order%3Ddesc',
+			'api.php?action=askargs&conditions=Modification date::%2B&printeouts=Modification date&parameters=|sort%3DModification date|order%3Ddesc',
 		);
 	}	
 	
