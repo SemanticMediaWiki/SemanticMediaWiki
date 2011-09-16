@@ -67,7 +67,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			
 			$headers = '<tr>' . implode( "\n", $headers ) . '</tr>';
 			
-			// MW 1.17 and earlier do not accept thead while later versions require it.
 			if ( $outputmode == SMW_OUTPUT_HTML ) {
 				$headers = '<thead>' . $headers . '</thead>'; 
 			}
@@ -77,7 +76,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 		$tableRows = implode( "\n", $tableRows );
 		
-		// MW 1.17 and earlier do not accept thead while later versions require it.
 		if ( $outputmode == SMW_OUTPUT_HTML ) {
 			$tableRows = '<tbody>' . $tableRows . '</tbody>'; 
 		}
