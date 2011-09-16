@@ -26,9 +26,29 @@ class SMWParamFormat extends ItemParameterManipulation {
 	/**
 	 * @see ItemParameterManipulation::doManipulation
 	 * 
-	 * @since 0.7
+	 * @since 1.6.2
 	 */	
 	public function doManipulation( &$value, Parameter $parameter, array &$parameters ) {
+		// Make sure the format value is valid.
+		$value = self::getValidFormatName( $value );
+		
+		// Add the formats parameters to the parameter list.
+		$queryPrinter = SMWQueryProcessor::getResultPrinter( $value );
+		$parameters = array_merge( $parameters, $queryPrinter->getValidatorParameters() );
+	}
+	
+	/**
+	 * Takes a format name, which can be an alias and returns something
+	 * that certainly valid. Aliases are resvolved. Invalid formats
+	 * will result into 'auto' being returned.
+	 * 
+	 * @since 1.6.2
+	 * 
+	 * @param string $value
+	 * 
+	 * @return string
+	 */
+	protected function getValidFormatName( $value ) {
 		global $smwgResultFormats;
 		
 		$value = trim( $value );
@@ -40,16 +60,20 @@ class SMWParamFormat extends ItemParameterManipulation {
 				$value = 'auto';  // If it is an unknown format, defaults to list/table again
 			}
 		}
+		
+		return $value;
 	}
 	
 	/**
 	 * Turns format aliases into main formats.
 	 *
+	 * @since 1.6.2
+	 *
 	 * @param string $format
 	 *
 	 * @return boolean Indicates if the passed format was an alias, and thus was changed.
 	 */
-	static protected function resolveFormatAliases( &$format ) {
+	public static function resolveFormatAliases( &$format ) {
 		global $smwgResultAliases;
 
 		$isAlias = false;

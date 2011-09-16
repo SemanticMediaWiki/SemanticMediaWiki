@@ -158,15 +158,7 @@ abstract class SMWResultPrinter {
 		$this->hasTemplates = false;
 		
 		if ( $this->useValidator ) {
-			$paramValidationResult = $this->handleRawParameters( $params );
-			
-			if ( is_array( $paramValidationResult ) ) {
-				$this->handleParameters( $paramValidationResult, $outputmode );
-			}
-			else {
-				$this->addError( $paramValidationResult );
-				return $this->getErrorString( $results );
-			}
+			$this->handleParameters( $params, $outputmode );
 		}
 		else {
 			$this->readParameters( $params, $outputmode );
@@ -290,31 +282,6 @@ abstract class SMWResultPrinter {
 		}
 
 		return $result;		
-	}
-
-	/**
-	 * Handles the user-provided parameters and returns the processes key-value pairs.
-	 * If there is a fatal error, a string with the error message will be returned intsead.
-	 * 
-	 * @since 1.6
-	 * 
-	 * @param array $keyValuePairs
-	 * 
-	 * @return array or string
-	 */
-	protected function handleRawParameters( array $keyValuePairs ) {
-		$validator = new Validator();
-		$validator->setParameters( $keyValuePairs, $this->getParameters() );
-		$validator->validateParameters();
-		$fatalError = $validator->hasFatalError();
-		
-		if ( $fatalError === false ) {
-			$this->mErrors = $validator->getErrorMessages();
-		    return $validator->getParameterValues();			
-		}
-		else {
-			return $fatalError->getMessage();
-		}
 	}
 	
 	/**
@@ -613,72 +580,9 @@ abstract class SMWResultPrinter {
 		$params = array();
 		
 		foreach ( $this->getParameters() as $param ) {
-			$params[] = $this->toValidatorParam( $param );
+			$param = $this->toValidatorParam( $param );
+			$params[$param->getName()] = $param;
 		}
-		
-		return $params;
-	}
-	
-	/**
-	 * A function to describe the allowed parameters of a query using
-	 * any specific format - most query printers should override this
-	 * function.
-	 * 
-	 * TODO: refactor non-printer params up to the query processor
-	 * and do all param handling there. 
-	 *
-	 * @since 1.5.0
-	 *
-	 * @return array
-	 */
-	public function getParameters() {
-		$params = array();
-		
-		$allowedFormats = $GLOBALS['smwgResultFormats'];
-		
-		foreach ( $GLOBALS['smwgResultAliases'] as $aliases ) {
-			$allowedFormats += $aliases;
-		}
-		
-		$params['format'] = new Parameter( 'format' );
-		$params['format']->setDefault( 'auto' );
-		//$params['format']->addCriteria( new CriterionInArray( $allowedFormats ) );
-		$params['format']->addManipulations( new SMWParamFormat() );
-		
-		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
-		$params['limit']->setMessage( 'smw_paramdesc_limit' );
-		$params['limit']->setDefault( 20 );
-		
-		$params['sort'] = new ListParameter( 'sort' );
-		$params['sort']->setMessage( 'smw-paramdesc-sort' );
-		$params['sort']->setDefault( '' );
-		
-		$params['order'] = new ListParameter( 'order' );
-		$params['order']->setMessage( 'smw-paramdesc-order' );
-		$params['order']->setDefault( '' );
-		$params['order']->addCriteria( new CriterionInArray( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ) );
-		
-		$params['offset'] = new Parameter( 'offset', Parameter::TYPE_INTEGER );
-		$params['offset']->setMessage( 'smw_paramdesc_offset' );
-		$params['offset']->setDefault( 0 );
-		
-		$params['headers'] = new Parameter( 'headers' );
-		$params['headers']->setMessage( 'smw_paramdesc_headers' );
-		$params['headers']->addCriteria( new CriterionInArray( 'show', 'hide', 'plain' ) );
-		$params['headers']->setDefault( 'show' );
-		
-		$params['mainlabel'] = new Parameter( 'mainlabel' );
-		$params['mainlabel']->setMessage( 'smw_paramdesc_mainlabel' );
-		$params['mainlabel']->setDefault( false, false );
-		
-		$params['link'] = new Parameter( 'link' );
-		$params['link']->setMessage( 'smw_paramdesc_link' );
-		$params['link']->addCriteria( new CriterionInArray( 'all', 'subject', 'none' ) );
-		$params['link']->setDefault( 'all' );
-		
-		$params['searchlabel'] = new Parameter( 'searchlabel' );
-		$params['searchlabel']->setDefault( '' );
-		$params['searchlabel']->setMessage( 'smw-paramdesc-searchlabel' );
 		
 		return $params;
 	}
@@ -721,6 +625,22 @@ abstract class SMWResultPrinter {
 		else {
 			return $param;
 		}
+	}
+	
+	/**
+	 * A function to describe the allowed parameters of a query using
+	 * any specific format - most query printers should override this
+	 * function.
+	 * 
+	 * TODO: refactor non-printer params up to the query processor
+	 * and do all param handling there. 
+	 *
+	 * @since 1.5
+	 *
+	 * @return array
+	 */
+	public function getParameters() {
+		return array();
 	}
 
 }

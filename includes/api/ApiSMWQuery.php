@@ -36,7 +36,7 @@ abstract class ApiSMWQuery extends ApiBase {
 	 */
 	protected function getQuery( $queryString ) {
 		// SMWQueryProcessor::processFunctionParams( $rawparams, $queryString, $m_params, $m_printouts);
-		return SMWQueryProcessor::createQuery( $queryString, $this->parameters, SMWQueryProcessor::SPECIAL_PAGE );
+		return SMWQueryProcessor::createQuery( $queryString, SMWQueryProcessor::getProcessedParams( $this->parameters ), SMWQueryProcessor::SPECIAL_PAGE );
 	}
 	
 	/**

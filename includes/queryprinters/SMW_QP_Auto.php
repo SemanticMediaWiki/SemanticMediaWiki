@@ -66,5 +66,16 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_auto' );
 	}
+	
+	public function getParameters() {
+		// TODO: this assumes table, which is not correct when it should be list
+		
+		$printer = SMWQueryProcessor::getResultPrinter(
+			'table',
+			$this->mInline ? SMWQueryProcessor::INLINE_QUERY : SMWQueryProcessor::SPECIAL_PAGE
+		);
+		
+		return $printer->getParameters();
+	}
 
 }

@@ -54,7 +54,12 @@ class SMWConcept {
 		$concept_docu = array_shift( $params );
 
 		// NOTE: the str_replace above is required in MediaWiki 1.11, but not in MediaWiki 1.14
-		$query = SMWQueryProcessor::createQuery( $concept_input, array( 'limit' => 20, 'format' => 'list' ), SMWQueryProcessor::CONCEPT_DESC );
+		$query = SMWQueryProcessor::createQuery(
+			$concept_input,
+			SMWQueryProcessor::getProcessedParams( array( 'limit' => 20, 'format' => 'list' ) ),
+			SMWQueryProcessor::CONCEPT_DESC
+		);
+		
 		$concept_text = $query->getDescription()->getQueryString();
 
 		if ( SMWParseData::getSMWData( $parser ) !== null ) {
