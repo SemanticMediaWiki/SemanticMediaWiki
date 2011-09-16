@@ -69,14 +69,9 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 			$cur_first_char = $wgContLang->firstChar( $sortkey == '' ? $content[0]->getDBkey() : $sortkey );
 			
 			if ( $rowindex % $rows_per_column == 0 ) {
-				$result .= Html::openElement( 'div', array( 'style' => array(
-					'float' => 'left',
-					'width' => "$column_width%"
-				) ) );
-				
-				if ( $cur_first_char == $prev_first_char ) {
+				$result .= "\n			<div style=\"float: left; width: $column_width%;\">\n";
+				if ( $cur_first_char == $prev_first_char )
 					$result .= "				<h3>$cur_first_char " . wfMsg( 'listingcontinuesabbrev' ) . "</h3>\n				<ul>\n";
-				}
 			}
 			
 			// if we're at a new first letter, end

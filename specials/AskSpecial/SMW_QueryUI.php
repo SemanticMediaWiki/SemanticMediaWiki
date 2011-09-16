@@ -525,11 +525,9 @@ END;
 		}
 		$result .= Html::openElement(
 				'div',
-				array(
-					'id' => 'smwmainlabel',
+				array( 'id' => 'smwmainlabel',
 					'class' => 'smwsort',
-					'style' => array( 'display' => $formDisplay )
-				)
+					'style' => "display:$formDisplay;" )
 			) .
 			Html::openElement( 'span',
 				array( 'class' => 'smwquisortlabel' ) ) .
@@ -1730,7 +1728,7 @@ EOT;
 			$resultHtml .= Html::rawElement(
 				'div',
 				array(
-					'style' => array( 'background' => $flipStyle ? 'white' : '#dddddd' ) )
+					'style' => 'background: ' . ( $flipStyle ? 'white' : '#dddddd' ) . ';'
 				),
 				$rowHtml
 			);

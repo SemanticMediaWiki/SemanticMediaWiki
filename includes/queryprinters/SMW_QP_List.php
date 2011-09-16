@@ -106,14 +106,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		// Set up floating divs, if there's more than one column
 		if ( $this->mColumns > 1 ) {
 			$column_width = floor( 100 / $this->mColumns );
-			
-			$result .= Html::openElement(
-				'div',
-				array(
-					'style' => array( 'float' => 'left', 'width' => "$column_width%" )
-				)
-			);
-			
+			$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
 			$rows_per_column = ceil( $res->getCount() / $this->mColumns );
 			$rows_in_cur_column = 0;
 		}
