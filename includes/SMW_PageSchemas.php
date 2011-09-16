@@ -47,15 +47,19 @@ class SMWPageSchemas {
 		return true;
 	}
 
+	/**
+	 * Constructs XML for the SMW property, based on what was submitted
+	 * in the 'edit schema' form.
+	 */
 	function getFieldXML( $request, &$xmlArray ) {
-		$templateNum = -1;
+		$fieldNum = -1;
 		$xmlPerField = array();
 		foreach ( $request->getValues() as $var => $val ) {
 			if ( substr( $var, 0, 18 ) == 'smw_property_name_' ) {
-				$templateNum = substr($var,18,1);
-				$xml = '<semanticmediawiki_Property name="'.$val.'" >';
+				$fieldNum = substr( $var, 18 );
+				$xml = '<semanticmediawiki_Property name="' . $val . '" >';
 			} elseif ( substr( $var, 0, 18 ) == 'smw_property_type_'){
-				$xml .= '<Type>'.$val.'</Type>';
+				$xml .= '<Type>' . $val . '</Type>';
 			} elseif ( substr( $var, 0, 11 ) == 'smw_values_') {
 				if ( $val != '' ) {
 					// replace the comma substitution character that has no chance of
@@ -66,11 +70,11 @@ class SMWPageSchemas {
 					foreach ( $allowed_values_array as $i => $value ) {
 						// replace beep back with comma, trim
 						$value = str_replace( "\a", $listSeparator, trim( $value ) );
-						$xml .= '<AllowedValue>'.$value.'</AllowedValue>';
+						$xml .= '<AllowedValue>' . $value . '</AllowedValue>';
 					}
 				}
 				$xml .= '</semanticmediawiki_Property>';
-				$xmlPerField[] = $xml;
+				$xmlPerField[$fieldNum] = $xml;
 			}
 		}
 		$xmlArray['smw'] = $xmlPerField;
@@ -80,11 +84,15 @@ class SMWPageSchemas {
 	function getFieldHTML( $field, &$text_extensions ) {
 		global $smwgContLang;
 		$datatype_labels = $smwgContLang->getDatatypeLabels();
+		$prop_array = array();
 		if ( !is_null( $field ) ) {
 			$smw_array = $field->getObject('semanticmediawiki_Property'); //this returns an array with property values filled
-			$prop_array = $smw_array['smw'];
-		} else {
-			$prop_array = array();
+			if ( array_key_exists( 'smw', $smw_array ) ) {
+				$prop_array = $smw_array['smw'];
+				$hasExistingValues = true;
+			} else {
+				$hasExistingValues = false;
+			}
 		}
 		$html_text = '<p>Property name: ';
 		if ( array_key_exists( 'name', $prop_array ) ) {
@@ -123,7 +131,7 @@ class SMWPageSchemas {
 		}
 		$html_text .= '<p>' . Html::input( 'smw_values_num', $allowed_val_string, 'text', $allowedValsInputAttrs ) . "</p>\n";
 
-		$text_extensions['smw'] = array( 'Property', '#DEF', $html_text );
+		$text_extensions['smw'] = array( 'Semantic property', '#DEF', $html_text, $hasExistingValues );
 
 		return true;
 	}
@@ -207,9 +215,10 @@ class SMWPageSchemas {
 						}
 					}
 					$smw_array['allowed_value_array'] = $allowed_value_array;
+					$object['smw'] = $smw_array;
+					return true;
 				}
 			}
-			$object['smw'] = $smw_array;
 		}
 		return true;
 	}
