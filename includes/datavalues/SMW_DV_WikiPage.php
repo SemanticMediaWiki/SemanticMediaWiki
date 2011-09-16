@@ -145,7 +145,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	public function getShortHTMLText( $linker = null ) {
 		if ( ( $linker !== null ) && ( $this->m_caption !== '' ) && ( $this->m_outformat != '-' ) ) $this->getTitle(); // init the Title object, may reveal hitherto unnoticed errors
-		if ( ( $linker === null ) || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
+		if ( is_null( $linker ) || $linker === false || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
 			return htmlspecialchars( $this->getCaption() );
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $this->getCaption() );

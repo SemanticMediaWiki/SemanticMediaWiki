@@ -370,7 +370,17 @@ END;
 		if ( array_key_exists( 'order', $this->m_params ) ) $urlArgs['order'] = $this->m_params['order'];
 
 		if ( $this->m_querystring != '' ) {
-			$queryobj = SMWQueryProcessor::createQuery( $this->m_querystring, $this->m_params, SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts );
+			$params = SMWQueryProcessor::getProcessedParams( $this->m_params );
+			$this->m_params['format'] = $params['format'];
+			
+			$queryobj = SMWQueryProcessor::createQuery(
+				$this->m_querystring,
+				$params,
+				SMWQueryProcessor::SPECIAL_PAGE ,
+				$this->m_params['format'],
+				$this->m_printouts
+			);
+			
 			$res = smwfGetStore()->getQueryResult( $queryobj );
 
 			// Try to be smart for rss/ical if no description/title is given and we have a concept query:
@@ -423,7 +433,7 @@ END;
 
 					$navigation = $this->getNavigationBar( $res, $urlArgs );
 					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
-					$query_result = $printer->getResult( $res, $this->m_params, SMW_OUTPUT_HTML );
+					$query_result = $printer->getResult( $res, $params, SMW_OUTPUT_HTML );
 
 					if ( is_array( $query_result ) ) {
 						$result .= $query_result[0];
@@ -436,7 +446,7 @@ END;
 					$result = '<div style="text-align: center;">' . wfMsgHtml( 'smw_result_noresults' ) . '</div>';
 				}
 			} else { // make a stand-alone file
-				$result = $printer->getResult( $res, $this->m_params, SMW_OUTPUT_FILE );
+				$result = $printer->getResult( $res, $params, SMW_OUTPUT_FILE );
 				$result_name = $printer->getFileName( $res ); // only fetch that after initialising the parameters
 			}
 		}
@@ -498,8 +508,8 @@ END;
 				if ( ! array_key_exists( 'sort', $this->m_params ) || ! array_key_exists( 'order', $this->m_params ) ) {
 					$orders = array(); // do not even show one sort input here
 				} else {
-					$sorts = explode( ',', $this->m_params['sort'] );
-					$orders = explode( ',', $this->m_params['order'] );
+					$sorts = $this->m_params['sort'];
+					$orders = $this->m_params['order'];
 					reset( $sorts );
 				}
 
@@ -725,8 +735,12 @@ END;
 	protected function showFormatOptions( $format, array $paramValues ) {
 		$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
 
-		$params = method_exists( $printer, 'getValidatorParameters' ) ? $printer->getValidatorParameters() : array();
+		$params = SMWQueryProcessor::getParameters();
 
+		if ( method_exists( $printer, 'getValidatorParameters' ) ) {
+			$params = array_merge( $params, $printer->getValidatorParameters() );
+		}
+		
 		$optionsHtml = array();
 
 		foreach ( $params as $param ) {
