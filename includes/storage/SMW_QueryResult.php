@@ -227,22 +227,41 @@ class SMWQueryResult {
 		return $result;
 	}
 	
+	public function getDataItemSerialization( SMWDataItem $dataItem ) {
+		switch ( $dataItem->getDIType() ) {
+			case SMWDataItem::TYPE_NUMBER:
+				$result = $dataItem->getNumber();
+				break;
+			case SMWDataItem::TYPE_GEO:
+				$result = $dataItem->getCoordinateSet();
+				break;
+			case SMWDataItem::TYPE_TIME:
+				$result = $dataItem->getMwTimestamp();
+				break;
+			default:
+				$result = $dataItem->getSerialization();
+				break;
+		}
+		
+		return $result;
+	}
+	
 	public function serializeToArray() {
 		$results = array();
 		
 		foreach ( $this->mResults as /* SMWDIWikiPage */ $diWikiPage ) {
-			switch ( $diWikiPage->getDIType() ) {
-				case SMWDataItem::TYPE_NUMBER:
-					$result = $diWikiPage->getNumber();
-					break;
-				case SMWDataItem::TYPE_GEO:
-					$result = $diWikiPage->getCoordinateSet();
-					break;
-				default:
-					$result = $diWikiPage->getSerialization();
+			$result = array();
+			
+			foreach ( $this->mPrintRequests as /* SMWPrintRequest */ $printRequest ) {
+				$resultAarray = new SMWResultArray( $diWikiPage, $printRequest, $this->mStore );
+				
+				$result[$printRequest->getLabel()] = array_map(
+					array( __class__, 'getDataItemSerialization' ),
+					$resultAarray->getContent()
+				);
 			}
 			
-			$results[$diWikiPage->getSerialization()] = $result;
+			$results[$diWikiPage->getTitle()->getFullText()] = $result;
 		}
 		
 		return $results;

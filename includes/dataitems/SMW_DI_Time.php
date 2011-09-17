@@ -171,6 +171,27 @@ class SMWDITime extends SMWDataItem {
 	public function getSecond() {
 		return $this->m_seconds;
 	}
+	
+	/**
+	 * Returns a MW timestamp representatation of the value.
+	 * 
+	 * @since 1.6.2
+	 * 
+	 * @param $outputtype
+	 */
+	public function getMwTimestamp( $outputtype = TS_UNIX ) {
+		return wfTimestamp(
+			$outputtype,
+			implode( '', array(
+				str_pad( $this->m_year, 4, '0', STR_PAD_LEFT ),
+				str_pad( $this->m_month, 2, '0', STR_PAD_LEFT ),
+				str_pad( $this->m_day, 2, '0', STR_PAD_LEFT ),
+				str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT ),
+				str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT ),
+				str_pad( $this->m_seconds, 2, '0', STR_PAD_LEFT ),
+			) )
+		);
+	}
 
 	/**
 	 * Get the data in the specified calendar model. This might require
