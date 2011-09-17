@@ -56,7 +56,7 @@ abstract class ApiSMWQuery extends ApiBase {
 	
 	protected function addQueryResult( SMWQueryResult $queryResult ) {
 		// TODO: create general SMWQueryResult serialization method that can then also be used for JSON printer
-		$this->getResult()->addValue( 'result', null, $queryResult->serializeToArray() );
+		$this->getResult()->addValue( 'query', null, $queryResult->serializeToArray() );
 	}
 	
 	public function getPossibleErrors() {

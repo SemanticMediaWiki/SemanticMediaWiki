@@ -229,6 +229,13 @@ class SMWQueryResult {
 	
 	public function getDataItemSerialization( SMWDataItem $dataItem ) {
 		switch ( $dataItem->getDIType() ) {
+			case SMWDataItem::TYPE_WIKIPAGE:
+				$title = $dataItem->getTitle();
+				$result = array(
+					'fulltext' => $title->getFullText(),
+					'fullurl' => $title->getFullUrl(),
+				);
+				break;
 			case SMWDataItem::TYPE_NUMBER:
 				$result = $dataItem->getNumber();
 				break;
@@ -248,6 +255,15 @@ class SMWQueryResult {
 	
 	public function serializeToArray() {
 		$results = array();
+		$printRequests = array();
+		
+		foreach ( $this->mPrintRequests as /* SMWPrintRequest */ $printRequest ) {
+			$printRequests[] = array(
+				'label' => $printRequest->getLabel(),
+				'typeid' => $printRequest->getTypeID(),
+				'mode' => $printRequest->getMode(),
+			);
+		}
 		
 		foreach ( $this->mResults as /* SMWDIWikiPage */ $diWikiPage ) {
 			$result = array();
@@ -264,7 +280,7 @@ class SMWQueryResult {
 			$results[$diWikiPage->getTitle()->getFullText()] = $result;
 		}
 		
-		return $results;
+		return array( 'results' => $results, 'printrequests' => $printRequests );
 	}
 
 }
