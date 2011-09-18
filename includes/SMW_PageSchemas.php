@@ -83,18 +83,18 @@ class SMWPageSchemas {
 
 	function getFieldHTML( $field, &$text_extensions ) {
 		global $smwgContLang;
+
 		$datatype_labels = $smwgContLang->getDatatypeLabels();
 		$prop_array = array();
+		$hasExistingValues = false;
 		if ( !is_null( $field ) ) {
 			$smw_array = $field->getObject('semanticmediawiki_Property'); //this returns an array with property values filled
 			if ( array_key_exists( 'smw', $smw_array ) ) {
 				$prop_array = $smw_array['smw'];
 				$hasExistingValues = true;
-			} else {
-				$hasExistingValues = false;
 			}
 		}
-		$html_text = '<p>Property name: ';
+		$html_text = '<p>' . wfMsg( 'ps-optional-name' ) . ' ';
 		if ( array_key_exists( 'name', $prop_array ) ) {
 			$propName = $prop_array['name'];
 		} else {
@@ -124,8 +124,8 @@ class SMWPageSchemas {
 		$allowedValsInputAttrs = array(
 			'size' => 80
 		);
-		if ( array_key_exists( 'allowed_value_array', $prop_array ) ) {
-			$allowed_val_string = implode( ', ', $prop_array['allowed_value_array'] );
+		if ( array_key_exists( 'allowed_values', $prop_array ) ) {
+			$allowed_val_string = implode( ', ', $prop_array['allowed_values'] );
 		} else {
 			$allowed_val_string = '';
 		}
@@ -137,19 +137,20 @@ class SMWPageSchemas {
 	}
 
 	function generatePages( $psSchemaObj, $toGenPageList ) {
+		// Get the SMW info from every field in every template
 		$template_all = $psSchemaObj->getTemplates();
 		foreach ( $template_all as $template ) {
 			$field_all = $template->getFields();
-			$field_count = 0; //counts the number of fields
-			foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type 
+			$field_count = 0;
+			foreach( $field_all as $field ) {
 				$field_count++;
-				$smw_array = $field->getObject('semanticmediawiki_Property'); //this returns an array with property values filled
+				$smw_array = $field->getObject('semanticmediawiki_Property');
 				$prop_array = $smw_array['smw'];
 				if($prop_array != null){
 					$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
 					$key_title = PageSchemas::titleString( $title );
 					if(in_array( $key_title, $toGenPageList )){
-						self::createProperty( $prop_array['name'], $prop_array['Type'], $prop_array['allowed_value_array'] ) ;
+						self::createProperty( $prop_array['name'], $prop_array['Type'], $prop_array['allowed_values'] ) ;
 					}
 				}
 			}
@@ -157,16 +158,16 @@ class SMWPageSchemas {
 		return true;
 	}
 
-	function createPropertyText( $property_type, $allowed_value_array ) {
+	function createPropertyText( $property_type, $allowed_values ) {
 		global $smwgContLang;
 		$prop_labels = $smwgContLang->getPropertyLabels();
 		$type_tag = "[[{$prop_labels['_TYPE']}::$property_type]]";
 		$text = wfMsgForContent( 'ps-property-isproperty', $type_tag );
-		if ( $allowed_value_array != null) {
+		if ( $allowed_values != null) {
 			// replace the comma substitution character that has no chance of
 			// being included in the values list - namely, the ASCII beep
-			$text .= "\n\n" . wfMsgExt( 'ps-property-allowedvals', array( 'parsemag', 'content' ), count( $allowed_value_array ) );
-			foreach ( $allowed_value_array as $i => $value ) {
+			$text .= "\n\n" . wfMsgExt( 'ps-property-allowedvals', array( 'parsemag', 'content' ), count( $allowed_values ) );
+			foreach ( $allowed_values as $i => $value ) {
 				// replace beep back with comma, trim
 				$value = str_replace( "\a",',' , trim( $value ) );
 				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
@@ -181,10 +182,10 @@ class SMWPageSchemas {
 		return $text;
 	}
 
-	function createProperty( $prop_name, $prop_type, $allowed_value_array ) {
+	function createProperty( $prop_name, $prop_type, $allowed_values ) {
 		global $wgUser;
 		$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_name );
-		$text = self::createPropertyText( $prop_type, $allowed_value_array );
+		$text = self::createPropertyText( $prop_type, $allowed_values );
 		$jobs = array();
 		$params = array();
 		$params['user_id'] = $wgUser->getId();
@@ -203,18 +204,17 @@ class SMWPageSchemas {
 			foreach ( $xmlForField->children() as $tag => $child ) {
 				if ( $tag == $objectName ) {
 					$propName = $child->attributes()->name;    
-					//this means object has already been initialized by some other extension.
-					$smw_array['name']=(string)$propName;
-					$allowed_value_array = array();
+					$smw_array['name'] = (string)$propName;
+					$allowed_values = array();
 					$count = 0;
 					foreach ( $child->children() as $prop => $value ) {
 						if ( $prop == "AllowedValue" ) {
-							$allowed_value_array[$count++] = $value;
+							$allowed_values[$count++] = $value;
 						} else {
 							$smw_array[$prop] = (string)$value;
 						}
 					}
-					$smw_array['allowed_value_array'] = $allowed_value_array;
+					$smw_array['allowed_values'] = $allowed_values;
 					$object['smw'] = $smw_array;
 					return true;
 				}
@@ -223,4 +223,3 @@ class SMWPageSchemas {
 		return true;
 	}
 }
-
