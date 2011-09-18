@@ -9,6 +9,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Added definitions for missing params (sort, order, searchlabel) to the base query printer.
 * Added validation and manipulation of the format paremeter using Validator.
 * Added class parameter to the table format which allows setting the css class. 
+* Added alpha version of native SMW Ask API with moudles ask and askargs. 
 
 == SMW 1.6.1 ==
 

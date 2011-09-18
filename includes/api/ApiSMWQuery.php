@@ -61,12 +61,22 @@ abstract class ApiSMWQuery extends ApiBase {
 		$result->setIndexedTagName( $serialized['results'], 'result' );
 		$result->setIndexedTagName( $serialized['printrequests'], 'printrequest' );
 		
-		$result->addValue( 'query', null, $serialized );
+		foreach ( $serialized['results'] as $subjectName => $subject ) {
+			if ( is_array( $subject ) && array_key_exists( 'printeouts', $subject ) ) {
+				foreach ( $subject['printeouts'] as $property => $values ) {
+					if ( is_array( $values ) ) {
+						$result->setIndexedTagName( $serialized['results'][$subjectName]['printeouts'][$property], 'value' );
+					}
+				}
+			}
+		}
+		
+		$result->addValue( null, 'query', $serialized );
 		
 		if ( $queryResult->hasFurtherResults() ) {
 			// TODO: obtain continuation data from store
 			$result->disableSizeCheck();
-			$result->addValue( 'query-continue', null, 0 );
+			$result->addValue( null, 'query-continue', 0 );
 			$result->enableSizeCheck();
 		}
 	}

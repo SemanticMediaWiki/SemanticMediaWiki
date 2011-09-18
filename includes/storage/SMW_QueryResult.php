@@ -71,6 +71,11 @@ class SMWQueryResult {
 	 * @param boolean $furtherRes
 	 */
 	public function __construct( array $printRequests, SMWQuery $query, array $results, SMWStore $store, $furtherRes = false ) {
+		// FIXME: this is a evil hack treating the symptom of something going wrong closer to the store
+//		if ( count( $results ) > 0 && $results[0]->getInterwiki() === SMW_SQL2_SMWBORDERIW ) {
+//			unset( $results[0] );
+//		}
+		
 		$this->mResults = $results;
 		reset( $this->mResults );
 		$this->mPrintRequests = $printRequests;
@@ -266,15 +271,22 @@ class SMWQueryResult {
 		}
 		
 		foreach ( $this->mResults as /* SMWDIWikiPage */ $diWikiPage ) {
-			$result = array();
+			$result = array( 'printeouts' => array() );
 			
 			foreach ( $this->mPrintRequests as /* SMWPrintRequest */ $printRequest ) {
 				$resultAarray = new SMWResultArray( $diWikiPage, $printRequest, $this->mStore );
 				
-				$result[$printRequest->getLabel()] = array_map(
-					array( __class__, 'getDataItemSerialization' ),
-					$resultAarray->getContent()
-				);
+				if ( $printRequest->getMode() === SMWPrintRequest::PRINT_THIS ) {
+					$dataItems = $resultAarray->getContent();
+					$result += $this->getDataItemSerialization( array_shift( $dataItems ) );
+				}
+				else {
+					$result['printeouts'][$printRequest->getLabel()] = array_map(
+						array( __class__, 'getDataItemSerialization' ),
+						$resultAarray->getContent()
+					);
+				}
+
 			}
 			
 			$results[$diWikiPage->getTitle()->getFullText()] = $result;

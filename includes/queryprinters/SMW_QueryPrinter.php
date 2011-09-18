@@ -190,7 +190,7 @@ abstract class SMWResultPrinter {
 				return $result;
 			}
 		}
-
+		
 		// Get output from printer:
 		$result = $this->getResultText( $results, $outputmode );
 
