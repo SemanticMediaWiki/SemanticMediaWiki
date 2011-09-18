@@ -69,7 +69,8 @@ class ApiAskArgs extends ApiSMWQuery {
 	
 	public function getDescription() {
 		return array(
-			'API module to query SMW by providing a query specified as a list of conditions, printeouts and parameters.'
+			'API module to query SMW by providing a query specified as a list of conditions, printeouts and parameters.
+			This API module is in alpha stage, and likely to see changes in upcomming versions of SMW.'
 		);
 	}
 	

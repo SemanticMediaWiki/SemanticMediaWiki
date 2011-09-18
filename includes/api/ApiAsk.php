@@ -18,9 +18,17 @@ class ApiAsk extends ApiSMWQuery {
 		$params = $this->extractRequestParams();
 		$this->requireParameters( $params, array( 'query' ) );
 
-		// SMWQueryProcessor::processFunctionParams( $rawparams, $queryString, $m_params, $m_printouts);
+		$rawParams = explode( '|', $params['query'] );
+		$queryString = '';
+		$printeouts = array();
 		
-		$queryResult = $this->getQueryResult( $this->getQuery( $params['query'] ) );
+		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $this->parameters, $printeouts );
+		
+		$queryResult = $this->getQueryResult( $this->getQuery(
+			$queryString,
+			$printeouts
+		) );
+		
 		$this->addQueryResult( $queryResult );
 	}
 
@@ -40,7 +48,8 @@ class ApiAsk extends ApiSMWQuery {
 	
 	public function getDescription() {
 		return array(
-			'API module to query SMW by providing a query in the ask language.'
+			'API module to query SMW by providing a query in the ask language.
+			This API module is in alpha stage, and likely to see changes in upcomming versions of SMW.'
 		);
 	}
 	
