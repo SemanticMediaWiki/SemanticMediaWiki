@@ -3,8 +3,11 @@
  * Print query results in alphabetic groups displayed in columns, a la the
  * standard Category pages and the default view in Semantic Drilldown.
  * Based on SMW_QP_List by Markus Krötzsch.
+ * 
  * @author David Loomer
  * @author Yaron Koren
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * 
  * @file
  * @ingroup SMWQuery
  */
@@ -16,28 +19,32 @@
  */
 class SMWCategoryResultPrinter extends SMWResultPrinter {
 
-	protected $mDelim = ',';
-	protected $mTemplate = '';
-	protected $mUserParam = '';
-	protected $mNumColumns = 3;
+	protected $mDelim;
+	protected $mTemplate;
+	protected $mUserParam;
+	protected $mNumColumns;
 
-	protected function readParameters( $params, $outputmode ) {
-		parent::readParameters( $params, $outputmode );
-
-		if ( array_key_exists( 'delim', $params ) ) {
-			$this->mDelim = str_replace( '_', ' ', $params['delim'] );
-		}
-		if ( array_key_exists( 'template', $params ) ) {
-			$this->mTemplate = trim( $params['template'] );
-		}
-		if ( array_key_exists( 'userparam', $params ) ) {
-			$this->mUserParam = trim( $params['userparam'] );
-		}
-		if ( array_key_exists( 'columns', $params ) ) {
-			$this->mNumColumns = (int)$params['columns'];
-		}
+	public function __construct( $format, $inline, $useValidator = true ) {
+		parent::__construct( $format, $inline, $useValidator );
 	}
-
+	
+	/**
+	 * @see SMWResultPrinter::handleParameters
+	 * 
+	 * @since 1.6.2
+	 * 
+	 * @param array $params
+	 * @param $outputmode
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		parent::handleParameters( $params, $outputmode );
+		
+		$this->mUserParam = trim( $params['userparam'] );
+		$this->mDelim = trim( $params['delim'] );
+		$this->mNumColumns = $params['columns'];
+		$this->mTemplate = $params['template'];
+	}	
+	
 	public function getName() {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_' . $this->mFormat );
@@ -186,7 +193,19 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 		
 		$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
 		$params['columns']->setDescription( wfMsg( 'smw_paramdesc_columns', 3 ) );
-		$params['columns']->setDefault( '', false );
+		$params['columns']->setDefault( 3, false );
+		
+		$params['delim'] = new Parameter( 'delim' );
+		$params['delim']->setDescription( wfMsg( 'smw-paramdesc-category-delim' ) );
+		$params['delim']->setDefault( ',' );
+		
+		$params['template'] = new Parameter( 'template' );
+		$params['template']->setDescription( wfMsg( 'smw-paramdesc-category-template' ) );
+		$params['template']->setDefault( '' );
+		
+		$params['userparam'] = new Parameter( 'userparam' );
+		$params['userparam']->setDescription( wfMsg( 'smw-paramdesc-category-userparam' ) );
+		$params['userparam']->setDefault( '' );
 		
 		return $params;
 	}
