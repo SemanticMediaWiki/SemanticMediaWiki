@@ -458,11 +458,12 @@ END;
 				$wgOut->setHTMLtitle( wfMsg( 'ask' ) );
 			}
 
+			$urlArgs['offset'] = $this->m_params['offset'];
+			$urlArgs['limit'] = $this->m_params['limit']; 
+			
 			$result = $this->getInputForm(
 				$printoutstring,
-				'offset=' . $this->m_params['offset']
-					. '&limit=' . $this->m_params['limit']
-					. wfArrayToCGI( $urlArgs )
+				wfArrayToCGI( $urlArgs )
 			) . $result;
 			
 			$wgOut->addHTML( $result );
