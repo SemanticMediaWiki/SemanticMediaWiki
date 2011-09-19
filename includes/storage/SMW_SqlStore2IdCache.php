@@ -48,8 +48,7 @@ class SMWSqlStore2IdCache {
 				$this->m_data[$hashKey] = $row->smw_id;
 				return $row->smw_id;
 			} else {
-				// FIXME: $index is undefined
-				$index->data[$hashKey] = 0;
+				$this->m_data[$hashKey] = 0;
 				return 0;
 			}
 		}

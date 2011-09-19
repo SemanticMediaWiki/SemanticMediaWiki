@@ -305,8 +305,7 @@ class SMWQueryParser {
 
 		foreach ( $propertynames as $name ) {
 			if ( $typeid != '_wpg' ) { // non-final property in chain was no wikipage: not allowed
-				// FIXME: $prevname is undefined
-				$this->m_errors[] = wfMsgForContent( 'smw_valuesubquery', $prevname );
+				$this->m_errors[] = wfMsgForContent( 'smw_valuesubquery', $name );
 				return null; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 

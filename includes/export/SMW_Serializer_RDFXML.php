@@ -169,8 +169,9 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	}
 
 	/**
-	 * Add a serialization of the given SMWExpLiteral to the output,
-	 * assuming that an opening property tag is alerady there.
+	 * Add to the output a serialization of a property assignment where an
+	 * SMWExpLiteral is the object. It is assumed that a suitable subject
+	 * block has already been openend.
 	 *
 	 * @param $expResourceProperty SMWExpNsResource the property to use
 	 * @param $expLiteral SMWExpLiteral the data value to use
@@ -186,8 +187,9 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	}
 
 	/**
-	 * Add a serialization of the given SMWExpResource to the output,
-	 * assuming that an opening property tag is alerady there.
+	 * Add to the output a serialization of a property assignment where an
+	 * SMWExpResource is the object. It is assumed that a suitable subject
+	 * block has already been openend.
 	 *
 	 * @param $expResourceProperty SMWExpNsResource the property to use
 	 * @param $expResource SMWExpResource the data value to use
@@ -219,6 +221,9 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	 * @param $expResource array of (SMWExpResource or SMWExpData)
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
+	 *
+	 * @bug The $isClassTypeProp parameter is not properly taken into account.
+	 * @bug Individual resources are not serialised properly.
 	 */
 	protected function serializeExpCollection( SMWExpNsResource $expResourceProperty, array $collection, $indent, $isClassTypeProp ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
@@ -226,11 +231,12 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 			if ( $expElement instanceof SMWExpData ) {
 				$this->serializeNestedExpData( $expElement, $indent );
 			} else {
-				$this->serializeExpResource( $expResourceProperty, $expElement, $indent );
+				// FIXME: the below is not the right thing to do here
+				//$this->serializeExpResource( $expResourceProperty, $expElement, $indent );
 			}
 			if ( $isClassTypeProp ) {
 				// FIXME: $expResource is undefined
-				$this->requireDeclaration( $expResource, SMW_SERIALIZER_DECL_CLASS );
+				//$this->requireDeclaration( $expResource, SMW_SERIALIZER_DECL_CLASS );
 			}
 		}
 		$this->post_ns_buffer .= "$indent</" . $expResourceProperty->getQName() . ">\n";

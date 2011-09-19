@@ -527,6 +527,7 @@ class SMWSparqlStoreQueryEngine {
 		$filter = '';
 		$namespaces = $weakConditions = $orderVariables = array();
 		$singletonMatchElement = null;
+		$singletonMatchElementName = '';
 		$hasSafeSubconditions = false;
 		foreach ( $subDescriptions as $subDescription ) {
 			$subCondition = $this->buildSparqlCondition( $subDescription, $joinVariable, null );
@@ -544,7 +545,7 @@ class SMWSparqlStoreQueryEngine {
 				if ( $matchElement instanceof SMWExpNsResource ) {
 					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 				}
-				// FIXME: $singletonMatchElementName is undefined
+
 				if ( ( $singletonMatchElement !== null ) &&
 				     ( $singletonMatchElementName !== $matchElementName ) ) {
 					return new SMWSparqlFalseCondition();

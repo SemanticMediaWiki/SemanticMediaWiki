@@ -97,8 +97,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	 */
 	public function doHttpPost( $payload ) {
 		if ( $this->m_dataEndpoint == '' ) {
-			// FIXME: $error is undefined
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified', $error );
+			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );

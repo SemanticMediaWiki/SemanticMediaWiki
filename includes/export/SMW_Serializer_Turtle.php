@@ -182,8 +182,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 						$this->post_ns_buffer .= " )";
 					} else {
 						if ( $class_type_prop ) {
-							// FIXME: $object is undefined
-							$this->requireDeclaration( $object, SMW_SERIALIZER_DECL_CLASS );
+							$this->requireDeclaration( $value->getSubject(), SMW_SERIALIZER_DECL_CLASS );
 						}
 						if ( count( $value->getProperties() ) > 0 ) { // resource with data: serialise
 							$this->post_ns_buffer .= "\n";
