@@ -60,7 +60,7 @@ class ApiAsk extends ApiSMWQuery {
 
 	protected function getExamples() {
 		return array(
-			'api.php?action=ask&query=[[Modification date::+]]|%3FModification date|sort%3DModification date|order%3Ddesc',
+			'api.php?action=ask&query=[[Modification date::%2B]]|%3FModification date|sort%3DModification date|order%3Ddesc',
 		);
 	}	
 	
