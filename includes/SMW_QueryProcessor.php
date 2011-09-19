@@ -32,10 +32,11 @@ class SMWQueryProcessor {
 	 * 
 	 * @param array $params
 	 * @param array $printRequests
+	 * @param boolean $unknownInvalid
 	 * 
 	 * @return array
 	 */
-	public static function getProcessedParams( array $params, array $printRequests = null ) {
+	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {
 		$paramDefinitions = self::getParameters();
 		
 		$formatManipulation = new SMWParamFormat();
@@ -46,7 +47,7 @@ class SMWQueryProcessor {
 		
 		$paramDefinitions['format']->addManipulations( $formatManipulation );
 		
-		$validator = new Validator();
+		$validator = new Validator( 'SMW query', $unknownInvalid );
 		$validator->setParameters( $params, $paramDefinitions, false );
 		$validator->validateParameters();
 		
