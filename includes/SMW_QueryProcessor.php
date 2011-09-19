@@ -81,7 +81,7 @@ class SMWQueryProcessor {
 		$qp->setDefaultNamespaces( $smwgQDefaultNamespaces );
 		$desc = $qp->getQueryDescription( $querystring );
 
-		if ( $format === '' ) {
+		if ( $format === '' || is_null( $format ) ) {
 			$format = $params['format'];
 		}
 		
