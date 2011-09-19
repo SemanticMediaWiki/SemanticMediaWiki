@@ -390,14 +390,16 @@ class SMWSQLStore2QueryEngine {
 			$qobj->where, 'SMW::getQueryResult', $sql_options );
 
 		$qr = array();
-		$count = 0;
+		$count = 0; // the number of fetched results ( != number of valid results in array $qr)
 		$prs = $query->getDescription()->getPrintrequests();
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $this->m_dbs->fetchObject( $res ) ) ) {
 			$count++;
-			$v = new SMWDIWikiPage( $row->t, $row->ns, $row->iw, $row->so );
-			$qr[] = $v;
-			$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw, $row->so );
+			if ( $row->iw == '' || $row->iw{0} != ':' )  {
+				$v = new SMWDIWikiPage( $row->t, $row->ns, $row->iw, $row->so );
+				$qr[] = $v;
+				$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw, $row->so );
+			}
 		}
 
 		if ( $this->m_dbs->fetchObject( $res ) ) {

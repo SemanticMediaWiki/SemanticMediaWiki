@@ -71,11 +71,6 @@ class SMWQueryResult {
 	 * @param boolean $furtherRes
 	 */
 	public function __construct( array $printRequests, SMWQuery $query, array $results, SMWStore $store, $furtherRes = false ) {
-		// FIXME: this is a evil hack treating the symptom of something going wrong closer to the store
-//		if ( count( $results ) > 0 && $results[0]->getInterwiki() === SMW_SQL2_SMWBORDERIW ) {
-//			unset( $results[0] );
-//		}
-		
 		$this->mResults = $results;
 		reset( $this->mResults );
 		$this->mPrintRequests = $printRequests;
