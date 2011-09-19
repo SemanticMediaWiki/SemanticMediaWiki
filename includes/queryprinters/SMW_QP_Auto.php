@@ -19,6 +19,8 @@
  */
 class SMWAutoResultPrinter extends SMWResultPrinter {
 
+	protected $format = false;
+	
 	/**
 	 * @see SMWResultPrinter::getResult
 	 * 
@@ -29,23 +31,10 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 	 * @return string
 	 */
 	public function getResult( SMWQueryResult $results, array $params, $outputmode ) {
-		$format = false;
-		
-		/**
-		 * This hook allows extensions to override SMWs implementation of default result
-		 * format handling.
-		 * 
-		 * @since 1.5.2
-		 */
-		wfRunHooks( 'SMWResultFormat', array( &$format, $results->getPrintRequests(), $params ) );		
-
-		// If no default was set by an extension, use a table or list, depending on the column count.
-		if ( $format === false ) {
-			$format = $results->getColumnCount() > 1 ? 'table' : 'list';
-		}
+		$this->determineFormat( $results, $params );
 		
 		$printer = SMWQueryProcessor::getResultPrinter(
-			$format,
+			$this->format,
 			$this->mInline ? SMWQueryProcessor::INLINE_QUERY : SMWQueryProcessor::SPECIAL_PAGE
 		);
 		
@@ -67,15 +56,42 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_auto' );
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see SMWResultPrinter::getParameters()
+	 * 
+	 * To work correctly as of 1.6.2, you need to call determineFormat first. 
+	 */
 	public function getParameters() {
-		// TODO: this assumes table, which is not correct when it should be list
-		
 		$printer = SMWQueryProcessor::getResultPrinter(
-			'table',
+			$this->format,
 			$this->mInline ? SMWQueryProcessor::INLINE_QUERY : SMWQueryProcessor::SPECIAL_PAGE
 		);
 		
 		return $printer->getParameters();
+	}
+	
+	/**
+	 * Determine the format, based on the result and provided parameters.
+	 * 
+	 * @since 1.6.2
+	 * 
+	 * @param SMWQueryResult $results
+	 * @param array $params
+	 * 
+	 * @return string
+	 */
+	public function determineFormat( SMWQueryResult $results = null, array $params = null ) {
+		if ( $this->format === false ) {
+			if ( is_null( $results ) || is_null( $params ) ) {
+				$this->format = 'table';
+			}
+			else {
+
+			}
+		}
+		
+		return $this->format;
 	}
 
 }

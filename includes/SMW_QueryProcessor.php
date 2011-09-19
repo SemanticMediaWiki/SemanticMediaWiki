@@ -31,13 +31,25 @@ class SMWQueryProcessor {
 	 * @since 1.6.2
 	 * 
 	 * @param array $params
+	 * @param array $printRequests
 	 * 
 	 * @return array
 	 */
-	public static function getProcessedParams( array $params ) {
+	public static function getProcessedParams( array $params, array $printRequests = null ) {
+		$paramDefinitions = self::getParameters();
+		
+		$formatManipulation = new SMWParamFormat();
+		
+		if ( !is_null( $printRequests ) ) {
+			$formatManipulation->setPrintRequests( $printRequests );
+		}
+		
+		$paramDefinitions['format']->addManipulations( $formatManipulation );
+		
 		$validator = new Validator();
-		$validator->setParameters( $params, self::getParameters(), false );
+		$validator->setParameters( $params, $paramDefinitions, false );
 		$validator->validateParameters();
+		
 		return $validator->getParameterValues();
 	}
 	
@@ -182,6 +194,12 @@ class SMWQueryProcessor {
 	 * an array of additional parameters, and an array of additional SMWPrintRequest
 	 * objects, which are filled into call-by-ref parameters.
 	 * $showmode is true if the input should be treated as if given by #show
+	 * 
+	 * @param array $rawparams
+	 * @param string $querystring
+	 * @param array $params
+	 * @param array $printouts array of SMWPrintRequest
+	 * @param $showmode
 	 */
 	static public function processFunctionParams( array $rawparams, &$querystring, &$params, &$printouts, $showmode = false ) {
 		global $wgContLang;
@@ -285,7 +303,7 @@ class SMWQueryProcessor {
 	 */
 	static public function getResultFromFunctionParams( array $rawparams, $outputmode, $context = self::INLINE_QUERY, $showmode = false ) {
 		self::processFunctionParams( $rawparams, $querystring, $params, $printouts, $showmode );
-		$params = self::getProcessedParams( $params );
+		$params = self::getProcessedParams( $params, $printouts );
 		return self::getResultFromQueryString( $querystring, $params, $printouts, SMW_OUTPUT_WIKI, $context );
 	}
 
@@ -329,8 +347,6 @@ class SMWQueryProcessor {
 	 */
 	static public function getResultFromQuery( SMWQuery $query, array $params, $extraprintouts, $outputmode, $context = self::INLINE_QUERY, $format = '' ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
-
-		//$params = self::getProcessedParams( $params );	
 
 		// Query routing allows extensions to provide alternative stores as data sources
 		// The while feature is experimental and is not properly integrated with most of SMW's architecture. For instance, some query printers just fetch their own store.
@@ -395,7 +411,11 @@ class SMWQueryProcessor {
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
 
-		$formatClass = array_key_exists( $format, $smwgResultFormats ) ? $smwgResultFormats[$format] : 'SMWAutoResultPrinter';
+		if ( !array_key_exists( $format, $smwgResultFormats ) ) {
+			throw new MWException( "There is no result format for '$format'." );
+		}
+		
+		$formatClass = $smwgResultFormats[$format];
 
 		return new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
 	}
@@ -449,10 +469,11 @@ class SMWQueryProcessor {
 			$allowedFormats += $aliases;
 		}
 		
+		$allowedFormats[] = 'auto';
+		
 		$params['format'] = new Parameter( 'format' );
 		$params['format']->setDefault( 'auto' );
 		//$params['format']->addCriteria( new CriterionInArray( $allowedFormats ) );
-		$params['format']->addManipulations( new SMWParamFormat() );
 		
 		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
 		$params['limit']->setMessage( 'smw_paramdesc_limit' );

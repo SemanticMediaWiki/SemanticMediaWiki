@@ -33,9 +33,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
-		if ( $params['class'] !== '' ) {
-			$this->mHTMLClass = $params['class'];
-		}
+		$this->mHTMLClass = $params['class'];
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -92,15 +90,12 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		}
 		
 		// Put the <table> tag around the whole thing
-		// print header
-		$tableClass = "sortable wikitable";
-		if ( !empty( $this->mHTMLClass ) ) {
-			$tableClass .= ' ' . $this->mHTMLClass;
-		}
-		$tableAttrs = array( 'class' => $tableClass );
+		$tableAttrs = array( 'class' => $this->mHTMLClass );
+		
 		if ( $this->mFormat == 'broadtable' ) {
 			$tableAttrs['width'] = '100%';
 		}
+		
 		$result = Xml::tags( 'table', $tableAttrs, $result );
 
 		$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
@@ -206,7 +201,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		
 		$params['class'] = new Parameter( 'class', Parameter::TYPE_STRING );
 		$params['class']->setMessage( 'smw-paramdesc-table-class' );
-		$params['class']->setDefault( '' );
+		$params['class']->setDefault( 'sortable wikitable' );
 		
 		return $params;
 	}
