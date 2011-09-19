@@ -46,10 +46,6 @@ class SMWParamFormat extends ItemParameterManipulation {
 		// Add the formats parameters to the parameter list.
 		$queryPrinter = SMWQueryProcessor::getResultPrinter( $value );
 		
-		if ( $queryPrinter instanceof SMWAutoResultPrinter ) {
-			$queryPrinter->determineFormat();
-		}
-		
 		$parameters = array_merge( $parameters, $queryPrinter->getValidatorParameters() );
 	}
 	

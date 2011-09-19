@@ -81,6 +81,10 @@ class SMWQueryProcessor {
 		$qp->setDefaultNamespaces( $smwgQDefaultNamespaces );
 		$desc = $qp->getQueryDescription( $querystring );
 
+		if ( $format === '' ) {
+			$format = $params['format'];
+		}
+		
 		if ( $format == 'count' ) {
 			$querymode = SMWQuery::MODE_COUNT;
 		} elseif ( $format == 'debug' ) {
