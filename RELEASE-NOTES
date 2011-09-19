@@ -14,7 +14,7 @@ Released on September 20, 2011.
 * Fixed display of properties of type URL (bug 30912).
 * Fixed hide query functionality on Special:Ask (bug 30768).
 * Fixed display of internal SMW helper constants in certain queries (bug 30969).
-* Fixed some issue with the category result format (including bug 30761).
+* Fixed some issues with the category result format (including bug 30761).
 
 == SMW 1.6.1 ==
 
