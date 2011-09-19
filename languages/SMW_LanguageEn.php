@@ -32,7 +32,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'_cod' => 'Code',  // name of the (source) code type
 		'_boo' => 'Boolean',  // name of the boolean type
 		'_num' => 'Number',  // name for the datatype of numbers
-		'_geo' => 'Geographic coordinate', // name of the geocoord type
+		'_geo' => 'Geographic coordinates', // name of the geocoord type
 		'_tem' => 'Temperature',  // name of the temperature type
 		'_dat' => 'Date',  // name of the datetime (calendar) type
 		'_ema' => 'Email',  // name of the email type
@@ -49,6 +49,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'Integer'     => '_num',
 		'Enumeration' => '_str',
 		'Phone number' => '_tel',
+		'Geographic coordinate' => '_geo'
 	);
 	
 	protected $m_SpecialProperties = array(

@@ -31,7 +31,7 @@ class SMWLanguageZh_cn extends SMWLanguage {
 		'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 		'_boo' => '布林',	// 'Boolean',  // name of the boolean type
 		'_num' => '数字',	// 'Number',  // name for the datatype of numbers
-		'_geo' => '地理学的座标',	// 'Geographic coordinate', // name of the geocoord type
+		'_geo' => '地理学的座标',	// 'Geographic coordinates', // name of the geocoord type
 		'_tem' => '温度',	// 'Temperature',  // name of the temperature type
 		'_dat' => '日期',	// 'Date',  // name of the datetime (calendar) type
 		'_ema' => 'Email',	// 'Email',  // name of the email type

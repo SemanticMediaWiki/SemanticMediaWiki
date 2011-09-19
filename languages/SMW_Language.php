@@ -56,7 +56,8 @@ abstract class SMWLanguage {
 		'Code'                  => '_cod',
 		'Boolean'               => '_boo',
 		'Number'                => '_num',
-		'Geographic coordinate' => '_geo',
+		'Geographic coordinates'=> '_geo',
+		'Geographic coordinate' => '_geo', // deprecated, see Bug 30990
 		'Temperature'           => '_tem',
 		'Quantity'              => '_qty',
 		'Date'                  => '_dat',
