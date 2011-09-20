@@ -6,11 +6,11 @@ For a documentation of all features, see http://semantic-mediawiki.org
 Released on September 20, 2011.
 
 * Use of native MediaWiki sortable tables for the table formats.
-* Fixed separator and filename parameters for the DSV format.
 * Added definitions for missing params (sort, order, searchlabel) to the base query printer.
 * Added validation and manipulation of the format paremeter using Validator.
 * Added class parameter to the table format which allows setting the css class. 
 * Added alpha version of native SMW Ask API with moudles ask and askargs.
+* Fixed separator and filename parameters for the DSV format.
 * Fixed display of properties of type URL (bug 30912).
 * Fixed hide query functionality on Special:Ask (bug 30768).
 * Fixed display of internal SMW helper constants in certain queries (bug 30969).
