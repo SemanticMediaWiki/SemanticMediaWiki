@@ -37,8 +37,8 @@ class SMWPageSchemas {
 			foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type 
 				$field_count++;
 				$smw_array = $field->getObject('semanticmediawiki_Property');   //this returns an array with property values filled
-				$prop_array = $smw_array['smw'];
-				if($prop_array != null){
+				if ( array_key_exists( 'smw', $smw_array ) ) {
+					$prop_array = $smw_array['smw'];
 					$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
 					$genPageList[] = $title;
 				}
