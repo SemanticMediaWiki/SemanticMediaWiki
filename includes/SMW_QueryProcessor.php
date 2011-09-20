@@ -512,7 +512,7 @@ class SMWQueryProcessor {
 		$params['link']->setDefault( 'all' );
 		
 		$params['searchlabel'] = new Parameter( 'searchlabel' );
-		$params['searchlabel']->setDefault( '' );
+		$params['searchlabel']->setDefault( false, false );
 		$params['searchlabel']->setMessage( 'smw-paramdesc-searchlabel' );
 		
 		return $params;
