@@ -96,7 +96,7 @@ class SMWRecordValue extends SMWDataValue {
 				default: return new SMWConjunction( $subdescriptions );
 			}
 		} else {
-			$this->m_dataitem = new SMWDIContainer( $semanticData, $this->m_typeid );
+			$this->m_dataitem = new SMWDIContainer( $semanticData );
 		}
 	}
 
