@@ -15,9 +15,8 @@ class SMWPageSchemas {
 	function parseFieldElements( $field_xml, &$text_object ) {
 		foreach ( $field_xml->children() as $tag => $child ) {
 			if ( $tag == "semanticmediawiki_Property" ) {
-				$text = "";
-				$text = PageSchemas::tableMessageRowHTML( "paramAttr", "SemanticMediaWiki", (string)$tag );
-				$propName = $child->attributes()->name;			    
+				$text = PageSchemas::tableMessageRowHTML( "paramAttr", wfMsg( 'specialpages-group-smw_group' ), wfMsg( 'smw_pp_type' ) );
+				$propName = $child->attributes()->name;
 				// this means object has already been initialized by some other extension.
 				$text .= PageSchemas::tableMessageRowHTML( "paramAttrMsg", "name", (string)$propName );
 				foreach ( $child->children() as $prop => $value ) {
@@ -29,14 +28,16 @@ class SMWPageSchemas {
 		return true;
 	}
 
+	/**
+	 * Returns the list of property pages defined by the passed-in
+	 * Page Schemas XML object.
+	 */
 	function getPageList( $psSchemaObj , &$genPageList ) {
 		$template_all = $psSchemaObj->getTemplates();
 		foreach ( $template_all as $template ) {
 			$field_all = $template->getFields();
-			$field_count = 0; //counts the number of fields
-			foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type 
-				$field_count++;
-				$smw_array = $field->getObject('semanticmediawiki_Property');   //this returns an array with property values filled
+			foreach( $field_all as $field ) {
+				$smw_array = $field->getObject('semanticmediawiki_Property');
 				if ( array_key_exists( 'smw', $smw_array ) ) {
 					$prop_array = $smw_array['smw'];
 					$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
@@ -81,6 +82,10 @@ class SMWPageSchemas {
 		return true;
 	}
 
+	/**
+	 * Returns the HTML necessary for getting information about the
+	 * semantic property within the Page Schemas 'editschema' page.
+	 */
 	function getFieldHTML( $field, &$text_extensions ) {
 		global $smwgContLang;
 
@@ -88,7 +93,7 @@ class SMWPageSchemas {
 		$prop_array = array();
 		$hasExistingValues = false;
 		if ( !is_null( $field ) ) {
-			$smw_array = $field->getObject('semanticmediawiki_Property'); //this returns an array with property values filled
+			$smw_array = $field->getObject('semanticmediawiki_Property');
 			if ( array_key_exists( 'smw', $smw_array ) ) {
 				$prop_array = $smw_array['smw'];
 				$hasExistingValues = true;
@@ -136,17 +141,19 @@ class SMWPageSchemas {
 		return true;
 	}
 
+	/**
+	 * Creates the property page for each property specified in the
+	 * passed-in Page Schemas XML object.
+	 */
 	function generatePages( $psSchemaObj, $toGenPageList ) {
 		// Get the SMW info from every field in every template
 		$template_all = $psSchemaObj->getTemplates();
 		foreach ( $template_all as $template ) {
 			$field_all = $template->getFields();
-			$field_count = 0;
 			foreach( $field_all as $field ) {
-				$field_count++;
 				$smw_array = $field->getObject('semanticmediawiki_Property');
-				$prop_array = $smw_array['smw'];
-				if($prop_array != null){
+				if ( array_key_exists( 'smw', $smw_array ) ) {
+					$prop_array = $smw_array['smw'];
 					$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
 					$key_title = PageSchemas::titleString( $title );
 					if(in_array( $key_title, $toGenPageList )){
@@ -185,25 +192,25 @@ class SMWPageSchemas {
 	function createProperty( $prop_name, $prop_type, $allowed_values ) {
 		global $wgUser;
 		$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_name );
-		$text = self::createPropertyText( $prop_type, $allowed_values );
-		$jobs = array();
 		$params = array();
 		$params['user_id'] = $wgUser->getId();
-		$params['page_text'] = $text;
+		$params['page_text'] = self::createPropertyText( $prop_type, $allowed_values );
+		$jobs = array();
 		$jobs[] = new PSCreatePageJob( $title, $params );
 		Job::batchInsert( $jobs );
 		return true;
 	}
 
 	/**
-	* Returns the property based on the XML passed from the Page Schemas extension 
+	 * Returns the property based on the XML passed from the Page Schemas
+	 * extension.
 	*/
 	function createPageSchemasObject( $objectName, $xmlForField, &$object ) {
 		$smw_array = array();
 		if ( $objectName == "semanticmediawiki_Property" ) {
 			foreach ( $xmlForField->children() as $tag => $child ) {
 				if ( $tag == $objectName ) {
-					$propName = $child->attributes()->name;    
+					$propName = $child->attributes()->name;
 					$smw_array['name'] = (string)$propName;
 					$allowed_values = array();
 					$count = 0;
