@@ -37,6 +37,13 @@ class SMWQueryProcessor {
 	 * @return array
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {
+//		$mainlabel = array_key_exists( 'mainlabel', $params ) ? $params['mainlabel'] : ''; 
+//		if ( ( $querymode == SMWQuery::MODE_NONE ) ||
+//		     ( ( !$desc->isSingleton() || ( count( $desc->getPrintRequests() ) + count( $extraprintouts ) == 0 ) )
+//		       && ( trim( $mainlabel ) != '-' ) ) ) {
+//			$desc->prependPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, $mainlabel ) );
+//		}
+		
 		$paramDefinitions = self::getParameters();
 		
 		$formatManipulation = new SMWParamFormat();
@@ -95,17 +102,10 @@ class SMWQueryProcessor {
 			$querymode = $printer->getQueryMode( $context );
 		}
 
-		$mainlabel = array_key_exists( 'mainlabel', $params ) ? $params['mainlabel'] : ''; 
-		if ( ( $querymode == SMWQuery::MODE_NONE ) ||
-		     ( ( !$desc->isSingleton() || ( count( $desc->getPrintRequests() ) + count( $extraprintouts ) == 0 ) )
-		       && ( trim( $mainlabel ) != '-' ) ) ) {
-			$desc->prependPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, $mainlabel ) );
-		}
-
 		$query = new SMWQuery( $desc, ( $context != self::SPECIAL_PAGE ), ( $context == self::CONCEPT_DESC ) );
 		$query->setQueryString( $querystring );
 		$query->setExtraPrintouts( $extraprintouts );
-		$query->setMainLabel( $mainlabel );
+		$query->setMainLabel( $params['mainlabel'] );
 		$query->addErrors( $qp->getErrors() ); // keep parsing errors for later output
 
 		// set mode, limit, and offset:

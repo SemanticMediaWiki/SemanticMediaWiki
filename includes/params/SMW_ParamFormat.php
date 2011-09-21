@@ -126,7 +126,7 @@ class SMWParamFormat extends ItemParameterManipulation {
 	
 			// If no default was set by an extension, use a table or list, depending on the column count.
 			if ( $format === false ) {
-				$format = count( $this->printRequests ) == 0 ? 'list' : 'table';
+				$format = count( $this->printRequests ) == 1 ? 'list' : 'table';
 			}
 			
 			return $format;
