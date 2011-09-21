@@ -123,7 +123,7 @@ class SMWParamFormat extends ItemParameterManipulation {
 			 * @since 1.5.2
 			 */
 			wfRunHooks( 'SMWResultFormat', array( &$format, $this->printRequests, array() ) );		
-	
+
 			// If no default was set by an extension, use a table or list, depending on the column count.
 			if ( $format === false ) {
 				$format = count( $this->printRequests ) == 1 ? 'list' : 'table';

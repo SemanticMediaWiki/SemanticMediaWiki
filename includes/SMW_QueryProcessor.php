@@ -36,14 +36,7 @@ class SMWQueryProcessor {
 	 * 
 	 * @return array
 	 */
-	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {
-//		$mainlabel = array_key_exists( 'mainlabel', $params ) ? $params['mainlabel'] : ''; 
-//		if ( ( $querymode == SMWQuery::MODE_NONE ) ||
-//		     ( ( !$desc->isSingleton() || ( count( $desc->getPrintRequests() ) + count( $extraprintouts ) == 0 ) )
-//		       && ( trim( $mainlabel ) != '-' ) ) ) {
-//			$desc->prependPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, $mainlabel ) );
-//		}
-		
+	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {		
 		$paramDefinitions = self::getParameters();
 		
 		$formatManipulation = new SMWParamFormat();
@@ -193,6 +186,19 @@ class SMWQueryProcessor {
 		return $query;
 	}
 
+	protected static function addThisPrinteout( array &$printRequests, array $rawParams ) {
+		$rawParams['mainlabel'] = array_key_exists( 'mainlabel', $rawParams ) ? $rawParams['mainlabel'] : false;
+		$noMainlabel = $rawParams['mainlabel'] === '-';
+		// !$desc->isSingleton() || count( $printRequests ) == 0 ) && ( !$noMainlabel )
+		//var_dump($printRequests);exit;
+		if ( !is_null( $printRequests ) && !$noMainlabel ) {
+			array_unshift( $printRequests, new SMWPrintRequest(
+				SMWPrintRequest::PRINT_THIS,
+				$rawParams['mainlabel']
+			) );
+		}
+	}
+	
 	/**
 	 * Preprocess a query as given by an array of parameters as is typically
 	 * produced by the #ask parser function. The parsing results in a querystring,
@@ -308,6 +314,7 @@ class SMWQueryProcessor {
 	 */
 	static public function getResultFromFunctionParams( array $rawparams, $outputmode, $context = self::INLINE_QUERY, $showmode = false ) {
 		self::processFunctionParams( $rawparams, $querystring, $params, $printouts, $showmode );
+		self::addThisPrinteout( $printouts, $params );
 		$params = self::getProcessedParams( $params, $printouts );
 		return self::getResultFromQueryString( $querystring, $params, $printouts, SMW_OUTPUT_WIKI, $context );
 	}
