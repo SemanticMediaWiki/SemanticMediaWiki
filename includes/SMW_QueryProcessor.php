@@ -186,11 +186,11 @@ class SMWQueryProcessor {
 		return $query;
 	}
 
-	protected static function addThisPrinteout( array &$printRequests, array $rawParams ) {
-		$rawParams['mainlabel'] = array_key_exists( 'mainlabel', $rawParams ) ? $rawParams['mainlabel'] : false;
+	public static function addThisPrinteout( array &$printRequests, array $rawParams, $isShow = false ) {
+		$rawParams['mainlabel'] = ( !$isShow && array_key_exists( 'mainlabel', $rawParams ) ) ? $rawParams['mainlabel'] : false;
 		$noMainlabel = $rawParams['mainlabel'] === '-';
 		// !$desc->isSingleton() || count( $printRequests ) == 0 ) && ( !$noMainlabel )
-		//var_dump($printRequests);exit;
+		
 		if ( !is_null( $printRequests ) && !$noMainlabel ) {
 			array_unshift( $printRequests, new SMWPrintRequest(
 				SMWPrintRequest::PRINT_THIS,
