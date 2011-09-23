@@ -348,8 +348,20 @@ class SMWQueryUIHelper {
 	public function execute() {
 		$errors = array();
 		if ( $this->queryString != '' ) {
-			$query = SMWQueryProcessor::createQuery( $this->queryString, $this->parameters,
-				SMWQueryProcessor::SPECIAL_PAGE , $this->parameters['format'], $this->printOuts );
+			// FIXME: this is a hack
+			SMWQueryProcessor::addThisPrinteout( $this->printOuts, $this->parameters );
+			$params = SMWQueryProcessor::getProcessedParams( $this->parameters, $this->printOuts );
+			$this->parameters['format'] = $params['format'];
+			$this->params = $params;
+			
+			$query = SMWQueryProcessor::createQuery(
+				$this->queryString, 
+				$params,
+				SMWQueryProcessor::SPECIAL_PAGE,
+				$this->parameters['format'],
+				$this->printOuts
+			);
+			
 			$res = smwfGetStore()->getQueryResult( $query );
 			$this->queryResult = $res;
 
@@ -429,7 +441,7 @@ class SMWQueryUIHelper {
 		$resultMime = $printer->getMimeType( $res );
 
 		if ( $res->getCount() > 0 ) {
-			$queryResult = $printer->getResult( $res, $this->parameters, SMW_OUTPUT_HTML );
+			$queryResult = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
 
 			if ( is_array( $queryResult ) ) {
 				$result .= $queryResult[0];

@@ -370,6 +370,8 @@ END;
 		if ( array_key_exists( 'order', $this->m_params ) ) $urlArgs['order'] = $this->m_params['order'];
 
 		if ( $this->m_querystring != '' ) {
+			// FIXME: this is a hack
+			SMWQueryProcessor::addThisPrinteout( $this->m_printouts, $this->m_params );
 			$params = SMWQueryProcessor::getProcessedParams( $this->m_params, $this->m_printouts );
 			$this->m_params['format'] = $params['format'];
 			
