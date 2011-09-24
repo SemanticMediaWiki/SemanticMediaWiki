@@ -96,8 +96,6 @@ abstract class SMWResultPrinter {
 	/// This can be set in LocalSettings.php, but only after enableSemantics().
 	public static $maxRecursionDepth = 2;
 
-	protected $useValidator;
-	
 	/**
 	 * Return serialised results in specified format.
 	 * Implemented by subclasses.
@@ -110,16 +108,16 @@ abstract class SMWResultPrinter {
 	 * 
 	 * @param string $format
 	 * @param $inline
-	 * @param boolean $useValidator Since 1.6
+	 * @param boolean $useValidator Depracted since 1.6.2
 	 */
 	public function __construct( $format, $inline, $useValidator = false ) {
 		global $smwgQDefaultLinking;
+
 		$this->mFormat = $format;
 		$this->mInline = $inline;
 		$this->mLinkFirst = ( $smwgQDefaultLinking != 'none' );
 		$this->mLinkOthers = ( $smwgQDefaultLinking == 'all' );
 		$this->mLinker = class_exists( 'DummyLinker' ) ? new DummyLinker : new Linker; ///TODO: how can we get the default or user skin here (depending on context)?
-		$this->useValidator = $useValidator;
 	}
 
 	/**
@@ -157,12 +155,7 @@ abstract class SMWResultPrinter {
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 		
-		if ( $this->useValidator ) {
-			$this->handleParameters( $params, $outputmode );
-		}
-		else {
-			$this->readParameters( $params, $outputmode );
-		}
+		$this->handleParameters( $params, $outputmode );
 		
 		// Default output for normal printers:
 		if ( ( $outputmode != SMW_OUTPUT_FILE ) && // not in FILE context,
@@ -328,63 +321,6 @@ abstract class SMWResultPrinter {
 		} else {
 			$this->mShowHeaders = SMW_HEADERS_SHOW;
 		}		
-	}
-	
-	/**
-	 * Read an array of parameter values given as key-value-pairs and
-	 * initialise internal member fields accordingly. Possibly overwritten
-	 * (extended) by subclasses.
-	 *
-	 * @param array $params
-	 * @param $outputmode
-	 * 
-	 * @deprecated Use handleParameters instead
-	 */
-	protected function readParameters( $params, $outputmode ) {
-		$this->m_params = $params;
-
-		if ( array_key_exists( 'intro', $params ) ) {
-			$this->mIntro = $params['intro'];
-		}
-
-		if ( array_key_exists( 'outro', $params ) ) {
-			$this->mOutro = $params['outro'];
-		}
-
-		if ( array_key_exists( 'searchlabel', $params ) ) {
-			$this->mSearchlabel = $params['searchlabel'];
-		}
-
-		if ( array_key_exists( 'link', $params ) ) {
-			switch ( strtolower( trim( $params['link'] ) ) ) {
-			case 'head': case 'subject':
-				$this->mLinkFirst = true;
-				$this->mLinkOthers = false;
-				break;
-			case 'all':
-				$this->mLinkFirst = true;
-				$this->mLinkOthers = true;
-				break;
-			case 'none':
-				$this->mLinkFirst = false;
-				$this->mLinkOthers = false;
-				break;
-			}
-		}
-
-		if ( array_key_exists( 'default', $params ) ) {
-			$this->mDefault = str_replace( '_', ' ', $params['default'] );
-		}
-
-		if ( array_key_exists( 'headers', $params ) ) {
-			if ( strtolower( trim( $params['headers'] ) ) == 'hide' ) {
-				$this->mShowHeaders = SMW_HEADERS_HIDE;
-			} elseif ( strtolower( trim( $params['headers'] ) ) == 'plain' ) {
-				$this->mShowHeaders = SMW_HEADERS_PLAIN;
-			} else {
-				$this->mShowHeaders = SMW_HEADERS_SHOW;
-			}
-		}
 	}
 
 	/**
