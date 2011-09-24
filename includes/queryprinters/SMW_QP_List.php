@@ -39,6 +39,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	 * @param $outputmode
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
+		parent::handleParameters( $params, $outputmode );
+		
 		$this->mSep = $this->isPlainlist() ? $params['sep'] : '';
 		$this->mTemplate = trim( $params['template'] );
 		$this->mUserParam = trim( $params['userparam'] );
