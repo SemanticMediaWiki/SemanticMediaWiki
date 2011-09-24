@@ -18,42 +18,33 @@
  */
 class SMWListResultPrinter extends SMWResultPrinter {
 
-	protected $mSep = '';
-	protected $mTemplate = '';
-	protected $mUserParam = '';
-	protected $mColumns = 1;
-	protected $mIntroTemplate = '';
-	protected $mOutroTemplate = '';
+	protected $mSep;
+	protected $mTemplate;
+	protected $mUserParam;
+	protected $mColumns;
+	protected $mIntroTemplate;
+	protected $mOutroTemplate;
 
-	protected function readParameters( $params, $outputmode ) {
-		parent::readParameters( $params, $outputmode );
-
-		if ( array_key_exists( 'sep', $params ) ) {
-			$this->mSep = str_replace( '_', ' ', $params['sep'] );
-		}
-		
-		if ( array_key_exists( 'template', $params ) ) {
-			$this->mTemplate = trim( $params['template'] );
-		}
-		
-		if ( array_key_exists( 'userparam', $params ) ) {
-			$this->mUserParam = trim( $params['userparam'] );
-		}
-		
-		if ( array_key_exists( 'columns', $params ) ) {
-			$columns = trim( $params['columns'] );
-			if ( $columns > 1 && $columns <= 10 ) { // allow a maximum of 10 columns
-				$this->mColumns = (int)$columns;
-			}
-		}
-		
-		if ( array_key_exists( 'introtemplate', $params ) ) {
-			$this->mIntroTemplate = $params['introtemplate'];
-		}
-		
-		if ( array_key_exists( 'outrotemplate', $params ) ) {
-			$this->mOutroTemplate = $params['outrotemplate'];
-		}
+	public function __construct( $format, $inline, $useValidator = true ) {
+		parent::__construct( $format, $inline );
+		$this->useValidator = $useValidator;
+	}
+	
+	/**
+	 * @see SMWResultPrinter::handleParameters
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param array $params
+	 * @param $outputmode
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		$this->mSep = $this->isPlainlist() ? $params['sep'] : '';
+		$this->mTemplate = trim( $params['template'] );
+		$this->mUserParam = trim( $params['userparam'] );
+		$this->mColumns = !$this->isPlainlist() ? $params['columns'] : 1;
+		$this->mIntroTemplate = $params['introtemplate'];
+		$this->mOutroTemplate = $params['outrotemplate'];
 	}
 
 	public function getName() {
@@ -295,12 +286,14 @@ END;
 		$result .= $rowstart . ' '. $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend;
 	}
 
+	protected function isPlainlist() {
+		return $this->mFormat != 'ul' && $this->mFormat != 'ol';
+	}
+	
 	public function getParameters() {
 		$params = array_merge( parent::getParameters(), parent::textDisplayParameters() );
 		
-		$plainlist = ( $this->mFormat != 'ul' && $this->mFormat != 'ol' );
-		
-		if ( $plainlist ) {
+		if ( $this->isPlainlist() ) {
 			$params['sep'] = new Parameter( 'sep' );
 			$params['sep']->setMessage( 'smw_paramdesc_sep' );
 			$params['sep']->setDefault( '' );
@@ -310,10 +303,11 @@ END;
 		$params['template']->setMessage( 'smw_paramdesc_template' );
 		$params['template']->setDefault( '' );	
 		
-		if ( !$plainlist ) {
+		if ( !$this->isPlainlist() ) {
 			$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
 			$params['columns']->setMessage( 'smw_paramdesc_columns', 1 );
-			$params['columns']->setDefault( '', false );		
+			$params['columns']->setDefault( 1, false );
+			$params['columns']->addCriteria( new CriterionInRange( 1, 10 ) );	
 		}
 		
 		$params['userparam'] = new Parameter( 'userparam' );
