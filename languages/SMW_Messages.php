@@ -463,11 +463,16 @@ This method is called ''content negotiation''.",
 	'smw_qui_delete' => 'Removes/deletes a form option.
 {{Identical|Remove}}',
 	'smw_qui_rescol' => 'Label for the main result column. See http://semantic-mediawiki.org/wiki/Help:Displaying_information#The_main_result_column/ for further information. The text appears as a label next to an text-box',
-	'smw_qui_ok' => 'Ok button',
-	'smw_qui_cancel' => 'Cancel button',
+	'smw_qui_options' => '{{Identical|Options}}',
+	'smw_qui_ok' => 'Ok button.
+{{Identical|OK}}',
+	'smw_qui_cancel' => 'Cancel button.
+{{Identical|Cancel}}',
+	'smw_qui_category' => '{{Identical|Category}}',
 	'smw_qui_label' => '{{Identical|Label}}',
 	'smw_prp_options' => 'Advanced options for property (title for a new modal window)',
 	'smw_qui_dlabel' => '{{Identical|Label}}',
+	'smw_qui_dcategory' => '{{identical|Category}}',
 	'smw_sbv_property' => '{{Identical|Property}}',
 	'smw_sbv_value' => '{{Identical|Value}}',
 	'smw_sbv_submit' => '{{Identical|Find results}}',
@@ -488,6 +493,16 @@ This method is called ''content negotiation''.",
  */
 $messages['niu'] = array(
 	'smw_browse_go' => 'Fano',
+);
+
+/** толышә зывон (толышә зывон)
+ * @author Гусейн
+ */
+$messages['tly'] = array(
+	'smw_finallistconjunct' => ', ијән',
+	'smw_printername_list' => 'Сијоһи',
+	'smw_printername_template' => 'Ғәлиб',
+	'smw_printername_category' => 'Категоријә',
 );
 
 /** Afrikaans (Afrikaans)
@@ -1125,7 +1140,7 @@ $messages['be'] = array(
  * @author Zedlik
  */
 $messages['be-tarask'] = array(
-	'smw-desc' => "Робіць вашую вікі больш дасяжнай — для кампутараў ''і'' людзей ([http://semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
+	'smw-desc' => "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([http://semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
 	'smw_viewasrdf' => 'RDF-крыніца',
 	'smw_finallistconjunct' => ' і',
 	'smw_factbox_head' => 'Факты аб $1',
@@ -1312,10 +1327,10 @@ $messages['be-tarask'] = array(
 	'smw_qui_randorder' => 'Выпадковая',
 	'smw_qui_addnprop' => 'дадаць уласьцівасьць',
 	'smw_qui_delete' => 'Выдаліць',
-	'smw_qui_rescol' => 'Супадзеньні запытаў',
+	'smw_qui_rescol' => 'Адпаведнасьці запыту',
 	'smw_qui_options' => 'налады',
 	'smw_qui_addcategory' => 'дадаць катэгорыю',
-	'smw_qui_addrescol' => 'дадаць супадзеньні запытаў',
+	'smw_qui_addrescol' => 'дадаць адпаведнасьці запыту',
 	'smw_qui_ok' => 'Добра',
 	'smw_qui_cancel' => 'Скасаваць',
 	'smw_qui_category' => '<strong>Катэгорыя</strong>',
@@ -1622,6 +1637,22 @@ Dic'hortoz e c'hall bezañ an disoc'hoù.",
 	'smw_ask_show_embed' => "Diskouez ar c'hod enframmet",
 	'smw_ask_hide_embed' => "Kuzhat ar c'hod enframmet",
 	'smw_ask_embed_instr' => "Evit enklozañ ar reked-mañ enlinenn e-barzh ur bajenn wiki, implijit ar c'hod amañ dindan.",
+	'smw_qc_otheropt' => 'Dibarzhioù all',
+	'smw_qui_property' => "<strong>Perc'henniezh </strong>",
+	'smw_qui_prop' => "Perc'henniezh",
+	'smw_qui_formt' => 'Furmad :',
+	'smw_qui_limt' => 'Bevenn :',
+	'smw_qui_randorder' => 'Dargouezhek',
+	'smw_qui_addnprop' => "ouzhpennañ ar perc'henniezh",
+	'smw_qui_delete' => 'Dilemel',
+	'smw_qui_options' => 'dibarzhioù',
+	'smw_qui_addcategory' => 'Ouzhpennañ ar rummad',
+	'smw_qui_ok' => 'Mat eo',
+	'smw_qui_cancel' => 'Nullañ',
+	'smw_qui_category' => '<strong>Rummad</strong>',
+	'smw_prp_options' => "Dibarzhioù perc'henniezh",
+	'smw_qui_catopts' => 'Dibarzhioù ar rummadoù',
+	'smw_qui_dcategory' => 'Rummad :',
 	'searchbyproperty' => 'Klask dre berzh',
 	'smw_sbv_docu' => 'Klask an holl bajennoù dezho ur perzh hag un dalvoudenn roet.',
 	'smw_sbv_novalue' => 'Ebarzhiñ un talvoud evit ar perzh, pe gwelet holl dalvoudoù ar perzhioù evit « $1 ».',
