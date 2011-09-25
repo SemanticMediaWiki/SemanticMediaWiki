@@ -1,6 +1,14 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
 
+== SMW 1.6.3 ==
+
+* Added native "internal objects" that can be set using #setobject.
+* Fixed the default result format for #show.
+* Fixed display of table headers when they are all empty.
+* Migrated all query printers to use the new param handling,
+  which fixes some issues introduced in 1.6.2.
+
 == SMW 1.6.2 ==
 
 Released on September 20, 2011.
@@ -15,6 +23,7 @@ Released on September 20, 2011.
 * Fixed hide query functionality on Special:Ask (bug 30768).
 * Fixed display of internal SMW helper constants in certain queries (bug 30969).
 * Fixed some issues with the category result format (including bug 30761).
+* Dropped compatibility with old-style (SMW < 1.6) query printers.
 
 == SMW 1.6.1 ==
 
