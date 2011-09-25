@@ -26,12 +26,19 @@ define( 'SMW_HEADERS_HIDE', 0 ); // Used to be "false" hence use "0" to support 
 abstract class SMWResultPrinter {
 
 	/**
-	 * List of parameters, set by readParameters (which is deprecated)
-	 * and can be used to store parameters in readParameters.
+	 * @deprecated Use $params instead
+	 */
+	protected $m_params;
+	
+	/**
+	 * List of parameters, set by handleParameters.
+	 * param name (lower case, trimmed) => param value (mixed)
+	 * 
+	 * @since 1.6.3
 	 * 
 	 * @var array
 	 */
-	protected $m_params;
+	protected $params;
 
 	/**
 	 * Text to print *before* the output in case it is *not* empty; assumed to be wikitext.
@@ -288,7 +295,7 @@ abstract class SMWResultPrinter {
 	 * @param $outputmode
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
-		$this->m_params = $params;
+		$this->params = $params;
 		
 		if ( array_key_exists( 'intro', $params ) ) { $this->mIntro = $params['intro']; }
 		if ( array_key_exists( 'outro', $params ) ) { $this->mOutro = $params['outro']; }

@@ -24,10 +24,6 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	protected $mUserParam;
 	protected $mNumColumns;
 
-	public function __construct( $format, $inline, $useValidator = true ) {
-		parent::__construct( $format, $inline, $useValidator );
-	}
-	
 	/**
 	 * @see SMWResultPrinter::handleParameters
 	 * 

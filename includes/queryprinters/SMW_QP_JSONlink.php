@@ -117,8 +117,8 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			$items = "\"items\": [\n\t" . implode( ",\n\t", $itemstack ) . "\n\t]";
 
 			// check whether a callback function is required
-			if ( array_key_exists( 'callback', $this->m_params ) ) {
-				$result = htmlspecialchars( $this->m_params['callback'] ) . "({\n\t" . $properties . ",\n\t" . $items . "\n})";
+			if ( array_key_exists( 'callback', $this->params ) ) {
+				$result = htmlspecialchars( $this->params['callback'] ) . "({\n\t" . $properties . ",\n\t" . $items . "\n})";
 			} else {
 				$result = "{\n\t" . $properties . ",\n\t" . $items . "\n}";
 			}
@@ -132,16 +132,16 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			}
 			
 			$link = $res->getQueryLink( $label );
-			if ( array_key_exists( 'callback', $this->m_params ) ) {
-				$link->setParameter( htmlspecialchars( $this->m_params['callback'] ), 'callback' );
+			if ( array_key_exists( 'callback', $this->params ) ) {
+				$link->setParameter( htmlspecialchars( $this->params['callback'] ), 'callback' );
 			}
 			
 			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) != '' ) { // used as a file name
 				$link->setParameter( $this->getSearchLabel( SMW_OUTPUT_WIKI ), 'searchlabel' );
 			}
 			
-			if ( array_key_exists( 'limit', $this->m_params ) ) {
-				$link->setParameter( htmlspecialchars( $this->m_params['limit'] ), 'limit' );
+			if ( array_key_exists( 'limit', $this->params ) ) {
+				$link->setParameter( htmlspecialchars( $this->params['limit'] ), 'limit' );
 			}
 			
 			$link->setParameter( 'json', 'format' );

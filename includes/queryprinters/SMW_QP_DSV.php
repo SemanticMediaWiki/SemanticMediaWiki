@@ -17,11 +17,6 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	protected $separator = ':';
 	protected $fileName = 'result.dsv';
 	
-	public function __construct( $format, $inline, $useValidator = true ) {
-		parent::__construct( $format, $inline );
-		$this->useValidator = $useValidator;
-	}
-	
 	/**
 	 * @see SMWResultPrinter::handleParameters
 	 * 
