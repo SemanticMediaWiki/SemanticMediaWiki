@@ -51,15 +51,16 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$headers = array();
 			
-			foreach ( $res->getPrintRequests() as $pr ) {
+			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
 				$attribs = array();
 				$columnClass = str_replace( array( ' ', '_' ), '-', $pr->getText( SMW_OUTPUT_WIKI ) );
 				$attribs['class'] = $columnClass;
+				$text = $pr->getText( $outputmode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
 				
 				$headers[] = Html::rawElement(
 					'th',
 					$attribs,
-					$pr->getText( $outputmode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) )
+					$text == '' ? '&nbsp;' : $text
 				);
 			}
 			
