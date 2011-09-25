@@ -187,21 +187,18 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * 
-	 * 
-	 * FIXME: show queries are not getting any results w/o passing any query condition 
+	 * Add the subject print request, unless mainlabel is set to "-".
 	 * 
 	 * @since 1.6.3
 	 * 
 	 * @param array $printRequests
 	 * @param array $rawParams
-	 * @param boolean $isShow
 	 */
-	public static function addThisPrinteout( array &$printRequests, array $rawParams, $isShow = false ) {
-		if ( !$isShow && !is_null( $printRequests ) ) {
+	public static function addThisPrinteout( array &$printRequests, array $rawParams ) {
+		if ( !is_null( $printRequests ) ) {
 			$hasMainlabel = array_key_exists( 'mainlabel', $rawParams );
 			
-			if  ( !$hasMainlabel || $rawParams['mainlabel'] === '-' ) {
+			if  ( !$hasMainlabel || $rawParams['mainlabel'] !== '-' ) {
 				array_unshift( $printRequests, new SMWPrintRequest(
 					SMWPrintRequest::PRINT_THIS,
 					$hasMainlabel ? $rawParams['mainlabel'] : ''
@@ -325,8 +322,13 @@ class SMWQueryProcessor {
 	 */
 	static public function getResultFromFunctionParams( array $rawparams, $outputmode, $context = self::INLINE_QUERY, $showmode = false ) {
 		self::processFunctionParams( $rawparams, $querystring, $params, $printouts, $showmode );
-		self::addThisPrinteout( $printouts, $params, $showmode );
+		
+		if ( !$showmode ) {
+			self::addThisPrinteout( $printouts, $params, $showmode );
+		}
+		
 		$params = self::getProcessedParams( $params, $printouts );
+		
 		return self::getResultFromQueryString( $querystring, $params, $printouts, SMW_OUTPUT_WIKI, $context );
 	}
 
