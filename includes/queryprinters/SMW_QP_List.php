@@ -24,11 +24,6 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	protected $mColumns;
 	protected $mIntroTemplate;
 	protected $mOutroTemplate;
-
-	public function __construct( $format, $inline, $useValidator = true ) {
-		parent::__construct( $format, $inline );
-		$this->useValidator = $useValidator;
-	}
 	
 	/**
 	 * @see SMWResultPrinter::handleParameters

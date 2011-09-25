@@ -7,7 +7,11 @@
 
 /**
  * Printer class for generating RDF output
+ * 
+ * @since 1.6
+ * 
  * @author Markus Krötzsch
+ * 
  * @ingroup SMWQuery
  */
 class SMWRDFResultPrinter extends SMWResultPrinter {
@@ -17,13 +21,17 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 	 */
 	protected $syntax;
 
-	protected function readParameters( $params, $outputmode ) {
-		parent::readParameters( $params, $outputmode );
-		if ( array_key_exists( 'syntax', $params ) ) {
-			$this->syntax = $params['syntax'];
-		} else {
-			$this->syntax = 'rdfxml';
-		}
+	/**
+	 * @see SMWResultPrinter::handleParameters
+	 * 
+	 * @since 1.6.3
+	 * 
+	 * @param array $params
+	 * @param $outputmode
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		parent::handleParameters( $params, $outputmode );
+		$this->syntax = $params['syntax'];
 	}
 
 	public function getMimeType( $res ) {
@@ -48,12 +56,15 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 			$serializer = $this->syntax == 'turtle' ? new SMWTurtleSerializer() : new SMWRDFXMLSerializer();
 			$serializer->startSerialization();
 			$serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
+			
 			while ( $row = $res->getNext() ) {
 				$subjectDi = reset( $row )->getResultSubject();
 				$data = SMWExporter::makeExportDataForSubject( $subjectDi );
+				
 				foreach ( $row as $resultarray ) {
 					$printreq = $resultarray->getPrintRequest();
 					$property = null;
+					
 					switch ( $printreq->getMode() ) {
 						case SMWPrintRequest::PRINT_PROP:
 							$property = $printreq->getData();
@@ -68,13 +79,16 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 							// ignored here (object is always included in export)
 						break;
 					}
+					
 					if ( $property !== null ) {
 						SMWExporter::addPropertyValues( $property, $resultarray->getContent() , $data, $subjectDi );
 					}					
 				}
 				$serializer->serializeExpData( $data );
 			}
+			
 			$serializer->finishSerialization();
+			
 			return $serializer->flushContent();
 		} else { // just make link to feed
 			if ( $this->getSearchLabel( $outputmode ) ) {
@@ -87,12 +101,15 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 			$link = $res->getQueryLink( $label );
 			$link->setParameter( 'rdf', 'format' );
 			$link->setParameter( $this->syntax, 'syntax' );
+			
 			if ( array_key_exists( 'limit', $this->m_params ) ) {
 				$link->setParameter( $this->m_params['limit'], 'limit' );
 			} else { // use a reasonable default limit
 				$link->setParameter( 100, 'limit' );
 			}
+			
 			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
+			
 			return $link->getText( $outputmode, $this->mLinker );
 		}
 	}

@@ -7,20 +7,28 @@
 
 /**
  * Printer class for generating CSV output
+ * 
  * @author Nathan R. Yergler
  * @author Markus Krötzsch
+ * 
  * @ingroup SMWQuery
  */
 class SMWCsvResultPrinter extends SMWResultPrinter {
+	
 	protected $m_sep;
 
-	protected function readParameters( $params, $outputmode ) {
-		parent::readParameters( $params, $outputmode );
-		if ( array_key_exists( 'sep', $params ) ) {
-			$this->m_sep = str_replace( '_', ' ', $params['sep'] );
-		} else {
-			$this->m_sep = ',';
-		}
+	/**
+	 * @see SMWResultPrinter::handleParameters
+	 * 
+	 * @since 1.6.3
+	 * 
+	 * @param array $params
+	 * @param $outputmode
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		parent::handleParameters( $params, $outputmode );
+		
+		$this->m_sep = str_replace( '_', ' ', $params['sep'] );
 	}
 
 	public function getMimeType( $res ) {
@@ -32,7 +40,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getQueryMode( $context ) {
-		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES:SMWQuery::MODE_NONE;
+		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
 	public function getName() {
