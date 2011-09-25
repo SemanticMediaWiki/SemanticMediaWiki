@@ -108,7 +108,7 @@ abstract class SMWResultPrinter {
 	 * 
 	 * @param string $format
 	 * @param $inline
-	 * @param boolean $useValidator Depracted since 1.6.2
+	 * @param boolean $useValidator Deprecated since 1.6.2
 	 */
 	public function __construct( $format, $inline, $useValidator = false ) {
 		global $smwgQDefaultLinking;
