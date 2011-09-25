@@ -94,14 +94,14 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 			$link->setParameter( 'csv', 'format' );
 			$link->setParameter( $this->m_sep, 'sep' );
 			
-			if ( array_key_exists( 'mainlabel', $this->m_params ) && $this->m_params['mainlabel'] !== false ) {
-				$link->setParameter( $this->m_params['mainlabel'], 'mainlabel' );
+			if ( array_key_exists( 'mainlabel', $this->params ) && $this->params['mainlabel'] !== false ) {
+				$link->setParameter( $this->params['mainlabel'], 'mainlabel' );
 			}
 				
 			$link->setParameter( $this->mShowHeaders ? 'show' : 'hide', 'headers' );
 			
-			if ( array_key_exists( 'limit', $this->m_params ) ) {
-				$link->setParameter( $this->m_params['limit'], 'limit' );
+			if ( array_key_exists( 'limit', $this->params ) ) {
+				$link->setParameter( $this->params['limit'], 'limit' );
 			} else { // use a reasonable default limit
 				$link->setParameter( 100, 'limit' );
 			}

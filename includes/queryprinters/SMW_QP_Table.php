@@ -13,11 +13,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 	protected $mHTMLClass = '';
 
-	public function __construct( $format, $inline, $useValidator = true ) {
-		parent::__construct( $format, $inline );
-		$this->useValidator = $useValidator;
-	}
-
 	public function getName() {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_' . $this->mFormat );

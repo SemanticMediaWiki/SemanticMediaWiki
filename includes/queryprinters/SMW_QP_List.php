@@ -251,8 +251,8 @@ END;
 
 		if ( $this->mTemplate != '' ) {
 			$link->setParameter( $this->mTemplate, 'template' );
-			if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates
-				$link->setParameter( $this->m_params['link'], 'link' );
+			if ( array_key_exists( 'link', $this->params ) ) { // linking may interfere with templates
+				$link->setParameter( $this->params['link'], 'link' );
 			}
 		}
 		

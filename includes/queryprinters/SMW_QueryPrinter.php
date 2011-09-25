@@ -296,6 +296,7 @@ abstract class SMWResultPrinter {
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		$this->params = $params;
+		$this->m_params = $params; // Compat, change made in 1.6.3
 		
 		if ( array_key_exists( 'intro', $params ) ) { $this->mIntro = $params['intro']; }
 		if ( array_key_exists( 'outro', $params ) ) { $this->mOutro = $params['outro']; }

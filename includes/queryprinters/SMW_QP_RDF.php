@@ -102,8 +102,8 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 			$link->setParameter( 'rdf', 'format' );
 			$link->setParameter( $this->syntax, 'syntax' );
 			
-			if ( array_key_exists( 'limit', $this->m_params ) ) {
-				$link->setParameter( $this->m_params['limit'], 'limit' );
+			if ( array_key_exists( 'limit', $this->params ) ) {
+				$link->setParameter( $this->params['limit'], 'limit' );
 			} else { // use a reasonable default limit
 				$link->setParameter( 100, 'limit' );
 			}

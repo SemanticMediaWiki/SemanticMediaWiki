@@ -10,34 +10,36 @@
  *
  * @author Denny Vrandecic
  * @author Markus Krötzsch
+ * 
  * @ingroup SMWQuery
  */
 class SMWRSSResultPrinter extends SMWResultPrinter {
+	
 	protected $m_title = '';
 	protected $m_description = '';
 
-	protected function readParameters( $params, $outputmode ) {
-		parent::readParameters( $params, $outputmode );
-		if ( array_key_exists( 'title', $this->m_params ) ) {
-			$this->m_title = trim( $this->m_params['title'] );
-		// for backward compatibiliy
-		} elseif ( array_key_exists( 'rsstitle', $this->m_params ) ) {
-			$this->m_title = trim( $this->m_params['rsstitle'] );
-		}
-		if ( array_key_exists( 'description', $this->m_params ) ) {
-			$this->m_description = trim( $this->m_params['description'] );
-		// for backward compatibiliy
-		} elseif ( array_key_exists( 'rssdescription', $this->m_params ) ) {
-			$this->m_description = trim( $this->m_params['rssdescription'] );
-		}
+	/**
+	 * @see SMWResultPrinter::handleParameters
+	 * 
+	 * @since 1.6.3
+	 * 
+	 * @param array $params
+	 * @param $outputmode
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		parent::handleParameters( $params, $outputmode );
+		
+		$this->m_title = trim( $params['title'] );
+		$this->m_description = trim( $params['description'] );
 	}
-
+	
 	public function getMimeType( $res ) {
-		return 'application/rss+xml'; // or is rdf+xml better? Might be confused in either case (with RSS2.0 or RDF)
+		// or is rdf+xml better? Might be confused in either case (with RSS2.0 or RDF)
+		return 'application/rss+xml';
 	}
 
 	public function getQueryMode( $context ) {
-		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES:SMWQuery::MODE_NONE;
+		return $context == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
 	public function getName() {
@@ -153,9 +155,11 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		
 		$params['title'] = new Parameter( 'title' );
 		$params['title']->setMessage( 'smw_paramdesc_rsstitle' );
+		$params['title']->setDefault( '' );
 		
 		$params['description'] = new Parameter( 'title' );
 		$params['description']->setMessage( 'smw_paramdesc_rssdescription' );
+		$params['description']->setDefault( '' );
 		
 		return $params;
 	}
