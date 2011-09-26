@@ -198,7 +198,7 @@ class SMWQueryProcessor {
 		if ( !is_null( $printRequests ) ) {
 			$hasMainlabel = array_key_exists( 'mainlabel', $rawParams );
 			
-			if  ( !$hasMainlabel || $rawParams['mainlabel'] !== '-' ) {
+			if  ( !$hasMainlabel || trim( $rawParams['mainlabel'] ) !== '-' ) {
 				array_unshift( $printRequests, new SMWPrintRequest(
 					SMWPrintRequest::PRINT_THIS,
 					$hasMainlabel ? $rawParams['mainlabel'] : ''
