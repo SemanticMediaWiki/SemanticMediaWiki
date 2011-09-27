@@ -310,10 +310,11 @@ function &smwfGetStore() {
  * @return SMWSparqlDatabase or null
  */
 function &smwfGetSparqlDatabase() {
-	global $smwgSparqlDatabase, $smwgSparqlQueryEndpoint, $smwgSparqlUpdateEndpoint,
-	       $smwgSparqlDataEndpoint, $smwgSparqlDatabaseMaster;
+	global $smwgSparqlDatabase, $smwgSparqlDefaultGraph, $smwgSparqlQueryEndpoint,
+		$smwgSparqlUpdateEndpoint, $smwgSparqlDataEndpoint, $smwgSparqlDatabaseMaster;
 	if ( !isset( $smwgSparqlDatabaseMaster ) ) {
-		$smwgSparqlDatabaseMaster = new $smwgSparqlDatabase( $smwgSparqlQueryEndpoint, $smwgSparqlUpdateEndpoint, $smwgSparqlDataEndpoint );
+		$smwgSparqlDatabaseMaster = new $smwgSparqlDatabase( $smwgSparqlDefaultGraph,
+			$smwgSparqlQueryEndpoint, $smwgSparqlUpdateEndpoint, $smwgSparqlDataEndpoint );
 	}
 	return $smwgSparqlDatabaseMaster;
 }

@@ -111,6 +111,7 @@ class SMWSparqlDatabase {
 
 	/**
 	 * The URL of the endpoint for executing read queries.
+	 *
 	 * @var string
 	 */
 	protected $m_queryEndpoint;
@@ -118,6 +119,7 @@ class SMWSparqlDatabase {
 	/**
 	 * The URL of the endpoint for executing update queries, or empty if
 	 * update is not allowed/supported.
+	 *
 	 * @var string
 	 */
 	protected $m_updateEndpoint;
@@ -125,24 +127,44 @@ class SMWSparqlDatabase {
 	/**
 	 * The URL of the endpoint for using the SPARQL Graph Store HTTP
 	 * Protocol with, or empty if this method is not allowed/supported.
+	 *
 	 * @var string
 	 */
 	protected $m_dataEndpoint;
 
 	/**
+	 * The URI of the default graph that is used to store data.
+	 * Can be the empty string to omit this information in all requests
+	 * (not supported by all stores).
+	 *
+	 * @var string
+	 */
+	protected $m_defaultGraph;
+
+	/**
 	 * The curl handle we use for communicating. We reuse the same handle
 	 * throughout as this safes some initialization effort.
+	 *
 	 * @var resource
 	 */
 	protected $m_curlhandle;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
+	 * Normally, you should call smwfGetSparqlDatabase() to obtain a
+	 * suitable instance of a SPARQL database handler rather than
+	 * constructing one directly.
+	 *
+	 * @param $graph string of URI of the default graph to store data to;
+	 * can be the empty string to omit this information in all requests
+	 * (not supported by all stores)
 	 * @param $queryEndpoint string of URL of query service (reading)
 	 * @param $updateEndpoint string of URL of update service (writing)
+	 * @param $dataEndpoint string of URL of POST service (writing, optional)
 	 */
-	public function __construct( $queryEndpoint, $updateEndpoint = '', $dataEndpoint = '' ) {
+	public function __construct( $graph, $queryEndpoint, $updateEndpoint = '', $dataEndpoint = '' ) {
+		$this->m_defaultGraph = $graph;
 		$this->m_queryEndpoint = $queryEndpoint;
 		$this->m_updateEndpoint = $updateEndpoint;
 		$this->m_dataEndpoint = $dataEndpoint;
@@ -152,6 +174,17 @@ class SMWSparqlDatabase {
 		curl_setopt( $this->m_curlhandle, CURLOPT_RETURNTRANSFER, true ); // put result into variable
 		curl_setopt( $this->m_curlhandle, CURLOPT_CONNECTTIMEOUT, 10 ); // timeout in seconds
 		curl_setopt( $this->m_curlhandle, CURLOPT_FAILONERROR, true );
+	}
+
+	/**
+	 * Get the URI of the default graph that this database connector is
+	 * using, or the empty string if none is used (no graph related
+	 * statements in queries/updates).
+	 *
+	 * @return string graph UIR or empty
+	 */
+	public function getDefaultGraph() {
+		return $this->m_defaultGraph;
 	}
 
 	/**
@@ -313,7 +346,8 @@ class SMWSparqlDatabase {
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
 		$sparql = self::getPrefixString( $extraNamespaces ) .
-		          "DELETE { $deletePattern } WHERE { $where }";
+			( ( $this->m_defaultGraph != '' )? "WITH <{$this->m_defaultGraph}> " : '' ) .
+			"DELETE { $deletePattern } WHERE { $where }";
 		return $this->doUpdate( $sparql );
 	}
 
@@ -351,7 +385,8 @@ class SMWSparqlDatabase {
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
 		$sparql = self::getPrefixString( $extraNamespaces ) .
-		          "INSERT { $insertPattern } DELETE { $deletePattern } WHERE { $where }";
+			( ( $this->m_defaultGraph != '' )? "WITH <{$this->m_defaultGraph}> " : '' ) .
+			"DELETE { $deletePattern } INSERT { $insertPattern } WHERE { $where }";
 		return $this->doUpdate( $sparql );
 	}
 
@@ -370,7 +405,10 @@ class SMWSparqlDatabase {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
 		} else {
-			$sparql = self::getPrefixString( $extraNamespaces, true ) . "INSERT DATA { $triples }";
+			$sparql = self::getPrefixString( $extraNamespaces, true ) .
+				"INSERT DATA { " .
+				( ( $this->m_defaultGraph != '' )? "GRAPH <{$this->m_defaultGraph}> " : '' ) .
+				"{ $triples } }";
 			return $this->doUpdate( $sparql );
 		}
 	}
@@ -386,7 +424,10 @@ class SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = array() ) {
-		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE DATA { $triples }";
+		$sparql = self::getPrefixString( $extraNamespaces ) .
+			"DELETE DATA { " .
+			( ( $this->m_defaultGraph != '' )? "GRAPH <{$this->m_defaultGraph}> " : '' ) .
+			"{ $triples } }";
 		return $this->doUpdate( $sparql );
 	}
 
@@ -398,6 +439,9 @@ class SMWSparqlDatabase {
 	 * method does not throw anything, then an empty result with an error
 	 * code is returned.
 	 *
+	 * @note This function sets the graph that is to be used as part of the
+	 * request. Queries should not include additional graph information.
+	 *
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
 	 * @return SMWSparqlResultWrapper
 	 */
@@ -405,7 +449,8 @@ class SMWSparqlDatabase {
 		//debug_zval_dump( $sparql );
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
-		$parameterString = "query=" . urlencode( $sparql );
+		$parameterString = "query=" . urlencode( $sparql ) .
+			( ( $this->m_defaultGraph != '' )? 'default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 
 		$xmlResult = curl_exec( $this->m_curlhandle );
@@ -424,6 +469,12 @@ class SMWSparqlDatabase {
 	 * operations was sucessfull. The method throws exceptions based on
 	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
 	 * method does not throw anything, then false is returned.
+	 *
+	 * @note When this is written, it is not clear if the update protocol
+	 * supports a default-graph-uri parameter. Hence the target graph for
+	 * all updates is generally encoded in the query string and not fixed
+	 * when sending the query. Direct callers to this function must include
+	 * the graph information in the queries that they build.
 	 *
 	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
 	 * @return boolean
@@ -455,9 +506,13 @@ class SMWSparqlDatabase {
 	 * method does not throw anything, then an empty result with an error
 	 * code is returned.
 	 *
-	 * @note This method has not been tesetd sufficiently since 4Store uses
-	 * another post encoding. To avoid using it, simply do not provide a
-	 * data endpoint URL when configuring the SPARQL database.
+	 * @note This protocol is not part of the SPARQL standard and may not
+	 * be supported by all stores. To avoid using it, simply do not provide
+	 * a data endpoint URL when configuring the SPARQL database. If used,
+	 * the protocol might lead to a better performance since there is less
+	 * parsing required to fetch the data from the request.
+	 * @note Some stores (e.g. 4Store) support another mode of posting data
+	 * that may be implemented in a special database handler.
 	 *
 	 * @param $payload string Turtle serialization of data to send
 	 * @return SMWSparqlResultWrapper
@@ -466,7 +521,8 @@ class SMWSparqlDatabase {
 		if ( $this->m_dataEndpoint == '' ) {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
-		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );
+		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint .
+			( ( $this->m_defaultGraph != '' )? '?graph=' . urlencode( $this->m_defaultGraph ) : '?default' ) );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 
 		// POST as file (fails in 4Store)

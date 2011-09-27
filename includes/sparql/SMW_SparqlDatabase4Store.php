@@ -37,9 +37,9 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 		//$result = parent::doQuery( $sparql );
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
-		$parameterString = "query=" . urlencode( $sparql ) . "&restricted=1";
+		$parameterString = "query=" . urlencode( $sparql ) . "&restricted=1" .
+			( ( $this->m_defaultGraph != '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
-
 		$xmlResult = curl_exec( $this->m_curlhandle );
 
 		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
@@ -101,7 +101,9 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
-		$parameterString = "data=" . urlencode( $payload ) . '&graph=default&mime-type=application/x-turtle';
+		$parameterString = "data=" . urlencode( $payload ) . '&graph=' .
+			( ( $this->m_defaultGraph != '' )? urlencode( $this->m_defaultGraph ) : 'default' ) .
+			'&mime-type=application/x-turtle';
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 
 		curl_exec( $this->m_curlhandle );

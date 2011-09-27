@@ -58,11 +58,19 @@ $smwgDefaultStore = "SMWSQLStore2";
 # This will lead to reduced functionality (e.g. the SMWSparqlStore will not
 # work if Update is not available). The data endpoint is always optional, but
 # in some SPARQL databases this method is more efficient than update.
+#
+# The default graph is similar to a database name in relational databases. It
+# can be set to any URI (e.g. the main page uri of your wiki with
+# "#graph" appended). Leaving the default graph URI empty only works if the
+# store is configure to use some default default graph or if it generally
+# supports this. Different wikis should normally use different default graphs
+# unless there is a good reason to share one graph.
 ##
 $smwgSparqlDatabase = 'SMWSparqlDatabase';
 $smwgSparqlQueryEndpoint = 'http://localhost:8080/sparql/';
 $smwgSparqlUpdateEndpoint = 'http://localhost:8080/update/';
 $smwgSparqlDataEndpoint = 'http://localhost:8080/data/';
+$smwgSparqlDefaultGraph = '';
 ##
 
 // load global constants and setup functions
