@@ -450,7 +450,7 @@ class SMWSparqlDatabase {
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		$parameterString = "query=" . urlencode( $sparql ) .
-			( ( $this->m_defaultGraph != '' )? 'default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
+			( ( $this->m_defaultGraph != '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 
 		$xmlResult = curl_exec( $this->m_curlhandle );
