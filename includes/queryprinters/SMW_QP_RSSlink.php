@@ -157,7 +157,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		$params['title']->setMessage( 'smw_paramdesc_rsstitle' );
 		$params['title']->setDefault( '' );
 		
-		$params['description'] = new Parameter( 'title' );
+		$params['description'] = new Parameter( 'description' );
 		$params['description']->setMessage( 'smw_paramdesc_rssdescription' );
 		$params['description']->setDefault( '' );
 		
