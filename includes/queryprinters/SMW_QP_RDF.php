@@ -67,7 +67,7 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 					
 					switch ( $printreq->getMode() ) {
 						case SMWPrintRequest::PRINT_PROP:
-							$property = $printreq->getData();
+							$property = $printreq->getData()->getDataItem();
 						break;
 						case SMWPrintRequest::PRINT_CATS:
 							$property = new SMWDIProperty( '_TYPE' );
