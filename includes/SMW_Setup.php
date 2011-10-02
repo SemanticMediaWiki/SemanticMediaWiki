@@ -622,7 +622,7 @@ function smwfAddMagicWords( &$magicWords, $langCode ) {
 	$magicWords['ask']     = array( 0, 'ask' );
 	$magicWords['show']    = array( 0, 'show' );
 	$magicWords['info']    = array( 0, 'info' );
-	$magicWords['setobject'] = array( 0, 'setobject' );
+	$magicWords['subobject'] = array( 0, 'subobject' );
 	$magicWords['concept'] = array( 0, 'concept' );
 	$magicWords['set']     = array( 0, 'set' );
 	$magicWords['set_recurring_event']     = array( 0, 'set_recurring_event' );
@@ -675,7 +675,7 @@ function smwfRegisterParserFunctions( Parser &$parser ) {
 	$parser->setFunctionHook( 'ask', array( 'SMWAsk', 'render' ) );
 	$parser->setFunctionHook( 'show', array( 'SMWShow', 'render' ) );
 	$parser->setFunctionHook( 'info', array( 'SMWInfo', 'render' ) );
-	$parser->setFunctionHook( 'setobject', array( 'SMWSubobject', 'render' ) );
+	$parser->setFunctionHook( 'subobject', array( 'SMWSubobject', 'render' ) );
 	$parser->setFunctionHook( 'concept', array( 'SMWConcept', 'render' ) );
 	$parser->setFunctionHook( 'set', array( 'SMWSet', 'render' ) );
 	$parser->setFunctionHook( 'set_recurring_event', array( 'SMWSetRecurringEvent', 'render' ) );
