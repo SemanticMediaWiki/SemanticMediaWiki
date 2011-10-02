@@ -5,24 +5,29 @@
  */
 
 /**
- * Subclass of SMWSemanticData that can be made read only to enforce the
- * immutability of all SMW data items. This ensures that the container dataitem
- * can safely give out an object reference without concern that this is
- * exploited to indirectly change its content.
+ * Subclass of SMWSemanticData that is used to store the data in SMWDIContainer
+ * objects. It is special since the subject that the stored property-value pairs
+ * refer to is not specified explicitly. Instead, the subject used in container
+ * data items is determined by the stored data together with the page that the
+ * data item is assigned to (the "master page" of this data). Maintaining the
+ * relation to the master page is important for data management since the
+ * subjects of container data items must be deleted when deleting the value.
  *
- * Objects of this class are usually only made immutable when passed to a data
- * item, so they can be built as usual. When cloning the object, the clone
- * becomes mutable again. This is safe since all data is stored in arrays that
- * contain only immutable objects and values of basic types. Arrays are copied
- * (lazily) when cloning in PHP, so later changes in the cloce will not affect
- * the original.
+ * Therefore, this container data provides a method setMasterPage() that is used
+ * to define the master page. SMWSemanticData will always call this method when
+ * it is given a container data item to store. Until this is done, the subject
+ * of the container is "anonymous" -- it has no usable name. This can be tested
+ * with hasAnonymousSubject(). When trying to access the subject in this state,
+ * an Exception will be thrown. Note that container data items that are not
+ * related to any master page are necessary, e.g. when specifying such a value
+ * in a search form where the master page is not known.
  *
- * In contrast to normal SMWSemanticData objects, SMWContainerSemanticData can
- * be created without specifying a subject. In this case, the subject is some
- * "anonymous" object that is left unspecified (for search) or generated later
- * (for storage). The method hasAnonymousSubject() should be used to check for
- * this case (as the method getSubject() will always return a valid subject).
- * See the documentation of SMWDIContainer for further details.
+ * See also the documentation of SMWDIContainer.
+ *
+ * @since 1.6
+ *
+ * @author Markus Krötzsch
+ * @ingroup SMWDataItems
  */
 class SMWContainerSemanticData extends SMWSemanticData {
 
@@ -130,25 +135,27 @@ class SMWContainerSemanticData extends SMWSemanticData {
  * This class implements container data items that can store SMWSemanticData
  * objects. Containers are not dataitems in the proper sense: they do not
  * represent a single, opaque value that can be assigned to a property. Rather,
- * a container represents a collection of individual property-value assignments.
- * When a container is stored, these individual data assignments are stored --
- * the data managed by SMW never contains any "container", just individual
- * property assignments. Likewise, when a container is used in search, it is
- * interpreted as a patterns of possible property assignments, and this pattern
- * is searched for.
+ * a container represents a "subobject" with a number of property-value
+ * assignments. When a container is stored, these individual data assignments
+ * are stored -- the data managed by SMW never contains any "container", just
+ * individual property assignments for the subobject. Likewise, when a container
+ * is used in search, it is interpreted as a patterns of possible property
+ * assignments, and this pattern is searched for.
  *
  * The data encapsulated in a container data item is essentially an
- * SMWSemanticData object. The data represented by the container consists of
- * the data stored in this SMWSemanticData object. As a special case, it is
- * possible that the subject of this data is left unspecified. The name of the
- * subject in this case is not part of the data: when storing such containers, a
- * new name will be invented; when searching for such containers, only the
- * property-value pairs are considered relevant in the search. If the subject is
- * given (i.e. not anonymous), and the container DI is used as a property value
- * for a wikipage Foo, then the subject of the container must be a subobject of
- * Foo, for example Foo#section. In this case "Foo" is called the master page of
- * the container. To get a suitable subject for a given master page, the method
- * getSubjectPage() can be used.
+ * SMWSemanticData object of class SMWContainerSemanticData. This class has a
+ * special handling for the subject of the stored annotations (i.e. the
+ * subobject). See the repsective documentation for details.
+ * 
+ * Being a mere placeholder/template for other data, an SMWDIContainer is not
+ * immutable as the other basic data items. New property-value pairs can always
+ * be added to the internal SMWContainerSemanticData. Moreover, the subobject
+ * that the container refers to is set only after it has been created, when the
+ * data item is added as a property value to some existing SMWSemanticData.
+ * Only after this has happened is the subobject fully defined. Any attempt to
+ * obtain the subobject from the internal SMWContainerSemanticData before it
+ * has been defined will result in an SMWDataItemException.
+ *
  *
  * @since 1.6
  *
