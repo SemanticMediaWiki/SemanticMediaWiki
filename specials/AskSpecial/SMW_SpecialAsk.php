@@ -361,7 +361,7 @@ END;
 		$urlArgs['p'] = SMWInfolink::encodeParameters( $tmp_parray );
 		$printoutstring = '';
 
-		foreach ( $this->m_printouts as $printout ) {
+		foreach ( $this->m_printouts as /* SMWPrintRequest */ $printout ) {
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
 
@@ -371,7 +371,7 @@ END;
 
 		if ( $this->m_querystring != '' ) {
 			// FIXME: this is a hack
-			SMWQueryProcessor::addThisPrinteout( $this->m_printouts, $this->m_params );
+			SMWQueryProcessor::addThisPrintout( $this->m_printouts, $this->m_params );
 			$params = SMWQueryProcessor::getProcessedParams( $this->m_params, $this->m_printouts );
 			$this->m_params['format'] = $params['format'];
 			

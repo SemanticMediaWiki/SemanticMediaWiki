@@ -194,7 +194,7 @@ class SMWQueryProcessor {
 	 * @param array $printRequests
 	 * @param array $rawParams
 	 */
-	public static function addThisPrinteout( array &$printRequests, array $rawParams ) {
+	public static function addThisPrintout( array &$printRequests, array $rawParams ) {
 		if ( !is_null( $printRequests ) ) {
 			$hasMainlabel = array_key_exists( 'mainlabel', $rawParams );
 			
@@ -324,7 +324,7 @@ class SMWQueryProcessor {
 		self::processFunctionParams( $rawparams, $querystring, $params, $printouts, $showmode );
 		
 		if ( !$showmode ) {
-			self::addThisPrinteout( $printouts, $params, $showmode );
+			self::addThisPrintout( $printouts, $params, $showmode );
 		}
 		
 		$params = self::getProcessedParams( $params, $printouts );
