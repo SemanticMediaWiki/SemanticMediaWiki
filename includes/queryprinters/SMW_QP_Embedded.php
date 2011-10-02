@@ -54,21 +54,22 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 		// print header
 		$result = '';
+		$footer = '';
+		$embstart = '';
+		$embend = '';
+		$headstart = '';
+		$headend = '';
 		$this->hasTemplates = true;
 
 		switch ( $this->m_embedformat ) {
 			case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
-				$footer = '';
-				$embstart = '';
 				$headstart = '<' . $this->m_embedformat . '>';
 				$headend = '</' . $this->m_embedformat . ">\n";
-				$embend = '';
 			break;
 			case 'ul': case 'ol':
 				$result .= '<' . $this->m_embedformat . '>';
 				$footer = '</' . $this->m_embedformat . '>';
 				$embstart = '<li>';
-				$headstart = '';
 				$headend = "<br />\n";
 				$embend = "</li>\n";
 			break;
