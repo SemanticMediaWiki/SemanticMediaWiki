@@ -181,8 +181,8 @@ class SMWSemanticData {
 		foreach ( $this->getProperties() as $property ) {
 			hash_update( $ctx, '_#_' . $property->getKey() . '##' );
 
-			foreach ( $this->getPropertyValues( $property ) as $dv ) {
-				hash_update( $ctx, '_#_' . $dv->getSerialization() );
+			foreach ( $this->getPropertyValues( $property ) as $di ) {
+				hash_update( $ctx, '_#_' . $di->getSerialization() );
 			}
 		}
 
@@ -218,6 +218,8 @@ class SMWSemanticData {
 
 	/**
 	 * Store a value for a property identified by its SMWDataItem object.
+	 * For container "pseudo" dataitems, this function also sets the master
+	 * page.
 	 *
 	 * @note There is no check whether the type of the given data item
 	 * agrees with the type of the property. Since property types can
@@ -241,6 +243,10 @@ class SMWSemanticData {
 			$this->mPropVals[$property->getKey()][$dataItem->getHash()] = $dataItem;
 		} else {
 			$this->mPropVals[$property->getKey()][] = $dataItem;
+		}
+
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
+			$dataItem->getSemanticData()->setMasterPage( $this->mSubject );
 		}
 
 		if ( !$property->isUserDefined() ) {

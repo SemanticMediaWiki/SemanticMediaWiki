@@ -270,6 +270,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWAsk']                    = $phDir . 'SMW_Ask.php';
 	$wgAutoloadClasses['SMWShow']                   = $phDir . 'SMW_Show.php';
 	$wgAutoloadClasses['SMWInfo']                   = $phDir . 'SMW_Info.php';
+	$wgAutoloadClasses['SMWSubobject']              = $phDir . 'SMW_Subobject.php';
 	$wgAutoloadClasses['SMWConcept']                = $phDir . 'SMW_Concept.php';
 	$wgAutoloadClasses['SMWSet']                    = $phDir . 'SMW_Set.php';
 	$wgAutoloadClasses['SMWSetRecurringEvent']      = $phDir . 'SMW_SetRecurringEvent.php';
@@ -621,6 +622,7 @@ function smwfAddMagicWords( &$magicWords, $langCode ) {
 	$magicWords['ask']     = array( 0, 'ask' );
 	$magicWords['show']    = array( 0, 'show' );
 	$magicWords['info']    = array( 0, 'info' );
+	$magicWords['setobject'] = array( 0, 'setobject' );
 	$magicWords['concept'] = array( 0, 'concept' );
 	$magicWords['set']     = array( 0, 'set' );
 	$magicWords['set_recurring_event']     = array( 0, 'set_recurring_event' );
@@ -673,6 +675,7 @@ function smwfRegisterParserFunctions( Parser &$parser ) {
 	$parser->setFunctionHook( 'ask', array( 'SMWAsk', 'render' ) );
 	$parser->setFunctionHook( 'show', array( 'SMWShow', 'render' ) );
 	$parser->setFunctionHook( 'info', array( 'SMWInfo', 'render' ) );
+	$parser->setFunctionHook( 'setobject', array( 'SMWSubobject', 'render' ) );
 	$parser->setFunctionHook( 'concept', array( 'SMWConcept', 'render' ) );
 	$parser->setFunctionHook( 'set', array( 'SMWSet', 'render' ) );
 	$parser->setFunctionHook( 'set_recurring_event', array( 'SMWSetRecurringEvent', 'render' ) );

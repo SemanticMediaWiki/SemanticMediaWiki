@@ -82,7 +82,7 @@ class SMWFactbox {
 				
 				foreach ( $propvalues as $dataItem ) {
 					$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $propertyDi );
-					
+
 					if ( $dataValue->isValid() ) {
 						$valuesHtml[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
 					}

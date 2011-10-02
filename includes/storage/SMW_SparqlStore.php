@@ -24,7 +24,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 
 	public function deleteSubject( Title $subject ) {
 		$dataItem = SMWDIWikiPage::newFromTitle( $subject );
-		$expResource = SMWExporter::getDataItemExpElement( $dataItem, $dataItem );
+		$expResource = SMWExporter::getDataItemExpElement( $dataItem );
 		$this->deleteSparqlData( $expResource );
 		parent::deleteSubject( $subject );
 	}
@@ -32,8 +32,8 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 		$oldWikiPage = SMWDIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = SMWDIWikiPage::newFromTitle( $newtitle );
-		$oldExpResource = SMWExporter::getDataItemExpElement( $oldWikiPage, $oldWikiPage );
-		$newExpResource = SMWExporter::getDataItemExpElement( $newWikiPage, $newWikiPage );
+		$oldExpResource = SMWExporter::getDataItemExpElement( $oldWikiPage );
+		$newExpResource = SMWExporter::getDataItemExpElement( $newWikiPage );
 		$namespaces = array( $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() );
 		$namespaces[$newExpResource->getNamespaceId()] = $newExpResource->getNamespace();
 		$oldUri = SMWTurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
@@ -62,7 +62,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		$expDataArray = $this->prepareUpdateExpData( $data );
 
 		if ( count( $expDataArray ) > 0 ) {
-			$subjectResource = SMWExporter::getDataItemExpElement( $data->getSubject(), $data->getSubject() );
+			$subjectResource = SMWExporter::getDataItemExpElement( $data->getSubject() );
 			$this->deleteSparqlData( $subjectResource );
 
 			$turtleSerializer = new SMWTurtleSerializer( true );

@@ -117,12 +117,18 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
+			// might throw an exception, we just pass it through
+			$dataItem = $dataItem->getSemanticData()->getSubject();
+		}
+
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
 			$this->m_dataitem = $dataItem;
 			$this->m_textform = str_replace( '_', ' ', $dataItem->getDBkey() );
 			$this->m_id = -1;
 			$this->m_title = null;
-			$this->m_fragment = $this->m_prefixedtext = '';
+			$this->m_fragment = $dataItem->getSubobjectName();
+			$this->m_prefixedtext = '';
 			$this->m_caption = false;
 			if ( ( $this->m_fixNamespace != NS_MAIN ) && ( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
@@ -138,8 +144,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( !$this->isValid() ) || ( $this->m_caption === '' ) ) {
 			return $this->getCaption();
 		} else {
-			return '[[:' . str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .
-			        ( $this->m_fragment ? "#{$this->m_fragment}" : '' ) . '|' . $this->getCaption() . ']]';
+			return '[[:' . $this->getWikiLinkTarget() . '|' . $this->getCaption() . ']]';
 		}
 	}
 
@@ -164,14 +169,16 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) ) {
-			return $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText():$this->getText();
+			return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
+				( $this->m_fragment ? "#{$this->m_fragment}" : '' );
 		} elseif ( $this->m_dataitem->getNamespace() == NS_FILE ) {
 			// For images and other files, embed them and display
 			// their name, instead of just displaying their name
+			// TODO? We forget about subobjecs/fragments here.
 			$fileName = str_replace( "'", '&#x0027;', $this->getPrefixedText() );
 			 return '[[' . $fileName . '|' . $this->m_textform . '|frameless|border|text-top]]' . "<br />\n" . '[[:' . $fileName . '|' . $this->m_textform . ']]';
 		} else {
-			return '[[:' . str_replace( "'", '&#x0027;', $this->getPrefixedText() ) . '|' . $this->m_textform . ']]';
+			return '[[' . $this->getWikiLinkTarget() . '|' . $this->m_textform . ']]';
 		}
 	}
 
@@ -191,13 +198,15 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	public function getWikiValue() {
 		if ( $this->m_fixNamespace != NS_MAIN ) { // no explicit namespace needed!
-			return $this->getText();
+			$result = $this->getText();
 		} elseif ( $this->m_dataitem->getNamespace() == NS_CATEGORY ) {
 			// escape to enable use in links; todo: not generally required/suitable :-/
-			return ':' . $this->getPrefixedText();
+			$result = ':' . $this->getPrefixedText();
 		} else {
-			return $this->getPrefixedText();
+			$result = $this->getPrefixedText();
 		}
+
+		return $result . ( $this->m_fragment ? "#{$this->m_fragment}" : '' );
 	}
 
 	public function getHash() {
@@ -309,7 +318,19 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected function getCaption() {
 		return $this->m_caption !== false ? $this->m_caption :
-		       ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() );
+			( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
+			( $this->m_fragment ? "#{$this->m_fragment}" : '' );
+	}
+
+	/**
+	 * Compute a text that can be used in wiki text to link to this
+	 * datavalue. Processing includes some escaping and adding the
+	 * fragment.
+	 */
+	protected function getWikiLinkTarget() {
+		return ':' .
+			str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .
+			( $this->m_fragment ? "#{$this->m_fragment}" : '' );
 	}
 
 	/**

@@ -16,23 +16,25 @@
  * contain only immutable objects and values of basic types. Arrays are copied
  * (lazily) when cloning in PHP, so later changes in the cloce will not affect
  * the original.
+ *
+ * In contrast to normal SMWSemanticData objects, SMWContainerSemanticData can
+ * be created without specifying a subject. In this case, the subject is some
+ * "anonymous" object that is left unspecified (for search) or generated later
+ * (for storage). The method hasAnonymousSubject() should be used to check for
+ * this case (as the method getSubject() will always return a valid subject).
+ * See the documentation of SMWDIContainer for further details.
  */
 class SMWContainerSemanticData extends SMWSemanticData {
 
 	/**
-	 * If true, the object will not allow further changes.
-	 * @var boolean
-	 */
-	protected $m_immutable = false;
-
-	/**
-	 * Constructor.
+	 * Construct a data container that refers to an anonymous subject. See
+	 * the documenation of the class for details.
 	 *
 	 * @param boolean $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( $noDuplicates = true ) {
-		$subject = SMWExporter::getInternalObjectDiPage();
-		parent::__construct( $subject, $noDuplicates );
+		$subject = new SMWDIWikiPage( 'SMWInternalObject', NS_SPECIAL, '' );
+		return parent::__construct( $subject, $noDuplicates );
 	}
 
 	/**
@@ -43,19 +45,34 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	}
 
 	/**
-	 * Clone handler. Make any clone mutable again.
+	 * Change the subject of this semantic data container so that it is used
+	 * as a subobject of the given master page.
+	 *
+	 * This "contextualizes" the data to belong to a given (master) wiki
+	 * page. It happens automatically when adding the object as part of a
+	 * property value to another SMWSemanticData object.
+	 *
+	 * @note This method could be extended to allow custom subobject names
+	 * to be set instead of using the hash. Note, however, that the length
+	 * of the subobject name in the database is limited in SQLStore2. To
+	 * make subobjects for sections of a page, this limit would have to be
+	 * extended.
+	 *
+	 * @param SMWDIWikiPage $masterPage
 	 */
-	public function __clone() {
-		$this->m_immutable = false;
-	}
-
-	/**
-	 * Freeze the object: no more change operations allowed after calling
-	 * this. Normally this is only called when passing the object to an
-	 * SMWDIContainer. Other code should not need this.
-	 */
-	public function makeImmutable() {
-		$this->m_immutable = true;
+	public function setMasterPage( SMWDIWikiPage $masterPage ) {
+		$subobject = $this->getHash(); // 32 chars: current max length of subobject name in store
+		$subobject{0} = '_'; // mark as anonymous subobject; hash is still good
+		$this->mSubject = new SMWDIWikiPage( $masterPage->getDBkey(),
+			$masterPage->getNamespace(), $masterPage->getInterwiki(),
+			$subobject );
+		foreach ( $this->getProperties() as $property ) {
+			foreach ( $this->getPropertyValues( $property ) as $di ) {
+				if ( $di->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
+					$di->getSemanticData()->setMasterPage( $this->mSubject );
+				}
+			}
+		}
 	}
 
 	/**
@@ -66,7 +83,6 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	 * @param $semanticData SMWSemanticData
 	 */
 	public function copyDataFrom( SMWSemanticData $semanticData ) {
-		$this->throwImmutableException();
 		$this->mSubject = $semanticData->getSubject();
 		$this->mProperties = $semanticData->getProperties();
 		$this->mPropVals = array();
@@ -79,41 +95,60 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	}
 
 	/**
-	 * Store a value for a property identified by its SMWDataItem object,
-	 * if the object was not set to immutable.
-	 *
-	 * @param $property SMWDIProperty
-	 * @param $dataItem SMWDataItem
+	 * Check if the subject of this container is an anonymous object.
+	 * See the documenation of the class for details.
+	 * @return boolean
 	 */
-	public function addPropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
-		$this->throwImmutableException();
-		parent::addPropertyObjectValue( $property, $dataItem );
-	}
-
-	/**
-	 * Delete all data other than the subject, if the object was not set to
-	 * immutable.
-	 */
-	public function clear() {
-		$this->throwImmutableException();
-		parent::clear();
-	}
-
-	/**
-	 * Throw an exception if the object is immutable.
-	 */
-	protected function throwImmutableException() {
-		if ( $this->m_immutable ) {
-			throw new SMWDataItemException( 'Changing the SMWSemanticData object that belongs to a data item of type SMWDIContainer is not allowed. Data items are immutable.' );
+	public function hasAnonymousSubject() {
+		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
+		     $this->mSubject->getDBkey() == 'SMWInternalObject' &&
+		     $this->mSubject->getInterwiki() == '' ) {
+			return true;
+		} else {
+			return false;
 		}
 	}
+
+	/**
+	 * Return subject to which the stored semantic annotation refer to, or
+	 * throw an exception if the subject is anonymous (if the data has not
+	 * been contextualized with setMasterPage() yet).
+	 *
+	 * @return SMWDIWikiPage subject
+	 */
+	public function getSubject() {
+		if ( $this->hasAnonymousSubject() ) {
+			throw new SMWDataItemException("Trying to get the subject of a container data item that has not been given any. The method hasAnonymousSubject() can be called to detect this situation.");
+		} else {
+			return $this->mSubject;
+		}
+	}
+
 }
 
 /**
  * This class implements container data items that can store SMWSemanticData
- * objects. In this sense, data items of this type are a kind of "internal
- * object" that can contain the data that is otherwise associated with a wiki
- * page.
+ * objects. Containers are not dataitems in the proper sense: they do not
+ * represent a single, opaque value that can be assigned to a property. Rather,
+ * a container represents a collection of individual property-value assignments.
+ * When a container is stored, these individual data assignments are stored --
+ * the data managed by SMW never contains any "container", just individual
+ * property assignments. Likewise, when a container is used in search, it is
+ * interpreted as a patterns of possible property assignments, and this pattern
+ * is searched for.
+ *
+ * The data encapsulated in a container data item is essentially an
+ * SMWSemanticData object. The data represented by the container consists of
+ * the data stored in this SMWSemanticData object. As a special case, it is
+ * possible that the subject of this data is left unspecified. The name of the
+ * subject in this case is not part of the data: when storing such containers, a
+ * new name will be invented; when searching for such containers, only the
+ * property-value pairs are considered relevant in the search. If the subject is
+ * given (i.e. not anonymous), and the container DI is used as a property value
+ * for a wikipage Foo, then the subject of the container must be a subobject of
+ * Foo, for example Foo#section. In this case "Foo" is called the master page of
+ * the container. To get a suitable subject for a given master page, the method
+ * getSubjectPage() can be used.
  *
  * @since 1.6
  *
@@ -137,7 +172,6 @@ class SMWDIContainer extends SMWDataItem {
 	 */
 	public function __construct( SMWContainerSemanticData $semanticData ) {
 		$this->m_semanticData = $semanticData;
-		$this->m_semanticData->makeImmutable();
 	}
 
 	public function getDIType() {
@@ -163,20 +197,6 @@ class SMWDIContainer extends SMWDataItem {
 	 */
 	public function getHash() {
 		return $this->m_semanticData->getHash();
-	}
-
-	/**
-	 * Get an internal object that can be used as a subject for this data.
-	 * This subject is not part of the data itself but makes the connection
-	 * to the wiki page for which this data will be stored. This allows to
-	 * encode a kind of provenance information when storing container data,
-	 * useful to find the source of the data, and to retrieve more data when
-	 * a structural (helper) node is found in a query etc.
-	 *
-	 * @return SMWDIWikiPage
-	 */
-	public function getSubjectPage( SMWDIWikiPage $masterPage ) {
-		return new SMWDIWikiPage( $masterPage->getDBkey(), $masterPage->getNamespace(), $masterPage->getInterwiki(), '_' . $this->getHash() );
 	}
 
 	/**

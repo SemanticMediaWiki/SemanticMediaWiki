@@ -95,8 +95,8 @@ class SMWDIWikiPage extends SMWDataItem {
 	 */
 	public function getTitle() {
 		if ( $this->m_interwiki == '' ) {
-			return Title::makeTitleSafe( $this->m_namespace, $this->m_dbkey, '' );
-		} else {
+			return Title::makeTitleSafe( $this->m_namespace, $this->m_dbkey, $this->m_subobjectname );
+		} else { // TODO inefficient; incomplete for fragments (see above commment)
 			$datavalue = new SMWWikiPageValue( '_wpg' );
 			$datavalue->setDataItem( $this );
 			return Title::newFromText( $datavalue->getPrefixedText() );
@@ -134,7 +134,8 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * @return SMWDIWikiPage
 	 */
 	public static function newFromTitle( Title $title ) {
-		return new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() );
+		return new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(),
+			$title->getInterwiki(), str_replace( ' ', '_', $title->getFragment() ) );
 	}
 
 }

@@ -471,7 +471,8 @@ class SMWSQLStore2 extends SMWStore {
 		$db = wfGetDB( DB_SLAVE );
 
 		if ( $value instanceof SMWDIContainer ) { // recursive handling of containers
-			$joinfield = "t$tableindex." . reset( array_keys( $proptable->objectfields ) ); // this must be a type 'p' object
+			$keys = array_keys( $proptable->objectfields );
+			$joinfield = "t$tableindex." . reset( $keys ); // this must be a type 'p' object
 			$proptables = self::getPropertyTables();
 			$semanticData = $value->getSemanticData();
 
@@ -832,7 +833,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 
 				if ( $di instanceof SMWDIContainer ) { // process subobjects recursively
-					$subObject = $di->getSubjectPage( $subject );
+					$subObject = $di->getSemanticData()->getSubject();
 					$subObjectId = $this->prepareDBUpdates( $updates, $di->getSemanticData(), 0, $subObject );
 					// Note: tables for container objects MUST have objectfields == array(<somename> => 'p')
 					reset( $proptable->objectfields );

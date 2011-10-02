@@ -205,7 +205,7 @@ class SMWSearchByProperty extends SpecialPage {
 			$html .= '<li>' . $result[0]->getLongHTMLText( smwfGetLinker() );
 			
 			if ( $result[0]->getTypeID() == '_wpg' ) {
-				$html .= '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getShortHTMLText() )->getHTML( smwfGetLinker() );
+				$html .= '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getLongWikiText() )->getHTML( smwfGetLinker() );
 			}
 			
 			if ( is_object( $result[1] ) && ( ( $this->value != $result[1] ) || $highlight ) ) {

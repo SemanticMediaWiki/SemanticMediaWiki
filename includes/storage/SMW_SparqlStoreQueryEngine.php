@@ -812,7 +812,7 @@ class SMWSparqlStoreQueryEngine {
 		} elseif ( $comparator == '=' ) {
 			$expElement = SMWExporter::getDataItemHelperExpElement( $dataItem );
 			if ( $expElement === null ) {
-				$expElement = SMWExporter::getDataItemExpElement( $dataItem, null );
+				$expElement = SMWExporter::getDataItemExpElement( $dataItem );
 			}
 			$result = new SMWSparqlSingletonCondition( $expElement );
 			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
@@ -832,11 +832,11 @@ class SMWSparqlStoreQueryEngine {
 			$orderByVariable = $result->orderByVariable;
 
 			if ( $dataItem instanceof SMWDIWikiPage ) {
-				$expElement = SMWExporter::getDataItemExpElement( $dataItem->getSortKeyDataItem(), null );
+				$expElement = SMWExporter::getDataItemExpElement( $dataItem->getSortKeyDataItem() );
 			} else {
 				$expElement = SMWExporter::getDataItemHelperExpElement( $dataItem );
 				if ( $expElement === null ) {
-					$expElement = SMWExporter::getDataItemExpElement( $dataItem, null );
+					$expElement = SMWExporter::getDataItemExpElement( $dataItem );
 				}
 			}
 
