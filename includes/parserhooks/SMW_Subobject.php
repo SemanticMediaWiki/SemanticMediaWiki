@@ -2,10 +2,9 @@
 
 /**
  * Class for the 'subobject' parser functions.
- * 
- * 
+ *
  * @since 1.6.3
- * 
+ *
  * @file SMW_Subobject.php
  * @ingroup SMW
  * @ingroup ParserHooks
@@ -13,7 +12,9 @@
  * @author Markus Krötzsch
  */
 class SMWSubobject {
-	
+
+	protected static $m_errors;
+
 	/**
 	 * Method for handling the subobject parser function.
 	 * 
@@ -22,6 +23,8 @@ class SMWSubobject {
 	 * @param Parser $parser
 	 */
 	public static function render( Parser &$parser ) {
+		self::$m_errors = array();
+
 		$params = func_get_args();
 		array_shift( $params ); // We already know the $parser ...
 
@@ -50,9 +53,12 @@ class SMWSubobject {
 			} catch ( SMWDataItemException $e ) {
 				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( new SMWDIProperty( '_ERRP' ), $propertyDi->getDiWikiPage() );
 			}
-		} // else: error reporting for this parser function unclear
+		} else {
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
+		}
 
-		return '';		
+		return smwfEncodeMessages( self::$m_errors );
 	}
 
 	protected static function addPropertyValueToSemanticData( $propertyName, $valueString, $semanticData ) {
@@ -65,8 +71,12 @@ class SMWSubobject {
 			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
 			if ( !$valueDv->isValid() ) {
 				$semanticData->addPropertyObjectValue( new SMWDIProperty( '_ERRP' ), $propertyDi->getDiWikiPage() );
+				self::$m_errors = array_merge( self::$m_errors, $valueDv->getErrors() );
 			}
-		} // else: error reporting for this parser function unclear
+		} else {
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
+		}
 	}
 	
 }
