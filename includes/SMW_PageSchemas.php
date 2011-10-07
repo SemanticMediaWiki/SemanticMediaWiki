@@ -150,16 +150,24 @@ class SMWPageSchemas {
 		$template_all = $psSchemaObj->getTemplates();
 		foreach ( $template_all as $template ) {
 			$field_all = $template->getFields();
-			foreach( $field_all as $field ) {
+			foreach ( $field_all as $field ) {
 				$smw_array = $field->getObject('semanticmediawiki_Property');
-				if ( array_key_exists( 'smw', $smw_array ) ) {
-					$prop_array = $smw_array['smw'];
-					$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
-					$key_title = PageSchemas::titleString( $title );
-					if(in_array( $key_title, $toGenPageList )){
-						self::createProperty( $prop_array['name'], $prop_array['Type'], $prop_array['allowed_values'] ) ;
-					}
+				if ( !array_key_exists( 'smw', $smw_array ) ) {
+					continue;
 				}
+				$prop_array = $smw_array['smw'];
+				if ( !array_key_exists( 'name', $prop_array ) ) {
+					continue;
+				}
+				if ( empty( $prop_array['name'] ) ) {
+					continue;
+				}
+				$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
+				$key_title = PageSchemas::titleString( $title );
+				if ( !in_array( $key_title, $toGenPageList ) ) {
+					continue;
+				}
+				self::createProperty( $prop_array['name'], $prop_array['Type'], $prop_array['allowed_values'] ) ;
 			}
 		}
 		return true;
@@ -171,11 +179,12 @@ class SMWPageSchemas {
 		$type_tag = "[[{$prop_labels['_TYPE']}::$property_type]]";
 		$text = wfMsgForContent( 'ps-property-isproperty', $type_tag );
 		if ( $allowed_values != null) {
-			// replace the comma substitution character that has no chance of
-			// being included in the values list - namely, the ASCII beep
+			// Replace the comma with a substitution character
+			// that has no chance of being included in the values
+			// list - namely, the ASCII beep.
 			$text .= "\n\n" . wfMsgExt( 'ps-property-allowedvals', array( 'parsemag', 'content' ), count( $allowed_values ) );
 			foreach ( $allowed_values as $i => $value ) {
-				// replace beep back with comma, trim
+				// Replace beep back with comma, trim.
 				$value = str_replace( "\a",',' , trim( $value ) );
 				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
 					$prop_labels = $smwgContLang->getPropertyLabels();
