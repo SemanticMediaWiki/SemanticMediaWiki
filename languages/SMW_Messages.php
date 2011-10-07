@@ -2384,7 +2384,7 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_sbv_property' => 'Attribut:',
 	'smw_sbv_value' => 'Wert:',
 	'smw_sbv_submit' => 'Finde Ergebnisse',
-	'browse' => 'Wiki browsen',
+	'browse' => 'Semantisches Browsen',
 	'smw_browselink' => 'Attribute anzeigen',
 	'smw_browse_article' => 'Bitte den Titel einer Seite angeben, um mit dem Browsen zu beginnen.',
 	'smw_browse_go' => 'Los',
