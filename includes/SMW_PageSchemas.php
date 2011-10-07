@@ -89,7 +89,6 @@ class SMWPageSchemas {
 	function getFieldHTML( $field, &$text_extensions ) {
 		global $smwgContLang;
 
-		$datatype_labels = $smwgContLang->getDatatypeLabels();
 		$prop_array = array();
 		$hasExistingValues = false;
 		if ( !is_null( $field ) ) {
@@ -112,6 +111,7 @@ class SMWPageSchemas {
 			$propType = null;
 		}
 		$select_body = "";
+		$datatype_labels = $smwgContLang->getDatatypeLabels();
 		foreach ( $datatype_labels as $label ) {
 			$optionAttrs = array();
 			if ( $label == $propType) {
