@@ -7041,7 +7041,7 @@ Rezultatas gali būti ne tas, kurio tikėtasi.',
  * @author Bjankuloski06
  */
 $messages['mk'] = array(
-	'smw-desc' => "Го прави вашето вики подостапно - за машини ''и'' луѓе ([http://semantic-mediawiki.org/wiki/Help:User_manual документација])",
+	'smw-desc' => "Го прави вашето вики подостапно - за машини ''и'' луѓе ([http://semantic-mediawiki.org/wiki/Help:User_manual?uselang=mk документација])",
 	'smw_viewasrdf' => 'RDF емитување',
 	'smw_finallistconjunct' => ' и',
 	'smw_factbox_head' => 'Факти за $1',
@@ -7287,7 +7287,7 @@ $messages['mk'] = array(
 Нема да се создаде друго.',
 	'smw_smwadmin_updatestopped' => 'Сите постоечки процеси на поднова се сопрени.',
 	'smw_smwadmin_updatenotstopped' => 'За да го запрете текот на подновата, мора да го активирате кутивчето за избор кое укажува на тоа дека сте навистина сигурни дека сакате да направите така.',
-	'smw_smwadmin_docu' => 'Оваа специјална страница ви помага во текот на инсталацијата и подновата на <a href="http://semantic-mediawiki.org">Семантички МедијаВики</a>.
+	'smw_smwadmin_docu' => 'Оваа специјална страница ви помага во текот на инсталацијата и подновата на <a href="http://semantic-mediawiki.org/?uselang=mk">Семантички МедијаВики</a>.
 Не заборавајте да направите резервни примероци од значајни податоци пред да вршите административни постапки.',
 	'smw_smwadmin_db' => 'Инсталација и поднова на базата на податоци',
 	'smw_smwadmin_dbdocu' => 'Семантички МедијаВики бара додавање на извесни додатоци кон базата на податоци на МедијаВики за да складира семантички податоци.
@@ -7299,8 +7299,8 @@ $messages['mk'] = array(
 	'smw_smwadmin_dbbutton' => 'Започни или поднови табели',
 	'smw_smwadmin_announce' => 'Објавете го вашето вики',
 	'smw_smwadmin_announcedocu' => 'Семантички МедијаВики има мрежна служба за соопштување на нови семантички вики-страници.
-Ова се користи за одржување на список на јавни мрежни места кои го користат Семантички МедијаВики, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Семантички МедијаВики.
-Погледајте го мрежното место на Семантички МедијаВики за <a href="http://semantic-mediawiki.org/wiki/Registry">повеќе информации за оваа служба</a>.',
+Ова се користи за одржување на список на јавни мрежни места кои го користат Семантички МедијаВики, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project?uselang=mk">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Семантички МедијаВики.
+Погледајте го мрежното место на Семантички МедијаВики за <a href="http://semantic-mediawiki.org/wiki/Registry?uselang=mk">повеќе информации за оваа служба</a>.',
 	'smw_smwadmin_announcebutton' => 'Притиснете го следново копче за да ја испратите URL-адресата на вашето вики во таа служба.
 Службата нема да регистрира викија што не се јавно достапни, и ќе складира само достапни информации.',
 	'smw_smwadmin_datarefresh' => 'Поправка и поднова на податоци',
@@ -7318,7 +7318,7 @@ $messages['mk'] = array(
 	'smw_smwadmin_support' => 'Како да добиете поддршка',
 	'smw_smwadmin_supportdocu' => 'Различни ресурси кои можат да ви помогнат во случај на проблеми:',
 	'smw_smwadmin_installfile' => 'Ако наидете на проблеми при инсталацијата, најпрвин прочитајте ги напатствијата во <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">податотеката INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Целосната корисничка документација за Семантички МедијаВики ќе ја најдете на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Целосната корисничка документација за Семантички МедијаВики ќе ја најдете на <b><a href="http://semantic-mediawiki.org?uselang=mk">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Бубачките (грешките) можат да се пријават на <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Ако имате некои други прашања или предлози, приклучете ѝ се на дискусијата на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форумот за корисници на Семантички МедијаВики</a>.',
 	'smw_adminlinks_datastructure' => 'Структура на податоците',
@@ -10315,7 +10315,7 @@ Ker je bilo le malo rezultatov, so prikazane strani s približnim ujemanjem.',
 	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
 );
 
-/** Serbian Cyrillic ekavian (‪Српски (ћирилица)‬)
+/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬)
  * @author Rancher
  * @author Sasa Stefanovic
  * @author Slaven Kosanovic
@@ -10337,7 +10337,10 @@ $messages['sr-ec'] = array(
 Ако проблем не нестане за неко време, затражите од администратора сајта да учини овај концепт доступним.',
 	'smw_noinvannot' => 'Вредности није могуће приписати инверзним особинама.',
 	'smw_baduri' => 'URI-ји облика "$1", нису прихватљиви.',
+	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
+	'smw_json_link' => 'JSON',
+	'smw_rdf_link' => 'RDF',
 	'smw_printername_auto' => 'Аутоматски',
 	'smw_printername_count' => 'Изброј резултате',
 	'smw_printername_csv' => 'CSV извоз',
@@ -10408,7 +10411,7 @@ $messages['sr-ec'] = array(
 	'smw_concept_header' => 'Странице концепта "$1"',
 	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.',
 	'smw_rss_description' => '$1 RSS довод',
-	'specialpages-group-smw_group' => 'Семантички медијавики',
+	'specialpages-group-smw_group' => 'Семантички Медијавики',
 	'exportrdf' => 'Извези странице у RDF',
 	'smw_exportrdf_docu' => 'Ова страница омогућава добијање података из странице у RDF формату.
 Како би извезли странице, унесите наслове у доњи формулар, по принципу један наслов за сваки ред.',
@@ -10471,6 +10474,7 @@ $messages['sr-ec'] = array(
 	'smw_browselink' => 'Прегледај особине',
 	'smw_browse_article' => 'Унесите име почетне странице за претрагу.',
 	'smw_browse_go' => 'Иди',
+	'smw_browse_more' => '…',
 	'smw_browse_show_incoming' => 'прикажи особине које вежу овде',
 	'smw_browse_hide_incoming' => 'сакриј особине које вежу овде',
 	'smw_browse_no_outgoing' => 'Ова страница нема особина.',
