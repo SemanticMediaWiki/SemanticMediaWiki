@@ -98,7 +98,7 @@ function smwfRegisterHooks() {
 	$wgHooks['PageSchemasGeneratePages'][]        = 'SMWPageSchemas::generatePages';
 	$wgHooks['PageSchemasGetFieldHTML'][]         = 'SMWPageSchemas::getFieldHTML';
 	$wgHooks['PageSchemasGetFieldXML'][]          = 'SMWPageSchemas::getFieldXML';
-	$wgHooks['PSParseFieldElements'][]            = 'SMWPageSchemas::parseFieldElements';
+	$wgHooks['PageSchemasGetFieldDisplayInfo'][]  = 'SMWPageSchemas::getPropertyDisplayInfo';
 	$wgHooks['PageSchemasGetPageList'][]          = 'SMWPageSchemas::getPageList';
 }
 

@@ -12,17 +12,20 @@
 
 class SMWPageSchemas {
 
-	function parseFieldElements( $field_xml, &$text_object ) {
+	/**
+	 * Returns the display info for the property (if any is defined)
+	 * for a single field in the Page Schemas XML.
+	 */
+	function getPropertyDisplayInfo( $field_xml, &$text_object ) {
 		foreach ( $field_xml->children() as $tag => $child ) {
 			if ( $tag == "semanticmediawiki_Property" ) {
-				$text = PageSchemas::tableMessageRowHTML( "paramAttr", wfMsg( 'specialpages-group-smw_group' ), wfMsg( 'smw_pp_type' ) );
 				$propName = $child->attributes()->name;
-				// this means object has already been initialized by some other extension.
-				$text .= PageSchemas::tableMessageRowHTML( "paramAttrMsg", "name", (string)$propName );
+				$values = array();
 				foreach ( $child->children() as $prop => $value ) {
-					$text .= PageSchemas::tableMessageRowHTML("paramAttrMsg", $prop, (string)$value );
+					$values[$prop] = (string)$value;
 				}
-				$text_object['smw'] = $text;
+				$text_object['smw'] = array( 'Semantic property', $propName, '#DEF', $values );
+				break;
 			}
 		}
 		return true;
