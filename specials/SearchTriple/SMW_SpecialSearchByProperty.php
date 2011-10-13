@@ -371,6 +371,7 @@ class SMWSearchByProperty extends SpecialPage {
 		if ( $greater ) $cmp = '>';
 		
 		$querystring = '[[' . $this->propertystring . '::' . $cmp . $this->valuestring . ']]';
+		$params = SMWQueryProcessor::getProcessedParams( $params, array( $printrequest ) );
 		$queryobj = SMWQueryProcessor::createQuery( $querystring, $params, SMWQueryProcessor::SPECIAL_PAGE, 'ul', array( $printrequest ) );
 		$queryobj->querymode = SMWQuery::MODE_INSTANCES;
 		$queryobj->setLimit( $this->limit );
