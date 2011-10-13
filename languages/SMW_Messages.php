@@ -8074,6 +8074,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw_paramdesc_outrotemplate' => 'Navnet på en mal som skal vises etter spørringsresultatene, hvis det er noen',
 	'smw_paramdesc_embedformat' => 'HTML-elementet brukt for å definere overskrifter',
 	'smw_paramdesc_embedonly' => 'Ikke vis overskrifter',
+	'smw-paramdesc-table-class' => 'En CSS-klasse til som kan brukes for tabellen',
 	'smw_paramdesc_rsstitle' => 'Tekst som skal brukes som tittel på matingen',
 	'smw_paramdesc_rssdescription' => 'Tekst som skal brukes som beskrivelse av matingen',
 	'smw_paramdesc_rdfsyntax' => 'RDF-syntaksen som blir brukt',
@@ -8082,6 +8083,9 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw-paramdesc-dsv-filename' => 'Navnet på DSV-filen',
 	'smw-smwdoc-description' => 'Viser en tabell over alle parametre som kan brukes for det angitte resultatformatet sammen med standardverdier og beskrivelser.',
 	'smw-smwdoc-par-format' => 'Resultatformatet for å vise parameterdokumentasjon.',
+	'smw-paramdesc-sort' => 'Egenskap som spørringen skal sorteres etter',
+	'smw-paramdesc-order' => 'Sorteringsrekkefølge for spørringen',
+	'smw-paramdesc-searchlabel' => 'Tekst som forteller om fortsatt søk (standard er «… flere resultater»)',
 	'smw_iq_disabled' => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
 	'smw_iq_moreresults' => '… flere resultater',
 	'smw_nonright_importtype' => '$1 kan kun brukes for sider i navnerommet «$2».',
@@ -8299,6 +8303,9 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw_adminlinks_datastructure' => 'Datastruktur',
 	'smw_adminlinks_displayingdata' => 'Datavisning',
 	'smw_adminlinks_inlinequerieshelp' => 'Hjelp for innebygde spørringer',
+	'smw-paramdesc-category-delim' => 'Skilletegnet',
+	'smw-paramdesc-category-template' => 'En mal til bruk for å formatere elementene',
+	'smw-paramdesc-category-userparam' => 'En parameter som gis til malen',
 );
 
 /** Occitan (Occitan)
