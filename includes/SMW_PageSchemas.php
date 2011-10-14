@@ -32,15 +32,15 @@ class SMWPageSchemas {
 	}
 
 	/**
-	 * Returns the list of property pages defined by the passed-in
-	 * Page Schemas XML object.
+	 * Returns the set of SMW property data from the entire page schema.
 	 */
-	function getPageList( $psSchemaObj , &$genPageList ) {
-		$template_all = $psSchemaObj->getTemplates();
-		foreach ( $template_all as $template ) {
-			$field_all = $template->getFields();
-			foreach( $field_all as $field ) {
-				$smw_array = $field->getObject('semanticmediawiki_Property');
+	static function getAllPropertyData( $psSchemaObj ) {
+		$propertyDataArray = array();
+		$psTemplates = $psSchemaObj->getTemplates();
+		foreach ( $psTemplates as $psTemplate ) {
+			$psTemplateFields = $psTemplate->getFields();
+			foreach ( $psTemplateFields as $psTemplateField ) {
+				$smw_array = $psTemplateField->getObject('semanticmediawiki_Property');
 				if ( !array_key_exists( 'smw', $smw_array ) ) {
 					continue;
 				}
@@ -51,9 +51,21 @@ class SMWPageSchemas {
 				if ( empty( $prop_array['name'] ) ) {
 					continue;
 				}
-				$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
-				$genPageList[] = $title;
+				$propertyDataArray[] = $prop_array;
 			}
+		}
+		return $propertyDataArray;
+	}
+
+	/**
+	 * Sets the list of property pages defined by the passed-in
+	 * Page Schemas XML object.
+	 */
+	function getPageList( $psSchemaObj , &$genPageList ) {
+		$propertyDataArray = self::getAllPropertyData( $psSchemaObj );
+		foreach ( $propertyDataArray as $propertyData ) {
+			$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
+			$genPageList[] = $title;
 		}
 		return true;
 	}
@@ -96,7 +108,7 @@ class SMWPageSchemas {
 	 * Returns the HTML necessary for getting information about the
 	 * semantic property within the Page Schemas 'editschema' page.
 	 */
-	function getFieldHTML( $field, &$text_extensions ) {
+	function getFieldHTML( $field, &$fieldHTMLFromExtensions ) {
 		global $smwgContLang;
 
 		$prop_array = array();
@@ -146,7 +158,7 @@ class SMWPageSchemas {
 		}
 		$html_text .= '<p>' . Html::input( 'smw_values_num', $allowed_val_string, 'text', $allowedValsInputAttrs ) . "</p>\n";
 
-		$text_extensions['smw'] = array( 'Semantic property', '#DEF', $html_text, $hasExistingValues );
+		$fieldHTMLFromExtensions['smw'] = array( 'Semantic property', '#DEF', $html_text, $hasExistingValues );
 
 		return true;
 	}
@@ -156,17 +168,20 @@ class SMWPageSchemas {
 	 * passed-in Page Schemas XML object.
 	 */
 	function generatePages( $psSchemaObj, $selectedPageList ) {
-		$genPageList = array();
-		self::getPageList( $psSchemaObj , &$genPageList );
-		foreach ( $genPageList as $generatedPage ) {
-			if ( !in_array( $generatedPage, $selectedPageList ) ) {
+		$propertyDataArray = self::getAllPropertyData( $psSchemaObj );
+		foreach ( $propertyDataArray as $propertyData ) {
+			$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
+			if ( !in_array( $title, $selectedPageList ) ) {
 				continue;
 			}
-			self::createProperty( $prop_array['name'], $prop_array['Type'], $prop_array['allowed_values'] ) ;
+			self::createProperty( $propertyData['name'], $propertyData['Type'], $propertyData['allowed_values'] );
 		}
 		return true;
 	}
 
+	/**
+	 * Creates the text for a property page.
+	 */
 	function createPropertyText( $property_type, $allowed_values ) {
 		global $smwgContLang;
 		$prop_labels = $smwgContLang->getPropertyLabels();
@@ -194,6 +209,7 @@ class SMWPageSchemas {
 
 	function createProperty( $prop_name, $prop_type, $allowed_values ) {
 		global $wgUser;
+
 		$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_name );
 		$params = array();
 		$params['user_id'] = $wgUser->getId();
