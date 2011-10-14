@@ -41,11 +41,18 @@ class SMWPageSchemas {
 			$field_all = $template->getFields();
 			foreach( $field_all as $field ) {
 				$smw_array = $field->getObject('semanticmediawiki_Property');
-				if ( array_key_exists( 'smw', $smw_array ) ) {
-					$prop_array = $smw_array['smw'];
-					$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
-					$genPageList[] = $title;
+				if ( !array_key_exists( 'smw', $smw_array ) ) {
+					continue;
 				}
+				$prop_array = $smw_array['smw'];
+				if ( !array_key_exists( 'name', $prop_array ) ) {
+					continue;
+				}
+				if ( empty( $prop_array['name'] ) ) {
+					continue;
+				}
+				$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
+				$genPageList[] = $title;
 			}
 		}
 		return true;
@@ -148,30 +155,14 @@ class SMWPageSchemas {
 	 * Creates the property page for each property specified in the
 	 * passed-in Page Schemas XML object.
 	 */
-	function generatePages( $psSchemaObj, $toGenPageList ) {
-		// Get the SMW info from every field in every template
-		$template_all = $psSchemaObj->getTemplates();
-		foreach ( $template_all as $template ) {
-			$field_all = $template->getFields();
-			foreach ( $field_all as $field ) {
-				$smw_array = $field->getObject('semanticmediawiki_Property');
-				if ( !array_key_exists( 'smw', $smw_array ) ) {
-					continue;
-				}
-				$prop_array = $smw_array['smw'];
-				if ( !array_key_exists( 'name', $prop_array ) ) {
-					continue;
-				}
-				if ( empty( $prop_array['name'] ) ) {
-					continue;
-				}
-				$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
-				$key_title = PageSchemas::titleString( $title );
-				if ( !in_array( $key_title, $toGenPageList ) ) {
-					continue;
-				}
-				self::createProperty( $prop_array['name'], $prop_array['Type'], $prop_array['allowed_values'] ) ;
+	function generatePages( $psSchemaObj, $selectedPageList ) {
+		$genPageList = array();
+		self::getPageList( $psSchemaObj , &$genPageList );
+		foreach ( $genPageList as $generatedPage ) {
+			if ( !in_array( $generatedPage, $selectedPageList ) ) {
+				continue;
 			}
+			self::createProperty( $prop_array['name'], $prop_array['Type'], $prop_array['allowed_values'] ) ;
 		}
 		return true;
 	}
