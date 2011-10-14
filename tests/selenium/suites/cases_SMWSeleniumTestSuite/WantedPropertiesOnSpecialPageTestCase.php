@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -32,7 +32,7 @@ class WantedPropertiesOnSpecialPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Special:WantedProperties");
 
 			$this->assertTrue($this->isTextPresent("RedLinkProperty (2 uses)"));
-		
+
 	}
 
 	public function test_showsproperty_WantedPropertiesOnSpecialPage()
@@ -40,7 +40,7 @@ class WantedPropertiesOnSpecialPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Special:WantedProperties");
 
 			$this->assertTrue($this->isElementPresent("link=RedLinkProperty"));
-		
+
 	}
 
 	public function testTeardown()

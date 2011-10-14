@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -24,7 +24,7 @@ class ShowFactboxTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Factboxtest");
 
 			$this->assertTrue($this->isTextPresent("Facts about"));
-		
+
 	}
 
 	public function testTeardown()

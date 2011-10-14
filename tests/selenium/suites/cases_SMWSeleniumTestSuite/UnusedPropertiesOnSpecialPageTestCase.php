@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -32,9 +32,9 @@ class UnusedPropertiesOnSpecialPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Special:UnusedProperties");
 
 			$this->assertFalse($this->isElementPresent("link=NoPageWillUseMe"));
-		
+
 	}
-	
+
 	public function test_propertynotused_UnusedPropertiesOnSpecialPage()
 	{
 		$this->type("searchInput", "UseProp");
@@ -47,7 +47,7 @@ class UnusedPropertiesOnSpecialPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Special:UnusedProperties");
 
 			$this->assertTrue($this->isElementPresent("link=NoPageWillUseMe"));
-		
+
 	}
 
 	public function testTeardown()

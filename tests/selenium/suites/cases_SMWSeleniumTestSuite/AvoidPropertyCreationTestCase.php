@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -24,7 +24,7 @@ class AvoidPropertyCreationTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/AvoidPropertyCreationTest");
 
 			$this->assertEquals("Avoid::Property", $this->getText("link=exact:Avoid::Property"));
-		
+
 	}
 
 	public function testTeardown()

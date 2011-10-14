@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -43,13 +43,13 @@ class SelectPagesByPropertyValue extends SeleniumTestCase {
 		$this->waitForPageToLoad("10000");
 
 			$this->assertTrue($this->isTextPresent("TestPageABCDEF"));
-		
+
 
 			$this->assertTrue($this->isTextPresent("TestPageCDEFGH"));
-		
+
 
 			$this->assertFalse($this->isTextPresent("TestPageEFGHIJ"));
-		
+
 	}
 
 	public function testTeardown()

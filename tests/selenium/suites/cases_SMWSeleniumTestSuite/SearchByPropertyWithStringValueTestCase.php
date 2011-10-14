@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -36,19 +36,19 @@ class SearchByPropertyWithStringValueTestCase extends SeleniumTestCase {
 		$this->waitForPageToLoad("30000");
 
 			$this->assertEquals("TestSBP Yes", $this->getText("firstHeading"));
-		
+
 
 			$this->assertTrue($this->isElementPresent("link=FirstPageToMatch"));
-		
+
 
 			$this->assertTrue($this->isElementPresent("link=SecondPageToMatch"));
-		
+
 
 			$this->assertEquals("TestSBP", $this->getValue("property"));
-		
+
 
 			$this->assertEquals("Yes", $this->getValue("value"));
-		
+
 	}
 
 	public function testTeardown()

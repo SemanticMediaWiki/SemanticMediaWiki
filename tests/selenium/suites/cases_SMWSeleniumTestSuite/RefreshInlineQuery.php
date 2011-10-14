@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -38,12 +38,12 @@ class RefreshInlineQuery extends SeleniumTestCase {
 		$this->type("searchInput", "TestPageForRefreshing");
 		$this->click("searchGoButton");
 		$this->waitForPageToLoad("10000");
-		
+
 		$this->click("link=Refresh");
 		$this->waitForPageToLoad("10000");
 
 			$this->assertTrue($this->isTextPresent("SC Freiburg"));
-		
+
 	}
 
 	public function testTeardown()

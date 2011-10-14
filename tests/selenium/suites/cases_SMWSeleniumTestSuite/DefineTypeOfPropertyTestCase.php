@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -27,7 +27,7 @@ class DefineTypeOfPropertyTestCase extends SeleniumTestCase {
 		$this->waitForPageToLoad("30000");
 
 			$this->assertTrue($this->isElementPresent("link=123456"));
-		
+
 	}
 
 	public function test_hastype_DefineTypeOfProperty()
@@ -45,14 +45,14 @@ class DefineTypeOfPropertyTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Property:TestNumber");
 
 			$this->assertFalse($this->isElementPresent("link=123456"));
-		
+
 		$this->click("link=ChangeType");
 		$this->waitForPageToLoad("30000");
 		$this->click("link=Refresh");
 		$this->waitForPageToLoad("30000");
 
 			$this->assertFalse($this->isElementPresent("link=123456"));
-		
+
 	}
 
 	public function testTeardown()

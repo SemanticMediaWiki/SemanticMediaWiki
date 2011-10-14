@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -35,7 +35,7 @@ class PropertyTypePageIsDefaultTestCase extends SeleniumTestCase {
 		$this->waitForPageToLoad("30000");
 
 			$this->assertTrue($this->isTextPresent("AaaDefaultType of type Page"));
-		
+
 	}
 
 	public function test_verifylink_PropertyTypePageIsDefault()
@@ -43,7 +43,7 @@ class PropertyTypePageIsDefaultTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/TestDefaultType");
 
 			$this->assertTrue($this->isElementPresent("link=CheckLink"));
-		
+
 	}
 
 	public function testTeardown()

@@ -36,7 +36,7 @@
  * @ingroup SMW
  */
 
-/*
+/**
  * no guarantees, but look in the usual place for commandLine.inc, so this
  * so it will work most of the time
  */

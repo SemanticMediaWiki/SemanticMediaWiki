@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -52,25 +52,25 @@ class SearchByPropertyWithNumericValueTestCase extends SeleniumTestCase {
 		$this->waitForPageToLoad("30000");
 
 			$this->assertEquals("NumericTest 123", $this->getText("firstHeading"));
-		
+
 
 			$this->assertTrue($this->isElementPresent("link=NumericTestPage1"));
-		
+
 
 			$this->assertTrue($this->isElementPresent("link=NumericTestPage2"));
-		
+
 
 			$this->assertTrue($this->isElementPresent("link=NumericTestPage3"));
-		
+
 
 			$this->assertTrue($this->isTextPresent("345"));
-		
+
 
 			$this->assertEquals("NumericTest", $this->getValue("property"));
-		
+
 
 			$this->assertEquals("123", $this->getValue("value"));
-		
+
 	}
 
 	public function testTeardown()

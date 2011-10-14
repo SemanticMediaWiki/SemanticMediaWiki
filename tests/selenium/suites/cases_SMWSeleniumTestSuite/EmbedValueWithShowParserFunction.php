@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -38,10 +38,10 @@ class EmbedValueWithShowParserFunction extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/EmbedValueToThisTestPage");
 
 			$this->assertTrue($this->isElementPresent("link=Succesful"));
-		
+
 
 			$this->assertTrue($this->isElementPresent("link=Prosperous"));
-		
+
 	}
 
 	public function testTeardown()

@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -48,10 +48,10 @@ class MakePropertySubpropertyOfAnotherOneTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Ben");
 
 			$this->assertTrue($this->isElementPresent("link=TeamLeaderTest"));
-		
+
 
 			$this->assertFalse($this->isElementPresent("link=TeamMemberTest"));
-		
+
 	}
 
 	public function test_semanticsearch_MakePropertySubpropertyOfAnotherOne()
@@ -62,7 +62,7 @@ class MakePropertySubpropertyOfAnotherOneTestCase extends SeleniumTestCase {
 		$this->waitForPageToLoad("30000");
 
 			$this->assertTrue($this->isElementPresent("link=Ben"));
-		
+
 	}
 
 	public function testTeardown()

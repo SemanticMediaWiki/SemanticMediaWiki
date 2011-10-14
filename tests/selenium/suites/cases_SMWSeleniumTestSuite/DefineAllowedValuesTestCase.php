@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -40,7 +40,7 @@ class DefineAllowedValuesTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/MaybeTest");
 
 			$this->assertFalse($this->isElementPresent("link=Maybe"));
-		
+
 	}
 
 	public function test_checktooltip_DefineAllowedValues()
@@ -49,7 +49,7 @@ class DefineAllowedValuesTestCase extends SeleniumTestCase {
 		$this->click("//div[@id='bodyContent']/p/span/img");
 
 			$this->assertTrue($this->isTextPresent("\"Maybe\" is not in the list of possible values (Yes, No) for this property."));
-		
+
 	}
 
 	public function test_checkyes_DefineAllowedValues()
@@ -57,7 +57,7 @@ class DefineAllowedValuesTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/YesTest");
 
 			$this->assertEquals("Yes", $this->getText("link=Yes"));
-		
+
 	}
 
 	public function testTeardown()

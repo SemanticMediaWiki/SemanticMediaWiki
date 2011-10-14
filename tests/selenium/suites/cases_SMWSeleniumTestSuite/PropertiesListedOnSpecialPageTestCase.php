@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -40,10 +40,10 @@ class PropertiesListedOnSpecialPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Special:Properties");
 
 			$this->assertTrue($this->isElementPresent("link=AaaProperty"));
-		
+
 
 			$this->assertTrue($this->isElementPresent("link=Page"));
-		
+
 	}
 
 	public function test_numberofusage_PropertiesListedOnSpecialPage()
@@ -51,7 +51,7 @@ class PropertiesListedOnSpecialPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Special:Properties");
 
 			$this->assertTrue($this->isTextPresent("AaaProperty of type Page (2)"));
-		
+
 	}
 
 	public function test_textpresent_PropertiesListedOnSpecialPage()
@@ -59,7 +59,7 @@ class PropertiesListedOnSpecialPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Special:Properties");
 
 			$this->assertTrue($this->isTextPresent("AaaProperty of type Page"));
-		
+
 	}
 
 	public function test_tooltipicon_PropertiesListedOnSpecialPage()
@@ -74,7 +74,7 @@ class PropertiesListedOnSpecialPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Special:Properties");
 
 			$this->assertFalse($this->isTextPresent("AabProperty"));
-		
+
 	}
 
 	public function testTeardown()

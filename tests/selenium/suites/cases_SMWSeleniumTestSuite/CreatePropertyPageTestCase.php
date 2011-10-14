@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -32,10 +32,10 @@ class CreatePropertyPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/CreateTest");
 
 			$this->assertTrue($this->isElementPresent("link=Create1"));
-		
+
 
 			$this->assertTrue($this->isElementPresent("link=Create2"));
-		
+
 	}
 
 	public function test_checkpropertypages_CreatePropertyPage()
@@ -43,11 +43,11 @@ class CreatePropertyPageTestCase extends SeleniumTestCase {
 		$this->open($this->getUrl() ."index.php/Property:Create1");
 
 			$this->assertTrue($this->isElementPresent("link=CreateTest"));
-		
+
 		$this->open($this->getUrl() ."index.php/Property:Create2");
 
 			$this->assertTrue($this->isElementPresent("link=CreateTest"));
-		
+
 	}
 
 	public function test_redlink_CreatePropertyPage()

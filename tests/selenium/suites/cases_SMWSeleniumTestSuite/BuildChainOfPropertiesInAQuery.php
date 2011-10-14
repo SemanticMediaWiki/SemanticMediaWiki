@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This test case is part of the SimpleSeleniumTestSuite.
  * Configuration for these tests are documented as part of SimpleSeleniumTestSuite.php
  */
@@ -8,7 +8,7 @@ class BuildChainOfPropertiesInAQuery extends SeleniumTestCase {
 
 	public function testSetup()
 	{
-		set_time_limit(0); 
+		set_time_limit(0);
 		$this->open($this->getUrl() ."index.php/Main_Page");
 		$this->type("searchInput", "Testing person Michael Green");
 		$this->click("searchGoButton");
@@ -76,25 +76,25 @@ class BuildChainOfPropertiesInAQuery extends SeleniumTestCase {
 		$this->waitForPageToLoad("30000");
 		$this->click("wpConfirmB");
 		$this->waitForPageToLoad("30000");
-		
+
 		$this->open($this->getUrl() ."index.php/Testing person Laura Blue");
 		$this->click("link=Delete");
 		$this->waitForPageToLoad("30000");
 		$this->click("wpConfirmB");
 		$this->waitForPageToLoad("30000");
-		
+
 		$this->open($this->getUrl() ."index.php/Testing person Sarah Yellow");
 		$this->click("link=Delete");
 		$this->waitForPageToLoad("30000");
 		$this->click("wpConfirmB");
 		$this->waitForPageToLoad("30000");
-		
+
 		$this->open($this->getUrl() ."index.php/Testing person Denise Grey");
 		$this->click("link=Delete");
 		$this->waitForPageToLoad("30000");
 		$this->click("wpConfirmB");
 		$this->waitForPageToLoad("30000");
-		
+
 		$this->open($this->getUrl() ."index.php/Testing person Mary Pink");
 		$this->click("link=Delete");
 		$this->waitForPageToLoad("30000");
