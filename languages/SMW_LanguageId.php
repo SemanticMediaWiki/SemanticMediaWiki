@@ -6,7 +6,7 @@
  * @author Ivan Lanin
  */
 
-/*
+/**
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -41,13 +41,13 @@ class SMWLanguageId extends SMWLanguage {
 		'_tel' => 'Nomor telepon',  // name of the telephone (URI) type
 		'_rec' => 'Rekaman', // name of record data type
 	);
-	
+
 	protected $m_DatatypeAliases = array(
 		'URI'           => '_uri',
 		'Enumerasi'     => '_str',
 		'Nomor telepon' => '_tel',
 	);
-	
+
 	protected $m_SpecialProperties = array(
 		// always start upper-case
 		'_TYPE' => 'Memiliki tipe',
@@ -63,11 +63,11 @@ class SMWLanguageId extends SMWLanguage {
 		'_ERRP' => 'Memiliki nilai yang tidak tepat untuk',
 		'_LIST' => 'Memiliki bidang',
 	);
-	
+
 	protected $m_SpecialPropertyAliases = array(
 		'Unit tampilan' => '_UNIT'
 	);
-	
+
 	protected $m_Namespaces = array(
 		SMW_NS_PROPERTY       => 'Properti',
 		SMW_NS_PROPERTY_TALK  => 'Pembicaraan_Properti',
@@ -76,11 +76,11 @@ class SMWLanguageId extends SMWLanguage {
 		SMW_NS_CONCEPT        => 'Konsep',
 		SMW_NS_CONCEPT_TALK   => 'Pembicaraan_Konsep'
 	);
-	
+
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
-	
+
 	protected $m_months = array( "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" );
-	
+
 	protected $m_monthsshort = array( "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des" );
 
 }

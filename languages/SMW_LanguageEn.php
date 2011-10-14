@@ -4,7 +4,7 @@
  * @ingroup SMWLanguage
  */
 
-/*
+/**
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -24,7 +24,7 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
 class SMWLanguageEn extends SMWLanguage {
 
 	protected $m_useEnDefaultAliases = false; // not needed for English, obviously
-	
+
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Page', // name of page datatype
 		'_str' => 'String',  // name of the string type
@@ -42,7 +42,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'_rec' => 'Record', // name of record data type
 		'_qty' => 'Quantity', // name of the number type with units of measurement
 	);
-	
+
 	protected $m_DatatypeAliases = array(
 		'URI'         => '_uri',
 		'Float'       => '_num',
@@ -51,7 +51,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'Phone number' => '_tel',
 		'Geographic coordinate' => '_geo'
 	);
-	
+
 	protected $m_SpecialProperties = array(
 		// always start upper-case
 		'_TYPE' => 'Has type',
@@ -67,11 +67,11 @@ class SMWLanguageEn extends SMWLanguage {
 		'_ERRP' => 'Has improper value for',
 		'_LIST' => 'Has fields',
 	);
-	
+
 	protected $m_SpecialPropertyAliases = array(
 		'Display unit' => '_UNIT'
 	);
-	
+
 	protected $m_Namespaces = array(
 		SMW_NS_PROPERTY       => 'Property',
 		SMW_NS_PROPERTY_TALK  => 'Property_talk',
@@ -80,11 +80,11 @@ class SMWLanguageEn extends SMWLanguage {
 		SMW_NS_CONCEPT        => 'Concept',
 		SMW_NS_CONCEPT_TALK   => 'Concept_talk'
 	);
-	
+
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
-	
+
 	protected $m_months = array( "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" );
-	
+
 	protected $m_monthsshort = array( "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" );
 
 }

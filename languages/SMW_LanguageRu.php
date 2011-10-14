@@ -4,7 +4,7 @@
  * @ingroup SMWLanguage
  */
 
-/*
+/**
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -35,11 +35,11 @@ class SMWLanguageRu extends SMWLanguage {
 		'_ema' => 'Почта',  // name of the email type
 		'_uri' => 'URL',  // name of the URL type
 		'_anu' => 'URI аннотации',  // name of the annotation URI type (OWL annotation property)
-		'_tel' => 'Номер телефона',  // name of the telephone (URI) type 
-		'_rec' => 'Запись', // name of record data type 
+		'_tel' => 'Номер телефона',  // name of the telephone (URI) type
+		'_rec' => 'Запись', // name of record data type
 		'_qty' => 'Количество', // name of the number type with units of measurement
 	);
-	
+
 	protected $m_DatatypeAliases = array(
 		'URI'                   => '_uri',
 		'Целое'                 => '_num',
@@ -48,7 +48,7 @@ class SMWLanguageRu extends SMWLanguage {
 		'Перечисление'          => '_str',
 		'Телефон'               => '_tel',
 	);
-	
+
 	protected $m_SpecialProperties = array(
 		// always start upper-case
 		'_TYPE' => 'Имеет тип',
@@ -60,17 +60,17 @@ class SMWLanguageRu extends SMWLanguage {
 		'_CONV' => 'Относится к',
 		'_SERV' => 'Предоставляет сервис',
 		'_PVAL' => 'Допустимое значение',
-		'_MDAT' => 'Дата последней правки', 
+		'_MDAT' => 'Дата последней правки',
 		'_ERRP' => 'Has improper value for', // TODO: translate
-		'_LIST' => 'Имеет поля', 
+		'_LIST' => 'Имеет поля',
 	);
-	
+
 	protected $m_SpecialPropertyAliases = array(
 		'Тип данных'				=> '_TYPE',
 		'Отображаемая единица' => '_UNIT'
 	);
-	
-	
+
+
 	protected $m_Namespaces = array(
 		SMW_NS_PROPERTY       => 'Свойство',
 		SMW_NS_PROPERTY_TALK  => 'Обсуждение_свойства',
@@ -79,11 +79,11 @@ class SMWLanguageRu extends SMWLanguage {
 		SMW_NS_CONCEPT        => 'Концепция',
 		SMW_NS_CONCEPT_TALK   => 'Обсуждение_концепции'
 	);
-	
+
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
-	
+
 	protected $m_months = array( "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентрября", "октября", "ноября", "декабря" );
-	
+
 	protected $m_monthsshort = array( "янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек" );
 
 }

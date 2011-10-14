@@ -3,7 +3,7 @@
  * @file
  * @ingroup SMWLanguage
  */
-/*
+/**
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -38,14 +38,14 @@ class SMWLanguageAr extends SMWLanguage {
 		'_tel' => 'رقم الهاتف',  // name of the telephone (URI) type
 		'_rec' => 'تسجيل', // name of record data type
 	);
-	
+
 	protected $m_DatatypeAliases = array(
 		'URI'         => '_uri',
 		'Float'       => '_num',
 		'Integer'     => '_num',
 		'Enumeration' => '_str'
 	);
-	
+
 	protected $m_SpecialProperties = array(
 		// always start upper-case
 		'_TYPE'  => 'لديه نوع',
@@ -61,11 +61,11 @@ class SMWLanguageAr extends SMWLanguage {
 		'_ERRP' => 'يمتلك قيمة غير صحيحة ل',
 		'_LIST' => 'يمتلك حقول',
 	);
-	
+
 	protected $m_SpecialPropertyAliases = array(
 		'عرض الوحدة' => '_UNIT'
 	);
-	
+
 	protected $m_Namespaces = array(
 		SMW_NS_PROPERTY       => 'خاصية',
 		SMW_NS_PROPERTY_TALK  => 'نقاش_الخاصية',
@@ -74,11 +74,11 @@ class SMWLanguageAr extends SMWLanguage {
 		SMW_NS_CONCEPT        => 'مبدأ',
 		SMW_NS_CONCEPT_TALK   => 'نقاش_المبدأ'
 	);
-	
+
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
-	
+
 	protected $m_months = array( "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر" );
-	
+
 	protected $m_monthsshort = array( "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر" );
 
 }

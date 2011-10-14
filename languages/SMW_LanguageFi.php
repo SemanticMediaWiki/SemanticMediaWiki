@@ -4,7 +4,7 @@
  * @ingroup SMWLanguage
  */
 
-/*
+/**
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -65,7 +65,7 @@ class SMWLanguageFi extends SMWLanguage {
 		SMW_NS_CONCEPT        => 'Konsepti',
 		SMW_NS_CONCEPT_TALK   => 'Keskustelu_konseptista'
 	);
-	
+
 	protected $m_months = array(
 		"tammikuu",
 		"helmikuu",
@@ -80,7 +80,7 @@ class SMWLanguageFi extends SMWLanguage {
 		"marraskuu",
 		"joulukuu"
 	);
-	
+
 	protected $m_monthsshort = array(
 		"tammikuu",
 		"helmikuu",

@@ -4,7 +4,7 @@
  * @ingroup SMWLanguage
  */
 
-/*
+/**
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -22,7 +22,7 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
  * @ingroup Language
  */
 class SMWLanguageIt extends SMWLanguage {
-	
+
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Pagina',  // name of page datatypee
 		'_str' => 'Stringa',  // name of the string type
@@ -39,7 +39,7 @@ class SMWLanguageIt extends SMWLanguage {
 		'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
 		'_rec' => 'Record', // name of record data type //TODO: translate
 	);
-	
+
 	protected $m_DatatypeAliases = array(
 		'URI'         => '_uri',
 		'Float'       => '_num',
@@ -48,7 +48,7 @@ class SMWLanguageIt extends SMWLanguage {
 		'Enumeration' => '_str',
 		'Enumerazione' => '_str'
 	);
-	
+
 	protected $m_SpecialProperties = array(
 		// always start upper-case
 		'_TYPE'  => 'Ha tipo', // 'Has type',
@@ -64,11 +64,11 @@ class SMWLanguageIt extends SMWLanguage {
 		'_ERRP' => 'Ha un valore improprio per',
 		'_LIST' => 'Has fields', // TODO: translate
 	);
-	
+
 	protected $m_SpecialPropertyAliases = array(
 		'Display unit' => '_UNIT',
 	);
-	
+
 	protected $m_Namespaces = array( // TODO: translate (English aliases can be kept, see other language files
 		SMW_NS_PROPERTY       => 'Proprietà',
 		SMW_NS_PROPERTY_TALK  => 'Discussione proprietà',
@@ -77,9 +77,9 @@ class SMWLanguageIt extends SMWLanguage {
 		SMW_NS_CONCEPT        => 'Concetto',
 		SMW_NS_CONCEPT_TALK   => 'Discussione concetto'
 	);
-	
+
 	protected $m_months = array( "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre" );
-	
+
 	protected $m_monthsshort = array( "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic" );
 
 }

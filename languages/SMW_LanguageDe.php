@@ -4,7 +4,7 @@
  * @ingroup SMWLanguage
  */
 
-/*
+/**
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -29,7 +29,7 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
  * @ingroup Language
  */
 class SMWLanguageDe extends SMWLanguage {
-	
+
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Seite', // name of page datatype
 		'_str' => 'Zeichenkette',  // name of the string type
@@ -47,14 +47,14 @@ class SMWLanguageDe extends SMWLanguage {
 		'_rec' => 'Verbund', // name of record data type
 		'_qty' => 'Menge', // name of quantity data type
 	);
-	
+
 	protected $m_DatatypeAliases = array(
 		'URI'                   => '_uri',
 		'Ganze Zahl'            => '_num',
 		'Dezimalzahl'           => '_num',
 		'Aufzählung'            => '_str',
 	);
-	
+
 	protected $m_SpecialProperties = array(
 		// always start upper-case
 		'_TYPE' => 'Datentyp',
@@ -70,12 +70,12 @@ class SMWLanguageDe extends SMWLanguage {
 		'_ERRP' => 'Hat unpassenden Wert für',
 		'_LIST' => 'Hat Komponenten',
 	);
-	
+
 	protected $m_SpecialPropertyAliases = array(
 		'Hat Datentyp'     => '_TYPE',
 		'Ausgabeeinheit'   => '_UNIT'
 	);
-	
+
 	protected $m_Namespaces = array(
 		SMW_NS_PROPERTY       => "Attribut",
 		SMW_NS_PROPERTY_TALK  => "Attribut_Diskussion",
@@ -84,11 +84,11 @@ class SMWLanguageDe extends SMWLanguage {
 		SMW_NS_CONCEPT        => 'Konzept',
 		SMW_NS_CONCEPT_TALK   => 'Konzept_Diskussion'
 	);
-	
+
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
-	
+
 	protected $m_months = array( "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" );
-	
+
 	protected $m_monthsshort = array( "Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez" );
 
 }

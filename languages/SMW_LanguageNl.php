@@ -6,7 +6,7 @@
  * @author Siebrand Mazeland
  */
 
-/*
+/**
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -40,7 +40,7 @@ class SMWLanguageNl extends SMWLanguage {
 		'_tel' => 'Telefoonnummer',  // name of the telephone (URI) type //TODO: translate
 		'_rec' => 'Record', // name of record data type //TODO: translate
 	);
-	
+
 	protected $m_DatatypeAliases = array(
 		'URI'         => '_uri',
 		'Drijvende komma'       => '_num',
@@ -48,7 +48,7 @@ class SMWLanguageNl extends SMWLanguage {
 		'Opsomming' => '_str',
 		'Telefoonnummer' => '_tel',
 	);
-	
+
 	protected $m_SpecialProperties = array(
 		// always start upper-case
 		'_TYPE' => 'Heeft type',
@@ -64,11 +64,11 @@ class SMWLanguageNl extends SMWLanguage {
 		'_ERRP' => 'Heeft ongeldige waarde voor',
 		'_LIST' => 'Heeft velden',
 	);
-	
+
 	protected $m_SpecialPropertyAliases = array(
 		'Weergave-eenheid' => '_UNIT'
 	);
-	
+
 	protected $m_Namespaces = array(
 		SMW_NS_PROPERTY       => 'Eigenschap',
 		SMW_NS_PROPERTY_TALK  => 'Overleg_eigenschap',
@@ -77,9 +77,9 @@ class SMWLanguageNl extends SMWLanguage {
 		SMW_NS_CONCEPT        => 'Concept',
 		SMW_NS_CONCEPT_TALK   => 'Overleg_concept'
 	);
-	
+
 	protected $m_months = array( 'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december' );
-	
+
 	protected $m_monthsshort = array( "jan", "feb", "mar", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec" );
 
 }
