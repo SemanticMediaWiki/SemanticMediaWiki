@@ -123,8 +123,6 @@ class SMWQueryParser {
 	 * @return SMWDescription or null
 	 */
 	protected function getSubqueryDescription( &$setNS ) {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
 		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
@@ -294,7 +292,6 @@ class SMWQueryParser {
 	 * string.
 	 */
 	protected function getPropertyDescription( $propertyname, &$setNS ) {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$this->readChunk(); // consume separator ":=" or "::"
 
 		// first process property chain syntax (e.g. "property1.property2::value"), escaped by initial " ":
@@ -412,8 +409,6 @@ class SMWQueryParser {
 	 * passed as a parameter.
 	 */
 	protected function getArticleDescription( $firstchunk, &$setNS ) {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-
 		$chunk = $firstchunk;
 		$result = null;
 		$continue = true;
@@ -459,8 +454,6 @@ class SMWQueryParser {
 	}
 
 	protected function finishLinkDescription( $chunk, $hasNamespaces, $result, &$setNS ) {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-
 		if ( $result === null ) { // no useful information or concrete error found
 			$this->m_errors[] = wfMsgForContent( 'smw_badqueryatom' );
 		} elseif ( !$hasNamespaces && $setNS && ( $this->m_defaultns !== null ) ) {

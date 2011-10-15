@@ -16,7 +16,6 @@ class SMWSpecialUnusedProperties extends SpecialPage {
 	
 	public function __construct() {
 		parent::__construct( 'UnusedProperties' );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $param ) {

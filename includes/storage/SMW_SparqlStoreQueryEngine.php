@@ -301,7 +301,6 @@ class SMWSparqlStoreQueryEngine {
 				return (int)$sparqlResultWrapper->getNumericValue();
 			} else {
 				///@todo Implement error reporting for counting queries.
-// 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 // 				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
 			}
 		}
@@ -444,11 +443,9 @@ class SMWSparqlStoreQueryEngine {
 		switch ( $sparqlResultWrapper->getErrorCode() ) {
 			case SMWSparqlResultWrapper::ERROR_NOERROR: break;
 			case SMWSparqlResultWrapper::ERROR_INCOMPLETE:
-				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryincomplete' ) ) );
 			break;
 			default:
-				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
 			break;
 		}

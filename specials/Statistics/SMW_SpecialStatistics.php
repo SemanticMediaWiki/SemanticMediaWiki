@@ -15,7 +15,6 @@ class SMWSpecialSemanticStatistics extends SpecialPage {
 
 	public function __construct() {
 		parent::__construct( 'SemanticStatistics' );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $param ) {

@@ -25,7 +25,6 @@ class SMWRecordValue extends SMWDataValue {
 
 	protected function parseUserValueOrQuery( $value, $queryMode ) {
 		if ( $value == '' ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsg( 'smw_novalues' ) );
 			
 			if ( $queryMode ) {
@@ -85,7 +84,6 @@ class SMWRecordValue extends SMWDataValue {
 		}
 
 		if ( $empty ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsg( 'smw_novalues' ) );
 		}
 

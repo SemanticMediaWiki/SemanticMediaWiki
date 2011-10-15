@@ -30,7 +30,6 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getHtml() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 
 		$result = $this->getSubpropertyList() . $this->getPropertyValueList();
 

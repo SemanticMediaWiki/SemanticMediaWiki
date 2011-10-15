@@ -20,7 +20,6 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 */
 	public function __construct() {
 		parent::__construct( 'QueryCreator' );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	/**

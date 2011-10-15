@@ -15,7 +15,6 @@
 class SMWStringValue extends SMWDataValue {
 
 	protected function parseUserValue( $value ) {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( $this->m_caption === false ) {
 			$this->m_caption = ( $this->m_typeid == '_cod' ) ? $this->getCodeDisplay( $value ) : $value;
 		}

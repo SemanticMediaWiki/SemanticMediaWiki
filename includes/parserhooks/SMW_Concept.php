@@ -28,8 +28,6 @@ class SMWConcept {
 	public static function render( Parser &$parser ) {
 		global $wgContLang, $wgTitle;
 
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-
 		$title = $parser->getTitle();
 		$pconc = new SMWDIProperty( '_CONC' );
 

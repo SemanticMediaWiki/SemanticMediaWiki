@@ -92,7 +92,6 @@ class SMWDataValueFactory {
 		if ( array_key_exists( $typeid, self::$mTypeClasses ) ) {
 			$result = new self::$mTypeClasses[$typeid]( $typeid );
 		} else {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			return new SMWErrorValue( $typeid, wfMsgForContent( 'smw_unknowntype', $typeid ), $value, $caption );
 		}
 

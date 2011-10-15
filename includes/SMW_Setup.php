@@ -443,7 +443,6 @@ function smwfSetupExtension() {
  * @return true
  */
 function smwfAddSemanticExtensionType( array &$aExtensionTypes ) {
-	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	$aExtensionTypes = array_merge( array( 'semantic' => wfMsg( 'version-semantic' ) ), $aExtensionTypes );
 	return true;
 }
@@ -466,8 +465,6 @@ function smwfOldAddSemanticExtensionType( SpecialVersion &$oSpecialVersion, arra
  * Adds links to Admin Links page.
  */
 function smwfAddToAdminLinks( &$admin_links_tree ) {
-	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-
 	$data_structure_section = new ALSection( wfMsg( 'smw_adminlinks_datastructure' ) );
 
 	$smw_row = new ALRow( 'smw' );
@@ -551,7 +548,6 @@ function smwfOnParserTestTables( &$tables ) {
  */
 function smwfShowBrowseLink( $skintemplate ) {
 	if ( $skintemplate->data['isarticle'] ) {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$browselink = SMWInfolink::newBrowsingLink( wfMsg( 'smw_browselink' ),
 						$skintemplate->data['titleprefixeddbkey'], false );
 		echo '<li id="t-smwbrowselink">' . $browselink->getHTML() . '</li>';

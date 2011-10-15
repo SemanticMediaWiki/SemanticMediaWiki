@@ -15,7 +15,6 @@ class SMWSpecialWantedProperties extends SpecialPage {
 	
 	public function __construct() {
 		parent::__construct( 'WantedProperties' );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 	
 	public function execute( $param ) {

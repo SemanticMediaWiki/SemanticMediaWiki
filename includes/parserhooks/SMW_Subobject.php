@@ -54,7 +54,6 @@ class SMWSubobject {
 				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( new SMWDIProperty( '_ERRP' ), $propertyDi->getDiWikiPage() );
 			}
 		} else {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
 		}
 
@@ -74,7 +73,6 @@ class SMWSubobject {
 				self::$m_errors = array_merge( self::$m_errors, $valueDv->getErrors() );
 			}
 		} else {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
 		}
 	}

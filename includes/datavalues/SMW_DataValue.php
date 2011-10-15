@@ -155,7 +155,6 @@ abstract class SMWDataValue {
 		if ( ( strpos( $value, "\x7f" ) === false ) && ( strpos( $value, "\x07" ) === false ) ) {
 			$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
 		} else {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
 			if ( $this->m_caption === false ) {
 				$this->m_caption = $value; // ensure that at least input can be shown
@@ -248,7 +247,6 @@ abstract class SMWDataValue {
 
 		foreach ( $servicelinks as $dataItem ) {
 			if ( !( $dataItem instanceof SMWDIString ) ) continue;
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 
 			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() ); // messages distinguish ' ' from '_'
 			$text = call_user_func_array( 'wfMsgForContent', $args );
@@ -724,7 +722,6 @@ abstract class SMWDataValue {
 		}
 
 		if ( !$accept ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError(
 				wfMsgForContent( 'smw_notinenum', $this->getWikiValue(), $valuestring )
 			);

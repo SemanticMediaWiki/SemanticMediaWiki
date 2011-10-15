@@ -26,7 +26,6 @@ class SMWPageProperty extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct( 'PageProperty', '', false );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $query ) {

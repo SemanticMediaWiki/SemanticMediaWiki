@@ -14,7 +14,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	protected $mHTMLClass = '';
 
 	public function getName() {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
 

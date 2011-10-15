@@ -174,7 +174,6 @@ abstract class SMWResultPrinter {
 				$label = $this->mSearchlabel;
 
 				if ( $label === null ) { // apply defaults
-					smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 					$label = wfMsgForContent( 'smw_iq_moreresults' );
 				}
 

@@ -50,7 +50,6 @@ class SMWTypesValue extends SMWDataValue {
 			$value = $valueParts[1];
 			$typeNamespace = $wgContLang->getNsText( SMW_NS_TYPE );
 			if ( $namespace != $typeNamespace ) {
-				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->addError( wfMsgForContent( 'smw_wrong_namespace', $typeNamespace ) );
 			}
 		}
@@ -58,7 +57,6 @@ class SMWTypesValue extends SMWDataValue {
 		$this->m_givenLabel = smwfNormalTitleText( $value );
 		$this->m_typeId = SMWDataValueFactory::findTypeID( $this->m_givenLabel );
 		if ( $this->m_typeId == '' ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_unknowntype', $this->m_givenLabel ) );
 			$this->m_realLabel = $this->m_givenLabel;
 		} else {
@@ -70,7 +68,6 @@ class SMWTypesValue extends SMWDataValue {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
 		} catch ( SMWDataItemException $e ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
 		}
 	}

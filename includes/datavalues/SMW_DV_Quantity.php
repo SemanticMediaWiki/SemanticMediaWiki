@@ -126,7 +126,6 @@ class SMWQuantityValue extends SMWNumberValue {
 
 		$factors = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_CONV' ) );
 		if ( count( $factors ) == 0 ) { // no custom type
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_nounitsdeclared' ) );
 			return;
 		}

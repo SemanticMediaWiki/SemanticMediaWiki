@@ -18,7 +18,6 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 	public function __construct() {
 		parent::__construct( 'ExportRDF' );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $page ) {

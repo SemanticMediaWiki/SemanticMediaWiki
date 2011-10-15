@@ -15,7 +15,6 @@ class SMWSpecialProperties extends SpecialPage {
 	
 	public function __construct() {
 		parent::__construct( 'Properties' );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $param ) {	

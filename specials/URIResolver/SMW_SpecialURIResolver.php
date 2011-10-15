@@ -22,7 +22,6 @@ class SMWURIResolver extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct( 'URIResolver', '', false );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	function execute( $query ) {

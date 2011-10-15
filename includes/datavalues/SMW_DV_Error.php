@@ -27,7 +27,6 @@ class SMWErrorValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$this->addError( wfMsgForContent( 'smw_parseerror' ) );
 	}
 

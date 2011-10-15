@@ -27,7 +27,6 @@ class SMWAskPage extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct( 'Ask' );
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	/**

@@ -42,7 +42,6 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	}	
 	
 	public function getName() {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
 

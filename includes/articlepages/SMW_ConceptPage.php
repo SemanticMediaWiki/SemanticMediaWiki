@@ -50,7 +50,6 @@ class SMWConceptPage extends SMWOrderedListPage {
 			$errors = array();
 		}
 
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$pageLister = new SMWPageLister( $diWikiPages, null, $this->limit, $this->from, $this->until );
 		$this->mTitle->setFragment( '#SMWResults' ); // Make navigation point to the result list.
 		$navigation = $pageLister->getNavigationLinks( $this->mTitle );

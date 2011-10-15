@@ -45,13 +45,11 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		if ( ( $this->mFormat == 'template' ) && ( $this->mTemplate == false ) ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$res->addErrors( array( wfMsgForContent( 'smw_notemplategiven' ) ) );
 			return '';
 		}

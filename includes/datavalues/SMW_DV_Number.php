@@ -66,7 +66,6 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	static protected function parseNumberValue( $value, &$number, &$unit ) {
 		// Parse to find $number and (possibly) $unit
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$decseparator = wfMsgForContent( 'smw_decseparator' );
 		$kiloseparator = wfMsgForContent( 'smw_kiloseparator' );
 

@@ -42,7 +42,6 @@ class SMWFactbox {
 		// actually build the Factbox text:
 		$text = '';
 		if ( wfRunHooks( 'smwShowFactbox', array( &$text, $semdata ) ) ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$subjectDv = SMWDataValueFactory::newDataItemValue( $semdata->getSubject(), null );
 			SMWOutputs::requireResource( 'ext.smw.style' );
 			$rdflink = SMWInfolink::newInternalLink(

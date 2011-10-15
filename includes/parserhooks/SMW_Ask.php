@@ -33,7 +33,6 @@ class SMWAsk {
 
 			$result = SMWQueryProcessor::getResultFromFunctionParams( $params, SMW_OUTPUT_WIKI );
 		} else {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$result = smwfEncodeMessages( array( wfMsgForContent( 'smw_iq_disabled' ) ) );
 		}
 

@@ -172,11 +172,9 @@ class SMWTimeValue extends SMWDataValue {
 						if ( $calendarmodel == 'MJD' ) $jd += self::MJD_EPOCH;
 						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT, $this->m_typeid );
 					} catch ( SMWDataItemException $e ) {
-						smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 						$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 					}
 				} else {
-					smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 					$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 				}
 			} else {
@@ -206,7 +204,6 @@ class SMWTimeValue extends SMWDataValue {
 	 * @todo This method in principle allows date parsing to be internationalized further. Should be done.
 	 */
 	protected function parseDateString( $string, &$datecomponents, &$calendarmodel, &$era, &$hours, &$minutes, &$seconds, &$timeoffset ) {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		// crude preprocessing for supporting different date separation characters;
 		// * this does not allow localized time notations such as "10.34 pm"
 		// * this creates problems with keywords that contain "." such as "p.m."
