@@ -260,22 +260,9 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
 }
 
 /**
- * MediaWiki 1.16 introduces major changes in message handling, and the old
- * wfLoadExtensionMessages function will no longer be needed (or supported).
- * This function is used for maintaining compatibility with MediaWiki 1.15 or
- * below.
- *
- * @param string $extensionName The extension name for finding the the message
- * file; same as in wfLoadExtensionMessages()
- *
- * @since 1.5.1
+ * @deprecated since 1.7, will be removed in 1.9.
  */
-function smwfLoadExtensionMessages( $extensionName ) {
-	global $wgVersion;
-	if ( version_compare( $wgVersion, '1.16', '<' ) ) {
-		wfLoadExtensionMessages( $extensionName );
-	}
-}
+function smwfLoadExtensionMessages( $extensionName ) {}
 
 /**
  * Get a handle for the storage backend that is used to manage the data.

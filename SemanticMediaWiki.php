@@ -15,6 +15,14 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
+}
+
+if ( version_compare( $wgVersion, '1.16', '<' ) ) {
+	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.16 or above; use SMW 1.6.x for MediaWiki 1.15.x.' );
+}
+
 // Include the Validator extension if that hasn't been done yet, since it's required for SMW to work.
 if ( !defined( 'Validator_VERSION' ) ) {
 	@include_once( dirname( __FILE__ ) . '/../Validator/Validator.php' );

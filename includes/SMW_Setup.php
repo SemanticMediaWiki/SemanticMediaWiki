@@ -310,11 +310,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSparqlStore']            = $stoDir . 'SMW_SparqlStore.php';
 	$wgAutoloadClasses['SMWSparqlStoreQueryEngine'] = $stoDir . 'SMW_SparqlStoreQueryEngine.php';
 
-	// To ensure SMW remains compatible with pre 1.16.
-	if ( !class_exists( 'Html' ) ) {
-		$wgAutoloadClasses['Html'] = $smwgIP . 'compat/Html.php';
-	}
-
 	// Special pages and closely related helper classes
 	$specDir = $smwgIP . 'specials/';
 	$wgAutoloadClasses['SMWQueryPage']                 = $specDir . 'QueryPages/SMW_QueryPage.php';
