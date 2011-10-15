@@ -30,6 +30,7 @@ class SMWSubobject {
 
 		$semanticData = new SMWContainerSemanticData();
 		$propertyName = null;
+		
 		foreach ( $params as $param ) {
 			if ( is_null( $propertyName ) ) {
 				$propertyName = trim( $param );
@@ -67,6 +68,7 @@ class SMWSubobject {
 		if ( !$propertyDi->isInverse() ) {
 			$valueDv = SMWDataValueFactory::newPropertyObjectValue( $propertyDi, $valueString );
 			$semanticData->addPropertyObjectValue( $propertyDi, $valueDv->getDataItem() );
+			
 			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
 			if ( !$valueDv->isValid() ) {
 				$semanticData->addPropertyObjectValue( new SMWDIProperty( '_ERRP' ), $propertyDi->getDiWikiPage() );

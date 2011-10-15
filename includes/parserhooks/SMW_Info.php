@@ -35,9 +35,8 @@ class SMWInfo {
 		
 		$result = smwfEncodeMessages( array( $content ), $icon );
 
-		// Starting from MW 1.16, there is a more suited method available: Title::isSpecialPage
 		global $wgTitle;
-		if ( !is_null( $wgTitle ) && $wgTitle->getNamespace() == NS_SPECIAL ) {
+		if ( !is_null( $wgTitle ) && $wgTitle->isSpecialPage() ) {
 			global $wgOut;
 			SMWOutputs::commitToOutputPage( $wgOut );
 		}
