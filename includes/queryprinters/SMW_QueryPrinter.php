@@ -34,7 +34,7 @@ abstract class SMWResultPrinter {
 	 * List of parameters, set by handleParameters.
 	 * param name (lower case, trimmed) => param value (mixed)
 	 * 
-	 * @since 1.6.3
+	 * @since 1.7
 	 * 
 	 * @var array
 	 */

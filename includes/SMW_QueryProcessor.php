@@ -189,7 +189,7 @@ class SMWQueryProcessor {
 	/**
 	 * Add the subject print request, unless mainlabel is set to "-".
 	 * 
-	 * @since 1.6.3
+	 * @since 1.7
 	 * 
 	 * @param array $printRequests
 	 * @param array $rawParams

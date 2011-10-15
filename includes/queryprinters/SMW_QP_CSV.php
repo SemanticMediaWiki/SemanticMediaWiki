@@ -20,7 +20,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 	/**
 	 * @see SMWResultPrinter::handleParameters
 	 * 
-	 * @since 1.6.3
+	 * @since 1.7
 	 * 
 	 * @param array $params
 	 * @param $outputmode

@@ -3,7 +3,7 @@
 /**
  * Class for the 'subobject' parser functions.
  *
- * @since 1.6.3
+ * @since 1.7
  *
  * @file SMW_Subobject.php
  * @ingroup SMW
@@ -18,7 +18,7 @@ class SMWSubobject {
 	/**
 	 * Method for handling the subobject parser function.
 	 * 
-	 * @since 1.6.3
+	 * @since 1.7
 	 * 
 	 * @param Parser $parser
 	 */
