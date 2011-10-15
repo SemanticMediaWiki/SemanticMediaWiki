@@ -74,7 +74,6 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				$listsep = $this->mSep;
 				$finallistsep = $listsep;
 			} elseif ( $this->mFormat == 'list' )  {  // make default list ", , , and "
-				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$listsep = ', ';
 				$finallistsep = wfMsgForContent( 'smw_finallistconjunct' ) . ' ';
 			} else { // no default separators for format "template"

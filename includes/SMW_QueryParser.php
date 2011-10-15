@@ -577,7 +577,6 @@ class SMWQueryParser {
 	 * also be changed (if it was non-NULL).
 	 */
 	protected function addDescription( $curdesc, $newdesc, $conjunction = true ) {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$notallowedmessage = 'smw_noqueryfeature';
 		if ( $newdesc instanceof SMWSomeProperty ) {
 			$allowed = $this->m_queryfeatures & SMW_PROPERTY_QUERY;
