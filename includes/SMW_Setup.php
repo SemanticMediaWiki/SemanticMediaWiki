@@ -73,6 +73,11 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	return true;
 }
 
+// Register class with the Page Schemas extension
+if ( isset( $wgPageSchemasHandlerClasses ) ) {
+	$wgPageSchemasHandlerClasses[] = 'SMWPageSchemas';
+}
+
 /**
  * Register all SMW hooks with MediaWiki.
  */
@@ -93,13 +98,6 @@ function smwfRegisterHooks() {
 		// For pre-MediaWiki 1.17 alpha.
 		$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfOldAddSemanticExtensionType';
 	}
-
-	$wgHooks['PageSchemasGetObject'][]            = 'SMWPageSchemas::createPageSchemasObject';
-	$wgHooks['PageSchemasGeneratePages'][]        = 'SMWPageSchemas::generatePages';
-	$wgHooks['PageSchemasGetFieldHTML'][]         = 'SMWPageSchemas::getFieldHTML';
-	$wgHooks['PageSchemasGetFieldXML'][]          = 'SMWPageSchemas::getFieldXML';
-	$wgHooks['PageSchemasGetFieldDisplayInfo'][]  = 'SMWPageSchemas::getPropertyDisplayInfo';
-	$wgHooks['PageSchemasGetPageList'][]          = 'SMWPageSchemas::getPageList';
 }
 
 /**

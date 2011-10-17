@@ -10,41 +10,47 @@
  * @ingroup SMW
  */
 
-class SMWPageSchemas {
+class SMWPageSchemas extends PSExtensionHandler {
+
+	public static function getDisplayColor() {
+		return '#DEF';
+	}
+
+	public static function getFieldDisplayString() {
+		return 'Semantic property';
+	}
 
 	/**
 	 * Returns the display info for the property (if any is defined)
 	 * for a single field in the Page Schemas XML.
 	 */
-	function getPropertyDisplayInfo( $field_xml, &$text_object ) {
-		foreach ( $field_xml->children() as $tag => $child ) {
+	public static function getFieldDisplayValues( $fieldXML ) {
+		foreach ( $fieldXML->children() as $tag => $child ) {
 			if ( $tag == "semanticmediawiki_Property" ) {
 				$propName = $child->attributes()->name;
 				$values = array();
 				foreach ( $child->children() as $prop => $value ) {
 					$values[$prop] = (string)$value;
 				}
-				$text_object['smw'] = array( 'Semantic property', $propName, '#DEF', $values );
-				break;
+				return array( $propName, $values );
 			}
 		}
-		return true;
+		return null;
 	}
 
 	/**
 	 * Returns the set of SMW property data from the entire page schema.
 	 */
-	static function getAllPropertyData( $psSchemaObj ) {
+	static function getAllPropertyData( $pageSchemaObj ) {
 		$propertyDataArray = array();
-		$psTemplates = $psSchemaObj->getTemplates();
+		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
 			$psTemplateFields = $psTemplate->getFields();
 			foreach ( $psTemplateFields as $psTemplateField ) {
-				$smw_array = $psTemplateField->getObject('semanticmediawiki_Property');
-				if ( !array_key_exists( 'smw', $smw_array ) ) {
+				$prop_array = $psTemplateField->getObject('semanticmediawiki_Property');
+				if ( empty( $prop_array ) ) {
 					continue;
 				}
-				$prop_array = $smw_array['smw'];
 				if ( !array_key_exists( 'name', $prop_array ) ) {
 					continue;
 				}
@@ -59,25 +65,28 @@ class SMWPageSchemas {
 
 	/**
 	 * Sets the list of property pages defined by the passed-in
-	 * Page Schemas XML object.
+	 * Page Schemas object.
 	 */
-	function getPageList( $psSchemaObj , &$genPageList ) {
-		$propertyDataArray = self::getAllPropertyData( $psSchemaObj );
+	public static function getPagesToGenerate( $pageSchemaObj ) {
+		$pagesToGenerate = array();
+		$propertyDataArray = self::getAllPropertyData( $pageSchemaObj );
 		foreach ( $propertyDataArray as $propertyData ) {
 			$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
-			$genPageList[] = $title;
+			$pagesToGenerate[] = $title;
 		}
-		return true;
+		return $pagesToGenerate;
 	}
 
 	/**
 	 * Constructs XML for the SMW property, based on what was submitted
 	 * in the 'edit schema' form.
 	 */
-	function getFieldXML( $request, &$xmlArray ) {
+	public static function createFieldXMLFromForm() {
+		global $wgRequest;
+
 		$fieldNum = -1;
 		$xmlPerField = array();
-		foreach ( $request->getValues() as $var => $val ) {
+		foreach ( $wgRequest->getValues() as $var => $val ) {
 			if ( substr( $var, 0, 18 ) == 'smw_property_name_' ) {
 				$fieldNum = substr( $var, 18 );
 				$xml = '<semanticmediawiki_Property name="' . $val . '" >';
@@ -100,38 +109,28 @@ class SMWPageSchemas {
 				$xmlPerField[$fieldNum] = $xml;
 			}
 		}
-		$xmlArray['smw'] = $xmlPerField;
-		return true;
+		return $xmlPerField;
 	}
 
 	/**
 	 * Returns the HTML necessary for getting information about the
 	 * semantic property within the Page Schemas 'editschema' page.
 	 */
-	function getFieldHTML( $field, &$fieldHTMLFromExtensions ) {
+	public static function getFieldEditingHTML( $psTemplateField ) {
 		global $smwgContLang;
 
 		$prop_array = array();
 		$hasExistingValues = false;
-		if ( !is_null( $field ) ) {
-			$smw_array = $field->getObject('semanticmediawiki_Property');
-			if ( array_key_exists( 'smw', $smw_array ) ) {
-				$prop_array = $smw_array['smw'];
+		if ( !is_null( $psTemplateField ) ) {
+			$prop_array = $psTemplateField->getObject('semanticmediawiki_Property');
+			if ( !is_null( $prop_array ) ) {
 				$hasExistingValues = true;
 			}
 		}
 		$html_text = '<p>' . wfMsg( 'ps-optional-name' ) . ' ';
-		if ( array_key_exists( 'name', $prop_array ) ) {
-			$propName = $prop_array['name'];
-		} else {
-			$propName = null;
-		}
+		$propName = PageSchemas::getValueFromObject( $prop_array, 'name' );
 		$html_text .= Html::input( 'smw_property_name_num', $propName, array( 'size' => 15 ) ) . "\n";
-		if ( array_key_exists( 'Type', $prop_array ) ) {
-			$propType = $prop_array['Type'];
-		} else {
-			$propType = null;
-		}
+		$propType = PageSchemas::getValueFromObject( $prop_array, 'Type' );
 		$select_body = "";
 		$datatype_labels = $smwgContLang->getDatatypeLabels();
 		foreach ( $datatype_labels as $label ) {
@@ -151,50 +150,51 @@ class SMWPageSchemas {
 		$allowedValsInputAttrs = array(
 			'size' => 80
 		);
-		if ( array_key_exists( 'allowed_values', $prop_array ) ) {
-			$allowed_val_string = implode( ', ', $prop_array['allowed_values'] );
-		} else {
+		$allowedValues = PageSchemas::getValueFromObject( $prop_array, 'allowed_values' );
+		if ( is_null( $allowedValues ) ) {
 			$allowed_val_string = '';
+		} else {
+			$allowed_val_string = implode( ', ', $allowedValues );
 		}
 		$html_text .= '<p>' . Html::input( 'smw_values_num', $allowed_val_string, 'text', $allowedValsInputAttrs ) . "</p>\n";
 
-		$fieldHTMLFromExtensions['smw'] = array( 'Semantic property', '#DEF', $html_text, $hasExistingValues );
-
-		return true;
+		return array( $html_text, $hasExistingValues );
 	}
 
 	/**
 	 * Creates the property page for each property specified in the
 	 * passed-in Page Schemas XML object.
 	 */
-	function generatePages( $psSchemaObj, $selectedPageList ) {
-		$propertyDataArray = self::getAllPropertyData( $psSchemaObj );
+	public static function generatePages( $pageSchemaObj, $selectedPages ) {
+		global $wgUser;
+
+		$jobs = array();
+		$jobParams = array();
+		$jobParams['user_id'] = $wgUser->getId();
+		$propertyDataArray = self::getAllPropertyData( $pageSchemaObj );
 		foreach ( $propertyDataArray as $propertyData ) {
-			$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
-			if ( !in_array( $title, $selectedPageList ) ) {
+			$propTitle = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
+			if ( !in_array( $propTitle, $selectedPages ) ) {
 				continue;
 			}
-			self::createProperty( $propertyData['name'], $propertyData['Type'], $propertyData['allowed_values'] );
+			$jobParams['page_text'] = self::createPropertyText( $propertyData['Type'], $propertyData['allowed_values'] );
+			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
 		}
-		return true;
+		Job::batchInsert( $jobs );
 	}
 
 	/**
 	 * Creates the text for a property page.
 	 */
-	function createPropertyText( $property_type, $allowed_values ) {
+	function createPropertyText( $propertyType, $allowedValues ) {
 		global $smwgContLang;
-		$prop_labels = $smwgContLang->getPropertyLabels();
-		$type_tag = "[[{$prop_labels['_TYPE']}::$property_type]]";
-		$text = wfMsgForContent( 'ps-property-isproperty', $type_tag );
-		if ( $allowed_values != null) {
-			// Replace the comma with a substitution character
-			// that has no chance of being included in the values
-			// list - namely, the ASCII beep.
-			$text .= "\n\n" . wfMsgExt( 'ps-property-allowedvals', array( 'parsemag', 'content' ), count( $allowed_values ) );
-			foreach ( $allowed_values as $i => $value ) {
-				// Replace beep back with comma, trim.
-				$value = str_replace( "\a",',' , trim( $value ) );
+		$propLabels = $smwgContLang->getPropertyLabels();
+		$hasTypeLabel = $propLabels['_TYPE'];
+		$typeTag = "[[$hasTypeLabel::$propertyType]]";
+		$text = wfMsgForContent( 'ps-property-isproperty', $typeTag );
+		if ( $allowedValues != null) {
+			$text .= "\n\n" . wfMsgExt( 'ps-property-allowedvals', array( 'parsemag', 'content' ), count( $allowedValues ) );
+			foreach ( $allowedValues as $i => $value ) {
 				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
 					$prop_labels = $smwgContLang->getPropertyLabels();
 					$text .= "\n* [[" . $prop_labels['_PVAL'] . "::$value]]";
@@ -207,28 +207,15 @@ class SMWPageSchemas {
 		return $text;
 	}
 
-	function createProperty( $prop_name, $prop_type, $allowed_values ) {
-		global $wgUser;
-
-		$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_name );
-		$params = array();
-		$params['user_id'] = $wgUser->getId();
-		$params['page_text'] = self::createPropertyText( $prop_type, $allowed_values );
-		$jobs = array();
-		$jobs[] = new PSCreatePageJob( $title, $params );
-		Job::batchInsert( $jobs );
-		return true;
-	}
-
 	/**
 	 * Returns the property based on the XML passed from the Page Schemas
 	 * extension.
 	*/
-	function createPageSchemasObject( $objectName, $xmlForField, &$object ) {
-		$smw_array = array();
-		if ( $objectName == "semanticmediawiki_Property" ) {
-			foreach ( $xmlForField->children() as $tag => $child ) {
-				if ( $tag == $objectName ) {
+	public static function createPageSchemasObject( $tagName, $xml ) {
+		if ( $tagName == "semanticmediawiki_Property" ) {
+			foreach ( $xml->children() as $tag => $child ) {
+				if ( $tag == $tagName ) {
+					$smw_array = array();
 					$propName = $child->attributes()->name;
 					$smw_array['name'] = (string)$propName;
 					$allowed_values = array();
@@ -241,11 +228,10 @@ class SMWPageSchemas {
 						}
 					}
 					$smw_array['allowed_values'] = $allowed_values;
-					$object['smw'] = $smw_array;
-					return true;
+					return $smw_array;
 				}
 			}
 		}
-		return true;
+		return null;
 	}
 }
