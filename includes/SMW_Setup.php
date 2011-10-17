@@ -73,11 +73,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	return true;
 }
 
-// Register class with the Page Schemas extension
-if ( isset( $wgPageSchemasHandlerClasses ) ) {
-	$wgPageSchemasHandlerClasses[] = 'SMWPageSchemas';
-}
-
 /**
  * Register all SMW hooks with MediaWiki.
  */
@@ -88,6 +83,7 @@ function smwfRegisterHooks() {
 	$wgHooks['LanguageGetMagic'][]    = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
 	$wgHooks['ParserTestTables'][]    = 'smwfOnParserTestTables';
 	$wgHooks['AdminLinks'][]          = 'smwfAddToAdminLinks';
+	$wgHooks['PageSchemasRegisterHandlers'][] = 'SMWPageSchemas::registerClass';
 	$wgHooks['ParserFirstCallInit'][] = 'SMWSMWDoc::staticInit';
 	$wgHooks['LanguageGetMagic'][]    = 'SMWSMWDoc::staticMagic';
 	
