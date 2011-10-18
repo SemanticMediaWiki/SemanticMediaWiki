@@ -196,7 +196,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		
 		$params['class'] = new Parameter( 'class', Parameter::TYPE_STRING );
 		$params['class']->setMessage( 'smw-paramdesc-table-class' );
-		$params['class']->setDefault( 'sortable wikitable' );
+		$params['class']->setDefault( 'sortable wikitable smwtable' );
 		
 		return $params;
 	}
