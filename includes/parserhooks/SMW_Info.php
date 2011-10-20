@@ -13,38 +13,102 @@
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class SMWInfo {
+class SMWInfo extends ParserHook {
 	
 	/**
-	 * Method for handling the info parser function.
+	 * Renders and returns the output.
+	 * @see ParserHook::render
 	 * 
-	 * @since 1.5.3
+	 * @since 1.7
 	 * 
-	 * @param Parser $parser
+	 * @param array $parameters
+	 * 
+	 * @return string
 	 */
-	public static function render( Parser &$parser ) {
-		$params = func_get_args();
-		array_shift( $params ); // We already know the $parser ...
+	public function render( array $parameters ) {		
+		/**
+		 * Non-escaping is safe bacause a user's message is passed through parser, which will
+		 * handle unsafe HTM elements.
+		 */
+		$result = smwfEncodeMessages(
+			array( $parameters['message'] ),
+			$parameters['icon'],
+			' <!--br-->',
+			false // No escaping.
+		);
 
-		$content = array_shift( $params ); // First parameter is the info message.
-		$icon = array_shift( $params ); // Second parameter is icon to use or null when not provided.
-		
-		if ( is_null( $icon ) || $icon === '' || !in_array( $icon, array( 'info', 'warning' ) ) ) {
-			$icon = 'info';
-		}
-		
-		$result = smwfEncodeMessages( array( $content ), $icon );
-
-		global $wgTitle;
-		if ( !is_null( $wgTitle ) && $wgTitle->isSpecialPage() ) {
+		if ( !is_null( $this->parser->getTitle() ) && $this->parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			SMWOutputs::commitToOutputPage( $wgOut );
 		}
 		else {
-			SMWOutputs::commitToParser( $parser );
+			SMWOutputs::commitToParser( $this->parser );
 		}
 		
 		return $result;		
+	}
+	
+	/**
+	 * No LSB in pre-5.3 PHP *sigh*.
+	 * This is to be refactored as soon as php >=5.3 becomes acceptable.
+	 */
+	public static function staticMagic( array &$magicWords, $langCode ) {
+		$instance = new self;
+		return $instance->magic( $magicWords, $langCode );
+	}
+	
+	/**
+	 * No LSB in pre-5.3 PHP *sigh*.
+	 * This is to be refactored as soon as php >=5.3 becomes acceptable.
+	 */	
+	public static function staticInit( Parser &$parser ) {
+		$instance = new self;
+		return $instance->init( $parser );
+	}	
+	
+	/**
+	 * Gets the name of the parser hook.
+	 * @see ParserHook::getName
+	 * 
+	 * @since 1.7
+	 * 
+	 * @return string
+	 */
+	protected function getName() {
+		return 'info';
+	}
+	
+	/**
+	 * Returns the list of default parameters.
+	 * @see ParserHook::getDefaultParameters
+	 * 
+	 * @since 1.6
+	 * 
+	 * @return array
+	 */
+	protected function getDefaultParameters( $type ) {
+		return array( 'message', 'icon' );
+	}
+	
+	/**
+	 * Returns an array containing the parameter info.
+	 * @see ParserHook::getParameterInfo
+	 * 
+	 * @since 1.7
+	 * 
+	 * @return array
+	 */
+	protected function getParameterInfo( $type ) {
+		$params = array();
+		
+		$params['message'] = new Parameter( 'message' );
+		$params['message']->setMessage( 'smw-info-par-message' );
+		
+		$params['icon'] = new Parameter( 'icon', Parameter::TYPE_STRING, 'info' );
+		$params['icon']->addCriteria( new CriterionInArray( 'info', 'warning' ) );
+		$params['icon']->setMessage( 'smw-info-par-icon' );
+			
+		return $params;
 	}
 	
 }

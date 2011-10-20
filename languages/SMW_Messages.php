@@ -380,6 +380,10 @@ Estimated progress of current update:',
 	'smw-paramdesc-category-delim' => 'The delimiter',
 	'smw-paramdesc-category-template' => 'A template to format the items with',
 	'smw-paramdesc-category-userparam' => 'A parameter to pass to the template',
+	
+	// Messages for info parser function.
+	'smw-info-par-message' => 'Message to display.',
+	'smw-info-par-icon' => 'Icon to show, either "info" or "warning".',
 );
 
 /** Message documentation (Message documentation)

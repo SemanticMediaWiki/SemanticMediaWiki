@@ -86,6 +86,8 @@ function smwfRegisterHooks() {
 	$wgHooks['PageSchemasRegisterHandlers'][] = 'SMWPageSchemas::registerClass';
 	$wgHooks['ParserFirstCallInit'][] = 'SMWSMWDoc::staticInit';
 	$wgHooks['LanguageGetMagic'][]    = 'SMWSMWDoc::staticMagic';
+	$wgHooks['ParserFirstCallInit'][] = 'SMWInfo::staticInit';
+	$wgHooks['LanguageGetMagic'][]    = 'SMWInfo::staticMagic';
 	
 	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
 		// For MediaWiki 1.17 alpha and later.
@@ -606,7 +608,6 @@ function smwfInitNamespaces() {
 function smwfAddMagicWords( &$magicWords, $langCode ) {
 	$magicWords['ask']     = array( 0, 'ask' );
 	$magicWords['show']    = array( 0, 'show' );
-	$magicWords['info']    = array( 0, 'info' );
 	$magicWords['subobject'] = array( 0, 'subobject' );
 	$magicWords['concept'] = array( 0, 'concept' );
 	$magicWords['set']     = array( 0, 'set' );
@@ -659,7 +660,6 @@ function smwfInitContentLanguage( $langcode ) {
 function smwfRegisterParserFunctions( Parser &$parser ) {
 	$parser->setFunctionHook( 'ask', array( 'SMWAsk', 'render' ) );
 	$parser->setFunctionHook( 'show', array( 'SMWShow', 'render' ) );
-	$parser->setFunctionHook( 'info', array( 'SMWInfo', 'render' ) );
 	$parser->setFunctionHook( 'subobject', array( 'SMWSubobject', 'render' ) );
 	$parser->setFunctionHook( 'concept', array( 'SMWConcept', 'render' ) );
 	$parser->setFunctionHook( 'set', array( 'SMWSet', 'render' ) );
