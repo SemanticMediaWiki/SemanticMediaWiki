@@ -490,6 +490,9 @@ This method is called ''content negotiation''.",
 	'smw_result_results' => '{{Identical|Result}}',
 	'smw_result_noresults' => '{{Identical|Sorry, no results}}',
 	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
+
+	'smw-info-par-message' => 'Short description of the message parameter behaviour.',
+	'smw-info-par-icon' => 'Short description of the icon parameter behaviour.',
 );
 
 /** Niuean (ko e vagahau Niuē)
