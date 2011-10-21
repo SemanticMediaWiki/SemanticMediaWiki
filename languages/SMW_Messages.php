@@ -490,7 +490,6 @@ This method is called ''content negotiation''.",
 	'smw_result_results' => '{{Identical|Result}}',
 	'smw_result_noresults' => '{{Identical|Sorry, no results}}',
 	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
-
 	'smw-info-par-message' => 'Short description of the message parameter behaviour.',
 	'smw-info-par-icon' => 'Short description of the icon parameter behaviour.',
 );
@@ -2460,6 +2459,8 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-paramdesc-category-delim' => 'Das Trennzeichen',
 	'smw-paramdesc-category-template' => 'Eine Vorlage, mit der die Objekte formatiert werden sollen',
 	'smw-paramdesc-category-userparam' => 'Ein Parameter, der an die Vorlage übergeben werden soll',
+	'smw-info-par-message' => 'Anzuzeigende Nachricht.',
+	'smw-info-par-icon' => 'Anzuzeigendes Symbol, entweder „Info“ oder „Warnung“.',
 );
 
 /** Lower Sorbian (Dolnoserbski)
@@ -4093,7 +4094,7 @@ Progreso estimado da actualización actual:',
 	'smw_smwadmin_datarefreshbutton' => 'Comezar a actualizar os datos',
 	'smw_smwadmin_datarefreshstop' => 'Deter esta actualización',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Si, estou seguro.',
-	'smw_smwadmin_support' => 'Obtendo asistencia',
+	'smw_smwadmin_support' => 'Obtendo a asistencia',
 	'smw_smwadmin_supportdocu' => 'Diversas fontes poden axudalo en caso de problemas:',
 	'smw_smwadmin_installfile' => 'Se experimenta problemas durante a súa instalación, comece comprobando a guía no <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ficheiro INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'A documentación do usuario completa de Semantic MediaWiki está en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
@@ -4105,6 +4106,8 @@ Progreso estimado da actualización actual:',
 	'smw-paramdesc-category-delim' => 'O delimitador',
 	'smw-paramdesc-category-template' => 'Un modelo co que dar formato aos elementos',
 	'smw-paramdesc-category-userparam' => 'Un parámetro que pasar ao modelo',
+	'smw-info-par-message' => 'A mensaxe a mostrar.',
+	'smw-info-par-icon' => 'A icona a mostrar; ou ben "información" ou ben "aviso".',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -7334,6 +7337,8 @@ $messages['mk'] = array(
 	'smw-paramdesc-category-delim' => 'Разделувачот',
 	'smw-paramdesc-category-template' => 'Шаблон со кој ќе се форматираат елементите',
 	'smw-paramdesc-category-userparam' => 'Параметар што ќе му даде на шаблонот',
+	'smw-info-par-message' => 'Порака за приказ.',
+	'smw-info-par-icon' => 'Икона за приказ на „инфо“ или „предупредување“.',
 );
 
 /** Malayalam (മലയാളം)
@@ -7824,6 +7829,8 @@ Geschatte voortgang van de huidige taak:",
 	'smw-paramdesc-category-delim' => 'Het scheidingsteken',
 	'smw-paramdesc-category-template' => 'Een sjabloon om de items mee op te maken',
 	'smw-paramdesc-category-userparam' => 'Een aan het sjabloon door te geven parameter',
+	'smw-info-par-message' => 'Bericht om weer te geven.',
+	'smw-info-par-icon' => 'Icoon dat "informatie" of "waarschuwing" aangeeft.',
 );
 
 /** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
