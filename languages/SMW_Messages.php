@@ -2417,8 +2417,8 @@ Alle gespeicherten Daten werden, sofern notwendig, entweder neu erstellt oder re
 Der Fortschritt der Aktualisierung kann auf dieser Spezialseite eingesehen werden.',
 	'smw_smwadmin_updatenotstarted' => 'Es läuft bereits ein Aktualisierungsprozess.
 Es wird kein Neuer begonnen.',
-	'smw_smwadmin_updatestopped' => 'Alle laufenden Aktualisierungsprozesse wurden gestoppt.',
-	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu stoppen, musst das Kontrollkästchen markiert werden, um dadurch anzuzeigen, dass man dabei sich wirklich sicher ist.',
+	'smw_smwadmin_updatestopped' => 'Alle laufenden Aktualisierungsprozesse wurden vorzeitig beendet.',
+	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu vorzeitig zu beenden, musst das Kontrollkästchen markiert werden, um dadurch anzuzeigen, dass man sich diesbezüglich tatsächlich sicher ist.',
 	'smw_smwadmin_docu' => 'Diese Spezialseite unterstützt dich während der Installation und der Aktualisierung von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a>.
 Denke stets daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
 	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
@@ -3658,6 +3658,8 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-paramdesc-category-delim' => 'Le délimiteur',
 	'smw-paramdesc-category-template' => 'Un modèle pour mettre en forme les éléments',
 	'smw-paramdesc-category-userparam' => 'Un paramètre à passer au modèle',
+	'smw-info-par-message' => 'Message à afficher.',
+	'smw-info-par-icon' => 'Icône à afficher, soit « info » ou « attention »',
 );
 
 /** Franco-Provençal (Arpetan)
@@ -8320,6 +8322,8 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw-paramdesc-category-delim' => 'Skilletegnet',
 	'smw-paramdesc-category-template' => 'En mal til bruk for å formatere elementene',
 	'smw-paramdesc-category-userparam' => 'En parameter som gis til malen',
+	'smw-info-par-message' => 'Melding å vise frem.',
+	'smw-info-par-icon' => 'Ikon for å vise frem enten "info" eller "advarsel".',
 );
 
 /** Occitan (Occitan)
