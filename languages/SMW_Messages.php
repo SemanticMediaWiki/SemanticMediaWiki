@@ -5624,6 +5624,8 @@ Progresso estimate del actualisation currente:',
 	'smw-paramdesc-category-delim' => 'Le delimitator',
 	'smw-paramdesc-category-template' => 'Un patrono con le qual formatar le elementos',
 	'smw-paramdesc-category-userparam' => 'Un parametro a passar al patrono',
+	'smw-info-par-message' => 'Le message a monstrar.',
+	'smw-info-par-icon' => 'Le icone a monstrar, o "info" o "attention!".',
 );
 
 /** Indonesian (Bahasa Indonesia)
