@@ -35,12 +35,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 		$result = '';
 		
-		$tableRows = array();
-		
-		$rowNum = 1;
-		while ( $subject = $res->getNext() ) {
-			$tableRows[] = $this->getRowForSubject( $subject, $outputmode, $rowNum++ );
-		}
+		$columnClasses = array();
 		
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$headers = array();
@@ -49,6 +44,9 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				$attribs = array();
 				$columnClass = str_replace( array( ' ', '_' ), '-', $pr->getText( SMW_OUTPUT_WIKI ) );
 				$attribs['class'] = $columnClass;
+				// Also add this to the array of classes, for
+				// use in displaying each row.
+				$columnClasses[] = $columnClass;
 				$text = $pr->getText( $outputmode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
 				
 				$headers[] = Html::rawElement(
@@ -63,8 +61,15 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			if ( $outputmode == SMW_OUTPUT_HTML ) {
 				$headers = '<thead>' . $headers . '</thead>'; 
 			}
-			
+			$headers = "\n$headers\n";
+
 			$result .= $headers;
+		}
+		
+		$tableRows = array();
+		$rowNum = 1;
+		while ( $subject = $res->getNext() ) {
+			$tableRows[] = $this->getRowForSubject( $subject, $outputmode, $columnClasses, $rowNum++ );
 		}
 
 		$tableRows = implode( "\n", $tableRows );
@@ -108,11 +113,12 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	 * 
 	 * @return string
 	 */
-	protected function getRowForSubject( array /* of SMWResultArray */ $subject, $outputmode, $rowNum ) {
+	protected function getRowForSubject( array /* of SMWResultArray */ $subject, $outputmode, $columnClasses, $rowNum ) {
 		$cells = array();
 		
-		foreach ( $subject as $field ) {
-			$cells[] = $this->getCellForPropVals( $field, $outputmode );
+		foreach ( $subject as $i => $field ) {
+			$columnClass = $columnClasses[$i];
+			$cells[] = $this->getCellForPropVals( $field, $outputmode, $columnClass );
 		}
 		
 		$rowClass = ( $rowNum % 2 == 1 ) ? 'row-odd' : 'row-even';
@@ -129,7 +135,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	 * 
 	 * @return string
 	 */
-	protected function getCellForPropVals( SMWResultArray $resultArray, $outputmode ) {
+	protected function getCellForPropVals( SMWResultArray $resultArray, $outputmode, $columnClass ) {
 		$dataValues = array();
 		
 		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
@@ -151,7 +157,8 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
 				$attribs['style'] = "text-align:' . $alignment . ';";
 			}
-			
+			$attribs['class'] = $columnClass;
+
 			$content = $this->getCellContent(
 				$dataValues,
 				$outputmode,
