@@ -9596,6 +9596,8 @@ Progresso estimado da atualização corrente:',
 	'smw-paramdesc-category-delim' => 'O delimitador',
 	'smw-paramdesc-category-template' => 'Uma predefinição para formatar os itens com',
 	'smw-paramdesc-category-userparam' => 'Um parâmetro para passar para a predefinição',
+	'smw-info-par-message' => 'Mensagem a ser exibida.',
+	'smw-info-par-icon' => 'Ícone para mostrar, "info" ou "aviso".',
 );
 
 /** Tarifit (Tarifit)
