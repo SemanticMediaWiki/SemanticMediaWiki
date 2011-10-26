@@ -76,7 +76,7 @@ class SMWQueryUIHelper {
 	 */
 	private $queryResult = null;
 
-	/*
+	/**
 	 * Constants define whether the parameters was passed from the ui form (SPECIAL_PAGE)
 	 * or from the further results infolink (WIKI_LINK)
 	 */
@@ -347,22 +347,22 @@ class SMWQueryUIHelper {
 	 */
 	public function execute() {
 		$errors = array();
-		
+
 		if ( $this->queryString != '' ) {
 			// FIXME: this is a hack
 			SMWQueryProcessor::addThisPrintout( $this->printOuts, $this->parameters );
 			$params = SMWQueryProcessor::getProcessedParams( $this->parameters, $this->printOuts );
 			$this->parameters['format'] = $params['format'];
 			$this->params = $params;
-			
+
 			$query = SMWQueryProcessor::createQuery(
-				$this->queryString, 
+				$this->queryString,
 				$params,
 				SMWQueryProcessor::SPECIAL_PAGE,
 				$this->parameters['format'],
 				$this->printOuts
 			);
-			
+
 			$res = smwfGetStore()->getQueryResult( $query );
 			$this->queryResult = $res;
 

@@ -1,10 +1,10 @@
 /**
  * JavaScript for tooltips.
- * 
+ *
  * TODO: optimize this file for use with the MW resource loader.
  * * Get rid of addOnloadHook, so wikibits is no longer needed.
  * * Use jQuery to bind behaviour to DOM events.
- * 
+ *
  * @file SMW_tooltip.js
  * @ingroup SMW
  *
@@ -423,7 +423,7 @@ BubbleTT.Platform.browser = {
 	var an = navigator.appName.toLowerCase();
 	var ua = navigator.userAgent.toLowerCase();
 
-	/*
+	/**
 	 *  Operating system
 	 */
 	BubbleTT.Platform.os.isMac = ( ua.indexOf( 'mac' ) != -1 );
@@ -437,7 +437,7 @@ BubbleTT.Platform.browser = {
 	);
 	BubbleTT.Platform.os.isUnix = ( ua.indexOf( 'x11' ) != -1 );
 
-	/*
+	/**
 	 *  Browser
 	 */
 	BubbleTT.Platform.browser.isIE = ( an.indexOf( 'microsoft' ) != -1 );
