@@ -265,7 +265,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * Create special highlighting for hinting at special properties.
 	 */
 	protected function highlightText( $text ) {
-		if ( $this->getDataItem()->isUserDefined() ) {
+		if ( $this->m_dataitem->isUserDefined() ) {
 			return $text;
 		} else {
 			SMWOutputs::requireResource( 'ext.smw.tooltips' );
