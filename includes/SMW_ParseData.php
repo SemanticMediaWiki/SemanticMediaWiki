@@ -107,6 +107,7 @@ class SMWParseData {
 
 		// See if this property is a special one, such as e.g. "has type".
 		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
+		if ( !$propertyDv->isValid() ) return $propertyDv;
 		$propertyDi = $propertyDv->getDataItem();
 		$result = SMWDataValueFactory::newPropertyObjectValue( $propertyDi, $value, $caption );
 
