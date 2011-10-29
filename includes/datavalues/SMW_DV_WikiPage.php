@@ -83,15 +83,31 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	protected function parseUserValue( $value ) {
 		global $wgContLang;
-		$value = ltrim( rtrim( $value, ' ]' ), ' [' ); // support inputs like " [[Test]] "
+
+		// support inputs like " [[Test]] ";
+		// note that this only works in pages if $smwgLinksInValues is set to true
+		$value = ltrim( rtrim( $value, ' ]' ), ' [' );
+
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
 
 		if ( $value != '' ) {
-			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
+			if ( $value{0} == '#' ) {
+				if ( is_null( $this->m_contextPage ) ) {
+					$this->addError(  wfMsgForContent( 'smw_notitle', $value ) );
+					return;
+				} else {
+					$this->m_title = Title::makeTitle( $this->m_contextPage->getNamespace(),
+						$this->m_contextPage->getDBkey(), substr( $value, 1 ),
+						$this->m_contextPage->getInterwiki() );
+				}
+			} else {
+				$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
+			}
+
 			///TODO: Escape the text so users can see punctuation problems (bug 11666).
-			if ( $this->m_title === null ) {
+			if ( is_null( $this->m_title ) ) {
 				$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
 			} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 				 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {

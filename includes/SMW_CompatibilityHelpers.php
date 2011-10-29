@@ -75,7 +75,10 @@ class SMWCompatibilityHelpers {
 			case SMWDataItem::TYPE_GEO:
 				return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ) );
 			case SMWDataItem::TYPE_CONTAINER:
-				$semanticData = new SMWContainerSemanticData();
+				// provided for backwards compatibility only;
+				// today containers are read from the store as substructures,
+				// not retrieved as single complex values
+				$semanticData = SMWContainerSemanticData::makeAnonymousContainer();
 				foreach ( reset( $dbkeys ) as $value ) {
 					if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
 						$diP = new SMWDIProperty( reset( $value ), false );

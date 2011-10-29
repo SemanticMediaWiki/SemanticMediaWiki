@@ -57,10 +57,11 @@ class SMWFactbox {
 				'swmfactboxheadbrowse'
 			);
 			$text .= '<div class="smwfact">' .
-						'<span class="smwfactboxhead">' . wfMsgForContent( 'smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
-					'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
-					'<table class="smwfacttable">' . "\n";
-			
+				'<span class="smwfactboxhead">' .
+				wfMsgForContent( 'smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
+				'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
+				'<table class="smwfacttable">' . "\n";
+
 			foreach ( $semdata->getProperties() as $propertyDi ) {
 				$propertyDv = SMWDataValueFactory::newDataItemValue( $propertyDi, null );
 				if ( !$propertyDi->isShown() ) { // showing this is not desired, hide
@@ -76,24 +77,32 @@ class SMWFactbox {
 				}
 
 				$propvalues = $semdata->getPropertyValues( $propertyDi );
-				
+
 				$valuesHtml = array();
-				
+
 				foreach ( $propvalues as $dataItem ) {
 					$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $propertyDi );
 
 					if ( $dataValue->isValid() ) {
-						$valuesHtml[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
+						$valuesHtml[] = $dataValue->getLongWikiText( true ) .
+							$dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
 					}
 				}
-				
+
 				$text .= $GLOBALS['wgLang']->listToText( $valuesHtml );
-				
+
 				$text .= '</td></tr>';
 			}
-			
+
 			$text .= '</table></div>';
 		}
+
+		// Debugging: show all child objects
+		// (does not play too well with Records, hence disabled by default)
+// 		foreach ( $semdata->getAllChildren() as $childSemanticData ) {
+// 			$text .= SMWFactbox::getFactboxText( $childSemanticData, $showfactbox );
+// 		}
+
 		wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
 		return $text;
 	}

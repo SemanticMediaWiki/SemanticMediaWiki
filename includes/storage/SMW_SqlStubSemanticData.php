@@ -90,7 +90,7 @@ class SMWSqlStubSemanticData extends SMWSemanticData {
 				try {
 					if ( $propertyDiId == SMWDataItem::TYPE_CONTAINER ) {
 						$diSubWikiPage = SMWCompatibilityHelpers::dataItemFromDBKeys( '_wpg', $dbkeys );
-						$semanticData = new SMWContainerSemanticData();
+						$semanticData = new SMWContainerSemanticData( $diSubWikiPage );
 						$semanticData->copyDataFrom( smwfGetStore()->getSemanticData( $diSubWikiPage ) );
 
 						$di = new SMWDIContainer( $semanticData );

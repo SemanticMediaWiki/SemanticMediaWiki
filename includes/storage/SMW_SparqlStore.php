@@ -60,6 +60,10 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		parent::doDataUpdate( $data );
 
 		$expDataArray = $this->prepareUpdateExpData( $data );
+		foreach ( $data->getAllChildren() as $childData ) {
+			$subExpDataArray = $this->prepareUpdateExpData( $childData );
+			$expDataArray = $expDataArray + $subExpDataArray;
+		}
 
 		if ( count( $expDataArray ) > 0 ) {
 			$subjectResource = SMWExporter::getDataItemExpElement( $data->getSubject() );

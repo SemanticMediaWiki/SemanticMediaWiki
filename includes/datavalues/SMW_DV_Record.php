@@ -26,7 +26,7 @@ class SMWRecordValue extends SMWDataValue {
 	protected function parseUserValueOrQuery( $value, $queryMode ) {
 		if ( $value == '' ) {
 			$this->addError( wfMsg( 'smw_novalues' ) );
-			
+
 			if ( $queryMode ) {
 				return new SMWThingDescription();
 			} else {
@@ -36,8 +36,14 @@ class SMWRecordValue extends SMWDataValue {
 
 		if ( $queryMode ) {
 			$subdescriptions = array();
+		} elseif ( is_null( $this->m_contextPage ) ) {
+			$semanticData = SMWContainerSemanticData::makeAnonymousContainer();
 		} else {
-			$semanticData = new SMWContainerSemanticData();
+			$subobjectName = hash( 'md4', $value, false); // md4 is probably fastest of PHP's hashes
+			$subject = new SMWDIWikiPage( $this->m_contextPage->getDBkey(),
+				$this->m_contextPage->getNamespace(), $this->m_contextPage->getInterwiki(),
+				$subobjectName );
+			$semanticData = new SMWContainerSemanticData( $subject );
 		}
 
 		$values = preg_split( '/[\s]*;[\s]*/u', trim( $value ) );
@@ -77,7 +83,7 @@ class SMWRecordValue extends SMWDataValue {
 					}
 					
 					$this->addError( $dataValue->getErrors() );
-					$valueIndex++;
+					++$valueIndex;
 				}
 			}
 			++$propertyIndex;

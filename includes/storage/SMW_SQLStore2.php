@@ -216,7 +216,7 @@ class SMWSQLStore2 extends SMWStore {
 				foreach ( $data as $dbkeys ) {
 					try {
 						$diSubWikiPage = SMWCompatibilityHelpers::dataItemFromDBKeys( '_wpg', $dbkeys );
-						$semanticData = new SMWContainerSemanticData();
+						$semanticData = new SMWContainerSemanticData( $diSubWikiPage );
 						$semanticData->copyDataFrom( $this->getSemanticData( $diSubWikiPage ) );
 						$result[] = new SMWDIContainer( $semanticData );
 					} catch ( SMWDataItemException $e ) {
@@ -735,6 +735,9 @@ class SMWSQLStore2 extends SMWStore {
 		$sid = $this->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		$this->prepareDBUpdates( $updates, $data, $sid, $subject );
+		foreach ( $data->getAllChildren() as $childData ) {
+			$this->prepareDBUpdates( $updates, $childData, 0, $childData->getSubject() );
+		}
 
 		$db = wfGetDB( DB_MASTER );
 		foreach ( $updates as $tablename => $uvals ) {
@@ -1285,7 +1288,7 @@ class SMWSQLStore2 extends SMWStore {
 				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
 				'smw_title' => $dbtypes['t'] . ' NOT NULL',
 				'smw_iw' => $dbtypes['w'] . ' NOT NULL',
-				'smw_subobject' => $dbtypes['w'] . ' NOT NULL',
+				'smw_subobject' => $dbtypes['t'] . ' NOT NULL',
 				'smw_sortkey' => $dbtypes['t']  . ' NOT NULL'
 			),
 			$db,

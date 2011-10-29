@@ -106,15 +106,20 @@ class SMWParseData {
 		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
 		if ( !$propertyDv->isValid() ) return $propertyDv;
 		$propertyDi = $propertyDv->getDataItem();
-		$result = SMWDataValueFactory::newPropertyObjectValue( $propertyDi, $value, $caption );
+
+		$semandticData = self::getSMWData( $parser );
+
+		$result = SMWDataValueFactory::newPropertyObjectValue( $propertyDi,
+			$value, $caption, $semandticData->getSubject() );
 
 		if ( $propertyDi->isInverse() ) {
 			$result->addError( wfMsgForContent( 'smw_noinvannot' ) );
 		} elseif ( $storeAnnotation && ( self::getSMWData( $parser ) !== null ) ) {
-			self::getSMWData( $parser )->addPropertyObjectValue( $propertyDi, $result->getDataItem() );
+			$semandticData->addPropertyObjectValue( $propertyDi, $result->getDataItem() );
 			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
 			if ( !$result->isValid() ) {
-				self::getSMWData( $parser )->addPropertyObjectValue( new SMWDIProperty( '_ERRP' ), $propertyDi->getDiWikiPage() );
+				$semandticData->addPropertyObjectValue( new SMWDIProperty( '_ERRP' ),
+					$propertyDi->getDiWikiPage() );
 			}
 		}
 
