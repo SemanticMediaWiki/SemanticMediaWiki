@@ -128,8 +128,6 @@ $select_update = array_key_exists( 'update', $options );
 $select_old    = isset( $options['old'] ) ? intval( $options['old'] ) : false;
 
 if ( isset( $options['concept'] ) ) { // single concept mode
-	// 	$concept = SMWDataValueFactory::newTypeIDValue( '_wpg' );
-	// 	$concept->setValues( 'African_countries', SMW_NS_CONCEPT );
 	global $wgContLang;
 	$concept = Title::newFromText( $wgContLang->getNsText( SMW_NS_CONCEPT ) . ':' . $options['concept'] );
 	if ( $concept !== null ) {

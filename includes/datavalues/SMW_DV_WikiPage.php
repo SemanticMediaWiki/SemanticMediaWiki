@@ -347,30 +347,12 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Find the sortkey for this object.
 	 * 
-	 * @deprecated Use SMWStore::getWikiPageSortKey().
+	 * @deprecated Use SMWStore::getWikiPageSortKey(). Will vanish before SMW 1.7
 	 *
 	 * @return string sortkey
 	 */
 	public function getSortKey() {
 		return smwfGetStore()->getWikiPageSortKey( $this->m_dataitem );
-	}
-
-	/**
-	 * Init this data value object based on a given Title object.
-	 * @deprecated Use setDataItem(); it's easy to create an SMWDIWikiPage from a Title, will vanish before SMW 1.7
-	 */
-	public function setTitle( $title ) {
-		$diWikiPage = SMWDIWikiPage::newFromTitle( $title );
-		$this->setDataItem( $diWikiPage );
-		$this->m_title = $title; // optional, just for efficiency
-	}
-
-	/**
-	 * @deprecated Use setDataItem()
-	 */
-	public function setValues( $dbkey, $namespace, $id = false, $interwiki = '' ) {
-		$dataItem = new SMWDIWikiPage( $dbkey, $namespace, $interwiki ); 
-		$this->setDataItem( $dataItem);
 	}
 
 	/**
