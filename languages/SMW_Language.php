@@ -80,6 +80,7 @@ abstract class SMWLanguage {
 		'Modification date' => '_MDAT',
 		'Has improper value for' => '_ERRP',
 		'Has fields'        => '_LIST',
+		'Has subobject'     => '_SOBJ',
 	);
 
 

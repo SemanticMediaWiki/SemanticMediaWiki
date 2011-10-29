@@ -735,9 +735,6 @@ class SMWSQLStore2 extends SMWStore {
 		$sid = $this->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		$this->prepareDBUpdates( $updates, $data, $sid, $subject );
-		foreach ( $data->getAllChildren() as $childData ) {
-			$this->prepareDBUpdates( $updates, $childData, 0, $childData->getSubject() );
-		}
 
 		$db = wfGetDB( DB_MASTER );
 		foreach ( $updates as $tablename => $uvals ) {

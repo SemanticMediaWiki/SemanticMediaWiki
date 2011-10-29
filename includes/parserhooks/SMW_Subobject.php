@@ -27,9 +27,16 @@ class SMWSubobject {
 
 		$params = func_get_args();
 		array_shift( $params ); // We already know the $parser ...
-		$subobjectName = str_replace( ' ', '_', trim( array_shift( $params ) ) );
 
-		$semanticData = SMWParseData::getSMWData( $parser )->getChild( $subobjectName );
+		$subobjectName = str_replace( ' ', '_', trim( array_shift( $params ) ) );
+		$mainSemanticData = SMWParseData::getSMWData( $parser );
+		$subject = $mainSemanticData->getSubject();
+
+		$diSubWikiPage = new SMWDIWikiPage( $subject->getDBkey(),
+				$subject->getNamespace(), $subject->getInterwiki(),
+				$subobjectName );
+
+		$semanticData = new SMWContainerSemanticData( $diSubWikiPage );
 
 		foreach ( $params as $param ) {
 			$parts = explode( '=', trim( $param ), 2 );
@@ -41,6 +48,10 @@ class SMWSubobject {
 				//self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
 			}
 		}
+
+		$propertyDi = new SMWDIProperty('_SOBJ');
+		$subObjectDi = new SMWDIContainer( $semanticData );
+		SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $propertyDi, $subObjectDi );
 
 		return smwfEncodeMessages( self::$m_errors );
 	}

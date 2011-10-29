@@ -63,6 +63,7 @@ class SMWLanguageRu extends SMWLanguage {
 		'_MDAT' => 'Дата последней правки',
 		'_ERRP' => 'Has improper value for', // TODO: translate
 		'_LIST' => 'Имеет поля',
+		'_SOBJ' => 'Has subobject', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

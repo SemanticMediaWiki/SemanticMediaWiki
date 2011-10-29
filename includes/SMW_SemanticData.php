@@ -55,30 +55,6 @@ class SMWSemanticData {
 	 */
 	protected $mProperties = array();
 
-
-	/**
-	 * Array of SMWSemanticData objects that refer to subobjects of this
-	 * object and for which this object is the parent. Elements in this
-	 * array are created (only) by calling the method getChild().
-	 * Existing data from other SMWSemanticData objects can be imported
-	 * into such children by calling the child's importDataFrom()
-	 * method.
-	 *
-	 * The array is indexed by the subobject name of the children's
-	 * subjects.
-	 *
-	 * @note The subject SMWDIWikiPage of a child is always a subobject of
-	 * the subject of its parent. Nevertheless, it is perfectly possible to
-	 * create an SMWSemanticData for a subject that is a subobject without
-	 * this SMWSemanticData being a child of anything.
-	 *
-	 * @since 1.7
-	 * @see SMWSemanticData::getChild()
-	 *
-	 * @var array of string => SMWSemanticData
-	 */
-	protected $mChildren = array();
-
 	/**
 	 * States whether the container holds any normal properties.
 	 *
@@ -119,18 +95,6 @@ class SMWSemanticData {
 	protected $mSubject;
 
 	/**
-	 * If the data describes a subobject, this field refers to its parent
-	 * object. To associate a semantic data with its parent, the method
-	 * getChild() can be used (see documentation there for details).
-	 *
-	 * @since 1.7
-	 * @see SMWSemanticData::getChild()
-	 *
-	 * @var SMWSemanticData or null
-	 */
-	protected $mParentSemanticData = null;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param SMWDIWikiPage $subject to which this data refers
@@ -166,68 +130,6 @@ class SMWSemanticData {
 	 */
 	public function getSubject() {
 		return $this->mSubject;
-	}
-
-	/**
-	 * Return a semantic data object to store data of the subobject with
-	 * the given name. If no data container exists for this purpose yet,
-	 * a new one will be created. Globally, child data has the same meaning
-	 * as if it was used in a separate SMWSemanticData (with the same
-	 * subobject as subject but which is not a child). The child-parent
-	 * association is merely used to attach extra data to an SMWSemanticData
-	 * so that a single object can carry information about all related
-	 * subobjects.
-	 *
-	 * Contrary to biological intuition, children are always managed by the
-	 * (unique) parent: when calling getChild() on a child SMWSemanticData,
-	 * the new child will be attached to the old child's parent. So there is
-	 * no hierarchy of children and all existing children can be accessed
-	 * through the parent. In the rare case that the given subobject name for
-	 * the child is the same as the subobject name of the subject of $this,
-	 * the method wil return $this instead of creating a new child.
-	 *
-	 * Overall, this management ensures that there will be at most one
-	 * SMWSemanticData object for any subobjectName. Note that the relation
-	 * parent-child is not the same as the relation page-subobject. A parent
-	 * SMWSemanticData can still refer to a subject with an empty subobject
-	 * name, while a child's subobject name might be empty.
-	 *
-	 * @see SMWSemanticData::importDataFrom()
-	 * @see SMWSemanticData::mChildren
-	 *
-	 * @since 1.7
-	 *
-	 * @param String $subobjectName must be non-empty
-	 * @return SMWSemanticData
-	 */
-	public function getChild( $subobjectName ) {
-		if ( $subobjectName == $this->mSubject->getSubobjectName() ) {
-			return $this;
-		} elseif ( !is_null( $this->mParentSemanticData ) ) {
-			return $this->mParentSemanticData->getChild( $subobjectName );
-		} elseif ( array_key_exists( $subobjectName, $this->mChildren ) ) {
-			return $this->mChildren[$subobjectName];
-		} else {
-			$diSubWikiPage = new SMWDIWikiPage( $this->mSubject->getDBkey(),
-				$this->mSubject->getNamespace(), $this->mSubject->getInterwiki(),
-				$subobjectName );
-			$result = new SMWSemanticData( $diSubWikiPage );
-			$result->mParentSemanticData = $this;
-			$this->mChildren[$subobjectName] = $result;
-			return $result;
-		}
-	}
-
-	/**
-	 * Return an array of SMWSemanticData objects for all children of this
-	 * object, indexed by the subobject name that they are using.
-	 *
-	 * @since 1.7
-	 *
-	 * @return array of SMWSemanticData
-	 */
-	public function getAllChildren() {
-		return $this->mChildren;
 	}
 
 	/**
@@ -278,10 +180,6 @@ class SMWSemanticData {
 			foreach ( $this->getPropertyValues( $property ) as $di ) {
 				hash_update( $ctx, '_#_' . $di->getSerialization() );
 			}
-		}
-
-		foreach ( $this->mChildren as $child ) {
-			hash_update( $ctx, '_#_' . $child->getHash() . '##' );
 		}
 
 		return hash_final( $ctx );
@@ -390,34 +288,12 @@ class SMWSemanticData {
 		$this->mHasVisibleProps = false;
 		$this->mHasVisibleSpecs = false;
 		$this->stubObject = false;
-		$mParentSemanticData = null;
-		$this->mChildren = array();
 	}
 
 	/**
-	 * Add all data from the given SMWSemanticData. Children will be added
-	 * recursively and might be moved to the parent of $this object (if it
-	 * is a child of something else).
-	 *
-	 * @note The subject of the SMWSemanticData that is imported is not
-	 * relevant to the result of this operation, but the subobject names of
-	 * its children (if any) will be used. Therefore, if one of the children
-	 * has the same subobject name as the subject of the SMWSemanticData
-	 * into which the data is imported, then the data of imported parent
-	 * and the eponymous child will be combined into a single object.
-	 * Example: we have data about "Foo#Bar" (no children) and we import
-	 * data about "Baz" with a child "Baz#Bar". Then the result will be
-	 * about "Foo#Bar" and have no children but all data from the three
-	 * sources. The original data from "Foo#Bar" is kept, the data from
-	 * "Baz" is imported (ignoring the name "Baz"), and the data of the
-	 * child "Baz#Bar" is merged into "Foo#Bar" (using only the subobject
-	 * name). While slightly subtle, this should make sense in most cases.
-	 * Typically, if "Baz" != "Foo" then "Baz" is just some internal page
-	 * name that is used as a placeholder. Children can never hold data
-	 * about other pages, so mergnig all data is most likely desired.
+	 * Add all data from the given SMWSemanticData.
 	 *
 	 * @since 1.7
-	 * @see SMWSemanticData::getChild()
 	 *
 	 * @param $semanticData SMWSemanticData object to copy from
 	 */
@@ -439,10 +315,6 @@ class SMWSemanticData {
 					$this->addPropertyObjectValue( $property, $dataItem);
 				}
 			}
-		}
-
-		foreach ( $semanticData->getAllChildren() as $subobjectName => $child ) {
-			$this->getChild( $subobjectName )->importDataFrom( $child );
 		}
 	}
 

@@ -37,6 +37,7 @@ class SMWLanguageHe extends SMWLanguage {
 		'_anu' => 'מזהה יחודי לפירוש',  // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
 		'_rec' => 'Record', // name of record data type //TODO: translate
+		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -62,6 +63,7 @@ class SMWLanguageHe extends SMWLanguage {
 		'_MDAT' => 'תאריך לשינוי',
 		'_ERRP' => 'יש ערך תקין בשביל',
 		'_LIST' => 'Has fields', // TODO: translate
+		'_SOBJ' => 'Has subobject', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

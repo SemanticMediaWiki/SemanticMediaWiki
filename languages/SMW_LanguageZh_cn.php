@@ -39,6 +39,7 @@ class SMWLanguageZh_cn extends SMWLanguage {
 		'_anu' => 'URI的注解',	// 'Annotation URI'  // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
 		'_rec' => 'Record', // name of record data type //TODO: translate
+		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -66,6 +67,7 @@ class SMWLanguageZh_cn extends SMWLanguage {
 		'_MDAT' => 'Modification date',  // TODO: translate
 		'_ERRP' => 'Has improper value for', // TODO: translate
 		'_LIST' => 'Has fields', // TODO: translate
+		'_SOBJ' => 'Has subobject', // TODO: translate
 	);
 
 

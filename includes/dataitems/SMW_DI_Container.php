@@ -97,8 +97,6 @@ class SMWContainerSemanticData extends SMWSemanticData {
 		$this->mHasVisibleProps = $semanticData->hasVisibleProperties();
 		$this->mHasVisibleSpecs = $semanticData->hasVisibleSpecialProperties();
 		$this->mNoDuplicates = $semanticData->mNoDuplicates;
-		$this->mChildren = $semanticData->mChildren;
-		$this->mParentSemanticData = $semanticData->mParentSemanticData;
 	}
 
 }

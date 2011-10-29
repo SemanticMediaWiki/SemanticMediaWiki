@@ -38,6 +38,7 @@ class SMWLanguageIt extends SMWLanguage {
 		'_anu' => 'Annotazione URI', // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
 		'_rec' => 'Record', // name of record data type //TODO: translate
+		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -63,6 +64,7 @@ class SMWLanguageIt extends SMWLanguage {
 		'_MDAT' => 'Data di modifica',
 		'_ERRP' => 'Ha un valore improprio per',
 		'_LIST' => 'Has fields', // TODO: translate
+		'_SOBJ' => 'Has subobject', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

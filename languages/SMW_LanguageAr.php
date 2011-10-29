@@ -37,6 +37,7 @@ class SMWLanguageAr extends SMWLanguage {
 		'_anu' => 'التعليق علي معرف الموارد الموحد',  // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'رقم الهاتف',  // name of the telephone (URI) type
 		'_rec' => 'تسجيل', // name of record data type
+		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -60,6 +61,7 @@ class SMWLanguageAr extends SMWLanguage {
 		'_MDAT' => 'تاريخ التعديل',
 		'_ERRP' => 'يمتلك قيمة غير صحيحة ل',
 		'_LIST' => 'يمتلك حقول',
+		'_SOBJ' => 'Has subobject', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

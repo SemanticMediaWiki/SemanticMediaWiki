@@ -40,6 +40,7 @@ class SMWLanguageId extends SMWLanguage {
 		'_anu' => 'URI anotasi',  // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'Nomor telepon',  // name of the telephone (URI) type
 		'_rec' => 'Rekaman', // name of record data type
+		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -62,6 +63,7 @@ class SMWLanguageId extends SMWLanguage {
 		'_MDAT' => 'Tanggal modifikasi',
 		'_ERRP' => 'Memiliki nilai yang tidak tepat untuk',
 		'_LIST' => 'Memiliki bidang',
+		'_SOBJ' => 'Has subobject', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

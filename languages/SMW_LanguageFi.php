@@ -39,6 +39,7 @@ class SMWLanguageFi extends SMWLanguage {
 		'_tel' => 'Puhelinnumero',  // name of the telephone (URI) type
 		'_rec' => 'Tietue', // name of record data type
 		'_qty' => 'Määrä', // name of the number type with units of measurement
+		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
 	);
 
 	protected $m_SpecialProperties = array(
@@ -55,6 +56,7 @@ class SMWLanguageFi extends SMWLanguage {
 		'_MDAT' => 'Muokkausaika',
 		'_ERRP' => 'Sopimaton arvo kentälle',
 		'_LIST' => 'Koostuu kentistä',
+		'_SOBJ' => 'Has subobject', // TODO: translate
 	);
 
 	protected $m_Namespaces = array(

@@ -66,6 +66,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'_MDAT' => 'Modification date',
 		'_ERRP' => 'Has improper value for',
 		'_LIST' => 'Has fields',
+		'_SOBJ' => 'Has subobject',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

@@ -335,6 +335,7 @@ class SMWDIProperty extends SMWDataItem {
 				'_SKEY'  =>  array( '__key', false ), // sort key of a page
 				'_SF_DF' => array( '__spf', true ), // Semantic Form's default form property
 				'_SF_AF' => array( '__spf', true ),  // Semantic Form's alternate form property
+				'_SOBJ'  =>  array( '_wpg', true ), // "has subobject"
 			);
 
 		foreach ( $datatypeLabels as $typeid => $label ) {
