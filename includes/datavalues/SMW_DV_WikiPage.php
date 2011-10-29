@@ -12,17 +12,20 @@
  * namespace, Whether a namespace is fixed is decided based on the
  * type ID when the object is constructed.
  *
+ * The short display simulates the behaviour of the MediaWiki "pipe trick"
+ * but always includes fragments. This can be overwritten by setting a 
+ * caption, which is also done by default when generating a value from user
+ * input. The long display always includes all relevant information. Only if a
+ * fixed namespace is used for the datatype, the namespace prefix is omitted.
+ * This behavior has changed in SMW 1.7: up to this time, short displays have
+ * always inlcuded the namespace and long displays used the pipe trick, leading
+ * to a paradoxical confusion of "long" and "short".
+ *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
  */
 class SMWWikiPageValue extends SMWDataValue {
-
-	/**
-	 * The isolated title as text. Always set when this object is valid.
-	 * @var string
-	 */
-	protected $m_textform;
 
 	/**
 	 * Fragment text for user-specified title. Not stored, but kept for
@@ -111,9 +114,9 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
 			} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 				 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
-				$this->addError( wfMsgForContent( 'smw_wrong_namespace', $wgContLang->getNsText( $this->m_fixNamespace ) ) );
+				$this->addError( wfMsgForContent( 'smw_wrong_namespace',
+					$wgContLang->getNsText( $this->m_fixNamespace ) ) );
 			} else {
-				$this->m_textform = $this->m_title->getText();
 				$this->m_fragment = $this->m_title->getFragment();
 				$this->m_prefixedtext = '';
 				$this->m_id = -1; // unset id
@@ -137,14 +140,15 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
 			$this->m_dataitem = $dataItem;
-			$this->m_textform = str_replace( '_', ' ', $dataItem->getDBkey() );
 			$this->m_id = -1;
 			$this->m_title = null;
 			$this->m_fragment = $dataItem->getSubobjectName();
 			$this->m_prefixedtext = '';
-			$this->m_caption = false;
-			if ( ( $this->m_fixNamespace != NS_MAIN ) && ( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
-				$this->addError( wfMsgForContent( 'smw_notitle', $this->getPrefixedText() ) );
+			$this->m_caption = false; // this class can handle this
+			if ( ( $this->m_fixNamespace != NS_MAIN ) &&
+				( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
+				$this->addError( wfMsgForContent( 'smw_wrong_namespace',
+					$wgContLang->getNsText( $this->m_fixNamespace ) ) );
 			}
 			return true;
 		} else {
@@ -152,73 +156,146 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
+	/**
+	 * Display the value on a wiki page. This is used to display the value
+	 * in the place where it was annotated on a wiki page. The desired
+	 * behavior is that the display in this case looks as if no property
+	 * annotation had been given, i.e. an annotation [[property::page|foo]]
+	 * should display like [[page|foo]] in MediaWiki. But this should lead
+	 * to a link, not to a category assignment. This means that:
+	 *
+	 * (1) If Image: is used (instead of Media:) then let MediaWiki embed
+	 * the image.
+	 *
+	 * (2) If Category: is used, treat it as a page and link to it (do not
+	 * categorize the page)
+	 *
+	 * (3) Preserve everything given after "|" for display (caption, image
+	 * parameters, ...)
+	 *
+	 * (4) Use the (default) caption for display. When the value comes from
+	 * user input, this includes the full value that one would also see in
+	 * MediaWiki.
+	 *
+	 * @param $linked mixed generate links if not null or false
+	 * @return string
+	 */
 	public function getShortWikiText( $linked = null ) {
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( !$this->isValid() ) || ( $this->m_caption === '' ) ) {
-			return $this->getCaption();
+		if ( is_null( $linked ) || $linked === false ||
+			$this->m_outformat == '-' || !$this->isValid() ||
+			$this->m_caption === '' ) {
+			return $this->m_caption !== false ? $this->m_caption : $this->getWikiValue();
 		} else {
-			return '[[:' . $this->getWikiLinkTarget() . '|' . $this->getCaption() . ']]';
-		}
-	}
-
-	public function getShortHTMLText( $linker = null ) {
-		if ( ( $linker !== null ) && ( $this->m_caption !== '' ) && ( $this->m_outformat != '-' ) ) $this->getTitle(); // init the Title object, may reveal hitherto unnoticed errors
-		if ( is_null( $linker ) || $linker === false || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
-			return htmlspecialchars( $this->getCaption() );
-		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
-			return $linker->makeMediaLinkObj( $this->getTitle(), $this->getCaption() );
-		} else {
-			return $linker->makeLinkObj( $this->getTitle(), htmlspecialchars( $this->getCaption() ) );
+			if ( $this->m_dataitem->getNamespace() == NS_FILE ) {
+				$linkEscape = '';
+				$defaultCaption = '|' . $this->getShortCaptionText() . '|frameless|border|text-top';
+			} else {
+				$linkEscape = ':';
+				$defaultCaption = '|' . $this->getShortCaptionText();
+			}
+			if ( $this->m_caption === false ) {
+				return '[[' . $linkEscape . $this->getWikiLinkTarget() . $defaultCaption . ']]';
+			} else {
+				return '[[' . $linkEscape . $this->getWikiLinkTarget() . '|' . $this->m_caption . ']]';
+			}
 		}
 	}
 
 	/**
-	 * @note The getLong... functions of this class always hide the fragment. Fragments are currently
-	 * not stored, and hence should not be shown in the Factbox (where the getLongWikiText method is used).
-	 * In all other uses, values come from the store and do not have fragments anyway.
+	 * Display the value as in getShortWikiText() but create HTML.
+	 * The only difference is that images are not embedded.
+	 *
+	 * @param $linker mixed the Linker object to use or null if no linking is desired
+	 * @return string
+	 */
+	public function getShortHTMLText( $linker = null ) {
+		// init the Title object, may reveal hitherto unnoticed errors:
+		if ( !is_null( $linker ) && $linker !== false &&
+				$this->m_caption !== '' && $this->m_outformat != '-' ) {
+			$this->getTitle();
+		}
+
+		if ( is_null( $linker ) || $linker === false || !$this->isValid() ||
+				$this->m_outformat == '-' || $this->m_caption === '' ) {
+			return htmlspecialchars( $this->m_caption !== false ? $this->m_caption : $this->getWikiValue() );
+		} else {
+			$caption = htmlspecialchars(
+				$this->m_caption !== false ? $this->m_caption : $this->getShortCaptionText() );
+			if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
+				return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
+			} else {
+				return $linker->makeLinkObj( $this->getTitle(), $caption );
+			}
+		}
+	}
+
+	/**
+	 * Display the "long" value on a wiki page. This behaves largely like
+	 * getShortWikiText() but does not use the caption. Instead, it always
+	 * takes the long display form (wiki value).
+	 *
+	 * @param $linked mixed if true the result will be linked
+	 * @return string
 	 */
 	public function getLongWikiText( $linked = null ) {
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) ) {
-			return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
-				( $this->m_fragment ? "#{$this->m_fragment}" : '' );
+
+		if ( is_null( $linked ) || $linked === false || $this->m_outformat == '-' ) {
+			return $this->getWikiValue();
 		} elseif ( $this->m_dataitem->getNamespace() == NS_FILE ) {
-			// For images and other files, embed them and display
-			// their name, instead of just displaying their name
-			// TODO? We forget about subobjecs/fragments here.
-			$fileName = str_replace( "'", '&#x0027;', $this->getPrefixedText() );
-			 return '[[' . $fileName . '|' . $this->m_textform . '|frameless|border|text-top]]' . "<br />\n" . '[[:' . $fileName . '|' . $this->m_textform . ']]';
+			// Embed images and other files
+			// Note that the embedded file links to the image, hence needs no additional link text.
+			// There should not be a linebreak after an impage, just like there is no linebreak after
+			// other values (whether formatted or not).
+			return '[[' . $this->getWikiLinkTarget() . '|' .
+				$this->getWikiValue() . '|frameless|border|text-top]]';
 		} else {
-			return '[[' . $this->getWikiLinkTarget() . '|' . $this->m_textform . ']]';
+			return '[[:' . $this->getWikiLinkTarget() . '|' . $this->getWikiValue() . ']]';
 		}
 	}
 
+	/**
+	 * Display the "long" value in HTML. This behaves largely like
+	 * getLongWikiText() but does not embed images.
+	 *
+	 * @param $linker mixed if a Linker is given, the result will be linked
+	 * @return string
+	 */
 	public function getLongHTMLText( $linker = null ) {
-		if ( ( $linker !== null ) && ( $this->m_outformat != '-' ) ) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
+		// init the Title object, may reveal hitherto unnoticed errors:
+		if ( !is_null( $linker ) && ( $this->m_outformat != '-' ) ) {
+			$this->getTitle();
+		}
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
-		if ( ( $linker === null ) || ( $this->m_outformat == '-' ) ) {
-			return htmlspecialchars( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText():$this->getText() );
+
+		if ( is_null( $linker ) || $this->m_outformat == '-' ) {
+			return htmlspecialchars( $this->getWikiValue() );
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case is really needed
-			return $linker->makeMediaLinkObj( $this->getTitle(), $this->m_textform );
+			return $linker->makeMediaLinkObj( $this->getTitle(),
+				htmlspecialchars( $this->getWikiValue() ) );
 		} else { // all others use default linking, no embedding of images here
-			return $linker->makeLinkObj( $this->getTitle(), htmlspecialchars( $this->m_textform ) );
+			return $linker->makeLinkObj( $this->getTitle(),
+				htmlspecialchars( $this->getWikiValue() ) );
 		}
 	}
 
+	/**
+	 * Return a string that could be used in an in-page property assignment
+	 * for setting this value. This does not include initial ":" for
+	 * escaping things like Category: links since the property value does
+	 * not include such escapes either. Fragment information is included.
+	 * Namespaces are omitted if a fixed namespace is used, since they are
+	 * not needed in this case when making a property assignment.
+	 *
+	 * @return string
+	 */
 	public function getWikiValue() {
-		if ( $this->m_fixNamespace != NS_MAIN ) { // no explicit namespace needed!
-			$result = $this->getText();
-		} elseif ( $this->m_dataitem->getNamespace() == NS_CATEGORY ) {
-			// escape to enable use in links; todo: not generally required/suitable :-/
-			$result = ':' . $this->getPrefixedText();
-		} else {
-			$result = $this->getPrefixedText();
-		}
-
-		return $result . ( $this->m_fragment ? "#{$this->m_fragment}" : '' );
+		return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
+			( $this->m_fragment ? "#{$this->m_fragment}" : '' );
 	}
 
 	public function getHash() {
@@ -265,7 +342,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * Get MediaWiki's ID for this value, if any.
+	 * Get MediaWiki's ID for this value or 0 if not available.
+	 *
+	 * @return integer
 	 */
 	public function getArticleID() {
 		if ( $this->m_id === false ) {
@@ -276,6 +355,8 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	/**
 	 * Get namespace constant for this value.
+	 *
+	 * @return integer
 	 */
 	public function getNamespace() {
 		return $this->m_dataitem->getNamespace();
@@ -286,18 +367,24 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * correspond to wiki pages may choose a DB key that is not a legal title
 	 * DB key but rather another suitable internal ID. Thus it is not suitable
 	 * to use this method in places where only MediaWiki Title keys are allowed.
+	 *
+	 * @return string
 	 */
 	public function getDBkey() {
 		return $this->m_dataitem->getDBkey();
 	}
 
-	/// Get text label for this value.
+	/**
+	 * Get text label for this value, just like Title::getText().
+	 *
+	 * @return string
+	 */
 	public function getText() {
 		return str_replace( '_', ' ', $this->m_dataitem->getDBkey() );
 	}
 
 	/**
-	 * Get the prefixed text for this value, including a localised namespace
+	 * Get the prefixed text for this value, including a localized namespace
 	 * prefix.
 	 *
 	 * @return string
@@ -307,8 +394,10 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( $this->m_prefixedtext == '' ) {
 			if ( $this->isValid() ) {
 				$nstext = $wgContLang->getNSText( $this->m_dataitem->getNamespace() );
-				$this->m_prefixedtext = ( $this->m_dataitem->getInterwiki() != '' ? $this->m_dataitem->getInterwiki() . ':' : '' ) .
-							( $nstext != '' ? "$nstext:" : '' ) . $this->m_textform;
+				$this->m_prefixedtext =
+					( $this->m_dataitem->getInterwiki() != '' ?
+						$this->m_dataitem->getInterwiki() . ':' : '' ) .
+					( $nstext != '' ? "$nstext:" : '' ) . $this->getText();
 			} else {
 				$this->m_prefixedtext = 'NO_VALID_VALUE';
 			}
@@ -318,29 +407,42 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	/**
 	 * Get interwiki prefix or empty string.
+	 *
+	 * @return string
 	 */
 	public function getInterwiki() {
 		return $this->m_dataitem->getInterwiki();
 	}
 
 	/**
-	 * Get the (default) caption for this value.
-	 * If a fixed namespace is set, we do not return the namespace prefix explicitly.
+	 * Get a short caption used to label this value. In particular, this
+	 * omits namespace and interwiki prefixes (similar to the MediaWiki
+	 * "pipe trick"). Fragments are included unless they start with an
+	 * underscore (used for generated fragment names that are not helpful
+	 * for users and that might change easily).
+	 *
+	 * @since 1.7
+	 * @return string
 	 */
-	protected function getCaption() {
-		return $this->m_caption !== false ? $this->m_caption :
-			( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
-			( $this->m_fragment ? "#{$this->m_fragment}" : '' );
+	protected function getShortCaptionText() {
+		if ( $this->m_fragment && $this->m_fragment{0} != '_' ) {
+			$fragmentText = '#' . $this->m_fragment;
+		} else {
+			$fragmentText = '';
+		}
+		return $this->getText() . $fragmentText;
 	}
 
 	/**
 	 * Compute a text that can be used in wiki text to link to this
 	 * datavalue. Processing includes some escaping and adding the
 	 * fragment.
+	 *
+	 * @since 1.7
+	 * @return string
 	 */
 	protected function getWikiLinkTarget() {
-		return ':' .
-			str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .
+		return str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .
 			( $this->m_fragment ? "#{$this->m_fragment}" : '' );
 	}
 

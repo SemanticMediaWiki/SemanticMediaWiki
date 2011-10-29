@@ -442,7 +442,11 @@ class SMWValueDescription extends SMWDescription {
 		if ( $asvalue ) {
 			return $comparator . $dataValue->getWikiValue();
 		} else { // this only is possible for values of Type:Page
-			return '[[' . $comparator . $dataValue->getWikiValue() . ']]';
+			if ( $comparator == '' ) { // some extra care for Category: pages
+				return '[[:' . $dataValue->getWikiValue() . ']]';
+			} else {
+				return '[[' . $comparator . $dataValue->getWikiValue() . ']]';
+			}
 		}
 	}
 

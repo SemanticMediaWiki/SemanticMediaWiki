@@ -430,20 +430,16 @@ class SMWResultArray {
 	 *
 	 * The parameter $linker controls linking of title values and should
 	 * be some Linker object (or NULL for no linking).
-	 * 
+	 *
 	 * @param integer $outputMode
 	 * @param mixed $linker
-	 * 
+	 *
 	 * @return string or false
 	 */
 	public function getNextText( $outputMode, $linker = null ) {
 		$dataValue = $this->getNextDataValue();
 		if ( $dataValue !== false ) { // Print data values.
-			if ( ( $dataValue->getTypeID() == '_wpg' ) || ( $dataValue->getTypeID() == '__sin' ) ) { // Prefer "long" text for page-values.
-				return $dataValue->getLongText( $outputMode, $linker );
-			} else {
-				return $dataValue->getShortText( $outputMode, $linker );
-			}
+			return $dataValue->getShortText( $outputMode, $linker );
 		} else {
 			return false;
 		}

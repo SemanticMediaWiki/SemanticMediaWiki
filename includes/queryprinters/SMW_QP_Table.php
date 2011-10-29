@@ -188,10 +188,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		$values = array();
 		
 		foreach ( $dataValues as $dv ) {
-			$value = ( ( $dv->getTypeID() == '_wpg' ) || ( $dv->getTypeID() == '__sin' ) ) ?
-				   $dv->getLongText( $outputmode, $this->getLinker( $isSubject ) ) :
-				   $dv->getShortText( $outputmode, $this->getLinker( $isSubject ) );
-			
+			$value = $dv->getShortText( $outputmode, $this->getLinker( $isSubject ) );
 			$values[] = $value;
 		}
 		
