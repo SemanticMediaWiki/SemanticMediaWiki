@@ -98,7 +98,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( $value != '' ) {
 			if ( $value{0} == '#' ) {
 				if ( is_null( $this->m_contextPage ) ) {
-					$this->addError(  wfMsgForContent( 'smw_notitle', $value ) );
+					$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
 					return;
 				} else {
 					$this->m_title = Title::makeTitle( $this->m_contextPage->getNamespace(),
@@ -117,7 +117,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->addError( wfMsgForContent( 'smw_wrong_namespace',
 					$wgContLang->getNsText( $this->m_fixNamespace ) ) );
 			} else {
-				$this->m_fragment = $this->m_title->getFragment();
+				$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
 				$this->m_prefixedtext = '';
 				$this->m_id = -1; // unset id
 				$this->m_dataitem = SMWDIWikiPage::newFromTitle( $this->m_title, $this->m_typeid );
@@ -250,9 +250,9 @@ class SMWWikiPageValue extends SMWDataValue {
 			// There should not be a linebreak after an impage, just like there is no linebreak after
 			// other values (whether formatted or not).
 			return '[[' . $this->getWikiLinkTarget() . '|' .
-				$this->getWikiValue() . '|frameless|border|text-top]]';
+				$this->getLongCaptionText() . '|frameless|border|text-top]]';
 		} else {
-			return '[[:' . $this->getWikiLinkTarget() . '|' . $this->getWikiValue() . ']]';
+			return '[[:' . $this->getWikiLinkTarget() . '|' . $this->getLongCaptionText() . ']]';
 		}
 	}
 
@@ -276,10 +276,10 @@ class SMWWikiPageValue extends SMWDataValue {
 			return htmlspecialchars( $this->getWikiValue() );
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case is really needed
 			return $linker->makeMediaLinkObj( $this->getTitle(),
-				htmlspecialchars( $this->getWikiValue() ) );
+				htmlspecialchars( $this->getLongCaptionText() ) );
 		} else { // all others use default linking, no embedding of images here
 			return $linker->makeLinkObj( $this->getTitle(),
-				htmlspecialchars( $this->getWikiValue() ) );
+				htmlspecialchars( $this->getLongCaptionText() ) );
 		}
 	}
 
@@ -425,12 +425,31 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	protected function getShortCaptionText() {
-		if ( $this->m_fragment && $this->m_fragment{0} != '_' ) {
+		if ( $this->m_fragment != '' && $this->m_fragment{0} != '_' ) {
 			$fragmentText = '#' . $this->m_fragment;
 		} else {
 			$fragmentText = '';
 		}
 		return $this->getText() . $fragmentText;
+	}
+
+	/**
+	 * Get a long caption used to label this value. In particular, this
+	 * includes namespace and interwiki prefixes, while fragments are only
+	 * included if they do not start with an underscore (used for generated
+	 * fragment names that are not helpful for users and that might change
+	 * easily).
+	 *
+	 * @since 1.7
+	 * @return string
+	 */
+	protected function getLongCaptionText() {
+		if ( $this->m_fragment && $this->m_fragment{0} != '_' ) {
+			$fragmentText = '#' . $this->m_fragment;
+		} else {
+			$fragmentText = '';
+		}
+		return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) . $fragmentText;
 	}
 
 	/**

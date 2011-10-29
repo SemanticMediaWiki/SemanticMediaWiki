@@ -237,7 +237,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		$wgOut->setHTMLTitle( $this->subject->getTitle() );
 		$html = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 			"<tr class=\"smwb-title\"><td colspan=\"2\">\n" .
-			$this->subject->getShortHTMLText( smwfGetLinker() ) . "\n" .
+			$this->subject->getLongHTMLText( smwfGetLinker() ) . "\n" .
 			"</td></tr>\n</table>\n";
 
 		return $html;
