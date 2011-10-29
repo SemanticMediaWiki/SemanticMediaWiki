@@ -1,6 +1,7 @@
 <?php
 /**
- * The class in this file manages semantic data collected during parsing of an article.
+ * The class in this file manages semantic data collected during parsing of an
+ * article.
  *
  * @author Markus Krötzsch
  *
@@ -9,19 +10,15 @@
  */
 
 /**
- * Static class for managing semantic data collected during parsing, including some hooks
- * that can be used for updating and storing the data for some article. All methods
- * in this class are stateless: data is stored persistently only in a given parser
- * output. There is one exception: to provide a minimal compatibility with MediaWiki
- * up to version 1.13, the class keeps track of the latest ParserOutput that was
- * accessed. In this way, the ParserOutput can be reproduced when storing, since it
- * is not available as part of the storing LinkUpdate object in MediaWiki before 1.14.
+ * Static class for managing semantic data collected during parsing, including
+ * some hooks that can be used for updating and storing the data for some
+ * article. All methods in this class are stateless: data is stored persistently
+ * only in a given parser output.
+ *
  * @ingroup SMW
+ * @author Markus Krötzsch
  */
 class SMWParseData {
-
-	/// ParserOutput last used. See documentation to SMWParseData.
-	static public $mPrevOutput = null;
 
 	/**
 	 * Remove relevant SMW magic words from the given text and return
@@ -43,7 +40,7 @@ class SMWParseData {
 			$words[] = 'SMW_SHOWFACTBOX';
 		}
 
-		$output = SMWParseData::getOutput( $parser );
+		$output = $parser->getOutput();
 		$output->mSMWMagicWords = $words;
 
 		return $words;
@@ -56,7 +53,7 @@ class SMWParseData {
 	 * @return SMWSemanticData
 	 */
 	static public function getSMWdata( $parser ) {
-		$output = self::getOutput( $parser );
+		$output = $parser->getOutput();
 		$title = $parser->getTitle();
 
 		// No parsing, create error.
@@ -78,7 +75,7 @@ class SMWParseData {
 	 * @param Parser $parser
 	 */
 	static public function clearStorage( Parser $parser ) {
-		$output = self::getOutput( $parser );
+		$output = $parser->getOutput();
 		$title = $parser->getTitle();
 
 		if ( !isset( $output ) || !isset( $title ) ) {
@@ -306,22 +303,6 @@ class SMWParseData {
 	}
 
 	/**
-	 * Get the parser output from a parser object. The result is also stored
-	 * in SMWParseData::$mPrevOutput for further reference.
-	 *
-	 * @param Parser $parser
-	 */
-	static protected function getOutput( Parser $parser ) {
-		if ( method_exists( $parser, 'getOutput' ) ) {
-			self::$mPrevOutput = $parser->getOutput();
-		} else {
-			self::$mPrevOutput = $parser->mOutput;
-		}
-
-		return self::$mPrevOutput;
-	}
-
-	/**
 	 * Hook function fetches category information and other final settings
 	 * from parser output, so that they are also replicated in SMW for more
 	 * efficient querying.
@@ -401,26 +382,11 @@ class SMWParseData {
 	}
 
 	/**
-	 * Used to updates data after changes of templates, but also at each saving of an article.
+	 * Hook where the storage of data is triggered. This happens when
+	 * saving an article but possibly also when running update jobs.
 	 */
 	static public function onLinksUpdateConstructed( $links_update ) {
-		if ( isset( $links_update->mParserOutput ) ) {
-			$output = $links_update->mParserOutput;
-		} else { // MediaWiki <= 1.13 compatibility
-			$output = self::$mPrevOutput;
-
-			if ( !isset( $output ) ) {
-				smwfGetStore()->clearData( new SMWDIWikiPage(
-					$links_update->mTitle->getDbKey(),
-					$links_update->mTitle->getNamespace(),
-					$links_update->mTitle->getInterwiki()
-				) );
-				return true;
-			}
-		}
-
-		self::storeData( $output, $links_update->mTitle, true );
-
+		self::storeData( $links_update->mParserOutput, $links_update->mTitle, true );
 		return true;
 	}
 
