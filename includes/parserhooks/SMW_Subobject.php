@@ -27,7 +27,7 @@ class SMWSubobject {
 
 		$params = func_get_args();
 		array_shift( $params ); // We already know the $parser ...
-		$subobjectName = trim( array_shift( $params ) );
+		$subobjectName = str_replace( ' ', '_', trim( array_shift( $params ) ) );
 
 		$semanticData = SMWParseData::getSMWData( $parser )->getChild( $subobjectName );
 
@@ -37,6 +37,8 @@ class SMWSubobject {
 			// Only add the property when there is both a name and a value.
 			if ( count( $parts ) == 2 ) {
 				self::addPropertyValueToSemanticData( $parts[0], $parts[1], $semanticData );
+			} else {
+				//self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
 			}
 		}
 
