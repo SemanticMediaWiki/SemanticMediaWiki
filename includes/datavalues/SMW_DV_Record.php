@@ -39,7 +39,7 @@ class SMWRecordValue extends SMWDataValue {
 		} elseif ( is_null( $this->m_contextPage ) ) {
 			$semanticData = SMWContainerSemanticData::makeAnonymousContainer();
 		} else {
-			$subobjectName = hash( 'md4', $value, false); // md4 is probably fastest of PHP's hashes
+			$subobjectName = '_' . hash( 'md4', $value, false); // md4 is probably fastest of PHP's hashes
 			$subject = new SMWDIWikiPage( $this->m_contextPage->getDBkey(),
 				$this->m_contextPage->getNamespace(), $this->m_contextPage->getInterwiki(),
 				$subobjectName );
