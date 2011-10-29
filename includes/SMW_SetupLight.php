@@ -112,7 +112,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';
 	$wgAutoloadClasses['SMWDataValue']           	= $dvDir . 'SMW_DataValue.php';
-	$wgAutoloadClasses['SMWContainerValue']		= $dvDir . 'SMW_DV_Container.php';
 //	$wgAutoloadClasses['SMWRecordValue']         	= $dvDir . 'SMW_DV_Record.php';
 	$wgAutoloadClasses['SMWErrorValue']          	= $dvDir . 'SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWStringValue']         	= $dvDir . 'SMW_DV_String.php';

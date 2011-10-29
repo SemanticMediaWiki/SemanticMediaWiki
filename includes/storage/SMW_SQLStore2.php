@@ -2429,9 +2429,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * be limited for performance reasons,
 	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
 	 * - n for namespace numbers (or other similar integers)
-	 * - f for floating point numbers of double precision
-	 * - c for the special container format used by SMWContainerValue; if used
-	 * then the signature must be 'c' without any other fields. 
+	 * - f for floating point numbers of double precision 
 	 * - p for a reference to an SMW ID as stored in the smw_ids table; this
 	 *   corresponds to a data entry of ID "tnwt".
 	 *
