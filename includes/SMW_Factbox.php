@@ -69,9 +69,9 @@ class SMWFactbox {
 				} elseif ( $propertyDi->isUserDefined() ) { // user defined property
 					$propertyDv->setCaption( preg_replace( '/[ ]/u', '&#160;', $propertyDv->getWikiValue(), 2 ) );
 					/// NOTE: the preg_replace is a slight hack to ensure that the left column does not get too narrow
-					$text .= '<tr><td class="smwpropname">' . $propertyDv->getLongWikiText( true ) . '</td><td class="smwprops">';
+					$text .= '<tr><td class="smwpropname">' . $propertyDv->getShortWikiText( true ) . '</td><td class="smwprops">';
 				} elseif ( $propertyDv->isVisible() ) { // predefined property
-					$text .= '<tr><td class="smwspecname">' . $propertyDv->getLongWikiText( true ) . '</td><td class="smwspecs">';
+					$text .= '<tr><td class="smwspecname">' . $propertyDv->getShortWikiText( true ) . '</td><td class="smwspecs">';
 				} else { // predefined, internal property
 					continue;
 				}
@@ -96,12 +96,6 @@ class SMWFactbox {
 
 			$text .= '</table></div>';
 		}
-
-		// Debugging: show all child objects
-		// (does not play too well with Records, hence disabled by default)
-// 		foreach ( $semdata->getAllChildren() as $childSemanticData ) {
-// 			$text .= SMWFactbox::getFactboxText( $childSemanticData, $showfactbox );
-// 		}
 
 		wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
 		return $text;
