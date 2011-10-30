@@ -1104,6 +1104,34 @@ $messages['arz'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'مساعده الاستعلامات الداخلية',
 );
 
+/** Asturian (Asturianu)
+ * @author Xuacu
+ */
+$messages['ast'] = array(
+	'smw-desc' => "Facer la to wiki más accesible - pa les máquines ''y'' pa los humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en llinia])",
+	'smw_viewasrdf' => 'Canal RDF',
+	'smw_finallistconjunct' => ', y',
+	'smw_factbox_head' => 'Fechos sobro $1',
+	'smw_isspecprop' => 'Esta propiedá ye una propiedá especial nesta wiki.',
+	'version-semantic' => 'Estensiones semántiques',
+	'smw_baduri' => 'Les URIs de la forma «$1» nun tan permitíes.',
+	'smw_dsv_link' => 'DSV',
+	'smw_printername_auto' => 'Automático',
+	'smw_printername_count' => 'Resultaos del recuentu',
+	'smw_printername_csv' => 'Esportación a CSV',
+	'smw_printername_dsv' => 'Esportación a DSV',
+	'smw_printername_debug' => 'Consulta de depuración (pa espertos)',
+	'smw_printername_json' => 'Esportación a JSON',
+	'smw_printername_list' => 'Llista',
+	'smw_printername_ol' => 'Enumeración',
+	'smw_printername_rss' => 'Esportación a RSS',
+	'smw_printername_table' => 'Tabla',
+	'smw_printername_broadtable' => 'Tabla ancha',
+	'smw_printername_template' => 'Plantía',
+	'smw_printername_rdf' => 'Esportación a RDF',
+	'smw_printername_category' => 'Categoría',
+);
+
 /** Azerbaijani (Azərbaycanca)
  * @author Cekli829
  */
