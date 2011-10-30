@@ -48,7 +48,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'Float'       => '_num',
 		'Integer'     => '_num',
 		'Enumeration' => '_str',
-		'Phone number' => '_tel'
+		'Phone number' => '_tel',
 		'E-mail'       => '_ema',
 		'Geographic coordinate' => '_geo'
 	);
