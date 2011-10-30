@@ -40,7 +40,7 @@ class SMWLanguageDe extends SMWLanguage {
 		'_geo' => 'Geografische Koordinaten', // name of the geocoord type
 		'_tem' => 'Temperatur',  // name of the temperature type
 		'_dat' => 'Datum',  // name of the datetime (calendar) type
-		'_ema' => 'Email',  // name of the email type
+		'_ema' => 'E-Mail',  // name of the email type
 		'_uri' => 'URL',  // name of the URL type
 		'_anu' => 'URI-Annotation',  // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'Telefonnummer', // name of the telephone number URI datatype
