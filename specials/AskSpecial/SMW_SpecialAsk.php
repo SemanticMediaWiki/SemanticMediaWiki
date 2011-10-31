@@ -217,7 +217,6 @@ function escapeQuestion(term){
 	}
 }
 
-jQuery.noConflict();
 /* extending jQuery functions for custom highligting */
 jQuery.ui.autocomplete.prototype._renderItem = function( ul, item) {
 	var term_without_q = escapeQuestion(extractLast(this.term));
