@@ -96,7 +96,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $value != '' ) {
-			if ( $value{0} == '#' ) {
+			if ( $value[0] == '#' ) {
 				if ( is_null( $this->m_contextPage ) ) {
 					$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
 					return;
@@ -295,7 +295,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getWikiValue() {
 		return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
-			( $this->m_fragment ? "#{$this->m_fragment}" : '' );
+			( $this->m_fragment != '' ? "#{$this->m_fragment}" : '' );
 	}
 
 	public function getHash() {
@@ -425,7 +425,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	protected function getShortCaptionText() {
-		if ( $this->m_fragment != '' && $this->m_fragment{0} != '_' ) {
+		if ( $this->m_fragment != '' && $this->m_fragment[0] != '_' ) {
 			$fragmentText = '#' . $this->m_fragment;
 		} else {
 			$fragmentText = '';
@@ -444,7 +444,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	protected function getLongCaptionText() {
-		if ( $this->m_fragment && $this->m_fragment{0} != '_' ) {
+		if ( $this->m_fragment != '' && $this->m_fragment[0] != '_' ) {
 			$fragmentText = '#' . $this->m_fragment;
 		} else {
 			$fragmentText = '';
@@ -462,7 +462,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected function getWikiLinkTarget() {
 		return str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .
-			( $this->m_fragment ? "#{$this->m_fragment}" : '' );
+			( $this->m_fragment != '' ? "#{$this->m_fragment}" : '' );
 	}
 
 	/**
