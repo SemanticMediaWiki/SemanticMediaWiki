@@ -3847,6 +3847,7 @@ noms (<strong>[[Alemagnes]]</strong>) et los èspâços de noms (<strong>[[{{ns:
 	'smw_adminlinks_datastructure' => 'Structura de les balyês',
 	'smw_adminlinks_displayingdata' => 'Visualisacion de les balyês',
 	'smw_adminlinks_inlinequerieshelp' => 'Éde sur les requétes entrebetâs',
+	'smw-info-par-message' => 'Mèssâjo a fâre vêre.',
 );
 
 /** Irish (Gaeilge)
