@@ -4,7 +4,7 @@
  * Print query results in tables.
  * 
  * @author Markus Krötzsch
- * @author Jeroen De Dauw  < jeroendedauw@gmail.com >
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * 
  * @file
  * @ingroup SMWQuery
@@ -117,7 +117,13 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		$cells = array();
 		
 		foreach ( $subject as $i => $field ) {
-			$columnClass = $columnClasses[$i];
+			// $columnClasses will be empty if "headers=hide"
+			// was set.
+			if ( array_key_exists( $i, $columnClasses ) ) {
+				$columnClass = $columnClasses[$i];
+			} else {
+				$columnClass = null;
+			}
 			$cells[] = $this->getCellForPropVals( $field, $outputmode, $columnClass );
 		}
 		
