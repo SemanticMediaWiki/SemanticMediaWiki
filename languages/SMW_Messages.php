@@ -633,6 +633,7 @@ $messages['an'] = array(
  * @author Meno25
  * @author OsamaK
  * @author Ouda
+ * @author روخو
  */
 $messages['ar'] = array(
 	'smw-desc' => "جعل الويكي الخاص بك أكثر قابلية للوصول - للآلات ''و'' البشر ([http://semantic-mediawiki.org/wiki/Help:User_manual توثيق على الإنترنت])",
@@ -776,6 +777,10 @@ $messages['ar'] = array(
 	'smw_ask_show_embed' => 'عرض الكود المضمن',
 	'smw_ask_hide_embed' => 'إخفاء الكود المضمن',
 	'smw_ask_embed_instr' => 'لتضمين هذا الاستعلام في صفحة ويكي، استخدم الكود أدناه',
+	'smw_qui_labl' => 'علامة:',
+	'smw_qui_formt' => 'الصيغة:',
+	'smw_qui_limt' => 'الحد:',
+	'smw_qui_options' => 'خيارات',
 	'searchbyproperty' => 'البحث حسب الخصائص',
 	'smw_sbv_docu' => 'البحث عن كل الصفحات التي لها خصائص معينة وقيمة',
 	'smw_sbv_novalue' => 'أدخل قيمة صحيحة للخاصية، أو انظر كل قيم الخصائص ل"$1"',
