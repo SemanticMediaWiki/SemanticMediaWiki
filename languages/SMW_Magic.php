@@ -1,8 +1,12 @@
 <?php
 
-$magicWords = array();
-
-/** English (English) */
+/**
+ * Magic words
+ * 
+ * @file
+ * @ingroup Extensions
+ * @ingroup SMWLanguage
+ */
 
 $magicWords = array();
 
