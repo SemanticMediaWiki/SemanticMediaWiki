@@ -82,7 +82,7 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 			arsort( $data, SORT_NUMERIC );
 		}
 		
-		if ( $this->params['distributionimit'] !== false ) {
+		if ( $this->params['distributionlimit'] !== false ) {
 			$data = array_slice( $data, 0, $this->params['distributionlimit'], true );
 		}
 	}
