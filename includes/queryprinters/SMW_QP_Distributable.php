@@ -41,9 +41,27 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 //			)->getText();
 		}
 		else {
+			$this->applyDistributionParams( $data );
 			$this->addResources();
 			return $this->getFormatOutput( $data );
 		}
+	}
+	
+	protected function applyDistributionParams( array &$data ) {
+		if ( $this->params['distributionsort'] == 'asc' ) {
+			asort( $data, SORT_NUMERIC );
+		}
+		else if ( $this->params['distributionsort'] == 'desc' ) {
+			arsort( $data, SORT_NUMERIC );
+		}
+		
+		if ( $this->params['distributionimit'] !== false ) {
+			$data = array_slice( $data, 0, $this->params['distributionimit'] );
+		}
+	}
+	
+	protected function getSortedResults( array $data, $ascending ) {
+	
 	}
 	
 	protected function getResults( SMWQueryResult $result, $outputmode ) {
@@ -136,7 +154,8 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		$params['distributionsort']->setMessage( 'smw-paramdesc-distributionsort' );
 		$params['distributionsort']->addCriteria( new CriterionInArray( 'asc', 'desc', 'none' ) );
 		
-		$params['distributionimit'] = new Parameter( 'distributionimit', Parameter::TYPE_INTEGER, 10 );
+		$params['distributionimit'] = new Parameter( 'distributionimit', Parameter::TYPE_INTEGER );
+		$params['distributionimit']->setDefault( false, false );
 		$params['distributionimit']->setMessage( 'smw-paramdesc-distributionimit' );
 		$params['distributionimit']->addCriteria( new CriterionInRange( 1, false ) );
 		
