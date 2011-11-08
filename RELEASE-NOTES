@@ -7,10 +7,13 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Added support for selecting a default graph when using RDF stores,
   configuration called $smwgSparqlDefaultGraph
 * Use of native MediaWiki sortable tables for the table formats.
+* Added value distribution functionality that can be used by result formats. 
 * Added definitions for missing params (sort, order, searchlabel) to the base query printer.
 * Added validation and manipulation of the format paremeter using Validator.
 * Added class parameter to the table format which allows setting the css class. 
 * Added alpha version of native SMW Ask API with moudles ask and askargs.
+* Added setting to choose which optional special properties are enabled ($smwgPageSpecialProperties).
+* Added creation date special property (disabled by default) (bug 32165).
 * Fixed separator and filename parameters for the DSV format.
 * Fixed display of properties of type URL (bug 30912).
 * Fixed hide query functionality on Special:Ask (bug 30768).

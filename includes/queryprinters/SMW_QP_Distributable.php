@@ -1,7 +1,16 @@
 <?php
 
 /**
- * Static utility class.
+ * Result printer that supports the distribution parameter,
+ * and related parameters. It allows the user to choose between
+ * regular behaviour or getting a distribution of values.
+ * 
+ * For example, this result set: foo bar baz foo bar bar ohi 
+ * Will be turned into
+ * * bar (3)
+ * * foo (2)
+ * * baz (1)
+ * * ohi (1)
  * 
  * @since 1.7
  * 
@@ -40,6 +49,7 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		$data = $this->getResults( $result, $outputmode );
 		
 		if ( count( $data ) == 0 ) {
+			// This is wikitext, so no escaping needed.
 			return '<span class="error">' . wfMsgForContent( 'srf-warn-empy-chart' ) . '</span>';
 			
 			// This makes the parser go mad :/
