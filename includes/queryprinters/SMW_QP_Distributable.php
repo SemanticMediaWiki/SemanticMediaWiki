@@ -164,15 +164,36 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 			$name = $row[0]->getNextDataValue()->getShortWikiText();
 			
 			foreach ( $row as $field ) {
-				while ( ( $object = $field->getNextDataValue() ) !== false ) {
-					if ( $object->isNumeric() ) { // use numeric sortkey
-						$values[$name] = $object->getDataItem()->getNumber();
-					}
+				while ( ( /* SMWDataItem */ $dataItem = $field->getNextDataItem() ) !== false ) {
+					$this->addNumbersForDataItem( $dataItem, $values, $name );
 				}
 			}
 		}
 		
 		return $values;
+	}
+	
+	/**
+	 * Adds all numbers contained in a dataitem to the list.
+	 * 
+	 * @since 1.7
+	 * 
+	 * @param SMWDataItem $dataItem
+	 * @param array $values
+	 * @param string $name
+	 */
+	protected function addNumbersForDataItem( SMWDataItem $dataItem, array &$values, $name ) {
+		switch ( $dataItem->getDIType() ) {
+			case SMWDataItem::TYPE_NUMBER:
+				$values[$name] = $dataItem->getNumber();
+				break;
+			case SMWDataItem::TYPE_CONTAINER:
+				foreach ( $dataItem->getDataItems() as $di ) {
+					$this->addNumbersForDataItem( $di, $values, $name );
+				}
+				break;
+			default:
+		}
 	}
 	
 	/**

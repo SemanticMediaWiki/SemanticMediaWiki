@@ -48,6 +48,7 @@ class SMWDIWikiPage extends SMWDataItem {
 		if ( !is_numeric( $namespace ) ) {
 			throw new SMWDataItemException( "Given namespace '$namespace' is not an integer." );
 		}
+		
 		$this->m_dbkey = $dbkey;
 		$this->m_namespace = (int)$namespace; // really make this an integer
 		$this->m_interwiki = $interwiki;
