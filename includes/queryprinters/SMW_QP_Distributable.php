@@ -83,7 +83,7 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		}
 		
 		if ( $this->params['distributionimit'] !== false ) {
-			$data = array_slice( $data, 0, $this->params['distributionimit'], true );
+			$data = array_slice( $data, 0, $this->params['distributionlimit'], true );
 		}
 	}
 	
@@ -210,10 +210,10 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		$params['distributionsort']->setMessage( 'smw-paramdesc-distributionsort' );
 		$params['distributionsort']->addCriteria( new CriterionInArray( 'asc', 'desc', 'none' ) );
 		
-		$params['distributionimit'] = new Parameter( 'distributionimit', Parameter::TYPE_INTEGER );
-		$params['distributionimit']->setDefault( false, false );
-		$params['distributionimit']->setMessage( 'smw-paramdesc-distributionimit' );
-		$params['distributionimit']->addCriteria( new CriterionInRange( 1, false ) );
+		$params['distributionlimit'] = new Parameter( 'distributionlimit', Parameter::TYPE_INTEGER );
+		$params['distributionlimit']->setDefault( false, false );
+		$params['distributionlimit']->setMessage( 'smw-paramdesc-distributionlimit' );
+		$params['distributionlimit']->addCriteria( new CriterionInRange( 1, false ) );
 		
 		return $params;
 	}
