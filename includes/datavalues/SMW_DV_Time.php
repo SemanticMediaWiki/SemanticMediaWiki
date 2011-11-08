@@ -526,7 +526,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return integer that encodes a three-digit bit vector
 	 */
 	protected static function checkDateComponent( $component, &$numvalue ) {
-		if ( $component == '' ) { // should not happen
+		if ( $component === '' ) { // should not happen
 			$numvalue = 0;
 			return 0;
 		} elseif ( is_numeric( $component ) ) {

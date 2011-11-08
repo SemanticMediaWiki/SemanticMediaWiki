@@ -96,7 +96,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function doHttpPost( $payload ) {
-		if ( $this->m_dataEndpoint == '' ) {
+		if ( $this->m_dataEndpoint === '' ) {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );

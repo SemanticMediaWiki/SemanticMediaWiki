@@ -24,7 +24,7 @@ class SMWRecordValue extends SMWDataValue {
 	}
 
 	protected function parseUserValueOrQuery( $value, $queryMode ) {
-		if ( $value == '' ) {
+		if ( $value === '' ) {
 			$this->addError( wfMsg( 'smw_novalues' ) );
 
 			if ( $queryMode ) {
@@ -62,7 +62,7 @@ class SMWRecordValue extends SMWDataValue {
 			}
 
 			// generating the DVs:
-			if ( ( $values[$valueIndex] == '' ) || ( $values[$valueIndex] == '?' ) ) { // explicit omission
+			if ( ( $values[$valueIndex] === '' ) || ( $values[$valueIndex] == '?' ) ) { // explicit omission
 				$valueIndex++;
 			} else {
 				$dataValue = SMWDataValueFactory::newPropertyObjectValue( $diProperty, $values[$valueIndex] );

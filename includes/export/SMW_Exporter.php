@@ -184,7 +184,7 @@ class SMWExporter {
 				}
 				$ed = self::getDataItemExpElement( $dataItem );
 				if ( $ed !== null ) {
-					if ( ( $property->getKey() == '_CONC' ) && ( $ed->getSubject()->getUri() == '' ) ) {
+					if ( ( $property->getKey() == '_CONC' ) && ( $ed->getSubject()->getUri() === '' ) ) {
 						// equivalent to anonymous class -> simplify description
 						foreach ( $ed->getProperties() as $subp ) {
 							if ( $subp->getUri() != self::getSpecialNsResource( 'rdf', 'type' )->getUri() ) {
@@ -256,7 +256,7 @@ class SMWExporter {
 			$modifier = $diWikiPage->getSubobjectName();
 		}
 
-		if ( $modifier == '' ) {
+		if ( $modifier === '' ) {
 			$importProperty = new SMWDIProperty( '_IMPO' );
 			$importDis = smwfGetStore()->getPropertyValues( $diWikiPage, $importProperty );
 			$importURI = ( count( $importDis ) > 0 );
@@ -276,7 +276,7 @@ class SMWExporter {
 				$namespaceId = 'property';
 				$localName = self::encodeURI( rawurlencode( $diWikiPage->getDBkey() ) );
 			}
-			if ( ( $localName == '' ) ||
+			if ( ( $localName === '' ) ||
 			     ( in_array( $localName{0}, array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) ) {
 				$namespace = self::getNamespaceUri( 'wiki' );
 				$namespaceId = 'wiki';

@@ -442,7 +442,7 @@ class SMWValueDescription extends SMWDescription {
 		if ( $asvalue ) {
 			return $comparator . $dataValue->getWikiValue();
 		} else { // this only is possible for values of Type:Page
-			if ( $comparator == '' ) { // some extra care for Category: pages
+			if ( $comparator === '' ) { // some extra care for Category: pages
 				return '[[:' . $dataValue->getWikiValue() . ']]';
 			} else {
 				return '[[' . $comparator . $dataValue->getWikiValue() . ']]';
@@ -512,7 +512,7 @@ class SMWConjunction extends SMWDescription {
 			$result .= ( $result ? ' ' : '' ) . $desc->getQueryString( false );
 		}
 		
-		if ( $result == '' ) {
+		if ( $result === '' ) {
 			return $asvalue ? '+' : '';
 		} else { // <q> not needed for stand-alone conjunctions (AND binds stronger than OR)
 			return $asvalue ? " &lt;q&gt;{$result}&lt;/q&gt; " : $result;

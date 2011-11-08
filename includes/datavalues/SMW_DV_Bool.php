@@ -65,7 +65,7 @@ class SMWBoolValue extends SMWDataValue {
 		if ( $formatstring == $this->m_outformat ) return;
 		unset( $this->m_truecaption );
 		unset( $this->m_falsecaption );
-		if ( $formatstring == '' ) { // no format
+		if ( $formatstring === '' ) { // no format
 			// (unsetting the captions is exactly the right thing here)
 		} elseif ( strtolower( $formatstring ) == '-' ) { // "plain" format
 			$this->m_truecaption = 'true';

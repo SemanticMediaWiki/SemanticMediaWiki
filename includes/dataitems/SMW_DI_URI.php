@@ -49,10 +49,10 @@ class SMWDIUri extends SMWDataItem {
 	 * @todo Implement more validation here.
 	 */
 	public function __construct( $scheme, $hierpart, $query, $fragment ) {
-		if ( ( $scheme == '' ) || ( preg_match( '/[^a-zA-Z]/u', $scheme ) ) ) {
+		if ( ( $scheme === '' ) || ( preg_match( '/[^a-zA-Z]/u', $scheme ) ) ) {
 			throw new SMWDataItemException( "Illegal URI scheme \"$scheme\"." );
 		}
-		if ( $hierpart == '' ) {
+		if ( $hierpart === '' ) {
 			throw new SMWDataItemException( "Illegal URI hierpart \"$hierpart\"." );
 		}
 		$this->m_scheme   = $scheme;

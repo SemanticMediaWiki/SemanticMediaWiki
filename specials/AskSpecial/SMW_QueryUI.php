@@ -387,7 +387,7 @@ END;
 		// processing params for main result column
 		if ( is_array( $mainColumnLabels ) ) {
 			foreach ( $mainColumnLabels as $key => $label ) {
-				if ( $label == '' ) {
+				if ( $label === '' ) {
 					$po[$key] = "?";
 				} else {
 					$po[$key] = "? = $label";
@@ -398,7 +398,7 @@ END;
 		$categoryNamespace = $wgContLang->getNsText( NS_CATEGORY );
 		if ( is_array( $categoryValues ) ) {
 			foreach ( $categoryValues as $key => $value ) {
-				if ( trim( $value ) == '' ) {
+				if ( trim( $value ) === '' ) {
 					$po[$key] = "?$categoryNamespace" ;
 				} else {
 					$po[$key] = "?$categoryNamespace:$value";
@@ -429,7 +429,7 @@ END;
 			$params['order'] = '';
 			foreach ( $propertyValues as $key => $propertyValue ) {
 				$propertyValues[$key] = trim( $propertyValue );
-				if ( $propertyValues[$key] == '' ) {
+				if ( $propertyValues[$key] === '' ) {
 					unset( $propertyValues[$key] );
 				}
 				if ( $smwgQSortingSupport
@@ -441,10 +441,10 @@ END;
 					$params['order'] .= ( $params['order'] != '' ? ',':'' ) . $orderValues[$key];
 				}
 			}
-			if ( $params['sort'] == '' ) {
+			if ( $params['sort'] === '' ) {
 				unset ( $params['sort'] );
 			}
-			if ( $params['order'] == '' ) {
+			if ( $params['order'] === '' ) {
 				unset ( $params['order'] );
 			}
 			$displayValues = $wgRequest->getArray( 'display' );
@@ -848,7 +848,7 @@ END;
 					) .
 					Xml::closeElement( 'div' );
 				$urlArgs["category[$i]"] =
-					( $categoryValues[$key] == '' ) ? ' ':$categoryValues[$key];
+					( $categoryValues[$key] === '' ) ? ' ':$categoryValues[$key];
 
 				$urlArgs["cat_label[$i]"] = $categoryLabelValues[$key];
 				$urlArgs["cat_yes[$i]"] = $categoryYesValues[$key];
@@ -879,7 +879,7 @@ END;
 					'<a class="smwq-more" href="javascript:smw_makeQueryMatchesDialog(\'' . $i . '\')">' . wfMsg( 'smw_qui_options' ) . '</a> ' .
 					'</div>';
 				$urlArgs["maincol_label[$i]"] =
-					( $mainColumnLabels[$key] == '' ) ? ' ':$mainColumnLabels[$key];
+					( $mainColumnLabels[$key] === '' ) ? ' ':$mainColumnLabels[$key];
 				$i++;
 			}
 		}
@@ -1538,7 +1538,7 @@ EOT;
 		if ( is_array( $orderValues ) ) {
 			$params['order'] = '';
 			foreach ( $orderValues as $order_value ) {
-				if ( $order_value == '' ) {
+				if ( $order_value === '' ) {
 					$order_value = 'ASC';
 				}
 				$params['order'] .= ( $params['order'] != '' ? ',' : '' ) . $order_value;

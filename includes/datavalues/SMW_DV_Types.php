@@ -56,7 +56,7 @@ class SMWTypesValue extends SMWDataValue {
 
 		$this->m_givenLabel = smwfNormalTitleText( $value );
 		$this->m_typeId = SMWDataValueFactory::findTypeID( $this->m_givenLabel );
-		if ( $this->m_typeId == '' ) {
+		if ( $this->m_typeId === '' ) {
 			$this->addError( wfMsgForContent( 'smw_unknowntype', $this->m_givenLabel ) );
 			$this->m_realLabel = $this->m_givenLabel;
 		} else {
@@ -80,7 +80,7 @@ class SMWTypesValue extends SMWDataValue {
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( ( $dataItem instanceof SMWDIUri ) && ( $dataItem->getScheme() == 'http' ) &&
 		     ( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
-		     ( $dataItem->getQuery() == '' ) ) {
+		     ( $dataItem->getQuery() === '' ) ) {
 			$this->m_isAlias = false;
 			$this->m_typeId = $dataItem->getFragment();
 			$this->m_realLabel = SMWDataValueFactory::findTypeLabel( $this->m_typeId );
@@ -94,7 +94,7 @@ class SMWTypesValue extends SMWDataValue {
 
 	public function getShortWikiText( $linked = null ) {
 		global $wgContLang;
-		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
 			return $this->m_caption;
 		} else {
 			$titleText = $this->getSpecialPageTitleText();
@@ -104,7 +104,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText( $linked = null ) {
-		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
 			return htmlspecialchars( $this->m_caption );
 		} else {
 			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );

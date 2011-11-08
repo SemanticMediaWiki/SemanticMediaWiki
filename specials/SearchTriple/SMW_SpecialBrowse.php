@@ -54,14 +54,14 @@ class SMWSpecialBrowse extends SpecialPage {
 		// get the GET parameters
 		$this->articletext = $wgRequest->getVal( 'article' );
 		// no GET parameters? Then try the URL
-		if ( $this->articletext == '' ) {
+		if ( $this->articletext === '' ) {
 			$params = SMWInfolink::decodeParameters( $query, false );
 			reset( $params );
 			$this->articletext = current( $params );
 		}
 		$this->subject = SMWDataValueFactory::newTypeIDValue( '_wpg', $this->articletext );
 		$offsettext = $wgRequest->getVal( 'offset' );
-		$this->offset = ( $offsettext == '' ) ? 0:intval( $offsettext );
+		$this->offset = ( $offsettext === '' ) ? 0:intval( $offsettext );
 		$dir = $wgRequest->getVal( 'dir' );
 		if ( $smwgBrowseShowAll ) {
 			$this->showoutgoing = true;

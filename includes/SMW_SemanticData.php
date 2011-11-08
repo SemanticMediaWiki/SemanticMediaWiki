@@ -262,7 +262,7 @@ class SMWSemanticData {
 		if ( array_key_exists( $propertyKey, $this->mProperties ) ) {
 			$property = $this->mProperties[$propertyKey];
 		} else {
-			if ( self::$mPropertyPrefix == '' ) {
+			if ( self::$mPropertyPrefix === '' ) {
 				global $wgContLang;
 				self::$mPropertyPrefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
 			} // explicitly use prefix to cope with things like [[Property:User:Stupid::somevalue]]

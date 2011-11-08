@@ -94,7 +94,7 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * @return mixed Title or null
 	 */
 	public function getTitle() {
-		if ( $this->m_interwiki == '' ) {
+		if ( $this->m_interwiki === '' ) {
 			return Title::makeTitleSafe( $this->m_namespace, $this->m_dbkey, $this->m_subobjectname );
 		} else { // TODO inefficient; incomplete for fragments (see above commment)
 			$datavalue = new SMWWikiPageValue( '_wpg' );
@@ -104,7 +104,7 @@ class SMWDIWikiPage extends SMWDataItem {
 	}
 
 	public function getSerialization() {
-		if ( $this->m_subobjectname == '' ) {
+		if ( $this->m_subobjectname === '' ) {
 			return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki );
 		} else {
 			return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki . '#' . $this->m_subobjectname );

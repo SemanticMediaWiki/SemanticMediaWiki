@@ -295,7 +295,7 @@ class SMWSQLStore2QueryEngine {
 			$entries['SQL Query'] =
 			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
 			           $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from .
-			           ( ( $qobj->where == '' ) ? '':' WHERE ' ) . $qobj->where . "$tailOpts LIMIT " .
+			           ( ( $qobj->where === '' ) ? '':' WHERE ' ) . $qobj->where . "$tailOpts LIMIT " .
 			           $sql_options['LIMIT'] . ' OFFSET ' . $sql_options['OFFSET'] . ';</tt>';
 		} else {
 			$entries['SQL Query'] = 'Empty result, no SQL query created.';
@@ -395,7 +395,7 @@ class SMWSQLStore2QueryEngine {
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $this->m_dbs->fetchObject( $res ) ) ) {
 			$count++;
-			if ( $row->iw == '' || $row->iw{0} != ':' )  {
+			if ( $row->iw === '' || $row->iw{0} != ':' )  {
 				$v = new SMWDIWikiPage( $row->t, $row->ns, $row->iw, $row->so );
 				$qr[] = $v;
 				$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw, $row->so );
@@ -578,7 +578,7 @@ class SMWSQLStore2QueryEngine {
 		$tableid = SMWSQLStore2::findPropertyTableID( $property );
 		$typeid = $property->findPropertyTypeID();
 
-		if ( $tableid == '' ) { // Still no table to query? Give up.
+		if ( $tableid === '' ) { // Still no table to query? Give up.
 			$query->type = SMW_SQL2_NOQUERY;
 			return;
 		}
@@ -772,7 +772,7 @@ class SMWSQLStore2QueryEngine {
 				}
 			}
 
-			if ( $where == '' ) { // comparators did not apply; match all fields
+			if ( $where === '' ) { // comparators did not apply; match all fields
 				$i = 0;
 
 				foreach ( $proptable->objectfields as $fname => $ftype ) {
@@ -830,7 +830,7 @@ class SMWSQLStore2QueryEngine {
 							$condition = "($condition)";
 						}
 
-						$query->where .= ( ( $query->where == '' ) ? '':' AND ' ) . $condition;
+						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . $condition;
 					} else { // interpret empty joinfields as impossible condition (empty result)
 						$query->joinfield = ''; // make whole query false
 						$query->jointable = '';
@@ -840,7 +840,7 @@ class SMWSQLStore2QueryEngine {
 					}
 
 					if ( $subquery->where != '' ) {
-						$query->where .= ( ( $query->where == '' ) ? '':' AND ' ) . '(' . $subquery->where . ')';
+						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . '(' . $subquery->where . ')';
 					}
 
 					$query->from .= $subquery->from;
@@ -1051,7 +1051,7 @@ class SMWSQLStore2QueryEngine {
 
 		foreach ( $this->m_sortkeys as $propkey => $order ) {
 			if ( !array_key_exists( $propkey, $qobj->sortfields ) ) { // Find missing property to sort by.
-				if ( $propkey == '' ) { // Sort by first result column (page titles).
+				if ( $propkey === '' ) { // Sort by first result column (page titles).
 					$qobj->sortfields[$propkey] = "$qobj->alias.smw_sortkey";
 				} else { // Try to extend query.
 					$extrawhere = '';

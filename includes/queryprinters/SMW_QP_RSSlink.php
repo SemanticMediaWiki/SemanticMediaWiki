@@ -51,10 +51,10 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		$result = '';
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // make RSS feed
 			if ( !$smwgRSSEnabled ) return '';
-			if ( $this->m_title == '' ) {
+			if ( $this->m_title === '' ) {
 				$this->m_title = $wgSitename;
 			}
-			if ( $this->m_description == '' ) {
+			if ( $this->m_description === '' ) {
 				$this->m_description = wfMsg( 'smw_rss_description', $wgSitename );
 			}
 

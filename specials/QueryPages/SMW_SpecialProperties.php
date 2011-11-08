@@ -83,11 +83,11 @@ class SMWPropertiesPage extends SMWQueryPage {
 			$typeDataValue = SMWTypesValue::newFromTypeId( $typeid );
 			$propertyDataValue = SMWDataValueFactory::newDataItemValue( $result[0], null );
 			$typestring = $typeDataValue->getLongHTMLText( $linker );
-			if ( $typestring == '' ) $typestring = '–'; /// FIXME some types of builtin props have no name, and another message should be used then
+			if ( $typestring === '' ) $typestring = '–'; /// FIXME some types of builtin props have no name, and another message should be used then
 			$proplink = $propertyDataValue->getLongHTMLText( $linker );
 		}
 
-		if ( $typestring == '' ) {
+		if ( $typestring === '' ) {
 			global $smwgPDefaultType;
 			$typeDataValue = SMWTypesValue::newFromTypeId( $smwgPDefaultType );
 			$typestring = $typeDataValue->getLongHTMLText( $linker );

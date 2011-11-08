@@ -136,7 +136,7 @@ class SMWSQLStore2 extends SMWStore {
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->m_semdata ) ) { // new cache entry
 			$this->m_semdata[$sid] = new SMWSqlStubSemanticData( $subject, false );
-			if ( $subject->getSubobjectName() == '' ) { // no sortkey for subobjects
+			if ( $subject->getSubobjectName() === '' ) { // no sortkey for subobjects
 				$this->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
 			}
 			$this->m_sdstate[$sid] = array();
@@ -202,7 +202,7 @@ class SMWSQLStore2 extends SMWStore {
 			$pid = $this->getSMWPropertyID( $property );
 			$tableid = self::findPropertyTableID( $property );
 
-			if ( ( $pid == 0 ) || ( $tableid == '' ) ) {
+			if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
 				wfProfileOut( "SMWSQLStore2::getPropertyValues (SMW)" );
 				return array();
 			}
@@ -369,7 +369,7 @@ class SMWSQLStore2 extends SMWStore {
 
 			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
 			if ( $proptable->getFieldSignature() != 'p' || count( $valuekeys ) < 3 ||
-			     $valuekeys[2] == '' ||  $valuekeys[2]{0} != ':' ) {
+			     $valuekeys[2] === '' ||  $valuekeys[2]{0} != ':' ) {
 				$result[] = $issubject ? array( $propertyname, $valuekeys ) : $valuekeys;
 			}
 		}
@@ -405,7 +405,7 @@ class SMWSQLStore2 extends SMWStore {
 		$pid = $this->getSMWPropertyID( $property );
 		$tableid = self::findPropertyTableID( $property );
 
-		if ( ( $pid == 0 ) || ( $tableid == '' ) ) {
+		if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
 			wfProfileOut( "SMWSQLStoreLight::getPropertySubjects (SMW)" );
 			return array();
 		}
@@ -437,7 +437,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		foreach ( $res as $row ) {
 			try {
-				if ( $row->smw_iw == '' || $row->smw_iw{0} != ':' ) { // filter special objects
+				if ( $row->smw_iw === '' || $row->smw_iw{0} != ':' ) { // filter special objects
 					$result[] = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw, $row->smw_subobject );
 				}
 			} catch ( SMWDataItemException $e ) {
@@ -568,7 +568,7 @@ class SMWSQLStore2 extends SMWStore {
 
 			if ( $proptable->idsubject ) {
 				$where = 's_id=' . $db->addQuotes( $sid );
-			} elseif ( $subject->getInterwiki() == '' ) {
+			} elseif ( $subject->getInterwiki() === '' ) {
 				$where = 's_title=' . $db->addQuotes( $subject->getDBkey() ) . ' AND s_namespace=' . $db->addQuotes( $subject->getNamespace() );
 			} else { // subjects with non-emtpy interwiki cannot have properties
 				continue;
@@ -1492,7 +1492,7 @@ class SMWSQLStore2 extends SMWStore {
 
 			if ( $row->smw_subobject != '' ) {
 				// leave subobjects alone; they ought to be changed with their pages
-			} elseif ( $row->smw_iw == '' || $row->smw_iw == SMW_SQL2_SMWREDIIW ) { // objects representing pages
+			} elseif ( $row->smw_iw === '' || $row->smw_iw == SMW_SQL2_SMWREDIIW ) { // objects representing pages
 				// TODO: special treament of redirects needed, since the store will
 				// not act on redirects that did not change according to its records
 				$title = Title::makeTitleSafe( $row->smw_namespace, $row->smw_title );
@@ -1924,7 +1924,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		$id = $this->m_idCache->getId( $title, $namespace, $iw, $subobjectName );
 		if ( $id == 0 && $smwgQEqualitySupport != SMW_EQ_NONE
-			&& $subobjectName == '' && $iw == '' ) {
+			&& $subobjectName === '' && $iw === '' ) {
 			$iw = SMW_SQL2_SMWREDIIW;
 			$id = $this->m_idCache->getId( $title, $namespace, SMW_SQL2_SMWREDIIW, $subobjectName );
 		}
@@ -1966,7 +1966,7 @@ class SMWSQLStore2 extends SMWStore {
 			$this->m_idCache->setId( $title, $namespace, $row->smw_iw, $subobjectName, $row->smw_id );
 
 			if ( $row->smw_iw == SMW_SQL2_SMWREDIIW && $canonical &&
-				$subobjectName == '' && $smwgQEqualitySupport != SMW_EQ_NONE ) {
+				$subobjectName === '' && $smwgQEqualitySupport != SMW_EQ_NONE ) {
 				$id = $this->getRedirectId( $title, $namespace );
 				$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, 0 );
 			} else {

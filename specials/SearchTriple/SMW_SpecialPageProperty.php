@@ -39,10 +39,10 @@ class SMWPageProperty extends SpecialPage {
 		$limit = $wgRequest->getVal( 'limit' );
 		$offset = $wgRequest->getVal( 'offset' );
 		
-		if ( $limit == '' ) $limit =  20;
-		if ( $offset == '' ) $offset = 0;
+		if ( $limit === '' ) $limit =  20;
+		if ( $offset === '' ) $offset = 0;
 		
-		if ( $propname == '' ) { // No GET parameters? Try the URL:
+		if ( $propname === '' ) { // No GET parameters? Try the URL:
 			$queryparts = explode( '::', $query );
 			$propname = $query;
 			if ( count( $queryparts ) > 1 ) {
@@ -58,7 +58,7 @@ class SMWPageProperty extends SpecialPage {
 
 		// Produce output
 		$html = '';
-		if ( ( $propname == '' ) ) { // no property given, show a message
+		if ( ( $propname === '' ) ) { // no property given, show a message
 			$html .= wfMsg( 'smw_pp_docu' ) . "\n";
 		} else { // property given, find and display results
 			// FIXME: very ugly, needs i18n

@@ -392,7 +392,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getPrefixedText() {
 		global $wgContLang;
-		if ( $this->m_prefixedtext == '' ) {
+		if ( $this->m_prefixedtext === '' ) {
 			if ( $this->isValid() ) {
 				$nstext = $wgContLang->getNSText( $this->m_dataitem->getNamespace() );
 				$this->m_prefixedtext =

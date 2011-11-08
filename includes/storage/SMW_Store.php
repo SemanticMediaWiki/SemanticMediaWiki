@@ -472,7 +472,7 @@ abstract class SMWStore {
 			foreach ( $query->getErrors() as $error ) {
 				$errors .= $error . '<br />';
 			}
-			if ( $errors == '' ) {
+			if ( $errors === '' ) {
 				$errors = 'None';
 			}
 			$entries['Errors and Warnings'] = $errors;

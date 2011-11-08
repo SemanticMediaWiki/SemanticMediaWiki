@@ -72,7 +72,7 @@ class SMWDIProperty extends SMWDataItem {
 	 * @param $inverse boolean states if the inverse of the property is constructed
 	 */
 	public function __construct( $key, $inverse = false ) {
-		if ( ( $key == '' ) || ( $key{0} == '-' ) ) {
+		if ( ( $key === '' ) || ( $key{0} == '-' ) ) {
 			throw new SMWDataItemException( "Illegal property key \"$key\"." );
 		}
 		if ( $key{0} == '_' ) {

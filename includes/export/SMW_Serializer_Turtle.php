@@ -199,7 +199,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 				}
 			}
 		}
-		$this->post_ns_buffer .= ( $bnode ? " ]" : " ." ) . ( $indent == '' ? "\n\n" : '' );
+		$this->post_ns_buffer .= ( $bnode ? " ]" : " ." ) . ( $indent === '' ? "\n\n" : '' );
 	}
 
 	protected function serializeExpLiteral( SMWExpLiteral $element ) {

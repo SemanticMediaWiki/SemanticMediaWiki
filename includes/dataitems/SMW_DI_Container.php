@@ -55,7 +55,7 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	public function hasAnonymousSubject() {
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
 		     $this->mSubject->getDBkey() == 'SMWInternalObject' &&
-		     $this->mSubject->getInterwiki() == '' ) {
+		     $this->mSubject->getInterwiki() === '' ) {
 			return true;
 		} else {
 			return false;

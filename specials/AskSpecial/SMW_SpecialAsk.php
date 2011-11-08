@@ -130,7 +130,7 @@ class SMWAskPage extends SpecialPage {
 				$this->m_params['order'] = '';
 
 				foreach ( $order_values as $order_value ) {
-					if ( $order_value == '' ) $order_value = 'ASC';
+					if ( $order_value === '' ) $order_value = 'ASC';
 					$this->m_params['order'] .= ( $this->m_params['order'] != '' ? ',' : '' ) . $order_value;
 				}
 			}
@@ -148,20 +148,20 @@ class SMWAskPage extends SpecialPage {
 
 		if ( !array_key_exists( 'offset', $this->m_params ) ) {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
-			if ( $this->m_params['offset'] == '' )  $this->m_params['offset'] = 0;
+			if ( $this->m_params['offset'] === '' )  $this->m_params['offset'] = 0;
 		}
 
 		if ( !array_key_exists( 'limit', $this->m_params ) ) {
 			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
 
-			if ( $this->m_params['limit'] == '' ) {
+			if ( $this->m_params['limit'] === '' ) {
 				 $this->m_params['limit'] = ( $this->m_params['format'] == 'rss' ) ? 10 : 20; // Standard limit for RSS.
 			}
 		}
 
 		$this->m_params['limit'] = min( $this->m_params['limit'], $smwgQMaxInlineLimit );
 
-		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring == '' );
+		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring === '' );
 	}
 
 	/**

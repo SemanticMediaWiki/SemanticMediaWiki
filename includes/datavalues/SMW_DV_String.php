@@ -18,7 +18,7 @@ class SMWStringValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = ( $this->m_typeid == '_cod' ) ? $this->getCodeDisplay( $value ) : $value;
 		}
-		if ( $value == '' ) {
+		if ( $value === '' ) {
 			$this->addError( wfMsgForContent( 'smw_emptystring' ) );
 		}
 

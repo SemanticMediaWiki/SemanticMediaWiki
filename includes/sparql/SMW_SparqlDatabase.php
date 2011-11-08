@@ -203,13 +203,13 @@ class SMWSparqlDatabase {
 			curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 			curl_setopt( $this->m_curlhandle, CURLOPT_NOBODY, true );
 		} elseif ( $endpointType == self::EP_TYPE_UPDATE ) {
-			if ( $this->m_updateEndpoint == '' ) {
+			if ( $this->m_updateEndpoint === '' ) {
 				return false;
 			}
 			curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_updateEndpoint );
 			curl_setopt( $this->m_curlhandle, CURLOPT_NOBODY, false ); // 4Store gives 404 instead of 500 with CURLOPT_NOBODY
 		} else { // ( $endpointType == self::EP_TYPE_DATA )
-			if ( $this->m_dataEndpoint == '' ) {
+			if ( $this->m_dataEndpoint === '' ) {
 				return false;
 			} else { // try an empty POST
 				return $this->doHttpPost( '' );
@@ -480,7 +480,7 @@ class SMWSparqlDatabase {
 	 * @return boolean
 	 */
 	public function doUpdate( $sparql ) {
-		if ( $this->m_updateEndpoint == '' ) {
+		if ( $this->m_updateEndpoint === '' ) {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_updateEndpoint );
@@ -518,7 +518,7 @@ class SMWSparqlDatabase {
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function doHttpPost( $payload ) {
-		if ( $this->m_dataEndpoint == '' ) {
+		if ( $this->m_dataEndpoint === '' ) {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint .

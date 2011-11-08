@@ -65,8 +65,8 @@ class SMWSearchByProperty extends SpecialPage {
 		reset( $params );
 		
 		// no GET parameters? Then try the URL
-		if ( $this->propertystring == '' ) $this->propertystring = current( $params );
-		if ( $this->valuestring == '' ) $this->valuestring = next( $params );
+		if ( $this->propertystring === '' ) $this->propertystring = current( $params );
+		if ( $this->valuestring === '' ) $this->valuestring = next( $params );
 
 		$this->valuestring = str_replace( '&nbsp;', ' ', $this->valuestring );
 		$this->valuestring = str_replace( '&#160;', ' ', $this->valuestring );
@@ -110,7 +110,7 @@ class SMWSearchByProperty extends SpecialPage {
 		global $wgOut, $smwgSearchByPropertyFuzzy;
 		$linker = smwfGetLinker();
 
-		if ( $this->propertystring == '' ) {
+		if ( $this->propertystring === '' ) {
 			return '<p>' . wfMsg( 'smw_sbv_docu' ) . "</p>\n";
 		}
 		

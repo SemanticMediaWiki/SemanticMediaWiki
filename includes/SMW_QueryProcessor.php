@@ -239,7 +239,7 @@ class SMWQueryProcessor {
 				$param = $name . '=' . $param;
 			}
 
-			if ( $param == '' ) {
+			if ( $param === '' ) {
 			} elseif ( $param { 0 } == '?' ) { // print statement
 				$param = substr( $param, 1 );
 				$parts = explode( '=', $param, 2 );
@@ -247,7 +247,7 @@ class SMWQueryProcessor {
 
 				$data = null;
 
-				if ( trim( $propparts[0] ) == '' ) { // print "this"
+				if ( trim( $propparts[0] ) === '' ) { // print "this"
 					$printmode = SMWPrintRequest::PRINT_THIS;
 					$label = ''; // default
 					$title = null;
@@ -275,7 +275,7 @@ class SMWQueryProcessor {
 
 				if ( count( $propparts ) == 1 ) { // no outputformat found, leave empty
 					$propparts[] = false;
-				} elseif ( trim( $propparts[1] ) == '' ) { // "plain printout", avoid empty string to avoid confusions with "false"
+				} elseif ( trim( $propparts[1] ) === '' ) { // "plain printout", avoid empty string to avoid confusions with "false"
 					$propparts[1] = '-';
 				}
 
@@ -390,7 +390,7 @@ class SMWQueryProcessor {
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) || ( $query->querymode == SMWQuery::MODE_NONE ) ) {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 
-			if ( $format == '' ) {
+			if ( $format === '' ) {
 				$format = self::getResultFormat( $params );
 			}
 

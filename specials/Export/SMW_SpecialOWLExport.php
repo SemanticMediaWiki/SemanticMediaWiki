@@ -25,8 +25,8 @@ class SMWSpecialOWLExport extends SpecialPage {
 		$wgOut->setPageTitle( wfMsg( 'exportrdf' ) );
 		
 		// see if we can find something to export:
-		$page = ( $page == '' ) ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
-		if ( $page == '' ) { // Try to get POST list; some settings are only available via POST.
+		$page = ( $page === '' ) ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
+		if ( $page === '' ) { // Try to get POST list; some settings are only available via POST.
 			$pageblob = $wgRequest->getText( 'pages' );
 			if ( $pageblob != '' ) {
 				$pages = explode( "\n", $pageblob );
@@ -89,7 +89,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 	protected function startRDFExport() {
 		global $wgOut, $wgRequest;
 		$syntax = $wgRequest->getText( 'syntax' );
-		if ( $syntax == '' ) $syntax = $wgRequest->getVal( 'syntax' );
+		if ( $syntax === '' ) $syntax = $wgRequest->getVal( 'syntax' );
 		$wgOut->disable();
 		ob_start();
 		if ( $syntax == 'turtle' ) {
@@ -120,14 +120,14 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		$recursive = 0;  // default, no recursion
 		$rec = $wgRequest->getText( 'recursive' );
-		if ( $rec == '' ) $rec = $wgRequest->getVal( 'recursive' );
+		if ( $rec === '' ) $rec = $wgRequest->getVal( 'recursive' );
 		if ( ( $rec == '1' ) && ( $smwgAllowRecursiveExport || $wgUser->isAllowed( 'delete' ) ) ) {
 			$recursive = 1; // users may be allowed to switch it on
 		}
 
 		$backlinks = $smwgExportBacklinks; // default
 		$bl = $wgRequest->getText( 'backlinks' );
-		if ( $bl == '' ) $bl = $wgRequest->getVal( 'backlinks' );
+		if ( $bl === '' ) $bl = $wgRequest->getVal( 'backlinks' );
 		if ( ( $bl == '1' ) && ( $wgUser->isAllowed( 'delete' ) ) ) {
 			$backlinks = true; // admins can always switch on backlinks
 		} elseif ( ( $bl == '0' ) || ( '' == $bl && $postform ) ) {
@@ -135,7 +135,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 		}
 
 		$date = $wgRequest->getText( 'date' );
-		if ( $date == '' ) $date = $wgRequest->getVal( 'date' );
+		if ( $date === '' ) $date = $wgRequest->getVal( 'date' );
 		if ( $date != '' ) {
 			$timeint = strtotime( $date );
 			$stamp = date( "YmdHis", $timeint );

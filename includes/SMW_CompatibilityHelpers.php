@@ -55,7 +55,7 @@ class SMWCompatibilityHelpers {
 				if ( ( count( $dbkeys ) == 2 ) && ( count( $timedate ) == 2 ) ) {
 					$date = reset( $timedate );
 					$year = $month = $day = $hours = $minutes = $seconds = $timeoffset = false;
-					if ( ( end( $timedate ) == '' ) ||
+					if ( ( end( $timedate ) === '' ) ||
 					     ( SMWTimeValue::parseTimeString( end( $timedate ), $hours, $minutes, $seconds, $timeoffset ) == true ) ) {
 						$d = explode( '/', $date, 3 );
 						if ( count( $d ) == 3 ) {
@@ -65,8 +65,8 @@ class SMWCompatibilityHelpers {
 						} elseif ( count( $d ) == 1 ) {
 							list( $year ) = $d;
 						}
-						if ( $month == '' ) $month = false;
-						if ( $day == '' ) $day = false;
+						if ( $month === '' ) $month = false;
+						if ( $day === '' ) $day = false;
 						$calendarmodel = SMWDITime::CM_GREGORIAN;
 						return new SMWDITime( $calendarmodel, $year, $month, $day, $hours, $minutes, $seconds );
 					}

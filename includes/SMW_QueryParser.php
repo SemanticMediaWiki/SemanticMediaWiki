@@ -178,7 +178,7 @@ class SMWQueryParser {
 							$this->m_errors[] = wfMsgForContent( 'smw_toomanyclosing', $chunk );
 							return null;
 						}
-					} elseif ( $chunk == '' ) {
+					} elseif ( $chunk === '' ) {
 						$continue = false;
 					}
 				break;
@@ -422,7 +422,7 @@ class SMWQueryParser {
 
 			$list = preg_split( '/:/', $chunk, 3 ); // ":Category:Foo" "User:bar"  ":baz" ":+"
 
-			if ( ( $list[0] == '' ) && ( count( $list ) == 3 ) ) {
+			if ( ( $list[0] === '' ) && ( count( $list ) == 3 ) ) {
 				$list = array_slice( $list, 1 );
 			}
 			if ( ( count( $list ) == 2 ) && ( $list[1] == '+' ) ) { // try namespace restriction
@@ -488,7 +488,7 @@ class SMWQueryParser {
 					$chunk = $this->readChunk( '\]\]' );
 				}
 			}
-			if ( $chunk == '' ) {
+			if ( $chunk === '' ) {
 				$this->m_errors[] = wfMsgForContent( 'smw_noclosingbrackets' );
 			}
 		}
@@ -514,7 +514,7 @@ class SMWQueryParser {
 	 * query string.
 	 */
 	protected function readChunk( $stoppattern = '', $consume = true, $trim = true ) {
-		if ( $stoppattern == '' ) {
+		if ( $stoppattern === '' ) {
 			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>' .
 				'|^' . $this->m_categoryprefix . '|^' . $this->m_categoryPrefixCannonical .
 				'|^' . $this->m_conceptprefix . '|^' . $this->m_conceptPrefixCannonical .
@@ -528,7 +528,7 @@ class SMWQueryParser {
 
 			return $trim ? trim( $chunks[0] ) : $chunks[0];
 		} elseif ( count( $chunks ) == 3 ) { // this should generally happen if count is not 1
-			if ( $chunks[0] == '' ) { // string started with delimiter
+			if ( $chunks[0] === '' ) { // string started with delimiter
 				if ( $consume ) {
 					$this->m_curstring = $chunks[2];
 				}

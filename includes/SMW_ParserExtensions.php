@@ -133,7 +133,7 @@ class SMWParserExtensions {
 			$value = '';
 		}
 
-		if ( $value == '' ) { // silently ignore empty values
+		if ( $value === '' ) { // silently ignore empty values
 			wfProfileOut( 'smwfParsePropertiesCallback (SMW)' );
 			return '';
 		}

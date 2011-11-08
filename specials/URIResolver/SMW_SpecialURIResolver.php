@@ -29,7 +29,7 @@ class SMWURIResolver extends SpecialPage {
 		
 		wfProfileIn( 'SpecialURIResolver::execute (SMW)' );
 		
-		if ( $query == '' ) {
+		if ( $query === '' ) {
 			if ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
 				$wgOut->redirect( SpecialPage::getTitleFor( 'ExportRDF' )->getFullURL( 'stats=1' ), '303' );
 			} else {

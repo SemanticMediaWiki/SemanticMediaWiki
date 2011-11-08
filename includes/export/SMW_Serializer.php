@@ -178,7 +178,7 @@ abstract class SMWSerializer {
 	 * (what is flushed is gone).
 	 */
 	public function flushContent() {
-		if ( ( $this->pre_ns_buffer == '' ) && ( $this->post_ns_buffer == '' ) ) return '';
+		if ( ( $this->pre_ns_buffer === '' ) && ( $this->post_ns_buffer === '' ) ) return '';
 		$this->serializeNamespaces();
 		$result = $this->pre_ns_buffer . $this->post_ns_buffer;
 		$this->pre_ns_buffer = '';

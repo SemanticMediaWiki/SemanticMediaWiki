@@ -208,7 +208,7 @@ class SMWQueryUIHelper {
 
 		$errors = array();
 		if ( $enableValidation ) {
-			if ( $queryString == '' ) {
+			if ( $queryString === '' ) {
 				$errors[] = wfMsg( 'smw_qui_noquery' );
 			} else {
 				$query = SMWQueryProcessor::createQuery( $queryString, array() );

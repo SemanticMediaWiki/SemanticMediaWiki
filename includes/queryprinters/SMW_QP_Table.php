@@ -52,7 +52,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				$headers[] = Html::rawElement(
 					'th',
 					$attribs,
-					$text == '' ? '&nbsp;' : $text
+					$text === '' ? '&nbsp;' : $text
 				);
 			}
 			

@@ -272,7 +272,7 @@ class SMWSQLStoreLight extends SMWStore {
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		foreach ( $data->getProperties() as $property ) {
 			$tablename = SMWSQLStoreLight::findPropertyTableName( $property );
-			if ( $tablename == '' ) continue;
+			if ( $tablename === '' ) continue;
 			foreach ( $data->getPropertyValues( $property ) as $dv ) {
 				if ( !$dv->isValid() ) continue;
 				if ( $dv instanceof SMWContainerValue ) {

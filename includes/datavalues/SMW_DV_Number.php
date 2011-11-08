@@ -85,7 +85,7 @@ class SMWNumberValue extends SMWDataValue {
 			}
 		}
 
-		if ( ( count( $parts ) == 1 ) || ( $numstring == '' ) ) { // no number found
+		if ( ( count( $parts ) == 1 ) || ( $numstring === '' ) ) { // no number found
 			return 1;
 		} elseif ( is_infinite( $number ) ) { // number is too large for this platform
 			return 2;
@@ -276,7 +276,7 @@ class SMWNumberValue extends SMWDataValue {
 	protected function convertToMainUnit( $number, $unit ) {
 		$this->m_dataitem = new SMWDINumber( $number );
 		$this->m_unitin = '';
-		return ( $unit == '' );
+		return ( $unit === '' );
 	}
 
 	/**

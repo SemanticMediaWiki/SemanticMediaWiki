@@ -77,7 +77,7 @@ class SMWExpResource extends SMWExpElement {
 	 * @return boolean
 	 */
 	public function isBlankNode() {
-		return ( $this->m_uri == '' ) || ( $this->m_uri{0} == '_' );
+		return ( $this->m_uri === '' ) || ( $this->m_uri{0} == '_' );
 	}
 
 	/**
