@@ -180,6 +180,7 @@ function smwfRegisterClasses() {
 	$incDir = $smwgIP . 'includes/';
 	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
 	$wgAutoloadClasses['SMWDataValueFactory']   	= $incDir . 'SMW_DataValueFactory.php';
+	$wgAutoloadClasses['SMWDISerializer']   		= $incDir . 'SMW_DISerializer.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';

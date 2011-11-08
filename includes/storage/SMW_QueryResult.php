@@ -226,69 +226,15 @@ class SMWQueryResult {
 		return $result;
 	}
 	
-	public function getDataItemSerialization( SMWDataItem $dataItem ) {
-		switch ( $dataItem->getDIType() ) {
-			case SMWDataItem::TYPE_WIKIPAGE:
-				$title = $dataItem->getTitle();
-				$result = array(
-					'fulltext' => $title->getFullText(),
-					'fullurl' => $title->getFullUrl(),
-				);
-				break;
-			case SMWDataItem::TYPE_NUMBER:
-				$result = $dataItem->getNumber();
-				break;
-			case SMWDataItem::TYPE_GEO:
-				$result = $dataItem->getCoordinateSet();
-				break;
-			case SMWDataItem::TYPE_TIME:
-				$result = $dataItem->getMwTimestamp();
-				break;
-			default:
-				$result = $dataItem->getSerialization();
-				break;
-		}
-		
-		return $result;
+	/**
+	 * @see SMWDISerializer::getSerializedQueryResult
+	 * @since 1.7
+	 * @return array
+	 */
+	public function serializeToArray() {
+		return SMWDISerializer::getSerializedQueryResult( $this );
 	}
 	
-	public function serializeToArray() {
-		$results = array();
-		$printRequests = array();
-		
-		foreach ( $this->mPrintRequests as /* SMWPrintRequest */ $printRequest ) {
-			$printRequests[] = array(
-				'label' => $printRequest->getLabel(),
-				'typeid' => $printRequest->getTypeID(),
-				'mode' => $printRequest->getMode(),
-			);
-		}
-		
-		foreach ( $this->mResults as /* SMWDIWikiPage */ $diWikiPage ) {
-			$result = array( 'printeouts' => array() );
-			
-			foreach ( $this->mPrintRequests as /* SMWPrintRequest */ $printRequest ) {
-				$resultAarray = new SMWResultArray( $diWikiPage, $printRequest, $this->mStore );
-				
-				if ( $printRequest->getMode() === SMWPrintRequest::PRINT_THIS ) {
-					$dataItems = $resultAarray->getContent();
-					$result += $this->getDataItemSerialization( array_shift( $dataItems ) );
-				}
-				else {
-					$result['printeouts'][$printRequest->getLabel()] = array_map(
-						array( __class__, 'getDataItemSerialization' ),
-						$resultAarray->getContent()
-					);
-				}
-
-			}
-			
-			$results[$diWikiPage->getTitle()->getFullText()] = $result;
-		}
-		
-		return array( 'results' => $results, 'printrequests' => $printRequests );
-	}
-
 }
 
 /**
