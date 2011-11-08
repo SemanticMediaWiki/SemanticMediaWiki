@@ -38,7 +38,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		$parameterString = "query=" . urlencode( $sparql ) . "&restricted=1" .
-			( ( $this->m_defaultGraph != '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
+			( ( $this->m_defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 		$xmlResult = curl_exec( $this->m_curlhandle );
 
@@ -102,7 +102,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		$parameterString = "data=" . urlencode( $payload ) . '&graph=' .
-			( ( $this->m_defaultGraph != '' )? urlencode( $this->m_defaultGraph ) : 'default' ) .
+			( ( $this->m_defaultGraph !== '' )? urlencode( $this->m_defaultGraph ) : 'default' ) .
 			'&mime-type=application/x-turtle';
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 

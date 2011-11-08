@@ -27,7 +27,7 @@ class SMWDeclare {
 	public static function render( Parser &$parser, PPFrame $frame, array $args ) {
 		if ( $frame->isTemplate() ) {
 			foreach ( $args as $arg )
-				if ( trim( $arg ) != '' ) {
+				if ( trim( $arg ) !== '' ) {
 					$expanded = trim( $frame->expand( $arg ) );
 					$parts = explode( '=', $expanded, 2 );
 
@@ -52,7 +52,7 @@ class SMWDeclare {
 							$objects = $matches[1];
 
 							if ( count( $objects ) == 0 ) {
-								if ( trim( $valuestring ) != '' ) {
+								if ( trim( $valuestring ) !== '' ) {
 									SMWParseData::addProperty( $propertystring, $valuestring, false, $parser, true );
 								}
 							} else {
@@ -60,7 +60,7 @@ class SMWDeclare {
 									SMWParseData::addProperty( $propertystring, $object, false, $parser, true );
 								}
 							}
-						} elseif ( trim( $valuestring ) != '' ) {
+						} elseif ( trim( $valuestring ) !== '' ) {
 								SMWParseData::addProperty( $propertystring, $valuestring, false, $parser, true );
 						}
 

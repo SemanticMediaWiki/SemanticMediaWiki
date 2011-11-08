@@ -62,14 +62,14 @@ class SMWPageProperty extends SpecialPage {
 			$html .= wfMsg( 'smw_pp_docu' ) . "\n";
 		} else { // property given, find and display results
 			// FIXME: very ugly, needs i18n
-			$wgOut->setPagetitle( ( $pagename != '' ? $pagename . ' ':'' ) . $property->getWikiValue() );
+			$wgOut->setPagetitle( ( $pagename !== '' ? $pagename . ' ':'' ) . $property->getWikiValue() );
 
 			// get results (get one more, to see if we have to add a link to more)
 			$options = new SMWRequestOptions();
 			$options->limit = $limit + 1;
 			$options->offset = $offset;
 			$options->sort = true;
-			$results = smwfGetStore()->getPropertyValues( $pagename != '' ? $subject->getDataItem() : null, $property->getDataItem(), $options );
+			$results = smwfGetStore()->getPropertyValues( $pagename !== '' ? $subject->getDataItem() : null, $property->getDataItem(), $options );
 
 			// prepare navigation bar if needed
 			if ( ( $offset > 0 ) || ( count( $results ) > $limit ) ) {

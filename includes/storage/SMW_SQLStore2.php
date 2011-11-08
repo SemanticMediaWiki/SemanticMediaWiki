@@ -311,7 +311,7 @@ class SMWSQLStore2 extends SMWStore {
 		foreach ( $proptable->objectfields as $fieldname => $typeid ) { // now add select entries for object column(s)
 			if ( $typeid == 'p' ) { // Special case: page id, use smw_id table to insert 4 page-specific values instead of internal id
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
-				$select .= ( ( $select != '' ) ? ',' : '' ) . "$fieldname AS id$valuecount";
+				$select .= ( ( $select !== '' ) ? ',' : '' ) . "$fieldname AS id$valuecount";
 
 				$selectvalues[$valuecount] = "o$valuecount.smw_title";
 				$selectvalues[$valuecount + 1] = "o$valuecount.smw_namespace";
@@ -329,14 +329,14 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		foreach ( $selectvalues as $index => $field ) {
-			$select .= ( ( $select != '' ) ? ',' : '' ) . "$field AS v$index";
+			$select .= ( ( $select !== '' ) ? ',' : '' ) . "$field AS v$index";
 		}
 
 		if ( !$issubject ) { // Needed to apply sorting/string matching in query; only with fixed property.
 			list( $sig, $valueIndex, $labelIndex ) = self::getTypeSignature( $object->findPropertyTypeID() );
 			$valuecolumn = ( array_key_exists( $valueIndex, $selectvalues ) ) ? $selectvalues[$valueIndex] : '';
 			$labelcolumn = ( array_key_exists( $labelIndex, $selectvalues ) ) ? $selectvalues[$labelIndex] : '';
-			$where .= $this->getSQLConditions( $requestoptions, $valuecolumn, $labelcolumn, $where != '' );
+			$where .= $this->getSQLConditions( $requestoptions, $valuecolumn, $labelcolumn, $where !== '' );
 		} else {
 			$valuecolumn = $labelcolumn = '';
 		}
@@ -431,7 +431,7 @@ class SMWSQLStore2 extends SMWStore {
 		// ***  Now execute the query and read the results  ***//
 		$result = array();
 		$res = $db->select( $from, 'DISTINCT ' . $select,
-		                    $where . $this->getSQLConditions( $requestoptions, 'smw_sortkey', 'smw_sortkey', $where != '' ),
+		                    $where . $this->getSQLConditions( $requestoptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
 		                    'SMW::getPropertySubjects',
 		                    $this->getSQLOptions( $requestoptions, 'smw_sortkey' ) );
 
@@ -645,7 +645,7 @@ class SMWSQLStore2 extends SMWStore {
 
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
 						// select sortkey since it might be used in ordering (needed by Postgres)
-						$where . $this->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey', $where != '' ),
+						$where . $this->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
 						'SMW::getInProperties', $this->getSQLOptions( $suboptions, 'smw_sortkey' ) );
 
 				foreach ( $res as $row ) {
@@ -766,7 +766,7 @@ class SMWSQLStore2 extends SMWStore {
 				'SMWSQLStore2Queries::updateConst2Data'
 			);
 
-			if ( ( $row === false ) && ( $up_conc2['concept_txt'] != '' ) ) { // insert newly given data
+			if ( ( $row === false ) && ( $up_conc2['concept_txt'] !== '' ) ) { // insert newly given data
 				$up_conc2['s_id'] = $sid;
 				$db->insert( 'smw_conc2', $up_conc2, 'SMW::updateConc2Data' );
 			} elseif ( $row !== false ) { // update data, preserve existing entries
@@ -1490,7 +1490,7 @@ class SMWSQLStore2 extends SMWStore {
 
 			if ( $namespaces && !in_array( $row->smw_namespace, $namespaces ) ) continue;
 
-			if ( $row->smw_subobject != '' ) {
+			if ( $row->smw_subobject !== '' ) {
 				// leave subobjects alone; they ought to be changed with their pages
 			} elseif ( $row->smw_iw === '' || $row->smw_iw == SMW_SQL2_SMWREDIIW ) { // objects representing pages
 				// TODO: special treament of redirects needed, since the store will
@@ -1641,7 +1641,7 @@ class SMWSQLStore2 extends SMWStore {
 				$sql_options['OFFSET'] = $requestoptions->offset;
 			}
 
-			if ( ( $valuecol != '' ) && ( $requestoptions->sort ) ) {
+			if ( ( $valuecol !== '' ) && ( $requestoptions->sort ) ) {
 				$sql_options['ORDER BY'] = $requestoptions->ascending ? $valuecol : $valuecol . ' DESC';
 			}
 		}
@@ -1667,7 +1667,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $requestoptions !== null ) {
 			$db = wfGetDB( DB_SLAVE ); /// TODO avoid doing this here again, all callers should have one
 
-			if ( ( $valuecol != '' ) && ( $requestoptions->boundary !== null ) ) { // Apply value boundary.
+			if ( ( $valuecol !== '' ) && ( $requestoptions->boundary !== null ) ) { // Apply value boundary.
 				if ( $requestoptions->ascending ) {
 					$op = $requestoptions->include_boundary ? ' >= ' : ' > ';
 				} else {
@@ -1676,7 +1676,7 @@ class SMWSQLStore2 extends SMWStore {
 				$sql_conds .= ( $addand ? ' AND ' : '' ) . $valuecol . $op . $db->addQuotes( $requestoptions->boundary );
 			}
 
-			if ( $labelcol != '' ) { // Apply string conditions.
+			if ( $labelcol !== '' ) { // Apply string conditions.
 				foreach ( $requestoptions->getStringConditions() as $strcond ) {
 					$string = str_replace( '_', '\_', $strcond->string );
 
@@ -1686,7 +1686,7 @@ class SMWSQLStore2 extends SMWStore {
 						case SMWStringCondition::STRCOND_MID:  $string = '%' . $string . '%'; break;
 					}
 
-					$sql_conds .= ( ( $addand || ( $sql_conds != '' ) ) ? ' AND ' : '' ) . $labelcol . ' LIKE ' . $db->addQuotes( $string );
+					$sql_conds .= ( ( $addand || ( $sql_conds !== '' ) ) ? ' AND ' : '' ) . $labelcol . ' LIKE ' . $db->addQuotes( $string );
 				}
 			}
 		}
@@ -1948,7 +1948,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		$db = wfGetDB( DB_SLAVE );
 
-		if ( $iw != '' ) { // external page; no need to think about redirects
+		if ( $iw !== '' ) { // external page; no need to think about redirects
 			$iwCond = 'smw_iw=' . $db->addQuotes( $iw );
 		} else {
 			$iwCond = '(smw_iw=' . $db->addQuotes( '' ) .
@@ -2002,7 +2002,7 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn( 'SMWSQLStore2::makeSMWPageID (SMW)' );
 
 		$oldsort = '';
-		if ( $sortkey != '' ) { // get the old sortkey (requires DB access):
+		if ( $sortkey !== '' ) { // get the old sortkey (requires DB access):
 			$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical );
 		} else { // only get the id, can use caches:
 			$id = $this->getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical );
@@ -2028,7 +2028,7 @@ class SMWSQLStore2 extends SMWStore {
 			$id = $db->insertId();
 
 			$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, $id );
-		} elseif ( ( $sortkey != '' ) && ( $sortkey != $oldsort ) ) {
+		} elseif ( ( $sortkey !== '' ) && ( $sortkey != $oldsort ) ) {
 			$db = wfGetDB( DB_MASTER );
 			$db->update( 'smw_ids', array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
 		}
@@ -2047,7 +2047,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $property->isUserDefined() ) {
 			return '';
 		} else {
-			return ( $property->getLabel() != '' ) ? SMW_SQL2_SMWPREDEFIW : SMW_SQL2_SMWINTDEFIW;
+			return ( $property->getLabel() !== '' ) ? SMW_SQL2_SMWPREDEFIW : SMW_SQL2_SMWINTDEFIW;
 		}
 	}
 
@@ -2209,7 +2209,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * @param $subject SMWDIWikiPage the data of which is deleted
 	 */
 	protected function deleteSemanticData( SMWDIWikiPage $subject ) {
-		if ( $subject->getSubobjectName() != '' ) return; // not needed, and would mess up data
+		if ( $subject->getSubobjectName() !== '' ) return; // not needed, and would mess up data
 
 		$db = wfGetDB( DB_MASTER );
 

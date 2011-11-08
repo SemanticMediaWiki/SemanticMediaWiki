@@ -181,7 +181,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @note Every user defined property is necessarily visible.
 	 */
 	public function isVisible() {
-		return ( $this->m_dataitem->isUserDefined() ) || ( $this->m_dataitem->getLabel() != '' );
+		return ( $this->m_dataitem->isUserDefined() ) || ( $this->m_dataitem->getLabel() !== '' );
 	}
 
 	public function getShortWikiText( $linked = null ) {

@@ -20,7 +20,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getFileName( $res ) {
-		if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) != '' ) {
+		if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) !== '' ) {
 			return str_replace( ' ', '_', $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) . '.json';
 		} else {
 			return 'result.json';
@@ -134,7 +134,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 				$link->setParameter( htmlspecialchars( $this->params['callback'] ), 'callback' );
 			}
 			
-			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) != '' ) { // used as a file name
+			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) !== '' ) { // used as a file name
 				$link->setParameter( $this->getSearchLabel( SMW_OUTPUT_WIKI ), 'searchlabel' );
 			}
 			

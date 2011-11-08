@@ -210,7 +210,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 			$exists = false;
 			return $expNsResource;
 		} elseif ( ( $expNsResource->getDataItem() instanceof SMWDIWikiPage ) &&
-			   $expNsResource->getDataItem()->getSubobjectName() != '' ) {
+			   $expNsResource->getDataItem()->getSubobjectName() !== '' ) {
 			$exists = true;
 			return $expNsResource;
 		}

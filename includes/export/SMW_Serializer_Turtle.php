@@ -142,7 +142,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 			$this->post_ns_buffer .= "[";
 		}
 
-		if ( ( $indent != '' ) && ( !$bnode ) ) { // called to generate a nested descripion; but Turtle cannot nest non-bnode descriptions, do this later
+		if ( ( $indent !== '' ) && ( !$bnode ) ) { // called to generate a nested descripion; but Turtle cannot nest non-bnode descriptions, do this later
 			$this->subexpdata[] = $data;
 			return;
 		} elseif ( !$bnode ) {
@@ -233,7 +233,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 		} elseif ( $expElement instanceof SMWExpLiteral ) {
 			$lexicalForm = '"' . str_replace( array( '\\', "\n", '"' ), array( '\\\\', "\\n", '\"' ), $expElement->getLexicalForm() ) . '"';
 			$dt = $expElement->getDatatype();
-			if ( ( $dt != '' ) && ( $dt != 'http://www.w3.org/2001/XMLSchema#string' ) ) {
+			if ( ( $dt !== '' ) && ( $dt != 'http://www.w3.org/2001/XMLSchema#string' ) ) {
 				$count = 0;
 				$newdt = str_replace( 'http://www.w3.org/2001/XMLSchema#', 'xsd:',  $dt, $count );
 				return ( $count == 1 ) ? "$lexicalForm^^$newdt" : "$lexicalForm^^<$dt>";

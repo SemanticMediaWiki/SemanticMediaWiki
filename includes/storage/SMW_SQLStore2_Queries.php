@@ -798,7 +798,7 @@ class SMWSQLStore2QueryEngine {
 			}
 		}
 
-		if ( $where != '' ) $query->where .= ( $query->where ? " $operator " : '' ) . "($where)";
+		if ( $where !== '' ) $query->where .= ( $query->where ? " $operator " : '' ) . "($where)";
 	}
 
 	/**
@@ -817,7 +817,7 @@ class SMWSQLStore2QueryEngine {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries( $subquery );
 
-					if ( $subquery->jointable != '' ) { // Join with jointable.joinfield
+					if ( $subquery->jointable !== '' ) { // Join with jointable.joinfield
 						$query->from .= ' INNER JOIN ' . $this->m_dbs->tableName( $subquery->jointable ) . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
 					} elseif ( $subquery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 						$condition = '';
@@ -839,7 +839,7 @@ class SMWSQLStore2QueryEngine {
 						break;
 					}
 
-					if ( $subquery->where != '' ) {
+					if ( $subquery->where !== '' ) {
 						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . '(' . $subquery->where . ')';
 					}
 
@@ -854,7 +854,7 @@ class SMWSQLStore2QueryEngine {
 				$key = false;
 
 				foreach ( $query->components as $qkey => $qid ) {
-					if ( $this->m_queries[$qkey]->jointable != '' ) {
+					if ( $this->m_queries[$qkey]->jointable !== '' ) {
 						$key = $qkey;
 						break;
 					}
@@ -900,7 +900,7 @@ class SMWSQLStore2QueryEngine {
 					$this->executeQueries( $subquery );
 					$sql = '';
 
-					if ( $subquery->jointable != '' ) {
+					if ( $subquery->jointable !== '' ) {
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
 						       $this->m_dbs->tableName( $query->alias ) .
 							   " SELECT $subquery->joinfield FROM " . $this->m_dbs->tableName( $subquery->jointable ) .

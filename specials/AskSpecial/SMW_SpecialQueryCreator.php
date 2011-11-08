@@ -153,7 +153,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			wfMsg( 'smw_ask_help' ) . '</a>';
 
 		// Control for showing #ask syntax of query:
-		if ( $this->uiCore->getQueryString() != '' ) { // only show if query given
+		if ( $this->uiCore->getQueryString() !== '' ) { // only show if query given
 			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="##" rel="nofollow">' .
 				wfMsg( 'smw_ask_show_embed' ) . '</a>' .
 				'<div id="embed-code-dialog">' . $this->getAskEmbedBox() . '</div>';

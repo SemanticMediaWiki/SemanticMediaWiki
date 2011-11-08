@@ -235,7 +235,7 @@ class SMWQueryProcessor {
 				$param = implode( ',', array_keys( $param ) );
 			}
 
-			if ( is_string( $name ) && ( $name != '' ) ) { // accept 'name' => 'value' just as '' => 'name=value'
+			if ( is_string( $name ) && ( $name !== '' ) ) { // accept 'name' => 'value' just as '' => 'name=value'
 				$param = $name . '=' . $param;
 			}
 

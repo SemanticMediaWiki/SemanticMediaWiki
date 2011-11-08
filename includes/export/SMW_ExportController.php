@@ -92,7 +92,7 @@ class SMWExportController {
 		$this->serializer->clear();
 		$this->element_queue = array();
 		$this->element_done = array();
-		if ( $outfilename != '' ) {
+		if ( $outfilename !== '' ) {
 			$this->outputfile = fopen( $outfilename, 'w' );
 			if ( !$this->outputfile ) { // TODO Rather throw an exception here.
 				print "\nCannot open \"$outfilename\" for writing.\n";
@@ -460,7 +460,7 @@ class SMWExportController {
 		$query = '';
 		foreach ( $smwgNamespacesWithSemanticLinks as $ns => $enabled ) {
 			if ( $enabled ) {
-				if ( $query != '' ) $query .= ' OR ';
+				if ( $query !== '' ) $query .= ' OR ';
 				$query .= 'page_namespace = ' . $db->addQuotes( $ns );
 			}
 		}

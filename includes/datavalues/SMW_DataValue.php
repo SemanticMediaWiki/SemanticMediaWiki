@@ -725,7 +725,7 @@ abstract class SMWDataValue {
 					$accept = true;
 					break;
 				} else {
-					if ( $valuestring != '' ) {
+					if ( $valuestring !== '' ) {
 						$valuestring .= ', ';
 					}
 					$valuestring .= $di->getString();

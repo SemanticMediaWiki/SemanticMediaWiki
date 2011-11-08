@@ -92,7 +92,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 			$result .= '<li>';
 			$first_col = true;
 			
-			if ( $this->mTemplate != '' ) { // build template code
+			if ( $this->mTemplate !== '' ) { // build template code
 				$this->hasTemplates = true;
 				$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam":'';
 				$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
@@ -131,7 +131,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 						if ( $first_value ) { // first value in any column, print header
 							$first_value = false;
 							
-							if ( $this->mShowHeaders && ( $field->getPrintRequest()->getLabel() != '' ) ) {
+							if ( $this->mShowHeaders && ( $field->getPrintRequest()->getLabel() !== '' ) ) {
 								$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . ' ';
 							}
 						}
@@ -169,7 +169,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 			
 			if ( $this->mNumColumns != 3 ) $link->setParameter( $this->mNumColumns, 'columns' );
 			
-			if ( $this->mTemplate != '' ) {
+			if ( $this->mTemplate !== '' ) {
 				$link->setParameter( $this->mTemplate, 'template' );
 				
 				if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates

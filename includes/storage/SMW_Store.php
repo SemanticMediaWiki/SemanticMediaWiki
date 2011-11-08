@@ -482,7 +482,7 @@ abstract class SMWStore {
 		          "<h3>Debug Output by $storeName</h3>";
 		foreach ( $entries as $header => $information ) {
 			$result .= "<h4>$header</h4>";
-			if ( $information != '' ) {
+			if ( $information !== '' ) {
 				$result .= "$information";
 			}
 		}

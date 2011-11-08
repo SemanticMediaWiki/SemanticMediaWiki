@@ -346,7 +346,7 @@ class SMWSparqlDatabase {
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
 		$sparql = self::getPrefixString( $extraNamespaces ) .
-			( ( $this->m_defaultGraph != '' )? "WITH <{$this->m_defaultGraph}> " : '' ) .
+			( ( $this->m_defaultGraph !== '' )? "WITH <{$this->m_defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } WHERE { $where }";
 		return $this->doUpdate( $sparql );
 	}
@@ -385,7 +385,7 @@ class SMWSparqlDatabase {
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
 		$sparql = self::getPrefixString( $extraNamespaces ) .
-			( ( $this->m_defaultGraph != '' )? "WITH <{$this->m_defaultGraph}> " : '' ) .
+			( ( $this->m_defaultGraph !== '' )? "WITH <{$this->m_defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } INSERT { $insertPattern } WHERE { $where }";
 		return $this->doUpdate( $sparql );
 	}
@@ -401,13 +401,13 @@ class SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = array() ) {
-		if ( $this->m_dataEndpoint != '' ) {
+		if ( $this->m_dataEndpoint !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
 		} else {
 			$sparql = self::getPrefixString( $extraNamespaces, true ) .
 				"INSERT DATA { " .
-				( ( $this->m_defaultGraph != '' )? "GRAPH <{$this->m_defaultGraph}> " : '' ) .
+				( ( $this->m_defaultGraph !== '' )? "GRAPH <{$this->m_defaultGraph}> " : '' ) .
 				"{ $triples } }";
 			return $this->doUpdate( $sparql );
 		}
@@ -426,7 +426,7 @@ class SMWSparqlDatabase {
 	public function deleteData( $triples, $extraNamespaces = array() ) {
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			"DELETE DATA { " .
-			( ( $this->m_defaultGraph != '' )? "GRAPH <{$this->m_defaultGraph}> " : '' ) .
+			( ( $this->m_defaultGraph !== '' )? "GRAPH <{$this->m_defaultGraph}> " : '' ) .
 			"{ $triples } }";
 		return $this->doUpdate( $sparql );
 	}
@@ -450,7 +450,7 @@ class SMWSparqlDatabase {
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		$parameterString = "query=" . urlencode( $sparql ) .
-			( ( $this->m_defaultGraph != '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
+			( ( $this->m_defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 
 		$xmlResult = curl_exec( $this->m_curlhandle );
@@ -522,7 +522,7 @@ class SMWSparqlDatabase {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint .
-			( ( $this->m_defaultGraph != '' )? '?graph=' . urlencode( $this->m_defaultGraph ) : '?default' ) );
+			( ( $this->m_defaultGraph !== '' )? '?graph=' . urlencode( $this->m_defaultGraph ) : '?default' ) );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 
 		// POST as file (fails in 4Store)

@@ -28,7 +28,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 		$page = ( $page === '' ) ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
 		if ( $page === '' ) { // Try to get POST list; some settings are only available via POST.
 			$pageblob = $wgRequest->getText( 'pages' );
-			if ( $pageblob != '' ) {
+			if ( $pageblob !== '' ) {
 				$pages = explode( "\n", $pageblob );
 			}
 		} else {
@@ -136,7 +136,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		$date = $wgRequest->getText( 'date' );
 		if ( $date === '' ) $date = $wgRequest->getVal( 'date' );
-		if ( $date != '' ) {
+		if ( $date !== '' ) {
 			$timeint = strtotime( $date );
 			$stamp = date( "YmdHis", $timeint );
 			$date = $stamp;

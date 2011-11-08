@@ -84,7 +84,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
 			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? smwfNumberFormat( $value ) : $value );
 		}
-		if ( ( $printunit != '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
+		if ( ( $printunit !== '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
 			if ( $this->m_outformat != '-u' ) {
 				$this->m_caption .=  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
 			}

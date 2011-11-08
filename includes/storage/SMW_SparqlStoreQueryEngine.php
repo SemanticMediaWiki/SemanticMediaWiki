@@ -559,7 +559,7 @@ class SMWSparqlStoreQueryEngine {
 		}
 
 		if ( $singletonMatchElement !== null ) {
-			if ( $filter != '' ) {
+			if ( $filter !== '' ) {
 				$condition .= "FILTER( $filter )";
 			}
 			$result = new SMWSparqlSingletonCondition( $singletonMatchElement, $condition,
@@ -567,7 +567,7 @@ class SMWSparqlStoreQueryEngine {
 		} elseif ( $condition === '' ) {
 			$result = new SMWSparqlFilterCondition( $filter, $namespaces );
 		} else {
-			if ( $filter != '' ) {
+			if ( $filter !== '' ) {
 				$condition .= "FILTER( $filter )";
 			}
 			$result = new SMWSparqlWhereCondition( $condition, $hasSafeSubconditions, $namespaces );
@@ -709,14 +709,14 @@ class SMWSparqlStoreQueryEngine {
 		}
 		$condition = "$subjectName $propertyName $objectName .\n";
 		$innerConditionString = $innerCondition->getCondition() . $innerCondition->getWeakConditionString();
-		if ( $innerConditionString != '' ) {
+		if ( $innerConditionString !== '' ) {
 			$condition .= "{ $innerConditionString}\n" ;
 		}
 		$result = new SMWSparqlWhereCondition( $condition, true, $namespaces );
 
 		//*** Record inner ordering variable if found ***//
 		$result->orderVariables = $innerCondition->orderVariables;
-		if ( ( $innerOrderByProperty !== null ) && ( $innerCondition->orderByVariable != '' ) ) {
+		if ( ( $innerOrderByProperty !== null ) && ( $innerCondition->orderByVariable !== '' ) ) {
 			$result->orderVariables[$diProperty->getKey()] = $innerCondition->orderByVariable;
 		}
 
@@ -959,7 +959,7 @@ class SMWSparqlStoreQueryEngine {
 					// not supported in SPARQL; might be possible via function calls in some stores
 				}
 			}
-			if ( $orderByString != '' ) {
+			if ( $orderByString !== '' ) {
 				$result['ORDER BY'] = $orderByString;
 			}
 		}

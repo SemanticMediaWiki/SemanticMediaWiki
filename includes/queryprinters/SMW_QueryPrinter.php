@@ -177,7 +177,7 @@ abstract class SMWResultPrinter {
 					$label = wfMsgForContent( 'smw_iq_moreresults' );
 				}
 
-				if ( $label != '' ) {
+				if ( $label !== '' ) {
 					$link = $results->getQueryLink( $this->escapeText( $label, $outputmode ) );
 					$result = $link->getText( $outputmode, $this->mLinker );
 				} else {

@@ -81,7 +81,7 @@ class SMWExporter {
 		$wikiPageExpElement = self::getDataItemExpElement( $diWikiPage );
 		$result = new SMWExpData( $wikiPageExpElement );
 
-		if ( $diWikiPage->getSubobjectName() != '' ) {
+		if ( $diWikiPage->getSubobjectName() !== '' ) {
 			$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdf', 'type' ), self::getSpecialNsResource( 'swivt', 'Subject' ) );
 			$masterPage = new SMWDIWikiPage( $diWikiPage->getDBkey(), $diWikiPage->getNamespace(), $diWikiPage->getInterwiki() );
 			$masterExpElement = self::getDataItemExpElement( $masterPage );
@@ -252,7 +252,7 @@ class SMWExporter {
 			} // else: Medialink to non-existing file :-/ fall through
 		}
 
-		if ( $diWikiPage->getSubobjectName() != '' ) {
+		if ( $diWikiPage->getSubobjectName() !== '' ) {
 			$modifier = $diWikiPage->getSubobjectName();
 		}
 
@@ -287,7 +287,7 @@ class SMWExporter {
 				}
 				$localName = self::encodeURI( wfUrlencode( $localName ) );
 			}
-			if ( $modifier != '' ) {
+			if ( $modifier !== '' ) {
 				$localName .=  '-23' . $modifier;
 			}
 		}
@@ -429,7 +429,7 @@ class SMWExporter {
 	 */
 	static public function getSpecialNsResource( $namespaceId, $localName ) {
 		$namespace = self::getNamespaceUri( $namespaceId );
-		if ( $namespace != '' ) {
+		if ( $namespace !== '' ) {
 			return new SMWExpNsResource( $localName, $namespace, $namespaceId );
 		} else {
 			throw new InvalidArgumentException( "The vocabulary '$namespaceId' is not a known special vocabulary." );

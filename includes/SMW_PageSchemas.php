@@ -98,7 +98,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			} elseif ( substr( $var, 0, 18 ) == 'smw_property_type_'){
 				$xml .= '<Type>' . $val . '</Type>';
 			} elseif ( substr( $var, 0, 11 ) == 'smw_values_') {
-				if ( $val != '' ) {
+				if ( $val !== '' ) {
 					// replace the comma substitution character that has no chance of
 					// being included in the values list - namely, the ASCII beep
 					$listSeparator = ',';

@@ -307,7 +307,7 @@ class SMWTimeValue extends SMWDataValue {
 		} else {
 			$nhours = intval( $match[1] );
 			$nminutes = $match[2] ? intval( $match[2] ) : false;
-			if ( ( count( $match ) > 3 ) && ( $match[3] != '' ) ) {
+			if ( ( count( $match ) > 3 ) && ( $match[3] !== '' ) ) {
 				$nseconds = intval( substr( $match[3], 1 ) );
 			} else {
 				$nseconds = false;
@@ -316,7 +316,7 @@ class SMWTimeValue extends SMWDataValue {
 				$hours = $nhours;
 				$minutes = $nminutes;
 				$seconds = $nseconds;
-				if ( ( count( $match ) > 5 ) && ( $match[5] != '' ) ) {
+				if ( ( count( $match ) > 5 ) && ( $match[5] !== '' ) ) {
 					$timeoffset = intval( $match[5] );
 					if ( ( count( $match ) > 7 ) && ( $match[7] == '30' ) ) {
 						$timeoffset += 0.5;

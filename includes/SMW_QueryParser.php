@@ -128,7 +128,7 @@ class SMWQueryParser {
 		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
 		$mustSetNS = $setNS;      // must NS restrictions be set? (may become true even if $setNS is false)
 
-		$continue = ( $chunk = $this->readChunk() ) != ''; // skip empty subquery completely, thorwing an error
+		$continue = ( $chunk = $this->readChunk() ) !== ''; // skip empty subquery completely, thorwing an error
 
 		while ( $continue ) {
 			$setsubNS = false;
@@ -478,7 +478,7 @@ class SMWQueryParser {
 			// What happended? We found some chunk that could not be processed as
 			// link content (as in [[Category:Test<q>]]), or the closing ]] are
 			// just missing entirely.
-			if ( $chunk != '' ) {
+			if ( $chunk !== '' ) {
 				$this->m_errors[] = wfMsgForContent( 'smw_misplacedsymbol', htmlspecialchars( $chunk ) );
 
 				// try to find a later closing ]] to finish this misshaped subpart

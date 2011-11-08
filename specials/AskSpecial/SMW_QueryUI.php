@@ -69,7 +69,7 @@ abstract class SMWQueryUI extends SpecialPage {
 				$this->uiCore =  SMWQueryUIHelper::makeForUI(
 					$this->processQueryFormBox( $wgRequest ),
 					$params, array(), false );
-				if ( $this->uiCore->getQueryString() != '' ) {
+				if ( $this->uiCore->getQueryString() !== '' ) {
 					$this->uiCore->execute();
 				}
 			} else { // Query not sent via form (though maybe from "further results" link:
@@ -418,7 +418,7 @@ END;
 		}
 		if ( is_array( $categoryLabelValues ) ) {
 			foreach ( $categoryLabelValues as $key => $value ) {
-				if ( trim( $value ) != '' ) {
+				if ( trim( $value ) !== '' ) {
 				 $po[$key] .= ' = ' . $value;
 				}
 			}
@@ -437,8 +437,8 @@ END;
 					&& array_key_exists( $key, $orderValues )
 					&& $orderValues[$key] != 'NONE' )
 				{
-					$params['sort'] .= ( $params['sort'] != '' ? ',':'' ) . $propertyValues[$key];
-					$params['order'] .= ( $params['order'] != '' ? ',':'' ) . $orderValues[$key];
+					$params['sort'] .= ( $params['sort'] !== '' ? ',':'' ) . $propertyValues[$key];
+					$params['order'] .= ( $params['order'] !== '' ? ',':'' ) . $orderValues[$key];
 				}
 			}
 			if ( $params['sort'] === '' ) {
@@ -454,19 +454,19 @@ END;
 						$propertyValues[$key] = '?' . trim( $propertyValues[$key] ); // adding leading '?'
 						if ( is_array( $propertyFormatValues ) // adding PO format
 							&& array_key_exists( $key, $propertyFormatValues )
-							&& $propertyFormatValues[$key] != '' )
+							&& $propertyFormatValues[$key] !== '' )
 						{
 							$propertyValues[$key] .= '#' . $propertyFormatValues[$key];
 						}
 						if ( is_array( $propertyLabelValues ) // adding label
 							&& array_key_exists( $key, $propertyLabelValues )
-							&& $propertyLabelValues[$key] != '' )
+							&& $propertyLabelValues[$key] !== '' )
 						{
 							$propertyValues[$key] .= ' = ' . $propertyLabelValues[$key];
 						}
 						if ( is_array( $propertyLimitValues ) // adding limit
 							&& array_key_exists( $key, $propertyLimitValues )
-							&& $propertyLimitValues[$key] != '' )
+							&& $propertyLimitValues[$key] !== '' )
 						{
 							// / @bug limit, when specified causes incorrect ordering of printouts
 							$po[] = $propertyValues[$key];
@@ -1541,7 +1541,7 @@ EOT;
 				if ( $order_value === '' ) {
 					$order_value = 'ASC';
 				}
-				$params['order'] .= ( $params['order'] != '' ? ',' : '' ) . $order_value;
+				$params['order'] .= ( $params['order'] !== '' ? ',' : '' ) . $order_value;
 			}
 		}
 
@@ -1549,7 +1549,7 @@ EOT;
 		if ( is_array( $sort_values ) ) {
 			$params['sort'] = '';
 			foreach ( $sort_values as $sort_value ) {
-				$params['sort'] .= ( $params['sort'] != '' ? ',' : '' ) . $sort_value;
+				$params['sort'] .= ( $params['sort'] !== '' ? ',' : '' ) . $sort_value;
 			}
 		}
 		return $params;
@@ -1622,13 +1622,13 @@ EOT;
 		$postring = $wgRequest->getText( 'po' );
 		$poArray = array();
 
-		if ( $postring != '' ) { // parameters from HTML input fields
+		if ( $postring !== '' ) { // parameters from HTML input fields
 			$ps = explode( "\n", $postring ); // params separated by newlines here (compatible with text-input for printouts)
 
 			foreach ( $ps as $param ) { // add initial ? if omitted (all params considered as printouts)
 				$param = trim( $param );
 
-				if ( ( $param != '' ) && ( $param[0] != '?' ) ) {
+				if ( ( $param !== '' ) && ( $param[0] != '?' ) ) {
 					$param = '?' . $param;
 				}
 

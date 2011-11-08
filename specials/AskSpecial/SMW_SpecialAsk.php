@@ -94,20 +94,20 @@ class SMWAskPage extends SpecialPage {
 
 		// Check for q= query string, used whenever this special page calls itself (via submit or plain link):
 		$this->m_querystring = $wgRequest->getText( 'q' );
-		if ( $this->m_querystring != '' ) {
+		if ( $this->m_querystring !== '' ) {
 			$rawparams[] = $this->m_querystring;
 		}
 
 		// Check for param strings in po (printouts), appears in some links and in submits:
 		$paramstring = $wgRequest->getText( 'po' );
 
-		if ( $paramstring != '' ) { // parameters from HTML input fields
+		if ( $paramstring !== '' ) { // parameters from HTML input fields
 			$ps = explode( "\n", $paramstring ); // params separated by newlines here (compatible with text-input for printouts)
 
 			foreach ( $ps as $param ) { // add initial ? if omitted (all params considered as printouts)
 				$param = trim( $param );
 
-				if ( ( $param != '' ) && ( $param { 0 } != '?' ) ) {
+				if ( ( $param !== '' ) && ( $param { 0 } != '?' ) ) {
 					$param = '?' . $param;
 				}
 
@@ -131,7 +131,7 @@ class SMWAskPage extends SpecialPage {
 
 				foreach ( $order_values as $order_value ) {
 					if ( $order_value === '' ) $order_value = 'ASC';
-					$this->m_params['order'] .= ( $this->m_params['order'] != '' ? ',' : '' ) . $order_value;
+					$this->m_params['order'] .= ( $this->m_params['order'] !== '' ? ',' : '' ) . $order_value;
 				}
 			}
 		}
@@ -363,11 +363,11 @@ END;
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
 
-		if ( $printoutstring != '' ) $urlArgs['po'] = $printoutstring;
+		if ( $printoutstring !== '' ) $urlArgs['po'] = $printoutstring;
 		if ( array_key_exists( 'sort', $this->m_params ) )  $urlArgs['sort'] = $this->m_params['sort'];
 		if ( array_key_exists( 'order', $this->m_params ) ) $urlArgs['order'] = $this->m_params['order'];
 
-		if ( $this->m_querystring != '' ) {
+		if ( $this->m_querystring !== '' ) {
 			// FIXME: this is a hack
 			SMWQueryProcessor::addThisPrintout( $this->m_printouts, $this->m_params );
 			$params = SMWQueryProcessor::getProcessedParams( $this->m_params, $this->m_printouts );

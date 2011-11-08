@@ -40,7 +40,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 			$queryResult = $store->getQueryResult( $query );
 
 			$diWikiPages = $queryResult->getResults();
-			if ($this->until != '' ) {
+			if ($this->until !== '' ) {
 				$diWikiPages = array_reverse( $diWikiPages );
 			}
 
@@ -78,7 +78,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 // 		$end = count( $this->diWikiPages );
 // 		
 // 		if ( $end > $this->limit ) {
-// 			if ( $this->until != '' ) {
+// 			if ( $this->until !== '' ) {
 // 				$start = 1;
 // 			} else {
 // 				$start = 0;

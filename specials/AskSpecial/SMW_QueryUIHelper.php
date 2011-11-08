@@ -348,7 +348,7 @@ class SMWQueryUIHelper {
 	public function execute() {
 		$errors = array();
 
-		if ( $this->queryString != '' ) {
+		if ( $this->queryString !== '' ) {
 			// FIXME: this is a hack
 			SMWQueryProcessor::addThisPrintout( $this->printOuts, $this->parameters );
 			$params = SMWQueryProcessor::getProcessedParams( $this->parameters, $this->printOuts );

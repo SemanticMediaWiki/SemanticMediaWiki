@@ -70,7 +70,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rowend = '';
 			$plainlist = true;
 			
-			if ( $this->mSep != '' ) { // always respect custom separator
+			if ( $this->mSep !== '' ) { // always respect custom separator
 				$listsep = $this->mSep;
 				$finallistsep = $listsep;
 			} elseif ( $this->mFormat == 'list' )  {  // make default list ", , , and "
@@ -96,11 +96,11 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rows_in_cur_column = 0;
 		}
 
-		if ( $header != '' ) {
+		if ( $header !== '' ) {
 			$result .= $header;
 		} 
 		
-		if ( $this->mIntroTemplate != '' ) {
+		if ( $this->mIntroTemplate !== '' ) {
 			$result .= "{{" . $this->mIntroTemplate . "}}";
 		}
 
@@ -113,7 +113,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				$column_width, $res, $listsep, $finallistsep );
 		}
 		
-		if ( $this->mOutroTemplate != '' ) {
+		if ( $this->mOutroTemplate !== '' ) {
 			$result .= "{{" . $this->mOutroTemplate . "}}";
 		}
 		
@@ -123,7 +123,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 
 		// Print footer
-		if ( $footer != '' ) {
+		if ( $footer !== '' ) {
 			$result .= $footer;
 		}
 		
@@ -177,7 +177,7 @@ END;
 		}
 
 		$first_col = true;
-		if ( $this->mTemplate != '' ) { // build template code
+		if ( $this->mTemplate !== '' ) { // build template code
 			$this->hasTemplates = true;
 			$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam" : '';
 			$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
@@ -216,7 +216,7 @@ END;
 					if ( $first_value ) { // first value in any column, print header
 						$first_value = false;
 						
-						if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() != '' ) ) {
+						if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() !== '' ) ) {
 							$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null:$this->mLinker ) ) . ' ';
 						}
 					}
@@ -240,40 +240,40 @@ END;
 			$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
 		}
 		
-		if ( $this->mSep != '' ) {
+		if ( $this->mSep !== '' ) {
 			$link->setParameter( $this->mSep, 'sep' );
 		}
 		
 		$link->setParameter( $this->mFormat, 'format' );
 
-		if ( $this->mTemplate != '' ) {
+		if ( $this->mTemplate !== '' ) {
 			$link->setParameter( $this->mTemplate, 'template' );
 			if ( array_key_exists( 'link', $this->params ) ) { // linking may interfere with templates
 				$link->setParameter( $this->params['link'], 'link' );
 			}
 		}
 		
-		if ( $this->mUserParam != '' ) {
+		if ( $this->mUserParam !== '' ) {
 			$link->setParameter( $this->mUserParam, 'userparam' );
 		}
 		
-		if ( $this->mColumns != '' ) {
+		if ( $this->mColumns !== '' ) {
 			$link->setParameter( $this->mColumns, 'columns' );
 		}
 		
-		if ( $this->mIntro != '' ) {
+		if ( $this->mIntro !== '' ) {
 			$link->setParameter( $this->mIntro, 'intro' );
 		}
 		
-		if ( $this->mOutro != '' ) {
+		if ( $this->mOutro !== '' ) {
 			$link->setParameter( $this->mOutro, 'outro' );
 		}
 		
-		if ( $this->mIntroTemplate != '' ) {
+		if ( $this->mIntroTemplate !== '' ) {
 			$link->setParameter( $this->mIntroTemplate, 'introtemplate' );
 		}
 		
-		if ( $this->mOutroTemplate != '' ) {
+		if ( $this->mOutroTemplate !== '' ) {
 			$link->setParameter( $this->mOutroTemplate, 'outrotemplate' );
 		}
 		

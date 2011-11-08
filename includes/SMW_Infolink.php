@@ -353,7 +353,7 @@ class SMWInfolink {
 
 		if ( $forTitle ) {
 			foreach ( $params as $name => $value ) {
-				if ( is_string( $name ) && ( $name != '' ) ) {
+				if ( is_string( $name ) && ( $name !== '' ) ) {
 					$value = $name . '=' . $value;
 				}
 				// Escape certain problematic values. Use SMW-escape
@@ -380,7 +380,7 @@ class SMWInfolink {
 					$value
 				);
 
-				if ( $result != '' ) {
+				if ( $result !== '' ) {
 					$result .= '/';
 				}
 
@@ -390,10 +390,10 @@ class SMWInfolink {
 			$q = array(); // collect unlabelled query parameters here
 
 			foreach ( $params as $name => $value ) {
-				if ( is_string( $name ) && ( $name != '' ) ) {
+				if ( is_string( $name ) && ( $name !== '' ) ) {
 					$value = $name . '=' . rawurlencode( $value );
 
-					if ( $result != '' ) {
+					if ( $result !== '' ) {
 						$result .= '&';
 					}
 
@@ -403,7 +403,7 @@ class SMWInfolink {
 				}
 			}
 			if ( count( $q ) > 0 ) { // prepend encoding for unlabelled parameters
-				if ( $result != '' ) {
+				if ( $result !== '' ) {
 					$result = '&' . $result;
 				}
 				$result = 'x=' . rawurlencode( SMWInfolink::encodeParameters( $q, true ) ) . $result;
@@ -445,7 +445,7 @@ class SMWInfolink {
 			$result = $wgRequest->getValues();
 
 			if ( array_key_exists( 'x', $result ) ) { // Considered to be part of the title param.
-				if ( $titleParam != '' ) {
+				if ( $titleParam !== '' ) {
 					$titleParam .= '/';
 				}
 				$titleParam .= $result['x'];
@@ -455,12 +455,12 @@ class SMWInfolink {
 
 		if ( is_array( $titleParam ) ) {
 			return $titleParam;
-		} elseif ( $titleParam != '' ) {
+		} elseif ( $titleParam !== '' ) {
 			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
 			$ps = explode( '/', $titleParam ); // params separated by / here (compatible with wiki link syntax)
 
 			foreach ( $ps as $p ) {
-				if ( $p != '' ) {
+				if ( $p !== '' ) {
 					$p = rawurldecode( str_replace( '-', '%', $p ) );
 					$parts = explode( '=', $p, 2 );
 

@@ -141,7 +141,7 @@ class SMWFactbox {
 		global $wgTitle, $wgParser;
 		$factbox = SMWFactbox::getFactboxTextFromOutput( $parseroutput, $wgTitle );
 		
-		if ( $factbox != '' ) {
+		if ( $factbox !== '' ) {
 			$popts = new ParserOptions();
 			$po = $wgParser->parse( $factbox, $wgTitle, $popts );
 			$outputpage->mSMWFactboxText = $po->getText();

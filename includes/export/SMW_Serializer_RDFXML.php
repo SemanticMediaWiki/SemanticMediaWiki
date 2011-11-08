@@ -179,7 +179,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	 */
 	protected function serializeExpLiteral( SMWExpNsResource $expResourceProperty, SMWExpLiteral $expLiteral, $indent ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
-		if ( $expLiteral->getDatatype() != '' ) {
+		if ( $expLiteral->getDatatype() !== '' ) {
 			$this->post_ns_buffer .= ' rdf:datatype="' . $expLiteral->getDatatype() . '"';
 		}
 		$this->post_ns_buffer .= '>' . $this->makeAttributeValueString( $expLiteral->getLexicalForm() ) .

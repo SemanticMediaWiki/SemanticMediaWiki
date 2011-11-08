@@ -807,9 +807,9 @@ class SMWSomeProperty extends SMWDescription {
 		$propertyChainString = $this->m_property->getLabel();
 		$propertyname = $propertyChainString;
 
-		while ( ( $propertyname != '' ) && ( $subdesc instanceof SMWSomeProperty ) ) { // try to use property chain syntax
+		while ( ( $propertyname !== '' ) && ( $subdesc instanceof SMWSomeProperty ) ) { // try to use property chain syntax
 			$propertyname = $subdesc->getProperty()->getLabel();
-			if ( $propertyname != '' ) {
+			if ( $propertyname !== '' ) {
 				$propertyChainString .= '.' . $propertyname;
 				$subdesc = $subdesc->getDescription();
 			}

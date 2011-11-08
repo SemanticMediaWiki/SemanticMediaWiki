@@ -61,7 +61,7 @@ class SMWPageLister {
 		$resultCount = count( $this->mDiWikiPages );
 		$beyondLimit = ( $resultCount > $this->mLimit );
 
-		if ( $this->mUntil != '' ) {
+		if ( $this->mUntil !== '' ) {
 			if ( $beyondLimit ) {
 				$first = smwfGetStore()->getWikiPageSortKey( $this->mDiWikiPages[1] );
 			} else {
@@ -69,7 +69,7 @@ class SMWPageLister {
 			}
 
 			$last = $this->mUntil;
-		} elseif ( $beyondLimit || ( $this->mFrom != '' ) ) {
+		} elseif ( $beyondLimit || ( $this->mFrom !== '' ) ) {
 			$first = $this->mFrom;
 
 			if ( $beyondLimit ) {
@@ -82,12 +82,12 @@ class SMWPageLister {
 		}
 
 		$prevLink = htmlspecialchars( wfMsg( 'prevn', $limitText ) );
-		if ( $first != '' ) {
+		if ( $first !== '' ) {
 			$prevLink = $this->makeSelfLink( $title, $prevLink, $query + array( 'until' => $first ) );
 		}
 
 		$nextLink = htmlspecialchars( wfMsg( 'nextn', $limitText ) );
-		if ( $last != '' ) {
+		if ( $last !== '' ) {
 			$nextLink = $this->makeSelfLink( $title, $nextLink, $query + array( 'from' => $last ) );
 		}
 
@@ -119,11 +119,11 @@ class SMWPageLister {
 		$options->limit = $limit + 1;
 		$options->sort = true;
 
-		if ( $from != '' ) {
+		if ( $from !== '' ) {
 			$options->boundary = $from;
 			$options->ascending = true;
 			$options->include_boundary = true;
-		} elseif ( $until != '' ) {
+		} elseif ( $until !== '' ) {
 			$options->boundary = $until;
 			$options->ascending = false;
 			$options->include_boundary = false;
@@ -145,12 +145,12 @@ class SMWPageLister {
 	 * @return SMWQuery
 	 */
 	public static function getQuery( SMWDescription $description, $limit, $from, $until ) {
-		if ( $from != '' ) {
+		if ( $from !== '' ) {
 			$diWikiPage = new SMWDIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$fromDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
 			$queryDescription = new SMWConjunction( array( $description, $fromDescription ) );
 			$order = 'ASC';
-		} elseif ( $until != '' ) {
+		} elseif ( $until !== '' ) {
 			$diWikiPage = new SMWDIWikiPage( $until, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$untilDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_LESS ); // do not include boundary in this case
 			$queryDescription = new SMWConjunction( array( $description, $untilDescription ) );
@@ -180,7 +180,7 @@ class SMWPageLister {
 		$end = count( $this->mDiWikiPages );
 		$start = 0;
 		if ( $end > $this->mLimit ) {
-			if ( $this->mFrom != '' ) {
+			if ( $this->mFrom !== '' ) {
 				$end -= 1;
 			} else {
 				$start += 1;

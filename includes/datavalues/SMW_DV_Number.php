@@ -153,7 +153,7 @@ class SMWNumberValue extends SMWDataValue {
 			foreach ( $this->m_unitvalues as $unit => $value ) {
 				if ( $unit != $this->m_unitin ) {
 					$tooltip .= $sep . smwfNumberFormat( $value );
-					if ( $unit != '' ) {
+					if ( $unit !== '' ) {
 						$tooltip .= '&#160;' . $unit;
 					}
 					$sep = ' <br />';
@@ -163,7 +163,7 @@ class SMWNumberValue extends SMWDataValue {
 					}
 				}
 			}
-			if ( $tooltip != '' ) {
+			if ( $tooltip !== '' ) {
 				SMWOutputs::requireResource( 'ext.smw.tooltips' );
 				return '<span class="smwttinline">' . $this->m_caption . '<span class="smwttcontent">' . $tooltip . '</span></span>';
 			} else {
@@ -190,7 +190,7 @@ class SMWNumberValue extends SMWDataValue {
 					$result .= ', ';
 				}
 				$result .= ( $this->m_outformat != '-' ? smwfNumberFormat( $value ) : $value );
-				if ( $unit != '' ) {
+				if ( $unit !== '' ) {
 					$result .= '&#160;' . $unit;
 				}
 				$i++;
@@ -216,7 +216,7 @@ class SMWNumberValue extends SMWDataValue {
 	public function getWikiValue() {
 		if ( $this->isValid() ) {
 			$unit = $this->getUnit();
-			return strval( $this->m_dataitem->getSerialization() ) . ( $unit != '' ? ' ' . $unit : '' );
+			return strval( $this->m_dataitem->getSerialization() ) . ( $unit !== '' ? ' ' . $unit : '' );
 		} else {
 			return 'error';
 		}

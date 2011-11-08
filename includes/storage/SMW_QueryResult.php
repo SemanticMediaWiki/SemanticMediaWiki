@@ -210,7 +210,7 @@ class SMWQueryResult {
 			$order = implode( ',', $this->mQuery->sortkeys );
 			$sort = implode( ',', array_keys( $this->mQuery->sortkeys ) );
 			
-			if ( $sort != '' || $order != 'ASC' ) {
+			if ( $sort !== '' || $order != 'ASC' ) {
 				$params['order'] = $order;
 				$params['sort'] = $sort;			
 			}

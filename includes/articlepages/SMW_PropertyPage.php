@@ -130,7 +130,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$ac = count( $diWikiPages );
 
 		if ( $ac > $this->limit ) {
-			if ( $this->until != '' ) {
+			if ( $this->until !== '' ) {
 				$start = 1;
 			} else {
 				$start = 0;

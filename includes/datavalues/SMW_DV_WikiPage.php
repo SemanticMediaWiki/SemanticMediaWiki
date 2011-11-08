@@ -95,7 +95,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 
-		if ( $value != '' ) {
+		if ( $value !== '' ) {
 			if ( $value[0] == '#' ) {
 				if ( is_null( $this->m_contextPage ) ) {
 					$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
@@ -295,7 +295,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getWikiValue() {
 		return ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() ) .
-			( $this->m_fragment != '' ? "#{$this->m_fragment}" : '' );
+			( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
 	}
 
 	public function getHash() {
@@ -396,9 +396,9 @@ class SMWWikiPageValue extends SMWDataValue {
 			if ( $this->isValid() ) {
 				$nstext = $wgContLang->getNSText( $this->m_dataitem->getNamespace() );
 				$this->m_prefixedtext =
-					( $this->m_dataitem->getInterwiki() != '' ?
+					( $this->m_dataitem->getInterwiki() !== '' ?
 						$this->m_dataitem->getInterwiki() . ':' : '' ) .
-					( $nstext != '' ? "$nstext:" : '' ) . $this->getText();
+					( $nstext !== '' ? "$nstext:" : '' ) . $this->getText();
 			} else {
 				$this->m_prefixedtext = 'NO_VALID_VALUE';
 			}
@@ -426,7 +426,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	protected function getShortCaptionText() {
-		if ( $this->m_fragment != '' && $this->m_fragment[0] != '_' ) {
+		if ( $this->m_fragment !== '' && $this->m_fragment[0] != '_' ) {
 			$fragmentText = '#' . $this->m_fragment;
 		} else {
 			$fragmentText = '';
@@ -445,7 +445,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	protected function getLongCaptionText() {
-		if ( $this->m_fragment != '' && $this->m_fragment[0] != '_' ) {
+		if ( $this->m_fragment !== '' && $this->m_fragment[0] != '_' ) {
 			$fragmentText = '#' . $this->m_fragment;
 		} else {
 			$fragmentText = '';
@@ -463,7 +463,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected function getWikiLinkTarget() {
 		return str_replace( "'", '&#x0027;', $this->getPrefixedText() ) .
-			( $this->m_fragment != '' ? "#{$this->m_fragment}" : '' );
+			( $this->m_fragment !== '' ? "#{$this->m_fragment}" : '' );
 	}
 
 	/**

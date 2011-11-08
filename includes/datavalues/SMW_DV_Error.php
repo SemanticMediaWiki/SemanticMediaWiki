@@ -18,7 +18,7 @@ class SMWErrorValue extends SMWDataValue {
 	public function __construct( $typeid, $errormsg = '', $uservalue = '', $caption = false ) {
 		parent::__construct( $typeid );
 		$this->m_caption = ( $caption !== false ) ? $caption : $uservalue;
-		if ( $errormsg != '' ) {
+		if ( $errormsg !== '' ) {
 			$this->addError( $errormsg );
 		}
 	}

@@ -41,7 +41,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$this->initDisplayData();
 		if ( count( $this->m_displayunits ) == 0 ) { // no display units, just show all
 			foreach ( $this->m_unitfactors as $unit => $factor ) {
-				if ( $unit != '' ) { // filter out the empty fallback unit that is always there
+				if ( $unit !== '' ) { // filter out the empty fallback unit that is always there
 					$this->m_unitvalues[$unit] = $this->m_dataitem->getNumber() * $factor;
 				}
 			}
@@ -86,7 +86,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
 			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? smwfNumberFormat( $value ) : $value );
 		}
-		if ( ( $printunit != '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
+		if ( ( $printunit !== '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
 			if ( $this->m_outformat != '-u' ) {
 				$this->m_caption .=  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
 			}
