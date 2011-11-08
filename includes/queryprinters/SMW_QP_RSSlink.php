@@ -196,7 +196,7 @@ class SMWRSSItem {
 		}
 		$this->date = array();
 		if ( count( $d ) == 0 ) {
-			if ( $article === null ) {
+			if ( is_null( $article ) ) {
 				$article = new Article( $t );
 			}
 			$this->date[] = date( "c", strtotime( $article->getTimestamp() ) );

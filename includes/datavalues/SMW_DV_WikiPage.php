@@ -330,9 +330,10 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return Title
 	 */
 	public function getTitle() {
-		if ( ( $this->isValid() ) && ( $this->m_title === null ) ) {
+		if ( ( $this->isValid() ) && is_null( $this->m_title ) ) {
 			$this->m_title = $this->m_dataitem->getTitle();
-			if ( $this->m_title === null ) { // should not normally happen, but anyway ...
+			
+			if ( is_null( $this->m_title ) ) { // should not normally happen, but anyway ...
 				global $wgContLang;
 				$this->addError( wfMsgForContent( 'smw_notitle', $wgContLang->getNsText( $this->m_dataitem->getNamespace() ) . ':' . $this->m_dataitem->getDBkey() ) );
 			}

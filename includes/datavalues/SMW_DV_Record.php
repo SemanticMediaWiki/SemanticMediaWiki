@@ -216,8 +216,9 @@ class SMWRecordValue extends SMWDataValue {
 	 * @return array of SMWDIProperty
 	 */
 	public function getPropertyDataItems() {
-		if ( $this->m_diProperties === null ) {
+		if ( is_null( $this->m_diProperties ) ) {
 			$this->m_diProperties = self::findPropertyDataItems( $this->m_property );
+			
 			if ( count( $this->m_diProperties ) == 0 ) { //TODO internalionalize
 				$this->addError( 'The list of properties to be used for the data fields has not been specified properly.' );
 			}

@@ -58,7 +58,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	);
 
 	// Initialize base namespace for URIs in data exports:
-	if ( $namespace === null ) { 
+	if ( is_null( $namespace ) ) { 
 		die ( 'You should be providing the domain name to enableSemantics()' );
 		// fallback (bad because data URL will change depending on client URL)
 //		wfWarn( 'You should be providing the domain name to enableSemantics()' );
@@ -423,7 +423,7 @@ function smwfSetupExtension() {
 	$wgHooks['SkinGetPoweredBy'][] = 'smwfAddPoweredBySMW';
 	if ( isset($wgFooterIcons["poweredby"])
 	  && isset($wgFooterIcons["poweredby"]["semanticmediawiki"])
-	  && $wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] === null ) {
+	  && is_null( $wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] ) ) {
 		$wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] = "$smwgScriptPath/skins/images/smw_button.png";
 	}
 

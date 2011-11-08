@@ -83,7 +83,7 @@ class SMWPrintRequest {
 	 * If it is NULL, no links will be created.
 	 */
 	public function getHTMLText( $linker = null ) {
-		if ( ( $linker === null ) || ( $this->m_label == '' ) ) {
+		if ( is_null( $linker ) || ( $this->m_label === '' ) ) {
 			return htmlspecialchars( $this->m_label );
 		}
 		
@@ -102,7 +102,7 @@ class SMWPrintRequest {
 	 * Obtain a Wiki-formatted representation of the label.
 	 */
 	public function getWikiText( $linked = false ) {
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_label == '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_label === '' ) ) {
 			return $this->m_label;
 		} else {
 			switch ( $this->m_mode ) {

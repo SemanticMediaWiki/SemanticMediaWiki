@@ -181,7 +181,7 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getShortWikiText( $linked = null ) {
 		$url = $this->getURL();
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url == '' ) || ( $this->m_caption == '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url == '' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
 		} else {
 			return '[' . $url . ' ' . $this->m_caption . ']';
@@ -190,7 +190,7 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getShortHTMLText( $linker = null ) {
 		$url = $this->getURL();
-		if ( ( $linker === null ) || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $url == '' ) || ( $this->m_caption == '' ) ) {
+		if ( is_null( $linked ) || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $url == '' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
 		} else {
 			return $linker->makeExternalLink( $url, $this->m_caption );
@@ -202,7 +202,7 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 		$url = $this->getURL();
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url == '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url == '' ) ) {
 			return $this->m_wikitext;
 		} else {
 			return '[' . $url . ' ' . $this->m_wikitext . ']';
@@ -214,7 +214,7 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 		$url = $this->getURL();
-		if ( ( $linker === null ) || ( $this->m_outformat == '-' ) || ( $url == '' ) ) {
+		if ( is_null( $linked ) || ( $this->m_outformat == '-' ) || ( $url == '' ) ) {
 			return htmlspecialchars( $this->m_wikitext );
 		} else {
 			return $linker->makeExternalLink( $url, $this->m_wikitext );

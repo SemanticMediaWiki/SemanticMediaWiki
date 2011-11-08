@@ -189,9 +189,11 @@ class SMWParseData {
 						$datum = self::getDataItemFromMWTimestamp( $timestamp );
 					} break;
 				}
-				if ( $datum === null ) {
+				
+				if ( is_null( $datum ) ) {
 					continue;    // Issue error or warning?
 				}
+				
 				$semdata->addPropertyObjectValue( $prop, $datum );
 			} // foreach
 		} else { // data found, but do all operations as if it was empty
@@ -340,7 +342,7 @@ class SMWParseData {
 	static public function onParserAfterTidy( &$parser, &$text ) {
 		global $smwgUseCategoryHierarchy, $smwgCategoriesAsInstances;
 
-		if ( self::getSMWData( $parser ) === null ) {
+		if ( is_null( self::getSMWData( $parser ) ) ) {
 			return true;
 		}
 

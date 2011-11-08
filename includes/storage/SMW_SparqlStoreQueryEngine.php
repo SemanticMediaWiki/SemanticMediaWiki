@@ -808,7 +808,7 @@ class SMWSparqlStoreQueryEngine {
 			$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
 		} elseif ( $comparator == '=' ) {
 			$expElement = SMWExporter::getDataItemHelperExpElement( $dataItem );
-			if ( $expElement === null ) {
+			if ( is_null( $expElement ) ) {
 				$expElement = SMWExporter::getDataItemExpElement( $dataItem );
 			}
 			$result = new SMWSparqlSingletonCondition( $expElement );
@@ -832,7 +832,7 @@ class SMWSparqlStoreQueryEngine {
 				$expElement = SMWExporter::getDataItemExpElement( $dataItem->getSortKeyDataItem() );
 			} else {
 				$expElement = SMWExporter::getDataItemHelperExpElement( $dataItem );
-				if ( $expElement === null ) {
+				if ( is_null( $expElement ) ) {
 					$expElement = SMWExporter::getDataItemExpElement( $dataItem );
 				}
 			}
@@ -880,7 +880,7 @@ class SMWSparqlStoreQueryEngine {
 	 * @param integer $diType DataItem type id if known, or SMWDataItem::TYPE_NOTYPE to determine it from the property
 	 */
 	protected function addOrderByDataForProperty( SMWSparqlCondition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = SMWDataItem::TYPE_NOTYPE ) {
-		if ( $orderByProperty === null ) {
+		if ( is_null( $orderByProperty ) ) {
 			return;
 		}
 

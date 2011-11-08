@@ -182,7 +182,7 @@ class SMWTimeValue extends SMWDataValue {
 			}
 		}
 		
-		if ( $this->m_dataitem === null ) { // make sure that m_dataitem is set in any case
+		if ( is_null( $this->m_dataitem ) ) { // make sure that m_dataitem is set in any case
 			$this->m_dataitem = new SMWDITime( SMWDITime::CM_GREGORIAN, 32202 );
 		}
 	}

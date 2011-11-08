@@ -111,7 +111,7 @@ class SMWStringValue extends SMWDataValue {
 	protected function getAbbValue( $linked, $value ) {
 		$len = mb_strlen( $value );
 		if ( ( $len > 255 ) && ( $this->m_typeid != '_cod' ) ) {
-			if ( ( $linked === null ) || ( $linked === false ) ) {
+			if ( is_null( $linked ) || ( $linked === false ) ) {
 				return mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">…</span> ' . mb_substr( $value, $len - 42 );
 			} else {
 				SMWOutputs::requireResource( 'ext.smw.tooltips' );

@@ -40,6 +40,9 @@ abstract class SMWResultPrinter {
 	 */
 	protected $params;
 
+	
+	protected $supportsCount = true;
+	
 	/**
 	 * Text to print *before* the output in case it is *not* empty; assumed to be wikitext.
 	 * Normally this is handled in SMWResultPrinter and can be ignored by subclasses.
@@ -163,6 +166,11 @@ abstract class SMWResultPrinter {
 		$this->hasTemplates = false;
 		
 		$this->handleParameters( $params, $outputmode );
+		$params = $this->params;
+		
+//		if ( $params['countproperty'] !== false ) {
+//			$results = $this->getCountResults( $results, $params );
+//		}
 		
 		// Default output for normal printers:
 		if ( ( $outputmode != SMW_OUTPUT_FILE ) && // not in FILE context,
@@ -173,7 +181,7 @@ abstract class SMWResultPrinter {
 			} elseif ( $this->mInline ) {
 				$label = $this->mSearchlabel;
 
-				if ( $label === null ) { // apply defaults
+				if ( is_null( $label ) ) { // apply defaults
 					$label = wfMsgForContent( 'smw_iq_moreresults' );
 				}
 
@@ -330,6 +338,47 @@ abstract class SMWResultPrinter {
 		}		
 	}
 
+	protected function getCountResults( SMWQueryResult $results, array $params, $outputmode ) {
+		$uniqueResults = array();
+		
+		while ( /* array of SMWResultArray */ $row = $results->getNext() ) { // Objects (pages)
+			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) { // SMWResultArray for a sinlge property 
+				
+				if ( $row[$i]->getPrintRequest()->getLabel() != $params['countproperty'] ) {
+					continue;
+				}
+				
+				while ( ( /* SMWDataValue */ $dataValue = $row[$i]->getNextDataValue() ) !== false ) { // Data values
+					
+					$value = $dataValue->getShortText( $outputmode, $this->getLinker( false ) );
+
+					if ( !array_key_exists( $value, $uniqueResults ) ) {
+						$uniqueResults[$value] = 0;
+					}
+					
+					$uniqueResults[$value]++;
+				}
+			}
+		}
+		
+		$countResults = array();
+		$printRequests = array();
+		
+		$printRequests[] = new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, '' );
+		$printRequests[] = new SMWPrintRequest( SMWPrintRequest::PRINT_PROP, $params['countlabel'] );
+		
+		foreach ( $uniqueResults as $label => $count ) {
+			$countResults = new SMWDIWikiPage(
+				'', 0, ''
+			);
+		}
+		
+		return new SMWFakeQueryResult(
+			$printRequests,
+			$countResults
+		);
+	}
+	
 	/**
 	 * Depending on current linking settings, returns a linker object
 	 * for making hyperlinks or NULL if no links should be created.
@@ -574,16 +623,41 @@ abstract class SMWResultPrinter {
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
 	 * function.
-	 * 
-	 * TODO: refactor non-printer params up to the query processor
-	 * and do all param handling there. 
 	 *
 	 * @since 1.5
 	 *
 	 * @return array
 	 */
 	public function getParameters() {
-		return array();
+		$params = array();
+		
+		if ( $this->supportsCount ) {
+//			$params['countsort'] = new Parameter( 'countsort' );
+//			$params['countsort']->setDefault( false, false );
+//			$params['countsort']->addCriteria( new CriterionInArray( 'asc', 'desc' ) );
+//			$params['countsort']->setMessage( '' );
+			
+			$params['countproperty'] = new Parameter( 'countproperty' );
+			$params['countproperty']->setDefault( false, false );
+			$params['countproperty']->setMessage( '' );
+			
+			$params['countlabel'] = new Parameter( 'countlabel', Parameter::TYPE_STRING, wfMsgForContent( '' ) );
+			$params['countlabel']->setMessage( '' );
+		}
+		
+		return $params;
 	}
 
 }
+
+//class SMWFakeQueryResult extends SMWQueryResult {
+//	
+//	public function __construct( $printRequests, $dataItems ) {
+//		
+//	}
+//	
+//	protected function getNext() {
+//		
+//	}
+//	
+//}

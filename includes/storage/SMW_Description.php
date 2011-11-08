@@ -638,7 +638,7 @@ class SMWDisjunction extends SMWDescription {
 		
 		if ( !$this->m_true ) {
 			if ( $description instanceof SMWClassDescription ) { // combine class descriptions
-				if ( $this->m_classdesc === null ) { // first class description
+				if ( is_null( $this->m_classdesc ) ) { // first class description
 					$this->m_classdesc = $description;
 					$this->m_descriptions[] = $description;
 				} else {

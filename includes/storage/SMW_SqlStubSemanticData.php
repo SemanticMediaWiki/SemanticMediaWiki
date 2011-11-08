@@ -176,7 +176,7 @@ class SMWSqlStubSemanticData extends SMWSemanticData {
 	 */
 	protected function unstubProperty( $propertyKey, $diProperty = null ) {
 		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
-			if ( $diProperty === null ) {
+			if ( is_null( $diProperty ) ) {
 				//$propertyDV = SMWPropertyValue::makeProperty( $propertyKey );
 				//$diProperty = $propertyDV->getDataItem();
 				$diProperty = new SMWDIProperty( $propertyKey, false );

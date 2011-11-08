@@ -401,7 +401,7 @@ class SMWExportController {
 
 		for ( $id = 1; $id <= $end; $id += 1 ) {
 			$title = Title::newFromID( $id );
-			if ( ( $title === null ) || !smwfIsSemanticsProcessed( $title->getNamespace() ) ) continue;
+			if ( is_null( $title ) || !smwfIsSemanticsProcessed( $title->getNamespace() ) ) continue;
 			if ( !SMWExportController::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) continue;
 			$a_count += 1; // DEBUG
 

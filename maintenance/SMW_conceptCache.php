@@ -147,7 +147,7 @@ if ( isset( $options['concept'] ) ) { // single concept mode
 
 	for ( $id = $start; $id <= $end; $id++ ) {
 		$title = Title::newFromID( $id );
-		if ( ( $title === null ) || ( $title->getNamespace() != SMW_NS_CONCEPT ) ) {
+		if ( is_null( $title ) || ( $title->getNamespace() != SMW_NS_CONCEPT ) ) {
 			continue;
 		}
 		$num_lines += doAction( $title, $num_lines );

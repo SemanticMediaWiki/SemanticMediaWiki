@@ -94,7 +94,7 @@ class SMWTypesValue extends SMWDataValue {
 
 	public function getShortWikiText( $linked = null ) {
 		global $wgContLang;
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
 		} else {
 			$titleText = $this->getSpecialPageTitleText();
@@ -104,7 +104,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText( $linked = null ) {
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return htmlspecialchars( $this->m_caption );
 		} else {
 			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );
@@ -114,7 +114,7 @@ class SMWTypesValue extends SMWDataValue {
 
 	public function getLongWikiText( $linked = null ) {
 		global $wgContLang;
-		if ( ( $linked === null ) || ( $linked === false ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) ) {
 			return $this->m_realLabel;
 		} else {
 			$titleText = $this->getSpecialPageTitleText();
@@ -124,7 +124,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getLongHTMLText( $linker = null ) {
-		if ( ( $linker === null ) || ( $linker === false ) ) {
+		if ( is_null( $linked ) || ( $linker === false ) ) {
 			return htmlspecialchars( $this->m_realLabel );
 		} else {
 			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );

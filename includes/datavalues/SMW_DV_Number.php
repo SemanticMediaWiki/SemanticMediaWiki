@@ -142,7 +142,7 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' )
+		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' )
 			|| ( $this->m_outformat == '-u' ) || ( $this->m_outformat == '-n' ) || ( !$this->isValid() ) ) {
 			return $this->m_caption;
 		} else {

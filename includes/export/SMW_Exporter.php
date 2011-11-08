@@ -164,7 +164,7 @@ class SMWExporter {
 			}
 
 			$pe = self::getSpecialPropertyResource( $property->getKey(), $diSubject->getNamespace() );
-			if ( $pe === null ) return; // unknown special property, not exported 
+			if ( is_null( $pe ) ) return; // unknown special property, not exported 
 			if ( $property->getKey() == '_REDI' || $property->getKey() == '_URI' ) {
 				$filterNamespace = true;
 				if ( $property->getKey() == '_REDI' ) {
@@ -219,7 +219,7 @@ class SMWExporter {
 	 */
 	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false ) {
 		$diWikiPage = $diProperty->getDiWikiPage();
-		if ( $diWikiPage === null ) {
+		if ( is_null( $diWikiPage ) ) {
 			throw new Exception( 'SMWExporter::getResourceElementForProperty() can only be used for user-defined properties.' );
 		} elseif ( $helperProperty ) {
 			return self::getResourceElementForWikiPage( $diWikiPage, 'aux' );

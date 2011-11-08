@@ -72,7 +72,7 @@ class SMWQueryParser {
 			$result = $this->addDescription( $this->m_defaultns, $result );
 		}
 
-		if ( $result === null ) { // parsing went wrong, no default namespaces
+		if ( is_null( $result ) ) { // parsing went wrong, no default namespaces
 			$result = new SMWThingDescription();
 		}
 
@@ -202,7 +202,7 @@ class SMWQueryParser {
 			$result = null;
 
 			foreach ( $disjuncts as $d ) {
-				if ( $d === null ) {
+				if ( is_null( $d ) ) {
 					$this->m_errors[] = wfMsgForContent( 'smw_emptysubquery' );
 					$setNS = false;
 					return null;
@@ -383,7 +383,7 @@ class SMWQueryParser {
 			$continue = ( $chunk == '||' );
 		}
 
-		if ( $innerdesc === null ) { // make a wildcard search
+		if ( is_null( $innerdesc ) ) { // make a wildcard search
 			$innerdesc = ( ( $this->m_defaultns !== null ) && ( $typeid == '_wpg' ) ) ?
 							$this->addDescription( $innerdesc, $this->m_defaultns, false ) :
 							$this->addDescription( $innerdesc, new SMWThingDescription(), false );
@@ -454,7 +454,7 @@ class SMWQueryParser {
 	}
 
 	protected function finishLinkDescription( $chunk, $hasNamespaces, $result, &$setNS ) {
-		if ( $result === null ) { // no useful information or concrete error found
+		if ( is_null( $result ) ) { // no useful information or concrete error found
 			$this->m_errors[] = wfMsgForContent( 'smw_badqueryatom' );
 		} elseif ( !$hasNamespaces && $setNS && ( $this->m_defaultns !== null ) ) {
 			$result = $this->addDescription( $result, $this->m_defaultns );
@@ -599,9 +599,9 @@ class SMWQueryParser {
 			return $curdesc;
 		}
 
-		if ( $newdesc === null ) {
+		if ( is_null( $newdesc ) ) {
 			return $curdesc;
-		} elseif ( $curdesc === null ) {
+		} elseif ( is_null( $curdesc ) ) {
 			return $newdesc;
 		} else { // we already found descriptions
 			if ( ( ( $conjunction ) && ( $curdesc instanceof SMWConjunction ) ) ||

@@ -120,7 +120,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		if ( $this->m_property !== null ) {
 			$propertyDiWikiPage = $this->m_property->getDiWikiPage();
 		}
-		if ( ( $this->m_property === null ) || ( $propertyDiWikiPage === null ) ) {
+		if ( is_null( $this->m_property ) || is_null( $propertyDiWikiPag ) ) {
 			return; // we cannot find conversion factors without the property
 		}
 
@@ -170,7 +170,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		if ( $this->m_displayunits !== false ) return; // do the below only once
 		$this->initConversionData(); // needed to normalise unit strings
 		$this->m_displayunits = array();
-		if ( ( $this->m_property === null ) || ( $this->m_property->getDIWikiPage() === null ) ) {
+		if ( is_null( $this->m_property ) || is_null( $this->m_property->getDIWikiPage() ) ) {
 			return;
 		}
 		$dataItems = smwfGetStore()->getPropertyValues( $this->m_property->getDIWikiPage(), new SMWDIProperty( '_UNIT' ) );

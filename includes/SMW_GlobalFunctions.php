@@ -275,7 +275,7 @@ function smwfLoadExtensionMessages( $extensionName ) {}
 function &smwfGetStore() {
 	global $smwgMasterStore, $smwgDefaultStore, $smwgIP;
 
-	if ( $smwgMasterStore === null ) {
+	if ( is_null( $smwgMasterStore ) ) {
 		$smwgMasterStore = new $smwgDefaultStore();
 	}
 

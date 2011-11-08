@@ -257,7 +257,7 @@ class SMWQueryProcessor {
 					$label = $showmode ? '' : $wgContLang->getNSText( NS_CATEGORY ); // default
 				} else { // print property or check category
 					$title = Title::newFromText( trim( $propparts[0] ), SMW_NS_PROPERTY ); // trim needed for \n
-					if ( $title === null ) { // too bad, this is no legal property/category name, ignore
+					if ( is_null( $title ) ) { // too bad, this is no legal property/category name, ignore
 						continue;
 					}
 

@@ -1704,7 +1704,7 @@ class SMWSQLStore2 extends SMWStore {
 	protected function applyRequestOptions( $data, $requestoptions ) {
 		wfProfileIn( "SMWSQLStore2::applyRequestOptions (SMW)" );
 
-		if ( ( count( $data ) == 0 ) || ( $requestoptions === null ) ) {
+		if ( ( count( $data ) == 0 ) || is_null( $requestoptions ) ) {
 			wfProfileOut( "SMWSQLStore2::applyRequestOptions (SMW)" );
 			return $data;
 		}

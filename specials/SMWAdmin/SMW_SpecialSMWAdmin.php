@@ -76,7 +76,7 @@ class SMWAdmin extends SpecialPage {
 		} elseif ( $smwgAdminRefreshStore && ( $action == 'refreshstore' ) ) { // managing refresh jobs for the store
 			$sure = $wgRequest->getText( 'rfsure' );
 			if ( $sure == 'yes' ) {
-				if ( $refreshjob === null ) { // careful, there might be race conditions here
+				if ( is_null( $refreshjob ) ) { // careful, there might be race conditions here
 					$title = SpecialPage::getTitleFor( 'SMWAdmin' );
 					$newjob = new SMWRefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
 					$newjob->insert();
