@@ -83,7 +83,7 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		}
 		
 		if ( $this->params['distributionimit'] !== false ) {
-			$data = array_slice( $data, 0, $this->params['distributionimit'] );
+			$data = array_slice( $data, 0, $this->params['distributionimit'], true );
 		}
 	}
 	
