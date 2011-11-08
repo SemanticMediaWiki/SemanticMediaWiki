@@ -161,6 +161,7 @@ class SMWParseData {
 
 		if ( $processSemantics ) {
 			$props = array();
+
 			foreach ( $smwgPageSpecialProperties as $propName ) {
 				// Property name in `$smwgPageSpecialProperties' may be localized.
 				// Get property id to work with.

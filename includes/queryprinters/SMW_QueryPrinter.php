@@ -580,7 +580,7 @@ abstract class SMWResultPrinter {
 	 *
 	 * @since 1.5
 	 *
-	 * @return array
+	 * @return array of Parameter
 	 */
 	public function getParameters() {
 		return array();
