@@ -22,8 +22,20 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 	 */
 	protected abstract function getFormatOutput( array $data );
 	
+	/**
+	 * Method gets called right before the result is returned
+	 * in case there are values to display. It is meant for
+	 * adding resources such as JS and CSS only needed for this
+	 * format when it has actual values.
+	 * 
+	 * @since 1.7
+	 */
 	protected function addResources() {}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see SMWResultPrinter::getResultText()
+	 */
 	protected function getResultText( SMWQueryResult $result, $outputmode ) {
 		$data = $this->getResults( $result, $outputmode );
 		
@@ -45,6 +57,13 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		}
 	}
 	
+	/**
+	 * Apply the distribution specific parameters.
+	 * 
+	 * @since 1.7
+	 * 
+	 * @param array $data
+	 */
 	protected function applyDistributionParams( array &$data ) {
 		if ( $this->params['distributionsort'] == 'asc' ) {
 			asort( $data, SORT_NUMERIC );
@@ -58,6 +77,18 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		}
 	}
 	
+	/**
+	 * Gets and processes the results so they can be fed directly to the 
+	 * getFormatOutput method. They are returned as an array with the keys
+	 * being the labels and the values being their corresponding (numeric) values.
+	 * 
+	 * @since 1.7
+	 * 
+	 * @param SMWQueryResult $result
+	 * @param $outputmode
+	 * 
+	 * @return array label => value
+	 */
 	protected function getResults( SMWQueryResult $result, $outputmode ) {
 		if ( $this->params['distribution'] ) {
 			return $this->getDistributionResults( $result, $outputmode );
