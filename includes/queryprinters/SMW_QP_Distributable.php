@@ -22,9 +22,7 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 	 */
 	protected abstract function getFormatOutput( array $data );
 	
-	protected function addResources() {
-	
-	}
+	protected function addResources() {}
 	
 	protected function getResultText( SMWQueryResult $result, $outputmode ) {
 		$data = $this->getResults( $result, $outputmode );
@@ -58,10 +56,6 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		if ( $this->params['distributionimit'] !== false ) {
 			$data = array_slice( $data, 0, $this->params['distributionimit'] );
 		}
-	}
-	
-	protected function getSortedResults( array $data, $ascending ) {
-	
 	}
 	
 	protected function getResults( SMWQueryResult $result, $outputmode ) {
