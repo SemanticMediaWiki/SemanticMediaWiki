@@ -37,7 +37,8 @@ class SMWParserExtensions {
 		// Process redirects, if any (it seems that there is indeed no more direct way of getting this info from MW)
 		if ( $smwgStoreAnnotations ) {
 			$rt = Title::newFromRedirect( $text );
-			if ( $rt !== null ) {
+			
+			if ( !is_null( $rt ) ) {
 				$p = new SMWDIProperty( '_REDI' );
 				$di = SMWDIWikiPage::newFromTitle( $rt, '__red' );
 				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $p, $di );

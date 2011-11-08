@@ -422,10 +422,12 @@ class SMWSparqlStoreQueryEngine {
 	 */
 	protected function getQueryResultFromSparqlResult( SMWSparqlResultWrapper $sparqlResultWrapper, SMWQuery $query ) {
 		$resultDataItems = array();
+		
 		foreach ( $sparqlResultWrapper as $resultRow ) {
 			if ( count( $resultRow ) > 0 ) {
 				$dataItem = SMWExporter::findDataItemForExpElement( $resultRow[0] );
-				if ( $dataItem !== null ) {
+				
+				if ( !is_null( $dataItem ) ) {
 					$resultDataItems[] = $dataItem;
 				}
 			}
@@ -543,7 +545,7 @@ class SMWSparqlStoreQueryEngine {
 					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 				}
 
-				if ( ( $singletonMatchElement !== null ) &&
+				if ( ( !is_null( $singletonMatchElement ) ) &&
 				     ( $singletonMatchElementName !== $matchElementName ) ) {
 					return new SMWSparqlFalseCondition();
 				}
@@ -558,7 +560,7 @@ class SMWSparqlStoreQueryEngine {
 			$orderVariables = array_merge( $orderVariables, $subCondition->orderVariables );
 		}
 
-		if ( $singletonMatchElement !== null ) {
+		if ( !is_null( $singletonMatchElement ) ) {
 			if ( $filter !== '' ) {
 				$condition .= "FILTER( $filter )";
 			}
@@ -716,7 +718,7 @@ class SMWSparqlStoreQueryEngine {
 
 		//*** Record inner ordering variable if found ***//
 		$result->orderVariables = $innerCondition->orderVariables;
-		if ( ( $innerOrderByProperty !== null ) && ( $innerCondition->orderByVariable !== '' ) ) {
+		if ( !is_null( $innerOrderByProperty ) && ( $innerCondition->orderByVariable !== '' ) ) {
 			$result->orderVariables[$diProperty->getKey()] = $innerCondition->orderByVariable;
 		}
 

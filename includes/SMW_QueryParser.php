@@ -43,7 +43,8 @@ class SMWQueryParser {
 	 */
 	public function setDefaultNamespaces( $nsarray ) {
 		$this->m_defaultns = null;
-		if ( $nsarray !== null ) {
+		
+		if ( !is_null( $nsarray ) ) {
 			foreach ( $nsarray as $ns ) {
 				$this->m_defaultns = $this->addDescription( $this->m_defaultns, new SMWNamespaceDescription( $ns ), false );
 			}
@@ -136,7 +137,8 @@ class SMWQueryParser {
 			switch ( $chunk ) {
 				case '[[': // start new link block
 					$ld = $this->getLinkDescription( $setsubNS );
-					if ( $ld !== null ) {
+					
+					if ( !is_null( $ld ) ) {
 						$conjunction = $this->addDescription( $conjunction, $ld );
 					}
 				break;
@@ -148,7 +150,7 @@ class SMWQueryParser {
 				case '||':
 				case '':
 				case '</q>': // finish disjunction and maybe subquery
-					if ( $this->m_defaultns !== null ) { // possibly add namespace restrictions
+					if ( !is_null( $this->m_defaultns ) ) { // possibly add namespace restrictions
 						if ( $hasNamespaces && !$mustSetNS ) {
 							// add NS restrictions to all earlier conjunctions (all of which did not have them yet)
 							$mustSetNS = true; // enforce NS restrictions from now on
@@ -271,7 +273,8 @@ class SMWQueryParser {
 			} else { // assume category/concept title
 				/// NOTE: we add m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$title = Title::newFromText( ( $category ? $this->m_categoryprefix : $this->m_conceptprefix ) . $chunk );
-				if ( $title !== null ) {
+				
+				if ( !is_null( $title ) ) {
 					$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNameSpace(), '' );
 					$desc = $category ? new SMWClassDescription( $diWikiPage ) : new SMWConceptDescription( $diWikiPage );
 					$result = $this->addDescription( $result, $desc, false );
@@ -327,7 +330,7 @@ class SMWQueryParser {
 
 			switch ( $chunk ) {
 				case '+': // wildcard, add namespaces for page-type properties
-					if ( ( $this->m_defaultns !== null ) && ( ( $typeid == '_wpg' ) || $inverse ) ) {
+					if ( !is_null( $this->m_defaultns ) && ( ( $typeid == '_wpg' ) || $inverse ) ) {
 						$innerdesc = $this->addDescription( $innerdesc, $this->m_defaultns, false );
 					} else {
 						$innerdesc = $this->addDescription( $innerdesc, new SMWThingDescription(), false );
@@ -384,7 +387,7 @@ class SMWQueryParser {
 		}
 
 		if ( is_null( $innerdesc ) ) { // make a wildcard search
-			$innerdesc = ( ( $this->m_defaultns !== null ) && ( $typeid == '_wpg' ) ) ?
+			$innerdesc = ( !is_null( $this->m_defaultns ) && ( $typeid == '_wpg' ) ) ?
 							$this->addDescription( $innerdesc, $this->m_defaultns, false ) :
 							$this->addDescription( $innerdesc, new SMWThingDescription(), false );
 			$this->m_errors[] = wfMsgForContent( 'smw_propvalueproblem', $property->getWikiValue() );
@@ -456,7 +459,7 @@ class SMWQueryParser {
 	protected function finishLinkDescription( $chunk, $hasNamespaces, $result, &$setNS ) {
 		if ( is_null( $result ) ) { // no useful information or concrete error found
 			$this->m_errors[] = wfMsgForContent( 'smw_badqueryatom' );
-		} elseif ( !$hasNamespaces && $setNS && ( $this->m_defaultns !== null ) ) {
+		} elseif ( !$hasNamespaces && $setNS && !is_null( $this->m_defaultns  ) ) {
 			$result = $this->addDescription( $result, $this->m_defaultns );
 			$hasNamespaces = true;
 		}

@@ -61,13 +61,13 @@ class SMWPropertiesPage extends SMWQueryPage {
 		$errors = array();
 
 		$diWikiPage = $result[0]->getDiWikiPage();
-		$title = $diWikiPage !== null ? $diWikiPage->getTitle() : null;
+		$title = !is_null( $diWikiPage ) ? $diWikiPage->getTitle() : null;
 
 		if ( $result[0]->isUserDefined() && ( $result[1] <= 5 ) ) {
 			$errors[] = wfMsg( 'smw_propertyhardlyused' );
 		}
 
-		if ( $result[0]->isUserDefined() && $title !== null && $title->exists() ) {
+		if ( $result[0]->isUserDefined() && !is_null( $title ) && $title->exists() ) {
 			$typeProperty = new SMWDIProperty( '_TYPE' );
 			$types = smwfGetStore()->getPropertyValues( $diWikiPage, $typeProperty );
 			if ( count( $types ) >= 1 ) {
@@ -75,7 +75,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 				$typestring = $typeDataValue->getLongHTMLText( $linker );
 			}
 			$proplink = $linker->makeKnownLinkObj( $title, $result[0]->getLabel() );
-		} elseif ( $result[0]->isUserDefined() && $title !== null ) {
+		} elseif ( $result[0]->isUserDefined() && !is_null( $title ) ) {
 			$errors[] = wfMsg( 'smw_propertylackspage' );
 			$proplink = $linker->makeBrokenLinkObj( $title, $result[0]->getLabel(), 'action=view' );
 		} else { // predefined property
@@ -89,9 +89,11 @@ class SMWPropertiesPage extends SMWQueryPage {
 
 		if ( $typestring === '' ) {
 			global $smwgPDefaultType;
+			
 			$typeDataValue = SMWTypesValue::newFromTypeId( $smwgPDefaultType );
 			$typestring = $typeDataValue->getLongHTMLText( $linker );
-			if ( $title !== null && $title->exists() ) { // print only when we did not print a "nopage" warning yet
+			
+			if ( !is_null( $title ) && $title->exists() ) { // print only when we did not print a "nopage" warning yet
 				$errors[] = wfMsg( 'smw_propertylackstype', $typestring );
 			}
 		}

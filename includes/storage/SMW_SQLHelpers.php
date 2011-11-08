@@ -470,7 +470,7 @@ EOT;
 	 * @param object $receiver
 	 */
 	protected static function reportProgress( $msg, $receiver ) {
-		if ( $receiver !== null ) $receiver->reportProgress( $msg );
+		if ( !is_null( $receiver ) ) $receiver->reportProgress( $msg );
 	}
 
 }

@@ -44,7 +44,7 @@ class SMWPrintRequest {
 	 */
 	public function __construct( $mode, $label, $data = null, $outputformat = false, $params = null ) {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
-		         $data !== null ) ||
+		         !is_null( $data ) ) ||
 		     ( $mode == self::PRINT_PROP &&
 		         ( !( $data instanceof SMWPropertyValue ) || !$data->isValid() ) ) ||
 		     ( $mode == self::PRINT_CCAT &&

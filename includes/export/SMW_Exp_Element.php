@@ -31,7 +31,7 @@ abstract class SMWExpElement {
 	 * @param $dataItem SMWDataItem or null
 	 */
 	public function __construct( $dataItem = null ) {
-		if ( $dataItem !== null ) {
+		if ( !is_null( $dataItem ) ) {
 			$this->m_dataItem = $dataItem;
 		}
 	}

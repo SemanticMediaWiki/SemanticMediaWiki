@@ -349,8 +349,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getArticleID() {
 		if ( $this->m_id === false ) {
-			$this->m_id = ( $this->getTitle() !== null ) ? $this->m_title->getArticleID() : 0;
+			$this->m_id = !is_null( $this->getTitle() ) ? $this->m_title->getArticleID() : 0;
 		}
+		
 		return $this->m_id;
 	}
 

@@ -147,13 +147,17 @@ class SMWExporter {
 		if ( $property->isUserDefined() ) {
 			$pe = self::getResourceElementForProperty( $property );
 			$peHelper = self::getResourceElementForProperty( $property, true );
+			
 			foreach ( $dataItems as $dataItem ) {
 				$ed = self::getDataItemExpElement( $dataItem );
-				if ( $ed !== null ) {
+				
+				if ( !is_null( $ed ) ) {
 					$expData->addPropertyObjectValue( $pe, $ed );
 				}
+				
 				$edHelper = self::getDataItemHelperExpElement( $dataItem );
-				if ( $edHelper !== null ) {
+				
+				if ( !is_null( $edHelper ) ) {
 					$expData->addPropertyObjectValue( $peHelper, $edHelper );
 				}
 			}
@@ -182,8 +186,10 @@ class SMWExporter {
 				        ( $dataItem->getNamespace() != $diSubject->getNamespace() ) ) ) {
 					continue;
 				}
+				
 				$ed = self::getDataItemExpElement( $dataItem );
-				if ( $ed !== null ) {
+				
+				if ( !is_null( $ed ) ) {
 					if ( ( $property->getKey() == '_CONC' ) && ( $ed->getSubject()->getUri() === '' ) ) {
 						// equivalent to anonymous class -> simplify description
 						foreach ( $ed->getProperties() as $subp ) {
@@ -334,11 +340,13 @@ class SMWExporter {
 							break;
 						}
 					}
+					
 					if ( $namespaceId != -1 ) {
 						$dataItem = new SMWDIWikiPage( $parts[1], $namespaceId, '', $subobjectname );
 					} else {
 						$title = Title::newFromDBkey( $dbKey );
-						if ( $title !== null ) {
+						
+						if ( !is_null( $title ) ) {
 							$dataItem = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), $subobjectname );
 						}
 					}

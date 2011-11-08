@@ -79,7 +79,7 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 						break;
 					}
 					
-					if ( $property !== null ) {
+					if ( !is_null( $property ) ) {
 						SMWExporter::addPropertyValues( $property, $resultarray->getContent() , $data, $subjectDi );
 					}					
 				}

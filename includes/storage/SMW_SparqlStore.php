@@ -228,7 +228,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		if ( $firstRow === false ) {
 			$exists = false;
 			return $expNsResource;
-		} elseif ( count( $firstRow ) > 1 && $firstRow[1] !== null ) {
+		} elseif ( count( $firstRow ) > 1 && !is_null( $firstRow[1] ) ) {
 			$exists = true;
 			$rediTargetElement = $firstRow[1];
 			$rediTargetUri = $rediTargetElement->getUri();

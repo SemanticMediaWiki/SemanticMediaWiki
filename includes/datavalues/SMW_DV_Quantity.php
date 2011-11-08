@@ -117,7 +117,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$this->m_unitfactors = array();
 		$this->m_mainunit = false;
 
-		if ( $this->m_property !== null ) {
+		if ( !is_null( $this->m_property ) ) {
 			$propertyDiWikiPage = $this->m_property->getDiWikiPage();
 		}
 		if ( is_null( $this->m_property ) || is_null( $propertyDiWikiPag ) ) {

@@ -195,7 +195,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = new SMWDIProperty( $property->getKey(), false );
 			$result = $this->getPropertySubjects( $noninverse, $subject, $requestoptions );
-		} elseif ( $subject !== null ) { // subject given, use semantic data cache
+		} elseif ( !is_null( $subject ) ) { // subject given, use semantic data cache
 			$sd = $this->getSemanticData( $subject, array( $property->findPropertyTypeID() ) );
 			$result = $this->applyRequestOptions( $sd->getPropertyValues( $property ), $requestoptions );
 		} else { // no subject given, get all values for the given property
@@ -499,7 +499,7 @@ class SMWSQLStore2 extends SMWStore {
 					$this->prepareValueQuery( $from, $where, $subproptable, $subvalue, $tableindex );
 				}
 			}
-		} elseif ( $value !== null ) { // add conditions for given value
+		} elseif ( !is_null( $value ) ) { // add conditions for given value
 			/// TODO This code still partly supports some abandoned flexibility of the DBkeys system;
 			/// this is not very clean (see break; below) and should be improved
 			$dbkeys = SMWCompatibilityHelpers::getDBkeysFromDataItem( $value );

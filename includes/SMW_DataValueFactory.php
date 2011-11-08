@@ -126,7 +126,7 @@ class SMWDataValueFactory {
 	 * @return SMWDataValue
 	 */
 	static public function newDataItemValue( SMWDataItem $dataItem, $property, $caption = false ) {
-		if ( $property !== null ) {
+		if ( !is_null( $property ) ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
 			$typeId = self::$mDefaultDataItemTypeIds[$dataItem->getDiType()];

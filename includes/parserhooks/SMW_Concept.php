@@ -60,7 +60,7 @@ class SMWConcept {
 		
 		$concept_text = $query->getDescription()->getQueryString();
 
-		if ( SMWParseData::getSMWData( $parser ) !== null ) {
+		if ( !is_null( SMWParseData::getSMWData( $parser ) ) ) {
 			$diConcept = new SMWDIConcept( $concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth() );
 			SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $pconc, $diConcept );
 		}

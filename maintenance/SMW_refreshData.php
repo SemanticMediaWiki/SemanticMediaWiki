@@ -181,16 +181,21 @@ if ( $pages == false ) {
 	print "$num_files IDs refreshed.\n";
 } else {
 	print "Refreshing specified pages!\n\n";
+	
 	foreach ( $pages as $page ) {
 		if ( $verbose ) {
 			print "($num_files) Processing page " . $page . " ...\n";
 		}
+		
 		$title = Title::newFromText( $page );
-		if ( $title !== null ) {
+		
+		if ( !is_null( $title ) ) {
 			$updatejob = new SMWUpdateJob( $title );
 			$updatejob->run();
 		}
+		
 		$num_files++;
 	}
+	
 	print "$num_files pages refreshed.\n";
 }

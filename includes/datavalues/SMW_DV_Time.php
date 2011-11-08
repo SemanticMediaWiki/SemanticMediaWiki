@@ -638,7 +638,7 @@ class SMWTimeValue extends SMWDataValue {
 	 */
 	public function getYear( $calendarmodel = SMWDITime::CM_GREGORIAN ) {
 		$di = $this->getDataForCalendarModel( $calendarmodel );
-		if ( $di !== null ) {
+		if ( !is_null( $di ) ) {
 			return $di->getYear();
 		} else {
 			return false;
@@ -655,7 +655,7 @@ class SMWTimeValue extends SMWDataValue {
 	 */
 	public function getMonth( $calendarmodel = SMWDITime::CM_GREGORIAN, $default = 1 ) {
 		$di = $this->getDataForCalendarModel( $calendarmodel );
-		if ( $di !== null ) {
+		if ( !is_null( $di ) ) {
 			return ( $di->getPrecision() >= SMWDITime::PREC_YM ) ? $di->getMonth() : $default;
 		} else {
 			return false;
@@ -672,7 +672,7 @@ class SMWTimeValue extends SMWDataValue {
 	 */
 	public function getDay( $calendarmodel = SMWDITime::CM_GREGORIAN, $default = 1 ) {
 		$di = $this->getDataForCalendarModel( $calendarmodel );
-		if ( $di !== null ) {
+		if ( !is_null( $di ) ) {
 			return ( $di->getPrecision() >= SMWDITime::PREC_YMD ) ? $di->getDay() : $default;
 		} else {
 			return false;

@@ -130,7 +130,8 @@ $select_old    = isset( $options['old'] ) ? intval( $options['old'] ) : false;
 if ( isset( $options['concept'] ) ) { // single concept mode
 	global $wgContLang;
 	$concept = Title::newFromText( $wgContLang->getNsText( SMW_NS_CONCEPT ) . ':' . $options['concept'] );
-	if ( $concept !== null ) {
+	
+	if ( !is_null( $concept ) ) {
 		doAction( $concept );
 	}
 } else { // iterate over concepts
@@ -139,17 +140,22 @@ if ( isset( $options['concept'] ) ) { // single concept mode
 	} else {
 		$start = 0;
 	}
+	
 	$end = $db->selectField( 'page', 'MAX(page_id)', false, 'SMW_refreshData' );
+	
 	if ( array_key_exists( 'e', $options ) ) {
 		$end = min( intval( $options['e'] ), $end );
 	}
+	
 	$num_lines = 0;
 
 	for ( $id = $start; $id <= $end; $id++ ) {
 		$title = Title::newFromID( $id );
+		
 		if ( is_null( $title ) || ( $title->getNamespace() != SMW_NS_CONCEPT ) ) {
 			continue;
 		}
+		
 		$num_lines += doAction( $title, $num_lines );
 	}
 }

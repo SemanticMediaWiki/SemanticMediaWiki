@@ -162,12 +162,16 @@ class SMWExportController {
 			if ( $this->add_backlinks ) {
 				wfProfileIn( "RDF::PrintPages::GetBacklinks" );
 				$inprops = smwfGetStore()->getInProperties( $diWikiPage );
+				
 				foreach ( $inprops as $inprop ) {
 					$propWikiPage = $inprop->getDiWikiPage();
-					if ( $propWikiPage !== null ) {
+					
+					if ( !is_null( $propWikiPage ) ) {
 						$this->queuePage( $propWikiPage, 0 ); // no real recursion along properties
 					}
+					
 					$inSubs = smwfGetStore()->getPropertySubjects( $inprop, $diWikiPage );
+					
 					foreach ( $inSubs as $inSub ) {
 						if ( !$this->isPageDone( $inSub, $subrecdepth ) ) {
 							$semdata = $this->getSemanticData( $inSub, true );
@@ -306,7 +310,7 @@ class SMWExportController {
 	protected function flush( $force = false ) {
 		if ( !$force && ( $this->delay_flush > 0 ) ) {
 			$this->delay_flush -= 1;
-		} elseif ( $this->outputfile !== null ) {
+		} elseif ( !is_null( $this->outputfile ) ) {
 			fwrite( $this->outputfile, $this->serializer->flushContent() );
 		} else {
 			print $this->serializer->flushContent();
@@ -532,10 +536,12 @@ class SMWExportController {
 		$ed = new SMWExpData( new SMWExpLiteral( $wgLanguageCode, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'langCode' ), $ed );
 		$mainpage = Title::newMainPage();
-		if ( $mainpage !== null ) {
+		
+		if ( !is_null( $mainpage ) ) {
 			$ed = new SMWExpData( new SMWExpResource( $mainpage->getFullURL() ) );
 			$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'mainPage' ), $ed );
 		}
+		
 		// statistical information
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::pages(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'pageCount' ), $ed );

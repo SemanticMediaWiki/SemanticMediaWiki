@@ -461,7 +461,7 @@ abstract class SMWStore {
 	 * @return string
 	 */
 	public static function formatDebugOutput( $storeName, array $entries, $query = null ) {
-		if ( $query !== null ) {
+		if ( !is_null( $query ) ) {
 			$preEntries = array();
 			$preEntries['Generated Wiki-Query'] = '<pre>' . str_replace( '[', '&#x005B;', $query->getDescription()->getQueryString() ) . '</pre>';
 			$preEntries['Query Metrics'] = 'Query-Size:' . $query->getDescription()->getSize() . '<br />' .

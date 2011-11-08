@@ -99,7 +99,8 @@ class SMWQuery {
 
 	public function setExtraPrintouts( $extraprintouts ) {
 		$this->m_extraprintouts = $extraprintouts;
-		if ( $this->m_description !== null ) {
+		
+		if ( !is_null( $this->m_description ) ) {
 			foreach ( $extraprintouts as $printout ) {
 				$this->m_description->addPrintRequest( $printout );
 			}
@@ -125,7 +126,7 @@ class SMWQuery {
 	public function getQueryString() {
 		if ( $this->m_querystring !== false ) {
 			return $this->m_querystring;
-		} elseif ( $this->m_description !== null ) {
+		} elseif ( !is_null( $this->m_description ) ) {
 			return $this->m_description->getQueryString();
 		} else {
 			return '';
@@ -174,7 +175,8 @@ class SMWQuery {
 	 */
 	public function applyRestrictions() {
 		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQConceptMaxSize, $smwgQConceptMaxDepth;
-		if ( $this->m_description !== null ) {
+		
+		if ( !is_null( $this->m_description ) ) {
 			if ( $this->m_concept ) {
 				$maxsize = $smwgQConceptMaxSize;
 				$maxdepth = $smwgQConceptMaxDepth;
@@ -182,8 +184,10 @@ class SMWQuery {
 				$maxsize = $smwgQMaxSize;
 				$maxdepth = $smwgQMaxDepth;
 			}
+			
 			$log = array();
 			$this->m_description = $this->m_description->prune( $maxsize, $maxdepth, $log );
+			
 			if ( count( $log ) > 0 ) {
 				$this->m_errors[] = wfMsgForContent( 'smw_querytoolarge', str_replace( '[', '&#x005B;', implode( ', ' , $log ) ) );
 			}

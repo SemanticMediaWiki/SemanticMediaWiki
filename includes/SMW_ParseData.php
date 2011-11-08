@@ -114,7 +114,7 @@ class SMWParseData {
 
 		if ( $propertyDi->isInverse() ) {
 			$result->addError( wfMsgForContent( 'smw_noinvannot' ) );
-		} elseif ( $storeAnnotation && ( self::getSMWData( $parser ) !== null ) ) {
+		} elseif ( $storeAnnotation && !is_null( self::getSMWData( $parser ) ) ) {
 			$semandticData->addPropertyObjectValue( $propertyDi, $result->getDataItem() );
 			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
 			if ( !$result->isValid() ) {
@@ -230,7 +230,7 @@ class SMWParseData {
 
 				foreach ( $subjects as $subject ) {
 					$subjectTitle = $subject->getTitle();
-					if ( $subjectTitle !== null ) {
+					if ( !is_null( $subjectTitle ) ) {
 						$jobs[] = new SMWUpdateJob( $subjectTitle );
 					}
 				}
@@ -240,7 +240,8 @@ class SMWParseData {
 
 				foreach ( $subjects as $subject ) {
 					$subjectTitle = $subject->getTitle();
-					if ( $subjectTitle !== null ) {
+					
+					if ( !is_null( $subjectTitle ) ) {
 						$jobs[] = new SMWUpdateJob( $subjectTitle );
 					}
 				}
@@ -263,15 +264,18 @@ class SMWParseData {
 
 				foreach ( $proppages as $proppage ) {
 					$propertyTitle = $proppage->getTitle();
-					if ( $propertyTitle !== null ) {
+					
+					if ( !is_null( $propertyTitle ) ) {
 						$jobs[] = new SMWUpdateJob( $propertyTitle );
 					}
+					
 					$prop = new SMWDIProperty( $proppage->getDBkey() );
 					$subjects = $store->getAllPropertySubjects( $prop );
 
 					foreach ( $subjects as $subject ) {
 						$subjectTitle = $subject->getTitle();
-						if ( $subjectTitle !== null ) {
+						
+						if ( !is_null( $subjectTitle ) ) {
 							$jobs[] = new SMWUpdateJob( $subjectTitle );
 						}
 					}
@@ -283,7 +287,8 @@ class SMWParseData {
 
 					foreach ( $subjects as $subject ) {
 						$subjectTitle = $subject->getTitle();
-						if ( $subjectTitle !== null ) {
+						
+						if ( !is_null( $subjectTitle ) ) {
 							$jobs[] = new SMWUpdateJob( $subject->getTitle() );
 						}
 					}
@@ -408,7 +413,8 @@ class SMWParseData {
 			$pmdat = new SMWDIProperty( $smwgContLang->getPropertyId( 'Modification date' ) );
 			$timestamp = $article->getTimestamp();
 			$di = self::getDataItemFromMWTimestamp( $timestamp );
-			if ( $di !== null ) {
+			
+			if ( !is_null( $di ) ) {
 				$semdata->addPropertyObjectValue( $pmdat, $di );
 			}
 		}

@@ -228,7 +228,7 @@ class SMWInfolink {
 
 			$title = Title::newFromText( $titletext );
 
-			if ( $title !== null ) {
+			if ( !is_null( $title ) ) {
 				if ( $outputformat == SMW_OUTPUT_WIKI ) {
 					$link = "[[$titletext|$this->mCaption]]";
 				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
@@ -240,7 +240,7 @@ class SMWInfolink {
 			         //  e.g. as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
 				$title = Title::newFromText( $this->mTarget );
 
-				if ( $title !== null ) {
+				if ( !is_null( $title ) ) {
 					if ( $outputformat == SMW_OUTPUT_WIKI ) {
 						$link = '[' . $title->getFullURL( SMWInfolink::encodeParameters( $this->mParams, false ) ) . " $this->mCaption]";
 					} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
@@ -296,7 +296,7 @@ class SMWInfolink {
 		if ( $this->mInternal ) {
 			$title = Title::newFromText( $this->mTarget );
 
-			if ( $title !== null ) {
+			if ( !is_null( $title ) ) {
 				return $title->getFullURL( SMWInfolink::encodeParameters( $this->mParams, false ) );
 			} else {
 				return ''; // the title was bad, normally this would indicate a software bug

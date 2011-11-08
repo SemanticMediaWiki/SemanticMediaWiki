@@ -164,7 +164,7 @@ class SMWPropertyValue extends SMWDataValue {
 	public function getWikiPageValue() {
 		if ( !isset( $this->m_wikipage ) ) {
 			$diWikiPage = $this->m_dataitem->getDiWikiPage();
-			if ( $diWikiPage !== null ) {
+			if ( !is_null( $diWikiPage ) ) {
 				$this->m_wikipage = SMWDataValueFactory::newDataItemValue( $diWikiPage, null, $this->m_caption );
 				$this->m_wikipage->setOutputFormat( $this->m_outformat );
 				$this->addError( $this->m_wikipage->getErrors() );

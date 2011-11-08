@@ -286,7 +286,7 @@ class SMWQueryProcessor {
 				$lastprintout = new SMWPrintRequest( $printmode, $label, $data, trim( $propparts[1] ) );
 				$printouts[] = $lastprintout;
 			} elseif ( $param[0] == '+' ) { // print request parameter
-				if ( $lastprintout !== null ) {
+				if ( !is_null( $lastprintout ) ) {
 					$param = substr( $param, 1 );
 					$parts = explode( '=', $param, 2 );
 					if ( count( $parts ) == 2 ) {

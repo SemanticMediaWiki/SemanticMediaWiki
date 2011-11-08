@@ -109,7 +109,7 @@ class SMWAdmin extends SpecialPage {
 
 		$html .= '<br /><h2>' . wfMsg( 'smw_smwadmin_datarefresh' ) . "</h2>\n" .
 				'<p>' . wfMsg( 'smw_smwadmin_datarefreshdocu' ) . "</p>\n";
-		if ( $refreshjob !== null ) {
+		if ( !is_null( $refreshjob ) ) {
 			$prog = $refreshjob->getProgress();
 			$html .= '<p>' . wfMsg( 'smw_smwadmin_datarefreshprogress' ) . "</p>\n" .
 			'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .
