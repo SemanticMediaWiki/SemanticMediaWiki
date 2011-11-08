@@ -22,7 +22,8 @@ abstract class SMWLanguage {
 	// the special message arrays ...
 	protected $m_DatatypeLabels;
 	protected $m_DatatypeAliases = array();
-	protected $m_SpecialProperties;
+	protected $m_SpecialProperties;    // Maps property ids to property names.
+	protected $m_SpecialPropertyIds;   // Maps property names to property ids.
 	protected $m_SpecialPropertyAliases = array();
 	protected $m_Namespaces;
 	protected $m_NamespaceAliases = array();
@@ -78,10 +79,19 @@ abstract class SMWLanguage {
 		'Provides service'  => '_SERV',
 		'Allows value'      => '_PVAL',
 		'Modification date' => '_MDAT',
+		'Creation date'     => '_CDAT',
 		'Has improper value for' => '_ERRP',
 		'Has fields'        => '_LIST',
 		'Has subobject'     => '_SOBJ',
 	);
+
+	public function __construct() {
+		// `$this->m_SpecialProperties' is set in descendants.
+		// Let us initialize reverse mapping.
+		foreach ( $this->m_SpecialProperties as $propId => $propName ) {
+			$this->m_SpecialPropertyIds[ $propName ] = $propId;
+		}
+	}
 
 
 	/**
@@ -153,6 +163,24 @@ abstract class SMWLanguage {
 		return $this->m_useEnDefaultAliases ?
 		       $this->m_SpecialPropertyAliases + SMWLanguage::$enPropertyAliases :
 		       $this->m_SpecialPropertyAliases;
+	}
+
+	/**
+	 * Function receives property name (for example, `Modificatino date') and returns property id
+	 * (for example, `_MDAT'). Property name may be localized one. If property name is not
+	 * recognized, null value returned.
+	 */
+	function getPropertyId( $propName ) {
+		if ( isset( $this->m_SpecialPropertyIds[$propName] ) ) {
+			return $this->m_SpecialPropertyIds[$propName];
+		};
+		if ( isset( $this->m_SpecialPropertyAliases[$propName] ) ) {
+			return $this->m_SpecialPropertyAliases[$propName];
+		}
+		if ( $this->m_useEnDefaultAliases && isset( SMWLanguage::$enPropertyAliases[$propName] ) ) {
+			return SMWLanguage::$enPropertyAliases[$propName];
+		} 
+		return null;
 	}
 
 	/**

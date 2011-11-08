@@ -72,6 +72,7 @@ class SMWSQLStore2 extends SMWStore {
 // 		'_5' => 27,
 		'_LIST' => 28,
 		'_MDAT' => 29,
+		'_CDAT' => 30,
 	);
 
 	/// Use special tables for Very Important Properties
@@ -90,7 +91,7 @@ class SMWSQLStore2 extends SMWStore {
 		'_CONC' => 'smw_conc2',
 		'_SF_DF' => 'smw_spec2', // Semantic Form's default form property
 		'_SF_AF' => 'smw_spec2',  // Semantic Form's alternate form property
-		//'_ERRP','_MDAT', '_SKEY' // no special table
+		//'_ERRP', '_MDAT', '_CDAT', '_SKEY' // no special table
 		'_LIST' => 'smw_spec2',
 	);
 

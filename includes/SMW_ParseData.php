@@ -149,7 +149,8 @@ class SMWParseData {
 	 * @todo FIXME: Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
-		global $smwgEnableUpdateJobs, $smwgDeclarationProperties;
+		global $smwgEnableUpdateJobs, $smwgDeclarationProperties,
+			$smwgContLang, $smwgPageSpecialProperties;
 
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
@@ -160,15 +161,39 @@ class SMWParseData {
 		}
 
 		if ( $processSemantics ) {
-			$pmdat = new SMWDIProperty( '_MDAT' );
-
-			if ( count( $semdata->getPropertyValues( $pmdat ) ) == 0  ) { // no article data present yet, add it here
-				$timestamp =  Revision::getTimeStampFromID( $title, $title->getLatestRevID() );
-				$di = self::getDataItemFromMWTimestamp( $timestamp );
-				if ( $di !== null ) {
-					$semdata->addPropertyObjectValue( $pmdat, $di );
+			$props = array();
+			foreach ( $smwgPageSpecialProperties as $propName ) {
+				// Property name in `$smwgPageSpecialProperties' may be localized.
+				// Get property id to work with.
+				$propId = $smwgContLang->getPropertyId( $propName );
+				if ( is_null( $propId ) ) {
+					continue;    // Issue error?
 				}
-			}
+				if ( isset( $props[$propId] ) ) {    // Do not calculate the same property again.
+					continue;    // Issue warning?
+				}
+				$props[ $propId ] = true;              // Remember the property is processed.
+				$prop = new SMWDIProperty( $propId );
+				if ( count( $semdata->getPropertyValues( $prop ) ) > 0  ) {
+					continue;
+				}
+				// Calculate property value.
+				$datum = null;
+				switch ( $propId ) {
+					case '_MDAT' : {
+						$timestamp =  Revision::getTimeStampFromID( $title, $title->getLatestRevID() );
+						$datum = self::getDataItemFromMWTimestamp( $timestamp );
+					} break;
+					case '_CDAT' : {
+						$timestamp = $title->getFirstRevision()->getTimestamp();
+						$datum = self::getDataItemFromMWTimestamp( $timestamp );
+					} break;
+				}
+				if ( $datum === null ) {
+					continue;    // Issue error or warning?
+				}
+				$semdata->addPropertyObjectValue( $prop, $datum );
+			} // foreach
 		} else { // data found, but do all operations as if it was empty
 			$semdata = new SMWSemanticData( $semdata->getSubject() );
 		}
@@ -360,6 +385,7 @@ class SMWParseData {
 	 * LinksUpdate.
 	 */
 	static public function onNewRevisionFromEditComplete( $article, $rev, $baseID ) {
+		global $smwgContLang, $smwgPageSpecialProperties;
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
 			$output = $article->mPreparedEdit->output;
 			$title = $article->getTitle();
@@ -376,11 +402,13 @@ class SMWParseData {
 			return true;
 		}
 
-		$pmdat = new SMWDIProperty( '_MDAT' );
-		$timestamp = $article->getTimestamp();
-		$di = self::getDataItemFromMWTimestamp( $timestamp );
-		if ( $di !== null ) {
-			$semdata->addPropertyObjectValue( $pmdat, $di );
+		if ( in_array( 'Modification date', $smwgPageSpecialProperties ) ) {
+			$pmdat = new SMWDIProperty( $smwgContLang->getPropertyId( 'Modification date' ) );
+			$timestamp = $article->getTimestamp();
+			$di = self::getDataItemFromMWTimestamp( $timestamp );
+			if ( $di !== null ) {
+				$semdata->addPropertyObjectValue( $pmdat, $di );
+			}
 		}
 
 		return true;

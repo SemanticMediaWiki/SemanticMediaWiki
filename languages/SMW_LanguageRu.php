@@ -61,6 +61,7 @@ class SMWLanguageRu extends SMWLanguage {
 		'_SERV' => 'Предоставляет сервис',
 		'_PVAL' => 'Допустимое значение',
 		'_MDAT' => 'Дата последней правки',
+		'_CDAT' => 'Дата создания',
 		'_ERRP' => 'Has improper value for', // TODO: translate
 		'_LIST' => 'Имеет поля',
 		'_SOBJ' => 'Has subobject', // TODO: translate

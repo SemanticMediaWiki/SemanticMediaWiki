@@ -65,6 +65,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'_SERV' => 'Provides service',
 		'_PVAL' => 'Allows value',
 		'_MDAT' => 'Modification date',
+		'_CDAT' => 'Creation date',
 		'_ERRP' => 'Has improper value for',
 		'_LIST' => 'Has fields',
 		'_SOBJ' => 'Has subobject',
