@@ -124,7 +124,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getLongHTMLText( $linker = null ) {
-		if ( is_null( $linked ) || ( $linker === false ) ) {
+		if ( is_null( $linker ) || ( $linker === false ) ) {
 			return htmlspecialchars( $this->m_realLabel );
 		} else {
 			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );

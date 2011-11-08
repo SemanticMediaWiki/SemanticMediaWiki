@@ -149,8 +149,7 @@ class SMWParseData {
 	 * @todo FIXME: Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
-		global $smwgEnableUpdateJobs, $smwgDeclarationProperties,
-			$smwgContLang, $smwgPageSpecialProperties;
+		global $smwgEnableUpdateJobs, $smwgDeclarationProperties, $smwgContLang, $smwgPageSpecialProperties;
 
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
@@ -166,35 +165,42 @@ class SMWParseData {
 				// Property name in `$smwgPageSpecialProperties' may be localized.
 				// Get property id to work with.
 				$propId = $smwgContLang->getPropertyId( $propName );
+				
 				if ( is_null( $propId ) ) {
-					continue;    // Issue error?
+					continue;
 				}
-				if ( isset( $props[$propId] ) ) {    // Do not calculate the same property again.
-					continue;    // Issue warning?
+				
+				// Do not calculate the same property again.
+				if ( array_key_exists( $propId, $props ) ) {
+					continue;
 				}
-				$props[ $propId ] = true;              // Remember the property is processed.
+				
+				// Remember the property is processed.
+				$props[ $propId ] = true;              
 				$prop = new SMWDIProperty( $propId );
+				
 				if ( count( $semdata->getPropertyValues( $prop ) ) > 0  ) {
 					continue;
 				}
+				
 				// Calculate property value.
 				$datum = null;
+				
 				switch ( $propId ) {
-					case '_MDAT' : {
+					case '_MDAT' :
 						$timestamp =  Revision::getTimeStampFromID( $title, $title->getLatestRevID() );
 						$datum = self::getDataItemFromMWTimestamp( $timestamp );
-					} break;
-					case '_CDAT' : {
+						break;
+					case '_CDAT' :
 						$timestamp = $title->getFirstRevision()->getTimestamp();
 						$datum = self::getDataItemFromMWTimestamp( $timestamp );
-					} break;
+						break;
 				}
 				
-				if ( is_null( $datum ) ) {
-					continue;    // Issue error or warning?
-				}
+				if ( !is_null( $datum ) ) {
+					$semdata->addPropertyObjectValue( $prop, $datum );    
+				} // Issue error or warning?
 				
-				$semdata->addPropertyObjectValue( $prop, $datum );
 			} // foreach
 		} else { // data found, but do all operations as if it was empty
 			$semdata = new SMWSemanticData( $semdata->getSubject() );
