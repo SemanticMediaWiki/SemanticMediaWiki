@@ -1948,7 +1948,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		$db = wfGetDB( DB_SLAVE );
 
-		if ( $iw !== '' ) { // external page; no need to think about redirects
+		if ( $iw !== '' && !is_null( $iw ) ) { // external page; no need to think about redirects
 			$iwCond = 'smw_iw=' . $db->addQuotes( $iw );
 		} else {
 			$iwCond = '(smw_iw=' . $db->addQuotes( '' ) .
