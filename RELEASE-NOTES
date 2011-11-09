@@ -19,6 +19,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Fixed hide query functionality on Special:Ask (bug 30768).
 * Fixed display of internal SMW helper constants in certain queries (bug 30969).
 * Fixed some issues with the category result format (including bug 30761).
+* Fixed email validation issue (bug 32295).
 * Dropped compatibility with old-style (SMW < 1.6) query printers.
 
 == SMW 1.6.1 ==
