@@ -120,7 +120,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		if ( !is_null( $this->m_property ) ) {
 			$propertyDiWikiPage = $this->m_property->getDiWikiPage();
 		}
-		if ( is_null( $this->m_property ) || is_null( $propertyDiWikiPag ) ) {
+		if ( is_null( $this->m_property ) || is_null( $propertyDiWikiPage ) ) {
 			return; // we cannot find conversion factors without the property
 		}
 

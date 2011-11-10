@@ -145,10 +145,12 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_fragment = $dataItem->getSubobjectName();
 			$this->m_prefixedtext = '';
 			$this->m_caption = false; // this class can handle this
+			
 			if ( ( $this->m_fixNamespace != NS_MAIN ) &&
 				( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
-				$this->addError( wfMsgForContent( 'smw_wrong_namespace',
-					$wgContLang->getNsText( $this->m_fixNamespace ) ) );
+					global $wgContLang;
+					$this->addError( wfMsgForContent( 'smw_wrong_namespace',
+						$wgContLang->getNsText( $this->m_fixNamespace ) ) );
 			}
 			return true;
 		} else {
