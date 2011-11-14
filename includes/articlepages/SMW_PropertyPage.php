@@ -7,7 +7,7 @@
  *
  * @file SMW_PropertyPage.php
  * @ingroup SMW
- * 
+ *
  * @author Markus Krötzsch
  */
 class SMWPropertyPage extends SMWOrderedListPage {
@@ -25,7 +25,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 	/**
 	 * Returns the HTML which is added to $wgOut after the article text.
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getHtml() {
@@ -62,7 +62,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			}
 
 			$result .= wfMsgExt( 'smw_subpropertyarticlecount', array( 'parsemag' ), $resultCount ) . "</p>\n";
-			
+
 			if ( $resultCount < 6 ) {
 				$result .= SMWPageLister::getShortList( 0, $resultCount, $subproperties, null );
 			} else {
@@ -159,13 +159,13 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$searchlink = SMWInfolink::newBrowsingLink( '+', $dvWikiPage->getShortHTMLText() );
 			$r .= '<tr><td class="smwpropname">' . $dvWikiPage->getShortHTMLText( smwfGetLinker() ) .
 			      '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</td><td class="smwprops">';
-			
+
 			// Property values
 			$ropts = new SMWRequestOptions();
 			$ropts->limit = $smwgMaxPropertyValues + 1;
 			$values = $store->getPropertyValues( $diWikiPage, $this->mProperty, $ropts );
 			$i = 0;
-			
+
 			foreach ( $values as $di ) {
 				if ( $i != 0 ) {
 					$r .= ', ';

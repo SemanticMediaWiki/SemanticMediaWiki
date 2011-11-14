@@ -27,7 +27,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 
 	/**
 	 * Returns the HTML which is added to $wgOut after the article text.
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getHtml() {
@@ -40,7 +40,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 			$queryResult = $store->getQueryResult( $query );
 
 			$diWikiPages = $queryResult->getResults();
-			if ($this->until !== '' ) {
+			if ( $this->until !== '' ) {
 				$diWikiPages = array_reverse( $diWikiPages );
 			}
 
@@ -76,7 +76,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 	 */
 // 	private function formatList( $cutoff = 6 ) {
 // 		$end = count( $this->diWikiPages );
-// 		
+//
 // 		if ( $end > $this->limit ) {
 // 			if ( $this->until !== '' ) {
 // 				$start = 1;
@@ -87,7 +87,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 // 		} else {
 // 			$start = 0;
 // 		}
-// 
+//
 // 		if ( count ( $this->diWikiPages ) > $cutoff ) {
 // 			return $this->columnList( $start, $end, $this->diWikiPages );
 // 		} elseif ( count( $this->diWikiPages ) > 0 ) {
