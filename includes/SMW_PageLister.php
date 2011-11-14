@@ -61,7 +61,7 @@ class SMWPageLister {
 		$resultCount = count( $this->mDiWikiPages );
 		$beyondLimit = ( $resultCount > $this->mLimit );
 
-		if ( $this->mUntil !== '' ) {
+		if ( !is_null( $this->mUntil ) && $this->mUntil !== '' ) {
 			if ( $beyondLimit ) {
 				$first = smwfGetStore()->getWikiPageSortKey( $this->mDiWikiPages[1] );
 			} else {
@@ -69,7 +69,7 @@ class SMWPageLister {
 			}
 
 			$last = $this->mUntil;
-		} elseif ( $beyondLimit || ( $this->mFrom !== '' ) ) {
+		} elseif ( $beyondLimit || ( !is_null( $this->mFrom ) && $this->mFrom !== '' ) ) {
 			$first = $this->mFrom;
 
 			if ( $beyondLimit ) {
@@ -100,7 +100,7 @@ class SMWPageLister {
 	 * @return string
 	 */
 	protected function makeSelfLink( Title $title, $linkText, array $parameters ) {
-		return smwfGetLinker()->makeLinkObj( $title, $linkText, wfArrayToCGI( $parameters ) );
+		return smwfGetLinker()->makeKnownLinkObj( $title, $linkText, wfArrayToCGI( $parameters ) );
 	}
 
 	/**
