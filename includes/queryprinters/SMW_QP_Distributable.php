@@ -161,11 +161,15 @@ abstract class SMWDistributablePrinter extends SMWResultPrinter {
 		
 		// print all result rows
 		while ( $row = $res->getNext() ) {
-			$name = $row[0]->getNextDataValue()->getShortWikiText();
+			$dataValue = $row[0]->getNextDataValue();
 			
-			foreach ( $row as $field ) {
-				while ( ( /* SMWDataItem */ $dataItem = $field->getNextDataItem() ) !== false ) {
-					$this->addNumbersForDataItem( $dataItem, $values, $name );
+			if ( $dataValue !== false ) {
+				$name = $dataValue->getShortWikiText();
+			
+				foreach ( $row as $field ) {
+					while ( ( /* SMWDataItem */ $dataItem = $field->getNextDataItem() ) !== false ) {
+						$this->addNumbersForDataItem( $dataItem, $values, $name );
+					}
 				}
 			}
 		}
