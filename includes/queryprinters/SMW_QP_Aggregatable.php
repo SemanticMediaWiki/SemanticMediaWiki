@@ -14,13 +14,13 @@
  * 
  * @since 1.7
  * 
- * @file SMW_QP_Distributable.php
+ * @file SMW_QP_Aggregatable.php
  * @ingroup SMWQuery
  * 
  * @licence GNU GPL v3
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class SMWDistributablePrinter extends SMWResultPrinter {
+abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	
 	/**
 	 * Create the formats output given the result data and return it.
