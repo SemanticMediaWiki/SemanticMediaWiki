@@ -12082,6 +12082,7 @@ Bi petuvons pads te aniks, i völads nilöfik palisedons.',
  */
 $messages['yi'] = array(
 	'smw_exportrdf_submit' => 'עקספארטירן',
+	'smw_result_prev' => 'פֿריערדיקער',
 );
 
 /** Chinese (China) (‪中文(中国大陆)‬)
