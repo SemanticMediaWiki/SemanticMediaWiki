@@ -4101,7 +4101,7 @@ Como houbo só uns poucos resultados, tamén os resultados próximos son amosado
 	'smw_browselink' => 'Propiedades de navegación',
 	'smw_browse_article' => 'Insira o nome da páxina para comezar a navegación.',
 	'smw_browse_go' => 'Ir',
-	'smw_browse_show_incoming' => 'amosar as propiedades que ligan cara a aquí',
+	'smw_browse_show_incoming' => 'mostrar as propiedades que ligan cara a aquí',
 	'smw_browse_hide_incoming' => 'agochar as propiedades que ligan cara a aquí',
 	'smw_browse_no_outgoing' => 'Esta páxina non ten propiedades.',
 	'smw_browse_no_incoming' => 'Ningunha propiedade liga con esta páxina.',
