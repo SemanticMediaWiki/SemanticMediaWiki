@@ -1854,6 +1854,7 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw_paramdesc_default' => 'El text que es mostrarà si no hi ha resultats de la consulta',
 	'smw_paramdesc_searchlabel' => "El text de l'enllaç als resultats",
 	'smw_paramdesc_sep' => 'El separador entre valors',
+	'smw-paramdesc-distribution' => 'En comptes de mostrar tots els valors, compta les coincidències i mostra-ho.',
 	'smw_paramdesc_template' => "El nom d'una plantilla amb la qual mostrar els llistats",
 	'smw_paramdesc_columns' => 'El nombre de columnes amb les quals mostrar els resultats (per defecte és $1)',
 	'smw_paramdesc_userparam' => "Es passa un valor a cada crida de la plantilla, sempre que s'utilitzi una plantilla",
@@ -1869,6 +1870,7 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw-paramdesc-dsv-filename' => 'El nom del fitxer DSV',
 	'smw-smwdoc-description' => 'Mostra una taula de tots els paràmetres que es poden utilitzar per al format del resultat especificat juntament amb els valors per defecte i les descripcions.',
 	'smw-smwdoc-par-format' => 'El format del resultat per mostrar la documentació del paràmetre.',
+	'smw-paramdesc-sort' => 'Propietat per ordenar la consulta per',
 	'smw_iq_disabled' => 'Les consultes semàntiques estan inhabilitades en aquest wiki.',
 	'smw_iq_moreresults' => '... més resultats',
 	'smw_nonright_importtype' => "$1 només es pot utilitzar per a pàgines de l'espai de noms «$2».",
@@ -1968,14 +1970,23 @@ Té cura que els humans no es tornin en llocs web.',
 	'smw_ask_hide_embed' => 'Amaga el codi incrustat',
 	'smw_ask_embed_instr' => 'Per a incrustar aquesta consulta en línia a una pàgina wiki utilitzeu el codi a continuació.',
 	'querycreator' => 'Creador de consultes',
+	'smw_qc_addmainlabel' => "Afegeix l'etiqueta principal",
 	'smw_qc_show_addnal_opts' => 'Mostra més opcions',
 	'smw_qc_hide_addnal_opts' => 'Mostra menys opcions',
+	'smw_qc_otheropt' => 'Altres opcions',
+	'smw_qc_intro' => 'Intro:',
+	'smw_qc_outro' => 'Outro:',
+	'smw_qc_default' => 'Per defecte:',
+	'smw_qc_formatopt' => 'Opcions de format',
 	'smw_qc_query_help' => 'Introduïu una consulta fent servir el formulari a continuació. Seleccioneu les pàgines wiki en funció de
 Categories (<strong>[[{{ns:category}}:Actor]]</strong>), 
 Propietats (<strong>[[Viu a::Elx]]</strong>), 
 Noms (<strong>[[Lleida]]</strong>) i espais de noms (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propietat</strong>',
 	'smw_qui_prop' => 'Propietat:',
+	'smw_qui_labl' => 'Etiqueta:',
+	'smw_qui_formt' => 'Format:',
+	'smw_qui_limt' => 'Límit:',
 	'smw_qui_shownresults' => 'mostra en els resultats',
 	'smw_qui_noquery' => "No s'ha especificat cap consulta",
 	'smw_qui_invalidprop' => '«$1» podria ser que no fos una propietat vàlida',
@@ -1983,11 +1994,22 @@ Noms (<strong>[[Lleida]]</strong>) i espais de noms (<strong>[[{{ns:help}}:+]]</
 	'smw_qui_nosort' => 'Sense ordenació',
 	'smw_qui_ascorder' => 'Ascendent',
 	'smw_qui_descorder' => 'Descendent',
-	'smw_qui_addnprop' => 'Afegeix propietats addicionals',
+	'smw_qui_randorder' => 'Aleatori',
+	'smw_qui_addnprop' => 'afegeix la propietat',
 	'smw_qui_delete' => 'Suprimeix',
+	'smw_qui_options' => 'opcions',
+	'smw_qui_addcategory' => 'afegeix la categoria',
 	'smw_qui_ok' => "D'acord",
 	'smw_qui_cancel' => 'Cancel·la',
 	'smw_qui_category' => '<strong>Categoria</strong>',
+	'smw_qui_label' => 'Etiqueta',
+	'smw_prp_options' => 'Opcions de propietat',
+	'smw_qui_catopts' => 'Opcions de categoria',
+	'smw_qui_mainlabopts' => 'Opcions de resultat',
+	'smw_qui_dlabel' => 'Etiqueta:',
+	'smw_qui_dcategory' => 'Categoria:',
+	'smw_qui_dcatyes' => 'Mostra el text quan la categoria és present:',
+	'smw_qui_dcatno' => 'Mostra el text quan la categoria no existeix:',
 	'searchbyproperty' => 'Cerca per propietat',
 	'smw_sbv_docu' => 'Cerca totes les pàgines que tenen una propietat i valor donats.',
 	'smw_sbv_novalue' => 'Introduïu un valor vàlid per a la propietat, o vegeu tots els valors de la propietat «$1».',
@@ -2064,6 +2086,11 @@ Progrés estimat de l'actualització actual:",
 	'smw_adminlinks_datastructure' => 'Estructura de dades',
 	'smw_adminlinks_displayingdata' => 'Visualització de les dades',
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda de les consultes en línia',
+	'smw-paramdesc-category-delim' => 'El delimitador',
+	'smw-paramdesc-category-template' => 'Una plantilla per donar format als elements amb',
+	'smw-paramdesc-category-userparam' => 'Un paràmetre per passar a la plantilla',
+	'smw-info-par-message' => 'Missatge per mostrar.',
+	'smw-info-par-icon' => 'La icona que es mostrarà, o bé «info», o bé «avís».',
 );
 
 /** Chechen (Нохчийн)
@@ -6868,7 +6895,7 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_adminlinks_inlinequerieshelp' => 'Hölp övver de em Wiki sing Sigge enjeboute Froore',
 );
 
-/** Kurdish (Latin) (Kurdî (Latin))
+/** Kurdish (Latin script) (‪Kurdî (latînî)‬)
  * @author George Animal
  */
 $messages['ku-latn'] = array(
@@ -10046,7 +10073,7 @@ $messages['rue'] = array(
 	'smw_smwadmin_return' => 'Навернутя до  «$1».',
 );
 
-/** Serbo-Croatian (Srpskohrvatski / Српскохрватски)
+/** Serbo-Croatian (Srpskohrvatski)
  * @author OC Ripper
  */
 $messages['sh'] = array(
@@ -10659,7 +10686,7 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Помоћ за непосредне упите',
 );
 
-/** Serbian Latin ekavian (‪Srpski (latinica)‬)
+/** Serbian (Latin script) (‪Srpski (latinica)‬)
  * @author Liangent
  * @author Michaello
  * @author Rancher
@@ -11181,7 +11208,7 @@ $messages['tet'] = array(
 	'smw_result_next' => 'Oinmai',
 );
 
-/** Tajik (Cyrillic) (Тоҷикӣ (Cyrillic))
+/** Tajik (Cyrillic script) (Тоҷикӣ)
  * @author Ibrahim
  */
 $messages['tg-cyrl'] = array(
@@ -11533,7 +11560,7 @@ Bir diğeri oluşturulmuyor.',
 	'smw_adminlinks_inlinequerieshelp' => 'Satıriçi sorgu yardımı',
 );
 
-/** Tatar (Cyrillic) (Татарча/Tatarça (Cyrillic))
+/** Tatar (Cyrillic script) (Татарча)
  * @author Ерней
  * @author Ильнар
  */
@@ -11545,14 +11572,14 @@ $messages['tt-cyrl'] = array(
 	'browse' => 'Сәхифәне карау',
 );
 
-/** ئۇيغۇرچە (ئۇيغۇرچە)
+/** Uyghur (Arabic script) (ئۇيغۇرچە)
  * @author Alfredie
  */
 $messages['ug-arab'] = array(
 	'smw_browse_go' => 'كۆچۈش',
 );
 
-/** Uighur (Latin) (ئۇيغۇرچە / Uyghurche‎ (Latin))
+/** Uyghur (Latin script) (Uyghurche‎)
  * @author Jose77
  * @author Minh Nguyen
  * @author Vinhtantran
