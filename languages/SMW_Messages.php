@@ -401,6 +401,7 @@ Estimated progress of current update:',
  * @author Pietrodn
  * @author Purodha
  * @author Siebrand
+ * @author Umherirrender
  * @author Тест
  */
 $messages['qqq'] = array(
@@ -410,6 +411,8 @@ $messages['qqq'] = array(
 {{Identical|And}}',
 	'smw_rss_link' => '{{optional}}',
 	'smw_csv_link' => '{{optional}}',
+	'smw_json_link' => '{{optional}}',
+	'smw_rdf_link' => '{{optional}}',
 	'smw_printername_auto' => '{{Identical|Automatic}}',
 	'smw_printername_table' => '{{Identical|Table}}',
 	'smw_printername_template' => '{{Identical|Template}}',
@@ -429,13 +432,16 @@ $messages['qqq'] = array(
 	'smw_paramdesc_embedonly' => 'A description of the "embedonly" parameter for the "embedded" format for inline queries',
 	'smw_paramdesc_rsstitle' => 'A description of the "title" parameter for the "rss" format for inline queries',
 	'smw_paramdesc_rssdescription' => 'A description of the "description" parameter for the "rss" format for inline queries',
-	'smw_decseparator' => "This message is as a separator symbol for decimal digits in numbers, like \".\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
+	'smw_decseparator' => "{{optional}}
+This message is as a separator symbol for decimal digits in numbers, like \".\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
 
 Note that spaces and space-like HTML entities are always ignored when reading numbers.",
-	'smw_kiloseparator' => "This message is as a separator symbol for thousands in numbers, like \",\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
+	'smw_kiloseparator' => "{{optional}}
+This message is as a separator symbol for thousands in numbers, like \",\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
 
 Note that spaces and space-like HTML entities are always ignored when reading numbers, whether or not a space symbol is used here.",
 	'smw_subpropertyarticlecount' => '[[bugzilla:15207|Bug on Bugzilla about this message]] has been fixed at [[mw:Special:Code/MediaWiki/40793|r40793]].',
+	'smw_rss_description' => '{{optional}}',
 	'specialpages-group-smw_group' => '{{optional}}',
 	'smw_exportrdf_submit' => '{{Identical|Export}}',
 	'properties' => 'This is the title of the special page showing all properties.
@@ -484,6 +490,7 @@ This method is called ''content negotiation''.",
 	'smw_sbv_value' => '{{Identical|Value}}',
 	'smw_sbv_submit' => '{{Identical|Find results}}',
 	'smw_browse_go' => '{{Identical|Go}}',
+	'smw_browse_more' => '{{optional}}',
 	'smw_inverse_label_property' => 'Can as well be translated as "Name of", or "Denomination of the inverse propery". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property "is child of" is the inverse propery of "is parent of".',
 	'smw_pp_docu' => '"fillers" can be translated as "values", if you so wish.',
 	'smw_pp_type' => '{{Identical|Property}}',
@@ -784,6 +791,7 @@ $messages['ar'] = array(
 	'smw_qui_formt' => 'الصيغة:',
 	'smw_qui_limt' => 'الحد:',
 	'smw_qui_options' => 'خيارات',
+	'smw_qui_ok' => 'موافق',
 	'searchbyproperty' => 'البحث حسب الخصائص',
 	'smw_sbv_docu' => 'البحث عن كل الصفحات التي لها خصائص معينة وقيمة',
 	'smw_sbv_novalue' => 'أدخل قيمة صحيحة للخاصية، أو انظر كل قيم الخصائص ل"$1"',
@@ -6361,6 +6369,8 @@ $messages['ja'] = array(
 	'smw_ask_show_embed' => '埋め込み用コードを表示',
 	'smw_ask_hide_embed' => '埋め込み用コードを非表示',
 	'smw_ask_embed_instr' => 'このクエリをウィキページにインラインで埋め込むには、下のコードを使います。',
+	'smw_qui_category' => '<strong>カテゴリー</strong>',
+	'smw_qui_dcategory' => 'カテゴリー:',
 	'searchbyproperty' => 'プロパティによる検索',
 	'smw_sbv_docu' => '指定したプロパティと値をもつすべてのページを検索する。',
 	'smw_sbv_novalue' => 'そのプロパティにとって有効な値を入力するか、「$1」のすべてのプロパティ値を確認してください。',
