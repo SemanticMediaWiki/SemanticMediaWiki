@@ -200,7 +200,7 @@ class SMWAskPage extends SpecialPage {
 		foreach ( $scripts as $js ) {
 			$wgOut->addScriptFile( $js );
 		}
-		
+
 		$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
 function split(val) {
@@ -252,7 +252,7 @@ jQuery(document).ready(function(){
 
 			jQuery.getJSON(url+request.term, function(data){
 				//remove the namespace prefix 'Property:' from returned data and add prefix '?'
-				for(i=0;i<data[1].length;i++) data[1][i]="?"+data[1][i].substr(data[1][i].indexOf(':')+1); 
+				for(i=0;i<data[1].length;i++) data[1][i]="?"+data[1][i].substr(data[1][i].indexOf(':')+1);
 				response(jQuery.ui.autocomplete.filter(data[1], escapeQuestion(extractLast(request.term))));
 			});
 		},
@@ -372,7 +372,7 @@ END;
 			SMWQueryProcessor::addThisPrintout( $this->m_printouts, $this->m_params );
 			$params = SMWQueryProcessor::getProcessedParams( $this->m_params, $this->m_printouts );
 			$this->m_params['format'] = $params['format'];
-			
+
 			$queryobj = SMWQueryProcessor::createQuery(
 				$this->m_querystring,
 				$params,
@@ -380,7 +380,7 @@ END;
 				$this->m_params['format'],
 				$this->m_printouts
 			);
-			
+
 			$res = smwfGetStore()->getQueryResult( $queryobj );
 
 			// Try to be smart for rss/ical if no description/title is given and we have a concept query:
@@ -427,7 +427,7 @@ END;
 					if ( $this->m_editquery ) {
 						$urlArgs['eq'] = 'yes';
 					}
-					else if ( $hidequery ) {
+					elseif ( $hidequery ) {
 						$urlArgs['eq'] = 'no';
 					}
 
@@ -459,13 +459,13 @@ END;
 			}
 
 			$urlArgs['offset'] = $this->m_params['offset'];
-			$urlArgs['limit'] = $this->m_params['limit']; 
-			
+			$urlArgs['limit'] = $this->m_params['limit'];
+
 			$result = $this->getInputForm(
 				$printoutstring,
 				wfArrayToCGI( $urlArgs )
 			) . $result;
-			
+
 			$wgOut->addHTML( $result );
 		} else {
 			$wgOut->disable();
@@ -655,7 +655,7 @@ END;
 				'a',
 				array(
 					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
-						'offset' => max( 0, $offset - $limit ), 
+						'offset' => max( 0, $offset - $limit ),
 						'limit' => $limit
 					) + $urlArgs ),
 					'rel' => 'nofollow'
@@ -679,8 +679,8 @@ END;
 				'a',
 				array(
 					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
-						'offset' => ( $offset + $limit ), 
-						'limit' => $limit 
+						'offset' => ( $offset + $limit ),
+						'limit' => $limit
 					)  + $urlArgs ),
 					'rel' => 'nofollow'
 				),
@@ -741,7 +741,7 @@ END;
 		if ( method_exists( $printer, 'getValidatorParameters' ) ) {
 			$params = array_merge( $params, $printer->getValidatorParameters() );
 		}
-		
+
 		$optionsHtml = array();
 
 		foreach ( $params as $param ) {
@@ -749,9 +749,9 @@ END;
 			if ( $param->getName() == 'format' ) {
 				continue;
 			}
-			
+
 			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
-			
+
 			$optionsHtml[] =
 				Html::rawElement(
 					'div',
@@ -786,7 +786,7 @@ END;
 				),
 				$rowHtml
 			);
-			
+
 			$rowHtml = '';
 		}
 

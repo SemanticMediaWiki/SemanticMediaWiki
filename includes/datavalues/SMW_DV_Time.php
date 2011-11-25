@@ -12,7 +12,7 @@
  * the Beginning of Time according to most of today's theories. The range of
  * supported future dates is limited more strictly, but it does also allow
  * year numbers in the order of 10^9.
- * 
+ *
  * The implementation notices and stores whether parts of a date/time have been
  * omitted (as in "2008" or "May 2007"). For all exporting and sorting
  * purposes, incomplete dates are completed with defaults (usually using the
@@ -21,14 +21,14 @@
  * behaviour e.g. for outputs (defaults are not printed when querying for a
  * value). This largely uses the precision handling of SMWDITime.
  *
- * 
+ *
  * Date formats
  *
  * Dates can be given in many formats, using numbers, month names, and
  * abbreviated month names. The preferred interpretation of ambiguous dates
  * ("1 2 2008" or even "1 2 3 BC") is controlled by the language file, as is
  * the local naming of months. English month names are always supported.
- * 
+ *
  * Dates can be given in Gregorian or Julian calendar, set by the token "Jl"
  * or "Gr" in the input. If neither is set, a default is chosen: inputs after
  * October 15, 1582 (the time when the Gregorian calendar was first inaugurated
@@ -38,12 +38,12 @@
  * 24), JD (direct numerical input in Julian Day notation), and MJD (direct
  * numerical input in Modified Julian Day notation as used in aviation and
  * space flight).
- * 
+ *
  * The class does not support the input of negative year numbers but uses the
  * markers "BC"/"BCE" and "AD"/"CE" instead. There is no year 0 in Gregorian or
  * Julian calendars, but the class graciously considers this input to mean year
  * 1 BC(E).
- * 
+ *
  * For prehisoric dates before 9999 BC(E) only year numbers are allowed
  * (nothing else makes much sense). At this time, the years of Julian and
  * Gregorian calendar still overlap significantly, so the transition to a
@@ -51,17 +51,17 @@
  * class will consider prehistoric dates as Gregorian but very ancient times
  * may be interpreted as desired (probably with reference to a physical notion
  * of time that is not dependent on revolutions of earth around the sun).
- * 
- * 
+ *
+ *
  * Time formats
  *
  * Times can be in formats like "23:12:45" and "12:30" possibly with additional
- * modifiers "am" or "pm". Timezones are supported: the class knows many 
+ * modifiers "am" or "pm". Timezones are supported: the class knows many
  * international timezone monikers (e.g. CET or GMT) and also allows time
  * offsets directly after a time (e.g. "10:30-3:30" or "14:45:23+2"). Such
  * offsets always refer to UTC. Timezones are only used on input and are not
  * stored as part of the value.
- * 
+ *
  * Time offsets take leap years into account, e.g. the date
  * "Feb 28 2004 23:00+2:00" is equivalent to "29 February 2004 01:00:00", while
  * "Feb 28 1900 23:00+2:00" is equivalent to "1 March 1900 01:00:00".
@@ -69,8 +69,8 @@
  * Military time format is supported. This consists of 4 or 6 numeric digits
  * followed by a one-letter timezone code (e.g. 1240Z is equivalent to 12:40
  * UTC).
- * 
- * 
+ *
+ *
  * I18N
  *
  * Currently, neither keywords like "BCE", "Jl", or "pm", nor timezone monikers
@@ -79,7 +79,7 @@
  * internationalized, but English names and abbreviations will also work in all
  * languages. The class also supports ordinal day-of-month annotations like
  * "st" and "rd", again only for English.
- * 
+ *
  * I18N includes the preferred order of dates, e.g. to interpret "5 6 2010".
  *
  * @todo Theparsing process can encounter many kinds of well-defined problems
@@ -145,11 +145,11 @@ class SMWTimeValue extends SMWDataValue {
 		/// TODO Direct JD input currently cannot cope with decimal numbers
 		$datecomponents = array();
 		$calendarmodel = $era = $hours = $minutes = $seconds = $timeoffset = false;
-		
+
 		// Check if it's parseable by wfTimestamp when it's not a year (which is wrongly interpreted).
 		if ( strlen( $value ) != 4 && wfTimestamp( TS_MW, $value ) !== false ) {
 			$timeStamp = wfTimestamp( TS_MW, $value );
-			
+
 			$this->m_dataitem = new SMWDITime(
 				SMWDITime::CM_GREGORIAN,
 				substr( $timeStamp, 0, 4 ),
@@ -160,11 +160,11 @@ class SMWTimeValue extends SMWDataValue {
 				substr( $timeStamp, 12, 2 )
 			);
 		}
-		else if ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset ) ) {
+		elseif ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset ) ) {
 			if ( ( $calendarmodel === false ) && ( $era === false ) && ( count( $datecomponents ) == 1 ) && ( intval( end( $datecomponents ) ) >= 100000 ) ) {
 				$calendarmodel = 'JD'; // default to JD input if a single number was given as the date
 			}
-			
+
 			if ( ( $calendarmodel == 'JD' ) || ( $calendarmodel == 'MJD' ) ) {
 				if ( ( $era === false ) && ( $hours === false ) && ( $timeoffset == 0 ) ) {
 					try {
@@ -181,7 +181,7 @@ class SMWTimeValue extends SMWDataValue {
 				$this->setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset );
 			}
 		}
-		
+
 		if ( is_null( $this->m_dataitem ) ) { // make sure that m_dataitem is set in any case
 			$this->m_dataitem = new SMWDITime( SMWDITime::CM_GREGORIAN, 32202 );
 		}
@@ -497,7 +497,7 @@ class SMWTimeValue extends SMWDataValue {
 		// Having more than years or specifying a calendar model does
 		// not make sense for prehistoric dates, and our calendar
 		// conversion would not be reliable if JD numbers get too huge:
-		if ( ( $date['y'] <= self::PREHISTORY ) && 
+		if ( ( $date['y'] <= self::PREHISTORY ) &&
 		     ( ( $this->m_dataitem->getPrecision() > SMWDITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
@@ -533,7 +533,7 @@ class SMWTimeValue extends SMWDataValue {
 			$numvalue = intval( $component );
 			if ( ( $numvalue >= 1 ) && ( $numvalue <= 12 ) ) {
 				return SMW_DAY_MONTH_YEAR; // can be a month, day or year
-			} elseif ( ( $numvalue >= 1 ) && ( $numvalue <= 31 ) ) { 
+			} elseif ( ( $numvalue >= 1 ) && ( $numvalue <= 31 ) ) {
 				return SMW_DAY_YEAR; // can be day or year
 			} else { // number can just be a year
 				return SMW_YEAR;
@@ -710,7 +710,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * than 4 digits, which is not strictly conforming to the standard.
 	 * The date includes year, month, and day regardless of the input
 	 * precision, but will only include time when specified.
-	 * 
+	 *
 	 * Conforming to the 2000 version of ISO8601, year 1 BC(E) is
 	 * represented as "0000", year 2 BC(E) as "-0001" and so on.
 	 *
@@ -765,11 +765,11 @@ class SMWTimeValue extends SMWDataValue {
 	/**
 	 * Compute a suitable string to display the given date item.
 	 * @note MediaWiki's date functions are not applicable for the range of historic dates we support.
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @param SMWDITime $dataitem
-	 * 
+	 *
 	 * @return string
 	 * @todo Internationalize the CE and BCE strings.
 	 */

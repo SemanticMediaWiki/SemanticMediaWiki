@@ -7,7 +7,7 @@
  * @author Markus Krötzsch
  * @author Marcel Gsteiger
  * @author Jeroen De Dauw
- * 
+ *
  * @file SMW_SQLHelpers.php
  * @ingroup SMWStore
  */
@@ -23,7 +23,7 @@ class SMWSQLHelpers {
 	 */
 	static public function getStandardDBType( $input ) {
 		global $wgDBtype;
-		
+
 		switch ( $input ) {
 			case 'id': return $wgDBtype == 'postgres' ? 'SERIAL' : ($wgDBtype == 'sqlite' ? 'INTEGER' :'INT(8) UNSIGNED'); // like page_id in MW page table
 			case 'namespace': return $wgDBtype == 'postgres' ? 'BIGINT' : 'INT(11)'; // like page_namespace in MW page table
@@ -31,7 +31,7 @@ class SMWSQLHelpers {
 			case 'iw': return ($wgDBtype == 'postgres' || $wgDBtype == 'sqlite') ? 'TEXT' : 'VARCHAR(32) binary'; // like iw_prefix in MW interwiki table
 			case 'blob': return $wgDBtype == 'postgres' ? 'BYTEA' : 'MEDIUMBLOB'; // larger blobs of character data, usually not subject to SELECT conditions
 		}
-		
+
 		return false;
 	}
 
@@ -55,7 +55,7 @@ class SMWSQLHelpers {
 	 *
 	 * @note The function partly ignores the order in which fields are set up.
 	 * Only if the type of some field changes will its order be adjusted explicitly.
-	 * 
+	 *
 	 * @param string $tableName The table name. Does not need to have been passed to DatabaseBase->tableName yet.
 	 * @param array $columns The fields and their types the table should have.
 	 * @param DatabaseBase or Database $db
@@ -65,21 +65,21 @@ class SMWSQLHelpers {
 		$tableName = $db->tableName( $rawTableName );
 
 		self::reportProgress( "Checking table $tableName ...\n", $reportTo );
-		
+
 		if ( $db->tableExists( $rawTableName ) === false ) { // create new table
 			self::reportProgress( "   Table not found, now creating...\n", $reportTo );
 			self::createTable( $tableName, $fields, $db, $reportTo );
-			self::reportProgress( "   ... done.\n", $reportTo );	
-		} else { 
+			self::reportProgress( "   ... done.\n", $reportTo );
+		} else {
 			self::reportProgress( "   Table already exists, checking structure ...\n", $reportTo );
 			self::updateTable( $tableName, $fields, $db, $reportTo );
 			self::reportProgress( "   ... done.\n", $reportTo );
 		}
 	}
-	
+
 	/**
 	 * Creates a new database table with the specified fields.
-	 * 
+	 *
 	 * @param string $tableName The table name.
 	 * @param array $columns The fields and their types the table should have.
 	 * @param DatabaseBase or Database $db
@@ -104,10 +104,10 @@ class SMWSQLHelpers {
 
 		$db->query( $sql, __METHOD__ );
 	}
-	
+
 	/**
 	 * Update a table given an array of field names and field types.
-	 * 
+	 *
 	 * @param string $tableName The table name.
 	 * @param array $columns The fields and their types the table should have.
 	 * @param DatabaseBase or Database $db
@@ -119,7 +119,7 @@ class SMWSQLHelpers {
 		$currentFields = self::getFields( $tableName, $db, $reportTo );
 
 		$isPostgres = $wgDBtype == 'postgres';
-		
+
 		if ( !$isPostgres ) $position = 'FIRST';
 
 		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
@@ -133,7 +133,7 @@ class SMWSQLHelpers {
 
 			$currentFields[$fieldName] = false;
 		}
-		
+
 		// The updated fields have their value set to false, so if a field has a value
 		// that differs from false, it's an obsolete one that should be removed.
 		foreach ( $currentFields as $fieldName => $value ) {
@@ -142,7 +142,7 @@ class SMWSQLHelpers {
 
 				if ( $isPostgres ) {
 					$db->query( 'ALTER TABLE "' . $tableName . '" DROP COLUMN "' . $fieldName . '"', __METHOD__ );
-				} else if ( $wgDBtype == 'sqlite' ) {
+				} elseif ( $wgDBtype == 'sqlite' ) {
 					// DROP COLUMN not supported in Sqlite3
 					SMWSQLHelpers::reportProgress( "   ... deleting obsolete field $fieldName not possible in SQLLite ... you could delete and reinitialize the tables to remove obsolete data, or just keep it ... ", $reportTo );
 				} else {
@@ -151,57 +151,57 @@ class SMWSQLHelpers {
 
 				SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
 			}
-		}		
+		}
 	}
 
 	/**
 	 * Returns an array of fields (as keys) and their types (as values).
-	 * 
+	 *
 	 * @param string $tableName The table name.
 	 * @param DatabaseBase or Database $db
 	 * @param $reportTo Object to report back to.
-	 * 
+	 *
 	 * @return array
 	 */
 	protected static function getFields( $tableName, $db, $reportTo ) {
 		global $wgDBtype;
-		
+
 		if ( $wgDBtype == 'postgres' ) {
 			$tableName = str_replace( '"', '', $tableName );
 			// Use the data dictionary in postgresql to get an output comparable to DESCRIBE.
 			$sql = <<<EOT
 SELECT
-	a.attname as "Field", 
-	upper(pg_catalog.format_type(a.atttypid, a.atttypmod)) as "Type", 
-	(SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128) 
-	FROM pg_catalog.pg_attrdef d 
-	WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as "Extra", 
-		case when a.attnotnull THEN 'NO'::text else 'YES'::text END as "Null", a.attnum 
-	FROM pg_catalog.pg_attribute a 
+	a.attname as "Field",
+	upper(pg_catalog.format_type(a.atttypid, a.atttypmod)) as "Type",
+	(SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128)
+	FROM pg_catalog.pg_attrdef d
+	WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as "Extra",
+		case when a.attnotnull THEN 'NO'::text else 'YES'::text END as "Null", a.attnum
+	FROM pg_catalog.pg_attribute a
 	WHERE a.attrelid = (
-	    SELECT c.oid 
-	    FROM pg_catalog.pg_class c 
-	    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace 
+	    SELECT c.oid
+	    FROM pg_catalog.pg_class c
+	    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
 	    WHERE c.relname ~ '^($tableName)$'
-	    AND pg_catalog.pg_table_is_visible(c.oid) 
-	    LIMIT 1 
-	 ) AND a.attnum > 0 AND NOT a.attisdropped 
-	 ORDER BY a.attnum			
+	    AND pg_catalog.pg_table_is_visible(c.oid)
+	    LIMIT 1
+	 ) AND a.attnum > 0 AND NOT a.attisdropped
+	 ORDER BY a.attnum
 EOT;
 		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
 			$sql = 'PRAGMA table_info(' . $tableName . ')';
 		} else { // MySQL
 			$sql = 'DESCRIBE ' . $tableName;
 		}
-		
+
 		$res = $db->query( $sql, __METHOD__ );
 		$curfields = array();
 		$result = array();
-		
+
 		foreach ( $res as $row ) {
 			if ( $wgDBtype == 'postgres' ) { // postgresql
 				$type = strtoupper( $row->Type );
-				
+
 				if ( preg_match( '/^nextval\\(.+\\)/i', $row->Extra ) ) {
 					$type = 'SERIAL NOT NULL';
 				} elseif ( $row->Null != 'YES' ) {
@@ -219,7 +219,7 @@ EOT;
 				}
 			} else { // mysql
 				$type = strtoupper( $row->Type );
-				
+
 				if ( substr( $type, 0, 8 ) == 'VARCHAR(' ) {
 					$type .= ' binary'; // just assume this to be the case for VARCHAR, though DESCRIBE will not tell us
 				}
@@ -245,7 +245,7 @@ EOT;
 
 	/**
 	 * Update a single field given it's name and type and an array of current fields. Postgres version.
-	 * 
+	 *
 	 * @param string $tableName The table name.
 	 * @param string $name The field name.
 	 * @param string $type The field type and attributes.
@@ -290,10 +290,10 @@ EOT;
 			self::reportProgress( "   ... field $name is fine.\n", $reportTo );
 		}
 	}
-	
+
 	/**
 	 * Update a single field given it's name and type and an array of current fields. MySQL version.
-	 * 
+	 *
 	 * @param string $tableName The table name.
 	 * @param string $name The field name.
 	 * @param string $type The field type and attributes.
@@ -319,19 +319,19 @@ EOT;
 		} else {
 			self::reportProgress( "   ... field $name is fine.\n", $reportTo );
 		}
-	}	
+	}
 
 	/**
 	 * Make sure that each of the column descriptions in the given array is indexed by *one* index
 	 * in the given DB table.
-	 * 
+	 *
 	 * @param string $tableName The table name. Does not need to have been passed to DatabaseBase->tableName yet.
 	 * @param array $columns The field names to put indexes on
 	 * @param DatabaseBase or Database $db
 	 */
 	public static function setupIndex( $rawTableName, array $columns, $db ) {
-		// TODO: $verbose is not a good global name! 
-		global $wgDBtype, $verbose; 
+		// TODO: $verbose is not a good global name!
+		global $wgDBtype, $verbose;
 
 		$tableName = $db->tableName( $rawTableName );
 
@@ -465,7 +465,7 @@ EOT;
 
 	/**
 	 * Reports the given message to the reportProgress method of the $receiver.
-	 * 
+	 *
 	 * @param string $msg
 	 * @param object $receiver
 	 */
