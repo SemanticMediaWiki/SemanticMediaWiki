@@ -20,6 +20,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 	protected $mSep;
 	protected $mTemplate;
+	protected $mNamedArgs;
 	protected $mUserParam;
 	protected $mColumns;
 	protected $mIntroTemplate;
@@ -38,6 +39,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		
 		$this->mSep = $this->isPlainlist() ? $params['sep'] : '';
 		$this->mTemplate = trim( $params['template'] );
+		$this->mNamedArgs = $params['named args'];
 		$this->mUserParam = trim( $params['userparam'] );
 		$this->mColumns = !$this->isPlainlist() ? $params['columns'] : 1;
 		$this->mIntroTemplate = $params['introtemplate'];
@@ -180,18 +182,15 @@ END;
 		if ( $this->mTemplate !== '' ) { // build template code
 			$this->hasTemplates = true;
 			$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam" : '';
-			$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
 			
-			foreach ( $row as $field ) {
-				$wikitext .= '|' . $i++ . '=';
+			foreach ( $row as $i => $field ) {
+				$wikitext .= '|' . ( $this->mNamedArgs ? '?' . $field->getPrintRequest()->getLabel() : $i + 1 ) . '=';
 				$first_value = true;
 				
-				while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
+				while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {
 					if ( $first_value ) $first_value = false; else $wikitext .= ', ';
 					$wikitext .= $text;
 				}
-				
-				$first_col = false;
 			}
 			
 			$wikitext .= "|#=$rownum";
@@ -296,6 +295,9 @@ END;
 		$params['template'] = new Parameter( 'template' );
 		$params['template']->setMessage( 'smw_paramdesc_template' );
 		$params['template']->setDefault( '' );	
+		
+		$params['named args'] = new Parameter( 'named args', Parameter::TYPE_BOOLEAN, false );
+		$params['named args']->setMessage( 'smw_paramdesc_named_args' );
 		
 		if ( !$this->isPlainlist() ) {
 			$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
