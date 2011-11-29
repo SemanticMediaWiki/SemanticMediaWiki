@@ -509,8 +509,8 @@ END;
 				if ( ! array_key_exists( 'sort', $this->m_params ) || ! array_key_exists( 'order', $this->m_params ) ) {
 					$orders = array(); // do not even show one sort input here
 				} else {
-					$sorts = $this->m_params['sort'];
-					$orders = $this->m_params['order'];
+					$sorts = explode( ',', $this->m_params['sort'] );
+					$orders = explode( ',', $this->m_params['order'] );
 					reset( $sorts );
 				}
 
