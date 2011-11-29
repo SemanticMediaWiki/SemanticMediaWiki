@@ -14,14 +14,17 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Added alpha version of native SMW Ask API with moudles ask and askargs.
 * Added setting to choose which optional special properties are enabled ($smwgPageSpecialProperties).
 * Added creation date special property (disabled by default) (bug 32165).
+* Added support for altitudes in geographic coordinates (bug 32698).
+* Dropped compatibility with MediaWiki 1.15.x (and earlier).
+* Dropped compatibility with old-style (SMW < 1.6) query printers.
 * Fixed separator and filename parameters for the DSV format.
 * Fixed display of properties of type URL (bug 30912).
 * Fixed hide query functionality on Special:Ask (bug 30768).
 * Fixed display of internal SMW helper constants in certain queries (bug 30969).
 * Fixed some issues with the category result format (including bug 30761).
 * Fixed email validation issue (bug 32295).
-* Dropped compatibility with MediaWiki 1.15.x (and earlier).
-* Dropped compatibility with old-style (SMW < 1.6) query printers.
+* Fixed incorrect handling of sort and order parameters on Special:Ask (bug 32706).
+* Fixed several more issues not listed here.
 
 == SMW 1.6.1 ==
 

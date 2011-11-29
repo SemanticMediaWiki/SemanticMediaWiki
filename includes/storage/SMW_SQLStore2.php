@@ -2499,8 +2499,8 @@ class SMWSQLStore2 extends SMWStore {
 		
 		self::$prop_tables['smw_coords'] = new SMWSQLStore2Table(
 			'sm_coords',
-			array( 'lat' => 'f', 'lon' => 'f' ),
-			array( 'lat', 'lon' )
+			array( 'lat' => 'f', 'lon' => 'f', 'alt' => 'f' ),
+			array( 'lat', 'lon', 'alt' )
 		);		
 
 		wfRunHooks( 'SMWPropertyTables', array( &self::$prop_tables ) );

@@ -13,16 +13,67 @@
  */
 class SMWDIGeoCoord extends SMWDataItem {
 
-	protected $coordinateSet;
+	/**
+	 * The locations latitude.
+	 * 
+	 * @since 1.6
+	 * @var float
+	 */
+	protected $latitude;
+	
+	/**
+	 * The locations longitude.
+	 * 
+	 * @since 1.6
+	 * @var float
+	 */
+	protected $longitude;
+	
+	/**
+	 * The locations altitude.
+	 * 
+	 * @since 1.7
+	 * @var float|null
+	 */
+	protected $altitude = null;
 
 	/**
 	 * Constructor.
+	 * Takes a latitude and longitude, and optionally an altitude. These can be provided in 2 forms:
+	 * * An associative array with lat, lon and alt keys
+	 * * Lat, lon and alt arguments
 	 * 
-	 * @param $coords array Array with lat and long keys pointing to float values.
-	 * @param $typeid string
+	 * The second way to provide the arguments, as well as the altitude argument, where introduced in SMW 1.7.
 	 */
-	public function __construct( array $coords ) {
-		$this->coordinateSet = $coords;
+	public function __construct() {
+		$args = func_get_args();
+		
+		$count = count( $args );
+		
+		if ( $count === 1 && is_array( $args[0] ) ) {
+			if ( array_key_exists( 'lat', $args[0] ) && array_key_exists( 'lon', $args[0] ) ) {
+				$this->latitude = (float)$args[0]['lat'];
+				$this->longitude = (float)$args[0]['lon'];
+				
+				if ( array_key_exists( 'alt', $args[0] ) ) {
+					$this->altitude = (float)$args[0]['alt'];
+				}
+			}
+			else {
+				throw new SMWDataItemException( 'Invalid coordinate data passed to the SMWDIGeoCoord constructor' );
+			}
+		}
+		elseif ( $count === 2 || $count === 3 ) {
+			$this->latitude = (float)$args[0];
+			$this->longitude = (float)$args[1];
+			
+			if ( $count === 3 ) {
+				$this->altitude = (float)$args[2];
+			}
+		}
+		else {
+			throw new SMWDataItemException( 'Invalid coordinate data passed to the SMWDIGeoCoord constructor' );
+		}
 	}
 
 	/**
@@ -34,7 +85,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	}
 	
 	/**
-	 * Returns the coordinate set as an array with lat and long keys
+	 * Returns the coordinate set as an array with lat and long (and alt) keys
 	 * pointing to float values.
 	 * 
 	 * @since 1.6
@@ -42,7 +93,13 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @return array
 	 */
 	public function getCoordinateSet() {
-		return $this->coordinateSet;
+		$coords = array( 'lat' => $this->latitude, 'lon' => $this->longitude );
+		
+		if ( !is_null( $this->altitude ) ) {
+			$coords['alt'] = $this->altitude;
+		}
+		
+		return $coords;
 	}
 
 	/**
@@ -50,7 +107,8 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @see SMWDataItem::getSortKey()
 	 */
 	public function getSortKey() {
-		return $this->coordinateSet['lat']; // TODO
+		// Maybe also add longitude here? Or is there a more meaningfull value we can return?
+		return $this->latitude;
 	}
 
 	/**
@@ -58,7 +116,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @see SMWDataItem::getSerialization()
 	 */
 	public function getSerialization() {
-		return $this->coordinateSet['lat'] . ',' . $this->coordinateSet['lon'];
+		return implode( ',', $this->getCoordinateSet() );
 	}
 
 	/**
@@ -75,12 +133,19 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 */
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( ',', $serialization );
-
-		if ( count( $parts ) != 2 ) {
+		$count = count( $parts );
+		
+		if ( $count !== 2 && $count !== 3 ) {
 			throw new SMWDataItemException( 'Unserialization of coordinates failed' );
 		}
+		
+		$coords = array( 'lat' => (float)$parts[0], 'lon' => (float)$parts[1] );
+		
+		if ( $count === 3 ) {
+			$coords['alt'] = (float)$parts[2];
+		}
 
-		return new self( array( 'lat' => (float)$parts[0], 'lon' => (float)$parts[1], ) );
+		return new self( $coords );
 	}
 	
 	/**
@@ -91,7 +156,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @return float
 	 */
 	public function getLatitude() {
-		return $this->coordinateSet['lat'];
+		return $this->latitude;
 	}
 	
 	/**
@@ -102,7 +167,18 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @return float
 	 */
 	public function getLongitude() {
-		return $this->coordinateSet['lon'];
+		return $this->longitude;
+	}
+	
+	/**
+	 * Returns the altitude if set, null otherwise.
+	 * 
+	 * @since 1.7
+	 * 
+	 * @return float|null
+	 */
+	public function getAltitude() {
+		return $this->altitude;
 	}
 
 }
