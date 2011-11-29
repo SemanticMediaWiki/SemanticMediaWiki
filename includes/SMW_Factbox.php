@@ -24,7 +24,9 @@ class SMWFactbox {
 	 */
 	static public function getFactboxText( SMWSemanticData $semdata, $showfactbox = SMW_FACTBOX_NONEMPTY ) {
 		global $wgContLang;
+		
 		wfProfileIn( 'SMWFactbox::printFactbox (SMW)' );
+		
 		switch ( $showfactbox ) {
 			case SMW_FACTBOX_HIDDEN: // never show
 				wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
@@ -48,7 +50,9 @@ class SMWFactbox {
 		$text = '';
 		if ( wfRunHooks( 'smwShowFactbox', array( &$text, $semdata ) ) ) {
 			$subjectDv = SMWDataValueFactory::newDataItemValue( $semdata->getSubject(), null );
+			
 			SMWOutputs::requireResource( 'ext.smw.style' );
+			
 			$rdflink = SMWInfolink::newInternalLink(
 				wfMsgForContent( 'smw_viewasrdf' ),
 				$wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' .
@@ -61,6 +65,7 @@ class SMWFactbox {
 				$subjectDv->getWikiValue(),
 				'swmfactboxheadbrowse'
 			);
+			
 			$text .= '<div class="smwfact">' .
 				'<span class="smwfactboxhead">' .
 				wfMsgForContent( 'smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
@@ -119,7 +124,9 @@ class SMWFactbox {
 	 */
 	static public function getFactboxTextFromOutput( ParserOutput $parseroutput, Title $title ) {
 		global $wgRequest, $smwgShowFactboxEdit, $smwgShowFactbox;
-		$mws =  ( isset( $parseroutput->mSMWMagicWords ) ) ? $parseroutput->mSMWMagicWords : array();
+		
+		$mws = isset( $parseroutput->mSMWMagicWords ) ? $parseroutput->mSMWMagicWords : array();
+		
 		if ( in_array( 'SMW_SHOWFACTBOX', $mws ) ) {
 			$showfactbox = SMW_FACTBOX_NONEMPTY;
 		} elseif ( in_array( 'SMW_NOFACTBOX', $mws ) ) {
@@ -129,9 +136,11 @@ class SMWFactbox {
 		} else {
 			$showfactbox = $smwgShowFactbox;
 		}
+		
 		if ( $showfactbox == SMW_FACTBOX_HIDDEN ) { // use shortcut
 			return '';
 		}
+		
 		// Deal with complete dataset only if needed:
 		if ( !isset( $parseroutput->mSMWData ) || $parseroutput->mSMWData->stubObject ) {
 			$semdata = smwfGetStore()->getSemanticData( SMWDIWikiPage::newFromTitle( $title ) );
