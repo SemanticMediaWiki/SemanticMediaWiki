@@ -217,45 +217,47 @@ class SMWTimeValue extends SMWDataValue {
 		$unclearparts = array();
 		$prevmatchwasnumber = $matchisnumber = false; // used for looking back; numbers are days/months/years by default but may be re-interpreted if certain further symbols are found
 		$prevmatchwasdate = $matchisdate = false; // used for ensuring that date parts are in one block
+		
 		foreach ( $matches as $match ) {
 			$prevmatchwasnumber = $matchisnumber;
 			$prevmatchwasdate   = $matchisdate;
 			$matchisnumber = $matchisdate = false;
+			
 			if ( $match == ' ' ) {
 				$matchisdate = $prevmatchwasdate; // spaces in dates do not end the date
 			} elseif ( $match == '-' ) { // can only occur separately between date components
 				$datecomponents[] = $match; // we check later if this makes sense
 				$matchisdate = true;
 			} elseif ( is_numeric( $match ) &&
-			           ( $prevmatchwasdate || ( count( $datecomponents ) == 0 ) ) ) {
+			           ( $prevmatchwasdate || count( $datecomponents ) == 0 ) ) {
 				$datecomponents[] = $match;
 				$matchisnumber = true;
 				$matchisdate = true;
-			} elseif ( ( $era === false ) && ( in_array( $match, array( 'AD', 'CE' ) ) ) ) {
+			} elseif ( $era === false && in_array( $match, array( 'AD', 'CE' ) ) ) {
 				$era = '+';
-			} elseif ( ( $era === false ) && (  in_array( $match, array( 'BC', 'BCE' ) ) ) ) {
+			} elseif ( $era === false && in_array( $match, array( 'BC', 'BCE' ) ) ) {
 				$era = '-';
-			} elseif ( ( $calendarmodel === false ) && ( in_array( $match, array( 'Gr', 'He', 'Jl', 'MJD', 'JD', 'OS' ) ) ) ) {
+			} elseif ( $calendarmodel === false && in_array( $match, array( 'Gr', 'He', 'Jl', 'MJD', 'JD', 'OS' ) ) ) {
 				$calendarmodel = $match;
-			} elseif (  ( $ampm === false ) && ( ( strtolower( $match ) == 'am' ) || ( strtolower( $match ) == 'pm' ) ) ) {
+			} elseif ( $ampm === false && ( strtolower( $match ) === 'am' || strtolower( $match ) === 'pm' ) ) {
 				$ampm = strtolower( $match );
-			} elseif (  ( $hours === false ) && ( self::parseTimeString( $match, $hours, $minutes, $seconds, $timeoffset ) ) ) {
+			} elseif ( $hours === false && self::parseTimeString( $match, $hours, $minutes, $seconds, $timeoffset ) ) {
 				// nothing to do
-			} elseif ( ( $hours === true ) && ( $timezoneoffset === false ) &&
-			           ( array_key_exists( $match, self::$m_tz ) ) ) {
+			} elseif ( $hours !== false && $timezoneoffset === false &&
+			           array_key_exists( $match, self::$m_tz ) ) {
 				// only accept timezone if time has already been set
 				$timezoneoffset = self::$m_tz[ $match ];
-			} elseif ( ( $prevmatchwasnumber ) && ( $hours === false ) && ( $timezoneoffset === false ) &&
-			           ( array_key_exists( $match, self::$m_miltz ) ) &&
-				   ( self::parseMilTimeString( end( $datecomponents ), $hours, $minutes, $seconds ) ) ) {
+			} elseif ( $prevmatchwasnumber && $hours === false && $timezoneoffset === false &&
+			           array_key_exists( $match, self::$m_miltz ) &&
+				   self::parseMilTimeString( end( $datecomponents ), $hours, $minutes, $seconds ) ) {
 					// military timezone notation is found after a number -> re-interpret the number as military time
 					array_pop( $datecomponents );
 					$timezoneoffset = self::$m_miltz[ $match ];
-			} elseif ( ( $prevmatchwasdate || ( count( $datecomponents ) == 0 ) ) &&
+			} elseif ( ( $prevmatchwasdate || count( $datecomponents ) == 0 ) &&
 				   $this->parseMonthString( $match, $monthname ) ) {
 				$datecomponents[] = $monthname;
 				$matchisdate = true;
-			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && ( in_array( $match, array( 'st', 'nd', 'rd', 'th' ) ) ) ) {
+			} elseif ( $prevmatchwasnumber && $prevmatchwasdate && in_array( $match, array( 'st', 'nd', 'rd', 'th' ) ) ) {
 				$datecomponents[] = 'd' . strval( array_pop( $datecomponents ) ); // must be a day; add standard marker
 				$matchisdate = true;
 			} else {
@@ -269,21 +271,24 @@ class SMWTimeValue extends SMWDataValue {
 		// 		debug_zval_dump( $unclearparts );
 
 		// Abort if we found unclear or over-specific information:
-		if ( ( count( $unclearparts ) != 0 ) ||
-		     ( ( $timezoneoffset !== false ) && ( $timeoffset !== false ) ) ) {
+		if ( count( $unclearparts ) != 0 ||
+		     ( $timezoneoffset !== false && $timeoffset !== false ) ) {
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
 		}
+		
 		$timeoffset = $timeoffset + $timezoneoffset;
 		// Check if the a.m. and p.m. information is meaningful
-		if ( ( $ampm !== false ) && ( ( $hours > 12 ) || ( $hours == 0 ) ) ) { // Note: the == 0 check subsumes $hours===false
+		
+		if ( $ampm !== false && ( $hours > 12 || $hours == 0 ) ) { // Note: the == 0 check subsumes $hours===false
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
-		} elseif ( ( $ampm == 'am' ) && ( $hours == 12 ) ) {
+		} elseif ( $ampm == 'am' && $hours == 12 ) {
 			$hours = 0;
-		} elseif ( ( $ampm == 'pm' ) && ( $hours < 12 ) ) {
+		} elseif ( $ampm == 'pm' && $hours < 12 ) {
 			$hours += 12;
 		}
+		
 		return true;
 	}
 
