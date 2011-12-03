@@ -7172,7 +7172,7 @@ Rezultatas gali būti ne tas, kurio tikėtasi.',
  */
 $messages['mk'] = array(
 	'smw-desc' => "Го прави вашето вики подостапно - за машини ''и'' луѓе ([http://semantic-mediawiki.org/wiki/Help:User_manual?uselang=mk документација])",
-	'smw_viewasrdf' => 'RDF емитување',
+	'smw_viewasrdf' => 'RDF канал',
 	'smw_finallistconjunct' => ' и',
 	'smw_factbox_head' => 'Факти за $1',
 	'smw_isspecprop' => 'Ова својство е специјално својство во ова вики.',
@@ -10542,7 +10542,7 @@ $messages['sr-ec'] = array(
 	'smw_false_words' => 'неистинито, н, не, н',
 	'smw_nofloat' => '"$1" није број.',
 	'smw_infinite' => 'Бројеви дужине као "$1" нису подржани.',
-	'smw_novalues' => 'Нисте навели вредности.',
+	'smw_novalues' => 'Нема назначене вредности.',
 	'smw_nodatetime' => 'Формат датума "$1" није разумљив.',
 	'smw_toomanyclosing' => 'Изгледа да је превише случајева типа "$1" у упиту.',
 	'smw_noclosingbrackets' => 'Неке угласте заграде "<nowiki>[[</nowiki>" у вашем упиту, нису затворене одговарајућим "]]".',
@@ -11140,6 +11140,7 @@ Uppskattning av hur långt uppdateringen har kommit:',
 );
 
 /** Tamil (தமிழ்)
+ * @author Logicwiki
  * @author TRYPPN
  */
 $messages['ta'] = array(
@@ -11147,6 +11148,7 @@ $messages['ta'] = array(
 	'smw_printername_list' => 'பட்டியல்',
 	'smw_printername_table' => 'பட்டியல்',
 	'smw_printername_template' => 'வார்ப்புரு',
+	'properties' => 'பண்புகள்',
 );
 
 /** Telugu (తెలుగు)
