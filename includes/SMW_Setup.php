@@ -7,12 +7,6 @@
  * @ingroup SMW
  */
 
-// The SMW version number.
-define( 'SMW_VERSION', '1.7 alpha' );
-
-// A flag used to indicate SMW defines a semantic extension type for extension crdits.
-define( 'SEMANTIC_EXTENSION_TYPE', true );
-
 require_once( 'SMW_GlobalFunctions.php' );
 
 /**
