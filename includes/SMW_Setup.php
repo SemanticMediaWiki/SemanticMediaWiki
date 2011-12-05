@@ -73,8 +73,11 @@ function enableSemantics( $namespace = null, $complete = false ) {
 function smwfRegisterHooks() {
 	global $wgHooks, $wgVersion;
 
+	$wgHooks['LoadExtensionSchemaUpdates'][] = 'SMWHooks::onSchemaUpdate';
+	
 	// FIXME: The following can be removed when new style magic words are used (introduced in r52503)
 	$wgHooks['LanguageGetMagic'][]    = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
+	
 	$wgHooks['ParserTestTables'][]    = 'smwfOnParserTestTables';
 	$wgHooks['AdminLinks'][]          = 'smwfAddToAdminLinks';
 	$wgHooks['PageSchemasRegisterHandlers'][] = 'SMWPageSchemas::registerClass';
@@ -168,6 +171,8 @@ function smwfRegisterResourceLoaderModules() {
 function smwfRegisterClasses() {
 	global $smwgIP, $wgAutoloadClasses, $wgJobClasses;
 
+	$wgAutoloadClasses['SMWHooks']   				= $smwgIP . 'SemanticMediaWiki.hooks.php';
+	
 	$incDir = $smwgIP . 'includes/';
 	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
 	$wgAutoloadClasses['SMWDataValueFactory']   	= $incDir . 'SMW_DataValueFactory.php';
@@ -332,6 +337,9 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['ApiAskArgs'] = $smwgIP . 'includes/api/ApiAskArgs.php';
 	$wgAutoloadClasses['ApiSMWInfo'] = $smwgIP . 'includes/api/ApiSMWInfo.php';
 
+	// Maintenance scripts
+	$wgAutoloadClasses['SMWSetupScript'] = $smwgIP . 'maintenance/SMW_setup.php';
+	
 	// Other extensions
 	$wgAutoloadClasses['SMWPageSchemas'] = $smwgIP . 'includes/SMW_PageSchemas.php';
 }
