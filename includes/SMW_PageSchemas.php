@@ -196,9 +196,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$propLabels = $smwgContLang->getPropertyLabels();
 		$hasTypeLabel = $propLabels['_TYPE'];
 		$typeTag = "[[$hasTypeLabel::$propertyType]]";
-		$text = wfMsgForContent( 'ps-property-isproperty', $typeTag );
+		$text = wfMsgForContent( 'smw-createproperty-isproperty', $typeTag );
 		if ( $allowedValues != null) {
-			$text .= "\n\n" . wfMsgExt( 'ps-property-allowedvals', array( 'parsemag', 'content' ), count( $allowedValues ) );
+			$text .= "\n\n" . wfMsgExt( 'smw-createproperty-allowedvals', array( 'parsemag', 'content' ), count( $allowedValues ) );
 			foreach ( $allowedValues as $i => $value ) {
 				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
 					$prop_labels = $smwgContLang->getPropertyLabels();
