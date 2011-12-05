@@ -17,7 +17,7 @@ final class SMWHooks {
 	 * Schema update to set up the needed database tables.
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
 	 *
-	 * @since 0.1
+	 * @since 1.7
 	 *
 	 * @param DatabaseUpdater $updater|null
 	 *

@@ -20,6 +20,7 @@ production untill the actual release.
 * Added setting to choose which optional special properties are enabled ($smwgPageSpecialProperties).
 * Added creation date special property (disabled by default) (bug 32165).
 * Added support for altitudes in geographic coordinates (bug 32698).
+* Added automatic invocation of the SMW_setup maintenance script when running update.php (for MW >= 1.17).
 * Dropped compatibility with MediaWiki 1.15.x (and earlier).
 * Dropped compatibility with old-style (SMW < 1.6) query printers.
 * Fixed separator and filename parameters for the DSV format.
