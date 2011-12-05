@@ -378,6 +378,10 @@ Estimated progress of current update:',
 	'smw_adminlinks_datastructure' => 'Data structure',
 	'smw_adminlinks_displayingdata' => 'Data display',
 	'smw_adminlinks_inlinequerieshelp' => 'Inline queries help',
+
+	// Messages for automated property creation
+	'smw-createproperty-isproperty' => 'This is a property of type $1.',
+	'smw-createproperty-allowedvals' => 'The allowed {{PLURAL:$1|value for this property is|values for this property are}}:',
 	
 	// Category QP
 	'smw-paramdesc-category-delim' => 'The delimiter',
@@ -1757,6 +1761,8 @@ Arabat krouiñ unan all.',
 	'smw_adminlinks_datastructure' => 'Framm ar roadennoù',
 	'smw_adminlinks_displayingdata' => 'Diskwel roadennoù',
 	'smw_adminlinks_inlinequerieshelp' => 'Skoazell evit ar rekedoù enlinenn',
+	'smw-createproperty-isproperty' => 'Ar perzh-mañ zo eus ar seurt $1.',
+	'smw-createproperty-allowedvals' => 'An talvoudenn{{PLURAL:$1||où}} aotreet evt ar perzh-se a zo :',
 	'smw-paramdesc-category-delim' => 'Ar bevenner',
 );
 
@@ -2094,6 +2100,8 @@ Progrés estimat de l'actualització actual:",
 	'smw_adminlinks_datastructure' => 'Estructura de dades',
 	'smw_adminlinks_displayingdata' => 'Visualització de les dades',
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda de les consultes en línia',
+	'smw-createproperty-isproperty' => 'Aquesta és una propietat del tipus $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|El valor permès per a aquestapropietat és|Els valors permesos per a aquestes propietats són}}:',
 	'smw-paramdesc-category-delim' => 'El delimitador',
 	'smw-paramdesc-category-template' => 'Una plantilla per donar format als elements amb',
 	'smw-paramdesc-category-userparam' => 'Un paràmetre per passar a la plantilla',
@@ -2543,6 +2551,8 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw_adminlinks_datastructure' => 'Datenstruktur',
 	'smw_adminlinks_displayingdata' => 'Daten anzeigen',
 	'smw_adminlinks_inlinequerieshelp' => 'Hilfe zu eingebetteten Abfragen',
+	'smw-createproperty-isproperty' => 'Dies ist eine Eigenschaft des Typs $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Der mögliche Wert für diese genschaft ist|Die möglichen Werte für diese Eigenschaft sind}}:',
 	'smw-paramdesc-category-delim' => 'Das Trennzeichen',
 	'smw-paramdesc-category-template' => 'Eine Vorlage, mit der die Objekte formatiert werden sollen',
 	'smw-paramdesc-category-userparam' => 'Ein Parameter, der an die Vorlage übergeben werden soll',
@@ -2775,6 +2785,7 @@ Licony póstup aktualneje aktualizacije:',
 	'smw_adminlinks_datastructure' => 'Datowa struktura',
 	'smw_adminlinks_displayingdata' => 'Daty zwobrazniś',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k wótpšašanjam',
+	'smw-createproperty-isproperty' => 'To jo kakos� typa $1.',
 );
 
 /** Ewe (Eʋegbe) */
@@ -2995,6 +3006,8 @@ $messages['eo'] = array(
 	'smw_smwadmin_support' => 'Teni subtenon',
 	'smw_smwadmin_mediazilla' => 'Cimoj povas esti raportitaj al <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_adminlinks_datastructure' => 'Datumstrukturo',
+	'smw-createproperty-isproperty' => '�i tiu estas atributo de speco $1.',
+	'smw-createproperty-allowedvals' => 'La {{PLURAL:$1|permesita valoro por �i tiu atributo|permesitaj valoroj por �i tiuj atributoj}} estas:',
 );
 
 /** Spanish (Español)
@@ -3226,6 +3239,8 @@ Progeso estimado de la actualización:',
 	'smw_adminlinks_datastructure' => 'Estructura de datos',
 	'smw_adminlinks_displayingdata' => 'Mostrando datos',
 	'smw_adminlinks_inlinequerieshelp' => 'Ayuda de consultas en línea',
+	'smw-createproperty-isproperty' => 'Esta es una propiedad de tipo $1.'
+	'smw-createproperty-allowedvals' => 'Los {{PLURAL:$1|valor permitido para esta propiedad es|valores permitidos para esta propiedad son}}:',
 );
 
 /** Basque (Euskara)
@@ -3745,6 +3760,8 @@ Progression estimée de la mise à jour actuelle :',
 	'smw_adminlinks_datastructure' => 'Structure des données',
 	'smw_adminlinks_displayingdata' => 'Affichage des données',
 	'smw_adminlinks_inlinequerieshelp' => 'Aide sur les requêtes',
+	'smw-createproperty-isproperty' => 'Cette propriété est de type $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|La valeur autorisée pour cett propriété est|Les valeurs autorisées pour cette propriété sont}} :',
 	'smw-paramdesc-category-delim' => 'Le délimiteur',
 	'smw-paramdesc-category-template' => 'Un modèle pour mettre en forme les éléments',
 	'smw-paramdesc-category-userparam' => 'Un paramètre à passer au modèle',
