@@ -149,7 +149,7 @@ class SMWParseData {
 	 * @todo FIXME: Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
-		global $smwgEnableUpdateJobs, $smwgDeclarationProperties, $smwgContLang, $smwgPageSpecialProperties;
+		global $smwgEnableUpdateJobs, $smwgDeclarationProperties, $smwgPageSpecialProperties;
 
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
@@ -162,15 +162,7 @@ class SMWParseData {
 		if ( $processSemantics ) {
 			$props = array();
 
-			foreach ( $smwgPageSpecialProperties as $propName ) {
-				// Property name in `$smwgPageSpecialProperties' may be localized.
-				// Get property id to work with.
-				$propId = $smwgContLang->getPropertyId( $propName );
-				
-				if ( is_null( $propId ) ) {
-					continue;
-				}
-				
+			foreach ( $smwgPageSpecialProperties as $propId ) {
 				// Do not calculate the same property again.
 				if ( array_key_exists( $propId, $props ) ) {
 					continue;
@@ -399,7 +391,7 @@ class SMWParseData {
 	 * LinksUpdate.
 	 */
 	static public function onNewRevisionFromEditComplete( $article, $rev, $baseID ) {
-		global $smwgContLang, $smwgPageSpecialProperties;
+		global $smwgPageSpecialProperties;
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
 			$output = $article->mPreparedEdit->output;
 			$title = $article->getTitle();
@@ -416,8 +408,8 @@ class SMWParseData {
 			return true;
 		}
 
-		if ( in_array( 'Modification date', $smwgPageSpecialProperties ) ) {
-			$pmdat = new SMWDIProperty( $smwgContLang->getPropertyId( 'Modification date' ) );
+		if ( in_array( '_MDAT', $smwgPageSpecialProperties ) ) {
+			$pmdat = new SMWDIProperty( '_MDAT' );
 			$timestamp = $article->getTimestamp();
 			$di = self::getDataItemFromMWTimestamp( $timestamp );
 			

@@ -450,6 +450,19 @@ $smwgNamespacesWithSemanticLinks = array(
 );
 ##
 
+### List of enabled special page properties.
+# Modification date (_MDAT) is enabled by default for backward compatibility.
+# Extend array to enable other properties:
+#     $smwgPageSpecialProperties[] = '_CDAT';
+# Or:
+#     array_merge( $smwgPageSpecialProperties, array( '_CDAT' ) );
+# Or rewrite entire array:
+#     $smwgPageSpecialProperties = array( '_MDAT', '_CDAT' );
+# However, DO NOT use `+=' operator! This DOES NOT work:
+#     $smwgPageSpecialProperties += array( '_MDAT' );
+##
+$smwgPageSpecialProperties = array( '_MDAT' );
+
 ###
 # Properties (usually given as internal ids or DB key versions of property
 # titles) that are relevant for declaring the behaviour of a property P on a

@@ -13,9 +13,6 @@ define( 'SMW_VERSION', '1.7 alpha' );
 // A flag used to indicate SMW defines a semantic extension type for extension crdits.
 define( 'SEMANTIC_EXTENSION_TYPE', true );
 
-// List of enabled page special properties.
-$smwgPageSpecialProperties = array( 'Modification date' );
-
 require_once( 'SMW_GlobalFunctions.php' );
 
 /**
