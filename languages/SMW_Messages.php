@@ -6232,6 +6232,8 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_adminlinks_datastructure' => 'Struttura dei dati',
 	'smw_adminlinks_displayingdata' => 'Visualizzazione dati',
 	'smw_adminlinks_inlinequerieshelp' => 'Aiuto sulle query inline',
+	'smw-createproperty-isproperty' => 'Questa è una proprietà di tipo $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Il valore permesso per questa proprità è|I valori permessi per questa proprietà sono}}:',
 );
 
 /** Japanese (日本語)
@@ -7189,6 +7191,8 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta. 
 Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw_emptysubquery' => 'Kai kurios užklausos dalys turi blogas sąlygas.',
+	'smw-createproperty-isproperty' => 'Tai yra �$1� tipo savyb�.',
+	'smw-createproperty-allowedvals' => 'Šios savyb�s leidžiamos reikšm�s yra:',
 );
 
 /** Macedonian (Македонски)
@@ -7976,6 +7980,8 @@ Geschatte voortgang van de huidige taak:",
 	'smw_adminlinks_datastructure' => 'Gegevensstructuur',
 	'smw_adminlinks_displayingdata' => 'Gegevens weergeven',
 	'smw_adminlinks_inlinequerieshelp' => 'Hulp bij inline zoekopdrachten',
+	'smw-createproperty-isproperty' => 'Dit is een eigenschap van type $1.',
+	'smw-createproperty-allowedvals' => 'De toegelaten {{PLURAL:$1|waarde voor deze eigenschap is|waarden voor deze eigenschap zijn}}:',
 	'smw-paramdesc-category-delim' => 'Het scheidingsteken',
 	'smw-paramdesc-category-template' => 'Een sjabloon om de items mee op te maken',
 	'smw-paramdesc-category-userparam' => 'Een aan het sjabloon door te geven parameter',
@@ -8176,6 +8182,8 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_smwhomepage' => 'Den komplette brukardokumentasjonen for Semantic MediaWiki finn du på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feil kan bli rapporterte til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki-brukarforumet</a>.',
+	'smw-createproperty-isproperty' => 'Dette er ein eigenskap av typen $1.',
+	'smw-createproperty-allowedvals' => 'Dei tillatne verdiane for denne eigenskapen er:',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
