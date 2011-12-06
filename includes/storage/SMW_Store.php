@@ -292,7 +292,7 @@ abstract class SMWStore {
 
 			$dbw->update(
 				'page',
-				array( 'page_touched' => $dbw->timestamp( time() + 9001 ) ),
+				array( 'page_touched' => $dbw->timestamp( time() + 4 ) ),
 				$title->pageCond(),
 				__METHOD__
 			);
