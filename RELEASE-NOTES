@@ -15,9 +15,10 @@ production until the actual release.
 * Added value distribution functionality that can be used by result formats. 
 * Added validation and manipulation of the format paremeter using Validator.
 * Added 'class' parameter to the 'table' format, which allows setting the CSS
-  class. 
+  class.
 * Added automatically-generated CSS classes for rows and cells in 'table' format.
 * Added alpha version of native SMW Ask API with modules 'ask' and 'askargs'.
+* Added alpha version of a new ask query interface: Special:QueryCreator.
 * Added setting to choose which optional special properties are enabled ($smwgPageSpecialProperties).
 * Added creation date special property (disabled by default) (bug 32165).
 * Added support for altitudes in geographic coordinates (bug 32698).
@@ -35,6 +36,7 @@ production until the actual release.
 * Fixed some issues with the category result format (including bug 30761).
 * Fixed email validation issue (bug 32295).
 * Fixed incorrect handling of sort and order parameters on Special:Ask (bug 32706).
+* Fixed display of images to old behaviour after a recent regression.
 * Fixed several more issues not listed here.
 
 == SMW 1.6.1 ==
