@@ -6,7 +6,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 THIS IS NOT A RELEASE YET
 
 Semantic MediaWiki 1.7 is currently in beta-quality and is not recommended for use in
-production untill the actual release.
+production until the actual release.
 
 * Added native "internal objects" that can be set using #setobject.
 * Added support for selecting a default graph when using RDF stores,
@@ -14,13 +14,17 @@ production untill the actual release.
 * Use of native MediaWiki sortable tables for the table formats.
 * Added value distribution functionality that can be used by result formats. 
 * Added validation and manipulation of the format paremeter using Validator.
-* Added class parameter to the table format which allows setting the css class. 
-* Added alpha version of native SMW Ask API with moudles ask and askargs.
+* Added 'class' parameter to the 'table' format, which allows setting the CSS
+  class. 
+* Added automatically-generated CSS classes for rows and cells in 'table' format.
+* Added alpha version of native SMW Ask API with modules 'ask' and 'askargs'.
 * Added setting to choose which optional special properties are enabled ($smwgPageSpecialProperties).
 * Added creation date special property (disabled by default) (bug 32165).
 * Added support for altitudes in geographic coordinates (bug 32698).
 * Added definitions for missing params (sort, order, searchlabel) to the base query printer.
-* Added automatic invocation of the SMW_setup maintenance script when running update.php (for MW >= 1.17).
+* Added automatic invocation of the SMW_setup maintenance script when running
+  update.php (for MW >= 1.17).
+* Added support for the Page Schemas extension.
 * Dropped compatibility with MediaWiki 1.15.x (and earlier).
 * Dropped compatibility with old-style (SMW < 1.6) query printers.
 * Removed defunct "SMWLight" files.
