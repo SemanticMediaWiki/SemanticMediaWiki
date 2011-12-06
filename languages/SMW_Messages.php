@@ -3239,7 +3239,7 @@ Progeso estimado de la actualización:',
 	'smw_adminlinks_datastructure' => 'Estructura de datos',
 	'smw_adminlinks_displayingdata' => 'Mostrando datos',
 	'smw_adminlinks_inlinequerieshelp' => 'Ayuda de consultas en línea',
-	'smw-createproperty-isproperty' => 'Esta es una propiedad de tipo $1.'
+	'smw-createproperty-isproperty' => 'Esta es una propiedad de tipo $1.',
 	'smw-createproperty-allowedvals' => 'Los {{PLURAL:$1|valor permitido para esta propiedad es|valores permitidos para esta propiedad son}}:',
 );
 
