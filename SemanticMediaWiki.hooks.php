@@ -24,9 +24,12 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onSchemaUpdate( /* DatabaseUpdater */ $updater = null ) {
-		// $updater can be null in MW 1.16.x. This can be removed when dropping 1.16 compat.
+		// $updater can be null in MW 1.16.
 		if ( !is_null( $updater ) ) {
-			$updater->addPostDatabaseUpdateMaintenance( 'SMWSetupScript' );
+			// Method was added in MW 1.19.
+			if ( is_callable( array( $updater, 'addPostDatabaseUpdateMaintenance' ) ) ) {
+				$updater->addPostDatabaseUpdateMaintenance( 'SMWSetupScript' );
+			}
 		}
 		
 		return true;
