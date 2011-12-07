@@ -2785,7 +2785,7 @@ Licony póstup aktualneje aktualizacije:',
 	'smw_adminlinks_datastructure' => 'Datowa struktura',
 	'smw_adminlinks_displayingdata' => 'Daty zwobrazniś',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k wótpšašanjam',
-	'smw-createproperty-isproperty' => 'To jo kakos� typa $1.',
+	'smw-createproperty-isproperty' => 'To jo kakosć typa $1.',
 );
 
 /** Ewe (Eʋegbe) */
@@ -3006,8 +3006,8 @@ $messages['eo'] = array(
 	'smw_smwadmin_support' => 'Teni subtenon',
 	'smw_smwadmin_mediazilla' => 'Cimoj povas esti raportitaj al <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_adminlinks_datastructure' => 'Datumstrukturo',
-	'smw-createproperty-isproperty' => '�i tiu estas atributo de speco $1.',
-	'smw-createproperty-allowedvals' => 'La {{PLURAL:$1|permesita valoro por �i tiu atributo|permesitaj valoroj por �i tiuj atributoj}} estas:',
+	'smw-createproperty-isproperty' => 'Ĉi tiu estas atributo de speco $1.',
+	'smw-createproperty-allowedvals' => 'La {{PLURAL:$1|permesita valoro por ĉi tiu atributo|permesitaj valoroj por ĉi tiuj atributoj}} estas:',
 );
 
 /** Spanish (Español)
@@ -3460,6 +3460,7 @@ Uutta ei käynnistetä.',
 	'smw_smwadmin_mediazilla' => 'Ohjelmistovirheet voi raportoida <a href="https://bugzilla.wikimedia.org/">Bugzillaan</a>.',
 	'smw_smwadmin_questions' => 'Jos sinulla on kysymyksiä tai ehdotuksia, liity keskusteluun <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semanttisen MediaWikin käyttäjäfoorumilla</a>.',
 	'smw_adminlinks_datastructure' => 'Tietorakenne',
+	'smw-createproperty-isproperty' => 'Tämä on ominaisuus, jonka tyyppi on $1.',
 );
 
 /** French (Français)
@@ -4216,6 +4217,8 @@ Progreso estimado da actualización actual:',
 	'smw_adminlinks_datastructure' => 'Estrutura dos datos',
 	'smw_adminlinks_displayingdata' => 'Mostrando os datos',
 	'smw_adminlinks_inlinequerieshelp' => 'Axuda sobre as pescudas',
+	'smw-createproperty-isproperty' => 'Esta é unha propiedade de clase $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|O valor permitido|Os valores permitidos}} para esta propiedade {{PLURAL:$1|é|son}}:',
 	'smw-paramdesc-category-delim' => 'O delimitador',
 	'smw-paramdesc-category-template' => 'Un modelo co que dar formato aos elementos',
 	'smw-paramdesc-category-userparam' => 'Un parámetro que pasar ao modelo',
@@ -5200,6 +5203,8 @@ Trochowany staw aktualneje aktualizacije:',
 	'smw_adminlinks_datastructure' => 'Struktura datow',
 	'smw_adminlinks_displayingdata' => 'Zwobraznjenje datow',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc za rjadowe wotprašowanja',
+	'smw-createproperty-isproperty' => 'To je kajkosć typa $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dowolena hódnota za tutu kajkosć je|Dowolenej hódnoće za tutu kajkosć stej|Dowolene hódnoty za tutu kajkosć su|Dowolene hódnoty za tutu kajkosć su}}:',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -5455,6 +5460,8 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw_adminlinks_datastructure' => 'Adatstruktúra',
 	'smw_adminlinks_displayingdata' => 'Adatok megjelenítése',
 	'smw_adminlinks_inlinequerieshelp' => 'Szövegbeli lekérdezés-súgó',
+	'smw-createproperty-isproperty' => 'Ez egy „$1” típusú tulajdonság.',
+	'smw-createproperty-allowedvals' => 'A tulajdonság a következő {{PLURAL:$1|értéket|értékeket}} veheti fel:',
 );
 
 /** Interlingua (Interlingua)
@@ -5750,6 +5757,8 @@ Progresso estimate del actualisation currente:',
 	'smw_adminlinks_datastructure' => 'Structura de datos',
 	'smw_adminlinks_displayingdata' => 'Monstrar datos',
 	'smw_adminlinks_inlinequerieshelp' => 'Adjuta super consultas incorporate',
+	'smw-createproperty-isproperty' => 'Isto es un proprietate del typo $1.',
+	'smw-createproperty-allowedvals' => 'Le {{PLURAL:$1|valor|valores}} permittite pro iste proprietate es:',
 	'smw-paramdesc-category-delim' => 'Le delimitator',
 	'smw-paramdesc-category-template' => 'Un patrono con le qual formatar le elementos',
 	'smw-paramdesc-category-userparam' => 'Un parametro a passar al patrono',
@@ -5993,6 +6002,8 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_adminlinks_datastructure' => 'Struktur data',
 	'smw_adminlinks_displayingdata' => 'Menampilkan data',
 	'smw_adminlinks_inlinequerieshelp' => 'Bantuan query sisip',
+	'smw-createproperty-isproperty' => 'Ini adalah properti bertipe $1',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Nilai|Nilai}} yang diizinkan untuk properti ini adalah:',
 );
 
 /** Igbo (Igbo)
@@ -6452,6 +6463,8 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw_adminlinks_datastructure' => 'データ構造',
 	'smw_adminlinks_displayingdata' => 'データ表示',
 	'smw_adminlinks_inlinequerieshelp' => 'インラインクエリーのヘルプ',
+	'smw-createproperty-isproperty' => 'これは型 $1 のプロパティです。',
+	'smw-createproperty-allowedvals' => 'このプロパティが取ることのできる{{PLURAL:$1|値}}:',
 );
 
 /** Javanese (Basa Jawa)
@@ -6922,6 +6935,8 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_adminlinks_datastructure' => 'De Daateshtruktur',
 	'smw_adminlinks_displayingdata' => 'Daate aanzeije',
 	'smw_adminlinks_inlinequerieshelp' => 'Hölp övver de em Wiki sing Sigge enjeboute Froore',
+	'smw-createproperty-isproperty' => 'Dat ess_en Eijeschaff vun dä Zoot $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dä einzijje müjjelesche Wäät för di Eijeschaff es:|De müjjelesche Wääte för di Eijeschaff sin:|Mer han kein müjjelesche Wääte för di Eijeschaff.}}',
 );
 
 /** Kurdish (Latin script) (‪Kurdî (latînî)‬)
@@ -7191,8 +7206,8 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta. 
 Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw_emptysubquery' => 'Kai kurios užklausos dalys turi blogas sąlygas.',
-	'smw-createproperty-isproperty' => 'Tai yra �$1� tipo savyb�.',
-	'smw-createproperty-allowedvals' => 'Šios savyb�s leidžiamos reikšm�s yra:',
+	'smw-createproperty-isproperty' => 'Tai yra „$1“ tipo savybė.',
+	'smw-createproperty-allowedvals' => 'Šios savybės leidžiamos reikšmės yra:',
 );
 
 /** Macedonian (Македонски)
@@ -8478,6 +8493,8 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw_adminlinks_datastructure' => 'Datastruktur',
 	'smw_adminlinks_displayingdata' => 'Datavisning',
 	'smw_adminlinks_inlinequerieshelp' => 'Hjelp for innebygde spørringer',
+	'smw-createproperty-isproperty' => 'Dette er en egenskap av type $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Den tillatte verdien|De tillatte verdiene}} for denne egenskapen er:',
 	'smw-paramdesc-category-delim' => 'Skilletegnet',
 	'smw-paramdesc-category-template' => 'En mal til bruk for å formatere elementene',
 	'smw-paramdesc-category-userparam' => 'En parameter som gis til malen',
@@ -8678,6 +8695,8 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_adminlinks_datastructure' => 'Estructura de las donadas',
 	'smw_adminlinks_displayingdata' => 'Afichatge de las donadas',
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda sus las requèstas',
+	'smw-createproperty-isproperty' => 'Aquò es una proprietat del tipe $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :',
 );
 
 /** Ossetic (Ирон)
@@ -8927,6 +8946,8 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw_adminlinks_datastructure' => 'Struktura danych',
 	'smw_adminlinks_displayingdata' => 'Pokaż dane',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc dotycząca wewnętrznych zapytań',
+	'smw-createproperty-isproperty' => 'To jest własność typu $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dopuszczalna wartość dla tej własności to|Dopuszczalne wartości dla tej własności to:}}',
 );
 
 /** Piedmontese (Piemontèis)
@@ -9160,6 +9181,8 @@ Avansament stimà dla modìfica corenta:",
 	'smw_adminlinks_datastructure' => 'Strutura dij dat',
 	'smw_adminlinks_displayingdata' => 'Visualisé ij dat',
 	'smw_adminlinks_inlinequerieshelp' => "Agiut an sj'anterogassion an linia",
+	'smw-createproperty-isproperty' => "Costa-sì a l'é na proprietà ëd sòrt $1.",
+	'smw-createproperty-allowedvals' => "{{PLURAL:$1|Ël valor përmëttù për sta proprietà-sì a l'é|Ij valor përmëttù për sta proprietà-sì a son}}:",
 );
 
 /** Pashto (پښتو)
@@ -9453,6 +9476,8 @@ Progresso estimado da actualização em curso:",
 	'smw_adminlinks_datastructure' => 'Estrutura de dados',
 	'smw_adminlinks_displayingdata' => 'A mostrar os dados',
 	'smw_adminlinks_inlinequerieshelp' => "Ajuda para consultas dinâmicas ''(inline queries)''",
+	'smw-createproperty-isproperty' => 'Esta é uma propriedade do tipo $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:',
 );
 
 /** Brazilian Portuguese (Português do Brasil)
@@ -9756,6 +9781,8 @@ Progresso estimado da atualização corrente:',
 	'smw-paramdesc-category-userparam' => 'Um parâmetro para passar para a predefinição',
 	'smw-info-par-message' => 'Mensagem a ser exibida.',
 	'smw-info-par-icon' => 'Ícone para mostrar, "info" ou "aviso".',
+	'smw-createproperty-isproperty' => 'Esta é uma propriedade do tipo $1.',
+	'smw-createproperty-allowedvals' => 'Os {{PLURAL:$1|valor permitido para este propriedade é|valores permitidos para este propriedade são}}:',
 );
 
 /** Tarifit (Tarifit)
@@ -9847,6 +9874,8 @@ Rezultatele pot fi neașteptate.',
 	'smw_smwadmin_datarefreshbutton' => 'Începerea actualizării datelor',
 	'smw_smwadmin_datarefreshstop' => 'Opriți această actualizare',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, sunt sigur.',
+	'smw-createproperty-isproperty' => 'Aceasta este o proprietate de tipul $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Valoarea admisă pentru această proprietate este|Valorile admise pentru această proprietate sunt}}:',
 );
 
 /** Tarandíne (Tarandíne)
@@ -10332,6 +10361,8 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_adminlinks_datastructure' => 'Štruktúra údajov',
 	'smw_adminlinks_displayingdata' => 'Zobrazenie údajov',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k inline požiadavkám',
+	'smw-createproperty-isproperty' => 'Toto je vlastnosť typu $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Povolená hodnota|Povolené hodnoty}} tejto vlastnosti {{PLURAL:$1|je|sú}}:',
 );
 
 /** Slovenian (Slovenščina)
@@ -11169,6 +11200,8 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw_adminlinks_datastructure' => 'Datastruktur',
 	'smw_adminlinks_displayingdata' => 'Visar data',
 	'smw_adminlinks_inlinequerieshelp' => 'Hjälp för inbäddade frågor',
+	'smw-createproperty-isproperty' => 'Det här är en egenskap av typen $1.',
+	'smw-createproperty-allowedvals' => 'De tillåtna värdena för den här egenskapen är:',
 );
 
 /** Tamil (தமிழ்)
@@ -11498,6 +11531,8 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_adminlinks_datastructure' => 'Kayarian ng dato',
 	'smw_adminlinks_displayingdata' => 'Pagpapakita ng dato',
 	'smw_adminlinks_inlinequerieshelp' => 'Tulong sa mga katanungang nasa guhit',
+	'smw-createproperty-isproperty' => 'Isa itong pag-aari ng uring $1.',
+	'smw-createproperty-allowedvals' => 'Ang pinahihintulutang {{PLURAL:$1|halaga para sa pag-aaring ito ay|mga halaga para sa pag-aaring ito ay}}:',
 );
 
 /** Turkish (Türkçe)
@@ -12055,6 +12090,8 @@ Xin nhập vào cả một trang và một thuộc tính.',
 	'smw_adminlinks_datastructure' => 'Cấu trúc dữ liệu',
 	'smw_adminlinks_displayingdata' => 'Hiển thị dữ liệu',
 	'smw_adminlinks_inlinequerieshelp' => 'Trợ giúp truy vấn nội dòng',
+	'smw-createproperty-isproperty' => 'Đây là tính chất thuộc kiểu $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Giá trị|Các giá trị}} cho phép của thuộc tính này là:',
 );
 
 /** Volapük (Volapük)
@@ -12847,4 +12884,3 @@ $messages['zh-tw'] = array(
 	'smw_adminlinks_displayingdata' => '顯示資料',
 	'smw_adminlinks_inlinequerieshelp' => '線上查詢協助',
 );
-
