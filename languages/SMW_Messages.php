@@ -872,6 +872,8 @@ $messages['ar'] = array(
 	'smw_adminlinks_datastructure' => 'هيكل البيانات',
 	'smw_adminlinks_displayingdata' => 'عرض البيانات',
 	'smw_adminlinks_inlinequerieshelp' => 'مساعدة الاستعلامات الداخلية',
+	'smw-createproperty-isproperty' => 'هذه خاصية من نوع $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1||القيمة المسموح بها لهذه الخاصية هي|القيمتان المسموح بهما لهذه الخاصية هما|القيم المسموح بها لهذه الخاصية هي}}:',
 );
 
 /** Aramaic (ܐܪܡܝܐ)
@@ -1122,6 +1124,8 @@ $messages['arz'] = array(
 	'smw_adminlinks_datastructure' => 'هيكل البيانات',
 	'smw_adminlinks_displayingdata' => 'عرض البيانات',
 	'smw_adminlinks_inlinequerieshelp' => 'مساعده الاستعلامات الداخلية',
+	'smw-createproperty-isproperty' => 'هذه خاصية من نوع $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1||القيمة المسموح بها لهذه الخاصية هي|القيمتان المسموح بهما لهذه الخاصية هما|القيم المسموح بها لهذه الخاصية هي}}:',
 );
 
 /** Asturian (Asturianu)
@@ -1472,6 +1476,8 @@ $messages['be-tarask'] = array(
 	'smw_adminlinks_datastructure' => 'Структура зьвестак',
 	'smw_adminlinks_displayingdata' => 'Паказ зьвестак',
 	'smw_adminlinks_inlinequerieshelp' => 'Дапамога па ўбудаваных запытах',
+	'smw-createproperty-isproperty' => 'Гэта ўласьцівасьць тыпу $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:',
 );
 
 /** Bulgarian (Български)
@@ -2889,6 +2895,7 @@ $messages['el'] = array(
 	'smw_adminlinks_datastructure' => 'Δομή δεδομένων',
 	'smw_adminlinks_displayingdata' => 'Προβαλλόμενα δεδομένα',
 	'smw_adminlinks_inlinequerieshelp' => 'Βοήθεια με τα αιτήματα',
+	'smw-createproperty-isproperty' => 'Αυτή είναι μια ιδιότητα του τύπου $1.',
 );
 
 /** British English (British English)
@@ -3337,6 +3344,8 @@ $messages['fa'] = array(
 	'smw_inverse_label_default' => '$1 از',
 	'smw_inverse_label_property' => 'برچسب خصوصیت برعکس',
 	'pageproperty' => 'جستجوی خصوصیت صفحه',
+	'smw-createproperty-isproperty' => 'این یک ویژگی از نوع $1 است.',
+	'smw-createproperty-allowedvals' => 'مقادیر مجاز برای این ویژگی یا صفت این‌ها هستند:',
 );
 
 /** Finnish (Suomi)
@@ -3920,6 +3929,7 @@ noms (<strong>[[Alemagnes]]</strong>) et los èspâços de noms (<strong>[[{{ns:
 	'smw_adminlinks_datastructure' => 'Structura de les balyês',
 	'smw_adminlinks_displayingdata' => 'Visualisacion de les balyês',
 	'smw_adminlinks_inlinequerieshelp' => 'Éde sur les requétes entrebetâs',
+	'smw-createproperty-isproperty' => 'Ceta propriètât est de tipo « $1 ».',
 	'smw-info-par-message' => 'Mèssâjo a fâre vêre.',
 );
 
@@ -4468,6 +4478,8 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw_adminlinks_datastructure' => 'Datestruktur',
 	'smw_adminlinks_displayingdata' => 'Date abbilde',
 	'smw_adminlinks_inlinequerieshelp' => 'Hilf fir Inline-Abfroge',
+	'smw-createproperty-isproperty' => 'Des isch e Eigeschaft vum Typ $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dr erlaubt Wärt fir die Eigeschaft isch|Di erlaubte Wärt fir die Eigeschaft sin}}:',
 );
 
 /** Hebrew (עברית)
@@ -4712,6 +4724,8 @@ $messages['he'] = array(
 	'smw_adminlinks_datastructure' => 'מבנה הנתונים',
 	'smw_adminlinks_displayingdata' => 'הצגת נתונים',
 	'smw_adminlinks_inlinequerieshelp' => 'עזרה על שאילתות משובצות',
+	'smw-createproperty-isproperty' => 'זהו מאפיין מסוג $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|הערך האפשרי למאפיין זה הוא|הערכים האפשריים למאפיין זה הם}}:',
 );
 
 /** Hindi (हिन्दी)
@@ -4730,6 +4744,7 @@ $messages['hi'] = array(
 	'unusedproperties' => 'इस्तेमाल न किये हुए गुणधर्म',
 	'smw_unusedproperty_template' => '$2 प्रकारके $1',
 	'wantedproperties' => 'चाहिये होनेवाले गुणधर्म',
+	'smw-createproperty-isproperty' => 'यह $1 प्रकार का गुणधर्म हैं।',
 );
 
 /** Hiligaynon (Ilonggo)
@@ -6669,6 +6684,8 @@ $messages['km'] = array(
 	'smw_smwadmin_datarefreshbutton' => 'ចាប់ផ្ដើម​បន្ទាន់សម័យ​ទិន្នន័យ',
 	'smw_smwadmin_datarefreshstop' => 'បញ្ឈប់​ការ​បន្ទាន់សម័យ​នេះ',
 	'smw_smwadmin_datarefreshstopconfirm' => 'បាទ/ចាស, ខ្ញុំ​ប្រាកដ​ហើយ​។',
+	'smw-createproperty-isproperty' => 'នេះ​គឺជា​លក្ខណៈសម្បត្តិមួយ​នៃ​គំរូ $1 ។',
+	'smw-createproperty-allowedvals' => 'តម្លៃ​ចំនួន$1 ​សម្រាប់​លក្ខណៈសម្បត្តិ​នេះគឺ​៖',
 );
 
 /** Kannada (ಕನ್ನಡ)
@@ -7500,6 +7517,8 @@ $messages['mk'] = array(
 	'smw_adminlinks_datastructure' => 'Структура на податоците',
 	'smw_adminlinks_displayingdata' => 'Приказ на податоци',
 	'smw_adminlinks_inlinequerieshelp' => 'Помош со вметнати барања',
+	'smw-createproperty-isproperty' => 'Ова е својство од типот $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дозволената вредност за ова својство е|Дозволените вредности за ова својство се}}:',
 	'smw-paramdesc-category-delim' => 'Разделувачот',
 	'smw-paramdesc-category-template' => 'Шаблон со кој ќе се форматираат елементите',
 	'smw-paramdesc-category-userparam' => 'Параметар што ќе му даде на шаблонот',
@@ -7659,6 +7678,8 @@ $messages['mr'] = array(
 	'smw_result_next' => 'पुढील',
 	'smw_result_results' => 'निकाल',
 	'smw_result_noresults' => 'माफ करा, निकाल नाहीत.',
+	'smw-createproperty-isproperty' => 'हा $1 प्रकारचा गुणधर्म आहे.',
+	'smw-createproperty-allowedvals' => 'या गुणधर्माच्या योग्य किंमती पुढीलप्रमाणे आहेत:',
 );
 
 /** Malay (Bahasa Melayu)
@@ -10129,6 +10150,8 @@ $messages['ru'] = array(
 	'smw_adminlinks_datastructure' => 'Структура данных',
 	'smw_adminlinks_displayingdata' => 'Отображение данных',
 	'smw_adminlinks_inlinequerieshelp' => 'Справка по встроенным запросам',
+	'smw-createproperty-isproperty' => 'Это свойство типа $1.',
+	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|допускается следующее значение|допускаются следующие значения}}:',
 );
 
 /** Rusyn (Русиньскый)
@@ -11290,6 +11313,7 @@ $messages['tet'] = array(
  */
 $messages['tg-cyrl'] = array(
 	'smw_sbv_value' => 'Қимат',
+	'smw-createproperty-isproperty' => 'Ин як вижагӣ аз навъи $1 аст.',
 );
 
 /** Turkmen (Türkmençe)
@@ -12287,6 +12311,8 @@ $messages['zh-cn'] = array(
 	'smw_result_next' => '下一页',
 	'smw_result_results' => '结果',
 	'smw_result_noresults' => '抱歉，无您所要的结果。',
+	'smw-createproperty-isproperty' => '这是$1型态的性质。',
+	'smw-createproperty-allowedvals' => '此属性的可用型态为：',
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
@@ -12520,6 +12546,8 @@ $messages['zh-hans'] = array(
 	'smw_adminlinks_datastructure' => '数据结构',
 	'smw_adminlinks_displayingdata' => '数据显示',
 	'smw_adminlinks_inlinequerieshelp' => '直接插入式查询帮助',
+	'smw-createproperty-isproperty' => '这是一个类型为$1的属性。',
+	'smw-createproperty-allowedvals' => '这个属性允许的值为：',
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)
@@ -12883,4 +12911,6 @@ $messages['zh-tw'] = array(
 	'smw_adminlinks_datastructure' => '資料結構',
 	'smw_adminlinks_displayingdata' => '顯示資料',
 	'smw_adminlinks_inlinequerieshelp' => '線上查詢協助',
+	'smw-createproperty-isproperty' => '這是$1型態的性質。',
+	'smw-createproperty-allowedvals' => '此屬性的可用型態為：',
 );
