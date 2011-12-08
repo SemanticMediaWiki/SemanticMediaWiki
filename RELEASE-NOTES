@@ -24,7 +24,7 @@ production until the actual release.
 * Added support for altitudes in geographic coordinates (bug 32698).
 * Added definitions for missing params (sort, order, searchlabel) to the base query printer.
 * Added automatic invocation of the SMW_setup maintenance script when running
-  update.php (for MW >= 1.17).
+  update.php (for MW >= 1.19).
 * Added support for the Page Schemas extension.
 * Dropped compatibility with MediaWiki 1.15.x (and earlier).
 * Dropped compatibility with old-style (SMW < 1.6) query printers.
