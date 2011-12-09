@@ -743,6 +743,37 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
+	 * Use MediaWiki's date and time formatting. It can't handle all inputs
+	 * properly, but has superior i18n support.
+	 *
+	 * @return string
+	 */
+	public function getMediaWikiDate() {
+		global $wgContLang;
+
+		$dataitem = $this->m_dataitem;
+		$precision = $dataitem->getPrecision();
+
+		$year = $this->getYear();
+		if ( $year < 0 || $year > 9999 ) $year = '0000';
+		$year = str_pad( $year, 4, "0", STR_PAD_LEFT );
+
+		if ( $precision <= SMWDITime::PREC_Y ) {
+			return $wgContLang->formatNum( $year, true );
+		}
+
+		$month = str_pad( $this->getMonth( SMWDITime::CM_GREGORIAN ), 2, "0", STR_PAD_LEFT );
+		$day = str_pad( $this->getDay( SMWDITime::CM_GREGORIAN ), 2, "0", STR_PAD_LEFT );
+
+		if ( $precision <= SMWDITime::PREC_YMD ) {
+			return $wgContLang->date( "$year$month$day" . '000000', false, false );
+		}
+
+		$time = str_replace( ':', '', $this->getTimeString() );
+		return $wgContLang->timeAndDate( "$year$month$day$time", false, false );
+	}
+
+	/**
 	 * Get the current data in the specified calendar model. Conversion is
 	 * not done for prehistoric dates (where it might lead to precision
 	 * errors and produce results that are not meaningful). In this case,
@@ -806,10 +837,14 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return string
 	 */
 	protected function getPreferredCaption() {
-		if ( ( strtoupper( $this->m_outformat ) == 'ISO' ) || ( $this->m_outformat == '-' ) ) {
+		$year = $this->m_dataitem->getYear();
+
+		if ( strtoupper( $this->m_outformat ) === 'ISO' || $this->m_outformat == '-' ) {
 			return $this->getISO8601Date();
+		} elseif ( strtoupper( $this->m_outformat ) === 'MEDIAWIKI' ) {
+			return $this->getMediaWikiDate();
 		} else {
-			if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
+			if ( $year <= self::PREHISTORY ) {
 				return $this->getCaptionFromDataitem( $this->m_dataitem ); // should be Gregorian, but don't bother here
 			} elseif ( $this->m_dataitem->getJD() < self::J1582 ) {
 				return $this->getCaptionFromDataitem( $this->getDataForCalendarModel( SMWDITime::CM_JULIAN ) );
