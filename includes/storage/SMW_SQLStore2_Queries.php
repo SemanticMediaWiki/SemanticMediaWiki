@@ -101,7 +101,7 @@ class SMWSQLStore2QueryEngine {
 			return $this->m_errors;
 		}
 
-		$values = $this->m_store->getPropertyValues( $concept, new SMWDIProperty( '_CONC' ) );// two lines due to "strict standards" warning
+		$values = $this->m_store->getPropertyValues( SMWDIWikiPage::newFromTitle( $concept ), new SMWDIProperty( '_CONC' ) );// two lines due to "strict standards" warning
 		$di = end( $values );
 		$desctxt = ( $di !== false ) ? $di->getConceptQuery() : false;
 		$this->m_errors = array();
