@@ -8229,6 +8229,7 @@ Estimert framdrift på den noverande oppdateringa:',
  * @author Jon Harald Søby
  * @author Laaknor
  * @author Nghtwlkr
+ * @author Njardarlogar
  */
 $messages['no'] = array(
 	'smw-desc' => "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -9797,13 +9798,13 @@ Progresso estimado da atualização corrente:',
 	'smw_adminlinks_datastructure' => 'Estrutura de dados',
 	'smw_adminlinks_displayingdata' => 'Exibição de dados',
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda para consultas inline',
+	'smw-createproperty-isproperty' => 'Esta é uma propriedade do tipo $1.',
+	'smw-createproperty-allowedvals' => 'Os {{PLURAL:$1|valor permitido para este propriedade é|valores permitidos para este propriedade são}}:',
 	'smw-paramdesc-category-delim' => 'O delimitador',
 	'smw-paramdesc-category-template' => 'Uma predefinição para formatar os itens com',
 	'smw-paramdesc-category-userparam' => 'Um parâmetro para passar para a predefinição',
 	'smw-info-par-message' => 'Mensagem a ser exibida.',
 	'smw-info-par-icon' => 'Ícone para mostrar, "info" ou "aviso".',
-	'smw-createproperty-isproperty' => 'Esta é uma propriedade do tipo $1.',
-	'smw-createproperty-allowedvals' => 'Os {{PLURAL:$1|valor permitido para este propriedade é|valores permitidos para este propriedade são}}:',
 );
 
 /** Tarifit (Tarifit)
@@ -12914,3 +12915,4 @@ $messages['zh-tw'] = array(
 	'smw-createproperty-isproperty' => '這是$1型態的性質。',
 	'smw-createproperty-allowedvals' => '此屬性的可用型態為：',
 );
+
