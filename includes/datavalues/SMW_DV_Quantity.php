@@ -31,7 +31,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			return true;
 		} else { // unsupported unit
 			return false;
-		} 
+		}
 	}
 
 	protected function makeConversionValues() {
@@ -60,7 +60,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$printunit = false; // the normalised string of a known unit to use for printouts
 		// Check if a known unit is given as outputformat:
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
-		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' )) { // first try given output unit
+		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$wantedunit = SMWNumberValue::normalizeUnit( $this->m_outformat );
 			if ( array_key_exists( $wantedunit, $this->m_unitids ) ) {
 				$printunit = $wantedunit;
@@ -131,7 +131,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		}
 		$number = $unit = '';
 		foreach ( $factors as $di ) {
-			if ( ( $di->getDIType() !== SMWDataItem::TYPE_STRING ) || 
+			if ( ( $di->getDIType() !== SMWDataItem::TYPE_STRING ) ||
 			     ( SMWNumberValue::parseNumberValue( $di->getString(), $number, $unit ) != 0 ) ) {
 				continue; // ignore corrupted data and bogus inputs
 			}

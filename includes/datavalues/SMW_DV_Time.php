@@ -217,12 +217,12 @@ class SMWTimeValue extends SMWDataValue {
 		$unclearparts = array();
 		$prevmatchwasnumber = $matchisnumber = false; // used for looking back; numbers are days/months/years by default but may be re-interpreted if certain further symbols are found
 		$prevmatchwasdate = $matchisdate = false; // used for ensuring that date parts are in one block
-		
+
 		foreach ( $matches as $match ) {
 			$prevmatchwasnumber = $matchisnumber;
 			$prevmatchwasdate   = $matchisdate;
 			$matchisnumber = $matchisdate = false;
-			
+
 			if ( $match == ' ' ) {
 				$matchisdate = $prevmatchwasdate; // spaces in dates do not end the date
 			} elseif ( $match == '-' ) { // can only occur separately between date components
@@ -276,10 +276,10 @@ class SMWTimeValue extends SMWDataValue {
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
 		}
-		
+
 		$timeoffset = $timeoffset + $timezoneoffset;
 		// Check if the a.m. and p.m. information is meaningful
-		
+
 		if ( $ampm !== false && ( $hours > 12 || $hours == 0 ) ) { // Note: the == 0 check subsumes $hours===false
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
@@ -288,7 +288,7 @@ class SMWTimeValue extends SMWDataValue {
 		} elseif ( $ampm == 'pm' && $hours < 12 ) {
 			$hours += 12;
 		}
-		
+
 		return true;
 	}
 
@@ -543,7 +543,7 @@ class SMWTimeValue extends SMWDataValue {
 			} else { // number can just be a year
 				return SMW_YEAR;
 			}
-		} elseif ( $component{0} == 'd' ) { // already marked as day
+		} elseif ( $component { 0 } == 'd' ) { // already marked as day
 			if ( is_numeric( substr( $component, 1 ) ) ) {
 				$numvalue = intval( substr( $component, 1 ) );
 				return ( ( $numvalue >= 1 ) && ( $numvalue <= 31 ) ) ? SMW_DAY : 0;
@@ -697,7 +697,7 @@ class SMWTimeValue extends SMWDataValue {
 			return $default;
 		} else {
 			return sprintf( "%02d", $this->m_dataitem->getHour() ) . ':' .
-			       sprintf( "%02d", $this->m_dataitem->getMinute()) . ':' .
+			       sprintf( "%02d", $this->m_dataitem->getMinute() ) . ':' .
 			       sprintf( "%02d", $this->m_dataitem->getSecond() );
 		}
 	}
@@ -788,10 +788,10 @@ class SMWTimeValue extends SMWDataValue {
 			$result = number_format( -( $dataitem->getYear() ), 0, '.', '' ) . ( $bcestring ? ( ' ' . $bcestring ) : '' );
 		}
 		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YM ) {
-			$result =  $smwgContLang->getMonthLabel( $dataitem->getMonth() ) . " " . $result;
+			$result = $smwgContLang->getMonthLabel( $dataitem->getMonth() ) . " " . $result;
 		}
 		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YMD ) {
-			$result =  $dataitem->getDay() . " " . $result;
+			$result = $dataitem->getDay() . " " . $result;
 		}
 		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YMDT ) {
 			$result .= " " . $this->getTimeString();

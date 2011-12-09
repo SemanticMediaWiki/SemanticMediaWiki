@@ -20,13 +20,13 @@
  * before being processed. All units, IDs or otherwise, should be suitable for
  * printout in wikitext, and main IDs should moreover be suitable for printout
  * in HTML.
- * 
+ *
  * Subclasses that support unit conversion may interpret the output format set
  * via setOutputFormat() to allow a unit to be selected for display. Note that
  * this setting does not affect the internal representation of the value
  * though. So chosing a specific output format will change the behavior of
  * output functions like getLongWikiText(), but not of functions that access
- * the value itself, such as getUnit() or getDBKeys(). 
+ * the value itself, such as getUnit() or getDBKeys().
  *
  * @author Markus Krötzsch
  * @ingroup SMWDataValues

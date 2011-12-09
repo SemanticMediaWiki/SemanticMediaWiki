@@ -118,7 +118,7 @@ class SMWURIValue extends SMWDataValue {
 				}
 				if ( ( strlen( preg_replace( '/[^0-9]/', '', $hierpart ) ) < 6 ) ||
 					( preg_match( '<[-+./][-./]>', $hierpart ) ) ||
-					( !SMWURIValue::isValidTelURI( 'tel:' . $hierpart ) ) ) { ///TODO: introduce error-message for "bad" phone number
+					( !SMWURIValue::isValidTelURI( 'tel:' . $hierpart ) ) ) { /// TODO: introduce error-message for "bad" phone number
 					$this->addError( wfMsgForContent( 'smw_baduri', $this->m_wikitext ) );
 				}
 				break;
@@ -128,10 +128,10 @@ class SMWURIValue extends SMWDataValue {
 					$value = substr( $value, 7 );
 					$this->m_wikitext = $value;
 				}
-				
+
 				$check = method_exists( 'Sanitizer', 'validateEmail' ) ? Sanitizer::validateEmail( $value ) : self::validateEmail( $value );
 				if ( !$check ) {
-					///TODO: introduce error-message for "bad" email
+					/// TODO: introduce error-message for "bad" email
 					$this->addError( wfMsgForContent( 'smw_baduri', $value ) );
 					break;
 				}
@@ -202,7 +202,7 @@ class SMWURIValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 		$url = $this->getURL();
-		
+
 		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url === '' ) ) {
 			return $this->m_wikitext;
 		} else {
@@ -214,9 +214,9 @@ class SMWURIValue extends SMWDataValue {
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
-		
+
 		$url = $this->getURL();
-		
+
 		if ( is_null( $linker ) || ( $this->m_outformat == '-' ) || ( $url === '' ) ) {
 			return htmlspecialchars( $this->m_wikitext );
 		} else {
@@ -246,24 +246,24 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	public function getURL() {
 		global $wgUrlProtocols;
-		
+
 		foreach ( $wgUrlProtocols as $prot ) {
 			if ( ( $prot == $this->m_dataitem->getScheme() . ':' ) || ( $prot == $this->m_dataitem->getScheme() . '://' ) ) {
 				return $this->m_dataitem->getURI();
 			}
 		}
-		
+
 		return '';
 	}
-	
+
 	/**
-	 * This is a copy of 
+	 * This is a copy of
 	 * @see Sanitizer::validateEmail
 	 * which was introduced in MW 1.18, and is thus used for compatibility with earlier versions.
 	 */
 	public static function validateEmail( $addr ) {
 		$result = null;
-		if( !wfRunHooks( 'isValidEmailAddr', array( $addr, &$result ) ) ) {
+		if ( !wfRunHooks( 'isValidEmailAddr', array( $addr, &$result ) ) ) {
 			return $result;
 		}
 

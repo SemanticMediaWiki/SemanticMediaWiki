@@ -72,7 +72,7 @@ class SMWImportValue extends SMWDataValue {
 		}
 
 		// check whether element of correct type was found (extracts data from factbox)
-		///TODO: parser needed to do that
+		/// TODO: parser needed to do that
 // 		if(SMWParseData::getSMWData($parser) instanceof SMWSemanticData) {
 // 			$this_ns = SMWParseData::getSMWData($parser)->getSubject()->getNamespace();
 // 			$error = null;

@@ -53,7 +53,7 @@ abstract class SMWDataValue {
 	 * that represents the current data content. All other data stored here
 	 * is only about presentation and parsing, but is not relevant to the
 	 * actual data that is represented (and stored later on).
-	 * 
+	 *
 	 * This variable must always be set to some data item, even if there
 	 * have been errors in initialising the data.
 	 * @var SMWDataItem
@@ -186,7 +186,7 @@ abstract class SMWDataValue {
 	 * true if this was successful (requiring the type of the dataitem
 	 * to match the data value). If false is returned, the data value is
 	 * left unchanged (the data item was rejected).
-	 * 
+	 *
 	 * @note Even if this function returns true, the data value object
 	 * might become invalid if the content of the data item caused errors
 	 * in spite of it being of the right basic type. False is only returned
@@ -359,7 +359,7 @@ abstract class SMWDataValue {
 	 * true if this was successful (requiring the type of the dataitem
 	 * to match the data value). If false is returned, the data value is
 	 * left unchanged (the data item was rejected).
-	 * 
+	 *
 	 * @note Even if this function returns true, the data value object
 	 * might become invalid if the content of the data item caused errors
 	 * in spite of it being of the right basic type. False is only returned
@@ -368,7 +368,7 @@ abstract class SMWDataValue {
 	 * @since 1.6
 	 *
 	 * @param $dataitem SMWDataItem
-	 * 
+	 *
 	 * @return boolean
 	 */
 	abstract protected function loadDataItem( SMWDataItem $dataItem );
@@ -393,7 +393,7 @@ abstract class SMWDataValue {
 	 * value is not used elsewhere when calling this method. The function can
 	 * return SMWThingDescription to not impose any condition, e.g. if parsing
 	 * failed. Error messages of this SMWDataValue object are propagated.
-	 * 
+	 *
 	 * @note Descriptions of values need to know their property to be able to
 	 * create a parsable wikitext version of a query condition again. Thus it
 	 * might be necessary to call setProperty() before using this method.
@@ -423,7 +423,7 @@ abstract class SMWDataValue {
 	 * @param string $comparator
 	 */
 	static protected function prepareValue( &$value, &$comparator ) {
-		// Loop over the comparators to determine which one is used and what the actual value is. 
+		// Loop over the comparators to determine which one is used and what the actual value is.
 		foreach ( SMWQueryLanguage::getComparatorStrings() as $srting ) {
 			if ( strpos( $value, $srting ) === 0 ) {
 				$comparator = SMWQueryLanguage::getComparatorFromString( substr( $value, 0, strlen( $srting ) ) );
@@ -442,9 +442,9 @@ abstract class SMWDataValue {
 	 * even if errors occurred, to avoid additional checks for not
 	 * accessing null. Hence, one must not assume that a non-null return
 	 * value here implies that isValid() returns true.
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @return SMWDataItem
 	 */
 	public function getDataItem() {
@@ -542,10 +542,10 @@ abstract class SMWDataValue {
 	/**
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
-	 * 
+	 *
 	 * @param integer $outputformat Element of the SMW_OUTPUT_ enum
 	 * @param $linker
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getInfolinkText( $outputformat, $linker = null ) {
@@ -663,7 +663,7 @@ abstract class SMWDataValue {
 	/**
 	 * Return true if a value was defined and understood by the given type,
 	 * and false if parsing errors occured or no value was given.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isValid() {
@@ -673,7 +673,7 @@ abstract class SMWDataValue {
 	/**
 	 * Return a string that displays all error messages as a tooltip, or
 	 * an empty string if no errors happened.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getErrorText() {
@@ -683,7 +683,7 @@ abstract class SMWDataValue {
 	/**
 	 * Return an array of error messages, or an empty array
 	 * if no errors occurred.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getErrors() {

@@ -7,13 +7,13 @@
 /**
  * This datavalue implements special processing suitable for defining
  * wikipages as values of properties.
- * 
- * The class can support general wiki pages, or pages of a fixed 
+ *
+ * The class can support general wiki pages, or pages of a fixed
  * namespace, Whether a namespace is fixed is decided based on the
  * type ID when the object is constructed.
  *
  * The short display simulates the behaviour of the MediaWiki "pipe trick"
- * but always includes fragments. This can be overwritten by setting a 
+ * but always includes fragments. This can be overwritten by setting a
  * caption, which is also done by default when generating a value from user
  * input. The long display always includes all relevant information. Only if a
  * fixed namespace is used for the datatype, the namespace prefix is omitted.
@@ -109,7 +109,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
 			}
 
-			///TODO: Escape the text so users can see punctuation problems (bug 11666).
+			/// TODO: Escape the text so users can see punctuation problems (bug 11666).
 			if ( is_null( $this->m_title ) ) {
 				$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
 			} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
@@ -145,7 +145,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_fragment = $dataItem->getSubobjectName();
 			$this->m_prefixedtext = '';
 			$this->m_caption = false; // this class can handle this
-			
+
 			if ( ( $this->m_fixNamespace != NS_MAIN ) &&
 				( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
 					global $wgContLang;
@@ -328,13 +328,13 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * make a Title out of the given data.
 	 * However, isValid() will return false *after* this function failed in
 	 * trying to create a title.
-	 * 
+	 *
 	 * @return Title
 	 */
 	public function getTitle() {
 		if ( ( $this->isValid() ) && is_null( $this->m_title ) ) {
 			$this->m_title = $this->m_dataitem->getTitle();
-			
+
 			if ( is_null( $this->m_title ) ) { // should not normally happen, but anyway ...
 				global $wgContLang;
 				$this->addError( wfMsgForContent( 'smw_notitle', $wgContLang->getNsText( $this->m_dataitem->getNamespace() ) . ':' . $this->m_dataitem->getDBkey() ) );
@@ -353,7 +353,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( $this->m_id === false ) {
 			$this->m_id = !is_null( $this->getTitle() ) ? $this->m_title->getArticleID() : 0;
 		}
-		
+
 		return $this->m_id;
 	}
 
@@ -471,7 +471,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	/**
 	 * Find the sortkey for this object.
-	 * 
+	 *
 	 * @deprecated Use SMWStore::getWikiPageSortKey(). Will vanish before SMW 1.7
 	 *
 	 * @return string sortkey
@@ -505,7 +505,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * MediaWiki Title object.
 	 *
 	 * @deprecated This method will vanish before SMW 1.7. If you really need this, simply copy its code.
-	 * 
+	 *
 	 * @return SMWWikiPageValue
 	 */
 	static public function makePageFromTitle( Title $title ) {

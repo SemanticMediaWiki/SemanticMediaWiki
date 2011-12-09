@@ -1,9 +1,9 @@
 <?php
 /**
  * File holding class SMWPropertyValue.
- * 
+ *
  * @author Markus Krötzsch
- * 
+ *
  * @file
  * @ingroup SMWDataValues
  */
@@ -53,9 +53,9 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @note The resulting property object might be invalid if
 	 * the provided name is not allowed. An object is returned
 	 * in any case.
-	 * 
+	 *
 	 * @param string $propertyName
-	 * 
+	 *
 	 * @return SMWPropertyValue
 	 */
 	static public function makeUserProperty( $propertyName ) {
@@ -106,7 +106,7 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 		$propertyName = smwfNormalTitleText( ltrim( rtrim( $value, ' ]' ), ' [' ) ); // slightly normalise label
 		$inverse = false;
-		if ( ( $propertyName !== '' ) && ( $propertyName{ 0 } == '-' ) ) { // property refers to an inverse
+		if ( ( $propertyName !== '' ) && ( $propertyName { 0 } == '-' ) ) { // property refers to an inverse
 			$propertyName = (string)substr( $value, 1 );
 			/// NOTE The cast is necessary at least in PHP 5.3.3 to get string '' instead of boolean false.
 			$inverse = true;
@@ -278,7 +278,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * A function for registering/overwriting predefined properties for SMW. Should be called from
 	 * within the hook 'smwInitProperties'. Ids should start with three underscores "___" to avoid
 	 * current and future confusion with SMW built-ins.
-	 * 
+	 *
 	 * @deprecated Use SMWDIProperty::registerProperty(). Will vanish before SMW 1.7.
 	 */
 	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
@@ -289,7 +289,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * Add a new alias label to an existing datatype id. Note that every ID should have a primary
 	 * label, either provided by SMW or registered with registerDatatype. This function should be
 	 * called from within the hook 'smwInitDatatypes'.
-	 * 
+	 *
 	 * @deprecated Use SMWDIProperty::registerPropertyAlias(). Will vanish before SMW 1.7.
 	 */
 	static public function registerPropertyAlias( $id, $label ) {
@@ -298,7 +298,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDIProperty::isUserDefined()
-	 * 
+	 *
 	 * @deprecated since 1.6
 	 */
 	public function isUserDefined() {
@@ -307,7 +307,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDIProperty::isShown()
-	 * 
+	 *
 	 * @deprecated since 1.6
 	 */
 	public function isShown() {
@@ -316,7 +316,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDIProperty::isInverse()
-	 * 
+	 *
 	 * @deprecated since 1.6
 	 */
 	public function isInverse() {
@@ -328,7 +328,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * for internal (invisible) properties, it is the property ID. The value agrees
 	 * with the first component of getDBkeys() and it can be used in its place.
 	 * @see SMWDIProperty::getKey()
-	 * 
+	 *
 	 * @deprecated since 1.6
 	 */
 	public function getDBkey() {
@@ -337,7 +337,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDIProperty::getLabel()
-	 * 
+	 *
 	 * @deprecated since 1.6
 	 */
 	public function getText() {
