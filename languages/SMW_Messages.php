@@ -4161,7 +4161,7 @@ Como houbo só uns poucos resultados, tamén os resultados próximos son amosado
 	'smw_sbv_value' => 'Valor:',
 	'smw_sbv_submit' => 'Atopar os resultados',
 	'browse' => 'Navegar polo wiki',
-	'smw_browselink' => 'Propiedades de navegación',
+	'smw_browselink' => 'Explorar as propiedades',
 	'smw_browse_article' => 'Insira o nome da páxina para comezar a navegación.',
 	'smw_browse_go' => 'Ir',
 	'smw_browse_show_incoming' => 'mostrar as propiedades que ligan cara a aquí',
@@ -4169,7 +4169,7 @@ Como houbo só uns poucos resultados, tamén os resultados próximos son amosado
 	'smw_browse_no_outgoing' => 'Esta páxina non ten propiedades.',
 	'smw_browse_no_incoming' => 'Ningunha propiedade liga con esta páxina.',
 	'smw_inverse_label_default' => '$1 de',
-	'smw_inverse_label_property' => 'Lapela da propiedade inversa',
+	'smw_inverse_label_property' => 'Etiqueta da propiedade inversa',
 	'pageproperty' => 'Procura de páxinas de propiedades',
 	'smw_pp_docu' => 'Procurar por todos os filtros dunha propiedade nunha páxina dada.
 Por favor, insira ambas, a páxina e mais a propiedade.',
@@ -6266,6 +6266,7 @@ Progresso stimato dell'aggiornamento in corso:",
  * @author Aotake
  * @author Fryed-peach
  * @author Hosiryuhosi
+ * @author Likibp
  * @author Naohiro19
  * @author Schu
  * @author 青子守歌
@@ -6323,8 +6324,11 @@ $messages['ja'] = array(
 	'smw-paramdesc-table-class' => 'テーブルに設定する追加の CSS クラス',
 	'smw_paramdesc_rsstitle' => 'フィードの表題として使う文字列',
 	'smw_paramdesc_rssdescription' => 'フィードの説明文として使う文字列',
+	'smw_paramdesc_rdfsyntax' => 'RDF構文を使用する',
+	'smw-paramdesc-csv-sep' => '使用する区切り文字',
+	'smw-paramdesc-dsv-separator' => '使用する区切り文字',
 	'smw-paramdesc-dsv-filename' => 'DSV ファイルの名前',
-	'smw_iq_disabled' => '意味的クエリーはこのウィキでは無効になっています。',
+	'smw_iq_disabled' => 'このウィキのセマンティッククエリが無効になっています。',
 	'smw_iq_moreresults' => '… 追加結果',
 	'smw_nonright_importtype' => '$1は名前空間「$2」のページでしか利用できません。',
 	'smw_wrong_importtype' => '$1は名前空間「$2」のページでは利用できません。',
@@ -6343,7 +6347,7 @@ $messages['ja'] = array(
 	'smw_false_words' => 'false,f,no,n',
 	'smw_nofloat' => '「$1」は数ではありません。',
 	'smw_infinite' => '「$1」以上の数には対応しません。',
-	'smw_unitnotallowed' => '「 $1 」はこのプロパティの測定値の有効な単位として宣言されていません。',
+	'smw_unitnotallowed' => '「$1」はこのプロパティの測定値の有効な単位として宣言されていません。',
 	'smw_nounitsdeclared' => '測定の単位はこのプロパティに宣言されませんでした。',
 	'smw_novalues' => '値が指定されていません。',
 	'smw_nodatetime' => '「$1」という日付は理解できませんでした。',
@@ -10657,8 +10661,8 @@ $messages['sr-ec'] = array(
 	'smw_rss_description' => '$1 RSS довод',
 	'specialpages-group-smw_group' => 'Семантички Медијавики',
 	'exportrdf' => 'Извези странице у RDF',
-	'smw_exportrdf_docu' => 'Ова страница омогућава добијање података из странице у RDF формату.
-Како би извезли странице, унесите наслове у доњи формулар, по принципу један наслов за сваки ред.',
+	'smw_exportrdf_docu' => 'Ова страница омогућава преузимање података с неке странице у формату RDF.
+Да бисте извезли странице, унесите наслове у кућицу испод (по један наслов у сваком реду).',
 	'smw_exportrdf_recursive' => 'Рекурзивно извези све повезане странице.
 Обратите пажњу да резултат може бити веома обиман!',
 	'smw_exportrdf_backlinks' => 'Такође извези све странице које вежу на већ извезене странице.
