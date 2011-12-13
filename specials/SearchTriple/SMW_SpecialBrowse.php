@@ -378,7 +378,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	private function queryForm() {
 		self::addAutoComplete();
 		$title = SpecialPage::getTitleFor( 'Browse' );
-		return '  <form name="smwbrowse" action="' . $title->escapeLocalURL() . '" method="get">' . "\n" .
+		return '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
 		       '    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
 		       wfMsg( 'smw_browse_article' ) . "<br />\n" .
 		       '    <input type="text" name="article" id="page_input_box" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .

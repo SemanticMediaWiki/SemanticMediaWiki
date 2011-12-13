@@ -401,7 +401,7 @@ class SMWSearchByProperty extends SpecialPage {
 	private function queryForm() {
 		self::addAutoComplete();
 		$spectitle = SpecialPage::getTitleFor( 'SearchByProperty' );
-		$html  = '<form name="searchbyproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+		$html  = '<form name="searchbyproperty" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= wfMsg( 'smw_sbv_property' ) . ' <input type="text" id="property_box" name="property" value="' . htmlspecialchars( $this->propertystring ) . '" />' . "&#160;&#160;&#160;\n";
 		$html .= wfMsg( 'smw_sbv_value' ) . ' <input type="text" name="value" value="' . htmlspecialchars( $this->valuestring ) . '" />' . "\n";

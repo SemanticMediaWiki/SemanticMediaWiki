@@ -26,8 +26,6 @@ production until the actual release.
 * Added automatic invocation of the SMW_setup maintenance script when running
   update.php (for MW >= 1.19).
 * Added support for the Page Schemas extension.
-* Dropped compatibility with MediaWiki 1.15.x (and earlier).
-* Dropped compatibility with old-style (SMW < 1.6) query printers.
 * Removed defunct "SMWLight" files.
 * Fixed separator and filename parameters for the DSV format.
 * Fixed display of properties of type URL (bug 30912).
@@ -39,6 +37,9 @@ production until the actual release.
 * Fixed display of images to old behavior after a recent regression.
 * Fixed several more issues not listed here.
 * Fixed fatal error in the concept cache maintenance script (bug 32592).
+* Dropped compatibility with MediaWiki 1.15.x (and earlier).
+* Dropped compatibility with old-style (SMW < 1.6) query printers.
+* Full compatibility with MediaWiki 1.18 and foreward-compatibility with 1.19. 
 
 == SMW 1.6.1 ==
 

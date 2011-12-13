@@ -495,7 +495,7 @@ END;
 
 		if ( $this->m_editquery ) {
 			$spectitle = $this->getTitleFor( 'Ask' );
-			$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+			$result .= '<form name="ask" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
 				'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 
 			// Table for main query and printouts.

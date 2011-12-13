@@ -112,7 +112,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$result = '<div class="smwqcerrors">' . $this->getErrorsHtml() . '</div>';
 
 		$formParameters = array( 'name' => 'qc', 'id'=>'smwqcform',
-			'action' => $specTitle->escapeLocalURL(), 'method' => 'get' );
+			'action' => htmlspecialchars( $specTitle->getLocalURL() ), 'method' => 'get' );
 		$result .= Html::openElement( 'form', $formParameters ) . "\n" .
 			Html::hidden( 'title', $specTitle->getPrefixedText() ) .
 			// Header:

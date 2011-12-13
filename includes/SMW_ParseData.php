@@ -26,7 +26,7 @@ class SMWParseData {
 	 * store this array in the current parser output, using the variable
 	 * mSMWMagicWords.
 	 */
-	static public function stripMagicWords( &$text, $parser ) {
+	static public function stripMagicWords( &$text, Parser $parser ) {
 		$words = array();
 		$mw = MagicWord::get( 'SMW_NOFACTBOX' );
 
