@@ -100,7 +100,7 @@ class SMWPageLister {
 	 * @return string
 	 */
 	protected function makeSelfLink( Title $title, $linkText, array $parameters ) {
-		return smwfGetLinker()->makeKnownLinkObj( $title, $linkText, wfArrayToCGI( $parameters ) );
+		return smwfGetLinker()->link( $title, $linkText, wfArrayToCGI( $parameters ) );
 	}
 
 	/**

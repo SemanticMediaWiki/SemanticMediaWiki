@@ -66,7 +66,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	function formatResult( $skin, /* SMWDIProperty */ $result ) {
 		$linker = smwfGetLinker();
 		
-		$proplink = $linker->makeKnownLinkObj(
+		$proplink = $linker->link(
 			$result->getDiWikiPage()->getTitle(),
 			$result->getLabel()
 		);

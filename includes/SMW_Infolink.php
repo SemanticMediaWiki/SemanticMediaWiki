@@ -232,7 +232,7 @@ class SMWInfolink {
 				if ( $outputformat == SMW_OUTPUT_WIKI ) {
 					$link = "[[$titletext|$this->mCaption]]";
 				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
-					$link = $this->getLinker( $linker )->makeKnownLinkObj( $title, $this->mCaption );
+					$link = $this->getLinker( $linker )->link( $title, $this->mCaption );
 				}
 			} else { // Title creation failed, maybe illegal symbols or too long; make a direct URL link
 			         // (only possible if offending target parts belong to some parameter
@@ -244,7 +244,7 @@ class SMWInfolink {
 					if ( $outputformat == SMW_OUTPUT_WIKI ) {
 						$link = '[' . $title->getFullURL( SMWInfolink::encodeParameters( $this->mParams, false ) ) . " $this->mCaption]";
 					} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
-						$link = $this->getLinker( $linker )->makeKnownLinkObj(
+						$link = $this->getLinker( $linker )->link(
 							$title,
 							$this->mCaption,
 							SMWInfolink::encodeParameters( $this->mParams, false )

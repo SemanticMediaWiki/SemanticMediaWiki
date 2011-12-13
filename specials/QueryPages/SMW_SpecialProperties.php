@@ -74,7 +74,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 				$typeDataValue = SMWDataValueFactory::newDataItemValue( current( $types ), $typeProperty );
 				$typestring = $typeDataValue->getLongHTMLText( $linker );
 			}
-			$proplink = $linker->makeKnownLinkObj( $title, $result[0]->getLabel() );
+			$proplink = $linker->link( $title, $result[0]->getLabel() );
 		} elseif ( $result[0]->isUserDefined() && !is_null( $title ) ) {
 			$errors[] = wfMsg( 'smw_propertylackspage' );
 			$proplink = $linker->makeBrokenLinkObj( $title, $result[0]->getLabel(), 'action=view' );
