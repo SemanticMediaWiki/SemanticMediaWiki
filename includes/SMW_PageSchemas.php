@@ -11,11 +11,6 @@
  */
 
 class SMWPageSchemas extends PSExtensionHandler {
-	public static function registerClass() {
-		global $wgPageSchemasHandlerClasses;
-		$wgPageSchemasHandlerClasses[] = 'SMWPageSchemas';
-		return true;
-	}
 
 	public static function getDisplayColor() {
 		return '#DEF';
