@@ -123,74 +123,74 @@ class SMWQueryProcessor {
 			}
 		}
 
-		// determine sortkeys and ascendings:
-		if ( array_key_exists( 'order', $params ) && !is_null( $params['order'] ) ) {
-			// Compatibility with query printers not using Validator yet
-			if ( is_string( $params['order'] ) ) {
-				$params['order'] = explode( ',', $params['order'] );
+		$defaultSort = $format === 'rss' ? 'DESC' : 'ASC';
+		$sort = self::getSortKeys( $params['sort'], $params['order'], $defaultSort );
+		
+		$query->sortkeys = $sort['keys'];
+		$query->addErrors( $sort['errors'] );
+		$query->sort = count( $query->sortkeys ) > 0; // TODO: Why would we do this here?
+		var_dump($query->sortkeys);exit;
+		return $query;
+	}
+	
+	/**
+	 * Takes the sort and order parameters and returns a list of sort keys and a list of errors.
+	 * 
+	 * @since 1.7
+	 * 
+	 * @param array $sortParam
+	 * @param array $orders
+	 * @param string $defaultSort
+	 * 
+	 * @return array ( keys => array(), errors => array() )
+	 */
+	protected static function getSortKeys( array $sortParam, array $orderParam, $defaultSort ) {
+		$orders = array();
+		$sortKeys = array();
+		$sortErros = array();
+		
+		foreach ( $orderParam as $key => $order ) {
+			$order = strtolower( trim( $order ) );
+			if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
+				$orders[$key] = 'DESC';
+			} elseif ( ( $order == 'random' ) || ( $order == 'rand' ) ) {
+				$orders[$key] = 'RANDOM';
+			} else {
+				$orders[$key] = 'ASC';
 			}
+		}
+		
+		foreach ( $sortParam as $sort ) {
+			$sortKey = false;
 			
-			$orders = $params['order'];
-
-			foreach ( $orders as $key => $order ) { // normalise
-				$order = strtolower( trim( $order ) );
-				if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
-					$orders[$key] = 'DESC';
-				} elseif ( ( $order == 'random' ) || ( $order == 'rand' ) ) {
-					$orders[$key] = 'RANDOM';
+			// An empty string indicates we mean the page, such as element 0 on the next line.
+			// sort=,Some property
+			if ( trim( $sort ) === '' ) {
+				$sortKey = '';
+			}
+			else {
+				$propertyValue = SMWPropertyValue::makeUserProperty( trim( $sort ) );
+			
+				if ( $propertyValue->isValid() ) {
+					$sortKey = $propertyValue->getDataItem()->getKey();
 				} else {
-					$orders[$key] = 'ASC';
+					$sortErros = array_merge( $sortErros, $propertyValue->getErrors() );
 				}
 			}
-		} else {
-			$orders = array();
+			
+			if ( $sortKey !== false ) {
+				$order = empty( $orders ) ? $defaultSort : array_shift( $orders );
+				$sortKeys[$sortKey] = $order;
+			}
 		}
 
-		reset( $orders );
-
-		if ( array_key_exists( 'sort', $params ) && !is_null( $params['sort'] ) ) {
-			// Compatibility with query printers not using Validator yet
-			if ( is_string( $params['sort'] ) ) {
-				$params['sort'] = explode( ',', $params['sort'] );
-			}
-			
-			$query->sort = true;
-			$query->sortkeys = array();
-
-			foreach ( $params['sort'] as $sort ) {
-				if ( trim( $sort ) === '' ) {
-					$query->sortkeys[''] = current( $orders );
-					next( $orders );
-				}
-				else {
-					$propertyValue = SMWPropertyValue::makeUserProperty( trim( $sort ) );
-				
-					if ( $propertyValue->isValid() ) {
-						$sortkey = $propertyValue->getDataItem()->getKey();
-						$order = current( $orders );
-						if ( $order === false ) { // default
-							$order = 'ASC';
-						}
-						$query->sortkeys[$sortkey] = $order; // should we check for duplicate sort keys?
-						next( $orders );
-					} else {
-						$query->addErrors( $propertyValue->getErrors() );
-					}
-				}
-			}
-
-			if ( current( $orders ) !== false ) { // sort key remaining, apply to page name
-				$query->sortkeys[''] = current( $orders );
-			}
-		} elseif ( $format == 'rss' ) { // unsorted RSS: use *descending* default order
-			// TODO: the default sort field should be "modification date" (now it is the title, but
-			// likely to be overwritten by printouts with label "date").
-			$query->sortkeys[''] = ( current( $orders ) != false ) ? current( $orders ) : 'DESC';
-		} else { // sort by page title (main column) by default
-			$query->sortkeys[''] = ( current( $orders ) != false ) ? current( $orders ) : 'ASC';
-		} // TODO: check and report if there are further order statements?
-
-		return $query;
+		// If more sort arguments are provided then properties, assume the first one is for the page.
+		// TODO: we might want to add errors if there is more then one.
+		if ( !empty( $orders ) ) {
+			$sortKeys[''] = array_shift( $orders );
+		}
+		
+		return array( 'keys' => $sortKeys, 'errors' => $sortErros );
 	}
 
 	/**
@@ -513,7 +513,7 @@ class SMWQueryProcessor {
 		
 		$params['sort'] = new ListParameter( 'sort' );
 		$params['sort']->setMessage( 'smw-paramdesc-sort' );
-		$params['sort']->setDefault( array() );
+		$params['sort']->setDefault( array( '' ) ); // The empty string represents the page itself, which should be sorted by default.
 		
 		$params['order'] = new ListParameter( 'order' );
 		$params['order']->setMessage( 'smw-paramdesc-order' );
