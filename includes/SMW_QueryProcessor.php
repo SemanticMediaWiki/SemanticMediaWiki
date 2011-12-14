@@ -158,17 +158,24 @@ class SMWQueryProcessor {
 			$query->sortkeys = array();
 
 			foreach ( $params['sort'] as $sort ) {
-				$propertyValue = SMWPropertyValue::makeUserProperty( trim( $sort ) );
-				if ( $propertyValue->isValid() ) {
-					$sortkey = $propertyValue->getDataItem()->getKey();
-					$order = current( $orders );
-					if ( $order === false ) { // default
-						$order = 'ASC';
-					}
-					$query->sortkeys[$sortkey] = $order; // should we check for duplicate sort keys?
+				if ( trim( $sort ) === '' ) {
+					$query->sortkeys[''] = current( $orders );
 					next( $orders );
-				} else {
-					$query->addErrors( $propertyValue->getErrors() );
+				}
+				else {
+					$propertyValue = SMWPropertyValue::makeUserProperty( trim( $sort ) );
+				
+					if ( $propertyValue->isValid() ) {
+						$sortkey = $propertyValue->getDataItem()->getKey();
+						$order = current( $orders );
+						if ( $order === false ) { // default
+							$order = 'ASC';
+						}
+						$query->sortkeys[$sortkey] = $order; // should we check for duplicate sort keys?
+						next( $orders );
+					} else {
+						$query->addErrors( $propertyValue->getErrors() );
+					}
 				}
 			}
 
