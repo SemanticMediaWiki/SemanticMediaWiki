@@ -432,7 +432,7 @@ class SMWResultArray {
 					$newcontent = array();
 
 					foreach ( $this->mContent as $diContainer ) {
-						$recordValue = SMWDataValueFactory::newDataItemValue( $diContainer, $propertyValue->getDataItem() );
+						/* SMWRecordValue */ $recordValue = SMWDataValueFactory::newDataItemValue( $diContainer, $propertyValue->getDataItem() );
 						$dataItems = $recordValue->getDataItems();
 						
 						if ( array_key_exists( $pos, $dataItems ) &&
