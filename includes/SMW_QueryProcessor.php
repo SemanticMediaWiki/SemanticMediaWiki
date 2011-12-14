@@ -129,7 +129,7 @@ class SMWQueryProcessor {
 		$query->sortkeys = $sort['keys'];
 		$query->addErrors( $sort['errors'] );
 		$query->sort = count( $query->sortkeys ) > 0; // TODO: Why would we do this here?
-		var_dump($query->sortkeys);exit;
+		
 		return $query;
 	}
 	
