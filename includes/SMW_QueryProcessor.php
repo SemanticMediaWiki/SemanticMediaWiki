@@ -186,7 +186,7 @@ class SMWQueryProcessor {
 
 		// If more sort arguments are provided then properties, assume the first one is for the page.
 		// TODO: we might want to add errors if there is more then one.
-		if ( !empty( $orders ) ) {
+		if ( !array_key_exists( '', $sortKeys ) && !empty( $orders ) ) {
 			$sortKeys[''] = array_shift( $orders );
 		}
 		
