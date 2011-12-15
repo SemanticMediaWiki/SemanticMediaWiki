@@ -52,11 +52,11 @@ final class SMWHooks {
 	 * 
 	 * @since 1.7
 	 * 
-	 * @param array $admin_links_tree
+	 * @param ALTree $admin_links_tree
 	 * 
 	 * @return true
 	 */
-	public static function addToAdminLinks( array &$admin_links_tree ) {
+	public static function addToAdminLinks( ALTree &$admin_links_tree ) {
 		$data_structure_section = new ALSection( wfMsg( 'smw_adminlinks_datastructure' ) );
 	
 		$smw_row = new ALRow( 'smw' );
