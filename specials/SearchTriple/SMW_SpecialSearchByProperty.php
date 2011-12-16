@@ -60,10 +60,10 @@ class SMWSearchByProperty extends SpecialPage {
 		// get the GET parameters
 		$this->propertystring = $wgRequest->getText( 'property' );
 		$this->valuestring = $wgRequest->getText( 'value' );
-		
+
 		$params = SMWInfolink::decodeParameters( $query, false );
 		reset( $params );
-		
+
 		// no GET parameters? Then try the URL
 		if ( $this->propertystring === '' ) $this->propertystring = current( $params );
 		if ( $this->valuestring === '' ) $this->valuestring = next( $params );
@@ -77,7 +77,7 @@ class SMWSearchByProperty extends SpecialPage {
 		} else {
 			$this->propertystring = $this->property->getWikiValue();
 			$this->value = SMWDataValueFactory::newPropertyObjectValue( $this->property->getDataItem(), $this->valuestring );
-			
+
 			if ( $this->value->isValid() ) {
 				$this->valuestring = $this->value->getWikiValue();
 			} else {
@@ -89,7 +89,7 @@ class SMWSearchByProperty extends SpecialPage {
 		if ( is_numeric( $limitstring ) ) {
 			$this->limit =  intval( $limitstring );
 		}
-		
+
 		$offsetstring = $wgRequest->getVal( 'offset' );
 		if ( is_numeric( $offsetstring ) ) {
 			$this->offset = intval( $offsetstring );
@@ -97,7 +97,7 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$wgOut->addHTML( $this->displaySearchByProperty() );
 		$wgOut->addHTML( $this->queryForm() );
-		
+
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
 
@@ -113,7 +113,7 @@ class SMWSearchByProperty extends SpecialPage {
 		if ( $this->propertystring === '' ) {
 			return '<p>' . wfMsg( 'smw_sbv_docu' ) . "</p>\n";
 		}
-		
+
 		if ( ( $this->value == null ) || !$this->value->isValid() ) {
 			return '<p>' . wfMsg( 'smw_sbv_novalue', $this->property->getShortHTMLText( $linker ) ) . "</p>\n";
 		}
@@ -123,19 +123,19 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$exact = $this->getExactResults();
 		$count = count( $exact );
-		
+
 		if ( ( $count < ( $this->limit / 3 ) ) && ( $this->value->isNumeric() ) && $smwgSearchByPropertyFuzzy ) {
 			$greater = $this->getNearbyResults( $count, true );
 			$lesser = $this->getNearbyResults( $count, false );
-			
+
 			// Calculate how many greater and lesser results should be displayed
 			$cG = count( $greater );
 			$cL = count( $lesser );
-			
+
 			if ( ( $cG + $cL + $count ) > $this->limit ) {
 				$l = $this->limit - $count;
 				$lhalf = round( $l / 2 );
-				
+
 				if ( $lhalf < $cG ) {
 					if ( $lhalf < $cL ) {
 						$cL = $lhalf; $cG = $lhalf;
@@ -146,24 +146,24 @@ class SMWSearchByProperty extends SpecialPage {
 					$cL = $this->limit - ( $count + $cG );
 				}
 			}
-			
+
 			if ( ( $cG + $cL + $count ) == 0 )
 				$html .= wfMsg( 'smw_result_noresults' );
 			else {
 				$html .= wfMsg( 'smw_sbv_displayresultfuzzy', $this->property->getShortHTMLText( $linker ), $this->value->getShortHTMLText( $linker ) ) . "<br />\n";
 				$html .= $this->displayResults( $lesser, $cL, false );
-				
+
 				if ( $count == 0 ) {
 					$html .= " &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
 				} else {
 					$html .= $this->displayResults( $exact, $count, true, true );
 				}
-				
+
 				$html .= $this->displayResults( $greater, $cG );
 			}
 		} else {
 			$html .= wfMsg( 'smw_sbv_displayresult', $this->property->getShortHTMLText( $linker ), $this->value->getShortHTMLText( $linker ) ) . "<br />\n";
-			
+
 			if ( 0 == $count ) {
 				$html .= wfMsg( 'smw_result_noresults' );
 			} else {
@@ -175,7 +175,7 @@ class SMWSearchByProperty extends SpecialPage {
 		}
 
 		$html .= '<p>&#160;</p>';
-		
+
 		return $html;
 	}
 
@@ -186,7 +186,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 * @param[in] $number int  How many results should be displayed? -1 for all
 	 * @param[in] $first bool  If less results should be displayed than given, should they show the first $number results, or the last $number results?
 	 * @param[in] $highlight bool  Should the results be highlighted?
-	 * 
+	 *
 	 * @return string  HTML with the bullet list and a header
 	 */
 	private function displayResults( $results, $number = - 1, $first = true, $highlight = false ) {
@@ -197,30 +197,30 @@ class SMWSearchByProperty extends SpecialPage {
 			// I (jeroendedauw) replaced a loop using array_shift by this, which is equivalent.
 			$results = array_slice( array_reverse( $results ), 0, $number );
 		}
-		
+
 		while ( $results && $number != 0 ) {
 			$result = array_shift( $results );
-			
+
 			$html .= '<li>' . $result[0]->getLongHTMLText( smwfGetLinker() );
-			
+
 			if ( $result[0]->getTypeID() == '_wpg' ) {
 				$html .= '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getLongWikiText() )->getHTML( smwfGetLinker() );
 			}
-			
+
 			if ( is_object( $result[1] ) && ( ( $this->value != $result[1] ) || $highlight ) ) {
 				$html .= " <em><small>(" . $result[1]->getLongHTMLText( smwfGetLinker() ) . ")</small></em>";
 			}
-			
+
 			$html .= "</li>";
-			
+
 			if ( $highlight ) {
 				$html = "<strong>" . $html . "</strong>";
 			}
-			
+
 			$html .= "\n";
 			$number--;
 		}
-		
+
 		$html .= "</ul>\n";
 
 		return $html;
@@ -241,19 +241,19 @@ class SMWSearchByProperty extends SpecialPage {
 				'a',
 				array(
 					'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
-						'offset' => max( 0, $this->offset - $this->limit ), 
+						'offset' => max( 0, $this->offset - $this->limit ),
 						'limit' => $this->limit,
-						'property' => $this->property->getWikiValue(), 
+						'property' => $this->property->getWikiValue(),
 						'value' => $this->value->getWikiValue()
 					) )
 				),
 				wfMsg( 'smw_result_prev' )
-			);			
+			);
 		}
 		else {
 			$navigation = wfMsg( 'smw_result_prev' );
 		}
-		
+
 		$navigation .=
 			'&#160;&#160;&#160;&#160; <b>' .
 				wfMsg( 'smw_result_results' ) . ' ' .
@@ -266,44 +266,44 @@ class SMWSearchByProperty extends SpecialPage {
 				'a',
 				array(
 					'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
-						'offset' => $this->offset + $this->limit, 
+						'offset' => $this->offset + $this->limit,
 						'limit' => $this->limit,
-						'property' => $this->property->getWikiValue(), 
+						'property' => $this->property->getWikiValue(),
 						'value' => $this->value->getWikiValue()
 					) )
 				),
 				wfMsg( 'smw_result_next' )
-			);	
+			);
 		} else {
 			$navigation .= wfMsg( 'smw_result_next' );
 		}
 
 		$max = false;
 		$first = true;
-		
+
 		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
 			if ( $max ) continue;
-			
+
 			if ( $first ) {
 				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else {
 				$navigation .= ' ' . wfMsgExt( 'pipe-separator' , 'escapenoentities' ) . ' ';
 			}
-			
+
 			if ( $l > $smwgQMaxInlineLimit ) {
 				$l = $smwgQMaxInlineLimit;
 				$max = true;
 			}
-			
+
 			if ( $this->limit != $l ) {
 				$navigation .= Html::element(
 					'a',
 					array(
 						'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
-							'offset' => $this->offset, 
+							'offset' => $this->offset,
 							'limit' => $l,
-							'property' => $this->property->getWikiValue(), 
+							'property' => $this->property->getWikiValue(),
 							'value' => $this->value->getWikiValue()
 						) )
 					),
@@ -313,9 +313,9 @@ class SMWSearchByProperty extends SpecialPage {
 				$navigation .= '<b>' . $l . '</b>';
 			}
 		}
-		
+
 		$navigation .= ')';
-		
+
 		return $navigation;
 	}
 
@@ -332,7 +332,7 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$res = smwfGetStore()->getPropertySubjects( $this->property->getDataItem(), $this->value->getDataItem(), $options );
 		$results = array();
-		
+
 		foreach ( $res as $result ) {
 			array_push( $results, array(
 				SMWDataValueFactory::newDataItemValue( $result, null ),
@@ -349,7 +349,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 *
 	 * @param[in] $count int  How many entities have the exact same value on the property?
 	 * @param[in] $greater bool  Should the values be bigger? Set false for smaller values
-	 * 
+	 *
 	 * @return array of array of SMWWikiPageValue, SMWDataValue with the first being the entity, and the second the value
 	 */
 	private function getNearbyResults( $count, $greater = true ) {
@@ -368,7 +368,7 @@ class SMWSearchByProperty extends SpecialPage {
 		if ( $greater ) $params['order'] = 'ASC';
 		$cmp = '<';
 		if ( $greater ) $cmp = '>';
-		
+
 		$querystring = '[[' . $this->propertystring . '::' . $cmp . $this->valuestring . ']]';
 		$params = SMWQueryProcessor::getProcessedParams( $params, array( $printrequest ) );
 		$queryobj = SMWQueryProcessor::createQuery( $querystring, $params, SMWQueryProcessor::SPECIAL_PAGE, 'ul', array( $printrequest ) );
@@ -380,16 +380,16 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$result = $results->getNext();
 		$ret = array();
-		
+
 		while ( $result ) {
 			$ret[] = array( $result[0]->getNextDataValue(), $result[1]->getNextDataValue() );
 			$result = $results->getNext();
 		}
-		
+
 		if ( !$greater ) {
 			$ret = array_reverse( $ret );
 		}
-		
+
 		return $ret;
 	}
 
@@ -413,17 +413,17 @@ class SMWSearchByProperty extends SpecialPage {
 	/**
 	 * Creates the JS needed for adding auto-completion to queryForm(). Uses the
 	 * MW API to fetch suggestions.
-	 * 
+	 *
 	 */
 	protected static function addAutoComplete() {
 		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
-		
+
 		$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	jQuery("#property_box").autocomplete({
 		minLength: 2,
-		source: function(request, response) {			
+		source: function(request, response) {
 			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['property']+'&format=jsonfm&search='+request.term, function(data){
 				//remove the word 'Property:' from returned data
 				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);

@@ -116,7 +116,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @param[in] $data SMWSemanticData  The data to be displayed
 	 * @param[in] $left bool  Should properties be displayed on the left side?
 	 * @param[in] $incoming bool  Is this an incoming? Or an outgoing?
-	 * 
+	 *
 	 * @return A string containing the HTML with the factbox
 	 */
 	private function displayData( SMWSemanticData $data, $left = true, $incoming = false ) {
@@ -176,13 +176,13 @@ class SMWSpecialBrowse extends SpecialPage {
 					'a',
 					array(
 						'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
-							 'property' => $dvProperty->getWikiValue(), 
+							 'property' => $dvProperty->getWikiValue(),
 							 'value' => $this->subject->getWikiValue()
 						) )
 					),
 					wfMsg( "smw_browse_more" )
 				);
-				
+
 			}
 
 			$body .= "</td>\n";
@@ -207,14 +207,14 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @param[in] $property SMWPropertyValue  The property this value is linked to the subject with
 	 * @param[in] $value SMWDataValue  The actual value
 	 * @param[in] $incoming bool  If this is an incoming or outgoing link
-	 * 
+	 *
 	 * @return string  HTML with the link to the article, browse, and search pages
 	 */
 	private function displayValue( SMWPropertyValue $property, SMWDataValue $dataValue, $incoming ) {
 		$linker = smwfGetLinker();
-		
+
 		$html = $dataValue->getLongHTMLText( $linker );
-		
+
 		if ( $dataValue->getTypeID() == '_wpg' ) {
 			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
 		} elseif ( $incoming && $property->isVisible() ) {
@@ -222,7 +222,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		} else {
 			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $linker );
 		}
-		
+
 		return $html;
 	}
 
@@ -290,13 +290,13 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @param[in] $out bool  Should the linked to page include outgoing properties?
 	 * @param[in] $in bool  Should the linked to page include incoming properties?
 	 * @param[in] $offset int  What is the offset for the incoming properties?
-	 * 
+	 *
 	 * @return string  HTML with the link to this page
 	 */
 	private function linkHere( $text, $out, $in, $offset ) {
 		$dir = $out ? ( $in ? 'both' : 'out' ) : 'in';
 		$frag = ( $text == wfMsg( 'smw_browse_show_incoming' ) ) ? '#smw_browse_incoming' : '';
-		
+
 		return Html::element(
 			'a',
 			array(
@@ -334,7 +334,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		$valoptions = new SMWRequestOptions();
 		$valoptions->sort = true;
 		$valoptions->limit = SMWSpecialBrowse::$incomingvaluescount;
-		
+
 		foreach ( $inproperties as $property ) {
 			$values = smwfGetStore()->getPropertySubjects( $property, $this->subject->getDataItem(), $valoptions );
 			foreach ( $values as $value ) {
@@ -352,12 +352,12 @@ class SMWSpecialBrowse extends SpecialPage {
 	 *
 	 * @param[in] $property SMWPropertyValue  The property of interest
 	 * @param[in] $incoming bool  If it is an incoming property
-	 * 
+	 *
 	 * @return string  The label of the property
 	 */
 	private function getPropertyLabel( SMWPropertyValue $property, $incoming = false ) {
 		global $smwgBrowseShowInverse;
-		
+
 		if ( $incoming && $smwgBrowseShowInverse ) {
 			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMsg( 'smw_inverse_label_property' ) );
 			$labelarray = &smwfGetStore()->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
@@ -366,7 +366,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		} else {
 			$rv = $property->getWikiValue();
 		}
-		
+
 		return $this->unbreak( $rv );
 	}
 
@@ -390,7 +390,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * Creates the JS needed for adding auto-completion to queryForm(). Uses the
 	 * MW API to fetch suggestions.
 	 */
-	private static function addAutoComplete(){
+	private static function addAutoComplete() {
 		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
 
 		$javascript_autocomplete_text = <<<END
@@ -423,5 +423,5 @@ END;
  		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, - 1, $count );
  		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
-	
+
 }
