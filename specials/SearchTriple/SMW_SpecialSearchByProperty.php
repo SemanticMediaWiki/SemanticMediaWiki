@@ -58,8 +58,8 @@ class SMWSearchByProperty extends SpecialPage {
 		$this->setHeaders();
 
 		// get the GET parameters
-		$this->propertystring = $wgRequest->getVal( 'property' );
-		$this->valuestring = $wgRequest->getVal( 'value' );
+		$this->propertystring = $wgRequest->getText( 'property' );
+		$this->valuestring = $wgRequest->getText( 'value' );
 		
 		$params = SMWInfolink::decodeParameters( $query, false );
 		reset( $params );
