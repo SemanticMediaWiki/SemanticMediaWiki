@@ -104,22 +104,38 @@ class SMWParseData {
 
 		// See if this property is a special one, such as e.g. "has type".
 		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
-		if ( !$propertyDv->isValid() ) return $propertyDv;
+		
+		if ( !$propertyDv->isValid() ) {
+			return $propertyDv;
+		}
+		
 		$propertyDi = $propertyDv->getDataItem();
-
+		
+		// FIXME: this solves the issue of bug 29438, but is probably not what we want to do.
+		if ( $propertyDi instanceof SMWDIError ) {
+			return $propertyDv;
+		}
+		
 		$semandticData = self::getSMWData( $parser );
 
-		$result = SMWDataValueFactory::newPropertyObjectValue( $propertyDi,
-			$value, $caption, $semandticData->getSubject() );
+		$result = SMWDataValueFactory::newPropertyObjectValue(
+			$propertyDi,
+			$value,
+			$caption,
+			$semandticData->getSubject()
+		);
 
 		if ( $propertyDi->isInverse() ) {
 			$result->addError( wfMsgForContent( 'smw_noinvannot' ) );
 		} elseif ( $storeAnnotation && !is_null( self::getSMWData( $parser ) ) ) {
 			$semandticData->addPropertyObjectValue( $propertyDi, $result->getDataItem() );
+			
 			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
 			if ( !$result->isValid() ) {
-				$semandticData->addPropertyObjectValue( new SMWDIProperty( '_ERRP' ),
-					$propertyDi->getDiWikiPage() );
+				$semandticData->addPropertyObjectValue(
+					new SMWDIProperty( '_ERRP' ),
+					$propertyDi->getDiWikiPage()
+				);
 			}
 		}
 

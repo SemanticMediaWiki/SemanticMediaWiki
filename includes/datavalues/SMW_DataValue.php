@@ -445,7 +445,7 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataItem
+	 * @return SMWDataItem|SMWDIError
 	 */
 	public function getDataItem() {
 		if ( $this->isValid() ) {
