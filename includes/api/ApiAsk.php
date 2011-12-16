@@ -20,13 +20,13 @@ class ApiAsk extends ApiSMWQuery {
 
 		$rawParams = explode( '|', $params['query'] );
 		$queryString = '';
-		$printeouts = array();
+		$printouts = array();
 		
-		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $this->parameters, $printeouts );
+		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $this->parameters, $printouts );
 		
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$queryString,
-			$printeouts
+			$printouts
 		) );
 		
 		$this->addQueryResult( $queryResult );
@@ -60,7 +60,7 @@ class ApiAsk extends ApiSMWQuery {
 
 	protected function getExamples() {
 		return array(
-			'api.php?action=ask&query=[[Modification date::%2B]]|%3FModification date|sort%3DModification date|order%3Ddesc',
+			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
 		);
 	}	
 	

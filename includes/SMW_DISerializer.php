@@ -76,7 +76,7 @@ class SMWDISerializer {
 		}
 		
 		foreach ( $queryResult->getResults() as /* SMWDIWikiPage */ $diWikiPage ) {
-			$result = array( 'printeouts' => array() );
+			$result = array( 'printouts' => array() );
 			
 			foreach ( $queryResult->getPrintRequests() as /* SMWPrintRequest */ $printRequest ) {
 				$resultAarray = new SMWResultArray( $diWikiPage, $printRequest, $queryResult->getStore() );
@@ -86,7 +86,7 @@ class SMWDISerializer {
 					$result += self::getSerialization( array_shift( $dataItems ) );
 				}
 				else {
-					$result['printeouts'][$printRequest->getLabel()] = array_map(
+					$result['printouts'][$printRequest->getLabel()] = array_map(
 						array( __class__, 'getSerialization' ),
 						$resultAarray->getContent()
 					);

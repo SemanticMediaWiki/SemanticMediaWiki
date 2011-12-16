@@ -2,7 +2,7 @@
 
 /**
  * API module to query SMW by providing a query specified as
- * a list of conditions, printeouts and parameters. 
+ * a list of conditions, printouts and parameters. 
  *
  * @since 1.6.2
  *
@@ -22,7 +22,7 @@ class ApiAskArgs extends ApiSMWQuery {
 		
 		$query = $this->getQuery( 
 			implode( array_map( array( __CLASS__, 'wrapCondition' ), $params['conditions'] ) ),
-			array_map( array( __CLASS__, 'printeoutFromString' ), $params['printeouts'] )
+			array_map( array( __CLASS__, 'printoutFromString' ), $params['printouts'] )
 		);
 		
 		$this->addQueryResult( $this->getQueryResult( $query ) );
@@ -32,11 +32,11 @@ class ApiAskArgs extends ApiSMWQuery {
 		return "[[$c]]"; 
 	}
 	
-	public static function printeoutFromString( $printeout ) {
+	public static function printoutFromString( $printout ) {
 		return new SMWPrintRequest(
 			SMWPrintRequest::PRINT_PROP,
-			$printeout,
-			SMWPropertyValue::makeUserProperty( $printeout )
+			$printout,
+			SMWPropertyValue::makeUserProperty( $printout )
 		);
 	}
 
@@ -46,7 +46,7 @@ class ApiAskArgs extends ApiSMWQuery {
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => true,
 			),
-			'printeouts' => array(
+			'printouts' => array(
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_ISMULTI => true,
@@ -61,15 +61,15 @@ class ApiAskArgs extends ApiSMWQuery {
 	
 	public function getParamDescription() {
 		return array(
-			'conditions' => 'The query conditions, ie the requirements for a subject to be included',
-			'printeouts' => 'The query printeouts, ie the properties to show per subject',
-			'parameters' => 'The query parameters, ie all non-condition and non-printeout arguments',
+			'conditions' => 'The query conditions, i.e. the requirements for a subject to be included',
+			'printouts' => 'The query printouts, i.e. the properties to show per subject',
+			'parameters' => 'The query parameters, i.e. all non-condition and non-printout arguments',
 		);
 	}
 	
 	public function getDescription() {
 		return array(
-			'API module to query SMW by providing a query specified as a list of conditions, printeouts and parameters.
+			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.
 			This API module is in alpha stage, and likely to see changes in upcomming versions of SMW.'
 		);
 	}
@@ -81,7 +81,7 @@ class ApiAskArgs extends ApiSMWQuery {
 
 	protected function getExamples() {
 		return array(
-			'api.php?action=askargs&conditions=Modification date::%2B&printeouts=Modification date&parameters=|sort%3DModification date|order%3Ddesc',
+			'api.php?action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc',
 		);
 	}	
 	

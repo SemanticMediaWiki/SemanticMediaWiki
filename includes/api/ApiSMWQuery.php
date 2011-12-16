@@ -56,10 +56,10 @@ abstract class ApiSMWQuery extends ApiBase {
 		$result->setIndexedTagName( $serialized['printrequests'], 'printrequest' );
 		
 		foreach ( $serialized['results'] as $subjectName => $subject ) {
-			if ( is_array( $subject ) && array_key_exists( 'printeouts', $subject ) ) {
-				foreach ( $subject['printeouts'] as $property => $values ) {
+			if ( is_array( $subject ) && array_key_exists( 'printouts', $subject ) ) {
+				foreach ( $subject['printouts'] as $property => $values ) {
 					if ( is_array( $values ) ) {
-						$result->setIndexedTagName( $serialized['results'][$subjectName]['printeouts'][$property], 'value' );
+						$result->setIndexedTagName( $serialized['results'][$subjectName]['printouts'][$property], 'value' );
 					}
 				}
 			}
