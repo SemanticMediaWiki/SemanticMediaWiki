@@ -187,6 +187,7 @@ Generates browsable RDF.',
 	'properties'             => 'Properties',
 	'smw_properties_docu'    => 'The following properties are used in the wiki.',
 	'smw_property_template'  => '$1 of type $2 ($3)', // <propname> of type <type> (<count>)
+	'smw_property_template_notype' => '$1 ($2)', // <propname> (<count>)
 	'smw_propertylackspage'  => 'All properties should be described by a page!',
 	'smw_propertylackstype'  => 'No type was specified for this property (assuming type $1 for now).',
 	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!',
@@ -506,6 +507,14 @@ This method is called ''content negotiation''.",
 	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
 	'smw-info-par-message' => 'Short description of the message parameter behaviour.',
 	'smw-info-par-icon' => 'Short description of the icon parameter behaviour.',
+	'smw_property_template'  => 'Used on [[Special:Properties]]
+* $1 link to Property page
+* $2 link to Type page
+* $3 Number of times the property is used',
+	'smw_property_template_notype' => 'Used on [[Special:Properties]]
+* $1 link to Property page
+* $2 Number of times the property is used',
+
 );
 
 /** Niuean (ko e vagahau Niuē)

@@ -92,9 +92,9 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortWikiText( $linked = null ) {
+	public function getShortWikiText( $linker = null ) {
 		global $wgContLang;
-		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
+		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === '' ) {
 			return $this->m_caption;
 		} else {
 			$titleText = $this->getSpecialPageTitleText();
@@ -103,18 +103,18 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText( $linked = null ) {
-		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
+	public function getShortHTMLText( $linker = null ) {
+		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === ''  ) {
 			return htmlspecialchars( $this->m_caption );
 		} else {
 			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );
-			return $linked->makeLinkObj( $title, htmlspecialchars( $this->m_caption ) );
+			return $linker->link( $title, htmlspecialchars( $this->m_caption ) );
 		}
 	}
 
-	public function getLongWikiText( $linked = null ) {
+	public function getLongWikiText( $linker = null ) {
 		global $wgContLang;
-		if ( is_null( $linked ) || ( $linked === false ) ) {
+		if ( !$linker || $this->m_realLabel === '' ) {
 			return $this->m_realLabel;
 		} else {
 			$titleText = $this->getSpecialPageTitleText();
@@ -124,11 +124,11 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getLongHTMLText( $linker = null ) {
-		if ( is_null( $linker ) || ( $linker === false ) ) {
+		if ( !$linker || $this->m_realLabel === '' ) {
 			return htmlspecialchars( $this->m_realLabel );
 		} else {
 			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );
-			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_realLabel ) );
+			return $linker->link( $title, htmlspecialchars( $this->m_realLabel ) );
 		}
 	}
 
