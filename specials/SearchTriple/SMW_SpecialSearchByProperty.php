@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * @ingroup SMWSpecialPage
@@ -11,13 +12,6 @@
  * @author Daniel Herzig
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'Not an entry point.' );
-}
-
-global $wgAjaxExportList;
-$wgAjaxExportList[] = "smwfGetValues";
-
 /**
  * This special page for Semantic MediaWiki implements a
  * view on a relation-object pair,i.e. a typed backlink.
@@ -28,6 +22,7 @@ $wgAjaxExportList[] = "smwfGetValues";
  * @ingroup SpecialPage
  */
 class SMWSearchByProperty extends SpecialPage {
+	
 	/// string  Name of the property searched for
 	private $propertystring = '';
 	/// SMWPropertyValue  The property that is searched for
@@ -207,7 +202,7 @@ class SMWSearchByProperty extends SpecialPage {
 				$html .= '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getLongWikiText() )->getHTML( smwfGetLinker() );
 			}
 
-			if ( is_object( $result[1] ) && ( ( $this->value != $result[1] ) || $highlight ) ) {
+			if ( array_key_exists( 1, $result ) && is_object( $result[1] ) && ( ( $this->value != $result[1] ) || $highlight ) ) {
 				$html .= " <em><small>(" . $result[1]->getLongHTMLText( smwfGetLinker() ) . ")</small></em>";
 			}
 
@@ -382,7 +377,14 @@ class SMWSearchByProperty extends SpecialPage {
 		$ret = array();
 
 		while ( $result ) {
-			$ret[] = array( $result[0]->getNextDataValue(), $result[1]->getNextDataValue() );
+			$r = array( $result[0]->getNextDataValue() );
+			
+			if ( array_key_exists( 1, $result ) ) {
+				$r[] = $result[1]->getNextDataValue();
+			}
+			
+			$ret[] = $r;
+			
 			$result = $results->getNext();
 		}
 
