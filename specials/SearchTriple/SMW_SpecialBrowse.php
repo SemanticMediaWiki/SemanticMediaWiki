@@ -59,17 +59,29 @@ class SMWSpecialBrowse extends SpecialPage {
 			reset( $params );
 			$this->articletext = current( $params );
 		}
+		
 		$this->subject = SMWDataValueFactory::newTypeIDValue( '_wpg', $this->articletext );
 		$offsettext = $wgRequest->getVal( 'offset' );
 		$this->offset = ( is_null( $offsettext ) ) ? 0 : intval( $offsettext );
+		
 		$dir = $wgRequest->getVal( 'dir' );
+		
 		if ( $smwgBrowseShowAll ) {
 			$this->showoutgoing = true;
 			$this->showincoming = true;
 		}
-		if ( ( $dir == 'both' ) || ( $dir == 'in' ) ) $this->showincoming = true;
-		if ( $dir == 'in' ) $this->showoutgoing = false;
-		if ( $dir == 'out' ) $this->showincoming = false;
+		
+		if ( $dir === 'both' || $dir === 'in' ) {
+			$this->showincoming = true;
+		}
+		
+		if ( $dir === 'in' ) {
+			$this->showoutgoing = false;
+		}
+		
+		if ( $dir === 'out' ) {
+			$this->showincoming = false;
+		}
 
 		$wgOut->addHTML( $this->displayBrowse() );
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
@@ -85,15 +97,18 @@ class SMWSpecialBrowse extends SpecialPage {
 		global $wgContLang, $wgOut;
 		$html = "\n";
 		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
+		
 		if ( $this->subject->isValid() ) {
 			$wgOut->addStyle( '../extensions/SemanticMediaWiki/skins/SMW_custom.css' );
 
 			$html .= $this->displayHead();
+			
 			if ( $this->showoutgoing ) {
 				$data = smwfGetStore()->getSemanticData( $this->subject->getDataItem() );
 				$html .= $this->displayData( $data, $leftside );
 				$html .= $this->displayCenter();
 			}
+			
 			if ( $this->showincoming ) {
 				list( $indata, $more ) = $this->getInData();
 				global $smwgBrowseShowInverse;
@@ -103,10 +118,17 @@ class SMWSpecialBrowse extends SpecialPage {
 			}
 
 			$this->articletext = $this->subject->getWikiValue();
+			
 			// Add a bit space between the factbox and the query form
-			if ( !$this->including() ) $html .= "<p> &#160; </p>\n";
+			if ( !$this->including() ) {
+				$html .= "<p> &#160; </p>\n";
+			}
 		}
-		if ( !$this->including() ) $html .= $this->queryForm();
+		
+		if ( !$this->including() ) {
+			$html .= $this->queryForm();
+		}
+		
 		$wgOut->addHTML( $html );
 	}
 
@@ -294,16 +316,16 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  HTML with the link to this page
 	 */
 	private function linkHere( $text, $out, $in, $offset ) {
-		$dir = $out ? ( $in ? 'both' : 'out' ) : 'in';
 		$frag = ( $text == wfMsg( 'smw_browse_show_incoming' ) ) ? '#smw_browse_incoming' : '';
 
 		return Html::element(
 			'a',
 			array(
 				'href' => SpecialPage::getSafeTitleFor( 'Browse' )->getLocalURL( array(
-					'offset' => "{$offset}&dir={$dir}",
-					'article' => $this->subject->getLongWikiText() . $frag
-				) )
+					'offset' => $offset,
+					'dir' => $out ? ( $in ? 'both' : 'out' ) : 'in',
+					'article' => $this->subject->getLongWikiText()
+				) ) . $frag
 			),
 			$text
 		);
