@@ -216,7 +216,7 @@ class SMWNumberValue extends SMWDataValue {
 	public function getWikiValue() {
 		if ( $this->isValid() ) {
 			$unit = $this->getUnit();
-			return strval( $this->m_dataitem->getSerialization() ) . ( $unit !== '' ? ' ' . $unit : '' );
+			return smwfNumberFormat( $this->m_dataitem->getSerialization() ) . ( $unit !== '' ? ' ' . $unit : '' );
 		} else {
 			return 'error';
 		}
