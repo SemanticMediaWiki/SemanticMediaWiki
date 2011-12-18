@@ -451,10 +451,13 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_exportrdf_submit' => '{{Identical|Export}}',
 	'properties' => 'This is the title of the special page showing all properties.
 {{Identical|Property}}',
-	'smw_property_template' => 'Used to display information about properties on Special:Properties. The parameters have the following meaning:
-* $1: the property name
-* $2: the name of the type of the property
-* $3: the number of occurrences of this property in the wiki',
+	'smw_property_template' => 'Used on [[Special:Properties]]
+* $1 link to Property page
+* $2 link to Type page
+* $3 Number of times the property is used',
+	'smw_property_template_notype' => 'Used on [[Special:Properties]]
+* $1 link to Property page
+* $2 Number of times the property is used',
 	'types' => '{{Identical|Type}}',
 	'smw_typeunits' => 'This message is used in the tooltip on Special:Types when a property supports custom units of measurement. The parameter $1 then is the type name, and $2 is a list of unit names.',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
@@ -507,14 +510,6 @@ This method is called ''content negotiation''.",
 	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
 	'smw-info-par-message' => 'Short description of the message parameter behaviour.',
 	'smw-info-par-icon' => 'Short description of the icon parameter behaviour.',
-	'smw_property_template'  => 'Used on [[Special:Properties]]
-* $1 link to Property page
-* $2 link to Type page
-* $3 Number of times the property is used',
-	'smw_property_template_notype' => 'Used on [[Special:Properties]]
-* $1 link to Property page
-* $2 Number of times the property is used',
-
 );
 
 /** Niuean (ko e vagahau Niuē)
@@ -1884,6 +1879,8 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw_paramdesc_searchlabel' => "El text de l'enllaç als resultats",
 	'smw_paramdesc_sep' => 'El separador entre valors',
 	'smw-paramdesc-distribution' => 'En comptes de mostrar tots els valors, compta les coincidències i mostra-ho.',
+	'smw-paramdesc-distributionsort' => "Ordena la distribució de valor pel recompte d'aparició.",
+	'smw-paramdesc-distributionlimit' => 'Limita la distribució de valor al recompte de només alguns valors.',
 	'smw_paramdesc_template' => "El nom d'una plantilla amb la qual mostrar els llistats",
 	'smw_paramdesc_columns' => 'El nombre de columnes amb les quals mostrar els resultats (per defecte és $1)',
 	'smw_paramdesc_userparam' => "Es passa un valor a cada crida de la plantilla, sempre que s'utilitzi una plantilla",
@@ -1891,6 +1888,7 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw_paramdesc_outrotemplate' => "El nom d'una plantilla que es mostrarà després dels resultats de la consulta, si n'hi ha cap",
 	'smw_paramdesc_embedformat' => "L'etiqueta HTML que s'utilitza per a definir les capçaleres",
 	'smw_paramdesc_embedonly' => 'No mostris capçaleres',
+	'smw-paramdesc-table-class' => 'Una classe CSS addicional per definir per a la taula',
 	'smw_paramdesc_rsstitle' => "El text que s'utilitzarà com a títol del canal",
 	'smw_paramdesc_rssdescription' => "El text que s'utilitzarà com a descripció del canal",
 	'smw_paramdesc_rdfsyntax' => "La sintaxi RDF que s'utilitzarà",
@@ -1900,6 +1898,8 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw-smwdoc-description' => 'Mostra una taula de tots els paràmetres que es poden utilitzar per al format del resultat especificat juntament amb els valors per defecte i les descripcions.',
 	'smw-smwdoc-par-format' => 'El format del resultat per mostrar la documentació del paràmetre.',
 	'smw-paramdesc-sort' => 'Propietat per ordenar la consulta per',
+	'smw-paramdesc-order' => 'Ordre de la ordenació de la consulta',
+	'smw-paramdesc-searchlabel' => 'Text per continuar la cerca (per defecte és «… més resultats»)',
 	'smw_iq_disabled' => 'Les consultes semàntiques estan inhabilitades en aquest wiki.',
 	'smw_iq_moreresults' => '... més resultats',
 	'smw_nonright_importtype' => "$1 només es pot utilitzar per a pàgines de l'espai de noms «$2».",
@@ -1948,6 +1948,7 @@ Els resultats podrien no ser els esperats.",
 	'smw_subpropertyarticlecount' => 'Aquesta propietat té {{PLURAL:$1|la subpropietat següent|les $1 subpropietats següents}}:',
 	'smw_concept_header' => 'Pàgines del concepte "$1"',
 	'smw_conceptarticlecount' => 'Es {{PLURAL:$1|mostra|mostren}} $1 {{PLURAL:$1|pàgina|pàgines}} que pertanyen a aquest concepte.',
+	'smw_rss_description' => 'Canal RSS $1',
 	'exportrdf' => 'Exporta les pàgines a RDF',
 	'smw_exportrdf_docu' => "Aquesta pàgina permet obtenir dades en format RDF d'una pàgina del wiki.
 Per exportar pàgines, entra els títols a la caixa de text següent, un títol per línia.",
@@ -1960,6 +1961,7 @@ Genera un RDF que es pot navegar.',
 	'properties' => 'Propietats',
 	'smw_properties_docu' => "S'utilitzen les propietats següents al wiki.",
 	'smw_property_template' => '$1 de tipus $2 ($3)',
+	'smw_property_template_notype' => '$1 ($2)',
 	'smw_propertylackspage' => 'Cal descriure totes les propietats amb una pàgina!',
 	'smw_propertylackstype' => "No s'ha especificat cap tipus per a la propietat (s'assumeix el tipus $1 per ara).",
 	'smw_propertyhardlyused' => 'Propietats pràcticament no utilitzades al llarg del wiki!',
@@ -2026,8 +2028,10 @@ Noms (<strong>[[Lleida]]</strong>) i espais de noms (<strong>[[{{ns:help}}:+]]</
 	'smw_qui_randorder' => 'Aleatori',
 	'smw_qui_addnprop' => 'afegeix la propietat',
 	'smw_qui_delete' => 'Suprimeix',
+	'smw_qui_rescol' => 'Coincidències de consulta',
 	'smw_qui_options' => 'opcions',
 	'smw_qui_addcategory' => 'afegeix la categoria',
+	'smw_qui_addrescol' => 'afegeix coincidències de consulta',
 	'smw_qui_ok' => "D'acord",
 	'smw_qui_cancel' => 'Cancel·la',
 	'smw_qui_category' => '<strong>Categoria</strong>',
@@ -2412,6 +2416,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'properties' => 'Attribute',
 	'smw_properties_docu' => 'In diesem Wiki gibt es die folgenden Attribute:',
 	'smw_property_template' => '$1 mit Datentyp $2 ($3)',
+	'smw_property_template_notype' => '$1 ($2)',
 	'smw_propertylackspage' => 'Alle Attribute sollten durch eine Seite beschrieben werden!',
 	'smw_propertylackstype' => 'Für dieses Attribut wurde kein Datentyp angegeben ($1 wird vorläufig als Typ angenommen).',
 	'smw_propertyhardlyused' => 'Dieses Attribut wird im Wiki kaum verwendet!',
@@ -3297,6 +3302,7 @@ $messages['eu'] = array(
 
 /** Persian (فارسی)
  * @author Momeni
+ * @author ZxxZxxZ
  */
 $messages['fa'] = array(
 	'smw_finallistconjunct' => '، و',
@@ -3316,7 +3322,7 @@ $messages['fa'] = array(
 	'smw_exportrdf_backlinks' => 'همچنین تمام صفحه‌هایی را که به صفحه‌های صادر شده ارجاع دارند، صادر کن.
 آر-دی-اف قابل مرور تولید می‌کند.',
 	'smw_exportrdf_lastdate' => 'صفحه‌هایی را که از زمان داده شده تغییری نکرده‌اند، صادر نکنید.',
-	'properties' => 'خصوصیت‌ها',
+	'properties' => 'ویژگی‌ها',
 	'smw_properties_docu' => 'خصوصیت‌های زیر در این ویکی استفاده شده‌اند.',
 	'smw_property_template' => '$1 از نوع $2 ($3)',
 	'smw_propertylackspage' => 'تمام خصوصیت‌ها باید توسط یک صفحه توصیف شوند.',
@@ -3415,8 +3421,13 @@ Huomioi, että tulos saattaa olla suuri.',
 	'smw_exportrdf_submit' => 'Vie',
 	'properties' => 'Ominaisuudet',
 	'smw_properties_docu' => 'Wikissä käytetään seuraavia ominaisuuksia.',
+	'smw_property_template' => '$1 on tyypiltään $2 ($3)',
+	'smw_propertylackspage' => 'Jokaisella ominaisuudella pitäisi olla kuvaussivu.',
+	'smw_propertylackstype' => 'Ominaisuuden tyyppiä ei ole määritelty (oletetaan tyypiksi $1).',
+	'smw_propertyhardlyused' => 'Tätä ominaisuutta ei juurikaan käytetä.',
 	'unusedproperties' => 'Käyttämättömät ominaisuudet',
 	'smw_unusedproperties_docu' => 'Seuraavat ominaisuudet ovat olemassa, vaikka mikään muu sivu ei käytä niitä.',
+	'smw_unusedproperty_template' => '$1 on tyypiltään $2',
 	'wantedproperties' => 'Halutut ominaisuudet',
 	'smw_purge' => 'Päivitä',
 	'types' => 'Tyypit',
@@ -3446,8 +3457,9 @@ Koska tuloksia on vain vähän, myös lähellä olevat arvot näytetään.',
 	'smw_sbv_property' => 'Ominaisuus',
 	'smw_sbv_value' => 'Arvo',
 	'smw_sbv_submit' => 'Etsi tuloksia',
-	'browse' => 'Selaa wikiä',
+	'browse' => 'Selaa semanttista wikiä',
 	'smw_browselink' => 'Selaa ominaisuuksia',
+	'smw_browse_article' => 'Kirjoita sen sivun nimi, jonka ominaisuuksia haluat selata.',
 	'smw_browse_go' => 'Siirry',
 	'smw_browse_show_incoming' => 'näytä ominaisuudet, jotka viittaavat tähän',
 	'smw_browse_hide_incoming' => 'piilota ominaisuudet, jotka viittaavat tähän',
@@ -4080,6 +4092,7 @@ Xera un RDF que se pode navegar.',
 	'properties' => 'Propiedades',
 	'smw_properties_docu' => 'As seguintes propiedades son usadas neste wiki.',
 	'smw_property_template' => '$1 de tipo $2 ($3)',
+	'smw_property_template_notype' => '$1 ($2)',
 	'smw_propertylackspage' => 'Todas as propiedades deberían estar descritas nunha páxina!',
 	'smw_propertylackstype' => 'Non foi especificado ningún tipo para esta propiedade (asúmese o tipo $1 polo de agora).',
 	'smw_propertyhardlyused' => 'Esta propiedade apenas é usada neste wiki!',
@@ -5622,6 +5635,7 @@ Genera un RDF navigabile.',
 	'properties' => 'Proprietates',
 	'smw_properties_docu' => 'Le sequente proprietates es usate in le wiki.',
 	'smw_property_template' => '$1 del typo $2 ($3)',
+	'smw_property_template_notype' => '$1 ($2)',
 	'smw_propertylackspage' => 'Tote le proprietates debe esser describite per un pagina!',
 	'smw_propertylackstype' => 'Nulle typo esseva specificate pro iste proprietate (es assumite le typo $1 pro le momento).',
 	'smw_propertyhardlyused' => 'Iste proprietate es a pena usate in iste wiki!',
@@ -7373,6 +7387,7 @@ $messages['mk'] = array(
 	'properties' => 'Својства',
 	'smw_properties_docu' => 'Во викито се користат следниве својства.',
 	'smw_property_template' => '$1 од типот $2 ($3)',
+	'smw_property_template_notype' => '$1 ($2)',
 	'smw_propertylackspage' => 'Сите својства треба да се опишани во страница!',
 	'smw_propertylackstype' => 'Нема назначено тип за ова својство (засега по основно ќе се користи типот $1)',
 	'smw_propertyhardlyused' => 'Ова својство речиси не се користи на викито!',
