@@ -8,7 +8,7 @@ THIS IS NOT A RELEASE YET
 Semantic MediaWiki 1.7 is currently at release candidate stage and is not recommended for use in
 production until the actual release.
 
-* Added native "internal objects" that can be set using #setobject.
+* Added native "internal objects" that can be set using #subobject.
 * Added support for selecting a default graph when using RDF stores,
   configuration called $smwgSparqlDefaultGraph
 * Use of native MediaWiki sortable tables for the table formats.
