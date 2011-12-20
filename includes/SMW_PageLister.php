@@ -100,7 +100,13 @@ class SMWPageLister {
 	 * @return string
 	 */
 	protected function makeSelfLink( Title $title, $linkText, array $parameters ) {
-		return smwfGetLinker()->link( $title, $linkText, $parameters );
+		if ( version_compare( $GLOBALS['wgVersion'], '1.18c', '<' ) ) {
+			$linker = new Linker();
+			return $linker->link( $title, $linkText, $parameters );
+		}
+		else {
+			return Linker::link( $title, $linkText, array(), $parameters );
+		}
 	}
 
 	/**
