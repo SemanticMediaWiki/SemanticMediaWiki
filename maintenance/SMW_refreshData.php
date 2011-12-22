@@ -152,7 +152,7 @@ if (  array_key_exists( 'f', $options ) ) {
 	echo "\nAll storage structures have been deleted and recreated.\n\n";
 }
 
-$linkCache =& LinkCache::singleton();
+$linkCache = LinkCache::singleton();
 $num_files = 0;
 if ( $pages == false ) {
 	print "Refreshing all semantic data in the database!\n---\n" .

@@ -340,7 +340,7 @@ class SMWExportController {
 	public function printPages( $pages, $recursion = 1, $revisiondate = false  ) {
 		wfProfileIn( "RDF::PrintPages" );
 
-		$linkCache =& LinkCache::singleton();
+		$linkCache = LinkCache::singleton();
 		$this->prepareSerialization();
 		$this->delay_flush = 10; // flush only after (fully) printing 11 objects
 
@@ -390,7 +390,7 @@ class SMWExportController {
 	 * @param integer $delayeach number of pages to process between two sleeps 
 	 */
 	public function printAll( $outfile, $ns_restriction = false, $delay, $delayeach ) {
-		$linkCache =& LinkCache::singleton();
+		$linkCache = LinkCache::singleton();
 		$db = wfGetDB( DB_SLAVE );
 
 		$this->delay_flush = 10;
@@ -518,8 +518,7 @@ class SMWExportController {
 		$db = & wfGetDB( DB_SLAVE );
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
-		$linkCache = LinkCache::singleton();
-		
+
 		// assemble export data: 
 		$data = new SMWExpData( new SMWExpResource( '&wiki;#wiki' ) );
 		$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'swivt', 'Wikisite' ) );

@@ -35,8 +35,7 @@ class SMWUpdateJob extends Job {
 		wfProfileIn( 'SMWUpdateJob::run (SMW)' );
 		global $wgParser;
 
-		$linkCache = LinkCache::singleton();
-		$linkCache->clear();
+		LinkCache::singleton()->clear();
 
 		if ( is_null( $this->title ) ) {
 			$this->error = "SMWUpdateJob: Invalid title";
