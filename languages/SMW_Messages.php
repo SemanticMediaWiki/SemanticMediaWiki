@@ -10764,7 +10764,7 @@ $messages['sr-ec'] = array(
 	'smw_result_noresults' => 'Нема резултата.',
 	'smwadmin' => 'Управљачке функције за Семантички медијавики',
 	'smw_smwadmin_setupsuccess' => 'Машина за складиштење је успешно покренута.',
-	'smw_smwadmin_return' => 'Повратак на $1',
+	'smw_smwadmin_return' => 'Назад на $1',
 	'smw_smwadmin_updatestarted' => 'Започет је нови процес за обнављање семантичких података.
 Сви сачувани подаци ће бити поново обновљени или поправљени по потреби.
 Можете следити ток ажурирања на овој посебној страници.',
@@ -10834,6 +10834,8 @@ Ako problem ne nestane za neko vreme, zatražite od administratora sajta da uči
 	'smw_baduri' => 'URI-ji oblika "$1", nisu prihvatljivi.',
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
+	'smw_json_link' => 'JSON',
+	'smw_rdf_link' => 'RDF',
 	'smw_printername_auto' => 'Automatski',
 	'smw_printername_count' => 'Izbroj rezultate',
 	'smw_printername_csv' => 'CSV izvoz',
@@ -10852,7 +10854,7 @@ Ako problem ne nestane za neko vreme, zatražite od administratora sajta da uči
 	'smw_paramdesc_intro' => 'Tekst koji treba da se prikaže prije rezultata upita (u slučaju potrebe)',
 	'smw_paramdesc_outro' => 'Tekst koji treba da se prikaže iza rezultata upita (u slučaju potrebe)',
 	'smw_paramdesc_default' => 'Tekst koji treba da se prikaže u slučaju da upit nije dao rezultate',
-	'smw_paramdesc_searchlabel' => 'Tekst u vezi ka rezultatima',
+	'smw_paramdesc_searchlabel' => 'Tekst veze s rezultatima',
 	'smw_paramdesc_sep' => 'Razdvajač za vrednosti',
 	'smw_paramdesc_columns' => 'Broj kolona u kojima će se prikazati rezultati (predodređeno $1)',
 	'smw_paramdesc_embedonly' => 'Ne prikazuj zaglavlja',
@@ -10928,10 +10930,13 @@ Generiše RDF koji je moguće pregledati.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|upotreba|upotreba}})',
 	'smw_purge' => 'Očisti keš',
 	'types' => 'Vrste',
-	'smw_types_docu' => 'Sledi spisak svih tipova podataka koji se mogu pripisati osobinama.
-Svaki tip podataka ima svoju stranicu gde je moguće dodati dodatne informacije.',
+	'smw_types_docu' => 'Ovo je spisak svih vrsta podataka koji mogu da se dodeljuju svojstvima.',
 	'smw_typeunits' => 'Merne jedinice tipa "$1": $2',
 	'semanticstatistics' => 'Semantičke statistike',
+	'smw_semstats_text' => "Ovaj viki sadrži '''$1''' {{PLURAL:$1|vrednost|vrednosti|vrednosti}} svojstva od ukupno '''$2''' [[Special:Properties|{{PLURAL:$2|svojstva|različita svojstva|različitih svojstava}}]].
+'''$3''' {{PLURAL:$3|svojstvo ima svoju stranicu|svojstva imaju svoje stranice|svojstava imaju svoje stranice}}, a predviđena vrsta podataka je naznačena za '''$4''' od njih.
+Neki od postojećih svojstava mogu biti [[Special:UnusedProperties|neiskorišćeni]].
+Svojstva koja još nemaju stranicu nalaze se na [[Special:WantedProperties|spisku potrebnih svojstava]].",
 	'ask' => 'Semantička pretraga',
 	'smw_ask_sortby' => 'Sortiraj u kolone (opciono)',
 	'smw_ask_ascorder' => 'Uzlazeći',
@@ -10963,6 +10968,7 @@ Pošto je pronađeno samo nekoliko rezultata, takođe su prikazane približne vr
 	'smw_browselink' => 'Pregledaj osobine',
 	'smw_browse_article' => 'Unesite ime početne stranice za pretragu.',
 	'smw_browse_go' => 'Idi',
+	'smw_browse_more' => '…',
 	'smw_browse_show_incoming' => 'prikaži osobine koje vežu ovde',
 	'smw_browse_hide_incoming' => 'sakrij osobine koje vežu ovde',
 	'smw_browse_no_outgoing' => 'Ova stranica nema osobina.',
@@ -11343,6 +11349,11 @@ $messages['tet'] = array(
 $messages['tg-cyrl'] = array(
 	'smw_sbv_value' => 'Қимат',
 	'smw-createproperty-isproperty' => 'Ин як вижагӣ аз навъи $1 аст.',
+);
+
+/** Tajik (Latin script) (tojikī) */
+$messages['tg-latn'] = array(
+	'smw-createproperty-isproperty' => "In jak viƶagī az nav'i $1 ast.",
 );
 
 /** Turkmen (Türkmençe)
@@ -12476,7 +12487,7 @@ $messages['zh-hans'] = array(
 	'smw_unusedproperty_template' => '类型为$2的属性$1',
 	'wantedproperties' => '需要的属性',
 	'smw_wantedproperties_docu' => '以下属性已在本维基中使用，但是尚未创建描述页面。',
-	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|use|使用}})',
+	'smw_wantedproperty_template' => '$1（$2{{PLURAL:$2|次使用}}）',
 	'smw_purge' => '更新',
 	'types' => '类型',
 	'smw_types_docu' => '以下列出了可被赋予属性的所有数据类型。每种数据类型都有一个可以提供附加信息的页面。',
@@ -12601,10 +12612,13 @@ $messages['zh-hant'] = array(
 	'smw_concept_cache_miss' => '因為維基設定需要概念「$1」在離線時計算，此概念現在無法使用。
 如果這個問題在一段時間後仍未解決，請向網站管理員請求令該概念可用。',
 	'smw_noinvannot' => '逆屬性',
+	'version-semantic' => '語義擴展',
 	'smw_baduri' => '不允許「$1」形式的 URI',
+	'smw_dsv_link' => 'DSV',
 	'smw_printername_auto' => '自動',
 	'smw_printername_count' => '計數結果',
 	'smw_printername_csv' => '匯出為 CSV',
+	'smw_printername_dsv' => '導出為DSV',
 	'smw_printername_debug' => 'Debug 查詢（專家適用）',
 	'smw_printername_embedded' => '嵌入的頁面內容',
 	'smw_printername_json' => '匯出為 JSON',
@@ -12615,7 +12629,9 @@ $messages['zh-hant'] = array(
 	'smw_printername_table' => '表格',
 	'smw_printername_broadtable' => '寬表格',
 	'smw_printername_template' => '模板',
+	'smw_printername_rdf' => '導出為RDF',
 	'smw_paramdesc_limit' => '返回結果最大數目',
+	'smw_paramdesc_offset' => '第一個結果的偏移量',
 	'smw_paramdesc_headers' => '顯示頭/屬性名稱',
 	'smw_paramdesc_mainlabel' => '首頁名稱的標籤',
 	'smw_paramdesc_link' => '以連結形式顯示值',
@@ -12633,6 +12649,10 @@ $messages['zh-hant'] = array(
 	'smw_paramdesc_embedonly' => '不顯示標題',
 	'smw_paramdesc_rsstitle' => '源標題文字',
 	'smw_paramdesc_rssdescription' => '源描述文字',
+	'smw_paramdesc_rdfsyntax' => '需要用到的RDF語法',
+	'smw-paramdesc-csv-sep' => '要使用的分隔符',
+	'smw-paramdesc-dsv-separator' => '要使用的分隔符',
+	'smw-paramdesc-dsv-filename' => 'DSV文件名稱',
 	'smw_iq_disabled' => '此 wiki 的語義查詢已被停用',
 	'smw_iq_moreresults' => '更多結果',
 	'smw_nonright_importtype' => '$1 只可用於名子空間「$2」下的頁面。',
@@ -12640,6 +12660,7 @@ $messages['zh-hant'] = array(
 	'smw_no_importelement' => '不可導入元素「$1」。',
 	'smw_parseerror' => '輸入的值無法理解。',
 	'smw_notitle' => '「$1」不得被用做此 wiki 的頁面名稱。',
+	'smw_noproperty' => '"$1"不能用作此維基中的一個屬性名稱。',
 	'smw_wrong_namespace' => '此處只允許名子空間「$1」中的頁面。',
 	'smw_unknowntype' => '定義的屬性類型「$1」不被支援。',
 	'smw_manytypes' => '此屬性定義了一種以上類型。',
@@ -12651,6 +12672,8 @@ $messages['zh-hant'] = array(
 	'smw_false_words' => 'false,f,no,n,否,假,錯',
 	'smw_nofloat' => '「$1」不是一個數字。',
 	'smw_infinite' => '「$1」數值過大，無法支援。',
+	'smw_unitnotallowed' => '"$1"未被聲明為此屬性的一個有效的度量單位。',
+	'smw_nounitsdeclared' => '此屬性沒有聲明任何度量單位。',
 	'smw_novalues' => '未設定數值。',
 	'smw_nodatetime' => '無法理解日期「$1」',
 	'smw_toomanyclosing' => '查詢中「$1」過多。',
@@ -12668,6 +12691,8 @@ $messages['zh-hant'] = array(
 	'smw_nodisjunctions' => '此 wiki 不支援查詢中的析取，查詢被部分停止（$1）。',
 	'smw_querytoolarge' => '由於 wiki 對查詢長度和深度的限制，以下查詢狀態無法包含：$1',
 	'smw_notemplategiven' => '為使查詢格式正常工作，請為參數「模板」賦值。',
+	'smw_db_sparqlqueryproblem' => '無法從SPARQL數據庫獲得查詢結果。這個錯誤可能是暫時的，也可能是數據庫軟件的錯誤造成的。',
+	'smw_db_sparqlqueryincomplete' => '本查詢太過複雜因而被中止，可能會因此丟失部分結果。如果可能，請嘗試改用一個較簡單的查詢。',
 	'smw_type_header' => '類型「$1」的屬性',
 	'smw_typearticlecount' => '使用此類型顯示 $1 {{PLURAL:$1|property|屬性}}',
 	'smw_attribute_header' => '使用屬性「$1」的頁面',
@@ -12795,6 +12820,7 @@ $messages['zh-hant'] = array(
 	'smw_adminlinks_datastructure' => '資料結構',
 	'smw_adminlinks_displayingdata' => '資料顯示',
 	'smw_adminlinks_inlinequerieshelp' => '直接插入式查詢幫助',
+	'smw-createproperty-isproperty' => '這是一個類型為$1的屬性。',
 );
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
