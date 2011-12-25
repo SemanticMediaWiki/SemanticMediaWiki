@@ -82,13 +82,13 @@ $magicWords['de'] = array(
 
 /** Spanish (Español) */
 $magicWords['es'] = array(
-	'ask' => array( 0, 'preguntar', 'pregunta', 'ask' ),
-	'show' => array( 0, 'muestra', 'mostrar', 'show' ),
-	'info' => array( 0, 'informacion', 'información', 'info' ),
-	'concept' => array( 0, 'concepto', 'concept' ),
-	'set' => array( 0, 'establecer', 'determinar', 'set' ),
-	'set_recurring_event' => array( 0, 'establecer_evento_recurrente', 'determinar_evento_recurrente', 'set_recurring_event' ),
-	'declare' => array( 0, 'declarar', 'declara', 'declare' ),
+	'ask' => array( 0, 'preguntar', 'pregunta' ),
+	'show' => array( 0, 'muestra', 'mostrar' ),
+	'info' => array( 0, 'informacion', 'información' ),
+	'concept' => array( 0, 'concepto' ),
+	'set' => array( 0, 'establecer', 'determinar' ),
+	'set_recurring_event' => array( 0, 'establecer_evento_recurrente', 'determinar_evento_recurrente' ),
+	'declare' => array( 0, 'declarar', 'declara' ),
 );
 
 /** Indonesian (Bahasa Indonesia) */
@@ -187,6 +187,19 @@ $magicWords['sr-ec'] = array(
 	'set' => array( 0, 'постави' ),
 	'set_recurring_event' => array( 0, 'постави_периодични_догађај' ),
 	'declare' => array( 0, 'одреди' ),
+);
+
+/** Serbian (Latin script) (‪Srpski (latinica)‬) */
+$magicWords['sr-el'] = array(
+	'ask' => array( 0, 'pitaj' ),
+	'show' => array( 0, 'prikaži' ),
+	'info' => array( 0, 'podaci' ),
+	'concept' => array( 0, 'koncept' ),
+	'set' => array( 0, 'postavi' ),
+	'set_recurring_event' => array( 0, 'postavi_periodični_događaj' ),
+	'declare' => array( 0, 'odredi' ),
+	'SMW_NOFACTBOX' => array( 0, '__BEZČINJENICA__', '__BEZ_ČINJENICA__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__PRIKAŽIČINJENICE__', '__PRIKAŽI_ČINJENICE__' ),
 );
 
 /** Swedish (Svenska) */
