@@ -8259,7 +8259,7 @@ Estimert framdrift på den noverande oppdateringa:',
  * @author Nghtwlkr
  * @author Njardarlogar
  */
-$messages['no'] = array(
+$messages['nb'] = array(
 	'smw-desc' => "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_viewasrdf' => 'RDF-kilde',
 	'smw_finallistconjunct' => ' og',
