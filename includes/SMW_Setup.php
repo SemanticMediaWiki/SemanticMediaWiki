@@ -26,12 +26,12 @@ require_once( 'SMW_GlobalFunctions.php' );
  */
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgIP, $wgFooterIcons, $wgExtensionFunctions,
-		$wgExtensionMessagesFiles, $wgExtensionAliasesFiles,
+		$wgExtensionMessagesFiles,
 		$smwgNamespace, $wgServer, $wgAPIModules;
 
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
-	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
+	$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
 
 	smwfRegisterHooks();
 	smwfRegisterResourceLoaderModules();
