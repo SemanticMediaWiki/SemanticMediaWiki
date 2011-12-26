@@ -12254,7 +12254,9 @@ Bi petuvons pads te aniks, i völads nilöfik palisedons.',
  * @author פוילישער
  */
 $messages['yi'] = array(
+	'smw_nodatetime' => 'די דאַטע "$1" איז נישט פֿארשטענדלעך.',
 	'smw_exportrdf_submit' => 'עקספארטירן',
+	'smw_qui_ok' => 'יא',
 	'smw_result_prev' => 'פֿריערדיקער',
 );
 
