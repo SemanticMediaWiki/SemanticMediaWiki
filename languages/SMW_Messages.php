@@ -2580,6 +2580,13 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-info-par-icon' => 'Anzuzeigendes Symbol, entweder „Info“ oder „Warnung“.',
 );
 
+/** Zazaki (Zazaki)
+ * @author Erdemaslancan
+ */
+$messages['diq'] = array(
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|vıraştene|vıraştene}})',
+);
+
 /** Lower Sorbian (Dolnoserbski)
  * @author Michawiki
  */
