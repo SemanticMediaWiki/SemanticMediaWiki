@@ -196,7 +196,6 @@ EOT;
 
 		$res = $db->query( $sql, __METHOD__ );
 		$curfields = array();
-		$result = array();
 
 		foreach ( $res as $row ) {
 			if ( $wgDBtype == 'postgres' ) { // postgresql
@@ -330,8 +329,7 @@ EOT;
 	 * @param DatabaseBase or Database $db
 	 */
 	public static function setupIndex( $rawTableName, array $columns, $db ) {
-		// TODO: $verbose is not a good global name!
-		global $wgDBtype, $verbose;
+		global $wgDBtype;
 
 		$tableName = $db->tableName( $rawTableName );
 
@@ -443,7 +441,7 @@ EOT;
 				}
 			}
 
-			foreach ( $columns as $key => $index ) { // Add the remaining indexes.
+			foreach ( $columns as $index ) { // Add the remaining indexes.
 				if ( $index != false ) {
 					$type = 'INDEX';
 

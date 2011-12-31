@@ -25,13 +25,6 @@ abstract class SMWQueryUI extends SpecialPage {
 	 */
 	protected $uiCore;
 
-	/**
-	 * Is auto-complete enabled for these UI elements?
-	 *
-	 * @var mixed SMWQUeryUI::ENABLE_AUTO_SUGGEST | SMWQUeryUI::DISABLE_AUTO_SUGGEST
-	 */
-	private $autoCompleteEnabled = false;
-
 	const ENABLE_AUTO_SUGGEST = true;
 	const DISABLE_AUTO_SUGGEST = false;
 
@@ -325,7 +318,6 @@ END;
 	 * @return string
 	 */
 	protected function getQueryFormBox() {
-		global $smwgScriptPath;
 		$this->setUrlArgs( array( 'q' => $this->uiCore->getQueryString() ) );
 		$result = '<div>' .
 			Html::element( 'textarea',
@@ -507,7 +499,6 @@ END;
 		SMWOutputs::requireResource( 'ext.smw.style' );
 
 		$result = '<span id="smwposortbox">';
-		$numSortValues = 0;
 		$params = $this->uiCore->getParameters();
 
 		// mainlabel
@@ -595,7 +586,7 @@ END;
 			}
 			$printOuts = ( $this->uiCore->getPrintOuts() );
 			$counter = 0;
-			foreach ( $printOuts as $poKey => $poValue ) {
+			foreach ( $printOuts as $poValue ) {
 				if ( $poValue->getMode() == SMWPrintRequest::PRINT_CATS ) {
 					$categoryValues[$counter] = ' ';
 					$categoryLabelValues[$counter] = $poValue->getLabel();

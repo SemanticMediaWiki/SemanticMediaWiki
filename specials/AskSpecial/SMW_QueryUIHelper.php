@@ -439,7 +439,6 @@ class SMWQueryUIHelper {
 		$res = $this->queryResult;
 		$printer = SMWQueryProcessor::getResultPrinter( $this->parameters['format'],
 			SMWQueryProcessor::SPECIAL_PAGE );
-		$resultMime = $printer->getMimeType( $res );
 
 		if ( $res->getCount() > 0 ) {
 			$queryResult = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );

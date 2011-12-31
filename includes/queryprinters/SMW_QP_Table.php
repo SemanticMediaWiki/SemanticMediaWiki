@@ -31,8 +31,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
-		global $wgVersion;
-
 		$result = '';
 		
 		$columnClasses = array();

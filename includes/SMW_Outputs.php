@@ -191,7 +191,7 @@ class SMWOutputs {
 	 * @param OutputPage $output
 	 */
 	static public function commitToOutputPage( OutputPage $output ) {
-		foreach ( self::$scripts as $key => $script ) {
+		foreach ( self::$scripts as $script ) {
 			$output->addScript( $script );
 		}
 		foreach ( self::$headItems as $key => $item ) {

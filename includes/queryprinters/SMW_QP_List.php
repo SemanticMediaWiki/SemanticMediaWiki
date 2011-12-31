@@ -178,7 +178,6 @@ END;
 			$result .= $rowstart;
 		}
 
-		$first_col = true;
 		if ( $this->mTemplate !== '' ) { // build template code
 			$this->hasTemplates = true;
 			$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam" : '';

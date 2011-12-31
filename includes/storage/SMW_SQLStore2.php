@@ -401,7 +401,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// First build $select, $from, and $where for the DB query
-		$select = $where = $from = '';
+		$where = $from = '';
 		$pid = $this->getSMWPropertyID( $property );
 		$tableid = self::findPropertyTableID( $property );
 
@@ -563,7 +563,7 @@ class SMWSQLStore2 extends SMWStore {
 			$suboptions = null;
 		}
 
-		foreach ( self::getPropertyTables() as $tid => $proptable ) {
+		foreach ( self::getPropertyTables() as $proptable ) {
 			$from = $db->tableName( $proptable->name );
 
 			if ( $proptable->idsubject ) {
@@ -638,7 +638,7 @@ class SMWSQLStore2 extends SMWStore {
 		$proptables = self::getPropertyTables();
 		foreach ( $tableIds as $tid ) {
 			$proptable = $proptables[$tid];
-			$select = $where = $from = '';
+			$where = $from = '';
 			if ( $proptable->fixedproperty == false ) { // join smw_ids to get property titles
 				$from = $db->tableName( 'smw_ids' ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.p_id=smw_id";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
@@ -847,11 +847,6 @@ class SMWSQLStore2 extends SMWStore {
 						if ( $typeid != 'p' ) {
 							$uvals[$fieldname] = current( $dbkeys );
 						} else {
-							/// TODO The dbkeys hanlding here is obsolete; a clean handling for the DI system is needed
-							$title = current( $dbkeys );
-							$namespace = next( $dbkeys );
-							$iw = next( $dbkeys );
-							$sortkey = next( $dbkeys ); // not used; sortkeys are not set on writing objects
 							$uvals[$fieldname] = $this->makeSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
 						}
 
@@ -1886,9 +1881,7 @@ class SMWSQLStore2 extends SMWStore {
 	public static function findAllDiTypeTableIds( $dataItemId ) {
 		$result = array( self::findDiTypeTableId( $dataItemId ) );
 
-		foreach ( self::$special_tables as $propertyKey => $specialTableId ) {
-			$diProperty = new SMWDIProperty( $propertyKey, false );
-			$propertyTypeId = $diProperty->findPropertyTypeId();
+		foreach ( self::$special_tables as $specialTableId ) {
 			if ( $dataItemId == SMWDataValueFactory::getDataItemId( $dataItemId ) ) {
 				$result[] = $specialTableId;
 			}

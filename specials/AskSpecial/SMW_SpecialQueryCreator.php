@@ -31,8 +31,6 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * @param string $p
 	 */
 	protected function makePage( $p ) {
-		global $wgOut;
-
 		$htmlOutput = $this->makeForm( $p );
 
 		if ( $this->uiCore->getQueryString() != "" ) {

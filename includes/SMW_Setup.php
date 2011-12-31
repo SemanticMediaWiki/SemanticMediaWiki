@@ -27,7 +27,7 @@ require_once( 'SMW_GlobalFunctions.php' );
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgIP, $wgFooterIcons, $wgExtensionFunctions,
 		$wgExtensionMessagesFiles,
-		$smwgNamespace, $wgServer, $wgAPIModules;
+		$smwgNamespace, $wgAPIModules;
 
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
@@ -416,7 +416,7 @@ function smwfRegisterSpecialPages() {
  */
 function smwfSetupExtension() {
 	wfProfileIn( 'smwfSetupExtension (SMW)' );
-	global $smwgIP, $smwgScriptPath, $wgHooks, $wgFooterIcons, $smwgMasterStore, $smwgIQRunningNumber, $smwgToolboxBrowseLink;
+	global $smwgIP, $smwgScriptPath, $wgFooterIcons, $smwgMasterStore, $smwgIQRunningNumber;
 
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;

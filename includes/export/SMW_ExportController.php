@@ -515,7 +515,6 @@ class SMWExportController {
 
 		global $wgSitename, $wgLanguageCode;
 
-		$db = & wfGetDB( DB_SLAVE );
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 

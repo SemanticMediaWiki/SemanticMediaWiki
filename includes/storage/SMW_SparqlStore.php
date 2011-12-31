@@ -266,7 +266,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 
 
 	public function getQueryResult( SMWQuery $query ) {
-		global $smwgIgnoreQueryErrors, $smwgQSortingSupport;
+		global $smwgIgnoreQueryErrors;
 
 		if ( !$smwgIgnoreQueryErrors &&
 		     ( $query->querymode != SMWQuery::MODE_DEBUG ) &&

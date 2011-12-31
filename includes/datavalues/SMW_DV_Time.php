@@ -215,8 +215,8 @@ class SMWTimeValue extends SMWDataValue {
 		$calendarmodel = $timezoneoffset = $era = $ampm = false;
 		$hours = $minutes = $seconds = $timeoffset = false;
 		$unclearparts = array();
-		$prevmatchwasnumber = $matchisnumber = false; // used for looking back; numbers are days/months/years by default but may be re-interpreted if certain further symbols are found
-		$prevmatchwasdate = $matchisdate = false; // used for ensuring that date parts are in one block
+		$matchisnumber = false; // used for looking back; numbers are days/months/years by default but may be re-interpreted if certain further symbols are found
+		$matchisdate = false; // used for ensuring that date parts are in one block
 
 		foreach ( $matches as $match ) {
 			$prevmatchwasnumber = $matchisnumber;
@@ -725,7 +725,6 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getISO8601Date( $mindefault = true ) {
-		$yearnum = ( $this->getYear() > 0 ) ? $this->getYear() : 1 - $this->getYear();
 		$result = ( $this->getYear() > 0 ) ? '' : '-';
 		$monthnum = $this->getMonth( SMWDITime::CM_GREGORIAN, ( $mindefault ? 1 : 12 ) );
 		$result .= str_pad( $this->getYear(), 4, "0", STR_PAD_LEFT ) .

@@ -318,7 +318,6 @@ class SMWQueryParser {
 
 			$typeid = $property->getDataItem()->findPropertyTypeID();
 			$inverse = $property->isInverse();
-			$prevname = $name;
 			$properties[] = $property;
 		} ///NOTE: after iteration, $property and $typeid correspond to last value
 

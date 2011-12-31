@@ -99,7 +99,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 					$listSeparator = ',';
 					$allowed_values_str = str_replace( "\\$listSeparator", "\a", $val );
 					$allowed_values_array = explode( $listSeparator, $allowed_values_str );
-					foreach ( $allowed_values_array as $i => $value ) {
+					foreach ( $allowed_values_array as $value ) {
 						// replace beep back with comma, trim
 						$value = str_replace( "\a", $listSeparator, trim( $value ) );
 						$xml .= '<AllowedValue>' . $value . '</AllowedValue>';
@@ -194,7 +194,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$text = wfMsgForContent( 'smw-createproperty-isproperty', $typeTag );
 		if ( $allowedValues != null) {
 			$text .= "\n\n" . wfMsgExt( 'smw-createproperty-allowedvals', array( 'parsemag', 'content' ), count( $allowedValues ) );
-			foreach ( $allowedValues as $i => $value ) {
+			foreach ( $allowedValues as $value ) {
 				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
 					$prop_labels = $smwgContLang->getPropertyLabels();
 					$text .= "\n* [[" . $prop_labels['_PVAL'] . "::$value]]";

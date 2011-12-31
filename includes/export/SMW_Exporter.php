@@ -321,7 +321,6 @@ class SMWExporter {
 
 				$parts = explode( '-23', $dbKey, 2 );
 				if ( count( $parts ) == 2 ) {
-					$dbkey = $parts[0];
 					$subobjectname = $parts[1];
 				} else {
 					$subobjectname = '';

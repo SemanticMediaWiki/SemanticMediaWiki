@@ -1054,7 +1054,6 @@ class SMWSQLStore2QueryEngine {
 				if ( $propkey === '' ) { // Sort by first result column (page titles).
 					$qobj->sortfields[$propkey] = "$qobj->alias.smw_sortkey";
 				} else { // Try to extend query.
-					$extrawhere = '';
 					$sortprop = SMWPropertyValue::makeUserProperty( $propkey );
 
 					if ( $sortprop->isValid() ) {

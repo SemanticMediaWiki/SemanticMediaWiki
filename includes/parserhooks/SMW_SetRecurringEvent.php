@@ -167,7 +167,6 @@ class SMWSetRecurringEvent {
 		$cur_date = $start_date;
 		$cur_date_jd = self::getJD( $cur_date );
 		$i = 0;
-		$reached_end_date = false;
 
 		do {
 			$i++;

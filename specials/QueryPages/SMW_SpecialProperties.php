@@ -59,7 +59,6 @@ class SMWPropertiesPage extends SMWQueryPage {
 		$linker = smwfGetLinker();
 		list ( $property, $useCount ) = $result;
 		
-		$typestring = '';
 		$errors = array();
 
 		$diWikiPage = $property->getDiWikiPage();
@@ -68,7 +67,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 		if ( $property->isUserDefined() ) {
 
 			if ( $title === null ) {
-				continue;
+				return '';
 			}
 
 			if ( $useCount <= 5 ) {

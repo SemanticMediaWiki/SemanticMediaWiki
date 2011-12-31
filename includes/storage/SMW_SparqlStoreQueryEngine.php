@@ -75,7 +75,7 @@ abstract class SMWSparqlCondition {
 	abstract public function isSafe();
 
 	public function getWeakConditionString() {
-		return implode( $this->weakConditions );
+		return implode( '', $this->weakConditions );
 	}
 
 }
@@ -278,7 +278,6 @@ class SMWSparqlStoreQueryEngine {
 		$sparqlCondition = $this->getSparqlCondition( $query->getDescription() );
 
 		if ( $sparqlCondition instanceof SMWSparqlSingletonCondition ) {
-			$matchElement = $sparqlCondition->matchElement;
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;
 			} else {
@@ -357,7 +356,6 @@ class SMWSparqlStoreQueryEngine {
 		$entries = array();
 
 		if ( $sparqlCondition instanceof SMWSparqlSingletonCondition ) {
-			$matchElement = $sparqlCondition->matchElement;
 			if ( $sparqlCondition->condition === '' ) { // all URIs exist, no querying
 				$sparql = 'None (no conditions).';
 			} else {
