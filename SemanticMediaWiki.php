@@ -34,7 +34,7 @@ if ( !defined( 'Validator_VERSION' ) ) {
 }
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.7 rc 1' );
+define( 'SMW_VERSION', '1.7' );
 
 // Registration of the extension credits, see Special:Version.
 $wgExtensionCredits['semantic'][] = array(
@@ -46,7 +46,7 @@ $wgExtensionCredits['semantic'][] = array(
 	'descriptionmsg' => 'smw-desc'
 );
 
-// A flag used to indicate SMW defines a semantic extension type for extension crdits.
+// A flag used to indicate SMW defines a semantic extension type for extension credits.
 define( 'SEMANTIC_EXTENSION_TYPE', true );
 
 // A flag used to indicate SMW supports Validator style parameter definitions and validation in the SMWResultPrinter class.

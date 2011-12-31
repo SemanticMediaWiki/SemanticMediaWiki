@@ -122,6 +122,10 @@ final class SMWHooks {
 	 * than MW hooks in general, which explains the two-level registration.
 	 *
 	 * @since 1.7
+	 *
+	 * @param Parser $parser
+	 *
+	 * @return true
 	 */
 	public static function onParserFirstCallInit( Parser &$parser ) {
 		$parser->setFunctionHook( 'ask', array( 'SMWAsk', 'render' ) );
@@ -132,7 +136,7 @@ final class SMWHooks {
 		$parser->setFunctionHook( 'set_recurring_event', array( 'SMWSetRecurringEvent', 'render' ) );
 		$parser->setFunctionHook( 'declare', array( 'SMWDeclare', 'render' ), SFH_OBJECT_ARGS );
 
-		return true; // Always return true, in order not to stop MW's hook processing!
+		return true;
 	}
 
 	/**
@@ -144,6 +148,9 @@ final class SMWHooks {
 	 *
 	 * @since 1.7
 	 *
+	 * @param string $text
+	 * @param Skin $skin
+	 *
 	 * @return true
 	 */
 	public static function addPoweredBySMW( &$text, $skin ) {
@@ -151,7 +158,7 @@ final class SMWHooks {
 		$url = htmlspecialchars( "$smwgScriptPath/skins/images/smw_button.png" );
 		$text .= ' <a href="http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki"><img src="' . $url . '" alt="Powered by Semantic MediaWiki" /></a>';
 
-		return true; // Always return true, in order not to stop MW's hook processing!
+		return true;
 	}
 
 }

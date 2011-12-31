@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.6-beta]]
+[[Semantic MediaWiki 1.6]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -36,10 +36,10 @@ If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.15.4 or greater (tested on 1.16.0 to 1.17alpha (r63248).
-* Validator MediaWiki extension version 0.4.5 or greater
+* MediaWiki 1.16 or greater
+* Validator MediaWiki extension version 0.4.13 or greater
   (http://www.mediawiki.org/wiki/Extension:Validator)
-* PHP 5.* or greater installed and working
+* PHP 5.2 or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki) OR PostgreSQL >= 8.3
   Note that Postgres support is still preliminary and might require special
   setup, see http://semantic-mediawiki.org/wiki/PostgreSQL
@@ -137,146 +137,44 @@ section).
 Semantic MediaWiki can be customised by a number of settings. The available
 options are detailed in http://semantic-mediawiki.org/wiki/Help:Configuration
 
-=== Running SMW on older versions of MediaWiki ===
-
-If your site is still running on PHP4, SMW is not supported. It would hardly
-be possible to backport the code to the old PHP version. If you have PHP5 but
-an older MediaWiki version, additional patches/modifications might be needed.
-Download an older release of SMW and have a look at the included INSTALL
-instructions to find out whether other changes are recommended therein.
-
-
 == Upgrading existing installations ==
 
 (Please read all of this before upgrading)
 
-Note that SMW 1.6.0 has a new software dependency: the Validator extension that
-helps Semantic MediaWiki to validate user-provided parameters. It must be
-installed for SMW to work (http://www.mediawiki.org/wiki/Extension:Validator).
+=== Upgrading SMW 1.6.x ===
 
-Installations of SMW 1.5.* and can be upgraded by replacing the files, and by
+Installations of SMW 1.6.* and can be upgraded by replacing the files, and by
 running the database update (Special:SMWAdmin or SMW_setup.php script) as usual.
 Moreover, it is strongly suggested to enable the refresh process to update all
 data on Special:SMWAdmin. Older versions of SMW can be upgraded in the same way,
-but there can be more feature chagnes that require changes of wiki pages. See
-the current documentation for details on using the current version.
+but there can be more feature changes that require changes of wiki pages.
+See the current documentation for details on using the current version.
 
-Extensions for SMW versions up to 1.5.* should not be assumed to work
-with SMW 1.6 out of the box. All SMW extensions should be upgraded to versions
-that are compatible with SMW 1.6. Moreover, some functions changed and pages
-might need updates (see sbelow). Additional remarks on upgrading older SMW
-versions are given below.
+=== Upgrading SMW 1.5.x ===
 
-If not done already, it is suggested to change the inclusion of SMW in
-LocalSettings.php to the following as described in the installation
-instructions above:
+SMW 1.6.0 introduces a new software dependency (which also applies to all later versions):
+the Validator extension that helps Semantic MediaWiki to validate user-provided parameters.
+It must be installed for SMW to work. Make sure that you include Validator prior to the
+inclusion of SMW in your LocalSettings.php. Do note that Validator comes bundled with SMW
+releases as of version 1.6.0. If you are obtaining the code via svn, you will need to get
+a checkout of Validator yourself.
 
- include_once("$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php");
+Do not forget to also install the extension Validator first and include it in LocalSettings.php
+prior to SMW with the following line of code. After that you may proceed to upgrade SMW.
 
-Including SMW_Settings.php as in earlier versions will continue to work, but may
-be disabled in some future version.
+require_once( "$IP/extensions/Validator/Validator.php" );
 
-The main user-visible changes in SMW 1.6 concern the Type namespace, the use of
-custom units of measurement (with custom conversion factors), and the
-declaration of Type:Record properties. Moreover, the support for the RAP was
-replaced by general RDF store support. Please see the documentation for details
-on how to configure this.
+Extensions for SMW versions up to 1.5.* should not be assumed to work with SMW 1.6.0 out
+of the box. All SMW extensions should be upgraded to versions that are compatible with
+SMW 1.6. Moreover, some functions changed and pages might need updates (see below).
+Additional remarks on upgrading older SMW versions are given below.
 
-Users who update from SMW 1.4 or earlier hould note that "n-ary" properties now
-are declared by properties of Type:Record as explained below, and that support
-for geographic coordinates has moved to the Semantic Maps extension. For 
-upgrading earlier SMW versions, users should have a look at upgrade instructions
-released with SMW 1.5.
+If not done already, it is suggested to change the inclusion of SMW in LocalSettings.php
+to the following as described in the installation instructions above:
 
+include_once("$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php");
 
-=== Type namespace ===
-
-SMW no longer uses namespaces "Type" and "Type talk." All types are now built-in
-and there is no good reason to keep a namespace just for documenting them. A new
-function of Special:Types allows viewing all properties of a type, like the Type
-pages did before.
-
-If you still want to use Type (for example to access pages that existed there),
-you should set $smwgHistoricTypeNamespace = true; before including SMW in
-LocalSettings.php. This should only be used to move old content to a better
-place. The old namespaces will not be kept indefinitely.
-
-
-=== Custom units ===
-
-The only use of Type pages was the declaration of custom types that would allow
-unit conversion. The declaration of properties with custom units of measurement
-has changed in two ways: 
-
-(1) The type of these properties is now "Quantity" (not a "custom" type page)
-(2) The conversion factors that used to be on the Type page are not given on the
-    property page. So one can simply move this text (Type must be activated for
-    this as described above).
-
-The internal data format of SMW has not changed for custom units, so stored data
-will be accessible immediately after the change.
-
-
-=== Type:Record ===
-
-The fields declaration of Type:Record properties now refer to properties, not to
-types. If you have a property with [[has type::Record]] that uses a setting like
-
- <nowiki>[[has fields::Page; Number; String]]</nowiki>
-
-then you should now replace it with something like
-
- <nowiki>[[has fields::my page; my number; my string]]</nowiki>
-
-where "my page", "my number", and "my string" are properties in your wiki that
-have the right types. The use of properties instead of types is better since it
-allows custom settings beyond the datatype of a field (e.g. conversion factors).
-
-The new method also involves internal changes in the data format, and it is not
-possible to make the update without tmporarily loosing access to the stored data
-for Type:Record properties (until SMW's self repair has fixed all data entries).
-
-
-=== Changed configuration options ===
-
-Some configuration options (used in LocalSettings.php) have changed since SMW
-1.0. All settings are documented in detail in the file SMW_Settings.php. The
-following list gives the version in which a setting was first introduced, so it
-can be ignored if you already run this version or a more recent one.
-
-* [1.4] Up to version 1.4, the default for value for the setting
-$smwgQComparators was '<|>|!'. It now has changed to '<|>|!|~' so the "like"
-comparator ~ is enabled by default.
-
-* [1.4] Version 1.4 still supported a setting $smwgSMWBetaCompatible to enable
-the old <ask> query syntax and the Relation namespace. This backwards
-compatibility has now been dropped and the setting is no longer used. Please
-update your wiki to not use the outdated (and now undocumented) features.
-
-* [1.3] Since SMW 1.3, the Factbox is hidden by default and will not appear.
-As a compensation, the toolbox (usually on the left below the search field)
-shows a link to Special:Browse. To use the display behaviour of the Factbox as
-it was before SMW 1.3, set $smwgShowFactbox = SMW_FACTBOX_NONEMPTY; The new
-link and the Factbox during editing can also be configured; see
-SMW_Settings.php for details.
-
-* [1.2.1] SMW will no longer support nested link syntax in property values by
-default, since this was known to cause problems. To re-enable this, set
-$smwgLinksInValues = true;
-
-* [1.2] The <ask> syntax and the Relation: namespace have still been officially
-supported in SMW 1.2, and were optionally available until SMW 1.4.*. Both are
-now disabled and can no longer be used.
-
-* [1.2] If you had a setting $smwgQDisjunctionSupport = false, then you now
-need the following settings:
-
- $smwgQFeatures        = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
- $smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY & ~SMW_CONCEPT_QUERY;
-
-Older configuration changes are found online, see
-http://semantic-mediawiki.org/wiki/Help:Installation_1.3
-
+Including SMW_Settings.php as in earlier versions will no longer work.
 
 == Troubleshooting ==
 

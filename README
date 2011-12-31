@@ -24,7 +24,7 @@ free technical support -- that is what the user list is for.
 
 == Developers ==
 
-Development is coordinated by Markus Krötzsch and Denny Vrandecic.
+Development is coordinated by Jeroen De Dauw and Markus Krötzsch.
 
 Semantic MediaWiki development is partially funded by Institut AIFB of the
 Karlsruhe Institute of Technology in Germany; see http://www.aifb.kit.edu
@@ -34,6 +34,8 @@ Halo project funded by Vulcan Inc., where development is coordinated
 by ontoprise GmbH, Karlsruhe, Germany.
 
 == Contributors ==
+
+* Denny Vrandecic is one of the original core developers.
 
 * Heiko Haller and Max Völkel contributed to the initial design and basic
   architectural decisions.
@@ -46,7 +48,7 @@ by ontoprise GmbH, Karlsruhe, Germany.
   Fernando Correia, Yaron Koren, Nick Grandy, Jörg Heizmann, Daniel Herzig,
   Nikolas Iwan, Tobias Matzner, Thomas Bleher, Felix Kratzer, Frank Dengler,
   Nathan R. Yergler, Daniel Friesen, Fabian Howahl, Jie Bao, Marcel Gsteiger,
-  Roi Avinoam, Richard Cyganiak, Sanyam Goyal, Jeroen De Dauw.
+  Roi Avinoam, Richard Cyganiak, Sanyam Goyal.
 
 * The logo and related artwork for Semantic MediaWiki as found on
   http://semantic-mediawiki.org/wiki/SMW_Logo
