@@ -68,6 +68,7 @@ class SMWLanguageDe extends SMWLanguage {
 		'_SERV' => 'Bietet Service',
 		'_PVAL' => 'Erlaubt Wert',
 		'_MDAT' => 'Zuletzt geändert',
+		'_CDAT' => 'Erstellt',
 		'_ERRP' => 'Hat unpassenden Wert für',
 		'_LIST' => 'Hat Komponenten',
 		'_SOBJ' => 'Hat Unterobjekt',
