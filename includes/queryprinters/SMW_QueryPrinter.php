@@ -451,7 +451,7 @@ abstract class SMWResultPrinter {
 	 * @return boolean
 	 */
 	protected function linkFurtherResults( $results ) {
-		return ( $this->mInline && $results->hasFurtherResults() && ( $this->mSearchlabel !== '' ) );
+		return $this->mInline && $results->hasFurtherResults() && $this->mSearchlabel !== '';
 	}
 	
 	/**

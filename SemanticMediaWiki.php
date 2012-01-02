@@ -34,7 +34,7 @@ if ( !defined( 'Validator_VERSION' ) ) {
 }
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.7' );
+define( 'SMW_VERSION', '1.7.1 alpha' );
 
 // Registration of the extension credits, see Special:Version.
 $wgExtensionCredits['semantic'][] = array(

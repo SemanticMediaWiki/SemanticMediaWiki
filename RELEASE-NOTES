@@ -1,6 +1,15 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
 
+== SMW 1.7.1 ==
+
+THIS IS NOT A RELEASE YET 
+
+Semantic MediaWiki 1.7.1 is currently in beta-quality and is not recommended for use in
+production until the actual release.
+
+* Fixed bug in "further results" links causing the main column to be displayed twice on Special:Ask.
+
 == SMW 1.7 ==
 
 Released on January 1, 2012.
@@ -31,12 +40,12 @@ Released on January 1, 2012.
 * Fixed some issues with the category result format (including bug 30761).
 * Fixed email validation issue (bug 32295).
 * Fixed incorrect handling of sort and order parameters on Special:Ask (bug 32706).
-* Fixed display of images to old behavior after a recent regression.
-* Fixed several more issues not listed here.
+* Fixed display of images to old behaviour after a recent regression.
 * Fixed fatal error in the concept cache maintenance script (bug 32592).
 * Fixed factbox links to Special:SearchByProperty containing numerical numbers for
   wikis in languages with the comma as decimal separator instead of a dot.
 * Fixed the "hide incoming properties" link on Special:Browse.
+* Fixed several more issues not listed here.
 * Dropped compatibility with MediaWiki 1.15.x (and earlier).
 * Dropped compatibility with old-style (SMW < 1.6) query printers.
 * Full compatibility with MediaWiki 1.18 and foreward-compatibility with 1.19. 

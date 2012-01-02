@@ -193,6 +193,9 @@ class SMWQueryResult {
 	 * can also be changed afterwards with SMWInfolink::setCaption()). If empty, the
 	 * message 'smw_iq_moreresults' is used as a caption.
 	 * 
+	 * TODO: have this work for all params without manually overriding and adding everything
+	 * (this is possible since the param handling changes in 1.7) 
+	 * 
 	 * @param mixed $caption A caption string or false
 	 * 
 	 * @return SMWInfolink
@@ -200,11 +203,19 @@ class SMWQueryResult {
 	public function getQueryLink( $caption = false ) {
 		$params = array( trim( $this->mQuery->getQueryString() ) );
 		
-		foreach ( $this->mQuery->getExtraPrintouts() as $printout ) {
-			$params[] = $printout->getSerialisation();
+		foreach ( $this->mQuery->getExtraPrintouts() as /* SMWPrintRequest */ $printout ) {
+			$serialization = $printout->getSerialisation();
+			
+			// TODO: this is a hack to get rid of the mainlabel param in case it was automatically added
+			// by SMWQueryProcessor::addThisPrintout. Should be done nicer when this link creation gets redone.
+			if ( $serialization !== '?#' ) {
+				$params[] = $serialization;
+			}
 		}
 		
-		$params['mainlabel'] = $this->mQuery->getMainLabel();
+		if ( $this->mQuery->getMainLabel() !== false ) {
+			$params['mainlabel'] = $this->mQuery->getMainLabel();
+		}
 		
 		if ( count( $this->mQuery->sortkeys ) > 0 ) {
 			$order = implode( ',', $this->mQuery->sortkeys );
