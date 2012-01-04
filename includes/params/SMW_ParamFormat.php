@@ -50,9 +50,9 @@ class SMWParamFormat extends ItemParameterManipulation {
 	}
 	
 	/**
-	 * Takes a format name, which can be an alias and returns something
-	 * that certainly valid. Aliases are resvolved. Invalid formats
-	 * will result into 'auto' being returned.
+	 * Takes a format name, which can be an alias and returns a format name
+	 * which will be valid for sure. Aliases are resvolved. If the given
+	 * format name is invalid, the predefined default format will be returned.
 	 * 
 	 * @since 1.6.2
 	 * 
@@ -63,7 +63,7 @@ class SMWParamFormat extends ItemParameterManipulation {
 	protected function getValidFormatName( $value ) {
 		global $smwgResultFormats;
 		
-		$value = trim( $value );
+		$value = strtolower( trim( $value ) );
 		
 		if ( !array_key_exists( $value, $smwgResultFormats ) ) {
 			$isAlias = self::resolveFormatAliases( $value );
