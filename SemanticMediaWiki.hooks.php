@@ -161,4 +161,77 @@ final class SMWHooks {
 		return true;
 	}
 
+    /**
+     * Adds the 'semantic' extension type to the type list.
+     *
+     * @since 1.7.1
+     *
+     * @param $aExtensionTypes Array
+     *
+     * @return true
+     */
+    public static function addSemanticExtensionType( array &$aExtensionTypes ) {
+    	$aExtensionTypes = array_merge( array( 'semantic' => wfMsg( 'version-semantic' ) ), $aExtensionTypes );
+    	return true;
+    }
+
+    /**
+     * @see SMWHooks::addSemanticExtensionType
+     *
+     * @since 1.7.1
+     *
+     * @param $oSpecialVersion SpecialVersion
+     * @param $aExtensionTypes Array
+     *
+     * @return true
+     */
+    public static function oldAddSemanticExtensionType( SpecialVersion &$oSpecialVersion, array &$aExtensionTypes ) {
+    	return self::addSemanticExtensionType( $aExtensionTypes );
+    }
+
+    /**
+     * Register tables to be added to temporary tables for parser tests.
+     * @todo Hard-coding this thwarts the modularity/exchangability of the SMW
+     * storage backend. The actual list of required tables depends on the backend
+     * implementation and cannot really be fixed here.
+     *
+     * @since 1.7.1
+     *
+     * @param array $tables
+     *
+     * @return true
+     */
+    public static function onParserTestTables( array &$tables ) {
+    	$tables[] = 'smw_ids';
+    	$tables[] = 'smw_redi2';
+    	$tables[] = 'smw_atts2';
+    	$tables[] = 'smw_rels2';
+    	$tables[] = 'smw_text2';
+    	$tables[] = 'smw_spec2';
+    	$tables[] = 'smw_inst2';
+    	$tables[] = 'smw_subs2';
+    	return true;
+    }
+
+    /**
+     * Add a link to the toolbox to view the properties of the current page in
+     * Special:Browse. The links has the CSS id "t-smwbrowselink" so that it can be
+     * skinned or hidden with all standard mechanisms (also by individual users
+     * with custom CSS).
+     *
+     * @since 1.7.1
+     *
+     * @param $skintemplate
+     *
+     * @return true
+     */
+    public static function showBrowseLink( $skintemplate ) {
+    	if ( $skintemplate->data['isarticle'] ) {
+    		$browselink = SMWInfolink::newBrowsingLink( wfMsg( 'smw_browselink' ),
+    						$skintemplate->data['titleprefixeddbkey'], false );
+    		echo '<li id="t-smwbrowselink">' . $browselink->getHTML() . '</li>';
+    	}
+    	return true;
+    }
+
 }

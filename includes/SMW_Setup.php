@@ -78,7 +78,7 @@ function smwfRegisterHooks() {
 	// FIXME: The following can be removed when new style magic words are used (introduced in r52503)
 	$wgHooks['LanguageGetMagic'][]    = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
 	
-	$wgHooks['ParserTestTables'][]    = 'smwfOnParserTestTables';
+	$wgHooks['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
 	$wgHooks['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 	$wgHooks['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 	
@@ -98,7 +98,7 @@ function smwfRegisterHooks() {
 	$wgHooks['ParserFirstCallInit'][] = 'SMWHooks::onParserFirstCallInit';
 
 	if ( $GLOBALS['smwgToolboxBrowseLink'] ) {
-		$wgHooks['SkinTemplateToolboxEnd'][] = 'smwfShowBrowseLink';
+		$wgHooks['SkinTemplateToolboxEnd'][] = 'SMWHooks::showBrowseLink';
 	}
 
 	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
@@ -106,10 +106,10 @@ function smwfRegisterHooks() {
 	
 	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
 		// For MediaWiki 1.17 alpha and later.
-		$wgHooks['ExtensionTypes'][] = 'smwfAddSemanticExtensionType';
+		$wgHooks['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
 	} else {
 		// For pre-MediaWiki 1.17 alpha.
-		$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfOldAddSemanticExtensionType';
+		$wgHooks['SpecialVersionExtensionTypes'][] = 'SMWHooks::oldAddSemanticExtensionType';
 	}
 }
 
@@ -431,67 +431,6 @@ function smwfSetupExtension() {
 	}
 
 	wfProfileOut( 'smwfSetupExtension (SMW)' );
-	return true;
-}
-
-/**
- * Adds the 'semantic' extension type to the type list.
- *
- * @since 1.5.2
- *
- * @param $aExtensionTypes Array
- *
- * @return true
- */
-function smwfAddSemanticExtensionType( array &$aExtensionTypes ) {
-	$aExtensionTypes = array_merge( array( 'semantic' => wfMsg( 'version-semantic' ) ), $aExtensionTypes );
-	return true;
-}
-
-/**
- * @see smwfAddSemanticExtensionType
- *
- * @since 1.5.2
- *
- * @param $oSpecialVersion SpecialVersion
- * @param $aExtensionTypes Array
- *
- * @return true
- */
-function smwfOldAddSemanticExtensionType( SpecialVersion &$oSpecialVersion, array &$aExtensionTypes ) {
-	return smwfAddSemanticExtensionType( $aExtensionTypes );
-}
-
-/**
- * Register tables to be added to temporary tables for parser tests.
- * @todo Hard-coding this thwarts the modularity/exchangability of the SMW
- * storage backend. The actual list of required tables depends on the backend
- * implementation and cannot really be fixed here.
- */
-function smwfOnParserTestTables( &$tables ) {
-	$tables[] = 'smw_ids';
-	$tables[] = 'smw_redi2';
-	$tables[] = 'smw_atts2';
-	$tables[] = 'smw_rels2';
-	$tables[] = 'smw_text2';
-	$tables[] = 'smw_spec2';
-	$tables[] = 'smw_inst2';
-	$tables[] = 'smw_subs2';
-	return true;
-}
-
-/**
- * Add a link to the toolbox to view the properties of the current page in
- * Special:Browse. The links has the CSS id "t-smwbrowselink" so that it can be
- * skinned or hidden with all standard mechanisms (also by individual users
- * with custom CSS).
- */
-function smwfShowBrowseLink( $skintemplate ) {
-	if ( $skintemplate->data['isarticle'] ) {
-		$browselink = SMWInfolink::newBrowsingLink( wfMsg( 'smw_browselink' ),
-						$skintemplate->data['titleprefixeddbkey'], false );
-		echo '<li id="t-smwbrowselink">' . $browselink->getHTML() . '</li>';
-	}
 	return true;
 }
 
