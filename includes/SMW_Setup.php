@@ -32,6 +32,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
 	$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
+    $wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
 
 	smwfRegisterHooks();
 	smwfRegisterResourceLoaderModules();
@@ -74,10 +75,7 @@ function smwfRegisterHooks() {
 	global $wgHooks, $wgVersion;
 
 	$wgHooks['LoadExtensionSchemaUpdates'][] = 'SMWHooks::onSchemaUpdate';
-	
-	// FIXME: The following can be removed when new style magic words are used (introduced in r52503)
-	$wgHooks['LanguageGetMagic'][]    = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
-	
+
 	$wgHooks['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
 	$wgHooks['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 	$wgHooks['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
@@ -483,23 +481,6 @@ function smwfInitNamespaces() {
 /**********************************************/
 /***** language settings                  *****/
 /**********************************************/
-
-/**
- * Set up (possibly localised) names for SMW's parser functions.
- * @todo Can be removed when new style magic words are used (introduced in r52503).
- */
-function smwfAddMagicWords( &$magicWords, $langCode ) {
-	$magicWords['ask']     = array( 0, 'ask' );
-	$magicWords['show']    = array( 0, 'show' );
-	$magicWords['subobject'] = array( 0, 'subobject' );
-	$magicWords['concept'] = array( 0, 'concept' );
-	$magicWords['set']     = array( 0, 'set' );
-	$magicWords['set_recurring_event']     = array( 0, 'set_recurring_event' );
-	$magicWords['declare'] = array( 0, 'declare' );
-	$magicWords['SMW_NOFACTBOX'] = array( 0, '__NOFACTBOX__' );
-	$magicWords['SMW_SHOWFACTBOX'] = array( 0, '__SHOWFACTBOX__' );
-	return true;
-}
 
 /**
  * Initialise a global language object for content language. This must happen
