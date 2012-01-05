@@ -32,7 +32,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
 	$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
-    $wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
+	$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
 
 	smwfRegisterHooks();
 	smwfRegisterResourceLoaderModules();
