@@ -21,7 +21,7 @@ BubbleTT.Platform= new Object();
 var tt = null; // the tooltip
 var all_tt = []; // record all active tooltips
 
-var imagePath = wgScriptPath + '/extensions/SemanticMediaWiki/skins/images/';
+var imagePath = mw.config.get( 'wgScriptPath' ) + '/extensions/SemanticMediaWiki/skins/images/';
 
 // Dimensions of persistent tooltips
 var SMWTT_WIDTH_P = 400;
