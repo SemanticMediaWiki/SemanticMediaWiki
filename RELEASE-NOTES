@@ -11,6 +11,7 @@ production until the actual release.
 * Fixed bug in "further results" links causing the main column to be displayed twice on Special:Ask (bug 33473).
 * Fixed incorrect case-sensitivity of the format parameter (bug 31138).
 * Fixed internationalization of magic words.
+* Fixed offset and limit value in further results links (bug 33575).
 
 == SMW 1.7 ==
 

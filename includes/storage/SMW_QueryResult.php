@@ -216,6 +216,9 @@ class SMWQueryResult {
 		if ( $this->mQuery->getMainLabel() !== false ) {
 			$params['mainlabel'] = $this->mQuery->getMainLabel();
 		}
+
+		$params['offset'] = $this->mQuery->getOffset() + $this->mQuery->getLimit();
+		$params['limit'] = $this->mQuery->getLimit();
 		
 		if ( count( $this->mQuery->sortkeys ) > 0 ) {
 			$order = implode( ',', $this->mQuery->sortkeys );
