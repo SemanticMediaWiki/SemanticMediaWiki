@@ -1,12 +1,9 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
 
-== SMW 1.7.1 ==
+== SMW 1.7.0.1 ==
 
-THIS IS NOT A RELEASE YET 
-
-Semantic MediaWiki 1.7.1 is currently in beta-quality and is not recommended for use in
-production until the actual release.
+Released on January 9, 2012.
 
 * Fixed bug in "further results" links causing the main column to be displayed twice on Special:Ask (bug 33473).
 * Fixed incorrect case-sensitivity of the format parameter (bug 31138).
