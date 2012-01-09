@@ -218,8 +218,11 @@ class SMWQueryResult {
 		}
 
 		$params['offset'] = $this->mQuery->getOffset() + $this->mQuery->getLimit();
-		$params['limit'] = $this->mQuery->getLimit();
-		
+
+		if ( $this->mQuery->getLimit() > 0 ) {
+			$params['limit'] = $this->mQuery->getLimit();
+		}
+
 		if ( count( $this->mQuery->sortkeys ) > 0 ) {
 			$order = implode( ',', $this->mQuery->sortkeys );
 			$sort = implode( ',', array_keys( $this->mQuery->sortkeys ) );
