@@ -7276,6 +7276,7 @@ Rezultatas gali būti ne tas, kurio tikėtasi.',
 
 /** Macedonian (Македонски)
  * @author Bjankuloski06
+ * @author Rancher
  */
 $messages['mk'] = array(
 	'smw-desc' => "Го прави вашето вики подостапно - за машини ''и'' луѓе ([http://semantic-mediawiki.org/wiki/Help:User_manual?uselang=mk документација])",
@@ -7293,7 +7294,7 @@ $messages['mk'] = array(
 Ако проблемот не исчезне по извесно време, побарајте од вашиот администратор да го овозможи тој концепт.',
 	'smw_noinvannot' => 'На обратните својства не можат да им се назначуваат вредности.',
 	'version-semantic' => 'Семантички додатоци',
-	'smw_baduri' => 'URI-ja од обликот „$1“ не се дозволени.',
+	'smw_baduri' => 'URI-ја од обликот „$1“ не се дозволени.',
 	'smw_dsv_link' => 'DSV',
 	'smw_printername_auto' => 'Автоматски',
 	'smw_printername_count' => 'Резултати од пребројувањето',
@@ -10628,7 +10629,7 @@ $messages['sr-ec'] = array(
 	'smw_concept_cache_miss' => 'Концепт "$1" се тренутно не може користити, пошто конфигурација викија захтева да буде компутован офлајн.
 Ако проблем не нестане за неко време, затражите од администратора сајта да учини овај концепт доступним.',
 	'smw_noinvannot' => 'Вредности није могуће приписати инверзним особинама.',
-	'smw_baduri' => 'URI-ји облика "$1", нису прихватљиви.',
+	'smw_baduri' => 'Једнообразни идентификатори ресурса (URI) за облик „$1“ нису дозвољени.',
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
 	'smw_json_link' => 'JSON',
@@ -12273,6 +12274,7 @@ Bi petuvons pads te aniks, i völads nilöfik palisedons.',
  * @author פוילישער
  */
 $messages['yi'] = array(
+	'smw_finallistconjunct' => 'און',
 	'smw_nodatetime' => 'די דאַטע "$1" איז נישט פֿארשטענדלעך.',
 	'smw_exportrdf_submit' => 'עקספארטירן',
 	'smw_qui_ok' => 'יא',
