@@ -88,7 +88,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 				$label = wfMsgForContent( 'smw_csv_link' );
 			}
 
-			$link = $res->getQueryLink( $label );
+			$link = $res->getQueryLink( $label, false );
 			$link->setParameter( 'csv', 'format' );
 			$link->setParameter( $this->m_sep, 'sep' );
 			

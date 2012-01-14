@@ -158,7 +158,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 			$label = wfMsgForContent( 'smw_dsv_link' );
 		}
 
-		$link = $res->getQueryLink( $label );
+		$link = $res->getQueryLink( $label, false );
 		$link->setParameter( 'dsv', 'format' );
 		$link->setParameter( $this->separator, 'separator' );
 		$link->setParameter( $this->fileName, 'filename' );

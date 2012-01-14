@@ -10,6 +10,7 @@ production until the actual release.
 
 * Fixed fatal error occurring for some invalid property definitions (bug 33652).
 * Fixed error in RSS when using creator or date parameters (bug 33721).
+* Fixed incorrect offset of export formats (bug 33726).
 
 == SMW 1.7.0.1 ==
 

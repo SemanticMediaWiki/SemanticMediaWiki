@@ -119,7 +119,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			} else {
 				$label = wfMsgForContent( 'smw_rss_link' );
 			}
-			$link = $res->getQueryLink( $label );
+			$link = $res->getQueryLink( $label, false );
 			$link->setParameter( 'rss', 'format' );
 			if ( $this->m_title !== '' ) {
 				$link->setParameter( $this->m_title, 'title' );

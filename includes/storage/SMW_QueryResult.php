@@ -196,11 +196,12 @@ class SMWQueryResult {
 	 * TODO: have this work for all params without manually overriding and adding everything
 	 * (this is possible since the param handling changes in 1.7) 
 	 * 
-	 * @param mixed $caption A caption string or false
+	 * @param string|false $caption
+	 * @param boolean $offsetResults Should the results be offsetted by the current limit? 
 	 * 
 	 * @return SMWInfolink
 	 */
-	public function getQueryLink( $caption = false ) {
+	public function getQueryLink( $caption = false, $offsetResults = true ) {
 		$params = array( trim( $this->mQuery->getQueryString() ) );
 		
 		foreach ( $this->mQuery->getExtraPrintouts() as /* SMWPrintRequest */ $printout ) {
@@ -217,8 +218,16 @@ class SMWQueryResult {
 			$params['mainlabel'] = $this->mQuery->getMainLabel();
 		}
 
-		$params['offset'] = $this->mQuery->getOffset() + $this->mQuery->getLimit();
-
+		$params['offset'] = $this->mQuery->getOffset();
+		
+		if ( $offsetResults ) {
+			$params['offset'] += $this->mQuery->getLimit();
+		}
+		
+		if ( $params['offset'] === 0 ) {
+			unset( $params['offset'] );
+		}
+		
 		if ( $this->mQuery->getLimit() > 0 ) {
 			$params['limit'] = $this->mQuery->getLimit();
 		}
