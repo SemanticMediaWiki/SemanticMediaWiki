@@ -9,6 +9,7 @@ Semantic MediaWiki 1.7.1 is currently in beta-quality and is not recommended for
 production until the actual release.
 
 * Fixed fatal error occurring for some invalid property definitions (bug 33652).
+* Fixed error in RSS when using creator or date parameters (bug 33721).
 
 == SMW 1.7.0.1 ==
 

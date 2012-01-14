@@ -71,11 +71,11 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 					// mechanism to add whatever you want :)
 					$req = $field->getPrintRequest();
 					if ( strtolower( $req->getLabel() ) == 'creator' ) {
-						foreach ( $field->getContent() as $entry ) {
+						while ( $entry = $field->getNextDataValue() ) {
 							$creators[] = $entry->getShortWikiText();
 						}
 					} elseif ( ( strtolower( $req->getLabel() ) == 'date' ) && ( $req->getTypeID() == '_dat' ) ) {
-						foreach ( $field->getContent() as $entry ) {
+						while ( $entry = $field->getNextDataValue() ) {
 							$dates[] = $entry->getXMLSchemaDate();
 						}
 					}
