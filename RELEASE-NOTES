@@ -3,10 +3,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 == SMW 1.7.0.2 ==
 
-THIS IS NOT A RELEASE YET 
-
-Semantic MediaWiki 1.7.0.2 is currently in beta-quality and is not recommended for use in
-production until the actual release.
+Released on January 16, 2012.
 
 * Fixed creation of concept cache and display of matching objects on concept pages (bug 32592, 32718).
 * Fixed fatal error occurring for some invalid property definitions (bug 33652).
