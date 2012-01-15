@@ -67,35 +67,5 @@ class SMWConceptPage extends SMWOrderedListPage {
 		return $result;
 	}
 
-	/**
-	 * Format a list of wiki pages chunked by letter, either as a bullet
-	 * list or a columnar format, depending on the length.
-	 *
-	 * @param int $cutoff
-	 * @return string
-	 */
-// 	private function formatList( $cutoff = 6 ) {
-// 		$end = count( $this->diWikiPages );
-//
-// 		if ( $end > $this->limit ) {
-// 			if ( $this->until !== '' ) {
-// 				$start = 1;
-// 			} else {
-// 				$start = 0;
-// 				$end --;
-// 			}
-// 		} else {
-// 			$start = 0;
-// 		}
-//
-// 		if ( count ( $this->diWikiPages ) > $cutoff ) {
-// 			return $this->columnList( $start, $end, $this->diWikiPages );
-// 		} elseif ( count( $this->diWikiPages ) > 0 ) {
-// 			return $this->shortList( $start, $end, $this->diWikiPages );
-// 		} else {
-// 			return '';
-// 		}
-// 	}
-
 }
 

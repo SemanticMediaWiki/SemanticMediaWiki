@@ -76,8 +76,8 @@ abstract class SMWOrderedListPage extends Article {
 
 		wfProfileIn( __METHOD__ . ' (SMW)' );
 
-		$this->from = $wgRequest->getVal( 'from' );
-		$this->until = $wgRequest->getVal( 'until' );
+		$this->from = $wgRequest->getVal( 'from', '' );
+		$this->until = $wgRequest->getVal( 'until', '' );
 
 		if ( $this->initParameters() ) {
 			$wgOut->addHTML( "<br id=\"smwfootbr\"/>\n" . $this->getHtml() );
