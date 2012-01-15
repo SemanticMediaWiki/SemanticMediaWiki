@@ -93,6 +93,8 @@ class SMWSQLStore2QueryEngine {
 	public function refreshConceptCache( Title $concept ) {
 		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
 
+		$fname = 'SMW::refreshConceptCache';
+
 		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
 		$cid_c = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 
@@ -101,7 +103,7 @@ class SMWSQLStore2QueryEngine {
 			return $this->m_errors;
 		}
 
-		$values = $this->m_store->getPropertyValues( SMWDIWikiPage::newFromTitle( $concept ), new SMWDIProperty( '_CONC' ) );// two lines due to "strict standards" warning
+		$values = $this->m_store->getPropertyValues( SMWDIWikiPage::newFromTitle( $concept ), new SMWDIProperty( '_CONC' ) );
 		$di = end( $values );
 		$desctxt = ( $di !== false ) ? $di->getConceptQuery() : false;
 		$this->m_errors = array();
@@ -127,27 +129,34 @@ class SMWSQLStore2QueryEngine {
 			}
 
 			// Update database:
-			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
+			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), $fname );
+			$smw_conccache = $this->m_dbs->tablename( 'smw_conccache' );
 
 			if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
-				$where = $qobj->where . ( $qobj->where ? ' AND ':'' ) .
-				         'NOT EXISTS (SELECT NULL FROM ' . $this->m_dbs->tableName( 'smw_conccache' ) .
-			             ' WHERE ' . $this->m_dbs->tablename( 'smw_conccache' ) . '.s_id = ' . $qobj->alias . '.s_id ' .
-			             ' AND   ' . $this->m_dbs->tablename( 'smw_conccache' ) . '.o_id = ' . $qobj->alias . '.o_id )';
+				$where = $qobj->where . ( $qobj->where ? ' AND ' : '' ) .
+					"NOT EXISTS (SELECT NULL FROM $smw_conccache" .
+					" WHERE {$smw_conccache}.s_id = {$qobj->alias}.s_id " .
+					" AND  {$smw_conccache}.o_id = {$qobj->alias}.o_id )";
 			} else { // MySQL just uses INSERT IGNORE, no extra conditions
 				$where = $qobj->where;
 			}
 
-			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "":"IGNORE " ) . "INTO " . $this->m_dbs->tableName( 'smw_conccache' ) .
-			                    " SELECT DISTINCT $qobj->joinfield AS s_id, $cid AS o_id FROM " .
-			                    $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from .
-			                    ( $where ? " WHERE ":'' ) . $where . " LIMIT $smwgQMaxLimit",
-			                    'SMW::refreshConceptCache' );
+			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
+				"INTO $smw_conccache" .
+				" SELECT DISTINCT {$qobj->joinfield} AS s_id, $cid AS o_id FROM " .
+				$this->m_dbs->tableName( $qobj->jointable ) . " AS {$qobj->alias}" .
+				$qobj->from .
+				( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
+				$fname );
 
-			$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
-		} else { // just delete old data if there is any
-			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
-			$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
+			$this->m_dbs->update( 'smw_conc2',
+				array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ),
+				array( 's_id' => $cid ), $fname );
+		} else { // no concept found; just delete old data if there is any
+			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), $fname );
+			$this->m_dbs->update( 'smw_conc2',
+				array( 'cache_date' => null, 'cache_count' => null ),
+				array( 's_id' => $cid ), $fname );
 			$this->m_errors[] = "No concept description found.";
 		}
 
@@ -504,7 +513,7 @@ class SMWSQLStore2QueryEngine {
 			}
 		} elseif ( $description instanceof SMWConceptDescription ) { // fetch concept definition and insert it here
 			$cid = $this->m_store->getSMWPageID( $description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '', '' );
-			// We bypass the storage interface here (which is legal as we controll it, and safe if we are careful with changes ...)
+			// We bypass the storage interface here (which is legal as we control it, and safe if we are careful with changes ...)
 			// This should be faster, but we must implement the unescaping that concepts do on getWikiValue()
 			$row = $this->m_dbs->selectRow(
 				'smw_conc2',
