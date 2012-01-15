@@ -197,11 +197,10 @@ class SMWQueryResult {
 	 * (this is possible since the param handling changes in 1.7) 
 	 * 
 	 * @param string|false $caption
-	 * @param boolean $offsetResults Should the results be offsetted by the current limit? 
 	 * 
 	 * @return SMWInfolink
 	 */
-	public function getQueryLink( $caption = false, $offsetResults = true ) {
+	public function getQueryLink( $caption = false ) {
 		$params = array( trim( $this->mQuery->getQueryString() ) );
 		
 		foreach ( $this->mQuery->getExtraPrintouts() as /* SMWPrintRequest */ $printout ) {
@@ -218,11 +217,7 @@ class SMWQueryResult {
 			$params['mainlabel'] = $this->mQuery->getMainLabel();
 		}
 
-		$params['offset'] = $this->mQuery->getOffset();
-		
-		if ( $offsetResults ) {
-			$params['offset'] += $this->mQuery->getLimit();
-		}
+		$params['offset'] = $this->mQuery->getOffset() + count( $this->mResults );
 		
 		if ( $params['offset'] === 0 ) {
 			unset( $params['offset'] );

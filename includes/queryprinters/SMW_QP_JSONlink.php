@@ -129,7 +129,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 				$label = wfMsgForContent( 'smw_json_link' );
 			}
 			
-			$link = $res->getQueryLink( $label, false );
+			$link = $res->getQueryLink( $label );
 			if ( array_key_exists( 'callback', $this->params ) ) {
 				$link->setParameter( htmlspecialchars( $this->params['callback'] ), 'callback' );
 			}

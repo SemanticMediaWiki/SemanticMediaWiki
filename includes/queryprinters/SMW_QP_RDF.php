@@ -96,7 +96,7 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 				$label = wfMsgForContent( 'smw_rdf_link' );
 			}
 
-			$link = $res->getQueryLink( $label, false );
+			$link = $res->getQueryLink( $label );
 			$link->setParameter( 'rdf', 'format' );
 			$link->setParameter( $this->syntax, 'syntax' );
 			
