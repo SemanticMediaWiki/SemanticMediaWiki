@@ -99,7 +99,8 @@ class SMWCompatibilityHelpers {
 				break;
 			case SMWDataItem::TYPE_CONCEPT:
 				if ( count( $dbkeys ) >= 5 ) {
-					new SMWDIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ), $dbkeys[2], $dbkeys[3], $dbkeys[4] );
+					return new SMWDIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ),
+						$dbkeys[2], $dbkeys[3], $dbkeys[4] );
 				}
 				break;
 			case SMWDataItem::TYPE_PROPERTY:
