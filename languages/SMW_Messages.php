@@ -416,6 +416,7 @@ $messages['qqq'] = array(
 	'smw_json_link' => '{{optional}}',
 	'smw_rdf_link' => '{{optional}}',
 	'smw_printername_auto' => '{{Identical|Automatic}}',
+	'smw_printername_count' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Count_format count].',
 	'smw_printername_table' => '{{Identical|Table}}',
 	'smw_printername_template' => '{{Identical|Template}}',
 	'smw_printername_category' => '{{Identical|Category}}',
@@ -2148,13 +2149,14 @@ $messages['ckb'] = array(
  * @author Kjbenes
  * @author Matěj Grabovský
  * @author Mormegil
+ * @author XenoPheX
  */
 $messages['cs'] = array(
 	'smw_viewasrdf' => 'RDF kanál',
 	'smw_finallistconjunct' => ' a',
 	'smw_factbox_head' => 'Skutečnosti o $1 &mdash; kliknutím na <span class="smwsearchicon">+</span> vyhledáte podobné stránky.',
 	'smw_isspecprop' => 'Tato vlastnost je speciální vlastnost na této wiki.',
-	'smw_isknowntype' => 'Tento typ patří meti standardní datové typy na této wiki.',
+	'smw_isknowntype' => 'Tento typ patří mezi standardní datové typy na této wiki.',
 	'smw_isaliastype' => 'Tento typ je alias datového typu „$1“.',
 	'smw_isnotype' => 'Tento typ „$1“ není standardní datový typ na této wiki a nebyl ani definován uživatelem.',
 	'smw_concept_description' => 'Popis pojmu „$1”',
@@ -2163,6 +2165,7 @@ $messages['cs'] = array(
 	'smw_concept_cache_miss' => 'Koncept „$1” není možné momentálně použít, protože konfigurace wiki vyžaduje, aby se vypočítal až dodatečně. Pokud problém přetrvává delší dobu, požádejte správce, aby tento koncept zpřístupnil.',
 	'smw_baduri' => 'Promiňte, URI z rozsahu „$1“ na tomto místě nejsou dostupné.',
 	'smw_printername_auto' => 'Automatické',
+	'smw_printername_category' => 'Kategorie',
 	'smw_iq_disabled' => 'Promiňtě, semantické dotazy byly pro tuto wiki zakázány.',
 	'smw_iq_moreresults' => '…další výsledky',
 	'smw_nonright_importtype' => '$1 je možné použít jen pro stránky ve jmenném prostoru „$2“.',
@@ -2170,6 +2173,7 @@ $messages['cs'] = array(
 	'smw_no_importelement' => 'Prvek „$1“ není dostupný pro import.',
 	'smw_parseerror' => 'Zadaná hodnota nebyla pochopená.',
 	'smw_notitle' => '„$1“ není možné použít na této wiki jako název stránky.',
+	'smw_noproperty' => '„$1“ nelze na této wiki použít jako název vlastnosti.',
 	'smw_wrong_namespace' => 'Zde jsou povoleny jen stránky ze jmenného prostoru "$1"',
 	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.',
 	'smw_manytypes' => 'Pro vlastnost byl definován více než jeden typ.',
@@ -2179,6 +2183,8 @@ $messages['cs'] = array(
 	'smw_noboolean' => '„$1“ nebylo rozpoznáno jako platná hodnota typu boolean (ano/ne).',
 	'smw_nofloat' => '“$1” není číslem.',
 	'smw_infinite' => 'Tak dlouhá čísla jako $1 nejsou podporována.',
+	'smw_unitnotallowed' => '"$1" není platnou měrnou jednotkou této vlastnosti.',
+	'smw_nounitsdeclared' => 'Pro tuto vlastnost nebyly definovány žádné měrné jednotky.',
 	'smw_nodatetime' => 'Datum "$1" nedává smysl.',
 	'smw_toomanyclosing' => 'Dotazovaný řetězec „$1“ má příliš mnoho výskytů.',
 	'smw_noclosingbrackets' => 'Některý výskyt „<nowiki>[[</nowiki>“ ve vašem dotazu nebyl ukončen odpovídajícím „]]“.',
@@ -2195,6 +2201,8 @@ Výsledky pravděpodobně nesplní očekávání.',
 	'smw_nodisjunctions' => 'Disjunkce nejsou v dotazech na této wiki podporované a část dotazu byla ignorována ($1).',
 	'smw_querytoolarge' => 'Následující podmínky dotazu nebudou zohledněné z důvodu omezení této wiki na délku nebo hĺoubku dotazu: $1.',
 	'smw_notemplategiven' => 'Aby tento formát dotazu fungoval, uveďte hodnotu parametru „template”.',
+	'smw_db_sparqlqueryproblem' => 'Výsledek dotazu se nepodařilo získat z databáze SPARQL. Tato chyba může být dočasná nebo může indikovat chybu v softwaru databáze.',
+	'smw_db_sparqlqueryincomplete' => 'Zodpovězení dotazu se ukázalo být příliš obtížným a bylo stornováno. Výsledky nemusí být úplné. Je-li to možné, zkuste použít jednodušší dotaz.',
 	'smw_type_header' => 'Vlastností typu „$1“',
 	'smw_typearticlecount' => 'Zobrazeno je $1 {{PLURAL:$1|vlastnost|vlastnosti|vlastností}} tohoto typu.',
 	'smw_attribute_header' => 'Stránek používajících vlastnost „$1“',
@@ -2241,10 +2249,12 @@ Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznam
 	'smw_ask_help' => 'Pomocník pro dotazy',
 	'smw_ask_queryhead' => 'Dotaz',
 	'smw_ask_printhead' => 'Přídavné výpisy (volitelné)',
+	'smw_qui_noquery' => 'Nebyl zadán žádný dotaz',
 	'searchbyproperty' => 'Hledat podle hodnoty vlastnosti',
 	'smw_sbv_docu' => 'Hledat na wiki článek, který má vlastnost s jistou hodnotou.',
 	'smw_sbv_novalue' => 'Nebyla uvedena hodnota. Prosím, vložte jí ve formuláři nebo zobrazte všechny atributy typu $1',
 	'smw_sbv_displayresult' => 'Seznam všech článků, které mají vlastnost $1 s hodnotou $2.',
+	'smw_sbv_displayresultfuzzy' => 'Seznam všech stránek, jejichž vlastnost „$1“ má hodnotu „$2“. Jelikož bylo výsledků málo, jsou zobrazeny i blízké hodnoty.',
 	'smw_sbv_property' => 'Vlastnost:',
 	'smw_sbv_value' => 'Hodnota:',
 	'smw_sbv_submit' => 'Hledat výsledky',
@@ -2264,8 +2274,47 @@ Prosím, zadejte stránku i vlastnost.',
 	'smw_result_noresults' => 'Bohužel nejsou žádné výsledky.',
 	'smwadmin' => 'Funkce pro administraci Sémantické wiki',
 	'smw_smwadmin_return' => 'Zpět na $1',
+	'smw_smwadmin_updatestarted' => 'Byl spuštěn nový proces updatu sémantických dat.
+Všechna uložená data budou zkontrolována a, bude-li to nutné, znovu vytvořena.
+Průběh updatu můžete sledovat na této speciální stránce.',
+	'smw_smwadmin_updatenotstarted' => 'Proces updatu již probíhá.
+Další nebyl vytvořen.',
 	'smw_smwadmin_updatestopped' => 'Všechny procesy aktualizace byly zastaveny.',
 	'smw_smwadmin_updatenotstopped' => 'Abyste zastavili běžící proces aktualizace, musíte zaškrtnout políčko, čímž potvrdíte, že si jste jisti.',
+	'smw_smwadmin_docu' => 'Tato speciální stránka vám pomůže s instalací a upgradem <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Před spuštěním administrativních funkcí nezapomeňte zálohovat cenná data.',
+	'smw_smwadmin_db' => 'Instalace a upgrade databáze',
+	'smw_smwadmin_dbdocu' => 'Aby mohla Semantic MediaWiki ukládat sémantická data, potřebuje rozšířit databázi MediaWiki.
+Funkce níže zajišťuje, že je vaše databáze správně nastavena.
+Změny provedené v tomto kroku nemají žádný vliv na zbytek databáze MediaWiki, a lze je snadno vzít zpět.
+Tuto přípravnou funkci můžete spustit vícekrát, aniž by došlo k jakémukoli poškození, ale je to nutné pouze jednou při instalaci nebo upgradu.',
+	'smw_smwadmin_permissionswarn' => 'Selže-li operace s SQL chybami, pak uživatel databáze, kterého vaše wiki používá (zkontrolujte LocalSettings.php) pravděpodobně nemá dostatečná oprávnění.
+Přidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do LocalSettings.php zadejte údaje rootu databáze, nebo použijte údržbový skript <tt>SMW_setup.php</tt>, který používá údaje z AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Inicializovat či upgradovat tabulky',
+	'smw_smwadmin_announce' => 'Nahlásit tuto wiki',
+	'smw_smwadmin_announcedocu' => 'Nové sémantické wiki lze ohlásit příslušné webové službě Semantic MediaWiki.
+Tato hlášení slouží k údržbě seznamu veřejných stránek, které Semantic MediaWiki používají. <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Projekt Semantic MediaWiki</a> si tak udržuje přehled o typických využitích Semantic MediaWiki.
+Na domovské stránce Semantic MediaWiki můžete najít <a href="http://semantic-mediawiki.org/wiki/Registry">více informací o této službě</a>.',
+	'smw_smwadmin_announcebutton' => 'Stisknutím následujícího tlačítka této službě odešlete URL vaší wiki.
+Služba neregistruje wiki, které nejsou veřejně přístupné, a ukládá pouze veřejně přístupné informace.',
+	'smw_smwadmin_datarefresh' => 'Oprava a upgrade dat',
+	'smw_smwadmin_datarefreshdocu' => 'Na základě obsahu stránek wiki je možné obnovit všechna data Semantic MediaWiki.
+To může být užitečné při opravě poškozených dat nebo při jejich úpravě, pokud se v důsledku upgrtadu softwaru změní vnitřní formát.
+Update se spouští stránku po stránce a nebude dokončen ihned.
+Následující se zobrazuje pokud update právě probíhá a umožňuje vám updaty spouštět či zastavovat (pokud tuto možnost nezakázal administrátor).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Probíhá update.</strong>
+Je normální, že update postupuje pomalu, protože data zpracovává v malých dávkách vždy, když wiki navštíví nějaký uživatel.
+Chcete-li update dokončit rychleji, můžete spustit údržbový skript MediaWiki <tt>runJobs.php</tt> (k omezení počtu updatů provedených v jedné dávce použijte nastavení <tt>--maxjobs 1000</tt>).
+Odhadovaný průběh updatu:',
+	'smw_smwadmin_datarefreshbutton' => 'Spustit update dat',
+	'smw_smwadmin_datarefreshstop' => 'Zastavit update',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Ano, jsem si jistý/á.',
+	'smw_smwadmin_support' => 'Získání podpory',
+	'smw_smwadmin_supportdocu' => 'V případě problémů vám může pomoci několik zdrojů:',
+	'smw_smwadmin_installfile' => 'Máte-li problémy s instalací, začněte kontrolou podle osnovy v <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">souboru INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Chyby lze hlásit na <a href="https://bugzilla.wikimedia.org/">Bugzille</a>.',
+	'smw_smwadmin_questions' => 'Další otázky či návrhy můžete pokládat v diskuzi v <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">uživatelském fóru Semantic MediaWiki</a>.',
 );
 
 /** German (Deutsch)
@@ -7732,13 +7781,60 @@ $messages['mr'] = array(
  * @author Anakmalaysia
  */
 $messages['ms'] = array(
+	'smw-desc' => 'Meningkatkan kebolehcapaian wiki anda – baik untuk mesin mahupun manusia ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi])',
+	'smw_viewasrdf' => 'Suapan RDF',
+	'smw_finallistconjunct' => ', dan',
+	'smw_factbox_head' => 'Fakta-fakta tentang $1',
+	'smw_isspecprop' => 'Sifat ini merupakan sifat khas di wiki ini.',
+	'smw_isknowntype' => 'Jenis ini adalah salah satu jenis data yang piawai di wiki ini.',
+	'smw_isaliastype' => 'Jenis ini merupakan nama lain untuk jenis data "$1".',
+	'smw_isnotype' => 'Jenis "$1" ini bukan jenis data yang piawai di wiki ini, apatah lagi belum diberi takrifan pengguna.',
+	'smw_concept_description' => 'Keterangan konsep "$1"',
+	'smw_no_concept_namespace' => 'Konsep hanya boleh ditakrifkan di laman-laman dalam ruang nama Concept:.',
+	'smw_multiple_concepts' => 'Setiap laman konsep hanya boleh ada satu takrifan konsep.',
+	'smw_concept_cache_miss' => 'Konsep "$1" tidak boleh digunakan buat masa ini kerana konfigurasi wiki memerlukannya untuk dikomput di luar talian.
+Jika masalah ini masih berlarutan selepas beberapa ketika, mintalah pentadbir tapak anda untuk menyediakan konsep ini.',
+	'smw_noinvannot' => 'Nilai tidak dapat diberikan kepada sifat songsang.',
+	'version-semantic' => 'Sambungan semantik',
+	'smw_baduri' => 'URI yang berbentuk "$1" tidak dibenarkan.',
+	'smw_dsv_link' => 'DSV',
+	'smw_printername_auto' => 'Automatik',
+	'smw_printername_count' => 'Hasil pengiraan',
+	'smw_printername_csv' => 'Eksport CSV',
+	'smw_printername_dsv' => 'Eksport DSV',
+	'smw_printername_debug' => 'Pertanyaan nyahpepijat (debug) (untuk pakar)',
+	'smw_printername_embedded' => 'Benamkan kandungan laman',
+	'smw_printername_json' => 'Eksport JSON',
+	'smw_printername_list' => 'Senarai',
+	'smw_printername_ol' => 'Penyenaraian dengan urutan',
+	'smw_printername_ul' => 'Penyenaraian tanpa urutan',
+	'smw_printername_rss' => 'Eksport RSS',
+	'smw_printername_table' => 'Jadual',
+	'smw_printername_broadtable' => 'Jadual lebar',
 	'smw_printername_template' => 'Templat',
+	'smw_printername_rdf' => 'Eksport RDF',
+	'smw_printername_category' => 'Kategori',
+	'smw_paramdesc_limit' => 'Bilangan hasil maksimum untuk diberikan',
+	'smw_paramdesc_offset' => 'Ofset hasil pertama',
+	'smw_paramdesc_headers' => 'Paparkan nama pengatas/sifat',
+	'smw_paramdesc_mainlabel' => 'Label untuk nama laman utama',
+	'smw_purge' => 'Muat semula',
 	'types' => 'Jenis',
 	'smw_ask_defaultformat' => 'asali',
+	'smw_qui_ok' => 'OK',
+	'smw_qui_cancel' => 'Batalkan',
 	'smw_sbv_value' => 'Nilai:',
+	'smw_sbv_submit' => 'Cari hasil',
+	'browse' => 'Semak seimbas wiki',
+	'smw_browselink' => 'Semak seimbas sifat-sifat',
 	'smw_browse_go' => 'Pergi',
+	'smw_inverse_label_default' => '$1 daripada',
+	'smw_inverse_label_property' => 'Label sifat songsang',
 	'smw_result_prev' => 'Sebelumnya',
 	'smw_result_next' => 'Berikutnya',
+	'smw_result_results' => 'Hasil',
+	'smw_result_noresults' => 'Tiada hasil.',
+	'smwadmin' => 'Fungsi pentadbir untuk Semantic MediaWiki',
 );
 
 /** Maltese (Malti)
@@ -12380,6 +12476,7 @@ $messages['zh-cn'] = array(
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
+ * @author Anakmalaysia
  * @author Gzdavidwong
  * @author Liangent
  * @author Onecountry
@@ -12402,7 +12499,7 @@ $messages['zh-hans'] = array(
 	'smw_multiple_concepts' => '一个概念页面只能有一个概念定义。',
 	'smw_concept_cache_miss' => '因为维基设置需要概念"$1"在离线时计算，此概念现在无法使用。
 如果这个问题在一段时间后仍未解决，请向网站管理员请求令该概念可用。',
-	'smw_noinvannot' => '逆属性',
+	'smw_noinvannot' => '不能为逆属性指定值。',
 	'version-semantic' => '语义扩展',
 	'smw_baduri' => '不允许"$1"形式的URI',
 	'smw_dsv_link' => 'DSV',
@@ -12411,7 +12508,7 @@ $messages['zh-hans'] = array(
 	'smw_printername_csv' => '导出为CSV',
 	'smw_printername_dsv' => '导出为DSV',
 	'smw_printername_debug' => 'Debug信息（专家适用）',
-	'smw_printername_embedded' => '嵌入的页面内容',
+	'smw_printername_embedded' => '嵌入页面内容',
 	'smw_printername_json' => '导出为JSON',
 	'smw_printername_list' => '列表',
 	'smw_printername_ol' => '有序列表项目',
@@ -12673,6 +12770,7 @@ $messages['zh-hans'] = array(
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)
+ * @author Anakmalaysia
  * @author Frankou
  * @author Gzdavidwong
  * @author Mark85296341
@@ -12693,7 +12791,7 @@ $messages['zh-hant'] = array(
 	'smw_multiple_concepts' => '一個概念頁面只允許有一個概念定義',
 	'smw_concept_cache_miss' => '因為維基設定需要概念「$1」在離線時計算，此概念現在無法使用。
 如果這個問題在一段時間後仍未解決，請向網站管理員請求令該概念可用。',
-	'smw_noinvannot' => '逆屬性',
+	'smw_noinvannot' => '不能為逆屬性指定值。',
 	'version-semantic' => '語義擴展',
 	'smw_baduri' => '不允許「$1」形式的 URI',
 	'smw_dsv_link' => 'DSV',
@@ -12702,7 +12800,7 @@ $messages['zh-hant'] = array(
 	'smw_printername_csv' => '匯出為 CSV',
 	'smw_printername_dsv' => '導出為DSV',
 	'smw_printername_debug' => 'Debug 查詢（專家適用）',
-	'smw_printername_embedded' => '嵌入的頁面內容',
+	'smw_printername_embedded' => '嵌入頁面內容',
 	'smw_printername_json' => '匯出為 JSON',
 	'smw_printername_list' => '列表',
 	'smw_printername_ol' => '有序列表項目',
