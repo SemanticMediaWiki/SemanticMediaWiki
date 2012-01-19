@@ -81,9 +81,7 @@ function smwfRegisterHooks() {
 	$wgHooks['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 	
 	$wgHooks['ParserFirstCallInit'][] = 'SMWSMWDoc::staticInit';
-	$wgHooks['LanguageGetMagic'][]    = 'SMWSMWDoc::staticMagic';
 	$wgHooks['ParserFirstCallInit'][] = 'SMWInfo::staticInit';
-	$wgHooks['LanguageGetMagic'][]    = 'SMWInfo::staticMagic';
 	
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
 	$wgHooks['ArticleDelete'][] = 'SMWParseData::onArticleDelete'; // delete annotations
