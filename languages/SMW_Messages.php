@@ -11715,6 +11715,7 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 );
 
 /** Turkish (Türkçe)
+ * @author Emperyan
  * @author Erdemaslancan
  * @author Karduelis
  * @author Vito Genovese
@@ -11758,7 +11759,7 @@ $messages['tr'] = array(
 	'smw_exportrdf_submit' => 'Dışa aktar',
 	'properties' => 'Özellikler',
 	'smw_properties_docu' => 'Vikide aşağıdaki özellikler kullanılıyor.',
-	'smw_property_template' => '$1 tipê $2 ($3)',
+	'smw_property_template' => '$1 tipi $2 ($3)',
 	'smw_propertylackspage' => 'Tüm özellikler bir sayfa tarafından açıklanmalıdır!',
 	'smw_propertyhardlyused' => 'Bu özellik, viki dahilinde nadiren kullanılmaktadır!',
 	'unusedproperties' => 'Kullanılmayan özellikler',
