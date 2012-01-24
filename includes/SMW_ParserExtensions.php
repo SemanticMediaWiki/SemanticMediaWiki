@@ -23,8 +23,10 @@ class SMWParserExtensions {
 	 *
 	 * @param Parser $parser
 	 * @param string $text
+	 *
+	 * @return true
 	 */
-	static public function onInternalParseBeforeLinks( &$parser, &$text ) {
+	static public function onInternalParseBeforeLinks( Parser &$parser, &$text ) {
 		global $smwgStoreAnnotations, $smwgLinksInValues;
 
 		SMWParseData::stripMagicWords( $text, $parser );

@@ -197,7 +197,8 @@ class SMWSetRecurringEvent {
 				}
 
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
-				$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
+				$all_date_strings = array_merge( $all_date_strings, $included_dates);
+				$cur_date_jd = $cur_date->getDataItem()->getJD();
 			} elseif ( $unit == 'dayofweekinmonth' ) {
 				// e.g., "3rd Monday of every month"
 				$prev_month = $cur_date->getMonth();
@@ -255,7 +256,7 @@ class SMWSetRecurringEvent {
 		} while ( !$reached_end_date );
 
 		// Handle the 'include' dates as well.
-		$all_date_strings = array_merge( $all_date_strings, $included_dates);
+		$all_date_strings = array_filter( array_merge( $all_date_strings, $included_dates ) );
 		
 		return array( $property_name, $all_date_strings, $unused_params );
 	}	
