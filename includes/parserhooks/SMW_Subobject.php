@@ -41,8 +41,9 @@ class SMWSubobject {
 		foreach ( $params as $param ) {
 			$parts = explode( '=', trim( $param ), 2 );
 
-			// Only add the property when there is both a name and a value.
-			if ( count( $parts ) == 2 ) {
+			// Only add the property when there is both a name 
+			// and a non-empty value.
+			if ( count( $parts ) == 2 && $parts[1] != '' ) {
 				self::addPropertyValueToSemanticData( $parts[0], $parts[1], $semanticData );
 			} else {
 				//self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
