@@ -509,7 +509,7 @@ class SMWQueryProcessor {
 		
 		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
 		$params['limit']->setMessage( 'smw_paramdesc_limit' );
-		$params['limit']->setDefault( 20 );
+		$params['limit']->setDefault( $GLOBALS['smwgQDefaultLimit'] );
 		
 		$params['sort'] = new ListParameter( 'sort' );
 		$params['sort']->setMessage( 'smw-paramdesc-sort' );

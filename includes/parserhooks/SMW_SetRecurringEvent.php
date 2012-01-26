@@ -257,7 +257,7 @@ class SMWSetRecurringEvent {
 
 		// Handle the 'include' dates as well.
 		$all_date_strings = array_filter( array_merge( $all_date_strings, $included_dates ) );
-		
+
 		return array( $property_name, $all_date_strings, $unused_params );
 	}	
 	
