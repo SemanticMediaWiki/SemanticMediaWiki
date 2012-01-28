@@ -9387,6 +9387,7 @@ $messages['ps'] = array(
  * @author Crazymadlover
  * @author Hamilton Abreu
  * @author Lijealso
+ * @author Luckas Blade
  * @author Malafaya
  * @author Waldir
  */
@@ -9423,6 +9424,7 @@ $messages['pt'] = array(
 	'smw_printername_broadtable' => 'Tabela ampla',
 	'smw_printername_template' => 'Predefinição',
 	'smw_printername_rdf' => 'Exportação para RDF',
+	'smw_printername_category' => 'Categoria',
 	'smw_paramdesc_limit' => 'O número máximo de resultados a devolver',
 	'smw_paramdesc_offset' => 'A posição do primeiro resultado',
 	'smw_paramdesc_headers' => 'Apresentar os nomes dos cabeçalhos e propriedades',
@@ -9561,8 +9563,13 @@ Nomes (<strong>[[Cabo Verde]]</strong>) e Espaços nominais (<strong>[[Ajuda:+]]
 	'smw_qui_nosort' => 'Sem ordenação',
 	'smw_qui_ascorder' => 'Ascendente',
 	'smw_qui_descorder' => 'Descendente',
+	'smw_qui_randorder' => 'Aleatório',
 	'smw_qui_addnprop' => 'Acrescentar propriedades adicionais',
 	'smw_qui_delete' => 'Remover',
+	'smw_qui_options' => 'opções',
+	'smw_qui_addcategory' => 'adicionar categoria',
+	'smw_qui_ok' => 'Ok',
+	'smw_qui_cancel' => 'Cancelar',
 	'smw_qui_dcategory' => 'Categoria:',
 	'searchbyproperty' => 'Pesquisa por propriedade',
 	'smw_sbv_docu' => 'Procurar todas as páginas que têm uma determinada propriedade e valor.',
