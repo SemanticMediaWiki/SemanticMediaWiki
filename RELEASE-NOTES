@@ -8,7 +8,7 @@ THIS IS NOT A RELEASE YET
 Semantic MediaWiki 1.7.1 is currently in beta-quality and is not recommended for use in
 production until the actual release.
 
-* 
+* Fixed display of nearby values on Special:SearchByProperty (bug 34178).
 
 == SMW 1.7.0.2 ==
 

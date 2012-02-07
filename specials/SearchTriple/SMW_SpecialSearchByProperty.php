@@ -184,7 +184,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 *
 	 * @return string  HTML with the bullet list and a header
 	 */
-	private function displayResults( $results, $number = - 1, $first = true, $highlight = false ) {
+	private function displayResults( $results, $number = -1, $first = true, $highlight = false ) {
 		$html  = "<ul>\n";
 
 		if ( !$first && ( $number > 0 ) ) {
@@ -365,15 +365,19 @@ class SMWSearchByProperty extends SpecialPage {
 		if ( $greater ) $cmp = '>';
 
 		$querystring = '[[' . $this->propertystring . '::' . $cmp . $this->valuestring . ']]';
-		$params = SMWQueryProcessor::getProcessedParams( $params, array( $printrequest ) );
-		$queryobj = SMWQueryProcessor::createQuery( $querystring, $params, SMWQueryProcessor::SPECIAL_PAGE, 'ul', array( $printrequest ) );
+		
+		$printouts = array( $printrequest );
+		
+		SMWQueryProcessor::addThisPrintout( $printouts, $params );
+		$params = SMWQueryProcessor::getProcessedParams( $params, $printouts );
+		$queryobj = SMWQueryProcessor::createQuery( $querystring, $params, SMWQueryProcessor::SPECIAL_PAGE, 'ul', $printouts );
 		$queryobj->querymode = SMWQuery::MODE_INSTANCES;
 		$queryobj->setLimit( $this->limit );
 		$queryobj->setOffset( $count );
 
 		$results = smwfGetStore()->getQueryResult( $queryobj );
 
-		$result = $results->getNext();
+		/* array of SMWResultArray */ $result = $results->getNext();
 		$ret = array();
 
 		while ( $result ) {
