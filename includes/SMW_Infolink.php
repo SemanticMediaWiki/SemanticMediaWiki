@@ -247,6 +247,7 @@ class SMWInfolink {
 						$link = $this->getLinker( $linker )->link(
 							$title,
 							$this->mCaption,
+							array(),
 							SMWInfolink::encodeParameters( $this->mParams, false )
 						);
 					}
