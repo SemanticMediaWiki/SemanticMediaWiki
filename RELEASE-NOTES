@@ -10,6 +10,7 @@ production until the actual release.
 
 * Fixed display of nearby values on Special:SearchByProperty (bug 34178).
 * Fixed display of URL values (bug 34312, 34044).
+* Fixed warning when browsing certain property pages (bug 34306).
 
 == SMW 1.7.0.2 ==
 
