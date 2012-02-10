@@ -9,6 +9,7 @@ Semantic MediaWiki 1.7.1 is currently in beta-quality and is not recommended for
 production until the actual release.
 
 * Fixed display of nearby values on Special:SearchByProperty (bug 34178).
+* Fixed display of URL values (bug 34312, 34044).
 
 == SMW 1.7.0.2 ==
 

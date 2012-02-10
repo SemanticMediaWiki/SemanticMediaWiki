@@ -104,6 +104,10 @@ class SMWURIValue extends SMWDataValue {
 				/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
 				/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
 				///       this prevents tel: from working directly, but we have a datatype for this anyway.
+
+				if ( substr( $hierpart, 0, 2 ) === '//' ) {
+					$hierpart = substr( $hierpart, 2 );
+				}
 				break;
 			case SMW_URI_MODE_TEL:
 				$scheme = 'tel';
