@@ -253,12 +253,13 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 */
 	protected function deleteSparqlData( SMWExpResource $expResource ) {
 		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expResource );
+		$extraNamespaces = array( $expResource->getNamespaceId() => $expResource->getNamespace() );
 		$masterPageProperty = SMWExporter::getSpecialNsResource( 'swivt', 'masterPage' );
 		$masterPagePropertyUri = SMWTurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
-		$success = smwfGetSparqlDatabase()->deleteContentByValue( $masterPagePropertyUri, $resourceUri );
+		$success = smwfGetSparqlDatabase()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );
 		if ( $success ) {
-			return smwfGetSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o"  );
+			return smwfGetSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o", $extraNamespaces );
 		} else {
 			return false;
 		}
