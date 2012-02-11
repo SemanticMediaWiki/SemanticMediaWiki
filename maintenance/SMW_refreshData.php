@@ -116,30 +116,7 @@ if (  array_key_exists( 'f', $options ) ) {
 	}
 
 	print 'Abort with control-c in the next five seconds ...  ';
-
-	// TODO
-	// Remove the following section and replace it with a simple
-	// wfCountDown as soon as we switch to MediaWiki 1.16.
-	// Currently, wfCountDown is only supported from
-	// revision 51650 (Jun 9 2009) onward.
-	$n = 6;
-	if ( function_exists( 'wfCountDown' ) ) {
-		wfCountDown( $n );
-	} else {
-		for ( $i = $n; $i >= 0; $i-- ) {
-			if ( $i != $n ) {
-				echo str_repeat( "\x08", strlen( $i + 1 ) );
-			}
-			echo $i;
-			flush();
-			if ( $i ) {
-				sleep( 1 );
-			}
-		}
-		echo "\n";
-	}
-	// Remove up to here and just uncomment the following line:
-	// wfCountDown( 6 );
+	wfCountDown( 6 );
 
 	smwfGetStore()->drop( $verbose );
 	wfRunHooks( 'smwDropTables' );

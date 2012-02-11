@@ -26,7 +26,7 @@
  *            when moving to a new storage engine, and in the rare case of unsinstalling
  *            SMW. Deleted data can be recreated using this script (setup) and
  *            SMW_refreshData.php but this may take some time.
- *            
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * 
@@ -84,29 +84,7 @@ class SMWSetupScript extends Maintenance {
 			}
 		
 			print "Abort with CTRL-C in the next $delay seconds ...  ";
-		
-			// TODO
-			// Remove the following section and replace it with a simple
-			// wfCountDown as soon as we switch to MediaWiki 1.16.
-			// Currently, wfCountDown is only supported from
-			// revision 51650 (Jun 9 2009) onward.
-			if ( function_exists( 'wfCountDown' ) ) {
-				wfCountDown( $delay );
-			} else {
-				for ( $i = $delay; $i >= 0; $i-- ) {
-					if ( $i != $delay ) {
-						echo str_repeat( "\x08", strlen( $i + 1 ) );
-					}
-					echo $i;
-					flush();
-					if ( $i ) {
-						sleep( 1 );
-					}
-				}
-				echo "\n";
-			}
-			// Remove up to here and just uncomment the following line:
-			// wfCountDown( $delay );
+			wfCountDown( $delay );
 		
 			smwfGetStore()->drop( true );
 			wfRunHooks( 'smwDropTables' );
