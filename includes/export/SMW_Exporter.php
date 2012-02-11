@@ -86,6 +86,11 @@ class SMWExporter {
 			$masterPage = new SMWDIWikiPage( $diWikiPage->getDBkey(), $diWikiPage->getNamespace(), $diWikiPage->getInterwiki() );
 			$masterExpElement = self::getDataItemExpElement( $masterPage );
 			$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'masterPage' ), $masterExpElement );
+			// Add a sortkey: subobjects do not get this during parsing (they are no pages),
+			// but it is needed to query for them (e.g., to get a defined order for result pages)
+			$subObjectLabel = $diWikiPage->getDBkey() . '#' . $diWikiPage->getSubobjectName();
+			$sortkey = new SMWExpLiteral( str_replace( '_', ' ', $subObjectLabel ) );
+			$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $sortkey );
 		} else {
 			$pageTitle = str_replace( '_', ' ', $diWikiPage->getDBkey() );
 			if ( $diWikiPage->getNamespace() !== 0 ) {
@@ -125,6 +130,8 @@ class SMWExporter {
 				$ed = new SMWExpLiteral( $diWikiPage->getNamespace(), 'http://www.w3.org/2001/XMLSchema#integer' );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'wikiNamespace' ), $ed );
 				if ( $addStubData ) {
+					// Add a default sort key; for pages that exist in the wiki,
+					// this is set during parsing
 					$defaultSortkey = new SMWExpLiteral( str_replace( '_', ' ', $diWikiPage->getDBkey() ) );
 					$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
 				}
