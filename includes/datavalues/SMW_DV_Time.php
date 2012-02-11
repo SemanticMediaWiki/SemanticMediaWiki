@@ -842,6 +842,8 @@ class SMWTimeValue extends SMWDataValue {
 			return $this->getISO8601Date();
 		} elseif ( strtoupper( $this->m_outformat ) === 'MEDIAWIKI' ) {
 			return $this->getMediaWikiDate();
+		} elseif ( strtoupper( $this->m_outformat ) === 'SORTKEY' ) {
+			return $this->m_dataitem->getSortKey();
 		} else {
 			if ( $year <= self::PREHISTORY ) {
 				return $this->getCaptionFromDataitem( $this->m_dataitem ); // should be Gregorian, but don't bother here
