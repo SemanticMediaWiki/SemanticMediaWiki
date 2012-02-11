@@ -691,17 +691,20 @@ class SMWSparqlStoreQueryEngine {
 		if ( $diProperty->isInverse() ) { // don't check if this really makes sense
 			$subjectName = $objectName;
 			$objectName = '?' . $joinVariable;
+			$diNonInverseProperty = new SMWDIProperty( $diProperty->getKey(), false );
 		} else {
 			$subjectName = '?' . $joinVariable;
+			$diNonInverseProperty = $diProperty;
 		}
 
 		//*** Build the condition ***//
 		$typeId = $diProperty->findPropertyTypeID();
 		$diType = SMWDataValueFactory::getDataItemId( $typeId );
+		// for types that use helper properties in encoding values, refer to this helper property:
 		if ( SMWExporter::hasHelperExpElement( $diType ) ) {
-			$propertyExpElement = SMWExporter::getResourceElementForProperty( $diProperty, true );
+			$propertyExpElement = SMWExporter::getResourceElementForProperty( $diNonInverseProperty, true );
 		} else {
-			$propertyExpElement = SMWExporter::getResourceElementForProperty( $diProperty );
+			$propertyExpElement = SMWExporter::getResourceElementForProperty( $diNonInverseProperty );
 		}
 		$propertyName = SMWTurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
 		if ( $propertyExpElement instanceof SMWExpNsResource ) {

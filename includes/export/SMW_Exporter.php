@@ -233,7 +233,7 @@ class SMWExporter {
 	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false ) {
 		$diWikiPage = $diProperty->getDiWikiPage();
 		if ( is_null( $diWikiPage ) ) {
-			throw new Exception( 'SMWExporter::getResourceElementForProperty() can only be used for user-defined properties.' );
+			throw new Exception( 'SMWExporter::getResourceElementForProperty() can only be used for non-inverse, user-defined properties.' );
 		} elseif ( $helperProperty ) {
 			return self::getResourceElementForWikiPage( $diWikiPage, 'aux' );
 		} else {
