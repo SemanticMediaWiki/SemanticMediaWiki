@@ -154,28 +154,31 @@ class SMWExporter {
 		if ( $property->isUserDefined() ) {
 			$pe = self::getResourceElementForProperty( $property );
 			$peHelper = self::getResourceElementForProperty( $property, true );
-			
+
 			foreach ( $dataItems as $dataItem ) {
 				$ed = self::getDataItemExpElement( $dataItem );
-				
 				if ( !is_null( $ed ) ) {
 					$expData->addPropertyObjectValue( $pe, $ed );
 				}
-				
+
 				$edHelper = self::getDataItemHelperExpElement( $dataItem );
-				
 				if ( !is_null( $edHelper ) ) {
 					$expData->addPropertyObjectValue( $peHelper, $edHelper );
 				}
 			}
 		} else { // pre-defined property, only exported if known
 			$diSubject = $expData->getSubject()->getDataItem();
-			if ( ( $diSubject == null ) || ( $diSubject->getDIType() != SMWDataItem::TYPE_WIKIPAGE ) ) {
-				return; // subject datavalue (wikipage) required for treating special properties properly
+			// subject wikipage required for disambiguating special properties:
+			if ( is_null( $diSubject ) ||
+			     $diSubject->getDIType() != SMWDataItem::TYPE_WIKIPAGE ) {
+				return;
 			}
 
 			$pe = self::getSpecialPropertyResource( $property->getKey(), $diSubject->getNamespace() );
-			if ( is_null( $pe ) ) return; // unknown special property, not exported 
+			if ( is_null( $pe ) ) return; // unknown special property, not exported
+			// have helper property ready before entering the for loop, even if not needed:
+			$peHelper = self::getResourceElementForProperty( $property, true );
+
 			if ( $property->getKey() == '_REDI' || $property->getKey() == '_URI' ) {
 				$filterNamespace = true;
 				if ( $property->getKey() == '_REDI' ) {
@@ -193,11 +196,12 @@ class SMWExporter {
 				        ( $dataItem->getNamespace() != $diSubject->getNamespace() ) ) ) {
 					continue;
 				}
-				
+
 				$ed = self::getDataItemExpElement( $dataItem );
-				
+
 				if ( !is_null( $ed ) ) {
-					if ( ( $property->getKey() == '_CONC' ) && ( $ed->getSubject()->getUri() === '' ) ) {
+					if ( $property->getKey() == '_CONC' &&
+					     $ed->getSubject()->getUri() === '' ) {
 						// equivalent to anonymous class -> simplify description
 						foreach ( $ed->getProperties() as $subp ) {
 							if ( $subp->getUri() != self::getSpecialNsResource( 'rdf', 'type' )->getUri() ) {
@@ -206,13 +210,18 @@ class SMWExporter {
 								}
 							}
 						}
-					} elseif ( is_array( $pe ) ) {
-						foreach ( $pe as $extraPropertyElement ) {
-							$expData->addPropertyObjectValue( $extraPropertyElement, $ed );
-						}
+					} elseif ( $property->getKey() == '_REDI' ) {
+						$expData->addPropertyObjectValue( $pe, $ed );
+						$peUri = self::getSpecialPropertyResource( '_URI' );
+						$expData->addPropertyObjectValue( $peUri, $ed );
 					} else {
 						$expData->addPropertyObjectValue( $pe, $ed );
 					}
+				}
+
+				$edHelper = self::getDataItemHelperExpElement( $dataItem );
+				if ( !is_null( $edHelper ) ) {
+					$expData->addPropertyObjectValue( $peHelper, $edHelper );
 				}
 			}
 		}
@@ -620,7 +629,7 @@ class SMWExporter {
 	 *
 	 * For dataitems that do not have such a simplification, the method
 	 * returns null.
-	 * 
+	 *
 	 * @note If a helper element is used, then it must be the same as
 	 * getDataItemHelperExpElement( $dataItem->getSortKeyDataItem() ).
 	 * Query conditions like ">" use sortkeys for values, and helper
