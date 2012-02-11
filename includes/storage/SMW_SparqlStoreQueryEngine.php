@@ -710,7 +710,11 @@ class SMWSparqlStoreQueryEngine {
 		$condition = "$subjectName $propertyName $objectName .\n";
 		$innerConditionString = $innerCondition->getCondition() . $innerCondition->getWeakConditionString();
 		if ( $innerConditionString !== '' ) {
-			$condition .= "{ $innerConditionString}\n" ;
+			if ( $innerCondition instanceof SMWSparqlFilterCondition ) {
+				$condition .= $innerConditionString;
+			} else {
+				$condition .= "{ $innerConditionString}\n";
+			}
 		}
 		$result = new SMWSparqlWhereCondition( $condition, true, $namespaces );
 
