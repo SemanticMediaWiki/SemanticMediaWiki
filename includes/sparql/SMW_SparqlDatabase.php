@@ -459,7 +459,7 @@ class SMWSparqlDatabase {
 			$xmlParser = new SMWSparqlResultParser();
 			return $xmlParser->makeResultFromXml( $xmlResult );
 		} else {
-			$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+			$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
 			return new SMWSparqlResultWrapper( array(), array(), array(), SMWSparqlResultWrapper::ERROR_UNREACHABLE );
 		}
 	}

@@ -46,7 +46,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 			$xmlParser = new SMWSparqlResultParser();
 			$result = $xmlParser->makeResultFromXml( $xmlResult );
 		} else {
-			$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+			$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
 			$result = new SMWSparqlResultWrapper( array(), array(), array(), SMWSparqlResultWrapper::ERROR_UNREACHABLE );
 		}
 
