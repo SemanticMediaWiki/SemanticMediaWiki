@@ -127,7 +127,9 @@ class SMWResultArray {
 		if ( $di === false ) {
 			return false;
 		}
-		if ( $this->mPrintRequest->getMode() == SMWPrintRequest::PRINT_PROP ) {
+		if ( $this->mPrintRequest->getMode() == SMWPrintRequest::PRINT_PROP &&
+		     ( $this->mPrintRequest->getTypeID() != '_rec' || 
+		       $this->mPrintRequest->getParameter( 'index' ) === false ) ) {
 			$diProperty = $this->mPrintRequest->getData()->getDataItem();
 		} else {
 			$diProperty = null;
