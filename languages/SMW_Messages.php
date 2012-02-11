@@ -12783,6 +12783,7 @@ $messages['zh-hans'] = array(
  * @author Frankou
  * @author Gzdavidwong
  * @author Mark85296341
+ * @author Oapbtommy
  * @author Sheepy
  * @author Wrightbus
  */
@@ -12911,7 +12912,7 @@ $messages['zh-hant'] = array(
 	'wantedproperties' => '需要的屬性',
 	'smw_wantedproperties_docu' => '以下屬性已在本 wiki 中使用，但是尚未建立描述頁面。',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|use|使用}})',
-	'smw_purge' => '更新',
+	'smw_purge' => '重新整理',
 	'types' => '類型',
 	'smw_types_docu' => '以下列出了可被賦予屬性的所有數據類型。每種數據類型都有一個可以提供附加資訊的頁面。',
 	'smw_typeunits' => '類型「$1」的量度單位：$2',
