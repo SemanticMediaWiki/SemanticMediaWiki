@@ -1086,9 +1086,20 @@ class SMWSQLStore2 extends SMWStore {
 
 		// all tables occurring in some property table are used:
 		foreach ( self::getPropertyTables() as $proptable ) {
-			if ( $proptable->fixedproperty == false ) { // MW does not seem to have a suitable wrapper for this
-				$db->query( "DELETE FROM $smw_tmp_unusedprops USING $smw_tmp_unusedprops INNER JOIN " . $db->tableName( $proptable->name ) .
-				" INNER JOIN $smw_ids ON p_id=smw_id AND title=smw_title AND smw_iw=" . $db->addQuotes( '' ), __METHOD__ );
+			if ( $proptable->fixedproperty == false ) {
+				// MW does not seem to have a wrapper for this:
+				if ( $wgDBtype == 'postgres' ) { // PostgresQL: don't repeat the FROM table in USING
+					$sql = "DELETE FROM $smw_tmp_unusedprops USING " .
+						$db->tableName( $proptable->name ) .
+						" INNER JOIN $smw_ids ON p_id=smw_id WHERE" .
+						" title=smw_title AND smw_iw=" . $db->addQuotes( '' );
+				} else {
+					$sql = "DELETE FROM $smw_tmp_unusedprops USING " .
+					"$smw_tmp_unusedprops INNER JOIN " . $db->tableName( $proptable->name ) .
+					" INNER JOIN $smw_ids ON p_id=smw_id AND title=smw_title" .
+					" AND smw_iw=" . $db->addQuotes( '' );			
+				}
+				$db->query( $sql, __METHOD__ );
 			} // else: todo
 		}
 
@@ -1097,9 +1108,18 @@ class SMWSQLStore2 extends SMWStore {
 		$subPropertyTableId = self::$special_tables['_SUBP'];
 		$subPropertyTable = $propertyTables[$subPropertyTableId];
 
-		// (again we have no fitting MW wrapper here:)
-		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops," . $db->tableName( $subPropertyTable->name ) .
-		           " INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title", __METHOD__ );
+		// Again we have no fitting MW wrapper here:
+		if ( $wgDBtype == 'postgres' ) { // PostgresQL: don't repeat the FROM table in USING
+			$sql = "DELETE FROM $smw_tmp_unusedprops USING " .
+				$db->tableName( $subPropertyTable->name ) .
+				" INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title";
+		} else {
+			$sql = "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops," .
+				$db->tableName( $subPropertyTable->name ) .
+				" INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title";
+		}
+		$db->query( $sql, __METHOD__ );
+
 		// properties that are redirects are considered to be used:
 		//   (a stricter and more costy approach would be to delete only redirects to used properties;
 		//    this would need to be done with an addtional query in the above loop)
@@ -1118,7 +1138,8 @@ class SMWSQLStore2 extends SMWStore {
 
 		$db->freeResult( $res );
 
-		$db->query( "DROP TEMPORARY table $smw_tmp_unusedprops", __METHOD__ );
+		$db->query( "DROP " . ( $wgDBtype == 'postgres' ? '' : 'TEMPORARY' ) .
+			" TABLE $smw_tmp_unusedprops", __METHOD__ );
 		wfProfileOut( "SMWSQLStore2::getUnusedPropertiesSpecial (SMW)" );
 
 		return $result;
