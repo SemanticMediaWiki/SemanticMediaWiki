@@ -96,6 +96,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-paramdesc-sort' => 'Property to sort the query by',
 	'smw-paramdesc-order' => 'Order of the query sort',
 	'smw-paramdesc-searchlabel' => 'Text for continuing the search (default is «… further results»)',
+	'smw_paramdesc_named_args' => 'Name the arguments passed to the template',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
