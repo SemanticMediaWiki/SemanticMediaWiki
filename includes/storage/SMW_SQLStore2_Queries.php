@@ -209,10 +209,14 @@ class SMWSQLStore2QueryEngine {
 	public function getQueryResult( SMWQuery $query ) {
 		global $smwgIgnoreQueryErrors, $smwgQSortingSupport;
 
-		if ( !$smwgIgnoreQueryErrors && ( $query->querymode != SMWQuery::MODE_DEBUG ) && ( count( $query->getErrors() ) > 0 ) ) {
+		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof SMWThingDescription ) && 
+		     $query->querymode != SMWQuery::MODE_DEBUG && 
+		     count( $query->getErrors() ) > 0 ) {
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
-			// NOTE: we check this here to prevent unnecessary work, but we check it after query processing below again in case more errors occurred
-		} elseif ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
+			// NOTE: we check this here to prevent unnecessary work, but we check
+			// it after query processing below again in case more errors occurred.
+		} elseif ( $query->querymode == SMWQuery::MODE_NONE ) {
+			// don't query, but return something to printer
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, true );
 		}
 
@@ -256,7 +260,10 @@ class SMWSQLStore2QueryEngine {
 			$this->applyOrderConditions( $rootid );
 		}
 
-		if ( !$smwgIgnoreQueryErrors && ( $query->querymode != SMWQuery::MODE_DEBUG ) && ( count( $this->m_errors ) > 0 ) ) { // stop here if new errors happened
+		// Possibly stop if new errors happened:
+		if ( !$smwgIgnoreQueryErrors && 
+                     $query->querymode != SMWQuery::MODE_DEBUG && 
+                     count( $this->m_errors ) > 0 ) {
 			$query->addErrors( $this->m_errors );
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
 		}

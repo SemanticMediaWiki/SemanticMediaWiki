@@ -269,11 +269,10 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	public function getQueryResult( SMWQuery $query ) {
 		global $smwgIgnoreQueryErrors;
 
-		if ( !$smwgIgnoreQueryErrors &&
-		     ( $query->querymode != SMWQuery::MODE_DEBUG ) &&
-		     ( count( $query->getErrors() ) > 0 ) ) {
+		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof SMWThingDescription ) &&
+		     $query->querymode != SMWQuery::MODE_DEBUG &&
+		     count( $query->getErrors() ) > 0 ) {
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this, false );
-			// NOTE: we check this here to prevent unnecessary work, but we may need to check it after query processing below again in case more errors occurred
 		}
 
 		if ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
