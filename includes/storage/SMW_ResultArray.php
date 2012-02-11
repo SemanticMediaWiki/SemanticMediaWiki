@@ -128,8 +128,22 @@ class SMWResultArray {
 			return false;
 		}
 		if ( $this->mPrintRequest->getMode() == SMWPrintRequest::PRINT_PROP &&
-		     ( $this->mPrintRequest->getTypeID() != '_rec' || 
-		       $this->mPrintRequest->getParameter( 'index' ) === false ) ) {
+		     $this->mPrintRequest->getTypeID() == '_rec' &&
+		     $this->mPrintRequest->getParameter( 'index' ) !== false ) {
+			// Not efficient, but correct: we need to find the right property for
+			// the selected index of the record here.
+			$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
+			$recordValue = SMWDataValueFactory::newDataItemValue( $di,
+				$this->mPrintRequest->getData()->getDataItem() );
+			$diProperties = $recordValue->getPropertyDataItems();
+
+			if ( array_key_exists( $pos, $diProperties ) &&
+				!is_null( $diProperties[$pos] ) ) {
+				$diProperty = $diProperties[$pos];
+			} else {
+				$diProperty = null;
+			}
+		} elseif ( $this->mPrintRequest->getMode() == SMWPrintRequest::PRINT_PROP ) {
 			$diProperty = $this->mPrintRequest->getData()->getDataItem();
 		} else {
 			$diProperty = null;
