@@ -1435,7 +1435,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		foreach ( $tables as $table ) {
 			$name = $db->tableName( $table );
-			$db->query( 'DROP TABLE' . ( $wgDBtype == 'postgres' ? '' : ' IF EXISTS' ) . $name, 'SMWSQLStore2::drop' );
+			$db->query( 'DROP TABLE ' . ( $wgDBtype == 'postgres' ? '' : 'IF EXISTS ' ) . $name, 'SMWSQLStore2::drop' );
 			$this->reportProgress( " ... dropped table $name.\n", $verbose );
 		}
 
