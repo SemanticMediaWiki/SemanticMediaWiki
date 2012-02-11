@@ -27,6 +27,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$this->initConversionData();
 		if ( array_key_exists( $unit, $this->m_unitids ) ) {
 			$this->m_unitin = $this->m_unitids[$unit];
+			assert( '$this->m_unitfactors[$this->m_unitin] != 0 /* Should be filtered by initConversionData() */' );
 			$this->m_dataitem = new SMWDINumber( $number / $this->m_unitfactors[$this->m_unitin], $this->m_typeid );
 			return true;
 		} else { // unsupported unit
@@ -132,7 +133,8 @@ class SMWQuantityValue extends SMWNumberValue {
 		$number = $unit = '';
 		foreach ( $factors as $di ) {
 			if ( ( $di->getDIType() !== SMWDataItem::TYPE_STRING ) ||
-			     ( SMWNumberValue::parseNumberValue( $di->getString(), $number, $unit ) != 0 ) ) {
+			     ( SMWNumberValue::parseNumberValue( $di->getString(), $number, $unit ) != 0 ) ||
+			     ( $number == 0 ) ) {
 				continue; // ignore corrupted data and bogus inputs
 			}
 			$unit_aliases = preg_split( '/\s*,\s*/u', $unit );
