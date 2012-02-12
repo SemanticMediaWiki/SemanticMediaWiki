@@ -253,7 +253,11 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 */
 	protected function deleteSparqlData( SMWExpResource $expResource ) {
 		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expResource );
-		$extraNamespaces = array( $expResource->getNamespaceId() => $expResource->getNamespace() );
+		if ( $expResource instanceof SMWExpNsResource ) {
+			$extraNamespaces = array( $expResource->getNamespaceId() => $expResource->getNamespace() );
+		} else {
+			$extraNamespaces = array();
+		}
 		$masterPageProperty = SMWExporter::getSpecialNsResource( 'swivt', 'masterPage' );
 		$masterPagePropertyUri = SMWTurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
