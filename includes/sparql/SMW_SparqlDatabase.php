@@ -368,7 +368,7 @@ class SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
-		return smwfGetSparqlDatabase()->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o" );
+		return smwfGetSparqlDatabase()->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o", $extraNamespaces );
 	}
 
 	/**
@@ -467,7 +467,7 @@ class SMWSparqlDatabase {
 
 	/**
 	 * Execute a SPARQL update and return a boolean to indicate if the
-	 * operations was sucessfull. The method throws exceptions based on
+	 * operations was successful. The method throws exceptions based on
 	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
 	 * method does not throw anything, then false is returned.
 	 *
