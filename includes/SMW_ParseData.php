@@ -204,6 +204,14 @@ class SMWParseData {
 						$timestamp = $title->getFirstRevision()->getTimestamp();
 						$datum = self::getDataItemFromMWTimestamp( $timestamp );
 						break;
+					case '_NEWP' :
+						$datum = new SMWDIBoolean( $title->isNewPage() );
+						break;
+					case '_LEDT' :
+						$revision = Revision::newFromId( $title->getLatestRevID() );
+						$user = User::newFromId( $revision->getUser() );
+						$datum = SMWDIWikiPage::newFromTitle( $user->getUserPage() );
+						break;
 				}
 				
 				if ( !is_null( $datum ) ) {

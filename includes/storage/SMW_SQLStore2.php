@@ -73,6 +73,8 @@ class SMWSQLStore2 extends SMWStore {
 		'_LIST' => 28,
 		'_MDAT' => 29,
 		'_CDAT' => 30,
+		'_NEWP' => 31,
+		'_LEDT' => 32,
 	);
 
 	/// Use special tables for Very Important Properties

@@ -66,6 +66,8 @@ class SMWLanguageEn extends SMWLanguage {
 		'_PVAL' => 'Allows value',
 		'_MDAT' => 'Modification date',
 		'_CDAT' => 'Creation date',
+		'_NEWP' => 'Is a new page',
+		'_LEDT' => 'Last editor is',
 		'_ERRP' => 'Has improper value for',
 		'_LIST' => 'Has fields',
 		'_SOBJ' => 'Has subobject',

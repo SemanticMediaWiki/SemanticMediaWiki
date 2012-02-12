@@ -80,6 +80,8 @@ abstract class SMWLanguage {
 		'Allows value'      => '_PVAL',
 		'Modification date' => '_MDAT',
 		'Creation date'     => '_CDAT',
+		'Is a new page'     => '_NEWP',
+		'Last editor is'    => '_LEDT',
 		'Has improper value for' => '_ERRP',
 		'Has fields'        => '_LIST',
 		'Has subobject'     => '_SOBJ',
