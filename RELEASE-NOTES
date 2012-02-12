@@ -8,6 +8,7 @@ THIS IS NOT A RELEASE YET
 Semantic MediaWiki 1.7.1 is currently in beta-quality and is not recommended for use in
 production until the actual release.
 
+* Added "Last editor is" and "Is a new page" special properties (bug 34359).
 * Added basic support for OpenLink Virtuoso RDF database. In addition to
   $smwgDefaultStore = 'SMWSparqlStore', users should set
   $smwgSparqlDatabase = 'SMWSparqlDatabaseVirtuoso' and use Virtuoso's SPARQL
