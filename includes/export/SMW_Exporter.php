@@ -179,14 +179,7 @@ class SMWExporter {
 			// have helper property ready before entering the for loop, even if not needed:
 			$peHelper = self::getResourceElementForProperty( $property, true );
 
-			if ( $property->getKey() == '_REDI' || $property->getKey() == '_URI' ) {
-				$filterNamespace = true;
-				if ( $property->getKey() == '_REDI' ) {
-					$pe = array( $pe, self::getSpecialPropertyResource( '_URI' ) );
-				}
-			} else {
-				$filterNamespace = false;
-			}
+			$filterNamespace = ( $property->getKey() == '_REDI' || $property->getKey() == '_URI' );
 
 			foreach ( $dataItems as $dataItem ) {
 				// Basic namespace filtering to ensure that types match for redirects etc.
