@@ -296,6 +296,7 @@ class SMWSparqlStoreQueryEngine {
 			$options['DISTINCT'] = true;
 			$sparqlResultWrapper = smwfGetSparqlDatabase()->selectCount( '?' . self::RESULT_VARIABLE,
 			                                      $condition, $options, $namespaces );
+
 			if ( $sparqlResultWrapper->getErrorCode() == SMWSparqlResultWrapper::ERROR_NOERROR ) {
 				return (int)$sparqlResultWrapper->getNumericValue();
 			} else {
