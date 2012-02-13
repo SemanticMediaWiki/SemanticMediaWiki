@@ -112,7 +112,11 @@ class SMWSpecialBrowse extends SpecialPage {
 			if ( $this->showincoming ) {
 				list( $indata, $more ) = $this->getInData();
 				global $smwgBrowseShowInverse;
-				if ( !$smwgBrowseShowInverse ) $leftside = !$leftside;
+				
+				if ( !$smwgBrowseShowInverse ) {
+					$leftside = !$leftside;
+				}
+				
 				$html .= $this->displayData( $indata, $leftside, true );
 				$html .= $this->displayBottom( $more );
 			}
@@ -150,7 +154,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 		$diProperties = $data->getProperties();
 		$noresult = true;
-		foreach ( $diProperties as $diProperty ) {
+		foreach ( $diProperties as $key => $diProperty ) {
 			$dvProperty = SMWDataValueFactory::newDataItemValue( $diProperty, null );
 
 			if ( $dvProperty->isVisible() ) {
@@ -164,20 +168,25 @@ class SMWSpecialBrowse extends SpecialPage {
 				continue; // skip this line
 			}
 
-			$head  = "<th>" . $proptext . "</th>\n";
+			$head  = '<th>' . $proptext . "</th>\n";
 
 			$body  = "<td>\n";
 
 			$values = $data->getPropertyValues( $diProperty );
+			
 			if ( $incoming && ( count( $values ) >= SMWSpecialBrowse::$incomingvaluescount ) ) {
 				$moreIncoming = true;
 				array_pop( $values );
 			} else {
 				$moreIncoming = false;
 			}
-
+			
 			$first = true;
-			foreach ( $values as $di ) {
+			foreach ( $values as /* SMWDataItem */ $di ) {
+				if ( !$di instanceof SMWDataItem ) {
+					throw new MWException('d');
+				}
+				
 				if ( $first ) {
 					$first = false;
 				} else {
@@ -189,6 +198,7 @@ class SMWSpecialBrowse extends SpecialPage {
 				} else {
 					$dv = SMWDataValueFactory::newDataItemValue( $di, $diProperty );
 				}
+				
 				$body .= "<span class=\"{$ccsPrefix}value\">" .
 				         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>\n";
 			}

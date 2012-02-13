@@ -145,6 +145,17 @@ class SMWParseData {
 	}
 
 	/**
+	 * 
+	 * 
+	 * @param Title $title
+	 * 
+	 * @return array( SMWDIProperty, SMWDataItem )
+	 */
+	protected static function getSpecialProperties( Title $title ) {
+	
+	}
+	
+	/**
 	 * This function takes care of storing the collected semantic data and takes
 	 * care of clearing out any outdated entries for the processed page. It assume that
 	 * parsing has happened and that all relevant data is contained in the provided parser
@@ -193,29 +204,29 @@ class SMWParseData {
 				}
 				
 				// Calculate property value.
-				$datum = null;
+				$value = null;
 				
 				switch ( $propId ) {
 					case '_MDAT' :
 						$timestamp =  Revision::getTimeStampFromID( $title, $title->getLatestRevID() );
-						$datum = self::getDataItemFromMWTimestamp( $timestamp );
+						$value = self::getDataItemFromMWTimestamp( $timestamp );
 						break;
 					case '_CDAT' :
 						$timestamp = $title->getFirstRevision()->getTimestamp();
-						$datum = self::getDataItemFromMWTimestamp( $timestamp );
+						$value = self::getDataItemFromMWTimestamp( $timestamp );
 						break;
 					case '_NEWP' :
-						$datum = new SMWDIBoolean( $title->isNewPage() );
+						$value = new SMWDIBoolean( $title->isNewPage() );
 						break;
 					case '_LEDT' :
 						$revision = Revision::newFromId( $title->getLatestRevID() );
 						$user = User::newFromId( $revision->getUser() );
-						$datum = SMWDIWikiPage::newFromTitle( $user->getUserPage() );
+						$value = SMWDIWikiPage::newFromTitle( $user->getUserPage() );
 						break;
 				}
 				
-				if ( !is_null( $datum ) ) {
-					$semdata->addPropertyObjectValue( $prop, $datum );    
+				if ( !is_null( $value ) ) {
+					$semdata->addPropertyObjectValue( $prop, $value );    
 				} // Issue error or warning?
 				
 			} // foreach
@@ -414,8 +425,9 @@ class SMWParseData {
 	 * a global/static variable appears to be the only way to get more article data to
 	 * LinksUpdate.
 	 */
-	static public function onNewRevisionFromEditComplete( $article, $rev, $baseID ) {
+	static public function onNewRevisionFromEditComplete( WikiPage $article, $rev, $baseID ) {
 		global $smwgPageSpecialProperties;
+		
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
 			$output = $article->mPreparedEdit->output;
 			$title = $article->getTitle();
@@ -433,13 +445,27 @@ class SMWParseData {
 		}
 
 		if ( in_array( '_MDAT', $smwgPageSpecialProperties ) ) {
-			$pmdat = new SMWDIProperty( '_MDAT' );
 			$timestamp = $article->getTimestamp();
 			$di = self::getDataItemFromMWTimestamp( $timestamp );
 			
 			if ( !is_null( $di ) ) {
-				$semdata->addPropertyObjectValue( $pmdat, $di );
+				$semdata->addPropertyObjectValue( new SMWDIProperty( '_MDAT' ), $di );
 			}
+		}
+		
+		if ( in_array( '_LEDT', $smwgPageSpecialProperties ) ) {
+			$di = SMWDIWikiPage::newFromTitle( User::newFromId( $article->getRevision()->getUser() )->getUserPage() );
+			
+			if ( !is_null( $di ) ) {
+				$semdata->addPropertyObjectValue( new SMWDIProperty( '_LEDT' ), $di );
+			}
+		}
+		
+		if ( in_array( '_NEWP', $smwgPageSpecialProperties ) ) {
+			$semdata->addPropertyObjectValue(
+				new SMWDIProperty( '_NEWP' ), 
+				new SMWDIBoolean( is_null( $article->getRevision()->getParentId() ) )
+			);
 		}
 
 		return true;

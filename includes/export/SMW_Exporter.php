@@ -424,6 +424,12 @@ class SMWExporter {
 				}
 			case '_MDAT':
 				return self::getSpecialNsResource( 'swivt', 'wikiPageModificationDate' );
+			case '_CDAT':
+				return self::getSpecialNsResource( 'swivt', 'wikiPageCreationDate' );
+			case '_LEDT':
+				return self::getSpecialNsResource( 'swivt', 'wikiPageLastEditor' );
+			case '_NEWP':
+				return self::getSpecialNsResource( 'swivt', 'wikiPageIsNew' );
 			case '_SKEY':
 				return self::getSpecialNsResource( 'swivt', 'wikiPageSortKey' );
 			case '_TYPE':

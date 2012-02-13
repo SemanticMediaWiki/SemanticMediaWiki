@@ -331,8 +331,8 @@ class SMWDIProperty extends SMWDataItem {
 				'_CONC'  =>  array( '__con', false ), // associated concept
 				'_MDAT'  =>  array( '_dat', false ), // "modification date"
 				'_CDAT'  =>  array( '_dat', false ), // "creation date"
-				'_NEWP'  =>  array( '_boo', false ), // "page is new"
-				'_LEDT'  =>  array( '_wpg', false ), // "page is new"
+				'_NEWP'  =>  array( '_dat', false ), // "is a new page"
+				'_LEDT'  =>  array( '_wpg', false ), // "last editor is"
 				'_ERRP'  =>  array( '_wpp', false ), // "has improper value for"
 				'_LIST'  =>  array( '__pls', true ), // "has fields"
 				'_SKEY'  =>  array( '__key', false ), // sort key of a page
