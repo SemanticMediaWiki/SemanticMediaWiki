@@ -436,6 +436,7 @@ $messages['qqq'] = array(
 	'smw_paramdesc_embedonly' => 'A description of the "embedonly" parameter for the "embedded" format for inline queries',
 	'smw_paramdesc_rsstitle' => 'A description of the "title" parameter for the "rss" format for inline queries',
 	'smw_paramdesc_rssdescription' => 'A description of the "description" parameter for the "rss" format for inline queries',
+	'smw_paramdesc_named_args' => 'This allows you to specify that you want named arguments in the template formatting the results (if any) instead of numerical ones',
 	'smw_decseparator' => "{{optional}}
 This message is as a separator symbol for decimal digits in numbers, like \".\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
 
@@ -2404,6 +2405,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-sort' => 'Das Attribut nach dem die Abfrage sortiert werden soll',
 	'smw-paramdesc-order' => 'Die Sortierreihenfolge für die Ergebnisse der Abfrage',
 	'smw-paramdesc-searchlabel' => 'Der Text zum Anzeigen weiterer Abfrageergebnisse (Standard ist „… weitere Ergebnisse“)',
+	'smw_paramdesc_named_args' => 'Die an die Vorlage zu übergebenden Argumente angeben',
 	'smw_iq_disabled' => 'Semantische Abfragen wurden in diesem Wiki deaktiviert.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_nonright_importtype' => 'Das Element „$1“ kann nur für Seiten im Namensraum „$2“ verwendet werden.',
@@ -3574,6 +3576,7 @@ Uutta ei käynnistetä.',
  * @author Sherbrooke
  * @author Urhixidur
  * @author Verdy p
+ * @author Wyz
  * @author Zetud
  */
 $messages['fr'] = array(
@@ -3642,6 +3645,7 @@ $messages['fr'] = array(
 	'smw-paramdesc-sort' => 'Propriété sur laquelle trier la requête',
 	'smw-paramdesc-order' => 'Ordre du tri de la requête',
 	'smw-paramdesc-searchlabel' => 'Texte pour continuer la recherche (par défaut, «… autres résultats»)',
+	'smw_paramdesc_named_args' => 'Nommez les arguments transmis au modèle',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
 	'smw_iq_moreresults' => '&hellip; autres résultats',
 	'smw_nonright_importtype' => 'L’élément « $1 » ne peut être employé que pour des pages de l’espace de noms « $2 ».',
@@ -4096,6 +4100,7 @@ $messages['gl'] = array(
 	'smw-paramdesc-sort' => 'Propiedade a partir da que ordenar a pesquisa',
 	'smw-paramdesc-order' => 'Orde da ordenación da pesquisa',
 	'smw-paramdesc-searchlabel' => 'Texto para continuar a procura (por defecto é "… máis resultados")',
+	'smw_paramdesc_named_args' => 'Dea nome aos argumentos que se lle pasan ao modelo',
 	'smw_iq_disabled' => 'Sentímolo. As preguntas semánticas foron deshabilitadas para este wiki.',
 	'smw_iq_moreresults' => '… máis resultados',
 	'smw_nonright_importtype' => '$1 só pode ser usado para as páxinas co espazo de nomes "$2".',
@@ -5636,6 +5641,7 @@ $messages['ia'] = array(
 	'smw-paramdesc-sort' => 'Proprietate per le qual ordinar le consulta',
 	'smw-paramdesc-order' => 'Ordination del consulta',
 	'smw-paramdesc-searchlabel' => 'Texto pro continuar le recerca (predefinition es «… altere resultatos»)',
+	'smw_paramdesc_named_args' => 'Nominar le parametros passate al patrono',
 	'smw_iq_disabled' => 'Le consultas semantic ha essite disactivate pro iste wiki.',
 	'smw_iq_moreresults' => '… ulterior resultatos',
 	'smw_nonright_importtype' => '$1 pote solmente esser usate pro paginas con le spatio de nomines "$2".',
@@ -7391,6 +7397,7 @@ $messages['mk'] = array(
 	'smw-paramdesc-sort' => 'По кое својство да се подреди барањето',
 	'smw-paramdesc-order' => 'Редослед на подредување на барањето',
 	'smw-paramdesc-searchlabel' => 'Текст за продолжување на пребарувањето (по основно: «… повеќе резултати»)',
+	'smw_paramdesc_named_args' => 'Наведете ги аргументите што му се дадени на шаблонот',
 	'smw_iq_disabled' => 'На ова вики се оневозможени семантички барања.',
 	'smw_iq_moreresults' => '… понатамошни резултати',
 	'smw_nonright_importtype' => '$1 може да се користи само за страници со именски простор „$2“.',
