@@ -183,10 +183,6 @@ class SMWSpecialBrowse extends SpecialPage {
 			
 			$first = true;
 			foreach ( $values as /* SMWDataItem */ $di ) {
-				if ( !$di instanceof SMWDataItem ) {
-					throw new MWException('d');
-				}
-				
 				if ( $first ) {
 					$first = false;
 				} else {
@@ -212,7 +208,7 @@ class SMWSpecialBrowse extends SpecialPage {
 							 'value' => $this->subject->getWikiValue()
 						) )
 					),
-					wfMsg( "smw_browse_more" )
+					wfMsg( 'smw_browse_more' )
 				);
 
 			}
