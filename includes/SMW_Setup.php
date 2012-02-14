@@ -33,6 +33,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
 	$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
 	$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
+	$wgExtensionMessagesFiles['SemanticMediaWikiNS'] = $smwgIP . 'languages/SMW_Namespaces.php';
 
 	smwfRegisterHooks();
 	smwfRegisterResourceLoaderModules();
@@ -99,6 +100,7 @@ function smwfRegisterHooks() {
 
 	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
 	$wgHooks['SkinGetPoweredBy'][] = 'SMWHooks::addPoweredBySMW';
+	$wgHooks['CanonicalNamespaces'][] = 'SMWHooks::onCanonicalNamespaces';
 	
 	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
 		// For MediaWiki 1.17 alpha and later.
@@ -462,8 +464,6 @@ function smwfInitNamespaces() {
 	if ( !is_array( $wgExtraNamespaces ) ) {
 		$wgExtraNamespaces = array();
 	}
-	$wgExtraNamespaces = $wgExtraNamespaces + $smwgContLang->getNamespaces();
-	$wgNamespaceAliases = $wgNamespaceAliases + $smwgContLang->getNamespaceAliases();
 
 	// Support subpages only for talk pages by default
 	$wgNamespacesWithSubpages = $wgNamespacesWithSubpages + array(

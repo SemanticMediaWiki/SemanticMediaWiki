@@ -95,42 +95,6 @@ abstract class SMWLanguage {
 		}
 	}
 
-
-	/**
-	 * Function that returns an array of namespace identifiers.
-	 */
-	function getNamespaces() {
-		global $smwgHistoricTypeNamespace;
-		$namespaces = $this->m_Namespaces;
-		if ( !$smwgHistoricTypeNamespace ) {
-			unset( $namespaces[SMW_NS_TYPE] );
-			unset( $namespaces[SMW_NS_TYPE_TALK] );
-		}
-		return $namespaces;
-	}
-
-	/**
-	 * Function that returns an array of namespace aliases, if any.
-	 */
-	function getNamespaceAliases() {
-		global $smwgHistoricTypeNamespace;
-
-		$namespaceAliases = $this->m_NamespaceAliases;
-		if ( $this->m_useEnDefaultAliases ) {
-			$namespaceAliases = $namespaceAliases + SMWLanguage::$enNamespaceAliases;
-		}
-
-		if ( !$smwgHistoricTypeNamespace ) {
-			foreach ($namespaceAliases as $alias => $namespace) {
-				if ( $namespace == SMW_NS_TYPE || $namespace == SMW_NS_TYPE_TALK ) {
-					unset( $namespaceAliases[$alias] );
-				}
-			}
-		}
-
-		return $namespaceAliases;
-	}
-
 	/**
 	 * Return all labels that are available as names for built-in datatypes. Those
 	 * are the types that users can access via [[has type::...]] (more built-in
