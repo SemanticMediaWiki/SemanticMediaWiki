@@ -72,6 +72,8 @@ class SMWLanguageDe extends SMWLanguage {
 		'_ERRP' => 'Hat unpassenden Wert für',
 		'_LIST' => 'Hat Komponenten',
 		'_SOBJ' => 'Hat Unterobjekt',
+		'_NEWP' => 'Ist eine neue Seite',
+		'_LEDT' => 'Letzter Bearbeiter ist',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
