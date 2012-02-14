@@ -27,6 +27,7 @@ production until the actual release.
 * Fixed erroneous SPARQL for property value comparison queries (bug 30993).
 * Fixed broken +index=x for records (bug 30284).
 * Fixed querying of subobjects using 4store as a datastore.
+* Fixed issue with namespace internationalization (bug 34383).
 
 == SMW 1.7.0.2 ==
 
