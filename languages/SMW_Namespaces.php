@@ -6,9 +6,9 @@
  * @since 0.1
  *
  * @file SMW_Namespaces.php
- * @ingroup EducationProgram
+ * @ingroup SMWLanguage
  *
- * @licence GNU GPL v3+
+ * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 
