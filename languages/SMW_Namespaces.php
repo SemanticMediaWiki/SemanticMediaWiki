@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Namespace internationalizationfor the Semantic MediaWiki extension.
+ * Namespace internationalization for the Semantic MediaWiki extension.
  *
  * @since 0.1
  *

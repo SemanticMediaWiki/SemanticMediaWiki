@@ -145,17 +145,6 @@ class SMWParseData {
 	}
 
 	/**
-	 * 
-	 * 
-	 * @param Title $title
-	 * 
-	 * @return array( SMWDIProperty, SMWDataItem )
-	 */
-	protected static function getSpecialProperties( Title $title ) {
-	
-	}
-	
-	/**
 	 * This function takes care of storing the collected semantic data and takes
 	 * care of clearing out any outdated entries for the processed page. It assume that
 	 * parsing has happened and that all relevant data is contained in the provided parser
