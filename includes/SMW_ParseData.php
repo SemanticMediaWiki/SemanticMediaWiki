@@ -413,8 +413,14 @@ class SMWParseData {
 	 * the purpose of adding information there. If the private access ever becomes a problem,
 	 * a global/static variable appears to be the only way to get more article data to
 	 * LinksUpdate.
+	 * 
+	 * @param WikiPage|Article $article WikiPage on 1.19 and later
+	 * @param $rev
+	 * @param $baseID
+	 * 
+	 * @return true
 	 */
-	static public function onNewRevisionFromEditComplete( WikiPage $article, $rev, $baseID ) {
+	static public function onNewRevisionFromEditComplete( /* WikiPage */ $article, $rev, $baseID ) {
 		global $smwgPageSpecialProperties;
 		
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
