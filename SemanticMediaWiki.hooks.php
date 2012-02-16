@@ -218,8 +218,7 @@ final class SMWHooks {
      * Special:Browse. The links has the CSS id "t-smwbrowselink" so that it can be
      * skinned or hidden with all standard mechanisms (also by individual users
      * with custom CSS).
-     * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateToolboxEnd
-	 *
+     *
      * @since 1.7.1
      *
      * @param $skintemplate
@@ -234,26 +233,5 @@ final class SMWHooks {
     	}
     	return true;
     }
-
-	/**
-	 * For extensions adding their own namespaces or altering the defaults.
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
-	 *
-	 * @since 1.7.1
-	 *
-	 * @param array $list
-	 *
-	 * @return true
-	 */
-	public static function onCanonicalNamespaces( array &$list ) {
-		$list[SMW_NS_PROPERTY] = 'Property';
-		$list[SMW_NS_PROPERTY_TALK] = 'Property_talk';
-		$list[SMW_NS_TYPE] = 'Type';
-		$list[SMW_NS_TYPE_TALK] = 'Type_talk';
-		$list[SMW_NS_CONCEPT] = 'Concept';
-		$list[SMW_NS_CONCEPT_TALK] = 'Concept_talk';
-
-		return true;
-	}
 
 }
