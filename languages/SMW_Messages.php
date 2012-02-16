@@ -3368,6 +3368,7 @@ $messages['eu'] = array(
 );
 
 /** Persian (فارسی)
+ * @author Huji
  * @author Momeni
  * @author ZxxZxxZ
  */
@@ -3416,6 +3417,8 @@ $messages['fa'] = array(
 	'smw_add_sortcondition' => '[افزودن شرایط مرتب‌سازی]',
 	'smw_ask_hidequery' => 'مخفی‌کردن پرس‌و‌جو',
 	'smw_ask_help' => 'پرس‌و‌جو از راهنما',
+	'searchbyproperty' => 'جستجو بر اساس ویژگی',
+	'browse' => 'مرور ویکی',
 	'smw_browselink' => 'مرور خصوصیات',
 	'smw_browse_article' => 'نام صفحه‌ای را که می‌خواهید مرور کردن را از آن شروع کنید، وارد کنید.',
 	'smw_browse_go' => 'برو',
@@ -3426,6 +3429,9 @@ $messages['fa'] = array(
 	'smw_inverse_label_default' => '$1 از',
 	'smw_inverse_label_property' => 'برچسب خصوصیت برعکس',
 	'pageproperty' => 'جستجوی خصوصیت صفحه',
+	'smwadmin' => 'عملکردهای مدیریتی برای مدیاویکی معنایی',
+	'smw_adminlinks_datastructure' => 'ساختار داده‌ها',
+	'smw_adminlinks_displayingdata' => 'نمایش داده‌ها',
 	'smw-createproperty-isproperty' => 'این یک ویژگی از نوع $1 است.',
 	'smw-createproperty-allowedvals' => 'مقادیر مجاز برای این ویژگی یا صفت این‌ها هستند:',
 );
