@@ -2494,7 +2494,7 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_ask_hidequery' => 'Abfrage ausblenden',
 	'smw_ask_help' => 'Hilfe',
 	'smw_ask_queryhead' => 'Abfrage',
-	'smw_ask_printhead' => 'Zusätzliche Daten zur Anzeige',
+	'smw_ask_printhead' => 'Zusätzlich anzuzeigende Daten',
 	'smw_ask_printdesc' => '(ein Attribut je Zeile angeben)',
 	'smw_ask_format_as' => 'Formatiert als:',
 	'smw_ask_defaultformat' => 'Standard',
@@ -12501,6 +12501,7 @@ $messages['zh-cn'] = array(
  * @author Anakmalaysia
  * @author Gzdavidwong
  * @author Liangent
+ * @author Linforest
  * @author Onecountry
  * @author PhiLiP
  * @author Richarddong
@@ -12573,6 +12574,7 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-sort' => '排序查询的属性',
 	'smw-paramdesc-order' => '查询排序的顺序',
 	'smw-paramdesc-searchlabel' => '继续搜索的文本（默认是 «… further results»）',
+	'smw_paramdesc_named_args' => '请指定传递给该模板的变量',
 	'smw_iq_disabled' => '此维基的语义查询已禁用',
 	'smw_iq_moreresults' => '更多结果',
 	'smw_nonright_importtype' => '$1仅能用于名字空间“$2”下的页面。',
