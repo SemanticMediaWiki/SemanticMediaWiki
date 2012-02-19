@@ -8903,6 +8903,7 @@ $messages['pdc'] = array(
 );
 
 /** Polish (Polski)
+ * @author BeginaFelicysym
  * @author Maikking
  * @author Sp5uhe
  * @author ToSter
@@ -9055,7 +9056,7 @@ Właściwości, które nie posiadają swojej strony odnaleźć można na stronie
 	'smw_sbv_displayresultfuzzy' => 'Lista wszystkich stron, które posiadają własność „$1” o wartości „$2”.
 Ponieważ znaleziono tylko kilka wyników, pokazano również wyniki podobne.',
 	'smw_sbv_property' => 'Atrybut',
-	'smw_sbv_value' => 'Wartość',
+	'smw_sbv_value' => 'Wartość:',
 	'smw_sbv_submit' => 'Znajdź wyniki',
 	'browse' => 'Przeglądaj artykuły',
 	'smw_browselink' => 'Przeglądaj właściwości',
