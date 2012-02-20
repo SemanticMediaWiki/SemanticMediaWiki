@@ -18,7 +18,14 @@ class ApiAskArgs extends ApiSMWQuery {
 	public function execute() {
 		$params = $this->extractRequestParams();
 		$this->requireParameters( $params, array( 'conditions' ) );
-		$this->parameters = $params['parameters'];
+		
+		foreach ( $params['parameters'] as $param ) {
+			$parts = explode( '=', $param, 2 );
+			
+			if ( count( $parts ) == 2 ) {
+				$this->parameters[$parts[0]] = $parts[1];
+			}
+		}
 		
 		$query = $this->getQuery( 
 			implode( array_map( array( __CLASS__, 'wrapCondition' ), $params['conditions'] ) ),
