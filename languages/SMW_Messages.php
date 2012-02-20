@@ -1900,6 +1900,7 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw-paramdesc-sort' => 'Propietat per ordenar la consulta per',
 	'smw-paramdesc-order' => 'Ordre de la ordenació de la consulta',
 	'smw-paramdesc-searchlabel' => 'Text per continuar la cerca (per defecte és «… més resultats»)',
+	'smw_paramdesc_named_args' => 'Anomena els arguments que es passen a la plantilla',
 	'smw_iq_disabled' => 'Les consultes semàntiques estan inhabilitades en aquest wiki.',
 	'smw_iq_moreresults' => '... més resultats',
 	'smw_nonright_importtype' => "$1 només es pot utilitzar per a pàgines de l'espai de noms «$2».",
