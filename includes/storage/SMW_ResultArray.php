@@ -113,6 +113,19 @@ class SMWResultArray {
 		return $result;
 	}
 
+	/**
+	 * Set the internal pointer of the array of SMWDataItem objects to its first
+	 * element. Return the first SMWDataItem object or false if the array is
+	 * empty.
+	 * 
+	 * @since 1.7.1
+	 * 
+	 * @return SMWDataItem or false
+	 */
+	public function reset() {
+		$this->loadContent();
+		return reset( $this->mContent );
+	}
 
 	/**
 	 * Return an SMWDataValue object for the next SMWDataItem object or
