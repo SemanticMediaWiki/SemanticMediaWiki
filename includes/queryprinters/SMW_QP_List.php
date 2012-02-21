@@ -37,7 +37,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
 		
-		$this->mSep = $this->isPlainlist() ? $params['sep'] : '';
+		$this->mSep = $params['sep'];
 		$this->mTemplate = trim( $params['template'] );
 		$this->mNamedArgs = $params['named args'];
 		$this->mUserParam = trim( $params['userparam'] );
@@ -63,8 +63,6 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rowstart = "\t<li>";
 			$rowend = "</li>\n";
 			$plainlist = false;
-			$finallistsep = '';
-			$listsep = '';
 		} else { // "list" and "template" format
 			$header = '';
 			$footer = '';
@@ -72,16 +70,22 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rowend = '';
 			$plainlist = true;
 			
-			if ( $this->mSep !== '' ) { // always respect custom separator
-				$listsep = $this->mSep;
-				$finallistsep = $listsep;
-			} elseif ( $this->mFormat == 'list' )  {  // make default list ", , , and "
-				$listsep = ', ';
-				$finallistsep = wfMsgForContent( 'smw_finallistconjunct' ) . ' ';
-			} else { // no default separators for format "template"
-				$listsep = '';
-				$finallistsep = '';
-			}
+		}
+		
+		if ( $this->mSep !== '' ) { // always respect custom separator
+			$listsep = $this->mSep;
+			$finallistsep = $listsep;
+		} elseif ( $this->mFormat == 'list' )  {  // make default list ", , , and "
+			// TODO: No default separator for "ul" and "ol" to not break
+			// compatibility with SMW pre 1.7.1. But they really should have
+			// default separators, i.e. the check should be for
+			// $this->mFormat !== 'template'
+			
+			$listsep = ', ';
+			$finallistsep = wfMsgForContent( 'smw_finallistconjunct' ) . ' ';
+		} else { // no default separators for format "template", "ul", "ol"
+			$listsep = '';
+			$finallistsep = '';
 		}
 		
 		// Initialise more values
@@ -285,12 +289,10 @@ END;
 	public function getParameters() {
 		$params = array_merge( parent::getParameters(), parent::textDisplayParameters() );
 		
-		if ( $this->isPlainlist() ) {
-			$params['sep'] = new Parameter( 'sep' );
-			$params['sep']->setMessage( 'smw_paramdesc_sep' );
-			$params['sep']->setDefault( '' );
-		}
-		
+		$params['sep'] = new Parameter( 'sep' );
+		$params['sep']->setMessage( 'smw_paramdesc_sep' );
+		$params['sep']->setDefault( '' );
+
 		$params['template'] = new Parameter( 'template' );
 		$params['template']->setMessage( 'smw_paramdesc_template' );
 		$params['template']->setDefault( '' );	
