@@ -415,12 +415,13 @@ class SMWParseData {
 	 * LinksUpdate.
 	 * 
 	 * @param WikiPage|Article $article WikiPage on 1.19 and later
-	 * @param $rev
-	 * @param $baseID
+	 * @param Revision $rev
+	 * @param integer $baseID
+	 * @param User $user
 	 * 
 	 * @return true
 	 */
-	static public function onNewRevisionFromEditComplete( /* WikiPage */ $article, $rev, $baseID ) {
+	static public function onNewRevisionFromEditComplete( /* WikiPage */ $article, Revision $rev, $baseID, User $user ) {
 		global $smwgPageSpecialProperties;
 		
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
@@ -449,7 +450,7 @@ class SMWParseData {
 		}
 		
 		if ( in_array( '_LEDT', $smwgPageSpecialProperties ) ) {
-			$di = SMWDIWikiPage::newFromTitle( User::newFromId( $article->getRevision()->getUser() )->getUserPage() );
+			$di = SMWDIWikiPage::newFromTitle( $user->getUserPage() );
 			
 			if ( !is_null( $di ) ) {
 				$semdata->addPropertyObjectValue( new SMWDIProperty( '_LEDT' ), $di );
@@ -459,7 +460,7 @@ class SMWParseData {
 		if ( in_array( '_NEWP', $smwgPageSpecialProperties ) ) {
 			$semdata->addPropertyObjectValue(
 				new SMWDIProperty( '_NEWP' ), 
-				new SMWDIBoolean( is_null( $article->getRevision()->getParentId() ) )
+				new SMWDIBoolean( is_null( $rev->getParentId() ) )
 			);
 		}
 
