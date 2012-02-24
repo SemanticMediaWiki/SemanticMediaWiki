@@ -62,6 +62,10 @@ class SMWSMWDoc extends ParserHook {
 		$params['language'] = new Parameter( 'language' );
 		$params['language']->setDefault( $GLOBALS['wgLanguageCode'] );
 		$params['language']->setMessage( 'smw-smwdoc-par-language' );
+		
+		$params['parameters'] = new Parameter( 'parameters', Parameter::TYPE_STRING, 'specific' );
+		$params['parameters']->setMessage( 'smw-smwdoc-par-parameters' );
+		$params['parameters']->addCriteria( new CriterionInArray( 'all', 'specific', 'base' ) );
 
 		return $params;
 	}
@@ -75,7 +79,7 @@ class SMWSMWDoc extends ParserHook {
 	 * @return array
 	 */
 	protected function getDefaultParameters( $type ) {
-		return array( 'format', 'language' );
+		return array( 'format', 'language', 'parameters' );
 	}
 
 	/**
@@ -91,7 +95,15 @@ class SMWSMWDoc extends ParserHook {
 	public function render( array $parameters ) {
 		$this->language = $parameters['language'];
 
-		$params = $this->getFormatParameters( $parameters['format'] );
+		$params = array();
+		
+		if ( in_array( $parameters['parameters'], array( 'all', 'base' ) ) ) {
+			$params = array_merge( $params, SMWQueryProcessor::getParameters() );
+		}
+		
+		if ( in_array( $parameters['parameters'], array( 'all', 'specific' ) ) ) {
+			$params = array_merge( $params, $this->getFormatParameters( $parameters['format'] ) );
+		}
 
 		return $this->getParameterTable( $params );
 	}
