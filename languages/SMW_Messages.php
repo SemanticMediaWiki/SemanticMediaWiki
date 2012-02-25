@@ -511,6 +511,10 @@ This method is called ''content negotiation''.",
 	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
 	'smw-info-par-message' => 'Short description of the message parameter behaviour.',
 	'smw-info-par-icon' => 'Short description of the icon parameter behaviour.',
+
+	'smw-smwdoc-description' => 'Short description of the smwdoc parser hook.',
+	'smw-smwdoc-par-format'	=> 'Description of the format parameter of the smwdoc parser hook.',
+	'smw-smwdoc-par-parameters' => 'Description of the parameters parameter of the smwdoc parser hook',
 );
 
 /** Niuean (ko e vagahau Niuē)
