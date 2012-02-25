@@ -437,6 +437,9 @@ $messages['qqq'] = array(
 	'smw_paramdesc_embedonly' => 'A description of the "embedonly" parameter for the "embedded" format for inline queries',
 	'smw_paramdesc_rsstitle' => 'A description of the "title" parameter for the "rss" format for inline queries',
 	'smw_paramdesc_rssdescription' => 'A description of the "description" parameter for the "rss" format for inline queries',
+	'smw-smwdoc-description' => 'Short description of the smwdoc parser hook.',
+	'smw-smwdoc-par-format' => 'Description of the format parameter of the smwdoc parser hook.',
+	'smw-smwdoc-par-parameters' => 'Description of the parameters parameter of the smwdoc parser hook',
 	'smw_paramdesc_named_args' => 'This allows you to specify that you want named arguments in the template formatting the results (if any) instead of numerical ones',
 	'smw_decseparator' => "{{optional}}
 This message is as a separator symbol for decimal digits in numbers, like \".\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
@@ -511,10 +514,6 @@ This method is called ''content negotiation''.",
 	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
 	'smw-info-par-message' => 'Short description of the message parameter behaviour.',
 	'smw-info-par-icon' => 'Short description of the icon parameter behaviour.',
-
-	'smw-smwdoc-description' => 'Short description of the smwdoc parser hook.',
-	'smw-smwdoc-par-format'	=> 'Description of the format parameter of the smwdoc parser hook.',
-	'smw-smwdoc-par-parameters' => 'Description of the parameters parameter of the smwdoc parser hook',
 );
 
 /** Niuean (ko e vagahau Niuē)
@@ -1180,6 +1179,13 @@ $messages['az'] = array(
 	'smw_qui_category' => '<strong>Kateqoriya</strong>',
 	'smw_qui_dcategory' => 'Kateqoriya:',
 	'smw_result_results' => 'Nəticələr',
+);
+
+/** Bashkir (Башҡортса)
+ * @author Roustammr
+ */
+$messages['ba'] = array(
+	'smw_browselink' => 'Үҙенсәлектәрҙе ҡарарға',
 );
 
 /** Bavarian (Boarisch)
@@ -2408,6 +2414,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-dsv-filename' => 'Der Name für die DSV-Datei',
 	'smw-smwdoc-description' => 'Zeigt eine Übersicht aller Parameter mitsamt deren Standardwerten einschließlich ihrer Beschreibung, die im Zusammenhang mit dem angegebenen Ergebnisformat genutzt werden können.',
 	'smw-smwdoc-par-format' => 'Das Ergebnisformat zu dessen Parametern die Dokumentation angezeigt werden soll.',
+	'smw-smwdoc-par-parameters' => 'Die anzuzeigenden Parameter: „specific“ für die vom jeweiligen Ergebnisformat bereitgestellten, „base“ für die für alle Ergebnisformate verfügbaren und „all“ zur Anzeige aller.',
 	'smw-paramdesc-sort' => 'Das Attribut nach dem die Abfrage sortiert werden soll',
 	'smw-paramdesc-order' => 'Die Sortierreihenfolge für die Ergebnisse der Abfrage',
 	'smw-paramdesc-searchlabel' => 'Der Text zum Anzeigen weiterer Abfrageergebnisse (Standard ist „… weitere Ergebnisse“)',
@@ -5650,6 +5657,7 @@ $messages['ia'] = array(
 	'smw-paramdesc-dsv-filename' => 'Le nomine del file DSV',
 	'smw-smwdoc-description' => 'Presenta un tabella de tote le parametros que pote esser usate pro le formato de resultatos specificate, insimul con lor valores predefinite e lor descriptiones.',
 	'smw-smwdoc-par-format' => 'Le formato de resultatos pro le qual presentar le documentation de parametros.',
+	'smw-smwdoc-par-parameters' => 'Le parametros a monstrar: "specific" pro illos addite per le formato, "base" pro illos disponibile in tote le formatos, e "all" pro ambes.',
 	'smw-paramdesc-sort' => 'Proprietate per le qual ordinar le consulta',
 	'smw-paramdesc-order' => 'Ordination del consulta',
 	'smw-paramdesc-searchlabel' => 'Texto pro continuar le recerca (predefinition es «… altere resultatos»)',
@@ -7406,6 +7414,7 @@ $messages['mk'] = array(
 	'smw-paramdesc-dsv-filename' => 'Име на DSV-податотеката',
 	'smw-smwdoc-description' => 'Прикажува табела на сите параметри што можат да се искористат за назначениот формат на резултати заедно со основните вредности и описи.',
 	'smw-smwdoc-par-format' => 'Форматот на резултатите за кој се прикажува параметарска документација.',
+	'smw-smwdoc-par-parameters' => 'Кои параметри да се прикажуваат. „specific“ за оние што ги додава форматот, „base“ за оние достапни во сите формати, а „all“ за обете.',
 	'smw-paramdesc-sort' => 'По кое својство да се подреди барањето',
 	'smw-paramdesc-order' => 'Редослед на подредување на барањето',
 	'smw-paramdesc-searchlabel' => 'Текст за продолжување на пребарувањето (по основно: «… повеќе резултати»)',
