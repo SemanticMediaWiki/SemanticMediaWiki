@@ -185,11 +185,11 @@ function smwfRegisterResourceLoaderModules() {
 function smwfRegisterClasses() {
 	global $smwgIP, $wgAutoloadClasses, $wgJobClasses;
 
-	$wgAutoloadClasses['SMWHooks']   				= $smwgIP . 'SemanticMediaWiki.hooks.php';
+	$wgAutoloadClasses['SMWHooks']                  = $smwgIP . 'SemanticMediaWiki.hooks.php';
 	
 	$incDir = $smwgIP . 'includes/';
 	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
-	$wgAutoloadClasses['SMWDataValueFactory']   	= $incDir . 'SMW_DataValueFactory.php';
+	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDISerializer']           = $incDir . 'SMW_DISerializer.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
@@ -209,7 +209,7 @@ function smwfRegisterClasses() {
 	// Printers
 	$qpDir = $smwgIP . 'includes/queryprinters/';
 	$wgAutoloadClasses['SMWResultPrinter']          = $qpDir . 'SMW_QueryPrinter.php';
-	$wgAutoloadClasses['SMWAggregatablePrinter']   = $qpDir . 'SMW_QP_Aggregatable.php';
+	$wgAutoloadClasses['SMWAggregatablePrinter']    = $qpDir . 'SMW_QP_Aggregatable.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']     = $qpDir . 'SMW_QP_Table.php';
 	$wgAutoloadClasses['SMWListResultPrinter']      = $qpDir . 'SMW_QP_List.php';
 	$wgAutoloadClasses['SMWCategoryResultPrinter']  = $qpDir . 'SMW_QP_Category.php';
@@ -222,41 +222,41 @@ function smwfRegisterClasses() {
 
 	// Data items
 	$diDir = $smwgIP . 'includes/dataitems/';
-	$wgAutoloadClasses['SMWDataItem']		= $diDir . 'SMW_DataItem.php';
-	$wgAutoloadClasses['SMWDataItemException']	= $diDir . 'SMW_DataItem.php';
-	$wgAutoloadClasses['SMWDIProperty']		= $diDir . 'SMW_DI_Property.php';
-	$wgAutoloadClasses['SMWDIBoolean']		= $diDir . 'SMW_DI_Bool.php';
-	$wgAutoloadClasses['SMWDINumber']		= $diDir . 'SMW_DI_Number.php';
-	$wgAutoloadClasses['SMWDIBlob']			= $diDir . 'SMW_DI_Blob.php';
-	$wgAutoloadClasses['SMWDIString']		= $diDir . 'SMW_DI_String.php';
-	$wgAutoloadClasses['SMWStringLengthException']	= $diDir . 'SMW_DI_String.php';
-	$wgAutoloadClasses['SMWDIUri']			= $diDir . 'SMW_DI_URI.php';
-	$wgAutoloadClasses['SMWDIWikiPage']		= $diDir . 'SMW_DI_WikiPage.php';
-	$wgAutoloadClasses['SMWDITime']			= $diDir . 'SMW_DI_Time.php';
-	$wgAutoloadClasses['SMWDIConcept']		= $diDir . 'SMW_DI_Concept.php';
-	$wgAutoloadClasses['SMWDIError']		= $diDir . 'SMW_DI_Error.php';
-	$wgAutoloadClasses['SMWDIGeoCoord']		= $diDir . 'SMW_DI_GeoCoord.php';
-	$wgAutoloadClasses['SMWContainerSemanticData']	= $diDir . 'SMW_DI_Container.php';
-	$wgAutoloadClasses['SMWDIContainer']		= $diDir . 'SMW_DI_Container.php';
+	$wgAutoloadClasses['SMWDataItem']               = $diDir . 'SMW_DataItem.php';
+	$wgAutoloadClasses['SMWDataItemException']      = $diDir . 'SMW_DataItem.php';
+	$wgAutoloadClasses['SMWDIProperty']             = $diDir . 'SMW_DI_Property.php';
+	$wgAutoloadClasses['SMWDIBoolean']              = $diDir . 'SMW_DI_Bool.php';
+	$wgAutoloadClasses['SMWDINumber']               = $diDir . 'SMW_DI_Number.php';
+	$wgAutoloadClasses['SMWDIBlob']                 = $diDir . 'SMW_DI_Blob.php';
+	$wgAutoloadClasses['SMWDIString']               = $diDir . 'SMW_DI_String.php';
+	$wgAutoloadClasses['SMWStringLengthException']  = $diDir . 'SMW_DI_String.php';
+	$wgAutoloadClasses['SMWDIUri']                  = $diDir . 'SMW_DI_URI.php';
+	$wgAutoloadClasses['SMWDIWikiPage']             = $diDir . 'SMW_DI_WikiPage.php';
+	$wgAutoloadClasses['SMWDITime']                 = $diDir . 'SMW_DI_Time.php';
+	$wgAutoloadClasses['SMWDIConcept']              = $diDir . 'SMW_DI_Concept.php';
+	$wgAutoloadClasses['SMWDIError']                = $diDir . 'SMW_DI_Error.php';
+	$wgAutoloadClasses['SMWDIGeoCoord']             = $diDir . 'SMW_DI_GeoCoord.php';
+	$wgAutoloadClasses['SMWContainerSemanticData']  = $diDir . 'SMW_DI_Container.php';
+	$wgAutoloadClasses['SMWDIContainer']            = $diDir . 'SMW_DI_Container.php';
 
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';
-	$wgAutoloadClasses['SMWDataValue']           	= $dvDir . 'SMW_DataValue.php';
-	$wgAutoloadClasses['SMWRecordValue']         	= $dvDir . 'SMW_DV_Record.php';
-	$wgAutoloadClasses['SMWErrorValue']          	= $dvDir . 'SMW_DV_Error.php';
-	$wgAutoloadClasses['SMWStringValue']         	= $dvDir . 'SMW_DV_String.php';
-	$wgAutoloadClasses['SMWWikiPageValue']       	= $dvDir . 'SMW_DV_WikiPage.php';
-	$wgAutoloadClasses['SMWPropertyValue']       	= $dvDir . 'SMW_DV_Property.php';
-	$wgAutoloadClasses['SMWURIValue']            	= $dvDir . 'SMW_DV_URI.php';
-	$wgAutoloadClasses['SMWTypesValue']          	= $dvDir . 'SMW_DV_Types.php';
-	$wgAutoloadClasses['SMWPropertyListValue']		= $dvDir . 'SMW_DV_PropertyList.php';
-	$wgAutoloadClasses['SMWNumberValue']         	= $dvDir . 'SMW_DV_Number.php';
-	$wgAutoloadClasses['SMWTemperatureValue']    	= $dvDir . 'SMW_DV_Temperature.php';
-	$wgAutoloadClasses['SMWQuantityValue']         	= $dvDir . 'SMW_DV_Quantity.php';
-	$wgAutoloadClasses['SMWTimeValue']           	= $dvDir . 'SMW_DV_Time.php';
-	$wgAutoloadClasses['SMWBoolValue']           	= $dvDir . 'SMW_DV_Bool.php';
-	$wgAutoloadClasses['SMWConceptValue']        	= $dvDir . 'SMW_DV_Concept.php';
-	$wgAutoloadClasses['SMWImportValue']         	= $dvDir . 'SMW_DV_Import.php';
+	$wgAutoloadClasses['SMWDataValue']              = $dvDir . 'SMW_DataValue.php';
+	$wgAutoloadClasses['SMWRecordValue']            = $dvDir . 'SMW_DV_Record.php';
+	$wgAutoloadClasses['SMWErrorValue']             = $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWStringValue']            = $dvDir . 'SMW_DV_String.php';
+	$wgAutoloadClasses['SMWWikiPageValue']          = $dvDir . 'SMW_DV_WikiPage.php';
+	$wgAutoloadClasses['SMWPropertyValue']          = $dvDir . 'SMW_DV_Property.php';
+	$wgAutoloadClasses['SMWURIValue']               = $dvDir . 'SMW_DV_URI.php';
+	$wgAutoloadClasses['SMWTypesValue']             = $dvDir . 'SMW_DV_Types.php';
+	$wgAutoloadClasses['SMWPropertyListValue']      = $dvDir . 'SMW_DV_PropertyList.php';
+	$wgAutoloadClasses['SMWNumberValue']            = $dvDir . 'SMW_DV_Number.php';
+	$wgAutoloadClasses['SMWTemperatureValue']       = $dvDir . 'SMW_DV_Temperature.php';
+	$wgAutoloadClasses['SMWQuantityValue']          = $dvDir . 'SMW_DV_Quantity.php';
+	$wgAutoloadClasses['SMWTimeValue']              = $dvDir . 'SMW_DV_Time.php';
+	$wgAutoloadClasses['SMWBoolValue']              = $dvDir . 'SMW_DV_Bool.php';
+	$wgAutoloadClasses['SMWConceptValue']           = $dvDir . 'SMW_DV_Concept.php';
+	$wgAutoloadClasses['SMWImportValue']            = $dvDir . 'SMW_DV_Import.php';
 
 	// Export
 	$expDir = $smwgIP . 'includes/export/';
@@ -266,14 +266,14 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWExpLiteral']             = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpResource']            = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpNsResource']          = $expDir . 'SMW_Exp_Element.php';
-	$wgAutoloadClasses['SMWExportController']		= $expDir . 'SMW_ExportController.php';
-	$wgAutoloadClasses['SMWSerializer']	        	= $expDir . 'SMW_Serializer.php';
+	$wgAutoloadClasses['SMWExportController']       = $expDir . 'SMW_ExportController.php';
+	$wgAutoloadClasses['SMWSerializer']	            = $expDir . 'SMW_Serializer.php';
 	$wgAutoloadClasses['SMWRDFXMLSerializer']       = $expDir . 'SMW_Serializer_RDFXML.php';
 	$wgAutoloadClasses['SMWTurtleSerializer']       = $expDir . 'SMW_Serializer_Turtle.php';
 
 	// Parameter classes
 	$parDir = $smwgIP . 'includes/params/';
-	$wgAutoloadClasses['SMWParamFormat']			= $parDir . 'SMW_ParamFormat.php';
+	$wgAutoloadClasses['SMWParamFormat']            = $parDir . 'SMW_ParamFormat.php';
 	
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
@@ -293,7 +293,7 @@ function smwfRegisterClasses() {
 
 	$wgAutoloadClasses['SMWSparqlDatabase']         = $smwgIP . 'includes/sparql/SMW_SparqlDatabase.php';
 	$wgAutoloadClasses['SMWSparqlDatabase4Store']   = $smwgIP . 'includes/sparql/SMW_SparqlDatabase4Store.php';
-	$wgAutoloadClasses['SMWSparqlDatabaseVirtuoso']   = $smwgIP . 'includes/sparql/SMW_SparqlDatabaseVirtuoso.php';
+	$wgAutoloadClasses['SMWSparqlDatabaseVirtuoso'] = $smwgIP . 'includes/sparql/SMW_SparqlDatabaseVirtuoso.php';
 	$wgAutoloadClasses['SMWSparqlDatabaseError']    = $smwgIP . 'includes/sparql/SMW_SparqlDatabase.php';
 	$wgAutoloadClasses['SMWSparqlResultWrapper']    = $smwgIP . 'includes/sparql/SMW_SparqlResultWrapper.php';
 	$wgAutoloadClasses['SMWSparqlResultParser']     = $smwgIP . 'includes/sparql/SMW_SparqlResultParser.php';
