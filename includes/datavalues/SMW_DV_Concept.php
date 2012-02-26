@@ -148,7 +148,7 @@ class SMWConceptValue extends SMWDataValue {
 			}
 		} elseif ( $desc instanceof SMWValueDescription ) {
 			if ( $desc->getComparator() == SMW_CMP_EQ ) {
-				$result = SMWExporter::getDataItemExpElement( $desc->getDataValue()->getDataItem() );
+				$result = SMWExporter::getDataItemExpElement( $desc->getDataItem() );
 			} else { // alas, OWL cannot represent <= and >= ...
 				$exact = false;
 				$result = false;
