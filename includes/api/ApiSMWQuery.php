@@ -75,11 +75,7 @@ abstract class ApiSMWQuery extends ApiBase {
 		}
 	}
 	
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-		) );
-	}
-	
+	/// TODO: when < 1.17 are no longer supported, use ApiBase::PARAM_REQUIRED
 	protected function requireParameters( array $params, array $required ) {
 		foreach ( $required as $param ) {
 			if ( !isset( $params[$param] ) ) {

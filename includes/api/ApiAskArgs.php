@@ -80,11 +80,6 @@ class ApiAskArgs extends ApiSMWQuery {
 			This API module is in alpha stage, and likely to see changes in upcomming versions of SMW.'
 		);
 	}
-	
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-		) );
-	}
 
 	protected function getExamples() {
 		return array(
