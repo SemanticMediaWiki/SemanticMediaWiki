@@ -110,18 +110,6 @@ abstract class SMWDescription {
 	}
 
 	/**
-	 * Determine the datatype of the values that are described by this object.
-	 * Most descriptins can only describe wiki pages, so this is the default,
-	 * but some descriptions may refer to other datatypes, and overwrite this
-	 * function accordingly.
-	 *
-	 * @return string
-	 */
-// 	public function getTypeID() {
-// 		return '_wpg';
-// 	}
-
-	/**
 	 * Recursively restrict query to a maximal size and depth as given.
 	 * Returns a possibly changed description that should be used as a replacement.
 	 * Reduce values of parameters to account for the returned descriptions size.
@@ -177,16 +165,6 @@ class SMWThingDescription extends SMWDescription {
 		return $this;
 	}
 
-	/**
-	 * Return an empty type id since we cannot know the datatype of values that
-	 * are described by this description. This type should not be relevant in
-	 * any place, since description types are currently only necessary for
-	 * processing an SMWSomeProperty object where the property does not specify
-	 * the type.
-	 */
-// 	public function getTypeID() {
-// 		return '';
-// 	}
 }
 
 /**
@@ -462,10 +440,6 @@ class SMWValueDescription extends SMWDescription {
 		return 1;
 	}
 
-// 	public function getTypeID() {
-// 		return $this->m_dataItem->getTypeID();
-// 	}
-
 }
 
 
@@ -547,14 +521,6 @@ class SMWConjunction extends SMWDescription {
 
 		return $depth;
 	}
-
-// 	public function getTypeID() {
-// 		if ( count( $this->m_descriptions ) > 0 ) { // all subdescriptions should have the same type!
-// 			return reset( $this->m_descriptions )->getTypeID();
-// 		} else {
-// 			return ''; // unknown
-// 		}
-// 	}
 
 	public function getQueryFeatures() {
 		$result = SMW_CONJUNCTION_QUERY;
@@ -717,14 +683,6 @@ class SMWDisjunction extends SMWDescription {
 
 		return $depth;
 	}
-
-// 	public function getTypeID() {
-// 		if ( count( $this->m_descriptions ) > 0 ) { // all subdescriptions should have the same type!
-// 			return reset( $this->m_descriptions )->getTypeID();
-// 		} else {
-// 			return ''; // unknown
-// 		}
-// 	}
 
 	public function getQueryFeatures() {
 		$result = SMW_DISJUNCTION_QUERY;
