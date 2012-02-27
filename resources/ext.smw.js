@@ -1,5 +1,5 @@
 /**
- * JavasSript for Semantic MediaWiki.
+ * JavaScript for Semantic MediaWiki.
  * @see http://semantic-mediawiki.org/
  * 
  * @licence GNU GPL v3 or later
