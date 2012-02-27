@@ -4116,6 +4116,7 @@ $messages['gl'] = array(
 	'smw-paramdesc-dsv-filename' => 'O nome para o ficheiro DSV',
 	'smw-smwdoc-description' => 'Mostra unha táboa de todos os parámetros que se poden empregar para un formato de resultados especificado xunto aos valores por defecto e descricións.',
 	'smw-smwdoc-par-format' => 'O formato dos resultados do que mostrar a documentación do parámetro.',
+	'smw-smwdoc-par-parameters' => 'Os parámetros que mostrar. "specific" para aqueles engadidos polo formato, "base" para aqueles dispoñibles en todos os formatos e "all" para ambos.',
 	'smw-paramdesc-sort' => 'Propiedade a partir da que ordenar a pesquisa',
 	'smw-paramdesc-order' => 'Orde da ordenación da pesquisa',
 	'smw-paramdesc-searchlabel' => 'Texto para continuar a procura (por defecto é "… máis resultados")',
