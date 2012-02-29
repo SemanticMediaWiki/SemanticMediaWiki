@@ -3661,6 +3661,7 @@ $messages['fr'] = array(
 	'smw-paramdesc-dsv-filename' => 'Le nom du fichier DSV',
 	'smw-smwdoc-description' => 'Montre un tableau de tous les paramètres qui peuvent être utilisés pour un format de résultat spécifié ensemble avec des valeurs et des descriptions par défaut.',
 	'smw-smwdoc-par-format' => "Le format de résultat dans lequel afficher la documentation d'un paramètre",
+	'smw-smwdoc-par-parameters' => 'Les paramètres à afficher. "specific" pour ceux ajoutés par le format, "base" pour ceux disponibles dans tous les formats, et "all" pour les deux.',
 	'smw-paramdesc-sort' => 'Propriété sur laquelle trier la requête',
 	'smw-paramdesc-order' => 'Ordre du tri de la requête',
 	'smw-paramdesc-searchlabel' => 'Texte pour continuer la recherche (par défaut, «… autres résultats»)',
