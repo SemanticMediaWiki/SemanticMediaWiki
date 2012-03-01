@@ -12589,6 +12589,7 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-dsv-filename' => 'DSV文件名称',
 	'smw-smwdoc-description' => '显示所有参数的表，它们可以与默认值和描述一起用于指定的结果格式。',
 	'smw-smwdoc-par-format' => '显示参数文档的结果格式。',
+	'smw-smwdoc-par-parameters' => '要显示哪些参数。"specific"（专用）表示该格式所添加那些的，"base"（基础）表示所有格式当中可用的那些，而"all"（全部）表示两种情况具有。',
 	'smw-paramdesc-sort' => '排序查询的属性',
 	'smw-paramdesc-order' => '查询排序的顺序',
 	'smw-paramdesc-searchlabel' => '继续搜索的文本（默认是 «… further results»）',
