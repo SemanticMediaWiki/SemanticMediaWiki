@@ -489,17 +489,17 @@ END;
 	 * @return string
 	 */
 	protected function getInputForm( $printoutstring, $urltail ) {
-		global $smwgQSortingSupport, $smwgResultFormats;
+		global $smwgQSortingSupport, $smwgResultFormats, $wgScript;
 
 		$result = '';
 
 		if ( $this->m_editquery ) {
-			$spectitle = $this->getTitleFor( 'Ask' );
-			$result .= '<form name="ask" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
-				'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
+			$result .= Html::openElement( 'form',
+				array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
+			$result .= Html::hidden( 'title', $this->getTitle()->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$result .= '<table style="width: 100%; "><tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_printhead' ) . "<br />\n" .
+			$result .= '<table style="width: 100%;"><tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_printhead' ) . "<br />\n" .
 				'<span style="font-weight: normal;">' . wfMsg( 'smw_ask_printdesc' ) . '</span>' . "</th></tr>\n" .
 				'<tr><td style="padding-right: 7px;"><textarea name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
 				'<td style="padding-left: 7px;"><textarea id = "add_property" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
