@@ -19,8 +19,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'Not an entry point.' );
 }
 
-if ( version_compare( $wgVersion, '1.16c', '<' ) ) {
-	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.16 or above; use SMW 1.6.x for MediaWiki 1.15.x.' );
+if ( version_compare( $wgVersion, '1.17c', '<' ) ) {
+	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.17 or above; use SMW 1.7.x for MediaWiki 1.16.x.' );
 }
 
 // Include the Validator extension if that hasn't been done yet, since it's required for SMW to work.
@@ -34,7 +34,7 @@ if ( !defined( 'Validator_VERSION' ) ) {
 }
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.7.1' );
+define( 'SMW_VERSION', '1.8 alpha' );
 
 // Registration of the extension credits, see Special:Version.
 $wgExtensionCredits['semantic'][] = array(

@@ -1060,10 +1060,10 @@ class SMWSQLStore2 extends SMWStore {
 		// we use a temporary table for executing this costly operation on the DB side
 		$smw_tmp_unusedprops = $db->tableName( 'smw_tmp_unusedprops' );
 		if ( $wgDBtype == 'postgres' ) { // PostgresQL: no in-memory tables available
-			$sql = "CREATE OR REPLACE FUNCTION create_" . $smw_tmp_unusedprops . "() RETURNS void AS "
+			$sql = "CREATE OR REPLACE FUNCTION create_smw_tmp_unusedprops() RETURNS void AS "
 				   . "$$ "
 				   . "BEGIN "
-				   . " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='" . $smw_tmp_unusedprops . "' AND schemaname = ANY (current_schemas(true))) "
+				   . " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename=" . $smw_tmp_unusedprops . " AND schemaname = ANY (current_schemas(true))) "
 				   . " THEN DELETE FROM " . $smw_tmp_unusedprops . "; "
 				   . " ELSE "
 				   . "  CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . " ( title text ); "
@@ -1071,7 +1071,7 @@ class SMWSQLStore2 extends SMWStore {
 				   . "END; "
 				   . "$$ "
 				   . "LANGUAGE 'plpgsql'; "
-				   . "SELECT create_" . $smw_tmp_unusedprops . "(); ";
+				   . "SELECT create_smw_tmp_unusedprops(); ";
 		} else { // MySQL: use temporary in-memory table
 			$sql = "CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . "( title VARCHAR(255) ) ENGINE=MEMORY";
 		}

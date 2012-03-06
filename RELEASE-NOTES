@@ -1,6 +1,16 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
 
+== SMW 1.8 ==
+
+THIS IS NOT A RELEASE YET
+
+Semantic MediaWiki 1.8 is currently in beta-quality and is not recommended for use in
+production until the actual release.
+
+* Dropped compatibility with MediaWiki 1.16.x (and earlier).
+* Full compatibility with MediaWiki 1.19 and foreward-compatibility with 1.20.
+
 == SMW 1.7.1 ==
 
 Released on March 5, 2012.
