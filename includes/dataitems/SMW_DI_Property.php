@@ -33,11 +33,13 @@ class SMWDIProperty extends SMWDataItem {
 	 * @var array
 	 */
 	static protected $m_prop_types;
+
 	/**
 	 * Array with entries "property id" => "property label"
 	 * @var array
 	 */
 	static protected $m_prop_labels;
+
 	/**
 	 * Array with entries "property alias" => "property id"
 	 * @var array
@@ -50,11 +52,13 @@ class SMWDIProperty extends SMWDataItem {
 	 * @var string
 	 */
 	protected $m_key;
+
 	/**
 	 * Whether to take the inverse of this property or not.
 	 * @var boolean
 	 */
 	protected $m_inverse;
+
 	/**
 	 * Cache for property type ID.
 	 * @var string
@@ -75,14 +79,16 @@ class SMWDIProperty extends SMWDataItem {
 		if ( ( $key === '' ) || ( $key{0} == '-' ) ) {
 			throw new SMWDataItemException( "Illegal property key \"$key\"." );
 		}
+
 		if ( $key{0} == '_' ) {
 			SMWDIProperty::initPropertyRegistration();
 			if ( !array_key_exists( $key, SMWDIProperty::$m_prop_types ) ) {
 				throw new SMWDataItemException( "There is no predefined property with \"$key\"." );
 			}
 		}
-		$this->m_key     = $key;
-		$this->m_inverse = ( $inverse == true );
+
+		$this->m_key = $key;
+		$this->m_inverse = $inverse;
 	}
 
 	public function getDIType() {
@@ -115,6 +121,8 @@ class SMWDIProperty extends SMWDataItem {
 	 * Examples of properties that are not shown include Modificaiton date
 	 * (not available in time), and Has improper value for (errors are
 	 * shown directly on the page anyway).
+	 *
+	 * @return boolean
 	 */
 	public function isShown() {
 		return ( ( $this->isUserDefined() ) ||
@@ -125,6 +133,7 @@ class SMWDIProperty extends SMWDataItem {
 	/**
 	 * Return true if this is a usual wiki property that is defined by a
 	 * wiki page, and not a property that is pre-defined in the wiki.
+	 *
 	 * @return boolean
 	 */
 	public function isUserDefined() {
@@ -134,6 +143,7 @@ class SMWDIProperty extends SMWDataItem {
 	/**
 	 * Find a user-readable label for this property, or return '' if it is
 	 * a predefined property that has no label.
+	 *
 	 * @return string
 	 */
 	public function getLabel() {
@@ -158,12 +168,16 @@ class SMWDIProperty extends SMWDataItem {
 	 * @return SMWDIWikiPage or null
 	 */
 	public function getDiWikiPage() {
-		if ( $this->m_inverse ) return null;
+		if ( $this->m_inverse ) {
+			return null;
+		}
+
 		if ( $this->isUserDefined() ) {
 			$dbkey = $this->m_key;
 		} else {
 			$dbkey = str_replace( ' ', '_', $this->getLabel() );
 		}
+
 		try {
 			return new SMWDIWikiPage( $dbkey, SMW_NS_PROPERTY, '' );
 		} catch ( SMWDataItemException $e ) {
@@ -181,12 +195,15 @@ class SMWDIProperty extends SMWDataItem {
 	 */
 	public function findPropertyTypeID() {
 		global $smwgPDefaultType;
+
 		if ( !isset( $this->m_proptypeid ) ) {
 			if ( $this->isUserDefined() ) { // normal property
 				$diWikiPage = new SMWDIWikiPage( $this->getKey(), SMW_NS_PROPERTY, '' );
 				$typearray = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
+
 				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
 					$typeDataItem = reset( $typearray );
+
 					if ( $typeDataItem instanceof SMWDIUri ) {
 						$this->m_proptypeid = $typeDataItem->getFragment();
 					} else {
@@ -199,25 +216,31 @@ class SMWDIProperty extends SMWDataItem {
 				$this->m_proptypeid = self::getPredefinedPropertyTypeId( $this->m_key );
 			}
 		}
+
 		return $this->m_proptypeid;
 	}
 
 
 	public function getSerialization() {
-		return ( $this->m_inverse ? '-' : '' ) . $this->m_key ;
+		return ( $this->m_inverse ? '-' : '' ) . $this->m_key;
 	}
 
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
+	 *
+	 * @param string $serialization
+	 *
 	 * @return SMWDIProperty
 	 */
 	public static function doUnserialize( $serialization ) {
 		$inverse = false;
+
 		if ( $serialization{0} == '-' ) {
 			$serialization = substr( $serialization, 1 );
 			$inverse = true;
 		}
+
 		return new SMWDIProperty( $serialization, $inverse );
 	}
 
@@ -233,10 +256,12 @@ class SMWDIProperty extends SMWDataItem {
 	 *
 	 * @param $label string label for the property
 	 * @param $inverse boolean states if the inverse of the property is constructed
+	 *
 	 * @return SMWDIProperty object
 	 */
 	public static function newFromUserLabel( $label, $inverse = false ) {
 		$id = SMWDIProperty::findPropertyID( $label );
+
 		if ( $id === false ) {
 			return new SMWDIProperty( str_replace( ' ', '_', $label ), $inverse );
 		} else {
@@ -251,13 +276,16 @@ class SMWDIProperty extends SMWDataItem {
 	 *
 	 * This function is protected. The public way of getting this data is
 	 * to simply create a new property object and to get its ID (if any).
+	 *
 	 * @param $label string normalized property label
 	 * @param $useAlias boolean determining whether to check if the label is an alias
+	 *
 	 * @return mixed string property ID or false
 	 */
 	protected static function findPropertyID( $label, $useAlias = true ) {
 		SMWDIProperty::initPropertyRegistration();
 		$id = array_search( $label, SMWDIProperty::$m_prop_labels );
+
 		if ( $id !== false ) {
 			return $id;
 		} elseif ( ( $useAlias ) && ( array_key_exists( $label, SMWDIProperty::$m_prop_aliases ) ) ) {
@@ -274,6 +302,7 @@ class SMWDIProperty extends SMWDataItem {
 	 * properties where isUserDefined() returns false.
 	 *
 	 * @param $key string key of the property
+	 *
 	 * @return string type ID
 	 */
 	public static function getPredefinedPropertyTypeId( $key ) {
@@ -288,6 +317,10 @@ class SMWDIProperty extends SMWDataItem {
 	 * Get the translated user label for a given internal property ID.
 	 * Returns false for properties without a translation (these are
 	 * usually internal, generated by SMW but not shown to the user).
+	 *
+	 * @param string $id
+	 *
+	 * @return string|false
 	 */
 	static protected function findPropertyLabel( $id ) {
 		SMWDIProperty::initPropertyRegistration();
@@ -363,6 +396,7 @@ class SMWDIProperty extends SMWDataItem {
 	 */
 	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
 		SMWDIProperty::$m_prop_types[$id] = array( $typeid, $show );
+
 		if ( $label != false ) {
 			SMWDIProperty::$m_prop_labels[$id] = $label;
 		}
@@ -376,6 +410,7 @@ class SMWDIProperty extends SMWDataItem {
 	 *
 	 * @param $id string id of a property
 	 * @param $label string alias label for the property
+	 * 
 	 * @note Always use registerProperty() for the first label. No property
 	 * that has used "false" for a label on registration should have an
 	 * alias.
