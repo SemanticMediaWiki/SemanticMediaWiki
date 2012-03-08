@@ -11293,13 +11293,14 @@ Procena napredovanja trenutnog ažuriranja:',
  * @author MagnusA
  * @author Najami
  * @author Per
+ * @author Rotsee
  * @author Sannab
  * @author WikiPhoenix
  */
 $messages['sv'] = array(
 	'smw-desc' => "Gör din wiki mer tillgänglig - för maskiner ''och'' människor ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
 	'smw_viewasrdf' => 'RDF-matning',
-	'smw_finallistconjunct' => ', och',
+	'smw_finallistconjunct' => 'och',
 	'smw_factbox_head' => 'Fakta om $1',
 	'smw_isspecprop' => 'Den här egenskapen är en specialegenskap på den här wikin.',
 	'smw_isknowntype' => 'Den här datatypen är bland standardtyperna på den här wikin.',
@@ -11311,7 +11312,8 @@ $messages['sv'] = array(
 	'smw_concept_cache_miss' => 'Konceptet "$1" kan inte användas för tillfället, eftersom wiki-konfigurationen kräver att det beräknas off-line.
 Om problemet inte försvinner efter någon tid, så be din administratör att göra konceptet tillgängligt.',
 	'smw_noinvannot' => 'Värden kan inte tilldelas inverterade egenskaper.',
-	'smw_baduri' => 'Beklagar, URI-er på formen "$1" är inte tillåtet.',
+	'version-semantic' => 'semantiska tillägg',
+	'smw_baduri' => 'Beklagar, URI:er på formen "$1" är inte tillåtna.',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
 	'smw_printername_auto' => 'Automatisk',
@@ -11329,6 +11331,10 @@ Om problemet inte försvinner efter någon tid, så be din administratör att g�
 	'smw_printername_broadtable' => 'Bred tabell',
 	'smw_printername_template' => 'Mall',
 	'smw_printername_rdf' => 'RDF-exportering',
+	'smw_printername_category' => 'Kategori',
+	'smw_paramdesc_limit' => 'Maximalt antal resultat att visa',
+	'smw_paramdesc_offset' => 'Vilket resultat i ordningen ska visas som det första?',
+	'smw_paramdesc_headers' => 'Visa rubriker/egenskapsnamn',
 	'smw_paramdesc_link' => 'Visa värden som länkar',
 	'smw_paramdesc_embedonly' => 'Visa inga rubriker',
 	'smw-paramdesc-dsv-filename' => 'Namnet för DSV-filen',
@@ -11508,6 +11514,10 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw_adminlinks_inlinequerieshelp' => 'Hjälp för inbäddade frågor',
 	'smw-createproperty-isproperty' => 'Det här är en egenskap av typen $1.',
 	'smw-createproperty-allowedvals' => 'De tillåtna värdena för den här egenskapen är:',
+	'smw-paramdesc-category-template' => 'Mall att formatera resultatet med',
+	'smw-paramdesc-category-userparam' => 'Parameter till mallen',
+	'smw-info-par-message' => 'Meddelande att skriva ut.',
+	'smw-info-par-icon' => 'Ikon att visa, antingen "info" eller "warning".',
 );
 
 /** Tamil (தமிழ்)
