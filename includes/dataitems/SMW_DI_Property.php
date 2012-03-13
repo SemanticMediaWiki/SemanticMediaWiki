@@ -410,7 +410,7 @@ class SMWDIProperty extends SMWDataItem {
 	 *
 	 * @param $id string id of a property
 	 * @param $label string alias label for the property
-	 * 
+	 *
 	 * @note Always use registerProperty() for the first label. No property
 	 * that has used "false" for a label on registration should have an
 	 * alias.
