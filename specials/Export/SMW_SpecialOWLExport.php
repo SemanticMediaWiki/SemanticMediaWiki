@@ -163,7 +163,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 		if ( $date === '' ) {
 			$date = $wgRequest->getVal( 'date' );
 		}
-		
+
 		if ( $date !== '' ) {
 			$timeint = strtotime( $date );
 			$stamp = date( "YmdHis", $timeint );
