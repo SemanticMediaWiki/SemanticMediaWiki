@@ -27,18 +27,25 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		// see if we can find something to export:
 		$page = is_null( $page ) ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
+		$pages = false;
 
-		if ( $page === '' ) { // Try to get POST list; some settings are only available via POST.
-			$pageblob = $wgRequest->getText( 'pages' );
+		if ( !is_null( $page ) || $wgRequest->getCheck( 'page' ) ) {
+			$page = is_null( $page ) ? $wgRequest->getCheck( 'text' ) : $page;
 
-			if ( $pageblob !== '' ) {
-				$pages = explode( "\n", $pageblob );
+			if ( $page !== '' ) {
+				$pages = array( $page );
 			}
-		} else {
-			$pages = array( $page );
 		}
 
-		if ( isset( $pages ) ) {
+		if ( $pages === false && $wgRequest->getCheck( 'pages' ) ) {
+			$pageBlob = $wgRequest->getText( 'pages' );
+
+			if ( $pageBlob !== '' ) {
+				$pages = explode( "\n", $wgRequest->getText( 'pages' ) );
+			}
+		}
+
+		if ( $pages !== false ) {
 			$this->exportPages( $pages );
 			return;
 		} else {
@@ -58,7 +65,8 @@ class SMWSpecialOWLExport extends SpecialPage {
 				}
 			}
 		}
-		// nothing exported yet; show user interface:
+
+		// Nothing exported yet; show user interface:
 		$this->showForm();
 	}
 
