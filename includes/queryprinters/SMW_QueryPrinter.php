@@ -72,7 +72,7 @@ abstract class SMWResultPrinter {
 	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
 
 	/**
-	 * List of errors that occured while processing the parameters.
+	 * List of errors that occurred while processing the parameters.
 	 * 
 	 * @since 1.6
 	 * 

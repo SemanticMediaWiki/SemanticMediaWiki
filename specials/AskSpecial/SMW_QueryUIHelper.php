@@ -45,10 +45,10 @@ class SMWQueryUIHelper {
 	protected $printOutStrings = array();
 
 	/**
-	 * Have errors occured so far?
+	 * Have errors occurred so far?
 	 * @var boolean
 	 */
-	private $errorsOccured = false;
+	private $errorsoccurred = false;
 
 	/**
 	 * Has the query come from a special page, or from an InfoLink?
@@ -102,12 +102,12 @@ class SMWQueryUIHelper {
 	}
 
 	/**
-	 * Returns true if any errors have occured
+	 * Returns true if any errors have occurred
 	 *
 	 * @return boolean
 	 */
 	public function hasError() {
-		return $this->errorsOccured;
+		return $this->errorsoccurred;
 	}
 
 	/**
@@ -160,7 +160,7 @@ class SMWQueryUIHelper {
 	}
 
 	/**
-	 * Returns an array of errors, if any have occured.
+	 * Returns an array of errors, if any have occurred.
 	 *
 	 * @return array of strings
 	 */
@@ -215,7 +215,7 @@ class SMWQueryUIHelper {
 				$errors = $query ->getErrors();
 			}
 			if ( !empty ( $errors ) ) {
-				$this->errorsOccured = true;
+				$this->errorsoccurred = true;
 			}
 			$this->errors = array_merge( $errors, $this->errors );
 		}
@@ -250,7 +250,7 @@ class SMWQueryUIHelper {
 				}
 				if ( !$this->validateProperty( $prop ) ) {
 					$errors[] = wfMsg( 'smw_qui_invalidprop', $prop );
-					$this->errorsOccured = true;
+					$this->errorsoccurred = true;
 				}
 			}
 		}
@@ -295,7 +295,7 @@ class SMWQueryUIHelper {
 		if ( $enableValidation ) { // validating the format
 			if ( !array_key_exists( $params['format'], $smwgResultFormats ) ) {
 				$errors[] = wfMsg( 'smw_qui_invalidformat', $params['format'] );
-				$this->errorsOccured = true;
+				$this->errorsoccurred = true;
 			} else { // validating parameters for result printer
 				$printer = SMWQueryProcessor::getResultPrinter( $params[ 'format' ] );
 				$para_meters = $printer->getParameters();
@@ -305,7 +305,7 @@ class SMWQueryUIHelper {
 					$validator->validateParameters();
 					if ( $validator->hasFatalError() ) {
 						array_merge ( $errors, $validator->getErrorMessages () );
-						$this->errorsOccured = true;
+						$this->errorsoccurred = true;
 					}
 				}
 			}
@@ -368,7 +368,7 @@ class SMWQueryUIHelper {
 
 			$errors = array_merge( $errors, $res->getErrors() );
 			if ( !empty( $errors ) ) {
-				$this->errorsOccured = true;
+				$this->errorsoccurred = true;
 				$this->errors = array_merge( $errors, $this->errors );
 			}
 
