@@ -109,7 +109,7 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	}
 
 	/**
-	 * Counts all the occurances of all values in the query result,
+	 * Counts all the occurrences of all values in the query result,
 	 * and returns an array with as key the value and as value the count.
 	 *
 	 * @since 1.7
