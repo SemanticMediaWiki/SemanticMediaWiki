@@ -196,7 +196,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 		
 		$params['delim'] = new Parameter( 'delim' );
 		$params['delim']->setDescription( wfMsg( 'smw-paramdesc-category-delim' ) );
-		$params['delim']->setDefault( ',' );
+		$params['delim']->setDefault( '' );
 		
 		$params['template'] = new Parameter( 'template' );
 		$params['template']->setDescription( wfMsg( 'smw-paramdesc-category-template' ) );
