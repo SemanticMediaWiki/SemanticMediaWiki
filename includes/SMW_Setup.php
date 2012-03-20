@@ -93,6 +93,9 @@ function smwfRegisterHooks() {
 	$wgHooks['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle'; // special implementations for property/type articles
 	$wgHooks['ParserFirstCallInit'][] = 'SMWHooks::onParserFirstCallInit';
 
+	$wgHooks['SkinTemplateTabs'][] = 'SMWHooks::addRefreshTab'; // basic tab addition
+	$wgHooks['SkinTemplateNavigation'][] = 'SMWHooks::addStructuredRefreshTab'; // structured version for "Vector"-type skins
+
 	if ( $GLOBALS['smwgToolboxBrowseLink'] ) {
 		$wgHooks['SkinTemplateToolboxEnd'][] = 'SMWHooks::showBrowseLink';
 	}
@@ -419,9 +422,6 @@ function smwfSetupExtension() {
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;
 
-	///// register hooks /////
-	require_once( $smwgIP . 'includes/SMW_RefreshTab.php' );
-	
 	if ( isset($wgFooterIcons["poweredby"])
 	  && isset($wgFooterIcons["poweredby"]["semanticmediawiki"])
 	  && is_null( $wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] ) ) {

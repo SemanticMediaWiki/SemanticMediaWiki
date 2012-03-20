@@ -234,4 +234,48 @@ final class SMWHooks {
     	return true;
     }
 
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateTabs
+	 * This is here for compatibility with MediaWiki 1.17. Once we can require 1.18, we can ditch this code :)
+	 *
+	 * @since 0.1
+	 *
+	 * @param SkinTemplate $skinTemplate
+	 * @param array $contentActions
+	 *
+	 * @return true
+	 */
+	public static function addRefreshTab( SkinTemplate $skinTemplate, array &$contentActions ) {
+		global $wgUser;
+
+		if ( $wgUser->isAllowed( 'purge' ) ) {
+			$contentActions['purge'] = array(
+				'class' => false,
+				'text' => wfMsg( 'smw_purge' ),
+				'href' => $skinTemplate->getTitle()->getLocalUrl( array( 'action' => 'purge' ) )
+			);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Alter the structured navigation links in SkinTemplates.
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
+	 *
+	 * @since 1.8
+	 *
+	 * @param SkinTemplate $skinTemplate
+	 * @param array $links
+	 *
+	 * @return true
+	 */
+	public static function addStructuredRefreshTab( SkinTemplate &$skinTemplate, array &$links ) {
+		$actions = $links['actions'];
+		self::addRefreshTab( $skinTemplate, $actions );
+		$links['actions'] = $actions;
+
+		return true;
+	}
+
 }
