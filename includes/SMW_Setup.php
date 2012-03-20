@@ -103,13 +103,7 @@ function smwfRegisterHooks() {
 	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
 	$wgHooks['SkinGetPoweredBy'][] = 'SMWHooks::addPoweredBySMW';
 	
-	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
-		// For MediaWiki 1.17 alpha and later.
-		$wgHooks['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
-	} else {
-		// For pre-MediaWiki 1.17 alpha.
-		$wgHooks['SpecialVersionExtensionTypes'][] = 'SMWHooks::oldAddSemanticExtensionType';
-	}
+	$wgHooks['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
 }
 
 /**
@@ -417,15 +411,15 @@ function smwfRegisterSpecialPages() {
  */
 function smwfSetupExtension() {
 	wfProfileIn( 'smwfSetupExtension (SMW)' );
-	global $smwgIP, $smwgScriptPath, $wgFooterIcons, $smwgMasterStore, $smwgIQRunningNumber;
+	global $smwgScriptPath, $wgFooterIcons, $smwgMasterStore, $smwgIQRunningNumber;
 
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;
 
-	if ( isset($wgFooterIcons["poweredby"])
-	  && isset($wgFooterIcons["poweredby"]["semanticmediawiki"])
-	  && is_null( $wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] ) ) {
-		$wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] = "$smwgScriptPath/skins/images/smw_button.png";
+	if ( isset( $wgFooterIcons['poweredby'] )
+	  && isset( $wgFooterIcons['poweredby']['semanticmediawiki'] )
+	  && is_null( $wgFooterIcons['poweredby']['semanticmediawiki']['src'] ) ) {
+		$wgFooterIcons['poweredby']['semanticmediawiki']['src'] = "$smwgScriptPath/skins/images/smw_button.png";
 	}
 
 	wfProfileOut( 'smwfSetupExtension (SMW)' );

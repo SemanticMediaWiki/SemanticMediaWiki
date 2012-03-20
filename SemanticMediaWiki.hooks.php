@@ -176,20 +176,6 @@ final class SMWHooks {
     }
 
     /**
-     * @see SMWHooks::addSemanticExtensionType
-     *
-     * @since 1.7.1
-     *
-     * @param $oSpecialVersion SpecialVersion
-     * @param $aExtensionTypes Array
-     *
-     * @return true
-     */
-    public static function oldAddSemanticExtensionType( SpecialVersion &$oSpecialVersion, array &$aExtensionTypes ) {
-    	return self::addSemanticExtensionType( $aExtensionTypes );
-    }
-
-    /**
      * Register tables to be added to temporary tables for parser tests.
      * @todo Hard-coding this thwarts the modularity/exchangability of the SMW
      * storage backend. The actual list of required tables depends on the backend
