@@ -298,6 +298,8 @@ class SMWQueryProcessor {
 					$parts = explode( '=', $param, 2 );
 					if ( count( $parts ) == 2 ) {
 						$lastprintout->setParameter( trim( $parts[0] ), $parts[1] );
+					} else {
+						$lastprintout->setParameter( trim( $parts[0] ), null );
 					}
 				}
 			} else { // parameter or query
