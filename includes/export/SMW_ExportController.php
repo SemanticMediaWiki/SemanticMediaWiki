@@ -207,7 +207,7 @@ class SMWExportController {
 					$pinst = new SMWDIProperty( '_INST' );
 	
 					while ( $resarray !== false ) {
-						$instance = end( $resarray )->getNextDataValue();
+						$instance = end( $resarray )->getNextDataItem();
 
 						if ( !array_key_exists( $instance->getHash(), $this->element_done ) ) {
 							$semdata = $this->getSemanticData( $instance, true );

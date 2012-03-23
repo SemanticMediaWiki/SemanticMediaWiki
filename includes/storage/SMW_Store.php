@@ -175,12 +175,19 @@ abstract class SMWStore {
 	 * Get an array of all subjects that have the given value for the given
 	 * property. The result is an array of SMWDIWikiPage objects. If null
 	 * is given as a value, all subjects having that property are returned.
+	 *
+	 * @param SMWDIProperty $property
+	 *
+	 *
+	 * @return array of SMWDIWikiPage
 	 */
 	public abstract function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null );
 
 	/**
 	 * Get an array of all subjects that have some value for the given
 	 * property. The result is an array of SMWDIWikiPage objects.
+	 *
+	 * @return array of SMWDIWikiPage
 	 */
 	public abstract function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null );
 
