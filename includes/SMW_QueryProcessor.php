@@ -487,9 +487,6 @@ class SMWQueryProcessor {
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
 	 * function.
-	 * 
-	 * TODO: refactor non-printer params up to the query processor
-	 * and do all param handling there. 
 	 *
 	 * @since 1.6.2
 	 *
@@ -544,6 +541,18 @@ class SMWQueryProcessor {
 		$params['searchlabel'] = new Parameter( 'searchlabel' );
 		$params['searchlabel']->setDefault( false, false );
 		$params['searchlabel']->setMessage( 'smw-paramdesc-searchlabel' );
+
+		$params['intro'] = new Parameter( 'intro' );
+		$params['intro']->setMessage( 'smw_paramdesc_intro' );
+		$params['intro']->setDefault( '' );
+
+		$params['outro'] = new Parameter( 'outro' );
+		$params['outro']->setMessage( 'smw_paramdesc_outro' );
+		$params['outro']->setDefault( '' );
+
+		$params['default'] = new Parameter( 'default' );
+		$params['default']->setMessage( 'smw_paramdesc_default' );
+		$params['default']->setDefault( '' );
 		
 		return $params;
 	}

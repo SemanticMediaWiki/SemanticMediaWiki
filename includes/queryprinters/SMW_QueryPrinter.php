@@ -297,12 +297,10 @@ abstract class SMWResultPrinter {
 		$this->params = $params;
 		$this->m_params = $params; // Compat, change made in 1.6.3/1.7
 		
-		if ( array_key_exists( 'intro', $params ) ) { $this->mIntro = $params['intro']; }
-		if ( array_key_exists( 'outro', $params ) ) { $this->mOutro = $params['outro']; }
-		
-		if ( array_key_exists( 'searchlabel', $params ) ) {
-			$this->mSearchlabel = $params['searchlabel'] === false ? null : $params['searchlabel'];
-		}
+		$this->mIntro = $params['intro'];
+		$this->mOutro = $params['outro'];
+
+		$this->mSearchlabel = $params['searchlabel'] === false ? null : $params['searchlabel'];
 
 		switch ( $params['link'] ) {
 			case 'head': case 'subject':
@@ -319,7 +317,7 @@ abstract class SMWResultPrinter {
 				break;			
 		}
 		
-		if ( array_key_exists( 'default', $params ) ) { $this->mDefault = str_replace( '_', ' ', $params['default'] ); }
+		 $this->mDefault = str_replace( '_', ' ', $params['default'] );
 		
 		if ( $params['headers'] == 'hide' ) {
 			$this->mShowHeaders = SMW_HEADERS_HIDE;
@@ -471,44 +469,28 @@ abstract class SMWResultPrinter {
 	 * formats, like 'list' and 'table', for use in their getParameters()
 	 * functions
 	 *
+	 * @deperecated since 1.8, removal in 1.10
+	 *
 	 * @since 1.5.0
 	 *
 	 * @return array of Parameter
 	 */
 	protected function textDisplayParameters() {
-		$params = array();
-		
-		$params['intro'] = new Parameter( 'intro' );
-		$params['intro']->setMessage( 'smw_paramdesc_intro' );
-		$params['intro']->setDefault( '' );
-		
-		$params['outro'] = new Parameter( 'outro' );
-		$params['outro']->setMessage( 'smw_paramdesc_outro' );
-		$params['outro']->setDefault( '' );
-		
-		$params['default'] = new Parameter( 'default' );
-		$params['default']->setMessage( 'smw_paramdesc_default' );
-		$params['default']->setDefault( '' );
-		
-		return $params;
+		return array();
 	}
 
 	/**
 	 * Return an array describing the parameters of the export formats
 	 * like 'rss' and 'csv', for use in their getParameters() functions
 	 *
+	 * @deperecated since 1.8, removal in 1.10
+	 *
 	 * @since 1.5.0
 	 *
 	 * @return array
 	 */
 	protected function exportFormatParameters() {
-		$params = array();
-		
-		$params['searchlabel'] = new Parameter( 'searchlabel' );
-		$params['searchlabel']->setMessage( 'smw_paramdesc_searchlabel' );
-		$params['searchlabel']->setDefault( false, false );
-		
-		return $params;
+		return array();
 	}
 
 	/**
@@ -575,9 +557,6 @@ abstract class SMWResultPrinter {
 	 * any specific format - most query printers should override this
 	 * function.
 	 * 
-	 * TODO: refactor non-printer params up to the query processor
-	 * and do all param handling there. 
-	 *
 	 * @since 1.5
 	 *
 	 * @return array of Parameter

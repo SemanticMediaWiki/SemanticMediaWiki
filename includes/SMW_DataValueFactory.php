@@ -134,9 +134,11 @@ class SMWDataValueFactory {
 
 		$result = self::newTypeIdValue( $typeId, false, $caption, $property );
 		$result->setDataItem( $dataItem );
+
 		if ( $caption !== false ) {
 			$result->setCaption( $caption );
 		}
+
 		return $result;
 	}
 
