@@ -37,7 +37,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
 		
-		$this->mSep = $params['sep'];
+		$this->mSep = str_replace( '_', ' ', $params['sep'] ); // allow "_" for encoding spaces, as documented
 		$this->mTemplate = trim( $params['template'] );
 		$this->mNamedArgs = $params['named args'];
 		$this->mUserParam = trim( $params['userparam'] );

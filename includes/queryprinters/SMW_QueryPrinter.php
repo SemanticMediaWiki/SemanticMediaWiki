@@ -280,7 +280,7 @@ abstract class SMWResultPrinter {
 			}
 		}
 
-		return $result;		
+		return $result;
 	}
 	
 	/**
@@ -296,9 +296,9 @@ abstract class SMWResultPrinter {
 	protected function handleParameters( array $params, $outputmode ) {
 		$this->params = $params;
 		$this->m_params = $params; // Compat, change made in 1.6.3/1.7
-		
-		$this->mIntro = $params['intro'];
-		$this->mOutro = $params['outro'];
+
+		$this->mIntro = str_replace( '_', ' ', $params['intro'] );
+		$this->mOutro = str_replace( '_', ' ', $params['outro'] );
 
 		$this->mSearchlabel = $params['searchlabel'] === false ? null : $params['searchlabel'];
 
@@ -469,7 +469,7 @@ abstract class SMWResultPrinter {
 	 * formats, like 'list' and 'table', for use in their getParameters()
 	 * functions
 	 *
-	 * @deperecated since 1.8, removal in 1.10
+	 * @deprecated since 1.8, removal in 1.10
 	 *
 	 * @since 1.5.0
 	 *
@@ -483,7 +483,7 @@ abstract class SMWResultPrinter {
 	 * Return an array describing the parameters of the export formats
 	 * like 'rss' and 'csv', for use in their getParameters() functions
 	 *
-	 * @deperecated since 1.8, removal in 1.10
+	 * @deprecated since 1.8, removal in 1.10
 	 *
 	 * @since 1.5.0
 	 *
@@ -556,7 +556,7 @@ abstract class SMWResultPrinter {
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
 	 * function.
-	 * 
+	 *
 	 * @since 1.5
 	 *
 	 * @return array of Parameter
