@@ -51,7 +51,7 @@ class SMWParamFormat extends ItemParameterManipulation {
 	
 	/**
 	 * Takes a format name, which can be an alias and returns a format name
-	 * which will be valid for sure. Aliases are resvolved. If the given
+	 * which will be valid for sure. Aliases are resolved. If the given
 	 * format name is invalid, the predefined default format will be returned.
 	 * 
 	 * @since 1.6.2

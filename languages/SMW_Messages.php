@@ -181,6 +181,7 @@ Note that the result could be large!',
 Generates browsable RDF.',
 	'smw_exportrdf_lastdate'  => 'Do not export pages that were not changed since the given point in time.',
 	'smw_exportrdf_submit'  => 'Export',
+	'uriresolver' => 'URIResolver',
 
 	// Messages for Properties Special
 	'properties'             => 'Properties',
@@ -217,7 +218,7 @@ Some of the existing properties might be [[Special:UnusedProperties|unused prope
 Properties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].',
 
 	// Name of the URI Resolver Special (no content)
-	'smw_uri_doc' => 'The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>.
+	'smw_uri_doc' => 'The URI resolver implements the [$1 W3C TAG finding on httpRange-14].
 It takes care that humans do not turn into websites.',
 
 	// Messages for ask Special
