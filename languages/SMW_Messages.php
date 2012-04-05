@@ -524,16 +524,6 @@ $messages['niu'] = array(
 	'smw_browse_go' => 'Fano',
 );
 
-/** толышә зывон (толышә зывон)
- * @author Гусейн
- */
-$messages['tly'] = array(
-	'smw_finallistconjunct' => ', ијән',
-	'smw_printername_list' => 'Сијоһи',
-	'smw_printername_template' => 'Ғәлиб',
-	'smw_printername_category' => 'Категоријә',
-);
-
 /** Afrikaans (Afrikaans)
  * @author Arnobarnard
  * @author Naudefj
@@ -4454,6 +4444,7 @@ $messages['grc'] = array(
 );
 
 /** Swiss German (Alemannisch)
+ * @author Als-Chlämens
  * @author Als-Holder
  */
 $messages['gsw'] = array(
@@ -4492,11 +4483,11 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_paramdesc_limit' => 'Di maximal Aazahl vu Ergebnis, wu zruck gee solle wäre',
 	'smw_paramdesc_headers' => 'Chopfzyyle bzw. d Nämme vu dr Eigeschafte aazeige',
 	'smw_paramdesc_mainlabel' => 'S Label vu Hauptsytename',
-	'smw_paramdesc_link' => 'Wärt as Gleicher (Links) aazeige',
+	'smw_paramdesc_link' => 'Wärt as Links aazeige',
 	'smw_paramdesc_intro' => 'Dr Text, wu vor dr Suechergebnis soll aazeigt wäre, wänn s het',
 	'smw_paramdesc_outro' => 'Dr Text, wu no dr Suechergebnis soll aazeigt wäre, wänn s het',
 	'smw_paramdesc_default' => 'Dr Text, wu soll aazeigt wäre, wänn s kei Suechergebnis het',
-	'smw_paramdesc_searchlabel' => 'Text im Gleich (Link) zue dr Ergebnis',
+	'smw_paramdesc_searchlabel' => 'De Teggst für de Link zue de Ergebniss',
 	'smw_paramdesc_sep' => 'S Trännzeiche fir Wärt',
 	'smw_paramdesc_template' => 'Dr Name vu dr Vorlag, wu Uusdruck dermit solle aazeigt wäre',
 	'smw_paramdesc_columns' => 'D Aazahl vu dr Spalte go Ergebnis aazeige (Standard isch $1)',
@@ -4559,6 +4550,7 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_exportrdf_backlinks' => 'Exportier au alli Syte, wu uf exportierti Syte verwyye. Leit e RDF aa, wu lyychter cha dursuecht wäre.',
 	'smw_exportrdf_lastdate' => 'Exportier keini Syte, wu nimi gänderet wore sin syt em Zytpunkt, wu aagee isch.',
 	'smw_exportrdf_submit' => 'Exportiere',
+	'uriresolver' => 'URI-Ufleser',
 	'properties' => 'Eigeschafte',
 	'smw_properties_docu' => 'In däm Wiki git s die Eigeschafte:',
 	'smw_property_template' => '$1 mit Datetyp $2 ($3)',
@@ -4609,10 +4601,10 @@ Wel nume wenig Ergebnis gfunde wore sin, wäre au ähnligi Wärt ufglischtet.',
 	'smw_browselink' => 'Eigeschaften aazeige',
 	'smw_browse_article' => 'Bitte gib dr Titel vun ere Syte yy.',
 	'smw_browse_go' => 'Gang',
-	'smw_browse_show_incoming' => 'zeig Eigeschafte, wu do ane vergleicht sin',
-	'smw_browse_hide_incoming' => 'verstecki Eigeschafte, wu do ane vergleicht sin',
+	'smw_browse_show_incoming' => 'zeig Eigeschafte, wu do druff verwyyse',
+	'smw_browse_hide_incoming' => 'versteck Eigeschafte, wu do druff verwyyse',
 	'smw_browse_no_outgoing' => 'Die Syte het kei Eigeschafte.',
-	'smw_browse_no_incoming' => 'Kei Eigeschafte vergleiche uf die Syte.',
+	'smw_browse_no_incoming' => 'Kei Eigeschafte verwyyse uf die Syte.',
 	'smw_inverse_label_default' => '$1 vu',
 	'smw_inverse_label_property' => 'Umgchehrti Eigeschaftbezeichnig',
 	'pageproperty' => 'Eigeschaftswärt vun ere Syte',
@@ -5227,6 +5219,8 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw-paramdesc-csv-sep' => 'Dźělatko, kotrež ma so wužywać',
 	'smw-paramdesc-dsv-separator' => 'Dźělatko, kotrež ma so wužywać',
 	'smw-paramdesc-dsv-filename' => 'Mjeno za DSV-dataju',
+	'smw-paramdesc-sort' => 'Kajkosć, po kotrejž naprašowanje ma so sortěrować',
+	'smw-paramdesc-searchlabel' => 'Tekst za dalše pytanske wuslědki (standard je "... dalše wuslědki")',
 	'smw_iq_disabled' => 'Semantiske naprašowanja su w tutym wikiju znjemóžnjene.',
 	'smw_iq_moreresults' => '... dalše wuslědki',
 	'smw_nonright_importtype' => '$1 da so jenož za strony w mjenowym rumje "$2" wužiwać.',
@@ -5234,6 +5228,7 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw_no_importelement' => 'Element "$1" za importowanje k dispoziciji njesteji.',
 	'smw_parseerror' => 'Podata hódnota njebu zrozumjena.',
 	'smw_notitle' => '"$1" njeda so jako mjeno strony w tutym wikiju wužiwać.',
+	'smw_noproperty' => '"$1" njeda so jako kajkosć w tutym wikiju wužiwać.',
 	'smw_wrong_namespace' => 'Jenož strony w mjenowym rumje "$1" su tu dowolene.',
 	'smw_unknowntype' => 'Za kajkosć bu njepodpěrowany typ "$1" definowany.',
 	'smw_manytypes' => 'Za kajkosć bu wjace hač jeden typ definowany.',
@@ -5246,6 +5241,7 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw_nofloat' => '"$1" ličba njeje.',
 	'smw_infinite' => 'Ličby, kotrež su tak wulke kaž "$1", so njepodpěruja.',
 	'smw_unitnotallowed' => '"$1" njeje jako płaćiwa měrjenska jednotka za tutón atribut postajił.',
+	'smw_nounitsdeclared' => 'Žane měrjenske jednotki njejsu so za tutu kajkosć podali.',
 	'smw_novalues' => 'Žane hódnoty podate.',
 	'smw_nodatetime' => 'Datum "$1" njebu zrozumjeny.',
 	'smw_toomanyclosing' => 'Zda so, zo "$1" w tutym naprašowanju přehusto wustupuje.',
@@ -5279,6 +5275,7 @@ Wobkedźbuj, zo wuslědk móhł wulki być!',
 Płodźi přepytujomny RDF.',
 	'smw_exportrdf_lastdate' => 'Njeeksportuj strony, kotrež njejsu so wot podateho časoweho dypka změnili.',
 	'smw_exportrdf_submit' => 'Eksportować',
+	'uriresolver' => 'Rezolwer URI',
 	'properties' => 'Kajkosće',
 	'smw_properties_docu' => 'Slědowace kajkosće so we wikiju wužiwaja.',
 	'smw_property_template' => '$1 typa $2 ($3)',
@@ -5319,6 +5316,7 @@ Stara so wo to, zo so ludźo z websydłami njestanu.',
 	'smw_ask_show_embed' => 'Zasadźeny kod pokazać',
 	'smw_ask_hide_embed' => 'Zasadźeny kod schować',
 	'smw_ask_embed_instr' => 'Wužij slědowacy kod, zo by tute wotprašowanje do wikijoweje strony zasadźił.',
+	'smw_qc_addmainlabel' => 'Hłowne pomjenowanje přidać',
 	'smw_qc_show_addnal_opts' => 'Dalše opcije pokazać',
 	'smw_qc_hide_addnal_opts' => 'Mjenje opcijow pokazać',
 	'smw_qc_otheropt' => 'Druhe opcije',
@@ -5326,8 +5324,17 @@ Stara so wo to, zo so ludźo z websydłami njestanu.',
 	'smw_qc_formatopt' => 'Formatowe opcije',
 	'smw_qui_property' => '<strong>Kajkosć</strong>',
 	'smw_qui_prop' => 'Kajkosć:',
+	'smw_qui_labl' => 'Pomjenowanje:',
 	'smw_qui_formt' => 'Format:',
 	'smw_qui_limt' => 'Limit:',
+	'smw_qui_shownresults' => 'we wuslědkach pokazać',
+	'smw_qui_noquery' => 'Naprašowanje njeje so podało',
+	'smw_qui_invalidprop' => 'Móže być, zo "$1" płaćiwa kajkosć njeje',
+	'smw_qui_invalidformat' => 'Wubrany format "$1" za tutón wiki njeeksistuje',
+	'smw_qui_nosort' => 'Žane sortěrowanje',
+	'smw_qui_ascorder' => 'Postupowacy',
+	'smw_qui_descorder' => 'Spadowacy',
+	'smw_qui_randorder' => 'Připadny',
 	'smw_qui_addnprop' => 'kajkosć přidać',
 	'smw_qui_delete' => 'Wotstronić',
 	'smw_qui_options' => 'opcije',
@@ -5335,7 +5342,14 @@ Stara so wo to, zo so ludźo z websydłami njestanu.',
 	'smw_qui_ok' => 'W porjadku',
 	'smw_qui_cancel' => 'Přetorhnyć',
 	'smw_qui_category' => '<strong>Kategorija</strong>',
+	'smw_qui_label' => 'Pomjenowanje',
+	'smw_prp_options' => 'Opcije kajkosćow',
+	'smw_qui_catopts' => 'Opcije kategorijow',
+	'smw_qui_mainlabopts' => 'Opcije wuslědkow',
+	'smw_qui_dlabel' => 'Pomjenowanje:',
 	'smw_qui_dcategory' => 'Kategorija:',
+	'smw_qui_dcatyes' => 'Tekst, kotryž ma so pokazać, hdyž kategorija eksistuje:',
+	'smw_qui_dcatno' => 'Tekst, kotryž ma so pokazać, hdyž kategorija njeeksistuje:',
 	'searchbyproperty' => 'Po atribuće pytać',
 	'smw_sbv_docu' => 'Wšě strrony pytać, kotrež maja wěstu kajkosć a hódnotu.',
 	'smw_sbv_novalue' => 'Zapodaj płaćiwu hódnotu za kajkosć abo wobhladaj sej wšě hódnoty kajkosće za "$1".',
@@ -5413,6 +5427,9 @@ Trochowany staw aktualneje aktualizacije:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc za rjadowe wotprašowanja',
 	'smw-createproperty-isproperty' => 'To je kajkosć typa $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dowolena hódnota za tutu kajkosć je|Dowolenej hódnoće za tutu kajkosć stej|Dowolene hódnoty za tutu kajkosć su|Dowolene hódnoty za tutu kajkosć su}}:',
+	'smw-paramdesc-category-delim' => 'Dźělatko',
+	'smw-info-par-message' => 'Powěsć, kotraž ma so zwobraznić.',
+	'smw-info-par-icon' => 'Symbol, kotryž ma so pokazać, pak "info" pak "warnowanje".',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -6239,11 +6256,13 @@ $messages['io'] = array(
 );
 
 /** Italian (Italiano)
+ * @author Beta16
  * @author Civvì
  * @author Cruccone
  * @author Darth Kule
  * @author Davide Eynard, David Laniado
  * @author Gianfranco
+ * @author Gmelfi
  * @author Melos
  * @author Pietrodn
  */
@@ -6276,6 +6295,7 @@ $messages['it'] = array(
 	'smw_printername_table' => 'Tabella',
 	'smw_printername_broadtable' => 'Tabella estesa',
 	'smw_printername_template' => 'Template',
+	'smw_printername_category' => 'Categoria',
 	'smw_paramdesc_limit' => 'Il numero massimo di risultati da restituire',
 	'smw_paramdesc_headers' => 'Mostra i nomi di header/proprietà',
 	'smw_paramdesc_mainlabel' => "L'etichetta da dare al nome della pagina principale",
@@ -6339,6 +6359,7 @@ $messages['it'] = array(
 	'smw_exportrdf_backlinks' => 'Esporta anche le pagine che si riferiscono a quelle esportate. Genera un RDF navigabile.',
 	'smw_exportrdf_lastdate' => 'Non esportare le pagine che non hanno sub&igrave;to modifiche dal momento specificato.',
 	'smw_exportrdf_submit' => 'Esporta',
+	'uriresolver' => 'Risolutore di URI',
 	'properties' => 'Proprietà',
 	'smw_properties_docu' => "Le seguenti proprietà sono utilizzate all'interno del wiki.",
 	'smw_property_template' => '$1 di tipo $2 ($3)',
@@ -6353,7 +6374,7 @@ $messages['it'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|uso|usi}})',
 	'smw_purge' => 'Aggiorna',
 	'types' => 'Tipi',
-	'smw_types_docu' => 'La seguente &egrave; una lista di tutti i tipi di dati che possono essere assegnati alle propiet&agrave;. Ogni tipo di dato ha una pagina dove si possono trovare informazioni aggiuntive.',
+	'smw_types_docu' => 'La seguente è una lista di tutti i tipi di dati che possono essere assegnati alle proprietà.',
 	'smw_typeunits' => 'Unit&agrave; di misura di tipo “$1”: $2',
 	'semanticstatistics' => 'Statistiche Semantiche',
 	'smw_semstats_text' => "Questo sito contiene '''$1''' {{PLURAL:$1|valore|valori}} di proprietà per un totale di '''$2''' [[Special:Properties|{{PLURAL:$2|proprietà|differenti proprietà}}]].
@@ -6379,6 +6400,28 @@ Le proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:
 	'smw_ask_show_embed' => 'Mostra codice di inclusione',
 	'smw_ask_hide_embed' => 'Nascondi codice di inclusione',
 	'smw_ask_embed_instr' => 'Per includere questa query in linea in una pagina wiki, usa il codice qui sotto.',
+	'smw_qc_show_addnal_opts' => 'Mostra più opzioni',
+	'smw_qc_hide_addnal_opts' => 'Mostra meno opzioni',
+	'smw_qui_property' => '<strong>Proprietà</strong>',
+	'smw_qui_prop' => 'Proprietà:',
+	'smw_qui_labl' => 'Etichetta:',
+	'smw_qui_formt' => 'Formato:',
+	'smw_qui_limt' => 'Limite:',
+	'smw_qui_shownresults' => 'mostra nei risultati',
+	'smw_qui_nosort' => 'Nessun ordinamento',
+	'smw_qui_ascorder' => 'Crescente',
+	'smw_qui_descorder' => 'Decrescente',
+	'smw_qui_randorder' => 'Casuale',
+	'smw_qui_addnprop' => 'aggiungi proprietà',
+	'smw_qui_delete' => 'Rimuovi',
+	'smw_qui_options' => 'opzioni',
+	'smw_qui_addcategory' => 'aggiungi categoria',
+	'smw_qui_ok' => 'Ok',
+	'smw_qui_cancel' => 'Annulla',
+	'smw_qui_category' => '<strong>Categoria</strong>',
+	'smw_qui_label' => 'Etichetta',
+	'smw_qui_dlabel' => 'Etichetta:',
+	'smw_qui_dcategory' => 'Categoria:',
 	'searchbyproperty' => 'Cerca per proprietà',
 	'smw_sbv_docu' => 'Cerca tutte le pagine che hanno proprietà e valore specificati.',
 	'smw_sbv_novalue' => 'Inserire un valore valido per la proprietà, o visualizzare tutti i valori di proprietà per "$1".',
@@ -6409,7 +6452,7 @@ Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
 	'smw_result_noresults' => 'Spiacenti, nessun risultato.',
 	'smwadmin' => 'Funzioni amministrative per Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Il motore di storage è stato installato correttamente.',
-	'smw_smwadmin_return' => 'Ritorna a $1',
+	'smw_smwadmin_return' => 'Torna a $1',
 	'smw_smwadmin_updatestarted' => "Un nuovo processo di aggiornamento per ricaricare i dati semantici è iniziato.
 Tutti i dati registrati saranno ricostruiti o riparati se necessario.
 Puoi seguire i progressi dell'aggiornamento in questa pagina speciale.",
@@ -10199,6 +10242,7 @@ $messages['roa-tara'] = array(
  * @author Kaganer
  * @author Lockal
  * @author QuestPC
+ * @author Van de Bugger
  * @author Александр Сигачёв
  */
 $messages['ru'] = array(
@@ -10312,12 +10356,13 @@ $messages['ru'] = array(
 	'smw_exportrdf_backlinks' => 'Также экспортировать все страницы, которые ссылаются на экспортируемые страницы. Генерирует RDF с поддержкой полноценной навигации.',
 	'smw_exportrdf_lastdate' => 'Не экспортировать страницы, которые не менялись с указанной даты.',
 	'smw_exportrdf_submit' => 'Экспорт',
+	'uriresolver' => 'Преобразователь URI',
 	'properties' => 'Свойства',
 	'smw_properties_docu' => 'Следующие свойства используются на данном сайте.',
 	'smw_property_template' => '$1 имеет тип $2, количество использований ($3)',
 	'smw_propertylackspage' => 'Каждое свойство должно иметь свою страницу описания!',
 	'smw_propertylackstype' => 'Данному свойству не сопоставлен тип данных (по умолчанию будет использоваться тип $1).',
-	'smw_propertyhardlyused' => 'Это свойство изначально предопределено для данного сайта!',
+	'smw_propertyhardlyused' => 'Это свойство почти не используется на сайте.',
 	'unusedproperties' => 'Неиспользуемые свойства',
 	'smw_unusedproperties_docu' => 'Следующие свойства определены, но не используются ни в одной из статей.',
 	'smw_unusedproperty_template' => '$1 имеет тип $2',
@@ -10442,6 +10487,13 @@ $messages['rue'] = array(
 	'smw_result_results' => 'Резултаты',
 	'smw_result_noresults' => 'Жадны ресултаты',
 	'smw_smwadmin_return' => 'Навернутя до  «$1».',
+);
+
+/** Sicilian (Sicilianu)
+ * @author Gmelfi
+ */
+$messages['scn'] = array(
+	'smw_browselink' => 'Prupritati',
 );
 
 /** Serbo-Croatian (Srpskohrvatski)
@@ -11871,6 +11923,16 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_adminlinks_inlinequerieshelp' => 'Tulong sa mga katanungang nasa guhit',
 	'smw-createproperty-isproperty' => 'Isa itong pag-aari ng uring $1.',
 	'smw-createproperty-allowedvals' => 'Ang pinahihintulutang {{PLURAL:$1|halaga para sa pag-aaring ito ay|mga halaga para sa pag-aaring ito ay}}:',
+);
+
+/** толышә зывон (толышә зывон)
+ * @author Гусейн
+ */
+$messages['tly'] = array(
+	'smw_finallistconjunct' => ', ијән',
+	'smw_printername_list' => 'Сијоһи',
+	'smw_printername_template' => 'Ғәлиб',
+	'smw_printername_category' => 'Категоријә',
 );
 
 /** Turkish (Türkçe)
