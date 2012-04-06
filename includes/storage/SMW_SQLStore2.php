@@ -1063,7 +1063,7 @@ class SMWSQLStore2 extends SMWStore {
 			$sql = "CREATE OR REPLACE FUNCTION create_smw_tmp_unusedprops() RETURNS void AS "
 				   . "$$ "
 				   . "BEGIN "
-				   . " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename=" . $smw_tmp_unusedprops . " AND schemaname = ANY (current_schemas(true))) "
+				   . " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='smw_tmp_unusedprops' AND schemaname = ANY (current_schemas(true))) "
 				   . " THEN DELETE FROM " . $smw_tmp_unusedprops . "; "
 				   . " ELSE "
 				   . "  CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . " ( title text ); "
