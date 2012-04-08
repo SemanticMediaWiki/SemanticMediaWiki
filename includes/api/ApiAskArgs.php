@@ -27,7 +27,7 @@ class ApiAskArgs extends ApiSMWQuery {
 		}
 		
 		$query = $this->getQuery( 
-			implode( array_map( array( __CLASS__, 'wrapCondition' ), $params['conditions'] ) ),
+			implode( ' ', array_map( array( __CLASS__, 'wrapCondition' ), $params['conditions'] ) ),
 			array_map( array( __CLASS__, 'printoutFromString' ), $params['printouts'] )
 		);
 		
