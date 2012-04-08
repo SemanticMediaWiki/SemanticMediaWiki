@@ -14,6 +14,7 @@ list at
 http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user.
 
 Bugs should be filed at MediaZilla, http://bugzilla.wikimedia.org/.
+(Mark product as MediaWiki extensions and Component as Semantic MediaWiki)
 
 People who want to contribute work to the project should subscribe to
 the developers list, semediawiki-devel@lists.sourceforge.net.
