@@ -117,13 +117,11 @@ class SMWOutputs {
 	 */
 	static public function requireFromParserOutput( ParserOutput $parserOutput ) {
 		// Note: we do not attempt to recover which head items where scripts here.
-		// ParserOutpt::getHeadItems() was added in MW 1.16
-		if ( is_callable( array( $parserOutput, 'getHeadItems' ) ) ) {
-			$parserOutputHeadItems = $parserOutput->getHeadItems();
-		} else {
-			$parserOutputHeadItems = (array)$parserOutput->headItems;
-		}
+
+		$parserOutputHeadItems = $parserOutput->getHeadItems();
+
 		self::$headItems = array_merge( (array)self::$headItems, $parserOutputHeadItems );
+
 		/// TODO Is the following needed?
 		if ( isset( $parserOutput->mModules ) ) {
 			foreach ( $parserOutput->mModules as $module ) {
@@ -219,54 +217,8 @@ class SMWOutputs {
 	 */
 	static public function addModulesBC( $output ) {
 		$items = array();
-		foreach ( self::$resourceModules as $moduleName ) {
-			self::processModuleBC( $moduleName, $items );
-		}
 		foreach ( $items as $key => $item ) {
 			$output->addHeadItem( $key, $item );
-		}
-	}
-
-	/**
-	 * Backwards compatibility method to generate the header items for
-	 * loading the specified module.
-	 *
-	 * @note This method can vanish when dropping compatibility to MW 1.16.
-	 */
-	static public function processModuleBC( $moduleName, &$items  ) {
-		global $wgResourceModules, $wgContLang, $smwgScriptPath;
-
-		if ( array_key_exists( $moduleName, $wgResourceModules ) ) {
-			$module = $wgResourceModules[$moduleName];
-			$basePath = $module['remoteBasePath'];
-			foreach( self::getValueArrayForKey( 'dependencies', $module ) as $dependency ) {
-				self::processModuleBC( $dependency, $items );
-			}
-			if ( $moduleName == 'ext.smw.style' && $wgContLang->isRTL() ) { // manual RTL support
-				// This is obsolete with Resource Loader, since it flips styles automatically
-				$items["CSSRTL"] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"$smwgScriptPath/skins/SMW_custom_rtl.css\" />\n";
-			}
-			foreach( self::getValueArrayForKey( 'scripts', $module ) as $script ) {
-				$items["JS$script"] = "<script type=\"text/javascript\" src=\"$basePath/$script\"></script>\n";
-			}
-			foreach( self::getValueArrayForKey( 'styles', $module ) as $style ) {
-				$items["CSS$style"] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"$basePath/$style\" />\n";
-			}
-		}
-	}
-
-	/**
-	 * Helper method for processModuleBC().
-	 *
-	 * @note This method can vanish when dropping compatibility to MW 1.16.
-	 */
-	static public function getValueArrayForKey( $key, $array ) {
-		if ( !array_key_exists( $key, $array ) ) {
-			return array();
-		} elseif ( is_array( $array[$key] ) ) {
-			return $array[$key];
-		} else {
-			return array( $array[$key] );
 		}
 	}
 
