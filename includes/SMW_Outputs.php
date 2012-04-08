@@ -167,12 +167,7 @@ class SMWOutputs {
 			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
 		}
 
-		// Check if the resource loader can be used or not.
-		if ( method_exists( $parserOutput, 'addModules' ) ) {
-			$parserOutput->addModules( array_values( self::$resourceModules ) );
-		} else {
-			self::addModulesBC( $parserOutput );
-		}
+		$parserOutput->addModules( array_values( self::$resourceModules ) );
 
 		self::$resourceModules = array();
 		self::$headItems = array();
@@ -196,30 +191,10 @@ class SMWOutputs {
 			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
 		}
 
-		// Check if the resource loader can be used or not.
-		if ( method_exists( $output, 'addModules' ) ) {
-			$output->addModules( array_values( self::$resourceModules ) );
-		} else {
-			self::addModulesBC( $output );
-		}
+		$output->addModules( array_values( self::$resourceModules ) );
 
 		self::$resourceModules = array();
 		self::$headItems = array();
-	}
-
-	/**
-	 * Backwards compatibility method to add the stored modules to an
-	 * OutputPage or ParserOuput (calls are the same so we don't care).
-	 * Only extension modules and a few MW modules that are included
-	 * in SMW for compatibility are supported.
-	 *
-	 * @note This method can vanish when dropping compatibility to MW 1.16.
-	 */
-	static public function addModulesBC( $output ) {
-		$items = array();
-		foreach ( $items as $key => $item ) {
-			$output->addHeadItem( $key, $item );
-		}
 	}
 
 }

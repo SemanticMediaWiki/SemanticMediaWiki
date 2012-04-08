@@ -16,7 +16,6 @@ class ApiAsk extends ApiSMWQuery {
 	
 	public function execute() {
 		$params = $this->extractRequestParams();
-		$this->requireParameters( $params, array( 'query' ) );
 
 		$rawParams = explode( '|', $params['query'] );
 		$queryString = '';
@@ -36,6 +35,7 @@ class ApiAsk extends ApiSMWQuery {
 		return array(
 			'query' => array(
 				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_REQUIRED => true,
 			),
 		);
 	}

@@ -74,14 +74,5 @@ abstract class ApiSMWQuery extends ApiBase {
 			$result->enableSizeCheck();
 		}
 	}
-	
-	/// TODO: when < 1.17 are no longer supported, use ApiBase::PARAM_REQUIRED
-	protected function requireParameters( array $params, array $required ) {
-		foreach ( $required as $param ) {
-			if ( !isset( $params[$param] ) ) {
-				$this->dieUsageMsg( array( 'missingparam', $param ) );
-			}
-		}
-	}
-	
+
 }

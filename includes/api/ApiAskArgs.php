@@ -17,8 +17,7 @@ class ApiAskArgs extends ApiSMWQuery {
 	
 	public function execute() {
 		$params = $this->extractRequestParams();
-		$this->requireParameters( $params, array( 'conditions' ) );
-		
+
 		foreach ( $params['parameters'] as $param ) {
 			$parts = explode( '=', $param, 2 );
 			
@@ -52,6 +51,7 @@ class ApiAskArgs extends ApiSMWQuery {
 			'conditions' => array(
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => true,
+				ApiBase::PARAM_REQUIRED => true,
 			),
 			'printouts' => array(
 				ApiBase::PARAM_TYPE => 'string',
