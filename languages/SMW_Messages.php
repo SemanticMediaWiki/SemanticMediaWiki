@@ -6523,6 +6523,8 @@ Progresso stimato dell'aggiornamento in corso:",
  * @author Likibp
  * @author Naohiro19
  * @author Schu
+ * @author Shirayuki
+ * @author Whym
  * @author 青子守歌
  */
 $messages['ja'] = array(
@@ -6578,7 +6580,7 @@ $messages['ja'] = array(
 	'smw-paramdesc-table-class' => 'テーブルに設定する追加の CSS クラス',
 	'smw_paramdesc_rsstitle' => 'フィードの表題として使う文字列',
 	'smw_paramdesc_rssdescription' => 'フィードの説明文として使う文字列',
-	'smw_paramdesc_rdfsyntax' => 'RDF構文を使用する',
+	'smw_paramdesc_rdfsyntax' => '使用するRDF構文',
 	'smw-paramdesc-csv-sep' => '使用する区切り文字',
 	'smw-paramdesc-dsv-separator' => '使用する区切り文字',
 	'smw-paramdesc-dsv-filename' => 'DSV ファイルの名前',
@@ -6627,7 +6629,7 @@ $messages['ja'] = array(
 	'smw_subpropertyarticlecount' => 'このプロパティには次の $1個の{{PLURAL:$1|サブプロパティ}}があります:',
 	'smw_concept_header' => '概念「$1」のページ',
 	'smw_conceptarticlecount' => 'この概念に属する $1個の{{PLURAL:$1|ページ}}を表示しています。',
-	'smw_rss_description' => '$1 RSSフィード',
+	'smw_rss_description' => '$1 RSS フィード',
 	'specialpages-group-smw_group' => 'セマンティック・メディアウィキ',
 	'exportrdf' => 'ページをRDFにエクスポート',
 	'smw_exportrdf_docu' => 'このページを使うとページからデータをRDF形式で取得できます。ページをエクスポートするには、下のテキストボックスにページ名を一行に一つずつ入力してください。',
@@ -6635,6 +6637,7 @@ $messages['ja'] = array(
 	'smw_exportrdf_backlinks' => 'エクスポートされたページを参照するすべてのページをさらにエクスポートする。閲覧が可能なRDFを生成します。',
 	'smw_exportrdf_lastdate' => '指定した時点以降に変更がされていないページをエクスポートしない。',
 	'smw_exportrdf_submit' => 'エクスポート',
+	'uriresolver' => 'URIリゾルバー',
 	'properties' => 'プロパティ',
 	'smw_properties_docu' => '以下のプロパティがこのウィキでは使われています。',
 	'smw_property_template' => '$1: 型 $2 ($3件)',
