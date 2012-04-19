@@ -131,9 +131,9 @@ class SMWDIWikiPage extends SMWDataItem {
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '#', $serialization, 4 );
 		if ( count( $parts ) == 3 ) {
-			return new SMWDIWikiPage( $parts[0], floatval( $parts[1] ), $parts[2] );
+			return new SMWDIWikiPage( $parts[0], intval( $parts[1] ), $parts[2] );
 		} elseif ( count( $parts ) == 4 ) {
-			return new SMWDIWikiPage( $parts[0], floatval( $parts[1] ), $parts[2], $parts[3] );
+			return new SMWDIWikiPage( $parts[0], intval( $parts[1] ), $parts[2], $parts[3] );
 		} else {
 			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
 		} 
