@@ -412,7 +412,7 @@ class SMWSQLStore2QueryEngine {
 		while ( ( $count < $query->getLimit() ) && ( $row = $this->m_dbs->fetchObject( $res ) ) ) {
 			$count++;
 			if ( $row->iw === '' || $row->iw{0} != ':' )  {
-				$v = new SMWDIWikiPage( $row->t, $row->ns, $row->iw, $row->so );
+				$v = new SMWDIWikiPage( $row->t, intval( $row->ns ), $row->iw, $row->so );
 				$qr[] = $v;
 				$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw, $row->so );
 			}
