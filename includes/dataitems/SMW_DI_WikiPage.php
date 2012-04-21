@@ -50,7 +50,9 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * @param string $subobjectname
 	 */
 	public function __construct( $dbkey, $namespace, $interwiki, $subobjectname = '' ) {
-		if ( !is_integer( $namespace ) ) {
+		// Check if the provided value holds an integer
+		// (it can be of type string or float as well, as long as the value is an int)
+		if ( !ctype_digit( (string)$namespace ) ) {
 			throw new SMWDataItemException( "Given namespace '$namespace' is not an integer." );
 		}
 		
