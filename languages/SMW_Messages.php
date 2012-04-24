@@ -6548,7 +6548,7 @@ $messages['ja'] = array(
 	'smw_printername_count' => '集計結果',
 	'smw_printername_csv' => 'CSV 形式で書き出し',
 	'smw_printername_dsv' => 'DSV 形式で書き出し',
-	'smw_printername_debug' => 'デバッグ・クエリー(上級者向け)',
+	'smw_printername_debug' => 'デバッグ クエリー（上級者向け）',
 	'smw_printername_embedded' => 'ページの内容を埋め込む',
 	'smw_printername_json' => 'JSON 形式で書き出し',
 	'smw_printername_list' => '一覧',
@@ -6568,7 +6568,7 @@ $messages['ja'] = array(
 	'smw_paramdesc_intro' => '問い合わせ結果がある場合、その前に表示する文章',
 	'smw_paramdesc_outro' => '問い合わせ結果がある場合、その後に表示する文章',
 	'smw_paramdesc_default' => '問い合わせ結果がない場合に表示する文章',
-	'smw_paramdesc_searchlabel' => '結果へのリンクに充てる文字列',
+	'smw_paramdesc_searchlabel' => '結果へのリンクの文字列',
 	'smw_paramdesc_sep' => '値の区切り記号',
 	'smw_paramdesc_template' => '印刷出力とともに表示するテンプレートの名前',
 	'smw_paramdesc_columns' => '結果を表示する列の数 (既定は3)',
@@ -6630,7 +6630,7 @@ $messages['ja'] = array(
 	'smw_concept_header' => '概念「$1」のページ',
 	'smw_conceptarticlecount' => 'この概念に属する $1個の{{PLURAL:$1|ページ}}を表示しています。',
 	'smw_rss_description' => '$1 RSS フィード',
-	'specialpages-group-smw_group' => 'セマンティック・メディアウィキ',
+	'specialpages-group-smw_group' => 'Semantic MediaWiki',
 	'exportrdf' => 'ページをRDFにエクスポート',
 	'smw_exportrdf_docu' => 'このページを使うとページからデータをRDF形式で取得できます。ページをエクスポートするには、下のテキストボックスにページ名を一行に一つずつ入力してください。',
 	'smw_exportrdf_recursive' => 'すべての関連ページを再帰的にエクスポートする。結果は大きくなることがあるので注意してください。',
@@ -6641,22 +6641,23 @@ $messages['ja'] = array(
 	'properties' => 'プロパティ',
 	'smw_properties_docu' => '以下のプロパティがこのウィキでは使われています。',
 	'smw_property_template' => '$1: 型 $2 ($3件)',
-	'smw_propertylackspage' => 'プロパティはすべて、専用のページで解説されるべきです！',
-	'smw_propertylackstype' => 'このプロパティには型が指定されていません (現時点では型 $1 を仮定しています)。',
-	'smw_propertyhardlyused' => 'このプロパティはウィキ内でほとんど使われていません！',
+	'smw_propertylackspage' => 'すべてのプロパティについて、各プロパティのページで解説する必要があります！',
+	'smw_propertylackstype' => 'このプロパティには型が指定されていません (現時点では型 $1 と想定します)。',
+	'smw_propertyhardlyused' => 'このプロパティはウィキ内でほとんど使用されていません！',
 	'unusedproperties' => '使われていないプロパティ',
 	'smw_unusedproperties_docu' => '以下のプロパティは存在しますが、他のページから利用されていません。',
-	'smw_unusedproperty_template' => '$1: 型 $2',
+	'smw_unusedproperty_template' => '$1：型 $2',
 	'wantedproperties' => '望まれているプロパティ',
 	'smw_wantedproperties_docu' => '以下のプロパティはこのウィキ内で使われていますが、プロパティを解説するページがまだ存在しません。',
 	'smw_wantedproperty_template' => '$1 ($2{{PLURAL:$2|件}})',
 	'smw_purge' => '更新',
 	'types' => '型',
-	'smw_types_docu' => '以下はプロパティに割り当てられているすべてのデータ型の一覧です。各データ型は追加情報が載ったページをもっています。',
-	'smw_typeunits' => '型「$1」の単位: $2',
+	'smw_types_docu' => '以下はプロパティに割り当てられているすべてのデータ型の一覧です。',
+	'smw_typeunits' => '型「$1」の単位：$2',
 	'semanticstatistics' => '意味的統計',
 	'smw_semstats_text' => "このウィキには、計 '''$2'''種の[[Special:Properties|{{PLURAL:$2|プロパティ}}]]と '''$1'''個の{{PLURAL:$1|プロパティ値}}があります。'''$3'''個の{{PLURAL:$3|プロパティ}}には専用のページがあり、うち '''$4'''個にはデータ型が指定されています。既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。解説ページがまだ存在しないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
-	'smw_uri_doc' => 'URIリゾルバーは <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG での httpRange-14 に関する議論成果</a>を実装しています。これは人間がウェブサイトに向かわないように取り計らいます。',
+	'smw_uri_doc' => 'URI リゾルバーは [$1 W3C TAG での httpRange-14 に関する議論成果]を実装しています。
+これは人間がウェブサイトに向かわないように取り計らいます。',
 	'ask' => '意味的検索',
 	'smw_ask_sortby' => '列ごとに整列 (任意選択)',
 	'smw_ask_ascorder' => '昇順',
@@ -6717,30 +6718,37 @@ $messages['ja'] = array(
 	'smw_smwadmin_permissionswarn' => 'SQLエラーを出して処理が失敗したとすると、それはおそらくあなたのウィキのデータベースユーザー(LocalSettings.php を確認してください)が必要な権限をもっていないためです。一時的に LocalSettings.php でデータベースのルートとしてログインして、そのユーザーにテーブルを作成および削除するための追加権限を与えるか、あるいは AdminSettings.php の設定情報を利用できるメンテナンススクリプト <tt>SMW_setup.php</tt> を使用してください。',
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
 	'smw_smwadmin_announce' => 'あなたのウィキの発表',
-	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しいセマンティック・ウィキのサイトを発表するためのウェブサービスがあります。
-このサービスは Semantic MediaWiki を使用するサイト一覧を保守するために用いられており、主に <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために利用されています。
-Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.org/wiki/Registry">このサービスについてのさらなる情報</a>を確認してください。',
-	'smw_smwadmin_announcebutton' => '次のボタンを押して、あなたのウィキのURLをこのサービスに提出します。このサービスは、公開されていないウィキは登録せず、公開されている情報のみを保管します。',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しい意味的ウィキのサイトを発表するためのウェブサービスがあります。
+このサービスは Semantic MediaWiki を使用するサイト一覧の保守に使用されており、主に <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために使用されています。
+Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.org/wiki/Registry">このサービスの詳細情報</a>をご覧ください。',
+	'smw_smwadmin_announcebutton' => '以下のボタンを押して、あなたのウィキのURLをこのサービスに送信します。
+このサービスでは、公開されていないウィキを登録せず、公開されている情報のみを保管します。',
 	'smw_smwadmin_datarefresh' => 'データの修復とアップグレード',
-	'smw_smwadmin_datarefreshdocu' => 'ウィキの現在の内容に基づいて、Semantic MediaWiki の全データを復旧することができます。この機能は破損したデータを修復する場合や、ソフトウェアのアップグレードによって内部形式が変わった際にデータを移行する場合などに有用です。この更新は1ページずつ実行され、直ちには完了しません。以下では、更新が進行中か否かを示し、更新を開始または停止することができます (この機能がサイト管理者によって無効化されていない場合に限る)。',
+	'smw_smwadmin_datarefreshdocu' => 'ウィキの現在の内容に基づいて、Semantic MediaWiki の全データを復旧できます。
+この機能は破損したデータを修復する場合や、ソフトウェアのアップグレードで内部形式が変わった際にデータを移行する場合などに有用です。
+この更新は1ページずつ実行され、直ちには完了しません。
+以下に更新が進行中かどうかを表示します。更新を開始または停止できます (サイト管理者が機能を無効にしていない場合のみ)。',
 	'smw_smwadmin_datarefreshprogress' => '<strong>更新が既に進行中です。</strong>
-利用者がウィキにアクセスするたびに少量の塊のデータを更新するだけなので、更新がゆっくりとしか進まないのは正常なことです。
-この更新をより速く終えたい場合は、MediaWiki のメンテナンススクリプト <tt>runJobs.php</tt> を起動できます (1つのバッチでなされる更新の数を制限するために <tt>--maxjobs 1000</tt> オプションを用いてください)。
-現在の更新の推定進捗:',
+利用者がウィキにアクセスするたびに少量の塊のデータを更新するのみのため、更新がゆっくりとしか進まないのは正常な動作です。
+この更新をより早く終えたい場合は、MediaWiki のメンテナンス スクリプト <tt>runJobs.php</tt> を起動できます (1つのバッチで行われる更新の数を制限するには <tt>--maxjobs 1000</tt> オプションを使用してください)。
+現在の更新の推定進捗：',
 	'smw_smwadmin_datarefreshbutton' => 'データの更新を開始',
 	'smw_smwadmin_datarefreshstop' => 'この更新を停止',
 	'smw_smwadmin_datarefreshstopconfirm' => 'はい、もちろんです。',
 	'smw_smwadmin_support' => '支援を得る',
-	'smw_smwadmin_supportdocu' => '問題が起きたときに種々のリソースが助けとなるかもしれません:',
+	'smw_smwadmin_supportdocu' => '問題が起きたときにさまざまなリソースが助けとなるかもしれません：',
 	'smw_smwadmin_installfile' => 'インストールに問題を発見した場合、<a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL ファイル</a>にある指針を確認することから始めてください。',
-	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki の完全な利用者用ドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
+	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
 	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> で報告できます。',
 	'smw_smwadmin_questions' => 'さらなる質問や提案がある場合は、<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki 利用者フォーラム</a>での議論に参加してください。',
 	'smw_adminlinks_datastructure' => 'データ構造',
-	'smw_adminlinks_displayingdata' => 'データ表示',
+	'smw_adminlinks_displayingdata' => 'データの表示',
 	'smw_adminlinks_inlinequerieshelp' => 'インラインクエリーのヘルプ',
 	'smw-createproperty-isproperty' => 'これは型 $1 のプロパティです。',
 	'smw-createproperty-allowedvals' => 'このプロパティが取ることのできる{{PLURAL:$1|値}}:',
+	'smw-paramdesc-category-userparam' => 'テンプレートに渡すパラメーター',
+	'smw-info-par-message' => '表示するメッセージです。',
+	'smw-info-par-icon' => '表示するアイコン（"info" と "warning" のどちらか）です。',
 );
 
 /** Javanese (Basa Jawa)
