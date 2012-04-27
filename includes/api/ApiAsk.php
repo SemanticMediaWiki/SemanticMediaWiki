@@ -17,12 +17,13 @@ class ApiAsk extends ApiSMWQuery {
 	public function execute() {
 		$params = $this->extractRequestParams();
 
+		// TODO: this prevents doing [[Category:Foo||bar||baz]], must document.
 		$rawParams = explode( '|', $params['query'] );
 		$queryString = '';
 		$printouts = array();
 		
 		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $this->parameters, $printouts );
-		
+
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$queryString,
 			$printouts
