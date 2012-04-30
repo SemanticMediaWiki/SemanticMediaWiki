@@ -2643,6 +2643,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
  */
 $messages['diq'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|vıraştene|vıraştene}})',
+	'smw_browselink' => 'Bewni xısusiyeta',
 );
 
 /** Lower Sorbian (Dolnoserbski)
