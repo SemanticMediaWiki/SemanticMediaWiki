@@ -390,34 +390,66 @@ class SMWNamespaceDescription extends SMWDescription {
  * @ingroup SMWQuery
  */
 class SMWValueDescription extends SMWDescription {
-	
+
+	/**
+	 * @var SMWDataItem
+	 */
 	protected $m_dataItem;
+
+	/**
+	 * @var integer element in the SMW_CMP_ enum
+	 */
 	protected $m_comparator;
+
+	/**
+	 * @var null|SMWDIProperty
+	 */
 	protected $m_property;
 
-	public function __construct( SMWDataItem $dataItem, $property, $comparator = SMW_CMP_EQ ) {
+	/**
+	 * @param SMWDataItem $dataItem
+	 * @param null|SMWDIProperty $property
+	 * @param integer $comparator
+	 */
+	public function __construct( SMWDataItem $dataItem, SMWDIProperty $property = null, $comparator = SMW_CMP_EQ ) {
 		$this->m_dataItem = $dataItem;
 		$this->m_comparator = $comparator;
 		$this->m_property = $property;
 	}
 
-	/// @deprecated Use getDataItem() and SMWDataValueFactory::newDataItemValue() if needed. Vanishes before SMW 1.7
+	/**
+	 * @deprecated Use getDataItem() and SMWDataValueFactory::newDataItemValue() if needed. Vanishes before SMW 1.7
+	 * @return SMWDataItem
+	 */
 	public function getDataValue() {
+		// FIXME: remove
 		return $this->m_dataItem;
 	}
 
+	/**
+	 * @return SMWDataItem
+	 */
 	public function getDataItem() {
 		return $this->m_dataItem;
 	}
 
+	/**
+	 * @return integer
+	 */
 	public function getComparator() {
 		return $this->m_comparator;
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	/**
+	 * @param bool $asValue
+	 *
+	 * @return string
+	 */
+	public function getQueryString( $asValue = false ) {
 		$comparator = SMWQueryLanguage::getStringForComparator( $this->m_comparator );
 		$dataValue = SMWDataValueFactory::newDataItemValue( $this->m_dataItem, $this->m_property );
-		if ( $asvalue ) {
+
+		if ( $asValue ) {
 			return $comparator . $dataValue->getWikiValue();
 		} else { // this only is possible for values of Type:Page
 			if ( $comparator === '' ) { // some extra care for Category: pages
@@ -760,7 +792,7 @@ class SMWSomeProperty extends SMWDescription {
 		return $this->m_description;
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asValue = false ) {
 		$subdesc = $this->m_description;
 		$propertyChainString = $this->m_property->getLabel();
 		$propertyname = $propertyChainString;
@@ -773,7 +805,7 @@ class SMWSomeProperty extends SMWDescription {
 			}
 		}
 
-		if ( $asvalue ) {
+		if ( $asValue ) {
 			return '&lt;q&gt;[[' . $propertyChainString . '::' . $subdesc->getQueryString( true ) . ']]&lt;/q&gt;';
 		} else {
 			return '[[' . $propertyChainString . '::' . $subdesc->getQueryString( true ) . ']]';
