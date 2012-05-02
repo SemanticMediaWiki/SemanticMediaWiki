@@ -125,7 +125,7 @@ class SMWDataValueFactory {
 	 *
 	 * @return SMWDataValue
 	 */
-	static public function newDataItemValue( SMWDataItem $dataItem, $property, $caption = false ) {
+	static public function newDataItemValue( SMWDataItem $dataItem, SMWDIProperty $property = null, $caption = false ) {
 		if ( !is_null( $property ) ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
