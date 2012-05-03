@@ -205,10 +205,23 @@ abstract class SMWDataValue {
 	 * used to make settings that affect parsing and display, hence it is
 	 * sometimes needed to know them.
 	 *
+	 * @since 1.6
+	 *
 	 * @param SMWDIProperty $property
 	 */
 	public function setProperty( SMWDIProperty $property ) {
 		$this->m_property = $property;
+	}
+
+	/**
+	 * Returns the property to which this value refers.
+	 *
+	 * @since 1.8
+	 *
+	 * @return SMWDIProperty|null
+	 */
+	public function getProperty() {
+		return $this->m_property;
 	}
 
 	/**

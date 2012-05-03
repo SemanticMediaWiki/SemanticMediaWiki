@@ -69,7 +69,14 @@ class SMWRecordValue extends SMWDataValue {
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
 					if ( $queryMode ) {
-						$subdescriptions[] = new SMWSomeProperty( $diProperty, new SMWValueDescription( $dataValue->getDataItem(), $comparator ) );
+						$subdescriptions[] = new SMWSomeProperty(
+							$diProperty,
+							new SMWValueDescription(
+								$dataValue->getDataItem(),
+								$dataValue->getProperty(),
+								$comparator
+							)
+						);
 					} else {
 						$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
 					}
