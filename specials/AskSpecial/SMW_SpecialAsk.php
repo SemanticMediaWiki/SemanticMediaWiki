@@ -171,29 +171,17 @@ class SMWAskPage extends SpecialPage {
 	 * @since 1.5.2
 	 */
 	protected static function addAutocompletionJavascriptAndCSS() {
-		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
-
-		// Add CSS and JavaScript for jQuery and jQuery UI.
-		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
+		global $wgOut, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
 
 		$scripts = array();
 
 		if ( !$smwgJQueryIncluded ) {
-			$realFunction = array( $wgOut, 'includeJQuery' );
-			if ( is_callable( $realFunction ) ) {
-				$wgOut->includeJQuery();
-			} else {
-				$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
-			}
-
+			$wgOut->addScript( 'jquery' );
 			$smwgJQueryIncluded = true;
 		}
 
 		if ( !$smwgJQueryUIIncluded ) {
-			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
-			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js";
-			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js";
-			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js";
+			$wgOut->addModules( array( 'jquery.ui.widget', 'jquery.ui.position', 'jquery.ui.autocomplete' ) );
 			$smwgJQueryUIIncluded = true;
 		}
 
