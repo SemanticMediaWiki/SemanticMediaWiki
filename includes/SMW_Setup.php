@@ -136,6 +136,17 @@ function smwfRegisterResourceLoaderModules() {
 			'ext.smw.style'
 		)
 	);
+
+	$wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
+		'scripts' => array(
+			'resources/ext.smw.ask.js',
+		),
+		'dependencies' => array(
+			'jquery.ui.widget',
+			'jquery.ui.position',
+			'jquery.ui.autocomplete',
+		),
+	);
 }
 
 /**
