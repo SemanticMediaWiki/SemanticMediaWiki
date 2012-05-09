@@ -171,23 +171,9 @@ class SMWAskPage extends SpecialPage {
 	 * @since 1.5.2
 	 */
 	protected static function addAutocompletionJavascriptAndCSS() {
-		global $wgOut, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
+		global $wgOut;
 
-		$scripts = array();
-
-		if ( !$smwgJQueryIncluded ) {
-			$wgOut->addScript( 'jquery' );
-			$smwgJQueryIncluded = true;
-		}
-
-		if ( !$smwgJQueryUIIncluded ) {
-			$wgOut->addModules( array( 'jquery.ui.widget', 'jquery.ui.position', 'jquery.ui.autocomplete' ) );
-			$smwgJQueryUIIncluded = true;
-		}
-
-		foreach ( $scripts as $js ) {
-			$wgOut->addScriptFile( $js );
-		}
+		$wgOut->addModules( array( 'jquery.ui.widget', 'jquery.ui.position', 'jquery.ui.autocomplete' ) );
 
 		$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
