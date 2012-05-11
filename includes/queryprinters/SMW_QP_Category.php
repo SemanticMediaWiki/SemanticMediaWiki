@@ -188,25 +188,29 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getParameters() {
-		$params = array_merge( parent::getParameters(), $this->textDisplayParameters() );
-		
-		$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
-		$params['columns']->setDescription( wfMsg( 'smw_paramdesc_columns', 3 ) );
-		$params['columns']->setDefault( 3, false );
-		
-		$params['delim'] = new Parameter( 'delim' );
-		$params['delim']->setDescription( wfMsg( 'smw-paramdesc-category-delim' ) );
-		$params['delim']->setDefault( '' );
-		
-		$params['template'] = new Parameter( 'template' );
-		$params['template']->setDescription( wfMsg( 'smw-paramdesc-category-template' ) );
-		$params['template']->setDefault( '' );
-		
-		$params['userparam'] = new Parameter( 'userparam' );
-		$params['userparam']->setDescription( wfMsg( 'smw-paramdesc-category-userparam' ) );
-		$params['userparam']->setDefault( '' );
-		
-		return $params;
+		return array_merge( parent::getParameters(), array(
+			array(
+				'name' => 'columns',
+				'type' => 'integer',
+				'message' => 'smw-paramdesc-columns',
+				'default' => 3,
+			),
+			array(
+				'name' => 'delim',
+				'message' => 'smw-paramdesc-category-delim',
+				'default' => '',
+			),
+			array(
+				'name' => 'template',
+				'message' => 'smw-paramdesc-category-template',
+				'default' => '',
+			),
+			array(
+				'name' => 'userparam',
+				'message' => 'smw-paramdesc-category-userparam',
+				'default' => '',
+			),
+		) );
 	}
 
 }
