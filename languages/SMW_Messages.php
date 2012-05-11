@@ -450,6 +450,8 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 This message is as a separator symbol for thousands in numbers, like \",\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
 
 Note that spaces and space-like HTML entities are always ignored when reading numbers, whether or not a space symbol is used here.",
+	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of datatype [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean]. See also {{msg-mw|Smw_false_words}}.',
+	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of datatype [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean]. See also {{msg-mw|Smw_true_words}}.',
 	'smw_subpropertyarticlecount' => '[[bugzilla:15207|Bug on Bugzilla about this message]] has been fixed at [[mw:Special:Code/MediaWiki/40793|r40793]].',
 	'smw_rss_description' => '{{optional}}',
 	'specialpages-group-smw_group' => '{{optional}}',
@@ -463,6 +465,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_property_template_notype' => 'Used on [[Special:Properties]]
 * $1 link to Property page
 * $2 Number of times the property is used',
+	'smw_unusedproperty_template' => '$1 is the name of the [http://semantic-mediawiki.org/wiki/Help:Properties_and_types property] and $2 is the name of the [http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Datatypes_for_properties datatype] assigned to the property.',
 	'types' => '{{Identical|Type}}',
 	'smw_typeunits' => 'This message is used in the tooltip on Special:Types when a property supports custom units of measurement. The parameter $1 then is the type name, and $2 is a list of unit names.',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
