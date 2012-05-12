@@ -38,14 +38,8 @@ class SMWQueryProcessor {
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {		
 		$paramDefinitions = self::getParameters();
-		
-		$formatManipulation = new SMWParamFormat();
-		
-		if ( !is_null( $printRequests ) ) {
-			$formatManipulation->setPrintRequests( $printRequests );
-		}
-		
-		$paramDefinitions['format']->addManipulations( $formatManipulation );
+
+		$paramDefinitions['format']->setPrintRequests( $printRequests );
 		
 		$validator = new Validator( 'SMW query', $unknownInvalid );
 		$validator->setParameters( $params, $paramDefinitions, false );
@@ -503,11 +497,9 @@ class SMWQueryProcessor {
 		
 		$allowedFormats[] = 'auto';
 
-		$params[] = array(
-			'name' => 'format',
-			'default' => 'auto',
-			//'values' => $allowedFormats,
-		);
+		$params['format'] = new SMWParamFormat( 'format', 'auto' );
+		$params['format']->setToLower( true );
+		// TODO:$allowedFormats
 
 		$params[] = array(
 			'name' => 'limit',
@@ -573,9 +565,14 @@ class SMWQueryProcessor {
 
 		$parameters = array();
 
-		foreach ( $params as $param ) {
-			$param['message'] = 'smw-paramdesc-offset' . $param['name'];
-			$parameters[$param['name']] = $param;
+		foreach ( $params as $key => $param ) {
+			if ( is_array( $param ) ) {
+				$param['message'] = 'smw-paramdesc-offset' . $param['name'];
+				$parameters[$param['name']] = $param;
+			}
+			else {
+				$parameters[$key] = $param;
+			}
 		}
 
 		return $parameters;
