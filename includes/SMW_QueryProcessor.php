@@ -567,7 +567,7 @@ class SMWQueryProcessor {
 
 		foreach ( $params as $key => $param ) {
 			if ( is_array( $param ) ) {
-				$param['message'] = 'smw-paramdesc-offset' . $param['name'];
+				$param['message'] = 'smw-paramdesc-' . $param['name'];
 				$parameters[$param['name']] = $param;
 			}
 			else {

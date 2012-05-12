@@ -152,13 +152,13 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 
 		$params[] = array(
 			'name' => 'title',
-			'message' => 'smw_paramdesc_rsstitle',
+			'message' => 'smw-paramdesc-rsstitle',
 			'default' => '',
 		);
 
 		$params[] = array(
 			'name' => 'description',
-			'message' => 'smw_paramdesc_rssdescription',
+			'message' => 'smw-paramdesc-rssdescription',
 			'default' => '',
 		);
 

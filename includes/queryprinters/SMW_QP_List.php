@@ -291,20 +291,20 @@ END;
 
 		$params[] = array(
 			'name' => 'sep',
-			'message' => 'smw_paramdesc_sep',
+			'message' => 'smw-paramdesc-sep',
 			'default' => '',
 		);
 
 		$params[] = array(
 			'name' => 'template',
-			'message' => 'smw_paramdesc_template',
+			'message' => 'smw-paramdesc-template',
 			'default' => '',
 		);
 
 		$params[] = array(
 			'name' => 'named args',
 			'type' => 'boolean',
-			'message' => 'smw_paramdesc_named_args',
+			'message' => 'smw-paramdesc-named_args',
 			'default' => false,
 		);
 
@@ -312,7 +312,7 @@ END;
 			$params[] = array(
 				'name' => 'columns',
 				'type' => 'integer',
-				'message' => 'smw_paramdesc_columns',
+				'message' => 'smw-paramdesc-columns',
 				'default' => 1,
 				'range' => array( 1, 10 ),
 			);
@@ -320,19 +320,19 @@ END;
 
 		$params[] = array(
 			'name' => 'userparam',
-			'message' => 'smw_paramdesc_userparam',
+			'message' => 'smw-paramdesc-userparam',
 			'default' => '',
 		);
 
 		$params[] = array(
 			'name' => 'introtemplate',
-			'message' => 'smw_paramdesc_introtemplate',
+			'message' => 'smw-paramdesc-introtemplate',
 			'default' => '',
 		);
 
 		$params[] = array(
 			'name' => 'outrotemplate',
-			'message' => 'smw_paramdesc_outrotemplate',
+			'message' => 'smw-paramdesc-outrotemplate',
 			'default' => '',
 		);
 

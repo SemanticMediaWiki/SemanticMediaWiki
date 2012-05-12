@@ -123,7 +123,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 		$params[] = array(
 			'name' => 'embedformat',
-			'message' => 'smw_paramdesc_embedformat',
+			'message' => 'smw-paramdesc-embedformat',
 			'default' => 'h1',
 			'values' => array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul' ),
 		);
@@ -131,7 +131,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		$params[] = array(
 			'name' => 'embedonly',
 			'type' => 'boolean',
-			'message' => 'smw_paramdesc_embedonly',
+			'message' => 'smw-paramdesc-embedonly',
 			'default' => false,
 		);
 
