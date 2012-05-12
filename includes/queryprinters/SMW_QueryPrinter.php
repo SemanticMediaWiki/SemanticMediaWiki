@@ -506,4 +506,23 @@ abstract class SMWResultPrinter {
 		return array();
 	}
 
+	/**
+	 * Returns the parameter definitions as an associative array where
+	 * the keys hold the parameter names and point to their full definitions.
+	 * array( name => array|iParamDefinition )
+	 *
+	 * @since 1.8
+	 *
+	 * @return array
+	 */
+	public final function getNamedParameters() {
+		$params = array();
+
+		foreach ( $this->getParameters() as $param ) {
+			$params[is_array( $param ) ? $param['name'] : $param->getName()] = $param;
+		}
+
+		return $params;
+	}
+
 }

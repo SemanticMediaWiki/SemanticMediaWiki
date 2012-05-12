@@ -15,7 +15,7 @@
  *
  * TODO: Split up the megamoths into sane methods.
  */
-class SMWAskPage extends SpecialPage {
+class SMWAskPage extends SMWQuerySpecialPage {
 
 	protected $m_querystring = '';
 	protected $m_params = array();
@@ -696,98 +696,6 @@ END;
 		$navigation .= ')';
 
 		return $navigation;
-	}
-
-	/**
-	 * Display a form section showing the options for a given format,
-	 * based on the getParameters() value for that format's query printer.
-	 *
-	 * @param string $format
-	 * @param array $paramValues The current values for the parameters (name => value)
-	 *
-	 * @return string
-	 */
-	protected function showFormatOptions( $format, array $paramValues ) {
-		$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-
-		$params = SMWQueryProcessor::getParameters();
-
-		if ( method_exists( $printer, 'getValidatorParameters' ) ) {
-			$params = array_merge( $params, $printer->getValidatorParameters() );
-		}
-
-		$optionsHtml = array();
-
-		foreach ( $params as $param ) {
-			// Ignore the format parameter, as we got a special control in the GUI for it already.
-			if ( $param->getName() == 'format' ) {
-				continue;
-			}
-
-			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
-
-			$optionsHtml[] =
-				Html::rawElement(
-					'div',
-					array(
-						'style' => 'width: 30%; padding: 5px; float: left;'
-					),
-					htmlspecialchars( $param->getName() ) . ': ' .
-					$this->showFormatOption( $param, $currentValue ) .
-					'<br />' .
-					Html::element( 'em', array(), $param->getDescription() )
-				);
-		}
-
-		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i++ ) {
-			if ( $i % 3 == 2 || $i == $n - 1 ) {
-				$optionsHtml[$i] .= "<div style=\"clear: both\";></div>\n";
-			}
-		}
-
-		$i = 0;
-		$rowHtml = '';
-		$resultHtml = '';
-
-		while ( $option = array_shift( $optionsHtml ) ) {
-			$rowHtml .= $option;
-			$i++;
-
-			$resultHtml .= Html::rawElement(
-				'div',
-				array(
-					'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#dddddd' ) . ';'
-				),
-				$rowHtml
-			);
-
-			$rowHtml = '';
-		}
-
-		return $resultHtml;
-	}
-
-
-
-	/**
-	 * Get the HTML for a single parameter input.
-	 *
-	 * @since 1.6
-	 *
-	 * @param Parameter $parameter
-	 * @param mixed $currentValue
-	 *
-	 * @return string
-	 */
-	protected function showFormatOption( Parameter $parameter, $currentValue ) {
-		$input = new ParameterInput( $parameter );
-		$input->setInputName( 'p[' . $parameter->getName() . ']' );
-
-		if ( $currentValue !== false ) {
-			$input->setCurrentValue( $currentValue );
-		}
-
-		return $input->getHtml();
 	}
 
 }

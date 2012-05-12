@@ -288,6 +288,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWQueryUIHelper']             = $specDir . 'AskSpecial/SMW_QueryUIHelper.php';
 	$wgAutoloadClasses['SMWQueryUI']                   = $specDir . 'AskSpecial/SMW_QueryUI.php';
 	$wgAutoloadClasses['SMWQueryCreatorPage']          = $specDir . 'AskSpecial/SMW_SpecialQueryCreator.php';
+	$wgAutoloadClasses['SMWQuerySpecialPage']          = $specDir . 'AskSpecial/SMW_QuerySpecialPage.php';
 	$wgAutoloadClasses['SMWSpecialBrowse']             = $specDir . 'SearchTriple/SMW_SpecialBrowse.php';
 	$wgAutoloadClasses['SMWPageProperty']              = $specDir . 'SearchTriple/SMW_SpecialPageProperty.php';
 	$wgAutoloadClasses['SMWSearchByProperty']          = $specDir . 'SearchTriple/SMW_SpecialSearchByProperty.php';
