@@ -38,14 +38,8 @@ class SMWQueryProcessor {
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {		
 		$paramDefinitions = self::getParameters();
-		
-		$formatManipulation = new SMWParamFormat();
-		
-		if ( !is_null( $printRequests ) ) {
-			$formatManipulation->setPrintRequests( $printRequests );
-		}
-		
-		$paramDefinitions['format']->addManipulations( $formatManipulation );
+
+		$paramDefinitions['format']->setPrintRequests( $printRequests );
 		
 		$validator = new Validator( 'SMW query', $unknownInvalid );
 		$validator->setParameters( $params, $paramDefinitions, false );
@@ -502,59 +496,86 @@ class SMWQueryProcessor {
 		}
 		
 		$allowedFormats[] = 'auto';
-		
-		$params['format'] = new Parameter( 'format' );
-		$params['format']->setDefault( 'auto' );
-		//$params['format']->addCriteria( new CriterionInArray( $allowedFormats ) );
-		
-		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
-		$params['limit']->setMessage( 'smw_paramdesc_limit' );
-		$params['limit']->setDefault( $GLOBALS['smwgQDefaultLimit'] );
-		
-		$params['sort'] = new ListParameter( 'sort' );
-		$params['sort']->setMessage( 'smw-paramdesc-sort' );
-		$params['sort']->setDefault( array( '' ) ); // The empty string represents the page itself, which should be sorted by default.
-		
-		$params['order'] = new ListParameter( 'order' );
-		$params['order']->setMessage( 'smw-paramdesc-order' );
-		$params['order']->setDefault( array() );
-		$params['order']->addCriteria( new CriterionInArray( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ) );
-		
-		$params['offset'] = new Parameter( 'offset', Parameter::TYPE_INTEGER );
-		$params['offset']->setMessage( 'smw_paramdesc_offset' );
-		$params['offset']->setDefault( 0 );
-		
-		$params['headers'] = new Parameter( 'headers' );
-		$params['headers']->setMessage( 'smw_paramdesc_headers' );
-		$params['headers']->addCriteria( new CriterionInArray( 'show', 'hide', 'plain' ) );
-		$params['headers']->setDefault( 'show' );
-		
-		$params['mainlabel'] = new Parameter( 'mainlabel' );
-		$params['mainlabel']->setMessage( 'smw_paramdesc_mainlabel' );
-		$params['mainlabel']->setDefault( false, false );
-		
-		$params['link'] = new Parameter( 'link' );
-		$params['link']->setMessage( 'smw_paramdesc_link' );
-		$params['link']->addCriteria( new CriterionInArray( 'all', 'subject', 'none' ) );
-		$params['link']->setDefault( 'all' );
-		
-		$params['searchlabel'] = new Parameter( 'searchlabel' );
-		$params['searchlabel']->setDefault( false, false );
-		$params['searchlabel']->setMessage( 'smw-paramdesc-searchlabel' );
 
-		$params['intro'] = new Parameter( 'intro' );
-		$params['intro']->setMessage( 'smw_paramdesc_intro' );
-		$params['intro']->setDefault( '' );
+		$params['format'] = new SMWParamFormat( 'format', 'auto' );
+		$params['format']->setToLower( true );
+		// TODO:$allowedFormats
 
-		$params['outro'] = new Parameter( 'outro' );
-		$params['outro']->setMessage( 'smw_paramdesc_outro' );
-		$params['outro']->setDefault( '' );
+		$params[] = array(
+			'name' => 'limit',
+			'type' => 'integer',
+			'default' => $GLOBALS['smwgQDefaultLimit'],
+		);
 
-		$params['default'] = new Parameter( 'default' );
-		$params['default']->setMessage( 'smw_paramdesc_default' );
-		$params['default']->setDefault( '' );
-		
-		return $params;
+		$params[] = array(
+			'name' => 'sort',
+			'islist' => true,
+			'default' => array( '' ), // The empty string represents the page itself, which should be sorted by default.
+		);
+
+		$params[] = array(
+			'name' => 'order',
+			'islist' => true,
+			'default' => array(),
+			'values' => array( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ),
+		);
+
+		$params[] = array(
+			'name' => 'offset',
+			'type' => 'integer',
+			'default' => 0,
+		);
+
+		$params[] = array(
+			'name' => 'headers',
+			'default' => 'show',
+			'values' => array( 'show', 'hide', 'plain' ),
+		);
+
+		$params[] = array(
+			'name' => 'mainlabel',
+			'default' => false,
+		);
+
+		$params[] = array(
+			'name' => 'link',
+			'default' => 'all',
+			'values' => array( 'all', 'subject', 'none' ),
+		);
+
+		$params[] = array(
+			'name' => 'searchlabel',
+			'default' => false,
+		);
+
+		$params[] = array(
+			'name' => 'intro',
+			'default' => '',
+		);
+
+		$params[] = array(
+			'name' => 'outro',
+			'default' => '',
+		);
+
+		$params[] = array(
+			'name' => 'default',
+			'default' => '',
+		);
+
+		$parameters = array();
+
+		foreach ( $params as $key => $param ) {
+			if ( is_array( $param ) ) {
+				$param['message'] = 'smw-paramdesc-' . $param['name'];
+				$parameters[$param['name']] = $param;
+			}
+			else {
+				$parameters[$key] = $param;
+			}
+		}
+
+		return $parameters;
 	}
 
 }

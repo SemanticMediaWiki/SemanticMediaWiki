@@ -50,24 +50,29 @@ class SMWSMWDoc extends ParserHook {
 	 *
 	 * @since 1.6
 	 *
+	 * @param $type
+	 *
 	 * @return array
 	 */
 	protected function getParameterInfo( $type ) {
-		$params = array();
-
-		$params['format'] = new Parameter( 'format' );
-		$params['format']->addCriteria( new CriterionInArray( array_keys( $GLOBALS['smwgResultFormats'] ) ) );
-		$params['format']->setMessage( 'smw-smwdoc-par-format' );
-
-		$params['language'] = new Parameter( 'language' );
-		$params['language']->setDefault( $GLOBALS['wgLanguageCode'] );
-		$params['language']->setMessage( 'smw-smwdoc-par-language' );
-		
-		$params['parameters'] = new Parameter( 'parameters', Parameter::TYPE_STRING, 'specific' );
-		$params['parameters']->setMessage( 'smw-smwdoc-par-parameters' );
-		$params['parameters']->addCriteria( new CriterionInArray( 'all', 'specific', 'base' ) );
-
-		return $params;
+		return array(
+			array(
+				'name' => 'format',
+				'message' => 'smw-smwdoc-par-format',
+				'values' => array_keys( $GLOBALS['smwgResultFormats'] ),
+			),
+			array(
+				'name' => 'language',
+				'message' => 'smw-smwdoc-par-language',
+				'default' => $GLOBALS['wgLanguageCode'],
+			),
+			array(
+				'name' => 'format',
+				'message' => 'smw-smwdoc-par-parameters',
+				'values' => array( 'all', 'specific', 'base' ),
+				'default' => 'specific',
+			),
+		);
 	}
 
 	/**
@@ -75,6 +80,8 @@ class SMWSMWDoc extends ParserHook {
 	 * @see ParserHook::getDefaultParameters
 	 *
 	 * @since 1.6
+	 *
+	 * @param $type
 	 *
 	 * @return array
 	 */

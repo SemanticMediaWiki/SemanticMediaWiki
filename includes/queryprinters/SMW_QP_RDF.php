@@ -113,14 +113,16 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getParameters() {
-		$params = array();
-		
-		$params['syntax'] = new Parameter( 'syntax' );
-		$params['syntax']->setMessage( 'smw_paramdesc_rdfsyntax' );
-		$params['syntax']->addCriteria( new CriterionInArray( 'rdfxml', 'turtle' ) );
-		$params['syntax']->setDefault( 'rdfxml' );
-		
-		return array_merge( parent::getParameters(), $this->exportFormatParameters(), $params );
+		$params = array(
+			array(
+				'name' => 'syntax',
+				'message' => 'smw-paramdesc-rdfsyntax',
+				'values' => array( 'rdfxml', 'turtle' ),
+				'default' => 'rdfxml',
+			),
+		);
+
+		return array_merge( parent::getParameters(), $params );
 	}
 
 }

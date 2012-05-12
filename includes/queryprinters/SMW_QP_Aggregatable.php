@@ -205,21 +205,28 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	 * @since 1.7
 	 */
 	public function getParameters() {
-		$params = parent::getParameters();
-
-		$params['distribution'] = new Parameter( 'distribution', Parameter::TYPE_BOOLEAN, false );
-		$params['distribution']->setMessage( 'smw-paramdesc-distribution' );
-
-		$params['distributionsort'] = new Parameter( 'distributionsort', Parameter::TYPE_STRING, 'none' );
-		$params['distributionsort']->setMessage( 'smw-paramdesc-distributionsort' );
-		$params['distributionsort']->addCriteria( new CriterionInArray( 'asc', 'desc', 'none' ) );
-
-		$params['distributionlimit'] = new Parameter( 'distributionlimit', Parameter::TYPE_INTEGER );
-		$params['distributionlimit']->setDefault( false, false );
-		$params['distributionlimit']->setMessage( 'smw-paramdesc-distributionlimit' );
-		$params['distributionlimit']->addCriteria( new CriterionInRange( 1, false ) );
-
-		return $params;
+		return array_merge( parent::getParameters(), array(
+			'distribution' => array(
+				'name' => 'distribution',
+				'type' => 'boolean',
+				'default' => false,
+				'message' => 'smw-paramdesc-distribution',
+			),
+			'distributionsort' => array(
+				'name' => 'distribution',
+				'type' => 'string',
+				'default' => 'none',
+				'message' => 'smw-paramdesc-distributionsort',
+				'values' => array( 'asc', 'desc', 'none' ),
+			),
+			'distributionlimit' => array(
+				'name' => 'distribution',
+				'type' => 'integer',
+				'default' => false,
+				'message' => 'smw-paramdesc-distributionlimit',
+				'lowerbound' => 1,
+			),
+		) );
 	}
 
 }

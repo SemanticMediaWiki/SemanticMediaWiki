@@ -241,19 +241,19 @@ EOT;
 				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
 				wfMsg( 'smw_qc_intro' ) .
 					'<input name="p[intro]" value="' . $intro . '" style="width:220px;"/> <br/>' .
-					wfMsg( 'smw_paramdesc_intro' )
+					wfMsg( 'smw-paramdesc-intro' )
 			) .
 			Html::rawElement( 'div',
 				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
 				wfMsg( 'smw_qc_outro' ) .
 					'<input name="p[outro]" value="' . $outro . '" style="width:220px;"/> <br/>' .
-					wfMsg( 'smw_paramdesc_outro' )
+					wfMsg( 'smw-paramdesc-outro' )
 			) .
 			Html::rawElement( 'div',
 				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
 				wfMsg( 'smw_qc_default' ) .
 					'<input name="p[default]" value="' . $default . '" style="width:220px;" /> <br/>' .
-					wfMsg( 'smw_paramdesc_default' )
+					wfMsg( 'smw-paramdesc-default' )
 			) .
 			Html::hidden( 'p[limit]', $limit ) .
 			Html::hidden( 'p[offset]', $offset ) .

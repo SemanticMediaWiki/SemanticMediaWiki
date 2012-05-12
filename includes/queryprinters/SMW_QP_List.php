@@ -287,38 +287,55 @@ END;
 	}
 	
 	public function getParameters() {
-		$params = array_merge( parent::getParameters(), parent::textDisplayParameters() );
-		
-		$params['sep'] = new Parameter( 'sep' );
-		$params['sep']->setMessage( 'smw_paramdesc_sep' );
-		$params['sep']->setDefault( '' );
+		$params = parent::getParameters();
 
-		$params['template'] = new Parameter( 'template' );
-		$params['template']->setMessage( 'smw_paramdesc_template' );
-		$params['template']->setDefault( '' );	
-		
-		$params['named args'] = new Parameter( 'named args', Parameter::TYPE_BOOLEAN, false );
-		$params['named args']->setMessage( 'smw_paramdesc_named_args' );
-		
+		$params[] = array(
+			'name' => 'sep',
+			'message' => 'smw-paramdesc-sep',
+			'default' => '',
+		);
+
+		$params[] = array(
+			'name' => 'template',
+			'message' => 'smw-paramdesc-template',
+			'default' => '',
+		);
+
+		$params[] = array(
+			'name' => 'named args',
+			'type' => 'boolean',
+			'message' => 'smw-paramdesc-named_args',
+			'default' => false,
+		);
+
 		if ( !$this->isPlainlist() ) {
-			$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
-			$params['columns']->setMessage( 'smw_paramdesc_columns', 1 );
-			$params['columns']->setDefault( 1, false );
-			$params['columns']->addCriteria( new CriterionInRange( 1, 10 ) );	
+			$params[] = array(
+				'name' => 'columns',
+				'type' => 'integer',
+				'message' => 'smw-paramdesc-columns',
+				'default' => 1,
+				'range' => array( 1, 10 ),
+			);
 		}
-		
-		$params['userparam'] = new Parameter( 'userparam' );
-		$params['userparam']->setMessage( 'smw_paramdesc_userparam' );		
-		$params['userparam']->setDefault( '' );
-		
-		$params['introtemplate'] = new Parameter( 'introtemplate' );
-		$params['introtemplate']->setMessage( 'smw_paramdesc_introtemplate' );		
-		$params['introtemplate']->setDefault( '' );
-		
-		$params['outrotemplate'] = new Parameter( 'outrotemplate' );
-		$params['outrotemplate']->setMessage( 'smw_paramdesc_outrotemplate' );		
-		$params['outrotemplate']->setDefault( '' );
-		
+
+		$params[] = array(
+			'name' => 'userparam',
+			'message' => 'smw-paramdesc-userparam',
+			'default' => '',
+		);
+
+		$params[] = array(
+			'name' => 'introtemplate',
+			'message' => 'smw-paramdesc-introtemplate',
+			'default' => '',
+		);
+
+		$params[] = array(
+			'name' => 'outrotemplate',
+			'message' => 'smw-paramdesc-outrotemplate',
+			'default' => '',
+		);
+
 		return $params;
 	}
 

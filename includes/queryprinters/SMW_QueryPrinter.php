@@ -492,65 +492,6 @@ abstract class SMWResultPrinter {
 	protected function exportFormatParameters() {
 		return array();
 	}
-
-	/**
-	 * Returns the parameters from getParameters, but with all non-Validator
-	 * parameters converted to Validator parameters.
-	 * 
-	 * @since 1.6
-	 * 
-	 * @return array of Parameter
-	 */
-	public function getValidatorParameters() {
-		$params = array();
-		
-		foreach ( $this->getParameters() as $param ) {
-			$param = $this->toValidatorParam( $param );
-			$params[$param->getName()] = $param;
-		}
-		
-		return $params;
-	}
-	
-	/**
-	 * Returns a Validator style Parameter definition.
-	 * SMW 1.5.x style definitions are converted.
-	 *
-	 * @since 1.6
-	 *
-	 * @param mixed $param
-	 *
-	 * @return Parameter
-	 */
-	protected function toValidatorParam( $param ) {
-		static $typeMap = array(
-			'int' => Parameter::TYPE_INTEGER
-		);
-
-		if ( !( $param instanceof Parameter ) ) {
-			if ( !array_key_exists( 'type', $param ) ) {
-				$param['type'] = 'string';
-			}
-
-			$paramClass = $param['type'] == 'enum-list' ? 'ListParameter' : 'Parameter';
-			$paramType = array_key_exists( $param['type'], $typeMap ) ? $typeMap[$param['type']] : Parameter::TYPE_STRING;
-
-			$parameter = new $paramClass( $param['name'], $paramType );
-
-			if ( array_key_exists( 'description', $param ) ) {
-				$parameter->setDescription( $param['description'] );
-			}
-
-			if ( array_key_exists( 'values', $param ) && is_array( $param['values'] ) ) {
-				$parameter->addCriteria( new CriterionInArray( $param['values'] ) );
-			}
-
-			return $parameter;
-		}
-		else {
-			return $param;
-		}
-	}
 	
 	/**
 	 * A function to describe the allowed parameters of a query using
@@ -563,6 +504,25 @@ abstract class SMWResultPrinter {
 	 */
 	public function getParameters() {
 		return array();
+	}
+
+	/**
+	 * Returns the parameter definitions as an associative array where
+	 * the keys hold the parameter names and point to their full definitions.
+	 * array( name => array|iParamDefinition )
+	 *
+	 * @since 1.8
+	 *
+	 * @return array
+	 */
+	public final function getNamedParameters() {
+		$params = array();
+
+		foreach ( $this->getParameters() as $param ) {
+			$params[is_array( $param ) ? $param['name'] : $param->getName()] = $param;
+		}
+
+		return $params;
 	}
 
 }

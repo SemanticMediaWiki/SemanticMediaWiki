@@ -200,12 +200,15 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	}
 	
 	public function getParameters() {
-		$params = array_merge( parent::getParameters(), parent::textDisplayParameters() );
-		
-		$params['class'] = new Parameter( 'class', Parameter::TYPE_STRING );
-		$params['class']->setMessage( 'smw-paramdesc-table-class' );
-		$params['class']->setDefault( 'sortable wikitable smwtable' );
-		
+		$params = parent::getParameters();
+
+		$params['class'] = array(
+			'name' => 'class',
+			'type' => 'integer',
+			'message' => 'smw-paramdesc-table-class',
+			'default' => 'sortable wikitable smwtable',
+		);
+
 		return $params;
 	}
 	

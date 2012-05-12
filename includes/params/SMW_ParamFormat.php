@@ -7,12 +7,12 @@
  * 
  * @file SMW_ParamFormat.php
  * @ingroup SMW
- * @ingroup ParameterManipulations
+ * @ingroup ParamDefinition
  * 
  * @licence GNU GPL v3
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWParamFormat extends ItemParameterManipulation {
+class SMWParamFormat extends StringParam {
 
 	/**
 	 * List of the queries print requests, used to determine the format
@@ -24,31 +24,7 @@ class SMWParamFormat extends ItemParameterManipulation {
 	 * @var array|false
 	 */
 	protected $printRequests = null;
-	
-	/**
-	 * Constructor.
-	 * 
-	 * @since 1.6.2
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-	
-	/**
-	 * @see ItemParameterManipulation::doManipulation
-	 * 
-	 * @since 1.6.2
-	 */	
-	public function doManipulation( &$value, Parameter $parameter, array &$parameters ) {
-		// Make sure the format value is valid.
-		$value = self::getValidFormatName( $value );
-		
-		// Add the formats parameters to the parameter list.
-		$queryPrinter = SMWQueryProcessor::getResultPrinter( $value );
-		
-		$parameters = array_merge( $parameters, $queryPrinter->getValidatorParameters() );
-	}
-	
+
 	/**
 	 * Takes a format name, which can be an alias and returns a format name
 	 * which will be valid for sure. Aliases are resolved. If the given
@@ -143,6 +119,32 @@ class SMWParamFormat extends ItemParameterManipulation {
 	 */
 	public function setPrintRequests( array /* of SMWPrintRequest */ $printRequests ) {
 		$this->printRequests = $printRequests;
+	}
+
+	/**
+	 * Formats the parameter value to it's final result.
+	 *
+	 * @since 0.5
+	 *
+	 * @param $value mixed
+	 * @param $param iParam
+	 * @param $definitions array of iParamDefinition
+	 * @param $params array of iParam
+	 *
+	 * @return mixed
+	 */
+	protected function formatValue( $value, iParam $param, array &$definitions, array $params ) {
+		$value = parent::formatValue( $value, $param, $definitions, $params );
+
+		// Make sure the format value is valid.
+		$value = self::getValidFormatName( $value );
+
+		// Add the formats parameters to the parameter list.
+		$queryPrinter = SMWQueryProcessor::getResultPrinter( $value );
+
+		$definitions = array_merge( $definitions, $queryPrinter->getParameters() );
+
+		return $value;
 	}
 	
 }
