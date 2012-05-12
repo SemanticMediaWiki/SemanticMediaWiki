@@ -121,15 +121,20 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 	public function getParameters() {
 		$params = parent::getParameters();
 
-		$params['embedformat'] = new Parameter( 'embedformat' );
-		$params['embedformat']->setMessage( 'smw_paramdesc_embedformat' );
-		$params['embedformat']->setDefault( 'h1' );
-		$params['embedformat']->addCriteria( new CriterionInArray( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul' ) );
-		
-		$params['embedonly'] = new Parameter( 'embedonly', Parameter::TYPE_BOOLEAN );
-		$params['embedonly']->setMessage( 'smw_paramdesc_embedonly' );
-		$params['embedonly']->setDefault( false, false );	
-		
+		$params[] = array(
+			'name' => 'embedformat',
+			'message' => 'smw_paramdesc_embedformat',
+			'default' => 'h1',
+			'values' => array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul' ),
+		);
+
+		$params[] = array(
+			'name' => 'embedonly',
+			'type' => 'boolean',
+			'message' => 'smw_paramdesc_embedonly',
+			'default' => false,
+		);
+
 		return $params;
 	}
 
