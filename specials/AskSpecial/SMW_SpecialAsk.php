@@ -356,7 +356,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					if ( $order == 'DESC' ) $result .= 'selected="selected" ';
 
 					$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
-					$result .= '[<a href="javascript:removeInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
+					$result .= '[<a class="smw-ask-delete" data-target="sort_div_' . $i . '" href="#">' . wfMsgHtml( 'delete' ) . '</a>]' . "\n";
 					$result .= "</div>\n";
 				}
 
@@ -366,7 +366,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
 				$result .= "</div>\n";
 				$result .= '<div id="sorting_main"></div>' . "\n";
-				$result .= '<a href="javascript:addInstance(\'sorting_starter\', \'sorting_main\')">' . wfMsg( 'smw_add_sortcondition' ) . '</a>' . "\n";
+				$result .= '<a class="smw-ask-add" href="#">' . wfMsgHtml( 'smw_add_sortcondition' ) . '</a>' . "\n";
 			}
 
 			$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
