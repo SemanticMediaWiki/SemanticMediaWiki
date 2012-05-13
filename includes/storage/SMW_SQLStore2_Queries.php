@@ -307,6 +307,7 @@ class SMWSQLStore2QueryEngine {
 
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 		list( $startOpts, $useIndex, $tailOpts ) = $this->m_dbs->makeSelectOptions( $sql_options );
+
 		if ( $qobj->joinfield !== '' ) {
 			$entries['SQL Query'] =
 			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .

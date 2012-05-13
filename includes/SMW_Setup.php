@@ -71,7 +71,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
  * Register all SMW hooks with MediaWiki.
  */
 function smwfRegisterHooks() {
-	global $wgHooks, $wgVersion;
+	global $wgHooks;
 
 	$wgHooks['LoadExtensionSchemaUpdates'][] = 'SMWHooks::onSchemaUpdate';
 

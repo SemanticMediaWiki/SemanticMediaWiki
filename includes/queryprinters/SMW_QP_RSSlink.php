@@ -230,28 +230,36 @@ class SMWRSSItem {
 	 */
 	public function text() {
 		global $wgServer, $wgParser, $smwgShowFactbox, $smwgRSSWithPages;
-		static $parser_options = null;
+
 		$smwgShowFactbox = SMW_FACTBOX_HIDDEN; // just hide factbox; no need to restore this setting, I hope that nothing comes after FILE outputs
 
 		$text  = "\t<item rdf:about=\"$this->uri\">\n";
 		$text .= "\t\t<title>" . smwfXMLContentEncode( $this->label ) . "</title>\n";
 		$text .= "\t\t<link>" . smwfXMLContentEncode( $this->uri ) . "</link>\n";
-		foreach ( $this->date as $date )
+
+		foreach ( $this->date as $date ) {
 			$text .= "\t\t<dc:date>$date</dc:date>\n";
-		foreach ( $this->creator as $creator )
+		}
+
+		foreach ( $this->creator as $creator ) {
 			$text .= "\t\t<dc:creator>" . smwfXMLContentEncode( $creator ) . "</dc:creator>\n";
+		}
+
 		if ( $smwgRSSWithPages ) {
 			$parser_options = new ParserOptions();
 			$parser_options->setEditSection( false );  // embedded sections should not have edit links
 			$parserOutput = $wgParser->parse( '{{' . $this->articlename . '}}', $this->title, $parser_options );
 			$content = $parserOutput->getText();
+
 			// Make absolute URLs out of the local ones:
 			///TODO is there maybe a way in the parser options to make the URLs absolute?
 			$content = str_replace( '<a href="/', '<a href="' . $wgServer . '/', $content );
 			$text .= "\t\t<description>" . smwfXMLContentEncode( $content ) . "</description>\n";
 			$text .= "\t\t<content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$content]]></content:encoded>\n";
 		}
+
 		$text .= "\t</item>\n";
+
 		return $text;
 	}
 
