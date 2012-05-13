@@ -28,7 +28,7 @@
 		var button = $( '<a>').attr( {
 			'href': '#',
 			'class': 'smw-ask-delete'
-		} ).text( mw.msg( 'smw-ask-delete' ) ); // TODO: i18n, def && pass message
+		} ).text( mw.msg( 'smw-ask-delete' ) );
 
 		button.click( function() {
 			removeInstance( 'sort_div_' + num_elements );

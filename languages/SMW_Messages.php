@@ -241,6 +241,7 @@ It takes care that humans do not turn into websites.',
 	'smw_ask_show_embed'	=> 'Show embed code',
 	'smw_ask_hide_embed'	=> 'Hide embed code',
 	'smw_ask_embed_instr'	=> 'To embed this query inline into a wiki page use the code below.',
+	'smw-ask-delete'        => '[Delete]',
 
 	// Messages for Query Creator Special
 	'querycreator'             => 'Query Creator',
