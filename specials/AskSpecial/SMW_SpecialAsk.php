@@ -370,7 +370,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 
 			$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
-			$url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions=' + this.value + '" );
+			$url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( 'showformatoptions=this.value' );
 
 			foreach ( $this->m_params as $param => $value ) {
 				if ( $param !== 'format' ) {
@@ -379,7 +379,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 
 			$result .= "<br /><br />\n<p>" . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
-				'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
+				'<select id="formatSelector" name="p[format]" data-url="' . $url . '">' . "\n" .
 				'	<option value="broadtable"' . ( $this->m_params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
 				$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
 
@@ -400,7 +400,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 
 			$result .= "</select></p>\n";
-			$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
+			$result .= '<fieldset><legend>' . wfMsgHtml( 'smw_ask_otheroptions' ) . "</legend>\n";
 			$result .= "<div id=\"other_options\">" . $this->showFormatOptions( $this->m_params['format'], $this->m_params ) . "</div>";
 			$result .= "</fieldset>\n";
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly

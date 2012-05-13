@@ -28,7 +28,7 @@
 		var button = $( '<a>').attr( {
 			'href': '#',
 			'class': 'smw-ask-delete'
-		} ).text( mw.msg( 'smw-ask-delete' ) ) // TODO: i18n, def && pass message
+		} ).text( mw.msg( 'smw-ask-delete' ) ); // TODO: i18n, def && pass message
 
 		button.click( function() {
 			removeInstance( 'sort_div_' + num_elements );
@@ -125,12 +125,23 @@
 			addInstance( 'sorting_starter', 'sorting_main' );
 		} );
 
+		$( '#formatSelector' ).change( function() {
+			console.log($( this).attr( 'data-url' ).replace( 'this.value', $( this ).val() ));
+			$.ajax( {
+				// Evil hack to get more evil Spcial:Ask stuff to work with less evil JS.
+				'url': $( this).attr( 'data-url' ).replace( 'this.value', $( this ).val() ),
+				'context': document.body,
+				'success': function( data ) {
+					$( "#other_options" ).html( data );
+				}
+			} );
+		} );
+
 	});
 
 	function updateOtherOptions(strURL) {
-		$.ajax({ url: strURL, context: document.body, success: function(data){
-			$("#other_options").html(data);
-		}});
+		debugger;
+
 	}
 
 })( window.jQuery );
