@@ -33,6 +33,15 @@ if ( !defined( 'Validator_VERSION' ) ) {
 	die( '<b>Error:</b> You need to have <a href="http://www.mediawiki.org/wiki/Extension:Validator">Validator</a> installed in order to use <a href="http://www.semantic-mediawiki.org">Semantic MediaWiki</a>.<br />' );
 }
 
+// Version check for Validator, which needs to be at 0.5 or greater.
+if ( version_compare( Validator_VERSION, '0.5c', '<' ) ) {
+	die(
+		'<b>Error:</b> This version of SMW needs <a href="http://www.mediawiki.org/wiki/Extension:Validator">Validator</a> 0.5 or later.
+		You are currently using version ' . Validator_VERSION . '. 
+	 	If for any reason you are stuck at Validator 0.4.x, you can use SMW 1.7.x and 1.6.x.<br />'
+	);
+}
+
 // The SMW version number.
 define( 'SMW_VERSION', '1.8 alpha' );
 
