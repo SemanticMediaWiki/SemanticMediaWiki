@@ -411,21 +411,42 @@ Estimated progress of current update:',
  */
 $messages['qqq'] = array(
 	'smw-desc' => '{{desc}}',
+	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked.',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 
 {{Identical|And}}',
 	'smw_factbox_head' => '$1 is the name of the page',
+	'smw_isspecprop' => 'Used on Special:Properties to identify a special (build in) property.',
 	'version-semantic' => 'This is the name of the extension group on "Special:Version".',
 	'smw_rss_link' => '{{optional}}',
 	'smw_csv_link' => '{{optional}}',
+	'smw_dsv_link' => 'This is the text of the link that is triggering the results export when clicked.',
 	'smw_json_link' => '{{optional}}',
 	'smw_rdf_link' => '{{optional}}',
 	'smw_printername_auto' => '{{Identical|Automatic}}',
 	'smw_printername_count' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Count_format count].',
-	'smw_printername_table' => '{{Identical|Table}}',
-	'smw_printername_template' => '{{Identical|Template}}',
-	'smw_printername_category' => '{{Identical|Category}}',
+	'smw_printername_csv' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:CSV_format CSV].',
+	'smw_printername_dsv' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:DSV_format DSV].',
+	'smw_printername_debug' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Debug_format Debug].',
+	'smw_printername_embedded' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Embedded_format Embedded].',
+	'smw_printername_json' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:JSON_format JSON].',
+	'smw_printername_list' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:List_format List].',
+	'smw_printername_ol' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ol_format Enumeration (numbered list)].',
+	'smw_printername_ul' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ul_format Itemization (bulleted list)].',
+	'smw_printername_rss' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:RSS_format RSS].',
+	'smw_printername_table' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Table_format Table].
+
+{{Identical|Table}}',
+	'smw_printername_broadtable' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Broadtable_format Broadtable].',
+	'smw_printername_template' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Template_format Template].
+
+{{Identical|Template}}',
+	'smw_printername_rdf' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:RDF_format RDF].',
+	'smw_printername_category' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Category_format Category].
+
+{{Identical|Category}}',
 	'smw-paramdesc-limit' => 'A description of the "limit" parameter for inline queries',
+	'smw-paramdesc-offset' => 'A description of the "offset" parameter for inline queries',
 	'smw-paramdesc-headers' => 'A description of the "headers" parameter for inline queries',
 	'smw-paramdesc-mainlabel' => 'A description of the "mainlabel" parameter for inline queries',
 	'smw-paramdesc-link' => 'A description of the "link" parameter for inline queries',
@@ -435,15 +456,22 @@ $messages['qqq'] = array(
 	'smw-paramdesc-sep' => 'A description of the "sep" (value separator) parameter for inline queries',
 	'smw-paramdesc-template' => 'A description of the "template" parameter for inline queries',
 	'smw-paramdesc-columns' => 'A description of the "columns" parameter for inline queries',
-	'smw-paramdesc-embedformat' => 'A description of the "embedformat" parameter for the "embedded" format inline queries',
-	'smw-paramdesc-embedonly' => 'A description of the "embedonly" parameter for the "embedded" format for inline queries',
-	'smw-paramdesc-rsstitle' => 'A description of the "title" parameter for the "rss" format for inline queries',
-	'smw-paramdesc-rssdescription' => 'A description of the "description" parameter for the "rss" format for inline queries',
-	'smw-smwdoc-description' => 'Short description of the smwdoc parser hook.',
+	'smw-paramdesc-introtemplate' => 'A description of the "introtemplate" parameter for inline queries',
+	'smw-paramdesc-outrotemplate' => 'A description of the "outrotemplate" parameter for inline queries',
+	'smw-paramdesc-embedformat' => 'This is the description of the "embedformat" parameter for the "embedded" result format inline queries.',
+	'smw-paramdesc-embedonly' => 'This is the description of the "embedonly" parameter for the "embedded" result format for inline queries.',
+	'smw-paramdesc-table-class' => 'This is the description of the "css" parameter for the "table" result format for inline queries.',
+	'smw-paramdesc-rsstitle' => 'This is the description of the "title" parameter for the "rss" result format for inline queries.',
+	'smw-paramdesc-rssdescription' => 'This is the description of the "description" parameter for the "rss" result format for inline queries.',
+	'smw-paramdesc-csv-sep' => 'This is the description of the "separator" parameter for the "csv" result format for inline queries',
+	'smw-paramdesc-dsv-separator' => 'This is the description of the "separator" parameter for the "dsv" result format for inline queries',
+	'smw-paramdesc-dsv-filename' => 'This is the description of the "filename" parameter for the "dsv" result format for inline queries',
+	'smw-smwdoc-description' => 'This it the short description of the smwdoc parser function.',
 	'smw-smwdoc-par-format' => 'Description of the format parameter of the smwdoc parser hook.',
 	'smw-smwdoc-par-parameters' => 'Description of the parameters parameter of the smwdoc parser hook. {{doc-important|Do not translate "specific", "base" and "all".}}',
 	'smw-paramdesc-searchlabel' => 'A description of the "searchlabel" parameter for inline queries',
 	'smw-paramdesc-named_args' => 'This allows you to specify that you want named arguments in the template formatting the results (if any) instead of numerical ones',
+	'smw_iq_moreresults' => 'This is the text of the link that is points to further results of the inline query not currently displayed on the page.',
 	'smw_decseparator' => "{{optional}}
 This message is as a separator symbol for decimal digits in numbers, like \".\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
 
@@ -458,7 +486,8 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_rss_description' => '{{optional}}',
 	'specialpages-group-smw_group' => '{{optional}}',
 	'smw_exportrdf_submit' => '{{Identical|Export}}',
-	'properties' => 'This is the title of the special page showing all properties.
+	'properties' => 'This is the title of the special page on Special:SpecialPages showing all properties.
+
 {{Identical|Property}}',
 	'smw_property_template' => 'Used on [[Special:Properties]]
 * $1 link to Property page
@@ -468,7 +497,10 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 link to Property page
 * $2 Number of times the property is used',
 	'smw_unusedproperty_template' => '$1 is the name of the [http://semantic-mediawiki.org/wiki/Help:Properties_and_types property] and $2 is the name of the [http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Datatypes_for_properties datatype] assigned to the property.',
-	'types' => '{{Identical|Type}}',
+	'smw_purge' => 'This is the label of a tab of an action item for the content area.',
+	'types' => 'This is the title of the special page on Special:SpecialPages showing all datatypes.
+
+{{Identical|Type}}',
 	'smw_typeunits' => 'This message is used in the tooltip on Special:Types when a property supports custom units of measurement. The parameter $1 then is the type name, and $2 is a list of unit names.',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
@@ -3344,6 +3376,7 @@ Las propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|li
 	'smw_ask_show_embed' => 'Mostrar código embebido',
 	'smw_ask_hide_embed' => 'Ocultar código embebido',
 	'smw_ask_embed_instr' => 'Para incluír esta consulta en línea dentro de una wiki use el código siguiente:',
+	'smw-ask-delete' => '[Eliminar]',
 	'querycreator' => 'Creador de consultas',
 	'smw_qc_addmainlabel' => 'Añadir la etiqueta principal',
 	'smw_qc_show_addnal_opts' => 'Mostrar más opciones',
@@ -3773,7 +3806,7 @@ $messages['fr'] = array(
 	'smw-paramdesc-distributionsort' => "Trier la distribution de valeurs par nombre d'occurrences.",
 	'smw-paramdesc-distributionlimit' => 'Limiter la distribution des valeurs au comptage de seulement certaines valeurs.',
 	'smw-paramdesc-template' => 'Le nom du modèle avec lequel il faut afficher les impressions',
-	'smw-paramdesc-columns' => 'Le nombre de colonnes dans lesquelles il faut afficher les résultats (3 par défaut)',
+	'smw-paramdesc-columns' => 'Le nombre de colonnes dans lesquelles il faut afficher les résultats ($1 par défaut)',
 	'smw-paramdesc-userparam' => 'Une valeur passée dans chaque appel de modèle, si un modèle est utilisé',
 	'smw-paramdesc-introtemplate' => "Le nom d'un modèle à afficher avant les résultats de requête, s'il y en a",
 	'smw-paramdesc-outrotemplate' => "Le nom d'un modèle à afficher après les résultats de la requête, s'il y en a",
@@ -3891,6 +3924,7 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'smw_ask_show_embed' => 'Montrer le code incrusté',
 	'smw_ask_hide_embed' => 'Masquer le code incrusté',
 	'smw_ask_embed_instr' => 'Pour incruster cette requête dans une page wiki, utilisez le code ci-dessous.',
+	'smw-ask-delete' => '[Supprimer]',
 	'querycreator' => 'Créateur de requêtes',
 	'smw_qc_addmainlabel' => 'Ajouter le libellé principal',
 	'smw_qc_show_addnal_opts' => "Afficher plus d'options",
@@ -4230,7 +4264,7 @@ $messages['gl'] = array(
 	'smw-paramdesc-distributionsort' => 'Ordenar a distribución de valores por número de ocorrencias.',
 	'smw-paramdesc-distributionlimit' => 'Limitar a distribución de valores á contaxe dalgúns valores soamente.',
 	'smw-paramdesc-template' => 'O nome dun modelo co que mostrar as impresións',
-	'smw-paramdesc-columns' => 'O número de columnas nas que mostrar os resultados (3 por defecto)',
+	'smw-paramdesc-columns' => 'O número de columnas nas que mostrar os resultados ($1 por defecto)',
 	'smw-paramdesc-userparam' => 'O valor pasado en cada chamada de modelo, se se empregase algún modelo',
 	'smw-paramdesc-introtemplate' => 'O nome dun modelo a mostrar antes dos resultados da pescuda, se houbese algún',
 	'smw-paramdesc-outrotemplate' => 'O nome dun modelo a mostrar despois dos resultados da pescuda, se houbese algún',
@@ -4350,6 +4384,7 @@ As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:Wan
 	'smw_ask_show_embed' => 'Mostrar o código incrustado',
 	'smw_ask_hide_embed' => 'Agochar o código incrustado',
 	'smw_ask_embed_instr' => 'Para incrustar esta pescuda en liña nunha páxina wiki use o código de embaixo.',
+	'smw-ask-delete' => '[Borrar]',
 	'querycreator' => 'Creador de consultas',
 	'smw_qc_addmainlabel' => 'Engadir a etiqueta principal',
 	'smw_qc_show_addnal_opts' => 'Mostrar máis opcións',
@@ -4494,6 +4529,7 @@ $messages['grc'] = array(
 	'smw_ask_defaultformat' => 'προκαθωρισμένη',
 	'smw_sbv_property' => 'Ἰδιότης:',
 	'smw_sbv_value' => 'Τιμή:',
+	'smw_browselink' => 'Ἲδιότηται πλοηγήσεως',
 	'smw_browse_go' => 'Ἱέναι',
 	'smw_inverse_label_default' => '$1 τοῦ',
 	'smw_pp_type' => 'Ἰδιότης',
