@@ -37,7 +37,7 @@ if ( !defined( 'Validator_VERSION' ) ) {
 if ( version_compare( Validator_VERSION, '0.5c', '<' ) ) {
 	die(
 		'<b>Error:</b> This version of SMW needs <a href="http://www.mediawiki.org/wiki/Extension:Validator">Validator</a> 0.5 or later.
-		You are currently using version ' . Validator_VERSION . '. 
+		You are currently using version ' . Validator_VERSION . '.
 	 	If for any reason you are stuck at Validator 0.4.x, you can use SMW 1.7.x and 1.6.x.<br />'
 	);
 }
