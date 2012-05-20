@@ -230,7 +230,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWResultArray']            = $stoDir . 'SMW_ResultArray.php';
 	$wgAutoloadClasses['SMWStore']                  = $stoDir . 'SMW_Store.php';
 	$wgAutoloadClasses['SMWStringCondition']        = $stoDir . 'SMW_Store.php';
-	$wgAutoloadClasses['SMWRequestOptions']         = $stoDir . 'SMW_Store.php';
+	$wgAutoloadClasses['SMWRequestOptions']         = $stoDir . 'SMW_RequestOptions.php';
 	$wgAutoloadClasses['SMWPrintRequest']           = $stoDir . 'SMW_PrintRequest.php';
 	$wgAutoloadClasses['SMWThingDescription']       = $stoDir . 'SMW_Description.php';
 	$wgAutoloadClasses['SMWClassDescription']       = $stoDir . 'SMW_Description.php';

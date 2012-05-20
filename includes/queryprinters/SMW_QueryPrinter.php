@@ -26,7 +26,7 @@ define( 'SMW_HEADERS_HIDE', 0 ); // Used to be "false" hence use "0" to support 
 abstract class SMWResultPrinter {
 
 	/**
-	 * @deprecated Use $params instead
+	 * @deprecated Use $params instead. Will be removed in 1.10.
 	 */
 	protected $m_params;
 	
@@ -115,7 +115,7 @@ abstract class SMWResultPrinter {
 	 * 
 	 * @param string $format
 	 * @param $inline
-	 * @param boolean $useValidator Deprecated since 1.6.2
+	 * @param boolean $useValidator Deprecated since 1.6.2, removal in 1.10
 	 */
 	public function __construct( $format, $inline, $useValidator = false ) {
 		global $smwgQDefaultLinking;
@@ -343,6 +343,47 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $res
+	 * @param $outputMode
+	 *
+	 * TODO: this does not seem like the right place to have the actual logic,
+	 * but it can be moved later on (having this method here does make sense).
+	 */
+	protected function getLink( SMWQueryResult $res, $outputMode ) {
+		$link = $res->getLink();
+
+		$link->setCaption( $this->getSearchLabel( $outputMode ) );
+
+		foreach ( $this->params as $param ) {
+			// TODO///
+		}
+
+
+		if ( $this->linkFurtherResults( $res ) ) {
+			$link = $res->getQueryLink();
+
+			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
+				$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
+			}
+
+			$link->setParameter( 'category', 'format' );
+
+			if ( $this->mNumColumns != 3 ) $link->setParameter( $this->mNumColumns, 'columns' );
+
+			if ( $this->mTemplate !== '' ) {
+				$link->setParameter( $this->mTemplate, 'template' );
+
+				if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates
+					$link->setParameter( $this->m_params['link'], 'link' );
+				}
+			}
+
+		}
+	}
+
+	/**
 	 * Some printers do not mainly produce embeddable HTML or Wikitext, but
 	 * produce stand-alone files. An example is RSS or iCalendar. This function
 	 * returns the mimetype string that this file would have, or FALSE if no
@@ -446,12 +487,14 @@ abstract class SMWResultPrinter {
 	 * result set with the given parameters. Individual result printers may decide to
 	 * create or hide such a link independent of that, but this is the default.
 	 *
+	 * @param SMWQueryResult $results
+	 *
 	 * @return boolean
 	 */
-	protected function linkFurtherResults( $results ) {
+	protected function linkFurtherResults( SMWQueryResult $results ) {
 		return $this->mInline && $results->hasFurtherResults() && $this->mSearchlabel !== '';
 	}
-	
+
 	/**
 	 * Adds an error message for a parameter handling error so a list
 	 * of errors can be created later on.

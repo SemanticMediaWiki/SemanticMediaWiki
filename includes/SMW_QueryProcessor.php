@@ -345,16 +345,17 @@ class SMWQueryProcessor {
 	 * 
 	 * @param string $querystring
 	 * @param array $params These need to be the result of a list fed to getProcessedParams
-	 * @param $extraprintouts
-	 * @param $outputmode
+	 * @param $extraPrintouts
+	 * @param $outputMode
 	 * @param $context
+	 *
+	 * @return string
 	 */
-	static public function getResultFromQueryString( $querystring, array $params, $extraprintouts, $outputmode, $context = self::INLINE_QUERY ) {
+	static public function getResultFromQueryString( $querystring, array $params, $extraPrintouts, $outputMode, $context = self::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
-		$format = $params['format']; // This is rather silly to do now... 
-		$query  = self::createQuery( $querystring, $params, $context, $format, $extraprintouts );
-		$result = self::getResultFromQuery( $query, $params, $extraprintouts, $outputmode, $context, $format );
+		$query  = self::createQuery( $querystring, $params, $context, '', $extraPrintouts );
+		$result = self::getResultFromQuery( $query, $params, $extraPrintouts, $outputMode, $context );
 
 		wfProfileOut( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
@@ -366,14 +367,13 @@ class SMWQueryProcessor {
 	 * 
 	 * @param SMWQuery $query
 	 * @param array $params These need to be the result of a list fed to getProcessedParams
-	 * @param $extraprintouts
+	 * @param $extraPrintouts
 	 * @param $outputmode
 	 * @param $context
-	 * @param $format
-	 * 
+	 *
 	 * @return string
 	 */
-	static public function getResultFromQuery( SMWQuery $query, array $params, $extraprintouts, $outputmode, $context = self::INLINE_QUERY, $format = '' ) {
+	static public function getResultFromQuery( SMWQuery $query, array $params, $extraPrintouts, $outputmode, $context = self::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
 		// Query routing allows extensions to provide alternative stores as data sources
@@ -381,6 +381,7 @@ class SMWQueryProcessor {
 		// @todo FIXME: case-insensitive
 		global $smwgQuerySources;
 
+		// FIXME: this must have been broken for a year by now (2012-5) since we do not have a param definition for this
 		if ( array_key_exists( 'source', $params ) && array_key_exists( $params['source'], $smwgQuerySources ) ) {
 			$store = new $smwgQuerySources[$params['source']]();
 			$query->params = $params; // this is a hack
@@ -393,11 +394,7 @@ class SMWQueryProcessor {
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) || ( $query->querymode == SMWQuery::MODE_NONE ) ) {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 
-			if ( $format === '' ) {
-				$format = self::getResultFormat( $params );
-			}
-
-			$printer = self::getResultPrinter( $format, $context, $res );
+			$printer = self::getResultPrinter( $params['format'], $context, $res );
 			$result = $printer->getResult( $res, $params, $outputmode );
 
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
@@ -408,16 +405,14 @@ class SMWQueryProcessor {
 			if ( is_numeric( $res ) ) {
 				$res = strval( $res );
 			}
+
 			if ( is_string( $res ) ) {
-				if ( array_key_exists( 'intro', $params ) ) {
-					$res = str_replace( '_', ' ', $params['intro'] ) . $res;
-				}
-				if ( array_key_exists( 'outro', $params ) ) {
-					$res .= str_replace( '_', ' ', $params['outro'] );
-				}
-				
-				$result = $res . smwfEncodeMessages( $query->getErrors() );
-			} else { // When no valid result was obtained, $res will be a SMWQueryResult.
+				$result = str_replace( '_', ' ', $params['intro'] )
+					. $res
+					. str_replace( '_', ' ', $params['outro'] )
+					. smwfEncodeMessages( $query->getErrors() );
+			} else {
+				// When no valid result was obtained, $res will be a SMWQueryResult.
 				$result = smwfEncodeMessages( $query->getErrors() );
 			}
 			
@@ -436,6 +431,7 @@ class SMWQueryProcessor {
 	 * @param $context
 	 *
 	 * @return SMWResultPrinter
+	 * @throws MWException
 	 */
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
@@ -448,35 +444,7 @@ class SMWQueryProcessor {
 
 		return new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
 	}
-	
-	/**
-	 * Determines the format from an array of parameters, and returns it.
-	 *
-	 * @deprecated since 1.6.2, removal in 1.8
-	 *
-	 * @param array $params
-	 *
-	 * @return string
-	 */
-	static protected function getResultFormat( array $params ) {
-		$format = 'auto';
 
-		if ( array_key_exists( 'format', $params ) ) {
-			global $smwgResultFormats;
-
-			$format = strtolower( trim( $params['format'] ) );
-
-			if ( !array_key_exists( $format, $smwgResultFormats ) ) {
-				$isAlias = SMWParamFormat::resolveFormatAliases( $format );
-				if ( !$isAlias ) {
-					$format = 'auto';  // If it is an unknown format, defaults to list/table again
-				}
-			}
-		}
-
-		return $format;
-	}
-	
 	/**
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this

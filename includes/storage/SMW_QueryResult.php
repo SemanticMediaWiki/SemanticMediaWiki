@@ -193,28 +193,36 @@ class SMWQueryResult {
 	 * @return SMWInfolink
 	 */
 	public function getQueryLink( $caption = false ) {
+		$link = $this->getLink();
+
+		if ( $caption == false ) {
+			$caption = ' ' . wfMsgForContent( 'smw_iq_moreresults' ); // The space is right here, not in the QPs!
+		}
+
+		$link->setCaption( $caption );
+
 		$params = array( trim( $this->mQuery->getQueryString() ) );
-		
+
 		foreach ( $this->mQuery->getExtraPrintouts() as /* SMWPrintRequest */ $printout ) {
 			$serialization = $printout->getSerialisation();
-			
+
 			// TODO: this is a hack to get rid of the mainlabel param in case it was automatically added
 			// by SMWQueryProcessor::addThisPrintout. Should be done nicer when this link creation gets redone.
 			if ( $serialization !== '?#' ) {
 				$params[] = $serialization;
 			}
 		}
-		
+
 		if ( $this->mQuery->getMainLabel() !== false ) {
 			$params['mainlabel'] = $this->mQuery->getMainLabel();
 		}
 
 		$params['offset'] = $this->mQuery->getOffset() + count( $this->mResults );
-		
+
 		if ( $params['offset'] === 0 ) {
 			unset( $params['offset'] );
 		}
-		
+
 		if ( $this->mQuery->getLimit() > 0 ) {
 			$params['limit'] = $this->mQuery->getLimit();
 		}
@@ -222,21 +230,42 @@ class SMWQueryResult {
 		if ( count( $this->mQuery->sortkeys ) > 0 ) {
 			$order = implode( ',', $this->mQuery->sortkeys );
 			$sort = implode( ',', array_keys( $this->mQuery->sortkeys ) );
-			
+
 			if ( $sort !== '' || $order != 'ASC' ) {
 				$params['order'] = $order;
-				$params['sort'] = $sort;			
+				$params['sort'] = $sort;
 			}
 		}
-		
-		if ( $caption == false ) {
-			$caption = ' ' . wfMsgForContent( 'smw_iq_moreresults' ); // The space is right here, not in the QPs!
+
+		foreach ( $params as $key => $param ) {
+			$link->setParameter( $param, is_string( $key ) ? $key : false );
 		}
-		
+
+		return $link;
+	}
+
+	/**
+	 * Returns an SMWInfolink object with the QueryResults print requests as parameters.
+	 *
+	 * @since 1.8
+	 *
+	 * @return SMWInfolink
+	 */
+	public function getLink() {
+		$params = array( trim( $this->mQuery->getQueryString() ) );
+
+		foreach ( $this->mQuery->getExtraPrintouts() as /* SMWPrintRequest */ $printout ) {
+			$serialization = $printout->getSerialisation();
+
+			// TODO: this is a hack to get rid of the mainlabel param in case it was automatically added
+			// by SMWQueryProcessor::addThisPrintout. Should be done nicer when this link creation gets redone.
+			if ( $serialization !== '?#' ) {
+				$params[] = $serialization;
+			}
+		}
+
 		// Note: the initial : prevents SMW from reparsing :: in the query string.
-		$result = SMWInfolink::newInternalLink( $caption, ':Special:Ask', false, $params );
-		
-		return $result;
+		return SMWInfolink::newInternalLink( '', ':Special:Ask', false, $params );
 	}
 	
 	/**
