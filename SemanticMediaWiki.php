@@ -107,4 +107,13 @@ $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
 	),
 );
 
+$wgResourceModules['ext.smw.browse'] = $moduleTemplate + array(
+	'scripts' => array(
+		'resources/ext.smw.browse.js',
+	),
+	'dependencies' => array(
+		'jquery.ui.autocomplete',
+	),
+);
+
 unset( $moduleTemplate );
