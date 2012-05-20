@@ -41,6 +41,32 @@ abstract class SMWResultPrinter {
 	protected $params;
 
 	/**
+	 * List of parameters, set by handleParameters.
+	 * param name (lower case, trimmed) => IParam object
+	 *
+	 * @since 1.8
+	 *
+	 * @var array of IParam
+	 */
+	protected $fullParams;
+
+	/**
+	 * @since 1.8
+	 *
+	 * @var
+	 */
+	protected $outputMode;
+
+	/**
+	 * The query result being displayed.
+	 *
+	 * @since 1.8
+	 *
+	 * @var SMWQueryResult
+	 */
+	protected $results;
+
+	/**
 	 * Text to print *before* the output in case it is *not* empty; assumed to be wikitext.
 	 * Normally this is handled in SMWResultPrinter and can be ignored by subclasses.
 	 */
@@ -152,24 +178,50 @@ abstract class SMWResultPrinter {
 	 * variable SMWResultPrinter::$maxRecursionDepth (in LocalSettings.php, after enableSemantics()).
 	 * Do this at your own risk.
 	 *
+	 * @note: since 1.8 this method is final, since it's the entry point.
+	 * Most logic has been moved out to buildResult, which you can override.
+	 *
 	 * @param $results SMWQueryResult
-	 * @param $params array
-	 * @param $outputmode integer
+	 * @param $fullParams array
+	 * @param $outputMode integer
 	 *
 	 * @return string
 	 */
-	public function getResult( SMWQueryResult $results, array $params, $outputmode ) {
+	public final function getResult( SMWQueryResult $results, array $fullParams, $outputMode ) {
+		$this->outputMode = $outputMode;
+		$this->results = $results;
+
+		$params = array();
+
+		foreach ( $fullParams as /* IParam */ $param ) {
+			$params[$param->getName()] = $param->getValue();
+		}
+
+		$this->params = $params;
+		$this->m_params = $params; // Compat, change made in 1.6.3/1.7, removal in 1.10
+		$this->fullParams = $fullParams;
+
+		$this->handleParameters();
+		
+		return $this->buildResult( $results );
+	}
+
+	/**
+	 * @param SMWQueryResult $results
+	 * @return string
+	 */
+	protected function buildResult( SMWQueryResult $results ) {
 		$this->isHTML = false;
 		$this->hasTemplates = false;
-		
-		$this->handleParameters( $params, $outputmode );
-		
+
+		$outputMode = $this->outputMode;
+
 		// Default output for normal printers:
-		if ( ( $outputmode != SMW_OUTPUT_FILE ) && // not in FILE context,
-				( $results->getCount() == 0 ) && // no results,
-				( $this->getMimeType( $results ) === false ) ) { // normal printer -> take over processing
+		if ( ( $outputMode != SMW_OUTPUT_FILE ) && // not in FILE context,
+			( $results->getCount() == 0 ) && // no results,
+			( $this->getMimeType( $results ) === false ) ) { // normal printer -> take over processing
 			if ( !$results->hasFurtherResults() ) {
-				return $this->escapeText( $this->mDefault, $outputmode ) . $this->getErrorString( $results );
+				return $this->escapeText( $this->mDefault, $outputMode ) . $this->getErrorString( $results );
 			} elseif ( $this->mInline ) {
 				$label = $this->mSearchlabel;
 
@@ -178,8 +230,8 @@ abstract class SMWResultPrinter {
 				}
 
 				if ( $label !== '' ) {
-					$link = $results->getQueryLink( $this->escapeText( $label, $outputmode ) );
-					$result = $link->getText( $outputmode, $this->mLinker );
+					$link = $results->getQueryLink( $this->escapeText( $label, $outputMode ) );
+					$result = $link->getText( $outputMode, $this->mLinker );
 				} else {
 					$result = '';
 				}
@@ -189,18 +241,18 @@ abstract class SMWResultPrinter {
 				return $result;
 			}
 		}
-		
-		// Get output from printer:
-		$result = $this->getResultText( $results, $outputmode );
 
-		if ( $outputmode != SMW_OUTPUT_FILE ) {
-			$result = $this->handleNonFileResult( $result, $results, $outputmode );
+		// Get output from printer:
+		$result = $this->getResultText( $results, $outputMode );
+
+		if ( $outputMode != SMW_OUTPUT_FILE ) {
+			$result = $this->handleNonFileResult( $result, $results, $outputMode );
 		}
-		
+
 		if ( $GLOBALS['wgDBtype'] == 'postgres' ) {
 			$result = pg_unescape_bytea( $result );
 		}
-		
+
 		return $result;
 	}
 	
@@ -289,13 +341,9 @@ abstract class SMWResultPrinter {
 	 * (extended) by subclasses.
 	 * 
 	 * @since 1.6
-	 * 
-	 * @param array $params
-	 * @param $outputmode
 	 */
-	protected function handleParameters( array $params, $outputmode ) {
-		$this->params = $params;
-		$this->m_params = $params; // Compat, change made in 1.6.3/1.7
+	protected function handleParameters() {
+		$params = $this->params;
 
 		$this->mIntro = str_replace( '_', ' ', $params['intro'] );
 		$this->mOutro = str_replace( '_', ' ', $params['outro'] );

@@ -37,17 +37,35 @@ class SMWQueryProcessor {
 	 * @return array
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {		
+		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid );
+		$validator->validateParameters();
+		return $validator->getParameterValues();
+	}
+
+	/**
+	 * Takes an array of unprocessed parameters,
+	 * and sets them on a new Validator object,
+	 * which is returned and ready to process the parameters.
+	 *
+	 * @since 1.8
+	 *
+	 * @param array $params
+	 * @param array $printRequests
+	 * @param boolean $unknownInvalid
+	 *
+	 * @return Validator
+	 */
+	public static function getValidatorForParams( array $params, array $printRequests = null, $unknownInvalid = true ) {
 		$paramDefinitions = self::getParameters();
 
 		$paramDefinitions['format']->setPrintRequests( $printRequests );
-		
+
 		$validator = new Validator( 'SMW query', $unknownInvalid );
 		$validator->setParameters( $params, $paramDefinitions, false );
-		$validator->validateParameters();
-		
-		return $validator->getParameterValues();
+
+		return $validator;
 	}
-	
+
 	/**
 	 * Parse a query string given in SMW's query language to create
 	 * an SMWQuery. Parameters are given as key-value-pairs in the
@@ -330,8 +348,9 @@ class SMWQueryProcessor {
 			self::addThisPrintout( $printouts, $params, $showmode );
 		}
 		
-		$params = self::getProcessedParams( $params, $printouts );
-		
+		$validator = self::getValidatorForParams( $params, $printouts );
+		$params = $validator->getParameters();
+
 		return self::getResultFromQueryString( $querystring, $params, $printouts, SMW_OUTPUT_WIKI, $context );
 	}
 
@@ -382,9 +401,8 @@ class SMWQueryProcessor {
 		global $smwgQuerySources;
 
 		// FIXME: this must have been broken for a year by now (2012-5) since we do not have a param definition for this
-		if ( array_key_exists( 'source', $params ) && array_key_exists( $params['source'], $smwgQuerySources ) ) {
-			$store = new $smwgQuerySources[$params['source']]();
-			$query->params = $params; // this is a hack
+		if ( array_key_exists( 'source', $params ) && array_key_exists( $params['source']->getValue(), $smwgQuerySources ) ) {
+			$store = new $smwgQuerySources[$params['source']->getValue()]();
 		} else {
 			$store = smwfGetStore(); // default store
 		}
@@ -394,7 +412,7 @@ class SMWQueryProcessor {
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) || ( $query->querymode == SMWQuery::MODE_NONE ) ) {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 
-			$printer = self::getResultPrinter( $params['format'], $context, $res );
+			$printer = self::getResultPrinter( $params['format']->getValue(), $context, $res );
 			$result = $printer->getResult( $res, $params, $outputmode );
 
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
@@ -407,9 +425,9 @@ class SMWQueryProcessor {
 			}
 
 			if ( is_string( $res ) ) {
-				$result = str_replace( '_', ' ', $params['intro'] )
+				$result = str_replace( '_', ' ', $params['intro']->getValue() )
 					. $res
-					. str_replace( '_', ' ', $params['outro'] )
+					. str_replace( '_', ' ', $params['outro']->getValue() )
 					. smwfEncodeMessages( $query->getErrors() );
 			} else {
 				// When no valid result was obtained, $res will be a SMWQueryResult.
