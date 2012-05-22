@@ -2729,6 +2729,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 $messages['diq'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|vıraştene|vıraştene}})',
 	'semanticstatistics' => 'İstatistike fahmeni',
+	'smw_sbv_value' => 'Deger:',
 	'smw_browselink' => 'Bewni xısusiyeta',
 );
 
