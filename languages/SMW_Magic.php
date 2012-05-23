@@ -75,11 +75,18 @@ $magicWords['de'] = array(
 	'show' => array( 0, 'zeige' ),
 	'info' => array( 0, 'informiere' ),
 	'concept' => array( 0, 'konzept' ),
+	'subobject' => array( 0, 'unterobjekt' ),
+	'smwdoc' => array( 0, 'smwdok' ),
 	'set' => array( 0, 'setze' ),
 	'set_recurring_event' => array( 0, 'setze_wiederholung' ),
 	'declare' => array( 0, 'deklariere' ),
-	'SMW_NOFACTBOX' => array( 0, '__KEINEFAKTENANZEIGE__' ),
+	'SMW_NOFACTBOX' => array( 0, '__KEINE_FAKTENANZEIGE__', '__KEINEFAKTENANZEIGE__' ),
 	'SMW_SHOWFACTBOX' => array( 0, '__FAKTENANZEIGE__' ),
+);
+
+/** Zazaki (Zazaki) */
+$magicWords['diq'] = array(
+	'show' => array( 0, 'bımocne' ),
 );
 
 /** Spanish (Español) */
@@ -106,6 +113,17 @@ $magicWords['id'] = array(
 /** Igbo (Igbo) */
 $magicWords['ig'] = array(
 	'ask' => array( 0, 'jüo', 'ask' ),
+);
+
+/** Georgian (ქართული) */
+$magicWords['ka'] = array(
+	'show' => array( 0, 'ჩვენება' ),
+);
+
+/** Luxembourgish (Lëtzebuergesch) */
+$magicWords['lb'] = array(
+	'ask' => array( 0, 'froen' ),
+	'show' => array( 0, 'weisen' ),
 );
 
 /** Macedonian (Македонски) */
