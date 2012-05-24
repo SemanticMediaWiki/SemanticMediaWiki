@@ -4468,7 +4468,7 @@ A función de embaixo asegúrase de que a súa base de datos está configurada a
 Os cambios feitos neste paso non afectarán ao resto da base de datos MediaWiki, e poden ser desfeitos de xeito sinxelo se se desexa.
 Esta función de configuración pode ser executada múltiples veces sen facer ningún dano, pero só é necesaria unha vez na instalación ou actualización.',
 	'smw_smwadmin_permissionswarn' => 'Se a operación falla con erros SQL, probablemente a base de datos empregada polo seu wiki (comprobe o seu LocalSettings.php) non teña os permisos suficientes.
-Fai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <tt>SMW_setup.php</tt>, que pode usar os credenciais de AdminSettings.php.',
+Fai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <tt>SMW_setup.php</tt>, que pode usar as credenciais de AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Inicialice ou actualice as táboas',
 	'smw_smwadmin_announce' => 'Anunciar o seu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ten un servizo web para anunciar novos wikis semánticos.
@@ -5309,6 +5309,7 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw-paramdesc-csv-sep' => 'Dźělatko, kotrež ma so wužywać',
 	'smw-paramdesc-dsv-separator' => 'Dźělatko, kotrež ma so wužywać',
 	'smw-paramdesc-dsv-filename' => 'Mjeno za DSV-dataju',
+	'smw-smwdoc-description' => 'Pokazuje tabelu wšěch parametrow, kotrež dadźa so za podaty wuslědkowy format hromadźe ze standardnymi hótnotami a wopisanjemi wužiwać.',
 	'smw-smwdoc-par-format' => 'Wuslědkowy format, za kotrehož parametry dokumentacija ma so zwobraznić.',
 	'smw-paramdesc-sort' => 'Kajkosć, po kotrejž naprašowanje ma so sortěrować',
 	'smw-paramdesc-order' => 'Sortěrowanski porjad za naprašowanje',
@@ -6762,6 +6763,7 @@ $messages['ja'] = array(
 	'smw_ask_show_embed' => '埋め込み用コードを表示',
 	'smw_ask_hide_embed' => '埋め込み用コードを非表示',
 	'smw_ask_embed_instr' => 'このクエリをウィキページにインラインで埋め込むには、下のコードを使います。',
+	'smw-ask-delete' => '[削除]',
 	'smw_qc_show_addnal_opts' => 'その他のオプションを表示',
 	'smw_qc_hide_addnal_opts' => 'オプションを折り畳む',
 	'smw_qc_otheropt' => 'その他のオプション',
@@ -6769,6 +6771,8 @@ $messages['ja'] = array(
 	'smw_qui_property' => '<strong>プロパティ</strong>',
 	'smw_qui_labl' => 'ラベル：',
 	'smw_qui_shownresults' => '結果に表示',
+	'smw_qui_ascorder' => '昇順',
+	'smw_qui_descorder' => '降順',
 	'smw_qui_addnprop' => 'プロパティを追加',
 	'smw_qui_delete' => '除去',
 	'smw_qui_options' => 'オプション',
