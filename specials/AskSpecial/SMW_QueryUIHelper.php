@@ -352,7 +352,7 @@ class SMWQueryUIHelper {
 			// FIXME: this is a hack
 			SMWQueryProcessor::addThisPrintout( $this->printOuts, $this->parameters );
 			$params = SMWQueryProcessor::getProcessedParams( $this->parameters, $this->printOuts );
-			$this->parameters['format'] = $params['format'];
+			$this->parameters['format'] = $params['format']->getValue();
 			$this->params = $params;
 
 			$query = SMWQueryProcessor::createQuery(

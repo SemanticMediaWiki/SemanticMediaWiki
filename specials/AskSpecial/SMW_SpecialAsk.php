@@ -204,7 +204,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			// FIXME: this is a hack
 			SMWQueryProcessor::addThisPrintout( $this->m_printouts, $this->m_params );
 			$params = SMWQueryProcessor::getProcessedParams( $this->m_params, $this->m_printouts );
-			$this->m_params['format'] = $params['format'];
+			$this->m_params['format'] = $params['format']->getValue();
 
 			$queryobj = SMWQueryProcessor::createQuery(
 				$this->m_querystring,

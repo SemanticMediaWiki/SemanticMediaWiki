@@ -34,10 +34,11 @@ abstract class ApiSMWQuery extends ApiBase {
 	 */
 	protected function getQuery( $queryString, array $printouts ) {
 		SMWQueryProcessor::addThisPrintout( $printouts, $this->parameters );
+		$this->parameters = SMWQueryProcessor::getProcessedParams( $this->parameters, $printouts );
 		
 		return SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( $this->parameters, $printouts ),
+			$this->parameters,
 			SMWQueryProcessor::SPECIAL_PAGE,
 			'',
 			$printouts
@@ -85,9 +86,15 @@ abstract class ApiSMWQuery extends ApiBase {
 		
 		if ( $queryResult->hasFurtherResults() ) {
 			$result->disableSizeCheck();
+
 			// TODO: right now this returns an offset that we can use for continuation, just like done
 			// in other places in SMW. However, this is not efficient, so we should change this at some point.
-			$result->addValue( null, 'query-continue-offset', $this->parameters['offset'] + $queryResult->getCount() );
+			$result->addValue(
+				null,
+				'query-continue-offset',
+				$this->parameters['offset']->getValue() + $queryResult->getCount()
+			);
+
 			$result->enableSizeCheck();
 		}
 	}

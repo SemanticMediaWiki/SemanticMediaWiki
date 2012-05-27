@@ -29,17 +29,18 @@ class SMWQueryProcessor {
 	 * param name (string) => param value (mixed)
 	 * 
 	 * @since 1.6.2
+	 * The return value changed in SMW 1.8 from an array with result values to an array with IParam objects.
 	 * 
 	 * @param array $params
 	 * @param array $printRequests
 	 * @param boolean $unknownInvalid
 	 * 
-	 * @return array
+	 * @return array of IParam
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {		
 		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid );
 		$validator->validateParameters();
-		return $validator->getParameterValues();
+		return $validator->getParameters();
 	}
 
 	/**
@@ -77,25 +78,25 @@ class SMWQueryProcessor {
 	 * known. Otherwise it will be determined from the parameters when
 	 * needed. This parameter is just for optimisation in a common case.
 	 *
-	 * @param string $querystring
+	 * @param string $queryString
 	 * @param array $params These need to be the result of a list fed to getProcessedParams
 	 * @param $context
 	 * @param string $format
-	 * @param array $extraprintouts
+	 * @param array $extraPrintouts
 	 *
 	 * @return SMWQuery
 	 */
-	static public function createQuery( $querystring, array $params, $context = self::INLINE_QUERY, $format = '', array $extraprintouts = array() ) {
+	static public function createQuery( $queryString, array $params, $context = self::INLINE_QUERY, $format = '', array $extraPrintouts = array() ) {
 		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
 		
 		// parse query:
 		$queryfeatures = ( $context == self::CONCEPT_DESC ) ? $smwgQConceptFeatures : $smwgQFeatures;
 		$qp = new SMWQueryParser( $queryfeatures );
 		$qp->setDefaultNamespaces( $smwgQDefaultNamespaces );
-		$desc = $qp->getQueryDescription( $querystring );
+		$desc = $qp->getQueryDescription( $queryString );
 
 		if ( $format === '' || is_null( $format ) ) {
-			$format = $params['format'];
+			$format = $params['format']->getValue();
 		}
 		
 		if ( $format == 'count' ) {
@@ -108,15 +109,15 @@ class SMWQueryProcessor {
 		}
 
 		$query = new SMWQuery( $desc, ( $context != self::SPECIAL_PAGE ), ( $context == self::CONCEPT_DESC ) );
-		$query->setQueryString( $querystring );
-		$query->setExtraPrintouts( $extraprintouts );
-		$query->setMainLabel( $params['mainlabel'] );
+		$query->setQueryString( $queryString );
+		$query->setExtraPrintouts( $extraPrintouts );
+		$query->setMainLabel( $params['mainlabel']->getValue() );
 		$query->addErrors( $qp->getErrors() ); // keep parsing errors for later output
 
 		// set mode, limit, and offset:
 		$query->querymode = $querymode;
-		if ( ( array_key_exists( 'offset', $params ) ) && ( is_int( $params['offset'] + 0 ) ) ) {
-			$query->setOffset( max( 0, trim( $params['offset'] ) + 0 ) );
+		if ( ( array_key_exists( 'offset', $params ) ) && ( is_int( $params['offset']->getValue() + 0 ) ) ) {
+			$query->setOffset( max( 0, trim( $params['offset']->getValue() ) + 0 ) );
 		}
 
 		if ( $query->querymode == SMWQuery::MODE_COUNT ) { // largest possible limit for "count", even inline
@@ -124,9 +125,9 @@ class SMWQueryProcessor {
 			$query->setOffset( 0 );
 			$query->setLimit( $smwgQMaxLimit, false );
 		} else {
-			if ( ( array_key_exists( 'limit', $params ) ) && ( is_int( trim( $params['limit'] ) + 0 ) ) ) {
-				$query->setLimit( max( 0, trim( $params['limit'] ) + 0 ) );
-				if ( ( trim( $params['limit'] ) + 0 ) < 0 ) { // limit < 0: always show further results link only
+			if ( ( array_key_exists( 'limit', $params ) ) && ( is_int( trim( $params['limit']->getValue() ) + 0 ) ) ) {
+				$query->setLimit( max( 0, trim( $params['limit']->getValue() ) + 0 ) );
+				if ( ( trim( $params['limit']->getValue() ) + 0 ) < 0 ) { // limit < 0: always show further results link only
 					$query->querymode = SMWQuery::MODE_NONE;
 				}
 			} else {
@@ -136,7 +137,7 @@ class SMWQueryProcessor {
 		}
 
 		$defaultSort = $format === 'rss' ? 'DESC' : 'ASC';
-		$sort = self::getSortKeys( $params['sort'], $params['order'], $defaultSort );
+		$sort = self::getSortKeys( $params['sort']->getValue(), $params['order']->getValue(), $defaultSort );
 		
 		$query->sortkeys = $sort['keys'];
 		$query->addErrors( $sort['errors'] );
@@ -374,7 +375,7 @@ class SMWQueryProcessor {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
 		$query  = self::createQuery( $querystring, $params, $context, '', $extraPrintouts );
-		$result = self::getResultFromQuery( $query, $params, $extraPrintouts, $outputMode, $context );
+		$result = self::getResultFromQuery( $query, $params, $outputMode, $context );
 
 		wfProfileOut( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
@@ -386,13 +387,12 @@ class SMWQueryProcessor {
 	 * 
 	 * @param SMWQuery $query
 	 * @param array $params These need to be the result of a list fed to getProcessedParams
-	 * @param $extraPrintouts
-	 * @param $outputmode
+	 * @param $outputMode
 	 * @param $context
 	 *
 	 * @return string
 	 */
-	static public function getResultFromQuery( SMWQuery $query, array $params, $extraPrintouts, $outputmode, $context = self::INLINE_QUERY ) {
+	protected static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context = self::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
 		// Query routing allows extensions to provide alternative stores as data sources
@@ -413,7 +413,7 @@ class SMWQueryProcessor {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 
 			$printer = self::getResultPrinter( $params['format']->getValue(), $context, $res );
-			$result = $printer->getResult( $res, $params, $outputmode );
+			$result = $printer->getResult( $res, $params, $outputMode );
 
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery (SMW)' );

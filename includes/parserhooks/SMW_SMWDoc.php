@@ -109,7 +109,7 @@ class SMWSMWDoc extends ParserHook {
 		}
 		
 		if ( in_array( $parameters['parameters'], array( 'all', 'specific' ) ) ) {
-			$params = array_merge( $params, $this->getFormatParameters( $parameters['format'] ) );
+			$params = array_merge( $params, $this->getFormatParameters( $parameters['format']->getValue() ) );
 		}
 
 		return $this->getParameterTable( $params );

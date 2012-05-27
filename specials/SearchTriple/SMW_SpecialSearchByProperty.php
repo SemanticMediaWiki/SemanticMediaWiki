@@ -369,8 +369,15 @@ class SMWSearchByProperty extends SpecialPage {
 		$printouts = array( $printrequest );
 		
 		SMWQueryProcessor::addThisPrintout( $printouts, $params );
-		$params = SMWQueryProcessor::getProcessedParams( $params, $printouts );
-		$queryobj = SMWQueryProcessor::createQuery( $querystring, $params, SMWQueryProcessor::SPECIAL_PAGE, 'ul', $printouts );
+
+		$queryobj = SMWQueryProcessor::createQuery(
+			$querystring,
+			SMWQueryProcessor::getProcessedParams( $params, $printouts ),
+			SMWQueryProcessor::SPECIAL_PAGE,
+			'ul',
+			$printouts
+		);
+
 		$queryobj->querymode = SMWQuery::MODE_INSTANCES;
 		$queryobj->setLimit( $this->limit );
 		$queryobj->setOffset( $count );
