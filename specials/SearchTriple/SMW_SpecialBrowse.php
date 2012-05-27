@@ -404,7 +404,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return A string containing the HTML for the form
 	 */
 	private function queryForm() {
-		self::addAutoComplete();
+		SMWOutputs::requireResource( 'ext.smw.browse' );
 		$title = SpecialPage::getTitleFor( 'Browse' );
 		return '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
 		       '    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
@@ -412,32 +412,6 @@ class SMWSpecialBrowse extends SpecialPage {
 		       '    <input type="text" name="article" id="page_input_box" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .
 		       '    <input type="submit" value="' . wfMsg( 'smw_browse_go' ) . "\"/>\n" .
 		       "  </form>\n";
-	}
-
-	/**
-	 * Creates the JS needed for adding auto-completion to queryForm(). Uses the
-	 * MW API to fetch suggestions.
-	 */
-	private static function addAutoComplete() {
-		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
-
-		$javascript_autocomplete_text = <<<END
-<script type="text/javascript">
-jQuery(document).ready(function(){
-	jQuery("#page_input_box").autocomplete({
-		minLength: 3,
-		source: function(request, response) {
-			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace=0&format=jsonfm&search='+request.term, function(data){
-				response(data[1]);
-			});
-		}
-	});
-});
-</script>
-
-END;
-
-		SMWOutputs::requireScript( 'smwAutocompleteSpecialBrowse', $javascript_autocomplete_text );
 	}
 
 	/**
