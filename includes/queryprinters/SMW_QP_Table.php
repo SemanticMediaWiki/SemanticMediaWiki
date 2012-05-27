@@ -65,10 +65,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		
 		// print further results footer
 		if ( $this->linkFurtherResults( $res ) ) {
-			$link = $res->getQueryLink();
-			if ( $this->getSearchLabel( $outputmode ) ) {
-				$link->setCaption( $this->getSearchLabel( $outputmode ) );
-			}
+			$link = $this->getFurtherResultsLink( $res, $outputmode );
 			$result .= "\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $link->getText( $outputmode, $this->mLinker ) . "</td></tr>\n";
 		}
 		
@@ -183,7 +180,10 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		
 		return implode( '<br />', $values );
 	}
-	
+
+	/**
+	 * @return array
+	 */
 	public function getParameters() {
 		$params = parent::getParameters();
 

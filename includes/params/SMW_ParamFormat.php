@@ -142,7 +142,7 @@ class SMWParamFormat extends StringParam {
 		// Add the formats parameters to the parameter list.
 		$queryPrinter = SMWQueryProcessor::getResultPrinter( $value );
 
-		$definitions = array_merge( $definitions, $queryPrinter->getParameters() );
+		$definitions = $queryPrinter->getParamDefinitions( $definitions );
 
 		return $value;
 	}

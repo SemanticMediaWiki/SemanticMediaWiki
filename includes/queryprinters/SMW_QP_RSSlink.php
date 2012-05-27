@@ -114,24 +114,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			}
 			$result .= '</rdf:RDF>';
 		} else { // just make link to feed
-			if ( $this->getSearchLabel( $outputmode ) ) {
-				$label = $this->getSearchLabel( $outputmode );
-			} else {
-				$label = wfMsgForContent( 'smw_rss_link' );
-			}
-			$link = $res->getQueryLink( $label );
-			$link->setParameter( 'rss', 'format' );
-			if ( $this->m_title !== '' ) {
-				$link->setParameter( $this->m_title, 'title' );
-			}
-			if ( $this->m_description !== '' ) {
-				$link->setParameter( $this->m_description, 'description' );
-			}
-			if ( array_key_exists( 'limit', $this->m_params ) ) {
-				$link->setParameter( $this->m_params['limit'], 'limit' );
-			} else { // use a reasonable deafult limit (10 is suggested by RSS)
-				$link->setParameter( 10, 'limit' );
-			}
+			$link = $this->getLink( $res, $outputmode );
 
 			foreach ( $res->getPrintRequests() as $printout ) { // overwrite given "sort" parameter with printout of label "date"
 				if ( ( $printout->getMode() == SMWPrintRequest::PRINT_PROP ) && ( strtolower( $printout->getLabel() ) == "date" ) && ( $printout->getTypeID() == "_dat" ) ) {
@@ -147,22 +130,26 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 
-	public function getParameters() {
-		$params = parent::getParameters();
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
 
-		$params[] = array(
+		$definitions['limit']->setDefault( 10 );
+
+		$definitions['searchlabel']->setDefault( wfMsgForContent( 'smw_rss_link' ) );
+
+		$definitions[] = array(
 			'name' => 'title',
 			'message' => 'smw-paramdesc-rsstitle',
 			'default' => '',
 		);
 
-		$params[] = array(
+		$definitions[] = array(
 			'name' => 'description',
 			'message' => 'smw-paramdesc-rssdescription',
 			'default' => '',
 		);
 
-		return $params;
+		return $definitions;
 	}
 
 }

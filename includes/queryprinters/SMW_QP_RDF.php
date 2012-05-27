@@ -90,39 +90,27 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 			
 			return $serializer->flushContent();
 		} else { // just make link to feed
-			if ( $this->getSearchLabel( $outputmode ) ) {
-				$label = $this->getSearchLabel( $outputmode );
-			} else {
-				$label = wfMsgForContent( 'smw_rdf_link' );
-			}
-
-			$link = $res->getQueryLink( $label );
-			$link->setParameter( 'rdf', 'format' );
-			$link->setParameter( $this->syntax, 'syntax' );
-			
-			if ( array_key_exists( 'limit', $this->params ) ) {
-				$link->setParameter( $this->params['limit'], 'limit' );
-			} else { // use a reasonable default limit
-				$link->setParameter( 100, 'limit' );
-			}
-			
 			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
 			
-			return $link->getText( $outputmode, $this->mLinker );
+			return $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
 		}
 	}
 
-	public function getParameters() {
-		$params = array(
-			array(
-				'name' => 'syntax',
-				'message' => 'smw-paramdesc-rdfsyntax',
-				'values' => array( 'rdfxml', 'turtle' ),
-				'default' => 'rdfxml',
-			),
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
+
+		$definitions['limit']->setDefault( 100 );
+
+		$definitions['searchlabel']->setDefault( wfMsgForContent( 'smw_rdf_link' ) );
+
+		$definitions[] = array(
+			'name' => 'syntax',
+			'message' => 'smw-paramdesc-rdfsyntax',
+			'values' => array( 'rdfxml', 'turtle' ),
+			'default' => 'rdfxml',
 		);
 
-		return array_merge( parent::getParameters(), $params );
+		return $definitions;
 	}
 
 }

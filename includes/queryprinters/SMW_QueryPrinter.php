@@ -605,12 +605,28 @@ abstract class SMWResultPrinter {
 	 * any specific format - most query printers should override this
 	 * function.
 	 *
+	 * @deprecated since 1.8, use getParamDefinitions instead.
+	 *
 	 * @since 1.5
 	 *
-	 * @return array of Parameter
+	 * @return array of IParamDefinition|array
 	 */
 	public function getParameters() {
 		return array();
+	}
+
+	/**
+	 * Takes a list of parameter definitions and adds those supported by this
+	 * result printer. Most result printers should override this method.
+	 *
+	 * @since 1.8
+	 *
+	 * @param $definitions array of IParamDefinition
+	 *
+	 * @return array of IParamDefinition|array
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		return array_merge( $definitions, $this->getParameters() );
 	}
 
 	/**

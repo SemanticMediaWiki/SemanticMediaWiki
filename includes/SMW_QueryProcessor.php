@@ -530,7 +530,7 @@ class SMWQueryProcessor {
 
 		$params[] = array(
 			'name' => 'searchlabel',
-			'default' => false,
+			'default' => '... further results', // FIXME: i18n
 		);
 
 		$params[] = array(
