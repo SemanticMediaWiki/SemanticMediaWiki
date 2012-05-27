@@ -530,7 +530,7 @@ class SMWQueryProcessor {
 
 		$params[] = array(
 			'name' => 'searchlabel',
-			'default' => '... further results', // FIXME: i18n
+			'default' => wfMsgForContent( 'smw_iq_moreresults' ),
 		);
 
 		$params[] = array(
