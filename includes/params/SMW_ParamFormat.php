@@ -127,13 +127,13 @@ class SMWParamFormat extends StringParam {
 	 * @since 0.5
 	 *
 	 * @param $value mixed
-	 * @param $param iParam
-	 * @param $definitions array of iParamDefinition
-	 * @param $params array of iParam
+	 * @param $param IParam
+	 * @param $definitions array of IParamDefinition
+	 * @param $params array of IParam
 	 *
 	 * @return mixed
 	 */
-	protected function formatValue( $value, iParam $param, array &$definitions, array $params ) {
+	protected function formatValue( $value, IParam $param, array &$definitions, array $params ) {
 		$value = parent::formatValue( $value, $param, $definitions, $params );
 
 		// Make sure the format value is valid.

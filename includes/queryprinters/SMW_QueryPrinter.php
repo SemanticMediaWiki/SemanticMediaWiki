@@ -632,7 +632,7 @@ abstract class SMWResultPrinter {
 	/**
 	 * Returns the parameter definitions as an associative array where
 	 * the keys hold the parameter names and point to their full definitions.
-	 * array( name => array|iParamDefinition )
+	 * array( name => array|IParamDefinition )
 	 *
 	 * @since 1.8
 	 *

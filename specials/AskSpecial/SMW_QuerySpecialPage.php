@@ -91,12 +91,12 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 	 *
 	 * @since 1.8
 	 *
-	 * @param iParamDefinition $definition
+	 * @param IParamDefinition $definition
 	 * @param mixed $currentValue
 	 *
 	 * @return string
 	 */
-	protected function showFormatOption( iParamDefinition $definition, $currentValue ) {
+	protected function showFormatOption( IParamDefinition $definition, $currentValue ) {
 		$input = new ParameterInput( $definition );
 		$input->setInputName( 'p[' . $definition->getName() . ']' );
 
