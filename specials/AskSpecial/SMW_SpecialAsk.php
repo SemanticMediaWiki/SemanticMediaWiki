@@ -22,6 +22,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	protected $m_printouts = array();
 	protected $m_editquery = false;
 
+	protected $params = array();
+
 	/**
 	 * Constructor.
 	 */
@@ -205,6 +207,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			SMWQueryProcessor::addThisPrintout( $this->m_printouts, $this->m_params );
 			$params = SMWQueryProcessor::getProcessedParams( $this->m_params, $this->m_printouts );
 			$this->m_params['format'] = $params['format']->getValue();
+
+			$this->params = $params;
 
 			$queryobj = SMWQueryProcessor::createQuery(
 				$this->m_querystring,
@@ -440,8 +444,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .= '|' . $printout->getSerialisation() . "\n";
 		}
 
-		foreach ( $this->m_params as $param_name => $param_value ) {
-			$result .= '|' . htmlspecialchars( $param_name ) . '=' . htmlspecialchars( $param_value ) . "\n";
+		foreach ( $this->params as /* IParam */ $param ) {
+			if ( !$param->wasSetToDefault() ) {
+				$result .= '|' . htmlspecialchars( $param->getName() ) . '=' . htmlspecialchars( $param->getValue() ) . "\n";
+			}
 		}
 
 		$result .= '}}</textarea></div><br />';

@@ -490,6 +490,7 @@ class SMWQueryProcessor {
 			'name' => 'limit',
 			'type' => 'integer',
 			'default' => $GLOBALS['smwgQDefaultLimit'],
+			'negatives' => false,
 		);
 
 		$params[] = array(
@@ -509,6 +510,8 @@ class SMWQueryProcessor {
 			'name' => 'offset',
 			'type' => 'integer',
 			'default' => 0,
+			'negatives' => false,
+			'upperbound' => 5000 // TODO: make setting
 		);
 
 		$params[] = array(
