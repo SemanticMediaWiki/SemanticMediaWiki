@@ -21,14 +21,14 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 	 * @see SMWResultPrinter::handleParameters
 	 * 
 	 * @since 1.7
-	 * 
+	 *
 	 * @param array $params
 	 * @param $outputmode
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
 		
-		$this->m_sep = str_replace( '_', ' ', $params['sep'] );
+		$this->m_sep = str_replace( '_', ' ', $this->params['sep'] );
 	}
 
 	public function getMimeType( $res ) {

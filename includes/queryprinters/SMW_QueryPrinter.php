@@ -201,7 +201,8 @@ abstract class SMWResultPrinter {
 		$this->m_params = $params; // Compat, change made in 1.6.3/1.7, removal in 1.10
 		$this->fullParams = $fullParams;
 
-		$this->handleParameters();
+		$this->postProcessParameters();
+		$this->handleParameters( $this->params, $outputMode );
 		
 		return $this->buildResult( $results );
 	}
@@ -334,15 +335,31 @@ abstract class SMWResultPrinter {
 
 		return $result;
 	}
-	
+
 	/**
-	 * Read an array of parameter values given as key-value-pairs and
-	 * initialise internal member fields accordingly. Possibly overwritten
-	 * (extended) by subclasses.
-	 * 
+	 * Does any additional parameter handling that needs to be done before the
+	 * actual result is build. This includes cleaning up parameter values
+	 * and setting class fields.
+	 *
+	 * Since 1.6 parameter handling should happen via validator based on the parameter
+	 * definitions returned in getParameters. Therefore this method should likely
+	 * not be used in any new code. It's mainly here for legacy reasons.
+	 *
 	 * @since 1.6
+	 *
+	 * @param array $params
+	 * @param $outputMode
 	 */
-	protected function handleParameters() {
+	protected function handleParameters( array $params, $outputMode ) {
+		// No-op
+	}
+
+	/**
+	 * Similar to handleParameters.
+	 *
+	 * @since 1.8
+	 */
+	protected function postProcessParameters() {
 		$params = $this->params;
 
 		$this->mIntro = str_replace( '_', ' ', $params['intro'] );

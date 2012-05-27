@@ -11,23 +11,8 @@
  */
 class SMWTableResultPrinter extends SMWResultPrinter {
 
-	protected $mHTMLClass = '';
-
 	public function getName() {
 		return wfMsg( 'smw_printername_' . $this->mFormat );
-	}
-
-	/**
-	 * @see SMWResultPrinter::handleParameters
-	 *
-	 * @since 1.6
-	 *
-	 * @param array $params
-	 * @param $outputmode
-	 */
-	protected function handleParameters( array $params, $outputmode ) {
-		parent::handleParameters( $params, $outputmode );
-		$this->mHTMLClass = $params['class'];
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -88,7 +73,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		}
 		
 		// Put the <table> tag around the whole thing
-		$tableAttrs = array( 'class' => $this->mHTMLClass );
+		$tableAttrs = array( 'class' => $this->params['class'] );
 		
 		if ( $this->mFormat == 'broadtable' ) {
 			$tableAttrs['width'] = '100%';
