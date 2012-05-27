@@ -208,7 +208,12 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
+	 * Build and return the HTML result.
+	 *
+	 * @since 1.8
+	 *
 	 * @param SMWQueryResult $results
+	 *
 	 * @return string
 	 */
 	protected function buildResult( SMWQueryResult $results ) {
@@ -636,12 +641,14 @@ abstract class SMWResultPrinter {
 	 *
 	 * @since 1.8
 	 *
+	 * @param array $definitions List of definitions to prepend to the result printers list before further processing.
+	 *
 	 * @return array
 	 */
-	public final function getNamedParameters() {
+	public final function getNamedParameters( array $definitions = array() ) {
 		$params = array();
 
-		foreach ( $this->getParameters() as $param ) {
+		foreach ( $this->getParamDefinitions( $definitions ) as $param ) {
 			$params[is_array( $param ) ? $param['name'] : $param->getName()] = $param;
 		}
 

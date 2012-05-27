@@ -37,7 +37,7 @@ class SMWQueryProcessor {
 	 * 
 	 * @return array of IParam
 	 */
-	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {		
+	public static function getProcessedParams( array $params, array $printRequests = null, $unknownInvalid = true ) {
 		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid );
 		$validator->validateParameters();
 		return $validator->getParameters();
