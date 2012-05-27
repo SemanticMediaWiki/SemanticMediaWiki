@@ -152,36 +152,26 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	 * @return string
 	 */		
 	protected function getLinkToFile( SMWQueryResult $res, $outputmode ) {
-		if ( $this->getSearchLabel( $outputmode ) ) {
-			$label = $this->getSearchLabel( $outputmode );
-		} else {
-			$label = wfMsgForContent( 'smw_dsv_link' );
-		}
-
-		$link = $res->getQueryLink( $label );
-		$link->setParameter( 'dsv', 'format' );
-		$link->setParameter( $this->separator, 'separator' );
-		$link->setParameter( $this->fileName, 'filename' );
-		
-		if ( array_key_exists( 'mainlabel', $this->m_params ) && $this->m_params['mainlabel'] !== false ) {
-			$link->setParameter( $this->m_params['mainlabel'], 'mainlabel' );
-		}
-		
-		$link->setParameter( $this->mShowHeaders ? 'show' : 'hide', 'headers' );
-			
-		if ( array_key_exists( 'limit', $this->m_params ) ) {
-			$link->setParameter( $this->m_params['limit'], 'limit' );
-		} else { // Use a reasonable default limit
-			$link->setParameter( 100, 'limit' );
-		}
-
 		// yes, our code can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); 
-		return $link->getText( $outputmode, $this->mLinker );
+		return $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
 	}
 
-	public function getParameters() {
-		$params = parent::getParameters();
+	/**
+	 * @see SMWResultPrinter::getParamDefinitions
+	 *
+	 * @since 1.8
+	 *
+	 * @param $definitions array of IParamDefinition
+	 *
+	 * @return array of IParamDefinition|array
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$params = parent::getParamDefinitions( $definitions );
+
+		$params['searchlabel']->setDefault( wfMsgForContent( 'smw_dsv_link' ) );
+
+		$params['limit']->setDefault( 100 );
 
 		$params[] = array(
 			'name' => 'separator',

@@ -130,6 +130,15 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 
+	/**
+	 * @see SMWResultPrinter::getParamDefinitions
+	 *
+	 * @since 1.8
+	 *
+	 * @param $definitions array of IParamDefinition
+	 *
+	 * @return array of IParamDefinition|array
+	 */
 	public function getParamDefinitions( array $definitions ) {
 		$definitions = parent::getParamDefinitions( $definitions );
 

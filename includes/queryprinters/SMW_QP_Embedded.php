@@ -100,19 +100,11 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 		// show link to more results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$link = $res->getQueryLink();
-			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
-				$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
-			}
-			$link->setParameter( 'embedded', 'format' );
-			// ordered lists confusing in paged output
-			$format = ( $this->m_embedformat == 'ol' ) ? 'ul':$this->m_embedformat;
-			$link->setParameter( $format, 'embedformat' );
-			if ( !$this->m_showhead ) {
-				$link->setParameter( 'on', 'embedonly' );
-			}
-			$result .= $embstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $embend;
+			$result .= $embstart
+				. $this->getFurtherResultsLink( $res, $outputmode )->getText( SMW_OUTPUT_WIKI, $this->mLinker )
+				. $embend;
 		}
+
 		$result .= $footer;
 
 		return $result;

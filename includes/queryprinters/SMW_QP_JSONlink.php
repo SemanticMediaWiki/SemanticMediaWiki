@@ -123,27 +123,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			}
 
 		} else { // just create a link that points to the JSON file
-			if ( $this->getSearchLabel( $outputmode ) ) {
-				$label = $this->getSearchLabel( $outputmode );
-			} else {
-				$label = wfMsgForContent( 'smw_json_link' );
-			}
-			
-			$link = $res->getQueryLink( $label );
-			if ( array_key_exists( 'callback', $this->params ) ) {
-				$link->setParameter( htmlspecialchars( $this->params['callback'] ), 'callback' );
-			}
-			
-			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) !== '' ) { // used as a file name
-				$link->setParameter( $this->getSearchLabel( SMW_OUTPUT_WIKI ), 'searchlabel' );
-			}
-			
-			if ( array_key_exists( 'limit', $this->params ) ) {
-				$link->setParameter( htmlspecialchars( $this->params['limit'] ), 'limit' );
-			}
-			
-			$link->setParameter( 'json', 'format' );
-			$result = $link->getText( $outputmode, $this->mLinker );
+			$result = $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
 			
 			// yes, our code can be viewed as HTML if requested, no more parsing needed
 			$this->isHTML = $outputmode == SMW_OUTPUT_HTML;
@@ -152,8 +132,22 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 
-	public function getParameters() {
-		return array_merge( parent::getParameters(), $this->exportFormatParameters() );
+	/**
+	 * @see SMWResultPrinter::getParamDefinitions
+	 *
+	 * @since 1.8
+	 *
+	 * @param $definitions array of IParamDefinition
+	 *
+	 * @return array of IParamDefinition|array
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
+
+		$definitions['searchlabel']->setDefault( wfMsgForContent( 'smw_json_link' ) );
+		$definitions['limit']->setDefault( 100 );
+
+		return $definitions;
 	}
 
 }

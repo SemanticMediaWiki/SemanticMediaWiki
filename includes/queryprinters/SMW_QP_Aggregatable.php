@@ -45,8 +45,8 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	 * (non-PHPdoc)
 	 * @see SMWResultPrinter::getResultText()
 	 */
-	protected function getResultText( SMWQueryResult $result, $outputmode ) {
-		$data = $this->getResults( $result, $outputmode );
+	protected function getResultText( SMWQueryResult $result, $outputMode ) {
+		$data = $this->getResults( $result, $outputMode );
 
 		if ( count( $data ) == 0 ) {
 			// This is wikitext, so no escaping needed.
@@ -95,16 +95,16 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	 * @since 1.7
 	 *
 	 * @param SMWQueryResult $result
-	 * @param $outputmode
+	 * @param $outputMode
 	 *
 	 * @return array label => value
 	 */
-	protected function getResults( SMWQueryResult $result, $outputmode ) {
+	protected function getResults( SMWQueryResult $result, $outputMode ) {
 		if ( $this->params['distribution'] ) {
-			return $this->getDistributionResults( $result, $outputmode );
+			return $this->getDistributionResults( $result, $outputMode );
 		}
 		else {
-			return $this->getNumericResults( $result, $outputmode );
+			return $this->getNumericResults( $result, $outputMode );
 		}
 	}
 
@@ -114,12 +114,12 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	 *
 	 * @since 1.7
 	 *
-	 * @param SMWQueryResult $res
-	 * @param $outputmode
+	 * @param SMWQueryResult $result
+	 * @param $outputMode
 	 *
 	 * @return array label => value
 	 */
-	protected function getDistributionResults( SMWQueryResult $result, $outputmode ) {
+	protected function getDistributionResults( SMWQueryResult $result, $outputMode ) {
 		$values = array();
 
 		while ( /* array of SMWResultArray */ $row = $result->getNext() ) { // Objects (pages)
@@ -131,7 +131,7 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 						$value = $dataValue->getTitle()->getText();
 					}
 					else {
-						$value = $dataValue->getShortText( $outputmode, $this->getLinker( false ) );
+						$value = $dataValue->getShortText( $outputMode, $this->getLinker( false ) );
 					}
 
 					if ( !array_key_exists( $value, $values ) ) {
@@ -152,11 +152,11 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	 * @since 1.7
 	 *
 	 * @param SMWQueryResult $res
-	 * @param $outputmode
+	 * @param $outputMode
 	 *
 	 * @return array label => value
 	 */
-	protected function getNumericResults( SMWQueryResult $res, $outputmode ) {
+	protected function getNumericResults( SMWQueryResult $res, $outputMode ) {
 		$values = array();
 
 		// print all result rows
@@ -201,32 +201,41 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	}
 
 	/**
-	 * @see SMWResultPrinter::getParameters
-	 * @since 1.7
+	 * @see SMWResultPrinter::getParamDefinitions
+	 *
+	 * @since 1.8
+	 *
+	 * @param $definitions array of IParamDefinition
+	 *
+	 * @return array of IParamDefinition|array
 	 */
-	public function getParameters() {
-		return array_merge( parent::getParameters(), array(
-			'distribution' => array(
-				'name' => 'distribution',
-				'type' => 'boolean',
-				'default' => false,
-				'message' => 'smw-paramdesc-distribution',
-			),
-			'distributionsort' => array(
-				'name' => 'distribution',
-				'type' => 'string',
-				'default' => 'none',
-				'message' => 'smw-paramdesc-distributionsort',
-				'values' => array( 'asc', 'desc', 'none' ),
-			),
-			'distributionlimit' => array(
-				'name' => 'distribution',
-				'type' => 'integer',
-				'default' => false,
-				'message' => 'smw-paramdesc-distributionlimit',
-				'lowerbound' => 1,
-			),
-		) );
+	public function getParamDefinitions( array $definitions ) {
+		$definitions = parent::getParamDefinitions( $definitions );
+
+		$definitions['distribution'] = array(
+			'name' => 'distribution',
+			'type' => 'boolean',
+			'default' => false,
+			'message' => 'smw-paramdesc-distribution',
+		);
+
+		$definitions['distributionsort'] = array(
+			'name' => 'distribution',
+			'type' => 'string',
+			'default' => 'none',
+			'message' => 'smw-paramdesc-distributionsort',
+			'values' => array( 'asc', 'desc', 'none' ),
+		);
+
+		$definitions['distributionlimit'] = array(
+			'name' => 'distribution',
+			'type' => 'integer',
+			'default' => false,
+			'message' => 'smw-paramdesc-distributionlimit',
+			'lowerbound' => 1,
+		);
+
+		return $definitions;
 	}
 
 }

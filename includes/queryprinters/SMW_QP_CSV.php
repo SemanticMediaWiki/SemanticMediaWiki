@@ -82,36 +82,27 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 			rewind( $csv );
 			$result .= stream_get_contents( $csv );
 		} else { // just make link to feed
-			if ( $this->getSearchLabel( $outputmode ) ) {
-				$label = $this->getSearchLabel( $outputmode );
-			} else {
-				$label = wfMsgForContent( 'smw_csv_link' );
-			}
-
-			$link = $res->getQueryLink( $label );
-			$link->setParameter( 'csv', 'format' );
-			$link->setParameter( $this->m_sep, 'sep' );
-			
-			if ( array_key_exists( 'mainlabel', $this->params ) && $this->params['mainlabel'] !== false ) {
-				$link->setParameter( $this->params['mainlabel'], 'mainlabel' );
-			}
-				
-			$link->setParameter( $this->mShowHeaders ? 'show' : 'hide', 'headers' );
-			
-			if ( array_key_exists( 'limit', $this->params ) ) {
-				$link->setParameter( $this->params['limit'], 'limit' );
-			} else { // use a reasonable default limit
-				$link->setParameter( 100, 'limit' );
-			}
-			
-			$result .= $link->getText( $outputmode, $this->mLinker );
+			$result .= $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
 			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		}
 		return $result;
 	}
 
-	public function getParameters() {
-		$params = parent::getParameters();
+	/**
+	 * @see SMWResultPrinter::getParamDefinitions
+	 *
+	 * @since 1.8
+	 *
+	 * @param $definitions array of IParamDefinition
+	 *
+	 * @return array of IParamDefinition|array
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$params = parent::getParamDefinitions( $definitions );
+
+		$definitions['searchlabel']->setDefault( wfMsgForContent( 'smw_csv_link' ) );
+
+		$definitions['limit']->setDefault( 100 );
 
 		$params[] = array(
 			'name' => 'sep',

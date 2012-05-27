@@ -159,25 +159,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$link = $res->getQueryLink();
-			
-			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
-				$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
-			}
-			
-			$link->setParameter( 'category', 'format' );
-			
-			if ( $this->mNumColumns != 3 ) $link->setParameter( $this->mNumColumns, 'columns' );
-			
-			if ( $this->mTemplate !== '' ) {
-				$link->setParameter( $this->mTemplate, 'template' );
-				
-				if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates
-					$link->setParameter( $this->m_params['link'], 'link' );
-				}
-			}
-			
-			$result .= '<br /><li>' . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . '</li>';
+			$result .= '<br /><li>' . $this->getLink( $res, $outputmode )->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . '</li>';
 		}
 
 		$result .= "				</ul>\n			</div> <!-- end column -->";
