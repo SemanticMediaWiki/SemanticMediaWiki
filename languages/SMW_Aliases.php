@@ -64,6 +64,13 @@ $specialPageAliases['arz'] = array(
 	'WantedProperties' => array( 'خصايص_مطلوبه' ),
 );
 
+/** Banjar (Bahasa Banjar) */
+$specialPageAliases['bjn'] = array(
+	'Ask' => array( 'Takun' ),
+	'Browse' => array( 'Ambahi' ),
+	'Types' => array( 'Janis' ),
+);
+
 /** Breton (Brezhoneg) */
 $specialPageAliases['br'] = array(
 	'Ask' => array( 'Goulenn' ),
@@ -85,7 +92,7 @@ $specialPageAliases['bs'] = array(
 /** German (Deutsch) */
 $specialPageAliases['de'] = array(
 	'Ask' => array( 'Semantische_Suche' ),
-	'Browse' => array( 'Browsen' ),
+	'Browse' => array( 'Durchsuchen', 'Browsen' ),
 	'ExportRDF' => array( 'RDF_exportieren', 'Exportiere_RDF' ),
 	'PageProperty' => array( 'Seitenattribut' ),
 	'Properties' => array( 'Attribute' ),
@@ -170,16 +177,19 @@ $specialPageAliases['gl'] = array(
 
 /** Swiss German (Alemannisch) */
 $specialPageAliases['gsw'] = array(
-	'Ask' => array( 'Semantischi Suech' ),
-	'ExportRDF' => array( 'Exportier ADF' ),
+	'Ask' => array( 'Semantischi_Suech' ),
+	'Browse' => array( 'Duresueche' ),
+	'ExportRDF' => array( 'Exportier_ADF' ),
 	'PageProperty' => array( 'Syteattribut' ),
 	'Properties' => array( 'Attribut' ),
 	'SMWAdmin' => array( 'SMW-Yyrichtig' ),
-	'SearchByProperty' => array( 'Suech no Attribut' ),
-	'SemanticStatistics' => array( 'Semantischi Statischtik' ),
+	'SearchByProperty' => array( 'Suech_no_Attribut' ),
+	'SemanticStatistics' => array( 'Semantischi_Statischtik' ),
 	'Types' => array( 'Datetype' ),
-	'UnusedProperties' => array( 'Verwaisti Attribut' ),
-	'WantedProperties' => array( 'Gwinschti Attribut' ),
+	'URIResolver' => array( 'URI-Ufflöser' ),
+	'UnusedProperties' => array( 'Verwaisti_Attribut' ),
+	'WantedProperties' => array( 'Gwinschti_Attribut' ),
+	'QueryCreator' => array( 'Abfroogersteller' ),
 );
 
 /** Upper Sorbian (Hornjoserbsce) */
@@ -316,7 +326,9 @@ $specialPageAliases['ksh'] = array(
 /** Cornish (Kernowek) */
 $specialPageAliases['kw'] = array(
 	'Ask' => array( 'Govyn' ),
-	'Browse' => array( 'Peury' ),
+	'Browse' => array( 'Peuri' ),
+	'ExportRDF' => array( 'EsperthiRDF' ),
+	'Properties' => array( 'Gnasow' ),
 );
 
 /** Luxembourgish (Lëtzebuergesch) */
@@ -589,6 +601,7 @@ $specialPageAliases['vec'] = array(
 /** Vietnamese (Tiếng Việt) */
 $specialPageAliases['vi'] = array(
 	'Ask' => array( 'Hỏi' ),
+	'Browse' => array( 'Duyệt' ),
 	'ExportRDF' => array( 'Xuất_RDF' ),
 	'PageProperty' => array( 'Thuộc_tính_trang' ),
 	'Properties' => array( 'Thuộc_tính' ),
