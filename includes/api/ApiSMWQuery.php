@@ -9,7 +9,7 @@
  * @ingroup SMW
  * @ingroup API
  *
- * @licence GNU GPL v3+
+ * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class ApiSMWQuery extends ApiBase {
@@ -23,7 +23,13 @@ abstract class ApiSMWQuery extends ApiBase {
 	protected $parameters;
 	
 	/**
-	 * 
+	 * Returns a query object for the provided query string and list of printouts.
+	 *
+	 * @since 1.6.2
+	 *
+	 * @param string $queryString
+	 * @param array $printouts
+	 *
 	 * @return SMWQuery
 	 */
 	protected function getQuery( $queryString, array $printouts ) {
@@ -39,6 +45,9 @@ abstract class ApiSMWQuery extends ApiBase {
 	}
 	
 	/**
+	 * Run the actual query and return the result.
+	 *
+	 * @since 1.6.2
 	 * 
 	 * @param SMWQuery $query
 	 * 
@@ -47,7 +56,14 @@ abstract class ApiSMWQuery extends ApiBase {
 	protected function getQueryResult( SMWQuery $query ) {
 		 return smwfGetStore()->getQueryResult( $query );
 	}
-	
+
+	/**
+	 * Add the query result to the API output.
+	 *
+	 * @since 1.6.2
+	 *
+	 * @param SMWQueryResult $queryResult
+	 */
 	protected function addQueryResult( SMWQueryResult $queryResult ) {
 		$serialized = $queryResult->serializeToArray();
 		$result = $this->getResult();
@@ -68,9 +84,10 @@ abstract class ApiSMWQuery extends ApiBase {
 		$result->addValue( null, 'query', $serialized );
 		
 		if ( $queryResult->hasFurtherResults() ) {
-			// TODO: obtain continuation data from store
 			$result->disableSizeCheck();
-			$result->addValue( null, 'query-continue', 0 );
+			// TODO: right now this returns an offset that we can use for continuation, just like done
+			// in other places in SMW. However, this is not efficient, so we should change this at some point.
+			$result->addValue( null, 'query-continue-offset', $this->parameters['offset'] + $queryResult->getCount() );
 			$result->enableSizeCheck();
 		}
 	}
