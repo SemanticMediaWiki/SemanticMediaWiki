@@ -187,7 +187,9 @@ class SMWQueryResult {
 	 * 
 	 * TODO: have this work for all params without manually overriding and adding everything
 	 * (this is possible since the param handling changes in 1.7) 
-	 * 
+	 *
+	 * @deprecated since SMW 1.8
+	 *
 	 * @param string|false $caption
 	 * 
 	 * @return SMWInfolink

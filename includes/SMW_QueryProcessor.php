@@ -342,17 +342,16 @@ class SMWQueryProcessor {
 	 * obtain actual parameters, printout requests, and the query string for
 	 * further processing.
 	 */
-	static public function getResultFromFunctionParams( array $rawparams, $outputmode, $context = self::INLINE_QUERY, $showmode = false ) {
-		self::processFunctionParams( $rawparams, $querystring, $params, $printouts, $showmode );
+	static public function getResultFromFunctionParams( array $rawParams, $outputMode, $context = self::INLINE_QUERY, $showMode = false ) {
+		self::processFunctionParams( $rawParams, $queryString, $params, $printouts, $showMode );
 		
-		if ( !$showmode ) {
-			self::addThisPrintout( $printouts, $params, $showmode );
+		if ( !$showMode ) {
+			self::addThisPrintout( $printouts, $params, $showMode );
 		}
-		
-		$validator = self::getValidatorForParams( $params, $printouts );
-		$params = $validator->getParameters();
 
-		return self::getResultFromQueryString( $querystring, $params, $printouts, SMW_OUTPUT_WIKI, $context );
+		$params = self::getProcessedParams( $params, $printouts );
+
+		return self::getResultFromQueryString( $queryString, $params, $printouts, SMW_OUTPUT_WIKI, $context );
 	}
 
 	/**
@@ -363,7 +362,7 @@ class SMWQueryProcessor {
 	 * certain general settings. Finally, $extraprintouts supplies additional
 	 * printout requests for the query results.
 	 * 
-	 * @param string $querystring
+	 * @param string $queryString
 	 * @param array $params These need to be the result of a list fed to getProcessedParams
 	 * @param $extraPrintouts
 	 * @param $outputMode
@@ -371,10 +370,10 @@ class SMWQueryProcessor {
 	 *
 	 * @return string
 	 */
-	static public function getResultFromQueryString( $querystring, array $params, $extraPrintouts, $outputMode, $context = self::INLINE_QUERY ) {
+	static public function getResultFromQueryString( $queryString, array $params, $extraPrintouts, $outputMode, $context = self::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
-		$query  = self::createQuery( $querystring, $params, $context, '', $extraPrintouts );
+		$query  = self::createQuery( $queryString, $params, $context, '', $extraPrintouts );
 		$result = self::getResultFromQuery( $query, $params, $outputMode, $context );
 
 		wfProfileOut( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );

@@ -246,7 +246,7 @@ abstract class SMWResultPrinter {
 		// Get output from printer:
 		$result = $this->getResultText( $results, $outputMode );
 
-		if ( $outputMode != SMW_OUTPUT_FILE ) {
+		if ( $outputMode !== SMW_OUTPUT_FILE ) {
 			$result = $this->handleNonFileResult( $result, $results, $outputMode );
 		}
 
@@ -408,44 +408,43 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
+	 * Gets a SMWInfolink object that allows linking to a display of the query result.
+	 *
 	 * @since 1.8
 	 *
 	 * @param SMWQueryResult $res
 	 * @param $outputMode
 	 *
-	 * TODO: this does not seem like the right place to have the actual logic,
-	 * but it can be moved later on (having this method here does make sense).
+	 * @return SMWInfolink
 	 */
 	protected function getLink( SMWQueryResult $res, $outputMode ) {
 		$link = $res->getLink();
 
 		$link->setCaption( $this->getSearchLabel( $outputMode ) );
 
-		foreach ( $this->params as $param ) {
-			// TODO///
+		foreach ( $this->fullParams as /* IParam */ $param ) {
+			if ( !$param->wasSetToDefault() ) {
+				$link->setParameter( $param->getOriginalValue(), $param->getName() );
+			}
 		}
 
+		return $link;
+	}
 
-		if ( $this->linkFurtherResults( $res ) ) {
-			$link = $res->getQueryLink();
-
-			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
-				$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
-			}
-
-			$link->setParameter( 'category', 'format' );
-
-			if ( $this->mNumColumns != 3 ) $link->setParameter( $this->mNumColumns, 'columns' );
-
-			if ( $this->mTemplate !== '' ) {
-				$link->setParameter( $this->mTemplate, 'template' );
-
-				if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates
-					$link->setParameter( $this->m_params['link'], 'link' );
-				}
-			}
-
-		}
+	/**
+	 * Gets a SMWInfolink object that allows linking to further results for the query.
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $res
+	 * @param $outputMode
+	 *
+	 * @return SMWInfolink
+	 */
+	protected function getFurtherResultsLink( SMWQueryResult $res, $outputMode ) {
+		$link = $this->getLink( $res, $outputMode );
+		$link->setParameter( $this->params['offset'] + $res->getCount(), 'offset' );
+		return $link;
 	}
 
 	/**

@@ -125,7 +125,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) && ( ( $this->mFormat != 'ol' ) || ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) ) {
-			$this->showFurtherResults( $result, $res, $rowstart, $rowend );
+			$this->showFurtherResults( $result, $res, $rowstart, $rowend, $outputmode );
 		}
 
 		// Print footer
@@ -235,50 +235,8 @@ END;
 		$result .= $rowend;
 	}
 	
-	protected function showFurtherResults( &$result, $res, $rowstart, $rowend ) {
-		$link = $res->getQueryLink();
-		
-		if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
-			$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
-		}
-		
-		if ( $this->mSep !== '' ) {
-			$link->setParameter( $this->mSep, 'sep' );
-		}
-		
-		$link->setParameter( $this->mFormat, 'format' );
-
-		if ( $this->mTemplate !== '' ) {
-			$link->setParameter( $this->mTemplate, 'template' );
-			if ( array_key_exists( 'link', $this->params ) ) { // linking may interfere with templates
-				$link->setParameter( $this->params['link'], 'link' );
-			}
-		}
-		
-		if ( $this->mUserParam !== '' ) {
-			$link->setParameter( $this->mUserParam, 'userparam' );
-		}
-		
-		if ( $this->mColumns !== '' ) {
-			$link->setParameter( $this->mColumns, 'columns' );
-		}
-		
-		if ( $this->mIntro !== '' ) {
-			$link->setParameter( $this->mIntro, 'intro' );
-		}
-		
-		if ( $this->mOutro !== '' ) {
-			$link->setParameter( $this->mOutro, 'outro' );
-		}
-		
-		if ( $this->mIntroTemplate !== '' ) {
-			$link->setParameter( $this->mIntroTemplate, 'introtemplate' );
-		}
-		
-		if ( $this->mOutroTemplate !== '' ) {
-			$link->setParameter( $this->mOutroTemplate, 'outrotemplate' );
-		}
-		
+	protected function showFurtherResults( &$result, $res, $rowstart, $rowend, $outputMode ) {
+		$link = $this->getFurtherResultsLink( $res, $outputMode );
 		$result .= $rowstart . ' '. $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend;
 	}
 
