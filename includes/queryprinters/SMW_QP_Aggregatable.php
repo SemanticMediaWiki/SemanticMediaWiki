@@ -220,7 +220,7 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 		);
 
 		$definitions['distributionsort'] = array(
-			'name' => 'distribution',
+			'name' => 'distributionsort',
 			'type' => 'string',
 			'default' => 'none',
 			'message' => 'smw-paramdesc-distributionsort',
@@ -228,7 +228,7 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 		);
 
 		$definitions['distributionlimit'] = array(
-			'name' => 'distribution',
+			'name' => 'distributionlimit',
 			'type' => 'integer',
 			'default' => false,
 			'message' => 'smw-paramdesc-distributionlimit',
