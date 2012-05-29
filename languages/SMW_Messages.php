@@ -4792,6 +4792,7 @@ $messages['he'] = array(
 	'smw_printername_broadtable' => 'טבלה רחבה',
 	'smw_printername_template' => 'תבנית',
 	'smw_printername_rdf' => 'יצוא RDF',
+	'smw_printername_category' => 'קטגוריה',
 	'smw-paramdesc-limit' => 'מספר התוצאות המרבי להחזרה',
 	'smw-paramdesc-offset' => 'ההיסט של התוצאה הראשונה',
 	'smw-paramdesc-headers' => 'הצגת הכותרות או שמות המאפיינים',
@@ -4801,6 +4802,9 @@ $messages['he'] = array(
 	'smw-paramdesc-outro' => 'הטקסט להצגה לאחר תוצאות התשאול, אם יש כאלו',
 	'smw-paramdesc-default' => 'הטקסט להצגה אם אין תוצאות תשאול',
 	'smw-paramdesc-sep' => 'המפריד בין הערכים',
+	'smw-paramdesc-distribution' => 'במקום להציג את כל הערכים, לספור את המופעים שלהם ולהציג אותם.',
+	'smw-paramdesc-distributionsort' => 'למיין את התפלגות הערכים לפי מניין המופעים.',
+	'smw-paramdesc-distributionlimit' => 'להגביל את התפלגות הערכים לפי מניין של ערכים מסוימים בלבד.',
 	'smw-paramdesc-template' => 'שם התבנית להצגת התדפיסים',
 	'smw-paramdesc-columns' => 'מספר העמודות להצגת התוצאות (ברירת המחדל היא $1)',
 	'smw-paramdesc-userparam' => 'הערך המועבר לכל קריאה לתבנית, אם נעשה שימוש בתבנית',
@@ -4808,6 +4812,7 @@ $messages['he'] = array(
 	'smw-paramdesc-outrotemplate' => 'שם התבנית שתוצג אחרי תוצאות השאילתה, אם יש תוצאות',
 	'smw-paramdesc-embedformat' => 'תגית ה־HTML המשמשת להגדרת כותרות',
 	'smw-paramdesc-embedonly' => 'לא יוצגו כותרות',
+	'smw-paramdesc-table-class' => 'מחלקת CSS נוספת שתוחל על הטבלה',
 	'smw-paramdesc-rsstitle' => 'הטקסט שישמש ככותרת ההזנה',
 	'smw-paramdesc-rssdescription' => 'הטקסט שישמש לתיאור ההזנה',
 	'smw-paramdesc-rdfsyntax' => 'באיזה תחביר RDF להשתמש',
@@ -4920,6 +4925,11 @@ $messages['he'] = array(
 קטגוריה (<strong>[[{{ns:category}}:שחקן]]</strong>),
 מאפיינים (<strong>[[נמצא ב::גרמניה]]</strong>),
 שמות (<strong>[[גרמניה]]</strong>) ומרחבי שם (<strong>[[{{ns:help}}:+]]</strong>)',
+	'smw_qui_ok' => 'אישור',
+	'smw_qui_cancel' => 'ביטול',
+	'smw_qui_category' => '<strong>קטגוריה</strong>',
+	'smw_qui_label' => 'תווית',
+	'smw_qui_dcategory' => 'קטגוריה:',
 	'searchbyproperty' => 'חיפוש לפי מאפיין',
 	'smw_sbv_docu' => 'חיפוש כל הדפים שיש להם מאפיין וערך מסוימים.',
 	'smw_sbv_novalue' => 'כתבו ערך תקין למאפיין, או צפו בכל ערכי המאפיינים עבור "$1".',
@@ -7078,6 +7088,7 @@ $messages['kn'] = array(
 /** Korean (한국어)
  * @author Albamhandae
  * @author Kwj2772
+ * @author 아라
  */
 $messages['ko'] = array(
 	'smw_viewasrdf' => 'RDF 피드',
@@ -7092,6 +7103,8 @@ $messages['ko'] = array(
 	'smw_nodatetime' => '의 날짜 “$1” 는 이해할 수 없다.',
 	'smw_typearticlecount' => '이 유형을 사용하여 보여주 $1 의 등록 정보를합니다.',
 	'smw_attributearticlecount' => '이 속성을 사용하여 보여주 $1 페이지입니다.',
+	'smw_rss_description' => '$1 RSS 피드',
+	'specialpages-group-smw_group' => '시맨틱(Semantic) MediaWiki',
 	'exportrdf' => 'RDF로 문서 내보내기',
 	'smw_pp_type' => '부동산',
 );
