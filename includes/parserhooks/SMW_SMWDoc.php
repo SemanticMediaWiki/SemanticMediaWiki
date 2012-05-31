@@ -180,17 +180,9 @@ class SMWSMWDoc extends ParserHook {
 			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : '-';
 		}
 
+		$description = $this->msg( $parameter->getMessage() );
 
-		$description = $parameter->getMessage();
-		if ( $description === false ) {
-			$description = $parameter->getDescription();
-			if ( $description === false ) $description = '-';
-		}
-		else {
-			$description = $this->msg( $description );
-		}
-
-		$type = $parameter->getTypeMessage();
+		$type = $this->msg( $parameter->getTypeMessage() );
 
 		$default = $parameter->isRequired() ? "''" . $this->msg( 'validator-describe-required' ) . "''" : $parameter->getDefault();
 		if ( is_array( $default ) ) {
