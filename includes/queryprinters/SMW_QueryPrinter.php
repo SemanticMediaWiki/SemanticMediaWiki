@@ -229,18 +229,7 @@ abstract class SMWResultPrinter {
 			if ( !$results->hasFurtherResults() ) {
 				return $this->escapeText( $this->mDefault, $outputMode ) . $this->getErrorString( $results );
 			} elseif ( $this->mInline ) {
-				$label = $this->mSearchlabel;
-
-				if ( $label === null ) { // apply defaults
-					$label = wfMsgForContent( 'smw_iq_moreresults' );
-				}
-
-				if ( $label !== '' ) {
-					$link = $results->getQueryLink( $this->escapeText( $label, $outputMode ) );
-					$result = $link->getText( $outputMode, $this->mLinker );
-				} else {
-					$result = '';
-				}
+				$result = $this->getFurtherResultsLink( $results, $outputMode )->getText( $outputMode, $this->mLinker );
 
 				$result .= $this->getErrorString( $results );
 
@@ -428,7 +417,7 @@ abstract class SMWResultPrinter {
 		$link->setCaption( $this->getSearchLabel( $outputMode ) );
 
 		foreach ( $this->fullParams as /* IParam */ $param ) {
-			if ( !$param->wasSetToDefault() ) {
+			if ( !$param->wasSetToDefault() && !( $param->getName() == 'limit' && $param->getValue() === 0 ) ) {
 				$link->setParameter( $param->getOriginalValue(), $param->getName() );
 			}
 		}
