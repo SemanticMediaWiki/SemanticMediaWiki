@@ -1610,7 +1610,7 @@ $messages['bn'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'হ্যাঁ, আমি নিশ্চিত।',
 );
 
-/** Breton (Brezhoneg)
+/** Breton (brezhoneg)
  * @author Fohanno
  * @author Fulup
  * @author Gwendal
@@ -7107,7 +7107,7 @@ $messages['ko'] = array(
 	'smw_typearticlecount' => '이 유형을 사용하여 보여주 $1 의 등록 정보를합니다.',
 	'smw_attributearticlecount' => '이 속성을 사용하여 보여주 $1 페이지입니다.',
 	'smw_rss_description' => '$1 RSS 피드',
-	'specialpages-group-smw_group' => 'Semantic MediaWiki (시멘틱 미디어위키)',
+	'specialpages-group-smw_group' => 'Semantic MediaWiki',
 	'exportrdf' => 'RDF로 문서 내보내기',
 	'smw_pp_type' => '부동산',
 );
@@ -7544,7 +7544,7 @@ Et ka keen neien ugefaang ginn.',
 	'smw-info-par-icon' => 'Symbol fir entweder "Info" oder "Warnung" ze weisen.',
 );
 
-/** Lithuanian (Lietuvių)
+/** Lithuanian (lietuvių)
  * @author Vpovilaitis
  */
 $messages['lt'] = array(
@@ -8774,14 +8774,14 @@ Geschatte voortgang van de huidige taak:",
 	'smw-info-par-icon' => 'Icoon dat "informatie" of "waarschuwing" aangeeft.',
 );
 
-/** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
+/** Norwegian Nynorsk (‪norsk (nynorsk)‬)
  * @author Gunnernett
  * @author Harald Khan
  * @author Njardarlogar
  * @author Ranveig
  */
 $messages['nn'] = array(
-	'smw_viewasrdf' => 'RDF-kjelda',
+	'smw_viewasrdf' => 'RDF-mating',
 	'smw_finallistconjunct' => ' og',
 	'smw_factbox_head' => 'Fakta om $1',
 	'smw_isspecprop' => 'Denne eigenskapen er ein spesialeigenskap på denne wikien',
@@ -9978,7 +9978,7 @@ Progresso estimado da actualização em curso:",
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:',
 );
 
-/** Brazilian Portuguese (Português do Brasil)
+/** Brazilian Portuguese (português do Brasil)
  * @author 555
  * @author Eduardo.mps
  * @author GKnedo
