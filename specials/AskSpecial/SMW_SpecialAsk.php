@@ -486,7 +486,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		global $smwgQMaxInlineLimit;
 
 		$offset = $this->m_params['offset'];
-		$limit  = $this->m_params['limit'];
+		$limit  = $this->params['limit']->getValue();
 
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
