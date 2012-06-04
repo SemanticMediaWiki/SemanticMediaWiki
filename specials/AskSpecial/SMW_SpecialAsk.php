@@ -66,6 +66,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	 * which is the way that this page calls itself when data is submitted via the form (since the shape
 	 * of the parameters then is governed by the UI structure, as opposed to being governed by reason).
 	 *
+	 * TODO: most of this can probably be killed now we are using Validator
+	 *
 	 * @param string $p
 	 */
 	protected function extractQueryParameters( $p ) {
