@@ -95,6 +95,9 @@ function smwfRegisterHooks() {
 	$wgHooks['SkinTemplateTabs'][] = 'SMWHooks::addRefreshTab'; // basic tab addition
 	$wgHooks['SkinTemplateNavigation'][] = 'SMWHooks::addStructuredRefreshTab'; // structured version for "Vector"-type skins
 
+	//UnitTests
+	$wgHooks['UnitTestsList'][] = 'SMWHooks::registerUnitTests';
+
 	if ( $GLOBALS['smwgToolboxBrowseLink'] ) {
 		$wgHooks['SkinTemplateToolboxEnd'][] = 'SMWHooks::showBrowseLink';
 	}

@@ -261,4 +261,23 @@ final class SMWHooks {
 		return true;
 	}
 
+	/**
+	* Hook to add PHPUnit test cases.
+	* @see https://www.mediawiki.org/wiki/Manual:Hooks/UnitTestsList
+	*
+	* @since storerewrite
+	* @param array $files
+	*
+	* @return boolean
+	*/
+	public static function registerUnitTests ( array &$files ) {
+		$testDir = dirname( __FILE__ ). '/tests/phpunit/';
+
+		//store tests
+		$testDirStore = $testDir . 'includes/storage/';
+		$files[] = $testDirStore . 'SMW_SQLStore2Test.php';
+
+		return true;
+	}
+
 }
