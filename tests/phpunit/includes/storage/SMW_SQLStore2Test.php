@@ -8,12 +8,13 @@
  *
  * @ingroup SMW
  * @ingroup Test
- * @group Store
+ *
+ * @group SMW
+ * @group SMWStore
  * @group Database
  *
  * @author Nischay Nahata
  */
-
 class SMWSQLStore2Test extends MediaWikiTestCase {
 
 	public function getSemanticDataProvider() {
@@ -27,11 +28,16 @@ class SMWSQLStore2Test extends MediaWikiTestCase {
 	/**
 	* @dataProvider getSemanticDataProvider
 	*/
-	public function testGetSemanticData( $titletext ,$filter = false) {
-		$title = Title::newFromText( $titletext );
+	public function testGetSemanticData( $titleText ,$filter = false) {
+		$title = Title::newFromText( $titleText );
 		$subject = SMWDIWikiPage::newFromTitle( $title );
 		$store = new SMWSQLStore2();
-		$this->assertInstanceOf( SMWSqlStubSemanticData, $store->getSemanticData( $subject, $filter ),
-			"Result should be instance of SMWSqlStubSemanticData." );
+
+		$this->assertInstanceOf(
+			'SMWSemanticData',
+			$store->getSemanticData( $subject, $filter ),
+			"Result should be instance of SMWSemanticData."
+		);
 	}
+
 }
