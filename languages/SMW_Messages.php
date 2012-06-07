@@ -1788,6 +1788,7 @@ Dic'hortoz e c'hall bezañ an disoc'hoù.",
 	'smw_ask_show_embed' => "Diskouez ar c'hod enframmet",
 	'smw_ask_hide_embed' => "Kuzhat ar c'hod enframmet",
 	'smw_ask_embed_instr' => "Evit enklozañ ar reked-mañ enlinenn e-barzh ur bajenn wiki, implijit ar c'hod amañ dindan.",
+	'smw-ask-delete' => '[Diverkañ]',
 	'smw_qc_show_addnal_opts' => 'Diskouez dibarzhioù ouzhpenn',
 	'smw_qc_hide_addnal_opts' => "Diskouez nebeutoc'h a zibarzhioù",
 	'smw_qc_otheropt' => 'Dibarzhioù all',
@@ -2769,12 +2770,18 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
  * @author Erdemaslancan
  */
 $messages['diq'] = array(
+	'specialpages-group-smw_group' => 'Fahm kerdışê MediaWiki',
+	'exportrdf' => 'Pela ahûlnê RDF',
+	'properties' => 'Xısusiyey',
 	'unusedproperties' => 'Xısusiyetê ke nê xebtênê',
 	'wantedproperties' => 'Xısusiyetê ke waştênê',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|vıraştene|vıraştene}})',
 	'smw_purge' => 'Anewe ke',
 	'types' => 'Babeti',
-	'semanticstatistics' => 'İstatistike fahmeni',
+	'semanticstatistics' => 'İstatistike fahm kerdeni',
+	'ask' => 'Fahmyayış cı geyrayış',
+	'querycreator' => 'Vıraşterê Persiyayışi',
+	'searchbyproperty' => 'Xısusiyeti heta cıgeyrê',
 	'smw_sbv_value' => 'Deger:',
 	'smw_browselink' => 'Bewni xısusiyeta',
 );
@@ -6702,7 +6709,7 @@ $messages['ja'] = array(
 	'smw_printername_broadtable' => '幅広の表',
 	'smw_printername_template' => 'テンプレート',
 	'smw_printername_rdf' => 'RDF 形式で書き出し',
-	'smw_printername_category' => 'カテゴリー',
+	'smw_printername_category' => 'カテゴリ',
 	'smw-paramdesc-limit' => '返却結果の最大数',
 	'smw-paramdesc-offset' => '最初の結果のオフセット',
 	'smw-paramdesc-headers' => 'ヘッダー名やプロパティ名を表示',
@@ -6755,7 +6762,7 @@ $messages['ja'] = array(
 	'smw_misplacedsymbol' => '記号「$1」は意味のない場所で使われていました。',
 	'smw_unexpectedpart' => 'クエリーの一部「$1」は理解できませんでした。結果は予期しないものになるかもしれません。',
 	'smw_emptysubquery' => 'サブクエリーには有効な条件をもたないものがあります。',
-	'smw_misplacedsubquery' => 'サブクエリーのなかに、サブクエリーが許可されていない場所で使われているものがあります。',
+	'smw_misplacedsubquery' => 'サブクエリーの中に、サブクエリーが許可されていない場所で使用されているものがあります。',
 	'smw_valuesubquery' => 'プロパティ「$1」の値に対してはサブクエリーが使えません。',
 	'smw_badqueryatom' => 'クエリーの「<nowiki>[[…]]</nowiki>」という部分が理解できませんでした。',
 	'smw_propvalueproblem' => 'プロパティ「$1」の値は理解できませんでした。',
@@ -6798,7 +6805,10 @@ $messages['ja'] = array(
 	'smw_types_docu' => '以下はプロパティに割り当てられているすべてのデータ型の一覧です。',
 	'smw_typeunits' => '型「$1」の単位：$2',
 	'semanticstatistics' => '意味的統計',
-	'smw_semstats_text' => "このウィキには、計 '''$2'''種の[[Special:Properties|{{PLURAL:$2|プロパティ}}]]と '''$1'''個の{{PLURAL:$1|プロパティ値}}があります。'''$3'''個の{{PLURAL:$3|プロパティ}}には専用のページがあり、うち '''$4'''個にはデータ型が指定されています。既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。解説ページがまだ存在しないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
+	'smw_semstats_text' => "このウィキには、計 '''$2'''種の[[Special:Properties|{{PLURAL:$2|プロパティ}}]]と '''$1'''個の{{PLURAL:$1|プロパティ値}}があります。
+'''$3'''個の{{PLURAL:$3|プロパティ}}には専用のページがあり、うち '''$4'''個にはデータ型が指定されています。
+既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。
+まだ解説ページないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
 	'smw_uri_doc' => 'URI リゾルバーは [$1 W3C TAG での httpRange-14 に関する議論成果]を実装しています。
 これは人間がウェブサイトに向かわないように取り計らいます。',
 	'ask' => '意味的検索',
@@ -6832,21 +6842,22 @@ $messages['ja'] = array(
 	'smw_qui_addnprop' => 'プロパティを追加',
 	'smw_qui_delete' => '除去',
 	'smw_qui_options' => 'オプション',
-	'smw_qui_addcategory' => 'カテゴリーを追加',
+	'smw_qui_addcategory' => 'カテゴリを追加',
 	'smw_qui_ok' => 'OK',
 	'smw_qui_cancel' => 'キャンセル',
-	'smw_qui_category' => '<strong>カテゴリー</strong>',
+	'smw_qui_category' => '<strong>カテゴリ</strong>',
 	'smw_qui_label' => 'ラベル',
 	'smw_prp_options' => 'プロパティオプション',
-	'smw_qui_catopts' => 'カテゴリーオプション',
+	'smw_qui_catopts' => 'カテゴリオプション',
 	'smw_qui_mainlabopts' => '結果オプション',
 	'smw_qui_dlabel' => 'ラベル：',
-	'smw_qui_dcategory' => 'カテゴリー:',
+	'smw_qui_dcategory' => 'カテゴリ：',
 	'searchbyproperty' => 'プロパティによる検索',
-	'smw_sbv_docu' => '指定したプロパティと値を持つすべてのページを検索する。',
+	'smw_sbv_docu' => '指定したプロパティと値を持つすべてのページを検索します。',
 	'smw_sbv_novalue' => 'そのプロパティにとって有効な値を入力するか、「$1」のすべてのプロパティ値を確認してください。',
-	'smw_sbv_displayresult' => 'プロパティ「$1」の値に「$2」をとっているすべてのページの一覧',
-	'smw_sbv_displayresultfuzzy' => 'プロパティ「$1」の値に「$2」をとっているすべてのページの一覧。ほんのわずかの結果しかなかったため、近い値も表示しています。',
+	'smw_sbv_displayresult' => 'プロパティ「$1」の値が「$2」であるすべてのページの一覧',
+	'smw_sbv_displayresultfuzzy' => 'プロパティ「$1」の値が「$2」であるすべてのページの一覧。
+結果がごく少数だったため、近い値も表示しています。',
 	'smw_sbv_property' => 'プロパティ:',
 	'smw_sbv_value' => '値：',
 	'smw_sbv_submit' => '結果を取得',
@@ -6856,7 +6867,7 @@ $messages['ja'] = array(
 	'smw_browse_go' => '表示',
 	'smw_browse_show_incoming' => 'ここにリンクしているプロパティを表示',
 	'smw_browse_hide_incoming' => 'ここにリンクしているプロパティを非表示',
-	'smw_browse_no_outgoing' => 'このページはプロパティをもっていません。',
+	'smw_browse_no_outgoing' => 'このページにはプロパティはありません。',
 	'smw_browse_no_incoming' => 'このページにリンクしているプロパティはありません。',
 	'smw_inverse_label_default' => '$1である',
 	'smw_inverse_label_property' => '逆プロパティの名前',
@@ -6872,15 +6883,21 @@ $messages['ja'] = array(
 	'smwadmin' => 'Semantic MediaWiki の管理機能',
 	'smw_smwadmin_setupsuccess' => 'ストレージエンジンの構築に成功しました。',
 	'smw_smwadmin_return' => '$1 に戻る',
-	'smw_smwadmin_updatestarted' => '意味的データを最新の状態とするための新しい更新プロセスが開始しました。格納済みのデータはすべて必要に応じて再構築または修復されます。この特別ページで更新の状況を追うことができます。',
+	'smw_smwadmin_updatestarted' => '意味的データを最新の状態にするための新しい更新プロセスを開始しました。
+格納済みのデータはすべて必要に応じて再構築または修復されます。
+この特別ページで更新の状況を追うことができます。',
 	'smw_smwadmin_updatenotstarted' => '既に実行中の更新プロセスがあります。
 新たに作成しないでください。',
 	'smw_smwadmin_updatestopped' => '既存のすべての更新プロセスは停止されました。',
 	'smw_smwadmin_updatenotstopped' => '実行中の更新プロセスを停止するには、本当に理解していることを示すためにチェックボックスを選択する必要があります。',
 	'smw_smwadmin_docu' => 'この特別ページは <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a> のインストールとアップグレードを補助します。管理機能を実行する前に重要なデータをバックアップするようにしてください。',
 	'smw_smwadmin_db' => 'データベースのインストールおよびアップグレード',
-	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki は意味的データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。以下の機能はあなたのデータベースが適切に構築されていることを確実にするものです。この作業でなされた変更は MediaWiki のデータベースのその他の部分には影響を与えず、必要なら簡単に取り消しができます。この機能は複数回実行したとしてもなんの害もありませんが、インストールもしくはアップグレード時に一度だけ実行すれば十分です。',
-	'smw_smwadmin_permissionswarn' => 'SQLエラーを出して処理が失敗したとすると、それはおそらくあなたのウィキのデータベースユーザー(LocalSettings.php を確認してください)が必要な権限をもっていないためです。一時的に LocalSettings.php でデータベースのルートとしてログインして、そのユーザーにテーブルを作成および削除するための追加権限を与えるか、あるいは AdminSettings.php の設定情報を利用できるメンテナンススクリプト <tt>SMW_setup.php</tt> を使用してください。',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki は意味的データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。
+以下の機能はあなたのデータベースが適切に構築されていることを確実にするものです。
+この作業でなされた変更は MediaWiki のデータベースのその他の部分には影響を与えず、必要なら簡単に取り消しができます。
+この機能は複数回実行しても何の害もありませんが、インストールもしくはアップグレード時に一度だけ実行すれば十分です。',
+	'smw_smwadmin_permissionswarn' => 'SQLエラーを出して処理が失敗したとすると、それはおそらくあなたのウィキのデータベースユーザー(LocalSettings.php を確認してください)に必要な権限がないためです。
+一時的に LocalSettings.php でデータベースの root としてログインして、そのユーザーにテーブルを作成および削除するための追加権限を与えるか、あるいは AdminSettings.php の設定情報を利用できるメンテナンススクリプト <tt>SMW_setup.php</tt> を使用してください。',
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
 	'smw_smwadmin_announce' => 'あなたのウィキの発表',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しい意味的ウィキのサイトを発表するためのウェブサービスがあります。
@@ -7032,6 +7049,13 @@ Tulung isèkna loro-loroné sawijining kaca lan sifat.',
  */
 $messages['ka'] = array(
 	'smw_finallistconjunct' => ', და',
+);
+
+/** Kirmanjki (Kırmancki)
+ * @author Erdemaslancan
+ */
+$messages['kiu'] = array(
+	'querycreator' => 'Dekerdışê Werênayışi',
 );
 
 /** Khmer (ភាសាខ្មែរ)
@@ -12272,7 +12296,8 @@ $messages['ug-latn'] = array(
 	'smw_browse_go' => 'Köchüsh',
 );
 
-/** Ukrainian (Українська)
+/** Ukrainian (українська)
+ * @author Olvin
  * @author Prima klasy4na
  * @author Тест
  * @author Юрій Булка
@@ -12441,7 +12466,9 @@ $messages['uk'] = array(
 	'smwadmin' => 'Адміністративні функції Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'База даних успішно налаштована.',
 	'smw_smwadmin_return' => 'Повернутись до $1',
-	'smw_smwadmin_updatestarted' => 'Новий процес освіження семантичних даних запущено. Всі збережені дані будуть при необхідності освіжені та поправлені. За процесом освіження можна слідкувати на цій сторінці.',
+	'smw_smwadmin_updatestarted' => 'Новий процес оновлення семантичних даних запущено. 
+Всі збережені дані буде за необхідності оновлено чи виправлено. 
+За процесом оновлення можна стежити на цій сторінці.',
 	'smw_smwadmin_updatenotstarted' => 'Процес освіження вже запущено. Новий не буде створено.',
 	'smw_smwadmin_updatestopped' => 'Всі наявні процеси освіження було зупинено.',
 	'smw_smwadmin_updatenotstopped' => 'Щоб зупинити вже запущений процес освіження, будь ласка активуйте цю відмітку, щоб засвідчити, що ви впевнені у цьому рішенні.',
