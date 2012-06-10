@@ -252,8 +252,8 @@ It takes care that humans do not turn into websites.',
 	'smw_qc_default'           => 'Default:',
 	'smw_qc_formatopt'         => 'Format options',
 	'smw_qc_query_help'        => 'Enter a query using the form below. Select wiki pages based on
-Categories (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Properties (<strong>[[Located in::Germany]]</strong>), 
+Categories (<strong>[[{{ns:category}}:Actor]]</strong>),
+Properties (<strong>[[Located in::Germany]]</strong>),
 Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[{{ns:help}}:+]]</strong>)',
 
 	//Generic messages for Query UI
@@ -347,7 +347,7 @@ The below function ensures that your database is set up properly.
 The changes made in this step do not affect the rest of the MediaWiki database, and can easily be undone if desired.
 This setup function can be executed multiple times without doing any harm, but it is needed only once on installation or upgrade.',
 	'smw_smwadmin_permissionswarn' => 'If the operation fails with SQL errors, the database user employed by your wiki (check your LocalSettings.php) probably does not have sufficient permissions.
-Either grant this user additional pemissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <tt>SMW_setup.php</tt> which can use the credentials of a SysOp user.',
+Either grant this user additional pemissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <tt>SMW_setup.php</tt> which can use the credentials of an administrator.',
 	'smw_smwadmin_dbbutton' => 'Initialise or upgrade tables',
 	'smw_smwadmin_announce' => 'Announce your wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki has a web service for announcing new semantic wiki sites.
@@ -382,12 +382,12 @@ Estimated progress of current update:',
 	// Messages for automated property creation
 	'smw-createproperty-isproperty' => 'This is a property of type $1.',
 	'smw-createproperty-allowedvals' => 'The allowed {{PLURAL:$1|value for this property is|values for this property are}}:',
-	
+
 	// Category QP
 	'smw-paramdesc-category-delim' => 'The delimiter',
 	'smw-paramdesc-category-template' => 'A template to format the items with',
 	'smw-paramdesc-category-userparam' => 'A parameter to pass to the template',
-	
+
 	// Messages for info parser function.
 	'smw-info-par-message' => 'Message to display.',
 	'smw-info-par-icon' => 'Icon to show, either "info" or "warning".',
@@ -1531,8 +1531,8 @@ $messages['be-tarask'] = array(
 	'smw_qc_default' => 'Па змоўчваньні:',
 	'smw_qc_formatopt' => 'Налады фармату',
 	'smw_qc_query_help' => 'Увядзіце запыт з дапамогай формы пададзенай ніжэй для выбару вікі-старонкі па
-Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>), 
-Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>), 
+Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>),
+Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>),
 Назвам(<strong>[[Нямеччына]]</strong>) і Прасторам назваў (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Уласьцівасьць</strong>',
 	'smw_qui_prop' => 'Уласьцівасьць:',
@@ -2175,8 +2175,8 @@ Té cura que els humans no es tornin en llocs web.',
 	'smw_qc_default' => 'Per defecte:',
 	'smw_qc_formatopt' => 'Opcions de format',
 	'smw_qc_query_help' => 'Introduïu una consulta fent servir el formulari a continuació. Seleccioneu les pàgines wiki en funció de
-Categories (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Propietats (<strong>[[Viu a::Elx]]</strong>), 
+Categories (<strong>[[{{ns:category}}:Actor]]</strong>),
+Propietats (<strong>[[Viu a::Elx]]</strong>),
 Noms (<strong>[[Lleida]]</strong>) i espais de noms (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propietat</strong>',
 	'smw_qui_prop' => 'Propietat:',
@@ -2722,7 +2722,7 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_qc_outro' => 'Nachfolgender Text:',
 	'smw_qc_default' => 'Standardtext:',
 	'smw_qc_formatopt' => 'Formatierungsoptionen',
-	'smw_qc_query_help' => 'Bitte eine Abfrage unter Verwendung des untenstehenden Formulars angeben, um Wikiseiten auf Basis von 
+	'smw_qc_query_help' => 'Bitte eine Abfrage unter Verwendung des untenstehenden Formulars angeben, um Wikiseiten auf Basis von
 Kategorien (<strong>z. B. [[:{{ns:category}}:Schauspieler]]</strong>),
 Attributen (<strong>[[:Liegt in::Deutschland]]</strong>),
 Seitennamen (<strong>[[:Deutschland]]</strong>) und
@@ -3511,8 +3511,8 @@ Las propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|li
 	'smw_qc_default' => 'Por defecto:',
 	'smw_qc_formatopt' => 'Opciones de formato',
 	'smw_qc_query_help' => 'Introduzca una consulta utilizando el siguiente formulario para seleccionar páginas wiki basadas en
-Categorías (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Propiedades (<strong>[[Localizado en::Alemania]]</strong>), 
+Categorías (<strong>[[{{ns:category}}:Actor]]</strong>),
+Propiedades (<strong>[[Localizado en::Alemania]]</strong>),
 Nombres (<strong>[[Alemania]]</strong>) y Espacios de nombres (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propiedad</strong>',
 	'smw_qui_prop' => 'Propiedad:',
@@ -4515,8 +4515,8 @@ As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:Wan
 	'smw_qc_default' => 'Por defecto:',
 	'smw_qc_formatopt' => 'Opcións de formato',
 	'smw_qc_query_help' => 'Introduza unha consulta utilizando o seguinte formulario para seleccionar páxinas wiki baseadas en
-Categorías (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Propiedades (<strong>[[Localizado en::Alemaña]]</strong>), 
+Categorías (<strong>[[{{ns:category}}:Actor]]</strong>),
+Propiedades (<strong>[[Localizado en::Alemaña]]</strong>),
 Nomes (<strong>[[Alemaña]]</strong>) e espazos de nomes (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propiedade</strong>',
 	'smw_qui_prop' => 'Propiedade:',
@@ -5257,11 +5257,11 @@ Rezultati možda neće biti odgovarajući.',
 	'smw_concept_header' => 'Stranice koncepta "$1"',
 	'smw_conceptarticlecount' => 'Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu.',
 	'exportrdf' => 'Izvezi stranice u RDF',
-	'smw_exportrdf_docu' => 'Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu. 
+	'smw_exportrdf_docu' => 'Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu.
 Da biste izvezli stranice unesite njihove naslove u prozor za uređivanje ispod, jedan naslov po retku.',
 	'smw_exportrdf_recursive' => 'Rekurzivno izvezi sve srodne stranice.
 Imajte na umu da bi rezultat mogao biti velik!',
-	'smw_exportrdf_backlinks' => 'Također izvezi sve stranice koje se referenciraju na izvezene stranice. 
+	'smw_exportrdf_backlinks' => 'Također izvezi sve stranice koje se referenciraju na izvezene stranice.
 Generira RDF za pregled i pretraživanje.',
 	'smw_exportrdf_lastdate' => 'Ne izvozi stranice koje nisu izmijenjene od navedenog datuma.',
 	'smw_exportrdf_submit' => 'Izvezi',
@@ -5557,8 +5557,8 @@ Stara so wo to, zo so ludźo z websydłami njestanu.',
 	'smw_qc_outro' => 'Naslědny tekst:',
 	'smw_qc_default' => 'Standard:',
 	'smw_qc_formatopt' => 'Formatowe opcije',
-	'smw_qc_query_help' => 'Prošu wutwor naprašowanje z pomocu slědowaceho formulara. Wubjer wikistrony na zakładźe kategorijow (<strong>[[:{{ns:category}}:Dźiwadźelnik]]</strong>), 
-kajkosćow (<strong>[[Leži w::Łužicy]]</strong>), 
+	'smw_qc_query_help' => 'Prošu wutwor naprašowanje z pomocu slědowaceho formulara. Wubjer wikistrony na zakładźe kategorijow (<strong>[[:{{ns:category}}:Dźiwadźelnik]]</strong>),
+kajkosćow (<strong>[[Leži w::Łužicy]]</strong>),
 mjenow (<strong>[[Łužica]]</strong>) a mjenowych rumow (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Kajkosć</strong>',
 	'smw_qui_prop' => 'Kajkosć:',
@@ -6115,9 +6115,9 @@ Illo assecura que le humanos non se transforma in sitos web.',
 	'smw_qc_outro' => 'Postfacio:',
 	'smw_qc_default' => 'Predefinition:',
 	'smw_qc_formatopt' => 'Optiones de formato',
-	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de 
-Categorias (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Proprietates (<strong>[[Localisate in::Germania]]</strong>), 
+	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de
+Categorias (<strong>[[{{ns:category}}:Actor]]</strong>),
+Proprietates (<strong>[[Localisate in::Germania]]</strong>),
 Nomines (<strong>[[Germania]]</strong>) e Spatios de nomines (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Proprietate</strong>',
 	'smw_qui_prop' => 'Proprietate:',
@@ -7702,7 +7702,7 @@ $messages['lt'] = array(
 	'smw_concept_description' => 'Sąvokos "$1" aprašymas',
 	'smw_no_concept_namespace' => 'Sąvokos gali būti apibrėžtos tik Concept: vardų srities puslapiuose.',
 	'smw_multiple_concepts' => 'Kiekviename sąvokos aprašymo puslapyje gali turėti tik vieną sąvokos apibrėžimą.',
-	'smw_concept_cache_miss' => 'Sąvoka "$1" negali būti naudojamas šiuo metu, nes wiki konfigūracija reikalauja ją apskaičiuoti off-line. 
+	'smw_concept_cache_miss' => 'Sąvoka "$1" negali būti naudojamas šiuo metu, nes wiki konfigūracija reikalauja ją apskaičiuoti off-line.
 Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administratorių, kad šią sąvoką padarytų prieinamą.',
 	'smw_noinvannot' => 'Reikšmės negali būti priskiriamos atvirkštinei savybei.',
 	'version-semantic' => 'Semantiniai praplėtimai',
@@ -7759,7 +7759,7 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_toomanyclosing' => 'Atrodo, kad yra per daug elementų "$1" užklausoje.',
 	'smw_noclosingbrackets' => 'Kažkuris panaudojimas "<nowiki>[[</nowiki>" jūsų užklausoje nebuvo uždaryta atitikimo "]]".',
 	'smw_misplacedsymbol' => 'Simbolis "$1" buvo panaudotas toje vietoje, kurioje jis nėra naudojamas.',
-	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta. 
+	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta.
 Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw_emptysubquery' => 'Kai kurios užklausos dalys turi blogas sąlygas.',
 	'smw-createproperty-isproperty' => 'Tai yra „$1“ tipo savybė.',
@@ -7950,9 +7950,9 @@ $messages['mk'] = array(
 	'smw_qc_outro' => 'Завршник:',
 	'smw_qc_default' => 'По основно:',
 	'smw_qc_formatopt' => 'Нагодувања на форматот',
-	'smw_qc_query_help' => 'Внесете барање користејќи го образецот подолу за да одберете викистраници по 
-Категории (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Својства (<strong>[[Located in::Germany]]</strong>),  
+	'smw_qc_query_help' => 'Внесете барање користејќи го образецот подолу за да одберете викистраници по
+Категории (<strong>[[{{ns:category}}:Actor]]</strong>),
+Својства (<strong>[[Located in::Germany]]</strong>),
 Имиња (<strong>[[Germany]]</strong>) и Именски простори (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Својство</strong>',
 	'smw_qui_prop' => 'Својство:',
@@ -8497,8 +8497,8 @@ Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'smw_qc_default' => 'Tomspørringstekst:',
 	'smw_qc_formatopt' => 'Formatvalg',
 	'smw_qc_query_help' => 'Legg inn en spørring ved hjelp av skjemaet under. Velg wikisider basert på
-Kategorier (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Egenskaper (<strong>[[Located in::Germany]]</strong>), 
+Kategorier (<strong>[[{{ns:category}}:Actor]]</strong>),
+Egenskaper (<strong>[[Located in::Germany]]</strong>),
 Navn (<strong>[[Germany]]</strong>) og navnerom (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Egenskap</strong>',
 	'smw_qui_prop' => 'Egenskap:',
@@ -9564,11 +9564,11 @@ Nie rejestrujemy wiki, które nie są publicznie dostępne. Zapisujemy wyłączn
 	'smw_smwadmin_datarefresh' => 'Naprawa i aktualizacja danych',
 	'smw_smwadmin_datarefreshdocu' => 'Istnieje możliwość przywrócenia wszystkich danych Semantic MediaWiki w oparciu o aktualną zawartość wiki.
 Może to być przydatne do naprawy uszkodzonych danych lub odświeżenia danych, jeśli wewnętrzny format zmienił się z powodu jakichś aktualizacji oprogramowania.
-Aktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychmiast. 
+Aktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychmiast.
 Poniżej przedstawiono, czy aktualizacja jest w toku. Można również uruchomić lub zatrzymać aktualizację (chyba, że ta funkcja została wyłączona przez administratora).',
-	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacja trwa.</strong> 
-To normalne, że aktualizacja postępuje powoli, gdyż odświeżanie danych wykonywane jest w małymi porcjami za każdym razem, gdy użytkownik korzysta z wiki. 
-Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <tt>runJobs.php</tt> (użyj opcji <tt>--maxjobs 1000</tt>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia). 
+	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacja trwa.</strong>
+To normalne, że aktualizacja postępuje powoli, gdyż odświeżanie danych wykonywane jest w małymi porcjami za każdym razem, gdy użytkownik korzysta z wiki.
+Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <tt>runJobs.php</tt> (użyj opcji <tt>--maxjobs 1000</tt>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia).
 Przewidywany postęp bieżącej aktualizacji:',
 	'smw_smwadmin_datarefreshbutton' => 'Rozpocznij aktualizację danych',
 	'smw_smwadmin_datarefreshstop' => 'Zatrzymaj aktualizację danych',
@@ -10025,7 +10025,7 @@ As propriedades que não têm uma página própria podem ser encontradas na [[Sp
 	'smw_qc_hide_addnal_opts' => 'Mostrar menos opções',
 	'smw_qc_query_help' => 'Introduza uma consulta usando o formulário abaixo para seleccionar páginas da wiki com base em
 Categorias (<strong>[[Categoria:Actor]]</strong>),
-Propriedades (<strong>[[Localizada em::Angola]]</strong>), 
+Propriedades (<strong>[[Localizada em::Angola]]</strong>),
 Nomes (<strong>[[Cabo Verde]]</strong>) e Espaços nominais (<strong>[[Ajuda:+]]</strong>)',
 	'smw_qui_property' => 'Propriedade',
 	'smw_qui_shownresults' => 'apresentar nos resultados',
@@ -10147,7 +10147,7 @@ $messages['pt-br'] = array(
 	'smw_concept_description' => 'Descrição do conceito "$1"',
 	'smw_no_concept_namespace' => 'Conceitos só podem ser definidos em páginas no domínio Conceito:.',
 	'smw_multiple_concepts' => 'Cada página de conceito pode ter apenas uma definição de conceito.',
-	'smw_concept_cache_miss' => 'O conceito "$1" não pode ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line. 
+	'smw_concept_cache_miss' => 'O conceito "$1" não pode ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line.
 Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça a um administrador deste wiki que este conceito seja disponibilizado.',
 	'smw_noinvannot' => 'Valores não podem ser atribuídos a propriedades inversas.',
 	'version-semantic' => 'Extensões semânticas',
@@ -10281,7 +10281,7 @@ Gera RDF navegável.',
 '''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} sua própria página, e o tipo de dados pretendido está especificado para '''$4''' delas.
 Algumas das propriedades existentes podem estar [[Special:UnusedProperties|sem uso]].
 As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
-	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. 
+	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>.
 Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'ask' => 'Busca semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
@@ -10313,7 +10313,7 @@ Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'smw_qc_formatopt' => 'Opções de formato',
 	'smw_qc_query_help' => 'Introduza uma consulta utilizando o formulário abaixo. Selecione páginas wiki com base em
 Categorias (<strong>[[Categoria:Ator]]</strong>),
-Propriedades (<strong>[[Localizado em::Brasil]]</strong>), 
+Propriedades (<strong>[[Localizado em::Brasil]]</strong>),
 Nomes (<strong>[[Portugal]]</strong>) e domínios (<strong>[[Ajuda:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propriedade</strong>',
 	'smw_qui_prop' => 'Propriedade:',
@@ -12543,8 +12543,8 @@ $messages['uk'] = array(
 	'smwadmin' => 'Адміністративні функції Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'База даних успішно налаштована.',
 	'smw_smwadmin_return' => 'Повернутись до $1',
-	'smw_smwadmin_updatestarted' => 'Новий процес оновлення семантичних даних запущено. 
-Всі збережені дані буде за необхідності оновлено чи виправлено. 
+	'smw_smwadmin_updatestarted' => 'Новий процес оновлення семантичних даних запущено.
+Всі збережені дані буде за необхідності оновлено чи виправлено.
 За процесом оновлення можна стежити на цій сторінці.',
 	'smw_smwadmin_updatenotstarted' => 'Процес освіження вже запущено. Новий не буде створено.',
 	'smw_smwadmin_updatestopped' => 'Всі наявні процеси освіження було зупинено.',
