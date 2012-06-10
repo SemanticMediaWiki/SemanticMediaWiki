@@ -414,10 +414,10 @@ $messages['qqq'] = array(
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 
 {{Identical|And}}',
-	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values. // $1 holds the name of the page',
+	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values. $1 holds the name of the page',
 	'smw_isspecprop' => 'Used on [[Special:Properties]] to identify a special (build in) property.',
 	'smw_isnotype' => ' This message is obsolete.',
-	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query) / $1 holds the name of the concept',
+	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query). $1 holds the name of the concept',
 	'smw_concept_cache_miss' => 'This is an information message. $1 holds the name of the [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
 	'smw_noinvannot' => 'This is an information message.',
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
@@ -458,8 +458,12 @@ $messages['qqq'] = array(
 	'smw-paramdesc-outro' => 'This is the description of the "outro" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-default' => 'This is the description of the "default" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-sep' => 'This is the description of the "sep" (value separator) parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-distribution' => 'This is the description of the "distribution" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-distributionsort' => 'This is the description of the "distributionsort" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-distributionlimit' => 'This is the description of the "distributionlimit" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-template' => 'This is the description of the "introtemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-columns' => 'A description of the "columns" parameter for inline queries',
+	'smw-paramdesc-columns' => 'This is the description of the "columns" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-userparam' => 'This is the description of the "userparam" parameter for the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-introtemplate' => 'This is the description of the "introtemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-outrotemplate' => 'This is the description of the "outrotemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-embedformat' => 'This is the description of the "embedformat" parameter of the "embedded" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
@@ -477,7 +481,7 @@ $messages['qqq'] = array(
 	'smw-paramdesc-sort' => 'This is the description of the "sort" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-order' => 'This is the description of the "order" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-searchlabel' => 'This is the description of the "searchlabel" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries]. "… further results" must be identical to message {{msg-mw|Smw iq moreresults}}.',
-	'smw-paramdesc-named_args' => 'This allows you to specify that you want named arguments in the template formatting the results (if any) instead of numerical ones',
+	'smw-paramdesc-named_args' => 'This is the description of the "named args" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw_iq_disabled' => 'This is an information message.',
 	'smw_iq_moreresults' => 'This is the text of the link that points to further results in case the [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline query] has more than currently displayed on the page. See also message {{msg-mw|Smw-paramdesc-searchlabel}}.',
 	'smw_parseerror' => 'This is an error/warning message.',
@@ -498,8 +502,8 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_maxstring' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
 	'smw_notinenum' => 'This is an error/warning message. $1 holds the property value causing the error/warning. $2 holds the property values that may be used.',
 	'smw_noboolean' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of datatype [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean]. See also message {{msg-mw|Smw_false_words}}.',
-	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of datatype [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean]. See also message {{msg-mw|Smw_true_words}}.',
+	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of datatype [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list. See also message {{msg-mw|Smw_false_words}}.',
+	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of datatype [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list. See also message {{msg-mw|Smw_true_words}}.',
 	'smw_nofloat' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
 	'smw_infinite' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
 	'smw_unitnotallowed' => 'This is an error/warning message. $1 holds the unit causing the error/warning.',
@@ -515,17 +519,31 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_valuesubquery' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
 	'smw_badqueryatom' => 'This is an error/warning message.',
 	'smw_propvalueproblem' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
+	'smw_noqueryfeature' => 'This is an error/warning message. $1 holds the part(s) of the query which were dropped.',
+	'smw_noconjunctions' => 'This is an error/warning message. $1 holds the part(s) of the query which were dropped.',
+	'smw_nodisjunctions' => 'This is an error/warning message. $1 holds the part(s) of the query which were dropped.',
+	'smw_querytoolarge' => 'This is an error/warning message. $1 holds the part(s) of the query which were dropped.',
+	'smw_notemplategiven' => 'This is an error/warning message.',
+	'smw_db_sparqlqueryproblem' => 'This is an error message.',
+	'smw_db_sparqlqueryincomplete' => 'This is an error message.',
 	'smw_type_header' => 'This is the header on [[Special:Types]]. $1 holds the name of the respective datatype.',
 	'smw_typearticlecount' => 'This is the introductory message below the header on [[Special:Types]]. $1 holds the number of property pages displayed in the current view.',
-	'smw_attribute_header' => 'This is the header on a page in namespace Property. $1 holds the name of the respective property.',
-	'smw_attributearticlecount' => 'This is the introductory message below the header on a page in namespace Property. $1 holds the number of property pages displayed in the current view.',
-	'smw_subproperty_header' => 'This is the header for subproperties on a page in namespace Property. $1 holds the name of the respective subproperty.',
-	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace Property. $1 holds the number of subproperty pages displayed in the current view.',
-	'smw_concept_header' => 'This is the header on a page in namespace Concept. $1 holds the name of the respective concept.',
-	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace Concept. $1 holds the number of pages displayed in the current view.',
+	'smw_attribute_header' => 'This is the header on a page in namespace "Property". $1 holds the name of the respective property.',
+	'smw_attributearticlecount' => 'This is the introductory message below the header on a page in namespace "Property". $1 holds the number of property pages displayed in the current view.',
+	'smw_subproperty_header' => 'This is the header for subproperties on a page in namespace "Property". $1 holds the name of the respective subproperty.',
+	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property". $1 holds the number of subproperty pages displayed in the current view.',
+	'smw_concept_header' => 'This is the header on a page in namespace "Concept". $1 holds the name of the respective concept.',
+	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". $1 holds the number of pages displayed in the current view.',
 	'smw_rss_description' => '{{optional}}',
 	'specialpages-group-smw_group' => '{{optional}}',
-	'smw_exportrdf_submit' => '{{Identical|Export}}',
+	'exportrdf' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:ExportRDF]].',
+	'smw_exportrdf_docu' => 'This is the introductory message at the top of [[Special:ExportRDF]].',
+	'smw_exportrdf_recursive' => 'This is the text describing an option available to choose from on [[Special:ExportRDF]].',
+	'smw_exportrdf_backlinks' => 'This is the text describing an option available to choose from on [[Special:ExportRDF]].',
+	'smw_exportrdf_lastdate' => 'This is the text describing an optional input field available on [[Special:ExportRDF]].',
+	'smw_exportrdf_submit' => 'This is the name of the submit button on [[Special:ExportRDF]] to trigger the export.
+
+{{Identical|Export}}',
 	'properties' => 'This is the title of the special page on [[Special:SpecialPages]] showing all properties.
 
 {{Identical|Property}}',
@@ -541,20 +559,29 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_propertylackstype' => 'This is an error/warning message. $1 holds the name of the assumed datatype which is in fact always datatype Page.',
 	'smw_propertyhardlyused' => 'This is an error/warning message.',
 	'unusedproperties' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:UnusedProperties]].',
-	'smw_unusedproperty_template' => '$1 is the name of the [http://semantic-mediawiki.org/wiki/Help:Properties_and_types property] and $2 is the name of the [http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Datatypes_for_properties datatype] assigned to the property.',
+	'smw_unusedproperties_docu' => 'This is the introductory message at the top of [[Special:UnusedProperties]].',
+	'smw_unusedproperty_template' => 'Used on [[Special:UnusedProperties]]
+* $1 is the name of the [http://semantic-mediawiki.org/wiki/Help:Properties_and_types property]
+* $2 is the name of the [http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Datatypes_for_properties datatype] assigned to the property.',
 	'wantedproperties' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:WantedProperties]].',
+	'smw_wantedproperties_docu' => 'This is the introductory message at the top of [[Special:WantedProperties]].',
 	'smw_wantedproperty_template' => 'This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned datatype and how often it is used in the wiki. $1 holds the name of the wanted property. $2 holds the number of values annotated with the wanted property.',
 	'smw_purge' => 'This is the label of a tab of an action item for the content area.',
 	'types' => 'This is the title of the special page on [[Special:SpecialPages]] showing all datatypes.
 
 {{Identical|Type}}',
-	'smw_typeunits' => 'This message is used in the tooltip on Special:Types when a property supports custom units of measurement. The parameter $1 then is the type name, and $2 is a list of unit names.',
+	'smw_types_docu' => 'This is the introductory message at the top of [[Special:Types]].',
+	'smw_typeunits' => 'This message is used in the tooltip on [[Special:Types]] when a property supports custom units of measurement.
+* $1 is the name of the datatype
+* $2 is a list of unit names.',
 	'semanticstatistics' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SemanticStatistics]].',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
 When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
 This is controlled by the HTTP request header. Semantic Web crawlers and browsers can thus request more metadata on a particular subject, while humans are referred to readable pages.
-This method is called ''content negotiation''.",
+This method is called ''content negotiation''.
+
+{{doc-important|Do not alter or translate link targets!}}",
 	'ask' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:Ask]].',
 	'smw_ask_submit' => '{{Identical|Find results}}',
 	'smw_ask_defaultformat' => '{{Identical|Default}}',
@@ -588,6 +615,7 @@ This method is called ''content negotiation''.",
 	'smw_sbv_property' => '{{Identical|Property}}',
 	'smw_sbv_value' => '{{Identical|Value}}',
 	'smw_sbv_submit' => '{{Identical|Find results}}',
+	'browse' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:Browse]].',
 	'smw_browse_go' => '{{Identical|Go}}',
 	'smw_browse_more' => '{{optional}}',
 	'smw_inverse_label_property' => 'Can as well be translated as "Name of", or "Denomination of the inverse propery". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property "is child of" is the inverse propery of "is parent of".',
@@ -598,9 +626,55 @@ This method is called ''content negotiation''.",
 	'smw_result_next' => '{{Identical|Next}}',
 	'smw_result_results' => '{{Identical|Result}}',
 	'smw_result_noresults' => '{{Identical|Sorry, no results}}',
-	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
-	'smw-info-par-message' => 'Short description of the message parameter behaviour.',
-	'smw-info-par-icon' => 'Short description of the icon parameter behaviour.',
+	'smwadmin' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SMWAdmin]].',
+	'smw_smwadmin_setupsuccess' => "This is the confirmation message at the bottom of the script's report concerning setup or update of the SMW database tables (process triggered from [[Special:SMWAdmin]]).",
+	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]].
+
+{{Identical|Return to $1}}',
+	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started.',
+	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started.',
+	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped.',
+	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process.',
+	'smw_smwadmin_docu' => 'This is the introductory message at the top of [[Special:SMWAdmin]].',
+	'smw_smwadmin_db' => 'This is a section header on [[Special:SMWAdmin]].',
+	'smw_smwadmin_dbdocu' => 'This is the text describing an available administrative option on [[Special:SMWAdmin]].',
+	'smw_smwadmin_permissionswarn' => 'This is the text describing a problem (including a solution) that may arise when using an available administrative option on [[Special:SMWAdmin]].',
+	'smw_smwadmin_dbbutton' => 'This is the name of the submit button on [[Special:SMWAdmin]] to trigger the respective process.',
+	'smw_smwadmin_announce' => 'This is the section header on [[Special:SMWAdmin]] as well as the name of the submit button to register the wiki at [http://semantic-mediawiki.org/wiki/Special:SMWRegistry semantic-mediawiki.org].',
+	'smw_smwadmin_announcedocu' => 'This is the text describing an available administrative option on [[Special:SMWAdmin]].
+
+{{doc-important|Do not alter or translate link targets!}}',
+	'smw_smwadmin_announcebutton' => 'This is the text describing an available administrative option on [[Special:SMWAdmin]].',
+	'smw_smwadmin_datarefresh' => 'This is a section header on [[Special:SMWAdmin]].',
+	'smw_smwadmin_datarefreshdocu' => 'This is the text describing an available administrative option on [[Special:SMWAdmin]].',
+	'smw_smwadmin_datarefreshprogress' => 'This is an information message on [[Special:SMWAdmin]].',
+	'smw_smwadmin_datarefreshbutton' => 'This is the name of the submit button on [[Special:SMWAdmin]] to trigger the respective process.',
+	'smw_smwadmin_datarefreshstop' => 'This is the name of the submit button on [[Special:SMWAdmin]] to abort the respective process.',
+	'smw_smwadmin_datarefreshstopconfirm' => 'This is the text next to the checkbox on [[Special:SMWAdmin]] reassuring that the respective process should indeed be cancelled.',
+	'smw_smwadmin_support' => 'This is a section header on [[Special:SMWAdmin]].',
+	'smw_smwadmin_supportdocu' => 'This is the introductory text on [[Special:SMWAdmin]] followed by a list of resources.',
+	'smw_smwadmin_installfile' => 'This text on [[Special:SMWAdmin]] describes a resource for help.
+
+{{doc-important|Do not alter or translate link targets!}}',
+	'smw_smwadmin_smwhomepage' => 'This text on [[Special:SMWAdmin]] describes a resource for help.
+
+{{doc-important|Do not alter or translate link targets!}}',
+	'smw_smwadmin_mediazilla' => 'This text on [[Special:SMWAdmin]] describes where to report bugs.
+
+{{doc-important|Do not alter or translate link targets!}}',
+	'smw_smwadmin_questions' => 'This text on [[Special:SMWAdmin]] describes a resource for help.
+
+{{doc-important|Do not alter or translate link targets!}}',
+	'smw_adminlinks_datastructure' => 'This is a section header on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
+	'smw_adminlinks_displayingdata' => 'This is a section header on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
+	'smw_adminlinks_inlinequerieshelp' => 'This is the link text for a link on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
+	'smw-createproperty-isproperty' => 'This an information message at the top on a page in namespace "Property". $1 holds the name of the datatype which was assigned to the respective property.',
+	'smw-createproperty-allowedvals' => 'This an information message at the top on a page in namespace "Property" which gets inserted in case only certain property values are [http://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed to be used] for the respective property.',
+	'smw-paramdesc-category-delim' => 'This is the description of the "delim" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-category-template' => 'This is the description of the "template" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-category-userparam' => 'This is the description of the "userparam" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-info-par-message' => 'This is the description of the "message" parameter of the parser function [http://semantic-mediawiki.org/wiki/Help:Adding_tooltips "#info"].',
+	'smw-info-par-icon' => 'This is the description of the "icon" parameter of the parser function [http://semantic-mediawiki.org/wiki/Help:Adding_tooltips "#info"]. {{doc-important|Do not translate the possible parameter values "info" and "warning".}}',
 );
 
 /** Niuean (ko e vagahau Niuē)
@@ -1917,7 +1991,7 @@ $messages['bs'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, siguran sam.',
 );
 
-/** Catalan (Català)
+/** Catalan (català)
  * @author Dvdgmz
  * @author Loupeter
  * @author SMP
@@ -2238,7 +2312,7 @@ $messages['ckb'] = array(
 	'smw_browse_go' => 'بڕۆ',
 );
 
-/** Czech (Česky)
+/** Czech (česky)
  * @author Kjbenes
  * @author Matěj Grabovský
  * @author Mormegil
@@ -2588,28 +2662,28 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_attributearticlecount' => 'Es {{PLURAL:$1|wird eine Seiten|werden $1 Seiten}} angezeigt, die dieses Attribut {{PLURAL:$1|verwendet|verwenden}}:',
 	'smw_subproperty_header' => 'Unterattribute',
 	'smw_subpropertyarticlecount' => 'Dieses Attribut hat {{PLURAL:$1|folgendes Unterattribut|folgende $1 Unterattribute}}:',
-	'smw_concept_header' => 'Seiten des Konzepts „$1“',
+	'smw_concept_header' => 'Seiten mit dem Konzept „$1“',
 	'smw_conceptarticlecount' => 'Es {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt, die zu diesem Konzept {{PLURAL:$1|gehört|gehören}}:',
 	'smw_rss_description' => 'RSS-Feed von $1',
 	'exportrdf' => 'Seiten als RDF exportieren',
 	'smw_exportrdf_docu' => 'Hier können Informationen zu einzelnen Seiten im RDF-Format abgerufen werden. Bitte die Namen der gewünschten Seiten <i>zeilenweise</i> angeben.',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnismengen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf zu exportierende Seiten verweisen. Diese Einstellung erzeugt RDF, das leichter durchsucht werden kann.',
-	'smw_exportrdf_lastdate' => 'Exportiere keine Seiten, die seit dem angegebenen Zeitpunkt unverändert geblieben sind.',
+	'smw_exportrdf_lastdate' => 'Exportiere keine Seiten, die seit dem angegebenen Zeitpunkt nicht mehr verändert wurden.',
 	'smw_exportrdf_submit' => 'Exportieren',
 	'uriresolver' => 'URI-Auflöser',
 	'properties' => 'Attribute',
 	'smw_properties_docu' => 'In diesem Wiki werden die folgenden Attribute genutzt:',
 	'smw_property_template' => '$1 mit Datentyp $2 ($3)',
 	'smw_property_template_notype' => '$1 ($2)',
-	'smw_propertylackspage' => 'Alle Attribute sollten durch eine Seite beschrieben werden!',
+	'smw_propertylackspage' => 'Alle Attribute sollten auf einer Seite beschrieben werden!',
 	'smw_propertylackstype' => 'Für dieses Attribut wurde kein Datentyp angegeben ($1 wird vorläufig als Typ angenommen).',
 	'smw_propertyhardlyused' => 'Dieses Attribut wird im Wiki kaum verwendet!',
 	'unusedproperties' => 'Verwaiste Attribute',
-	'smw_unusedproperties_docu' => 'Die folgenden Attributseiten sind vorhanden, obwohl sie nicht verwendet werden.',
+	'smw_unusedproperties_docu' => 'Die folgenden Attribute wurden auf einer zugehörigen Seite im Namensraum „Attribut:“ beschrieben, werden aber nicht im Wiki verwendet.',
 	'smw_unusedproperty_template' => '$1 mit Datentyp $2',
 	'wantedproperties' => 'Gewünschte Attribute',
-	'smw_wantedproperties_docu' => 'Folgende Attribute haben bisher keine erläuterende Seite, obwohl sie bereits für die Beschreibung anderer Seiten verwendet werden.',
+	'smw_wantedproperties_docu' => 'Die folgenden Attribute wurden bislang noch nicht auf einer zugehörigen Seite im Namensraum „Attribut:“ beschrieben, obwohl sie bereits im Wiki verwendet werden.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|Vorkommen|Vorkommen}})',
 	'smw_purge' => 'Neu laden',
 	'types' => 'Datentypen',
@@ -2619,7 +2693,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_semstats_text' => "In diesem Wiki {{PLURAL:$1|wurde '''1''' Wert|wurden '''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]] eingegeben. '''$3''' {{PLURAL:$3|Attribut hat|Attribute haben}} eine eigene Seite und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.
 
 Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste gewünschter Attribute]] aufgeführt.",
-	'smw_uri_doc' => 'Der URI-Auflöser setzt die Empfehlungen „<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>“ um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.',
+	'smw_uri_doc' => 'Der URI-Auflöser setzt die Empfehlungen „[$1 W3C TAG finding on httpRange-14]“ um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.',
 	'ask' => 'Semantische Suche',
 	'smw_ask_sortby' => 'Sortiere nach Spalte (optional)',
 	'smw_ask_ascorder' => 'Aufsteigend',
@@ -2628,7 +2702,7 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_ask_editquery' => '[Abfrage bearbeiten]',
 	'smw_add_sortcondition' => '[Sortieranweisung hinzufügen]',
 	'smw_ask_hidequery' => 'Abfrage ausblenden',
-	'smw_ask_help' => 'Hilfe',
+	'smw_ask_help' => 'Hilfe zu Abfragen',
 	'smw_ask_queryhead' => 'Abfrage',
 	'smw_ask_printhead' => 'Zusätzlich anzuzeigende Daten',
 	'smw_ask_printdesc' => '(ein Attribut je Zeile angeben)',
@@ -2702,15 +2776,15 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_browse_no_incoming' => 'Keine Attribute verlinken auf diese Seite.',
 	'smw_inverse_label_default' => '$1 von',
 	'smw_inverse_label_property' => 'Bezeichnung des inversen Attributs',
-	'pageproperty' => 'Attributswerte einer Seite',
+	'pageproperty' => 'Attributwerte einer Seite',
 	'smw_pp_docu' => 'Suche nach allen Werten, die ein bestimmtes Attribut für die angegebene Seite hat.',
-	'smw_pp_from' => 'Seite',
+	'smw_pp_from' => 'Von Seite',
 	'smw_pp_type' => 'Attribut',
 	'smw_pp_submit' => 'Ergebnisse anzeigen',
 	'smw_result_prev' => 'Zurück',
 	'smw_result_next' => 'Vorwärts',
 	'smw_result_results' => 'Ergebnisse',
-	'smw_result_noresults' => 'Keine Ergebnisse gefunden.',
+	'smw_result_noresults' => 'Es wurden keine Ergebnisse gefunden.',
 	'smwadmin' => 'Administration von Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Die Speichereinheit wurde erfolgreich eingerichtet.',
 	'smw_smwadmin_return' => 'Zurück zu $1',
@@ -2755,9 +2829,9 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet werden.',
 	'smw_smwadmin_questions' => 'Im Fall weiterer Fragen oder Anregungen kann man sich an den Diskussionen im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Benutzerforum</a> beteiligen.',
 	'smw_adminlinks_datastructure' => 'Datenstruktur',
-	'smw_adminlinks_displayingdata' => 'Daten anzeigen',
+	'smw_adminlinks_displayingdata' => 'Datenanzeige',
 	'smw_adminlinks_inlinequerieshelp' => 'Hilfe zu eingebetteten Abfragen',
-	'smw-createproperty-isproperty' => 'Dies ist eine Eigenschaft des Typs $1.',
+	'smw-createproperty-isproperty' => 'Dies ist ein Attribut des Datentyps $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Der mögliche Wert für dieses Attribut ist|Die möglichen Werte für dieses Attribut sind}}:',
 	'smw-paramdesc-category-delim' => 'Das Trennzeichen für die Ergebniswerte',
 	'smw-paramdesc-category-template' => 'Eine Vorlage, mit der die Objekte formatiert werden sollen',
@@ -2982,7 +3056,7 @@ Nowy se njestartujo.',
 Změny, kótarež cynje se w toś tom kšacu, njewobwliwuju zbytk datoweje banki MediaWiki a daju se lažko anulěrowaś, jolic póžedane.
 Toś te zarědowańska funkcija móžo se někotare razy wugbaś, mimo až zawinuju škódu, ale jo trěbna jano jaden raz pśi instalaciji abo aktualizaciji.',
 	'smw_smwadmin_permissionswarn' => 'Jolic operacija raźi se z SQL-zmólkami, wužywaŕ datoweje banki, kótaregož twój wiki wužywa (skontrolěruj twóju dataja LocalSettings.php), nejskerjej njama dosegajuce pšawa.
-Pak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tabelow, zapódaj nachylu twójo admininistratorowe wužywarske mě w LocalSettings.php, pak wužyj wótglědowański skript <tt>SMW_setup.php</tt>, kótarež mógu wósobinske pódaśa z dataje AdminSettings.php wužywaś.',
+Pak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tabelow, zapódaj nachylu twójo admininistratorowe wužywarske mě w LocalSettings.php, pak wužyj wótglědowański skript <tt>SMW_setup.php</tt>, kótarež mógu wósobinske pódaśa administratora wužywaś.',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializěrowaś abo aktualizěrowaś',
 	'smw_smwadmin_announce' => 'Twój wiki pśipowěźeś',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki ma websłužbu za wuzjawjenje nowych semantiskich wikisedłow.
@@ -3248,7 +3322,7 @@ $messages['eo'] = array(
 	'smw-createproperty-allowedvals' => 'La {{PLURAL:$1|permesita valoro por ĉi tiu atributo|permesitaj valoroj por ĉi tiuj atributoj}} estas:',
 );
 
-/** Spanish (Español)
+/** Spanish (español)
  * @author Antur
  * @author Armando-Martin
  * @author Bola
@@ -3659,7 +3733,7 @@ $messages['fa'] = array(
 	'smw-createproperty-allowedvals' => 'مقادیر مجاز برای این ویژگی یا صفت این‌ها هستند:',
 );
 
-/** Finnish (Suomi)
+/** Finnish (suomi)
  * @author Cimon Avaro
  * @author Crt
  * @author Nike
@@ -3788,7 +3862,7 @@ Uutta ei käynnistetä.',
 	'smw-createproperty-isproperty' => 'Tämä on ominaisuus, jonka tyyppi on $1.',
 );
 
-/** French (Français)
+/** French (français)
  * @author Crochet.david
  * @author Faure.thomas
  * @author Gomoko
@@ -5089,7 +5163,7 @@ $messages['hil'] = array(
 	'smw_browse_go' => 'Lakat',
 );
 
-/** Croatian (Hrvatski)
+/** Croatian (hrvatski)
  * @author Dalibor Bosits
  * @author Tivek
  */
@@ -5563,7 +5637,7 @@ Slědowaca funkcija zawěsćuje, zo twoja datowa banka je prawje zarjadowana.
 Změny, kotrež so w tutym kroku činja, njewobwliwuja zbytk datowje banki MediaWiki a dadźa so lochko cofnyć, jeli požadane.
 Tuta zarjadowanska funkcija da so wjacore razy wuwjesć, bjeztoho zo so škoda zawinuje, je wšak jenož jedyn raz při instalaciji abo aktualizaciji trěbna.',
 	'smw_smwadmin_permissionswarn' => 'Jeli operacija so ze zmylkami SQL njeradźi, najskerje wužiwar datoweje banki, kotrehož twój wiki wužiwa (hlej twoju dataju LocalSettings.php), dosahace prawa nima.
-Zaruč tute přidatne wužiwarske prawa za wutworjenje a wušmórnjenje tabelow, zapodaj nachwilu přizjewjenje twojeho administratora datoweje banki do dataje LocalSettings.php abo wužij wothladowanski skript <tt>SMW_setup.php</tt>, kotryž móže wužiwarske daty z dataje AdminSettings.php wužiwać.',
+Zaruč tute přidatne wužiwarske prawa za wutworjenje a wušmórnjenje tabelow, zapodaj nachwilu přizjewjenje twojeho administratora datoweje banki do dataje LocalSettings.php abo wužij wothladowanski skript <tt>SMW_setup.php</tt>, kotryž móže wužiwarske daty administratora wužiwać.',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializować abo aktualizować',
 	'smw_smwadmin_announce' => 'Twój wiki připowědźić',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ma websłužbu za wozjewjenje nowych semantiskich wikisydłow.
@@ -5632,7 +5706,7 @@ $messages['ht'] = array(
 	'smw_infinite' => 'Nimewo ki gwo tankou "$1" pa sipòte.',
 );
 
-/** Hungarian (Magyar)
+/** Hungarian (magyar)
  * @author Dani
  * @author Glanthor Reviol
  */
@@ -5856,7 +5930,7 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw-createproperty-allowedvals' => 'A tulajdonság a következő {{PLURAL:$1|értéket|értékeket}} veheti fel:',
 );
 
-/** Interlingua (Interlingua)
+/** Interlingua (interlingua)
  * @author McDutchie
  */
 $messages['ia'] = array(
@@ -6422,7 +6496,7 @@ $messages['io'] = array(
 	'smw_result_next' => 'Sequanta',
 );
 
-/** Italian (Italiano)
+/** Italian (italiano)
  * @author Beta16
  * @author Civvì
  * @author Cruccone
@@ -6698,7 +6772,7 @@ $messages['ja'] = array(
 	'smw_printername_count' => '集計結果',
 	'smw_printername_csv' => 'CSV 形式で書き出し',
 	'smw_printername_dsv' => 'DSV 形式で書き出し',
-	'smw_printername_debug' => 'デバッグ クエリー（上級者向け）',
+	'smw_printername_debug' => 'デバッグクエリー（上級者向け）',
 	'smw_printername_embedded' => 'ページの内容を埋め込む',
 	'smw_printername_json' => 'JSON 形式で書き出し',
 	'smw_printername_list' => '一覧',
@@ -6733,8 +6807,8 @@ $messages['ja'] = array(
 	'smw-paramdesc-csv-sep' => '使用する区切り文字',
 	'smw-paramdesc-dsv-separator' => '使用する区切り文字',
 	'smw-paramdesc-dsv-filename' => 'DSV ファイルの名前',
-	'smw-paramdesc-searchlabel' => '結果へのリンクの文字列',
-	'smw_iq_disabled' => 'このウィキのセマンティッククエリが無効になっています。',
+	'smw-paramdesc-searchlabel' => '結果へのリンクの文字列（既定は「{{int:Smw iq moreresults}}」）',
+	'smw_iq_disabled' => 'このウィキのセマンティッククエリーが無効になっています。',
 	'smw_iq_moreresults' => '… 追加結果',
 	'smw_nonright_importtype' => '$1は名前空間「$2」のページのみで利用できます。',
 	'smw_wrong_importtype' => '$1は名前空間「$2」のページでは利用できません。',
@@ -6757,13 +6831,13 @@ $messages['ja'] = array(
 	'smw_nounitsdeclared' => '測定の単位はこのプロパティに宣言されませんでした。',
 	'smw_novalues' => '値が指定されていません。',
 	'smw_nodatetime' => '「$1」という日付は理解できませんでした。',
-	'smw_toomanyclosing' => 'クエリー中に含まれる「$1」の数が多すぎるようです。',
-	'smw_noclosingbrackets' => 'クエリー中の <nowiki>[[</nowiki> に、対応する ]] で閉じられていないものがありました。',
-	'smw_misplacedsymbol' => '記号「$1」は意味のない場所で使われていました。',
+	'smw_toomanyclosing' => 'クエリーに含まれる「$1」の数が多すぎるようです。',
+	'smw_noclosingbrackets' => 'クエリー内の「<nowiki>[[</nowiki>」に、対応する「]]」で閉じられていないものがありました。',
+	'smw_misplacedsymbol' => '記号「$1」が、無意味な場所で使用されていました。',
 	'smw_unexpectedpart' => 'クエリーの一部「$1」は理解できませんでした。結果は予期しないものになるかもしれません。',
-	'smw_emptysubquery' => 'サブクエリーには有効な条件をもたないものがあります。',
-	'smw_misplacedsubquery' => 'サブクエリーの中に、サブクエリーが許可されていない場所で使用されているものがあります。',
-	'smw_valuesubquery' => 'プロパティ「$1」の値に対してはサブクエリーが使えません。',
+	'smw_emptysubquery' => '有効な条件がないサブクエリーがあります。',
+	'smw_misplacedsubquery' => '許可されていない場所で使用されているサブクエリーがあります。',
+	'smw_valuesubquery' => 'プロパティ「$1」の値に対してはサブクエリーを使用できません。',
 	'smw_badqueryatom' => 'クエリーの「<nowiki>[[…]]</nowiki>」という部分が理解できませんでした。',
 	'smw_propvalueproblem' => 'プロパティ「$1」の値は理解できませんでした。',
 	'smw_noqueryfeature' => 'このウィキではクエリーの機能の一部をサポートしておらず、クエリーの一部が破棄されました ($1)。',
@@ -6776,17 +6850,20 @@ $messages['ja'] = array(
 	'smw_attribute_header' => 'プロパティ「$1」を使っているページ',
 	'smw_attributearticlecount' => 'このプロパティを使っている $1個の{{PLURAL:$1|ページ}}を表示しています。',
 	'smw_subproperty_header' => 'サブプロパティ',
-	'smw_subpropertyarticlecount' => 'このプロパティには次の $1個の{{PLURAL:$1|サブプロパティ}}があります:',
+	'smw_subpropertyarticlecount' => 'このプロパティには以下の $1 {{PLURAL:$1|サブプロパティ}}があります：',
 	'smw_concept_header' => '概念「$1」のページ',
 	'smw_conceptarticlecount' => 'この概念に属する $1個の{{PLURAL:$1|ページ}}を表示しています。',
 	'smw_rss_description' => '$1 RSS フィード',
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
-	'exportrdf' => 'ページをRDFにエクスポート',
-	'smw_exportrdf_docu' => 'このページを使うとページからデータをRDF形式で取得できます。ページをエクスポートするには、下のテキストボックスにページ名を一行に一つずつ入力してください。',
-	'smw_exportrdf_recursive' => 'すべての関連ページを再帰的にエクスポートする。結果は大きくなることがあるので注意してください。',
-	'smw_exportrdf_backlinks' => 'エクスポートされたページを参照するすべてのページをさらにエクスポートする。閲覧が可能なRDFを生成します。',
-	'smw_exportrdf_lastdate' => '指定した時点以降に変更がされていないページをエクスポートしない。',
-	'smw_exportrdf_submit' => 'エクスポート',
+	'exportrdf' => 'ページをRDFに書き出し',
+	'smw_exportrdf_docu' => 'このページを使用すると、ページからデータをRDF形式で取得できます。
+ページを書き出すには、下のテキストボックスにページ名を一行に一つずつ入力してください。',
+	'smw_exportrdf_recursive' => 'すべての関連ページを再帰的に書き出す。
+結果が大きくなる場合があるため注意してください。',
+	'smw_exportrdf_backlinks' => '書き出されたされたページを参照するページもすべて書き出す。
+閲覧できるRDFを生成します。',
+	'smw_exportrdf_lastdate' => '指定した時点以降に変更がされていないページを書き出さない。',
+	'smw_exportrdf_submit' => '書き出し',
 	'uriresolver' => 'URIリゾルバー',
 	'properties' => 'プロパティ',
 	'smw_properties_docu' => '以下のプロパティがこのウィキでは使われています。',
@@ -6812,12 +6889,12 @@ $messages['ja'] = array(
 	'smw_uri_doc' => 'URI リゾルバーは [$1 W3C TAG での httpRange-14 に関する議論成果]を実装しています。
 これは人間がウェブサイトに向かわないように取り計らいます。',
 	'ask' => '意味的検索',
-	'smw_ask_sortby' => '列ごとに整列 (任意選択)',
+	'smw_ask_sortby' => '列ごとに並べ替え (任意選択)',
 	'smw_ask_ascorder' => '昇順',
 	'smw_ask_descorder' => '降順',
 	'smw_ask_submit' => '結果を取得',
 	'smw_ask_editquery' => '[クエリーを編集]',
-	'smw_add_sortcondition' => '[整列条件を追加]',
+	'smw_add_sortcondition' => '[並べ替え条件を追加]',
 	'smw_ask_hidequery' => 'クエリーを非表示',
 	'smw_ask_help' => 'クエリーのヘルプ',
 	'smw_ask_queryhead' => 'クエリー',
@@ -6828,7 +6905,7 @@ $messages['ja'] = array(
 	'smw_ask_otheroptions' => '他の選択肢',
 	'smw_ask_show_embed' => '埋め込み用コードを表示',
 	'smw_ask_hide_embed' => '埋め込み用コードを非表示',
-	'smw_ask_embed_instr' => 'このクエリをウィキページにインラインで埋め込むには、下のコードを使います。',
+	'smw_ask_embed_instr' => 'このクエリーをウィキページにインラインで埋め込むには、下のコードを使用します。',
 	'smw-ask-delete' => '[削除]',
 	'smw_qc_show_addnal_opts' => 'その他のオプションを表示',
 	'smw_qc_hide_addnal_opts' => 'オプションを折り畳む',
@@ -6854,7 +6931,7 @@ $messages['ja'] = array(
 	'smw_qui_dcategory' => 'カテゴリ：',
 	'searchbyproperty' => 'プロパティによる検索',
 	'smw_sbv_docu' => '指定したプロパティと値を持つすべてのページを検索します。',
-	'smw_sbv_novalue' => 'そのプロパティにとって有効な値を入力するか、「$1」のすべてのプロパティ値を確認してください。',
+	'smw_sbv_novalue' => 'そのプロパティに対して有効な値を入力するか、「$1」のすべてのプロパティ値を確認してください。',
 	'smw_sbv_displayresult' => 'プロパティ「$1」の値が「$2」であるすべてのページの一覧',
 	'smw_sbv_displayresultfuzzy' => 'プロパティ「$1」の値が「$2」であるすべてのページの一覧。
 結果がごく少数だったため、近い値も表示しています。',
@@ -6918,7 +6995,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw_smwadmin_datarefreshstop' => 'この更新を停止',
 	'smw_smwadmin_datarefreshstopconfirm' => 'はい、もちろんです。',
 	'smw_smwadmin_support' => '支援を得る',
-	'smw_smwadmin_supportdocu' => '問題が起きたときにさまざまなリソースが助けとなるかもしれません：',
+	'smw_smwadmin_supportdocu' => '問題が発生したときにさまざまなリソースが助けとなるかもしれません：',
 	'smw_smwadmin_installfile' => 'インストールに問題を発見した場合、<a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL ファイル</a>にある指針を確認することから始めてください。',
 	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
 	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> で報告できます。',
@@ -7689,7 +7766,7 @@ Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw-createproperty-allowedvals' => 'Šios savybės leidžiamos reikšmės yra:',
 );
 
-/** Macedonian (Македонски)
+/** Macedonian (македонски)
  * @author Bjankuloski06
  * @author Rancher
  */
@@ -9040,7 +9117,7 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw-createproperty-allowedvals' => 'Dei tillatne verdiane for denne eigenskapen er:',
 );
 
-/** Occitan (Occitan)
+/** Occitan (occitan)
  * @author Cedric31
  */
 $messages['oc'] = array(
@@ -9271,7 +9348,7 @@ $messages['pfl'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, isch bin ma sischa',
 );
 
-/** Polish (Polski)
+/** Polish (polski)
  * @author BeginaFelicysym
  * @author Maikking
  * @author Sp5uhe
@@ -9777,7 +9854,7 @@ $messages['ps'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'هو، زه ډاډه يم.',
 );
 
-/** Portuguese (Português)
+/** Portuguese (português)
  * @author 555
  * @author Crazymadlover
  * @author Hamilton Abreu
@@ -10463,7 +10540,7 @@ $messages['roa-tara'] = array(
 	'smw_typeunits' => 'Aunità de mesure d\'u tipe "$1": $2',
 );
 
-/** Russian (Русский)
+/** Russian (русский)
  * @author Eleferen
  * @author Ferrer
  * @author Innv
@@ -10730,7 +10807,7 @@ $messages['sh'] = array(
 	'smw_result_prev' => 'Prethodna',
 );
 
-/** Slovak (Slovenčina)
+/** Slovak (slovenčina)
  * @author Helix84
  */
 $messages['sk'] = array(
@@ -11114,7 +11191,7 @@ Ker je bilo le malo rezultatov, so prikazane strani s približnim ujemanjem.',
 	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
 );
 
-/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬)
+/** Serbian (Cyrillic script) (‪српски (ћирилица)‬)
  * @author Rancher
  * @author Sasa Stefanovic
  * @author Slaven Kosanovic
@@ -11339,7 +11416,7 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Помоћ за непосредне упите',
 );
 
-/** Serbian (Latin script) (‪Srpski (latinica)‬)
+/** Serbian (Latin script) (‪srpski (latinica)‬)
  * @author Liangent
  * @author Michaello
  * @author Rancher
@@ -11562,7 +11639,7 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za neposredne upite',
 );
 
-/** Swedish (Svenska)
+/** Swedish (svenska)
  * @author Boivie
  * @author Eliasb
  * @author Flrn
@@ -12141,7 +12218,7 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Oo, nakatitiyak ako.',
 	'smw_smwadmin_support' => 'Pagkuha ng suporta',
 	'smw_smwadmin_supportdocu' => 'Maaaring makatulong sa iyo ang sari-saring kapakipakinabang na mga bagay-bagay kung sakaling magkaroon ng mga suliranin:',
-	'smw_smwadmin_installfile' => 'Kung sakaling makaranas ka ng mga suliranin hinggil sa iyong pag-iinstala/gawaing panluluklok, magsimula sa pagsusuri ng mga pamamatnubay na nasa loob ng <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ILUKLOK ang talaksan</a>.',
+	'smw_smwadmin_installfile' => 'Kung sakaling makaranas ka ng mga suliranin sa pagluluklok mo, magsimula sa pamamagitan ng pagsusuri ng mga patnubay na nasa loob ng <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ILUKLOK ang talaksan</a>.',
 	'smw_smwadmin_smwhomepage' => 'Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://bugzilla.wikimedia.org/\">Bugzilla</a>.",
 	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan o mga mungkahi, makilahok sa usapang nasa <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Pangmadlang talakayan ng tagagamit ng MediaWiking Semantiko</a>.',
@@ -12924,7 +13001,7 @@ $messages['zh-cn'] = array(
 	'smw-createproperty-allowedvals' => '此属性的可用型态为：',
 );
 
-/** Simplified Chinese (‪中文(简体)‬)
+/** Simplified Chinese (‪中文（简体）‬)
  * @author Anakmalaysia
  * @author Gzdavidwong
  * @author Liangent
@@ -13221,7 +13298,7 @@ $messages['zh-hans'] = array(
 	'smw-info-par-icon' => '显示的图标，“信息”或“警告”。',
 );
 
-/** Traditional Chinese (‪中文(繁體)‬)
+/** Traditional Chinese (‪中文（繁體）‬)
  * @author Anakmalaysia
  * @author Frankou
  * @author Gzdavidwong
@@ -13446,7 +13523,7 @@ $messages['zh-hant'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => '是的，我確認。',
 	'smw_smwadmin_support' => '獲得協助',
 	'smw_smwadmin_supportdocu' => '遇到問題時，可以使用以下資源獲得幫助：',
-	'smw_smwadmin_installfile' => '如果安裝遇到問題，請先仔細閱讀<a href=「https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL 文件</a>中的指引。',
+	'smw_smwadmin_installfile' => '如果安裝遇到問題，請先仔細閱讀<a href=「http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL 文件</a>中的指引。',
 	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki的完整用戶文檔請查閱 <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
 	'smw_smwadmin_mediazilla' => '臭蟲可到<a href="https://bugzilla.wikimedia.org/">Bugzilla</a>報告。',
 	'smw_smwadmin_questions' => '如果有問題或建議，可加入<a href= 「http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user」>Semantic MediaWiki 用戶論壇</a>參與討論。',
