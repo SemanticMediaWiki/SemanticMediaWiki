@@ -60,7 +60,7 @@ $magicWords['arz'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__', '__SHOWFACTBOX__' ),
 );
 
-/** Breton (Brezhoneg) */
+/** Breton (brezhoneg) */
 $magicWords['br'] = array(
 	'ask' => array( 0, 'goulenn' ),
 	'show' => array( 0, 'diskouez' ),
@@ -89,7 +89,7 @@ $magicWords['diq'] = array(
 	'show' => array( 0, 'bımocne' ),
 );
 
-/** Spanish (Español) */
+/** Spanish (español) */
 $magicWords['es'] = array(
 	'ask' => array( 0, 'preguntar', 'pregunta' ),
 	'show' => array( 0, 'muestra', 'mostrar' ),
@@ -120,13 +120,28 @@ $magicWords['ka'] = array(
 	'show' => array( 0, 'ჩვენება' ),
 );
 
+/** Korean (한국어) */
+$magicWords['ko'] = array(
+	'ask' => array( 0, '묻기' ),
+	'show' => array( 0, '보이기' ),
+	'info' => array( 0, '정보' ),
+	'concept' => array( 0, '생각' ),
+	'subobject' => array( 0, '하위객체' ),
+	'smwdoc' => array( 0, 'smw문서' ),
+	'set' => array( 0, '설정' ),
+	'set_recurring_event' => array( 0, '반복_일정_설정' ),
+	'declare' => array( 0, '선언' ),
+	'SMW_NOFACTBOX' => array( 0, '__사실상자숨김__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__사실상자보이기__', '__사실상자표시__' ),
+);
+
 /** Luxembourgish (Lëtzebuergesch) */
 $magicWords['lb'] = array(
 	'ask' => array( 0, 'froen' ),
 	'show' => array( 0, 'weisen' ),
 );
 
-/** Macedonian (Македонски) */
+/** Macedonian (македонски) */
 $magicWords['mk'] = array(
 	'ask' => array( 0, 'прашај' ),
 	'show' => array( 0, 'прикажи' ),
@@ -182,7 +197,7 @@ $magicWords['nl'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__FEITENKADERWEERGEVEN__' ),
 );
 
-/** Polish (Polski) */
+/** Polish (polski) */
 $magicWords['pl'] = array(
 	'ask' => array( 0, 'pytanie' ),
 	'show' => array( 0, 'pokaż' ),
@@ -198,7 +213,7 @@ $magicWords['ps'] = array(
 	'info' => array( 0, 'مالومات', 'info' ),
 );
 
-/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬) */
+/** Serbian (Cyrillic script) (‪српски (ћирилица)‬) */
 $magicWords['sr-ec'] = array(
 	'ask' => array( 0, 'питај' ),
 	'show' => array( 0, 'прикажи' ),
@@ -209,7 +224,7 @@ $magicWords['sr-ec'] = array(
 	'declare' => array( 0, 'одреди' ),
 );
 
-/** Serbian (Latin script) (‪Srpski (latinica)‬) */
+/** Serbian (Latin script) (‪srpski (latinica)‬) */
 $magicWords['sr-el'] = array(
 	'ask' => array( 0, 'pitaj' ),
 	'show' => array( 0, 'prikaži' ),
@@ -222,14 +237,14 @@ $magicWords['sr-el'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__PRIKAŽIČINJENICE__', '__PRIKAŽI_ČINJENICE__' ),
 );
 
-/** Swedish (Svenska) */
+/** Swedish (svenska) */
 $magicWords['sv'] = array(
 	'ask' => array( 0, 'fråga', 'ask' ),
 	'show' => array( 0, 'visa', 'show' ),
 	'concept' => array( 0, 'koncept', 'concept' ),
 );
 
-/** Tatar (Cyrillic script) (Татарча) */
+/** Tatar (Cyrillic script) (татарча) */
 $magicWords['tt-cyrl'] = array(
 	'ask' => array( 0, 'сорау' ),
 	'show' => array( 0, 'күрсәт' ),

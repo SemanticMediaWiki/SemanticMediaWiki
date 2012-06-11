@@ -46,6 +46,7 @@ $specialPageAliases['ar'] = array(
 	'URIResolver' => array( 'محلل_يو_آر_آي' ),
 	'UnusedProperties' => array( 'خصائص_غير_مستخدمة' ),
 	'WantedProperties' => array( 'خصائص_مطلوبة' ),
+	'QueryCreator' => array( 'منشئ_الاستعلام' ),
 );
 
 /** Egyptian Spoken Arabic (مصرى) */
@@ -71,7 +72,7 @@ $specialPageAliases['bjn'] = array(
 	'Types' => array( 'Janis' ),
 );
 
-/** Breton (Brezhoneg) */
+/** Breton (brezhoneg) */
 $specialPageAliases['br'] = array(
 	'Ask' => array( 'Goulenn' ),
 	'Browse' => array( 'Furchal' ),
@@ -81,7 +82,7 @@ $specialPageAliases['br'] = array(
 	'Types' => array( 'Seurtoù' ),
 );
 
-/** Bosnian (Bosanski) */
+/** Bosnian (bosanski) */
 $specialPageAliases['bs'] = array(
 	'Ask' => array( 'Upit' ),
 	'Browse' => array( 'Pregledanje' ),
@@ -106,6 +107,23 @@ $specialPageAliases['de'] = array(
 	'QueryCreator' => array( 'Abfragenersteller' ),
 );
 
+/** Zazaki (Zazaki) */
+$specialPageAliases['diq'] = array(
+	'Ask' => array( 'Pers' ),
+	'Browse' => array( 'Bıgeyrê' ),
+	'ExportRDF' => array( 'RDFTeberde' ),
+	'PageProperty' => array( 'XısusiyaPela' ),
+	'Properties' => array( 'Xısusiyeti' ),
+	'SMWAdmin' => array( 'SMWXızmetkar' ),
+	'SearchByProperty' => array( 'XısusiyetkarCıgeyrayış' ),
+	'SemanticStatistics' => array( 'İstatıstikêFahmkerdışi' ),
+	'Types' => array( 'Babeti' ),
+	'URIResolver' => array( 'URIAgozne' ),
+	'UnusedProperties' => array( 'XısusiyetêNêkarênê' ),
+	'WantedProperties' => array( 'XısusiyetêWaştênê' ),
+	'QueryCreator' => array( 'PesinVıraşter' ),
+);
+
 /** Lower Sorbian (Dolnoserbski) */
 $specialPageAliases['dsb'] = array(
 	'Ask' => array( 'Semantiske pytanhje' ),
@@ -125,7 +143,7 @@ $specialPageAliases['dv'] = array(
 	'Ask' => array( 'އައްސަވާ' ),
 );
 
-/** Spanish (Español) */
+/** Spanish (español) */
 $specialPageAliases['es'] = array(
 	'Types' => array( 'Tipos' ),
 );
@@ -147,7 +165,7 @@ $specialPageAliases['fa'] = array(
 	'QueryCreator' => array( 'کوئری‌ساز' ),
 );
 
-/** Finnish (Suomi) */
+/** Finnish (suomi) */
 $specialPageAliases['fi'] = array(
 	'Ask' => array( 'Kysy' ),
 	'Browse' => array( 'Selaa' ),
@@ -221,7 +239,7 @@ $specialPageAliases['ht'] = array(
 	'WantedProperties' => array( 'ProprieteKiMande' ),
 );
 
-/** Hungarian (Magyar) */
+/** Hungarian (magyar) */
 $specialPageAliases['hu'] = array(
 	'Ask' => array( 'Kérdez' ),
 	'Browse' => array( 'Böngészés' ),
@@ -233,7 +251,7 @@ $specialPageAliases['hu'] = array(
 	'WantedProperties' => array( 'Keresett_tulajdonságok' ),
 );
 
-/** Interlingua (Interlingua) */
+/** Interlingua (interlingua) */
 $specialPageAliases['ia'] = array(
 	'Ask' => array( 'Consultar' ),
 	'Browse' => array( 'Percurrer' ),
@@ -265,7 +283,7 @@ $specialPageAliases['id'] = array(
 	'WantedProperties' => array( 'PropertiDiinginkan' ),
 );
 
-/** Italian (Italiano) */
+/** Italian (italiano) */
 $specialPageAliases['it'] = array(
 	'Ask' => array( 'Chiedi' ),
 	'Browse' => array( 'Esplora' ),
@@ -308,6 +326,23 @@ $specialPageAliases['km'] = array(
 	'Types' => array( 'ប្រភេទ' ),
 );
 
+/** Korean (한국어) */
+$specialPageAliases['ko'] = array(
+	'Ask' => array( '묻기' ),
+	'Browse' => array( '찾아보기' ),
+	'ExportRDF' => array( 'RDF내보내기' ),
+	'PageProperty' => array( '문서속성' ),
+	'Properties' => array( '속성' ),
+	'SMWAdmin' => array( 'SMW관리' ),
+	'SearchByProperty' => array( '속성찾기', '속성검색' ),
+	'SemanticStatistics' => array( '시멘틱통계량' ),
+	'Types' => array( '종류' ),
+	'URIResolver' => array( 'URI해결' ),
+	'UnusedProperties' => array( '안쓰는속성', '쓰이지않는속성' ),
+	'WantedProperties' => array( '필요한속성' ),
+	'QueryCreator' => array( '쿼리작성기' ),
+);
+
 /** Colognian (Ripoarisch) */
 $specialPageAliases['ksh'] = array(
 	'Ask' => array( 'Froore' ),
@@ -323,7 +358,7 @@ $specialPageAliases['ksh'] = array(
 	'WantedProperties' => array( 'Eijeschaffte di noch jebruch wääde' ),
 );
 
-/** Cornish (Kernowek) */
+/** Cornish (kernowek) */
 $specialPageAliases['kw'] = array(
 	'Ask' => array( 'Govyn' ),
 	'Browse' => array( 'Peuri' ),
@@ -344,12 +379,12 @@ $specialPageAliases['lb'] = array(
 	'WantedProperties' => array( 'Gewënschten_Eegeschaften' ),
 );
 
-/** Lumbaart (Lumbaart) */
+/** lumbaart (lumbaart) */
 $specialPageAliases['lmo'] = array(
 	'Ask' => array( 'Ciama' ),
 );
 
-/** Macedonian (Македонски) */
+/** Macedonian (македонски) */
 $specialPageAliases['mk'] = array(
 	'Ask' => array( 'Прашај' ),
 	'Browse' => array( 'Прелистај' ),
@@ -395,7 +430,7 @@ $specialPageAliases['mt'] = array(
 	'Browse' => array( 'Esplora' ),
 );
 
-/** Norwegian Bokmål (‪Norsk (bokmål)‬) */
+/** Norwegian Bokmål (‪norsk (bokmål)‬) */
 $specialPageAliases['nb'] = array(
 	'Ask' => array( 'Spør' ),
 	'Browse' => array( 'Se_gjennom' ),
@@ -443,7 +478,7 @@ $specialPageAliases['nl'] = array(
 	'QueryCreator' => array( 'Zoekopdrachtenmaker' ),
 );
 
-/** Occitan (Occitan) */
+/** Occitan (occitan) */
 $specialPageAliases['oc'] = array(
 	'Browse' => array( 'Percórrer' ),
 	'Properties' => array( 'Proprietats' ),
@@ -462,7 +497,7 @@ $specialPageAliases['or'] = array(
 	'WantedProperties' => array( 'ଦରକାରୀ_ଗୁଣ' ),
 );
 
-/** Polish (Polski) */
+/** Polish (polski) */
 $specialPageAliases['pl'] = array(
 	'Ask' => array( 'Pytanie' ),
 	'Browse' => array( 'Przegląd' ),
@@ -488,7 +523,7 @@ $specialPageAliases['ps'] = array(
 	'UnusedProperties' => array( 'ناکارېدلې ځانتياوې' ),
 );
 
-/** Portuguese (Português) */
+/** Portuguese (português) */
 $specialPageAliases['pt'] = array(
 	'Ask' => array( 'Pedir' ),
 	'Browse' => array( 'Navegar' ),
@@ -502,12 +537,12 @@ $specialPageAliases['pt'] = array(
 	'WantedProperties' => array( 'Propriedades_desejadas' ),
 );
 
-/** Romanian (Română) */
+/** Romanian (română) */
 $specialPageAliases['ro'] = array(
 	'Browse' => array( 'Răsfoieşte' ),
 );
 
-/** Slovak (Slovenčina) */
+/** Slovak (slovenčina) */
 $specialPageAliases['sk'] = array(
 	'Ask' => array( 'SpýtaťSa' ),
 	'Browse' => array( 'Prehliadať' ),
@@ -522,13 +557,13 @@ $specialPageAliases['sk'] = array(
 	'WantedProperties' => array( 'ŽiadanéVlastnosti' ),
 );
 
-/** Albanian (Shqip) */
+/** Albanian (shqip) */
 $specialPageAliases['sq'] = array(
 	'Ask' => array( 'Pyet' ),
 	'Browse' => array( 'Sille' ),
 );
 
-/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬) */
+/** Serbian (Cyrillic script) (‪српски (ћирилица)‬) */
 $specialPageAliases['sr-ec'] = array(
 	'Ask' => array( 'Питај' ),
 	'Browse' => array( 'Потражи' ),
@@ -538,7 +573,7 @@ $specialPageAliases['sr-ec'] = array(
 	'WantedProperties' => array( 'Тражена_својства' ),
 );
 
-/** Swedish (Svenska) */
+/** Swedish (svenska) */
 $specialPageAliases['sv'] = array(
 	'Ask' => array( 'Fråga' ),
 	'Browse' => array( 'Bläddra' ),
@@ -591,7 +626,13 @@ $specialPageAliases['tr'] = array(
 	'WantedProperties' => array( 'İstenenÖzellikler' ),
 );
 
-/** Vèneto (Vèneto) */
+/** Ukrainian (українська) */
+$specialPageAliases['uk'] = array(
+	'Properties' => array( 'Властивості' ),
+	'Types' => array( 'Типи' ),
+);
+
+/** vèneto (vèneto) */
 $specialPageAliases['vec'] = array(
 	'Browse' => array( 'Sfója' ),
 	'Properties' => array( 'Proprietà' ),
@@ -607,13 +648,13 @@ $specialPageAliases['vi'] = array(
 	'Properties' => array( 'Thuộc_tính' ),
 );
 
-/** Simplified Chinese (‪中文(简体)‬) */
+/** Simplified Chinese (‪中文（简体）‬) */
 $specialPageAliases['zh-hans'] = array(
 	'Ask' => array( '问' ),
 	'Browse' => array( '浏览' ),
 );
 
-/** Traditional Chinese (‪中文(繁體)‬) */
+/** Traditional Chinese (‪中文（繁體）‬) */
 $specialPageAliases['zh-hant'] = array(
 	'Ask' => array( '問' ),
 	'Browse' => array( '瀏覽' ),
