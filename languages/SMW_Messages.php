@@ -631,10 +631,18 @@ This method is called ''content negotiation''.
 	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]].
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started.',
-	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started.',
-	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped.',
-	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process.',
+	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started.
+
+{{Identical|Return to $1}}',
+	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started.
+
+{{Identical|Return to $1}}',
+	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped.
+
+{{Identical|Return to $1}}',
+	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process.
+
+{{Identical|Return to $1}}',
 	'smw_smwadmin_docu' => 'This is the introductory message at the top of [[Special:SMWAdmin]].',
 	'smw_smwadmin_db' => 'This is a section header on [[Special:SMWAdmin]].',
 	'smw_smwadmin_dbdocu' => 'This is the text describing an available administrative option on [[Special:SMWAdmin]].',
@@ -1531,8 +1539,8 @@ $messages['be-tarask'] = array(
 	'smw_qc_default' => 'Па змоўчваньні:',
 	'smw_qc_formatopt' => 'Налады фармату',
 	'smw_qc_query_help' => 'Увядзіце запыт з дапамогай формы пададзенай ніжэй для выбару вікі-старонкі па
-Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>),
-Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>),
+Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>), 
+Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>), 
 Назвам(<strong>[[Нямеччына]]</strong>) і Прасторам назваў (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Уласьцівасьць</strong>',
 	'smw_qui_prop' => 'Уласьцівасьць:',
@@ -2175,8 +2183,8 @@ Té cura que els humans no es tornin en llocs web.',
 	'smw_qc_default' => 'Per defecte:',
 	'smw_qc_formatopt' => 'Opcions de format',
 	'smw_qc_query_help' => 'Introduïu una consulta fent servir el formulari a continuació. Seleccioneu les pàgines wiki en funció de
-Categories (<strong>[[{{ns:category}}:Actor]]</strong>),
-Propietats (<strong>[[Viu a::Elx]]</strong>),
+Categories (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Propietats (<strong>[[Viu a::Elx]]</strong>), 
 Noms (<strong>[[Lleida]]</strong>) i espais de noms (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propietat</strong>',
 	'smw_qui_prop' => 'Propietat:',
@@ -2722,7 +2730,7 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_qc_outro' => 'Nachfolgender Text:',
 	'smw_qc_default' => 'Standardtext:',
 	'smw_qc_formatopt' => 'Formatierungsoptionen',
-	'smw_qc_query_help' => 'Bitte eine Abfrage unter Verwendung des untenstehenden Formulars angeben, um Wikiseiten auf Basis von
+	'smw_qc_query_help' => 'Bitte eine Abfrage unter Verwendung des untenstehenden Formulars angeben, um Wikiseiten auf Basis von 
 Kategorien (<strong>z. B. [[:{{ns:category}}:Schauspieler]]</strong>),
 Attributen (<strong>[[:Liegt in::Deutschland]]</strong>),
 Seitennamen (<strong>[[:Deutschland]]</strong>) und
@@ -2802,7 +2810,7 @@ Die folgende Funktion gewährleistet, dass die Datenbank richtig eingerichtet is
 Die Datenbankänderungen, die in diesem Schritt durchgeführt werden, beeinträchtigen den Rest der MediaWiki-Datenbank nicht. Sie können, sofern dies gewünscht ist, leicht rückgängig gemacht werden.
 Diese Einrichtungsfunktion kann mehrere Male ausgeführt werden, ohne Schaden zu verursachen. Sie braucht allerdings nur einmal, während der Installation oder Aktualisierung von Semantic MediaWiki, durchgeführt werden.',
 	'smw_smwadmin_permissionswarn' => 'Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei LocalSettings.php), über keine ausreichenden Rechte verfügt.
-Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datentabellen einzuräumen, den Datenbankadministrator zeitweilig in die LocalSettings.php einzutragen, oder aber das Wartungsskript <tt>SMW_setup.php</tt> zu nutzen, das die Benutzerdaten aus der Datei AdminSettings.php einsetzt.',
+Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei LocalSettings.php einzutragen, oder aber das Wartungsskript <tt>SMW_setup.php</tt> zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualisieren',
 	'smw_smwadmin_announce' => 'Wiki bekannt geben',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
@@ -3511,8 +3519,8 @@ Las propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|li
 	'smw_qc_default' => 'Por defecto:',
 	'smw_qc_formatopt' => 'Opciones de formato',
 	'smw_qc_query_help' => 'Introduzca una consulta utilizando el siguiente formulario para seleccionar páginas wiki basadas en
-Categorías (<strong>[[{{ns:category}}:Actor]]</strong>),
-Propiedades (<strong>[[Localizado en::Alemania]]</strong>),
+Categorías (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Propiedades (<strong>[[Localizado en::Alemania]]</strong>), 
 Nombres (<strong>[[Alemania]]</strong>) y Espacios de nombres (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propiedad</strong>',
 	'smw_qui_prop' => 'Propiedad:',
@@ -4515,8 +4523,8 @@ As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:Wan
 	'smw_qc_default' => 'Por defecto:',
 	'smw_qc_formatopt' => 'Opcións de formato',
 	'smw_qc_query_help' => 'Introduza unha consulta utilizando o seguinte formulario para seleccionar páxinas wiki baseadas en
-Categorías (<strong>[[{{ns:category}}:Actor]]</strong>),
-Propiedades (<strong>[[Localizado en::Alemaña]]</strong>),
+Categorías (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Propiedades (<strong>[[Localizado en::Alemaña]]</strong>), 
 Nomes (<strong>[[Alemaña]]</strong>) e espazos de nomes (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propiedade</strong>',
 	'smw_qui_prop' => 'Propiedade:',
@@ -4595,7 +4603,7 @@ A función de embaixo asegúrase de que a súa base de datos está configurada a
 Os cambios feitos neste paso non afectarán ao resto da base de datos MediaWiki, e poden ser desfeitos de xeito sinxelo se se desexa.
 Esta función de configuración pode ser executada múltiples veces sen facer ningún dano, pero só é necesaria unha vez na instalación ou actualización.',
 	'smw_smwadmin_permissionswarn' => 'Se a operación falla con erros SQL, probablemente a base de datos empregada polo seu wiki (comprobe o seu LocalSettings.php) non teña os permisos suficientes.
-Fai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <tt>SMW_setup.php</tt>, que pode usar as credenciais de AdminSettings.php.',
+Fai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <tt>SMW_setup.php</tt>, que pode usar as credenciais dun usuario SysOp.',
 	'smw_smwadmin_dbbutton' => 'Inicialice ou actualice as táboas',
 	'smw_smwadmin_announce' => 'Anunciar o seu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ten un servizo web para anunciar novos wikis semánticos.
@@ -5257,11 +5265,11 @@ Rezultati možda neće biti odgovarajući.',
 	'smw_concept_header' => 'Stranice koncepta "$1"',
 	'smw_conceptarticlecount' => 'Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu.',
 	'exportrdf' => 'Izvezi stranice u RDF',
-	'smw_exportrdf_docu' => 'Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu.
+	'smw_exportrdf_docu' => 'Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu. 
 Da biste izvezli stranice unesite njihove naslove u prozor za uređivanje ispod, jedan naslov po retku.',
 	'smw_exportrdf_recursive' => 'Rekurzivno izvezi sve srodne stranice.
 Imajte na umu da bi rezultat mogao biti velik!',
-	'smw_exportrdf_backlinks' => 'Također izvezi sve stranice koje se referenciraju na izvezene stranice.
+	'smw_exportrdf_backlinks' => 'Također izvezi sve stranice koje se referenciraju na izvezene stranice. 
 Generira RDF za pregled i pretraživanje.',
 	'smw_exportrdf_lastdate' => 'Ne izvozi stranice koje nisu izmijenjene od navedenog datuma.',
 	'smw_exportrdf_submit' => 'Izvezi',
@@ -5557,8 +5565,8 @@ Stara so wo to, zo so ludźo z websydłami njestanu.',
 	'smw_qc_outro' => 'Naslědny tekst:',
 	'smw_qc_default' => 'Standard:',
 	'smw_qc_formatopt' => 'Formatowe opcije',
-	'smw_qc_query_help' => 'Prošu wutwor naprašowanje z pomocu slědowaceho formulara. Wubjer wikistrony na zakładźe kategorijow (<strong>[[:{{ns:category}}:Dźiwadźelnik]]</strong>),
-kajkosćow (<strong>[[Leži w::Łužicy]]</strong>),
+	'smw_qc_query_help' => 'Prošu wutwor naprašowanje z pomocu slědowaceho formulara. Wubjer wikistrony na zakładźe kategorijow (<strong>[[:{{ns:category}}:Dźiwadźelnik]]</strong>), 
+kajkosćow (<strong>[[Leži w::Łužicy]]</strong>), 
 mjenow (<strong>[[Łužica]]</strong>) a mjenowych rumow (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Kajkosć</strong>',
 	'smw_qui_prop' => 'Kajkosć:',
@@ -6115,9 +6123,9 @@ Illo assecura que le humanos non se transforma in sitos web.',
 	'smw_qc_outro' => 'Postfacio:',
 	'smw_qc_default' => 'Predefinition:',
 	'smw_qc_formatopt' => 'Optiones de formato',
-	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de
-Categorias (<strong>[[{{ns:category}}:Actor]]</strong>),
-Proprietates (<strong>[[Localisate in::Germania]]</strong>),
+	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de 
+Categorias (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Proprietates (<strong>[[Localisate in::Germania]]</strong>), 
 Nomines (<strong>[[Germania]]</strong>) e Spatios de nomines (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Proprietate</strong>',
 	'smw_qui_prop' => 'Proprietate:',
@@ -6707,8 +6715,8 @@ Ricordati di fare un backup dei dati importanti prima di eseguire funzioni ammin
 La funzione qui sotto verifica che il tuo database sia installato correttamente.
 Le modifiche effettuate in questo passaggio non hanno effetto sul resto del database MediaWiki, e possono essere facilmente annullate se necessario.
 Questa funzione di setup può essere rieseguita più volte senza conseguenze indesiderate, ma è richiesta solo una volta all'atto dell'installazione o dell'aggiornamento.",
-	'smw_smwadmin_permissionswarn' => "Se l'operazione fallisce con errori SQL, l'utente del database usato dal tuo Wiki (controlla nel LocalSettings.php) probabilmente non ha permessi sufficienti.
-Alternativamente assegna a questo utente permessi aggiuntivi per creare e cancellare tabelle, oppure immetti temporaneamente in LocalSettings.php i dati di accesso root al database, oppure usa lo script di manutenzione <tt>SMW_setup.php</tt> che può usare le credenziali di AdminSettings.php.",
+	'smw_smwadmin_permissionswarn' => "Se l'operazione avrà esito negativo con errori SQL, l'utente del database usato dal tuo wiki (controlla nel LocalSettings.php) probabilmente non ha permessi sufficienti.
+Puoi assegnare a questo utente permessi aggiuntivi per creare e cancellare tabelle, oppure inserire temporaneamente in LocalSettings.php i dati di accesso root al database, oppure usare lo script di manutenzione <tt>SMW_setup.php</tt> che può utilizzare le credenziali di un utente amministratore di sistema.",
 	'smw_smwadmin_dbbutton' => 'Inizializza o aggiorna tabelle',
 	'smw_smwadmin_announce' => 'Annuncia il tuo wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispone di un servizio web per dare notizia di nuovi siti wiki semantici.
@@ -7950,9 +7958,9 @@ $messages['mk'] = array(
 	'smw_qc_outro' => 'Завршник:',
 	'smw_qc_default' => 'По основно:',
 	'smw_qc_formatopt' => 'Нагодувања на форматот',
-	'smw_qc_query_help' => 'Внесете барање користејќи го образецот подолу за да одберете викистраници по
-Категории (<strong>[[{{ns:category}}:Actor]]</strong>),
-Својства (<strong>[[Located in::Germany]]</strong>),
+	'smw_qc_query_help' => 'Внесете барање користејќи го образецот подолу за да одберете викистраници по 
+Категории (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Својства (<strong>[[Located in::Germany]]</strong>),  
 Имиња (<strong>[[Germany]]</strong>) и Именски простори (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Својство</strong>',
 	'smw_qui_prop' => 'Својство:',
@@ -8030,8 +8038,8 @@ $messages['mk'] = array(
 Функцијата подолу ви гарантира дека вашата база на податоци е правилно поставена.
 Промените извршени во овој чекор немаат влијание врз остатокот од базата на МедијаВики, и лесно можат да се вратат по старо ако се јави потреба.
 Оваа функција на поставката може да се врши повеќе пати без тоа да причини било каква штета, но потребна е само еднаш при инсталирање или подновување.',
-	'smw_smwadmin_permissionswarn' => 'Ако операцијата не успее со SQL грешки, корисникот на базата на податоци кој работи за вашето вики (проверете ги вашите LocalSettings.php) веројатно нема доволно дозволи.
-Доделете му доволно дозволи на корисникот за да може да создава и брише табели, привремено внесете го најавниот корен (root) на вашата база на податоци во LocalSettings.php, или пак употребете ја скриптата за одржување <tt>SMW_setup.php</tt> која може да ги користи акердитивите за пристап од AdminSettings.php.',
+	'smw_smwadmin_permissionswarn' => 'Ако операцијата не успее со грешки при исполнувањето на SQL-наредбите, тогаш корисникот на базата на податоци што го употребува вашето вики (проверете ги вашите LocalSettings.php) нема доволно дозволи.
+Доделете му доволно дозволи на корисникот за да може да создава и брише табели, привремено внесете го најавниот корен (root) на вашата база на податоци во LocalSettings.php, или пак употребете ја скриптата за одржување <tt>SMW_setup.php</tt> која може да ги користи акердитивите за пристап од корисник на SysOp.',
 	'smw_smwadmin_dbbutton' => 'Започни или поднови табели',
 	'smw_smwadmin_announce' => 'Објавете го вашето вики',
 	'smw_smwadmin_announcedocu' => 'Семантички МедијаВики има мрежна служба за соопштување на нови семантички вики-страници.
@@ -9553,7 +9561,7 @@ Poniższa funkcja zapewnia, że baza danych zostanie poprawnie przygotowana.
 Zmiany wykonane w tym kroku nie mają wpływu na pozostałą część bazy danych MediaWiki i mogą łatwo zostać cofnięte w razie potrzeby.
 Ta operacja może zostać wykonana wielokrotnie bez wyrządzenia szkód ale konieczna jest tylko raz w trakcie instalacji lub aktualizacji.',
 	'smw_smwadmin_permissionswarn' => 'Jeśli operacja nie powiedzie się i wystąpią błędy SQL, najprawdopodobniej użytkownik bazy danych wykorzystywany przez Twoją wiki (sprawdź LocalSettings.php) nie ma wystarczających uprawnień.
-Nadaj użytkownikowi dodatkowe uprawnienia do tworzenia i usuwania tabel, tymczasowo użyj konta root w LocalSettings.php lub użyj skryptu konserwacyjnego <tt>SMW_setup.php</tt>, który może poświadczeń z AdminSettings.php.',
+Nadaj użytkownikowi dodatkowe uprawnienia do tworzenia i usuwania tabel, tymczasowo użyj konta root w LocalSettings.php lub użyj skryptu konserwacyjnego <tt>SMW_setup.php</tt>, który ma uprawnienia SysOp.',
 	'smw_smwadmin_dbbutton' => 'Inicjuj lub aktualizuj tabele',
 	'smw_smwadmin_announce' => 'Opublikuj swoją wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki posiada serwis internetowy do zamieszczania informacji o nowych semantycznych witrynach wiki.
@@ -9564,11 +9572,11 @@ Nie rejestrujemy wiki, które nie są publicznie dostępne. Zapisujemy wyłączn
 	'smw_smwadmin_datarefresh' => 'Naprawa i aktualizacja danych',
 	'smw_smwadmin_datarefreshdocu' => 'Istnieje możliwość przywrócenia wszystkich danych Semantic MediaWiki w oparciu o aktualną zawartość wiki.
 Może to być przydatne do naprawy uszkodzonych danych lub odświeżenia danych, jeśli wewnętrzny format zmienił się z powodu jakichś aktualizacji oprogramowania.
-Aktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychmiast.
+Aktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychmiast. 
 Poniżej przedstawiono, czy aktualizacja jest w toku. Można również uruchomić lub zatrzymać aktualizację (chyba, że ta funkcja została wyłączona przez administratora).',
-	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacja trwa.</strong>
-To normalne, że aktualizacja postępuje powoli, gdyż odświeżanie danych wykonywane jest w małymi porcjami za każdym razem, gdy użytkownik korzysta z wiki.
-Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <tt>runJobs.php</tt> (użyj opcji <tt>--maxjobs 1000</tt>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia).
+	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacja trwa.</strong> 
+To normalne, że aktualizacja postępuje powoli, gdyż odświeżanie danych wykonywane jest w małymi porcjami za każdym razem, gdy użytkownik korzysta z wiki. 
+Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <tt>runJobs.php</tt> (użyj opcji <tt>--maxjobs 1000</tt>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia). 
 Przewidywany postęp bieżącej aktualizacji:',
 	'smw_smwadmin_datarefreshbutton' => 'Rozpocznij aktualizację danych',
 	'smw_smwadmin_datarefreshstop' => 'Zatrzymaj aktualizację danych',
@@ -10025,7 +10033,7 @@ As propriedades que não têm uma página própria podem ser encontradas na [[Sp
 	'smw_qc_hide_addnal_opts' => 'Mostrar menos opções',
 	'smw_qc_query_help' => 'Introduza uma consulta usando o formulário abaixo para seleccionar páginas da wiki com base em
 Categorias (<strong>[[Categoria:Actor]]</strong>),
-Propriedades (<strong>[[Localizada em::Angola]]</strong>),
+Propriedades (<strong>[[Localizada em::Angola]]</strong>), 
 Nomes (<strong>[[Cabo Verde]]</strong>) e Espaços nominais (<strong>[[Ajuda:+]]</strong>)',
 	'smw_qui_property' => 'Propriedade',
 	'smw_qui_shownresults' => 'apresentar nos resultados',
@@ -10147,7 +10155,7 @@ $messages['pt-br'] = array(
 	'smw_concept_description' => 'Descrição do conceito "$1"',
 	'smw_no_concept_namespace' => 'Conceitos só podem ser definidos em páginas no domínio Conceito:.',
 	'smw_multiple_concepts' => 'Cada página de conceito pode ter apenas uma definição de conceito.',
-	'smw_concept_cache_miss' => 'O conceito "$1" não pode ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line.
+	'smw_concept_cache_miss' => 'O conceito "$1" não pode ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line. 
 Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça a um administrador deste wiki que este conceito seja disponibilizado.',
 	'smw_noinvannot' => 'Valores não podem ser atribuídos a propriedades inversas.',
 	'version-semantic' => 'Extensões semânticas',
@@ -10281,7 +10289,7 @@ Gera RDF navegável.',
 '''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} sua própria página, e o tipo de dados pretendido está especificado para '''$4''' delas.
 Algumas das propriedades existentes podem estar [[Special:UnusedProperties|sem uso]].
 As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
-	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>.
+	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. 
 Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'ask' => 'Busca semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
@@ -10313,7 +10321,7 @@ Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'smw_qc_formatopt' => 'Opções de formato',
 	'smw_qc_query_help' => 'Introduza uma consulta utilizando o formulário abaixo. Selecione páginas wiki com base em
 Categorias (<strong>[[Categoria:Ator]]</strong>),
-Propriedades (<strong>[[Localizado em::Brasil]]</strong>),
+Propriedades (<strong>[[Localizado em::Brasil]]</strong>), 
 Nomes (<strong>[[Portugal]]</strong>) e domínios (<strong>[[Ajuda:+]]</strong>)',
 	'smw_qui_property' => '<strong>Propriedade</strong>',
 	'smw_qui_prop' => 'Propriedade:',
@@ -12543,8 +12551,8 @@ $messages['uk'] = array(
 	'smwadmin' => 'Адміністративні функції Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'База даних успішно налаштована.',
 	'smw_smwadmin_return' => 'Повернутись до $1',
-	'smw_smwadmin_updatestarted' => 'Новий процес оновлення семантичних даних запущено.
-Всі збережені дані буде за необхідності оновлено чи виправлено.
+	'smw_smwadmin_updatestarted' => 'Новий процес оновлення семантичних даних запущено. 
+Всі збережені дані буде за необхідності оновлено чи виправлено. 
 За процесом оновлення можна стежити на цій сторінці.',
 	'smw_smwadmin_updatenotstarted' => 'Процес освіження вже запущено. Новий не буде створено.',
 	'smw_smwadmin_updatestopped' => 'Всі наявні процеси освіження було зупинено.',
