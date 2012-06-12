@@ -25,7 +25,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
 				$attribs = array();
-				$columnClass = str_replace( array( ' ', '_' ), '-', $pr->getText( SMW_OUTPUT_WIKI ) );
+				$columnClass = str_replace( array( ' ', '_' ), '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
 				$attribs['class'] = $columnClass;
 				// Also add this to the array of classes, for
 				// use in displaying each row.
