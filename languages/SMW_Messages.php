@@ -575,6 +575,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 is the name of the datatype
 * $2 is a list of unit names.',
 	'semanticstatistics' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SemanticStatistics]].',
+	'smw_semstats_text' => 'This it the contents of [[Special:SemanticStatistics]]. $1 to $4 hold numerical values.',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
 When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
@@ -583,12 +584,33 @@ This method is called ''content negotiation''.
 
 {{doc-important|Do not alter or translate link targets!}}",
 	'ask' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:Ask]].',
-	'smw_ask_submit' => '{{Identical|Find results}}',
-	'smw_ask_defaultformat' => '{{Identical|Default}}',
+	'smw_ask_sortby' => 'This is the text describing the textbox on [[Special:Ask]] available for optionally entering an printout statement for a query.',
+	'smw_ask_ascorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.',
+	'smw_ask_descorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.',
+	'smw_ask_submit' => 'This is the name of the submit button on [[Special:Ask]] to start the semantic search.
+
+{{Identical|Find results}}',
+	'smw_ask_editquery' => 'This is the text of the action link on [[Special:Ask]] to edit a query.',
+	'smw_add_sortcondition' => 'This is the text of the action link on [[Special:Ask]] to add an printout statement to a query.',
+	'smw_ask_hidequery' => 'This is the text of the action link on [[Special:Ask]] to abandon a query.',
+	'smw_ask_help' => 'This is the text of a link on [[Special:Ask]] pointing to the help page on [http://semantic-mediawiki.org/wiki/Help:Semantic_search semantic search].',
+	'smw_ask_queryhead' => 'This is the header of the edit field available on [[Special:Ask]] to enter the [http://semantic-mediawiki.org/wiki/Help:Selecting_pages query conditions] of the query.',
+	'smw_ask_printhead' => 'This is the header of the edit field available on [[Special:Ask]] to enter the [http://semantic-mediawiki.org/wiki/Help:Displaying_information printout statements] of the query.',
+	'smw_ask_printdesc' => 'This is an additional information message for the header of the edit field available on [[Special:Ask]] to enter the [http://semantic-mediawiki.org/wiki/Help:Displaying_information printout statements] of the query.',
+	'smw_ask_format_as' => 'This is the text describing a dropdown box on [[Special:Ask]] available for choosing the [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for a query.',
+	'smw_ask_defaultformat' => 'This is the label used for indicating the default [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] within a dropdown field.
+
+{{Identical|Default}}',
+	'smw_ask_otheroptions' => 'This is the text for the header of the section on [[Special:Ask]] containing various different options to choose or enter to specify printout statements of a query.',
+	'smw_ask_show_embed' => 'This is the text of the action link on [[Special:Ask]] to show the code of a query.',
+	'smw_ask_hide_embed' => 'This is the text of the action link on [[Special:Ask]] to hide the code of a query.',
+	'smw_ask_embed_instr' => 'This is an information message for the field on [[Special:Ask]] that contains the code of a query that may be copied and when pasted into a regular page on the wiki..',
+	'smw-ask-delete' => 'This is the text of the action link on [[Special:Ask]] to delete an printout statement from a query.',
 	'smw_qc_intro' => 'initial text that is prepended to the output, if at least some results exist',
 	'smw_qc_outro' => 'text that is appended to the output, if at least some results exist',
 	'smw_qc_query_help' => 'You may translate "Actor", "Located in" and "Germany".',
-	'smw_qui_property' => 'Describes a textbox where a property is expected to be typed in.
+	'smw_qui_property' => 'This is the text describing a textbox on [[Special:QueryCreator]] where a property is expected to be typed in.
+
 {{Identical|Property}}',
 	'smw_qui_prop' => '{{Identical|Property}}',
 	'smw_qui_labl' => '{{Identical|Label}}',
@@ -628,19 +650,19 @@ This method is called ''content negotiation''.
 	'smw_result_noresults' => '{{Identical|Sorry, no results}}',
 	'smwadmin' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SMWAdmin]].',
 	'smw_smwadmin_setupsuccess' => "This is the confirmation message at the bottom of the script's report concerning setup or update of the SMW database tables (process triggered from [[Special:SMWAdmin]]).",
-	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]].
+	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]]. $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started.
+	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started. $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started.
+	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started. $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped.
+	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped. $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process.
+	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process. $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
 	'smw_smwadmin_docu' => 'This is the introductory message at the top of [[Special:SMWAdmin]].',
@@ -2709,7 +2731,7 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_ask_submit' => 'Ergebnisse suchen',
 	'smw_ask_editquery' => '[Abfrage bearbeiten]',
 	'smw_add_sortcondition' => '[Sortieranweisung hinzufügen]',
-	'smw_ask_hidequery' => 'Abfrage ausblenden',
+	'smw_ask_hidequery' => 'Code der Abfrage ausblenden',
 	'smw_ask_help' => 'Hilfe zu Abfragen',
 	'smw_ask_queryhead' => 'Abfrage',
 	'smw_ask_printhead' => 'Zusätzlich anzuzeigende Daten',
@@ -2717,8 +2739,8 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_ask_format_as' => 'Formatiert als:',
 	'smw_ask_defaultformat' => 'Standard',
 	'smw_ask_otheroptions' => 'Andere Optionen',
-	'smw_ask_show_embed' => 'Eingebetteten Code anzeigen',
-	'smw_ask_hide_embed' => 'Eingebetteten Code ausblenden',
+	'smw_ask_show_embed' => 'Code der Abfrage anzeigen',
+	'smw_ask_hide_embed' => 'Code der Abfrage verstecken',
 	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wikiseite einzufügen, kann der unten angegebene Code verwendet werden.',
 	'smw-ask-delete' => '[Löschen]',
 	'querycreator' => 'Abfragenersteller',
@@ -10400,7 +10422,7 @@ A função abaixo assegura que a sua base de dados está devidamente preparada.
 As alterações feitas neste passo não afetam o resto da base de dados MediaWiki e podem ser facilmente desfeitas se desejado.
 Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou atualização.',
 	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, provavelmente o usuário da base de dados utilizado pelo seu wiki (consulte o seu LocalSettings.php) não possui permissões suficientes.
-Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu superusuário (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.",
+Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu superusuário (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais de um administrador.",
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie seu wiki',
 	'smw_smwadmin_announcedocu' => 'O Semantic MediaWiki tem um serviço na internet para anunciar novos wikis semânticos.
