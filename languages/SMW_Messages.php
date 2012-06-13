@@ -601,39 +601,69 @@ This method is called ''content negotiation''.
 	'smw_ask_defaultformat' => 'This is the label used for indicating the default [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] within a dropdown field.
 
 {{Identical|Default}}',
-	'smw_ask_otheroptions' => 'This is the text for the header of the section on [[Special:Ask]] containing various different options to choose or enter to specify printout statements of a query.',
+	'smw_ask_otheroptions' => 'This is the text for the header of the section on [[Special:Ask]] containing various different options to choose or enter in order to specify printout statements of a query.',
 	'smw_ask_show_embed' => 'This is the text of the action link on [[Special:Ask]] to show the code of a query.',
 	'smw_ask_hide_embed' => 'This is the text of the action link on [[Special:Ask]] to hide the code of a query.',
 	'smw_ask_embed_instr' => 'This is an information message for the field on [[Special:Ask]] that contains the code of a query that may be copied and when pasted into a regular page on the wiki..',
 	'smw-ask-delete' => 'This is the text of the action link on [[Special:Ask]] to delete an printout statement from a query.',
-	'smw_qc_intro' => 'initial text that is prepended to the output, if at least some results exist',
-	'smw_qc_outro' => 'text that is appended to the output, if at least some results exist',
-	'smw_qc_query_help' => 'You may translate "Actor", "Located in" and "Germany".',
+	'querycreator' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:QueryCreator]].',
+	'smw_qc_show_addnal_opts' => 'This is the text of the action link on [[Special:QueryCreator]] to show the input and selection areas for printout statements of a query.',
+	'smw_qc_hide_addnal_opts' => 'This is the text of the action link on [[Special:QueryCreator]] to hide the input and selection areas for printout statements of a query.',
+	'smw_qc_otheropt' => 'This is the text for the header of the section on [[Special:QueryCreator]] containing various different universal options to choose or enter in order to specify printout statements of a query.',
+	'smw_qc_intro' => 'This is the text describing the textbox on [[Special:QueryCreator]] available for optionally entering an printout statement for a query (parameter "intro" - text that is prepended to the output, if at least one result exists).',
+	'smw_qc_outro' => 'This is the text describing the textbox on [[Special:QueryCreator]] available for optionally entering an printout statement for a query (parameter "outro" - text that is appended to the output, if at least one result exists).',
+	'smw_qc_default' => 'This is the text describing the textbox on [[Special:QueryCreator]] available for optionally entering an printout statement for a query (parameter "default" - text that is printed in case no result exists).',
+	'smw_qc_formatopt' => 'This is the text for the header of the section on [[Special:QueryCreator]] containing various different format specific options to choose or enter in order to specify printout statements of a query.',
+	'smw_qc_query_help' => 'This is the introductory message at the top of [[Special:QueryCreator]] containing a simple example.
+
+{{doc-important|You may translate/localise "Actor", "Located in" and "Germany".}}',
 	'smw_qui_property' => 'This is the text describing a textbox on [[Special:QueryCreator]] where a property is expected to be typed in.
 
 {{Identical|Property}}',
-	'smw_qui_prop' => '{{Identical|Property}}',
-	'smw_qui_labl' => '{{Identical|Label}}',
-	'smw_qui_formt' => '{{Identical|Format}}',
-	'smw_qui_limt' => '{{Identical|Limit}}',
-	'smw_qui_shownresults' => 'Message next to a checkbox indicating if an item should be shown in the results or not',
+	'smw_qui_prop' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where a property is expected to be typed in.
+
+{{Identical|Property}}',
+	'smw_qui_labl' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the label for a property is expected to be typed in.
+
+{{Identical|Label}}',
+	'smw_qui_formt' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the format for property is expected to be typed in.
+
+{{Identical|Format}}',
+	'smw_qui_limt' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the limit for results of a property is expected to be typed in.
+
+{{Identical|Limit}}',
+	'smw_qui_shownresults' => 'This is the message next to a checkbox on [[Special:QueryCreatory]] indicating if an item should be shown in the results or not.',
 	'smw_qui_invalidprop' => 'Parameters:
 * $1 is a property name',
 	'smw_qui_nosort' => 'Option in a drop-down menu indicating that user does not want any sorting to be done',
-	'smw_qui_addnprop' => 'Clicking on this message creates a new form to add more properties',
+	'smw_qui_addnprop' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add another property to a query when clicked.',
 	'smw_qui_delete' => 'Removes/deletes a form option.
 {{Identical|Remove}}',
 	'smw_qui_rescol' => 'Label for the main result column. See http://semantic-mediawiki.org/wiki/Help:Displaying_information#The_main_result_column/ for further information. The text appears as a label next to an text-box',
 	'smw_qui_options' => '{{Identical|Options}}',
-	'smw_qui_ok' => 'Ok button.
+	'smw_qui_addcategory' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add another category to a query when clicked.',
+	'smw_qui_addrescol' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add query-matches to a query when clicked.',
+	'smw_qui_ok' => 'This is the label of the Ok button within a modal pop-up window on [[Special:QueryCreator]] to submit the entries when clicked.
+
 {{Identical|OK}}',
-	'smw_qui_cancel' => 'Cancel button.
+	'smw_qui_cancel' => 'This is the label of the Cancel button within a modal pop-up window on [[Special:QueryCreator]] to abandon the entries when clicked.
+
 {{Identical|Cancel}}',
-	'smw_qui_category' => '{{Identical|Category}}',
-	'smw_qui_label' => '{{Identical|Label}}',
-	'smw_prp_options' => 'Advanced options for property (title for a new modal window)',
-	'smw_qui_dlabel' => '{{Identical|Label}}',
-	'smw_qui_dcategory' => '{{identical|Category}}',
+	'smw_qui_category' => 'This is the text describing a textbox on [[Special:QueryCreator]] where a category is expected to be typed in.
+
+{{Identical|Category}}',
+	'smw_qui_label' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the label for a category is expected to be typed in.
+
+{{Identical|Label}}',
+	'smw_prp_options' => 'This is the title of a modal pop-up window on [[Special:QueryCreator]] where options for a property are expected to be typed in.',
+	'smw_qui_catopts' => 'This is the title of a modal pop-up window on [[Special:QueryCreator]] where options for a category are expected to be typed in.',
+	'smw_qui_mainlabopts' => 'This is the title of a modal pop-up window on [[Special:QueryCreator]] where options for results are expected to be typed in.',
+	'smw_qui_dlabel' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the label for a category is expected to be typed in.
+
+{{Identical|Label}}',
+	'smw_qui_dcategory' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where a category is expected to be typed in.
+
+{{identical|Category}}',
 	'smw_sbv_property' => '{{Identical|Property}}',
 	'smw_sbv_value' => '{{Identical|Value}}',
 	'smw_sbv_submit' => '{{Identical|Find results}}',
@@ -3620,8 +3650,8 @@ Recuerda respaldar cualquier información importante antes de ejecutar funciones
 La función indicada abajo asegura que tu base de datos está configurada correctamente.
 Los cambios realizados en este paso no afectan el resto de la base de datos de MediaWiki y pueden ser revertidos fácilmente si así se desea.
 Esta función de configuración puede ejecutarse varias veces sin hacer ningún daño, pero es necesaria sólo una vez para la instalación o actualización.',
-	'smw_smwadmin_permissionswarn' => 'Si la operación falla con errores SQL, la base de datos de usuarios empleada por su wiki (revise LocalSettings.php) probablemente no tiene permisos suficientes.
-Ud puede conceder estos permisos adicionales de usuario para crear y borrar tablas, ingresando temporariamente la clave de acceso de su base de datos raíz en LocalSettings.php, o bien usar el script de mantenimiento <tt>SMW_setup.php</tt>, que puede acceder a las credenciales de AdminSettings.php.',
+	'smw_smwadmin_permissionswarn' => 'Si la operación falla con errores SQL, la base de datos de usuarios empleada por su wiki (revise su archivo LocalSettings.php) probablemente no tiene permisos suficientes.
+Ud puede conceder a este usuario permisos adicionales para crear y borrar tablas, ingresando temporalmente la clave de acceso de su base de datos raíz en LocalSettings.php, o bien usar el script de mantenimiento <tt>SMW_setup.php</tt>, que puede usar las credenciales de un administrador.',
 	'smw_smwadmin_dbbutton' => 'Inicializar o actualizar tablas',
 	'smw_smwadmin_announce' => 'Anunciar tu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki cuenta con un servicio Web para anunciar nuevos sitios wiki semánticos, que es usado para mantener un listado de sitios Web públicos que usan Semantic MediaWiki, principalmente para ayudar al <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyecto Semantic MediaWiki</a>, para tener una visión general de los usos típicos de Semantic MediaWiki.
@@ -8647,6 +8677,7 @@ Anslått fremdrift for gjeldende oppdatering:',
 
 /** Dutch (Nederlands)
  * @author Kghbln
+ * @author Rcdeboer
  * @author SPQRobin
  * @author Siebrand
  * @author Tjcool007
@@ -8910,8 +8941,8 @@ Denk eraan een back-up te maken van uw waardevolle gegevens voordat u beheershan
 De onderstaande functionaliteit zorgt ervoor dat uw database juist is ingesteld.
 De wijzigingen die in deze stap worden gemaakt, hebben geen invloed op de bestaande database van MediaWiki, en zijn eventueel eenvoudig ongedaan te maken.
 Deze instelfunctie kan meerdere keren worden uitgevoerd zonder schade aan te richten, hoewel het uiteraard slechts noodzakelijk is deze een keer uit te voeren per installatie of upgrade.',
-	'smw_smwadmin_permissionswarn' => 'Als de handeling faalt met SQL-fouten, heeft de databasegebruiker van uw wiki (zie LocalSettings.php) waarschijnlijk onvoldoende rechten.
-Geef deze gebruiker de benodigde extra rechten om tabellen aan te maken en te verwijderen, geef tijdelijk de aanmeldgegevens van de hoofdgebruiker van uw databasesysteem aan in LocalSettings.php, of gebruik het beheerscript <tt>SMW_setup.php</tt> dat de instellingen van AdminSettings.php kan gebruiken.',
+	'smw_smwadmin_permissionswarn' => 'Als de handeling mislukt en er SQL-foutmeldingen worden getoond, heeft de databasegebruiker van uw wiki (zie LocalSettings.php) waarschijnlijk onvoldoende rechten.
+Geef deze gebruiker de benodigde extra rechten om tabellen aan te maken en te verwijderen, zet tijdelijk de aanmeldgegevens van de hoofdgebruiker (root) van uw databasesysteem in LocalSettings.php, of gebruik het beheerscript <tt>SMW_setup.php</tt> dat de instellingen van AdminSettings.php kan gebruiken.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiseren of bijwerken',
 	'smw_smwadmin_announce' => 'Uw wiki aankondigen',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki heeft een webservice voor het aankondigen van nieuwe semantische wikisites.
