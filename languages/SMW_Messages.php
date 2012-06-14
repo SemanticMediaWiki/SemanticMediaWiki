@@ -1346,7 +1346,7 @@ $messages['arz'] = array(
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1||القيمة المسموح بها لهذه الخاصية هي|القيمتان المسموح بهما لهذه الخاصية هما|القيم المسموح بها لهذه الخاصية هي}}:',
 );
 
-/** Asturian (Asturianu)
+/** Asturian (asturianu)
  * @author Xuacu
  */
 $messages['ast'] = array(
@@ -1374,7 +1374,7 @@ $messages['ast'] = array(
 	'smw_printername_category' => 'Categoría',
 );
 
-/** Azerbaijani (Azərbaycanca)
+/** Azerbaijani (azərbaycanca)
  * @author Cekli829
  */
 $messages['az'] = array(
@@ -1406,7 +1406,7 @@ $messages['bar'] = array(
 	'smw_browselink' => "D' Attributt åzoang",
 );
 
-/** Belarusian (Беларуская)
+/** Belarusian (беларуская)
  * @author Тест
  */
 $messages['be'] = array(
@@ -1704,7 +1704,7 @@ $messages['be-tarask'] = array(
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:',
 );
 
-/** Bulgarian (Български)
+/** Bulgarian (български)
  * @author DCLXVI
  */
 $messages['bg'] = array(
@@ -2001,7 +2001,7 @@ Arabat krouiñ unan all.',
 	'smw-paramdesc-category-delim' => 'Ar bevenner',
 );
 
-/** Bosnian (Bosanski)
+/** Bosnian (bosanski)
  * @author CERminator
  */
 $messages['bs'] = array(
@@ -2367,7 +2367,7 @@ $messages['ch'] = array(
 	'smw_browse_go' => 'Hånao',
 );
 
-/** Sorani (کوردی) */
+/** Sorani Kurdish (کوردی) */
 $messages['ckb'] = array(
 	'smw_browse_go' => 'بڕۆ',
 );
@@ -3148,7 +3148,7 @@ Licony póstup aktualneje aktualizacije:',
 	'smw-createproperty-isproperty' => 'To jo kakosć typa $1.',
 );
 
-/** Ewe (Eʋegbe) */
+/** Ewe (eʋegbe) */
 $messages['ee'] = array(
 	'smw_browse_go' => 'Yi',
 );
@@ -3689,7 +3689,7 @@ Progeso estimado de la actualización:',
 	'smw-info-par-icon' => 'Icono a mostrar; ya sea "información" o bien "aviso".',
 );
 
-/** Basque (Euskara)
+/** Basque (euskara)
  * @author An13sa
  * @author Kobazulo
  */
@@ -4232,7 +4232,7 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-info-par-icon' => 'Icône à afficher, soit « info » ou « attention »',
 );
 
-/** Franco-Provençal (Arpetan)
+/** Franco-Provençal (arpetan)
  * @author Cedric31
  * @author ChrisPtDe
  */
@@ -7762,7 +7762,7 @@ $messages['lt'] = array(
 	'smw_concept_description' => 'Sąvokos "$1" aprašymas',
 	'smw_no_concept_namespace' => 'Sąvokos gali būti apibrėžtos tik Concept: vardų srities puslapiuose.',
 	'smw_multiple_concepts' => 'Kiekviename sąvokos aprašymo puslapyje gali turėti tik vieną sąvokos apibrėžimą.',
-	'smw_concept_cache_miss' => 'Sąvoka "$1" negali būti naudojamas šiuo metu, nes wiki konfigūracija reikalauja ją apskaičiuoti off-line.
+	'smw_concept_cache_miss' => 'Sąvoka "$1" negali būti naudojamas šiuo metu, nes wiki konfigūracija reikalauja ją apskaičiuoti off-line. 
 Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administratorių, kad šią sąvoką padarytų prieinamą.',
 	'smw_noinvannot' => 'Reikšmės negali būti priskiriamos atvirkštinei savybei.',
 	'version-semantic' => 'Semantiniai praplėtimai',
@@ -7819,7 +7819,7 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_toomanyclosing' => 'Atrodo, kad yra per daug elementų "$1" užklausoje.',
 	'smw_noclosingbrackets' => 'Kažkuris panaudojimas "<nowiki>[[</nowiki>" jūsų užklausoje nebuvo uždaryta atitikimo "]]".',
 	'smw_misplacedsymbol' => 'Simbolis "$1" buvo panaudotas toje vietoje, kurioje jis nėra naudojamas.',
-	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta.
+	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta. 
 Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw_emptysubquery' => 'Kai kurios užklausos dalys turi blogas sąlygas.',
 	'smw-createproperty-isproperty' => 'Tai yra „$1“ tipo savybė.',
@@ -8163,7 +8163,7 @@ $messages['ml'] = array(
 	'smw_result_noresults' => 'ക്ഷമിക്കുക, ഫലങ്ങൾ ഒന്നുമില്ല',
 );
 
-/** Mongolian (Монгол)
+/** Mongolian (монгол)
  * @author Chinneeb
  */
 $messages['mn'] = array(
@@ -10498,7 +10498,7 @@ $messages['rif'] = array(
 	'smw_browse_go' => 'Raḥ ɣa',
 );
 
-/** Romanian (Română)
+/** Romanian (română)
  * @author AdiJapan
  * @author Firilacroco
  * @author KlaudiuMihaila
@@ -10585,7 +10585,7 @@ Rezultatele pot fi neașteptate.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Valoarea admisă pentru această proprietate este|Valorile admise pentru această proprietate sunt}}:',
 );
 
-/** Tarandíne (Tarandíne)
+/** tarandíne (tarandíne)
  * @author Joetaras
  */
 $messages['roa-tara'] = array(
@@ -10854,14 +10854,14 @@ $messages['rue'] = array(
 	'smw_smwadmin_return' => 'Навернутя до  «$1».',
 );
 
-/** Sicilian (Sicilianu)
+/** Sicilian (sicilianu)
  * @author Gmelfi
  */
 $messages['scn'] = array(
 	'smw_browselink' => 'Prupritati',
 );
 
-/** Serbo-Croatian (Srpskohrvatski)
+/** Serbo-Croatian (srpskohrvatski / српскохрватски)
  * @author OC Ripper
  */
 $messages['sh'] = array(
@@ -11082,7 +11082,7 @@ Odhadovaný priebeh aktualizácie:',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Povolená hodnota|Povolené hodnoty}} tejto vlastnosti {{PLURAL:$1|je|sú}}:',
 );
 
-/** Slovenian (Slovenščina)
+/** Slovenian (slovenščina)
  * @author Dbc334
  * @author Lesko987
  */
@@ -12024,7 +12024,7 @@ $messages['te'] = array(
 	'smw_smwadmin_support' => 'తోడ్పాటుని పొందడం',
 );
 
-/** Tetum (Tetun)
+/** Tetum (tetun)
  * @author MF-Warburg
  */
 $messages['tet'] = array(
@@ -12034,7 +12034,7 @@ $messages['tet'] = array(
 	'smw_result_next' => 'Oinmai',
 );
 
-/** Tajik (Cyrillic script) (Тоҷикӣ)
+/** Tajik (Cyrillic script) (тоҷикӣ)
  * @author Ibrahim
  */
 $messages['tg-cyrl'] = array(
@@ -12042,7 +12042,7 @@ $messages['tg-cyrl'] = array(
 	'smw-createproperty-isproperty' => 'Ин як вижагӣ аз навъи $1 аст.',
 );
 
-/** Tajik (Latin script) (Tojikī) */
+/** Tajik (Latin script) (tojikī) */
 $messages['tg-latn'] = array(
 	'smw-createproperty-isproperty' => "In jak viƶagī az nav'i $1 ast.",
 );
@@ -12290,7 +12290,7 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw-createproperty-allowedvals' => 'Ang pinahihintulutang {{PLURAL:$1|halaga para sa pag-aaring ito ay|mga halaga para sa pag-aaring ito ay}}:',
 );
 
-/** Толышә зывон (Толышә зывон)
+/** толышә зывон (толышә зывон)
  * @author Гусейн
  */
 $messages['tly'] = array(
@@ -12406,7 +12406,7 @@ Bir diğeri oluşturulmuyor.',
 	'smw_adminlinks_inlinequerieshelp' => 'Satıriçi sorgu yardımı',
 );
 
-/** Tatar (Cyrillic script) (Татарча)
+/** Tatar (Cyrillic script) (татарча)
  * @author Ерней
  * @author Ильнар
  */
