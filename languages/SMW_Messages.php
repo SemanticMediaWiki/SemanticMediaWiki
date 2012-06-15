@@ -2956,6 +2956,7 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw_printername_broadtable' => 'Šyroka tabela',
 	'smw_printername_template' => 'Pśedłoga',
 	'smw_printername_rdf' => 'RDF-eksport',
+	'smw_printername_category' => 'Kategorija',
 	'smw-paramdesc-limit' => 'Maksimalna licba wuslědkow, kótarež maju se wrośiś',
 	'smw-paramdesc-headers' => 'Mjenja głowow resp. atributow zwobrazniś',
 	'smw-paramdesc-mainlabel' => 'Pomjenjenje, kótarež ma se głownemu bokoju daś',
@@ -2985,6 +2986,7 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw_no_importelement' => 'Element "$1" njestoj za importěrowanje k dispoziciji.',
 	'smw_parseerror' => 'Zapódana gódnota njejo se rozměła.',
 	'smw_notitle' => '"$1" njedajo se ako bokowe mě w toś tom wikiju wužywaś.',
+	'smw_noproperty' => '"$1" njedajo se ako mě kakosći w toś tom wikiju wužywaś.',
 	'smw_wrong_namespace' => 'Jano boki w mjenjowem rumje "$1" su how dowólone.',
 	'smw_unknowntype' => 'Za kakosć jo se njepódpěrany typ "$1" definěrował.',
 	'smw_manytypes' => 'Wěcej ako jaden typ za kakosć definěrowany.',
@@ -3071,6 +3073,37 @@ Stara se za to, až luźe njebudu websedła.',
 	'smw_ask_show_embed' => 'Zasajźony kod pokazaś',
 	'smw_ask_hide_embed' => 'Zasajźony kod schowaś',
 	'smw_ask_embed_instr' => 'Aby toś to wótpšašanje do wikiboka zasajźił, wužyj slědujucy kod.',
+	'smw-ask-delete' => '[Lašowaś]',
+	'smw_qc_show_addnal_opts' => 'Dalšne opcije pokazaś',
+	'smw_qc_hide_addnal_opts' => 'Mjenjej opcijow pokazaś',
+	'smw_qc_otheropt' => 'Druge opcije',
+	'smw_qc_default' => 'Standard:',
+	'smw_qc_formatopt' => 'Formatowe opcije',
+	'smw_qui_property' => '<strong>Kakosć</strong>',
+	'smw_qui_prop' => 'Kakosć:',
+	'smw_qui_labl' => 'Pomjenjenje:',
+	'smw_qui_formt' => 'Format:',
+	'smw_qui_limt' => 'Limit:',
+	'smw_qui_shownresults' => 'we wuslědkach pokazaś',
+	'smw_qui_invalidprop' => 'Móžo byś, až "$1" njejo płaśiwa kakosć',
+	'smw_qui_invalidformat' => 'Wubrany format "$1" njeeksistěrujo za toś tón wiki',
+	'smw_qui_nosort' => 'Žedno sortěrowanje',
+	'smw_qui_ascorder' => 'Stupajucy',
+	'smw_qui_descorder' => 'Spadujucy',
+	'smw_qui_randorder' => 'Pśipadny',
+	'smw_qui_addnprop' => 'kakosć pśidaś',
+	'smw_qui_delete' => 'Wótpóraś',
+	'smw_qui_options' => 'opcije',
+	'smw_qui_addcategory' => 'kategoriju pśidaś',
+	'smw_qui_ok' => 'W pórěźe',
+	'smw_qui_cancel' => 'Pśetergnuś',
+	'smw_qui_category' => '<strong>Kategorija</strong>',
+	'smw_qui_label' => 'Pomjenjenje',
+	'smw_prp_options' => 'Opcije kakosćow',
+	'smw_qui_catopts' => 'Opcije kategorijow',
+	'smw_qui_mainlabopts' => 'Opcije wuslědkow',
+	'smw_qui_dlabel' => 'Pomjenjenje:',
+	'smw_qui_dcategory' => 'Kategorija:',
 	'searchbyproperty' => 'Pó kakosći pytaś',
 	'smw_sbv_docu' => 'Wšykne boki pytaś, kótarež maju wěstu kakosć a gódnotu.',
 	'smw_sbv_novalue' => 'Zapódaj płaśiwu gódnotu za kakosć abo woglědaj se wšykne gódnoty za kakosć "$1".',
@@ -3146,6 +3179,7 @@ Licony póstup aktualneje aktualizacije:',
 	'smw_adminlinks_displayingdata' => 'Daty zwobrazniś',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k wótpšašanjam',
 	'smw-createproperty-isproperty' => 'To jo kakosć typa $1.',
+	'smw-paramdesc-category-delim' => 'Źěleńske znamuško',
 );
 
 /** Ewe (eʋegbe) */
@@ -4193,8 +4227,8 @@ N’oubliez pas de sauvegarder vos données avant d’exécuter les fonctions d�
 La fonction ci-dessous s’assure que votre base de données a été correctement installée.
 Les modifications faites lors de cette étape n’affecteront pas le reste de la base de données Mediawiki, et peuvent être annulées si nécessaire.
 Cette fonction d’installation peut être lancée plusieurs fois sans causer le moindre dégat, et n’est nécessaire qu’une fois par installation ou mise à niveau.',
-	'smw_smwadmin_permissionswarn' => "Si l’opération échoue avec des erreurs SQL, l’utilisateur de la base de données utilisée par votre wiki, (regardez votre LocalSettings.php) n’a probablement pas les permissions suffisantes.
-Il faut soit permettre à cet utilisateur de créer et supprimer les tables, soit entrer temporairement la connexion en ''root'' à votre base de données dans le LocalSettings.php, soit utiliser le script d’entretien <tt>SMW_setup.php</tt> (qui peut utiliser les accréditations de AdminSettings.php).",
+	'smw_smwadmin_permissionswarn' => 'Si l’opération échoue avec des erreurs SQL, l’utilisateur de la base de données utilisée par votre wiki (regardez votre LocalSettings.php) n’a probablement pas les droits suffisants.
+Il faut soit permettre à cet utilisateur de créer et supprimer les tables, soit saisir temporairement les identifiants du compte root de votre base de données dans LocalSettings.php, soit utiliser le script de maintenance <tt>SMW_setup.php</tt> qui peut utiliser les informations de connexion d’un administrateur.',
 	'smw_smwadmin_dbbutton' => 'Initialiser ou mettre à niveau les tables',
 	'smw_smwadmin_announce' => 'Annoncer votre wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispose d’un service Internet pour annoncer de nouveaux sites wiki sémantiques.
@@ -8941,8 +8975,8 @@ Denk eraan een back-up te maken van uw waardevolle gegevens voordat u beheershan
 De onderstaande functionaliteit zorgt ervoor dat uw database juist is ingesteld.
 De wijzigingen die in deze stap worden gemaakt, hebben geen invloed op de bestaande database van MediaWiki, en zijn eventueel eenvoudig ongedaan te maken.
 Deze instelfunctie kan meerdere keren worden uitgevoerd zonder schade aan te richten, hoewel het uiteraard slechts noodzakelijk is deze een keer uit te voeren per installatie of upgrade.',
-	'smw_smwadmin_permissionswarn' => 'Als de handeling mislukt en er SQL-foutmeldingen worden getoond, heeft de databasegebruiker van uw wiki (zie LocalSettings.php) waarschijnlijk onvoldoende rechten.
-Geef deze gebruiker de benodigde extra rechten om tabellen aan te maken en te verwijderen, zet tijdelijk de aanmeldgegevens van de hoofdgebruiker (root) van uw databasesysteem in LocalSettings.php, of gebruik het beheerscript <tt>SMW_setup.php</tt> dat de instellingen van AdminSettings.php kan gebruiken.',
+	'smw_smwadmin_permissionswarn' => 'Als de handeling mislukt en er SQL-foutmeldingen worden weergegeven, heeft de databasegebruiker van uw wiki waarschijnlijk onvoldoende rechten (zie LocalSettings.php).
+Geef deze gebruiker de benodigde extra rechten om tabellen aan te maken en te verwijderen, zet tijdelijk de aanmeldgegevens van de hoofdgebruiker (root) van uw databasesysteem in LocalSettings.php, of gebruik het beheerscript <tt>SMW_setup.php</tt> dat de gebruikersnaam en wachtwoord van een beheerder kan gebruiken.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiseren of bijwerken',
 	'smw_smwadmin_announce' => 'Uw wiki aankondigen',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki heeft een webservice voor het aankondigen van nieuwe semantische wikisites.
@@ -10453,7 +10487,7 @@ A função abaixo assegura que a sua base de dados está devidamente preparada.
 As alterações feitas neste passo não afetam o resto da base de dados MediaWiki e podem ser facilmente desfeitas se desejado.
 Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou atualização.',
 	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, provavelmente o usuário da base de dados utilizado pelo seu wiki (consulte o seu LocalSettings.php) não possui permissões suficientes.
-Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu superusuário (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais de um administrador.",
+Conceda a esse usuário permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu superusuário (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais de um administrador.",
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie seu wiki',
 	'smw_smwadmin_announcedocu' => 'O Semantic MediaWiki tem um serviço na internet para anunciar novos wikis semânticos.
