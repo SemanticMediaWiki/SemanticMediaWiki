@@ -7081,7 +7081,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 この機能は破損したデータを修復する場合や、ソフトウェアのアップグレードで内部形式が変わった際にデータを移行する場合などに有用です。
 この更新は1ページずつ実行され、直ちには完了しません。
 以下に更新が進行中かどうかを表示します。更新を開始または停止できます (サイト管理者が機能を無効にしていない場合のみ)。',
-	'smw_smwadmin_datarefreshprogress' => '<strong>更新が既に進行中です。</strong>
+	'smw_smwadmin_datarefreshprogress' => '<strong>更新が既に進行しています。</strong>
 利用者がウィキにアクセスするたびに少量の塊のデータを更新するのみのため、更新がゆっくりとしか進まないのは正常な動作です。
 この更新をより早く終えたい場合は、MediaWiki のメンテナンス スクリプト <tt>runJobs.php</tt> を起動できます (1つのバッチで行われる更新の数を制限するには <tt>--maxjobs 1000</tt> オプションを使用してください)。
 現在の更新の推定進捗：',
@@ -13222,7 +13222,7 @@ $messages['zh-hans'] = array(
 	'smw_subpropertyarticlecount' => '此属性有以下 $1 {{PLURAL:$1|subproperty|子属性}}:',
 	'smw_concept_header' => '概念"$1"的页面',
 	'smw_conceptarticlecount' => '显示属于此概念的$1 {{PLURAL:$1|page|页面}}。',
-	'exportrdf' => '输出页面到RDF',
+	'exportrdf' => '输出页面至RDF',
 	'smw_exportrdf_docu' => '这个页面用于以RDF格式获得页面数据。
 在下方文本框中输入标题以导出页面，每行一个标题。',
 	'smw_exportrdf_recursive' => '递归导出所有相关页面。
@@ -13269,7 +13269,7 @@ $messages['zh-hans'] = array(
 	'smw_ask_show_embed' => '显示嵌入代码',
 	'smw_ask_hide_embed' => '隐藏嵌入的代码',
 	'smw_ask_embed_instr' => '使用以下代码将查询嵌入维基页面。',
-	'querycreator' => '查询生成器',
+	'querycreator' => '问题创建器',
 	'smw_qc_addmainlabel' => '添加主标签',
 	'smw_qc_show_addnal_opts' => '显示更多选项',
 	'smw_qc_hide_addnal_opts' => '显示少些选项',
@@ -13320,7 +13320,7 @@ $messages['zh-hans'] = array(
 	'smw_sbv_submit' => '搜索',
 	'browse' => '浏览维基',
 	'smw_browselink' => '浏览属性',
-	'smw_browse_article' => '输入浏览起始页面名称。',
+	'smw_browse_article' => '请输入开始浏览的页面名称。',
 	'smw_browse_go' => '提交',
 	'smw_browse_show_incoming' => '显示链接到此页的属性',
 	'smw_browse_hide_incoming' => '隐藏链接到此页的属性',
