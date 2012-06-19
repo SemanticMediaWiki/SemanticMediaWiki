@@ -334,11 +334,19 @@ Enter both a page and a property.',
 	'smw_smwadmin_return' => 'Return to $1',
 	'smw_smwadmin_updatestarted' => 'A new update process for refreshing the semantic data was started.
 All stored data will be rebuilt or repaired where needed.
-You can follow the progress of the update on this special page.',
+You can follow the progress of the update on this special page.
+
+Return to $1.',
 	'smw_smwadmin_updatenotstarted' => 'There is already an update process running.
-Not creating another one.',
-	'smw_smwadmin_updatestopped' => 'All existing update processes have been stopped.',
-	'smw_smwadmin_updatenotstopped' => 'To stop the running update process, you must activate the checkbox to indicate that you are really sure.',
+Not creating another one.
+
+Return to $1.',
+	'smw_smwadmin_updatestopped' => 'All existing update processes have been stopped.
+
+Return to $1.',
+	'smw_smwadmin_updatenotstopped' => 'To stop the running update process, you must activate the checkbox to indicate that you are really sure.
+
+Return to $1.',
 	'smw_smwadmin_docu' => 'This special page helps you during installation and upgrade of <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Remember to back up valuable data before executing administrative functions.',
 	'smw_smwadmin_db' => 'Database installation and upgrade',
