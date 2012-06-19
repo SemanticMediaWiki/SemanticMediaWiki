@@ -672,12 +672,26 @@ This method is called ''content negotiation''.
 	'smw_qui_dcategory' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where a category is expected to be typed in.
 
 {{identical|Category}}',
-	'smw_sbv_property' => '{{Identical|Property}}',
-	'smw_sbv_value' => '{{Identical|Value}}',
-	'smw_sbv_submit' => '{{Identical|Find results}}',
+	'searchbyproperty' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SearchByProperty]].',
+	'smw_sbv_property' => 'This is the text describing a textbox on [[Special:SearchByProperty]] where the name of a property is expected to be typed in.
+
+{{Identical|Property}}',
+	'smw_sbv_value' => 'This is the text describing a textbox on [[Special:SearchByProperty]] where the value of a property is expected to be typed in.
+
+{{Identical|Value}}',
+	'smw_sbv_submit' => 'This is the name of the submit button on [[Special:SearchByProperty]] to trigger the search.
+
+{{Identical|Find results}}',
 	'browse' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:Browse]].',
-	'smw_browse_go' => '{{Identical|Go}}',
+	'smw_browse_article' => 'This is the text describing a textbox on [[Special:Browse]] where the name of a page is expected to be typed in.',
+	'smw_browse_go' => 'This is the name of the submit button on [[Special:Browse]] to trigger the browsing of pages.
+
+{{Identical|Go}}',
 	'smw_browse_more' => '{{optional}}',
+	'smw_browse_show_incoming' => 'This is the text of the link on [[Special:Browse]] that shows the properties linking to a page when clicked.',
+	'smw_browse_hide_incoming' => 'This is the text of the link on [[Special:Browse]] that hides the properties linking to a page when clicked.',
+	'smw_browse_no_outgoing' => 'This is the information message shown on [[Special:Browse]] in case the browsed page does not contain any properties.',
+	'smw_browse_no_incoming' => 'This is the information message shown on [[Special:Browse]] in case no properties link to the browsed page.',
 	'smw_inverse_label_property' => 'Can as well be translated as "Name of", or "Denomination of the inverse propery". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property "is child of" is the inverse propery of "is parent of".',
 	'smw_pp_docu' => '"fillers" can be translated as "values", if you so wish.',
 	'smw_pp_type' => '{{Identical|Property}}',
@@ -2858,7 +2872,9 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_smwadmin_return' => 'Zurück zu $1',
 	'smw_smwadmin_updatestarted' => 'Ein Aktualisierungsprozess zu Erneuerung der semantischen Daten wurde gestartet.
 Alle gespeicherten Daten werden, sofern notwendig, entweder neu erstellt oder repariert.
-Der Fortschritt der Aktualisierung kann auf dieser Spezialseite eingesehen werden.',
+Der Fortschritt der Aktualisierung kann auf dieser Spezialseite eingesehen werden.
+
+Zurück zu $1.',
 	'smw_smwadmin_updatenotstarted' => 'Es läuft bereits ein Aktualisierungsprozess.
 Es wird kein Neuer begonnen.',
 	'smw_smwadmin_updatestopped' => 'Alle laufenden Aktualisierungsprozesse wurden vorzeitig beendet.',
@@ -4437,7 +4453,7 @@ $messages['ga'] = array(
 	'smw_pp_type' => 'Airí',
 );
 
-/** Galician (Galego)
+/** Galician (galego)
  * @author Toliño
  */
 $messages['gl'] = array(
