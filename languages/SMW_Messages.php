@@ -2874,11 +2874,17 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 Alle gespeicherten Daten werden, sofern notwendig, entweder neu erstellt oder repariert.
 Der Fortschritt der Aktualisierung kann auf dieser Spezialseite eingesehen werden.
 
-Zurück zu $1.',
+Zurück zur Seite $1.',
 	'smw_smwadmin_updatenotstarted' => 'Es läuft bereits ein Aktualisierungsprozess.
-Es wird kein Neuer begonnen.',
-	'smw_smwadmin_updatestopped' => 'Alle laufenden Aktualisierungsprozesse wurden vorzeitig beendet.',
-	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu vorzeitig zu beenden, musst das Kontrollkästchen markiert werden, um dadurch anzuzeigen, dass man sich diesbezüglich tatsächlich sicher ist.',
+Es wird kein Neuer begonnen.
+
+Zurück zur Seite  $1',
+	'smw_smwadmin_updatestopped' => 'Alle laufenden Aktualisierungsprozesse wurden vorzeitig beendet.
+
+Zurück zur Seite  $1.',
+	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu vorzeitig zu beenden, musst das Kontrollkästchen markiert werden, um dadurch anzuzeigen, dass man sich diesbezüglich tatsächlich sicher ist.
+
+Zurück zur Seite  $1.',
 	'smw_smwadmin_docu' => 'Diese Spezialseite bietet während Installation und Aktualisierung von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a> Unterstützung. Wichtige Daten sollten vor der Ausführung administrativer Funktionen gesichert werden.',
 	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki benötigt weitere Datentabellen in der MediaWiki-Datenbank, um die semantischen Daten speichern zu können.
@@ -3696,11 +3702,19 @@ Ingrese la página y la propiedad.',
 	'smw_smwadmin_return' => 'Regresar a $1',
 	'smw_smwadmin_updatestarted' => 'Se ha iniciado un nuevo proceso de actualización para volver a cargar los datos semánticos.
 Todos los datos almacenados serán reconstruidos o reparados donde sea necesario.
-Puedes hacer un seguimiento del progreso de la actualización en esta página especial.',
+Puedes hacer un seguimiento del progreso de la actualización en esta página especial.
+
+Volver a $1.',
 	'smw_smwadmin_updatenotstarted' => 'Ya hay un proceso de actualización ejecutándose.
-No crear otro más.',
-	'smw_smwadmin_updatestopped' => 'Todos los procesos de actualización existentes han sido detenidos.',
-	'smw_smwadmin_updatenotstopped' => 'Para detener el proceso de actualización en ejecución, debes activar la tabla de verificación para indicar que estás realmente seguro.',
+No crear otro más.
+
+Volver a $1.',
+	'smw_smwadmin_updatestopped' => 'Todos los procesos de actualización existentes han sido detenidos.
+
+Volver a $1.',
+	'smw_smwadmin_updatenotstopped' => 'Para detener el proceso de actualización en ejecución, debes activar la tabla de verificación para indicar que estás realmente seguro.
+
+Volver a $1.',
 	'smw_smwadmin_docu' => 'Esta página especial te ayudará durante la instalación y actualización de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Recuerda respaldar cualquier información importante antes de ejecutar funciones administrativas.',
 	'smw_smwadmin_db' => 'Instalación de la base de datos y actualización',
@@ -4700,11 +4714,19 @@ Por favor, insira ambas, a páxina e mais a propiedade.',
 	'smw_smwadmin_return' => 'Volver a "$1"',
 	'smw_smwadmin_updatestarted' => 'Comezou un novo proceso de actualización para refrescar os datos semánticos.
 Todos os datos almacenados serán reconstruídos ou reparados onde sexa necesario.
-Pode seguir o proceso da actualización nesta páxina especial.',
+Pode seguir o proceso da actualización nesta páxina especial.
+
+Volver a "$1".',
 	'smw_smwadmin_updatenotstarted' => 'Xa hai un proceso de actualización en curso.
-Non se pode crear outro.',
-	'smw_smwadmin_updatestopped' => 'Todos os procesos de actualización existentes foron detidos.',
-	'smw_smwadmin_updatenotstopped' => 'Para deter os procesos de actualización actuais, debe activar a caixa de verificación para indicar que está seguro de facelo.',
+Non se pode crear outro.
+
+Volver a "$1".',
+	'smw_smwadmin_updatestopped' => 'Todos os procesos de actualización existentes foron detidos.
+
+Volver a "$1".',
+	'smw_smwadmin_updatenotstopped' => 'Para deter os procesos de actualización actuais, debe activar a caixa de verificación para indicar que está seguro de facelo.
+
+Volver a "$1".',
 	'smw_smwadmin_docu' => 'Esta páxina especial axúdarao durante a instalación e actualización do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Lembre facer unha copia de seguranza dos datos antes de executar funcións administrativas.',
 	'smw_smwadmin_db' => 'Instalación e actualización da base de datos',
@@ -5741,12 +5763,20 @@ Zapodaj stronu kaž tež kajkosć.',
 	'smw_smwadmin_setupsuccess' => 'Składowanska jednotka je so wuspěšnje nastajiła.',
 	'smw_smwadmin_return' => 'Wróćo k $1',
 	'smw_smwadmin_updatestarted' => 'Nowy proces aktualizacije za wobnowjenje semantiskich datow bu startowany.
-Wšě składowane daty budu so znowa tworić abo porjedźeć, hdźež je trěbne.
-Móžeš proces aktualizacije na tutej specialnej stronje slědować.',
+Wšě składowane daty budu so znowa tworić abo porjedźeć, hdźež je to trěbne.
+Móžeš proces aktualizacije na tutej specialnej stronje slědować.
+
+Wróćo k $1.',
 	'smw_smwadmin_updatenotstarted' => 'Proces aktualizacije hižo běži.
-Nowy so njezapočnje.',
-	'smw_smwadmin_updatestopped' => 'Wšě eksistowace aktualizaciske procesy su so zastajili.',
-	'smw_smwadmin_updatenotstopped' => 'Zo by běžny aktualizowanski proces zastajił, dyrbiš kontrolny kašćik aktiwizować, zo by podał, zo sy sej woprawdźe wěsty.',
+Nowy so njezapočnje.
+
+Wróćo k $1.',
+	'smw_smwadmin_updatestopped' => 'Wšě eksistowace aktualizaciske procesy su so zastajili.
+
+Wróćo k $1.',
+	'smw_smwadmin_updatenotstopped' => 'Zo by běžny aktualizowanski proces zastajił, dyrbiš kontrolny kašćik aktiwizować, zo by podał, zo sy sej woprawdźe wěsty.
+
+Wróćo k $1.',
 	'smw_smwadmin_docu' => 'Tuta specialna strona ći za instalaciju a akutalizaciju <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a> pomha.
 Njezabudź hódnotne daty zawěsćić, prjedy hač administratiwne funkcije wuwjedźeš.',
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
@@ -6813,11 +6843,19 @@ Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
 	'smw_smwadmin_return' => 'Torna a $1',
 	'smw_smwadmin_updatestarted' => "Un nuovo processo di aggiornamento per ricaricare i dati semantici è iniziato.
 Tutti i dati registrati saranno ricostruiti o riparati se necessario.
-Puoi seguire i progressi dell'aggiornamento in questa pagina speciale.",
+Puoi seguire i progressi dell'aggiornamento in questa pagina speciale.
+
+Torna a $1.",
 	'smw_smwadmin_updatenotstarted' => "C'è già un processo di aggiornamento in corso.
-Non ne verrà avviato un altro.",
-	'smw_smwadmin_updatestopped' => 'Tutti i processi di aggiornamento in corso sono stati arrestati.',
-	'smw_smwadmin_updatenotstopped' => 'Per arrestare i processi di aggiornamento in corso, devi selezionare la casellina per confermare che sei davvero sicuro di volerlo fare.',
+Non ne verrà avviato un altro.
+
+Torna a $1.",
+	'smw_smwadmin_updatestopped' => 'Tutti i processi di aggiornamento in corso sono stati arrestati.
+
+Torna a $1.',
+	'smw_smwadmin_updatenotstopped' => 'Per arrestare i processi di aggiornamento in corso, devi selezionare la casellina per confermare che sei davvero sicuro di volerlo fare.
+
+Torna a $1.',
 	'smw_smwadmin_docu' => 'Questa pagina speciale serve ad aiutarti durante l\'installazione e l\'aggiornamento di <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Ricordati di fare un backup dei dati importanti prima di eseguire funzioni amministrative.',
 	'smw_smwadmin_db' => 'Installazione database e aggiornamento',
@@ -8136,11 +8174,19 @@ $messages['mk'] = array(
 	'smw_smwadmin_return' => 'Назад на $1',
 	'smw_smwadmin_updatestarted' => 'Започнат е нов процес за обнова на семантичките податоци.
 Сите складирани податоци ќе бидат преработени или поправени, каде што е потребно.
-На оваа специјална страница можете да го следите процесот на поднова.',
+На оваа специјална страница можете да го следите процесот на поднова.
+
+Назад на $1.',
 	'smw_smwadmin_updatenotstarted' => 'Веќе е во тек едно подновување.
-Нема да се создаде друго.',
-	'smw_smwadmin_updatestopped' => 'Сите постоечки процеси на поднова се сопрени.',
-	'smw_smwadmin_updatenotstopped' => 'За да го запрете текот на подновата, мора да го активирате кутивчето за избор кое укажува на тоа дека сте навистина сигурни дека сакате да направите така.',
+Нема да се создаде друго.
+
+Назад на $1.',
+	'smw_smwadmin_updatestopped' => 'Сите постоечки процеси на поднова се сопрени.
+
+Назад на $1.',
+	'smw_smwadmin_updatenotstopped' => 'За да го запрете текот на подновата, мора да го активирате кутивчето за избор кое укажува на тоа дека сте навистина сигурни дека сакате да направите така.
+
+Назад на $1.',
 	'smw_smwadmin_docu' => 'Оваа специјална страница ви помага во текот на инсталацијата и подновата на <a href="http://semantic-mediawiki.org/?uselang=mk">Семантички МедијаВики</a>.
 Не заборавајте да направите резервни примероци од значајни податоци пред да вршите административни постапки.',
 	'smw_smwadmin_db' => 'Инсталација и поднова на базата на податоци',
@@ -8987,11 +9033,19 @@ Voer zowel een pagina als een eigenschap in.',
 	'smw_smwadmin_return' => 'Terug naar $1',
 	'smw_smwadmin_updatestarted' => 'Er is een proces gestart voor het bijwerken van de semantische gegevens.
 Alle opgeslagen gegevens worden opnieuw opgebouwd of gerepareerd als dat nodig is.
-U kunt de voortgang volgen via deze speciale pagina.',
+U kunt de voortgang volgen via deze speciale pagina.
+
+Terug naar $1.',
 	'smw_smwadmin_updatenotstarted' => 'Er loopt al een bijwerkproces.
-Er wordt geen nieuw proces gestart.',
-	'smw_smwadmin_updatestopped' => 'Alle lopende bijwerkprocessen zijn afgebroken.',
-	'smw_smwadmin_updatenotstopped' => 'Om de lopende processes te stoppen, moet u het vinkje inschakelen om aan te geven dat u het zeker weet.',
+Er wordt geen nieuw proces gestart.
+
+Terug naar $1.',
+	'smw_smwadmin_updatestopped' => 'Alle lopende bijwerkprocessen zijn afgebroken.
+
+Terug naar $1.',
+	'smw_smwadmin_updatenotstopped' => 'Om de lopende processen te stoppen, moet u het vinkje inschakelen om aan te geven dat u het zeker weet.
+
+Terug naar $1.',
 	'smw_smwadmin_docu' => 'Deze speciale pagina assisteert u tijdens de installatie en het bijwerken van <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Denk eraan een back-up te maken van uw waardevolle gegevens voordat u beheershandelingen uitvoert.',
 	'smw_smwadmin_db' => 'Database installeren en bijwerken',
