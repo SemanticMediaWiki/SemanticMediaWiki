@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Print query results in lists.
  * @author Markus Krötzsch
@@ -223,7 +223,7 @@ END;
 						}
 					}
 					
-					$result .= $text; // actual output value
+					$result .= Sanitizer::stripAllTags( $text ); // actual output value
 				}
 				
 				$first_col = false;
