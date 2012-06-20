@@ -6654,6 +6654,7 @@ $messages['io'] = array(
  * @author Gmelfi
  * @author Melos
  * @author Pietrodn
+ * @author Ximo17
  */
 $messages['it'] = array(
 	'smw-desc' => "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([http://semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -6841,19 +6842,19 @@ Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
 	'smwadmin' => 'Funzioni amministrative per Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Il motore di storage è stato installato correttamente.',
 	'smw_smwadmin_return' => 'Torna a $1',
-	'smw_smwadmin_updatestarted' => "Un nuovo processo di aggiornamento per ricaricare i dati semantici è iniziato.
+	'smw_smwadmin_updatestarted' => "E' iniziato un nuovo processo di aggiornamento per ricaricare i dati semantici.
 Tutti i dati registrati saranno ricostruiti o riparati se necessario.
 Puoi seguire i progressi dell'aggiornamento in questa pagina speciale.
 
 Torna a $1.",
-	'smw_smwadmin_updatenotstarted' => "C'è già un processo di aggiornamento in corso.
+	'smw_smwadmin_updatenotstarted' => 'Un processo di aggiornamento è già in corso.
 Non ne verrà avviato un altro.
 
-Torna a $1.",
+Torna a $1.',
 	'smw_smwadmin_updatestopped' => 'Tutti i processi di aggiornamento in corso sono stati arrestati.
 
 Torna a $1.',
-	'smw_smwadmin_updatenotstopped' => 'Per arrestare i processi di aggiornamento in corso, devi selezionare la casellina per confermare che sei davvero sicuro di volerlo fare.
+	'smw_smwadmin_updatenotstopped' => 'Per arrestare il processo di aggiornamento in corso, devi cliccare nel riquadro per confermare che sei davvero sicuro di volerlo fare.
 
 Torna a $1.',
 	'smw_smwadmin_docu' => 'Questa pagina speciale serve ad aiutarti durante l\'installazione e l\'aggiornamento di <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
