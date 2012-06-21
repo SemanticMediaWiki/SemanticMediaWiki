@@ -94,8 +94,7 @@ class SMWSetupScript extends Maintenance {
 			}
 			echo "\n  All storage structures for $smwgDefaultStore have been deleted.\n  You can recreate them with this script, and then use\n  SMW_refreshData.php to rebuild their contents.";
 		} else {
-			smwfGetStore()->setup();
-			wfRunHooks( 'smwInitializeTables' );
+			SMWStore::setupStore();
 		}
 	}
 

@@ -336,6 +336,8 @@ abstract class SMWStore {
 	 * linebreaks and weak markup.
 	 *
 	 * @param boolean $verbose
+	 *
+	 * @return boolean Success indicator
 	 */
 	public abstract function setup( $verbose = true );
 
@@ -415,6 +417,21 @@ abstract class SMWStore {
 			}
 		}
 		$result .= '</div>';
+		return $result;
+	}
+
+	/**
+	 * Setup the store.
+	 *
+	 * @since 1.8
+	 *
+	 * @param bool $verbose
+	 *
+	 * @return boolean Success indicator
+	 */
+	public static function setupStore( $verbose = true ) {
+		$result = smwfGetStore()->setup( $verbose );
+		wfRunHooks( 'smwInitializeTables' );
 		return $result;
 	}
 
