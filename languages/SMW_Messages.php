@@ -9713,12 +9713,20 @@ Podaj zarówno stronę, jak i właściwość.',
 	'smw_smwadmin_setupsuccess' => 'Silnik przestrzeni dyskowej został pomyślnie ustawiony.',
 	'smw_smwadmin_return' => 'Powrót do $1',
 	'smw_smwadmin_updatestarted' => 'Uruchomiono nowy proces aktualizacji danych semantycznych.
-Wszystkie zapisane dane zostaną przebudowane lub naprawione w razie potrzeby.
-Możesz śledzić stan procesu aktualizacji na tej specjalnej stronie.',
-	'smw_smwadmin_updatenotstarted' => 'Proces aktualizacji jest już uruchomiony.
-Nie można utworzyć jeszcze jednego.',
-	'smw_smwadmin_updatestopped' => 'Wszystkie istniejące procesy aktualizacji zostały zatrzymane.',
-	'smw_smwadmin_updatenotstopped' => 'Aby zatrzymać uruchomiony proces aktualizacji, należy zaznaczyć pole wyboru, aby potwierdzić decyzję.',
+Wszystkie zapisane dane zostaną uporządkowane oraz naprawione w razie potrzeby.
+Możesz śledzić stan procesu aktualizacji na tej specjalnej stronie.
+
+Powrót do $1.',
+	'smw_smwadmin_updatenotstarted' => 'Jest już uruchomiony proces aktualizacji.
+Kolejny nie zostanie utworzony.
+
+Powrót do $1.',
+	'smw_smwadmin_updatestopped' => 'Wszystkie istniejące procesy aktualizacji zostały zatrzymane.
+
+Powrót do $1.',
+	'smw_smwadmin_updatenotstopped' => 'W celu zatrzymania uruchomionego procesu aktualizacji należy zaznaczyć pole wyboru, aby potwierdzić decyzję.
+
+Powrót do $1.',
 	'smw_smwadmin_docu' => 'Ta strona specjalna pomoże Ci w instalacji i modernizacji <a href="http://semantic-mediawiki.org">Semantycznego MediaWiki</a>.
 Pamiętaj przed wykonaniem funkcji administracyjnych o utworzeniu kopii zapasowej ważnych danych.',
 	'smw_smwadmin_db' => 'Instalacja i aktualizacja bazy danych',
