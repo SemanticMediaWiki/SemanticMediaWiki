@@ -13,6 +13,7 @@ production until the actual release.
 * Fixed page parameter handling on Special:ExportPDF (bug 35180).
 * Fixed handling of #set_recurring_event for 'month' and 'year' time units.
 * Fixed error on Special:URIResolver (bug 35643).
+* Fixed automatic running of SMW updating script when running maitenance/update.php.
 
 == SMW 1.7.1 ==
 

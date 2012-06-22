@@ -24,10 +24,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onSchemaUpdate( DatabaseUpdater $updater = null ) {
-		// Method was added in MW 1.19.
-		if ( is_callable( array( $updater, 'addPostDatabaseUpdateMaintenance' ) ) ) {
-			$updater->addPostDatabaseUpdateMaintenance( 'SMWSetupScript' );
-		}
+		$updater->addExtensionUpdate( array( 'SMWStore::setupStore' ) );
 
 		return true;
 	}
