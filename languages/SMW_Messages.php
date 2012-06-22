@@ -1137,7 +1137,7 @@ $messages['arc'] = array(
 	'smw_sbv_value' => 'ܛܝܡܐ:',
 	'browse' => 'ܦܐܬ ܘܝܩܝ',
 	'smw_browse_go' => 'ܙܠ',
-	'smw_pp_from' => 'ܡܢ ܕܦܐ',
+	'smw_pp_from' => 'ܡܢ ܦܐܬܐ',
 	'smw_result_results' => 'ܦܠܛ̈ܐ',
 	'smw_result_noresults' => 'ܠܐ ܦܠܛ̈ܐ.',
 );
@@ -3168,11 +3168,19 @@ Zapódaj ako bok tak teke kakosć.',
 	'smw_smwadmin_return' => 'Slědk k $1',
 	'smw_smwadmin_updatestarted' => 'Nowy aktualizěrowański proces za wótnowjenje semantiskich datow jo se startował.
 Wšykne skłaźone daty budu se znowego natwarjaś abo pórěźaś, źož trjeba.
-Móžoš póstupoju aktualizacije na toś tom specialnem boku slědowaś.',
+Móžoš póstupoju aktualizacije na toś tom specialnem boku slědowaś.
+
+Slědk k $1.',
 	'smw_smwadmin_updatenotstarted' => 'Proces aktualizacije južo běžy.
-Nowy se njestartujo.',
-	'smw_smwadmin_updatestopped' => 'Wše eksistěrujuce aktualizěrowańske procese su se zastajili.',
-	'smw_smwadmin_updatenotstopped' => 'Aby běžecy proces zastajił, musyš kontrolowy kašćik aktiwěrowaś, aby pódał, až sy napšawdu wěsty.',
+Nowy se njestartujo.
+
+Slědk k $1.',
+	'smw_smwadmin_updatestopped' => 'Wše eksistěrujuce aktualizěrowańske procese su se zastajili.
+
+Slědk k $1.',
+	'smw_smwadmin_updatenotstopped' => 'Aby běžecy proces zastajił, musyš kontrolowy kašćik aktiwěrowaś, aby pódał, až sy napšawdu wěsty.
+
+Slědk k $1.',
 	'smw_smwadmin_docu' => 'Toś ten specialny bok śi pomaga za instalaciju a aktualizaciju a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Mysli se na zawěsćenje gódnotnych datow, nježli až wuwjeźoš administratiwne funkcije.',
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki trjeba rozšyrjenja za datowu banku MediaWiki, aby semantiske daty składował. Slědujuca funkcija zawěsćijo, až twója datowa banka se pórědnje zarědujo.
@@ -4256,7 +4264,9 @@ Toutes les données stockées seront reconstruites, voire réparées si nécessa
 Vous pouvez suivre la progression de la mise à jour sur cette page spéciale.',
 	'smw_smwadmin_updatenotstarted' => 'Un processus de mise à jour est déjà en cours d’exécution.
 Ne pas en créer un autre.',
-	'smw_smwadmin_updatestopped' => 'Tous les processus de mise à jour ont été arrêtés.',
+	'smw_smwadmin_updatestopped' => 'Tous les processus de mise à jour existantes ont été arrêtés. 
+
+Retour à  $1 .',
 	'smw_smwadmin_updatenotstopped' => 'Pour arrêter le processus en cours de mise à jour, vous devez cocher la case.',
 	'smw_smwadmin_docu' => 'Cette page spéciale vous aide pendant l’installation et la mise à niveau de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 N’oubliez pas de sauvegarder vos données avant d’exécuter les fonctions d’administration du site.',
@@ -12728,8 +12738,13 @@ $messages['uk'] = array(
 	'smw_smwadmin_updatestarted' => 'Новий процес оновлення семантичних даних запущено. 
 Всі збережені дані буде за необхідності оновлено чи виправлено. 
 За процесом оновлення можна стежити на цій сторінці.',
-	'smw_smwadmin_updatenotstarted' => 'Процес освіження вже запущено. Новий не буде створено.',
-	'smw_smwadmin_updatestopped' => 'Всі наявні процеси освіження було зупинено.',
+	'smw_smwadmin_updatenotstarted' => 'Процес оновлення вже працює. 
+Нового запущено не буде.
+
+Поверніться до $1.',
+	'smw_smwadmin_updatestopped' => 'Усі процеси оновлення було зупинено.
+
+Поверніться до $1.',
 	'smw_smwadmin_updatenotstopped' => 'Щоб зупинити вже запущений процес освіження, будь ласка активуйте цю відмітку, щоб засвідчити, що ви впевнені у цьому рішенні.',
 	'smw_smwadmin_docu' => 'Ця сторінка допоможе при встановленні або оновленні <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Не забудьте зробити резервну копію всіх важливих даних перед запуском адміністративних функцій.',
 	'smw_smwadmin_db' => 'Встановлення та оновлення бази даних',
