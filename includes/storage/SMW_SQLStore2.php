@@ -544,6 +544,7 @@ class SMWSQLStore2 extends SMWStore {
 	 *
 	 * @param SMWDIWikiPage $subject
 	 * @param SMWRequestOptions $requestoptions
+	 * @return array of SMWDIProperty
 	 */
 	public function getProperties( SMWDIWikiPage $subject, $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore2::getProperties (SMW)" );
@@ -590,6 +591,7 @@ class SMWSQLStore2 extends SMWStore {
 				$res = $db->select( $from, '*', $where, 'SMW::getProperties', array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
+					//TODO - should we use SMWDIProperty::newFromUserLabel( $proptable->fixedproperty ) here?
 					$result[] = new SMWDIProperty( $proptable->fixedproperty );
 				}
 			}
