@@ -1436,7 +1436,7 @@ $messages['be'] = array(
 	'types' => 'Тыпы',
 );
 
-/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+/** Belarusian (Taraškievica orthography) (‪беларуская (тарашкевіца)‬)
  * @author EugeneZelenko
  * @author Jim-by
  * @author Red Winged Duck
@@ -2950,7 +2950,7 @@ $messages['diq'] = array(
 	'smw_browselink' => 'Bewni xısusiyeta',
 );
 
-/** Lower Sorbian (Dolnoserbski)
+/** Lower Sorbian (dolnoserbski)
  * @author Michawiki
  */
 $messages['dsb'] = array(
@@ -5534,7 +5534,7 @@ Procjena napretka osvježavanja:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za umetnute upite',
 );
 
-/** Upper Sorbian (Hornjoserbsce)
+/** Upper Sorbian (hornjoserbsce)
  * @author Michawiki
  */
 $messages['hsb'] = array(
