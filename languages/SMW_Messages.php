@@ -552,6 +552,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_exportrdf_submit' => 'This is the name of the submit button on [[Special:ExportRDF]] to trigger the export.
 
 {{Identical|Export}}',
+	'uriresolver' => 'This is the name of [[Special:URIResolver]].',
 	'properties' => 'This is the title of the special page on [[Special:SpecialPages]] showing all properties.
 
 {{Identical|Property}}',
@@ -641,9 +642,13 @@ This method is called ''content negotiation''.
 
 {{Identical|Limit}}',
 	'smw_qui_shownresults' => 'This is the message next to a checkbox on [[Special:QueryCreatory]] indicating if an item should be shown in the results or not.',
-	'smw_qui_invalidprop' => 'Parameters:
-* $1 is a property name',
-	'smw_qui_nosort' => 'Option in a drop-down menu indicating that user does not want any sorting to be done',
+	'smw_qui_noquery' => 'This is an error message on [[Special:QueryCreatory]].',
+	'smw_qui_invalidprop' => 'This is an error/warning message on [[Special:QueryCreatory]]. $1 holds the property name.',
+	'smw_qui_invalidformat' => 'This is an error/warning message on [[Special:QueryCreatory]]. $1 holds the name of the result format.',
+	'smw_qui_nosort' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user does not want any sorting to be done by the given property.',
+	'smw_qui_ascorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in ascending order by the given property.',
+	'smw_qui_descorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in descending order by the given property.',
+	'smw_qui_randorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in random order by the given property.',
 	'smw_qui_addnprop' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add another property to a query when clicked.',
 	'smw_qui_delete' => 'Removes/deletes a form option.
 {{Identical|Remove}}',
@@ -672,6 +677,8 @@ This method is called ''content negotiation''.
 	'smw_qui_dcategory' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where a category is expected to be typed in.
 
 {{identical|Category}}',
+	'smw_qui_dcatyes' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is present is expected to be typed in.',
+	'smw_qui_dcatno' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is absent is expected to be typed in.',
 	'searchbyproperty' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SearchByProperty]].',
 	'smw_sbv_property' => 'This is the text describing a textbox on [[Special:SearchByProperty]] where the name of a property is expected to be typed in.
 
@@ -2631,7 +2638,7 @@ Odhadovaný průběh updatu:',
  * @author Umherirrender
  */
 $messages['de'] = array(
-	'smw-desc' => "Ermöglicht es, das Wiki zugänglicher zu machen - für Menschen ''und'' Maschinen ([http://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
+	'smw-desc' => "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([http://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und',
 	'smw_factbox_head' => 'Fakten zu $1',
@@ -2804,11 +2811,11 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_qc_outro' => 'Nachfolgender Text:',
 	'smw_qc_default' => 'Standardtext:',
 	'smw_qc_formatopt' => 'Formatierungsoptionen',
-	'smw_qc_query_help' => 'Bitte eine Abfrage unter Verwendung des untenstehenden Formulars angeben, um Wikiseiten auf Basis von 
-Kategorien (<strong>z. B. [[:{{ns:category}}:Schauspieler]]</strong>),
-Attributen (<strong>[[:Liegt in::Deutschland]]</strong>),
-Seitennamen (<strong>[[:Deutschland]]</strong>) und
-Namensräumen (<strong>[[{{ns:help}}:+]]</strong>) auszuwählen.',
+	'smw_qc_query_help' => 'Bitte eine Abfrage unter Verwendung des untenstehenden Formulars angeben, um Wikiseiten auf Basis von
+Kategorien (bspw. <strong><nowiki>[[Kategorie:Schauspieler]]</nowiki></strong>),
+Attributen (bspw. <strong><nowiki>[[Liegt in::Deutschland]]</nowiki></strong>),
+Seitennamen (bspw. <strong><nowiki>[[Deutschland]]</nowiki></strong>) und
+Namensräumen (bspw. <strong><nowiki>[[Hilfe:+]]</nowiki></strong>) auszuwählen.',
 	'smw_qui_property' => '<strong>Attribut</strong>',
 	'smw_qui_prop' => 'Attribut:',
 	'smw_qui_labl' => 'Bezeichnung:',
@@ -6342,11 +6349,19 @@ Entra e un pagina e un proprietate.',
 	'smw_smwadmin_return' => 'Retornar a $1',
 	'smw_smwadmin_updatestarted' => 'Un nove processo de actualisation pro le refrescamento del datos semantic ha essite comenciate.
 Tote le datos immagazinate essera reconstruite o reparate ubi necessari.
-Tu pote sequer le progresso del actualisation in iste pagina special.',
+Tu pote sequer le progresso del actualisation in iste pagina special.
+
+Retornar a $1.',
 	'smw_smwadmin_updatenotstarted' => 'Il ha ja un processo de actualisation in curso de execution.
-Non es create un altere.',
-	'smw_smwadmin_updatestopped' => 'Tote le processos de actualisation existente ha essite stoppate.',
-	'smw_smwadmin_updatenotstopped' => 'Pro stoppar le processo de actualisation in curso, tu debe marcar le quadrato pro indicar que tu es absolutemente secur de voler facer isto.',
+Non es create un altere.
+
+Retornar a $1.',
+	'smw_smwadmin_updatestopped' => 'Tote le processos de actualisation existente ha essite stoppate.
+
+Retornar a $1.',
+	'smw_smwadmin_updatenotstopped' => 'Pro stoppar le processo de actualisation in curso, tu debe marcar le quadrato pro indicar que tu es absolutemente secur de voler facer isto.
+
+Retornar a $1.',
 	'smw_smwadmin_docu' => 'Iste pagina special te adjuta durante le installation e actualisation de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Non oblida facer un copia de reserva del datos de valor ante de executar un function administrative.',
 	'smw_smwadmin_db' => 'Installation e actualisation del base de datos',
@@ -6354,8 +6369,8 @@ Non oblida facer un copia de reserva del datos de valor ante de executar un func
 Le function infra assecura que tu base de datos es configurate correctemente.
 Le cambiamentos facite durante iste passo non afficera le resto del base de datos de MediaWiki, e pote esser facilemente disfacite si desirate.
 Iste function de installation pote esser executate plure vices sin causar alcun damno, sed es necessari solmente un vice post cata installation o actualisation.',
-	'smw_smwadmin_permissionswarn' => 'Si le operation falle con errores SQL, le usator de base de datos que tu wiki usa (verifica tu <tt>LocalSettings.php</tt>) probabilemente non ha permissiones sufficiente.
-O da a iste usator le permissiones additional de crear e deler tabulas, o entra temporarimente le nomine e contrasigno del usator <tt>root</tt> de tu base de datos in <tt>LocalSettings.php</tt>, o usa le script de mantenentia <tt>SMW_setup.php</tt> le qual pote usar le credentiales de AdminSettings.php.',
+	'smw_smwadmin_permissionswarn' => 'Si le operation falle con errores de SQL, le usator del base de datos que tu wiki usa (verifica tu LocalSettings.php) probabilemente non ha permissiones sufficiente.
+O da a iste usator le permissiones additional de crear e deler tabulas, o entra temporarimente le nomine e contrasigno del usator "root" de tu base de datos in LocalSettings.php, o usa le script de mantenentia SMW_setup.php le qual pote usar le datos de identification de un administrator.',
 	'smw_smwadmin_dbbutton' => 'Initialisar u actualisar tabulas',
 	'smw_smwadmin_announce' => 'Annunciar tu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispone de un servicio web pro annunciar nove sitos de wiki semantic.
