@@ -485,7 +485,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	 * @return string
 	 */
 	protected function getNavigationBar( SMWQueryResult $res, array $urlArgs ) {
-		global $smwgQMaxInlineLimit;
+		global $smwgQMaxInlineLimit, $wgLang;
 
 		$offset = $this->m_params['offset'];
 		$limit  = $this->params['limit']->getValue();
@@ -510,9 +510,9 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$navigation .=
 			'&#160;&#160;&#160;&#160; <b>' .
-				wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) .
-			'&#150; ' .
-				( $offset + $res->getCount() ) .
+				wfMsg( 'smw_result_results' ) . ' ' . $wgLang->formatNum( $offset + 1 ) .
+			' &#150; ' .
+				$wgLang->formatNum( $offset + $res->getCount() ) .
 			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $res->hasFurtherResults() ) {
