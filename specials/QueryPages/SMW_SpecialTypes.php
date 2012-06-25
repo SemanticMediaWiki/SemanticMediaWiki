@@ -10,8 +10,6 @@
  * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
- * 
- * @todo The messages 'smw_isnotype' and 'smw_typeunits', maybe 'smw_isaliastype', could be obsolete now.
  *
  * @author Markus Krötzsch
  */

@@ -19,8 +19,6 @@ $messages['en'] = array(
 	'smw_finallistconjunct' => ', and', // used in "A, B, and C"
 	'smw_factbox_head'      => 'Facts about $1',
 	'smw_isspecprop'        => 'This property is a special property in this wiki.',
-	'smw_isaliastype'       => 'This type is an alias for the datatype "$1".',
-	'smw_isnotype'          => 'This type "$1" is not a standard datatype in the wiki, and has not been given a user definition either.',
 	'smw_concept_description' => 'Description of concept "$1"', // used in the namespace "Concept:"
 	'smw_no_concept_namespace' => 'Concepts can only be defined on pages in the Concept: namespace.',
 	'smw_multiple_concepts'   => 'Each concept page can have only one concept definition.',
@@ -111,7 +109,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_notitle'       => '"$1" cannot be used as a page name in this wiki.',
 	'smw_noproperty'    => '"$1" cannot be used as a property name in this wiki.',
 	'smw_wrong_namespace' => 'Only pages in namespace "$1" are allowed here.',
-	'smw_unknowntype'   => 'Unsupported type "$1" defined for property.',
 	'smw_manytypes'     => 'More than one type defined for property.',
 	'smw_emptystring'   => 'Empty strings are not accepted.',
 	'smw_maxstring'     => 'String representation $1 is too long.',
@@ -206,7 +203,6 @@ Generates browsable RDF.',
 	// Messages for (data)Types Special
 	'types'          => 'Types',
 	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to properties.',
-	'smw_typeunits'  => 'Units of measurement of type "$1": $2',
 
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Semantic statistics',
@@ -424,7 +420,6 @@ $messages['qqq'] = array(
 {{Identical|And}}',
 	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values. $1 holds the name of the page',
 	'smw_isspecprop' => 'Used on [[Special:Properties]] to identify a special (build in) property.',
-	'smw_isnotype' => ' This message is obsolete.',
 	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query). $1 holds the name of the concept',
 	'smw_concept_cache_miss' => 'This is an information message. $1 holds the name of the [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
 	'smw_noinvannot' => 'This is an information message.',
@@ -435,7 +430,6 @@ $messages['qqq'] = array(
 	'smw_dsv_link' => 'This is the text of the link that is triggering the results export when clicked.',
 	'smw_json_link' => '{{optional}}',
 	'smw_rdf_link' => '{{optional}}',
-	'smw_printername_auto' => ' This message is obsolete!',
 	'smw_printername_count' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Count_format count].',
 	'smw_printername_csv' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:CSV_format CSV].',
 	'smw_printername_dsv' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:DSV_format DSV].',
