@@ -43,7 +43,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_rdf_link' => 'RDF',
 
 	// Names for result formats:
-	'smw_printername_auto' => 'Automatic',
 	'smw_printername_count' => 'Count results',
 	'smw_printername_csv' => 'CSV export',
 	'smw_printername_dsv' => 'DSV export',
