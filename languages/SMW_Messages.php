@@ -413,7 +413,7 @@ Estimated progress of current update:',
  */
 $messages['qqq'] = array(
 	'smw-desc' => '{{desc}}',
-	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked.',
+	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 
 {{Identical|And}}',
@@ -426,11 +426,21 @@ $messages['qqq'] = array(
 	'smw_noinvannot' => 'This is an information message.',
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
 	'smw_baduri' => 'This is an information message. $1 holds the malformed URI.',
-	'smw_rss_link' => '{{optional}}',
-	'smw_csv_link' => '{{optional}}',
-	'smw_dsv_link' => 'This is the text of the link that is triggering the results export when clicked.',
-	'smw_json_link' => '{{optional}}',
-	'smw_rdf_link' => '{{optional}}',
+	'smw_rss_link' => 'This is the text of the link that is triggering the results export to a RSS-file when clicked.
+
+{{optional}}',
+	'smw_csv_link' => 'This is the text of the link that is triggering the results export to a CSV-file when clicked.
+
+{{optional}}',
+	'smw_dsv_link' => 'This is the text of the link that is triggering the results export to a DSV-file when clicked.
+
+{{optional}}',
+	'smw_json_link' => 'This is the text of the link that is triggering the results export to a JSON-file when clicked.
+
+{{optional}}',
+	'smw_rdf_link' => 'This is the text of the link that is triggering the results export to a RDF-file when clicked.
+
+{{optional}}',
 	'smw_printername_count' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Count_format count].',
 	'smw_printername_csv' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:CSV_format CSV].',
 	'smw_printername_dsv' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:DSV_format DSV].',
@@ -537,7 +547,9 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_concept_header' => 'This is the header on a page in namespace "Concept". $1 holds the name of the respective concept.',
 	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". $1 holds the number of pages displayed in the current view.',
 	'smw_rss_description' => '{{optional}}',
-	'specialpages-group-smw_group' => '{{optional}}',
+	'specialpages-group-smw_group' => 'This is the name of the group of extensions on [[Special:Version]] which are related to or dependant on Semantic MediaWiki.
+
+{{optional}}',
 	'exportrdf' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:ExportRDF]].',
 	'smw_exportrdf_docu' => 'This is the introductory message at the top of [[Special:ExportRDF]].',
 	'smw_exportrdf_recursive' => 'This is the text describing an option available to choose from on [[Special:ExportRDF]].',
@@ -555,9 +567,9 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 link to Property page
 * $2 link to Type page
 * $3 Number of times the property is used',
-	'smw_property_template_notype' => 'Used on [[Special:Properties]]
-* $1 link to Property page
-* $2 Number of times the property is used',
+	'smw_property_template_notype' => 'This is used on [[Special:Properties]]. $1 holds the link to the property page and $2 holds the number of times the property is used within the wiki.
+
+{{optional}}',
 	'smw_propertylackspage' => 'This is an error/warning message.',
 	'smw_propertylackstype' => 'This is an error/warning message. $1 holds the name of the assumed datatype which is in fact always datatype Page.',
 	'smw_propertyhardlyused' => 'This is an error/warning message.',
@@ -672,6 +684,10 @@ This method is called ''content negotiation''.
 	'smw_qui_dcatyes' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is present is expected to be typed in.',
 	'smw_qui_dcatno' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is absent is expected to be typed in.',
 	'searchbyproperty' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SearchByProperty]].',
+	'smw_sbv_docu' => 'This is the information message shown on [[Special:SearchByProperty]] in case no property and no property value were not yet provided to search for.',
+	'smw_sbv_novalue' => 'This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided. $1 holds the name of the property.',
+	'smw_sbv_displayresult' => 'This is an information message shown on [[Special:SearchByProperty]] in case more than 20 results were found. $1 holds the name of the property and $2 holds the value of the property one searched for.',
+	'smw_sbv_displayresultfuzzy' => 'This is an information message shown on [[Special:SearchByProperty]] in case less than 20 results were found. $1 holds the name of the property and $2 holds the value of the property one searched for.',
 	'smw_sbv_property' => 'This is the text describing a textbox on [[Special:SearchByProperty]] where the name of a property is expected to be typed in.
 
 {{Identical|Property}}',
@@ -702,14 +718,18 @@ This method is called ''content negotiation''.
 	'smw_pp_submit' => 'This is the name of the submit button on [[Special:PageProperty]] to trigger the search.
 
 {{Identical|Find results}}',
-	'smw_result_prev' => 'This is the text of the link on [[Special:Ask]] that allows to return to the previous page containing results for the query.
+	'smw_result_prev' => 'This is the text of the link on [[Special:Ask]] or [[Special:SearchByProperty]] that allows to return to the previous page containing results for the query.
 
 {{Identical|Previous}}',
-	'smw_result_next' => 'This is the text of the link on [[Special:Ask]] that allows to proceed to the next page containing results for the query.
+	'smw_result_next' => 'This is the text of the link on [[Special:Ask]] or [[Special:SearchByProperty]] that allows to proceed to the next page containing results for the query.
 
 {{Identical|Next}}',
-	'smw_result_results' => '{{Identical|Result}}',
-	'smw_result_noresults' => '{{Identical|Sorry, no results}}',
+	'smw_result_results' => "This is the text on [[Special:Ask]] or [[Special:SearchByProperty]] preceding the shown range of results which were returned by the query, e.g. '''Results 1 - 50'''.
+
+{{Identical|Result}}",
+	'smw_result_noresults' => 'This is the text on [[Special:Ask]] or [[Special:SearchByProperty]] shown in case a query does not return any results.
+
+{{Identical|Sorry, no results}}',
 	'smwadmin' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SMWAdmin]].',
 	'smw_smwadmin_setupsuccess' => "This is the confirmation message at the bottom of the script's report concerning setup or update of the SMW database tables (process triggered from [[Special:SMWAdmin]]).",
 	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]]. $1 holds the link back to Special:SMWAdmin.
