@@ -7358,19 +7358,17 @@ $messages['ko'] = array(
 	'smw_viewasrdf' => 'RDF 피드',
 	'smw_factbox_head' => '$1에 대한 사실',
 	'smw_isspecprop' => '이 속성은 이 위키의 특별한 속성입니다.',
-	'smw_isaliastype' => '이 유형은 데이터의 별칭을 “$1”.',
 	'smw_baduri' => '죄송합니다, uri의 범위에서 “$1” 해당 장소에서 사용할 수 없다.',
-	'smw_no_importelement' => '원소 “$1” 에 사용할 수없습니다 져올.',
-	'smw_unknowntype' => '지원되지 않는 종류 “$1” 정의에 대한 속성을.',
+	'smw_no_importelement' => '"$1" 원소 가져오기를 사용할 수 없습니다.',
 	'smw_maxstring' => '문자열 표현 $1 이 너무 긴이 사이트에 대한.',
-	'smw_infinite' => '숫자와 대형으로 “$1” 는 지원되지 않습니다이 사이트에서.',
+	'smw_infinite' => '"$1" 크기와 같은 숫자는 지원하지 않습니다.',
 	'smw_nodatetime' => '의 날짜 “$1” 는 이해할 수 없다.',
 	'smw_typearticlecount' => '이 유형을 사용하여 보여주 $1 의 등록 정보를합니다.',
 	'smw_attributearticlecount' => '이 속성을 사용하여 보여주 $1 페이지입니다.',
 	'smw_rss_description' => '$1 RSS 피드',
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
 	'exportrdf' => 'RDF로 문서 내보내기',
-	'smw_pp_type' => '부동산',
+	'smw_pp_type' => '속성',
 );
 
 /** Krio (Krio)
