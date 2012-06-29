@@ -4006,6 +4006,7 @@ Uutta ei käynnistetä.',
  * @author Pierre Matringe
  * @author Seb35
  * @author Sherbrooke
+ * @author Tititou36
  * @author Urhixidur
  * @author Verdy p
  * @author Wyz
@@ -4252,7 +4253,9 @@ Ne pas en créer un autre.',
 	'smw_smwadmin_updatestopped' => 'Tous les processus de mise à jour existantes ont été arrêtés. 
 
 Retour à  $1 .',
-	'smw_smwadmin_updatenotstopped' => 'Pour arrêter le processus en cours de mise à jour, vous devez cocher la case.',
+	'smw_smwadmin_updatenotstopped' => 'Pour arrêter le processus de mise à jour en cours, vous devez activer la case à cocher pour indiquer que vous êtes vraiment sûr. 
+
+Revenir à $1.',
 	'smw_smwadmin_docu' => 'Cette page spéciale vous aide pendant l’installation et la mise à niveau de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 N’oubliez pas de sauvegarder vos données avant d’exécuter les fonctions d’administration du site.',
 	'smw_smwadmin_db' => 'Installation et mise à niveau de la base de données',
@@ -9715,7 +9718,6 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'version-semantic' => 'Estension semàntiche',
 	'smw_baduri' => 'URI dla forma "$1" a son pa përmëttù.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automàtich',
 	'smw_printername_count' => "Conta dj'arzultà",
 	'smw_printername_csv' => 'esportassion an CSV',
 	'smw_printername_dsv' => 'esportassion an DSV',
