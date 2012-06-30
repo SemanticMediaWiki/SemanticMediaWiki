@@ -40,8 +40,10 @@ $magicWords['ar'] = array(
 	'show' => array( 0, 'عرض' ),
 	'info' => array( 0, 'معلومات' ),
 	'concept' => array( 0, 'مبدأ' ),
+	'subobject' => array( 0, 'كائن_فرعي' ),
+	'smwdoc' => array( 0, 'توثيق_سمو' ),
 	'set' => array( 0, 'مجموعة' ),
-	'set_recurring_event' => array( 0, 'ضبط_حدث_جاري' ),
+	'set_recurring_event' => array( 0, 'ضبط_حدث_متكرر' ),
 	'declare' => array( 0, 'إعلان' ),
 	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقيقة__' ),
 	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__' ),
@@ -58,6 +60,13 @@ $magicWords['arz'] = array(
 	'declare' => array( 0, 'إعلان', 'declare' ),
 	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقيقة__', '__NOFACTBOX__' ),
 	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__', '__SHOWFACTBOX__' ),
+);
+
+/** Assamese (অসমীয়া) */
+$magicWords['as'] = array(
+	'ask' => array( 0, 'সোধক' ),
+	'show' => array( 0, 'দেখুৱাওক' ),
+	'info' => array( 0, 'তথ্য' ),
 );
 
 /** Breton (brezhoneg) */
@@ -86,7 +95,13 @@ $magicWords['de'] = array(
 
 /** Zazaki (Zazaki) */
 $magicWords['diq'] = array(
+	'ask' => array( 0, 'perske' ),
 	'show' => array( 0, 'bımocne' ),
+	'info' => array( 0, 'zanışe' ),
+	'concept' => array( 0, 'konsept' ),
+	'subobject' => array( 0, 'bınobce' ),
+	'set' => array( 0, 'saz' ),
+	'declare' => array( 0, 'ilaniye' ),
 );
 
 /** Spanish (español) */

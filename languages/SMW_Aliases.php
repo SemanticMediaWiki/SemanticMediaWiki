@@ -65,6 +65,14 @@ $specialPageAliases['arz'] = array(
 	'WantedProperties' => array( 'خصايص_مطلوبه' ),
 );
 
+/** Assamese (অসমীয়া) */
+$specialPageAliases['as'] = array(
+	'Ask' => array( 'সোধক' ),
+	'Browse' => array( 'ব্ৰাউজ' ),
+	'ExportRDF' => array( 'RDF_ৰপ্তানি' ),
+	'Types' => array( 'প্ৰকাৰসমূহ' ),
+);
+
 /** Banjar (Bahasa Banjar) */
 $specialPageAliases['bjn'] = array(
 	'Ask' => array( 'Takun' ),
@@ -124,7 +132,7 @@ $specialPageAliases['diq'] = array(
 	'QueryCreator' => array( 'PesinVıraşter' ),
 );
 
-/** Lower Sorbian (Dolnoserbski) */
+/** Lower Sorbian (dolnoserbski) */
 $specialPageAliases['dsb'] = array(
 	'Ask' => array( 'Semantiske pytanhje' ),
 	'Browse' => array( 'Pśepytaś' ),
@@ -179,7 +187,7 @@ $specialPageAliases['fi'] = array(
 	'QueryCreator' => array( 'Semanttisen_kyselyn_luonti' ),
 );
 
-/** Galician (Galego) */
+/** Galician (galego) */
 $specialPageAliases['gl'] = array(
 	'Ask' => array( 'Preguntar' ),
 	'Browse' => array( 'Navegar' ),
@@ -210,7 +218,7 @@ $specialPageAliases['gsw'] = array(
 	'QueryCreator' => array( 'Abfroogersteller' ),
 );
 
-/** Upper Sorbian (Hornjoserbsce) */
+/** Upper Sorbian (hornjoserbsce) */
 $specialPageAliases['hsb'] = array(
 	'Ask' => array( 'Semantiske pytanje' ),
 	'Browse' => array( 'Přepytać' ),
@@ -333,7 +341,7 @@ $specialPageAliases['ko'] = array(
 	'ExportRDF' => array( 'RDF내보내기' ),
 	'PageProperty' => array( '문서속성' ),
 	'Properties' => array( '속성' ),
-	'SMWAdmin' => array( 'SMW관리' ),
+	'SMWAdmin' => array( 'SMW관리자' ),
 	'SearchByProperty' => array( '속성찾기', '속성검색' ),
 	'SemanticStatistics' => array( '시멘틱통계량' ),
 	'Types' => array( '종류' ),
@@ -369,6 +377,7 @@ $specialPageAliases['kw'] = array(
 /** Luxembourgish (Lëtzebuergesch) */
 $specialPageAliases['lb'] = array(
 	'Ask' => array( 'Froen' ),
+	'Browse' => array( 'Browsen' ),
 	'ExportRDF' => array( 'RDF_exportéieren' ),
 	'PageProperty' => array( 'Säiten-Eegeschaften' ),
 	'Properties' => array( 'Eegeschaften' ),
