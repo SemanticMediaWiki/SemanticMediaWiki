@@ -49,7 +49,7 @@ class SMWDIBoolean extends SMWDataItem {
 		if ( $serialization == 't' ) {
 			return new SMWDIBoolean( true );
 		} elseif  ( $serialization == 'f' ) {
-			return new SMWDIBoolean( true );
+			return new SMWDIBoolean( false );
 		} else {
 			throw new SMWDataItemException( "Boolean data item unserialised from illegal value '$serialization'" );
 		}
