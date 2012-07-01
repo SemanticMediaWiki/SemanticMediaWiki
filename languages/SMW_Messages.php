@@ -804,10 +804,8 @@ $messages['af'] = array(
 	'smw_finallistconjunct' => ', en',
 	'smw_factbox_head' => 'Feite oor $1',
 	'smw_isspecprop' => "Hierdie eienskap is 'n spesiale eienskap van hierdie wiki.",
-	'smw_printername_auto' => 'Outomaties',
 	'smw_printername_template' => 'Sjabloon',
 	'smw_parseerror' => 'Die gegewe waarde is onverstaanbaar.',
-	'smw_unknowntype' => 'Onondersteunde tipe "$1" gedefinieer vir eienskap.',
 	'smw_manytypes' => 'Meer as een tipe gedefinieer vir eienskap.',
 	'smw_emptystring' => 'Leë stringe word nie aanvaar nie.',
 	'smw_true_words' => 'waar,w,ja,j',
@@ -850,15 +848,12 @@ $messages['af'] = array(
  */
 $messages['aln'] = array(
 	'smw_isspecprop' => 'Kjo pronë është një veti të veçantë në këtë wiki.',
-	'smw_isaliastype' => 'Ky lloj është një pseudonim për dhënave "$1".',
-	'smw_isnotype' => 'Ky lloj "$1" nuk është një standard të dhënave në wiki, dhe nuk është dhënë një përkufizim ose përdorues.',
 	'smw_concept_description' => 'Përshkrimi i konceptit "$1"',
 	'smw_no_concept_namespace' => 'Konceptet mund të përcaktohet në faqet në Konceptin: hapësira.',
 	'smw_multiple_concepts' => 'Çdo faqe koncept mund të ketë vetëm një përkufizim koncept.',
 	'smw_concept_cache_miss' => 'Koncepti "$1" nuk mund të përdoret në këtë moment, që nga konfigurimi Wiki kërkon që ajo të jetë llogaritur off-line. Nëse problemi nuk zhduken pas disa kohë, pyesni administratorin e faqes tuaj për të bërë këtë koncept në dispozicion.',
 	'smw_noinvannot' => 'Vlerat nuk mund të vendoset në pronat e anasjelltas.',
 	'smw_baduri' => 'URI e formës "$1" nuk lejohen.',
-	'smw_printername_auto' => 'Automatik',
 	'smw_printername_count' => 'Rezultatet Count',
 	'smw_printername_csv' => 'eksport CSV',
 	'smw_printername_debug' => 'query Debug (për ekspertët)',
@@ -894,7 +889,6 @@ $messages['aln'] = array(
 	'smw_parseerror' => 'Vlera e dhënë nuk është kuptuar.',
 	'smw_notitle' => '"$1" nuk mund të përdoret si një emër faqe në këtë wiki.',
 	'smw_wrong_namespace' => 'Vetëm faqet në hapësirën "$1" lejohen këtu.',
-	'smw_unknowntype' => 'Lloj i pasuportuar "$1" të përcaktuara për pronën.',
 );
 
 /** Amharic (አማርኛ)
@@ -904,7 +898,7 @@ $messages['am'] = array(
 	'smw_result_next' => 'ቀጥሎ',
 );
 
-/** Aragonese (Aragonés)
+/** Aragonese (aragonés)
  * @author Juanpabl
  */
 $messages['an'] = array(
@@ -935,7 +929,6 @@ $messages['ar'] = array(
 	'smw_csv_link' => 'سي في إس',
 	'smw_json_link' => 'جسون',
 	'smw_rdf_link' => 'آر دي إف',
-	'smw_printername_auto' => 'تلقائي',
 	'smw_printername_count' => 'عد النتائج',
 	'smw_printername_csv' => 'تصدير CSV',
 	'smw_printername_debug' => 'استعلام التصليح (للخبراء)',
@@ -1187,7 +1180,6 @@ $messages['arz'] = array(
 	'smw_baduri' => 'URIs من النوع "$1" غير مسموح بها.',
 	'smw_rss_link' => 'آر إس إس',
 	'smw_csv_link' => 'سى فى إس',
-	'smw_printername_auto' => 'تلقائي',
 	'smw_printername_count' => 'عد النتائج',
 	'smw_printername_csv' => 'تصدير CSV',
 	'smw_printername_debug' => 'استعلام التصليح (للخبراء)',
@@ -1401,7 +1393,6 @@ $messages['ast'] = array(
 	'version-semantic' => 'Estensiones semántiques',
 	'smw_baduri' => 'Les URIs de la forma «$1» nun tan permitíes.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automático',
 	'smw_printername_count' => 'Resultaos del recuentu',
 	'smw_printername_csv' => 'Esportación a CSV',
 	'smw_printername_dsv' => 'Esportación a DSV',
@@ -1423,7 +1414,6 @@ $messages['ast'] = array(
 $messages['az'] = array(
 	'smw_finallistconjunct' => ', və',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Avtomatik',
 	'smw_printername_list' => 'Siyahı',
 	'smw_printername_table' => 'Cədvəl',
 	'smw_printername_template' => 'Şablon',
@@ -1479,7 +1469,6 @@ $messages['be-tarask'] = array(
 	'version-semantic' => 'Сэмантычныя пашырэньні',
 	'smw_baduri' => 'Спасылкі на форму «$1» не дазволеныя.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Аўтаматычна',
 	'smw_printername_count' => 'Падлік вынікаў',
 	'smw_printername_csv' => 'экспарт у фармаце CSV',
 	'smw_printername_dsv' => 'Экспарт у фармат DSV',
@@ -1749,7 +1738,6 @@ $messages['be-tarask'] = array(
 $messages['bg'] = array(
 	'smw_viewasrdf' => 'RDF емисия',
 	'smw_factbox_head' => 'Факти за $1',
-	'smw_printername_auto' => 'Автоматично',
 	'smw_printername_template' => 'Шаблон',
 	'smw_iq_disabled' => 'Съжаляваме. Семантичните заявки са изключени в това уики.',
 	'smw_nonright_importtype' => '$1 може да се използва само за страници от именното пространство „$2“.',
@@ -1798,7 +1786,6 @@ $messages['bn'] = array(
 	'smw_viewasrdf' => 'আরডিএফ ফিড',
 	'smw_finallistconjunct' => ', এবং',
 	'smw_dsv_link' => 'ডিএসভি',
-	'smw_printername_auto' => 'স্বয়ংক্রিয়',
 	'smw_printername_csv' => 'সিএসভি রপ্তাপি',
 	'smw_printername_dsv' => 'ডিএসভি রপ্তাপি',
 	'smw_printername_debug' => 'ডিবাগ কোয়েরি (বিশেষজ্ঞদের জন্য)',
@@ -1844,7 +1831,6 @@ $messages['br'] = array(
 	'version-semantic' => 'Astennoù steroniezh',
 	'smw_baduri' => 'An URLoù er stumm « $1 » n"int ket aotreet.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Emgefre',
 	'smw_printername_count' => "Kontañ an disoc'hoù",
 	'smw_printername_csv' => 'Ezporzh CSV',
 	'smw_printername_dsv' => 'Ezporzhiañ e DSV',
@@ -2044,10 +2030,8 @@ $messages['bs'] = array(
 	'smw_finallistconjunct' => ' i',
 	'smw_factbox_head' => 'Činjenice o $1',
 	'smw_isspecprop' => 'Ovo svojstvo je posebna osobina na ovoj wiki.',
-	'smw_isaliastype' => 'Ovaj tip je nadimak za tip podataka "$1".',
 	'smw_concept_description' => 'Opis koncepta "$1"',
 	'version-semantic' => 'Semantička proširenja',
-	'smw_printername_auto' => 'Automatsko',
 	'smw_printername_count' => 'Rezultati brojanja',
 	'smw_printername_csv' => 'CSV izvoz',
 	'smw_printername_json' => 'JSON izvoz',
@@ -2108,7 +2092,6 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'version-semantic' => 'Extensions semàntiques',
 	'smw_baduri' => 'Les URI del formulari «$1» no són permeses.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automàtic',
 	'smw_printername_count' => 'Resultats del recompte',
 	'smw_printername_csv' => 'exportació a CSV',
 	'smw_printername_dsv' => 'Exportació DSV',
@@ -2422,7 +2405,6 @@ $messages['cs'] = array(
 	'smw_noinvannot' => 'Inverzním vlastnostem nelze přiřazovat hodnoty.',
 	'smw_baduri' => 'Promiňte, URI z rozsahu „$1“ na tomto místě nejsou dostupné.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automatické',
 	'smw_printername_csv' => 'Export do CSV',
 	'smw_printername_dsv' => 'Export do DSV',
 	'smw_printername_json' => 'Export do JSON',
@@ -3233,7 +3215,6 @@ $messages['el'] = array(
 	'smw_factbox_head' => 'Γεγονότα για $1',
 	'smw_isspecprop' => 'Αυτή η ιδιότητα είναι μια ειδική ιδιότητα σε αυτό το βίκι.',
 	'smw_concept_description' => 'Περιγραφή του κόνσεπτ "$1"',
-	'smw_printername_auto' => 'Αυτόματα',
 	'smw_printername_count' => 'Αποτελέσματα μέτρησης',
 	'smw_printername_csv' => 'Εξαγωγή CSV',
 	'smw_printername_debug' => 'Αίτημα εκσφαλμάτωσης (για ειδικούς)',
@@ -3337,12 +3318,9 @@ $messages['eo'] = array(
 	'smw_finallistconjunct' => ', kaj',
 	'smw_factbox_head' => 'Faktoj pri $1',
 	'smw_isspecprop' => 'Ĉi tiu atributo estas speciala atributo en ĉi tiu vikio.',
-	'smw_isaliastype' => 'Ĉi tiu datumtipo estas kromnomo por la datumtipo "$1".',
-	'smw_isnotype' => 'Ĉi tiu datumtipo "$1" ne estas norma datumtipo en la vikio, kaj ne estis donita difino de uzanto.',
 	'smw_concept_description' => 'Priskribo de koncepto "$1"',
 	'smw_no_concept_namespace' => 'Konceptoj povas nur esti difinita en paĝoj en la nomspaco Concept:.',
 	'smw_baduri' => 'Bedaŭrinde, URI-oj de la kamparo "$1" ne estas permesita.',
-	'smw_printername_auto' => 'Aŭtomata',
 	'smw_printername_csv' => 'CSV-eksporto',
 	'smw_printername_list' => 'Listo',
 	'smw_printername_rss' => 'RSS-eksporti',
@@ -3357,7 +3335,6 @@ $messages['eo'] = array(
 	'smw_no_importelement' => 'Elemento "$1" ne estas havebla por importi.',
 	'smw_parseerror' => 'La donata valoro ne estas komprenita.',
 	'smw_notitle' => '"$1" ne eblas esti uzata kiel paĝnomo en ĉi tiu vikio.',
-	'smw_unknowntype' => 'Nesubtenita datumtipo "$1" difinita por atributo.',
 	'smw_manytypes' => 'Pli ol unu tipo estas difinita por atributo.',
 	'smw_emptystring' => 'Malplenaj ĉenoj ne estas akceptitaj.',
 	'smw_maxstring' => 'Ĉena reprezentado $1 estas tro longa.',
@@ -3766,7 +3743,6 @@ Progeso estimado de la actualización:',
 $messages['eu'] = array(
 	'smw_viewasrdf' => 'RDF jarioa',
 	'smw_finallistconjunct' => ', eta',
-	'smw_printername_auto' => 'Automatikoa',
 	'smw_true_words' => 'egia,e,bai,b',
 	'smw_false_words' => 'gezurra,g,ez,e',
 	'smw_nofloat' => '"$1" ez da zenbakia.',
@@ -3803,7 +3779,6 @@ $messages['eu'] = array(
 $messages['fa'] = array(
 	'smw_finallistconjunct' => '، و',
 	'smw_isspecprop' => 'این خصوصیت یک خصوصیت ویژه در این ویکی است.',
-	'smw_isaliastype' => 'این نوع یک نام مستعار برای نوع داده "$1" است.',
 	'smw_concept_description' => 'توصیف مفهوم "$1"',
 	'smw_no_concept_namespace' => 'مفاهیم فقط می‌توانند در صفحه‌های داخل فضای نام مفهوم: تعریف شوند.',
 	'smw_multiple_concepts' => 'هر صفحه مفهوم فقط می‌تواند شامل یک تعریف مفهوم باشد.',
@@ -3833,7 +3808,6 @@ $messages['fa'] = array(
 	'types' => 'نوع‌ها',
 	'smw_types_docu' => 'در ذیل لیستی از تمام نوع‌داده‌هایی که می‌تواند به خصوصیت‌ها انتصاب شود، آمده است.
 هر نوع‌داده یک صفحه دارد که اطلاعات اضافه می‌تواند در آن فراهم آورده شود.',
-	'smw_typeunits' => 'واحدهای اندازه‌گیری از نوع "$1" : $2',
 	'semanticstatistics' => 'آمار معنایی',
 	'ask' => 'جستجوی معنایی',
 	'smw_ask_sortby' => 'مرتب‌سازی با ستون (اختیاری)',
@@ -3877,7 +3851,6 @@ $messages['fi'] = array(
 	'smw_isspecprop' => 'Tämä on erikoisominaisuus.',
 	'smw_concept_description' => 'Käsitteen ”$1” kuvaus',
 	'smw_multiple_concepts' => 'Kullakin käsitesivulla voi olla vain yksi käsitteen määritelmä.',
-	'smw_printername_auto' => 'Automaattinen',
 	'smw_printername_count' => 'Laskennan tulokset',
 	'smw_printername_csv' => 'CSV-vienti',
 	'smw_printername_json' => 'JSON-vienti',
@@ -3993,6 +3966,7 @@ Uutta ei käynnistetä.',
 );
 
 /** French (français)
+ * @author Boniface
  * @author Crochet.david
  * @author Faure.thomas
  * @author Gomoko
@@ -4006,6 +3980,7 @@ Uutta ei käynnistetä.',
  * @author Pierre Matringe
  * @author Seb35
  * @author Sherbrooke
+ * @author Solitarius
  * @author Tititou36
  * @author Urhixidur
  * @author Verdy p
@@ -4086,10 +4061,10 @@ $messages['fr'] = array(
 	'smw_notitle' => '« $1 » ne peut être utilisé comme nom de page sur ce wiki.',
 	'smw_noproperty' => '"$1" ne peut être utilisé comme un nom de propriété dans ce wiki.',
 	'smw_wrong_namespace' => 'Seules les pages dans l’espace « $1 » sont autorisées ici.',
-	'smw_manytypes' => 'Plusieurs types de données ont été assignés à l’attribut.',
+	'smw_manytypes' => 'Plusieurs types de données ont été assignés à cette propriété.',
 	'smw_emptystring' => 'Les chaînes vides ne sont pas acceptées.',
 	'smw_maxstring' => 'La chaîne de représentation $1 est trop grande.',
-	'smw_notinenum' => '« $1 » ne fait pas partie des valeurs possibles ($2) pour cet attribut.',
+	'smw_notinenum' => '« $1 » ne fait pas partie des valeurs possibles ($2) pour cette propriété.',
 	'smw_noboolean' => '« $1 » n’est pas reconnu comme valeur booléenne (vrai/faux).',
 	'smw_true_words' => 'vrai,v,oui,true',
 	'smw_false_words' => 'faux,f,non,false',
@@ -4114,10 +4089,10 @@ $messages['fr'] = array(
 	'smw_querytoolarge' => 'Les conditions suivantes de la requête n’ont pu être évaluées en raison des restrictions de ce wiki à la taille ou à la profondeur des requêtes : $1.',
 	'smw_notemplategiven' => 'Veuillez fournir une valeur pour le paramètre « modèle » pour ce format de requête afin de travailler.',
 	'smw_db_sparqlqueryproblem' => "Le résultat de la requête n'a pas pu être obtenu à partir de la base de données SPARQL. Cette erreur peut être temporaire ou indiquer un bogue dans le logiciel de la base de données.",
-	'smw_db_sparqlqueryincomplete' => 'Il s’est avéré trop difficile de répondre à la requête et celle-ci a été abandonnée. Certains résultats pourraient manquer. Si possible, essayez plutôt d’utiliser une requête simple.',
-	'smw_type_header' => 'Attributs de type « $1 »',
+	'smw_db_sparqlqueryincomplete' => 'Il s’est avéré trop difficile de répondre à la requête et celle-ci a été abandonnée. Certains résultats pourraient manquer. Si possible, essayez plutôt d’utiliser une requête plus simple.',
+	'smw_type_header' => 'Propriétés de type « $1 »',
 	'smw_typearticlecount' => 'Afficher {{PLURAL:$1|la propriété|les $1 propriétés}} utilisant ce type.',
-	'smw_attribute_header' => 'Pages utilisant l’attribut « $1 »',
+	'smw_attribute_header' => 'Pages utilisant la propriété « $1 »',
 	'smw_attributearticlecount' => 'Afficher {{PLURAL:$1|la page|les $1 pages}} utilisant cette propriété.',
 	'smw_subproperty_header' => 'Sous-propriétés',
 	'smw_subpropertyarticlecount' => 'Cette propriété dispose {{PLURAL:$1|de la sous-propriété suivante|des $1 sous-propriétés suivantes}} :',
@@ -4146,7 +4121,7 @@ $messages['fr'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 utilisation{{PLURAL:$2||s}})',
 	'smw_purge' => 'Réactualiser',
 	'types' => 'Types de données',
-	'smw_types_docu' => 'Ceci est une liste de tous les types de données qui peuvent être assignés aux attributs.',
+	'smw_types_docu' => 'Ceci est une liste de tous les types de données qui peuvent être assignés aux propriétés.',
 	'semanticstatistics' => 'Statistiques sémantiques',
 	'smw_semstats_text' => "Ce wiki contient '''$1''' valeur{{PLURAL:$1||s}} de propriété pour un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriété différente|propriétés différentes}}]].
 '''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci.
@@ -4215,10 +4190,10 @@ Noms (<strong>[[Allemagne]]</strong>) et espaces de noms (<strong>[[{{ns:help}}:
 	'smw_qui_dcategory' => 'Catégorie :',
 	'smw_qui_dcatyes' => 'Afficher le texte quand la catégorie est présente:',
 	'smw_qui_dcatno' => 'Afficher le texte quand la catégorie est absente:',
-	'searchbyproperty' => 'Rechercher par attribut',
-	'smw_sbv_docu' => 'Rechercher toutes les pages qui ont un attribut donné avec un certaine valeur.',
-	'smw_sbv_novalue' => 'Veuillez entrer une valeur ou consulter toutes les valeurs des attributs pour « $1 ».',
-	'smw_sbv_displayresult' => 'Liste de toutes les pages qui ont un attribut « $1 » avec la valeur « $2 ».',
+	'searchbyproperty' => 'Recherche par propriété',
+	'smw_sbv_docu' => 'Rechercher toutes les pages qui ont une propriété donnée avec une certaine valeur.',
+	'smw_sbv_novalue' => 'Entrez une valeur correcte pour le critère, ou consultez toutes les valeurs de critère pour "$1".',
+	'smw_sbv_displayresult' => 'Une liste de toutes les pages qui ont un critère « $1 » avec la valeur « $2 ».',
 	'smw_sbv_displayresultfuzzy' => 'Une liste de toutes les pages qui ont la propriété « $1 » avec la valeur « $2 ». Puisqu’il n’y a que quelques résultats, les valeurs proches sont également affichées.',
 	'smw_sbv_property' => 'Propriété :',
 	'smw_sbv_value' => 'Valeur :',
@@ -4245,11 +4220,15 @@ Noms (<strong>[[Allemagne]]</strong>) et espaces de noms (<strong>[[{{ns:help}}:
 	'smwadmin' => 'Fonctions administrateur pour Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Le moteur de stockage a été installé avec succès.',
 	'smw_smwadmin_return' => 'Revenir vers $1',
-	'smw_smwadmin_updatestarted' => 'Un nouveau processus pour le rafraîchissement des données sémantiques a commencé.
+	'smw_smwadmin_updatestarted' => 'Un nouveau processus de rafraîchissement des données sémantiques a commencé.
 Toutes les données stockées seront reconstruites, voire réparées si nécessaire.
-Vous pouvez suivre la progression de la mise à jour sur cette page spéciale.',
-	'smw_smwadmin_updatenotstarted' => 'Un processus de mise à jour est déjà en cours d’exécution.
-Ne pas en créer un autre.',
+Vous pouvez suivre la progression de la mise à jour sur cette page spéciale.
+
+Retour à $1.',
+	'smw_smwadmin_updatenotstarted' => "Un processus de mise à jour est déjà en cours d’exécution.
+Aucune action n'a été prise.
+
+Retour à $1.",
 	'smw_smwadmin_updatestopped' => 'Tous les processus de mise à jour existantes ont été arrêtés. 
 
 Retour à  $1 .',
@@ -4313,7 +4292,6 @@ $messages['frp'] = array(
 	'smw_concept_description' => 'Dèscripcion du concèpte « $1 »',
 	'version-semantic' => 'Èxtensions sèmantiques',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Ôtomatico',
 	'smw_printername_count' => 'Comptar los rèsultats',
 	'smw_printername_csv' => 'èxportacion en CSV',
 	'smw_printername_dsv' => 'Èxportacion en DSV',
@@ -4361,7 +4339,6 @@ $messages['frp'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 usâjo{{PLURAL:$2||s}})',
 	'smw_purge' => 'Rafrèchir',
 	'types' => 'Tipos',
-	'smw_typeunits' => 'Unitâts de mesera de tipo « $1 » : $2',
 	'semanticstatistics' => 'Statistiques sèmantiques',
 	'ask' => 'Rechèrche sèmantica',
 	'smw_ask_sortby' => 'Triyér per colones (u chouèx)',
@@ -4810,7 +4787,6 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'version-semantic' => 'Semantischi Erwyterige',
 	'smw_baduri' => 'URI mit dr Form „$1“ sin nit zuelässig.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automatisch',
 	'smw_printername_count' => 'Zellerergebnis',
 	'smw_printername_csv' => 'CSV-Export',
 	'smw_printername_dsv' => 'DSV-Export',
@@ -5031,7 +5007,6 @@ $messages['he'] = array(
 	'version-semantic' => 'הרחבות סמנטיות',
 	'smw_baduri' => 'כתובות מהצורה "$1" אינן מורשות.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'אוטומטי',
 	'smw_printername_count' => 'ספירת התוצאות',
 	'smw_printername_csv' => 'ייצוא ל־CVS',
 	'smw_printername_dsv' => 'יצוא DSV',
@@ -5305,7 +5280,6 @@ $messages['hr'] = array(
 	'smw_noinvannot' => 'Vrijednosti se ne mogu dodijeliti inverznim svojstva.',
 	'version-semantic' => 'Semantičke ekstenzije',
 	'smw_baduri' => 'URI oblika "$1" nije dozvoljen.',
-	'smw_printername_auto' => 'Automatski',
 	'smw_printername_count' => 'Broji rezultate',
 	'smw_printername_csv' => 'Izvoz u CSV',
 	'smw_printername_debug' => 'Debugiranje upita (za stručnjake)',
@@ -5808,8 +5782,6 @@ $messages['ht'] = array(
 	'smw_finallistconjunct' => ', epi',
 	'smw_factbox_head' => 'Bagay an relasyon ak $1',
 	'smw_isspecprop' => 'Pwopryete sa espesyal toutbon nan wiki sa',
-	'smw_isaliastype' => 'Tip sa se yon alyas pou done "$1".',
-	'smw_isnotype' => 'Tip "$1" pa yon tip estanda nan wiki a, li pa defini pa yon itilizatè tou.',
 	'smw_baduri' => 'Eskize nou, URIs yo pou domèn "$1" pa otorize, oubyen li pa disponib nan plas isit la.',
 	'smw_iq_disabled' => 'Eskize nou. Rechèch nan atik wiki sa a pa otorize oubyen nou dezaktive l.',
 	'smw_iq_moreresults' => '… lòt rezilta yo',
@@ -5818,7 +5790,6 @@ $messages['ht'] = array(
 	'smw_no_importelement' => 'Eleman "$1" pa disponib pou rekipere, pou chaje.',
 	'smw_parseerror' => 'Valè ou bay oubyen sa li retounen pa klè, nou pa kapab konprann li.',
 	'smw_notitle' => 'Nou pa kapab itilize "$1" tankou non yon paj nan wiki sa.',
-	'smw_unknowntype' => 'Tip done "$1" yo ki pa sipòte retounen nan atribi a.',
 	'smw_manytypes' => 'Plizyè tip done pase  nan atribi.',
 	'smw_emptystring' => 'Chèn mo ou bay an pa dwe vid.',
 	'smw_maxstring' => 'Chèn reprezantasyon $1 an two long.',
@@ -5848,7 +5819,6 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_noinvannot' => 'Inverz tulajdonságokhoz nem lehet értékeket rendelni.',
 	'version-semantic' => 'Szemantikai kiterjesztések',
 	'smw_baduri' => '„$1” formájú URI-k nem engedélyezettek.',
-	'smw_printername_auto' => 'Automatikus',
 	'smw_printername_count' => 'Eredmények megszámlálása',
 	'smw_printername_csv' => 'CSV exportálás',
 	'smw_printername_debug' => 'Lekérdezés hibakeresése (szakértőknek)',
@@ -6380,7 +6350,6 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'version-semantic' => 'Ekstensi semantik',
 	'smw_baduri' => 'URI berbentuk "$1" tidak diperbolehkan.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Otomatis',
 	'smw_printername_count' => 'Hasil perhitungan',
 	'smw_printername_csv' => 'Expor CSV',
 	'smw_printername_dsv' => 'Ekspor DSV',
@@ -6889,7 +6858,6 @@ $messages['ja'] = array(
 	'version-semantic' => 'セマンティック拡張機能',
 	'smw_baduri' => '「$1」という形式のURIは認められていません。',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => '自動',
 	'smw_printername_count' => '集計結果',
 	'smw_printername_csv' => 'CSV 形式で書き出し',
 	'smw_printername_dsv' => 'DSV 形式で書き出し',
@@ -7138,8 +7106,6 @@ $messages['jv'] = array(
 	'smw_finallistconjunct' => ', lan',
 	'smw_factbox_head' => 'Fakta-fakta ngenani $1',
 	'smw_isspecprop' => 'Sifat iki iku sawijining sifat kusus ing wiki iki.',
-	'smw_isaliastype' => 'Jenis iki sawijining alias kanggo jenis data “$1”.',
-	'smw_isnotype' => 'Jenis “$1” iki dudu sawijining jenis data baku ing wiki, lan uga ora diwènèhi sawijining définisi déning sang panganggo.',
 	'smw_baduri' => 'Nuwun sèwu, URI awujud “$1” ora diidinaké.',
 	'smw_iq_disabled' => 'Nuwun sèwu. Kwéri sémantik kanggo wiki iki dipatèni.',
 	'smw_iq_moreresults' => '… pituwas sabanjuré',
@@ -7148,7 +7114,6 @@ $messages['jv'] = array(
 	'smw_no_importelement' => 'Unsur “$1” ora kasedyakaké kanggi diimpor.',
 	'smw_parseerror' => 'Bijih sing diwènèhaké ora dimangertèni.',
 	'smw_notitle' => '“$1” ora bisa dienggo minangka jeneng kaca ing wiki iki.',
-	'smw_unknowntype' => 'Jenis “$1” sing ora disengkuyung, didéfinisi kanggo sifat.',
 	'smw_manytypes' => 'Sifaté didéfinisi luwih saka sajenis.',
 	'smw_emptystring' => 'Rangkéan kosong ora ditampa.',
 	'smw_maxstring' => 'Répresèntasi string $1 kedawan.',
@@ -7200,7 +7165,6 @@ Nggawé berkas RDF sing bisa dijlajah.',
 	'types' => 'Jenis-jenis',
 	'smw_types_docu' => 'Ing ngisor iki kapacak sawijining daftar kabèh jenis data sing bisa ditunjukaké menyang sifat-sifat.
 Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.',
-	'smw_typeunits' => 'Unit-unit pangukuran jenis “$1”: $2',
 	'semanticstatistics' => 'Statistik sémantik',
 	'smw_semstats_text' => "Wiki iki ngandhut '''$1''' {{PLURAL:$1|aji|aji}} sifat nganti gunggung '''$2''' [[Special:Properties|{{PLURAL:$2|sifat|sifat}}]].
 '''$3''' {{PLURAL:$3|sifat nduwèni|sifat nduwèni}} kaca dhéwé, lan jinis-data sing dimaksudaké kanggo '''$4'''.
@@ -7371,6 +7335,7 @@ $messages['ko'] = array(
 	'smw_rss_description' => '$1 RSS 피드',
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
 	'exportrdf' => 'RDF로 문서 내보내기',
+	'smw_qui_cancel' => '취소',
 	'smw_pp_type' => '속성',
 );
 
@@ -7412,7 +7377,6 @@ Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.
 	'smw_dsv_link' => '<i lang="en">DSV</i>-Dattei',
 	'smw_json_link' => '<i lang="en">JSON</i>',
 	'smw_rdf_link' => '<i lang="en">RDF</i>',
-	'smw_printername_auto' => 'Automattesch',
 	'smw_printername_count' => 'Zälle, wat erus kütt',
 	'smw_printername_csv' => 'Expoot em <i lang="en">CSV</i>-Fommaat',
 	'smw_printername_dsv' => 'Äxpoot als en <i lang="en">DSV</i>-Dattei',
@@ -7634,7 +7598,6 @@ $messages['lb'] = array(
 	'smw_baduri' => 'URIë vun der Form "$1" sinn net erlaabt.',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automatesch',
 	'smw_printername_count' => 'Resultater zielen',
 	'smw_printername_csv' => 'Export als CSV',
 	'smw_printername_dsv' => 'DSV-Export',
@@ -7727,6 +7690,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_ask_otheroptions' => 'Aner Optiounen',
 	'smw_ask_show_embed' => 'Agebonnene Code weisen',
 	'smw_ask_hide_embed' => 'Agebonnene Code verstoppen',
+	'smw-ask-delete' => '[Läschen]',
 	'smw_qc_addmainlabel' => 'Haaptetiquette derbäisetzen',
 	'smw_qc_show_addnal_opts' => 'Méi Optioune weisen',
 	'smw_qc_hide_addnal_opts' => 'Manner Optioune weisen',
@@ -7808,8 +7772,6 @@ $messages['lt'] = array(
 	'smw_finallistconjunct' => ', ir',
 	'smw_factbox_head' => 'Faktai apie $1',
 	'smw_isspecprop' => 'Ši savybė yra speciali šioje wiki.',
-	'smw_isaliastype' => 'Šis tipas yra už duomenų tipo "$1" sinonimas.',
-	'smw_isnotype' => 'Šis tipas "$1" nėra standartinis wiki duomenų tipas, ir nebuvo pateiktas jo vartotojo apibrėžimas.',
 	'smw_concept_description' => 'Sąvokos "$1" aprašymas',
 	'smw_no_concept_namespace' => 'Sąvokos gali būti apibrėžtos tik Concept: vardų srities puslapiuose.',
 	'smw_multiple_concepts' => 'Kiekviename sąvokos aprašymo puslapyje gali turėti tik vieną sąvokos apibrėžimą.',
@@ -7818,7 +7780,6 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_noinvannot' => 'Reikšmės negali būti priskiriamos atvirkštinei savybei.',
 	'version-semantic' => 'Semantiniai praplėtimai',
 	'smw_baduri' => 'URI formoje "$1" yra draudžiami.',
-	'smw_printername_auto' => 'Automatinis',
 	'smw_printername_count' => 'Paskaičiuoti rezultatus',
 	'smw_printername_csv' => 'CSV eksportavimas',
 	'smw_printername_debug' => 'Derinti užklausą (ekspertams)',
@@ -7855,7 +7816,6 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_parseerror' => 'Nurodyta reikšmė yra nesuprantama.',
 	'smw_notitle' => '"$1" negali būti naudojamas kaip puslapio pavadinimas šiame wiki.',
 	'smw_wrong_namespace' => 'Čia leidžiami tik puslapiai, priklausantys vardų sričiai "$1".',
-	'smw_unknowntype' => 'Savybei nustatytas nepalaikomas tipas "$1".',
 	'smw_manytypes' => 'Savybei apibrėžtas daugiau negu vienas tipas.',
 	'smw_emptystring' => 'Tuščios eilutės yra nepriimtinos.',
 	'smw_maxstring' => 'Simbolių eilutė $1 yra per ilga.',
@@ -8233,8 +8193,6 @@ $messages['mr'] = array(
 	'smw_finallistconjunct' => ', व',
 	'smw_factbox_head' => '$1 च्या फॅक्ट्स',
 	'smw_isspecprop' => 'हा गुणधर्म या विकिवरील विशेष गुणधर्म आहे.',
-	'smw_isaliastype' => 'हा प्रकार “$1” या डाटाप्रकारची पुनरुक्ती आहे.',
-	'smw_isnotype' => 'हा  “$1” प्रकार या विकिवरील ठराविक डाटा प्रकारांपैकी नाही, व त्याची सदस्य व्याख्या सुद्धा दिलेली नाही.',
 	'smw_baduri' => 'माफ करा, “$1” अर्जाचे URI वापरण्यास परवानगी नाही.',
 	'smw_iq_disabled' => 'माफ करा. या विकिवर सिमँटिक पॄच्छा करण्यास बंदी आहे.',
 	'smw_iq_moreresults' => '… पुढचे निकाल',
@@ -8243,7 +8201,6 @@ $messages['mr'] = array(
 	'smw_no_importelement' => '“$1” हा एलेमेंट आयातीसाठी उपलब्ध नाही.',
 	'smw_parseerror' => 'दिलेली किंमत समजलेली नाही.',
 	'smw_notitle' => 'या विकिवर “$1” हे पानाच्या शीर्षकात वापरता येत नाही.',
-	'smw_unknowntype' => 'गुणधर्माचा प्रकार “$1” वापरता येत नाही.',
 	'smw_manytypes' => 'गुणधर्माला एकापेक्षा जास्त प्रकार दिलेले आहेत.',
 	'smw_emptystring' => 'रिकाम्या किंमती वापरता येत नाहीत.',
 	'smw_maxstring' => '{{SITENAME}} साठी $1 हे स्ट्रींग रिप्रेझेंटेशन खूप लांब आहे.',
@@ -8297,7 +8254,6 @@ $messages['mr'] = array(
 	'types' => 'प्रकार',
 	'smw_types_docu' => 'खाली गुणधर्माशी जोडता येणार्‍या सर्व डाटा प्रकारांची यादी आहे.
 प्रत्येक डाटा प्रकाराचे एक पाने आहे जिथे जास्तीची माहिती देता येईल.',
-	'smw_typeunits' => '“$1” प्रकारची मापनाची एकके: $2',
 	'semanticstatistics' => 'सिमँटिक सांख्यिकी',
 	'smw_semstats_text' => 'ह्या विकिमध्ये <b>$1</b> गुणधर्मांच्या किंमती आहेत ज्या एकूण <b>$2</b> वेगवेगळ्या <a href="$3">गुणधर्म</a> दर्शवितात.
 <b>$4</b> गुणधर्मांना स्वत:ची पाने आहेत, व त्यापैकी <b>$5</b> गुणधर्मांना जुळणारे डाटा प्रकार दिलेले आहेत.
@@ -8348,8 +8304,6 @@ $messages['ms'] = array(
 	'smw_finallistconjunct' => ', dan',
 	'smw_factbox_head' => 'Fakta-fakta tentang $1',
 	'smw_isspecprop' => 'Sifat ini merupakan sifat khas di wiki ini.',
-	'smw_isaliastype' => 'Jenis ini merupakan nama lain untuk jenis data "$1".',
-	'smw_isnotype' => 'Jenis "$1" ini bukan jenis data yang piawai di wiki ini, apatah lagi belum diberi takrifan pengguna.',
 	'smw_concept_description' => 'Keterangan konsep "$1"',
 	'smw_no_concept_namespace' => 'Konsep hanya boleh ditakrifkan di laman-laman dalam ruang nama Concept:.',
 	'smw_multiple_concepts' => 'Setiap laman konsep hanya boleh ada satu takrifan konsep.',
@@ -8359,7 +8313,6 @@ Jika masalah ini masih berlarutan selepas beberapa ketika, mintalah pentadbir ta
 	'version-semantic' => 'Sambungan semantik',
 	'smw_baduri' => 'URI yang berbentuk "$1" tidak dibenarkan.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automatik',
 	'smw_printername_count' => 'Hasil pengiraan',
 	'smw_printername_csv' => 'Eksport CSV',
 	'smw_printername_dsv' => 'Eksport DSV',
@@ -9054,7 +9007,6 @@ $messages['nn'] = array(
 	'smw_concept_cache_miss' => 'Konseptet «$1» kan ikkje bli nytta for augneblinken, då wikikonfigurasjonen krev at det blir sett saman fråkopla.
 Om problemet ikkje går vekk etter noko tid, be sideadministratoren om å gjera dette konseptet tilgjengleg.',
 	'smw_baduri' => 'URI-ar på forma «$1» er ikkje tillatne.',
-	'smw_printername_auto' => 'Automatisk',
 	'smw_printername_count' => 'Tel opp resultata',
 	'smw_printername_csv' => 'CSV eksport',
 	'smw_printername_json' => 'JSON eksport',
@@ -9247,7 +9199,6 @@ $messages['oc'] = array(
 	'smw_noinvannot' => 'Las valors pòdon pas èsser allogadas per inversar de proprietats.',
 	'smw_baduri' => 'O planhèm. Las URIs del domeni $1 son pas disponiblas a aqueste emplaçament',
 	'smw_csv_link' => 'CSV',
-	'smw_printername_auto' => 'Automatic',
 	'smw_printername_count' => 'Comptatge dels resultats',
 	'smw_printername_csv' => 'expòrt en CSV',
 	'smw_printername_debug' => 'Requèste de debogatge (pels expèrts)',
@@ -9934,7 +9885,6 @@ Avansament stimà dla modìfica corenta:",
  */
 $messages['ps'] = array(
 	'smw_finallistconjunct' => '، او',
-	'smw_printername_auto' => 'اتوماتيک',
 	'smw_printername_list' => 'لړليک',
 	'smw_printername_template' => 'کينډۍ',
 	'smw_iq_moreresults' => 'نورې پايلې ...',
@@ -9986,7 +9936,6 @@ $messages['pt'] = array(
 	'smw_baduri' => 'URIs da forma “$1” não são permitidos.',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automático',
 	'smw_printername_count' => 'Contar resultados',
 	'smw_printername_csv' => 'Exportação CSV',
 	'smw_printername_dsv' => 'Exportação DSV',
@@ -10255,7 +10204,6 @@ Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça
 	'version-semantic' => 'Extensões semânticas',
 	'smw_baduri' => 'URIs na forma de "$1" não são permitidos.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automático',
 	'smw_printername_count' => 'Contar resultados',
 	'smw_printername_csv' => 'Exportação em CSV',
 	'smw_printername_dsv' => 'Exportação em DVS',
@@ -10390,7 +10338,7 @@ Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'smw_ask_submit' => 'Buscar resultados',
 	'smw_ask_editquery' => '[Editar consulta]',
 	'smw_add_sortcondition' => '[Adicionar condição de ordenação]',
-	'smw_ask_hidequery' => 'Esconder consulta',
+	'smw_ask_hidequery' => 'Ocultar consulta',
 	'smw_ask_help' => 'Ajuda sobre consultas',
 	'smw_ask_queryhead' => 'Consulta',
 	'smw_ask_printhead' => 'Dados adicionas para exibir',
@@ -10546,7 +10494,6 @@ $messages['ro'] = array(
 	'smw_viewasrdf' => 'Flux RDF',
 	'smw_finallistconjunct' => 'și',
 	'smw_concept_description' => 'Descrierea conceptului "$1"',
-	'smw_printername_auto' => 'Automatic',
 	'smw_printername_count' => 'Numără rezultatele',
 	'smw_printername_csv' => 'Export CSV',
 	'smw_printername_json' => 'Export JSON',
@@ -10637,7 +10584,6 @@ $messages['roa-tara'] = array(
 	'smw_unusedproperty_template' => '$1 de tipe $2',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|ause|ausene}})',
 	'types' => 'Tipe',
-	'smw_typeunits' => 'Aunità de mesure d\'u tipe "$1": $2',
 );
 
 /** Russian (русский)
@@ -10665,7 +10611,6 @@ $messages['ru'] = array(
 	'smw_baduri' => 'Извините, но ссылки из диапазона "$1" не доступны отсюда.',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Автоматически',
 	'smw_printername_count' => 'Результаты подсчёта',
 	'smw_printername_csv' => 'Экспорт CSV',
 	'smw_printername_dsv' => 'Экспорт DSV',
@@ -10876,11 +10821,10 @@ $messages['ru'] = array(
 	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|допускается следующее значение|допускаются следующие значения}}:',
 );
 
-/** Rusyn (Русиньскый)
+/** Rusyn (русиньскый)
  * @author Gazeb
  */
 $messages['rue'] = array(
-	'smw_printername_auto' => 'Автоматічно',
 	'smw_browse_go' => 'Выконати',
 	'smw_result_prev' => 'Попередня',
 	'smw_result_next' => 'Далша',
@@ -10919,7 +10863,6 @@ $messages['sk'] = array(
 	'smw_noinvannot' => 'Hodnoty nemožno priradiť inverzným vlastnostiam.',
 	'smw_baduri' => 'Prepáčte, URI z rozsahu "$1" na tomto mieste nie sú dostupné.',
 	'smw_csv_link' => 'CSV',
-	'smw_printername_auto' => 'Automaticky',
 	'smw_printername_count' => 'Výsledky počítania',
 	'smw_printername_csv' => 'export CSV',
 	'smw_printername_debug' => 'Ladiaca požiadavka (pre expertov)',
@@ -11126,7 +11069,6 @@ $messages['sl'] = array(
 	'smw_concept_description' => 'Opis zasnove »$1«',
 	'version-semantic' => 'Semantična razširitev',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Samodejno',
 	'smw_printername_count' => 'Število',
 	'smw_printername_csv' => 'Izvozi v CSV',
 	'smw_printername_dsv' => 'Izvozi v DSV',
@@ -11306,7 +11248,6 @@ $messages['sr-ec'] = array(
 	'smw_csv_link' => 'CSV',
 	'smw_json_link' => 'JSON',
 	'smw_rdf_link' => 'RDF',
-	'smw_printername_auto' => 'Аутоматски',
 	'smw_printername_count' => 'Изброј резултате',
 	'smw_printername_csv' => 'CSV извоз',
 	'smw_printername_debug' => 'Упит за пречишћавање (само за експерте)',
@@ -11526,7 +11467,6 @@ Ako problem ne nestane za neko vreme, zatražite od administratora sajta da uči
 	'smw_csv_link' => 'CSV',
 	'smw_json_link' => 'JSON',
 	'smw_rdf_link' => 'RDF',
-	'smw_printername_auto' => 'Automatski',
 	'smw_printername_count' => 'Izbroj rezultate',
 	'smw_printername_csv' => 'CSV izvoz',
 	'smw_printername_debug' => 'Upit za prečišćavanje (samo za eksperte)',
@@ -11754,7 +11694,6 @@ Om problemet inte försvinner efter någon tid, så be din administratör att g�
 	'smw_baduri' => 'Beklagar, URI:er på formen "$1" är inte tillåtna.',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automatisk',
 	'smw_printername_count' => 'Räkna resultat',
 	'smw_printername_csv' => 'CSV-exportering',
 	'smw_printername_dsv' => 'DSV-exportering',
@@ -11977,7 +11916,6 @@ Uppskattning av hur långt uppdateringen har kommit:',
  * @author TRYPPN
  */
 $messages['ta'] = array(
-	'smw_printername_auto' => 'தானாக',
 	'smw_printername_list' => 'பட்டியல்',
 	'smw_printername_table' => 'பட்டியல்',
 	'smw_printername_template' => 'வார்ப்புரு',
@@ -12094,7 +12032,6 @@ Kapag hindi nawala/naalis ang suliranin makalipas ang ilang panahon, pakihiling 
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Kusa',
 	'smw_printername_count' => 'Bilangin ang mga kinalabasan',
 	'smw_printername_csv' => 'Luwas ng CSV',
 	'smw_printername_dsv' => 'Pagluluwas ng DSV',
@@ -12328,7 +12265,6 @@ $messages['tr'] = array(
 	'smw_isspecprop' => 'Bu özellik, bu vikideki özel bir özelliktir.',
 	'smw_concept_description' => '"$1" kavramının tanımı',
 	'smw_multiple_concepts' => 'Tüm kavram sayfaları sadece birer kavram tanımına sahip olabilir.',
-	'smw_printername_auto' => 'Otomatik',
 	'smw_printername_count' => 'Sonuçları say',
 	'smw_printername_csv' => 'CSV dışa aktarımı',
 	'smw_printername_embedded' => 'Sayfa içeriklerini yerleştir',
@@ -12658,7 +12594,6 @@ $messages['vep'] = array(
 	'smw_viewasrdf' => 'RDF-purde',
 	'smw_finallistconjunct' => ' da',
 	'smw_factbox_head' => 'Faktad $1:n polhe',
-	'smw_printername_auto' => 'Avtomatižikš',
 	'smw_printername_count' => "Lugeda rezul'tatad",
 	'smw_printername_list' => 'Nimikirjutez',
 	'smw_printername_table' => 'Tablut',
@@ -12690,13 +12625,10 @@ $messages['vi'] = array(
 	'smw_finallistconjunct' => ', và',
 	'smw_factbox_head' => 'Sự thật về $1',
 	'smw_isspecprop' => 'Thuộc tính này là thuộc tính đặc biệt trong wiki này.',
-	'smw_isaliastype' => 'Kiểu này là tên hiệu của kiểu dữ liệu “$1”.',
-	'smw_isnotype' => 'Kiểu “$1” này không phải là kiểu dữ liệu chuẩn trên wiki, và cũng chưa được cung cấp định nghĩa người dùng.',
 	'smw_concept_description' => 'Miêu tả khái niệm “$1”',
 	'version-semantic' => 'Phần mở rộng ngữ nghĩa',
 	'smw_baduri' => 'Rất tiếc, không cho phép URI có dạng “$1”.',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Tự động',
 	'smw_printername_count' => 'Đếm kết quả',
 	'smw_printername_csv' => 'Xuất CSV',
 	'smw_printername_dsv' => 'Xuất DSV',
@@ -12729,7 +12661,6 @@ $messages['vi'] = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_notitle' => 'Không thể dùng “$1” làm tên trang trên wiki này.',
-	'smw_unknowntype' => 'Không hỗ trợ kiểu “$1” trong thuộc tính.',
 	'smw_manytypes' => 'Thuộc tính này có nhiều hơn một kiểu',
 	'smw_emptystring' => 'Không chấp nhận chuỗi trống.',
 	'smw_maxstring' => 'Đại diện chuỗi $1 quá dài.',
@@ -12786,7 +12717,6 @@ Tạo ra RDF có thể duyệt được.',
 	'smw_purge' => 'Làm tươi',
 	'types' => 'Các dạng',
 	'smw_types_docu' => 'Sau đây là danh sách tất cả các kiểu dữ liệu có thể gán vào thuộc tính.',
-	'smw_typeunits' => 'Đơn vị đo lường thuộc loại “$1”: $2',
 	'semanticstatistics' => 'Thống kê ngữ nghĩa',
 	'smw_semstats_text' => "Wiki này có chứa '''$1''' giá trị thuộc tính cho tổng cộng '''$2''' [[Special:Properties|thuộc tính khác nhau]].
 '''$3''' thuộc tính có trang riêng, và kiểu dữ liệu dự tính được chỉ định cho '''$4''' trong số đó.
@@ -12886,8 +12816,6 @@ $messages['vo'] = array(
 	'smw_finallistconjunct' => ', e',
 	'smw_factbox_head' => 'Jenöfots dö $1',
 	'smw_isspecprop' => 'Patöf at binon patöf patik in vük at.',
-	'smw_isaliastype' => 'Sot at binon näinem nünodasota: „$1“.',
-	'smw_isnotype' => 'Sot at: „$1“ no binon stabanünodasot in vük at, e no edageton miedeti fa geban.',
 	'smw_concept_description' => 'Bepenam suemoda: „$1“.',
 	'smw_no_concept_namespace' => 'Suemods kanons pamiedetön te su pads nemadaspada: Miedet.',
 	'smw_multiple_concepts' => 'Suemodapad alik dalon labön suemodimiedeti te bali.',
@@ -13103,7 +13031,6 @@ $messages['zh-hans'] = array(
 	'version-semantic' => '语义扩展',
 	'smw_baduri' => '不允许"$1"形式的URI',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => '自动',
 	'smw_printername_count' => '计数结果',
 	'smw_printername_csv' => '导出为CSV',
 	'smw_printername_dsv' => '导出为DSV',
@@ -13393,7 +13320,6 @@ $messages['zh-hant'] = array(
 	'version-semantic' => '語義擴展',
 	'smw_baduri' => '不允許「$1」形式的 URI',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => '自動',
 	'smw_printername_count' => '計數結果',
 	'smw_printername_csv' => '匯出為 CSV',
 	'smw_printername_dsv' => '導出為DSV',

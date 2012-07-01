@@ -205,6 +205,7 @@ $magicWords['nds-nl'] = array(
 $magicWords['nl'] = array(
 	'ask' => array( 0, 'vragen' ),
 	'show' => array( 0, 'weergeven' ),
+	'subobject' => array( 0, 'onderobject' ),
 	'set' => array( 0, 'instellen' ),
 	'set_recurring_event' => array( 0, 'herhalende_gebeurtenis_instellen' ),
 	'declare' => array( 0, 'declareren' ),
