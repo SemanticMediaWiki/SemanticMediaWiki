@@ -274,6 +274,14 @@ final class SMWHooks {
 		$testDirStore = $testDir . 'includes/storage/';
 		$files[] = $testDirStore . 'SMW_SQLStore2Test.php';
 
+		//dataitems tests
+		$testDirDI = $testDir . 'includes/dataitems/';
+		$files[] = $testDirDI . 'SMW_DI_NumberTest.php';
+		$files[] = $testDirDI . 'SMW_DI_BoolTest.php';
+		$files[] = $testDirDI . 'SMW_DI_BlobTest.php';
+		$files[] = $testDirDI . 'SMW_DI_StringTest.php';
+		$files[] = $testDirDI . 'SMW_DI_GeoCoordTest.php';
+
 		return true;
 	}
 
