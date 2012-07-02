@@ -7578,8 +7578,10 @@ Mer donn jetz nit noch ein aanshtüße!',
 $messages['ku-latn'] = array(
 	'smw_finallistconjunct' => ', û',
 	'smw_printername_list' => 'Lîste',
+	'smw_printername_category' => 'Kategorî',
 	'smw_true_words' => 'rast, r, erê, e',
 	'smw_false_words' => 'nerast, n, na, n',
+	'smw_qui_dcategory' => 'Kategorî:',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -12559,7 +12561,9 @@ $messages['uk'] = array(
 	'smw_smwadmin_updatestopped' => 'Усі процеси оновлення було зупинено.
 
 Поверніться до $1.',
-	'smw_smwadmin_updatenotstopped' => 'Щоб зупинити вже запущений процес освіження, будь ласка активуйте цю відмітку, щоб засвідчити, що ви впевнені у цьому рішенні.',
+	'smw_smwadmin_updatenotstopped' => 'Щоб зупинити запущений процес оновлення, Ви маєте поставити позначку, аби засвідчити, що ви справді впевнені в цьому.
+
+Повернення до $1.',
 	'smw_smwadmin_docu' => 'Ця сторінка допоможе при встановленні або оновленні <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Не забудьте зробити резервну копію всіх важливих даних перед запуском адміністративних функцій.',
 	'smw_smwadmin_db' => 'Встановлення та оновлення бази даних',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki потребує розширити базу даних, щоб могти зберігати семантичну інформацію. Подана нижче функція забезпечує правильне налаштування бази даних. Зміни, котрі вона вносить, не зачіпають решти бази даних MediaWiki, та можуть бути легко скасовані. Хоча цю функцію безпечно запускати кілька разів, її використання потрібне лише один раз для встановлення чи оновлення.',
