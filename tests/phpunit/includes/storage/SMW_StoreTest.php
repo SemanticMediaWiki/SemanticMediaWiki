@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tests for the SMWSQLStore2 class.
+ * Tests for the SMWStore class.
  *
  * @file
  * @since storerewrite
@@ -15,7 +15,9 @@
  *
  * @author Nischay Nahata
  */
-class SMWSQLStore2Test extends MediaWikiTestCase {
+class SMWStoreTest extends MediaWikiTestCase {
+
+///// Reading methods /////
 
 	public function getSemanticDataProvider() {
 		return array(
@@ -31,7 +33,7 @@ class SMWSQLStore2Test extends MediaWikiTestCase {
 	public function testGetSemanticData( $titleText ,$filter = false) {
 		$title = Title::newFromText( $titleText );
 		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = new SMWSQLStore2();
+		$store = smwfGetStore();
 
 		$this->assertInstanceOf(
 			'SMWSemanticData',
@@ -55,7 +57,7 @@ class SMWSQLStore2Test extends MediaWikiTestCase {
 	public function testGetPropertyValues( $titleText, SMWDIProperty $property, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = new SMWSQLStore2();
+		$store = smwfGetStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
@@ -81,7 +83,7 @@ class SMWSQLStore2Test extends MediaWikiTestCase {
 	* @dataProvider getPropertySubjectsDataProvider
 	*/
 	public function testGetPropertySubjects( SMWDIProperty $property, $value, $requestOptions = null ) {
-		$store = new SMWSQLStore2();
+		$store = smwfGetStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
@@ -109,7 +111,7 @@ class SMWSQLStore2Test extends MediaWikiTestCase {
 	public function testGetProperties( $titleText, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = new SMWSQLStore2();
+		$store = smwfGetStore();
 		$result = $store->getProperties( $subject, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
@@ -121,5 +123,37 @@ class SMWSQLStore2Test extends MediaWikiTestCase {
 				"Result should be instance of SMWDIProperty."
 			);
 		}
+	}
+
+///// Query answering /////
+
+	public function getQueryResultDataProvider() {
+		return array(
+			array( '[[Modification date::+]]|?Modification date|sort=Modification date|order=desc' ),
+		);
+	}
+
+	/**
+	* @dataProvider getQueryResultDataProvider
+	*/
+	public function testGetQueryResult( $query ) {
+		// TODO: this prevents doing [[Category:Foo||bar||baz]], must document.
+		$rawParams = explode( '|', $query );
+		$queryString = '';
+		$printouts = array();
+		$parameters;
+		
+		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $parameters, $printouts );
+		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
+		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
+		$smwQuery = SMWQueryProcessor::createQuery( $queryString, $parameters, SMWQueryProcessor::SPECIAL_PAGE, '', $printouts );
+		$store = smwfGetStore();
+		$queryResult = $store->getQueryResult( $smwQuery );
+
+		$this->assertInstanceOf(
+			'SMWQueryResult',
+			$queryResult,
+			"Result should be instance of SMWQueryResult."
+		);
 	}
 }
