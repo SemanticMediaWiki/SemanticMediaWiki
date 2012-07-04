@@ -2914,8 +2914,10 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 
 /** Zazaki (Zazaki)
  * @author Erdemaslancan
+ * @author Mirzali
  */
 $messages['diq'] = array(
+	'smw_printername_category' => 'Kategoriye',
 	'specialpages-group-smw_group' => 'Fahm kerdışê MediaWiki',
 	'exportrdf' => 'Pela ahûlnê RDF',
 	'properties' => 'Xısusiyey',
@@ -2927,6 +2929,8 @@ $messages['diq'] = array(
 	'semanticstatistics' => 'İstatistike fahm kerdeni',
 	'ask' => 'Fahmyayış cı geyrayış',
 	'querycreator' => 'Vıraşterê Persiyayışi',
+	'smw_qui_category' => '<strong>Kategoriye</strong>',
+	'smw_qui_dcategory' => 'Kategoriye:',
 	'searchbyproperty' => 'Xısusiyeti heta cıgeyrê',
 	'smw_sbv_value' => 'Deger:',
 	'smw_browselink' => 'Bewni xısusiyeta',
