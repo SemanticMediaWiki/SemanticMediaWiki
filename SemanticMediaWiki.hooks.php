@@ -8,7 +8,7 @@
  * @file SemanticMediaWiki.hooks.php
  * @ingroup SMW
  *
- * @licence GNU GPL v3+
+ * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 final class SMWHooks {
@@ -21,7 +21,7 @@ final class SMWHooks {
 	 *
 	 * @param DatabaseUpdater $updater|null
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function onSchemaUpdate( DatabaseUpdater $updater = null ) {
 		$updater->addExtensionUpdate( array( 'SMWStore::setupStore' ) );
@@ -34,7 +34,7 @@ final class SMWHooks {
 	 *
 	 * @since 1.7
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function onPageSchemasRegistration() {
 		$GLOBALS['wgPageSchemasHandlerClasses'][] = 'SMWPageSchemas';
@@ -48,7 +48,7 @@ final class SMWHooks {
 	 *
 	 * @param ALTree $admin_links_tree
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function addToAdminLinks( ALTree &$admin_links_tree ) {
 		$data_structure_section = new ALSection( wfMsg( 'smw_adminlinks_datastructure' ) );
@@ -98,7 +98,7 @@ final class SMWHooks {
 	 * @param $title Title
 	 * @param $article Article or null
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function onArticleFromTitle( Title &$title, /* Article */ &$article ) {
 		if ( $title->getNamespace() == SMW_NS_PROPERTY ) {
@@ -119,7 +119,7 @@ final class SMWHooks {
 	 *
 	 * @param Parser $parser
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function onParserFirstCallInit( Parser &$parser ) {
 		$parser->setFunctionHook( 'ask', array( 'SMWAsk', 'render' ) );
@@ -145,7 +145,7 @@ final class SMWHooks {
 	 * @param string $text
 	 * @param Skin $skin
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function addPoweredBySMW( &$text, $skin ) {
 		global $smwgScriptPath;
@@ -162,7 +162,7 @@ final class SMWHooks {
 	 *
 	 * @param $aExtensionTypes Array
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function addSemanticExtensionType( array &$aExtensionTypes ) {
 		$aExtensionTypes = array_merge( array( 'semantic' => wfMsg( 'version-semantic' ) ), $aExtensionTypes );
@@ -179,7 +179,7 @@ final class SMWHooks {
 	 *
 	 * @param array $tables
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function onParserTestTables( array &$tables ) {
 		$tables[] = 'smw_ids';
@@ -203,7 +203,7 @@ final class SMWHooks {
 	 *
 	 * @param $skintemplate
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function showBrowseLink( $skintemplate ) {
 		if ( $skintemplate->data['isarticle'] ) {
@@ -223,7 +223,7 @@ final class SMWHooks {
 	 * @param SkinTemplate $skinTemplate
 	 * @param array $contentActions
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function addRefreshTab( SkinTemplate $skinTemplate, array &$contentActions ) {
 		global $wgUser;
@@ -248,7 +248,7 @@ final class SMWHooks {
 	 * @param SkinTemplate $skinTemplate
 	 * @param array $links
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public static function addStructuredRefreshTab( SkinTemplate &$skinTemplate, array &$links ) {
 		$actions = $links['actions'];
@@ -262,7 +262,8 @@ final class SMWHooks {
 	* Hook to add PHPUnit test cases.
 	* @see https://www.mediawiki.org/wiki/Manual:Hooks/UnitTestsList
 	*
-	* @since storerewrite
+	* @since 1.8
+	 * 
 	* @param array $files
 	*
 	* @return boolean
