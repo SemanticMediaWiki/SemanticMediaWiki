@@ -231,6 +231,7 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 			'name' => 'distributionlimit',
 			'type' => 'integer',
 			'default' => false,
+			'manipulatedefault' => false,
 			'message' => 'smw-paramdesc-distributionlimit',
 			'lowerbound' => 1,
 		);
