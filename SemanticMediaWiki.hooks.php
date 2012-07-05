@@ -268,23 +268,21 @@ final class SMWHooks {
 	* @return boolean
 	*/
 	public static function registerUnitTests ( array &$files ) {
-		$testDir = dirname( __FILE__ ). '/tests/phpunit/';
+		$testFiles = array(
+			'SMW_QueryProcessor',
 
-		//store tests
-		$testDirStore = $testDir . 'includes/storage/';
-		$files[] = $testDirStore . 'SMW_StoreTest.php';
+			'dataitems/SMW_DI_Number',
+			'dataitems/SMW_DI_Bool',
+			'dataitems/SMW_DI_Blob',
+			'dataitems/SMW_DI_String',
+			'dataitems/SMW_DI_GeoCoord',
 
-		//dataitems tests
-		$testDirDI = $testDir . 'includes/dataitems/';
-		$files[] = $testDirDI . 'SMW_DI_NumberTest.php';
-		$files[] = $testDirDI . 'SMW_DI_BoolTest.php';
-		$files[] = $testDirDI . 'SMW_DI_BlobTest.php';
-		$files[] = $testDirDI . 'SMW_DI_StringTest.php';
-		$files[] = $testDirDI . 'SMW_DI_GeoCoordTest.php';
+			'storage/SMW_Store',
+		);
 
-		//QueryProcessor tests
-		$testDirInc = $testDir . 'includes/';
-		$files[] = $testDirInc . 'SMW_QueryProcessorTest.php';
+		foreach ( $testFiles as $file ) {
+			$files[] = dirname( __FILE__ ) . '/tests/phpunit/includes/' . $file . 'Test.php';
+		}
 
 		return true;
 	}
