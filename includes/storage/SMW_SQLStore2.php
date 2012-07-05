@@ -408,7 +408,7 @@ class SMWSQLStore2 extends SMWStore {
 		$tableid = self::findPropertyTableID( $property );
 
 		if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
-			wfProfileOut( "SMWSQLStoreLight::getPropertySubjects (SMW)" );
+			wfProfileOut( "SMWSQLStore::getPropertySubjects (SMW)" );
 			return array();
 		}
 
