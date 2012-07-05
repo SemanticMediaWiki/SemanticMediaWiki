@@ -200,7 +200,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWRDFXMLSerializer']       = $expDir . 'SMW_Serializer_RDFXML.php';
 	$wgAutoloadClasses['SMWTurtleSerializer']       = $expDir . 'SMW_Serializer_Turtle.php';
 
-	// Parameter classes
+	// Param classes
 	$parDir = $smwgIP . 'includes/params/';
 	$wgAutoloadClasses['SMWParamFormat']            = $parDir . 'SMW_ParamFormat.php';
 	
