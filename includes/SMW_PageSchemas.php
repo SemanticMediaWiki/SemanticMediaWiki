@@ -186,7 +186,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Creates the text for a property page.
 	 */
-	function createPropertyText( $propertyType, $allowedValues ) {
+	protected function createPropertyText( $propertyType, $allowedValues ) {
 		global $smwgContLang;
 		$propLabels = $smwgContLang->getPropertyLabels();
 		$hasTypeLabel = $propLabels['_TYPE'];
@@ -200,6 +200,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 					$text .= "\n* [[" . $prop_labels['_PVAL'] . "::$value]]";
 				} else {
 					$spec_props = $smwgContLang->getSpecialPropertiesArray();
+					// FIXME: SMW_SP_POSSIBLE_VALUE is undefined!
 					$text .= "\n* [[" . $spec_props[SMW_SP_POSSIBLE_VALUE] . "::$value]]";
 				}
 			}

@@ -174,8 +174,6 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	protected function makeHTMLResult() {
 		global $wgOut;
 
-		$delete_msg = wfMsg( 'delete' );
-
 		// TODO: hold into account $smwgAutocompleteInSpecialAsk
 
 		$wgOut->addModules( 'ext.smw.ask' );

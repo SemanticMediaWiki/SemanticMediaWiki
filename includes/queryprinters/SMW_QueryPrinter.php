@@ -574,7 +574,7 @@ abstract class SMWResultPrinter {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @return array of Parameter
+	 * @return array
 	 */
 	protected function textDisplayParameters() {
 		return array();

@@ -86,7 +86,7 @@ class SMWDISerializer {
 				}
 				else {
 					$result['printouts'][$printRequest->getLabel()] = array_map(
-						array( __class__, 'getSerialization' ),
+						array( __CLASS__, 'getSerialization' ),
 						$resultAarray->getContent()
 					);
 				}
