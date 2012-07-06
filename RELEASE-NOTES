@@ -1,4 +1,4 @@
-For a documentation of all features, see http://semantic-mediawiki.org
+﻿For a documentation of all features, see http://semantic-mediawiki.org
 
 
 == SMW 1.8 ==
@@ -14,6 +14,7 @@ production until the actual release.
 * Fixed handling of #set_recurring_event for 'month' and 'year' time units.
 * Fixed error on Special:URIResolver (bug 35643).
 * Fixed automatic running of SMW updating script when running maitenance/update.php.
+* Added improved JSON export (JSON structure has been altered)(bug 37418)
 
 == SMW 1.7.1 ==
 

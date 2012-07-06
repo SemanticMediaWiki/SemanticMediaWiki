@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Internationalization file for Semantic MediaWiki
  *
@@ -93,6 +93,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-paramdesc-order' => 'Order of the query sort',
 	'smw-paramdesc-searchlabel' => 'Text for continuing the search (default is «… further results»)',
 	'smw-paramdesc-named_args' => 'Name the arguments passed to the template',
+	'smw-paramdesc-export' => 'Export option',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
@@ -500,7 +501,7 @@ $messages['qqq'] = array(
 	'smw_parseerror' => 'This is an error/warning message.',
 	'smw_decseparator' => "{{optional}}
 This message is as a separator symbol for decimal digits in numbers, like \".\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
-
+	'smw-paramdesc-export' => 'Export option',
 Note that spaces and space-like HTML entities are always ignored when reading numbers.",
 	'smw_kiloseparator' => "{{optional}}
 This message is as a separator symbol for thousands in numbers, like \",\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
