@@ -2682,6 +2682,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-order' => 'Die Sortierreihenfolge für die Ergebnisse der Abfrage',
 	'smw-paramdesc-searchlabel' => 'Der Text zum Anzeigen weiterer Abfrageergebnisse (Standard ist „… weitere Ergebnisse“)',
 	'smw-paramdesc-named_args' => 'Die an die Vorlage zu übergebenden Argumente',
+	'smw-paramdesc-export' => 'Exportoption',
 	'smw_iq_disabled' => 'Semantische Abfragen wurden in diesem Wiki deaktiviert.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_nonright_importtype' => 'Das Element „$1“ kann nur für Seiten im Namensraum „$2“ verwendet werden.',
@@ -4513,6 +4514,7 @@ $messages['gl'] = array(
 	'smw-paramdesc-order' => 'Orde da ordenación da pesquisa',
 	'smw-paramdesc-searchlabel' => 'Texto para continuar a procura (por defecto é "… máis resultados")',
 	'smw-paramdesc-named_args' => 'Dea nome aos argumentos que se lle pasan ao modelo',
+	'smw-paramdesc-export' => 'Opción de exportación',
 	'smw_iq_disabled' => 'Sentímolo. As preguntas semánticas foron deshabilitadas para este wiki.',
 	'smw_iq_moreresults' => '… máis resultados',
 	'smw_nonright_importtype' => '$1 só pode ser usado para as páxinas co espazo de nomes "$2".',
@@ -5549,6 +5551,7 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw-paramdesc-order' => 'Sortěrowanski porjad za naprašowanje',
 	'smw-paramdesc-searchlabel' => 'Tekst za dalše pytanske wuslědki (standard je "... dalše wuslědki")',
 	'smw-paramdesc-named_args' => 'Argumenty, kotrež maja so předłoze přepodać',
+	'smw-paramdesc-export' => 'Eksportowe nastajenje',
 	'smw_iq_disabled' => 'Semantiske naprašowanja su w tutym wikiju znjemóžnjene.',
 	'smw_iq_moreresults' => '... dalše wuslědki',
 	'smw_nonright_importtype' => '$1 da so jenož za strony w mjenowym rumje "$2" wužiwać.',
@@ -6092,6 +6095,7 @@ $messages['ia'] = array(
 	'smw-paramdesc-order' => 'Ordination del consulta',
 	'smw-paramdesc-searchlabel' => 'Texto pro continuar le recerca (predefinition es «… altere resultatos»)',
 	'smw-paramdesc-named_args' => 'Nominar le parametros passate al patrono',
+	'smw-paramdesc-export' => 'Option de exportation',
 	'smw_iq_disabled' => 'Le consultas semantic ha essite disactivate pro iste wiki.',
 	'smw_iq_moreresults' => '… ulterior resultatos',
 	'smw_nonright_importtype' => '$1 pote solmente esser usate pro paginas con le spatio de nomines "$2".',
@@ -9421,6 +9425,7 @@ $messages['pfl'] = array(
  * @author Maikking
  * @author Sp5uhe
  * @author ToSter
+ * @author Woytecr
  * @author Łukasz Bolikowski
  */
 $messages['pl'] = array(
@@ -9569,6 +9574,10 @@ Właściwości, które nie posiadają swojej strony odnaleźć można na stronie
 	'smw_ask_show_embed' => 'Pokaż kod zagnieżdżony',
 	'smw_ask_hide_embed' => 'Ukryj zagnieżdżony kod',
 	'smw_ask_embed_instr' => 'Aby zagnieździć to zapytanie na stronie wiki, użyj poniższego kodu.',
+	'smw_qui_ok' => 'Ok',
+	'smw_qui_cancel' => 'Anuluj',
+	'smw_qui_category' => '<strong>Kategoria</strong>',
+	'smw_qui_label' => 'Etykieta',
 	'searchbyproperty' => 'Szukaj po atrybucie',
 	'smw_sbv_docu' => 'Szukanie wszystkich stron, które mają dany atrybut i wartość.',
 	'smw_sbv_novalue' => 'Wpisz wartość, lub zobacz wszystkie wartości atrybutów dla $1.',
@@ -11443,7 +11452,7 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Да, сигуран/-на сам',
 	'smw_smwadmin_support' => 'Добијање подршке',
 	'smw_smwadmin_supportdocu' => 'Постоји више места која могу помоћи у случају проблема:',
-	'smw_smwadmin_installfile' => 'Ако се нађете у проблемима са вашом инсталацијом, погледајте водич у <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">фајлу INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Ако наиђете на проблем при инсталацији, најпре прочитајте смернице у <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">датотеци INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Потпуна корисничка документација за Семантички медијавики, налази се на сајту <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Багови се могу пријављивати на <a href="https://bugzilla.wikimedia.org/">Медијазилу</a>.',
 	'smw_smwadmin_questions' => 'Ако имате даљих питања или сугестија, укључите се у дискусију на листи <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
