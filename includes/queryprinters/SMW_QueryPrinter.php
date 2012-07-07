@@ -80,7 +80,8 @@ abstract class SMWResultPrinter {
 
 	/**
 	 * Text to use for link to further results, or empty if link should not be shown.
-	 * Unescaped! Use SMWResultPrinter::getSearchLabel() and SMWResultPrinter::linkFurtherResults()
+	 * Unescaped! Use @see SMWResultPrinter::getSearchLabel()
+	 * and @see SMWResultPrinter::linkFurtherResults()
 	 * instead of accessing this directly.
 	 */
 	protected $mSearchlabel = null;
@@ -268,15 +269,15 @@ abstract class SMWResultPrinter {
 
 		if ( ( !$this->isHTML ) && ( $this->hasTemplates ) ) { // preprocess embedded templates if needed
 			if ( ( $wgParser->getTitle() instanceof Title ) && ( $wgParser->getOptions() instanceof ParserOptions ) ) {
-				SMWResultPrinter::$mRecursionDepth++;
+				self::$mRecursionDepth++;
 
-				if ( SMWResultPrinter::$mRecursionDepth <= SMWResultPrinter::$maxRecursionDepth ) { // restrict recursion
+				if ( self::$mRecursionDepth <= self::$maxRecursionDepth ) { // restrict recursion
 					$result = '[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]';
 				} else {
 					$result = ''; /// TODO: explain problem (too much recursive parses)
 				}
 
-				SMWResultPrinter::$mRecursionDepth--;
+				self::$mRecursionDepth--;
 			} else { // not during parsing, no preprocessing needed, still protect the result
 				$result = '[[SMW::off]]' . $result . '[[SMW::on]]';
 			}
@@ -285,10 +286,10 @@ abstract class SMWResultPrinter {
 		if ( ( $this->isHTML ) && ( $outputmode == SMW_OUTPUT_WIKI ) ) {
 			$result = array( $result, 'isHTML' => true );
 		} elseif ( ( !$this->isHTML ) && ( $outputmode == SMW_OUTPUT_HTML ) ) {
-			SMWResultPrinter::$mRecursionDepth++;
+			self::$mRecursionDepth++;
 
 			// check whether we are in an existing parse, or if we should start a new parse for $wgTitle
-			if ( SMWResultPrinter::$mRecursionDepth <= SMWResultPrinter::$maxRecursionDepth ) { // retrict recursion
+			if ( self::$mRecursionDepth <= self::$maxRecursionDepth ) { // retrict recursion
 				if ( ( $wgParser->getTitle() instanceof Title ) && ( $wgParser->getOptions() instanceof ParserOptions ) ) {
 					$result = $wgParser->recursiveTagParse( $result );
 				} else {
@@ -306,7 +307,7 @@ abstract class SMWResultPrinter {
 				$result = ''; /// TODO: explain problem (too much recursive parses)
 			}
 
-			SMWResultPrinter::$mRecursionDepth--;
+			self::$mRecursionDepth--;
 		}
 
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
@@ -479,7 +480,7 @@ abstract class SMWResultPrinter {
 	 * in such a case (the default filename is created by browsers from the
 	 * URL, and it is often not pretty).
 	 *
-	 * See also SMWResultPrinter::getMimeType()
+	 * @see SMWResultPrinter::getMimeType()
 	 */
 	public function getFileName( $res ) {
 		return false;
