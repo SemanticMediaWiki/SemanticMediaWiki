@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -11,9 +11,26 @@
  * getResults(). This is useful for printers that disregard printouts and
  * only are interested in the actual list of pages.
  * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ *
  * @file SMW_QueryResult.php
  * @ingroup SMWQuery
- * 
+ *
+ * @licence GNU GPL v2 or later
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
@@ -121,6 +138,17 @@ class SMWQueryResult {
 	}
 
 	/**
+	 * Returns the query object of the current result set
+	 *
+	 * @since 1.8
+	 *
+	 * @return SMWQuery
+	 */
+	public function getQuery() {
+		return $this->mQuery;
+	}
+
+	/**
 	 * Return the number of columns of result values that each row
 	 * in this result set contains.
 	 * 
@@ -185,9 +213,6 @@ class SMWQueryResult {
 	 * can also be changed afterwards with SMWInfolink::setCaption()). If empty, the
 	 * message 'smw_iq_moreresults' is used as a caption.
 	 * 
-	 * TODO: have this work for all params without manually overriding and adding everything
-	 * (this is possible since the param handling changes in 1.7) 
-	 *
 	 * @deprecated since SMW 1.8
 	 *
 	 * @param string|false $caption
