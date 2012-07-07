@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Print query results in lists.
  * @author Markus Krötzsch
