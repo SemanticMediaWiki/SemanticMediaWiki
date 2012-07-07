@@ -486,84 +486,68 @@ class SMWQueryProcessor {
 		$params['format']->setToLower( true );
 		// TODO:$allowedFormats
 
-		$params[] = array(
-			'name' => 'limit',
+		$params['limit'] = array(
 			'type' => 'integer',
 			'default' => $GLOBALS['smwgQDefaultLimit'],
 			'negatives' => false,
 		);
 
-		$params[] = array(
-			'name' => 'sort',
+		$params['sort'] = array(
 			'islist' => true,
 			'default' => array( '' ), // The empty string represents the page itself, which should be sorted by default.
 		);
 
-		$params[] = array(
-			'name' => 'order',
+		$params['order'] = array(
 			'islist' => true,
 			'default' => array(),
 			'values' => array( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ),
 		);
 
-		$params[] = array(
-			'name' => 'offset',
+		$params['offset'] = array(
 			'type' => 'integer',
 			'default' => 0,
 			'negatives' => false,
 			'upperbound' => 5000 // TODO: make setting
 		);
 
-		$params[] = array(
-			'name' => 'headers',
+		$params['headers'] = array(
 			'default' => 'show',
 			'values' => array( 'show', 'hide', 'plain' ),
 		);
 
-		$params[] = array(
-			'name' => 'mainlabel',
+		$params['mainlabel'] = array(
 			'default' => false,
 		);
 
-		$params[] = array(
-			'name' => 'link',
+		$params['link'] = array(
 			'default' => 'all',
 			'values' => array( 'all', 'subject', 'none' ),
 		);
 
-		$params[] = array(
-			'name' => 'searchlabel',
+		$params['searchlabel'] = array(
 			'default' => wfMsgForContent( 'smw_iq_moreresults' ),
 		);
 
-		$params[] = array(
-			'name' => 'intro',
+		$params['intro'] = array(
 			'default' => '',
 		);
 
-		$params[] = array(
-			'name' => 'outro',
+		$params['outro'] = array(
 			'default' => '',
 		);
 
-		$params[] = array(
-			'name' => 'default',
+		$params['default'] = array(
 			'default' => '',
 		);
 
-		$parameters = array();
-
-		foreach ( $params as $key => $param ) {
+		foreach ( $params as $name => &$param ) {
 			if ( is_array( $param ) ) {
-				$param['message'] = 'smw-paramdesc-' . $param['name'];
-				$parameters[$param['name']] = $param;
-			}
-			else {
-				$parameters[$key] = $param;
+				$param['message'] = 'smw-paramdesc-' . $name;
+				$param['name'] = $name;
 			}
 		}
 
-		return $parameters;
+		return $params;
 	}
 
 }
