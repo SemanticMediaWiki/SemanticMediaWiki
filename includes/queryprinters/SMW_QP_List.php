@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Print query results in lists.
  * @author Markus Krötzsch
@@ -139,6 +139,11 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		
 		if ( $this->mColumns > 1 ) {
 			$result .= '<br style="clear: both" />' . "\n";
+		}
+
+		// Make sure that if the result set turns empty and if available display default
+		if ( $this->params['default'] !== '' && $result === '' ) {
+			$result = $this->params['default'];
 		}
 
 		return $result;
