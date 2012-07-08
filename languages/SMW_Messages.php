@@ -4058,6 +4058,7 @@ $messages['fr'] = array(
 	'smw-paramdesc-order' => 'Ordre du tri de la requête',
 	'smw-paramdesc-searchlabel' => 'Texte pour continuer la recherche (par défaut, «… autres résultats»)',
 	'smw-paramdesc-named_args' => 'Nommez les arguments transmis au modèle',
+	'smw-paramdesc-export' => 'Options d’exportation',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
 	'smw_iq_moreresults' => '&hellip; autres résultats',
 	'smw_nonright_importtype' => 'L’élément « $1 » ne peut être employé que pour des pages de l’espace de noms « $2 ».',
