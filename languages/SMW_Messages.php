@@ -5550,6 +5550,7 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw-paramdesc-dsv-filename' => 'Mjeno za DSV-dataju',
 	'smw-smwdoc-description' => 'Pokazuje tabelu wšěch parametrow, kotrež dadźa so za podaty wuslědkowy format hromadźe ze standardnymi hótnotami a wopisanjemi wužiwać.',
 	'smw-smwdoc-par-format' => 'Wuslědkowy format, za kotrehož parametry dokumentacija ma so zwobraznić.',
+	'smw-smwdoc-par-parameters' => 'Parametry, kotrež maja so pokazać: "specific" za tute, kotrež so přez format přidawaja, "base" za tute, kotrež su we wšěch formatach k dispoziciji a "all" za wobaj.',
 	'smw-paramdesc-sort' => 'Kajkosć, po kotrejž naprašowanje ma so sortěrować',
 	'smw-paramdesc-order' => 'Sortěrowanski porjad za naprašowanje',
 	'smw-paramdesc-searchlabel' => 'Tekst za dalše pytanske wuslědki (standard je "... dalše wuslědki")',
@@ -5592,6 +5593,8 @@ Wuslědki snano kaž wočakowane njejsu.',
 	'smw_nodisjunctions' => 'ABO-zwjazanja we wotprašowanjach njepodpěruja so w tutym wikiju a dźěl wotprašowanja je so wotstronił ($1).',
 	'smw_querytoolarge' => 'Slědowace naprašowanske wuměnjenja njedachu so dla wikijowych wobmjezowanjow za wulkosć abo hłubokosć naprašowanja wobkedźbować: $1.',
 	'smw_notemplategiven' => 'Podaj hódnotu za parameter "template", zo by tutón naprašowanski format fungował.',
+	'smw_db_sparqlqueryproblem' => 'Naprašowanski wuslědk njeda so z datoweje banki SPARQL wotwołać. Tutón zmylk móhł nachwilny być abo programowy zmylk w datowej bance być.',
+	'smw_db_sparqlqueryincomplete' => 'Wotmołwjenje na naprašowanje je so jako přećežko wukopało a je so přetorhnyło. Někotre wuslědki móhli falować. Jeli je móžno, spytaj jednoriše naprašowanje město toho wužiwać.',
 	'smw_type_header' => 'Kajkosće typa "$1"',
 	'smw_typearticlecount' => '{{PLURAL:$1|Pokazuje so kajkosć, kotraž tutón typ wužiwa|Pokazujetej so $1 kajkosći, kotrejž tutón typ wužiwatej|Pokazuja so $1 kajkosće, kotrež tutón typ wužiwaja|Pokazuje so $1 kajkosćow, kotrež tutón typ wužiwa}}.',
 	'smw_attribute_header' => 'Strony, kotrež kajkosć "$1" wužiwaja',
@@ -5815,6 +5818,7 @@ $messages['ht'] = array(
 /** Hungarian (magyar)
  * @author Dani
  * @author Glanthor Reviol
+ * @author TK-999
  */
 $messages['hu'] = array(
 	'smw-desc' => "A wiki elérhetőbbé tétele – gépek ''és'' emberek számára is ([http://semantic-mediawiki.org/wiki/Help:User_manual online dokumentáció])",
@@ -5832,6 +5836,7 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_baduri' => '„$1” formájú URI-k nem engedélyezettek.',
 	'smw_printername_count' => 'Eredmények megszámlálása',
 	'smw_printername_csv' => 'CSV exportálás',
+	'smw_printername_dsv' => 'DSV formátumú exportálás',
 	'smw_printername_debug' => 'Lekérdezés hibakeresése (szakértőknek)',
 	'smw_printername_embedded' => 'Lap tartalmának beágyazása',
 	'smw_printername_json' => 'JSON exportálás',
@@ -5842,6 +5847,8 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_printername_table' => 'Táblázat',
 	'smw_printername_broadtable' => 'Széles táblázat',
 	'smw_printername_template' => 'Sablon',
+	'smw_printername_rdf' => 'RDF formátumú exportálás',
+	'smw_printername_category' => 'Kategória',
 	'smw-paramdesc-limit' => 'Legfeljebb ennyi eredmény megjelenítése',
 	'smw-paramdesc-headers' => 'Fejlécek/tulajdonságnevek megjelenítése',
 	'smw-paramdesc-mainlabel' => 'A kezdőlap nevének címkéje',
@@ -5850,13 +5857,29 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw-paramdesc-outro' => 'A lekérdezés eredményei után megjelenő szöveg',
 	'smw-paramdesc-default' => 'Megjelenítendő szöveg, ha a lekérdezésnek nincs eredménye',
 	'smw-paramdesc-sep' => 'Az értékek közötti elválasztó',
+	'smw-paramdesc-distribution' => 'Az összes érték megjelenítése helyett számolja meg az előfordulásukat, és mutassa azokat.',
+	'smw-paramdesc-distributionsort' => 'Értékszórás rendezése előfordulások száma szerint.',
+	'smw-paramdesc-distributionlimit' => 'Értékszórás korlátozása néhány érték előfordulásának számára',
 	'smw-paramdesc-template' => 'Egy sablon neve, amellyel megjelenítendő a kiírás',
 	'smw-paramdesc-columns' => 'A keresési eredmények oszlopainak száma (az alapértelmezett $1)',
+	'smw-paramdesc-introtemplate' => 'A lekérdezés eredményei előtt (ha vannak) megjelenítendő sablon neve',
+	'smw-paramdesc-outrotemplate' => 'A lekérdezés eredményei után (ha vannak) megjelenítendő sablon neve',
 	'smw-paramdesc-embedformat' => 'A címsorokhoz használt HTML-tag',
 	'smw-paramdesc-embedonly' => 'Fejlécek kikapcsolása',
+	'smw-paramdesc-table-class' => 'A táblázathoz beállítandó extra CSS osztály',
 	'smw-paramdesc-rsstitle' => 'A hírcsatorna címeként használt szöveg',
 	'smw-paramdesc-rssdescription' => 'A hírcsatorna leírásaként használt szöveg',
+	'smw-paramdesc-rdfsyntax' => 'A használandó RDF-változat',
+	'smw-paramdesc-csv-sep' => 'A használandó elválasztójel',
+	'smw-paramdesc-dsv-separator' => 'A használandó elválasztójel',
+	'smw-paramdesc-dsv-filename' => 'A DSV-fájl neve',
+	'smw-smwdoc-description' => 'Egy táblázatot jelenít meg azon összes paraméterrel, amelyek az alapértékekkel és -leírásokkal együtt használhatóak a megadott célformátumban.',
+	'smw-smwdoc-par-format' => 'A célfrmátum, amelynek paramétereinek dokumentációját meg kell jeleníteni.',
+	'smw-smwdoc-par-parameters' => 'A megjelenítendő paraméterek. "specific" a formátum által hozzáadottakhoz, "base" a minden formátumban elérhetőkhöz és "all" mindkét fajtához.',
+	'smw-paramdesc-sort' => 'A tulajdonság, amely szerint rendezni kell a lekérdezést',
+	'smw-paramdesc-order' => 'A lekérdezések rendezési sorrendje',
 	'smw-paramdesc-searchlabel' => 'Az eredményekre mutató hivatkozás szövege',
+	'smw-paramdesc-named_args' => 'Nevezd meg a sablonba átküldendő argumentumokat',
 	'smw_iq_disabled' => 'A szemantikus lekérdezések le vannak tiltva ezen a wikin.',
 	'smw_iq_moreresults' => '… további eredmények',
 	'smw_nonright_importtype' => '$1 csak a(z) „$2” névtérben található lapokhoz használható.',
@@ -5864,6 +5887,7 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_no_importelement' => 'A(z) „$1” elem nem elérhető importáláshoz.',
 	'smw_parseerror' => 'A megadott érték nem érthető.',
 	'smw_notitle' => 'A(z) „$1” nem használható lap neveként ebben a wikiben.',
+	'smw_noproperty' => 'A(z) "$1" nem használható tulajdonság neveként ebben a wikiben.',
 	'smw_wrong_namespace' => 'Csak a(z) „$1” névtérbeli lapok engedélyezettek itt.',
 	'smw_manytypes' => 'Egynél több megadott típus a tulajdonsághoz.',
 	'smw_emptystring' => 'Üres sztringek nem elfogadhatóak.',
@@ -5874,6 +5898,8 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_false_words' => 'hamis,nem,n',
 	'smw_nofloat' => '„$1” nem egy szám.',
 	'smw_infinite' => 'Ilyen nagy számok („$1”) nem támogatottak.',
+	'smw_unitnotallowed' => 'A(z) "$1" nem érvényes mértékegysége ennek a tulajdonságnak.',
+	'smw_nounitsdeclared' => 'Nem határozták meg mértékegységet ennek a tulajdonságnak.',
 	'smw_novalues' => 'Nincsenek megadva értékek.',
 	'smw_nodatetime' => 'A(z) „$1” dátum nem értelmezhető.',
 	'smw_toomanyclosing' => 'A(z) „$1” túl sokszor fordul elő a lekérdezésben.',
@@ -5891,6 +5917,8 @@ Az eredmények eltérhetnek a várttól.',
 	'smw_nodisjunctions' => 'A diszjunkció a lekérdezésekben nem támogatott ebben a wikiben, így a lekérdezés egy része el lett dobva ($1).',
 	'smw_querytoolarge' => 'A következő lekérdezés-feltételek nem lettek figyelembe véve a wikin érvényes lekérdezésméret vagy -mélység-korlátozások miatt: $1',
 	'smw_notemplategiven' => 'Adj értéket a lekérdezés „paramétersablonjának”, hogy működjön ez a lekérdezésformátum.',
+	'smw_db_sparqlqueryproblem' => 'A lekérdezés eredméynét nem tudtuk begyűjteni a SPARQL adatbázisból. Ez a hiba ideiglenes, de az adatbázisszoftver hibáját is jelentheti.',
+	'smw_db_sparqlqueryincomplete' => 'A lekérdezés megválaszolása túl nehéznek bizonyult és megszakadt. Néhány eredmény hiányozhat. Ha lehet, próbálkozz egyszerűbb lekérdezéssel.',
 	'smw_type_header' => 'A(z) „$1” típus tulajdonságai',
 	'smw_typearticlecount' => '{{PLURAL:$1|Egy|$1}} tulajdonság megjelenítése ezen típus használatával.',
 	'smw_attribute_header' => 'A(z) „$1” tulajdonságot használó lapok',
@@ -5924,8 +5952,7 @@ Böngészhető RDF-et készít.',
 	'smw_wantedproperty_template' => '$1 ($2 helyen használva)',
 	'smw_purge' => 'Frissítés',
 	'types' => 'Típusok',
-	'smw_types_docu' => 'Alább azon adattípusok listája látható, melyek hozzárendelhetőek a tulajdonságokhoz.
-Minden egyes adattípus rendelkezik egy lappal, ahol további információkat lehet megadni.',
+	'smw_types_docu' => 'Ez a tulajdonságokhoz rendelhető adattípusok listáját tartalmazza.',
 	'semanticstatistics' => 'Szemantikus statisztika',
 	'smw_semstats_text' => "Ez a wiki '''$1''' tulajdonságértéket tartalmaz '''$2''' [[Special:Properties|különböző tulajdonsághoz]].
 '''$3''' tulajdonság rendelkezik saját lappal, és '''$4''' adattípusa van megadva.
@@ -5951,6 +5978,18 @@ Biztosítja, hogy az emberek ne váljanak weboldalakká.',
 	'smw_ask_show_embed' => 'Beágyazási kód megjelenítése',
 	'smw_ask_hide_embed' => 'Beágyazási kód elrejtése',
 	'smw_ask_embed_instr' => 'Ha egy wikilapra szeretnéd beilleszteni ezt a lekérdezést, másold be az alábbi kódot.',
+	'smw-ask-delete' => '[Törlés]',
+	'querycreator' => 'Lekérdezés létrehozása',
+	'smw_qc_show_addnal_opts' => 'Több beállítási lehetőség megjelenítése',
+	'smw_qc_hide_addnal_opts' => 'Kevesebb beállítási lehetőség megjelenítése',
+	'smw_qc_otheropt' => 'Egyéb beállítások',
+	'smw_qc_formatopt' => 'Formátum beállításai',
+	'smw_qc_query_help' => 'Az alábbi űrlap segítségével lekérdezést adhatsz meg. A wiki lapjait kiválaszthatod
+kategóriák (<strong>[[{{ns:category}}:Actor]]</strong>),
+tulajdonságok (<strong>[[Located in::Germany]]</strong>),
+nevek(<strong>[[Germany]]</strong>) és névterek (<strong>[[{{ns:help}}:+]]</strong>) alapján.',
+	'smw_qui_property' => '<strong>Tulajdonság</strong>',
+	'smw_qui_prop' => 'Tulajdonság:',
 	'searchbyproperty' => 'Keresés tulajdonság szerint',
 	'smw_sbv_docu' => 'Az összes olyan lap megkeresése, ami a megadott tulajdonsággal és értékkel rendelkezik.',
 	'smw_sbv_novalue' => 'Add meg a tulajdonság egy érvényes értékét, vagy nézd meg a(z) „$1” összes tulajdonság-értékét.',
@@ -5985,11 +6024,19 @@ Add meg a lapot és a tulajdonságot is.',
 	'smw_smwadmin_return' => 'Vissza ide: $1',
 	'smw_smwadmin_updatestarted' => 'Egy új frissítő folyamat indult a szemantikus adatok frissítése céljából.
 Minden tárolt adat újra elő lesz állítva, és javítva lesz, ahol szükséges.
-A frissítési folyamat előrehaladását ezen a speciális lapon követheted figyelemmel.',
+A frissítési folyamat előrehaladását ezen a speciális lapon követheted figyelemmel.
+
+Visszatérés a(z) $1 lapra.',
 	'smw_smwadmin_updatenotstarted' => 'Már fut egy frissítő folyamat.
-Nem kell újat készíteni.',
-	'smw_smwadmin_updatestopped' => 'Minden futó frissítési folyamat leállítva.',
-	'smw_smwadmin_updatenotstopped' => 'Az éppen futó frissítési folyamat megszakításához aktiválnod kell a dobozt, hogy jelezd, tényleg biztos vagy benne.',
+Nem kell újat készíteni.
+
+Visszatérés a(z) $1 lapra.',
+	'smw_smwadmin_updatestopped' => 'Minden futó frissítési folyamat leállítva.
+
+Visszatérés a(z) $1 lapra.',
+	'smw_smwadmin_updatenotstopped' => 'Az éppen futó frissítési folyamat megszakításához aktiválnod kell a jelölőnégyzetet, hogy jelezd, tényleg biztos vagy benne.
+
+Visszatérés a(z) $1 lapra.',
 	'smw_smwadmin_docu' => 'Ez a speciális lap segít a <a href="http://semantic-mediawiki.org">Szemantikus MediaWiki</a> telepítése és frissítése során.
 Ne felejts el másolatot készíteni az értékes adatokról az adminisztratív funkciók használata előtt.',
 	'smw_smwadmin_db' => 'Adatbázistelepítés és -frissítés',
@@ -5998,7 +6045,7 @@ Az alábbi funkció ellenőrzi, hogy az adatbázis megfelelően be van-e állít
 Az ezen lépés során végrehajtott változások nincsenek hatással a MediaWiki adatbázisának többi részére, és egyszerűen visszavonható, amennyiben szükséges.
 Ez a telepítési lépés többször is végrehajtható, anékül, hogy bármilyen kárt tenne, de csak egyszer szükséges a telepítés vagy frissítés során.',
 	'smw_smwadmin_permissionswarn' => 'Ha a művelet SQL-hibákkal leáll, a wikid által használt adatbázis-felhasználó (amit a LocalSettings.php-ben adtál meg) valószínűleg nem rendelkezik a megfelelő jogosultságokkal.
-Adj a felhasználó számára táblák készítéséhez és törléséhez jogosultságot, ideiglenesen add meg a root fiók adatait, vagy használd az <tt>SMW_setup.php</tt> karbantartó parancsfájlt, ami az AdminSettings.php-ben megadott adatokkal lép be.',
+Adj a felhasználó számára táblák készítéséhez és törléséhez jogosultságot, ideiglenesen add meg a root fiók adatait, vagy használd az <tt>SMW_setup.php</tt> karbantartó parancsfájlt, ami egy adminisztrátor adataival lép be.',
 	'smw_smwadmin_dbbutton' => 'Táblák inicializálása vagy frissítése',
 	'smw_smwadmin_announce' => 'Wiki bejelentése',
 	'smw_smwadmin_announcedocu' => 'A Szemantikus MediaWikinek van egy webes szolgáltatása az új szemantikus wikioldalak jelzésére.
@@ -6029,6 +6076,10 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw_adminlinks_inlinequerieshelp' => 'Szövegbeli lekérdezés-súgó',
 	'smw-createproperty-isproperty' => 'Ez egy „$1” típusú tulajdonság.',
 	'smw-createproperty-allowedvals' => 'A tulajdonság a következő {{PLURAL:$1|értéket|értékeket}} veheti fel:',
+	'smw-paramdesc-category-delim' => 'A határolójel',
+	'smw-paramdesc-category-template' => 'Az elemeket formázandó sablon',
+	'smw-info-par-message' => 'Megjelenítendő üzenet.',
+	'smw-info-par-icon' => 'Megjelenítendő jel, "info" vagy "warning."',
 );
 
 /** Interlingua (interlingua)

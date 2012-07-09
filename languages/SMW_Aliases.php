@@ -607,16 +607,16 @@ $specialPageAliases['te'] = array(
 $specialPageAliases['tl'] = array(
 	'Ask' => array( 'Magtanong' ),
 	'Browse' => array( 'Tumingin-tingin' ),
-	'ExportRDF' => array( 'Iluwas ang RDF' ),
-	'PageProperty' => array( 'Pag-aari ng pahina' ),
-	'Properties' => array( 'Mga pag-aari' ),
-	'SMWAdmin' => array( 'Tagapangasiwa ng SMW' ),
-	'SearchByProperty' => array( 'Maghanap ayon sa pag-aari' ),
-	'SemanticStatistics' => array( 'Mga estadistika ng semantiko' ),
-	'Types' => array( 'Mga uri' ),
-	'URIResolver' => array( 'Tagapaglutas ng URI' ),
-	'UnusedProperties' => array( 'Mga pag-aaring hindi ginagamit' ),
-	'WantedProperties' => array( 'Mga pag-aaring ninanais' ),
+	'ExportRDF' => array( 'Iluwas_ang_RDF' ),
+	'PageProperty' => array( 'Pag-aari_ng_pahina' ),
+	'Properties' => array( 'Mga_pag-aari' ),
+	'SMWAdmin' => array( 'Tagapangasiwa_ng_SMW' ),
+	'SearchByProperty' => array( 'Maghanap_ayon_sa_pag-aari' ),
+	'SemanticStatistics' => array( 'Mga_estadistika_ng_semantiko' ),
+	'Types' => array( 'Mga_uri' ),
+	'URIResolver' => array( 'Tagapaglutas_ng_URI' ),
+	'UnusedProperties' => array( 'Mga_pag-aaring_hindi_ginagamit' ),
+	'WantedProperties' => array( 'Mga_pag-aaring_ninanais' ),
 );
 
 /** Turkish (Türkçe) */
