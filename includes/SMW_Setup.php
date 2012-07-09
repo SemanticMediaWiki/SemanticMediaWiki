@@ -112,7 +112,7 @@ function smwfRegisterHooks() {
  * Register all SMW classes with the MediaWiki autoloader.
  */
 function smwfRegisterClasses() {
-	global $smwgIP, $wgAutoloadClasses, $wgJobClasses;
+	global $smwgIP, $wgAutoloadClasses, $wgJobClasses, $smwgDefaultStore;
 
 	$wgAutoloadClasses['SMWHooks']                  = $smwgIP . 'SemanticMediaWiki.hooks.php';
 	
@@ -244,14 +244,40 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWConjunction']            = $stoDir . 'SMW_Description.php';
 	$wgAutoloadClasses['SMWDisjunction']            = $stoDir . 'SMW_Description.php';
 	$wgAutoloadClasses['SMWSomeProperty']           = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWSparqlStore']            = $stoDir . 'SMW_SparqlStore.php';
+	$wgAutoloadClasses['SMWSparqlStoreQueryEngine'] = $stoDir . 'SMW_SparqlStoreQueryEngine.php';
+	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
 	$wgAutoloadClasses['SMWSQLStore2']              = $stoDir . 'SMW_SQLStore2.php';
 	$wgAutoloadClasses['SMWSqlStubSemanticData']    = $stoDir . 'SMW_SqlStubSemanticData.php';
 	$wgAutoloadClasses['SMWSqlStore2IdCache']       = $stoDir . 'SMW_SqlStore2IdCache.php';
 	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoDir . 'SMW_SQLStore2Table.php';
-	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
-	$wgAutoloadClasses['SMWSparqlStore']            = $stoDir . 'SMW_SparqlStore.php';
-	$wgAutoloadClasses['SMWSparqlStoreQueryEngine'] = $stoDir . 'SMW_SparqlStoreQueryEngine.php';
 
+	//SQLStore (since SMW.storerewrite)
+	$stoDirSQL = $smwgIP . 'includes/storage/SQLStore/';
+	$wgAutoloadClasses['SMWSQLStore3']                     = $stoDirSQL . 'SMW_SQLStore3.php';
+	$wgAutoloadClasses['SMWSql3StubSemanticData']          = $stoDirSQL . 'SMW_Sql3StubSemanticData.php';
+	$wgAutoloadClasses['SMWSQLStore3IdCache']              = $stoDirSQL . 'SMW_SQLStore3IdCache.php';
+	$wgAutoloadClasses['SMWSQLStore3Table']                = $stoDirSQL . 'SMW_SQLStore3Table.php';
+	$wgAutoloadClasses['SMWSQLStore3Readers']              = $stoDirSQL . 'SMW_SQLStore3_Readers.php';
+	$wgAutoloadClasses['SMWSQLStore3QueryEngine']          = $stoDirSQL . 'SMW_SQLStore3_Queries.php';
+	$wgAutoloadClasses['SMWSQLStore3Query']                = $stoDirSQL . 'SMW_SQLStore3_Queries.php';
+	$wgAutoloadClasses['SMWSQLStore3Writers']              = $stoDirSQL . 'SMW_SQLStore3_Writers.php';
+	$wgAutoloadClasses['SMWSQLStore3SpecialPageHandlers']  = $stoDirSQL . 'SMW_SQLStore3_SpecialPageHandlers.php';
+	$wgAutoloadClasses['SMWSQLStore3SetupHandlers']        = $stoDirSQL . 'SMW_SQLStore3_SetupHandlers.php';
+	$wgAutoloadClasses['SMWDIHandlerFactory']             = $stoDirSQL . 'SMW_DataItemHandler.php';
+	$wgAutoloadClasses['SMWDataItemHandler']              = $stoDirSQL . 'SMW_DataItemHandler.php';
+	$wgAutoloadClasses['SMWDIHandlerProperty']            = $stoDirSQL . 'SMW_DIHandler_Property.php';
+	$wgAutoloadClasses['SMWDIHandlerBoolean']             = $stoDirSQL . 'SMW_DIHandler_Bool.php';
+	$wgAutoloadClasses['SMWDIHandlerNumber']              = $stoDirSQL . 'SMW_DIHandler_Number.php';
+	$wgAutoloadClasses['SMWDIHandlerBlob']                = $stoDirSQL . 'SMW_DIHandler_Blob.php';
+	$wgAutoloadClasses['SMWDIHandlerString']              = $stoDirSQL . 'SMW_DIHandler_String.php';
+	$wgAutoloadClasses['SMWDIHandlerUri']                 = $stoDirSQL . 'SMW_DIHandler_URI.php';
+	$wgAutoloadClasses['SMWDIHandlerWikiPage']            = $stoDirSQL . 'SMW_DIHandler_WikiPage.php';
+	$wgAutoloadClasses['SMWDIHandlerTime']                = $stoDirSQL . 'SMW_DIHandler_Time.php';
+	$wgAutoloadClasses['SMWDIHandlerConcept']             = $stoDirSQL . 'SMW_DIHandler_Concept.php';
+	$wgAutoloadClasses['SMWDIHandlerGeoCoord']            = $stoDirSQL . 'SMW_DIHandler_GeoCoord.php';
+	$wgAutoloadClasses['SMWDIHandlerContainer']           = $stoDirSQL . 'SMW_DIHandler_Container.php';
+	
 	// Special pages and closely related helper classes
 	$specDir = $smwgIP . 'specials/';
 	$wgAutoloadClasses['SMWQueryPage']                 = $specDir . 'QueryPages/SMW_QueryPage.php';

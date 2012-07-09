@@ -39,7 +39,10 @@ $smwgIP = dirname( __FILE__ ) . '/';
 # Use another storage backend for Semantic MediaWiki. The default is suitable
 # for most uses of SMW.
 ##
-$smwgDefaultStore = "SMWSQLStore2";
+// SMWSQLStore3 is available after SMW.storerewrite and needs fresh setup of SMW from SMWAdmin for new tables to be setup
+// It is recommend to use this instead of the optional SMWSQLStore2 which is only available in this version
+// to ease transition
+$smwgDefaultStore = "SMWSQLStore3";
 ##
 
 ###
