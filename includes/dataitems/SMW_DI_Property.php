@@ -306,6 +306,7 @@ class SMWDIProperty extends SMWDataItem {
 	 * @return string type ID
 	 */
 	public static function getPredefinedPropertyTypeId( $key ) {
+		SMWDIProperty::initPropertyRegistration();
 		if ( array_key_exists( $key, SMWDIProperty::$m_prop_types ) ) {
 			return SMWDIProperty::$m_prop_types[$key][0];
 		} else {
