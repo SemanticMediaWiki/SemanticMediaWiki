@@ -156,4 +156,65 @@ class SMWStoreTest extends MediaWikiTestCase {
 			"Result should be instance of SMWQueryResult."
 		);
 	}
+
+///// Special page functions /////
+
+	public function testGetPropertiesSpecial() {
+		// This test fails on mysql http://bugs.mysql.com/bug.php?id=10327
+		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
+			return;
+		}
+
+		$store = smwfGetStore();
+		$result = $store->getPropertiesSpecial( null );
+		$this->assertTrue( is_array( $result ) );
+
+		foreach( $result as $row ) {
+			$this->assertEquals( 2, sizeof( $row ) );
+
+			$this->assertInstanceOf(
+				'SMWDIProperty',
+				$row[0],
+				"Result should be instance of SMWDIProperty."
+			);
+		}
+	}
+
+	public function testGetUnusedPropertiesSpecial() {
+		$store = smwfGetStore();
+		$result = $store->getUnusedPropertiesSpecial( null );
+
+		$this->assertTrue( is_array( $result ) );
+		foreach( $result as $row ) {
+			$this->assertInstanceOf(
+				'SMWDIProperty',
+				$row,
+				"Result should be instance of SMWDIProperty."
+			);
+		}
+	}
+
+	public function testGetWantedPropertiesSpecial() {
+		$store = smwfGetStore();
+		$result = $store->getWantedPropertiesSpecial( null );
+
+		$this->assertTrue( is_array( $result ) );
+		foreach( $result as $row ) {
+			$this->assertInstanceOf(
+				'SMWDIProperty',
+				$row[0],
+				"Result should be instance of SMWDIProperty."
+			);
+		}
+	}
+	
+	public function testGetStatistics() {
+		$store = smwfGetStore();
+		$result = $store->getStatistics();
+
+		$this->assertTrue( is_array( $result ) );
+		$this->assertArrayHasKey( 'PROPUSES', $result );
+		$this->assertArrayHasKey( 'USEDPROPS', $result );
+		$this->assertArrayHasKey( 'DECLPROPS', $result );
+	}
 }
