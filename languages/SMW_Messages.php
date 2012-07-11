@@ -1426,7 +1426,7 @@ $messages['az'] = array(
 	'smw_result_results' => 'Nəticələr',
 );
 
-/** Bashkir (Башҡортса)
+/** Bashkir (башҡортса)
  * @author Roustammr
  */
 $messages['ba'] = array(
@@ -2369,7 +2369,7 @@ Progrés estimat de l'actualització actual:",
 	'smw-info-par-icon' => 'La icona que es mostrarà, o bé «info», o bé «avís».',
 );
 
-/** Chechen (Нохчийн)
+/** Chechen (нохчийн)
  * @author Sasan700
  */
 $messages['ce'] = array(
@@ -8431,7 +8431,7 @@ $messages['mt'] = array(
 	'smw_result_prev' => "Ta' qabel",
 );
 
-/** Erzya (Эрзянь)
+/** Erzya (эрзянь)
  * @author Botuzhaleny-sodamo
  */
 $messages['myv'] = array(
@@ -8453,11 +8453,10 @@ $messages['nah'] = array(
 	'smw_smwadmin_return' => 'Titocuepāz īhuīc $1',
 );
 
-/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+/** Norwegian Bokmål (‪norsk (bokmål)‬)
  * @author Audun
  * @author Event
  * @author Harald Khan
- * @author Jon Harald Søby
  * @author Laaknor
  * @author Nghtwlkr
  * @author Njardarlogar
@@ -8468,8 +8467,6 @@ $messages['nb'] = array(
 	'smw_finallistconjunct' => ' og',
 	'smw_factbox_head' => 'Fakta om $1',
 	'smw_isspecprop' => 'Denne egenskapen er en spesialegenskap på denne wikien.',
-	'smw_isaliastype' => 'Denne datatypen er et alias for typen «$1».',
-	'smw_isnotype' => 'Datatypen «$1» er ikke en standardtype på denne wikien, og har ikke blitt gitt en brukerdefinsjon.',
 	'smw_concept_description' => 'Beskrivelse av konseptet «$1»',
 	'smw_no_concept_namespace' => 'Konsepter kan kun defineres på sider i Concept:-navnerommet.',
 	'smw_multiple_concepts' => 'Hver konseptside kan kun ha én konseptdefinisjon.',
@@ -8480,7 +8477,6 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw_baduri' => 'Beklager, URI-er på formen «$1» er ikke tillatt.',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
-	'smw_printername_auto' => 'Automatisk',
 	'smw_printername_count' => 'Tell opp resultat',
 	'smw_printername_csv' => 'CSV-eksport',
 	'smw_printername_dsv' => 'DSV-eksport',
@@ -8524,6 +8520,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw-paramdesc-dsv-filename' => 'Navnet på DSV-filen',
 	'smw-smwdoc-description' => 'Viser en tabell over alle parametre som kan brukes for det angitte resultatformatet sammen med standardverdier og beskrivelser.',
 	'smw-smwdoc-par-format' => 'Resultatformatet for å vise parameterdokumentasjon.',
+	'smw-smwdoc-par-parameters' => 'Hvilke parametre som skal vises. "specific" for dem som er lagt til av formatet, "base" for dem som er tilgjengelig i alle formater og "all" for begge.',
 	'smw-paramdesc-sort' => 'Egenskap som spørringen skal sorteres etter',
 	'smw-paramdesc-order' => 'Sorteringsrekkefølge for spørringen',
 	'smw-paramdesc-searchlabel' => 'Tekst som forteller om fortsatt søk (standard er «… flere resultater»)',
@@ -8536,7 +8533,6 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw_notitle' => '«$1» kan ikke brukes som sidenavn på denne wikien.',
 	'smw_noproperty' => '"$1" kan ikke brukes som en egenskap i denne wikien.',
 	'smw_wrong_namespace' => 'Kun sider i navnerommet «$1» er tillatte her.',
-	'smw_unknowntype' => 'Typen «$1» som er definert for egenskapen støttes ikke.',
 	'smw_manytypes' => 'Mer enn én type definert for egenskapen.',
 	'smw_emptystring' => 'Tomme strenger godtas ikke.',
 	'smw_maxstring' => 'Strengrepresentasjonen $1 er for lang.',
@@ -8584,6 +8580,7 @@ Merk at resultatet kan være stort.',
 Lager en RDF som kan gås gjennom.',
 	'smw_exportrdf_lastdate' => 'Ikke eksporter sider som ikke ble endret siden gitte tidspunkt.',
 	'smw_exportrdf_submit' => 'Eksporter',
+	'uriresolver' => 'URI-løser',
 	'properties' => 'Egenskaper',
 	'smw_properties_docu' => 'Følgende egenskaper brukes på wikien.',
 	'smw_property_template' => '$1 av type $2 ($3)',
@@ -8599,7 +8596,6 @@ Lager en RDF som kan gås gjennom.',
 	'smw_purge' => 'Gjenoppfrisk',
 	'types' => 'Typer',
 	'smw_types_docu' => 'Følgende er en liste over alle datatyper som kan knyttes til egenskaper.',
-	'smw_typeunits' => 'Måleenheter av typen «$1»: $2',
 	'semanticstatistics' => 'Semantisk statistikk',
 	'smw_semstats_text' => "Denne wikien inneholder {{PLURAL:$1|'''én''' egenskapsverdi|'''$1''' egenskapsverdier}} for totalt [[Special:Properties|{{PLURAL:$2|'''én''' egenskap|'''$2''' forskjellige egenskaper}}]].
 {{PLURAL:$3|'''Én''' egenskap|'''$3''' egenskaper}} har en egen side, og den mente datatypen er spesifisert for '''$4''' av disse.
@@ -8635,8 +8631,8 @@ Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'smw_qc_default' => 'Tomspørringstekst:',
 	'smw_qc_formatopt' => 'Formatvalg',
 	'smw_qc_query_help' => 'Legg inn en spørring ved hjelp av skjemaet under. Velg wikisider basert på
-Kategorier (<strong>[[{{ns:category}}:Actor]]</strong>),
-Egenskaper (<strong>[[Located in::Germany]]</strong>),
+Kategorier (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Egenskaper (<strong>[[Located in::Germany]]</strong>), 
 Navn (<strong>[[Germany]]</strong>) og navnerom (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Egenskap</strong>',
 	'smw_qui_prop' => 'Egenskap:',
@@ -12665,7 +12661,7 @@ $messages['uk'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Довідка із вбудованих запитів',
 );
 
-/** Veps (Vepsän kel’)
+/** Veps (vepsän kel’)
  * @author Игорь Бродский
  */
 $messages['vep'] = array(
