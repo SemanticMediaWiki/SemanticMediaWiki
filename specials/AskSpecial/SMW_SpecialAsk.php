@@ -4,6 +4,21 @@
  * This special page for MediaWiki implements a customisable form for
  * executing queries outside of articles.
  *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
  * @file SMW_SpecialAsk.php
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
@@ -218,7 +233,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				$this->m_printouts
 			);
 
-			$res = smwfGetStore()->getQueryResult( $queryobj );
+			// Determine query results
+			$res = SMWQueryProcessor::getQuerySource( $params )->getQueryResult( $queryobj );
 
 			// Try to be smart for rss/ical if no description/title is given and we have a concept query:
 			if ( $this->m_params['format'] == 'rss' ) {

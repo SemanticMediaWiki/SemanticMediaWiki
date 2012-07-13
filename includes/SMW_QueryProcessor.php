@@ -2,6 +2,22 @@
 /**
  * This file contains a static class for accessing functions to generate and execute
  * semantic queries and to serialise their results.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
  * @file
  * @ingroup SMWQuery
  * @author Markus Krötzsch
@@ -394,19 +410,7 @@ class SMWQueryProcessor {
 	protected static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context = self::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
-		// Query routing allows extensions to provide alternative stores as data sources
-		// The while feature is experimental and is not properly integrated with most of SMW's architecture. For instance, some query printers just fetch their own store.
-		// @todo FIXME: case-insensitive
-		global $smwgQuerySources;
-
-		// FIXME: this must have been broken for a year by now (2012-5) since we do not have a param definition for this
-		if ( array_key_exists( 'source', $params ) && array_key_exists( $params['source']->getValue(), $smwgQuerySources ) ) {
-			$store = new $smwgQuerySources[$params['source']->getValue()]();
-		} else {
-			$store = smwfGetStore(); // default store
-		}
-
-		$res = $store->getQueryResult( $query );
+		$res = self::getQuerySource( $params )->getQueryResult( $query );
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) || ( $query->querymode == SMWQuery::MODE_NONE ) ) {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
@@ -463,6 +467,46 @@ class SMWQueryProcessor {
 	}
 
 	/**
+	 * Returns selected query source
+	 *
+	 * @since 1.8
+	 *
+	 * @return array
+	 */
+	public static function getQuerySource( array $params ) {
+		$querySources = self::getRegisteredQuerySources();
+
+		if ( array_key_exists( $params['source']->getValue(), $querySources  ) ) {
+			// A source was selected
+			$source = new $querySources[$params['source']->getValue()]();
+		} elseif ( array_key_exists( 'default', $querySources ) ) {
+			// No source was selected but a default entry was found
+			$source = new $querySources['default']();
+		} else {
+			// Neither a selected nor a default source was found, therefore use the fallback
+			$source = smwfGetStore();
+		}
+		return $source;
+	}
+
+	/**
+	 * Returns registered query sources
+	 *
+	 * @since 1.8
+	 *
+	 * @return array
+	 */
+	protected static function getRegisteredQuerySources() {
+		$sources = array();
+
+		foreach ( $GLOBALS['smwgQuerySources'] as $key => $value ) {
+			$sources[strtolower ( $key )] = $value;
+		}
+		return $sources;
+	}
+
+
+	/**
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
 	 * function.
@@ -475,21 +519,39 @@ class SMWQueryProcessor {
 		$params = array();
 		
 		$allowedFormats = $GLOBALS['smwgResultFormats'];
+		$querySources   = self::getRegisteredQuerySources();
 		
 		foreach ( $GLOBALS['smwgResultAliases'] as $aliases ) {
 			$allowedFormats += $aliases;
 		}
-		
+
 		$allowedFormats[] = 'auto';
 
 		$params['format'] = new SMWParamFormat( 'format', 'auto' );
 		$params['format']->setToLower( true );
 		// TODO:$allowedFormats
 
+		$params['source'] = array(
+			'default' => array_key_exists( 'default', $querySources ) ? 'default' : '',
+			'values'  => array_keys( $querySources ),
+		);
+
 		$params['limit'] = array(
 			'type' => 'integer',
 			'default' => $GLOBALS['smwgQDefaultLimit'],
 			'negatives' => false,
+		);
+
+		$params['offset'] = array(
+			'type' => 'integer',
+			'default' => 0,
+			'negatives' => false,
+			'upperbound' => 5000 // TODO: make setting
+		);
+
+		$params['link'] = array(
+			'default' => 'all',
+			'values' => array( 'all', 'subject', 'none' ),
 		);
 
 		$params['sort'] = array(
@@ -503,13 +565,6 @@ class SMWQueryProcessor {
 			'values' => array( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ),
 		);
 
-		$params['offset'] = array(
-			'type' => 'integer',
-			'default' => 0,
-			'negatives' => false,
-			'upperbound' => 5000 // TODO: make setting
-		);
-
 		$params['headers'] = array(
 			'default' => 'show',
 			'values' => array( 'show', 'hide', 'plain' ),
@@ -519,21 +574,16 @@ class SMWQueryProcessor {
 			'default' => false,
 		);
 
-		$params['link'] = array(
-			'default' => 'all',
-			'values' => array( 'all', 'subject', 'none' ),
-		);
-
-		$params['searchlabel'] = array(
-			'default' => wfMsgForContent( 'smw_iq_moreresults' ),
-		);
-
 		$params['intro'] = array(
 			'default' => '',
 		);
 
 		$params['outro'] = array(
 			'default' => '',
+		);
+
+		$params['searchlabel'] = array(
+			'default' => wfMsgForContent( 'smw_iq_moreresults' ),
 		);
 
 		$params['default'] = array(
@@ -549,5 +599,4 @@ class SMWQueryProcessor {
 
 		return $params;
 	}
-
 }
