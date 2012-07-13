@@ -234,7 +234,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			);
 
 			// Determine query results
-			$res = SMWQueryProcessor::getQuerySource( $params )->getQueryResult( $queryobj );
+			$res = $params['source']->getValue()->getQueryResult( $queryobj );
 
 			// Try to be smart for rss/ical if no description/title is given and we have a concept query:
 			if ( $this->m_params['format'] == 'rss' ) {

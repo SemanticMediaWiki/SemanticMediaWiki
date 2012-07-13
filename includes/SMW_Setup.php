@@ -203,6 +203,7 @@ function smwfRegisterClasses() {
 	// Param classes
 	$parDir = $smwgIP . 'includes/params/';
 	$wgAutoloadClasses['SMWParamFormat']            = $parDir . 'SMW_ParamFormat.php';
+	$wgAutoloadClasses['SMWParamSource']            = $parDir . 'SMW_ParamSource.php';
 	
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';

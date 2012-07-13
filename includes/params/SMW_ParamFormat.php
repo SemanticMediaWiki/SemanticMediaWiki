@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Parameter manipulation ensuring the value is an file url.
+ * Definition for the format parameter.
  * 
  * @since 1.6.2
  * 
- * @file SMW_ParamFormat.php
+ * @file
  * @ingroup SMW
  * @ingroup ParamDefinition
  * 
- * @licence GNU GPL v3
+ * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SMWParamFormat extends StringParam {
@@ -124,7 +124,7 @@ class SMWParamFormat extends StringParam {
 	/**
 	 * Formats the parameter value to it's final result.
 	 *
-	 * @since 0.5
+	 * @since 1.8
 	 *
 	 * @param $value mixed
 	 * @param $param IParam

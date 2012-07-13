@@ -410,7 +410,7 @@ class SMWQueryProcessor {
 	protected static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context = self::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
-		$res = self::getQuerySource( $params )->getQueryResult( $query );
+		$res = $params['source']->getValue()->getQueryResult( $query );
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) || ( $query->querymode == SMWQuery::MODE_NONE ) ) {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
@@ -467,46 +467,6 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Returns selected query source
-	 *
-	 * @since 1.8
-	 *
-	 * @return array
-	 */
-	public static function getQuerySource( array $params ) {
-		$querySources = self::getRegisteredQuerySources();
-
-		if ( array_key_exists( $params['source']->getValue(), $querySources  ) ) {
-			// A source was selected
-			$source = new $querySources[$params['source']->getValue()]();
-		} elseif ( array_key_exists( 'default', $querySources ) ) {
-			// No source was selected but a default entry was found
-			$source = new $querySources['default']();
-		} else {
-			// Neither a selected nor a default source was found, therefore use the fallback
-			$source = smwfGetStore();
-		}
-		return $source;
-	}
-
-	/**
-	 * Returns registered query sources
-	 *
-	 * @since 1.8
-	 *
-	 * @return array
-	 */
-	protected static function getRegisteredQuerySources() {
-		$sources = array();
-
-		foreach ( $GLOBALS['smwgQuerySources'] as $key => $value ) {
-			$sources[strtolower ( $key )] = $value;
-		}
-		return $sources;
-	}
-
-
-	/**
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
 	 * function.
@@ -519,8 +479,7 @@ class SMWQueryProcessor {
 		$params = array();
 		
 		$allowedFormats = $GLOBALS['smwgResultFormats'];
-		$querySources   = self::getRegisteredQuerySources();
-		
+
 		foreach ( $GLOBALS['smwgResultAliases'] as $aliases ) {
 			$allowedFormats += $aliases;
 		}
@@ -531,10 +490,8 @@ class SMWQueryProcessor {
 		$params['format']->setToLower( true );
 		// TODO:$allowedFormats
 
-		$params['source'] = array(
-			'default' => array_key_exists( 'default', $querySources ) ? 'default' : '',
-			'values'  => array_keys( $querySources ),
-		);
+
+		$params['source'] = new SMWParamSource( 'source' );
 
 		$params['limit'] = array(
 			'type' => 'integer',
