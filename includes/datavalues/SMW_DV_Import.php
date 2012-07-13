@@ -71,32 +71,6 @@ class SMWImportValue extends SMWDataValue {
 			}
 		}
 
-		// check whether element of correct type was found (extracts data from factbox)
-		/// TODO: parser needed to do that
-// 		if(SMWParseData::getSMWData($parser) instanceof SMWSemanticData) {
-// 			$this_ns = SMWParseData::getSMWData($parser)->getSubject()->getNamespace();
-// 			$error = null;
-// 			switch ($elemtype) {
-// 				case SMW_NS_PROPERTY: case NS_CATEGORY:
-// 					if ($this_ns != $elemtype) {
-// 						$error = wfMsgForContent('smw_nonright_importtype',$value, $wgContLang->getNsText($elemtype));
-// 					}
-// 					break;
-// 				case NS_MAIN:
-// 					if ( (SMW_NS_PROPERTY == $this_ns) || (NS_CATEGORY == $this_ns)) {
-// 						$error = wfMsgForContent('smw_wrong_importtype',$value, $wgContLang->getNsText($this_ns));
-// 					}
-// 					break;
-// 				case -1:
-// 					$error = wfMsgForContent('smw_no_importelement',$value);
-// 			}
-//
-// 			if (null != $error) {
-// 				$this->addError($error);
-// 				return;
-// 			}
-// 		}
-
 		try {
 			$this->m_dataitem = new SMWDIString( $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri );
 		} catch ( SMWStringLengthException $e ) {
