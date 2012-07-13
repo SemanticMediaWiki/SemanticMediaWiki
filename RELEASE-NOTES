@@ -15,6 +15,7 @@ production until the actual release.
 * Fixed error on Special:URIResolver (bug 35643).
 * Fixed automatic running of SMW updating script when running maitenance/update.php.
 * Added improved JSON export (JSON structure has been altered)(bug 37418)
+* Fixed alternative query source ($smwgQuerySources) (bug 38292)
 
 == SMW 1.7.1 ==
 

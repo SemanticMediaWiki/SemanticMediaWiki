@@ -6,6 +6,21 @@
  * Currently contains code that was duplicated in Special:Ask and Special:QueryUI.
  * Probably there is more such code to put here.
  *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
  * @since 1.8
  *
  * @file
@@ -40,6 +55,15 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 		foreach ( $definitions as $name => $definition ) {
 			// Ignore the format parameter, as we got a special control in the GUI for it already.
 			if ( $name == 'format' ) {
+				continue;
+			}
+
+			// Maybe there is a better way but somehow I couldn't find one therefore
+			// 'source' display will be omitted where no alternative source was found or
+			// a source was marked as default but had no other available options
+			if ( ( $name == 'source' && count ( $definition->getAllowedValues() ) == 0 ) || (
+				$name == 'source' && in_array( 'default', $definition->getAllowedValues() ) &&
+				count ( $definition->getAllowedValues() ) < 2 ) ) {
 				continue;
 			}
 

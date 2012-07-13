@@ -94,6 +94,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-paramdesc-searchlabel' => 'Text for continuing the search (default is «… further results»)',
 	'smw-paramdesc-named_args' => 'Name the arguments passed to the template',
 	'smw-paramdesc-export' => 'Export option',
+	'smw-paramdesc-source' => 'Alternative query source',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
