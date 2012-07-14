@@ -24,6 +24,7 @@ class SMWParamSource extends StringParam {
 
 		$this->allowedValues = array_keys( $GLOBALS['smwgQuerySources'] );
 		$this->setDefault( array_key_exists( 'default', $this->allowedValues ) ? 'default' : '' );
+		$this->setMessage( 'smw-paramdesc-source' );
 	}
 
 	/**
