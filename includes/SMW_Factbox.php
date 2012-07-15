@@ -162,12 +162,12 @@ class SMWFactbox {
 	 * @return true
 	 */
 	static public function onOutputPageParserOutput( OutputPage $outputpage, ParserOutput $parseroutput ) {
-		global $wgTitle, $wgParser;
-		$factbox = SMWFactbox::getFactboxTextFromOutput( $parseroutput, $wgTitle );
+		global $wgParser;
+		$factbox = SMWFactbox::getFactboxTextFromOutput( $parseroutput, $outputpage->getTitle() );
 		
 		if ( $factbox !== '' ) {
 			$popts = new ParserOptions();
-			$po = $wgParser->parse( $factbox, $wgTitle, $popts );
+			$po = $wgParser->parse( $factbox, $outputpage->getTitle(), $popts );
 			$outputpage->mSMWFactboxText = $po->getText();
 			// do not forget to grab the outputs header items
 			SMWOutputs::requireFromParserOutput( $po );
