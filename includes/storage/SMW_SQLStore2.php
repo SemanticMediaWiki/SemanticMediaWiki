@@ -1292,17 +1292,6 @@ class SMWSQLStore2 extends SMWStore {
 			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
 		);
 
-		$smw_spec2 = $db->tableName( 'smw_spec2' );
-
-		// DB update: field renaming between SMW 1.3 and SMW 1.4.
-		if ( ( $db->tableExists( $smw_spec2 ) ) && ( $db->fieldExists( $smw_spec2, 'sp_id', __METHOD__ ) ) ) {
-			if ( $wgDBtype == 'postgres' ) {
-				$db->query( "ALTER TABLE $smw_spec2 ALTER COLUMN sp_id RENAME TO p_id", __METHOD__ );
-			} else {
-				$db->query( "ALTER TABLE $smw_spec2 CHANGE `sp_id` `p_id` " . $dbtypes['p'] . " NOT NULL", __METHOD__ );
-			}
-		}
-
 		// Set up table for internal IDs used in this store:
 		SMWSQLHelpers::setupTable(
 			'smw_ids',
