@@ -993,7 +993,7 @@ class SMWSQLStore2 extends SMWStore {
 	public function getQueryResult( SMWQuery $query ) {
 		wfProfileIn( 'SMWSQLStore2::getQueryResult (SMW)' );
 		global $smwgIP;
-		include_once( "$smwgIP/includes/storage/SMW_SQLStore2_Queries.php" );
+		include_once( "$smwgIP/includes/storage/compatSQLStore/SMW_SQLStore2_Queries.php" );
 
 		$qe = new SMWSQLStore2QueryEngine( $this, wfGetDB( DB_SLAVE ) );
 		$result = $qe->getQueryResult( $query );

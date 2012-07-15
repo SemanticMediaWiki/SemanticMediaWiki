@@ -247,10 +247,13 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSparqlStore']            = $stoDir . 'SMW_SparqlStore.php';
 	$wgAutoloadClasses['SMWSparqlStoreQueryEngine'] = $stoDir . 'SMW_SparqlStoreQueryEngine.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
-	$wgAutoloadClasses['SMWSQLStore2']              = $stoDir . 'SMW_SQLStore2.php';
-	$wgAutoloadClasses['SMWSqlStubSemanticData']    = $stoDir . 'SMW_SqlStubSemanticData.php';
-	$wgAutoloadClasses['SMWSqlStore2IdCache']       = $stoDir . 'SMW_SqlStore2IdCache.php';
-	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoDir . 'SMW_SQLStore2Table.php';
+
+	//compatSQLStore (since SMW.storerewrite)
+	$stoCompatSQL = $smwgIP . 'includes/storage/compatSQLStore/';
+	$wgAutoloadClasses['SMWSQLStore2']              = $stoCompatSQL . 'SMW_SQLStore2.php';
+	$wgAutoloadClasses['SMWSqlStubSemanticData']    = $stoCompatSQL . 'SMW_SqlStubSemanticData.php';
+	$wgAutoloadClasses['SMWSqlStore2IdCache']       = $stoCompatSQL . 'SMW_SqlStore2IdCache.php';
+	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoCompatSQL . 'SMW_SQLStore2Table.php';
 
 	//SQLStore (since SMW.storerewrite)
 	$stoDirSQL = $smwgIP . 'includes/storage/SQLStore/';
