@@ -21,6 +21,17 @@ interface SMWDataItemHandler {
 	 * Method to return array of fields and indexes for a DI type
 	 * @since SMW.storerewrite
 	 *
+	 * Tables declare value columns ("object fields") by specifying their name
+	 * and type. Types are given using letters:
+	 * - t for strings of the same maximal length as MediaWiki title names,
+	 * - l for arbitrarily long strings; searching/sorting with such data may
+	 * be limited for performance reasons,
+	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
+	 * - n for namespace numbers (or other similar integers)
+	 * - f for floating point numbers of double precision
+	 * - p for a reference to an SMW ID as stored in the smw_ids table; this
+	 *   corresponds to a data entry of ID "tnwt".
+	 *
 	 * @return array
 	 */
 	public function getTableFields();

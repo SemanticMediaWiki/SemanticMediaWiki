@@ -45,7 +45,7 @@ class SMWSQLStore3Table {
 	 * and property column (if any). Items can also be an array with the column
 	 * name as first element, and a index type as second elemet to allow for
 	 * custom index types.
-	 *
+	 * 
 	 * @var array of string
 	 */
 	public $indexes;
@@ -72,28 +72,6 @@ class SMWSQLStore3Table {
 	public $specpropsonly = false;
 
 	/**
-	 * Constructor.
-	 *
-	 * @param string $name
-	 * @param array $objectFields Associative array
-	 * @param mixed $indexes Array of string or a single string
-	 * @param mixed $fixedProperty string or false
-	 */
-	public function __construct( $name, array $objectFields, $indexes = array(), $fixedProperty = false ) {
-		$this->name = $name;
-		$this->objectfields = $objectFields;
-		$this->fixedproperty = $fixedProperty;
-		$this->indexes = (array) $indexes;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getFieldSignature() {
-		return implode( '', $this->objectfields );
-	}
-
-	/**
 	* Factory method to create an instance for a given
 	* DI type and the given table name.
 	*
@@ -104,26 +82,22 @@ class SMWSQLStore3Table {
 	* @param $fixedProperty
 	* @return $table SMWSQLStore3Table
 	*/
-	public static function newFromDIType( $DIType, $tableName, $fixedProperty = false ) {
-		$table = new SMWSQLStore3Table( $tableName, array(), array(), $fixedProperty );
-		$table->setFields( $DIType );
+	public function __construct( $DIType, $tableName, $fixedProperty = false ) {
+		$this->name = $tableName;
+		$this->fixedproperty = $fixedProperty;
+		$this->setFields( $DIType );
+	}
 
-		return $table;
+	/**
+	 * @return string
+	 */
+	public function getFieldSignature() {
+		return implode( '', $this->objectfields );
 	}
 
 	/**
 	 * Sets the fields and indexes for the tables based on the DI type of the property-values.
 	 *
-	 * Tables declare value columns ("object fields") by specifying their name
-	 * and type. Types are given using letters:
-	 * - t for strings of the same maximal length as MediaWiki title names,
-	 * - l for arbitrarily long strings; searching/sorting with such data may
-	 * be limited for performance reasons,
-	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
-	 * - n for namespace numbers (or other similar integers)
-	 * - f for floating point numbers of double precision
-	 * - p for a reference to an SMW ID as stored in the smw_ids table; this
-	 *   corresponds to a data entry of ID "tnwt".
 	 * @param const $DIType
 	 */
 	protected function setFields( $DIType ) {

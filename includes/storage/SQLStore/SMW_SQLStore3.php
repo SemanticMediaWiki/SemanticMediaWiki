@@ -1253,17 +1253,6 @@ class SMWSQLStore3 extends SMWStore {
 	 * indexed by table ids. Note that the ids are only for accessing the data
 	 * and should not be assumed to agree with the table name.
 	 *
-	 * Tables declare value columns ("object fields") by specifying their name
-	 * and type. Types are given using letters:
-	 * - t for strings of the same maximal length as MediaWiki title names,
-	 * - l for arbitrarily long strings; searching/sorting with such data may
-	 * be limited for performance reasons,
-	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
-	 * - n for namespace numbers (or other similar integers)
-	 * - f for floating point numbers of double precision
-	 * - p for a reference to an SMW ID as stored in the smw_ids table; this
-	 *   corresponds to a data entry of ID "tnwt".
-	 *
 	 * @return array of SMWSQLStore3Table
 	 * @todo The concept table should make s_id a primary key; make this possible.
 	 */
@@ -1274,15 +1263,16 @@ class SMWSQLStore3 extends SMWStore {
 
 		//tables for each DI type
 		foreach( self::$di_type_tables as $tableDIType => $tableName ){
-			self::$prop_tables[$tableName] = SMWSQLStore3Table::newFromDIType( $tableDIType, $tableName );
+			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName );
 		}
 
 		//tables for special properties
 		foreach( self::$special_tables as $key => $tableName ){
 			$typeId = SMWDIProperty::getPredefinedPropertyTypeId( $key );
 			$diType = SMWDataValueFactory::getDataItemId( $typeId );
-			self::$prop_tables[$tableName] = SMWSQLStore3Table::newFromDIType( $diType, $tableName );
+			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $diType, $tableName );
 		}
+
 		self::$prop_tables['smw_spec2']->specpropsonly = true;
 		self::$prop_tables['smw_uri']->specpropsonly = true;
 		self::$prop_tables['smw_subs2']->fixedproperty = '_SUBC';
@@ -1306,7 +1296,7 @@ class SMWSQLStore3 extends SMWStore {
 		//get all the tables for the properties that are declared as fixed (overly used and thus having separate tables)
 		foreach(self::$fixedProperties as $fixedPropertyLabel => $tableDIType){
 			$tableName = self::findFixedPropertyTableID ( $fixedPropertyLabel );
-			self::$prop_tables[$tableName] = SMWSQLStore3Table::newFromDIType( $tableDIType, $tableName, $fixedPropertyLabel );
+			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName, $fixedPropertyLabel );
 		}
 
 		return self::$prop_tables;
