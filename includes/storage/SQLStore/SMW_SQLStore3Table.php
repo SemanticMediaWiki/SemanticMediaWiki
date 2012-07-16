@@ -50,16 +50,6 @@ class SMWSQLStore3Table {
 	public $idsubject = true;
 
 	/**
-	 * State if a table is reserved for "special properties" (properties that
-	 * are pre-defined in SMW). This is mainly for optimization, since we do
-	 * not want to join with the SMW page id table to find the property for an
-	 * ID when it is likely that the ID is fixed and cached.
-	 *
-	 * @var unknown_type
-	 */
-	public $specpropsonly = false;
-
-	/**
 	* Factory method to create an instance for a given
 	* DI type and the given table name.
 	*

@@ -51,7 +51,7 @@ Class SMWSQLStore3SetupHandlers {
 	 *
 	 * - Rows with iw SMW_SQL2_SMWREDIIW are similar to normal entries for
 	 * (internal) wiki pages, but the iw indicates that the page is a
-	 * redirect, the target of which should be sought using the smw_redi2
+	 * redirect, the target of which should be sought using the smw_redi
 	 * table.
 	 *
 	 * - The (unique) row with iw SMW_SQL2_SMWBORDERIW just marks the

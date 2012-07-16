@@ -117,22 +117,22 @@ class SMWSQLStore3 extends SMWStore {
 
 	/// Use special tables for Very Important Properties
 	public static $special_tables = array(
-		'_TYPE' => 'smw_uri',
+		'_TYPE' => 'smw_type',
 		'_URI'  => 'smw_uri',
-		'_INST' => 'smw_inst2',
-		'_UNIT' => 'smw_spec2',
-		'_IMPO' => 'smw_spec2',
-		'_CONV' => 'smw_spec2',
-		'_SERV' => 'smw_spec2',
-		'_PVAL' => 'smw_spec2',
-		'_REDI' => 'smw_redi2',
-		'_SUBP' => 'smw_subp2',
-		'_SUBC' => 'smw_subs2',
-		'_CONC' => 'smw_conc2',
-		'_SF_DF' => 'smw_spec2', // Semantic Form's default form property
-		'_SF_AF' => 'smw_spec2',  // Semantic Form's alternate form property
+		'_INST' => 'smw_inst',
+		'_UNIT' => 'smw_unit',
+		'_IMPO' => 'smw_impo',
+		'_CONV' => 'smw_conv',
+		'_SERV' => 'smw_serv',
+		'_PVAL' => 'smw_pval',
+		'_REDI' => 'smw_redi',
+		'_SUBP' => 'smw_subp',
+		'_SUBC' => 'smw_subs',
+		'_CONC' => 'smw_conc',
+		'_SF_DF' => 'smw_sfdf', // Semantic Form's default form property
+		'_SF_AF' => 'smw_sfaf',  // Semantic Form's alternate form property
 		//'_ERRP', '_MDAT', '_CDAT', '_SKEY' // no special table
-		'_LIST' => 'smw_spec2',
+		'_LIST' => 'smw_list',
 	);
 
 	/// Default tables to use for storing data of certain types.
@@ -146,7 +146,7 @@ class SMWSQLStore3 extends SMWStore {
 		SMWDataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
 		SMWDataItem::TYPE_CONTAINER  => 'smw_di_container', // values of this type represented by internal objects, stored like pages in smw_rels2
 		SMWDataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
-		SMWDataItem::TYPE_CONCEPT    => 'smw_conc2', // unlikely to occur as value of a normal property
+		SMWDataItem::TYPE_CONCEPT    => 'smw_conc', // unlikely to occur as value of a normal property
 		SMWDataItem::TYPE_PROPERTY   => 'smw_di_property'  // unlikely to occur as value of any property
 	);
 
@@ -374,7 +374,7 @@ class SMWSQLStore3 extends SMWStore {
 		$db = wfGetDB( DB_SLAVE );
 		$cid = $this->getSMWPageID( $concept->getDBkey(), $concept->getNamespace(), '', '', false );
 
-		$row = $db->selectRow( 'smw_conc2',
+		$row = $db->selectRow( 'smw_conc',
 		         array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ),
 		         array( 's_id' => $cid ), 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
 
@@ -764,7 +764,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function getRedirectId( $title, $namespace ) {
 		$db = wfGetDB( DB_SLAVE );
-		$row = $db->selectRow( 'smw_redi2', 'o_id',
+		$row = $db->selectRow( 'smw_redi', 'o_id',
 			array( 's_title' => $title, 's_namespace' => $namespace ), __METHOD__ );
 		return ( $row === false ) ? 0 : $row->o_id;
 	}
@@ -970,10 +970,10 @@ class SMWSQLStore3 extends SMWStore {
 		// Change id entries in concept-related tables:
 		if ( $sdata && ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_CONCEPT ) ) ) {
 			if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_CONCEPT ) ) {
-				$db->update( 'smw_conc2', array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
+				$db->update( 'smw_conc', array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
 				$db->update( 'smw_conccache', array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
 			} else {
-				$db->delete( 'smw_conc2', array( 's_id' => $oldid ), __METHOD__ );
+				$db->delete( 'smw_conc', array( 's_id' => $oldid ), __METHOD__ );
 				$db->delete( 'smw_conccache', array( 's_id' => $oldid ), __METHOD__ );
 			}
 		}
@@ -1003,10 +1003,10 @@ class SMWSQLStore3 extends SMWStore {
 		}
 
 		foreach ( self::getPropertyTables() as $proptable ) {
-			if ( $proptable->name == 'smw_conc2' ) continue; // skip concepts, since they have chache data in their table which should be kept while the cache is intact
+			if ( $proptable->name == 'smw_conc' ) continue; // skip concepts, since they have chache data in their table which should be kept while the cache is intact
 			if ( $proptable->idsubject ) {
 				$db->delete( $proptable->name, array( 's_id' => $id ), __METHOD__ );
-			} elseif ( $proptable->name != 'smw_redi2' ) { /// NOTE: redirects are handled by updateRedirects(), not here!
+			} elseif ( $proptable->name != 'smw_redi' ) { /// NOTE: redirects are handled by updateRedirects(), not here!
 				$db->delete( $proptable->name, array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() ), __METHOD__ );
 			}
 		}
@@ -1126,7 +1126,7 @@ class SMWSQLStore3 extends SMWStore {
 		$new_tid = $curtarget_t ? ( $this->makeSMWPageID( $curtarget_t, $curtarget_ns, '', '', false ) ) : 0; // real id of new target, if given
 
 		$db = wfGetDB( DB_SLAVE );
-		$row = $db->selectRow( array( 'smw_redi2' ), 'o_id',
+		$row = $db->selectRow( array( 'smw_redi' ), 'o_id',
 				array( 's_title' => $subject_t, 's_namespace' => $subject_ns ), __METHOD__ );
 		$old_tid = ( $row !== false ) ? $row->o_id : 0; // real id of old target, if any
 		/// NOTE: $old_tid and $new_tid both (intentionally) ignore further redirects: no redirect chains
@@ -1144,7 +1144,7 @@ class SMWSQLStore3 extends SMWStore {
 			// Since references must not be 0, we don't have to do this is $sid == 0.
 			$this->changeSMWPageID( $sid, $new_tid, $subject_ns, $curtarget_ns, false, true );
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
-			$db->delete( 'smw_redi2',
+			$db->delete( 'smw_redi',
 				array( 's_title' => $subject_t, 's_namespace' => $subject_ns ), __METHOD__ );
 
 			if ( $smwgEnableUpdateJobs && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
@@ -1153,7 +1153,7 @@ class SMWSQLStore3 extends SMWStore {
 				$jobs = array();
 
 				foreach ( self::getPropertyTables() as $proptable ) {
-					if ( $proptable->name == 'smw_redi2' ) continue; // can safely be skipped
+					if ( $proptable->name == 'smw_redi' ) continue; // can safely be skipped
 
 					if ( $proptable->idsubject ) {
 						$from   = $db->tableName( $proptable->name ) . ' INNER JOIN ' .
@@ -1204,7 +1204,7 @@ class SMWSQLStore3 extends SMWStore {
 			// Redirecting done right:
 			// (1) make a new ID with iw SMW_SQL2_SMWREDIIW or
 			//     change iw field of current ID in this way,
-			// (2) write smw_redi2 table,
+			// (2) write smw_redi table,
 			// (3) update canonical cache.
 			// This order must be obeyed unless you really understand what you are doing!
 
@@ -1221,7 +1221,7 @@ class SMWSQLStore3 extends SMWStore {
 				}
 			}
 
-			$db->insert( 'smw_redi2', array( 's_title' => $subject_t,
+			$db->insert( 'smw_redi', array( 's_title' => $subject_t,
 				's_namespace' => $subject_ns, 'o_id' => $new_tid ), __METHOD__ );
 		} else { // delete old redirect
 			// This case implies $old_tid != 0 (or we would have new_tid == old_tid above).
@@ -1264,19 +1264,12 @@ class SMWSQLStore3 extends SMWStore {
 		foreach( self::$special_tables as $key => $tableName ){
 			$typeId = SMWDIProperty::getPredefinedPropertyTypeId( $key );
 			$diType = SMWDataValueFactory::getDataItemId( $typeId );
-			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $diType, $tableName );
+			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $diType, $tableName, $key );
 		}
+		// why this??
+		self::$prop_tables['smw_redi']->idsubject = false;
 
-		self::$prop_tables['smw_spec2']->specpropsonly = true;
-		self::$prop_tables['smw_uri']->specpropsonly = true;
-		self::$prop_tables['smw_subs2']->fixedproperty = '_SUBC';
-		self::$prop_tables['smw_subp2']->fixedproperty = '_SUBP';
-		self::$prop_tables['smw_inst2']->fixedproperty = '_INST';
-		self::$prop_tables['smw_redi2']->fixedproperty = '_REDI';
-		self::$prop_tables['smw_redi2']->idsubject = false;
-
-		//TODO - smw_conc2 appears in di_type_tables as well special_tables. Fix this
-		self::$prop_tables['smw_conc2']->fixedproperty = '_CONC';
+		//TODO - smw_conc appears in di_type_tables as well special_tables. Fix this
 
 		wfRunHooks( 'SMWPropertyTables', array( &self::$prop_tables ) );
 

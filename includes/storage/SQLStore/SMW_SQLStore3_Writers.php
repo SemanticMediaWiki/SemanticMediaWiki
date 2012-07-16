@@ -43,7 +43,7 @@ Class SMWSQLStore3Writers {
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = wfGetDB( DB_MASTER );
 			$id = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
-			$db->delete( 'smw_conc2', array( 's_id' => $id ), 'SMW::deleteSubject::Conc2' );
+			$db->delete( 'smw_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc2' );
 			$db->delete( 'smw_conccache', array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
 
@@ -95,8 +95,8 @@ Class SMWSQLStore3Writers {
 		$hashIsChanged = false;
 		foreach ( SMWSQLStore3::getPropertyTables() as $tableId => $tableDeclaration ) {
 			$tableName = $tableDeclaration->name;
-			if ( $tableName == 'smw_conc2' || $tableName == 'smw_redi2' ) {
-				continue;	//smw_redi2 and smw_conc2 are not considered here.
+			if ( $tableName == 'smw_conc' || $tableName == 'smw_redi' ) {
+				continue;	//smw_redi and smw_conc are not considered here.
 			}
 			if ( array_key_exists( $tableName, $updates ) ) {
 				$newHash = md5( serialize( $updates[$tableName] ) );
@@ -125,8 +125,8 @@ Class SMWSQLStore3Writers {
 		// Concepts are not just written but carefully updated,
 		// preserving existing metadata (cache ...) for a concept:
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) {
-			if ( array_key_exists( 'smw_conc2', $updates ) && ( count( $updates['smw_conc2'] ) != 0 ) ) {
-				$up_conc2 = end( $updates['smw_conc2'] );
+			if ( array_key_exists( 'smw_conc', $updates ) && ( count( $updates['smw_conc'] ) != 0 ) ) {
+				$up_conc2 = end( $updates['smw_conc'] );
 				unset ( $up_conc2['cache_date'] );
 				unset ( $up_conc2['cache_count'] );
 			} else {
@@ -140,7 +140,7 @@ Class SMWSQLStore3Writers {
 			}
 
 			$row = $db->selectRow(
-				'smw_conc2',
+				'smw_conc',
 				array( 'cache_date', 'cache_count' ),
 				array( 's_id' => $sid ),
 				'SMWSQLStoreQueries::updateConst2Data'
@@ -148,9 +148,9 @@ Class SMWSQLStore3Writers {
 
 			if ( ( $row === false ) && ( $up_conc2['concept_txt'] !== '' ) ) { // insert newly given data
 				$up_conc2['s_id'] = $sid;
-				$db->insert( 'smw_conc2', $up_conc2, 'SMW::updateConc2Data' );
+				$db->insert( 'smw_conc', $up_conc2, 'SMW::updateConc2Data' );
 			} elseif ( $row !== false ) { // update data, preserve existing entries
-				$db->update( 'smw_conc2', $up_conc2, array( 's_id' => $sid ), 'SMW::updateConc2Data' );
+				$db->update( 'smw_conc', $up_conc2, array( 's_id' => $sid ), 'SMW::updateConc2Data' );
 			}
 		}
 
@@ -299,7 +299,7 @@ Class SMWSQLStore3Writers {
 
 			// make redirect id for oldtitle:
 			$this->store->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL2_SMWREDIIW, '' );
-			$db->insert( 'smw_redi2', array( 's_title' => $oldtitle->getDBkey(),
+			$db->insert( 'smw_redi', array( 's_title' => $oldtitle->getDBkey(),
 						's_namespace' => $oldtitle->getNamespace(),
 						'o_id' => $sid ),
 			             __METHOD__ );
@@ -351,7 +351,7 @@ Class SMWSQLStore3Writers {
 
 	/**
 	 * Delete all semantic data stored for the given subject on the specified table.
-	 * Note - if the table is smw_conc2 or smw_redi2 nothing is done as doDataUpdate handles them itself
+	 * Note - if the table is smw_conc or smw_redi nothing is done as doDataUpdate handles them itself
 	 *
 	 * @param $subject SMWDIWikiPage
 	 * @param $table SMW_SQLStoreTable
@@ -361,7 +361,7 @@ Class SMWSQLStore3Writers {
 			return; // not needed, and would mess up data
 		}
 
-		if ( $table->name == 'smw_conc2' || $table->name == 'smw_redi2' ) {
+		if ( $table->name == 'smw_conc' || $table->name == 'smw_redi' ) {
 			return;
 		}
 
