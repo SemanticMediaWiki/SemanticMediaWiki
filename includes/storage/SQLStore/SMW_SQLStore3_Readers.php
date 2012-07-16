@@ -207,15 +207,13 @@ Class SMWSQLStore3Readers {
 		$select = '';
 		$where  = '';
 
-		if ( $issubject != 0 ) { // restrict subject, select property
+		if ( $issubject ) { // restrict subject, select property
 			$where .= ( $proptable->idsubject ) ? 's_id=' . $db->addQuotes( $id ) :
 					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
 					  ' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
-			if ( !$proptable->fixedproperty && !$proptable->specpropsonly ) { // get property name
+			if ( !$proptable->fixedproperty ) { // get property name
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . ' AS p ON p_id=p.smw_id';
 				$select .= 'p.smw_title as prop';
-			} elseif ( $proptable->specpropsonly ) { // avoid join for tables that contain only built-in properties
-				$select .= 'p_id';
 			} // else: fixed property, no select needed at all to get at it
 		} elseif ( !$proptable->fixedproperty ) { // restrict property, but don't select subject
 			$where .= 'p_id=' . $db->addQuotes( $id );
@@ -273,18 +271,8 @@ Class SMWSQLStore3Readers {
 		                        $this->store->getSQLOptions( $requestoptions, $valuecolumn ) ) );
 
 		foreach ( $res as $row ) {
-			if ( $issubject && !$proptable->fixedproperty ) { // use joined or predefined property name
-				if ( $proptable->specpropsonly ) {
-					$propertyname = array_search( $row->p_id, SMWSQLStore3::$special_ids );
-					// Note: this may leave $propertyname false if a special type
-					// has been assigned to a proerty not in SMWSQLStore3::$special_ids.
-					// Extensions could do this, but this will not work.
-					if ( $propertyname == false ) continue;
-				} else {
-					$propertyname = $row->prop;
-				}
-			} elseif ( $issubject ) { // use fixed property name
-				$propertyname = $proptable->fixedproperty;
+			if ( $issubject ) { // use joined or predefined property name
+				$propertyname = $proptable->fixedproperty ? $proptable->fixedproperty : $row->prop;
 			}
 
 			$valuekeys = array();

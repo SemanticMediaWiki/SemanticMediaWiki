@@ -151,7 +151,7 @@ Class SMWSQLStore3SpecialPageHandlers {
 		//   (a stricter and more costy approach would be to delete only redirects to used properties;
 		//    this would need to be done with an addtional query in the above loop)
 		// The redirect table is a fixed part of this store, no need to find its name.
-		$db->deleteJoin( $smw_tmp_unusedprops, 'smw_redi2', 'title', 's_title', array( 's_namespace' => SMW_NS_PROPERTY ), __METHOD__ );
+		$db->deleteJoin( $smw_tmp_unusedprops, 'smw_redi', 'title', 's_title', array( 's_namespace' => SMW_NS_PROPERTY ), __METHOD__ );
 
 		$options = $this->store->getSQLOptions( $requestoptions, 'title' );
 		$options['ORDER BY'] = 'title';
