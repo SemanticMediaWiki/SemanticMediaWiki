@@ -15,15 +15,21 @@
 class SMWDIHandlerTime implements SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields and indexes for a DI type
+	 * Method to return array of fields for a DI type
 	 *
 	 * @return array
 	 */
-	public function getTableFields(){
-		return array(
-			'objectfields' => array( 'value_xsd' => 't', 'value_num' => 'f' ),
-			'indexes' => array( 'value_num', 'value_xsd' ),
-		);
+	public function getTableFields() {
+		return array( 'value_xsd' => 't', 'value_num' => 'f' );
+	}
+
+	/**
+	 * Method to return array of indexes for a DI type
+	 *
+	 * @return array
+	 */
+	public function getTableIndexes() {
+		return array( 'value_num', 'value_xsd' );
 	}
 
 	/**

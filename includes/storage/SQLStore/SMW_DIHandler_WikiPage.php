@@ -15,15 +15,21 @@
 class SMWDIHandlerWikiPage implements SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields and indexes for a DI type
+	 * Method to return array of fields for a DI type
 	 *
 	 * @return array
 	 */
-	public function getTableFields(){
-		return array(
-			'objectfields' => array( 'o_id' => 'p' ),
-			'indexes' => array( 'o_id' ),
-		);
+	public function getTableFields() {
+		return array( 'o_id' => 'p' );
+	}
+
+	/**
+	 * Method to return array of indexes for a DI type
+	 *
+	 * @return array
+	 */
+	public function getTableIndexes() {
+		return array( 'o_id' );
 	}
 
 	/**

@@ -15,15 +15,21 @@
 class SMWDIHandlerBoolean implements SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields and indexes for a DI type
+	 * Method to return array of fields for a DI type
 	 *
 	 * @return array
 	 */
-	public function getTableFields(){
-		return array(
-			'objectfields' => array( 'value_bool' => 'b' ),
-			'indexes' => array( 'value_bool' ),
-		);
+	public function getTableFields() {
+		return array( 'value_bool' => 'b' );
+	}
+
+	/**
+	 * Method to return array of indexes for a DI type
+	 *
+	 * @return array
+	 */
+	public function getTableIndexes() {
+		return array( 'value_bool' );
 	}
 
 	/**

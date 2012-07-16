@@ -613,10 +613,11 @@ class SMWSQLStore3QueryEngine {
 
 		// *** Basic settings: table, joinfield, and objectfields ***//
 		$query->jointable = $proptable->name;
+		$fields = $proptable->getFields();
 
 		if ( $property->isInverse() ) { // see if we can support inverses by inverting the proptable data
-			if ( ( count( $proptable->objectfields ) == 1 ) && ( reset( $proptable->objectfields ) == 'p' ) ) {
-				$keys = array_keys( $proptable->objectfields );
+			if ( ( count( $fields ) == 1 ) && ( reset( $fields ) == 'p' ) ) {
+				$keys = array_keys( $fields );
 				$query->joinfield = $query->alias . '.' . $keys[0];
 				$objectfields = array( 's_id' => 'p' );
 				$valueField = $labelField = 'smw_sortkey'; // should normally not change, but let's be strict
@@ -626,7 +627,7 @@ class SMWSQLStore3QueryEngine {
 			}
 		} else { // normal forward property
 			$query->joinfield = "{$query->alias}.s_id";
-			$objectfields = $proptable->objectfields;
+			$objectfields = $fields;
 		}
 
 		// *** Add conditions for selecting rows for this property, maybe with a hierarchy ***//
@@ -729,7 +730,8 @@ class SMWSQLStore3QueryEngine {
 
 					// See if the getSQLCondition method exists and call it if this is the case.
 					if ( method_exists( $description, 'getSQLCondition' ) ) {
-						$customSQL = $description->getSQLCondition( $query->alias, array_keys( $proptable->objectfields ), $this->m_dbs );
+						$fields = $proptable->getFields();
+						$customSQL = $description->getSQLCondition( $query->alias, array_keys( $fields ), $this->m_dbs );
 					}
 
 					if ( $customSQL ) {

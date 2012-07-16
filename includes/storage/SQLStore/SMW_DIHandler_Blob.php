@@ -15,15 +15,21 @@
 class SMWDIHandlerBlob implements SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields and indexes for a DI type
+	 * Method to return array of fields for a DI type
 	 *
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array(
-			'objectfields' => array( 'value_blob' => 'l', 'value_hash' => 't' ),
-			'indexes' => array( 'value_hash' ),
-		);
+		return array( 'value_blob' => 'l', 'value_hash' => 't' );
+	}
+
+	/**
+	 * Method to return array of indexes for a DI type
+	 *
+	 * @return array
+	 */
+	public function getTableIndexes() {
+		return array( 'value_hash' );
 	}
 
 	/**

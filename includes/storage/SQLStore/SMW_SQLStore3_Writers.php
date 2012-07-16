@@ -217,8 +217,9 @@ Class SMWSQLStore3Writers {
 					$subObject = $di->getSemanticData()->getSubject();
 					$subObjectId = $this->prepareDBUpdates( $updates, $di->getSemanticData(), 0, $subObject );
 					// Note: tables for container objects MUST have objectfields == array(<somename> => 'p')
-					reset( $proptable->objectfields );
-					$uvals[key( $proptable->objectfields )] = $subObjectId;
+					$fields = $proptable->getFields();
+					reset( $fields );
+					$uvals[key( $fields )] = $subObjectId;
 				} else {
 					///since SMW.storerewrite we get the array of where conds (fieldname=>value) from the DIHander class
 					//This causes a database error when called for special properties as they have different table structure

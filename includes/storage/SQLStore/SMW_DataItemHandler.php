@@ -18,7 +18,7 @@
 interface SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields and indexes for a DI type
+	 * Method to return array of fields for a DI type
 	 * @since SMW.storerewrite
 	 *
 	 * Tables declare value columns ("object fields") by specifying their name
@@ -35,6 +35,14 @@ interface SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableFields();
+
+	/**
+	 * Method to return array of indexes for a DI type
+	 * @since SMW.storerewrite
+	 *
+	 * @return array
+	 */
+	public function getTableIndexes();
 
 	/**
 	 * Method to return an array of fields=>values for a DataItem

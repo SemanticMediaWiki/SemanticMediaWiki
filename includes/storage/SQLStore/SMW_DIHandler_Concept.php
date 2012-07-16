@@ -15,15 +15,12 @@
 class SMWDIHandlerConcept implements SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields and indexes for a DI type
-	 *
-	 * @since SMW.storerewrite
+	 * Method to return array of fields for a DI type
 	 *
 	 * @return array
 	 */
-	public function getTableFields(){
+	public function getTableFields() {
 		return array(
-			'objectfields' => array(
 				'concept_txt' => 'l',
 				'concept_docu' => 'l',
 				'concept_features' => 'n',
@@ -31,9 +28,16 @@ class SMWDIHandlerConcept implements SMWDataItemHandler {
 				'concept_depth' => 'n',
 				'cache_date' => 'j',
 				'cache_count' => 'j'
-			),
-			'indexes' => array(),
-		);
+			);
+	}
+
+	/**
+	 * Method to return array of indexes for a DI type
+	 *
+	 * @return array
+	 */
+	public function getTableIndexes() {
+		return array();
 	}
 
 	/**

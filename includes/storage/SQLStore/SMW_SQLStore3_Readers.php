@@ -225,7 +225,8 @@ Class SMWSQLStore3Readers {
 		$usedistinct = true; // use DISTINCT option only if no text blobs are among values
 		$selectvalues = array(); // array for all values to be selected, kept to help finding value and label fields below
 
-		foreach ( $proptable->objectfields as $fieldname => $typeid ) { // now add select entries for object column(s)
+		$fields = $proptable->getFields();
+		foreach ( $fields as $fieldname => $typeid ) { // now add select entries for object column(s)
 			if ( $typeid == 'p' ) { // Special case: page id, use smw_id table to insert 4 page-specific values instead of internal id
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
 				$select .= ( ( $select !== '' ) ? ',' : '' ) . "$fieldname AS id$valuecount";
@@ -294,7 +295,7 @@ Class SMWSQLStore3Readers {
 			}
 
 			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
-			if ( $proptable->getFieldSignature() != 'p' || count( $valuekeys ) < 3 ||
+			if ( implode( '', $fields ) != 'p' || count( $valuekeys ) < 3 ||
 			     $valuekeys[2] === '' ||  $valuekeys[2]{0} != ':' ) {
 				$result[] = $issubject ? array( $propertyname, $valuekeys ) : $valuekeys;
 			}
@@ -398,7 +399,7 @@ Class SMWSQLStore3Readers {
 		$db = wfGetDB( DB_SLAVE );
 
 		if ( $value instanceof SMWDIContainer ) { // recursive handling of containers
-			$keys = array_keys( $proptable->objectfields );
+			$keys = array_keys( $proptable->getFields() );
 			$joinfield = "t$tableindex." . reset( $keys ); // this must be a type 'p' object
 			$proptables = SMWSQLStore3::getPropertyTables();
 			$semanticData = $value->getSemanticData();

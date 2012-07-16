@@ -965,7 +965,7 @@ class SMWSQLStore3 extends SMWStore {
 					}
 				}
 
-				foreach ( $proptable->objectfields as $fieldname => $type ) {
+				foreach ( $proptable->getFields() as $fieldname => $type ) {
 					if ( $type == 'p' ) {
 						$db->update( $proptable->name, array( $fieldname => $newid ), array( $fieldname => $oldid ), __METHOD__ );
 					}
@@ -1182,7 +1182,7 @@ class SMWSQLStore3 extends SMWStore {
 						$db->freeResult( $res );
 					}
 
-					foreach ( $proptable->objectfields as $fieldname => $type ) {
+					foreach ( $proptable->getFields() as $fieldname => $type ) {
 						if ( $type == 'p' ) {
 							$res = $db->select( $from, $select,
 								array( $fieldname => $old_tid ), __METHOD__ );
