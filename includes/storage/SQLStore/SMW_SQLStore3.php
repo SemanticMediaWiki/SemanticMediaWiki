@@ -333,9 +333,6 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function refreshConceptCache( Title $concept ) {
 		wfProfileIn( 'SMWSQLStore3::refreshConceptCache (SMW)' );
-		global $smwgIP;
-
-		include_once( "$smwgIP/includes/storage/SMW_SQLStore_Queries.php" );
 
 		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_MASTER ) );
 		$result = $qe->refreshConceptCache( $concept );
@@ -352,9 +349,6 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function deleteConceptCache( $concept ) {
 		wfProfileIn( 'SMWSQLStore3::deleteConceptCache (SMW)' );
-		global $smwgIP;
-
-		include_once( "$smwgIP/includes/storage/SMW_SQLStore_Queries.php" );
 
 		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_MASTER ) );
 		$result = $qe->deleteConceptCache( $concept );

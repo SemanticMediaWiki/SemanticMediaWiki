@@ -117,7 +117,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWHooks']                  = $smwgIP . 'SemanticMediaWiki.hooks.php';
 	
 	$incDir = $smwgIP . 'includes/';
-	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
 	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDISerializer']           = $incDir . 'SMW_DISerializer.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
@@ -254,6 +253,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSqlStubSemanticData']    = $stoCompatSQL . 'SMW_SqlStubSemanticData.php';
 	$wgAutoloadClasses['SMWSqlStore2IdCache']       = $stoCompatSQL . 'SMW_SqlStore2IdCache.php';
 	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoCompatSQL . 'SMW_SQLStore2Table.php';
+	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $stoCompatSQL . 'SMW_CompatibilityHelpers.php';
 
 	//SQLStore (since SMW.storerewrite)
 	$stoDirSQL = $smwgIP . 'includes/storage/SQLStore/';
