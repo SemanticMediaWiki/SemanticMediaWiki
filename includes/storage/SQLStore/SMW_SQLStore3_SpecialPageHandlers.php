@@ -28,42 +28,51 @@ Class SMWSQLStore3SpecialPageHandlers {
 	}
 
 	/**
-	 * @todo Properties that are stored in dedicated tables
-	 * (SMWSQLStoreTable::fixedproperty) are currently ignored.
+	 * Implementation of SMWStore::getPropertiesSpecial(). It works by
+	 * querying for all properties in smw_ids by identifying from the
+	 * namespace and then counting their usage one by one by querying their tables.
 	 */
 	public function getPropertiesSpecial( $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore3::getPropertiesSpecial (SMW)" );
-		$db = wfGetDB( DB_SLAVE );
+		$dbr = wfGetDB( DB_SLAVE );
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
-		$queries = array();
 
-		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-			if ( $proptable->fixedproperty == false ) {
-				$queries[] = 'SELECT smw_id, smw_title, COUNT(*) as count, smw_sortkey FROM ' .
-					$db->tableName( $proptable->name ) . ' INNER JOIN ' .
-					$db->tableName( 'smw_ids' ) . ' ON p_id=smw_id WHERE smw_iw=' .
-					$db->addQuotes( '' ) . ' OR smw_iw=' . $db->addQuotes( SMW_SQL2_SMWPREDEFIW ) .
-					' GROUP BY smw_id,smw_title,smw_sortkey';
-			} // else: properties with special tables are ignored for now; maybe fix in the future
-		}
-
-		$query = '(' . implode( ') UNION (', $queries ) . ') ORDER BY smw_sortkey';
-		// The following line is possible in MW 1.6 and above only:
-		// $query = $db->unionQueries($queries, false) . ' ORDER BY smw_sortkey'; // should probably use $db->makeSelectOptions()
+		//default limits
+		$limit = 25;
+		$offset = 0;
 		if ( $requestoptions !== null ) {
 			if ( $requestoptions->limit > 0 ) {
-				$query = $db->limitResult( $query, $requestoptions->limit, ( $requestoptions->offset > 0 ) ? $requestoptions->offset:0 );
+				$limit = $requestoptions->limit;
+				$offset = ( $requestoptions->offset > 0 ) ? $requestoptions->offset : 0 ;
 			}
 		}
 
-		$res = $db->query( $query, 'SMW::getPropertySubjects' );
+		$res = $dbr->select(
+				'smw_ids',
+				array( 'smw_id', 'smw_title', 'smw_sortkey' ),
+				'smw_namespace = ' . $dbr->addQuotes( SMW_NS_PROPERTY ) . ' AND smw_iw = ' .
+					$dbr->addQuotes( '' ) . ' OR smw_iw = ' . $dbr->addQuotes( SMW_SQL2_SMWPREDEFIW ),
+				__METHOD__,
+				array( 'ORDER BY' => 'smw_sortkey', 'LIMIT' => $limit, 'OFFSET' => $offset )
+		);
+
 		$result = array();
+		$proptables = SMWSQLStore3::getPropertyTables();
 
 		foreach ( $res as $row ) {
-			$result[] = array( new SMWDIProperty( $row->smw_title ), $row->count );
+			$di = new SMWDIProperty( $row->smw_title );
+			$tableId = SMWSQLStore3::findPropertyTableID( $di );
+			$proptable = $proptables[$tableId];
+			$propRow = $dbr->selectRow(
+					$proptable->name,
+					'Count(*) as count',
+					$proptable->fixedproperty ? array() : array('p_id' => $row->smw_id ),
+					__METHOD__
+			);
+			$result[] = array( $di, $propRow->count );
 		}
 
-		$db->freeResult( $res );
+		$dbr->freeResult( $res );
 		wfProfileOut( "SMWSQLStore3::getPropertiesSpecial (SMW)" );
 
 		return $result;
@@ -80,10 +89,10 @@ Class SMWSQLStore3SpecialPageHandlers {
 		global $wgDBtype;
 
 		wfProfileIn( "SMWSQLStore3::getUnusedPropertiesSpecial (SMW)" );
-		$db = wfGetDB( DB_SLAVE );
+		$dbr = wfGetDB( DB_SLAVE );
 
 		// we use a temporary table for executing this costly operation on the DB side
-		$smw_tmp_unusedprops = $db->tableName( 'smw_tmp_unusedprops' );
+		$smw_tmp_unusedprops = $dbr->tableName( 'smw_tmp_unusedprops' );
 		if ( $wgDBtype == 'postgres' ) { // PostgresQL: no in-memory tables available
 			$sql = "CREATE OR REPLACE FUNCTION create_smw_tmp_unusedprops() RETURNS void AS "
 				   . "$$ "
@@ -101,15 +110,15 @@ Class SMWSQLStore3SpecialPageHandlers {
 			$sql = "CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . "( title VARCHAR(255) ) ENGINE=MEMORY";
 		}
 
-		$db->query( $sql, __METHOD__ );
+		$dbr->query( $sql, __METHOD__ );
 
-		$db->insertSelect( $smw_tmp_unusedprops, 'page', array( 'title' => 'page_title' ),
+		$dbr->insertSelect( $smw_tmp_unusedprops, 'page', array( 'title' => 'page_title' ),
 		                  array( "page_namespace" => SMW_NS_PROPERTY ),  __METHOD__ );
 
-		$smw_ids = $db->tableName( 'smw_ids' );
+		$smw_ids = $dbr->tableName( 'smw_ids' );
 
 		// all predefined properties are assumed to be used:
-		$db->deleteJoin( $smw_tmp_unusedprops, $smw_ids, 'title', 'smw_title', array( 'smw_iw' => SMW_SQL2_SMWPREDEFIW ), __METHOD__ );
+		$dbr->deleteJoin( $smw_tmp_unusedprops, $smw_ids, 'title', 'smw_title', array( 'smw_iw' => SMW_SQL2_SMWPREDEFIW ), __METHOD__ );
 
 		// all tables occurring in some property table are used:
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
@@ -117,16 +126,16 @@ Class SMWSQLStore3SpecialPageHandlers {
 				// MW does not seem to have a wrapper for this:
 				if ( $wgDBtype == 'postgres' ) { // PostgresQL: don't repeat the FROM table in USING
 					$sql = "DELETE FROM $smw_tmp_unusedprops USING " .
-						$db->tableName( $proptable->name ) .
+						$dbr->tableName( $proptable->name ) .
 						" INNER JOIN $smw_ids ON p_id=smw_id WHERE" .
-						" title=smw_title AND smw_iw=" . $db->addQuotes( '' );
+						" title=smw_title AND smw_iw=" . $dbr->addQuotes( '' );
 				} else {
 					$sql = "DELETE FROM $smw_tmp_unusedprops USING " .
-					"$smw_tmp_unusedprops INNER JOIN " . $db->tableName( $proptable->name ) .
+					"$smw_tmp_unusedprops INNER JOIN " . $dbr->tableName( $proptable->name ) .
 					" INNER JOIN $smw_ids ON p_id=smw_id AND title=smw_title" .
-					" AND smw_iw=" . $db->addQuotes( '' );
+					" AND smw_iw=" . $dbr->addQuotes( '' );
 				}
-				$db->query( $sql, __METHOD__ );
+				$dbr->query( $sql, __METHOD__ );
 			} // else: todo
 		}
 
@@ -138,24 +147,24 @@ Class SMWSQLStore3SpecialPageHandlers {
 		// Again we have no fitting MW wrapper here:
 		if ( $wgDBtype == 'postgres' ) { // PostgresQL: don't repeat the FROM table in USING
 			$sql = "DELETE FROM $smw_tmp_unusedprops USING " .
-				$db->tableName( $subPropertyTable->name ) .
+				$dbr->tableName( $subPropertyTable->name ) .
 				" INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title";
 		} else {
 			$sql = "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops," .
-				$db->tableName( $subPropertyTable->name ) .
+				$dbr->tableName( $subPropertyTable->name ) .
 				" INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title";
 		}
-		$db->query( $sql, __METHOD__ );
+		$dbr->query( $sql, __METHOD__ );
 
 		// properties that are redirects are considered to be used:
 		//   (a stricter and more costy approach would be to delete only redirects to used properties;
 		//    this would need to be done with an addtional query in the above loop)
 		// The redirect table is a fixed part of this store, no need to find its name.
-		$db->deleteJoin( $smw_tmp_unusedprops, 'smw_redi', 'title', 's_title', array( 's_namespace' => SMW_NS_PROPERTY ), __METHOD__ );
+		$dbr->deleteJoin( $smw_tmp_unusedprops, 'smw_redi', 'title', 's_title', array( 's_namespace' => SMW_NS_PROPERTY ), __METHOD__ );
 
 		$options = $this->store->getSQLOptions( $requestoptions, 'title' );
 		$options['ORDER BY'] = 'title';
-		$res = $db->select( $smw_tmp_unusedprops, 'title', '', __METHOD__, $options );
+		$res = $dbr->select( $smw_tmp_unusedprops, 'title', '', __METHOD__, $options );
 
 		$result = array();
 
@@ -163,9 +172,9 @@ Class SMWSQLStore3SpecialPageHandlers {
 			$result[] = new SMWDIProperty( $row->title );
 		}
 
-		$db->freeResult( $res );
+		$dbr->freeResult( $res );
 
-		$db->query( "DROP " . ( $wgDBtype == 'postgres' ? '' : 'TEMPORARY' ) .
+		$dbr->query( "DROP " . ( $wgDBtype == 'postgres' ? '' : 'TEMPORARY' ) .
 			" TABLE $smw_tmp_unusedprops", __METHOD__ );
 		wfProfileOut( "SMWSQLStore3::getUnusedPropertiesSpecial (SMW)" );
 
@@ -193,16 +202,16 @@ Class SMWSQLStore3SpecialPageHandlers {
 		$result = array();
 
 		if ( $proptable->fixedproperty == false ) { // anything else would be crazy, but let's fail gracefully even if the whole world is crazy
-			$db = wfGetDB( DB_SLAVE );
+			$dbr = wfGetDB( DB_SLAVE );
 
 			$options = $this->store->getSQLOptions( $requestoptions, 'title' );
 			$options['ORDER BY'] = 'count DESC';
 
-			$res = $db->select( // TODO: this is not how JOINS should be specified in the select function
-				$db->tableName( $proptable->name ) . ' INNER JOIN ' .
-					$db->tableName( 'smw_ids' ) . ' ON p_id=smw_id LEFT JOIN ' .
-					$db->tableName( 'page' ) . ' ON (page_namespace=' .
-					$db->addQuotes( SMW_NS_PROPERTY ) . ' AND page_title=smw_title)',
+			$res = $dbr->select( // TODO: this is not how JOINS should be specified in the select function
+				$dbr->tableName( $proptable->name ) . ' INNER JOIN ' .
+					$dbr->tableName( 'smw_ids' ) . ' ON p_id=smw_id LEFT JOIN ' .
+					$dbr->tableName( 'page' ) . ' ON (page_namespace=' .
+					$dbr->addQuotes( SMW_NS_PROPERTY ) . ' AND page_title=smw_title)',
 				'smw_title, COUNT(*) as count',
 				'smw_id > 50 AND page_id IS NULL GROUP BY smw_title',
 				'SMW::getWantedPropertiesSpecial',
@@ -222,7 +231,7 @@ Class SMWSQLStore3SpecialPageHandlers {
 	public function getStatistics() {
 		wfProfileIn( 'SMWSQLStore3::getStatistics (SMW)' );
 
-		$db = wfGetDB( DB_SLAVE );
+		$dbr = wfGetDB( DB_SLAVE );
 		$result = array();
 		$proptables = SMWSQLStore3::getPropertyTables();
 
@@ -232,7 +241,7 @@ Class SMWSQLStore3SpecialPageHandlers {
 		$res = $db->select( $typetable->name, 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
 		$row = $db->fetchObject( $res );
 		$result['DECLPROPS'] = $row->count;
-		$db->freeResult( $res );
+		$dbr->freeResult( $res );
 
 		// count property uses by counting rows in property tables,
 		// count used properties by counting distinct properties in each table
@@ -242,21 +251,21 @@ Class SMWSQLStore3SpecialPageHandlers {
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
 			/// Note: subproperties that are part of container values are counted individually;
 			/// It does not seem to be important to filter them by adding more conditions.
-			$res = $db->select( $proptable->name, 'COUNT(*) AS count', '', 'SMW::getStatistics' );
-			$row = $db->fetchObject( $res );
+			$res = $dbr->select( $proptable->name, 'COUNT(*) AS count', '', 'SMW::getStatistics' );
+			$row = $dbr->fetchObject( $res );
 			$result['PROPUSES'] += $row->count;
-			$db->freeResult( $res );
+			$dbr->freeResult( $res );
 
 			if ( $proptable->fixedproperty == false ) {
-				$res = $db->select( $proptable->name, 'COUNT(DISTINCT(p_id)) AS count', '', 'SMW::getStatistics' );
-				$row = $db->fetchObject( $res );
+				$res = $dbr->select( $proptable->name, 'COUNT(DISTINCT(p_id)) AS count', '', 'SMW::getStatistics' );
+				$row = $dbr->fetchObject( $res );
 				$result['USEDPROPS'] += $row->count;
 			} else {
-				$res = $db->select( $proptable->name, '*', '', 'SMW::getStatistics', array( 'LIMIT' => 1 ) );
-				if ( $db->numRows( $res ) > 0 )  $result['USEDPROPS']++;
+				$res = $dbr->select( $proptable->name, '*', '', 'SMW::getStatistics', array( 'LIMIT' => 1 ) );
+				if ( $dbr->numRows( $res ) > 0 )  $result['USEDPROPS']++;
 			}
 
-			$db->freeResult( $res );
+			$dbr->freeResult( $res );
 		}
 
 		wfProfileOut( 'SMWSQLStore3::getStatistics (SMW)' );
