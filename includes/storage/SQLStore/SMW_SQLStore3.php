@@ -131,7 +131,9 @@ class SMWSQLStore3 extends SMWStore {
 		'_CONC' => 'smw_conc',
 		'_SF_DF' => 'smw_sfdf', // Semantic Form's default form property
 		'_SF_AF' => 'smw_sfaf',  // Semantic Form's alternate form property
-		//'_ERRP', '_MDAT', '_CDAT', '_SKEY' // no special table
+		'_MDAT'  => 'smw_mdat',
+		'_CDAT'  => 'smw_cdat',
+		//'_ERRP', '_SKEY' // no special table
 		'_LIST' => 'smw_list',
 	);
 

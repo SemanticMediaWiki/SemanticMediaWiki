@@ -149,12 +149,12 @@ class SMWSQLStore3QueryEngine {
 				( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
 				$fname );
 
-			$this->m_dbs->update( 'smw_conc2',
+			$this->m_dbs->update( 'smw_conc',
 				array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ),
 				array( 's_id' => $cid ), $fname );
 		} else { // no concept found; just delete old data if there is any
 			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), $fname );
-			$this->m_dbs->update( 'smw_conc2',
+			$this->m_dbs->update( 'smw_conc',
 				array( 'cache_date' => null, 'cache_count' => null ),
 				array( 's_id' => $cid ), $fname );
 			$this->m_errors[] = "No concept description found.";
@@ -173,7 +173,7 @@ class SMWSQLStore3QueryEngine {
 	public function deleteConceptCache( $concept ) {
 		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 		$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
-		$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
+		$this->m_dbs->update( 'smw_conc', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 	}
 
 	/**
@@ -488,7 +488,7 @@ class SMWSQLStore3QueryEngine {
 				$query->jointable = '';
 				$query->joinfield = '';
 			} else { // Instance query with dicjunction of classes (categories)
-				$query->jointable = 'smw_inst2';
+				$query->jointable = 'smw_inst';
 				$query->joinfield = "$query->alias.s_id";
 				$query->components[$cqid] = "$query->alias.o_id";
 				$this->m_queries[$cqid] = $cquery;
@@ -524,7 +524,7 @@ class SMWSQLStore3QueryEngine {
 			// We bypass the storage interface here (which is legal as we control it, and safe if we are careful with changes ...)
 			// This should be faster, but we must implement the unescaping that concepts do on getWikiValue()
 			$row = $this->m_dbs->selectRow(
-				'smw_conc2',
+				'smw_conc',
 				array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ),
 				array( 's_id' => $cid ),
 				'SMWSQLStore3Queries::compileQueries'
@@ -942,7 +942,7 @@ class SMWSQLStore3QueryEngine {
 			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $this->m_dbs->addQuotes( $value );
 		}
 
-		$smwtable = $this->m_dbs->tableName( ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? 'smw_subp2':'smw_subs2' );
+		$smwtable = $this->m_dbs->tableName( ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? 'smw_subp':'smw_subs' );
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $this->m_dbs->select( $smwtable, 's_id', $valuecond, __METHOD__, array( 'LIMIT' => 1 ) );
