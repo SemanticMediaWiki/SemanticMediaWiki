@@ -246,9 +246,10 @@ It takes care that humans do not turn into websites.',
 	'smw_qc_default'           => 'Default:',
 	'smw_qc_formatopt'         => 'Format options',
 	'smw_qc_query_help'        => 'Enter a query using the form below. Select wiki pages based on
-Categories (<strong>[[{{ns:category}}:Actor]]</strong>),
-Properties (<strong>[[Located in::Germany]]</strong>),
-Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[{{ns:help}}:+]]</strong>)',
+Categories (<strong><nowiki>e.g. [[Category:Actor]]</nowiki></strong>),
+Properties (<strong><nowiki>e.g. [[Located in::Germany]]</nowiki></strong>),
+Names(<strong><nowiki>e.g. [[Germany]]</nowiki></strong>) and
+Namespaces (<strong><nowiki>e.g. [[Help:+]]</nowiki></strong>)',
 
 	//Generic messages for Query UI
 	'smw_qui_property'      => '<strong>Property</strong>',
