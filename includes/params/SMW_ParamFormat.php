@@ -21,9 +21,9 @@ class SMWParamFormat extends StringParam {
 	 * 
 	 * @since 1.6.2
 	 * 
-	 * @var array|false
+	 * @var array
 	 */
-	protected $printRequests = null;
+	protected $printRequests = array();
 
 	/**
 	 * Takes a format name, which can be an alias and returns a format name
@@ -86,7 +86,7 @@ class SMWParamFormat extends StringParam {
 	 * @return string Array key in $smwgResultFormats
 	 */
 	protected function getDefaultFormat() {
-		if ( is_null( $this->printRequests ) ) {
+		if ( empty( $this->printRequests ) ) {
 			return 'table';
 		}
 		else {
