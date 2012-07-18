@@ -37,13 +37,11 @@ Class SMWSQLStore3SpecialPageHandlers {
 		$dbr = wfGetDB( DB_SLAVE );
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 
-		//default limits
-		$limit = 25;
-		$offset = 0;
+		$options = array( 'ORDER BY' => 'smw_sortkey' );
 		if ( $requestoptions !== null ) {
 			if ( $requestoptions->limit > 0 ) {
-				$limit = $requestoptions->limit;
-				$offset = ( $requestoptions->offset > 0 ) ? $requestoptions->offset : 0 ;
+				$options['LIMIT'] = $requestoptions->limit;
+				$options['OFFSET'] = max( $requestoptions->offset, 0 );
 			}
 		}
 
@@ -53,7 +51,7 @@ Class SMWSQLStore3SpecialPageHandlers {
 				'smw_namespace = ' . $dbr->addQuotes( SMW_NS_PROPERTY ) . ' AND smw_iw = ' .
 					$dbr->addQuotes( '' ) . ' OR smw_iw = ' . $dbr->addQuotes( SMW_SQL3_SMWPREDEFIW ),
 				__METHOD__,
-				array( 'ORDER BY' => 'smw_sortkey', 'LIMIT' => $limit, 'OFFSET' => $offset )
+				$options
 		);
 
 		$result = array();

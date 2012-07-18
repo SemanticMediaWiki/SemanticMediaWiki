@@ -209,7 +209,7 @@ Class SMWSQLStore3SetupHandlers {
 					'smw_namespace' => SMW_NS_PROPERTY,
 					'smw_iw' => $this->store->getPropertyInterwiki( $p ),
 					'smw_subobject' => '',
-					'smw_sortkey' => $p->getKey()
+					'smw_sortkey' => $p->getLabel()
 				), 'SMW::setup'
 			);
 		}
