@@ -14,11 +14,11 @@
  */
 
 // The use of the following constants is explained in SMWSQLStore3::setup():
-define( 'SMW_SQL2_SMWIW_OUTDATED', ':smw' ); // virtual "interwiki prefix" for old-style special SMW objects (no longer used)
-define( 'SMW_SQL2_SMWREDIIW', ':smw-redi' ); // virtual "interwiki prefix" for SMW objects that are redirected
-define( 'SMW_SQL2_SMWBORDERIW', ':smw-border' ); // virtual "interwiki prefix" separating very important pre-defined properties from the rest
-define( 'SMW_SQL2_SMWPREDEFIW', ':smw-preprop' ); // virtual "interwiki prefix" marking predefined objects (non-movable)
-define( 'SMW_SQL2_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" marking internal (invisible) predefined properties
+define( 'SMW_SQL3_SMWIW_OUTDATED', ':smw' ); // virtual "interwiki prefix" for old-style special SMW objects (no longer used)
+define( 'SMW_SQL3_SMWREDIIW', ':smw-redi' ); // virtual "interwiki prefix" for SMW objects that are redirected
+define( 'SMW_SQL3_SMWBORDERIW', ':smw-border' ); // virtual "interwiki prefix" separating very important pre-defined properties from the rest
+define( 'SMW_SQL3_SMWPREDEFIW', ':smw-preprop' ); // virtual "interwiki prefix" marking predefined objects (non-movable)
+define( 'SMW_SQL3_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" marking internal (invisible) predefined properties
 
 /**
  * Storage access class for using the standard MediaWiki SQL database
@@ -708,11 +708,11 @@ class SMWSQLStore3 extends SMWStore {
 		$id = $this->m_idCache->getId( $title, $namespace, $iw, $subobjectName );
 		if ( $id == 0 && $smwgQEqualitySupport != SMW_EQ_NONE
 			&& $subobjectName === '' && $iw === '' ) {
-			$iw = SMW_SQL2_SMWREDIIW;
-			$id = $this->m_idCache->getId( $title, $namespace, SMW_SQL2_SMWREDIIW, $subobjectName );
+			$iw = SMW_SQL3_SMWREDIIW;
+			$id = $this->m_idCache->getId( $title, $namespace, SMW_SQL3_SMWREDIIW, $subobjectName );
 		}
 
-		if ( $id == 0 || !$canonical || $iw != SMW_SQL2_SMWREDIIW ) {
+		if ( $id == 0 || !$canonical || $iw != SMW_SQL3_SMWREDIIW ) {
 			return $id;
 		} else {
 			$rediId = $this->getRedirectId( $title, $namespace );
@@ -735,7 +735,7 @@ class SMWSQLStore3 extends SMWStore {
 			$iwCond = 'smw_iw=' . $db->addQuotes( $iw );
 		} else {
 			$iwCond = '(smw_iw=' . $db->addQuotes( '' ) .
-				' OR smw_iw=' . $db->addQuotes( SMW_SQL2_SMWREDIIW ) . ')';
+				' OR smw_iw=' . $db->addQuotes( SMW_SQL3_SMWREDIIW ) . ')';
 		}
 
 		$row = $db->selectRow( 'smw_ids', array( 'smw_id', 'smw_iw', 'smw_sortkey' ),
@@ -748,7 +748,7 @@ class SMWSQLStore3 extends SMWStore {
 			$sort = $row->smw_sortkey;
 			$this->m_idCache->setId( $title, $namespace, $row->smw_iw, $subobjectName, $row->smw_id );
 
-			if ( $row->smw_iw == SMW_SQL2_SMWREDIIW && $canonical &&
+			if ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $canonical &&
 				$subobjectName === '' && $smwgQEqualitySupport != SMW_EQ_NONE ) {
 				$id = $this->getRedirectId( $title, $namespace );
 				$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, 0 );
@@ -830,7 +830,7 @@ class SMWSQLStore3 extends SMWStore {
 		if ( $property->isUserDefined() ) {
 			return '';
 		} else {
-			return ( $property->getLabel() !== '' ) ? SMW_SQL2_SMWPREDEFIW : SMW_SQL2_SMWINTDEFIW;
+			return ( $property->getLabel() !== '' ) ? SMW_SQL3_SMWPREDEFIW : SMW_SQL3_SMWINTDEFIW;
 		}
 	}
 
@@ -863,7 +863,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * Extend the ID cache as specified. This is called in places where IDs are
 	 * retrieved by SQL queries and it would be a pity to throw them away. This
 	 * function expects to get the contents of a row in smw_ids, i.e. possibly
-	 * with iw being SMW_SQL2_SMWREDIIW. This information is used to determine
+	 * with iw being SMW_SQL3_SMWREDIIW. This information is used to determine
 	 * whether the given ID is canonical or not.
 	 */
 	public function cacheSMWPageID( $id, $title, $namespace, $iw, $subobjectName ) {
@@ -1204,7 +1204,7 @@ class SMWSQLStore3 extends SMWStore {
 
 		if ( $new_tid != 0 ) { // record a new redirect
 			// Redirecting done right:
-			// (1) make a new ID with iw SMW_SQL2_SMWREDIIW or
+			// (1) make a new ID with iw SMW_SQL3_SMWREDIIW or
 			//     change iw field of current ID in this way,
 			// (2) write smw_redi table,
 			// (3) update canonical cache.
@@ -1214,12 +1214,12 @@ class SMWSQLStore3 extends SMWStore {
 				// mark subject as redirect (if it was no redirect before)
 				if ( $sid == 0 ) { // every redirect page must have an ID
 					$sid = $this->makeSMWPageID( $subject_t, $subject_ns,
-						SMW_SQL2_SMWREDIIW, '', false );
+						SMW_SQL3_SMWREDIIW, '', false );
 				} else {
-					$db->update( 'smw_ids', array( 'smw_iw' => SMW_SQL2_SMWREDIIW ),
+					$db->update( 'smw_ids', array( 'smw_iw' => SMW_SQL3_SMWREDIIW ),
 						array( 'smw_id' => $sid ), __METHOD__ );
 					$this->m_idCache->setId( $subject_t, $subject_ns, '', '', 0 );
-					$this->m_idCache->setId( $subject_t, $subject_ns, SMW_SQL2_SMWREDIIW, '', $sid );
+					$this->m_idCache->setId( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', $sid );
 				}
 			}
 

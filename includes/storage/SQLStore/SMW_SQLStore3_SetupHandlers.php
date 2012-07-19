@@ -49,7 +49,7 @@ Class SMWSQLStore3SetupHandlers {
 	 * stored therein. These are marked by special interwiki prefixes (iw)
 	 * that cannot occcur in real life:
 	 *
-	 * - Rows with iw SMW_SQL2_SMWREDIIW are similar to normal entries for
+	 * - Rows with iw SMW_SQL3_SMWREDIIW are similar to normal entries for
 	 * (internal) wiki pages, but the iw indicates that the page is a
 	 * redirect, the target of which should be sought using the smw_redi
 	 * table.
@@ -301,7 +301,7 @@ Class SMWSQLStore3SetupHandlers {
 
 			if ( $row->smw_subobject !== '' ) {
 				// leave subobjects alone; they ought to be changed with their pages
-			} elseif ( $row->smw_iw === '' || $row->smw_iw == SMW_SQL2_SMWREDIIW ) { // objects representing pages
+			} elseif ( $row->smw_iw === '' || $row->smw_iw == SMW_SQL3_SMWREDIIW ) { // objects representing pages
 				// TODO: special treament of redirects needed, since the store will
 				// not act on redirects that did not change according to its records
 				$title = Title::makeTitleSafe( $row->smw_namespace, $row->smw_title );
@@ -309,7 +309,7 @@ Class SMWSQLStore3SetupHandlers {
 				if ( $title !== null && !$title->exists() ) {
 					$updatejobs[] = new SMWUpdateJob( $title );
 				}
-			} elseif ( $row->smw_iw == SMW_SQL2_SMWIW_OUTDATED ) { // remove outdated internal object references
+			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED ) { // remove outdated internal object references
 				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
 					if ( $proptable->idsubject ) {
 						$dbr->delete( $proptable->name, array( 's_id' => $row->smw_id ), __METHOD__ );

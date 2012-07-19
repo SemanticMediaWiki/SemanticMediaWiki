@@ -67,10 +67,10 @@ class SMWSQLStore3IdCache {
 		$hashKey = self::getHashKey( $title, $namespace, $interwiki, $subobject );
 		$this->checkForSizeLimit();
 		$this->m_data[$hashKey] = $id;
-		if ( $interwiki == SMW_SQL2_SMWREDIIW ) {
+		if ( $interwiki == SMW_SQL3_SMWREDIIW ) {
 			$hashKey = self::getHashKey( $title, $namespace, '', $subobject );
 			$this->m_data[$hashKey] = 0;
-		} // could do this for $interwiki === '' too, but the SMW_SQL2_SMWREDIIW would be useless
+		} // could do this for $interwiki === '' too, but the SMW_SQL3_SMWREDIIW would be useless
 	}
 
 	public function deleteId( $title, $namespace, $interwiki, $subobject ) {

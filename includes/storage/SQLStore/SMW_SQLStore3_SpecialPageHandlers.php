@@ -51,7 +51,7 @@ Class SMWSQLStore3SpecialPageHandlers {
 				'smw_ids',
 				array( 'smw_id', 'smw_title', 'smw_sortkey' ),
 				'smw_namespace = ' . $dbr->addQuotes( SMW_NS_PROPERTY ) . ' AND smw_iw = ' .
-					$dbr->addQuotes( '' ) . ' OR smw_iw = ' . $dbr->addQuotes( SMW_SQL2_SMWPREDEFIW ),
+					$dbr->addQuotes( '' ) . ' OR smw_iw = ' . $dbr->addQuotes( SMW_SQL3_SMWPREDEFIW ),
 				__METHOD__,
 				array( 'ORDER BY' => 'smw_sortkey', 'LIMIT' => $limit, 'OFFSET' => $offset )
 		);
@@ -118,7 +118,7 @@ Class SMWSQLStore3SpecialPageHandlers {
 		$smw_ids = $dbr->tableName( 'smw_ids' );
 
 		// all predefined properties are assumed to be used:
-		$dbr->deleteJoin( $smw_tmp_unusedprops, $smw_ids, 'title', 'smw_title', array( 'smw_iw' => SMW_SQL2_SMWPREDEFIW ), __METHOD__ );
+		$dbr->deleteJoin( $smw_tmp_unusedprops, $smw_ids, 'title', 'smw_title', array( 'smw_iw' => SMW_SQL3_SMWPREDEFIW ), __METHOD__ );
 
 		// all tables occurring in some property table are used:
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {

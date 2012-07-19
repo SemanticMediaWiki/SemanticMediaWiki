@@ -35,7 +35,7 @@ Class SMWSQLStore3Writers {
 	 */
 	public function deleteSubject( Title $subject ) {
 		wfProfileIn( 'SMWSQLStore3::deleteSubject (SMW)' );
-		wfRunHooks( 'SMWSQLStore3::deleteSubjectBefore', array( $this, $subject ) );
+		wfRunHooks( 'SMWSQLStore3::deleteSubjectBefore', array( $this->store, $subject ) );
 
 		$this->store->deleteSemanticData( SMWDIWikiPage::newFromTitle( $subject ) );
 		$this->store->updateRedirects( $subject->getDBkey(), $subject->getNamespace() ); // also delete redirects, may trigger update jobs!
@@ -51,7 +51,7 @@ Class SMWSQLStore3Writers {
 		///TODO: who is responsible for these updates? Some update jobs are currently created in SMW_Hooks, some internally in the store
 		///TODO: Possibly delete ID here (at least for non-properties/categories, if not used in any place in rels2)
 		///FIXME: clean internal caches here
-		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this, $subject ) );
+		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $subject ) );
 		wfProfileOut( 'SMWSQLStore3::deleteSubject (SMW)' );
 	}
 
@@ -62,7 +62,7 @@ Class SMWSQLStore3Writers {
 	 */
 	public function doDataUpdate( SMWSemanticData $data ) {
 		wfProfileIn( "SMWSQLStore3::updateData (SMW)" );
-		wfRunHooks( 'SMWSQLStore3::updateDataBefore', array( $this, $data ) );
+		wfRunHooks( 'SMWSQLStore3::updateDataBefore', array( $this->store, $data ) );
 
 		$subject = $data->getSubject();
 
@@ -162,7 +162,7 @@ Class SMWSQLStore3Writers {
 			$this->store->m_sdstate[$sid][$tableId] = true;
 		}
 
-		wfRunHooks( 'SMWSQLStore3::updateDataAfter', array( $this, $data ) );
+		wfRunHooks( 'SMWSQLStore3::updateDataAfter', array( $this->store, $data ) );
 
 		wfProfileOut( "SMWSQLStore3::updateData (SMW)" );
 	}
@@ -298,7 +298,7 @@ Class SMWSQLStore3Writers {
 			} // at this point, $sid is the id of the target page (according to smw_ids)
 
 			// make redirect id for oldtitle:
-			$this->store->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL2_SMWREDIIW, '' );
+			$this->store->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL3_SMWREDIIW, '' );
 			$db->insert( 'smw_redi', array( 's_title' => $oldtitle->getDBkey(),
 						's_namespace' => $oldtitle->getNamespace(),
 						'o_id' => $sid ),

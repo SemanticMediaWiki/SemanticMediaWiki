@@ -238,7 +238,7 @@ class SMWSQLStore3QueryEngine {
 			$q = new SMWSQLStore3Query();
 			$q->jointable = 'smw_ids';
 			$q->joinfield = "$q->alias.smw_id";
-			$q->where = "$q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWINTDEFIW );
+			$q->where = "$q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWINTDEFIW );
 			$this->m_queries[$qid] = $q;
 		}
 
