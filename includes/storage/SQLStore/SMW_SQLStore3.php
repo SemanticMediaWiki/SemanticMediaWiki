@@ -17,7 +17,6 @@
 define( 'SMW_SQL3_SMWIW_OUTDATED', ':smw' ); // virtual "interwiki prefix" for old-style special SMW objects (no longer used)
 define( 'SMW_SQL3_SMWREDIIW', ':smw-redi' ); // virtual "interwiki prefix" for SMW objects that are redirected
 define( 'SMW_SQL3_SMWBORDERIW', ':smw-border' ); // virtual "interwiki prefix" separating very important pre-defined properties from the rest
-define( 'SMW_SQL3_SMWPREDEFIW', ':smw-preprop' ); // virtual "interwiki prefix" marking predefined objects (non-movable)
 define( 'SMW_SQL3_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" marking internal (invisible) predefined properties
 
 /**
@@ -827,11 +826,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * e.g., be moved, while the predefined object is not movable).
 	 */
 	public function getPropertyInterwiki( SMWDIProperty $property ) {
-		if ( $property->isUserDefined() ) {
-			return '';
-		} else {
-			return ( $property->getLabel() !== '' ) ? SMW_SQL3_SMWPREDEFIW : SMW_SQL3_SMWINTDEFIW;
-		}
+		return ( $property->getLabel() !== '' ) ? '' : SMW_SQL3_SMWINTDEFIW;
 	}
 
 	/**

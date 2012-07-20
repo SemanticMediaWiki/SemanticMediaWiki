@@ -54,7 +54,7 @@ Class SMWSQLStore3SetupHandlers {
 	 * redirect, the target of which should be sought using the smw_redi
 	 * table.
 	 *
-	 * - The (unique) row with iw SMW_SQL2_SMWBORDERIW just marks the
+	 * - The (unique) row with iw SMW_SQL3_SMWBORDERIW just marks the
 	 * border between predefined ids (rows that are reserved for hardcoded
 	 * ids built into SMW) and normal entries. It is no object, but makes
 	 * sure that SQL's auto increment counter is high enough to not add any
@@ -172,7 +172,7 @@ Class SMWSQLStore3SetupHandlers {
 		// Check if we already have this structure
 		$borderiw = $db->selectField( 'smw_ids', 'smw_iw', 'smw_id=' . $db->addQuotes( 50 ) );
 
-		if ( $borderiw != SMW_SQL2_SMWBORDERIW ) {
+		if ( $borderiw != SMW_SQL3_SMWBORDERIW ) {
 			$this->reportProgress( "   ... allocating space for internal properties ...\n", $verbose );
 			$this->store->moveSMWPageID( 50 ); // make sure position 50 is empty
 
@@ -180,7 +180,7 @@ Class SMWSQLStore3SetupHandlers {
 					'smw_id' => 50,
 					'smw_title' => '',
 					'smw_namespace' => 0,
-					'smw_iw' => SMW_SQL2_SMWBORDERIW,
+					'smw_iw' => SMW_SQL3_SMWBORDERIW,
 					'smw_subobject' => '',
 					'smw_sortkey' => ''
 				), 'SMW::setup'
