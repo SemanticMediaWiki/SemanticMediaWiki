@@ -104,4 +104,10 @@ class SMWDIConcept extends SMWDataItem {
 		return $result;
 	}
 
+	public function equals( $di ) {
+		if ( $di->getDIType() !== SMWDataItem::TYPE_CONCEPT ) {
+			return false;
+		}
+		return $di->getSerialization() === $this->getSerialization();
+	}
 }

@@ -39,7 +39,7 @@ Class SMWSQLStore3Readers {
 		$sortkey = '';
 		$sid = $this->store->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(),
 			$subject->getInterwiki(), $subject->getSubobjectName(), $sortkey, true );
-		if ( $sid == 0 ) { // no data, safe our time
+		if ( $sid == 0 ) { // no data, save our time
 			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
 			self::$in_getSemanticData--;
 			wfProfileOut( "SMWSQLStore3::getSemanticData (SMW)" );
@@ -575,6 +575,25 @@ Class SMWSQLStore3Readers {
 		wfProfileOut( "SMWSQLStore3::getInProperties (SMW)" );
 
 		return $result;
+	}
+
+	/**
+	 * This method adds property-values of a subject from a property-value table into the given 
+	 * SemanticData object.
+	 * @todo Use share code with getSemanticData above, maybe remove it completely with this??
+	 *
+	 * @param SMWSql3StubSemanticData $semData
+	 * @param SMWSQLStore3Table $proptable
+	 *
+	 * @since SMW.storerewrite
+	 */
+	public function addTableSemanticData( $sid, SMWSql3StubSemanticData &$semData, SMWSQLStore3Table $proptable ) {
+		$subject = $semData->getSubject();
+		$data = $this->fetchSemanticData( $sid, $subject, $proptable );
+
+		foreach ( $data as $d ) {
+			$semData->addPropertyStubValue( reset( $d ), end( $d ) );
+		}
 	}
 
 }

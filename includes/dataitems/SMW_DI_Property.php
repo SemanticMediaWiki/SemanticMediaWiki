@@ -420,4 +420,10 @@ class SMWDIProperty extends SMWDataItem {
 		SMWDIProperty::$m_prop_aliases[$label] = $id;
 	}
 
+	public function equals( $di ) {
+		if ( $di->getDIType() !== SMWDataItem::TYPE_PROPERTY ) {
+			return false;
+		}
+		return $di->getKey() === $this->m_key;
+	}
 }

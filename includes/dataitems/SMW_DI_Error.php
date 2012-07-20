@@ -52,4 +52,10 @@ class SMWDIError extends SMWDataItem {
 		return new SMWDIError( unserialize( $serialization ) );
 	}
 
+	public function equals( $di ) {
+		if ( $di->getDIType() !== SMWDataItem::TYPE_ERROR ) {
+			return false;
+		}
+		return $di->getSerialization() === $this->getSerialization();
+	}
 }

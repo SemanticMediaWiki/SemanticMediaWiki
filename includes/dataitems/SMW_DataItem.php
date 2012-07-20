@@ -100,6 +100,18 @@ abstract class SMWDataItem {
 	abstract public function getSortKey();
 
 	/**
+	* Method to compare two SMWDataItems
+	* This should result true only if they are of the same DI type
+	* and have the same internal value
+	*
+	* @param SMWDataItem
+	* @return Boolean
+	*
+	* @since SMW.storerewrite
+	*/
+	abstract public function equals( $di );
+
+	/**
 	 * Create a data item that represents the sortkey, i.e. either an
 	 * SMWDIBlob or an SMWDINumber. For efficiency, these subclasses
 	 * overwrite this method to return themselves.

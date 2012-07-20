@@ -280,6 +280,48 @@ class SMWSemanticData {
 	}
 
 	/**
+	 * Remove a value for a property identified by its SMWDataItem object.
+	 * This method removes a property-value specified by the property and
+	 * dataitem. If there are no more property-values for this property it
+	 * also removes the property from the mProperties.
+	 *
+	 * @note There is no check whether the type of the given data item
+	 * agrees with the type of the property. Since property types can
+	 * change, all parts of SMW are prepared to handle mismatched data item
+	 * types anyway.
+	 *
+	 * @param $property SMWDIProperty
+	 * @param $dataItem SMWDataItem
+	 *
+	 * @since SMW.storerewrite
+	 */
+	public function removePropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
+		if ( $property->isInverse() ) { // inverse properties cannot be used for annotation
+			return;
+		}
+
+		if ( !array_key_exists( $property->getKey(), $this->mPropVals ) || !array_key_exists( $property->getKey(), $this->mProperties ) ) {
+			return;
+		}
+
+		if ( $this->mNoDuplicates ) {
+			//this didn't get checked for my tests, but should work
+			unset( $this->mPropVals[$property->getKey()][$dataItem->getHash()] );
+		} else {
+			foreach( $this->mPropVals[$property->getKey()] as $index => $di ) {
+				if( $di->equals( $dataItem ) )
+					unset( $this->mPropVals[$property->getKey()][$index] );
+			}
+			$this->mPropVals[$property->getKey()] = array_values( $this->mPropVals[$property->getKey()] );
+		}
+
+		if ( $this->mPropVals[$property->getKey()] === array() ) {
+			unset( $this->mProperties[$property->getKey()] );
+			unset( $this->mPropVals[$property->getKey()] );
+		}
+	}
+
+	/**
 	 * Delete all data other than the subject.
 	 */
 	public function clear() {

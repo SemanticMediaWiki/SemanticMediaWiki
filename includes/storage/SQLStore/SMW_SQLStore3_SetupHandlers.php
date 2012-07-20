@@ -109,6 +109,19 @@ Class SMWSQLStore3SetupHandlers {
 
 		SMWSQLHelpers::setupIndex( 'smw_conccache', array( 'o_id' ), $db );
 
+		// Set up table for stats on Properties (only counts for now)
+		SMWSQLHelpers::setupTable(
+			'smw_stats',
+			array(
+				'pid' => $dbtypes['p'],
+				'usage_count' => $dbtypes['j']
+			),
+			$db,
+			$reportTo
+		);
+
+		SMWSQLHelpers::setupIndex( 'smw_stats', array( 'pid', 'usage_count' ), $db );
+
 		// Set up all property tables as defined:
 		$this->setupPropertyTables( $dbtypes, $db, $reportTo );
 
@@ -211,6 +224,17 @@ Class SMWSQLStore3SetupHandlers {
 					'smw_subobject' => '',
 					'smw_sortkey' => $p->getLabel()
 				), 'SMW::setup'
+			);
+			$id = $db->insertId();
+
+			// Properties also need to be in smw_stats
+			$db->insert(
+				'smw_stats',
+				array(
+					'pid' => $id,
+					'usage_count' => 0
+				),
+				__METHOD__
 			);
 		}
 
@@ -319,7 +343,7 @@ Class SMWSQLStore3SetupHandlers {
 				$dbr->delete( 'smw_ids',	array( 'smw_id' => $row->smw_id ), __METHOD__ );
 			} else { // "normal" interwiki pages or outdated internal objects
 				$diWikiPage = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw );
-				$this->store->deleteSemanticData( $diWikiPage );
+				$this->store->getWriter()->deleteSemanticData( $diWikiPage );
 			}
 		}
 		$dbr->freeResult( $res );

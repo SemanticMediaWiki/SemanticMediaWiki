@@ -55,4 +55,10 @@ class SMWDIBoolean extends SMWDataItem {
 		}
 	}
 
+	public function equals( $di ) {
+		if ( $di->getDIType() !== SMWDataItem::TYPE_BOOLEAN ) {
+			return false;
+		}
+		return $di->getBoolean() === $this->m_boolean;
+	}
 }

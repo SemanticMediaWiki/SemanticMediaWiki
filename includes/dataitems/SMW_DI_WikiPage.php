@@ -156,4 +156,10 @@ class SMWDIWikiPage extends SMWDataItem {
 		);
 	}
 
+	public function equals( $di ) {
+		if ( $di->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) {
+			return false;
+		}
+		return $di->getSerialization() === $this->getSerialization();
+	}
 }

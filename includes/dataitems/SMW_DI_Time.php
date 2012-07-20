@@ -461,4 +461,10 @@ class SMWDITime extends SMWDataItem {
 		}
 	}
 
+	public function equals( $di ) {
+		if ( $di->getDIType() !== SMWDataItem::TYPE_TIME ) {
+			return false;
+		}
+		return $di->getSortKey() === $this->getSortKey();
+	}
 }
