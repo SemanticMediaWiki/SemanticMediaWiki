@@ -420,7 +420,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 
 			$result .= "</select></p>\n";
-			$result .= '<fieldset><legend>' . wfMsgHtml( 'smw_ask_otheroptions' ) . "</legend>\n";
+			$result .= '<fieldset class="smw-ask-options"><legend>' . wfMsgHtml( 'smw_ask_otheroptions' ) . "</legend>\n";
 			$result .= "<div id=\"other_options\">" . $this->showFormatOptions( $this->m_params['format'], $this->m_params ) . "</div>";
 			$result .= "</fieldset>\n";
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly

@@ -101,6 +101,7 @@ $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
 		'jquery.ui.widget',
 		'jquery.ui.position',
 		'jquery.ui.autocomplete',
+		'ext.smw.style'
 	),
 	'messages' => array(
 		'smw-ask-delete',

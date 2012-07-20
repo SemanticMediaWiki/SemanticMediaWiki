@@ -356,3 +356,16 @@ tr.smwb-ipropvalue td {
 
 span.smwb-ivalue {
 }
+
+.smw-ask-options legend {
+	cursor: pointer;
+	padding-left: 20px;
+}
+
+.smwCollapsedFieldset legend {
+	background: transparent url(images/collapse-plus.png) no-repeat center left;
+}
+
+.smwExpandedFieldset legend {
+	background: transparent url(images/collapse-minus.png) no-repeat center left;
+}
