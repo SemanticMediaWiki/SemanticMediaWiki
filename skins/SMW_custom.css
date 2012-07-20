@@ -150,14 +150,14 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #888888;
-	background: url(images/searchgray_iconsmall.png) center right no-repeat;
+    /* @embed */ background: url(images/searchgray_iconsmall.png) center right no-repeat;
 }
 
 #bodyContent span.smwsearch a {
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #888888;
-	background: url(images/searchgray_iconsmall.png) center right no-repeat;
+    /* @embed */ background: url(images/searchgray_iconsmall.png) center right no-repeat;
 }
 
 #bodyContent span.smwsearch a:hover {
@@ -165,14 +165,14 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	color: #0000FF;
 	padding-right: 18px;
 	margin-right: 0px;
-	background: url(images/search_icon.png) center right no-repeat;
+    /* @embed */ background: url(images/search_icon.png) center right no-repeat;
 }
 
 #bodyContent span.swmfactboxheadbrowse a {
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #000000;
-	background: url(images/browse_iconsmall.png) center right no-repeat;
+    /* @embed */ background: url(images/browse_iconsmall.png) center right no-repeat;
 }
 
 #bodyContent span.swmfactboxheadbrowse a:hover {
@@ -180,14 +180,14 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	color: #0000FF;
 	padding-right: 18px;
 	margin-right: 0px;
-	background: url(images/browse_icon.png) center right no-repeat;
+    /* @embed */ background: url(images/browse_icon.png) center right no-repeat;
 }
 
 #bodyContent span.smwbrowse a {
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #888888;
-	background: url(images/browse_iconsmall.png) center right no-repeat;
+    /* @embed */ background: url(images/browse_iconsmall.png) center right no-repeat;
 }
 
 #bodyContent span.smwbrowse a:hover {
@@ -195,19 +195,19 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	color: #0000FF;
 	padding-right: 18px;
 	margin-right: 0px;
-	background: url(images/browse_icon.png) center right no-repeat;
+    /* @embed */ background: url(images/browse_icon.png) center right no-repeat;
 }
 
 #bodyContent span.smwmap a {
 	padding-right: 20px;
 	color: #888888;
-	background: url(images/world.png) center right no-repeat;
+    /* @embed */ background: url(images/world.png) center right no-repeat;
 }
 
 #bodyContent span.smwmap a:hover {
 	padding-right: 20px;
 	color: #0000FF;
-	background: url(images/world.png) center right no-repeat;
+    /* @embed */ background: url(images/world.png) center right no-repeat;
 }
 
 #bodyContent span.rdflink {
@@ -217,7 +217,7 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 #bodyContent span.rdflink a {
 	padding-right: 20px;
 	color: #888888;
-	background: url(images/rdf_flyer.18.gif) center right no-repeat;
+    /* @embed */ background: url(images/rdf_flyer.18.gif) center right no-repeat;
 }
 
 #bodyContent span.rdflink a:hover {
@@ -225,7 +225,7 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	color: #0000FF;
 	padding-right: 20px;
 	margin-right: 0px;
-	background: url(images/rdf_flyer.18.gif) center right no-repeat;
+    /* @embed */ background: url(images/rdf_flyer.18.gif) center right no-repeat;
 }
 
 /* Tooltips */
@@ -363,9 +363,9 @@ span.smwb-ivalue {
 }
 
 .smwCollapsedFieldset legend {
-	background: transparent url(images/collapse-plus.png) no-repeat center left;
+    /* @embed */ background: transparent url(images/collapse-plus.png) no-repeat center left;
 }
 
 .smwExpandedFieldset legend {
-	background: transparent url(images/collapse-minus.png) no-repeat center left;
+    /* @embed */ background: transparent url(images/collapse-minus.png) no-repeat center left;
 }
