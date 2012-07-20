@@ -86,6 +86,52 @@
 		}
 	});
 
+	// Allows for collapsible fieldsets.
+	// Based on the 'coolfieldset' jQuery plugin:
+	// http://w3shaman.com/article/jquery-plugin-collapsible-fieldset
+	function smwHideFieldsetContent(obj, options){
+		obj.find('div').slideUp(options.speed);
+		obj.removeClass("smwExpandedFieldset");
+		obj.addClass("smwCollapsedFieldset");
+	}
+
+	function smwShowFieldsetContent(obj, options){
+		obj.find('div').slideDown(options.speed);
+		obj.removeClass("smwCollapsedFieldset");
+		obj.addClass("smwExpandedFieldset");
+	}
+
+	$.fn.smwMakeCollapsible = function(options){
+		var setting = { collapsed: false, speed: 'medium' };
+		$.extend(setting, options);
+
+		this.each(function(){
+			var fieldset = $(this);
+			var legend = fieldset.children('legend');
+			if ( setting.collapsed == true ) {
+				legend.toggle(
+					function(){
+						smwShowFieldsetContent(fieldset, setting);
+					},
+					function(){
+						smwHideFieldsetContent(fieldset, setting);
+					}
+				)
+	
+				smwHideFieldsetContent(fieldset, {animation:false});
+			} else {
+				legend.toggle(
+					function(){
+						smwHideFieldsetContent(fieldset, setting);
+					},
+					function(){
+						smwShowFieldsetContent(fieldset, setting);
+					}
+				)
+			}
+		});
+	}
+
 	$( document ).ready( function() {
 
 		$("#add_property").autocomplete({
@@ -136,6 +182,9 @@
 				}
 			} );
 		} );
+
+		// Fieldset collapsible
+		$('.smw-ask-options').smwMakeCollapsible();
 
 	});
 
