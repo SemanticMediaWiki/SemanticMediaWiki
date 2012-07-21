@@ -452,7 +452,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				'| ' . SMWAskPage::getEmbedToggle() .
 				'</p>';
 		}
-	//show|hide inline embed code
+		//show|hide inline embed code
 		$result .= '<div id="inlinequeryembed" style="display: none"><div id="inlinequeryembedinstruct">' . wfMsg( 'smw_ask_embed_instr' ) . '</div><textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">' .
 			'{{#ask:' . htmlspecialchars( $this->m_querystring ) . "\n";
 
@@ -460,9 +460,12 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .= '|' . $printout->getSerialisation() . "\n";
 		}
 
+		// Find parameters
 		foreach ( $this->params as /* IParam */ $param ) {
 			if ( !$param->wasSetToDefault() ) {
-				$result .= '|' . htmlspecialchars( $param->getName() ) . '=' . htmlspecialchars( $param->getValue() ) . "\n";
+					$result .= '|' . htmlspecialchars( $param->getName() ) . '=';
+					// e.g. sorting returns with an array
+					$result .= $param->getDefinition()->isList() ? implode( $param->getDefinition()->getDelimiter(), $param->getValue() ) . "\n" : $param->getValue() . "\n";
 			}
 		}
 
