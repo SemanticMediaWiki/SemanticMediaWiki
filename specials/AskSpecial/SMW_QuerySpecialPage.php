@@ -71,41 +71,49 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 
 			$optionsHtml[] =
 				Html::rawElement(
-					'div',
+					'span',
 					array(
-						'style' => 'width: 30%; padding: 5px; float: left;'
-					),
-					htmlspecialchars( $name ) . ': ' .
-						$this->showFormatOption( $definition, $currentValue ) .
-						'<br />' .
-						Html::element( 'em', array(), $definition->getDescription() )
+						'class' => 'smw-ask-info',
+						'word-wrap' => 'break-word',
+						'data-info' => $definition->getDescription()
+					), htmlspecialchars( $name ) .  ': ' .
+					$this->showFormatOption( $definition, $currentValue )
 				);
 		}
 
-		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i++ ) {
-			if ( $i % 3 == 2 || $i == $n - 1 ) {
-				$optionsHtml[$i] .= "<div style=\"clear: both\";></div>\n";
-			}
-		}
-
 		$i = 0;
+		$n = 0;
 		$rowHtml = '';
 		$resultHtml = '';
 
+		$resultHtml .= Html::openElement( 'table', array( 'class' => 'other options', 'width' => '100%' ) );
+		$resultHtml .= Html::openElement( 'tbody' );
+
 		while ( $option = array_shift( $optionsHtml ) ) {
-			$rowHtml .= $option;
 			$i++;
 
-			$resultHtml .= Html::rawElement(
-				'div',
-				array(
-					'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#dddddd' ) . ';'
-				),
-				$rowHtml
-			);
+			// Collect elements for a row
+			$rowHtml .= Html::rawElement('td', array(), $option );
 
+			// Create table row
+			if ( $i % 3 == 0 ){
+			$resultHtml .= Html::rawElement( 'tr', array(
+				'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#eee' )
+				), $rowHtml
+			);
 			$rowHtml = '';
+			$n++;
+			}
 		}
+
+		// Ensure left over elements are collected as well
+		$resultHtml .= Html::rawElement( 'tr', array(
+			'style' => 'background: ' . ( $n % 2 == 0 ? '#eee' : 'white' )
+			), $rowHtml
+		);
+
+		$resultHtml .= Html::closeElement( 'tbody' );
+		$resultHtml .= Html::closeElement( 'table' );
 
 		return $resultHtml;
 	}
@@ -128,7 +136,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 			$input->setCurrentValue( $currentValue );
 		}
 
-		return $input->getHtml();
+		return Html::rawElement( 'td', array( 'overflow' => 'hidden' ), $input->getHtml()   );
 	}
 
 }

@@ -132,6 +132,19 @@
 		});
 	}
 
+	// Show tipsy tooltip with info retrieved from the data-info attribute
+	$.fn.smwShowTooltip = function(){
+		this.each(function(){
+			$( this ).tipsy( {
+					gravity: 'sw',
+					//gravity: $.fn.tipsy.autoNS,
+					//offset: 2,
+					html: true,
+					title: function() { return this.getAttribute( "data-info" ) ; }
+				} );
+		} );
+	}
+
 	$( document ).ready( function() {
 
 		$("#add_property").autocomplete({
@@ -179,12 +192,18 @@
 				'context': document.body,
 				'success': function( data ) {
 					$( "#other_options" ).html( data );
+
+					// Every change needs to re-initialize the tooltip
+					$( ".smw-ask-info" ).smwShowTooltip();
 				}
 			} );
 		} );
 
 		// Fieldset collapsible
 		$('.smw-ask-options').smwMakeCollapsible();
+
+		// Initialize tooltip for the default selection
+		$( ".smw-ask-info" ).smwShowTooltip();
 
 	});
 
