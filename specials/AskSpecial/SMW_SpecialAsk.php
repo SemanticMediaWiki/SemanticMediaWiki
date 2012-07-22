@@ -27,6 +27,7 @@
  * @author Yaron Koren
  * @author Sanyam Goyal
  * @author Jeroen De Dauw
+ * @author mwjames
  *
  * TODO: Split up the megamoths into sane methods.
  */
@@ -342,7 +343,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	 * @return string
 	 */
 	protected function getInputForm( $printoutstring, $urltail ) {
-		global $smwgQSortingSupport, $smwgResultFormats, $wgScript;
+		global $wgScript;
 
 		$result = '';
 
@@ -356,75 +357,25 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				'<span style="font-weight: normal;">' . wfMsg( 'smw_ask_printdesc' ) . '</span>' . "</th></tr>\n" .
 				'<tr><td style="padding-right: 7px;"><textarea name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
 				'<td style="padding-left: 7px;"><textarea id = "add_property" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
-// @TODO
-			// sorting inputs
-			if ( $smwgQSortingSupport ) {
-				if ( ! array_key_exists( 'sort', $this->m_params ) || ! array_key_exists( 'order', $this->m_params ) ) {
-					$orders = array(); // do not even show one sort input here
-				} else {
-					$sorts = explode( ',', $this->m_params['sort'] );
-					$orders = explode( ',', $this->m_params['order'] );
-					reset( $sorts );
-				}
 
-				foreach ( $orders as $i => $order ) {
-					$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
-						    htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
+			// Format selection
+			$result .= self::getFormatSelection ( $this->m_params );
 
-					if ( $order == 'ASC' ) $result .= 'selected="selected" ';
-					$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
-					if ( $order == 'DESC' ) $result .= 'selected="selected" ';
-
-					$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
-					$result .= '[<a class="smw-ask-delete" data-target="sort_div_' . $i . '" href="#">' . wfMsgHtml( 'delete' ) . '</a>]' . "\n";
-					$result .= "</div>\n";
-				}
-
-				$result .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort_num" size="35" />' . "\n";
-				$result .= ' <select name="order_num">' . "\n";
-				$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
-				$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
-				$result .= "</div>\n";
-				$result .= '<div id="sorting_main"></div>' . "\n";
-				$result .= '<a class="smw-ask-add" href="#">' . wfMsgHtml( 'smw_add_sortcondition' ) . '</a>' . "\n";
+			// @TODO
+			// Sorting inputs
+			if ( $GLOBALS['smwgQSortingSupport'] ) {
+				$result .= '<fieldset class="smw-ask-sorting"><legend>' . wfMsgHtml( 'smw-ask-sorting' ) . "</legend>\n";
+				$result .= self::getSortingOption( $this->m_params );
+				$result .= "</fieldset>\n";
 			}
 
-			$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
-			$url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( 'showformatoptions=this.value' );
-
-			foreach ( $this->m_params as $param => $value ) {
-				if ( $param !== 'format' ) {
-					$url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
-				}
-			}
-
-			$result .= "<br /><br />\n<p>" . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
-				'<select id="formatSelector" name="p[format]" data-url="' . $url . '">' . "\n" .
-				'	<option value="broadtable"' . ( $this->m_params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
-				$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
-
-			$formats = array();
-
-			foreach ( array_keys( $smwgResultFormats ) as $format ) {
-				// Special formats "count" and "debug" currently not supported.
-				if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
-					$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-					$formats[$format] = $printer->getName();
-				}
-			}
-
-			natcasesort( $formats );
-
-			foreach ( $formats as $format => $name ) {
-				$result .= '	<option value="' . $format . '"' . ( $this->m_params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
-			}
-
-			$result .= "</select></p>\n";
+			// Other options
 			$result .= '<fieldset class="smw-ask-options smwExpandedFieldset"><legend>' . wfMsgHtml( 'smw_ask_otheroptions' ) . "</legend>\n";
 			$result .= "<div id=\"other_options\">" . $this->showFormatOptions( $this->m_params['format'], $this->m_params ) . "</div>";
 			$result .= "</fieldset>\n";
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
 
+			// Submit 
 			$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
 					Html::element(
@@ -435,8 +386,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 						),
 						wfMsg( 'smw_ask_hidequery' )
 					) .
-					'| ' . SMWAskPage::getEmbedToggle() .
-					'| <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
+					' | ' . SMWAskPage::getEmbedToggle() .
+					' | <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
 				"\n</form>";
 		} else { // if $this->m_editquery == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
@@ -470,6 +421,93 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		}
 
 		$result .= '}}</textarea></div><br />';
+
+		return $result;
+	}
+
+	/**
+	 * Build the format drop down
+	 *
+	 * @param array
+	 *
+	 * @return string
+	 */
+	protected static function getFormatSelection ( $params ) {
+		$result = '';
+
+		$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
+		$url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( 'showformatoptions=this.value' );
+
+		foreach ( $params as $param => $value ) {
+			if ( $param !== 'format' ) {
+				$url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
+			}
+		}
+
+		$result .= '<br /><span style=vertical-align:middle;">' . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
+			'<select id="formatSelector" name="p[format]" data-url="' . $url . '">' . "\n" .
+			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
+			$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
+
+		$formats = array();
+
+		foreach ( array_keys( $GLOBALS['smwgResultFormats'] ) as $format ) {
+			// Special formats "count" and "debug" currently not supported.
+			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
+				$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
+				$formats[$format] = $printer->getName();
+			}
+		}
+
+		natcasesort( $formats );
+
+		foreach ( $formats as $format => $name ) {
+			$result .= '	<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
+		}
+
+		$result .= "</select></span>\n";
+
+		return $result;
+	}
+
+	/**
+	 * Build the sorting/order input
+	 *
+	 * @param array
+	 *
+	 * @return string
+	 */
+	protected static function getSortingOption ( $params ) {
+		$result = '';
+
+		if ( ! array_key_exists( 'sort', $params ) || ! array_key_exists( 'order', $params ) ) {
+			$orders = array(); // do not even show one sort input here
+		} else {
+			$sorts = explode( ',', $params['sort'] );
+			$orders = explode( ',', $params['order'] );
+			reset( $sorts );
+		}
+
+		foreach ( $orders as $i => $order ) {
+			$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
+				    htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
+
+			if ( $order == 'ASC' ) $result .= 'selected="selected" ';
+			$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
+			if ( $order == 'DESC' ) $result .= 'selected="selected" ';
+
+			$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
+			$result .= '[<a class="smw-ask-delete" data-target="sort_div_' . $i . '" href="#">' . wfMsgHtml( 'delete' ) . '</a>]' . "\n";
+			$result .= "</div>\n";
+		}
+
+		$result .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort_num" size="35" />' . "\n";
+		$result .= ' <select name="order_num">' . "\n";
+		$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+		$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
+		$result .= "</div>\n";
+		$result .= '<div id="sorting_main"></div>' . "\n";
+		$result .= '<a class="smw-ask-add" href="#">' . wfMsgHtml( 'smw_add_sortcondition' ) . '</a>' . "\n";
 
 		return $result;
 	}
@@ -581,5 +619,4 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		return $navigation;
 	}
-
 }
