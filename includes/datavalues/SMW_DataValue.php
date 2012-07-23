@@ -36,10 +36,6 @@
  *
  * The main functions of data value objects are:
  * - setUserValue() which triggers parseUserValue() to process a user-level string.
- * - getDBkeys() which provides an array that represents the current value for internal
- *   processing
- * - setDBkeys() which triggers parseDBkeys() to process an array with the internal
- *   representation
  *
  * In addition, there are a number of get-functions that provide useful output versions
  * for displaying and serializing the value.
@@ -344,7 +340,7 @@ abstract class SMWDataValue {
 
 	/**
 	 * Clear error messages. This function is provided temporarily to allow
-	 * n-ary to do this. Eventually, n-ary should implement its setDBkeys()
+	 * n-ary to do this.
 	 * properly so that this function will vanish again.
 	 * @note Do not use this function in external code.
 	 * @todo Check if we can remove this function again.
