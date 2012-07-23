@@ -2122,6 +2122,7 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw-paramdesc-order' => 'Ordre de la ordenació de la consulta',
 	'smw-paramdesc-searchlabel' => 'Text per continuar la cerca (per defecte és «… més resultats»)',
 	'smw-paramdesc-named_args' => 'Anomena els arguments que es passen a la plantilla',
+	'smw-paramdesc-export' => "Opció d'exportació",
 	'smw_iq_disabled' => 'Les consultes semàntiques estan inhabilitades en aquest wiki.',
 	'smw_iq_moreresults' => '... més resultats',
 	'smw_parseerror' => "El valor donat no s'ha entès.",
@@ -2218,6 +2219,7 @@ Té cura que els humans no es tornin en llocs web.',
 	'smw_ask_show_embed' => 'Mostra el codi incrustat',
 	'smw_ask_hide_embed' => 'Amaga el codi incrustat',
 	'smw_ask_embed_instr' => 'Per a incrustar aquesta consulta en línia a una pàgina wiki utilitzeu el codi a continuació.',
+	'smw-ask-delete' => '[Suprimeix]',
 	'querycreator' => 'Creador de consultes',
 	'smw_qc_addmainlabel' => "Afegeix l'etiqueta principal",
 	'smw_qc_show_addnal_opts' => 'Mostra més opcions',
@@ -2295,11 +2297,19 @@ Introduïu tant la pàgina com la propietat.",
 	'smw_smwadmin_return' => 'Torna a $1',
 	'smw_smwadmin_updatestarted' => "S'ha iniciat un nou procés d'actualització per a refrescar les dades semàntiques.
 Es reconstruiran totes les dades emmagatzemades o bé es repararan quan calgui.
-Podeu seguir el progrés de l'actualització en aquesta pàgina especial.",
+Podeu seguir el progrés de l'actualització en aquesta pàgina especial.
+
+Torna a $1.",
 	'smw_smwadmin_updatenotstarted' => "Ja hi ha un procés d'actualització executant-se.
-No es crearà cap altre.",
-	'smw_smwadmin_updatestopped' => "S'han aturat tots els processos d'actualització existents.",
-	'smw_smwadmin_updatenotstopped' => "Per a aturar l'execució del procés d'actualització, heu de marcar la casella per tal d'indicar que n'esteu plenament segur.",
+No es crearà cap altre.
+
+Torna a $1.",
+	'smw_smwadmin_updatestopped' => "S'han aturat tots els processos d'actualització existents.
+
+Torna a $1.",
+	'smw_smwadmin_updatenotstopped' => "Per a aturar l'execució del procés d'actualització, heu de marcar la casella per tal d'indicar que n'esteu plenament segur.
+
+Torna a $1.",
 	'smw_smwadmin_docu' => 'Aquesta pàgina especial us ajuda durant la instal·lació i l\'actualització del <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Recordeu fer una còpia de seguretat de les dades importants abans d\'executar cap funció administrativa.',
 	'smw_smwadmin_db' => 'Instal·lació de la base de dades i actualització',
@@ -2308,7 +2318,7 @@ La funció a continuació garanteix que la vostra base de dades està configurad
 Els canvis fets en aquest pas no afecten la resta de la base de dades del MediaWiki, i poden desfer-se fàcilment si així es vol.
 La funció de configuració pot executar-se moltes vegades sense que es faci cap mal, però només cal una vegada per a la instal·lació o l'actualització.",
 	'smw_smwadmin_permissionswarn' => "Si l'operació falla amb errors SQL, l'usuari de la base de dades que utilitza el vostre wiki (comproveu el LocalSettings.php) probablement no té suficients permisos.
-Podeu atorgar l'usuari permisos addicionals per a crear o suprimir taules, introduïu temporalment les dades d'inici de l'administrador (root) de la base de dades al LocalSettings.php, o bé feu servir l'script de manteniment <tt>SMW_setup.php</tt>, que pot utilitzar les credencials de l'AdminSettings.php.",
+Podeu atorgar l'usuari permisos addicionals per a crear o suprimir taules, introduïu temporalment les dades d'inici de l'administrador (root) de la base de dades al LocalSettings.php, o bé feu servir l'script de manteniment <tt>SMW_setup.php</tt>, que pot utilitzar les credencials d'un administrador.",
 	'smw_smwadmin_dbbutton' => 'Inicialitza o actualitza les taules',
 	'smw_smwadmin_announce' => 'Feu conèixer el vostre wiki',
 	'smw_smwadmin_announcedocu' => 'El Semantic MediaWiki té un servei web per a anunciar nous llocs wiki semàntics.
@@ -2551,7 +2561,7 @@ Na domovské stránce Semantic MediaWiki můžete najít <a href="http://semanti
 Služba neregistruje wiki, které nejsou veřejně přístupné, a ukládá pouze veřejně přístupné informace.',
 	'smw_smwadmin_datarefresh' => 'Oprava a upgrade dat',
 	'smw_smwadmin_datarefreshdocu' => 'Na základě obsahu stránek wiki je možné obnovit všechna data Semantic MediaWiki.
-To může být užitečné při opravě poškozených dat nebo při jejich úpravě, pokud se v důsledku upgrtadu softwaru změní vnitřní formát.
+To může být užitečné při opravě poškozených dat nebo při jejich úpravě, pokud se v důsledku upgradu softwaru změní vnitřní formát.
 Update se spouští stránku po stránce a nebude dokončen ihned.
 Následující se zobrazuje pokud update právě probíhá a umožňuje vám updaty spouštět či zastavovat (pokud tuto možnost nezakázal administrátor).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Probíhá update.</strong>
@@ -2658,6 +2668,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-searchlabel' => 'Der Text zum Anzeigen weiterer Abfrageergebnisse (Standard ist „… weitere Ergebnisse“)',
 	'smw-paramdesc-named_args' => 'Die an die Vorlage zu übergebenden Argumente',
 	'smw-paramdesc-export' => 'Die Exportoption',
+	'smw-paramdesc-source' => 'Die alternative Abfragequelle',
 	'smw_iq_disabled' => 'Semantische Abfragen wurden in diesem Wiki deaktiviert.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_parseerror' => 'Der eingegebene Wert wurde nicht verstanden.',
@@ -2891,7 +2902,16 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
  * @author Mirzali
  */
 $messages['diq'] = array(
+	'smw_finallistconjunct' => 'ew',
+	'smw_printername_csv' => 'CSV Teberdayış',
+	'smw_printername_dsv' => 'DSV Teberdayış',
+	'smw_printername_json' => 'JSON teberdayış',
+	'smw_printername_rss' => 'RSS teberdayış',
+	'smw_printername_rdf' => 'RDF teberdayış',
 	'smw_printername_category' => 'Kategoriye',
+	'smw-paramdesc-export' => 'Weçenegê teberdayışi',
+	'smw_true_words' => 'raştay,r,eya,e',
+	'smw_false_words' => 'zuray,z,nê,n',
 	'specialpages-group-smw_group' => 'Fahm kerdışê MediaWiki',
 	'exportrdf' => 'Pela ahûlnê RDF',
 	'properties' => 'Xısusiyey',
@@ -4078,7 +4098,7 @@ $messages['fr'] = array(
 	'smw_property_template' => '$1 du type $2 ($3)',
 	'smw_propertylackspage' => 'Toute propriété devrait être décrite par une page !',
 	'smw_propertylackstype' => 'Aucun type n’a été spécifié pour cette propriété (type actuellement supposé : $1).',
-	'smw_propertyhardlyused' => 'Cette propriété est à peine utilisée sur ce wiki !',
+	'smw_propertyhardlyused' => 'Cette propriété est à peine utilisée sur ce wiki !',
 	'unusedproperties' => 'Propriétés inutilisées',
 	'smw_unusedproperties_docu' => 'Les propriétés suivantes existent, bien qu’aucune page ne les utilise.',
 	'smw_unusedproperty_template' => '$1 de type $2',
@@ -10203,6 +10223,7 @@ Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça
 	'smw-paramdesc-order' => 'Ordem da classificação da consulta',
 	'smw-paramdesc-searchlabel' => 'Texto para continuar a busca (o padrão é "… mais resultados")',
 	'smw-paramdesc-named_args' => 'Nomeie os argumentos passados para a predefinição',
+	'smw-paramdesc-export' => 'Opção de exportação',
 	'smw_iq_disabled' => 'As consultas semânticas foram desativadas neste wiki',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_parseerror' => 'O valor fornecido não foi compreendido.',
@@ -10374,12 +10395,20 @@ Por favor, inclua tanto a página quanto a propriedade.',
 	'smw_smwadmin_setupsuccess' => 'O mecanismo de armazenamento foi configurado com sucesso.',
 	'smw_smwadmin_return' => 'Voltar para $1',
 	'smw_smwadmin_updatestarted' => 'Um novo processo de atualização para atualizar os dados semânticos foi iniciado.
-Todos os dados armazenados serão reconstruídos ou reparados onde necessário.
-Você pode acompanhar o progresso de atualização nesta página especial.',
+Todos os dados armazenados serão reconstruídos ou reparados quando necessário.
+Você pode acompanhar o progresso de atualização nesta página especial.
+
+Retornar pata $1.',
 	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de atualização em execução.
-Não foi criado outro.',
-	'smw_smwadmin_updatestopped' => 'Todos os processos de atualização existentes foram parados.',
-	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em execução, você deverá ativar a caixa de seleção para indicar que tem realmente certeza.',
+Não foi criado outro.
+
+Retornar para $1.',
+	'smw_smwadmin_updatestopped' => 'Todos os processos de atualização existentes foram parados.
+
+Retornar para $1.',
+	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em execução, você precisa ativar a caixa de seleção para indicar que realmente tem certeza.
+
+Retornar para $1.',
 	'smw_smwadmin_docu' => 'Esta página especial ajuda-o durante a instalação ou atualização do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Lembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
 	'smw_smwadmin_db' => 'Instalação e atualização da base de dados',
@@ -11976,7 +12005,9 @@ Kapag hindi nawala/naalis ang suliranin makalipas ang ilang panahon, pakihiling 
 	'smw_printername_broadtable' => 'Malawak na tabla',
 	'smw_printername_template' => 'Suleras',
 	'smw_printername_rdf' => 'Angkat ng RDF',
+	'smw_printername_category' => 'Kategorya',
 	'smw-paramdesc-limit' => 'Ang pinakamataas na bilang ng mga resultang ibabalik',
+	'smw-paramdesc-offset' => 'Ang timbang na pambalanse ng unang resulta',
 	'smw-paramdesc-headers' => 'Ipakita ang mga pangalan ng paulo/katangiang-ari',
 	'smw-paramdesc-mainlabel' => 'Ang tatak na ibibigay sa pangalan ng pangunahing pahina',
 	'smw-paramdesc-link' => 'Ipakita ang mga halaga bilang mga kawing',
@@ -11984,6 +12015,9 @@ Kapag hindi nawala/naalis ang suliranin makalipas ang ilang panahon, pakihiling 
 	'smw-paramdesc-outro' => 'Ang tekstong ipapakita pagkaraan ng mga resulta ng pagtatanong, kung mayroon',
 	'smw-paramdesc-default' => 'Ang tekstong ipapakita kung walang mga resulta ng pagtatanong',
 	'smw-paramdesc-sep' => 'Ang panghiwalay ng mga halaga',
+	'smw-paramdesc-distribution' => 'Sa halip na ipakita ang lahat ng mga halaga, bilangin ang pagsipot ng mga ito, at ipakita ang mga ito.',
+	'smw-paramdesc-distributionsort' => 'Iayos ang pamumudmod ng halaga ayon sa bilang ng pagsipot.',
+	'smw-paramdesc-distributionlimit' => 'Hanggahan ang pamumudmod ng halaga sa bilang ng ilang mga halaga lamang.',
 	'smw-paramdesc-template' => 'Ang pangalan ng isang suleras kung saan ipapakita ang mga inilimbag',
 	'smw-paramdesc-columns' => 'Ang bilang ng mga haligi kung saan ipapakita ang mga resulta (likas na nakatakda ang $1)',
 	'smw-paramdesc-userparam' => 'Isang halagang pinadaraan papasok sa bawat pagtawag ng suleras, kapag ginamit ang isang suleras',
@@ -11991,17 +12025,25 @@ Kapag hindi nawala/naalis ang suliranin makalipas ang ilang panahon, pakihiling 
 	'smw-paramdesc-outrotemplate' => 'Ang suleras na ipapakita pagkaraan ng mga resulta ng pagtatanong, kung mayroon',
 	'smw-paramdesc-embedformat' => 'Ang ginagamit na tatak ng HTML upang ilarawan ang mga paulo',
 	'smw-paramdesc-embedonly' => 'Huwag magpakita ng mga paulo',
+	'smw-paramdesc-table-class' => 'Isang karagdagang klase ng CSS na itatalaga para sa talahanayan',
 	'smw-paramdesc-rsstitle' => 'Ang tekstong gagamitin bilang pamagat ng pakain',
 	'smw-paramdesc-rssdescription' => 'Ang tekstong gagamitin bilang paglalarawan ng pakain',
 	'smw-paramdesc-rdfsyntax' => 'Ang gagamiting palaugnayan ng RDF',
 	'smw-paramdesc-csv-sep' => 'Ang panghiwalay na gagamitin',
 	'smw-paramdesc-dsv-separator' => 'Ang panghiwalay na gagamitin',
 	'smw-paramdesc-dsv-filename' => 'Ang pangalan para sa talaksan ng DSV',
+	'smw-smwdoc-description' => 'Nagpapakita ng isang talahanayan ng lahat ng mga parametro na magagamit para sa tinukoy na kaanyuan ng resulta na kasama ang likas na nakatakdang mga halaga at mga paglalarawan.',
+	'smw-smwdoc-par-format' => 'Ang kaanyuan ng resulta na pagpapakitaan ng kasulatan ng parametro.',
+	'smw-smwdoc-par-parameters' => 'Kung aling mga parametro ang ipapakita. "specific" para sa mga idinagdag ayon sa kaanyuan, "base" para sa mga makukuha na nasa lahat ng mga kaanyuan, at "all" para sa dalawang mga ito.',
+	'smw-paramdesc-sort' => 'Kaarian na pag-aayusan ng pag-uusisa',
+	'smw-paramdesc-order' => 'Pagkakasunud-sunod ng pagkakaayos ng pag-uusisa',
 	'smw-paramdesc-searchlabel' => 'Ang tekstong nasa loob ng kawing sa mga resulta',
+	'smw-paramdesc-export' => 'Mapagpipilian ng pag-angkat',
 	'smw_iq_disabled' => 'Hindi pinagana ang mga katanungang hinggil sa kahulugan ng salita (semantiko) para sa wiking ito.',
 	'smw_iq_moreresults' => '… karagdagang mga resulta/kinalabasan',
 	'smw_parseerror' => 'Hindi naunawaan ang ibinigay na halaga.',
 	'smw_notitle' => 'Hindi magagamit sa loob ng wiking ito ang "$1" bilang isang pangalan ng pahina.',
+	'smw_noproperty' => 'Hindi magagamit sa loob ng wiking ito ang "$1" bilang isang pangalan ng pag-aari.',
 	'smw_wrong_namespace' => 'Tanging mga pahinang nasa espasyo ng pangalang "$1" ang pinapahintulutan dito.',
 	'smw_manytypes' => 'Mahigit sa isang uri ang binigyang kahulugan para sa pag-aari.',
 	'smw_emptystring' => 'Hindi tinatanggap ang mga bagting na walang laman.',
@@ -12089,6 +12131,17 @@ Pinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.',
 	'smw_ask_show_embed' => 'Ipakita ang kodigong pambaon',
 	'smw_ask_hide_embed' => 'Ibaong nakakubli ang kodigo',
 	'smw_ask_embed_instr' => 'Upang maibaon ang katanungang ito sa loob ng guhit papasok sa isang pahina ng wiki, gamitin ang kodigong nasa ibaba.',
+	'smw_qui_ok' => 'Sige',
+	'smw_qui_cancel' => 'Huwag ituloy',
+	'smw_qui_category' => '<strong>Kategorya</strong>',
+	'smw_qui_label' => 'Katatakan',
+	'smw_prp_options' => 'Mga Mapagpipilian ng Kaarian',
+	'smw_qui_catopts' => 'Mga Mapagpipilian ng Kategorya',
+	'smw_qui_mainlabopts' => 'Mga Mapagpipilian ng Resulta',
+	'smw_qui_dlabel' => 'Katatakan:',
+	'smw_qui_dcategory' => 'Kategorya:',
+	'smw_qui_dcatyes' => 'Ipakita ang teksto kapag nariyan ang kategorya:',
+	'smw_qui_dcatno' => 'Ipakita ang teksto kapag wala ang kategorya:',
 	'searchbyproperty' => 'Maghanap ayon sa pag-aari',
 	'smw_sbv_docu' => 'Hanapin ang lahat ng mga pahinang may isang ibinigay na pag-aari at halaga.',
 	'smw_sbv_novalue' => 'Maglagay/magpasok ng isang tanggap na halaga para sa pag-aari, o tingnan ang lahat ng mga halaga ng ari-arian para sa "$1".',
@@ -12167,6 +12220,11 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_adminlinks_inlinequerieshelp' => 'Tulong sa mga katanungang nasa guhit',
 	'smw-createproperty-isproperty' => 'Isa itong pag-aari ng uring $1.',
 	'smw-createproperty-allowedvals' => 'Ang pinahihintulutang {{PLURAL:$1|halaga para sa pag-aaring ito ay|mga halaga para sa pag-aaring ito ay}}:',
+	'smw-paramdesc-category-delim' => 'Ang pantakda ng hangganan',
+	'smw-paramdesc-category-template' => 'Isang suleras na pangbigay ng kaanyuan sa mga bagay',
+	'smw-paramdesc-category-userparam' => 'Isang parametro na ipapasa sa suleras',
+	'smw-info-par-message' => 'Mensaheng ipapakita.',
+	'smw-info-par-icon' => 'Kinatawang larawan na ipapakita, maaaring "kabatiran" o "babala".',
 );
 
 /** толышә зывон (толышә зывон)
