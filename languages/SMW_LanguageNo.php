@@ -36,8 +36,8 @@ class SMWLanguageNo extends SMWLanguage {
 		'_uri' => 'URL',  // name of the URL type
 		'_anu' => 'URI-merknad', // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'Telefonnummer',  // name of the telephone (URI) type
-		'_rec' => 'Record', // name of record data type
-		'_qty' => 'Mål', // name of the number type with units of measurement
+		'_rec' => 'Post', // name of record data type
+		'_qty' => 'Størrelse', // name of the number type with units of measurement
 	);
 
 	protected $m_DatatypeAliases = array(
@@ -52,7 +52,8 @@ class SMWLanguageNo extends SMWLanguage {
 		'Epost'                 => '_ema',
 		'URI'                   => '_uri',
 		'Nettadresse'           => '_uri',
-		'Størrelse'             => '_qty',
+		'Mål'                   => '_qty',
+		'Record'                => '_rec',
 	);
 
 	protected $m_SpecialProperties = array(
