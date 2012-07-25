@@ -210,6 +210,9 @@ abstract class SMWStore {
 	 * @param $data SMWSemanticData
 	 */
 	public function updateData( SMWSemanticData $data ) {
+		/**
+		 * @since 1.6
+		 */
 		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $data ) );
 
 		// Invalidate the page, so data stored on it gets displayed immediately in queries.
@@ -230,6 +233,9 @@ abstract class SMWStore {
 
 		$this->doDataUpdate( $data );
 
+		/**
+		 * @since 1.6
+		 */
 		wfRunHooks( 'SMWStore::updateDataAfter', array( $this, $data ) );
 	}
 

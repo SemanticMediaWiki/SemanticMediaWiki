@@ -182,10 +182,16 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	}
 
 	/**
-	 * @return array
+	 * @see SMWResultPrinter::getParamDefinitions
+	 *
+	 * @since 1.8
+	 *
+	 * @param $definitions array of IParamDefinition
+	 *
+	 * @return array of IParamDefinition|array
 	 */
-	public function getParameters() {
-		$params = parent::getParameters();
+	public function getParamDefinitions( array $definitions ) {
+		$params = parent::getParamDefinitions( $definitions );
 
 		$params['class'] = array(
 			'name' => 'class',

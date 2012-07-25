@@ -163,7 +163,8 @@ Released on July 30, 2011.
   a single specified result format.
 * Fixed escaping issues in the JSON result format. A compatibility breaking change
   is that per property an array of values will be returned, even if there is only
-  one. 
+  one.
+* Added SMWStore::updateDataBefore and SMWStore::updateDataAfter hooks.
 
 == SMW 1.5.6 ==
 
