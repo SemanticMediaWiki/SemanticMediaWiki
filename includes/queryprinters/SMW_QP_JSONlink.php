@@ -94,12 +94,16 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 				return;
 			}
 
+			// JSON instance
+			$json = new SMWJSON( $res );
+
+			// JSON export type
 			if ( $this->params['export'] == 'obsolete' ) {
 				$result = $this->getObsoleteJSON( $res , $outputmode );
-			} elseif ( $this->params['export'] == 'simplified' ) {
-				$result = $this->getSimplifiedJSON( $res ) ;
+			} elseif ( $this->params['export'] == 'simple' ) {
+				$result = $json->getSimpleEncoding( $this->params['prettyprint'] );
 			} else {
-				$result = $this->getCompleteJSON( $res );
+				$result = $json->getEncoding( $this->params['prettyprint'] );
 			}
 
 		} else {
@@ -114,79 +118,6 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	}
 
 	/**
-	 * Complete JSON layer
-	 *
-	 * @since 1.8
-	 *
-	 * @param SMWQueryResult $res
-	 * @param boolean $isPretty
-	 *
-	 * @return string
-	 */
-	public static function getCompleteJSON( SMWQueryResult $res, $isPretty = false ) {
-		$serialize = array_merge( SMWDISerializer::getSerializedQueryResult( $res ), array ( 'rows' => $res->getCount() ) );
-		return FormatJSON::encode( $serialize, $isPretty );
-	}
-
-	/**
-	 * Simplified JSON layer
-	 *
-	 * @since 1.8
-	 *
-	 * @param SMWQueryResult $res
-	 * @param boolean $isPretty
-	 *
-	 * @return string
-	 */
-	public static function getSimplifiedJSON( SMWQueryResult $res, $isPretty = false ) {
-		$results = array();
-		$printRequests = array();
-
-		foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $printRequest ) {
-			$printRequests[$printRequest->getLabel()] = array(
-				'label'  => $printRequest->getLabel(),
-				'typeid' => $printRequest->getTypeID()
-			);
-		}
-
-		foreach ( $res->getResults() as /* SMWDIWikiPage */ $diWikiPage ) {
-			$result = array( );
-
-			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $printRequest ) {
-				$serializationItems = array();
-				$resultAarray = new SMWResultArray( $diWikiPage, $printRequest, $res->getStore() );
-
-				if ( $printRequest->getMode() === SMWPrintRequest::PRINT_THIS ) {
-					$dataItems = $resultAarray->getContent();
-					$temp =   SMWDISerializer::getSerialization( array_shift( $dataItems ) );
-					$result += array ( 'label' => $temp["fulltext"] );
-				}
-				else {
-					$serializationItems = array_map(
-						array( 'SMWDISerializer', 'getSerialization' ),
-						$resultAarray->getContent()
-					);
-
-					$type  = $printRequest->getTypeID();
-					$items = array();
-
-					foreach ( $serializationItems as $item ) {
-					  if ( $type == "_wpg" ) {
-								$items[] = $item["fulltext"];
-						} else {
-								$items[] = $item;
-						}
-					}
-					$result[$printRequest->getLabel()] = $items;
-				}
-			}
-			$results[$diWikiPage->getTitle()->getFullText()] = $result;
-		}
-
-		return FormatJSON::encode( array( 'printrequests' => $printRequests, 'results' => $results, 'rows' => $res->getCount() ), $isPretty );
-	}
-
-	/**
 	 * Compatibility layer for obsolete JSON format
 	 *
 	 * @since 1.8
@@ -198,6 +129,8 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	 * @return string
 	 */
 	private function getObsoleteJSON( SMWQueryResult $res, $outputmode ){
+		wfDeprecated( __METHOD__, '1.8' );
+
 		$types = array( '_wpg' => 'text', '_num' => 'number', '_dat' => 'date', '_geo' => 'text', '_str' => 'text' );
 
 		$itemstack = array(); // contains Items for the items section
@@ -300,9 +233,134 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			'type' => 'string',
 			'default' => 'complete',
 			'message' => 'smw-paramdesc-export',
-			'values' => array( 'obsolete', 'simplified', 'complete' ),
+			'values' => array( 'obsolete', 'simple', 'full' ),
+		);
+
+		$definitions['prettyprint'] = array(
+			'name' => 'prettyprint',
+			'type' => 'boolean',
+			'default' => '',
+			'message' => 'smw-paramdesc-prettyprint',
 		);
 
 		return $definitions;
+	}
+}
+
+/**
+ * Class representing SMW JSON objects
+ *
+ * @since 1.8
+ *
+ * @return array of SMWJSON|array
+ */
+class SMWJSON {
+	protected $results;
+	protected $count;
+
+	/**
+	 * Constructor.
+	 * @param $printrequests
+	 * @param $results
+	 * @param $rows
+	 */
+  public function __construct( SMWQueryResult $res ){
+		$this->results = $res;
+		$this->count   = $res->getCount();
+	}
+
+	/**
+	 * Full JSON layer
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $res
+	 * @param boolean $isPretty
+	 *
+	 * @return string
+	 */
+	public function getSerialization() {
+		return array_merge( SMWDISerializer::getSerializedQueryResult( $this->results ), array ( 'rows' => $this->count ) );
+	}
+
+	/**
+	 * Simplified JSON layer
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $res
+	 * @param boolean $isPretty
+	 *
+	 * @return string
+	 */
+	public function getSimpleSerialization( ) {
+		$results = array();
+		$printRequests = array();
+
+		foreach ( $this->results->getPrintRequests() as /* SMWPrintRequest */ $printRequest ) {
+			$printRequests[$printRequest->getLabel()] = array(
+				'label'  => $printRequest->getLabel(),
+				'typeid' => $printRequest->getTypeID()
+			);
+		}
+
+		foreach ( $this->results->getResults() as /* SMWDIWikiPage */ $diWikiPage ) {
+			$result = array( );
+
+			foreach ( $this->results->getPrintRequests() as /* SMWPrintRequest */ $printRequest ) {
+				$serializationItems = array();
+				$resultAarray = new SMWResultArray( $diWikiPage, $printRequest, $this->results->getStore() );
+
+				if ( $printRequest->getMode() === SMWPrintRequest::PRINT_THIS ) {
+					$dataItems = $resultAarray->getContent();
+					$fulltext = SMWDISerializer::getSerialization( array_shift( $dataItems ) );
+					$result  += array ( 'label' => $fulltext["fulltext"] );
+				}
+				else {
+					$serializationItems = array_map(
+						array( 'SMWDISerializer', 'getSerialization' ),
+						$resultAarray->getContent()
+					);
+
+					$type  = $printRequest->getTypeID();
+					$items = array();
+
+					foreach ( $serializationItems as $item ) {
+					  if ( $type == "_wpg" ) {
+								$items[] = $item["fulltext"];
+						} else {
+								$items[] = $item;
+						}
+					}
+					$result[$printRequest->getLabel()] = $items;
+				}
+			}
+			$results[$diWikiPage->getTitle()->getFullText()] = $result;
+		}
+		return array( 'printrequests' => $printRequests, 'results' => $results,  'rows' => $this->count  );
+	}
+
+	/**
+	 * Encoding
+	 *
+	 * @since 1.8
+	 * @param $isPretty boolean prettify JSON output
+	 *
+	 * @return string
+  */
+	public function getEncoding( $isPretty = false ){
+		return FormatJSON::encode( $this->getSerialization() , $isPretty );
+	}
+
+	/**
+	 * Encoding
+	 *
+	 * @since 1.8
+	 * @param $isPretty boolean prettify JSON output
+	 *
+	 * @return string
+  */
+	public function getSimpleEncoding( $isPretty = false ){
+		return FormatJSON::encode( $this->getSimpleSerialization() , $isPretty );
 	}
 }
