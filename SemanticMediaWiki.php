@@ -101,6 +101,7 @@ $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
 		'jquery.ui.widget',
 		'jquery.ui.position',
 		'jquery.ui.autocomplete',
+		'jquery.tipsy',
 		'ext.smw.style'
 	),
 	'messages' => array(
