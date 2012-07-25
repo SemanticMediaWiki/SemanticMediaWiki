@@ -43,12 +43,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 	 * @return string
 	 */
 	protected function showFormatOptions( $format, array $paramValues ) {
-		$definitions = array_merge(
-			SMWQueryProcessor::getParameters(),
-			SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE )->getPa
-		);
-
-		$definitions = ParamDefinition::getCleanDefinitions( $definitions );
+		$definitions = SMWQueryProcessor::getFormatParameters( $format );
 
 		$optionsHtml = array();
 

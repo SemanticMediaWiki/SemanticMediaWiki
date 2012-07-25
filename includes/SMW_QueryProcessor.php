@@ -556,4 +556,27 @@ class SMWQueryProcessor {
 
 		return $params;
 	}
+
+	/**
+	 * Returns the definitions of all parameters supported by the specified format.
+	 *
+	 * @since 1.8
+	 *
+	 * @param string $format
+	 *
+	 * @return array of IParamDefinition
+	 */
+	public static function getFormatParameters( $format ) {
+		SMWParamFormat::resolveFormatAliases( $format );
+
+		if ( array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
+			return ParamDefinition::getCleanDefinitions(
+				SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
+			);
+		}
+		else {
+			return array();
+		}
+	}
+
 }

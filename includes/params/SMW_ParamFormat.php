@@ -146,5 +146,5 @@ class SMWParamFormat extends StringParam {
 
 		return $value;
 	}
-	
+
 }
