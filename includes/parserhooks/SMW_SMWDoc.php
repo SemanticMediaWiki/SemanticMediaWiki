@@ -115,7 +115,7 @@ class SMWSMWDoc extends ParserHook {
 			}
 		}
 
-		return $this->getParameterTable( $params );
+		return $this->parseWikitext( $this->getParameterTable( $params ) );
 	}
 
 	/**
