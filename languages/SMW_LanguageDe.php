@@ -1,6 +1,6 @@
 <?php
 /**
- * @file
+ * @file SMW_LanguageDe.php
  * @ingroup SMWLanguage
  */
 
@@ -14,15 +14,16 @@ global $smwgIP;
 include_once( $smwgIP . 'languages/SMW_Language.php' );
 
 /**
- * German language labels for important SMW labels (namespaces, datatypes,...).
+ * German language labels for important SMW labels (datatypes, special properties, ...).
  *
  * Main translations:
- * "property" --> "Attribut"
- * "type" --> "Datentyp"
- * "special properties" --> "Besondere Attribute"
- * "query" --> "Anfrage"
- * "subquery" --> Teilanfrage
- * "printout statement" --> Ausgabeanweisung
+ * - "type" / "datatype" --> "Datentyp"
+ * - "property" --> "Attribut"
+ * - "special property" --> "Spezialattribut" / ("Besonderes Attribut")
+ * - "query" --> "Abfrage" / ("Anfrage")
+ * - "subquery" --> "Teilabfrage" / ("Teilanfrage")
+ * - "query description" --> "Abfragebeschreibung"
+ * - "printout statement" --> "Ausgabeanweisung"
  *
  * @author Markus Krötzsch
  * @ingroup SMWLanguage
@@ -31,29 +32,29 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
 class SMWLanguageDe extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
-		'_wpg' => 'Seite', // name of page datatype
-		'_str' => 'Zeichenkette',  // name of the string type
-		'_txt' => 'Text',  // name of the text type
-		'_cod' => 'Quellcode',  // name of the (source) code type
-		'_boo' => 'Wahrheitswert',  // name of the boolean type
-		'_num' => 'Zahl', // name for the datatype of numbers
-		'_geo' => 'Geografische Koordinaten', // name of the geocoord type
-		'_tem' => 'Temperatur',  // name of the temperature type
-		'_dat' => 'Datum',  // name of the datetime (calendar) type
-		'_ema' => 'E-Mail',  // name of the email type
-		'_uri' => 'URL',  // name of the URL type
-		'_anu' => 'URI-Annotation',  // name of the annotation URI type (OWL annotation property)
+		'_wpg' => 'Seite', // name of the page datatype
+		'_str' => 'Zeichenkette', // name of the string datatype
+		'_txt' => 'Text', // name of the text datatype
+		'_cod' => 'Quellcode', // name of the (source) code datatype
+		'_boo' => 'Wahrheitswert', // name of the boolean datatype
+		'_num' => 'Zahl', // name for the number datatype
+		'_geo' => 'Geografische Koordinaten', // name of the geocoordinates datatype
+		'_tem' => 'Temperatur', // name of the temperature datatype
+		'_dat' => 'Datum', // name of the datetime (calendar) datatype
+		'_ema' => 'E-Mail', // name of the e-mail datatype
+		'_uri' => 'URL', // name of the URL datatype
+		'_anu' => 'URI-Annotation', // name of the annotation URI datatype (OWL annotation property)
 		'_tel' => 'Telefonnummer', // name of the telephone number URI datatype
-		'_rec' => 'Verbund', // name of record data type
-		'_qty' => 'Maß', // name of quantity data type
+		'_rec' => 'Verbund', // name of the record datatype
+		'_qty' => 'Maß', // name of the quantity datatype
 	);
 
 	protected $m_DatatypeAliases = array(
-		'URI'                   => '_uri',
-		'Ganze Zahl'            => '_num',
-		'Dezimalzahl'           => '_num',
-		'Aufzählung'            => '_str',
-		'Menge'                 => '_qty'
+		'URI'			=> '_uri',
+		'Ganze Zahl'		=> '_num',
+		'Dezimalzahl'		=> '_num',
+		'Aufzählung'		=> '_str',
+		'Menge' 		=> '_qty',
 	);
 
 	protected $m_SpecialProperties = array(
@@ -77,8 +78,11 @@ class SMWLanguageDe extends SMWLanguage {
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-		'Hat Datentyp'     => '_TYPE',
-		'Ausgabeeinheit'   => '_UNIT'
+		'Hat Datentyp'		=> '_TYPE',
+		'Hat erlaubten Wert'	=> '_PVAL',
+		'Hat Einheiten' 	=> '_UNIT',
+		'Ausgabeeinheit'	=> '_UNIT',
+		'Gleichwertige URI von' => '_URI',
 	);
 
 	protected $m_Namespaces = array(
@@ -87,7 +91,7 @@ class SMWLanguageDe extends SMWLanguage {
 		SMW_NS_TYPE           => "Datentyp",
 		SMW_NS_TYPE_TALK      => "Datentyp_Diskussion",
 		SMW_NS_CONCEPT        => 'Konzept',
-		SMW_NS_CONCEPT_TALK   => 'Konzept_Diskussion'
+		SMW_NS_CONCEPT_TALK   => 'Konzept_Diskussion',
 	);
 
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
