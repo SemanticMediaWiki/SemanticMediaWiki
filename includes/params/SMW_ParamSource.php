@@ -42,7 +42,24 @@ class SMWParamSource extends StringParam {
 	protected function formatValue( $value, IParam $param, array &$definitions, array $params ) {
 		$source = parent::formatValue( $value, $param, $definitions, $params );
 
+		$this->setAutoDefault( $source, $definitions['source']->getAllowedValues() );
+
 		return $source === '' ? smwfGetStore() : new $GLOBALS['smwgQuerySources'][$source]();
+	}
+	/**
+	 * Determines an auto default value for cases where default is to be used
+	 * as standard setting as long as no other source is used as input parameter
+	 *
+	 * @since 1.8
+	 *
+	 * @param $source
+	 * @param $allowedValues
+	 *
+	 * @return SMWStore
+	 */
+	protected function setAutoDefault( &$source, $allowedValues ) {
+		$source = in_array( 'default', $allowedValues ) && $source === '' ? 'default' : $source;
+		return true;
 	}
 
 }
