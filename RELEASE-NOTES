@@ -8,14 +8,37 @@ THIS IS NOT A RELEASE YET
 Semantic MediaWiki 1.8 is currently in beta-quality and is not recommended for use in
 production until the actual release.
 
-* Dropped compatibility with MediaWiki 1.16.x (and earlier).
+; Compatibility changes
+
+* Changed minimum MediaWiki version from 1.16 to 1.17.
 * Full compatibility with MediaWiki 1.19 and foreward-compatibility with 1.20.
+* Changed minimum Validator version from 0.4 to 0.5.
+* The structured of the JSON result format has been altered (bug 37418).
+
+; New features
+
+*
+
+; Other improvements
+
+* TODO: sqlstore 3
+* TODO: validator 0.5
+
+* Made query link generation completely generic. Links for all formats will now contain
+  all provided arguments.
+* Improved JSON export (bug 37418).
+* Improved Special:Ask UI.
+* Added tests for the query processor, the store, data items and result printers,
+  including base test classes for the later two that can be used by extensions.
+* No more inline CSS and JavaScript on special pages (now all resource loader modules).
+
+; Bug fixes
+
+* Fixed automatic running of SMW updating script when running maitenance/update.php.
 * Fixed page parameter handling on Special:ExportPDF (bug 35180).
 * Fixed handling of #set_recurring_event for 'month' and 'year' time units.
 * Fixed error on Special:URIResolver (bug 35643).
-* Fixed automatic running of SMW updating script when running maitenance/update.php.
-* Added improved JSON export (JSON structure has been altered)(bug 37418)
-* Fixed alternative query source ($smwgQuerySources) (bug 38292)
+* Fixed alternative query source ($smwgQuerySources) (bug 38292).
 
 == SMW 1.7.1 ==
 

@@ -21,6 +21,10 @@ class SMWDIBoolean extends SMWDataItem {
 	protected $m_boolean;
 
 	public function __construct( $boolean ) {
+		if ( !is_bool( $boolean ) ) {
+			throw new SMWDataItemException( "Initialisation value '$boolean' is not a boolean." );
+		}
+
 		$this->m_boolean = ( $boolean == true );
 	}
 

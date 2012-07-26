@@ -301,6 +301,11 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSpecialUnusedProperties']   = $specDir . 'QueryPages/SMW_SpecialUnusedProperties.php';
 	$wgAutoloadClasses['SMWSpecialWantedProperties']   = $specDir . 'QueryPages/SMW_SpecialWantedProperties.php';
 
+	// Special pages and closely related helper classes
+	$testsDir = $smwgIP . 'tests/phpunit/';
+	$wgAutoloadClasses['SMW\Tests\DataItemTest']		= $testsDir . 'includes/dataitems/DataItemTest.php';
+	$wgAutoloadClasses['SMW\Tests\ResultPrinterTest']	= $testsDir . 'includes/printers/ResultPrinterTest.php';
+
 	// Jobs
 	$wgJobClasses['SMWUpdateJob']       = 'SMWUpdateJob';
 	$wgAutoloadClasses['SMWUpdateJob']  = $smwgIP . 'includes/jobs/SMW_UpdateJob.php';

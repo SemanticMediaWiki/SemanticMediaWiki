@@ -270,15 +270,15 @@ final class SMWHooks {
 	*/
 	public static function registerUnitTests ( array &$files ) {
 		$testFiles = array(
-			'SMW_QueryProcessor',
+			'QueryProcessor',
 
-			'dataitems/SMW_DI_Number',
-			'dataitems/SMW_DI_Bool',
-			'dataitems/SMW_DI_Blob',
-			'dataitems/SMW_DI_String',
-			'dataitems/SMW_DI_GeoCoord',
+			'dataitems/DI_Number',
+			'dataitems/DI_Bool',
+			'dataitems/DI_Blob',
+			'dataitems/DI_String',
+			'dataitems/DI_GeoCoord',
 
-			'storage/SMW_Store',
+			'storage/Store',
 		);
 
 		foreach ( $testFiles as $file ) {

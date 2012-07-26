@@ -1,20 +1,24 @@
 <?php
 
+namespace SMW\Test;
+use SMWQueryProcessor;
+
 /**
  * Tests for the SMWQueryProcessor class.
  *
  * @file
- * @since storerewrite
+ * @since 1.8
  *
  * @ingroup SMW
  * @ingroup Test
  *
  * @group SMW
+ * @group SMWExtension
  * @group SMWQueries
  *
  * @author Nischay Nahata
  */
-class SMWQueryProcessorTest extends MediaWikiTestCase {
+class SMWQueryProcessorTest extends\ MediaWikiTestCase {
 
 	public function createQueryDataProvider() {
 		return array(
@@ -30,14 +34,13 @@ class SMWQueryProcessorTest extends MediaWikiTestCase {
 		$rawParams = explode( '|', $query );
 		$queryString = '';
 		$printouts = array();
-		$parameters;
-		
+
 		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $parameters, $printouts );
 		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
 		
 		$this->assertInstanceOf(
-			'SMWQuery',
+			'\SMWQuery',
 			SMWQueryProcessor::createQuery(
 				$queryString,
 				$parameters,
@@ -48,4 +51,5 @@ class SMWQueryProcessorTest extends MediaWikiTestCase {
 			"Result should be instance of SMWQuery."
 		);
 	}
+
 }

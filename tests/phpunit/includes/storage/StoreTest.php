@@ -1,21 +1,25 @@
 <?php
 
+namespace SMW\Test;
+use Title, SMWDIProperty, SMWDIWikiPage, SMWQueryProcessor;
+
 /**
  * Tests for the SMWStore class.
  *
  * @file
- * @since storerewrite
+ * @since 1.8
  *
  * @ingroup SMW
  * @ingroup Test
  *
  * @group SMW
  * @group SMWStore
+ * @group SMWExtension
  * @group Database
  *
  * @author Nischay Nahata
  */
-class SMWStoreTest extends MediaWikiTestCase {
+class StoreTest extends \MediaWikiTestCase {
 
 ///// Reading methods /////
 
@@ -36,7 +40,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 		$store = smwfGetStore();
 
 		$this->assertInstanceOf(
-			'SMWSemanticData',
+			'\SMWSemanticData',
 			$store->getSemanticData( $subject, $filter ),
 			"Result should be instance of SMWSemanticData."
 		);
@@ -64,7 +68,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 
 		foreach( $result as $di ) {
 			$this->assertInstanceOf(
-				'SMWDataItem',
+				'\SMWDataItem',
 				$di,
 				"Result should be instance of SMWDataItem."
 			);
@@ -90,7 +94,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 
 		foreach( $result as $page ) {
 			$this->assertInstanceOf(
-				'SMWDIWikiPage',
+				'\SMWDIWikiPage',
 				$page,
 				"Result should be instance of SMWDIWikiPage."
 			);
@@ -118,7 +122,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 
 		foreach( $result as $property ) {
 			$this->assertInstanceOf(
-				'SMWDIProperty',
+				'\SMWDIProperty',
 				$property,
 				"Result should be instance of SMWDIProperty."
 			);
@@ -141,8 +145,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 		$rawParams = explode( '|', $query );
 		$queryString = '';
 		$printouts = array();
-		$parameters;
-		
+
 		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $parameters, $printouts );
 		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
@@ -151,7 +154,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 		$queryResult = $store->getQueryResult( $smwQuery );
 
 		$this->assertInstanceOf(
-			'SMWQueryResult',
+			'\SMWQueryResult',
 			$queryResult,
 			"Result should be instance of SMWQueryResult."
 		);
@@ -173,7 +176,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 			$this->assertEquals( 2, sizeof( $row ) );
 
 			$this->assertInstanceOf(
-				'SMWDIProperty',
+				'\SMWDIProperty',
 				$row[0],
 				"Result should be instance of SMWDIProperty."
 			);
@@ -187,7 +190,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 		$this->assertTrue( is_array( $result ) );
 		foreach( $result as $row ) {
 			$this->assertInstanceOf(
-				'SMWDIProperty',
+				'\SMWDIProperty',
 				$row,
 				"Result should be instance of SMWDIProperty."
 			);
@@ -201,7 +204,7 @@ class SMWStoreTest extends MediaWikiTestCase {
 		$this->assertTrue( is_array( $result ) );
 		foreach( $result as $row ) {
 			$this->assertInstanceOf(
-				'SMWDIProperty',
+				'\SMWDIProperty',
 				$row[0],
 				"Result should be instance of SMWDIProperty."
 			);
@@ -217,4 +220,5 @@ class SMWStoreTest extends MediaWikiTestCase {
 		$this->assertArrayHasKey( 'USEDPROPS', $result );
 		$this->assertArrayHasKey( 'DECLPROPS', $result );
 	}
+
 }
