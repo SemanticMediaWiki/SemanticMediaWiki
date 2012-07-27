@@ -56,7 +56,9 @@ interface SMWDataItemHandler {
 	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 * This array is used to perform all insert operations into the DB
-	 * To optimize return minimum fields having indexes
+	 * NOTE - For Containers this only inserts the id of the container
+	 * and rest data should be handled by recursion in calling code
+	 *
 	 * @since SMW.storerewrite
 	 *
 	 * @param SMWDataItem
@@ -90,15 +92,14 @@ interface SMWDataItemHandler {
 	public function getLabelField();
 
 	/**
-	 * Method to create a dataitem from a type ID and array of DB keys.
+	 * Method to create a dataitem from an array of DB keys.
 	 *
 	 * @since SMW.storerewrite
-	 * @param $typeId typeId of the DataItem
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
 	 */
-	public function dataItemFromDBKeys( $typeId, $dbkeys );
+	public function dataItemFromDBKeys( $dbkeys );
 
 }
 

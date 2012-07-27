@@ -100,17 +100,14 @@ class SMWDIHandlerConcept implements SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to create a dataitem from a type ID and array of DB keys.
+	 * Method to create a dataitem from an array of DB keys.
 	 *
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
 	 */
-	public function dataItemFromDBKeys( $typeId, $dbkeys ) {
-		if ( count( $dbkeys ) >= 5 ) {
+	public function dataItemFromDBKeys( $dbkeys ) {
 			return new SMWDIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ),
 				$dbkeys[2], $dbkeys[3], $dbkeys[4] );
-		}
-		throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
 	}
 }

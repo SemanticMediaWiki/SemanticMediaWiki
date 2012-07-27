@@ -76,22 +76,14 @@ class SMWDIHandlerWikiPage implements SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to create a dataitem from a type ID and array of DB keys.
+	 * Method to create a dataitem from an array of DB keys.
 	 *
 	 * @since SMW.storerewrite
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
 	 */
-	public function dataItemFromDBKeys( $typeId, $dbkeys ) {
-		if ( $typeId == '__spf' ) {
-			$pagedbkey = str_replace( ' ', '_', $dbkeys[0] );
-			return new SMWDIWikiPage( $pagedbkey, SF_NS_FORM, '' );
-		} elseif ( count( $dbkeys ) >= 5 ) { // with subobject name (and sortkey)
-			return new SMWDIWikiPage( $dbkeys[0], intval( $dbkeys[1] ), $dbkeys[2], $dbkeys[4] );
-		} elseif ( count( $dbkeys ) >= 3 ) { // without subobject name (just for b/c)
-			return new SMWDIWikiPage( $dbkeys[0], intval( $dbkeys[1] ), $dbkeys[2] );
-		}
-		throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+	public function dataItemFromDBKeys( $dbkeys ) {
+		return new SMWDIWikiPage( $dbkeys[0], intval( $dbkeys[1] ), $dbkeys[2], $dbkeys[4] );
 	}
 }

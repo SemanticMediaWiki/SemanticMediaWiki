@@ -126,30 +126,13 @@ Class SMWSQLStore3Readers {
 			$propertyTypeId = $property->findPropertyTypeID();
 			$propertyDiId = SMWDataValueFactory::getDataItemId( $propertyTypeId );
 
-			if ( $propertyDiId == SMWDataItem::TYPE_CONTAINER ) {
-				foreach ( $data as $dbkeys ) {
-					try {
-						$dataItemId = SMWDataValueFactory::getDataItemId( '_wpg' );
-						$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $dataItemId );
-						$diSubWikiPage = $diHandler->dataItemFromDBKeys( '_wpg', $dbkeys );
-						$semanticData = new SMWContainerSemanticData( $diSubWikiPage );
-						$semanticData->copyDataFrom( $this->getSemanticData( $diSubWikiPage ) );
-						$result[] = new SMWDIContainer( $semanticData );
-					} catch ( SMWDataItemException $e ) {
-						// maybe type assignment changed since data was stored;
-						// don't worry, but we can only drop the data here
-					}
-				}
-			} else {
-				foreach ( $data as $dbkeys ) {
-					try {
-						$dataItemId = SMWDataValueFactory::getDataItemId( $propertyTypeId );
-						$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $dataItemId );
-						$result[] = $diHandler->dataItemFromDBKeys( $propertyTypeId, $dbkeys );
-					} catch ( SMWDataItemException $e ) {
-						// maybe type assignment changed since data was stored;
-						// don't worry, but we can only drop the data here
-					}
+			foreach ( $data as $dbkeys ) {
+				try {
+					$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $propertyDiId );
+					$result[] = $diHandler->dataItemFromDBKeys( $dbkeys );
+				} catch ( SMWDataItemException $e ) {
+					// maybe type assignment changed since data was stored;
+					// don't worry, but we can only drop the data here
 				}
 			}
 		}

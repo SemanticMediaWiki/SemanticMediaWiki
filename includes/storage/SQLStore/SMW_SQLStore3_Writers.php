@@ -43,7 +43,10 @@ Class SMWSQLStore3Writers {
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = wfGetDB( DB_MASTER );
 			$id = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
-			$db->delete( 'smw_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc2' );
+			$db->delete( 'smw_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
+			//Concepts updating is not handled in deleteSemanticData (no diff for them right now)
+			$sql = 'UPDATE smw_stats SET usage_count = usage_count - 1 where pid = ' . $this->store->getSMWPropertyID( new SMWDIProperty( '_CONC' ) );
+			$db->query( $sql, __METHOD__ );
 			$db->delete( 'smw_conccache', array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
 
@@ -86,6 +89,11 @@ Class SMWSQLStore3Writers {
 
 		// Always make an ID (pages without ID cannot be in query results, not even in fixed value queries!):
 		$sid = $this->store->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
+
+		// recursively update Subobjects
+		foreach ( $data->getPropertyValues( new SMWDIProperty( '_SOBJ' ) ) as $di ) {
+			$this->doDataUpdate( $di->getSemanticData() );
+		}
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		$this->prepareDBUpdates( $updates, $data, $sid, $subject );
 
@@ -115,7 +123,7 @@ Class SMWSQLStore3Writers {
 				} else {
 					//data didn't exist before or has changed
 					$this->store->getReader()->addTableSemanticData( $sid, $oldData, $tableDeclaration ); // Add data for this table
-					$this->deleteTableSemanticData( $subject, $tableDeclaration );
+					$this->deleteTableSemanticData( $sid, $tableDeclaration );
 					$db->insert( $tableName, $updates[$tableName], "SMW::updateData$tableName" );
 					$oldHashes[$tableName] = $newHash;
 					$hashIsChanged = true;
@@ -124,7 +132,7 @@ Class SMWSQLStore3Writers {
 			} elseif ( array_key_exists( $tableName, $oldHashes ) ) {
 				//data existed before but not now
 				$this->store->getReader()->addTableSemanticData( $sid, $oldData, $tableDeclaration ); // Add data for this table
-				$this->deleteTableSemanticData( $subject, $tableDeclaration );
+				$this->deleteTableSemanticData( $sid, $tableDeclaration );
 				unset( $oldHashes[$tableName] );
 				$hashIsChanged = true;
 			}
@@ -193,7 +201,7 @@ Class SMWSQLStore3Writers {
 				}
 			}
 		}
-		$this->updatePropertyCounts( $oldData, $newData );
+		$this->doDiffandUpdateCount( $oldData, $newData );
 
 		wfRunHooks( 'SMWSQLStore3::updateDataAfter', array( $this->store, $data ) );
 		wfProfileOut( "SMWSQLStore3::updateData (SMW)" );
@@ -244,23 +252,12 @@ Class SMWSQLStore3Writers {
 				if ( $proptable->fixedproperty == false ) {
 					$uvals['p_id'] = $this->store->makeSMWPropertyID( $property );
 				}
-
-				if ( $di instanceof SMWDIContainer ) { // process subobjects recursively
-					$subObject = $di->getSemanticData()->getSubject();
-					$subObjectId = $this->prepareDBUpdates( $updates, $di->getSemanticData(), 0, $subObject );
-					// Note: tables for container objects MUST have objectfields == array(<somename> => 'p')
-					$fields = $proptable->getFields();
-					reset( $fields );
-					$uvals[key( $fields )] = $subObjectId;
-				} else {
-					$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $di->getDIType() );
-					$uvals = array_merge( $uvals, $diHandler->getInsertValues( $di ) );
-				}
+				$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $di->getDIType() );
+				$uvals = array_merge( $uvals, $diHandler->getInsertValues( $di ) );
 
 				if ( !array_key_exists( $proptable->name, $updates ) ) {
 					$updates[$proptable->name] = array();
 				}
-
 				$updates[$proptable->name][] = $uvals;
 			}
 		}
@@ -381,64 +378,55 @@ Class SMWSQLStore3Writers {
 	/**
 	 * Delete all semantic data stored for the given subject on the specified table.
 	 * Note - if the table is smw_conc or smw_redi nothing is done as doDataUpdate handles them itself
+	 * No handling of tables with idsubject set to false here.
 	 *
-	 * @param $subject SMWDIWikiPage
-	 * @param $table SMW_SQLStoreTable
+	 * @since 1.8
+	 *
+	 * @param $id Integer
+	 * @param $table SMWSQLStore3Table
 	 */
-	protected function deleteTableSemanticData( SMWDIWikiPage $subject, $table ) {
-		if ( $subject->getSubobjectName() !== '' ) {
-			return; // not needed, and would mess up data
-		}
-
+	protected function deleteTableSemanticData( $id, SMWSQLStore3Table $table ) {
 		if ( $table->name == 'smw_conc' || $table->name == 'smw_redi' ) {
-			return;
+			return; // not handled here
 		}
 
-		$id = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
 		if ( $id == 0 ) {
 			return;
 		}
-		$db = wfGetDB( DB_MASTER );
-		if ( $table->idsubject ) {
-			$db->delete( $table->name, array( 's_id' => $id ), __METHOD__ );
-		} else {
-			$db->delete(
-				$table->name,
-				array(
-					's_title' => $subject->getDBkey(),
-					's_namespace' => $subject->getNamespace()
-				),
-				__METHOD__
-			);
-		}
+
+		$dbw = wfGetDB( DB_MASTER );
+		$dbw->delete( $table->name, array( 's_id' => $id ), __METHOD__ );
 	}
 
 	/**
 	 * Delete all semantic data stored for the given subject. Used for
-	 * update purposes.
+	 * update purposes. Handles Subobjects recursively
 	 *
 	 * @param $subject SMWDIWikiPage the data of which is deleted
 	 */
 	public function deleteSemanticData( SMWDIWikiPage $subject ) {
-		if ( $subject->getSubobjectName() !== '' ) return; // not needed, and would mess up data
-
 		$db = wfGetDB( DB_MASTER );
 
-		$id = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
-
+		$id = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), false );
 		if ( $id == 0 ) {
 			// not (directly) used anywhere yet, may be a redirect but we do not care here
 			wfRunHooks( 'smwDeleteSemanticData', array( $subject ) );
 			return;
 		}
+		//get oldData for diffing and updating property counts
+		$oldData = $this->store->getSemanticData( $subject );
+		$this->doDiffandUpdateCount( $oldData );
 
-		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-			if ( $proptable->name == 'smw_conc' ) continue; // skip concepts, since they have chache data in their table which should be kept while the cache is intact
-			if ( $proptable->idsubject ) {
-				$db->delete( $proptable->name, array( 's_id' => $id ), __METHOD__ );
-			} elseif ( $proptable->name != 'smw_redi' ) { /// NOTE: redirects are handled by updateRedirects(), not here!
-				$db->delete( $proptable->name, array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() ), __METHOD__ );
+		$oldHashes = $this->getPropTableHashes( $id );
+		foreach ( SMWSQLStore3::getPropertyTables() as $tableId => $tableDeclaration ) {
+			$tableName = $tableDeclaration->name;
+			if ( array_key_exists( $tableName, $oldHashes ) ) {
+				$this->deleteTableSemanticData( $id, $tableDeclaration );
 			}
+		}
+		if ( $subject->getSubobjectName() !== '' ) {
+			return; // Subobjects don't have subsubobjects
+			wfRunHooks( 'smwDeleteSemanticData', array( $subject ) );
 		}
 
 		// also find subobjects used by this ID ...
@@ -455,21 +443,15 @@ Class SMWSQLStore3Writers {
 			__METHOD__ );
 		$subobjects = array();
 
-		// ... and delete them as well
+		// ... and delete there data as well recursively
 		foreach ( $res as $row ) {
+			$this->deleteSemanticData( new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw, $row->smw_subobject ) );
 			$subobjects[] = $row->smw_id;
-			$this->store->m_idCache->setId( $row->smw_title, $row->smw_namespace,
-				$row->smw_iw, $row->smw_subobject, 0 ); // deleted below
-			foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-				if ( $proptable->idsubject ) {
-					$db->delete( $proptable->name, array( 's_id' => $row->smw_id ), __METHOD__ );
-				}
-			}
 		}
 
 		$db->freeResult( $res );
 
-		// free all affected subobjects in one call:
+		// delete all subobjects used in one call:
 		if ( count( $subobjects ) > 0 ) {
 			$db->delete( 'smw_ids',
 				array( 'smw_id' => $subobjects),
@@ -626,18 +608,23 @@ Class SMWSQLStore3Writers {
 	}
 
 	/**
-	* This method takes two SemanticData objects and computes the change in count
-	* of the Property Usage and then updates the db.
+	* Updates propertyCounts using the diff ( old SemanticData and new SemanticData for a subject )
+	* Old SemanticData is data before the page was edited and new SemanticData is data after edit.
+	* new SemanticData is optional sometimes (as for deleting data)
+	*
+	* @since 1.8
 	*
 	* @param SemanticData $oldData
-	* @param SemanticData $newData
-	*
-	* @return array of keys (strings) => array( DIProperty, count )
+	* @param SemanticData or null $newData
 	*/
-	protected function updatePropertyCounts( $oldData, $newData ) {
+	protected function doDiffandUpdateCount( $oldData, $newData = null ) {
+
+		//Update Property Counts
 		$updates = array();
-		foreach( $newData->getProperties() as $diKey => $diProp ) {
-			$updates[$diKey] = array( $diProp, count( $newData->getPropertyValues( $diProp ) ) );
+		if( !is_null( $newData ) ) {
+			foreach( $newData->getProperties() as $diKey => $diProp ) {
+				$updates[$diKey] = array( $diProp, count( $newData->getPropertyValues( $diProp ) ) );
+			}
 		}
 
 		foreach( $oldData->getProperties() as $diKey => $diProp ) {
@@ -664,8 +651,6 @@ Class SMWSQLStore3Writers {
 			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $update[1] . ' where pid = ' . $this->store->getSMWPropertyID( $update[0] );
 			$dbw->query( $sql, __METHOD__ );
 		}
-
-		return $updates;
 	}
 
 	/**
@@ -693,7 +678,6 @@ Class SMWSQLStore3Writers {
 		else {
 			$tableHashes = array();
 		}
-
 		return $tableHashes;
 	}
 

@@ -96,14 +96,14 @@ class SMWDIHandlerTime implements SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to create a dataitem from a type ID and array of DB keys.
+	 * Method to create a dataitem from an array of DB keys.
 	 *
 	 * @since SMW.storerewrite
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
 	 */
-	public function dataItemFromDBKeys( $typeId, $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ) {
 		$timedate = explode( 'T', $dbkeys[0], 2 );
 		if ( ( count( $dbkeys ) == 2 ) && ( count( $timedate ) == 2 ) ) {
 			$date = reset( $timedate );

@@ -76,14 +76,14 @@ class SMWDIHandlerBoolean implements SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to create a dataitem from a type ID and array of DB keys.
+	 * Method to create a dataitem from an array of DB keys.
 	 *
 	 * @since SMW.storerewrite
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
 	 */
-	public function dataItemFromDBKeys( $typeId, $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ) {
 		global $wgDBtype;
 		$value = true;
 

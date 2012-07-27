@@ -73,18 +73,14 @@ class SMWDIHandlerUri implements SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to create a dataitem from a type ID and array of DB keys.
+	 * Method to create a dataitem from an array of DB keys.
 	 *
 	 * @since SMW.storerewrite
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
 	 */
-	public function dataItemFromDBKeys( $typeId, $dbkeys ) {
-		if ( $typeId == '__typ' && $dbkeys[0]{0} == '_' ) { // b/c: old data stored as type ids
-			return SMWTypesValue::getTypeUriFromTypeId( $dbkeys[0] );
-		} else {
-			return SMWDIUri::doUnserialize( $dbkeys[0] );
-		}
+	public function dataItemFromDBKeys( $dbkeys ) {
+		return SMWDIUri::doUnserialize( $dbkeys[0] );
 	}
 }
