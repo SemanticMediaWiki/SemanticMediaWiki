@@ -44,9 +44,6 @@ Class SMWSQLStore3Writers {
 			$db = wfGetDB( DB_MASTER );
 			$id = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
 			$db->delete( 'smw_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
-			//Concepts updating is not handled in deleteSemanticData (no diff for them right now)
-			$sql = 'UPDATE smw_stats SET usage_count = usage_count - 1 where pid = ' . $this->store->getSMWPropertyID( new SMWDIProperty( '_CONC' ) );
-			$db->query( $sql, __METHOD__ );
 			$db->delete( 'smw_conccache', array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
 
