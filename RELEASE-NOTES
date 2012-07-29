@@ -16,8 +16,7 @@ production until the actual release.
 * The structured of the JSON result format has been altered (bug 37418).
 
 ; New features
-
-*
+* Added anonymous auto-numbering for subobjects that don't specify their identifier (bug 36634)
 
 ; Other improvements
 
