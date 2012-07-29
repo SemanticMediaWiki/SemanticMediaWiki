@@ -29,6 +29,13 @@ class SMWSubobject {
 		array_shift( $params ); // We already know the $parser ...
 
 		$subobjectName = str_replace( ' ', '_', trim( array_shift( $params ) ) );
+
+		// For objects that don't come with there own idenifier, use a value
+		// dependant md4 hash key
+		if ( $subobjectName === '' || $subobjectName === '-' ){
+			$subobjectName = '_' . hash( 'md4', implode( '|', $params ) , false );
+		}
+
 		$mainSemanticData = SMWParseData::getSMWData( $parser );
 		$subject = $mainSemanticData->getSubject();
 
