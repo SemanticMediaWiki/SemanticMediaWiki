@@ -98,6 +98,9 @@ function smwfRegisterHooks() {
 	//UnitTests
 	$wgHooks['UnitTestsList'][] = 'SMWHooks::registerUnitTests';
 
+	// User preference
+	$wgHooks['GetPreferences'][] = 'SMWHooks::onGetPreferences';
+
 	if ( $GLOBALS['smwgToolboxBrowseLink'] ) {
 		$wgHooks['SkinTemplateToolboxEnd'][] = 'SMWHooks::showBrowseLink';
 	}

@@ -28,6 +28,7 @@
  *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author mwjames
  */
 abstract class SMWQuerySpecialPage extends SpecialPage {
 
@@ -55,7 +56,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 
 			// Maybe there is a better way but somehow I couldn't find one therefore
 			// 'source' display will be omitted where no alternative source was found or
-			// a source was marked as default but had no other available options
+			// a source that was marked as default but had no other available options
 			if ( ( $name == 'source' && count ( $definition->getAllowedValues() ) == 0 ) || (
 				$name == 'source' && in_array( 'default', $definition->getAllowedValues() ) &&
 				count ( $definition->getAllowedValues() ) < 2 ) ) {
@@ -68,7 +69,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 				Html::rawElement(
 					'span',
 					array(
-						'class' => 'smw-ask-info',
+						'class' => $this->isTooltipDisplay() == true ? 'smw-ask-info' : '',
 						'word-wrap' => 'break-word',
 						'data-info' => $definition->getDescription()
 					), htmlspecialchars( $name ) .  ': ' .
@@ -81,7 +82,20 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 		$rowHtml = '';
 		$resultHtml = '';
 
-		$resultHtml .= Html::openElement( 'table', array( 'class' => 'other options', 'width' => '100%' ) );
+		// Top info text for a collapsed option box
+		if ( $this->isTooltipDisplay() == true ){
+			$resultHtml .= Html::element('div', array(
+				'style' => 'margin-bottom:10px;'
+				), wfMsg( 'smw-ask-otheroptions-info')
+			);
+		}
+
+		// Table
+		$resultHtml .= Html::openElement( 'table', array(
+			'class' => 'smw-ask-otheroptions',
+			'width' => '100%'
+			)
+		);
 		$resultHtml .= Html::openElement( 'tbody' );
 
 		while ( $option = array_shift( $optionsHtml ) ) {
@@ -114,7 +128,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 	}
 
 	/**
-	 * Get the HTML for a single parameter input.
+	 * Get the HTML for a single parameter input
 	 *
 	 * @since 1.8
 	 *
@@ -124,6 +138,9 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 	 * @return string
 	 */
 	protected function showFormatOption( IParamDefinition $definition, $currentValue ) {
+		// Init
+		$description = '';
+
 		$input = new ParameterInput( $definition );
 		$input->setInputName( 'p[' . $definition->getName() . ']' );
 
@@ -131,7 +148,32 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 			$input->setCurrentValue( $currentValue );
 		}
 
-		return Html::rawElement( 'td', array( 'overflow' => 'hidden' ), $input->getHtml()   );
+		// Parameter description text
+		if ( !$this->isTooltipDisplay() ) {
+			$description =  Html::rawElement( 'span', array(
+				'class' => 'smw-ask-parameter-description'
+				), '<br />' . $definition->getDescription()
+			);
+		}
+
+		return Html::rawElement( 'td', array(
+			'overflow' => 'hidden'
+			), $input->getHtml() . $description
+		);
 	}
 
+	/**
+	 * Getting Special:Ask user tooltip preference
+	 *
+	 * @since 1.8
+	 *
+	 *
+	 * @return boolean
+	 */
+	protected function isTooltipDisplay() {
+		// @TODO global
+		// In case of RequestContext, switch to
+		// $this->getUser()->getOption('smw-ask-options-tooltip-display');
+		return $GLOBALS['wgUser']->getOption('smw-ask-options-tooltip-display');
+	}
 }

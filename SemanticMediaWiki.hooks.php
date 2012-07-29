@@ -288,4 +288,32 @@ final class SMWHooks {
 		return true;
 	}
 
+	/**
+	 * Hook: GetPreferences adds user preference
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
+	 *
+	 * @param User $user
+	 * @param array $preferences
+	 *
+	 * @return true
+	 */
+	public static function onGetPreferences( $user, &$preferences ) {
+
+		// Option to enable tooltip info
+		$preferences['smw-ask-options-tooltip-display'] = array(
+			'type' => 'toggle',
+			'label-message' => 'smw-ask-userpref-options-tooltip-display',
+			'section' => 'smw/ask-options',
+		);
+
+		// Preference to set option box be collapsed by default
+		$preferences['smw-ask-options-collapsed-default'] = array(
+			'type' => 'toggle',
+			'label-message' => 'smw-ask-userpref-options-collapsed-default',
+			'section' => 'smw/ask-options',
+		);
+
+		return true;
+	}
+
 }

@@ -107,6 +107,7 @@ $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
 	'messages' => array(
 		'smw-ask-delete',
 	),
+	'position' => 'top'
 );
 
 $wgResourceModules['ext.smw.browse'] = $moduleTemplate + array(

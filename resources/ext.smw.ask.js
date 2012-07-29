@@ -90,19 +90,21 @@
 	// Based on the 'coolfieldset' jQuery plugin:
 	// http://w3shaman.com/article/jquery-plugin-collapsible-fieldset
 	function smwHideFieldsetContent(obj, options){
-		obj.find('div').slideUp(options.speed);
-		obj.removeClass("smwExpandedFieldset");
-		obj.addClass("smwCollapsedFieldset");
+		obj.find( 'div' ).slideUp(options.speed);
+		obj.find( '.collapsed-info' ).slideDown(options.speed);
+		obj.removeClass( "smwExpandedFieldset" );
+		obj.addClass( "smwCollapsedFieldset" );
 	}
 
 	function smwShowFieldsetContent(obj, options){
-		obj.find('div').slideDown(options.speed);
-		obj.removeClass("smwCollapsedFieldset");
-		obj.addClass("smwExpandedFieldset");
+		obj.find( 'div' ).slideDown(options.speed);
+		obj.find( '.collapsed-info' ).slideUp(options.speed);
+		obj.removeClass( "smwCollapsedFieldset" );
+		obj.addClass( "smwExpandedFieldset" );
 	}
 
 	$.fn.smwMakeCollapsible = function(options){
-		var setting = { collapsed: false, speed: 'medium' };
+		var setting = { collapsed: options.collapsed, speed: 'medium' };
 		$.extend(setting, options);
 
 		this.each(function(){
@@ -185,7 +187,7 @@
 		} );
 
 		$( '#formatSelector' ).change( function() {
-			console.log($( this).attr( 'data-url' ).replace( 'this.value', $( this ).val() ));
+			// console.log($( this).attr( 'data-url' ).replace( 'this.value', $( this ).val() ));
 			$.ajax( {
 				// Evil hack to get more evil Spcial:Ask stuff to work with less evil JS.
 				'url': $( this).attr( 'data-url' ).replace( 'this.value', $( this ).val() ),
@@ -200,7 +202,9 @@
 		} );
 
 		// Fieldset collapsible
-		$('.smw-ask-options').smwMakeCollapsible();
+		$( '.smw-ask-options' ).smwMakeCollapsible( {
+			'collapsed' : mw.user.options.get( 'smw-ask-options-collapsed-default' )
+		} );
 
 		// Initialize tooltip for the default selection
 		$( ".smw-ask-info" ).smwShowTooltip();

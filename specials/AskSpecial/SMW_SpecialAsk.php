@@ -369,10 +369,20 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				$result .= "</fieldset>\n";
 			}
 
-			// Other options
+			// Other options fieldset
 			$result .= '<fieldset class="smw-ask-options smwExpandedFieldset"><legend>' . wfMsgHtml( 'smw_ask_otheroptions' ) . "</legend>\n";
+
+			// Info text for when the fieldset is collapsed
+			$result .= Html::element( 'div', array(
+				'class' => 'collapsed-info',
+				'style' => 'display:none;'
+				), wfMsg( 'smw-ask-otheroptions-collapsed-info')
+			);
+
+			// Individual options
 			$result .= "<div id=\"other_options\">" . $this->showFormatOptions( $this->m_params['format'], $this->m_params ) . "</div>";
 			$result .= "</fieldset>\n";
+
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
 
 			// Submit 

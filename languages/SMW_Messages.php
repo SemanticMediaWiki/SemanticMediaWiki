@@ -230,6 +230,8 @@ It takes care that humans do not turn into websites.',
 	'smw_ask_format_as'     => 'Format as:',
 	'smw_ask_defaultformat'	=> 'default',
 	'smw_ask_otheroptions'  => 'Other options',
+	'smw-ask-otheroptions-info' => 'This section contains options that alter printout statements. Parameter descriptions can be viewed by hovering over them.',
+	'smw-ask-otheroptions-collapsed-info' => 'Please use the plus icon to view all available options',
 	'smw_ask_show_embed'	=> 'Show embed code',
 	'smw_ask_hide_embed'	=> 'Hide embed code',
 	'smw_ask_embed_instr'	=> 'To embed this query inline into a wiki page use the code below.',
@@ -395,6 +397,12 @@ Estimated progress of current update:',
 	// Messages for info parser function.
 	'smw-info-par-message' => 'Message to display.',
 	'smw-info-par-icon' => 'Icon to show, either "info" or "warning".',
+
+	// User preference
+	'prefs-smw' => 'Semantic MediaWiki',
+	'prefs-ask-options' => 'Semantic search options',
+	'smw-ask-userpref-options-tooltip-display' => 'Display parameter text as info tooltip',
+	'smw-ask-userpref-options-collapsed-default' => 'Enable option box to be collapsed by default',
 );
 
 /** Message documentation (Message documentation)
@@ -415,9 +423,14 @@ Estimated progress of current update:',
 $messages['qqq'] = array(
 	'smw-desc' => '{{desc}}',
 	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
-	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
+	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language. 
+	{{Identical|And}}',
 
-{{Identical|And}}',
+	'prefs-smw' => 'Semantic MediaWiki',
+	'prefs-ask-options' => 'Semantic search options',
+	'smw-ask-userpref-options-tooltip-display' => 'Display parameter text as info tooltip',
+	'smw-ask-userpref-options-collapsed-default' => 'Enable option box to be collapsed by default',
+
 	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values. $1 holds the name of the page',
 	'smw_isspecprop' => 'Used on [[Special:Properties]] to identify a special (build in) property.',
 	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query). $1 holds the name of the concept',
@@ -615,6 +628,9 @@ This method is called ''content negotiation''.
 	'smw_ask_defaultformat' => 'This is the label used for indicating the default [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] within a dropdown field.
 
 {{Identical|Default}}',
+	'smw-ask-sorting' => 'Sorting',
+	'smw-ask-otheroptions-info' => 'This section contains options that alter printout statements. Parameter descriptions can be viewed by hovering over them.',
+	'smw-ask-otheroptions-collapsed-info' => 'Please use the plus icon to view all available options',
 	'smw_ask_otheroptions' => 'This is the text for the header of the section on [[Special:Ask]] containing various different options to choose or enter in order to specify printout statements of a query.',
 	'smw_ask_show_embed' => 'This is the text of the action link on [[Special:Ask]] to show the code of a query.',
 	'smw_ask_hide_embed' => 'This is the text of the action link on [[Special:Ask]] to hide the code of a query.',
