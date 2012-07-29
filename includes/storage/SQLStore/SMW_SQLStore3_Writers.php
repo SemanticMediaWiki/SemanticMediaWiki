@@ -56,6 +56,7 @@ Class SMWSQLStore3Writers {
 	}
 
 	/**
+	 * TODO - Handle containers, delete them from tables (how to use proptable hashes here?)
 	 * @see SMWStore::doDataUpdate
 	 *
 	 * @param SMWSemanticData $data
@@ -108,10 +109,11 @@ Class SMWSQLStore3Writers {
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $tableId => $tableDeclaration ) {
 			$tableName = $tableDeclaration->name;
-			if ( $tableName == 'smw_conc' || $tableName == 'smw_redi' ) {
-			// TODO - handle these for updating property counts
-				continue;	//smw_redi and smw_conc are not considered here.
+			if ( $tableName == 'smw_redi' ) {
+				// TODO - handle these for updating property counts
+				continue;	//smw_redi are not considered here.
 			}
+
 			if ( array_key_exists( $tableName, $updates ) ) {
 				$newHash = md5( serialize( $updates[$tableName] ) );
 				if ( array_key_exists( $tableName, $oldHashes ) && $newHash == $oldHashes[$tableName] ) {
@@ -120,14 +122,32 @@ Class SMWSQLStore3Writers {
 				} else {
 					//data didn't exist before or has changed
 					$this->store->getReader()->addTableSemanticData( $sid, $oldData, $tableDeclaration ); // Add data for this table
-					$this->deleteTableSemanticData( $sid, $tableDeclaration );
-					$db->insert( $tableName, $updates[$tableName], "SMW::updateData$tableName" );
+
+					// Concepts are not just written but carefully updated,
+					// preserving existing metadata (cache ...) for a concept:
+					if ( $tableName == 'smw_conc' ) {
+						$row = $db->selectRow(
+							'smw_conc',
+							array( 'cache_date', 'cache_count' ),
+							array( 's_id' => $sid ),
+							'SMWSQLStoreQueries::updateConcData'
+						);
+
+						if ( ( $row === false ) && ( $updates['smw_conc']['concept_txt'] !== '' ) ) { // insert newly given data
+							$db->insert( 'smw_conc', $updates['smw_conc'], 'SMW::updateConcData' );
+						} elseif ( $row !== false ) { // update data, preserve existing entries
+							$db->update( 'smw_conc', $updates['smw_conc'], array( 's_id' => $sid ), 'SMW::updateConcData' );
+						}
+					} else {
+						$this->deleteTableSemanticData( $subject, $tableDeclaration );
+						$db->insert( $tableName, $updates[$tableName], "SMW::updateData$tableName" );
+					}
 					$oldHashes[$tableName] = $newHash;
 					$hashIsChanged = true;
 					$modifiedTables[$tableId] = $tableDeclaration;
 				}
 			} elseif ( array_key_exists( $tableName, $oldHashes ) ) {
-				//data existed before but not now
+				//data existed before but not now (Concepts data is not deleted here)
 				$this->store->getReader()->addTableSemanticData( $sid, $oldData, $tableDeclaration ); // Add data for this table
 				$this->deleteTableSemanticData( $sid, $tableDeclaration );
 				unset( $oldHashes[$tableName] );
@@ -137,38 +157,6 @@ Class SMWSQLStore3Writers {
 
 		if ( $hashIsChanged ) {
 			$this->setPropTableHashes( $sid, $oldHashes );
-		}
-
-		// Concepts are not just written but carefully updated,
-		// preserving existing metadata (cache ...) for a concept:
-		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) {
-			if ( array_key_exists( 'smw_conc', $updates ) && ( count( $updates['smw_conc'] ) != 0 ) ) {
-				$up_conc2 = end( $updates['smw_conc'] );
-				unset ( $up_conc2['cache_date'] );
-				unset ( $up_conc2['cache_count'] );
-			} else {
-				$up_conc2 = array(
-				     'concept_txt'   => '',
-				     'concept_docu'  => '',
-				     'concept_features' => 0,
-				     'concept_size'  => -1,
-				     'concept_depth' => -1
-				);
-			}
-
-			$row = $db->selectRow(
-				'smw_conc',
-				array( 'cache_date', 'cache_count' ),
-				array( 's_id' => $sid ),
-				'SMWSQLStoreQueries::updateConst2Data'
-			);
-
-			if ( ( $row === false ) && ( $up_conc2['concept_txt'] !== '' ) ) { // insert newly given data
-				$up_conc2['s_id'] = $sid;
-				$db->insert( 'smw_conc', $up_conc2, 'SMW::updateConc2Data' );
-			} elseif ( $row !== false ) { // update data, preserve existing entries
-				$db->update( 'smw_conc', $up_conc2, array( 's_id' => $sid ), 'SMW::updateConc2Data' );
-			}
 		}
 
 		// Finally update caches (may be important if jobs are directly following this call)
@@ -256,6 +244,23 @@ Class SMWSQLStore3Writers {
 					$updates[$proptable->name] = array();
 				}
 				$updates[$proptable->name][] = $uvals;
+			}
+		}
+
+		// Special handling of Concepts
+		if ( $subject->getNamespace() == SMW_NS_CONCEPT && $subject->getSubobjectName() == '' ) {
+			if ( array_key_exists( 'smw_conc', $updates ) && ( count( $updates['smw_conc'] ) != 0 ) ) {
+				$updates['smw_conc'] = end( $updates['smw_conc'] );
+				unset ( $updates['smw_conc']['cache_date'] );
+				unset ( $updates['smw_conc']['cache_count'] );
+			} else {
+				$updates['smw_conc'] = array(
+				     'concept_txt'   => '',
+				     'concept_docu'  => '',
+				     'concept_features' => 0,
+				     'concept_size'  => -1,
+				     'concept_depth' => -1
+				);
 			}
 		}
 
