@@ -177,39 +177,27 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
-		$result = $this->getReader()->getSemanticData( $subject, $filter );
-
-		return $result;
+		return $this->getReader()->getSemanticData( $subject, $filter );
 	}
 
 	public function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null ) {
-		$result = $this->getReader()->getPropertyValues( $subject, $property, $requestoptions );
-
-		return $result;
+		return $this->getReader()->getPropertyValues( $subject, $property, $requestoptions );
 	}
 
 	public function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
-		$result = $this->getReader()->getPropertySubjects( $property, $value, $requestoptions );
-
-		return $result;
+		return $this->getReader()->getPropertySubjects( $property, $value, $requestoptions );
 	}
 
 	public function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
-		$result = $this->getReader()->getAllPropertySubjects( $property, $requestoptions );
-
-		return $result;
+		return $this->getReader()->getAllPropertySubjects( $property, $requestoptions );
 	}
 
 	public function getProperties( SMWDIWikiPage $subject, $requestoptions = null ) {
-		$result = $this->getReader()->getProperties( $subject, $requestoptions );
-
-		return $result;
+		return $this->getReader()->getProperties( $subject, $requestoptions );
 	}
 
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
-		$result = $this->getReader()->getInProperties( $value, $requestoptions );
-
-		return $result;
+		return $this->getReader()->getInProperties( $value, $requestoptions );
 	}
 
 
@@ -224,21 +212,15 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function deleteSubject ( Title $subject ) {
-		$result = $this->getWriter()->deleteSubject( $subject );
-
-		return $result;
+		return $this->getWriter()->deleteSubject( $subject );
 	}
 
 	public function doDataUpdate( SMWSemanticData $data ) {
-		$result = $this->getWriter()->doDataUpdate( $data );
-
-		return $result;
+		return $this->getWriter()->doDataUpdate( $data );
 	}
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-		$result = $this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
-
-		return $result;
+		return $this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
 	}
 
 
@@ -271,27 +253,19 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function getPropertiesSpecial( $requestoptions = null ) {
-		$result = $this->getSpecialPageHandler()->getPropertiesSpecial( $requestoptions );
-
-		return $result;
+		return $this->getSpecialPageHandler()->getPropertiesSpecial( $requestoptions );
 	}
 
 	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
-		$result = $this->getSpecialPageHandler()->getUnusedPropertiesSpecial( $requestoptions );
-
-		return $result;
+		return $this->getSpecialPageHandler()->getUnusedPropertiesSpecial( $requestoptions );
 	}
 
 	public function getWantedPropertiesSpecial( $requestoptions = null ) {
-		$result = $this->getSpecialPageHandler()->getWantedPropertiesSpecial( $requestoptions );
-
-		return $result;
+		return $this->getSpecialPageHandler()->getWantedPropertiesSpecial( $requestoptions );
 	}
 
 	public function getStatistics() {
-		$result = $this->getSpecialPageHandler()->getStatistics();
-
-		return $result;
+		return $this->getSpecialPageHandler()->getStatistics();
 	}
 
 
@@ -305,21 +279,15 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function setup( $verbose = true ) {
-		$result = $this->getSetupHandler()->setup( $verbose );
-
-		return $result;
+		return $this->getSetupHandler()->setup( $verbose );
 	}
 
 	public function drop( $verbose = true ) {
-		$result = $this->getSetupHandler()->drop( $verbose );
-
-		return $result;
+		return $this->getSetupHandler()->drop( $verbose );
 	}
 
 	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
-		$result = $this->getSetupHandler()->refreshData( $index, $count, $namespaces, $usejobs );
-
-		return $result;
+		return $this->getSetupHandler()->refreshData( $index, $count, $namespaces, $usejobs );
 	}
 
 
