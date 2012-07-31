@@ -471,9 +471,9 @@ class SMWQueryProcessor {
 	 * any specific format - most query printers should override this
 	 * function.
 	 *
-	 * @since 1.6.2
+	 * @since 1.6.2, return element type changed in 1.8
 	 *
-	 * @return array
+	 * @return array of IParamDefinition
 	 */
 	public static function getParameters() {
 		$params = array();
@@ -550,11 +550,10 @@ class SMWQueryProcessor {
 		foreach ( $params as $name => &$param ) {
 			if ( is_array( $param ) ) {
 				$param['message'] = 'smw-paramdesc-' . $name;
-				$param['name'] = $name;
 			}
 		}
 
-		return $params;
+		return ParamDefinition::getCleanDefinitions( $params );
 	}
 
 	/**
