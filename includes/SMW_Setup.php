@@ -139,7 +139,8 @@ function smwfRegisterClasses() {
 
 	// Printers
 	$qpDir = $smwgIP . 'includes/queryprinters/';
-	$wgAutoloadClasses['SMWResultPrinter']          = $qpDir . 'SMW_QueryPrinter.php';
+	$wgAutoloadClasses['SMWResultPrinter']          = $qpDir . 'SMW_ResultPrinter.php';
+	$wgAutoloadClasses['SMWIResultPrinter']         = $qpDir . 'SMW_IResultPrinter.php';
 	$wgAutoloadClasses['SMWAggregatablePrinter']    = $qpDir . 'SMW_QP_Aggregatable.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']     = $qpDir . 'SMW_QP_Table.php';
 	$wgAutoloadClasses['SMWListResultPrinter']      = $qpDir . 'SMW_QP_List.php';
