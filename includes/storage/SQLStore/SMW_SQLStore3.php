@@ -829,7 +829,7 @@ class SMWSQLStore3 extends SMWStore {
 			return self::$special_ids[$property->getKey()]; // very important property with fixed id
 		} else {
 			return $this->makeSMWPageID( $property->getKey(), SMW_NS_PROPERTY,
-				$this->getPropertyInterwiki( $property ), '', true );
+				$this->getPropertyInterwiki( $property ), '', true, $property->getLabel() );
 		}
 	}
 
