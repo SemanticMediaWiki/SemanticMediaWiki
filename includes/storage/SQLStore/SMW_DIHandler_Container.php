@@ -40,7 +40,8 @@ class SMWDIHandlerContainer implements SMWDataItemHandler {
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
 		$subject = $dataItem->getSemanticData()->getSubject();
-		$sid = smwfGetStore()->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName() );
+		$store3 = new SMWSQLStore3();
+		$sid = $store3->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName() );
 		return array( 'o_id' => $sid );
 	}
 
@@ -55,7 +56,8 @@ class SMWDIHandlerContainer implements SMWDataItemHandler {
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		$subject = $dataItem->getSemanticData()->getSubject();
-		$sid = smwfGetStore()->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(),
+		$store3 = new SMWSQLStore3();
+		$sid = $store3->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(),
 			$subject->getSubobjectName(), true, str_replace( '_', ' ', $subject->getDBkey() ) . $subject->getSubobjectName() );
 		return array( 'o_id' => $sid );
 	}

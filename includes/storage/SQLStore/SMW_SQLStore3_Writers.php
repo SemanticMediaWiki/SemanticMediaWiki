@@ -225,19 +225,18 @@ Class SMWSQLStore3Writers {
 			$tableid = SMWSQLStore3::findPropertyTableID( $property );
 			$proptable = $proptables[$tableid];
 
+			$dataItemId = SMWDataValueFactory::getDataItemId( $property->findPropertyTypeId() );
+			$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $dataItemId );
+			///TODO check needed if subject is null (would happen if a user defined proptable with !idsubject was used on an internal object -- currently this is not possible
+			$uvals = $proptable->idsubject ? array( 's_id' => $sid ) :
+					 array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() );
+			if ( $proptable->fixedproperty == false ) {
+				$uvals['p_id'] = $this->store->makeSMWPropertyID( $property );
+			}
 			foreach ( $data->getPropertyValues( $property ) as $di ) {
 				if ( $di instanceof SMWDIError ) { // error values, ignore
 					continue;
 				}
-				// redirects were treated above
-
-				///TODO check needed if subject is null (would happen if a user defined proptable with !idsubject was used on an internal object -- currently this is not possible
-				$uvals = $proptable->idsubject ? array( 's_id' => $sid ) :
-				         array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() );
-				if ( $proptable->fixedproperty == false ) {
-					$uvals['p_id'] = $this->store->makeSMWPropertyID( $property );
-				}
-				$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $di->getDIType() );
 				$uvals = array_merge( $uvals, $diHandler->getInsertValues( $di ) );
 
 				if ( !array_key_exists( $proptable->name, $updates ) ) {
@@ -330,8 +329,11 @@ Class SMWSQLStore3Writers {
 			$db->insert( 'smw_redi', array( 's_title' => $oldtitle->getDBkey(),
 						's_namespace' => $oldtitle->getNamespace(),
 						'o_id' => $sid ),
-			             __METHOD__ );
+			             __METHOD__
+			);
 
+			$sql = 'UPDATE smw_stats SET usage_count = usage_count + 1 where pid = ' . $this->store->getSMWPropertyID( new SMWDIProperty( '_REDI' ) );
+			$db->query( $sql, __METHOD__ );
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
 			/// redirects are not supported by MW or SMW, the above is maximally correct in this case too.
 			/// NOTE: this temporarily leaves existing redirects to oldtitle point to newtitle as well, which
@@ -486,6 +488,7 @@ Class SMWSQLStore3Writers {
 	 */
 	protected function updateRedirects( $subject_t, $subject_ns, $curtarget_t = '', $curtarget_ns = -1 ) {
 		global $smwgQEqualitySupport, $smwgEnableUpdateJobs;
+		$count = 0; //track count changes for redi property
 
 		// *** First get id of subject, old redirect target, and current (new) redirect target ***//
 
@@ -514,6 +517,7 @@ Class SMWSQLStore3Writers {
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
 			$db->delete( 'smw_redi',
 				array( 's_title' => $subject_t, 's_namespace' => $subject_ns ), __METHOD__ );
+			$count--;
 
 			if ( $smwgEnableUpdateJobs && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
 				// entries that refer to old target may in fact refer to subject,
@@ -591,6 +595,7 @@ Class SMWSQLStore3Writers {
 
 			$db->insert( 'smw_redi', array( 's_title' => $subject_t,
 				's_namespace' => $subject_ns, 'o_id' => $new_tid ), __METHOD__ );
+			$count++;
 		} else { // delete old redirect
 			// This case implies $old_tid != 0 (or we would have new_tid == old_tid above).
 			// Therefore $subject had a redirect, and it must also have an ID.
@@ -605,8 +610,12 @@ Class SMWSQLStore3Writers {
 
 		unset( $this->store->m_semdata[$sid] ); unset( $this->store->m_semdata[$new_tid] ); unset( $this->store->m_semdata[$old_tid] );
 		unset( $this->store->m_sdstate[$sid] ); unset( $this->store->m_sdstate[$new_tid] ); unset( $this->store->m_sdstate[$old_tid] );
+		if( $count!= 0 ) {
+			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $count . ' where pid = ' . $this->store->getSMWPropertyID( new SMWDIProperty( '_REDI' ) );
+			$db->query( $sql, __METHOD__ );
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
+		}
 	}
 
 	/**
