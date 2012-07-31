@@ -42,7 +42,7 @@ class ResultPrintersTest extends \MediaWikiTestCase {
 	 */
 	public function testConstructor( $format, $class, $isInline ) {
 		$instance = new $class( $format, $isInline );
-		$this->assertInstanceOf( '\SMWResultPrinter', $instance );
+		$this->assertInstanceOf( '\SMWIResultPrinter', $instance );
 	}
 
 	public function instanceProvider() {
