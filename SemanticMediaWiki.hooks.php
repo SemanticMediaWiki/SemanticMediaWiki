@@ -278,6 +278,8 @@ final class SMWHooks {
 			'dataitems/DI_String',
 			'dataitems/DI_GeoCoord',
 
+			'printers/ResultPrinters',
+
 			'storage/Store',
 		);
 

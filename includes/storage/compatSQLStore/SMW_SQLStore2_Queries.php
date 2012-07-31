@@ -424,7 +424,9 @@ class SMWSQLStore2QueryEngine {
 		}
 
 		$this->m_dbs->freeResult( $res );
-		$result = new SMWQueryResult( $prs, $query, $qr, $this->m_store, ( $count > $query->getLimit() ) );
+
+		// TODO: for some reason this line makes PHPunit complain "This test printed output: ﻿".
+		$result = new SMWQueryResult( $prs, $query, $qr, $this->m_store, $count > $query->getLimit() );
 
 		wfProfileOut( 'SMWSQLStore2Queries::getInstanceQueryResult (SMW)' );
 
