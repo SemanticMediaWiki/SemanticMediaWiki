@@ -11,9 +11,9 @@ production until the actual release.
 ; Compatibility changes
 
 * Changed minimum MediaWiki version from 1.16 to 1.17.
-* Full compatibility with MediaWiki 1.19 and foreward-compatibility with 1.20.
+* Full compatibility with MediaWiki 1.19 and forward-compatibility with 1.20.
 * Changed minimum Validator version from 0.4 to 0.5.
-* The structured of the JSON result format has been altered (bug 37418).
+* The structure of the JSON result format has been altered (bug 37418).
 
 ; New features
 * Added anonymous auto-numbering for subobjects that don't specify their identifier (bug 36634)
