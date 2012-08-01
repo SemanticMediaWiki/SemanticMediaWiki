@@ -102,6 +102,8 @@ $magicWords['diq'] = array(
 	'subobject' => array( 0, 'bınobce' ),
 	'set' => array( 0, 'saz' ),
 	'declare' => array( 0, 'ilaniye' ),
+	'SMW_NOFACTBOX' => array( 0, '__DORARAŞTAYÇINİYA__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__DORARAŞTAYBIMOCNE__' ),
 );
 
 /** Spanish (español) */
@@ -132,7 +134,9 @@ $magicWords['ig'] = array(
 
 /** Georgian (ქართული) */
 $magicWords['ka'] = array(
+	'ask' => array( 0, 'კითხვა' ),
 	'show' => array( 0, 'ჩვენება' ),
+	'info' => array( 0, 'ინფო' ),
 );
 
 /** Korean (한국어) */
