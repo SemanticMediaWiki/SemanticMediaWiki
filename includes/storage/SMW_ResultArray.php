@@ -248,12 +248,12 @@ class SMWResultArray {
 					self::$catCacheObj = $this->mResult->getHash();
 				}
 
-				$found = '0';
+				$found = false;
 				$prkey = $this->mPrintRequest->getData()->getDBkey();
 
 				foreach ( self::$catCache as $cat ) {
 					if ( $cat->getDBkey() == $prkey ) {
-						$found = '1';
+						$found = true;
 						break;
 					}
 				}
