@@ -210,13 +210,24 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$urlArgs['p'] = SMWInfolink::encodeParameters( $tmp_parray );
 		$printoutstring = '';
 
-		foreach ( $this->m_printouts as /* SMWPrintRequest */ $printout ) {
+		/**
+		 * @var SMWPrintRequest $printout
+		 */
+		foreach ( $this->m_printouts as $printout ) {
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
 
-		if ( $printoutstring !== '' ) $urlArgs['po'] = $printoutstring;
-		if ( array_key_exists( 'sort', $this->m_params ) )  $urlArgs['sort'] = $this->m_params['sort'];
-		if ( array_key_exists( 'order', $this->m_params ) ) $urlArgs['order'] = $this->m_params['order'];
+		if ( $printoutstring !== '' ) {
+			$urlArgs['po'] = $printoutstring;
+		}
+
+		if ( array_key_exists( 'sort', $this->m_params ) ) {
+			$urlArgs['sort'] = $this->m_params['sort'];
+		}
+
+		if ( array_key_exists( 'order', $this->m_params ) ) {
+			$urlArgs['order'] = $this->m_params['order'];
+		}
 
 		if ( $this->m_querystring !== '' ) {
 			// FIXME: this is a hack
@@ -233,6 +244,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				$this->m_params['format'],
 				$this->m_printouts
 			);
+
+			/**
+			 * @var SMWQueryResult $res
+			 */
 
 			// Determine query results
 			$res = $params['source']->getValue()->getQueryResult( $queryobj );
@@ -276,7 +291,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			// show the link instead
 			if ( $this->m_editquery || $hidequery ) $result_mime = false;
 
-			if ( $result_mime == false ) {
+			if ( $result_mime === false ) {
 				if ( $res->getCount() > 0 ) {
 					if ( $this->m_editquery ) {
 						$urlArgs['eq'] = 'yes';
@@ -305,7 +320,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 		}
 
-		if ( $result_mime == false ) {
+		if ( $result_mime === false ) {
 			if ( $this->m_querystring ) {
 				$wgOut->setHTMLtitle( $this->m_querystring );
 			} else {
