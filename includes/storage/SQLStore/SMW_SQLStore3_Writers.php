@@ -139,7 +139,7 @@ Class SMWSQLStore3Writers {
 							$db->update( 'smw_conc', $updates['smw_conc'], array( 's_id' => $sid ), 'SMW::updateConcData' );
 						}
 					} else {
-						$this->deleteTableSemanticData( $subject, $tableDeclaration );
+						$this->deleteTableSemanticData( $sid, $tableDeclaration );
 						$db->insert( $tableName, $updates[$tableName], "SMW::updateData$tableName" );
 					}
 					$oldHashes[$tableName] = $newHash;
