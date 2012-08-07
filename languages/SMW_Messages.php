@@ -8802,6 +8802,8 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-searchlabel' => 'Tekst voor de voortzetting van de zoekopdracht (standaardinstelling is «… meer resultaten»)',
 	'smw-paramdesc-named_args' => 'Naam voor de aan het sjabloon door te geven parameters',
 	'smw-paramdesc-export' => 'Exportoptie',
+	'smw-paramdesc-prettyprint' => 'Een netjes opgemaakte uitvoer inschakelen',
+	'smw-paramdesc-source' => 'Alternatieve zoekopdrachtbron',
 	'smw_iq_disabled' => 'Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.',
 	'smw_iq_moreresults' => '… overige resultaten',
 	'smw_parseerror' => 'De opgegeven waarde is niet begrepen.',
@@ -9037,6 +9039,10 @@ Geschatte voortgang van de huidige taak:",
 	'smw-paramdesc-category-userparam' => 'Een aan het sjabloon door te geven parameter',
 	'smw-info-par-message' => 'Weer te geven bericht.',
 	'smw-info-par-icon' => 'Icoon dat "informatie" of "waarschuwing" aangeeft.',
+	'prefs-smw' => 'Semantic MediaWiki',
+	'prefs-ask-options' => 'Semantische zoekopties',
+	'smw-ask-userpref-options-tooltip-display' => 'Parametertekst weergeven als infotooltip',
+	'smw-ask-userpref-options-collapsed-default' => 'Optievenster standaard samengevouwen weergeven',
 );
 
 /** Norwegian Nynorsk (‪norsk (nynorsk)‬)
