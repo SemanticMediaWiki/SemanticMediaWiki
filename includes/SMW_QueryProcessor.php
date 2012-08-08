@@ -362,7 +362,7 @@ class SMWQueryProcessor {
 		self::processFunctionParams( $rawParams, $queryString, $params, $printouts, $showMode );
 		
 		if ( !$showMode ) {
-			self::addThisPrintout( $printouts, $params, $showMode );
+			self::addThisPrintout( $printouts, $params );
 		}
 
 		$params = self::getProcessedParams( $params, $printouts );
