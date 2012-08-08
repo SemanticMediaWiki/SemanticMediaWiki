@@ -261,7 +261,28 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 		global $wgParser;
 		$result .= $this->getErrorString( $results ); // append errors
 
-		if ( ( !$this->isHTML ) && ( $this->hasTemplates ) ) { // preprocess embedded templates if needed
+		// Apply intro parameter
+		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
+			if ( $outputmode == SMW_OUTPUT_HTML ) {
+				global $wgParser;
+				$result = $wgParser->recursiveTagParse( $this->mIntro ) . $result;
+			} else {
+				$result = $this->mIntro . $result;
+			}
+		}
+
+		// Apply outro parameter
+		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
+			if ( $outputmode == SMW_OUTPUT_HTML ) {
+				global $wgParser;
+				$result = $result . $wgParser->recursiveTagParse( $this->mOutro );
+			} else {
+				$result = $result . $this->mOutro;
+			}
+		}
+
+		// Preprocess embedded templates if needed
+		if ( ( !$this->isHTML ) && ( $this->hasTemplates ) ) {
 			if ( ( $wgParser->getTitle() instanceof Title ) && ( $wgParser->getOptions() instanceof ParserOptions ) ) {
 				self::$mRecursionDepth++;
 
@@ -302,24 +323,6 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 			}
 
 			self::$mRecursionDepth--;
-		}
-
-		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
-			if ( $outputmode == SMW_OUTPUT_HTML ) {
-				global $wgParser;
-				$result = $wgParser->recursiveTagParse( $this->mIntro ) . $result;
-			} else {
-				$result = $this->mIntro . $result;
-			}
-		}
-
-		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
-			if ( $outputmode == SMW_OUTPUT_HTML ) {
-				global $wgParser;
-				$result = $result . $wgParser->recursiveTagParse( $this->mOutro );
-			} else {
-				$result = $result . $this->mOutro;
-			}
 		}
 
 		return $result;
