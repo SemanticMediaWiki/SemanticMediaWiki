@@ -3997,6 +3997,7 @@ Uutta ei käynnistetä.',
 /** French (français)
  * @author Boniface
  * @author Crochet.david
+ * @author Erkethan
  * @author Faure.thomas
  * @author Gomoko
  * @author Grondin
@@ -4171,10 +4172,12 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'smw_ask_format_as' => 'Formater en :',
 	'smw_ask_defaultformat' => 'défaut',
 	'smw_ask_otheroptions' => 'Autres options',
+	'smw-ask-otheroptions-collapsed-info' => 'Veuillez utiliser l\'icône "plus" pour afficher toutes les options disponibles',
 	'smw_ask_show_embed' => 'Montrer le code incrusté',
 	'smw_ask_hide_embed' => 'Masquer le code incrusté',
 	'smw_ask_embed_instr' => 'Pour incruster cette requête dans une page wiki, utilisez le code ci-dessous.',
 	'smw-ask-delete' => '[Supprimer]',
+	'smw-ask-sorting' => 'Tri',
 	'querycreator' => 'Créateur de requêtes',
 	'smw_qc_addmainlabel' => 'Ajouter le libellé principal',
 	'smw_qc_show_addnal_opts' => "Afficher plus d'options",
@@ -4308,6 +4311,8 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-paramdesc-category-userparam' => 'Un paramètre à passer au modèle',
 	'smw-info-par-message' => 'Message à afficher.',
 	'smw-info-par-icon' => 'Icône à afficher, soit « info » ou « attention »',
+	'prefs-smw' => 'Semantic MediaWiki',
+	'prefs-ask-options' => 'Options de recherche sémantique',
 );
 
 /** Franco-Provençal (arpetan)
@@ -8907,6 +8912,8 @@ Dit zorgt ervoor dat mensen niet veranderen in websites.',
 	'smw_ask_format_as' => 'Opmaken als:',
 	'smw_ask_defaultformat' => 'standaard',
 	'smw_ask_otheroptions' => 'Overige opties',
+	'smw-ask-otheroptions-info' => 'Dit onderdeel bevat opties die de uitvoer wijzigen. Parameterbeschrijvingen zijn zichtbaar door er met de muisaanwijzer overeen te bewegen.',
+	'smw-ask-otheroptions-collapsed-info' => 'Gebruik het "plusicoon" om alle beschikbaar opties te bekijken',
 	'smw_ask_show_embed' => 'Ingesloten code weergeven',
 	'smw_ask_hide_embed' => 'Ingesloten code verbergen',
 	'smw_ask_embed_instr' => 'Gebruik de onderstaande code om deze zoekopdracht op te nemen in een wikipagina.',
@@ -9976,6 +9983,7 @@ $messages['ps'] = array(
  * @author Lijealso
  * @author Luckas Blade
  * @author Malafaya
+ * @author SandroHc
  * @author Waldir
  */
 $messages['pt'] = array(
@@ -10130,11 +10138,13 @@ As propriedades que não têm uma página própria podem ser encontradas na [[Sp
 	'querycreator' => 'Criador de Consultas',
 	'smw_qc_show_addnal_opts' => 'Mostrar mais opções',
 	'smw_qc_hide_addnal_opts' => 'Mostrar menos opções',
-	'smw_qc_query_help' => 'Introduza uma consulta usando o formulário abaixo para seleccionar páginas da wiki com base em
-Categorias (<strong>[[Categoria:Actor]]</strong>),
-Propriedades (<strong>[[Localizada em::Angola]]</strong>), 
-Nomes (<strong>[[Cabo Verde]]</strong>) e Espaços nominais (<strong>[[Ajuda:+]]</strong>)',
-	'smw_qui_property' => 'Propriedade',
+	'smw_qc_default' => 'Padrão:',
+	'smw_qc_query_help' => 'Introduza uma consulta usando o formulário abaixo. Seleccione páginas da wiki com base em
+Categorias (<strong><nowiki>ex. [[Categoria:Actor]]</nowiki></strong>),
+Propriedades (<strong><nowiki>ex. [[Localizada em::Angola]]</nowiki></strong>), 
+Nomes (<strong><nowiki>ex. [[Cabo Verde]]</nowiki></strong>) e
+Espaços nominais (<strong><nowiki>ex. [[Ajuda:+]]</nowiki></strong>),',
+	'smw_qui_property' => '<strong>Propriedade</strong>',
 	'smw_qui_shownresults' => 'apresentar nos resultados',
 	'smw_qui_noquery' => 'Não foi especificada nenhuma consulta',
 	'smw_qui_invalidprop' => '"$1" pode não ser uma propriedade válida',
@@ -10143,7 +10153,7 @@ Nomes (<strong>[[Cabo Verde]]</strong>) e Espaços nominais (<strong>[[Ajuda:+]]
 	'smw_qui_ascorder' => 'Ascendente',
 	'smw_qui_descorder' => 'Descendente',
 	'smw_qui_randorder' => 'Aleatório',
-	'smw_qui_addnprop' => 'Acrescentar propriedades adicionais',
+	'smw_qui_addnprop' => 'Adicionar propriedade',
 	'smw_qui_delete' => 'Remover',
 	'smw_qui_options' => 'opções',
 	'smw_qui_addcategory' => 'adicionar categoria',
