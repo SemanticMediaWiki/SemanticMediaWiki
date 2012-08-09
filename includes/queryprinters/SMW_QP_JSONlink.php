@@ -18,14 +18,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
+ * @see http://www.semantic-mediawiki.org/wiki/Help:JSON_format
  * @since 1.5.3
  *
  * @file SWM_QP_JSONlink.php
  * @ingroup SMWQuery
  *
  * @licence GNU GPL v2 or later
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Fabian Howahl
  */
 class SMWJSONResultPrinter extends SMWResultPrinter {
@@ -89,21 +90,21 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 
 		if ( $outputmode == SMW_OUTPUT_FILE ) {
 
-			// Bail out in case there are no results
+			// No results, just bailout
 			if ( $res->getCount() == 0 ){
-				return;
+				return $this->params['default'] !== '' ? $this->params['default'] : '';
 			}
 
 			// JSON instance
 			$json = new SMWJSON( $res );
 
 			// JSON export type
-			if ( $this->params['export'] == 'obsolete' ) {
+			if ( $this->params['syntax'] === 'obsolete' ) {
 				$result = $this->getObsoleteJSON( $res , $outputmode );
-			} elseif ( $this->params['export'] == 'simple' ) {
-				$result = $json->getSimpleEncoding( $this->params['prettyprint'] );
+			} elseif ( $this->params['syntax'] === 'basic' ) {
+				$result = $json->getEncoding( $this->params['syntax'] , $this->params['prettyprint'] );
 			} else {
-				$result = $json->getEncoding( $this->params['prettyprint'] );
+				$result = $json->getEncoding( $this->params['syntax'] , $this->params['prettyprint'] );
 			}
 
 		} else {
@@ -223,27 +224,25 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	 * @return array of IParamDefinition|array
 	 */
 	public function getParamDefinitions( array $definitions ) {
-		$definitions = parent::getParamDefinitions( $definitions );
+		$params = parent::getParamDefinitions( $definitions );
 
-		$definitions['searchlabel']->setDefault( wfMsgForContent( 'smw_json_link' ) );
-		$definitions['limit']->setDefault( 100 );
+		$params['searchlabel']->setDefault( wfMsgForContent( 'smw_json_link' ) );
+		$params['limit']->setDefault( 100 );
 
-		$definitions['export'] = array(
-			'name' => 'export',
+		$params['syntax'] = array(
 			'type' => 'string',
 			'default' => 'complete',
-			'message' => 'smw-paramdesc-export',
-			'values' => array( 'obsolete', 'simple', 'full' ),
+			'message' => 'smw-paramdesc-jsonsyntax',
+			'values' => array( 'obsolete', 'basic', 'standard' ),
 		);
 
-		$definitions['prettyprint'] = array(
-			'name' => 'prettyprint',
+		$params['prettyprint'] = array(
 			'type' => 'boolean',
 			'default' => '',
 			'message' => 'smw-paramdesc-prettyprint',
 		);
 
-		return $definitions;
+		return $params;
 	}
 }
 
@@ -259,41 +258,39 @@ class SMWJSON {
 	protected $count;
 
 	/**
-	 * Constructor.
-	 * @param $printrequests
-	 * @param $results
-	 * @param $rows
+	 * Constructor
+	 *
+	 * @param SMWQueryResult $res
 	 */
-  public function __construct( SMWQueryResult $res ){
+	public function __construct( SMWQueryResult $res ){
 		$this->results = $res;
 		$this->count   = $res->getCount();
 	}
 
 	/**
-	 * Full JSON layer
+	 * Standard SMW JSON layer
+	 *
+	 * The output structure resembles that of the api json format structure
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $res
-	 * @param boolean $isPretty
-	 *
-	 * @return string
+	 * @return array
 	 */
 	public function getSerialization() {
 		return array_merge( SMWDISerializer::getSerializedQueryResult( $this->results ), array ( 'rows' => $this->count ) );
 	}
 
 	/**
-	 * Simplified JSON layer
+	 * Basic SMW JSON layer
+	 *
+	 * This is a convenience layer which is eliminating some overhead from the
+	 * standard SMW JSON
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $res
-	 * @param boolean $isPretty
-	 *
-	 * @return string
+	 * @return array
 	 */
-	public function getSimpleSerialization( ) {
+	public function getBasicSerialization( ) {
 		$results = array();
 		$printRequests = array();
 
@@ -326,7 +323,7 @@ class SMWJSON {
 					$items = array();
 
 					foreach ( $serializationItems as $item ) {
-					  if ( $type == "_wpg" ) {
+						if ( $type == "_wpg" ) {
 								$items[] = $item["fulltext"];
 						} else {
 								$items[] = $item;
@@ -337,30 +334,20 @@ class SMWJSON {
 			}
 			$results[$diWikiPage->getTitle()->getFullText()] = $result;
 		}
-		return array( 'printrequests' => $printRequests, 'results' => $results,  'rows' => $this->count  );
+		return array( 'printrequests' => $printRequests, 'results' => $results, 'rows' => $this->count );
 	}
 
 	/**
-	 * Encoding
+	 * JSON Encoding
 	 *
 	 * @since 1.8
+	 *
+	 * @param $syntax string
 	 * @param $isPretty boolean prettify JSON output
 	 *
 	 * @return string
-  */
-	public function getEncoding( $isPretty = false ){
-		return FormatJSON::encode( $this->getSerialization() , $isPretty );
-	}
-
-	/**
-	 * Encoding
-	 *
-	 * @since 1.8
-	 * @param $isPretty boolean prettify JSON output
-	 *
-	 * @return string
-  */
-	public function getSimpleEncoding( $isPretty = false ){
-		return FormatJSON::encode( $this->getSimpleSerialization() , $isPretty );
+	*/
+	public function getEncoding( $syntax = '' , $isPretty = false ){
+		return FormatJSON::encode( $syntax === 'basic' ? $this->getBasicSerialization() : $this->getSerialization(), $isPretty );
 	}
 }
