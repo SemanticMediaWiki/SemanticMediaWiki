@@ -506,6 +506,7 @@ $messages['qqq'] = array(
 	'smw-paramdesc-named_args' => 'This is the description of the "named args" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-export' => 'This is the description of the "export" parameter of the "json" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-prettyprint' => 'This is the description of the "[[wikipedia:prettyprint|prettyprint]]" parameter of the "JSON" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-source' => 'This is the description of the "source" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw_iq_disabled' => 'This is an information message.',
 	'smw_iq_moreresults' => 'This is the text of the link that points to further results in case the [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline query] has more than currently displayed on the page. See also message {{msg-mw|Smw-paramdesc-searchlabel}}.',
 	'smw_parseerror' => 'This is an error/warning message.',
@@ -3804,10 +3805,12 @@ $messages['eu'] = array(
 
 /** Persian (فارسی)
  * @author Huji
+ * @author Mjbmr
  * @author Momeni
  * @author ZxxZxxZ
  */
 $messages['fa'] = array(
+	'smw_viewasrdf' => 'خوراک RDF',
 	'smw_finallistconjunct' => '، و',
 	'smw_isspecprop' => 'این خصوصیت یک خصوصیت ویژه در این ویکی است.',
 	'smw_concept_description' => 'توصیف مفهوم "$1"',
@@ -3815,6 +3818,10 @@ $messages['fa'] = array(
 	'smw_multiple_concepts' => 'هر صفحه مفهوم فقط می‌تواند شامل یک تعریف مفهوم باشد.',
 	'smw_concept_cache_miss' => 'مفهوم "$1" نمی‌تواند در حال حاضر استفاده شود، زیرا تنظیمات ویکی نیاز به محاسبه آن به‌صورت برون‌خط دارد.
 اگر این مشکل پس از مدتی از بین نرفت، از مدیر سایت بخواهید تا این مفهوم را در دسترس قرار دهد.',
+	'smw_printername_json' => 'برون‌بری در قالب JSON',
+	'smw_printername_table' => 'جدول',
+	'smw_printername_rdf' => 'برون‌بری در قالب RDF',
+	'smw_printername_category' => 'رده',
 	'smw_subproperty_header' => 'زیرخصوصیت‌ها',
 	'smw_concept_header' => 'صفحه‌های مفهوم "$1"',
 	'exportrdf' => 'برون‌بری صفحه‌ها به آردی‌اف',
@@ -3849,6 +3856,11 @@ $messages['fa'] = array(
 	'smw_add_sortcondition' => '[افزودن شرایط مرتب‌سازی]',
 	'smw_ask_hidequery' => 'مخفی‌کردن پرس‌و‌جو',
 	'smw_ask_help' => 'پرس‌و‌جو از راهنما',
+	'smw_qui_options' => 'گزینه‌ها',
+	'smw_qui_ok' => 'تأیید',
+	'smw_qui_cancel' => 'لغو',
+	'smw_qui_dlabel' => 'برچسب:',
+	'smw_qui_dcategory' => 'رده:',
 	'searchbyproperty' => 'جستجو بر اساس ویژگی',
 	'browse' => 'مرور ویکی',
 	'smw_browselink' => 'مرور خصوصیات',
@@ -3996,6 +4008,7 @@ Uutta ei käynnistetä.',
 
 /** French (français)
  * @author Boniface
+ * @author Brunoperel
  * @author Crochet.david
  * @author Erkethan
  * @author Faure.thomas
@@ -4081,6 +4094,7 @@ $messages['fr'] = array(
 	'smw-paramdesc-searchlabel' => 'Texte pour continuer la recherche (par défaut, «… autres résultats»)',
 	'smw-paramdesc-named_args' => 'Nommez les arguments transmis au modèle',
 	'smw-paramdesc-export' => 'Options d’exportation',
+	'smw-paramdesc-prettyprint' => 'Pour permettre un affichage plus lisible',
 	'smw-paramdesc-source' => 'Source de requête alternative',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
 	'smw_iq_moreresults' => '&hellip; autres résultats',
@@ -4313,6 +4327,7 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-info-par-icon' => 'Icône à afficher, soit « info » ou « attention »',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Options de recherche sémantique',
+	'smw-ask-userpref-options-tooltip-display' => 'Afficher le texte du paramètre comme info-bulle',
 );
 
 /** Franco-Provençal (arpetan)
@@ -6173,6 +6188,8 @@ $messages['ia'] = array(
 	'smw-paramdesc-searchlabel' => 'Texto pro continuar le recerca (predefinition es «… altere resultatos»)',
 	'smw-paramdesc-named_args' => 'Nominar le parametros passate al patrono',
 	'smw-paramdesc-export' => 'Option de exportation',
+	'smw-paramdesc-prettyprint' => 'Pro imprimer con un disposition plus nette',
+	'smw-paramdesc-source' => 'Fonte alternative de consultas',
 	'smw_iq_disabled' => 'Le consultas semantic ha essite disactivate pro iste wiki.',
 	'smw_iq_moreresults' => '… ulterior resultatos',
 	'smw_parseerror' => 'Le valor date non esseva comprendite.',
@@ -7073,10 +7090,14 @@ $messages['ja'] = array(
 	'smw_qc_otheropt' => 'その他のオプション',
 	'smw_qc_default' => '既定：',
 	'smw_qui_property' => '<strong>プロパティ</strong>',
+	'smw_qui_prop' => 'プロパティ:',
 	'smw_qui_labl' => 'ラベル：',
+	'smw_qui_limt' => '制限:',
 	'smw_qui_shownresults' => '結果に表示',
+	'smw_qui_nosort' => '並べ替えなし',
 	'smw_qui_ascorder' => '昇順',
 	'smw_qui_descorder' => '降順',
+	'smw_qui_randorder' => 'ランダム',
 	'smw_qui_addnprop' => 'プロパティを追加',
 	'smw_qui_delete' => '除去',
 	'smw_qui_options' => 'オプション',
@@ -7169,6 +7190,8 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw-paramdesc-category-userparam' => 'テンプレートに渡すパラメーター',
 	'smw-info-par-message' => '表示するメッセージです。',
 	'smw-info-par-icon' => '表示するアイコン（"info" と "warning" のどちらか）です。',
+	'prefs-smw' => 'Semantic MediaWiki',
+	'prefs-ask-options' => '意味的検索オプション',
 );
 
 /** Javanese (Basa Jawa)
