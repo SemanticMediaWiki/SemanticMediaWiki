@@ -36,7 +36,7 @@ define( 'SMW_HEADERS_HIDE', 0 ); // Used to be "false" hence use "0" to support 
  * part of the former functionality of SMWInlineQuery (everything related to
  * output formatting and the correspoding parameters) and is subclassed by concrete
  * printers that provide the main formatting functionality.
- * 
+ *
  * @ingroup SMWQuery
  */
 abstract class SMWResultPrinter implements SMWIResultPrinter {
@@ -45,13 +45,13 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	 * @deprecated Use $params instead. Will be removed in 1.10.
 	 */
 	protected $m_params;
-	
+
 	/**
 	 * List of parameters, set by handleParameters.
 	 * param name (lower case, trimmed) => param value (mixed)
-	 * 
+	 *
 	 * @since 1.7
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $params;
@@ -115,14 +115,14 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
 
 	/**
-	 * List of errors that occured while processing the parameters.
-	 * 
+	 * List of errors that occurred while processing the parameters.
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $mErrors = array();
-	
+
 	/**
 	 * If set, treat result as plain HTML. Can be used by printer classes if wiki mark-up is not enough.
 	 * This setting is used only after the result text was generated.
@@ -155,7 +155,7 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	/**
 	 * Constructor. The parameter $format is a format string
 	 * that may influence the processing details.
-	 * 
+	 *
 	 * @param string $format
 	 * @param $inline
 	 * @param boolean $useValidator Deprecated since 1.6.2, removal in 1.10
@@ -198,7 +198,7 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 
 		$this->postProcessParameters();
 		$this->handleParameters( $this->params, $outputMode );
-		
+
 		return $this->buildResult( $results );
 	}
 
@@ -245,16 +245,16 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 
 		return $result;
 	}
-	
+
 	/**
 	 * Continuation of getResult that only gets executed for non file outputs.
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @param string $result
 	 * @param SMWQueryResult $results
 	 * @param integer $outputmode
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function handleNonFileResult( $result, SMWQueryResult $results, $outputmode ) {
@@ -371,18 +371,18 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 			case 'none':
 				$this->mLinkFirst = false;
 				$this->mLinkOthers = false;
-				break;			
+				break;
 		}
-		
+
 		 $this->mDefault = str_replace( '_', ' ', $params['default'] );
-		
+
 		if ( $params['headers'] == 'hide' ) {
 			$this->mShowHeaders = SMW_HEADERS_HIDE;
 		} elseif ( $params['headers'] == 'plain' ) {
 			$this->mShowHeaders = SMW_HEADERS_PLAIN;
 		} else {
 			$this->mShowHeaders = SMW_HEADERS_SHOW;
-		}		
+		}
 	}
 
 	/**
@@ -544,9 +544,9 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	/**
 	 * Adds an error message for a parameter handling error so a list
 	 * of errors can be created later on.
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @param string $errorMessage
 	 */
 	protected function addError( $errorMessage ) {
@@ -581,7 +581,7 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	protected function exportFormatParameters() {
 		return array();
 	}
-	
+
 	/**
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this

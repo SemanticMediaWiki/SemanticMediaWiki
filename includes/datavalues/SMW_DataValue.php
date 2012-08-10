@@ -669,7 +669,7 @@ abstract class SMWDataValue {
 
 	/**
 	 * Return true if a value was defined and understood by the given type,
-	 * and false if parsing errors occured or no value was given.
+	 * and false if parsing errors occurred or no value was given.
 	 *
 	 * @return boolean
 	 */
