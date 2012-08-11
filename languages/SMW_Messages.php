@@ -3233,6 +3233,7 @@ $messages['ee'] = array(
 /** Greek (Ελληνικά)
  * @author Consta
  * @author Crazymadlover
+ * @author Geraki
  * @author Lou
  * @author Omnipaedista
  * @author ZaDiak
@@ -3298,7 +3299,7 @@ $messages['el'] = array(
 	'smw_sbv_property' => 'Ιδιότητα:',
 	'smw_sbv_value' => 'Τιμή:',
 	'smw_sbv_submit' => 'Αναζήτηση αποτελεσμάτων',
-	'browse' => 'Πλοήγηση στο βίκι',
+	'browse' => 'Πλοήγηση στο wiki',
 	'smw_browselink' => 'Πλοήγηση στις ιδιότητες',
 	'smw_browse_go' => 'Πήγαινε',
 	'smw_browse_show_incoming' => 'εμφάνιση ιδιοτήτων που συνδέουν εδώ',
@@ -3316,7 +3317,7 @@ $messages['el'] = array(
 	'smw_smwadmin_updatestopped' => 'Όλες οι υπάρχουσες εργασίες ενημέρωσης έχουν διακοπεί.',
 	'smw_smwadmin_db' => 'Εγκατάσταση βάσεως δεδομένων και αναβάθμιση',
 	'smw_smwadmin_dbbutton' => 'Αρχικοποίηση ή αναβάθμιση πινάκων',
-	'smw_smwadmin_announce' => 'Ανακοίνωση του βίκι σας',
+	'smw_smwadmin_announce' => 'Ανακοίνωση του wiki σας',
 	'smw_smwadmin_datarefresh' => 'Επιδιόρθωση και αναβάθμιση δεδομένων',
 	'smw_smwadmin_datarefreshbutton' => 'Έναρξη ενημέρωσης δεδομένων',
 	'smw_smwadmin_datarefreshstop' => 'Σταμάτα αυτή την ενημέρωση',
@@ -5042,6 +5043,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 
 /** Hebrew (עברית)
  * @author Amire80
+ * @author Inkbug
  * @author Rotemliss
  * @author Udi Oron אודי אורון
  * @author YaronSh
@@ -5199,6 +5201,8 @@ $messages['he'] = array(
 	'smw_ask_hide_embed' => 'הסתרת קוד הטמעה',
 	'smw_ask_embed_instr' => 'כדי לשבץ את השאילתה הזאת אל תוך דף ויקי, השתמשו בקוד להלן.',
 	'querycreator' => 'יוצר השאילתות',
+	'smw_qc_otheropt' => 'אפשרויות אחרות',
+	'smw_qc_default' => 'ברירת המחדל:',
 	'smw_qc_query_help' => 'נא להזין שאילתה באמצעות הטופס להלן כדי לבחור דפי ויקי מבוססים על
 קטגוריה (<strong>[[{{ns:category}}:שחקן]]</strong>),
 מאפיינים (<strong>[[נמצא ב::גרמניה]]</strong>),
@@ -10340,6 +10344,7 @@ Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça
 	'smw-paramdesc-searchlabel' => 'Texto para continuar a busca (o padrão é "… mais resultados")',
 	'smw-paramdesc-named_args' => 'Nomeie os argumentos passados para a predefinição',
 	'smw-paramdesc-export' => 'Opção de exportação',
+	'smw-paramdesc-source' => 'Fonte alternativa de consulta',
 	'smw_iq_disabled' => 'As consultas semânticas foram desativadas neste wiki',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_parseerror' => 'O valor fornecido não foi compreendido.',
@@ -10445,9 +10450,10 @@ Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'smw_qc_default' => 'Padrão:',
 	'smw_qc_formatopt' => 'Opções de formato',
 	'smw_qc_query_help' => 'Introduza uma consulta utilizando o formulário abaixo. Selecione páginas wiki com base em
-Categorias (<strong>[[Categoria:Ator]]</strong>),
-Propriedades (<strong>[[Localizado em::Brasil]]</strong>), 
-Nomes (<strong>[[Portugal]]</strong>) e domínios (<strong>[[Ajuda:+]]</strong>)',
+Categorias (<strong><nowiki>por exemplo: [[Categoria:Ator]]</nowiki></strong>),
+Propriedades (<strong><nowiki>por exemplo: [[Localizado em::Brasil]]</nowiki></strong>), 
+Nomes (<strong><nowiki>por exemplo: [[Portugal]]</nowiki></strong>) e 
+Domínios (<strong><nowiki>por exemplo: [[Ajuda:+]]</nowiki></strong>)',
 	'smw_qui_property' => '<strong>Propriedade</strong>',
 	'smw_qui_prop' => 'Propriedade:',
 	'smw_qui_labl' => 'Rótulo:',
