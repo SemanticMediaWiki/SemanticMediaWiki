@@ -279,19 +279,12 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 
 			$printer = SMWQueryProcessor::getResultPrinter( $this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE );
-			$result_mime = $printer->getMimeType( $res );
 
 			global $wgRequest;
 
 			$hidequery = $wgRequest->getVal( 'eq' ) == 'no';
 
-			// if it's an export format (like CSV, JSON, etc.),
-			// don't actually export the data if 'eq' is set to
-			// either 'yes' or 'no' in the query string - just
-			// show the link instead
-			if ( $this->m_editquery || $hidequery ) $result_mime = false;
-
-			if ( $result_mime === false ) {
+			if ( !$printer->isExportFormat() ) {
 				if ( $res->getCount() > 0 ) {
 					if ( $this->m_editquery ) {
 						$urlArgs['eq'] = 'yes';
@@ -314,13 +307,17 @@ class SMWAskPage extends SMWQuerySpecialPage {
 				} else {
 					$result = '<div style="text-align: center;">' . wfMsgHtml( 'smw_result_noresults' ) . '</div>';
 				}
-			} else { // make a stand-alone file
-				$result = $printer->getResult( $res, $params, SMW_OUTPUT_FILE );
-				$result_name = $printer->getFileName( $res ); // only fetch that after initialising the parameters
 			}
 		}
 
-		if ( $result_mime === false ) {
+		if ( isset( $printer ) && $printer->isExportFormat() ) {
+			$wgOut->disable();
+
+			/**
+			 * @var SMWIExportPrinter $printer
+			 */
+			$printer->outputAsFile( $res, $params );
+		} else {
 			if ( $this->m_querystring ) {
 				$wgOut->setHTMLtitle( $this->m_querystring );
 			} else {
@@ -336,16 +333,6 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			) . $result;
 
 			$wgOut->addHTML( $result );
-		} else {
-			$wgOut->disable();
-
-			header( "Content-type: $result_mime; charset=UTF-8" );
-
-			if ( $result_name !== false ) {
-				header( "content-disposition: attachment; filename=$result_name" );
-			}
-
-			echo $result;
 		}
 	}
 

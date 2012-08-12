@@ -29,7 +29,7 @@
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Fabian Howahl
  */
-class SMWJSONResultPrinter extends SMWResultPrinter {
+class SMWJSONResultPrinter extends SMWExportPrinter {
 
 	/**
 	 * Returns human readable label for this printer
@@ -41,24 +41,28 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	}
 
 	/**
-	 * Returns the mimetype string
+	 * @see SMWIExportPrinter::getMimeType
 	 *
-	 * @param SMWQueryResult $res
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $queryResult
 	 *
 	 * @return string
 	 */
-	public function getMimeType( $res ) {
+	public function getMimeType( SMWQueryResult $queryResult ) {
 		return 'application/JSON';
 	}
 
 	/**
-	 * Returns a filename that is to be sent to the caller
+	 * @see SMWIExportPrinter::getFileName
 	 *
-	 * @param SMWQueryResult $res
+	 * @since 1.8
 	 *
-	 * @return string
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return string|boolean
 	 */
-	public function getFileName( $res ) {
+	public function getFileName( SMWQueryResult $queryResult ) {
 		if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) !== '' ) {
 			return str_replace( ' ', '_', $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) . '.json';
 		} else {

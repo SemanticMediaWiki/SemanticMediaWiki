@@ -12,7 +12,7 @@
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * Based on the SMWCsvResultPrinter class.
  */
-class SMWDSVResultPrinter extends SMWResultPrinter {
+class SMWDSVResultPrinter extends SMWExportPrinter {
 	
 	protected $separator = ':';
 	protected $fileName = 'result.dsv';
@@ -34,13 +34,31 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 		}
 		
 		$this->fileName = str_replace( ' ', '_', $params['filename'] );
-	}	
+	}
 
-	public function getMimeType( $res ) {
+	/**
+	 * @see SMWIExportPrinter::getMimeType
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return string
+	 */
+	public function getMimeType( SMWQueryResult $queryResult ) {
 		return 'text/dsv';
 	}
 
-	public function getFileName( $res ) {
+	/**
+	 * @see SMWIExportPrinter::getFileName
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return string|boolean
+	 */
+	public function getFileName( SMWQueryResult $queryResult ) {
 		return $this->fileName;
 	}
 

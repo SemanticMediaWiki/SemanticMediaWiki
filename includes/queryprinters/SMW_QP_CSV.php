@@ -13,7 +13,7 @@
  * 
  * @ingroup SMWQuery
  */
-class SMWCsvResultPrinter extends SMWResultPrinter {
+class SMWCsvResultPrinter extends SMWExportPrinter {
 	
 	protected $m_sep;
 
@@ -31,11 +31,29 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 		$this->m_sep = str_replace( '_', ' ', $this->params['sep'] );
 	}
 
-	public function getMimeType( $res ) {
+	/**
+	 * @see SMWIExportPrinter::getMimeType
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return string
+	 */
+	public function getMimeType( SMWQueryResult $queryResult ) {
 		return 'text/csv';
 	}
 
-	public function getFileName( $res ) {
+	/**
+	 * @see SMWIExportPrinter::getFileName
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return string|boolean
+	 */
+	public function getFileName( SMWQueryResult $queryResult ) {
 		return 'result.csv';
 	}
 

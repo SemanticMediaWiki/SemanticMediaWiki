@@ -451,7 +451,7 @@ class SMWQueryProcessor {
 	 * @param string $format
 	 * @param $context
 	 *
-	 * @return SMWResultPrinter
+	 * @return SMWIResultPrinter
 	 * @throws MWException
 	 */
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {

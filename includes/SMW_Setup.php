@@ -115,7 +115,7 @@ function smwfRegisterHooks() {
  * Register all SMW classes with the MediaWiki autoloader.
  */
 function smwfRegisterClasses() {
-	global $smwgIP, $wgAutoloadClasses, $wgJobClasses, $smwgDefaultStore;
+	global $smwgIP, $wgAutoloadClasses, $wgJobClasses;
 
 	$wgAutoloadClasses['SMWHooks']                  = $smwgIP . 'SemanticMediaWiki.hooks.php';
 	
@@ -139,6 +139,8 @@ function smwfRegisterClasses() {
 
 	// Printers
 	$qpDir = $smwgIP . 'includes/queryprinters/';
+	$wgAutoloadClasses['SMWExportPrinter']          = $qpDir . 'SMW_ExportPrinter.php';
+	$wgAutoloadClasses['SMWIExportPrinter']         = $qpDir . 'SMW_IExportPrinter.php';
 	$wgAutoloadClasses['SMWResultPrinter']          = $qpDir . 'SMW_ResultPrinter.php';
 	$wgAutoloadClasses['SMWIResultPrinter']         = $qpDir . 'SMW_IResultPrinter.php';
 	$wgAutoloadClasses['SMWAggregatablePrinter']    = $qpDir . 'SMW_QP_Aggregatable.php';

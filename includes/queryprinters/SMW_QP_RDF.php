@@ -14,7 +14,7 @@
  * 
  * @ingroup SMWQuery
  */
-class SMWRDFResultPrinter extends SMWResultPrinter {
+class SMWRDFResultPrinter extends SMWExportPrinter {
 	
 	/**
 	 * The syntax to be used for export. May be 'rdfxml' or 'turtle'.
@@ -34,11 +34,29 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 		$this->syntax = $params['syntax'];
 	}
 
-	public function getMimeType( $res ) {
+	/**
+	 * @see SMWIExportPrinter::getMimeType
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return string
+	 */
+	public function getMimeType( SMWQueryResult $queryResult ) {
 		return $this->syntax == 'turtle' ? 'application/x-turtle' : 'application/xml';
 	}
 
-	public function getFileName( $res ) {
+	/**
+	 * @see SMWIExportPrinter::getFileName
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWQueryResult $queryResult
+	 *
+	 * @return string|boolean
+	 */
+	public function getFileName( SMWQueryResult $queryResult ) {
 		return $this->syntax == 'turtle' ? 'result.ttl' : 'result.rdf';
 	}
 

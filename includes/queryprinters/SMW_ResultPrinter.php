@@ -218,17 +218,13 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 		$outputMode = $this->outputMode;
 
 		// Default output for normal printers:
-		if ( ( $outputMode != SMW_OUTPUT_FILE ) && // not in FILE context,
-			( $results->getCount() == 0 ) && // no results,
-			( $this->getMimeType( $results ) === false ) ) { // normal printer -> take over processing
+		if ( $outputMode !== SMW_OUTPUT_FILE && $results->getCount() == 0 ) {
 			if ( !$results->hasFurtherResults() ) {
-				return $this->escapeText( $this->mDefault, $outputMode ) . $this->getErrorString( $results );
+				return $this->escapeText( $this->mDefault, $outputMode )
+					. $this->getErrorString( $results );
 			} elseif ( $this->mInline ) {
-				$result = $this->getFurtherResultsLink( $results, $outputMode )->getText( $outputMode, $this->mLinker );
-
-				$result .= $this->getErrorString( $results );
-
-				return $result;
+				return $this->getFurtherResultsLink( $results, $outputMode )->getText( $outputMode, $this->mLinker )
+					. $this->getErrorString( $results );
 			}
 		}
 
@@ -440,17 +436,6 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	}
 
 	/**
-	 * @see SMWIResultPrinter::getMimeType
-	 *
-	 * @param $res
-	 *
-	 * @return string|boolean
-	 */
-	public function getMimeType( $res ) {
-		return false;
-	}
-
-	/**
 	 * @see SMWIResultPrinter::getQueryMode
 	 *
 	 * @param $context
@@ -459,17 +444,6 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	 */
 	public function getQueryMode( $context ) {
 		return SMWQuery::MODE_INSTANCES;
-	}
-
-	/**
-	 * @see SMWIResultPrinter::getFileName
-	 *
-	 * @param $res
-	 *
-	 * @return string|boolean
-	 */
-	public function getFileName( $res ) {
-		return false;
 	}
 
 	/**
@@ -629,6 +603,17 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 		}
 
 		return $params;
+	}
+
+	/**
+	 * @see SMWIResultPrinter::isExportFormat
+	 *
+	 * @since 1.8
+	 *
+	 * @return boolean
+	 */
+	public function isExportFormat() {
+		return false;
 	}
 
 }

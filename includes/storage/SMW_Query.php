@@ -48,7 +48,7 @@ class SMWQuery {
 	
 	/**
 	 * Constructor.
-	 * @param $description Optional SMWDescription object describing the query conditions
+	 * @param $description SMWDescription object describing the query conditions
 	 * @param $inline bool stating whether this query runs in an inline context; used to determine
 	 * proper default parameters (e.g. the default limit)
 	 * @param $concept bool stating whether this query belongs to a concept; used to determine
