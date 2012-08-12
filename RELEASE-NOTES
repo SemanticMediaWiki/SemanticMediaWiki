@@ -30,6 +30,8 @@ production until the actual release.
 * Added tests for the query processor, the store, data items and result printers,
   including base test classes for the later two that can be used by extensions.
 * No more inline CSS and JavaScript on special pages (now all resource loader modules).
+* Added SMWExportPrinter class to facilitate creating export printers and simplify handling code.
+* Added SMWIResultPrinter interface to type hint result printers against.
 
 ; Dropped features
 
