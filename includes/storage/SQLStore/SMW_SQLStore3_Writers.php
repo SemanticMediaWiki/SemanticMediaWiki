@@ -225,8 +225,6 @@ Class SMWSQLStore3Writers {
 			$tableid = SMWSQLStore3::findPropertyTableID( $property );
 			$proptable = $proptables[$tableid];
 
-			$dataItemId = SMWDataValueFactory::getDataItemId( $property->findPropertyTypeId() );
-			$diHandler = $this->store->getDataItemHandlerForDIType( $dataItemId );
 			///TODO check needed if subject is null (would happen if a user defined proptable with !idsubject was used on an internal object -- currently this is not possible
 			$uvals = $proptable->idsubject ? array( 's_id' => $sid ) :
 					 array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() );
@@ -237,6 +235,7 @@ Class SMWSQLStore3Writers {
 				if ( $di instanceof SMWDIError ) { // error values, ignore
 					continue;
 				}
+				$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $di->getDIType() );
 				$uvals = array_merge( $uvals, $diHandler->getInsertValues( $di ) );
 
 				if ( !array_key_exists( $proptable->name, $updates ) ) {
