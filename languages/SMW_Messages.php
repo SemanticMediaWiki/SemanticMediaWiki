@@ -10996,6 +10996,56 @@ $messages['sh'] = array(
 	'smw_result_prev' => 'Prethodna',
 );
 
+/** Sinhala (සිංහල)
+ * @author පසිඳු කාවින්ද
+ */
+$messages['si'] = array(
+	'smw_finallistconjunct' => ', සහ',
+	'smw_printername_list' => 'ලැයිස්තුව',
+	'smw_printername_template' => 'සැකිල්ල',
+	'smw_printername_category' => 'ප්‍රවර්ගය',
+	'smw_true_words' => 'true,t,yes,y',
+	'smw_false_words' => 'false,f,no,n',
+	'smw_exportrdf_submit' => 'නිර්යාත කරන්න',
+	'properties' => 'ගුණ',
+	'types' => 'වර්ග',
+	'smw_ask_queryhead' => 'ප්‍රශ්නය',
+	'smw_ask_defaultformat' => 'සාමාන්‍ය',
+	'smw_ask_otheroptions' => 'වෙනත් විකල්පයන්',
+	'smw-ask-delete' => '[මකන්න]',
+	'smw_qc_otheropt' => 'වෙනත් විකල්පයන්',
+	'smw_qc_default' => 'සාමාන්‍ය:',
+	'smw_qui_prop' => 'ගුණාංගය:',
+	'smw_qui_labl' => 'ලේබලය:',
+	'smw_qui_formt' => 'ආකෘතිය:',
+	'smw_qui_limt' => 'සීමාව:',
+	'smw_qui_randorder' => 'අහඹු',
+	'smw_qui_delete' => 'ඉවත් කරන්න',
+	'smw_qui_options' => 'විකල්පයන්',
+	'smw_qui_ok' => 'හ‍රි',
+	'smw_qui_cancel' => 'අත් හරින්න',
+	'smw_qui_category' => '<strong>ප්‍රවර්ගය</strong>',
+	'smw_qui_label' => 'ලේබලය',
+	'smw_qui_dlabel' => 'ලේබලය:',
+	'smw_qui_dcategory' => 'ප්‍රවර්ගය:',
+	'smw_sbv_property' => 'ගුණාංගය:',
+	'smw_sbv_value' => 'අගය:',
+	'smw_sbv_submit' => 'ප්‍රතිඵල සොයන්න',
+	'browse' => 'විකිය ගවේෂණය කරන්න',
+	'smw_browselink' => 'ගුණ ගවේෂණය කරන්න',
+	'smw_browse_go' => 'යන්න',
+	'smw_pp_from' => 'පිටුව වෙතින්',
+	'smw_pp_type' => 'ගුණාංගය',
+	'smw_pp_submit' => 'ප්‍රතිඵල සොයන්න',
+	'smw_result_prev' => 'පෙර',
+	'smw_result_next' => 'මීළඟ',
+	'smw_result_results' => 'ප්‍රතිඵල',
+	'smw_result_noresults' => 'ප්‍රතිඵල නොමැත',
+	'smw_smwadmin_datarefreshstopconfirm' => 'ඔව්, මට විශ්වාසයි.',
+	'smw_smwadmin_support' => 'සහාය ලබා ගනිමින්',
+	'smw_adminlinks_displayingdata' => 'දත්ත ප්‍රදර්ශනය',
+);
+
 /** Slovak (slovenčina)
  * @author Helix84
  */
@@ -12059,14 +12109,51 @@ Uppskattning av hur långt uppdateringen har kommit:',
 );
 
 /** Tamil (தமிழ்)
+ * @author Karthi.dr
  * @author Logicwiki
+ * @author Shanmugamp7
  * @author TRYPPN
  */
 $messages['ta'] = array(
 	'smw_printername_list' => 'பட்டியல்',
 	'smw_printername_table' => 'பட்டியல்',
 	'smw_printername_template' => 'வார்ப்புரு',
+	'smw_printername_category' => 'பகுப்பு',
 	'properties' => 'பண்புகள்',
+	'smw_qui_ascorder' => 'ஏறுவரிசை',
+	'smw_qui_descorder' => 'இறங்குவரிசை',
+	'smw_qui_randorder' => 'ஏதாவதொன்று',
+	'smw_qui_addnprop' => 'உடமையைச் சேர்',
+	'smw_qui_delete' => 'நீக்குக',
+	'smw_qui_options' => 'விருப்பத்தேர்வுகள்',
+	'smw_qui_addcategory' => ' பகுப்பைச் சேர்க்கவும்',
+	'smw_qui_ok' => 'சரி',
+	'smw_qui_cancel' => 'ரத்து செய்',
+	'smw_qui_category' => '<strong>பகுப்பு</strong>',
+	'smw_qui_label' => 'சிட்டை',
+	'smw_prp_options' => 'உடமை விருப்பத்தேர்வுகள்',
+	'smw_qui_catopts' => 'பகுப்பு விருப்பத்தேர்வுகள்',
+	'smw_qui_mainlabopts' => 'முடிவு விருப்பத்தேர்வுகள்',
+	'smw_qui_dlabel' => 'சிட்டை:',
+	'smw_qui_dcategory' => 'பகுப்பு:',
+	'smw_sbv_property' => 'உடமை:',
+	'smw_sbv_value' => 'மதிப்பு:',
+	'smw_sbv_submit' => 'முடிவுகளைத் தேடு',
+	'browse' => 'விக்கியில் உலாவு',
+	'smw_browselink' => 'உடமைகளில் உலாவு',
+	'smw_browse_article' => 'உலாவ ஆரம்பிக்க விரும்பும் பக்கத்தின் பெயரை உள்ளிடவும்.',
+	'smw_browse_go' => 'செல்',
+	'smw_browse_show_incoming' => 'இங்கு இணைக்கப்பட்டுள்ள உடமைகளைக் காண்பிக்கவும்',
+	'smw_browse_hide_incoming' => 'இங்கு இணைக்கப்பட்டுள்ள உடமைகளைக் மறைக்கவும்',
+	'smw_browse_no_outgoing' => 'இந்தப் பக்கத்திற்கு உடமைகள் ஏதுமில்லை.',
+	'smw_browse_no_incoming' => 'இந்தப் பக்கத்திற்கு உடமைகள் ஏதும் இணைக்கப்படவில்லை.',
+	'smw_pp_from' => 'பக்கத்திலிருந்து',
+	'smw_pp_type' => 'உடமை',
+	'smw_pp_submit' => 'முடிவுகளைத் தேடு',
+	'smw_result_prev' => 'முந்தைய',
+	'smw_result_next' => 'அடுத்து',
+	'smw_result_results' => 'முடிவுகள்',
+	'smw_result_noresults' => 'முடிவுகள் ஏதுமில்லை.',
 );
 
 /** Telugu (తెలుగు)
