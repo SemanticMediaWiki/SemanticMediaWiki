@@ -3,39 +3,44 @@ THIS IS NOT A RELEASE YET
 Semantic MediaWiki 1.8 is currently in beta-quality and is not recommended for use in
 production until the actual release.
 
-; Compatibility changes
+=== Compatibility changes ===
 
 * Changed minimum MediaWiki version from 1.16 to 1.17.
 * Full compatibility with MediaWiki 1.19 and forward-compatibility with 1.20.
 * Changed minimum Validator version from 0.4 to 0.5.
 * The structure of the JSON result format has been altered (bug 37418).
 
-; New features
+=== New features ===
+
 * Added anonymous auto-numbering for subobjects that don't specify their identifier (bug 36634)
 
-; Other improvements
+=== Enhancements ===
 
 * TODO: sqlstore 3
 * TODO: validator 0.5
 
 * Made query link generation completely generic. Links for all formats will now contain
-  all provided arguments.
+: all provided arguments.
 * Improved JSON export (bug 37418).
 * Improved Special:Ask UI.
 * Added tests for the query processor, the store, data items and result printers,
-  including base test classes for the later two that can be used by extensions.
+: including base test classes for the later two that can be used by extensions.
 * No more inline CSS and JavaScript on special pages (now all resource loader modules).
 * Added SMWExportPrinter class to facilitate creating export printers and simplify handling code.
 * Added SMWIResultPrinter interface to type hint result printers against.
 
-; Dropped features
+=== Dropped features ===
 
 * Special:QueryCreator got disabled pending fixes.
 
-; Bug fixes
+=== Bug fixes ===
 
 * Fixed automatic running of SMW updating script when running maitenance/update.php.
 * Fixed page parameter handling on Special:ExportPDF (bug 35180).
 * Fixed handling of #set_recurring_event for 'month' and 'year' time units.
 * Fixed error on Special:URIResolver (bug 35643).
 * Fixed alternative query source ($smwgQuerySources) (bug 38292).
+
+=== Extended translations ===
+
+As usual, translations have been extended thanks to the [[Translatewiki.net|Translatewiki.net project]].
