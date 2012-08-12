@@ -341,8 +341,8 @@ function smwfRegisterSpecialPages() {
 	$wgSpecialPages['Ask']                          = 'SMWAskPage';
 	$wgSpecialPageGroups['Ask']                     = 'smw_group';
 
-	$wgSpecialPages['QueryCreator']                 = 'SMWQueryCreatorPage';
-	$wgSpecialPageGroups['QueryCreator']            = 'smw_group';
+//	$wgSpecialPages['QueryCreator']                 = 'SMWQueryCreatorPage';
+//	$wgSpecialPageGroups['QueryCreator']            = 'smw_group';
 
 	$wgSpecialPages['Browse']                       = 'SMWSpecialBrowse';
 	$wgSpecialPageGroups['Browse']                  = 'smw_group';

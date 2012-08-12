@@ -31,6 +31,10 @@ production until the actual release.
   including base test classes for the later two that can be used by extensions.
 * No more inline CSS and JavaScript on special pages (now all resource loader modules).
 
+; Dropped features
+
+* Special:QueryCreator got disabled pending fixes.
+
 ; Bug fixes
 
 * Fixed automatic running of SMW updating script when running maitenance/update.php.
