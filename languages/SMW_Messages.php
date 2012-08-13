@@ -3769,6 +3769,18 @@ Progeso estimado de la actualización:',
 	'smw-ask-userpref-options-collapsed-default' => 'Activar la contracción de la caja de opciones por defecto',
 );
 
+/** Estonian (eesti)
+ * @author Avjoska
+ */
+$messages['et'] = array(
+	'smw_printername_table' => 'Tabel',
+	'smw_purge' => 'Värskenda',
+	'smw_qui_addcategory' => 'lisa kategooria',
+	'smw_qui_dcategory' => 'Kategooria:',
+	'smw_result_prev' => 'Eelmine',
+	'smw_result_next' => 'Järgmine',
+);
+
 /** Basque (euskara)
  * @author An13sa
  * @author Kobazulo
@@ -12120,6 +12132,11 @@ $messages['ta'] = array(
 	'smw_printername_template' => 'வார்ப்புரு',
 	'smw_printername_category' => 'பகுப்பு',
 	'properties' => 'பண்புகள்',
+	'smw_ask_ascorder' => 'ஏறுவரிசை',
+	'smw_ask_descorder' => 'இறங்குவரிசை',
+	'smw_ask_submit' => 'முடிவுகளைத் தேடு',
+	'smw_ask_defaultformat' => 'பொதுவானது',
+	'smw_ask_otheroptions' => 'மற்ற விருப்பத்தேர்வுகள்',
 	'smw_qui_ascorder' => 'ஏறுவரிசை',
 	'smw_qui_descorder' => 'இறங்குவரிசை',
 	'smw_qui_randorder' => 'ஏதாவதொன்று',
