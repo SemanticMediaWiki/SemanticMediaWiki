@@ -39,11 +39,11 @@ by ontoprise GmbH, Karlsruhe, Germany.
 * Denny Vrandecic is one of the original core developers.
 
 * Heiko Haller and Max Völkel contributed to the initial design and basic
-architectural decisions.
+: architectural decisions.
 
 * The German company Doccheck (doccheck.com) helped to get the implementation
-going at the early stages of the project, and set up the first testing wiki.
-The first implementation was done by Klaus Lassleben.
+: going at the early stages of the project, and set up the first testing wiki.
+: The first implementation was done by Klaus Lassleben.
 
 * Code has been contributed by (in no particular order) S Page, Kai Hüner,
 : Fernando Correia, Yaron Koren, Nick Grandy, Jörg Heizmann, Daniel Herzig,
@@ -53,9 +53,9 @@ The first implementation was done by Klaus Lassleben.
 : James HK, Sam Reed, Karsten Hoffmeyer.
 
 * The logo and related artwork for Semantic MediaWiki as found on
-http://semantic-mediawiki.org/wiki/SMW_Logo
-were designed and realised by Markus Krötzsch. A previous version of
-the SMW logo has been realised by Rozana Vrandecic.
+: http://semantic-mediawiki.org/wiki/SMW_Logo
+: were designed and realised by Markus Krötzsch. A previous version of
+: the SMW logo has been realised by Rozana Vrandecic.
 
 == Translations ==
 
