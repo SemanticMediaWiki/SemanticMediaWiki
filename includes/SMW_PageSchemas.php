@@ -51,11 +51,10 @@ class SMWPageSchemas extends PSExtensionHandler {
 				if ( empty( $prop_array ) ) {
 					continue;
 				}
-				if ( !array_key_exists( 'name', $prop_array ) ) {
-					continue;
-				}
-				if ( empty( $prop_array['name'] ) ) {
-					continue;
+				// If property name is blank, set it to the
+				// field name.
+				if ( !array_key_exists( 'name', $prop_array ) || empty( $prop_array['name'] ) ) {
+					$prop_array['name'] = $psTemplateField->getName();
 				}
 				$propertyDataArray[] = $prop_array;
 			}
