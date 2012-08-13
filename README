@@ -50,7 +50,7 @@ by ontoprise GmbH, Karlsruhe, Germany.
 : Nikolas Iwan, Tobias Matzner, Thomas Bleher, Felix Kratzer, Frank Dengler,
 : Nathan R. Yergler, Daniel Friesen, Fabian Howahl, Jie Bao, Marcel Gsteiger,
 : Roi Avinoam, Richard Cyganiak, Sanyam Goyal, Devayon Das, Nischay Nahata,
-: James HK, Sam Reed, Karsten Hoffmeyer.
+: James HK, Sam Reed, Karsten Hoffmeyer, Niklas Laxström.
 
 * The logo and related artwork for Semantic MediaWiki as found on
 : http://semantic-mediawiki.org/wiki/SMW_Logo
@@ -67,12 +67,12 @@ excellent translation service they provide.
 == Credits to other projects ==
 
 * Most icons used by Semantic MediaWiki are derived from the "Crystal Clear"
-icon theme for KDE, which was created by Everaldo (everaldo.com).
+: icon theme for KDE, which was created by Everaldo (everaldo.com).
 
 * The code contains a minified version of the jQuery JavaScript library
-(http://jquery.com/), developed by John Resig and the jQuery team.
+: (http://jquery.com/), developed by John Resig and the jQuery team.
 
 * Many people have contributed to the project by providing helpful comments and
-suggestions. Among them are the members of the Semantic Wiki Interest Group
-(swikig@aifb.uni-karlsruhe.de; see semanticweb.org), the people at the project
-mailing lists, and a number of anonymous reviewers. Thanks a lot!
+: suggestions. Among them are the members of the Semantic Wiki Interest Group
+: (swikig@aifb.uni-karlsruhe.de; see semanticweb.org), the people at the project
+: mailing lists, and a number of anonymous reviewers. Thanks a lot!
