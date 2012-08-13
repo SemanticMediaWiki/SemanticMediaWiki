@@ -22,6 +22,11 @@
 class SMWSql3StubSemanticData extends SMWSemanticData {
 
 	/**
+	* The store object.
+	*/
+	protected $store;
+
+	/**
 	 * Stub property data that is not part of $mPropVals and $mProperties
 	 * yet. Entries use property keys as keys. The value is an array of
 	 * DBkey-arrays that define individual datavalues. The stubs will be
@@ -41,6 +46,18 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	protected $mSubject;
 
 	/**
+	 * Constructor.
+	 *
+	 * @param SMWDIWikiPage $subject to which this data refers
+	 * @param SMWSQLStore $store (the parent store)
+	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 */
+	public function __construct( SMWDIWikiPage $subject, SMWSQLStore $store, $noDuplicates = true ) {
+		$this->store = $store;
+		parent::__construct( $subject, $noDuplicates );
+	}
+
+	/**
 	 * Create a new SMWSql3StubSemanticData object that holds the data of a
 	 * given SMWSemanticData object. Array assignments create copies in PHP
 	 * so the arrays are distinct in input and output object. The object
@@ -50,8 +67,8 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @param $semanticData SMWSemanticData
 	 * @return SMWSql3StubSemanticData
 	 */
-	public static function newFromSemanticData( SMWSemanticData $semanticData ) {
-		$result = new SMWSql3StubSemanticData( $semanticData->getSubject() );
+	public static function newFromSemanticData( SMWSemanticData $semanticData, $store ) {
+		$result = new SMWSql3StubSemanticData( $semanticData->getSubject(), $store );
 		$result->mPropVals = $semanticData->mPropVals;
 		$result->mProperties = $semanticData->mProperties;
 		$result->mHasVisibleProps = $semanticData->mHasVisibleProps;
@@ -88,7 +105,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 
 			foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {
 				try {
-					$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $propertyDiId );
+					$diHandler = $this->store->getDataItemHandlerForDIType( $propertyDiId );
 					$di = $diHandler->dataItemFromDBKeys( $dbkeys );
 
 					if ( $this->mNoDuplicates ) {

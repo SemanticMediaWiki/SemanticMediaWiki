@@ -65,15 +65,16 @@ class SMWSQLStore3Table {
 		$this->fixedproperty = $fixedProperty;
 		$this->diType = $DIType;
 	}
+
 	/**
 	* Method to return the fields for this table
-	* 
+	*
 	* @since SMW.storerewrite
 	*
 	* @return array
 	*/
-	public function getFields() {
-		$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $this->diType );
+	public function getFields( $store ) {
+		$diHandler = $store->getDataItemHandlerForDIType( $this->diType );
 		return $diHandler->getTableFields();
 	}
 }

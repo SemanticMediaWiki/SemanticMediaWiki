@@ -12,7 +12,7 @@
  * @author Nischay Nahata
  * @ingroup SMWDataItemsHandlers
  */
-class SMWDIHandlerContainer implements SMWDataItemHandler {
+class SMWDIHandlerContainer extends SMWDataItemHandler {
 
 	/**
 	 * Method to return array of fields for a DI type
@@ -40,8 +40,7 @@ class SMWDIHandlerContainer implements SMWDataItemHandler {
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
 		$subject = $dataItem->getSemanticData()->getSubject();
-		$store3 = new SMWSQLStore3();
-		$sid = $store3->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName() );
+		$sid = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName() );
 		return array( 'o_id' => $sid );
 	}
 
@@ -56,8 +55,7 @@ class SMWDIHandlerContainer implements SMWDataItemHandler {
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		$subject = $dataItem->getSemanticData()->getSubject();
-		$store3 = new SMWSQLStore3();
-		$sid = $store3->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(),
+		$sid = $this->store->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(),
 			$subject->getSubobjectName(), true, str_replace( '_', ' ', $subject->getDBkey() ) . $subject->getSubobjectName() );
 		return array( 'o_id' => $sid );
 	}
@@ -90,10 +88,10 @@ class SMWDIHandlerContainer implements SMWDataItemHandler {
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
+		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
 		$diSubWikiPage = $diHandler->dataItemFromDBKeys( $dbkeys );
 		$semanticData = new SMWContainerSemanticData( $diSubWikiPage );
-		$semanticData->copyDataFrom( smwfGetStore()->getSemanticData( $diSubWikiPage ) );
+		$semanticData->copyDataFrom( $store3->getSemanticData( $diSubWikiPage ) );
 		return new SMWDIContainer( $semanticData );
 	}
 }

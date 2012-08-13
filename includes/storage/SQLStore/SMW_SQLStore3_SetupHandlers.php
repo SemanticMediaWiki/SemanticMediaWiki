@@ -152,7 +152,8 @@ Class SMWSQLStore3SetupHandlers {
 				$indexes[] = 'p_id';
 			}
 
-			foreach ( $proptable->getFields() as $fieldname => $typeid ) {
+			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->diType );
+			foreach ( $diHandler->getTableFields() as $fieldname => $typeid ) {
 				// If the type signature is not recognized and the custom signatures have not been added, add them.
 				if ( !$addedCustomTypeSignatures && !array_key_exists( $typeid, $dbtypes ) ) {
 					wfRunHooks( 'SMWCustomSQLStoreFieldType', array( &$dbtypes ) );
@@ -164,7 +165,6 @@ Class SMWSQLStore3SetupHandlers {
 					$fieldarray[$fieldname] = $dbtypes[$typeid];
 				}
 			}
-			$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $proptable->diType );
 			$indexes = array_merge( $indexes, $diHandler->getTableIndexes() );
 
 			SMWSQLHelpers::setupTable( $proptable->name, $fieldarray, $db, $reportTo );
