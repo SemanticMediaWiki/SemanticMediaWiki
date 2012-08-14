@@ -6703,6 +6703,7 @@ $messages['io'] = array(
  * @author Cruccone
  * @author Darth Kule
  * @author Davide Eynard, David Laniado
+ * @author F. Cosoleto
  * @author Gianfranco
  * @author Gmelfi
  * @author Melos
@@ -6836,12 +6837,14 @@ Le proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:
 	'smw_ask_embed_instr' => 'Per includere questa query in linea in una pagina wiki, usa il codice qui sotto.',
 	'smw_qc_show_addnal_opts' => 'Mostra più opzioni',
 	'smw_qc_hide_addnal_opts' => 'Mostra meno opzioni',
+	'smw_qc_default' => 'Predefinito:',
 	'smw_qui_property' => '<strong>Proprietà</strong>',
 	'smw_qui_prop' => 'Proprietà:',
 	'smw_qui_labl' => 'Etichetta:',
 	'smw_qui_formt' => 'Formato:',
 	'smw_qui_limt' => 'Limite:',
 	'smw_qui_shownresults' => 'mostra nei risultati',
+	'smw_qui_invalidformat' => 'Il formato scelto "$1" non esiste per questa wiki',
 	'smw_qui_nosort' => 'Nessun ordinamento',
 	'smw_qui_ascorder' => 'Crescente',
 	'smw_qui_descorder' => 'Decrescente',
@@ -8517,8 +8520,10 @@ Jika masalah ini masih berlarutan selepas beberapa ketika, mintalah pentadbir ta
 /** Maltese (Malti)
  * @author Chrisportelli
  * @author Roderick Mallia
+ * @author පසිඳු කාවින්ද
  */
 $messages['mt'] = array(
+	'smw_qui_ok' => 'Ok',
 	'smw_browse_go' => 'Mur',
 	'smw_result_prev' => "Ta' qabel",
 );
