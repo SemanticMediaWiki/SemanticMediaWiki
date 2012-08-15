@@ -2762,7 +2762,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|Vorkommen|Vorkommen}})',
 	'smw_purge' => 'Neu laden',
 	'types' => 'Datentypen',
-	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden.',
+	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden:',
 	'semanticstatistics' => 'Statistik zu semantischen Daten',
 	'smw_semstats_text' => "In diesem Wiki {{PLURAL:$1|wurde '''1''' Wert|wurden '''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]] eingegeben. '''$3''' {{PLURAL:$3|Attribut hat|Attribute haben}} eine eigene Seite und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.
 
@@ -3784,6 +3784,7 @@ $messages['et'] = array(
 /** Basque (euskara)
  * @author An13sa
  * @author Kobazulo
+ * @author පසිඳු කාවින්ද
  */
 $messages['eu'] = array(
 	'smw_viewasrdf' => 'RDF jarioa',
@@ -3801,6 +3802,12 @@ $messages['eu'] = array(
 	'smw_ask_ascorder' => 'Gorantz',
 	'smw_ask_descorder' => 'Beherantz',
 	'smw_ask_submit' => 'Emaitzak bilatu',
+	'smw_qui_formt' => 'Formatua:',
+	'smw_qui_limt' => 'Muga:',
+	'smw_qui_randorder' => 'Ausazkoa',
+	'smw_qui_delete' => 'Kendu',
+	'smw_qui_cancel' => 'Utzi',
+	'smw_qui_dcategory' => 'Kategoria:',
 	'searchbyproperty' => 'Propietateen arabera bilatu',
 	'smw_sbv_property' => 'Propietatea:',
 	'smw_sbv_value' => 'Balioa:',
@@ -7010,6 +7017,7 @@ $messages['ja'] = array(
 	'smw-paramdesc-dsv-separator' => '使用する区切り文字',
 	'smw-paramdesc-dsv-filename' => 'DSV ファイルの名前',
 	'smw-paramdesc-searchlabel' => '結果へのリンクの文字列（既定は「{{int:Smw iq moreresults}}」）',
+	'smw-paramdesc-export' => '書き出しオプション',
 	'smw_iq_disabled' => 'このウィキのセマンティッククエリーが無効になっています。',
 	'smw_iq_moreresults' => '… 追加結果',
 	'smw_parseerror' => '指定値が理解できませんでした。',
@@ -7104,6 +7112,7 @@ $messages['ja'] = array(
 	'smw_ask_hide_embed' => '埋め込み用コードを非表示',
 	'smw_ask_embed_instr' => 'このクエリーをウィキページにインラインで埋め込むには、下のコードを使用します。',
 	'smw-ask-delete' => '[削除]',
+	'smw-ask-sorting' => '並べ替えています',
 	'smw_qc_show_addnal_opts' => 'その他のオプションを表示',
 	'smw_qc_hide_addnal_opts' => 'オプションを折り畳む',
 	'smw_qc_otheropt' => 'その他のオプション',
@@ -7113,6 +7122,7 @@ $messages['ja'] = array(
 	'smw_qui_labl' => 'ラベル：',
 	'smw_qui_limt' => '制限:',
 	'smw_qui_shownresults' => '結果に表示',
+	'smw_qui_noquery' => 'クエリーが指定されていません',
 	'smw_qui_nosort' => '並べ替えなし',
 	'smw_qui_ascorder' => '昇順',
 	'smw_qui_descorder' => '降順',
@@ -7163,11 +7173,19 @@ $messages['ja'] = array(
 	'smw_smwadmin_return' => '$1 に戻る',
 	'smw_smwadmin_updatestarted' => '意味的データを最新の状態にするための新しい更新プロセスを開始しました。
 格納済みのデータはすべて必要に応じて再構築または修復されます。
-この特別ページで更新の状況を追うことができます。',
+この特別ページで更新の状況を追うことができます。
+
+$1に戻る。',
 	'smw_smwadmin_updatenotstarted' => '既に実行中の更新プロセスがあります。
-新たに作成しないでください。',
-	'smw_smwadmin_updatestopped' => '既存のすべての更新プロセスは停止されました。',
-	'smw_smwadmin_updatenotstopped' => '実行中の更新プロセスを停止するには、本当に理解していることを示すためにチェックボックスを選択する必要があります。',
+新たに作成しないでください。
+
+$1に戻る。',
+	'smw_smwadmin_updatestopped' => '既存のすべての更新プロセスは停止されました。
+
+$1に戻る。',
+	'smw_smwadmin_updatenotstopped' => '実行中の更新プロセスを停止するには、本当に理解していることを示すためにチェックボックスを選択する必要があります。
+
+$1に戻る。',
 	'smw_smwadmin_docu' => 'この特別ページは <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a> のインストールとアップグレードを補助します。管理機能を実行する前に重要なデータをバックアップするようにしてください。',
 	'smw_smwadmin_db' => 'データベースのインストールおよびアップグレード',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki は意味的データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。
@@ -11934,7 +11952,7 @@ Om problemet inte försvinner efter någon tid, så be din administratör att g�
 	'smw-paramdesc-sort' => 'Egenskap som resultatet ska sorteras efter',
 	'smw_iq_disabled' => 'Beklagar. Semantiska efterfrågningar har slagits av på den här wikin.',
 	'smw_iq_moreresults' => '… mer resultat',
-	'smw_parseerror' => 'Det angivna värdet förståddes inte.',
+	'smw_parseerror' => 'Det angivna värdet förstods inte.',
 	'smw_notitle' => '"$1" kan inte användas som sidnamn på den här wikin.',
 	'smw_noproperty' => '”$1” kan inte användas som namn på en egenskap på den här wikin.',
 	'smw_wrong_namespace' => 'Endast sidor i namnrymden "$1" tillåts här.',
