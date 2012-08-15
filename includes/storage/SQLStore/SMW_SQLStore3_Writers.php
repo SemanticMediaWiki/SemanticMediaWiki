@@ -101,9 +101,9 @@ Class SMWSQLStore3Writers {
 		$hashIsChanged = false;
 
 		//old SemanticData container for this subject (This will only hold Semantic data that will be deleted)
-		$oldData = new SMWSql3StubSemanticData( $subject, false );
+		$oldData = new SMWSql3StubSemanticData( $subject, $this->store, false );
 		//new SemanticData container for this subject (This will only hold Semantic data that will be newly added)
-		$newData = new SMWSql3StubSemanticData( $subject, false );
+		$newData = new SMWSql3StubSemanticData( $subject, $this->store, false );
 		//tables into which data has been changed or added (not considering the ones where data is only deleted)
 		$modifiedTables = array();
 
@@ -160,7 +160,7 @@ Class SMWSQLStore3Writers {
 		}
 
 		// Finally update caches (may be important if jobs are directly following this call)
-		$this->store->m_semdata[$sid] = SMWSql3StubSemanticData::newFromSemanticData( $data );
+		$this->store->m_semdata[$sid] = SMWSql3StubSemanticData::newFromSemanticData( $data, $this->store );
 		// Everything that one can know.
 		$this->store->m_sdstate[$sid] = array();
 		foreach ( SMWSQLStore3::getPropertyTables() as $tableId => $tableDeclaration ) {
@@ -226,7 +226,7 @@ Class SMWSQLStore3Writers {
 			$proptable = $proptables[$tableid];
 
 			$dataItemId = SMWDataValueFactory::getDataItemId( $property->findPropertyTypeId() );
-			$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $dataItemId );
+			$diHandler = $this->store->getDataItemHandlerForDIType( $dataItemId );
 			///TODO check needed if subject is null (would happen if a user defined proptable with !idsubject was used on an internal object -- currently this is not possible
 			$uvals = $proptable->idsubject ? array( 's_id' => $sid ) :
 					 array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() );
@@ -548,7 +548,7 @@ Class SMWSQLStore3Writers {
 						$db->freeResult( $res );
 					}
 
-					foreach ( $proptable->getFields() as $fieldname => $type ) {
+					foreach ( $proptable->getFields( $this->store ) as $fieldname => $type ) {
 						if ( $type == 'p' ) {
 							$res = $db->select( $from, $select,
 								array( $fieldname => $old_tid ), __METHOD__ );

@@ -73,6 +73,13 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	protected $setupHandler = false;
 
+	/**
+	 * Array of DIHandler objects used by this store. Initialized by getDIHandler()
+	 * Always access using getDIHandler()
+	 *
+	 * @since SMW.storerewrite
+	 */
+	protected $diHandlers = array();
 
 	/// Cache for SMWSemanticData objects, indexed by SMW ID
 	public $m_semdata = array();
@@ -165,6 +172,59 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function __construct() {
 		$this->m_idCache = new SMWSQLStore3IdCache( wfGetDB( DB_SLAVE ) );
+	}
+
+	/**
+	 * Gets an object of the dataitem handler from the dataitem provided.
+	 *
+	 * @since SMW.storerewrite
+	 *
+	 * @param $dataItemID constant
+	 *
+	 * @throws MWException
+	 * @return SMWDataItemHandler
+	 */
+	public function getDataItemHandlerForDIType( $diType ) {
+		if( !array_key_exists( $diType, $this->diHandlers ) ) {
+			switch ( $diType ) {
+				case SMWDataItem::TYPE_NUMBER:
+					$this->diHandlers[$diType] =  new SMWDIHandlerNumber( $this );
+					break;
+				case SMWDataItem::TYPE_STRING:
+					$this->diHandlers[$diType] =  new SMWDIHandlerString( $this );
+					break;
+				case SMWDataItem::TYPE_BLOB:
+					$this->diHandlers[$diType] =  new SMWDIHandlerBlob( $this );
+					break;
+				case SMWDataItem::TYPE_BOOLEAN:
+					$this->diHandlers[$diType] =  new SMWDIHandlerBoolean( $this );
+					break;
+				case SMWDataItem::TYPE_URI:
+					$this->diHandlers[$diType] =  new SMWDIHandlerUri( $this );
+					break;
+				case SMWDataItem::TYPE_TIME:
+					$this->diHandlers[$diType] =  new SMWDIHandlerTime( $this );
+					break;
+				case SMWDataItem::TYPE_GEO:
+					$this->diHandlers[$diType] =  new SMWDIHandlerGeoCoord( $this );
+					break;
+				case SMWDataItem::TYPE_CONTAINER:
+					$this->diHandlers[$diType] =  new SMWDIHandlerContainer( $this );
+					break;
+				case SMWDataItem::TYPE_WIKIPAGE:
+					$this->diHandlers[$diType] =  new SMWDIHandlerWikiPage( $this );
+					break;
+				case SMWDataItem::TYPE_CONCEPT:
+					$this->diHandlers[$diType] =  new SMWDIHandlerConcept( $this );
+					break;
+				case SMWDataItem::TYPE_PROPERTY:
+					$this->diHandlers[$diType] =  new SMWDIHandlerProperty( $this );
+					break;
+				default:
+					throw new MWException( "The value \"$diType\" is not a valid dataitem ID." );
+			}
+		}
+		return $this->diHandlers[$diType];
 	}
 
 ///// Reading methods /////
@@ -549,9 +609,9 @@ class SMWSQLStore3 extends SMWStore {
 	 * data of this type can be obtained. The result is an array of two
 	 * entries: the value field and the label field.
 	 */
-	public static function getTypeSignature( $typeid ) {
+	public function getTypeSignature( $typeid ) {
 		$dataItemId = SMWDataValueFactory::getDataItemId( $typeid );
-		$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $dataItemId );
+		$diHandler = $this->getDataItemHandlerForDIType( $dataItemId );
 		return array(
 			$diHandler->getIndexField(),
 			$diHandler->getLabelField()
@@ -935,7 +995,7 @@ class SMWSQLStore3 extends SMWStore {
 					}
 				}
 
-				foreach ( $proptable->getFields() as $fieldname => $type ) {
+				foreach ( $proptable->getFields( $this ) as $fieldname => $type ) {
 					if ( $type == 'p' ) {
 						$db->update( $proptable->name, array( $fieldname => $newid ), array( $fieldname => $oldid ), __METHOD__ );
 					}

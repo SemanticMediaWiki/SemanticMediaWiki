@@ -12,7 +12,7 @@
  * @author Nischay Nahata
  * @ingroup SMWDataItemsHandlers
  */
-class SMWDIHandlerConcept implements SMWDataItemHandler {
+class SMWDIHandlerConcept extends SMWDataItemHandler {
 
 	/**
 	 * Method to return array of fields for a DI type

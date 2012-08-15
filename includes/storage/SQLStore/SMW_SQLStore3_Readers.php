@@ -48,7 +48,7 @@ Class SMWSQLStore3Readers {
 
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->store->m_semdata ) ) { // new cache entry
-			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, false );
+			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, $this->store, false );
 			if ( $subject->getSubobjectName() === '' ) { // no sortkey for subobjects
 				$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
 			}
@@ -128,7 +128,7 @@ Class SMWSQLStore3Readers {
 
 			foreach ( $data as $dbkeys ) {
 				try {
-					$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $propertyDiId );
+					$diHandler = $this->store->getDataItemHandlerForDIType( $propertyDiId );
 					$result[] = $diHandler->dataItemFromDBKeys( $dbkeys );
 				} catch ( SMWDataItemException $e ) {
 					// maybe type assignment changed since data was stored;
@@ -206,7 +206,7 @@ Class SMWSQLStore3Readers {
 		$usedistinct = true; // use DISTINCT option only if no text blobs are among values
 		$selectvalues = array(); // array for all values to be selected, kept to help finding value and label fields below
 
-		$fields = $proptable->getFields();
+		$fields = $proptable->getFields( $this->store );
 		foreach ( $fields as $fieldname => $typeid ) { // now add select entries for object column(s)
 			if ( $typeid == 'p' ) { // Special case: page id, use smw_id table to insert 4 page-specific values instead of internal id
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
@@ -232,7 +232,7 @@ Class SMWSQLStore3Readers {
 		}
 
 		if ( !$issubject ) { // Needed to apply sorting/string matching in query; only with fixed property.
-			list( $valueField, $labelField ) = SMWSQLStore3::getTypeSignature( $object->findPropertyTypeID() );
+			list( $valueField, $labelField ) = $this->store->getTypeSignature( $object->findPropertyTypeID() );
 
 			//Hacky, we assume that valueFields that are in smw_ids table start with 'smw'
 			//the alias for smw_ids table is o0 (assigned above)
@@ -370,7 +370,7 @@ Class SMWSQLStore3Readers {
 		$db = wfGetDB( DB_SLAVE );
 
 		if ( $value instanceof SMWDIContainer ) { // recursive handling of containers
-			$keys = array_keys( $proptable->getFields() );
+			$keys = array_keys( $proptable->getFields( $this->store ) );
 			$joinfield = "t$tableindex." . reset( $keys ); // this must be a type 'p' object
 			$proptables = SMWSQLStore3::getPropertyTables();
 			$semanticData = $value->getSemanticData();
@@ -401,7 +401,7 @@ Class SMWSQLStore3Readers {
 			///since SMW.storerewrite we get the array of where conds (fieldname=>value) from the DIHander class
 			//This causes a database error when called for special properties as they have different table structure
 			//unknown to the DIHandlers. Do we really need different table structure for special properties?
-			$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $value->getDIType() );
+			$diHandler = $this->store->getDataItemHandlerForDIType( $value->getDIType() );
 			foreach ( $diHandler->getWhereConds( $value ) as $fieldname => $value ) {
 				$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.$fieldname=" . $db->addQuotes( $value );
 			}

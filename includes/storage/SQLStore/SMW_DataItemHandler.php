@@ -1,6 +1,6 @@
 <?php
 /**
- * File holding interface SMWDataItemHandler and factory class SMWDIHandlerFactory, the base for all dataitem handlers in SMW.
+ * File holding abstract class SMWDataItemHandler, the base for all dataitem handlers in SMW.
  *
  * @author Nischay Nahata
  *
@@ -9,14 +9,22 @@
  */
 
 /**
- * Classes implementing this represent all store layout that is known about a certain dataitem
+ * Classes extending this represent all store layout that is known about a certain dataitem
  *
  * @since SMW.storerewrite
  *
  * @ingroup SMWDataItemsHandlers
  */
-interface SMWDataItemHandler {
+abstract class SMWDataItemHandler {
 
+	/**
+	* The store object.
+	*/
+	protected $store;
+
+	public function __construct( SMWSQLStore $store ){
+		$this->store = $store;
+	}
 	/**
 	 * Method to return array of fields for a DI type
 	 * @since SMW.storerewrite
@@ -34,7 +42,7 @@ interface SMWDataItemHandler {
 	 *
 	 * @return array
 	 */
-	public function getTableFields();
+	abstract public function getTableFields();
 
 	/**
 	 * Method to return array of indexes for a DI type
@@ -42,7 +50,7 @@ interface SMWDataItemHandler {
 	 *
 	 * @return array
 	 */
-	public function getTableIndexes();
+	abstract public function getTableIndexes();
 
 	/**
 	 * Method to return an array of fields=>values for a DataItem
@@ -51,7 +59,7 @@ interface SMWDataItemHandler {
 	 * @param SMWDataItem
 	 * @return array
 	 */
-	public function getWhereConds( SMWDataItem $dataItem );
+	abstract public function getWhereConds( SMWDataItem $dataItem );
 
 	/**
 	 * Method to return an array of fields=>values for a DataItem
@@ -64,7 +72,7 @@ interface SMWDataItemHandler {
 	 * @param SMWDataItem
 	 * @return array
 	 */
-	public function getInsertValues( SMWDataItem $dataItem );
+	abstract public function getInsertValues( SMWDataItem $dataItem );
 
 	/**
 	 * Method to return the field used to select this type of DataItem
@@ -76,7 +84,7 @@ interface SMWDataItemHandler {
 	 * @since SMW.storerewrite
 	 * @return string
 	 */
-	public function getIndexField();
+	abstract public function getIndexField();
 
 	/**
 	 * Method to return the field used to select this type of DataItem
@@ -89,7 +97,7 @@ interface SMWDataItemHandler {
 	 * @since SMW.storerewrite
 	 * @return string
 	 */
-	public function getLabelField();
+	abstract public function getLabelField();
 
 	/**
 	 * Method to create a dataitem from an array of DB keys.
@@ -99,44 +107,6 @@ interface SMWDataItemHandler {
 	 *
 	 * @return SMWDataItem
 	 */
-	public function dataItemFromDBKeys( $dbkeys );
+	abstract public function dataItemFromDBKeys( $dbkeys );
 
-}
-
-/**
- * Factory Class for creating objects of DIHandlers
- *
- * @since SMW.storerewrite
- *
- * @ingroup SMWDataItemsHandlers
- */
-class SMWDIHandlerFactory {
-
-	/**
-	 * Gets an object of the dataitem handler from the dataitem provided.
-	 *
-	 * @since SMW.storerewrite
-	 *
-	 * @param $dataItemID constant
-	 *
-	 * @throws MWException
-	 * @return SMWDataItemHandler
-	 */
-	public static function getDataItemHandlerForDIType( $diType ) {
-		switch ( $diType ) {
-			case SMWDataItem::TYPE_NUMBER:    return new SMWDIHandlerNumber;
-			case SMWDataItem::TYPE_STRING:    return new SMWDIHandlerString;
-			case SMWDataItem::TYPE_BLOB:      return new SMWDIHandlerBlob;
-			case SMWDataItem::TYPE_BOOLEAN:   return new SMWDIHandlerBoolean;
-			case SMWDataItem::TYPE_URI:       return new SMWDIHandlerUri;
-			case SMWDataItem::TYPE_TIME:      return new SMWDIHandlerTime;
-			case SMWDataItem::TYPE_GEO:       return new SMWDIHandlerGeoCoord;
-			case SMWDataItem::TYPE_CONTAINER: return new SMWDIHandlerContainer;
-			case SMWDataItem::TYPE_WIKIPAGE:  return new SMWDIHandlerWikiPage;
-			case SMWDataItem::TYPE_CONCEPT:   return new SMWDIHandlerConcept;
-			case SMWDataItem::TYPE_PROPERTY:  return new SMWDIHandlerProperty;
-			case SMWDataItem::TYPE_ERROR:	case SMWDataItem::TYPE_NOTYPE: default:
-				throw new MWException( "The value \"$diType\" is not a valid dataitem ID." );
-		}
-	}
 }

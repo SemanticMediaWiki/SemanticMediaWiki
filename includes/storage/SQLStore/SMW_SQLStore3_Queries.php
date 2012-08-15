@@ -608,12 +608,12 @@ class SMWSQLStore3QueryEngine {
 			return;
 		}
 
-		list( $valueField, $labelField ) = SMWSQLStore3::getTypeSignature( $typeid );
+		list( $valueField, $labelField ) = $this->m_store->getTypeSignature( $typeid );
 		$sortkey = $property->getKey(); // TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 
 		// *** Basic settings: table, joinfield, and objectfields ***//
 		$query->jointable = $proptable->name;
-		$fields = $proptable->getFields();
+		$fields = $proptable->getFields( $this->m_store );
 
 		if ( $property->isInverse() ) { // see if we can support inverses by inverting the proptable data
 			if ( ( count( $fields ) == 1 ) && ( reset( $fields ) == 'p' ) ) {
@@ -711,7 +711,7 @@ class SMWSQLStore3QueryEngine {
 
 		if ( $description instanceof SMWValueDescription ) {
 			$dataItem = $description->getDataItem();
-			$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $dataItem->getDIType() );
+			$diHandler = $this->m_store->getDataItemHandlerForDIType( $dataItem->getDIType() );
 			$keys = $diHandler->getWhereConds( $dataItem );
 
 			// Try comparison based on value field and comparator.
@@ -730,7 +730,7 @@ class SMWSQLStore3QueryEngine {
 
 					// See if the getSQLCondition method exists and call it if this is the case.
 					if ( method_exists( $description, 'getSQLCondition' ) ) {
-						$fields = $proptable->getFields();
+						$fields = $proptable->getFields( $this->m_store );
 						$customSQL = $description->getSQLCondition( $query->alias, array_keys( $fields ), $this->m_dbs );
 					}
 

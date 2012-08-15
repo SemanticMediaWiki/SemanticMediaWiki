@@ -12,7 +12,7 @@
  * @author Nischay Nahata
  * @ingroup SMWDataItemsHandlers
  */
-class SMWDIHandlerWikiPage implements SMWDataItemHandler {
+class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 
 	/**
 	 * Method to return array of fields for a DI type
@@ -38,8 +38,7 @@ class SMWDIHandlerWikiPage implements SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $di) {
-		$store3 = new SMWSQLStore3();
-		$oid = $store3->getSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
+		$oid = $this->store->getSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
 		return array( 'o_id' => $oid );
 	}
 
@@ -51,8 +50,7 @@ class SMWDIHandlerWikiPage implements SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getInsertValues( SMWDataItem $di ) {
-		$store3 = new SMWSQLStore3();
-		$oid = $store3->makeSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
+		$oid = $this->store->makeSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
 		return array( 'o_id' => $oid );
 	}
 
