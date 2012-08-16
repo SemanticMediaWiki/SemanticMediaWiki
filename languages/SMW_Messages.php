@@ -4426,6 +4426,7 @@ $messages['frp'] = array(
 	'smw_ask_otheroptions' => 'Ôtros chouèx',
 	'smw_ask_show_embed' => 'Fâre vêre lo code entrebetâ',
 	'smw_ask_hide_embed' => 'Cachiér lo code entrebetâ',
+	'smw-ask-delete' => '[Suprimar]',
 	'querycreator' => 'Crèator de requétes',
 	'smw_qc_addmainlabel' => 'Apondre lo lambél principâl',
 	'smw_qc_show_addnal_opts' => 'Fâre vêre més de chouèx',
@@ -4505,10 +4506,22 @@ noms (<strong>[[Alemagnes]]</strong>) et los èspâços de noms (<strong>[[{{ns:
 
 /** Irish (Gaeilge)
  * @author Alison
+ * @author පසිඳු කාවින්ද
  */
 $messages['ga'] = array(
+	'smw_printername_category' => 'Catagóir',
+	'smw_exportrdf_submit' => 'Easportáil',
+	'smw_ask_defaultformat' => 'réamhshocrú',
+	'smw_qc_default' => 'réamhshocrú:',
+	'smw_qui_formt' => 'Formáid:',
+	'smw_qui_options' => 'Roghanna',
+	'smw_qui_cancel' => 'Cealaigh',
+	'smw_qui_dcategory' => 'Catagóir:',
 	'smw_sbv_property' => 'Airí',
+	'smw_browse_go' => 'Gabh',
 	'smw_pp_type' => 'Airí',
+	'smw_result_prev' => 'Siar',
+	'smw_result_next' => 'Ar aghaidh',
 );
 
 /** Galician (galego)
@@ -7149,7 +7162,7 @@ $messages['ja'] = array(
 	'smw_sbv_property' => 'プロパティ:',
 	'smw_sbv_value' => '値：',
 	'smw_sbv_submit' => '結果を取得',
-	'browse' => 'ウィキを閲覧',
+	'browse' => 'ウィキの閲覧',
 	'smw_browselink' => 'プロパティを閲覧',
 	'smw_browse_article' => '閲覧を開始するページの名前を入力してください。',
 	'smw_browse_go' => '表示',
@@ -13263,13 +13276,25 @@ Bi petuvons pads te aniks, i völads nilöfik palisedons.',
 
 /** Yiddish (ייִדיש)
  * @author פוילישער
+ * @author පසිඳු කාවින්ද
  */
 $messages['yi'] = array(
 	'smw_finallistconjunct' => 'און',
+	'smw_printername_list' => 'ליסטע',
+	'smw_printername_category' => 'קאַטעגאָריע',
 	'smw_nodatetime' => 'די דאַטע "$1" איז נישט פֿארשטענדלעך.',
 	'smw_exportrdf_submit' => 'עקספארטירן',
+	'smw_qui_formt' => 'פֿאָרמאַט:',
+	'smw_qui_limt' => 'לימיט:',
+	'smw_qui_randorder' => 'צופֿעליג',
+	'smw_qui_delete' => 'אַראָפּנעמען',
+	'smw_qui_options' => 'ברירות',
 	'smw_qui_ok' => 'יא',
+	'smw_qui_dcategory' => 'קאטעגאריע:',
+	'smw_sbv_value' => 'ווערט:',
+	'smw_browse_go' => 'גיין',
 	'smw_result_prev' => 'פֿריערדיקער',
+	'smw_result_results' => 'רעזולטאט',
 );
 
 /** Chinese (China) (‪中文(中国大陆)‬)
