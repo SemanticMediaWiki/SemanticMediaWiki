@@ -3901,6 +3901,7 @@ $messages['fa'] = array(
 );
 
 /** Finnish (suomi)
+ * @author Beluga
  * @author Cimon Avaro
  * @author Crt
  * @author Nike
@@ -3980,6 +3981,9 @@ Huomioi, että tulos saattaa olla suuri.',
 	'smw_ask_otheroptions' => 'Muut valinnat',
 	'smw_ask_show_embed' => 'Näytä upotettava koodi',
 	'smw_ask_hide_embed' => 'Piilota upotettava koodi',
+	'smw_qui_prop' => 'Ominaisuus:',
+	'smw_qui_formt' => 'Muoto:',
+	'smw_qui_limt' => 'Rajoitus:',
 	'smw_qui_cancel' => 'Peruuta',
 	'searchbyproperty' => 'Selaaminen ominaisuuksittain',
 	'smw_sbv_docu' => 'Voit selata sivuja, joilla on tietty arvo tietylle ominaisuudelle.',
@@ -6770,6 +6774,10 @@ $messages['it'] = array(
 	'smw-paramdesc-embedonly' => 'Non mostrare intestazioni',
 	'smw-paramdesc-rsstitle' => 'Testo da usare come titolo del feed',
 	'smw-paramdesc-rssdescription' => 'Testo da usare come descrizione del feed',
+	'smw-paramdesc-rdfsyntax' => 'La sintassi RDF da utilizzare',
+	'smw-paramdesc-csv-sep' => 'Il separatore da usare',
+	'smw-paramdesc-dsv-separator' => 'Il separatore da usare',
+	'smw-paramdesc-dsv-filename' => 'Il nome per il file DSV',
 	'smw-paramdesc-searchlabel' => 'Il testo nel link ai risultati',
 	'smw_iq_disabled' => 'Spiacenti. Le query semantiche sono state disabilitate per questo wiki.',
 	'smw_iq_moreresults' => '&hellip; risultati successivi',
@@ -12970,6 +12978,57 @@ $messages['uk'] = array(
 	'smw_adminlinks_datastructure' => 'Структура даних',
 	'smw_adminlinks_displayingdata' => 'Відображення даних',
 	'smw_adminlinks_inlinequerieshelp' => 'Довідка із вбудованих запитів',
+);
+
+/** Urdu (اردو)
+ * @author පසිඳු කාවින්ද
+ */
+$messages['ur'] = array(
+	'smw_printername_list' => 'فہرست',
+	'smw_printername_table' => 'ٹیبل',
+	'smw_printername_category' => 'زمرہ',
+	'smw_exportrdf_submit' => 'برآمد',
+	'properties' => 'کی خصوصیات',
+	'smw_purge' => 'کی تازہ کاری کریں',
+	'types' => 'اقسام',
+	'smw_ask_queryhead' => 'استفہام',
+	'smw_ask_defaultformat' => 'پہلے سے طے شدہ',
+	'smw_ask_otheroptions' => 'دوسرے اختیارات',
+	'smw-ask-delete' => '[حذف کریں]',
+	'smw_qc_show_addnal_opts' => 'مزید اختیارات دکھائیں',
+	'smw_qc_otheropt' => 'دوسرے اختیارات',
+	'smw_qc_default' => 'پہلے سے طے شدہ:',
+	'smw_qc_formatopt' => 'کی شکل کے اختیارات',
+	'smw_qui_prop' => 'جائداد:',
+	'smw_qui_labl' => 'لیبل:',
+	'smw_qui_formt' => 'فارمیٹ:',
+	'smw_qui_limt' => 'کی حد:',
+	'smw_qui_shownresults' => 'شو کے نتائج میں',
+	'smw_qui_randorder' => 'بے ترتيب',
+	'smw_qui_delete' => 'حذف کریں',
+	'smw_qui_options' => 'اختیارات',
+	'smw_qui_addcategory' => 'زمرہ شامل کریں',
+	'smw_qui_cancel' => 'منسوخ',
+	'smw_qui_label' => 'لیبل',
+	'smw_prp_options' => 'پراپرٹی کے اختیارات',
+	'smw_qui_catopts' => 'زمرہ کے اختیارات',
+	'smw_qui_mainlabopts' => 'نتیجہ کے اختیارات',
+	'smw_qui_dlabel' => 'لیبل:',
+	'smw_qui_dcategory' => 'زمرہ:',
+	'smw_sbv_property' => 'جائداد:',
+	'smw_sbv_value' => 'قیمت:',
+	'smw_sbv_submit' => 'نتائج تلاش کریں',
+	'smw_browselink' => 'کی خصوصیات کو براؤز کریں',
+	'smw_browse_go' => 'جانا',
+	'smw_pp_from' => 'صفحہ سے',
+	'smw_pp_type' => 'پراپرٹی',
+	'smw_pp_submit' => 'نتائج تلاش کریں',
+	'smw_result_prev' => 'پچھلے',
+	'smw_result_next' => 'اگلے',
+	'smw_result_results' => 'نتائج',
+	'smw_result_noresults' => 'کوئی نتائج.',
+	'smw_smwadmin_datarefreshstopconfirm' => 'جی ہاں, میں اس بات کا یقین ہوں.',
+	'smw_smwadmin_support' => 'ہو رہی ہے کی حمایت',
 );
 
 /** Veps (vepsän kel’)
