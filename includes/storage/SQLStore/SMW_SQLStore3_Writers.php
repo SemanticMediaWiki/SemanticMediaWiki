@@ -428,8 +428,8 @@ Class SMWSQLStore3Writers {
 			}
 		}
 		if ( $subject->getSubobjectName() !== '' ) {
-			return; // Subobjects don't have subsubobjects
 			wfRunHooks( 'smwDeleteSemanticData', array( $subject ) );
+			return; // Subobjects don't have subsubobjects
 		}
 
 		// also find subobjects used by this ID ...
