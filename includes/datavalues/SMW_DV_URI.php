@@ -122,6 +122,7 @@ class SMWURIValue extends SMWDataValue {
 					( preg_match( '<[-+./][-./]>', $hierpart ) ) ||
 					( !SMWURIValue::isValidTelURI( 'tel:' . $hierpart ) ) ) { /// TODO: introduce error-message for "bad" phone number
 					$this->addError( wfMsgForContent( 'smw_baduri', $this->m_wikitext ) );
+					return;
 				}
 				break;
 			case SMW_URI_MODE_EMAIL:
@@ -135,7 +136,7 @@ class SMWURIValue extends SMWDataValue {
 				if ( !$check ) {
 					/// TODO: introduce error-message for "bad" email
 					$this->addError( wfMsgForContent( 'smw_baduri', $value ) );
-					break;
+					return;
 				}
 				$hierpart = str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $value ) );
 		}
