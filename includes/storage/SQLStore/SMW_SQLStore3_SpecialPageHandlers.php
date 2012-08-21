@@ -234,8 +234,8 @@ Class SMWSQLStore3SpecialPageHandlers {
 		// count number of declared properties by counting "has type" annotations
 		$typeprop = new SMWDIProperty( '_TYPE' );
 		$typetable = $proptables[SMWSQLStore3::findPropertyTableID( $typeprop )];
-		$res = $db->select( $typetable->name, 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
-		$row = $db->fetchObject( $res );
+		$res = $dbr->select( $typetable->name, 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$row = $dbr->fetchObject( $res );
 		$result['DECLPROPS'] = $row->count;
 		$dbr->freeResult( $res );
 
