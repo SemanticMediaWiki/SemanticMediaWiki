@@ -2696,6 +2696,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-export' => 'Die Exportoption',
 	'smw-paramdesc-prettyprint' => 'Die Ausgabe des Quelltextes soll umformatiert werden oder nicht.',
 	'smw-paramdesc-source' => 'Die alternative Abfragequelle',
+	'smw-paramdesc-jsonsyntax' => 'Die zu verwendende JSON-Syntax',
 	'smw_iq_disabled' => 'Semantische Abfragen wurden in diesem Wiki deaktiviert.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_parseerror' => 'Der eingegebene Wert wurde nicht verstanden.',
