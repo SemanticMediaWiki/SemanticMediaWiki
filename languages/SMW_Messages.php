@@ -8975,6 +8975,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-export' => 'Exportoptie',
 	'smw-paramdesc-prettyprint' => 'Een netjes opgemaakte uitvoer inschakelen',
 	'smw-paramdesc-source' => 'Alternatieve zoekopdrachtbron',
+	'smw-paramdesc-jsonsyntax' => 'Te gebruiken JSON-syntaxis',
 	'smw_iq_disabled' => 'Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.',
 	'smw_iq_moreresults' => '… overige resultaten',
 	'smw_parseerror' => 'De opgegeven waarde is niet begrepen.',
