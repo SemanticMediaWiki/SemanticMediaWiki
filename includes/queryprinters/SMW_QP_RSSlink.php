@@ -144,7 +144,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 
 		$definitions['limit']->setDefault( 10 );
 
-		$definitions['searchlabel']->setDefault( wfMessage( 'smw_rss_link' )->inContentLanuage()->text() );
+		$definitions['searchlabel']->setDefault( wfMessage( 'smw_rss_link' )->inContentLanguage()->text() );
 
 		$definitions[] = array(
 			'name' => 'title',
