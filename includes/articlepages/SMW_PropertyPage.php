@@ -55,13 +55,13 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$resultCount = count( $subproperties );
 		if ( $resultCount > 0 ) {
 			$titleText = htmlspecialchars( $this->mTitle->getText() );
-			$result .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg( 'smw_subproperty_header', $titleText ) . "</h2>\n<p>";
+			$result .= "<div id=\"mw-subcategories\">\n<h2>" . wfMessage( 'smw_subproperty_header', $titleText )->text() . "</h2>\n<p>";
 
 			if ( !$this->mProperty->isUserDefined() ) {
-				$result .= wfMsg( 'smw_isspecprop' ) . ' ';
+				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
 			}
 
-			$result .= wfMsgExt( 'smw_subpropertyarticlecount', array( 'parsemag' ), $resultCount ) . "</p>\n";
+			$result .= wfMessage( 'smw_subpropertyarticlecount' )->numParams( $resultCount )->text() . "</p>\n";
 
 			if ( $resultCount < 6 ) {
 				$result .= SMWPageLister::getShortList( 0, $resultCount, $subproperties, null );
@@ -105,11 +105,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$resultNumber = min( $this->limit, count( $diWikiPages ) );
 
 			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
-			           '<h2>' . wfMsg( 'smw_attribute_header', $titleText ) . "</h2>\n<p>";
+			           '<h2>' . wfMessage( 'smw_attribute_header', $titleText )->text() . "</h2>\n<p>";
 			if ( !$this->mProperty->isUserDefined() ) {
-				$result .= wfMsg( 'smw_isspecprop' ) . ' ';
+				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
 			}
-			$result .= wfMsgExt( 'smw_attributearticlecount', array( 'parsemag' ), $resultNumber ) . "</p>\n" .
+			$result .= wfMessage( 'smw_attributearticlecount' )->numParams( $resultNumber )->text() . "</p>\n" .
 			           $navigation . $this->subjectObjectList( $diWikiPages ) . $navigation . "\n</div>";
 		}
 

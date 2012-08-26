@@ -34,7 +34,7 @@ class SMWURIResolver extends SpecialPage {
 				$this->setHeaders();
 				$wgOut->addHTML(
 					'<p>' .
-						wfMsgExt( 'smw_uri_doc', 'parseinline', 'http://www.w3.org/2001/tag/issues.html#httpRange-14' ) .
+						wfMessage( 'smw_uri_doc', 'http://www.w3.org/2001/tag/issues.html#httpRange-14' )->parse() .
 					'</p>'
 				);
 			}

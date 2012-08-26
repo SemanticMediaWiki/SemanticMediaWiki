@@ -22,7 +22,7 @@ class SMWSpecialProperties extends SpecialPage {
 		
 		global $wgOut;
 		
-		$wgOut->setPageTitle( wfMsg( 'properties' ) );
+		$wgOut->setPageTitle( wfMessage( 'properties' )->text() );
 		
 		$rep = new SMWPropertiesPage();
 		
@@ -47,7 +47,7 @@ class SMWSpecialProperties extends SpecialPage {
 class SMWPropertiesPage extends SMWQueryPage {
 
 	function getPageHeader() {
-		return '<p>' . wfMsg( 'smw_properties_docu' ) . "</p><br />\n";
+		return '<p>' . wfMessage( 'smw_properties_docu' )->text() . "</p><br />\n";
 	}
 
 	function getName() {
@@ -71,7 +71,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 			}
 
 			if ( $useCount <= 5 ) {
-				$errors[] = wfMsgHtml( 'smw_propertyhardlyused' );
+				$errors[] = wfMessage( 'smw_propertyhardlyused' )->escaped();
 			}
 
 			// User defined types default to Page
@@ -87,12 +87,12 @@ class SMWPropertiesPage extends SMWQueryPage {
 					$typeDataValue = SMWDataValueFactory::newDataItemValue( current( $types ), $typeProperty );
 					$typestring = $typeDataValue->getLongHTMLText( $linker );
 				} else {
-					$errors[] = wfMsgHtml( 'smw_propertylackstype', $typestring );
+					$errors[] = wfMessage( 'smw_propertylackstype', $typestring )->escaped();
 				}
 
 				$proplink = $linker->link( $title, $label );
 			} else {
-				$errors[] = wfMsgHtml( 'smw_propertylackspage' );
+				$errors[] = wfMessage( 'smw_propertylackspage' )->escaped();
 				$proplink = $linker->link( $title, $label, array(), array( 'action' => 'view' ) );
 			}
 
@@ -108,14 +108,15 @@ class SMWPropertiesPage extends SMWQueryPage {
 
 		$useCount = $wgLang->formatNum( $useCount );
 		if ( $typestring === '' ) { // Builtins have no type
-			return wfMsgHtml( 'smw_property_template_notype', $proplink, $useCount ) . ' ' . $warnings;
+			// @todo Should use numParams for $useCount?
+			return wfMessage( 'smw_property_template_notype', $proplink, $useCount )->text() . ' ' . $warnings;
 		} else {
-			return wfMsgHtml( 'smw_property_template', $proplink, $typestring, $useCount ) . ' ' . $warnings;
+			// @todo Should use numParams for $useCount?
+			return wfMessage( 'smw_property_template', $proplink, $typestring, $useCount )->escaped() . ' ' . $warnings;
 		}
 	}
 
 	function getResults( $requestoptions ) {
 		return smwfGetStore()->getPropertiesSpecial( $requestoptions );
 	}
-
 }

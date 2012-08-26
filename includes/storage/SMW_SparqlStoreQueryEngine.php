@@ -301,7 +301,7 @@ class SMWSparqlStoreQueryEngine {
 				return (int)$sparqlResultWrapper->getNumericValue();
 			} else {
 				///@todo Implement error reporting for counting queries.
-// 				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
+// 				$result->addErrors( array( wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguge()->text() ) );
 			}
 		}
 	}
@@ -444,10 +444,10 @@ class SMWSparqlStoreQueryEngine {
 		switch ( $sparqlResultWrapper->getErrorCode() ) {
 			case SMWSparqlResultWrapper::ERROR_NOERROR: break;
 			case SMWSparqlResultWrapper::ERROR_INCOMPLETE:
-				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryincomplete' ) ) );
+				$result->addErrors( array( wfMessage( 'smw_db_sparqlqueryincomplete' )->inContentLanguage()->text() ) );
 			break;
 			default:
-				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
+				$result->addErrors( array( wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguage()->text() ) );
 			break;
 		}
 

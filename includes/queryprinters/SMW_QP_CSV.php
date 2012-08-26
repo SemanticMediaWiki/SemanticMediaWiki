@@ -62,7 +62,7 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 	}
 
 	public function getName() {
-		return wfMsg( 'smw_printername_csv' );
+		return wfMessage( 'smw_printername_csv' )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -118,7 +118,7 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$definitions['searchlabel']->setDefault( wfMsgForContent( 'smw_csv_link' ) );
+		$definitions['searchlabel']->setDefault( wfMessage( 'smw_csv_link' )->inContentLanguage()->text() );
 
 		$definitions['limit']->setDefault( 100 );
 

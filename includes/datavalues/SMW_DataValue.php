@@ -165,7 +165,7 @@ abstract class SMWDataValue {
 		// just fails, even if parseUserValue() above might not have noticed this issue.
 		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now (backwards compatiblity, b/c)
 		if ( ( strpos( $value, "\x7f" ) !== false ) || ( strpos( $value, "\x07" ) !== false ) ) {
-			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
+			$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
 		}
 
 		if ( $this->isValid() ) {
@@ -741,10 +741,11 @@ abstract class SMWDataValue {
 		}
 
 		if ( !$accept ) {
-			$this->addError(
-				wfMsgForContent( 'smw_notinenum', $this->getWikiValue(), $valuestring )
+			$this->addError( wfMessage(
+					'smw_notinenum',
+					$this->getWikiValue(), $valuestring
+				)->inContentLanguage()->text()
 			);
 		}
 	}
-
 }

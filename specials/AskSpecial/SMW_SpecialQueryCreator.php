@@ -114,7 +114,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$result .= Html::openElement( 'form', $formParameters ) . "\n" .
 			Html::hidden( 'title', $specTitle->getPrefixedText() ) .
 			// Header:
-			wfMsg( 'smw_qc_query_help' ) .
+			wfMessage( 'smw_qc_query_help' )->text() .
 			 // Main query and format options:
 			$this->getQueryFormBox() .
 			// Sorting and prinouts:
@@ -122,38 +122,38 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 		// Control to show/hide additional options:
 		$result .= '<div class="smwqcformatas">' .
-			Html::element( 'strong', array(), wfMsg( 'smw_ask_format_as' ) ) .
+			Html::element( 'strong', array(), wfMessage( 'smw_ask_format_as' )->text() ) .
 			$formatBox[0] .
 			'<span id="show_additional_options" style="display:inline;">' .
 			'<a href="#addtional" rel="nofollow" onclick="' .
 			 "jQuery('#additional_options').show('blind');" .
 			 "document.getElementById('show_additional_options').style.display='none';" .
 			 "document.getElementById('hide_additional_options').style.display='inline';" . '">' .
-			 wfMsg( 'smw_qc_show_addnal_opts' ) . '</a></span>' .
+			wfMessage( 'smw_qc_show_addnal_opts' )->text() . '</a></span>' .
 			'<span id="hide_additional_options" style="display:none"><a href="#" rel="nofollow" onclick="' .
 			 "jQuery('#additional_options').hide('blind');;" .
 			 "document.getElementById('hide_additional_options').style.display='none';" .
 			 "document.getElementById('show_additional_options').style.display='inline';" . '">' .
-			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>' .
+			wfMessage( 'smw_qc_hide_addnal_opts' )->text() . '</a></span>' .
 			'</div>';
 
 		// Controls for additional options:
 		$result .= '<div id="additional_options" style="display:none">' .
 			$this->getOtherParametersBox() .
-			'<fieldset><legend>' . wfMsg( 'smw_qc_formatopt' ) . "</legend>\n" .
+			'<fieldset><legend>' . wfMessage( 'smw_qc_formatopt' )->text() . "</legend>\n" .
 			$formatBox[1] . // display the format options
 			"</fieldset>\n" .
 			'</div>'; // end of hidden additional options
 
 		// Submit button and documentation link:
-		$result .= '<br/><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/><br/>' .
-			'<a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' .
-			wfMsg( 'smw_ask_help' ) . '</a>';
+		$result .= '<br/><input type="submit" value="' . wfMessage( 'smw_ask_submit' )->text() . '"/><br/>' .
+			'<a href="' . wfMessage( 'smw_ask_doculink' )->escaped() . '">' .
+			wfMessage( 'smw_ask_help' )->text() . '</a>';
 
 		// Control for showing #ask syntax of query:
 		if ( $this->uiCore->getQueryString() !== '' ) { // only show if query given
 			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="##" rel="nofollow">' .
-				wfMsg( 'smw_ask_show_embed' ) . '</a>' .
+				wfMessage( 'smw_ask_show_embed' )->text() . '</a>' .
 				'<div id="embed-code-dialog">' . $this->getAskEmbedBox() . '</div>';
 
 			SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
@@ -236,24 +236,24 @@ EOT;
 		} else {
 			$default = '';
 		}
-		$result = '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n" .
+		$result = '<fieldset><legend>' . wfMessage( 'smw_ask_otheroptions' )->text() . "</legend>\n" .
 			Html::rawElement( 'div',
 				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
-				wfMsg( 'smw_qc_intro' ) .
+				wfMessage( 'smw_qc_intro' )->text() .
 					'<input name="p[intro]" value="' . $intro . '" style="width:220px;"/> <br/>' .
-					wfMsg( 'smw-paramdesc-intro' )
+					wfMessage( 'smw-paramdesc-intro' )->text()
 			) .
 			Html::rawElement( 'div',
 				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
-				wfMsg( 'smw_qc_outro' ) .
+				wfMessage( 'smw_qc_outro' )->text() .
 					'<input name="p[outro]" value="' . $outro . '" style="width:220px;"/> <br/>' .
-					wfMsg( 'smw-paramdesc-outro' )
+					wfMessage( 'smw-paramdesc-outro' )->text()
 			) .
 			Html::rawElement( 'div',
 				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
-				wfMsg( 'smw_qc_default' ) .
+				wfMessage( 'smw_qc_default' )->text() .
 					'<input name="p[default]" value="' . $default . '" style="width:220px;" /> <br/>' .
-					wfMsg( 'smw-paramdesc-default' )
+					wfMessage( 'smw-paramdesc-default' )->text()
 			) .
 			Html::hidden( 'p[limit]', $limit ) .
 			Html::hidden( 'p[offset]', $offset ) .
@@ -262,4 +262,3 @@ EOT;
 		return $result;
 	}
 }
-

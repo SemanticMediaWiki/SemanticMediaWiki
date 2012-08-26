@@ -27,7 +27,7 @@ class SMWErrorValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
-		$this->addError( wfMsgForContent( 'smw_parseerror' ) );
+		$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
 	}
 
 	/**

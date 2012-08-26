@@ -59,7 +59,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		wfProfileIn( 'doSpecialAsk (SMW)' );
 
 		if ( !$smwgQEnabled ) {
-			$wgOut->addHTML( '<br />' . wfMsg( 'smw_iq_disabled' ) );
+			$wgOut->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->text() );
 		} else {
 			if ( $wgRequest->getCheck( 'showformatoptions' ) ) {
 				// handle Ajax action
@@ -305,7 +305,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
 				} else {
-					$result = '<div style="text-align: center;">' . wfMsgHtml( 'smw_result_noresults' ) . '</div>';
+					$result = '<div style="text-align: center;">' . wfMessage( 'smw_result_noresults' )->escaped() . '</div>';
 				}
 			}
 		}
@@ -321,7 +321,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			if ( $this->m_querystring ) {
 				$wgOut->setHTMLtitle( $this->m_querystring );
 			} else {
-				$wgOut->setHTMLtitle( wfMsg( 'ask' ) );
+				$wgOut->setHTMLtitle( wfMessage( 'ask' )->text() );
 			}
 
 			$urlArgs['offset'] = $this->m_params['offset'];
@@ -355,8 +355,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .= Html::hidden( 'title', $this->getTitle()->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$result .= '<table style="width: 100%;"><tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_printhead' ) . "<br />\n" .
-				'<span style="font-weight: normal;">' . wfMsg( 'smw_ask_printdesc' ) . '</span>' . "</th></tr>\n" .
+			$result .= '<table style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->text() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->text() . "<br />\n" .
+				'<span style="font-weight: normal;">' . wfMessage( 'smw_ask_printdesc' )->text() . '</span>' . "</th></tr>\n" .
 				'<tr><td style="padding-right: 7px;"><textarea name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
 				'<td style="padding-left: 7px;"><textarea id = "add_property" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
 
@@ -366,19 +366,19 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			// @TODO
 			// Sorting inputs
 			if ( $GLOBALS['smwgQSortingSupport'] ) {
-				$result .= '<fieldset class="smw-ask-sorting"><legend>' . wfMsgHtml( 'smw-ask-sorting' ) . "</legend>\n";
+				$result .= '<fieldset class="smw-ask-sorting"><legend>' . wfMessage( 'smw-ask-sorting' )->escaped() . "</legend>\n";
 				$result .= self::getSortingOption( $this->m_params );
 				$result .= "</fieldset>\n";
 			}
 
 			// Other options fieldset
-			$result .= '<fieldset class="smw-ask-options smwExpandedFieldset"><legend>' . wfMsgHtml( 'smw_ask_otheroptions' ) . "</legend>\n";
+			$result .= '<fieldset class="smw-ask-options smwExpandedFieldset"><legend>' . wfMessage( 'smw_ask_otheroptions' )->escaped() . "</legend>\n";
 
 			// Info text for when the fieldset is collapsed
 			$result .= Html::element( 'div', array(
 				'class' => 'collapsed-info',
 				'style' => 'display:none;'
-				), wfMsg( 'smw-ask-otheroptions-collapsed-info')
+				), wfMessage( 'smw-ask-otheroptions-collapsed-info')->text()
 			);
 
 			// Individual options
@@ -388,7 +388,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
 
 			// Submit 
-			$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
+			$result .= '<br /><input type="submit" value="' . wfMessage( 'smw_ask_submit' )->text() . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
 					Html::element(
 						'a',
@@ -396,10 +396,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 							'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
 							'rel' => 'nofollow'
 						),
-						wfMsg( 'smw_ask_hidequery' )
+						wfMessage( 'smw_ask_hidequery' )->text()
 					) .
 					' | ' . SMWAskPage::getEmbedToggle() .
-					' | <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
+					' | <a href="' . htmlspecialchars( wfMessage( 'smw_ask_doculink' )->text() ) . '">' . wfMessage( 'smw_ask_help' )->text() . '</a>' .
 				"\n</form>";
 		} else { // if $this->m_editquery == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
@@ -410,13 +410,13 @@ class SMWAskPage extends SMWQuerySpecialPage {
 						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
 						'rel' => 'nofollow'
 					),
-					wfMsg( 'smw_ask_editquery' )
+					wfMessage( 'smw_ask_editquery' )->text()
 				) .
 				'| ' . SMWAskPage::getEmbedToggle() .
 				'</p>';
 		}
 		//show|hide inline embed code
-		$result .= '<div id="inlinequeryembed" style="display: none"><div id="inlinequeryembedinstruct">' . wfMsg( 'smw_ask_embed_instr' ) . '</div><textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">' .
+		$result .= '<div id="inlinequeryembed" style="display: none"><div id="inlinequeryembedinstruct">' . wfMessage( 'smw_ask_embed_instr' )->text() . '</div><textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">' .
 			'{{#ask:' . htmlspecialchars( $this->m_querystring ) . "\n";
 
 		foreach ( $this->m_printouts as $printout ) {
@@ -456,10 +456,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 		}
 
-		$result .= '<br /><span style=vertical-align:middle;">' . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
+		$result .= '<br /><span style=vertical-align:middle;">' . wfMessage( 'smw_ask_format_as' )->text() . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
 			'<select id="formatSelector" name="p[format]" data-url="' . $url . '">' . "\n" .
 			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
-			$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
+			$printer->getName() . ' (' . wfMessage( 'smw_ask_defaultformat' )->text() . ')</option>' . "\n";
 
 		$formats = array();
 
@@ -501,25 +501,25 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		}
 
 		foreach ( $orders as $i => $order ) {
-			$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
+			$result .=  "<div id=\"sort_div_$i\">" . wfMessage( 'smw_ask_sortby' )->text() . ' <input type="text" name="sort[' . $i . ']" value="' .
 				    htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
 
 			if ( $order == 'ASC' ) $result .= 'selected="selected" ';
-			$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
+			$result .=  'value="ASC">' . wfMessage( 'smw_ask_ascorder' )->text() . '</option><option ';
 			if ( $order == 'DESC' ) $result .= 'selected="selected" ';
 
-			$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
-			$result .= '[<a class="smw-ask-delete" data-target="sort_div_' . $i . '" href="#">' . wfMsgHtml( 'delete' ) . '</a>]' . "\n";
+			$result .=  'value="DESC">' . wfMessage( 'smw_ask_descorder' )->text() . "</option></select>\n";
+			$result .= '[<a class="smw-ask-delete" data-target="sort_div_' . $i . '" href="#">' . wfMessage( 'delete' )->escaped() . '</a>]' . "\n";
 			$result .= "</div>\n";
 		}
 
-		$result .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort_num" size="35" />' . "\n";
+		$result .=  '<div id="sorting_starter" style="display: none">' . wfMessage( 'smw_ask_sortby' )->text() . ' <input type="text" name="sort_num" size="35" />' . "\n";
 		$result .= ' <select name="order_num">' . "\n";
-		$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
-		$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
+		$result .= '	<option value="ASC">' . wfMessage( 'smw_ask_ascorder' )->text() . "</option>\n";
+		$result .= '	<option value="DESC">' . wfMessage( 'smw_ask_descorder' )->text() . "</option>\n</select>\n";
 		$result .= "</div>\n";
 		$result .= '<div id="sorting_main"></div>' . "\n";
-		$result .= '<a class="smw-ask-add" href="#">' . wfMsgHtml( 'smw_add_sortcondition' ) . '</a>' . "\n";
+		$result .= '<a class="smw-ask-add" href="#">' . wfMessage( 'smw_add_sortcondition' )->escaped() . '</a>' . "\n";
 
 		return $result;
 	}
@@ -535,12 +535,12 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			"document.getElementById('embed_hide').style.display='inline';" .
 			"document.getElementById('embed_show').style.display='none';" .
 			"document.getElementById('inlinequeryembedarea').select();" .
-			'">' . wfMsg( 'smw_ask_show_embed' ) . '</a></span>' .
+			'">' . wfMessage( 'smw_ask_show_embed' )->text() . '</a></span>' .
 			'<span id="embed_hide" style="display: none"><a href="#" rel="nofollow" onclick="' .
 			"document.getElementById('inlinequeryembed').style.display='none';" .
 			"document.getElementById('embed_show').style.display='inline';" .
 			"document.getElementById('embed_hide').style.display='none';" .
-			'">' . wfMsg( 'smw_ask_hide_embed' ) . '</a></span>';
+			'">' . wfMessage( 'smw_ask_hide_embed' )->text() . '</a></span>';
 	}
 
 	/**
@@ -568,16 +568,17 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					) + $urlArgs ),
 					'rel' => 'nofollow'
 				),
-				wfMsg( 'smw_result_prev' )
+				wfMessage( 'smw_result_prev' )->text()
 			);
 
 		} else {
-			$navigation = wfMsg( 'smw_result_prev' );
+			$navigation = wfMessage( 'smw_result_prev' )->text();
 		}
 
+		// @todo FIXME: i18n: Patchwork text.
 		$navigation .=
 			'&#160;&#160;&#160;&#160; <b>' .
-				wfMsg( 'smw_result_results' ) . ' ' . $wgLang->formatNum( $offset + 1 ) .
+				wfMessage( 'smw_result_results' )->text() . ' ' . $wgLang->formatNum( $offset + 1 ) .
 			' &#150; ' .
 				$wgLang->formatNum( $offset + $res->getCount() ) .
 			'</b>&#160;&#160;&#160;&#160;';
@@ -592,10 +593,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 					)  + $urlArgs ),
 					'rel' => 'nofollow'
 				),
-				wfMsg( 'smw_result_next' )
+				wfMessage( 'smw_result_next' )->text()
 			);
 		} else {
-			$navigation .= wfMsg( 'smw_result_next' );
+			$navigation .= wfMessage( 'smw_result_next' )->text();
 		}
 
 		$first = true;

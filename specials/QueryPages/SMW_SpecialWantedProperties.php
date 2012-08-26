@@ -22,7 +22,7 @@ class SMWSpecialWantedProperties extends SpecialPage {
 		
 		global $wgOut;
 		
-		$wgOut->setPageTitle( wfMsg( 'wantedproperties' ) );
+		$wgOut->setPageTitle( wfMessage( 'wantedproperties' )->text() );
 		
 		$rep = new SMWWantedPropertiesPage();
 		
@@ -60,7 +60,7 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	}
 
 	function getPageHeader() {
-		return '<p>' . wfMsg( 'smw_wantedproperties_docu' ) . "</p><br />\n";
+		return '<p>' . wfMessage( 'smw_wantedproperties_docu' )->text() . "</p><br />\n";
 	}
 
 	/**
@@ -78,7 +78,7 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 			$proplink = SMWDataValueFactory::newDataItemValue( $result[0], new SMWDIProperty( '_TYPE' ) )->getLongHTMLText( $linker );
 		}
 		
-		return wfMsgExt( 'smw_wantedproperty_template', array( 'parsemag' ), $proplink, $result[1] );
+		return wfMessage( 'smw_wantedproperty_template', $proplink, $result[1] )->text();
 	}
 
 	function getResults( $requestoptions ) {

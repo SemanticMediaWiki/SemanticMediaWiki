@@ -43,7 +43,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
-		return wfMsg( 'smw_printername_rss' );
+		return wfMessage( 'smw_printername_rss' )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -55,7 +55,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 				$this->m_title = $wgSitename;
 			}
 			if ( $this->m_description === '' ) {
-				$this->m_description = wfMsg( 'smw_rss_description', $wgSitename );
+				$this->m_description = wfMessage( 'smw_rss_description', $wgSitename )->text();
 			}
 
 			// cast printouts into "items"
@@ -144,7 +144,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 
 		$definitions['limit']->setDefault( 10 );
 
-		$definitions['searchlabel']->setDefault( wfMsgForContent( 'smw_rss_link' ) );
+		$definitions['searchlabel']->setDefault( wfMessage( 'smw_rss_link' )->inContentLanuage()->text() );
 
 		$definitions[] = array(
 			'name' => 'title',

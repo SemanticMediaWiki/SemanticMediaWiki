@@ -13,7 +13,6 @@
  * @ingroup SMWDataValues
  */
 class SMWQuantityValue extends SMWNumberValue {
-
 	/// Array with format (canonical unit ID string) => (conversion factor)
 	protected $m_unitfactors = false;
 	/// Array with format (normalised unit string) => (canonical unit ID string)
@@ -127,7 +126,7 @@ class SMWQuantityValue extends SMWNumberValue {
 
 		$factors = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_CONV' ) );
 		if ( count( $factors ) == 0 ) { // no custom type
-			$this->addError( wfMsgForContent( 'smw_nounitsdeclared' ) );
+			$this->addError( wfMessage( 'smw_nounitsdeclared' )->inContentLanguage()->text() );
 			return;
 		}
 		$number = $unit = '';
@@ -189,5 +188,4 @@ class SMWQuantityValue extends SMWNumberValue {
 			} // note: we ignore unsuppported units -- no way to display them
 		}
 	}
-
 }

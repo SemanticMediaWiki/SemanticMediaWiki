@@ -66,8 +66,8 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	static protected function parseNumberValue( $value, &$number, &$unit ) {
 		// Parse to find $number and (possibly) $unit
-		$decseparator = wfMsgForContent( 'smw_decseparator' );
-		$kiloseparator = wfMsgForContent( 'smw_kiloseparator' );
+		$decseparator = wfMessage( 'smw_decseparator' )->inContentLanguage()->text();
+		$kiloseparator = wfMessage( 'smw_kiloseparator' )->inContentLanguage()->text();
 
 		$parts = preg_split( '/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d\d\d)*' .
 		                      '(?:\\' . $decseparator . '\d+)?\s*(?:[eE][-+]?\d+)?)/u',
@@ -104,11 +104,11 @@ class SMWNumberValue extends SMWDataValue {
 		$number = $unit = '';
 		$error = self::parseNumberValue( $value, $number, $unit );
 		if ( $error == 1 ) { // no number found
-			$this->addError( wfMsgForContent( 'smw_nofloat', $value ) );
+			$this->addError( wfMessage( 'smw_nofloat', $value )->inContentLanguage()->text() );
 		} elseif ( $error == 2 ) { // number is too large for this platform
-			$this->addError( wfMsgForContent( 'smw_infinite', $value ) );
+			$this->addError( wfMessage( 'smw_infinite', $value )->inContentLanguage()->text() );
 		} elseif ( $this->convertToMainUnit( $number, $unit ) === false ) { // so far so good: now convert unit and check if it is allowed
-			$this->addError( wfMsgForContent( 'smw_unitnotallowed', $unit ) );
+			$this->addError( wfMessage( 'smw_unitnotallowed', $unit )->inContentLanguage()->text() );
 		} // note that convertToMainUnit() also sets m_dataitem if valid
 	}
 

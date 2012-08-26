@@ -97,7 +97,7 @@ class SMWDataValueFactory {
 			$result = new self::$mTypeClasses[$typeId]( $typeId );
 		} else {
 			return new SMWErrorValue( $typeId,
-				wfMsgForContent( 'smw_unknowntype', $typeId ),
+				wfMessage( 'smw_unknowntype', $typeId )->inContentLanguage()->text(),
 				$valueString, $caption );
 		}
 

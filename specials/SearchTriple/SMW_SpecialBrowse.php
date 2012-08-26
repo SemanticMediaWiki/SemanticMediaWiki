@@ -208,7 +208,7 @@ class SMWSpecialBrowse extends SpecialPage {
 							 'value' => $this->subject->getWikiValue()
 						) )
 					),
-					wfMsg( 'smw_browse_more' )
+					wfMessage( 'smw_browse_more' )->text()
 				);
 
 			}
@@ -223,7 +223,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 		if ( $noresult ) {
 			$html .= "<tr class=\"smwb-propvalue\"><th> &#160; </th><td><em>" .
-			         wfMsg( $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing' ) . "</em></td></tr>\n";
+				wfMessage( $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing' )->text() . "</em></td></tr>\n";
 		}
 		$html .= "</table>\n";
 		return $html;
@@ -281,8 +281,8 @@ class SMWSpecialBrowse extends SpecialPage {
 		       "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 		       "<tr class=\"smwb-center\"><td colspan=\"2\">\n" .
 		       ( $this->showincoming ?
-			     $this->linkHere( wfMsg( 'smw_browse_hide_incoming' ), true, false, 0 ):
-		         $this->linkHere( wfMsg( 'smw_browse_show_incoming' ), true, true, $this->offset ) ) .
+			     $this->linkHere( wfMessage( 'smw_browse_hide_incoming' )->text(), true, false, 0 ):
+		         $this->linkHere( wfMessage( 'smw_browse_show_incoming' )->text(), true, true, $this->offset ) ) .
 		       "&#160;\n" . "</td></tr>\n" . "</table>\n";
 	}
 
@@ -299,12 +299,13 @@ class SMWSpecialBrowse extends SpecialPage {
 		if ( !$smwgBrowseShowAll ) {
 			if ( ( $this->offset > 0 ) || $more ) {
 				$offset = max( $this->offset - SMWSpecialBrowse::$incomingpropertiescount + 1, 0 );
-				$html .= ( $this->offset == 0 ) ? wfMsg( 'smw_result_prev' ):
-					     $this->linkHere( wfMsg( 'smw_result_prev' ), $this->showoutgoing, true, $offset );
+				$html .= ( $this->offset == 0 ) ? wfMessage( 'smw_result_prev' )->text():
+					     $this->linkHere( wfMessage( 'smw_result_prev' )->text(), $this->showoutgoing, true, $offset );
 				$offset = $this->offset + SMWSpecialBrowse::$incomingpropertiescount - 1;
-				$html .= " &#160;&#160;&#160;  <strong>" . wfMsg( 'smw_result_results' ) . " " . ( $this->offset + 1 ) .
+				// @todo FIXME: i18n patchwork.
+				$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->text() . " " . ( $this->offset + 1 ) .
 						 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
-				$html .= $more ? $this->linkHere( wfMsg( 'smw_result_next' ), $this->showoutgoing, true, $offset ):wfMsg( 'smw_result_next' );
+				$html .= $more ? $this->linkHere( wfMessage( 'smw_result_next' )->text(), $this->showoutgoing, true, $offset ):wfMessage( 'smw_result_next' )->text();
 			}
 		}
 		$html .= "&#160;\n" . "</td></tr>\n" . "</table>\n";
@@ -322,7 +323,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  HTML with the link to this page
 	 */
 	private function linkHere( $text, $out, $in, $offset ) {
-		$frag = ( $text == wfMsg( 'smw_browse_show_incoming' ) ) ? '#smw_browse_incoming' : '';
+		$frag = ( $text == wfMessage( 'smw_browse_show_incoming' )->text() ) ? '#smw_browse_incoming' : '';
 
 		return Html::element(
 			'a',
@@ -387,10 +388,10 @@ class SMWSpecialBrowse extends SpecialPage {
 		global $smwgBrowseShowInverse;
 
 		if ( $incoming && $smwgBrowseShowInverse ) {
-			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMsg( 'smw_inverse_label_property' ) );
+			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
 			$labelarray = &smwfGetStore()->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
 			$rv = ( count( $labelarray ) > 0 ) ? $labelarray[0]->getLongWikiText():
-			       wfMsg( 'smw_inverse_label_default', $property->getWikiValue() );
+				wfMessage( 'smw_inverse_label_default', $property->getWikiValue() )->text();
 		} else {
 			$rv = $property->getWikiValue();
 		}
@@ -407,11 +408,11 @@ class SMWSpecialBrowse extends SpecialPage {
 		SMWOutputs::requireResource( 'ext.smw.browse' );
 		$title = SpecialPage::getTitleFor( 'Browse' );
 		return '  <form name="smwbrowse" action="' . htmlspecialchars( $title->getLocalURL() ) . '" method="get">' . "\n" .
-		       '    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
-		       wfMsg( 'smw_browse_article' ) . "<br />\n" .
-		       '    <input type="text" name="article" id="page_input_box" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .
-		       '    <input type="submit" value="' . wfMsg( 'smw_browse_go' ) . "\"/>\n" .
-		       "  </form>\n";
+			'    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
+			wfMessage( 'smw_browse_article' )->text() . "<br />\n" .
+		    '    <input type="text" name="article" id="page_input_box" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .
+		    '    <input type="submit" value="' . wfMessage( 'smw_browse_go' )->text() . "\"/>\n" .
+		    "  </form>\n";
 	}
 
 	/**
@@ -425,5 +426,4 @@ class SMWSpecialBrowse extends SpecialPage {
  		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, - 1, $count );
  		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
-
 }

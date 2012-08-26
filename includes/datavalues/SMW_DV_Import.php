@@ -29,10 +29,10 @@ class SMWImportValue extends SMWDataValue {
 		$this->m_qname = $value;
 
 		list( $onto_ns, $onto_section ) = explode( ':', $this->m_qname, 2 );
-		$msglines = preg_split( "([\n][\s]?)", wfMsgForContent( "smw_import_$onto_ns" ) ); // get the definition for "$namespace:$section"
+		$msglines = preg_split( "([\n][\s]?)", wfMessage( "smw_import_$onto_ns" )->inContentLanguage()->text() ); // get the definition for "$namespace:$section"
 
 		if ( count( $msglines ) < 2 ) { // error: no elements for this namespace
-			$this->addError( wfMsgForContent( 'smw_unknown_importns', $onto_ns ) );
+			$this->addError( wfMessage( 'smw_unknown_importns', $onto_ns )->inContentLanguage()->text() );
 			$this->m_dataitem = new SMWDIString( 'ERROR' );
 			return;
 		}
@@ -74,7 +74,10 @@ class SMWImportValue extends SMWDataValue {
 		try {
 			$this->m_dataitem = new SMWDIString( $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri );
 		} catch ( SMWStringLengthException $e ) {
-			$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri . '"' ) );
+			$this->addError( wfMessage(
+				'smw_maxstring',
+				'"' . $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri . '"'
+			)->inContentLanguage()->text() );
 			$this->m_dataitem = new SMWDIString( 'ERROR' );
 		}
 
@@ -94,7 +97,7 @@ class SMWImportValue extends SMWDataValue {
 			$this->m_dataitem = $dataItem;
 			$parts = explode( ' ', $dataItem->getString(), 3 );
 			if ( count( $parts ) != 3 ) {
-				$this->addError( wfMsgForContent( 'smw_parseerror' ) );
+				$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
 			} else {
 				$this->m_namespace = $parts[0];
 				$this->m_section = $parts[1];

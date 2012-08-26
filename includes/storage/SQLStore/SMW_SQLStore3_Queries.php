@@ -559,10 +559,10 @@ class SMWSQLStore3QueryEngine {
 						if ($qid != -1) {
 							$query = $this->m_queries[$qid];
 						} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
-							$this->m_errors[] = wfMsg( 'smw_emptysubquery' ); // not quite the right message, but this case is very rare; let us not make detailed messages for this
+							$this->m_errors[] = wfMessage( 'smw_emptysubquery' )->text(); // not quite the right message, but this case is very rare; let us not make detailed messages for this
 						}
 					} else {
-						$this->m_errors[] = wfMsg( 'smw_concept_cache_miss', $description->getConcept()->getText() );
+						$this->m_errors[] = wfMessage( 'smw_concept_cache_miss', $description->getConcept()->getText() )->text();
 					}
 				} // else: no cache, no description (this may happen); treat like empty concept
 			}

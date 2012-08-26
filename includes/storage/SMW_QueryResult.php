@@ -35,7 +35,6 @@
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SMWQueryResult {
-	
 	/**
 	 * Array of SMWDIWikiPage objects that are the basis for this result
 	 * @var Array of SMWDIWikiPage
@@ -223,7 +222,8 @@ class SMWQueryResult {
 		$link = $this->getLink();
 
 		if ( $caption == false ) {
-			$caption = ' ' . wfMsgForContent( 'smw_iq_moreresults' ); // The space is right here, not in the QPs!
+			// The space is right here, not in the QPs!
+			$caption = ' ' . wfMessage( 'smw_iq_moreresults' )->inContentLanguage()->text();
 		}
 
 		$link->setCaption( $caption );
@@ -303,5 +303,4 @@ class SMWQueryResult {
 	public function serializeToArray() {
 		return SMWDISerializer::getSerializedQueryResult( $this );
 	}
-	
 }

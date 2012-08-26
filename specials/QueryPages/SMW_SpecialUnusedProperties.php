@@ -13,7 +13,6 @@
  * @author Jeroen De Dauw
  */
 class SMWSpecialUnusedProperties extends SpecialPage {
-	
 	public function __construct() {
 		parent::__construct( 'UnusedProperties' );
 	}
@@ -23,7 +22,7 @@ class SMWSpecialUnusedProperties extends SpecialPage {
 			
 		global $wgOut;
 		
-		$wgOut->setPageTitle( wfMsg( 'unusedproperties' ) );
+		$wgOut->setPageTitle( wfMessage( 'unusedproperties' )->text() );
 		
 		$rep = new SMWUnusedPropertiesPage();
 		
@@ -60,7 +59,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	}
 
 	function getPageHeader() {
-		return '<p>' . wfMsg( 'smw_unusedproperties_docu' ) . "</p><br />\n";
+		return '<p>' . wfMessage( 'smw_unusedproperties_docu' )->text() . "</p><br />\n";
 	}
 
 	function formatResult( $skin, /* SMWDIProperty */ $result ) {
@@ -79,10 +78,10 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 		} else {
 			$type = SMWTypesValue::newFromTypeId( '_wpg' );
 			$typestring = $type->getLongHTMLText( $linker );
-			$errors[] = wfMsg( 'smw_propertylackstype', $type->getLongHTMLText() );
+			$errors[] = wfMessage( 'smw_propertylackstype', $type->getLongHTMLText() )->text();
 		}
 
-		return wfMsg( 'smw_unusedproperty_template', $proplink, $typestring ) . ' ' . smwfEncodeMessages( $errors );
+		return wfMessage( 'smw_unusedproperty_template', $proplink, $typestring )->text() . ' ' . smwfEncodeMessages( $errors );
 	}
 
 	/**
@@ -91,6 +90,4 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	function getResults( $requestoptions ) {
 		return smwfGetStore()->getUnusedPropertiesSpecial( $requestoptions );
 	}
-
 }
-

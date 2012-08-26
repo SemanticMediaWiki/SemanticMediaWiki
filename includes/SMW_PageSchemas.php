@@ -126,7 +126,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 				$hasExistingValues = true;
 			}
 		}
-		$html_text = '<p>' . wfMsg( 'ps-optional-name' ) . ' ';
+		$html_text = '<p>' . wfMessage( 'ps-optional-name' )->text() . ' ';
 		$propName = PageSchemas::getValueFromObject( $prop_array, 'name' );
 		$html_text .= Html::input( 'smw_property_name_num', $propName, array( 'size' => 15 ) ) . "\n";
 		$propType = PageSchemas::getValueFromObject( $prop_array, 'Type' );
@@ -190,9 +190,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$propLabels = $smwgContLang->getPropertyLabels();
 		$hasTypeLabel = $propLabels['_TYPE'];
 		$typeTag = "[[$hasTypeLabel::$propertyType]]";
-		$text = wfMsgForContent( 'smw-createproperty-isproperty', $typeTag );
+		$text = wfMessage( 'smw-createproperty-isproperty', $typeTag )->inContentLanguage()->text();
 		if ( $allowedValues != null) {
-			$text .= "\n\n" . wfMsgExt( 'smw-createproperty-allowedvals', array( 'parsemag', 'content' ), count( $allowedValues ) );
+			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals' )->numParams( count( $allowedValues ) )->inContentLanguage()->text();
 			foreach ( $allowedValues as $value ) {
 				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
 					$prop_labels = $smwgContLang->getPropertyLabels();

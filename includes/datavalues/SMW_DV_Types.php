@@ -50,14 +50,14 @@ class SMWTypesValue extends SMWDataValue {
 			$value = $valueParts[1];
 			$typeNamespace = $wgContLang->getNsText( SMW_NS_TYPE );
 			if ( $namespace != $typeNamespace ) {
-				$this->addError( wfMsgForContent( 'smw_wrong_namespace', $typeNamespace ) );
+				$this->addError( wfMessage( 'smw_wrong_namespace', $typeNamespace )->inContentLanguage()->text() );
 			}
 		}
 
 		$this->m_givenLabel = smwfNormalTitleText( $value );
 		$this->m_typeId = SMWDataValueFactory::findTypeID( $this->m_givenLabel );
 		if ( $this->m_typeId === '' ) {
-			$this->addError( wfMsgForContent( 'smw_unknowntype', $this->m_givenLabel ) );
+			$this->addError( wfMessage( 'smw_unknowntype', $this->m_givenLabel )->inContentLanguage()->text() );
 			$this->m_realLabel = $this->m_givenLabel;
 		} else {
 			$this->m_realLabel = SMWDataValueFactory::findTypeLabel( $this->m_typeId );
@@ -68,7 +68,7 @@ class SMWTypesValue extends SMWDataValue {
 			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
 		} catch ( SMWDataItemException $e ) {
 			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
-			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
+			$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
 		}
 	}
 

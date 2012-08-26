@@ -51,7 +51,7 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function addToAdminLinks( ALTree &$admin_links_tree ) {
-		$data_structure_section = new ALSection( wfMsg( 'smw_adminlinks_datastructure' ) );
+		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 
 		$smw_row = new ALRow( 'smw' );
 		$smw_row->addItem( ALItem::newFromSpecialPage( 'Categories' ) );
@@ -65,19 +65,22 @@ final class SMWHooks {
 
 		$data_structure_section->addRow( $smw_admin_row );
 		$smw_docu_row = new ALRow( 'smw_docu' );
-		$smw_name = wfMsg( 'specialpages-group-smw_group' );
-		$smw_docu_label = wfMsg( 'adminlinks_documentation', $smw_name );
+		$smw_name = wfMessage( 'specialpages-group-smw_group' )->text();
+		$smw_docu_label = wfMessage( 'adminlinks_documentation', $smw_name )->text();
 		$smw_docu_row->addItem( AlItem::newFromExternalLink( 'http://semantic-mediawiki.org/wiki/Help:User_manual', $smw_docu_label ) );
 
 		$data_structure_section->addRow( $smw_docu_row );
-		$admin_links_tree->addSection( $data_structure_section, wfMsg( 'adminlinks_browsesearch' ) );
+		$admin_links_tree->addSection( $data_structure_section, wfMessage( 'adminlinks_browsesearch' )->text() );
 		$smw_row = new ALRow( 'smw' );
-		$displaying_data_section = new ALSection( wfMsg( 'smw_adminlinks_displayingdata' ) );
-		$smw_row->addItem( AlItem::newFromExternalLink( 'http://semantic-mediawiki.org/wiki/Help:Inline_queries', wfMsg( 'smw_adminlinks_inlinequerieshelp' ) ) );
+		$displaying_data_section = new ALSection( wfMessage( 'smw_adminlinks_displayingdata' )->text() );
+		$smw_row->addItem( AlItem::newFromExternalLink(
+			'http://semantic-mediawiki.org/wiki/Help:Inline_queries',
+			wfMessage( 'smw_adminlinks_inlinequerieshelp' )->text()
+		) );
 
 		$displaying_data_section->addRow( $smw_row );
-		$admin_links_tree->addSection( $displaying_data_section, wfMsg( 'adminlinks_browsesearch' ) );
-		$browse_search_section = $admin_links_tree->getSection( wfMsg( 'adminlinks_browsesearch' ) );
+		$admin_links_tree->addSection( $displaying_data_section, wfMessage( 'adminlinks_browsesearch' )->text() );
+		$browse_search_section = $admin_links_tree->getSection( wfMessage( 'adminlinks_browsesearch' )->text() );
 
 		$smw_row = new ALRow( 'smw' );
 		$smw_row->addItem( ALItem::newFromSpecialPage( 'Browse' ) );
@@ -165,7 +168,7 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function addSemanticExtensionType( array &$aExtensionTypes ) {
-		$aExtensionTypes = array_merge( array( 'semantic' => wfMsg( 'version-semantic' ) ), $aExtensionTypes );
+		$aExtensionTypes = array_merge( array( 'semantic' => wfMessage( 'version-semantic' )->text() ), $aExtensionTypes );
 		return true;
 	}
 
@@ -207,7 +210,7 @@ final class SMWHooks {
 	 */
 	public static function showBrowseLink( $skintemplate ) {
 		if ( $skintemplate->data['isarticle'] ) {
-			$browselink = SMWInfolink::newBrowsingLink( wfMsg( 'smw_browselink' ),
+			$browselink = SMWInfolink::newBrowsingLink( wfMessage( 'smw_browselink' )->text(),
 							$skintemplate->data['titleprefixeddbkey'], false );
 			echo '<li id="t-smwbrowselink">' . $browselink->getHTML() . '</li>';
 		}
@@ -231,7 +234,7 @@ final class SMWHooks {
 		if ( $wgUser->isAllowed( 'purge' ) ) {
 			$contentActions['purge'] = array(
 				'class' => false,
-				'text' => wfMsg( 'smw_purge' ),
+				'text' => wfMessage( 'smw_purge' )->text(),
 				'href' => $skinTemplate->getTitle()->getLocalUrl( array( 'action' => 'purge' ) )
 			);
 		}
@@ -317,5 +320,4 @@ final class SMWHooks {
 
 		return true;
 	}
-
 }

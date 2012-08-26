@@ -42,7 +42,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	}	
 	
 	public function getName() {
-		return wfMsg( 'smw_printername_' . $this->mFormat );
+		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -77,7 +77,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 			if ( $rowindex % $rows_per_column == 0 ) {
 				$result .= "\n			<div style=\"float: left; width: $column_width%;\">\n";
 				if ( $cur_first_char == $prev_first_char )
-					$result .= "				<h3>$cur_first_char " . wfMsg( 'listingcontinuesabbrev' ) . "</h3>\n				<ul>\n";
+					$result .= "				<h3>$cur_first_char " . wfMessage( 'listingcontinuesabbrev' )->text() . "</h3>\n				<ul>\n";
 			}
 			
 			// if we're at a new first letter, end

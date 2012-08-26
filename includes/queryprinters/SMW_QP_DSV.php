@@ -67,7 +67,7 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 	}
 
 	public function getName() {
-		return wfMsg( 'smw_printername_dsv' );
+		return wfMessage( 'smw_printername_dsv' )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -187,7 +187,7 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$params['searchlabel']->setDefault( wfMsgForContent( 'smw_dsv_link' ) );
+		$params['searchlabel']->setDefault( wfMessage( 'smw_dsv_link' )->text() );
 
 		$params['limit']->setDefault( 100 );
 

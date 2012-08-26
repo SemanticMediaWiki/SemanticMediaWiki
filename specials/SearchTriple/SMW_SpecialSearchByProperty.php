@@ -22,7 +22,6 @@
  * @ingroup SpecialPage
  */
 class SMWSearchByProperty extends SpecialPage {
-	
 	/// string  Name of the property searched for
 	private $propertystring = '';
 	/// SMWPropertyValue  The property that is searched for
@@ -106,11 +105,11 @@ class SMWSearchByProperty extends SpecialPage {
 		$linker = smwfGetLinker();
 
 		if ( $this->propertystring === '' ) {
-			return '<p>' . wfMsg( 'smw_sbv_docu' ) . "</p>\n";
+			return '<p>' . wfMessage( 'smw_sbv_docu' )->text() . "</p>\n";
 		}
 
 		if ( ( $this->value == null ) || !$this->value->isValid() ) {
-			return '<p>' . wfMsg( 'smw_sbv_novalue', $this->property->getShortHTMLText( $linker ) ) . "</p>\n";
+			return '<p>' . wfMessage( 'smw_sbv_novalue', $this->property->getShortHTMLText( $linker ) )->text() . "</p>\n";
 		}
 
 		$wgOut->setPagetitle( $this->property->getWikiValue() . ' ' . $this->value->getShortHTMLText( null ) );
@@ -143,12 +142,13 @@ class SMWSearchByProperty extends SpecialPage {
 			}
 
 			if ( ( $cG + $cL + $count ) == 0 )
-				$html .= wfMsg( 'smw_result_noresults' );
+				$html .= wfMessage( 'smw_result_noresults' )->text();
 			else {
-				$html .= wfMsg( 'smw_sbv_displayresultfuzzy', $this->property->getShortHTMLText( $linker ), $this->value->getShortHTMLText( $linker ) ) . "<br />\n";
+				$html .= wfMessage( 'smw_sbv_displayresultfuzzy', $this->property->getShortHTMLText( $linker ), $this->value->getShortHTMLText( $linker ) )->text() . "<br />\n";
 				$html .= $this->displayResults( $lesser, $cL, false );
 
 				if ( $count == 0 ) {
+					// @todo FIXME: i18n: Hardcoded parentheses.
 					$html .= " &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
 				} else {
 					$html .= $this->displayResults( $exact, $count, true, true );
@@ -157,10 +157,10 @@ class SMWSearchByProperty extends SpecialPage {
 				$html .= $this->displayResults( $greater, $cG );
 			}
 		} else {
-			$html .= wfMsg( 'smw_sbv_displayresult', $this->property->getShortHTMLText( $linker ), $this->value->getShortHTMLText( $linker ) ) . "<br />\n";
+			$html .= wfMessage( 'smw_sbv_displayresult', $this->property->getShortHTMLText( $linker ), $this->value->getShortHTMLText( $linker ) )->text() . "<br />\n";
 
 			if ( 0 == $count ) {
-				$html .= wfMsg( 'smw_result_noresults' );
+				$html .= wfMessage( 'smw_result_noresults' )->text();
 			} else {
 				$navi = $this->getNavigationBar( $count );
 				if ( ( $this->offset > 0 ) || ( $count > $this->limit ) ) $html .= $navi;
@@ -242,16 +242,17 @@ class SMWSearchByProperty extends SpecialPage {
 						'value' => $this->value->getWikiValue()
 					) )
 				),
-				wfMsg( 'smw_result_prev' )
+				wfMessage( 'smw_result_prev' )->text()
 			);
 		}
 		else {
-			$navigation = wfMsg( 'smw_result_prev' );
+			$navigation = wfMessage( 'smw_result_prev' )->text();
 		}
 
+		// @todo FIXME: i18n patchwork.
 		$navigation .=
 			'&#160;&#160;&#160;&#160; <b>' .
-				wfMsg( 'smw_result_results' ) . ' ' .
+				wfMessage( 'smw_result_results' )->text() . ' ' .
 				( $this->offset + 1 ) . '– ' .
 				( $this->offset + min( $count, $this->limit ) ) .
 			'</b>&#160;&#160;&#160;&#160;';
@@ -267,10 +268,10 @@ class SMWSearchByProperty extends SpecialPage {
 						'value' => $this->value->getWikiValue()
 					) )
 				),
-				wfMsg( 'smw_result_next' )
+				wfMessage( 'smw_result_next' )->text()
 			);
 		} else {
-			$navigation .= wfMsg( 'smw_result_next' );
+			$navigation .= wfMessage( 'smw_result_next' )->text();
 		}
 
 		$max = false;
@@ -283,7 +284,7 @@ class SMWSearchByProperty extends SpecialPage {
 				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else {
-				$navigation .= ' ' . wfMsgExt( 'pipe-separator' , 'escapenoentities' ) . ' ';
+				$navigation .= ' ' . wfMessage( 'pipe-separator' )->escaped() . ' ';
 			}
 
 			if ( $l > $smwgQMaxInlineLimit ) {
@@ -416,9 +417,9 @@ class SMWSearchByProperty extends SpecialPage {
 		$spectitle = SpecialPage::getTitleFor( 'SearchByProperty' );
 		$html  = '<form name="searchbyproperty" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg( 'smw_sbv_property' ) . ' <input type="text" id="property_box" name="property" value="' . htmlspecialchars( $this->propertystring ) . '" />' . "&#160;&#160;&#160;\n";
-		$html .= wfMsg( 'smw_sbv_value' ) . ' <input type="text" name="value" value="' . htmlspecialchars( $this->valuestring ) . '" />' . "\n";
-		$html .= '<input type="submit" value="' . wfMsg( 'smw_sbv_submit' ) . "\"/>\n</form>\n";
+		$html .= wfMessage( 'smw_sbv_property' )->text() . ' <input type="text" id="property_box" name="property" value="' . htmlspecialchars( $this->propertystring ) . '" />' . "&#160;&#160;&#160;\n";
+		$html .= wfMessage( 'smw_sbv_value' )->text() . ' <input type="text" name="value" value="' . htmlspecialchars( $this->valuestring ) . '" />' . "\n";
+		$html .= '<input type="submit" value="' . wfMessage( 'smw_sbv_submit' )->text() . "\"/>\n</form>\n";
 
 		return $html;
 	}
@@ -451,5 +452,4 @@ END;
 
 		SMWOutputs::requireScript( 'smwAutocompleteSpecialSearchByProperty', $javascript_autocomplete_text );
 	}
-
 }

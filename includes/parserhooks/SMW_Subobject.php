@@ -57,7 +57,7 @@ class SMWSubobject {
 			} elseif ( count( $parts ) == 1 && !is_null( $previousPropertyDi ) ) {
 				self::addPropertyDiValueToSemanticData( $previousPropertyDi, $parts[0], $semanticData  );
 			} else {
-				//self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
+				//self::$m_errors[] = wfMessage( 'smw_noinvannot' )->inContentLanguage()->text();
 			}
 		}
 
@@ -88,8 +88,7 @@ class SMWSubobject {
 				self::$m_errors = array_merge( self::$m_errors, $valueDv->getErrors() );
 			}
 		} else {
-			self::$m_errors[] = wfMsgForContent( 'smw_noinvannot' );
+			self::$m_errors[] = wfMessage( 'smw_noinvannot' )->inContentLanguage()->text();
 		}
 	}
-	
 }

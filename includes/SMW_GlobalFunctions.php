@@ -156,7 +156,7 @@ function smwfHTMLtoUTF8( $text ) {
 function smwfNumberFormat( $value, $decplaces = 3 ) {
 	global $smwgMaxNonExpNumber;
 
-	$decseparator = wfMsgForContent( 'smw_decseparator' );
+	$decseparator = wfMessage( 'smw_decseparator' )->text();
 
 	// If number is a trillion or more, then switch to scientific
 	// notation. If number is less than 0.0000001 (i.e. twice decplaces),
@@ -200,7 +200,11 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 		// Format to some level of precision; number_format does rounding and locale formatting,
 		// x and y are used temporarily since number_format supports only single characters for either
 		$value = number_format( $value, $decplaces, 'x', 'y' );
-		$value = str_replace( array( 'x', 'y' ), array( $decseparator, wfMsgForContent( 'smw_kiloseparator' ) ), $value );
+		$value = str_replace(
+			array( 'x', 'y' ),
+			array( $decseparator, wfMessage( 'smw_kiloseparator' )->inContentLanguage()->text() ),
+			$value
+		);
 
 		// Make it more readable by removing ending .000 from nnn.000
 		//    Assumes substr is faster than a regular expression replacement.

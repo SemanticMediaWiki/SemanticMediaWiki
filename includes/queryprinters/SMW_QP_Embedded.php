@@ -38,7 +38,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
-		return wfMsg( 'smw_printername_embedded' );
+		return wfMessage( 'smw_printername_embedded' )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {

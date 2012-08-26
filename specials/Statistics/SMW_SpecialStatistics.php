@@ -12,7 +12,6 @@
  * @author Jeroen De Dauw
  */
 class SMWSpecialSemanticStatistics extends SpecialPage {
-
 	public function __construct() {
 		parent::__construct( 'SemanticStatistics' );
 	}
@@ -20,7 +19,7 @@ class SMWSpecialSemanticStatistics extends SpecialPage {
 	public function execute( $param ) {
 		global $wgOut, $wgLang;
 		
-		$wgOut->setPageTitle( wfMsg( 'semanticstatistics' ) );
+		$wgOut->setPageTitle( wfMessage( 'semanticstatistics' )->text() );
 		
 		$semanticStatistics = smwfGetStore()->getStatistics();
 	
@@ -34,12 +33,10 @@ class SMWSpecialSemanticStatistics extends SpecialPage {
 			)
 		);
 	
-		$out = wfMsgExt( 'smw_semstats_text', array( 'parse' ),
-			$wgLang->formatNum( $semanticStatistics['PROPUSES'] ), $wgLang->formatNum( $semanticStatistics['USEDPROPS'] ),
-			$wgLang->formatNum( $propertyPageAmount ), $wgLang->formatNum( $semanticStatistics['DECLPROPS'] )
-		);
+		$out = wfMessage( 'smw_semstats_text' )->numParams(	$semanticStatistics['PROPUSES'],
+			$semanticStatistics['USEDPROPS'], $propertyPageAmount, $semanticStatistics['DECLPROPS']
+		)->parseAsBlock();
 	
 		$wgOut->addHTML( $out );
 	}
-	
 }

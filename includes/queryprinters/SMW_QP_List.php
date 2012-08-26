@@ -63,12 +63,12 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
-		return wfMsg( 'smw_printername_' . $this->mFormat );
+		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		if ( ( $this->mFormat == 'template' ) && ( $this->mTemplate == false ) ) {
-			$res->addErrors( array( wfMsgForContent( 'smw_notemplategiven' ) ) );
+			$res->addErrors( array( wfMessage( 'smw_notemplategiven' )->inContentLanguage()->text() ) );
 			return '';
 		}
 		
@@ -98,7 +98,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			// $this->mFormat !== 'template'
 			
 			$listsep = ', ';
-			$finallistsep = wfMsgForContent( 'smw_finallistconjunct' ) . ' ';
+			$finallistsep = wfMessage( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
 		} else { // no default separators for format "template", "ul", "ol"
 			$listsep = '';
 			$finallistsep = '';

@@ -12,7 +12,7 @@
 class SMWTableResultPrinter extends SMWResultPrinter {
 
 	public function getName() {
-		return wfMsg( 'smw_printername_' . $this->mFormat );
+		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {

@@ -115,7 +115,7 @@ class SMWPropertyValue extends SMWDataValue {
 		try {
 			$this->m_dataitem = SMWDIProperty::newFromUserLabel( $propertyName, $inverse, $this->m_typeid );
 		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
-			$this->addError( wfMsgForContent( 'smw_noproperty', $value ) );
+			$this->addError( wfMessage( 'smw_noproperty', $value )->inContentLanguage()->text() );
 			$this->m_dataitem = new SMWDIProperty( 'ERROR', false ); // just to have something
 		}
 	}
@@ -270,7 +270,7 @@ class SMWPropertyValue extends SMWDataValue {
 		} else {
 			SMWOutputs::requireResource( 'ext.smw.tooltips' );
 			return '<span class="smwttinline"><span class="smwbuiltin">' . $text .
-			'</span><span class="smwttcontent">' . wfMsgForContent( 'smw_isspecprop' ) . '</span></span>';
+			'</span><span class="smwttcontent">' . wfMessage( 'smw_isspecprop' )->inContentLanguage()->text() . '</span></span>';
 		}
 	}
 

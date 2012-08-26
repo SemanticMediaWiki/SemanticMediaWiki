@@ -126,7 +126,7 @@ class SMWParseData {
 		);
 
 		if ( $propertyDi->isInverse() ) {
-			$result->addError( wfMsgForContent( 'smw_noinvannot' ) );
+			$result->addError( wfMessage( 'smw_noinvannot' )->inContentLanguage()->text() );
 		} elseif ( $storeAnnotation && !is_null( self::getSMWData( $parser ) ) ) {
 			$semandticData->addPropertyObjectValue( $propertyDi, $result->getDataItem() );
 			

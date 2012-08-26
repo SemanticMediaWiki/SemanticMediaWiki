@@ -37,7 +37,7 @@ class SMWJSONResultPrinter extends SMWExportPrinter {
 	 * @return string
 	 */
 	public function getName() {
-		return wfMsg( 'smw_printername_json' );
+		return wfMessage( 'smw_printername_json' )->text();
 	}
 
 	/**
@@ -230,7 +230,7 @@ class SMWJSONResultPrinter extends SMWExportPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$params['searchlabel']->setDefault( wfMsgForContent( 'smw_json_link' ) );
+		$params['searchlabel']->setDefault( wfMessage( 'smw_json_link' )->text() );
 		$params['limit']->setDefault( 100 );
 
 		$params['syntax'] = array(

@@ -31,7 +31,6 @@
  * @author mwjames
  */
 abstract class SMWQuerySpecialPage extends SpecialPage {
-
 	/**
 	 * Display a form section showing the options for a given format,
 	 * based on the getParameters() value for that format's query printer.
@@ -86,7 +85,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 		if ( $this->isTooltipDisplay() == true ){
 			$resultHtml .= Html::element('div', array(
 				'style' => 'margin-bottom:10px;'
-				), wfMsg( 'smw-ask-otheroptions-info')
+				), wfMessage( 'smw-ask-otheroptions-info')->text()
 			);
 		}
 

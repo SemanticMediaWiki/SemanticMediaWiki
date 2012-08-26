@@ -23,7 +23,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 	public function execute( $page ) {
 		global $wgOut, $wgRequest;
 
-		$wgOut->setPageTitle( wfMsg( 'exportrdf' ) );
+		$wgOut->setPageTitle( wfMessage( 'exportrdf' )->text() );
 
 		// see if we can find something to export:
 		$page = is_null( $page ) ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
@@ -77,24 +77,24 @@ class SMWSpecialOWLExport extends SpecialPage {
 		global $wgOut, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
 
 		$html = '<form name="tripleSearch" action="" method="POST">' . "\n" .
-                '<p>' . wfMsg( 'smw_exportrdf_docu' ) . "</p>\n" .
+                '<p>' . wfMessage( 'smw_exportrdf_docu' )->text() . "</p>\n" .
                 '<input type="hidden" name="postform" value="1"/>' . "\n" .
                 '<textarea name="pages" cols="40" rows="10"></textarea><br />' . "\n";
 		
 		if ( $wgUser->isAllowed( 'delete' ) || $smwgAllowRecursiveExport ) {
-			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&#160;<label for="rec">' . wfMsg( 'smw_exportrdf_recursive' ) . '</label></input><br />' . "\n";
+			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&#160;<label for="rec">' . wfMessage( 'smw_exportrdf_recursive' )->text() . '</label></input><br />' . "\n";
 		}
 
 		if ( $wgUser->isAllowed( 'delete' ) || $smwgExportBacklinks ) {
-			$html .= '<input type="checkbox" name="backlinks" value="1" default="true" id="bl">&#160;<label for="bl">' . wfMsg( 'smw_exportrdf_backlinks' ) . '</label></input><br />' . "\n";
+			$html .= '<input type="checkbox" name="backlinks" value="1" default="true" id="bl">&#160;<label for="bl">' . wfMessage( 'smw_exportrdf_backlinks' )->text() . '</label></input><br />' . "\n";
 		}
 
 		if ( $wgUser->isAllowed( 'delete' ) || $smwgExportAll ) {
 			$html .= '<br />';
-			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&#160;<label for="ea">' . wfMsg( 'smw_exportrdf_lastdate' ) . '</label></input><br />' . "\n";
+			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&#160;<label for="ea">' . wfMessage( 'smw_exportrdf_lastdate' )->text() . '</label></input><br />' . "\n";
 		}
 
-		$html .= '<br /><input type="submit"  value="' . wfMsg( 'smw_exportrdf_submit' ) . "\"/>\n</form>";
+		$html .= '<br /><input type="submit"  value="' . wfMessage( 'smw_exportrdf_submit' )->text() . "\"/>\n</form>";
 		
 		$wgOut->addHTML( $html );
 	}

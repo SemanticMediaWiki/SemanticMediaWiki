@@ -540,7 +540,7 @@ class SMWQueryProcessor {
 		);
 
 		$params['searchlabel'] = array(
-			'default' => wfMsgForContent( 'smw_iq_moreresults' ),
+			'default' => wfMessage( 'smw_iq_moreresults' )->inContentLanguage()->text(),
 		);
 
 		$params['default'] = array(

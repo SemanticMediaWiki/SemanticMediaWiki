@@ -58,8 +58,8 @@ class SMWConceptPage extends SMWOrderedListPage {
 		$resultNumber = min( $this->limit, count( $diWikiPages ) );
 
 		$result = "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
-		          '<h2>' . wfMsg( 'smw_concept_header', $titleText ) . "</h2>\n" .
-		          wfMsgExt( 'smw_conceptarticlecount', array( 'parsemag' ), $resultNumber ) .
+		          '<h2>' . wfMessage( 'smw_concept_header', $titleText )->text() . "</h2>\n" .
+			wfMessage( 'smw_conceptarticlecount' )->numParams( $resultNumber )->text() .
 		          smwfEncodeMessages( $errors ) . "\n" .
 		          $navigation . $pageLister->formatList() . $navigation . "</div>\n";
 

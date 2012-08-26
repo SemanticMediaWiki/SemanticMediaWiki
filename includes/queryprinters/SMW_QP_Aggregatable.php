@@ -50,12 +50,12 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 
 		if ( count( $data ) == 0 ) {
 			// This is wikitext, so no escaping needed.
-			return '<span class="error">' . wfMsgForContent( 'srf-warn-empy-chart' ) . '</span>';
+			return '<span class="error">' . wfMessage( 'srf-warn-empy-chart' )->inContentLanguage()->text() . '</span>';
 
 			// This makes the parser go mad :/
 //			global $wgParser;
 //			return $wgParser->parse(
-//				'{{#info:' . wfMsgForContent( 'srf-warn-empy-chart' ) . '|warning}}',
+//				'{{#info:' . wfMessage( 'srf-warn-empy-chart' )->inContentLanguage()->text() . '|warning}}',
 //				Title::newMainPage(),
 //				( new ParserOptions() )
 //			)->getText();

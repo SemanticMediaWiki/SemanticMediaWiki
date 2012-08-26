@@ -25,7 +25,7 @@ class SMWRecordValue extends SMWDataValue {
 
 	protected function parseUserValueOrQuery( $value, $queryMode ) {
 		if ( $value === '' ) {
-			$this->addError( wfMsg( 'smw_novalues' ) );
+			$this->addError( wfMessage( 'smw_novalues' )->text() );
 
 			if ( $queryMode ) {
 				return new SMWThingDescription();
@@ -97,7 +97,7 @@ class SMWRecordValue extends SMWDataValue {
 		}
 
 		if ( $empty ) {
-			$this->addError( wfMsg( 'smw_novalues' ) );
+			$this->addError( wfMessage( 'smw_novalues' )->text() );
 		}
 
 		if ( $queryMode ) {

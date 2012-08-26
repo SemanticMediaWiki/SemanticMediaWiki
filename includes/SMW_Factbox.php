@@ -54,7 +54,7 @@ class SMWFactbox {
 			SMWOutputs::requireResource( 'ext.smw.style' );
 			
 			$rdflink = SMWInfolink::newInternalLink(
-				wfMsgForContent( 'smw_viewasrdf' ),
+				wfMessage( 'smw_viewasrdf' )->inContentLanguage()->text(),
 				$wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' .
 					$subjectDv->getWikiValue(),
 				'rdflink'
@@ -68,7 +68,7 @@ class SMWFactbox {
 			
 			$text .= '<div class="smwfact">' .
 				'<span class="smwfactboxhead">' .
-				wfMsgForContent( 'smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
+				wfMessage( 'smw_factbox_head', $browselink->getWikiText() )->inContentLanguage()->text() . '</span>' .
 				'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 				'<table class="smwfacttable">' . "\n";
 

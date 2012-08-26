@@ -63,7 +63,7 @@ abstract class SMWQueryPage extends QueryPage {
 
 		// if list is empty, show it
 		if ( $num == 0 ) {
-			$wgOut->addHTML( '<p>' . wfMsgHTML( 'specialpage-empty' ) . '</p>' );
+			$wgOut->addHTML( '<p>' . wfMessage( 'specialpage-empty' )->escaped() . '</p>' );
 			return;
 		}
 

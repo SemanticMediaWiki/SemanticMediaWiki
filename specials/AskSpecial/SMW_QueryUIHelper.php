@@ -209,7 +209,7 @@ class SMWQueryUIHelper {
 		$errors = array();
 		if ( $enableValidation ) {
 			if ( $queryString === '' ) {
-				$errors[] = wfMsg( 'smw_qui_noquery' );
+				$errors[] = wfMessage( 'smw_qui_noquery' )->text();
 			} else {
 				$query = SMWQueryProcessor::createQuery( $queryString, array() );
 				$errors = $query ->getErrors();
@@ -249,7 +249,7 @@ class SMWQueryUIHelper {
 					$printOuts[$key] = "?" . $printOuts[$key];
 				}
 				if ( !$this->validateProperty( $prop ) ) {
-					$errors[] = wfMsg( 'smw_qui_invalidprop', $prop );
+					$errors[] = wfMessage( 'smw_qui_invalidprop', $prop )->text();
 					$this->errorsOccurred = true;
 				}
 			}
@@ -294,7 +294,7 @@ class SMWQueryUIHelper {
 
 		if ( $enableValidation ) { // validating the format
 			if ( !array_key_exists( $params['format'], $smwgResultFormats ) ) {
-				$errors[] = wfMsg( 'smw_qui_invalidformat', $params['format'] );
+				$errors[] = wfMessage( 'smw_qui_invalidformat', $params['format'] )->text();
 				$this->errorsOccurred = true;
 			} else { // validating parameters for result printer
 				$printer = SMWQueryProcessor::getResultPrinter( $params[ 'format' ] );
@@ -449,7 +449,7 @@ class SMWQueryUIHelper {
 				$result .= $queryResult;
 			}
 		} else {
-			$result = wfMsg( 'smw_result_noresults' );
+			$result = wfMessage( 'smw_result_noresults' )->text();
 		}
 
 		return $result;
@@ -585,5 +585,4 @@ class SMWQueryUIHelper {
 			return false;
 		}
 	}
-
 }

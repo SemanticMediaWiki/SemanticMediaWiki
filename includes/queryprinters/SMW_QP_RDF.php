@@ -65,7 +65,7 @@ class SMWRDFResultPrinter extends SMWExportPrinter {
 	}
 
 	public function getName() {
-		return wfMsg( 'smw_printername_rdf' );
+		return wfMessage( 'smw_printername_rdf' )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -128,7 +128,7 @@ class SMWRDFResultPrinter extends SMWExportPrinter {
 
 		$definitions['limit']->setDefault( 100 );
 
-		$definitions['searchlabel']->setDefault( wfMsgForContent( 'smw_rdf_link' ) );
+		$definitions['searchlabel']->setDefault( wfMessage( 'smw_rdf_link' )->inContentLanguage()->text() );
 
 		$definitions[] = array(
 			'name' => 'syntax',

@@ -33,7 +33,7 @@ class SMWAsk {
 
 			$result = SMWQueryProcessor::getResultFromFunctionParams( $params, SMW_OUTPUT_WIKI );
 		} else {
-			$result = smwfEncodeMessages( array( wfMsgForContent( 'smw_iq_disabled' ) ) );
+			$result = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
 		}
 
 		if ( !is_null( $wgTitle ) && $wgTitle->isSpecialPage() ) {
