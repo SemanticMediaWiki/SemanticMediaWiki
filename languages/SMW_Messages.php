@@ -17,7 +17,7 @@ $messages['en'] = array(
 	'smw-desc'              => 'Making your wiki more accessible - for machines \'\'and\'\' humans ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])',
 	'smw_viewasrdf'         => 'RDF feed',
 	'smw_finallistconjunct' => ', and', // used in "A, B, and C"
-	'smw_factbox_head'      => 'Facts about $1',
+	'smw_factbox_head'      => 'Facts about "$1"',
 	'smw_isspecprop'        => 'This property is a special property in this wiki.',
 	'smw_concept_description' => 'Description of concept "$1"', // used in the namespace "Concept:"
 	'smw_no_concept_namespace' => 'Concepts can only be defined on pages in the Concept: namespace.',
@@ -91,7 +91,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-smwdoc-par-parameters' => 'Which parameters to show. "specific" for those added by the format, "base" for those available in all formats, and "all" for both.',
 	'smw-paramdesc-sort' => 'Property to sort the query by',
 	'smw-paramdesc-order' => 'Order of the query sort',
-	'smw-paramdesc-searchlabel' => 'Text for continuing the search (default is «… further results»)',
+	'smw-paramdesc-searchlabel' => 'Text for continuing the search',
 	'smw-paramdesc-named_args' => 'Name the arguments passed to the template',
 	'smw-paramdesc-export' => 'Export option',
 	'smw-paramdesc-prettyprint' => 'A pretty-print output that displays additional indents and newlines',
