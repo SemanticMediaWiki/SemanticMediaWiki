@@ -87,7 +87,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 					$typeDataValue = SMWDataValueFactory::newDataItemValue( current( $types ), $typeProperty );
 					$typestring = $typeDataValue->getLongHTMLText( $linker );
 				} else {
-					$errors[] = wfMessage( 'smw_propertylackstype', $typestring )->escaped();
+					$errors[] = wfMessage( 'smw_propertylackstype' )->rawParams( $typestring )->escaped();
 				}
 
 				$proplink = $linker->link( $title, $label );
