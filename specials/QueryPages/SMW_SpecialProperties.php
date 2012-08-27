@@ -109,10 +109,13 @@ class SMWPropertiesPage extends SMWQueryPage {
 		$useCount = $wgLang->formatNum( $useCount );
 		if ( $typestring === '' ) { // Builtins have no type
 			// @todo Should use numParams for $useCount?
-			return wfMessage( 'smw_property_template_notype', $proplink, $useCount )->text() . ' ' . $warnings;
+			return wfMessage( 'smw_property_template_notype' )
+				->rawParams( $proplink )->params( $useCount )->text() . ' ' . $warnings;
 		} else {
 			// @todo Should use numParams for $useCount?
-			return wfMessage( 'smw_property_template', $proplink, $typestring, $useCount )->escaped() . ' ' . $warnings;
+			return wfMessage( 'smw_property_template', $useCount )
+				->rawParams( $proplink, $typestring )
+				->params( $useCount )->escaped() . ' ' . $warnings;
 		}
 	}
 
