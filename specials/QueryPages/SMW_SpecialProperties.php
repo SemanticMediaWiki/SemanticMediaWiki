@@ -73,7 +73,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 		} elseif ( $dataItem instanceof SMWDIError ) {
 			return smwfEncodeMessages( $dataItem->getErrors() );
 		} else {
-			throw MWException( 'SMWUnusedPropertiesPage expects results that are properties or errors.' );
+			throw new MWException( 'SMWUnusedPropertiesPage expects results that are properties or errors.' );
 		}
 	}
 
@@ -89,6 +89,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 	 */
 	protected function formatPropertyItem( SMWDIProperty $property, $useCount ) {
 		global $wgLang;
+
 		$linker = smwfGetLinker();
 
 		$errors = array();
@@ -139,16 +140,15 @@ class SMWPropertiesPage extends SMWQueryPage {
 
 		$warnings = smwfEncodeMessages( $errors, 'warning', '', false );
 
-		$useCount = $wgLang->formatNum( $useCount );
 		if ( $typestring === '' ) { // Builtins have no type
 			// @todo Should use numParams for $useCount?
 			return wfMessage( 'smw_property_template_notype' )
-				->rawParams( $proplink )->params( $useCount )->text() . ' ' . $warnings;
+				->rawParams( $proplink )->numParams( $useCount )->text() . ' ' . $warnings;
 		} else {
 			// @todo Should use numParams for $useCount?
 			return wfMessage( 'smw_property_template' )
 				->rawParams( $proplink, $typestring )
-				->params( $useCount )->escaped() . ' ' . $warnings;
+				->numParams( $useCount )->escaped() . ' ' . $warnings;
 		}
 	}
 
