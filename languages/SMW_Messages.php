@@ -405,6 +405,8 @@ Estimated progress of current update:',
 	'prefs-ask-options' => 'Semantic search options',
 	'smw-ask-userpref-options-tooltip-display' => 'Display parameter text as info tooltip',
 	'smw-ask-userpref-options-collapsed-default' => 'Enable option box to be collapsed by default',
+
+	'smw_unknowntype' => 'The type of this property is invalid',
 );
 
 /** Message documentation (Message documentation)
@@ -424,6 +426,7 @@ Estimated progress of current update:',
  */
 $messages['qqq'] = array(
 	'smw-desc' => '{{desc}}',
+	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language. 
 	{{Identical|And}}',
