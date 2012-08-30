@@ -4066,6 +4066,7 @@ Uutta ei käynnistetä.',
  * @author IAlex
  * @author McDutchie
  * @author Meithal
+ * @author Nicolas NALLET
  * @author Od1n
  * @author Peter17
  * @author PieRRoMaN
@@ -4140,11 +4141,12 @@ $messages['fr'] = array(
 	'smw-smwdoc-par-parameters' => 'Les paramètres à afficher. "specific" pour ceux ajoutés par le format, "base" pour ceux disponibles dans tous les formats, et "all" pour les deux.',
 	'smw-paramdesc-sort' => 'Propriété sur laquelle trier la requête',
 	'smw-paramdesc-order' => 'Ordre du tri de la requête',
-	'smw-paramdesc-searchlabel' => 'Texte pour continuer la recherche (par défaut, «… autres résultats»)',
+	'smw-paramdesc-searchlabel' => "Titre du lien permettant d'accéder aux résultats suivants (par défaut, «… autres résultats»)",
 	'smw-paramdesc-named_args' => 'Nommez les arguments transmis au modèle',
 	'smw-paramdesc-export' => 'Options d’exportation',
 	'smw-paramdesc-prettyprint' => 'Pour permettre un affichage plus lisible',
 	'smw-paramdesc-source' => 'Source de requête alternative',
+	'smw-paramdesc-jsonsyntax' => 'Syntaxe JSON à utiliser',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
 	'smw_iq_moreresults' => '&hellip; autres résultats',
 	'smw_parseerror' => 'La donnée indiquée n’a pas été comprise.',
@@ -4235,6 +4237,7 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'smw_ask_format_as' => 'Formater en :',
 	'smw_ask_defaultformat' => 'défaut',
 	'smw_ask_otheroptions' => 'Autres options',
+	'smw-ask-otheroptions-info' => "Cette section contient des options qui modifient l'affichage des données. Placez votre souris sur les paramètres pour voir leur description.",
 	'smw-ask-otheroptions-collapsed-info' => 'Veuillez utiliser l\'icône "plus" pour afficher toutes les options disponibles',
 	'smw_ask_show_embed' => 'Montrer le code incrusté',
 	'smw_ask_hide_embed' => 'Masquer le code incrusté',
