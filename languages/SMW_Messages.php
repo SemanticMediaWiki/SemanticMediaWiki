@@ -426,7 +426,6 @@ Estimated progress of current update:',
  */
 $messages['qqq'] = array(
 	'smw-desc' => '{{desc}}',
-	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language. 
 	{{Identical|And}}',
@@ -817,6 +816,7 @@ This method is called ''content negotiation''.
 	'prefs-ask-options' => 'This is the text of a header within a section on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ask-userpref-options-tooltip-display' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ask-userpref-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
+	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 );
 
 /** Niuean (ko e vagahau Niuē)
@@ -871,6 +871,7 @@ $messages['af'] = array(
 	'smw_result_next' => 'Volgende',
 	'smw_result_results' => 'Resultate',
 	'smw_result_noresults' => 'Geen resultate.',
+	'smw_unknowntype' => 'Onondersteunde tipe "$1" gedefinieer vir eienskap.',
 );
 
 /** Gheg Albanian (Gegë)
@@ -916,6 +917,7 @@ $messages['aln'] = array(
 	'smw_parseerror' => 'Vlera e dhënë nuk është kuptuar.',
 	'smw_notitle' => '"$1" nuk mund të përdoret si një emër faqe në këtë wiki.',
 	'smw_wrong_namespace' => 'Vetëm faqet në hapësirën "$1" lejohen këtu.',
+	'smw_unknowntype' => 'Lloj i pasuportuar "$1" të përcaktuara për pronën.',
 );
 
 /** Amharic (አማርኛ)
@@ -1157,6 +1159,7 @@ $messages['ar'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'مساعدة الاستعلامات الداخلية',
 	'smw-createproperty-isproperty' => 'هذه خاصية من نوع $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1||القيمة المسموح بها لهذه الخاصية هي|القيمتان المسموح بهما لهذه الخاصية هما|القيم المسموح بها لهذه الخاصية هي}}:',
+	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.',
 );
 
 /** Aramaic (ܐܪܡܝܐ)
@@ -1400,6 +1403,7 @@ $messages['arz'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'مساعده الاستعلامات الداخلية',
 	'smw-createproperty-isproperty' => 'هذه خاصية من نوع $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1||القيمة المسموح بها لهذه الخاصية هي|القيمتان المسموح بهما لهذه الخاصية هما|القيم المسموح بها لهذه الخاصية هي}}:',
+	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.',
 );
 
 /** Asturian (asturianu)
@@ -1748,6 +1752,7 @@ $messages['be-tarask'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Дапамога па ўбудаваных запытах',
 	'smw-createproperty-isproperty' => 'Гэта ўласьцівасьць тыпу $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:',
+	'smw_unknowntype' => 'Тып «$1» не падтрымліваецца для гэтай уласьцівасьці.',
 );
 
 /** Bulgarian (български)
@@ -2032,6 +2037,7 @@ Arabat krouiñ unan all.',
 	'smw-createproperty-isproperty' => 'Ar perzh-mañ zo eus ar seurt $1.',
 	'smw-createproperty-allowedvals' => 'An talvoudenn{{PLURAL:$1||où}} aotreet evt ar perzh-se a zo :',
 	'smw-paramdesc-category-delim' => 'Ar bevenner',
+	'smw_unknowntype' => 'Ar seurt roadennoù "$1" nann skoret a zo distroet d\'an doareenn',
 );
 
 /** Bosnian (bosanski)
@@ -2383,6 +2389,7 @@ Progrés estimat de l'actualització actual:",
 	'smw-paramdesc-category-userparam' => 'Un paràmetre per passar a la plantilla',
 	'smw-info-par-message' => 'Missatge per mostrar.',
 	'smw-info-par-icon' => 'La icona que es mostrarà, o bé «info», o bé «avís».',
+	'smw_unknowntype' => "S'ha definit un tipus «$1» no permès per la propietat.",
 );
 
 /** Chechen (нохчийн)
@@ -2610,6 +2617,7 @@ Odhadovaný průběh updatu:',
 	'smw-paramdesc-category-delim' => 'Oddělovač',
 	'smw-info-par-message' => 'Jaká zpráva se má zobrazit.',
 	'smw-info-par-icon' => 'Jaká ikona se má zobrazit, buď „info“ nebo „warning“ (varování).',
+	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.',
 );
 
 /** German (Deutsch)
@@ -2933,6 +2941,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'prefs-ask-options' => 'Optionen für die Semantische Suche',
 	'smw-ask-userpref-options-tooltip-display' => 'Beschreibung der Ausgabeparameter als Tooltip anzeigen',
 	'smw-ask-userpref-options-collapsed-default' => 'Bereich mit den Ausgabeparametern standardmäßig einklappen',
+	'smw_unknowntype' => 'Der Datentyp dieses Attributs ist ungültig.',
 );
 
 /** Zazaki (Zazaki)
@@ -3250,6 +3259,7 @@ Licony póstup aktualneje aktualizacije:',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Semantiske pytańske opcije',
 	'smw-ask-userpref-options-tooltip-display' => 'Parametrowy tekst ako spěšne info zwobrazniś',
+	'smw_unknowntype' => 'Za kakosć jo se njepódpěrany typ "$1" definěrował.',
 );
 
 /** Ewe (eʋegbe) */
@@ -3477,6 +3487,7 @@ $messages['eo'] = array(
 	'smw_adminlinks_datastructure' => 'Datumstrukturo',
 	'smw-createproperty-isproperty' => 'Ĉi tiu estas atributo de speco $1.',
 	'smw-createproperty-allowedvals' => 'La {{PLURAL:$1|permesita valoro por ĉi tiu atributo|permesitaj valoroj por ĉi tiuj atributoj}} estas:',
+	'smw_unknowntype' => 'Nesubtenita datumtipo "$1" difinita por atributo.',
 );
 
 /** Spanish (español)
@@ -3795,6 +3806,7 @@ Progeso estimado de la actualización:',
 	'prefs-ask-options' => 'Opciones de búsqueda semántica',
 	'smw-ask-userpref-options-tooltip-display' => 'Mostrar el texto del parámetro como ayuda informativa',
 	'smw-ask-userpref-options-collapsed-default' => 'Activar la contracción de la caja de opciones por defecto',
+	'smw_unknowntype' => 'El tipo de datos "$1" no soportado ha sido devuelto al atributo.',
 );
 
 /** Estonian (eesti)
@@ -4383,6 +4395,7 @@ Progression estimée de la mise à jour actuelle :',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Options de recherche sémantique',
 	'smw-ask-userpref-options-tooltip-display' => 'Afficher le texte du paramètre comme info-bulle',
+	'smw_unknowntype' => 'Le type de données « $1 » non supporté a été retourné à l’attribut.',
 );
 
 /** Franco-Provençal (arpetan)
@@ -4867,6 +4880,7 @@ Progreso estimado da actualización actual:',
 	'prefs-ask-options' => 'Opcións de procura semántica',
 	'smw-ask-userpref-options-tooltip-display' => 'Mostrar o texto do parámetro como axuda informativa',
 	'smw-ask-userpref-options-collapsed-default' => 'Activar a contracción da caixa de opcións por defecto',
+	'smw_unknowntype' => 'Tipo "$1" non soportado definido para a propiedade.',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -5107,6 +5121,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw_adminlinks_inlinequerieshelp' => 'Hilf fir Inline-Abfroge',
 	'smw-createproperty-isproperty' => 'Des isch e Eigeschaft vum Typ $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dr erlaubt Wärt fir die Eigeschaft isch|Di erlaubte Wärt fir die Eigeschaft sin}}:',
+	'smw_unknowntype' => 'Imn dr Eigeschaft isch dr nit bekannt Datetyp „$1“ zuegwise wore.',
 );
 
 /** Hebrew (עברית)
@@ -5358,6 +5373,7 @@ $messages['he'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'עזרה על שאילתות משובצות',
 	'smw-createproperty-isproperty' => 'זהו מאפיין מסוג $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|הערך האפשרי למאפיין זה הוא|הערכים האפשריים למאפיין זה הם}}:',
+	'smw_unknowntype' => '[אופס! סוג לא מוכר "$1" הוגדר עבור מאפיין זה]',
 );
 
 /** Hindi (हिन्दी)
@@ -5597,6 +5613,7 @@ Procjena napretka osvježavanja:',
 	'smw_adminlinks_datastructure' => 'Struktura podataka',
 	'smw_adminlinks_displayingdata' => 'Prikaz podataka',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za umetnute upite',
+	'smw_unknowntype' => 'Za svojstvo je definiran nepodržan tip "$1".',
 );
 
 /** Upper Sorbian (hornjoserbsce)
@@ -5901,6 +5918,7 @@ Trochowany staw aktualneje aktualizacije:',
 	'prefs-ask-options' => 'Semantiske pytanske opcije',
 	'smw-ask-userpref-options-tooltip-display' => 'Parametrowy tekst jako spěšne info zwobraznić',
 	'smw-ask-userpref-options-collapsed-default' => 'Kašćik opcijow po standardźe sfałdowany zmóžnić',
+	'smw_unknowntype' => 'Za kajkosć bu njepodpěrowany typ "$1" definowany.',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -5927,6 +5945,7 @@ $messages['ht'] = array(
 	'smw_false_words' => 'fo,f,non,n',
 	'smw_nofloat' => '"$1" pa yon nimewo.',
 	'smw_infinite' => 'Nimewo ki gwo tankou "$1" pa sipòte.',
+	'smw_unknowntype' => 'Tip done "$1" yo ki pa sipòte retounen nan atribi a.',
 );
 
 /** Hungarian (magyar)
@@ -6191,6 +6210,7 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw-paramdesc-category-template' => 'Az elemeket formázandó sablon',
 	'smw-info-par-message' => 'Megjelenítendő üzenet.',
 	'smw-info-par-icon' => 'Megjelenítendő jel, "info" vagy "warning."',
+	'smw_unknowntype' => 'A megadott „$1” típus nem támogatott a tulajdonságnál.',
 );
 
 /** Interlingua (interlingua)
@@ -6499,6 +6519,7 @@ Progresso estimate del actualisation currente:',
 	'smw-paramdesc-category-userparam' => 'Un parametro a passar al patrono',
 	'smw-info-par-message' => 'Le message a monstrar.',
 	'smw-info-par-icon' => 'Le icone a monstrar, o "info" o "attention!".',
+	'smw_unknowntype' => 'Typo non supportate "$1" definite pro proprietate.',
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -6731,6 +6752,7 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_adminlinks_inlinequerieshelp' => 'Bantuan query sisip',
 	'smw-createproperty-isproperty' => 'Ini adalah properti bertipe $1',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Nilai|Nilai}} yang diizinkan untuk properti ini adalah:',
+	'smw_unknowntype' => 'Tipe "$1" yang tidak didukung ditetapkan untuk properti.',
 );
 
 /** Igbo (Igbo)
@@ -7005,6 +7027,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_adminlinks_inlinequerieshelp' => 'Aiuto sulle query inline',
 	'smw-createproperty-isproperty' => 'Questa è una proprietà di tipo $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Il valore permesso per questa proprità è|I valori permessi per questa proprietà sono}}:',
+	'smw_unknowntype' => 'È stato definito un tipo non supportato "$1" per la proprietà.',
 );
 
 /** Japanese (日本語)
@@ -7296,6 +7319,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'prefs-ask-options' => '意味的検索オプション',
 	'smw-ask-userpref-options-tooltip-display' => 'パラメーター文字列を情報ツールチップとして表示',
 	'smw-ask-userpref-options-collapsed-default' => 'オプションボックスを既定では折り畳む',
+	'smw_unknowntype' => '対応していない型「$1」がプロパティに対して定義されました。',
 );
 
 /** Javanese (Basa Jawa)
@@ -7400,6 +7424,7 @@ Tulung isèkna loro-loroné sawijining kaca lan sifat.',
 	'smw_result_next' => 'Sabanjuré',
 	'smw_result_results' => 'Pituwas (kasil)',
 	'smw_result_noresults' => 'Nuwun sèwu, ora ana pituwasé (kasilé).',
+	'smw_unknowntype' => 'Jenis “$1” sing ora disengkuyung, didéfinisi kanggo sifat.',
 );
 
 /** Georgian (ქართული)
@@ -7587,6 +7612,7 @@ $messages['ko'] = array(
 	'smw_qui_formt' => '형식:',
 	'smw_qui_cancel' => '취소',
 	'smw_pp_type' => '속성',
+	'smw_unknowntype' => '지원되지 않는 종류 “$1” 정의에 대한 속성을.',
 );
 
 /** Krio (Krio)
@@ -7817,6 +7843,7 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_adminlinks_inlinequerieshelp' => 'Hölp övver de em Wiki sing Sigge enjeboute Froore',
 	'smw-createproperty-isproperty' => 'Dat ess_en Eijeschaff vun dä Zoot $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dä einzijje müjjelesche Wäät för di Eijeschaff es:|De müjjelesche Wääte för di Eijeschaff sin:|Mer han kein müjjelesche Wääte för di Eijeschaff.}}',
+	'smw_unknowntype' => 'De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.',
 );
 
 /** Kurdish (Latin script) (‪Kurdî (latînî)‬)
@@ -8078,6 +8105,7 @@ Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw_emptysubquery' => 'Kai kurios užklausos dalys turi blogas sąlygas.',
 	'smw-createproperty-isproperty' => 'Tai yra „$1“ tipo savybė.',
 	'smw-createproperty-allowedvals' => 'Šios savybės leidžiamos reikšmės yra:',
+	'smw_unknowntype' => 'Savybei nustatytas nepalaikomas tipas "$1".',
 );
 
 /** Macedonian (македонски)
@@ -8398,6 +8426,7 @@ $messages['mk'] = array(
 	'prefs-ask-options' => 'Можности за семантичко пребарување',
 	'smw-ask-userpref-options-tooltip-display' => 'Прикажи го текстот на параметарот како информативен отскочен текст',
 	'smw-ask-userpref-options-collapsed-default' => 'Полето за можности нека стои расклопено (отворено) по основно',
+	'smw_unknowntype' => 'За својството е определен неподдржан тип „$1“.',
 );
 
 /** Malayalam (മലയാളം)
@@ -8545,6 +8574,7 @@ $messages['mr'] = array(
 	'smw_result_noresults' => 'माफ करा, निकाल नाहीत.',
 	'smw-createproperty-isproperty' => 'हा $1 प्रकारचा गुणधर्म आहे.',
 	'smw-createproperty-allowedvals' => 'या गुणधर्माच्या योग्य किंमती पुढीलप्रमाणे आहेत:',
+	'smw_unknowntype' => 'गुणधर्माचा प्रकार “$1” वापरता येत नाही.',
 );
 
 /** Malay (Bahasa Melayu)
@@ -8927,6 +8957,7 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw-paramdesc-category-userparam' => 'En parameter som gis til malen',
 	'smw-info-par-message' => 'Melding å vise frem.',
 	'smw-info-par-icon' => 'Ikon for å vise frem enten "info" eller "advarsel".',
+	'smw_unknowntype' => 'Typen «$1» som er definert for egenskapen støttes ikke.',
 );
 
 /** Dutch (Nederlands)
@@ -9245,6 +9276,7 @@ Geschatte voortgang van de huidige taak:",
 	'prefs-ask-options' => 'Semantische zoekopties',
 	'smw-ask-userpref-options-tooltip-display' => 'Parametertekst weergeven als infotooltip',
 	'smw-ask-userpref-options-collapsed-default' => 'Optievenster standaard samengevouwen weergeven',
+	'smw_unknowntype' => 'Type "$1" is niet beschikbaar voor de gedefinieerde eigenschap.',
 );
 
 /** Norwegian Nynorsk (‪norsk (nynorsk)‬)
@@ -9435,6 +9467,7 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki-brukarforumet</a>.',
 	'smw-createproperty-isproperty' => 'Dette er ein eigenskap av typen $1.',
 	'smw-createproperty-allowedvals' => 'Dei tillatne verdiane for denne eigenskapen er:',
+	'smw_unknowntype' => 'Typen «$1» som er definert for eigenskapen er ikkje støtta.',
 );
 
 /** Occitan (occitan)
@@ -9624,6 +9657,7 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda sus las requèstas',
 	'smw-createproperty-isproperty' => 'Aquò es una proprietat del tipe $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :',
+	'smw_unknowntype' => 'Lo tipe de donadas "$1" pas suportat es estat tornat a l\'atribut.',
 );
 
 /** Ossetic (Ирон)
@@ -9901,6 +9935,7 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc dotycząca wewnętrznych zapytań',
 	'smw-createproperty-isproperty' => 'To jest własność typu $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dopuszczalna wartość dla tej własności to|Dopuszczalne wartości dla tej własności to:}}',
+	'smw_unknowntype' => '„$1” jako typ atrybutu nie jest obsługiwany.',
 );
 
 /** Piedmontese (Piemontèis)
@@ -10128,6 +10163,7 @@ Avansament stimà dla modìfica corenta:",
 	'smw_adminlinks_inlinequerieshelp' => "Agiut an sj'anterogassion an linia",
 	'smw-createproperty-isproperty' => "Costa-sì a l'é na proprietà ëd sòrt $1.",
 	'smw-createproperty-allowedvals' => "{{PLURAL:$1|Ël valor përmëttù për sta proprietà-sì a l'é|Ij valor përmëttù për sta proprietà-sì a son}}:",
+	'smw_unknowntype' => "Un tipo ''$1'' pa mantnù a l'é definì për proprietà.",
 );
 
 /** Pashto (پښتو)
@@ -10425,6 +10461,7 @@ Progresso estimado da actualização em curso:",
 	'smw_adminlinks_inlinequerieshelp' => "Ajuda para consultas dinâmicas ''(inline queries)''",
 	'smw-createproperty-isproperty' => 'Esta é uma propriedade do tipo $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:',
+	'smw_unknowntype' => 'Foi definido para a propriedade o tipo não suportado “$1”.',
 );
 
 /** Brazilian Portuguese (português do Brasil)
@@ -10744,6 +10781,7 @@ Progresso estimado da atualização corrente:',
 	'prefs-ask-options' => 'Opções da busca semântica',
 	'smw-ask-userpref-options-tooltip-display' => 'Exibir o texto do parâmetro em forma de dica',
 	'smw-ask-userpref-options-collapsed-default' => 'Habilitar a caixa de opção como recolhida por padrão',
+	'smw_unknowntype' => 'O tipo "$1" definido para propriedade não é suportado.',
 );
 
 /** Tarifit (Tarifit)
@@ -11111,6 +11149,7 @@ $messages['ru'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Справка по встроенным запросам',
 	'smw-createproperty-isproperty' => 'Это свойство типа $1.',
 	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|допускается следующее значение|допускаются следующие значения}}:',
+	'smw_unknowntype' => 'Тип "$1" не поддерживается для данного свойства.',
 );
 
 /** Rusyn (русиньскый)
@@ -11393,6 +11432,7 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k inline požiadavkám',
 	'smw-createproperty-isproperty' => 'Toto je vlastnosť typu $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Povolená hodnota|Povolené hodnoty}} tejto vlastnosti {{PLURAL:$1|je|sú}}:',
+	'smw_unknowntype' => 'Pre atribút je definovaný nepodporovaný typ "$1".',
 );
 
 /** Slovenian (slovenščina)
@@ -11780,6 +11820,7 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_datastructure' => 'Структура података',
 	'smw_adminlinks_displayingdata' => 'Приказивање података',
 	'smw_adminlinks_inlinequerieshelp' => 'Помоћ за непосредне упите',
+	'smw_unknowntype' => 'Неподржан тип "$1" је дефинисан за особину.',
 );
 
 /** Serbian (Latin script) (‪srpski (latinica)‬)
@@ -11995,6 +12036,7 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_adminlinks_datastructure' => 'Struktura podataka',
 	'smw_adminlinks_displayingdata' => 'Prikazivanje podataka',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za neposredne upite',
+	'smw_unknowntype' => 'Nepodržan tip "$1" je definisan za osobinu.',
 );
 
 /** Swedish (svenska)
@@ -12249,6 +12291,7 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw-paramdesc-category-userparam' => 'Parameter till mallen',
 	'smw-info-par-message' => 'Meddelande att skriva ut.',
 	'smw-info-par-icon' => 'Ikon att visa, antingen "info" eller "warning".',
+	'smw_unknowntype' => 'Typen "$1" som är definierad för egenskapen stödjs inte.',
 );
 
 /** Tamil (தமிழ்)
@@ -12720,6 +12763,7 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'prefs-ask-options' => 'Mga mapagpipilian ng semantikong paghahanap',
 	'smw-ask-userpref-options-tooltip-display' => 'Ipakita ang teksto ng parametro bilang pangkabatiran na payo sa kasangkapan',
 	'smw-ask-userpref-options-collapsed-default' => 'Paganahin ang kahon ng mapagpipilian na paguguhuin ayon sa likas na katakdaan',
+	'smw_unknowntype' => 'Binigyang kahulugan para sa pag-aari ang hindi tinatangkilik na uring "$1".',
 );
 
 /** толышә зывон (толышә зывон)
@@ -12834,6 +12878,7 @@ Bir diğeri oluşturulmuyor.',
 	'smw_adminlinks_datastructure' => 'Veri yapısı',
 	'smw_adminlinks_displayingdata' => 'Veriler görüntüleniyor',
 	'smw_adminlinks_inlinequerieshelp' => 'Satıriçi sorgu yardımı',
+	'smw_unknowntype' => 'Özellik için desteklenmeyen "$1" türü tanımlanmış.',
 );
 
 /** Tatar (Cyrillic script) (татарча)
@@ -13066,6 +13111,7 @@ $messages['uk'] = array(
 	'smw_adminlinks_datastructure' => 'Структура даних',
 	'smw_adminlinks_displayingdata' => 'Відображення даних',
 	'smw_adminlinks_inlinequerieshelp' => 'Довідка із вбудованих запитів',
+	'smw_unknowntype' => 'Для властивості означено тип даних «$1», який не підтримується.',
 );
 
 /** Urdu (اردو)
@@ -13335,6 +13381,7 @@ Xin nhập vào cả một trang và một thuộc tính.',
 	'smw_adminlinks_inlinequerieshelp' => 'Trợ giúp truy vấn nội dòng',
 	'smw-createproperty-isproperty' => 'Đây là tính chất thuộc kiểu $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Giá trị|Các giá trị}} cho phép của thuộc tính này là:',
+	'smw_unknowntype' => 'Không hỗ trợ kiểu “$1” trong thuộc tính.',
 );
 
 /** Volapük (Volapük)
@@ -13826,6 +13873,7 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-category-userparam' => '传递给模板的参数',
 	'smw-info-par-message' => '显示的信息。',
 	'smw-info-par-icon' => '显示的图标，“信息”或“警告”。',
+	'smw_unknowntype' => '定义的属性类型"$1"不被支持。',
 );
 
 /** Traditional Chinese (‪中文（繁體）‬)
@@ -14053,6 +14101,7 @@ $messages['zh-hant'] = array(
 	'smw_adminlinks_displayingdata' => '資料顯示',
 	'smw_adminlinks_inlinequerieshelp' => '直接插入式查詢幫助',
 	'smw-createproperty-isproperty' => '這是一個類型為$1的屬性。',
+	'smw_unknowntype' => '定義的屬性類型「$1」不被支援。',
 );
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
