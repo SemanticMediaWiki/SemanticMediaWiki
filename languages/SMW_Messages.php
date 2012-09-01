@@ -2941,7 +2941,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'prefs-ask-options' => 'Optionen für die Semantische Suche',
 	'smw-ask-userpref-options-tooltip-display' => 'Beschreibung der Ausgabeparameter als Tooltip anzeigen',
 	'smw-ask-userpref-options-collapsed-default' => 'Bereich mit den Ausgabeparametern standardmäßig einklappen',
-	'smw_unknowntype' => 'Der Datentyp dieses Attributs ist ungültig.',
+	'smw_unknowntype' => 'Der Typ dieses Attributs ist ungültig.',
 );
 
 /** Zazaki (Zazaki)
@@ -3036,6 +3036,7 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw-paramdesc-dsv-separator' => 'Źěleńske znamuško, kótarež ma se wužywaś',
 	'smw-paramdesc-dsv-filename' => 'Mě za DSV-dataju',
 	'smw-smwdoc-par-format' => 'Wuslědkowy format, za kótaregož parametry dokumentacija ma se zwobrazniś.',
+	'smw-paramdesc-sort' => 'Kakosć, pó kótarejž napšašowanje ma se sortěrowaś',
 	'smw-paramdesc-searchlabel' => 'Tekst za dalšne pytańske wuslědki',
 	'smw-paramdesc-named_args' => 'Argumenty, kótarež maju se pśedłoze pśepódaś',
 	'smw-paramdesc-export' => 'Eksportowe nastajenje',
@@ -3057,6 +3058,8 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw_false_words' => 'njewěrny, ně, n',
 	'smw_nofloat' => '"$1" njejo licba.',
 	'smw_infinite' => 'Licby, kótarež su dłujke ako "$1", se njepódpěraju.',
+	'smw_unitnotallowed' => '"$1" njejo ako płaśiwa měrjeńska jadnotka za toś ten atribut póstajił.',
+	'smw_nounitsdeclared' => 'Za toś tu kakosć njesu se žedne měrjeńške jadnotki namakali.',
 	'smw_novalues' => 'Žedne gódnoty pódane',
 	'smw_nodatetime' => 'Datum "$1" njejo se rozměł.',
 	'smw_toomanyclosing' => 'Zda se, až jo pśewjele wustupowanjow "$1" w napšašowanju.',
@@ -3133,10 +3136,13 @@ Stara se za to, až luźe njebudu websedła.',
 	'smw_ask_hide_embed' => 'Zasajźony kod schowaś',
 	'smw_ask_embed_instr' => 'Aby toś to wótpšašanje do wikiboka zasajźił, wužyj slědujucy kod.',
 	'smw-ask-delete' => '[Lašowaś]',
+	'smw-ask-sorting' => 'Sortěrowanje',
 	'smw_qc_addmainlabel' => 'Głowne pomjenjenje pśidaś',
 	'smw_qc_show_addnal_opts' => 'Dalšne opcije pokazaś',
 	'smw_qc_hide_addnal_opts' => 'Mjenjej opcijow pokazaś',
 	'smw_qc_otheropt' => 'Druge opcije',
+	'smw_qc_intro' => 'Zawjeźenje:',
+	'smw_qc_outro' => 'Naslědujucy tekst:',
 	'smw_qc_default' => 'Standard:',
 	'smw_qc_formatopt' => 'Formatowe opcije',
 	'smw_qui_property' => '<strong>Kakosć</strong>',
@@ -3259,7 +3265,7 @@ Licony póstup aktualneje aktualizacije:',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Semantiske pytańske opcije',
 	'smw-ask-userpref-options-tooltip-display' => 'Parametrowy tekst ako spěšne info zwobrazniś',
-	'smw_unknowntype' => 'Za kakosć jo se njepódpěrany typ "$1" definěrował.',
+	'smw_unknowntype' => 'Typ toś teje kakosći jo njepłaśiwy',
 );
 
 /** Ewe (eʋegbe) */
@@ -3806,7 +3812,7 @@ Progeso estimado de la actualización:',
 	'prefs-ask-options' => 'Opciones de búsqueda semántica',
 	'smw-ask-userpref-options-tooltip-display' => 'Mostrar el texto del parámetro como ayuda informativa',
 	'smw-ask-userpref-options-collapsed-default' => 'Activar la contracción de la caja de opciones por defecto',
-	'smw_unknowntype' => 'El tipo de datos "$1" no soportado ha sido devuelto al atributo.',
+	'smw_unknowntype' => 'El tipo de esta propiedad no es válido',
 );
 
 /** Estonian (eesti)
@@ -5918,7 +5924,7 @@ Trochowany staw aktualneje aktualizacije:',
 	'prefs-ask-options' => 'Semantiske pytanske opcije',
 	'smw-ask-userpref-options-tooltip-display' => 'Parametrowy tekst jako spěšne info zwobraznić',
 	'smw-ask-userpref-options-collapsed-default' => 'Kašćik opcijow po standardźe sfałdowany zmóžnić',
-	'smw_unknowntype' => 'Za kajkosć bu njepodpěrowany typ "$1" definowany.',
+	'smw_unknowntype' => 'Typ tuteje kajkosće je njepłaćiwy',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -7027,7 +7033,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_adminlinks_inlinequerieshelp' => 'Aiuto sulle query inline',
 	'smw-createproperty-isproperty' => 'Questa è una proprietà di tipo $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Il valore permesso per questa proprità è|I valori permessi per questa proprietà sono}}:',
-	'smw_unknowntype' => 'È stato definito un tipo non supportato "$1" per la proprietà.',
+	'smw_unknowntype' => 'Il tipo di questa proprietà non è valido',
 );
 
 /** Japanese (日本語)
@@ -7319,7 +7325,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'prefs-ask-options' => '意味的検索オプション',
 	'smw-ask-userpref-options-tooltip-display' => 'パラメーター文字列を情報ツールチップとして表示',
 	'smw-ask-userpref-options-collapsed-default' => 'オプションボックスを既定では折り畳む',
-	'smw_unknowntype' => '対応していない型「$1」がプロパティに対して定義されました。',
+	'smw_unknowntype' => 'このプロパティの型は無効です',
 );
 
 /** Javanese (Basa Jawa)
@@ -7612,7 +7618,7 @@ $messages['ko'] = array(
 	'smw_qui_formt' => '형식:',
 	'smw_qui_cancel' => '취소',
 	'smw_pp_type' => '속성',
-	'smw_unknowntype' => '지원되지 않는 종류 “$1” 정의에 대한 속성을.',
+	'smw_unknowntype' => '이 속성의 형식이 잘못되었습니다',
 );
 
 /** Krio (Krio)
@@ -8426,7 +8432,7 @@ $messages['mk'] = array(
 	'prefs-ask-options' => 'Можности за семантичко пребарување',
 	'smw-ask-userpref-options-tooltip-display' => 'Прикажи го текстот на параметарот како информативен отскочен текст',
 	'smw-ask-userpref-options-collapsed-default' => 'Полето за можности нека стои расклопено (отворено) по основно',
-	'smw_unknowntype' => 'За својството е определен неподдржан тип „$1“.',
+	'smw_unknowntype' => 'Ова својство е од неважечки тип',
 );
 
 /** Malayalam (മലയാളം)
@@ -9276,7 +9282,7 @@ Geschatte voortgang van de huidige taak:",
 	'prefs-ask-options' => 'Semantische zoekopties',
 	'smw-ask-userpref-options-tooltip-display' => 'Parametertekst weergeven als infotooltip',
 	'smw-ask-userpref-options-collapsed-default' => 'Optievenster standaard samengevouwen weergeven',
-	'smw_unknowntype' => 'Type "$1" is niet beschikbaar voor de gedefinieerde eigenschap.',
+	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
 );
 
 /** Norwegian Nynorsk (‪norsk (nynorsk)‬)
