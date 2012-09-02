@@ -4401,7 +4401,7 @@ Progression estimée de la mise à jour actuelle :',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Options de recherche sémantique',
 	'smw-ask-userpref-options-tooltip-display' => 'Afficher le texte du paramètre comme info-bulle',
-	'smw_unknowntype' => 'Le type de données « $1 » non supporté a été retourné à l’attribut.',
+	'smw_unknowntype' => "Le type de cette propriété n'est pas valide",
 );
 
 /** Franco-Provençal (arpetan)
@@ -4886,7 +4886,7 @@ Progreso estimado da actualización actual:',
 	'prefs-ask-options' => 'Opcións de procura semántica',
 	'smw-ask-userpref-options-tooltip-display' => 'Mostrar o texto do parámetro como axuda informativa',
 	'smw-ask-userpref-options-collapsed-default' => 'Activar a contracción da caixa de opcións por defecto',
-	'smw_unknowntype' => 'Tipo "$1" non soportado definido para a propiedade.',
+	'smw_unknowntype' => 'O tipo desta propiedade non é válido',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
