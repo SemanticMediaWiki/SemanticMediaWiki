@@ -7142,8 +7142,8 @@ $messages['ja'] = array(
 	'smw_typearticlecount' => 'この型を使っている $1個の{{PLURAL:$1|プロパティ}}を表示しています。',
 	'smw_attribute_header' => 'プロパティ「$1」を使っているページ',
 	'smw_attributearticlecount' => 'このプロパティを使っている $1個の{{PLURAL:$1|ページ}}を表示しています。',
-	'smw_subproperty_header' => 'サブプロパティ',
-	'smw_subpropertyarticlecount' => 'このプロパティには以下の $1 {{PLURAL:$1|サブプロパティ}}があります：',
+	'smw_subproperty_header' => '下位プロパティ',
+	'smw_subpropertyarticlecount' => 'このプロパティには以下の $1 {{PLURAL:$1|下位プロパティ}}があります：',
 	'smw_concept_header' => '概念「$1」のページ',
 	'smw_conceptarticlecount' => 'この概念に属する $1個の{{PLURAL:$1|ページ}}を表示しています。',
 	'smw_rss_description' => '$1 RSS フィード',
@@ -9941,7 +9941,7 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc dotycząca wewnętrznych zapytań',
 	'smw-createproperty-isproperty' => 'To jest własność typu $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dopuszczalna wartość dla tej własności to|Dopuszczalne wartości dla tej własności to:}}',
-	'smw_unknowntype' => '„$1” jako typ atrybutu nie jest obsługiwany.',
+	'smw_unknowntype' => 'Typ atrybutu jest nieprawidłowy.',
 );
 
 /** Piedmontese (Piemontèis)
@@ -13381,13 +13381,15 @@ Xin nhập vào cả một trang và một thuộc tính.',
 	'smw_smwadmin_datarefreshstop' => 'Ngừng việc nâng cấp',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Có chắc',
 	'smw_smwadmin_support' => 'Trợ giúp',
+	'smw_smwadmin_smwhomepage' => 'Tài liệu sử dụng đầy đủ của MediaWiki Ngữ nghĩa có sẵn tại <b><a href="http://semantic-mediawiki.org/?uselang=vi">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Hãy báo cáo lỗi tại <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_adminlinks_datastructure' => 'Cấu trúc dữ liệu',
 	'smw_adminlinks_displayingdata' => 'Hiển thị dữ liệu',
 	'smw_adminlinks_inlinequerieshelp' => 'Trợ giúp truy vấn nội dòng',
 	'smw-createproperty-isproperty' => 'Đây là tính chất thuộc kiểu $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Giá trị|Các giá trị}} cho phép của thuộc tính này là:',
-	'smw_unknowntype' => 'Không hỗ trợ kiểu “$1” trong thuộc tính.',
+	'prefs-smw' => 'MediaWiki Ngữ nghĩa',
+	'smw_unknowntype' => 'Kiểu của thuộc tính này không hợp lệ.',
 );
 
 /** Volapük (Volapük)
