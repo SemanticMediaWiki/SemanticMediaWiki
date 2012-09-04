@@ -12769,7 +12769,7 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'prefs-ask-options' => 'Mga mapagpipilian ng semantikong paghahanap',
 	'smw-ask-userpref-options-tooltip-display' => 'Ipakita ang teksto ng parametro bilang pangkabatiran na payo sa kasangkapan',
 	'smw-ask-userpref-options-collapsed-default' => 'Paganahin ang kahon ng mapagpipilian na paguguhuin ayon sa likas na katakdaan',
-	'smw_unknowntype' => 'Binigyang kahulugan para sa pag-aari ang hindi tinatangkilik na uring "$1".',
+	'smw_unknowntype' => 'Hindi katanggap-tanggap ang uri ng pag-aaring ito',
 );
 
 /** толышә зывон (толышә зывон)
