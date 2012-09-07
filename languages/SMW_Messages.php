@@ -2976,6 +2976,7 @@ $messages['diq'] = array(
 	'searchbyproperty' => 'Xısusiyeti heta cıgeyrê',
 	'smw_sbv_value' => 'Qıymet:',
 	'smw_browselink' => 'Bewni xısusiyeta',
+	'smw_browse_go' => 'Şo',
 );
 
 /** Lower Sorbian (dolnoserbski)
