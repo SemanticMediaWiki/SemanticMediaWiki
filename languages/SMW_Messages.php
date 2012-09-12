@@ -420,6 +420,7 @@ Estimated progress of current update:',
  * @author Meno25
  * @author Pietrodn
  * @author Purodha
+ * @author Shirayuki
  * @author Siebrand
  * @author Umherirrender
  * @author Тест
@@ -583,8 +584,9 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 link to Property page
 * $2 link to Type page
 * $3 Number of times the property is used',
-	'smw_property_template_notype' => 'This is used on [[Special:Properties]]. $1 holds the link to the property page and $2 holds the number of times the property is used within the wiki.
-
+	'smw_property_template_notype' => 'This is used on [[Special:Properties]].
+*$1 holds the link to the property page.
+*$2 holds the number of times the property is used within the wiki.
 {{optional}}',
 	'smw_propertylackspage' => 'This is an error/warning message.',
 	'smw_propertylackstype' => 'This is an error/warning message. $1 holds the name of the assumed datatype which is in fact always datatype Page.',
@@ -7130,7 +7132,7 @@ $messages['ja'] = array(
 	'smw_nodatetime' => '日付「$1」を理解できませんでした。',
 	'smw_toomanyclosing' => 'クエリ内の「$1」の数が多すぎるようです。',
 	'smw_noclosingbrackets' => 'クエリ内の「<nowiki>[[</nowiki>」に、対応する「]]」で閉じられていないものがありました。',
-	'smw_misplacedsymbol' => '記号「$1」が、無意味な場所で使用されていました。',
+	'smw_misplacedsymbol' => '記号「$1」が、無意味な場所で使用されました。',
 	'smw_unexpectedpart' => 'クエリの一部「$1」を理解できませんでした。
 結果は予期しないものになる可能性があります。',
 	'smw_emptysubquery' => '有効な条件がないサブクエリがあります。',
@@ -7166,7 +7168,8 @@ $messages['ja'] = array(
 	'uriresolver' => 'URI リゾルバー',
 	'properties' => 'プロパティ',
 	'smw_properties_docu' => 'このウィキでは以下のプロパティが使用されています。',
-	'smw_property_template' => '$1: 型 $2 ($3 件)',
+	'smw_property_template' => '$1、型 $2 ($3 件)',
+	'smw_property_template_notype' => '$1 ($2 件)',
 	'smw_propertylackspage' => 'すべてのプロパティについて、各プロパティのページで解説する必要があります！',
 	'smw_propertylackstype' => 'このプロパティには型が指定されていません (現時点では型 $1 と想定します)。',
 	'smw_propertyhardlyused' => 'このプロパティはウィキ内でほとんど使用されていません！',
@@ -7197,7 +7200,7 @@ $messages['ja'] = array(
 	'smw_ask_help' => 'クエリのヘルプ',
 	'smw_ask_queryhead' => 'クエリ',
 	'smw_ask_printhead' => '表示する追加データ',
-	'smw_ask_printdesc' => '(プロパティ名を1行に1つずつ追加してください)',
+	'smw_ask_printdesc' => '(プロパティ名を各行に 1 つ追加してください)',
 	'smw_ask_format_as' => '書式:',
 	'smw_ask_defaultformat' => '既定',
 	'smw_ask_otheroptions' => '他の選択肢',
@@ -7252,8 +7255,8 @@ $messages['ja'] = array(
 	'smw_browselink' => 'プロパティを閲覧',
 	'smw_browse_article' => '閲覧を開始するページの名前を入力してください。',
 	'smw_browse_go' => '表示',
-	'smw_browse_show_incoming' => 'ここにリンクしているプロパティを表示',
-	'smw_browse_hide_incoming' => 'ここにリンクしているプロパティを非表示',
+	'smw_browse_show_incoming' => 'このページにリンクしているプロパティを表示',
+	'smw_browse_hide_incoming' => 'このページにリンクしているプロパティを隠す',
 	'smw_browse_no_outgoing' => 'このページにはプロパティはありません。',
 	'smw_browse_no_incoming' => 'このページにリンクしているプロパティはありません。',
 	'smw_inverse_label_default' => '$1である',
@@ -7293,8 +7296,8 @@ $1に戻る。',
 以下の機能はあなたのデータベースが適切に構築されていることを確実にするものです。
 この作業でなされた変更は MediaWiki のデータベースのその他の部分には影響を与えず、必要なら簡単に取り消しができます。
 この機能は複数回実行しても何の害もありませんが、インストールもしくはアップグレード時に一度だけ実行すれば十分です。',
-	'smw_smwadmin_permissionswarn' => 'SQLエラーを出して処理が失敗したとすると、それはおそらくあなたのウィキのデータベースユーザー(LocalSettings.php を確認してください)に必要な権限がないためです。
-一時的に LocalSettings.php でデータベースの root としてログインして、そのユーザーにテーブルを作成および削除するための追加権限を与えるか、あるいは AdminSettings.php の設定情報を利用できるメンテナンススクリプト <tt>SMW_setup.php</tt> を使用してください。',
+	'smw_smwadmin_permissionswarn' => 'SQL エラーを出して処理が失敗する場合、おそらくあなたのウィキのデータベース ユーザー (LocalSettings.php を確認してください) に必要な権限がありません。
+LocalSettings.php に一時的にデータベースの root のログイン情報を記入してこのユーザーにテーブルを作成および削除するための追加権限を与えるか、<tt>SMW_setup.php</tt> の認証情報を使用できるメンテナンススクリプト <tt>SMW_setup.php</tt> を使用してください。',
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
 	'smw_smwadmin_announce' => 'あなたのウィキの発表',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しい意味的ウィキのサイトを発表するためのウェブサービスがあります。
