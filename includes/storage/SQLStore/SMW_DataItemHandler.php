@@ -11,7 +11,7 @@
 /**
  * Classes extending this represent all store layout that is known about a certain dataitem
  *
- * @since SMW.storerewrite
+ * @since 1.8
  *
  * @ingroup SMWDataItemsHandlers
  */
@@ -27,7 +27,7 @@ abstract class SMWDataItemHandler {
 	}
 	/**
 	 * Method to return array of fields for a DI type
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 *
 	 * Tables declare value columns ("object fields") by specifying their name
 	 * and type. Types are given using letters:
@@ -46,7 +46,7 @@ abstract class SMWDataItemHandler {
 
 	/**
 	 * Method to return array of indexes for a DI type
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 *
 	 * @return array
 	 */
@@ -54,7 +54,7 @@ abstract class SMWDataItemHandler {
 
 	/**
 	 * Method to return an array of fields=>values for a DataItem
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 *
 	 * @param SMWDataItem
 	 * @return array
@@ -67,7 +67,7 @@ abstract class SMWDataItemHandler {
 	 * NOTE - For Containers this only inserts the id of the container
 	 * and rest data should be handled by recursion in calling code
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 *
 	 * @param SMWDataItem
 	 * @return array
@@ -81,7 +81,7 @@ abstract class SMWDataItemHandler {
 	 * 2 - return column name of starting with 'smw' if the column is present in smw_ids (see WikiPage)
 	 * 3 - return '' if no such column exists
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @return string
 	 */
 	abstract public function getIndexField();
@@ -94,7 +94,7 @@ abstract class SMWDataItemHandler {
 	 * 2 - return column name of starting with 'smw' if the column is present in smw_ids (see WikiPage)
 	 * 3 - return '' if no such column exists
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @return string
 	 */
 	abstract public function getLabelField();
@@ -102,7 +102,7 @@ abstract class SMWDataItemHandler {
 	/**
 	 * Method to create a dataitem from an array of DB keys.
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem

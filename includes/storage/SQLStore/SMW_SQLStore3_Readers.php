@@ -7,7 +7,7 @@
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *
- * @since SMW.storerewrite
+ * @since 1.8
  * @file
  * @ingroup SMWStore
  */
@@ -17,7 +17,7 @@ Class SMWSQLStore3Readers {
 	/**
 	 * The store used by this store reader
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @var SMWSQLStore3
 	 */
 	protected $store;
@@ -568,7 +568,7 @@ Class SMWSQLStore3Readers {
 	 * @param SMWSql3StubSemanticData $semData
 	 * @param SMWSQLStore3Table $proptable
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 */
 	public function addTableSemanticData( $sid, SMWSql3StubSemanticData &$semData, SMWSQLStore3Table $proptable ) {
 		$subject = $semData->getSubject();

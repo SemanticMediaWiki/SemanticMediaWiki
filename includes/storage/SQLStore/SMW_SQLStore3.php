@@ -41,7 +41,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * The reader object used by this store. Initialized by getReader()
 	 * Always access using getReader()
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @var SMWSQLStore3Readers
 	 */
 	protected $reader = false;
@@ -50,7 +50,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * The writer object used by this store. Initialized by getWriter()
 	 * Always access using getWriter()
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @var SMWSQLStore3Writers
 	 */
 	protected $writer = false;
@@ -59,7 +59,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * The SpecialPageHandler object used by this store. Initialized by getSpecialPageHandler()
 	 * Always access using getSpecialPageHandler()
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @var SMWSQLStore3SpecialPageHandlers
 	 */
 	protected $specialPageHandler = false;
@@ -68,7 +68,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * The SetupHandler object used by this store. Initialized by getSetupHandler()
 	 * Always access using getSetupHandler()
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @var SMWSQLStore3SetupHandlers
 	 */
 	protected $setupHandler = false;
@@ -77,7 +77,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * Array of DIHandler objects used by this store. Initialized by getDIHandler()
 	 * Always access using getDIHandler()
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 */
 	protected $diHandlers = array();
 
@@ -177,7 +177,7 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * Gets an object of the dataitem handler from the dataitem provided.
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 *
 	 * @param $dataItemID constant
 	 *

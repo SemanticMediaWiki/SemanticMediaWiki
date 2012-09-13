@@ -7,7 +7,7 @@
 /**
  * This class implements Store access to Blob data items.
  *
- * @since SMW.storerewrite
+ * @since 1.8
  *
  * @author Nischay Nahata
  * @ingroup SMWDataItemsHandlers
@@ -58,7 +58,7 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 
 	/**
 	 * Method to return the field used to select this type of DataItem
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @return string
 	 */
 	public function getIndexField() {
@@ -68,7 +68,7 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	/**
 	 * Method to return the field used to select this type of DataItem
 	 * using the label
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @return string
 	 */
 	public function getLabelField() {
@@ -79,7 +79,7 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	/**
 	 * Method to create a dataitem from an array of DB keys.
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
@@ -93,7 +93,7 @@ class SMWDIHandlerBlob extends SMWDataItemHandler {
 	* Method to make a hashed representation for strings of length>255
 	* to be used for selecting and sorting
 	*
-	* @since SMW.storerewrite
+	* @since 1.8
 	* @param $string string
 	*
 	* @return string

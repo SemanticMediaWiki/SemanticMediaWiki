@@ -107,7 +107,7 @@ abstract class SMWDataItem {
 	* @param SMWDataItem
 	* @return Boolean
 	*
-	* @since SMW.storerewrite
+	* @since 1.8
 	*/
 	abstract public function equals( $di );
 

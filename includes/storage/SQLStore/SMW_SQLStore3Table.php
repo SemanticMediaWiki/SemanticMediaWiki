@@ -53,7 +53,7 @@ class SMWSQLStore3Table {
 	* Factory method to create an instance for a given
 	* DI type and the given table name.
 	*
-	* @since SMW.storerewrite
+	* @since 1.8
 	*
 	* @param $DIType constant
 	* @param $tableName string
@@ -69,7 +69,7 @@ class SMWSQLStore3Table {
 	/**
 	* Method to return the fields for this table
 	*
-	* @since SMW.storerewrite
+	* @since 1.8
 	*
 	* @return array
 	*/
