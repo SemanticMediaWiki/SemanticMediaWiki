@@ -43,7 +43,7 @@ if ( version_compare( Validator_VERSION, '0.5c', '<' ) ) {
 }
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.8 alpha' );
+define( 'SMW_VERSION', '1.8 beta 1' );
 
 // Registration of the extension credits, see Special:Version.
 $wgExtensionCredits['semantic'][] = array(
