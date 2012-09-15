@@ -7,7 +7,7 @@
 /**
  * This class implements Store access to Concept data items.
  *
- * @since SMW.storerewrite
+ * @since 1.8
  *
  * @author Nischay Nahata
  * @ingroup SMWDataItemsHandlers
@@ -43,7 +43,7 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 *
 	 * @param SMWDataItem $dataItem
 	 *
@@ -64,7 +64,7 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	 * This array is used to perform all insert operations into the DB
 	 * To optimize return minimum fields having indexes
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 *
 	 * @param SMWDataItem $dataItem
 	 *
@@ -82,7 +82,7 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 
 	/**
 	 * Method to return the field used to select this type of DataItem
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @return string
 	 */
 	public function getIndexField() {
@@ -92,7 +92,7 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	/**
 	 * Method to return the field used to select this type of DataItem
 	 * using the label
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @return string
 	 */
 	public function getLabelField() {

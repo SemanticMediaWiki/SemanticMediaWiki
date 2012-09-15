@@ -7,7 +7,7 @@
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *
- * @since SMW.storerewrite
+ * @since 1.8
  * @file
  * @ingroup SMWStore
  */
@@ -17,7 +17,7 @@ Class SMWSQLStore3Writers {
 	/**
 	 * The store used by this store writer
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @var SMWSQLStore3
 	 */
 	protected $store;

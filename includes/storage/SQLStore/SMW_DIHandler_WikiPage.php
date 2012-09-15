@@ -7,7 +7,7 @@
 /**
  * This class implements Store access to Time data items.
  *
- * @since SMW.storerewrite
+ * @since 1.8
  *
  * @author Nischay Nahata
  * @ingroup SMWDataItemsHandlers
@@ -57,7 +57,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	/**
 	 * Method to return the field used to select this type of DataItem
 	 * Take care we are returning the field from the ID table, so do a proper JOIN
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @return string
 	 */
 	public function getIndexField() {
@@ -68,7 +68,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	 * Method to return the field used to select this type of DataItem
 	 * using the label. Take care we are returning the field from the 
 	 * ID table, so do a proper JOIN
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @return string
 	 */
 	public function getLabelField() {
@@ -78,7 +78,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	/**
 	 * Method to create a dataitem from an array of DB keys.
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
