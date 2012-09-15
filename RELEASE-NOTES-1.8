@@ -14,11 +14,17 @@ production until the actual release.
 
 * Added anonymous auto-numbering for subobjects that don't specify their identifier (bug 36634)
 * Added atom printer (bug 38636)
+* Added support to have fixed tables for a property, see http://semantic-mediawiki.org/wiki/Fixed_properties
 
 === Enhancements ===
 
-* TODO: sqlstore 3
-
+* Hash-based checks to update SMW data rather than the delete-insert method used before
+* Different tables for different datatypes leading to less storage wastage, better query performance
+: and improved access methods
+* Highly optimized Special pages Special:Properties,Special:UnusedProperties
+* Refactored code uses DIHandlers class for Database abstraction for each DataItem
+* Splitted the SQLStore into SQLStore3_Writers, SQLStore3_Readers, SQLStore3_SpecialPageHandlers and SQLStore_SetupHandler,
+: while keeping the commonly used functions in SQLStore3
 * Made query link generation completely generic. Links for all formats will now contain
 : all provided arguments.
 * Improved JSON export (bug 37418).
