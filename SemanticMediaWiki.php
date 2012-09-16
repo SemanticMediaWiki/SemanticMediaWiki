@@ -19,6 +19,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'Not an entry point.' );
 }
 
+global $smwgIP;
+
 if ( version_compare( $wgVersion, '1.17c', '<' ) ) {
 	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.17 or above; use SMW 1.7.x for MediaWiki 1.16.x.' );
 }
@@ -38,7 +40,7 @@ if ( version_compare( Validator_VERSION, '0.5c', '<' ) ) {
 	die(
 		'<b>Error:</b> This version of SMW needs <a href="http://www.mediawiki.org/wiki/Extension:Validator">Validator</a> 0.5 or later.
 		You are currently using version ' . Validator_VERSION . '.
-	 	If for any reason you are stuck at Validator 0.4.x, you can use SMW 1.7.x and 1.6.x.<br />'
+		If for any reason you are stuck at Validator 0.4.x, you can use SMW 1.7.x and 1.6.x.<br />'
 	);
 }
 
