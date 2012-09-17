@@ -56,6 +56,7 @@ $wgExtensionCredits['semantic'][] = array(
 );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
+// @deprecated
 define( 'SEMANTIC_EXTENSION_TYPE', true );
 
 // A flag used to indicate SMW supports Validator style parameter definitions and validation in the SMWResultPrinter class.
