@@ -2956,6 +2956,7 @@ $messages['diq'] = array(
 	'smw_printername_dsv' => 'DSV Teberdayış',
 	'smw_printername_json' => 'JSON teberdayış',
 	'smw_printername_rss' => 'RSS teberdayış',
+	'smw_printername_template' => 'Şablon',
 	'smw_printername_rdf' => 'RDF teberdayış',
 	'smw_printername_category' => 'Kategoriye',
 	'smw-paramdesc-export' => 'Weçenegê teberdayışi',

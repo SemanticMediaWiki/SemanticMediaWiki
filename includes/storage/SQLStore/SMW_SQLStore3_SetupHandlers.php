@@ -3,11 +3,11 @@
 /**
  * Class Handling all the setup methods for SMWSQLStore3
  *
- * @author Markus Krötzsch
+ * @author Markus Krï¿½tzsch
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *
- * @since SMW.storerewrite
+ * @since 1.8
  * @file
  * @ingroup SMWStore
  */
@@ -17,7 +17,7 @@ Class SMWSQLStore3SetupHandlers {
 	/**
 	 * The store used by this setupHandler
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @var SMWSQLStore3
 	 */
 	protected $store;

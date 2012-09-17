@@ -138,7 +138,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @param $property SMWDIProperty
 	 * @param $dataItem SMWDataItem
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 */
 	public function removePropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
 		$this->unstubProperties();

@@ -3,11 +3,11 @@
 /**
  * Class Handling all the Special Page methods for SMWSQLStore3
  *
- * @author Markus Krötzsch
+ * @author Markus Krï¿½tzsch
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *
- * @since SMW.storerewrite
+ * @since 1.8
  * @file
  * @ingroup SMWStore
  */
@@ -17,7 +17,7 @@ Class SMWSQLStore3SpecialPageHandlers {
 	/**
 	 * The store used by this specialPageHandler
 	 *
-	 * @since SMW.storerewrite
+	 * @since 1.8
 	 * @var SMWSQLStore3
 	 */
 	protected $store;
