@@ -1185,6 +1185,8 @@ $messages['arc'] = array(
 	'browse' => 'ܦܐܬ ܘܝܩܝ',
 	'smw_browse_go' => 'ܙܠ',
 	'smw_pp_from' => 'ܡܢ ܦܐܬܐ',
+	'smw_result_prev' => 'ܕܩܕܡ',
+	'smw_result_next' => 'ܕܒܬܪ',
 	'smw_result_results' => 'ܦܠܛ̈ܐ',
 	'smw_result_noresults' => 'ܠܐ ܦܠܛ̈ܐ.',
 );
@@ -2659,19 +2661,19 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
 	'smw_printername_count' => 'Ergebnisse zählen',
-	'smw_printername_csv' => 'CSV-Export',
-	'smw_printername_dsv' => 'DSV-Export',
+	'smw_printername_csv' => 'Export (CSV)',
+	'smw_printername_dsv' => 'Export (DSV)',
 	'smw_printername_debug' => 'Debug-Abfrage (für Experten)',
-	'smw_printername_embedded' => 'Seiteninhalt einbetten',
-	'smw_printername_json' => 'JSON-Export',
+	'smw_printername_embedded' => 'Einbettung (Seiteninhalt)',
+	'smw_printername_json' => 'Export (JSON)',
 	'smw_printername_list' => 'Liste',
 	'smw_printername_ol' => 'Aufzählung',
 	'smw_printername_ul' => 'Auflistung',
-	'smw_printername_rss' => 'RSS-Export',
+	'smw_printername_rss' => 'Export (RSS)',
 	'smw_printername_table' => 'Tabelle',
-	'smw_printername_broadtable' => 'Breite Tabelle',
+	'smw_printername_broadtable' => 'Tabelle (breit)',
 	'smw_printername_template' => 'Vorlage',
-	'smw_printername_rdf' => 'RDF-Export',
+	'smw_printername_rdf' => 'Export (RDF)',
 	'smw_printername_category' => 'Kategorie',
 	'smw-paramdesc-limit' => 'Die maximale Anzahl der auszugebenden Ergebnisse',
 	'smw-paramdesc-offset' => 'Das erste auszugebende Ergebnis',
@@ -13192,6 +13194,13 @@ $messages['ur'] = array(
 	'smw_result_noresults' => 'کوئی نتائج.',
 	'smw_smwadmin_datarefreshstopconfirm' => 'جی ہاں, میں اس بات کا یقین ہوں.',
 	'smw_smwadmin_support' => 'ہو رہی ہے کی حمایت',
+);
+
+/** Uzbek (oʻzbekcha)
+ * @author CoderSI
+ */
+$messages['uz'] = array(
+	'smw_browselink' => "Xossalarni ko'rish",
 );
 
 /** Veps (vepsän kel’)
