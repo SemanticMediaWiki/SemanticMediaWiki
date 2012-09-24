@@ -9398,8 +9398,8 @@ Kvar datatype har ei sida der ekstra informasjon kan verta oppgjeven.',
 '''$3''' {{PLURAL:$3|eigenskap|eigenskapar}} har ei eiga sida, og den meinte datatypen er oppgjeven for <b>$4</b> av desse.
 Somme av dei eksisterande eigenskapane kan vera [[Special:UnusedProperties|unytta eigenskapar]].
 Eigenskapar som framleis ikkje har ei eiga sida finst på [[Special:WantedProperties|lista over ynskte eigenskapar]].",
-	'smw_uri_doc' => "URI-løysaren implementerer ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">finning av W3C TAG-ar på «httpRange-14»</a>''.
-Han syter for at menneske ikkje vert til nettsider.",
+	'smw_uri_doc' => 'URI-løysaren implementerer [$1 finning av W3C TAG-ar på «httpRange-14»].
+Han syter for at menneske ikkje vert til nettstader.',
 	'ask' => 'Semantisk søk',
 	'smw_ask_sortby' => 'Sorter etter kolonne (valfritt)',
 	'smw_ask_ascorder' => 'Stigande',
@@ -10811,7 +10811,7 @@ Progresso estimado da atualização corrente:',
 	'prefs-ask-options' => 'Opções da busca semântica',
 	'smw-ask-userpref-options-tooltip-display' => 'Exibir o texto do parâmetro em forma de dica',
 	'smw-ask-userpref-options-collapsed-default' => 'Habilitar a caixa de opção como recolhida por padrão',
-	'smw_unknowntype' => 'O tipo "$1" definido para propriedade não é suportado.',
+	'smw_unknowntype' => 'O tipo dessa propriedade é invalido',
 );
 
 /** Tarifit (Tarifit)
@@ -13200,7 +13200,14 @@ $messages['ur'] = array(
  * @author CoderSI
  */
 $messages['uz'] = array(
+	'specialpages-group-smw_group' => "Ma'noviy MediaWiki",
 	'smw_browselink' => "Xossalarni ko'rish",
+	'smw-info-par-message' => 'Tasvirlash uchun xabar',
+	'prefs-smw' => "Ma'noviy MediaWiki",
+	'prefs-ask-options' => "Ma'noviy qidiruv moslamalari",
+	'smw-ask-userpref-options-tooltip-display' => "Ko'rsatkich matnni yo'l ko'rsatuvchi ma'lumot sifatida tasvirlash",
+	'smw-ask-userpref-options-collapsed-default' => "Boshlang'ich holatga yig'ilgan turishi uchun tanlov maydoniga ruxsatlilikni yoqish",
+	'smw_unknowntype' => "Ushbu xossaning tipi noto'g'ri",
 );
 
 /** Veps (vepsän kel’)
