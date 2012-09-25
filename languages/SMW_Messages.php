@@ -9300,7 +9300,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
 );
 
-/** Norwegian Nynorsk (‪norsk (nynorsk)‬)
+/** Norwegian Nynorsk (norsk (nynorsk)‎)
  * @author Gunnernett
  * @author Harald Khan
  * @author Njardarlogar
@@ -13201,6 +13201,7 @@ $messages['ur'] = array(
  */
 $messages['uz'] = array(
 	'specialpages-group-smw_group' => "Ma'noviy MediaWiki",
+	'smw_purge' => 'Yangilash',
 	'smw_browselink' => "Xossalarni ko'rish",
 	'smw-info-par-message' => 'Tasvirlash uchun xabar',
 	'prefs-smw' => "Ma'noviy MediaWiki",

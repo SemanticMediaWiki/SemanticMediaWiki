@@ -233,7 +233,7 @@ $magicWords['ps'] = array(
 	'info' => array( 0, 'مالومات', 'info' ),
 );
 
-/** Serbian (Cyrillic script) (‪српски (ћирилица)‬) */
+/** Serbian (Cyrillic script) (српски (ћирилица)‎) */
 $magicWords['sr-ec'] = array(
 	'ask' => array( 0, 'питај' ),
 	'show' => array( 0, 'прикажи' ),
@@ -244,7 +244,7 @@ $magicWords['sr-ec'] = array(
 	'declare' => array( 0, 'одреди' ),
 );
 
-/** Serbian (Latin script) (‪srpski (latinica)‬) */
+/** Serbian (Latin script) (srpski (latinica)‎) */
 $magicWords['sr-el'] = array(
 	'ask' => array( 0, 'pitaj' ),
 	'show' => array( 0, 'prikaži' ),

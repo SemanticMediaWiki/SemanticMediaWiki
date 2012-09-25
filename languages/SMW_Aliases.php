@@ -439,7 +439,7 @@ $specialPageAliases['mt'] = array(
 	'Browse' => array( 'Esplora' ),
 );
 
-/** Norwegian Bokmål (‪norsk (bokmål)‬) */
+/** Norwegian Bokmål (norsk (bokmål)‎) */
 $specialPageAliases['nb'] = array(
 	'Ask' => array( 'Spør' ),
 	'Browse' => array( 'Se_gjennom' ),
@@ -572,7 +572,7 @@ $specialPageAliases['sq'] = array(
 	'Browse' => array( 'Sille' ),
 );
 
-/** Serbian (Cyrillic script) (‪српски (ћирилица)‬) */
+/** Serbian (Cyrillic script) (српски (ћирилица)‎) */
 $specialPageAliases['sr-ec'] = array(
 	'Ask' => array( 'Питај' ),
 	'Browse' => array( 'Потражи' ),
@@ -657,13 +657,13 @@ $specialPageAliases['vi'] = array(
 	'Properties' => array( 'Thuộc_tính' ),
 );
 
-/** Simplified Chinese (‪中文（简体）‬) */
+/** Simplified Chinese (中文（简体）‎) */
 $specialPageAliases['zh-hans'] = array(
 	'Ask' => array( '问' ),
 	'Browse' => array( '浏览' ),
 );
 
-/** Traditional Chinese (‪中文（繁體）‬) */
+/** Traditional Chinese (中文（繁體）‎) */
 $specialPageAliases['zh-hant'] = array(
 	'Ask' => array( '問' ),
 	'Browse' => array( '瀏覽' ),
