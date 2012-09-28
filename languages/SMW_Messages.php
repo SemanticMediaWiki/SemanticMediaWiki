@@ -7927,7 +7927,7 @@ $messages['lb'] = array(
 	'smw-paramdesc-rssdescription' => 'Den Text deen als Beschreiwung vum Feed benotzt gëtt',
 	'smw-paramdesc-rdfsyntax' => 'RDF-Syntax déi benotzt gi muss',
 	'smw-paramdesc-dsv-filename' => 'Den Numm fir den DSV-Fichier',
-	'smw-paramdesc-searchlabel' => "Den Text vum Link op d'Resultater",
+	'smw-paramdesc-searchlabel' => 'Den Text fir mam Siche virunzefueren',
 	'smw_iq_moreresults' => '… weider Resultater',
 	'smw_parseerror' => 'De Wäert deen Dir aginn hutt gouf net verstan.',
 	'smw_notitle' => '"$1" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.',
@@ -8033,9 +8033,13 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_result_noresults' => 'Pardon, et gouf näischt fonnt.',
 	'smwadmin' => 'Admin-Fonctiounen fir Semantic MediaWiki',
 	'smw_smwadmin_return' => 'Zréck op $1',
-	'smw_smwadmin_updatenotstarted' => 'Et ass schonn een Aktualiséiereungs-Prozess amgaang.
-Et ka keen neien ugefaang ginn.',
-	'smw_smwadmin_updatestopped' => 'All Aktualisatiouns-Prozesser goufe gestoppt.',
+	'smw_smwadmin_updatenotstarted' => "Et ass schonn een Aktualiséiereungs-Prozess amgaang.
+Et ka keen neien ugefaang ginn.
+
+Zréck op d'Säit $1.",
+	'smw_smwadmin_updatestopped' => "All Aktualisatiouns-Prozesser goufe gestoppt.
+
+Zréck op d'Säit $1.",
 	'smw_smwadmin_db' => 'Datebankinstallatioun and -aktualiséierung',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiséieren oder aktualiséieren',
 	'smw_smwadmin_announce' => 'Är wiki ukënnegen',
