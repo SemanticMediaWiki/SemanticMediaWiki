@@ -63,61 +63,8 @@ define( 'SEMANTIC_EXTENSION_TYPE', true );
 // @deprecated, removal in 1.9
 define( 'SMW_SUPPORTS_VALIDATOR', true );
 
-
-
+// Default settings
 require_once dirname( __FILE__ ) . '/SMW_Settings.php';
 
-
-
-$moduleTemplate = array(
-	'localBasePath' => $smwgIP,
-	'remoteBasePath' => $smwgScriptPath,
-	'group' => 'ext.smw'
-);
-
-$wgResourceModules['ext.smw'] = $moduleTemplate + array(
-	'scripts' => array(
-		'resources/ext.smw.js',
-		'resources/ext.smw.compat.js',
-	),
-);
-
-$wgResourceModules['ext.smw.style'] = $moduleTemplate + array(
-	'styles' => 'skins/SMW_custom.css'
-);
-
-$wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
-	'scripts' => 'skins/SMW_tooltip.js',
-	'dependencies' => array(
-		'mediawiki.legacy.wikibits',
-		'ext.smw.style'
-	)
-);
-
-$wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
-	'scripts' => array(
-		'resources/ext.smw.ask.js',
-	),
-	'dependencies' => array(
-		'jquery.ui.widget',
-		'jquery.ui.position',
-		'jquery.ui.autocomplete',
-		'jquery.tipsy',
-		'ext.smw.style'
-	),
-	'messages' => array(
-		'smw-ask-delete',
-	),
-	'position' => 'top'
-);
-
-$wgResourceModules['ext.smw.browse'] = $moduleTemplate + array(
-	'scripts' => array(
-		'resources/ext.smw.browse.js',
-	),
-	'dependencies' => array(
-		'jquery.ui.autocomplete',
-	),
-);
-
-unset( $moduleTemplate );
+// Resource definitions
+require_once dirname( __FILE__ ) . '/SMW_Resources.php';
