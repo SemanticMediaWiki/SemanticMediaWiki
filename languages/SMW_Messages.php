@@ -1476,7 +1476,7 @@ $messages['be'] = array(
 	'types' => 'Тыпы',
 );
 
-/** Belarusian (Taraškievica orthography) (‪беларуская (тарашкевіца)‬)
+/** Belarusian (Taraškievica orthography) (беларуская (тарашкевіца)‎)
  * @author EugeneZelenko
  * @author Jim-by
  * @author Red Winged Duck
@@ -1522,6 +1522,8 @@ $messages['be-tarask'] = array(
 	'smw-paramdesc-outro' => 'Тэкст для паказу пасьля вынікаў запыту, калі яны ёсьць',
 	'smw-paramdesc-default' => 'Тэкст для паказу ў выпадку адсутнасьці вынікаў',
 	'smw-paramdesc-sep' => 'Разьдзяляльнік значэньняў',
+	'smw-paramdesc-distribution' => 'Замест адлюстраваньня ўсіх значэньняў падлічыць ужываньні і паказаць іх.',
+	'smw-paramdesc-distributionsort' => 'Адсартаваць разьмеркаваньне значэньняў паводле колькасьці ўжываньня.',
 	'smw-paramdesc-template' => 'Назва шаблёну, які будзе выкарыстоўвацца для вываду вынікаў',
 	'smw-paramdesc-columns' => 'Колькасьць слупкоў у якіх будуць паказвацца вынікі (па змоўчваньні — $1)',
 	'smw-paramdesc-userparam' => 'Значэньне, якое перадаецца ў кожны выклік шаблёну, калі ён выкарыстоўваецца',
@@ -1635,6 +1637,7 @@ $messages['be-tarask'] = array(
 	'smw_ask_show_embed' => 'Паказаць убудаваны код',
 	'smw_ask_hide_embed' => 'Схаваць убудаваны код',
 	'smw_ask_embed_instr' => 'Каб убудаваць гэты запыт у старонку, выкарыстоўвайце код пададзены ніжэй.',
+	'smw-ask-delete' => '[Выдаліць]',
 	'querycreator' => 'Стваральнік запыту',
 	'smw_qc_addmainlabel' => 'Дадаць галоўную метку',
 	'smw_qc_show_addnal_opts' => 'Паказаць болей наладаў',
