@@ -259,7 +259,7 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 
 		// Apply intro parameter
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
-			if ( $outputmode == SMW_OUTPUT_HTML ) {
+			if ( $outputmode == SMW_OUTPUT_HTML && $wgParser->getTitle() instanceof Title ) {
 				global $wgParser;
 				$result = $wgParser->recursiveTagParse( $this->mIntro ) . $result;
 			} else {
@@ -269,7 +269,7 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 
 		// Apply outro parameter
 		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
-			if ( $outputmode == SMW_OUTPUT_HTML ) {
+			if ( $outputmode == SMW_OUTPUT_HTML && $wgParser->getTitle() instanceof Title ) {
 				global $wgParser;
 				$result = $result . $wgParser->recursiveTagParse( $this->mOutro );
 			} else {
