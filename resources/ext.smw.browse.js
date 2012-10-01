@@ -1,35 +1,24 @@
 /**
- * JavaScript for the Semantic MediaWiki extension.
- * @see https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki
+ * JavaScript for Special:Browse related functions
  *
- * @licence GNU GPL v2+
+ * @see https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki
+ * @licence: GNU GPL v2 or later
+ *
+ * @since: 1.7
+ * @release: 0.2
+ *
  * @author Jeroen De Dauw <jeroendedauw at gmail dot com>
  * @author Devayon Das
+ * @author mwjames
  */
-
-(function( $, mw ) {
+( function( $, mw ) {
 
 	$( document ).ready( function() {
 
-		$( '#page_input_box' ).autocomplete( {
-			minLength: 3,
-			source: function( request, response ) {
-				jQuery.getJSON(
-					mw.config.get( 'wgScriptPath' ) + '/api.php',
-					{
-						'action': 'opensearch',
-						'limit': 10,
-						'namespace': 0,
-						'format': 'json',
-						'search': request.term
-					},
-					function( data ){
-						response( data[1] );
-					}
-				);
-			}
-		} );
+		// Used in Special:Browse
+		// Function is specified in ext.smw.autocomplete
+		$( '#page_input_box' ).smwAutocomplete( { search: 'page', namespace: 0 } );
 
 	} );
 
-})( jQuery, mediaWiki );
+} )( jQuery, mediaWiki );
