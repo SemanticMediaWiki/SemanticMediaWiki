@@ -44,9 +44,14 @@ class SMWURIResolver extends SpecialPage {
 			$query = urldecode( $query );
 			$title = Title::newFromText( $query );
 
-			$wgOut->redirect( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' )
-				? SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( array( 'xmlmime' => 'rdf' ) )
-				: $title->getFullURL(), '303' );
+			// In case the title doesn't exists throw an error page
+			if ( $title === null ) {
+				$wgOut->showErrorPage( 'badtitle', 'badtitletext' );
+			} else {
+				$wgOut->redirect( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' )
+					? SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( array( 'xmlmime' => 'rdf' ) )
+					: $title->getFullURL(), '303' );
+			}
 		}
 		
 		wfProfileOut( 'SpecialURIResolver::execute (SMW)' );
