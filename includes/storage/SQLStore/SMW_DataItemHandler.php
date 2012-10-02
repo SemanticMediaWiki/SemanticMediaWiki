@@ -19,10 +19,14 @@ abstract class SMWDataItemHandler {
 
 	/**
 	* The store object.
+	 *
+	 * @since 1.8
+	 *
+	 * @var SMWSQLStore3
 	*/
 	protected $store;
 
-	public function __construct( SMWSQLStore $store ){
+	public function __construct( SMWSQLStore3 $store ){
 		$this->store = $store;
 	}
 	/**
