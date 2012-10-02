@@ -113,6 +113,9 @@
 		// @see ext.smw.autocomplete
 		$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
 
+		// Property autocomplete for the single sort field
+		$( '.smw-ask-input-sort' ).smwAutocomplete();
+
 		$( '.smw-ask-delete').click( function() {
 			removeInstance( $( this).attr( 'data-target' ) );
 		} );
@@ -132,6 +135,10 @@
 
 					// Every change needs to re-initialize the tooltip
 					$( ".smw-ask-info" ).smwShowTooltip();
+
+					// Init new instance after format change
+					$( '.smw-ask-input-sort' ).smwAutocomplete();
+
 				}
 			} );
 		} );

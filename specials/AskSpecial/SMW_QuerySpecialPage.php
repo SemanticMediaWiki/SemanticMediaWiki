@@ -142,6 +142,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 
 		$input = new ParameterInput( $definition );
 		$input->setInputName( 'p[' . $definition->getName() . ']' );
+		$input->setInputClass( 'smw-ask-input-' . str_replace( ' ', '-', $definition->getName() ) );
 
 		if ( $currentValue !== false ) {
 			$input->setCurrentValue( $currentValue );
