@@ -7870,7 +7870,7 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_unknowntype' => 'De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.',
 );
 
-/** Kurdish (Latin script) (‪Kurdî (latînî)‬)
+/** Kurdish (Latin script) (Kurdî (latînî)‎)
  * @author George Animal
  */
 $messages['ku-latn'] = array(
@@ -8694,7 +8694,7 @@ $messages['nah'] = array(
 	'smw_smwadmin_return' => 'Titocuepāz īhuīc $1',
 );
 
-/** Norwegian Bokmål (‪norsk (bokmål)‬)
+/** Norwegian Bokmål (norsk (bokmål)‎)
  * @author Audun
  * @author Event
  * @author Harald Khan
@@ -11642,7 +11642,7 @@ Ker je bilo le malo rezultatov, so prikazane strani s približnim ujemanjem.',
 	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
 );
 
-/** Serbian (Cyrillic script) (‪српски (ћирилица)‬)
+/** Serbian (Cyrillic script) (српски (ћирилица)‎)
  * @author Rancher
  * @author Sasa Stefanovic
  * @author Slaven Kosanovic
@@ -13642,7 +13642,7 @@ $messages['zh-cn'] = array(
 	'smw-createproperty-allowedvals' => '此属性的可用型态为：',
 );
 
-/** Simplified Chinese (‪中文（简体）‬)
+/** Simplified Chinese (中文（简体）‎)
  * @author Anakmalaysia
  * @author Gzdavidwong
  * @author Liangent
