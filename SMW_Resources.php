@@ -52,16 +52,23 @@ $wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
 	)
 );
 
+$wgResourceModules['ext.smw.autocomplete'] = $moduleTemplate + array(
+	'scripts' => 'resources/ext.smw.autocomplete.js',
+	'dependencies' => array(
+		// 'jquery.ui.widget',
+		// 'jquery.ui.position',
+		'jquery.ui.autocomplete'
+	)
+);
+
 $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
 	'scripts' => array(
 		'resources/ext.smw.ask.js',
 	),
 	'dependencies' => array(
-		'jquery.ui.widget',
-		'jquery.ui.position',
-		'jquery.ui.autocomplete',
 		'jquery.tipsy',
-		'ext.smw.style'
+		'ext.smw.style',
+		'ext.smw.autocomplete'
 	),
 	'messages' => array(
 		'smw-ask-delete',
