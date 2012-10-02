@@ -85,4 +85,9 @@ $wgResourceModules['ext.smw.browse'] = $moduleTemplate + array(
 	),
 );
 
+$wgResourceModules['ext.smw.property'] = $moduleTemplate + array(
+	'scripts' => 'resources/ext.smw.property.js',
+	'dependencies' => 'ext.smw.autocomplete'
+);
+
 unset( $moduleTemplate );

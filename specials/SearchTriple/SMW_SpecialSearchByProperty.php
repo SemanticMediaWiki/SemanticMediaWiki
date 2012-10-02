@@ -413,7 +413,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 * @return string  HTML for the query form
 	 */
 	private function queryForm() {
-		self::addAutoComplete();
+		SMWOutputs::requireResource( 'ext.smw.property' );
 		$spectitle = SpecialPage::getTitleFor( 'SearchByProperty' );
 		$html  = '<form name="searchbyproperty" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
@@ -422,34 +422,5 @@ class SMWSearchByProperty extends SpecialPage {
 		$html .= '<input type="submit" value="' . wfMessage( 'smw_sbv_submit' )->text() . "\"/>\n</form>\n";
 
 		return $html;
-	}
-
-	/**
-	 * Creates the JS needed for adding auto-completion to queryForm(). Uses the
-	 * MW API to fetch suggestions.
-	 *
-	 */
-	protected static function addAutoComplete() {
-		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
-
-		$javascript_autocomplete_text = <<<END
-<script type="text/javascript">
-jQuery(document).ready(function(){
-	jQuery("#property_box").autocomplete({
-		minLength: 2,
-		source: function(request, response) {
-			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['property']+'&format=jsonfm&search='+request.term, function(data){
-				//remove the word 'Property:' from returned data
-				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
-				response(data[1]);
-			});
-		}
-	});
-});
-</script>
-
-END;
-
-		SMWOutputs::requireScript( 'smwAutocompleteSpecialSearchByProperty', $javascript_autocomplete_text );
 	}
 }
