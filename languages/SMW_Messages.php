@@ -824,11 +824,11 @@ This method is called ''content negotiation''.
 	'prefs-ask-options' => 'This is the text of a header within a section on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ask-userpref-options-tooltip-display' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ask-userpref-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
-	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 	'smw-ui-tooltip-title-property' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-info' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-service' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-warning' => 'Is a label that is displayed on the info tooltip',
+	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 );
 
 /** Niuean (ko e vagahau Niuē)
@@ -2958,6 +2958,10 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'prefs-ask-options' => 'Optionen für die Semantische Suche',
 	'smw-ask-userpref-options-tooltip-display' => 'Beschreibung der Ausgabeparameter als Tooltip anzeigen',
 	'smw-ask-userpref-options-collapsed-default' => 'Bereich mit den Ausgabeparametern standardmäßig einklappen',
+	'smw-ui-tooltip-title-property' => 'Attribut',
+	'smw-ui-tooltip-title-info' => 'Information',
+	'smw-ui-tooltip-title-service' => 'Servicelinks',
+	'smw-ui-tooltip-title-warning' => 'Fehler',
 	'smw_unknowntype' => 'Der Typ dieses Attributs ist ungültig.',
 );
 
@@ -10845,9 +10849,13 @@ $messages['rif'] = array(
  * @author Minisarm
  */
 $messages['ro'] = array(
+	'smw-desc' => "Wikiul dumneavoastră devine mai accesibil — pentru mașini ''și'' oameni ([http://semantic-mediawiki.org/wiki/Help:User_manual documentație on-line])",
 	'smw_viewasrdf' => 'Flux RDF',
 	'smw_finallistconjunct' => 'și',
-	'smw_concept_description' => 'Descrierea conceptului "$1"',
+	'smw_factbox_head' => 'Informații despre „$1”',
+	'smw_isspecprop' => 'Această proprietate este una specială pe acest wiki.',
+	'smw_concept_description' => 'Descrierea conceptului „$1”',
+	'version-semantic' => 'Extensii semantice',
 	'smw_printername_count' => 'Numără rezultatele',
 	'smw_printername_csv' => 'Export CSV',
 	'smw_printername_dsv' => 'Export DSV',
@@ -10943,10 +10951,13 @@ Rezultatele pot fi neașteptate.',
 	'smw_result_next' => 'Următor',
 	'smw_result_results' => 'Rezultate',
 	'smw_result_noresults' => 'Ne pare rău, niciun rezultat.',
+	'smwadmin' => 'Funcții administrative pentru Semantic MediaWiki',
 	'smw_smwadmin_return' => 'Înapoi la $1',
 	'smw_smwadmin_datarefreshbutton' => 'Pornește actualizarea datelor',
 	'smw_smwadmin_datarefreshstop' => 'Oprește această actualizare',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, sunt sigur.',
+	'smw_adminlinks_datastructure' => 'Structura datelor',
+	'smw_adminlinks_displayingdata' => 'Afișarea datelor',
 	'smw-createproperty-isproperty' => 'Aceasta este o proprietate de tipul $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Valoarea admisă pentru această proprietate este|Valorile admise pentru această proprietate sunt}}:',
 );
