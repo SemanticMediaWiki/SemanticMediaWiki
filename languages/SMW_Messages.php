@@ -406,6 +406,12 @@ Estimated progress of current update:',
 	'smw-ask-userpref-options-tooltip-display' => 'Display parameter text as info tooltip',
 	'smw-ask-userpref-options-collapsed-default' => 'Enable option box to be collapsed by default',
 
+	// Tooltip UI
+	'smw-ui-tooltip-title-property' => 'Property',
+	'smw-ui-tooltip-title-info' => 'Information',
+	'smw-ui-tooltip-title-service' => 'Service links',
+	'smw-ui-tooltip-title-warning' => 'Error',
+
 	'smw_unknowntype' => 'The type of this property is invalid',
 );
 
@@ -819,6 +825,10 @@ This method is called ''content negotiation''.
 	'smw-ask-userpref-options-tooltip-display' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ask-userpref-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
+	'smw-ui-tooltip-title-property' => 'Is a label that is displayed on the info tooltip',
+	'smw-ui-tooltip-title-info' => 'Is a label that is displayed on the info tooltip',
+	'smw-ui-tooltip-title-service' => 'Is a label that is displayed on the info tooltip',
+	'smw-ui-tooltip-title-warning' => 'Is a label that is displayed on the info tooltip',
 );
 
 /** Niuean (ko e vagahau Niuē)

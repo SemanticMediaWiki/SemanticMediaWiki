@@ -44,14 +44,40 @@ $wgResourceModules['ext.smw.style'] = $moduleTemplate + array(
 	'styles' => 'skins/SMW_custom.css'
 );
 
-$wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
-	'scripts' => 'skins/SMW_tooltip.js',
-	'dependencies' => array(
-		'mediawiki.legacy.wikibits',
-		'ext.smw.style'
-	)
+/******************************************************************************/
+/* Tooltip resources
+/******************************************************************************/
+$wgResourceModules['ext.jquery.qtip'] = $moduleTemplate + array(
+	'scripts' => 'resources/jquery/jquery.qtip.js',
+	'styles' => 'resources/jquery/jquery.qtip.css',
 );
 
+$wgResourceModules['ext.smw.tooltip'] = $moduleTemplate + array(
+	'scripts' => 'resources/ext.smw.tooltip.js',
+	'styles' => 'resources/ext.smw.tooltip.css',
+	'dependencies' => 'ext.jquery.qtip',
+	'messages' => array(
+		'smw-ui-tooltip-title-property',
+		'smw-ui-tooltip-title-info',
+		'smw-ui-tooltip-title-service',
+		'smw-ui-tooltip-title-warning',
+	),
+);
+
+// Resource is loaded at the top otherwise the stylesheet will only
+// become active after all content is loaded with icons appearing with a
+// delay due to missing stylesheet definitions at the time of the display
+$wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
+	'dependencies' => array(
+		'ext.smw.style',
+		'ext.smw.tooltip'
+	),
+	'position' => 'top'
+);
+
+/******************************************************************************/
+/* Autocomplete resources
+/******************************************************************************/
 $wgResourceModules['ext.smw.autocomplete'] = $moduleTemplate + array(
 	'scripts' => 'resources/ext.smw.autocomplete.js',
 	'dependencies' => array(

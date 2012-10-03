@@ -1,0 +1,38 @@
+/**
+ * CSS related to the tooltip display
+ *
+ * @licence: GNU GPL v2 or later
+ *
+ * @since: 1.8
+ * @release: 0.1
+ *
+ * @author: mwjames
+ */
+
+/* Tooltip content is always hidden */
+.smwttcontent {
+	display:none;
+}
+
+/* Tooltip icon defaults*/
+.smwtticon {
+	padding:14px 12px 0 0;
+	white-space:nowrap;
+	margin-bottom: -1px;
+}
+
+/* Individual assigned icons ( inline-block is important because the icon <span> is empty) */
+.smwtticon.info {
+	display:inline-block;
+	/* @embed */ background: url(images/info.png)  no-repeat left bottom;
+}
+
+.smwtticon.service {
+	display:inline-block;
+	/* @embed */ background: url(images/info.png)  no-repeat bottom;
+}
+
+.smwtticon.warning {
+	display:inline-block;
+	/* @embed */ background: url(images/warning.png)  no-repeat bottom;
+}

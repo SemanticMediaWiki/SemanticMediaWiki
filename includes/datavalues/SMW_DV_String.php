@@ -118,7 +118,18 @@ class SMWStringValue extends SMWDataValue {
 				return mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">…</span> ' . mb_substr( $value, $len - 42 );
 			} else {
 				SMWOutputs::requireResource( 'ext.smw.tooltips' );
-				return mb_substr( $value, 0, 42 ) . ' <span class="smwttpersist"> … <span class="smwttcontent">' . $value . '</span></span> ' . mb_substr( $value, $len - 42 );
+				// Tooltip info link
+				// $value has been escaped using smwfXMLContentEncode
+				return mb_substr( $value , 0, 42 ) .
+					Html::rawElement(
+					'span',
+					array( 'class' => 'smwttpersist' ),
+					 ' … ' .
+					Html::rawElement(
+						'span',
+						array( 'class' => 'smwttcontent', 'data-type' => 'string' ),
+						$value
+					) ) . mb_substr( $value, $len - 42 );
 			}
 		} elseif ( $this->m_typeid == '_cod' ) {
 			return $this->getCodeDisplay( $value, true );

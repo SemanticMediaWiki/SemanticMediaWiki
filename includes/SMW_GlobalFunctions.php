@@ -253,10 +253,21 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
 			$errorList = '<ul>' . implode( $seperator, $messages ) . '</ul>';
 		}
 
-		return '<span class="smwttpersist">' .
-				'<span class="smwtticon">' . htmlspecialchars( $icon ) . '.png</span>' .
-				'<span class="smwttcontent">' . $errorList . '</span>' . 
-			'</span>';
+		// Tooltip
+		return Html::rawElement(
+			'span',
+			array( 'class' => 'smwttpersist' ),
+			Html::element(
+				'span',
+				array( 'class' => 'smwtticon ' . htmlspecialchars( $icon ), 'data-type' => htmlspecialchars( $icon ) ),
+				null
+			) .
+			Html::rawElement(
+				'span',
+				array( 'class' => 'smwttcontent' ),
+				$errorList
+			)
+		);
 	} else {
 		return '';
 	}

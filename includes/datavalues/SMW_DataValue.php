@@ -586,7 +586,7 @@ abstract class SMWDataValue {
 		}
 
 		if ( count( $extralinks ) > 0 ) {
-			$result .= smwfEncodeMessages( $extralinks, 'info', ', <!--br-->', false );
+			$result .= smwfEncodeMessages( $extralinks, 'service', '', false );
 		}
 
 		return $result;
