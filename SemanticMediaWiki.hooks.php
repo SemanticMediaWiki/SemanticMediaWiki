@@ -304,6 +304,19 @@ final class SMWHooks {
 	 */
 	public static function onGetPreferences( $user, &$preferences ) {
 
+		// Intro text
+		$preferences['smw-prefs-intro'] =
+			array(
+				'type' => 'info',
+				'label' => '&#160;',
+				'default' => Xml::tags( 'tr', array(),
+					Xml::tags( 'td', array( 'colspan' => 2 ),
+						wfMessage(  'smw-prefs-intro-text' )->parseAsBlock() ) ),
+				'section' => 'smw',
+				'raw' => 1,
+				'rawrow' => 1,
+			);
+
 		// Option to enable tooltip info
 		$preferences['smw-ask-options-tooltip-display'] = array(
 			'type' => 'toggle',

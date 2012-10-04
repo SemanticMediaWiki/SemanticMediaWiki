@@ -402,6 +402,7 @@ Estimated progress of current update:',
 
 	// User preference
 	'prefs-smw' => 'Semantic MediaWiki',
+	'smw-prefs-intro-text' => 'Options below are provided by [http://semantic-mediawiki.org/ Semantic MediaWiki] (or related extensions) to enable individual customization on selected functions. For more information, please have a look at this [http://semantic-mediawiki.org/wiki/Help:User_preferences help section].',
 	'prefs-ask-options' => 'Semantic search options',
 	'smw-ask-userpref-options-tooltip-display' => 'Display parameter text as info tooltip',
 	'smw-ask-userpref-options-collapsed-default' => 'Enable option box to be collapsed by default',
@@ -822,6 +823,7 @@ This method is called ''content negotiation''.
 {{doc-important|Do not translate the possible parameter values "info" and "warning".}}',
 	'prefs-smw' => 'This is the text of a section header on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'prefs-ask-options' => 'This is the text of a header within a section on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
+	'smw-prefs-intro-text' => 'This is an user preference intro text on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ask-userpref-options-tooltip-display' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ask-userpref-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ui-tooltip-title-property' => 'Is a label that is displayed on the info tooltip',
