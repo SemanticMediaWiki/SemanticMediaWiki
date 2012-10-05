@@ -70,7 +70,12 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 		
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // make CSV file
 			$csv = fopen( 'php://temp', 'r+' );
-			
+			$sep = str_replace( '_', ' ', $this->params['sep'] );
+
+			if ( $this->params['showsep'] ) {
+				fputs( $csv, "sep=" . $sep . "\n" );
+			}
+
 			if ( $this->mShowHeaders ) {
 				$header_items = array();
 				
@@ -78,7 +83,7 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 					$header_items[] = $pr->getLabel();
 				}
 				
-				fputcsv( $csv, $header_items, $this->m_sep );
+				fputcsv( $csv, $header_items, $sep );
 			}
 			
 			while ( $row = $res->getNext() ) {
@@ -128,6 +133,11 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 			'default' => ',',
 		);
 
+		$params['showsep'] = array(
+			'type' => 'boolean',
+			'default' => false,
+			'message' => 'smw-paramdesc-showsep',
+		);
 		return $params;
 	}
 
