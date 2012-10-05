@@ -5,7 +5,7 @@
  * @licence: GNU GPL v2 or later
  *
  * @since: 1.8
- * @release: 0.1
+ * @release: 0.2
  *
  * @author: Jeroen De Dauw <jeroendedauw at gmail dot com>
  * @author: mwjames
@@ -14,7 +14,68 @@
 	"use strict";
 	/*global mediaWiki:true*/
 
-	// code for handling adding and removing the "sort" inputs
+	////////////////////////// PRIVATE METHODS ////////////////////////
+
+	/**
+	 * Support functions
+	 *
+	 */
+	var _init = {
+
+		// Autocomplete
+		autocomplete: {
+			textarea: function(){
+				// Textarea property autocomplete
+				// @see ext.smw.autocomplete
+				$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
+			},
+			parameter: function(){
+				// Property autocomplete for the single sort field
+				$( '.smw-ask-input-sort' ).smwAutocomplete();
+			}
+		},
+
+		// Tooltip
+		tooltip: function(){
+			$( '.smw-ask-info' ).each( function(){
+				$( this ).smwTooltip( {
+					content: $( this ).data( 'info' ),
+					title: mw.msg( 'smw-ui-tooltip-title-parameter' ),
+					button: false
+				} );
+			} );
+		},
+
+		// Format help link
+		formatHelp: function( options ){
+			// Make sure we don't have a pre existing element, using id as selector
+			// as it is faster compared to the class selector
+			$( '#formatHelp' ).remove();
+			$( options.selector ).after( '<span id="formatHelp" class="smw-ask-format-selection-help">' + mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) ) + '</span>' );
+		}
+	};
+
+	/**
+	 * Add format help link
+	 *
+	 * @return object
+	 */
+	function addFormatHelpLink ( options ){
+		var h = mw.html,
+			link = h.element( 'a', {
+					href: 'http://semantic-mediawiki.org/wiki/Help:' + options.format + ( options.lang !== undefined ? '/' + options.lang : '' ),
+					title: options.name
+				}, options.name
+			);
+		return link;
+	}
+
+	/**
+	 * Multiple sorting
+	 * Code for handling adding and removing the "sort" inputs
+	 *
+	 * @TODO Something don't quite work here but it is broken from the beginning therefore ...
+	 */
 	var num_elements = $( '#sorting_main > div' ).length;
 
 	function addInstance(starter_div_id, main_div_id) {
@@ -53,9 +114,12 @@
 		$( '#' + div_id ).remove();
 	}
 
-	// Allows for collapsible fieldsets.
-	// Based on the 'coolfieldset' jQuery plugin:
-	// http://w3shaman.com/article/jquery-plugin-collapsible-fieldset
+	/**
+	 * Collapsible fieldsets
+	 * Based on the 'coolfieldset' jQuery plugin:
+	 * http://w3shaman.com/article/jquery-plugin-collapsible-fieldset
+	 *
+	 */
 	function smwHideFieldsetContent(obj, options){
 		obj.find( 'div' ).slideUp(options.speed);
 		obj.find( '.collapsed-info' ).slideDown(options.speed);
@@ -69,6 +133,8 @@
 		obj.removeClass( "smwCollapsedFieldset" );
 		obj.addClass( "smwExpandedFieldset" );
 	}
+
+	////////////////////////// PUBLIC METHODS ////////////////////////
 
 	$.fn.smwMakeCollapsible = function(options){
 		var setting = { collapsed: options.collapsed, speed: 'medium' };
@@ -101,43 +167,24 @@
 		});
 	};
 
-	/**
-	 * Support functions
-	 *
-	 */
-	var _init = {
-
-		// Autocomplete
-		autocomplete: {
-			textarea: function(){
-				// Textarea property autocomplete
-				// @see ext.smw.autocomplete
-				$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
-			},
-			parameter: function(){
-				// Property autocomplete for the single sort field
-				$( '.smw-ask-input-sort' ).smwAutocomplete();
-			}
-		},
-
-		// Tooltip
-		tooltip: function(){
-			$( '.smw-ask-info' ).each( function(){
-				$( this ).smwTooltip( {
-					content: $( this ).data( 'info' ),
-					title: mw.msg( 'smw-ui-tooltip-title-parameter' ),
-					button: false
-				} );
-			} );
-		}
-	};
+	////////////////////////// DOM HANDLING ////////////////////////
 
 	$( document ).ready( function() {
+
+		// Get initial format and language settings
+		var selected = $( '#formatSelector option:selected' ),
+			options = {
+				selector : '#formatSelector',
+				format : selected.val(),
+				name : selected.text(),
+				lang : mw.config.get( 'wgPageContentLanguage' ) !== '' ? mw.config.get( 'wgPageContentLanguage' ) : mw.config.get( 'wgContentLanguage')
+			};
 
 		// Init
 		_init.autocomplete.textarea();
 		_init.autocomplete.parameter();
 		_init.tooltip();
+		_init.formatHelp( options );
 
 		$( '.smw-ask-delete').click( function() {
 			removeInstance( $( this).attr( 'data-target' ) );
@@ -148,10 +195,11 @@
 		} );
 
 		$( '#formatSelector' ).change( function() {
-			// console.log($( this).attr( 'data-url' ).replace( 'this.value', $( this ).val() ));
+			var $this = $( this );
+
 			$.ajax( {
 				// Evil hack to get more evil Spcial:Ask stuff to work with less evil JS.
-				'url': $( this).attr( 'data-url' ).replace( 'this.value', $( this ).val() ),
+				'url': $this.data( 'url' ).replace( 'this.value',  $this.val() ),
 				'context': document.body,
 				'success': function( data ) {
 					$( "#other_options" ).html( data );
@@ -160,6 +208,11 @@
 					_init.autocomplete.parameter();
 					_init.tooltip();
 
+					// Update format created by the ajax instance
+					_init.formatHelp( $.extend( {}, options, {
+						format:  $this.val(),
+						name: $this.find( 'option:selected' ).text()
+					} ) );
 				}
 			} );
 		} );
@@ -168,6 +221,5 @@
 		$( '.smw-ask-options' ).smwMakeCollapsible( {
 			'collapsed' : mw.user.options.get( 'smw-ask-options-collapsed-default' )
 		} );
-
 	} );
 } )( jQuery, mediaWiki );

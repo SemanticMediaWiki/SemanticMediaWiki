@@ -356,27 +356,3 @@ tr.smwb-ipropvalue td {
 
 span.smwb-ivalue {
 }
-
-.smw-ask-options legend {
-	cursor: pointer;
-	padding-left: 20px;
-}
-
-.smwCollapsedFieldset legend {
-    /* @embed */ background: transparent url(images/collapse-plus.png) no-repeat center left;
-}
-
-.smwExpandedFieldset legend {
-    /* @embed */ background: transparent url(images/collapse-minus.png) no-repeat center left;
-}
-
-/* The current MW tipsy version does not allow to add a class to tipsy therefore
-we override .tipsy-innner here */
-.tipsy-inner {
-	background-image: -ms-linear-gradient(bottom,white,#a7d7f9);
-	background-image: -moz-linear-gradient(bottom,white,#a7d7f9);
-	background-image: -o-linear-gradient(bottom,white,#a7d7f9);
-	background-image: -webkit-radient(linear,left bottom,left top,from(white),to(#a7d7f9));
-	background-image: -webkit-linear-gradient(bottom,white,#a7d7f9);
-	background-image: linear-gradient(bottom,white,#a7d7f9);
-}

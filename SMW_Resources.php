@@ -71,7 +71,7 @@ $wgResourceModules['ext.smw.tooltip'] = $moduleTemplate + array(
 // delay due to missing stylesheet definitions at the time of the display
 $wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
 	'dependencies' => array(
-		'ext.smw.style',
+		'ext.smw.style', //@TODO Any legacy styling relevant for the tooltip?
 		'ext.smw.tooltip'
 	),
 	'position' => 'top'
@@ -90,9 +90,8 @@ $wgResourceModules['ext.smw.autocomplete'] = $moduleTemplate + array(
 );
 
 $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
-	'scripts' => array(
-		'resources/ext.smw.ask.js',
-	),
+	'scripts' => 'resources/ext.smw.ask.js',
+	'styles' => 'resources/ext.smw.ask.css',
 	'dependencies' => array(
 		'ext.smw.tooltip',
 		'ext.smw.style',
@@ -100,6 +99,7 @@ $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
 	),
 	'messages' => array(
 		'smw-ask-delete',
+		'smw-ask-format-selection-help'
 	),
 	'position' => 'top'
 );

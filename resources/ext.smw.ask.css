@@ -1,0 +1,26 @@
+/**
+ * CSS definitions related to Special:Ask
+ *
+ * @licence: GNU GPL v2 or later
+ *
+ * @since: 1.8
+ * @release: 0.1
+ *
+ */
+.smw-ask-format-selection-help {
+	vertical-align:middle;
+	margin-left: 10px;
+}
+
+.smw-ask-options legend {
+	cursor: pointer;
+	padding-left: 20px;
+}
+
+.smwCollapsedFieldset legend {
+	/* @embed */ background: transparent url(images/collapse-plus.png) no-repeat center left;
+}
+
+.smwExpandedFieldset legend {
+	/* @embed */ background: transparent url(images/collapse-minus.png) no-repeat center left;
+}

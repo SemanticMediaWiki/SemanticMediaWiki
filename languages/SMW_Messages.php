@@ -241,6 +241,7 @@ It takes care that humans do not turn into websites.',
 	'smw_ask_embed_instr'	=> 'To embed this query inline into a wiki page use the code below.',
 	'smw-ask-delete'        => '[Delete]',
 	'smw-ask-sorting'       => 'Sorting',
+	'smw-ask-format-selection-help' => 'For a detailed description, please visit the $1 help page.',
 
 	// Messages for Query Creator Special
 	'querycreator'             => 'Query Creator',
@@ -652,6 +653,7 @@ This method is called ''content negotiation''.
 	'smw_ask_embed_instr' => 'This is an information message for the field on [[Special:Ask]] that contains the code of a query that may be copied and when pasted into a regular page on the wiki..',
 	'smw-ask-delete' => 'This is the text of the action link on [[Special:Ask]] to delete an printout statement from a query.',
 	'smw-ask-sorting' => 'This is the text for the header of the section on [[Special:Ask]] that allows to specify sorting options for specific properties that are queried for.',
+	'smw-ask-format-selection-help' => 'This is a text displayed on [[Special:Ask]] to inform about a help page on [http://semantic-mediawiki.org/wiki/ Semantic MediaWiki]',
 	'querycreator' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:QueryCreator]].',
 	'smw_qc_addmainlabel' => 'This is the text of the action link on [[Special:QueryCreator]].',
 	'smw_qc_show_addnal_opts' => 'This is the text of the action link on [[Special:QueryCreator]] to show the input and selection areas for printout statements of a query.',
