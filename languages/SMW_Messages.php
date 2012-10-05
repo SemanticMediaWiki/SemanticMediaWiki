@@ -412,6 +412,8 @@ Estimated progress of current update:',
 	'smw-ui-tooltip-title-info' => 'Information',
 	'smw-ui-tooltip-title-service' => 'Service links',
 	'smw-ui-tooltip-title-warning' => 'Error',
+	'smw-ui-tooltip-title-parameter' => 'Parameter',
+	'smw-ui-tooltip-title-event' => 'Event',
 
 	'smw_unknowntype' => 'The type of this property is invalid',
 );
@@ -830,6 +832,8 @@ This method is called ''content negotiation''.
 	'smw-ui-tooltip-title-info' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-service' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-warning' => 'Is a label that is displayed on the info tooltip',
+	'smw-ui-tooltip-title-parameter' => 'Is a label that is displayed on the info tooltip',
+	'smw-ui-tooltip-title-event' => 'Is a label that is displayed on the info tooltip',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 );
 

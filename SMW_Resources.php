@@ -61,6 +61,8 @@ $wgResourceModules['ext.smw.tooltip'] = $moduleTemplate + array(
 		'smw-ui-tooltip-title-info',
 		'smw-ui-tooltip-title-service',
 		'smw-ui-tooltip-title-warning',
+		'smw-ui-tooltip-title-parameter',
+		'smw-ui-tooltip-title-event',
 	),
 );
 
