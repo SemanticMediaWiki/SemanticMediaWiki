@@ -58,12 +58,15 @@
 	/**
 	 * Add format help link
 	 *
+	 * We do not try to be smart here but using a pragmatic approach to generate
+	 * the URL by assuming Help:<format> format
+	 *
 	 * @return object
 	 */
 	function addFormatHelpLink ( options ){
 		var h = mw.html,
 			link = h.element( 'a', {
-					href: 'http://semantic-mediawiki.org/wiki/Help:' + options.format + ( options.lang !== undefined ? '/' + options.lang : '' ),
+					href: 'http://semantic-mediawiki.org/wiki/Help:' + options.format + ' format',
 					title: options.name
 				}, options.name
 			);
@@ -177,7 +180,6 @@
 				selector : '#formatSelector',
 				format : selected.val(),
 				name : selected.text(),
-				lang : mw.config.get( 'wgPageContentLanguage' ) !== '' ? mw.config.get( 'wgPageContentLanguage' ) : mw.config.get( 'wgContentLanguage')
 			};
 
 		// Init
