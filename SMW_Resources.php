@@ -94,7 +94,7 @@ $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
 		'resources/ext.smw.ask.js',
 	),
 	'dependencies' => array(
-		'jquery.tipsy',
+		'ext.smw.tooltip',
 		'ext.smw.style',
 		'ext.smw.autocomplete'
 	),

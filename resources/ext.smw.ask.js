@@ -1,11 +1,18 @@
 /**
- * JavaScript for the Semantic MediaWiki extension.
- * @see https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki
+ * JavaScript for supporting functionality in Special:Ask
  *
- * @licence GNU GPL v2+
+ * @see http://www.semantic-mediawiki.org/wiki/Help:Special:Ask
+ * @licence: GNU GPL v2 or later
+ *
+ * @since: 1.8
+ * @release: 0.1
+ *
+ * @author: Jeroen De Dauw <jeroendedauw at gmail dot com>
+ * @author: mwjames
  */
-
-(function( $ ) {
+( function( $, mw ) {
+	"use strict";
+	/*global mediaWiki:true*/
 
 	// code for handling adding and removing the "sort" inputs
 	var num_elements = $( '#sorting_main > div' ).length;
@@ -70,7 +77,7 @@
 		this.each(function(){
 			var fieldset = $(this);
 			var legend = fieldset.children('legend');
-			if ( setting.collapsed == true ) {
+			if ( setting.collapsed === true ) {
 				legend.toggle(
 					function(){
 						smwShowFieldsetContent(fieldset, setting);
@@ -78,7 +85,7 @@
 					function(){
 						smwHideFieldsetContent(fieldset, setting);
 					}
-				)
+				);
 	
 				smwHideFieldsetContent(fieldset, {animation:false});
 			} else {
@@ -89,32 +96,48 @@
 					function(){
 						smwShowFieldsetContent(fieldset, setting);
 					}
-				)
+				);
 			}
 		});
-	}
+	};
 
-	// Show tipsy tooltip with info retrieved from the data-info attribute
-	$.fn.smwShowTooltip = function(){
-		this.each(function(){
-			$( this ).tipsy( {
-					gravity: 'sw',
-					//gravity: $.fn.tipsy.autoNS,
-					//offset: 2,
-					html: true,
-					title: function() { return this.getAttribute( "data-info" ) ; }
+	/**
+	 * Support functions
+	 *
+	 */
+	var _init = {
+
+		// Autocomplete
+		autocomplete: {
+			textarea: function(){
+				// Textarea property autocomplete
+				// @see ext.smw.autocomplete
+				$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
+			},
+			parameter: function(){
+				// Property autocomplete for the single sort field
+				$( '.smw-ask-input-sort' ).smwAutocomplete();
+			}
+		},
+
+		// Tooltip
+		tooltip: function(){
+			$( '.smw-ask-info' ).each( function(){
+				$( this ).smwTooltip( {
+					content: $( this ).data( 'info' ),
+					title: mw.msg( 'smw-ui-tooltip-title-parameter' ),
+					button: false
 				} );
-		} );
-	}
+			} );
+		}
+	};
 
 	$( document ).ready( function() {
 
-		// Textarea property autocomplete
-		// @see ext.smw.autocomplete
-		$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
-
-		// Property autocomplete for the single sort field
-		$( '.smw-ask-input-sort' ).smwAutocomplete();
+		// Init
+		_init.autocomplete.textarea();
+		_init.autocomplete.parameter();
+		_init.tooltip();
 
 		$( '.smw-ask-delete').click( function() {
 			removeInstance( $( this).attr( 'data-target' ) );
@@ -133,11 +156,9 @@
 				'success': function( data ) {
 					$( "#other_options" ).html( data );
 
-					// Every change needs to re-initialize the tooltip
-					$( ".smw-ask-info" ).smwShowTooltip();
-
-					// Init new instance after format change
-					$( '.smw-ask-input-sort' ).smwAutocomplete();
+					// Reinitialize functions after each ajax request
+					_init.autocomplete.parameter();
+					_init.tooltip();
 
 				}
 			} );
@@ -148,14 +169,5 @@
 			'collapsed' : mw.user.options.get( 'smw-ask-options-collapsed-default' )
 		} );
 
-		// Initialize tooltip for the default selection
-		$( ".smw-ask-info" ).smwShowTooltip();
-
-	});
-
-	function updateOtherOptions(strURL) {
-		debugger;
-
-	}
-
-})( window.jQuery );
+	} );
+} )( jQuery, mediaWiki );
