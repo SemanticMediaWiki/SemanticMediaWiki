@@ -49,6 +49,18 @@ $specialPageAliases['ar'] = array(
 	'QueryCreator' => array( 'منشئ_الاستعلام' ),
 );
 
+/** Aramaic (ܐܪܡܝܐ) */
+$specialPageAliases['arc'] = array(
+	'Ask' => array( 'ܫܐܠ' ),
+	'Browse' => array( 'ܦܐܬ' ),
+	'PageProperty' => array( 'ܦܐܬܐ_ܕܕܝܠܝܘܬ̈ܐ' ),
+	'Properties' => array( 'ܕܝܠܝܘܬ̈ܐ' ),
+	'SearchByProperty' => array( 'ܒܨܝ_ܒܝܕ_ܕܝܠܝܘܬ̈ܐ' ),
+	'Types' => array( 'ܐܕ̈ܫܐ' ),
+	'UnusedProperties' => array( 'ܕܝܠܝܘܬ̈ܐ_ܠܐ_ܦܠܝܚܬ̈ܐ' ),
+	'WantedProperties' => array( 'ܕܝܠܝܘܬ̈ܐ_ܣܢܝܩܬ̈ܐ' ),
+);
+
 /** Egyptian Spoken Arabic (مصرى) */
 $specialPageAliases['arz'] = array(
 	'Ask' => array( 'سؤال' ),
