@@ -60,6 +60,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_printername_category' => 'Category',
 
 	// Messages for query parameter descriptions
+	'validator-type-class-SMWParamSource' => 'text',
 	'smw-paramdesc-limit'	=> 'The maximum number of results to return',
 	'smw-paramdesc-offset' => 'The offset of the first result',
 	'smw-paramdesc-headers'	=> 'Display the headers/property names',
@@ -485,6 +486,7 @@ $messages['qqq'] = array(
 	'smw_printername_category' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Category_format Category].
 
 {{Identical|Category}}',
+	'validator-type-class-SMWParamSource' => 'This is the description of the "source" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-limit' => 'This is the description of the "limit" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-offset' => 'This is the description of the "offset" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-headers' => 'This is the description of the "headers" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
