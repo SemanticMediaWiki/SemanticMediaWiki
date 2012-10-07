@@ -50,7 +50,8 @@ class SMWLanguageEn extends SMWLanguage {
 		'Enumeration' => '_str',
 		'Phone number' => '_tel',
 		'E-mail'       => '_ema',
-		'Geographic coordinate' => '_geo'
+		'Geographic coordinate' => '_geo',
+		'Geographic polygon'    => '_gpo',
 	);
 
 	protected $m_SpecialProperties = array(

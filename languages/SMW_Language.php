@@ -59,6 +59,7 @@ abstract class SMWLanguage {
 		'Number'                => '_num',
 		'Geographic coordinates'=> '_geo',
 		'Geographic coordinate' => '_geo', // deprecated, see Bug 30990
+		'Geographic polygon'    => '_gpo',
 		'Temperature'           => '_tem',
 		'Quantity'              => '_qty',
 		'Date'                  => '_dat',
