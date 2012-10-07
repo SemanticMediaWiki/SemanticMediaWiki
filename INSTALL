@@ -36,7 +36,7 @@ If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.16 or greater
+* MediaWiki 1.17 or greater
 * Validator MediaWiki extension version 0.5 or greater
   (http://www.mediawiki.org/wiki/Extension:Validator)
 * PHP 5.2 or greater installed and working
