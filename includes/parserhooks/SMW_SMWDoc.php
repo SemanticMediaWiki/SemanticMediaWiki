@@ -241,6 +241,6 @@ EOT;
 	protected function msg( $key ) {
 		$args = func_get_args();
 		$key = array_shift( $args );
-		return wfMsgReal( $key, $args, true, $this->language );
+		return wfMessage( $key )->params( $args )->useDatabase( true )->inLanguage( $this->language )->text();
 	}
 }

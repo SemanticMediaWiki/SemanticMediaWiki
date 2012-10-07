@@ -286,6 +286,7 @@ abstract class SMWDataValue {
 			}
 
 			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() ); // messages distinguish ' ' from '_'
+			// @todo FIXME: Use wfMessage/Message class here.
 			$text = call_user_func_array( 'wfMsgForContent', $args );
 			$links = preg_split( "/[\n][\s]?/u", $text );
 
