@@ -332,6 +332,7 @@ $specialPageAliases['ja'] = array(
 	'URIResolver' => array( 'URIリゾルバー', 'ＵＲＩリゾルバー' ),
 	'UnusedProperties' => array( '使われていないプロパティ' ),
 	'WantedProperties' => array( '望まれているプロパティ' ),
+	'QueryCreator' => array( 'クエリ作成' ),
 );
 
 /** Georgian (ქართული) */
