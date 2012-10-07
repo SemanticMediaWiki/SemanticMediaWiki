@@ -318,16 +318,16 @@ final class SMWHooks {
 			);
 
 		// Option to enable tooltip info
-		$preferences['smw-ask-options-tooltip-display'] = array(
+		$preferences['smw-prefs-ask-options-tooltip-display'] = array(
 			'type' => 'toggle',
-			'label-message' => 'smw-ask-userpref-options-tooltip-display',
+			'label-message' => 'smw-prefs-ask-options-tooltip-display',
 			'section' => 'smw/ask-options',
 		);
 
 		// Preference to set option box be collapsed by default
-		$preferences['smw-ask-options-collapsed-default'] = array(
+		$preferences['smw-prefs-ask-options-collapsed-default'] = array(
 			'type' => 'toggle',
-			'label-message' => 'smw-ask-userpref-options-collapsed-default',
+			'label-message' => 'smw-prefs-ask-options-collapsed-default',
 			'section' => 'smw/ask-options',
 		);
 

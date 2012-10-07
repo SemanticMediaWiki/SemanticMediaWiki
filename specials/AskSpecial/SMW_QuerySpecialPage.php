@@ -173,7 +173,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 	protected function isTooltipDisplay() {
 		// @TODO global
 		// In case of RequestContext, switch to
-		// $this->getUser()->getOption('smw-ask-options-tooltip-display');
-		return $GLOBALS['wgUser']->getOption('smw-ask-options-tooltip-display');
+		// $this->getUser()->getOption( 'smw-prefs-ask-options-tooltip-display' );
+		return $GLOBALS['wgUser']->getOption( 'smw-prefs-ask-options-tooltip-display' );
 	}
 }

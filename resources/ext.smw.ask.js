@@ -146,7 +146,7 @@
 		this.each(function(){
 			var fieldset = $(this);
 			var legend = fieldset.children('legend');
-			if ( setting.collapsed === true ) {
+			if ( setting.collapsed ) {
 				legend.toggle(
 					function(){
 						smwShowFieldsetContent(fieldset, setting);
@@ -188,6 +188,12 @@
 		_init.tooltip();
 		_init.formatHelp( options );
 
+		// Fieldset collapsible
+		$( '.smw-ask-options' ).smwMakeCollapsible( {
+			'collapsed' : mw.user.options.get( 'smw-prefs-ask-options-collapsed-default' )
+		} );
+
+		// Multiple sorting
 		$( '.smw-ask-delete').click( function() {
 			removeInstance( $( this).attr( 'data-target' ) );
 		} );
@@ -196,6 +202,7 @@
 			addInstance( 'sorting_starter', 'sorting_main' );
 		} );
 
+		// Change format parameter form via ajax
 		$( '#formatSelector' ).change( function() {
 			var $this = $( this );
 
@@ -217,11 +224,6 @@
 					} ) );
 				}
 			} );
-		} );
-
-		// Fieldset collapsible
-		$( '.smw-ask-options' ).smwMakeCollapsible( {
-			'collapsed' : mw.user.options.get( 'smw-ask-options-collapsed-default' )
 		} );
 	} );
 } )( jQuery, mediaWiki );
