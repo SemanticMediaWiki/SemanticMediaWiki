@@ -281,7 +281,9 @@ abstract class SMWDataValue {
 		$servicelinks = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_SERV' ) );
 
 		foreach ( $servicelinks as $dataItem ) {
-			if ( !( $dataItem instanceof SMWDIString ) ) continue;
+			if ( !( $dataItem instanceof SMWDIString ) ) {
+				continue;
+			}
 
 			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() ); // messages distinguish ' ' from '_'
 			$text = call_user_func_array( 'wfMsgForContent', $args );
