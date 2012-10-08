@@ -99,7 +99,6 @@ class SMWSpecialBrowse extends SpecialPage {
 		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
 		
 		if ( $this->subject->isValid() ) {
-			$wgOut->addStyle( '../extensions/SemanticMediaWiki/skins/SMW_custom.css' );
 
 			$html .= $this->displayHead();
 			

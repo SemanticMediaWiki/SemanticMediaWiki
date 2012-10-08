@@ -33,6 +33,9 @@ $moduleTemplate = array(
 	'group' => 'ext.smw'
 );
 
+/******************************************************************************/
+/* SMW core
+/******************************************************************************/
 $wgResourceModules['ext.smw'] = $moduleTemplate + array(
 	'scripts' => array(
 		'resources/ext.smw.js',
@@ -41,7 +44,11 @@ $wgResourceModules['ext.smw'] = $moduleTemplate + array(
 );
 
 $wgResourceModules['ext.smw.style'] = $moduleTemplate + array(
-	'styles' => 'skins/SMW_custom.css'
+	'styles' => 'resources/ext.smw.core.css'
+);
+
+$wgResourceModules['ext.smw.query.ui'] = $moduleTemplate + array(
+	'styles' => 'resources/ext.smw.query.ui.css'
 );
 
 /******************************************************************************/
@@ -53,8 +60,8 @@ $wgResourceModules['ext.jquery.qtip'] = $moduleTemplate + array(
 );
 
 $wgResourceModules['ext.smw.tooltip'] = $moduleTemplate + array(
-	'scripts' => 'resources/ext.smw.tooltip.js',
-	'styles' => 'resources/ext.smw.tooltip.css',
+	'scripts' => 'resources/ext.smw.util.tooltip.js',
+	'styles' => 'resources/ext.smw.util.tooltip.css',
 	'dependencies' => 'ext.jquery.qtip',
 	'messages' => array(
 		'smw-ui-tooltip-title-property',
@@ -71,7 +78,6 @@ $wgResourceModules['ext.smw.tooltip'] = $moduleTemplate + array(
 // delay due to missing stylesheet definitions at the time of the display
 $wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
 	'dependencies' => array(
-		'ext.smw.style', //@TODO Any legacy styling relevant for the tooltip?
 		'ext.smw.tooltip'
 	),
 	'position' => 'top'
@@ -81,7 +87,7 @@ $wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
 /* Autocomplete resources
 /******************************************************************************/
 $wgResourceModules['ext.smw.autocomplete'] = $moduleTemplate + array(
-	'scripts' => 'resources/ext.smw.autocomplete.js',
+	'scripts' => 'resources/ext.smw.util.autocomplete.js',
 	'dependencies' => array(
 		// 'jquery.ui.widget',
 		// 'jquery.ui.position',
@@ -89,9 +95,12 @@ $wgResourceModules['ext.smw.autocomplete'] = $moduleTemplate + array(
 	)
 );
 
+/******************************************************************************/
+/* Special:Ask
+/******************************************************************************/
 $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
-	'scripts' => 'resources/ext.smw.ask.js',
-	'styles' => 'resources/ext.smw.ask.css',
+	'scripts' => 'resources/ext.smw.special.ask.js',
+	'styles' => 'resources/ext.smw.special.ask.css',
 	'dependencies' => array(
 		'ext.smw.tooltip',
 		'ext.smw.style',
@@ -104,13 +113,25 @@ $wgResourceModules['ext.smw.ask'] = $moduleTemplate + array(
 	'position' => 'top'
 );
 
+/******************************************************************************/
+/* Special:Browse
+/******************************************************************************/
+// should replace $wgOut->addStyle( '../extensions/SemanticMediaWiki/resources/ext..css' ); line 104
+// and since it was loaded at the top we do the same here with position -> top
 $wgResourceModules['ext.smw.browse'] = $moduleTemplate + array(
-	'scripts' => 'resources/ext.smw.browse.js',
-	'dependencies' => 'ext.smw.autocomplete'
+	'scripts' => 'resources/ext.smw.special.browse.js',
+	'dependencies' => array(
+		'ext.smw.style',
+		'ext.smw.autocomplete'
+	),
+	'position' => 'top'
 );
 
+/******************************************************************************/
+/* Special:SearchByProperty
+/******************************************************************************/
 $wgResourceModules['ext.smw.property'] = $moduleTemplate + array(
-	'scripts' => 'resources/ext.smw.property.js',
+	'scripts' => 'resources/ext.smw.special.property.js',
 	'dependencies' => 'ext.smw.autocomplete'
 );
 

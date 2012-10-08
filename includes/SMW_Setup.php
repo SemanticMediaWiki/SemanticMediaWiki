@@ -393,7 +393,7 @@ function smwfSetupExtension() {
 	if ( isset( $wgFooterIcons['poweredby'] )
 	  && isset( $wgFooterIcons['poweredby']['semanticmediawiki'] )
 	  && is_null( $wgFooterIcons['poweredby']['semanticmediawiki']['src'] ) ) {
-		$wgFooterIcons['poweredby']['semanticmediawiki']['src'] = "$smwgScriptPath/skins/images/smw_button.png";
+		$wgFooterIcons['poweredby']['semanticmediawiki']['src'] = "$smwgScriptPath/resources/images/smw_button.png";
 	}
 
 	wfProfileOut( 'smwfSetupExtension (SMW)' );

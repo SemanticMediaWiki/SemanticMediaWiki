@@ -1,0 +1,57 @@
+/**
+ * CSS related to the query ui
+ *
+ * @since 1.8
+ * @release 0.1
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2 or later
+ * @author
+ */
+
+/* ui buttons for QueryUI */
+div.smwsort{
+	margin-bottom: 5px;
+}
+.smwsort input, .smwsort a, .smwsort select, .smwsort checkbox{
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+
+span.smw-remove a img{
+	text-decoration: none;
+	margin-right: 5px;
+	vertical-align: -0.25em;
+	margin-left: -30px;
+
+}
+
+div.smwqcsortbox{
+	padding-left: 35px;
+}
+
+.smwpropdialog input, .smwpropdialog select, .smwcatdialog input,
+.smwcatdialog select, .smwmainlabdialog input{
+	margin-top: 10px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+/* Query Creator */
+div.smwqcnavbar{
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+div.smwqcformatas{
+	margin:10px;
+	margin-top: 15px;
+	margin-bottom: 0px;
+}
+
+.smwquisortlabel{
+	width: 10em;
+	float: left;
+}

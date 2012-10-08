@@ -2,13 +2,16 @@
  * JavaScript for supporting functionality in Special:Ask
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Special:Ask
- * @licence: GNU GPL v2 or later
  *
- * @since: 1.8
- * @release: 0.2
+ * @since 1.8
+ * @release 0.1
  *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2 or later
  * @author: Jeroen De Dauw <jeroendedauw at gmail dot com>
- * @author: mwjames
+ * @author mwjames
  */
 ( function( $, mw ) {
 	"use strict";
@@ -155,7 +158,7 @@
 						smwHideFieldsetContent(fieldset, setting);
 					}
 				);
-	
+
 				smwHideFieldsetContent(fieldset, {animation:false});
 			} else {
 				legend.toggle(

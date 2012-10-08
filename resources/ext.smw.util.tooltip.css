@@ -1,0 +1,79 @@
+/**
+ * CSS related to the tooltip display
+ *
+ * @licence: GNU GPL v2 or later
+ *
+ * @since 1.8
+ * @release 0.1
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @author mwjames
+ */
+
+/* From SMW_custom.css */
+/* Tooltips */
+
+div.smwtt { /* style for content of the bubble */
+	color: #000000;
+}
+
+span.smwttpersist span.smwttcontent { /* show persistent tooltips for non-JavaScript clients */
+	color: #888888;
+	font-style: italic;
+	font-size: 90%;
+}
+
+span.smwttinline span.smwttcontent { /* hide inline tooltips for non-JavaScript clients */
+	display: none;
+	speak: none;
+}
+
+span.smwtticon { /* style for image anchor for persistent tooltips */
+	display: none;
+}
+
+span.smwttactivepersist { /* colored anchors? */
+	cursor: help;
+	color: #0000C8;
+}
+
+span.smwttactiveinline { /* colored anchors */
+	color: #BB7700;
+	text-decoration: none;
+}
+
+img.smwttimg { /* images for tooltip icons */
+	padding-right: 5px;
+	padding-left: 4px;
+}
+
+/* New tooltip */
+/* Tooltip content is always hidden */
+.smwttcontent {
+	display:none;
+}
+
+/* Tooltip icon defaults*/
+.smwtticon {
+	padding:14px 12px 0 0;
+	white-space:nowrap;
+	margin-bottom: -1px;
+}
+
+/* Individual assigned icons ( inline-block is important because the icon <span> is empty) */
+.smwtticon.info {
+	display:inline-block;
+	/* @embed */ background: url(images/info.png) no-repeat left bottom;
+}
+
+.smwtticon.service {
+	display:inline-block;
+	/* @embed */ background: url(images/info.png) no-repeat left bottom;
+}
+
+.smwtticon.warning {
+	display:inline-block;
+	/* @embed */ background: url(images/warning.png) no-repeat left bottom;
+}

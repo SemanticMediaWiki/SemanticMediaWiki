@@ -2,12 +2,15 @@
  * JavaScript for SMW autocomplete functionality
  *
  * @see https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki
- * @licence: GNU GPL v2 or later
  *
- * @since: 1.8
- * @release: 0.1
+ * @since 1.8
+ * @release 0.1
  *
- * @author:  mwjames
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2 or later
+ * @author mwjames
  */
 ( function( mw, $ ) {
 	"use strict";

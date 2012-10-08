@@ -1,56 +1,55 @@
 /**
- * JavaScript for tooltip related functions
+ * JavaScript for SMW tooltip functions
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Tooltip
- * @licence: GNU GPL v2 or later
  *
- * @since: 1.8
- * @release: 0.2
+ * @since 1.8
+ * @release 0.2
  *
- * @author: mwjames
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2 or later
+ * @author mwjames
  */
-
 ( function( $, mw ) {
 	"use strict";
 	/*global mediaWiki:true*/
 
+	////////////////////////// PRIVATE METHODS ////////////////////////
+
 	/**
 	 * Default options
+	 *
+	 * viewport => $(window) keeps the tooltip on-screen at all times
+	 * 'top center' + 'bottom center' => Position the tooltip above the link
+	 * solo => true shows only one tooltip at a time
 	 *
 	 */
 	var defaults = {
 			position: {
-				viewport: $(window), // Keep the tooltip on-screen at all times
-				at: 'top center',  // Position the tooltip above the link
+				viewport: $(window),
+				at: 'top center',
 				my: 'bottom center'
 			},
 			show: {
-				solo: true // Only show one tooltip at a time
+				solo: true
 			},
 			style: {
 				classes: 'ui-tooltip-shadow ui-tooltip-bootstrap'
 			}
 	};
 
-	/**
-	 * Add icon image
-	 *
-	 * @return object
-	 */
-	var addIcon = function( options ){
-		var h = mw.html,
-			icon = h.element( 'span', { 'class' : options.className, 'style': 'display:inline;' },
-			new h.Raw( h.element( 'img', {
-					src: mw.config.get( 'wgExtensionAssetsPath' ) + '/SemanticMediaWiki/resources/images/' + options.image,
-					title: options.title
-				}
-			) )
-		);
-		return icon;
-	};
+	////////////////////////// PUBLIC METHODS ////////////////////////
 
 	/**
-	 * Handle qtip2 instances
+	 * The SMW qtip2 instance
+	 *
+	 * If the button (true) is displayed it means the tooltip focus is persitent and
+	 * in all other cases the tooltip is being closed by crossing the tooltip
+	 *
+	 * Event = 'click' means that a click event will trigger the tooltip to open in
+	 * all other cases it opens via hoovering
 	 *
 	 * @var options
 	 *
@@ -59,7 +58,7 @@
 	$.fn.smwTooltip = function( options ){
 		this.each( function() {
 			$( this ).qtip( $.extend( {}, defaults, {
-				hide: options.focus,
+				hide: options.button ? 'unfocus' : undefined,
 				show: { event: options.event, solo: true },
 				content: {
 					text: options.content,
@@ -72,36 +71,35 @@
 		} );
 	};
 
-	/**
-	 * Handle DOM instances
-	 *
-	 */
+	/////////////////////////////// DOM //////////////////////////////
+
 	$( document ).ready( function() {
 
-		// Used for special property display
+		// Mostly used for special property display
 		$( '.smwttinline' ).each( function() {
-			var $this = $( this ),
-				content = $this.find( '.smwttcontent' ),
-				title = mw.msg( 'smw-ui-tooltip-title-property' );
+			var $this = $( this );
 
 			// Tooltip instance
-			$this.smwTooltip( { content: content, title: title, button: false } );
+			$this.smwTooltip( {
+				content: $this.find( '.smwttcontent' ),
+				title: mw.msg( 'smw-ui-tooltip-title-property' ),
+				button: false
+			} );
 		} );
 
 		// Tooltip with extended interactions for service links, info, and error messages
 		$( '.smwttpersist' ).each( function() {
 
-			// Using a click event instead to display the tooltip
+			// Using a click event instead to trigger the tooltip
 			var click = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined;
 
 			// Standard configuration
 			var $this = $( this ),
 				content = $this.find( '.smwttcontent' ),
 				title = mw.msg( 'smw-ui-tooltip-title-info' ),
-				button = true, // Display close button
-				focus = 'unfocus'; // Stay open until it is closed
+				button = true; // Display close button
 
-			// Find icon instance where it exists
+			// Find icon reference where it exists
 			$this.find( '.smwtticon' ).each( function() {
 
 				// Change title in accordance with its type
@@ -111,14 +109,13 @@
 				} else if ( type === 'warning' ) {
 					title = mw.msg( 'smw-ui-tooltip-title-warning' );
 					button = false; // No close button
-					focus = undefined; // Hover like behaviour
 				} else {
 					title = mw.msg( 'smw-ui-tooltip-title-info' );
 				}
 			} );
 
 			// Tooltip instance
-			$( this ).smwTooltip( { content: content, title: title, button: button, focus: focus, event: click } );
+			$( this ).smwTooltip( { content: content, title: title, button: button, event: click } );
 		} );
 	} );
 } )( jQuery, mediaWiki );
