@@ -9082,6 +9082,7 @@ Anslått fremdrift for gjeldende oppdatering:',
  * @author SPQRobin
  * @author Siebrand
  * @author Tjcool007
+ * @author Wiki13
  */
 $messages['nl'] = array(
 	'smw-desc' => "Maakt uw wiki toegankelijker - voor machines ''en'' mensen ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -9394,6 +9395,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw-prefs-ask-options-collapsed-default' => 'Optievenster standaard samengevouwen weergeven',
 	'smw-ui-tooltip-title-property' => 'Eigenschap',
 	'smw-ui-tooltip-title-info' => 'Informatie',
+	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
 );
 
