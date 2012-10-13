@@ -152,7 +152,7 @@ final class SMWHooks {
 	 */
 	public static function addPoweredBySMW( &$text, $skin ) {
 		global $smwgScriptPath;
-		$url = htmlspecialchars( "$smwgScriptPath/skins/images/smw_button.png" );
+		$url = htmlspecialchars( "$smwgScriptPath/resources/images/smw_button.png" );
 		$text .= ' <a href="http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki"><img src="' . $url . '" alt="Powered by Semantic MediaWiki" /></a>';
 
 		return true;
