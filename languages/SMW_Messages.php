@@ -412,6 +412,7 @@ Estimated progress of current update:',
 
 	// Tooltip UI
 	'smw-ui-tooltip-title-property' => 'Property',
+	'smw-ui-tooltip-title-quantity' => 'Quantity',
 	'smw-ui-tooltip-title-info' => 'Information',
 	'smw-ui-tooltip-title-service' => 'Service links',
 	'smw-ui-tooltip-title-warning' => 'Error',
@@ -836,6 +837,7 @@ This method is called ''content negotiation''.
 	'smw-prefs-ask-options-tooltip-display' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-prefs-ask-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ui-tooltip-title-property' => 'Is a label that is displayed on the info tooltip',
+	'smw-ui-tooltip-title-quantity' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-info' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-service' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-warning' => 'Is a label that is displayed on the info tooltip',

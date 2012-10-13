@@ -141,14 +141,14 @@
 
 	$( document ).ready( function() {
 
-		// Mostly used for special property display
+		// Mostly used for special properties and quantity conversions
 		$( '.smwttinline' ).each( function() {
 			var $this = $( this );
 
 			// Tooltip instance
 			$this.smwTooltip( {
 				content: $this.find( '.smwttcontent' ),
-				title: mw.msg( 'smw-ui-tooltip-title-property' ),
+				title: $this.data( 'type' ) === 'quantity' ? mw.msg( 'smw-ui-tooltip-title-quantity' ) : mw.msg( 'smw-ui-tooltip-title-property' ),
 				button: false
 			} );
 		} );

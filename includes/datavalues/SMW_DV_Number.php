@@ -164,8 +164,28 @@ class SMWNumberValue extends SMWDataValue {
 				}
 			}
 			if ( $tooltip !== '' ) {
+
+				// @todo resource 'ext.smw.tooltips'
 				SMWOutputs::requireResource( 'ext.smw.tooltips' );
-				return '<span class="smwttinline">' . $this->m_caption . '<span class="smwttcontent">' . $tooltip . '</span></span>';
+
+				// @todo Specify one place where a tooltip is generated and its resource is added
+				// instead of having similar code in several other places
+				// $options = array ( context (inline, persistent), class, type, content );
+				// return ... ::getContextHighlighter( $options );
+
+				// The tooltip is only generated for a quantity entity therefore
+				// the data-type is being fixed. Content escaping has been
+				// applied using smwfNumberFormat() earlier.
+				return Html::rawElement(
+					'span',
+					array( 'class' => 'smwttinline', 'data-type' => 'quantity' ),
+						$this->m_caption .
+						Html::rawElement(
+							'span',
+							array( 'class' => 'smwttcontent' ),
+							$tooltip
+						)
+				);
 			} else {
 				return $this->m_caption;
 			}
