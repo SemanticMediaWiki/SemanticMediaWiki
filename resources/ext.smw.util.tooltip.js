@@ -1,10 +1,9 @@
 /**
  * JavaScript for SMW tooltip functions
- *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Tooltip
  *
  * @since 1.8
- * @release 0.2
+ * @release 0.3
  *
  * @file
  * @ingroup SMW
@@ -12,11 +11,19 @@
  * @licence GNU GPL v2 or later
  * @author mwjames
  */
-( function( $, mw ) {
+( function( $, mw, smw ) {
+
 	"use strict";
-	/*global mediaWiki:true*/
+
+	/*global mediaWiki:true semanticMediaWiki:true*/
 
 	////////////////////////// PRIVATE METHODS ////////////////////////
+
+	// Ensure global object is instantiate
+	smw.util = smw.util || {};
+
+	// Helper variable
+	var h = mw.html;
 
 	/**
 	 * Default options
@@ -52,32 +59,42 @@
 			}
 	};
 
+	/**
+	 * Build a html element
+	 *
+	 * @var object
+	 * @return string
+	 */
+	function _getHTMLElement( options ){
+		return h.element( 'span', { 'class' : options.entityClass },
+			new h.Raw(
+				h.element( 'span', { 'class' : options.iconClass, 'data-type': options.type }, null ) +
+				h.element( 'span', { 'class' : options.contentClass }, new h.Raw( options.content ) ) )
+		);
+	}
+
 	////////////////////////// PUBLIC METHODS ////////////////////////
 
 	/**
-	 * The SMW qtip2 instance
-	 *
-	 * If the button (true) is displayed it means the tooltip focus is persitent and
-	 * in all other cases the tooltip is being closed by crossing the tooltip
-	 *
-	 * Event = 'click' means that a click event will trigger the tooltip to open in
-	 * all other cases it opens via hoovering
-	 *
-	 * @var options
-	 *
-	 * @since: 1.8
+	 * Constructor
+	 * @var Object
 	 */
-	var methods = {
+	smw.util.tooltip = function( settings ) {
+		$.extend( this, defaults, settings );
+	};
+
+	smw.util.tooltip.prototype = {
 		/**
-		 * Init method initializes the qtip2 instance and does run without
-		 * explicitly mentioning this method
+		 * Init method initializes the qtip2 instance
 		 *
-		 * Example: $this.smwTooltip( { title: ..., type: ..., content: ..., button: ..., event: ... } );
+		 * Example
+		 * tooltip = new smw.util.tooltip();
+		 * tooltip.show ( { title: ..., type: ..., content: ..., button: ..., event: ... } );
 		 *
 		 * @since 1.8
 		 */
-		init : function( options ) {
-			return this.each( function() {
+		show: function( options ) {
+			return options.context.each( function() {
 				$( this ).qtip( $.extend( {}, defaults.qtip, {
 					hide: options.button ? 'unfocus' : undefined,
 					show: { event: options.event, solo: true },
@@ -88,15 +105,13 @@
 							button: options.button
 						}
 					}
-			} ) );
+				}	) );
 			} );
 		},
 
 		/**
-		 * The add method is a convenience method which allows to create a tooltip element
-		 * and create an instance
-		 *
-		 * Example: $this.smwTooltip( 'add', { title: ..., type: ..., content: ... } );
+		 * The add method is a convenience method allowing to create a tooltip element
+		 * with immediate instantiation
 		 *
 		 * @since 1.8
 		 */
@@ -104,24 +119,51 @@
 			// Defaults
 			var option = $.extend( true, defaults.classes, options );
 
-			// Add html element
-			var h = mw.html,
-				element = h.element( 'span', { 'class' : option.entityClass },
-				new h.Raw(
-					h.element( 'span', { 'class' : option.iconClass, 'data-type': option.type }, null ) +
-					h.element( 'span', { 'class' : option.contentClass }, new h.Raw( option.content ) ) )
-				);
+			// Check context
+			if ( option.context === undefined ){
+				return $.error( 'smw.util.tooltip add method is missing a context object' );
+			}
 
-			// Append elements
-			this.prepend( element );
+			// Assign context
+			var $this = option.context;
+
+			// Append element
+			$this.prepend( _getHTMLElement( options ) );
 
 			// Ensure the rigth scope and use the icon as hoover/click element
 			// The class [] selector is not the fastest but the safest otherwise if spaces are
 			// used in the class definition it will break the selection
-			methods.init.call(
-				this.find( "[class='" + option.iconClass + "']" ),
-				$.extend( true, options, { content: this.find( "[class='" + option.contentClass + "']" ) } )
+			this.show.call(
+				$this.find( "[class='" + option.iconClass + "']" ),
+				$.extend( true, options, { content: $this.find( "[class='" + option.contentClass + "']" ) } )
 			);
+		}
+	};
+
+
+
+	////////
+	// @todo keep this one for now, as long as modules in SRF rely on it and only
+	// after they have been updated below can vanish
+	var methods = {
+		init : function( options ) {
+			return this.each( function() {
+				var tooltip  = new smw.util.tooltip();
+
+				// Tooltip instance
+				tooltip.show( {
+					context: $( this ),
+					content: options.content,
+					title: options.title,
+					button: options.button
+				} );
+			} );
+		},
+		add : function( options ) {
+			var tooltip  = new smw.util.tooltip();
+
+			// Tooltip instance
+			tooltip.add( $.extend( true, options, { context: this } ) );
 		}
 	};
 
@@ -136,28 +178,34 @@
 			$.error( 'Method ' +  method + ' does not exist on smwTooltip' );
 		}
 	};
+	////////
 
 	/////////////////////////////// DOM //////////////////////////////
 
 	$( document ).ready( function() {
+
+		// Class reference
+		var tooltip = new smw.util.tooltip();
 
 		// Mostly used for special properties and quantity conversions
 		$( '.smwttinline' ).each( function() {
 			var $this = $( this );
 
 			// Tooltip instance
-			$this.smwTooltip( {
+			tooltip.show( {
+				context: $this,
 				content: $this.find( '.smwttcontent' ),
-				title: $this.data( 'type' ) === 'quantity' ? mw.msg( 'smw-ui-tooltip-title-quantity' ) : mw.msg( 'smw-ui-tooltip-title-property' ),
-				button: false
+				title  : $this.data( 'type' ) === 'quantity' ? mw.msg( 'smw-ui-tooltip-title-quantity' ) : mw.msg( 'smw-ui-tooltip-title-property' ),
+				button : false
 			} );
+
 		} );
 
 		// Tooltip with extended interactions for service links, info, and error messages
 		$( '.smwttpersist' ).each( function() {
 
 			// Using a click event instead to trigger the tooltip
-			var click = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined;
+			var event = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined;
 
 			// Standard configuration
 			var $this = $( this ),
@@ -181,7 +229,14 @@
 			} );
 
 			// Tooltip instance
-			$( this ).smwTooltip( { content: content, title: title, button: button, event: click } );
+			tooltip.show( {
+				context: $this,
+				content: content,
+				title  : title,
+				event  : event,
+				button : button
+			} );
+
 		} );
 	} );
-} )( jQuery, mediaWiki );
+} )( jQuery, mediaWiki, semanticMediaWiki );
