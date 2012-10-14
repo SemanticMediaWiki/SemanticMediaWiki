@@ -235,7 +235,7 @@ Class SMWSQLStore3Writers {
 				if ( $di instanceof SMWDIError ) { // error values, ignore
 					continue;
 				}
-				$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $di->getDIType() );
+				$diHandler = $this->store->getDataItemHandlerForDIType( $di->getDIType() );
 				$uvals = array_merge( $uvals, $diHandler->getInsertValues( $di ) );
 
 				if ( !array_key_exists( $proptable->name, $updates ) ) {
