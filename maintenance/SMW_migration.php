@@ -89,7 +89,7 @@ class SMWMigrate extends Maintenance {
 				$proptable = $proptables[$tableId];
 				//get the DIHandler
 				$dataItemId = SMWDataValueFactory::getDataItemId( $property->findPropertyTypeId() );
-				$diHandler = SMWDIHandlerFactory::getDataItemHandlerForDIType( $dataItemId );
+				$diHandler = $newStore->getDataItemHandlerForDIType( $dataItemId );
 
 				$subjects = $oldStore->getPropertySubjects( $property, null );
 				$insertions = array();
