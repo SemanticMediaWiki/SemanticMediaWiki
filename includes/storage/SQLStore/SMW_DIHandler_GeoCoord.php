@@ -89,6 +89,10 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ) );
+		if ( count( $dbkeys ) == 2 ) {
+			return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ) );
+		} else {
+			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+		}
 	}
 }

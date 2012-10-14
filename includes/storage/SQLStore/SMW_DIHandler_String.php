@@ -85,8 +85,15 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		$text = $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0];
-		return new SMWDIString( $text );
+		if ( $dbkeys[0] == '' ) { // empty blob: use "hash" string
+			if ( count( $dbkeys ) == 2 ) {
+				return new SMWDIString( $dbkeys[1] );
+			} else {
+				throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+			}
+		} else { // use blob
+			return new SMWDIString( $dbkeys[0] );
+		}
 	}
 
 	/**

@@ -124,6 +124,6 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 				return new SMWDITime( $calendarmodel, $year, $month, $day, $hours, $minutes, $seconds );
 			}
 		}
-		throw new SMWDataItemException( 'Failed to create data item from DB keys.' );		
+		throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
 	}
 }

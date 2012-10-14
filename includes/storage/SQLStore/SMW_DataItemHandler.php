@@ -105,9 +105,12 @@ abstract class SMWDataItemHandler {
 
 	/**
 	 * Method to create a dataitem from an array of DB keys.
+	 * May throw an SMWDataItemException if the given DB keys
+	 * cannot be converted back into a dataitem.
 	 *
 	 * @since 1.8
 	 * @param $dbkeys array of mixed
+	 * @throws SMWDataItemException
 	 *
 	 * @return SMWDataItem
 	 */

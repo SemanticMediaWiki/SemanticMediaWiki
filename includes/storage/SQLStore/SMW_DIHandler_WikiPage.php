@@ -84,6 +84,10 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		return new SMWDIWikiPage( $dbkeys[0], intval( $dbkeys[1] ), $dbkeys[2], $dbkeys[4] );
+		if ( count( $dbkeys ) == 5 ) {
+			return new SMWDIWikiPage( $dbkeys[0], intval( $dbkeys[1] ), $dbkeys[2], $dbkeys[4] );
+		} else {
+			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+		}
 	}
 }

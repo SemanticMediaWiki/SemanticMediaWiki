@@ -85,7 +85,6 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 		global $wgDBtype;
-		$value = true;
 
 		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $wgDBtype == 'postgres' ) {
