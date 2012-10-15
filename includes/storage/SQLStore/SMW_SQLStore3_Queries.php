@@ -95,8 +95,8 @@ class SMWSQLStore3QueryEngine {
 
 		$fname = 'SMW::refreshConceptCache';
 
-		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
-		$cid_c = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
+		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
+		$cid_c = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 
 		if ( $cid != $cid_c ) {
 			$this->m_errors[] = "Skipping redirect concept.";
@@ -171,7 +171,7 @@ class SMWSQLStore3QueryEngine {
 	 * @param $concept Title
 	 */
 	public function deleteConceptCache( $concept ) {
-		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
+		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 		$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
 		$this->m_dbs->update( 'smw_conc', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 	}
@@ -415,7 +415,8 @@ class SMWSQLStore3QueryEngine {
 			if ( $row->iw === '' || $row->iw{0} != ':' )  {
 				$v = new SMWDIWikiPage( $row->t, intval( $row->ns ), $row->iw, $row->so );
 				$qr[] = $v;
-				$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw, $row->so );
+				// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
+				$this->m_store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
 			}
 		}
 
@@ -477,7 +478,7 @@ class SMWSQLStore3QueryEngine {
 			$cquery->joinfield = array();
 
 			foreach ( $description->getCategories() as $cat ) {
-				$cid = $this->m_store->getSMWPageID( $cat->getDBkey(), NS_CATEGORY, $cat->getInterwiki(), '' );
+				$cid = $this->m_store->smwIds->getSMWPageID( $cat->getDBkey(), NS_CATEGORY, $cat->getInterwiki(), '' );
 				if ( $cid != 0 ) {
 					$cquery->joinfield[] = $cid;
 				}
@@ -497,7 +498,7 @@ class SMWSQLStore3QueryEngine {
 			if ( $description->getDataItem() instanceof SMWDIWikiPage ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
 					$query->type = SMW_SQL2_VALUE;
-					$oid = $this->m_store->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki(), $description->getDataItem()->getSubobjectName() );
+					$oid = $this->m_store->smwIds->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki(), $description->getDataItem()->getSubobjectName() );
 					$query->joinfield = array( $oid );
 				} else { // Join with smw_ids needed for other comparators (apply to title string).
 					$query->jointable = 'smw_ids';
@@ -520,7 +521,7 @@ class SMWSQLStore3QueryEngine {
 				}
 			}
 		} elseif ( $description instanceof SMWConceptDescription ) { // fetch concept definition and insert it here
-			$cid = $this->m_store->getSMWPageID( $description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '', '' );
+			$cid = $this->m_store->smwIds->getSMWPageID( $description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '', '' );
 			// We bypass the storage interface here (which is legal as we control it, and safe if we are careful with changes ...)
 			// This should be faster, but we must implement the unescaping that concepts do on getWikiValue()
 			$row = $this->m_dbs->selectRow(
@@ -632,7 +633,7 @@ class SMWSQLStore3QueryEngine {
 
 		// *** Add conditions for selecting rows for this property, maybe with a hierarchy ***//
 		if ( $proptable->fixedproperty == false ) {
-			$pid = $this->m_store->getSMWPropertyID( $property );
+			$pid = $this->m_store->smwIds->getSMWPropertyID( $property );
 
 			if ( $property->isUserDefined() || ( $property->findPropertyTypeID() != '__err' ) ) {
 				// also make property hierarchy (may or may not be executed later on)

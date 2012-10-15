@@ -38,7 +38,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $di) {
-		$oid = $this->store->getSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
+		$oid = $this->store->smwIds->getSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
 		return array( 'o_id' => $oid );
 	}
 
@@ -50,7 +50,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getInsertValues( SMWDataItem $di ) {
-		$oid = $this->store->makeSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
+		$oid = $this->store->smwIds->makeSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
 		return array( 'o_id' => $oid );
 	}
 
