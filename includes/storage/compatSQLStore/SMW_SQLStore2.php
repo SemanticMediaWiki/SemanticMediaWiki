@@ -808,6 +808,8 @@ class SMWSQLStore2 extends SMWStore {
 	 * @param $subject SMWDIWikiPage subject to which the data refers
 	 */
 	protected function prepareDBUpdates( &$updates, SMWSemanticData $data, $sid, SMWDIWikiPage $subject ) {
+
+		$subSemanticData = $data->getSubSemanticData();
 		if ( $sid == 0 ) {
 			$sid = $this->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(),
 				$subject->getInterwiki(), $subject->getSubobjectName(), true,
@@ -829,6 +831,11 @@ class SMWSQLStore2 extends SMWStore {
 					continue;
 				}
 				// redirects were treated above
+
+				// To support compatibility with the new handling of Subobjects
+				if( $di->getDIType() == SMWDataItem::TYPE_WIKIPAGE && array_key_exists( $di->getSubobjectName(), $subSemanticData ) ) {
+					$di = new SMWDIContainer( $subSemanticData[ $di->getSubobjectName() ] );
+				}
 
 				///TODO check needed if subject is null (would happen if a user defined proptable with !idsubject was used on an internal object -- currently this is not possible
 				$uvals = $proptable->idsubject ? array( 's_id' => $sid ) :

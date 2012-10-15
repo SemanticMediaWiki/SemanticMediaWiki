@@ -14,7 +14,7 @@
  * Class for representing chunks of semantic data for one given
  * article (subject), similar what is typically displayed in the Factbox.
  * This is a light-weight data container.
- * 
+ *
  * By its very design, the container is unable to hold inverse properties.
  * For one thing, it would not be possible to identify them with mere keys.
  * Since SMW cannot annotate pages with inverses, this is not a limitation.
@@ -77,8 +77,8 @@ class SMWSemanticData {
 	 * duplicate elimination (e.g. when loading from store) can save some
 	 * time, especially in subclasses like SMWSqlStubSemanticData, where
 	 * the first access to a data item is more costy.
-	 * 
-	 * @note This setting is merely for optimization. The SMW data model 
+	 *
+	 * @note This setting is merely for optimization. The SMW data model
 	 * never cares about the multiplicity of identical data assignments.
 	 *
 	 * @var boolean
@@ -93,6 +93,15 @@ class SMWSemanticData {
 	 * @var SMWDIWikiPage
 	 */
 	protected $mSubject;
+
+	/**
+	 * subSemanticData objects associated with this SemanticData
+	 * These key-value pairs of subObjectName (string) =>SMWSemanticData.
+	 *
+	 * @since 1.8
+	 * @var Array
+	 */
+	protected $subSemanticData = array();
 
 	/**
 	 * Constructor.
@@ -186,6 +195,16 @@ class SMWSemanticData {
 	}
 
 	/**
+	 * Return the array of subSemanticData objects for this SemanticData
+	 *
+	 * @since 1.8
+	 * @return array of subobject => SMWContainerSemanticData objects
+	 */
+	public function getSubSemanticData() {
+		return $this->subSemanticData;
+	}
+
+	/**
 	 * Return true if there are any visible properties.
 	 *
 	 * @note While called "visible" this check actually refers to the
@@ -224,6 +243,11 @@ class SMWSemanticData {
 	 * @param $dataItem SMWDataItem
 	 */
 	public function addPropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
+		if( $dataItem instanceof SMWDIContainer ) {
+			$this->addSubSemanticData( $dataItem->getSemanticData() );
+			$dataItem = $dataItem->getSemanticData()->getSubject();
+		}
+
 		if ( $property->isInverse() ) { // inverse properties cannot be used for annotation
 			return;
 		}
@@ -272,7 +296,7 @@ class SMWSemanticData {
 			if ( !$propertyDV->isValid() ) { // error, maybe illegal title text
 				return;
 			}
-			
+
 			$property = $propertyDV->getDataItem();
 		}
 
@@ -296,6 +320,12 @@ class SMWSemanticData {
 	 * @since 1.8
 	 */
 	public function removePropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
+		//delete associated subSemanticData
+		if( $dataItem instanceof SMWDIContainer ) {
+			$this->removeSubSemanticData( $dataItem->getSemanticData() );
+			$dataItem = $dataItem->getSemanticData()->getSubject();
+		}
+
 		if ( $property->isInverse() ) { // inverse properties cannot be used for annotation
 			return;
 		}
@@ -330,6 +360,19 @@ class SMWSemanticData {
 		$this->mHasVisibleProps = false;
 		$this->mHasVisibleSpecs = false;
 		$this->stubObject = false;
+		$this->subSemanticData = array();
+	}
+
+	/**
+	 * Return true if this SemanticData is empty.
+	 * Assumes that the mProperties array is always
+	 * made empty when there is no data in mPropVals
+	 *
+	 * since 1.8
+	 * @return boolean
+	 */
+	public function isEmpty() {
+		return $this->mProperties == array() && $this->subSemanticData == array();
 	}
 
 	/**
@@ -340,6 +383,9 @@ class SMWSemanticData {
 	 * @param $semanticData SMWSemanticData object to copy from
 	 */
 	public function importDataFrom( SMWSemanticData $semanticData ) {
+		// drop if subjects don't match. Different subjects don't have their subSemanticData compatible to each other
+		if( !$this->mSubject->equals( $semanticData->getSubject() ) )
+			return;
 		// Shortcut when copying into empty objects that don't ask for more duplicate elimination:
 		if ( count( $this->mProperties ) == 0 &&
 		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
@@ -356,6 +402,74 @@ class SMWSemanticData {
 				foreach ( $values as $dataItem ) {
 					$this->addPropertyObjectValue( $property, $dataItem);
 				}
+			}
+		}
+		foreach( $semanticData->subSemanticData as $semData ) {
+			$this->addSubSemanticData( $semData );
+		}
+	}
+
+	/**
+	 * Removes all common data present in the given SMWSemanticData.
+	 *
+	 * @since 1.8
+	 *
+	 * @param $semanticData SMWSemanticData
+	 */
+	public function removeDataFrom( SMWSemanticData $semanticData ) {
+		// drop if subjects don't match. Different subjects don't have their subSemanticData compatible to each other
+		if( !$this->mSubject->equals( $semanticData->getSubject() ) )
+		foreach ( $semanticData->getProperties() as $property ) {
+			$values = $semanticData->getPropertyValues( $property );
+			foreach ( $values as $dataItem ) {
+				$this->removePropertyObjectValue( $property, $dataItem );
+			}
+		}
+		foreach( $semanticData->subSemanticData as $semData ) {
+			$this->removeSubSemanticData( $semData );
+		}
+	}
+
+	/**
+	* Method to add Container items into subSemanticData
+	* This method will merge data if they are of the same subobject.
+	* Its assumed that the container items all belong to the same subject.
+	*
+	* @since 1.8
+	* @param SMWSemanticData
+	*/
+	public function addSubSemanticData( SMWSemanticData $semanticData ) {
+		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
+			throw new MWException( "SubSemanticData can only be assigned for sub-objects" );
+		}
+
+		$subobjectName = $semanticData->getSubject()->getSubobjectName();
+		if( array_key_exists( $subobjectName, $this->subSemanticData ) ) {
+			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
+		} else {
+			$this->subSemanticData[$subobjectName] = $semanticData;
+		}
+	}
+
+	/**
+	* Method to remove Container items from subSemanticData
+	* This method will remove data from the appropriate subSemanticData
+	* and delete it if its empty afterwards.
+	*
+	* @since 1.8
+	* @param SMWSemanticData
+	*/
+	public function removeSubSemanticData( SMWSemanticData $semanticData ) {
+		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
+			return;
+		}
+
+		$subobjectName = $container->getSubject()->getSubobjectName();
+		if( array_key_exists( $subobjectName, $this->subSemanticData ) ) {
+			$this->subSemanticData[$subobjectName]->removeDataFrom( $semanticData );
+
+			if( $this->subSemanticData[$subobjectName]->isEmpty() ) {
+				unset( $this->subSemanticData[$subobjectName] );
 			}
 		}
 	}
