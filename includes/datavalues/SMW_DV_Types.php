@@ -38,14 +38,14 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	protected function parseUserValue( $value ) {
-		global $wgContLang;
+		global $wgContLang, $smwgHistoricTypeNamespace;
 
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
 
 		$valueParts = explode( ':', $value, 2 );
-		if ( count( $valueParts ) > 1 ) {
+		if ( $smwgHistoricTypeNamespace && count( $valueParts ) > 1 ) {
 			$namespace = smwfNormalTitleText( $valueParts[0] );
 			$value = $valueParts[1];
 			$typeNamespace = $wgContLang->getNsText( SMW_NS_TYPE );
