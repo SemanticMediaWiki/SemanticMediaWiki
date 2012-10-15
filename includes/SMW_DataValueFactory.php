@@ -264,7 +264,7 @@ class SMWDataValueFactory {
 			'__spf' => SMWDataItem::TYPE_WIKIPAGE, // Special Form page type for Semantic Forms
 			'__sin' => SMWDataItem::TYPE_WIKIPAGE, // Special instance of type
 			'__red' => SMWDataItem::TYPE_WIKIPAGE, // Special redirect type
-			'__err' => SMWDataItem::TYPE_STRING, // Special error type
+			'__err' => SMWDataItem::TYPE_ERROR, // Special error type
 			'__imp' => SMWDataItem::TYPE_STRING, // Special import vocabulary type
 			'__pro' => SMWDataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)
 			'__key' => SMWDataItem::TYPE_STRING, // Sort key of a page
