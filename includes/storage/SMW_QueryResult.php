@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
