@@ -42,7 +42,7 @@ Class SMWSQLStore3Writers {
 
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = wfGetDB( DB_MASTER );
-			$id = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
+			$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
 			$db->delete( 'smw_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
 			$db->delete( 'smw_conccache', array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
@@ -86,7 +86,7 @@ Class SMWSQLStore3Writers {
 		}
 
 		// Always make an ID (pages without ID cannot be in query results, not even in fixed value queries!):
-		$sid = $this->store->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
+		$sid = $this->store->smwIds->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
 
 		// recursively update Subobjects
 		foreach ( $data->getPropertyValues( new SMWDIProperty( '_SOBJ' ) ) as $di ) {
@@ -210,7 +210,7 @@ Class SMWSQLStore3Writers {
 	 */
 	protected function prepareDBUpdates( &$updates, SMWSemanticData $data, $sid, SMWDIWikiPage $subject ) {
 		if ( $sid == 0 ) {
-			$sid = $this->store->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(),
+			$sid = $this->store->smwIds->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(),
 				$subject->getInterwiki(), $subject->getSubobjectName(), true,
 				str_replace( '_', ' ', $subject->getDBkey() ) . $subject->getSubobjectName() );
 		}
@@ -229,7 +229,7 @@ Class SMWSQLStore3Writers {
 			$uvals = $proptable->idsubject ? array( 's_id' => $sid ) :
 					 array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() );
 			if ( $proptable->fixedproperty == false ) {
-				$uvals['p_id'] = $this->store->makeSMWPropertyID( $property );
+				$uvals['p_id'] = $this->store->smwIds->makeSMWPropertyID( $property );
 			}
 			foreach ( $data->getPropertyValues( $property ) as $di ) {
 				if ( $di instanceof SMWDIError ) { // error values, ignore
@@ -298,8 +298,8 @@ Class SMWSQLStore3Writers {
 		wfProfileIn( "SMWSQLStore3::changeTitle (SMW)" );
 
 		// get IDs but do not resolve redirects:
-		$sid = $this->store->getSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', false );
-		$tid = $this->store->getSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '', false );
+		$sid = $this->store->smwIds->getSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', false );
+		$tid = $this->store->smwIds->getSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '', false );
 		$db = wfGetDB( DB_MASTER );
 
 		// Easy case: target not used anywhere yet, just hijack its title for our current id
@@ -315,23 +315,24 @@ Class SMWSQLStore3Writers {
 					array( 'smw_title' => $oldtitle->getDBkey(),
 					'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '' ),
 					__METHOD__ );
-				$this->store->m_idCache->moveSubobjects( $oldtitle->getDBkey(), $oldtitle->getNamespace(),
+				$this->store->smwIds->moveSubobjects( $oldtitle->getDBkey(), $oldtitle->getNamespace(),
 					$newtitle->getDBkey(), $newtitle->getNamespace() );
-				$this->store->m_idCache->setId( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', 0 );
-				$this->store->m_idCache->setId( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '', $sid );
+				$this->store->smwIds->setCache( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', 0, '' );
+				// We do not know the new sortkey, so just clear the cache:
+				$this->store->smwIds->deleteCache( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
 			} else { // make new (target) id for use in redirect table
-				$sid = $this->store->makeSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
+				$sid = $this->store->smwIds->makeSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
 			} // at this point, $sid is the id of the target page (according to smw_ids)
 
 			// make redirect id for oldtitle:
-			$this->store->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL3_SMWREDIIW, '' );
+			$this->store->smwIds->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL3_SMWREDIIW, '' );
 			$db->insert( 'smw_redi', array( 's_title' => $oldtitle->getDBkey(),
 						's_namespace' => $oldtitle->getNamespace(),
 						'o_id' => $sid ),
 			             __METHOD__
 			);
 
-			$sql = 'UPDATE smw_stats SET usage_count = usage_count + 1 where pid = ' . $this->store->getSMWPropertyID( new SMWDIProperty( '_REDI' ) );
+			$sql = 'UPDATE smw_stats SET usage_count = usage_count + 1 where pid = ' . $this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) );
 			$db->query( $sql, __METHOD__ );
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
 			/// redirects are not supported by MW or SMW, the above is maximally correct in this case too.
@@ -367,7 +368,7 @@ Class SMWSQLStore3Writers {
 // 				array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
 // 				array( 'smw_title' => $oldtitle->getDBkey(), 'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '', 'smw_subobject!' => array( '' ) ), // array() needed for ! to work
 // 				__METHOD__ );
-			$this->store->m_idCache->moveSubobjects( $oldtitle->getDBkey(), $oldtitle->getNamespace(),$newtitle->getDBkey(), $newtitle->getNamespace() );
+			$this->store->smwIds->moveSubobjects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
 
 			// Write a redirect from old title to new one:
 			// (this also updates references in other tables as needed.)
@@ -410,7 +411,7 @@ Class SMWSQLStore3Writers {
 	public function deleteSemanticData( SMWDIWikiPage $subject ) {
 		$db = wfGetDB( DB_MASTER );
 
-		$id = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), false );
+		$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), false );
 		if ( $id == 0 ) {
 			// not (directly) used anywhere yet, may be a redirect but we do not care here
 			wfRunHooks( 'smwDeleteSemanticData', array( $subject ) );
@@ -491,9 +492,10 @@ Class SMWSQLStore3Writers {
 
 		// *** First get id of subject, old redirect target, and current (new) redirect target ***//
 
-		$sid = $this->store->getSMWPageID( $subject_t, $subject_ns, '', '', false ); // find real id of subject, if any
+		$sid_sort = '';
+		$sid = $this->store->smwIds->getSMWPageIDandSort( $subject_t, $subject_ns, '', '', $sid_sort, false ); // find real id of subject, if any
 		/// NOTE: $sid can be 0 here; this is useful to know since it means that fewer table updates are needed
-		$new_tid = $curtarget_t ? ( $this->store->makeSMWPageID( $curtarget_t, $curtarget_ns, '', '', false ) ) : 0; // real id of new target, if given
+		$new_tid = $curtarget_t ? ( $this->store->smwIds->makeSMWPageID( $curtarget_t, $curtarget_ns, '', '', false ) ) : 0; // real id of new target, if given
 
 		$db = wfGetDB( DB_SLAVE );
 		$row = $db->selectRow( array( 'smw_redi' ), 'o_id',
@@ -582,13 +584,13 @@ Class SMWSQLStore3Writers {
 			if ( ( $old_tid == 0 ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
 				// mark subject as redirect (if it was no redirect before)
 				if ( $sid == 0 ) { // every redirect page must have an ID
-					$sid = $this->store->makeSMWPageID( $subject_t, $subject_ns,
+					$sid = $this->store->smwIds->makeSMWPageID( $subject_t, $subject_ns,
 						SMW_SQL3_SMWREDIIW, '', false );
 				} else {
 					$db->update( 'smw_ids', array( 'smw_iw' => SMW_SQL3_SMWREDIIW ),
 						array( 'smw_id' => $sid ), __METHOD__ );
-					$this->store->m_idCache->setId( $subject_t, $subject_ns, '', '', 0 );
-					$this->store->m_idCache->setId( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', $sid );
+					$this->store->smwIds->setCache( $subject_t, $subject_ns, '', '', 0, '' );
+					$this->store->smwIds->setCache( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', $sid, $sid_sort );
 				}
 			}
 
@@ -601,7 +603,8 @@ Class SMWSQLStore3Writers {
 			// This shows that $sid != 0 here.
 			if ( $smwgQEqualitySupport != SMW_EQ_NONE ) { // mark subject as non-redirect
 				$db->update( 'smw_ids', array( 'smw_iw' => '' ), array( 'smw_id' => $sid ), __METHOD__ );
-				$this->store->m_idCache->setId( $subject_t, $subject_ns, '', '', $sid );
+				$this->store->smwIds->setCache( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', 0, '' );
+				$this->store->smwIds->setCache( $subject_t, $subject_ns, '', '', $sid, $sid_sort );
 			}
 		}
 
@@ -609,12 +612,15 @@ Class SMWSQLStore3Writers {
 
 		unset( $this->store->m_semdata[$sid] ); unset( $this->store->m_semdata[$new_tid] ); unset( $this->store->m_semdata[$old_tid] );
 		unset( $this->store->m_sdstate[$sid] ); unset( $this->store->m_sdstate[$new_tid] ); unset( $this->store->m_sdstate[$old_tid] );
-		if( $count!= 0 ) {
-			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $count . ' where pid = ' . $this->store->getSMWPropertyID( new SMWDIProperty( '_REDI' ) );
+
+		// *** Update reference count for _REDI property ***//
+
+		if( $count != 0 ) {
+			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $count . ' where pid = ' . $this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) );
 			$db->query( $sql, __METHOD__ );
+		}
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
-		}
 	}
 
 	/**
@@ -654,11 +660,11 @@ Class SMWSQLStore3Writers {
 			$dbw->update(
 				'smw_stats',
 				array( 'usage_count' => 'usage_count + '.$update[1] ),
-				array( 'pid' => $this->store->getSMWPropertyID( $update[0] ) ),
+				array( 'pid' => $this->store->smwIds->getSMWPropertyID( $update[0] ) ),
 				__METHOD__
 			);
  */
-			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $update[1] . ' where pid = ' . $this->store->getSMWPropertyID( $update[0] );
+			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $update[1] . ' where pid = ' . $this->store->smwIds->getSMWPropertyID( $update[0] );
 			$dbw->query( $sql, __METHOD__ );
 		}
 	}

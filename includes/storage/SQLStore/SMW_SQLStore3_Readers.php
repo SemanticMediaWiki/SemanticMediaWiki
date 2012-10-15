@@ -37,7 +37,7 @@ Class SMWSQLStore3Readers {
 
 		// *** Find out if this subject exists ***//
 		$sortkey = '';
-		$sid = $this->store->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(),
+		$sid = $this->store->smwIds->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(),
 			$subject->getInterwiki(), $subject->getSubobjectName(), $sortkey, true );
 		if ( $sid == 0 ) { // no data, save our time
 			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
@@ -112,7 +112,7 @@ Class SMWSQLStore3Readers {
 			$sd = $this->getSemanticData( $subject, array( $property->findPropertyTypeID() ) );
 			$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestoptions );
 		} else { // no subject given, get all values for the given property
-			$pid = $this->store->getSMWPropertyID( $property );
+			$pid = $this->store->smwIds->getSMWPropertyID( $property );
 			$tableid = SMWSQLStore3::findPropertyTableID( $property );
 
 			if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
@@ -167,6 +167,8 @@ Class SMWSQLStore3Readers {
 	 *
 	 * @todo Maybe share DB handler; asking for it seems to take quite some time and we do not want
 	 * to change it in one call.
+	 * 
+	 * @todo This uses some hacky code; see FIXME in method.
 	 *
 	 * @param integer $id
 	 * @param SMWDataItem $object
@@ -234,6 +236,7 @@ Class SMWSQLStore3Readers {
 		if ( !$issubject ) { // Needed to apply sorting/string matching in query; only with fixed property.
 			list( $valueField, $labelField ) = $this->store->getTypeSignature( $object->findPropertyTypeID() );
 
+			/// FIXME This is a hack.
 			//Hacky, we assume that valueFields that are in smw_ids table start with 'smw'
 			//the alias for smw_ids table is o0 (assigned above)
 			if( substr( $valueField, 0, 3 ) == 'smw' ) {
@@ -246,13 +249,13 @@ Class SMWSQLStore3Readers {
 
 			$where .= $this->store->getSQLConditions( $requestoptions, $valueField, $labelField, $where !== '' );
 		} else {
-			$valuecolumn = $labelcolumn = '';
+			$valueField = $labelField = '';
 		}
 
 		// ***  Now execute the query and read the results  ***//
 		$res = $db->select( $from, $select, $where, 'SMW::getSemanticData',
-		       ( $usedistinct ? $this->store->getSQLOptions( $requestoptions, $valuecolumn ) + array( 'DISTINCT' ) :
-		                        $this->store->getSQLOptions( $requestoptions, $valuecolumn ) ) );
+		       ( $usedistinct ? $this->store->getSQLOptions( $requestoptions, $valueField ) + array( 'DISTINCT' ) :
+		                        $this->store->getSQLOptions( $requestoptions, $valueField ) ) );
 
 		foreach ( $res as $row ) {
 			if ( $issubject ) { // use joined or predefined property name
@@ -300,7 +303,7 @@ Class SMWSQLStore3Readers {
 
 		// First build $select, $from, and $where for the DB query
 		$where = $from = '';
-		$pid = $this->store->getSMWPropertyID( $property );
+		$pid = $this->store->smwIds->getSMWPropertyID( $property );
 		$tableid = SMWSQLStore3::findPropertyTableID( $property );
 
 		if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
@@ -358,7 +361,7 @@ Class SMWSQLStore3Readers {
 	 * queried.
 	 *
 	 * @todo Maybe do something about redirects. The old code was
-	 * $oid = $this->store->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki(),false);
+	 * $oid = $this->store->smwIds->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki(),false);
 	 *
 	 * @param string $from
 	 * @param string $where
@@ -391,7 +394,7 @@ Class SMWSQLStore3Readers {
 					}
 
 					if ( $subproptable->fixedproperty == false ) { // the ID we get should be !=0, so no point in filtering the converse
-						$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.p_id=" . $db->addQuotes( $this->store->getSMWPropertyID( $subproperty ) );
+						$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.p_id=" . $db->addQuotes( $this->store->smwIds->getSMWPropertyID( $subproperty ) );
 					}
 
 					$this->prepareValueQuery( $from, $where, $subproptable, $subvalue, $tableindex );
@@ -432,7 +435,7 @@ Class SMWSQLStore3Readers {
 	 */
 	public function getProperties( SMWDIWikiPage $subject, $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore3::getProperties (SMW)" );
-		$sid = $this->store->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName() );
+		$sid = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName() );
 
 		if ( $sid == 0 ) { // no id, no page, no properties
 			wfProfileOut( "SMWSQLStore3::getProperties (SMW)" );

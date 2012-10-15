@@ -187,7 +187,7 @@ Class SMWSQLStore3SetupHandlers {
 
 		if ( $borderiw != SMW_SQL3_SMWBORDERIW ) {
 			$this->reportProgress( "   ... allocating space for internal properties ...\n", $verbose );
-			$this->store->moveSMWPageID( 50 ); // make sure position 50 is empty
+			$this->store->smwIds->moveSMWPageID( 50 ); // make sure position 50 is empty
 
 			$db->insert( 'smw_ids', array(
 					'smw_id' => 50,
@@ -202,7 +202,7 @@ Class SMWSQLStore3SetupHandlers {
 			$this->reportProgress( '   ', $verbose );
 
 			for ( $i = 0; $i < 50; $i++ ) { // make way for built-in ids
-				$this->store->moveSMWPageID( $i );
+				$this->store->smwIds->moveSMWPageID( $i );
 				$this->reportProgress( '.', $verbose );
 			}
 
@@ -214,13 +214,13 @@ Class SMWSQLStore3SetupHandlers {
 		// now write actual properties; do that each time, it is cheap enough and we can update sortkeys by current language
 		$this->reportProgress( "   ... writing entries for internal properties ...", $verbose );
 
-		foreach ( SMWSQLStore3::$special_ids as $prop => $id ) {
+		foreach ( SMWSql3SmwIds::$special_ids as $prop => $id ) {
 			$p = new SMWDIProperty( $prop );
 			$db->replace( 'smw_ids',	array( 'smw_id' ), array(
 					'smw_id' => $id,
 					'smw_title' => $p->getKey(),
 					'smw_namespace' => SMW_NS_PROPERTY,
-					'smw_iw' => $this->store->getPropertyInterwiki( $p ),
+					'smw_iw' => $this->store->smwIds->getPropertyInterwiki( $p ),
 					'smw_subobject' => '',
 					'smw_sortkey' => $p->getLabel()
 				), 'SMW::setup'

@@ -34,8 +34,8 @@ define( 'SMW_SQL3_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" 
  */
 class SMWSQLStore3 extends SMWStore {
 
-	/// Cache for SMW IDs
-	public $m_idCache;
+	/// Object to access to smw ids.
+	public $smwIds;
 
 	/**
 	 * The reader object used by this store. Initialized by getReader()
@@ -92,35 +92,6 @@ class SMWSQLStore3 extends SMWStore {
 	/// Array to cache "propkey => table id" associations for fixed property tables. Built only when needed.
 	public static $fixed_prop_tables = null;
 
-	/// Use pre-defined ids for Very Important Properties, avoiding frequent ID lookups for those
-	public static $special_ids = array(
-		'_TYPE' => 1,
-		'_URI'  => 2,
-		'_INST' => 4,
-		'_UNIT' => 7,
-		'_IMPO' => 8,
-		'_CONV' => 12,
-		'_SERV' => 13,
-		'_PVAL' => 14,
-		'_REDI' => 15,
-		'_SUBP' => 17,
-		'_SUBC' => 18,
-		'_CONC' => 19,
-		'_SF_DF' => 20, // Semantic Form's default form property
-		'_SF_AF' => 21,  // Semantic Form's alternate form property
-		'_ERRP' => 22,
-// 		'_1' => 23, // properties for encoding (short) lists
-// 		'_2' => 24,
-// 		'_3' => 25,
-// 		'_4' => 26,
-// 		'_5' => 27,
-		'_LIST' => 28,
-		'_MDAT' => 29,
-		'_CDAT' => 30,
-		'_NEWP' => 31,
-		'_LEDT' => 32,
-	);
-
 	/// Use special tables for Very Important Properties
 	public static $special_tables = array(
 		'_TYPE' => 'smw_type',
@@ -155,23 +126,26 @@ class SMWSQLStore3 extends SMWStore {
 		SMWDataItem::TYPE_CONTAINER  => 'smw_di_container', // values of this type represented by internal objects, stored like pages in smw_rels2
 		SMWDataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
 		SMWDataItem::TYPE_CONCEPT    => 'smw_conc', // unlikely to occur as value of a normal property
-		SMWDataItem::TYPE_PROPERTY   => 'smw_di_property'  // unlikely to occur as value of any property
+		SMWDataItem::TYPE_PROPERTY   => 'smw_di_property',  // unlikely to occur as value of any property
 	);
 
-	/*
-	* These are fixed properties i.e. user defined tables having a dedicated table for them.
+	/**
+	* These are fixed properties, i.e. user defined tables having a dedicated table for them.
 	* Declare these properties as an array of their name (as seen on the wiki) => SMWDataItem::TYPE_proptype
 	* where proptype should be replaced with the appropriate type as seen in the array above
-	* Example usage 	'Age' => SMWDataItem::TYPE_NUMBER,
-	* TODO - Document on semantic-mediawiki.org , move these to somewhere else
+	* Example usage 'Age' => SMWDataItem::TYPE_NUMBER.
+	* 
+	* See also http://semantic-mediawiki.org/wiki/Fixed_properties
 	*
-	* @since storerewrite
+	* @todo Move these to somewhere else?
+	*
+	* @since 1.8
 	*/
 	public static $fixedProperties = array(
 	);
 
 	public function __construct() {
-		$this->m_idCache = new SMWSQLStore3IdCache( wfGetDB( DB_SLAVE ) );
+		$this->smwIds = new SMWSql3SmwIds( $this );
 	}
 
 	/**
@@ -188,38 +162,40 @@ class SMWSQLStore3 extends SMWStore {
 		if( !array_key_exists( $diType, $this->diHandlers ) ) {
 			switch ( $diType ) {
 				case SMWDataItem::TYPE_NUMBER:
-					$this->diHandlers[$diType] =  new SMWDIHandlerNumber( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerNumber( $this );
 					break;
 				case SMWDataItem::TYPE_STRING:
-					$this->diHandlers[$diType] =  new SMWDIHandlerString( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerString( $this );
 					break;
 				case SMWDataItem::TYPE_BLOB:
-					$this->diHandlers[$diType] =  new SMWDIHandlerBlob( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerBlob( $this );
 					break;
 				case SMWDataItem::TYPE_BOOLEAN:
-					$this->diHandlers[$diType] =  new SMWDIHandlerBoolean( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerBoolean( $this );
 					break;
 				case SMWDataItem::TYPE_URI:
-					$this->diHandlers[$diType] =  new SMWDIHandlerUri( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerUri( $this );
 					break;
 				case SMWDataItem::TYPE_TIME:
-					$this->diHandlers[$diType] =  new SMWDIHandlerTime( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerTime( $this );
 					break;
 				case SMWDataItem::TYPE_GEO:
-					$this->diHandlers[$diType] =  new SMWDIHandlerGeoCoord( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerGeoCoord( $this );
 					break;
 				case SMWDataItem::TYPE_CONTAINER:
-					$this->diHandlers[$diType] =  new SMWDIHandlerContainer( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerContainer( $this );
 					break;
 				case SMWDataItem::TYPE_WIKIPAGE:
-					$this->diHandlers[$diType] =  new SMWDIHandlerWikiPage( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerWikiPage( $this );
 					break;
 				case SMWDataItem::TYPE_CONCEPT:
-					$this->diHandlers[$diType] =  new SMWDIHandlerConcept( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerConcept( $this );
 					break;
 				case SMWDataItem::TYPE_PROPERTY:
-					$this->diHandlers[$diType] =  new SMWDIHandlerProperty( $this );
+					$this->diHandlers[$diType] = new SMWDIHandlerProperty( $this );
 					break;
+				case SMWDataItem::TYPE_ERROR:
+					throw new MWException( "There is no DI handler for SMWDataItem::TYPE_ERROR." );
 				default:
 					throw new MWException( "The value \"$diType\" is not a valid dataitem ID." );
 			}
@@ -401,7 +377,7 @@ class SMWSQLStore3 extends SMWStore {
 		wfProfileIn( 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
 
 		$db = wfGetDB( DB_SLAVE );
-		$cid = $this->getSMWPageID( $concept->getDBkey(), $concept->getNamespace(), '', '', false );
+		$cid = $this->smwIds->getSMWPageID( $concept->getDBkey(), $concept->getNamespace(), '', '', false );
 
 		$row = $db->selectRow( 'smw_conc',
 		         array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ),
@@ -664,13 +640,18 @@ class SMWSQLStore3 extends SMWStore {
 
 	/**
 	 * Find the id of a property table that is normally used to store
-	 * data items of the given type.
+	 * data items of the given type. The empty string is returned if
+	 * no such table exists.
 	 *
 	 * @param $dataItemId integer
 	 * @return string
 	 */
 	public static function findDiTypeTableId( $dataItemId ) {
-		return self::$di_type_tables[$dataItemId];
+		if ( array_key_exists( $dataItemId, self::$di_type_tables ) ) {
+			return self::$di_type_tables[$dataItemId];
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -721,237 +702,6 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public static function findFixedPropertyTableID( $propertyLabel ) {
 		return 'smw_fixedproptable'.hash( 'md5' , $propertyLabel );
-	}
-
-	/**
-	 * Find the numeric ID used for the page of the given title and namespace.
-	 * If $canonical is set to true, redirects are taken into account to find
-	 * the canonical alias ID for the given page. If no such ID exists, 0 is
-	 * returned.
-	 */
-	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true ) {
-		global $smwgQEqualitySupport;
-
-		$id = $this->m_idCache->getId( $title, $namespace, $iw, $subobjectName );
-		if ( $id == 0 && $smwgQEqualitySupport != SMW_EQ_NONE
-			&& $subobjectName === '' && $iw === '' ) {
-			$iw = SMW_SQL3_SMWREDIIW;
-			$id = $this->m_idCache->getId( $title, $namespace, SMW_SQL3_SMWREDIIW, $subobjectName );
-		}
-
-		if ( $id == 0 || !$canonical || $iw != SMW_SQL3_SMWREDIIW ) {
-			return $id;
-		} else {
-			$rediId = $this->getRedirectId( $title, $namespace );
-			return $rediId != 0 ? $rediId : $id; // fallback for inconsistent redirect info
-		}
-	}
-
-	/**
-	 * Like getSMWPageID(), but also sets the Call-By-Ref parameter $sort to
-	 * the current sortkey.
-	 */
-	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sort, $canonical ) {
-		wfProfileIn( 'SMWSQLStore3::getSMWPageID (SMW)' );
-
-		global $smwgQEqualitySupport;
-
-		$db = wfGetDB( DB_SLAVE );
-
-		if ( $iw !== '' && !is_null( $iw ) ) { // external page; no need to think about redirects
-			$iwCond = 'smw_iw=' . $db->addQuotes( $iw );
-		} else {
-			$iwCond = '(smw_iw=' . $db->addQuotes( '' ) .
-				' OR smw_iw=' . $db->addQuotes( SMW_SQL3_SMWREDIIW ) . ')';
-		}
-
-		$row = $db->selectRow( 'smw_ids', array( 'smw_id', 'smw_iw', 'smw_sortkey' ),
-			'smw_title=' . $db->addQuotes( $title ) .
-			' AND smw_namespace=' . $db->addQuotes( $namespace ) .
-			" AND $iwCond AND smw_subobject=" . $db->addQuotes( $subobjectName ),
-			__METHOD__ );
-
-		if ( $row !== false ) {
-			$sort = $row->smw_sortkey;
-			$this->m_idCache->setId( $title, $namespace, $row->smw_iw, $subobjectName, $row->smw_id );
-
-			if ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $canonical &&
-				$subobjectName === '' && $smwgQEqualitySupport != SMW_EQ_NONE ) {
-				$id = $this->getRedirectId( $title, $namespace );
-				$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, 0 );
-			} else {
-				$id = $row->smw_id;
-			}
-		} else {
-			$id = 0;
-			$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, 0 );
-		}
-
-		wfProfileOut( 'SMWSQLStore3::getSMWPageID (SMW)' );
-		return $id;
-	}
-
-	public function getRedirectId( $title, $namespace ) {
-		$db = wfGetDB( DB_SLAVE );
-		$row = $db->selectRow( 'smw_redi', 'o_id',
-			array( 's_title' => $title, 's_namespace' => $namespace ), __METHOD__ );
-		return ( $row === false ) ? 0 : $row->o_id;
-	}
-
-	/**
-	 * Find the numeric ID used for the page of the given title and namespace.
-	 * If $canonical is set to true, redirects are taken into account to find
-	 * the canonical alias ID for the given page. If no such ID exists, a new
-	 * ID is created and returned. In any case, the current sortkey is set to
-	 * the given one unless $sortkey is empty.
-	 * @note Using this with $canonical==false can make sense, especially when
-	 * the title is a redirect target (we do not want chains of redirects).
-	 * But it is of no relevance if the title does not have an id yet.
-	 */
-	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '' ) {
-		wfProfileIn( 'SMWSQLStore3::makeSMWPageID (SMW)' );
-
-		$oldsort = '';
-		if ( $sortkey !== '' ) { // get the old sortkey (requires DB access):
-			$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical );
-		} else { // only get the id, can use caches:
-			$id = $this->getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical );
-		}
-
-		if ( $id == 0 ) {
-			$db = wfGetDB( DB_MASTER );
-			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
-
-			$db->insert(
-				'smw_ids',
-				array(
-					'smw_id' => $db->nextSequenceValue( 'smw_ids_smw_id_seq' ),
-					'smw_title' => $title,
-					'smw_namespace' => $namespace,
-					'smw_iw' => $iw,
-					'smw_subobject' => $subobjectName,
-					'smw_sortkey' => $sortkey
-				),
-				__METHOD__
-			);
-
-			$id = $db->insertId();
-
-			// Properties also need to be in smw_stats
-			if( $namespace == SMW_NS_PROPERTY ) {
-				$db->insert(
-					'smw_stats',
-					array(
-						'pid' => $id,
-						'usage_count' => 0
-					),
-					__METHOD__
-				);
-			}
-			$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, $id );
-		} elseif ( ( $sortkey !== '' ) && ( $sortkey != $oldsort ) ) {
-			$db = wfGetDB( DB_MASTER );
-			$db->update( 'smw_ids', array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
-		}
-
-		wfProfileOut( 'SMWSQLStore3::makeSMWPageID (SMW)' );
-		return $id;
-	}
-
-	/**
-	 * Properties have a mechanisms for being predefined (i.e. in PHP instead
-	 * of in wiki). Special "interwiki" prefixes separate the ids of such
-	 * predefined properties from the ids for the current pages (which may,
-	 * e.g., be moved, while the predefined object is not movable).
-	 */
-	public function getPropertyInterwiki( SMWDIProperty $property ) {
-		return ( $property->getLabel() !== '' ) ? '' : SMW_SQL3_SMWINTDEFIW;
-	}
-
-	/**
-	 * This function does the same as getSMWPageID() but takes into account
-	 * that properties might be predefined.
-	 */
-	public function getSMWPropertyID( SMWDIProperty $property ) {
-		if ( ( !$property->isUserDefined() ) && ( array_key_exists( $property->getKey(), self::$special_ids ) ) ) {
-			return self::$special_ids[$property->getKey()]; // very important property with fixed id
-		} else {
-			return $this->getSMWPageID( $property->getKey(), SMW_NS_PROPERTY, $this->getPropertyInterwiki( $property ), '', true );
-		}
-	}
-
-	/**
-	 * This function does the same as makeSMWPageID() but takes into account
-	 * that properties might be predefined.
-	 */
-	public function makeSMWPropertyID( SMWDIProperty $property ) {
-		if ( ( !$property->isUserDefined() ) && ( array_key_exists( $property->getKey(), self::$special_ids ) ) ) {
-			return self::$special_ids[$property->getKey()]; // very important property with fixed id
-		} else {
-			return $this->makeSMWPageID( $property->getKey(), SMW_NS_PROPERTY,
-				$this->getPropertyInterwiki( $property ), '', true, $property->getLabel() );
-		}
-	}
-
-	/**
-	 * Extend the ID cache as specified. This is called in places where IDs are
-	 * retrieved by SQL queries and it would be a pity to throw them away. This
-	 * function expects to get the contents of a row in smw_ids, i.e. possibly
-	 * with iw being SMW_SQL3_SMWREDIIW. This information is used to determine
-	 * whether the given ID is canonical or not.
-	 */
-	public function cacheSMWPageID( $id, $title, $namespace, $iw, $subobjectName ) {
-		$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, $id );
-	}
-
-	/**
-	 * Change an internal id to another value. If no target value is given, the
-	 * value is changed to become the last id entry (based on the automatic id
-	 * increment of the database). Whatever currently occupies this id will be
-	 * moved consistently in all relevant tables. Whatever currently occupies
-	 * the target id will be ignored (it should be ensured that nothing is
-	 * moved to an id that is still in use somewhere).
-	 */
-	public function moveSMWPageID( $curid, $targetid = 0 ) {
-		$db = wfGetDB( DB_MASTER );
-
-		$row = $db->selectRow( 'smw_ids', '*', array( 'smw_id' => $curid ), __METHOD__ );
-
-		if ( $row === false ) return; // no id at current position, ignore
-
-		if ( $targetid == 0 ) { // append new id
-			$db->insert(
-				'smw_ids',
-				array(
-					'smw_id' => $db->nextSequenceValue( 'smw_ids_smw_id_seq' ),
-					'smw_title' => $row->smw_title,
-					'smw_namespace' => $row->smw_namespace,
-					'smw_iw' => $row->smw_iw,
-					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey
-				),
-				__METHOD__
-			);
-			$targetid = $db->insertId();
-		} else { // change to given id
-			$db->insert( 'smw_ids',
-				array( 'smw_id' => $targetid,
-					'smw_title' => $row->smw_title,
-					'smw_namespace' => $row->smw_namespace,
-					'smw_iw' => $row->smw_iw,
-					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey
-				),
-				__METHOD__
-			);
-		}
-
-		$db->delete( 'smw_ids', array( 'smw_id' => $curid ), 'SMWSQLStore3::moveSMWPageID' );
-
-		$this->m_idCache->setId( $row->smw_title, $row->smw_namespace, $row->smw_iw,
-			$row->smw_subobject, $targetid );
-
-		$this->changeSMWPageID( $curid, $targetid, $row->smw_namespace, $row->smw_namespace );
 	}
 
 	/**
