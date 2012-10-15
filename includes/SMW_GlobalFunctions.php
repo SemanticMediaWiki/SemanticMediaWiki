@@ -253,21 +253,13 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
 			$errorList = '<ul>' . implode( $seperator, $messages ) . '</ul>';
 		}
 
-		// Tooltip
-		return Html::rawElement(
-			'span',
-			array( 'class' => 'smwttpersist' ),
-			Html::element(
-				'span',
-				array( 'class' => 'smwtticon ' . htmlspecialchars( $icon ), 'data-type' => htmlspecialchars( $icon ) ),
-				null
-			) .
-			Html::rawElement(
-				'span',
-				array( 'class' => 'smwttcontent' ),
-				$errorList
-			)
-		);
+		return smwfContextHighlighter( array (
+			'context' => 'persitent',
+			'class'   => 'smwtticon ' . htmlspecialchars( $icon ),
+			'type'    => htmlspecialchars( $icon ),
+			'title'   => null,
+			'content' => $errorList
+		) );
 	} else {
 		return '';
 	}
@@ -339,4 +331,45 @@ function smwfGetLinker() {
 	}
 
 	return $linker;
+}
+
+/**
+ * Provide a consistent interface for context hightlighting.
+ *
+ * Escaping should be dealt with before calling this function to ensure proper
+ * handling of html encoded strings
+ *
+ * @var options
+ * context = described as either inline or persitent
+ * title   = a text or null
+ * class   = assigned class which will control if an icon is displayed or not
+ * type    = identifies the entity type
+ * content = ...
+ *
+ * @since 1.8
+ *
+ * @param array options
+ *
+ * @return string
+ */
+function smwfContextHighlighter( array $opions ) {
+	// Load RL module
+	SMWOutputs::requireResource( 'ext.smw.tooltips' );
+
+	// Tooltip
+	return Html::rawElement(
+		'span',
+		array(
+			'class' => $opions['context'] === 'inline' ? 'smwttinline' : 'smwttpersist' ,
+			'data-type' => $opions['type'],
+			'data-context' => $opions['context']
+		), Html::rawElement(
+			'span',
+			array( 'class' => $opions['class'] ),
+			$opions['title']
+			) . Html::rawElement(
+				'span',
+				array( 'class' => 'smwttcontent'), $opions['content']
+				)
+	);
 }

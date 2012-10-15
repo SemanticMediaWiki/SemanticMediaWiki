@@ -268,23 +268,13 @@ class SMWPropertyValue extends SMWDataValue {
 		if ( $this->m_dataitem->isUserDefined() ) {
 			return $text;
 		} else {
-			SMWOutputs::requireResource( 'ext.smw.tooltips' );
-
-			// Tooltip
-			return Html::rawElement(
-				'span',
-				array( 'class' => 'smwttinline' ),
-				Html::rawElement(
-					'span',
-					array( 'class' => 'smwbuiltin', 'data-type' => 'property' ),
-					$text
-				) .
-				Html::element(
-					'span',
-					array( 'class' => 'smwttcontent' ),
-					wfMessage( 'smw_isspecprop' )->inContentLanguage()->text()
-				)
-			);
+			return smwfContextHighlighter( array (
+				'context' => 'inline',
+				'class'   => 'smwbuiltin',
+				'type'    => 'property',
+				'title'   => $text,
+				'content' => wfMessage( 'smw_isspecprop' )->inContentLanguage()->text()
+			) );
 		}
 	}
 

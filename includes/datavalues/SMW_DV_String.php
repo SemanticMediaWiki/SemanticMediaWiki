@@ -117,19 +117,13 @@ class SMWStringValue extends SMWDataValue {
 			if ( is_null( $linked ) || ( $linked === false ) ) {
 				return mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">…</span> ' . mb_substr( $value, $len - 42 );
 			} else {
-				SMWOutputs::requireResource( 'ext.smw.tooltips' );
-				// Tooltip info link
-				// $value has been escaped using smwfXMLContentEncode
-				return mb_substr( $value , 0, 42 ) .
-					Html::rawElement(
-					'span',
-					array( 'class' => 'smwttpersist' ),
-					 ' … ' .
-					Html::rawElement(
-						'span',
-						array( 'class' => 'smwttcontent', 'data-type' => 'string' ),
-						$value
-					) ) . mb_substr( $value, $len - 42 );
+				return mb_substr( $value , 0, 42 ) . smwfContextHighlighter( array (
+					'context' => 'persistent',
+					'class'   => 'smwtext',
+					'type'    => 'string',
+					'title'   => ' … ',
+					'content' => $value
+				) ) . mb_substr( $value, $len - 42 );
 			}
 		} elseif ( $this->m_typeid == '_cod' ) {
 			return $this->getCodeDisplay( $value, true );

@@ -19,6 +19,8 @@
 
 	////////////////////////// PRIVATE METHODS ////////////////////////
 
+	var tooltip = new smw.util.tooltip();
+
 	/**
 	 * Support functions
 	 *
@@ -41,10 +43,11 @@
 		// Tooltip
 		tooltip: function(){
 			$( '.smw-ask-info' ).each( function(){
-				$( this ).smwTooltip( {
+				tooltip.show( {
+					context: $( this ),
 					content: $( this ).data( 'info' ),
-					title: mw.msg( 'smw-ui-tooltip-title-parameter' ),
-					button: false
+					title  : mw.msg( 'smw-ui-tooltip-title-parameter' ),
+					button : false
 				} );
 			} );
 		},

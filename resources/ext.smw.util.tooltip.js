@@ -73,6 +73,22 @@
 		);
 	}
 
+	/**
+	 * Get title message
+	 *
+	 * @var type
+	 * @return string
+	 */
+	function _getTitle( type ){
+		switch( type ){
+			case 'quantity': return 'smw-ui-tooltip-title-quantity';
+			case 'property': return 'smw-ui-tooltip-title-property';
+			case 'service' : return 'smw-ui-tooltip-title-service';
+			case 'warning' : return 'smw-ui-tooltip-title-warning';
+		default: return 'smw-ui-tooltip-title-info';
+		}
+	}
+
 	////////////////////////// PUBLIC METHODS ////////////////////////
 
 	/**
@@ -140,8 +156,6 @@
 		}
 	};
 
-
-
 	////////
 	// @todo keep this one for now, as long as modules in SRF rely on it and only
 	// after they have been updated below can vanish
@@ -187,54 +201,23 @@
 		// Class reference
 		var tooltip = new smw.util.tooltip();
 
-		// Mostly used for special properties and quantity conversions
-		$( '.smwttinline' ).each( function() {
-			var $this = $( this );
-
-			// Tooltip instance
-			tooltip.show( {
-				context: $this,
-				content: $this.find( '.smwttcontent' ),
-				title  : $this.data( 'type' ) === 'quantity' ? mw.msg( 'smw-ui-tooltip-title-quantity' ) : mw.msg( 'smw-ui-tooltip-title-property' ),
-				button : false
-			} );
-
-		} );
-
-		// Tooltip with extended interactions for service links, info, and error messages
-		$( '.smwttpersist' ).each( function() {
-
-			// Using a click event instead to trigger the tooltip
-			var event = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined;
+		// Inline mostly used for special properties and quantity conversions
+		// Persistent extends interactions for service links, info, and error messages
+		$( '.smwttpersist,.smwttinline' ).each( function() {
 
 			// Standard configuration
 			var $this = $( this ),
-				content = $this.find( '.smwttcontent' ),
-				title = mw.msg( 'smw-ui-tooltip-title-info' ),
-				button = true; // Display close button
+				event   = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined,
+				context = $this.data( 'context' ),
+				type    = $this.data( 'type' );
 
-			// Find icon reference where it exists
-			$this.find( '.smwtticon' ).each( function() {
-
-				// Change title in accordance with its type
-				var type = $( this ).data( 'type' );
-				if ( type === 'service' ){
-					title = mw.msg( 'smw-ui-tooltip-title-service' );
-				} else if ( type === 'warning' ) {
-					title = mw.msg( 'smw-ui-tooltip-title-warning' );
-					button = false; // No close button
-				} else {
-					title = mw.msg( 'smw-ui-tooltip-title-info' );
-				}
-			} );
-
-			// Tooltip instance
+			// Call instance
 			tooltip.show( {
 				context: $this,
-				content: content,
-				title  : title,
+				content: $this.find( '.smwttcontent' ),
+				title  : mw.msg( _getTitle( type ) ),
 				event  : event,
-				button : button
+				button : type === 'warning' || context === 'inline' ? false /* No close button */ : true
 			} );
 
 		} );
