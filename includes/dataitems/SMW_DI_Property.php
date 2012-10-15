@@ -207,7 +207,12 @@ class SMWDIProperty extends SMWDataItem {
 					if ( $typeDataItem instanceof SMWDIUri ) {
 						$this->m_proptypeid = $typeDataItem->getFragment();
 					} else {
-						$this->m_proptypeid = '__err';
+						$this->m_proptypeid = $smwgPDefaultType;
+						// This is important. If a page has an invalid assignment to "has type", no
+						// value will be stored, so the elseif case below occurs. But if the value
+						// is retrieved within the same run, then the error value for "has type" is
+						// cached and thus this case occurs. This is why it is important to tolerate
+						// this case -- it is not necessarily a DB error.
 					}
 				} elseif ( count( $typearray ) == 0 ) { // no type given
 					$this->m_proptypeid = $smwgPDefaultType;
