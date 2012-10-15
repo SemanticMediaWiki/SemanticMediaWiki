@@ -56,53 +56,7 @@ Class SMWSQLStore3Writers {
 	}
 
 	/**
-	* Method to get all subobjects for a given subject.
-	*
-	* since SMW 1.8
-	* @param SMWDIWikiPage
-	*
-	* @return array of smw_id => SMWDIWikiPage
-	*/
-	protected function getSubobjects( SMWDIWikiPage $subject ) {
-		$dbr = wfGetDB( DB_SLAVE );
-		$res = $dbr->select( 'smw_ids',
-			'*',
-			'smw_title = ' . $dbr->addQuotes( $subject->getDBkey() ) . ' AND ' .
-				'smw_namespace = ' . $dbr->addQuotes( $subject->getNamespace() ) . ' AND ' .
-				'smw_iw = ' . $dbr->addQuotes( $subject->getInterwiki() ) . ' AND ' .
-				'smw_subobject != ' . $dbr->addQuotes( '' ),
-			__METHOD__
-		);
-		$subobjects = array();
-
-		foreach ( $res as $row ) {
-					$subobjects[$row->smw_id] = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw, $row->smw_subobject );
-		}
-
-		$dbr->freeResult( $res );
-		return $subobjects;
-	}
-
-	/**
-	* Method to handle subobjects for doDataUpdate.
-	*
-	* since SMW 1.8
-	* @param array of subobject->SMWSemanticData
-	*/
-	protected function updateSubobjects( $subject, $containers ) {
-		foreach( $containers as $subobject => $container ) {
-			$this->doDataUpdate( $container );
-		}
-		$subobjects = $this->getSubobjects( $subject );
-		foreach( $subobjects as $smw_id => $subobject ) {
-			if( !array_key_exists( $subobject->getSubobjectName(), $containers ) ) {
-				$this->deleteSemanticData( $subobject );
-			}
-		}
-		//TODO run delete job (this should find out what ids are not needed and delete them)
-	}
-
-	/**
+	 * TODO - Handle containers, delete them from tables (how to use proptable hashes here?)
 	 * @see SMWStore::doDataUpdate
 	 *
 	 * @param SMWSemanticData $data
@@ -112,6 +66,7 @@ Class SMWSQLStore3Writers {
 		wfRunHooks( 'SMWSQLStore3::updateDataBefore', array( $this->store, $data ) );
 
 		$subject = $data->getSubject();
+
 		$redirects = $data->getPropertyValues( new SMWDIProperty( '_REDI' ) );
 		if ( count( $redirects ) > 0 ) {
 			$redirect = end( $redirects ); // at most one redirect per page
@@ -133,8 +88,9 @@ Class SMWSQLStore3Writers {
 		// Always make an ID (pages without ID cannot be in query results, not even in fixed value queries!):
 		$sid = $this->store->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
 
-		if( $subject->getSubobjectName() == '' ) {
-			$this->updateSubobjects( $subject, $data->getSubSemanticData() );
+		// recursively update Subobjects
+		foreach ( $data->getPropertyValues( new SMWDIProperty( '_SOBJ' ) ) as $di ) {
+			$this->doDataUpdate( $di->getSemanticData() );
 		}
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		$this->prepareDBUpdates( $updates, $data, $sid, $subject );
@@ -477,13 +433,34 @@ Class SMWSQLStore3Writers {
 		}
 
 		// also find subobjects used by this ID ...
-		$oldSubobjects = $this->getSubobjects( $subject );
+		$res = $db->select( 'smw_ids', '*',
+			'smw_title = ' . $db->addQuotes( $subject->getDBkey() ) . ' AND ' .
+			'smw_namespace = ' . $db->addQuotes( $subject->getNamespace() ) . ' AND ' .
+			'smw_iw = ' . $db->addQuotes( $subject->getInterwiki() ) . ' AND ' .
+			'smw_subobject != ' . $db->addQuotes( '' ),
+// The below code can be used instead when moving to MW 1.17 (support for '!' in Database::makeList()):
+// 			array( 'smw_title' => $subject->getDBkey(),
+// 				'smw_namespace' => $subject->getNamespace(),
+// 				'smw_iw' => $subject->getInterwiki(),
+// 				'smw_subobject!' => array( '' ) ), // ! (NOT) in MW only supported for array values!
+			__METHOD__ );
+		$subobjects = array();
 
-		// ... and delete their data as well recursively
-		foreach ( $oldSubobjects as $subobject ) {
-			$this->deleteSemanticData( $subobject );
+		// ... and delete there data as well recursively
+		foreach ( $res as $row ) {
+			$this->deleteSemanticData( new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw, $row->smw_subobject ) );
+			$subobjects[] = $row->smw_id;
 		}
-		//TODO: delete all unused subobjects
+
+		$db->freeResult( $res );
+
+		// delete all subobjects used in one call:
+		if ( count( $subobjects ) > 0 ) {
+			$db->delete( 'smw_ids',
+				array( 'smw_id' => $subobjects),
+				__METHOD__ );
+		}
+
 		wfRunHooks( 'smwDeleteSemanticData', array( $subject ) );
 	}
 

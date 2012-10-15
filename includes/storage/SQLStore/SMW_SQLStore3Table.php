@@ -73,7 +73,7 @@ class SMWSQLStore3Table {
 	*
 	* @return array
 	*/
-	public function getFields( SMWSQLStore3 $store ) {
+	public function getFields( $store ) {
 		$diHandler = $store->getDataItemHandlerForDIType( $this->diType );
 		return $diHandler->getTableFields();
 	}
