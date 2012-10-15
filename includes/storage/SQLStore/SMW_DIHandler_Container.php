@@ -91,7 +91,7 @@ class SMWDIHandlerContainer extends SMWDataItemHandler {
 		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
 		$diSubWikiPage = $diHandler->dataItemFromDBKeys( $dbkeys );
 		$semanticData = new SMWContainerSemanticData( $diSubWikiPage );
-		$semanticData->copyDataFrom( $store3->getSemanticData( $diSubWikiPage ) );
+		$semanticData->copyDataFrom( $this->store->getSemanticData( $diSubWikiPage ) );
 		return new SMWDIContainer( $semanticData );
 	}
 }
