@@ -3,7 +3,7 @@
  * @see http://www.semantic-mediawiki.org/wiki/Help:Tooltip
  *
  * @since 1.8
- * @release 0.3
+ * @release 0.3.1
  *
  * @file
  * @ingroup SMW
@@ -53,9 +53,9 @@
 				}
 			},
 			classes: {
-				iconClass: 'smwtticon',
+				targetClass: 'smwtticon',
 				contentClass: 'smwttcontent',
-				entityClass: 'smwttpersist'
+				contextClass: 'smwttpersist'
 			}
 	};
 
@@ -66,9 +66,9 @@
 	 * @return string
 	 */
 	function _getHTMLElement( options ){
-		return h.element( 'span', { 'class' : options.entityClass },
+		return h.element( 'span', { 'class' : options.contextClass, 'data-type': options.type },
 			new h.Raw(
-				h.element( 'span', { 'class' : options.iconClass, 'data-type': options.type }, null ) +
+				h.element( 'span', { 'class' : options.targetClass }, null ) +
 				h.element( 'span', { 'class' : options.contentClass }, new h.Raw( options.content ) ) )
 		);
 	}
@@ -110,6 +110,12 @@
 		 * @since 1.8
 		 */
 		show: function( options ) {
+
+			// Check context
+			if ( options.context === undefined ){
+				return $.error( 'smw.util.tooltip show method is missing a context object' );
+			}
+
 			return options.context.each( function() {
 				$( this ).qtip( $.extend( {}, defaults.qtip, {
 					hide: options.button ? 'unfocus' : undefined,
@@ -144,55 +150,19 @@
 			var $this = option.context;
 
 			// Append element
-			$this.prepend( _getHTMLElement( options ) );
+			$this.prepend( _getHTMLElement( option ) );
 
-			// Ensure the rigth scope and use the icon as hoover/click element
-			// The class [] selector is not the fastest but the safest otherwise if spaces are
-			// used in the class definition it will break the selection
-			this.show.call(
-				$this.find( "[class='" + option.iconClass + "']" ),
-				$.extend( true, options, { content: $this.find( "[class='" + option.contentClass + "']" ) } )
+			// Ensure that the right context is used as hoover/click element
+			// The class [] selector is not the fastest but the safest otherwise if
+			// spaces are used in the class definition it will break the selection
+			this.show.call( this,
+				$.extend( true, options, {
+					context: $this.find( "[class='" + option.targetClass + "']" ),
+					content: $this.find( "[class='" + option.contentClass + "']" )
+				} )
 			);
 		}
 	};
-
-	////////
-	// @todo keep this one for now, as long as modules in SRF rely on it and only
-	// after they have been updated below can vanish
-	var methods = {
-		init : function( options ) {
-			return this.each( function() {
-				var tooltip  = new smw.util.tooltip();
-
-				// Tooltip instance
-				tooltip.show( {
-					context: $( this ),
-					content: options.content,
-					title: options.title,
-					button: options.button
-				} );
-			} );
-		},
-		add : function( options ) {
-			var tooltip  = new smw.util.tooltip();
-
-			// Tooltip instance
-			tooltip.add( $.extend( true, options, { context: this } ) );
-		}
-	};
-
-	// Extends jquery
-	$.fn.smwTooltip = function( method ) {
-
-		if ( methods[method] ) {
-			return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-		} else if ( typeof method === 'object' || ! method ) {
-			return methods.init.apply( this, arguments );
-		} else {
-			$.error( 'Method ' +  method + ' does not exist on smwTooltip' );
-		}
-	};
-	////////
 
 	/////////////////////////////// DOM //////////////////////////////
 
