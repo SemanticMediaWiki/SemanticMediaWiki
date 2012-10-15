@@ -62,7 +62,10 @@ $wgResourceModules['ext.jquery.qtip'] = $moduleTemplate + array(
 $wgResourceModules['ext.smw.tooltip'] = $moduleTemplate + array(
 	'scripts' => 'resources/ext.smw.util.tooltip.js',
 	'styles' => 'resources/ext.smw.util.tooltip.css',
-	'dependencies' => 'ext.jquery.qtip',
+	'dependencies' => array(
+		'ext.smw',
+		'ext.jquery.qtip'
+	),
 	'messages' => array(
 		'smw-ui-tooltip-title-property',
 		'smw-ui-tooltip-title-quantity',
