@@ -12,8 +12,12 @@
 
 /**
  * Class for representing chunks of semantic data for one given
- * article (subject), similar what is typically displayed in the Factbox.
- * This is a light-weight data container.
+ * subject. This consists of property-value pairs, grouped by property,
+ * and possibly by SMWSemanticData objects about subobjects.
+ *
+ * Data about subobjects can be added in two ways: by directly adding it
+ * using addSubSemanticData() or by adding a property value of type
+ * SMWDIContainer.
  *
  * By its very design, the container is unable to hold inverse properties.
  * For one thing, it would not be possible to identify them with mere keys.
@@ -95,7 +99,8 @@ class SMWSemanticData {
 	protected $mSubject;
 
 	/**
-	 * subSemanticData objects associated with this SemanticData
+	 * Semantic data associated to subobjects of the subject of this
+	 * SMWSemanticData.
 	 * These key-value pairs of subObjectName (string) =>SMWSemanticData.
 	 *
 	 * @since 1.8
@@ -365,28 +370,33 @@ class SMWSemanticData {
 
 	/**
 	 * Return true if this SemanticData is empty.
-	 * Assumes that the mProperties array is always
-	 * made empty when there is no data in mPropVals
+	 * This is the case when the subject has neither property values nor
+	 * data for subobjects.
 	 *
 	 * since 1.8
 	 * @return boolean
 	 */
 	public function isEmpty() {
-		return $this->mProperties == array() && $this->subSemanticData == array();
+		return empty( $this->mProperties ) && empty( $this->subSemanticData );
 	}
 
 	/**
 	 * Add all data from the given SMWSemanticData.
+	 * Only works if the imported SMWSemanticData has the same subject as
+	 * this SMWSemanticData; an exception is thrown otherwise.
 	 *
 	 * @since 1.7
+	 * @throws MWException if subjects do not match
 	 *
 	 * @param $semanticData SMWSemanticData object to copy from
 	 */
 	public function importDataFrom( SMWSemanticData $semanticData ) {
-		// drop if subjects don't match. Different subjects don't have their subSemanticData compatible to each other
-		if( !$this->mSubject->equals( $semanticData->getSubject() ) )
-			return;
-		// Shortcut when copying into empty objects that don't ask for more duplicate elimination:
+		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
+			throw new MWException( "SMWSemanticData can only represent data about one subject. Importing data for another subject is not possible." );
+		}
+
+		// Shortcut when copying into empty objects that don't ask for
+		// more duplicate elimination:
 		if ( count( $this->mProperties ) == 0 &&
 		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
 			$this->mProperties = $semanticData->getProperties();
@@ -404,21 +414,27 @@ class SMWSemanticData {
 				}
 			}
 		}
+
 		foreach( $semanticData->subSemanticData as $semData ) {
 			$this->addSubSemanticData( $semData );
 		}
 	}
 
 	/**
-	 * Removes all common data present in the given SMWSemanticData.
+	 * Removes data from the given SMWSemanticData.
+	 * If the subject of the data that is to be removed is not equal to the
+	 * subject of this SMWSemanticData, it will just be ignored (nothing to
+	 * remove). Likewise, removing data that is not present does not change
+	 * anything.
 	 *
 	 * @since 1.8
 	 *
 	 * @param $semanticData SMWSemanticData
 	 */
 	public function removeDataFrom( SMWSemanticData $semanticData ) {
-		// drop if subjects don't match. Different subjects don't have their subSemanticData compatible to each other
-		if( !$this->mSubject->equals( $semanticData->getSubject() ) )
+		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
+			return;
+		}
 		foreach ( $semanticData->getProperties() as $property ) {
 			$values = $semanticData->getPropertyValues( $property );
 			foreach ( $values as $dataItem ) {
@@ -431,19 +447,27 @@ class SMWSemanticData {
 	}
 
 	/**
-	* Method to add Container items into subSemanticData
-	* This method will merge data if they are of the same subobject.
-	* Its assumed that the container items all belong to the same subject.
+	* Add data about subobjects.
+	* Will only work if the data that is added is not about a subobject of
+	* this SMWSemanticData's subject, and the latter is not already a
+	* subobject. Otherwise an exception is thrown.
 	*
 	* @since 1.8
+	* @throws MWException if not adding data about a subobject of this data
 	* @param SMWSemanticData
 	*/
 	public function addSubSemanticData( SMWSemanticData $semanticData ) {
+		$subobjectName = $semanticData->getSubject()->getSubobjectName();
+		if ( $subobjectName == '' ) {
+			throw new MWException( "Cannot add data that is not about a subobject." );
+		}
+		if ( $this->getSubject()->getSubobjectName() != '' ) {
+			throw new MWException( "Cannot add subdata to a subobject." );
+		}
 		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
-			throw new MWException( "SubSemanticData can only be assigned for sub-objects" );
+			throw new MWException( "Data for a subobject of {$semanticData->getSubject()->getDBkey()} cannot be added to {$this->getSubject()->getDBkey()}." );
 		}
 
-		$subobjectName = $semanticData->getSubject()->getSubobjectName();
 		if( array_key_exists( $subobjectName, $this->subSemanticData ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
 		} else {
@@ -452,9 +476,10 @@ class SMWSemanticData {
 	}
 
 	/**
-	* Method to remove Container items from subSemanticData
-	* This method will remove data from the appropriate subSemanticData
-	* and delete it if its empty afterwards.
+	* Remove data about a subobject.
+	* If the removed data is not about a subobject of this object,
+	* it will silently be ignored (nothing to remove). Likewise,
+	* removing data that is not present does not change anything.
 	*
 	* @since 1.8
 	* @param SMWSemanticData
