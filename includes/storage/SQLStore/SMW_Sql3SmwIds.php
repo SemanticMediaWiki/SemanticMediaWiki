@@ -473,8 +473,16 @@ class SMWSql3SmwIds {
 		$that = self::$singleton_debug;
 		print "Executed {$that->selectrow_sort_debug} selects for sortkeys.\n";
 		print "Executed {$that->selectrow_redi_debug} selects for redirects.\n";
-		print "Regular cache hits: {$that->reghit_debug} misses: {$that->regmiss_debug} rate: " . $that->reghit_debug/$that->regmiss_debug . " cache size: " . count( $that->regular_ids ) . "\n";
-		print "Property cache hits: {$that->prophit_debug} misses: {$that->propmiss_debug} rate: " . $that->prophit_debug/$that->propmiss_debug . " cache size: " . count( $that->prop_ids ) . "\n";
+		print "Regular cache hits: {$that->reghit_debug} misses: {$that->regmiss_debug}";
+		if ( $that->regmiss_debug + $that->reghit_debug > 0 ) {
+			print " rate: " . $that->reghit_debug/( $that->regmiss_debug + $that->reghit_debug );
+		}
+		print " cache size: " . count( $that->regular_ids ) . "\n";
+		print "Property cache hits: {$that->prophit_debug} misses: {$that->propmiss_debug}";
+		if ( $that->propmiss_debug + $that->prophit_debug > 0 ) {
+			print " rate: " . $that->prophit_debug/( $that->propmiss_debug + $that->prophit_debug );
+		}
+		print " cache size: " . count( $that->prop_ids ) . "\n";
 // 		debug_zval_dump($that->prop_ids);
 	}
 
