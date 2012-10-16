@@ -109,6 +109,16 @@ class SMWSemanticData {
 	protected $subSemanticData = array();
 
 	/**
+	 * Internal flag that indicates if this semantic data will accept
+	 * subdata. Semantic data objects that are subdata already do not allow
+	 * (second level) subdata to be added. This ensures that all data is
+	 * collected on the top level, and in particular that there is only one
+	 * way to represent the same data with subdata. This is also useful for
+	 * diff computation.
+	 */
+	protected $subDataAllowed = true;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param SMWDIWikiPage $subject to which this data refers
@@ -415,7 +425,7 @@ class SMWSemanticData {
 			}
 		}
 
-		foreach( $semanticData->subSemanticData as $semData ) {
+		foreach( $semanticData->getSubSemanticData() as $semData ) {
 			$this->addSubSemanticData( $semData );
 		}
 	}
@@ -441,28 +451,29 @@ class SMWSemanticData {
 				$this->removePropertyObjectValue( $property, $dataItem );
 			}
 		}
-		foreach( $semanticData->subSemanticData as $semData ) {
+		foreach( $semanticData->getSubSemanticData() as $semData ) {
 			$this->removeSubSemanticData( $semData );
 		}
 	}
 
 	/**
 	* Add data about subobjects.
-	* Will only work if the data that is added is not about a subobject of
-	* this SMWSemanticData's subject, and the latter is not already a
-	* subobject. Otherwise an exception is thrown.
+	* Will only work if the data that is added is about a subobject of
+	* this SMWSemanticData's subject. Otherwise an exception is thrown.
+	* The SMWSemanticData object that is given will belong to this object
+	* after the operation; it should not be modified further by the caller.
 	*
 	* @since 1.8
 	* @throws MWException if not adding data about a subobject of this data
 	* @param SMWSemanticData
 	*/
 	public function addSubSemanticData( SMWSemanticData $semanticData ) {
+		if ( !$this->subDataAllowed ) {
+			throw new MWException( "Cannot add subdata. Are you trying to add data to an SMWSemanticData object that is already used as a subdata object?" );
+		}
 		$subobjectName = $semanticData->getSubject()->getSubobjectName();
 		if ( $subobjectName == '' ) {
 			throw new MWException( "Cannot add data that is not about a subobject." );
-		}
-		if ( $this->getSubject()->getSubobjectName() != '' ) {
-			throw new MWException( "Cannot add subdata to a subobject." );
 		}
 		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
 			throw new MWException( "Data for a subobject of {$semanticData->getSubject()->getDBkey()} cannot be added to {$this->getSubject()->getDBkey()}." );
@@ -471,6 +482,11 @@ class SMWSemanticData {
 		if( array_key_exists( $subobjectName, $this->subSemanticData ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
 		} else {
+			$semanticData->subDataAllowed = false;
+			foreach ( $semanticData->getSubSemanticData() as $subsubdata ) {
+				$this->addSubSemanticData( $subsubdata );
+			}
+			$semanticData->subSemanticData = array();
 			$this->subSemanticData[$subobjectName] = $semanticData;
 		}
 	}
