@@ -30,7 +30,7 @@ class SMWSql3SmwIds {
 	public $propmiss_debug = 0;
 	public $reghit_debug = 0;
 	public $regmiss_debug = 0;
-	static public $singleton_debug;
+	static public $singleton_debug = null;
 
 	/// Parent SMWSQLStore3.
 	public $store;
@@ -471,6 +471,7 @@ class SMWSql3SmwIds {
 	 */
 	public static function debugDumpCacheStats() {
 		$that = self::$singleton_debug;
+		if ( is_null( $that ) ) return;
 		print "Executed {$that->selectrow_sort_debug} selects for sortkeys.\n";
 		print "Executed {$that->selectrow_redi_debug} selects for redirects.\n";
 		print "Regular cache hits: {$that->reghit_debug} misses: {$that->regmiss_debug}";
