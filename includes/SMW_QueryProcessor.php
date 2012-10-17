@@ -293,7 +293,7 @@ class SMWQueryProcessor {
 					$label = $showmode ? '' : $wgContLang->getNSText( NS_CATEGORY ); // default
 				} else { // print property or check category
 					$title = Title::newFromText( trim( $propparts[0] ), SMW_NS_PROPERTY ); // trim needed for \n
-					if ( is_null( $title ) ) { // too bad, this is no legal property/category name, ignore
+					if ( is_null( $title ) ) { // not a legal property/category name; give up
 						continue;
 					}
 
@@ -304,6 +304,9 @@ class SMWQueryProcessor {
 					} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
 						$printmode = SMWPrintRequest::PRINT_PROP;
 						$property = SMWPropertyValue::makeUserProperty( trim( $propparts[0] ) );
+						if ( !$property->isValid() ) { // not a property; give up
+							continue;
+						}
 						$data = $property;
 						$label = $showmode ? '' : $property->getWikiValue();  // default
 					}
@@ -319,7 +322,11 @@ class SMWQueryProcessor {
 					$label = trim( $parts[1] );
 				}
 
-				$lastprintout = new SMWPrintRequest( $printmode, $label, $data, trim( $propparts[1] ) );
+				try {
+					$lastprintout = new SMWPrintRequest( $printmode, $label, $data, trim( $propparts[1] ) );
+				} catch ( InvalidArgumentException $e ) { // something still went wrong; give up
+					continue;
+				}
 				$printouts[] = $lastprintout;
 			} elseif ( $param[0] == '+' ) { // print request parameter
 				if ( !is_null( $lastprintout ) ) {
