@@ -184,7 +184,7 @@ class SMWURIValue extends SMWDataValue {
 	public function getShortWikiText( $linked = null ) {
 		$url = $this->getURL();
 		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url === '' ) || ( $this->m_caption === '' ) ) {
-			return $this->m_caption;
+			return $this->makeNonlinkedWikiText( $this->m_caption );
 		} else {
 			return '[' . $url . ' ' . $this->m_caption . ']';
 		}
@@ -206,7 +206,7 @@ class SMWURIValue extends SMWDataValue {
 		$url = $this->getURL();
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url === '' ) ) {
-			return $this->m_wikitext;
+			return $this->makeNonlinkedWikiText( $this->m_wikitext );
 		} else {
 			return '[' . $url . ' ' . $this->m_wikitext . ']';
 		}
@@ -300,6 +300,19 @@ class SMWURIValue extends SMWDataValue {
 		/ix" ; // case Insensitive, eXtended
 
 		return (bool) preg_match( $HTML5_email_regexp, $addr );
+	}
+
+	/**
+	 * Helper function that changes a URL string in such a way that it
+	 * can be used in wikitext without being turned into a hyperlink,
+	 * while still displaying the same characters. The use of
+	 * &lt;nowiki&gt; is avoided, since the resulting strings may be
+	 * inserted during parsing, after this has been stripped.
+	 * 
+	 * @since 1.8
+	 */
+	protected function makeNonlinkedWikiText( $url ) {
+		return str_replace( ':', '&#58;', $url );
 	}
 
 }
