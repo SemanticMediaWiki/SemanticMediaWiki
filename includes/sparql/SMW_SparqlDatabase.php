@@ -406,9 +406,10 @@ class SMWSparqlDatabase {
 			return $this->doHttpPost( $turtle );
 		} else {
 			$sparql = self::getPrefixString( $extraNamespaces, true ) .
-				"INSERT DATA { " .
-				( ( $this->m_defaultGraph !== '' )? "GRAPH <{$this->m_defaultGraph}> " : '' ) .
-				"{ $triples } }";
+				"INSERT DATA  " .
+				( ( $this->m_defaultGraph !== '' )? " { GRAPH <{$this->m_defaultGraph}> " : '' ) .
+				"{ $triples } " .
+				( ( $this->m_defaultGraph !== '' )? " } " : '' ) ;
 			return $this->doUpdate( $sparql );
 		}
 	}
@@ -453,6 +454,7 @@ class SMWSparqlDatabase {
 		$parameterString = "query=" . urlencode( $sparql ) .
 			( ( $this->m_defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
+		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=UTF-8'));
 
 		$xmlResult = curl_exec( $this->m_curlhandle );
 
@@ -488,6 +490,7 @@ class SMWSparqlDatabase {
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		$parameterString = "update=" . urlencode( $sparql );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
+		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=UTF-8'));
 
 		curl_exec( $this->m_curlhandle );
 
