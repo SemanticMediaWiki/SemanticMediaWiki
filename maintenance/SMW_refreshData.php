@@ -53,7 +53,7 @@ if ( isset( $options['server'] ) ) {
 }
 
 if ( array_key_exists( 'd', $options ) ) {
-	$delay = intval( $options['d'] ) * 100000; // sleep 100 times the given time, but do so only each 100 pages
+	$delay = intval( $options['d'] ) * 1000; // convert milliseconds to microseconds
 } else {
 	$delay = false;
 }
@@ -145,11 +145,13 @@ if ( $pages == false ) {
 			print "($num_files) Processing ID " . $id . " ...\n";
 		}
 		smwfGetStore()->refreshData( $id, 1, $filter, false );
-		if ( ( $delay !== false ) && ( ( $num_files + 1 ) % 100 === 0 ) ) {
+		if ( $delay !== false ) {
 			usleep( $delay );
 		}
 		$num_files++;
-		$linkCache->clear(); // avoid memory leaks
+		if ( $num_files % 100 === 0 ) { // every 100 pages only
+			$linkCache->clear(); // avoid memory leaks
+		}
 	}
 	if ( $writeToStartidfile ) {
 		file_put_contents( $options['startidfile'], "$id" );
@@ -157,21 +159,21 @@ if ( $pages == false ) {
 	print "$num_files IDs refreshed.\n";
 } else {
 	print "Refreshing specified pages!\n\n";
-	
+
 	foreach ( $pages as $page ) {
 		if ( $verbose ) {
 			print "($num_files) Processing page " . $page . " ...\n";
 		}
-		
+
 		$title = Title::newFromText( $page );
-		
+
 		if ( !is_null( $title ) ) {
 			$updatejob = new SMWUpdateJob( $title );
 			$updatejob->run();
 		}
-		
+
 		$num_files++;
 	}
-	
+
 	print "$num_files pages refreshed.\n";
 }
