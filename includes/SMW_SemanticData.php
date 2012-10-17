@@ -186,27 +186,40 @@ class SMWSemanticData {
 
 	/**
 	 * Generate a hash value to simplify the comparison of this data
-	 * container with other containers. The hash uses PHP's md5
-	 * implementation, which is among the fastest hash algorithms that
-	 * PHP offers.
+	 * container with other containers. Subdata is taken into account.
+	 * 
+	 * The hash uses PHP's md5 implementation, which is among the fastest
+	 * hash algorithms that PHP offers.
+	 * 
+	 * @note This function may be used to obtain keys for SemanticData
+	 * objects or to do simple equalitiy tests. Equal hashes with very
+	 * high probability indicate equal data. However, the hash is
+	 * sensitive to the order of properties and values, so it does not
+	 * yield a reliable way to detect inequality: objects with different
+	 * hashes may still contain the same data, added in different order.
 	 *
 	 * @return string
 	 */
 	public function getHash() {
-		$ctx = hash_init( 'md5' );
+		$stringToHash = '';
 
 		// here and below, use "_#_" to separate values; really not much care needed here
-		hash_update( $ctx, '_#_' . $this->mSubject->getSerialization() );
+		$stringToHash .= '_#_' . $this->mSubject->getSerialization();
 
 		foreach ( $this->getProperties() as $property ) {
-			hash_update( $ctx, '_#_' . $property->getKey() . '##' );
+			$stringToHash .= '_#_' . $property->getKey() . '##';
 
 			foreach ( $this->getPropertyValues( $property ) as $di ) {
-				hash_update( $ctx, '_#_' . $di->getSerialization() );
+				$stringToHash .= '_#_' . $di->getSerialization();
 			}
+			$stringToHash = md5( $stringToHash ); // intermediate hashing to safe memory
 		}
 
-		return hash_final( $ctx );
+		foreach ( $this->getSubSemanticData() as $data ) {
+			$stringToHash .= '#' . $data->getHash();
+		}
+
+		return md5( $stringToHash );
 	}
 
 	/**
