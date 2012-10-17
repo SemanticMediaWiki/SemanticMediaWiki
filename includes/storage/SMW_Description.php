@@ -362,10 +362,11 @@ class SMWNamespaceDescription extends SMWDescription {
 
 	public function getQueryString( $asvalue = false ) {
 		global $wgContLang;
+		$prefix = $this->m_namespace == NS_CATEGORY ? ':' : '';
 		if ( $asvalue ) {
-			return ' &lt;q&gt;[[' . $wgContLang->getNSText( $this->m_namespace ) . ':+]]&lt;/q&gt; ';
+			return ' &lt;q&gt;[[' . $prefix . $wgContLang->getNSText( $this->m_namespace ) . ':+]]&lt;/q&gt; ';
 		} else {
-			return '[[' . $wgContLang->getNSText( $this->m_namespace ) . ':+]]';
+			return '[[' . $prefix . $wgContLang->getNSText( $this->m_namespace ) . ':+]]';
 		}
 	}
 
