@@ -758,7 +758,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		$time = str_replace( ':', '', $this->getTimeString() );
-		return $wgContLang->timeAndDate( "$year$month$day$time", false, false );
+		return $wgContLang->timeanddate( "$year$month$day$time", false, false );
 	}
 
 	/**
