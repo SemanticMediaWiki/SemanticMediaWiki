@@ -61,7 +61,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
 			}
 
-			 $result .= wfMsgExt( 'smw_subpropertyarticlecount', array( 'parsemag' ), $resultCount ) . "</p>\n";
+			$result .= wfMessage( 'smw_subpropertyarticlecount' )->numParams( $resultCount )->text() . "</p>\n";
 
 			if ( $resultCount < 6 ) {
 				$result .= SMWPageLister::getShortList( 0, $resultCount, $subproperties, null );
@@ -106,12 +106,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
 			           '<h2>' . wfMessage( 'smw_attribute_header', $titleText )->text() . "</h2>\n<p>";
-
 			if ( !$this->mProperty->isUserDefined() ) {
 				$result .= wfMessage( 'smw_isspecprop' )->text() . ' ';
 			}
-
-			$result .= wfMsgExt( 'smw_attributearticlecount', array( 'parsemag' ), $resultNumber ) . "</p>\n" .
+			$result .= wfMessage( 'smw_attributearticlecount' )->numParams( $resultNumber )->text() . "</p>\n" .
 			           $navigation . $this->subjectObjectList( $diWikiPages ) . $navigation . "\n</div>";
 		}
 

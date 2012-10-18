@@ -86,7 +86,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
 			        '<h2>' . wfMessage( 'smw_type_header', $typeName )->text() . "</h2>\n<p>" .
-					wfMsgExt( 'smw_typearticlecount', array( 'parsemag' ), $resultNumber ) . "</p>\n" .
+					wfMessage( 'smw_typearticlecount' )->numParams( $resultNumber )->text() . "</p>\n" .
 			        $navigation . $pageLister->formatList() . $navigation . "\n</div>";
 		}
 

@@ -32,11 +32,10 @@ class SMWSpecialSemanticStatistics extends SpecialPage {
 				'page_namespace' => SMW_NS_PROPERTY
 			)
 		);
-
-		$out = wfMsgExt( 'smw_semstats_text', array( 'parse' ),
-			$wgLang->formatNum( $semanticStatistics['PROPUSES'] ), $wgLang->formatNum( $semanticStatistics['USEDPROPS'] ),
-			$wgLang->formatNum( $propertyPageAmount ), $wgLang->formatNum( $semanticStatistics['DECLPROPS'] )
-		);
+	
+		$out = wfMessage( 'smw_semstats_text' )->numParams(	$semanticStatistics['PROPUSES'],
+			$semanticStatistics['USEDPROPS'], $propertyPageAmount, $semanticStatistics['DECLPROPS']
+		)->parseAsBlock();
 	
 		$wgOut->addHTML( $out );
 	}
