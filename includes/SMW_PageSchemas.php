@@ -186,13 +186,13 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Creates the text for a property page.
 	 */
 	protected function createPropertyText( $propertyType, $allowedValues ) {
-		global $smwgContLang;
+		global $smwgContLang, $wgContLang;
 		$propLabels = $smwgContLang->getPropertyLabels();
 		$hasTypeLabel = $propLabels['_TYPE'];
 		$typeTag = "[[$hasTypeLabel::$propertyType]]";
 		$text = wfMessage( 'smw-createproperty-isproperty', $typeTag )->inContentLanguage()->text();
 		if ( $allowedValues != null) {
-			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals' )->numParams( count( $allowedValues ) )->inContentLanguage()->text();
+			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', $wgContLang->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
 			foreach ( $allowedValues as $value ) {
 				if ( method_exists( $smwgContLang, 'getPropertyLabels' ) ) {
 					$prop_labels = $smwgContLang->getPropertyLabels();
