@@ -42,9 +42,9 @@ class SMWDIBooleanTest extends DataItemTest {
 		return array(
 			array( true, false ),
 			array( true, true ),
-			array( 'SMWDataItemException', 42 ),
-			array( 'SMWDataItemException', array() ),
-			array( 'SMWDataItemException', 'ohi there' ),
+			array( false, 42 ),
+			array( false, array() ),
+			array( false, 'ohi there' ),
 		);
 	}
 

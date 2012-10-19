@@ -99,6 +99,9 @@ abstract class DataItemTest extends \MediaWikiTestCase {
 			if ( is_string( $valid ) ) {
 				$this->assertEquals( $valid, get_class( $pokemons ) );
 			}
+			else {
+				$this->assertTrue( true );
+			}
 		}
 	}
 

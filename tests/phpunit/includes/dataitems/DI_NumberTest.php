@@ -14,6 +14,7 @@ namespace SMW\Tests;
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
+ * @group SMWDINumberTest
  *
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -42,9 +43,9 @@ class SMWDINumberTest extends DataItemTest {
 		return array(
 			array( true, 0 ),
 			array( true, 243.35353 ),
-			array( 'SMWDataItemException', 'ohi there' ),
-			array( 'SMWDataItemException', array() ),
-			array( 'SMWDataItemException', true ),
+			array( false, 'ohi there' ),
+			array( false, array() ),
+			array( false, true ),
 		);
 	}
 
