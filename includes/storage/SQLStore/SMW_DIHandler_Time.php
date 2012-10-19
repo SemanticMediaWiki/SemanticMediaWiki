@@ -24,12 +24,13 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return array of indexes for a DI type
+	 * The only indexed column is the sortkey. Nothing else should be
+	 * relevant for selecting vlaues of this type.
 	 *
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'value_num', 'value_xsd' );
+		return array( 'value_num' );
 	}
 
 	/**
@@ -38,46 +39,27 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
-		$xsdvalue = $dataItem->getYear() . "/" .
-				( ( $dataItem->getPrecision() >= SMWDITime::PREC_YM ) ? $dataItem->getMonth() : '' ) . "/" .
-				( ( $dataItem->getPrecision() >= SMWDITime::PREC_YMD ) ? $dataItem->getDay() : '' ) . "T";
-		if ( $dataItem->getPrecision() == SMWDITime::PREC_YMDT ) {
-			$xsdvalue .= sprintf( "%02d", $dataItem->getHour() ) . ':' .
-					sprintf( "%02d", $dataItem->getMinute()) . ':' .
-					sprintf( "%02d", $dataItem->getSecond() );
-		}
-
-		return array(
-			'value_xsd' => $xsdvalue,
-			'value_num' => $dataItem->getSortKey()
-			);
+		return array( 'value_num' => $dataItem->getSortKey() );
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 * This array is used to perform all insert operations into the DB
-	 * To optimize return minimum fields having indexes
+	 * Method to return an array of fields=>values for a DataItem.
+	 * This array is used to perform all insert operations into the DB.
+	 * To optimize return minimum fields having indexes.
 	 *
 	 * @return array
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
-		$xsdvalue = $dataItem->getYear() . "/" .
-				( ( $dataItem->getPrecision() >= SMWDITime::PREC_YM ) ? $dataItem->getMonth() : '' ) . "/" .
-				( ( $dataItem->getPrecision() >= SMWDITime::PREC_YMD ) ? $dataItem->getDay() : '' ) . "T";
-		if ( $dataItem->getPrecision() == SMWDITime::PREC_YMDT ) {
-			$xsdvalue .= sprintf( "%02d", $dataItem->getHour() ) . ':' .
-					sprintf( "%02d", $dataItem->getMinute()) . ':' .
-					sprintf( "%02d", $dataItem->getSecond() );
-		}
-
 		return array(
-			'value_xsd' => $xsdvalue,
+			'value_xsd' => $dataItem->getSerialization(),
 			'value_num' => $dataItem->getSortKey()
 			);
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
+	 * This type is sorted by a numerical sortkey that maps time values to
+	 * a time line.
+	 *
 	 * @since 1.8
 	 * @return string
 	 */
@@ -86,13 +68,16 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * using the label
+	 * This type does not have a label. The string value that we store
+	 * internally is a technical serialisation that is not of interest for
+	 * asking queries about, in particular since this serialisation might
+	 * be changed.
+	 *
 	 * @since 1.8
 	 * @return string
 	 */
 	public function getLabelField() {
-		return 'value_xsd';
+		return '';
 	}
 
 	/**
@@ -104,26 +89,6 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		$timedate = explode( 'T', $dbkeys[0], 2 );
-		if ( ( count( $dbkeys ) == 2 ) && ( count( $timedate ) == 2 ) ) {
-			$date = reset( $timedate );
-			$year = $month = $day = $hours = $minutes = $seconds = $timeoffset = false;
-			if ( ( end( $timedate ) === '' ) ||
-				 ( SMWTimeValue::parseTimeString( end( $timedate ), $hours, $minutes, $seconds, $timeoffset ) == true ) ) {
-				$d = explode( '/', $date, 3 );
-				if ( count( $d ) == 3 ) {
-					list( $year, $month, $day ) = $d;
-				} elseif ( count( $d ) == 2 ) {
-					list( $year, $month ) = $d;
-				} elseif ( count( $d ) == 1 ) {
-					list( $year ) = $d;
-				}
-				if ( $month === '' ) $month = false;
-				if ( $day === '' ) $day = false;
-				$calendarmodel = SMWDITime::CM_GREGORIAN;
-				return new SMWDITime( $calendarmodel, $year, $month, $day, $hours, $minutes, $seconds );
-			}
-		}
-		throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+		return SMWDITime::doUnserialize( $dbkeys[0] );
 	}
 }

@@ -278,8 +278,8 @@ class SMWDITime extends SMWDataItem {
 	}
 
 	/**
-	 * Create a data item from the provided serialization string and type
-	 * ID.
+	 * Create a data item from the provided serialization string.
+	 *
 	 * @return SMWDITime
 	 */
 	public static function doUnserialize( $serialization ) {

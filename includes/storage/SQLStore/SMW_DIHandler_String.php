@@ -72,7 +72,6 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getLabelField() {
-		//What is the best choice to return here?
 		return 'value_hash';
 	}
 

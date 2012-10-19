@@ -774,12 +774,12 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
 			return ( $this->m_dataitem->getCalendarModel() == $calendarmodel ) ? $this->m_dataitem : null;
 		} elseif ( $calendarmodel == SMWDITime::CM_GREGORIAN ) {
-			if ( $this->m_dataitem_greg === null ) {
+			if ( is_null( $this->m_dataitem_greg ) ) {
 				$this->m_dataitem_greg = $this->m_dataitem->getForCalendarModel( SMWDITime::CM_GREGORIAN );
 			}
 			return $this->m_dataitem_greg;
 		} else {
-			if ( $this->m_dataitem_jul === null ) {
+			if ( is_null( $this->m_dataitem_jul ) ) {
 				$this->m_dataitem_jul = $this->m_dataitem->getForCalendarModel( SMWDITime::CM_JULIAN );
 			}
 			return $this->m_dataitem_jul;
@@ -826,21 +826,31 @@ class SMWTimeValue extends SMWDataValue {
 	 */
 	protected function getPreferredCaption() {
 		$year = $this->m_dataitem->getYear();
+		$format = strtoupper( $this->m_outformat );
 
-		if ( strtoupper( $this->m_outformat ) === 'ISO' || $this->m_outformat == '-' ) {
+		if ( $format == 'ISO' || $this->m_outformat == '-' ) {
 			return $this->getISO8601Date();
-		} elseif ( strtoupper( $this->m_outformat ) === 'MEDIAWIKI' ) {
+		} elseif ( $format == 'MEDIAWIKI' ) {
 			return $this->getMediaWikiDate();
-		} elseif ( strtoupper( $this->m_outformat ) === 'SORTKEY' ) {
+		} elseif ( $format == 'SORTKEY' ) {
 			return $this->m_dataitem->getSortKey();
-		} else {
-			if ( $year <= self::PREHISTORY ) {
-				return $this->getCaptionFromDataitem( $this->m_dataitem ); // should be Gregorian, but don't bother here
-			} elseif ( $this->m_dataitem->getJD() < self::J1582 ) {
-				return $this->getCaptionFromDataitem( $this->getDataForCalendarModel( SMWDITime::CM_JULIAN ) );
+		} elseif ( $year > self::PREHISTORY && $this->m_dataitem->getPrecision() >= SMWDITime::PREC_YM ) {
+			// Do not convert between Gregorian and Julian if only
+			// year is given (years largely overlap in history, but
+			// assuming 1 Jan as the default date, the year number
+			// would change in conversion).
+			// Also do not convert calendars in prehistory: not
+			// meaningful (getDataForCalendarModel may return null).
+			if ( ( $format == 'JL' ) ||
+				( $this->m_dataitem->getJD() < self::J1582
+				  && $format != 'GR' ) ) {
+				$model = SMWDITime::CM_JULIAN;
 			} else {
-				return $this->getCaptionFromDataitem( $this->getDataForCalendarModel( SMWDITime::CM_GREGORIAN ) );
+				$model = SMWDITime::CM_GREGORIAN;
 			}
+			return $this->getCaptionFromDataitem( $this->getDataForCalendarModel( $model ) );
+		} else {
+			return $this->getCaptionFromDataitem( $this->m_dataitem );
 		}
 	}
 }
