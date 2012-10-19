@@ -5,7 +5,7 @@
  */
 
 /**
- * This class implements Store access to CeoCoord data items.
+ * This class implements store access to SMWDIGeoCoord data items.
  *
  * @since 1.8
  *
@@ -15,84 +15,78 @@
 class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields for a DI type
+	 * Coordinates have three fields: a string version to keep the
+	 * serialized value (exact), and two floating point columns for
+	 * latitude and longitude (inexact, useful for bounding box selects).
+	 * Altitude is not stored in an extra column since no operation uses
+	 * this for anything so far.
 	 *
+	 * @see SMWDataItemHandler::getTableFields()
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'lat' => 'f', 'lon' => 'f', 'alt' => 'f' );
+		return array( 'serialized' => 't', 'lat' => 'f', 'lon' => 'f' );
 	}
 
 	/**
-	 * Method to return array of indexes for a DI type
-	 *
+	 * @see SMWDataItemHandler::getTableIndexes()
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'lat', 'lon', 'alt' );
+		return array( 'serialized', 'lat', 'lon' );
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 *
+	 * @see SMWDataItemHandler::getWhereConds()
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
-		$coordinateSet = $dataItem->getCoordinateSet();
 		return array(
-			'lat' => $coordinateSet['lat'],
-			'lon' => $coordinateSet['lon']
+			'serialized' => $dataItem->getSerialization()
 		);
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 * This array is used to perform all insert operations into the DB
-	 * To optimize return minimum fields having indexes
-	 *
+	 * @see SMWDataItemHandler::getInsertValues()
 	 * @return array
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
-		$coordinateSet = $dataItem->getCoordinateSet();
 		return array(
-			'lat' => $coordinateSet['lat'],
-			'lon' => $coordinateSet['lon']
+			'serialized' => $dataItem->getSerialization(),
+			'lat' => $dataItem->getLatitude(),
+			'lon' => $dataItem->getLongitude()
 		);
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * @since 1.8
+	 * @see SMWDataItemHandler::getIndexField()
 	 * @return string
 	 */
 	public function getIndexField() {
-		//TODO - Why use lat? why was only lat used till now?
-		return 'lat';
+		return 'serialized';
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * using the label
+	 * Coordinates do not have a general string version that
+	 * could be used for string search, so this method returns
+	 * no label column (empty string).
+	 *
+	 * @see SMWDataItemHandler::getLabelField()
 	 * @since 1.8
 	 * @return string
 	 */
 	public function getLabelField() {
-		return 'lat';
+		return '';
 	}
 
 	/**
-	 * Method to create a dataitem from an array of DB keys.
-	 *
+	 * @see SMWDataItemHandler::dataItemFromDBKeys()
 	 * @since 1.8
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		if ( count( $dbkeys ) == 2 ) {
-			return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ) );
-		} else {
-			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
-		}
+		return SMWDIGeoCoord::doUnserialize( $dbkeys[0] );
 	}
 }
