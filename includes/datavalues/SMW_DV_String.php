@@ -80,7 +80,7 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		return $this->m_dataitem->getString();
+		return $this->isValid() ? $this->m_dataitem->getString() : 'error';
 	}
 
 	public function getInfolinks() {
@@ -95,10 +95,10 @@ class SMWStringValue extends SMWDataValue {
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded string
-		if ( ( $this->m_typeid != '_txt' ) && ( $this->m_typeid != '_cod' ) ) {
+		if ( $this->isValid() ) {
 			return array( rawurlencode( $this->m_dataitem->getString() ) );
 		} else {
-			return false; // no services for Type:Text and Type:Code
+			return false;
 		}
 	}
 
