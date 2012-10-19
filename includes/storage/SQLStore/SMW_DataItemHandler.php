@@ -30,8 +30,7 @@ abstract class SMWDataItemHandler {
 		$this->store = $store;
 	}
 	/**
-	 * Method to return array of fields for a DI type
-	 * @since 1.8
+	 * Return array of fields for a DI type.
 	 *
 	 * Tables declare value columns ("object fields") by specifying their name
 	 * and type. Types are given using letters:
@@ -44,6 +43,7 @@ abstract class SMWDataItemHandler {
 	 * - p for a reference to an SMW ID as stored in the smw_ids table; this
 	 *   corresponds to a data entry of ID "tnwt".
 	 *
+	 * @since 1.8
 	 * @return array
 	 */
 	abstract public function getTableFields();
@@ -57,7 +57,15 @@ abstract class SMWDataItemHandler {
 	abstract public function getTableIndexes();
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
+	 * Return an array of fields=>values to conditions (WHERE part) in SQL
+	 * queries for the given SMWDataItem. This method can return fewer
+	 * fields than getInstertValues as long as they are enough to identify
+	 * an item for search.
+	 *
+	 * @todo Shouldn't this method always return the same result as
+	 * getInsertValues(), restricted to the column that is returned by
+	 * getIndexField()?
+	 *
 	 * @since 1.8
 	 *
 	 * @param SMWDataItem
@@ -66,10 +74,10 @@ abstract class SMWDataItemHandler {
 	abstract public function getWhereConds( SMWDataItem $dataItem );
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 * This array is used to perform all insert operations into the DB
-	 * NOTE - For Containers this only inserts the id of the container
-	 * and rest data should be handled by recursion in calling code
+	 * Return an array of fields=>values that is to be inserted when
+	 * writing the given SMWDataItem to the database. Values should be set
+	 * for all columns, even if NULL. This array is used to perform all
+	 * insert operations into the DB.
 	 *
 	 * @since 1.8
 	 *
@@ -79,32 +87,46 @@ abstract class SMWDataItemHandler {
 	abstract public function getInsertValues( SMWDataItem $dataItem );
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * Careful when modifying these; the rest of the code assumes the following
-	 * 1 - return column name if present in the same table (hence no join needed with smw_ids)
-	 * 2 - return column name of starting with 'smw' if the column is present in smw_ids (see WikiPage)
-	 * 3 - return '' if no such column exists
+	 * Return the field used to select this type of SMWDataItem. In
+	 * particular, this identifies the column that is used to sort values
+	 * of this kind.
+	 * 
+	 * The return value can be a column name or the empty string (if the
+	 * give type of SMWDataItem does not have an index field). If the
+	 * column name satarts with 'smw' it is assumed to belong to the table
+	 * smw_ids, and a join is performed to access this column.
 	 *
+	 * @todo This is not a clean way to get to smw_ids. Better handle the
+	 * case of smw_ids differently.
+	 * @todo Is it really possible to return an empty string here? Every
+	 * kind of data should be sortable, even if the order is arbitrary.
+	 * This is essential for paged retrievals.
 	 * @since 1.8
 	 * @return string
 	 */
 	abstract public function getIndexField();
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * using the label
-	 * Careful when modifying these; the rest of the code assumes the following
-	 * 1 - return column name if present in the same table (hence no join needed with smw_ids)
-	 * 2 - return column name of starting with 'smw' if the column is present in smw_ids (see WikiPage)
-	 * 3 - return '' if no such column exists
+	 * Return the label field for this type of SMWDataItem. This should be
+	 * a string column in the database table that can be used for selecting
+	 * values using criteria such as "starts with". The return value can be
+	 * empty if this is not supported. This is preferred for SMWDataItem
+	 * classes that do not have an obvious canonical string writing anyway.
 	 *
+	 * The return value can be a column name or the empty string (if the
+	 * give type of SMWDataItem does not have a label field). If the
+	 * column name satarts with 'smw' it is assumed to belong to the table
+	 * smw_ids, and a join is performed to access this column.
+	 *
+	 * @todo This is not a clean way to get to smw_ids. Better handle the
+	 * case of smw_ids differently.
 	 * @since 1.8
 	 * @return string
 	 */
 	abstract public function getLabelField();
 
 	/**
-	 * Method to create a dataitem from an array of DB keys.
+	 * Create a dataitem from an array of DB keys.
 	 * May throw an SMWDataItemException if the given DB keys
 	 * cannot be converted back into a dataitem.
 	 *
