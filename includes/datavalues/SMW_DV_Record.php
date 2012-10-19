@@ -5,10 +5,23 @@
  */
 
 /**
- * SMWDataValue implements the handling of short lists of values,
- * where the order governs the type of each entry.
+ * SMWDataValue implements the handling of small sets of property-value pairs.
+ * The declaration of Records in SMW uses the order of values to encode the
+ * property that should be used, so the user only needs to enter a list of
+ * values. Internally, however, the property-value assignments are not stored
+ * with a particular order; they will only be ordered for display, following
+ * the declaration. This is why it is not supported to have Records using the
+ * same property for more than one value.
+ *
+ * The class uses SMWDIContainer objects to return its inner state. See the
+ * documentation for SMWDIContainer for details on how this "pseudo" data
+ * encapsulated many property assignments. Such data is stored internally
+ * like a page with various property-value assignments. Indeed, record values
+ * can be created from SMWDIWikiPage objects (the missing information will
+ * be fetched from the store).
  *
  * @todo Enforce limitation of maximal number of values.
+ * @todo Enforce uniqueness of properties in declaration.
  * @todo Complete internationalisation.
  *
  * @author Markus Krötzsch
@@ -119,6 +132,11 @@ class SMWRecordValue extends SMWDataValue {
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;
+			return true;
+		} elseif ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
+			$semanticData = new SMWContainerSemanticData( $dataItem );
+			$semanticData->copyDataFrom( smwfGetStore()->getSemanticData( $dataItem ) );
+			$this->m_dataitem = new SMWDIContainer( $semanticData );
 			return true;
 		} else {
 			return false;

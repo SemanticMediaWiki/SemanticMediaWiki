@@ -84,18 +84,19 @@ Class SMWSQLStore3Writers {
 	}
 
 	/**
-	* Method to handle subobjects for doDataUpdate.
-	*
-	* since SMW 1.8
-	* @param array of subobject->SMWSemanticData
-	*/
-	protected function updateSubobjects( $subject, $containers ) {
-		foreach( $containers as $subobject => $container ) {
-			$this->doDataUpdate( $container );
+	 * Update sub-SemanticData as part of doDataUpdate.
+	 *
+	 * @since 1.8
+	 * @param SMWSemanticData $data
+	 */
+	protected function updateSubSemanticData( SMWSemanticData $data ) {
+		$subDatas = $data->getSubSemanticData();
+		foreach( $subDatas as $subobject => $subData ) {
+			$this->doDataUpdate( $subData );
 		}
-		$subobjects = $this->getSubobjects( $subject );
+		$subobjects = $this->getSubobjects( $data->getSubject() );
 		foreach( $subobjects as $smw_id => $subobject ) {
-			if( !array_key_exists( $subobject->getSubobjectName(), $containers ) ) {
+			if( !array_key_exists( $subobject->getSubobjectName(), $subDatas ) ) {
 				$this->deleteSemanticData( $subobject );
 			}
 		}
@@ -134,7 +135,7 @@ Class SMWSQLStore3Writers {
 		$sid = $this->store->smwIds->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
 
 		if( $subject->getSubobjectName() == '' ) {
-			$this->updateSubobjects( $subject, $data->getSubSemanticData() );
+			$this->updateSubSemanticData( $data );
 		}
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		$this->prepareDBUpdates( $updates, $data, $sid, $subject );
@@ -241,8 +242,8 @@ Class SMWSQLStore3Writers {
 	 * SMWSemanticData object. The subject page of the data container is
 	 * ignored, and the given $sid (subject page id) is used directly. If
 	 * this ID is 0, then $subject is used to find an ID. This is usually
-	 * the case for all internal objects that are created in writing
-	 * container values.
+	 * the case for all internal objects (subobjects) that are created in
+	 * writing sub-SemanticData.
 	 *
 	 * The function returns the id that was used for writing. Especially,
 	 * any newly created internal id is returned.

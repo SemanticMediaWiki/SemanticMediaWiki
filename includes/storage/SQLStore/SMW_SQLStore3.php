@@ -123,7 +123,6 @@ class SMWSQLStore3 extends SMWStore {
 		SMWDataItem::TYPE_URI        => 'smw_di_uri',
 		SMWDataItem::TYPE_TIME       => 'smw_di_time',
 		SMWDataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
-		SMWDataItem::TYPE_CONTAINER  => 'smw_di_container', // values of this type represented by internal objects, stored like pages in smw_rels2
 		SMWDataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
 		SMWDataItem::TYPE_CONCEPT    => 'smw_conc', // unlikely to occur as value of a normal property
 		SMWDataItem::TYPE_PROPERTY   => 'smw_di_property',  // unlikely to occur as value of any property
@@ -182,9 +181,6 @@ class SMWSQLStore3 extends SMWStore {
 				case SMWDataItem::TYPE_GEO:
 					$this->diHandlers[$diType] = new SMWDIHandlerGeoCoord( $this );
 					break;
-				case SMWDataItem::TYPE_CONTAINER:
-					$this->diHandlers[$diType] = new SMWDIHandlerContainer( $this );
-					break;
 				case SMWDataItem::TYPE_WIKIPAGE:
 					$this->diHandlers[$diType] = new SMWDIHandlerWikiPage( $this );
 					break;
@@ -194,6 +190,8 @@ class SMWSQLStore3 extends SMWStore {
 				case SMWDataItem::TYPE_PROPERTY:
 					$this->diHandlers[$diType] = new SMWDIHandlerProperty( $this );
 					break;
+				case SMWDataItem::TYPE_CONTAINER:
+					throw new MWException( "There is no DI handler for SMWDataItem::TYPE_CONTAINER." );
 				case SMWDataItem::TYPE_ERROR:
 					throw new MWException( "There is no DI handler for SMWDataItem::TYPE_ERROR." );
 				default:

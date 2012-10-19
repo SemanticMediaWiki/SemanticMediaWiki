@@ -148,6 +148,10 @@ class SMWDataValueFactory {
 	 * appropriate data item class for processing data of this type. See
 	 * SMWDataItem for possible values.
 	 *
+	 * @note SMWDIContainer is a pseudo dataitem type that is used only in
+	 * data input methods, but not for storing data. Types that work with
+	 * SMWDIContainer use SMWDIWikiPage as their DI type. (Since SMW 1.8)
+	 *
 	 * @param $typeId string id string for the given type
 	 * @return integer data item ID
 	 */
@@ -249,7 +253,7 @@ class SMWDataValueFactory {
 			'_tem'  => SMWDataItem::TYPE_NUMBER, // Temperature type
 			'_dat'  => SMWDataItem::TYPE_TIME, // Time type
 			'_boo'  => SMWDataItem::TYPE_BOOLEAN, // Boolean type
-			'_rec'  => SMWDataItem::TYPE_CONTAINER, // Value list type (replacing former nary properties)
+			'_rec'  => SMWDataItem::TYPE_WIKIPAGE, // Value list type (replacing former nary properties)
 			'_geo'  => SMWDataItem::TYPE_GEO, // Geographical coordinates
 			'_gpo'  => SMWDataItem::TYPE_BLOB, // Geographical polygon
 			'_qty'  => SMWDataItem::TYPE_NUMBER, // Type for numbers with units of measurement
