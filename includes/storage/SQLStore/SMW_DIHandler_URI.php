@@ -20,7 +20,7 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'value_xsd' => 't', 'value_num' => 'f' );
+		return array( 'o_serialized' => 't' );
 	}
 
 	/**
@@ -29,7 +29,7 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'value_num', 'value_xsd' );
+		return array( 'o_serialized' );
 	}
 
 	/**
@@ -38,7 +38,7 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
-		return array( 'value_xsd' => $dataItem->getSerialization() );
+		return array( 'o_serialized' => $dataItem->getSerialization() );
 	}
 
 	/**
@@ -49,8 +49,7 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
-		//TODO - what to insert in value_num?? How was this done before?
-		return array( 'value_xsd' => $dataItem->getSerialization() );
+		return array( 'o_serialized' => $dataItem->getSerialization() );
 	}
 
 	/**
@@ -59,7 +58,7 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getIndexField() {
-		return 'value_num';
+		return 'o_serialized';
 	}
 
 	/**
@@ -69,7 +68,7 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getLabelField() {
-		return 'value_xsd';
+		return 'o_serialized';
 	}
 
 	/**

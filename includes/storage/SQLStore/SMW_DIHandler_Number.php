@@ -15,72 +15,61 @@
 class SMWDIHandlerNumber extends SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields for a DI type
-	 *
+	 * @see SMWDataItemHandler::getTableFields()
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'value_xsd' => 't', 'value_num' => 'f' );
+		return array( 'o_serialized' => 't', 'o_sortkey' => 'f' );
 	}
 
 	/**
-	 * Method to return array of indexes for a DI type
-	 *
+	 * @see SMWDataItemHandler::getTableIndexes
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'value_num', 'value_xsd' );
+		return array( 'o_serialized', 'o_sortkey' );
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 *
+	 * @see SMWDataItemHandler::getWhereConds
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
 		return array(
-			'value_xsd' => $dataItem->getSerialization(),
-			'value_num' => floatval( $dataItem->getNumber() )
+			'o_serialized' => $dataItem->getSerialization(),
+			'o_sortkey' => floatval( $dataItem->getNumber() )
 			);
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 * This array is used to perform all insert operations into the DB
-	 * To optimize return minimum fields having indexes
-	 *
+	 * @see SMWDataItemHandler::getInsertValues
 	 * @return array
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		return array(
-			'value_xsd' => $dataItem->getSerialization(),
-			'value_num' => floatval( $dataItem->getNumber() )
+			'o_serialized' => $dataItem->getSerialization(),
+			'o_sortkey' => floatval( $dataItem->getNumber() )
 			);
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * @since 1.8
+	 * @see SMWDataItemHandler::getIndexField
 	 * @return string
 	 */
 	public function getIndexField() {
-		return 'value_num';
+		return 'o_sortkey';
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * using the label
-	 * @since 1.8
+	 * @see SMWDataItemHandler::getLabelField
 	 * @return string
 	 */
 	public function getLabelField() {
-		return 'value_xsd';
+		return 'o_serialized';
 	}
 
 	/**
-	 * Method to create a dataitem from an array of DB keys.
-	 *
-	 * @since 1.8
+	 * @see SMWDataItemHandler::dataItemFromDBKeys
 	 * @param $dbkeys array of mixed
 	 *
 	 * @return SMWDataItem

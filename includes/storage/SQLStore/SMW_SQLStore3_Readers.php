@@ -178,14 +178,19 @@ Class SMWSQLStore3Readers {
 	 *
 	 * @return array
 	 */
-	protected function fetchSemanticData( $id, $object, $proptable, $issubject = true, $requestoptions = null ) {
+	protected function fetchSemanticData( $id, SMWDataItem $object = null, SMWSQLStore3Table $proptable, $issubject = true, SMWRequestOptions $requestoptions = null ) {
 		// stop if there is not enough data:
-		// properties always need to be given as object, subjects at least if !$proptable->idsubject
-		if ( ( $id == 0 ) || ( is_null( $object ) && ( !$issubject || !$proptable->idsubject ) ) ) return array();
+		// properties always need to be given as object,
+		// subjects at least if !$proptable->idsubject
+		if ( ( $id == 0 ) ||
+			( is_null( $object ) && ( !$issubject || !$proptable->idsubject ) ) )
+			return array();
 
 		wfProfileIn( "SMWSQLStore3::fetchSemanticData-" . $proptable->name .  " (SMW)" );
 		$result = array();
 		$db = wfGetDB( DB_SLAVE );
+
+		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->diType );
 
 		// ***  First build $from, $select, and $where for the DB query  ***//
 		$from   = $db->tableName( $proptable->name ); // always use actual table
@@ -196,60 +201,52 @@ Class SMWSQLStore3Readers {
 			$where .= ( $proptable->idsubject ) ? 's_id=' . $db->addQuotes( $id ) :
 					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
 					  ' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
-			if ( !$proptable->fixedproperty ) { // get property name
+			if ( !$proptable->fixedproperty ) { // select property name
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . ' AS p ON p_id=p.smw_id';
 				$select .= 'p.smw_title as prop';
-			} // else: fixed property, no select needed at all to get at it
-		} elseif ( !$proptable->fixedproperty ) { // restrict property, but don't select subject
+			} // else: fixed property, no select needed
+		} elseif ( !$proptable->fixedproperty ) { // restrict property only
 			$where .= 'p_id=' . $db->addQuotes( $id );
 		}
 
 		$valuecount = 0;
 		$usedistinct = true; // use DISTINCT option only if no text blobs are among values
-		$selectvalues = array(); // array for all values to be selected, kept to help finding value and label fields below
 
-		$fields = $proptable->getFields( $this->store );
-		foreach ( $fields as $fieldname => $typeid ) { // now add select entries for object column(s)
-			if ( $typeid == 'p' ) { // Special case: page id, use smw_id table to insert 4 page-specific values instead of internal id
+		$valueField = $diHandler->getIndexField();
+		$labelField = $diHandler->getLabelField();
+		$fields = $diHandler->getTableFields();
+		foreach ( $fields as $fieldname => $typeid ) { // select object column(s)
+			if ( $typeid == 'p' ) { // get data from smw_ids
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
-				$select .= ( ( $select !== '' ) ? ',' : '' ) . "$fieldname AS id$valuecount";
+				$select .= ( ( $select !== '' ) ? ',' : '' ) .
+					"$fieldname AS id$valuecount" .
+					",o$valuecount.smw_title AS v$valuecount" .
+					",o$valuecount.smw_namespace AS v" . ( $valuecount + 1 ) .
+					",o$valuecount.smw_iw AS v" . ( $valuecount + 2 ) .
+					",o$valuecount.smw_sortkey AS v" . ( $valuecount + 3 ) .
+					",o$valuecount.smw_subobject AS v" . ( $valuecount + 4 );
 
-				$selectvalues[$valuecount] = "o$valuecount.smw_title";
-				$selectvalues[$valuecount + 1] = "o$valuecount.smw_namespace";
-				$selectvalues[$valuecount + 2] = "o$valuecount.smw_iw";
-				$selectvalues[$valuecount + 3] = "o$valuecount.smw_sortkey";
-				$selectvalues[$valuecount + 4] = "o$valuecount.smw_subobject";
+				if ( $valueField == $fieldname ) {
+					$valueField = "o$valuecount.smw_sortkey";
+				}
+				if ( $labelField == $fieldname ) {
+					$labelField = "o$valuecount.smw_sortkey";
+				}
 
 				$valuecount += 4;
-			} else { // Just use value as given.
-				$selectvalues[$valuecount] = $fieldname;
+			} else {
+				$select .= ( ( $select !== '' ) ? ',' : '' ) .
+					"$fieldname AS v$valuecount";
 			}
 
 			if ( $typeid == 'l' ) $usedistinct = false;
 			$valuecount += 1;
 		}
 
-		foreach ( $selectvalues as $index => $field ) {
-			$select .= ( ( $select !== '' ) ? ',' : '' ) . "$field AS v$index";
-		}
-
-		if ( !$issubject ) { // Needed to apply sorting/string matching in query; only with fixed property.
-			list( $valueField, $labelField ) = $this->store->getTypeSignature( $object->findPropertyTypeID() );
-
-			/// FIXME This is a hack.
-			//Hacky, we assume that valueFields that are in smw_ids table start with 'smw'
-			//the alias for smw_ids table is o0 (assigned above)
-			if( substr( $valueField, 0, 3 ) == 'smw' ) {
-				$valueField = "o0.".$valueField;
-			}
-
-			if( substr( $labelField, 0, 3 ) == 'smw' ) {
-				$labelField = "o0.".$labelField;
-			}
-
+		if ( !$issubject ) { // Apply sorting/string matching; only with given property
 			$where .= $this->store->getSQLConditions( $requestoptions, $valueField, $labelField, $where !== '' );
 		} else {
-			$valueField = $labelField = '';
+			$valueField = '';
 		}
 
 		// ***  Now execute the query and read the results  ***//

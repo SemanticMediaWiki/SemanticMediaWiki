@@ -20,7 +20,7 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'value_bool' => 'b' );
+		return array( 'o_value' => 'b' );
 	}
 
 	/**
@@ -29,7 +29,7 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'value_bool' );
+		return array( 'o_value' );
 	}
 
 	/**
@@ -39,7 +39,7 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
 		return array(
-			'value_bool' => $dataItem->getBoolean() ? 1 : 0,
+			'o_value' => $dataItem->getBoolean() ? 1 : 0,
 		);
 	}
 
@@ -52,7 +52,7 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		return array(
-			'value_bool' => $dataItem->getBoolean() ? 1 : 0,
+			'o_value' => $dataItem->getBoolean() ? 1 : 0,
 		);
 	}
 
@@ -62,7 +62,7 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getIndexField() {
-		return 'value_bool';
+		return 'o_value';
 	}
 
 	/**
@@ -72,7 +72,7 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getLabelField() {
-		return 'value_bool';
+		return 'o_value';
 	}
 
 	/**

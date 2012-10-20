@@ -20,7 +20,7 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'value_xsd' => 't', 'value_num' => 'f' );
+		return array( 'o_serialized' => 't', 'o_sortkey' => 'f' );
 	}
 
 	/**
@@ -30,7 +30,7 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'value_num' );
+		return array( 'o_sortkey' );
 	}
 
 	/**
@@ -39,7 +39,7 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
-		return array( 'value_num' => $dataItem->getSortKey() );
+		return array( 'o_sortkey' => $dataItem->getSortKey() );
 	}
 
 	/**
@@ -51,8 +51,8 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		return array(
-			'value_xsd' => $dataItem->getSerialization(),
-			'value_num' => $dataItem->getSortKey()
+			'o_serialized' => $dataItem->getSerialization(),
+			'o_sortkey' => $dataItem->getSortKey()
 			);
 	}
 
@@ -64,7 +64,7 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getIndexField() {
-		return 'value_num';
+		return 'o_sortkey';
 	}
 
 	/**
