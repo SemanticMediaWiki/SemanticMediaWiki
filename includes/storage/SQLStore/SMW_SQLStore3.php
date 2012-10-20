@@ -491,7 +491,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * results (SMWDataItem objects) *of the same type* and applies the
 	 * given requestoptions as appropriate.
 	 */
-	public function applyRequestOptions( $data, $requestoptions ) {
+	public function applyRequestOptions( array $data, $requestoptions ) {
 		wfProfileIn( "SMWSQLStore3::applyRequestOptions (SMW)" );
 
 		if ( ( count( $data ) == 0 ) || is_null( $requestoptions ) ) {
@@ -601,7 +601,7 @@ class SMWSQLStore3 extends SMWStore {
 			return true;
 		}
 		foreach ( self::$fixedProperties as $propertyLabel => $tableDItype ){
-			if( self::findFixedPropertyTableID($propertyLabel) == $tableId && $tableDItype == $dataItemId){
+			if( self::findFixedPropertyTableID( $propertyLabel ) == $tableId && $tableDItype == $dataItemId){
 				return true;
 			}
 		}
@@ -678,7 +678,7 @@ class SMWSQLStore3 extends SMWStore {
 		if ( array_key_exists( $propertyKey, self::$special_tables ) ) {
 			return self::$special_tables[$propertyKey];
 		} elseif ( array_key_exists( $propertyLabel, self::$fixedProperties ) ) {
-			return self::findFixedPropertyTableID($propertyLabel);
+			return self::findFixedPropertyTableID( $propertyLabel );
 		} else {
 			return self::findTypeTableId( $diProperty->findPropertyTypeID() );
 		}

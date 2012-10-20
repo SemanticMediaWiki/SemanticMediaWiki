@@ -27,7 +27,7 @@ class SMWDIHandlerNumber extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'o_serialized', 'o_sortkey' );
+		return array( 'o_sortkey' );
 	}
 
 	/**
@@ -36,7 +36,6 @@ class SMWDIHandlerNumber extends SMWDataItemHandler {
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
 		return array(
-			'o_serialized' => $dataItem->getSerialization(),
 			'o_sortkey' => floatval( $dataItem->getNumber() )
 			);
 	}
@@ -65,7 +64,7 @@ class SMWDIHandlerNumber extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getLabelField() {
-		return 'o_serialized';
+		return '';
 	}
 
 	/**
