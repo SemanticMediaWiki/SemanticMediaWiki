@@ -25,7 +25,7 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'serialized' => 't', 'lat' => 'f', 'lon' => 'f' );
+		return array( 'o_serialized' => 't', 'o_lat' => 'f', 'o_lon' => 'f' );
 	}
 
 	/**
@@ -33,7 +33,7 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'serialized', 'lat', 'lon' );
+		return array( 'o_serialized', 'o_lat', 'o_lon' );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
 		return array(
-			'serialized' => $dataItem->getSerialization()
+			'o_serialized' => $dataItem->getSerialization()
 		);
 	}
 
@@ -52,9 +52,9 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 */
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		return array(
-			'serialized' => $dataItem->getSerialization(),
-			'lat' => $dataItem->getLatitude(),
-			'lon' => $dataItem->getLongitude()
+			'o_serialized' => $dataItem->getSerialization(),
+			'o_lat' => $dataItem->getLatitude(),
+			'o_lon' => $dataItem->getLongitude()
 		);
 	}
 
@@ -63,7 +63,7 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getIndexField() {
-		return 'serialized';
+		return 'o_serialized';
 	}
 
 	/**

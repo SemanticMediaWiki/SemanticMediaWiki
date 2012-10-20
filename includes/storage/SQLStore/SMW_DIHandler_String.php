@@ -20,7 +20,7 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableFields() {
-		return array( 'value_blob' => 'l', 'value_hash' => 't' );
+		return array( 'o_blob' => 'l', 'o_hash' => 't' );
 	}
 
 	/**
@@ -29,7 +29,7 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'value_hash' );
+		return array( 'o_hash' );
 	}
 
 	/**
@@ -38,7 +38,7 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getWhereConds( SMWDataItem $dataItem ) {
-		return array( 'value_hash' => self::makeHash( $dataItem->getString() ) );
+		return array( 'o_hash' => self::makeHash( $dataItem->getString() ) );
 	}
 
 	/**
@@ -51,8 +51,8 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	public function getInsertValues( SMWDataItem $dataItem ) {
 		$text = $dataItem->getString();
 		return array(
-			'value_blob' => strlen( $text ) <= 255 ? '' : $text,
-			'value_hash' => self::makeHash( $text ),
+			'o_blob' => strlen( $text ) <= 255 ? null : $text,
+			'o_hash' => self::makeHash( $text ),
 		);
 	}
 
@@ -62,7 +62,7 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getIndexField() {
-		return 'value_hash';
+		return 'o_hash';
 	}
 
 	/**
@@ -72,7 +72,7 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getLabelField() {
-		return 'value_hash';
+		return 'o_hash';
 	}
 
 	/**
@@ -108,7 +108,7 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 		if( strlen( $string ) <= 255 ) {
 			return $string;
 		} else {
-			return substr( $string, 0, 254 ) . md5( $string );
+			return substr( $string, 0, 255 - 32 ) . md5( $string );
 		}
 	}
 }

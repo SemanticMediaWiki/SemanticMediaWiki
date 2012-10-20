@@ -125,7 +125,6 @@ class SMWSQLStore3 extends SMWStore {
 		SMWDataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
 		SMWDataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
 		SMWDataItem::TYPE_CONCEPT    => 'smw_conc', // unlikely to occur as value of a normal property
-		SMWDataItem::TYPE_PROPERTY   => 'smw_di_property',  // unlikely to occur as value of any property
 	);
 
 	/**
@@ -151,9 +150,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * Gets an object of the dataitem handler from the dataitem provided.
 	 *
 	 * @since 1.8
-	 *
 	 * @param $dataItemID constant
-	 *
 	 * @throws MWException
 	 * @return SMWDataItemHandler
 	 */
@@ -188,8 +185,7 @@ class SMWSQLStore3 extends SMWStore {
 					$this->diHandlers[$diType] = new SMWDIHandlerConcept( $this );
 					break;
 				case SMWDataItem::TYPE_PROPERTY:
-					$this->diHandlers[$diType] = new SMWDIHandlerProperty( $this );
-					break;
+					throw new MWException( "There is no DI handler for SMWDataItem::TYPE_PROPERTY." );
 				case SMWDataItem::TYPE_CONTAINER:
 					throw new MWException( "There is no DI handler for SMWDataItem::TYPE_CONTAINER." );
 				case SMWDataItem::TYPE_ERROR:
@@ -199,6 +195,19 @@ class SMWSQLStore3 extends SMWStore {
 			}
 		}
 		return $this->diHandlers[$diType];
+	}
+
+	/**
+	 * Convenience method to get a dataitem handler for a datatype id.
+	 *
+	 * @since 1.8
+	 * @param $typeid String
+	 * @throws MWException
+	 * @return SMWDataItemHandler
+	 */
+	public function getDataItemHandlerForDatatype( $typeid ) {
+		$dataItemId = SMWDataValueFactory::getDataItemId( $typeid );
+		return $this->getDataItemHandlerForDIType( $dataItemId );
 	}
 
 ///// Reading methods /////
@@ -575,21 +584,6 @@ class SMWSQLStore3 extends SMWStore {
 		wfProfileOut( "SMWSQLStore3::applyRequestOptions (SMW)" );
 
 		return $result;
-	}
-
-	/**
-	 * For a given SMW type id, obtain the "signature" from which the
-	 * appropriate property table and information about sorting/filtering
-	 * data of this type can be obtained. The result is an array of two
-	 * entries: the value field and the label field.
-	 */
-	public function getTypeSignature( $typeid ) {
-		$dataItemId = SMWDataValueFactory::getDataItemId( $typeid );
-		$diHandler = $this->getDataItemHandlerForDIType( $dataItemId );
-		return array(
-			$diHandler->getIndexField(),
-			$diHandler->getLabelField()
-		);
 	}
 
 	/**

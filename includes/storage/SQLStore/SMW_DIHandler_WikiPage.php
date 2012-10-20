@@ -61,7 +61,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getIndexField() {
-		return 'smw_sortkey';
+		return 'o_id';
 	}
 
 	/**
@@ -72,7 +72,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	 * @return string
 	 */
 	public function getLabelField() {
-		return 'smw_sortkey';
+		return 'o_id';
 	}
 
 	/**

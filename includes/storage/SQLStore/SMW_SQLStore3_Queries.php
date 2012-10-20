@@ -1,7 +1,7 @@
 <?php
 /**
- * Query answering functions for SMWSQLStore3. Separated from main code for readability and
- * for avoiding twice the amount of code being required on every use of a simple storage function.
+ * Query answering functions for SMWSQLStore3. Separated from main code for
+ * readability.
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
@@ -10,22 +10,42 @@
  * @ingroup SMWStore
  */
 
-// Types for query descriptions (comments refer to SMWSQLStore3Query class below):
-define( 'SMW_SQL3_NOQUERY', 0 ); // empty query without usable condition, dropped as soon as discovered; this is used only during preparing the query (no queries of this type should ever be added)
-define( 'SMW_SQL3_TABLE', 1 ); // jointable: internal table name, joinfield, components, where use alias.fields, from uses external table names, components interpreted conjunctively (JOIN)
-define( 'SMW_SQL3_VALUE', 2 ); // joinfield (disjunctive) array of unquoted values, jointable empty, components empty
-define( 'SMW_SQL3_DISJUNCTION', 3 ); // joinfield, jointable empty, only components relevant
-define( 'SMW_SQL3_CONJUNCTION', 4 ); // joinfield, jointable empty, only components relevant
-define( 'SMW_SQL3_CLASS_HIERARCHY', 5 ); // only joinfield relevant: (disjunctive) array of unquoted values
-define( 'SMW_SQL3_PROP_HIERARCHY', 6 ); // only joinfield relevant: (disjunctive) array of unquoted values
-
 /**
  * Class for representing a single (sub)query description. Simple data
  * container.
  * @ingroup SMWStore
  */
 class SMWSQLStore3Query {
-	public $type = SMW_SQL3_TABLE;
+
+	/// Type of empty query without usable condition, dropped as soon as
+	/// discovered. This is used only during preparing the query (no
+	/// queries of this type should ever be added).
+	const Q_NOQUERY = 0;
+	/// Type of query that is a join with a query (jointable: internal
+	/// table name; joinfield/components/where use alias.fields;
+	/// from uses external table names, components interpreted
+	/// conjunctively (JOIN)).
+	const Q_TABLE = 1; 
+	/// Type of query that matches a constant value (joinfield is a
+	/// disjunctive array of unquoted values, jointable empty, components
+	/// empty).
+	const Q_VALUE = 2; 
+	/// Type of query that is a disjunction of other queries
+	/// (joinfield/jointable empty; only components relevant)
+	const Q_DISJUNCTION = 3;
+	/// Type of query that is a conjunction of other queries 
+	/// (joinfield/jointable empty; only components relevant).
+	const Q_CONJUNCTION = 4;
+	/// Type of query that creates a temporary table of all superclasses
+	/// of given classes (only joinfield relevant: (disjunctive) array of
+	/// unquoted values).
+	const Q_CLASS_HIERARCHY = 5; 
+	/// Type of query that creates a temporary table of all superproperties
+	/// of given properties (only joinfield relevant: (disjunctive) array
+	/// of unquoted values).
+	const Q_PROP_HIERARCHY = 6;
+
+	public $type = SMWSQLStore3Query::Q_TABLE;
 	public $jointable = '';
 	public $joinfield = '';
 	public $from = '';
@@ -44,10 +64,14 @@ class SMWSQLStore3Query {
 	 */
 	public $sortfields = array();
 
+	public $queryNumber;
+
 	public static $qnum = 0;
 
 	public function __construct() {
-		$this->alias = 't' . self::$qnum++;
+		$this->queryNumber = self::$qnum;
+		$this->alias = 't' . self::$qnum;
+		self::$qnum++;
 	}
 }
 
@@ -439,28 +463,26 @@ class SMWSQLStore3QueryEngine {
 	 * Returns -1 if no query was created.
 	 * @todo The case of nominal classes (top-level SMWValueDescription) still
 	 * makes some assumptions about the table structure, especially about the
-	 * name of the joinfield (o_id). Better extend compileAttributeWhere to
-	 * deal with this case.
+	 * name of the joinfield (o_id). Better extend
+	 * compilePropertyValueDescription to deal with this case.
 	 *
 	 * @param SMWDescription $description
 	 *
 	 * @return integer
 	 */
 	protected function compileQueries( SMWDescription $description ) {
-		$qid = SMWSQLStore3Query::$qnum;
 		$query = new SMWSQLStore3Query();
 
 		if ( $description instanceof SMWSomeProperty ) {
-			$this->compilePropertyCondition( $query, $description->getProperty(), $description->getDescription() );
-			// Compilation has set type to NOQUERY: drop condition.
-			if ( $query->type == SMW_SQL3_NOQUERY ) $qid = - 1;
+			$this->compileSomePropertyDescription( $query, $description );
 		} elseif ( $description instanceof SMWNamespaceDescription ) {
 			// TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
 			$query->jointable = 'smw_ids';
 			$query->joinfield = "$query->alias.smw_id";
 			$query->where = "$query->alias.smw_namespace=" . $this->m_dbs->addQuotes( $description->getNamespace() );
-		} elseif ( ( $description instanceof SMWConjunction ) || ( $description instanceof SMWDisjunction ) ) {
-			$query->type = ( $description instanceof SMWConjunction ) ? SMW_SQL3_CONJUNCTION:SMW_SQL3_DISJUNCTION;
+		} elseif ( ( $description instanceof SMWConjunction ) ||
+				( $description instanceof SMWDisjunction ) ) {
+			$query->type = ( $description instanceof SMWConjunction ) ? SMWSQLStore3Query::Q_CONJUNCTION : SMWSQLStore3Query::Q_DISJUNCTION;
 
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				$sub = $this->compileQueries( $subdesc );
@@ -470,11 +492,13 @@ class SMWSQLStore3QueryEngine {
 			}
 
 			// All subconditions failed, drop this as well.
-			if ( count( $query->components ) == 0 ) $qid = - 1;
+			if ( count( $query->components ) == 0 ) {
+				$query->type = SMWSQLStore3Query::Q_NOQUERY;
+			}
 		} elseif ( $description instanceof SMWClassDescription ) {
 			$cqid = SMWSQLStore3Query::$qnum;
 			$cquery = new SMWSQLStore3Query();
-			$cquery->type = SMW_SQL3_CLASS_HIERARCHY;
+			$cquery->type = SMWSQLStore3Query::Q_CLASS_HIERARCHY;
 			$cquery->joinfield = array();
 
 			foreach ( $description->getCategories() as $cat ) {
@@ -485,10 +509,10 @@ class SMWSQLStore3QueryEngine {
 			}
 
 			if ( count( $cquery->joinfield ) == 0 ) { // Empty result.
-				$query->type = SMW_SQL3_VALUE;
+				$query->type = SMWSQLStore3Query::Q_VALUE;
 				$query->jointable = '';
 				$query->joinfield = '';
-			} else { // Instance query with dicjunction of classes (categories)
+			} else { // Instance query with disjunction of classes (categories)
 				$query->jointable = 'smw_inst';
 				$query->joinfield = "$query->alias.s_id";
 				$query->components[$cqid] = "$query->alias.o_id";
@@ -497,12 +521,16 @@ class SMWSQLStore3QueryEngine {
 		} elseif ( $description instanceof SMWValueDescription ) { // Only type '_wpg' objects can appear on query level (essentially as nominal classes).
 			if ( $description->getDataItem() instanceof SMWDIWikiPage ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
-					$query->type = SMW_SQL3_VALUE;
-					$oid = $this->m_store->smwIds->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki(), $description->getDataItem()->getSubobjectName() );
+					$query->type = SMWSQLStore3Query::Q_VALUE;
+					$oid = $this->m_store->smwIds->getSMWPageID(
+						$description->getDataItem()->getDBkey(), 
+						$description->getDataItem()->getNamespace(), 
+						$description->getDataItem()->getInterwiki(), 
+						$description->getDataItem()->getSubobjectName() );
 					$query->joinfield = array( $oid );
 				} else { // Join with smw_ids needed for other comparators (apply to title string).
 					$query->jointable = 'smw_ids';
-					$query->joinfield = "$query->alias.smw_id";
+					$query->joinfield = "{$query->alias}.smw_id";
 					$value = $description->getDataItem()->getSortKey();
 
 					switch ( $description->getComparator() ) {
@@ -517,7 +545,7 @@ class SMWSQLStore3QueryEngine {
 							$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
 						break;
 					}
-					$query->where = "$query->alias.smw_sortkey$comp" . $this->m_dbs->addQuotes( $value );
+					$query->where = "{$query->alias}.smw_sortkey$comp" . $this->m_dbs->addQuotes( $value );
 				}
 			}
 		} elseif ( $description instanceof SMWConceptDescription ) { // fetch concept definition and insert it here
@@ -568,128 +596,121 @@ class SMWSQLStore3QueryEngine {
 				} // else: no cache, no description (this may happen); treat like empty concept
 			}
 		} else { // (e.g. SMWThingDescription)
-			$qid = - 1; // no condition
+			$query->type = SMWSQLStore3Query::Q_NOQUERY; // no condition
 		}
 
-		if ( $qid >= 0 ) { // Success, keep query object, propagate sortkeys from subqueries.
-			$this->m_queries[$qid] = $query;
+		$this->registerQuery( $query );
+		if ( $query->type != SMWSQLStore3Query::Q_NOQUERY  ) {
+			return $query->queryNumber;
+		} else {
+			return -1;
+		}
+	}
 
-			if ( $query->type != SMW_SQL3_DISJUNCTION ) { // Sortkeys are killed by disjunctions (not all parts may have them),
+	/**
+	 * Register a query object to the internal query list, if the query is
+	 * valid. Also make sure that sortkey information is propagated down
+	 * from subqueries of this query.
+	 */
+	protected function registerQuery( SMWSQLStore3Query $query ) {
+		if ( $query->type != SMWSQLStore3Query::Q_NOQUERY  ) {
+			$this->m_queries[$query->queryNumber] = $query;
+
+			// Propagate sortkeys from subqueries: 
+			if ( $query->type != SMWSQLStore3Query::Q_DISJUNCTION ) {
+				// Sortkeys are killed by disjunctions (not all parts may have them),
 				// NOTE: preprocessing might try to push disjunctions downwards to safe sortkey, but this seems to be minor
 				foreach ( $query->components as $cid => $field ) {
 					$query->sortfields = array_merge( $this->m_queries[$cid]->sortfields, $query->sortfields );
 				}
 			}
 		}
-
-		return $qid;
 	}
 
 	/**
 	 * Modify the given query object to account for some property condition for
 	 * the given property. If it is not possible to generate a query for the
-	 * given data, the query type is changed to SMW_SQL3_NOQUERY. Callers need
+	 * given data, the query type is changed to SMWSQLStore3Query::Q_NOQUERY. Callers need
 	 * to check for this and discard the query in this case.
 	 * @todo Check if hierarchy queries work as expected.
 	 */
-	protected function compilePropertyCondition( SMWSQLStore3Query $query, SMWDIProperty $property, SMWDescription $valuedesc ) {
-		$tableid = SMWSQLStore3::findPropertyTableID( $property );
-		$typeid = $property->findPropertyTypeID();
+	protected function compileSomePropertyDescription( SMWSQLStore3Query $query, SMWSomeProperty $description ) {
 
-		if ( $tableid === '' ) { // Still no table to query? Give up.
-			$query->type = SMW_SQL3_NOQUERY;
+		$property = $description->getProperty();
+
+		$tableid = SMWSQLStore3::findPropertyTableID( $property );
+		if ( $tableid === '' ) { // Give up
+			$query->type = SMWSQLStore3Query::Q_NOQUERY;
 			return;
 		}
 
 		$proptables = SMWSQLStore3::getPropertyTables();
 		$proptable = $proptables[$tableid];
-
-		if ( !$proptable->idsubject ) { // no queries with such tables (there is really no demand, as only redirects are affected)
-			$query->type = SMW_SQL3_NOQUERY;
+		if ( !$proptable->idsubject ) {
+			// no queries with such tables
+			// (only redirects are affected in practice)
+			$query->type = SMWSQLStore3Query::Q_NOQUERY;
 			return;
 		}
 
-		list( $valueField, $labelField ) = $this->m_store->getTypeSignature( $typeid );
+		$typeid = $property->findPropertyTypeID();
+		$diType = SMWDataValueFactory::getDataItemId( $typeid );
+		if ( $property->isInverse() && $diType != SMWDataItem::TYPE_WIKIPAGE ) {
+			// can only invert properties that point to pages
+			$query->type = SMWSQLStore3Query::Q_NOQUERY;
+			return;
+		}
+		$diHandler = $this->m_store->getDataItemHandlerForDIType( $diType );
+		$indexField = $diHandler->getIndexField();
 		$sortkey = $property->getKey(); // TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 
-		// *** Basic settings: table, joinfield, and objectfields ***//
+		// *** Now construct the query ... ***//
 		$query->jointable = $proptable->name;
-		$fields = $proptable->getFields( $this->m_store );
 
-		if ( $property->isInverse() ) { // see if we can support inverses by inverting the proptable data
-			if ( ( count( $fields ) == 1 ) && ( reset( $fields ) == 'p' ) ) {
-				$keys = array_keys( $fields );
-				$query->joinfield = $query->alias . '.' . $keys[0];
-				$objectfields = array( 's_id' => 'p' );
-				$valueField = $labelField = 'smw_sortkey'; // should normally not change, but let's be strict
-			} else { // no inverses supported for this property, stop here
-				$query->type = SMW_SQL3_NOQUERY;
-				return;
-			}
-		} else { // normal forward property
-			$query->joinfield = "{$query->alias}.s_id";
-			$objectfields = $fields;
-		}
-
-		// *** Add conditions for selecting rows for this property, maybe with a hierarchy ***//
+		// *** Add conditions for selecting rows for this property ***//
 		if ( $proptable->fixedproperty == false ) {
 			$pid = $this->m_store->smwIds->getSMWPropertyID( $property );
-
-			if ( $property->isUserDefined() || ( $property->findPropertyTypeID() != '__err' ) ) {
-				// also make property hierarchy (may or may not be executed later on)
-				// exclude type-polymorphic properties _1, _2, ... (2nd check above suffices, but 1st is faster to check)
-				// we could also exclude other cases here, if desired
-				$pqid = SMWSQLStore3Query::$qnum;
-				$pquery = new SMWSQLStore3Query();
-				$pquery->type = SMW_SQL3_PROP_HIERARCHY;
-				$pquery->joinfield = array( $pid );
-				$query->components[$pqid] = "{$query->alias}.p_id";
-				$this->m_queries[$pqid] = $pquery;
-			} else {
-				$query->where = "{$query->alias}.p_id=" . $this->m_dbs->addQuotes( $pid );
-			}
+			// Construct property hierarchy:
+			$pqid = SMWSQLStore3Query::$qnum;
+			$pquery = new SMWSQLStore3Query();
+			$pquery->type = SMWSQLStore3Query::Q_PROP_HIERARCHY;
+			$pquery->joinfield = array( $pid );
+			$query->components[$pqid] = "{$query->alias}.p_id";
+			$this->m_queries[$pqid] = $pquery;
+			// Alternative code without property hierarchies:
+			// $query->where = "{$query->alias}.p_id=" . $this->m_dbs->addQuotes( $pid );
 		} // else: no property column, no hierarchy queries
 
 		// *** Add conditions on the value of the property ***//
-		if ( ( count( $objectfields ) == 1 ) && ( reset( $objectfields ) == 'p' ) ) { // page description, process like main query
-			$sub = $this->compileQueries( $valuedesc );
+		if ( $diType == SMWDataItem::TYPE_WIKIPAGE ) {
+			$o_id = $indexField;
+			if ( $property->isInverse() ) {
+				$s_id = $o_id;
+				$o_id = 's_id';
+			} else {
+				$s_id = 's_id';
+			}
+			$query->joinfield = "{$query->alias}.{$s_id}";
 
-			$objectfield = array_keys( $objectfields );
-			$objectfield = reset( $objectfield );
-
+			// process page description like main query
+			$sub = $this->compileQueries( $description->getDescription() );
 			if ( $sub >= 0 ) {
-				$query->components[$sub] = "{$query->alias}.{$objectfield}";
-			}
-		} else { // non-page value description; expressive features mainly based on value
-			$this->compileAttributeWhere( $query, $valuedesc, $proptable, $valueField );
-			// (no need to pass on $objectfields since they are just as in $proptable in this case)
-		}
-
-		// *** Incorporate ordering if desired ***//
-		if ( ( $valueField != '' ) && array_key_exists( $sortkey, $this->m_sortkeys ) ) {
-			// This code might be overly general: it supports datatypes of arbitrary signatures
-			// and valueindex (sortkeys). It can even order pages by something other than their
-			// sortkey (e.g. by their namespace?!), and it can handle values consisting of a page
-			// and some more data fields before or after. Supporting pages in this way requires us
-			// to iterate over the table fields since one page corresponds to four values in a
-			// type's signature. Thankfully, signatures are short so this iteration is not notable.
-			$smwidjoinfield = false;
-
-			//Hacky, we assume that valueFields that are in smw_ids table start with 'smw' and the joinfield is always o_id
-			//What's the best way to do this?
-			if( substr( $valueField, 0, 3 ) == 'smw' ) {
-				$smwidjoinfield = 'o_id';
+				$query->components[$sub] = "{$query->alias}.{$o_id}";
 			}
 
-			if ( $valueField ) {
-				if ( $smwidjoinfield ) {
-					// TODO: is this smw_ids possibly duplicated in the query? Can we prevent that? (PERFORMANCE)
-					$query->from = ' INNER JOIN ' . $this->m_dbs->tableName( 'smw_ids' ) .
-									" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$smwidjoinfield}";
-					$query->sortfields[$sortkey] = "ids{$query->alias}.{$valueField}";
-				} else {
-					$query->sortfields[$sortkey] = "{$query->alias}.{$valueField}";
-				}
+			if ( array_key_exists( $sortkey, $this->m_sortkeys ) ) {
+				// TODO: This smw_ids is possibly duplicated in the query.
+				// Example: [[has capital::!Berlin]] with sort=has capital
+				// Can we prevent that? (PERFORMANCE)
+				$query->from = ' INNER JOIN ' .	$this->m_dbs->tableName( 'smw_ids' ) .
+						" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$o_id}";
+				$query->sortfields[$sortkey] = "ids{$query->alias}.smw_sortkey";
+			}
+		} else { // non-page value description
+			$query->joinfield = "{$query->alias}.s_id";
+			$this->compilePropertyValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
+			if ( array_key_exists( $sortkey, $this->m_sortkeys ) ) {
+				$query->sortfields[$sortkey] = "{$query->alias}.{$indexField}";
 			}
 		}
 	}
@@ -702,80 +723,97 @@ class SMWSQLStore3QueryEngine {
 	 * @param $query
 	 * @param SMWDescription $description
 	 * @param SMWSQLStore3Table $proptable
-	 * @param string $valueField
-	 * @param string $operator
+	 * @param SMWDataItemHandler $diHandler for that table
+	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	protected function compileAttributeWhere(
-			$query, SMWDescription $description, SMWSQLStore3Table $proptable, $valueField, $operator = 'AND' ) {
-
-		$where = '';
-
+	protected function compilePropertyValueDescription(
+			$query, SMWDescription $description, SMWSQLStore3Table $proptable, SMWDataItemHandler $diHandler, $operator ) {
 		if ( $description instanceof SMWValueDescription ) {
-			$dataItem = $description->getDataItem();
-			$diHandler = $this->m_store->getDataItemHandlerForDIType( $dataItem->getDIType() );
-			$keys = $diHandler->getWhereConds( $dataItem );
-
-			// Try comparison based on value field and comparator.
-			if ( $valueField != '' ) {
-				$smwidjoinfield = false;
-				//Hacky, we assume that valueFields that are in smw_ids table start with 'smw' and the joinfield is always o_id
-				//What's the best way to do this?
-				if( substr( $valueField, 0, 3 ) == 'smw' ) {
-					$smwidjoinfield = 'o_id';
-				}
-
-				// Do not support smw_id joined data for now.
-				if ( !$smwidjoinfield ) {
-					$comparator = false;
-					$customSQL = false;
-
-					// See if the getSQLCondition method exists and call it if this is the case.
-					if ( method_exists( $description, 'getSQLCondition' ) ) {
-						$fields = $proptable->getFields( $this->m_store );
-						$customSQL = $description->getSQLCondition( $query->alias, array_keys( $fields ), $this->m_dbs );
-					}
-
-					if ( $customSQL ) {
-						$where = $customSQL;
-					} else {
-						//Hack to get to the field used as index
-						$value = $keys[$valueField];
-
-						switch ( $description->getComparator() ) {
-							case SMW_CMP_EQ: $comparator = '='; break;
-							case SMW_CMP_LESS: $comparator = '<'; break;
-							case SMW_CMP_GRTR: $comparator = '>'; break;
-							case SMW_CMP_LEQ: $comparator = '<='; break;
-							case SMW_CMP_GEQ: $comparator = '>='; break;
-							case SMW_CMP_NEQ: $comparator = '!='; break;
-							case SMW_CMP_LIKE: case SMW_CMP_NLKE:
-								$comparator = ' LIKE ';
-								if ( $description->getComparator() == SMW_CMP_NLKE ) $comparator = " NOT{$comparator}";
-								$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
-						}
-
-						if ( $comparator ) {
-							$where = "$query->alias.{$valueField}{$comparator}" . $this->m_dbs->addQuotes( $value );
-						}
-					}
-				}
-			}
-
-			if ( $where === '' ) { // comparators did not apply; match all fields
-				foreach ( $keys as $fieldname => $value ) {
-					$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fieldname=" . $this->m_dbs->addQuotes( $value );
-				}
-			}
-
-		} elseif ( ( $description instanceof SMWConjunction ) || ( $description instanceof SMWDisjunction ) ) {
+			$this->compileValueDescription( $query, $description, $proptable, $diHandler, $operator );
+		} elseif ( ( $description instanceof SMWConjunction ) ||
+				( $description instanceof SMWDisjunction ) ) {
 			$op = ( $description instanceof SMWConjunction ) ? 'AND' : 'OR';
 
 			foreach ( $description->getDescriptions() as $subdesc ) {
-				$this->compileAttributeWhere( $query, $subdesc, $proptable, $valueField, $op );
+				$this->compilePropertyValueDescription( $query, $subdesc, $proptable, $diHandler, $op );
+			}
+		} elseif ( $description instanceof SMWThingDescription ) {
+			// nothing to do
+		} else {
+			throw new MWException( "Cannot process this type of SMWDescription." );
+		}
+	}
+
+	/**
+	 * Given an SMWDescription that is just a conjunction or disjunction of
+	 * SMWValueDescription objects, create and return a plain WHERE condition
+	 * string for it.
+	 *
+	 * @param $query
+	 * @param SMWDescription $description
+	 * @param SMWSQLStore3Table $proptable
+	 * @param SMWDataItemHandler $diHandler for that table
+	 * @param string $operator SQL operator "AND" or "OR"
+	 */
+	protected function compileValueDescription(
+			$query, SMWValueDescription $description, SMWSQLStore3Table $proptable, SMWDataItemHandler $diHandler, $operator ) {
+		$where = '';
+		$dataItem = $description->getDataItem();
+		// TODO Better get the handle from the property type
+		// Some comparators (e.g. LIKE) could use DI values of
+		// a different type; we care about the property table, not
+		// about the value
+		$diType = $dataItem->getDIType();
+
+		// Try comparison based on value field and comparator,
+		// but only if no join with smw_ids is needed.
+		if ( $diType != SMWDataItem::TYPE_WIKIPAGE ) {
+			// Do not support smw_id joined data for now.
+
+			// See if the getSQLCondition method exists and call it if this is the case.
+			if ( method_exists( $description, 'getSQLCondition' ) ) {
+				$fields = $diHandler->getTableFields();
+				$where = $description->getSQLCondition( $query->alias, array_keys( $fields ), $this->m_dbs );
+			}
+
+			if ( $where == '' ) {
+				$indexField = $diHandler->getIndexField();
+				//Hack to get to the field used as index
+				$keys = $diHandler->getWhereConds( $dataItem );
+				$value = $keys[$indexField];
+
+				switch ( $description->getComparator() ) {
+					case SMW_CMP_EQ: $comparator = '='; break;
+					case SMW_CMP_LESS: $comparator = '<'; break;
+					case SMW_CMP_GRTR: $comparator = '>'; break;
+					case SMW_CMP_LEQ: $comparator = '<='; break;
+					case SMW_CMP_GEQ: $comparator = '>='; break;
+					case SMW_CMP_NEQ: $comparator = '!='; break;
+					case SMW_CMP_LIKE: case SMW_CMP_NLKE:
+						if ( $description->getComparator() == SMW_CMP_LIKE ) { 
+							$comparator = ' LIKE ';
+						} else {
+							$comparator = ' NOT LIKE ';
+						}
+						// Escape to prepare string matching:
+						$value = str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
+						break;
+					default: 
+						throw new MWException( "Unsupported comparator '" . $description->getComparator() . "' in query condition." );
+				}
+
+				$where = "$query->alias.{$indexField}{$comparator}" . $this->m_dbs->addQuotes( $value );
+			}
+		} else { // exact match (like comparator = above, but not using $valueField
+throw new MWException("Debug -- this code might be dead.");
+			foreach ( $diHandler->getWhereConds( $dataItem ) as $fieldname => $value ) {
+				$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fieldname=" . $this->m_dbs->addQuotes( $value );
 			}
 		}
 
-		if ( $where !== '' ) $query->where .= ( $query->where ? " $operator " : '' ) . "($where)";
+		if ( $where !== '' ) {
+			$query->where .= ( $query->where ? " $operator " : '' ) . "($where)";
+		}
 	}
 
 	/**
@@ -789,7 +827,7 @@ class SMWSQLStore3QueryEngine {
 		global $wgDBtype;
 
 		switch ( $query->type ) {
-			case SMW_SQL3_TABLE: // Normal query with conjunctive subcondition.
+			case SMWSQLStore3Query::Q_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinfield ) {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries( $subquery );
@@ -825,7 +863,7 @@ class SMWSQLStore3QueryEngine {
 
 				$query->components = array();
 			break;
-			case SMW_SQL3_CONJUNCTION:
+			case SMWSQLStore3Query::Q_CONJUNCTION:
 				// pick one subquery with jointable as anchor point ...
 				reset( $query->components );
 				$key = false;
@@ -865,7 +903,7 @@ class SMWSQLStore3QueryEngine {
 				}
 				$query = $result;
 			break;
-			case SMW_SQL3_DISJUNCTION:
+			case SMWSQLStore3Query::Q_DISJUNCTION:
 				if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
 					$this->m_dbs->query( $this->getCreateTempIDTableSQL( $this->m_dbs->tableName( $query->alias ) ), 'SMW::executeQueries' );
 				}
@@ -907,10 +945,11 @@ class SMWSQLStore3QueryEngine {
 				$query->sortfields = array(); // Make sure we got no sortfields.
 				// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
-			case SMW_SQL3_PROP_HIERARCHY: case SMW_SQL3_CLASS_HIERARCHY: // make a saturated hierarchy
+			case SMWSQLStore3Query::Q_PROP_HIERARCHY:
+			case SMWSQLStore3Query::Q_CLASS_HIERARCHY: // make a saturated hierarchy
 				$this->executeHierarchyQuery( $query );
 			break;
-			case SMW_SQL3_VALUE: break; // nothing to do
+			case SMWSQLStore3Query::Q_VALUE: break; // nothing to do
 		}
 	}
 
@@ -927,10 +966,10 @@ class SMWSQLStore3QueryEngine {
 		$fname = "SMWSQLStore3Queries::executeQueries-hierarchy-$query->type (SMW)";
 		wfProfileIn( $fname );
 
-		$depth = ( $query->type == SMW_SQL3_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
+		$depth = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
 
 		if ( $depth <= 0 ) { // treat as value, no recursion
-			$query->type = SMW_SQL3_VALUE;
+			$query->type = SMWSQLStore3Query::Q_VALUE;
 			wfProfileOut( $fname );
 			return;
 		}
@@ -943,14 +982,14 @@ class SMWSQLStore3QueryEngine {
 			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $this->m_dbs->addQuotes( $value );
 		}
 
-		$smwtable = $this->m_dbs->tableName( ( $query->type == SMW_SQL3_PROP_HIERARCHY ) ? 'smw_subp':'smw_subs' );
+		$smwtable = $this->m_dbs->tableName( ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? 'smw_subp':'smw_subs' );
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $this->m_dbs->select( $smwtable, 's_id', $valuecond, __METHOD__, array( 'LIMIT' => 1 ) );
 
 		if ( !$this->m_dbs->fetchObject( $res ) ) { // no subobjects, we are done!
 			$this->m_dbs->freeResult( $res );
-			$query->type = SMW_SQL3_VALUE;
+			$query->type = SMWSQLStore3Query::Q_VALUE;
 			wfProfileOut( $fname );
 			return;
 		}
@@ -1044,7 +1083,7 @@ class SMWSQLStore3QueryEngine {
 		if ( count( $extraproperties ) > 0 ) {
 			$desc = new SMWConjunction( $extraproperties );
 			$newqid = $this->compileQueries( $desc );
-			$newqobj = $this->m_queries[$newqid]; // This is always an SMW_SQL3_CONJUNCTION ...
+			$newqobj = $this->m_queries[$newqid]; // This is always an SMWSQLStore3Query::Q_CONJUNCTION ...
 
 			foreach ( $newqobj->components as $cid => $field ) { // ... so just re-wire its dependencies
 				$qobj->components[$cid] = $qobj->joinfield;
