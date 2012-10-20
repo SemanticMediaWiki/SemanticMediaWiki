@@ -9088,6 +9088,7 @@ Anslått fremdrift for gjeldende oppdatering:',
  * @author Kghbln
  * @author Rcdeboer
  * @author SPQRobin
+ * @author Saruman
  * @author Siebrand
  * @author Tjcool007
  * @author Wiki13
@@ -9123,6 +9124,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_printername_template' => 'Sjabloon',
 	'smw_printername_rdf' => 'Naar RDF exporteren',
 	'smw_printername_category' => 'Categorie',
+	'validator-type-class-SMWParamSource' => 'tekst',
 	'smw-paramdesc-limit' => 'Het maximaal aantal weer te geven resultaten',
 	'smw-paramdesc-offset' => 'De resultaatpositie van het eerste resultaat',
 	'smw-paramdesc-headers' => 'De namen van koppen en eigenschappen weergeven',
@@ -9261,6 +9263,7 @@ Dit zorgt ervoor dat mensen niet veranderen in websites.',
 	'smw_ask_embed_instr' => 'Gebruik de onderstaande code om deze zoekopdracht op te nemen in een wikipagina.',
 	'smw-ask-delete' => '[Verwijderen]',
 	'smw-ask-sorting' => 'Sortering',
+	'smw-ask-format-selection-help' => 'Bezoek de  $1  help-pagina voor een gedetailleerde beschrijving.',
 	'querycreator' => 'Zoekopdrachtenmaker',
 	'smw_qc_addmainlabel' => 'Hoofdlabel toevoegen',
 	'smw_qc_show_addnal_opts' => 'Meer opties weergeven',
@@ -9402,8 +9405,12 @@ Geschatte voortgang van de huidige taak:",
 	'smw-prefs-ask-options-tooltip-display' => 'Parametertekst weergeven als infotooltip',
 	'smw-prefs-ask-options-collapsed-default' => 'Optievenster standaard samengevouwen weergeven',
 	'smw-ui-tooltip-title-property' => 'Eigenschap',
+	'smw-ui-tooltip-title-quantity' => 'Hoeveelheid',
 	'smw-ui-tooltip-title-info' => 'Informatie',
+	'smw-ui-tooltip-title-service' => 'Servicelinks',
+	'smw-ui-tooltip-title-warning' => 'Fout',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
+	'smw-ui-tooltip-title-event' => 'Gebeurtenis',
 	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
 );
 
@@ -10302,6 +10309,7 @@ $messages['ps'] = array(
 	'smw_printername_list' => 'لړليک',
 	'smw_printername_template' => 'کينډۍ',
 	'smw_printername_category' => 'وېشنيزه',
+	'validator-type-class-SMWParamSource' => 'متن',
 	'smw_iq_moreresults' => 'نورې پايلې ...',
 	'smw_true_words' => 'سم، س، هو، هـ',
 	'smw_false_words' => 'ناسم، نا، نه، ن',
@@ -10316,11 +10324,13 @@ $messages['ps'] = array(
 	'smw_qc_default' => 'تلواليز:',
 	'smw_qui_prop' => 'ځانتيا:',
 	'smw_qui_limt' => 'بريد:',
+	'smw_qui_ascorder' => 'ختند',
 	'smw_qui_options' => 'خوښنې',
 	'smw_qui_addcategory' => 'وېشنيزه ورګډول',
 	'smw_qui_ok' => 'ښه',
 	'smw_qui_cancel' => 'ناګارل',
 	'smw_qui_dcategory' => 'وېشنيزه:',
+	'smw_sbv_property' => 'ځانتيا:',
 	'smw_sbv_value' => 'ارزښت:',
 	'smw_sbv_submit' => 'پايلې موندل',
 	'browse' => 'ويکي سپړل',
@@ -10334,6 +10344,8 @@ $messages['ps'] = array(
 	'smw_result_noresults' => 'بې پايلو.',
 	'smw_smwadmin_return' => '$1 ته ورګرځېدل',
 	'smw_smwadmin_datarefreshstopconfirm' => 'هو، زه ډاډه يم.',
+	'smw-ui-tooltip-title-info' => 'مالومات',
+	'smw-ui-tooltip-title-warning' => 'تېروتنه',
 );
 
 /** Portuguese (português)
