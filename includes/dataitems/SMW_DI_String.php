@@ -66,10 +66,4 @@ class SMWDIString extends SMWDIBlob {
 		return new SMWDIString( $serialization );
 	}
 
-	public function equals( $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_STRING ) {
-			return false;
-		}
-		return $di->getString() === $this->m_string;
-	}
 }
