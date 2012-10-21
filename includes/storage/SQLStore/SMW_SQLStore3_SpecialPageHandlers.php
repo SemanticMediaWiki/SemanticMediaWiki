@@ -3,7 +3,7 @@
 /**
  * Class Handling all the Special Page methods for SMWSQLStore3
  *
- * @author Markus Kr�tzsch
+ * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *

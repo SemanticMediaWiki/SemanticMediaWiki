@@ -43,7 +43,7 @@ Class SMWSQLStore3Writers {
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = wfGetDB( DB_MASTER );
 			$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
-			$db->delete( 'smw_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
+			$db->delete( 'smw_ftp_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
 			$db->delete( 'smw_conccache', array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
 
@@ -154,9 +154,9 @@ Class SMWSQLStore3Writers {
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $tableId => $tableDeclaration ) {
 			$tableName = $tableDeclaration->name;
-			if ( $tableName == 'smw_redi' ) {
+			if ( $tableName == 'smw_fpt_redi' ) {
 				// TODO - handle these for updating property counts
-				continue;	//smw_redi are not considered here.
+				continue;	//smw_fpt_redi are not considered here.
 			}
 
 			if ( array_key_exists( $tableName, $updates ) ) {
@@ -170,18 +170,18 @@ Class SMWSQLStore3Writers {
 
 					// Concepts are not just written but carefully updated,
 					// preserving existing metadata (cache ...) for a concept:
-					if ( $tableName == 'smw_conc' ) {
+					if ( $tableName == 'smw_fpt_conc' ) {
 						$row = $db->selectRow(
-							'smw_conc',
+							'smw_fpt_conc',
 							array( 'cache_date', 'cache_count' ),
 							array( 's_id' => $sid ),
 							'SMWSQLStoreQueries::updateConcData'
 						);
 
-						if ( ( $row === false ) && ( $updates['smw_conc']['concept_txt'] !== '' ) ) { // insert newly given data
-							$db->insert( 'smw_conc', $updates['smw_conc'], 'SMW::updateConcData' );
+						if ( ( $row === false ) && ( $updates['smw_fpt_conc']['concept_txt'] !== '' ) ) { // insert newly given data
+							$db->insert( 'smw_fpt_conc', $updates['smw_fpt_conc'], 'SMW::updateConcData' );
 						} elseif ( $row !== false ) { // update data, preserve existing entries
-							$db->update( 'smw_conc', $updates['smw_conc'], array( 's_id' => $sid ), 'SMW::updateConcData' );
+							$db->update( 'smw_fpt_conc', $updates['smw_fpt_conc'], array( 's_id' => $sid ), 'SMW::updateConcData' );
 						}
 					} else {
 						$this->deleteTableSemanticData( $sid, $tableDeclaration );
@@ -292,12 +292,12 @@ Class SMWSQLStore3Writers {
 
 		// Special handling of Concepts
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT && $subject->getSubobjectName() == '' ) {
-			if ( array_key_exists( 'smw_conc', $updates ) && ( count( $updates['smw_conc'] ) != 0 ) ) {
-				$updates['smw_conc'] = end( $updates['smw_conc'] );
-				unset ( $updates['smw_conc']['cache_date'] );
-				unset ( $updates['smw_conc']['cache_count'] );
+			if ( array_key_exists( 'smw_fpt_conc', $updates ) && ( count( $updates['smw_fpt_conc'] ) != 0 ) ) {
+				$updates['smw_fpt_conc'] = end( $updates['smw_fpt_conc'] );
+				unset ( $updates['smw_fpt_conc']['cache_date'] );
+				unset ( $updates['smw_fpt_conc']['cache_count'] );
 			} else {
-				$updates['smw_conc'] = array(
+				$updates['smw_fpt_conc'] = array(
 				     'concept_txt'   => '',
 				     'concept_docu'  => '',
 				     'concept_features' => 0,
@@ -371,7 +371,7 @@ Class SMWSQLStore3Writers {
 
 			// make redirect id for oldtitle:
 			$this->store->smwIds->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL3_SMWREDIIW, '' );
-			$db->insert( 'smw_redi', array( 's_title' => $oldtitle->getDBkey(),
+			$db->insert( 'smw_fpt_redi', array( 's_title' => $oldtitle->getDBkey(),
 						's_namespace' => $oldtitle->getNamespace(),
 						'o_id' => $sid ),
 			             __METHOD__
@@ -425,9 +425,11 @@ Class SMWSQLStore3Writers {
 	}
 
 	/**
-	 * Delete all semantic data stored for the given subject on the specified table.
-	 * Note - if the table is smw_conc or smw_redi nothing is done as doDataUpdate handles them itself
-	 * No handling of tables with idsubject set to false here.
+	 * Delete all semantic data stored for the given subject on the
+	 * specified table.
+	 * @note If the table is smw_fpt_conc or smw_fpt_redi nothing is done,
+	 * as doDataUpdate handles them itself. Also, there is no handling of
+	 * tables with idsubject set to false here.
 	 *
 	 * @since 1.8
 	 *
@@ -435,7 +437,7 @@ Class SMWSQLStore3Writers {
 	 * @param $table SMWSQLStore3Table
 	 */
 	protected function deleteTableSemanticData( $id, SMWSQLStore3Table $table ) {
-		if ( $table->name == 'smw_conc' || $table->name == 'smw_redi' ) {
+		if ( $table->name == 'smw_fpt_conc' || $table->name == 'smw_fpt_redi' ) {
 			return; // not handled here
 		}
 
@@ -522,7 +524,7 @@ Class SMWSQLStore3Writers {
 		$new_tid = $curtarget_t ? ( $this->store->smwIds->makeSMWPageID( $curtarget_t, $curtarget_ns, '', '', false ) ) : 0; // real id of new target, if given
 
 		$db = wfGetDB( DB_SLAVE );
-		$row = $db->selectRow( array( 'smw_redi' ), 'o_id',
+		$row = $db->selectRow( array( 'smw_fpt_redi' ), 'o_id',
 				array( 's_title' => $subject_t, 's_namespace' => $subject_ns ), __METHOD__ );
 		$old_tid = ( $row !== false ) ? $row->o_id : 0; // real id of old target, if any
 		/// NOTE: $old_tid and $new_tid both (intentionally) ignore further redirects: no redirect chains
@@ -540,7 +542,7 @@ Class SMWSQLStore3Writers {
 			// Since references must not be 0, we don't have to do this is $sid == 0.
 			$this->store->changeSMWPageID( $sid, $new_tid, $subject_ns, $curtarget_ns, false, true );
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
-			$db->delete( 'smw_redi',
+			$db->delete( 'smw_fpt_redi',
 				array( 's_title' => $subject_t, 's_namespace' => $subject_ns ), __METHOD__ );
 			$count--;
 
@@ -550,7 +552,7 @@ Class SMWSQLStore3Writers {
 				$jobs = array();
 
 				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-					if ( $proptable->name == 'smw_redi' ) continue; // can safely be skipped
+					if ( $proptable->name == 'smw_fpt_redi' ) continue; // can safely be skipped
 
 					if ( $proptable->idsubject ) {
 						$from   = $db->tableName( $proptable->name ) . ' INNER JOIN ' .
@@ -601,7 +603,7 @@ Class SMWSQLStore3Writers {
 			// Redirecting done right:
 			// (1) make a new ID with iw SMW_SQL3_SMWREDIIW or
 			//     change iw field of current ID in this way,
-			// (2) write smw_redi table,
+			// (2) write smw_fpt_redi table,
 			// (3) update canonical cache.
 			// This order must be obeyed unless you really understand what you are doing!
 
@@ -618,7 +620,7 @@ Class SMWSQLStore3Writers {
 				}
 			}
 
-			$db->insert( 'smw_redi', array( 's_title' => $subject_t,
+			$db->insert( 'smw_fpt_redi', array( 's_title' => $subject_t,
 				's_namespace' => $subject_ns, 'o_id' => $new_tid ), __METHOD__ );
 			$count++;
 		} else { // delete old redirect

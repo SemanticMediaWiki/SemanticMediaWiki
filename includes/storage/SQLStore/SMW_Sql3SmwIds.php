@@ -165,7 +165,7 @@ class SMWSql3SmwIds {
 	 */
 	protected function getRedirectId( $title, $namespace ) {
 		$db = wfGetDB( DB_SLAVE );
-		$row = $db->selectRow( 'smw_redi', 'o_id',
+		$row = $db->selectRow( 'smw_fpt_redi', 'o_id',
 			array( 's_title' => $title, 's_namespace' => $namespace ), __METHOD__ );
 		$this->selectrow_redi_debug++;
 		return ( $row === false ) ? 0 : $row->o_id;
