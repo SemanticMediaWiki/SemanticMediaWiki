@@ -19,6 +19,19 @@
  */
 class SMWSql3SmwIds {
 
+	/**
+	 * Id for which property table hashes are cached, if any.
+	 *
+	 * @since 1.8
+	 */
+	protected $hashCacheId = 0;
+	/**
+	 * Cached property table hashes for $hashCacheId.
+	 *
+	 * @since 1.8
+	 */
+	protected $hashCacheContents = '';
+
 	/// Maximal number of cached property IDs.
 	public static $PROP_CACHE_MAX_SIZE = 250;
 	/// Maximal number of cached non-property IDs.
@@ -94,8 +107,25 @@ class SMWSql3SmwIds {
 	 * the given page. If no such ID exists, 0 is returned. The Call-By-Ref
 	 * parameter $sortkey is set to the current sortkey, or to '' if no ID
 	 * exists.
+	 *
+	 * If $fetchhashes is true, the property table hash blob will be
+	 * retireved in passing if the opportunity arises, and cached
+	 * internally. This will speed up a subsequent call to
+	 * getPropertyTableHashes() for this id. This should only be done
+	 * if such a call is intended, both to safe the previous cache and
+	 * to avoid extra work (even if only a little) to fill it.
+	 *
+	 * @since 1.8
+	 * @param $title string DB key
+	 * @param $namespace integer namespacs
+	 * @param $iw string interwiki prefix
+	 * @param $subobjectName string name of subobject
+	 * @param $sortkey string call-by-ref will be set to sortkey
+	 * @param $canonical boolean should redirects be resolved?
+	 * @param fetchHashes boolean should the property hashes be obtained and cached?
+	 * @return integer SMW id or 0 if there is none
 	 */
-	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical ) {
+	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes = false ) {
 		global $smwgQEqualitySupport;
 
 		$id = $this->getCachedId( $title, $namespace, $iw, $subobjectName );
@@ -107,11 +137,19 @@ class SMWSql3SmwIds {
 				$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
 				$id = $this->getRedirectId( $title, $namespace );
 				if ( $id != 0 ) {
-					$row = $db->selectRow( 'smw_ids', array( 'smw_id', 'smw_sortkey' ),
+					if ( $fetchHashes ) {
+						$select = array( 'smw_id', 'smw_sortkey', 'smw_proptable_hash' );
+					} else {
+						$select = array( 'smw_id', 'smw_sortkey' );
+					}
+					$row = $db->selectRow( 'smw_ids', $select,
 						'smw_id=' . $db->addQuotes( $id ),
 						__METHOD__ );
 					if ( $row !== false ) {
 						$sortkey = $row->smw_sortkey;
+						if ( $fetchHashes ) {
+							$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
+						}
 					} else { // inconsistent DB; just recover somehow
 						$sortkey = str_replace( '_', ' ', $title );
 					}
@@ -119,7 +157,12 @@ class SMWSql3SmwIds {
 					$sortkey = '';
 				}
 			} else {
-				$row = $db->selectRow( 'smw_ids', array( 'smw_id', 'smw_sortkey' ),
+				if ( $fetchHashes ) {
+					$select = array( 'smw_id', 'smw_sortkey', 'smw_proptable_hash' );
+				} else {
+					$select = array( 'smw_id', 'smw_sortkey' );
+				}
+				$row = $db->selectRow( 'smw_ids', $select,
 					'smw_title=' . $db->addQuotes( $title ) .
 					' AND smw_namespace=' . $db->addQuotes( $namespace ) .
 					' AND smw_iw=' . $db->addQuotes( $iw ) .
@@ -133,6 +176,9 @@ class SMWSql3SmwIds {
 				if ( $row !== false ) {
 					$id = $row->smw_id;
 					$sortkey = $row->smw_sortkey;
+					if ( $fetchHashes ) {
+						$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
+					}
 				} else {
 					$id = 0;
 					$sortkey = '';
@@ -142,7 +188,7 @@ class SMWSql3SmwIds {
 		}
 
 		if ( $id == 0 && $subobjectName == '' && $iw == '' ) { // could be a redirect; check
-			$id = $this->getSMWPageIDandSort( $title, $namespace, SMW_SQL3_SMWREDIIW, $subobjectName, $sortkey, $canonical );
+			$id = $this->getSMWPageIDandSort( $title, $namespace, SMW_SQL3_SMWREDIIW, $subobjectName, $sortkey, $canonical, $fetchHashes );
 		}
 
 		return $id;
@@ -151,10 +197,19 @@ class SMWSql3SmwIds {
 	/**
 	 * Convenience method for calling getSMWPageIDandSort without
 	 * specifying a sortkey (if not asked for).
+	 *
+	 * @since 1.8
+	 * @param $title string DB key
+	 * @param $namespace integer namespacs
+	 * @param $iw string interwiki prefix
+	 * @param $subobjectName string name of subobject
+	 * @param $canonical boolean should redirects be resolved?
+	 * @param fetchHashes boolean should the property hashes be obtained and cached?
+	 * @return integer SMW id or 0 if there is none
 	 */
-	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true ) {
+	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ) {
 		$sort = '';
-		return $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $sort, $canonical );
+		return $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $sort, $canonical, $fetchHashes );
 	}
 
 	/**
@@ -182,9 +237,20 @@ class SMWSql3SmwIds {
 	 * @note Using this with $canonical==false can make sense, especially when
 	 * the title is a redirect target (we do not want chains of redirects).
 	 * But it is of no relevance if the title does not have an id yet.
+	 *
+	 * @since 1.8
+	 * @param $title string DB key
+	 * @param $namespace integer namespacs
+	 * @param $iw string interwiki prefix
+	 * @param $subobjectName string name of subobject
+	 * @param $canonical boolean should redirects be resolved?
+	 * @param $sortkey string call-by-ref will be set to sortkey
+	 * @param fetchHashes boolean should the property hashes be obtained and cached?
+	 * @return integer SMW id or 0 if there is none
 	 */
-	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '' ) {
-		$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical );
+	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '', $fetchHashes = false ) {
+		$oldsort = '';
+		$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
 
 		if ( $id == 0 ) {
 			$db = wfGetDB( DB_MASTER );
@@ -217,6 +283,9 @@ class SMWSql3SmwIds {
 				);
 			}
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
+			if ( $fetchHashes ) {
+				$this->setPropertyTableHashesCache( $id, null );
+			}
 		} elseif ( ( $sortkey !== '' ) && ( $sortkey != $oldsort ) ) {
 			$db = wfGetDB( DB_MASTER );
 			$db->update( 'smw_ids', array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
@@ -462,26 +531,35 @@ class SMWSql3SmwIds {
 	* hashes are used to compare new data with old data for each
 	* property-value table when updating data
 	*
+	* @since 1.8
 	* @param $sid ID of the page as stored in smw_ids
 	* @return array
 	*/
 	public function getPropertyTableHashes( $sid ) {
-		$db = wfGetDB( DB_SLAVE );
-
-		$row = $db->selectRow(
-			'smw_ids',
-			array( 'smw_proptable_hash' ),
-			'smw_id=' . $sid ,
-			__METHOD__
-		);
-
-		if( $row !== false && !is_null( $row->smw_proptable_hash ) ) {
-			$tableHashes = unserialize( $row->smw_proptable_hash );
+		if ( $this->hashCacheId == $sid ) {
+			//print "Cache hit! " . $this->hitcount++ . "\n";
+			$hash = $this->hashCacheContents;
+		} elseif ( $sid !== 0 ) {
+			//print "Cache miss! $sid is not {$this->hashCacheId} " . $this->misscount++ . "\n";
+			$db = wfGetDB( DB_SLAVE );
+			$row = $db->selectRow(
+				'smw_ids',
+				array( 'smw_proptable_hash' ),
+				'smw_id=' . $sid ,
+				__METHOD__
+			);
+			if ( $row !== false ) {
+				$hash = $row->smw_proptable_hash;
+			}
+		} else { // $sid == 0
+			$hash = null;
 		}
-		else {
-			$tableHashes = array();
+
+		if ( !is_null( $hash ) ) {
+			return unserialize( $hash );
+		} else {
+			return array();
 		}
-		return $tableHashes;
 	}
 
 	/**
@@ -489,6 +567,7 @@ class SMWSql3SmwIds {
 	*
 	* @param $sid ID of the page as stored in smw_ids
 	* @param array of hash values with tablename as keys
+	* @since 1.8
 	*/
 	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
 		$db = wfGetDB( DB_MASTER );
@@ -498,6 +577,24 @@ class SMWSql3SmwIds {
 			array( 'smw_id' => $sid ),
 			__METHOD__
 		);
+		if ( $sid == $this->hashCacheId ) {
+			$this->setPropertyTableHashesCache( $sid, $propertyTableHash );
+		}
+	}
+
+	/**
+	 * Temporarily cache a property tablehash that has been retrieved for
+	 * the given SMW ID.
+	 *
+	 * @since 1.8
+	 * @param $id integer
+	 * @param $propertyTableHash string
+	 */
+	protected function setPropertyTableHashesCache( $id, $propertyTableHash ) {
+		if ( $id == 0 ) return; // never cache 0
+		//print "Cache set for $id.\n";
+		$this->hashCacheId = $id;
+		$this->hashCacheContents = $propertyTableHash;
 	}
 
 	/**
