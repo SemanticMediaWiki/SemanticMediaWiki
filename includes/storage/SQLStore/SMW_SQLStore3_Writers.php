@@ -142,7 +142,7 @@ Class SMWSQLStore3Writers {
 
 		$db = wfGetDB( DB_MASTER );
 
-		$oldHashes = $this->getPropTableHashes( $sid );
+		$oldHashes = $this->store->smwIds->getPropertyTableHashes( $sid );
 		$hashIsChanged = false;
 
 		//old SemanticData container for this subject (This will only hold Semantic data that will be deleted)
@@ -201,7 +201,7 @@ Class SMWSQLStore3Writers {
 		}
 
 		if ( $hashIsChanged ) {
-			$this->setPropTableHashes( $sid, $oldHashes );
+			$this->store->smwIds->setPropertyTableHashes( $sid, $oldHashes );
 		}
 
 		// Finally update caches (may be important if jobs are directly following this call)
@@ -468,7 +468,7 @@ Class SMWSQLStore3Writers {
 		$oldData = $this->store->getSemanticData( $subject );
 		$this->doDiffandUpdateCount( $oldData );
 
-		$oldHashes = $this->getPropTableHashes( $id );
+		$oldHashes = $this->store->smwIds->getPropertyTableHashes( $id );
 		foreach ( SMWSQLStore3::getPropertyTables() as $tableId => $tableDeclaration ) {
 			$tableName = $tableDeclaration->name;
 			if ( array_key_exists( $tableName, $oldHashes ) ) {
@@ -693,51 +693,6 @@ Class SMWSQLStore3Writers {
 			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $update[1] . ' where pid = ' . $this->store->smwIds->getSMWPropertyID( $update[0] );
 			$dbw->query( $sql, __METHOD__ );
 		}
-	}
-
-	/**
-	* Returns an array of hashes with table names as keys. These
-	* hashes are used to compare new data with old data for each
-	* property-value table when updating data
-	*
-	* since SMW.storerewrite
-	* @param $sid ID of the page as stored in smw_ids
-	* @return array
-	*/
-	protected function getPropTableHashes( $sid ) {
-		$db = wfGetDB( DB_SLAVE );
-
-		$row = $db->selectRow(
-			'smw_ids',
-			array( 'smw_proptable_hash' ),
-			'smw_id=' . $sid ,
-			__METHOD__
-		);
-
-		if( $row !== false && !is_null( $row->smw_proptable_hash ) ) {
-			$tableHashes = unserialize( $row->smw_proptable_hash );
-		}
-		else {
-			$tableHashes = array();
-		}
-		return $tableHashes;
-	}
-
-	/**
-	* Updates the proptable_hash for a given page.
-	*
-	* since SMW.storerewrite
-	* @param $sid ID of the page as stored in smw_ids
-	* @param array() of hash values with tablename as keys
-	*/
-	protected function setPropTableHashes( $sid, array $newTableHashes ) {
-		$db = wfGetDB( DB_MASTER );
-		$db->update(
-			'smw_ids',
-			array( 'smw_proptable_hash' => serialize( $newTableHashes ) ),
-			array( 'smw_id' => $sid ),
-			__METHOD__
-		);
 	}
 
 }

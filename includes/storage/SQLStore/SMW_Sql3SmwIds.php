@@ -458,6 +458,49 @@ class SMWSql3SmwIds {
 	}
 
 	/**
+	* Returns an array of hashes with table names as keys. These
+	* hashes are used to compare new data with old data for each
+	* property-value table when updating data
+	*
+	* @param $sid ID of the page as stored in smw_ids
+	* @return array
+	*/
+	public function getPropertyTableHashes( $sid ) {
+		$db = wfGetDB( DB_SLAVE );
+
+		$row = $db->selectRow(
+			'smw_ids',
+			array( 'smw_proptable_hash' ),
+			'smw_id=' . $sid ,
+			__METHOD__
+		);
+
+		if( $row !== false && !is_null( $row->smw_proptable_hash ) ) {
+			$tableHashes = unserialize( $row->smw_proptable_hash );
+		}
+		else {
+			$tableHashes = array();
+		}
+		return $tableHashes;
+	}
+
+	/**
+	* Updates the proptable_hash for a given page.
+	*
+	* @param $sid ID of the page as stored in smw_ids
+	* @param array of hash values with tablename as keys
+	*/
+	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
+		$db = wfGetDB( DB_MASTER );
+		$db->update(
+			'smw_ids',
+			array( 'smw_proptable_hash' => serialize( $newTableHashes ) ),
+			array( 'smw_id' => $sid ),
+			__METHOD__
+		);
+	}
+
+	/**
 	 * Simple helper method for debugging cache performance. Prints
 	 * statistics about the SMWSql3SmwIds object created last.
 	 * The following code can be used in LocalSettings.php to enable
