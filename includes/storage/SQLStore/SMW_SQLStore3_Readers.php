@@ -39,6 +39,7 @@ Class SMWSQLStore3Readers {
 							$subject->getInterwiki(),
 							$subject->getSubobjectName(),
 							$sortkey, true );
+
 		if ( $sid == 0 ) {
 			// We consider redirects for getting $sid,
 			// so $sid == 0 also means "no redirects".
@@ -46,7 +47,13 @@ Class SMWSQLStore3Readers {
 			return new SMWSemanticData( $subject );
 		}
 
+		$propertyTableHashes = $this->store->smwIds->getPropertyTableHashes( $sid );
+
 		foreach ( SMWSQLStore3::getPropertyTables() as $tid => $proptable ) {
+			if ( !array_key_exists( $proptable->name, $propertyTableHashes ) ) {
+				continue;
+			}
+
 			if ( $filter !== false ) {
 				$relevant = false;
 				foreach ( $filter as $typeId ) {
@@ -62,27 +69,21 @@ Class SMWSQLStore3Readers {
 
 		// Note: the sortkey is always set but belongs to no property table,
 		// hence no entry in $this->store->m_sdstate[$sid] is made.
+		self::$in_getSemanticData++;
+		$this->initSemanticDataCache( $sid, $subject );
 		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
+		self::$in_getSemanticData--;
 
 		wfProfileOut( "SMWSQLStore3::getSemanticData (SMW)" );
 
 		return $this->store->m_semdata[$sid];
 	}
 
-	/**
-	 * Fetch the data storder about one subject in one particular table.
-	 */
-	protected function getSemanticDataFromTable( $sid, SMWDIWikiPage $subject, SMWSQLStore3Table $proptable ) {
-		// Do not clear the cache when called recursively.
-		self::$in_getSemanticData++;
-
+	protected function initSemanticDataCache( $sid, SMWDIWikiPage $subject ) {
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->store->m_semdata ) ) { // new cache entry
 			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, $this->store, false );
 			$this->store->m_sdstate[$sid] = array();
-		} elseif ( array_key_exists( $proptable->name, $this->store->m_sdstate[$sid] ) ) {
-			self::$in_getSemanticData--;
-			return $this->store->m_semdata[$sid];
 		}
 
 		if ( ( count( $this->store->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
@@ -92,6 +93,21 @@ Class SMWSQLStore3Readers {
 			// However, things might have changed in the meantime ...
 			$this->store->m_semdata = array( $sid => $this->store->m_semdata[$sid] );
 			$this->store->m_sdstate = array( $sid => $this->store->m_sdstate[$sid] );
+		}
+	}
+
+	/**
+	 * Fetch the data storder about one subject in one particular table.
+	 */
+	protected function getSemanticDataFromTable( $sid, SMWDIWikiPage $subject, SMWSQLStore3Table $proptable ) {
+		// Do not clear the cache when called recursively.
+		self::$in_getSemanticData++;
+
+		$this->initSemanticDataCache( $sid, $subject );
+
+		if ( array_key_exists( $proptable->name, $this->store->m_sdstate[$sid] ) ) {
+			self::$in_getSemanticData--;
+			return $this->store->m_semdata[$sid];
 		}
 
 		// *** Read the data ***//
