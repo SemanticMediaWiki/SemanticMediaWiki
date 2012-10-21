@@ -89,9 +89,15 @@ class SMWSQLStore3 extends SMWStore {
 	/// Array for keeping property table table data, indexed by table id.
 	/// Access this only by calling getPropertyTables().
 	protected static $prop_tables;
-	/// Array to cache "propkey => table id" associations for fixed
-	/// property tables. Available only after calling getPropertyTables().
-	protected static $fixed_prop_tableids;
+
+	/**
+	 * Array to cache "propkey => table id" associations for fixed
+	 * property tables. Available only after calling @see getPropertyTables.
+	 *
+	 * @since 1.8
+	 * @var array|null
+	 */
+	protected static $fixedPropertyTableIds;
 
 	/// Keys of special properties that should have their own
 	/// fixed property table.
@@ -626,8 +632,12 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public static function findPropertyTableID( SMWDIProperty $diProperty ) {
 		$propertyKey = $diProperty->getKey();
-		if ( array_key_exists( $propertyKey, self::$fixed_prop_tableids ) ) {
-			return self::$fixed_prop_tableids[$propertyKey];
+
+		// This is needed to initialize the $fixedPropertyTableIds field
+		self::getPropertyTables();
+
+		if ( array_key_exists( $propertyKey, self::$fixedPropertyTableIds ) ) {
+			return self::$fixedPropertyTableIds[$propertyKey];
 		} else {
 			return self::findTypeTableId( $diProperty->findPropertyTypeID() );
 		}
@@ -739,10 +749,11 @@ class SMWSQLStore3 extends SMWStore {
 		wfRunHooks( 'SMWPropertyTables', array( &self::$prop_tables ) );
 
 		// Build index for finding property tables
-		self::$fixed_prop_tableids = array();
+		self::$fixedPropertyTableIds = array();
+
 		foreach ( self::$prop_tables as $tid => $proptable ) {
 			if ( $proptable->fixedproperty ) {
-				self::$fixed_prop_tableids[$proptable->fixedproperty] = $tid;
+				self::$fixedPropertyTableIds[$proptable->fixedproperty] = $tid;
 			}
 		}
 
