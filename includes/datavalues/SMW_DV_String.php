@@ -43,8 +43,8 @@ class SMWStringValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-		$diType = ( ( $this->m_typeid == '_txt' ) || ( $this->m_typeid == '_cod' ) ) ? SMWDataItem::TYPE_BLOB : SMWDataItem::TYPE_STRING;
-		if ( $dataItem->getDIType() == $diType ) {
+		if ( ( $dataItem->getDIType() == SMWDataItem::TYPE_BLOB ) ||
+			( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) ) {
 			$this->m_dataitem = $dataItem;
 			if ( $this->m_typeid == '_cod' ) {
 				$this->m_caption = $this->getCodeDisplay( $this->m_dataitem->getString() );
