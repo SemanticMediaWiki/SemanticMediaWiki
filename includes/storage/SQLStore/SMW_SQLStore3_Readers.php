@@ -29,6 +29,10 @@ Class SMWSQLStore3Readers {
 		$this->store = $parentstore;
 	}
 
+	/**
+	 * @see SMWStore::getSemanticData()
+	 * @since 1.8
+	 */
 	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
 		wfProfileIn( "SMWSQLStore3::getSemanticData (SMW)" );
 
@@ -79,6 +83,14 @@ Class SMWSQLStore3Readers {
 		return $this->store->m_semdata[$sid];
 	}
 
+	/**
+	 * Helper method to make sure there is a cache entry for the data about
+	 * the given subject with the given ID.
+	 * 
+	 * @todo The management of this cache should be revisited.
+	 *
+	 * @since 1.8
+	 */
 	protected function initSemanticDataCache( $sid, SMWDIWikiPage $subject ) {
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->store->m_semdata ) ) { // new cache entry
@@ -98,6 +110,12 @@ Class SMWSQLStore3Readers {
 
 	/**
 	 * Fetch the data storder about one subject in one particular table.
+	 *
+	 * @param $sid integer
+	 * @param $subject SMWDIWikiPage
+	 * @param $proptable SMWSQLStore3Table
+	 * @return SMWSemanticData
+	 * @since 1.8
 	 */
 	protected function getSemanticDataFromTable( $sid, SMWDIWikiPage $subject, SMWSQLStore3Table $proptable ) {
 		// Do not clear the cache when called recursively.
@@ -124,10 +142,10 @@ Class SMWSQLStore3Readers {
 	/**
 	 * @see SMWStore::getPropertyValues
 	 *
+	 * @since 1.8
 	 * @param $subject mixed SMWDIWikiPage or null
 	 * @param $property SMWDIProperty
 	 * @param $requestoptions SMWRequestOptions
-	 *
 	 * @return array of SMWDataItem
 	 */
 	public function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null ) {

@@ -9,6 +9,8 @@
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *
+ * @since 1.8
+ *
  * @file
  * @ingroup SMWStore
  */
@@ -30,6 +32,8 @@ define( 'SMW_SQL3_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" 
  * way to filter out results that may be found if an interwiki object is given but a
  * local object of the same name exists. It is currently not planned to support things
  * like interwiki reuse of properties.
+ * 
+ * @since 1.8
  * @ingroup SMWStore
  */
 class SMWSQLStore3 extends SMWStore {
@@ -75,15 +79,24 @@ class SMWSQLStore3 extends SMWStore {
 
 	/**
 	 * Array of DIHandler objects used by this store. Initialized by getDIHandler()
-	 * Always access using getDIHandler()
+	 * Always access using getDIHandler().
 	 *
 	 * @since 1.8
 	 */
 	protected $diHandlers = array();
 
-	/// Cache for SMWSemanticData objects, indexed by SMW ID
+	/**
+	 * Cache for SMWSemanticData objects, indexed by SMW ID.
+	 *
+	 * @since 1.8
+	 */
 	public $m_semdata = array();
-	/// Like SMWSQLStore3::m_semdata, but containing flags indicating completeness of the SMWSemanticData objs
+	/**
+	 * Like SMWSQLStore3::m_semdata, but containing flags indicating
+	 * completeness of the SMWSemanticData objs.
+	 *
+	 * @since 1.8
+	 */
 	public $m_sdstate = array();
 
 	/// Array for keeping property table table data, indexed by table id.
@@ -99,8 +112,12 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	protected static $fixedPropertyTableIds;
 
-	/// Keys of special properties that should have their own
-	/// fixed property table.
+	/**
+	 * Keys of special properties that should have their own
+	 * fixed property table.
+	 *
+	 * @since 1.8
+	 */
 	protected static $special_tables = array(
 		// page metadata tables
 		'_MDAT', '_CDAT', '_NEWP', '_LEDT',
@@ -120,7 +137,11 @@ class SMWSQLStore3 extends SMWStore {
 		'_SF_DF', '_SF_AF',
 	);
 
-	/// Default tables to use for storing data of certain types.
+	/**
+	 * Default tables to use for storing data of certain types.
+	 *
+	 * @since 1.8
+	 */
 	public static $di_type_tables = array(
 		SMWDataItem::TYPE_NUMBER     => 'smw_di_number',
 		SMWDataItem::TYPE_STRING     => 'smw_di_blob',
