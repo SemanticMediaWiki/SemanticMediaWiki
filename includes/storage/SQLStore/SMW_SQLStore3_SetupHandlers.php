@@ -3,7 +3,7 @@
 /**
  * Class Handling all the setup methods for SMWSQLStore3
  *
- * @author Markus Kr�tzsch
+ * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *
@@ -51,8 +51,8 @@ Class SMWSQLStore3SetupHandlers {
 	 *
 	 * - Rows with iw SMW_SQL3_SMWREDIIW are similar to normal entries for
 	 * (internal) wiki pages, but the iw indicates that the page is a
-	 * redirect, the target of which should be sought using the smw_redi
-	 * table.
+	 * redirect, the target of which should be sought using the
+	 * smw_fpt_redi table.
 	 *
 	 * - The (unique) row with iw SMW_SQL3_SMWBORDERIW just marks the
 	 * border between predefined ids (rows that are reserved for hardcoded

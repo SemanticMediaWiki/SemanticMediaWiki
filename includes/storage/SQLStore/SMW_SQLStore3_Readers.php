@@ -3,7 +3,7 @@
 /**
  * Class Handling all the read methods for SMWSQLStore3
  *
- * @author Markus Kr�tzsch
+ * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *
@@ -71,8 +71,10 @@ Class SMWSQLStore3Readers {
 
 			if ( $filter !== false ) {
 				$relevant = false;
-				foreach ( $filter as $typeid ) {
-					$relevant = $relevant || SMWSQLStore3::tableFitsType( $tid, $typeid );
+				foreach ( $filter as $typeId ) {
+					$diType = SMWDataValueFactory::getDataItemId( $typeId );
+					$relevant = $relevant || ( $proptable->diType == $diType );
+					if ( $relevant ) break;
 				}
 				if ( !$relevant ) continue;
 			}
@@ -157,18 +159,16 @@ Class SMWSQLStore3Readers {
 	 * in $object.
 	 *
 	 * In case (1), the result in general is an array of pairs (arrays of size 2) consisting of
-	 * a property name (string), and an array of DB keys (array) from which a datvalue object for
+	 * a property key (string), and an array of DB keys (array) from which a datvalue object for
 	 * this value could be built. It is possible that some of the DB keys are based on internal
 	 * objects; these will be represented by similar result arrays of (recursive calls of)
 	 * fetchSemanticData().
 	 *
-	 * In case (2), the result is simply an array of DB keys (array) without the property strings.
+	 * In case (2), the result is simply an array of DB keys (array) without the property keys.
 	 * Container objects will be encoded with nested arrays like in case (1).
 	 *
 	 * @todo Maybe share DB handler; asking for it seems to take quite some time and we do not want
 	 * to change it in one call.
-	 * 
-	 * @todo This uses some hacky code; see FIXME in method.
 	 *
 	 * @param integer $id
 	 * @param SMWDataItem $object
@@ -256,7 +256,7 @@ Class SMWSQLStore3Readers {
 
 		foreach ( $res as $row ) {
 			if ( $issubject ) { // use joined or predefined property name
-				$propertyname = $proptable->fixedproperty ? $proptable->fixedproperty : $row->prop;
+				$propertykey = $proptable->fixedproperty ? $proptable->fixedproperty : $row->prop;
 			}
 
 			$valuekeys = array();
@@ -268,7 +268,7 @@ Class SMWSQLStore3Readers {
 			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
 			if ( implode( '', $fields ) != 'p' || count( $valuekeys ) < 3 ||
 			     $valuekeys[2] === '' ||  $valuekeys[2]{0} != ':' ) {
-				$result[] = $issubject ? array( $propertyname, $valuekeys ) : $valuekeys;
+				$result[] = $issubject ? array( $propertykey, $valuekeys ) : $valuekeys;
 			}
 		}
 
@@ -521,10 +521,13 @@ Class SMWSQLStore3Readers {
 			$suboptions = null;
 		}
 
-		$tableIds = SMWSQLStore3::findAllDiTypeTableIds( $value->getDIType() );
-		$proptables = SMWSQLStore3::getPropertyTables();
-		foreach ( $tableIds as $tid ) {
-			$proptable = $proptables[$tid];
+		$diType = $value->getDIType();
+
+		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+			if ( $diType != $proptable->diType ) {
+				continue;
+			}
+
 			$where = $from = '';
 			if ( $proptable->fixedproperty == false ) { // join smw_ids to get property titles
 				$from = $db->tableName( 'smw_ids' ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.p_id=smw_id";

@@ -173,12 +173,12 @@ class SMWSQLStore3QueryEngine {
 				( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
 				$fname );
 
-			$this->m_dbs->update( 'smw_conc',
+			$this->m_dbs->update( 'smw_fpt_conc',
 				array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ),
 				array( 's_id' => $cid ), $fname );
 		} else { // no concept found; just delete old data if there is any
 			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), $fname );
-			$this->m_dbs->update( 'smw_conc',
+			$this->m_dbs->update( 'smw_fpt_conc',
 				array( 'cache_date' => null, 'cache_count' => null ),
 				array( 's_id' => $cid ), $fname );
 			$this->m_errors[] = "No concept description found.";
@@ -197,7 +197,7 @@ class SMWSQLStore3QueryEngine {
 	public function deleteConceptCache( $concept ) {
 		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 		$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
-		$this->m_dbs->update( 'smw_conc', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
+		$this->m_dbs->update( 'smw_fpt_conc', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 	}
 
 	/**
@@ -553,7 +553,7 @@ class SMWSQLStore3QueryEngine {
 			// We bypass the storage interface here (which is legal as we control it, and safe if we are careful with changes ...)
 			// This should be faster, but we must implement the unescaping that concepts do on getWikiValue()
 			$row = $this->m_dbs->selectRow(
-				'smw_conc',
+				'smw_fpt_conc',
 				array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ),
 				array( 's_id' => $cid ),
 				'SMWSQLStore3Queries::compileQueries'

@@ -30,9 +30,14 @@ class SMWSQLStore3Table {
 	public $diType;
 
 	/**
-	 * If the table is only for one property, this field holds its name.
+	 * If the table is only for one property, this field holds its key.
 	 * Empty otherwise. Tables without a fixed property have a column "p_id"
 	 * for storing the SMW page id of the property.
+	 *
+	 * @note It is important that this is the DB key form or special
+	 * property key, not the label. This is not checked eagerly in SMW but
+	 * can lead to spurious errors when properties are compared to each
+	 * other or to the contents of the store.
 	 *
 	 * @var mixed String or false
 	 */
@@ -57,7 +62,7 @@ class SMWSQLStore3Table {
 	*
 	* @param $DIType constant
 	* @param $tableName string
-	* @param $fixedProperty
+	* @param $fixedProperty mixed false or string property key
 	* @return $table SMWSQLStore3Table
 	*/
 	public function __construct( $DIType, $tableName, $fixedProperty = false ) {
