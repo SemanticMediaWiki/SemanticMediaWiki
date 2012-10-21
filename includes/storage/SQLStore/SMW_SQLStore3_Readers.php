@@ -32,43 +32,21 @@ Class SMWSQLStore3Readers {
 	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
 		wfProfileIn( "SMWSQLStore3::getSemanticData (SMW)" );
 
-		// Do not clear the cache when called recursively.
-		self::$in_getSemanticData++;
-
 		// *** Find out if this subject exists ***//
 		$sortkey = '';
-		$sid = $this->store->smwIds->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(),
-			$subject->getInterwiki(), $subject->getSubobjectName(), $sortkey, true );
-		if ( $sid == 0 ) { // no data, save our time
-			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
-			self::$in_getSemanticData--;
+		$sid = $this->store->smwIds->getSMWPageIDandSort( $subject->getDBkey(),
+							$subject->getNamespace(),
+							$subject->getInterwiki(),
+							$subject->getSubobjectName(),
+							$sortkey, true );
+		if ( $sid == 0 ) {
+			// We consider redirects for getting $sid,
+			// so $sid == 0 also means "no redirects".
 			wfProfileOut( "SMWSQLStore3::getSemanticData (SMW)" );
 			return new SMWSemanticData( $subject );
 		}
 
-		// *** Prepare the cache ***//
-		if ( !array_key_exists( $sid, $this->store->m_semdata ) ) { // new cache entry
-			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, $this->store, false );
-			if ( $subject->getSubobjectName() === '' ) { // no sortkey for subobjects
-				$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
-			}
-			$this->store->m_sdstate[$sid] = array();
-			// Note: the sortkey is always set but belongs to no property table,
-			// hence no entry in $this->store->m_sdstate[$sid] is made.
-		}
-
-		if ( ( count( $this->store->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
-			// prevent memory leak;
-			// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
-			// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
-			$this->store->m_semdata = array( $sid => $this->store->m_semdata[$sid] );
-			$this->store->m_sdstate = array( $sid => $this->store->m_sdstate[$sid] );
-		}
-
-		// *** Read the data ***//
 		foreach ( SMWSQLStore3::getPropertyTables() as $tid => $proptable ) {
-			if ( array_key_exists( $tid, $this->store->m_sdstate[$sid] ) ) continue;
-
 			if ( $filter !== false ) {
 				$relevant = false;
 				foreach ( $filter as $typeId ) {
@@ -79,19 +57,51 @@ Class SMWSQLStore3Readers {
 				if ( !$relevant ) continue;
 			}
 
-			$data = $this->fetchSemanticData( $sid, $subject, $proptable );
-
-			foreach ( $data as $d ) {
-				$this->store->m_semdata[$sid]->addPropertyStubValue( reset( $d ), end( $d ) );
-			}
-
-			$this->store->m_sdstate[$sid][$tid] = true;
+			$this->getSemanticDataFromTable( $sid, $subject, $proptable );
 		}
 
-		self::$in_getSemanticData--;
+		// Note: the sortkey is always set but belongs to no property table,
+		// hence no entry in $this->store->m_sdstate[$sid] is made.
+		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
 
 		wfProfileOut( "SMWSQLStore3::getSemanticData (SMW)" );
 
+		return $this->store->m_semdata[$sid];
+	}
+
+	/**
+	 * Fetch the data storder about one subject in one particular table.
+	 */
+	protected function getSemanticDataFromTable( $sid, SMWDIWikiPage $subject, SMWSQLStore3Table $proptable ) {
+		// Do not clear the cache when called recursively.
+		self::$in_getSemanticData++;
+
+		// *** Prepare the cache ***//
+		if ( !array_key_exists( $sid, $this->store->m_semdata ) ) { // new cache entry
+			$this->store->m_semdata[$sid] = new SMWSql3StubSemanticData( $subject, $this->store, false );
+			$this->store->m_sdstate[$sid] = array();
+		} elseif ( array_key_exists( $proptable->name, $this->store->m_sdstate[$sid] ) ) {
+			self::$in_getSemanticData--;
+			return $this->store->m_semdata[$sid];
+		}
+
+		if ( ( count( $this->store->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
+			// prevent memory leak;
+			// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
+			// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
+			// However, things might have changed in the meantime ...
+			$this->store->m_semdata = array( $sid => $this->store->m_semdata[$sid] );
+			$this->store->m_sdstate = array( $sid => $this->store->m_sdstate[$sid] );
+		}
+
+		// *** Read the data ***//
+		$data = $this->fetchSemanticData( $sid, $subject, $proptable );
+		foreach ( $data as $d ) {
+			$this->store->m_semdata[$sid]->addPropertyStubValue( reset( $d ), end( $d ) );
+		}
+		$this->store->m_sdstate[$sid][$proptable->name] = true;
+
+		self::$in_getSemanticData--;
 		return $this->store->m_semdata[$sid];
 	}
 
@@ -111,8 +121,17 @@ Class SMWSQLStore3Readers {
 			$noninverse = new SMWDIProperty( $property->getKey(), false );
 			$result = $this->getPropertySubjects( $noninverse, $subject, $requestoptions );
 		} elseif ( !is_null( $subject ) ) { // subject given, use semantic data cache
-			$sd = $this->getSemanticData( $subject, array( $property->findPropertyTypeID() ) );
-			$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestoptions );
+			$sid = $this->store->smwIds->getSMWPageID( $subject->getDBkey(),
+				$subject->getNamespace(), $subject->getInterwiki(),
+				$subject->getSubobjectName(), true );
+			if ( $sid == 0 ) {
+				$result = array();
+			} else {
+				$proptables = SMWSQLStore3::getPropertyTables();
+				$sd = $this->getSemanticDataFromTable( $sid, $subject,
+					$proptables[$this->store->findPropertyTableID( $property )] );
+				$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestoptions );
+			}
 		} else { // no subject given, get all values for the given property
 			$pid = $this->store->smwIds->getSMWPropertyID( $property );
 			$tableid = SMWSQLStore3::findPropertyTableID( $property );
@@ -398,9 +417,6 @@ Class SMWSQLStore3Readers {
 				}
 			}
 		} elseif ( !is_null( $value ) ) { // add conditions for given value
-			///since SMW.storerewrite we get the array of where conds (fieldname=>value) from the DIHander class
-			//This causes a database error when called for special properties as they have different table structure
-			//unknown to the DIHandlers. Do we really need different table structure for special properties?
 			$diHandler = $this->store->getDataItemHandlerForDIType( $value->getDIType() );
 			foreach ( $diHandler->getWhereConds( $value ) as $fieldname => $value ) {
 				$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.$fieldname=" . $db->addQuotes( $value );
