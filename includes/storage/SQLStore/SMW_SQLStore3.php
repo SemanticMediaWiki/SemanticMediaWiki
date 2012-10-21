@@ -626,6 +626,7 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public static function findPropertyTableID( SMWDIProperty $diProperty ) {
 		$propertyKey = $diProperty->getKey();
+		self::getPropertyTables(); // init self::$fixed_prop_tableid
 		if ( array_key_exists( $propertyKey, self::$fixed_prop_tableids ) ) {
 			return self::$fixed_prop_tableids[$propertyKey];
 		} else {
