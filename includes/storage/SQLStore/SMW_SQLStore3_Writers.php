@@ -132,7 +132,7 @@ Class SMWSQLStore3Writers {
 		}
 
 		// Always make an ID (pages without ID cannot be in query results, not even in fixed value queries!):
-		$sid = $this->store->smwIds->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
+		$sid = $this->store->smwIds->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey, true );
 
 		if( $subject->getSubobjectName() == '' ) {
 			$this->updateSubSemanticData( $data );
@@ -143,6 +143,7 @@ Class SMWSQLStore3Writers {
 		$db = wfGetDB( DB_MASTER );
 
 		$oldHashes = $this->store->smwIds->getPropertyTableHashes( $sid );
+
 		$hashIsChanged = false;
 
 		//old SemanticData container for this subject (This will only hold Semantic data that will be deleted)
@@ -458,7 +459,7 @@ Class SMWSQLStore3Writers {
 	public function deleteSemanticData( SMWDIWikiPage $subject ) {
 		$db = wfGetDB( DB_MASTER );
 
-		$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), false );
+		$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), false, true );
 		if ( $id == 0 ) {
 			// not (directly) used anywhere yet, may be a redirect but we do not care here
 			wfRunHooks( 'smwDeleteSemanticData', array( $subject ) );

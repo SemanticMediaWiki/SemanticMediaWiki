@@ -42,7 +42,7 @@ Class SMWSQLStore3Readers {
 							$subject->getNamespace(),
 							$subject->getInterwiki(),
 							$subject->getSubobjectName(),
-							$sortkey, true );
+							$sortkey, true, true );
 
 		if ( $sid == 0 ) {
 			// We consider redirects for getting $sid,
