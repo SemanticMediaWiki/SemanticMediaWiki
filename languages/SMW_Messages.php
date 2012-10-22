@@ -3013,7 +3013,6 @@ $messages['diq'] = array(
 	'types' => 'Babeti',
 	'semanticstatistics' => 'İstatistike fahm kerdeni',
 	'ask' => 'Fahmyayış cı geyrayış',
-	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search',
 	'smw_ask_defaultformat' => 'hesıbyaye',
 	'querycreator' => 'Vıraşterê Persiyayışi',
 	'smw_qui_category' => '<strong>Kategoriye</strong>',
