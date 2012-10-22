@@ -960,10 +960,9 @@ throw new MWException("Debug -- this code might be dead.");
 	 * @param SMWSQLStore3Query $query
 	 */
 	protected function executeHierarchyQuery( SMWSQLStore3Query &$query ) {
-		global $wgDBtype;
-		global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
+		global $wgDBtype, $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
 
-		$fname = "SMWSQLStore3Queries::executeQueries-hierarchy-$query->type (SMW)";
+		$fname = "SMWSQLStore3Queries::executeQueries-hierarchy-{$query->type} (SMW)";
 		wfProfileIn( $fname );
 
 		$depth = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
@@ -982,7 +981,9 @@ throw new MWException("Debug -- this code might be dead.");
 			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $this->m_dbs->addQuotes( $value );
 		}
 
-		$smwtable = $this->m_dbs->tableName( ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? 'smw_subp':'smw_subs' );
+		$propertyKey = ( $query->type == SMWSQLStore3Query::Q_PROP_HIERARCHY ) ? '_SUBP' : '_SUBC';
+		$smwtable = $this->m_dbs->tableName(
+				$this->m_store->findPropertyTableID( new SMWDIProperty( $propertyKey ) ) );
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $this->m_dbs->select( $smwtable, 's_id', $valuecond, __METHOD__, array( 'LIMIT' => 1 ) );
