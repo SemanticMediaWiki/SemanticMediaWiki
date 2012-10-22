@@ -378,8 +378,11 @@ Class SMWSQLStore3Writers {
 			             __METHOD__
 			);
 
-			$sql = 'UPDATE smw_stats SET usage_count = usage_count + 1 where pid = ' . $this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) );
-			$db->query( $sql, __METHOD__ );
+			$this->addToUsageCount(
+				$this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
+				1
+			);
+
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
 			/// redirects are not supported by MW or SMW, the above is maximally correct in this case too.
 			/// NOTE: this temporarily leaves existing redirects to oldtitle point to newtitle as well, which
@@ -643,8 +646,10 @@ Class SMWSQLStore3Writers {
 		// *** Update reference count for _REDI property ***//
 
 		if( $count != 0 ) {
-			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $count . ' where pid = ' . $this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) );
-			$db->query( $sql, __METHOD__ );
+			$this->addToUsageCount(
+				$this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
+				$count
+			);
 		}
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
@@ -677,7 +682,7 @@ Class SMWSQLStore3Writers {
 				$updates[$diKey] = array( $diProp , -count( $oldData->getPropertyValues( $diProp ) ));
 			}
 		}
-		$dbw = wfGetDB( DB_MASTER );
+
 		foreach ( $updates as $update ) {
 			if( $update[1] == 0 ) {
 				continue;
@@ -691,9 +696,35 @@ Class SMWSQLStore3Writers {
 				__METHOD__
 			);
  */
-			$sql = 'UPDATE smw_stats SET usage_count = usage_count + ' . $update[1] . ' where pid = ' . $this->store->smwIds->getSMWPropertyID( $update[0] );
-			$dbw->query( $sql, __METHOD__ );
+
+			$this->addToUsageCount(
+				$this->store->smwIds->getSMWPropertyID( $update[0] ),
+				$update[1]
+			);
 		}
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * @param integer $propertyId
+	 * @param integer $addition
+	 *
+	 * @return boolean Success indicator
+	 */
+	protected function addToUsageCount( $propertyId, $addition ) {
+		$dbw = wfGetDB( DB_MASTER );
+
+		return $dbw->update(
+			'smw_stats',
+			array(
+				'usage_count = usage_count + ' . $dbw->addQuotes( $addition ),
+			),
+			array(
+				'pid' => $propertyId
+			),
+			__METHOD__
+		);
 	}
 
 }
