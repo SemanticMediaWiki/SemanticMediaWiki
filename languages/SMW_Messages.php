@@ -452,6 +452,7 @@ $messages['qqq'] = array(
 	'smw_concept_cache_miss' => 'This is an information message. $1 holds the name of the [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
 	'smw_noinvannot' => 'This is an information message.',
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
+	'smw_uri_blacklist' => '{{notranslate}}',
 	'smw_baduri' => 'This is an information message. $1 holds the malformed URI.',
 	'smw_rss_link' => 'This is the text of the link that is triggering the results export to a RSS-file when clicked.
 
@@ -630,6 +631,10 @@ This method is called ''content negotiation''.
 
 {{doc-important|Do not alter or translate link targets!}}",
 	'ask' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:Ask]].',
+	'smw_ask_doculink' => "{{notranslate}}
+This message should be the URL of the semantic query documentation for that language. For English, this is http://semantic-mediawiki.org/wiki/Help:Semantic_search. For other languages, it should be an ''existing'' page on semantic-mediawiki.org. Note that only some languages have own documentations yet. 
+
+The SMW Project welcomes documentation translators! Please contact Markus Krötzsch (http://semantic-mediawiki.org/wiki/Markus) for getting a login at semantic-mediawiki.org if you wish to create SMW handbooks in another language.",
 	'smw_ask_sortby' => 'This is the text describing the textbox on [[Special:Ask]] available for optionally entering an printout statement for a query.',
 	'smw_ask_ascorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.',
 	'smw_ask_descorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.',
@@ -846,13 +851,6 @@ This method is called ''content negotiation''.
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 );
 
-/** Niuean (ko e vagahau Niuē)
- * @author Jose77
- */
-$messages['niu'] = array(
-	'smw_browse_go' => 'Fano',
-);
-
 /** Afrikaans (Afrikaans)
  * @author Arnobarnard
  * @author Naudefj
@@ -873,7 +871,7 @@ $messages['af'] = array(
 	'smw_exportrdf_submit' => 'Eksporteer',
 	'smw_propertyhardlyused' => 'Hierdie eienskap word skaars gebruik in hierdie wiki!',
 	'smw_unusedproperty_template' => '$1 van tipe $2',
-	'smw_wantedproperty_template' => '$1 ($2 gebruike)',
+	'smw_wantedproperty_template' => '$1 ($2 gebruike)', # Fuzzy
 	'smw_purge' => 'Verfris',
 	'types' => 'Tipes',
 	'smw_ask_sortby' => 'Sorteer volgens kolom (optioneel)',
@@ -884,7 +882,7 @@ $messages['af'] = array(
 	'smw_ask_hidequery' => 'Versteek navraag',
 	'smw_ask_help' => 'Navraag hulp',
 	'smw_ask_queryhead' => 'Navraag',
-	'smw_ask_printhead' => 'Addisionele uitdrukke (optioneel)',
+	'smw_ask_printhead' => 'Addisionele uitdrukke (optioneel)', # Fuzzy
 	'smw_ask_defaultformat' => 'standaard',
 	'searchbyproperty' => 'Soek volgens eienskap',
 	'smw_sbv_property' => 'Eienskap:',
@@ -898,7 +896,7 @@ $messages['af'] = array(
 	'smw_result_next' => 'Volgende',
 	'smw_result_results' => 'Resultate',
 	'smw_result_noresults' => 'Geen resultate.',
-	'smw_unknowntype' => 'Onondersteunde tipe "$1" gedefinieer vir eienskap.',
+	'smw_unknowntype' => 'Onondersteunde tipe "$1" gedefinieer vir eienskap.', # Fuzzy
 );
 
 /** Gheg Albanian (Gegë)
@@ -938,13 +936,13 @@ $messages['aln'] = array(
 	'smw-paramdesc-embedonly' => 'Afisho nuk ka tituj',
 	'smw-paramdesc-rsstitle' => "Teksti për t'u përdorur si titulli i feed",
 	'smw-paramdesc-rssdescription' => 'Teksti që do të përdoret si përshkrim i feed',
-	'smw-paramdesc-searchlabel' => 'Teksti në lidhje me rezultatet e',
+	'smw-paramdesc-searchlabel' => 'Teksti në lidhje me rezultatet e', # Fuzzy
 	'smw_iq_disabled' => 'pyetje Semantic kanë qenë të paaftë për këtë wiki.',
 	'smw_iq_moreresults' => 'Rezultatet e ... më tej',
 	'smw_parseerror' => 'Vlera e dhënë nuk është kuptuar.',
 	'smw_notitle' => '"$1" nuk mund të përdoret si një emër faqe në këtë wiki.',
 	'smw_wrong_namespace' => 'Vetëm faqet në hapësirën "$1" lejohen këtu.',
-	'smw_unknowntype' => 'Lloj i pasuportuar "$1" të përcaktuara për pronën.',
+	'smw_unknowntype' => 'Lloj i pasuportuar "$1" të përcaktuara për pronën.', # Fuzzy
 );
 
 /** Amharic (አማርኛ)
@@ -1011,7 +1009,7 @@ $messages['ar'] = array(
 	'smw-paramdesc-embedonly' => 'لا تظهر الترويسات',
 	'smw-paramdesc-rsstitle' => 'النص المستخدم كعنوان للتغذية',
 	'smw-paramdesc-rssdescription' => 'النص المستخدم لوصف التغذية',
-	'smw-paramdesc-searchlabel' => 'نص وصلة النتائج',
+	'smw-paramdesc-searchlabel' => 'نص وصلة النتائج', # Fuzzy
 	'smw_iq_disabled' => 'استعلامات السيمانتيك تم تعطيلها في هذا الويكي.',
 	'smw_iq_moreresults' => '… مزيد من النتائج',
 	'smw_parseerror' => 'القيمة المعطاة لم يتم فهمها.',
@@ -1078,7 +1076,7 @@ $messages['ar'] = array(
 	'smw_purge' => 'أنعش',
 	'types' => 'أنواع',
 	'smw_types_docu' => 'التالي قائمة بجميع أنواع البيانات التي يمكن أن تسند إلى الخصائص.
-كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.',
+كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.', # Fuzzy
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
 	'smw_semstats_text' => "هذا الويكي يحتوي على '''$1''' {{PLURAL:$1|قيمة|قيمة}} خاصية بإجمالي '''$2''' [[Special:Properties|{{PLURAL:$2|خاصية|خاصية مختلفة}}]].
 '''$3''' {{PLURAL:$3|خاصية تمتلك|خاصية تمتلك}} صفحتها الخاصة، ونوع البيانات المقصود محدد ل'''$4''' من هؤلاء.
@@ -1142,11 +1140,11 @@ $messages['ar'] = array(
 	'smw_smwadmin_return' => 'أرجع إلى $1',
 	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
 كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
-أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
+أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية.
-لا تنشئ واحدة أخرى.',
-	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
-	'smw_smwadmin_updatenotstopped' => 'لوقف عملية التحديث الجارية، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.',
+لا تنشئ واحدة أخرى.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'لوقف عملية التحديث الجارية، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.', # Fuzzy
 	'smw_smwadmin_docu' => 'هذه الصفحة الخاصة تساعدك خلال تنصيب وترقية <a href="http://semantic-mediawiki.org">سيمانتيك ميدياويكي</a>.
 تذكر أن تخزن احتياطيا البيانات القيمة قبل تنفيذ وظائف إدارية.',
 	'smw_smwadmin_db' => 'تثبيت و تحديث قاعدة البيانات',
@@ -1155,7 +1153,7 @@ $messages['ar'] = array(
 التغييرات المعمولة في هذه الخطوة لا تؤثر على بقية قاعدة بيانات ميدياويكي، ويمكن استرجاعها بسهولة في حالة الرغبة في ذلك.
 وظيفة التنصيب هذه يمكن تنفيذها عدة مرات بدون عمل أي ضرر، لكنها مطلوبة مرة واحدة عند التنصيب أو الترقية.',
 	'smw_smwadmin_permissionswarn' => 'لو أن العملية فشلت مع أخطاء SQL، فقاعدة البيانات التي طبقها المستخدم بواسطة الويكي الخاص بك (تحقق من LocalSettings.php الخاص بك) على الأرجح لا تمتلك سماحات كافية.
-إما أن تمنح هذا المستخدم سماحات إضافية لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعدة بياناتك في LocalSettings.php، أو استخدم سكريبت الصيانة <tt>SMW_setup.php</tt> الذي يمكنه استخدام تأكيدات AdminSettings.php.',
+إما أن تمنح هذا المستخدم سماحات إضافية لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعدة بياناتك في LocalSettings.php، أو استخدم سكريبت الصيانة <tt>SMW_setup.php</tt> الذي يمكنه استخدام تأكيدات AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'جداول البدء أو الترقية',
 	'smw_smwadmin_announce' => 'أعلن عن الويكي الخاص بك',
 	'smw_smwadmin_announcedocu' => 'سيمانتيك ميدياويكي لديه خدمة وب لإعلان مواقع الويكي السيمانتيك الجديدة.
@@ -1186,7 +1184,7 @@ $messages['ar'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'مساعدة الاستعلامات الداخلية',
 	'smw-createproperty-isproperty' => 'هذه خاصية من نوع $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1||القيمة المسموح بها لهذه الخاصية هي|القيمتان المسموح بهما لهذه الخاصية هما|القيم المسموح بها لهذه الخاصية هي}}:',
-	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.',
+	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.', # Fuzzy
 );
 
 /** Aramaic (ܐܪܡܝܐ)
@@ -1263,7 +1261,7 @@ $messages['arz'] = array(
 	'smw-paramdesc-embedonly' => 'لا تظهر الترويسات',
 	'smw-paramdesc-rsstitle' => 'النص المستخدم كعنوان للتغذية',
 	'smw-paramdesc-rssdescription' => 'النص المستخدم لوصف التغذية',
-	'smw-paramdesc-searchlabel' => 'نص وصله النتائج',
+	'smw-paramdesc-searchlabel' => 'نص وصله النتائج', # Fuzzy
 	'smw_iq_disabled' => 'استعلامات السيمانتيك تم تعطيلها فى هذا الويكى.',
 	'smw_iq_moreresults' => '… مزيد من النتائج',
 	'smw_parseerror' => 'القيمه المعطاه لم يتم فهمها.',
@@ -1330,7 +1328,7 @@ $messages['arz'] = array(
 	'smw_purge' => 'تحديث',
 	'types' => 'أنواع',
 	'smw_types_docu' => 'التالى قائمه بجميع أنواع البيانات التى يمكن أن تسند إلى الخصائص.
-كل نوع بيانات له صفحه حيث يمكن توفير معلومات إضافيه.',
+كل نوع بيانات له صفحه حيث يمكن توفير معلومات إضافيه.', # Fuzzy
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
 	'smw_semstats_text' => "هذا الويكى يحتوى على '''$1''' {{PLURAL:$1|قيمة|قيمة}} خاصيه بإجمالى '''$2''' [[Special:Properties|{{PLURAL:$2|خاصية|خاصيه مختلفة}}]].
 '''$3''' {{PLURAL:$3|خاصيه تمتلك|خاصيه تمتلك}} صفحتها الخاصه، ونوع البيانات المقصود محدد ل'''$4''' من هؤلاء.
@@ -1389,11 +1387,11 @@ $messages['arz'] = array(
 	'smw_smwadmin_return' => 'أرجع إلى $1',
 	'smw_smwadmin_updatestarted' => 'عمليه تحديث جديده لتحديث بيانات سيمانتيك بدأت.
 كل البيانات المخزنه ستتم إعاده بنائها أو إصلاحها عند الحاجه.
-أنت يمكنك متابعه تطور التحديث على هذه الصفحه الخاصه.',
+أنت يمكنك متابعه تطور التحديث على هذه الصفحه الخاصه.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عمليه تحديث جاريه.
-لا تنشئ واحده أخرى.',
-	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجوده تم إيقافها',
-	'smw_smwadmin_updatenotstopped' => 'لوقف عمليه التحديث الجاريه، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.',
+لا تنشئ واحده أخرى.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجوده تم إيقافها', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'لوقف عمليه التحديث الجاريه، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.', # Fuzzy
 	'smw_smwadmin_docu' => 'هذه الصفحه الخاصه تساعدك خلال تنصيب وترقيه <a href="http://semantic-mediawiki.org">سيمانتيك ميدياويكي</a>.
 تذكر أن تخزن احتياطيا البيانات القيمه قبل تنفيذ وظائف إداريه.',
 	'smw_smwadmin_db' => 'تثبيت و تحديث قاعده البيانات',
@@ -1402,7 +1400,7 @@ $messages['arz'] = array(
 التغييرات المعموله فى هذه الخطوه لا تؤثر على بقيه قاعده بيانات ميدياويكى، ويمكن استرجاعها بسهوله فى حاله الرغبه فى ذلك.
 وظيفه التنصيب هذه يمكن تنفيذها عده مرات بدون عمل أى ضرر، لكنها مطلوبه مره واحده عند التنصيب أو الترقيه.',
 	'smw_smwadmin_permissionswarn' => 'لو أن العمليه فشلت مع أخطاء SQL، فقاعده البيانات التى طبقها المستخدم بواسطه الويكى الخاص بك (تحقق من LocalSettings.php الخاص بك) على الأرجح لا تمتلك سماحات كافيه.
-إما أن تمنح هذا المستخدم سماحات إضافيه لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعده بياناتك فى LocalSettings.php، أو استخدم سكريبت الصيانه <tt>SMW_setup.php</tt> الذى يمكنه استخدام تأكيدات AdminSettings.php.',
+إما أن تمنح هذا المستخدم سماحات إضافيه لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعده بياناتك فى LocalSettings.php، أو استخدم سكريبت الصيانه <tt>SMW_setup.php</tt> الذى يمكنه استخدام تأكيدات AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'جداول البدء أو الترقية',
 	'smw_smwadmin_announce' => 'أعلن عن الويكى الخاص بك',
 	'smw_smwadmin_announcedocu' => 'سيمانتيك ميدياويكى لديه خدمه وب لإعلان مواقع الويكى السيمانتيك الجديده.
@@ -1433,7 +1431,7 @@ $messages['arz'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'مساعده الاستعلامات الداخلية',
 	'smw-createproperty-isproperty' => 'هذه خاصية من نوع $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1||القيمة المسموح بها لهذه الخاصية هي|القيمتان المسموح بهما لهذه الخاصية هما|القيم المسموح بها لهذه الخاصية هي}}:',
-	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.',
+	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.', # Fuzzy
 );
 
 /** Asturian (asturianu)
@@ -1568,7 +1566,7 @@ $messages['be-tarask'] = array(
 	'smw-smwdoc-par-format' => 'Фармат вынікаў для паказу дакумэнтацыі пра парамэтры.',
 	'smw-paramdesc-sort' => 'Уласьцівасьць, паводле якой сартаваць запыт',
 	'smw-paramdesc-order' => 'Парадак сартаваньня запыту',
-	'smw-paramdesc-searchlabel' => 'Тэкст для працягу пошуку (па змоўчваньні «… дадатковыя вынікі»)',
+	'smw-paramdesc-searchlabel' => 'Тэкст для працягу пошуку (па змоўчваньні «… дадатковыя вынікі»)', # Fuzzy
 	'smw_iq_disabled' => 'Сэмантычныя запыты былі выключаны ў {{GRAMMAR:месны|{{SITENAME}}}}.',
 	'smw_iq_moreresults' => '… наступныя вынікі',
 	'smw_parseerror' => 'Пададзенае значэньне не было распазнанае.',
@@ -1676,7 +1674,7 @@ $messages['be-tarask'] = array(
 	'smw_qc_query_help' => 'Увядзіце запыт з дапамогай формы пададзенай ніжэй для выбару вікі-старонкі па
 Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>), 
 Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>), 
-Назвам(<strong>[[Нямеччына]]</strong>) і Прасторам назваў (<strong>[[{{ns:help}}:+]]</strong>)',
+Назвам(<strong>[[Нямеччына]]</strong>) і Прасторам назваў (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Уласьцівасьць</strong>',
 	'smw_qui_prop' => 'Уласьцівасьць:',
 	'smw_qui_labl' => 'Метка:',
@@ -1741,11 +1739,11 @@ $messages['be-tarask'] = array(
 	'smw_smwadmin_return' => 'Вярнуцца да $1',
 	'smw_smwadmin_updatestarted' => 'Быў распачаты новы працэс абнаўленьня сэмантычных зьвестак.
 Усе зьвесткі будуць пераўтвораны, ці зьменены калі гэта будзе неабходна.
-Вы можаце назіраць за працэсам абнаўленьня на гэтай спэцыяльнай старонцы.',
+Вы можаце назіраць за працэсам абнаўленьня на гэтай спэцыяльнай старонцы.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Працэс абнаўленьня ўжо распачаты.
-Не стварайце новы.',
-	'smw_smwadmin_updatestopped' => 'Усе існуючыя працэсы абнаўленьня былі спынены.',
-	'smw_smwadmin_updatenotstopped' => 'Каб спыніць працэс абнаўленьня, Вам неабходна паставіць паметку ў полі, каб пацьвердзіць Вашыя намеры.',
+Не стварайце новы.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Усе існуючыя працэсы абнаўленьня былі спынены.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Каб спыніць працэс абнаўленьня, Вам неабходна паставіць паметку ў полі, каб пацьвердзіць Вашыя намеры.', # Fuzzy
 	'smw_smwadmin_docu' => 'Гэта спэцыяльная старонка дапамагае Вам пад час усталяваньня і абнаўленьня <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Не забывайце захоўваць каштоўныя зьвесткі перад выкананьнем адміністратарскіх функцыяў.',
 	'smw_smwadmin_db' => 'Усталяваньне і абнаўленьне базы зьвестак',
@@ -1754,7 +1752,7 @@ $messages['be-tarask'] = array(
 Зьмены, зробленыя на гэтым этапе, не паўплываюць на астатнія базы зьвестак MediaWiki, і могуць быць лёгка адмененыя па жаданьні.
 Гэта ўсталёвачная функцыя можа быць выкананая некалькі разоў без аніякай шкоды, але для ўсталяваньня ці абнаўленьня дастаткова будзе аднаго разу.',
 	'smw_smwadmin_permissionswarn' => 'Калі адбываюцца SQL-памылкі пад час выкананьня апэрацыі, то гэта азначае, што рахунак базы зьвестак, які выкарыстоўвае {{SITENAME}} (праверце Вашыя LocalSettings.php), магчыма ня мае адпаведных правоў.
-Надайце рахунку дадатковыя правы на стварэньне і выдаленьне табліцаў, часова ўвядзіце рахунак адміністратара базы зьвестак у LocalSettings.php, ці карыстайцеся скрыптом падтрымкі <tt>SMW_setup.php</tt>, які можа выкарыстоўваць рахунак з AdminSettings.php.',
+Надайце рахунку дадатковыя правы на стварэньне і выдаленьне табліцаў, часова ўвядзіце рахунак адміністратара базы зьвестак у LocalSettings.php, ці карыстайцеся скрыптом падтрымкі <tt>SMW_setup.php</tt>, які можа выкарыстоўваць рахунак з AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Усталяваць ці абнавіць табліцы',
 	'smw_smwadmin_announce' => 'Анансуйце {{GRAMMAR:вінавальны|{{SITENAME}}}}',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki мае сэрвіс для анансаваньня новых сэмантычных вікі-сайтаў.
@@ -1785,7 +1783,7 @@ $messages['be-tarask'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Дапамога па ўбудаваных запытах',
 	'smw-createproperty-isproperty' => 'Гэта ўласьцівасьць тыпу $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:',
-	'smw_unknowntype' => 'Тып «$1» не падтрымліваецца для гэтай уласьцівасьці.',
+	'smw_unknowntype' => 'Тып «$1» не падтрымліваецца для гэтай уласьцівасьці.', # Fuzzy
 );
 
 /** Bulgarian (български)
@@ -1920,7 +1918,7 @@ $messages['br'] = array(
 	'smw-paramdesc-csv-sep' => "An dispartier d'ober gantañ",
 	'smw-paramdesc-dsv-separator' => "An dispartier d'ober gantañ",
 	'smw-paramdesc-dsv-filename' => 'Anv ar restr DSV',
-	'smw-paramdesc-searchlabel' => "Testenn al liamm davet an disoc'hoù",
+	'smw-paramdesc-searchlabel' => "Testenn al liamm davet an disoc'hoù", # Fuzzy
 	'smw_iq_disabled' => 'Diweredekaet eo bet ar goulennoù semantek evit ar wiki-mañ.',
 	'smw_iq_moreresults' => "... disoc'hoù all",
 	'smw_parseerror' => "An talvoud merket n'eo ket bet komprenet.",
@@ -2050,8 +2048,8 @@ Dic'hortoz e c'hall bezañ an disoc'hoù.",
 	'smw_smwadmin_setupsuccess' => "Staliet-mat eo ar c'heflusker stokañ.",
 	'smw_smwadmin_return' => 'Distreiñ da $1',
 	'smw_smwadmin_updatenotstarted' => 'Emeur krog dija gant un argerzh hizivaat.
-Arabat krouiñ unan all.',
-	'smw_smwadmin_updatestopped' => 'Ehanet eo bet an holl argerzhoù hizivaat.',
+Arabat krouiñ unan all.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Ehanet eo bet an holl argerzhoù hizivaat.', # Fuzzy
 	'smw_smwadmin_db' => 'Staliañ ha lakaat an diaz roadennoù a-live',
 	'smw_smwadmin_dbbutton' => 'Deraouekaat pe lakaat taolennoù a-live',
 	'smw_smwadmin_announce' => 'Brudañ ho wiki',
@@ -2070,7 +2068,7 @@ Arabat krouiñ unan all.',
 	'smw-createproperty-isproperty' => 'Ar perzh-mañ zo eus ar seurt $1.',
 	'smw-createproperty-allowedvals' => 'An talvoudenn{{PLURAL:$1||où}} aotreet evt ar perzh-se a zo :',
 	'smw-paramdesc-category-delim' => 'Ar bevenner',
-	'smw_unknowntype' => 'Ar seurt roadennoù "$1" nann skoret a zo distroet d\'an doareenn',
+	'smw_unknowntype' => 'Ar seurt roadennoù "$1" nann skoret a zo distroet d\'an doareenn', # Fuzzy
 );
 
 /** Bosnian (bosanski)
@@ -2188,7 +2186,7 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw-smwdoc-par-parameters' => 'Quins paràmetres mostrar. «specific» per a aquells afegits per format, «base» per a aquells disponibles en tots els formats, i «all» per als dos.',
 	'smw-paramdesc-sort' => 'Propietat per ordenar la consulta per',
 	'smw-paramdesc-order' => 'Ordre de la ordenació de la consulta',
-	'smw-paramdesc-searchlabel' => 'Text per continuar la cerca (per defecte és «… més resultats»)',
+	'smw-paramdesc-searchlabel' => 'Text per continuar la cerca (per defecte és «… més resultats»)', # Fuzzy
 	'smw-paramdesc-named_args' => 'Anomena els arguments que es passen a la plantilla',
 	'smw-paramdesc-export' => "Opció d'exportació",
 	'smw_iq_disabled' => 'Les consultes semàntiques estan inhabilitades en aquest wiki.',
@@ -2300,7 +2298,7 @@ Té cura que els humans no es tornin en llocs web.',
 	'smw_qc_query_help' => 'Introduïu una consulta fent servir el formulari a continuació. Seleccioneu les pàgines wiki en funció de
 Categories (<strong>[[{{ns:category}}:Actor]]</strong>), 
 Propietats (<strong>[[Viu a::Elx]]</strong>), 
-Noms (<strong>[[Lleida]]</strong>) i espais de noms (<strong>[[{{ns:help}}:+]]</strong>)',
+Noms (<strong>[[Lleida]]</strong>) i espais de noms (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Propietat</strong>',
 	'smw_qui_prop' => 'Propietat:',
 	'smw_qui_labl' => 'Etiqueta:',
@@ -2422,7 +2420,7 @@ Progrés estimat de l'actualització actual:",
 	'smw-paramdesc-category-userparam' => 'Un paràmetre per passar a la plantilla',
 	'smw-info-par-message' => 'Missatge per mostrar.',
 	'smw-info-par-icon' => 'La icona que es mostrarà, o bé «info», o bé «avís».',
-	'smw_unknowntype' => "S'ha definit un tipus «$1» no permès per la propietat.",
+	'smw_unknowntype' => "S'ha definit un tipus «$1» no permès per la propietat.", # Fuzzy
 );
 
 /** Chechen (нохчийн)
@@ -2439,7 +2437,8 @@ $messages['ch'] = array(
 	'smw_browse_go' => 'Hånao',
 );
 
-/** Sorani Kurdish (کوردی) */
+/** Sorani Kurdish (کوردی)
+ */
 $messages['ckb'] = array(
 	'smw_browse_go' => 'بڕۆ',
 );
@@ -2517,7 +2516,7 @@ Výsledky pravděpodobně nesplní očekávání.',
 	'smw_attribute_header' => 'Stránek používajících vlastnost „$1“',
 	'smw_attributearticlecount' => 'Zobrazeno je $1 {{PLURAL:$1|stránka používající|stránky používající|stránek používajících}} tuto vlastnost.',
 	'smw_subproperty_header' => 'Podvlastnosti',
-	'smw_subpropertyarticlecount' => 'Této vlastnosti náleží $1 {{PLURAL:$1|podvlastnost|podvlastností}}.',
+	'smw_subpropertyarticlecount' => 'Této vlastnosti náleží $1 {{PLURAL:$1|podvlastnost|podvlastností}}.', # Fuzzy
 	'smw_concept_header' => 'Stran konceptu "$1"',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|zobrazena je|zobrazeny jsou|zobrazeno je}} $1 {{PLURAL:$1|stránka náležející|stránky náležející|stránek náležejících}} tomuto konceptu.',
 	'exportrdf' => 'Export stránek do RDF',
@@ -2537,18 +2536,18 @@ Výsledky pravděpodobně nesplní očekávání.',
 	'smw_unusedproperty_template' => '$1 typu $2',
 	'wantedproperties' => 'Požadované vlastnosti',
 	'smw_wantedproperties_docu' => 'Následující vlastnosti, které existují na této wiki, zatím nemají popisnou stránku.',
-	'smw_wantedproperty_template' => '$1 (užité $2-krát)',
+	'smw_wantedproperty_template' => '$1 (užité $2-krát)', # Fuzzy
 	'smw_purge' => 'Obnovit',
 	'types' => 'Typy',
-	'smw_types_docu' => 'Následuje seznam všech údajových typů, které je možné přiřadit vlastnostem. Každý údajový typ má stránku, kde je možné uvést dodatečné informace.',
+	'smw_types_docu' => 'Následuje seznam všech údajových typů, které je možné přiřadit vlastnostem. Každý údajový typ má stránku, kde je možné uvést dodatečné informace.', # Fuzzy
 	'semanticstatistics' => 'Statistika sémantik',
 	'smw_semstats_text' => 'Tato wiki obsahuje <b>$1</b> hodnot vlastností celkem <b>$2</b> rozličných <a href="$3">vlastností</a>.
 <b>$4</b> vlastností nemá vlastní stránku a zamýšlený datový typ má uvedený <b>$5</b> z nich.
 Některé z existujících vlastností mohou být <a href="$6">nepoužívané</a>.
-Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznamu požadovaných vlastností</a>.',
+Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznamu požadovaných vlastností</a>.', # Fuzzy
 	'smw_uri_doc' => 'URI resolver se stará o implementaci <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG hledání na httpRange-14</a>. Stará se o to, aby se lidé nestali webstránkami.',
 	'ask' => 'Sémantické vyhledávání',
-	'smw_ask_sortby' => 'Řadit podle sloupce',
+	'smw_ask_sortby' => 'Řadit podle sloupce', # Fuzzy
 	'smw_ask_ascorder' => 'Vzestupně',
 	'smw_ask_descorder' => 'Sestupně',
 	'smw_ask_submit' => 'Najdi výsledky',
@@ -2557,7 +2556,7 @@ Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznam
 	'smw_ask_hidequery' => 'Skrýt dotaz',
 	'smw_ask_help' => 'Pomocník pro dotazy',
 	'smw_ask_queryhead' => 'Dotaz',
-	'smw_ask_printhead' => 'Přídavné výpisy (volitelné)',
+	'smw_ask_printhead' => 'Přídavné výpisy (volitelné)', # Fuzzy
 	'smw_ask_printdesc' => '(každý název vlastnosti na samostatný řádek)',
 	'smw_ask_format_as' => 'Formát výstupu:',
 	'smw_ask_defaultformat' => 'výchozí',
@@ -2569,7 +2568,7 @@ Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznam
 	'smw_qc_query_help' => 'Zadejte dotaz pomocí níže uvedeného formuláře. Vyhledejte wiki stránky podle
 Kategorií (<strong>[[{{ns:category}}:Herec]]</strong>),
 Vlastností (<strong>[[Nachází se v::Německo]]</strong>),
-Jmen (<strong>[[Německo]]</strong>) a Jmenných prostorů (<strong>[[{{ns:help}}:+]]</strong>)',
+Jmen (<strong>[[Německo]]</strong>) a Jmenných prostorů (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Vlastnost</strong>',
 	'smw_qui_noquery' => 'Nebyl zadán žádný dotaz',
 	'smw_qui_nosort' => 'Neřadit',
@@ -2585,7 +2584,7 @@ Jmen (<strong>[[Německo]]</strong>) a Jmenných prostorů (<strong>[[{{ns:help}
 	'smw_sbv_displayresult' => 'Seznam všech článků, které mají vlastnost $1 s hodnotou $2.',
 	'smw_sbv_displayresultfuzzy' => 'Seznam všech stránek, jejichž vlastnost „$1“ má hodnotu „$2“. Jelikož bylo výsledků málo, jsou zobrazeny i blízké hodnoty.',
 	'smw_sbv_property' => 'Vlastnost:',
-	'smw_sbv_value' => 'Hodnota:',
+	'smw_sbv_value' => 'Hodnota:', # Fuzzy
 	'smw_sbv_submit' => 'Hledat výsledky',
 	'browse' => 'Prohledat wiki',
 	'smw_browselink' => 'Projít vlastnosti',
@@ -2607,11 +2606,11 @@ Prosím, zadejte stránku i vlastnost.',
 	'smw_smwadmin_return' => 'Zpět na $1',
 	'smw_smwadmin_updatestarted' => 'Byl spuštěn nový proces updatu sémantických dat.
 Všechna uložená data budou zkontrolována a, bude-li to nutné, znovu vytvořena.
-Průběh updatu můžete sledovat na této speciální stránce.',
+Průběh updatu můžete sledovat na této speciální stránce.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Proces updatu již probíhá.
-Další nebyl vytvořen.',
-	'smw_smwadmin_updatestopped' => 'Všechny procesy aktualizace byly zastaveny.',
-	'smw_smwadmin_updatenotstopped' => 'Abyste zastavili běžící proces aktualizace, musíte zaškrtnout políčko, čímž potvrdíte, že si jste jisti.',
+Další nebyl vytvořen.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Všechny procesy aktualizace byly zastaveny.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Abyste zastavili běžící proces aktualizace, musíte zaškrtnout políčko, čímž potvrdíte, že si jste jisti.', # Fuzzy
 	'smw_smwadmin_docu' => 'Tato speciální stránka vám pomůže s instalací a upgradem <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Před spuštěním administrativních funkcí nezapomeňte zálohovat cenná data.',
 	'smw_smwadmin_db' => 'Instalace a upgrade databáze',
@@ -2620,7 +2619,7 @@ Funkce níže zajišťuje, že je vaše databáze správně nastavena.
 Změny provedené v tomto kroku nemají žádný vliv na zbytek databáze MediaWiki, a lze je snadno vzít zpět.
 Tuto přípravnou funkci můžete spustit vícekrát, aniž by došlo k jakémukoli poškození, ale je to nutné pouze jednou při instalaci nebo upgradu.',
 	'smw_smwadmin_permissionswarn' => 'Selže-li operace s SQL chybami, pak uživatel databáze, kterého vaše wiki používá (zkontrolujte LocalSettings.php) pravděpodobně nemá dostatečná oprávnění.
-Přidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do LocalSettings.php zadejte údaje rootu databáze, nebo použijte údržbový skript <tt>SMW_setup.php</tt>, který používá údaje z AdminSettings.php.',
+Přidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do LocalSettings.php zadejte údaje rootu databáze, nebo použijte údržbový skript <tt>SMW_setup.php</tt>, který používá údaje z AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializovat či upgradovat tabulky',
 	'smw_smwadmin_announce' => 'Nahlásit tuto wiki',
 	'smw_smwadmin_announcedocu' => 'Nové sémantické wiki lze ohlásit příslušné webové službě Semantic MediaWiki.
@@ -2650,7 +2649,7 @@ Odhadovaný průběh updatu:',
 	'smw-paramdesc-category-delim' => 'Oddělovač',
 	'smw-info-par-message' => 'Jaká zpráva se má zobrazit.',
 	'smw-info-par-icon' => 'Jaká ikona se má zobrazit, buď „info“ nebo „warning“ (varování).',
-	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.',
+	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.', # Fuzzy
 );
 
 /** German (Deutsch)
@@ -3010,10 +3009,11 @@ $messages['diq'] = array(
 	'unusedproperties' => 'Xısusiyetê ke nê xebtênê',
 	'wantedproperties' => 'Xısusiyetê ke waştênê',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|vıraştene|vıraştene}})',
-	'smw_purge' => 'Anewe ke',
+	'smw_purge' => 'Newe ke',
 	'types' => 'Babeti',
 	'semanticstatistics' => 'İstatistike fahm kerdeni',
 	'ask' => 'Fahmyayış cı geyrayış',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search',
 	'smw_ask_defaultformat' => 'hesıbyaye',
 	'querycreator' => 'Vıraşterê Persiyayışi',
 	'smw_qui_category' => '<strong>Kategoriye</strong>',
@@ -3318,7 +3318,8 @@ Licony póstup aktualneje aktualizacije:',
 	'smw_unknowntype' => 'Typ toś teje kakosći jo njepłaśiwy',
 );
 
-/** Ewe (eʋegbe) */
+/** Ewe (eʋegbe)
+ */
 $messages['ee'] = array(
 	'smw_browse_go' => 'Yi',
 );
@@ -3407,7 +3408,7 @@ $messages['el'] = array(
 	'smw_result_results' => 'Αποτελέσματα',
 	'smw_result_noresults' => 'Συγνώμη, δεν υπάρχουν αποτελέσματα.',
 	'smw_smwadmin_return' => 'Επιστροφή στην $1',
-	'smw_smwadmin_updatestopped' => 'Όλες οι υπάρχουσες εργασίες ενημέρωσης έχουν διακοπεί.',
+	'smw_smwadmin_updatestopped' => 'Όλες οι υπάρχουσες εργασίες ενημέρωσης έχουν διακοπεί.', # Fuzzy
 	'smw_smwadmin_db' => 'Εγκατάσταση βάσεως δεδομένων και αναβάθμιση',
 	'smw_smwadmin_dbbutton' => 'Αρχικοποίηση ή αναβάθμιση πινάκων',
 	'smw_smwadmin_announce' => 'Ανακοίνωση του wiki σας',
@@ -3543,7 +3544,7 @@ $messages['eo'] = array(
 	'smw_adminlinks_datastructure' => 'Datumstrukturo',
 	'smw-createproperty-isproperty' => 'Ĉi tiu estas atributo de speco $1.',
 	'smw-createproperty-allowedvals' => 'La {{PLURAL:$1|permesita valoro por ĉi tiu atributo|permesitaj valoroj por ĉi tiuj atributoj}} estas:',
-	'smw_unknowntype' => 'Nesubtenita datumtipo "$1" difinita por atributo.',
+	'smw_unknowntype' => 'Nesubtenita datumtipo "$1" difinita por atributo.', # Fuzzy
 );
 
 /** Spanish (español)
@@ -3968,11 +3969,11 @@ $messages['fa'] = array(
 	'smw_unusedproperty_template' => '$1 از نوع $2',
 	'wantedproperties' => 'خصوصیت‌های خواسته شده',
 	'smw_wantedproperties_docu' => 'خصوصیت‌های زیر در این ویکی استفاده شده‌اند ولی هنوز صفحه‌ای برای توصیف آن‌ها وجود ندارد.',
-	'smw_wantedproperty_template' => '$1 ($2 استفاده شده)',
+	'smw_wantedproperty_template' => '$1 ($2 استفاده شده)', # Fuzzy
 	'smw_purge' => 'بازخوانی',
 	'types' => 'نوع‌ها',
 	'smw_types_docu' => 'در ذیل لیستی از تمام نوع‌داده‌هایی که می‌تواند به خصوصیت‌ها انتصاب شود، آمده است.
-هر نوع‌داده یک صفحه دارد که اطلاعات اضافه می‌تواند در آن فراهم آورده شود.',
+هر نوع‌داده یک صفحه دارد که اطلاعات اضافه می‌تواند در آن فراهم آورده شود.', # Fuzzy
 	'semanticstatistics' => 'آمار معنایی',
 	'ask' => 'جستجوی معنایی',
 	'smw_ask_sortby' => 'مرتب‌سازی با ستون (اختیاری)',
@@ -4004,7 +4005,7 @@ $messages['fa'] = array(
 	'smw_adminlinks_datastructure' => 'ساختار داده‌ها',
 	'smw_adminlinks_displayingdata' => 'نمایش داده‌ها',
 	'smw-createproperty-isproperty' => 'این یک ویژگی از نوع $1 است.',
-	'smw-createproperty-allowedvals' => 'مقادیر مجاز برای این ویژگی یا صفت این‌ها هستند:',
+	'smw-createproperty-allowedvals' => 'مقادیر مجاز برای این ویژگی یا صفت این‌ها هستند:', # Fuzzy
 );
 
 /** Finnish (suomi)
@@ -4119,9 +4120,9 @@ Koska tuloksia on vain vähän, myös lähellä olevat arvot näytetään.',
 	'smwadmin' => 'Ylläpitotoiminnot semanttiselle MediaWikille',
 	'smw_smwadmin_return' => 'Palaa kohteeseen $1',
 	'smw_smwadmin_updatenotstarted' => 'Päivitysprosessi on jo käynnissä.
-Uutta ei käynnistetä.',
-	'smw_smwadmin_updatestopped' => 'Kaikki käynnissä olevat päivitysprosessit on pysäytetty.',
-	'smw_smwadmin_updatenotstopped' => 'Jos haluat pysäyttää käynnissä olevan päivitysprosessin, sinun täytyy aktivoida valintaruutu osoittaaksesi, että olet todella varma.',
+Uutta ei käynnistetä.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Kaikki käynnissä olevat päivitysprosessit on pysäytetty.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Jos haluat pysäyttää käynnissä olevan päivitysprosessin, sinun täytyy aktivoida valintaruutu osoittaaksesi, että olet todella varma.', # Fuzzy
 	'smw_smwadmin_db' => 'Tietokannan asennus ja päivitys',
 	'smw_smwadmin_dbbutton' => 'Alusta tai päivitä taulukot',
 	'smw_smwadmin_announce' => 'Julkista wikisi',
@@ -4226,7 +4227,7 @@ $messages['fr'] = array(
 	'smw-paramdesc-searchlabel' => "Titre du lien permettant d'accéder aux résultats suivants (par défaut, «… autres résultats»)",
 	'smw-paramdesc-named_args' => 'Nommez les arguments transmis au modèle',
 	'smw-paramdesc-export' => 'Options d’exportation',
-	'smw-paramdesc-prettyprint' => 'Pour permettre un affichage plus lisible',
+	'smw-paramdesc-prettyprint' => 'Pour permettre un affichage plus lisible', # Fuzzy
 	'smw-paramdesc-source' => 'Source de requête alternative',
 	'smw-paramdesc-jsonsyntax' => 'Syntaxe JSON à utiliser',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
@@ -4461,7 +4462,7 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-info-par-icon' => 'Icône à afficher, soit « info » ou « attention »',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Options de recherche sémantique',
-	'smw-ask-userpref-options-tooltip-display' => 'Afficher le texte du paramètre comme info-bulle',
+	'smw-prefs-ask-options-tooltip-display' => 'Afficher le texte du paramètre comme info-bulle',
 	'smw_unknowntype' => "Le type de cette propriété n'est pas valide",
 );
 
@@ -4498,7 +4499,7 @@ $messages['frp'] = array(
 	'smw-paramdesc-csv-sep' => 'Lo sèparator a utilisar',
 	'smw-paramdesc-dsv-separator' => 'Lo sèparator a utilisar',
 	'smw-paramdesc-dsv-filename' => 'Lo nom du fichiér DSV',
-	'smw-paramdesc-searchlabel' => 'Lo tèxto du lim de vers los rèsultats',
+	'smw-paramdesc-searchlabel' => 'Lo tèxto du lim de vers los rèsultats', # Fuzzy
 	'smw_iq_moreresults' => '&hellip; ôtros rèsultats',
 	'smw_true_words' => 'veré,v,ouè,o',
 	'smw_false_words' => 'fôx,f,nan,n',
@@ -4554,7 +4555,7 @@ $messages['frp'] = array(
 	'smw_qc_query_help' => 'Buchiéd una requéta en utilisent lo formulèro ce-desot por chouèsir les pâges vouiqui basâs sur les
 catègories (<strong>[[{{ns:category}}:Actor]]</strong>), les
 propriètâts (<strong>[[Placiê en::Alemagnes]]</strong>), los
-noms (<strong>[[Alemagnes]]</strong>) et los èspâços de noms (<strong>[[{{ns:help}}:+]]</strong>)',
+noms (<strong>[[Alemagnes]]</strong>) et los èspâços de noms (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Propriètât</strong>',
 	'smw_qui_prop' => 'Propriètât :',
 	'smw_qui_labl' => 'Lambél :',
@@ -4632,7 +4633,7 @@ $messages['ga'] = array(
 	'smw_qui_options' => 'Roghanna',
 	'smw_qui_cancel' => 'Cealaigh',
 	'smw_qui_dcategory' => 'Catagóir:',
-	'smw_sbv_property' => 'Airí',
+	'smw_sbv_property' => 'Airí', # Fuzzy
 	'smw_browse_go' => 'Gabh',
 	'smw_pp_type' => 'Airí',
 	'smw_result_prev' => 'Siar',
@@ -5040,7 +5041,7 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw-paramdesc-csv-sep' => 'Trännzeiche, wu sott brucht wäre',
 	'smw-paramdesc-dsv-separator' => 'Trännzeiche, wu sott brucht wäre',
 	'smw-paramdesc-dsv-filename' => 'Dr Name fir d DSV-Datei',
-	'smw-paramdesc-searchlabel' => 'De Teggst für de Link zue de Ergebniss',
+	'smw-paramdesc-searchlabel' => 'De Teggst für de Link zue de Ergebniss', # Fuzzy
 	'smw_iq_disabled' => 'Semantischi Aafroge sin in däm Wiki zur Zyt nit megli.',
 	'smw_iq_moreresults' => '… meh Ergebniss',
 	'smw_parseerror' => 'Dr Wärt, wu Du yygee hesch, isch nit verstande wore.',
@@ -5100,7 +5101,7 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|Vorchu|Vorchu}})',
 	'smw_purge' => 'nej lade',
 	'types' => 'Datetype',
-	'smw_types_docu' => 'Die Datetype chenne Eigeschafte zuegwise wäre. E jede Datetyp het e eigeni Syte, wu gnaueri Informatione druf chenne yytrage wäre.',
+	'smw_types_docu' => 'Die Datetype chenne Eigeschafte zuegwise wäre. E jede Datetyp het e eigeni Syte, wu gnaueri Informatione druf chenne yytrage wäre.', # Fuzzy
 	'semanticstatistics' => 'Statischtik iber semantischi Date',
 	'smw_semstats_text' => "In däm Wiki {{PLURAL:$1|isch '''1''' Wert|sin '''$1''' Wärt}} fir insgsamt '''$2''' [[Special:Properties|{{PLURAL:$2|Eigeschaft|verschideni Eigeschafte}}]] yygee wore. '''$3''' {{PLURAL:$3|Eigeschaft het|Eigeschafte hän}} e eigeni Syte un dr gwischt Datetyp isch fir '''$4''' vu däne aagee wore. E paar vo dr Eigeschafte, wu s het, chenne [[Special:UnusedProperties|verwaisti Eigeschafte]] syy. Eigeschafte, wu no ne Syte sott aagleit wäre derfir, sin in dr [[Special:WantedProperties|Lischt vu dr gwinschte Eigeschafte]] ufgfiert.",
 	'smw_uri_doc' => 'Dr URI-Ufleser setzt d Empfählige »<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>« um. Är sorgt defir, ass Mänsche nit zue Netzsyte wäre.',
@@ -5155,11 +5156,11 @@ Wel nume wenig Ergebnis gfunde wore sin, wäre au ähnligi Wärt ufglischtet.',
 	'smw_smwadmin_return' => 'Zrugg zue $1',
 	'smw_smwadmin_updatestarted' => 'E neje Update-Prozäss fir d Aktualisierig vu dr semantische Date isch gstartet wore.
 Alli gspycherete Date wäre nej aagleit oder repariert, wänn netig.
-Du chasch dr Fortschritt vum Update uf däre Spezialsyte verfolge.',
+Du chasch dr Fortschritt vum Update uf däre Spezialsyte verfolge.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'S lauft scho ne Update-Prozäss.
-S wird kei neje aagfange.',
-	'smw_smwadmin_updatestopped' => 'Alli Aktualisierigsprozäss, wu s git, sin aaghalte wore.',
-	'smw_smwadmin_updatenotstopped' => 'Go Prozäss aahlate, wu am laufe sin, muesch Du s Kontrollchäschtli aktiviere zum aazeige, ass Du Dir wirkli sicher bisch.',
+S wird kei neje aagfange.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Alli Aktualisierigsprozäss, wu s git, sin aaghalte wore.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Go Prozäss aahlate, wu am laufe sin, muesch Du s Kontrollchäschtli aktiviere zum aazeige, ass Du Dir wirkli sicher bisch.', # Fuzzy
 	'smw_smwadmin_docu' => 'Die Spezialsyte hilft währed dr Installation un em Upgrade vu <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Dänk dra, wichtigi Date vor dr Uusfierig vu adminischtrative Funktione z sichere.',
 	'smw_smwadmin_db' => 'Datebankinstallation un -aktualisierig',
@@ -5168,7 +5169,7 @@ Die Funktion gwährleischtet, ass d Datebank richtig yygrichtet isch.
 D Änderige, wu in däm Schritt gmacht wäre, stere dr Räscht vu dr MediaWiki-Datebank nit un chenne eifach zrugggsetzt wäre, wänn gwinscht.
 Die Setup-Funktion cha e paar Mol uusgfiert wäre ohni Schade z verursache, s isch aber nume eimol netig bi dr  Installation oder em Update.',
 	'smw_smwadmin_permissionswarn' => 'Wänn d Aktion mit eme SQL-Fähler abbricht, chennt s syy, ass dr Datebankbenutzer, wu s Wiki iber en uf d Datenbank zuegryft (lueg d Datei LocalSettings.php), nit d Rächt dezue het.
-Go des Probläm lese  isch s megli, em Benutzer zuesätzligi Rächt fir s Aalege und Lesche vu Tabälle z gee, dr  Datebank-Adminischtrator zytwyys in d LocalSettings.php yyztrage oder s Wartigsskript <tt>SMW_setup.php</tt> z verwände, wu d Benutzerdate us AdminSettings.php cha verwände.',
+Go des Probläm lese  isch s megli, em Benutzer zuesätzligi Rächt fir s Aalege und Lesche vu Tabälle z gee, dr  Datebank-Adminischtrator zytwyys in d LocalSettings.php yyztrage oder s Wartigsskript <tt>SMW_setup.php</tt> z verwände, wu d Benutzerdate us AdminSettings.php cha verwände.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Tabällen initialisiere oder aktualisere',
 	'smw_smwadmin_announce' => 'Dyy Wiki aachinde',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki het e Netzservice zum neji semantischi Wikisyte bekannt gee.
@@ -5199,7 +5200,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw_adminlinks_inlinequerieshelp' => 'Hilf fir Inline-Abfroge',
 	'smw-createproperty-isproperty' => 'Des isch e Eigeschaft vum Typ $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dr erlaubt Wärt fir die Eigeschaft isch|Di erlaubte Wärt fir die Eigeschaft sin}}:',
-	'smw_unknowntype' => 'Imn dr Eigeschaft isch dr nit bekannt Datetyp „$1“ zuegwise wore.',
+	'smw_unknowntype' => 'Imn dr Eigeschaft isch dr nit bekannt Datetyp „$1“ zuegwise wore.', # Fuzzy
 );
 
 /** Hebrew (עברית)
@@ -5265,7 +5266,7 @@ $messages['he'] = array(
 	'smw-paramdesc-csv-sep' => 'תו הפרדה',
 	'smw-paramdesc-dsv-separator' => 'באיזה תו הפרדה להשתמש',
 	'smw-paramdesc-dsv-filename' => 'שם קובץ DSV',
-	'smw-paramdesc-searchlabel' => 'הטקסט בקישור אל התוצאות',
+	'smw-paramdesc-searchlabel' => 'הטקסט בקישור אל התוצאות', # Fuzzy
 	'smw_iq_disabled' => 'שאילתות סמנטיות בוטלו באתר ויקי זה.',
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
 	'smw_parseerror' => 'הערך הניתן אינו ניתן לפענוח.',
@@ -5367,7 +5368,7 @@ $messages['he'] = array(
 	'smw_qc_query_help' => 'נא להזין שאילתה באמצעות הטופס להלן כדי לבחור דפי ויקי מבוססים על
 קטגוריה (<strong>[[{{ns:category}}:שחקן]]</strong>),
 מאפיינים (<strong>[[נמצא ב::גרמניה]]</strong>),
-שמות (<strong>[[גרמניה]]</strong>) ומרחבי שם (<strong>[[{{ns:help}}:+]]</strong>)',
+שמות (<strong>[[גרמניה]]</strong>) ומרחבי שם (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_ok' => 'אישור',
 	'smw_qui_cancel' => 'ביטול',
 	'smw_qui_category' => '<strong>קטגוריה</strong>',
@@ -5407,11 +5408,11 @@ $messages['he'] = array(
 	'smw_smwadmin_return' => 'חזרה אל $1',
 	'smw_smwadmin_updatestarted' => 'הותחל תהליך עדכון חדש לרענון הנתונים הסמנטיים.
 כל הנתונים המאוחסנים ייבנו מחדש או יתוקנו היכן שיש צורך.
-תוכלו לעקוב אחר תהליך העדכון בדף מיוחד זה.',
+תוכלו לעקוב אחר תהליך העדכון בדף מיוחד זה.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'יש כבר תהליך עדכון פעיל.
-לא ייווצר עוד אחד.',
-	'smw_smwadmin_updatestopped' => 'כל תהליכי העדכון הקיימים נעצרו.',
-	'smw_smwadmin_updatenotstopped' => 'כדי לעצור תהליך עדכון פעיל, עליכם לסמן את תיבת הסימון כדי לציין שאתם בטוחים בכך.',
+לא ייווצר עוד אחד.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'כל תהליכי העדכון הקיימים נעצרו.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'כדי לעצור תהליך עדכון פעיל, עליכם לסמן את תיבת הסימון כדי לציין שאתם בטוחים בכך.', # Fuzzy
 	'smw_smwadmin_docu' => 'דף מיוחד זה יעזור לכם במהלך ההתקנה והשדרוג של <a href="http://semantic-mediawiki.org">מדיה־ויקי הסמנטית</a>.
 זִכרו לגבות את הנתונים החיוניים לכם בטרם הפעלת התכונות הניהוליות.',
 	'smw_smwadmin_db' => 'התקנה ושדרוג של בסיס הנתונים',
@@ -5420,7 +5421,7 @@ $messages['he'] = array(
 השינויים שנעשים בשלב זה אינם משפיעים על שאר בסיס הנתונים של מדיה־ויקי, וניתן לבטלם בקלות אם תרצו בכך.
 ניתן להפעיל את פונקציית ההגדרה הזו מספר פעמים מבלי לגרום לנזק כלשהו, אך היא נדרשת רק פעם אחת עם ההתקנה או עם שדרוג.',
 	'smw_smwadmin_permissionswarn' => 'אם הפעולה נכשלת עם שגיאות SQL, למשתמש של בסיס הנתונים של אתר הוויקי שלכם (תוכלו למצוא אותו בקובץ ה־LocalSettings.php שלכם) אין הרשאות מתאימות.
-אנא הוסיפו למשתמש זה הרשאות ליצירה ולמחיקה של טבלאות, כִתבו את פרטי גישת העל לבסיס הנתונים לקובץ LocalSetting.php באופן זמני, או השתמשו בסקריפט התחזוקה <tt>SMW_setup.php</tt> שיכול להשתמש בהרשאות של הקובץ AdminSettings.php.',
+אנא הוסיפו למשתמש זה הרשאות ליצירה ולמחיקה של טבלאות, כִתבו את פרטי גישת העל לבסיס הנתונים לקובץ LocalSetting.php באופן זמני, או השתמשו בסקריפט התחזוקה <tt>SMW_setup.php</tt> שיכול להשתמש בהרשאות של הקובץ AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'אתחול או שדרוג של טבלאות',
 	'smw_smwadmin_announce' => 'הכריזו על הוויקי שלכם',
 	'smw_smwadmin_announcedocu' => 'למדיה־ויקי סמנטי, ישנ שירות מקוון להכרזה על אתרי ויקי סמנטיים חדשים.
@@ -5451,7 +5452,7 @@ $messages['he'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'עזרה על שאילתות משובצות',
 	'smw-createproperty-isproperty' => 'זהו מאפיין מסוג $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|הערך האפשרי למאפיין זה הוא|הערכים האפשריים למאפיין זה הם}}:',
-	'smw_unknowntype' => '[אופס! סוג לא מוכר "$1" הוגדר עבור מאפיין זה]',
+	'smw_unknowntype' => '[אופס! סוג לא מוכר "$1" הוגדר עבור מאפיין זה]', # Fuzzy
 );
 
 /** Hindi (हिन्दी)
@@ -5526,7 +5527,7 @@ $messages['hr'] = array(
 	'smw-paramdesc-embedonly' => 'Ne prikazuj zaglavlja',
 	'smw-paramdesc-rsstitle' => 'Tekst za naslov feeda',
 	'smw-paramdesc-rssdescription' => 'Tekst za opis feeda',
-	'smw-paramdesc-searchlabel' => 'Tekst poveznice na rezultate',
+	'smw-paramdesc-searchlabel' => 'Tekst poveznice na rezultate', # Fuzzy
 	'smw_iq_disabled' => 'Semantički upiti su isključeni na ovom wikiju.',
 	'smw_iq_moreresults' => '… daljnji rezultati',
 	'smw_parseerror' => 'Dana vrijednost nije razumljiva.',
@@ -5591,7 +5592,7 @@ Generira RDF za pregled i pretraživanje.',
 	'smw_purge' => 'Osvježi',
 	'types' => 'Tipovi',
 	'smw_types_docu' => 'Slijedi popis svih tipova podataka koji mogu biti dodijeljeni svojstvima.
-Svaki tip podatka ima stranicu koja može pružiti dodatne informacije.',
+Svaki tip podatka ima stranicu koja može pružiti dodatne informacije.', # Fuzzy
 	'semanticstatistics' => 'Statistika o semantici',
 	'smw_semstats_text' => "Ovaj wiki sadrži '''$1''' {{PLURAL:$1|vrijednost svojstva|vrijednosti svojstava|vrijednosti svojstava}} za ukupno '''$2''' [[Special:Properties|{{PLURAL:$2|svojstvo|različita svojstva|različitih svojstava}}]].
 '''$3''' {{PLURAL:$3|svojstvo ima|svojstva imaju|svojstava imaju}} vlastitu stranicu i '''$4''' {{PLURAL:$3|ima|od njih imaju|od njih imaju}} zadan tip podatka.
@@ -5650,11 +5651,11 @@ Unesite stranicu i svojstvo.',
 	'smw_smwadmin_return' => 'Vrati se na $1',
 	'smw_smwadmin_updatestarted' => 'Pokrenut je novi proces osvježavanja semantičkih podataka.
 Svi spremljeni podaci će biti ponovno izgrađeni ili popravljeni ako je to potrebno.
-Napredak osvježavanja možete pratiti na ovoj posebnoj stranici.',
+Napredak osvježavanja možete pratiti na ovoj posebnoj stranici.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Već se izvršava proces osvježavanja.
-Ne pokrećem novi.',
-	'smw_smwadmin_updatestopped' => 'Svi postojeći procesi osvježavanja su zaustavljeni.',
-	'smw_smwadmin_updatenotstopped' => 'Da biste zaustavili proces osvježavanja, označite u potvrdnom okviru da ste zaista sigurni.',
+Ne pokrećem novi.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Svi postojeći procesi osvježavanja su zaustavljeni.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Da biste zaustavili proces osvježavanja, označite u potvrdnom okviru da ste zaista sigurni.', # Fuzzy
 	'smw_smwadmin_docu' => 'Ova posebna stranica pomaže prilikom instalacije i nadogradnje <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Ne zaboravite napraviti sigurnosnu kopiju važnih podataka prije izvršavanja administrativnih funkcija.',
 	'smw_smwadmin_db' => 'Instalacija i nadgradnja baze podataka',
@@ -5663,7 +5664,7 @@ Funkcija ispod osigurava da je vaša baza pravilno postavljena.
 Ovaj korak ne utječe na ostatak MediaWiki baze podataka i lako se može poništiti ukoliko to želite.
 Ova se funkcija može izvršiti više puta bez ikakvih štetnih posljedica, no potrebna je samo kod instalacije ili nadgradnje.',
 	'smw_smwadmin_permissionswarn' => 'Ako operacija ne uspije i vrati SQL grešku, baza podataka koju koristi Vaš wiki (provjerite svoj LocalSettings.php) vjerojatno nema dovoljna prava.
-Učinite jedno od sljedećeg: dodijelite ovom korisniku dodatna prava za stvaranje i brisanje tablica, privremeno unesite administratorsko korisničko ime i lozinku Vaše baze podataka u LocalSettings.php, ili pokrenite skriptu za održavanje <tt>SMW_setup.php</tt> koja će koristiti prava iz AdminSettings.php.',
+Učinite jedno od sljedećeg: dodijelite ovom korisniku dodatna prava za stvaranje i brisanje tablica, privremeno unesite administratorsko korisničko ime i lozinku Vaše baze podataka u LocalSettings.php, ili pokrenite skriptu za održavanje <tt>SMW_setup.php</tt> koja će koristiti prava iz AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicijaliziraj ili nadogradi tablice',
 	'smw_smwadmin_announce' => 'Najavite svoj wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki pruža web uslugu koja prikazuje i najavljuje nove semantičke wikije.
@@ -5691,7 +5692,7 @@ Procjena napretka osvježavanja:',
 	'smw_adminlinks_datastructure' => 'Struktura podataka',
 	'smw_adminlinks_displayingdata' => 'Prikaz podataka',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za umetnute upite',
-	'smw_unknowntype' => 'Za svojstvo je definiran nepodržan tip "$1".',
+	'smw_unknowntype' => 'Za svojstvo je definiran nepodržan tip "$1".', # Fuzzy
 );
 
 /** Upper Sorbian (hornjoserbsce)
@@ -6034,7 +6035,7 @@ $messages['ht'] = array(
 	'smw_false_words' => 'fo,f,non,n',
 	'smw_nofloat' => '"$1" pa yon nimewo.',
 	'smw_infinite' => 'Nimewo ki gwo tankou "$1" pa sipòte.',
-	'smw_unknowntype' => 'Tip done "$1" yo ki pa sipòte retounen nan atribi a.',
+	'smw_unknowntype' => 'Tip done "$1" yo ki pa sipòte retounen nan atribi a.', # Fuzzy
 );
 
 /** Hungarian (magyar)
@@ -6100,7 +6101,7 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw-smwdoc-par-parameters' => 'A megjelenítendő paraméterek. "specific" a formátum által hozzáadottakhoz, "base" a minden formátumban elérhetőkhöz és "all" mindkét fajtához.',
 	'smw-paramdesc-sort' => 'A tulajdonság, amely szerint rendezni kell a lekérdezést',
 	'smw-paramdesc-order' => 'A lekérdezések rendezési sorrendje',
-	'smw-paramdesc-searchlabel' => 'Az eredményekre mutató hivatkozás szövege',
+	'smw-paramdesc-searchlabel' => 'Az eredményekre mutató hivatkozás szövege', # Fuzzy
 	'smw-paramdesc-named_args' => 'Nevezd meg a sablonba átküldendő argumentumokat',
 	'smw_iq_disabled' => 'A szemantikus lekérdezések le vannak tiltva ezen a wikin.',
 	'smw_iq_moreresults' => '… további eredmények',
@@ -6206,7 +6207,7 @@ Biztosítja, hogy az emberek ne váljanak weboldalakká.',
 	'smw_qc_query_help' => 'Az alábbi űrlap segítségével lekérdezést adhatsz meg. A wiki lapjait kiválaszthatod
 kategóriák (<strong>[[{{ns:category}}:Actor]]</strong>),
 tulajdonságok (<strong>[[Located in::Germany]]</strong>),
-nevek(<strong>[[Germany]]</strong>) és névterek (<strong>[[{{ns:help}}:+]]</strong>) alapján.',
+nevek(<strong>[[Germany]]</strong>) és névterek (<strong>[[{{ns:help}}:+]]</strong>) alapján.', # Fuzzy
 	'smw_qui_property' => '<strong>Tulajdonság</strong>',
 	'smw_qui_prop' => 'Tulajdonság:',
 	'searchbyproperty' => 'Keresés tulajdonság szerint',
@@ -6299,7 +6300,7 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw-paramdesc-category-template' => 'Az elemeket formázandó sablon',
 	'smw-info-par-message' => 'Megjelenítendő üzenet.',
 	'smw-info-par-icon' => 'Megjelenítendő jel, "info" vagy "warning."',
-	'smw_unknowntype' => 'A megadott „$1” típus nem támogatott a tulajdonságnál.',
+	'smw_unknowntype' => 'A megadott „$1” típus nem támogatott a tulajdonságnál.', # Fuzzy
 );
 
 /** Interlingua (interlingua)
@@ -6317,6 +6318,9 @@ $messages['ia'] = array(
 	'smw_concept_cache_miss' => 'Le concepto "$1" non pote esser usate al momento, post que le configuration del wiki require que illo sia computate foras de linea. Si le problema non dispare post alcun tempore, demanda al administrator de tu sito de render disponibile iste concepto.',
 	'smw_noinvannot' => 'Le valores non pote esser assignate al proprietates inverse.',
 	'version-semantic' => 'Extensiones semantic',
+	'smw_uri_blacklist' => '  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  http://www.w3.org/2000/01/rdf-schema#
+  http://www.w3.org/2002/07/owl#',
 	'smw_baduri' => 'Le adresses URI del forma "$1" non es permittite.',
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
@@ -6367,10 +6371,10 @@ $messages['ia'] = array(
 	'smw-smwdoc-par-parameters' => 'Le parametros a monstrar: "specific" pro illos addite per le formato, "base" pro illos disponibile in tote le formatos, e "all" pro ambes.',
 	'smw-paramdesc-sort' => 'Proprietate per le qual ordinar le consulta',
 	'smw-paramdesc-order' => 'Ordination del consulta',
-	'smw-paramdesc-searchlabel' => 'Texto pro continuar le recerca (predefinition es «… altere resultatos»)',
+	'smw-paramdesc-searchlabel' => 'Texto pro continuar le recerca (predefinition es «… altere resultatos»)', # Fuzzy
 	'smw-paramdesc-named_args' => 'Nominar le parametros passate al patrono',
 	'smw-paramdesc-export' => 'Option de exportation',
-	'smw-paramdesc-prettyprint' => 'Pro imprimer con un disposition plus nette',
+	'smw-paramdesc-prettyprint' => 'Pro imprimer con un disposition plus nette', # Fuzzy
 	'smw-paramdesc-source' => 'Fonte alternative de consultas',
 	'smw_iq_disabled' => 'Le consultas semantic ha essite disactivate pro iste wiki.',
 	'smw_iq_moreresults' => '… ulterior resultatos',
@@ -6485,7 +6489,7 @@ Illo assecura que le humanos non se transforma in sitos web.',
 	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de 
 Categorias (<strong>[[{{ns:category}}:Actor]]</strong>), 
 Proprietates (<strong>[[Localisate in::Germania]]</strong>), 
-Nomines (<strong>[[Germania]]</strong>) e Spatios de nomines (<strong>[[{{ns:help}}:+]]</strong>)',
+Nomines (<strong>[[Germania]]</strong>) e Spatios de nomines (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Proprietate</strong>',
 	'smw_qui_prop' => 'Proprietate:',
 	'smw_qui_labl' => 'Etiquetta:',
@@ -6608,7 +6612,7 @@ Progresso estimate del actualisation currente:',
 	'smw-paramdesc-category-userparam' => 'Un parametro a passar al patrono',
 	'smw-info-par-message' => 'Le message a monstrar.',
 	'smw-info-par-icon' => 'Le icone a monstrar, o "info" o "attention!".',
-	'smw_unknowntype' => 'Typo non supportate "$1" definite pro proprietate.',
+	'smw_unknowntype' => 'Typo non supportate "$1" definite pro proprietate.', # Fuzzy
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -6668,7 +6672,7 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw-paramdesc-csv-sep' => 'Pemisah yang dipakai',
 	'smw-paramdesc-dsv-separator' => 'Pemisah yang dipakai',
 	'smw-paramdesc-dsv-filename' => 'Nama berkas DSV',
-	'smw-paramdesc-searchlabel' => 'Tulisan pada pranala menuju hasil',
+	'smw-paramdesc-searchlabel' => 'Tulisan pada pranala menuju hasil', # Fuzzy
 	'smw_iq_disabled' => 'Query semantik telah dinonaktifkan di wiki ini.',
 	'smw_iq_moreresults' => '… hasil lebih lanjut',
 	'smw_parseerror' => 'Nilai yang diberikan tidak dipahami.',
@@ -6737,7 +6741,7 @@ Menghasilkan RDF yang dapat ditelurusi.',
 	'smw_purge' => 'Segarkan',
 	'types' => 'Tipe',
 	'smw_types_docu' => 'Berikut adalah daftar semua tipe data yang dapat diberikan pada properti.
-Setiap tipe data memiliki suatu halaman yang memberikan informasi tambahan.',
+Setiap tipe data memiliki suatu halaman yang memberikan informasi tambahan.', # Fuzzy
 	'semanticstatistics' => 'Statistik semantik',
 	'smw_semstats_text' => "Wiki ini memiliki '''$1''' {{PLURAL:$1|nilai|nilai}} properti dari total '''$2''' [[Special:Properties|{{PLURAL:$2|properti|properti}}]].
 '''$3''' {{PLURAL:$3|properti|properti}} telah memiliki halaman sendiri, dan tipe data telah diberikan pada '''$4''' di antaranya.
@@ -6797,11 +6801,11 @@ Masukkan satu halaman dan satu properti.',
 	'smw_smwadmin_return' => 'Kembali ke $1',
 	'smw_smwadmin_updatestarted' => 'Suatu proses pembaruan untuk menyegarkan data semantik telah dimulai.
 Semua data tersimpan akan dibangun ulang atau diperbaiki jika diperlukan.
-Anda dapat mengikuti kemajuan pembaruan tersebut di halaman istimewa ini.',
+Anda dapat mengikuti kemajuan pembaruan tersebut di halaman istimewa ini.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Sudah ada suatu proses pembaruan yang sedang berjalan.
-Tidak membuat proses lain.',
-	'smw_smwadmin_updatestopped' => 'Semua proses pembaruan yang ada telah dihentikan.',
-	'smw_smwadmin_updatenotstopped' => 'Untuk menghentikan proses pembaruan yang sedang berjalan, Anda harus memilih kotak centang untuk menunjukkan bahwa Anda benar-benar yakin.',
+Tidak membuat proses lain.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Semua proses pembaruan yang ada telah dihentikan.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Untuk menghentikan proses pembaruan yang sedang berjalan, Anda harus memilih kotak centang untuk menunjukkan bahwa Anda benar-benar yakin.', # Fuzzy
 	'smw_smwadmin_docu' => 'Halaman istimewa ini akan membantu Anda selama instalasi dan peningkatan dari <a href="http://semantic-mediawiki.org">Semantic MediaWiki.</a>
 Jangan lupa untuk mencadangkan data Anda yang berharga sebelum melaksanakan fungsi administratif.',
 	'smw_smwadmin_db' => 'Instalasi dan peningkatan basis data',
@@ -6810,7 +6814,7 @@ Fungsi berikut memastikan bahwa basis data Anda dipersiapkan dengan baik.
 Perubahan yang dilakukan pada langkah ini tidak memengaruhi bagian lain dari basis data MediaWiki, dan dengan mudah dapat dibatalkan jika diingkan.
 Fungsi persiapan ini dapat dilakukan berulang kali tanpa menyebabkan kerusaan, tapi hanya dibutuhkan sekali sewaktu instalasi atau peningkatan.',
 	'smw_smwadmin_permissionswarn' => 'Jika operasi gagal karena kesalahan SQL, pengguna basis data yang digunakan oleh wiki Anda (cek LocalSettings.php Anda) mungkin tidak mempunyai hak akses yang cukup.
-Anda dapat memberikan hak akses tambahan untuk membuat dan menghapus tabel, memasukkan sementara pengguna root basis data Anda di LocalSettings.php, atau menggunakan skrip pemeliharaan <tt>SMW_setup.php</tt> yang dapat menggunakan hak akses dari AdminSettings.php.',
+Anda dapat memberikan hak akses tambahan untuk membuat dan menghapus tabel, memasukkan sementara pengguna root basis data Anda di LocalSettings.php, atau menggunakan skrip pemeliharaan <tt>SMW_setup.php</tt> yang dapat menggunakan hak akses dari AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inisiasi atau tingkatkan tabel',
 	'smw_smwadmin_announce' => 'Umumkan wiki Anda',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki memiliki layanan web untuk mengumumkan situs wiki semantik baru.
@@ -6841,7 +6845,7 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_adminlinks_inlinequerieshelp' => 'Bantuan query sisip',
 	'smw-createproperty-isproperty' => 'Ini adalah properti bertipe $1',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Nilai|Nilai}} yang diizinkan untuk properti ini adalah:',
-	'smw_unknowntype' => 'Tipe "$1" yang tidak didukung ditetapkan untuk properti.',
+	'smw_unknowntype' => 'Tipe "$1" yang tidak didukung ditetapkan untuk properti.', # Fuzzy
 );
 
 /** Igbo (Igbo)
@@ -7495,7 +7499,7 @@ Nggawé berkas RDF sing bisa dijlajah.',
 	'smw_purge' => 'Anyarana',
 	'types' => 'Jenis-jenis',
 	'smw_types_docu' => 'Ing ngisor iki kapacak sawijining daftar kabèh jenis data sing bisa ditunjukaké menyang sifat-sifat.
-Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.',
+Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.', # Fuzzy
 	'semanticstatistics' => 'Statistik sémantik',
 	'smw_semstats_text' => "Wiki iki ngandhut '''$1''' {{PLURAL:$1|aji|aji}} sifat nganti gunggung '''$2''' [[Special:Properties|{{PLURAL:$2|sifat|sifat}}]].
 '''$3''' {{PLURAL:$3|sifat nduwèni|sifat nduwèni}} kaca dhéwé, lan jinis-data sing dimaksudaké kanggo '''$4'''.
@@ -7512,7 +7516,7 @@ Sifat-sifat sing isih ora duwé kaca bisa ditemokaké ing [[Special:WantedProper
 	'smw_ask_hidequery' => 'Delikna kwéri',
 	'smw_ask_help' => 'Pitulung kwéri',
 	'smw_ask_queryhead' => 'Kwéri',
-	'smw_ask_printhead' => 'Cithakan tambahan (opsional)',
+	'smw_ask_printhead' => 'Cithakan tambahan (opsional)', # Fuzzy
 	'searchbyproperty' => 'Golèk miturut sifat',
 	'smw_sbv_docu' => 'Golèk kabèh kaca sing duwé sifat lan bijih tartamtu.',
 	'smw_sbv_novalue' => 'Mangga lebokna bijih absah kanggo sifat iki, utawa tuduhna kabèh bijih-bijihé sifat kanggo “$1.”',
@@ -7533,7 +7537,7 @@ Tulung isèkna loro-loroné sawijining kaca lan sifat.',
 	'smw_result_next' => 'Sabanjuré',
 	'smw_result_results' => 'Pituwas (kasil)',
 	'smw_result_noresults' => 'Nuwun sèwu, ora ana pituwasé (kasilé).',
-	'smw_unknowntype' => 'Jenis “$1” sing ora disengkuyung, didéfinisi kanggo sifat.',
+	'smw_unknowntype' => 'Jenis “$1” sing ora disengkuyung, didéfinisi kanggo sifat.', # Fuzzy
 );
 
 /** Georgian (ქართული)
@@ -7756,6 +7760,9 @@ Wann dat nit noh en jeweße Zick nit fun sellfs jedonn es, un hee di
 Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.',
 	'smw_noinvannot' => 'För Eijeschaffte met ömjedriehte Reschtung künne kei Wääte verjovve wääde.',
 	'version-semantic' => 'Projrammzohsäz vum „Semantesch MediaWiki“',
+	'smw_uri_blacklist' => '  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  http://www.w3.org/2000/01/rdf-schema#
+  http://www.w3.org/2002/07/owl#',
 	'smw_baduri' => 'URIs met dämm Opbou „$1“ sin nit zojelohße.',
 	'smw_rss_link' => '<i lang="en">RSS</i>',
 	'smw_csv_link' => '<i lang="en">CSV</i>',
@@ -7797,7 +7804,7 @@ Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.
 	'smw-paramdesc-csv-sep' => 'Dat Zeishe för Fälder ze tränne',
 	'smw-paramdesc-dsv-separator' => 'Dat Zeishe för Fälder ze tränne',
 	'smw-paramdesc-dsv-filename' => 'Dä Name för di <i lang="en">DSV</i>-Dattei',
-	'smw-paramdesc-searchlabel' => 'Dä Täx för em Lengk för wat eruß kütt',
+	'smw-paramdesc-searchlabel' => 'Dä Täx för em Lengk för wat eruß kütt', # Fuzzy
 	'smw_iq_disabled' => 'Semantesche Frore sem em Wiki em Momang afjeschaldt.',
 	'smw_iq_moreresults' => '…&nbsp;mieh vun däm, wat jefonge woodt',
 	'smw_parseerror' => 'Dä aanjejovve Wäät kunnte mer nit vershtonn.',
@@ -7866,7 +7873,7 @@ Heh dä Fähler künnt wider vörbei jonn, udder ene Fähler em Programm för de
 	'smw_purge' => 'Nöü Aanzeije',
 	'types' => 'Date-Tüpe',
 	'smw_types_docu' => 'Hee kütt en Leß met alle Datte-Tüpe, die en Eijeschaff hann künnt.
-Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
+Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.', # Fuzzy
 	'semanticstatistics' => 'Shtatistik övver de semantesche Date',
 	'smw_semstats_text' => "Dat Wiki hät {{PLURAL:$1|'''eine''' Wäät|'''$1''' Wääte|'''nit eine''' Wäät}} för ensjesamp '''{{PLURAL:$2|ein|$2|keine}}''' ongerscheedlijje [[Special:Properties|{{PLURAL:$2|Eijeschaff|Eijeschaffte|Eijeschaff}}]].
 {{PLURAL:$3|'''Ein''' Eijeschaff hät|'''$3''' Eijeschaffte han|'''Kein''' Eijeschaff hät}} en eije Sigg, un en Zoot (dä Datetyp) es för '''{{PLURAL:$4|eine|$4|keine}}'''  dovun aanjejovve. Et künne och [[Special:UnusedProperties|{{lcfirst:{{#special:UnusedProperties}}}}]] dronger sinn. Eijeschaffte ohne eije Sigg sin op dä Sigg met de [[Special:WantedProperties|{{lcfirst:{{#special:WantedProperties}}}}]] opjeleß.",
@@ -7922,15 +7929,15 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 	'smwadmin' => 'Verwalldung fun <i lang="en">Semantic MediaWiki</i>',
 	'smw_smwadmin_setupsuccess' => 'Dä Shpeisherplaz es opjesaz för <i lang="en">Semantic MediaWiki</i>.',
 	'smw_smwadmin_return' => 'Jangk retuur noh $1',
-	'smw_smwadmin_updatestarted' => 'Ene Projrammlouf för de semantesche Date neu opzeboue es em Jang. All de jeshpeisherte Date wäde neu zosamme jebout un woh nüdesch repareet. Mer kann bei däm Louf hee op dä Söndersigg metloore.',
+	'smw_smwadmin_updatestarted' => 'Ene Projrammlouf för de semantesche Date neu opzeboue es em Jang. All de jeshpeisherte Date wäde neu zosamme jebout un woh nüdesch repareet. Mer kann bei däm Louf hee op dä Söndersigg metloore.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Et es ald e Projramm för dat op der neuste Shtand ze bränge aam Loufe.
-Mer donn jetz nit noch ein aanshtüße!',
-	'smw_smwadmin_updatestopped' => 'Alle Projramme för et op der neuste Shtand Bränge, sin jetz aanjehallde woode.',
-	'smw_smwadmin_updatenotstopped' => 'Öm dat Projramm anzehallde, wat ald am Loufe es, moß De dat Höcksche en dat Käßje maache, öm ze zeije, dat De Der janz sesher bes.',
+Mer donn jetz nit noch ein aanshtüße!', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Alle Projramme för et op der neuste Shtand Bränge, sin jetz aanjehallde woode.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Öm dat Projramm anzehallde, wat ald am Loufe es, moß De dat Höcksche en dat Käßje maache, öm ze zeije, dat De Der janz sesher bes.', # Fuzzy
 	'smw_smwadmin_docu' => 'Hee di Söndersigg hellef beim Enshtallerere un beim op der neue Shtand bränge vum <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Opjepaß: Donn Ding Date seschere, ih dat De di Funkßjohne aanschmiiße deihß!',
 	'smw_smwadmin_db' => 'Datebangk inshtalleere un op der neuste Shatnd bränge',
 	'smw_smwadmin_dbdocu' => 'Semantesch MediaWiki hät bruch eije zosätzlejje Plaz en de Datebangk vum MediaWiki, öm sing semantesche Date ongerzebrenge. De Funkßjuhne hee dronger sorje doför, dat de Datebangk em Wiki öhndlesch för Semantesch MediaWiki opjesaz es. Wat hee verändert weet, dathät keine Enfloß op dä Rääß vun dä Datebangk vum MediaWiki, un mer kann et och eifach widder retuur maache, wann mer well. Di Funkßjuhn zom Opseze kam_mer esu öff loufe lohße, wi mer well, dat schaadt nix, ävver et es bloß eijmohl nüdesch bemm Enreschte, udder bem Ömshteije op en neuere Projrammversion.',
-	'smw_smwadmin_permissionswarn' => 'Wann de Aufjab met enem Fähler em <i lang="en">SQL</i> donävve jeiht, dann künnd et sin, dat dä Name för op de Datebangk zohzejriife en de <code>LocalSettings.php</code> för Ding Wiki nit jenooch Rääschte en dä Datebangk hät. Entweder jiß De dämm dat Rääsch, Tabälle aanzelääje udder fott ze maache, udder donn för der Momang Dinge <i lang="en">English text sample</i> udder Datebank-Köbes en dä <code>tings.php </code> enndraare, udder nemm dat Waadungsprojramm <code>SMW_setup.php</code> wat sesch op de Aanjabe en <code>AdminSettings.php</code> betrecke kann.',
+	'smw_smwadmin_permissionswarn' => 'Wann de Aufjab met enem Fähler em <i lang="en">SQL</i> donävve jeiht, dann künnd et sin, dat dä Name för op de Datebangk zohzejriife en de <code>LocalSettings.php</code> för Ding Wiki nit jenooch Rääschte en dä Datebangk hät. Entweder jiß De dämm dat Rääsch, Tabälle aanzelääje udder fott ze maache, udder donn för der Momang Dinge <i lang="en">English text sample</i> udder Datebank-Köbes en dä <code>tings.php </code> enndraare, udder nemm dat Waadungsprojramm <code>SMW_setup.php</code> wat sesch op de Aanjabe en <code>AdminSettings.php</code> betrecke kann.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Tabelle aanlääje udder op der neuste Shatnd bränge',
 	'smw_smwadmin_announce' => 'Donn Ding Wiki annongßeere un bikannt maache',
 	'smw_smwadmin_announcedocu' => 'Semantesch MediaWiki hät en Websigg för neu Semantsche MediaWiki ßaits aanzeköndijje. Doh weed en Leß met de öffentlesche Websaits jehallde, en de Houpsaach, öm dämm <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantesch MediaWiki Projäk</a> zoh enem Övverbleck ze verhellve, wi Semantesch MediaWiki esu enjesaz weed. Op dä Houpäjtsch fun dämm Projäk fengks De <a href="http://semantic-mediawiki.org/wiki/Registry">mieh övver dä Deens</a>.',
@@ -7952,7 +7959,7 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_adminlinks_inlinequerieshelp' => 'Hölp övver de em Wiki sing Sigge enjeboute Froore',
 	'smw-createproperty-isproperty' => 'Dat ess_en Eijeschaff vun dä Zoot $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dä einzijje müjjelesche Wäät för di Eijeschaff es:|De müjjelesche Wääte för di Eijeschaff sin:|Mer han kein müjjelesche Wääte för di Eijeschaff.}}',
-	'smw_unknowntype' => 'De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.',
+	'smw_unknowntype' => 'De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.', # Fuzzy
 );
 
 /** Kurdish (Latin script) (Kurdî (latînî)‎)
@@ -8193,7 +8200,7 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw-paramdesc-outrotemplate' => 'Šablono pavadinimas, kuris būtų rodomas po užklausos rezultatų, jei yra kokių nors rezultatų',
 	'smw-paramdesc-embedformat' => 'HTML žymė naudojama apibrėžti antraštes',
 	'smw-paramdesc-embedonly' => 'Nerodyti antraščių',
-	'smw-paramdesc-searchlabel' => 'Nuorodos į rezultatus tekstas',
+	'smw-paramdesc-searchlabel' => 'Nuorodos į rezultatus tekstas', # Fuzzy
 	'smw_iq_disabled' => 'Semantinės užklausos yra išjungtos šioje wiki.',
 	'smw_iq_moreresults' => '... tolesni rezultatai',
 	'smw_parseerror' => 'Nurodyta reikšmė yra nesuprantama.',
@@ -8217,8 +8224,8 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw_emptysubquery' => 'Kai kurios užklausos dalys turi blogas sąlygas.',
 	'smw-createproperty-isproperty' => 'Tai yra „$1“ tipo savybė.',
-	'smw-createproperty-allowedvals' => 'Šios savybės leidžiamos reikšmės yra:',
-	'smw_unknowntype' => 'Savybei nustatytas nepalaikomas tipas "$1".',
+	'smw-createproperty-allowedvals' => 'Šios savybės leidžiamos reikšmės yra:', # Fuzzy
+	'smw_unknowntype' => 'Savybei nustatytas nepalaikomas tipas "$1".', # Fuzzy
 );
 
 /** Macedonian (македонски)
@@ -8608,13 +8615,13 @@ $messages['mr'] = array(
 	'smw_notitle' => 'या विकिवर “$1” हे पानाच्या शीर्षकात वापरता येत नाही.',
 	'smw_manytypes' => 'गुणधर्माला एकापेक्षा जास्त प्रकार दिलेले आहेत.',
 	'smw_emptystring' => 'रिकाम्या किंमती वापरता येत नाहीत.',
-	'smw_maxstring' => '{{SITENAME}} साठी $1 हे स्ट्रींग रिप्रेझेंटेशन खूप लांब आहे.',
+	'smw_maxstring' => '{{SITENAME}} साठी $1 हे स्ट्रींग रिप्रेझेंटेशन खूप लांब आहे.', # Fuzzy
 	'smw_notinenum' => 'या गुणधर्माच्या योग्य किंमतींच्या ($2) यादीत “$1” नाही आहे.',
 	'smw_noboolean' => '“$1” ही योग्य बुलियन (बरोबर/चूक) किंमत नाही.',
 	'smw_true_words' => 'बरोबर,t,हो,y',
 	'smw_false_words' => 'चूक,f,नाही,n',
 	'smw_nofloat' => '“$1” ही संख्या नाही.',
-	'smw_infinite' => '{{SITENAME}} वर “$1” एवढ्या मोठ्या संख्या वापरता येत नाहीत.',
+	'smw_infinite' => '{{SITENAME}} वर “$1” एवढ्या मोठ्या संख्या वापरता येत नाहीत.', # Fuzzy
 	'smw_nodatetime' => '“$1” हा दिनांक समजला नाही.',
 	'smw_toomanyclosing' => 'या पृच्छेमध्ये “$1” खूप ठिकाणी आलेले आहे.',
 	'smw_noclosingbrackets' => 'तुमच्या पृच्छेत कुठेतरी वापरलेले “<nowiki>[[</nowiki>” हे योग्य अशा जुळणार्‍या “]]” ने बंद केलेले नाही.',
@@ -8631,7 +8638,7 @@ $messages['mr'] = array(
 	'smw_type_header' => '“$1” प्रकारचे गुणधर्म',
 	'smw_typearticlecount' => 'हा प्रकार {{PLURAL:$1|वापरणारा|वापरणारे}} $1 गुणधर्म दाखवित आहे.',
 	'smw_attribute_header' => '“$1” गुणधर्म वापरणारी पृष्ठे',
-	'smw_attributearticlecount' => 'हा गुणधर्म वापरणारी $1 पाने दाखवित आहे..',
+	'smw_attributearticlecount' => 'हा गुणधर्म वापरणारी $1 पाने दाखवित आहे..', # Fuzzy
 	'smw_rss_description' => '$1 आरएसएस फीड',
 	'specialpages-group-smw_group' => 'सिमँटिक मीडियाविकि',
 	'exportrdf' => 'RDF कडे पाने निर्यात करा',
@@ -8654,16 +8661,16 @@ $messages['mr'] = array(
 	'smw_unusedproperty_template' => '$2 प्रकारचे $1',
 	'wantedproperties' => 'पाहिजे असलेले गुणधर्म',
 	'smw_wantedproperties_docu' => 'या विकिवर वापरण्यात आलेल्या खालील गुणधर्मांसाठी माहिती पृष्ठे अस्तित्वात नाहीत.',
-	'smw_wantedproperty_template' => '$1 ($2 वापरतो)',
+	'smw_wantedproperty_template' => '$1 ($2 वापरतो)', # Fuzzy
 	'smw_purge' => 'ताजेतवाने करा',
 	'types' => 'प्रकार',
 	'smw_types_docu' => 'खाली गुणधर्माशी जोडता येणार्‍या सर्व डाटा प्रकारांची यादी आहे.
-प्रत्येक डाटा प्रकाराचे एक पाने आहे जिथे जास्तीची माहिती देता येईल.',
+प्रत्येक डाटा प्रकाराचे एक पाने आहे जिथे जास्तीची माहिती देता येईल.', # Fuzzy
 	'semanticstatistics' => 'सिमँटिक सांख्यिकी',
 	'smw_semstats_text' => 'ह्या विकिमध्ये <b>$1</b> गुणधर्मांच्या किंमती आहेत ज्या एकूण <b>$2</b> वेगवेगळ्या <a href="$3">गुणधर्म</a> दर्शवितात.
 <b>$4</b> गुणधर्मांना स्वत:ची पाने आहेत, व त्यापैकी <b>$5</b> गुणधर्मांना जुळणारे डाटा प्रकार दिलेले आहेत.
 यातील काही गुणधर्म हे <a href="$6">न वापरलेले गुणधर्म</a> असण्याची शक्यता आहे.
-ज्या गुणधर्मांना स्वत:चे पान नाही असे गुणधर्म <a href="$7">पाहिजे असलेल्या गुणधर्मांची यादी</a> मध्ये सापडतील.',
+ज्या गुणधर्मांना स्वत:चे पान नाही असे गुणधर्म <a href="$7">पाहिजे असलेल्या गुणधर्मांची यादी</a> मध्ये सापडतील.', # Fuzzy
 	'smw_uri_doc' => 'URI रिझॉल्वर मध्ये एक <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C टॅग आहे जो httpRange-14 शोधण्यास मदत करतो</a>. हा मनुष्यप्राणी संकेतस्थळामध्ये बदलणार नाही याची काळजी घेतो.',
 	'ask' => 'सिमंटिक शोध',
 	'smw_ask_sortby' => 'रकान्या प्रमाणे लावा (वैकल्पिक)',
@@ -8675,12 +8682,12 @@ $messages['mr'] = array(
 	'smw_ask_hidequery' => 'पृच्छा लपवा',
 	'smw_ask_help' => 'पृच्छा करण्यासाठी मदत',
 	'smw_ask_queryhead' => 'पॄच्छा',
-	'smw_ask_printhead' => 'जास्तीच्या छापील प्रती (वैकल्पिक)',
+	'smw_ask_printhead' => 'जास्तीच्या छापील प्रती (वैकल्पिक)', # Fuzzy
 	'searchbyproperty' => 'गुणधर्माप्रमाणे शोधा',
 	'smw_sbv_docu' => 'दिलेला गुणधर्म व किंमत असणारी सर्व पाने शोधा.',
 	'smw_sbv_novalue' => 'कृपया या गुणधर्माची एक योग्य किंमत द्या, किंवा “$1” साठीच्या सर्व किंमती पहा.',
 	'smw_sbv_displayresult' => 'गुणधर्म  “$1” व त्याची किंमत “$2” असणार्‍ सर्व पानांची यादी',
-	'smw_sbv_property' => 'गुणधर्म',
+	'smw_sbv_property' => 'गुणधर्म', # Fuzzy
 	'smw_sbv_value' => 'किंमत:',
 	'smw_sbv_submit' => 'निकाल शोधा',
 	'browse' => 'विकि न्याहाळा',
@@ -8697,8 +8704,8 @@ $messages['mr'] = array(
 	'smw_result_results' => 'निकाल',
 	'smw_result_noresults' => 'माफ करा, निकाल नाहीत.',
 	'smw-createproperty-isproperty' => 'हा $1 प्रकारचा गुणधर्म आहे.',
-	'smw-createproperty-allowedvals' => 'या गुणधर्माच्या योग्य किंमती पुढीलप्रमाणे आहेत:',
-	'smw_unknowntype' => 'गुणधर्माचा प्रकार “$1” वापरता येत नाही.',
+	'smw-createproperty-allowedvals' => 'या गुणधर्माच्या योग्य किंमती पुढीलप्रमाणे आहेत:', # Fuzzy
+	'smw_unknowntype' => 'गुणधर्माचा प्रकार “$1” वापरता येत नाही.', # Fuzzy
 );
 
 /** Malay (Bahasa Melayu)
@@ -8860,7 +8867,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw-smwdoc-par-parameters' => 'Hvilke parametre som skal vises. "specific" for dem som er lagt til av formatet, "base" for dem som er tilgjengelig i alle formater og "all" for begge.',
 	'smw-paramdesc-sort' => 'Egenskap som spørringen skal sorteres etter',
 	'smw-paramdesc-order' => 'Sorteringsrekkefølge for spørringen',
-	'smw-paramdesc-searchlabel' => 'Tekst som forteller om fortsatt søk (standard er «… flere resultater»)',
+	'smw-paramdesc-searchlabel' => 'Tekst som forteller om fortsatt søk (standard er «… flere resultater»)', # Fuzzy
 	'smw_iq_disabled' => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
 	'smw_iq_moreresults' => '… flere resultater',
 	'smw_parseerror' => 'Den gitte verdien ble ikke forstått.',
@@ -8967,7 +8974,7 @@ Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'smw_qc_query_help' => 'Legg inn en spørring ved hjelp av skjemaet under. Velg wikisider basert på
 Kategorier (<strong>[[{{ns:category}}:Actor]]</strong>), 
 Egenskaper (<strong>[[Located in::Germany]]</strong>), 
-Navn (<strong>[[Germany]]</strong>) og navnerom (<strong>[[{{ns:help}}:+]]</strong>)',
+Navn (<strong>[[Germany]]</strong>) og navnerom (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Egenskap</strong>',
 	'smw_qui_prop' => 'Egenskap:',
 	'smw_qui_labl' => 'Ledetekst:',
@@ -9032,11 +9039,11 @@ Skriv inn både sidenavn og egenskap.',
 	'smw_smwadmin_return' => 'Gå tilbake til $1',
 	'smw_smwadmin_updatestarted' => 'En ny oppdateringsprosess for oppfriskning av de semantiske dataene ble startet.
 Alle lagrede data vil bli bygd på nytt eller reparert der det trengs.
-Du kan følge med på fremgangen til oppdateringen på denne spesialsiden.',
+Du kan følge med på fremgangen til oppdateringen på denne spesialsiden.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Det kjører allerede en oppdateringsprosess.
-Starter derfor ikke enda en.',
-	'smw_smwadmin_updatestopped' => 'Alle eksisterende oppdateringsprosesser har blitt stoppet.',
-	'smw_smwadmin_updatenotstopped' => 'For å stoppe den kjørende oppdateringsprosessen må du markere avkrysningsboksen for å vise at du er helt sikker.',
+Starter derfor ikke enda en.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Alle eksisterende oppdateringsprosesser har blitt stoppet.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'For å stoppe den kjørende oppdateringsprosessen må du markere avkrysningsboksen for å vise at du er helt sikker.', # Fuzzy
 	'smw_smwadmin_docu' => 'Denne spesialsiden hjelper deg under innstallasjon og oppgradering av <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Husk å ta sikkerhetskopier av viktige data før du starter administrerende funksjoner.',
 	'smw_smwadmin_db' => 'Databaseinstallering og -oppgradering',
@@ -9045,7 +9052,7 @@ Funksjonen under sikrer at databasen din blir satt opp riktig.
 Endringene gjort i dette steget har ingen effekt på resten av MediaWiki-databasen og kan enkelt gjøres om om ønskelig.
 Denne initialiseringsfunksjonen kan bli kjørt flere ganger uten skadevirkning, men den trenger kun kjøres en gang ved installering eller oppgradering.',
 	'smw_smwadmin_permissionswarn' => 'Dersom operasjonen mislykkes med SQL-feil, har databasebrukeren anvendt av din wiki sannsynligvis manglende rettigheter (sjekk LocalSettings.php).
-Enten må denne brukeren gis tilstrekkelige rettigheter til å opprette og slette tabeller, eller en må midlertidig skrive inn innloggingsinformasjonen til database-roten i LocalSettings.php, eller en må bruke vedlikeholdsskriptet <tt>SMW_setup.php</tt> som har rettighetene til AdminSettings.php.',
+Enten må denne brukeren gis tilstrekkelige rettigheter til å opprette og slette tabeller, eller en må midlertidig skrive inn innloggingsinformasjonen til database-roten i LocalSettings.php, eller en må bruke vedlikeholdsskriptet <tt>SMW_setup.php</tt> som har rettighetene til AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Initialiser eller oppgrader tabeller',
 	'smw_smwadmin_announce' => 'Kunngjør din wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har en nettjeneste for kunngjøring av nye semantiske wikisider.
@@ -9081,7 +9088,14 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw-paramdesc-category-userparam' => 'En parameter som gis til malen',
 	'smw-info-par-message' => 'Melding å vise frem.',
 	'smw-info-par-icon' => 'Ikon for å vise frem enten "info" eller "advarsel".',
-	'smw_unknowntype' => 'Typen «$1» som er definert for egenskapen støttes ikke.',
+	'smw_unknowntype' => 'Typen «$1» som er definert for egenskapen støttes ikke.', # Fuzzy
+);
+
+/** Niuean (ko e vagahau Niuē)
+ * @author Jose77
+ */
+$messages['niu'] = array(
+	'smw_browse_go' => 'Fano',
 );
 
 /** Dutch (Nederlands)
@@ -9506,7 +9520,7 @@ Lagar ein RDF som ein kan gå gjennom.',
 	'smw_purge' => 'Oppfrisk',
 	'types' => 'Typar',
 	'smw_types_docu' => 'Fylgjande er ei lista over alle datatypar som eigenskapar kan ha.
-Kvar datatype har ei sida der ekstra informasjon kan verta oppgjeven.',
+Kvar datatype har ei sida der ekstra informasjon kan verta oppgjeven.', # Fuzzy
 	'semanticstatistics' => 'Semantisk statistikk',
 	'smw_semstats_text' => "Denne wikien inneheld <b>$1</b> {{PLURAL:$1|eigenskapsverdi|eigenskapsverdiar}} for totalt <b>$2</b> [[Special:Properties|{{PLURAL:$2|eigenskap|eigenskapar}}]].
 '''$3''' {{PLURAL:$3|eigenskap|eigenskapar}} har ei eiga sida, og den meinte datatypen er oppgjeven for <b>$4</b> av desse.
@@ -9524,7 +9538,7 @@ Han syter for at menneske ikkje vert til nettstader.',
 	'smw_ask_hidequery' => 'Løyn spørjing',
 	'smw_ask_help' => 'Spørjehjelp',
 	'smw_ask_queryhead' => 'Spørjing',
-	'smw_ask_printhead' => 'Ekstra utskrifter (valfritt)',
+	'smw_ask_printhead' => 'Ekstra utskrifter (valfritt)', # Fuzzy
 	'smw_ask_format_as' => 'Formatér som:',
 	'smw_ask_defaultformat' => 'standard',
 	'searchbyproperty' => 'Søk etter eigenskap',
@@ -9545,7 +9559,7 @@ Sidan det berre kom fram nokre få resultat er òg nære verdiar viste.',
 	'smw_browse_no_outgoing' => 'Denne sida har ingen eigenskapar.',
 	'smw_browse_no_incoming' => 'Ingen eigenskapar lenkjar til denne sida.',
 	'smw_inverse_label_default' => '$1 av',
-	'smw_inverse_label_property' => 'Vrengd eigenskapsmerke',
+	'smw_inverse_label_property' => 'Vrengd eigenskapsmerke', # Fuzzy
 	'pageproperty' => 'Sideeigenskapssøk',
 	'smw_pp_docu' => 'Søk etter all eigenskapstekst på ei viss side.
 Skriv inn både sidenamn og eigenskap.',
@@ -9561,11 +9575,11 @@ Skriv inn både sidenamn og eigenskap.',
 	'smw_smwadmin_return' => 'Attende til $1',
 	'smw_smwadmin_updatestarted' => 'Ein ny oppdateringsprosses for å oppfriska dei semantiske dataa blei starta.
 Alle lagra data vil bygt om eller reparert der det trengst.
-Du kan fylgja med på framgangen til oppdateringa på denne spesialsida.',
+Du kan fylgja med på framgangen til oppdateringa på denne spesialsida.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Ein oppdateringsprosses køyrer frå før.
-Startar ikkje ein ny ein.',
-	'smw_smwadmin_updatestopped' => 'Alle eksisterande oppdateringsprosessar har blitt stoppa.',
-	'smw_smwadmin_updatenotstopped' => 'For å stoppa oppdateringsprosessen som køyrer, må du markera boksen for å syna at du verkeleg meiner det.',
+Startar ikkje ein ny ein.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Alle eksisterande oppdateringsprosessar har blitt stoppa.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'For å stoppa oppdateringsprosessen som køyrer, må du markera boksen for å syna at du verkeleg meiner det.', # Fuzzy
 	'smw_smwadmin_docu' => 'Denne spesialsida hjelper deg under installering og oppgradering av <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Hugs å ta kopiar av viktige data før du køyrer administrerande funksjonar.',
 	'smw_smwadmin_db' => 'Databaseinnstallering og -oppgradering',
@@ -9574,7 +9588,7 @@ Funksjonen under syter for at databasen din er sett opp rett.
 Endringar gjort i dette steget har ikkje nokon effekt på resten av MediaWiki-databasen og kan enkelt rullast attende om det skulle vera ynskjeleg.
 Denne oppsettsfunksjonen kan køyrast fleire gongen utan at ein gjer nokon skade, men han trengst berre éin gong under installering eller oppgradering.',
 	'smw_smwadmin_permissionswarn' => 'Om operasjonen mislukkast med SQL-feil, har sannsynlegvis ikkje databasebrukaren nytta av wikien din dei rette løyva (sjekk LocalSettings.php).
-Anten gje denne brukaren dei rette løyva til å oppretta og sletta tabellar og mellombels skriv inn innloggingsinformasjonen til database-rooten din i LocalSettings.php, eller køyr vedlikehaldsskriptet <tt>SMW_setup.php</tt> som kan nytta løyva til AdminSettings.php.',
+Anten gje denne brukaren dei rette løyva til å oppretta og sletta tabellar og mellombels skriv inn innloggingsinformasjonen til database-rooten din i LocalSettings.php, eller køyr vedlikehaldsskriptet <tt>SMW_setup.php</tt> som kan nytta løyva til AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Set i verk eller oppgrader tabellar',
 	'smw_smwadmin_announce' => 'Kunngjer wikien din',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har ei nettenesta for å kunngjera nye semantiske wikisider.
@@ -9601,8 +9615,8 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_mediazilla' => 'Feil kan bli rapporterte til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki-brukarforumet</a>.',
 	'smw-createproperty-isproperty' => 'Dette er ein eigenskap av typen $1.',
-	'smw-createproperty-allowedvals' => 'Dei tillatne verdiane for denne eigenskapen er:',
-	'smw_unknowntype' => 'Typen «$1» som er definert for eigenskapen er ikkje støtta.',
+	'smw-createproperty-allowedvals' => 'Dei tillatne verdiane for denne eigenskapen er:', # Fuzzy
+	'smw_unknowntype' => 'Typen «$1» som er definert for eigenskapen er ikkje støtta.', # Fuzzy
 );
 
 /** Occitan (occitan)
@@ -9693,7 +9707,7 @@ $messages['oc'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|utilizacion|utilizacions}})',
 	'smw_purge' => 'Reactualizar',
 	'types' => 'Tipes',
-	'smw_types_docu' => "Los tipes de donadas seguents pòdon èsser assignadas als atributs. Cada tipe de donadas a son pròpri article, dins lo qual pòdon figurar d'entresenhas mai precisas.",
+	'smw_types_docu' => "Los tipes de donadas seguents pòdon èsser assignadas als atributs. Cada tipe de donadas a son pròpri article, dins lo qual pòdon figurar d'entresenhas mai precisas.", # Fuzzy
 	'semanticstatistics' => 'Estatisticas semanticas',
 	'smw_semstats_text' => "Aqueste wiki conten '''$1''' {{PLURAL:$1|valor|valors}} de proprietat per una soma de '''$2''' [[Special:Properties|{{PLURAL:$2|proprietat diferenta|proprietats diferentas}}]].
 '''$3''' {{PLURAL:$3|proprietat a sa|proprietats an lor}} pagina pròprie, e lo tipe de donadas volgut es especificat per '''$4''' d'aquesta.
@@ -9710,7 +9724,7 @@ Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedPr
 	'smw_ask_hidequery' => 'Amagar la requèsta',
 	'smw_ask_help' => 'Ajuda a la requèsta',
 	'smw_ask_queryhead' => 'Requèsta',
-	'smw_ask_printhead' => 'Condicions suplementàrias (facultatiu)',
+	'smw_ask_printhead' => 'Condicions suplementàrias (facultatiu)', # Fuzzy
 	'smw_ask_format_as' => 'Formatar en :',
 	'smw_ask_defaultformat' => 'defaut',
 	'smw_ask_show_embed' => 'Far veire lo còde incrustat',
@@ -9748,11 +9762,11 @@ Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedPr
 	'smw_smwadmin_return' => 'Tornar cap a $1',
 	'smw_smwadmin_updatestarted' => 'Un processús novèl pel refrescament de semantic data a començat.
 Totas las donadas estocadas seràn reconstruchas o quitament reparadas se necessari.
-Podètz seguir la progression de la mesa a jorn sus aquesta pagina especiala.',
+Podètz seguir la progression de la mesa a jorn sus aquesta pagina especiala.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Un processús de mesa a jorn ja es en cors d’execucion.
-Ne creetz pas un autre.',
-	'smw_smwadmin_updatestopped' => 'Totes los processús de mesa a jorn son estats arrestats.',
-	'smw_smwadmin_updatenotstopped' => 'Per arrestar lo processús en cors de mesa a jorn, vos cal marcar la casa per indicar que ne sètz vertadièrament segur(a).',
+Ne creetz pas un autre.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Totes los processús de mesa a jorn son estats arrestats.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Per arrestar lo processús en cors de mesa a jorn, vos cal marcar la casa per indicar que ne sètz vertadièrament segur(a).', # Fuzzy
 	'smw_smwadmin_docu' => 'Aquesta pagina especiala vos ajuda pendent l’installacion e la mesa a nivèl de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Doblidetz pas de salvar las donadas abans las foncions d’administracion del site.',
 	'smw_smwadmin_db' => 'Installacion e mesa a nivèl de la banca de donadas',
@@ -9761,7 +9775,7 @@ La foncion çaijós verifica que vòstra banca de donadas es estada installada c
 Las modificacions fachas al moment d'aquesta etapa afectaràn pas la rèsta de la banca de donadas Mediawiki, e pòt èsser desfacha a volontat.
 Aquesta foncion d’installacion pòt èsser aviada mantun còp sens causar lo mendre degalh, mas una sola installacion o mesa e nivèl es necessària.",
 	'smw_smwadmin_permissionswarn' => "Se l’operacion fracassa amb d'errors SQL, l’utilizaire de la banca de donadas utilizada per vòstre wiki, (agachatz vòstre LocalSettings.php) risca probablament d'aver pas las permissions sufisentas.
-Cal siá permetre a aqueste utilizaire de dispausar de las permissions per crear e suprimir las taulas, siá entrar temporàriament la connexion en root a vòstra banca de donadas dins lo LocalSettings.php, siá utilizar l'escript de mantenença <tt>SMW_setup.php</tt> lo qual pòt utilizar las acreditacions de AdminSettings.php.",
+Cal siá permetre a aqueste utilizaire de dispausar de las permissions per crear e suprimir las taulas, siá entrar temporàriament la connexion en root a vòstra banca de donadas dins lo LocalSettings.php, siá utilizar l'escript de mantenença <tt>SMW_setup.php</tt> lo qual pòt utilizar las acreditacions de AdminSettings.php.", # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializa las taulas de mesa a nivèl',
 	'smw_smwadmin_announce' => 'Anonciar vòstre wiki',
 	'smw_smwadmin_announcedocu' => "Semantic MediaWiki dispausa d’un servici internet per anonciar de sites wiki semantics novèls.
@@ -9792,7 +9806,7 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda sus las requèstas',
 	'smw-createproperty-isproperty' => 'Aquò es una proprietat del tipe $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :',
-	'smw_unknowntype' => 'Lo tipe de donadas "$1" pas suportat es estat tornat a l\'atribut.',
+	'smw_unknowntype' => 'Lo tipe de donadas "$1" pas suportat es estat tornat a l\'atribut.', # Fuzzy
 );
 
 /** Ossetic (Ирон)
@@ -9849,6 +9863,9 @@ $messages['pl'] = array(
 	'smw_concept_cache_miss' => 'Koncepcja „$1” w chwili obecnej nie może zostać użyta, ponieważ konfiguracja wiki wymaga aby została ona przeliczona offline. Jeśli problem nie ustąpi po jakimś czasie, skontaktuj się z administratorem witryny.',
 	'smw_noinvannot' => 'Nie można przypisać wartości właściwościom odwrotnym.',
 	'version-semantic' => 'Rozszerzenia semantyczne',
+	'smw_uri_blacklist' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#
+http://www.w3.org/2000/01/rdf-schema#
+http://www.w3.org/2002/07/owl#',
 	'smw_baduri' => 'Niestety, URI z przestrzeni „$1” nie są w tym miejscu dostępne.',
 	'smw_dsv_link' => 'DSV',
 	'smw_printername_count' => 'Wyniki obliczeń',
@@ -10127,7 +10144,7 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw-paramdesc-csv-sep' => 'Ël separator da dovré',
 	'smw-paramdesc-dsv-separator' => 'Ël separator da dovré',
 	'smw-paramdesc-dsv-filename' => "Ël nòm për l'archivi DSV",
-	'smw-paramdesc-searchlabel' => "Ël test ant ël colegament a j'arzultà",
+	'smw-paramdesc-searchlabel' => "Ël test ant ël colegament a j'arzultà", # Fuzzy
 	'smw_iq_disabled' => "J'arceste semàntiche a son ëstàite disabilità për sta wiki-sì.",
 	'smw_iq_moreresults' => '... àutri arzultà',
 	'smw_parseerror' => "Ël valor dàit a l'é pa stàit capì.",
@@ -10195,7 +10212,7 @@ A génera RDF navigàbij.",
 	'smw_purge' => 'Rinfrësca',
 	'types' => 'Tipo',
 	'smw_types_docu' => "Cola sì-sota a l'é na lista ëd tùit ij tipo ëd dat che a peulo esse assignà a la proprietà.
-Minca tipo ëd dat a l'ha na pàgina andoa d'anformassion adissionaj a peulo esse smonùe.",
+Minca tipo ëd dat a l'ha na pàgina andoa d'anformassion adissionaj a peulo esse smonùe.", # Fuzzy
 	'semanticstatistics' => 'Statìstiche semàntiche',
 	'smw_semstats_text' => "Sta wiki-sì a conten '''$1''' {{PLURAL:$1|valor|valor}} ëd proprietà për un total ëd '''$2''' [[Special:Properties|{{PLURAL:$2|proprietà|proprietà diferente}}]].
 '''$3''' {{PLURAL:$3|proprietà a l'ha|proprietà a l'han}} na soa pàgina, e ël tipo ëd dat a l'é specificà për '''$4''' ëd lor.
@@ -10254,11 +10271,11 @@ Dagià ch\'a-i son ëstàje mach pòchi arzultà, a son smonù ëdcò ij valor d
 	'smw_smwadmin_return' => 'Torna a $1',
 	'smw_smwadmin_updatestarted' => "Un process ëd modìfica neuv për rinfrësché ij dat semàntich a l'é stàit fàit parte.
 Tùit ij dat memorisà a saran rifàit o riparà andoa a-i é dabzògn.
-A peul trové l'andament ëd la modìfica an sta pàgina special-sì.",
+A peul trové l'andament ëd la modìfica an sta pàgina special-sì.", # Fuzzy
 	'smw_smwadmin_updatenotstarted' => "A-i é già un process ëd modìfica an camin.
-Creene nen n'àutr.",
-	'smw_smwadmin_updatestopped' => 'Tùit ij process ëd modìfica esistent a son ëstàit fërmà.',
-	'smw_smwadmin_updatenotstopped' => "Për fërmé ël process ëd modìfica an cors, a deuv ativé la casela për indiché ch'a l'é pròpi sicur.",
+Creene nen n'àutr.", # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Tùit ij process ëd modìfica esistent a son ëstàit fërmà.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => "Për fërmé ël process ëd modìfica an cors, a deuv ativé la casela për indiché ch'a l'é pròpi sicur.", # Fuzzy
 	'smw_smwadmin_docu' => "Sta pàgina special-sì a lo giuta durant l'instalassion e l'agiornament ëd <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a>.
 Ch'as visa ëd salvé ij dat ëd valor prima ëd fé le funsion aministrative.",
 	'smw_smwadmin_db' => 'Anstalassion e agiornament dla base ëd dàit',
@@ -10267,7 +10284,7 @@ La funsion sì-sota a assicura che soa base ëd dàit a l'é ampostà për da bi
 Ij cangiament fàit an cost pass-sì a toco pa ël rest dla bse ëd dàit mediaWiki, e a l'é bel fé torné andré s'as veul.
 Sta funsion d'ampostassion-sì a peul esse fàita vàire vire sensa fé gnun dann, ma a-i n'a j'é dabzògn mach na vira për l'anstalassion o l'agiornament.",
 	'smw_smwadmin_permissionswarn' => "Se l'operassion a faliss con dj'eror SQL, l'utent dla base ëd dàit dovrà da soa wiki (ch'a contròla sò LocalSettings.php) probabilment a l'ha pa basta 'd përmess.
-O bin ch'a-j daga a st'utent dij përmess adissionaj për creé e scancelé 'd tabele, temporaneament ch'a anserissa lë stranòm ëd l'utent ris an  LocalSettings.php, opura ch'a deuvra ël senari ëd manteniment <tt>SMW_setup.php</tt> ch'a peul dovré le credensiaj d'AdminSettings.php.",
+O bin ch'a-j daga a st'utent dij përmess adissionaj për creé e scancelé 'd tabele, temporaneament ch'a anserissa lë stranòm ëd l'utent ris an  LocalSettings.php, opura ch'a deuvra ël senari ëd manteniment <tt>SMW_setup.php</tt> ch'a peul dovré le credensiaj d'AdminSettings.php.", # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inissialisé o agiorné le tàule',
 	'smw_smwadmin_announce' => 'Anonsia toa wiki',
 	'smw_smwadmin_announcedocu' => "Semantic MediaWiki a l'ha un servissi an grija për nonsié ëd sit neuv ëd wiki semàntiche.
@@ -10298,7 +10315,7 @@ Avansament stimà dla modìfica corenta:",
 	'smw_adminlinks_inlinequerieshelp' => "Agiut an sj'anterogassion an linia",
 	'smw-createproperty-isproperty' => "Costa-sì a l'é na proprietà ëd sòrt $1.",
 	'smw-createproperty-allowedvals' => "{{PLURAL:$1|Ël valor përmëttù për sta proprietà-sì a l'é|Ij valor përmëttù për sta proprietà-sì a son}}:",
-	'smw_unknowntype' => "Un tipo ''$1'' pa mantnù a l'é definì për proprietà.",
+	'smw_unknowntype' => "Un tipo ''$1'' pa mantnù a l'é definì për proprietà.", # Fuzzy
 );
 
 /** Pashto (پښتو)
@@ -10349,7 +10366,6 @@ $messages['ps'] = array(
 );
 
 /** Portuguese (português)
- * @author 555
  * @author Crazymadlover
  * @author Hamilton Abreu
  * @author Lijealso
@@ -10357,6 +10373,7 @@ $messages['ps'] = array(
  * @author Malafaya
  * @author SandroHc
  * @author Waldir
+ * @author 555
  */
 $messages['pt'] = array(
 	'smw-desc' => "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -10412,7 +10429,7 @@ $messages['pt'] = array(
 	'smw-paramdesc-dsv-filename' => 'O nome para o ficheiro DSV',
 	'smw-smwdoc-description' => 'Apresenta uma tabela de todos os parâmetros que podem ser usados para o formato de resultados especificado, com os respectivos valores por omissão e descrições',
 	'smw-smwdoc-par-format' => 'O formato de resultados para o qual será apresentada a documentação dos parâmetros.',
-	'smw-paramdesc-searchlabel' => 'O texto no link dos resultados',
+	'smw-paramdesc-searchlabel' => 'O texto no link dos resultados', # Fuzzy
 	'smw_iq_disabled' => 'As consultas semânticas foram impossibilitadas nesta wiki.',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_parseerror' => 'O valor fornecido não foi compreendido.',
@@ -10566,11 +10583,11 @@ Introduza a página e a propriedade.',
 	'smw_smwadmin_return' => 'Voltar a $1',
 	'smw_smwadmin_updatestarted' => 'Foi iniciado um novo processo de actualização para refrescar os dados semânticos.
 Todos os dados armazenados serão reconstruídos ou reparados conforme for necessário.
-Pode seguir o progresso de actualização nesta página especial.',
+Pode seguir o progresso de actualização nesta página especial.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de actualização em curso.
-Não foi criado outro.',
-	'smw_smwadmin_updatestopped' => 'Todos os processos de actualização existentes foram parados.',
-	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de actualização em curso, deve marcar a caixa de selecção para indicar que tem realmente a certeza.',
+Não foi criado outro.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Todos os processos de actualização existentes foram parados.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de actualização em curso, deve marcar a caixa de selecção para indicar que tem realmente a certeza.', # Fuzzy
 	'smw_smwadmin_docu' => 'Esta página especial auxilia-o durante a instalação ou actualização do <a href="http://semantic-mediawiki.org">MediaWiki Semântico</a>.
 Lembre-se de efectuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
 	'smw_smwadmin_db' => 'Instalação e actualização da base de dados',
@@ -10579,7 +10596,7 @@ A função abaixo assegura que a sua base de dados está devidamente preparada.
 As alterações feitas neste passo não afectam o resto da base de dados do MediaWiki, e podem ser facilmente desfeitas se desejado.
 Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou actualização.',
 	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, é provável que o utilizador da base de dados usado pela sua wiki (consulte o seu LocalSettings.php) não tenha as permissões necessárias.
-Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.",
+Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.", # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializar ou actualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
 	'smw_smwadmin_announcedocu' => 'O MediaWiki Semântico tem um serviço na internet \'\'(web service)\'\' para anunciar novas wikis semânticas.
@@ -10610,11 +10627,10 @@ Progresso estimado da actualização em curso:",
 	'smw_adminlinks_inlinequerieshelp' => "Ajuda para consultas dinâmicas ''(inline queries)''",
 	'smw-createproperty-isproperty' => 'Esta é uma propriedade do tipo $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:',
-	'smw_unknowntype' => 'Foi definido para a propriedade o tipo não suportado “$1”.',
+	'smw_unknowntype' => 'Foi definido para a propriedade o tipo não suportado “$1”.', # Fuzzy
 );
 
 /** Brazilian Portuguese (português do Brasil)
- * @author 555
  * @author Eduardo.mps
  * @author GKnedo
  * @author Giro720
@@ -10625,6 +10641,7 @@ Progresso estimado da actualização em curso:",
  * @author Luckas Blade
  * @author Rafael Vargas
  * @author Waldir
+ * @author 555
  */
 $messages['pt-br'] = array(
 	'smw-desc' => "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -11163,7 +11180,7 @@ $messages['ru'] = array(
 	'smw-paramdesc-csv-sep' => 'Использовать разделитель',
 	'smw-paramdesc-dsv-separator' => 'Использовать разделитель',
 	'smw-paramdesc-dsv-filename' => 'Имя файла DSV',
-	'smw-paramdesc-searchlabel' => 'Текст ссылки на результатах',
+	'smw-paramdesc-searchlabel' => 'Текст ссылки на результатах', # Fuzzy
 	'smw_iq_disabled' => 'Извините, но встроенные запросы отключены для этого сайта.',
 	'smw_iq_moreresults' => '&hellip; следующие результаты',
 	'smw_parseerror' => 'Переданное значение не было понято.',
@@ -11231,7 +11248,7 @@ $messages['ru'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|использование|использования|использований}})',
 	'smw_purge' => 'Обновить',
 	'types' => 'Типы',
-	'smw_types_docu' => 'Список поддерживаемых типов свойств. Каждый тип имеет страницу, на которую можно поместить его расширенное описание.',
+	'smw_types_docu' => 'Список поддерживаемых типов свойств. Каждый тип имеет страницу, на которую можно поместить его расширенное описание.', # Fuzzy
 	'semanticstatistics' => 'Семантическая статистика',
 	'smw_semstats_text' => "Данный сайт содержит '''$1''' {{PLURAL:$1|значение|значения|значений}} свойств, общее число которых составляет '''$2''' [[Special:Properties|{{PLURAL:$2|свойство|различных свойства|различных свойств}}]].
 '''$3''' {{PLURAL:$3|свойство|свойства|свойств}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них.
@@ -11289,11 +11306,11 @@ $messages['ru'] = array(
 	'smw_smwadmin_return' => 'Вернуться к $1',
 	'smw_smwadmin_updatestarted' => 'Запущен новый процесс обновления семантических данных.
 Все сохранённые данные будут перестроены и восстановлены, где это необходимо.
-Вы можете следить за ходом обновления на этой служебной странице.',
+Вы можете следить за ходом обновления на этой служебной странице.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Уже запущен один процесс обновления.
-Второй не создаётся.',
-	'smw_smwadmin_updatestopped' => 'Все существующие процессы обновления остановлены.',
-	'smw_smwadmin_updatenotstopped' => 'Чтобы остановить запущенный процесс обновления, вы должны поставить отметку, подтверждающую, что вы действительно уверены в этом решении.',
+Второй не создаётся.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Все существующие процессы обновления остановлены.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Чтобы остановить запущенный процесс обновления, вы должны поставить отметку, подтверждающую, что вы действительно уверены в этом решении.', # Fuzzy
 	'smw_smwadmin_docu' => 'Эта служебная страница поможет вам в процессе установки и обновления <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Не забудьте произвести резервное копирование значимых данных перед выполнением административных действий.',
 	'smw_smwadmin_db' => 'Установка и обновление базы данных',
@@ -11302,7 +11319,7 @@ $messages['ru'] = array(
 Изменения, сделанные на этом шаге, не влияют на основную часть базы данных MediaWiki и могут быть при желании легко отменены.
 Хотя эта функция установки может быть выполнена несколько раз не причинив никакого, её запуск необходим только один раз во время установки или обновления.',
 	'smw_smwadmin_permissionswarn' => 'Причиной сбоев при выполнении SQL-команд, может быть отсутствие необходимых прав у пользователя, от имени которого вы подключаетесь к базе данных вики (проверьте ваш LocalSettings.php).
-Предоставьте этому пользователю дополнительные права на создание и удаление таблиц, временно введите логин root в LocalSettings.php, или используйте обслуживающий скрипт <tt>SMW_setup.php</tt>, который может использовать настройки доступа из AdminSettings.php.',
+Предоставьте этому пользователю дополнительные права на создание и удаление таблиц, временно введите логин root в LocalSettings.php, или используйте обслуживающий скрипт <tt>SMW_setup.php</tt>, который может использовать настройки доступа из AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Инициализация или обновление таблиц',
 	'smw_smwadmin_announce' => 'Объявление вашей вики',
 	'smw_smwadmin_announcedocu' => 'У Semantic MediaWiki есть веб-сервис для объявлений новых семантических вики-сайтов.
@@ -11333,7 +11350,7 @@ $messages['ru'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Справка по встроенным запросам',
 	'smw-createproperty-isproperty' => 'Это свойство типа $1.',
 	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|допускается следующее значение|допускаются следующие значения}}:',
-	'smw_unknowntype' => 'Тип "$1" не поддерживается для данного свойства.',
+	'smw_unknowntype' => 'Тип "$1" не поддерживается для данного свойства.', # Fuzzy
 );
 
 /** Rusyn (русиньскый)
@@ -11454,7 +11471,7 @@ $messages['sk'] = array(
 	'smw-paramdesc-embedonly' => 'Nezobrazovať nadpisy',
 	'smw-paramdesc-rsstitle' => 'Text, ktorý sa má použiť ako názov kanála',
 	'smw-paramdesc-rssdescription' => 'Text, ktorý sa má použiť ako popis kanála',
-	'smw-paramdesc-searchlabel' => 'Text v odkaze na výsledky',
+	'smw-paramdesc-searchlabel' => 'Text v odkaze na výsledky', # Fuzzy
 	'smw_iq_disabled' => 'Prepáčte. Inline queries have been disabled for this wiki.',
 	'smw_iq_moreresults' => '&hellip; ďalšie výsledky',
 	'smw_parseerror' => 'Zadaná hodnota nebola pochopená.',
@@ -11514,7 +11531,7 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_wantedproperty_template' => '$1 (použité {{PLURAL:$2|raz|$2-krát}})',
 	'smw_purge' => 'Obnoviť',
 	'types' => 'Typy',
-	'smw_types_docu' => 'Nasleduje zoznam všetkých údajových typov, ktoré je možné priradiť atribútom. Každý údajový typ má stránku, kde je možné poskytnúť dodatočné informácie.',
+	'smw_types_docu' => 'Nasleduje zoznam všetkých údajových typov, ktoré je možné priradiť atribútom. Každý údajový typ má stránku, kde je možné poskytnúť dodatočné informácie.', # Fuzzy
 	'semanticstatistics' => 'Sémantická štatistika',
 	'smw_semstats_text' => "Táto wiki obsahuje '''$1''' {{PLURAL:$1|hodnotu|hodnoty|hodnôt}} vlastností celkom {{PLURAL:$2|'''jednej''' vlastnosti|'''$2''' rozličných vlastností|'''$2''' rozličných vlastností}}. {{PLURAL:$3|'''Jedna''' vlastnosť má|'''$3''' vlastnosti majú|'''$3''' vlastností má}} vlastnú stránku a zamýšľaný údajový typ {{PLURAL:$4|má uvedený '''$4''' z nich|majú uvedené '''$4''' z nich|má uvedených '''$4''' z nich}}.
 Niektoré z existujúcich vlastností môžu byť [[Special:UnusedProperties|nepoužité]].
@@ -11572,11 +11589,11 @@ Prosím, zadajte stránku aj vlastnosť.',
 	'smw_smwadmin_return' => 'Späť na $1',
 	'smw_smwadmin_updatestarted' => 'Začal sa nový proces aktualizácie sémantických údajov.
 Všetky uložené údaje budú znova zostavené alebo opravené tam, kde je to potrebné.
-Na tejto špeciálnej stránke môžete sledovať priebeh aktualizácie.',
+Na tejto špeciálnej stránke môžete sledovať priebeh aktualizácie.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Už beží proces aktualizácie.
-Nespustí sa ďalší.',
-	'smw_smwadmin_updatestopped' => 'Všetky bežiace procesy aktualizácie boli zastavené.',
-	'smw_smwadmin_updatenotstopped' => 'Bežiaci proces aktualizácie môžete zastaviť označením zaškrtávacieho poľa, čím potvrdíte, že ste si naozaj istý.',
+Nespustí sa ďalší.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Všetky bežiace procesy aktualizácie boli zastavené.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Bežiaci proces aktualizácie môžete zastaviť označením zaškrtávacieho poľa, čím potvrdíte, že ste si naozaj istý.', # Fuzzy
 	'smw_smwadmin_docu' => 'Táto špeciálna stránka vám pomôže počas inštalácie a aktualizácie <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Pamätajte na zálohovanie dôležitých údajov pred vykonávaním správcovských funkcií.',
 	'smw_smwadmin_db' => 'Inštalácia a aktualizácia databázy',
@@ -11585,7 +11602,7 @@ Funkcia nižšie zabezpečuje správne nastavenie databázy.
 Zmeny vykonané v tomto kroku neovplyvňujú zvyšok databázy MediaWiki a ak je to potrebné, je ich možno jednoducho vrátiť.
 Túto funkcia nastavenia možno vykonať viacnásobne bez akejkoľvek ujmy, ale je potrebná iba raz počas inštalácie či aktualizácie.',
 	'smw_smwadmin_permissionswarn' => 'Ak táto operácia zlyhá na chybách SQL, používateľ databázy, ktorého využíva vaša wiki (pozrite sa do LocalSettings.php) pravdepodobne nemá dostatočné privilégiá.
-Buď udeľte tomuto používateľovi ďalšie privilégiá na vytváranie a mazanie tabuliek, dočasne zadajte prihlasovacie údaje používateľa root databázy do LocalSettings.php alebo použite skript na údržbu t>SMW_setup.php</tt>, ktorý dokáže využiť oprávnenia z AdminSettings.php.',
+Buď udeľte tomuto používateľovi ďalšie privilégiá na vytváranie a mazanie tabuliek, dočasne zadajte prihlasovacie údaje používateľa root databázy do LocalSettings.php alebo použite skript na údržbu t>SMW_setup.php</tt>, ktorý dokáže využiť oprávnenia z AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializovať alebo aktualizovať tabuľky',
 	'smw_smwadmin_announce' => 'Oznámiť vašu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki má webovú službu na oznamovanie nových sémantických wiki lokalít.
@@ -11616,7 +11633,7 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k inline požiadavkám',
 	'smw-createproperty-isproperty' => 'Toto je vlastnosť typu $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Povolená hodnota|Povolené hodnoty}} tejto vlastnosti {{PLURAL:$1|je|sú}}:',
-	'smw_unknowntype' => 'Pre atribút je definovaný nepodporovaný typ "$1".',
+	'smw_unknowntype' => 'Pre atribút je definovaný nepodporovaný typ "$1".', # Fuzzy
 );
 
 /** Slovenian (slovenščina)
@@ -11834,7 +11851,7 @@ $messages['sr-ec'] = array(
 	'smw-paramdesc-embedonly' => 'Не приказуј заглавља',
 	'smw-paramdesc-rsstitle' => 'Текст који ће се користити као наслов у добављачу',
 	'smw-paramdesc-rssdescription' => 'Текст који ће се користити као опис у добављачу',
-	'smw-paramdesc-searchlabel' => 'Текст везе с резултатима',
+	'smw-paramdesc-searchlabel' => 'Текст везе с резултатима', # Fuzzy
 	'smw_iq_disabled' => 'Семантички упити су онемогућени на овом викију.',
 	'smw_iq_moreresults' => '... више резултата',
 	'smw_parseerror' => 'Дата вредност није схваћена.',
@@ -11962,11 +11979,11 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_return' => 'Назад на $1',
 	'smw_smwadmin_updatestarted' => 'Започет је нови процес за обнављање семантичких података.
 Сви сачувани подаци ће бити поново обновљени или поправљени по потреби.
-Можете следити ток ажурирања на овој посебној страници.',
+Можете следити ток ажурирања на овој посебној страници.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Већ је у току један процес ажурирања.
-Не покрећите други.',
-	'smw_smwadmin_updatestopped' => 'Сви постојећи процеси ажурирања су обустављени.',
-	'smw_smwadmin_updatenotstopped' => 'Како бисте обуставили покренути процес ажурирања, морате активирати контролни оквир да бисте потврдили да сте сигурни да желите да га обуставите.',
+Не покрећите други.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Сви постојећи процеси ажурирања су обустављени.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Како бисте обуставили покренути процес ажурирања, морате активирати контролни оквир да бисте потврдили да сте сигурни да желите да га обуставите.', # Fuzzy
 	'smw_smwadmin_docu' => 'Ова посебна страница вам помаже приликом инсталирања и ажурирања <a href="http://semantic-mediawiki.org">Семантичког медијавикија</a>.
 Не заборавите да направите копију вредних података пре него покренете функције администрације.',
 	'smw_smwadmin_db' => 'Инсталирање и ажурирање базе података',
@@ -11975,7 +11992,7 @@ $messages['sr-ec'] = array(
 Промене које ће се сада извести немају последица за остали део базе података Медијавикија, а по потреби се могу врло лако поништити.
 Ова функција инсталирања се може покретати више пута без бојазни да ће нанети неку штету, али је неопходна само једном приликом инсталирања или ажурирања.',
 	'smw_smwadmin_permissionswarn' => 'Ако се операција заврши са SQL грешкама, корисник базе података (погледајте ваш LocalSettings.php) вероватно нема довољно дозвола за извршавање неопходних операција.
-Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, привремено се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <tt>SMW_setup.php</tt>, која може користити акредитацију из скрипте AdminSettings.php.',
+Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, привремено се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <tt>SMW_setup.php</tt>, која може користити акредитацију из скрипте AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Покретање или ажурирање табела базе података',
 	'smw_smwadmin_announce' => 'Дојавите о постојању вашег викија',
 	'smw_smwadmin_announcedocu' => 'Семантички медијавики има веб сервиз за дојаву о постојању нових викија.
@@ -12004,7 +12021,7 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_datastructure' => 'Структура података',
 	'smw_adminlinks_displayingdata' => 'Приказивање података',
 	'smw_adminlinks_inlinequerieshelp' => 'Помоћ за непосредне упите',
-	'smw_unknowntype' => 'Неподржан тип "$1" је дефинисан за особину.',
+	'smw_unknowntype' => 'Неподржан тип "$1" је дефинисан за особину.', # Fuzzy
 );
 
 /** Serbian (Latin script) (srpski (latinica)‎)
@@ -12024,6 +12041,9 @@ $messages['sr-el'] = array(
 	'smw_concept_cache_miss' => 'Koncept "$1" se trenutno ne može koristiti, pošto konfiguracija vikija zahteva da bude komputovan oflajn.
 Ako problem ne nestane za neko vreme, zatražite od administratora sajta da učini ovaj koncept dostupnim.',
 	'smw_noinvannot' => 'Vrednosti nije moguće pripisati inverznim osobinama.',
+	'smw_uri_blacklist' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#
+http://www.w3.org/2000/01/rdf-schema#
+http://www.w3.org/2002/07/owl#',
 	'smw_baduri' => 'URI-ji oblika "$1", nisu prihvatljivi.',
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
@@ -12051,7 +12071,7 @@ Ako problem ne nestane za neko vreme, zatražite od administratora sajta da uči
 	'smw-paramdesc-embedonly' => 'Ne prikazuj zaglavlja',
 	'smw-paramdesc-rsstitle' => 'Tekst koji će se koristiti kao naslov u dobavljaču',
 	'smw-paramdesc-rssdescription' => 'Tekst koji će se koristiti kao opis u dobavljaču',
-	'smw-paramdesc-searchlabel' => 'Tekst veze s rezultatima',
+	'smw-paramdesc-searchlabel' => 'Tekst veze s rezultatima', # Fuzzy
 	'smw_iq_disabled' => 'Semantički upiti su onemogućeni na ovom vikiju.',
 	'smw_iq_moreresults' => '... više rezultata',
 	'smw_parseerror' => 'Data vrednost nije shvaćena.',
@@ -12179,11 +12199,11 @@ Unesite oboje, i stranicu, i osobinu.',
 	'smw_smwadmin_return' => 'Nazad na $1',
 	'smw_smwadmin_updatestarted' => 'Započet je novi proces za obnavljanje semantičkih podataka.
 Svi sačuvani podaci će biti ponovo obnovljeni ili popravljeni po potrebi.
-Možete slediti tok ažuriranja na ovoj posebnoj stranici.',
+Možete slediti tok ažuriranja na ovoj posebnoj stranici.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Već je u toku jedan proces ažuriranja.
-Ne pokrećite drugi.',
-	'smw_smwadmin_updatestopped' => 'Svi postojeći procesi ažuriranja su obustavljeni.',
-	'smw_smwadmin_updatenotstopped' => 'Kako biste obustavili pokrenuti proces ažuriranja, morate aktivirati kontrolni okvir da biste potvrdili da ste sigurni da želite da ga obustavite.',
+Ne pokrećite drugi.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Svi postojeći procesi ažuriranja su obustavljeni.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Kako biste obustavili pokrenuti proces ažuriranja, morate aktivirati kontrolni okvir da biste potvrdili da ste sigurni da želite da ga obustavite.', # Fuzzy
 	'smw_smwadmin_docu' => 'Ova posebna stranica vam pomaže prilikom instaliranja i ažuriranja <a href="http://semantic-mediawiki.org">Semantičkog medijavikija</a>.
 Ne zaboravite da napravite kopiju vrednih podataka pre nego pokrenete funkcije administracije.',
 	'smw_smwadmin_db' => 'Instaliranje i ažuriranje baze podataka',
@@ -12192,7 +12212,7 @@ Donja funkcija potvrđuje da je vaša baza podataka ispravno instalirana.
 Promene koje će se sada izvesti nemaju posledica za ostali deo baze podataka Medijavikija, a po potrebi se mogu vrlo lako poništiti.
 Ova funkcija instaliranja se može pokretati više puta bez bojazni da će naneti neku štetu, ali je neophodna samo jednom prilikom instaliranja ili ažuriranja.',
 	'smw_smwadmin_permissionswarn' => 'Ako se operacija završi sa SQL greškama, korisnik baze podataka (pogledajte vaš LocalSettings.php) verovatno nema dovoljno dozvola za izvršavanje neophodnih operacija.
-Ili dajte neophodne dozvole tom korisniku kako bi mogao da pravi i briše tabele u bazi, privremeno se ulogujte kao root u LocalSettings.php, ili koristite skriptu za održavanje <tt>SMW_setup.php</tt>, koja može koristiti akreditaciju iz skripte AdminSettings.php.',
+Ili dajte neophodne dozvole tom korisniku kako bi mogao da pravi i briše tabele u bazi, privremeno se ulogujte kao root u LocalSettings.php, ili koristite skriptu za održavanje <tt>SMW_setup.php</tt>, koja može koristiti akreditaciju iz skripte AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Pokretanje ili ažuriranje tabela baze podataka',
 	'smw_smwadmin_announce' => 'Dojavite o postojanju vašeg vikija',
 	'smw_smwadmin_announcedocu' => 'Semantički medijaviki ima veb serviz za dojavu o postojanju novih vikija.
@@ -12221,7 +12241,7 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_adminlinks_datastructure' => 'Struktura podataka',
 	'smw_adminlinks_displayingdata' => 'Prikazivanje podataka',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za neposredne upite',
-	'smw_unknowntype' => 'Nepodržan tip "$1" je definisan za osobinu.',
+	'smw_unknowntype' => 'Nepodržan tip "$1" je definisan za osobinu.', # Fuzzy
 );
 
 /** Swedish (svenska)
@@ -12693,11 +12713,12 @@ $messages['tet'] = array(
  * @author Ibrahim
  */
 $messages['tg-cyrl'] = array(
-	'smw_sbv_value' => 'Қимат',
+	'smw_sbv_value' => 'Қимат', # Fuzzy
 	'smw-createproperty-isproperty' => 'Ин як вижагӣ аз навъи $1 аст.',
 );
 
-/** Tajik (Latin script) (tojikī) */
+/** Tajik (Latin script) (tojikī)
+ */
 $messages['tg-latn'] = array(
 	'smw-createproperty-isproperty' => "In jak viƶagī az nav'i $1 ast.",
 );
@@ -13025,8 +13046,8 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw-info-par-icon' => 'Kinatawang larawan na ipapakita, maaaring "kabatiran" o "babala".',
 	'prefs-smw' => 'Semantikong MediaWiki',
 	'prefs-ask-options' => 'Mga mapagpipilian ng semantikong paghahanap',
-	'smw-ask-userpref-options-tooltip-display' => 'Ipakita ang teksto ng parametro bilang pangkabatiran na payo sa kasangkapan',
-	'smw-ask-userpref-options-collapsed-default' => 'Paganahin ang kahon ng mapagpipilian na paguguhuin ayon sa likas na katakdaan',
+	'smw-prefs-ask-options-tooltip-display' => 'Ipakita ang teksto ng parametro bilang pangkabatiran na payo sa kasangkapan',
+	'smw-prefs-ask-options-collapsed-default' => 'Paganahin ang kahon ng mapagpipilian na paguguhuin ayon sa likas na katakdaan',
 	'smw_unknowntype' => 'Hindi katanggap-tanggap ang uri ng pag-aaring ito',
 );
 
@@ -13068,7 +13089,7 @@ $messages['tr'] = array(
 	'smw-paramdesc-sep' => 'Değerler için ayraç',
 	'smw-paramdesc-embedonly' => 'Başlık gösterme',
 	'smw-paramdesc-rsstitle' => 'Beslemenin başlığı olarak kullanılacak metin',
-	'smw-paramdesc-searchlabel' => 'Sonuçlara giden bağlantıdaki metin',
+	'smw-paramdesc-searchlabel' => 'Sonuçlara giden bağlantıdaki metin', # Fuzzy
 	'smw_iq_moreresults' => '... ek sonuçlar',
 	'smw_emptystring' => 'Boş dizgiler kabul edilmemektedir.',
 	'smw_maxstring' => 'Dizgi temsili $1 çok uzun.',
@@ -13132,8 +13153,8 @@ $messages['tr'] = array(
 	'smwadmin' => 'Anlamsal MediaWiki için hizmetlilik fonksiyonları',
 	'smw_smwadmin_setupsuccess' => 'Saklama motoru başarıyla ayarlandı.',
 	'smw_smwadmin_updatenotstarted' => 'Yürürlükte olan bir güncelleme işlemi mevcut.
-Bir diğeri oluşturulmuyor.',
-	'smw_smwadmin_updatestopped' => 'Tüm mevcut güncelleme işlemleri durduruldu.',
+Bir diğeri oluşturulmuyor.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Tüm mevcut güncelleme işlemleri durduruldu.', # Fuzzy
 	'smw_smwadmin_announce' => 'Vikinizi duyurun',
 	'smw_smwadmin_datarefresh' => 'Veri onarımı ve yükseltmesi',
 	'smw_smwadmin_datarefreshbutton' => 'Veri güncellemesini başlat',
@@ -13143,7 +13164,7 @@ Bir diğeri oluşturulmuyor.',
 	'smw_adminlinks_datastructure' => 'Veri yapısı',
 	'smw_adminlinks_displayingdata' => 'Veriler görüntüleniyor',
 	'smw_adminlinks_inlinequerieshelp' => 'Satıriçi sorgu yardımı',
-	'smw_unknowntype' => 'Özellik için desteklenmeyen "$1" türü tanımlanmış.',
+	'smw_unknowntype' => 'Özellik için desteklenmeyen "$1" türü tanımlanmış.', # Fuzzy
 );
 
 /** Tatar (Cyrillic script) (татарча)
@@ -13224,7 +13245,7 @@ $messages['uk'] = array(
 	'smw-paramdesc-rsstitle' => 'Текст, який використати у якості заголовку стрічки rss',
 	'smw-paramdesc-rssdescription' => 'Текст, який використати у якості опису стрічки',
 	'smw-paramdesc-rdfsyntax' => 'Який синтаксис RDF вживати',
-	'smw-paramdesc-searchlabel' => 'Текст у посиланні на результати запиту',
+	'smw-paramdesc-searchlabel' => 'Текст у посиланні на результати запиту', # Fuzzy
 	'smw_iq_disabled' => 'Семантичні запити було вимкнено у цій вікі.',
 	'smw_iq_moreresults' => '... подальші результати',
 	'smw_parseerror' => 'Вказане значення — незрозуміле.',
@@ -13284,7 +13305,7 @@ $messages['uk'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|звернення|звернення|звернень}})',
 	'smw_purge' => 'Оновити',
 	'types' => 'Типи',
-	'smw_types_docu' => 'Список типів даних, які можуть бути призначені властивостям. Кожен тип даних має сторінку, де модна надати додаткову інформацію.',
+	'smw_types_docu' => 'Список типів даних, які можуть бути призначені властивостям. Кожен тип даних має сторінку, де модна надати додаткову інформацію.', # Fuzzy
 	'semanticstatistics' => 'Семантична статистика',
 	'smw_semstats_text' => "Ця вікі містить '''$1''' {{PLURAL:$1|значення властивості|значення властивостей|значень властивостей}}, для '''$2''' [[Special:Properties|{{PLURAL:$2|властивості|властивостей|властивостей}}]]. '''$3''' {{PLURAL:$3|властивість має|властивості мають|властивостей мають}} відповідні їм сторінки, і відповідний тип даних вказано у '''$4''' із них. Деякі із наявних властивостей можуть бути [[Special:UnusedProperties|властивостями, що не використовуються]]. Властивості, котрі не мають відповідних їм сторінок, можна знайти в [[Special:WantedProperties|списку пропонованих властивостей]].",
 	'smw_uri_doc' => 'Оброблювач URI виконує <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">«W3C TAG finding on httpRange-14»</a>. Ця функція спрощує пошук семантичної інформації.',
@@ -13354,7 +13375,7 @@ $messages['uk'] = array(
 	'smw_smwadmin_docu' => 'Ця сторінка допоможе при встановленні або оновленні <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Не забудьте зробити резервну копію всіх важливих даних перед запуском адміністративних функцій.',
 	'smw_smwadmin_db' => 'Встановлення та оновлення бази даних',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki потребує розширити базу даних, щоб могти зберігати семантичну інформацію. Подана нижче функція забезпечує правильне налаштування бази даних. Зміни, котрі вона вносить, не зачіпають решти бази даних MediaWiki, та можуть бути легко скасовані. Хоча цю функцію безпечно запускати кілька разів, її використання потрібне лише один раз для встановлення чи оновлення.',
-	'smw_smwadmin_permissionswarn' => 'Якщо ця операція буде зупинена через помилки SQL, вірогідною причиною може бути відсутність необхідних прав користувача, під іменем якого вікі під’єднується до бази даних (він вказується у LocalSettings.php). В такому випадку вам необхідно або дозволити цьому користувачу створювати та вилучати таблиці БД, або тимчасово ввести в LocalSettings.php логін БД «root», або використати сценарій обслуговування <tt>SMW_setup.php</tt>, який може використовувати облікові дані AdminSettings.php.',
+	'smw_smwadmin_permissionswarn' => 'Якщо ця операція буде зупинена через помилки SQL, вірогідною причиною може бути відсутність необхідних прав користувача, під іменем якого вікі під’єднується до бази даних (він вказується у LocalSettings.php). В такому випадку вам необхідно або дозволити цьому користувачу створювати та вилучати таблиці БД, або тимчасово ввести в LocalSettings.php логін БД «root», або використати сценарій обслуговування <tt>SMW_setup.php</tt>, який може використовувати облікові дані AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Ініціалізація або освіження таблиць',
 	'smw_smwadmin_announce' => 'Заявити про вашу вікі',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki має вебсервіс для заявлення про нові семантичні вікі сайти. Головне призначення цього сервісу — зберігати список відкритих сайтів, що використовують Semantic MediaWiki з метою допомогти проектові <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki</a> мати інформацію про типові варіанти використання цього рушія. Більше інформації можна знайти на <a href="http://semantic-mediawiki.org/wiki/Registry">сайті Semantic MediaWiki</a>.',
@@ -13376,7 +13397,7 @@ $messages['uk'] = array(
 	'smw_adminlinks_datastructure' => 'Структура даних',
 	'smw_adminlinks_displayingdata' => 'Відображення даних',
 	'smw_adminlinks_inlinequerieshelp' => 'Довідка із вбудованих запитів',
-	'smw_unknowntype' => 'Для властивості означено тип даних «$1», який не підтримується.',
+	'smw_unknowntype' => 'Для властивості означено тип даних «$1», який не підтримується.', # Fuzzy
 );
 
 /** Urdu (اردو)
@@ -13440,8 +13461,8 @@ $messages['uz'] = array(
 	'smw-info-par-message' => 'Tasvirlash uchun xabar',
 	'prefs-smw' => "Ma'noviy MediaWiki",
 	'prefs-ask-options' => "Ma'noviy qidiruv moslamalari",
-	'smw-ask-userpref-options-tooltip-display' => "Ko'rsatkich matnni yo'l ko'rsatuvchi ma'lumot sifatida tasvirlash",
-	'smw-ask-userpref-options-collapsed-default' => "Boshlang'ich holatga yig'ilgan turishi uchun tanlov maydoniga ruxsatlilikni yoqish",
+	'smw-prefs-ask-options-tooltip-display' => "Ko'rsatkich matnni yo'l ko'rsatuvchi ma'lumot sifatida tasvirlash",
+	'smw-prefs-ask-options-collapsed-default' => "Boshlang'ich holatga yig'ilgan turishi uchun tanlov maydoniga ruxsatlilikni yoqish",
 	'smw_unknowntype' => "Ushbu xossaning tipi noto'g'ri",
 );
 
@@ -13700,7 +13721,7 @@ $messages['vo'] = array(
 	'smw_attribute_header' => 'Pads patöfi: „$1“ geböls',
 	'smw_attributearticlecount' => '{{PLURAL:$1|Pad $1 pajonon, kel gebon|Pads $1 pajonons, kels gebons}} patöfi at.',
 	'smw_subproperty_header' => 'Donapatöfs',
-	'smw_subpropertyarticlecount' => 'Patöf at labon {{PLURAL:$1|donapatöfi|donapatöfis}} sököl $1.',
+	'smw_subpropertyarticlecount' => 'Patöf at labon {{PLURAL:$1|donapatöfi|donapatöfis}} sököl $1.', # Fuzzy
 	'smw_concept_header' => 'Pads suemoda: „$1“.',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Pajonon pad $1, kel duton|Pajonons pads $1, kels dutons}} lü suemod at.',
 	'exportrdf' => 'Seveigön padis at RDF',
@@ -13714,7 +13735,7 @@ $messages['vo'] = array(
 	'smw_unusedproperty_template' => '$1 sota: $2',
 	'wantedproperties' => 'Patöfs pavilöl',
 	'smw_wantedproperties_docu' => 'Patöfs sököl pagebons in vük ab no nog labons bepenamapadis oksik.',
-	'smw_wantedproperty_template' => '$1 (gebs $2)',
+	'smw_wantedproperty_template' => '$1 (gebs $2)', # Fuzzy
 	'types' => 'Sots',
 	'smw_ask_submit' => 'Tuvön sekis',
 	'smw_ask_editquery' => '[Bevobön seividi]',
@@ -13726,8 +13747,8 @@ $messages['vo'] = array(
 	'smw_sbv_novalue' => 'Penolös völadi lonöfol patöfa, u logolös patöfavöladis valik tefü „$1“.',
 	'smw_sbv_displayresult' => 'Lised padas valik labü völad: „$2“ patöfa: „$1“.',
 	'smw_sbv_displayresultfuzzy' => 'Lised padas valik labü völad: „$1“ patöfa: „$1“.
-Bi petuvons pads te aniks, i völads nilöfik palisedons.',
-	'smw_sbv_property' => 'Patöf',
+Bi petuvons pads te aniks, i völads nilöfik palisedons.', # Fuzzy
+	'smw_sbv_property' => 'Patöf', # Fuzzy
 	'smw_sbv_value' => 'Völad:',
 	'smw_sbv_submit' => 'Tuvön sekis',
 	'browse' => 'Padön vüki',
@@ -13941,7 +13962,7 @@ $messages['zh-hans'] = array(
 	'smw-smwdoc-par-parameters' => '要显示哪些参数。"specific"（专用）表示该格式所添加那些的，"base"（基础）表示所有格式当中可用的那些，而"all"（全部）表示两种情况具有。',
 	'smw-paramdesc-sort' => '排序查询的属性',
 	'smw-paramdesc-order' => '查询排序的顺序',
-	'smw-paramdesc-searchlabel' => '继续搜索的文本（默认是 «… further results»）',
+	'smw-paramdesc-searchlabel' => '继续搜索的文本（默认是 «… further results»）', # Fuzzy
 	'smw-paramdesc-named_args' => '请指定传递给该模板的变量',
 	'smw_iq_disabled' => '此维基的语义查询已禁用',
 	'smw_iq_moreresults' => '更多结果',
@@ -14042,7 +14063,7 @@ $messages['zh-hans'] = array(
 	'smw_qc_outro' => '后缀：',
 	'smw_qc_default' => '默认：',
 	'smw_qc_formatopt' => '格式选项',
-	'smw_qc_query_help' => '用下面的表单输入查询。选择基于类别（<strong>[[{{ns:category}}:Actor]]</strong>）、属性（<strong>[[Located in::Germany]]</strong>）、名称（<strong>[[Germany]]</strong>）和命名空间（<strong>[[{{ns:help}}:+]]</strong>）的维基页',
+	'smw_qc_query_help' => '用下面的表单输入查询。选择基于类别（<strong>[[{{ns:category}}:Actor]]</strong>）、属性（<strong>[[Located in::Germany]]</strong>）、名称（<strong>[[Germany]]</strong>）和命名空间（<strong>[[{{ns:help}}:+]]</strong>）的维基页', # Fuzzy
 	'smw_qui_property' => '<strong>属性</strong>',
 	'smw_qui_prop' => '属性：',
 	'smw_qui_labl' => '标签：',
@@ -14107,10 +14128,10 @@ $messages['zh-hans'] = array(
 	'smw_smwadmin_return' => '返回到$1。',
 	'smw_smwadmin_updatestarted' => '更新语义数据过程开始。
 所有已存储数据将被按需重建或修复。
-你可以通过本特殊页面跟踪更新进程。',
-	'smw_smwadmin_updatenotstarted' => '已有更新进程正在运行，请勿新建另一个。',
-	'smw_smwadmin_updatestopped' => '已停止所有更新进程。',
-	'smw_smwadmin_updatenotstopped' => '请勾选复选框，以确认确实希望终止正在运行的升级进程。',
+你可以通过本特殊页面跟踪更新进程。', # Fuzzy
+	'smw_smwadmin_updatenotstarted' => '已有更新进程正在运行，请勿新建另一个。', # Fuzzy
+	'smw_smwadmin_updatestopped' => '已停止所有更新进程。', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => '请勾选复选框，以确认确实希望终止正在运行的升级进程。', # Fuzzy
 	'smw_smwadmin_docu' => '这个特殊页面为您安装和升级<a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>提供帮助。
 请在执行管理功能前备份好数据。',
 	'smw_smwadmin_db' => '数据库安装和升级',
@@ -14119,7 +14140,7 @@ $messages['zh-hans'] = array(
 这个步骤所做的修改不会影响MediaWiki数据库的其他部分，如果需要，可以方便地撤销所做的修改。
 这个设置功能可多次执行，不会造成任何危害。但是只需在安装或升级时执行一次即可。',
 	'smw_smwadmin_permissionswarn' => '如果操作因SQL错误而失败，可能是维基的数据库用户（检查LocalSettings.php）没有相应权限。
-你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<tt>SMW_setup.php</tt>，这个脚本可以使用AdminSettings.php中的信息。',
+你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<tt>SMW_setup.php</tt>，这个脚本可以使用AdminSettings.php中的信息。', # Fuzzy
 	'smw_smwadmin_dbbutton' => '初始化或升级表格',
 	'smw_smwadmin_announce' => '发布维基',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki提供一个网络服务，用于公告新的语义维基网站。
@@ -14155,7 +14176,7 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-category-userparam' => '传递给模板的参数',
 	'smw-info-par-message' => '显示的信息。',
 	'smw-info-par-icon' => '显示的图标，“信息”或“警告”。',
-	'smw_unknowntype' => '定义的属性类型"$1"不被支持。',
+	'smw_unknowntype' => '定义的属性类型"$1"不被支持。', # Fuzzy
 );
 
 /** Traditional Chinese (中文（繁體）‎)
@@ -14228,7 +14249,7 @@ $messages['zh-hant'] = array(
 	'smw-smwdoc-par-parameters' => '要顯示哪些參數。"specific"（專用）表示該格式所添加那些的，"base"（基礎）表示所有格式當中可用的那些，而"all"（全部）表示兩種情況具有。',
 	'smw-paramdesc-sort' => '排序查詢的屬性',
 	'smw-paramdesc-order' => '查詢排序的順序',
-	'smw-paramdesc-searchlabel' => '在指向結果的連結中顯示的文字',
+	'smw-paramdesc-searchlabel' => '在指向結果的連結中顯示的文字', # Fuzzy
 	'smw-paramdesc-named_args' => '請指定傳遞給該模板的變量',
 	'smw_iq_disabled' => '此 wiki 的語義查詢已被停用',
 	'smw_iq_moreresults' => '更多結果',
@@ -14301,7 +14322,7 @@ $messages['zh-hant'] = array(
 	'smw_types_docu' => '以下列出了可被賦予屬性的所有數據類型。',
 	'semanticstatistics' => '語意統計',
 	'smw_semstats_text' => "此維基包含 '''$1''' 個屬性{{PLURAL:$1|值|值}}，源自 '''$2''' 個[[Special:Properties|{{PLURAL:$2|屬性|不同屬性}}]]。'''$3''' 個{{PLURAL:$3|屬性有|屬性有}}自己的頁，並且預期的數據類型被指定為 '''$4'''。某些已經存在的屬性也許是[[Special:UnusedProperties|無用屬性]]。缺乏頁的屬性可以在[[Special:WantedProperties|需要的屬性列表]]中找到。",
-	'smw_uri_doc' => 'URI 分析器實現<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C httpRange-14 標記查找</a>。它將處理那些沒有網站內容的頁。',
+	'smw_uri_doc' => 'URI 分析器實現<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C httpRange-14 標記查找</a>。它將處理那些沒有網站內容的頁。', # Fuzzy
 	'ask' => '語意搜尋',
 	'smw_ask_sortby' => '按列排序（可選）',
 	'smw_ask_ascorder' => '升冪',
@@ -14393,10 +14414,10 @@ $messages['zh-hant'] = array(
 	'smw_smwadmin_return' => '返回到 $1。',
 	'smw_smwadmin_updatestarted' => '更新語意數據過程開始。
 所有已儲存數據將被按需重建或修復。
-你可以通過本特殊頁面追蹤更新進程。',
-	'smw_smwadmin_updatenotstarted' => '已有更新進程正在執行，請勿建立另一個。',
-	'smw_smwadmin_updatestopped' => '已停止所有更新進程。',
-	'smw_smwadmin_updatenotstopped' => '請勾選複選框，以確認確實希望終止正在執行的升級進程。',
+你可以通過本特殊頁面追蹤更新進程。', # Fuzzy
+	'smw_smwadmin_updatenotstarted' => '已有更新進程正在執行，請勿建立另一個。', # Fuzzy
+	'smw_smwadmin_updatestopped' => '已停止所有更新進程。', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => '請勾選複選框，以確認確實希望終止正在執行的升級進程。', # Fuzzy
 	'smw_smwadmin_docu' => '這個特殊頁面為您安裝和升級<a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>提供說明。
 請在執行管理功能前備份好資料。',
 	'smw_smwadmin_db' => '資料庫安裝和升級',
@@ -14405,7 +14426,7 @@ $messages['zh-hant'] = array(
 這個步驟所做的修改不會影響 MediaWiki 資料庫的其他部分，如果需要，可以方便地撤銷所做的修改。
 這個定射功能可多次執行，不會造成任何危害。但是只需在安裝或升級時執行一次即可。',
 	'smw_smwadmin_permissionswarn' => '如果操作因 SQL 錯誤而失敗，可能是維基的資歷庫用戶（檢查 LocalSettings.php）沒有相應權限。
-你可以向該用戶賦予建立和刪除表格的權限，或臨時將資料庫根用戶的登入資訊輸入 LocalSettings.php。你也可以使用維護腳本<tt>SMW_setup.php</tt>，這個腳本可以使用 AdminSettings.php 中的資訊。',
+你可以向該用戶賦予建立和刪除表格的權限，或臨時將資料庫根用戶的登入資訊輸入 LocalSettings.php。你也可以使用維護腳本<tt>SMW_setup.php</tt>，這個腳本可以使用 AdminSettings.php 中的資訊。', # Fuzzy
 	'smw_smwadmin_dbbutton' => '初始化或升級表格',
 	'smw_smwadmin_announce' => '發布 wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki 提供一個網路服務，用於公告新的語意維基網站。
@@ -14441,7 +14462,7 @@ $messages['zh-hant'] = array(
 	'smw-paramdesc-category-userparam' => '傳遞給模板的參數',
 	'smw-info-par-message' => '顯示的信息。',
 	'smw-info-par-icon' => '顯示的圖標，“信息”或“警告”。',
-	'smw_unknowntype' => '定義的屬性類型「$1」不被支援。',
+	'smw_unknowntype' => '定義的屬性類型「$1」不被支援。', # Fuzzy
 );
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
@@ -14586,4 +14607,3 @@ $messages['zh-tw'] = array(
 	'smw-createproperty-isproperty' => '這是$1型態的性質。',
 	'smw-createproperty-allowedvals' => '此屬性的可用型態為：',
 );
-
