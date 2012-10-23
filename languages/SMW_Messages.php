@@ -7121,6 +7121,13 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_adminlinks_inlinequerieshelp' => 'Aiuto sulle query inline',
 	'smw-createproperty-isproperty' => 'Questa è una proprietà di tipo $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Il valore permesso per questa proprità è|I valori permessi per questa proprietà sono}}:',
+	'smw-ui-tooltip-title-property' => 'Proprietà',
+	'smw-ui-tooltip-title-quantity' => 'Quantità',
+	'smw-ui-tooltip-title-info' => 'Informazione',
+	'smw-ui-tooltip-title-service' => 'Collegamento di servizio',
+	'smw-ui-tooltip-title-warning' => 'Errore',
+	'smw-ui-tooltip-title-parameter' => 'Parametro',
+	'smw-ui-tooltip-title-event' => 'Evento',
 	'smw_unknowntype' => 'Il tipo di questa proprietà non è valido',
 );
 
