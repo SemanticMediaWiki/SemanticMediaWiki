@@ -571,9 +571,10 @@ class SMWSql3SmwIds {
 	*/
 	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
 		$db = wfGetDB( DB_MASTER );
+		$propertyTableHash = serialize( $newTableHashes );
 		$db->update(
 			'smw_ids',
-			array( 'smw_proptable_hash' => serialize( $newTableHashes ) ),
+			array( 'smw_proptable_hash' => $propertyTableHash ),
 			array( 'smw_id' => $sid ),
 			__METHOD__
 		);
