@@ -513,7 +513,9 @@ class SMWSQLStore3QueryEngine {
 				$query->jointable = '';
 				$query->joinfield = '';
 			} else { // Instance query with disjunction of classes (categories)
-				$query->jointable = 'smw_inst';
+				$query->jointable = $this->m_dbs->tableName(
+					$this->m_store->findPropertyTableID(
+						new SMWDIProperty( '_INST' ) ) );
 				$query->joinfield = "$query->alias.s_id";
 				$query->components[$cqid] = "$query->alias.o_id";
 				$this->m_queries[$cqid] = $cquery;
