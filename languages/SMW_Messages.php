@@ -9426,11 +9426,11 @@ Geschatte voortgang van de huidige taak:",
 	'smw-prefs-ask-options-collapsed-default' => 'Optievenster standaard samengevouwen weergeven',
 	'smw-ui-tooltip-title-property' => 'Eigenschap',
 	'smw-ui-tooltip-title-quantity' => 'Hoeveelheid',
-	'smw-ui-tooltip-title-info' => 'Informatie',
+	'smw-ui-tooltip-title-info' => 'Gegevens',
 	'smw-ui-tooltip-title-service' => 'Servicelinks',
 	'smw-ui-tooltip-title-warning' => 'Fout',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
-	'smw-ui-tooltip-title-event' => 'Gebeurtenis',
+	'smw-ui-tooltip-title-event' => 'Evenement',
 	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
 );
 
