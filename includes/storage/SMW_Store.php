@@ -441,4 +441,17 @@ abstract class SMWStore {
 		return $result;
 	}
 
+	/**
+	 * Returns the tables that should be added via the
+	 * https://www.mediawiki.org/wiki/Manual:Hooks/ParserTestTables
+	 * hook when it's run.
+	 *
+	 * @since 1.8
+	 *
+	 * @return array
+	 */
+	public function getParserTestTables() {
+		return array();
+	}
+
 }

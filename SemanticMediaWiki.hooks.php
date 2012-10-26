@@ -174,9 +174,6 @@ final class SMWHooks {
 
 	/**
 	 * Register tables to be added to temporary tables for parser tests.
-	 * @todo Hard-coding this thwarts the modularity/exchangability of the SMW
-	 * storage backend. The actual list of required tables depends on the backend
-	 * implementation and cannot really be fixed here.
 	 *
 	 * @since 1.7.1
 	 *
@@ -185,14 +182,11 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function onParserTestTables( array &$tables ) {
-		$tables[] = 'smw_ids';
-		$tables[] = 'smw_redi2';
-		$tables[] = 'smw_atts2';
-		$tables[] = 'smw_rels2';
-		$tables[] = 'smw_text2';
-		$tables[] = 'smw_spec2';
-		$tables[] = 'smw_inst2';
-		$tables[] = 'smw_subs2';
+		$tables = array_merge(
+			$tables,
+			smwfGetStore()->getParserTestTables()
+		);
+
 		return true;
 	}
 
