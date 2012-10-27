@@ -728,7 +728,7 @@ abstract class SMWDataValue {
 		$accept = false;
 		$valuestring = '';
 		foreach ( $allowedvalues as $di ) {
-			if ( $di->getDIType() === SMWDataItem::TYPE_STRING ) {
+			if ( $di instanceof SMWDIBlob ) {
 				$testdv->setUserValue( $di->getString() );
 
 				if ( $hash === $testdv->getDataItem()->getHash() ) {

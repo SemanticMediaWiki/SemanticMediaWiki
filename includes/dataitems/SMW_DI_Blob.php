@@ -58,8 +58,7 @@ class SMWDIBlob extends SMWDataItem {
 	}
 
 	public function equals( $di ) {
-		if ( ( $di->getDIType() !== SMWDataItem::TYPE_BLOB ) &&
-			( $di->getDIType() !== SMWDataItem::TYPE_STRING ) ) {
+		if ( !( $di instanceof SMWDIBlob ) ) {
 			return false;
 		}
 		return $di->getString() === $this->m_string;
