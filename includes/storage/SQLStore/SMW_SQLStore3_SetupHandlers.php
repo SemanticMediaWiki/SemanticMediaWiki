@@ -35,6 +35,7 @@ Class SMWSQLStore3SetupHandlers {
 
 		$this->setupTables( $verbose, $db );
 		$this->setupPredefinedProperties( $verbose, $db );
+		$this->computeStats( $verbose, $db );
 
 		return true;
 	}
@@ -225,17 +226,6 @@ Class SMWSQLStore3SetupHandlers {
 					'smw_sortkey' => $p->getLabel()
 				), 'SMW::setup'
 			);
-			$id = $db->insertId();
-
-			// Properties also need to be in smw_stats
-			$db->insert(
-				'smw_stats',
-				array(
-					'pid' => $id,
-					'usage_count' => 0
-				),
-				__METHOD__
-			);
 		}
 
 		$this->reportProgress( " done.\n", $verbose );
@@ -250,6 +240,53 @@ Class SMWSQLStore3SetupHandlers {
 		}
 
 		$this->reportProgress( "Internal properties initialised successfully.\n", $verbose );
+	}
+
+	/**
+	 * Compute statistics for all the properties, basically update the count in smw_stats
+	 */
+	protected function computeStats( $verbose, $db ) {
+
+		$this->reportProgress( "Computing property statistics.\n", $verbose );
+		$res = $db->select(
+				'smw_ids',
+				array( 'smw_id', 'smw_title', 'smw_sortkey' ),
+				array( 'smw_namespace' => SMW_NS_PROPERTY  ),
+				__METHOD__
+		);
+		$proptables = SMWSQLStore3::getPropertyTables();
+
+		$count = 0;
+		foreach ( $res as $row ) {
+			$count++;
+
+			try{
+				$di = new SMWDIProperty( $row->smw_title );
+			} catch( SMWDataItemException $e ) {
+				$this->reportProgress( "Warning: Could not create a property for key\"{$row->smw_title}\" ({$e->getMessage()}) \n", $verbose );
+				continue;
+			}
+
+			$tableId = SMWSQLStore3::findPropertyTableID( $di );
+			$proptable = $proptables[$tableId];
+			$propRow = $db->selectRow(
+					$proptable->name,
+					'Count(*) as count',
+					$proptable->fixedproperty ? array() : array('p_id' => $row->smw_id ),
+					__METHOD__
+			);
+			$db->replace(
+				'smw_stats',
+				'pid',
+				array(
+					'pid' => $row->smw_id,
+					'usage_count' => $propRow->count
+				),
+				__METHOD__
+			);
+		}
+		$db->freeResult( $res );
+		$this->reportProgress( "Updated statistics for $count Properties.\n", $verbose );
 	}
 
 	public function drop( $verbose = true ) {
