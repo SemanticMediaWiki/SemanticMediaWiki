@@ -613,19 +613,22 @@ class SMWSql3SmwIds {
 	public static function debugDumpCacheStats() {
 		$that = self::$singleton_debug;
 		if ( is_null( $that ) ) return;
-		print "Executed {$that->selectrow_sort_debug} selects for sortkeys.\n";
-		print "Executed {$that->selectrow_redi_debug} selects for redirects.\n";
-		print "Regular cache hits: {$that->reghit_debug} misses: {$that->regmiss_debug}";
+
+		$debugString =
+			"Statistics for SMWSql3SmwIds:\n" .
+			"- Executed {$that->selectrow_sort_debug} selects for sortkeys.\n" .
+			"- Executed {$that->selectrow_redi_debug} selects for redirects.\n" .
+			"- Regular cache hits: {$that->reghit_debug} misses: {$that->regmiss_debug}";
 		if ( $that->regmiss_debug + $that->reghit_debug > 0 ) {
-			print " rate: " . $that->reghit_debug/( $that->regmiss_debug + $that->reghit_debug );
+			$debugString .= " rate: " . round( $that->reghit_debug/( $that->regmiss_debug + $that->reghit_debug ), 3 );
 		}
-		print " cache size: " . count( $that->regular_ids ) . "\n";
-		print "Property cache hits: {$that->prophit_debug} misses: {$that->propmiss_debug}";
+		$debugString .= " cache size: " . count( $that->regular_ids ) . "\n" ;
+		$debugString .= "- Property cache hits: {$that->prophit_debug} misses: {$that->propmiss_debug}";
 		if ( $that->propmiss_debug + $that->prophit_debug > 0 ) {
-			print " rate: " . $that->prophit_debug/( $that->propmiss_debug + $that->prophit_debug );
+			$debugString .= " rate: " . round( $that->prophit_debug/( $that->propmiss_debug + $that->prophit_debug ), 3 );
 		}
-		print " cache size: " . count( $that->prop_ids ) . "\n";
-// 		debug_zval_dump($that->prop_ids);
+		$debugString .= " cache size: " . count( $that->prop_ids ) . "\n";
+		wfDebug( $debugString );
 	}
 
 }
