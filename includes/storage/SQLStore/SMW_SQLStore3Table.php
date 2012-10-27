@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * @ingroup SMWStore
+ * @since 1.8
+ */
 
 /**
  * Simple data container for storing information about property tables. A
@@ -7,11 +12,11 @@
  * value, but also in whether the property is explicitly named (or fixed),
  * and in the way subject pages are referred to.
  *
- * @file SMW_SQLStore3Table.php
  * @ingroup SMWStore
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
+ * @since 1.8
  */
 class SMWSQLStore3Table {
 
@@ -60,10 +65,10 @@ class SMWSQLStore3Table {
 	*
 	* @since 1.8
 	*
-	* @param $DIType constant
-	* @param $tableName string
-	* @param $fixedProperty mixed false or string property key
-	* @return $table SMWSQLStore3Table
+	* @param insteger $DIType constant
+	* @param string $tableName logocal table name (not the DB version)
+	* @param string|false $fixedProperty property key if any
+	* @return SMWSQLStore3Table $table
 	*/
 	public function __construct( $DIType, $tableName, $fixedProperty = false ) {
 		$this->name = $tableName;

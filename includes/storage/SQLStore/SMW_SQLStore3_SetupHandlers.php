@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * @ingroup SMWStore
+ * @since 1.8
+ */
 
 /**
  * Class Handling all the setup methods for SMWSQLStore3
@@ -8,11 +13,9 @@
  * @author Nischay Nahata
  *
  * @since 1.8
- * @file
  * @ingroup SMWStore
  */
-
-Class SMWSQLStore3SetupHandlers {
+class SMWSQLStore3SetupHandlers {
 
 	/**
 	 * The store used by this setupHandler
@@ -22,8 +25,7 @@ Class SMWSQLStore3SetupHandlers {
 	 */
 	protected $store;
 
-
-	public function __construct( &$parentstore ) {
+	public function __construct( SMWSQLStore3 $parentstore ) {
 		$this->store = $parentstore;
 	}
 

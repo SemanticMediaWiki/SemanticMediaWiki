@@ -1,18 +1,17 @@
 <?php
 /**
- * Query answering functions for SMWSQLStore3. Separated from main code for
- * readability.
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- *
  * @file
  * @ingroup SMWStore
+ * @since 1.8
  */
 
 /**
  * Class for representing a single (sub)query description. Simple data
  * container.
+ *
+ * @since 1.8
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  * @ingroup SMWStore
  */
 class SMWSQLStore3Query {
@@ -102,7 +101,7 @@ class SMWSQLStore3QueryEngine {
 	/** Local collection of error strings, passed on to callers if possible. */
 	protected $m_errors = array();
 
-	public function __construct( &$parentstore, &$dbslave ) {
+	public function __construct( SMWSQLStore3 $parentstore, $dbslave ) {
 		$this->m_store = $parentstore;
 		$this->m_dbs = $dbslave;
 	}
