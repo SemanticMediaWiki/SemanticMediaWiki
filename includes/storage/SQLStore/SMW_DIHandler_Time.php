@@ -24,16 +24,6 @@ class SMWDIHandlerTime extends SMWDataItemHandler {
 	}
 
 	/**
-	 * The only indexed column is the sortkey. Nothing else should be
-	 * relevant for selecting vlaues of this type.
-	 *
-	 * @return array
-	 */
-	public function getTableIndexes() {
-		return array( 'o_sortkey' );
-	}
-
-	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 *
 	 * @return array

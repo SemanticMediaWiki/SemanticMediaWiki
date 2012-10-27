@@ -24,15 +24,6 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return array of indexes for a DI type
-	 *
-	 * @return array
-	 */
-	public function getTableIndexes() {
-		return array( 'o_hash' );
-	}
-
-	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 *
 	 * @return array

@@ -24,8 +24,10 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return array of indexes for a DI type
+	 * Create an additional index for finding incoming properties.
 	 *
+	 * @see SMWDataItemHandler::getTableIndexes()
+	 * @since 1.8
 	 * @return array
 	 */
 	public function getTableIndexes() {

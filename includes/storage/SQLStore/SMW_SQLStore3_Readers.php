@@ -542,15 +542,8 @@ Class SMWSQLStore3Readers {
 	 * Implementation of SMWStore::getInProperties(). This function is meant to
 	 * be used for finding properties that link to wiki pages.
 	 *
+	 * @since 1.8
 	 * @see SMWStore::getInProperties
-	 *
-	 * TODO: When used for other datatypes, the function may return too many
-	 * properties since it selects results by comparing the stored information
-	 * (DB keys) only, while not currently comparing the type of the returned
-	 * property to the type of the queried data. So values with the same DB keys
-	 * can be confused. This is a minor issue now since no code is known to use
-	 * this function in cases where this occurs.
-	 *
 	 * @param SMWDataItem $value
 	 * @param SMWRequestOptions $requestoptions
 	 *

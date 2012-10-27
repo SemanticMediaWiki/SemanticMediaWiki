@@ -15,11 +15,14 @@ class SMWSQLHelpers {
 
 	/**
 	 * Database backends often have different types that need to be used
-	 * repeatedly in (Semantic) MediaWiki. This function provides the preferred
-	 * type (as a string) for various common kinds of columns. The input
-	 * is one of the following strings: 'id' (page id numbers or similar),
-	 * 'title' (title strings or similar), 'namespace' (namespace numbers),
-	 * 'blob' (longer text blobs), 'iw' (interwiki prefixes).
+	 * repeatedly in (Semantic) MediaWiki. This function provides the
+	 * preferred type (as a string) for various common kinds of columns.
+	 * The input is one of the following strings: 'id' (page id numbers or
+	 * similar), 'title' (title strings or similar), 'namespace' (namespace
+	 * numbers), 'blob' (longer text blobs), 'iw' (interwiki prefixes).
+	 *
+	 * @param string $input
+	 * @return string|false SQL type declaration
 	 */
 	static public function getStandardDBType( $input ) {
 		global $wgDBtype;
@@ -59,7 +62,7 @@ class SMWSQLHelpers {
 	 * @param string $tableName The table name. Does not need to have been passed to DatabaseBase->tableName yet.
 	 * @param array $columns The fields and their types the table should have.
 	 * @param DatabaseBase or Database $db
-	 * @param $reportTo Object to report back to.
+	 * @param object $reportTo Object to report back to.
 	 */
 	public static function setupTable( $rawTableName, array $fields, $db, $reportTo = null ) {
 		$tableName = $db->tableName( $rawTableName );
@@ -82,8 +85,8 @@ class SMWSQLHelpers {
 	 *
 	 * @param string $tableName The table name.
 	 * @param array $columns The fields and their types the table should have.
-	 * @param DatabaseBase or Database $db
-	 * @param $reportTo Object to report back to.
+	 * @param DatabaseBase|Database $db
+	 * @param object $reportTo object to report back to.
 	 */
 	protected static function createTable( $tableName, array $fields, $db, $reportTo ) {
 		global $wgDBtype, $wgDBTableOptions, $wgDBname;
@@ -110,8 +113,8 @@ class SMWSQLHelpers {
 	 *
 	 * @param string $tableName The table name.
 	 * @param array $columns The fields and their types the table should have.
-	 * @param DatabaseBase or Database $db
-	 * @param $reportTo Object to report back to.
+	 * @param DatabaseBase|Database $db
+	 * @param object $reportTo Object to report back to.
 	 */
 	protected static function updateTable( $tableName, array $fields, $db, $reportTo ) {
 		global $wgDBtype;
@@ -158,8 +161,8 @@ class SMWSQLHelpers {
 	 * Returns an array of fields (as keys) and their types (as values).
 	 *
 	 * @param string $tableName The table name.
-	 * @param DatabaseBase or Database $db
-	 * @param $reportTo Object to report back to.
+	 * @param DatabaseBase|Database $db
+	 * @param object $reportTo to report back to.
 	 *
 	 * @return array
 	 */
@@ -243,13 +246,14 @@ EOT;
 	}
 
 	/**
-	 * Update a single field given it's name and type and an array of current fields. Postgres version.
+	 * Update a single field given it's name and type and an array of
+	 * current fields. Postgres version.
 	 *
 	 * @param string $tableName The table name.
 	 * @param string $name The field name.
 	 * @param string $type The field type and attributes.
 	 * @param array $currentFields List of fields as they have been found in the database.
-	 * @param DatabaseBase or Database $db
+	 * @param DatabaseBase|Database $db
 	 * @param object $reportTo Object to report back to.
 	 */
 	protected static function updatePostgresField( $tableName, $name, $type, array $currentFields, $db, $reportTo ) {
@@ -291,13 +295,14 @@ EOT;
 	}
 
 	/**
-	 * Update a single field given it's name and type and an array of current fields. MySQL version.
+	 * Update a single field given it's name and type and an array of
+	 * current fields. MySQL version.
 	 *
 	 * @param string $tableName The table name.
 	 * @param string $name The field name.
 	 * @param string $type The field type and attributes.
 	 * @param array $currentFields List of fields as they have been found in the database.
-	 * @param DatabaseBase or Database $db
+	 * @param DatabaseBase|Database $db
 	 * @param object $reportTo Object to report back to.
 	 * @param string $position
 	 */
@@ -321,18 +326,75 @@ EOT;
 	}
 
 	/**
-	 * Make sure that each of the column descriptions in the given array is indexed by *one* index
-	 * in the given DB table.
+	 * Make sure that each of the column descriptions in the given array is
+	 * indexed by *one* index in the given DB table.
 	 *
-	 * @param string $tableName The table name. Does not need to have been passed to DatabaseBase->tableName yet.
-	 * @param array $columns The field names to put indexes on
-	 * @param DatabaseBase or Database $db
+	 * @param string $tableName table name. Does not need to have been passed to DatabaseBase->tableName yet.
+	 * @param array $indexes array of strings, each a comma separated list with column names to index
+	 * @param DatabaseBase|Database $db DatabaseBase or Database
+	 * @param object $reportTo object to report messages to; since 1.8
 	 */
-	public static function setupIndex( $rawTableName, array $columns, $db ) {
+	public static function setupIndex( $rawTableName, array $indexes, $db, $reportTo = null ) {
 		global $wgDBtype;
 
 		$tableName = $db->tableName( $rawTableName );
 
+		self::reportProgress( "Checking index structures for table $tableName ...\n", $reportTo );
+
+		// First remove obsolete indexes.
+		$oldIndexes = self::getIndexInfo( $db, $tableName );
+		if ( $wgDBtype == 'sqlite' ) { // SQLite
+			/// TODO We do not currently get the right column definitions in
+			/// SQLLite; hence we can only drop all indexes. Wasteful.
+			foreach ( $oldIndexes as $key => $index ) {
+				self::dropIndex( $db, $key, $tableName, $key, $reportTo );
+			}
+		} else {
+			foreach ( $oldIndexes as $key => $indexcolumn ) {
+				$id = array_search( $indexcolumn, $indexes );
+				if ( $id !== false || $key == 'PRIMARY' ) {
+					self::reportProgress( "   ... index $indexcolumn is fine.\n", $reportTo );
+					unset( $indexes[$id] );
+				} else { // Duplicate or unrequired index.
+					self::dropIndex( $db, $key, $tableName, $indexcolumn, $reportTo );
+				}
+			}
+		}
+
+		// Add new indexes.
+		foreach ( $indexes as $key => $index ) {
+			// If the index is an array, it contains the column
+			// name as first element, and index type as second one.
+			if ( is_array( $index ) ) {
+				$columns = $index[0];
+				$type = count( $index ) > 1 ? $index[1] : 'INDEX';
+			} else {
+				$columns = $index;
+				$type = 'INDEX';
+			}
+
+			self::createIndex( $db, $type, "{$tableName}_index{$key}", $tableName, $columns, $reportTo );
+		}
+
+		self::reportProgress( "   ... done.\n", $reportTo );
+
+		return true;
+	}
+
+	/**
+	 * Get the information about all indexes of a table. The result is an
+	 * array of format indexname => indexcolumns. The latter is a comma
+	 * separated list.
+	 *
+	 * @since 1.8
+	 * @param DatabaseBase|Database $db database handler
+	 * @param string $tableName name of table
+	 * @return array indexname => columns
+	 */
+	protected static function getIndexInfo( $db, $tableName ) {
+		global $wgDBtype;
+
+		$indexes = array();
 		if ( $wgDBtype == 'postgres' ) { // postgresql
 			$sql = "SELECT  i.relname AS indexname,"
 				. " pg_get_indexdef(i.oid) AS indexdef, "
@@ -352,30 +414,7 @@ EOT;
 			}
 
 			foreach ( $res as $row ) {
-				// Remove the unneeded indexes, let indexes alone that already exist in the correct fashion.
-				if ( array_key_exists( $row->indexcolumns, $columns ) ) {
-					$columns[$row->indexcolumns] = false;
-				} else {
-					$db->query( 'DROP INDEX IF EXISTS ' . $row->indexname, __METHOD__ );
-				}
-			}
-
-			foreach ( $columns as $key => $index ) { // Ddd the remaining indexes.
-				if ( $index != false ) {
-					$type = 'INDEX';
-
-					// If the index is an array, it'll contain the column name as first element, and index type as second one.
-					if ( is_array( $index ) ) {
-						$column = $index[0];
-						if ( count( $index ) > 1 ) $type = $index[1];
-					} else {
-						$column = $index;
-					}
-
-					if ( $db->indexInfo( $rawTableName, "{$rawTableName}_index{$key}" ) === false ) {
-						$db->query( "CREATE $type {$rawTableName}_index{$key} ON $tableName USING btree(" . $column . ")", __METHOD__ );
-					}
-				}
+				$indexes[$row->indexname] = $row->indexcolumns;
 			}
 		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
 			$res = $db->query( 'PRAGMA index_list(' . $tableName . ')' , __METHOD__ );
@@ -384,85 +423,88 @@ EOT;
 				return false;
 			}
 
-			$indexes = array();
-
-			foreach ( $db->fetchObject( $res ) as $row ) {
+			foreach ( $res as $row ) {
+				/// FIXME The value should not be $row->name below?!
 				if ( !array_key_exists( $row->name, $indexes ) ) {
-					$indexes[$row->name] = array();
-				}
-
-				$indexes[$row->name][$row->seq] = $row->name;
-			}
-
-			foreach ( $indexes as $key => $index ) { // Clean up the existing indexes.
-				$db->query( 'DROP INDEX ' . $key, __METHOD__ );
-			}
-
-			foreach ( $columns as $key => $index ) { // Add the remaining indexes.
-				if ( $index != false ) {
-					$type = 'INDEX';
-
-					// If the index is an array, it'll contain the column name as first element, and index type as second one.
-					if ( is_array( $index ) ) {
-						$column = $index[0];
-
-						if ( count( $index ) > 1 ) {
-							$type = $index[1];
-						}
-					} else {
-						$column = $index;
-					}
-
-					$db->query( "CREATE $type {$tableName}_index{$key} ON $tableName (" . $column . ")", __METHOD__ );
+					$indexes[$row->name] = $row->name;
+				} else {
+					$indexes[$row->name] .= ',' . $row->name;
 				}
 			}
-		} else { // MySQL
+		} else { // MySQL and default
 			$res = $db->query( 'SHOW INDEX FROM ' . $tableName , __METHOD__ );
 
 			if ( !$res ) {
 				return false;
 			}
 
-			$indexes = array();
-
 			foreach ( $res as $row ) {
 				if ( !array_key_exists( $row->Key_name, $indexes ) ) {
-					$indexes[$row->Key_name] = array();
-				}
-				$indexes[$row->Key_name][$row->Seq_in_index] = $row->Column_name;
-			}
-
-			foreach ( $indexes as $key => $index ) { // Clean up the existing indexes.
-				$id = array_search( implode( ',', $index ), $columns );
-				if ( $id !== false ) {
-					$columns[$id] = false;
-				} else { // Duplicate or unrequired index.
-					$db->query( 'DROP INDEX ' . $key . ' ON ' . $tableName, __METHOD__ );
-				}
-			}
-
-			foreach ( $columns as $index ) { // Add the remaining indexes.
-				if ( $index != false ) {
-					$type = 'INDEX';
-
-					// If the index is an array, it'll contain the column name as first element, and index type as second one.
-					if ( is_array( $index ) ) {
-						$column = $index[0];
-						if ( count( $index ) > 1 ) $type = $index[1];
-					} else {
-						$column = $index;
-					}
-
-					$db->query( "ALTER TABLE $tableName ADD $type ( $column )", __METHOD__ );
+					$indexes[$row->Key_name] = $row->Column_name;
+				} else {
+					$indexes[$row->Key_name] .= ',' . $row->Column_name;
 				}
 			}
 		}
 
-		return true;
+		return $indexes;
 	}
 
 	/**
-	 * Reports the given message to the reportProgress method of the $receiver.
+	 * Drop an index using the suitable SQL for various RDBMS.
+	 *
+	 * @since 1.8
+	 * @param DatabaseBase|Database $db database handler
+	 * @param string $indexName name fo the index as in DB
+	 * @param string $tableName name of the table (not relevant in all DBMSs)
+	 * @param string $columns list of column names to index, comma
+	 * separated; only for reporting
+	 * @param object $reportTo to report messages to
+	 */
+	protected static function dropIndex( $db, $indexName, $tableName, $columns, $reportTo = null ) {
+		global $wgDBtype;
+
+		self::reportProgress( "   ... removing index $columns ...", $reportTo );
+		if ( $wgDBtype == 'postgres' ) { // postgresql
+			$db->query( 'DROP INDEX IF EXISTS ' . $indexName, __METHOD__ );
+		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
+			$db->query( 'DROP INDEX ' . $indexName, __METHOD__ );
+		} else { // MySQL and default
+			$db->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__ );
+		}
+		self::reportProgress( "done.\n", $reportTo );
+	}
+
+	/**
+	 * Create an index using the suitable SQL for various RDBMS.
+	 *
+	 * @since 1.8
+	 * @param DatabaseBase|Database $db Database handler
+	 * @param string $type "INDEX", "UNIQUE" or similar
+	 * @param string $indexName name fo the index as in DB
+	 * @param string $tableName name of the table
+	 * @param array $columns list of column names to index, comma separated
+	 * @param object $reportTo object to report messages to
+	 */
+	protected static function createIndex( $db, $type, $indexName, $tableName, $columns, $reportTo = null ) {
+		global $wgDBtype;
+
+		self::reportProgress( "   ... creating new index $columns ...", $reportTo );
+		if ( $wgDBtype == 'postgres' ) { // postgresql
+			if ( $db->indexInfo( $tableName, $indexName ) === false ) {
+				$db->query( "CREATE $type $tableName ON $tableName USING btree($columns)", __METHOD__ );
+			}
+		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
+			$db->query( "CREATE $type $indexName ON $tableName ($columns)", __METHOD__ );
+		} else { // MySQL and default
+			$db->query( "ALTER TABLE $tableName ADD $type ($columns)", __METHOD__ );
+		}
+		self::reportProgress( "done.\n", $reportTo );
+	}
+
+	/**
+	 * Reports the given message to the reportProgress method of the
+	 * $receiver.
 	 *
 	 * @param string $msg
 	 * @param object $receiver

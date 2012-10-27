@@ -23,14 +23,6 @@ class SMWDIHandlerNumber extends SMWDataItemHandler {
 	}
 
 	/**
-	 * @see SMWDataItemHandler::getTableIndexes
-	 * @return array
-	 */
-	public function getTableIndexes() {
-		return array( 'o_sortkey' );
-	}
-
-	/**
 	 * @see SMWDataItemHandler::getWhereConds
 	 * @return array
 	 */

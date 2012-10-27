@@ -33,7 +33,7 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	 * @return array
 	 */
 	public function getTableIndexes() {
-		return array( 'o_serialized', 'o_lat', 'o_lon' );
+		return array( 'o_lat,o_lon' );
 	}
 
 	/**
