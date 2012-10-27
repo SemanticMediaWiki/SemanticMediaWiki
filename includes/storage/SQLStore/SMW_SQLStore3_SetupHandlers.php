@@ -95,7 +95,16 @@ Class SMWSQLStore3SetupHandlers {
 			$reportTo
 		);
 
-		SMWSQLHelpers::setupIndex( 'smw_ids', array( 'smw_id', 'smw_title,smw_namespace,smw_iw', 'smw_title,smw_namespace,smw_iw,smw_subobject', 'smw_sortkey' ), $db );
+		SMWSQLHelpers::setupIndex(
+			'smw_ids',
+			array(
+				'smw_id',
+				'smw_id,smw_sortkey', 
+				'smw_title,smw_namespace,smw_iw,smw_subobject', // id lookup
+				'smw_sortkey' // select by sortkey (range queries)
+			),
+			$db
+		);
 
 		// Set up concept cache: member elements (s)->concepts (o)
 		SMWSQLHelpers::setupTable(
@@ -132,28 +141,50 @@ Class SMWSQLStore3SetupHandlers {
 	/**
 	 * Sets up the property tables.
 	 *
+	 * @since 1.8
 	 * @param array $dbtypes
-	 * @param $db
-	 * @param $reportTo SMWSQLStore3 or null
+	 * @param DatabaseBase|Database $db
+	 * @param SMWSQLStore3SetupHandlers|null $reportTo
 	 */
-	protected function setupPropertyTables( array $dbtypes, $db, $reportTo ) {
+	protected function setupPropertyTables( array $dbtypes, $db, SMWSQLStore3SetupHandlers $reportTo = null ) {
 		$addedCustomTypeSignatures = false;
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->diType );
+
+			// Prepare indexes. By default, property-value tables
+			// have the following indexes:
+			//
+			// sp: getPropertyValues(), getSemanticData(), getProperties()
+			// po: ask, getPropertySubjects()
+			//
+			// The "p" component is omitted for tables with fixed property.
+			$indexes = array();
 			if ( $proptable->idsubject ) {
 				$fieldarray = array( 's_id' => $dbtypes['p'] . ' NOT NULL' );
-				$indexes = array( 's_id' );
+				$indexes['sp'] = 's_id';
 			} else {
 				$fieldarray = array( 's_title' => $dbtypes['t'] . ' NOT NULL', 's_namespace' => $dbtypes['n'] . ' NOT NULL' );
-				$indexes = array( 's_title,s_namespace' );
+				$indexes['sp'] = 's_title,s_namespace';
 			}
+
+			$indexes['po'] = $diHandler->getIndexField();
 
 			if ( !$proptable->fixedproperty ) {
 				$fieldarray['p_id'] = $dbtypes['p'] . ' NOT NULL';
-				$indexes[] = 'p_id';
+				$indexes['po'] = 'p_id,' . $indexes['po'];
+				$indexes['sp'] = $indexes['sp'] . ',p_id';
 			}
 
-			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->diType );
+			// TODO Special handling; concepts should be handled differently
+			// in the future. See comments in SMW_DIHandler_Concept.php.
+			if ( $proptable->diType == SMWDataItem::TYPE_CONCEPT ) {
+				unset( $indexes['po'] );
+			}
+
+			$indexes = array_merge( $indexes, $diHandler->getTableIndexes() );
+			$indexes = array_unique( $indexes );
+
 			foreach ( $diHandler->getTableFields() as $fieldname => $typeid ) {
 				// If the type signature is not recognized and the custom signatures have not been added, add them.
 				if ( !$addedCustomTypeSignatures && !array_key_exists( $typeid, $dbtypes ) ) {
@@ -166,10 +197,10 @@ Class SMWSQLStore3SetupHandlers {
 					$fieldarray[$fieldname] = $dbtypes[$typeid];
 				}
 			}
-			$indexes = array_merge( $indexes, $diHandler->getTableIndexes() );
 
 			SMWSQLHelpers::setupTable( $proptable->name, $fieldarray, $db, $reportTo );
-			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db );
+
+			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db, $reportTo );
 		}
 	}
 
