@@ -77,9 +77,13 @@ class SMWParseData {
 	 * @return SMWSemanticData|null
 	 */
 	public static function getSMWDataFromParserOutput( ParserOutput $output, Title $title = null ) {
-		// No data container yet.
-		$smwData = method_exists( $output, 'getAdditionalData' ) ? $output->getAdditionalData( 'smwdata' ) : $output->mSMWData;
+		if ( method_exists( $output, 'getAdditionalData' ) ) {
+			$smwData = $output->getAdditionalData( 'smwdata' );
+		} elseif ( isset( $output->mSMWData ) ) {
+			$smwData = $output->mSMWData;
+		}
 
+		// No data container yet:
 		if ( !isset( $smwData ) ) {
 			if ( $title === null ) {
 				return null;
