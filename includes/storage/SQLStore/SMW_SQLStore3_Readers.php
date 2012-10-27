@@ -293,7 +293,8 @@ class SMWSQLStore3Readers {
 		}
 
 		$valuecount = 0;
-		$usedistinct = true; // use DISTINCT option only if no text blobs are among values
+		// Don't use DISTINCT for value of one subject:
+		$usedistinct = !$issubject;
 
 		$valueField = $diHandler->getIndexField();
 		$labelField = $diHandler->getLabelField();
@@ -322,6 +323,7 @@ class SMWSQLStore3Readers {
 					"$fieldname AS v$valuecount";
 			}
 
+			// Don't use DISTINCT with text blobs:
 			if ( $typeid == 'l' ) $usedistinct = false;
 			$valuecount += 1;
 		}
@@ -334,8 +336,10 @@ class SMWSQLStore3Readers {
 
 		// ***  Now execute the query and read the results  ***//
 		$res = $db->select( $from, $select, $where, 'SMW::getSemanticData',
-		       ( $usedistinct ? $this->store->getSQLOptions( $requestoptions, $valueField ) + array( 'DISTINCT' ) :
-		                        $this->store->getSQLOptions( $requestoptions, $valueField ) ) );
+				( $usedistinct ?
+					$this->store->getSQLOptions( $requestoptions, $valueField ) + array( 'DISTINCT' ) :
+					$this->store->getSQLOptions( $requestoptions, $valueField )
+				) );
 
 		foreach ( $res as $row ) {
 			if ( $issubject ) { // use joined or predefined property name
