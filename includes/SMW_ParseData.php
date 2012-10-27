@@ -50,9 +50,11 @@ class SMWParseData {
 	 * This function retrieves the SMW data from a given parser, and creates
 	 * a new empty container if it is not initiated yet.
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return SMWSemanticData
 	 */
-	static public function getSMWdata( $parser ) {
+	static public function getSMWdata( Parser $parser ) {
 		$output = $parser->getOutput();
 		$title = $parser->getTitle();
 
@@ -61,12 +63,49 @@ class SMWParseData {
 			return null;
 		}
 
+		$smwData = self::getSMWDataFromParserOutput( $output, $title );
+
+		return $smwData;
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * @param ParserOutput $output
+	 * @param Title|null $title
+	 *
+	 * @return SMWSemanticData|null
+	 */
+	public static function getSMWDataFromParserOutput( ParserOutput $output, Title $title = null ) {
 		// No data container yet.
-		if ( !isset( $output->mSMWData ) ) {
-			$output->mSMWData = new SMWSemanticData( new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() ) );
+		$smwData = method_exists( $output, 'getAdditionalData' ) ? $output->getAdditionalData( 'smwdata' ) : $output->mSMWData;
+
+		if ( !isset( $smwData ) ) {
+			if ( $title === null ) {
+				return null;
+			}
+
+			$smwData = new SMWSemanticData( SMWDIWikiPage::newFromTitle( $title ) );
+
+			self::setSMWData( $output, $smwData );
 		}
 
-		return $output->mSMWData;
+		return $smwData;
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * @param ParserOutput $output
+	 * @param SMWSemanticData $smwData
+	 */
+	public static function setSMWData( ParserOutput $output, SMWSemanticData $smwData ) {
+		if ( method_exists( $output, 'getAdditionalData' ) ) {
+			$output->setAdditionalData( 'smwdata', $smwData );
+		}
+		else {
+			$output->mSMWData = $smwData;
+		}
 	}
 
 	/**
@@ -75,14 +114,16 @@ class SMWParseData {
 	 * @param Parser $parser
 	 */
 	static public function clearStorage( Parser $parser ) {
-		$output = $parser->getOutput();
 		$title = $parser->getTitle();
 
-		if ( !isset( $output ) || !isset( $title ) ) {
+		if ( !isset( $title ) ) {
 			return;
 		}
 
-		$output->mSMWData = new SMWSemanticData( new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() ) );
+		self::setSMWData(
+			$parser->getOutput(),
+			new SMWSemanticData( SMWDIWikiPage::newFromTitle( $title ) )
+		);
 	}
 
 	/**
@@ -167,7 +208,7 @@ class SMWParseData {
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
 		global $smwgEnableUpdateJobs, $smwgDeclarationProperties, $smwgPageSpecialProperties;
 
-		$semdata = $parseroutput->mSMWData;
+		$semdata = self::getSMWDataFromParserOutput( $parseroutput, $title );
 		$namespace = $title->getNamespace();
 		$processSemantics = smwfIsSemanticsProcessed( $namespace );
 
@@ -425,17 +466,10 @@ class SMWParseData {
 		global $smwgPageSpecialProperties;
 		
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
-			$output = $article->mPreparedEdit->output;
-			$title = $article->getTitle();
-
-			if ( !isset( $title ) ) {
-				return true; // nothing we can do
-			}
-			if ( !isset( $output->mSMWData ) ) { // no data container yet, make one
-				$output->mSMWData = new SMWSemanticData( new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() ) );
-			}
-
-			$semdata = $output->mSMWData;
+			$semdata = self::getSMWDataFromParserOutput(
+				$article->mPreparedEdit->output,
+				$article->getTitle()
+			);
 		} else { // give up, just keep the old data
 			return true;
 		}

@@ -136,19 +136,19 @@ class SMWFactbox {
 		} else {
 			$showfactbox = $smwgShowFactbox;
 		}
-		
+
 		if ( $showfactbox == SMW_FACTBOX_HIDDEN ) { // use shortcut
 			return '';
 		}
 		
 		// Deal with complete dataset only if needed:
-		if ( !isset( $parseroutput->mSMWData ) || $parseroutput->mSMWData->stubObject ) {
-			$semdata = smwfGetStore()->getSemanticData( SMWDIWikiPage::newFromTitle( $title ) );
-		} else {
-			$semdata = $parseroutput->mSMWData;
+		$smwData = SMWParseData::getSMWDataFromParserOutput( $parseroutput );
+
+		if ( $smwData === null || $smwData->stubObject ) {
+			$smwData = smwfGetStore()->getSemanticData( SMWDIWikiPage::newFromTitle( $title ) );
 		}
 		
-		return SMWFactbox::getFactboxText( $semdata, $showfactbox );
+		return SMWFactbox::getFactboxText( $smwData, $showfactbox );
 	}
 
 	/**
