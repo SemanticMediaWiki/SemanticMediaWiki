@@ -18,7 +18,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.8
  *
  * @ingroup SMW
@@ -28,6 +27,10 @@
  * @author Markus Krötzsch
  */
 interface SMWIResultPrinter {
+
+	// Constructor restriction:
+	// Needs to have exactly one required argument $formatName.
+	// Is allowed to have additional optional arguments.
 
 	/**
 	 * Main entry point: takes an SMWQueryResult and parameters given as key-value-pairs in an array,

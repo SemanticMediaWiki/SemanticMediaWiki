@@ -18,7 +18,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file SMW_QueryPrinter.php
  * @ingroup SMWQuery
  *
  * @licence GNU GPL v2 or later
@@ -156,11 +155,13 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	 * Constructor. The parameter $format is a format string
 	 * that may influence the processing details.
 	 *
+	 * Do not override in deriving classes.
+	 *
 	 * @param string $format
-	 * @param $inline
+	 * @param boolean $inline Optional since 1.9
 	 * @param boolean $useValidator Deprecated since 1.6.2, removal in 1.10
 	 */
-	public function __construct( $format, $inline, $useValidator = false ) {
+	public function __construct( $format, $inline = true, $useValidator = false ) {
 		global $smwgQDefaultLinking;
 
 		$this->mFormat = $format;

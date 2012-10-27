@@ -267,6 +267,7 @@ final class SMWHooks {
 	*/
 	public static function registerUnitTests ( array &$files ) {
 		$testFiles = array(
+			'FormatFactory',
 			'QueryProcessor',
 
 			'dataitems/DI_Number',
@@ -277,6 +278,7 @@ final class SMWHooks {
 
 			'printers/ResultPrinters',
 
+			// Keep store tests near the end, since they are slower due to database access.
 			'storage/Store',
 		);
 
