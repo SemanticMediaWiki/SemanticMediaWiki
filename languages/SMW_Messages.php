@@ -2992,7 +2992,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
  * @author Mirzali
  */
 $messages['diq'] = array(
-	'smw_finallistconjunct' => 'ew',
+	'smw_finallistconjunct' => ', u',
 	'smw_printername_csv' => 'CSV Teberdayış',
 	'smw_printername_dsv' => 'DSV Teberdayış',
 	'smw_printername_json' => 'JSON teberdayış',
@@ -3019,7 +3019,7 @@ $messages['diq'] = array(
 	'smw_qui_dcategory' => 'Kategoriye:',
 	'searchbyproperty' => 'Xısusiyeti heta cıgeyrê',
 	'smw_sbv_value' => 'Qıymet:',
-	'smw_browselink' => 'Bewni xısusiyeta',
+	'smw_browselink' => 'Xısusiyetan bıvêne',
 	'smw_browse_go' => 'Şo',
 );
 
@@ -6317,9 +6317,6 @@ $messages['ia'] = array(
 	'smw_concept_cache_miss' => 'Le concepto "$1" non pote esser usate al momento, post que le configuration del wiki require que illo sia computate foras de linea. Si le problema non dispare post alcun tempore, demanda al administrator de tu sito de render disponibile iste concepto.',
 	'smw_noinvannot' => 'Le valores non pote esser assignate al proprietates inverse.',
 	'version-semantic' => 'Extensiones semantic',
-	'smw_uri_blacklist' => '  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-  http://www.w3.org/2000/01/rdf-schema#
-  http://www.w3.org/2002/07/owl#',
 	'smw_baduri' => 'Le adresses URI del forma "$1" non es permittite.',
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
@@ -7766,9 +7763,6 @@ Wann dat nit noh en jeweße Zick nit fun sellfs jedonn es, un hee di
 Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.',
 	'smw_noinvannot' => 'För Eijeschaffte met ömjedriehte Reschtung künne kei Wääte verjovve wääde.',
 	'version-semantic' => 'Projrammzohsäz vum „Semantesch MediaWiki“',
-	'smw_uri_blacklist' => '  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-  http://www.w3.org/2000/01/rdf-schema#
-  http://www.w3.org/2002/07/owl#',
 	'smw_baduri' => 'URIs met dämm Opbou „$1“ sin nit zojelohße.',
 	'smw_rss_link' => '<i lang="en">RSS</i>',
 	'smw_csv_link' => '<i lang="en">CSV</i>',
@@ -9869,9 +9863,6 @@ $messages['pl'] = array(
 	'smw_concept_cache_miss' => 'Koncepcja „$1” w chwili obecnej nie może zostać użyta, ponieważ konfiguracja wiki wymaga aby została ona przeliczona offline. Jeśli problem nie ustąpi po jakimś czasie, skontaktuj się z administratorem witryny.',
 	'smw_noinvannot' => 'Nie można przypisać wartości właściwościom odwrotnym.',
 	'version-semantic' => 'Rozszerzenia semantyczne',
-	'smw_uri_blacklist' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#
-http://www.w3.org/2000/01/rdf-schema#
-http://www.w3.org/2002/07/owl#',
 	'smw_baduri' => 'Niestety, URI z przestrzeni „$1” nie są w tym miejscu dostępne.',
 	'smw_dsv_link' => 'DSV',
 	'smw_printername_count' => 'Wyniki obliczeń',
@@ -12047,9 +12038,6 @@ $messages['sr-el'] = array(
 	'smw_concept_cache_miss' => 'Koncept "$1" se trenutno ne može koristiti, pošto konfiguracija vikija zahteva da bude komputovan oflajn.
 Ako problem ne nestane za neko vreme, zatražite od administratora sajta da učini ovaj koncept dostupnim.',
 	'smw_noinvannot' => 'Vrednosti nije moguće pripisati inverznim osobinama.',
-	'smw_uri_blacklist' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#
-http://www.w3.org/2000/01/rdf-schema#
-http://www.w3.org/2002/07/owl#',
 	'smw_baduri' => 'URI-ji oblika "$1", nisu prihvatljivi.',
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
