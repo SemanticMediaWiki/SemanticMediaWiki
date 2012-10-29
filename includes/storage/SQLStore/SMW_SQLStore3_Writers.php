@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * @ingroup SMWStore
+ * @since 1.8
+ */
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3
@@ -8,11 +13,10 @@
  * @author Nischay Nahata
  *
  * @since 1.8
- * @file
  * @ingroup SMWStore
  */
 
-Class SMWSQLStore3Writers {
+class SMWSQLStore3Writers {
 
 	/**
 	 * The store used by this store writer
@@ -23,7 +27,7 @@ Class SMWSQLStore3Writers {
 	protected $store;
 
 
-	public function __construct( &$parentstore ) {
+	public function __construct( SMWSQLStore3 $parentstore ) {
 		$this->store = $parentstore;
 	}
 
@@ -157,7 +161,7 @@ Class SMWSQLStore3Writers {
 			$tableName = $tableDeclaration->name;
 			if ( $tableName == 'smw_fpt_redi' ) {
 				// TODO - handle these for updating property counts
-				continue;	//smw_fpt_redi are not considered here.
+				continue; //smw_fpt_redi are not considered here.
 			}
 
 			if ( array_key_exists( $tableName, $updates ) ) {

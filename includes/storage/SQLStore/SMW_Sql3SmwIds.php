@@ -1,11 +1,8 @@
 <?php
 /**
- * Code to access the smw_ids table in SQLStore3.
- *
  * @file
  * @ingroup SMWStore
- *
- * @author Markus Krötzsch
+ * @since 1.8
  */
 
 
@@ -14,6 +11,7 @@
  * Provides transparent in-memory caching facilities.
  *
  * @since 1.8
+ * @author Markus Krötzsch
  *
  * @ingroup SMWStore
  */
