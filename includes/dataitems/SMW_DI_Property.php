@@ -117,8 +117,8 @@ class SMWDIProperty extends SMWDataItem {
 	 * internal so it should never be observed by users, then it is better
 	 * to just not associate any translated label with it, so it never
 	 * appears anywhere.
-	 * 
-	 * Examples of properties that are not shown include Modificaiton date
+	 *
+	 * Examples of properties that are not shown include Modification date
 	 * (not available in time), and Has improper value for (errors are
 	 * shown directly on the page anyway).
 	 *
@@ -142,17 +142,19 @@ class SMWDIProperty extends SMWDataItem {
 
 	/**
 	 * Find a user-readable label for this property, or return '' if it is
-	 * a predefined property that has no label.
+	 * a predefined property that has no label. For inverse properties, the
+	 * label starts with a "-".
 	 *
 	 * @return string
 	 */
 	public function getLabel() {
+		$prefix = $this->m_inverse ? '-' : '';
 		if ( $this->isUserDefined() ) {
-			return str_replace( '_', ' ', $this->m_key );
+			return $prefix . str_replace( '_', ' ', $this->m_key );
 		} else {
 			SMWDIProperty::initPropertyRegistration();
 			if ( array_key_exists( $this->m_key, SMWDIProperty::$m_prop_labels ) ) {
-				return SMWDIProperty::$m_prop_labels[$this->m_key];
+				return $prefix . SMWDIProperty::$m_prop_labels[$this->m_key];
 			} else {
 				return '';
 			}
