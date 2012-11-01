@@ -107,8 +107,9 @@ class SMWPropertyValue extends SMWDataValue {
 		$propertyName = smwfNormalTitleText( ltrim( rtrim( $value, ' ]' ), ' [' ) ); // slightly normalise label
 		$inverse = false;
 		if ( ( $propertyName !== '' ) && ( $propertyName { 0 } == '-' ) ) { // property refers to an inverse
-			$propertyName = (string)substr( $value, 1 );
+			$propertyName = smwfNormalTitleText( (string)substr( $value, 1 ) );
 			/// NOTE The cast is necessary at least in PHP 5.3.3 to get string '' instead of boolean false.
+			/// NOTE It is necessary to normalize again here, since normalization may uppercase the first letter.
 			$inverse = true;
 		}
 

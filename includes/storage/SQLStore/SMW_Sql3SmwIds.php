@@ -57,7 +57,7 @@ class SMWSql3SmwIds {
 	protected $regular_ids = array();
 	/// Cache for non-property sortkeys.
 	protected $regular_sortkeys = array();
-	
+
 	//protected $subobject_data = array();
 
 	/// Use pre-defined ids for Very Important Properties, avoiding frequent ID lookups for those
@@ -306,6 +306,9 @@ class SMWSql3SmwIds {
 	/**
 	 * This function does the same as getSMWPageID() but takes into account
 	 * that properties might be predefined.
+	 *
+	 * @note There is no distinction between properties and inverse
+	 * properties here. A property and its inverse have the same ID in SMW.
 	 */
 	public function getSMWPropertyID( SMWDIProperty $property ) {
 		if ( ( !$property->isUserDefined() ) && ( array_key_exists( $property->getKey(), self::$special_ids ) ) ) {
@@ -601,7 +604,7 @@ class SMWSql3SmwIds {
 	 * statistics about the SMWSql3SmwIds object created last.
 	 * The following code can be used in LocalSettings.php to enable
 	 * this in a wiki:
-	 * 
+	 *
 	 * $wgHooks['SkinAfterContent'][] = 'showCacheStats';
 	 * function showCacheStats() {
 	 *   SMWSql3SmwIds::debugDumpCacheStats();
