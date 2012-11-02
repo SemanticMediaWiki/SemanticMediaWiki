@@ -332,7 +332,7 @@ class SMWQueryUIHelper {
 			$rawParams = $this->parameters;
 		}
 
-		SMWQueryProcessor::processFunctionParams( $rawParams, $this->queryString, $this->parameters, $this->printOuts );
+		list( $this->queryString, $this->parameters, $this->m_printOuts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
 	}
 
 	/**

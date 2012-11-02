@@ -1,7 +1,13 @@
 <?php
+/**
+ * @file
+ * @since 1.6.2
+ * @ingroup SMW
+ * @ingroup API
+ */
 
 /**
- * API module to query SMW by providing a query in the ask language. 
+ * API module to query SMW by providing a query in the ask language.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,26 +28,23 @@
  *
  * @ingroup SMW
  * @ingroup API
- *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ApiAsk extends ApiSMWQuery {
-	
+
 	public function execute() {
 		$params = $this->extractRequestParams();
 
 		$rawParams = preg_split( "/(?<=[^\|])\|(?=[^\|])/", $params['query'] );
-		$queryString = '';
-		$printouts = array();
-		
-		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $this->parameters, $printouts );
+
+		list( $queryString, $this->parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
 
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$queryString,
 			$printouts
 		) );
-		
+
 		$this->addQueryResult( $queryResult );
 	}
 
@@ -53,13 +56,13 @@ class ApiAsk extends ApiSMWQuery {
 			),
 		);
 	}
-	
+
 	public function getParamDescription() {
 		return array(
 			'query' => 'The query string in ask-language'
 		);
 	}
-	
+
 	public function getDescription() {
 		return array(
 			'API module to query SMW by providing a query in the ask language.'
@@ -70,10 +73,10 @@ class ApiAsk extends ApiSMWQuery {
 		return array(
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
 		);
-	}	
-	
+	}
+
 	public function getVersion() {
 		return __CLASS__ . '-' . SMW_VERSION;
 	}		
-	
+
 }
