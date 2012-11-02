@@ -8018,6 +8018,7 @@ $messages['lb'] = array(
 	'smw_printername_template' => 'Schabloun',
 	'smw_printername_rdf' => 'RDF-Export',
 	'smw_printername_category' => 'Kategorie',
+	'validator-type-class-SMWParamSource' => 'Text',
 	'smw-paramdesc-limit' => "D'maximal Zuel vu Resultater déi gewise gëtt",
 	'smw-paramdesc-mainlabel' => "D'Etiquette déi der Haaptsäit den Numm gëtt",
 	'smw-paramdesc-link' => "D'Werter als Linke weisen",
@@ -8168,6 +8169,8 @@ Zréck op d'Säit $1.",
 	'smw-paramdesc-category-userparam' => 'E Parameter deen der Schabloun iwwergi gëtt',
 	'smw-info-par-message' => 'Message fir ze weisen.',
 	'smw-info-par-icon' => 'Symbol fir entweder "Info" oder "Warnung" ze weisen.',
+	'smw-ui-tooltip-title-warning' => 'Feeler',
+	'smw-ui-tooltip-title-parameter' => 'Parameter',
 );
 
 /** Lithuanian (lietuvių)
