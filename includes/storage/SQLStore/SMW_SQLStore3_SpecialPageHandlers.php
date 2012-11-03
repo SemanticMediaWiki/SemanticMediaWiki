@@ -194,6 +194,17 @@ class SMWSQLStore3SpecialPageHandlers {
 		$result = array();
 		$proptables = SMWSQLStore3::getPropertyTables();
 
+		// Properties with their own page
+		$result['OWNPAGE'] = $dbr->estimateRowCount( 'page', '*', array( 'page_namespace' => SMW_NS_PROPERTY ) );
+
+		// Count existing inline queries
+		$typeprop = new SMWDIProperty( '_ASK' );
+		$typetable = $proptables[SMWSQLStore3::findPropertyTableID( $typeprop )];
+		$res = $dbr->select( $typetable->name, 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$row = $dbr->fetchObject( $res );
+		$result['QUERY'] = $row->count;
+		$dbr->freeResult( $res );
+
 		// count number of declared properties by counting "has type" annotations
 		$typeprop = new SMWDIProperty( '_TYPE' );
 		$typetable = $proptables[SMWSQLStore3::findPropertyTableID( $typeprop )];
