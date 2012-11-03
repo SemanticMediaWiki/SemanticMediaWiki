@@ -22,7 +22,7 @@ class SMWSpecialSemanticStatistics extends SpecialPage {
 		$wgOut->setPageTitle( wfMessage( 'semanticstatistics' )->text() );
 
 		$semanticStatistics = smwfGetStore()->getStatistics();
-	
+
 		$dbr = wfGetDB( DB_SLAVE );
 		
 		$propertyPageAmount = $dbr->estimateRowCount(

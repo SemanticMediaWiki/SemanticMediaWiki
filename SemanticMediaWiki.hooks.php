@@ -407,7 +407,6 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onResourceLoaderGetConfigVars( &$vars ) {
-
 		$vars['smw'] = array(
 			'version' => SMW_VERSION,
 			'options' => array(
@@ -415,6 +414,39 @@ final class SMWHooks {
 				'QMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
 			)
 		);
+
+		return true;
+	}
+
+	/**
+	* Add extra statistic at the end of Special:Statistics.
+	* @see http://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
+	*
+	* @since 1.9
+	*
+	* @param $extraStats
+	* @return boolean
+	*/
+	public static function onSpecialStatsAddExtra( $context, &$extraStats ) {
+		global $wgVersion, $wgLang;
+
+		$semanticStatistics = smwfGetStore()->getStatistics();
+
+		if ( version_compare( $wgVersion, '1.21', '<' ) ) {
+			// Legacy approach to display statistical items
+			$extraStats[wfMessage( 'smw-statistics-property-instance' )->text()] = $wgLang->formatNum( $semanticStatistics['PROPUSES'] );
+			$extraStats[wfMessage( 'smw-statistics-property-total-legacy' )->text()] = $wgLang->formatNum( $semanticStatistics['USEDPROPS'] );
+			$extraStats[wfMessage( 'smw-statistics-property-page' )->text()] = $wgLang->formatNum( $semanticStatistics['OWNPAGE'] );
+			$extraStats[wfMessage( 'smw-statistics-property-type' )->text()] = $wgLang->formatNum( $semanticStatistics['DECLPROPS'] );
+			$extraStats[wfMessage( 'smw-statistics-query-inline' )->text()]  = $wgLang->formatNum( $semanticStatistics['QUERY'] );
+		} else {
+			$extraStats['smw-statistics'] = array();
+			$extraStats['smw-statistics']['smw-statistics-property-instance'] = $semanticStatistics['PROPUSES'];
+			$extraStats['smw-statistics']['smw-statistics-property-total']    = $semanticStatistics['USEDPROPS'];
+			$extraStats['smw-statistics']['smw-statistics-property-page']  = $semanticStatistics['OWNPAGE'];
+			$extraStats['smw-statistics']['smw-statistics-property-type']  = $semanticStatistics['DECLPROPS'];
+			$extraStats['smw-statistics']['smw-statistics-query-inline']   = $semanticStatistics['QUERY'];
+		}
 
 		return true;
 	}

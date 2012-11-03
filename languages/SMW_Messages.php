@@ -214,6 +214,14 @@ Generates browsable RDF.',
 Some of the existing properties might be [[Special:UnusedProperties|unused properties]].
 Properties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].',
 
+	'smw-statistics' => 'Semantic statistics',
+	'smw-statistics-property-instance' => 'Property value {{PLURAL:$1|assignment|assignments}}',
+	'smw-statistics-property-total' => 'Total of [[Special:Properties|{{PLURAL:$1|property|different properties}}]]',
+	'smw-statistics-property-total-legacy' => 'Total of {{PLURAL:$1|property|different properties}}',
+	'smw-statistics-property-page'  => '{{PLURAL:$1|Property|Properties}} with their own page',
+	'smw-statistics-property-type'  => '{{PLURAL:$1|Property|Properties}} with an assigned datatype',
+	'smw-statistics-query-inline'   => 'Total of inline {{PLURAL:$1|query|queries}}',
+
 	// Name of the URI Resolver Special (no content)
 	'smw_uri_doc' => 'The URI resolver implements the [$1 W3C TAG finding on httpRange-14].
 It takes care that humans do not turn into websites.',
@@ -926,6 +934,14 @@ See also:
 	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}
 {{Identical|Legend}}',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
+
+	'smw-statistics' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-instance' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-total' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-total-legacy' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-page'  => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-type'  => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-query-inline'   => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
 );
 
 /** Afrikaans (Afrikaans)
