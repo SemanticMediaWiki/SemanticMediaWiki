@@ -136,7 +136,10 @@ class SMWStringValue extends SMWDataValue {
 	 */
 	protected function getCodeDisplay( $value, $scroll = false ) {
 		SMWOutputs::requireResource( 'ext.smw.style' );
-		$result = str_replace( array( '<', '>', ' ', '=', "'", ':', "\n" ), array( '&lt;', '&gt;', '&#160;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ), $value );
+		$result = str_replace(
+			array( '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ),
+			array( '&lt;', '&gt;', '&#160;', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ),
+			$value );
 		if ( $scroll ) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
 		}
