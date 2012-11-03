@@ -59,9 +59,17 @@ class SMWLanguageAr extends SMWLanguage {
 		'_SERV' => 'يوفر الخدمة',
 		'_PVAL' => 'يسمح بالقيمة',
 		'_MDAT' => 'تاريخ التعديل',
+		'_CDAT' => 'Creation date', // TODO: translate
+		'_NEWP' => 'Is a new page', // TODO: translate
+		'_LEDT' => 'Last editor is', // TODO: translate
 		'_ERRP' => 'يمتلك قيمة غير صحيحة ل',
 		'_LIST' => 'يمتلك حقول',
 		'_SOBJ' => 'Has subobject', // TODO: translate
+		'_ASK'  => 'Has query', // TODO: translate
+		'_ASKST'=> 'Query string', // TODO: translate
+		'_ASKFO'=> 'Query format', // TODO: translate
+		'_ASKSI'=> 'Query size', // TODO: translate
+		'_ASKDE'=> 'Query depth', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

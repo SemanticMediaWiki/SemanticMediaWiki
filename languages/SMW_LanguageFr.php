@@ -59,9 +59,17 @@ class SMWLanguageFr extends SMWLanguage {
 		'_SERV' => 'Fournit le service',
 		'_PVAL' => 'Valeur possible',
 		'_MDAT' => 'Date de modification',
+		'_CDAT' => 'Creation date', // TODO: translate
+		'_NEWP' => 'Is a new page', // TODO: translate
+		'_LEDT' => 'Last editor is', // TODO: translate
 		'_ERRP' => 'A une valeur incorrecte pour',
 		'_LIST' => 'A le champ',
 		'_SOBJ' => 'Has subobject', // TODO: translate
+		'_ASK'  => 'Has query', // TODO: translate
+		'_ASKST'=> 'Query string', // TODO: translate
+		'_ASKFO'=> 'Query format', // TODO: translate
+		'_ASKSI'=> 'Query size', // TODO: translate
+		'_ASKDE'=> 'Query depth', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

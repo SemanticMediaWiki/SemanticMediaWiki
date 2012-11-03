@@ -65,9 +65,17 @@ class SMWLanguageZh_cn extends SMWLanguage {
 		'_SERV' => '提供服务',      // Provides service
 		'_PVAL' => '允许值',      // Allows value
 		'_MDAT' => 'Modification date',  // TODO: translate
+		'_CDAT' => 'Creation date', // TODO: translate
+		'_NEWP' => 'Is a new page', // TODO: translate
+		'_LEDT' => 'Last editor is', // TODO: translate
 		'_ERRP' => 'Has improper value for', // TODO: translate
 		'_LIST' => 'Has fields', // TODO: translate
 		'_SOBJ' => 'Has subobject', // TODO: translate
+		'_ASK'  => 'Has query', // TODO: translate
+		'_ASKST'=> 'Query string', // TODO: translate
+		'_ASKFO'=> 'Query format', // TODO: translate
+		'_ASKSI'=> 'Query size', // TODO: translate
+		'_ASKDE'=> 'Query depth', // TODO: translate
 	);
 
 

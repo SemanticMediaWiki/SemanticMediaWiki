@@ -53,9 +53,17 @@ class SMWLanguageFi extends SMWLanguage {
 		'_SERV' => 'Tarjoaa palvelun',
 		'_PVAL' => 'Mahdollinen arvo',
 		'_MDAT' => 'Muokkausaika',
+		'_CDAT' => 'Creation date', // TODO: translate
+		'_NEWP' => 'Is a new page', // TODO: translate
+		'_LEDT' => 'Last editor is', // TODO: translate
 		'_ERRP' => 'Sopimaton arvo kentälle',
 		'_LIST' => 'Koostuu kentistä',
 		'_SOBJ' => 'Has subobject', // TODO: translate
+		'_ASK'  => 'Has query', // TODO: translate
+		'_ASKST'=> 'Query string', // TODO: translate
+		'_ASKFO'=> 'Query format', // TODO: translate
+		'_ASKSI'=> 'Query size', // TODO: translate
+		'_ASKDE'=> 'Query depth', // TODO: translate
 	);
 
 	protected $m_Namespaces = array(

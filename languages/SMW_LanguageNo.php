@@ -68,9 +68,17 @@ class SMWLanguageNo extends SMWLanguage {
 		'_SERV' => 'Tilbyr tjeneste',
 		'_PVAL' => 'Tillater verdi',
 		'_MDAT' => 'Endringsdato',
+		'_CDAT' => 'Creation date', // TODO: translate
+		'_NEWP' => 'Is a new page', // TODO: translate
+		'_LEDT' => 'Last editor is', // TODO: translate
 		'_ERRP' => 'Feilaktig verdi for',
 		'_LIST' => 'Has fields', // TODO: translate
 		'_SOBJ' => 'Has subobject', // TODO: translate
+		'_ASK'  => 'Has query', // TODO: translate
+		'_ASKST'=> 'Query string', // TODO: translate
+		'_ASKFO'=> 'Query format', // TODO: translate
+		'_ASKSI'=> 'Query size', // TODO: translate
+		'_ASKDE'=> 'Query depth', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

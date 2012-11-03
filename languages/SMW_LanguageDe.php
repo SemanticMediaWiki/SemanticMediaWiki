@@ -70,11 +70,16 @@ class SMWLanguageDe extends SMWLanguage {
 		'_PVAL' => 'Erlaubt Wert',
 		'_MDAT' => 'Zuletzt geändert',
 		'_CDAT' => 'Erstellt',
+		'_NEWP' => 'Ist eine neue Seite',
+		'_LEDT' => 'Letzter Bearbeiter ist',
 		'_ERRP' => 'Hat unpassenden Wert für',
 		'_LIST' => 'Hat Komponenten',
 		'_SOBJ' => 'Hat Unterobjekt',
-		'_NEWP' => 'Ist eine neue Seite',
-		'_LEDT' => 'Letzter Bearbeiter ist',
+		'_ASK'  => 'Hat Abfrage',
+		'_ASKST'=> 'Abfragetext',
+		'_ASKFO'=> 'Abfrageformat',
+		'_ASKSI'=> 'Abfragegröße',
+		'_ASKDE'=> 'Abfragetiefe',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

@@ -87,6 +87,12 @@ class SMWSql3SmwIds {
 		'_CDAT' => 30,
 		'_NEWP' => 31,
 		'_LEDT' => 32,
+		// properties related to query management
+		'_ASK'   =>  33,
+		'_ASKST' =>  34,
+		'_ASKFO' =>  35,
+		'_ASKSI' =>  36,
+		'_ASKDE' =>  37,
 	);
 
 	/**

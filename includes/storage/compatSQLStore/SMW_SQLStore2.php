@@ -75,6 +75,12 @@ class SMWSQLStore2 extends SMWStore {
 		'_CDAT' => 30,
 		'_NEWP' => 31,
 		'_LEDT' => 32,
+		// properties related to query management
+		'_ASK'   =>  33,
+		'_ASKST' =>  34,
+		'_ASKFO' =>  35,
+		'_ASKSI' =>  36,
+		'_ASKDE' =>  37,
 	);
 
 	/// Use special tables for Very Important Properties
@@ -525,10 +531,10 @@ class SMWSQLStore2 extends SMWStore {
 
 	/**
 	 * @see SMWStore::getAllPropertySubjects
-	 * 
+	 *
 	 * @param SMWDIProperty $property
 	 * @param SMWRequestOptions $requestoptions
-	 * 
+	 *
 	 * @return array of SMWDIWikiPage
 	 */
 	public function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
@@ -608,9 +614,9 @@ class SMWSQLStore2 extends SMWStore {
 	/**
 	 * Implementation of SMWStore::getInProperties(). This function is meant to
 	 * be used for finding properties that link to wiki pages.
-	 * 
+	 *
 	 * @see SMWStore::getInProperties
-	 * 
+	 *
 	 * TODO: When used for other datatypes, the function may return too many
 	 * properties since it selects results by comparing the stored information
 	 * (DB keys) only, while not currently comparing the type of the returned
@@ -620,7 +626,7 @@ class SMWSQLStore2 extends SMWStore {
 	 *
 	 * @param SMWDataItem $value
 	 * @param SMWRequestOptions $requestoptions
-	 * 
+	 *
 	 * @return array of SMWWikiPageValue
 	 */
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
@@ -681,7 +687,7 @@ class SMWSQLStore2 extends SMWStore {
 
 	/**
 	 * @see SMWStore::deleteSubject
-	 * 
+	 *
 	 * @param Title $subject
 	 */
 	public function deleteSubject( Title $subject ) {
@@ -708,13 +714,13 @@ class SMWSQLStore2 extends SMWStore {
 
 	/**
 	 * @see SMWStore::doDataUpdate
-	 * 
+	 *
 	 * @param SMWSemanticData $data
 	 */
 	public function doDataUpdate( SMWSemanticData $data ) {
 		wfProfileIn( "SMWSQLStore2::updateData (SMW)" );
 		wfRunHooks( 'SMWSQLStore2::updateDataBefore', array( $this, $data ) );
-		
+
 		$subject = $data->getSubject();
 		$this->deleteSemanticData( $subject );
 
@@ -752,7 +758,7 @@ class SMWSQLStore2 extends SMWStore {
 			if ( array_key_exists( 'smw_conc2', $updates ) && ( count( $updates['smw_conc2'] ) != 0 ) ) {
 				$up_conc2 = end( $updates['smw_conc2'] );
 				unset ( $up_conc2['cache_date'] );
-				unset ( $up_conc2['cache_count'] ); 
+				unset ( $up_conc2['cache_count'] );
 			} else {
 				$up_conc2 = array(
 				     'concept_txt'   => '',
@@ -785,9 +791,9 @@ class SMWSQLStore2 extends SMWStore {
 		foreach ( self::getPropertyTables() as $tableId => $tableDeclaration ) {
 			$this->m_sdstate[$sid][$tableId] = true;
 		}
-		
+
 		wfRunHooks( 'SMWSQLStore2::updateDataAfter', array( $this, $data ) );
-		
+
 		wfProfileOut( "SMWSQLStore2::updateData (SMW)" );
 	}
 
@@ -935,7 +941,7 @@ class SMWSQLStore2 extends SMWStore {
 			} // at this point, $sid is the id of the target page (according to smw_ids)
 
 			// make redirect id for oldtitle:
-			$this->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL2_SMWREDIIW, '' ); 
+			$this->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL2_SMWREDIIW, '' );
 			$db->insert( 'smw_redi2', array( 's_title' => $oldtitle->getDBkey(),
 						's_namespace' => $oldtitle->getNamespace(),
 						'o_id' => $sid ),
@@ -972,7 +978,7 @@ class SMWSQLStore2 extends SMWStore {
 				'smw_subobject != ' . $db->addQuotes( '' );
 			$db->query( $sql, __METHOD__ );
 // The below code can be used instead when moving to MW 1.17 (support for '!' in Database::makeList()):
-// 			$db->update( 'smw_ids', 
+// 			$db->update( 'smw_ids',
 // 				array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
 // 				array( 'smw_title' => $oldtitle->getDBkey(), 'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '', 'smw_subobject!' => array( '' ) ), // array() needed for ! to work
 // 				__METHOD__ );
@@ -984,7 +990,7 @@ class SMWSQLStore2 extends SMWStore {
 			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
 			$this->updateRedirects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
 		}
-		
+
 		wfProfileOut( "SMWSQLStore2::changeTitle (SMW)" );
 	}
 
@@ -992,9 +998,9 @@ class SMWSQLStore2 extends SMWStore {
 
 	/**
 	 * @see SMWStore::getQueryResult
-	 * 
+	 *
 	 * @param $query SMWQuery
-	 * 
+	 *
 	 * @return mixed: depends on $query->querymode
 	 */
 	public function getQueryResult( SMWQuery $query ) {
@@ -1108,7 +1114,7 @@ class SMWSQLStore2 extends SMWStore {
 					$sql = "DELETE FROM $smw_tmp_unusedprops USING " .
 					"$smw_tmp_unusedprops INNER JOIN " . $db->tableName( $proptable->name ) .
 					" INNER JOIN $smw_ids ON p_id=smw_id AND title=smw_title" .
-					" AND smw_iw=" . $db->addQuotes( '' );			
+					" AND smw_iw=" . $db->addQuotes( '' );
 				}
 				$db->query( $sql, __METHOD__ );
 			} // else: todo
@@ -1472,12 +1478,12 @@ class SMWSQLStore2 extends SMWStore {
 
 	/**
 	 * @see SMWStore::refreshData
-	 * 
+	 *
 	 * @param integer $index
 	 * @param integer $count
 	 * @param mixed $namespaces Array or false
 	 * @param boolean $usejobs
-	 * 
+	 *
 	 * @return decimal between 0 and 1 to indicate the overall progress of the refreshing
 	 */
 	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
@@ -1488,7 +1494,7 @@ class SMWSQLStore2 extends SMWStore {
 		$tids = array();
 
 		// Array of ids
-		for ( $i = $index; $i < $index + $count; $i++ ) { 
+		for ( $i = $index; $i < $index + $count; $i++ ) {
 			$tids[] = $i;
 		}
 
@@ -1503,7 +1509,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$dbr = wfGetDB( DB_SLAVE );
-		
+
 		$res = $dbr->select(
 			'smw_ids',
 			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject' ),
@@ -1535,12 +1541,12 @@ class SMWSQLStore2 extends SMWStore {
 						$dbr->delete( $proptable->name, array( 's_id' => $row->smw_id ), __METHOD__ );
 					}
 				}
-				
+
 				$dbr->delete( 'smw_ids',	array( 'smw_id' => $row->smw_id ), __METHOD__ );
 			} else { // "normal" interwiki pages or outdated internal objects
 				$diWikiPage = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw );
 				$this->deleteSemanticData( $diWikiPage );
-			} 
+			}
 		}
 		$dbr->freeResult( $res );
 
@@ -1576,7 +1582,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * Refresh the concept cache for the given concept.
 	 *
 	 * @param $concept Title
-	 * 
+	 *
 	 * @return array
 	 */
 	public function refreshConceptCache( Title $concept ) {
@@ -2174,7 +2180,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * only properties can be used as properties) instead of moving them.
 	 *
 	 * The id in smw_ids as such is not touched.
-	 * 
+	 *
 	 * @note This method only changes internal page IDs in SMW. It does not
 	 * assume any change in (title-related) data, as e.g. in a page move.
 	 * Internal objects (subobject) do not need to be updated since they
@@ -2213,7 +2219,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 			}
 		}
-		
+
 		// Change id entries in concept-related tables:
 		if ( $sdata && ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_CONCEPT ) ) ) {
 			if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_CONCEPT ) ) {
@@ -2224,7 +2230,7 @@ class SMWSQLStore2 extends SMWStore {
 				$db->delete( 'smw_conccache', array( 's_id' => $oldid ), __METHOD__ );
 			}
 		}
-		
+
 		if ( $podata ) {
 			$db->update( 'smw_conccache', array( 'o_id' => $newid ), array( 'o_id' => $oldid ), __METHOD__ );
 		}
@@ -2288,7 +2294,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		// free all affected subobjects in one call:
 		if ( count( $subobjects ) > 0 ) {
-			$db->delete( 'smw_ids', 
+			$db->delete( 'smw_ids',
 				array( 'smw_id' => $subobjects),
 				__METHOD__ );
 		}
@@ -2395,7 +2401,7 @@ class SMWSQLStore2 extends SMWStore {
 				/// NOTE: we do not update the concept cache here; this remains an offline task
 
 				/// NOTE: this only happens if $smwgEnableUpdateJobs was true above:
-				Job::batchInsert( $jobs ); 
+				Job::batchInsert( $jobs );
 			}
 		}
 
@@ -2455,7 +2461,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * be limited for performance reasons,
 	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
 	 * - n for namespace numbers (or other similar integers)
-	 * - f for floating point numbers of double precision 
+	 * - f for floating point numbers of double precision
 	 * - p for a reference to an SMW ID as stored in the smw_ids table; this
 	 *   corresponds to a data entry of ID "tnwt".
 	 *
@@ -2470,46 +2476,46 @@ class SMWSQLStore2 extends SMWStore {
 			array( 'o_id' => 'p' ),
 			array( 'o_id' )
 		);
-		
+
 		self::$prop_tables['smw_atts2'] = new SMWSQLStore2Table(
 			'smw_atts2',
 			array( 'value_xsd' => 't', 'value_num' => 'f' ),
 			array( 'value_num', 'value_xsd' )
 		);
-		
+
 		self::$prop_tables['smw_text2'] = new SMWSQLStore2Table(
 			'smw_text2',
 			array( 'value_blob' => 'l' )
 		);
-		
+
 		self::$prop_tables['smw_spec2'] = new SMWSQLStore2Table(
 			'smw_spec2',
 			array( 'value_string' => 't' ),
 			array( 's_id,p_id' )
 		);
 		self::$prop_tables['smw_spec2']->specpropsonly = true;
-		
+
 		self::$prop_tables['smw_subs2'] = new SMWSQLStore2Table(
 			'smw_subs2',
 			array( 'o_id' => 'p' ),
 			array( 'o_id' ),
 			'_SUBC'
 		);
-		
+
 		self::$prop_tables['smw_subp2'] = new SMWSQLStore2Table(
 			'smw_subp2',
 		    array( 'o_id' => 'p' ),
 			array( 'o_id' ),
 			'_SUBP'
 		);
-		
+
 		self::$prop_tables['smw_inst2'] = new SMWSQLStore2Table(
 			'smw_inst2',
 		    array( 'o_id' => 'p' ),
 			array( 'o_id' ),
 			'_INST'
 		);
-		
+
 		self::$prop_tables['smw_redi2'] = new SMWSQLStore2Table(
 			'smw_redi2',
 			array( 'o_id' => 'p' ),
@@ -2524,12 +2530,12 @@ class SMWSQLStore2 extends SMWStore {
 			array( ),
 			'_CONC'
 		);
-		
+
 		self::$prop_tables['smw_coords'] = new SMWSQLStore2Table(
 			'sm_coords',
 			array( 'lat' => 'f', 'lon' => 'f', 'alt' => 'f' ),
 			array( 'lat', 'lon', 'alt' )
-		);		
+		);
 
 		wfRunHooks( 'SMWPropertyTables', array( &self::$prop_tables ) );
 

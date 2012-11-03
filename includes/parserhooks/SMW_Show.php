@@ -33,12 +33,15 @@ class SMWShow {
 		if ( $smwgQEnabled ) {
 			$smwgIQRunningNumber++;
 
-			$params = func_get_args();
-			array_shift( $params ); // We already know the $parser ...
+			$rawParams = func_get_args();
+			array_shift( $rawParams ); // We already know the $parser ...
 
-			list( $query, $params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams( $params, SMW_OUTPUT_WIKI, SMWQueryProcessor::INLINE_QUERY, true );
+			list( $query, $params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams( $rawParams, SMW_OUTPUT_WIKI, SMWQueryProcessor::INLINE_QUERY, true );
 
 			$result = SMWQueryProcessor::getResultFromQuery( $query, $params, SMW_OUTPUT_WIKI, SMWQueryProcessor::INLINE_QUERY );
+
+			$queryKey = hash( 'md4', implode( '|', $rawParams ) , false );
+			SMWAsk::addQueryData( $queryKey, $query, $params, $parser );
 		} else {
 			$result = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
 		}

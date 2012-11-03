@@ -14,6 +14,7 @@ production until the actual release.
 
 * Added anonymous auto-numbering for subobjects that don't specify their identifier (bug 36634)
 * Added atom printer (bug 38636)
+* SMW now collects data about all queries, and this data can be queried to get an overview of queries used on the wiki. Information about queries is stored in subobjects of the page they are on. The property [[Property:Has query]] links a page to a query. The query subobject currently holds values for the following properties: [[Property:Query string]], [[Property:Query format]], [[Property:Query size]], [[Property:Query depth]].
 * Added support to have fixed tables for a property, see http://semantic-mediawiki.org/wiki/Fixed_properties
 * Added new info tooltip (bug 37361)
 * Added two new output formats for properties of type Time, "Gr" and "Jl", to set the desired calendar model for display in #ask results. If nothing is given, SMW will select the calendar based on the date as before (Julian calendar defaults from until 4th Oct 1582). As before. the same behaviour is used when entering dates, and "Jl" and "Gr" also work in this case.
