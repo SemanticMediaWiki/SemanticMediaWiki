@@ -101,8 +101,8 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 			} else {
 				throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
 			}
-		} else { // use blob
-			return new SMWDIString( $dbkeys[0] );
+		} else {
+			return new SMWDIBlob( $dbkeys[0] );
 		}
 	}
 
