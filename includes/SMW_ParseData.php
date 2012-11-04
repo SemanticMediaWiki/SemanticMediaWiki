@@ -50,9 +50,11 @@ class SMWParseData {
 	 * This function retrieves the SMW data from a given parser, and creates
 	 * a new empty container if it is not initiated yet.
 	 *
+	 * @param Parser $parser
+	 *
 	 * @return SMWSemanticData
 	 */
-	static public function getSMWdata( $parser ) {
+	static public function getSMWdata( Parser $parser ) {
 		$output = $parser->getOutput();
 		$title = $parser->getTitle();
 
@@ -61,12 +63,53 @@ class SMWParseData {
 			return null;
 		}
 
-		// No data container yet.
-		if ( !isset( $output->mSMWData ) ) {
-			$output->mSMWData = new SMWSemanticData( new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() ) );
+		$smwData = self::getSMWDataFromParserOutput( $output, $title );
+
+		return $smwData;
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * @param ParserOutput $output
+	 * @param Title|null $title
+	 *
+	 * @return SMWSemanticData|null
+	 */
+	public static function getSMWDataFromParserOutput( ParserOutput $output, Title $title = null ) {
+		if ( method_exists( $output, 'getAdditionalData' ) ) {
+			$smwData = $output->getAdditionalData( 'smwdata' );
+		} elseif ( isset( $output->mSMWData ) ) {
+			$smwData = $output->mSMWData;
 		}
 
-		return $output->mSMWData;
+		// No data container yet:
+		if ( !isset( $smwData ) ) {
+			if ( $title === null ) {
+				return null;
+			}
+
+			$smwData = new SMWSemanticData( SMWDIWikiPage::newFromTitle( $title ) );
+
+			self::setSMWData( $output, $smwData );
+		}
+
+		return $smwData;
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * @param ParserOutput $output
+	 * @param SMWSemanticData $smwData
+	 */
+	public static function setSMWData( ParserOutput $output, SMWSemanticData $smwData ) {
+		if ( method_exists( $output, 'getAdditionalData' ) ) {
+			$output->setAdditionalData( 'smwdata', $smwData );
+		}
+		else {
+			$output->mSMWData = $smwData;
+		}
 	}
 
 	/**
@@ -75,14 +118,16 @@ class SMWParseData {
 	 * @param Parser $parser
 	 */
 	static public function clearStorage( Parser $parser ) {
-		$output = $parser->getOutput();
 		$title = $parser->getTitle();
 
-		if ( !isset( $output ) || !isset( $title ) ) {
+		if ( !isset( $title ) ) {
 			return;
 		}
 
-		$output->mSMWData = new SMWSemanticData( new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() ) );
+		self::setSMWData(
+			$parser->getOutput(),
+			new SMWSemanticData( SMWDIWikiPage::newFromTitle( $title ) )
+		);
 	}
 
 	/**
@@ -104,18 +149,18 @@ class SMWParseData {
 
 		// See if this property is a special one, such as e.g. "has type".
 		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
-		
+
 		if ( !$propertyDv->isValid() ) {
 			return $propertyDv;
 		}
-		
+
 		$propertyDi = $propertyDv->getDataItem();
-		
+
 		// FIXME: this solves the issue of bug 29438, but is probably not what we want to do.
 		if ( $propertyDi instanceof SMWDIError ) {
 			return $propertyDv;
 		}
-		
+
 		$semandticData = self::getSMWData( $parser );
 
 		$result = SMWDataValueFactory::newPropertyObjectValue(
@@ -129,7 +174,7 @@ class SMWParseData {
 			$result->addError( wfMessage( 'smw_noinvannot' )->inContentLanguage()->text() );
 		} elseif ( $storeAnnotation && !is_null( self::getSMWData( $parser ) ) ) {
 			$semandticData->addPropertyObjectValue( $propertyDi, $result->getDataItem() );
-			
+
 			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
 			if ( !$result->isValid() ) {
 				$semandticData->addPropertyObjectValue(
@@ -167,7 +212,7 @@ class SMWParseData {
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
 		global $smwgEnableUpdateJobs, $smwgDeclarationProperties, $smwgPageSpecialProperties;
 
-		$semdata = $parseroutput->mSMWData;
+		$semdata = self::getSMWDataFromParserOutput( $parseroutput, $title );
 		$namespace = $title->getNamespace();
 		$processSemantics = smwfIsSemanticsProcessed( $namespace );
 
@@ -183,18 +228,18 @@ class SMWParseData {
 				if ( array_key_exists( $propId, $props ) ) {
 					continue;
 				}
-				
+
 				// Remember the property is processed.
-				$props[ $propId ] = true;              
+				$props[ $propId ] = true;
 				$prop = new SMWDIProperty( $propId );
-				
+
 				if ( count( $semdata->getPropertyValues( $prop ) ) > 0  ) {
 					continue;
 				}
-				
+
 				// Calculate property value.
 				$value = null;
-				
+
 				switch ( $propId ) {
 					case '_MDAT' :
 						$timestamp =  Revision::getTimeStampFromID( $title, $title->getLatestRevID() );
@@ -208,16 +253,21 @@ class SMWParseData {
 						$value = new SMWDIBoolean( $title->isNewPage() );
 						break;
 					case '_LEDT' :
-						$revision = Revision::newFromId( $title->getLatestRevID() );
+						// Do *not* use
+						// $revision = Revision::newFromId( $title->getLatestRevID() );
+						// When run from maintenance/runJobs.php it causes exceptions since
+						// `$title->getLatestRevID()' returns zero for *existing* page.
+						// See https://bugzilla.wikimedia.org/show_bug.cgi?id=35962 for discussion.
+						$revision = Revision::newFromTitle( $title );
 						$user = User::newFromId( $revision->getUser() );
 						$value = SMWDIWikiPage::newFromTitle( $user->getUserPage() );
 						break;
 				}
-				
+
 				if ( !is_null( $value ) ) {
-					$semdata->addPropertyObjectValue( $prop, $value );    
+					$semdata->addPropertyObjectValue( $prop, $value );
 				} // Issue error or warning?
-				
+
 			} // foreach
 		} else { // data found, but do all operations as if it was empty
 			$semdata = new SMWSemanticData( $semdata->getSubject() );
@@ -263,7 +313,7 @@ class SMWParseData {
 
 				foreach ( $subjects as $subject ) {
 					$subjectTitle = $subject->getTitle();
-					
+
 					if ( !is_null( $subjectTitle ) ) {
 						$jobs[] = new SMWUpdateJob( $subjectTitle );
 					}
@@ -287,17 +337,17 @@ class SMWParseData {
 
 				foreach ( $proppages as $proppage ) {
 					$propertyTitle = $proppage->getTitle();
-					
+
 					if ( !is_null( $propertyTitle ) ) {
 						$jobs[] = new SMWUpdateJob( $propertyTitle );
 					}
-					
+
 					$prop = new SMWDIProperty( $proppage->getDBkey() );
 					$subjects = $store->getAllPropertySubjects( $prop );
 
 					foreach ( $subjects as $subject ) {
 						$subjectTitle = $subject->getTitle();
-						
+
 						if ( !is_null( $subjectTitle ) ) {
 							$jobs[] = new SMWUpdateJob( $subjectTitle );
 						}
@@ -310,7 +360,7 @@ class SMWParseData {
 
 					foreach ( $subjects as $subject ) {
 						$subjectTitle = $subject->getTitle();
-						
+
 						if ( !is_null( $subjectTitle ) ) {
 							$jobs[] = new SMWUpdateJob( $subject->getTitle() );
 						}
@@ -413,29 +463,22 @@ class SMWParseData {
 	 * the purpose of adding information there. If the private access ever becomes a problem,
 	 * a global/static variable appears to be the only way to get more article data to
 	 * LinksUpdate.
-	 * 
+	 *
 	 * @param WikiPage|Article $article WikiPage on 1.19 and later
 	 * @param Revision $rev
 	 * @param integer $baseID
 	 * @param User $user
-	 * 
+	 *
 	 * @return true
 	 */
 	static public function onNewRevisionFromEditComplete( /* WikiPage */ $article, Revision $rev, $baseID, User $user ) {
 		global $smwgPageSpecialProperties;
-		
+
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
-			$output = $article->mPreparedEdit->output;
-			$title = $article->getTitle();
-
-			if ( !isset( $title ) ) {
-				return true; // nothing we can do
-			}
-			if ( !isset( $output->mSMWData ) ) { // no data container yet, make one
-				$output->mSMWData = new SMWSemanticData( new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() ) );
-			}
-
-			$semdata = $output->mSMWData;
+			$semdata = self::getSMWDataFromParserOutput(
+				$article->mPreparedEdit->output,
+				$article->getTitle()
+			);
 		} else { // give up, just keep the old data
 			return true;
 		}
@@ -443,23 +486,23 @@ class SMWParseData {
 		if ( in_array( '_MDAT', $smwgPageSpecialProperties ) ) {
 			$timestamp = $article->getTimestamp();
 			$di = self::getDataItemFromMWTimestamp( $timestamp );
-			
+
 			if ( !is_null( $di ) ) {
 				$semdata->addPropertyObjectValue( new SMWDIProperty( '_MDAT' ), $di );
 			}
 		}
-		
+
 		if ( in_array( '_LEDT', $smwgPageSpecialProperties ) ) {
 			$di = SMWDIWikiPage::newFromTitle( $user->getUserPage() );
-			
+
 			if ( !is_null( $di ) ) {
 				$semdata->addPropertyObjectValue( new SMWDIProperty( '_LEDT' ), $di );
 			}
 		}
-		
+
 		if ( in_array( '_NEWP', $smwgPageSpecialProperties ) ) {
 			$semdata->addPropertyObjectValue(
-				new SMWDIProperty( '_NEWP' ), 
+				new SMWDIProperty( '_NEWP' ),
 				new SMWDIBoolean( is_null( $rev->getParentId() ) )
 			);
 		}

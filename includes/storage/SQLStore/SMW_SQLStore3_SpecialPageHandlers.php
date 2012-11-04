@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * @ingroup SMWStore
+ * @since 1.8
+ */
 
 /**
  * Class Handling all the Special Page methods for SMWSQLStore3
@@ -8,11 +13,9 @@
  * @author Nischay Nahata
  *
  * @since 1.8
- * @file
  * @ingroup SMWStore
  */
-
-Class SMWSQLStore3SpecialPageHandlers {
+class SMWSQLStore3SpecialPageHandlers {
 
 	/**
 	 * The store used by this specialPageHandler
@@ -23,7 +26,7 @@ Class SMWSQLStore3SpecialPageHandlers {
 	protected $store;
 
 
-	public function __construct( &$parentstore ) {
+	public function __construct( SMWSQLStore3 $parentstore ) {
 		$this->store = $parentstore;
 	}
 

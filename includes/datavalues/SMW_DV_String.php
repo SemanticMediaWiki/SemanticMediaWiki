@@ -43,8 +43,7 @@ class SMWStringValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( ( $dataItem->getDIType() == SMWDataItem::TYPE_BLOB ) ||
-			( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) ) {
+		if ( $dataItem instanceof SMWDIBlob ) {
 			$this->m_dataitem = $dataItem;
 			if ( $this->m_typeid == '_cod' ) {
 				$this->m_caption = $this->getCodeDisplay( $this->m_dataitem->getString() );
@@ -137,7 +136,10 @@ class SMWStringValue extends SMWDataValue {
 	 */
 	protected function getCodeDisplay( $value, $scroll = false ) {
 		SMWOutputs::requireResource( 'ext.smw.style' );
-		$result = str_replace( array( '<', '>', ' ', '=', "'", ':', "\n" ), array( '&lt;', '&gt;', '&#160;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ), $value );
+		$result = str_replace(
+			array( '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ),
+			array( '&lt;', '&gt;', '&#160;', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ),
+			$value );
 		if ( $scroll ) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
 		}

@@ -6,8 +6,9 @@
 
 /**
  * This class implements Concept data items.
- * These special data items for storing concept declaration data in SMW may
- * well vanish at some point since Container values could encode this data
+ * 
+ * @note These special data items for storing concept declaration data in SMW
+ * should vanish at some point since Container values could encode this data
  * just as well.
  *
  * @since 1.6

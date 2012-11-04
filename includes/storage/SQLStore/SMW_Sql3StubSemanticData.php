@@ -1,14 +1,9 @@
 <?php
 /**
- * The class in this file provides a subclass of SMWSemanticData that can store
- * prefetched values from SMW's SQL stores, and unstub this data on demand when
- * it is accessed.
- *
  * @file
  * @ingroup SMWStore
- *
- * @author Markus Krötzsch
-  */
+ * @since 1.8
+ */
 
 /**
  * This class provides a subclass of SMWSemanticData that can store
@@ -16,6 +11,7 @@
  * it is accessed.
  * 
  * @since 1.8
+ * @author Markus Krötzsch
  *
  * @ingroup SMWStore
  */

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * @ingroup SMWStore
+ * @since 1.8
+ */
 
 /**
  * Class Handling all the setup methods for SMWSQLStore3
@@ -8,11 +13,9 @@
  * @author Nischay Nahata
  *
  * @since 1.8
- * @file
  * @ingroup SMWStore
  */
-
-Class SMWSQLStore3SetupHandlers {
+class SMWSQLStore3SetupHandlers {
 
 	/**
 	 * The store used by this setupHandler
@@ -22,8 +25,7 @@ Class SMWSQLStore3SetupHandlers {
 	 */
 	protected $store;
 
-
-	public function __construct( &$parentstore ) {
+	public function __construct( SMWSQLStore3 $parentstore ) {
 		$this->store = $parentstore;
 	}
 
@@ -35,6 +37,7 @@ Class SMWSQLStore3SetupHandlers {
 
 		$this->setupTables( $verbose, $db );
 		$this->setupPredefinedProperties( $verbose, $db );
+		$this->computeStats( $verbose, $db );
 
 		return true;
 	}
@@ -94,7 +97,16 @@ Class SMWSQLStore3SetupHandlers {
 			$reportTo
 		);
 
-		SMWSQLHelpers::setupIndex( 'smw_ids', array( 'smw_id', 'smw_title,smw_namespace,smw_iw', 'smw_title,smw_namespace,smw_iw,smw_subobject', 'smw_sortkey' ), $db );
+		SMWSQLHelpers::setupIndex(
+			'smw_ids',
+			array(
+				'smw_id',
+				'smw_id,smw_sortkey', 
+				'smw_title,smw_namespace,smw_iw,smw_subobject', // id lookup
+				'smw_sortkey' // select by sortkey (range queries)
+			),
+			$db
+		);
 
 		// Set up concept cache: member elements (s)->concepts (o)
 		SMWSQLHelpers::setupTable(
@@ -131,28 +143,50 @@ Class SMWSQLStore3SetupHandlers {
 	/**
 	 * Sets up the property tables.
 	 *
+	 * @since 1.8
 	 * @param array $dbtypes
-	 * @param $db
-	 * @param $reportTo SMWSQLStore3 or null
+	 * @param DatabaseBase|Database $db
+	 * @param SMWSQLStore3SetupHandlers|null $reportTo
 	 */
-	protected function setupPropertyTables( array $dbtypes, $db, $reportTo ) {
+	protected function setupPropertyTables( array $dbtypes, $db, SMWSQLStore3SetupHandlers $reportTo = null ) {
 		$addedCustomTypeSignatures = false;
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->diType );
+
+			// Prepare indexes. By default, property-value tables
+			// have the following indexes:
+			//
+			// sp: getPropertyValues(), getSemanticData(), getProperties()
+			// po: ask, getPropertySubjects()
+			//
+			// The "p" component is omitted for tables with fixed property.
+			$indexes = array();
 			if ( $proptable->idsubject ) {
 				$fieldarray = array( 's_id' => $dbtypes['p'] . ' NOT NULL' );
-				$indexes = array( 's_id' );
+				$indexes['sp'] = 's_id';
 			} else {
 				$fieldarray = array( 's_title' => $dbtypes['t'] . ' NOT NULL', 's_namespace' => $dbtypes['n'] . ' NOT NULL' );
-				$indexes = array( 's_title,s_namespace' );
+				$indexes['sp'] = 's_title,s_namespace';
 			}
+
+			$indexes['po'] = $diHandler->getIndexField();
 
 			if ( !$proptable->fixedproperty ) {
 				$fieldarray['p_id'] = $dbtypes['p'] . ' NOT NULL';
-				$indexes[] = 'p_id';
+				$indexes['po'] = 'p_id,' . $indexes['po'];
+				$indexes['sp'] = $indexes['sp'] . ',p_id';
 			}
 
-			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->diType );
+			// TODO Special handling; concepts should be handled differently
+			// in the future. See comments in SMW_DIHandler_Concept.php.
+			if ( $proptable->diType == SMWDataItem::TYPE_CONCEPT ) {
+				unset( $indexes['po'] );
+			}
+
+			$indexes = array_merge( $indexes, $diHandler->getTableIndexes() );
+			$indexes = array_unique( $indexes );
+
 			foreach ( $diHandler->getTableFields() as $fieldname => $typeid ) {
 				// If the type signature is not recognized and the custom signatures have not been added, add them.
 				if ( !$addedCustomTypeSignatures && !array_key_exists( $typeid, $dbtypes ) ) {
@@ -165,10 +199,10 @@ Class SMWSQLStore3SetupHandlers {
 					$fieldarray[$fieldname] = $dbtypes[$typeid];
 				}
 			}
-			$indexes = array_merge( $indexes, $diHandler->getTableIndexes() );
 
 			SMWSQLHelpers::setupTable( $proptable->name, $fieldarray, $db, $reportTo );
-			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db );
+
+			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db, $reportTo );
 		}
 	}
 
@@ -225,17 +259,6 @@ Class SMWSQLStore3SetupHandlers {
 					'smw_sortkey' => $p->getLabel()
 				), 'SMW::setup'
 			);
-			$id = $db->insertId();
-
-			// Properties also need to be in smw_stats
-			$db->insert(
-				'smw_stats',
-				array(
-					'pid' => $id,
-					'usage_count' => 0
-				),
-				__METHOD__
-			);
 		}
 
 		$this->reportProgress( " done.\n", $verbose );
@@ -250,6 +273,53 @@ Class SMWSQLStore3SetupHandlers {
 		}
 
 		$this->reportProgress( "Internal properties initialised successfully.\n", $verbose );
+	}
+
+	/**
+	 * Compute statistics for all the properties, basically update the count in smw_stats
+	 */
+	protected function computeStats( $verbose, $db ) {
+
+		$this->reportProgress( "Computing property statistics.\n", $verbose );
+		$res = $db->select(
+				'smw_ids',
+				array( 'smw_id', 'smw_title', 'smw_sortkey' ),
+				array( 'smw_namespace' => SMW_NS_PROPERTY  ),
+				__METHOD__
+		);
+		$proptables = SMWSQLStore3::getPropertyTables();
+
+		$count = 0;
+		foreach ( $res as $row ) {
+			$count++;
+
+			try{
+				$di = new SMWDIProperty( $row->smw_title );
+			} catch( SMWDataItemException $e ) {
+				$this->reportProgress( "Warning: Could not create a property for key\"{$row->smw_title}\" ({$e->getMessage()}) \n", $verbose );
+				continue;
+			}
+
+			$tableId = SMWSQLStore3::findPropertyTableID( $di );
+			$proptable = $proptables[$tableId];
+			$propRow = $db->selectRow(
+					$proptable->name,
+					'Count(*) as count',
+					$proptable->fixedproperty ? array() : array('p_id' => $row->smw_id ),
+					__METHOD__
+			);
+			$db->replace(
+				'smw_stats',
+				'pid',
+				array(
+					'pid' => $row->smw_id,
+					'usage_count' => $propRow->count
+				),
+				__METHOD__
+			);
+		}
+		$db->freeResult( $res );
+		$this->reportProgress( "Updated statistics for $count Properties.\n", $verbose );
 	}
 
 	public function drop( $verbose = true ) {

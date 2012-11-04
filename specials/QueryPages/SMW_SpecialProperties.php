@@ -113,7 +113,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 				->rawParams( $proplink )->params( $useCount )->text() . ' ' . $warnings;
 		} else {
 			// @todo Should use numParams for $useCount?
-			return wfMessage( 'smw_property_template', $useCount )
+			return wfMessage( 'smw_property_template' )
 				->rawParams( $proplink, $typestring )
 				->params( $useCount )->escaped() . ' ' . $warnings;
 		}

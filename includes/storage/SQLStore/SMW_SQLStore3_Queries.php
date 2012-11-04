@@ -1,18 +1,17 @@
 <?php
 /**
- * Query answering functions for SMWSQLStore3. Separated from main code for
- * readability.
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- *
  * @file
  * @ingroup SMWStore
+ * @since 1.8
  */
 
 /**
  * Class for representing a single (sub)query description. Simple data
  * container.
+ *
+ * @since 1.8
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  * @ingroup SMWStore
  */
 class SMWSQLStore3Query {
@@ -25,21 +24,21 @@ class SMWSQLStore3Query {
 	/// table name; joinfield/components/where use alias.fields;
 	/// from uses external table names, components interpreted
 	/// conjunctively (JOIN)).
-	const Q_TABLE = 1; 
+	const Q_TABLE = 1;
 	/// Type of query that matches a constant value (joinfield is a
 	/// disjunctive array of unquoted values, jointable empty, components
 	/// empty).
-	const Q_VALUE = 2; 
+	const Q_VALUE = 2;
 	/// Type of query that is a disjunction of other queries
 	/// (joinfield/jointable empty; only components relevant)
 	const Q_DISJUNCTION = 3;
-	/// Type of query that is a conjunction of other queries 
+	/// Type of query that is a conjunction of other queries
 	/// (joinfield/jointable empty; only components relevant).
 	const Q_CONJUNCTION = 4;
 	/// Type of query that creates a temporary table of all superclasses
 	/// of given classes (only joinfield relevant: (disjunctive) array of
 	/// unquoted values).
-	const Q_CLASS_HIERARCHY = 5; 
+	const Q_CLASS_HIERARCHY = 5;
 	/// Type of query that creates a temporary table of all superproperties
 	/// of given properties (only joinfield relevant: (disjunctive) array
 	/// of unquoted values).
@@ -102,7 +101,7 @@ class SMWSQLStore3QueryEngine {
 	/** Local collection of error strings, passed on to callers if possible. */
 	protected $m_errors = array();
 
-	public function __construct( &$parentstore, &$dbslave ) {
+	public function __construct( SMWSQLStore3 $parentstore, $dbslave ) {
 		$this->m_store = $parentstore;
 		$this->m_dbs = $dbslave;
 	}
@@ -525,9 +524,9 @@ class SMWSQLStore3QueryEngine {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
 					$query->type = SMWSQLStore3Query::Q_VALUE;
 					$oid = $this->m_store->smwIds->getSMWPageID(
-						$description->getDataItem()->getDBkey(), 
-						$description->getDataItem()->getNamespace(), 
-						$description->getDataItem()->getInterwiki(), 
+						$description->getDataItem()->getDBkey(),
+						$description->getDataItem()->getNamespace(),
+						$description->getDataItem()->getInterwiki(),
 						$description->getDataItem()->getSubobjectName() );
 					$query->joinfield = array( $oid );
 				} else { // Join with smw_ids needed for other comparators (apply to title string).
@@ -618,7 +617,7 @@ class SMWSQLStore3QueryEngine {
 		if ( $query->type != SMWSQLStore3Query::Q_NOQUERY  ) {
 			$this->m_queries[$query->queryNumber] = $query;
 
-			// Propagate sortkeys from subqueries: 
+			// Propagate sortkeys from subqueries:
 			if ( $query->type != SMWSQLStore3Query::Q_DISJUNCTION ) {
 				// Sortkeys are killed by disjunctions (not all parts may have them),
 				// NOTE: preprocessing might try to push disjunctions downwards to safe sortkey, but this seems to be minor
@@ -792,7 +791,7 @@ class SMWSQLStore3QueryEngine {
 					case SMW_CMP_GEQ: $comparator = '>='; break;
 					case SMW_CMP_NEQ: $comparator = '!='; break;
 					case SMW_CMP_LIKE: case SMW_CMP_NLKE:
-						if ( $description->getComparator() == SMW_CMP_LIKE ) { 
+						if ( $description->getComparator() == SMW_CMP_LIKE ) {
 							$comparator = ' LIKE ';
 						} else {
 							$comparator = ' NOT LIKE ';
@@ -800,7 +799,7 @@ class SMWSQLStore3QueryEngine {
 						// Escape to prepare string matching:
 						$value = str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
 						break;
-					default: 
+					default:
 						throw new MWException( "Unsupported comparator '" . $description->getComparator() . "' in query condition." );
 				}
 

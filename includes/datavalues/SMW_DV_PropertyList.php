@@ -66,7 +66,7 @@ class SMWPropertyListValue extends SMWDataValue {
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) {
+		if ( $dataItem instanceof SMWDIBlob ) {
 			$this->m_dataitem = $dataItem;
 			$this->m_diProperties = array();
 

@@ -45,7 +45,8 @@ class SMWAdmin extends SpecialPage {
 		$row = $dbr->selectRow( 'job', '*', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );
 		if ( $row !== false ) { // similar to Job::pop_type, but without deleting the job
 			$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title );
-			$refreshjob = Job::factory( $row->job_cmd, $title, Job::extractBlob( $row->job_params ), $row->job_id );
+			$blob = (string)$row->job_params !== '' ? unserialize( $row->job_params ) : false;
+			$refreshjob = Job::factory( $row->job_cmd, $title, $blob, $row->job_id );
 		} else {
 			$refreshjob = null;
 		}

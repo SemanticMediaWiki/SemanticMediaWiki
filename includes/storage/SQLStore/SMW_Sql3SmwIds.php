@@ -1,11 +1,8 @@
 <?php
 /**
- * Code to access the smw_ids table in SQLStore3.
- *
  * @file
  * @ingroup SMWStore
- *
- * @author Markus Krötzsch
+ * @since 1.8
  */
 
 
@@ -14,6 +11,7 @@
  * Provides transparent in-memory caching facilities.
  *
  * @since 1.8
+ * @author Markus Krötzsch
  *
  * @ingroup SMWStore
  */
@@ -59,7 +57,7 @@ class SMWSql3SmwIds {
 	protected $regular_ids = array();
 	/// Cache for non-property sortkeys.
 	protected $regular_sortkeys = array();
-	
+
 	//protected $subobject_data = array();
 
 	/// Use pre-defined ids for Very Important Properties, avoiding frequent ID lookups for those
@@ -308,6 +306,9 @@ class SMWSql3SmwIds {
 	/**
 	 * This function does the same as getSMWPageID() but takes into account
 	 * that properties might be predefined.
+	 *
+	 * @note There is no distinction between properties and inverse
+	 * properties here. A property and its inverse have the same ID in SMW.
 	 */
 	public function getSMWPropertyID( SMWDIProperty $property ) {
 		if ( ( !$property->isUserDefined() ) && ( array_key_exists( $property->getKey(), self::$special_ids ) ) ) {
@@ -603,7 +604,7 @@ class SMWSql3SmwIds {
 	 * statistics about the SMWSql3SmwIds object created last.
 	 * The following code can be used in LocalSettings.php to enable
 	 * this in a wiki:
-	 * 
+	 *
 	 * $wgHooks['SkinAfterContent'][] = 'showCacheStats';
 	 * function showCacheStats() {
 	 *   SMWSql3SmwIds::debugDumpCacheStats();
@@ -613,19 +614,22 @@ class SMWSql3SmwIds {
 	public static function debugDumpCacheStats() {
 		$that = self::$singleton_debug;
 		if ( is_null( $that ) ) return;
-		print "Executed {$that->selectrow_sort_debug} selects for sortkeys.\n";
-		print "Executed {$that->selectrow_redi_debug} selects for redirects.\n";
-		print "Regular cache hits: {$that->reghit_debug} misses: {$that->regmiss_debug}";
+
+		$debugString =
+			"Statistics for SMWSql3SmwIds:\n" .
+			"- Executed {$that->selectrow_sort_debug} selects for sortkeys.\n" .
+			"- Executed {$that->selectrow_redi_debug} selects for redirects.\n" .
+			"- Regular cache hits: {$that->reghit_debug} misses: {$that->regmiss_debug}";
 		if ( $that->regmiss_debug + $that->reghit_debug > 0 ) {
-			print " rate: " . $that->reghit_debug/( $that->regmiss_debug + $that->reghit_debug );
+			$debugString .= " rate: " . round( $that->reghit_debug/( $that->regmiss_debug + $that->reghit_debug ), 3 );
 		}
-		print " cache size: " . count( $that->regular_ids ) . "\n";
-		print "Property cache hits: {$that->prophit_debug} misses: {$that->propmiss_debug}";
+		$debugString .= " cache size: " . count( $that->regular_ids ) . "\n" ;
+		$debugString .= "- Property cache hits: {$that->prophit_debug} misses: {$that->propmiss_debug}";
 		if ( $that->propmiss_debug + $that->prophit_debug > 0 ) {
-			print " rate: " . $that->prophit_debug/( $that->propmiss_debug + $that->prophit_debug );
+			$debugString .= " rate: " . round( $that->prophit_debug/( $that->propmiss_debug + $that->prophit_debug ), 3 );
 		}
-		print " cache size: " . count( $that->prop_ids ) . "\n";
-// 		debug_zval_dump($that->prop_ids);
+		$debugString .= " cache size: " . count( $that->prop_ids ) . "\n";
+		wfDebug( $debugString );
 	}
 
 }

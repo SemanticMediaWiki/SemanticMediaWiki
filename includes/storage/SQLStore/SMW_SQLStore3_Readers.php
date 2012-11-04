@@ -1,18 +1,21 @@
 <?php
+/**
+ * @file
+ * @ingroup SMWStore
+ * @since 1.8
+ */
 
 /**
- * Class Handling all the read methods for SMWSQLStore3
+ * Class to provide all basic read methods for SMWSQLStore3.
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author Nischay Nahata
  *
  * @since 1.8
- * @file
  * @ingroup SMWStore
  */
-
-Class SMWSQLStore3Readers {
+class SMWSQLStore3Readers {
 
 	/**
 	 * The store used by this store reader
@@ -25,7 +28,7 @@ Class SMWSQLStore3Readers {
 	/// >0 while getSemanticData runs, used to prevent nested calls from clearing the cache while another call runs and is about to fill it with data
 	protected static $in_getSemanticData = 0;
 
-	public function __construct( &$parentstore ) {
+	public function __construct( SMWSQLStore3 $parentstore ) {
 		$this->store = $parentstore;
 	}
 
@@ -140,6 +143,28 @@ Class SMWSQLStore3Readers {
 	}
 
 	/**
+	 * This method adds property-values of a subject from a property-value
+	 * table into the given SemanticData object.
+	 *
+	 * @todo Share code with getSemanticDatafromTable above? The problem is
+	 * that this method must not return too much, so it is hard to use the
+	 * cache.
+	 *
+	 * @param SMWSql3StubSemanticData $semData
+	 * @param SMWSQLStore3Table $proptable
+	 *
+	 * @since 1.8
+	 */
+	public function addTableSemanticData( $sid, SMWSql3StubSemanticData $semData, SMWSQLStore3Table $proptable ) {
+		$subject = $semData->getSubject();
+		$data = $this->fetchSemanticData( $sid, $subject, $proptable );
+
+		foreach ( $data as $d ) {
+			$semData->addPropertyStubValue( reset( $d ), end( $d ) );
+		}
+	}
+
+	/**
 	 * @see SMWStore::getPropertyValues
 	 *
 	 * @since 1.8
@@ -198,30 +223,35 @@ Class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * Helper function for reading all data for from a given property table (specified by an
-	 * SMWSQLStore3Table object), based on certain restrictions. The function can filter data
-	 * based on the subject (1) or on the property it belongs to (2) -- but one of those must
-	 * be done. The Boolean $issubject is true for (1) and false for (2).
+	 * Helper function for reading all data for from a given property table
+	 * (specified by an SMWSQLStore3Table object), based on certain
+	 * restrictions. The function can filter data based on the subject (1)
+	 * or on the property it belongs to (2) -- but one of those must be
+	 * done. The Boolean $issubject is true for (1) and false for (2).
 	 *
-	 * In case (1), the first two parameters are taken to refer to a subject; in case (2) they
-	 * are taken to refer to a property. In any case, the retrieval is limited to the specified
-	 * $proptable. The parameters are an internal $id (of a subject or property), and an $object
-	 * (being an SMWDIWikiPage or SMWDIProperty). Moreover, when filtering by property, it is
-	 * assumed that the given $proptable belongs to the property: if it is a table with fixed
-	 * property, it will not be checked that this is the same property as the one that was given
-	 * in $object.
+	 * In case (1), the first two parameters are taken to refer to a
+	 * subject; in case (2) they are taken to refer to a property. In any
+	 * case, the retrieval is limited to the specified $proptable. The
+	 * parameters are an internal $id (of a subject or property), and an
+	 * $object (being an SMWDIWikiPage or SMWDIProperty). Moreover, when
+	 * filtering by property, it is assumed that the given $proptable
+	 * belongs to the property: if it is a table with fixed property, it
+	 * will not be checked that this is the same property as the one that
+	 * was given in $object.
 	 *
-	 * In case (1), the result in general is an array of pairs (arrays of size 2) consisting of
-	 * a property key (string), and an array of DB keys (array) from which a datvalue object for
-	 * this value could be built. It is possible that some of the DB keys are based on internal
-	 * objects; these will be represented by similar result arrays of (recursive calls of)
-	 * fetchSemanticData().
+	 * In case (1), the result in general is an array of pairs (arrays of
+	 * size 2) consisting of a property key (string), and an array of DB
+	 * keys (array) from which a datvalue object for this value could be
+	 * built. It is possible that some of the DB keys are based on internal
+	 * objects; these will be represented by similar result arrays of
+	 * (recursive calls of) fetchSemanticData().
 	 *
-	 * In case (2), the result is simply an array of DB keys (array) without the property keys.
-	 * Container objects will be encoded with nested arrays like in case (1).
+	 * In case (2), the result is simply an array of DB keys (array)
+	 * without the property keys. Container objects will be encoded with
+	 * nested arrays like in case (1).
 	 *
-	 * @todo Maybe share DB handler; asking for it seems to take quite some time and we do not want
-	 * to change it in one call.
+	 * @todo Maybe share DB handler; asking for it seems to take quite some
+	 * time and we do not want to change it in one call.
 	 *
 	 * @param integer $id
 	 * @param SMWDataItem $object
@@ -263,7 +293,8 @@ Class SMWSQLStore3Readers {
 		}
 
 		$valuecount = 0;
-		$usedistinct = true; // use DISTINCT option only if no text blobs are among values
+		// Don't use DISTINCT for value of one subject:
+		$usedistinct = !$issubject;
 
 		$valueField = $diHandler->getIndexField();
 		$labelField = $diHandler->getLabelField();
@@ -292,6 +323,7 @@ Class SMWSQLStore3Readers {
 					"$fieldname AS v$valuecount";
 			}
 
+			// Don't use DISTINCT with text blobs:
 			if ( $typeid == 'l' ) $usedistinct = false;
 			$valuecount += 1;
 		}
@@ -304,8 +336,10 @@ Class SMWSQLStore3Readers {
 
 		// ***  Now execute the query and read the results  ***//
 		$res = $db->select( $from, $select, $where, 'SMW::getSemanticData',
-		       ( $usedistinct ? $this->store->getSQLOptions( $requestoptions, $valueField ) + array( 'DISTINCT' ) :
-		                        $this->store->getSQLOptions( $requestoptions, $valueField ) ) );
+				( $usedistinct ?
+					$this->store->getSQLOptions( $requestoptions, $valueField ) + array( 'DISTINCT' ) :
+					$this->store->getSQLOptions( $requestoptions, $valueField )
+				) );
 
 		foreach ( $res as $row ) {
 			if ( $issubject ) { // use joined or predefined property name
@@ -542,15 +576,8 @@ Class SMWSQLStore3Readers {
 	 * Implementation of SMWStore::getInProperties(). This function is meant to
 	 * be used for finding properties that link to wiki pages.
 	 *
+	 * @since 1.8
 	 * @see SMWStore::getInProperties
-	 *
-	 * TODO: When used for other datatypes, the function may return too many
-	 * properties since it selects results by comparing the stored information
-	 * (DB keys) only, while not currently comparing the type of the returned
-	 * property to the type of the queried data. So values with the same DB keys
-	 * can be confused. This is a minor issue now since no code is known to use
-	 * this function in cases where this occurs.
-	 *
 	 * @param SMWDataItem $value
 	 * @param SMWRequestOptions $requestoptions
 	 *
@@ -611,25 +638,6 @@ Class SMWSQLStore3Readers {
 		wfProfileOut( "SMWSQLStore3::getInProperties (SMW)" );
 
 		return $result;
-	}
-
-	/**
-	 * This method adds property-values of a subject from a property-value table into the given 
-	 * SemanticData object.
-	 * @todo Use share code with getSemanticData above, maybe remove it completely with this??
-	 *
-	 * @param SMWSql3StubSemanticData $semData
-	 * @param SMWSQLStore3Table $proptable
-	 *
-	 * @since 1.8
-	 */
-	public function addTableSemanticData( $sid, SMWSql3StubSemanticData &$semData, SMWSQLStore3Table $proptable ) {
-		$subject = $semData->getSubject();
-		$data = $this->fetchSemanticData( $sid, $subject, $proptable );
-
-		foreach ( $data as $d ) {
-			$semData->addPropertyStubValue( reset( $d ), end( $d ) );
-		}
 	}
 
 }

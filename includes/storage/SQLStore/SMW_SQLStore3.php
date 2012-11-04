@@ -1,9 +1,7 @@
 <?php
 
 /**
- * New SQL implementation of SMW's storage abstraction layer.
- * TODO: Check what needs to be protected and make them protected.
- * ( Most helper methods and pre-defined property arrays were made public to support the storerewrite)
+ * SQL-based implementation of SMW's storage abstraction layer.
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
@@ -22,17 +20,21 @@ define( 'SMW_SQL3_SMWBORDERIW', ':smw-border' ); // virtual "interwiki prefix" s
 define( 'SMW_SQL3_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" marking internal (invisible) predefined properties
 
 /**
- * Storage access class for using the standard MediaWiki SQL database
- * for keeping semantic data.
+ * Storage access class for using the standard MediaWiki SQL database for
+ * keeping semantic data.
  *
  * @note Regarding the use of interwiki links in the store, there is currently
- * no support for storing semantic data about interwiki objects, and hence queries
- * that involve interwiki objects really make sense only for them occurring in
- * object positions. Most methods still use the given input interwiki text as a simple
- * way to filter out results that may be found if an interwiki object is given but a
- * local object of the same name exists. It is currently not planned to support things
- * like interwiki reuse of properties.
- * 
+ * no support for storing semantic data about interwiki objects, and hence
+ * queries that involve interwiki objects really make sense only for them
+ * occurring in object positions. Most methods still use the given input
+ * interwiki text as a simple way to filter out results that may be found if an
+ * interwiki object is given but a local object of the same name exists. It is
+ * currently not planned to support things like interwiki reuse of properties.
+ *
+ * @todo Check what needs to be protected and make them protected. Many helper
+ * methods and pre-defined property arrays were made public to support the
+ * storerewrite).
+ *
  * @since 1.8
  * @ingroup SMWStore
  */

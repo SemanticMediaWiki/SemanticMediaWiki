@@ -43,7 +43,7 @@ class SMWQueryParser {
 	 */
 	public function setDefaultNamespaces( $nsarray ) {
 		$this->m_defaultns = null;
-		
+
 		if ( !is_null( $nsarray ) ) {
 			foreach ( $nsarray as $ns ) {
 				$this->m_defaultns = $this->addDescription( $this->m_defaultns, new SMWNamespaceDescription( $ns ), false );
@@ -137,7 +137,7 @@ class SMWQueryParser {
 			switch ( $chunk ) {
 				case '[[': // start new link block
 					$ld = $this->getLinkDescription( $setsubNS );
-					
+
 					if ( !is_null( $ld ) ) {
 						$conjunction = $this->addDescription( $conjunction, $ld );
 					}
@@ -279,7 +279,7 @@ class SMWQueryParser {
 			} else { // assume category/concept title
 				/// NOTE: we add m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$title = Title::newFromText( ( $category ? $this->m_categoryprefix : $this->m_conceptprefix ) . $chunk );
-				
+
 				if ( !is_null( $title ) ) {
 					$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNameSpace(), '' );
 					$desc = $category ? new SMWClassDescription( $diWikiPage ) : new SMWConceptDescription( $diWikiPage );
@@ -304,7 +304,7 @@ class SMWQueryParser {
 		$this->readChunk(); // consume separator ":=" or "::"
 
 		// first process property chain syntax (e.g. "property1.property2::value"), escaped by initial " ":
-		$propertynames = ( $propertyname{0} == ' ' ) ? array( $propertyname ):explode( '.', $propertyname );
+		$propertynames = ( $propertyname{0} == ' ' ) ? array( $propertyname ) : explode( '.', $propertyname );
 		$properties = array();
 		$typeid = '_wpg';
 		$inverse = false;

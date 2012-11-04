@@ -49,12 +49,18 @@ abstract class SMWDataItemHandler {
 	abstract public function getTableFields();
 
 	/**
-	 * Method to return array of indexes for a DI type
+	 * Return an array of additional indexes that should be provided for
+	 * the table using this DI handler. By default, SMWSQLStore3 will
+	 * already create indexes for all standard select operations, based
+	 * on the indexfield provided by getIndexField(). Hence, most handlers
+	 * do not need to define any indexes.
+	 * 
 	 * @since 1.8
-	 *
 	 * @return array
 	 */
-	abstract public function getTableIndexes();
+	public function getTableIndexes() {
+		return array();
+	}
 
 	/**
 	 * Return an array of fields=>values to conditions (WHERE part) in SQL
