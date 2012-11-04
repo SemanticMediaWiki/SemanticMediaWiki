@@ -4,9 +4,23 @@
  * API module to query SMW by providing a query specified as
  * a list of conditions, printouts and parameters. 
  *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
  * @since 1.6.2
  *
- * @file ApiAskArgs.php
  * @ingroup SMW
  * @ingroup API
  *
@@ -76,8 +90,7 @@ class ApiAskArgs extends ApiSMWQuery {
 	
 	public function getDescription() {
 		return array(
-			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.
-			This API module is in alpha stage, and likely to see changes in upcomming versions of SMW.'
+			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.'
 		);
 	}
 
@@ -85,10 +98,10 @@ class ApiAskArgs extends ApiSMWQuery {
 		return array(
 			'api.php?action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc',
 		);
-	}	
-	
+	}
+
 	public function getVersion() {
-		return __CLASS__ . ': $Id$';
-	}		
+		return __CLASS__ . '-' . SMW_VERSION;
+	}
 	
 }
