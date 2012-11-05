@@ -30,19 +30,15 @@ class SMWPageProperty extends SpecialPage {
 
 	public function execute( $query ) {
 		global $wgRequest, $wgOut;
-		$linker = smwfGetLinker();
 		$this->setHeaders();
 
 		// Get parameters
 		$pagename = $wgRequest->getVal( 'from' );
 		$propname = $wgRequest->getVal( 'type' );
-		$limit = $wgRequest->getVal( 'limit' );
-		$offset = $wgRequest->getVal( 'offset' );
+		$limit = $wgRequest->getVal( 'limit', 20 );
+		$offset = $wgRequest->getVal( 'offset', 0 );
 
-		if ( $limit === '' ) $limit =  20;
-		if ( $offset === '' ) $offset = 0;
-
-		if ( $propname === '' ) { // No GET parameters? Try the URL:
+		if ( $propname == '' ) { // No GET parameters? Try the URL:
 			$queryparts = explode( '::', $query );
 			$propname = $query;
 			if ( count( $queryparts ) > 1 ) {
@@ -72,9 +68,10 @@ class SMWPageProperty extends SpecialPage {
 			$results = smwfGetStore()->getPropertyValues( $pagename !== '' ? $subject->getDataItem() : null, $property->getDataItem(), $options );
 
 			// prepare navigation bar if needed
+			$navigation = '';
 			if ( ( $offset > 0 ) || ( count( $results ) > $limit ) ) {
 				if ( $offset > 0 ) {
-					$navigation = Html::element(
+					$navigation .= Html::element(
 						'a',
 						array(
 							'href' => $this->getTitle()->getLocalURL( array(
@@ -98,7 +95,7 @@ class SMWPageProperty extends SpecialPage {
 					'</b>&#160;&#160;&#160;&#160;';
 
 				if ( count( $results ) == ( $limit + 1 ) ) {
-					$navigation = Html::element(
+					$navigation .= Html::element(
 						'a',
 						array(
 							'href' => $this->getTitle()->getLocalURL( array(
@@ -113,8 +110,6 @@ class SMWPageProperty extends SpecialPage {
 				} else {
 					$navigation .= wfMessage( 'smw_result_next' )->text();
 				}
-			} else {
-				$navigation = '';
 			}
 
 			// display results
@@ -122,6 +117,7 @@ class SMWPageProperty extends SpecialPage {
 			if ( count( $results ) == 0 ) {
 				$html .= wfMessage( 'smw_result_noresults' )->text();
 			} else {
+				$linker = smwfGetLinker();
 				$html .= "<ul>\n";
 				$count = $limit + 1;
 
