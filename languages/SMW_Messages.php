@@ -9875,6 +9875,7 @@ $messages['pfl'] = array(
  * @author Maikking
  * @author Sp5uhe
  * @author ToSter
+ * @author Vuh
  * @author Woytecr
  * @author Łukasz Bolikowski
  */
@@ -9907,6 +9908,7 @@ $messages['pl'] = array(
 	'smw_printername_template' => 'Szablon',
 	'smw_printername_rdf' => 'Eksport RDF',
 	'smw_printername_category' => 'Kategoria',
+	'validator-type-class-SMWParamSource' => 'tekst',
 	'smw-paramdesc-limit' => 'Maksymalna liczba zwracanych wyników',
 	'smw-paramdesc-offset' => 'Przesunięcie pierwszego wyniku',
 	'smw-paramdesc-headers' => 'Wyświetlanie nazw nagłówków i właściwości',
@@ -9934,6 +9936,8 @@ $messages['pl'] = array(
 	'smw-smwdoc-par-format' => 'Formatuj wynik, do wyświetlenia sparametryzowanej dokumentacji.',
 	'smw-smwdoc-par-parameters' => 'Które parametry wyświetlić. "specific" dla dodanych przez format, "base" dla dostępnych we wszystkich formatach oraz "all" do obu.',
 	'smw-paramdesc-searchlabel' => 'Treść linku do kolejnych wyników',
+	'smw-paramdesc-named_args' => 'Nazwa argumentu przekazana do szablonu',
+	'smw-paramdesc-export' => 'Opcje eksportu',
 	'smw_iq_disabled' => 'Niestety, w tym wiki wyłączono możliwość tworzenia zapytań w artykułach.',
 	'smw_iq_moreresults' => '&hellip; dalsze wyniki',
 	'smw_parseerror' => 'Podana wartość jest niezrozumiała.',
@@ -10021,10 +10025,37 @@ Właściwości, które nie posiadają swojej strony odnaleźć można na stronie
 	'smw_ask_show_embed' => 'Pokaż kod zagnieżdżony',
 	'smw_ask_hide_embed' => 'Ukryj zagnieżdżony kod',
 	'smw_ask_embed_instr' => 'Aby zagnieździć to zapytanie na stronie wiki, użyj poniższego kodu.',
+	'smw-ask-sorting' => 'Sortowanie',
+	'smw-ask-format-selection-help' => 'Aby uzyskać szczegółowy opis, odwiedź $1 stronę pomocy.',
+	'querycreator' => 'Kreator zapytań',
+	'smw_qc_addmainlabel' => 'Dodaj główną etykietę',
+	'smw_qc_show_addnal_opts' => 'Więcej opcji',
+	'smw_qc_hide_addnal_opts' => 'Mniej opcji',
+	'smw_qc_otheropt' => 'Inne opcje',
+	'smw_qc_default' => 'Domyślnie',
+	'smw_qc_formatopt' => 'Opcje formatowania',
+	'smw_qc_query_help' => 'Wpisz zapytanie korzystając z poniższego formularza. Wybierz strony wiki opartych na
+Kategoriach (<strong><nowiki>np. [[Kategoria:Aktor]]</nowiki></strong>),
+Własnościach (<strong><nowiki>np. [[Located in::Niemcy]]</nowiki></strong>),
+Nazwach (<strong><nowiki>np. [[Niemcy]]</nowiki></strong>) i
+Przestrzeniach nazw (<strong><nowiki>np. [[Pomoc: +]]</nowiki></strong>)',
+	'smw_qui_property' => '<strong>Właściwość</strong>',
+	'smw_qui_prop' => 'Właściwość',
+	'smw_qui_labl' => 'Etykieta:',
+	'smw_qui_noquery' => 'Zapytanie nie zostało określone',
+	'smw_qui_nosort' => 'Bez sortowania',
+	'smw_qui_ascorder' => 'Rosnąco',
+	'smw_qui_descorder' => 'Malejąco',
+	'smw_qui_addnprop' => 'Dodaj właściwość',
+	'smw_qui_delete' => 'Usuń',
+	'smw_qui_options' => 'Opcje',
+	'smw_qui_addcategory' => 'Dodaj kategorię',
 	'smw_qui_ok' => 'Ok',
 	'smw_qui_cancel' => 'Anuluj',
 	'smw_qui_category' => '<strong>Kategoria</strong>',
 	'smw_qui_label' => 'Etykieta',
+	'smw_qui_dlabel' => 'Etykieta:',
+	'smw_qui_dcategory' => 'Kategoria:',
 	'searchbyproperty' => 'Szukaj po atrybucie',
 	'smw_sbv_docu' => 'Szukanie wszystkich stron, które mają dany atrybut i wartość.',
 	'smw_sbv_novalue' => 'Wpisz wartość, lub zobacz wszystkie wartości atrybutów dla $1.',
@@ -10111,6 +10142,13 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc dotycząca wewnętrznych zapytań',
 	'smw-createproperty-isproperty' => 'To jest własność typu $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dopuszczalna wartość dla tej własności to|Dopuszczalne wartości dla tej własności to:}}',
+	'smw-info-par-message' => 'Wiadomość do wyświetlenia.',
+	'prefs-smw' => 'Semantyczna MediaWiki',
+	'prefs-ask-options' => 'Opcje wyszukiwania semantycznego',
+	'smw-ui-tooltip-title-info' => 'Informacja',
+	'smw-ui-tooltip-title-warning' => 'Błąd',
+	'smw-ui-tooltip-title-parameter' => 'Parametr',
+	'smw-ui-tooltip-title-event' => 'Wydarzenie',
 	'smw_unknowntype' => 'Typ atrybutu jest nieprawidłowy.',
 );
 
