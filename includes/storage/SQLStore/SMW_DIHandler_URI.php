@@ -24,6 +24,16 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	}
 
 	/**
+	 * @see SMWDataItemHandler::getFetchFields()
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getFetchFields() {
+		return array( 'o_serialized' => 't' );
+	}
+
+	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 *
 	 * @return array
@@ -63,14 +73,17 @@ class SMWDIHandlerUri extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to create a dataitem from an array of DB keys.
-	 *
+	 * @see SMWDataItemHandler::dataItemFromDBKeys()
 	 * @since 1.8
-	 * @param $dbkeys array of mixed
+	 * @param array|string $dbkeys expecting string here
 	 *
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		return SMWDIUri::doUnserialize( $dbkeys[0] );
+		if ( is_string( $dbkeys ) ) {
+			return SMWDIUri::doUnserialize( $dbkeys );
+		} else {
+			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+		}
 	}
 }

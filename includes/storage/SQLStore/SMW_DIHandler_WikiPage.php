@@ -24,6 +24,16 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	}
 
 	/**
+	 * @see SMWDataItemHandler::getFetchFields()
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getFetchFields() {
+		return array( 'o_id' => 'p' );
+	}
+
+	/**
 	 * Create an additional index for finding incoming properties.
 	 *
 	 * @see SMWDataItemHandler::getTableIndexes()
@@ -68,7 +78,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 
 	/**
 	 * Method to return the field used to select this type of DataItem
-	 * using the label. Take care we are returning the field from the 
+	 * using the label. Take care we are returning the field from the
 	 * ID table, so do a proper JOIN
 	 * @since 1.8
 	 * @return string
@@ -78,15 +88,14 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to create a dataitem from an array of DB keys.
-	 *
+	 * @see SMWDataItemHandler::dataItemFromDBKeys()
 	 * @since 1.8
-	 * @param $dbkeys array of mixed
+	 * @param array|string $dbkeys expecting array here
 	 *
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		if ( count( $dbkeys ) == 5 ) {
+		if ( is_array( $dbkeys ) && count( $dbkeys ) == 5 ) {
 			return new SMWDIWikiPage( $dbkeys[0], intval( $dbkeys[1] ), $dbkeys[2], $dbkeys[4] );
 		} else {
 			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );

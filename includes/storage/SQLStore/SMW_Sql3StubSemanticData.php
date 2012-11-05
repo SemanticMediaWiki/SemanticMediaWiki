@@ -188,16 +188,17 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	}
 
 	/**
-	 * Add data in abbreviated form so that it is only expanded if needed. The property key
-	 * is the DB key (string) of a property value, whereas valuekeys is an array of DBkeys for
-	 * the added value that will be used to initialize the value if needed at some point.
+	 * Add data in abbreviated form so that it is only expanded if needed.
+	 * The property key is the DB key (string) of a property value, whereas
+	 * valuekeys is an array of DBkeys for the added value that will be
+	 * used to initialize the value if needed at some point. If there is
+	 * only one valuekey, a single string can be used.
 	 *
 	 * @since 1.8
-	 *
-	 * @param $propertyKey string
-	 * @param $valueKeys array
+	 * @param string $propertyKey
+	 * @param array|string $valueKeys
 	 */
-	public function addPropertyStubValue( $propertyKey, array $valueKeys ) {
+	public function addPropertyStubValue( $propertyKey, $valueKeys ) {
 		$this->mStubPropVals[$propertyKey][] = $valueKeys;
 	}
 

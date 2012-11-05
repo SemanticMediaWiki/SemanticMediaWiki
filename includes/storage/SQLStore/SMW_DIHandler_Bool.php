@@ -24,6 +24,16 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	}
 
 	/**
+	 * @see SMWDataItemHandler::getFetchFields()
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getFetchFields() {
+		return array( 'o_value' => 'b' );
+	}
+
+	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 *
 	 * @return array
@@ -70,7 +80,7 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 	 * Method to create a dataitem from an array of DB keys.
 	 *
 	 * @since 1.8
-	 * @param $dbkeys array of mixed
+	 * @param array|string $dbkeys should be a string here
 	 *
 	 * @return SMWDataItem
 	 */
@@ -79,9 +89,9 @@ class SMWDIHandlerBoolean extends SMWDataItemHandler {
 
 		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $wgDBtype == 'postgres' ) {
-			$value = $dbkeys[0] == 't' ;
+			$value = ( $dbkeys == 't' );
 		} else {
-			$value = $dbkeys[0] == '1' ;
+			$value = ( $dbkeys == '1' );
 		}
 
 		return new SMWDIBoolean( $value );

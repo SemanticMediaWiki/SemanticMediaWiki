@@ -23,6 +23,16 @@ class SMWDIHandlerNumber extends SMWDataItemHandler {
 	}
 
 	/**
+	 * @see SMWDataItemHandler::getFetchFields()
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getFetchFields() {
+		return array( 'o_serialized' => 't' );
+	}
+
+	/**
 	 * @see SMWDataItemHandler::getWhereConds
 	 * @return array
 	 */
@@ -60,12 +70,17 @@ class SMWDIHandlerNumber extends SMWDataItemHandler {
 	}
 
 	/**
-	 * @see SMWDataItemHandler::dataItemFromDBKeys
-	 * @param $dbkeys array of mixed
+	 * @see SMWDataItemHandler::dataItemFromDBKeys()
+	 * @since 1.8
+	 * @param array|string $dbkeys expecting string here
 	 *
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		return SMWDINumber::doUnserialize( $dbkeys[0] );
+		if ( is_string( $dbkeys ) ) {
+			return SMWDINumber::doUnserialize( $dbkeys );
+		} else {
+			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+		}
 	}
 }

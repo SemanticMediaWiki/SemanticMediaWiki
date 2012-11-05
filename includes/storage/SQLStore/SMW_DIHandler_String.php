@@ -44,6 +44,16 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	}
 
 	/**
+	 * @see SMWDataItemHandler::getFetchFields()
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getFetchFields() {
+		return array( 'o_blob' => 'l', 'o_hash' => 't' );
+	}
+
+	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 *
 	 * @return array
@@ -87,20 +97,18 @@ class SMWDIHandlerString extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to create a dataitem from an array of DB keys.
-	 *
+	 * @see SMWDataItemHandler::dataItemFromDBKeys()
 	 * @since 1.8
-	 * @param $dbkeys array of mixed
+	 * @param array|string $dbkeys expecting array here
 	 *
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
+		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
+			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+		}
 		if ( $dbkeys[0] == '' ) { // empty blob: use "hash" string
-			if ( count( $dbkeys ) == 2 ) {
-				return new SMWDIBlob( $dbkeys[1] );
-			} else {
-				throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
-			}
+			return new SMWDIBlob( $dbkeys[1] );
 		} else {
 			return new SMWDIBlob( $dbkeys[0] );
 		}
