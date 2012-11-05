@@ -14,7 +14,7 @@
  * This class provides a subclass of SMWSemanticData that can store
  * prefetched values from SMW's SQL stores, and unstub this data on demand when
  * it is accessed.
- * 
+ *
  * @since 1.6
  *
  * @ingroup SMWStore
@@ -161,7 +161,13 @@ class SMWSqlStubSemanticData extends SMWSemanticData {
 	 */
 	protected function unstubProperties() {
 		foreach ( $this->mStubPropVals as $pkey => $values ) { // unstub property values only, the value lists are still kept as stubs
-			$this->unstubProperty( $pkey );
+			try {
+				$this->unstubProperty( $pkey );
+			} catch ( SMWDataItemException $e ) {
+				// Likely cause: a property name from the DB is no longer valid.
+				// Do nothing; we could unset the data, but it will never be
+				// unstubbed anyway if there is no valid property DI for it.
+			}
 		}
 	}
 
@@ -171,8 +177,10 @@ class SMWSqlStubSemanticData extends SMWSemanticData {
 	 * need to make a new one. It is not checked if the object matches the
 	 * property name.
 	 *
-	 * @param $propertyKey string
-	 * @param $diProperty SMWDIProperty
+	 * @param string $propertyKey
+	 * @param SMWDIProperty $diProperty if available
+	 * @throws SMWDataItemException if property key is not valid
+	 * 	and $diProperty is null
 	 */
 	protected function unstubProperty( $propertyKey, $diProperty = null ) {
 		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {

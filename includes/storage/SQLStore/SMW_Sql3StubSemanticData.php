@@ -9,7 +9,7 @@
  * This class provides a subclass of SMWSemanticData that can store
  * prefetched values from SMW's SQL stores, and unstub this data on demand when
  * it is accessed.
- * 
+ *
  * @since 1.8
  * @author Markus Krötzsch
  *
@@ -114,6 +114,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 		}
 
 		if ( array_key_exists( $property->getKey(), $this->mStubPropVals ) ) {
+			// Not catching exception here; the
 			$this->unstubProperty( $property->getKey(), $property );
 			$propertyTypeId = $property->findPropertyTypeID();
 			$propertyDiId = SMWDataValueFactory::getDataItemId( $propertyTypeId );
@@ -218,7 +219,13 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 */
 	protected function unstubProperties() {
 		foreach ( $this->mStubPropVals as $pkey => $values ) { // unstub property values only, the value lists are still kept as stubs
-			$this->unstubProperty( $pkey );
+			try {
+				$this->unstubProperty( $pkey );
+			} catch ( SMWDataItemException $e ) {
+				// Likely cause: a property name from the DB is no longer valid.
+				// Do nothing; we could unset the data, but it will never be
+				// unstubbed anyway if there is no valid property DI for it.
+			}
 		}
 	}
 
@@ -230,14 +237,14 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @param $propertyKey string
-	 * @param $diProperty SMWDIProperty
+	 * @param string $propertyKey
+	 * @param SMWDIProperty $diProperty if available
+	 * @throws SMWDataItemException if property key is not valid
+	 * 	and $diProperty is null
 	 */
 	protected function unstubProperty( $propertyKey, $diProperty = null ) {
 		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
 			if ( is_null( $diProperty ) ) {
-				//$propertyDV = SMWPropertyValue::makeProperty( $propertyKey );
-				//$diProperty = $propertyDV->getDataItem();
 				$diProperty = new SMWDIProperty( $propertyKey, false );
 			}
 
