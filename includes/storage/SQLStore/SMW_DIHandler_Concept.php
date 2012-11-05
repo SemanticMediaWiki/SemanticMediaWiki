@@ -37,6 +37,22 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	}
 
 	/**
+	 * @see SMWDataItemHandler::getFetchFields()
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getFetchFields() {
+		return array(
+				'concept_txt' => 'l',
+				'concept_docu' => 'l',
+				'concept_features' => 'n',
+				'concept_size' => 'n',
+				'concept_depth' => 'n'
+			);
+	}
+
+	/**
 	 * Method to return an array of fields=>values for a DataItem
 	 *
 	 * @since 1.8
@@ -98,12 +114,12 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	/**
 	 * Method to create a dataitem from an array of DB keys.
 	 *
-	 * @param $dbkeys array of mixed
+	 * @param array|string $dbkeys expecting array here
 	 *
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		if ( count( $dbkeys ) == 5 ) {
+		if ( is_array( $dbkeys) && count( $dbkeys ) == 5 ) {
 			return new SMWDIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ),
 				$dbkeys[2], $dbkeys[3], $dbkeys[4] );
 		} else {

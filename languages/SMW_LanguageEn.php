@@ -72,6 +72,11 @@ class SMWLanguageEn extends SMWLanguage {
 		'_ERRP' => 'Has improper value for',
 		'_LIST' => 'Has fields',
 		'_SOBJ' => 'Has subobject',
+		'_ASK'  => 'Has query',
+		'_ASKST'=> 'Query string',
+		'_ASKFO'=> 'Query format',
+		'_ASKSI'=> 'Query size',
+		'_ASKDE'=> 'Query depth',
 	);
 
 	protected $m_SpecialPropertyAliases = array(

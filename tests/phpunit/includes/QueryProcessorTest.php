@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ * @since 1.8
+ * @ingroup SMW
+ * @ingroup Test
+ */
 
 namespace SMW\Test;
 use SMWQueryProcessor;
@@ -6,7 +12,6 @@ use SMWQueryProcessor;
 /**
  * Tests for the SMWQueryProcessor class.
  *
- * @file
  * @since 1.8
  *
  * @ingroup SMW
@@ -32,13 +37,12 @@ class SMWQueryProcessorTest extends\ MediaWikiTestCase {
 	public function testCreateQuery( $query ) {
 		// TODO: this prevents doing [[Category:Foo||bar||baz]], must document.
 		$rawParams = explode( '|', $query );
-		$queryString = '';
-		$printouts = array();
 
-		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $parameters, $printouts );
+		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
+
 		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
-		
+
 		$this->assertInstanceOf(
 			'\SMWQuery',
 			SMWQueryProcessor::createQuery(

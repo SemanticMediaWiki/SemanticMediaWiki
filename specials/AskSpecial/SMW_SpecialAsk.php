@@ -136,7 +136,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		}
 
 		// Now parse parameters and rebuilt the param strings for URLs.
-		SMWQueryProcessor::processFunctionParams( $rawparams, $this->m_querystring, $this->m_params, $this->m_printouts );
+		list( $this->m_querystring, $this->m_params, $this->m_printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawparams, false );
 
 		// Try to complete undefined parameter values from dedicated URL params.
 		if ( !array_key_exists( 'format', $this->m_params ) ) {
@@ -387,7 +387,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
 
-			// Submit 
+			// Submit
 			$result .= '<br /><input type="submit" value="' . wfMessage( 'smw_ask_submit' )->text() . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
 					Html::element(

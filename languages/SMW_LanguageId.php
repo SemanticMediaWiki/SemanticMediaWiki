@@ -61,9 +61,17 @@ class SMWLanguageId extends SMWLanguage {
 		'_SERV' => 'Memberikan layanan',
 		'_PVAL' => 'Mengizinkan nilai',
 		'_MDAT' => 'Tanggal modifikasi',
+		'_CDAT' => 'Creation date', // TODO: translate
+		'_NEWP' => 'Is a new page', // TODO: translate
+		'_LEDT' => 'Last editor is', // TODO: translate
 		'_ERRP' => 'Memiliki nilai yang tidak tepat untuk',
 		'_LIST' => 'Memiliki bidang',
 		'_SOBJ' => 'Has subobject', // TODO: translate
+		'_ASK'  => 'Has query', // TODO: translate
+		'_ASKST'=> 'Query string', // TODO: translate
+		'_ASKFO'=> 'Query format', // TODO: translate
+		'_ASKSI'=> 'Query size', // TODO: translate
+		'_ASKDE'=> 'Query depth', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

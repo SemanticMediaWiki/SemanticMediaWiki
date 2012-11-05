@@ -96,11 +96,6 @@ require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
 $store = smwfGetStore();
 $db = wfGetDB( DB_SLAVE );
 
-if ( !( $store instanceof SMWSQLStore2 ) ) {
-	outputMessage( "Only SMWSQLStore2 supports this operation.\n Aborting." );
-	return;
-}
-
 $select_hard   = array_key_exists( 'hard', $options );
 $select_update = array_key_exists( 'update', $options );
 $select_old    = isset( $options['old'] ) ? intval( $options['old'] ) : false;
@@ -108,7 +103,7 @@ $select_old    = isset( $options['old'] ) ? intval( $options['old'] ) : false;
 if ( isset( $options['concept'] ) ) { // single concept mode
 	global $wgContLang;
 	$concept = Title::newFromText( $wgContLang->getNsText( SMW_NS_CONCEPT ) . ':' . $options['concept'] );
-	
+
 	if ( !is_null( $concept ) ) {
 		doAction( $concept );
 	}
@@ -118,22 +113,22 @@ if ( isset( $options['concept'] ) ) { // single concept mode
 	} else {
 		$start = 0;
 	}
-	
+
 	$end = $db->selectField( 'page', 'MAX(page_id)', false, 'SMW_refreshData' );
-	
+
 	if ( array_key_exists( 'e', $options ) ) {
 		$end = min( intval( $options['e'] ), $end );
 	}
-	
+
 	$num_lines = 0;
 
 	for ( $id = $start; $id <= $end; $id++ ) {
 		$title = Title::newFromID( $id );
-		
+
 		if ( is_null( $title ) || ( $title->getNamespace() != SMW_NS_CONCEPT ) ) {
 			continue;
 		}
-		
+
 		$num_lines += doAction( $title, $num_lines );
 	}
 }

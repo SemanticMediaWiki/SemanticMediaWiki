@@ -78,7 +78,7 @@ class SMWSQLStore3Readers {
 		// hence no entry in $this->store->m_sdstate[$sid] is made.
 		self::$in_getSemanticData++;
 		$this->initSemanticDataCache( $sid, $subject );
-		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
+		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', $sortkey );
 		self::$in_getSemanticData--;
 
 		wfProfileOut( "SMWSQLStore3::getSemanticData (SMW)" );
@@ -89,7 +89,7 @@ class SMWSQLStore3Readers {
 	/**
 	 * Helper method to make sure there is a cache entry for the data about
 	 * the given subject with the given ID.
-	 * 
+	 *
 	 * @todo The management of this cache should be revisited.
 	 *
 	 * @since 1.8
@@ -240,11 +240,11 @@ class SMWSQLStore3Readers {
 	 * was given in $object.
 	 *
 	 * In case (1), the result in general is an array of pairs (arrays of
-	 * size 2) consisting of a property key (string), and an array of DB
-	 * keys (array) from which a datvalue object for this value could be
-	 * built. It is possible that some of the DB keys are based on internal
-	 * objects; these will be represented by similar result arrays of
-	 * (recursive calls of) fetchSemanticData().
+	 * size 2) consisting of a property key (string), and DB keys (array if
+	 * many, string if one) from which a datvalue object for this value can
+	 * be built. It is possible that some of the DB keys are based on
+	 * internal objects; these will be represented by similar result arrays
+	 * of (recursive calls of) fetchSemanticData().
 	 *
 	 * In case (2), the result is simply an array of DB keys (array)
 	 * without the property keys. Container objects will be encoded with
@@ -253,6 +253,7 @@ class SMWSQLStore3Readers {
 	 * @todo Maybe share DB handler; asking for it seems to take quite some
 	 * time and we do not want to change it in one call.
 	 *
+	 * @since 1.8
 	 * @param integer $id
 	 * @param SMWDataItem $object
 	 * @param SMWSQLStore3Table $proptable
@@ -298,7 +299,7 @@ class SMWSQLStore3Readers {
 
 		$valueField = $diHandler->getIndexField();
 		$labelField = $diHandler->getLabelField();
-		$fields = $diHandler->getTableFields();
+		$fields = $diHandler->getFetchFields();
 		foreach ( $fields as $fieldname => $typeid ) { // select object column(s)
 			if ( $typeid == 'p' ) { // get data from smw_ids
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
@@ -346,14 +347,19 @@ class SMWSQLStore3Readers {
 				$propertykey = $proptable->fixedproperty ? $proptable->fixedproperty : $row->prop;
 			}
 
-			$valuekeys = array();
-			for ( $i = 0; $i < $valuecount; $i += 1 ) { // read the value fields from the current row
-				$fieldname = "v$i";
-				$valuekeys[] = $row->$fieldname;
+			// Use enclosing array only for results with many values:
+			if ( $valuecount > 1 ) {
+				$valuekeys = array();
+				for ( $i = 0; $i < $valuecount; $i += 1 ) { // read the value fields from the current row
+					$fieldname = "v$i";
+					$valuekeys[] = $row->$fieldname;
+				}
+			} else {
+				$valuekeys = $row->v0;
 			}
 
 			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
-			if ( implode( '', $fields ) != 'p' || count( $valuekeys ) < 3 ||
+			if ( $valuecount < 3 || implode( '', $fields ) != 'p' ||
 			     $valuekeys[2] === '' ||  $valuekeys[2]{0} != ':' ) {
 				$result[] = $issubject ? array( $propertykey, $valuekeys ) : $valuekeys;
 			}

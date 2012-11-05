@@ -29,6 +29,16 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	}
 
 	/**
+	 * @see SMWDataItemHandler::getFetchFields()
+	 *
+	 * @since 1.8
+	 * @return array
+	 */
+	public function getFetchFields() {
+		return array( 'o_serialized' => 't' );
+	}
+
+	/**
 	 * @see SMWDataItemHandler::getTableIndexes()
 	 * @return array
 	 */
@@ -82,11 +92,15 @@ class SMWDIHandlerGeoCoord extends SMWDataItemHandler {
 	/**
 	 * @see SMWDataItemHandler::dataItemFromDBKeys()
 	 * @since 1.8
-	 * @param $dbkeys array of mixed
+	 * @param array|string $dbkeys expecting string here
 	 *
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		return SMWDIGeoCoord::doUnserialize( $dbkeys[0] );
+		if ( is_string( $dbkeys ) ) {
+			return SMWDIGeoCoord::doUnserialize( $dbkeys );
+		} else {
+			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+		}
 	}
 }

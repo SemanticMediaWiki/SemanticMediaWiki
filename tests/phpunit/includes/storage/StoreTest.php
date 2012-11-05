@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ * @since 1.8
+ * @ingroup SMW
+ * @ingroup Test
+ */
 
 namespace SMW\Test;
 use Title, SMWDIProperty, SMWDIWikiPage, SMWQueryProcessor;
@@ -6,7 +12,6 @@ use Title, SMWDIProperty, SMWDIWikiPage, SMWQueryProcessor;
 /**
  * Tests for the SMWStore class.
  *
- * @file
  * @since 1.8
  *
  * @ingroup SMW
@@ -144,10 +149,8 @@ class StoreTest extends \MediaWikiTestCase {
 		// TODO: this prevents doing [[Category:Foo||bar||baz]], must document.
 		// TODO: for some reason PHPUnit is failing here. Line in SQLStore2Queries with comment "This test printed output:"
 //		$rawParams = explode( '|', $query );
-//		$queryString = '';
-//		$printouts = array();
 //
-//		SMWQueryProcessor::processFunctionParams( $rawParams, $queryString, $parameters, $printouts );
+//		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
 //		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 //		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
 //		$smwQuery = SMWQueryProcessor::createQuery( $queryString, $parameters, SMWQueryProcessor::SPECIAL_PAGE, '', $printouts );
@@ -214,7 +217,7 @@ class StoreTest extends \MediaWikiTestCase {
 			);
 		}
 	}
-	
+
 	public function testGetStatistics() {
 		$store = smwfGetStore();
 		$result = $store->getStatistics();

@@ -164,7 +164,7 @@ class SMWSQLStore3 extends SMWStore {
 	* one of the types declared in SMWDataItem, e.g.,
 	* SMWDataItem::TYPE_DATE. The correct DI type for common datatypes
 	* can be found in SMWDataValueFactory.
-	* 
+	*
 	* See also http://semantic-mediawiki.org/wiki/Fixed_properties
 	*
 	* @todo Move these to somewhere else?
@@ -370,8 +370,8 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * Refresh the concept cache for the given concept.
 	 *
-	 * @param $concept Title
-	 *
+	 * @since 1.8
+	 * @param Title $concept
 	 * @return array
 	 */
 	public function refreshConceptCache( Title $concept ) {
@@ -388,7 +388,8 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * Delete the concept cache for the given concept.
 	 *
-	 * @param $concept Title
+	 * @since 1.8
+	 * @param Title $concept
 	 */
 	public function deleteConceptCache( $concept ) {
 		wfProfileIn( 'SMWSQLStore3::deleteConceptCache (SMW)' );
@@ -409,7 +410,9 @@ class SMWSQLStore3 extends SMWStore {
 	 * status is 'full', the array also contains keys 'date' (timestamp of
 	 * cache), 'count' (number of results in cache).
 	 *
-	 * @param $concept Title or SMWWikiPageValue
+	 * @since 1.8
+	 * @param Title|SMWWikiPageValue $concept
+	 * @return array
 	 */
 	public function getConceptCacheStatus( $concept ) {
 		wfProfileIn( 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
