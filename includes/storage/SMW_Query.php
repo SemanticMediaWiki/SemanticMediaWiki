@@ -33,7 +33,7 @@ class SMWQuery {
 	const MODE_NONE = 4;  // do nothing with the query
 
 	public $sort = false;
-	public $sortkeys = array(); // format: "Property name" => "ASC" / "DESC" (note: order of entries also matters)
+	public $sortkeys = array(); // format: "Property key" => "ASC" / "DESC" (note: order of entries also matters)
 	public $querymode = SMWQuery::MODE_INSTANCES;
 
 	protected $m_limit;
@@ -45,7 +45,7 @@ class SMWQuery {
 	protected $m_concept; // query used in concept? (required for finding right default parameters)
 	protected $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
 	protected $m_mainlabel = ''; // Since 1.6
-	
+
 	/**
 	 * Constructor.
 	 * @param $description SMWDescription object describing the query conditions
@@ -62,27 +62,27 @@ class SMWQuery {
 		$this->m_description = $description;
 		$this->applyRestrictions();
 	}
-	
+
 	/**
 	 * Sets the mainlabel.
-	 * 
+	 *
 	 * @since 1.6.
-	 * 
+	 *
 	 * @param string $mainlabel
 	 */
 	public function setMainLabel( $mainlabel ) {
-		$this->m_mainlabel = $mainlabel; 
+		$this->m_mainlabel = $mainlabel;
 	}
 
 	/**
 	 * Gets the mainlabel.
-	 * 
+	 *
 	 * @since 1.6.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getMainLabel() {
-		return $this->m_mainlabel; 
+		return $this->m_mainlabel;
 	}
 
 	public function setDescription( SMWDescription $description ) {
@@ -99,7 +99,7 @@ class SMWQuery {
 
 	public function setExtraPrintouts( $extraprintouts ) {
 		$this->m_extraprintouts = $extraprintouts;
-		
+
 		if ( !is_null( $this->m_description ) ) {
 			foreach ( $extraprintouts as $printout ) {
 				$this->m_description->addPrintRequest( $printout );
@@ -175,7 +175,7 @@ class SMWQuery {
 	 */
 	public function applyRestrictions() {
 		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQConceptMaxSize, $smwgQConceptMaxDepth;
-		
+
 		if ( !is_null( $this->m_description ) ) {
 			if ( $this->m_concept ) {
 				$maxsize = $smwgQConceptMaxSize;
@@ -184,10 +184,10 @@ class SMWQuery {
 				$maxsize = $smwgQMaxSize;
 				$maxdepth = $smwgQMaxDepth;
 			}
-			
+
 			$log = array();
 			$this->m_description = $this->m_description->prune( $maxsize, $maxdepth, $log );
-			
+
 			if ( count( $log ) > 0 ) {
 				$this->m_errors[] = wfMessage(
 					'smw_querytoolarge',
