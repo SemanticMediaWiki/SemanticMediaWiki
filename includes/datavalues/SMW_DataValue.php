@@ -281,7 +281,7 @@ abstract class SMWDataValue {
 		$servicelinks = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_SERV' ) );
 
 		foreach ( $servicelinks as $dataItem ) {
-			if ( !( $dataItem instanceof SMWDIString ) ) {
+			if ( !( $dataItem instanceof SMWDIBlob ) ) {
 				continue;
 			}
 
