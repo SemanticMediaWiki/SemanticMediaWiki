@@ -19,29 +19,29 @@ class SMWSpecialUnusedProperties extends SpecialPage {
 
 	public function execute( $param ) {
 		wfProfileIn( 'smwfDoSpecialUnusedProperties (SMW)' );
-			
+
 		global $wgOut;
-		
+
 		$wgOut->setPageTitle( wfMessage( 'unusedproperties' )->text() );
-		
+
 		$rep = new SMWUnusedPropertiesPage();
-		
+
 		list( $limit, $offset ) = wfCheckLimits();
 		$rep->doQuery( $offset, $limit );
-		
+
 		// Ensure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $wgOut );
-		
+
 		wfProfileOut( 'smwfDoSpecialUnusedProperties (SMW)' );
 	}
 }
 
 /**
  * This query page shows all unused properties.
- * 
+ *
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
- * 
+ *
  * @author Markus Krötzsch
  */
 class SMWUnusedPropertiesPage extends SMWQueryPage {
@@ -62,15 +62,44 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 		return '<p>' . wfMessage( 'smw_unusedproperties_docu' )->text() . "</p><br />\n";
 	}
 
-	function formatResult( $skin, /* SMWDIProperty */ $result ) {
+	/**
+	 * Format a result in the list of results as a string. We expect the
+	 * result to be an object of type SMWDIProperty (normally) or maybe
+	 * SMWDIError (if something went wrong).
+	 *
+	 * @param Skin $skin provided by MediaWiki, not needed here
+	 * @param mixed $result
+	 * @return String
+	 * @throws MWException if the result was not of a supported type
+	 */
+	function formatResult( $skin, $result ) {
+		if ( $result instanceof SMWDIProperty ) {
+			return $this->formatPropertyItem( $result );
+		} elseif ( $result instanceof SMWDIError ) {
+			return smwfEncodeMessages( $result->getErrors() );
+		} else {
+			throw MWException( 'SMWUnusedPropertiesPage expects results that are properties or errors.' );
+		}
+	}
+
+	/**
+	 * Produce a formatted string representation for showing a property in
+	 * the list of unused properties.
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWDIProperty $property
+	 * @return string
+	 */
+	protected function formatPropertyItem( SMWDIProperty $property ) {
 		$linker = smwfGetLinker();
-		
+
 		$proplink = $linker->link(
-			$result->getDiWikiPage()->getTitle(),
-			$result->getLabel()
+			$property->getDiWikiPage()->getTitle(),
+			$property->getLabel()
 		);
 
-		$types = smwfGetStore()->getPropertyValues( $result->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) );
+		$types = smwfGetStore()->getPropertyValues( $property->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) );
 		$errors = array();
 
 		if ( count( $types ) >= 1 ) {
@@ -85,9 +114,12 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	}
 
 	/**
-	 * @return array of SMWDIProperty
+	 * Get the list of results.
+	 *
+	 * @param SMWRequestOptions $requestOptions
+	 * @return array of SMWDIProperty|SMWDIError
 	 */
-	function getResults( $requestoptions ) {
-		return smwfGetStore()->getUnusedPropertiesSpecial( $requestoptions );
+	function getResults( $requestOptions ) {
+		return smwfGetStore()->getUnusedPropertiesSpecial( $requestOptions );
 	}
 }

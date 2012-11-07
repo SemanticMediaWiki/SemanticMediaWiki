@@ -279,13 +279,19 @@ abstract class SMWStore {
 
 	/**
 	 * Return all properties that have been used on pages in the wiki. The
-	 * result is an array of arrays, each containing a property title and a
-	 * count. The expected order is alphabetical w.r.t. to property title
-	 * texts.
+	 * result is an array of arrays, each containing a property data item
+	 * and a count. The expected order is alphabetical w.r.t. to property
+	 * names.
+	 *
+	 * If there is an error on creating some property object, then a
+	 * suitable SMWDIError object might be returned in its place. Even if
+	 * there are errors, the function should always return the number of
+	 * results requested (otherwise callers might assume that there are no
+	 * further results to ask for).
 	 *
 	 * @param SMWRequestOptions $requestoptions
 	 *
-	 * @return array
+	 * @return array of array( SMWDIProperty|SMWDIError, integer )
 	 */
 	public abstract function getPropertiesSpecial( $requestoptions = null );
 
@@ -295,9 +301,15 @@ abstract class SMWStore {
 	 * properties that have been given a type if they have no efficient
 	 * means of accessing the set of all pages in the property namespace.
 	 *
+	 * If there is an error on creating some property object, then a
+	 * suitable SMWDIError object might be returned in its place. Even if
+	 * there are errors, the function should always return the number of
+	 * results requested (otherwise callers might assume that there are no
+	 * further results to ask for).
+	 *
 	 * @param SMWRequestOptions $requestoptions
 	 *
-	 * @return array of SMWDIProperty
+	 * @return array of SMWDIProperty|SMWDIError
 	 */
 	public abstract function getUnusedPropertiesSpecial( $requestoptions = null );
 
