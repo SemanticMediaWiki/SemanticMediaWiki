@@ -183,7 +183,7 @@ Generates browsable RDF.',
 	// Messages for Properties Special
 	'properties'             => 'Properties',
 	'smw_properties_docu'    => 'The following properties are used in the wiki.',
-	'smw_property_template'  => '$1 of type $2 ($3)', // <propname> of type <type> (<count>)
+	'smw_property_template'  => '$1 of type $2 ($3 {{PLURAL:$3|use|uses}})', // <propname> of type <type> (<count> uses)
 	'smw_property_template_notype' => '$1 ($2)', // <propname> (<count>)
 	'smw_propertylackspage'  => 'All properties should be described by a page!',
 	'smw_propertylackstype'  => 'No type was specified for this property (assuming type $1 for now).',
