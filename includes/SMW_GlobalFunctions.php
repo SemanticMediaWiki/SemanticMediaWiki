@@ -352,7 +352,7 @@ function smwfGetLinker() {
  *
  * @return string
  */
-function smwfContextHighlighter( array $opions ) {
+function smwfContextHighlighter( array $options ) {
 	// Load RL module
 	SMWOutputs::requireResource( 'ext.smw.tooltips' );
 
@@ -360,16 +360,16 @@ function smwfContextHighlighter( array $opions ) {
 	return Html::rawElement(
 		'span',
 		array(
-			'class' => $opions['context'] === 'inline' ? 'smwttinline' : 'smwttpersist' ,
-			'data-type' => $opions['type'],
-			'data-context' => $opions['context']
+			'class' => $options['context'] === 'inline' ? 'smwttinline' : 'smwttpersist' ,
+			'data-type' => $options['type'],
+			'data-context' => $options['context']
 		), Html::rawElement(
 			'span',
-			array( 'class' => $opions['class'] ),
-			$opions['title']
+			array( 'class' => $options['class'] ),
+			$options['title']
 			) . Html::rawElement(
 				'span',
-				array( 'class' => 'smwttcontent'), $opions['content']
+				array( 'class' => 'smwttcontent'), $options['content']
 				)
 	);
 }
