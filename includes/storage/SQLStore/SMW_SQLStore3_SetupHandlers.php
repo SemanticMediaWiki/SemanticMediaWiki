@@ -101,7 +101,7 @@ class SMWSQLStore3SetupHandlers {
 			'smw_ids',
 			array(
 				'smw_id',
-				'smw_id,smw_sortkey', 
+				'smw_id,smw_sortkey',
 				'smw_title,smw_namespace,smw_iw,smw_subobject', // id lookup
 				'smw_sortkey' // select by sortkey (range queries)
 			),
@@ -411,9 +411,10 @@ class SMWSQLStore3SetupHandlers {
 				}
 
 				$dbr->delete( 'smw_ids',	array( 'smw_id' => $row->smw_id ), __METHOD__ );
-			} else { // "normal" interwiki pages or outdated internal objects
+			} else { // "normal" interwiki pages or outdated internal objects -- delete
 				$diWikiPage = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw );
-				$this->store->getWriter()->deleteSemanticData( $diWikiPage );
+				$emptySemanticData = new SMWSemanticData( $diWikiPage );
+				$this->store->doDataUpdate( $emptySemanticData );
 			}
 		}
 		$dbr->freeResult( $res );

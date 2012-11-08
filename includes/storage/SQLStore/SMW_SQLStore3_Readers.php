@@ -143,28 +143,6 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * This method adds property-values of a subject from a property-value
-	 * table into the given SemanticData object.
-	 *
-	 * @todo Share code with getSemanticDatafromTable above? The problem is
-	 * that this method must not return too much, so it is hard to use the
-	 * cache.
-	 *
-	 * @param SMWSql3StubSemanticData $semData
-	 * @param SMWSQLStore3Table $proptable
-	 *
-	 * @since 1.8
-	 */
-	public function addTableSemanticData( $sid, SMWSql3StubSemanticData $semData, SMWSQLStore3Table $proptable ) {
-		$subject = $semData->getSubject();
-		$data = $this->fetchSemanticData( $sid, $subject, $proptable );
-
-		foreach ( $data as $d ) {
-			$semData->addPropertyStubValue( reset( $d ), end( $d ) );
-		}
-	}
-
-	/**
 	 * @see SMWStore::getPropertyValues
 	 *
 	 * @since 1.8
