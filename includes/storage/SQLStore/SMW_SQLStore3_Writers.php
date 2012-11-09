@@ -57,7 +57,7 @@ class SMWSQLStore3Writers {
 			$db = wfGetDB( DB_MASTER );
 			$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
 			$db->delete( 'smw_ftp_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
-			$db->delete( 'smw_conccache', array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
+			$db->delete( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
 
 		///FIXME: if a property page is deleted, more pages may need to be updated by jobs!
@@ -173,7 +173,7 @@ class SMWSQLStore3Writers {
 	 * @return array of smw_id => SMWDIWikiPage
 	 */
 	protected function getSubobjects( SMWDIWikiPage $subject, DatabaseBase $dbr ) {
-		$res = $dbr->select( 'smw_ids',
+		$res = $dbr->select( SMWSql3SmwIds::tableName,
 			'*',
 			'smw_title = ' . $dbr->addQuotes( $subject->getDBkey() ) . ' AND ' .
 			'smw_namespace = ' . $dbr->addQuotes( $subject->getNamespace() ) . ' AND ' .
@@ -539,12 +539,12 @@ class SMWSQLStore3Writers {
 		}
 
 		return $dbw->update(
-			'smw_stats',
+			SMWSQLStore3::tableNamePropertyStatistics,
 			array(
 				'usage_count = usage_count + ' . $dbw->addQuotes( $value ),
 			),
 			array(
-				'pid' => $propertyId
+				'p_id' => $propertyId
 			),
 			__METHOD__
 		);
@@ -613,7 +613,7 @@ class SMWSQLStore3Writers {
 			// does too much; fall back to general case below.
 			if ( $sid != 0 ) { // change id entry to refer to the new title
 				// Note that this also changes the reference for internal objects (subobjects)
-				$db->update( 'smw_ids', array( 'smw_title' => $newtitle->getDBkey(),
+				$db->update( SMWSql3SmwIds::tableName, array( 'smw_title' => $newtitle->getDBkey(),
 					'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
 					array( 'smw_title' => $oldtitle->getDBkey(),
 					'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '' ),
@@ -625,7 +625,7 @@ class SMWSQLStore3Writers {
 				$this->store->smwIds->deleteCache( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
 			} else { // make new (target) id for use in redirect table
 				$sid = $this->store->smwIds->makeSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
-			} // at this point, $sid is the id of the target page (according to smw_ids)
+			} // at this point, $sid is the id of the target page (according to the IDs table)
 
 			// make redirect id for oldtitle:
 			$this->store->smwIds->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL3_SMWREDIIW, '' );
@@ -661,7 +661,7 @@ class SMWSQLStore3Writers {
 			}
 
 			// Associate internal objects (subobjects) with the new title:
-			$table = $db->tableName( 'smw_ids' );
+			$table = $db->tableName( SMWSql3SmwIds::tableName );
 			$values = array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' );
 			$sql = "UPDATE $table SET " . $db->makeList( $values, LIST_SET ) .
 				' WHERE smw_title = ' . $db->addQuotes( $oldtitle->getDBkey() ) . ' AND ' .
@@ -755,7 +755,7 @@ class SMWSQLStore3Writers {
 
 					if ( $proptable->idsubject ) {
 						$from   = $db->tableName( $proptable->name ) . ' INNER JOIN ' .
-							  $db->tableName( 'smw_ids' ) . ' ON s_id=smw_id';
+							  $db->tableName( SMWSql3SmwIds::tableName ) . ' ON s_id=smw_id';
 						$select = 'DISTINCT smw_title AS t,smw_namespace AS ns';
 					} else {
 						$from   = $db->tableName( $proptable->name );
@@ -812,7 +812,7 @@ class SMWSQLStore3Writers {
 					$sid = $this->store->smwIds->makeSMWPageID( $subject_t, $subject_ns,
 						SMW_SQL3_SMWREDIIW, '', false );
 				} else {
-					$db->update( 'smw_ids', array( 'smw_iw' => SMW_SQL3_SMWREDIIW ),
+					$db->update( SMWSql3SmwIds::tableName, array( 'smw_iw' => SMW_SQL3_SMWREDIIW ),
 						array( 'smw_id' => $sid ), __METHOD__ );
 					$this->store->smwIds->setCache( $subject_t, $subject_ns, '', '', 0, '' );
 					$this->store->smwIds->setCache( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', $sid, $sid_sort );
@@ -827,7 +827,7 @@ class SMWSQLStore3Writers {
 			// Therefore $subject had a redirect, and it must also have an ID.
 			// This shows that $sid != 0 here.
 			if ( $smwgQEqualitySupport != SMW_EQ_NONE ) { // mark subject as non-redirect
-				$db->update( 'smw_ids', array( 'smw_iw' => '' ), array( 'smw_id' => $sid ), __METHOD__ );
+				$db->update( SMWSql3SmwIds::tableName, array( 'smw_iw' => '' ), array( 'smw_id' => $sid ), __METHOD__ );
 				$this->store->smwIds->setCache( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', 0, '' );
 				$this->store->smwIds->setCache( $subject_t, $subject_ns, '', '', $sid, $sid_sort );
 			}
