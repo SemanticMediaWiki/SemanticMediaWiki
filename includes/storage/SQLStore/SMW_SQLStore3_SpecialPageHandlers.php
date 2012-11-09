@@ -34,12 +34,19 @@ class SMWSQLStore3SpecialPageHandlers {
 	 * Implementation of SMWStore::getPropertiesSpecial(). It works by
 	 * querying for all properties in smw_ids by identifying from the
 	 * namespace and then getting their usage from the smw_stats table.
+	 * When asking for unused properties, the result does not include
+	 * the usage count (which is always 0 then).
 	 *
-	 * Note: $extraConds specify filtering on properties, if given the result
-	 * will be array of DIWikiPages only. 
+	 * @bug Properties that are used as super properties of others are reported as unused now.
 	 *
+	 * @see SMWStore::getPropertiesSpecial()
+	 * @see SMWStore::getUnusedPropertiesSpecial()
+	 * @since 1.8
+	 * @param SMWRequestOptions $requestoptions
+	 * @param boolean $unusedProperties
+	 * @return array
 	 */
-	public function getPropertiesSpecial( $requestoptions = null, $extraConds = array() ) {
+	public function getPropertiesSpecial( SMWRequestOptions $requestoptions = null, $unusedProperties = false ) {
 		wfProfileIn( "SMWSQLStore3::getPropertiesSpecial (SMW)" );
 		$dbr = wfGetDB( DB_SLAVE );
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
@@ -53,8 +60,8 @@ class SMWSQLStore3SpecialPageHandlers {
 		}
 
 		$conds = array( 'smw_namespace' => SMW_NS_PROPERTY, 'smw_iw' => '' );
-		if( $extraConds != array() ) {
-			$conds = array_merge( $conds, $extraConds );
+		if( $unusedProperties ) {
+			$conds['usage_count'] = 0;
 		}
 		$res = $dbr->select(
 				array( 'smw_ids', 'smw_stats' ),
@@ -67,11 +74,15 @@ class SMWSQLStore3SpecialPageHandlers {
 
 		$result = array();
 		foreach ( $res as $row ) {
-			if( $extraConds == array() ) {
-				$result[] = array( new SMWDIProperty( $row->smw_title ), $row->usage_count );
-			} else {
-				$result[] = new SMWDIProperty( $row->smw_title );
+			try {
+				$property = new SMWDIProperty( $row->smw_title );
+			} catch ( SMWDataItemException $e ) {
+				// The following is not ideal, but more changes are needed for better error reporting:
+				// * The code needs to make assumptions about the context in which the message is used (content language, escaping)
+				// * The message text is not ideal for this situation.
+				$property = new SMWDIError( array( wfMessage( 'smw_noproperty', $row->smw_title )->inContentLanguage()->text() ) );
 			}
+			$result[] = $unusedProperties ? $property : array( $property, $row->usage_count );
 		}
 
 		$dbr->freeResult( $res );
@@ -81,11 +92,16 @@ class SMWSQLStore3SpecialPageHandlers {
 
 	/**
 	 * Implementation of SMWStore::getUnusedPropertiesSpecial(). It works by
-	 * calling getPropertiesSpecial() with additional parameters
+	 * calling getPropertiesSpecial() with additional parameters.
+	 *
+	 * @see SMWStore::getUnusedPropertiesSpecial()
+	 * @since 1.8
+	 * @param SMWRequestOptions $requestoptions
+	 * @return array
 	 */
-	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
+	public function getUnusedPropertiesSpecial( SMWRequestOptions $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore3::getUnusedPropertiesSpecial (SMW)" );
-		$result = $this->getPropertiesSpecial( $requestoptions, array( 'usage_count' => 0 ) );
+		$result = $this->getPropertiesSpecial( $requestoptions, true );
 		wfProfileOut( "SMWSQLStore3::getUnusedPropertiesSpecial (SMW)" );
 		return $result;
 	}
