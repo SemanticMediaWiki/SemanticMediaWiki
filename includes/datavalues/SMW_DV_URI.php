@@ -183,7 +183,10 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getShortWikiText( $linked = null ) {
 		$url = $this->getURL();
-		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url === '' ) || ( $this->m_caption === '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
+			( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
+			return $this->m_caption;
+		} elseif ( $this->m_outformat == 'nowiki' ) {
 			return $this->makeNonlinkedWikiText( $this->m_caption );
 		} else {
 			return '[' . $url . ' ' . $this->m_caption . ']';
@@ -192,7 +195,9 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getShortHTMLText( $linker = null ) {
 		$url = $this->getURL();
-		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $url === '' ) || ( $this->m_caption === '' ) ) {
+		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
+			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||
+			( $this->m_caption === '' ) ) {
 			return $this->m_caption;
 		} else {
 			return $linker->makeExternalLink( $url, $this->m_caption );
@@ -205,7 +210,10 @@ class SMWURIValue extends SMWDataValue {
 		}
 		$url = $this->getURL();
 
-		if ( is_null( $linked ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url === '' ) ) {
+		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
+			( $this->m_outformat == '-' ) ) {
+			return $this->m_wikitext;
+		} elseif ( $this->m_outformat == 'nowiki' ) {
 			return $this->makeNonlinkedWikiText( $this->m_wikitext );
 		} else {
 			return '[' . $url . ' ' . $this->m_wikitext . ']';
@@ -219,7 +227,8 @@ class SMWURIValue extends SMWDataValue {
 
 		$url = $this->getURL();
 
-		if ( is_null( $linker ) || ( $this->m_outformat == '-' ) || ( $url === '' ) ) {
+		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
+			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ) {
 			return htmlspecialchars( $this->m_wikitext );
 		} else {
 			return $linker->makeExternalLink( $url, $this->m_wikitext );
@@ -308,7 +317,7 @@ class SMWURIValue extends SMWDataValue {
 	 * while still displaying the same characters. The use of
 	 * &lt;nowiki&gt; is avoided, since the resulting strings may be
 	 * inserted during parsing, after this has been stripped.
-	 * 
+	 *
 	 * @since 1.8
 	 */
 	protected function makeNonlinkedWikiText( $url ) {
