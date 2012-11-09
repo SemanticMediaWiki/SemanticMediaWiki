@@ -183,7 +183,7 @@ Generates browsable RDF.',
 	// Messages for Properties Special
 	'properties'             => 'Properties',
 	'smw_properties_docu'    => 'The following properties are used in the wiki.',
-	'smw_property_template'  => '$1 of type $2 ($3)', // <propname> of type <type> (<count>)
+	'smw_property_template'  => '$1 of type $2 ($3 {{PLURAL:$3|use|uses}})', // <propname> of type <type> (<count> uses)
 	'smw_property_template_notype' => '$1 ($2)', // <propname> (<count>)
 	'smw_propertylackspage'  => 'All properties should be described by a page!',
 	'smw_propertylackstype'  => 'No type was specified for this property (assuming type $1 for now).',
@@ -8327,7 +8327,7 @@ $messages['mk'] = array(
 	'smw-paramdesc-sort' => 'По кое својство да се подреди барањето',
 	'smw-paramdesc-order' => 'Редослед на подредување на барањето',
 	'smw-paramdesc-searchlabel' => 'Текст за продолжување на пребарувањето',
-	'smw-paramdesc-named_args' => 'Наведете ги аргументите што му се дадени на шаблонот',
+	'smw-paramdesc-named_args' => 'Именувајте ги аргументите што му се предаваат на шаблонот.',
 	'smw-paramdesc-export' => 'Можност за извоз',
 	'smw-paramdesc-prettyprint' => 'Дали исписот да се форматира со дополнителни вовлекувања и нови редови',
 	'smw-paramdesc-source' => 'Алтернативен извор за барање',

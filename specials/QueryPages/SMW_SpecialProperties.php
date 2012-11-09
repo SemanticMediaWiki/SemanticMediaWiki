@@ -2,46 +2,46 @@
 
 /**
  * This special page for MediaWiki shows all used properties.
- * 
+ *
  * @file SMW_SpecialProperties.php
- * 
+ *
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
- * 
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
 class SMWSpecialProperties extends SpecialPage {
-	
+
 	public function __construct() {
 		parent::__construct( 'Properties' );
 	}
 
 	public function execute( $param ) {
 		wfProfileIn( 'smwfDoSpecialProperties (SMW)' );
-		
+
 		global $wgOut;
-		
+
 		$wgOut->setPageTitle( wfMessage( 'properties' )->text() );
-		
+
 		$rep = new SMWPropertiesPage();
-		
+
 		list( $limit, $offset ) = wfCheckLimits();
 		$rep->doQuery( $offset, $limit );
-		
+
 		// Ensure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $wgOut );
-		
+
 		wfProfileOut( 'smwfDoSpecialProperties (SMW)' );
 	}
 }
 
 /**
  * This query page shows all used properties.
- * 
+ *
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
- * 
+ *
  * @author Markus Krötzsch
  */
 class SMWPropertiesPage extends SMWQueryPage {
@@ -54,21 +54,54 @@ class SMWPropertiesPage extends SMWQueryPage {
 		return 'Properties';
 	}
 
+	/**
+	 * Format a result in the list of results as a string. We expect the
+	 * result to be an array with one object of type SMWDIProperty
+	 * (normally) or maybe SMWDIError (if something went wrong), followed
+	 * by a number (how often the property is used).
+	 *
+	 * @param Skin $skin provided by MediaWiki, not needed here
+	 * @param mixed $result
+	 * @return String
+	 * @throws MWException if the result was not of a supported type
+	 */
 	function formatResult( $skin, $result ) {
+		list ( $dataItem, $useCount ) = $result;
+
+		if ( $dataItem instanceof SMWDIProperty ) {
+			return $this->formatPropertyItem( $dataItem, $useCount );
+		} elseif ( $dataItem instanceof SMWDIError ) {
+			return smwfEncodeMessages( $dataItem->getErrors() );
+		} else {
+			throw MWException( 'SMWUnusedPropertiesPage expects results that are properties or errors.' );
+		}
+	}
+
+	/**
+	 * Produce a formatted string representation for showing a property and
+	 * its usage count in the list of used properties.
+	 *
+	 * @since 1.8
+	 *
+	 * @param SMWDIProperty $property
+	 * @param integer $useCount
+	 * @return string
+	 */
+	protected function formatPropertyItem( SMWDIProperty $property, $useCount ) {
 		global $wgLang;
 		$linker = smwfGetLinker();
-		list ( $property, $useCount ) = $result;
-		
+
 		$errors = array();
 
 		$diWikiPage = $property->getDiWikiPage();
 		$title = !is_null( $diWikiPage ) ? $diWikiPage->getTitle() : null;
 
-		if ( $property->isUserDefined() ) {
-
-			if ( $title === null ) {
-				return '';
-			}
+		if ( $property->isUserDefined() && is_null( $title ) ) {
+			// Show even messed up property names.
+			$typestring = '';
+			$proplink = $property->getLabel();
+			$errors[] = wfMessage( 'smw_notitle', $property->getLabel() )->escaped();
+		} elseif ( $property->isUserDefined() ) {
 
 			if ( $useCount <= 5 ) {
 				$errors[] = wfMessage( 'smw_propertyhardlyused' )->escaped();
@@ -119,6 +152,12 @@ class SMWPropertiesPage extends SMWQueryPage {
 		}
 	}
 
+	/**
+	 * Get the list of results.
+	 *
+	 * @param SMWRequestOptions $requestOptions
+	 * @return array of array( SMWDIProperty|SMWDIError, integer )
+	 */
 	function getResults( $requestoptions ) {
 		return smwfGetStore()->getPropertiesSpecial( $requestoptions );
 	}
