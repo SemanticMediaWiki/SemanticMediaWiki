@@ -674,6 +674,17 @@ $specialPageAliases['vi'] = array(
 $specialPageAliases['zh-hans'] = array(
 	'Ask' => array( '问' ),
 	'Browse' => array( '浏览' ),
+	'ExportRDF' => array( '导出RDF' ),
+	'PageProperty' => array( '页面属性' ),
+	'Properties' => array( '属性' ),
+	'SMWAdmin' => array( 'MWA管理' ),
+	'SearchByProperty' => array( '按属性搜索' ),
+	'SemanticStatistics' => array( '语义统计' ),
+	'Types' => array( '类型' ),
+	'URIResolver' => array( 'URL分解器' ),
+	'UnusedProperties' => array( '未使用属性' ),
+	'WantedProperties' => array( '缺乏属性' ),
+	'QueryCreator' => array( '查询创建者' ),
 );
 
 /** Traditional Chinese (中文（繁體）‎) */
