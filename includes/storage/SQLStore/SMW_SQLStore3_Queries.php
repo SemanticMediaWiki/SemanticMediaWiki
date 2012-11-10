@@ -152,8 +152,8 @@ class SMWSQLStore3QueryEngine {
 			}
 
 			// Update database:
-			$this->m_dbs->delete( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $cid ), $fname );
-			$smw_conccache = $this->m_dbs->tablename( SMWSQLStore3::tableNameConceptCache );
+			$this->m_dbs->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $cid ), $fname );
+			$smw_conccache = $this->m_dbs->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
 
 			if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 				$where = $qobj->where . ( $qobj->where ? ' AND ' : '' ) .
@@ -176,7 +176,7 @@ class SMWSQLStore3QueryEngine {
 				array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ),
 				array( 's_id' => $cid ), $fname );
 		} else { // no concept found; just delete old data if there is any
-			$this->m_dbs->delete( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $cid ), $fname );
+			$this->m_dbs->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $cid ), $fname );
 			$this->m_dbs->update( 'smw_fpt_conc',
 				array( 'cache_date' => null, 'cache_count' => null ),
 				array( 's_id' => $cid ), $fname );
@@ -195,7 +195,7 @@ class SMWSQLStore3QueryEngine {
 	 */
 	public function deleteConceptCache( $concept ) {
 		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
-		$this->m_dbs->delete( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
+		$this->m_dbs->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
 		$this->m_dbs->update( 'smw_fpt_conc', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 	}
 
@@ -575,7 +575,7 @@ class SMWSQLStore3QueryEngine {
 				     ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
 				       !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
 
-					$query->jointable = SMWSQLStore3::tableNameConceptCache;
+					$query->jointable = SMWSQLStore3::CONCEPT_CACHE_TABLE;
 					$query->joinfield = "$query->alias.s_id";
 					$query->where = "$query->alias.o_id=" . $this->m_dbs->addQuotes( $cid );
 				} elseif ( $row->concept_txt ) { // Parse description and process it recursively.

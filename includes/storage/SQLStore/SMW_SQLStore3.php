@@ -42,7 +42,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @note This should never change. If it is changed, the concept caches
 	 * will appear empty until they are recomputed.
 	 */
-	const tableNameConceptCache = 'smw_concept_cache';
+	const CONCEPT_CACHE_TABLE = 'smw_concept_cache';
 
 	/**
 	 * Name of the table to store the concept cache in.
@@ -50,7 +50,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @note This should never change, but if it does then its contents can
 	 * simply be rebuilt by running the setup.
 	 */
-	const tableNamePropertyStatistics = 'smw_prop_stats';
+	const PROPERTY_STATISTICS_TABLE = 'smw_prop_stats';
 
 	/**
 	 * Object to access the SMW IDs table.
@@ -769,15 +769,15 @@ class SMWSQLStore3 extends SMWStore {
 		if ( $sdata && ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_CONCEPT ) ) ) {
 			if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_CONCEPT ) ) {
 				$db->update( 'smw_fpt_conc', array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
-				$db->update( SMWSQLStore3::tableNameConceptCache, array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
+				$db->update( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
 			} else {
 				$db->delete( 'smw_fpt_conc', array( 's_id' => $oldid ), __METHOD__ );
-				$db->delete( SMWSQLStore3::tableNameConceptCache, array( 's_id' => $oldid ), __METHOD__ );
+				$db->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 's_id' => $oldid ), __METHOD__ );
 			}
 		}
 
 		if ( $podata ) {
-			$db->update( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $newid ), array( 'o_id' => $oldid ), __METHOD__ );
+			$db->update( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $newid ), array( 'o_id' => $oldid ), __METHOD__ );
 		}
 	}
 

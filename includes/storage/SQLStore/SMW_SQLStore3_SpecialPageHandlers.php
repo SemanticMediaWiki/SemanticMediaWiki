@@ -64,7 +64,7 @@ class SMWSQLStore3SpecialPageHandlers {
 			$conds['usage_count'] = 0;
 		}
 		$res = $dbr->select(
-				array( SMWSql3SmwIds::tableName, SMWSQLStore3::tableNamePropertyStatistics ),
+				array( SMWSql3SmwIds::tableName, SMWSQLStore3::PROPERTY_STATISTICS_TABLE ),
 				array( 'smw_title', 'usage_count' ),
 				$conds,
 				__METHOD__,

@@ -57,7 +57,7 @@ class SMWSQLStore3Writers {
 			$db = wfGetDB( DB_MASTER );
 			$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
 			$db->delete( 'smw_ftp_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
-			$db->delete( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
+			$db->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
 
 		///FIXME: if a property page is deleted, more pages may need to be updated by jobs!
@@ -539,7 +539,7 @@ class SMWSQLStore3Writers {
 		}
 
 		return $dbw->update(
-			SMWSQLStore3::tableNamePropertyStatistics,
+			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
 			array(
 				'usage_count = usage_count + ' . $dbw->addQuotes( $value ),
 			),
