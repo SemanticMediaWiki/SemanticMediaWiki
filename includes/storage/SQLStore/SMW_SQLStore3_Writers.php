@@ -508,7 +508,7 @@ class SMWSQLStore3Writers {
 		}
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
-			$property = new SMWDIProperty( $propertyTable->isFixedPropertyTable() );
+			$property = new SMWDIProperty( $propertyTable->getFixedProperty() );
 			$pid = $this->store->smwIds->makeSMWPropertyID( $property );
 		}
 

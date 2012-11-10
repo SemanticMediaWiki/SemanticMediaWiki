@@ -543,7 +543,7 @@ class SMWSQLStore3Readers {
 				$res = $db->select( $from, '*', $where, 'SMW::getProperties', array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMWDIProperty( $proptable->isFixedPropertyTable() );
+					$result[] = new SMWDIProperty( $proptable->getFixedProperty() );
 				}
 			}
 
@@ -612,7 +612,7 @@ class SMWSQLStore3Readers {
 				$res = $db->select( $from, '*', $where, 'SMW::getInProperties', array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMWDIProperty( $proptable->isFixedPropertyTable() );
+					$result[] = new SMWDIProperty( $proptable->getFixedProperty() );
 				}
 			}
 			$db->freeResult( $res );
