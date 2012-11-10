@@ -572,9 +572,9 @@ class SMWSql3SmwIds {
 	/**
 	* Updates the proptable_hash for a given page.
 	*
+	* @since 1.8
 	* @param $sid ID of the page as stored in smw_ids
 	* @param array of hash values with tablename as keys
-	* @since 1.8
 	*/
 	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
 		$db = wfGetDB( DB_MASTER );

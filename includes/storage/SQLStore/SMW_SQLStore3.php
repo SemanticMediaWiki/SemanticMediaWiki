@@ -153,7 +153,7 @@ class SMWSQLStore3 extends SMWStore {
 		SMWDataItem::TYPE_TIME       => 'smw_di_time',
 		SMWDataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
 		SMWDataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
-		//SMWDataItem::TYPE_CONCEPT    => '', // _CONC is the onluy property of this type
+		//SMWDataItem::TYPE_CONCEPT    => '', // _CONC is the only property of this type
 	);
 
 	/**
@@ -782,6 +782,11 @@ class SMWSQLStore3 extends SMWStore {
 				self::$fixedPropertyTableIds[$proptable->fixedproperty] = $tid;
 			}
 		}
+
+		// Specifically set properties that must not be stored in any
+		// property table to null here. Any function that hits this
+		// null unprepared is doing something wrong anyway.
+		self::$fixedPropertyTableIds['_SKEY'] = null;
 
 		return self::$prop_tables;
 	}
