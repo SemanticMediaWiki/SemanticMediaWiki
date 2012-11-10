@@ -7,8 +7,30 @@
 
 
 /**
- * Class to access the smw_ids table in SQLStore3.
+ * Class to access the SMW IDs table in SQLStore3.
  * Provides transparent in-memory caching facilities.
+ *
+ * Documentation for the SMW IDs table: This table is a dictionary that
+ * assigns integer IDs to pages, properties, and other objects used by SMW.
+ * All tables that refer to such objects store these IDs instead. If the ID
+ * information is lost (e.g., table gets deleted), then the data stored in SMW
+ * is no longer meaningful: all tables need to be dropped, recreated, and
+ * refreshed to get back to a working database.
+ *
+ * The table has a column for storing interwiki prefixes, used to refer to
+ * pages on external sites (like in MediaWiki). This column is also used to
+ * mark some special objects in the table, using "interwiki prefixes" that
+ * cannot occur in MediaWiki:
+ *
+ * - Rows with iw SMW_SQL3_SMWREDIIW are similar to normal entries for
+ * (internal) wiki pages, but the iw indicates that the page is a redirect, the
+ * (target of which should be sought using the smw_fpt_redi table.
+ *
+ * - The (unique) row with iw SMW_SQL3_SMWBORDERIW just marks the border
+ * between predefined ids (rows that are reserved for hardcoded ids built into
+ * SMW) and normal entries. It is no object, but makes sure that SQL's auto
+ * increment counter is high enough to not add any objects before that marked
+ * "border".
  *
  * @since 1.8
  * @author Markus Krötzsch
@@ -18,49 +40,107 @@
 class SMWSql3SmwIds {
 
 	/**
+	 * Name of the table to store IDs in.
+	 *
+	 * @note This should never change. Existing wikis will have to drop and
+	 * rebuild their SMW tables completely to recover from any change here.
+	 */
+	const tableName = 'smw_object_ids';
+
+	/**
 	 * Id for which property table hashes are cached, if any.
 	 *
 	 * @since 1.8
+	 * @var integer
 	 */
 	protected $hashCacheId = 0;
+
 	/**
 	 * Cached property table hashes for $hashCacheId.
 	 *
 	 * @since 1.8
+	 * @var string
 	 */
 	protected $hashCacheContents = '';
 
-	/// Maximal number of cached property IDs.
+	/**
+	 * Maximal number of cached property IDs.
+	 *
+	 * @since 1.8
+	 * @var integer
+	 */
 	public static $PROP_CACHE_MAX_SIZE = 250;
-	/// Maximal number of cached non-property IDs.
+
+	/**
+	 * Maximal number of cached non-property IDs.
+	 *
+	 * @since 1.8
+	 * @var integer
+	 */
 	public static $PAGE_CACHE_MAX_SIZE = 500;
 
-	public $selectrow_sort_debug = 0;
-	public $selectrow_redi_debug = 0;
-	public $prophit_debug = 0;
-	public $propmiss_debug = 0;
-	public $reghit_debug = 0;
-	public $regmiss_debug = 0;
-	static public $singleton_debug = null;
+	protected $selectrow_sort_debug = 0;
+	protected $selectrow_redi_debug = 0;
+	protected $prophit_debug = 0;
+	protected $propmiss_debug = 0;
+	protected $reghit_debug = 0;
+	protected $regmiss_debug = 0;
+	static protected $singleton_debug = null;
 
-	/// Parent SMWSQLStore3.
+	/**
+	 * Parent SMWSQLStore3.
+	 *
+	 * @since 1.8
+	 * @var SMWSQLStore3
+	 */
 	public $store;
 
-	/// Cache for property IDs.
-	/// @note Tests indicate that it is more memory efficient to have two
-	/// arrays (IDs and sortkeys) than to have one array that stores both
-	/// values in some data structure (other than a single string).
+	/**
+	 * Cache for property IDs.
+	 *
+	 * @note Tests indicate that it is more memory efficient to have two
+	 * arrays (IDs and sortkeys) than to have one array that stores both
+	 * values in some data structure (other than a single string).
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
 	protected $prop_ids = array();
-	/// Cache for property sortkeys.
+
+	/**
+	 * Cache for property sortkeys.
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
 	protected $prop_sortkeys = array();
-	/// Cache for non-property IDs.
+
+	/**
+	 * Cache for non-property IDs.
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
 	protected $regular_ids = array();
-	/// Cache for non-property sortkeys.
+
+	/**
+	 * Cache for non-property sortkeys.
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
 	protected $regular_sortkeys = array();
 
-	//protected $subobject_data = array();
-
-	/// Use pre-defined ids for Very Important Properties, avoiding frequent ID lookups for those
+	/**
+	 * Use pre-defined ids for Very Important Properties, avoiding frequent
+	 * ID lookups for those.
+	 *
+	 * @note These constants also occur in the store. Changing them will
+	 * require to run setup.php again. They can also not be larger than 50.
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
 	public static $special_ids = array(
 		'_TYPE' => 1,
 		'_URI'  => 2,
@@ -97,6 +177,9 @@ class SMWSql3SmwIds {
 
 	/**
 	 * Constructor.
+	 *
+	 * @since 1.8
+	 * @param SMWSQLStore3 $store
 	 */
 	public function __construct( SMWSQLStore3 $store ) {
 		$this->store = $store;
@@ -146,7 +229,7 @@ class SMWSql3SmwIds {
 					} else {
 						$select = array( 'smw_id', 'smw_sortkey' );
 					}
-					$row = $db->selectRow( 'smw_ids', $select,
+					$row = $db->selectRow( SMWSql3SmwIds::tableName, $select,
 						'smw_id=' . $db->addQuotes( $id ),
 						__METHOD__ );
 					if ( $row !== false ) {
@@ -166,7 +249,7 @@ class SMWSql3SmwIds {
 				} else {
 					$select = array( 'smw_id', 'smw_sortkey' );
 				}
-				$row = $db->selectRow( 'smw_ids', $select,
+				$row = $db->selectRow( SMWSql3SmwIds::tableName, $select,
 					'smw_title=' . $db->addQuotes( $title ) .
 					' AND smw_namespace=' . $db->addQuotes( $namespace ) .
 					' AND smw_iw=' . $db->addQuotes( $iw ) .
@@ -218,7 +301,7 @@ class SMWSql3SmwIds {
 
 	/**
 	 * Return the ID that a page redirects to. This is only used internally
-	 * and it is not cached since the results will affect the smw_ids
+	 * and it is not cached since the results will affect the SMW IDs table
 	 * cache, which will prevent duplicate queries for the same redirect
 	 * anyway.
 	 */
@@ -261,7 +344,7 @@ class SMWSql3SmwIds {
 			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
 
 			$db->insert(
-				'smw_ids',
+				SMWSql3SmwIds::tableName,
 				array(
 					'smw_id' => $db->nextSequenceValue( 'smw_ids_smw_id_seq' ),
 					'smw_title' => $title,
@@ -275,12 +358,12 @@ class SMWSql3SmwIds {
 
 			$id = $db->insertId();
 
-			// Properties also need to be in smw_stats
+			// Properties also need to be in the property statistics table
 			if( $namespace == SMW_NS_PROPERTY ) {
 				$db->insert(
-					'smw_stats',
+					SMWSQLStore3::tableNamePropertyStatistics,
 					array(
-						'pid' => $id,
+						'p_id' => $id,
 						'usage_count' => 0
 					),
 					__METHOD__
@@ -292,7 +375,7 @@ class SMWSql3SmwIds {
 			}
 		} elseif ( ( $sortkey !== '' ) && ( $sortkey != $oldsort ) ) {
 			$db = wfGetDB( DB_MASTER );
-			$db->update( 'smw_ids', array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
+			$db->update( SMWSql3SmwIds::tableName, array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
 		}
 
@@ -348,13 +431,13 @@ class SMWSql3SmwIds {
 	public function moveSMWPageID( $curid, $targetid = 0 ) {
 		$db = wfGetDB( DB_MASTER );
 
-		$row = $db->selectRow( 'smw_ids', '*', array( 'smw_id' => $curid ), __METHOD__ );
+		$row = $db->selectRow( SMWSql3SmwIds::tableName, '*', array( 'smw_id' => $curid ), __METHOD__ );
 
 		if ( $row === false ) return; // no id at current position, ignore
 
 		if ( $targetid == 0 ) { // append new id
 			$db->insert(
-				'smw_ids',
+				SMWSql3SmwIds::tableName,
 				array(
 					'smw_id' => $db->nextSequenceValue( 'smw_ids_smw_id_seq' ),
 					'smw_title' => $row->smw_title,
@@ -367,7 +450,7 @@ class SMWSql3SmwIds {
 			);
 			$targetid = $db->insertId();
 		} else { // change to given id
-			$db->insert( 'smw_ids',
+			$db->insert( SMWSql3SmwIds::tableName,
 				array( 'smw_id' => $targetid,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
@@ -379,7 +462,7 @@ class SMWSql3SmwIds {
 			);
 		}
 
-		$db->delete( 'smw_ids', array( 'smw_id' => $curid ), 'SMWSQLStore3::moveSMWPageID' );
+		$db->delete( SMWSql3SmwIds::tableName, array( 'smw_id' => $curid ), 'SMWSQLStore3::moveSMWPageID' );
 
 		$this->setCache( $row->smw_title, $row->smw_namespace, $row->smw_iw,
 			$row->smw_subobject, $targetid, $row->smw_sortkey );
@@ -539,7 +622,7 @@ class SMWSql3SmwIds {
 	* property-value table when updating data
 	*
 	* @since 1.8
-	* @param $sid ID of the page as stored in smw_ids
+	* @param integer $sid ID of the page as stored in the SMW IDs table
 	* @return array
 	*/
 	public function getPropertyTableHashes( $sid ) {
@@ -550,7 +633,7 @@ class SMWSql3SmwIds {
 			//print "Cache miss! $sid is not {$this->hashCacheId} " . $this->misscount++ . "\n";
 			$db = wfGetDB( DB_SLAVE );
 			$row = $db->selectRow(
-				'smw_ids',
+				SMWSql3SmwIds::tableName,
 				array( 'smw_proptable_hash' ),
 				'smw_id=' . $sid ,
 				__METHOD__
@@ -572,15 +655,15 @@ class SMWSql3SmwIds {
 	/**
 	* Updates the proptable_hash for a given page.
 	*
-	* @param $sid ID of the page as stored in smw_ids
-	* @param array of hash values with tablename as keys
 	* @since 1.8
+	* @param integer $sid ID of the page as stored in SMW IDs table
+	* @param array of hash values with tablename as keys
 	*/
 	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
 		$db = wfGetDB( DB_MASTER );
 		$propertyTableHash = serialize( $newTableHashes );
 		$db->update(
-			'smw_ids',
+			SMWSql3SmwIds::tableName,
 			array( 'smw_proptable_hash' => $propertyTableHash ),
 			array( 'smw_id' => $sid ),
 			__METHOD__

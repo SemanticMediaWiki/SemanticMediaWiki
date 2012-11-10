@@ -32,10 +32,10 @@ class SMWSQLStore3SpecialPageHandlers {
 
 	/**
 	 * Implementation of SMWStore::getPropertiesSpecial(). It works by
-	 * querying for all properties in smw_ids by identifying from the
-	 * namespace and then getting their usage from the smw_stats table.
-	 * When asking for unused properties, the result does not include
-	 * the usage count (which is always 0 then).
+	 * querying for all properties in the SMW IDs table (based on their
+	 * namespace) and getting their usage from the property statistics
+	 * table. When asking for unused properties, the result does not
+	 * include the usage count (which is always 0 then).
 	 *
 	 * @bug Properties that are used as super properties of others are reported as unused now.
 	 *
@@ -64,12 +64,12 @@ class SMWSQLStore3SpecialPageHandlers {
 			$conds['usage_count'] = 0;
 		}
 		$res = $dbr->select(
-				array( 'smw_ids', 'smw_stats' ),
+				array( SMWSql3SmwIds::tableName, SMWSQLStore3::tableNamePropertyStatistics ),
 				array( 'smw_title', 'usage_count' ),
 				$conds,
 				__METHOD__,
 				$options,
-				array( 'smw_ids' => array( 'INNER JOIN', array( 'smw_id=pid' ) ) )
+				array( SMWSql3SmwIds::tableName => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
 		);
 
 		$result = array();
@@ -134,7 +134,7 @@ class SMWSQLStore3SpecialPageHandlers {
 
 			$res = $dbr->select( // TODO: this is not how JOINS should be specified in the select function
 				$dbr->tableName( $proptable->name ) . ' INNER JOIN ' .
-					$dbr->tableName( 'smw_ids' ) . ' ON p_id=smw_id LEFT JOIN ' .
+					$dbr->tableName( SMWSql3SmwIds::tableName ) . ' ON p_id=smw_id LEFT JOIN ' .
 					$dbr->tableName( 'page' ) . ' ON (page_namespace=' .
 					$dbr->addQuotes( SMW_NS_PROPERTY ) . ' AND page_title=smw_title)',
 				'smw_title, COUNT(*) as count',

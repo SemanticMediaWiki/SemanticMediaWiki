@@ -109,9 +109,9 @@ class SMWSQLStore3QueryEngine {
 	/**
 	 * Refresh the concept cache for the given concept.
 	 *
+	 * @since 1.8
 	 * @param $concept Title
-	 *
-	 * @return array
+	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
 		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
@@ -152,8 +152,8 @@ class SMWSQLStore3QueryEngine {
 			}
 
 			// Update database:
-			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), $fname );
-			$smw_conccache = $this->m_dbs->tablename( 'smw_conccache' );
+			$this->m_dbs->delete( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $cid ), $fname );
+			$smw_conccache = $this->m_dbs->tablename( SMWSQLStore3::tableNameConceptCache );
 
 			if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 				$where = $qobj->where . ( $qobj->where ? ' AND ' : '' ) .
@@ -176,7 +176,7 @@ class SMWSQLStore3QueryEngine {
 				array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ),
 				array( 's_id' => $cid ), $fname );
 		} else { // no concept found; just delete old data if there is any
-			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), $fname );
+			$this->m_dbs->delete( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $cid ), $fname );
 			$this->m_dbs->update( 'smw_fpt_conc',
 				array( 'cache_date' => null, 'cache_count' => null ),
 				array( 's_id' => $cid ), $fname );
@@ -195,7 +195,7 @@ class SMWSQLStore3QueryEngine {
 	 */
 	public function deleteConceptCache( $concept ) {
 		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
-		$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
+		$this->m_dbs->delete( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
 		$this->m_dbs->update( 'smw_fpt_conc', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 	}
 
@@ -259,17 +259,17 @@ class SMWSQLStore3QueryEngine {
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
 			$qid = SMWSQLStore3Query::$qnum;
 			$q = new SMWSQLStore3Query();
-			$q->jointable = 'smw_ids';
+			$q->jointable = SMWSql3SmwIds::tableName;
 			$q->joinfield = "$q->alias.smw_id";
 			$q->where = "$q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL3_SMWINTDEFIW );
 			$this->m_queries[$qid] = $q;
 		}
 
-		if ( $this->m_queries[$qid]->jointable != 'smw_ids' ) {
+		if ( $this->m_queries[$qid]->jointable != SMWSql3SmwIds::tableName ) {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = SMWSQLStore3Query::$qnum;
 			$qobj = new SMWSQLStore3Query();
-			$qobj->jointable  = 'smw_ids';
+			$qobj->jointable  = SMWSql3SmwIds::tableName;
 			$qobj->joinfield  = "$qobj->alias.smw_id";
 			$qobj->components = array( $qid => "$qobj->alias.smw_id" );
 			$qobj->sortfields = $this->m_queries[$qid]->sortfields;
@@ -475,8 +475,8 @@ class SMWSQLStore3QueryEngine {
 		if ( $description instanceof SMWSomeProperty ) {
 			$this->compileSomePropertyDescription( $query, $description );
 		} elseif ( $description instanceof SMWNamespaceDescription ) {
-			// TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
-			$query->jointable = 'smw_ids';
+			// TODO: One instance of the SMW IDs table on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
+			$query->jointable = SMWSql3SmwIds::tableName;
 			$query->joinfield = "$query->alias.smw_id";
 			$query->where = "$query->alias.smw_namespace=" . $this->m_dbs->addQuotes( $description->getNamespace() );
 		} elseif ( ( $description instanceof SMWConjunction ) ||
@@ -529,8 +529,8 @@ class SMWSQLStore3QueryEngine {
 						$description->getDataItem()->getInterwiki(),
 						$description->getDataItem()->getSubobjectName() );
 					$query->joinfield = array( $oid );
-				} else { // Join with smw_ids needed for other comparators (apply to title string).
-					$query->jointable = 'smw_ids';
+				} else { // Join with SMW IDs table needed for other comparators (apply to title string).
+					$query->jointable = SMWSql3SmwIds::tableName;
 					$query->joinfield = "{$query->alias}.smw_id";
 					$value = $description->getDataItem()->getSortKey();
 
@@ -575,7 +575,7 @@ class SMWSQLStore3QueryEngine {
 				     ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
 				       !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
 
-					$query->jointable = 'smw_conccache';
+					$query->jointable = SMWSQLStore3::tableNameConceptCache;
 					$query->joinfield = "$query->alias.s_id";
 					$query->where = "$query->alias.o_id=" . $this->m_dbs->addQuotes( $cid );
 				} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
@@ -700,10 +700,10 @@ class SMWSQLStore3QueryEngine {
 			}
 
 			if ( array_key_exists( $sortkey, $this->m_sortkeys ) ) {
-				// TODO: This smw_ids is possibly duplicated in the query.
+				// TODO: This SMW IDs table is possibly duplicated in the query.
 				// Example: [[has capital::!Berlin]] with sort=has capital
 				// Can we prevent that? (PERFORMANCE)
-				$query->from = ' INNER JOIN ' .	$this->m_dbs->tableName( 'smw_ids' ) .
+				$query->from = ' INNER JOIN ' .	$this->m_dbs->tableName( SMWSql3SmwIds::tableName ) .
 						" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$o_id}";
 				$query->sortfields[$sortkey] = "ids{$query->alias}.smw_sortkey";
 			}
@@ -767,7 +767,7 @@ class SMWSQLStore3QueryEngine {
 		$diType = $dataItem->getDIType();
 
 		// Try comparison based on value field and comparator,
-		// but only if no join with smw_ids is needed.
+		// but only if no join with SMW IDs table is needed.
 		if ( $diType != SMWDataItem::TYPE_WIKIPAGE ) {
 			// Do not support smw_id joined data for now.
 
@@ -1058,7 +1058,7 @@ throw new MWException("Debug -- this code might be dead.");
 	/**
 	 * This function modifies the given query object at $qid to account for all ordering conditions
 	 * in the SMWQuery $query. It is always required that $qid is the id of a query that joins with
-	 * smw_ids so that the field alias.smw_title is $available for default sorting.
+	 * SMW IDs table so that the field alias.smw_title is $available for default sorting.
 	 *
 	 * @param integer $qid
 	 */

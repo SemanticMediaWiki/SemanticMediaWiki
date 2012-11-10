@@ -17,6 +17,8 @@
  * @ingroup SMW
  */
 
+die( "\nThis script is not functional. Please run SMW_refreshData.php instead.\nYou can also do this to initialise SQLStore3 while still using SQLStore2:\n* first run \"php SMW_refreshData.php -b SMWSQLStore3 -fp\" to recreate tables and initialise property pages,\n* then run \"php SMW_refreshData.php -b SMWSQLStore3\" again to refresh all normal pages.\n\n" );
+
 require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'
 	: dirname( __FILE__ ) . '/../../../maintenance/Maintenance.php' );

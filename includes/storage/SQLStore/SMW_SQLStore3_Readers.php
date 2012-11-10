@@ -143,28 +143,6 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * This method adds property-values of a subject from a property-value
-	 * table into the given SemanticData object.
-	 *
-	 * @todo Share code with getSemanticDatafromTable above? The problem is
-	 * that this method must not return too much, so it is hard to use the
-	 * cache.
-	 *
-	 * @param SMWSql3StubSemanticData $semData
-	 * @param SMWSQLStore3Table $proptable
-	 *
-	 * @since 1.8
-	 */
-	public function addTableSemanticData( $sid, SMWSql3StubSemanticData $semData, SMWSQLStore3Table $proptable ) {
-		$subject = $semData->getSubject();
-		$data = $this->fetchSemanticData( $sid, $subject, $proptable );
-
-		foreach ( $data as $d ) {
-			$semData->addPropertyStubValue( reset( $d ), end( $d ) );
-		}
-	}
-
-	/**
 	 * @see SMWStore::getPropertyValues
 	 *
 	 * @since 1.8
@@ -286,7 +264,7 @@ class SMWSQLStore3Readers {
 					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
 					  ' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
 			if ( !$proptable->fixedproperty ) { // select property name
-				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . ' AS p ON p_id=p.smw_id';
+				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::tableName ) . ' AS p ON p_id=p.smw_id';
 				$select .= 'p.smw_title as prop';
 			} // else: fixed property, no select needed
 		} elseif ( !$proptable->fixedproperty ) { // restrict property only
@@ -301,8 +279,8 @@ class SMWSQLStore3Readers {
 		$labelField = $diHandler->getLabelField();
 		$fields = $diHandler->getFetchFields();
 		foreach ( $fields as $fieldname => $typeid ) { // select object column(s)
-			if ( $typeid == 'p' ) { // get data from smw_ids
-				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
+			if ( $typeid == 'p' ) { // get data from ID table
+				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::tableName ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
 				$select .= ( ( $select !== '' ) ? ',' : '' ) .
 					"$fieldname AS id$valuecount" .
 					",o$valuecount.smw_title AS v$valuecount" .
@@ -405,8 +383,8 @@ class SMWSQLStore3Readers {
 		$proptable = $proptables[$tableid];
 		$db = wfGetDB( DB_SLAVE );
 
-		if ( $proptable->idsubject ) { // join in smw_ids to get title data
-			$from = $db->tableName( 'smw_ids' ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.s_id=smw_id";
+		if ( $proptable->idsubject ) { // join with ID table to get title data
+			$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.s_id=smw_id";
 			$select = 'smw_title, smw_namespace, smw_sortkey, smw_iw, smw_subobject';
 		} else { // no join needed, title+namespace as given in proptable
 			$from = $db->tableName( $proptable->name ) . " AS t1";
@@ -478,7 +456,7 @@ class SMWSQLStore3Readers {
 					if ( $subproptable->idsubject ) { // simply add property table to check values
 						$from .= " INNER JOIN " . $db->tableName( $subproptable->name ) . " AS t$tableindex ON t$tableindex.s_id=$joinfield";
 					} else { // exotic case with table that uses subject title+namespace in container object (should never happen in SMW core)
-						$from .= " INNER JOIN " . $db->tableName( 'smw_ids' ) . " AS ids$tableindex ON ids$tableindex.smw_id=$joinfield" .
+						$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " AS ids$tableindex ON ids$tableindex.smw_id=$joinfield" .
 						         " INNER JOIN " . $db->tableName( $subproptable->name ) . " AS t$tableindex ON " .
 						         "t$tableindex.s_title=ids$tableindex.smw_title AND t$tableindex.s_namespace=ids$tableindex.smw_namespace";
 					}
@@ -552,7 +530,7 @@ class SMWSQLStore3Readers {
 			}
 
 			if ( $proptable->fixedproperty == false ) { // select all properties
-				$from .= " INNER JOIN " . $db->tableName( 'smw_ids' ) . " ON smw_id=p_id";
+				$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " ON smw_id=p_id";
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
 					// (select sortkey since it might be used in ordering (needed by Postgres))
 					$where . $this->store->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey' ),
@@ -612,8 +590,8 @@ class SMWSQLStore3Readers {
 			}
 
 			$where = $from = '';
-			if ( $proptable->fixedproperty == false ) { // join smw_ids to get property titles
-				$from = $db->tableName( 'smw_ids' ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.p_id=smw_id";
+			if ( $proptable->fixedproperty == false ) { // join ID table to get property titles
+				$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.p_id=smw_id";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
 
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',

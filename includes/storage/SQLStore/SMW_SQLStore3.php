@@ -31,16 +31,33 @@ define( 'SMW_SQL3_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" 
  * interwiki object is given but a local object of the same name exists. It is
  * currently not planned to support things like interwiki reuse of properties.
  *
- * @todo Check what needs to be protected and make them protected. Many helper
- * methods and pre-defined property arrays were made public to support the
- * storerewrite).
- *
  * @since 1.8
  * @ingroup SMWStore
  */
 class SMWSQLStore3 extends SMWStore {
 
-	/// Object to access to smw ids.
+	/**
+	 * Name of the table to store the concept cache in.
+	 *
+	 * @note This should never change. If it is changed, the concept caches
+	 * will appear empty until they are recomputed.
+	 */
+	const tableNameConceptCache = 'smw_concept_cache';
+
+	/**
+	 * Name of the table to store the concept cache in.
+	 *
+	 * @note This should never change, but if it does then its contents can
+	 * simply be rebuilt by running the setup.
+	 */
+	const tableNamePropertyStatistics = 'smw_prop_stats';
+
+	/**
+	 * Object to access the SMW IDs table.
+	 *
+	 * @since 1.8
+	 * @var SMWSql3SmwIds
+	 */
 	public $smwIds;
 
 	/**
@@ -53,8 +70,8 @@ class SMWSQLStore3 extends SMWStore {
 	protected $reader = false;
 
 	/**
-	 * The writer object used by this store. Initialized by getWriter()
-	 * Always access using getWriter()
+	 * The writer object used by this store. Initialized by getWriter(),
+	 * which is the only way in which it should be accessed.
 	 *
 	 * @since 1.8
 	 * @var SMWSQLStore3Writers
@@ -62,8 +79,9 @@ class SMWSQLStore3 extends SMWStore {
 	protected $writer = false;
 
 	/**
-	 * The SpecialPageHandler object used by this store. Initialized by getSpecialPageHandler()
-	 * Always access using getSpecialPageHandler()
+	 * The SpecialPageHandler object used by this store. Initialized by
+	 * getSpecialPageHandler(), which is the only way in which it should
+	 * be accessed.
 	 *
 	 * @since 1.8
 	 * @var SMWSQLStore3SpecialPageHandlers
@@ -71,8 +89,8 @@ class SMWSQLStore3 extends SMWStore {
 	protected $specialPageHandler = false;
 
 	/**
-	 * The SetupHandler object used by this store. Initialized by getSetupHandler()
-	 * Always access using getSetupHandler()
+	 * The SetupHandler object used by this store. Initialized by getSetupHandler(),
+	 * which is the only way in which it should be accessed.
 	 *
 	 * @since 1.8
 	 * @var SMWSQLStore3SetupHandlers
@@ -80,24 +98,30 @@ class SMWSQLStore3 extends SMWStore {
 	protected $setupHandler = false;
 
 	/**
-	 * Array of DIHandler objects used by this store. Initialized by getDIHandler()
-	 * Always access using getDIHandler().
+	 * Array of DIHandler objects used by this store. Initialized by getDIHandler(),
+	 * which is the only way in which it should be accessed.
 	 *
 	 * @since 1.8
+	 * @var array
 	 */
 	protected $diHandlers = array();
 
 	/**
 	 * Cache for SMWSemanticData objects, indexed by SMW ID.
 	 *
+	 * @todo In the future, the cache should be managed by a helper class.
+	 *
 	 * @since 1.8
+	 * @var array
 	 */
 	public $m_semdata = array();
+
 	/**
 	 * Like SMWSQLStore3::m_semdata, but containing flags indicating
 	 * completeness of the SMWSemanticData objs.
 	 *
 	 * @since 1.8
+	 * @var array
 	 */
 	public $m_sdstate = array();
 
@@ -106,25 +130,29 @@ class SMWSQLStore3 extends SMWStore {
 	protected static $prop_tables;
 
 	/**
-	 * Array to cache "propkey => table id" associations for fixed
-	 * property tables. Available only after calling @see getPropertyTables.
+	 * Array to cache "propkey => table id" associations for fixed property
+	 * tables. Initialized by getPropertyTables(), which must be called
+	 * before accessing this.
 	 *
 	 * @since 1.8
 	 * @var array|null
 	 */
-	protected static $fixedPropertyTableIds;
+	protected static $fixedPropertyTableIds = null;
 
 	/**
 	 * Keys of special properties that should have their own
 	 * fixed property table.
 	 *
 	 * @since 1.8
+	 * @var array
 	 */
 	protected static $special_tables = array(
 		// page metadata tables
 		'_MDAT', '_CDAT', '_NEWP', '_LEDT',
 		// property declarations
 		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV',
+		// query statistics (very frequently used)
+		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST',
 		// subproperties, classes, and instances
 		'_SUBP', '_SUBC', '_INST',
 		// redirects
@@ -143,8 +171,9 @@ class SMWSQLStore3 extends SMWStore {
 	 * Default tables to use for storing data of certain types.
 	 *
 	 * @since 1.8
+	 * @var array
 	 */
-	public static $di_type_tables = array(
+	protected static $di_type_tables = array(
 		SMWDataItem::TYPE_NUMBER     => 'smw_di_number',
 		SMWDataItem::TYPE_STRING     => 'smw_di_blob',
 		SMWDataItem::TYPE_BLOB       => 'smw_di_blob',
@@ -153,7 +182,7 @@ class SMWSQLStore3 extends SMWStore {
 		SMWDataItem::TYPE_TIME       => 'smw_di_time',
 		SMWDataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
 		SMWDataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
-		//SMWDataItem::TYPE_CONCEPT    => '', // _CONC is the onluy property of this type
+		//SMWDataItem::TYPE_CONCEPT    => '', // _CONC is the only property of this type
 	);
 
 	/**
@@ -170,19 +199,25 @@ class SMWSQLStore3 extends SMWStore {
 	* @todo Move these to somewhere else?
 	*
 	* @since 1.8
+	* @var array
 	*/
 	public static $fixedProperties = array();
 
+	/**
+	 * Constructor.
+	 *
+	 * @since 1.8
+	 */
 	public function __construct() {
 		$this->smwIds = new SMWSql3SmwIds( $this );
 	}
 
 	/**
-	 * Gets an object of the dataitem handler from the dataitem provided.
+	 * Get an object of the dataitem handler from the dataitem provided.
 	 *
 	 * @since 1.8
-	 * @param $dataItemID constant
-	 * @throws MWException
+	 * @param integer $diType
+	 * @throws MWException if no handler exists for the given type
 	 * @return SMWDataItemHandler
 	 */
 	public function getDataItemHandlerForDIType( $diType ) {
@@ -232,8 +267,8 @@ class SMWSQLStore3 extends SMWStore {
 	 * Convenience method to get a dataitem handler for a datatype id.
 	 *
 	 * @since 1.8
-	 * @param $typeid String
-	 * @throws MWException
+	 * @param string $typeid
+	 * @throws MWException if there is no handler for this type
 	 * @return SMWDataItemHandler
 	 */
 	public function getDataItemHandlerForDatatype( $typeid ) {
@@ -303,9 +338,9 @@ class SMWSQLStore3 extends SMWStore {
 	/**
 	 * @see SMWStore::getQueryResult
 	 *
-	 * @param $query SMWQuery
-	 *
-	 * @return mixed: depends on $query->querymode
+	 * @since 1.8
+	 * @param SMWQuery $query
+	 * @return SMWQueryResult|string|integer depends on $query->querymode
 	 */
 	public function getQueryResult( SMWQuery $query ) {
 		wfProfileIn( 'SMWSQLStore3::getQueryResult (SMW)' );
@@ -372,7 +407,7 @@ class SMWSQLStore3 extends SMWStore {
 	 *
 	 * @since 1.8
 	 * @param Title $concept
-	 * @return array
+	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
 		wfProfileIn( 'SMWSQLStore3::refreshConceptCache (SMW)' );
@@ -451,9 +486,12 @@ class SMWSQLStore3 extends SMWStore {
 	 * The parameter $valuecol defines the string name of the column to which
 	 * sorting requests etc. are to be applied.
 	 *
-	 *
+	 * @since 1.8
+	 * @param SMWRequestOptions|null $requestoptions
+	 * @param string $valuecol
+	 * @return array
 	 */
-	public function getSQLOptions( $requestoptions, $valuecol = '' ) {
+	public function getSQLOptions( SMWRequestOptions $requestoptions = null, $valuecol = '' ) {
 		$sql_options = array();
 
 		if ( $requestoptions !== null ) {
@@ -478,14 +516,14 @@ class SMWSQLStore3 extends SMWStore {
 	 * conditions. The parameter $valuecol defines the string name of the
 	 * column to which value restrictions etc. are to be applied.
 	 *
-	 * @param $requestoptions object with options
-	 * @param $valuecol string name of SQL column to which conditions apply
-	 * @param $labelcol string name of SQL column to which string conditions apply, if any
-	 * @param $addand boolean to indicate whether the string should begin with " AND " if non-empty
-	 *
+	 * @since 1.8
+	 * @param SMWRequestOptions|null $requestoptions
+	 * @param string $valuecol name of SQL column to which conditions apply
+	 * @param string $labelcol name of SQL column to which string conditions apply, if any
+	 * @param boolean $addand indicate whether the string should begin with " AND " if non-empty
 	 * @return string
 	 */
-	public function getSQLConditions( $requestoptions, $valuecol = '', $labelcol = '', $addand = true ) {
+	public function getSQLConditions( SMWRequestOptions $requestoptions = null, $valuecol = '', $labelcol = '', $addand = true ) {
 		$sql_conds = '';
 
 		if ( $requestoptions !== null ) {
@@ -524,8 +562,13 @@ class SMWSQLStore3 extends SMWStore {
 	 * that do not respect the options yet. This method takes an array of
 	 * results (SMWDataItem objects) *of the same type* and applies the
 	 * given requestoptions as appropriate.
+	 *
+	 * @since 1.8
+	 * @param array $data array of SMWDataItem objects
+	 * @param SMWRequestOptions|null $requestoptions
+	 * @return array of SMWDataItem objects
 	 */
-	public function applyRequestOptions( array $data, $requestoptions ) {
+	public function applyRequestOptions( array $data, SMWRequestOptions $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore3::applyRequestOptions (SMW)" );
 
 		if ( ( count( $data ) == 0 ) || is_null( $requestoptions ) ) {
@@ -625,7 +668,8 @@ class SMWSQLStore3 extends SMWStore {
 	 * the given type. The type is specified by an SMW type id such as '_wpg'.
 	 * An empty string is returned if no matching table could be found.
 	 *
-	 * @param $typeid string
+	 * @since 1.8
+	 * @param string $typeid
 	 * @return string
 	 */
 	public static function findTypeTableId( $typeid ) {
@@ -638,7 +682,8 @@ class SMWSQLStore3 extends SMWStore {
 	 * data items of the given type. The empty string is returned if
 	 * no such table exists.
 	 *
-	 * @param $dataItemId integer
+	 * @since 1.8
+	 * @param integer $dataItemId
 	 * @return string
 	 */
 	public static function findDiTypeTableId( $dataItemId ) {
@@ -653,7 +698,8 @@ class SMWSQLStore3 extends SMWStore {
 	 * Retrieve the id of the property table that is to be used for storing
 	 * values for the given property object.
 	 *
-	 * @param $diProperty SMWDIProperty
+	 * @since 1.8
+	 * @param SMWDIProperty $diProperty
 	 * @return string
 	 */
 	public static function findPropertyTableID( SMWDIProperty $diProperty ) {
@@ -677,19 +723,20 @@ class SMWSQLStore3 extends SMWStore {
 	 * delete any entries that are limited to one particular namespace (e.g.
 	 * only properties can be used as properties) instead of moving them.
 	 *
-	 * The id in smw_ids as such is not touched.
+	 * The id in the SMW IDs table is not touched.
 	 *
 	 * @note This method only changes internal page IDs in SMW. It does not
 	 * assume any change in (title-related) data, as e.g. in a page move.
 	 * Internal objects (subobject) do not need to be updated since they
 	 * refer to the title of their parent page, not to its ID.
 	 *
-	 * @param $oldid numeric ID that is to be changed
-	 * @param $newid numeric ID to which the records are to be changed
-	 * @param $oldnamespace namespace of old id's page (-1 to ignore it)
-	 * @param $newnamespace namespace of new id's page (-1 to ignore it)
-	 * @param $sdata boolean stating whether to update subject references
-	 * @param $podata boolean stating if to update property/object references
+	 * @since 1.8
+	 * @param integer $oldid numeric ID that is to be changed
+	 * @param integer $newid numeric ID to which the records are to be changed
+	 * @param integer $oldnamespace namespace of old id's page (-1 to ignore it)
+	 * @param integer $newnamespace namespace of new id's page (-1 to ignore it)
+	 * @param boolean $sdata stating whether to update subject references
+	 * @param boolean $podata stating if to update property/object references
 	 */
 	public function changeSMWPageID( $oldid, $newid, $oldnamespace = -1,
 				$newnamespace = -1, $sdata = true, $podata = true ) {
@@ -722,24 +769,27 @@ class SMWSQLStore3 extends SMWStore {
 		if ( $sdata && ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_CONCEPT ) ) ) {
 			if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_CONCEPT ) ) {
 				$db->update( 'smw_fpt_conc', array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
-				$db->update( 'smw_conccache', array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
+				$db->update( SMWSQLStore3::tableNameConceptCache, array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
 			} else {
 				$db->delete( 'smw_fpt_conc', array( 's_id' => $oldid ), __METHOD__ );
-				$db->delete( 'smw_conccache', array( 's_id' => $oldid ), __METHOD__ );
+				$db->delete( SMWSQLStore3::tableNameConceptCache, array( 's_id' => $oldid ), __METHOD__ );
 			}
 		}
 
 		if ( $podata ) {
-			$db->update( 'smw_conccache', array( 'o_id' => $newid ), array( 'o_id' => $oldid ), __METHOD__ );
+			$db->update( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $newid ), array( 'o_id' => $oldid ), __METHOD__ );
 		}
 	}
 
 	/**
 	 * Return the array of predefined property table declarations, initialising
 	 * it if necessary. The result is an array of SMWSQLStore3Table objects
-	 * indexed by table ids. Note that the ids are only for accessing the data
-	 * and should not be assumed to agree with the table name.
+	 * indexed by table ids.
 	 *
+	 * It is ensured that the keys of the returned array agree with the name of
+	 * the table that they refer to.
+	 *
+	 * @since 1.8
 	 * @return array of SMWSQLStore3Table
 	 */
 	public static function getPropertyTables() {
@@ -782,6 +832,11 @@ class SMWSQLStore3 extends SMWStore {
 				self::$fixedPropertyTableIds[$proptable->fixedproperty] = $tid;
 			}
 		}
+
+		// Specifically set properties that must not be stored in any
+		// property table to null here. Any function that hits this
+		// null unprepared is doing something wrong anyway.
+		self::$fixedPropertyTableIds['_SKEY'] = null;
 
 		return self::$prop_tables;
 	}
