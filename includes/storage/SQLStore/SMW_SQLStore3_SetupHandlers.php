@@ -37,7 +37,7 @@ class SMWSQLStore3SetupHandlers {
 
 		$this->setupTables( $verbose, $db );
 		$this->setupPredefinedProperties( $verbose, $db );
-		$this->computeStats( $verbose, $db );
+		$this->refreshPropertyStatistics( $verbose, $db );
 
 		return true;
 	}
@@ -46,22 +46,11 @@ class SMWSQLStore3SetupHandlers {
 	 * Create required SQL tables. This function also performs upgrades of
 	 * table contents when required.
 	 *
-	 * Documentation for the table smw_ids: This table is normally used to
-	 * store references to wiki pages (possibly with some external interwiki
-	 * prefix). There are, however, some special objects that are also
-	 * stored therein. These are marked by special interwiki prefixes (iw)
-	 * that cannot occcur in real life:
+	 * @see SMWSql3SmwIds for documentation of the SMW IDs table.
 	 *
-	 * - Rows with iw SMW_SQL3_SMWREDIIW are similar to normal entries for
-	 * (internal) wiki pages, but the iw indicates that the page is a
-	 * redirect, the target of which should be sought using the
-	 * smw_fpt_redi table.
-	 *
-	 * - The (unique) row with iw SMW_SQL3_SMWBORDERIW just marks the
-	 * border between predefined ids (rows that are reserved for hardcoded
-	 * ids built into SMW) and normal entries. It is no object, but makes
-	 * sure that SQL's auto increment counter is high enough to not add any
-	 * objects before that marked "border".
+	 * @since 1.8
+	 * @param boolean $verbose
+	 * @param DatabaseBase $db used for writing
 	 */
 	protected function setupTables( $verbose, $db ) {
 		global $wgDBtype;
@@ -83,7 +72,7 @@ class SMWSQLStore3SetupHandlers {
 
 		// Set up table for internal IDs used in this store:
 		SMWSQLHelpers::setupTable(
-			'smw_ids',
+			SMWSql3SmwIds::tableName,
 			array(
 				'smw_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ),
 				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
@@ -98,7 +87,7 @@ class SMWSQLStore3SetupHandlers {
 		);
 
 		SMWSQLHelpers::setupIndex(
-			'smw_ids',
+			SMWSql3SmwIds::tableName,
 			array(
 				'smw_id',
 				'smw_id,smw_sortkey',
@@ -110,7 +99,7 @@ class SMWSQLStore3SetupHandlers {
 
 		// Set up concept cache: member elements (s)->concepts (o)
 		SMWSQLHelpers::setupTable(
-			'smw_conccache',
+			SMWSQLStore3::tableNameConceptCache,
 			array(
 				's_id' => $dbtypes['p'] . ' NOT NULL',
 				'o_id' => $dbtypes['p'] . ' NOT NULL'
@@ -119,20 +108,20 @@ class SMWSQLStore3SetupHandlers {
 			$reportTo
 		);
 
-		SMWSQLHelpers::setupIndex( 'smw_conccache', array( 'o_id' ), $db );
+		SMWSQLHelpers::setupIndex( SMWSQLStore3::tableNameConceptCache, array( 'o_id' ), $db );
 
 		// Set up table for stats on Properties (only counts for now)
 		SMWSQLHelpers::setupTable(
-			'smw_stats',
+			SMWSQLStore3::tableNamePropertyStatistics,
 			array(
-				'pid' => $dbtypes['p'],
+				'p_id' => $dbtypes['p'],
 				'usage_count' => $dbtypes['j']
 			),
 			$db,
 			$reportTo
 		);
 
-		SMWSQLHelpers::setupIndex( 'smw_stats', array( array( 'pid', 'UNIQUE' ), 'usage_count' ), $db );
+		SMWSQLHelpers::setupIndex( SMWSQLStore3::tableNamePropertyStatistics, array( array( 'p_id', 'UNIQUE' ), 'usage_count' ), $db );
 
 		// Set up all property tables as defined:
 		$this->setupPropertyTables( $dbtypes, $db, $reportTo );
@@ -217,13 +206,13 @@ class SMWSQLStore3SetupHandlers {
 		$this->reportProgress( "Setting up internal property indices ...\n", $verbose );
 
 		// Check if we already have this structure
-		$borderiw = $db->selectField( 'smw_ids', 'smw_iw', 'smw_id=' . $db->addQuotes( 50 ) );
+		$borderiw = $db->selectField( SMWSql3SmwIds::tableName, 'smw_iw', 'smw_id=' . $db->addQuotes( 50 ) );
 
 		if ( $borderiw != SMW_SQL3_SMWBORDERIW ) {
 			$this->reportProgress( "   ... allocating space for internal properties ...\n", $verbose );
 			$this->store->smwIds->moveSMWPageID( 50 ); // make sure position 50 is empty
 
-			$db->insert( 'smw_ids', array(
+			$db->insert( SMWSql3SmwIds::tableName, array(
 					'smw_id' => 50,
 					'smw_title' => '',
 					'smw_namespace' => 0,
@@ -250,7 +239,7 @@ class SMWSQLStore3SetupHandlers {
 
 		foreach ( SMWSql3SmwIds::$special_ids as $prop => $id ) {
 			$p = new SMWDIProperty( $prop );
-			$db->replace( 'smw_ids',	array( 'smw_id' ), array(
+			$db->replace( SMWSql3SmwIds::tableName, array( 'smw_id' ), array(
 					'smw_id' => $id,
 					'smw_title' => $p->getKey(),
 					'smw_namespace' => SMW_NS_PROPERTY,
@@ -266,7 +255,7 @@ class SMWSQLStore3SetupHandlers {
 		if ( $wgDBtype == 'postgres' ) {
 			$this->reportProgress( " ... updating smw_ids_smw_id_seq sequence accordingly.\n", $verbose );
 
-			$max = $db->selectField( 'smw_ids', 'max(smw_id)', array(), __METHOD__ );
+			$max = $db->selectField( SMWSql3SmwIds::tableName, 'max(smw_id)', array(), __METHOD__ );
 			$max += 1;
 
 			$db->query( "ALTER SEQUENCE smw_ids_smw_id_seq RESTART WITH {$max}", __METHOD__ );
@@ -276,50 +265,60 @@ class SMWSQLStore3SetupHandlers {
 	}
 
 	/**
-	 * Compute statistics for all the properties, basically update the count in smw_stats
+	 * Update the usage count in the property statistics table for all
+	 * properties. This function also initialises the required entry for
+	 * all properties that have IDs in the SMW IDs table.
+	 *
+	 * @since 1.8
+	 * @param boolean $verbose
+	 * @param DatabaseBase $dbw used for writing
 	 */
-	protected function computeStats( $verbose, $db ) {
+	protected function refreshPropertyStatistics( $verbose, $dbw ) {
+		$this->reportProgress( "Updating property statistics. This may take a while.\n", $verbose );
 
-		$this->reportProgress( "Computing property statistics.\n", $verbose );
-		$res = $db->select(
-				'smw_ids',
-				array( 'smw_id', 'smw_title', 'smw_sortkey' ),
+		$res = $dbw->select(
+				SMWSql3SmwIds::tableName,
+				array( 'smw_id', 'smw_title' ),
 				array( 'smw_namespace' => SMW_NS_PROPERTY  ),
 				__METHOD__
 		);
-		$proptables = SMWSQLStore3::getPropertyTables();
 
-		$count = 0;
+		$propertyTables = SMWSQLStore3::getPropertyTables();
+
 		foreach ( $res as $row ) {
-			$count++;
+			$this->reportProgress( '.' );
 
-			try{
-				$di = new SMWDIProperty( $row->smw_title );
-			} catch( SMWDataItemException $e ) {
-				$this->reportProgress( "Warning: Could not create a property for key\"{$row->smw_title}\" ({$e->getMessage()}) \n", $verbose );
-				continue;
+			$usageCount = 0;
+			foreach ( $propertyTables as $propertyTable ) {
+
+				if ( ( $propertyTable->fixedproperty != false ) &&
+					( $propertyTable->fixedproperty != $row->smw_title ) ) {
+					// This table cannot store values for this property
+					continue;
+				}
+
+				$propRow = $dbw->selectRow(
+						$propertyTable->name,
+						'Count(*) as count',
+						$propertyTable->fixedproperty ? array() : array('p_id' => $row->smw_id ),
+						__METHOD__
+				);
+				$usageCount += $propRow->count;
 			}
 
-			$tableId = SMWSQLStore3::findPropertyTableID( $di );
-			$proptable = $proptables[$tableId];
-			$propRow = $db->selectRow(
-					$proptable->name,
-					'Count(*) as count',
-					$proptable->fixedproperty ? array() : array('p_id' => $row->smw_id ),
-					__METHOD__
-			);
-			$db->replace(
-				'smw_stats',
-				'pid',
+			$dbw->replace(
+				SMWSQLStore3::tableNamePropertyStatistics,
+				'p_id',
 				array(
-					'pid' => $row->smw_id,
-					'usage_count' => $propRow->count
+					'p_id' => $row->smw_id,
+					'usage_count' => $usageCount
 				),
 				__METHOD__
 			);
 		}
-		$db->freeResult( $res );
-		$this->reportProgress( "Updated statistics for $count Properties.\n", $verbose );
+
+		$this->reportProgress( "\nUpdated statistics for {$res->numRows()} Properties.\n", $verbose );
+		$dbw->freeResult( $res );
 	}
 
 	public function drop( $verbose = true ) {
@@ -327,7 +326,7 @@ class SMWSQLStore3SetupHandlers {
 
 		$this->reportProgress( "Deleting all database content and tables generated by SMW ...\n\n", $verbose );
 		$dbw = wfGetDB( DB_MASTER );
-		$tables = array( 'smw_ids', 'smw_conccache', 'smw_stats' );
+		$tables = array( SMWSql3SmwIds::tableName, SMWSQLStore3::tableNameConceptCache, SMWSQLStore3::tableNamePropertyStatistics );
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
 			$tables[] = $proptable->name;
@@ -379,7 +378,7 @@ class SMWSQLStore3SetupHandlers {
 		$dbr = wfGetDB( DB_SLAVE );
 
 		$res = $dbr->select(
-			'smw_ids',
+			SMWSql3SmwIds::tableName,
 			array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw', 'smw_subobject' ),
 			array(
 				"smw_id >= $index ",
@@ -410,7 +409,7 @@ class SMWSQLStore3SetupHandlers {
 					}
 				}
 
-				$dbr->delete( 'smw_ids',	array( 'smw_id' => $row->smw_id ), __METHOD__ );
+				$dbr->delete( SMWSql3SmwIds::tableName, array( 'smw_id' => $row->smw_id ), __METHOD__ );
 			} else { // "normal" interwiki pages or outdated internal objects -- delete
 				$diWikiPage = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SMWSemanticData( $diWikiPage );
@@ -433,12 +432,12 @@ class SMWSQLStore3SetupHandlers {
 
 		if ( $emptyrange ) { // nothing found, check if there will be more pages later on
 			$next1 = $dbr->selectField( 'page', 'page_id', "page_id >= $nextpos", __METHOD__, array( 'ORDER BY' => "page_id ASC" ) );
-			$next2 = $dbr->selectField( 'smw_ids', 'smw_id', "smw_id >= $nextpos", __METHOD__, array( 'ORDER BY' => "smw_id ASC" ) );
+			$next2 = $dbr->selectField( SMWSql3SmwIds::tableName, 'smw_id', "smw_id >= $nextpos", __METHOD__, array( 'ORDER BY' => "smw_id ASC" ) );
 			$nextpos = $next2 != 0 && $next2 < $next1 ? $next2 : $next1;
 		}
 
 		$max1 = $dbr->selectField( 'page', 'MAX(page_id)', '', __METHOD__ );
-		$max2 = $dbr->selectField( 'smw_ids', 'MAX(smw_id)', '', __METHOD__ );
+		$max2 = $dbr->selectField( SMWSql3SmwIds::tableName, 'MAX(smw_id)', '', __METHOD__ );
 		$index = $nextpos ? $nextpos : -1;
 
 		return $index > 0 ? $index / max( $max1, $max2 ) : 1;

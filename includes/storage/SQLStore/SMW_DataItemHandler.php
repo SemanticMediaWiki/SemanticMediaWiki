@@ -21,14 +21,20 @@ abstract class SMWDataItemHandler {
 	* The store object.
 	 *
 	 * @since 1.8
-	 *
 	 * @var SMWSQLStore3
 	*/
 	protected $store;
 
+	/**
+	 * Constructor.
+	 *
+	 * @since 1.8
+	 * @param SMWSQLStore3 $store
+	 */
 	public function __construct( SMWSQLStore3 $store ){
 		$this->store = $store;
 	}
+
 	/**
 	 * Return array of fields for a DI type.
 	 *
@@ -40,7 +46,7 @@ abstract class SMWDataItemHandler {
 	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
 	 * - n for namespace numbers (or other similar integers)
 	 * - f for floating point numbers of double precision
-	 * - p for a reference to an SMW ID as stored in the smw_ids table;
+	 * - p for a reference to an SMW ID as stored in the SMW IDs table;
 	 *   this corresponds to a data entry of ID "tnwt".
 	 *
 	 * @since 1.8
@@ -84,8 +90,7 @@ abstract class SMWDataItemHandler {
 	 * an item for search.
 	 *
 	 * @since 1.8
-	 *
-	 * @param SMWDataItem
+	 * @param SMWDataItem $dataItem
 	 * @return array
 	 */
 	abstract public function getWhereConds( SMWDataItem $dataItem );
@@ -97,8 +102,7 @@ abstract class SMWDataItemHandler {
 	 * insert operations into the DB.
 	 *
 	 * @since 1.8
-	 *
-	 * @param SMWDataItem
+	 * @param SMWDataItem $dataItem
 	 * @return array
 	 */
 	abstract public function getInsertValues( SMWDataItem $dataItem );
@@ -106,18 +110,8 @@ abstract class SMWDataItemHandler {
 	/**
 	 * Return the field used to select this type of SMWDataItem. In
 	 * particular, this identifies the column that is used to sort values
-	 * of this kind.
+	 * of this kind. Every type of data returns a non-empty string here.
 	 *
-	 * The return value can be a column name or the empty string (if the
-	 * give type of SMWDataItem does not have an index field). If the
-	 * column name satarts with 'smw' it is assumed to belong to the table
-	 * smw_ids, and a join is performed to access this column.
-	 *
-	 * @todo This is not a clean way to get to smw_ids. Better handle the
-	 * case of smw_ids differently.
-	 * @todo Is it really possible to return an empty string here? Every
-	 * kind of data should be sortable, even if the order is arbitrary.
-	 * This is essential for paged retrievals.
 	 * @since 1.8
 	 * @return string
 	 */
@@ -131,12 +125,8 @@ abstract class SMWDataItemHandler {
 	 * classes that do not have an obvious canonical string writing anyway.
 	 *
 	 * The return value can be a column name or the empty string (if the
-	 * give type of SMWDataItem does not have a label field). If the
-	 * column name satarts with 'smw' it is assumed to belong to the table
-	 * smw_ids, and a join is performed to access this column.
+	 * give type of SMWDataItem does not have a label field).
 	 *
-	 * @todo This is not a clean way to get to smw_ids. Better handle the
-	 * case of smw_ids differently.
 	 * @since 1.8
 	 * @return string
 	 */
@@ -152,7 +142,6 @@ abstract class SMWDataItemHandler {
 	 * @since 1.8
 	 * @param array|string $dbkeys
 	 * @throws SMWDataItemException
-	 *
 	 * @return SMWDataItem
 	 */
 	abstract public function dataItemFromDBKeys( $dbkeys );
