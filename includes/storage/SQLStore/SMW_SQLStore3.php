@@ -125,8 +125,13 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public $m_sdstate = array();
 
-	/// Array for keeping property table table data, indexed by table id.
-	/// Access this only by calling getPropertyTables().
+	/**
+	 * Array for keeping property table table data, indexed by table id.
+	 * Access this only by calling getPropertyTables().
+	 *
+	 * @since 1.8
+	 * @var SMWSQLStore3Table[]
+	 */
 	protected static $prop_tables;
 
 	/**
@@ -744,22 +749,22 @@ class SMWSQLStore3 extends SMWStore {
 
 		// Change all id entries in property tables:
 		foreach ( self::getPropertyTables() as $proptable ) {
-			if ( $sdata && $proptable->idsubject ) {
-				$db->update( $proptable->name, array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
+			if ( $sdata && $proptable->usesIdSubject() ) {
+				$db->update( $proptable->getName(), array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
 			}
 
 			if ( $podata ) {
-				if ( ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_PROPERTY ) ) && ( $proptable->fixedproperty == false ) ) {
+				if ( ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_PROPERTY ) ) && ( !$proptable->isFixedPropertyTable() ) ) {
 					if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_PROPERTY ) ) {
-						$db->update( $proptable->name, array( 'p_id' => $newid ), array( 'p_id' => $oldid ), __METHOD__ );
+						$db->update( $proptable->getName(), array( 'p_id' => $newid ), array( 'p_id' => $oldid ), __METHOD__ );
 					} else {
-						$db->delete( $proptable->name, array( 'p_id' => $oldid ), __METHOD__ );
+						$db->delete( $proptable->getName(), array( 'p_id' => $oldid ), __METHOD__ );
 					}
 				}
 
 				foreach ( $proptable->getFields( $this ) as $fieldname => $type ) {
 					if ( $type == 'p' ) {
-						$db->update( $proptable->name, array( $fieldname => $newid ), array( $fieldname => $oldid ), __METHOD__ );
+						$db->update( $proptable->getName(), array( $fieldname => $newid ), array( $fieldname => $oldid ), __METHOD__ );
 					}
 				}
 			}
@@ -790,7 +795,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * the table that they refer to.
 	 *
 	 * @since 1.8
-	 * @return array of SMWSQLStore3Table
+	 * @return SMWSQLStore3Table[]
 	 */
 	public static function getPropertyTables() {
 		if ( isset( self::$prop_tables ) ) {
@@ -813,7 +818,7 @@ class SMWSQLStore3 extends SMWStore {
 		}
 		// Redirect table uses another subject scheme for historic reasons
 		// TODO This should be changed if possible
-		self::$prop_tables['smw_fpt_redi']->idsubject = false;
+		self::$prop_tables['smw_fpt_redi']->setUsesIdUsbject( false );
 
 		// Get all the tables for the properties that are declared as fixed
 		// (overly used and thus having separate tables)
@@ -827,9 +832,9 @@ class SMWSQLStore3 extends SMWStore {
 		// Build index for finding property tables
 		self::$fixedPropertyTableIds = array();
 
-		foreach ( self::$prop_tables as $tid => $proptable ) {
-			if ( $proptable->fixedproperty ) {
-				self::$fixedPropertyTableIds[$proptable->fixedproperty] = $tid;
+		foreach ( self::$prop_tables as $tid => $propTable ) {
+			if ( $propTable->isFixedPropertyTable() ) {
+				self::$fixedPropertyTableIds[$propTable->fixedproperty] = $tid;
 			}
 		}
 

@@ -57,7 +57,7 @@ class SMWSQLStore3Readers {
 		$propertyTableHashes = $this->store->smwIds->getPropertyTableHashes( $sid );
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $tid => $proptable ) {
-			if ( !array_key_exists( $proptable->name, $propertyTableHashes ) ) {
+			if ( !array_key_exists( $proptable->getName(), $propertyTableHashes ) ) {
 				continue;
 			}
 
@@ -65,7 +65,7 @@ class SMWSQLStore3Readers {
 				$relevant = false;
 				foreach ( $filter as $typeId ) {
 					$diType = SMWDataValueFactory::getDataItemId( $typeId );
-					$relevant = $relevant || ( $proptable->diType == $diType );
+					$relevant = $relevant || ( $proptable->getDiType() == $diType );
 					if ( $relevant ) break;
 				}
 				if ( !$relevant ) continue;
@@ -126,7 +126,7 @@ class SMWSQLStore3Readers {
 
 		$this->initSemanticDataCache( $sid, $subject );
 
-		if ( array_key_exists( $proptable->name, $this->store->m_sdstate[$sid] ) ) {
+		if ( array_key_exists( $proptable->getName(), $this->store->m_sdstate[$sid] ) ) {
 			self::$in_getSemanticData--;
 			return $this->store->m_semdata[$sid];
 		}
@@ -136,7 +136,7 @@ class SMWSQLStore3Readers {
 		foreach ( $data as $d ) {
 			$this->store->m_semdata[$sid]->addPropertyStubValue( reset( $d ), end( $d ) );
 		}
-		$this->store->m_sdstate[$sid][$proptable->name] = true;
+		$this->store->m_sdstate[$sid][$proptable->getName()] = true;
 
 		self::$in_getSemanticData--;
 		return $this->store->m_semdata[$sid];
@@ -245,29 +245,29 @@ class SMWSQLStore3Readers {
 		// properties always need to be given as object,
 		// subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) ||
-			( is_null( $object ) && ( !$issubject || !$proptable->idsubject ) ) )
+			( is_null( $object ) && ( !$issubject || !$proptable->usesIdSubject() ) ) )
 			return array();
 
-		wfProfileIn( "SMWSQLStore3::fetchSemanticData-" . $proptable->name .  " (SMW)" );
+		wfProfileIn( "SMWSQLStore3::fetchSemanticData-" . $proptable->getName() .  " (SMW)" );
 		$result = array();
 		$db = wfGetDB( DB_SLAVE );
 
-		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->diType );
+		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
 
 		// ***  First build $from, $select, and $where for the DB query  ***//
-		$from   = $db->tableName( $proptable->name ); // always use actual table
+		$from   = $db->tableName( $proptable->getName() ); // always use actual table
 		$select = '';
 		$where  = '';
 
 		if ( $issubject ) { // restrict subject, select property
-			$where .= ( $proptable->idsubject ) ? 's_id=' . $db->addQuotes( $id ) :
+			$where .= ( $proptable->usesIdSubject() ) ? 's_id=' . $db->addQuotes( $id ) :
 					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
 					  ' AND s_namespace=' . $db->addQuotes( $object->getNamespace() );
-			if ( !$proptable->fixedproperty ) { // select property name
+			if ( !$proptable->isFixedPropertyTable() ) { // select property name
 				$from .= ' INNER JOIN ' . $db->tableName( SMWSql3SmwIds::tableName ) . ' AS p ON p_id=p.smw_id';
 				$select .= 'p.smw_title as prop';
 			} // else: fixed property, no select needed
-		} elseif ( !$proptable->fixedproperty ) { // restrict property only
+		} elseif ( !$proptable->isFixedPropertyTable() ) { // restrict property only
 			$where .= 'p_id=' . $db->addQuotes( $id );
 		}
 
@@ -322,7 +322,7 @@ class SMWSQLStore3Readers {
 
 		foreach ( $res as $row ) {
 			if ( $issubject ) { // use joined or predefined property name
-				$propertykey = $proptable->fixedproperty ? $proptable->fixedproperty : $row->prop;
+				$propertykey = $proptable->isFixedPropertyTable() ? $proptable->getFixedProperty() : $row->prop;
 			}
 
 			// Use enclosing array only for results with many values:
@@ -344,7 +344,7 @@ class SMWSQLStore3Readers {
 		}
 
 		$db->freeResult( $res );
-		wfProfileOut( "SMWSQLStore3::fetchSemanticData-" . $proptable->name .  " (SMW)" );
+		wfProfileOut( "SMWSQLStore3::fetchSemanticData-" . $proptable->getName() .  " (SMW)" );
 
 		return $result;
 	}
@@ -383,15 +383,15 @@ class SMWSQLStore3Readers {
 		$proptable = $proptables[$tableid];
 		$db = wfGetDB( DB_SLAVE );
 
-		if ( $proptable->idsubject ) { // join with ID table to get title data
-			$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.s_id=smw_id";
+		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
+			$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
 			$select = 'smw_title, smw_namespace, smw_sortkey, smw_iw, smw_subobject';
 		} else { // no join needed, title+namespace as given in proptable
-			$from = $db->tableName( $proptable->name ) . " AS t1";
+			$from = $db->tableName( $proptable->getName() ) . " AS t1";
 			$select = 's_title AS smw_title, s_namespace AS smw_namespace, s_title AS smw_sortkey, \'\' AS smw_iw, \'\' AS smw_subobject';
 		}
 
-		if ( $proptable->fixedproperty == false ) {
+		if ( !$proptable->isFixedPropertyTable() ) {
 			$where .= ( $where ? ' AND ' : '' ) . "t1.p_id=" . $db->addQuotes( $pid );
 		}
 
@@ -453,15 +453,15 @@ class SMWSQLStore3Readers {
 				foreach ( $semanticData->getPropertyValues( $subproperty ) as $subvalue ) {
 					$tableindex++;
 
-					if ( $subproptable->idsubject ) { // simply add property table to check values
-						$from .= " INNER JOIN " . $db->tableName( $subproptable->name ) . " AS t$tableindex ON t$tableindex.s_id=$joinfield";
+					if ( $subproptable->usesIdSubject() ) { // simply add property table to check values
+						$from .= " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableindex ON t$tableindex.s_id=$joinfield";
 					} else { // exotic case with table that uses subject title+namespace in container object (should never happen in SMW core)
 						$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " AS ids$tableindex ON ids$tableindex.smw_id=$joinfield" .
-						         " INNER JOIN " . $db->tableName( $subproptable->name ) . " AS t$tableindex ON " .
+						         " INNER JOIN " . $db->tableName( $subproptable->getName() ) . " AS t$tableindex ON " .
 						         "t$tableindex.s_title=ids$tableindex.smw_title AND t$tableindex.s_namespace=ids$tableindex.smw_namespace";
 					}
 
-					if ( $subproptable->fixedproperty == false ) { // the ID we get should be !=0, so no point in filtering the converse
+					if ( !$subproptable->isFixedPropertyTable() ) { // the ID we get should be !=0, so no point in filtering the converse
 						$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.p_id=" . $db->addQuotes( $this->store->smwIds->getSMWPropertyID( $subproperty ) );
 					}
 
@@ -519,9 +519,9 @@ class SMWSQLStore3Readers {
 		}
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-			$from = $db->tableName( $proptable->name );
+			$from = $db->tableName( $proptable->getName() );
 
-			if ( $proptable->idsubject ) {
+			if ( $proptable->usesIdSubject() ) {
 				$where = 's_id=' . $db->addQuotes( $sid );
 			} elseif ( $subject->getInterwiki() === '' ) {
 				$where = 's_title=' . $db->addQuotes( $subject->getDBkey() ) . ' AND s_namespace=' . $db->addQuotes( $subject->getNamespace() );
@@ -529,7 +529,7 @@ class SMWSQLStore3Readers {
 				continue;
 			}
 
-			if ( $proptable->fixedproperty == false ) { // select all properties
+			if ( !$proptable->isFixedPropertyTable() ) { // select all properties
 				$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " ON smw_id=p_id";
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
 					// (select sortkey since it might be used in ordering (needed by Postgres))
@@ -543,7 +543,7 @@ class SMWSQLStore3Readers {
 				$res = $db->select( $from, '*', $where, 'SMW::getProperties', array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMWDIProperty( $proptable->fixedproperty );
+					$result[] = new SMWDIProperty( $proptable->isFixedPropertyTable() );
 				}
 			}
 
@@ -585,13 +585,13 @@ class SMWSQLStore3Readers {
 		$diType = $value->getDIType();
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-			if ( $diType != $proptable->diType ) {
+			if ( $diType != $proptable->getDiType() ) {
 				continue;
 			}
 
 			$where = $from = '';
-			if ( $proptable->fixedproperty == false ) { // join ID table to get property titles
-				$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.p_id=smw_id";
+			if ( !$proptable->isFixedPropertyTable() ) { // join ID table to get property titles
+				$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.p_id=smw_id";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
 
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
@@ -607,12 +607,12 @@ class SMWSQLStore3Readers {
 					}
 				}
 			} else {
-				$from = $db->tableName( $proptable->name ) . " AS t1";
+				$from = $db->tableName( $proptable->getName() ) . " AS t1";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
 				$res = $db->select( $from, '*', $where, 'SMW::getInProperties', array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMWDIProperty( $proptable->fixedproperty );
+					$result[] = new SMWDIProperty( $proptable->isFixedPropertyTable() );
 				}
 			}
 			$db->freeResult( $res );
