@@ -647,7 +647,7 @@ class SMWSQLStore3QueryEngine {
 
 		$proptables = SMWSQLStore3::getPropertyTables();
 		$proptable = $proptables[$tableid];
-		if ( !$proptable->idsubject ) {
+		if ( !$proptable->usesIdSubject() ) {
 			// no queries with such tables
 			// (only redirects are affected in practice)
 			$query->type = SMWSQLStore3Query::Q_NOQUERY;
@@ -666,10 +666,10 @@ class SMWSQLStore3QueryEngine {
 		$sortkey = $property->getKey(); // TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 
 		// *** Now construct the query ... ***//
-		$query->jointable = $proptable->name;
+		$query->jointable = $proptable->getName();
 
 		// *** Add conditions for selecting rows for this property ***//
-		if ( $proptable->fixedproperty == false ) {
+		if ( !$proptable->isFixedPropertyTable() ) {
 			$pid = $this->m_store->smwIds->getSMWPropertyID( $property );
 			// Construct property hierarchy:
 			$pqid = SMWSQLStore3Query::$qnum;

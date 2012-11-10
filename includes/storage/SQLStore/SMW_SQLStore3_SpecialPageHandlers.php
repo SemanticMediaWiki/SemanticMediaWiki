@@ -126,14 +126,14 @@ class SMWSQLStore3SpecialPageHandlers {
 
 		$result = array();
 
-		if ( $proptable->fixedproperty == false ) { // anything else would be crazy, but let's fail gracefully even if the whole world is crazy
+		if ( !$proptable->isFixedPropertyTable() ) { // anything else would be crazy, but let's fail gracefully even if the whole world is crazy
 			$dbr = wfGetDB( DB_SLAVE );
 
 			$options = $this->store->getSQLOptions( $requestoptions, 'title' );
 			$options['ORDER BY'] = 'count DESC';
 
 			$res = $dbr->select( // TODO: this is not how JOINS should be specified in the select function
-				$dbr->tableName( $proptable->name ) . ' INNER JOIN ' .
+				$dbr->tableName( $proptable->getName() ) . ' INNER JOIN ' .
 					$dbr->tableName( SMWSql3SmwIds::tableName ) . ' ON p_id=smw_id LEFT JOIN ' .
 					$dbr->tableName( 'page' ) . ' ON (page_namespace=' .
 					$dbr->addQuotes( SMW_NS_PROPERTY ) . ' AND page_title=smw_title)',
@@ -163,7 +163,7 @@ class SMWSQLStore3SpecialPageHandlers {
 		// count number of declared properties by counting "has type" annotations
 		$typeprop = new SMWDIProperty( '_TYPE' );
 		$typetable = $proptables[SMWSQLStore3::findPropertyTableID( $typeprop )];
-		$res = $dbr->select( $typetable->name, 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$res = $dbr->select( $typetable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
 		$row = $dbr->fetchObject( $res );
 		$result['DECLPROPS'] = $row->count;
 		$dbr->freeResult( $res );
@@ -176,17 +176,17 @@ class SMWSQLStore3SpecialPageHandlers {
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
 			/// Note: subproperties that are part of container values are counted individually;
 			/// It does not seem to be important to filter them by adding more conditions.
-			$res = $dbr->select( $proptable->name, 'COUNT(*) AS count', '', 'SMW::getStatistics' );
+			$res = $dbr->select( $proptable->getName(), 'COUNT(*) AS count', '', 'SMW::getStatistics' );
 			$row = $dbr->fetchObject( $res );
 			$result['PROPUSES'] += $row->count;
 			$dbr->freeResult( $res );
 
-			if ( $proptable->fixedproperty == false ) {
-				$res = $dbr->select( $proptable->name, 'COUNT(DISTINCT(p_id)) AS count', '', 'SMW::getStatistics' );
+			if ( !$proptable->isFixedPropertyTable() ) {
+				$res = $dbr->select( $proptable->getName(), 'COUNT(DISTINCT(p_id)) AS count', '', 'SMW::getStatistics' );
 				$row = $dbr->fetchObject( $res );
 				$result['USEDPROPS'] += $row->count;
 			} else {
-				$res = $dbr->select( $proptable->name, '*', '', 'SMW::getStatistics', array( 'LIMIT' => 1 ) );
+				$res = $dbr->select( $proptable->getName(), '*', '', 'SMW::getStatistics', array( 'LIMIT' => 1 ) );
 				if ( $dbr->numRows( $res ) > 0 )  $result['USEDPROPS']++;
 			}
 

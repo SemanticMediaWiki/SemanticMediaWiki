@@ -141,7 +141,7 @@ class SMWSQLStore3SetupHandlers {
 		$addedCustomTypeSignatures = false;
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->diType );
+			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
 
 			// Prepare indexes. By default, property-value tables
 			// have the following indexes:
@@ -151,7 +151,7 @@ class SMWSQLStore3SetupHandlers {
 			//
 			// The "p" component is omitted for tables with fixed property.
 			$indexes = array();
-			if ( $proptable->idsubject ) {
+			if ( $proptable->usesIdSubject() ) {
 				$fieldarray = array( 's_id' => $dbtypes['p'] . ' NOT NULL' );
 				$indexes['sp'] = 's_id';
 			} else {
@@ -161,7 +161,7 @@ class SMWSQLStore3SetupHandlers {
 
 			$indexes['po'] = $diHandler->getIndexField();
 
-			if ( !$proptable->fixedproperty ) {
+			if ( !$proptable->isFixedPropertyTable() ) {
 				$fieldarray['p_id'] = $dbtypes['p'] . ' NOT NULL';
 				$indexes['po'] = 'p_id,' . $indexes['po'];
 				$indexes['sp'] = $indexes['sp'] . ',p_id';
@@ -169,7 +169,7 @@ class SMWSQLStore3SetupHandlers {
 
 			// TODO Special handling; concepts should be handled differently
 			// in the future. See comments in SMW_DIHandler_Concept.php.
-			if ( $proptable->diType == SMWDataItem::TYPE_CONCEPT ) {
+			if ( $proptable->getDiType() == SMWDataItem::TYPE_CONCEPT ) {
 				unset( $indexes['po'] );
 			}
 
@@ -189,9 +189,9 @@ class SMWSQLStore3SetupHandlers {
 				}
 			}
 
-			SMWSQLHelpers::setupTable( $proptable->name, $fieldarray, $db, $reportTo );
+			SMWSQLHelpers::setupTable( $proptable->getName(), $fieldarray, $db, $reportTo );
 
-			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db, $reportTo );
+			SMWSQLHelpers::setupIndex( $proptable->getName(), $indexes, $db, $reportTo );
 		}
 	}
 
@@ -291,16 +291,16 @@ class SMWSQLStore3SetupHandlers {
 			$usageCount = 0;
 			foreach ( $propertyTables as $propertyTable ) {
 
-				if ( ( $propertyTable->fixedproperty != false ) &&
-					( $propertyTable->fixedproperty != $row->smw_title ) ) {
+				if ( ( $propertyTable->isFixedPropertyTable() ) &&
+					( $propertyTable->getFixedProperty() != $row->smw_title ) ) {
 					// This table cannot store values for this property
 					continue;
 				}
 
 				$propRow = $dbw->selectRow(
-						$propertyTable->name,
+						$propertyTable->getName(),
 						'Count(*) as count',
-						$propertyTable->fixedproperty ? array() : array('p_id' => $row->smw_id ),
+						$propertyTable->isFixedPropertyTable() ? array() : array('p_id' => $row->smw_id ),
 						__METHOD__
 				);
 				$usageCount += $propRow->count;
@@ -329,7 +329,7 @@ class SMWSQLStore3SetupHandlers {
 		$tables = array( SMWSql3SmwIds::tableName, SMWSQLStore3::tableNameConceptCache, SMWSQLStore3::tableNamePropertyStatistics );
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-			$tables[] = $proptable->name;
+			$tables[] = $proptable->getName();
 		}
 
 		foreach ( $tables as $table ) {
@@ -404,8 +404,8 @@ class SMWSQLStore3SetupHandlers {
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED ) { // remove outdated internal object references
 				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-					if ( $proptable->idsubject ) {
-						$dbr->delete( $proptable->name, array( 's_id' => $row->smw_id ), __METHOD__ );
+					if ( $proptable->usesIdSubject() ) {
+						$dbr->delete( $proptable->getName(), array( 's_id' => $row->smw_id ), __METHOD__ );
 					}
 				}
 

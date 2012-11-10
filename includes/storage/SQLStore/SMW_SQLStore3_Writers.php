@@ -225,12 +225,12 @@ class SMWSQLStore3Writers {
 			}
 
 			$propertyTable = $propertyTables[$tableId];
-			if ( !$propertyTable->idsubject ) { // not using subject ids, e.g., redirects
+			if ( !$propertyTable->usesIdSubject() ) { // not using subject ids, e.g., redirects
 				continue;
 			}
 
 			$insertValues = array( 's_id' => $sid );
-			if ( $propertyTable->fixedproperty == false ) {
+			if ( !$propertyTable->isFixedPropertyTable() ) {
 				$insertValues['p_id'] = $this->store->smwIds->makeSMWPropertyID( $property );
 			}
 
@@ -238,15 +238,15 @@ class SMWSQLStore3Writers {
 				if ( $di instanceof SMWDIError ) { // ignore error values
 					continue;
 				}
-				if ( !array_key_exists( $propertyTable->name, $updates ) ) {
-					$updates[$propertyTable->name] = array();
+				if ( !array_key_exists( $propertyTable->getName(), $updates ) ) {
+					$updates[$propertyTable->getName()] = array();
 				}
 
 				$diHandler = $this->store->getDataItemHandlerForDIType( $di->getDIType() );
 				// Note that array_merge creates a new array; not overwriting past entries here
 				$insertValues = array_merge( $insertValues, $diHandler->getInsertValues( $di ) );
 				$insertValueKey = self::makeDatabaseRowKey( $insertValues );
-				$updates[$propertyTable->name][$insertValueKey] = $insertValues;
+				$updates[$propertyTable->getName()][$insertValueKey] = $insertValues;
 			}
 		}
 
@@ -355,11 +355,11 @@ class SMWSQLStore3Writers {
 		$newData = $this->preparePropertyTableInserts( $sid, $data, $dbr );
 
 		foreach ( SMWSQLStore3::getPropertyTables() as $propertyTable ) {
-			if ( !$propertyTable->idsubject ) { // ignore; only affects redirects anyway
+			if ( !$propertyTable->usesIdSubject() ) { // ignore; only affects redirects anyway
 				continue;
 			}
 
-			$tableName = $propertyTable->name;
+			$tableName = $propertyTable->getName();
 
 			if ( array_key_exists( $tableName, $newData ) ) {
 				// Note: the order within arrays should remain the same while page is not updated.
@@ -400,12 +400,12 @@ class SMWSQLStore3Writers {
 	 * @return array
 	 */
 	protected function getCurrentPropertyTableContents( $sid, SMWSQLStore3Table $propertyTable, DatabaseBase $dbr ) {
-		if ( !$propertyTable->idsubject ) { // does not occur, but let's be strict
+		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
 			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
 		}
 		$contents = array();
 
-		$results = $dbr->select( $propertyTable->name, '*', array( 's_id' => $sid ), __METHOD__ );
+		$results = $dbr->select( $propertyTable->getName(), '*', array( 's_id' => $sid ), __METHOD__ );
 		foreach ( $results as $result ) {
 			$rowArray = (array)$result;
 			$rowKey = self::makeDatabaseRowKey( $rowArray );
@@ -474,18 +474,18 @@ class SMWSQLStore3Writers {
 	 */
 	protected function writePropertyTableRowUpdates( array &$propertyUseIncrements, SMWSQLStore3Table $propertyTable, array $rows, $insert, DatabaseBase $dbw ) {
 		if ( empty( $rows ) ) {
-			//print "Nothing to " . ( $insert ? 'insert' : 'delete' ) . " for table {$propertyTable->name}.\n"; //DEBUG
+			//print "Nothing to " . ( $insert ? 'insert' : 'delete' ) . " for table {$propertyTable->getName()}.\n"; //DEBUG
 			return;
 		}
-		//print ( $insert ? 'Inserting ' : 'Deleting ' ) . count( $rows ) . " row(s) in table {$propertyTable->name}.\n"; //DEBUG
+		//print ( $insert ? 'Inserting ' : 'Deleting ' ) . count( $rows ) . " row(s) in table {$propertyTable->getName()}.\n"; //DEBUG
 		//print var_export( $rows, true ) . "\n"; //DEBUG
 
-		if ( !$propertyTable->idsubject ) { // does not occur, but let's be strict
+		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
 			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
 		}
 
 		if ( $insert ) {
-			$dbw->insert( $propertyTable->name, array_values( $rows ), "SMW::writePropertyTableRowUpdates-insert-{$propertyTable->name}" );
+			$dbw->insert( $propertyTable->getName(), array_values( $rows ), "SMW::writePropertyTableRowUpdates-insert-{$propertyTable->getName()}" );
 		} else {
 			$condition = '';
 			// We build a condition that mentions s_id only once,
@@ -495,7 +495,7 @@ class SMWSQLStore3Writers {
 			$sid = false;
 			foreach ( $rows as $row ) {
 				if ( $sid === false ) {
-					$sid = $row['s_id']; // 's_id' exists for all tables with $propertyTable->idsubject
+					$sid = $row['s_id']; // 's_id' exists for all tables with $propertyTable->usesIdSubject()
 				}
 				unset( $row['s_id'] );
 				if ( $condition != '' ) {
@@ -504,16 +504,16 @@ class SMWSQLStore3Writers {
 				$condition .= '(' . $dbw->makeList( $row, LIST_AND ) . ')';
 			}
 			$condition = "s_id=" . $dbw->addQuotes( $sid ) . " AND ($condition)";
-			$dbw->delete( $propertyTable->name, array( $condition ), "SMW::writePropertyTableRowUpdates-delete-{$propertyTable->name}" );
+			$dbw->delete( $propertyTable->getName(), array( $condition ), "SMW::writePropertyTableRowUpdates-delete-{$propertyTable->getName()}" );
 		}
 
-		if ( $propertyTable->fixedproperty != false ) {
-			$property = new SMWDIProperty( $propertyTable->fixedproperty );
+		if ( $propertyTable->isFixedPropertyTable() ) {
+			$property = new SMWDIProperty( $propertyTable->isFixedPropertyTable() );
 			$pid = $this->store->smwIds->makeSMWPropertyID( $property );
 		}
 
 		foreach ( $rows as $row ) {
-			if ( $propertyTable->fixedproperty == false ) {
+			if ( !$propertyTable->isFixedPropertyTable() ) {
 				$pid = $row['p_id'];
 			}
 			if ( !array_key_exists( $pid, $propertyUseIncrements ) ) {
@@ -622,6 +622,8 @@ class SMWSQLStore3Writers {
 					$newtitle->getDBkey(), $newtitle->getNamespace() );
 				$this->store->smwIds->setCache( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', 0, '' );
 				// We do not know the new sortkey, so just clear the cache:
+
+				// FIXME: This is calling a protected method - wtf!
 				$this->store->smwIds->deleteCache( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
 			} else { // make new (target) id for use in redirect table
 				$sid = $this->store->smwIds->makeSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
@@ -751,18 +753,20 @@ class SMWSQLStore3Writers {
 				$jobs = array();
 
 				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-					if ( $proptable->name == 'smw_fpt_redi' ) continue; // can safely be skipped
+					if ( $proptable->getName() == 'smw_fpt_redi' ) {
+						continue; // can safely be skipped
+					}
 
-					if ( $proptable->idsubject ) {
-						$from   = $db->tableName( $proptable->name ) . ' INNER JOIN ' .
+					if ( $proptable->usesIdSubject() ) {
+						$from   = $db->tableName( $proptable->getName() ) . ' INNER JOIN ' .
 							  $db->tableName( SMWSql3SmwIds::tableName ) . ' ON s_id=smw_id';
 						$select = 'DISTINCT smw_title AS t,smw_namespace AS ns';
 					} else {
-						$from   = $db->tableName( $proptable->name );
+						$from   = $db->tableName( $proptable->getName() );
 						$select = 'DISTINCT s_title AS t,s_namespace AS ns';
 					}
 
-					if ( $subject_ns == SMW_NS_PROPERTY && !$proptable->fixedproperty ) {
+					if ( $subject_ns == SMW_NS_PROPERTY && !$proptable->isFixedPropertyTable() ) {
 						$res = $db->select( $from, $select,
 							array( 'p_id' => $old_tid ), __METHOD__ );
 						foreach ( $res as $row ) {
