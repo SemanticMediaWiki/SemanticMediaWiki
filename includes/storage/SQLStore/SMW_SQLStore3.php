@@ -802,11 +802,14 @@ class SMWSQLStore3 extends SMWStore {
 			return self::$prop_tables; // Don't initialise twice.
 		}
 
-		self::$prop_tables = array();
+		/**
+		 * @var SMWSQLStore3Table[] $propertyTables
+		 */
+		$propertyTables = array();
 
 		//tables for each DI type
 		foreach( self::$di_type_tables as $tableDIType => $tableName ){
-			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName );
+			$propertyTables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName );
 		}
 
 		//tables for special properties
@@ -814,27 +817,30 @@ class SMWSQLStore3 extends SMWStore {
 			$typeId = SMWDIProperty::getPredefinedPropertyTypeId( $propertyKey );
 			$diType = SMWDataValueFactory::getDataItemId( $typeId );
 			$tableName = 'smw_fpt' . strtolower( $propertyKey );
-			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $diType, $tableName, $propertyKey );
+			$propertyTables[$tableName] = new SMWSQLStore3Table( $diType, $tableName, $propertyKey );
 		}
+
 		// Redirect table uses another subject scheme for historic reasons
 		// TODO This should be changed if possible
-		self::$prop_tables['smw_fpt_redi']->setUsesIdUsbject( false );
+		$propertyTables['smw_fpt_redi']->setUsesIdSubject( false );
 
 		// Get all the tables for the properties that are declared as fixed
 		// (overly used and thus having separate tables)
 		foreach( self::$fixedProperties as $propertyKey => $tableDIType ){
 			$tableName = 'smw_fpt_' . md5( $propertyKey );
-			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName, $propertyKey );
+			$propertyTables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName, $propertyKey );
 		}
 
-		wfRunHooks( 'SMWPropertyTables', array( &self::$prop_tables ) );
+		wfRunHooks( 'SMWPropertyTables', array( &$propertyTables ) );
+
+		self::$prop_tables = $propertyTables;
 
 		// Build index for finding property tables
 		self::$fixedPropertyTableIds = array();
 
 		foreach ( self::$prop_tables as $tid => $propTable ) {
 			if ( $propTable->isFixedPropertyTable() ) {
-				self::$fixedPropertyTableIds[$propTable->fixedproperty] = $tid;
+				self::$fixedPropertyTableIds[$propTable->getFixedProperty()] = $tid;
 			}
 		}
 
