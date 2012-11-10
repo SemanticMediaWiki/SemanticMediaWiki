@@ -93,24 +93,33 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	 */
 	protected function formatPropertyItem( SMWDIProperty $property ) {
 		$linker = smwfGetLinker();
-
-		$proplink = $linker->link(
-			$property->getDiWikiPage()->getTitle(),
-			$property->getLabel()
-		);
-
-		$types = smwfGetStore()->getPropertyValues( $property->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) );
 		$errors = array();
 
-		if ( count( $types ) >= 1 ) {
-			$typestring = SMWDataValueFactory::newDataItemValue( current( $types ), new SMWDIProperty( '_TYPE' ) )->getLongHTMLText( $linker );
+		if ( $property->isUserDefined() ) {
+			$proplink = $linker->link(
+				$property->getDiWikiPage()->getTitle(),
+				$property->getLabel()
+			);
+
+			$types = smwfGetStore()->getPropertyValues( $property->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) );
+
+			if ( count( $types ) >= 1 ) {
+				$typeDataValue = SMWDataValueFactory::newDataItemValue( current( $types ), new SMWDIProperty( '_TYPE' ) );
+			} else {
+				$typeDataValue = SMWTypesValue::newFromTypeId( '_wpg' );
+				$errors[] = wfMessage( 'smw_propertylackstype', $typeDataValue->getLongHTMLText() )->text();
+			}
+
+			$typeString = $typeDataValue->getLongHTMLText( $linker );
 		} else {
-			$type = SMWTypesValue::newFromTypeId( '_wpg' );
-			$typestring = $type->getLongHTMLText( $linker );
-			$errors[] = wfMessage( 'smw_propertylackstype', $type->getLongHTMLText() )->text();
+			$typeid = $property->findPropertyTypeID();
+			$typeDataValue = SMWTypesValue::newFromTypeId( $typeid );
+			$typeString = $typeDataValue->getLongHTMLText( $linker );
+			$propertyDataValue = SMWDataValueFactory::newDataItemValue( $property, null );
+			$proplink = $propertyDataValue->getShortHtmlText( $linker );
 		}
 
-		return wfMessage( 'smw_unusedproperty_template', $proplink, $typestring )->text() . ' ' . smwfEncodeMessages( $errors );
+		return wfMessage( 'smw_unusedproperty_template', $proplink, $typeString )->text() . ' ' . smwfEncodeMessages( $errors );
 	}
 
 	/**

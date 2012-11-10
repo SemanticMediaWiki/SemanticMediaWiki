@@ -269,6 +269,7 @@ class SMWPropertyValue extends SMWDataValue {
 		if ( $this->m_dataitem->isUserDefined() ) {
 			return $text;
 		} else {
+			SMWOutputs::requireResource( 'ext.smw.style' );
 			return smwfContextHighlighter( array (
 				'context' => 'inline',
 				'class'   => 'smwbuiltin',
