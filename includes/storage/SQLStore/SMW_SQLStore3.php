@@ -42,7 +42,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @note This should never change. If it is changed, the concept caches
 	 * will appear empty until they are recomputed.
 	 */
-	const tableNameConceptCache = 'smw_concept_cache';
+	const CONCEPT_CACHE_TABLE = 'smw_concept_cache';
 
 	/**
 	 * Name of the table to store the concept cache in.
@@ -50,7 +50,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @note This should never change, but if it does then its contents can
 	 * simply be rebuilt by running the setup.
 	 */
-	const tableNamePropertyStatistics = 'smw_prop_stats';
+	const PROPERTY_STATISTICS_TABLE = 'smw_prop_stats';
 
 	/**
 	 * Object to access the SMW IDs table.
@@ -125,8 +125,13 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public $m_sdstate = array();
 
-	/// Array for keeping property table table data, indexed by table id.
-	/// Access this only by calling getPropertyTables().
+	/**
+	 * Array for keeping property table table data, indexed by table id.
+	 * Access this only by calling getPropertyTables().
+	 *
+	 * @since 1.8
+	 * @var SMWSQLStore3Table[]
+	 */
 	protected static $prop_tables;
 
 	/**
@@ -744,22 +749,22 @@ class SMWSQLStore3 extends SMWStore {
 
 		// Change all id entries in property tables:
 		foreach ( self::getPropertyTables() as $proptable ) {
-			if ( $sdata && $proptable->idsubject ) {
-				$db->update( $proptable->name, array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
+			if ( $sdata && $proptable->usesIdSubject() ) {
+				$db->update( $proptable->getName(), array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
 			}
 
 			if ( $podata ) {
-				if ( ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_PROPERTY ) ) && ( $proptable->fixedproperty == false ) ) {
+				if ( ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_PROPERTY ) ) && ( !$proptable->isFixedPropertyTable() ) ) {
 					if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_PROPERTY ) ) {
-						$db->update( $proptable->name, array( 'p_id' => $newid ), array( 'p_id' => $oldid ), __METHOD__ );
+						$db->update( $proptable->getName(), array( 'p_id' => $newid ), array( 'p_id' => $oldid ), __METHOD__ );
 					} else {
-						$db->delete( $proptable->name, array( 'p_id' => $oldid ), __METHOD__ );
+						$db->delete( $proptable->getName(), array( 'p_id' => $oldid ), __METHOD__ );
 					}
 				}
 
 				foreach ( $proptable->getFields( $this ) as $fieldname => $type ) {
 					if ( $type == 'p' ) {
-						$db->update( $proptable->name, array( $fieldname => $newid ), array( $fieldname => $oldid ), __METHOD__ );
+						$db->update( $proptable->getName(), array( $fieldname => $newid ), array( $fieldname => $oldid ), __METHOD__ );
 					}
 				}
 			}
@@ -769,15 +774,15 @@ class SMWSQLStore3 extends SMWStore {
 		if ( $sdata && ( ( $oldnamespace == -1 ) || ( $oldnamespace == SMW_NS_CONCEPT ) ) ) {
 			if ( ( $newnamespace == -1 ) || ( $newnamespace == SMW_NS_CONCEPT ) ) {
 				$db->update( 'smw_fpt_conc', array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
-				$db->update( SMWSQLStore3::tableNameConceptCache, array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
+				$db->update( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
 			} else {
 				$db->delete( 'smw_fpt_conc', array( 's_id' => $oldid ), __METHOD__ );
-				$db->delete( SMWSQLStore3::tableNameConceptCache, array( 's_id' => $oldid ), __METHOD__ );
+				$db->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 's_id' => $oldid ), __METHOD__ );
 			}
 		}
 
 		if ( $podata ) {
-			$db->update( SMWSQLStore3::tableNameConceptCache, array( 'o_id' => $newid ), array( 'o_id' => $oldid ), __METHOD__ );
+			$db->update( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $newid ), array( 'o_id' => $oldid ), __METHOD__ );
 		}
 	}
 
@@ -790,18 +795,21 @@ class SMWSQLStore3 extends SMWStore {
 	 * the table that they refer to.
 	 *
 	 * @since 1.8
-	 * @return array of SMWSQLStore3Table
+	 * @return SMWSQLStore3Table[]
 	 */
 	public static function getPropertyTables() {
 		if ( isset( self::$prop_tables ) ) {
 			return self::$prop_tables; // Don't initialise twice.
 		}
 
-		self::$prop_tables = array();
+		/**
+		 * @var SMWSQLStore3Table[] $propertyTables
+		 */
+		$propertyTables = array();
 
 		//tables for each DI type
 		foreach( self::$di_type_tables as $tableDIType => $tableName ){
-			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName );
+			$propertyTables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName );
 		}
 
 		//tables for special properties
@@ -809,27 +817,30 @@ class SMWSQLStore3 extends SMWStore {
 			$typeId = SMWDIProperty::getPredefinedPropertyTypeId( $propertyKey );
 			$diType = SMWDataValueFactory::getDataItemId( $typeId );
 			$tableName = 'smw_fpt' . strtolower( $propertyKey );
-			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $diType, $tableName, $propertyKey );
+			$propertyTables[$tableName] = new SMWSQLStore3Table( $diType, $tableName, $propertyKey );
 		}
+
 		// Redirect table uses another subject scheme for historic reasons
 		// TODO This should be changed if possible
-		self::$prop_tables['smw_fpt_redi']->idsubject = false;
+		$propertyTables['smw_fpt_redi']->setUsesIdSubject( false );
 
 		// Get all the tables for the properties that are declared as fixed
 		// (overly used and thus having separate tables)
 		foreach( self::$fixedProperties as $propertyKey => $tableDIType ){
 			$tableName = 'smw_fpt_' . md5( $propertyKey );
-			self::$prop_tables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName, $propertyKey );
+			$propertyTables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName, $propertyKey );
 		}
 
-		wfRunHooks( 'SMWPropertyTables', array( &self::$prop_tables ) );
+		wfRunHooks( 'SMWPropertyTables', array( &$propertyTables ) );
+
+		self::$prop_tables = $propertyTables;
 
 		// Build index for finding property tables
 		self::$fixedPropertyTableIds = array();
 
-		foreach ( self::$prop_tables as $tid => $proptable ) {
-			if ( $proptable->fixedproperty ) {
-				self::$fixedPropertyTableIds[$proptable->fixedproperty] = $tid;
+		foreach ( self::$prop_tables as $tid => $propTable ) {
+			if ( $propTable->isFixedPropertyTable() ) {
+				self::$fixedPropertyTableIds[$propTable->getFixedProperty()] = $tid;
 			}
 		}
 
