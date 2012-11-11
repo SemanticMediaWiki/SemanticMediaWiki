@@ -31,8 +31,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri'        => 'URIs of the form "$1" are not allowed.',
 
-	// Link to RSS feeds
-	'smw_rss_link' => 'RSS',
 	// Link to CSV files
 	'smw_csv_link' => 'CSV',
 	// Link to DSV files
@@ -52,7 +50,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_printername_list' => 'List',
 	'smw_printername_ol' => 'Enumeration',
 	'smw_printername_ul' => 'Itemization',
-	'smw_printername_rss' => 'RSS export',
 	'smw_printername_table' => 'Table',
 	'smw_printername_broadtable' => 'Broad table',
 	'smw_printername_template' => 'Template',
@@ -82,8 +79,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-paramdesc-embedformat'	=> 'The HTML tag used to define headings',
 	'smw-paramdesc-embedonly'	=> 'Display no headings',
 	'smw-paramdesc-table-class'	=> 'An additional CSS class to set for the table',
-	'smw-paramdesc-rsstitle'	=> 'The text to be used as the title of the feed',
-	'smw-paramdesc-rssdescription'	=> 'The text to be used as the description of the feed',
 	'smw-paramdesc-rdfsyntax'	=> 'The RDF syntax to be used',
 	'smw-paramdesc-csv-sep'		=> 'The separator to use',
 	'smw-paramdesc-dsv-separator'	=> 'The separator to use',
@@ -99,6 +94,15 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-paramdesc-prettyprint' => 'A pretty-print output that displays additional indents and newlines',
 	'smw-paramdesc-source' => 'Alternative query source',
 	'smw-paramdesc-jsonsyntax' => 'JSON syntax to be used',
+
+	// Feed printer
+	'smw-printername-feed' => 'RSS and Atom feed',
+	'smw-paramdesc-feedtype'  => 'Feed type',
+	'smw-paramdesc-feedtitle' => 'The text to be used as the title of the feed',
+	'smw-paramdesc-feeddescription' => 'The text to be used as the description of the feed',
+	'smw-paramdesc-feedpagecontent' => 'Page content to be displayed with the feed',
+	'smw-label-feed-link' => 'RSS',
+	'smw-label-feed-description' => '$1 $2 feed',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
@@ -161,9 +165,6 @@ Results might not be as expected.',
 	'smw_subpropertyarticlecount' => 'This property has the following $1 {{PLURAL:$1|subproperty|subproperties}}:',
 	'smw_concept_header'          => 'Pages of concept "$1"',
 	'smw_conceptarticlecount'     => 'Showing $1 {{PLURAL:$1|page|pages}} belonging to that concept.',
-
-	// Messages used in RSS feeds
-	'smw_rss_description' => '$1 RSS feed',
 
 	// Group name for SMW special pages
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
@@ -454,9 +455,7 @@ $messages['qqq'] = array(
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
 	'smw_uri_blacklist' => '{{notranslate}}',
 	'smw_baduri' => 'This is an information message. $1 holds the malformed URI.',
-	'smw_rss_link' => 'This is the text of the link that is triggering the results export to a RSS-file when clicked.
 
-{{optional}}',
 	'smw_csv_link' => 'This is the text of the link that is triggering the results export to a CSV-file when clicked.
 
 {{optional}}',
@@ -478,7 +477,6 @@ $messages['qqq'] = array(
 	'smw_printername_list' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:List_format List].',
 	'smw_printername_ol' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ol_format Enumeration (numbered list)].',
 	'smw_printername_ul' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ul_format Itemization (bulleted list)].',
-	'smw_printername_rss' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:RSS_format RSS].',
 	'smw_printername_table' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Table_format Table].
 
 {{Identical|Table}}',
@@ -512,8 +510,6 @@ $messages['qqq'] = array(
 	'smw-paramdesc-embedformat' => 'This is the description of the "embedformat" parameter of the "embedded" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-embedonly' => 'This is the description of the "embedonly" parameter of the "embedded" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-table-class' => 'This is the description of the "css" parameter of the "table" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-rsstitle' => 'This is the description of the "title" parameter of the "rss" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-rssdescription' => 'This is the description of the "description" parameter for the "rss" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-rdfsyntax' => 'This is the description of the "syntax" parameter for the "rdf" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-csv-sep' => 'This is the description of the "separator" parameter for the "csv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-dsv-separator' => 'This is the description of the "separator" parameter for the "dsv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
@@ -580,7 +576,6 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property". $1 holds the number of subproperty pages displayed in the current view.',
 	'smw_concept_header' => 'This is the header on a page in namespace "Concept". $1 holds the name of the respective concept.',
 	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". $1 holds the number of pages displayed in the current view.',
-	'smw_rss_description' => '{{optional}}',
 	'specialpages-group-smw_group' => 'This is the name of the group of extensions on [[Special:Version]] which are related to or dependant on Semantic MediaWiki.
 
 {{optional}}',
@@ -849,6 +844,15 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 	'smw-ui-tooltip-title-parameter' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-event' => 'Is a label that is displayed on the info tooltip',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
+
+	'smw-printername-feed' => 'This is the name of the [http://semantic-mediawiki.org/wiki/Help:Feed_format Feed result format].',
+	'smw-paramdesc-feedtype' => 'This is the description of the feed type',
+	'smw-paramdesc-feedtitle' => 'This is the description of the "title" parameter of the "feed" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-feeddescription' => 'This is the description of the "description" parameter for the "feed" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-feedpagecontent' => 'Option the enable page content to be generated with the feed',
+	'smw-label-feed-description' => '{{optional}}',
+	'smw-label-feed-link' => 'This is the text of the link that is triggering the results export to a RSS-file when clicked. {{optional}}',
+
 );
 
 /** Afrikaans (Afrikaans)
