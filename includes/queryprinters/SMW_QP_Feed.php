@@ -60,7 +60,7 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	 * @param array $params
 	 */
 	public function outputAsFile( SMWQueryResult $queryResult, array $params ) {
-		return $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
+		$this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	 * @return integer
 	 */
 	public function getQueryMode( $mode ) {
-		return ( $mode == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
+		return $mode == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
 	/**
@@ -87,7 +87,8 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 
 		if ( $outputMode == SMW_OUTPUT_FILE ) {
 			if ( $res->getCount() == 0 ){
-				return $res->addErrors( array( wfMessage( 'smw_result_noresults' )->inContentLanguage()->text() ) );
+				$res->addErrors( array( wfMessage( 'smw_result_noresults' )->inContentLanguage()->text() ) );
+				return '';
 			}
 			$result = $this->getFeed( $res, $this->params['type'] );
 		} else {
@@ -104,19 +105,24 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult  $res
+	 * @param SMWQueryResult $results
 	 * @param $type
 	 *
 	 * @return string
 	 */
-	protected function getFeed( SMWQueryResult $res, $type ){
+	protected function getFeed( SMWQueryResult $results, $type ){
 		global $wgFeedClasses;
 
 		if( !isset( $wgFeedClasses[$type] ) ) {
-			return $results->addErrors( array( wfMessage( 'feed-invalid' )->inContentLanguage()->text() ) );
+			$results->addErrors( array( wfMessage( 'feed-invalid' )->inContentLanguage()->text() ) );
+			return '';
 		}
 
 		// Get feed class instance
+
+		/**
+		 * @var ChannelFeed $feed
+		 */
 		$feed = new $wgFeedClasses[$type](
 			$this->feedTitle(),
 			$this->feedDescription(),
@@ -127,7 +133,7 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 		$feed->outHeader();
 
 		// Create feed items
-		while ( $row = $res->getNext() ) {
+		while ( $row = $results->getNext() ) {
 			$feed->outItem( $this->feedItem( $row ) );
 		}
 
@@ -164,7 +170,7 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @return uri
+	 * @return string
 	 */
 	protected function feedURL() {
 		return $GLOBALS['wgTitle']->getFullUrl();
@@ -182,6 +188,8 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	protected function feedItem( array $row ) {
 		$rowItems = array();
 
+		$subject = false;
+
 		/**
 		 * Loop over all properties within a row
 		 *
@@ -191,34 +199,36 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 		foreach ( $row as $field ) {
 			$itemSegments = array();
 
-				$subject = $field->getResultSubject()->getTitle();
+			$subject = $field->getResultSubject()->getTitle();
 
-				// Loop over all values for the property.
-				while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
-					if ( $dataValue->getDataItem() instanceof SMWDIWikipage ) {
-						$itemSegments[] = Sanitizer::decodeCharReferences( $dataValue->getLongHTMLText() );
-					} else {
-						$itemSegments[] = Sanitizer::decodeCharReferences( $dataValue->getWikiValue() );
-					}
+			// Loop over all values for the property.
+			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
+				if ( $dataValue->getDataItem() instanceof SMWDIWikipage ) {
+					$itemSegments[] = Sanitizer::decodeCharReferences( $dataValue->getLongHTMLText() );
+				} else {
+					$itemSegments[] = Sanitizer::decodeCharReferences( $dataValue->getWikiValue() );
 				}
+			}
 
-				// Join all property values into a single string, separated by a comma
-				if ( $itemSegments !== array() ) {
-					$rowItems[] = implode( ', ', $itemSegments );
-				}
+			// Join all property values into a single string, separated by a comma
+			if ( $itemSegments !== array() ) {
+				$rowItems[] = implode( ', ', $itemSegments );
+			}
 		}
 
-		$wikiPage = WikiPage::newFromID ( $subject->getArticleID() );
+		if ( $subject instanceof Title ) {
+			$wikiPage = WikiPage::newFromID( $subject->getArticleID() );
 
-		if ( $wikiPage->exists() ){
-			return new FeedItem(
-				$subject->getPrefixedText(),
-				$this->feedItemDescription( $rowItems, $this->getPageContent( $wikiPage ) ),
-				$subject->getFullURL(),
-				$wikiPage->getTimestamp(),
-				$wikiPage->getUserText(),
-				$this->feedItemComments()
-			);
+			if ( $wikiPage->exists() ){
+				return new FeedItem(
+					$subject->getPrefixedText(),
+					$this->feedItemDescription( $rowItems, $this->getPageContent( $wikiPage ) ),
+					$subject->getFullURL(),
+					$wikiPage->getTimestamp(),
+					$wikiPage->getUserText(),
+					$this->feedItemComments()
+				);
+			}
 		}
 
 		return array();
@@ -237,12 +247,25 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 		if ( in_array( $this->params['page'], array( 'abstract', 'full' ) ) ) {
 			$parserOptions = new ParserOptions();
 			$parserOptions->setEditSection( false );
+
 			if ( $this->params['page'] === 'abstract' ) {
 				// Abstract of the first 30 words
 				// preg_match( '/^([^.!?\s]*[\.!?\s]+){0,30}/', $wikiPage->getText(), $abstract );
 				// $text = $abstract[0] . ' ...';
 			} else {
-				$text = $wikiPage->getText();
+				if ( method_exists( $wikiPage, 'getContent' ) ) {
+					$content = $wikiPage->getContent();
+
+					if ( $content instanceof TextContent ) {
+						$text = $content->getNativeData();
+					}
+					else {
+						return '';
+					}
+				}
+				else {
+					$text = $wikiPage->getText();
+				}
 			}
 			return $GLOBALS['wgParser']->parse( $text , $wikiPage->getTitle(), $parserOptions )->getText();
 		} else {
