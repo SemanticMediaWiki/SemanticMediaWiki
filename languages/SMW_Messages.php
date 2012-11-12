@@ -31,8 +31,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri'        => 'URIs of the form "$1" are not allowed.',
 
-	// Link to RSS feeds
-	'smw_rss_link' => 'RSS',
 	// Link to CSV files
 	'smw_csv_link' => 'CSV',
 	// Link to DSV files
@@ -52,7 +50,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_printername_list' => 'List',
 	'smw_printername_ol' => 'Enumeration',
 	'smw_printername_ul' => 'Itemization',
-	'smw_printername_rss' => 'RSS export',
 	'smw_printername_table' => 'Table',
 	'smw_printername_broadtable' => 'Broad table',
 	'smw_printername_template' => 'Template',
@@ -82,8 +79,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-paramdesc-embedformat'	=> 'The HTML tag used to define headings',
 	'smw-paramdesc-embedonly'	=> 'Display no headings',
 	'smw-paramdesc-table-class'	=> 'An additional CSS class to set for the table',
-	'smw-paramdesc-rsstitle'	=> 'The text to be used as the title of the feed',
-	'smw-paramdesc-rssdescription'	=> 'The text to be used as the description of the feed',
 	'smw-paramdesc-rdfsyntax'	=> 'The RDF syntax to be used',
 	'smw-paramdesc-csv-sep'		=> 'The separator to use',
 	'smw-paramdesc-dsv-separator'	=> 'The separator to use',
@@ -99,6 +94,15 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-paramdesc-prettyprint' => 'A pretty-print output that displays additional indents and newlines',
 	'smw-paramdesc-source' => 'Alternative query source',
 	'smw-paramdesc-jsonsyntax' => 'JSON syntax to be used',
+
+	// Feed printer
+	'smw-printername-feed' => 'RSS and Atom feed',
+	'smw-paramdesc-feedtype'  => 'Feed type',
+	'smw-paramdesc-feedtitle' => 'The text to be used as the title of the feed',
+	'smw-paramdesc-feeddescription' => 'The text to be used as the description of the feed',
+	'smw-paramdesc-feedpagecontent' => 'Page content to be displayed with the feed',
+	'smw-label-feed-link' => 'RSS',
+	'smw-label-feed-description' => '$1 $2 feed',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
@@ -161,9 +165,6 @@ Results might not be as expected.',
 	'smw_subpropertyarticlecount' => 'This property has the following $1 {{PLURAL:$1|subproperty|subproperties}}:',
 	'smw_concept_header'          => 'Pages of concept "$1"',
 	'smw_conceptarticlecount'     => 'Showing $1 {{PLURAL:$1|page|pages}} belonging to that concept.',
-
-	// Messages used in RSS feeds
-	'smw_rss_description' => '$1 RSS feed',
 
 	// Group name for SMW special pages
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
@@ -454,9 +455,6 @@ $messages['qqq'] = array(
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
 	'smw_uri_blacklist' => '{{notranslate}}',
 	'smw_baduri' => 'This is an information message. $1 holds the malformed URI.',
-	'smw_rss_link' => 'This is the text of the link that is triggering the results export to a RSS-file when clicked.
-
-{{optional}}',
 	'smw_csv_link' => 'This is the text of the link that is triggering the results export to a CSV-file when clicked.
 
 {{optional}}',
@@ -478,7 +476,6 @@ $messages['qqq'] = array(
 	'smw_printername_list' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:List_format List].',
 	'smw_printername_ol' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ol_format Enumeration (numbered list)].',
 	'smw_printername_ul' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ul_format Itemization (bulleted list)].',
-	'smw_printername_rss' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:RSS_format RSS].',
 	'smw_printername_table' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Table_format Table].
 
 {{Identical|Table}}',
@@ -512,8 +509,6 @@ $messages['qqq'] = array(
 	'smw-paramdesc-embedformat' => 'This is the description of the "embedformat" parameter of the "embedded" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-embedonly' => 'This is the description of the "embedonly" parameter of the "embedded" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-table-class' => 'This is the description of the "css" parameter of the "table" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-rsstitle' => 'This is the description of the "title" parameter of the "rss" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-rssdescription' => 'This is the description of the "description" parameter for the "rss" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-rdfsyntax' => 'This is the description of the "syntax" parameter for the "rdf" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-csv-sep' => 'This is the description of the "separator" parameter for the "csv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-dsv-separator' => 'This is the description of the "separator" parameter for the "dsv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
@@ -529,6 +524,13 @@ $messages['qqq'] = array(
 	'smw-paramdesc-prettyprint' => 'This is the description of the "[[wikipedia:prettyprint|prettyprint]]" parameter of the "JSON" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-source' => 'This is the description of the "source" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-jsonsyntax' => 'This is the description of the "syntax" parameter used by [http://www.semantic-mediawiki.org/wiki/Help:JSON_format].',
+	'smw-printername-feed' => 'This is the name of the [http://semantic-mediawiki.org/wiki/Help:Feed_format Feed result format].',
+	'smw-paramdesc-feedtype' => 'This is the description of the feed type',
+	'smw-paramdesc-feedtitle' => 'This is the description of the "title" parameter of the "feed" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-feeddescription' => 'This is the description of the "description" parameter for the "feed" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-feedpagecontent' => 'Option the enable page content to be generated with the feed',
+	'smw-label-feed-link' => 'This is the text of the link that is triggering the results export to a RSS-file when clicked. {{optional}}',
+	'smw-label-feed-description' => '{{optional}}',
 	'smw_iq_disabled' => 'This is an information message.',
 	'smw_iq_moreresults' => 'This is the text of the link that points to further results in case the [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline query] has more than currently displayed on the page. See also message {{msg-mw|Smw-paramdesc-searchlabel}}.',
 	'smw_parseerror' => 'This is an error/warning message.',
@@ -580,7 +582,6 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property". $1 holds the number of subproperty pages displayed in the current view.',
 	'smw_concept_header' => 'This is the header on a page in namespace "Concept". $1 holds the name of the respective concept.',
 	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". $1 holds the number of pages displayed in the current view.',
-	'smw_rss_description' => '{{optional}}',
 	'specialpages-group-smw_group' => 'This is the name of the group of extensions on [[Special:Version]] which are related to or dependant on Semantic MediaWiki.
 
 {{optional}}',
@@ -600,7 +601,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_property_template' => 'Used on [[Special:Properties]]
 * $1 link to Property page
 * $2 link to Type page
-* $3 Number of times the property is used',
+* $3 Number of times the property is used', # Fuzzy
 	'smw_property_template_notype' => 'This is used on [[Special:Properties]].
 *$1 holds the link to the property page.
 *$2 holds the number of times the property is used within the wiki.
@@ -2708,7 +2709,6 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_printername_list' => 'Liste',
 	'smw_printername_ol' => 'Liste (Aufzählung)',
 	'smw_printername_ul' => 'Liste (Auflistung)',
-	'smw_printername_rss' => 'Export (RSS)',
 	'smw_printername_table' => 'Tabelle',
 	'smw_printername_broadtable' => 'Tabelle (breit)',
 	'smw_printername_template' => 'Vorlage',
@@ -2736,8 +2736,6 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-embedformat' => 'Das zum Festlegen der Überschriften genutzte HTML-Tag',
 	'smw-paramdesc-embedonly' => 'Die Ergebniswerte ohne Überschriften anzeigen',
 	'smw-paramdesc-table-class' => 'Eine zusätzliche auf die Tabelle anwendbare CSS-Klasse',
-	'smw-paramdesc-rsstitle' => 'Der Text, der als Titel für den Feed benutzt werden soll',
-	'smw-paramdesc-rssdescription' => 'Der Text, der als Beschreibung für den Feed benutzt werden soll',
 	'smw-paramdesc-rdfsyntax' => 'Die zu verwendende RDF-Syntax',
 	'smw-paramdesc-csv-sep' => 'Das zur Abgrenzung der Ergebnisse zu verwendende Trennzeichen',
 	'smw-paramdesc-dsv-separator' => 'Das zur Abgrenzung der Ergebnisse zu verwendende Trennzeichen',
@@ -2753,6 +2751,12 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-prettyprint' => 'Die unformatierte Anzeige mit zusätzlichen Einzügen und neuen Zeilen',
 	'smw-paramdesc-source' => 'Die alternative Abfragequelle',
 	'smw-paramdesc-jsonsyntax' => 'Die zu verwendende JSON-Syntax',
+	'smw-printername-feed' => 'RSS- und Atom-Feed',
+	'smw-paramdesc-feedtype' => 'Feedtyp',
+	'smw-paramdesc-feedtitle' => 'Der Text, der als Titel des Feeds verwendet werden soll',
+	'smw-paramdesc-feeddescription' => 'Der Text, der als Beschreibung des Feeds verwendet werden soll',
+	'smw-paramdesc-feedpagecontent' => 'Der Seiteninhalt, der mit dem Feed angezeigt werden soll',
+	'smw-label-feed-description' => '$1 $2 Feed',
 	'smw_iq_disabled' => 'Semantische Abfragen wurden in diesem Wiki deaktiviert.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_parseerror' => 'Der eingegebene Wert wurde nicht verstanden.',
@@ -2798,7 +2802,6 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_subpropertyarticlecount' => 'Dieses Attribut hat {{PLURAL:$1|folgendes Unterattribut|folgende $1 Unterattribute}}:',
 	'smw_concept_header' => 'Seiten mit dem Konzept „$1“',
 	'smw_conceptarticlecount' => 'Es {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt, die zu diesem Konzept {{PLURAL:$1|gehört|gehören}}:',
-	'smw_rss_description' => 'RSS-Feed von $1',
 	'exportrdf' => 'Seiten als RDF exportieren',
 	'smw_exportrdf_docu' => 'Hier können Informationen zu einzelnen Seiten im RDF-Format abgerufen werden. Bitte die Namen der gewünschten Seiten <i>zeilenweise</i> angeben.',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnismengen führen!',
@@ -4199,7 +4202,6 @@ $messages['fr'] = array(
 	'smw_printername_list' => 'Liste',
 	'smw_printername_ol' => 'Énumération',
 	'smw_printername_ul' => 'Liste détaillée',
-	'smw_printername_rss' => 'Exporter au format RSS',
 	'smw_printername_table' => 'Tableau',
 	'smw_printername_broadtable' => 'Tableau élargi',
 	'smw_printername_template' => 'Modèle',
@@ -4227,8 +4229,6 @@ $messages['fr'] = array(
 	'smw-paramdesc-embedformat' => 'La balise HTML qui sert à définir les en-têtes',
 	'smw-paramdesc-embedonly' => 'Ne pas afficher d’en-tête',
 	'smw-paramdesc-table-class' => 'Une classe CSS supplémentaire à mettre pour la table',
-	'smw-paramdesc-rsstitle' => 'Texte à utiliser comme titre des flux',
-	'smw-paramdesc-rssdescription' => 'Texte a utiliser comme description des flux',
 	'smw-paramdesc-rdfsyntax' => 'La syntaxe de RDF à utiliser',
 	'smw-paramdesc-csv-sep' => 'Le séparateur à utiliser',
 	'smw-paramdesc-dsv-separator' => 'Le séparateur à utiliser',
@@ -4289,7 +4289,6 @@ $messages['fr'] = array(
 	'smw_subpropertyarticlecount' => 'Cette propriété dispose {{PLURAL:$1|de la sous-propriété suivante|des $1 sous-propriétés suivantes}} :',
 	'smw_concept_header' => 'Page du concept « $1 »',
 	'smw_conceptarticlecount' => 'Afficher {{PLURAL:$1|la page|les $1 pages}} reposant sur ce concept',
-	'smw_rss_description' => 'fil RSS $1',
 	'specialpages-group-smw_group' => 'MediaWiki sémantique',
 	'exportrdf' => 'Exporter des pages en RDF',
 	'smw_exportrdf_docu' => 'Cette page permet d’obtenir des données d’une page au format RDF. Veuillez entrer le nom des pages souhaitées dans la boîte de texte ci-dessous, un nom par ligne.',
@@ -5233,6 +5232,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
  * @author Rotemliss
  * @author Udi Oron אודי אורון
  * @author YaronSh
+ * @author חיים
  */
 $messages['he'] = array(
 	'smw-desc' => 'הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([http://semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])',
@@ -5258,7 +5258,6 @@ $messages['he'] = array(
 	'smw_printername_list' => 'רשימה',
 	'smw_printername_ol' => 'ספירה',
 	'smw_printername_ul' => 'פירוט',
-	'smw_printername_rss' => 'ייצוא ל־RSS',
 	'smw_printername_table' => 'טבלה',
 	'smw_printername_broadtable' => 'טבלה רחבה',
 	'smw_printername_template' => 'תבנית',
@@ -5284,13 +5283,11 @@ $messages['he'] = array(
 	'smw-paramdesc-embedformat' => 'תגית ה־HTML המשמשת להגדרת כותרות',
 	'smw-paramdesc-embedonly' => 'לא יוצגו כותרות',
 	'smw-paramdesc-table-class' => 'מחלקת CSS נוספת שתוחל על הטבלה',
-	'smw-paramdesc-rsstitle' => 'הטקסט שישמש ככותרת ההזנה',
-	'smw-paramdesc-rssdescription' => 'הטקסט שישמש לתיאור ההזנה',
 	'smw-paramdesc-rdfsyntax' => 'באיזה תחביר RDF להשתמש',
 	'smw-paramdesc-csv-sep' => 'תו הפרדה',
 	'smw-paramdesc-dsv-separator' => 'באיזה תו הפרדה להשתמש',
 	'smw-paramdesc-dsv-filename' => 'שם קובץ DSV',
-	'smw-paramdesc-searchlabel' => 'הטקסט בקישור אל התוצאות', # Fuzzy
+	'smw-paramdesc-searchlabel' => 'טקסט עבור המשך החיפוש',
 	'smw_iq_disabled' => 'שאילתות סמנטיות בוטלו באתר ויקי זה.',
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
 	'smw_parseerror' => 'הערך הניתן אינו ניתן לפענוח.',
@@ -5335,7 +5332,6 @@ $messages['he'] = array(
 	'smw_subpropertyarticlecount' => 'למאפיין זה {{PLURAL:$1|קיים מאפיין המשנה הבא|קיימים $1 מאפייני המשנה הבאים}}:',
 	'smw_concept_header' => 'דפים מהרעיון "$1"',
 	'smw_conceptarticlecount' => 'הצגת {{PLURAL:$1|דף אחד השייך|$1 דפים השייכים}} לרעיון זה.',
-	'smw_rss_description' => 'הזנת RSS של $1',
 	'specialpages-group-smw_group' => 'מדיה־ויקי סמנטית',
 	'exportrdf' => 'ייצוא דפים ל־RDF',
 	'smw_exportrdf_docu' => 'דף זה מאפשר לכם לאחזר נתונים מדף במבנה RDF.
@@ -5349,7 +5345,7 @@ $messages['he'] = array(
 	'uriresolver' => 'פותר הכתובות',
 	'properties' => 'מאפיינים',
 	'smw_properties_docu' => 'בוויקי נעשה שימוש במאפיינים הבאים.',
-	'smw_property_template' => '$1 מסוג $2 ($3)',
+	'smw_property_template' => '$1 מסוג $2 ($3 {{PLURAL:$3|פעם אחת|פעמים}})',
 	'smw_propertylackspage' => 'פרטי כל המאפיינים אמורים להופיע בדף!',
 	'smw_propertylackstype' => 'לא צוין סוג עבור מאפיין זה (בינתיים נעשה שימוש בסוג $1).',
 	'smw_propertyhardlyused' => 'בקושי נעשה שימוש במאפיין זה בוויקי!',
@@ -7188,7 +7184,6 @@ $messages['ja'] = array(
 	'smw_printername_list' => '一覧',
 	'smw_printername_ol' => '番号付き箇条書き',
 	'smw_printername_ul' => '箇条書き',
-	'smw_printername_rss' => 'RSS 形式で書き出し',
 	'smw_printername_table' => '表',
 	'smw_printername_broadtable' => '幅広の表',
 	'smw_printername_template' => 'テンプレート',
@@ -7213,8 +7208,6 @@ $messages['ja'] = array(
 	'smw-paramdesc-embedformat' => '見出しの定義に使用する HTML タグ',
 	'smw-paramdesc-embedonly' => '見出しを表示しない',
 	'smw-paramdesc-table-class' => '表に設定する追加 CSS クラス',
-	'smw-paramdesc-rsstitle' => 'フィードの表題として使用する文字列',
-	'smw-paramdesc-rssdescription' => 'フィードの説明として使用する文字列',
 	'smw-paramdesc-rdfsyntax' => '使用する RDF 構文',
 	'smw-paramdesc-csv-sep' => '使用する区切り文字',
 	'smw-paramdesc-dsv-separator' => '使用する区切り文字',
@@ -7268,7 +7261,6 @@ $messages['ja'] = array(
 	'smw_subpropertyarticlecount' => 'このプロパティには以下の $1 {{PLURAL:$1|下位プロパティ}}があります：',
 	'smw_concept_header' => '概念「$1」のページ',
 	'smw_conceptarticlecount' => 'この概念に属する $1 {{PLURAL:$1|件のページ}}を表示しています。',
-	'smw_rss_description' => '$1 RSS フィード',
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
 	'exportrdf' => 'ページをRDFに書き出し',
 	'smw_exportrdf_docu' => 'このページを使用すると、ページからデータをRDF形式で取得できます。
@@ -8274,7 +8266,6 @@ $messages['mk'] = array(
 	'smw_noinvannot' => 'На обратните својства не можат да им се назначуваат вредности.',
 	'version-semantic' => 'Семантички додатоци',
 	'smw_baduri' => 'URI-ја од обликот „$1“ не се дозволени.',
-	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
 	'smw_json_link' => 'JSON',
@@ -8288,7 +8279,6 @@ $messages['mk'] = array(
 	'smw_printername_list' => 'Список',
 	'smw_printername_ol' => 'Набројување',
 	'smw_printername_ul' => 'Список',
-	'smw_printername_rss' => 'RSS извоз',
 	'smw_printername_table' => 'Табела',
 	'smw_printername_broadtable' => 'Широка табела',
 	'smw_printername_template' => 'Шаблон',
@@ -8316,8 +8306,6 @@ $messages['mk'] = array(
 	'smw-paramdesc-embedformat' => 'HTML-ознаката која се користи за определување на наслови',
 	'smw-paramdesc-embedonly' => 'Не прикажувај наслови',
 	'smw-paramdesc-table-class' => 'Дополнителна CSS-класа за табелата',
-	'smw-paramdesc-rsstitle' => 'Текстот што ќе се користи како наслов на каналот',
-	'smw-paramdesc-rssdescription' => 'Текстот што ќе се користи како опис на каналот',
 	'smw-paramdesc-rdfsyntax' => 'RDF-синтаксата што ќе се користи',
 	'smw-paramdesc-csv-sep' => 'Кој разделник да се користи',
 	'smw-paramdesc-dsv-separator' => 'Кој разделник да се користи',
@@ -8379,7 +8367,6 @@ $messages['mk'] = array(
 	'smw_subpropertyarticlecount' => 'Ова својство {{PLURAL:$1|го има следново $1 потсвојство|ги има следниве $1 потсвојства}}:',
 	'smw_concept_header' => 'Страници на концептот „$1“',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Прикажана е $1 страница која му припаѓа|Прикажани се $1 страници кои му припаѓаат}} на тој концепт.',
-	'smw_rss_description' => '$1 RSS-канал',
 	'specialpages-group-smw_group' => 'Семантички МедијаВики',
 	'exportrdf' => 'Извези страници во RDF',
 	'smw_exportrdf_docu' => 'Оваа страница ви овозможува да преземете податоци од страница во RDF формат.
@@ -9160,7 +9147,6 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_printername_list' => 'Lijst',
 	'smw_printername_ol' => 'Opsomming',
 	'smw_printername_ul' => 'Itemisatie',
-	'smw_printername_rss' => 'Naar RSS exporteren',
 	'smw_printername_table' => 'Tabel',
 	'smw_printername_broadtable' => 'Brede tabel',
 	'smw_printername_template' => 'Sjabloon',
@@ -9176,19 +9162,18 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-outro' => 'De tekst die wordt weergegeven onder de zoekresultaten, als die er zijn',
 	'smw-paramdesc-default' => 'De tekst die wordt weergegeven als er geen zoekresultaten zijn',
 	'smw-paramdesc-sep' => 'Het scheidingsteken voor waarden',
+	'smw-paramdesc-showsep' => 'Toon het scheidingsteken bovenaan het CSV-bestand ("sep =<value>")',
 	'smw-paramdesc-distribution' => 'Geef het aantal waarden weer in plaats van alle waarden.',
 	'smw-paramdesc-distributionsort' => 'De waardeverdeling sorteren op aantal keer dat die voorkomt.',
 	'smw-paramdesc-distributionlimit' => 'Beperk de waardeverdeling tot het aantal van sommige waarden.',
 	'smw-paramdesc-template' => 'De naam van het sjabloon waar de afdrukken mee worden weergegeven',
 	'smw-paramdesc-columns' => 'Het aantal kolommen om resultaten in weer te geven (standaard $1)',
-	'smw-paramdesc-userparam' => 'Een aan ieder sjabloon doorgegeven waarde als een sjabloon wordt gebruikt',
+	'smw-paramdesc-userparam' => 'Een aan iedere sjabloon doorgegeven waarde als een sjabloon wordt gebruikt',
 	'smw-paramdesc-introtemplate' => 'De naam van een weer te geven sjabloon voor de zoekresultaten als die er zijn',
 	'smw-paramdesc-outrotemplate' => 'De naam van een weer te geven sjabloon na de zoekresultaten als die er zijn',
 	'smw-paramdesc-embedformat' => 'Het HTML-label voor de koptekstdefinities',
 	'smw-paramdesc-embedonly' => 'Geen koppen weergeven',
 	'smw-paramdesc-table-class' => 'Een extra CSS-klasse om in te stellen voor de tabel',
-	'smw-paramdesc-rsstitle' => 'De tekst die wordt gebruikt als de naam van de feed',
-	'smw-paramdesc-rssdescription' => 'De tekst die wordt gebruikt als de beschrijving van de feed',
 	'smw-paramdesc-rdfsyntax' => 'De te gebruiken RDF-syntaxis',
 	'smw-paramdesc-csv-sep' => 'Het te gebruiken scheidingsteken',
 	'smw-paramdesc-dsv-separator' => 'Het te gebruiken scheidingsteken',
@@ -9199,7 +9184,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-sort' => 'Eigenschap om de zoekopdracht op te sorteren',
 	'smw-paramdesc-order' => 'Sorteervolgorde',
 	'smw-paramdesc-searchlabel' => 'Tekst voor de voortzetting van de zoekopdracht',
-	'smw-paramdesc-named_args' => 'Naam voor de aan het sjabloon door te geven parameters',
+	'smw-paramdesc-named_args' => 'Naam voor de aan de sjabloon door te geven parameters',
 	'smw-paramdesc-export' => 'Exportoptie',
 	'smw-paramdesc-prettyprint' => 'Een netjes opgemaakte uitvoer inschakelen die tabs en nieuwe regels toevoegt',
 	'smw-paramdesc-source' => 'Alternatieve zoekopdrachtbron',
@@ -9263,7 +9248,7 @@ Genereert door te bladeren RDF.",
 	'uriresolver' => 'URI-resolver',
 	'properties' => 'Eigenschappen',
 	'smw_properties_docu' => 'De volgende eigenschappen worden in de wiki gebruikt.',
-	'smw_property_template' => '$1 van type $2 ($3)',
+	'smw_property_template' => '$1 van type $2 ($3)', # Fuzzy
 	'smw_propertylackspage' => 'Alle eigenschappen moeten op een pagina beschreven worden!',
 	'smw_propertylackstype' => 'Er is geen type opgegeven voor deze eigenschap (type $1 wordt verondersteld).',
 	'smw_propertyhardlyused' => 'Deze eigenschap wordt vrijwel niet gebruikt in de wiki.',
@@ -9903,7 +9888,6 @@ $messages['pl'] = array(
 	'smw_printername_list' => 'Lista',
 	'smw_printername_ol' => 'Lista numerowana',
 	'smw_printername_ul' => 'Lista nienumerowana',
-	'smw_printername_rss' => 'eksport RSS',
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_broadtable' => 'Szeroka tabela',
 	'smw_printername_template' => 'Szablon',
@@ -9927,8 +9911,6 @@ $messages['pl'] = array(
 	'smw-paramdesc-outrotemplate' => 'Nazwa szablonu wyświetlana poniżej wyników zapytania, jeśli są jakieś',
 	'smw-paramdesc-embedformat' => 'Znacznik HTML używany do definiowania nagłówków',
 	'smw-paramdesc-embedonly' => 'Nie wyświetlaj nagłówków',
-	'smw-paramdesc-rsstitle' => 'Tekst, który zostanie użyty jako tytuł kanału',
-	'smw-paramdesc-rssdescription' => 'Tekst, który zostanie użyty jako opis kanału',
 	'smw-paramdesc-rdfsyntax' => 'Wykorzystywana składnia RDF',
 	'smw-paramdesc-csv-sep' => 'Używany separator',
 	'smw-paramdesc-dsv-separator' => 'Użyty separator',

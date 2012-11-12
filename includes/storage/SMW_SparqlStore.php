@@ -11,24 +11,105 @@
 
 /**
  * Storage access class for using SMW's SPARQL database for keeping semantic
- * data.
+ * data. The store keeps an underlying base store running for completeness.
+ * This might become optional in the future.
  *
  * @since 1.6
  *
- * @note For now, the store keeps an underlying SMWSQLStore2 running for
- * completeness. This might change in the future.
- *
  * @ingroup SMWStore
  */
-class SMWSparqlStore extends SMWSQLStore2 {
+class SMWSparqlStore extends SMWStore {
 
+	/**
+	 * Class to be used as an underlying base store. This can be changed in
+	 * LocalSettings.php (after enableSemantics()) to use another base
+	 * store.
+	 *
+	 * @var string
+	 * @since 1.8
+	 */
+	static public $baseStoreClass = 'SMWSQLStore3';
+
+	/**
+	 * Underlying store to use for basic read operations.
+	 *
+	 * @var SMWStore
+	 * @since 1.8
+	 */
+	protected $baseStore;
+
+	/**
+	 * Constructor.
+	 *
+	 * @since 1.8
+	 */
+	public function __construct() {
+		$this->baseStore = new self::$baseStoreClass();
+	}
+
+	/**
+	 * @see SMWStore::getSemanticData()
+	 * @since 1.8
+	 */
+	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
+		return $this->baseStore->getSemanticData( $subject, $filter );
+	}
+
+	/**
+	 * @see SMWStore::getPropertyValues()
+	 * @since 1.8
+	 */
+	public function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null ) {
+		return $this->baseStore->getPropertyValues( $subject, $property, $requestoptions);
+	}
+
+	/**
+	 * @see SMWStore::getPropertySubjects()
+	 * @since 1.8
+	 */
+	public function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
+		return $this->baseStore->getPropertySubjects( $property, $value, $requestoptions );
+	}
+
+	/**
+	 * @see SMWStore::getAllPropertySubjects()
+	 * @since 1.8
+	 */
+	public function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
+		return $this->baseStore->getAllPropertySubjects( $property, $requestoptions );
+	}
+
+	/**
+	 * @see SMWStore::getProperties()
+	 * @since 1.8
+	 */
+	public function getProperties( SMWDIWikiPage $subject, $requestoptions = null ) {
+		return $this->baseStore->getProperties( $subject, $requestoptions );
+	}
+
+	/**
+	 * @see SMWStore::getInProperties()
+	 * @since 1.8
+	 */
+	public function getInProperties( SMWDataItem $object, $requestoptions = null ) {
+		return $this->baseStore->getInProperties( $object, $requestoptions );
+	}
+
+	/**
+	 * @see SMWStore::deleteSubject()
+	 * @since 1.6
+	 */
 	public function deleteSubject( Title $subject ) {
 		$dataItem = SMWDIWikiPage::newFromTitle( $subject );
 		$expResource = SMWExporter::getDataItemExpElement( $dataItem );
 		$this->deleteSparqlData( $expResource );
-		parent::deleteSubject( $subject );
+		$this->baseStore->deleteSubject( $subject );
 	}
 
+	/**
+	 * @see SMWStore::changeTitle()
+	 * @since 1.6
+	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 		$oldWikiPage = SMWDIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = SMWDIWikiPage::newFromTitle( $newtitle );
@@ -39,7 +120,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		$oldUri = SMWTurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
 		$newUri = SMWTurtleSerializer::getTurtleNameForExpElement( $newExpResource );
 
-		parent::changeTitle( $oldtitle, $newtitle, $pageid, $redirid ); // do this only here, so Imported from is not moved too early
+		$this->baseStore->changeTitle( $oldtitle, $newtitle, $pageid, $redirid ); // do this only here, so Imported from is not moved too early
 
 		$sparqlDatabase = smwfGetSparqlDatabase();
 		$sparqlDatabase->insertDelete( "?s ?p $newUri", "?s ?p $oldUri", "?s ?p $oldUri", $namespaces );
@@ -56,8 +137,12 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		}
 	}
 
+	/**
+	 * @see SMWStore::doDataUpdate()
+	 * @since 1.6
+	 */
 	public function doDataUpdate( SMWSemanticData $data ) {
-		parent::doDataUpdate( $data );
+		$this->baseStore->doDataUpdate( $data );
 
 		$expDataArray = $this->prepareUpdateExpData( $data );
 
@@ -89,6 +174,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * capture necessary stub declarations for objects that do not have
 	 * any data in the RDF store yet.
 	 *
+	 * @since 1.6
 	 * @param $data SMWSemanticData object containing the update data
 	 * @return array of SMWExpData
 	 */
@@ -109,6 +195,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * written to the store when including this SMWExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
+	 * @since 1.6
 	 * @param $expElement SMWExpElement object containing the update data
 	 * @param $auxiliaryExpData array of SMWExpData
 	 * @return SMWExpElement
@@ -134,6 +221,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * written to the store when including this SMWExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
+	 * @since 1.6
 	 * @param $expResource SMWExpResource object containing the update data
 	 * @param $auxiliaryExpData array of SMWExpData
 	 * @return SMWExpElement
@@ -165,6 +253,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * written to the store when including this SMWExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
+	 * @since 1.6
 	 * @param $expData SMWExpData object containing the update data
 	 * @param $auxiliaryExpData array of SMWExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
@@ -200,6 +289,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * the input itself if there is no redirect (or it cannot be
 	 * used for making a resource with a prefix).
 	 *
+	 * @since 1.6
 	 * @param $expNsResource string URI to check
 	 * @param $exists boolean that is set to true if $expNsResource is in the
 	 * store; always false for blank nodes; always true for subobjects
@@ -248,6 +338,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * Delete from the SPARQL database all data that is associated with the
 	 * given resource.
 	 *
+	 * @since 1.6
 	 * @param $expResource SMWExpResource
 	 * @return boolean success
 	 */
@@ -270,6 +361,10 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	}
 
 
+	/**
+	 * @see SMWStore::getQueryResult()
+	 * @since 1.6
+	 */
 	public function getQueryResult( SMWQuery $query ) {
 		global $smwgIgnoreQueryErrors;
 
@@ -283,19 +378,72 @@ class SMWSparqlStore extends SMWSQLStore2 {
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this, true );
 		} elseif ( $query->querymode == SMWQuery::MODE_DEBUG ) {
 			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
-			return $queryEngine->getDebugQueryResult( $query ); 
+			return $queryEngine->getDebugQueryResult( $query );
 		} elseif ( $query->querymode == SMWQuery::MODE_COUNT ) {
 			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
-			return $queryEngine->getCountQueryResult( $query ); 
+			return $queryEngine->getCountQueryResult( $query );
 		} else {
 			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
-			return $queryEngine->getInstanceQueryResult( $query ); 
+			return $queryEngine->getInstanceQueryResult( $query );
 		}
 	}
 
+
+	/**
+	 * @see SMWStore::getPropertiesSpecial()
+	 * @since 1.8
+	 */
+	public function getPropertiesSpecial( $requestoptions = null ) {
+		return $this->baseStore->getPropertiesSpecial( $requestoptions );
+	}
+
+	/**
+	 * @see SMWStore::getUnusedPropertiesSpecial()
+	 * @since 1.8
+	 */
+	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
+		return $this->baseStore->getUnusedPropertiesSpecial( $requestoptions );
+	}
+
+	/**
+	 * @see SMWStore::getWantedPropertiesSpecial()
+	 * @since 1.8
+	 */
+	public function getWantedPropertiesSpecial( $requestoptions = null ) {
+		return $this->baseStore->getWantedPropertiesSpecial( $requestoptions );
+	}
+
+	/**
+	 * @see SMWStore::getStatistics()
+	 * @since 1.8
+	 */
+	public function getStatistics() {
+		return $this->baseStore->getStatistics();
+	}
+
+	/**
+	 * @see SMWStore::setup()
+	 * @since 1.8
+	 */
+	public function setup( $verbose = true ) {
+		$this->baseStore->setup( $verbose );
+	}
+
+	/**
+	 * @see SMWStore::drop()
+	 * @since 1.6
+	 */
 	public function drop( $verbose = true ) {
-		parent::drop( $verbose );
+		$this->baseStore->drop( $verbose );
 		smwfGetSparqlDatabase()->delete( "?s ?p ?o", "?s ?p ?o" );
+	}
+
+	/**
+	 * @see SMWStore::refreshData()
+	 * @since 1.8
+	 */
+	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
+		return $this->baseStore->refreshData( $index, $count, $namespaces, $usejobs );
 	}
 
 }

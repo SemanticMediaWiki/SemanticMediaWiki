@@ -633,7 +633,14 @@ class SMWSQLStore3QueryEngine {
 	 * the given property. If it is not possible to generate a query for the
 	 * given data, the query type is changed to SMWSQLStore3Query::Q_NOQUERY. Callers need
 	 * to check for this and discard the query in this case.
-	 * @todo Check if hierarchy queries work as expected.
+	 *
+	 * @note This method does not support sortkey (_SKEY) property queries,
+	 * since they do not have a normal property table. This should not be a
+	 * problem since comparators on sortkeys are supported indirectly when
+	 * using comparators on wikipages. There is no reason to create any
+	 * query with _SKEY ad users cannot do so either (no user label).
+	 *
+	 * @since 1.8
 	 */
 	protected function compileSomePropertyDescription( SMWSQLStore3Query $query, SMWSomeProperty $description ) {
 
