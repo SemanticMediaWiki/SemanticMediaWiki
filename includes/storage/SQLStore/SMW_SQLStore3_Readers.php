@@ -78,7 +78,7 @@ class SMWSQLStore3Readers {
 		// hence no entry in $this->store->m_sdstate[$sid] is made.
 		self::$in_getSemanticData++;
 		$this->initSemanticDataCache( $sid, $subject );
-		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', $sortkey );
+		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( '', $sortkey ) );
 		self::$in_getSemanticData--;
 
 		wfProfileOut( "SMWSQLStore3::getSemanticData (SMW)" );
@@ -145,6 +145,9 @@ class SMWSQLStore3Readers {
 	/**
 	 * @see SMWStore::getPropertyValues
 	 *
+	 * @todo Retrieving all sortkeys (values for _SKEY with $subject null)
+	 * is not supported. An empty array will be given.
+	 *
 	 * @since 1.8
 	 * @param $subject mixed SMWDIWikiPage or null
 	 * @param $property SMWDIProperty
@@ -163,10 +166,16 @@ class SMWSQLStore3Readers {
 				$subject->getSubobjectName(), true );
 			if ( $sid == 0 ) {
 				$result = array();
+			} elseif ( $property->getKey() == '_SKEY' ) {
+				$this->store->smwIds->getSMWPageIDandSort( $subject->getDBkey(),
+				$subject->getNamespace(), $subject->getInterwiki(),
+				$subject->getSubobjectName(), $sortKey, true );
+				$sortKeyDi = new SMWDIBlob( $sortKey );
+				$result = $this->store->applyRequestOptions( array( $sortKeyDi ), $requestoptions );
 			} else {
+				$propTableId = $this->store->findPropertyTableID( $property );
 				$proptables = SMWSQLStore3::getPropertyTables();
-				$sd = $this->getSemanticDataFromTable( $sid, $subject,
-					$proptables[$this->store->findPropertyTableID( $property )] );
+				$sd = $this->getSemanticDataFromTable( $sid, $subject, $proptables[$propTableId] );
 				$result = $this->store->applyRequestOptions( $sd->getPropertyValues( $property ), $requestoptions );
 			}
 		} else { // no subject given, get all values for the given property
@@ -352,6 +361,9 @@ class SMWSQLStore3Readers {
 	/**
 	 * @see SMWStore::getPropertySubjects
 	 *
+	 * @todo This method cannot retrieve subjects for sortkeys, i.e., for
+	 * property _SKEY. Only empty arrays will be returned there.
+	 *
 	 * @param SMWDIProperty $property
 	 * @param mixed $value SMWDataItem or null
 	 * @param SMWRequestOptions $requestoptions
@@ -430,6 +442,10 @@ class SMWSQLStore3Readers {
 	 *
 	 * @todo Maybe do something about redirects. The old code was
 	 * $oid = $this->store->smwIds->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki(),false);
+	 *
+	 * @note This method cannot handle DIContainer objects with sortkey
+	 * properties correctly. This should never occur, but it would be good
+	 * to fail in a more controlled way if it ever does.
 	 *
 	 * @param string $from
 	 * @param string $where
