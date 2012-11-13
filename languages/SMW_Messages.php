@@ -2685,7 +2685,7 @@ Odhadovaný průběh updatu:',
  * @author Umherirrender
  */
 $messages['de'] = array(
-	'smw-desc' => "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([http://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
+	'smw-desc' => "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und',
 	'smw_factbox_head' => 'Fakten zu „$1“',
