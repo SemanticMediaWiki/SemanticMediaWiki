@@ -129,7 +129,7 @@ final class SMWHooks {
 		$parser->setFunctionHook( 'show', array( 'SMWShow', 'render' ) );
 		$parser->setFunctionHook( 'subobject', array( 'SMWSubobject', 'render' ) );
 		$parser->setFunctionHook( 'concept', array( 'SMWConcept', 'render' ) );
-		$parser->setFunctionHook( 'set', array( 'SMWSet', 'render' ) );
+		$parser->setFunctionHook( 'set', array( 'SMW\Set', 'render' ) );
 		$parser->setFunctionHook( 'set_recurring_event', array( 'SMWSetRecurringEvent', 'render' ) );
 		$parser->setFunctionHook( 'declare', array( 'SMWDeclare', 'render' ), SFH_OBJECT_ARGS );
 
@@ -275,6 +275,8 @@ final class SMWHooks {
 			'dataitems/DI_Blob',
 			'dataitems/DI_String',
 			'dataitems/DI_GeoCoord',
+
+			'parserhooks/ParserParameters',
 
 			'printers/ResultPrinters',
 
