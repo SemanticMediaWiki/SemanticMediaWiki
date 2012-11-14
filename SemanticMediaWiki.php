@@ -71,7 +71,7 @@ define( 'SEMANTIC_EXTENSION_TYPE', true );
 define( 'SMW_SUPPORTS_VALIDATOR', true );
 
 // Default settings
-require_once dirname( __FILE__ ) . '/SMW_Settings.php';
+require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
 // Resource definitions
-require_once dirname( __FILE__ ) . '/SMW_Resources.php';
+$wgResourceModules = array_merge( $wgResourceModules, include( __DIR__ . "/resources/Resources.php" ) );
