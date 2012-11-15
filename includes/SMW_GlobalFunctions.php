@@ -234,9 +234,8 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
  *
  * @return string
  */
-function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' <!--br-->', $escape = true ) {
-	if ( count( $messages ) > 0 ) {
-		SMWOutputs::requireResource( 'ext.smw.tooltips' );
+function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' <!--br-->', $escape = true ) {
+	if (  $messages !== array() ) {
 
 		if ( $escape ) {
 			$messages = array_map( 'htmlspecialchars', $messages );
@@ -249,17 +248,18 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
 			foreach ( $messages as &$message ) {
 				$message = '<li>' . $message . '</li>';
 			}
-			
+
 			$errorList = '<ul>' . implode( $seperator, $messages ) . '</ul>';
 		}
 
-		return smwfContextHighlighter( array (
-			'context' => 'persitent',
-			'class'   => 'smwtticon ' . htmlspecialchars( $icon ),
-			'type'    => htmlspecialchars( $icon ),
-			'title'   => null,
-			'content' => $errorList
+		// Type will be converted internally
+		$highlighter = SMW\Highlighter::factory( $type );
+		$highlighter->setContent( array (
+			'caption'   => null,
+			'content'   => $errorList
 		) );
+
+		return $highlighter->getHtml();
 	} else {
 		return '';
 	}
@@ -331,45 +331,4 @@ function smwfGetLinker() {
 	}
 
 	return $linker;
-}
-
-/**
- * Provide a consistent interface for context hightlighting.
- *
- * Escaping should be dealt with before calling this function to ensure proper
- * handling of html encoded strings
- *
- * @var options
- * context = described as either inline or persitent
- * title   = a text or null
- * class   = assigned class which will control if an icon is displayed or not
- * type    = identifies the entity type
- * content = ...
- *
- * @since 1.8
- *
- * @param array options
- *
- * @return string
- */
-function smwfContextHighlighter( array $options ) {
-	// Load RL module
-	SMWOutputs::requireResource( 'ext.smw.tooltips' );
-
-	// Tooltip
-	return Html::rawElement(
-		'span',
-		array(
-			'class' => $options['context'] === 'inline' ? 'smwttinline' : 'smwttpersist' ,
-			'data-type' => $options['type'],
-			'data-context' => $options['context']
-		), Html::rawElement(
-			'span',
-			array( 'class' => $options['class'] ),
-			$options['title']
-			) . Html::rawElement(
-				'span',
-				array( 'class' => 'smwttcontent'), $options['content']
-				)
-	);
 }

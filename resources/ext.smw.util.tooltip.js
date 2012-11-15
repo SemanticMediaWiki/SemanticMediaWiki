@@ -171,23 +171,27 @@
 		// Class reference
 		var tooltip = new smw.util.tooltip();
 
-		// Inline mostly used for special properties and quantity conversions
-		// Persistent extends interactions for service links, info, and error messages
-		$( '.smwttpersist,.smwttinline' ).each( function() {
+		$( '.smw-highlighter' ).each( function() {
 
-			// Standard configuration
+			// Get configuration
 			var $this = $( this ),
-				event   = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined,
-				context = $this.data( 'context' ),
-				type    = $this.data( 'type' );
+				eventPrefs = mw.user.options.get( 'smw-prefs-tooltip-option-click' ) ? 'click' : undefined,
+				state      = $this.data( 'state' ),
+				title      = $this.data( 'title' ),
+				type       = $this.data( 'type' );
+
+			// Assign sub-class
+			// Inline mostly used for special properties and quantity conversions
+			// Persistent extends interactions for service links, info, and error messages
+			$this.addClass( state === 'inline' ? 'smwttinline' : 'smwttpersist' );
 
 			// Call instance
 			tooltip.show( {
 				context: $this,
 				content: $this.find( '.smwttcontent' ),
-				title  : mw.msg( _getTitle( type ) ),
-				event  : event,
-				button : type === 'warning' || context === 'inline' ? false /* No close button */ : true
+				title  : title !== undefined ? title : mw.msg( _getTitle( type ) ),
+				event  : eventPrefs,
+				button : type === 'warning' || state === 'inline' ? false /* false = no close button */ : true
 			} );
 
 		} );

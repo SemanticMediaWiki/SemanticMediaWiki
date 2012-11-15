@@ -79,7 +79,10 @@ return array(
 	// become active after all content is loaded with icons appearing with a
 	// delay due to missing stylesheet definitions at the time of the display
 	'ext.smw.tooltips' => $moduleTemplate + array(
-		'dependencies' => 'ext.smw.tooltip',
+		'dependencies' => array(
+			'ext.smw.style',
+			'ext.smw.tooltip'
+		),
 		'position' => 'top'
 	),
 	// Autocomplete resources

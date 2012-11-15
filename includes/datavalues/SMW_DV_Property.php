@@ -269,14 +269,13 @@ class SMWPropertyValue extends SMWDataValue {
 		if ( $this->m_dataitem->isUserDefined() ) {
 			return $text;
 		} else {
-			SMWOutputs::requireResource( 'ext.smw.style' );
-			return smwfContextHighlighter( array (
-				'context' => 'inline',
-				'class'   => 'smwbuiltin',
-				'type'    => 'property',
-				'title'   => $text,
-				'content' => wfMessage( 'smw_isspecprop' )->inContentLanguage()->text()
+			$highlighter = SMW\Highlighter::factory( SMW\Highlighter::TYPE_PROPERTY );
+			$highlighter->setContent( array (
+				'caption' => $text,
+				'content' => wfMessage( 'smw_isspecprop' )->text()
 			) );
+
+			return $highlighter->getHtml();
 		}
 	}
 

@@ -116,13 +116,13 @@ class SMWStringValue extends SMWDataValue {
 			if ( is_null( $linked ) || ( $linked === false ) ) {
 				return mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">…</span> ' . mb_substr( $value, $len - 42 );
 			} else {
-				return mb_substr( $value , 0, 42 ) . smwfContextHighlighter( array (
-					'context' => 'persistent',
-					'class'   => 'smwtext',
-					'type'    => 'string',
-					'title'   => ' … ',
+				$highlighter = SMW\Highlighter::factory( SMW\Highlighter::TYPE_TEXT );
+				$highlighter->setContent( array (
+					'caption' => ' … ',
 					'content' => $value
-				) ) . mb_substr( $value, $len - 42 );
+				) );
+
+				return mb_substr( $value , 0, 42 ) . $highlighter->getHtml() . mb_substr( $value, $len - 42 );
 			}
 		} elseif ( $this->m_typeid == '_cod' ) {
 			return $this->getCodeDisplay( $value, true );

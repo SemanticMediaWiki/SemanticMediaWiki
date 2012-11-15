@@ -164,13 +164,13 @@ class SMWNumberValue extends SMWDataValue {
 				}
 			}
 			if ( $tooltip !== '' ) {
-				return smwfContextHighlighter( array (
-					'context' => 'inline',
-					'class'   => 'smwtext',
-					'type'    => 'quantity',
-					'title'   => $this->m_caption,
+				$highlighter = SMW\Highlighter::factory( SMW\Highlighter::TYPE_QUANTITY );
+				$highlighter->setContent( array (
+					'caption' => $this->m_caption,
 					'content' => $tooltip
 				) );
+
+				return $highlighter->getHtml();
 			} else {
 				return $this->m_caption;
 			}

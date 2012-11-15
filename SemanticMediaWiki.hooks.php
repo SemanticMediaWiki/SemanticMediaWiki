@@ -269,6 +269,8 @@ final class SMWHooks {
 		$testFiles = array(
 			'FormatFactory',
 			'QueryProcessor',
+			'Highlighter',
+			'GlobalFunctions',
 
 			'dataitems/DI_Number',
 			'dataitems/DI_Bool',

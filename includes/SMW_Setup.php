@@ -118,9 +118,10 @@ function smwfRegisterClasses() {
 	global $smwgIP, $wgAutoloadClasses, $wgJobClasses;
 
 	$wgAutoloadClasses['SMWHooks']                  = $smwgIP . 'SemanticMediaWiki.hooks.php';
-	
+
 	$incDir = $smwgIP . 'includes/';
 	$wgAutoloadClasses['SMW\FormatFactory']       	= $incDir . 'FormatFactory.php';
+	$wgAutoloadClasses['SMW\Highlighter']           = $incDir . 'Highlighter.php';
 	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDISerializer']           = $incDir . 'SMW_DISerializer.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
