@@ -54,22 +54,24 @@ class Highlighter extends \ContextSource {
 	protected $options;
 
 	/**
+	 * @var int $type
+	 */
+	protected $type;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 1.9
 	 *
-	 * @var options
-	 * container = described as either inline or persitent
-	 * caption   = a text or null
-	 *
+	 * @param int $type
 	 * @param \IContextSource|null $context
 	 */
-	public function __construct( $options, IContextSource $context = null ) {
+	public function __construct( $type, IContextSource $context = null ) {
 		if ( !$context ) {
 			$context = \RequestContext::getMain();
 		}
 		$this->setContext( $context );
-		$this->options = $options;
+		$this->type = $type;
 	}
 
 	/**
@@ -87,8 +89,7 @@ class Highlighter extends \ContextSource {
 			$type = self::getTypeId( $type );
 		}
 
-		$configuration = self::getTypeConfiguration( $type );
-		return new Highlighter( $configuration, $context );
+		return new Highlighter( $type, $context );
 	}
 
 	/**
@@ -116,7 +117,12 @@ class Highlighter extends \ContextSource {
 	 * @return array
 	 */
 	public function setContent( array $content ) {
-		return $this->options = array_merge( $this->options, $content );
+		/**
+		 * @var $content
+		 * $content['caption'] = a text or null
+		 * $content['context'] = a text or null
+		 */
+		return $this->options = array_merge( $this->getTypeConfiguration( $this->type ), $content );
 	}
 
 	/**
@@ -128,7 +134,7 @@ class Highlighter extends \ContextSource {
 	 *
 	 * @return integer
 	 */
-	public function getTypeId( $type ) {
+	public static function getTypeId( $type ) {
 		switch ( strtolower ( htmlspecialchars ( $type ) ) ) {
 			case 'property': return self::TYPE_PROPERTY;
 			case 'text'    : return self::TYPE_TEXT;
