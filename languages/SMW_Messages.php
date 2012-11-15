@@ -2685,7 +2685,7 @@ Odhadovaný průběh updatu:',
  * @author Umherirrender
  */
 $messages['de'] = array(
-	'smw-desc' => "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([http://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
+	'smw-desc' => "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und',
 	'smw_factbox_head' => 'Fakten zu „$1“',
@@ -4690,7 +4690,6 @@ $messages['gl'] = array(
 	'smw_printername_list' => 'Lista',
 	'smw_printername_ol' => 'Enumeración',
 	'smw_printername_ul' => 'Lista detallada',
-	'smw_printername_rss' => 'Exportación en RSS',
 	'smw_printername_table' => 'Táboa',
 	'smw_printername_broadtable' => 'Táboa ampla',
 	'smw_printername_template' => 'Modelo',
@@ -4718,8 +4717,6 @@ $messages['gl'] = array(
 	'smw-paramdesc-embedformat' => 'A etiqueta HTML utilizada para definir as cabeceiras',
 	'smw-paramdesc-embedonly' => 'Non mostrar as cabeceiras',
 	'smw-paramdesc-table-class' => 'Unha clase CSS adicional que establecer para a táboa',
-	'smw-paramdesc-rsstitle' => 'O texto a usar como título da fonte de novas',
-	'smw-paramdesc-rssdescription' => 'O texto a usar como descrición da fonte de novas',
 	'smw-paramdesc-rdfsyntax' => 'A sintaxe de RDF a usar',
 	'smw-paramdesc-csv-sep' => 'O separador a empregar',
 	'smw-paramdesc-dsv-separator' => 'O separador a empregar',
@@ -4735,6 +4732,12 @@ $messages['gl'] = array(
 	'smw-paramdesc-prettyprint' => 'Unha saída cun formato xeitoso que mostra sangrías e liñas novas adicionais',
 	'smw-paramdesc-source' => 'Fonte alternativa de pescuda',
 	'smw-paramdesc-jsonsyntax' => 'Sintaxe JSON a utilizar',
+	'smw-printername-feed' => 'Fonte de novas RSS e Atom',
+	'smw-paramdesc-feedtype' => 'Tipo de fonte de novas',
+	'smw-paramdesc-feedtitle' => 'O texto a usar como título da fonte de novas',
+	'smw-paramdesc-feeddescription' => 'O texto a usar como descrición da fonte de novas',
+	'smw-paramdesc-feedpagecontent' => 'Contido da páxina a mostrar coa fonte de novas',
+	'smw-label-feed-description' => 'Fonte de novas $1 $2',
 	'smw_iq_disabled' => 'As preguntas semánticas están deshabilitadas neste wiki.',
 	'smw_iq_moreresults' => '… máis resultados',
 	'smw_parseerror' => 'O valor dado non foi entendido.',
@@ -4779,7 +4782,6 @@ Pode que os resultados non sexan os agardados.',
 	'smw_subpropertyarticlecount' => 'Esta propiedade ten {{PLURAL:$1|a seguinte subpropiedade|as seguintes $1 subpropiedades}}:',
 	'smw_concept_header' => 'Páxinas do concepto "$1"',
 	'smw_conceptarticlecount' => 'Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|pertence|pertencen}} a ese concepto.',
-	'smw_rss_description' => 'Fonte de novas RSS de "$1"',
 	'exportrdf' => 'Exportar páxinas a RDF',
 	'smw_exportrdf_docu' => 'Esta páxina permítelle obter datos dunha páxina en formato RDF.
 Para exportar páxinas, insira os títulos na caixa de embaixo (un título por liña).',
@@ -4791,17 +4793,17 @@ Xera un RDF que se pode navegar.',
 	'smw_exportrdf_submit' => 'Exportar',
 	'uriresolver' => 'Solucionador de URI',
 	'properties' => 'Propiedades',
-	'smw_properties_docu' => 'As seguintes propiedades son usadas neste wiki.',
-	'smw_property_template' => '$1 de tipo $2 ($3)',
+	'smw_properties_docu' => 'Este wiki usa as seguintes propiedades.',
+	'smw_property_template' => '"$1" de tipo "$2" ($3 {{PLURAL:$3|uso|usos}})',
 	'smw_property_template_notype' => '$1 ($2)',
 	'smw_propertylackspage' => 'Todas as propiedades deberían estar descritas nunha páxina!',
-	'smw_propertylackstype' => 'Non foi especificado ningún tipo para esta propiedade (asúmese o tipo $1 polo de agora).',
-	'smw_propertyhardlyused' => 'Esta propiedade apenas é usada neste wiki!',
+	'smw_propertylackstype' => 'Non foi especificado ningún tipo para esta propiedade (asúmese o tipo "$1" polo de agora).',
+	'smw_propertyhardlyused' => 'Esta propiedade apenas ten uso neste wiki!',
 	'unusedproperties' => 'Propiedades non usadas',
 	'smw_unusedproperties_docu' => 'As seguintes propiedades existen aínda que ningunha páxina faga uso delas.',
-	'smw_unusedproperty_template' => '$1 de tipo $2',
+	'smw_unusedproperty_template' => '"$1" de tipo "$2"',
 	'wantedproperties' => 'Propiedades requiridas',
-	'smw_wantedproperties_docu' => 'As seguintes propiedades son usadas no wiki pero aínda non teñen ningunha páxina que as describa.',
+	'smw_wantedproperties_docu' => 'As seguintes propiedades teñen uso no wiki, pero aínda non contan con ningunha páxina que as describa.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|uso|usos}})',
 	'smw_purge' => 'Refrescar',
 	'types' => 'Tipos',
@@ -4884,7 +4886,7 @@ espazos de nomes (<strong><nowiki>por exemplo, [[Axuda:+]]</strong>)',
 	'smw_sbv_novalue' => 'Por favor, insira un valor válido para a propiedade ou vexa todos os valores das propiedades para "$1".',
 	'smw_sbv_displayresult' => 'Unha lista de todas as páxinas que teñen a propiedade "$1" co valor "$2"',
 	'smw_sbv_displayresultfuzzy' => 'Unha lista con todas as páxinas que teñen a propiedade "$1" co valor "$2".
-Como houbo só uns poucos resultados, tamén os resultados próximos son amosados.',
+Como houbo só uns poucos resultados, móstranse tamén os resultados próximos.',
 	'smw_sbv_property' => 'Propiedade:',
 	'smw_sbv_value' => 'Valor:',
 	'smw_sbv_submit' => 'Atopar os resultados',
@@ -5742,7 +5744,6 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw_printername_list' => 'Lisćina',
 	'smw_printername_ol' => 'Naličenje',
 	'smw_printername_ul' => 'Nalistowanje',
-	'smw_printername_rss' => 'Eksport RSS',
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_broadtable' => 'Šěroka tabela',
 	'smw_printername_template' => 'Předłoha',
@@ -5770,8 +5771,6 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw-paramdesc-embedformat' => 'HTML-taflički, kotrež so wužiwaja, zo bychu nadpisma definowali',
 	'smw-paramdesc-embedonly' => 'Žane nadpisma zwobraznić',
 	'smw-paramdesc-table-class' => 'Přidatna CSS-klasa za tabelu',
-	'smw-paramdesc-rsstitle' => 'Tekst, kotryž ma so jako titul kanala wužiwać',
-	'smw-paramdesc-rssdescription' => 'Tekst, kotryž ma so jako wopisanje kanala wužiwać',
 	'smw-paramdesc-rdfsyntax' => 'RDF-syntaksa, kotraž ma so wužiwać',
 	'smw-paramdesc-csv-sep' => 'Dźělatko, kotrež ma so wužywać',
 	'smw-paramdesc-dsv-separator' => 'Dźělatko, kotrež ma so wužywać',
@@ -5787,6 +5786,12 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw-paramdesc-prettyprint' => 'Njeformatowane wudaće, kotrež přidatne zasunjenja a nowe linki zwobraznja',
 	'smw-paramdesc-source' => 'Alternatiwne naprašowanske žórło',
 	'smw-paramdesc-jsonsyntax' => 'JSON-syntaksa, kotraž ma so wužiwać',
+	'smw-printername-feed' => 'RSS- a Atom-kanal',
+	'smw-paramdesc-feedtype' => 'Kanalowy typ',
+	'smw-paramdesc-feedtitle' => 'Tekst, kotryž ma so jako titul kanala wužiwać',
+	'smw-paramdesc-feeddescription' => 'Tekst, kotryž ma so jako wopisanje kanala wužiwać',
+	'smw-paramdesc-feedpagecontent' => 'Wobsah strony, kotryž ma so z komentarom zwobraznić',
+	'smw-label-feed-description' => '$1 $2 kanal',
 	'smw_iq_disabled' => 'Semantiske naprašowanja su w tutym wikiju znjemóžnjene.',
 	'smw_iq_moreresults' => '... dalše wuslědki',
 	'smw_parseerror' => 'Podata hódnota njebu zrozumjena.',
@@ -5842,7 +5847,7 @@ Płodźi přepytujomny RDF.',
 	'uriresolver' => 'Rezolwer URI',
 	'properties' => 'Kajkosće',
 	'smw_properties_docu' => 'Slědowace kajkosće so we wikiju wužiwaja.',
-	'smw_property_template' => '$1 typa $2 ($3)',
+	'smw_property_template' => '$1 typa $2 ($3 {{PLURAL:$3|wužiće|wužići|wužića|wužićow}})',
 	'smw_propertylackspage' => 'Wšě kajkosće měli so přez stronu wopisać!',
 	'smw_propertylackstype' => 'Za tutu kajkosć njeje so žadyn typ podał (mjeztym so typ $1 předpokładuje).',
 	'smw_propertyhardlyused' => 'Tuta kajkosć so we wikiju lědma wužiwa!',
@@ -11211,12 +11216,14 @@ $messages['ru'] = array(
 	'smw_printername_list' => 'Список',
 	'smw_printername_ol' => 'Перечисление',
 	'smw_printername_ul' => 'Список',
-	'smw_printername_rss' => 'Экспорт RSS',
 	'smw_printername_table' => 'Таблица',
 	'smw_printername_broadtable' => 'Широкая таблица',
 	'smw_printername_template' => 'Шаблон',
 	'smw_printername_rdf' => 'RDF-экспорт',
+	'smw_printername_category' => 'Категория',
+	'validator-type-class-SMWParamSource' => 'текст',
 	'smw-paramdesc-limit' => 'Максимальное число возвращаемых результатов',
+	'smw-paramdesc-offset' => 'Смещение первого результата',
 	'smw-paramdesc-headers' => 'Показывать заголовки/названия свойств',
 	'smw-paramdesc-mainlabel' => 'Обозначение, даваемое названию главной страницы',
 	'smw-paramdesc-link' => 'Показывать значения как ссылки',
@@ -11231,15 +11238,14 @@ $messages['ru'] = array(
 	'smw-paramdesc-outrotemplate' => 'Название шаблона для отображения после результатов запроса, если они есть',
 	'smw-paramdesc-embedformat' => 'HTML-тег, используемый для обозначения заголовков',
 	'smw-paramdesc-embedonly' => 'Не отображать заголовки',
-	'smw-paramdesc-rsstitle' => 'Текст, который будет использоваться в качестве названия канала',
-	'smw-paramdesc-rssdescription' => 'Текст, который будет использоваться в качестве описания канала',
+	'smw-paramdesc-table-class' => 'Дополнительный класс CSS для таблиц',
 	'smw-paramdesc-rdfsyntax' => 'Какой синтаксис RDF использовать',
 	'smw-paramdesc-csv-sep' => 'Использовать разделитель',
 	'smw-paramdesc-dsv-separator' => 'Использовать разделитель',
 	'smw-paramdesc-dsv-filename' => 'Имя файла DSV',
-	'smw-paramdesc-searchlabel' => 'Текст ссылки на результатах', # Fuzzy
+	'smw-paramdesc-searchlabel' => 'Текст для продолжения поиска',
 	'smw_iq_disabled' => 'Извините, но встроенные запросы отключены для этого сайта.',
-	'smw_iq_moreresults' => '&hellip; следующие результаты',
+	'smw_iq_moreresults' => '… следующие результаты',
 	'smw_parseerror' => 'Переданное значение не было понято.',
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '',
@@ -11283,7 +11289,6 @@ $messages['ru'] = array(
 	'smw_subpropertyarticlecount' => 'Это свойство имеет {{PLURAL:$1|следующее $1 подсвойство|следующие $1 подсвойства|следующие $1 подсвойств}}:',
 	'smw_concept_header' => 'Страницы, использующие представление «$1»',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Показана|Показаны|Показаны}} $1 {{PLURAL:$1|страница|страницы|страниц}}, {{PLURAL:$1|принадлежащая|принадлежащие|принадлежащие}} данному представлению.',
-	'smw_rss_description' => '$1 источник RSS',
 	'exportrdf' => 'Экспорт страниц в RDF',
 	'smw_exportrdf_docu' => 'Эта страница позволяет экспортировать части статьи в формате RDF. Наберите заголовки необходимых статей по одному на строку.',
 	'smw_exportrdf_recursive' => 'Рекурсивный экспорт всех связанных страниц. Результат этой операции может быть очень большим!',
@@ -11293,7 +11298,7 @@ $messages['ru'] = array(
 	'uriresolver' => 'Преобразователь URI',
 	'properties' => 'Свойства',
 	'smw_properties_docu' => 'Следующие свойства используются на данном сайте.',
-	'smw_property_template' => '$1 имеет тип $2, количество использований ($3)',
+	'smw_property_template' => '$1 имеет тип $2, количество использований ($3)', # Fuzzy
 	'smw_propertylackspage' => 'Каждое свойство должно иметь свою страницу описания!',
 	'smw_propertylackstype' => 'Данному свойству не сопоставлен тип данных (по умолчанию будет использоваться тип $1).',
 	'smw_propertyhardlyused' => 'Это свойство почти не используется на сайте.',
@@ -11305,7 +11310,7 @@ $messages['ru'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|использование|использования|использований}})',
 	'smw_purge' => 'Обновить',
 	'types' => 'Типы',
-	'smw_types_docu' => 'Список поддерживаемых типов свойств. Каждый тип имеет страницу, на которую можно поместить его расширенное описание.', # Fuzzy
+	'smw_types_docu' => 'В нижеприведённом списке перечислены все типы данных, которые можно задавать для свойств.',
 	'semanticstatistics' => 'Семантическая статистика',
 	'smw_semstats_text' => "Данный сайт содержит '''$1''' {{PLURAL:$1|значение|значения|значений}} свойств, общее число которых составляет '''$2''' [[Special:Properties|{{PLURAL:$2|свойство|различных свойства|различных свойств}}]].
 '''$3''' {{PLURAL:$3|свойство|свойства|свойств}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них.
@@ -11330,6 +11335,7 @@ $messages['ru'] = array(
 	'smw_ask_show_embed' => 'Показать встроенный код',
 	'smw_ask_hide_embed' => 'Скрыть встроенный код',
 	'smw_ask_embed_instr' => 'Для линейного встраивания этого запроса в вики-страницу, используйте приведённых ниже код.',
+	'smw-ask-delete' => '[Удалить]',
 	'searchbyproperty' => 'Искать по свойству',
 	'smw_sbv_docu' => 'Искать все страницы, которые содержат указаннок свойство и значение.',
 	'smw_sbv_novalue' => 'Укажите значение или просмотрите все значения свойства $1.',
@@ -11363,11 +11369,19 @@ $messages['ru'] = array(
 	'smw_smwadmin_return' => 'Вернуться к $1',
 	'smw_smwadmin_updatestarted' => 'Запущен новый процесс обновления семантических данных.
 Все сохранённые данные будут перестроены и восстановлены, где это необходимо.
-Вы можете следить за ходом обновления на этой служебной странице.', # Fuzzy
+Вы можете следить за ходом обновления на этой служебной странице.
+
+Возврат к $1.',
 	'smw_smwadmin_updatenotstarted' => 'Уже запущен один процесс обновления.
-Второй не создаётся.', # Fuzzy
-	'smw_smwadmin_updatestopped' => 'Все существующие процессы обновления остановлены.', # Fuzzy
-	'smw_smwadmin_updatenotstopped' => 'Чтобы остановить запущенный процесс обновления, вы должны поставить отметку, подтверждающую, что вы действительно уверены в этом решении.', # Fuzzy
+Второй не создаётся.
+
+Возврат к $1.',
+	'smw_smwadmin_updatestopped' => 'Все существующие процессы обновления остановлены.
+
+Возврат к $1.',
+	'smw_smwadmin_updatenotstopped' => 'Чтобы остановить запущенный процесс обновления, вы должны поставить отметку, подтверждающую, что вы действительно уверены в этом решении.
+
+Возврат к $1.',
 	'smw_smwadmin_docu' => 'Эта служебная страница поможет вам в процессе установки и обновления <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Не забудьте произвести резервное копирование значимых данных перед выполнением административных действий.',
 	'smw_smwadmin_db' => 'Установка и обновление базы данных',
@@ -11375,8 +11389,8 @@ $messages['ru'] = array(
 Приведённая ниже функция гарантирует, что ваша база данных установлена корректно.
 Изменения, сделанные на этом шаге, не влияют на основную часть базы данных MediaWiki и могут быть при желании легко отменены.
 Хотя эта функция установки может быть выполнена несколько раз не причинив никакого, её запуск необходим только один раз во время установки или обновления.',
-	'smw_smwadmin_permissionswarn' => 'Причиной сбоев при выполнении SQL-команд, может быть отсутствие необходимых прав у пользователя, от имени которого вы подключаетесь к базе данных вики (проверьте ваш LocalSettings.php).
-Предоставьте этому пользователю дополнительные права на создание и удаление таблиц, временно введите логин root в LocalSettings.php, или используйте обслуживающий скрипт <tt>SMW_setup.php</tt>, который может использовать настройки доступа из AdminSettings.php.', # Fuzzy
+	'smw_smwadmin_permissionswarn' => 'Причиной сбоев при выполнении SQL-команд, может быть отсутствие необходимых прав у пользователя, от имени которого вы подключаетесь к базе данных вики (проверьте свой LocalSettings.php).
+Предоставьте этому пользователю дополнительные права на создание и удаление таблиц, временно введите логин root в LocalSettings.php, или используйте обслуживающий скрипт <tt>SMW_setup.php</tt>, который может использовать настройки администратора.',
 	'smw_smwadmin_dbbutton' => 'Инициализация или обновление таблиц',
 	'smw_smwadmin_announce' => 'Объявление вашей вики',
 	'smw_smwadmin_announcedocu' => 'У Semantic MediaWiki есть веб-сервис для объявлений новых семантических вики-сайтов.
@@ -11390,7 +11404,7 @@ $messages['ru'] = array(
 Обновление будет выполняться страница за страницей и займёт некоторое время.
 Ниже показано как идёт процесс обновления, даётся возможность начать или прекратить обновление (если эта функция не была отключена на администратором сайте).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Обновление уже запущено.</strong>
-Это нормально, что процесс обновления идём достаточно медленно, поскольку он обновляет данные лишь небольшими порциями, когда пользователь обращается к вики.
+Это нормально, что процесс обновления идёт достаточно медленно, поскольку он обновляет данные лишь небольшими порциями, когда пользователь обращается к вики.
 Чтобы закончить данное обновление быстрее, вы можете вызвать скрипт обслуживания MediaWiki <tt>runJobs.php</tt> (используйте настройку <tt>- maxjobs 1000</tt>, чтобы ограничить количество обновлений в одной партии).
 Ориентировочный ход выполнения текущего обновления:',
 	'smw_smwadmin_datarefreshbutton' => 'Начать обновление данных',
@@ -11407,7 +11421,18 @@ $messages['ru'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Справка по встроенным запросам',
 	'smw-createproperty-isproperty' => 'Это свойство типа $1.',
 	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|допускается следующее значение|допускаются следующие значения}}:',
-	'smw_unknowntype' => 'Тип "$1" не поддерживается для данного свойства.', # Fuzzy
+	'smw-paramdesc-category-delim' => 'Разделитель',
+	'prefs-ask-options' => 'Параметры семантического поиска',
+	'smw-prefs-ask-options-tooltip-display' => 'Отображать параметр «текст» в виде всплывающей подсказки',
+	'smw-prefs-ask-options-collapsed-default' => 'Включить панель параметров свёрнутой по умолчанию',
+	'smw-ui-tooltip-title-property' => 'Свойство',
+	'smw-ui-tooltip-title-quantity' => 'Количество',
+	'smw-ui-tooltip-title-info' => 'Информация',
+	'smw-ui-tooltip-title-service' => 'Служебная ссылка',
+	'smw-ui-tooltip-title-warning' => 'Ошибка',
+	'smw-ui-tooltip-title-parameter' => 'Параметр',
+	'smw-ui-tooltip-title-event' => 'Событие',
+	'smw_unknowntype' => 'Для этого свойства задан некорректный тип',
 );
 
 /** Rusyn (русиньскый)
