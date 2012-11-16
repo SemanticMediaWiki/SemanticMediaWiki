@@ -403,13 +403,18 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	 *
 	 * @param SMWQueryResult $res
 	 * @param $outputMode
+	 * @param string $classAffix
 	 *
 	 * @return SMWInfolink
 	 */
-	protected function getLink( SMWQueryResult $res, $outputMode ) {
+	protected function getLink( SMWQueryResult $res, $outputMode, $classAffix = '' ) {
 		$link = $res->getLink();
 
 		$link->setCaption( $this->getSearchLabel( $outputMode ) );
+
+		if ( $classAffix !== '' ){
+			$link->setStyle(  'smw-' . $this->params['format'] . '-' . Sanitizer::escapeClass( $classAffix ) );
+		}
 
 		foreach ( $this->fullParams as /* IParam */ $param ) {
 			if ( !$param->wasSetToDefault() && !( $param->getName() == 'limit' && $param->getValue() === 0 ) ) {
@@ -431,7 +436,7 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	 * @return SMWInfolink
 	 */
 	protected function getFurtherResultsLink( SMWQueryResult $res, $outputMode ) {
-		$link = $this->getLink( $res, $outputMode );
+		$link = $this->getLink( $res, $outputMode, 'furtherresults' );
 		$link->setParameter( $this->params['offset'] + $res->getCount(), 'offset' );
 		return $link;
 	}
