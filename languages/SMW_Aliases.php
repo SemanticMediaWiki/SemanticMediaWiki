@@ -314,8 +314,10 @@ $specialPageAliases['it'] = array(
 	'SearchByProperty' => array( 'CercaPerProprietà' ),
 	'SemanticStatistics' => array( 'StatisticheSemantiche' ),
 	'Types' => array( 'Tipi' ),
+	'URIResolver' => array( 'RisolutoreURI' ),
 	'UnusedProperties' => array( 'ProprietàNonUtilizzate' ),
 	'WantedProperties' => array( 'ProprietàRichieste' ),
+	'QueryCreator' => array( 'CreatoreQuery' ),
 );
 
 /** Japanese (日本語) */
