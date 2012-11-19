@@ -1,22 +1,29 @@
 <?php
 /**
  * @file
+ * @author Nischay Nahata
+ * @author Markus Kroetzsch
  * @ingroup SMWDataItemsHandlers
  */
 
 /**
- * This class implements Store access to Time data items.
+ * SMWDataItemHandler for dataitems of type SMWDIWikiPage.
+ *
+ * This handler is slightly different from other handlers since wikipages are
+ * stored in a separate table and referred to by numeric IDs. The handler thus
+ * returns IDs in most cases, but expects data from the SMW IDs table (with
+ * DBkey, namespace, interwiki, subobjectname) to be given for creating new
+ * dataitems. The store recognizes this special behavior from the field type
+ * 'p' that the handler reports for its only data field.
  *
  * @since 1.8
- *
- * @author Nischay Nahata
  * @ingroup SMWDataItemsHandlers
  */
 class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 
 	/**
-	 * Method to return array of fields for a DI type
-	 *
+	 * @see SMWDataItemHandler::getTableFields()
+	 * @since 1.8
 	 * @return array
 	 */
 	public function getTableFields() {
@@ -25,7 +32,6 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 
 	/**
 	 * @see SMWDataItemHandler::getFetchFields()
-	 *
 	 * @since 1.8
 	 * @return array
 	 */
@@ -34,8 +40,6 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Create an additional index for finding incoming properties.
-	 *
 	 * @see SMWDataItemHandler::getTableIndexes()
 	 * @since 1.8
 	 * @return array
@@ -45,30 +49,39 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 *
+	 * @see SMWDataItemHandler::getWhereConds()
+	 * @since 1.8
+	 * @param SMWDataItem $dataItem
 	 * @return array
 	 */
-	public function getWhereConds( SMWDataItem $di) {
-		$oid = $this->store->smwIds->getSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
+	public function getWhereConds( SMWDataItem $dataItem ) {
+		$oid = $this->store->smwIds->getSMWPageID(
+				$dataItem->getDBkey(),
+				$dataItem->getNamespace(),
+				$dataItem->getInterwiki(),
+				$dataItem->getSubobjectName()
+			);
 		return array( 'o_id' => $oid );
 	}
 
 	/**
-	 * Method to return an array of fields=>values for a DataItem
-	 * This array is used to perform all insert operations into the DB
-	 * To optimize return minimum fields having indexes
-	 *
+	 * @see SMWDataItemHandler::getInsertValues()
+	 * @since 1.8
+	 * @param SMWDataItem $dataItem
 	 * @return array
 	 */
-	public function getInsertValues( SMWDataItem $di ) {
-		$oid = $this->store->smwIds->makeSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
+	public function getInsertValues( SMWDataItem $dataItem ) {
+		$oid = $this->store->smwIds->makeSMWPageID(
+				$dataItem->getDBkey(),
+				$dataItem->getNamespace(),
+				$dataItem->getInterwiki(),
+				$dataItem->getSubobjectName()
+			);
 		return array( 'o_id' => $oid );
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * Take care we are returning the field from the ID table, so do a proper JOIN
+	 * @see SMWDataItemHandler::getIndexField()
 	 * @since 1.8
 	 * @return string
 	 */
@@ -77,9 +90,7 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	}
 
 	/**
-	 * Method to return the field used to select this type of DataItem
-	 * using the label. Take care we are returning the field from the
-	 * ID table, so do a proper JOIN
+	 * @see SMWDataItemHandler::getLabelField()
 	 * @since 1.8
 	 * @return string
 	 */
@@ -91,14 +102,26 @@ class SMWDIHandlerWikiPage extends SMWDataItemHandler {
 	 * @see SMWDataItemHandler::dataItemFromDBKeys()
 	 * @since 1.8
 	 * @param array|string $dbkeys expecting array here
-	 *
+	 * @throws SMWDataItemException
 	 * @return SMWDataItem
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 		if ( is_array( $dbkeys ) && count( $dbkeys ) == 5 ) {
-			return new SMWDIWikiPage( $dbkeys[0], intval( $dbkeys[1] ), $dbkeys[2], $dbkeys[4] );
-		} else {
-			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
+			$namespace = intval( $dbkeys[1] );
+
+			if ( $namespace == SMW_NS_PROPERTY && $dbkeys[0] != '' &&
+				$dbkeys[0]{0} == '_' && $dbkeys[2] == '' ) {
+				// Correctly interpret internal property keys
+				$property = new SMWDIProperty( $dbkeys[0] );
+				$wikipage = $property->getDiWikiPage( $dbkeys[4] );
+				if ( !is_null( $wikipage ) ) {
+					return $wikipage;
+				}
+			} else {
+				return new SMWDIWikiPage( $dbkeys[0], $namespace, $dbkeys[2], $dbkeys[4] );
+			}
 		}
+
+		throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
 	}
 }

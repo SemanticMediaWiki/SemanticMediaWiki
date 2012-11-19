@@ -433,11 +433,18 @@ class SMWSQLStore3QueryEngine {
 		$count = 0; // the number of fetched results ( != number of valid results in array $qr)
 		$prs = $query->getDescription()->getPrintrequests();
 
+		$diHandler = $this->m_store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
+
 		while ( ( $count < $query->getLimit() ) && ( $row = $this->m_dbs->fetchObject( $res ) ) ) {
 			$count++;
 			if ( $row->iw === '' || $row->iw{0} != ':' )  {
-				$v = new SMWDIWikiPage( $row->t, intval( $row->ns ), $row->iw, $row->so );
-				$qr[] = $v;
+				$qr[] = $diHandler->dataItemFromDBKeys( array(
+						$row->t,
+						intval( $row->ns ),
+						$row->iw,
+						'',
+						$row->so
+					) );
 				// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
 				$this->m_store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
 			}
