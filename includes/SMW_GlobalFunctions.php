@@ -113,12 +113,12 @@ function smwfNormalTitleDBKey( $text ) {
  * @param string $text
  */
 function smwfNormalTitleText( $text ) {
-	global $wgCapitalLinks;
+	global $wgCapitalLinks, $wgContLang;
 
 	$text = trim( $text );
 
 	if ( $wgCapitalLinks ) {
-		$text = ucfirst( $text );
+		$text = $wgContLang->ucfirst( $text );
 	}
 
 	return str_replace( '_', ' ', $text );

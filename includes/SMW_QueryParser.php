@@ -543,7 +543,7 @@ class SMWQueryParser {
 				'|^' . $this->m_conceptprefix . '|^' . $this->m_conceptPrefixCannonical .
 				'|\|\||\|';
 		}
-		$chunks = preg_split( '/[\s]*(' . $stoppattern . ')/u', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE );
+		$chunks = preg_split( '/[\s]*(' . $stoppattern . ')/iu', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE );
 		if ( count( $chunks ) == 1 ) { // no matches anymore, strip spaces and finish
 			if ( $consume ) {
 				$this->m_curstring = '';
