@@ -3,8 +3,8 @@
  * @file
  * @ingroup SMWStore
  * @since 1.8
+ * @author Markus Krötzsch
  */
-
 
 /**
  * Class to access the SMW IDs table in SQLStore3.
@@ -32,8 +32,13 @@
  * increment counter is high enough to not add any objects before that marked
  * "border".
  *
+ * @note Do not call the constructor of SMWDIWikiPage using data from the SMW
+ * IDs table; use SMWDIHandlerWikiPage::dataItemFromDBKeys() instead. The table
+ * does not always contain data as required wiki pages. Especially predefined
+ * properties are represented by language-independent keys rather than proper
+ * titles. SMWDIHandlerWikiPage takes care of this.
+ *
  * @since 1.8
- * @author Markus Krötzsch
  *
  * @ingroup SMWStore
  */
@@ -196,80 +201,103 @@ class SMWSql3SmwIds {
 	 * exists.
 	 *
 	 * If $fetchhashes is true, the property table hash blob will be
-	 * retireved in passing if the opportunity arises, and cached
+	 * retrieved in passing if the opportunity arises, and cached
 	 * internally. This will speed up a subsequent call to
 	 * getPropertyTableHashes() for this id. This should only be done
 	 * if such a call is intended, both to safe the previous cache and
 	 * to avoid extra work (even if only a little) to fill it.
 	 *
 	 * @since 1.8
-	 * @param $title string DB key
-	 * @param $namespace integer namespacs
-	 * @param $iw string interwiki prefix
-	 * @param $subobjectName string name of subobject
-	 * @param $sortkey string call-by-ref will be set to sortkey
-	 * @param $canonical boolean should redirects be resolved?
-	 * @param fetchHashes boolean should the property hashes be obtained and cached?
+	 * @param string $title DB key
+	 * @param integer $namespace namespace
+	 * @param string $iw interwiki prefix
+	 * @param string $subobjectName name of subobject
+	 * @param string $sortkey call-by-ref will be set to sortkey
+	 * @param boolean $canonical should redirects be resolved?
+	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
 	 * @return integer SMW id or 0 if there is none
 	 */
 	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes = false ) {
+		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
+		if ( $id != 0 ) {
+			return $id;
+		} else {
+			return $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $sortkey, $canonical, $fetchHashes );
+		}
+	}
+
+	/**
+	 * Find the numeric ID used for the page of the given normalized title,
+	 * namespace, interwiki, and subobjectName. Predefined IDs are not
+	 * taken into account (however, they would still be found correctly by
+	 * an avoidable database read if they are stored correctly in the
+	 * database; this should always be the case). In all other aspects, the
+	 * method works just like getSMWPageIDandSort().
+	 *
+	 * @since 1.8
+	 * @param string $title DB key
+	 * @param integer $namespace namespace
+	 * @param string $iw interwiki prefix
+	 * @param string $subobjectName name of subobject
+	 * @param string $sortkey call-by-ref will be set to sortkey
+	 * @param boolean $canonical should redirects be resolved?
+	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @return integer SMW id or 0 if there is none
+	 */
+	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
 		global $smwgQEqualitySupport;
 
 		$id = $this->getCachedId( $title, $namespace, $iw, $subobjectName );
 		if ( $id !== false ) { // cache hit
 			$sortkey = $this->getCachedSortKey( $title, $namespace, $iw, $subobjectName );
-		} else { // cache miss
-			$db = wfGetDB( DB_SLAVE );
-			if ( $iw == SMW_SQL3_SMWREDIIW && $canonical &&
-				$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
-				$id = $this->getRedirectId( $title, $namespace );
-				if ( $id != 0 ) {
-					if ( $fetchHashes ) {
-						$select = array( 'smw_id', 'smw_sortkey', 'smw_proptable_hash' );
-					} else {
-						$select = array( 'smw_id', 'smw_sortkey' );
-					}
-					$row = $db->selectRow( SMWSql3SmwIds::tableName, $select,
-						'smw_id=' . $db->addQuotes( $id ),
-						__METHOD__ );
-					if ( $row !== false ) {
-						$sortkey = $row->smw_sortkey;
-						if ( $fetchHashes ) {
-							$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
-						}
-					} else { // inconsistent DB; just recover somehow
-						$sortkey = str_replace( '_', ' ', $title );
-					}
-				} else {
-					$sortkey = '';
-				}
-			} else {
+		} elseif ( $iw == SMW_SQL3_SMWREDIIW && $canonical &&
+			$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
+			$id = $this->getRedirectId( $title, $namespace );
+			if ( $id != 0 ) {
+				$db = wfGetDB( DB_SLAVE );
 				if ( $fetchHashes ) {
-					$select = array( 'smw_id', 'smw_sortkey', 'smw_proptable_hash' );
+					$select = array( 'smw_sortkey', 'smw_proptable_hash' );
 				} else {
-					$select = array( 'smw_id', 'smw_sortkey' );
+					$select = array( 'smw_sortkey' );
 				}
 				$row = $db->selectRow( SMWSql3SmwIds::tableName, $select,
-					'smw_title=' . $db->addQuotes( $title ) .
-					' AND smw_namespace=' . $db->addQuotes( $namespace ) .
-					' AND smw_iw=' . $db->addQuotes( $iw ) .
-					' AND smw_subobject=' . $db->addQuotes( $subobjectName ),
-					__METHOD__ );
-				$this->selectrow_sort_debug++;
-// 				if ( $this->selectrow_sort_debug % 100 == 0 ) {
-// 					self::debugDumpCacheStats();
-// 				}
-
+						array( 'smw_id' => $id ), __METHOD__ );
 				if ( $row !== false ) {
-					$id = $row->smw_id;
 					$sortkey = $row->smw_sortkey;
 					if ( $fetchHashes ) {
-						$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
+						$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash );
 					}
-				} else {
-					$id = 0;
-					$sortkey = '';
+				} else { // inconsistent DB; just recover somehow
+					$sortkey = str_replace( '_', ' ', $title );
 				}
+			} else {
+				$sortkey = '';
+			}
+			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
+		} else {
+			$db = wfGetDB( DB_SLAVE );
+			if ( $fetchHashes ) {
+				$select = array( 'smw_id', 'smw_sortkey', 'smw_proptable_hash' );
+			} else {
+				$select = array( 'smw_id', 'smw_sortkey' );
+			}
+			$row = $db->selectRow( SMWSql3SmwIds::tableName, $select, array(
+					'smw_title' => $title,
+					'smw_namespace' => $namespace,
+					'smw_iw' => $iw,
+					'smw_subobject' => $subobjectName
+				), __METHOD__ );
+			$this->selectrow_sort_debug++;
+
+			if ( $row !== false ) {
+				$id = $row->smw_id;
+				$sortkey = $row->smw_sortkey;
+				if ( $fetchHashes ) {
+					$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
+				}
+			} else {
+				$id = 0;
+				$sortkey = '';
 			}
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
 		}
@@ -286,12 +314,12 @@ class SMWSql3SmwIds {
 	 * specifying a sortkey (if not asked for).
 	 *
 	 * @since 1.8
-	 * @param $title string DB key
-	 * @param $namespace integer namespacs
-	 * @param $iw string interwiki prefix
-	 * @param $subobjectName string name of subobject
-	 * @param $canonical boolean should redirects be resolved?
-	 * @param fetchHashes boolean should the property hashes be obtained and cached?
+	 * @param string $title DB key
+	 * @param integer $namespace namespace
+	 * @param string $iw interwiki prefix
+	 * @param string $subobjectName name of subobject
+	 * @param boolean $canonical should redirects be resolved?
+	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
 	 * @return integer SMW id or 0 if there is none
 	 */
 	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ) {
@@ -304,6 +332,11 @@ class SMWSql3SmwIds {
 	 * and it is not cached since the results will affect the SMW IDs table
 	 * cache, which will prevent duplicate queries for the same redirect
 	 * anyway.
+	 *
+	 * @since 1.8
+	 * @param string $title DB key
+	 * @param integer $namespace
+	 * @return integer
 	 */
 	protected function getRedirectId( $title, $namespace ) {
 		$db = wfGetDB( DB_SLAVE );
@@ -326,18 +359,47 @@ class SMWSql3SmwIds {
 	 * But it is of no relevance if the title does not have an id yet.
 	 *
 	 * @since 1.8
-	 * @param $title string DB key
-	 * @param $namespace integer namespacs
-	 * @param $iw string interwiki prefix
-	 * @param $subobjectName string name of subobject
-	 * @param $canonical boolean should redirects be resolved?
-	 * @param $sortkey string call-by-ref will be set to sortkey
-	 * @param fetchHashes boolean should the property hashes be obtained and cached?
+	 * @param string $title DB key
+	 * @param integer $namespace namespace
+	 * @param string $iw interwiki prefix
+	 * @param string $subobjectName name of subobject
+	 * @param boolean $canonical should redirects be resolved?
+	 * @param string $sortkey call-by-ref will be set to sortkey
+	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
 	 * @return integer SMW id or 0 if there is none
 	 */
 	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '', $fetchHashes = false ) {
+		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
+		if ( $id != 0 ) {
+			return $id;
+		} else {
+			return $this->makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes );
+		}
+	}
+
+	/**
+	 * Find the numeric ID used for the page of the given normalized title,
+	 * namespace, interwiki, and subobjectName. Predefined IDs are not
+	 * taken into account (however, they would still be found correctly by
+	 * an avoidable database read if they are stored correctly in the
+	 * database; this should always be the case). In all other aspects, the
+	 * method works just like makeSMWPageID(). Especially, if no ID exists,
+	 * a new ID is created and returned.
+	 *
+	 * @since 1.8
+	 * @param string $title DB key
+	 * @param integer $namespace namespace
+	 * @param string $iw interwiki prefix
+	 * @param string $subobjectName name of subobject
+	 * @param boolean $canonical should redirects be resolved?
+	 * @param string $sortkey call-by-ref will be set to sortkey
+	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 * @return integer SMW id or 0 if there is none
+	 */
+	protected function makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes ) {
+
 		$oldsort = '';
-		$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
+		$id = $this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical, $fetchHashes );
 
 		if ( $id == 0 ) {
 			$db = wfGetDB( DB_MASTER );
@@ -373,7 +435,7 @@ class SMWSql3SmwIds {
 			if ( $fetchHashes ) {
 				$this->setPropertyTableHashesCache( $id, null );
 			}
-		} elseif ( ( $sortkey !== '' ) && ( $sortkey != $oldsort ) ) {
+		} elseif ( $sortkey !== '' && $sortkey != $oldsort ) {
 			$db = wfGetDB( DB_MASTER );
 			$db->update( SMWSql3SmwIds::tableName, array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
@@ -387,37 +449,109 @@ class SMWSql3SmwIds {
 	 * of in wiki). Special "interwiki" prefixes separate the ids of such
 	 * predefined properties from the ids for the current pages (which may,
 	 * e.g., be moved, while the predefined object is not movable).
+	 *
+	 * @todo This documentation is out of date. Right now, the special
+	 * interwiki is used only for special properties without a label, i.e.,
+	 * which cannot be shown to a user. This allows us to filter such cases
+	 * from all queries that retrieve lists of properties. It should be
+	 * checked that this is really the only use that this has throughout
+	 * the code.
+	 *
+	 * @since 1.8
+	 * @param SMWDIProperty $property
+	 * @return string
 	 */
 	public function getPropertyInterwiki( SMWDIProperty $property ) {
 		return ( $property->getLabel() !== '' ) ? '' : SMW_SQL3_SMWINTDEFIW;
 	}
 
 	/**
-	 * This function does the same as getSMWPageID() but takes into account
-	 * that properties might be predefined.
+	 * Fetch the ID for an SMWDIProperty object. This method achieves the
+	 * same as getSMWPageID(), but avoids additional normalization steps
+	 * that have already been performed when creating an SMWDIProperty
+	 * object.
 	 *
 	 * @note There is no distinction between properties and inverse
 	 * properties here. A property and its inverse have the same ID in SMW.
+	 *
+	 * @param SMWDIProperty $property
+	 * @return integer
 	 */
 	public function getSMWPropertyID( SMWDIProperty $property ) {
-		if ( ( !$property->isUserDefined() ) && ( array_key_exists( $property->getKey(), self::$special_ids ) ) ) {
-			return self::$special_ids[$property->getKey()]; // very important property with fixed id
+		if ( array_key_exists( $property->getKey(), self::$special_ids ) ) {
+			return self::$special_ids[$property->getKey()];
 		} else {
-			return $this->getSMWPageID( $property->getKey(), SMW_NS_PROPERTY, $this->getPropertyInterwiki( $property ), '', true );
+			$sortkey = '';
+			return $this->getDatabaseIdAndSort( $property->getKey(), SMW_NS_PROPERTY, $this->getPropertyInterwiki( $property ), '', $sortkey, true, false );
 		}
 	}
 
 	/**
-	 * This function does the same as makeSMWPageID() but takes into account
-	 * that properties might be predefined.
+	 * Fetch and possibly create the ID for an SMWDIProperty object. The
+	 * method achieves the same as getSMWPageID() but avoids additional
+	 * normalization steps that have already been performed when creating
+	 * an SMWDIProperty object.
+	 *
+	 * @see getSMWPropertyID
+	 * @param SMWDIProperty $property
+	 * @return integer
 	 */
 	public function makeSMWPropertyID( SMWDIProperty $property ) {
-		if ( ( !$property->isUserDefined() ) && ( array_key_exists( $property->getKey(), self::$special_ids ) ) ) {
-			return self::$special_ids[$property->getKey()]; // very important property with fixed id
+		if ( array_key_exists( $property->getKey(), self::$special_ids ) ) {
+			return self::$special_ids[$property->getKey()];
 		} else {
-			return $this->makeSMWPageID( $property->getKey(), SMW_NS_PROPERTY,
-				$this->getPropertyInterwiki( $property ), '', true, $property->getLabel() );
+			$sortkey = '';
+			return $this->makeDatabaseId( $property->getKey(), SMW_NS_PROPERTY, $this->getPropertyInterwiki( $property ), '', true, $property->getLabel(), false );
 		}
+	}
+
+	/**
+	 * Normalize the information for an SMW object (page etc.) and return
+	 * the predefined ID if any. All parameters are call-by-reference and
+	 * will be changed to perform any kind of built-in normalization that
+	 * SMW requires. This mainly applies to predefined properties that
+	 * should always use their property key as a title, have fixed
+	 * sortkeys, etc. Some very special properties also have fixed IDs that
+	 * do not require any DB lookups. In such cases, the method returns
+	 * this ID; otherwise it returns 0.
+	 *
+	 * @note This function could be extended to account for further kinds
+	 * of normalization and predefined ID. However, both getSMWPropertyID
+	 * and makeSMWPropertyID must then also be adjusted to do the same.
+	 *
+	 * @since 1.8
+	 * @param string $title DB key
+	 * @param integer $namespace namespace
+	 * @param string $iw interwiki prefix
+	 * @param string $subobjectName
+	 * @param string $sortkey
+	 * @return integer predefined id or 0 if none
+	 */
+	protected function getPredefinedData( &$title, &$namespace, &$iw, &$subobjectName, &$sortkey ) {
+		if ( $namespace == SMW_NS_PROPERTY &&
+			( $iw == '' || $iw == SMW_SQL3_SMWINTDEFIW ) && $title != '' ) {
+
+			// Check if this is a predefined property:
+			if ( $title{0} != '_' ) {
+				// This normalization also applies to
+				// subobjects of predefined properties.
+				$newTitle = SMWDIProperty::findPropertyID( str_replace( '_', ' ', $title ) );
+				if ( $newTitle ) {
+					$title = $newTitle;
+					$sortkey = SMWDIProperty::findPropertyLabel( $title );
+					if ( $sortkey == '' ) {
+						$iw = SMW_SQL3_SMWINTDEFIW;
+					}
+				}
+			}
+
+			// Check if this is a property with a fixed SMW ID:
+			if ( $subobjectName == '' && array_key_exists( $title, self::$special_ids ) ) {
+				return self::$special_ids[$title];
+			}
+		}
+
+		return 0;
 	}
 
 	/**
@@ -427,6 +561,10 @@ class SMWSql3SmwIds {
 	 * moved consistently in all relevant tables. Whatever currently occupies
 	 * the target id will be ignored (it should be ensured that nothing is
 	 * moved to an id that is still in use somewhere).
+	 *
+	 * @since 1.8
+	 * @param integer $curid
+	 * @param integer $targetid
 	 */
 	public function moveSMWPageID( $curid, $targetid = 0 ) {
 		$db = wfGetDB( DB_MASTER );
@@ -474,6 +612,14 @@ class SMWSql3SmwIds {
 	 * Add or modify a cache entry. The key consists of the
 	 * parameters $title, $namespace, $interwiki, and $subobject. The
 	 * cached data is $id and $sortkey.
+	 *
+	 * @since 1.8
+	 * @param string $title
+	 * @param integer $namespace
+	 * @param string $interwiki
+	 * @param string $subobject
+	 * @param integer $id
+	 * @param string $sortkey
 	 */
 	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
 		if ( strpos( $title, ' ' ) !== false ) {
@@ -496,6 +642,13 @@ class SMWSql3SmwIds {
 
 	/**
 	 * Get a cached SMW ID, or false if no cache entry is found.
+	 *
+	 * @since 1.8
+	 * @param string $title
+	 * @param integer $namespace
+	 * @param string $interwiki
+	 * @param string $subobject
+	 * @return integer|boolean
 	 */
 	protected function getCachedId( $title, $namespace, $interwiki, $subobject ) {
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki == '' && $subobject == '' ) {
@@ -520,6 +673,13 @@ class SMWSql3SmwIds {
 
 	/**
 	 * Get a cached SMW sortkey, or false if no cache entry is found.
+	 *
+	 * @since 1.8
+	 * @param string $title
+	 * @param integer $namespace
+	 * @param string $interwiki
+	 * @param string $subobject
+	 * @return string|boolean
 	 */
 	protected function getCachedSortKey( $title, $namespace, $interwiki, $subobject ) {
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki == '' && $subobject == '' ) {
@@ -540,6 +700,12 @@ class SMWSql3SmwIds {
 
 	/**
 	 * Remove any cache entry for the given data.
+	 *
+	 * @since 1.8
+	 * @param string $title
+	 * @param integer $namespace
+	 * @param string $interwiki
+	 * @param string $subobject
 	 */
 	protected function deleteCache( $title, $namespace, $interwiki, $subobject ) {
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki == '' && $subobject == '' ) {
@@ -554,8 +720,15 @@ class SMWSql3SmwIds {
 
 	/**
 	 * Move all cached information about subobjects.
-	 * This method is neither efficient nor very convincing
+	 *
+	 * @todo This method is neither efficient nor very convincing
 	 * architecturally; it should be redesigned.
+	 *
+	 * @since 1.8
+	 * @param string $oldtitle
+	 * @param integer $oldnamespace
+	 * @param string $newtitle
+	 * @param integer $newnamespace
 	 */
 	public function moveSubobjects( $oldtitle, $oldnamespace, $newtitle, $newnamespace ) {
 		// Currently we have no way to change title and namespace across all entries.
@@ -572,6 +745,8 @@ class SMWSql3SmwIds {
 
 	/**
 	 * Delete all cached information.
+	 *
+	 * @since 1.8
 	 */
 	public function clearCaches() {
 		$this->prop_ids = array();
@@ -583,6 +758,8 @@ class SMWSql3SmwIds {
 	/**
 	 * Ensure that the property ID and sortkey caches have space to insert
 	 * at least one more element. If not, some other entries will be unset.
+	 *
+	 * @since 1.8
 	 */
 	protected function checkPropertySizeLimit() {
 		if ( count( $this->prop_ids ) >= self::$PROP_CACHE_MAX_SIZE ) {
@@ -598,6 +775,8 @@ class SMWSql3SmwIds {
 	 * Ensure that the non-property ID and sortkey caches have space to
 	 * insert at least one more element. If not, some other entries will be
 	 * unset.
+	 *
+	 * @since 1.8
 	 */
 	protected function checkRegularSizeLimit() {
 		if ( count( $this->regular_ids ) >= self::$PAGE_CACHE_MAX_SIZE ) {
@@ -611,20 +790,27 @@ class SMWSql3SmwIds {
 
 	/**
 	 * Get the hash key for regular (non-property) pages.
+	 *
+	 * @since 1.8
+	 * @param string $title
+	 * @param integer $namespace
+	 * @param string $interwiki
+	 * @param string $subobject
+	 * @return string
 	 */
 	protected static function getRegularHashKey( $title, $namespace, $interwiki, $subobject ) {
 		return "$title#$namespace#$interwiki#$subobject";
 	}
 
 	/**
-	* Returns an array of hashes with table names as keys. These
-	* hashes are used to compare new data with old data for each
-	* property-value table when updating data
-	*
-	* @since 1.8
-	* @param integer $sid ID of the page as stored in the SMW IDs table
-	* @return array
-	*/
+	 * Return an array of hashes with table names as keys. These
+	 * hashes are used to compare new data with old data for each
+	 * property-value table when updating data
+	 *
+	 * @since 1.8
+	 * @param integer $sid ID of the page as stored in the SMW IDs table
+	 * @return array
+	 */
 	public function getPropertyTableHashes( $sid ) {
 		if ( $this->hashCacheId == $sid ) {
 			//print "Cache hit! " . $this->hitcount++ . "\n";
@@ -653,12 +839,12 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	* Updates the proptable_hash for a given page.
-	*
-	* @since 1.8
-	* @param integer $sid ID of the page as stored in SMW IDs table
-	* @param array of hash values with tablename as keys
-	*/
+	 * Update the proptable_hash for a given page.
+	 *
+	 * @since 1.8
+	 * @param integer $sid ID of the page as stored in SMW IDs table
+	 * @param array of hash values with tablename as keys
+	 */
 	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
 		$db = wfGetDB( DB_MASTER );
 		$propertyTableHash = serialize( $newTableHashes );
@@ -699,6 +885,11 @@ class SMWSql3SmwIds {
 	 *   SMWSql3SmwIds::debugDumpCacheStats();
 	 *   return true;
 	 * }
+	 *
+	 * @note This is a debugging/profiling method that no published code
+	 * should rely on.
+	 *
+	 * @since 1.8
 	 */
 	public static function debugDumpCacheStats() {
 		$that = self::$singleton_debug;

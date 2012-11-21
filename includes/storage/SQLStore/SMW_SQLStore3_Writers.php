@@ -174,7 +174,7 @@ class SMWSQLStore3Writers {
 	 */
 	protected function getSubobjects( SMWDIWikiPage $subject, DatabaseBase $dbr ) {
 		$res = $dbr->select( SMWSql3SmwIds::tableName,
-			'*',
+			'smw_id,smw_subobject',
 			'smw_title = ' . $dbr->addQuotes( $subject->getDBkey() ) . ' AND ' .
 			'smw_namespace = ' . $dbr->addQuotes( $subject->getNamespace() ) . ' AND ' .
 			'smw_iw = ' . $dbr->addQuotes( $subject->getInterwiki() ) . ' AND ' .
@@ -182,9 +182,17 @@ class SMWSQLStore3Writers {
 			__METHOD__
 		);
 
+		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
+
 		$subobjects = array();
 		foreach ( $res as $row ) {
-			$subobjects[$row->smw_id] = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw, $row->smw_subobject );
+			$subobjects[$row->smw_id] = $diHandler->dataItemFromDBKeys( array(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				'',
+				$row->smw_subobject
+			) );
 		}
 		$dbr->freeResult( $res );
 

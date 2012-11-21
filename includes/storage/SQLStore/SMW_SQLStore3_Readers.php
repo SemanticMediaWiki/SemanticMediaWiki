@@ -397,10 +397,10 @@ class SMWSQLStore3Readers {
 
 		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
 			$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
-			$select = 'smw_title, smw_namespace, smw_sortkey, smw_iw, smw_subobject';
+			$select = 'smw_title, smw_namespace, smw_iw, smw_sortkey, smw_subobject';
 		} else { // no join needed, title+namespace as given in proptable
 			$from = $db->tableName( $proptable->getName() ) . " AS t1";
-			$select = 's_title AS smw_title, s_namespace AS smw_namespace, s_title AS smw_sortkey, \'\' AS smw_iw, \'\' AS smw_subobject';
+			$select = 's_title AS smw_title, s_namespace AS smw_namespace, \'\' AS smw_iw, s_title AS smw_sortkey, \'\' AS smw_subobject';
 		}
 
 		if ( !$proptable->isFixedPropertyTable() ) {
@@ -416,10 +416,12 @@ class SMWSQLStore3Readers {
 		                    'SMW::getPropertySubjects',
 		                    $this->store->getSQLOptions( $requestoptions, 'smw_sortkey' ) );
 
+		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
+
 		foreach ( $res as $row ) {
 			try {
 				if ( $row->smw_iw === '' || $row->smw_iw{0} != ':' ) { // filter special objects
-					$result[] = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw, $row->smw_subobject );
+					$result[] = $diHandler->dataItemFromDBKeys( array_values( (array)$row ) );
 				}
 			} catch ( SMWDataItemException $e ) {
 				// silently drop data, should be extremely rare and will usually fix itself at next edit
