@@ -508,7 +508,7 @@ class SMWQueryProcessor {
 			( $query->querymode == SMWQuery::MODE_NONE ) ) {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 
-			$printer = self::getResultPrinter( $params['format']->getValue(), $context, $res );
+			$printer = self::getResultPrinter( $params['format']->getValue(), $context );
 			$result = $printer->getResult( $res, $params, $outputMode );
 
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
