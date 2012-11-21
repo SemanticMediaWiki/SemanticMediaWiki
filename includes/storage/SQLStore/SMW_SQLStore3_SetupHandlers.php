@@ -286,7 +286,7 @@ class SMWSQLStore3SetupHandlers {
 		$propertyTables = SMWSQLStore3::getPropertyTables();
 
 		foreach ( $res as $row ) {
-			$this->reportProgress( '.' );
+			$this->reportProgress( '.', $verbose );
 
 			$usageCount = 0;
 			foreach ( $propertyTables as $propertyTable ) {
@@ -346,6 +346,9 @@ class SMWSQLStore3SetupHandlers {
 	/**
 	 * @see SMWStore::refreshData
 	 *
+	 * @todo This method will be overhauled in SMW 1.9 to become cleaner
+	 * and more robust.
+	 *
 	 * @param integer $index
 	 * @param integer $count
 	 * @param mixed $namespaces Array or false
@@ -392,26 +395,38 @@ class SMWSQLStore3SetupHandlers {
 
 			if ( $namespaces && !in_array( $row->smw_namespace, $namespaces ) ) continue;
 
+			// Find page to refresh, even for special properties:
+			if ( $row->smw_title != '' && $row->smw_title{0} != '_' ) {
+				$titleKey = $row->smw_title;
+			} elseif ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
+				$titleKey = str_replace( ' ', '_', SMWDIProperty::findPropertyLabel( $row->smw_title ) );
+			} else {
+				$titleKey = '';
+			}
+
 			if ( $row->smw_subobject !== '' ) {
 				// leave subobjects alone; they ought to be changed with their pages
-			} elseif ( $row->smw_iw === '' || $row->smw_iw == SMW_SQL3_SMWREDIIW ) { // objects representing pages
+			} elseif ( ( $row->smw_iw === '' || $row->smw_iw == SMW_SQL3_SMWREDIIW ) &&
+				$titleKey != '' ){
+				// objects representing pages
 				// TODO: special treament of redirects needed, since the store will
 				// not act on redirects that did not change according to its records
-				$title = Title::makeTitleSafe( $row->smw_namespace, $row->smw_title );
+				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				if ( $title !== null && !$title->exists() ) {
 					$updatejobs[] = new SMWUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED ) { // remove outdated internal object references
+				$dbw = wfGetDB( DB_MASTER );
 				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
 					if ( $proptable->usesIdSubject() ) {
-						$dbr->delete( $proptable->getName(), array( 's_id' => $row->smw_id ), __METHOD__ );
+						$dbw->delete( $proptable->getName(), array( 's_id' => $row->smw_id ), __METHOD__ );
 					}
 				}
 
-				$dbr->delete( SMWSql3SmwIds::tableName, array( 'smw_id' => $row->smw_id ), __METHOD__ );
-			} else { // "normal" interwiki pages or outdated internal objects -- delete
-				$diWikiPage = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw );
+				$dbw->delete( SMWSql3SmwIds::tableName, array( 'smw_id' => $row->smw_id ), __METHOD__ );
+			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
+				$diWikiPage = new SMWDIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SMWSemanticData( $diWikiPage );
 				$this->store->doDataUpdate( $emptySemanticData );
 			}

@@ -174,7 +174,7 @@ class SMWSQLStore3Writers {
 	 */
 	protected function getSubobjects( SMWDIWikiPage $subject, DatabaseBase $dbr ) {
 		$res = $dbr->select( SMWSql3SmwIds::tableName,
-			'*',
+			'smw_id,smw_subobject',
 			'smw_title = ' . $dbr->addQuotes( $subject->getDBkey() ) . ' AND ' .
 			'smw_namespace = ' . $dbr->addQuotes( $subject->getNamespace() ) . ' AND ' .
 			'smw_iw = ' . $dbr->addQuotes( $subject->getInterwiki() ) . ' AND ' .
@@ -182,9 +182,17 @@ class SMWSQLStore3Writers {
 			__METHOD__
 		);
 
+		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
+
 		$subobjects = array();
 		foreach ( $res as $row ) {
-			$subobjects[$row->smw_id] = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw, $row->smw_subobject );
+			$subobjects[$row->smw_id] = $diHandler->dataItemFromDBKeys( array(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				'',
+				$row->smw_subobject
+			) );
 		}
 		$dbr->freeResult( $res );
 
@@ -613,13 +621,28 @@ class SMWSQLStore3Writers {
 			// does too much; fall back to general case below.
 			if ( $sid != 0 ) { // change id entry to refer to the new title
 				// Note that this also changes the reference for internal objects (subobjects)
-				$db->update( SMWSql3SmwIds::tableName, array( 'smw_title' => $newtitle->getDBkey(),
-					'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
-					array( 'smw_title' => $oldtitle->getDBkey(),
-					'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '' ),
-					__METHOD__ );
-				$this->store->smwIds->moveSubobjects( $oldtitle->getDBkey(), $oldtitle->getNamespace(),
-					$newtitle->getDBkey(), $newtitle->getNamespace() );
+				$db->update(
+					SMWSql3SmwIds::tableName,
+					array(
+						'smw_title' => $newtitle->getDBkey(),
+						'smw_namespace' => $newtitle->getNamespace(),
+						'smw_iw' => ''
+					),
+					array(
+						'smw_title' => $oldtitle->getDBkey(),
+						'smw_namespace' => $oldtitle->getNamespace(),
+						'smw_iw' => ''
+					),
+					__METHOD__
+				);
+
+				$this->store->smwIds->moveSubobjects(
+					$oldtitle->getDBkey(),
+					$oldtitle->getNamespace(),
+					$newtitle->getDBkey(),
+					$newtitle->getNamespace()
+				);
+
 				$this->store->smwIds->setCache( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', 0, '' );
 				// We do not know the new sortkey, so just clear the cache:
 
@@ -631,10 +654,14 @@ class SMWSQLStore3Writers {
 
 			// make redirect id for oldtitle:
 			$this->store->smwIds->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL3_SMWREDIIW, '' );
-			$db->insert( 'smw_fpt_redi', array( 's_title' => $oldtitle->getDBkey(),
-						's_namespace' => $oldtitle->getNamespace(),
-						'o_id' => $sid ),
-			             __METHOD__
+
+			$db->insert( 'smw_fpt_redi',
+				array(
+					's_title' => $oldtitle->getDBkey(),
+					's_namespace' => $oldtitle->getNamespace(),
+					'o_id' => $sid
+				),
+				 __METHOD__
 			);
 
 			$this->addToPropertyUsageCount(
