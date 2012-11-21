@@ -111,11 +111,13 @@ class SMWSQLStore3Writers {
 	 * Update the store to contain the given data, without taking any
 	 * subobject data into account.
 	 *
+	 * @note This method is only temporary a public method in order to enable migration
+	 *
 	 * @since 1.8
 	 * @param SMWSemanticData $data
 	 * @param DatabaseBase $dbw used for writing
 	 */
-	protected function doFlatDataUpdate( SMWSemanticData $data, DatabaseBase $dbw ) {
+	public function doFlatDataUpdate( SMWSemanticData $data, DatabaseBase $dbw ) {
 		$subject = $data->getSubject();
 
 		// Take care of redirects
