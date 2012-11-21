@@ -621,13 +621,28 @@ class SMWSQLStore3Writers {
 			// does too much; fall back to general case below.
 			if ( $sid != 0 ) { // change id entry to refer to the new title
 				// Note that this also changes the reference for internal objects (subobjects)
-				$db->update( SMWSql3SmwIds::tableName, array( 'smw_title' => $newtitle->getDBkey(),
-					'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
-					array( 'smw_title' => $oldtitle->getDBkey(),
-					'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '' ),
-					__METHOD__ );
-				$this->store->smwIds->moveSubobjects( $oldtitle->getDBkey(), $oldtitle->getNamespace(),
-					$newtitle->getDBkey(), $newtitle->getNamespace() );
+				$db->update(
+					SMWSql3SmwIds::tableName,
+					array(
+						'smw_title' => $newtitle->getDBkey(),
+						'smw_namespace' => $newtitle->getNamespace(),
+						'smw_iw' => ''
+					),
+					array(
+						'smw_title' => $oldtitle->getDBkey(),
+						'smw_namespace' => $oldtitle->getNamespace(),
+						'smw_iw' => ''
+					),
+					__METHOD__
+				);
+
+				$this->store->smwIds->moveSubobjects(
+					$oldtitle->getDBkey(),
+					$oldtitle->getNamespace(),
+					$newtitle->getDBkey(),
+					$newtitle->getNamespace()
+				);
+
 				$this->store->smwIds->setCache( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', 0, '' );
 				// We do not know the new sortkey, so just clear the cache:
 
@@ -639,10 +654,14 @@ class SMWSQLStore3Writers {
 
 			// make redirect id for oldtitle:
 			$this->store->smwIds->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL3_SMWREDIIW, '' );
-			$db->insert( 'smw_fpt_redi', array( 's_title' => $oldtitle->getDBkey(),
-						's_namespace' => $oldtitle->getNamespace(),
-						'o_id' => $sid ),
-			             __METHOD__
+
+			$db->insert( 'smw_fpt_redi',
+				array(
+					's_title' => $oldtitle->getDBkey(),
+					's_namespace' => $oldtitle->getNamespace(),
+					'o_id' => $sid
+				),
+				 __METHOD__
 			);
 
 			$this->addToPropertyUsageCount(
