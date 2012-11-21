@@ -15,9 +15,9 @@ Contents
   ** Customising Semantic MediaWiki
   ** Running SMW on older versions of MediaWiki
 * Upgrading existing installations
-  ** Upgrading geographic coordinates
-  ** Upgrading n-ary (multivalued) properties
-  ** Changed configuration options
+  ** Upgrading SMW 1.7.*
+  ** Upgrading SMW 1.6.*
+  ** Upgrading SMW 1.5.*
 * Troubleshooting
 * SMW is installed. What should I do now?
 * Contact
@@ -36,7 +36,7 @@ If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.17 or greater
+* MediaWiki 1.17 or greater (tested up to 1.21alpha (647ccc6))
 * Validator MediaWiki extension version 0.5 or greater
   (http://www.mediawiki.org/wiki/Extension:Validator)
 * PHP 5.2 or greater installed and working
@@ -54,7 +54,7 @@ Notes:
   SMW was set up. The script SMW_setup.php can use the DB credentials from
   AdminSettings.php for this purpose, avoiding the need of extra rights for
   the wiki DB user.
-* When using SMWSQLStore2 (default data store for SMW), SMW creates and alters
+* When using SMWSQLStore3 (default data store for SMW), SMW creates and alters
   temporary tables for certain semantic queries. To do this, your wikidb user
   must have privileges for CREATE TEMPORARY TABLES. The according features can
   be disabled by adding the following to Localsettings.php:
@@ -141,33 +141,54 @@ options are detailed in http://semantic-mediawiki.org/wiki/Help:Configuration
 
 (Please read all of this before upgrading)
 
+=== Upgrading SMW 1.7.x ===
+
+SMW 1.8 introduces a new default database layout (SMWSQLStore3). You can
+continue to use the old layout (SMWSQLStore2) for transition purposes, but it
+is strongly recommended to migrate to the new layout for future compatibility.
+
+To use the old layout at first, add $smwgDefaultStore = 'SMWSQLStore2'; to
+your LocalSettings.php. If you are using $smwgDefaultStore = 'SMWSparqlStore';
+already, then you should keep this line and add the following:
+SMWSparqlStore::$baseStoreClass = 'SMWSQLStore2'; (after enableSemantics).
+After setting these, run SMW_setup.php or Special:SMWAdmin upgrade as usual.
+The wiki should now work as normal, but using the old storage structures.
+
+To migrate to the new store, you can do a normal "full refresh" for the new
+store. Run the following two commands (both will run a while).
+
+php SMW_refreshData.php -v -b SMWSQLStore3 -fp
+php SMW_refreshData.php -v -b SMWSQLStore3
+
+The running wiki will not be affected by this, but the operation could affect
+server speed. See
+http://semantic-mediawiki.org/wiki/Help:Repairing_SMW%27s_data for details.
+
+After successful migration, remove the lines with 'SMWSQLStore2' from your
+LocalSettings.php to use the new store. You can always return to the old store
+in case of problems. If the old store is no longer needed, it can be deleted
+(and its memory freed) by running
+
+php SMW_setup.php --delete --backend SMWSQLStore2
+
 === Upgrading SMW 1.6.x ===
 
-Installations of SMW 1.6.* and can be upgraded by replacing the files, and by
-running the database update (Special:SMWAdmin or SMW_setup.php script) as usual.
-Moreover, it is strongly suggested to enable the refresh process to update all
-data on Special:SMWAdmin. Older versions of SMW can be upgraded in the same way,
-but there can be more feature changes that require changes of wiki pages.
-See the current documentation for details on using the current version.
+Installations of SMW 1.6.* and can be upgraded like SMW 1.7.*.
 
 === Upgrading SMW 1.5.x ===
 
-SMW 1.6.0 introduces a new software dependency (which also applies to all later versions):
+Installations of SMW 1.5.* and can mostly be upgraded like SMW 1.7.*, with some additions.
+SMW 1.6.0 introduced a new software dependency (which also applies to all later versions):
 the Validator extension that helps Semantic MediaWiki to validate user-provided parameters.
 It must be installed for SMW to work. Make sure that you include Validator prior to the
 inclusion of SMW in your LocalSettings.php. Do note that Validator comes bundled with SMW
-releases as of version 1.6.0. If you are obtaining the code via svn, you will need to get
+releases as of version 1.6.0. If you are obtaining the code via git, you will need to get
 a checkout of Validator yourself.
 
 Do not forget to also install the extension Validator first and include it in LocalSettings.php
 prior to SMW with the following line of code. After that you may proceed to upgrade SMW.
 
 require_once( "$IP/extensions/Validator/Validator.php" );
-
-Extensions for SMW versions up to 1.5.* should not be assumed to work with SMW 1.6.0 out
-of the box. All SMW extensions should be upgraded to versions that are compatible with
-SMW 1.6. Moreover, some functions changed and pages might need updates (see below).
-Additional remarks on upgrading older SMW versions are given below.
 
 If not done already, it is suggested to change the inclusion of SMW in LocalSettings.php
 to the following as described in the installation instructions above:
