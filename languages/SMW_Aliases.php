@@ -566,6 +566,23 @@ $specialPageAliases['ro'] = array(
 	'Browse' => array( 'Răsfoieşte' ),
 );
 
+/** Sicilian (sicilianu) */
+$specialPageAliases['scn'] = array(
+	'Ask' => array( 'Chiedi' ),
+	'Browse' => array( 'Esplora' ),
+	'ExportRDF' => array( 'EsportaRDF' ),
+	'PageProperty' => array( 'ProprietàPagina' ),
+	'Properties' => array( 'Proprietà' ),
+	'SMWAdmin' => array( 'AdminSMW' ),
+	'SearchByProperty' => array( 'CercaPerProprietà' ),
+	'SemanticStatistics' => array( 'StatisticheSemantiche' ),
+	'Types' => array( 'Tipi' ),
+	'URIResolver' => array( 'RisolutoreURI' ),
+	'UnusedProperties' => array( 'ProprietàNonUtilizzate' ),
+	'WantedProperties' => array( 'ProprietàRichieste' ),
+	'QueryCreator' => array( 'CreatoreQuery' ),
+);
+
 /** Slovak (slovenčina) */
 $specialPageAliases['sk'] = array(
 	'Ask' => array( 'SpýtaťSa' ),
