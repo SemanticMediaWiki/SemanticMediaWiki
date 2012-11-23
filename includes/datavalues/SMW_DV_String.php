@@ -15,14 +15,11 @@
 class SMWStringValue extends SMWDataValue {
 
 	protected function parseUserValue( $value ) {
-		if ( $this->m_caption === false ) {
-			$this->m_caption = ( $this->m_typeid == '_cod' ) ? $this->getCodeDisplay( $value ) : $value;
-		}
 		if ( $value === '' ) {
 			$this->addError( wfMessage( 'smw_emptystring' )->inContentLanguage()->text() );
 		}
 
-		if ( ( $this->m_typeid == '_txt' ) || ( $this->m_typeid == '_cod' ) ) {
+		if ( $this->m_typeid == '_txt' || $this->m_typeid == '_cod' ) {
 			$this->m_dataitem = new SMWDIBlob( $value, $this->m_typeid );
 		} else {
 			try {
@@ -44,12 +41,8 @@ class SMWStringValue extends SMWDataValue {
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem instanceof SMWDIBlob ) {
+			$this->m_caption = false;
 			$this->m_dataitem = $dataItem;
-			if ( $this->m_typeid == '_cod' ) {
-				$this->m_caption = $this->getCodeDisplay( $this->m_dataitem->getString() );
-			} else {
-				$this->m_caption = $this->m_dataitem->getString();
-			}
 			return true;
 		} else {
 			return false;
@@ -57,25 +50,46 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		return $this->m_caption;
+		if ( $this->m_caption !== false ) {
+			return $this->m_caption;
+		} else {
+			return $this->getDisplayString(
+					false,
+					( $linked !== false ) && ( !is_null( $linked ) ),
+					false
+				);
+		}
 	}
 
-	/**
-	 * @todo Rather parse input to obtain properly formatted HTML.
-	 */
 	public function getShortHTMLText( $linker = null ) {
-		return smwfXMLContentEncode( $this->getShortWikiText( $linker ) );
+		if ( $this->m_caption !== false ) {
+			return smwfXMLContentEncode( $this->m_caption );
+		} else {
+			return $this->getDisplayString(
+					false,
+					( $linker !== false ) && ( !is_null( $linker ) ),
+					true
+				);
+		}
 	}
 
 	public function getLongWikiText( $linked = null ) {
-		return $this->isValid() ? $this->getAbbValue( $linked, $this->m_dataitem->getString() ) : $this->getErrorText();
+		return $this->getDisplayString(
+				true,
+				( $linked !== false ) && ( !is_null( $linked ) ),
+				false
+			);
 	}
 
 	/**
 	 * @todo Rather parse input to obtain properly formatted HTML.
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->isValid() ? $this->getAbbValue( $linker, smwfXMLContentEncode( $this->m_dataitem->getString() ) ) : $this->getErrorText();
+		return $this->getDisplayString(
+				true,
+				( $linker !== false ) && ( !is_null( $linker ) ),
+				true
+			);
 	}
 
 	public function getWikiValue() {
@@ -102,47 +116,90 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	/**
+	 * Get the string that should be displayed for this value.
+	 * The result is only escaped to be HTML-safe if this is requested
+	 * explicitly. The result will contain mark-up that must not be escaped
+	 * again.
+	 *
+	 * @since 1.8
+	 * @param boolean $abbreviate
+	 * @param boolean $linked set to false to disable tooltips
+	 * @param boolean $forHtml should the result be escaped to be HTML-safe?
+	 * @return string
+	 */
+	protected function getDisplayString( $abbreviate, $linked, $forHtml ) {
+		if ( !$this->isValid() ) {
+			return '';
+		} elseif ( $this->m_typeid == '_cod' ) {
+			return $this->getCodeDisplay( $this->m_dataitem->getString(), $abbreviate );
+		} else {
+			return $this->getTextDisplay( $this->m_dataitem->getString(), $abbreviate, $linked, $forHtml );
+		}
+	}
+
+	/**
 	 * Make a possibly shortened printout string for displaying the value.
-	 * The value must be specified as an input since necessary HTML escaping
-	 * must be applied to it first, if desired. The result of getAbbValue()
-	 * may contain wiki-compatible HTML mark-up that should not be escaped.
+	 * The result is only escaped to be HTML-safe if this is requested
+	 * explicitly. The result will contain mark-up that must not be escaped
+	 * again.
+	 *
 	 * @todo The method abbreviates very long strings for display by simply
 	 * taking substrings. This is not in all cases a good idea, since it may
 	 * break XML entities and mark-up.
+	 *
+	 * @since 1.8
+	 * @param string $value
+	 * @param boolean $abbreviate limit overall display length?
+	 * @param boolean $linked should abbreviated values use tooltips?
+	 * @param boolean $forHtml should the result be escaped to be HTML-safe?
+	 * @return string
 	 */
-	protected function getAbbValue( $linked, $value ) {
-		$len = mb_strlen( $value );
-		if ( ( $len > 255 ) && ( $this->m_typeid != '_cod' ) ) {
-			if ( is_null( $linked ) || ( $linked === false ) ) {
-				return mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">…</span> ' . mb_substr( $value, $len - 42 );
+	protected function getTextDisplay( $value, $abbreviate, $linked, $forHtml ) {
+		if ( $forHtml ) {
+			$value = smwfXMLContentEncode( $value );
+		}
+
+		$length = mb_strlen( $value );
+		if ( $abbreviate && $length > 255 ) {
+			if ( !$linked ) {
+				$ellipsis = ' <span class="smwwarning">…</span> ';
 			} else {
-				return mb_substr( $value , 0, 42 ) . smwfContextHighlighter( array (
+				$ellipsis = smwfContextHighlighter( array (
 					'context' => 'persistent',
 					'class'   => 'smwtext',
 					'type'    => 'string',
 					'title'   => ' … ',
 					'content' => $value
-				) ) . mb_substr( $value, $len - 42 );
+				) );
 			}
-		} elseif ( $this->m_typeid == '_cod' ) {
-			return $this->getCodeDisplay( $value, true );
+
+			return mb_substr( $value, 0, 42 ) . $ellipsis . mb_substr( $value, $length - 42 );
 		} else {
 			return $value;
 		}
 	}
 
 	/**
-	 * Special features for Type:Code formatting.
+	 * Escape and wrap values of type Code. The result is escaped to be
+	 * HTML-safe (it will also work in wiki context). The result will
+	 * contain mark-up that must not be escaped again.
+	 *
+	 * @param string $value
+	 * @param boolean $abbreviate should the code box be limited vertically?
+	 * @return string
 	 */
-	protected function getCodeDisplay( $value, $scroll = false ) {
+	protected function getCodeDisplay( $value, $abbreviate ) {
 		SMWOutputs::requireResource( 'ext.smw.style' );
+		// This disables all active wiki and HTML markup:
 		$result = str_replace(
 			array( '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ),
 			array( '&lt;', '&gt;', '&#160;', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ),
 			$value );
-		if ( $scroll ) {
+
+		if ( $abbreviate ) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
 		}
+
 		return "<div class=\"smwpre\">$result</div>";
 	}
 
