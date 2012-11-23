@@ -2753,12 +2753,12 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-prettyprint' => 'Die unformatierte Anzeige mit zusätzlichen Einzügen und neuen Zeilen',
 	'smw-paramdesc-source' => 'Die alternative Abfragequelle',
 	'smw-paramdesc-jsonsyntax' => 'Die zu verwendende JSON-Syntax',
-	'smw-printername-feed' => 'RSS- und Atom-Feed',
+	'smw-printername-feed' => 'Feed (RSS/Atom)',
 	'smw-paramdesc-feedtype' => 'Der Feedtyp',
 	'smw-paramdesc-feedtitle' => 'Der Text, der als Titel des Feeds verwendet werden soll',
 	'smw-paramdesc-feeddescription' => 'Der Text, der als Beschreibung des Feeds verwendet werden soll',
 	'smw-paramdesc-feedpagecontent' => 'Der Seiteninhalt, der mit dem Feed angezeigt werden soll',
-	'smw-label-feed-description' => '$1 $2 Feed',
+	'smw-label-feed-description' => '$2-Feed: $1',
 	'smw_iq_disabled' => 'Semantische Abfragen wurden in diesem Wiki deaktiviert.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_parseerror' => 'Der eingegebene Wert wurde nicht verstanden.',
@@ -2851,7 +2851,7 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw-ask-otheroptions-collapsed-info' => 'Bitte auf das kleine Plus-Symbol klicken, um sich die weiteren verfügbaren Optionen anzeigen zu lassen.',
 	'smw_ask_show_embed' => 'Code der Abfrage anzeigen',
 	'smw_ask_hide_embed' => 'Code der Abfrage verstecken',
-	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wikiseite einzufügen, kann der unten angegebene Code verwendet werden.',
+	'smw_ask_embed_instr' => 'Zum Einbetten dieser Abfrage in eine Wikiseite kann der unten angegebene Code verwendet werden.',
 	'smw-ask-delete' => '[Löschen]',
 	'smw-ask-sorting' => 'Sortierung',
 	'smw-ask-format-selection-help' => 'Weitere Informationen sind auf der Hilfeseite $1 verfügbar',
@@ -14282,6 +14282,7 @@ $messages['zh-hans'] = array(
  * @author Mark85296341
  * @author Oapbtommy
  * @author Sheepy
+ * @author Simon Shek
  * @author Wrightbus
  */
 $messages['zh-hant'] = array(
@@ -14308,7 +14309,6 @@ $messages['zh-hant'] = array(
 	'smw_printername_list' => '列表',
 	'smw_printername_ol' => '有序列表項目',
 	'smw_printername_ul' => '無序列表項目',
-	'smw_printername_rss' => '導出為RSS',
 	'smw_printername_table' => '表格',
 	'smw_printername_broadtable' => '寬表格',
 	'smw_printername_template' => '模板',
@@ -14334,8 +14334,6 @@ $messages['zh-hant'] = array(
 	'smw-paramdesc-embedformat' => '定義標題的 HTML 標籤',
 	'smw-paramdesc-embedonly' => '不顯示標題',
 	'smw-paramdesc-table-class' => '添加的設置表的CSS類',
-	'smw-paramdesc-rsstitle' => '源標題文字',
-	'smw-paramdesc-rssdescription' => '源描述文字',
 	'smw-paramdesc-rdfsyntax' => '需要用到的RDF語法',
 	'smw-paramdesc-csv-sep' => '要使用的分隔符',
 	'smw-paramdesc-dsv-separator' => '要使用的分隔符',
@@ -14403,7 +14401,7 @@ $messages['zh-hant'] = array(
 	'uriresolver' => 'URI 解析器',
 	'properties' => '屬性',
 	'smw_properties_docu' => '本 wiki 使用以下屬性。',
-	'smw_property_template' => '類型為 $2 的屬性 $1（出現 $3 次）',
+	'smw_property_template' => '類型為 $2 的屬性 $1（出現 $3 次）', # Fuzzy
 	'smw_propertylackspage' => '所有屬性均應有一個頁面描述！',
 	'smw_propertylackstype' => '此屬性未指定類型（目前預設為類型 $1）',
 	'smw_propertyhardlyused' => '此屬性在本 wiki 中不常使用。',
@@ -14507,7 +14505,7 @@ $messages['zh-hant'] = array(
 	'smw_result_noresults' => '沒有結果。',
 	'smwadmin' => 'Semantic MediaWiki 管理功能',
 	'smw_smwadmin_setupsuccess' => '儲存引擎成功設定。',
-	'smw_smwadmin_return' => '返回到 $1。',
+	'smw_smwadmin_return' => '返回到$1。',
 	'smw_smwadmin_updatestarted' => '更新語意數據過程開始。
 所有已儲存數據將被按需重建或修復。
 你可以通過本特殊頁面追蹤更新進程。', # Fuzzy
