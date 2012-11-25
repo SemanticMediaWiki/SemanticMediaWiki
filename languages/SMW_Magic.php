@@ -217,6 +217,13 @@ $magicWords['nl'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__FEITENKADERWEERGEVEN__' ),
 );
 
+/** Punjabi (ਪੰਜਾਬੀ) */
+$magicWords['pa'] = array(
+	'ask' => array( 0, 'ਪੁੱਛੋ' ),
+	'show' => array( 0, 'ਵਿਖਾਓ' ),
+	'info' => array( 0, 'ਜਾਣਕਾਰੀ' ),
+);
+
 /** Polish (polski) */
 $magicWords['pl'] = array(
 	'ask' => array( 0, 'pytanie' ),

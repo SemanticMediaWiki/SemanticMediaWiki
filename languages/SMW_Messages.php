@@ -3343,14 +3343,17 @@ $messages['ee'] = array(
  * @author Geraki
  * @author Lou
  * @author Omnipaedista
+ * @author Protnet
  * @author ZaDiak
  */
 $messages['el'] = array(
+	'smw-desc' => "Κάνοντας το βίκι σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([http://semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
 	'smw_viewasrdf' => 'Ροή RDF',
 	'smw_finallistconjunct' => ', και',
 	'smw_factbox_head' => 'Γεγονότα για $1',
 	'smw_isspecprop' => 'Αυτή η ιδιότητα είναι μια ειδική ιδιότητα σε αυτό το βίκι.',
 	'smw_concept_description' => 'Περιγραφή του κόνσεπτ "$1"',
+	'version-semantic' => 'Σημασιολογικές επεκτάσεις',
 	'smw_printername_count' => 'Αποτελέσματα μέτρησης',
 	'smw_printername_csv' => 'Εξαγωγή CSV',
 	'smw_printername_debug' => 'Αίτημα εκσφαλμάτωσης (για ειδικούς)',
@@ -3359,10 +3362,23 @@ $messages['el'] = array(
 	'smw_printername_list' => 'Λίστα',
 	'smw_printername_ol' => 'Αριθμοποίηση',
 	'smw_printername_ul' => 'Αντικειμενοποίηση',
-	'smw_printername_rss' => 'Εξαγωγή RSS',
 	'smw_printername_table' => 'Πίνακας',
 	'smw_printername_broadtable' => 'Πίνακας Επιτροπής',
 	'smw_printername_template' => 'Πρότυπο',
+	'smw_printername_category' => 'Κατηγορία',
+	'validator-type-class-SMWParamSource' => 'κείμενο',
+	'smw-paramdesc-limit' => 'Ο μέγιστος αριθμός αποτελεσμάτων που θα επιστραφούν',
+	'smw-paramdesc-headers' => 'Προβολή των κεφαλίδων/ονομάτων ιδιοτήτων',
+	'smw-paramdesc-mainlabel' => 'Η ετικέτα που θα δοθεί στο όνομα της κύριας σελίδας',
+	'smw-paramdesc-link' => 'Εμφάνιση τιμών ως σύνδεσμοι',
+	'smw-paramdesc-intro' => 'Το κείμενο που θα εμφανίζεται πριν από τα αποτελέσματα του ερωτήματος, αν υπάρχουν',
+	'smw-paramdesc-outro' => 'Το κείμενο που θα εμφανίζεται μετά από τα αποτελέσματα του ερωτήματος, αν υπάρχουν',
+	'smw-paramdesc-default' => 'Το κείμενο που θα εμφανίζεται αν δεν υπάρχουν αποτελέσματα ερωτήματος',
+	'smw-paramdesc-sep' => 'Το διαχωριστικό για τις τιμές',
+	'smw-paramdesc-showsep' => 'Εμφάνιση διαχωριστικού στην αρχή του αρχείου CSV ("sep=<value>")',
+	'smw-paramdesc-distribution' => 'Αντί για προβολή όλων των τιμών, καταμέτρηση των εμφανίσεών τους και προβολή αυτών.',
+	'smw-paramdesc-distributionsort' => 'Ταξινόμηση της κατανομής τιμών βάσει πλήθους εμφανίσεων.',
+	'smw-paramdesc-distributionlimit' => 'Περιορισμός της κατανομής τιμών σε πλήθος μόνο κάποιων τιμών.',
 	'smw-paramdesc-embedonly' => 'Μη εμφάνιση επικεφαλίδων',
 	'smw_iq_moreresults' => '... περισσότερα αποτελέσματα',
 	'smw_emptystring' => 'Κενές συμβολοσειρές δεν γίνονται δεκτές.',
@@ -3378,7 +3394,7 @@ $messages['el'] = array(
 	'smw_exportrdf_submit' => 'Εξαγωγή',
 	'uriresolver' => 'Επιλύτης URI',
 	'properties' => 'Ιδιότητες',
-	'smw_property_template' => '$1 του τύπου $2 ($3)',
+	'smw_property_template' => '$1 του τύπου $2 ($3)', # Fuzzy
 	'unusedproperties' => 'Αχρησιμοποίητες ιδιότητες',
 	'smw_unusedproperty_template' => '$1 του τύπου $2',
 	'wantedproperties' => 'Επιθυμητές ιδιότητες',

@@ -230,6 +230,11 @@ $specialPageAliases['gsw'] = array(
 	'QueryCreator' => array( 'Abfroogersteller' ),
 );
 
+/** Hindi (हिन्दी) */
+$specialPageAliases['hi'] = array(
+	'Ask' => array( 'पूछो' ),
+);
+
 /** Upper Sorbian (hornjoserbsce) */
 $specialPageAliases['hsb'] = array(
 	'Ask' => array( 'Semantiske pytanje' ),
@@ -519,6 +524,12 @@ $specialPageAliases['or'] = array(
 	'Properties' => array( 'ଗୁଣ' ),
 	'UnusedProperties' => array( 'ବ୍ୟବହାର_ହୋଇନଥିବା_ଗୁଣ' ),
 	'WantedProperties' => array( 'ଦରକାରୀ_ଗୁଣ' ),
+);
+
+/** Punjabi (ਪੰਜਾਬੀ) */
+$specialPageAliases['pa'] = array(
+	'Ask' => array( 'ਪੁੱਛੋ' ),
+	'Browse' => array( 'ਬ੍ਰਾਊਜ਼' ),
 );
 
 /** Polish (polski) */
