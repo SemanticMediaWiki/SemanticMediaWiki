@@ -530,6 +530,7 @@ $specialPageAliases['or'] = array(
 $specialPageAliases['pa'] = array(
 	'Ask' => array( 'ਪੁੱਛੋ' ),
 	'Browse' => array( 'ਬ੍ਰਾਊਜ਼' ),
+	'Types' => array( 'ਕਿਸਮਾਂ' ),
 );
 
 /** Polish (polski) */
