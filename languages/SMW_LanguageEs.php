@@ -79,11 +79,11 @@ class SMWLanguageEs extends SMWLanguage {
 
 	protected $m_Namespaces = array(
 		SMW_NS_PROPERTY       => "Atributo",
-		SMW_NS_PROPERTY_TALK  => "Discusión_atributo",
-		SMW_NS_TYPE           => "Tipos_de_datos",
-		SMW_NS_TYPE_TALK      => "Discusión_tipos_de_datos",
+		SMW_NS_PROPERTY_TALK  => "Atributo_discusión",
+		SMW_NS_TYPE           => "Tipo",
+		SMW_NS_TYPE_TALK      => "Tipo_discusión",
 		SMW_NS_CONCEPT        => 'Concepto',
-		SMW_NS_CONCEPT_TALK   => 'Discusión_concepto'
+		SMW_NS_CONCEPT_TALK   => 'Concepto_discusión'
 	);
 
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
