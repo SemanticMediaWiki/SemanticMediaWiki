@@ -199,6 +199,11 @@ $specialPageAliases['fi'] = array(
 	'QueryCreator' => array( 'Semanttisen_kyselyn_luonti' ),
 );
 
+/** French (français) */
+$specialPageAliases['fr'] = array(
+	'Properties' => array( 'Propriétés' ),
+);
+
 /** Galician (galego) */
 $specialPageAliases['gl'] = array(
 	'Ask' => array( 'Preguntar' ),
@@ -474,7 +479,7 @@ $specialPageAliases['nb'] = array(
 	'WantedProperties' => array( 'Ønskede_egenskaper' ),
 );
 
-/** Nedersaksisch (Nedersaksisch) */
+/** Nedersaksies (Nedersaksies) */
 $specialPageAliases['nds-nl'] = array(
 	'Ask' => array( 'Vragen' ),
 	'Browse' => array( 'Bekieken' ),
