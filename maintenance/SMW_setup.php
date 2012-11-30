@@ -11,8 +11,6 @@
  *       then the MW_INSTALL_PATH environment variable must be set.
  *       See README in the maintenance directory.
  *
- * Note: For people still using MediaWiki 1.16.x, there is the SMW_setup_1.16.php script.
- *
  * Usage:
  * php SMW_refreshData.php [options...]
  *
@@ -26,6 +24,11 @@
  *            when moving to a new storage engine, and in the rare case of unsinstalling
  *            SMW. Deleted data can be recreated using this script (setup) and
  *            SMW_refreshData.php but this may take some time.
+ *
+ * --backend  The backend to use. For instance SMWSQLStore3 or SMWSQLStore2.
+ *
+ * --nochecks When specied, no promts are provided. Deletion will thus happen
+ *            without the need to provide any confomration.
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -46,56 +49,131 @@ require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
 
 class SMWSetupScript extends Maintenance {
 
+	protected $originalStore;
+
 	public function __construct() {
 		parent::__construct();
+
 		$this->mDescription = 'Sets up the SMW storage backend currently selected in LocalSettings.php.';
 
-		$this->addArg( 'backend', 'Execute the operation for the storage backend of the given name.', false );
-		
+		$this->addOption( 'backend', 'Execute the operation for the storage backend of the given name.' );
+
 		$this->addOption( 'delete', 'Delete all SMW data, uninstall the selected storage backend.' );
+
+		$this->addOption(
+			'nochecks',
+			'Run the script without providing promts.
+				Deletion will thus happen without the need to provide any confomration.'
+		);
 	}
 
 	public function execute() {
-		global $smwgDefaultStore;
+		if ( !defined( 'SMW_VERSION' ) ) {
+			echo "You need to have SMW enabled in order to use this maintenance script!\n\n";
+			exit;
+		}
 
-		$alternativestore = $this->getArg( 'backend', false );
-		$alternativestore = $alternativestore !== false && $alternativestore !== $smwgDefaultStore;
-		
-		if ( $alternativestore !== false ) {
-			$smwgDefaultStore = $this->getArg( 'backend', false );
-			print "\nSelected storage " . $smwgDefaultStore . " for update!\n\n";
-		}
-		
-		global $smwgIP;
-		if ( !isset( $smwgIP ) ) {
-			$smwgIP = dirname( __FILE__ ) . '/../';
-		}
-		
-		require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
-		
+		$this->loadGlobalFunctions();
+
+		$store = $this->getStore();
+
 		if ( $this->hasOption( 'delete' ) ) {
-			print "\n  Deleting all stored data for $smwgDefaultStore completely!\n  \n\n";
-			if ( $alternativestore ) {
-				print "  This store is currently not used by SMW. Deleting it\n  should not cause problems in the wiki.\n\n";
-				$delay = 5;
-			} else {
-				print "  WARNING: This store is currently used by SMW! Deleting it\n           will cause problems in the wiki if SMW is enabled.\n\n";
-				$delay = 20;
-			}
-		
-			print "Abort with CTRL-C in the next $delay seconds ...  ";
-			wfCountDown( $delay );
-		
-			smwfGetStore()->drop( true );
-			wfRunHooks( 'smwDropTables' );
-			print "\n";
-			while ( ob_get_level() > 0 ) { // be sure to have some buffer, otherwise some PHPs complain
-				ob_end_flush();
-			}
-			echo "\n  All storage structures for $smwgDefaultStore have been deleted.\n  You can recreate them with this script, and then use\n  SMW_refreshData.php to rebuild their contents.";
+			$this->dropStore( $store );
 		} else {
 			SMWStore::setupStore();
 		}
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	protected function loadGlobalFunctions() {
+		global $smwgIP;
+
+		if ( !isset( $smwgIP ) ) {
+			$smwgIP = dirname( __FILE__ ) . '/../';
+		}
+
+		require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * @return SMWStore
+	 */
+	protected function getStore() {
+		global $smwgDefaultStore;
+
+		$storeClass = $this->getOption( 'backend', $smwgDefaultStore );
+
+		print "\nSelected storage " . $storeClass . " for update!\n\n";
+
+		$this->originalStore = $smwgDefaultStore;
+
+		$smwgDefaultStore = $storeClass;
+
+		return smwfGetStore();
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * @param SMWStore $store
+	 */
+	protected function dropStore( SMWStore $store ) {
+		$storeName = get_class( $store );
+
+		$verification = $this->promtDeletionVerification( $storeName );
+
+		if ( !$verification ) {
+			return;
+		}
+
+		$store->drop( true );
+
+		// TODO: this hook should be run on all calls to SMWSTore::drop
+		wfRunHooks( 'smwDropTables' );
+
+		// be sure to have some buffer, otherwise some PHPs complain
+		while ( ob_get_level() > 0 ) {
+			ob_end_flush();
+		}
+
+		echo <<<EOT
+
+All storage structures for $storeName have been deleted.
+You can recreate them with this script, and then use SMW_refreshData.php to rebuild their contents.
+
+
+EOT;
+	}
+
+	/**
+	 * @since 1.8
+	 *
+	 * @param string $storeName
+	 *
+	 * @return boolean
+	 */
+	protected function promtDeletionVerification( $storeName ) {
+		echo "You are about to delete all data stored in the SMW backend $storeName.\n";
+
+		if ( $storeName === $this->originalStore ) {
+			echo "This backend is CURRENTLY IN USE. Deleting it is likely to BREAK YOUR WIKI.\n";
+		} else {
+			echo "This backend is not currently in use. Deleting it should not cause any problems.\n";
+		}
+
+		if ( !$this->hasOption( 'nochecks' ) ) {
+			echo "This operation cannot be undone directly. If you are sure you want to proceed, type DELETE\n";
+
+			if ( $this->readconsole() !== 'DELETE' ) {
+				echo "Aborting.\n\n";
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
