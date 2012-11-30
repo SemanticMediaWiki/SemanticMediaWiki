@@ -27,12 +27,12 @@
  *
  * --backend  The backend to use. For instance SMWSQLStore3 or SMWSQLStore2.
  *
- * --nochecks When specied, no promts are provided. Deletion will thus happen
+ * --nochecks When specied, no prompts are provided. Deletion will thus happen
  *            without the need to provide any confomration.
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * 
+ *
  * @file
  * @ingroup SMWMaintenance
  */
@@ -49,6 +49,13 @@ require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
 
 class SMWSetupScript extends Maintenance {
 
+	/**
+	 * Name of the store class configured in LocalSettings.php. Stored to
+	 * be able to tell if the selected store is the currecnt default or not.
+	 *
+	 * @since 1.8
+	 * @var string
+	 */
 	protected $originalStore;
 
 	public function __construct() {
@@ -56,20 +63,21 @@ class SMWSetupScript extends Maintenance {
 
 		$this->mDescription = 'Sets up the SMW storage backend currently selected in LocalSettings.php.';
 
-		$this->addOption( 'backend', 'Execute the operation for the storage backend of the given name.' );
+		$this->addOption( 'backend', 'Execute the operation for the storage backend of the given name.', false, true, 'b' );
 
 		$this->addOption( 'delete', 'Delete all SMW data, uninstall the selected storage backend.' );
 
 		$this->addOption(
 			'nochecks',
-			'Run the script without providing promts.
-				Deletion will thus happen without the need to provide any confomration.'
+			'Run the script without providing prompts. Deletion will thus happen without the need to provide any confirmation.'
 		);
 	}
 
 	public function execute() {
+		// TODO It would be good if this script would work with SMW not being enable (yet).
+		// Then one could setup the store without first enabling SMW (which will break the wiki until the store is setup).
 		if ( !defined( 'SMW_VERSION' ) ) {
-			echo "You need to have SMW enabled in order to use this maintenance script!\n\n";
+			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
 			exit;
 		}
 
@@ -80,7 +88,7 @@ class SMWSetupScript extends Maintenance {
 		if ( $this->hasOption( 'delete' ) ) {
 			$this->dropStore( $store );
 		} else {
-			SMWStore::setupStore();
+			SMWStore::setupStore( !$this->isQuiet() );
 		}
 	}
 
@@ -106,12 +114,15 @@ class SMWSetupScript extends Maintenance {
 		global $smwgDefaultStore;
 
 		$storeClass = $this->getOption( 'backend', $smwgDefaultStore );
-
-		print "\nSelected storage " . $storeClass . " for update!\n\n";
-
 		$this->originalStore = $smwgDefaultStore;
 
-		$smwgDefaultStore = $storeClass;
+		if ( class_exists( $storeClass ) ) {
+			$smwgDefaultStore = $storeClass;
+		} else {
+			$this->error( "\nError: There is no backend class \"$storeClass\". Aborting.", 1 );
+		}
+
+		$this->output( "\nSelected storage \"$smwgDefaultStore\" for update!\n\n" );
 
 		return smwfGetStore();
 	}
@@ -124,15 +135,15 @@ class SMWSetupScript extends Maintenance {
 	protected function dropStore( SMWStore $store ) {
 		$storeName = get_class( $store );
 
-		$verification = $this->promtDeletionVerification( $storeName );
+		$verification = $this->promptDeletionVerification( $storeName );
 
 		if ( !$verification ) {
 			return;
 		}
 
-		$store->drop( true );
+		$store->drop( !$this->isQuiet() );
 
-		// TODO: this hook should be run on all calls to SMWSTore::drop
+		// TODO: this hook should be run on all calls to SMWStore::drop
 		wfRunHooks( 'smwDropTables' );
 
 		// be sure to have some buffer, otherwise some PHPs complain
@@ -140,13 +151,8 @@ class SMWSetupScript extends Maintenance {
 			ob_end_flush();
 		}
 
-		echo <<<EOT
-
-All storage structures for $storeName have been deleted.
-You can recreate them with this script, and then use SMW_refreshData.php to rebuild their contents.
-
-
-EOT;
+		$this->output( "\nAll storage structures for $storeName have been deleted." );
+		$this->output( "You can recreate them with this script, and then use SMW_refreshData.php to rebuild their contents.");
 	}
 
 	/**
@@ -156,20 +162,21 @@ EOT;
 	 *
 	 * @return boolean
 	 */
-	protected function promtDeletionVerification( $storeName ) {
-		echo "You are about to delete all data stored in the SMW backend $storeName.\n";
+	protected function promptDeletionVerification( $storeName ) {
+		$this->output( "You are about to delete all data stored in the SMW backend $storeName.\n" );
 
 		if ( $storeName === $this->originalStore ) {
-			echo "This backend is CURRENTLY IN USE. Deleting it is likely to BREAK YOUR WIKI.\n";
+			$this->output( "This backend is CURRENTLY IN USE. Deleting it is likely to BREAK YOUR WIKI.\n" );
 		} else {
-			echo "This backend is not currently in use. Deleting it should not cause any problems.\n";
+			$this->output( "This backend is not currently in use. Deleting it should not cause any problems.\n" );
 		}
+		$this->output( "To undo this operation later on, a complete refresh of the data will be needed.\n" );
 
 		if ( !$this->hasOption( 'nochecks' ) ) {
-			echo "This operation cannot be undone directly. If you are sure you want to proceed, type DELETE\n";
+			print( "If you are sure you want to proceed, type DELETE.\n" );
 
 			if ( $this->readconsole() !== 'DELETE' ) {
-				echo "Aborting.\n\n";
+				print( "Aborting.\n\n" );
 				return false;
 			}
 		}
