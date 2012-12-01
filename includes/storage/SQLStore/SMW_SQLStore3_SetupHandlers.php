@@ -74,7 +74,10 @@ class SMWSQLStore3SetupHandlers {
 		SMWSQLHelpers::setupTable(
 			SMWSql3SmwIds::tableName,
 			array(
-				'smw_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ),
+				'smw_id' => $dbtypes['p'] .
+					( $wgDBtype == 'sqlite' ? '' : ' NOT NULL' ) .
+					( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ) .
+					( $wgDBtype == 'sqlite' ? ' NOT NULL' : '' ),
 				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
 				'smw_title' => $dbtypes['t'] . ' NOT NULL',
 				'smw_iw' => $dbtypes['w'] . ' NOT NULL',

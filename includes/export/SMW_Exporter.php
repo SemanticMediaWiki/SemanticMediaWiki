@@ -61,7 +61,7 @@ class SMWExporter {
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Make an SMWExpData object for the given page, and include the basic
 	 * properties about this subject that are not directly represented by
@@ -140,7 +140,7 @@ class SMWExporter {
 
 		return $result;
 	}
-	
+
 	/**
 	 * Extend a given SMWExpData element by adding export data for the
 	 * specified property data itme. This method is called when
@@ -326,7 +326,7 @@ class SMWExporter {
 			$wikiNamespace = self::getNamespaceUri( 'wiki' );
 			if ( strpos( $uri, $wikiNamespace ) === 0 ) {
 				$localName = substr( $uri, strlen( $wikiNamespace ) );
-				$dbKey = urldecode( self::decodeURI( $localName ) );
+				$dbKey = rawurldecode( self::decodeURI( $localName ) );
 
 				$parts = explode( '-23', $dbKey, 2 );
 				if ( count( $parts ) == 2 ) {
@@ -348,12 +348,12 @@ class SMWExporter {
 							break;
 						}
 					}
-					
+
 					if ( $namespaceId != -1 ) {
 						$dataItem = new SMWDIWikiPage( $parts[1], $namespaceId, '', $subobjectname );
 					} else {
 						$title = Title::newFromDBkey( $dbKey );
-						
+
 						if ( !is_null( $title ) ) {
 							$dataItem = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), $subobjectname );
 						}
@@ -400,7 +400,7 @@ class SMWExporter {
 	 */
 	static public function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
 		switch ( $propertyKey ) {
-			case '_INST': 
+			case '_INST':
 				return self::getSpecialNsResource( 'rdf', 'type' );
 			case '_SUBC':
 				return self::getSpecialNsResource( 'rdfs', 'subClassOf' );
@@ -529,7 +529,7 @@ class SMWExporter {
 	/**
 	 * Create an SMWExpData container that encodes the ontology header for an
 	 * SMW exported OWL file.
-	 * 
+	 *
 	 * @param string $ontologyuri specifying the URI of the ontology, possibly
 	 * empty
 	 */
@@ -550,7 +550,7 @@ class SMWExporter {
 	 * dataitem as a subject or object. To get the URI of a property, use
 	 * SMWExporter::getResourceElementForProperty() or
 	 * SMWExporter::getSpecialPropertyResource().
-	 * 
+	 *
 	 * @param $dataItem SMWDataItem
 	 * @return SMWExpElement
 	 */

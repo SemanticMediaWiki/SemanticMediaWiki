@@ -199,6 +199,11 @@ $specialPageAliases['fi'] = array(
 	'QueryCreator' => array( 'Semanttisen_kyselyn_luonti' ),
 );
 
+/** French (français) */
+$specialPageAliases['fr'] = array(
+	'Properties' => array( 'Propriétés' ),
+);
+
 /** Galician (galego) */
 $specialPageAliases['gl'] = array(
 	'Ask' => array( 'Preguntar' ),
@@ -228,6 +233,11 @@ $specialPageAliases['gsw'] = array(
 	'UnusedProperties' => array( 'Verwaisti_Attribut' ),
 	'WantedProperties' => array( 'Gwinschti_Attribut' ),
 	'QueryCreator' => array( 'Abfroogersteller' ),
+);
+
+/** Hindi (हिन्दी) */
+$specialPageAliases['hi'] = array(
+	'Ask' => array( 'पूछो' ),
 );
 
 /** Upper Sorbian (hornjoserbsce) */
@@ -469,7 +479,7 @@ $specialPageAliases['nb'] = array(
 	'WantedProperties' => array( 'Ønskede_egenskaper' ),
 );
 
-/** Nedersaksisch (Nedersaksisch) */
+/** Nedersaksies (Nedersaksies) */
 $specialPageAliases['nds-nl'] = array(
 	'Ask' => array( 'Vragen' ),
 	'Browse' => array( 'Bekieken' ),
@@ -521,6 +531,13 @@ $specialPageAliases['or'] = array(
 	'WantedProperties' => array( 'ଦରକାରୀ_ଗୁଣ' ),
 );
 
+/** Punjabi (ਪੰਜਾਬੀ) */
+$specialPageAliases['pa'] = array(
+	'Ask' => array( 'ਪੁੱਛੋ' ),
+	'Browse' => array( 'ਬ੍ਰਾਊਜ਼' ),
+	'Types' => array( 'ਕਿਸਮਾਂ' ),
+);
+
 /** Polish (polski) */
 $specialPageAliases['pl'] = array(
 	'Ask' => array( 'Pytanie' ),
@@ -564,6 +581,23 @@ $specialPageAliases['pt'] = array(
 /** Romanian (română) */
 $specialPageAliases['ro'] = array(
 	'Browse' => array( 'Răsfoieşte' ),
+);
+
+/** Sicilian (sicilianu) */
+$specialPageAliases['scn'] = array(
+	'Ask' => array( 'Chiedi' ),
+	'Browse' => array( 'Esplora' ),
+	'ExportRDF' => array( 'EsportaRDF' ),
+	'PageProperty' => array( 'ProprietàPagina' ),
+	'Properties' => array( 'Proprietà' ),
+	'SMWAdmin' => array( 'AdminSMW' ),
+	'SearchByProperty' => array( 'CercaPerProprietà' ),
+	'SemanticStatistics' => array( 'StatisticheSemantiche' ),
+	'Types' => array( 'Tipi' ),
+	'URIResolver' => array( 'RisolutoreURI' ),
+	'UnusedProperties' => array( 'ProprietàNonUtilizzate' ),
+	'WantedProperties' => array( 'ProprietàRichieste' ),
+	'QueryCreator' => array( 'CreatoreQuery' ),
 );
 
 /** Slovak (slovenčina) */
