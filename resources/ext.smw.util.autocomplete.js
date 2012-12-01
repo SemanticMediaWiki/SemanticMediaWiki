@@ -14,7 +14,7 @@
  */
 ( function( mw, $ ) {
 	"use strict";
-	/*global mediaWiki:true wgNamespaceIds:true*/
+	/*global mediaWiki:true*/
 
 	/**
 	 * Default options
@@ -24,7 +24,7 @@
 			limit: 10,
 			separator: null,
 			search: 'property',
-			namespace: wgNamespaceIds.property
+			namespace: mw.config.get( 'wgNamespaceIds' ).property
 	};
 
 	/**
