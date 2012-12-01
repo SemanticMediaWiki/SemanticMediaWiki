@@ -218,13 +218,14 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWAsk']                    = $phDir . 'SMW_Ask.php';
 	$wgAutoloadClasses['SMWShow']                   = $phDir . 'SMW_Show.php';
 	$wgAutoloadClasses['SMWInfo']                   = $phDir . 'SMW_Info.php';
-	$wgAutoloadClasses['SMW\Subobject']             = $phDir . 'Subobject.php';
 	$wgAutoloadClasses['SMWConcept']                = $phDir . 'SMW_Concept.php';
-	$wgAutoloadClasses['SMW\Set']                   = $phDir . 'Set.php';
 	$wgAutoloadClasses['SMWSetRecurringEvent']      = $phDir . 'SMW_SetRecurringEvent.php';
 	$wgAutoloadClasses['SMWDeclare']                = $phDir . 'SMW_Declare.php';
 	$wgAutoloadClasses['SMWSMWDoc']                 = $phDir . 'SMW_SMWDoc.php';
 	$wgAutoloadClasses['SMW\ParserParameter']       = $phDir . 'ParserParameter.php';
+	$wgAutoloadClasses['SMW\SetParser']             = $phDir . 'SetParser.php';
+	$wgAutoloadClasses['SMW\SubobjectParser']       = $phDir . 'SubobjectParser.php';
+	$wgAutoloadClasses['SMW\Subobject']             = $phDir . 'Subobject.php';
 
 	// Stores & queries
 	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';

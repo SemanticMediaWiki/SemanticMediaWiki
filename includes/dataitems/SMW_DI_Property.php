@@ -18,6 +18,11 @@
  */
 class SMWDIProperty extends SMWDataItem {
 
+	// Property subobject data item ID
+	const TYPE_SUBOBJECT  = '_SOBJ';
+	// Property improper value data item ID
+	const TYPE_ERROR      = '_ERRP';
+
 	/**
 	 * Array for assigning types to predefined properties. Each
 	 * property is associated with an array with the following
@@ -370,12 +375,12 @@ class SMWDIProperty extends SMWDataItem {
 				'_CDAT'  =>  array( '_dat', false ), // "creation date"
 				'_NEWP'  =>  array( '_boo', false ), // "is a new page"
 				'_LEDT'  =>  array( '_wpg', false ), // "last editor is"
-				'_ERRP'  =>  array( '_wpp', false ), // "has improper value for"
+				self::TYPE_ERROR  =>  array( '_wpp', false ), // "has improper value for"
 				'_LIST'  =>  array( '__pls', true ), // "has fields"
 				'_SKEY'  =>  array( '__key', false ), // sort key of a page
 				'_SF_DF' => array( '__spf', true ), // Semantic Form's default form property
 				'_SF_AF' => array( '__spf', true ),  // Semantic Form's alternate form property
-				'_SOBJ'  =>  array( '_wpg', true ), // "has subobject"
+				self::TYPE_SUBOBJECT  =>  array( '_wpg', true ), // "has subobject"
 				'_ASK'   =>  array( '_wpg', false ), // "has query"
 				'_ASKST' =>  array( '_cod', true ), // "has query string"
 				'_ASKFO' =>  array( '_str', true ), // "has query format"

@@ -127,9 +127,9 @@ final class SMWHooks {
 	public static function onParserFirstCallInit( Parser &$parser ) {
 		$parser->setFunctionHook( 'ask', array( 'SMWAsk', 'render' ) );
 		$parser->setFunctionHook( 'show', array( 'SMWShow', 'render' ) );
-		$parser->setFunctionHook( 'subobject', array( 'SMW\Subobject', 'render' ) );
+		$parser->setFunctionHook( 'subobject', array( 'SMW\SubobjectParser', 'render' ) );
 		$parser->setFunctionHook( 'concept', array( 'SMWConcept', 'render' ) );
-		$parser->setFunctionHook( 'set', array( 'SMW\Set', 'render' ) );
+		$parser->setFunctionHook( 'set', array( 'SMW\SetParser', 'render' ) );
 		$parser->setFunctionHook( 'set_recurring_event', array( 'SMWSetRecurringEvent', 'render' ) );
 		$parser->setFunctionHook( 'declare', array( 'SMWDeclare', 'render' ), SFH_OBJECT_ARGS );
 
@@ -260,7 +260,7 @@ final class SMWHooks {
 	* @see https://www.mediawiki.org/wiki/Manual:Hooks/UnitTestsList
 	*
 	* @since 1.8
-	 * 
+	 *
 	* @param array $files
 	*
 	* @return boolean
@@ -279,6 +279,7 @@ final class SMWHooks {
 			'dataitems/DI_GeoCoord',
 
 			'parserhooks/ParserParameter',
+			'parserhooks/Subobject',
 
 			'printers/ResultPrinters',
 
