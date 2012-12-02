@@ -394,9 +394,11 @@ $specialPageAliases['ksh'] = array(
 /** Cornish (kernowek) */
 $specialPageAliases['kw'] = array(
 	'Ask' => array( 'Govyn' ),
-	'Browse' => array( 'Peuri' ),
-	'ExportRDF' => array( 'EsperthiRDF' ),
+	'Browse' => array( 'Peury' ),
+	'ExportRDF' => array( 'EsperthyRDF' ),
+	'PageProperty' => array( 'GnasFolen' ),
 	'Properties' => array( 'Gnasow' ),
+	'SearchByProperty' => array( 'WhilasHerwydhGnas' ),
 );
 
 /** Luxembourgish (Lëtzebuergesch) */

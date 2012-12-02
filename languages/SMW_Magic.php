@@ -154,6 +154,14 @@ $magicWords['ko'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__사실상자보이기__', '__사실상자표시__' ),
 );
 
+/** Cornish (kernowek) */
+$magicWords['kw'] = array(
+	'ask' => array( 0, 'govyn' ),
+	'show' => array( 0, 'disqwedhes' ),
+	'info' => array( 0, 'kedhlow' ),
+	'set' => array( 0, 'settya' ),
+);
+
 /** Luxembourgish (Lëtzebuergesch) */
 $magicWords['lb'] = array(
 	'ask' => array( 0, 'froen' ),
