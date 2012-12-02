@@ -45,7 +45,7 @@ if ( version_compare( Validator_VERSION, '0.5c', '<' ) ) {
 }
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.8 rc1' );
+define( 'SMW_VERSION', '1.8' );
 
 // Registration of the extension credits, see Special:Version.
 $wgExtensionCredits['semantic'][] = array(
