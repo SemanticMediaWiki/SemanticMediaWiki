@@ -9351,7 +9351,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-outro' => 'De tekst die wordt weergegeven onder de zoekresultaten, als die er zijn',
 	'smw-paramdesc-default' => 'De tekst die wordt weergegeven als er geen zoekresultaten zijn',
 	'smw-paramdesc-sep' => 'Het scheidingsteken voor waarden',
-	'smw-paramdesc-showsep' => 'Toon het scheidingsteken bovenaan het CSV-bestand ("sep =<value>")',
+	'smw-paramdesc-showsep' => 'Het scheidingsteken bovenaan het CSV-bestand weergeven ("sep=<waarde>")',
 	'smw-paramdesc-distribution' => 'Geef het aantal waarden weer in plaats van alle waarden.',
 	'smw-paramdesc-distributionsort' => 'De waardeverdeling sorteren op aantal keer dat die voorkomt.',
 	'smw-paramdesc-distributionlimit' => 'Beperk de waardeverdeling tot het aantal van sommige waarden.',
