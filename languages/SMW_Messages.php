@@ -4287,7 +4287,20 @@ Tässä vaiheessa tehyt muutokset eivät vaikuta muuhun MediaWiki-tietokantaan j
 Asennus voidaan suorittaa monta kertaa ilman että siitä eiheutuisi vahinkoa, mutta se on tehtävä vain kerran asennuksen tai päivityksen yhteydessä.',
 	'smw_smwadmin_dbbutton' => 'Alusta tai päivitä taulukot',
 	'smw_smwadmin_announce' => 'Julkista wikisi',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWikillä on verkkopalvelu, jossa ilmoitetaan uusista semanttista wiki käyttävistä sivustoista.
+Palvelussa ylläpidetään luetteloa Semantic MediaWikiä käyttävistä julkisista sivuista. Sen päätarkoituksena on antaa <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki -hankkeelle</a> yleiskuva siitä, miten Semantic MediaWikiä tyypillisesti käytetään.
+Semantic MediaWikin kotisivuilta <a href="http://semantic-mediawiki.org/wiki/Registry">löytyy lisätietoja tästä palvelusta</a>.',
+	'smw_smwadmin_announcebutton' => 'Paina seuraavaa painiketta, jos haluat lähettää wikisi osoitteen tähän palveluun.
+Palvelu ei rekisteröi wikejä, jotka eivät ole käytettävissä julkisesti. Palvelu tallentaa lisäksi vain julkaistuja tietoja.',
 	'smw_smwadmin_datarefresh' => 'Tietojen korjaus ja päivitys',
+	'smw_smwadmin_datarefreshdocu' => 'Semantic MediaWikin data voidaan palauttaa wikin nykyisen sisällön avulla.
+Tämä voi olla hyödyllistä, kun halutaan korjata tai päivittää dataa, jonka sisäinen muoto on muuttunut jonkin ohjelmistopäivityksen takia.
+Päivitys etenee sivu sivulta eikä valmistu nopeasti.
+Alla näkyy päivityksen eteneminen ja mahdollistaa päivitysten käynnistämisen tai pysäyttämisen (paitsi jos sivuston ylläpitäjä on ottanut toiminnon pois käytöstä).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Päivitys on jo käynnissä.</strong>
+On normaalia, että päivitys etenee hitaasti, sillä se päivittää tiedot vain pieninä paloina aina, kun joku käyttäjä käyttää wiki.
+Jos haluat päivityksen valmistuvan nopeammin, käytä MediaWiki-ylläpidon komentosarjaa <tt>runJobs.php</tt> (käytä valintaa <tt>--maxjobs 1000</tt> rajoittaaksesi yhdessä erässsä tehtävien päivitysten määrää).
+Nykyisen päivityksen arvioitu eteneminen:',
 	'smw_smwadmin_datarefreshbutton' => 'Aloita tietojen päivitys',
 	'smw_smwadmin_datarefreshstop' => 'Lopeta tämä päivitys',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Kyllä, olen varma.',
