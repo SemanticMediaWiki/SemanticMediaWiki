@@ -4108,7 +4108,7 @@ $messages['fi'] = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '&nbsp;',
 	'smw_notitle' => 'Nimeä ”$1” ei voi käyttää sivun nimenä tässä wikissä.',
-	'smw_noproperty' => 'Nimeä "$1" ei voi käyttää ominaisuuden nimenä tässä wikissä.',
+	'smw_noproperty' => 'Nimeä ”$1” ei voi käyttää ominaisuuden nimenä tässä wikissä.',
 	'smw_wrong_namespace' => 'Vain nimiavaruuden "$1" sivut sallitaan tässä.',
 	'smw_manytypes' => 'Ominaisuudelle on määritelty useampi kuin yksi tyyppi.',
 	'smw_emptystring' => 'Tyhjiä merkkijonoja ei hyväksytä.',
@@ -4167,7 +4167,7 @@ Generoi selailtavan RDF:n.',
 	'smw_unusedproperties_docu' => 'Seuraavat ominaisuudet ovat olemassa, vaikka mikään muu sivu ei käytä niitä.',
 	'smw_unusedproperty_template' => '$1 on tyypiltään $2',
 	'wantedproperties' => 'Halutut ominaisuudet',
-	'smw_wantedproperties_docu' => 'Seuraavia ominaisuuksia käytetään wikissä mutta niillä ei ole vielä kuvaussivua.',
+	'smw_wantedproperties_docu' => 'Seuraavia ominaisuuksia käytetään tässä wikissä, mutta niillä ei ole kuvaussivua.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|esiintymä|esiintymää}})',
 	'smw_purge' => 'Päivitä',
 	'types' => 'Tyypit',
@@ -4191,13 +4191,13 @@ Generoi selailtavan RDF:n.',
 	'smw-ask-otheroptions-collapsed-info' => 'Katso kaikki vaihtoehot plus-kuvakkeen avulla.',
 	'smw_ask_show_embed' => 'Näytä upotettava koodi',
 	'smw_ask_hide_embed' => 'Piilota upotettava koodi',
-	'smw_ask_embed_instr' => 'Jos haluat lisätä tämän kyselyn wikisivulle, käytä allaolevaa koodia.',
+	'smw_ask_embed_instr' => 'Jos haluat lisätä tämän kyselyn wikisivulle, käytä alla olevaa koodia.',
 	'smw-ask-delete' => '[Poista]',
 	'smw-ask-sorting' => 'Lajittelu',
-	'smw-ask-format-selection-help' => 'Yksityiskohtaiset tiedot löytyvät $1 -ohjesivulta',
+	'smw-ask-format-selection-help' => 'Yksityiskohtaiset tiedot löytyvät sivulta $1.',
 	'querycreator' => 'Kyselyjen luontityökalu',
 	'smw_qc_addmainlabel' => 'Lisää pääotsikko',
-	'smw_qc_show_addnal_opts' => 'Näytä lisää valintoja',
+	'smw_qc_show_addnal_opts' => 'Näytä lisävalinnat',
 	'smw_qc_hide_addnal_opts' => 'Piilota lisävalinnat',
 	'smw_qc_otheropt' => 'Muut valinnat',
 	'smw_qc_intro' => 'Alussa oleva teksti',
@@ -4287,7 +4287,20 @@ Tässä vaiheessa tehyt muutokset eivät vaikuta muuhun MediaWiki-tietokantaan j
 Asennus voidaan suorittaa monta kertaa ilman että siitä eiheutuisi vahinkoa, mutta se on tehtävä vain kerran asennuksen tai päivityksen yhteydessä.',
 	'smw_smwadmin_dbbutton' => 'Alusta tai päivitä taulukot',
 	'smw_smwadmin_announce' => 'Julkista wikisi',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWikillä on verkkopalvelu, jossa ilmoitetaan uusista semanttista wiki käyttävistä sivustoista.
+Palvelussa ylläpidetään luetteloa Semantic MediaWikiä käyttävistä julkisista sivuista. Sen päätarkoituksena on antaa <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki -hankkeelle</a> yleiskuva siitä, miten Semantic MediaWikiä tyypillisesti käytetään.
+Semantic MediaWikin kotisivuilta <a href="http://semantic-mediawiki.org/wiki/Registry">löytyy lisätietoja tästä palvelusta</a>.',
+	'smw_smwadmin_announcebutton' => 'Paina seuraavaa painiketta, jos haluat lähettää wikisi osoitteen tähän palveluun.
+Palvelu ei rekisteröi wikejä, jotka eivät ole käytettävissä julkisesti. Palvelu tallentaa lisäksi vain julkaistuja tietoja.',
 	'smw_smwadmin_datarefresh' => 'Tietojen korjaus ja päivitys',
+	'smw_smwadmin_datarefreshdocu' => 'Semantic MediaWikin data voidaan palauttaa wikin nykyisen sisällön avulla.
+Tämä voi olla hyödyllistä, kun halutaan korjata tai päivittää dataa, jonka sisäinen muoto on muuttunut jonkin ohjelmistopäivityksen takia.
+Päivitys etenee sivu sivulta eikä valmistu nopeasti.
+Alla näkyy päivityksen eteneminen ja mahdollistaa päivitysten käynnistämisen tai pysäyttämisen (paitsi jos sivuston ylläpitäjä on ottanut toiminnon pois käytöstä).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Päivitys on jo käynnissä.</strong>
+On normaalia, että päivitys etenee hitaasti, sillä se päivittää tiedot vain pieninä paloina aina, kun joku käyttäjä käyttää wiki.
+Jos haluat päivityksen valmistuvan nopeammin, käytä MediaWiki-ylläpidon komentosarjaa <tt>runJobs.php</tt> (käytä valintaa <tt>--maxjobs 1000</tt> rajoittaaksesi yhdessä erässsä tehtävien päivitysten määrää).
+Nykyisen päivityksen arvioitu eteneminen:',
 	'smw_smwadmin_datarefreshbutton' => 'Aloita tietojen päivitys',
 	'smw_smwadmin_datarefreshstop' => 'Lopeta tämä päivitys',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Kyllä, olen varma.',
@@ -8201,7 +8214,6 @@ $messages['lb'] = array(
 	'smw_printername_list' => 'Lëscht',
 	'smw_printername_ol' => 'Opzielung',
 	'smw_printername_ul' => 'Opzielung',
-	'smw_printername_rss' => 'Export als RSS',
 	'smw_printername_table' => 'Tabell',
 	'smw_printername_broadtable' => 'Breed Tabell',
 	'smw_printername_template' => 'Schabloun',
@@ -8221,8 +8233,6 @@ $messages['lb'] = array(
 	'smw-paramdesc-outrotemplate' => 'Den Numm vun enger Schabloun déi no de Resultater vun der Ufro gewise gëtt, wann et der gëtt',
 	'smw-paramdesc-embedformat' => "Den HTML-Tag dee benotzt gëtt fir d'Iwwerschrëften ze definéieren",
 	'smw-paramdesc-embedonly' => 'Keng Iwwerschrëfte weisen',
-	'smw-paramdesc-rsstitle' => 'Den Text deen als Iwwerschrëft vun der Rubrik benotzt gëtt',
-	'smw-paramdesc-rssdescription' => 'Den Text deen als Beschreiwung vum Feed benotzt gëtt',
 	'smw-paramdesc-rdfsyntax' => 'RDF-Syntax déi benotzt gi muss',
 	'smw-paramdesc-dsv-filename' => 'Den Numm fir den DSV-Fichier',
 	'smw-paramdesc-searchlabel' => 'Den Text fir mam Siche virunzefueren',
@@ -8254,7 +8264,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_exportrdf_submit' => 'Exportéieren',
 	'properties' => 'Eegeschaften',
 	'smw_properties_docu' => 'Dës Eegeschafte ginn op dëser Wiki benotzt.',
-	'smw_property_template' => '$1 vum Typ $2 ($3)', # Fuzzy
+	'smw_property_template' => '$1 vum Typ $2 ({{PLURAL:$3|eemol benotzt|$3 benotzt}})',
 	'smw_propertylackspage' => 'All Eegeschafte sollen op enger Säit beschriwwe sinn!',
 	'smw_propertyhardlyused' => 'Dës Eegeschaft gëtt an dëser Wiki kaum benotzt!',
 	'unusedproperties' => 'Onbenotzten Eegeschaften',
@@ -8358,6 +8368,7 @@ Zréck op d'Säit $1.",
 	'smw-paramdesc-category-userparam' => 'E Parameter deen der Schabloun iwwergi gëtt',
 	'smw-info-par-message' => 'Message fir ze weisen.',
 	'smw-info-par-icon' => 'Symbol fir entweder "Info" oder "Warnung" ze weisen.',
+	'smw-ui-tooltip-title-quantity' => 'Quantitéit',
 	'smw-ui-tooltip-title-warning' => 'Feeler',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 );
@@ -9353,7 +9364,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-outro' => 'De tekst die wordt weergegeven onder de zoekresultaten, als die er zijn',
 	'smw-paramdesc-default' => 'De tekst die wordt weergegeven als er geen zoekresultaten zijn',
 	'smw-paramdesc-sep' => 'Het scheidingsteken voor waarden',
-	'smw-paramdesc-showsep' => 'Toon het scheidingsteken bovenaan het CSV-bestand ("sep =<value>")',
+	'smw-paramdesc-showsep' => 'Het scheidingsteken bovenaan het CSV-bestand weergeven ("sep=<waarde>")',
 	'smw-paramdesc-distribution' => 'Geef het aantal waarden weer in plaats van alle waarden.',
 	'smw-paramdesc-distributionsort' => 'De waardeverdeling sorteren op aantal keer dat die voorkomt.',
 	'smw-paramdesc-distributionlimit' => 'Beperk de waardeverdeling tot het aantal van sommige waarden.',
@@ -9626,6 +9637,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw-info-par-icon' => 'Icoon dat "informatie" of "waarschuwing" aangeeft.',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Semantische zoekopties',
+	'smw-prefs-intro-text' => 'De onderstaande opties zijn mogelijk via [http://semantic-mediawiki.org/ Semantic MediaWiki] (of gerelateerde uitbreidingen) om individuele of aangepaste functies in te schakelen. Ga naar de [http://semantic-mediawiki.org/wiki/Help:User_preferences hulppagina] voor meer informatie.',
 	'smw-prefs-ask-options-tooltip-display' => 'Parametertekst weergeven als infotooltip',
 	'smw-prefs-ask-options-collapsed-default' => 'Optievenster standaard samengevouwen weergeven',
 	'smw-ui-tooltip-title-property' => 'Eigenschap',
@@ -14452,6 +14464,7 @@ $messages['zh-hans'] = array(
  * @author Anakmalaysia
  * @author Frankou
  * @author Gzdavidwong
+ * @author Justincheng12345
  * @author Mark85296341
  * @author Oapbtommy
  * @author Sheepy
@@ -14462,7 +14475,7 @@ $messages['zh-hant'] = array(
 	'smw-desc' => '讓你的維基更可及——對機器與人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 網上文檔]）',
 	'smw_viewasrdf' => 'RDF 源',
 	'smw_finallistconjunct' => '和',
-	'smw_factbox_head' => '關於 $1 的事實',
+	'smw_factbox_head' => '關於「$1」的訊息',
 	'smw_isspecprop' => '此屬性為維基中特殊屬性',
 	'smw_concept_description' => '概念「$1」的描述',
 	'smw_no_concept_namespace' => '概念只能在命名空間 Concept（概念）：下的頁面中定義。',
