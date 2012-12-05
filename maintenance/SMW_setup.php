@@ -152,7 +152,7 @@ class SMWSetupScript extends Maintenance {
 		}
 
 		$this->output( "\nAll storage structures for $storeName have been deleted." );
-		$this->output( "You can recreate them with this script, and then use SMW_refreshData.php to rebuild their contents.");
+		$this->output( "You can recreate them with this script, and then use SMW_refreshData.php to rebuild their contents.\n\n");
 	}
 
 	/**
