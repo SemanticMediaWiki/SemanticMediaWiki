@@ -21,8 +21,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 
 global $smwgIP;
 
-if ( version_compare( $wgVersion, '1.17c', '<' ) ) {
-	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.17 or above; use SMW 1.7.x for MediaWiki 1.16.x.' );
+if ( version_compare( $wgVersion, '1.19c', '<' ) ) {
+	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.19 or above; use SMW 1.8.x for MediaWiki 1.18.x or 1.17.x.' );
 }
 
 // Include the Validator extension if that hasn't been done yet, since it's required for SMW to work.

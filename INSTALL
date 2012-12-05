@@ -36,13 +36,10 @@ If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.17 or greater (tested up to 1.21alpha (647ccc6))
-* Validator MediaWiki extension version 0.5 or greater
-  (http://www.mediawiki.org/wiki/Extension:Validator)
-* PHP 5.2 or greater installed and working
-* MySQL >= 4.0.14 (version required by MediaWiki) OR PostgreSQL >= 8.3
-  Note that Postgres support is still preliminary and might require special
-  setup, see http://semantic-mediawiki.org/wiki/PostgreSQL
+* MediaWiki 1.19 or greater
+* Validator 0.5 or greater (https://www.mediawiki.org/wiki/Extension:Validator)
+* PHP 5.3 or greater
+* MySQL >= 4.0.14 (version required by MediaWiki)
 
 Notes:
 * SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the
