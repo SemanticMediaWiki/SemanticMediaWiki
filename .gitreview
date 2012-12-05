@@ -2,4 +2,4 @@
 host=gerrit.wikimedia.org
 port=29418
 project=mediawiki/extensions/SemanticMediaWiki.git
-defaultbranch=1.9.x
+defaultbranch=master
