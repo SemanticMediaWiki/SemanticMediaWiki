@@ -3341,6 +3341,7 @@ $messages['ee'] = array(
  * @author Consta
  * @author Crazymadlover
  * @author Geraki
+ * @author Glavkos
  * @author Lou
  * @author Omnipaedista
  * @author Protnet
@@ -3390,7 +3391,7 @@ $messages['el'] = array(
 	'smw_attribute_header' => 'Σελίδες που χρησιμοποιούν την ιδιότητα "$1"',
 	'smw_subproperty_header' => 'Υποϊδιότητες',
 	'smw_concept_header' => 'Σελίδες του κόνσεπτ "$1"',
-	'exportrdf' => 'Εξαγωγή σελίδων στο RDF',
+	'exportrdf' => 'Εξαγωγή σελίδων σε RDF',
 	'smw_exportrdf_submit' => 'Εξαγωγή',
 	'uriresolver' => 'Επιλύτης URI',
 	'properties' => 'Ιδιότητες',
@@ -3424,7 +3425,7 @@ $messages['el'] = array(
 	'smw_sbv_submit' => 'Αναζήτηση αποτελεσμάτων',
 	'browse' => 'Πλοήγηση στο wiki',
 	'smw_browselink' => 'Πλοήγηση στις ιδιότητες',
-	'smw_browse_go' => 'Πήγαινε',
+	'smw_browse_go' => 'Μετάβαση',
 	'smw_browse_show_incoming' => 'εμφάνιση ιδιοτήτων που συνδέουν εδώ',
 	'smw_browse_hide_incoming' => 'απόκρυψη ιδιοτήτων που συνδέουν εδώ',
 	'smw_inverse_label_default' => '$1 από',
@@ -3435,9 +3436,9 @@ $messages['el'] = array(
 	'smw_result_prev' => 'Προηγούμενος',
 	'smw_result_next' => 'Επόμενο',
 	'smw_result_results' => 'Αποτελέσματα',
-	'smw_result_noresults' => 'Συγνώμη, δεν υπάρχουν αποτελέσματα.',
+	'smw_result_noresults' => 'Λυπούμαστε, δεν υπάρχουν αποτελέσματα.',
 	'smw_smwadmin_return' => 'Επιστροφή στην $1',
-	'smw_smwadmin_updatestopped' => 'Όλες οι υπάρχουσες εργασίες ενημέρωσης έχουν διακοπεί.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Όλες οι υπάρχουσες διεργασίες ενημέρωσης έχουν διακοπεί.', # Fuzzy
 	'smw_smwadmin_db' => 'Εγκατάσταση βάσεως δεδομένων και αναβάθμιση',
 	'smw_smwadmin_dbbutton' => 'Αρχικοποίηση ή αναβάθμιση πινάκων',
 	'smw_smwadmin_announce' => 'Ανακοίνωση του wiki σας',
@@ -3451,6 +3452,19 @@ $messages['el'] = array(
 	'smw_adminlinks_displayingdata' => 'Προβαλλόμενα δεδομένα',
 	'smw_adminlinks_inlinequerieshelp' => 'Βοήθεια με τα αιτήματα',
 	'smw-createproperty-isproperty' => 'Αυτή είναι μια ιδιότητα του τύπου $1.',
+	'smw-paramdesc-category-template' => 'Ένα πρότυπο για να μορφοποιήσετε με αυτό τα στοιχεία',
+	'smw-paramdesc-category-userparam' => 'Παράμετρος για να την περάσετε στο πρότυπο',
+	'smw-info-par-message' => 'Μήνυμα προς εμφάνιση.',
+	'prefs-ask-options' => 'Επιλογές σημασιολογικής αναζήτησης',
+	'smw-prefs-ask-options-tooltip-display' => 'Εμφάνιση κειμένου παραμέτρου ως πληροφορίες στο δείκτη του ποντικιού',
+	'smw-ui-tooltip-title-property' => 'Ιδιότητα',
+	'smw-ui-tooltip-title-quantity' => 'Ποσότητα',
+	'smw-ui-tooltip-title-info' => 'Πληροφορίες',
+	'smw-ui-tooltip-title-service' => 'Σύνδεσμοι υπηρεσίας',
+	'smw-ui-tooltip-title-warning' => 'Σφάλμα',
+	'smw-ui-tooltip-title-parameter' => 'Παράμετρος',
+	'smw-ui-tooltip-title-event' => 'Συμβάν',
+	'smw_unknowntype' => 'Ο τύπος αυτής της ιδιότητας δεν είναι έγκυρος',
 );
 
 /** British English (British English)
