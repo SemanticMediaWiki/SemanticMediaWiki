@@ -278,7 +278,7 @@ final class SMWHooks {
 			'dataitems/DI_String',
 			'dataitems/DI_GeoCoord',
 
-			'parserhooks/ParserParameters',
+			'parserhooks/ParserParameter',
 
 			'printers/ResultPrinters',
 

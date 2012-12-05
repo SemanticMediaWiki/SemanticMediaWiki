@@ -1,7 +1,7 @@
 <?php
 
 namespace SMW;
-use MWException;
+use MWException, IContextSource, Html;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
@@ -135,6 +135,7 @@ class Highlighter extends \ContextSource {
 	 * @return integer
 	 */
 	public static function getTypeId( $type ) {
+		// TODO: why do we have a htmlspecialchars here?!
 		switch ( strtolower ( htmlspecialchars ( $type ) ) ) {
 			case 'property': return self::TYPE_PROPERTY;
 			case 'text'    : return self::TYPE_TEXT;
@@ -159,19 +160,19 @@ class Highlighter extends \ContextSource {
 	 * @return string
 	 */
 	private function getContainer() {
-		return \Html::rawElement(
+		return Html::rawElement(
 			'span',
 			array(
 				'class'      => 'smw-highlighter',
 				'data-type'  => $this->options['type'],
 				'data-state' => $this->options['state'],
 				'data-title' => $this->msg( $this->options['title'] )->text(),
-			), \Html::rawElement(
+			), Html::rawElement(
 					'span',
 					array(
 						'class' => $this->options['captionclass']
 					), $this->options['caption']
-				) . \Html::rawElement(
+				) . Html::rawElement(
 					'span',
 					array(
 						'class' => 'smwttcontent'
@@ -188,7 +189,7 @@ class Highlighter extends \ContextSource {
 	 *
 	 * @since 1.9
 	 *
-	 * @param string type
+	 * @param string $type
 	 *
 	 * @return array
 	 */
@@ -245,4 +246,5 @@ class Highlighter extends \ContextSource {
 
 		return $settings;
 	}
+
 }

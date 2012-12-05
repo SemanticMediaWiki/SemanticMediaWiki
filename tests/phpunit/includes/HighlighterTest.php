@@ -75,12 +75,16 @@ class HighlighterTest extends \MediaWikiTestCase {
 	public function testGetHtml( $type ) {
 		$instance = Highlighter::factory( $type );
 
+		$instance->setContent( array(
+			'title' => \Title::newMainPage()->getFullText()
+		) );
+
 		// Check without caption/content set
 		$this->assertTrue( is_string( $instance->getHtml() ) );
 
-		$instance->setContent( array (
+		$instance->setContent( array(
 			'caption' => '123',
-			'content' => 'ABC'
+			'content' => 'ABC',
 		) );
 
 		// Check with caption/content set
