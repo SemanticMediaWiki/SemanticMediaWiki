@@ -39,7 +39,7 @@ If you have any specific questions, please contact the authors.
 * MediaWiki 1.19 or greater
 * Validator 0.5 or greater (https://www.mediawiki.org/wiki/Extension:Validator)
 * PHP 5.3 or greater
-* MySQL >= 4.0.14 (version required by MediaWiki)
+* MySQL >= 5.0.2 (version required by MediaWiki)
 
 Notes:
 * SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the
