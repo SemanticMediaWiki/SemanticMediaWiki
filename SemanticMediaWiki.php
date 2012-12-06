@@ -63,12 +63,8 @@ $wgExtensionCredits['semantic'][] = array(
 );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
-// @deprecated
+// @deprecated, removal in SMW 1.11
 define( 'SEMANTIC_EXTENSION_TYPE', true );
-
-// A flag used to indicate SMW supports Validator style parameter definitions and validation in the SMWResultPrinter class.
-// @deprecated, removal in 1.9
-define( 'SMW_SUPPORTS_VALIDATOR', true );
 
 // Default settings
 require_once __DIR__ . '/SemanticMediaWiki.settings.php';
