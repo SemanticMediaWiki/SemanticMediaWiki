@@ -177,7 +177,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$dataItems = smwfGetStore()->getPropertyValues( $this->m_property->getDIWikiPage(), new SMWDIProperty( '_UNIT' ) );
 		$units = array();
 		foreach ( $dataItems as $di ) { // Join all if many annotations exist. Discouraged (random order) but possible.
-			if ( $di->getDIType() instanceof SMWDIBlob ) {
+			if ( $di instanceof SMWDIBlob ) {
 				$units = $units + preg_split( '/\s*,\s*/u', $di->getString() );
 			}
 		}
