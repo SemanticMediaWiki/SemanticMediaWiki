@@ -123,6 +123,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\FormatFactory']       	= $incDir . 'FormatFactory.php';
 	$wgAutoloadClasses['SMW\Highlighter']           = $incDir . 'Highlighter.php';
 	$wgAutoloadClasses['SMW\ParameterInput']        = $incDir . 'ParameterInput.php';
+	$wgAutoloadClasses['SMW\MessageReporter']        = $incDir . 'MessageReporter.php';
+	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . 'MessageReporter.php';
 	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDISerializer']           = $incDir . 'SMW_DISerializer.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
@@ -240,6 +242,9 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSparqlResultParser']     = $smwgIP . 'includes/sparql/SMW_SparqlResultParser.php';
 
 	$stoDir = $smwgIP . 'includes/storage/';
+
+	$wgAutoloadClasses['SMW\Store\PropertyStatisticsRebuilder']			= $stoDir . 'PropertyStatisticsRebuilder.php';
+	$wgAutoloadClasses['SMW\Store\PropertyStatisticsStore']				= $stoDir . 'PropertyStatisticsStore.php';
 	$wgAutoloadClasses['SMWQuery']                  = $stoDir . 'SMW_Query.php';
 	$wgAutoloadClasses['SMWQueryResult']            = $stoDir . 'SMW_QueryResult.php';
 	$wgAutoloadClasses['SMWResultArray']            = $stoDir . 'SMW_ResultArray.php';
@@ -259,7 +264,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSparqlStoreQueryEngine'] = $stoDir . 'SMW_SparqlStoreQueryEngine.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
 
-	//compatSQLStore (since SMW.storerewrite)
+	//compatSQLStore (since 1.8)
 	$stoCompatSQL = $smwgIP . 'includes/storage/compatSQLStore/';
 	$wgAutoloadClasses['SMWSQLStore2']              = $stoCompatSQL . 'SMW_SQLStore2.php';
 	$wgAutoloadClasses['SMWSqlStubSemanticData']    = $stoCompatSQL . 'SMW_SqlStubSemanticData.php';
@@ -267,8 +272,10 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoCompatSQL . 'SMW_SQLStore2Table.php';
 	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $stoCompatSQL . 'SMW_CompatibilityHelpers.php';
 
-	//SQLStore (since SMW.storerewrite)
+	//SQLStore (since 1.8)
 	$stoDirSQL = $smwgIP . 'includes/storage/SQLStore/';
+	$wgAutoloadClasses['SMW\SQLStore\PropertyStatisticsTable']				= $stoDirSQL . 'PropertyStatisticsTable.php';
+	$wgAutoloadClasses['SMW\SQLStore\SimplePropertyStatisticsRebuilder']	= $stoDirSQL . 'SimplePropertyStatisticsRebuilder.php';
 	$wgAutoloadClasses['SMWSQLStore3']                     = $stoDirSQL . 'SMW_SQLStore3.php';
 	$wgAutoloadClasses['SMWSql3StubSemanticData']          = $stoDirSQL . 'SMW_Sql3StubSemanticData.php';
 	$wgAutoloadClasses['SMWSql3SmwIds']                    = $stoDirSQL . 'SMW_Sql3SmwIds.php';

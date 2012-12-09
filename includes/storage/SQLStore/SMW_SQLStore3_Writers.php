@@ -436,6 +436,7 @@ class SMWSQLStore3Writers {
 	 * $rows in these datasets refer to the same subject ID.
 	 *
 	 * @since 1.8
+	 *
 	 * @param integer $sid
 	 * @param array $tablesInsertRows array mapping table names to arrays of rows
 	 * @param array $tablesDeleteRows array mapping table names to arrays of rows
@@ -446,6 +447,7 @@ class SMWSQLStore3Writers {
 		$propertyUseIncrements = array();
 
 		$propertyTables = SMWSQLStore3::getPropertyTables();
+
 		foreach ( $tablesInsertRows as $tableName => $insertRows ) {
 			// Note: by construction, the inserts and deletes have the same table keys.
 			// Note: by construction, the inserts and deletes are currently disjoint;
@@ -458,9 +460,8 @@ class SMWSQLStore3Writers {
 			$this->store->smwIds->setPropertyTableHashes( $sid, $newHashes );
 		}
 
-		foreach ( $propertyUseIncrements as $pid => $increment ) {
-			$this->addToPropertyUsageCount( $pid, $increment, $dbw );
-		}
+		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $dbw );
+		$statsTable->addToUsageCounts( $propertyUseIncrements );
 	}
 
 	/**
@@ -540,33 +541,6 @@ class SMWSQLStore3Writers {
 	}
 
 	/**
-	 * Change the usage count for the property of the given ID by the given
-	 * value. The method does nothing if the count is 0.
-	 *
-	 * @since 1.8
-	 * @param integer $propertyId
-	 * @param integer $value
-	 * @param DatabaseBase $dbw used for writing
-	 * @return boolean success indicator
-	 */
-	protected function addToPropertyUsageCount( $propertyId, $value, DatabaseBase $dbw ) {
-		if ( $value == 0 ) {
-			return true;
-		}
-
-		return $dbw->update(
-			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
-			array(
-				'usage_count = usage_count + ' . $dbw->addQuotes( $value ),
-			),
-			array(
-				'p_id' => $propertyId
-			),
-			__METHOD__
-		);
-	}
-
-	/**
 	 * Set the semantic data cache to hold exactly the given value for the
 	 * given ID.
 	 *
@@ -619,6 +593,7 @@ class SMWSQLStore3Writers {
 		// get IDs but do not resolve redirects:
 		$sid = $this->store->smwIds->getSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', false );
 		$tid = $this->store->smwIds->getSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '', false );
+
 		$db = wfGetDB( DB_MASTER );
 
 		// Easy case: target not used anywhere yet, just hijack its title for our current id
@@ -671,10 +646,10 @@ class SMWSQLStore3Writers {
 				 __METHOD__
 			);
 
-			$this->addToPropertyUsageCount(
+			$statsTable = new \SMW\Store\SqlPropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db );
+			$statsTable->addToUsageCount(
 				$this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
-				1,
-				$db
+				1
 			);
 
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
@@ -878,10 +853,10 @@ class SMWSQLStore3Writers {
 
 		// *** Update reference count for _REDI property ***//
 
-		$this->addToPropertyUsageCount(
+		$statsTable = new \SMW\Store\SqlPropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db );
+		$statsTable->addToUsageCount(
 			$this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
-			$count,
-			$db
+			$count
 		);
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;

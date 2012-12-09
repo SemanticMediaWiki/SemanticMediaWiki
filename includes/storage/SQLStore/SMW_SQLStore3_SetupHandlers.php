@@ -1,4 +1,7 @@
 <?php
+
+use SMW\MessageReporter;
+
 /**
  * @file
  * @ingroup SMWStore
@@ -15,7 +18,7 @@
  * @since 1.8
  * @ingroup SMWStore
  */
-class SMWSQLStore3SetupHandlers {
+class SMWSQLStore3SetupHandlers implements MessageReporter {
 
 	/**
 	 * The store used by this setupHandler
@@ -37,7 +40,6 @@ class SMWSQLStore3SetupHandlers {
 
 		$this->setupTables( $verbose, $db );
 		$this->setupPredefinedProperties( $verbose, $db );
-		$this->refreshPropertyStatistics( $verbose, $db );
 
 		return true;
 	}
@@ -203,7 +205,7 @@ class SMWSQLStore3SetupHandlers {
 	 * allows us to safe DB calls when certain data is needed. At the same time, the entries in the DB
 	 * make sure that DB-based functions work as with all other properties.
 	 */
-	protected function setupPredefinedProperties( $verbose, $db ) {
+	protected function setupPredefinedProperties( $verbose, DatabaseBase $db ) {
 		global $wgDBtype;
 
 		$this->reportProgress( "Setting up internal property indices ...\n", $verbose );
@@ -265,63 +267,6 @@ class SMWSQLStore3SetupHandlers {
 		}
 
 		$this->reportProgress( "Internal properties initialised successfully.\n", $verbose );
-	}
-
-	/**
-	 * Update the usage count in the property statistics table for all
-	 * properties. This function also initialises the required entry for
-	 * all properties that have IDs in the SMW IDs table.
-	 *
-	 * @since 1.8
-	 * @param boolean $verbose
-	 * @param DatabaseBase $dbw used for writing
-	 */
-	protected function refreshPropertyStatistics( $verbose, $dbw ) {
-		$this->reportProgress( "Updating property statistics. This may take a while.\n", $verbose );
-
-		$res = $dbw->select(
-				SMWSql3SmwIds::tableName,
-				array( 'smw_id', 'smw_title' ),
-				array( 'smw_namespace' => SMW_NS_PROPERTY  ),
-				__METHOD__
-		);
-
-		$propertyTables = SMWSQLStore3::getPropertyTables();
-
-		foreach ( $res as $row ) {
-			$this->reportProgress( '.', $verbose );
-
-			$usageCount = 0;
-			foreach ( $propertyTables as $propertyTable ) {
-
-				if ( ( $propertyTable->isFixedPropertyTable() ) &&
-					( $propertyTable->getFixedProperty() != $row->smw_title ) ) {
-					// This table cannot store values for this property
-					continue;
-				}
-
-				$propRow = $dbw->selectRow(
-						$propertyTable->getName(),
-						'Count(*) as count',
-						$propertyTable->isFixedPropertyTable() ? array() : array('p_id' => $row->smw_id ),
-						__METHOD__
-				);
-				$usageCount += $propRow->count;
-			}
-
-			$dbw->replace(
-				SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
-				'p_id',
-				array(
-					'p_id' => $row->smw_id,
-					'usage_count' => $usageCount
-				),
-				__METHOD__
-			);
-		}
-
-		$this->reportProgress( "\nUpdated statistics for {$res->numRows()} Properties.\n", $verbose );
-		$dbw->freeResult( $res );
 	}
 
 	public function drop( $verbose = true ) {
@@ -476,4 +421,16 @@ class SMWSQLStore3SetupHandlers {
 			flush();
 		}
 	}
+
+	/**
+	 * @see MessageReporter::reportMessage
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $message
+	 */
+	public function reportMessage( $message ) {
+		$this->reportProgress( $message );
+	}
+
 }

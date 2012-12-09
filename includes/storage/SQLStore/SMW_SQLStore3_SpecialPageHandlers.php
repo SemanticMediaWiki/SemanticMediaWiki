@@ -39,6 +39,9 @@ class SMWSQLStore3SpecialPageHandlers {
 	 *
 	 * @bug Properties that are used as super properties of others are reported as unused now.
 	 *
+	 * FIXME: this method is doing to uch things. Getting unused properties and getting usage counts
+	 * for all properties are two different tasks.
+	 *
 	 * @see SMWStore::getPropertiesSpecial()
 	 * @see SMWStore::getUnusedPropertiesSpecial()
 	 * @since 1.8
@@ -52,6 +55,7 @@ class SMWSQLStore3SpecialPageHandlers {
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 
 		$options = array( 'ORDER BY' => 'smw_sortkey' );
+
 		if ( $requestoptions !== null ) {
 			if ( $requestoptions->limit > 0 ) {
 				$options['LIMIT'] = $requestoptions->limit;
@@ -59,20 +63,45 @@ class SMWSQLStore3SpecialPageHandlers {
 			}
 		}
 
-		$conds = array( 'smw_namespace' => SMW_NS_PROPERTY, 'smw_iw' => '' );
-		if( $unusedProperties ) {
+		$conds = array(
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_iw' => ''
+		);
+
+		if ( $unusedProperties ) {
 			$conds['usage_count'] = 0;
-		}
-		$res = $dbr->select(
+
+			$res = $dbr->select(
 				array( SMWSql3SmwIds::tableName, SMWSQLStore3::PROPERTY_STATISTICS_TABLE ),
 				array( 'smw_title', 'usage_count' ),
 				$conds,
 				__METHOD__,
 				$options,
 				array( SMWSql3SmwIds::tableName => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
-		);
+			);
+		}
+		else {
+			$res = $dbr->select(
+				SMWSql3SmwIds::tableName,
+				array( 'smw_id', 'smw_title' ),
+				$conds,
+				__METHOD__,
+				$options
+			);
+		}
+
+
+		$propertyIds = array();
+
+		foreach ( $res as $row ) {
+			$propertyIds[] = (int)$row->smw_id;
+		}
+
+		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $dbr );
+		$usageCounts = $statsTable->getUsageCounts( $propertyIds );
 
 		$result = array();
+
 		foreach ( $res as $row ) {
 			try {
 				$property = new SMWDIProperty( $row->smw_title );
@@ -82,7 +111,10 @@ class SMWSQLStore3SpecialPageHandlers {
 				// * The message text is not ideal for this situation.
 				$property = new SMWDIError( array( wfMessage( 'smw_noproperty', $row->smw_title )->inContentLanguage()->text() ) );
 			}
-			$result[] = $unusedProperties ? $property : array( $property, $row->usage_count );
+
+			$usageCount = $usageCounts[(int)$row->smw_id];
+
+			$result[] = $unusedProperties? $property : array( $property, $usageCount );
 		}
 
 		$dbr->freeResult( $res );

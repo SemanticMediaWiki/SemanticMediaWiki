@@ -422,16 +422,12 @@ class SMWSql3SmwIds {
 
 			// Properties also need to be in the property statistics table
 			if( $namespace == SMW_NS_PROPERTY ) {
-				$db->insert(
-					SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
-					array(
-						'p_id' => $id,
-						'usage_count' => 0
-					),
-					__METHOD__
-				);
+				$statsStore = new \SMW\Store\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db );
+				$statsStore->insertUsageCount( $id, 0 );
 			}
+
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
+
 			if ( $fetchHashes ) {
 				$this->setPropertyTableHashesCache( $id, null );
 			}
