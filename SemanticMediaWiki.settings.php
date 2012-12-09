@@ -393,13 +393,6 @@ $smwgPDefaultType = '_wpg';
 ##
 
 ###
-# Settings for RSS export
-##
-$smwgRSSEnabled = true;  // use to switch off RSS (it's not worse than querying Special:Ask, but attracts more users)
-$smwgRSSWithPages = true; // Should RSS feeds deliver whole pages or just link to them?
-##
-
-###
 # Settings for OWL/RDF export
 ##
 $smwgAllowRecursiveExport = false; // can normal users request recursive export?
