@@ -54,7 +54,7 @@ class SMWLanguageRu extends SMWLanguage {
 		'_TYPE' => 'Имеет тип',
 		'_URI'  => 'Эквивалентный URI',
 		'_SUBP' => 'Подчиненное свойству',
-		'_SUBC' => 'Subcategory of', // TODO: translate
+		'_SUBC' => 'Вложенная категория',
 		'_UNIT' => 'Отображаемые единицы',
 		'_IMPO' => 'Импортировано из',
 		'_CONV' => 'Относится к',
@@ -64,14 +64,14 @@ class SMWLanguageRu extends SMWLanguage {
 		'_CDAT' => 'Дата создания',
 		'_NEWP' => 'Новая страница',
 		'_LEDT' => 'Последний редактор',
-		'_ERRP' => 'Has improper value for', // TODO: translate
+		'_ERRP' => 'Содержит некорректное значение',
 		'_LIST' => 'Имеет поля',
-		'_SOBJ' => 'Has subobject', // TODO: translate
-		'_ASK'  => 'Has query', // TODO: translate
-		'_ASKST'=> 'Query string', // TODO: translate
-		'_ASKFO'=> 'Query format', // TODO: translate
-		'_ASKSI'=> 'Query size', // TODO: translate
-		'_ASKDE'=> 'Query depth', // TODO: translate
+		'_SOBJ' => 'Содержит субобъект',
+		'_ASK'  => 'Содержит запрос',
+		'_ASKST'=> 'Строка запроса',
+		'_ASKFO'=> 'Формат запроса',
+		'_ASKSI'=> 'Размер запроса',
+		'_ASKDE'=> 'Глубина запроса',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
