@@ -77,3 +77,8 @@ img.smwttimg { /* images for tooltip icons */
 	display:inline-block;
 	/* @embed */ background: url(images/warning.png) no-repeat left bottom;
 }
+
+.smwtticon.note {
+	display:inline-block;
+	/* @embed */ background: url(images/note.png) no-repeat left bottom;
+}

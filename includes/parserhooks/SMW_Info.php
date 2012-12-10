@@ -98,7 +98,7 @@ class SMWInfo extends ParserHook {
 				'name' => 'icon',
 				'message' => 'smw-info-par-icon',
 				'default' => 'info',
-				'values' => array( 'info', 'warning' ),
+				'values' => array( 'info', 'warning', 'note' ),
 			),
 		);
 	}
