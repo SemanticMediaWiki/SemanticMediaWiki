@@ -498,7 +498,8 @@ $messages['qqq'] = array(
 	'smw-paramdesc-outro' => 'This is the description of the "outro" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-default' => 'This is the description of the "default" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-sep' => 'This is the description of the "sep" (value separator) parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-showsep' => 'This is the description of the "showsep" (show value separator at top of csv file) parameter for the "csv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-showsep' => 'This is the description of the "showsep" (show value separator at top of csv file) parameter for the "csv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].
+{{doc-important|Do not translate the parameter name "sep". However <value> may be translated.}}',
 	'smw-paramdesc-distribution' => 'This is the description of the "distribution" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-distributionsort' => 'This is the description of the "distributionsort" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-distributionlimit' => 'This is the description of the "distributionlimit" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
@@ -2779,7 +2780,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-outro' => 'Der nach etwaigen Abfrageergebnissen anzuzeigende Text',
 	'smw-paramdesc-default' => 'Der anzuzeigende Text, sofern keine Abfrageergebnisse vorhanden sind',
 	'smw-paramdesc-sep' => 'Das Trennzeichen für die Ergebniswerte',
-	'smw-paramdesc-showsep' => 'Das Trennzeichen im Kopfbereich der CSV-Datei anzeigen (<code>sep=<value><code>)',
+	'smw-paramdesc-showsep' => 'Das Trennzeichen im Kopfbereich der CSV-Datei anzeigen (<code>sep=</code><Wert>)',
 	'smw-paramdesc-distribution' => 'Die Anzahl der Vorkommen von Werten zählen und anzeigen, anstatt sie alle anzuzeigen.',
 	'smw-paramdesc-distributionsort' => 'Die Werteverteilung nach Anzahl der Vorkommen sortieren.',
 	'smw-paramdesc-distributionlimit' => 'Die Anzahl der Vorkommen von Werten auf bestimmte Werte beschränken.',
@@ -4168,7 +4169,7 @@ $messages['fi'] = array(
 	'smw-paramdesc-feedtitle' => 'Syötteen otsikkoteksti',
 	'smw-paramdesc-feeddescription' => 'Syötteen kuvausteksti',
 	'smw-paramdesc-feedpagecontent' => 'Sivun sisältö, joka näytetään syötteessä',
-	'smw-label-feed-description' => '$2-syöte $1',
+	'smw-label-feed-description' => '$1 $2-syöte',
 	'smw_iq_disabled' => 'Semanttiset hakukyselyt on estetty tässä wikissä.',
 	'smw_iq_moreresults' => '… lisää tuloksia',
 	'smw_parseerror' => 'Tarjottua arvoa ei ymmärretty.',
@@ -4365,8 +4366,8 @@ Tämä voi olla hyödyllistä, kun halutaan korjata tai päivittää dataa, jonk
 Päivitys etenee sivu sivulta eikä valmistu nopeasti.
 Alla näkyy päivityksen eteneminen ja mahdollistaa päivitysten käynnistämisen tai pysäyttämisen (paitsi jos sivuston ylläpitäjä on ottanut toiminnon pois käytöstä).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Päivitys on jo käynnissä.</strong>
-On normaalia, että päivitys etenee hitaasti, sillä se päivittää tiedot vain pieninä paloina aina, kun joku käyttäjä käyttää wiki.
-Jos haluat päivityksen valmistuvan nopeammin, käytä MediaWiki-ylläpidon komentosarjaa <tt>runJobs.php</tt> (käytä valintaa <tt>--maxjobs 1000</tt> rajoittaaksesi yhdessä erässsä tehtävien päivitysten määrää).
+On normaalia, että päivitys etenee hitaasti, sillä tietoja päivitetään pienissä osissa silloin kuin wikin sivuja ladataan.
+Jos haluat päivityksen valmistuvan nopeammin, käytä MediaWikin ylläpitokomentosarjaa <tt>runJobs.php</tt> (käytä valitsinta <tt>--maxjobs 1000</tt> rajoittaaksesi yhdessä erässsä tehtävien päivitysten määrää).
 Nykyisen päivityksen arvioitu eteneminen:',
 	'smw_smwadmin_datarefreshbutton' => 'Aloita tietojen päivitys',
 	'smw_smwadmin_datarefreshstop' => 'Lopeta tämä päivitys',
@@ -7456,7 +7457,7 @@ $messages['ja'] = array(
 	'smw-paramdesc-outro' => '問い合わせ結果がある場合、その後に表示する文字列',
 	'smw-paramdesc-default' => '問い合わせ結果がない場合に表示する文字列',
 	'smw-paramdesc-sep' => '値の区切り文字',
-	'smw-paramdesc-showsep' => 'CSV ファイルの先頭に区切り文字を表示する ("sep=<value>")',
+	'smw-paramdesc-showsep' => 'CSV ファイルの先頭に区切り文字を表示する ("sep=<値>")',
 	'smw-paramdesc-template' => '印刷出力とともに表示するテンプレートの名前',
 	'smw-paramdesc-columns' => '結果を表示する列の数 (既定は$1)',
 	'smw-paramdesc-userparam' => 'テンプレートが使用されている場合に、各テンプレート呼出しに渡される値',
