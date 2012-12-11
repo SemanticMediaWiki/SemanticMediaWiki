@@ -3054,6 +3054,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-ui-tooltip-title-warning' => 'Warnhinweis',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw-ui-tooltip-title-event' => 'Ereignis',
+	'smw-ui-tooltip-title-note' => 'Hinweis',
 	'smw_unknowntype' => 'Der Datentyp dieses Attributs ist ungültig.',
 );
 
@@ -4739,6 +4740,7 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-ui-tooltip-title-warning' => 'Erreur',
 	'smw-ui-tooltip-title-parameter' => 'Paramètre',
 	'smw-ui-tooltip-title-event' => 'Évènement',
+	'smw-ui-tooltip-title-note' => 'Note',
 	'smw_unknowntype' => "Le type de cette propriété n'est pas valide",
 );
 
@@ -6286,6 +6288,7 @@ Trochowany staw aktualneje aktualizacije:',
 	'smw-ui-tooltip-title-warning' => 'Zmylk',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw-ui-tooltip-title-event' => 'Podawk',
+	'smw-ui-tooltip-title-note' => 'Přispomnjenka',
 	'smw_unknowntype' => 'Typ tuteje kajkosće je njepłaćiwy',
 );
 
@@ -7718,6 +7721,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw-ui-tooltip-title-warning' => 'エラー',
 	'smw-ui-tooltip-title-parameter' => 'パラメーター',
 	'smw-ui-tooltip-title-event' => 'イベント',
+	'smw-ui-tooltip-title-note' => '注記',
 	'smw_unknowntype' => 'このプロパティの型は無効です',
 );
 
@@ -8842,6 +8846,7 @@ $messages['mk'] = array(
 	'smw-ui-tooltip-title-warning' => 'Грешка',
 	'smw-ui-tooltip-title-parameter' => 'Параметар',
 	'smw-ui-tooltip-title-event' => 'Настан',
+	'smw-ui-tooltip-title-note' => 'Белешка',
 	'smw_unknowntype' => 'Ова својство е од неважечки тип',
 );
 
@@ -9715,6 +9720,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw-ui-tooltip-title-warning' => 'Fout',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw-ui-tooltip-title-event' => 'Evenement',
+	'smw-ui-tooltip-title-note' => 'Notitie',
 	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
 );
 
@@ -10136,6 +10142,7 @@ $messages['pfl'] = array(
 /** Polish (polski)
  * @author BeginaFelicysym
  * @author Maikking
+ * @author Odie2
  * @author Sp5uhe
  * @author ToSter
  * @author Vuh
@@ -10409,6 +10416,7 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw-ui-tooltip-title-warning' => 'Błąd',
 	'smw-ui-tooltip-title-parameter' => 'Parametr',
 	'smw-ui-tooltip-title-event' => 'Wydarzenie',
+	'smw-ui-tooltip-title-note' => 'Notatka',
 	'smw_unknowntype' => 'Typ atrybutu jest nieprawidłowy.',
 );
 
