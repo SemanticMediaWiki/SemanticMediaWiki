@@ -5239,6 +5239,7 @@ Progreso estimado da actualización actual:',
 	'smw-ui-tooltip-title-warning' => 'Erro',
 	'smw-ui-tooltip-title-parameter' => 'Parámetro',
 	'smw-ui-tooltip-title-event' => 'Evento',
+	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw_unknowntype' => 'O tipo desta propiedade non é válido',
 );
 
