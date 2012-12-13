@@ -7158,6 +7158,7 @@ $messages['io'] = array(
  * @author Gianfranco
  * @author Gmelfi
  * @author Melos
+ * @author Nemo bis
  * @author Pietrodn
  * @author Ximo17
  */
@@ -7182,7 +7183,6 @@ $messages['it'] = array(
 	'smw_printername_list' => 'Lista',
 	'smw_printername_ol' => 'Enumerazione',
 	'smw_printername_ul' => 'Creazione lista di elementi',
-	'smw_printername_rss' => 'Esportazione RSS',
 	'smw_printername_table' => 'Tabella',
 	'smw_printername_broadtable' => 'Tabella estesa',
 	'smw_printername_template' => 'Template',
@@ -7199,8 +7199,6 @@ $messages['it'] = array(
 	'smw-paramdesc-columns' => 'Il numero di colonne in cui ordinare la visualizzazione dei risultati (valore predefinito: $1)',
 	'smw-paramdesc-embedformat' => 'Il tag HTML usato per definire le intestazioni',
 	'smw-paramdesc-embedonly' => 'Non mostrare intestazioni',
-	'smw-paramdesc-rsstitle' => 'Testo da usare come titolo del feed',
-	'smw-paramdesc-rssdescription' => 'Testo da usare come descrizione del feed',
 	'smw-paramdesc-rdfsyntax' => 'La sintassi RDF da utilizzare',
 	'smw-paramdesc-csv-sep' => 'Il separatore da usare',
 	'smw-paramdesc-dsv-separator' => 'Il separatore da usare',
@@ -7254,7 +7252,7 @@ $messages['it'] = array(
 	'uriresolver' => 'Risolutore di URI',
 	'properties' => 'Proprietà',
 	'smw_properties_docu' => "Le seguenti proprietà sono utilizzate all'interno del wiki.",
-	'smw_property_template' => '$1 di tipo $2 ($3)',
+	'smw_property_template' => '$1 di tipo $2 ($3)', # Fuzzy
 	'smw_propertylackspage' => 'Tutte le proprietà dovrebbero essere descritte da una pagina!',
 	'smw_propertylackstype' => 'Non è stato specificato nessun tipo per questa proprietà (per il momento si suppone sia di tipo $1).',
 	'smw_propertyhardlyused' => 'Questa proprietà non è quasi mai usata nel wiki!',
@@ -7376,7 +7374,7 @@ Puoi assegnare a questo utente permessi aggiuntivi per creare e cancellare tabel
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispone di un servizio web per dare notizia di nuovi siti wiki semantici.
 Il servizio è usato per mantenere una lista di siti pubblici che usano Semantic MediaWiki principalmente per fornire al <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Progetto Semantic MediaWiki</a> una panoramica degli usi tipici del Semantic MediaWiki.
 Visita la Home Page di Semantic MediaWiki per <a href="http://semantic-mediawiki.org/wiki/Registry">maggiori informazioni su questo servizio</a>.',
-	'smw_smwadmin_announcebutton' => 'Premi il bottone seguente per inviare la URL del tuo wiki a quel servizio.
+	'smw_smwadmin_announcebutton' => 'Premi il pulsante seguente per inviare la URL del tuo wiki a quel servizio.
 Il servizio non registrerà wiki che non siano pubblicamente accessibili, e conserverà esclusivamente informazioni pubblicamente accessibili.',
 	'smw_smwadmin_datarefresh' => 'Riparazione ed aggiornamento dei dati',
 	'smw_smwadmin_datarefreshdocu' => "Si possono ripristinare tutti i dati Semantic MediaWiki basati sui contenuti attuali del wiki.
