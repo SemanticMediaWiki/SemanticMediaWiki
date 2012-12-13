@@ -22,7 +22,7 @@ use SMWParseData;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.7
+ * @since 1.9
  *
  * @file
  * @ingroup SMW
@@ -36,7 +36,7 @@ class SubobjectParser {
 	/**
 	 * Method for handling the subobject parser function.
 	 *
-	 * @since 1.7
+	 * @since 1.9
 	 *
 	 * @param Parser $parser
 	 */
