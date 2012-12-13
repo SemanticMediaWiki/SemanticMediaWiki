@@ -1,9 +1,11 @@
 <?php
 
 namespace SMW;
+use MWException, ContextSource, IContextSource, RequestContext;
+use SMWPropertyValue, SMWDataValueFactory, SMWDIProperty, SMWDIWikiPage, SMWContainerSemanticData, SMWDIContainer;
 
 /**
- * Class for the 'subobject' parser functions.
+ * Class for the 'subobject' interface functions
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,89 +22,175 @@ namespace SMW;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.7
+ * @since 1.9
  *
  * @file
  * @ingroup SMW
- * @ingroup ParserHooks
  *
- * @author Markus Krötzsch
  * @author mwjames
  */
-class Subobject {
-
-	protected static $m_errors;
+class Subobject extends ContextSource {
 
 	/**
-	 * Method for handling the subobject parser function.
-	 *
-	 * @since 1.7
-	 *
-	 * @param Parser $parser
+	 * @var subject
 	 */
-	public static function render( \Parser &$parser ) {
-		self::$m_errors = array();
+	 protected $subject;
 
-		$params = func_get_args();
-		array_shift( $params ); // We already know the $parser ...
+	/**
+	 * @var subobjectName
+	 */
+	 protected $subobjectName;
 
-		$subobjectName = str_replace( ' ', '_', trim( array_shift( $params ) ) );
+	/**
+	 * @var semanticData
+	 */
+	 protected $semanticData;
 
-		// For objects that don't come with there own idenifier, use a value
-		// dependant md4 hash key
-		if ( $subobjectName === '' || $subobjectName === '-' ){
-			$subobjectName = '_' . hash( 'md4', implode( '|', $params ) , false );
+	/**
+	 * @var errors
+	 */
+	protected $errors = array();
+
+	/**
+	 * Constructor
+	 *
+	 * @since 1.9
+	 *
+	 * @param SMWDIWikiPage $subject
+	 * @param string|null $subobjectName
+	 * @param \IContextSource|null $context
+	 *
+	 */
+	public function __construct( SMWDIWikiPage $subject, $subobjectName = null, IContextSource $context = null ) {
+		if ( !$context ) {
+			$context = RequestContext::getMain();
 		}
+		$this->setContext( $context );
+		$this->subject = $subject;
+		$this->setSubjectContainer( $subobjectName );
+	}
 
-		$mainSemanticData = \SMWParseData::getSMWData( $parser );
-		$subject = $mainSemanticData->getSubject();
+	/**
+	 * Factory method
+	 *
+	 * @since 1.9
+	 *
+	 * @param SMWDIWikiPage $subject
+	 * @param string|null $subobjectName
+	 * @param \IContextSource|null $context
+	 *
+	 * @return SMW\Subobject
+	 */
+	public static function factory( SMWDIWikiPage $subject, $subobjectName = null , IContextSource $context = null ){
+		return new Subobject( $subject, $subobjectName, $context );
+	}
 
-		$diSubWikiPage = new \SMWDIWikiPage( $subject->getDBkey(),
-				$subject->getNamespace(), $subject->getInterwiki(),
+	/**
+	 * Returns the subobject name
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getSubobjectName(){
+		return $this->subobjectName;
+	}
+
+	/**
+	 * Return errors that happen during the insert procedure
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function getErrors(){
+		return $this->errors;
+	}
+
+	/**
+	 * Sets the semantic data container for a subobject wikipage object
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $subobjectName
+	 *
+	 * @return SMWContainerSemanticData
+	 */
+	public function setSubjectContainer( $subobjectName ){
+		if ( $subobjectName !== '' ) {
+			$this->subobjectName = $subobjectName;
+
+			$diSubWikiPage = new SMWDIWikiPage( $this->subject->getDBkey(),
+				$this->subject->getNamespace(), $this->subject->getInterwiki(),
 				$subobjectName );
 
-		$semanticData = new \SMWContainerSemanticData( $diSubWikiPage );
-
-		// Get property/value mapping from the parser parameter class
-		foreach ( ParserParameter::singleton()->getParameters( $params ) as $property => $values ){
-			foreach ( $values as $value ) {
-				self::addPropertyValueToSemanticData( $property, $value, $semanticData );
-			}
+			return $this->semanticData = new SMWContainerSemanticData( $diSubWikiPage );
 		}
+		return '';
+	}
 
-		$propertyDi = new \SMWDIProperty('_SOBJ');
-		$subObjectDi = new \SMWDIContainer( $semanticData );
-		\SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $propertyDi, $subObjectDi );
+	/**
+	 * Returns semantic data container for a subject
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWContainerSemanticData
+	 */
+	public function getSubjectContainer(){
+		return $this->semanticData;
+	}
 
-		return smwfEncodeMessages( self::$m_errors );
+	/**
+	 * Returns subobject property data item
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWDIProperty
+	 */
+	public function getSubobjectProperty(){
+		return new SMWDIProperty( SMWDIProperty::TYPE_SUBOBJECT );
+	}
+
+	/**
+	 * Returns semantic data container for a subobject
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWDIContainer
+	 */
+	public function getSubobjectContainer(){
+		return new SMWDIContainer( $this->semanticData );
 	}
 
 	/**
 	 * Add property/value to the semantic data container
 	 *
-	 * @since 1.7
+	 * @since 1.9
 	 *
 	 * @param string $propertyName
 	 * @param string $valueString
-	 * @param SMWContainerSemanticData $semanticData
 	 */
-	protected static function addPropertyValueToSemanticData( $propertyName, $valueString, $semanticData ) {
-		$propertyDv = \SMWPropertyValue::makeUserProperty( $propertyName );
+	public function addPropertyValue( $propertyName, $valueString ) {
+		if ( $this->semanticData === array() ) {
+			throw new MWException( 'The subject container is not initialized' );
+		}
+
+		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
 		$propertyDi = $propertyDv->getDataItem();
 
 		if ( !$propertyDi->isInverse() ) {
-			$valueDv = \SMWDataValueFactory::newPropertyObjectValue( $propertyDi, $valueString,
-				false, $semanticData->getSubject() );
-			$semanticData->addPropertyObjectValue( $propertyDi, $valueDv->getDataItem() );
+			$valueDv = SMWDataValueFactory::newPropertyObjectValue( $propertyDi, $valueString,
+				false, $this->semanticData->getSubject() );
+			$this->semanticData->addPropertyObjectValue( $propertyDi, $valueDv->getDataItem() );
 
 			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
 			if ( !$valueDv->isValid() ) {
-				$semanticData->addPropertyObjectValue( new \SMWDIProperty( '_ERRP' ),
+				$this->semanticData->addPropertyObjectValue( new SMWDIProperty( SMWDIProperty::TYPE_ERROR ),
 					$propertyDi->getDiWikiPage() );
-				self::$m_errors = array_merge( self::$m_errors, $valueDv->getErrors() );
+				$this->errors = array_merge( $this->errors, $valueDv->getErrors() );
 			}
 		} else {
-			self::$m_errors[] = wfMessage( 'smw_noinvannot' )->inContentLanguage()->text();
+			$this->errors[] = $this->msg( 'smw_noinvannot' )->inContentLanguage()->text();
 		}
 	}
 }

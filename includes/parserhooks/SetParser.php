@@ -1,6 +1,7 @@
 <?php
 
 namespace SMW;
+use Parser, SMWParseData;
 
 /**
  * Class for the 'set' parser functions.
@@ -33,7 +34,7 @@ namespace SMW;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class Set {
+class SetParser {
 
 	/**
 	 * Method for handling the set parser function.
@@ -42,13 +43,13 @@ class Set {
 	 *
 	 * @param Parser $parser
 	 */
-	public static function render( \Parser &$parser ) {
+	public static function render( Parser &$parser ) {
 		$params = func_get_args();
 		array_shift( $params );
 
 		foreach ( ParserParameter::singleton()->getParameters( $params ) as $property => $values ){
 			foreach ( $values as $value ) {
-				\SMWParseData::addProperty( $property, $value, false, $parser, true );
+				SMWParseData::addProperty( $property, $value, false, $parser, true );
 			}
 		}
 		return '';
