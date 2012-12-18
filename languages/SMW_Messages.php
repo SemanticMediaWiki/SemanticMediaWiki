@@ -1495,6 +1495,13 @@ $messages['az'] = array(
 	'smw_result_results' => 'Nəticələr',
 );
 
+/** South Azerbaijani (تورکجه)
+ * @author Ebrahimi-amir
+ */
+$messages['azb'] = array(
+	'smw_browselink' => 'اوزللیکلری گؤزدن کئچیر',
+);
+
 /** Bashkir (башҡортса)
  * @author Roustammr
  */
@@ -13638,6 +13645,7 @@ $messages['ug-latn'] = array(
  * @author Base
  * @author Olvin
  * @author Prima klasy4na
+ * @author Steve.rusyn
  * @author Тест
  * @author Юрій Булка
  */
@@ -13772,8 +13780,10 @@ $messages['uk'] = array(
 	'smw_ask_show_embed' => 'Показати включений код',
 	'smw_ask_hide_embed' => 'Приховати включений код',
 	'smw_ask_embed_instr' => 'Щоб вбудувати цей запит в вікісторінку, використовуйте поданий нижче код.',
+	'smw_qui_formt' => 'Формат:',
 	'smw_qui_ok' => 'Гаразд',
 	'smw_qui_cancel' => 'Скасувати',
+	'smw_qui_dcategory' => 'Категорія:',
 	'searchbyproperty' => 'Шукати за властивістю',
 	'smw_sbv_docu' => 'Шукати всі сторінки, що мають вказану властивість і значення.',
 	'smw_sbv_novalue' => 'Введіть правильне значення властивості або перегляньте всі значення властивості «$1».',
