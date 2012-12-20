@@ -699,7 +699,9 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	 * Remove any cache entry for the given data.
+	 * Remove any cache entry for the given data. The key consists of the
+	 * parameters $title, $namespace, $interwiki, and $subobject. The
+	 * cached data is $id and $sortkey.
 	 *
 	 * @since 1.8
 	 * @param string $title
@@ -707,7 +709,7 @@ class SMWSql3SmwIds {
 	 * @param string $interwiki
 	 * @param string $subobject
 	 */
-	protected function deleteCache( $title, $namespace, $interwiki, $subobject ) {
+	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki == '' && $subobject == '' ) {
 			unset( $this->regular_ids[$title] );
 			unset( $this->regular_sortkeys[$title] );

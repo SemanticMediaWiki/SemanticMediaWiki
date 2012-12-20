@@ -646,7 +646,6 @@ class SMWSQLStore3Writers {
 				$this->store->smwIds->setCache( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', 0, '' );
 				// We do not know the new sortkey, so just clear the cache:
 
-				// FIXME: This is calling a protected method - wtf!
 				$this->store->smwIds->deleteCache( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
 			} else { // make new (target) id for use in redirect table
 				$sid = $this->store->smwIds->makeSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
