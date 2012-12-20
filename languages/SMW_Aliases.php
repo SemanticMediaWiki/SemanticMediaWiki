@@ -706,6 +706,7 @@ $specialPageAliases['vi'] = array(
 	'ExportRDF' => array( 'Xuất_RDF' ),
 	'PageProperty' => array( 'Thuộc_tính_trang' ),
 	'Properties' => array( 'Thuộc_tính' ),
+	'UnusedProperties' => array( 'Thuộc_tính_không_dùng' ),
 );
 
 /** Simplified Chinese (中文（简体）‎) */
