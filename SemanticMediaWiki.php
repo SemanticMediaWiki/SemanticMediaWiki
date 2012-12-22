@@ -71,3 +71,11 @@ require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
 // Resource definitions
 $wgResourceModules = array_merge( $wgResourceModules, include( __DIR__ . "/resources/Resources.php" ) );
+
+$wgParamDefinitions['smwformat'] = array(
+	'definition'=> 'SMWParamFormat',
+);
+
+$wgParamDefinitions['smwsource'] = array(
+	'definition' => 'SMWParamSource',
+);

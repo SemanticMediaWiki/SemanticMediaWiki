@@ -581,12 +581,18 @@ class SMWQueryProcessor {
 
 		$allowedFormats[] = 'auto';
 
-		$params['format'] = new SMWParamFormat( 'format', 'auto' );
-		$params['format']->setToLower( true );
-		// TODO:$allowedFormats
+		$params['format'] = array(
+			'type' => 'smwformat',
+			'default' => 'auto',
+		);
 
+		// TODO $params['format']->setToLower( true );
+		// TODO $allowedFormats
 
-		$params['source'] = new SMWParamSource( 'source' );
+		$params['source'] = array(
+			'type' => 'smwsource',
+			'default' => 'default',
+		);
 
 		$params['limit'] = array(
 			'type' => 'integer',
