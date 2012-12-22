@@ -302,7 +302,7 @@ class SMWSql3SmwIds {
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
 		}
 
-		if ( $id == 0 && $subobjectName == '' && $iw == '' ) { // could be a redirect; check
+		if ( $id == 0 && $subobjectName === '' && $iw === '' ) { // could be a redirect; check
 			$id = $this->getSMWPageIDandSort( $title, $namespace, SMW_SQL3_SMWREDIIW, $subobjectName, $sortkey, $canonical, $fetchHashes );
 		}
 
@@ -529,7 +529,7 @@ class SMWSql3SmwIds {
 	 */
 	protected function getPredefinedData( &$title, &$namespace, &$iw, &$subobjectName, &$sortkey ) {
 		if ( $namespace == SMW_NS_PROPERTY &&
-			( $iw == '' || $iw == SMW_SQL3_SMWINTDEFIW ) && $title != '' ) {
+			( $iw === '' || $iw == SMW_SQL3_SMWINTDEFIW ) && $title != '' ) {
 
 			// Check if this is a predefined property:
 			if ( $title{0} != '_' ) {
@@ -539,14 +539,14 @@ class SMWSql3SmwIds {
 				if ( $newTitle ) {
 					$title = $newTitle;
 					$sortkey = SMWDIProperty::findPropertyLabel( $title );
-					if ( $sortkey == '' ) {
+					if ( $sortkey === '' ) {
 						$iw = SMW_SQL3_SMWINTDEFIW;
 					}
 				}
 			}
 
 			// Check if this is a property with a fixed SMW ID:
-			if ( $subobjectName == '' && array_key_exists( $title, self::$special_ids ) ) {
+			if ( $subobjectName === '' && array_key_exists( $title, self::$special_ids ) ) {
 				return self::$special_ids[$title];
 			}
 		}
@@ -625,7 +625,7 @@ class SMWSql3SmwIds {
 		if ( strpos( $title, ' ' ) !== false ) {
 			throw new MWException("Somebody tried to use spaces in a cache title! ($title)");
 		}
-		if ( $namespace == SMW_NS_PROPERTY && $interwiki == '' && $subobject == '' ) {
+		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			$this->checkPropertySizeLimit();
 			$this->prop_ids[$title] = $id;
 			$this->prop_sortkeys[$title] = $sortkey;
@@ -651,7 +651,7 @@ class SMWSql3SmwIds {
 	 * @return integer|boolean
 	 */
 	protected function getCachedId( $title, $namespace, $interwiki, $subobject ) {
-		if ( $namespace == SMW_NS_PROPERTY && $interwiki == '' && $subobject == '' ) {
+		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			if ( array_key_exists( $title, $this->prop_ids ) ) {
 				$this->prophit_debug++;
 				return $this->prop_ids[$title];
@@ -682,7 +682,7 @@ class SMWSql3SmwIds {
 	 * @return string|boolean
 	 */
 	protected function getCachedSortKey( $title, $namespace, $interwiki, $subobject ) {
-		if ( $namespace == SMW_NS_PROPERTY && $interwiki == '' && $subobject == '' ) {
+		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			if ( array_key_exists( $title, $this->prop_sortkeys ) ) {
 				return $this->prop_sortkeys[$title];
 			} else {
@@ -710,7 +710,7 @@ class SMWSql3SmwIds {
 	 * @param string $subobject
 	 */
 	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
-		if ( $namespace == SMW_NS_PROPERTY && $interwiki == '' && $subobject == '' ) {
+		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			unset( $this->regular_ids[$title] );
 			unset( $this->regular_sortkeys[$title] );
 		} else {
