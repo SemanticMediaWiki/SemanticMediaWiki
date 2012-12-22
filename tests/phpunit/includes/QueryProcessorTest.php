@@ -20,7 +20,6 @@ use SMWQueryProcessor;
  * @group SMW
  * @group SMWExtension
  * @group SMWQueries
- * @group SMWQueryProcessorTest
  *
  * @author Nischay Nahata
  */
