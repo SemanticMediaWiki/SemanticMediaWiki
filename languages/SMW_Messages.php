@@ -1837,17 +1837,20 @@ $messages['be-tarask'] = array(
 
 /** Bulgarian (български)
  * @author DCLXVI
+ * @author පසිඳු කාවින්ද
  */
 $messages['bg'] = array(
 	'smw_viewasrdf' => 'RDF емисия',
 	'smw_factbox_head' => 'Факти за $1',
+	'smw_printername_list' => 'Списък',
 	'smw_printername_template' => 'Шаблон',
+	'smw_printername_category' => 'Категория',
+	'validator-type-class-SMWParamSource' => 'текст',
 	'smw_iq_disabled' => 'Съжаляваме. Семантичните заявки са изключени в това уики.',
 	'smw_notitle' => '„$1“ не може да се използва като име на страница в това уики.',
 	'smw_wrong_namespace' => 'Тук са позволени само страници от именното пространство „$1“.',
 	'smw_emptystring' => 'Празните низове са неприемливи.',
 	'smw_nofloat' => '„$1“ не е число.',
-	'smw_rss_description' => '$1 RSS емисия',
 	'exportrdf' => 'Изнасяне на страниците към RDF',
 	'smw_exportrdf_docu' => 'Тази страница позволява да се извлечат данните опт страница в RDF формат.
 За изнасяне на страници, въведете заглавията в текстовата кутия по-долу (по едно заглавие на ред).',
@@ -1855,7 +1858,8 @@ $messages['bg'] = array(
 Обърнете внимание, че резултатът може да е огромен!',
 	'smw_exportrdf_lastdate' => 'Без изнасяне на страници, които не са променяни от посоченото време.',
 	'smw_exportrdf_submit' => 'Изнасяне',
-	'smw_property_template' => '$1 от типа $2 ($3)',
+	'properties' => 'Свойства',
+	'smw_property_template' => '$1 от типа $2 ($3)', # Fuzzy
 	'smw_unusedproperty_template' => '$1 от типа $2',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|използване|използвания}})',
 	'smw_purge' => 'Опресняване',
@@ -1869,6 +1873,14 @@ $messages['bg'] = array(
 	'smw_add_sortcondition' => '[Добавяне на условие за сортиране]',
 	'smw_ask_hidequery' => 'Скриване на заявката',
 	'smw_ask_queryhead' => 'Заявка',
+	'smw_ask_defaultformat' => 'по подразбиране',
+	'smw_qc_default' => 'по подразбиране:',
+	'smw_qui_formt' => 'Формат:',
+	'smw_qui_limt' => 'Лимит:',
+	'smw_qui_delete' => 'Премахване',
+	'smw_qui_cancel' => 'Отказване',
+	'smw_qui_label' => 'Етикет',
+	'smw_qui_dcategory' => 'Категория:',
 	'smw_sbv_value' => 'Стойност:',
 	'smw_browse_go' => 'Отваряне',
 	'smw_pp_from' => 'От страница',
@@ -1877,6 +1889,11 @@ $messages['bg'] = array(
 	'smw_result_results' => 'Резултати',
 	'smw_result_noresults' => 'Съжаляваме, няма резултати.',
 	'smwadmin' => 'Администраторски функции за Semantic MediaWiki',
+	'smw-ui-tooltip-title-info' => 'Информация',
+	'smw-ui-tooltip-title-warning' => 'Грешка',
+	'smw-ui-tooltip-title-parameter' => 'Параметър',
+	'smw-ui-tooltip-title-event' => 'Събитие',
+	'smw-ui-tooltip-title-note' => 'Бележка',
 );
 
 /** Bengali (বাংলা)
@@ -7033,6 +7050,7 @@ Progresso estimate del actualisation currente:',
  * @author Irwangatot
  * @author IvanLanin
  * @author Rex
+ * @author පසිඳු කාවින්ද
  */
 $messages['id'] = array(
 	'smw-desc' => "Membuat wiki Anda lebih mudah diakses - oleh mesin ''dan'' manusia ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi daring])",
@@ -7058,11 +7076,12 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw_printername_list' => 'Daftar',
 	'smw_printername_ol' => 'Enumerasi',
 	'smw_printername_ul' => 'Itemisasi',
-	'smw_printername_rss' => 'Ekspor RSS',
 	'smw_printername_table' => 'Tabel',
 	'smw_printername_broadtable' => 'Tabel lebar',
 	'smw_printername_template' => 'Templat',
 	'smw_printername_rdf' => 'Ekspor RDF',
+	'smw_printername_category' => 'Kategori',
+	'validator-type-class-SMWParamSource' => 'teks',
 	'smw-paramdesc-limit' => 'Jumlah maksimum hasil yang diberikan',
 	'smw-paramdesc-headers' => 'Tampilkan nama kepala/properti',
 	'smw-paramdesc-mainlabel' => 'Label untuk nama halaman utama',
@@ -7078,8 +7097,6 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw-paramdesc-outrotemplate' => 'Nama templat yang ditampilkan setelah hasil pencarian, bila ada',
 	'smw-paramdesc-embedformat' => 'Tag HTML yang digunakan untuk menentukan judul',
 	'smw-paramdesc-embedonly' => 'Jangan tampilkan judul',
-	'smw-paramdesc-rsstitle' => 'Tulisan yang digunakan sebagai judul umpan',
-	'smw-paramdesc-rssdescription' => 'Tulisan yang digunakan sebagai deskripsi umpan',
 	'smw-paramdesc-rdfsyntax' => 'Sintaks RDF untuk digunakan',
 	'smw-paramdesc-csv-sep' => 'Pemisah yang dipakai',
 	'smw-paramdesc-dsv-separator' => 'Pemisah yang dipakai',
@@ -7140,7 +7157,7 @@ Menghasilkan RDF yang dapat ditelurusi.',
 	'uriresolver' => 'Pengurai URI',
 	'properties' => 'Properti',
 	'smw_properties_docu' => 'Properti berikut digunakan dalam wiki ini.',
-	'smw_property_template' => '$1 bertipe $2 ($3)',
+	'smw_property_template' => '$1 bertipe $2 ($3)', # Fuzzy
 	'smw_propertylackspage' => 'Semua properti harus dideskripsikan dengan suatu halaman!',
 	'smw_propertylackstype' => 'Tidak ada tipe yang dispesifikasikan untuk properti ini (untu saat ini diasumsikan bertipe $1)',
 	'smw_propertyhardlyused' => 'Properti ini hampir tak digunakan di wiki ini!',
@@ -7179,6 +7196,11 @@ Ini memastikan bahwa manusia tidak berubah menjadi situs web.',
 	'smw_ask_show_embed' => 'Tampilkan kode sertaan',
 	'smw_ask_hide_embed' => 'Sembunyikan kode sertaan',
 	'smw_ask_embed_instr' => 'Untuk menyertakan query ini secara tersisip dalam suatu halaman wiki gunakan kode di bawah.',
+	'smw_qui_formt' => 'Format:',
+	'smw_qui_randorder' => 'Acak',
+	'smw_qui_delete' => 'Hapus',
+	'smw_qui_cancel' => 'Batalkan',
+	'smw_qui_dcategory' => 'Kategori:',
 	'searchbyproperty' => 'Pencarian menurut properti',
 	'smw_sbv_docu' => 'Cari semua halaman yang memiliki properti dan nilai yang diberikan.',
 	'smw_sbv_novalue' => 'Masukkan nilai yang valid untuk properti, atau lihat semua nilai properti untuk "$1".',
@@ -7257,6 +7279,11 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_adminlinks_inlinequerieshelp' => 'Bantuan query sisip',
 	'smw-createproperty-isproperty' => 'Ini adalah properti bertipe $1',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Nilai|Nilai}} yang diizinkan untuk properti ini adalah:',
+	'smw-ui-tooltip-title-info' => 'Informasi',
+	'smw-ui-tooltip-title-warning' => 'Kesalahan',
+	'smw-ui-tooltip-title-parameter' => 'Parameter',
+	'smw-ui-tooltip-title-event' => 'Peristiwa',
+	'smw-ui-tooltip-title-note' => 'Catatan',
 	'smw_unknowntype' => 'Tipe "$1" yang tidak didukung ditetapkan untuk properti.', # Fuzzy
 );
 
@@ -13853,6 +13880,8 @@ $messages['uk'] = array(
 	'smw_qui_addnprop' => 'додати властивість',
 	'smw_qui_delete' => 'Вилучити',
 	'smw_qui_rescol' => 'Відповідності запиту',
+	'smw_qui_options' => 'параметри',
+	'smw_qui_addcategory' => 'додати категорію',
 	'smw_qui_ok' => 'Гаразд',
 	'smw_qui_cancel' => 'Скасувати',
 	'smw_qui_category' => '<strong>Категорія</strong>',
@@ -14500,6 +14529,8 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-order' => '查询排序的顺序',
 	'smw-paramdesc-searchlabel' => '继续搜索的文本（默认是 «… further results»）', # Fuzzy
 	'smw-paramdesc-named_args' => '请指定传递给该模板的变量',
+	'smw-paramdesc-feedtitle' => '源标题文字',
+	'smw-paramdesc-feeddescription' => '源描述文字',
 	'smw_iq_disabled' => '此维基的语义查询已禁用',
 	'smw_iq_moreresults' => '更多结果',
 	'smw_parseerror' => '输入的值无法理解。',
@@ -14729,6 +14760,7 @@ $messages['zh-hans'] = array(
  * @author Mark85296341
  * @author Oapbtommy
  * @author Sheepy
+ * @author Shirayuki
  * @author Simon Shek
  * @author Wrightbus
  */
@@ -14792,6 +14824,8 @@ $messages['zh-hant'] = array(
 	'smw-paramdesc-order' => '查詢排序的順序',
 	'smw-paramdesc-searchlabel' => '在指向結果的連結中顯示的文字', # Fuzzy
 	'smw-paramdesc-named_args' => '請指定傳遞給該模板的變量',
+	'smw-paramdesc-feedtitle' => '源標題文字',
+	'smw-paramdesc-feeddescription' => '源描述文字',
 	'smw_iq_disabled' => '此 wiki 的語義查詢已被停用',
 	'smw_iq_moreresults' => '更多結果',
 	'smw_parseerror' => '輸入的值無法理解。',
