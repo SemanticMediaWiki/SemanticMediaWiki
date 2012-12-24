@@ -6,7 +6,7 @@ use Job, Title;
 /**
  * Migration job Store2 > Store3
  *
- * @since 1.8
+ * @since 1.9
  *
  * @file
  * @ingroup SMW
@@ -38,7 +38,7 @@ class MigrationJob extends Job {
 	/**
 	 * Handles the packing process
 	 *
-	 * #since 1.8
+	 * @since 1.9
 	 */
 	private function packJobs(){
 		$i = 0;
@@ -79,7 +79,7 @@ class MigrationJob extends Job {
 	/**
 	 * Handle the unpacking process
 	 *
-	 * @since 1.8
+	 * @since 1.9
 	 */
 	private function unpackJobs(){
 		$dbw = wfGetDB( DB_MASTER );
