@@ -4119,11 +4119,14 @@ Progeso estimado de la actualización:',
 
 /** Estonian (eesti)
  * @author Avjoska
+ * @author Pikne
  */
 $messages['et'] = array(
 	'smw_printername_table' => 'Tabel',
 	'smw_purge' => 'Värskenda',
 	'smw_qui_addcategory' => 'lisa kategooria',
+	'smw_qui_ok' => 'Sobib',
+	'smw_qui_cancel' => 'Loobu',
 	'smw_qui_dcategory' => 'Kategooria:',
 	'smw_result_prev' => 'Eelmine',
 	'smw_result_next' => 'Järgmine',
@@ -7702,9 +7705,9 @@ $messages['ja'] = array(
 	'smw_properties_docu' => 'このウィキでは以下のプロパティが使用されています。',
 	'smw_property_template' => '$1、$2 型 ($3 {{PLURAL:$3|回使用}})',
 	'smw_property_template_notype' => '$1 ($2 件)',
-	'smw_propertylackspage' => 'すべてのプロパティについて、各プロパティのページで解説する必要があります！',
+	'smw_propertylackspage' => 'すべてのプロパティについて、各プロパティのページで解説する必要があります!',
 	'smw_propertylackstype' => 'このプロパティには型が指定されていません (現時点では型 $1 と想定します)。',
-	'smw_propertyhardlyused' => 'このプロパティはウィキ内でほとんど使用されていません！',
+	'smw_propertyhardlyused' => 'このプロパティはウィキ内でほとんど使用されていません!',
 	'unusedproperties' => '使われていないプロパティ',
 	'smw_unusedproperties_docu' => '以下のプロパティは存在しますが、他のページで使用されていません。',
 	'smw_unusedproperty_template' => '$1: 型 $2',
@@ -11466,6 +11469,7 @@ $messages['rif'] = array(
  * @author Firilacroco
  * @author KlaudiuMihaila
  * @author Minisarm
+ * @author Stelistcristi
  */
 $messages['ro'] = array(
 	'smw-desc' => "Wikiul dumneavoastră devine mai accesibil — pentru mașini ''și'' oameni ([http://semantic-mediawiki.org/wiki/Help:User_manual documentație on-line])",
@@ -11483,7 +11487,6 @@ $messages['ro'] = array(
 	'smw_printername_json' => 'Export JSON',
 	'smw_printername_list' => 'Listă',
 	'smw_printername_ol' => 'Enumerare',
-	'smw_printername_rss' => 'Export RSS',
 	'smw_printername_table' => 'Tabel',
 	'smw_printername_template' => 'Format',
 	'smw_printername_rdf' => 'Export RDF',
@@ -11513,7 +11516,7 @@ Rezultatele pot fi neașteptate.',
 	'uriresolver' => 'Rezolvator URI',
 	'properties' => 'Proprietăți',
 	'smw_properties_docu' => 'Următoarele proprietăți sunt folosite în wiki.',
-	'smw_property_template' => '$1 de tipul $2 ($3)',
+	'smw_property_template' => '$1 de tipul $2 ($3)', # Fuzzy
 	'smw_propertylackstype' => 'Nici un tip nu a fost specificat pentru această proprietate (presupunem deocamdată tipul $1).',
 	'smw_propertyhardlyused' => 'Această proprietate este puțin folosită în wiki!',
 	'unusedproperties' => 'Proprietăți neutilizate',
@@ -11546,6 +11549,7 @@ Rezultatele pot fi neașteptate.',
 	'smw-ask-delete' => '[Șterge]',
 	'smw-ask-sorting' => 'Sortare',
 	'querycreator' => 'Creator de interogări',
+	'smw_qc_addmainlabel' => 'Adaugă eticheta principală',
 	'smw_qc_show_addnal_opts' => 'Afișează mai multe opțiuni',
 	'smw_qc_hide_addnal_opts' => 'Afișează mai puține opțiuni',
 	'smw_qc_otheropt' => 'Alte opțiuni',
@@ -11554,6 +11558,12 @@ Rezultatele pot fi neașteptate.',
 	'smw_qui_limt' => 'Limită:',
 	'smw_qui_invalidprop' => '„$1” poate să nu fie o proprietate validă',
 	'smw_qui_nosort' => 'Fără sortare',
+	'smw_qui_ascorder' => 'Ascendent',
+	'smw_qui_descorder' => 'Descendent',
+	'smw_qui_randorder' => 'Aleatoriu',
+	'smw_qui_addnprop' => 'adaugă proprietate',
+	'smw_qui_options' => 'opțiuni',
+	'smw_qui_addcategory' => 'adăugă o categorie',
 	'smw_qui_ok' => 'Ok',
 	'smw_qui_cancel' => 'Revocare',
 	'smw_qui_category' => '<strong>Categorie</strong>',
@@ -11589,6 +11599,7 @@ Rezultatele pot fi neașteptate.',
 	'smw_adminlinks_displayingdata' => 'Afișarea datelor',
 	'smw-createproperty-isproperty' => 'Aceasta este o proprietate de tipul $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Valoarea admisă pentru această proprietate este|Valorile admise pentru această proprietate sunt}}:',
+	'smw-info-par-message' => 'Mesaj spre afișare.',
 	'smw-ui-tooltip-title-property' => 'Proprietate',
 	'smw-ui-tooltip-title-quantity' => 'Cantitate',
 	'smw-ui-tooltip-title-info' => 'Informații',
@@ -13870,6 +13881,7 @@ $messages['uk'] = array(
 	'smw_ask_hide_embed' => 'Приховати включений код',
 	'smw_ask_embed_instr' => 'Щоб вбудувати цей запит в вікісторінку, використовуйте поданий нижче код.',
 	'smw-ask-delete' => '[Видалити]',
+	'smw_qc_default' => 'Стандартно:',
 	'smw_qui_property' => '<strong>Властивість</strong>',
 	'smw_qui_prop' => 'Властивість:',
 	'smw_qui_formt' => 'Формат:',
