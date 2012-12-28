@@ -8726,6 +8726,26 @@ Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw_unknowntype' => 'Savybei nustatytas nepalaikomas tipas "$1".', # Fuzzy
 );
 
+/** Latvian (latviešu)
+ * @author Papuass
+ */
+$messages['lv'] = array(
+	'smw_qui_dcategory' => 'Kategorija:',
+	'smw_sbv_value' => 'Vērtība:',
+	'smw_result_prev' => 'Iepriekšējie',
+	'smw_result_next' => 'Nākamie',
+	'smw_result_results' => 'Rezultāti',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Jā, es esmu pārliecināts.',
+	'smw_adminlinks_datastructure' => 'Datu struktūra',
+	'smw-paramdesc-category-delim' => 'Atdalītājs',
+	'smw-ui-tooltip-title-info' => 'Informācija',
+	'smw-ui-tooltip-title-service' => 'Pakalpojumu saites',
+	'smw-ui-tooltip-title-warning' => 'Kļūda',
+	'smw-ui-tooltip-title-parameter' => 'Parametrs',
+	'smw-ui-tooltip-title-event' => 'Notikums',
+	'smw-ui-tooltip-title-note' => 'Piezīme',
+);
+
 /** Macedonian (македонски)
  * @author Bjankuloski06
  * @author Rancher
@@ -11772,6 +11792,8 @@ $messages['roa-tara'] = array(
 	'smw_ask_queryhead' => 'Inderroghe',
 	'smw-ask-delete' => '[Scangelle]',
 	'smw_qc_default' => 'De base:',
+	'smw_qui_options' => 'opziune',
+	'smw_qui_addcategory' => "aggiunge 'na categorije",
 	'smw_qui_ok' => 'Ok',
 	'smw_qui_cancel' => 'Annulle',
 	'smw_qui_label' => 'Etichette',
@@ -14109,7 +14131,11 @@ $messages['uk'] = array(
 	'smw_qc_default' => 'Стандартно:',
 	'smw_qui_property' => '<strong>Властивість</strong>',
 	'smw_qui_prop' => 'Властивість:',
+	'smw_qui_labl' => 'Позначка:',
 	'smw_qui_formt' => 'Формат:',
+	'smw_qui_limt' => 'Ліміт:',
+	'smw_qui_shownresults' => 'показувати в результатах',
+	'smw_qui_noquery' => 'Запит не вказано',
 	'smw_qui_nosort' => 'Без сортування',
 	'smw_qui_ascorder' => 'За зростанням',
 	'smw_qui_descorder' => 'За спаданням',
@@ -14122,6 +14148,8 @@ $messages['uk'] = array(
 	'smw_qui_ok' => 'Гаразд',
 	'smw_qui_cancel' => 'Скасувати',
 	'smw_qui_category' => '<strong>Категорія</strong>',
+	'smw_qui_catopts' => 'Параметри категорії',
+	'smw_qui_dlabel' => 'Позначка:',
 	'smw_qui_dcategory' => 'Категорія:',
 	'smw_qui_dcatyes' => 'Показати текст, коли категорія присутня:',
 	'smw_qui_dcatno' => 'Показати текст, коли категорія відсутня:',
