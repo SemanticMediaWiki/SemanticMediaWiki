@@ -420,6 +420,7 @@ Estimated progress of current update:',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw-ui-tooltip-title-event' => 'Event',
 	'smw-ui-tooltip-title-note' => 'Note',
+	'smw-ui-tooltip-title-legend' => 'Legend',
 
 	'smw_unknowntype' => 'The type of this property is invalid',
 );
@@ -855,6 +856,7 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 	'smw-ui-tooltip-title-parameter' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-event' => 'Is a label that is displayed on the info tooltip',
 	'smw-ui-tooltip-title-note' => 'Is a label that is displayed on the info tooltip',
+	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 );
 

@@ -3,7 +3,7 @@
  * @see http://www.semantic-mediawiki.org/wiki/Help:Tooltip
  *
  * @since 1.8
- * @release 0.3.1
+ * @release 0.3.2
  *
  * @file
  * @ingroup SMW
@@ -49,7 +49,7 @@
 						}
 				},
 				style: {
-					classes: 'ui-tooltip-shadow ui-tooltip-bootstrap'
+					classes: 'qtip-shadow qtip-bootstrap'
 				}
 			},
 			classes: {
