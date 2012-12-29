@@ -1,7 +1,7 @@
 <?php
 
 namespace SMW;
-use MWException, IContextSource, Html;
+use MWException, IContextSource, Html, SMWOutputs;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
@@ -100,7 +100,9 @@ class Highlighter extends \ContextSource {
 	 * @return string
 	 */
 	public function getHtml() {
-		$this->getOutput()->addModules( 'ext.smw.tooltips' );
+		//@todo Introduce temporary fix, for more information see bug 43205
+		SMWOutputs::requireResource( 'ext.smw.tooltips' );
+		// $this->getOutput()->addModules( 'ext.smw.tooltips' );
 		return $this->getContainer();
 	}
 
