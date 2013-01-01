@@ -3681,7 +3681,7 @@ $messages['el'] = array(
 	'smw_smwadmin_support' => 'Παίρνοντας υποστήριξη',
 	'smw_smwadmin_supportdocu' => 'Διάφορες πηγές ενδέχεται να σας βοηθήσουν σε περίπτωση που αντιμετωπίζετε προβλήματα:',
 	'smw_smwadmin_installfile' => 'Εάν αντιμετωπίζετε προβλήματα με την εγκατάσταση, ξεκινήστε τσεκάροντας τις κατευθυντήριες γραμμές στην <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ΕΓΚΑΤΑΣΤΑΣΗ του αρχείου</a>.',
-	'smw_smwadmin_smwhomepage' => 'Η πλήρης τεκμηρίωση χρήστη του Semantic MediaWiki βρίσκεται στο <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Η πλήρης τεκμηρίωση χρήσης του Semantic MediaWiki βρίσκεται στο <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Προγραμματιστικά σφάλματα μπορούν να αναφερθούν στο <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Εάν έχετε περαιτέρω ερωτήσεις ή προτάσεις, λάβετε μέρος στη συζήτηση στο <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">φόρουμ χρηστών του Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Δομή δεδομένων',
@@ -4987,7 +4987,7 @@ $messages['frp'] = array(
 	'smw_printername_list' => 'Lista',
 	'smw_printername_ol' => 'Ènumèracion',
 	'smw_printername_ul' => 'Dètaly',
-	'smw_printername_table' => 'Tablô',
+	'smw_printername_table' => 'Grelye',
 	'smw_printername_broadtable' => 'Trâbla lârge',
 	'smw_printername_template' => 'Modèlo',
 	'smw_printername_rdf' => 'Èxportacion RDF',
@@ -14015,7 +14015,7 @@ $messages['tly'] = array(
 	'smw_finallistconjunct' => ', ијән',
 	'smw_printername_list' => 'Сијоһи',
 	'smw_printername_template' => 'Ғәлиб',
-	'smw_printername_category' => 'Категоријә',
+	'smw_printername_category' => 'Тиспир',
 	'smw_purge' => 'Тожә кардеј',
 );
 
