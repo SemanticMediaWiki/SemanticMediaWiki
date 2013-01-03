@@ -447,16 +447,20 @@ $messages['qqq'] = array(
 	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language. 
 	{{Identical|And}}',
-	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values. $1 holds the name of the page',
+	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values. Parameters:
+* $1 holds the name of the page',
 	'smw_isspecprop' => 'Used on [[Special:Properties]] to identify a special (build in) property.',
-	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query). $1 holds the name of the concept',
+	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query). Parameters:
+* $1 holds the name of the concept',
 	'smw_no_concept_namespace' => 'This is an error/warning message that appears when a concept is added to a page in namespaces other than Concept:.',
 	'smw_multiple_concepts' => 'This is an error/warning message that appears when more than concept is added to a page in namespaces Concept:.',
-	'smw_concept_cache_miss' => 'This is an information message. $1 holds the name of the [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
+	'smw_concept_cache_miss' => 'This is an information message. Parameters:
+* $1 holds the name of the [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
 	'smw_noinvannot' => 'This is an information message.',
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
 	'smw_uri_blacklist' => '{{notranslate}}',
-	'smw_baduri' => 'This is an information message. $1 holds the malformed URI.',
+	'smw_baduri' => 'This is an information message. Parameters:
+* $1 holds the malformed URI.',
 	'smw_csv_link' => 'This is the text of the link that is triggering the results export to a CSV-file when clicked.
 
 {{optional}}',
@@ -548,46 +552,74 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 This message is as a separator symbol for thousands in numbers, like \",\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
 
 Note that spaces and space-like HTML entities are always ignored when reading numbers, whether or not a space symbol is used here.",
-	'smw_notitle' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_noproperty' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_wrong_namespace' => 'This is an error/warning message. $1 holds the name of the namespace that may be used.',
+	'smw_notitle' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
+	'smw_noproperty' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
+	'smw_wrong_namespace' => 'This is an error/warning message. Parameters:
+* $1 holds the name of the namespace that may be used.',
 	'smw_manytypes' => 'This is an error/warning message.',
 	'smw_emptystring' => 'This is an error/warning message.',
-	'smw_maxstring' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_notinenum' => 'This is an error/warning message. $1 holds the property value causing the error/warning. $2 holds the property values that may be used.',
-	'smw_noboolean' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of datatype [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list. See also message {{msg-mw|Smw_false_words}}.',
-	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of datatype [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list. See also message {{msg-mw|Smw_true_words}}.',
-	'smw_nofloat' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_infinite' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_unitnotallowed' => 'This is an error/warning message. $1 holds the unit causing the error/warning.',
+	'smw_maxstring' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
+	'smw_notinenum' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.
+* $2 holds the property values that may be used.',
+	'smw_noboolean' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
+	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of data type [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list. See also message {{msg-mw|Smw_false_words}}.',
+	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of data type [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list. See also message {{msg-mw|Smw_true_words}}.',
+	'smw_nofloat' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
+	'smw_infinite' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
+	'smw_unitnotallowed' => 'This is an error/warning message. Parameters:
+* $1 holds the unit causing the error/warning.',
 	'smw_nounitsdeclared' => 'This is an error/warning message.',
 	'smw_novalues' => 'This is an error/warning message.',
-	'smw_nodatetime' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_toomanyclosing' => 'This is an error/warning message. $1 holds the string causing the error/warning.',
+	'smw_nodatetime' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
+	'smw_toomanyclosing' => 'This is an error/warning message. Parameters:
+* $1 holds the string causing the error/warning.',
 	'smw_noclosingbrackets' => 'This is an error/warning message.',
-	'smw_misplacedsymbol' => 'This is an error/warning message. $1 holds the string causing the error/warning.',
-	'smw_unexpectedpart' => 'This is an error/warning message. $1 holds the string causing the error/warning.',
+	'smw_misplacedsymbol' => 'This is an error/warning message. Parameters:
+* $1 holds the string causing the error/warning.',
+	'smw_unexpectedpart' => 'This is an error/warning message. Parameters:
+* $1 holds the string causing the error/warning.',
 	'smw_emptysubquery' => 'This is an error/warning message.',
 	'smw_misplacedsubquery' => 'This is an error/warning message.',
-	'smw_valuesubquery' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
+	'smw_valuesubquery' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
 	'smw_badqueryatom' => 'This is an error/warning message.',
-	'smw_propvalueproblem' => 'This is an error/warning message. $1 holds the property value causing the error/warning.',
-	'smw_noqueryfeature' => 'This is an error/warning message. $1 holds the part(s) of the query which were dropped.',
-	'smw_noconjunctions' => 'This is an error/warning message. $1 holds the part(s) of the query which were dropped.',
-	'smw_nodisjunctions' => 'This is an error/warning message. $1 holds the part(s) of the query which were dropped.',
-	'smw_querytoolarge' => 'This is an error/warning message. $1 holds the part(s) of the query which were dropped.',
+	'smw_propvalueproblem' => 'This is an error/warning message. Parameters:
+* $1 holds the property value causing the error/warning.',
+	'smw_noqueryfeature' => 'This is an error/warning message. Parameters:
+* $1 holds the part(s) of the query which were dropped.',
+	'smw_noconjunctions' => 'This is an error/warning message. Parameters:
+* $1 holds the part(s) of the query which were dropped.',
+	'smw_nodisjunctions' => 'This is an error/warning message. Parameters:
+* $1 holds the part(s) of the query which were dropped.',
+	'smw_querytoolarge' => 'This is an error/warning message. Parameters:
+* $1 holds the part(s) of the query which were dropped.',
 	'smw_notemplategiven' => 'This is an error/warning message.',
 	'smw_db_sparqlqueryproblem' => 'This is an error message.',
 	'smw_db_sparqlqueryincomplete' => 'This is an error message.',
-	'smw_type_header' => 'This is the header on [[Special:Types]]. $1 holds the name of the respective datatype.',
-	'smw_typearticlecount' => 'This is the introductory message below the header on [[Special:Types]]. $1 holds the number of property pages displayed in the current view.',
-	'smw_attribute_header' => 'This is the header on a page in namespace "Property". $1 holds the name of the respective property.',
-	'smw_attributearticlecount' => 'This is the introductory message below the header on a page in namespace "Property". $1 holds the number of property pages displayed in the current view.',
-	'smw_subproperty_header' => 'This is the header for subproperties on a page in namespace "Property". $1 holds the name of the respective subproperty.',
-	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property". $1 holds the number of subproperty pages displayed in the current view.',
-	'smw_concept_header' => 'This is the header on a page in namespace "Concept". $1 holds the name of the respective concept.',
-	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". $1 holds the number of pages displayed in the current view.',
+	'smw_type_header' => 'This is the header on [[Special:Types]]. Parameters:
+* $1 holds the name of the respective data type.',
+	'smw_typearticlecount' => 'This is the introductory message below the header on [[Special:Types]]. Parameters:
+* $1 holds the number of property pages displayed in the current view.',
+	'smw_attribute_header' => 'This is the header on a page in namespace "Property". Parameters:
+* $1 holds the name of the respective property.',
+	'smw_attributearticlecount' => 'This is the introductory message below the header on a page in namespace "Property". Parameters:
+* $1 holds the number of property pages displayed in the current view.',
+	'smw_subproperty_header' => 'This is the header for subproperties on a page in namespace "Property". Parameters:
+* $1 holds the name of the respective subproperty.',
+	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property". Parameters:
+* $1 holds the number of subproperty pages displayed in the current view.',
+	'smw_concept_header' => 'This is the header on a page in namespace "Concept". Parameters:
+* $1 holds the name of the respective concept.',
+	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". Parameters:
+* $1 holds the number of pages displayed in the current view.',
 	'specialpages-group-smw_group' => 'This is the name of the group of extensions on [[Special:Version]] which are related to or dependant on Semantic MediaWiki.
 
 {{optional}}',
@@ -606,30 +638,32 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_properties_docu' => 'This is the introductory message at the top of [[Special:Properties]].',
 	'smw_property_template' => "This message is used on [[Special:Properties]] to display each property listed. It holds the following parameters:
 * $1 link to the property's page
-* $2 link to the property's datatype page
+* $2 link to the property's data type page
 * $3 number of times the property is used",
 	'smw_property_template_notype' => 'This is used on [[Special:Properties]].
 *$1 holds the link to the property page.
 *$2 holds the number of times the property is used within the wiki.
 {{optional}}',
 	'smw_propertylackspage' => 'This is an error/warning message.',
-	'smw_propertylackstype' => 'This is an error/warning message. $1 holds the name of the assumed datatype which is in fact always datatype Page.',
+	'smw_propertylackstype' => 'This is an error/warning message. Parameters:
+* $1 holds the name of the assumed data type which is in fact always data type Page.',
 	'smw_propertyhardlyused' => 'This is an error/warning message.',
 	'unusedproperties' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:UnusedProperties]].',
 	'smw_unusedproperties_docu' => 'This is the introductory message at the top of [[Special:UnusedProperties]].',
 	'smw_unusedproperty_template' => "This message is used on [[Special:UnusedProperties]] to display each property listed. It holds the following parameters:
 * $1 link to the property's page
-* $2 link to the property's datatype page",
+* $2 link to the property's data type page",
 	'wantedproperties' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:WantedProperties]].',
 	'smw_wantedproperties_docu' => 'This is the introductory message at the top of [[Special:WantedProperties]].',
-	'smw_wantedproperty_template' => 'This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned datatype and how often it is used in the wiki. $1 holds the name of the wanted property. $2 holds the number of values annotated with the wanted property.',
+	'smw_wantedproperty_template' => 'This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned data type and how often it is used in the wiki. $1 holds the name of the wanted property. $2 holds the number of values annotated with the wanted property.',
 	'smw_purge' => 'This is the label of a tab of an action item for the content area.',
-	'types' => 'This is the title of the special page on [[Special:SpecialPages]] showing all datatypes.
+	'types' => 'This is the title of the special page on [[Special:SpecialPages]] showing all data types.
 
 {{Identical|Type}}',
 	'smw_types_docu' => 'This is the introductory message at the top of [[Special:Types]].',
 	'semanticstatistics' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SemanticStatistics]].',
-	'smw_semstats_text' => 'This it the contents of [[Special:SemanticStatistics]]. $1 to $4 hold numerical values.',
+	'smw_semstats_text' => 'This it the contents of [[Special:SemanticStatistics]]. Parameters:
+* $1 to $4 hold numerical values.',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
 When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
@@ -697,8 +731,10 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 {{Identical|Limit}}',
 	'smw_qui_shownresults' => 'This is the message next to a checkbox on [[Special:QueryCreatory]] indicating if an item should be shown in the results or not.',
 	'smw_qui_noquery' => 'This is an error message on [[Special:QueryCreatory]].',
-	'smw_qui_invalidprop' => 'This is an error/warning message on [[Special:QueryCreatory]]. $1 holds the property name.',
-	'smw_qui_invalidformat' => 'This is an error/warning message on [[Special:QueryCreatory]]. $1 holds the name of the result format.',
+	'smw_qui_invalidprop' => 'This is an error/warning message on [[Special:QueryCreatory]]. Parameters:
+* $1 holds the property name.',
+	'smw_qui_invalidformat' => 'This is an error/warning message on [[Special:QueryCreatory]]. Parameters:
+* $1 holds the name of the result format.',
 	'smw_qui_nosort' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user does not want any sorting to be done by the given property.',
 	'smw_qui_ascorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in ascending order by the given property.',
 	'smw_qui_descorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in descending order by the given property.',
@@ -738,9 +774,12 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 	'smw_qui_dcatno' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is absent is expected to be typed in.',
 	'searchbyproperty' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SearchByProperty]].',
 	'smw_sbv_docu' => 'This is the information message shown on [[Special:SearchByProperty]] in case no property and no property value were not yet provided to search for.',
-	'smw_sbv_novalue' => 'This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided. $1 holds the name of the property.',
-	'smw_sbv_displayresult' => 'This is an information message shown on [[Special:SearchByProperty]] in case more than 20 results were found. $1 holds the name of the property and $2 holds the value of the property one searched for.',
-	'smw_sbv_displayresultfuzzy' => 'This is an information message shown on [[Special:SearchByProperty]] in case less than 20 results were found. $1 holds the name of the property and $2 holds the value of the property one searched for.',
+	'smw_sbv_novalue' => 'This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided. Parameters:
+* $1 holds the name of the property.',
+	'smw_sbv_displayresult' => 'This is an information message shown on [[Special:SearchByProperty]] in case more than 20 results were found. Parameters:
+* $1 holds the name of the property and $2 holds the value of the property one searched for.',
+	'smw_sbv_displayresultfuzzy' => 'This is an information message shown on [[Special:SearchByProperty]] in case less than 20 results were found. Parameters:
+* $1 holds the name of the property and $2 holds the value of the property one searched for.',
 	'smw_sbv_property' => 'This is the text describing a textbox on [[Special:SearchByProperty]] where the name of a property is expected to be typed in.
 
 {{Identical|Property}}',
@@ -761,7 +800,8 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 	'smw_browse_hide_incoming' => 'This is the text of the link on [[Special:Browse]] that hides the properties linking to a page when clicked.',
 	'smw_browse_no_outgoing' => 'This is the information message shown on [[Special:Browse]] in case the browsed page does not contain any properties.',
 	'smw_browse_no_incoming' => 'This is the information message shown on [[Special:Browse]] in case no properties link to the browsed page.',
-	'smw_inverse_label_default' => 'Inverse label default, $1 is a place marker',
+	'smw_inverse_label_default' => 'Inverse label default. Parameters:
+* $1 is a place marker',
 	'smw_inverse_label_property' => 'Can as well be translated as "Name of", or "Denomination of the inverse propery". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property "is child of" is the inverse propery of "is parent of".',
 	'pageproperty' => 'This is the name of [[Special:PageProperty]].',
 	'smw_pp_docu' => 'This is the introductory message at the top of [[Special:PageProperty]].',
@@ -786,19 +826,24 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 {{Identical|Sorry, no results}}',
 	'smwadmin' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SMWAdmin]].',
 	'smw_smwadmin_setupsuccess' => "This is the confirmation message at the bottom of the script's report concerning setup or update of the SMW database tables (process triggered from [[Special:SMWAdmin]]).",
-	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]]. $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]]. Parameters:
+* $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started. $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started. Parameters:
+* $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started. $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started. Parameters:
+* $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped. $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped. Parameters:
+* $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process. $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process. Parameters:
+* $1 holds the link back to Special:SMWAdmin.
 
 {{Identical|Return to $1}}',
 	'smw_smwadmin_docu' => 'This is the introductory message at the top of [[Special:SMWAdmin]].',
@@ -834,7 +879,8 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 	'smw_adminlinks_datastructure' => 'This is a section header on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
 	'smw_adminlinks_displayingdata' => 'This is a section header on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
 	'smw_adminlinks_inlinequerieshelp' => 'This is the link text for a link on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
-	'smw-createproperty-isproperty' => 'This an information message at the top on a page in namespace "Property". $1 holds the name of the datatype which was assigned to the respective property.',
+	'smw-createproperty-isproperty' => 'This an information message at the top on a page in namespace "Property". Parameters:
+* $1 holds the name of the data type which was assigned to the respective property.',
 	'smw-createproperty-allowedvals' => 'This an information message at the top on a page in namespace "Property" which gets inserted in case only certain property values are [http://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed to be used] for the respective property.',
 	'smw-paramdesc-category-delim' => 'This is the description of the "delim" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-category-template' => 'This is the description of the "template" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
@@ -848,14 +894,14 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 	'smw-prefs-intro-text' => 'This is an user preference intro text on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-prefs-ask-options-tooltip-display' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-prefs-ask-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
-	'smw-ui-tooltip-title-property' => 'Is a label that is displayed on the info tooltip',
-	'smw-ui-tooltip-title-quantity' => 'Is a label that is displayed on the info tooltip',
-	'smw-ui-tooltip-title-info' => 'Is a label that is displayed on the info tooltip',
-	'smw-ui-tooltip-title-service' => 'Is a label that is displayed on the info tooltip',
-	'smw-ui-tooltip-title-warning' => 'Is a label that is displayed on the info tooltip',
-	'smw-ui-tooltip-title-parameter' => 'Is a label that is displayed on the info tooltip',
-	'smw-ui-tooltip-title-event' => 'Is a label that is displayed on the info tooltip',
-	'smw-ui-tooltip-title-note' => 'Is a label that is displayed on the info tooltip',
+	'smw-ui-tooltip-title-property' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-quantity' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-info' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-service' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-warning' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-parameter' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-event' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-note' => 'A label that is displayed on the info tooltip.',
 	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 );
@@ -3554,6 +3600,7 @@ $messages['el'] = array(
 	'smw_type_header' => 'Ιδιότητες τύπου "$1"',
 	'smw_attribute_header' => 'Σελίδες που χρησιμοποιούν την ιδιότητα "$1"',
 	'smw_subproperty_header' => 'Υποϊδιότητες',
+	'smw_subpropertyarticlecount' => 'Αυτή η ιδιότητα έχει {{PLURAL:$1|την ακόλουθη $1 υποϊδιότητα|τις ακόλουθες $1 υποϊδιότητες}}:',
 	'smw_concept_header' => 'Σελίδες της έννοιας «$1»',
 	'exportrdf' => 'Εξαγωγή σελίδων σε RDF',
 	'smw_exportrdf_lastdate' => 'Μην εξάγετε σελίδες που δεν έχουν αλλάξει από τη δεδομένη χρονική στιγμή.',
@@ -7122,6 +7169,7 @@ Progresso estimate del actualisation currente:',
  * @author Farras
  * @author Irwangatot
  * @author IvanLanin
+ * @author Naval Scene
  * @author Rex
  * @author පසිඳු කාවින්ද
  */
@@ -7284,7 +7332,7 @@ Karena hanya ada sedikit hasil, nilai yang mendekati juga ditampilkan.',
 	'smw_sbv_value' => 'Nilai:',
 	'smw_sbv_submit' => 'Temukan hasil',
 	'browse' => 'Jelajahi wiki',
-	'smw_browselink' => 'Jelajahi properti',
+	'smw_browselink' => 'Jalajahi properti',
 	'smw_browse_article' => 'Masukkan nama halaman untuk memulai penelusuran',
 	'smw_browse_go' => 'Tuju ke',
 	'smw_browse_show_incoming' => 'tampilkan properti yang bertaut ke sini',
@@ -8790,6 +8838,13 @@ $messages['lv'] = array(
 	'smw-ui-tooltip-title-parameter' => 'Parametrs',
 	'smw-ui-tooltip-title-event' => 'Notikums',
 	'smw-ui-tooltip-title-note' => 'Piezīme',
+);
+
+/** Minangkabau (Baso Minangkabau)
+ * @author Naval Scene
+ */
+$messages['min'] = array(
+	'smw_purge' => 'Pabaharui',
 );
 
 /** Macedonian (македонски)
