@@ -161,7 +161,7 @@ class SMWQueryResult {
 	 * Return array of print requests (needed for printout since they contain
 	 * property labels).
 	 * 
-	 * @return array of SMWPrintRequest
+	 * @return SMWPrintRequest[]
 	 */
 	public function getPrintRequests() {
 		return $this->mPrintRequests;

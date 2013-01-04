@@ -63,19 +63,19 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 	}
 
 	public function getQueryMode( $context ) {
-		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
+		return $context == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
 	public function getName() {
 		return wfMessage( 'smw_printername_dsv' )->text();
 	}
 
-	protected function getResultText( SMWQueryResult $res, $outputmode ) {
-		if ( $outputmode == SMW_OUTPUT_FILE ) { // Make the DSV file.
+	protected function getResultText( SMWQueryResult $res, $outputMode ) {
+		if ( $outputMode == SMW_OUTPUT_FILE ) { // Make the DSV file.
 			return $this->getResultFileContents( $res );
 		}
 		else { // Create a link pointing to the DSV file.
-			return $this->getLinkToFile( $res, $outputmode );
+			return $this->getLinkToFile( $res, $outputMode );
 		}
 	}
 	
@@ -88,25 +88,28 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 	 * 
 	 * @return string
 	 */	
-	protected function getResultFileContents( SMWQueryResult $res ) {
+	protected function getResultFileContents( SMWQueryResult $queryResult ) {
 		$lines = array();
 		
 		if ( $this->mShowHeaders ) {
 			$headerItems = array();
 			
-			foreach ( $res->getPrintRequests() as $pr ) {
-				$headerItems[] = $pr->getLabel();
+			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
+				$headerItems[] = $printRequest->getLabel();
 			}
 			
 			$lines[] = $this->getDSVLine( $headerItems );
 		}
 		
 		// Loop over the result objects (pages).
-		while ( $row = $res->getNext() ) {
+		while ( $row = $queryResult->getNext() ) {
 			$rowItems = array();
 			
-			// Loop over their fields (properties).
-			foreach ( $row as /* SMWResultArray */ $field ) {
+			/**
+			 * Loop over their fields (properties).
+			 * @var SMWResultArray $field
+			 */
+			foreach ( $row as $field ) {
 				$itemSegments = array();
 				
 				// Loop over all values for the property.
@@ -121,7 +124,7 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 			$lines[] = $this->getDSVLine( $rowItems );
 		}
 
-		return implode( "\n", $lines );	
+		return implode( "\n", $lines );
 	}
 	
 	/**
@@ -165,14 +168,14 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 	 * @since 1.6
 	 *  
 	 * @param SMWQueryResult $res
-	 * @param $outputmode
+	 * @param $outputMode
 	 * 
 	 * @return string
 	 */		
-	protected function getLinkToFile( SMWQueryResult $res, $outputmode ) {
+	protected function getLinkToFile( SMWQueryResult $res, $outputMode ) {
 		// yes, our code can be viewed as HTML if requested, no more parsing needed
-		$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); 
-		return $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
+		$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML );
+		return $this->getLink( $res, $outputMode )->getText( $outputMode, $this->mLinker );
 	}
 
 	/**
@@ -182,7 +185,7 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 	 *
 	 * @param $definitions array of IParamDefinition
 	 *
-	 * @return array of IParamDefinition|array
+	 * @return IParamDefinition[]|array
 	 */
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
