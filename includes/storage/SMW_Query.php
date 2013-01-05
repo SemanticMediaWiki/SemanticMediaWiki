@@ -197,4 +197,40 @@ class SMWQuery {
 		}
 	}
 
+	/**
+	 * Returns serialized query details
+	 *
+	 * The output is following the askargs api module convention
+	 *
+	 * conditions The query conditions (requirements for a subject to be included)
+	 * printouts The query printouts (which properties to show per subject)
+	 * parameters The query parameters (non-condition and non-printout arguments)
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function toArray(){
+		$serialized = array();
+
+		$serialized['conditions'] = $this->m_querystring;
+
+		// This can be extended but for the current use cases that is
+		// sufficient since most printer related parameters have to be sourced
+		// in the result printer class
+		$serialized['parameters'] = array(
+				'limit'  => $this->m_limit,
+				'offset' => $this->m_offset
+		);
+
+		foreach ( $this->m_extraprintouts as $printout ) {
+			$serialization = $printout->getSerialisation();
+			if ( $serialization !== '?#' ) {
+				$serialized['printouts'][] = $serialization;
+			}
+		}
+
+		return $serialized;
+	}
+
 }

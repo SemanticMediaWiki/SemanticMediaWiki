@@ -10,7 +10,7 @@
  * It is also possible to access the set of result pages directly using
  * getResults(). This is useful for printers that disregard printouts and
  * only are interested in the actual list of pages.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -40,26 +40,26 @@ class SMWQueryResult {
 	 * @var Array of SMWDIWikiPage
 	 */
 	protected $mResults;
-	
+
 	/**
 	 * Array of SMWPrintRequest objects, indexed by their natural hash keys
 	 * @var Array of SMWPrintRequest
-	 */ 
+	 */
 	protected $mPrintRequests;
-	
+
 	/**
 	 * Are there more results than the ones given?
 	 * @var boolean
-	 */ 
+	 */
 	protected $mFurtherResults;
-	
+
 	/**
 	 * The query object for which this is a result, must be set on create and is the source of
 	 * data needed to create further result links.
 	 * @var SMWQuery
 	 */
 	protected $mQuery;
-	
+
 	/**
 	 * The SMWStore object used to retrieve further data on demand.
 	 * @var SMWStore
@@ -69,9 +69,9 @@ class SMWQueryResult {
 	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
-	 * 
+	 *
 	 * TODO: Update documentation
-	 * 
+	 *
 	 * @param array of SMWPrintRequest $printRequests
 	 * @param SMWQuery $query
 	 * @param array of SMWDIWikiPage $results
@@ -99,21 +99,21 @@ class SMWQueryResult {
 	/**
 	 * Return the next result row as an array of SMWResultArray objects, and
 	 * advance the internal pointer.
-	 * 
+	 *
 	 * @return array of SMWResultArray or false
 	 */
 	public function getNext() {
 		$page = current( $this->mResults );
 		next( $this->mResults );
-		
+
 		if ( $page === false ) return false;
-		
+
 		$row = array();
-		
+
 		foreach ( $this->mPrintRequests as $p ) {
 			$row[] = new SMWResultArray( $page, $p, $this->mStore );
 		}
-		
+
 		return $row;
 	}
 
@@ -129,7 +129,7 @@ class SMWQueryResult {
 	/**
 	 * Return an array of SMWDIWikiPage objects that make up the
 	 * results stored in this object.
-	 * 
+	 *
 	 * @return array of SMWDIWikiPage
 	 */
 	public function getResults() {
@@ -150,7 +150,7 @@ class SMWQueryResult {
 	/**
 	 * Return the number of columns of result values that each row
 	 * in this result set contains.
-	 * 
+	 *
 	 * @return integer
 	 */
 	public function getColumnCount() {
@@ -170,7 +170,7 @@ class SMWQueryResult {
 	/**
 	 * Returns the query string defining the conditions for the entities to be
 	 * returned.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getQueryString() {
@@ -179,7 +179,7 @@ class SMWQueryResult {
 
 	/**
 	 * Would there be more query results that were not shown due to a limit?
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function hasFurtherResults() {
@@ -188,7 +188,7 @@ class SMWQueryResult {
 
 	/**
 	 * Return error array, possibly empty.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getErrors() {
@@ -198,7 +198,7 @@ class SMWQueryResult {
 
 	/**
 	 * Adds an array of erros.
-	 * 
+	 *
 	 * @param array $errors
 	 */
 	public function addErrors( array $errors ) {
@@ -211,11 +211,11 @@ class SMWQueryResult {
 	 * The optional $caption can be used to set the caption of the link (though this
 	 * can also be changed afterwards with SMWInfolink::setCaption()). If empty, the
 	 * message 'smw_iq_moreresults' is used as a caption.
-	 * 
+	 *
 	 * @deprecated since SMW 1.8
 	 *
 	 * @param string|false $caption
-	 * 
+	 *
 	 * @return SMWInfolink
 	 */
 	public function getQueryLink( $caption = false ) {
@@ -294,7 +294,7 @@ class SMWQueryResult {
 		// Note: the initial : prevents SMW from reparsing :: in the query string.
 		return SMWInfolink::newInternalLink( '', ':Special:Ask', false, $params );
 	}
-	
+
 	/**
 	 * @see SMWDISerializer::getSerializedQueryResult
 	 * @since 1.7
@@ -302,5 +302,47 @@ class SMWQueryResult {
 	 */
 	public function serializeToArray() {
 		return SMWDISerializer::getSerializedQueryResult( $this );
+	}
+
+	/**
+	 * Returns a serialized SMWQueryResult object with additional meta data
+	 *
+	 * This methods extends the serializeToArray() for additional meta
+	 * that are useful when handling data via the api
+	 *
+	 * @note should be used instead of SMWQueryResult::serializeToArray()
+	 * as this method contains additional informaion
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+
+		// @note micro optimization: We call getSerializedQueryResult()
+		// only once and create the hash here instead of calling getHash()
+		// to avoid getSerializedQueryResult() being called again
+		// @note count + offset equals total therefore we deploy both values
+		$serializeArray = $this->serializeToArray();
+
+		return array_merge( $serializeArray, array(
+			'meta'=> array(
+				'hash'   => md5( FormatJson::encode( $serializeArray ) ),
+				'count'  => $this->getCount(),
+				'offset' => $this->mQuery->getOffset()
+				)
+			)
+		);
+	}
+
+	/**
+	 * Returns result hash value
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		return md5( FormatJson::encode( $this->serializeToArray() ) );
 	}
 }
