@@ -255,8 +255,7 @@ class SMWSQLStore3Writers {
 				$diHandler = $this->store->getDataItemHandlerForDIType( $di->getDIType() );
 				// Note that array_merge creates a new array; not overwriting past entries here
 				$insertValues = array_merge( $insertValues, $diHandler->getInsertValues( $di ) );
-				$insertValueKey = self::makeDatabaseRowKey( $insertValues );
-				$updates[$propertyTable->getName()][$insertValueKey] = $insertValues;
+				$updates[$propertyTable->getName()] = $insertValues;
 			}
 		}
 
@@ -382,6 +381,7 @@ class SMWSQLStore3Writers {
 					continue;
 				} else { // Table contains no data or contains data that is different from the new
 					$oldTableData = $this->getCurrentPropertyTableContents( $sid, $propertyTable, $dbr );
+
 					$tablesInsertRows[$tableName] = array_diff_assoc( $newData[$tableName], $oldTableData );
 					$tablesDeleteRows[$tableName] = array_diff_assoc( $oldTableData, $newData[$tableName] );
 				}
@@ -415,13 +415,11 @@ class SMWSQLStore3Writers {
 		}
 		$contents = array();
 
-		$results = $dbr->select( $propertyTable->getName(), '*', array( 's_id' => $sid ), __METHOD__ );
-		foreach ( $results as $result ) {
-			$rowArray = (array)$result;
-			$rowKey = self::makeDatabaseRowKey( $rowArray );
-			$contents[$rowKey] = $rowArray;
+		$result = $dbr->selectRow( $propertyTable->getName(), '*', array( 's_id' => $sid ), __METHOD__ );
+
+		if ( is_object( $result ) ) {
+			$contents = (array)$result;
 		}
-		$dbr->freeResult( $results );
 
 		return $contents;
 	}
@@ -484,37 +482,17 @@ class SMWSQLStore3Writers {
 	 */
 	protected function writePropertyTableRowUpdates( array &$propertyUseIncrements, SMWSQLStore3Table $propertyTable, array $rows, $insert, DatabaseBase $dbw ) {
 		if ( empty( $rows ) ) {
-			//print "Nothing to " . ( $insert ? 'insert' : 'delete' ) . " for table {$propertyTable->getName()}.\n"; //DEBUG
 			return;
 		}
-		//print ( $insert ? 'Inserting ' : 'Deleting ' ) . count( $rows ) . " row(s) in table {$propertyTable->getName()}.\n"; //DEBUG
-		//print var_export( $rows, true ) . "\n"; //DEBUG
 
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
 			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
 		}
 
 		if ( $insert ) {
-			$dbw->insert( $propertyTable->getName(), array_values( $rows ), "SMW::writePropertyTableRowUpdates-insert-{$propertyTable->getName()}" );
+			$dbw->insert( $propertyTable->getName(), $rows, "SMW::writePropertyTableRowUpdates-insert-{$propertyTable->getName()}" );
 		} else {
-			$condition = '';
-			// We build a condition that mentions s_id only once,
-			// since it must be the same for all rows. This should
-			// help the DBMS in selecting the rows (it would not be
-			// easy for to detect that all tuples share one s_id).
-			$sid = false;
-			foreach ( $rows as $row ) {
-				if ( $sid === false ) {
-					$sid = $row['s_id']; // 's_id' exists for all tables with $propertyTable->usesIdSubject()
-				}
-				unset( $row['s_id'] );
-				if ( $condition != '' ) {
-					$condition .= ' OR ';
-				}
-				$condition .= '(' . $dbw->makeList( $row, LIST_AND ) . ')';
-			}
-			$condition = "s_id=" . $dbw->addQuotes( $sid ) . " AND ($condition)";
-			$dbw->delete( $propertyTable->getName(), array( $condition ), "SMW::writePropertyTableRowUpdates-delete-{$propertyTable->getName()}" );
+			$this->deleteRows( $rows, $dbw, $propertyTable );
 		}
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
@@ -531,6 +509,34 @@ class SMWSQLStore3Writers {
 			}
 			$propertyUseIncrements[$pid] += ( $insert ? 1 : -1 );
 		}
+	}
+
+	protected function deleteRows( array $rows, DatabaseBase $dbw, SMWSQLStore3Table $propertyTable ) {
+		$condition = '';
+		// We build a condition that mentions s_id only once,
+		// since it must be the same for all rows. This should
+		// help the DBMS in selecting the rows (it would not be
+		// easy for to detect that all tuples share one s_id).
+		$sid = false;
+		foreach ( $rows as $row ) {
+			if ( $sid === false ) {
+				if ( !array_key_exists( 's_id', (array)$row ) ) {
+					// FIXME: The assumption that s_id is present does not hold.
+					// This return is there to prevent fatal errors, but does not fix the issue of this code being broken
+					return;
+				}
+
+				$sid = $row['s_id']; // 's_id' exists for all tables with $propertyTable->usesIdSubject()
+			}
+			unset( $row['s_id'] );
+			if ( $condition != '' ) {
+				$condition .= ' OR ';
+			}
+			$condition .= '(' . $dbw->makeList( $row, LIST_AND ) . ')';
+		}
+
+		$condition = "s_id=" . $dbw->addQuotes( $sid ) . " AND ($condition)";
+		$dbw->delete( $propertyTable->getName(), array( $condition ), "SMW::writePropertyTableRowUpdates-delete-{$propertyTable->getName()}" );
 	}
 
 	/**
