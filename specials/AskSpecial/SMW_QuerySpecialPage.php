@@ -1,5 +1,7 @@
 <?php
 
+use SMW\ParameterInput;
+
 /**
  * Base class for special pages with ask query interfaces.
  *
@@ -47,6 +49,9 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 
 		$optionsHtml = array();
 
+		/**
+		 * @var ParamProcessor\ParamDefinition $definition
+		 */
 		foreach ( $definitions as $name => $definition ) {
 			// Ignore the format parameter, as we got a special control in the GUI for it already.
 			if ( $name == 'format' ) {
@@ -70,7 +75,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 					array(
 						'class' => $this->isTooltipDisplay() == true ? 'smw-ask-info' : '',
 						'word-wrap' => 'break-word',
-						'data-info' => $definition->getDescription()
+						'data-info' => $this->msg( $definition->getMessage() )->text()
 					), htmlspecialchars( $name ) .  ': ' .
 					$this->showFormatOption( $definition, $currentValue )
 				);
@@ -142,7 +147,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 
 		$input = new ParameterInput( $definition );
 		$input->setInputName( 'p[' . $definition->getName() . ']' );
-		$input->setInputClass( 'smw-ask-input-' . str_replace( ' ', '-', $definition->getName() ) );
+		//$input->setInputClass( 'smw-ask-input-' . str_replace( ' ', '-', $definition->getName() ) );
 
 		if ( $currentValue !== false ) {
 			$input->setCurrentValue( $currentValue );
@@ -152,7 +157,7 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 		if ( !$this->isTooltipDisplay() ) {
 			$description =  Html::rawElement( 'span', array(
 				'class' => 'smw-ask-parameter-description'
-				), '<br />' . $definition->getDescription()
+				), '<br />' . $this->msg( $definition->getMessage() )->text()
 			);
 		}
 
