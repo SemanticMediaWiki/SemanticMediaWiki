@@ -656,7 +656,8 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'wantedproperties' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:WantedProperties]].',
 	'smw_wantedproperties_docu' => 'This is the introductory message at the top of [[Special:WantedProperties]].',
 	'smw_wantedproperty_template' => 'This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned data type and how often it is used in the wiki. $1 holds the name of the wanted property. $2 holds the number of values annotated with the wanted property.',
-	'smw_purge' => 'This is the label of a tab of an action item for the content area.',
+	'smw_purge' => '{{doc-actionlink}}
+This is the label of a tab of an action item for the content area.',
 	'types' => 'This is the title of the special page on [[Special:SpecialPages]] showing all data types.
 
 {{Identical|Type}}',
@@ -796,8 +797,16 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 
 {{Identical|Go}}',
 	'smw_browse_more' => '{{optional}}',
-	'smw_browse_show_incoming' => 'This is the text of the link on [[Special:Browse]] that shows the properties linking to a page when clicked.',
-	'smw_browse_hide_incoming' => 'This is the text of the link on [[Special:Browse]] that hides the properties linking to a page when clicked.',
+	'smw_browse_show_incoming' => '{{doc-actionlink}}
+This is the text of the link on [[Special:Browse]] that shows the properties linking to a page when clicked.
+
+See also:
+* {{msg-mw|Smw browse hide incoming}}',
+	'smw_browse_hide_incoming' => '{{doc-actionlink}}
+This is the text of the link on [[Special:Browse]] that hides the properties linking to a page when clicked.
+
+See also:
+* {{msg-mw|Smw browse show incoming}}',
 	'smw_browse_no_outgoing' => 'This is the information message shown on [[Special:Browse]] in case the browsed page does not contain any properties.',
 	'smw_browse_no_incoming' => 'This is the information message shown on [[Special:Browse]] in case no properties link to the browsed page.',
 	'smw_inverse_label_default' => 'Inverse label default. Parameters:
@@ -3540,6 +3549,7 @@ $messages['el'] = array(
 	'smw_printername_category' => 'Κατηγορία',
 	'validator-type-class-SMWParamSource' => 'κείμενο',
 	'smw-paramdesc-limit' => 'Ο μέγιστος αριθμός αποτελεσμάτων που θα επιστραφούν',
+	'smw-paramdesc-offset' => 'Η μετατόπιση του πρώτου αποτελέσματος',
 	'smw-paramdesc-headers' => 'Προβολή των κεφαλίδων/ονομάτων ιδιοτήτων',
 	'smw-paramdesc-mainlabel' => 'Η ετικέτα που θα δοθεί στο όνομα της κύριας σελίδας',
 	'smw-paramdesc-link' => 'Εμφάνιση τιμών ως σύνδεσμοι',
@@ -3563,6 +3573,7 @@ $messages['el'] = array(
 	'smw-paramdesc-csv-sep' => 'Το διαχωριστικό που θα χρησιμοποιηθεί',
 	'smw-paramdesc-dsv-separator' => 'Το διαχωριστικό που θα χρησιμοποιηθεί',
 	'smw-paramdesc-dsv-filename' => 'Το όνομα του αρχείου DSV',
+	'smw-smwdoc-description' => 'Εμφανίζει έναν πίνακα με όλες τις παραμέτρους που μπορούν να χρησιμοποιηθούν για τη μορφή αποτελέσματος που έχει οριστεί μαζί με προεπιλεγμένες τιμές και περιγραφές.',
 	'smw-smwdoc-par-format' => 'Η μορφή αποτελέσματος για την οποία να προβληθεί τεκμηρίωση παραμέτρων.',
 	'smw-paramdesc-sort' => 'Ιδιότητα βάσει της οποίας να ταξινομηθεί το ερώτημα',
 	'smw-paramdesc-order' => 'Σειρά ταξινόμησης του ερωτήματος',
@@ -3596,10 +3607,14 @@ $messages['el'] = array(
 	'smw_nounitsdeclared' => 'Δεν έχουν δηλωθεί μονάδες μέτρησης για αυτήν την ιδιότητα.',
 	'smw_novalues' => 'Δεν καθορίστηκαν τιμές.',
 	'smw_nodatetime' => 'Η ημερομηνία "$1" δεν έγινε κατανοητή.',
+	'smw_toomanyclosing' => 'Φαίνεται ότι το «$1» εμφανίζεται πάρα πολλές φορές μέσα στο ερώτημα.',
 	'smw_misplacedsymbol' => 'Το σύμβολο «$1» χρησιμοποιήθηκε σε σημείο όπου δεν έχει κάποια χρησιμότητα.',
+	'smw_unexpectedpart' => 'Το τμήμα «$1» του ερωτήματος δεν έγινε κατανοητό.
+Τα αποτελέσματα ενδέχεται να μην είναι τα αναμενόμενα.',
 	'smw_emptysubquery' => 'Κάποιο υποερώτημα δεν έχει έγκυρη συνθήκη.',
 	'smw_misplacedsubquery' => 'Κάποιο υποερώτημα χρησιμοποιήθηκε σε σημείο όπου δεν επιτρέπονται υποερωτήματα.',
 	'smw_valuesubquery' => 'Δεν υποστηρίζονται υποερωτήματα για τιμές της ιδιότητας «$1».',
+	'smw_badqueryatom' => 'Κάποιο τμήμα «<nowiki>[[…]]</nowiki>» του ερωτήματος δεν έγινε κατανοητό.',
 	'smw_propvalueproblem' => 'Η τιμή της ιδιότητας «$1» δεν έγινε κατανοητή.',
 	'smw_type_header' => 'Ιδιότητες τύπου «$1»',
 	'smw_typearticlecount' => 'Εμφάνιση $1 {{PLURAL:$1|ιδιότητας|ιδιοτήτων}} που χρησιμοποιούν αυτόν τον τύπο.',
@@ -7730,7 +7745,7 @@ $messages['ja'] = array(
 	'smw_concept_cache_miss' => '概念「$1」は、ウィキの設定によりオフラインでの処理が必要なため、現時点では利用できません。
 しばらく経っても問題が消えない場合は、この概念を利用可能にするようにサイト管理者にお問い合わせください。',
 	'smw_noinvannot' => '逆プロパティには値を割り当てられません。',
-	'version-semantic' => 'セマンティック拡張機能',
+	'version-semantic' => '意味的拡張機能',
 	'smw_baduri' => '「$1」の形式の URI は許可されていません。',
 	'smw_dsv_link' => 'DSV',
 	'smw_printername_count' => '集計結果',
