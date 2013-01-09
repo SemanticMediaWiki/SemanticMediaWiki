@@ -56,7 +56,7 @@ class SMWSQLStore3Writers {
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
 			$db = wfGetDB( DB_MASTER );
 			$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
-			$db->delete( 'smw_ftp_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
+			$db->delete( 'smw_fpt_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
 			$db->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
 
