@@ -684,7 +684,8 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 
 {{Identical|Find results}}',
 	'smw_ask_editquery' => 'This is the text of the action link on [[Special:Ask]] to edit a query.',
-	'smw_add_sortcondition' => 'This is the text of the action link on [[Special:Ask]] to add an printout statement to a query.',
+	'smw_add_sortcondition' => '{{doc-actionlink}}
+This is the text of the action link on [[Special:Ask]] to add an printout statement to a query.',
 	'smw_ask_hidequery' => 'This is the text of the action link on [[Special:Ask]] to abandon a query.',
 	'smw_ask_help' => 'This is the text of a link on [[Special:Ask]] pointing to the help page on [http://semantic-mediawiki.org/wiki/Help:Semantic_search semantic search].',
 	'smw_ask_queryhead' => 'This is the header of the edit field available on [[Special:Ask]] to enter the [http://semantic-mediawiki.org/wiki/Help:Selecting_pages query conditions] of the query.',
@@ -697,8 +698,10 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 	'smw_ask_otheroptions' => 'This is the text for the header of a section on [[Special:Ask]] that is containing various different options to choose or enter in order to specify printout statements of a query.',
 	'smw-ask-otheroptions-info' => "This is the text describing the section ''Other options'' on [[Special:Ask]] that is containing various different options to choose or enter in order to specify printout statements of a query.",
 	'smw-ask-otheroptions-collapsed-info' => 'Please use the plus icon to view all available options',
-	'smw_ask_show_embed' => 'This is the text of the action link on [[Special:Ask]] to show the code of a query.',
-	'smw_ask_hide_embed' => 'This is the text of the action link on [[Special:Ask]] to hide the code of a query.',
+	'smw_ask_show_embed' => '{{doc-actionlink}}
+This is the text of the action link on [[Special:Ask]] to show the code of a query.',
+	'smw_ask_hide_embed' => '{{doc-actionlink}}
+This is the text of the action link on [[Special:Ask]] to hide the code of a query.',
 	'smw_ask_embed_instr' => 'This is an information message for the field on [[Special:Ask]] that contains the code of a query that may be copied and when pasted into a regular page on the wiki..',
 	'smw-ask-delete' => 'This is the text of the action link on [[Special:Ask]] to delete an printout statement from a query.',
 	'smw-ask-sorting' => 'This is the text for the header of the section on [[Special:Ask]] that allows to specify sorting options for specific properties that are queried for.',
@@ -3740,13 +3743,27 @@ $messages['el'] = array(
 	'smwadmin' => 'Λειτουργίες διαχειριστή για το Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Η μηχανή αποθήκευσης στήθηκε επιτυχώς.',
 	'smw_smwadmin_return' => 'Επιστροφή στην $1',
+	'smw_smwadmin_updatenotstarted' => 'Υπάρχει ήδη μια διαδικασία ενημέρωσης σε εκτέλεση.
+Δεν πρόκειται να δημιουργηθεί άλλη.
+
+Επιστροφή στο $1.',
 	'smw_smwadmin_updatestopped' => 'Όλες οι υπάρχουσες διεργασίες ενημέρωσης έχουν διακοπεί.', # Fuzzy
+	'smw_smwadmin_updatenotstopped' => 'Για να διακόψετε τη εκτελούμενη διεργασία ενημέρωσης, πρέπει να ενεργοποιήσετε το πλαίσιο ελέγχου για να δηλώσετε ότι είστε πραγματικά βέβαιοι.
+
+Επιστροφή στο $1.',
 	'smw_smwadmin_db' => 'Εγκατάσταση βάσεως δεδομένων και αναβάθμιση',
 	'smw_smwadmin_dbbutton' => 'Αρχικοποίηση ή αναβάθμιση πινάκων',
 	'smw_smwadmin_announce' => 'Ανακοίνωση του wiki σας',
+	'smw_smwadmin_announcedocu' => 'Το Semantic MediaWiki έχει μια διαδικτυακή υπηρεσία για την αναγγελία νέων σημασιολογικών ιστοχώρων wiki.
+Η υπηρεσία χρησιμεύει για τη διατήρηση μιας λίστας των δημόσιων ιστοχώρων που χρησιμοποιούν το Semantic MediaWiki, κυρίως για να βοηθήσει το <a href="http://semantic-mediawiki.org/wiki/SMW_Project">εγχείρημα Semantic MediaWiki</a> να έχει μια γενική εικόνα των τυπικών χρήσεων του Semantic MediaWiki.
+Δείτε την ιστοσελίδα του Semantic MediaWiki για <a href="http://semantic-mediawiki.org/wiki/Registry">περισσότερες πληροφορίες σχετικά με αυτήν την υπηρεσία</a>.',
 	'smw_smwadmin_announcebutton' => 'Πατήστε το παρακάτω κουμπί για την υποβολή της διεύθυνσης URL του wiki σας στην εν λόγω υπηρεσία.
 Η υπηρεσία δεν καταχωρίζει wiki που δεν είναι δημόσια προσβάσιμα, και θα αποθηκεύει μόνο πληροφορίες προσιτές στο κοινό.',
 	'smw_smwadmin_datarefresh' => 'Επιδιόρθωση και αναβάθμιση δεδομένων',
+	'smw_smwadmin_datarefreshdocu' => 'Είναι δυνατό να επαναφέρετε όλα τα δεδομένα του Semantic MediaWiki βασιζόμενοι στα τρέχοντα περιεχόμενα του wiki.
+Αυτό μπορεί να είναι χρήσιμο στην περίπτωση της επιδιόρθωσης κατεστραμμένων δεδομένων ή για την ανανέωση των δεδομένων εάν έχει αλλάξει η εσωτερική τους μορφή λόγω κάποιας αναβάθμισης λογισμικού.
+Η ενημέρωση εκτελείται σελίδα σελίδα και δεν θα ολοκληρωθεί άμεσα.
+Το ακόλουθο δείχνει εάν μια ενημέρωση βρίσκεται σε εξέλιξη και σας επιτρέπει να ξεκινήσετε ή να διακόψετε ενημερώσεις (εκτός εάν αυτή η δυνατότητα έχει απενεργοποιηθεί από το διαχειριστή του ιστοχώρου).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Η ενημέρωση είναι ήδη σε εξέλιξη.</strong>
 Είναι φυσικό η ενημέρωση να εξελίσσεται αργά δεδομένου ότι ανανεώνει τα δεδομένα σε μικρά κομμάτια και μόνο κάθε φορά που ένας χρήστης έχει πρόσβαση σε σελίδα του wiki.
 Για να ολοκληρώσετε αυτήν την ενημέρωση πιο γρήγορα, μπορείτε να εκτελέσετε το script συντήρησης <tt>runJobs.php</tt> του MediaWiki (χρησιμοποιήστε την επιλογή <tt>--maxjobs 1000</tt> για να περιορίσετε τον αριθμό των ενημερώσεων που θα γίνονται σε μία δέσμη).
@@ -3772,6 +3789,7 @@ $messages['el'] = array(
 	'smw-info-par-icon' => 'Εικονίδιο για εμφάνιση είτε «πληροφοριών» είτε «προειδοποίησης».',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Επιλογές σημασιολογικής αναζήτησης',
+	'smw-prefs-intro-text' => 'Οι παρακάτω επιλογές παρέχονται από το [http://semantic-mediawiki.org/ Semantic MediaWiki] (ή άλλες σχετικές επεκτάσεις) για να επιτρέψουν εξατομικευμένη παραμετροποίηση σε επιλεγμένες λειτουργίες. Για περισσότερες πληροφορίες, παρακαλώ ρίξτε μια ματιά σε αυτήν την [http://semantic-mediawiki.org/wiki/Help:User_preferences ενότητα βοηθείας].',
 	'smw-prefs-ask-options-tooltip-display' => 'Εμφάνιση κειμένου παραμέτρου ως πληροφορίες στο δείκτη του ποντικιού',
 	'smw-prefs-ask-options-collapsed-default' => 'Το πλαίσιο επιλογών να είναι συμπτυγμένο εκ προεπιλογής',
 	'smw-ui-tooltip-title-property' => 'Ιδιότητα',
@@ -7734,7 +7752,7 @@ Progresso stimato dell'aggiornamento in corso:",
  * @author 青子守歌
  */
 $messages['ja'] = array(
-	'smw-desc' => 'ウィキを機械や人間にとってよりアクセスしやすいものにする（[http://semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント]）',
+	'smw-desc' => 'ウィキを機械や人間にとってよりアクセスしやすいものにする ([http://semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])',
 	'smw_viewasrdf' => 'RDF フィード',
 	'smw_finallistconjunct' => ',',
 	'smw_factbox_head' => '「$1」に関する事実',
@@ -7785,7 +7803,7 @@ $messages['ja'] = array(
 	'smw-paramdesc-csv-sep' => '使用する区切り文字',
 	'smw-paramdesc-dsv-separator' => '使用する区切り文字',
 	'smw-paramdesc-dsv-filename' => 'DSV ファイルの名前',
-	'smw-paramdesc-sort' => 'クエリの並び順のプロパティ',
+	'smw-paramdesc-sort' => 'クエリの並べ替えに使用するプロパティ',
 	'smw-paramdesc-order' => 'クエリの並べ替えでの並び順',
 	'smw-paramdesc-searchlabel' => '検索結果の続きへのリンク文字列',
 	'smw-paramdesc-named_args' => 'テンプレートに渡した引数に名前を付ける',
@@ -7837,7 +7855,7 @@ $messages['ja'] = array(
 	'smw_attribute_header' => 'プロパティ「$1」を使用しているページ',
 	'smw_attributearticlecount' => 'このプロパティを使用している $1 {{PLURAL:$1|件のページ}}を表示しています。',
 	'smw_subproperty_header' => '下位プロパティ',
-	'smw_subpropertyarticlecount' => 'このプロパティには以下の $1 {{PLURAL:$1|下位プロパティ}}があります：',
+	'smw_subpropertyarticlecount' => 'このプロパティには以下の $1 {{PLURAL:$1|下位プロパティ}}があります:',
 	'smw_concept_header' => '概念「$1」のページ',
 	'smw_conceptarticlecount' => 'この概念に属する $1 {{PLURAL:$1|件のページ}}を表示しています。',
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
@@ -7868,10 +7886,10 @@ $messages['ja'] = array(
 	'types' => '型',
 	'smw_types_docu' => '以下はプロパティに割り当てられているすべてのデータ型の一覧です。',
 	'semanticstatistics' => '意味的統計',
-	'smw_semstats_text' => "このウィキには、計 '''$2'''種の[[Special:Properties|{{PLURAL:$2|プロパティ}}]]と '''$1'''個の{{PLURAL:$1|プロパティ値}}があります。
-'''$3'''個の{{PLURAL:$3|プロパティ}}には専用のページがあり、うち '''$4'''個にはデータ型が指定されています。
+	'smw_semstats_text' => "このウィキには、計 '''$2''' 種の[[Special:Properties|{{PLURAL:$2|プロパティ}}]]と '''$1''' 個のプロパティ{{PLURAL:$1|値}}があります。
+'''$3''' {{PLURAL:$3|個のプロパティ}}には専用のページがあり、うち '''$4''' 個にはデータ型が指定されています。
 既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。
-まだ解説ページないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
+まだ専用のページがないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
 	'smw_uri_doc' => 'URI リゾルバーは [$1 W3C TAG での httpRange-14 に関する議論成果]を実装しています。
 これは人間がウェブサイトに向かわないように取り計らいます。',
 	'ask' => '意味的検索',
@@ -7888,7 +7906,7 @@ $messages['ja'] = array(
 	'smw_ask_printdesc' => '(プロパティ名を各行に 1 つ追加してください)',
 	'smw_ask_format_as' => '書式:',
 	'smw_ask_defaultformat' => '既定',
-	'smw_ask_otheroptions' => '他の選択肢',
+	'smw_ask_otheroptions' => 'その他のオプション',
 	'smw-ask-otheroptions-collapsed-info' => '利用できるオプションをすべて表示するには + アイコンを使用してください',
 	'smw_ask_show_embed' => '埋め込み用コードを表示',
 	'smw_ask_hide_embed' => '埋め込み用コードを非表示',
@@ -7998,15 +8016,15 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 この機能は破損したデータを修復する場合や、ソフトウェアのアップグレードで内部形式が変わった際にデータを移行する場合などに有用です。
 この更新は1ページずつ実行され、直ちには完了しません。
 以下に更新が進行中かどうかを表示します。更新を開始または停止できます (サイト管理者が機能を無効にしていない場合のみ)。',
-	'smw_smwadmin_datarefreshprogress' => '<strong>更新が既に進行しています。</strong>
-利用者がウィキにアクセスするたびに少量の塊のデータを更新するのみのため、更新がゆっくりとしか進まないのは正常な動作です。
-この更新をより早く終えたい場合は、MediaWiki のメンテナンス スクリプト <tt>runJobs.php</tt> を起動できます (1つのバッチで行われる更新の数を制限するには <tt>--maxjobs 1000</tt> オプションを使用してください)。
-現在の更新の推定進捗：',
+	'smw_smwadmin_datarefreshprogress' => '<strong>更新が既に進行中です。</strong>
+利用者がウィキにアクセスするたびに少量の塊のデータを更新するのみであるため、更新がゆっくりとしか進まないのは正常な動作です。
+この更新をより早く終えるには、MediaWiki のメンテナンス スクリプト <tt>runJobs.php</tt> を実行してください (1つのバッチで行われる更新の数を制限するには <tt>--maxjobs 1000</tt> オプションを使用してください)。
+現在の更新の推定進捗:',
 	'smw_smwadmin_datarefreshbutton' => 'データの更新を開始',
 	'smw_smwadmin_datarefreshstop' => 'この更新を停止',
 	'smw_smwadmin_datarefreshstopconfirm' => 'はい、もちろんです。',
 	'smw_smwadmin_support' => '支援を得る',
-	'smw_smwadmin_supportdocu' => '問題が発生したときにさまざまなリソースが助けとなるかもしれません：',
+	'smw_smwadmin_supportdocu' => '問題が発生したときにさまざまなリソースが助けとなるかもしれません:',
 	'smw_smwadmin_installfile' => 'インストールに問題を発見した場合、<a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL ファイル</a>にある指針を確認することから始めてください。',
 	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
 	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> で報告できます。',
