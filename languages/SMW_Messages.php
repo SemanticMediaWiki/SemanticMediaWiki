@@ -908,7 +908,8 @@ See also:
 	'smw-prefs-ask-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ui-tooltip-title-property' => 'A label that is displayed on the info tooltip.',
 	'smw-ui-tooltip-title-quantity' => 'A label that is displayed on the info tooltip.',
-	'smw-ui-tooltip-title-info' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-info' => 'A label that is displayed on the info tooltip.
+{{Identical|Information}}',
 	'smw-ui-tooltip-title-service' => 'A label that is displayed on the info tooltip.',
 	'smw-ui-tooltip-title-warning' => 'A label that is displayed on the info tooltip.',
 	'smw-ui-tooltip-title-parameter' => 'A label that is displayed on the info tooltip.',
@@ -3578,6 +3579,7 @@ $messages['el'] = array(
 	'smw-paramdesc-dsv-filename' => 'Το όνομα του αρχείου DSV',
 	'smw-smwdoc-description' => 'Εμφανίζει έναν πίνακα με όλες τις παραμέτρους που μπορούν να χρησιμοποιηθούν για τη μορφή αποτελέσματος που έχει οριστεί μαζί με προεπιλεγμένες τιμές και περιγραφές.',
 	'smw-smwdoc-par-format' => 'Η μορφή αποτελέσματος για την οποία να προβληθεί τεκμηρίωση παραμέτρων.',
+	'smw-smwdoc-par-parameters' => 'Ποιες παράμετροι να εμφανίζονται. «ειδικές» για όσες προστίθενται από τη μορφή, «βασικές» για όσες είναι διαθέσιμες σε όλες τις μορφές και «όλες» και για τα δύο.',
 	'smw-paramdesc-sort' => 'Ιδιότητα βάσει της οποίας να ταξινομηθεί το ερώτημα',
 	'smw-paramdesc-order' => 'Σειρά ταξινόμησης του ερωτήματος',
 	'smw-paramdesc-searchlabel' => 'Κείμενο για συνέχιση της αναζήτησης',
@@ -3611,6 +3613,7 @@ $messages['el'] = array(
 	'smw_novalues' => 'Δεν καθορίστηκαν τιμές.',
 	'smw_nodatetime' => 'Η ημερομηνία "$1" δεν έγινε κατανοητή.',
 	'smw_toomanyclosing' => 'Φαίνεται ότι το «$1» εμφανίζεται πάρα πολλές φορές μέσα στο ερώτημα.',
+	'smw_noclosingbrackets' => 'Κάποιες αγκύλες «<nowiki>[[</nowiki>» στο ερώτημά σας δεν έχουν κλείσει με αντίστοιχο «]]».',
 	'smw_misplacedsymbol' => 'Το σύμβολο «$1» χρησιμοποιήθηκε σε σημείο όπου δεν έχει κάποια χρησιμότητα.',
 	'smw_unexpectedpart' => 'Το τμήμα «$1» του ερωτήματος δεν έγινε κατανοητό.
 Τα αποτελέσματα ενδέχεται να μην είναι τα αναμενόμενα.',
@@ -3619,6 +3622,10 @@ $messages['el'] = array(
 	'smw_valuesubquery' => 'Δεν υποστηρίζονται υποερωτήματα για τιμές της ιδιότητας «$1».',
 	'smw_badqueryatom' => 'Κάποιο τμήμα «<nowiki>[[…]]</nowiki>» του ερωτήματος δεν έγινε κατανοητό.',
 	'smw_propvalueproblem' => 'Η τιμή της ιδιότητας «$1» δεν έγινε κατανοητή.',
+	'smw_noqueryfeature' => 'Κάποια δυνατότητα των ερωτημάτων δεν υποστηρίζεται σε αυτό το wiki και κόπηκε μέρος του ερωτήματος ($1).',
+	'smw_querytoolarge' => 'Οι ακόλουθες συνθήκες του ερωτήματος δεν μπόρεσαν να ληφθούν υπόψιν λόγω των περιορισμών μεγέθους ή βάθους ερωτήματος του wiki: $1.',
+	'smw_notemplategiven' => 'Δώστε μια τιμή για την παράμετρο «πρότυπο» για αυτήν τη μορφή ερωτήματος για να λειτουργήσει.',
+	'smw_db_sparqlqueryincomplete' => 'Το να απαντηθεί το ερώτημα αποδείχτηκε πολύ δύσκολο και η εκτέλεση δεν ολοκληρώθηκε. Μερικά αποτελέσματα μπορεί να είναι ελλειπή. Εάν είναι δυνατόν, προσπαθήστε να χρησιμοποιήσετε απλούστερο ερώτημα.',
 	'smw_type_header' => 'Ιδιότητες τύπου «$1»',
 	'smw_typearticlecount' => 'Εμφάνιση $1 {{PLURAL:$1|ιδιότητας|ιδιοτήτων}} που χρησιμοποιούν αυτόν τον τύπο.',
 	'smw_attribute_header' => 'Σελίδες που χρησιμοποιούν την ιδιότητα «$1»',
@@ -3717,6 +3724,8 @@ $messages['el'] = array(
 	'smw_sbv_docu' => 'Αναζήτηση για όλες τις σελίδες που έχουν μια δεδομένη ιδιότητα και τιμή.',
 	'smw_sbv_novalue' => 'Εισαγάγετε μια έγκυρη τιμή για την ιδιότητα, ή προβάλετε όλες τις τιμές ιδιοτήτων για «$1».',
 	'smw_sbv_displayresult' => 'Μια λίστα όλων των σελίδων που έχουν την ιδιότητα «$1» με τιμή «$2»',
+	'smw_sbv_displayresultfuzzy' => 'Λίστα με όλες τις σελίδες που έχουν ιδιότητα «$1» με τιμή «$2».
+Δεδομένου ότι υπήρξαν μόνο λίγα αποτελέσματα, εμφανίζονται επίσης κάποιες γειτονικές τιμές.',
 	'smw_sbv_property' => 'Ιδιότητα:',
 	'smw_sbv_value' => 'Τιμή:',
 	'smw_sbv_submit' => 'Αναζήτηση αποτελεσμάτων',
@@ -3756,6 +3765,8 @@ $messages['el'] = array(
 	'smw_smwadmin_updatenotstopped' => 'Για να διακόψετε τη εκτελούμενη διεργασία ενημέρωσης, πρέπει να ενεργοποιήσετε το πλαίσιο ελέγχου για να δηλώσετε ότι είστε πραγματικά βέβαιοι.
 
 Επιστροφή στο $1.',
+	'smw_smwadmin_docu' => 'Αυτή η ειδική σελίδα σάς βοηθά κατά τη διάρκεια της εγκατάστασης και αναβάθμισης του <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Να θυμάστε να παίρνετε αντίγραφα ασφαλείας όλων των σημαντικών δεδομένων πριν από την εκτέλεση διαχειριστικών λειτουργιών.',
 	'smw_smwadmin_db' => 'Εγκατάσταση βάσεως δεδομένων και αναβάθμιση',
 	'smw_smwadmin_dbbutton' => 'Αρχικοποίηση ή αναβάθμιση πινάκων',
 	'smw_smwadmin_announce' => 'Ανακοίνωση του wiki σας',
