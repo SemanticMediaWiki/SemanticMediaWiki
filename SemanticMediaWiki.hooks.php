@@ -286,6 +286,8 @@ final class SMWHooks {
 
 			// Keep store tests near the end, since they are slower due to database access.
 			'storage/Store',
+
+			'storage/sqlstore/PropertyStatisticsTable',
 		);
 
 		foreach ( $testFiles as $file ) {

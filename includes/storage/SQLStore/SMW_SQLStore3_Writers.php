@@ -646,7 +646,7 @@ class SMWSQLStore3Writers {
 				 __METHOD__
 			);
 
-			$statsTable = new \SMW\Store\SqlPropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db );
+			$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db );
 			$statsTable->addToUsageCount(
 				$this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
 				1
@@ -853,7 +853,7 @@ class SMWSQLStore3Writers {
 
 		// *** Update reference count for _REDI property ***//
 
-		$statsTable = new \SMW\Store\SqlPropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db );
+		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db );
 		$statsTable->addToUsageCount(
 			$this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
 			$count

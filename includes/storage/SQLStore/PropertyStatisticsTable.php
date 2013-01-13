@@ -87,7 +87,7 @@ class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
 		return $this->dbConnection->update(
 			$this->table,
 			array(
-				'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->dbConnection->addQuotes( $value ),
+				'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->dbConnection->addQuotes( abs( $value ) ),
 			),
 			array(
 				'p_id' => $propertyId
