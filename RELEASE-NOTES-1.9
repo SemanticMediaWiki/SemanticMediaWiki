@@ -9,11 +9,11 @@ production until the actual release.
 * Changed minimum PHP version from 5.2.x. to 5.3.x.
 * Full compatibility with MediaWiki 1.19 and forward-compatibility with 1.21.
 * Deleted pre SMW 1.5.1 entry point (includes/SMW_Settings.php), the main entry point is SemanticMediaWiki.php
-* Renamed SMW_Settings.php to SemanticMediaWiki.settings.php
+* Changed minimum Validator version from 0.5 to 1.0.
 
 === New features ===
 
-*
+* Added maintenance script to rebuild the property statistics
 
 === Enhancements ===
 
@@ -21,6 +21,7 @@ production until the actual release.
 * (Bug 39019) Enable +sep= as multiple values identifier in #subobject
 * (Bug 34477) Display cache information in concept pages
 * (Bug 34172) Add individual CSS class for further result links allowing to add auxiliary information (icon etc.)
+* Improved efficiency of property statistics rebuilding script
 
 === Dropped features ===
 
@@ -28,7 +29,7 @@ production until the actual release.
 
 === Bug fixes ===
 
-*
+* The property statistics rebuilding is no longer done whenever you run update.php.
 
 === Unit tests ===
 

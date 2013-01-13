@@ -268,15 +268,16 @@ final class SMWHooks {
 	public static function registerUnitTests ( array &$files ) {
 		$testFiles = array(
 			'FormatFactory',
-			'QueryProcessor',
-			'Highlighter',
 			'GlobalFunctions',
+			'Highlighter',
+			'ObservableMessageReporter',
+			'QueryProcessor',
 
-			'dataitems/DI_Number',
-			'dataitems/DI_Bool',
 			'dataitems/DI_Blob',
-			'dataitems/DI_String',
+			'dataitems/DI_Bool',
+			'dataitems/DI_Number',
 			'dataitems/DI_GeoCoord',
+			'dataitems/DI_String',
 
 			'parserhooks/ParserParameter',
 			'parserhooks/Subobject',
