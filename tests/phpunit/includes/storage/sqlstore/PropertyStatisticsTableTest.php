@@ -28,7 +28,6 @@ use SMW\SQLStore\PropertyStatisticsTable;
  *
  * @group SMW
  * @group SMWExtension
- * @group SMWQueries
  * @group Database
  *
  * @licence GNU GPL v2+
