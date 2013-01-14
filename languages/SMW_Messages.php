@@ -911,7 +911,8 @@ See also:
 	'smw-ui-tooltip-title-info' => 'A label that is displayed on the info tooltip.
 {{Identical|Information}}',
 	'smw-ui-tooltip-title-service' => 'A label that is displayed on the info tooltip.',
-	'smw-ui-tooltip-title-warning' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-warning' => 'A label that is displayed on the info tooltip.
+{{Identical|Error}}',
 	'smw-ui-tooltip-title-parameter' => 'A label that is displayed on the info tooltip.',
 	'smw-ui-tooltip-title-event' => 'A label that is displayed on the info tooltip.',
 	'smw-ui-tooltip-title-note' => 'A label that is displayed on the info tooltip.',
@@ -3651,7 +3652,7 @@ $messages['el'] = array(
 	'properties' => 'Ιδιότητες',
 	'smw_properties_docu' => 'Σε αυτό το wiki χρησιμοποιούνται οι ακόλουθες ιδιότητες.',
 	'smw_property_template' => '$1 τύπου $2 ($3 {{PLURAL:$3|χρήση|χρήσεις}})',
-	'smw_propertylackspage' => 'Όλες οι ιδιότητες πρέπει να περιγράφονται από μία σελίδα!',
+	'smw_propertylackspage' => 'Όλες οι ιδιότητες πρέπει να περιγράφονται από κάποια σελίδα!',
 	'smw_propertylackstype' => 'Δεν έχει καθοριστεί τύπος για την ιδιότητα αυτή (προς το παρόν θεωρείται τύπος $1).',
 	'smw_propertyhardlyused' => 'Αυτή η ιδιότητα δεν χρησιμοποιείται σχεδόν καθόλου εντός του wiki!',
 	'unusedproperties' => 'Αχρησιμοποίητες ιδιότητες',
@@ -3766,7 +3767,7 @@ $messages['el'] = array(
 	'smw_result_next' => 'Επόμενο',
 	'smw_result_results' => 'Αποτελέσματα',
 	'smw_result_noresults' => 'Λυπούμαστε, δεν υπάρχουν αποτελέσματα.',
-	'smwadmin' => 'Λειτουργίες διαχειριστή για το Semantic MediaWiki',
+	'smwadmin' => 'Λειτουργίες διαχειριστή για το Σημασιολογικό MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Η μηχανή αποθήκευσης στήθηκε επιτυχώς.',
 	'smw_smwadmin_return' => 'Επιστροφή στην $1',
 	'smw_smwadmin_updatestarted' => 'Ξεκίνησε μια νέα διαδικασία ενημέρωσης για την ανανέωση των σημασιολογικών δεδομένων.
@@ -3782,10 +3783,10 @@ $messages['el'] = array(
 	'smw_smwadmin_updatenotstopped' => 'Για να διακόψετε τη εκτελούμενη διεργασία ενημέρωσης, πρέπει να ενεργοποιήσετε το πλαίσιο ελέγχου για να δηλώσετε ότι είστε πραγματικά βέβαιοι.
 
 Επιστροφή στο $1.',
-	'smw_smwadmin_docu' => 'Αυτή η ειδική σελίδα σάς βοηθά κατά τη διάρκεια της εγκατάστασης και αναβάθμισης του <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Αυτή η ειδική σελίδα σάς βοηθά κατά τη διάρκεια της εγκατάστασης και αναβάθμισης του <a href="http://semantic-mediawiki.org">Σημασιολογικού MediaWiki</a>.
 Να θυμάστε να παίρνετε αντίγραφα ασφαλείας όλων των σημαντικών δεδομένων πριν από την εκτέλεση διαχειριστικών λειτουργιών.',
 	'smw_smwadmin_db' => 'Εγκατάσταση βάσεως δεδομένων και αναβάθμιση',
-	'smw_smwadmin_dbdocu' => 'Το Semantic MediaWiki απαιτεί να γίνουν ορισμένες επεκτάσεις στη βάση δεδομένων του MediaWiki για την αποθήκευση σημασιολογικών δεδομένων.
+	'smw_smwadmin_dbdocu' => 'Το Σημασιολογικό MediaWiki απαιτεί να γίνουν ορισμένες επεκτάσεις στη βάση δεδομένων του MediaWiki για την αποθήκευση σημασιολογικών δεδομένων.
 Η παρακάτω λειτουργία εξασφαλίζει ότι η βάση δεδομένων σας θα στηθεί σωστά.
 Οι αλλαγές που γίνονται σε αυτό το βήμα δεν επηρεάζουν την υπόλοιπη βάση δεδομένων του MediaWiki, και μπορούν εύκολα να αναιρεθούν εφόσον επιθυμείτε.
 Αυτή η λειτουργία μπορεί να εκτελεσθεί πολλές φορές χωρίς να προκαλεί ζημιά, αλλά είναι αναγκαία μόνο μία φορά κατά την εγκατάσταση ή αναβάθμιση.',
@@ -3793,13 +3794,13 @@ $messages['el'] = array(
 Ή χορηγήστε σε αυτόν το χρήστη επιπλέον δικαιώματα να δημιουργεί και να διαγράφει πίνακες, ή εισαγάγετε προσωρινά τα στοιχεία του διαχειριστή της βάσης δεδομένων σας στο LocalSettings.php, ή χρησιμοποιήστε το script συντήρησης <tt>SMW_setup.php</tt> το οποίο μπορεί να χρησιμοποιήσει διαπιστευτήρια διαχειριστή.',
 	'smw_smwadmin_dbbutton' => 'Αρχικοποίηση ή αναβάθμιση πινάκων',
 	'smw_smwadmin_announce' => 'Ανακοίνωση του wiki σας',
-	'smw_smwadmin_announcedocu' => 'Το Semantic MediaWiki έχει μια διαδικτυακή υπηρεσία για την αναγγελία νέων σημασιολογικών ιστοχώρων wiki.
-Η υπηρεσία χρησιμεύει για τη διατήρηση μιας λίστας των δημόσιων ιστοχώρων που χρησιμοποιούν το Semantic MediaWiki, κυρίως για να βοηθήσει το <a href="http://semantic-mediawiki.org/wiki/SMW_Project">εγχείρημα Semantic MediaWiki</a> να έχει μια γενική εικόνα των τυπικών χρήσεων του Semantic MediaWiki.
-Δείτε την ιστοσελίδα του Semantic MediaWiki για <a href="http://semantic-mediawiki.org/wiki/Registry">περισσότερες πληροφορίες σχετικά με αυτήν την υπηρεσία</a>.',
+	'smw_smwadmin_announcedocu' => 'Το Σημασιολογικό MediaWiki έχει μια διαδικτυακή υπηρεσία για την αναγγελία νέων σημασιολογικών ιστοχώρων wiki.
+Η υπηρεσία χρησιμεύει για τη διατήρηση μιας λίστας των δημόσιων ιστοχώρων που χρησιμοποιούν το Σημασιολογικό MediaWiki, κυρίως για να βοηθήσει το <a href="http://semantic-mediawiki.org/wiki/SMW_Project">εγχείρημα Σημασιολογικό MediaWiki</a> να έχει μια γενική εικόνα των τυπικών χρήσεων του Σημασιολογικού MediaWiki.
+Δείτε την ιστοσελίδα του Σημασιολογικού MediaWiki για <a href="http://semantic-mediawiki.org/wiki/Registry">περισσότερες πληροφορίες σχετικά με αυτήν την υπηρεσία</a>.',
 	'smw_smwadmin_announcebutton' => 'Πατήστε το παρακάτω κουμπί για την υποβολή της διεύθυνσης URL του wiki σας στην εν λόγω υπηρεσία.
 Η υπηρεσία δεν καταχωρίζει wiki που δεν είναι δημόσια προσβάσιμα, και θα αποθηκεύει μόνο πληροφορίες προσιτές στο κοινό.',
 	'smw_smwadmin_datarefresh' => 'Επιδιόρθωση και αναβάθμιση δεδομένων',
-	'smw_smwadmin_datarefreshdocu' => 'Είναι δυνατό να επαναφέρετε όλα τα δεδομένα του Semantic MediaWiki βασιζόμενοι στα τρέχοντα περιεχόμενα του wiki.
+	'smw_smwadmin_datarefreshdocu' => 'Είναι δυνατό να επαναφέρετε όλα τα δεδομένα του Σημασιολογικού MediaWiki βασιζόμενοι στα τρέχοντα περιεχόμενα του wiki.
 Αυτό μπορεί να είναι χρήσιμο στην περίπτωση της επιδιόρθωσης κατεστραμμένων δεδομένων ή για την ανανέωση των δεδομένων εάν έχει αλλάξει η εσωτερική τους μορφή λόγω κάποιας αναβάθμισης λογισμικού.
 Η ενημέρωση εκτελείται σελίδα σελίδα και δεν θα ολοκληρωθεί άμεσα.
 Το ακόλουθο δείχνει εάν μια ενημέρωση βρίσκεται σε εξέλιξη και σας επιτρέπει να ξεκινήσετε ή να διακόψετε ενημερώσεις (εκτός εάν αυτή η δυνατότητα έχει απενεργοποιηθεί από το διαχειριστή του ιστοχώρου).',
@@ -3813,9 +3814,9 @@ $messages['el'] = array(
 	'smw_smwadmin_support' => 'Παίρνοντας υποστήριξη',
 	'smw_smwadmin_supportdocu' => 'Διάφορες πηγές ενδέχεται να σας βοηθήσουν σε περίπτωση που αντιμετωπίζετε προβλήματα:',
 	'smw_smwadmin_installfile' => 'Εάν αντιμετωπίζετε προβλήματα με την εγκατάσταση, ξεκινήστε τσεκάροντας τις κατευθυντήριες γραμμές στην <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ΕΓΚΑΤΑΣΤΑΣΗ του αρχείου</a>.',
-	'smw_smwadmin_smwhomepage' => 'Η πλήρης τεκμηρίωση χρήσης του Semantic MediaWiki βρίσκεται στο <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Η πλήρης τεκμηρίωση χρήσης του Σημασιολογικού MediaWiki βρίσκεται στο <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Προγραμματιστικά σφάλματα μπορούν να αναφερθούν στο <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Εάν έχετε περαιτέρω ερωτήσεις ή προτάσεις, λάβετε μέρος στη συζήτηση στο <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">φόρουμ χρηστών του Semantic MediaWiki</a>.',
+	'smw_smwadmin_questions' => 'Εάν έχετε περαιτέρω ερωτήσεις ή προτάσεις, λάβετε μέρος στη συζήτηση στο <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">φόρουμ χρηστών του Σημασιολογικού MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Δομή δεδομένων',
 	'smw_adminlinks_displayingdata' => 'Προβαλλόμενα δεδομένα',
 	'smw_adminlinks_inlinequerieshelp' => 'Βοήθεια με τα αιτήματα',
@@ -3826,9 +3827,9 @@ $messages['el'] = array(
 	'smw-paramdesc-category-userparam' => 'Παράμετρος για να την περάσετε στο πρότυπο',
 	'smw-info-par-message' => 'Μήνυμα προς εμφάνιση.',
 	'smw-info-par-icon' => 'Εικονίδιο για εμφάνιση είτε «πληροφοριών» είτε «προειδοποίησης».',
-	'prefs-smw' => 'Semantic MediaWiki',
+	'prefs-smw' => 'Σημασιολογικό MediaWiki',
 	'prefs-ask-options' => 'Επιλογές σημασιολογικής αναζήτησης',
-	'smw-prefs-intro-text' => 'Οι παρακάτω επιλογές παρέχονται από το [http://semantic-mediawiki.org/ Semantic MediaWiki] (ή άλλες σχετικές επεκτάσεις) για να επιτρέψουν εξατομικευμένη παραμετροποίηση σε επιλεγμένες λειτουργίες. Για περισσότερες πληροφορίες, παρακαλώ ρίξτε μια ματιά σε αυτήν την [http://semantic-mediawiki.org/wiki/Help:User_preferences ενότητα βοηθείας].',
+	'smw-prefs-intro-text' => 'Οι παρακάτω επιλογές παρέχονται από το [http://semantic-mediawiki.org/ Σημασιολογικό MediaWiki] (ή άλλες σχετικές επεκτάσεις) για να επιτρέψουν εξατομικευμένη παραμετροποίηση σε επιλεγμένες λειτουργίες. Για περισσότερες πληροφορίες, παρακαλώ ρίξτε μια ματιά σε αυτήν την [http://semantic-mediawiki.org/wiki/Help:User_preferences ενότητα βοηθείας].',
 	'smw-prefs-ask-options-tooltip-display' => 'Εμφάνιση κειμένου παραμέτρου ως πληροφορίες στο δείκτη του ποντικιού',
 	'smw-prefs-ask-options-collapsed-default' => 'Το πλαίσιο επιλογών να είναι συμπτυγμένο εκ προεπιλογής',
 	'smw-ui-tooltip-title-property' => 'Ιδιότητα',
