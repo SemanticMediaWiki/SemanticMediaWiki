@@ -255,7 +255,7 @@ class SMWSQLStore3Writers {
 				$diHandler = $this->store->getDataItemHandlerForDIType( $di->getDIType() );
 				// Note that array_merge creates a new array; not overwriting past entries here
 				$insertValues = array_merge( $insertValues, $diHandler->getInsertValues( $di ) );
-				$updates[$propertyTable->getName()] = $insertValues;
+				$updates[$propertyTable->getName()][] = $insertValues;
 			}
 		}
 
@@ -362,7 +362,6 @@ class SMWSQLStore3Writers {
 		$newHashes = array();
 
 		$newData = $this->preparePropertyTableInserts( $sid, $data, $dbr );
-
 		foreach ( SMWSQLStore3::getPropertyTables() as $propertyTable ) {
 			if ( !$propertyTable->usesIdSubject() ) { // ignore; only affects redirects anyway
 				continue;
@@ -391,7 +390,6 @@ class SMWSQLStore3Writers {
 				$tablesDeleteRows[$tableName] = $this->getCurrentPropertyTableContents( $sid, $propertyTable, $dbr );
 			}
 		}
-
 		return array( $tablesInsertRows, $tablesDeleteRows, $newHashes );
 	}
 
@@ -415,10 +413,12 @@ class SMWSQLStore3Writers {
 		}
 		$contents = array();
 
-		$result = $dbr->selectRow( $propertyTable->getName(), '*', array( 's_id' => $sid ), __METHOD__ );
+		$result = $dbr->select( $propertyTable->getName(), '*', array( 's_id' => $sid ), __METHOD__ );
 
-		if ( is_object( $result ) ) {
-			$contents = (array)$result;
+		foreach( $result as $row ) {
+			if ( is_object( $row ) ) {
+				$contents[] = (array)$row;
+			}
 		}
 
 		return $contents;
