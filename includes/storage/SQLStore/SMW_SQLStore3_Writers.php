@@ -332,6 +332,38 @@ class SMWSQLStore3Writers {
 	}
 
 	/**
+	 * Delete all matching values from old and new arrays and return the
+	 * remaining new values as insert values and the remaining old values as
+	 * delete values.
+	 *
+	 * @param array $oldValues
+	 * @param array $newValues
+	 * @return array
+	 */
+	protected function arrayDeleteMatchingValues( $oldValues, $newValues ) {
+
+		// cycle through old values
+		foreach ( $oldValues as $oldKey => $oldValue ) {
+
+			// cycle through new values
+			foreach ( $newValues as $newKey => $newValue ) {
+				// delete matching values;
+				// use of == is intentional to account for oldValues only
+				// containing strings while new values might also contain other
+				// types
+				if ( $newValue == $oldValue ) {
+					unset( $newValues[$newKey] );
+					unset( $oldValues[$oldKey] );
+				}
+			}
+		};
+		
+		// arrays have to be renumbered because database functions expect an
+		// element with index 0 to be present in the array
+		return array( array_values( $newValues ), array_values( $oldValues ) );
+	}
+
+	/**
 	 * Compute necessary insertions, deletions, and new table hashes for
 	 * updating the database to contain $newData for the subject with ID
 	 * $sid. Insertions and deletions are returned in as an array mapping
@@ -381,8 +413,7 @@ class SMWSQLStore3Writers {
 				} else { // Table contains no data or contains data that is different from the new
 					$oldTableData = $this->getCurrentPropertyTableContents( $sid, $propertyTable, $dbr );
 
-					$tablesInsertRows[$tableName] = array_diff_assoc( $newData[$tableName], $oldTableData );
-					$tablesDeleteRows[$tableName] = array_diff_assoc( $oldTableData, $newData[$tableName] );
+					list( $tablesInsertRows[$tableName], $tablesDeleteRows[$tableName]) = $this->arrayDeleteMatchingValues( $oldTableData, $newData[$tableName] );
 				}
 			} elseif ( array_key_exists( $tableName, $oldHashes ) ) {
 				// Table contains data but should not contain any after update
