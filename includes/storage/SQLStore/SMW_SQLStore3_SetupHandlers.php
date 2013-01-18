@@ -66,7 +66,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
 			'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
 			'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
-			'j' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
+			'j' => ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
 			'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
 			'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
 			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
@@ -126,7 +126,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			$reportTo
 		);
 
-		SMWSQLHelpers::setupIndex( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, array( array( 'p_id', 'UNIQUE' ), 'usage_count' ), $db );
+		SMWSQLHelpers::setupIndex( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, array( array( 'p_id', 'UNIQUE INDEX' ), 'usage_count' ), $db );
 
 		// Set up all property tables as defined:
 		$this->setupPropertyTables( $dbtypes, $db, $reportTo );

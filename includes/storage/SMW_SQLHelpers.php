@@ -350,13 +350,13 @@ EOT;
 				self::dropIndex( $db, $key, $tableName, $key, $reportTo );
 			}
 		} else {
-			foreach ( $oldIndexes as $key => $indexcolumn ) {
-				$id = array_search( $indexcolumn, $indexes );
+			foreach ( $oldIndexes as $key => $indexColumn ) {
+				$id = array_search( $indexColumn, $indexes );
 				if ( $id !== false || $key == 'PRIMARY' ) {
-					self::reportProgress( "   ... index $indexcolumn is fine.\n", $reportTo );
+					self::reportProgress( "   ... index $indexColumn is fine.\n", $reportTo );
 					unset( $indexes[$id] );
 				} else { // Duplicate or unrequired index.
-					self::dropIndex( $db, $key, $tableName, $indexcolumn, $reportTo );
+					self::dropIndex( $db, $key, $tableName, $indexColumn, $reportTo );
 				}
 			}
 		}
