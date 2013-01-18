@@ -13,8 +13,13 @@
  * @ingroup SMWDataValues
  */
 class SMWQuantityValue extends SMWNumberValue {
-	/// Array with format (canonical unit ID string) => (conversion factor)
+
+	/**
+	 * Array with format (canonical unit ID string) => (conversion factor)
+	 * @var float[]|bool
+	 */
 	protected $m_unitfactors = false;
+
 	/// Array with format (normalised unit string) => (canonical unit ID string)
 	protected $m_unitids = false;
 	/// Ordered array of (normalized) units that should be displayed in tooltips, etc.
