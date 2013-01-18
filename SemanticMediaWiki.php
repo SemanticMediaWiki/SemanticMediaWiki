@@ -27,7 +27,7 @@ if ( version_compare( $wgVersion, '1.19c', '<' ) ) {
 
 // Include the Validator extension if that hasn't been done yet, since it's required for SMW to work.
 if ( !defined( 'Validator_VERSION' ) ) {
-	@include_once( dirname( __FILE__ ) . '/../Validator/Validator.php' );
+	@include_once( __DIR__ . '/../Validator/Validator.php' );
 }
 
 // Only initialize the extension when all dependencies are present.
