@@ -20,11 +20,22 @@ class SMWQuantityValue extends SMWNumberValue {
 	 */
 	protected $m_unitfactors = false;
 
-	/// Array with format (normalised unit string) => (canonical unit ID string)
+	/**
+	 * Array with format (normalised unit string) => (canonical unit ID string)
+	 * @var string[]|bool
+	 */
 	protected $m_unitids = false;
-	/// Ordered array of (normalized) units that should be displayed in tooltips, etc.
+
+	/**
+	 * Ordered array of (normalized) units that should be displayed in tooltips, etc.
+	 * @var string[]|bool
+	 */
 	protected $m_displayunits = false;
-	/// Main unit in canonical form (recognised by the conversion factor 1)
+
+	/**
+	 * Main unit in canonical form (recognised by the conversion factor 1)
+	 * @var string|bool
+	 */
 	protected $m_mainunit = false;
 
 	protected function convertToMainUnit( $number, $unit ) {
