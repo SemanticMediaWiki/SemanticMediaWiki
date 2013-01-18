@@ -307,8 +307,8 @@ class SMWSQLStore3Writers {
 			$insertValues['cache_date'] = $row->cache_date;
 			$insertValues['cache_count'] = $row->cache_count;
 		}
-		$insertValueKey = self::makeDatabaseRowKey( $insertValues );
-		$insertData['smw_fpt_conc'] = array( $insertValueKey => $insertValues );
+
+		$insertData['smw_fpt_conc'] = array( $insertValues );
 	}
 
 	/**
