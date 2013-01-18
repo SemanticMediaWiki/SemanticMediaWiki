@@ -39,8 +39,7 @@ return array(
 	// SMW core class
 	'ext.smw' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/ext.smw.js',
-			'resources/ext.smw.compat.js',
+			'resources/ext.smw.js'
 		)
 	),
 	// Common styles independent from JavaScript

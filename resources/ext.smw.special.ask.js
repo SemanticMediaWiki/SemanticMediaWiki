@@ -13,11 +13,11 @@
  * @author: Jeroen De Dauw <jeroendedauw at gmail dot com>
  * @author mwjames
  */
-( function( $, mw ) {
-	"use strict";
-	/*global mediaWiki:true*/
+/*global browser:true window document mediaWiki:true*/
+( function( $, mw, smw ) {
+	'use strict';
 
-	////////////////////////// PRIVATE METHODS ////////////////////////
+	////////////////////////// PRIVATE OBJECTS ////////////////////////
 
 	var tooltip = new smw.util.tooltip();
 
@@ -185,7 +185,7 @@
 			options = {
 				selector : '#formatSelector',
 				format : selected.val(),
-				name : selected.text(),
+				name : selected.text()
 			};
 
 		// Init
@@ -232,4 +232,4 @@
 			} );
 		} );
 	} );
-} )( jQuery, mediaWiki );
+} )( jQuery, mediaWiki, semanticMediaWiki );

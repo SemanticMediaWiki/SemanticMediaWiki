@@ -11,13 +11,11 @@
  * @licence GNU GPL v2 or later
  * @author mwjames
  */
+/*global browser:true window document mediaWiki:true semanticMediaWiki:true*/
 ( function( $, mw, smw ) {
+	'use strict';
 
-	"use strict";
-
-	/*global mediaWiki:true semanticMediaWiki:true*/
-
-	////////////////////////// PRIVATE METHODS ////////////////////////
+	////////////////////////// PRIVATE OBJECTS ////////////////////////
 
 	// Ensure global object is instantiate
 	smw.util = smw.util || {};
@@ -36,7 +34,7 @@
 	var defaults = {
 			qtip: {
 				position: {
-					viewport: $(window),
+					viewport: $( window ),
 					at: 'top center',
 					my: 'bottom center'
 				},

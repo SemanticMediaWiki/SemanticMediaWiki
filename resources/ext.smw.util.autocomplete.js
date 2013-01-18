@@ -12,9 +12,9 @@
  * @licence GNU GPL v2 or later
  * @author mwjames
  */
-( function( mw, $ ) {
-	"use strict";
-	/*global mediaWiki:true*/
+/*global mediaWiki:true*/
+( function( $, mw ) {
+	'use strict';
 
 	/**
 	 * Default options
@@ -34,10 +34,10 @@
 	 *
 	 * @since: 1.8
 	 */
-	$.fn.smwAutocomplete = function( options ){
+	$.fn.smwAutocomplete = function( settings ){
 
 		// Merge defaults and options
-		var options = $.extend( {}, defaults, options );
+		var options = $.extend( {}, defaults, settings );
 
 		// Specify regular expression
 		var regex = new RegExp( options.separator , 'mi' );
@@ -134,4 +134,4 @@
 		} );
 	};
 
-} )( mediaWiki, jQuery );
+} )( jQuery, mediaWiki );
