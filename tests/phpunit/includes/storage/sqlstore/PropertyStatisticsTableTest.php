@@ -38,12 +38,12 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	public function testDeleteAll() {
 		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
 
-		$this->assertTrue( $statsTable->deleteAll() );
-		$this->assertTrue( $statsTable->deleteAll() );
+		$this->assertTrue( $statsTable->deleteAll() !== false );
+		$this->assertTrue( $statsTable->deleteAll() !== false );
 
 		$statsTable->insertUsageCount( 1, 1 );
 
-		$this->assertTrue( $statsTable->deleteAll() );
+		$this->assertTrue( $statsTable->deleteAll() !== false );
 
 		$this->assertTrue( $statsTable->getUsageCounts( array( 1, 2 ) ) === array() );
 	}
@@ -71,7 +71,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	protected function getTable() {
 		if ( $this->statsTable === null ) {
 			$this->statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
-			$this->assertTrue( $this->statsTable->deleteAll() );
+			$this->assertTrue( $this->statsTable->deleteAll() !== false );
 		}
 
 		return $this->statsTable;
@@ -95,7 +95,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 
 		$change = mt_rand( max( -100, -$usageCount ), 100 );
 
-		$this->assertTrue( $table->addToUsageCount( $propId, $change ) );
+		$this->assertTrue( $table->addToUsageCount( $propId, $change ) !== false );
 
 		$usageCounts = $table->getUsageCounts( array( $propId ) );
 
@@ -105,7 +105,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 
 	public function testAddToUsageCounts() {
 		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
-		$this->assertTrue( $statsTable->deleteAll() );
+		$this->assertTrue( $statsTable->deleteAll() !== false );
 
 		$counts = array(
 			1 => 42,
@@ -116,7 +116,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 		);
 
 		foreach ( $counts as $propId => $count ) {
-			$this->assertTrue( $statsTable->insertUsageCount( $propId, $count ) );
+			$this->assertTrue( $statsTable->insertUsageCount( $propId, $count ) !== false );
 		}
 
 		$additions = array(
@@ -125,7 +125,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 			9003 => 0,
 		);
 
-		$this->assertTrue( $statsTable->addToUsageCounts( $additions ) );
+		$this->assertTrue( $statsTable->addToUsageCounts( $additions ) !== false );
 
 		foreach ( $additions as $propId => $addition ) {
 			$counts[$propId] += $addition;
