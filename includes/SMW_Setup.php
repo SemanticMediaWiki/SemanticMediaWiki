@@ -19,42 +19,16 @@ require_once( 'SMW_GlobalFunctions.php' );
  * This function also sets up all autoloading, such that all SMW classes are
  * available as early on. Moreover, jobs and special pages are registered.
  *
+ * @deprecated since 1.9, just set $smwgNamespace after the inclusion of SemanticMediaWiki.php
+ *
  * @param mixed $namespace
  * @param boolean $complete
  *
  * @return true
  */
 function enableSemantics( $namespace = null, $complete = false ) {
-	global $smwgIP, $wgFooterIcons, $wgExtensionFunctions,
-		$wgExtensionMessagesFiles,
-		$smwgNamespace, $wgAPIModules;
+	global $smwgNamespace;
 
-	$wgExtensionFunctions[] = 'smwfSetupExtension';
-	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
-	$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
-	$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
-
-	smwfRegisterHooks();
-	smwfRegisterClasses();
-	smwfRegisterSpecialPages();
-
-	$wgAPIModules['smwinfo'] = 'ApiSMWInfo';
-	$wgAPIModules['ask'] = 'ApiAsk';
-	$wgAPIModules['askargs'] = 'ApiAskArgs';
-
-	$wgFooterIcons['poweredby']['semanticmediawiki'] = array(
-		'src' => null,
-		'url' => 'http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
-		'alt' => 'Powered by Semantic MediaWiki',
-	);
-
-	// Initialize base namespace for URIs in data exports:
-	if ( is_null( $namespace ) ) { 
-		die ( 'You should be providing the domain name to enableSemantics()' );
-		// fallback (bad because data URL will change depending on client URL)
-//		wfWarn( 'You should be providing the domain name to enableSemantics()' );
-//		$namespace = parse_url( $wgServer, PHP_URL_HOST );
-	}
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
 		// The dot tells that the domain is not complete. It will be completed
 		// in the Export since we do not want to create a title object here when

@@ -79,3 +79,24 @@ $wgParamDefinitions['smwformat'] = array(
 $wgParamDefinitions['smwsource'] = array(
 	'definition' => 'SMWParamSource',
 );
+
+$wgExtensionFunctions[] = 'smwfSetupExtension';
+$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
+$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
+$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
+
+smwfRegisterHooks();
+smwfRegisterClasses();
+smwfRegisterSpecialPages();
+
+$wgAPIModules['smwinfo'] = 'ApiSMWInfo';
+$wgAPIModules['ask'] = 'ApiAsk';
+$wgAPIModules['askargs'] = 'ApiAskArgs';
+
+$wgFooterIcons['poweredby']['semanticmediawiki'] = array(
+	'src' => null,
+	'url' => 'http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
+	'alt' => 'Powered by Semantic MediaWiki',
+);
+
+$smwgNamespace = parse_url( $wgServer, PHP_URL_HOST );
