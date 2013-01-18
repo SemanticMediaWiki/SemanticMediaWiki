@@ -54,7 +54,7 @@ class ResultPrintersTest extends \MediaWikiTestCase {
 			$instances[] = new $class( $format, true );
 		}
 
-		return $instances;
+		return $this->arrayWrap( $instances );
 	}
 
 	/**
