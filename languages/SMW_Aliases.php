@@ -53,12 +53,12 @@ $specialPageAliases['ar'] = array(
 $specialPageAliases['arc'] = array(
 	'Ask' => array( 'ܫܐܠ' ),
 	'Browse' => array( 'ܦܐܬ' ),
-	'PageProperty' => array( 'ܦܐܬܐ_ܕܕܝܠܝܘܬ̈ܐ' ),
+	'PageProperty' => array( 'ܦܐܬܐ_ܕܕܝܠܝܘ̈ܬܐ' ),
 	'Properties' => array( 'ܕܝܠܝܘܬ̈ܐ' ),
-	'SearchByProperty' => array( 'ܒܨܝ_ܒܝܕ_ܕܝܠܝܘܬ̈ܐ' ),
+	'SearchByProperty' => array( 'ܒܨܝ_ܒܝܕ_ܕܝܠܝܘ̈ܬܐ' ),
 	'Types' => array( 'ܐܕ̈ܫܐ' ),
-	'UnusedProperties' => array( 'ܕܝܠܝܘܬ̈ܐ_ܠܐ_ܦܠܝܚܬ̈ܐ' ),
-	'WantedProperties' => array( 'ܕܝܠܝܘܬ̈ܐ_ܣܢܝܩܬ̈ܐ' ),
+	'UnusedProperties' => array( 'ܕܝܠܝܘ̈ܬܐ_ܠܐ_ܦܠܝܚ̈ܬܐ' ),
+	'WantedProperties' => array( 'ܕܝܠܝܘ̈ܬܐ_ܣܢܝܩ̈ܬܐ' ),
 );
 
 /** Egyptian Spoken Arabic (مصرى) */
