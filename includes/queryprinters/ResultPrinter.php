@@ -2,7 +2,7 @@
 
 namespace SMW;
 use SMWIResultPrinter, SMWQueryResult, SMWQuery;
-use ParserOptions, Sanitizer, DummyLinker, SMWInfolink;
+use ParserOptions, Sanitizer, DummyLinker, SMWInfolink, Title;
 
 /**
  * File with abstract base class for printing query results.
@@ -197,7 +197,10 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 
 		$params = array();
 
-		foreach ( $fullParams as /* IParam */ $param ) {
+		/**
+		 * @var \IParam $param
+		 */
+		foreach ( $fullParams as $param ) {
 			$params[$param->getName()] = $param->getValue();
 		}
 
@@ -263,7 +266,11 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 	 * @return string
 	 */
 	protected function handleNonFileResult( $result, SMWQueryResult $results, $outputmode ) {
+		/**
+		 * @var \Parser $wgParser
+		 */
 		global $wgParser;
+
 		$result .= $this->getErrorString( $results ); // append errors
 
 		// Apply intro parameter
@@ -394,7 +401,7 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 	 * Depending on current linking settings, returns a linker object
 	 * for making hyperlinks or NULL if no links should be created.
 	 *
-	 * @param $firstcol True of this is the first result column (having special linkage settings).
+	 * @param boolean $firstcol True of this is the first result column (having special linkage settings).
 	 */
 	protected function getLinker( $firstcol = false ) {
 		if ( ( $firstcol && $this->mLinkFirst ) || ( !$firstcol && $this->mLinkOthers ) ) {
@@ -424,7 +431,10 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 			$link->setStyle(  'smw-' . $this->params['format'] . '-' . Sanitizer::escapeClass( $classAffix ) );
 		}
 
-		foreach ( $this->fullParams as /* IParam */ $param ) {
+		/**
+		 * @var \IParam $param
+		 */
+		foreach ( $this->fullParams as $param ) {
 			if ( !$param->wasSetToDefault() && !( $param->getName() == 'limit' && $param->getValue() === 0 ) ) {
 				$link->setParameter( $param->getOriginalValue(), $param->getName() );
 			}
