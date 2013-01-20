@@ -2,7 +2,7 @@
 
 namespace SMW;
 use SMWIResultPrinter, SMWQueryResult, SMWQuery;
-use ParserOptions, Sanitizer, DummyLinker;
+use ParserOptions, Sanitizer, DummyLinker, SMWInfolink;
 
 /**
  * File with abstract base class for printing query results.
@@ -176,7 +176,7 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 		$this->mInline = $inline;
 		$this->mLinkFirst = ( $smwgQDefaultLinking != 'none' );
 		$this->mLinkOthers = ( $smwgQDefaultLinking == 'all' );
-		$this->mLinker = class_exists( 'DummyLinker' ) ? new DummyLinker : new Linker; ///TODO: how can we get the default or user skin here (depending on context)?
+		$this->mLinker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new \Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
 	}
 
 	/**
@@ -320,7 +320,7 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 					$pout = $wgParser->parse( $result . '__NOTOC__', $wgTitle, $popt );
 
 					/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
-					SMWOutputs::requireFromParserOutput( $pout );
+					\SMWOutputs::requireFromParserOutput( $pout );
 					$result = $pout->getText();
 				}
 			} else {
