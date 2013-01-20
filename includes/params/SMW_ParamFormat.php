@@ -43,12 +43,13 @@ class SMWParamFormat extends StringParam {
 		
 		if ( !array_key_exists( $value, $smwgResultFormats ) ) {
 			$isAlias = self::resolveFormatAliases( $value );
-			
+
 			if ( !$isAlias ) {
 				$value = $this->getDefaultFormat();
+				self::resolveFormatAliases( $value );
 			}
 		}
-		
+
 		return $value;
 	}
 	
