@@ -260,7 +260,7 @@ class SMWSql3SmwIds {
 				} else {
 					$select = array( 'smw_sortkey' );
 				}
-				$row = $db->selectRow( SMWSql3SmwIds::tableName, $select,
+				$row = $db->selectRow( self::tableName, $select,
 						array( 'smw_id' => $id ), __METHOD__ );
 				if ( $row !== false ) {
 					$sortkey = $row->smw_sortkey;
@@ -281,7 +281,7 @@ class SMWSql3SmwIds {
 			} else {
 				$select = array( 'smw_id', 'smw_sortkey' );
 			}
-			$row = $db->selectRow( SMWSql3SmwIds::tableName, $select, array(
+			$row = $db->selectRow( self::tableName, $select, array(
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
@@ -406,7 +406,7 @@ class SMWSql3SmwIds {
 			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
 
 			$db->insert(
-				SMWSql3SmwIds::tableName,
+				self::tableName,
 				array(
 					'smw_id' => $db->nextSequenceValue( 'smw_ids_smw_id_seq' ),
 					'smw_title' => $title,
@@ -433,7 +433,7 @@ class SMWSql3SmwIds {
 			}
 		} elseif ( $sortkey !== '' && $sortkey != $oldsort ) {
 			$db = wfGetDB( DB_MASTER );
-			$db->update( SMWSql3SmwIds::tableName, array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
+			$db->update( self::tableName, array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
 		}
 
@@ -565,13 +565,13 @@ class SMWSql3SmwIds {
 	public function moveSMWPageID( $curid, $targetid = 0 ) {
 		$db = wfGetDB( DB_MASTER );
 
-		$row = $db->selectRow( SMWSql3SmwIds::tableName, '*', array( 'smw_id' => $curid ), __METHOD__ );
+		$row = $db->selectRow( self::tableName, '*', array( 'smw_id' => $curid ), __METHOD__ );
 
 		if ( $row === false ) return; // no id at current position, ignore
 
 		if ( $targetid == 0 ) { // append new id
 			$db->insert(
-				SMWSql3SmwIds::tableName,
+				self::tableName,
 				array(
 					'smw_id' => $db->nextSequenceValue( 'smw_ids_smw_id_seq' ),
 					'smw_title' => $row->smw_title,
@@ -584,7 +584,7 @@ class SMWSql3SmwIds {
 			);
 			$targetid = $db->insertId();
 		} else { // change to given id
-			$db->insert( SMWSql3SmwIds::tableName,
+			$db->insert( self::tableName,
 				array( 'smw_id' => $targetid,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
@@ -596,7 +596,7 @@ class SMWSql3SmwIds {
 			);
 		}
 
-		$db->delete( SMWSql3SmwIds::tableName, array( 'smw_id' => $curid ), 'SMWSQLStore3::moveSMWPageID' );
+		$db->delete( self::tableName, array( 'smw_id' => $curid ), 'SMWSQLStore3::moveSMWPageID' );
 
 		$this->setCache( $row->smw_title, $row->smw_namespace, $row->smw_iw,
 			$row->smw_subobject, $targetid, $row->smw_sortkey );
@@ -817,7 +817,7 @@ class SMWSql3SmwIds {
 			//print "Cache miss! $sid is not {$this->hashCacheId} " . $this->misscount++ . "\n";
 			$db = wfGetDB( DB_SLAVE );
 			$row = $db->selectRow(
-				SMWSql3SmwIds::tableName,
+				self::tableName,
 				array( 'smw_proptable_hash' ),
 				'smw_id=' . $sid ,
 				__METHOD__
@@ -847,7 +847,7 @@ class SMWSql3SmwIds {
 		$db = wfGetDB( DB_MASTER );
 		$propertyTableHash = serialize( $newTableHashes );
 		$db->update(
-			SMWSql3SmwIds::tableName,
+			self::tableName,
 			array( 'smw_proptable_hash' => $propertyTableHash ),
 			array( 'smw_id' => $sid ),
 			__METHOD__
@@ -880,7 +880,7 @@ class SMWSql3SmwIds {
 	 *
 	 * $wgHooks['SkinAfterContent'][] = 'showCacheStats';
 	 * function showCacheStats() {
-	 *   SMWSql3SmwIds::debugDumpCacheStats();
+	 *   self::debugDumpCacheStats();
 	 *   return true;
 	 * }
 	 *
