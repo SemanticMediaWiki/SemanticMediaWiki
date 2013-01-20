@@ -120,7 +120,6 @@ function smwfRegisterClasses() {
 	$qpDir = $smwgIP . 'includes/queryprinters/';
 	$wgAutoloadClasses['SMWExportPrinter']          = $qpDir . 'SMW_ExportPrinter.php';
 	$wgAutoloadClasses['SMWIExportPrinter']         = $qpDir . 'SMW_IExportPrinter.php';
-	$wgAutoloadClasses['SMWResultPrinter']          = $qpDir . 'SMW_ResultPrinter.php';
 	$wgAutoloadClasses['SMWIResultPrinter']         = $qpDir . 'SMW_IResultPrinter.php';
 	$wgAutoloadClasses['SMWAggregatablePrinter']    = $qpDir . 'SMW_QP_Aggregatable.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']     = $qpDir . 'SMW_QP_Table.php';
@@ -133,6 +132,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWJSONResultPrinter']      = $qpDir . 'SMW_QP_JSONlink.php';
 	$wgAutoloadClasses['SMWJSON']                   = $qpDir . 'SMW_QP_JSONlink.php';
 	$wgAutoloadClasses['SMWRDFResultPrinter']       = $qpDir . 'SMW_QP_RDF.php';
+	$wgAutoloadClasses['SMWResultPrinter']          = $qpDir . 'ResultPrinter.php'; // deprecated in 1.9
+	$wgAutoloadClasses['SMW\ResultPrinter']         = $qpDir . 'ResultPrinter.php';
 
 	// Data items
 	$diDir = $smwgIP . 'includes/dataitems/';
