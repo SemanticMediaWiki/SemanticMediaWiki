@@ -2,7 +2,7 @@
 
 namespace SMW;
 use SMWIResultPrinter, SMWQueryResult, SMWQuery;
-use ParserOptions, Sanitizer, DummyLinker, IContextSource;
+use ParserOptions, Sanitizer, DummyLinker;
 
 /**
  * File with abstract base class for printing query results.
