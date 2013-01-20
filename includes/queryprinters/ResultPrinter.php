@@ -34,7 +34,7 @@ use ParserOptions, Sanitizer, DummyLinker, SMWInfolink, Title;
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
  * part of the former functionality of SMWInlineQuery (everything related to
- * output formatting and the correspoding parameters) and is subclassed by concrete
+ * output formatting and the corresponding parameters) and is subclassed by concrete
  * printers that provide the main formatting functionality.
  *
  * @ingroup SMWQuery
@@ -62,7 +62,7 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 	 *
 	 * @since 1.8
 	 *
-	 * @var array of IParam
+	 * @var \IParam[]
 	 */
 	protected $fullParams;
 
