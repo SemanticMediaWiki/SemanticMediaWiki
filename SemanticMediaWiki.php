@@ -69,6 +69,9 @@ define( 'SEMANTIC_EXTENSION_TYPE', true );
 // Default settings
 require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
+// Load global defines
+require_once( __DIR__ . "/includes/Defines.php" );
+
 // Resource definitions
 $wgResourceModules = array_merge( $wgResourceModules, include( __DIR__ . "/resources/Resources.php" ) );
 
