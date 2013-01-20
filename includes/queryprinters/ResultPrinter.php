@@ -31,11 +31,6 @@ use ParserOptions, Sanitizer, DummyLinker, IContextSource;
  * @author mwjames
  */
 
-// Constants that define how/if headers should be displayed.
-define( 'SMW_HEADERS_SHOW', 2 );
-define( 'SMW_HEADERS_PLAIN', 1 );
-define( 'SMW_HEADERS_HIDE', 0 ); // Used to be "false" hence use "0" to support extensions that still assume this.
-
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
  * part of the former functionality of SMWInlineQuery (everything related to
