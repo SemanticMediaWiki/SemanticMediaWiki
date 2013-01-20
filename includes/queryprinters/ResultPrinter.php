@@ -1,5 +1,9 @@
 <?php
 
+namespace SMW;
+use SMWIResultPrinter, SMWQueryResult, SMWQuery;
+use ParserOptions, Sanitizer, DummyLinker, IContextSource;
+
 /**
  * File with abstract base class for printing query results.
  *
@@ -18,11 +22,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
+ * @since 1.9
  * @ingroup SMWQuery
  *
  * @licence GNU GPL v2 or later
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author mwjames
  */
 
 // Constants that define how/if headers should be displayed.
@@ -38,7 +44,7 @@ define( 'SMW_HEADERS_HIDE', 0 ); // Used to be "false" hence use "0" to support 
  *
  * @ingroup SMWQuery
  */
-abstract class SMWResultPrinter implements SMWIResultPrinter {
+abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter {
 
 	/**
 	 * @deprecated Use $params instead. Will be removed in 1.10.
@@ -163,6 +169,13 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	 */
 	public function __construct( $format, $inline = true, $useValidator = false ) {
 		global $smwgQDefaultLinking;
+
+		// Context aware since SMW 1.9
+		//
+		// If someone cleans the constructor, please add
+		// IContextSource $context = null as for now we leave it
+		// in order to keep compatibility with the original constructor
+		$this->setContext( \RequestContext::getMain() );
 
 		$this->mFormat = $format;
 		$this->mInline = $inline;
@@ -449,6 +462,8 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	 * @return integer
 	 */
 	public function getQueryMode( $context ) {
+		// TODO: Now that we are using RequestContext object maybe
+		// $context is misleading
 		return SMWQuery::MODE_INSTANCES;
 	}
 
@@ -623,3 +638,10 @@ abstract class SMWResultPrinter implements SMWIResultPrinter {
 	}
 
 }
+
+/**
+ * SMWResultPrinter
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
