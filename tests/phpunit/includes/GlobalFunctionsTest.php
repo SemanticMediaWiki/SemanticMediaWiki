@@ -34,6 +34,27 @@ namespace SMW\Test;
  */
 class GlobalFunctionsTest extends \MediaWikiTestCase {
 
+	/**
+	 * dataProvider
+	 */
+	public function getGlobalFunctions() {
+		return array(
+			array( 'smwfIsSemanticsProcessed' ),
+			array( 'smwfNormalTitleDBKey' ),
+			array( 'smwfNormalTitleText' ),
+			array( 'smwfXMLContentEncode' ),
+			array( 'smwfHTMLtoUTF8' ),
+			array( 'smwfNumberFormat' ),
+			array( 'smwfEncodeMessages' ),
+			array( 'smwfGetStore' ),
+			array( 'smwfGetSparqlDatabase' ),
+			array( 'smwfGetLinker' ),
+		) ;
+	}
+
+	/**
+	 * dataProvider
+	 */
 	public function getEncodeMessagesDataProvider() {
 		return array(
 			array( array ( '', '', '' ) , '', '', true ),
@@ -43,6 +64,16 @@ class GlobalFunctionsTest extends \MediaWikiTestCase {
 			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , null, ',', false ),
 			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , '<span>Test</span>', ',', true ),
 		);
+	}
+
+	/**
+	 * Test if global functions are accessible
+	 *
+	 * @covers global functions
+	 * @dataProvider getGlobalFunctions
+	 */
+	public function testGlobalFunctionsAccessibility( $function ) {
+		$this->assertTrue( function_exists( $function ) );
 	}
 
 	/**

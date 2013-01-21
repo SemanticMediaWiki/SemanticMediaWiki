@@ -66,11 +66,17 @@ $wgExtensionCredits['semantic'][] = array(
 // @deprecated, removal in SMW 1.11
 define( 'SEMANTIC_EXTENSION_TYPE', true );
 
-// Default settings
-require_once __DIR__ . '/SemanticMediaWiki.settings.php';
+// Load global constants
+require_once( __DIR__ . '/includes/Defines.php' );
 
-// Load global defines
-require_once( __DIR__ . "/includes/Defines.php" );
+// Load global functions
+require_once( __DIR__ . '/includes/GlobalFunctions.php' );
+
+// Load setup and autoloader classes
+require_once( __DIR__ . '/includes/Setup.php' );
+
+// Load default settings
+require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
 // Resource definitions
 $wgResourceModules = array_merge( $wgResourceModules, include( __DIR__ . "/resources/Resources.php" ) );

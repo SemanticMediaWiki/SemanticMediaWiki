@@ -267,8 +267,9 @@ final class SMWHooks {
 	*/
 	public static function registerUnitTests ( array &$files ) {
 		$testFiles = array(
-			'FormatFactory',
+			'Defines',
 			'GlobalFunctions',
+			'FormatFactory',
 			'Highlighter',
 			'ObservableMessageReporter',
 			'QueryProcessor',

@@ -92,9 +92,6 @@ $smwgSparqlDataEndpoint = 'http://localhost:8080/data/';
 $smwgSparqlDefaultGraph = '';
 ##
 
-// load global constants and setup functions
-require_once( 'includes/SMW_Setup.php' );
-
 ###
 # Setting this option to true before including this file to enable the old
 # Type: namespace that SMW used up to version 1.5.*. This should only be
