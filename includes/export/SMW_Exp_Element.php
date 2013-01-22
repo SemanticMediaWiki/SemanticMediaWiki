@@ -21,29 +21,28 @@ abstract class SMWExpElement {
 	/**
 	 * The SMWDataItem that this export element is associated with, if
 	 * any. Might be unset if not given yet.
-	 * @var SMWDataItem
+	 *
+	 * @var SMWDataItem|null
 	 */
-	protected $m_dataItem;
+	protected $dataItem;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param $dataItem SMWDataItem or null
+	 * @param $dataItem SMWDataItem|null
 	 */
-	public function __construct( $dataItem = null ) {
-		if ( !is_null( $dataItem ) ) {
-			$this->m_dataItem = $dataItem;
-		}
+	public function __construct( SMWDataItem $dataItem = null ) {
+		$this->dataItem = $dataItem;
 	}
 
 	/**
 	 * Get a SMWDataItem object that represents the contents of this export
 	 * element in SMW, or null if no such data item could be found.
 	 *
-	 * @return SMWDataItem or null
+	 * @return SMWDataItem|null
 	 */
 	public function getDataItem() {
-		return isset( $this->m_dataItem ) ? $this->m_dataItem : null;
+		return $this->dataItem;
 	}
 }
 
@@ -60,15 +59,27 @@ abstract class SMWExpElement {
 class SMWExpResource extends SMWExpElement {
 
 	/**
+	 * @var string
+	 */
+	protected $uri;
+
+	/**
 	 * Constructor. The given URI must not contain serialization-specific
 	 * abbreviations or escapings, such as XML entities.
 	 *
-	 * @param $uri string of the full URI
-	 * @param $dataItem SMWDataItem or null
+	 * @param string $uri The full URI
+	 * @param SMWDataItem|null $dataItem
+	 *
+	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $uri, $dataItem = null ) {
+	public function __construct( $uri, SMWDataItem $dataItem = null ) {
+		if ( !is_string( $uri ) ) {
+			throw new InvalidArgumentException( '$uri needs to be a string' );
+		}
+
 		parent::__construct( $dataItem );
-		$this->m_uri = $uri;
+
+		$this->uri = $uri;
 	}
 	
 	/**
@@ -77,7 +88,7 @@ class SMWExpResource extends SMWExpElement {
 	 * @return boolean
 	 */
 	public function isBlankNode() {
-		return ( $this->m_uri === '' ) || ( $this->m_uri{0} == '_' );
+		return $this->uri === '' || $this->uri{0} == '_';
 	}
 
 	/**
@@ -87,7 +98,7 @@ class SMWExpResource extends SMWExpElement {
 	 * @return string
 	 */
 	public function getUri() {
-		return $this->m_uri;
+		return $this->uri;
 	}
 
 }
@@ -105,41 +116,58 @@ class SMWExpNsResource extends SMWExpResource {
 	 * Namespace URI prefix of the abbreviated URI
 	 * @var string
 	 */
-	protected $m_namespace;
+	protected $namespace;
+
 	/**
 	 * Namespace abbreviation of the abbreviated URI
 	 * @var string
 	 */
-	protected $m_namespaceid;
+	protected $namespaceId;
+
 	/**
 	 * Local part of the abbreviated URI
 	 * @var string
 	 */
-	protected $m_localname;
+	protected $localName;
 
 	/**
 	 * Constructor. The given URI must not contain serialization-specific
 	 * abbreviations or escapings, such as XML entities.
 	 *
-	 * @param $localname string local part of the abbreviated URI
-	 * @param $namespace string namespace URI prefix of the abbreviated URI
-	 * @param $namespaceid string namespace abbreviation of the abbreviated URI
-	 * @param $dataItem SMWDataItem or null
+	 * @param string $localName Local part of the abbreviated URI
+	 * @param string $namespace Namespace URI prefix of the abbreviated URI
+	 * @param string $namespaceId Namespace abbreviation of the abbreviated URI
+	 * @param SMWDataItem|null $dataItem
+	 *
+	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $localname, $namespace, $namespaceid, $dataItem = null ) {
-		parent::__construct( $namespace . $localname, $dataItem );
-		$this->m_namespace = $namespace;
-		$this->m_namespaceid = $namespaceid;
-		$this->m_localname = $localname;
+	public function __construct( $localName, $namespace, $namespaceId, SMWDataItem $dataItem = null ) {
+		if ( !is_string( $localName ) ) {
+			throw new InvalidArgumentException( '$localName needs to be a string' );
+		}
+
+		if ( !is_string( $namespace ) ) {
+			throw new InvalidArgumentException( '$namespace needs to be a string' );
+		}
+
+		if ( !is_string( $namespaceId ) ) {
+			throw new InvalidArgumentException( '$namespaceId needs to be a string' );
+		}
+
+		parent::__construct( $namespace . $localName, $dataItem );
+
+		$this->namespace = $namespace;
+		$this->namespaceId = $namespaceId;
+		$this->localName = $localName;
 	}
 
 	/**
-	 * Return a qualitifed name for the element.
+	 * Return a qualified name for the element.
 	 *
 	 * @return string
 	 */
 	public function getQName() {
-		return $this->m_namespaceid . ':' . $this->m_localname;
+		return $this->namespaceId . ':' . $this->localName;
 	}
 
 	/**
@@ -148,7 +176,7 @@ class SMWExpNsResource extends SMWExpResource {
 	 * @return string
 	 */
 	public function getNamespaceId() {
-		return $this->m_namespaceid;
+		return $this->namespaceId;
 	}
 
 	/**
@@ -157,7 +185,7 @@ class SMWExpNsResource extends SMWExpResource {
 	 * @return string
 	 */
 	public function getNamespace() {
-		return $this->m_namespace;
+		return $this->namespace;
 	}
 
 	/**
@@ -166,7 +194,7 @@ class SMWExpNsResource extends SMWExpResource {
 	 * @return string
 	 */
 	public function getLocalName() {
-		return $this->m_localname;
+		return $this->localName;
 	}
 
 	/**
@@ -178,7 +206,7 @@ class SMWExpNsResource extends SMWExpResource {
 	 * @return boolean
 	 */
 	public function hasAllowedLocalName() {
-		return preg_match( '/^[A-Za-z_][-A-Za-z_0-9]*$/u', $this->m_localname );
+		return preg_match( '/^[A-Za-z_][-A-Za-z_0-9]*$/u', $this->localName );
 	}
 
 }
@@ -197,26 +225,38 @@ class SMWExpLiteral extends SMWExpElement {
 	 * Datatype URI for the literal.
 	 * @var string
 	 */
-	protected $m_datatype;
+	protected $datatype;
+	
 	/**
 	 * Lexical form of the literal.
 	 * @var string
 	 */
-	protected $m_lexicalForm;
+	protected $lexicalForm;
 
 	/**
 	 * Constructor. The given lexical form should be the plain string for
 	 * representing the literal without datatype or language information.
-	 * It must not use any escaping or abbrevition mechanisms.
+	 * It must not use any escaping or abbreviation mechanisms.
 	 *
-	 * @param $lexicalForm string lexical form
-	 * @param $datatype string datatype URI or empty for untyped literals
-	 * @param $dataItem SMWDataItem or null
+	 * @param string $lexicalForm lexical form
+	 * @param string $datatype Data type URI or empty for untyped literals
+	 * @param SMWDataItem|null $dataItem
+	 *
+	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $lexicalForm, $datatype = '', $dataItem = null ) {
+	public function __construct( $lexicalForm, $datatype = '', SMWDataItem $dataItem = null ) {
+		if ( !is_string( $lexicalForm ) ) {
+			throw new InvalidArgumentException( '$lexicalForm needs to be a string' );
+		}
+
+		if ( !is_string( $datatype ) ) {
+			throw new InvalidArgumentException( '$datatype needs to be a string' );
+		}
+
 		parent::__construct( $dataItem );
-		$this->m_lexicalForm = $lexicalForm;
-		$this->m_datatype = $datatype;
+
+		$this->lexicalForm = $lexicalForm;
+		$this->datatype = $datatype;
 	}
 
 	/**
@@ -225,7 +265,7 @@ class SMWExpLiteral extends SMWExpElement {
 	 * @return string
 	 */
 	public function getDatatype() {
-		return $this->m_datatype;
+		return $this->datatype;
 	}
 
 	/**
@@ -236,7 +276,7 @@ class SMWExpLiteral extends SMWExpElement {
 	 * @return string
 	 */
 	public function getLexicalForm() {
-		return $this->m_lexicalForm;
+		return $this->lexicalForm;
 	}
 
 }
