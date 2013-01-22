@@ -280,6 +280,8 @@ final class SMWHooks {
 			'dataitems/DI_GeoCoord',
 			'dataitems/DI_String',
 
+			'export/SMWExpElement',
+
 			'parserhooks/ParserParameter',
 			'parserhooks/Subobject',
 
