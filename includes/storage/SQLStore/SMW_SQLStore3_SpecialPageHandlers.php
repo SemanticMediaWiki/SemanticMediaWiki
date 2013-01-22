@@ -79,8 +79,7 @@ class SMWSQLStore3SpecialPageHandlers {
 				$options,
 				array( SMWSql3SmwIds::tableName => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
 			);
-		}
-		else {
+		} else {
 			$res = $dbr->select(
 				SMWSql3SmwIds::tableName,
 				array( 'smw_id', 'smw_title' ),
@@ -88,20 +87,18 @@ class SMWSQLStore3SpecialPageHandlers {
 				__METHOD__,
 				$options
 			);
+
+			$propertyIds = array();
+
+			foreach ( $res as $row ) {
+				$propertyIds[] = (int)$row->smw_id;
+			}
+
+			$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $dbr );
+			$usageCounts = $statsTable->getUsageCounts( $propertyIds );
 		}
-
-
-		$propertyIds = array();
-
-		foreach ( $res as $row ) {
-			$propertyIds[] = (int)$row->smw_id;
-		}
-
-		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $dbr );
-		$usageCounts = $statsTable->getUsageCounts( $propertyIds );
 
 		$result = array();
-
 		foreach ( $res as $row ) {
 			try {
 				$property = new SMWDIProperty( $row->smw_title );
@@ -112,9 +109,7 @@ class SMWSQLStore3SpecialPageHandlers {
 				$property = new SMWDIError( array( wfMessage( 'smw_noproperty', $row->smw_title )->inContentLanguage()->text() ) );
 			}
 
-			$usageCount = $usageCounts[(int)$row->smw_id];
-
-			$result[] = $unusedProperties? $property : array( $property, $usageCount );
+			$result[] = $unusedProperties ? $property : array( $property, $usageCounts[(int)$row->smw_id] );
 		}
 
 		$dbr->freeResult( $res );
