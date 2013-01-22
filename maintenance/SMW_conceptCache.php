@@ -91,7 +91,7 @@ if ( !isset( $smwgIP ) ) {
 	$smwgIP = dirname( __FILE__ ) . '/../';
 }
 
-require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
+require_once( $smwgIP . 'includes/GlobalFunctions.php' );
 
 $store = smwfGetStore();
 $db = wfGetDB( DB_SLAVE );

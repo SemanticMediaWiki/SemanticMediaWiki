@@ -102,7 +102,7 @@ class SMWSetupScript extends Maintenance {
 			$smwgIP = dirname( __FILE__ ) . '/../';
 		}
 
-		require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
+		require_once( $smwgIP . 'includes/GlobalFunctions.php' );
 	}
 
 	/**
