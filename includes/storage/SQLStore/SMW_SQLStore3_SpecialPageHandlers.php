@@ -109,7 +109,14 @@ class SMWSQLStore3SpecialPageHandlers {
 				$property = new SMWDIError( array( wfMessage( 'smw_noproperty', $row->smw_title )->inContentLanguage()->text() ) );
 			}
 
-			$result[] = $unusedProperties ? $property : array( $property, $usageCounts[(int)$row->smw_id] );
+			if ( $unusedProperties){
+				$result[] = $property;
+			} else {
+				// If there is no key entry in the usageCount table for that
+				// particular property it is to be counted with usage 0
+				$count = array_key_exists( (int)$row->smw_id, $usageCounts ) ? $usageCounts[(int)$row->smw_id] : 0;
+				$result[] = array( $property, $count );
+			}
 		}
 
 		$dbr->freeResult( $res );
