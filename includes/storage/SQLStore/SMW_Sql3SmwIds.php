@@ -712,7 +712,7 @@ class SMWSql3SmwIds {
 			unset( $this->regular_ids[$title] );
 			unset( $this->regular_sortkeys[$title] );
 		} else {
-			$hashKey = $this->getHashKey( $title, $namespace, $interwiki, $subobject );
+			$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
 			unset( $this->regular_ids[$hashKey] );
 			unset( $this->regular_sortkeys[$hashKey] );
 		}
