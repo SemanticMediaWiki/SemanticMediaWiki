@@ -69,6 +69,7 @@ function smwfRegisterHooks() {
 
 	//UnitTests
 	$wgHooks['UnitTestsList'][] = 'SMWHooks::registerUnitTests';
+	$wgHooks['ResourceLoaderTestModules'][] = 'SMWHooks::registerQUnitTests';
 
 	// User preference
 	$wgHooks['GetPreferences'][] = 'SMWHooks::onGetPreferences';
