@@ -289,3 +289,25 @@ tr.smwb-ipropvalue td {
 
 span.smwb-ivalue {
 }
+
+/* Added in 1.9 */
+.smw-spinner .text {
+	padding-left: 2.1em;
+	font-size: 12px;
+	vertical-align: middle;
+}
+
+/* Spinner for left side in-text*/
+.smw-spinner.left.mw-small-spinner {
+	background-position:left;
+	vertical-align: middle;
+	display:inline-block;
+	padding: 0px !important;
+}
+
+/* Sppiner for image center*/
+.smw-spinner.center.mw-small-spinner {
+	vertical-align: middle;
+	display:inline-block;
+	padding: 0px !important;
+}

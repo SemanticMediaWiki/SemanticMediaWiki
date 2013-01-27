@@ -132,6 +132,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWRDFResultPrinter']       = $qpDir . 'SMW_QP_RDF.php';
 	$wgAutoloadClasses['SMWResultPrinter']          = $qpDir . 'ResultPrinter.php'; // deprecated in 1.9
 	$wgAutoloadClasses['SMW\ResultPrinter']         = $qpDir . 'ResultPrinter.php';
+	$wgAutoloadClasses['SMW\ApiResultPrinter']      = $qpDir . 'ApiResultPrinter.php';
 	$wgAutoloadClasses['SMWListResultPrinter']      = $qpDir . 'ListResultPrinter.php'; // deprecated in 1.9
 	$wgAutoloadClasses['SMW\ListResultPrinter']     = $qpDir . 'ListResultPrinter.php';
 
