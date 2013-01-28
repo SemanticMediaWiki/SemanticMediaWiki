@@ -204,7 +204,7 @@ $magicWords['mr'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__फॅक्टबॉक्सदाखवा__', '__SHOWFACTBOX__' ),
 );
 
-/** Nedersaksies (Nedersaksies) */
+/** Low Saxon (Netherlands) (Nedersaksies) */
 $magicWords['nds-nl'] = array(
 	'concept' => array( 0, 'konsept' ),
 	'set_recurring_event' => array( 0, 'herhaolende_gebeurtenisse_instellen', 'herhalende_gebeurtenis_instellen' ),

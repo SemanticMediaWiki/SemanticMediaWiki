@@ -481,7 +481,7 @@ $specialPageAliases['nb'] = array(
 	'WantedProperties' => array( 'Ønskede_egenskaper' ),
 );
 
-/** Nedersaksies (Nedersaksies) */
+/** Low Saxon (Netherlands) (Nedersaksies) */
 $specialPageAliases['nds-nl'] = array(
 	'Ask' => array( 'Vragen' ),
 	'Browse' => array( 'Bekieken' ),
