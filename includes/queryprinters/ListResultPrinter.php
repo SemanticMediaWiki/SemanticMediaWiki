@@ -257,7 +257,7 @@ END;
 	 *
 	 * @return string
 	 */
-	protected function getListContent( $row, &$rowstart, $options ){
+	protected function getListContent( $row, &$rowstart, $options ) {
 		$first_col = true;
 		$found_values = false; // has anything but the first column been printed?
 		$result = '';
@@ -270,7 +270,7 @@ END;
 				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE && $first_col ){
 					$sortKey = $dataValue->getSortKey();
 					// Override the original start element
-					$rowstart = "\t" . Html::openElement('li', array( 'data-sortkey' => $sortKey[0] )  );
+					$rowstart = $this->params['format'] !== 'list' ? "\t" . Html::openElement('li', array( 'data-sortkey' => $sortKey[0] )  ) : $rowstart;
 				}
 
 				$text = $dataValue->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) );
