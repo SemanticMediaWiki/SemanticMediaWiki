@@ -49,6 +49,7 @@ class SMWDISerializer {
 				$result = array(
 					'fulltext' => $title->getFullText(),
 					'fullurl' => $title->getFullUrl(),
+					'namespace' => $title->getNamespace()
 				);
 				break;
 			case SMWDataItem::TYPE_NUMBER:
