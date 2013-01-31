@@ -8454,20 +8454,20 @@ $messages['ko'] = array(
 결과가 커질 수 있음을 참고하세요!',
 	'smw_exportrdf_submit' => '내보내기',
 	'uriresolver' => 'URI해결',
-	'properties' => '속성',
+	'properties' => '속성 목록',
 	'smw_properties_docu' => '다음 속성은 위키에서 사용합니다.',
 	'smw_property_template' => '$2 유형의 $1 ($3개 {{PLURAL:$3|사용}})',
 	'smw_propertylackspage' => '모든 속성은 문서에서 설명해야 합니다.',
 	'smw_propertylackstype' => '이 속성에 지정한 유형이 없습니다. (지금은 $1 유형으로 가정합니다)',
 	'smw_propertyhardlyused' => '이 속성은 거의 위키 안에 사용하지 않습니다!',
-	'unusedproperties' => '사용하지 않는 속성',
+	'unusedproperties' => '사용하지 않는 속성 목록',
 	'smw_unusedproperties_docu' => '다음 속성은 존재하지만 다른 문서에 해당 속성을 사용하지 않습니다.',
 	'smw_unusedproperty_template' => '$2 유형의 $1',
-	'wantedproperties' => '필요한 속성',
+	'wantedproperties' => '필요한 속성 목록',
 	'smw_wantedproperties_docu' => '다음 속성은 위키에 사용하지만 아직 설명하는 문서가 없습니다.',
 	'smw_wantedproperty_template' => '$1 ($2개 {{PLURAL:$2|사용}})',
 	'smw_purge' => '새로 고침',
-	'types' => '유형',
+	'types' => '유형 목록',
 	'smw_types_docu' => '다음은 속성에 할당할 수 있는 모든 데이터 유형의 목록입니다.',
 	'semanticstatistics' => '시맨틱 통계',
 	'ask' => '시맨틱 찾기',
@@ -8570,6 +8570,10 @@ $messages['ko'] = array(
 	'smw_smwadmin_updatestarted' => '시맨틱 데이터를 최신으로 하기 위해 새 업데이트 과정을 시작했습니다.
 모든 저장한 데이터는 필요에 따라 다시 작성하거나 복구됩니다.
 이 특수 문서에 대한 업데이트의 진행을 따를 수 있습니다.
+
+$1 문서로 돌아갑니다.',
+	'smw_smwadmin_updatenotstarted' => '이미 실행하고 있는 업데이트 프로세스입니다.
+새로 만들 수 없습니다.
 
 $1 문서로 돌아갑니다.',
 	'smw_smwadmin_updatestopped' => '모든 기존 업데이트 과정을 중지했습니다.
