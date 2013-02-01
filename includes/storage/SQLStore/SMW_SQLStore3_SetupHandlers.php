@@ -72,14 +72,23 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
 		);
 
+		switch ( $wgDBtype ) {
+			case 'sqlite':
+				$idType = $dbtypes['p'] . ' NOT NULL PRIMARY KEY AUTOINCREMENT';
+				break;
+			case 'postgres':
+				$idType = $dbtypes['p'] . ' NOT NULL PRIMARY KEY';
+				break;
+			default:
+				$idType = $dbtypes['p'] . ' NOT NULL PRIMARY KEY AUTO_INCREMENT';
+				break;
+		}
+
 		// Set up table for internal IDs used in this store:
 		SMWSQLHelpers::setupTable(
 			SMWSql3SmwIds::tableName,
 			array(
-				'smw_id' => $dbtypes['p'] .
-					( $wgDBtype == 'sqlite' ? '' : ' NOT NULL' ) .
-					( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ) .
-					( $wgDBtype == 'sqlite' ? ' NOT NULL' : '' ),
+				'smw_id' => $idType,
 				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
 				'smw_title' => $dbtypes['t'] . ' NOT NULL',
 				'smw_iw' => $dbtypes['w'] . ' NOT NULL',
