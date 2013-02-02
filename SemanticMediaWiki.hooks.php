@@ -311,15 +311,22 @@ final class SMWHooks {
 	 *
 	 * @return boolean
 	 */
-	public static function registerQUnitTests( array &$testModules, ResourceLoader &$resourceLoader ){
-		$testModules['qunit']['ext.semanticMediaWiki'] = array(
+	public static function registerQUnitTests( array &$testModules, ResourceLoader &$resourceLoader ) {
+		$testModules['qunit']['ext.smw.tests'] = array(
 			'scripts' => array(
 				'tests/qunit/ext.smw.test.js',
 				'tests/qunit/ext.smw.util.tooltip.test.js',
+
+				// dataItem tests
+				'tests/qunit/ext.smw.dataItem.test.js',
+				'tests/qunit/ext.smw.dataItem.wikiPage.test.js',
+				'tests/qunit/ext.smw.dataItem.uri.test.js',
+				'tests/qunit/ext.smw.dataItem.time.test.js',
 			),
 			'dependencies' => array(
 				'ext.smw',
-				'ext.smw.tooltip'
+				'ext.smw.tooltip',
+				'ext.smw.dataItem'
 			),
 			'position' => 'top',
 			'localBasePath' => __DIR__,

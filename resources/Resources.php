@@ -47,6 +47,22 @@ return array(
 		'styles' => 'resources/ext.smw.core.css',
 		'position' => 'top'
 	),
+
+	// dataItem representation
+	'ext.smw.dataItem' => $moduleTemplate + array(
+		'scripts' => array(
+			'resources/ext.smw.dataItem.js',
+			'resources/ext.smw.dataItem.wikiPage.js',
+			'resources/ext.smw.dataItem.uri.js',
+			'resources/ext.smw.dataItem.time.js',
+		),
+		'dependencies' => array(
+			'ext.smw',
+			'mediawiki.Title',
+			'mediawiki.Uri'
+		)
+	),
+
 	//
 	'ext.smw.query.ui' => $moduleTemplate + array(
 		'styles' => 'resources/ext.smw.query.ui.css'
