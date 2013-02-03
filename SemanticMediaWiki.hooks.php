@@ -279,6 +279,7 @@ final class SMWHooks {
 			'dataitems/DI_Number',
 			'dataitems/DI_GeoCoord',
 			'dataitems/DI_String',
+			'dataitems/DISerializer',
 
 			'export/SMWExpElement',
 

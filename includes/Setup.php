@@ -99,7 +99,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\MessageReporter']        = $incDir . 'MessageReporter.php';
 	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . 'MessageReporter.php';
 	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'SMW_DataValueFactory.php';
-	$wgAutoloadClasses['SMWDISerializer']           = $incDir . 'SMW_DISerializer.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
@@ -154,6 +153,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWDIGeoCoord']             = $diDir . 'SMW_DI_GeoCoord.php';
 	$wgAutoloadClasses['SMWContainerSemanticData']  = $diDir . 'SMW_DI_Container.php';
 	$wgAutoloadClasses['SMWDIContainer']            = $diDir . 'SMW_DI_Container.php';
+	$wgAutoloadClasses['SMWDISerializer']           = $diDir . 'DISerializer.php'; // deprecated in 1.9
+	$wgAutoloadClasses['SMW\DISerializer']          = $diDir . 'DISerializer.php';
 
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';

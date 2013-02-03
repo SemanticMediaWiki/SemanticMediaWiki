@@ -1,5 +1,8 @@
 <?php
 
+namespace SMW;
+use SMWDataItem, SMWPrintRequest, SMWResultArray, SMWQueryResult;
+
 /**
  * Class for serializing SMWDataItem and SMWQueryResult objects to a context
  * independent object consisting of arrays and associative arrays, which can
@@ -25,13 +28,13 @@
  *
  * @since 1.7
  *
- * @file SMW_DISerializer.php
+ * @file
  * @ingroup SMW
  *
  * @licence GNU GPL v2 or later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDISerializer {
+class DISerializer {
 
 	/**
 	 * Get the serialization for the provided data item.
@@ -49,7 +52,8 @@ class SMWDISerializer {
 				$result = array(
 					'fulltext' => $title->getFullText(),
 					'fullurl' => $title->getFullUrl(),
-					'namespace' => $title->getNamespace()
+					'namespace' => $title->getNamespace(),
+					'exists' => $title->isKnown()
 				);
 				break;
 			case SMWDataItem::TYPE_NUMBER:
@@ -68,7 +72,7 @@ class SMWDISerializer {
 
 		return $result;
 	}
-	
+
 	/**
 	 * Get the serialization for a SMWQueryResult object.
 	 *
@@ -108,10 +112,17 @@ class SMWDISerializer {
 				}
 
 			}
-			
+
 			$results[$diWikiPage->getTitle()->getFullText()] = $result;
 		}
-		
+
 		return array( 'printrequests' => $printRequests, 'results' => $results);
 	}
 }
+
+/**
+ * SMWDISerializer
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\DISerializer', 'SMWDISerializer' );
