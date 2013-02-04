@@ -2230,6 +2230,7 @@ $messages['bs'] = array(
 /** Catalan (català)
  * @author Dvdgmz
  * @author Loupeter
+ * @author Pitort
  * @author SMP
  * @author Solde
  * @author Toniher
@@ -2553,6 +2554,7 @@ Progrés estimat de l'actualització actual:",
 	'smw-ui-tooltip-title-warning' => 'Error',
 	'smw-ui-tooltip-title-parameter' => 'Paràmetre',
 	'smw-ui-tooltip-title-event' => 'Esdeveniment',
+	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw_unknowntype' => "El tipus d'aquesta propietat no és vàlid",
 );
 
