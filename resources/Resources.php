@@ -51,16 +51,26 @@ return array(
 	// dataItem representation
 	'ext.smw.dataItem' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/ext.smw.dataItem.js',
-			'resources/ext.smw.dataItem.wikiPage.js',
-			'resources/ext.smw.dataItem.uri.js',
-			'resources/ext.smw.dataItem.time.js',
+			'resources/smw.dataitem/ext.smw.dataItem.js',
+			'resources/smw.dataitem/ext.smw.dataItem.wikiPage.js',
+			'resources/smw.dataitem/ext.smw.dataItem.uri.js',
+			'resources/smw.dataitem/ext.smw.dataItem.time.js',
+			'resources/smw.dataitem/ext.smw.dataItem.property.js',
 		),
 		'dependencies' => array(
 			'ext.smw',
 			'mediawiki.Title',
 			'mediawiki.Uri'
 		)
+	),
+
+	// API
+	'ext.smw.api' => $moduleTemplate + array(
+		'scripts' => array(
+			'resources/smw.api/ext.smw.api.js',
+			'resources/smw.api/ext.smw.api.query.js',
+		),
+		'dependencies' => 'ext.smw.dataItem'
 	),
 
 	//

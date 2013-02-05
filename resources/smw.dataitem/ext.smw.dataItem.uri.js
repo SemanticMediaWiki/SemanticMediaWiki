@@ -17,12 +17,20 @@
 	var html = mw.html;
 
 	/**
+	 * Inheritance class
+	 *
+	 * @type object
+	 */
+	smw.dataItem = smw.dataItem || {};
+
+	/**
 	 * Uri constructor
 	 *
 	 * @since  1.9
 	 *
-	 * @param {String}
-	 * @return this
+	 * @param {string}
+	 *
+	 * @return {this}
 	 */
 	var uri = function ( fullurl ) {
 		this.fullurl = fullurl !== '' && fullurl !==  undefined ? fullurl : null;
@@ -36,17 +44,9 @@
 	};
 
 	/**
-	 * Inheritance class
-	 *
-	 * @since 1.9
-	 * @type Object
-	 */
-	smw.dataItem = smw.dataItem || {};
-
-	/**
 	 * Constructor
 	 *
-	 * @var Object
+	 * @var object
 	 */
 	smw.dataItem.uri = function( fullurl ) {
 		if ( $.type( fullurl ) === 'string' ) {
@@ -58,8 +58,6 @@
 
 	/**
 	 * Public methods
-	 *
-	 * Invoke methods on the constructor
 	 *
 	 * @since  1.9
 	 *
@@ -74,18 +72,18 @@
 		 *
 		 * @since  1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getDIType: function() {
 			return '_uri';
 		},
 
 		/**
-		 * Returns invoked uri
+		 * Returns uri
 		 *
 		 * @since  1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getUri: function() {
 			return this.fullurl;
@@ -96,9 +94,9 @@
 		 *
 		 * @since  1.9
 		 *
-		 * @param linker
+		 * @param {boolean}
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getHtml: function( linker ) {
 			if ( linker && this.fullurl !== null ){

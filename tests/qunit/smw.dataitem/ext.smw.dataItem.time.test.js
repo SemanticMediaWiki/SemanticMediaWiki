@@ -91,7 +91,7 @@
 		var result;
 
 		result = new smw.dataItem.time( '1362200400' );
-		assert.equal( result.getTimeString(), '14:00:00', pass + 'returned a time string' );
+		assert.equal( result.getTimeString(), '05:00:00', pass + 'returned a time string' );
 
 	} );
 
@@ -103,8 +103,16 @@
 	QUnit.test( 'getMediaWikiDate', 1, function ( assert ) {
 		var result;
 
+		// Use as helper to fetch language dep. month name
+		var monthNames = [];
+		$.map ( mw.config.get( 'wgMonthNames' ), function( index, value ) {
+			if( index !== '' ){
+				monthNames.push( index );
+			}
+		} );
+
 		result = new smw.dataItem.time( '1362200400' );
-		assert.equal( result.getMediaWikiDate(), '2 March 2013 14:00:00', pass + 'returned a MW date and time formatted string' );
+		assert.equal( result.getMediaWikiDate(), '2 ' + monthNames[2] + ' 2013 05:00:00', pass + 'returned a MW date and time formatted string' );
 
 	} );
 

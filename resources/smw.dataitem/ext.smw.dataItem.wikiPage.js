@@ -1,5 +1,5 @@
 /**
- * SMW WikiPage DataItem JavaScript representation
+ * SMW wikiPage DataItem JavaScript representation
  *
  * @see SMW\DIWikiPage
  *
@@ -17,6 +17,13 @@
 	var html = mw.html;
 
 	/**
+	 * Inheritance class
+	 *
+	 * @type object
+	 */
+	smw.dataItem = smw.dataItem || {};
+
+	/**
 	 * wikiPage constructor
 	 *
 	 * @since  1.9
@@ -26,41 +33,28 @@
 	 * @param {Integer} namespace
 	 * @return {Object} this
 	 */
-	var wikiPage = function ( fulltext, fullurl, namespace ) {
+	var wikiPage = function ( fulltext, fullurl, namespace, exists ) {
 		this.fulltext  = fulltext !== ''&& fulltext !==  undefined ? fulltext : null;
 		this.fullurl   = fullurl !== '' && fullurl !==  undefined ? fullurl : null;
-
-		// Namespace will replaced by this.title.getNamespace() in a follow-up
-		// and SMW\DISerializer will instead generate ( fulltext, fullurl, exists )
 		this.namespace = namespace !==  undefined ? namespace : 0;
+		this.exists    = exists !==  undefined ? exists : true;
 
 		// Get mw.Title inheritance
 		if ( this.fulltext !== null ){
 			this.title = new mw.Title( this.fulltext );
 		}
 
-		// For now we assume true, as long as SMW\DISerializer doesn't tells us otherwise
-		this.exists = true;
-
 		return this;
 	};
-
-	/**
-	 * Inheritance class
-	 *
-	 * @since 1.9
-	 * @type Object
-	 */
-	smw.dataItem = smw.dataItem || {};
 
 	/**
 	 * Constructor
 	 *
 	 * @var Object
 	 */
-	smw.dataItem.wikiPage = function( fulltext, fullurl, namespace ) {
+	smw.dataItem.wikiPage = function( fulltext, fullurl, namespace, exists ) {
 		if ( $.type( fulltext ) === 'string' && $.type( fullurl ) === 'string' ) {
-			this.constructor( fulltext, fullurl, namespace );
+			this.constructor( fulltext, fullurl, namespace, exists );
 		} else {
 			throw new Error( 'smw.dataItem.wikiPage: fulltext, fullurl must be a string' );
 		}
@@ -75,7 +69,7 @@
 	 *
 	 * @type object
 	 */
-	smw.dataItem.wikiPage.prototype = {
+	var fn = {
 
 		constructor: wikiPage,
 
@@ -84,40 +78,43 @@
 		 *
 		 * @since  1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getDIType: function() {
 			return '_wpg';
 		},
 
 		/**
-		 * Returns wikiPage invoked name
+		 * Returns wikiPage text title
+		 *
+		 * Get full name in text form, like "File:Foo bar.jpg" due to fact
+		 * that name is serialized in fulltext
 		 *
 		 * @since  1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getName: function() {
 			return this.fulltext;
 		},
 
 		/**
-		 * Returns wikiPage invoked uri
+		 * Returns wikiPage uri
 		 *
 		 * @since  1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getUri: function() {
 			return this.fullurl;
 		},
 
 		/**
-		 * Returns wikiPage invoked uri
+		 * Returns mw.Title
 		 *
 		 * @since  1.9
 		 *
-		 * @return {String}
+		 * @return {mw.Title}
 		 */
 		getTitle: function() {
 			return this.title;
@@ -128,18 +125,18 @@
 		 *
 		 * @since  1.9
 		 *
-		 * @return {Boolean}
+		 * @return {boolean}
 		 */
 		isKnown: function(){
 			return this.exists;
 		},
 
 		/**
-		 * Returns wikiPage namespace
+		 * Returns namespace
 		 *
 		 * @since  1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getNamespace: function() {
 			return this.namespace;
@@ -150,9 +147,9 @@
 		 *
 		 * @since  1.9
 		 *
-		 * @param linker
+		 * @param {boolean}
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getHtml: function( linker ) {
 			if ( linker && this.fullurl !== null ){
@@ -162,10 +159,15 @@
 		}
 	};
 
+	// Alias
+	fn.exists = fn.isKnown;
+	fn.getPrefixedText = fn.getName;
+
+	// Assign methods
+	smw.dataItem.wikiPage.prototype = fn;
+
 	// Extension
 	// If you need to extend methods just use
 	// $.extend( smw.dataItem.wikiPage.prototype, { method: function (){ ... } } );
-
-	// Alias
 
 } )( jQuery, mediaWiki, semanticMediaWiki );

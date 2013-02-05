@@ -319,15 +319,21 @@ final class SMWHooks {
 				'tests/qunit/ext.smw.util.tooltip.test.js',
 
 				// dataItem tests
-				'tests/qunit/ext.smw.dataItem.test.js',
-				'tests/qunit/ext.smw.dataItem.wikiPage.test.js',
-				'tests/qunit/ext.smw.dataItem.uri.test.js',
-				'tests/qunit/ext.smw.dataItem.time.test.js',
+				'tests/qunit/smw.dataitem/ext.smw.dataItem.test.js',
+				'tests/qunit/smw.dataitem/ext.smw.dataItem.wikiPage.test.js',
+				'tests/qunit/smw.dataitem/ext.smw.dataItem.uri.test.js',
+				'tests/qunit/smw.dataitem/ext.smw.dataItem.time.test.js',
+				'tests/qunit/smw.dataitem/ext.smw.dataItem.property.test.js',
+
+				// Api
+				'tests/qunit/smw.api/ext.smw.api.test.js',
+				'tests/qunit/smw.api/ext.smw.api.query.test.js',
 			),
 			'dependencies' => array(
 				'ext.smw',
 				'ext.smw.tooltip',
-				'ext.smw.dataItem'
+				'ext.smw.dataItem',
+				'ext.smw.api'
 			),
 			'position' => 'top',
 			'localBasePath' => __DIR__,

@@ -17,17 +17,23 @@
 	var html = mw.html;
 
 	/**
+	 * Inheritance class
+	 *
+	 * @type Object
+	 */
+	smw.dataItem = smw.dataItem || {};
+
+	/**
 	 * Date constructor
 	 *
 	 * @since  1.9
 	 *
-	 * @param {String|Integer}
-	 * @return this
+	 * @param {string|number}
+	 *
+	 * @return {this}
 	 */
 	var time = function ( timestamp ) {
 		this.timestamp = timestamp !== '' && timestamp !== undefined ? timestamp : null;
-
-console.log( timestamp );
 
 		// Returns a normalized timestamp as JS date object
 		if ( typeof this.timestamp === 'number' ) {
@@ -47,23 +53,16 @@ console.log( timestamp );
 	 *
 	 */
 	var monthNames = [];
-	$.map ( mw.config.get( wgMonthNames ), function( index, value ) {
-		if( value !== '' ){
-			monthNames.push( value );
+	$.map ( mw.config.get( 'wgMonthNames' ), function( index, value ) {
+		if( index !== '' ){
+			monthNames.push( index );
 		}
 	} );
 
 	/**
-	 * Inheritance class
-	 *
-	 * @type Object
-	 */
-	smw.dataItem = smw.dataItem || {};
-
-	/**
 	 * Constructor
 	 *
-	 * @var Object
+	 * @type object
 	 */
 	smw.dataItem.time = function( timestamp ) {
 		if ( $.type( timestamp ) === 'string' || 'number' ) {
@@ -75,8 +74,6 @@ console.log( timestamp );
 
 	/**
 	 * Public methods
-	 *
-	 * Invoke methods on the constructor
 	 *
 	 * @since  1.9
 	 *
@@ -93,7 +90,7 @@ console.log( timestamp );
 		 *
 		 * @since  1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getDIType: function() {
 			return '_dat';
@@ -106,7 +103,7 @@ console.log( timestamp );
 		 *
 		 * @since 1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getMwTimestamp: function() {
 			return this.timestamp;
@@ -130,7 +127,7 @@ console.log( timestamp );
 		 *
 		 * @since 1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getISO8601Date: function() {
 			return this.date.toISOString();
@@ -139,15 +136,20 @@ console.log( timestamp );
 		/**
 		 * Returns a formatted time (HH:MM:SS)
 		 *
+		 * In case of no time '00:00:00' is returned
+		 *
 		 * @since 1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getTimeString: function() {
 			var d = this.date;
-			return ( d.getHours() < 10 ? '0' + d.getHours() : d.getHours() ) +
-				':' + ( d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes() ) +
-				':' + ( d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds() );
+			if ( d.getUTCHours() + d.getUTCMinutes() + d.getUTCSeconds() === 0 ){
+				return '00:00:00';
+			}
+			return ( d.getUTCHours() < 10 ? '0' + d.getUTCHours() : d.getUTCHours() ) +
+				':' + ( d.getUTCMinutes() < 10 ? '0' + d.getUTCMinutes() : d.getUTCMinutes() ) +
+				':' + ( d.getUTCSeconds() < 10 ? '0' + d.getUTCSeconds() : d.getUTCSeconds() );
 		},
 
 		/**
@@ -155,13 +157,13 @@ console.log( timestamp );
 		 *
 		 * @since 1.9
 		 *
-		 * @return {String}
+		 * @return {string}
 		 */
 		getMediaWikiDate: function() {
 			return this.date.getDate() + ' ' +
 				monthNames[this.date.getMonth()] + ' ' +
-				this.date.getFullYear() + ' ' +
-				this.getTimeString();
+				this.date.getFullYear() +
+				( this.getTimeString() !== '00:00:00' ? ' ' + this.getTimeString() : '' );
 		},
 
 		/**
@@ -169,10 +171,11 @@ console.log( timestamp );
 		 *
 		 * @since  1.9
 		 *
-		 * @param linker
-		 * @return string
+		 * @param {boolean}
+		 *
+		 * @return {string}
 		 */
-		getHtml: function() {
+		getHtml: function( linker ) {
 			return this.getMediaWikiDate();
 		}
 	};
