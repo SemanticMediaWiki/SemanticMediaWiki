@@ -1,5 +1,9 @@
 <?php
 
+namespace SMW;
+use SMWQueryResult, SMWQuery, SMWQueryProcessor, SMWDIWikipage;
+use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
+
 /**
  * Result printer to export results as RSS/Atom feed
  *
@@ -21,13 +25,13 @@
  * @since 1.8
  *
  * @file
- * @ingroup SMWResultPrinter
- * @ingroup SMWQuery
+ * @ingroup SMW\ResultPrinter
+ * @ingroup SMW\Query
  *
  * @licence GNU GPL v2 or later
  * @author mwjames
  */
-class SMWFeedResultPrinter extends SMWExportPrinter {
+final class FeedResultPrinter extends \SMWExportPrinter {
 
 	/**
 	 * Returns human readable label for this printer
@@ -35,7 +39,7 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	 * @return string
 	 */
 	public function getName() {
-		return wfMessage( 'smw-printername-feed' )->text();
+		return $this->getContext()->msg( 'smw-printername-feed' )->text();
 	}
 
 	/**
@@ -87,7 +91,7 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 
 		if ( $outputMode == SMW_OUTPUT_FILE ) {
 			if ( $res->getCount() == 0 ){
-				$res->addErrors( array( wfMessage( 'smw_result_noresults' )->inContentLanguage()->text() ) );
+				$res->addErrors( array( $this->getContext()->msg( 'smw_result_noresults' )->inContentLanguage()->text() ) );
 				return '';
 			}
 			$result = $this->getFeed( $res, $this->params['type'] );
@@ -110,11 +114,11 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getFeed( SMWQueryResult $results, $type ){
+	protected function getFeed( SMWQueryResult $results, $type ) {
 		global $wgFeedClasses;
 
 		if( !isset( $wgFeedClasses[$type] ) ) {
-			$results->addErrors( array( wfMessage( 'feed-invalid' )->inContentLanguage()->text() ) );
+			$results->addErrors( array( $this->getContext()->msg( 'feed-invalid' )->inContentLanguage()->text() ) );
 			return '';
 		}
 
@@ -162,7 +166,7 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	 * @return string
 	 */
 	protected function feedDescription() {
-		return $this->params['description'] !== '' ? wfMessage( 'smw-label-feed-description', $this->params['description'], $this->params['type'] )->text() : wfMessage( 'tagline' )->text();
+		return $this->params['description'] !== '' ? $this->getContext()->msg( 'smw-label-feed-description', $this->params['description'], $this->params['type'] )->text() : $this->getContext()->msg( 'tagline' )->text();
 	}
 
 	/**
@@ -258,12 +262,10 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 
 					if ( $content instanceof TextContent ) {
 						$text = $content->getNativeData();
-					}
-					else {
+					} else {
 						return '';
 					}
-				}
-				else {
+				} else {
 					$text = $wikiPage->getText();
 				}
 			}
@@ -273,9 +275,11 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 		}
 	}
 
-
 	/**
 	 * Feed item description and property value output manipulation
+	 *
+	 * @note FeedItem will do an FeedItem::xmlEncode therefore no need
+	 * to be overly cautious here
 	 *
 	 * @since 1.8
 	 *
@@ -285,10 +289,8 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	 * @return string
 	 */
 	protected function feedItemDescription( $items, $pageContent  ) {
-		return htmlspecialchars(
-			FeedItem::stripComment( implode( ',', $items ) ) .
-			FeedItem::stripComment( $pageContent )
-		);
+		return FeedItem::stripComment( implode( ',', $items ) ) .
+			FeedItem::stripComment( $pageContent );
 	}
 
 	/**
@@ -314,7 +316,7 @@ class SMWFeedResultPrinter extends SMWExportPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$params['searchlabel']->setDefault( wfMessage( 'smw-label-feed-link' )->inContentLanguage()->text() );
+		$params['searchlabel']->setDefault( $this->getContext()->msg( 'smw-label-feed-link' )->inContentLanguage()->text() );
 
 		$params['type'] = array(
 			'type' => 'string',
