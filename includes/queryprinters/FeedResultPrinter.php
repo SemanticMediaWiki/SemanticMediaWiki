@@ -125,7 +125,7 @@ final class FeedResultPrinter extends \SMWExportPrinter {
 		// Get feed class instance
 
 		/**
-		 * @var ChannelFeed $feed
+		 * @var \ChannelFeed $feed
 		 */
 		$feed = new $wgFeedClasses[$type](
 			$this->feedTitle(),
@@ -197,8 +197,8 @@ final class FeedResultPrinter extends \SMWExportPrinter {
 		/**
 		 * Loop over all properties within a row
 		 *
-		 * @var SMWResultArray $field
-		 * @var SMWDataValue $object
+		 * @var \SMWResultArray $field
+		 * @var \SMWDataValue $object
 		 */
 		foreach ( $row as $field ) {
 			$itemSegments = array();
