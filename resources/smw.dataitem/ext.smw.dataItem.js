@@ -75,7 +75,7 @@
 
 				$.each( value, function( subjectName, subject ) {
 					if( subject.hasOwnProperty( 'fulltext' ) ){
-						var nSubject = new smw.dataItem.wikiPage( subject.fulltext, subject.fullurl, subject.namespace );
+						var nSubject = new smw.dataItem.wikiPage( subject.fulltext, subject.fullurl, subject.namespace, subject.exists );
 						nSubject.printouts = subject.printouts;
 						nResults[subjectName] = nSubject;
 					} else {
@@ -97,7 +97,7 @@
 					switch ( self.properties[key].typeid ) {
 						case '_wpg':
 							$.map( value, function( w ) {
-								factoredValue.push( new smw.dataItem.wikiPage( w.fulltext, w.fullurl, w.namespace ) );
+								factoredValue.push( new smw.dataItem.wikiPage( w.fulltext, w.fullurl, w.namespace, w.exists ) );
 							} );
 							break;
 						case '_uri':

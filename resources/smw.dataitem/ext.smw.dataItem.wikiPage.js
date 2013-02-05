@@ -153,7 +153,7 @@
 		 */
 		getHtml: function( linker ) {
 			if ( linker && this.fullurl !== null ){
-				return html.element( 'a', { 'href': this.fullurl }, this.fulltext );
+				return html.element( 'a', { 'href': this.fullurl, 'class': ( this.exists ? '' : 'new' ) } , this.fulltext );
 			}
 			return this.fulltext;
 		}

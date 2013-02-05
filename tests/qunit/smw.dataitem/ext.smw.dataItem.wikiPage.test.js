@@ -18,10 +18,13 @@
 
 	// Data provider
 	var testCases = [
-		{ test: [ '', '', '' ], expected: [ null, null, 0 , null] } ,
-		{ test: [ 'foo', '', '' ], expected: [ 'foo', null, 0, 'foo' ] },
-		{ test: [ 'bar', '', 6 ], expected: [ 'bar', null, 6, 'bar'] },
-		{ test: [ 'fooBar', 'http://fooBar', 0 ], expected: [ 'fooBar', 'http://fooBar', 0, '<a href=\"http://fooBar\">fooBar</a>' ] }
+		{ test: [ '', '', '' ], expected: [ null, null, 0 , null, true] } ,
+		{ test: [ 'foo', '', '' ], expected: [ 'foo', null, 0, 'foo', true] },
+		{ test: [ 'bar', '', 6 ], expected: [ 'bar', null, 6, 'bar', true ] },
+		{ test: [ 'bar', '', 0, true ], expected: [ 'bar', null, 0, 'bar', true ] },
+		{ test: [ 'bar', '', 2, false ], expected: [ 'bar', null, 2, 'bar', false ] },
+		{ test: [ 'fooBar', 'http://fooBar', 0, false ], expected: [ 'fooBar', 'http://fooBar', 0, '<a href=\"http://fooBar\" class=\"new\">fooBar</a>', false ] },
+		{ test: [ 'fooBar', 'http://fooBar', 0, true ], expected: [ 'fooBar', 'http://fooBar', 0, '<a href=\"http://fooBar\" class=\"\">fooBar</a>', true ] }
 	];
 
 	/**
@@ -53,7 +56,7 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getName', 4, function ( assert ) {
+	QUnit.test( 'getName', 7, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -68,7 +71,7 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getUri', 4, function ( assert ) {
+	QUnit.test( 'getUri', 7, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -83,7 +86,7 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getNamespace', 4, function ( assert ) {
+	QUnit.test( 'getNamespace', 7, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -112,11 +115,13 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'isKnown', 1, function ( assert ) {
+	QUnit.test( 'isKnown', 7, function ( assert ) {
+		var result;
 
-		var wikiPage = new smw.dataItem.wikiPage( 'File:foo', 'bar' );
-
-		assert.assertTrue( wikiPage.isKnown(), pass + 'the page is known' );
+		$.map( testCases, function ( testCase ) {
+			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2], testCase.test[3] );
+			assert.equal( result.isKnown(), testCase.expected[4] , pass + 'returned ' + testCase.expected[4]  );
+		} );
 
 	} );
 
@@ -125,7 +130,7 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getHtml', 8, function ( assert ) {
+	QUnit.test( 'getHtml', 14, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
@@ -134,7 +139,7 @@
 		} );
 
 		$.map( testCases, function ( testCase ) {
-			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2] );
+			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2], testCase.test[3] );
 			assert.equal( result.getHtml( true ), testCase.expected[3] , pass + 'returned ' + testCase.expected[3]  );
 		} );
 

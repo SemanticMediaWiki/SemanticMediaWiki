@@ -23,13 +23,32 @@
 	 * @since: 1.9
 	 */
 	QUnit.test( 'instance', 2, function ( assert ) {
-		var result = ''
+		var result;
 
 		result = new smw.api();
 		assert.ok( result instanceof Object, pass + 'the api instance was accessible' );
 
 		result = new smw.api.query();
 		assert.ok( result instanceof Object, pass + 'the api.query instance was accessible' );
+
+	} );
+
+	/**
+	 * Test toString sanity
+	 *
+	 * @since: 1.9
+	 */
+	QUnit.test( 'toString sanity test', 3, function ( assert ) {
+		var result;
+
+		result = new smw.api.query( '', '' ,'' ).toString();
+		assert.equal( result, '', pass + 'returned an empty string' );
+
+		result = new smw.api.query( [], [] ,[] ).toString();
+		assert.equal( result, '', pass + 'returned an empty string' );
+
+		result = new smw.api.query( {}, {} ,{} ).toString();
+		assert.equal( result, '', pass + 'returned an empty string' );
 
 	} );
 

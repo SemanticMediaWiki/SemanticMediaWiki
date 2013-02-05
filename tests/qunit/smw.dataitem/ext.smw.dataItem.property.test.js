@@ -48,10 +48,10 @@
 	QUnit.test( 'getHtml', 2, function ( assert ) {
 
 		var result = new smw.dataItem.property( 'Has type' );
+		var href = mw.util.wikiGetlink( 'Property:');
 		assert.equal( result.getHtml(), 'Has type', pass + 'a text label was returned' );
-		assert.equal( result.getHtml( true ), '<a href=\"/mw/index.php/Property:Has_type\">Has type</a>', pass + 'a href link was returned' );
+		assert.equal( result.getHtml( true ), '<a href=\"' + href + 'Has_type\">Has type</a>', pass + 'a href link was returned' );
 
 	} );
-
 
 }( jQuery, mediaWiki, semanticMediaWiki ) );

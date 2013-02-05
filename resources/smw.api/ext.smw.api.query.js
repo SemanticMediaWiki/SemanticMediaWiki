@@ -80,26 +80,27 @@
 		 * @return {string}
 		 */
 		toString: function() {
+
 			var printouts = '';
-			if ( this.printouts !== '' ){
+			if ( this.printouts !== null ){
 				$.each( this.printouts, function( key, value ) {
 					printouts += '|' + value;
 				} );
 			}
 
 			var parameters = '';
-			if ( this.parameters !== '' ){
+			if ( this.parameters !== null ){
 				$.each( this.parameters, function( key, value ) {
 					parameters += '|' + key + '=' + value;
 				} );
 			}
 
 			var conditions = '';
-			if ( typeof this.conditions === 'object' ) {
+			if ( this.conditions !== null && typeof this.conditions === 'object' ){
 				$.each( this.conditions, function( key, value ) {
 					conditions += value;
 				} );
-			} else {
+			} else if ( this.conditions !== null ) {
 				conditions += this.conditions;
 			}
 
