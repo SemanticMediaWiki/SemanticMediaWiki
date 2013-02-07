@@ -311,6 +311,7 @@ $specialPageAliases['id'] = array(
 	'URIResolver' => array( 'PenguraiURI' ),
 	'UnusedProperties' => array( 'PropertiTakDigunakan' ),
 	'WantedProperties' => array( 'PropertiDiinginkan' ),
+	'QueryCreator' => array( 'PembuatKueri' ),
 );
 
 /** Italian (italiano) */
@@ -466,7 +467,7 @@ $specialPageAliases['mt'] = array(
 	'Browse' => array( 'Esplora' ),
 );
 
-/** Norwegian Bokmål (norsk (bokmål)‎) */
+/** Norwegian Bokmål (norsk bokmål) */
 $specialPageAliases['nb'] = array(
 	'Ask' => array( 'Spør' ),
 	'Browse' => array( 'Se_gjennom' ),
