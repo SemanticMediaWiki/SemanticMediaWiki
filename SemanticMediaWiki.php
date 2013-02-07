@@ -54,9 +54,9 @@ $wgExtensionCredits['semantic'][] = array(
 	'version' => SMW_VERSION,
 	'author' => array(
 		'[http://korrekt.org Markus Krötzsch]',
-		'[http://simia.net Denny Vrandecic]',
 		'[https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]',
-		'...'
+		'James Hong Kong',
+		'[https://semantic-mediawiki.org/wiki/Contributors ...]'
 		),
 	'url' => 'https://semantic-mediawiki.org',
 	'descriptionmsg' => 'smw-desc'
