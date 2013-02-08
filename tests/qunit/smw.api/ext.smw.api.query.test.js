@@ -38,17 +38,44 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'toString sanity test', 3, function ( assert ) {
+	QUnit.test( 'toString sanity test', 10, function ( assert ) {
 		var result;
 
-		result = new smw.api.query( '', '' ,'' ).toString();
-		assert.equal( result, '', pass + 'returned an empty string' );
+		raises( function() {
+			new smw.api.query( '', '' ,'' ).toString();
+		}, pass + 'an error was raised due to missing conditions' );
 
-		result = new smw.api.query( [], [] ,[] ).toString();
-		assert.equal( result, '', pass + 'returned an empty string' );
+		raises( function() {
+			new smw.api.query( [], {} ,'' ).toString();
+		}, pass + 'an error was raised due to missing conditions' );
 
-		result = new smw.api.query( {}, {} ,{} ).toString();
-		assert.equal( result, '', pass + 'returned an empty string' );
+		raises( function() {
+			new smw.api.query( [], [] , '[[Modification date::+]]' ).toString();
+		}, pass + 'an error was raised due to parameters being a non object' );
+
+		raises( function() {
+			new smw.api.query( '', [] , '[[Modification date::+]]' ).toString();
+		}, pass + 'an error was raised due to parameters being a non object' );
+
+		raises( function() {
+			new smw.api.query( '?Modification date', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
+		}, pass + 'an error was raised due to printouts weren\'t empty at first, contained values but those weren\'t of type array' );
+
+		raises( function() {
+			new smw.api.query( ['?Modification date'], ['limit'], '[[Modification date::+]]' ).toString();
+		}, pass + 'an error was raised due to parameters weren\'t empty at first, contained values but those weren\'t of type object' );
+
+		result = new smw.api.query( '', '' , ['[[Modification date::+]]'] ).toString();
+		assert.equal( result, '[[Modification date::+]]', pass + '.toString() returned a string' );
+
+		result = new smw.api.query( [], {} , ['[[Modification date::+]]'] ).toString();
+		assert.equal( result, '[[Modification date::+]]', pass + '.toString() returned a string' );
+
+		result = new smw.api.query( '', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
+		assert.equal( result, '[[Modification date::+]]|limit=10|offset=0', pass + '.toString() returned a string' );
+
+		result = new smw.api.query( ['?Modification date'], {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
+		assert.equal( result, '[[Modification date::+]]|?Modification date|limit=10|offset=0', pass + '.toString() returned a string' );
 
 	} );
 
@@ -57,7 +84,7 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'toString', 4, function ( assert ) {
+	QUnit.test( 'toString Ajax response test', 4, function ( assert ) {
 
 		var smwApi = new smw.api();
 		var queryObject = smwApi.parse( jsonString );
@@ -66,7 +93,6 @@
 
 		assert.ok( $.type( query.toString() ) === 'string', pass + 'the query is a string' );
 		assert.ok( $.type( query.getQueryString() ) === 'string', pass + 'the function alias returned a string' );
-
 
 		// Ajax
 		stop();
