@@ -383,4 +383,29 @@ final class SMWHooks {
 
 		return true;
 	}
+
+	/**
+	 * Hook: ResourceLoaderGetConfigVars called right before
+	 * ResourceLoaderStartUpModule::getConfig returns
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
+	 *
+	 * @since  1.9
+	 *
+	 * @param &$vars Array of variables to be added into the output of the startup module.
+	 *
+	 * @return true
+	 */
+	public static function onResourceLoaderGetConfigVars( &$vars ) {
+
+		$vars['smw'] = array(
+			'version' => SMW_VERSION,
+			'options' => array(
+				'QMaxLimit' => $GLOBALS['smwgQMaxLimit'],
+				'QMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
+			)
+		);
+
+		return true;
+	}
 }

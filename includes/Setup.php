@@ -74,6 +74,9 @@ function smwfRegisterHooks() {
 	// User preference
 	$wgHooks['GetPreferences'][] = 'SMWHooks::onGetPreferences';
 
+	// ResourceLoader
+	$wgHooks['ResourceLoaderGetConfigVars'][] = 'SMWHooks::onResourceLoaderGetConfigVars';
+
 	if ( $GLOBALS['smwgToolboxBrowseLink'] ) {
 		$wgHooks['SkinTemplateToolboxEnd'][] = 'SMWHooks::showBrowseLink';
 	}
