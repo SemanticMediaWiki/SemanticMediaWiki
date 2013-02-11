@@ -36,6 +36,10 @@ use SMW\SQLStore\PropertyStatisticsTable;
 class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 
 	public function testDeleteAll() {
+		if ( !( smwfGetStore() instanceof \SMWSQLStore3 ) ) {
+			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
+		}
+
 		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
 
 		$this->assertTrue( $statsTable->deleteAll() !== false );
@@ -84,6 +88,10 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	 * @param int $usageCount
 	 */
 	public function testInsertUsageCount( $propId, $usageCount ) {
+		if ( !( smwfGetStore() instanceof \SMWSQLStore3 ) ) {
+			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
+		}
+
 		$table = $this->getTable();
 
 		$this->assertTrue( $table->insertUsageCount( $propId, $usageCount ) );
@@ -104,6 +112,10 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	}
 
 	public function testAddToUsageCounts() {
+		if ( !( smwfGetStore() instanceof \SMWSQLStore3 ) ) {
+			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
+		}
+
 		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
 		$this->assertTrue( $statsTable->deleteAll() !== false );
 
