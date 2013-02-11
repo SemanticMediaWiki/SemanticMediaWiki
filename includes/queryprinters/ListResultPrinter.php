@@ -108,11 +108,15 @@ class ListResultPrinter extends ResultPrinter {
 			// Allow "_" for encoding spaces, as documented
 			$listsep = str_replace( '_', ' ', $this->params['sep'] );
 			$finallistsep = $listsep;
+
 			if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ){
 				// Make default list ", , , and "
 				$listsep = ', ';
 				$finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
 			}
+		} else {
+			$listsep = $this->params['sep'];
+			$finallistsep = $listsep;
 		}
 
 		// Initialise more values
