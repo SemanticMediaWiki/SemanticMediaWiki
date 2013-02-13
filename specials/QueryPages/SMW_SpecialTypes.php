@@ -65,9 +65,14 @@ class SMWSpecialTypes extends SpecialPage {
 		$until = $wgRequest->getVal( 'until' );
 		$typeValue = SMWDataValueFactory::newTypeIDValue( '__typ', $typeLabel );
 
+		if ( !$typeValue->isValid() ) {
+			return $this->msg( 'smw-special-types-no-such-type' )->escaped();
+		}
+
 		$store = smwfGetStore();
 		$options = SMWPageLister::getRequestOptions( $smwgTypePagingLimit, $from, $until );
 		$diWikiPages = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typeValue->getDataItem(), $options );
+
 		if ( !$options->ascending ) {
 			$diWikiPages = array_reverse( $diWikiPages );
 		}
