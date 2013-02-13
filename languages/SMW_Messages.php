@@ -2987,6 +2987,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_purge' => 'Neu laden',
 	'types' => 'Datentypen',
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden:',
+	'smw-special-types-no-such-type' => 'Der angegebene Datentyp ist nicht vorhanden',
 	'semanticstatistics' => 'Statistik zu semantischen Daten',
 	'smw_semstats_text' => "In diesem Wiki {{PLURAL:$1|wurde '''1''' Wert|wurden '''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]] eingegeben. '''$3''' {{PLURAL:$3|Attribut hat|Attribute haben}} eine eigene Seite und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.
 
@@ -4908,6 +4909,7 @@ $messages['fr'] = array(
 	'smw_purge' => 'Réactualiser',
 	'types' => 'Types de données',
 	'smw_types_docu' => 'Ceci est une liste de tous les types de données qui peuvent être assignés aux propriétés.',
+	'smw-special-types-no-such-type' => 'Le type de données spécifié n’existe pas.',
 	'semanticstatistics' => 'Statistiques sémantiques',
 	'smw_semstats_text' => "Ce wiki contient '''$1''' valeur{{PLURAL:$1||s}} de propriété pour un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriété différente|propriétés différentes}}]].
 '''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci.
