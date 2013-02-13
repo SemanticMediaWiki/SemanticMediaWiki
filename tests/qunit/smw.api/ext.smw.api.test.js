@@ -33,7 +33,7 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'fetch', 4, function ( assert ) {
+	QUnit.test( 'fetch()', 4, function ( assert ) {
 
 		var smwApi = new smw.api();
 
@@ -53,13 +53,63 @@
 
 	} );
 
-
 	/**
-	 * Test fetch
+	 * Test caching
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'comparison $.ajax vs. smw.Api.parse()', 2, function ( assert ) {
+	QUnit.test( 'fetch() cache test', 4, function ( assert ) {
+
+		var smwApi = new smw.api();
+
+		// Ajax
+		var queryString = '[[Modification date::+]]|?Modification date|?Modification date|?Modification date|limit=100';
+
+		stop();
+		smwApi.fetch( queryString )
+		.done( function ( results ) {
+			assert.equal( results.isCached, false , pass + ' caching is set "undefined" and results are not cached' );
+			start();
+		} );
+
+		stop();
+		smwApi.fetch( queryString, false )
+		.done( function ( results ) {
+			assert.equal( results.isCached , false , pass + ' caching is set "false" and results are not cached' );
+			start();
+		} );
+
+		// Make sure the cache is initialized otherwise the asserts will fail
+		// for the first test run
+		stop();
+		smwApi.fetch( queryString, true )
+		.done( function ( results ) {
+
+			stop();
+			smwApi.fetch( queryString, 60 * 1000 )
+			.done( function ( results ) {
+				assert.equal( results.isCached , true , pass + ' caching is set to "60 * 1000" and results are cached' );
+				start();
+			} );
+
+			stop();
+			smwApi.fetch( queryString, true )
+			.done( function ( results ) {
+				assert.equal( results.isCached , true , pass + ' caching is set "true" and results are cached' );
+				start();
+			} );
+
+			start();
+		} );
+
+	} );
+
+	/**
+	 * Test fetch vs. a normal $.ajax call
+	 *
+	 * @since: 1.9
+	 */
+	QUnit.test( 'fetch() vs. $.ajax', 3, function ( assert ) {
 
 		var smwApi = new smw.api();
 		var startDate;
@@ -88,7 +138,14 @@
 		stop();
 		smwApi.fetch( queryString )
 		.done( function ( results ) {
-			assert.ok( results, 'Fetch ' + results.query.meta.count + ' items using smw.Api.parse() which took: ' + ( new Date().getTime() - startDate.getTime() ) + ' ms' );
+			assert.ok( results, 'Fetch ' + results.query.meta.count + ' items using smw.Api.fetch() which took: ' + ( new Date().getTime() - startDate.getTime() ) + ' ms' );
+			start();
+		} );
+
+		stop();
+		smwApi.fetch( queryString, true )
+		.done( function ( results ) {
+			assert.ok( results, 'Fetch ' + results.query.meta.count + ' items using smw.Api.fetch() which were cached and took: ' + ( new Date().getTime() - startDate.getTime() ) + ' ms' );
 			start();
 		} );
 
