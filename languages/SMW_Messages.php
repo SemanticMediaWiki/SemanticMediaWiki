@@ -108,7 +108,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
 	'smw_iq_moreresults' => '… further results',
 
-	// Messages and strings for basic datatype processing
+	// Messages and strings for basic data type processing
 	'smw_parseerror'    => 'The given value was not understood.', // generic error, "something" went wrong
 	'smw_decseparator'  => '.',
 	'smw_kiloseparator' => ',',
@@ -205,12 +205,13 @@ Generates browsable RDF.',
 
 	// Messages for (data)Types Special
 	'types'          => 'Types',
-	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to properties.',
+	'smw_types_docu' => 'The following is a list of all data types that can be assigned to properties.',
+	'smw-special-types-no-such-type' => 'The specified data type does not exist',
 
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Semantic statistics',
 	'smw_semstats_text'  => 'This wiki contains \'\'\'$1\'\'\' property {{PLURAL:$1|value|values}} for a total of \'\'\'$2\'\'\' [[Special:Properties|{{PLURAL:$2|property|different properties}}]].
-\'\'\'$3\'\'\' {{PLURAL:$3|property has|properties have}} an own page, and the intended datatype is specified for \'\'\'$4\'\'\' of those.
+\'\'\'$3\'\'\' {{PLURAL:$3|property has|properties have}} an own page, and the intended data type is specified for \'\'\'$4\'\'\' of those.
 Some of the existing properties might be [[Special:UnusedProperties|unused properties]].
 Properties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].',
 
@@ -662,6 +663,7 @@ This is the label of a tab of an action item for the content area.',
 
 {{Identical|Type}}',
 	'smw_types_docu' => 'This is the introductory message at the top of [[Special:Types]].',
+	'smw-special-types-no-such-type' => 'Error message shown on [[Special:Types]] when specifying an invalid data type.',
 	'semanticstatistics' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SemanticStatistics]].',
 	'smw_semstats_text' => 'This it the contents of [[Special:SemanticStatistics]]. Parameters:
 * $1 to $4 hold numerical values.',
