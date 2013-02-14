@@ -22,13 +22,8 @@
 	 */
 	smw.Api = function() {};
 
-	/**
-	 * Public methods
-	 *
-	 * @since  1.9
-	 *
-	 * @type object
-	 */
+	/* Public methods */
+
 	smw.Api.prototype = {
 
 		/**
@@ -80,14 +75,34 @@
 		 * @since 1.9
 		 *
 		 * @param {string} queryString
+		 * @param {boolean|number} useCache
 		 *
 		 * @return {jQuery.Promise}
 		 */
-		fetch: function( queryString ){
-			var self = this;
+		fetch: function( queryString, useCache ){
+			var self = this,
+				apiDeferred = $.Deferred();
 
 			if ( !queryString || typeof queryString !== 'string' ) {
-				$.error( 'Invalid query string: ' + queryString );
+				throw new Error( 'Invalid query string: ' + queryString );
+			}
+
+			// Look for a cache object otherwise do an Ajax call
+			if ( useCache ) {
+
+				// Use a hash key to compare queries and use it as identifier for
+				// stored resultObjects, each change in the queryString will result
+				// in another hash key which will ensure only objects are stored
+				// with this key can be reused
+				var hash = md5( queryString );
+
+				var resultObject = $.jStorage.get( hash );
+				if ( resultObject !== null ) {
+					var results = self.parse( resultObject );
+					results.isCached = true;
+					apiDeferred.resolve( results );
+					return apiDeferred.promise();
+				}
 			}
 
 			return $.ajax( {
@@ -99,7 +114,16 @@
 					'query' : queryString
 					},
 				converters: { 'text json': function ( data ) {
-					return self.parse( data );
+					// Store only the string as we want to return a typed object
+					// If useCache is not a number use 15 min as default ttl
+					if ( useCache ){
+						$.jStorage.set( hash, data, {
+							TTL: $.type( useCache ) === 'number' ? useCache : 900000
+						} );
+					}
+					var results = self.parse( data );
+					results.isCached = false;
+					return results;
 				} }
 			} );
 		}

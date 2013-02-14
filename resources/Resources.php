@@ -42,10 +42,22 @@ return array(
 			'resources/ext.smw.js'
 		)
 	),
+
 	// Common styles independent from JavaScript
 	'ext.smw.style' => $moduleTemplate + array(
 		'styles' => 'resources/ext.smw.core.css',
 		'position' => 'top'
+	),
+
+	// jStorage was added in MW 1.20
+	'ext.jquery.jStorage' => $moduleTemplate + array(
+		'scripts' => 'resources/jquery/jquery.jstorage.js',
+		'dependencies' => 'jquery.json',
+	),
+
+	// md5 hash key generator
+	'ext.jquery.md5' => $moduleTemplate + array(
+		'scripts' => 'resources/jquery/jquery.md5.js'
 	),
 
 	// dataItem representation
@@ -70,13 +82,18 @@ return array(
 			'resources/smw.api/ext.smw.api.js',
 			'resources/smw.api/ext.smw.api.query.js',
 		),
-		'dependencies' => 'ext.smw.dataItem'
+		'dependencies' => array(
+			'ext.smw.dataItem',
+			'ext.jquery.jStorage',
+			'ext.jquery.md5'
+		)
 	),
 
-	//
+	// This one is obsolete since SMW_QueryUI.php isn't officially supported
 	'ext.smw.query.ui' => $moduleTemplate + array(
 		'styles' => 'resources/ext.smw.query.ui.css'
 	),
+
 	// Tooltip qtip2 resources
 	'ext.jquery.qtip' => $moduleTemplate + array(
 		'scripts' => 'resources/jquery/jquery.qtip.js',
