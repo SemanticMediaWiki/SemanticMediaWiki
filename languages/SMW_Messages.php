@@ -680,8 +680,10 @@ This message should be the URL of the semantic query documentation for that lang
 
 The SMW Project welcomes documentation translators! Please contact Markus Krötzsch (http://semantic-mediawiki.org/wiki/Markus) for getting a login at semantic-mediawiki.org if you wish to create SMW handbooks in another language.",
 	'smw_ask_sortby' => 'This is the text describing the textbox on [[Special:Ask]] available for optionally entering an printout statement for a query.',
-	'smw_ask_ascorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.',
-	'smw_ask_descorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.',
+	'smw_ask_ascorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.
+{{Identical|Ascending}}',
+	'smw_ask_descorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.
+{{Identical|Descending}}',
 	'smw_ask_submit' => 'This is the name of the submit button on [[Special:Ask]] to start the semantic search.
 
 {{Identical|Find results}}',
@@ -743,8 +745,10 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw_qui_invalidformat' => 'This is an error/warning message on [[Special:QueryCreatory]]. Parameters:
 * $1 holds the name of the result format.',
 	'smw_qui_nosort' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user does not want any sorting to be done by the given property.',
-	'smw_qui_ascorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in ascending order by the given property.',
-	'smw_qui_descorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in descending order by the given property.',
+	'smw_qui_ascorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in ascending order by the given property.
+{{Identical|Ascending}}',
+	'smw_qui_descorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in descending order by the given property.
+{{Identical|Descending}}',
 	'smw_qui_randorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in random order by the given property.',
 	'smw_qui_addnprop' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add another property to a query when clicked.',
 	'smw_qui_delete' => 'This is the text of the action link on [[Special:QueryCreator]] which allows to remove the respective query option when clicked.
@@ -918,7 +922,8 @@ See also:
 	'smw-ui-tooltip-title-warning' => 'A label that is displayed on the info tooltip.
 {{Identical|Error}}',
 	'smw-ui-tooltip-title-parameter' => 'A label that is displayed on the info tooltip.',
-	'smw-ui-tooltip-title-event' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-event' => 'A label that is displayed on the info tooltip.
+{{Identical|Event}}',
 	'smw-ui-tooltip-title-note' => 'A label that is displayed on the info tooltip.',
 	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
@@ -5407,6 +5412,7 @@ Xera un RDF que se pode navegar.',
 	'smw_purge' => 'Refrescar',
 	'types' => 'Tipos',
 	'smw_types_docu' => 'O que segue é unha lista de todos os tipos de datos que poden ser asignados ás propiedades.',
+	'smw-special-types-no-such-type' => 'O tipo de datos especificado non existe',
 	'semanticstatistics' => 'Estatísticas semánticas',
 	'smw_semstats_text' => "Este wiki contén '''$1''' {{PLURAL:$1|valor|valores}} de propiedade, dun total {{PLURAL:$2|'''dunha'''|de '''$2'''}} [[Special:Properties|{{PLURAL:$2|propiedade|propiedades diferentes}}]].
 '''$3''' {{PLURAL:$3|propiedade ten|propiedades teñen}} unha páxina propia e o tipo de datos desexado está especificado para '''$4''' de elas.
@@ -8527,6 +8533,7 @@ $messages['ko'] = array(
 	'smw_purge' => '새로 고침',
 	'types' => '유형 목록',
 	'smw_types_docu' => '다음은 속성에 할당할 수 있는 모든 데이터 유형의 목록입니다.',
+	'smw-special-types-no-such-type' => '지정한 데이터 유형이 존재하지 않습니다',
 	'semanticstatistics' => '시맨틱 통계',
 	'ask' => '시맨틱 찾기',
 	'smw_ask_sortby' => '열을 기준으로 정렬 (선택 사항)',
@@ -9369,6 +9376,7 @@ $messages['mk'] = array(
 	'smw_purge' => 'Превчитај',
 	'types' => 'Типови',
 	'smw_types_docu' => 'Ова е список на сите типови на податоци кои можат да се назначуваат на својства.',
+	'smw-special-types-no-such-type' => 'Назначениот податочен тип не постои',
 	'semanticstatistics' => 'Семантички статистики',
 	'smw_semstats_text' => "Ова вики содржи '''$1''' {{PLURAL:$1|својствена вредност|својствени вредности}} од вкупно '''$2''' [[Special:Properties|{{PLURAL:$2|својство|различни својства}}]].
 '''$3''' {{PLURAL:$3|својство има|својства имаат}} своја страница, а предвидениот тип на податоци е назначен за '''$4''' од нив.
