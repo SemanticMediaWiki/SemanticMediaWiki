@@ -480,7 +480,8 @@ $messages['qqq'] = array(
 	'smw_printername_debug' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Debug_format Debug].',
 	'smw_printername_embedded' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Embedded_format Embedded].',
 	'smw_printername_json' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:JSON_format JSON].',
-	'smw_printername_list' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:List_format List].',
+	'smw_printername_list' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:List_format List].
+{{Identical|List}}',
 	'smw_printername_ol' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ol_format Enumeration (numbered list)].',
 	'smw_printername_ul' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ul_format Itemization (bulleted list)].',
 	'smw_printername_table' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Table_format Table].
