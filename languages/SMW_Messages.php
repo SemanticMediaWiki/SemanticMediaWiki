@@ -896,9 +896,9 @@ See also:
 	'smw_smwadmin_questions' => 'This text on [[Special:SMWAdmin]] describes a resource for help.
 
 {{doc-important|Do not alter or translate link targets!}}',
-	'smw_adminlinks_datastructure' => 'This is a section header on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
-	'smw_adminlinks_displayingdata' => 'This is a section header on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
-	'smw_adminlinks_inlinequerieshelp' => 'This is the link text for a link on [[Special:AdminLinks]] which is needed for the integration of the [https://www.mediawiki.org/wiki/Extension:Admin_Links Admin Links extension] into this extension.',
+	'smw_adminlinks_datastructure' => 'This is a section header on [[Special:AdminLinks]] which is needed for the integration of the [[mw:Extension:Admin_Links|Admin Links extension]] into this extension.',
+	'smw_adminlinks_displayingdata' => 'This is a section header on [[Special:AdminLinks]] which is needed for the integration of the [[mw:Extension:Admin_Links|Admin Links extension]] into this extension.',
+	'smw_adminlinks_inlinequerieshelp' => 'This is the link text for a link on [[Special:AdminLinks]] which is needed for the integration of the [[mw:Extension:Admin_Links|Admin Links extension]] into this extension.',
 	'smw-createproperty-isproperty' => 'This an information message at the top on a page in namespace "Property". Parameters:
 * $1 holds the name of the data type which was assigned to the respective property.',
 	'smw-createproperty-allowedvals' => 'This an information message at the top on a page in namespace "Property" which gets inserted in case only certain property values are [http://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed to be used] for the respective property.',
@@ -8503,6 +8503,7 @@ $messages['ko'] = array(
 	'smw_nodisjunctions' => '쿼리의 분리사는 이 위키에서 지원하지 않아 쿼리의 부분을 없앴습니다. ($1)',
 	'smw_querytoolarge' => '쿼리의 길이나 깊이가 위키의 제한 때문에 다음 쿼리 조건은 고려하지 않았습니다: $1',
 	'smw_notemplategiven' => '작동할 이 쿼리 형식에 "틀" 변수에 대한 값을 제공하세요.',
+	'smw_db_sparqlqueryproblem' => '쿼리 결과는 SPARQL 데이터베이스에서 가져올 수 없습니다. 이 오류는 일시적이거나 데이터베이스 소프트웨어의 버그일 수 있습니다.',
 	'smw_type_header' => '"$1" 유형의 속성',
 	'smw_typearticlecount' => '이 유형을 사용하여 {{PLURAL:$1|속성}} $1개를 보여줍니다.',
 	'smw_attribute_header' => '"$1" 유형을 사용한 문서',
@@ -8517,6 +8518,9 @@ $messages['ko'] = array(
 문서를 내보내려면 아래 텍스트 상자에 줄마다 제목 하나를 입력하세요.',
 	'smw_exportrdf_recursive' => '모든 관련된 문서를 재귀적으로 내보냅니다.
 결과가 커질 수 있음을 참고하세요!',
+	'smw_exportrdf_backlinks' => '또한 내보낸 문서를 참고하는 모든 문서를 내보냅니다.
+찾아볼 수 있는 RDF를 생성합니다.',
+	'smw_exportrdf_lastdate' => '지정한 시간 이후에 바뀌지 않은 문서는 내보내지 않습니다.',
 	'smw_exportrdf_submit' => '내보내기',
 	'uriresolver' => 'URI해결',
 	'properties' => '속성 목록',
