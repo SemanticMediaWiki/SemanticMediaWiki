@@ -6462,6 +6462,7 @@ Płodźi přepytujomny RDF.',
 	'smw_purge' => 'Aktualizować',
 	'types' => 'Typy',
 	'smw_types_docu' => 'Deleka je lisćina wšěch datowych typow, kotrež dadźa so kajkosćam připokazać.',
+	'smw-special-types-no-such-type' => 'Podaty datowy typ njeeksistuje',
 	'semanticstatistics' => 'Semantiska statistika',
 	'smw_semstats_text' => "Tutón wiki wobsahuje '''$1''' {{PLURAL:$1|kajkostnu hódnotu|kajkostnej hódnoće|kajkostne hódnoty|kajkostnych hódnotow}} za dohromady '''$2''' [[Special:Properties|{{PLURAL:$2|kajkosć|rozdźělnej kajkosći|rozdźělne kajkosće|rozdźělnych kajkosćow}}]].
 '''$3''' {{PLURAL:$3|kajkosć ma|kajkosći matej|kajkosće maja|kajkosćow ma}} swójsku stronu, a požadany datowy typ je za '''$4''' z nich podaty.
