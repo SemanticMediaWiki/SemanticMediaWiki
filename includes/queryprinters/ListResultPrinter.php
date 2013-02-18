@@ -294,10 +294,15 @@ END;
 						$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null:$this->mLinker ) ) . ' ';
 					}
 				}
-				// Display the text with tags for all non-list type outputs but
-				// for others remove tags to ensure that lists are not distorted by
-				// unresolved in-text tags
-				$result .= $options['plainlist'] ? $text : Sanitizer::stripAllTags( $text );
+				// Display the text with tags for all non-list type outputs and
+				// where the property is of type _qty (to ensure the highlighter
+				// is displayed) but for others remove tags so that lists are
+				// not distorted by unresolved in-text tags
+				if ( $dataValue->getTypeID() === '_qty' || $options['plainlist'] ) {
+					$result .=  $text;
+				} else {
+					$result .= Sanitizer::stripAllTags( $text );
+				}
 			}
 
 			$first_col = false;
