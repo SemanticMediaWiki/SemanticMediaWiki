@@ -78,7 +78,7 @@ class SMWSQLStore3SetupHandlers {
 				$idType = $dbtypes['p'] . ' NOT NULL PRIMARY KEY';
 				break;
 			default:
-				$idType = $dbtypes['p'] . ' NOT NULL PRIMARY KEY AUTO_INCREMENT';
+				$idType = $dbtypes['p'] . ' NOT NULL KEY AUTO_INCREMENT';
 				break;
 		}
 
