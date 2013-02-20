@@ -76,14 +76,21 @@ return array(
 		)
 	),
 
+	// Query
+	'ext.smw.query' => $moduleTemplate + array(
+		'scripts' => 'resources/smw.api/ext.smw.query.js',
+		'dependencies' => array(
+			'ext.smw',
+			'mediawiki.util'
+		)
+	),
+
 	// API
 	'ext.smw.api' => $moduleTemplate + array(
-		'scripts' => array(
-			'resources/smw.api/ext.smw.api.js',
-			'resources/smw.api/ext.smw.api.query.js',
-		),
+		'scripts' => 'resources/smw.api/ext.smw.api.js',
 		'dependencies' => array(
 			'ext.smw.dataItem',
+			'ext.smw.query',
 			'ext.jquery.jStorage',
 			'ext.jquery.md5'
 		)

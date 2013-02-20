@@ -325,9 +325,9 @@ final class SMWHooks {
 				'tests/qunit/smw.dataitem/ext.smw.dataItem.time.test.js',
 				'tests/qunit/smw.dataitem/ext.smw.dataItem.property.test.js',
 
-				// Api
+				// Api / Query
 				'tests/qunit/smw.api/ext.smw.api.test.js',
-				'tests/qunit/smw.api/ext.smw.api.query.test.js',
+				'tests/qunit/smw.api/ext.smw.query.test.js',
 			),
 			'dependencies' => array(
 				'ext.smw',

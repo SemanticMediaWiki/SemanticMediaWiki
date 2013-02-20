@@ -12,7 +12,7 @@
 ( function ( $, mw, smw ) {
 	'use strict';
 
-	QUnit.module( 'ext.smw.Api.query', QUnit.newMwEnvironment() );
+	QUnit.module( 'ext.smw.Query', QUnit.newMwEnvironment() );
 	var jsonString = '{\"conditions\":\"[[Modification date::+]]\",\"parameters\":{\"limit\":10,\"offset\":0,\"link\":\"all\",\"headers\":\"show\",\"mainlabel\":\"\",\"intro\":\"\",\"outro\":\"\",\"searchlabel\":\"\\u2026 further results\",\"default\":\"\",\"class\":\"\"},\"printouts\":[\"?Modification date\"]}';
 
 	var pass = 'Passes because ';
@@ -28,7 +28,7 @@
 		result = new smw.api();
 		assert.ok( result instanceof Object, pass + 'the api instance was accessible' );
 
-		result = new smw.api.query();
+		result = new smw.query();
 		assert.ok( result instanceof Object, pass + 'the api.query instance was accessible' );
 
 	} );
@@ -42,39 +42,39 @@
 		var result;
 
 		raises( function() {
-			new smw.api.query( '', '' ,'' ).toString();
+			new smw.query( '', '' ,'' ).toString();
 		}, pass + 'an error was raised due to missing conditions' );
 
 		raises( function() {
-			new smw.api.query( [], {} ,'' ).toString();
+			new smw.query( [], {} ,'' ).toString();
 		}, pass + 'an error was raised due to missing conditions' );
 
 		raises( function() {
-			new smw.api.query( [], [] , '[[Modification date::+]]' ).toString();
+			new smw.query( [], [] , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters being a non object' );
 
 		raises( function() {
-			new smw.api.query( '', [] , '[[Modification date::+]]' ).toString();
+			new smw.query( '', [] , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters being a non object' );
 
 		raises( function() {
-			new smw.api.query( '?Modification date', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
+			new smw.query( '?Modification date', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to printouts weren\'t empty at first, contained values but those weren\'t of type array' );
 
 		raises( function() {
-			new smw.api.query( ['?Modification date'], ['limit'], '[[Modification date::+]]' ).toString();
+			new smw.query( ['?Modification date'], ['limit'], '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters weren\'t empty at first, contained values but those weren\'t of type object' );
 
-		result = new smw.api.query( '', '' , ['[[Modification date::+]]'] ).toString();
+		result = new smw.query( '', '' , ['[[Modification date::+]]'] ).toString();
 		assert.equal( result, '[[Modification date::+]]', pass + '.toString() returned a string' );
 
-		result = new smw.api.query( [], {} , ['[[Modification date::+]]'] ).toString();
+		result = new smw.query( [], {} , ['[[Modification date::+]]'] ).toString();
 		assert.equal( result, '[[Modification date::+]]', pass + '.toString() returned a string' );
 
-		result = new smw.api.query( '', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
+		result = new smw.query( '', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
 		assert.equal( result, '[[Modification date::+]]|limit=10|offset=0', pass + '.toString() returned a string' );
 
-		result = new smw.api.query( ['?Modification date'], {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
+		result = new smw.query( ['?Modification date'], {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
 		assert.equal( result, '[[Modification date::+]]|?Modification date|limit=10|offset=0', pass + '.toString() returned a string' );
 
 	} );
@@ -89,7 +89,7 @@
 		var smwApi = new smw.api();
 		var queryObject = smwApi.parse( jsonString );
 
-		var query = new smw.api.query ( queryObject.printouts, queryObject.parameters, queryObject.conditions );
+		var query = new smw.query ( queryObject.printouts, queryObject.parameters, queryObject.conditions );
 
 		assert.ok( $.type( query.toString() ) === 'string', pass + 'the query is a string' );
 		assert.ok( $.type( query.getQueryString() ) === 'string', pass + 'the function alias returned a string' );
@@ -116,7 +116,7 @@
 		var smwApi = new smw.api();
 		var queryObject = smwApi.parse( jsonString );
 
-		var query = new smw.api.query ( queryObject.printouts, queryObject.parameters, queryObject.conditions );
+		var query = new smw.query ( queryObject.printouts, queryObject.parameters, queryObject.conditions );
 		assert.equal( query.getLimit(), 10, pass + 'the query limit parameter returned 10' );
 
 	} );

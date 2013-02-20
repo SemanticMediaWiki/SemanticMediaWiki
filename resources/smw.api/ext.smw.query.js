@@ -15,13 +15,6 @@
 	'use strict';
 
 	/**
-	 * Inheritance class
-	 *
-	 * @type Object
-	 */
-	smw.Api = smw.Api || {};
-
-	/**
 	 * Query constructor
 	 *
 	 * @since  1.9
@@ -44,7 +37,7 @@
 	 *
 	 * @var Object
 	 */
-	smw.Api.query = function( printouts, parameters, conditions ) {
+	smw.Query = function( printouts, parameters, conditions ) {
 
 		// You need to have some conditions otherwise jump the right light
 		// because a query one can survive without printouts or parameters
@@ -125,6 +118,7 @@
 	fn.getQueryString = fn.toString;
 
 	// Assign methods
-	smw.Api.query.prototype = fn;
+	smw.Query.prototype = fn;
+	smw.query = smw.Query;
 
 } )( jQuery, mediaWiki, semanticMediaWiki );
