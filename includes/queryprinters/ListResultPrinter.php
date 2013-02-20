@@ -115,8 +115,9 @@ class ListResultPrinter extends ResultPrinter {
 				$finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
 			}
 		} else {
-			$listsep = $this->params['sep'];
-			$finallistsep = $listsep;
+			// No default separators for format "template"
+			$listsep = '';
+			$finallistsep = '';
 		}
 
 		// Initialise more values
