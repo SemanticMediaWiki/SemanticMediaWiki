@@ -17,7 +17,7 @@
 abstract class SMWDescription {
 
 	/**
-	 * @var array of SMWPrintRequest
+	 * @var SMWPrintRequest[]
 	 */
 	protected $m_printreqs = array();
 
@@ -34,29 +34,29 @@ abstract class SMWDescription {
 	/**
 	 * Set the array of print requests completely.
 	 *
-	 * @param array of SMWPrintRequest $printrequests
+	 * @param SMWPrintRequest[] $printRequests
 	 */
-	public function setPrintRequests( array $printrequests ) {
-		$this->m_printreqs = $printrequests;
+	public function setPrintRequests( array $printRequests ) {
+		$this->m_printreqs = $printRequests;
 	}
 
 	/**
 	 * Add a single SMWPrintRequest.
 	 *
-	 * @param SMWPrintRequest $printrequest
+	 * @param SMWPrintRequest $printRequest
 	 */
-	public function addPrintRequest( SMWPrintRequest $printrequest ) {
-		$this->m_printreqs[] = $printrequest;
+	public function addPrintRequest( SMWPrintRequest $printRequest ) {
+		$this->m_printreqs[] = $printRequest;
 	}
 
 	/**
 	 * Add a new print request, but at the beginning of the list of requests
 	 * (thus it will be printed first).
 	 *
-	 * @param SMWPrintRequest
+	 * @param SMWPrintRequest $printRequest
 	 */
-	public function prependPrintRequest( SMWPrintRequest $printrequest ) {
-		array_unshift( $this->m_printreqs, $printrequest );
+	public function prependPrintRequest( SMWPrintRequest $printRequest ) {
+		array_unshift( $this->m_printreqs, $printRequest );
 	}
 
 	/**
@@ -72,11 +72,11 @@ abstract class SMWDescription {
 	 * The result should be a plain query string that SMW is able to parse,
 	 * without any kind of HTML escape sequences.
 	 *
-	 * @param boolean $asvalue
+	 * @param boolean $asValue
 	 *
 	 * @return string
 	 */
-	abstract public function getQueryString( $asvalue = false );
+	abstract public function getQueryString( $asValue = false );
 
 	/**
 	 * Return true if the description is required to encompass at most a single
@@ -87,7 +87,7 @@ abstract class SMWDescription {
 	abstract public function isSingleton();
 
 	/**
-	 * Compute the size of the decription. Default is 1.
+	 * Compute the size of the description. Default is 1.
 	 *
 	 * @return integer
 	 */
@@ -96,7 +96,7 @@ abstract class SMWDescription {
 	}
 
 	/**
-	 * Compute the depth of the decription. Default is 0.
+	 * Compute the depth of the description. Default is 0.
 	 *
 	 * @return integer
 	 */
@@ -124,8 +124,8 @@ abstract class SMWDescription {
 	 * reused in multiple places of one or many queries. Make new objects to reflect
 	 * changes!
 	 */
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
-		if ( ( $maxsize < $this->getSize() ) || ( $maxdepth < $this->getDepth() ) ) {
+	public function prune( &$maxsize, &$maxDepth, &$log ) {
+		if ( ( $maxsize < $this->getSize() ) || ( $maxDepth < $this->getDepth() ) ) {
 			$log[] = $this->getQueryString();
 
 			$result = new SMWThingDescription();
@@ -133,8 +133,9 @@ abstract class SMWDescription {
 
 			return $result;
 		} else {
+			// TODO: the below is not doing much?
 			$maxsize = $maxsize - $this->getSize();
-			$maxdepth = $maxdepth - $this->getDepth();
+			$maxDepth = $maxDepth - $this->getDepth();
 
 			return $this;
 		}
@@ -152,8 +153,8 @@ abstract class SMWDescription {
  */
 class SMWThingDescription extends SMWDescription {
 
-	public function getQueryString( $asvalue = false ) {
-		return $asvalue ? '+' : '';
+	public function getQueryString( $asValue = false ) {
+		return $asValue ? '+' : '';
 	}
 
 	public function isSingleton() {
@@ -214,7 +215,7 @@ class SMWClassDescription extends SMWDescription {
 		return $this->m_diWikiPages;
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asValue = false ) {
 		$first = true;
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
 			$wikiValue = SMWDataValueFactory::newDataItemValue( $wikiPage, null );
@@ -228,7 +229,7 @@ class SMWClassDescription extends SMWDescription {
 
 		$result .= ']]';
 
-		if ( $asvalue ) {
+		if ( $asValue ) {
 			return ' <q>' . $result . '</q> ';
 		} else {
 			return $result;
@@ -241,6 +242,7 @@ class SMWClassDescription extends SMWDescription {
 
 	public function getSize() {
 		global $smwgQSubcategoryDepth;
+
 		if ( $smwgQSubcategoryDepth > 0 ) {
 			return 1; // disj. of cats should not cause much effort if we compute cat-hierarchies anyway!
 		} else {
@@ -307,10 +309,10 @@ class SMWConceptDescription extends SMWDescription {
 		return $this->m_concept;
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asValue = false ) {
 		$pageValue = SMWDataValueFactory::newDataItemValue( $this->m_concept, null );
 		$result = '[[' . $pageValue->getPrefixedText() . ']]';
-		if ( $asvalue ) {
+		if ( $asValue ) {
 			return ' <q>' . $result . '</q> ';
 		} else {
 			return $result;
@@ -363,10 +365,12 @@ class SMWNamespaceDescription extends SMWDescription {
 		return $this->m_namespace;
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asValue = false ) {
 		global $wgContLang;
+
 		$prefix = $this->m_namespace == NS_CATEGORY ? ':' : '';
-		if ( $asvalue ) {
+
+		if ( $asValue ) {
 			return ' <q>[[' . $prefix . $wgContLang->getNSText( $this->m_namespace ) . ':+]]</q> ';
 		} else {
 			return '[[' . $prefix . $wgContLang->getNSText( $this->m_namespace ) . ':+]]';
@@ -488,9 +492,12 @@ class SMWValueDescription extends SMWDescription {
  */
 class SMWConjunction extends SMWDescription {
 
+	/**
+	 * @var SMWDescription[]
+	 */
 	protected $m_descriptions;
 
-	public function __construct( $descriptions = array() ) {
+	public function __construct( array $descriptions = array() ) {
 		$this->m_descriptions = $descriptions;
 	}
 
@@ -616,12 +623,21 @@ class SMWConjunction extends SMWDescription {
  * @ingroup SMWQuery
  */
 class SMWDisjunction extends SMWDescription {
+
+	/**
+	 * @var SMWDescription[]
+	 */
 	protected $m_descriptions;
+
+	/**
+	 * @var null|SMWClassDescription
+	 */
 	protected $m_classdesc = null; // contains a single class description if any such disjunct was given;
 	                               // disjunctive classes are aggregated therein
+
 	protected $m_true = false; // used if disjunction is trivially true already
 
-	public function __construct( $descriptions = array() ) {
+	public function __construct( array $descriptions = array() ) {
 		foreach ( $descriptions as $desc ) {
 			$this->addDescription( $desc );
 		}
@@ -663,19 +679,19 @@ class SMWDisjunction extends SMWDescription {
 		$description->setPrintRequests( array() );
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asValue = false ) {
 		if ( $this->m_true ) {
 			return '+';
 		}
 
 		$result = '';
-		$sep = $asvalue ? '||':' OR ';
+		$sep = $asValue ? '||':' OR ';
 
 		foreach ( $this->m_descriptions as $desc ) {
-			$subdesc = $desc->getQueryString( $asvalue );
+			$subdesc = $desc->getQueryString( $asValue );
 
 			if ( $desc instanceof SMWSomeProperty ) { // enclose in <q> for parsing
-				if ( $asvalue ) {
+				if ( $asValue ) {
 					$subdesc = ' <q>[[' . $subdesc . ']]</q> ';
 				} else {
 					$subdesc = ' <q>' . $subdesc . '</q> ';
@@ -684,7 +700,7 @@ class SMWDisjunction extends SMWDescription {
 
 			$result .= ( $result ? $sep:'' ) . $subdesc;
 		}
-		if ( $asvalue ) {
+		if ( $asValue ) {
 			return $result;
 		} else {
 			return ' <q>' . $result . '</q> ';
@@ -780,7 +796,14 @@ class SMWDisjunction extends SMWDescription {
  */
 class SMWSomeProperty extends SMWDescription {
 
+	/**
+	 * @var SMWDescription
+	 */
 	protected $m_description;
+
+	/**
+	 * @var SMWDIProperty
+	 */
 	protected $m_property;
 
 	public function __construct( SMWDIProperty $property, SMWDescription $description ) {
@@ -788,10 +811,16 @@ class SMWSomeProperty extends SMWDescription {
 		$this->m_description = $description;
 	}
 
+	/**
+	 * @return SMWDIProperty
+	 */
 	public function getProperty() {
 		return $this->m_property;
 	}
 
+	/**
+	 * @return SMWDescription
+	 */
 	public function getDescription() {
 		return $this->m_description;
 	}
@@ -803,6 +832,7 @@ class SMWSomeProperty extends SMWDescription {
 
 		while ( ( $propertyname !== '' ) && ( $subdesc instanceof SMWSomeProperty ) ) { // try to use property chain syntax
 			$propertyname = $subdesc->getProperty()->getLabel();
+
 			if ( $propertyname !== '' ) {
 				$propertyChainString .= '.' . $propertyname;
 				$subdesc = $subdesc->getDescription();
