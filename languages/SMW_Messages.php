@@ -495,7 +495,8 @@ $messages['qqq'] = array(
 	'smw_printername_category' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Category_format Category].
 
 {{Identical|Category}}',
-	'validator-type-class-SMWParamSource' => 'This is the description of the "source" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'validator-type-class-SMWParamSource' => 'This is the description of the "source" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].
+{{Identical|Text}}',
 	'smw-paramdesc-limit' => 'This is the description of the "limit" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-offset' => 'This is the description of the "offset" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-headers' => 'This is the description of the "headers" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
