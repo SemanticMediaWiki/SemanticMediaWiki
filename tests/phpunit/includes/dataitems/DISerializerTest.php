@@ -92,4 +92,23 @@ class DISerializerTest extends \MediaWikiTestCase {
 		$this->assertEquals( $queryResultToArray['printrequests'][1], $printrequests[1] );
 
 	}
+
+	/**
+	 * @covers DISerializer::getSerialization
+	 *
+	 * @since  1.9
+	 */
+	public function testGetSerialization( ) {
+
+		// Number
+		$dataItem = new \SMWDINumber( 1001 );
+		$results = DISerializer::getSerialization( $dataItem );
+		$this->assertEquals( $results, 1001 );
+
+		// Quantity
+		// Test the quantity here but after spending hours to figure out
+		// how to mock the $printRequest object which come to no fruitful
+		// success we miss out a test
+	}
+
 }

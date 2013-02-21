@@ -45,7 +45,7 @@ class DISerializer {
 	 *
 	 * @return mixed
 	 */
-	public static function getSerialization( SMWDataItem $dataItem ) {
+	public static function getSerialization( SMWDataItem $dataItem, $printRequest = null ) {
 		switch ( $dataItem->getDIType() ) {
 			case SMWDataItem::TYPE_WIKIPAGE:
 				$title = $dataItem->getTitle();
@@ -57,7 +57,23 @@ class DISerializer {
 				);
 				break;
 			case SMWDataItem::TYPE_NUMBER:
-				$result = $dataItem->getNumber();
+				// dataitems and datavalues
+				// Quantity is a datavalue type that belongs to dataitem
+				// type number which means in order to identify the correct
+				// unit, we have re-factor the corresponding datavalue otherwise
+				// we will not be able to determine the unit
+				// (unit is part of the datavalue object)
+				if ( $printRequest !== null && $printRequest->getTypeID() === '_qty' ) {
+					$diProperty = $printRequest->getData()->getDataItem();
+					$dataValue = \SMWDataValueFactory::newDataItemValue( $dataItem, $diProperty );
+
+					$result = array(
+						'value' => $dataValue->getNumber(),
+						'unit' => $dataValue->getUnit()
+					);
+				} else {
+					$result = $dataItem->getNumber();
+				}
 				break;
 			case SMWDataItem::TYPE_GEO:
 				$result = $dataItem->getCoordinateSet();
@@ -102,15 +118,13 @@ class DISerializer {
 
 				if ( $printRequest->getMode() === SMWPrintRequest::PRINT_THIS ) {
 					$dataItems = $resultAarray->getContent();
-					$result += self::getSerialization( array_shift( $dataItems ) );
-				}
-				else {
+					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
+				} else {
 					$result['printouts'][$printRequest->getLabel()] = array_map(
 						array( __CLASS__, 'getSerialization' ),
-						$resultAarray->getContent()
+						$resultAarray->getContent(), array ( $printRequest )
 					);
 				}
-
 			}
 
 			$results[$diWikiPage->getTitle()->getFullText()] = $result;
