@@ -29,3 +29,5 @@
  */
 
 abstract class SMWResultPrinter extends SMW\ResultPrinter {}
+
+class SMWJSONResultPrinter extends SMWExportPrinter {}

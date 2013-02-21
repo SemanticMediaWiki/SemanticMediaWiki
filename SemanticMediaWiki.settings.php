@@ -353,7 +353,7 @@ $smwgResultFormats = array(
 	'feed'       => 'SMW\FeedResultPrinter',
 	'csv'        => 'SMWCsvResultPrinter',
 	'dsv'        => 'SMWDSVResultPrinter',
-	'json'       => 'SMWJSONResultPrinter',
+	'json'       => 'SMW\JSONResultPrinter',
 	'rdf'        => 'SMWRDFResultPrinter'
 );
 ##
