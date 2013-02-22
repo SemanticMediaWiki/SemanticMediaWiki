@@ -12,7 +12,7 @@
 ( function ( $, mw, smw ) {
 	'use strict';
 
-	QUnit.module( 'ext.smw.dataItem', QUnit.newMwEnvironment() );
+	QUnit.module( 'ext.smw.Data', QUnit.newMwEnvironment() );
 
 	var pass = 'Passes because ';
 	var testString = '{\"query\":{\"result\":{\"printrequests\":[{\"label\":\"\",\"typeid\":\"_wpg\",\"mode\":2},{\"label\":\"Has test date\",\"typeid\":\"_dat\",\"mode\":1},{\"label\":\"Has test page\",\"typeid\":\"_wpg\",\"mode\":1},{\"label\":\"Has test string\",\"typeid\":\"_str\",\"mode\":1},{\"label\":\"Has test text\",\"typeid\":\"_txt\",\"mode\":1},{\"label\":\"Has test url\",\"typeid\":\"_uri\",\"mode\":1}],\"results\":{\"DataitemFactory\\/1\":{\"printouts\":{\"Has test date\":[\"947548800\"],\"Has test page\":[{\"fulltext\":\"File:FooBarfoo.png\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/File:FooBarfoo.png\",\"namespace\":6},{\"fulltext\":\"Foo page\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/Foo_page\",\"namespace\":0}],\"Has test string\":[\"Foobar string\"],\"Has test text\":[\"foo foo string\"],\"Has test url\":[\"http:\\/\\/localhost\\/mw\\/foobarfoo\"]},\"fulltext\":\"DataitemFactory\\/1\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/DataitemFactory\\/1\",\"namespace\":0},\"DataitemFactory\\/2\":{\"printouts\":{\"Has test date\":[\"1010707200\"],\"Has test page\":[{\"fulltext\":\"File:Foo.png\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/File:Foo.png\",\"namespace\":6},{\"fulltext\":\"Bar page\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/Bar_page\",\"namespace\":0}],\"Has test string\":[\"foo string\"],\"Has test text\":[\"fooBar string\"],\"Has test url\":[\"http:\\/\\/localhost\\/mw\\/foo\"]},\"fulltext\":\"DataitemFactory\\/2\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/DataitemFactory\\/2\",\"namespace\":0},\"DataitemFactory\\/3\":{\"printouts\":{\"Has test date\":[\"1010725200\"],\"Has test page\":[{\"fulltext\":\"Foo page\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/Foo_page\",\"namespace\":0},{\"fulltext\":\"File:FooBar.png\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/File:FooBar.png\",\"namespace\":6}],\"Has test string\":[\"bar string\"],\"Has test text\":[\"fooBar foo string\"],\"Has test url\":[\"http:\\/\\/localhost\\/index.php?title=foo\"]},\"fulltext\":\"DataitemFactory\\/3\",\"fullurl\":\"http:\\/\\/localhost\\/mw\\/index.php\\/DataitemFactory\\/3\",\"namespace\":0}},\"meta\":{\"hash\":\"c26caabe31af28817c3f87f26cfd0a3d\",\"count\":3,\"offset\":0}},\"ask\":{\"conditions\":\"[[Has test string::+]]\",\"parameters\":{\"limit\":50,\"offset\":0,\"format\":\"datatables\",\"link\":\"all\",\"headers\":\"show\",\"mainlabel\":\"\",\"intro\":\"\",\"outro\":\"\",\"searchlabel\":\"\\u2026 further results\",\"default\":\"\",\"class\":\"\",\"theme\":\"bootstrap\"},\"printouts\":[\"?Has test date\",\"?Has test page\",\"?Has test string\",\"?Has test text\",\"?Has test url\"]}},\"version\":\"0.1\"}';
@@ -28,7 +28,7 @@
 	 */
 	QUnit.test( 'instance', 1, function ( assert ) {
 
-		var result = new smw.dataItem();
+		var result = new smw.Data();
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem instance was accessible' );
 
 	} );

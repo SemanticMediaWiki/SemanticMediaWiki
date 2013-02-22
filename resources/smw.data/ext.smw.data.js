@@ -17,11 +17,11 @@
 	 *
 	 * @var Object
 	 */
-	smw.dataItem = function() {};
+	smw.Data = function() {};
 
 	/* Public methods */
 
-	smw.dataItem.prototype = {
+	smw.Data.prototype = {
 
 		properties: null,
 
@@ -137,5 +137,8 @@
 			return value;
 		}
 	};
+
+	//Alias
+	smw.data = smw.Data;
 
 } )( jQuery, mediaWiki, semanticMediaWiki );
