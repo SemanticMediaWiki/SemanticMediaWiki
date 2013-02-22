@@ -41,27 +41,27 @@
 	QUnit.test( 'toString sanity test', 10, function ( assert ) {
 		var result;
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.query( '', '' ,'' ).toString();
 		}, pass + 'an error was raised due to missing conditions' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.query( [], {} ,'' ).toString();
 		}, pass + 'an error was raised due to missing conditions' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.query( [], [] , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters being a non object' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.query( '', [] , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters being a non object' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.query( '?Modification date', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to printouts weren\'t empty at first, contained values but those weren\'t of type array' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.query( ['?Modification date'], ['limit'], '[[Modification date::+]]' ).toString();
 		}, pass + 'an error was raised due to parameters weren\'t empty at first, contained values but those weren\'t of type object' );
 
@@ -95,13 +95,13 @@
 		assert.ok( $.type( query.getQueryString() ) === 'string', pass + 'the function alias returned a string' );
 
 		// Ajax
-		stop();
+		QUnit.stop();
 		smwApi.fetch( query.toString() )
 		.done( function ( results ) {
 
 			assert.ok( true, pass + 'the query returned with a positive server response' );
 			assert.ok( results instanceof Object, pass + 'the query returned with a result object' );
-			start();
+			QUnit.start();
 		} );
 
 	} );

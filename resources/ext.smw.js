@@ -5,10 +5,13 @@
  * @licence GNU GPL v3 or later
  * @author Jeroen De Dauw <jeroendedauw at gmail dot com>
  */
+/*global console:true message:true */
 
 // Declare instance
 smw = ( function () {
-  var instance = {};
+	'use strict';
+
+	var instance = {};
 
 	instance.log = function( message ) {
 		if ( typeof mediaWiki === 'undefined' ) {
@@ -41,6 +44,5 @@ smw = ( function () {
 // Assign namespace
 window.smw = window.semanticMediaWiki = smw;
 
-( function( $ ) { $( document ).ready( function() {
-
+( function( $ ) { 'use strict'; $( document ).ready( function() {
 } ); } )( jQuery );

@@ -11,7 +11,6 @@
  * @licence GNU GPL v2 or later
  * @author mwjames
  */
-/*global browser:true window document mediaWiki:true semanticMediaWiki:true*/
 ( function( $, mw, smw ) {
 	'use strict';
 

@@ -1,2 +1,9 @@
 # third-party libs
 resources/jquery/
+
+# Those files need overall re-factoring and qunit tests
+resources/ext.smw.special.ask.js
+resources/ext.smw.special.browse.js
+resources/ext.smw.special.property.js
+resources/ext.smw.util.autocomplete.js
+resources/ext.smw.util.tooltip.js

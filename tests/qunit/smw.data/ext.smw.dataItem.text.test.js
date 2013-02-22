@@ -26,15 +26,15 @@
 		var result = new smw.dataItem.text( 'foo' );
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem.text instance was accessible' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.dataItem.text( {} );
 		}, pass + 'an error was raised due to the wrong type' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.dataItem.text( [] );
 		}, pass + 'an error was raised due to the wrong type' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.dataItem.text( 3 );
 		}, pass + 'an error was raised due to the wrong type' );
 

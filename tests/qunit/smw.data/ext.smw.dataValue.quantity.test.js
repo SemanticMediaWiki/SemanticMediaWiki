@@ -33,7 +33,7 @@
 		var result = new smw.dataValue.quantity( 3 );
 		assert.ok( result instanceof Object, pass + 'the smw.dataValue.quantity instance was accessible' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.dataValue.quantity( 'foo' );
 		}, pass + 'an error was raised due to wrong type' );
 

@@ -9,6 +9,7 @@
  * @licence GNU GPL v2 or later
  * @author mwjames
  */
+/*global md5 */
 ( function( $, mw, smw ) {
 	'use strict';
 

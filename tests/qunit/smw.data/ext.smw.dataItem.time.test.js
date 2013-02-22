@@ -105,7 +105,7 @@
 
 		// Use as helper to fetch language dep. month name
 		var monthNames = [];
-		$.map ( mw.config.get( 'wgMonthNames' ), function( index, value ) {
+		$.map ( mw.config.get( 'wgMonthNames' ), function( index ) {
 			if( index !== '' ){
 				monthNames.push( index );
 			}

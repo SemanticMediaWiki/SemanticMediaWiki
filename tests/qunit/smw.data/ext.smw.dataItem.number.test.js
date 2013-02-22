@@ -20,7 +20,7 @@
 	var testCases = [
 		{ test: [ 1 ], expected: [ 1 ] },
 		{ test: [ 0.0001 ], expected: [ 0.0001 ] },
-		{ test: [ 1000 ], expected: [ 1000 ] },
+		{ test: [ 1000 ], expected: [ 1000 ] }
 	];
 
 	/**
@@ -33,7 +33,7 @@
 		var result = new smw.dataItem.number( 3 );
 		assert.ok( result instanceof Object, pass + 'the smw.dataItem.number instance was accessible' );
 
-		raises( function() {
+		QUnit.raises( function() {
 			new smw.dataItem.number( 'foo' );
 		}, pass + 'an error was raised due to wrong type' );
 

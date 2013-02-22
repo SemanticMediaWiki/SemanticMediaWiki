@@ -14,8 +14,6 @@
 ( function( $, mw, smw ) {
 	'use strict';
 
-	var html = mw.html;
-
 	/**
 	 * Inheritance class
 	 *
@@ -53,7 +51,7 @@
 	 *
 	 */
 	var monthNames = [];
-	$.map ( mw.config.get( 'wgMonthNames' ), function( index, value ) {
+	$.map ( mw.config.get( 'wgMonthNames' ), function( index ) {
 		if( index !== '' ){
 			monthNames.push( index );
 		}
