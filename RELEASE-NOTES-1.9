@@ -11,6 +11,7 @@ production until the actual release.
 * Deleted pre SMW 1.5.1 entry point (includes/SMW_Settings.php), the main entry point is SemanticMediaWiki.php
 * Changed minimum Validator version from 0.5 to 1.0.
 * Restored compatibility with SQLite
+* Support for quantity export via API and JSON format (I17a3e046)
 
 === New features ===
 
@@ -22,7 +23,9 @@ production until the actual release.
 * (Bug 39019) Enable +sep= as multiple values identifier in #subobject
 * (Bug 34477) Display cache information in concept pages
 * (Bug 34172) Add individual CSS class for further result links allowing to add auxiliary information (icon etc.)
-* Improved efficiency of property statistics rebuilding script
+* (I2e509e08) Improved efficiency of property statistics rebuilding script
+* (Bug 43932) Enable html tags support for non-list results in SMW\ListResultPrinter
+* (Bug 44275) Enable .data( 'sortkey' ) support in SMW\ListResultPrinter
 
 === Dropped features ===
 
@@ -33,9 +36,17 @@ production until the actual release.
 * The property statistics rebuilding is no longer done whenever you run update.php.
 * (Bug 42321) Fixed issue frequently causing notices in SQLStore3
 
+== Deprecated classes ==
+
+* SMWListResultPrinter, SMWResultPrinter, SMWSubobject, SMWSet
+* SMWFeedResultPrinter, SMWDISerializer
+
 === Unit tests ===
 
-* Add FormatFactoryTest.php, QueryProcessorTest.php, ParserParameterTest.php
+* Add PHPUnit tests FormatFactoryTest.php, QueryProcessorTest.php, ParserParameterTest.php
+:DefinesTest.php, GlobalFunctionsTest.php, HighlighterTest.php, SubobjectTest.php
+
+* Add QUnit tests ext.smw.test, ext.smw.util.tooltip
 
 === Extended translations ===
 
