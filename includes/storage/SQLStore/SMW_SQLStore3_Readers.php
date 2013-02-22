@@ -311,8 +311,6 @@ class SMWSQLStore3Readers {
 					"$fieldname AS v$valuecount";
 			}
 
-			// Don't use DISTINCT with text blobs:
-			if ( $typeid == 'l' ) $usedistinct = false;
 			$valuecount += 1;
 		}
 
