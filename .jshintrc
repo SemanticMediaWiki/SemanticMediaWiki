@@ -2,6 +2,7 @@
 	"predef": [
 		"mediaWiki",
 		"smw",
+		"semanticMediaWiki",
 		"jQuery",
 		"QUnit"
 	],
