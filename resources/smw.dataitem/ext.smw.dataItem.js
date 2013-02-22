@@ -19,13 +19,8 @@
 	 */
 	smw.dataItem = function() {};
 
-	/**
-	 * Public methods
-	 *
-	 * @since  1.9
-	 *
-	 * @type object
-	 */
+	/* Public methods */
+
 	smw.dataItem.prototype = {
 
 		properties: null,
@@ -90,11 +85,12 @@
 			// Map individual properties according to its type
 			if ( typeof value === 'object' && self.properties !== null ){
 				if ( key !== '' && value.length > 0 && self.properties.hasOwnProperty( key ) ){
-					var property = new smw.dataItem.property( key );
-					var factoredValue = [];
+					var property = new smw.dataItem.property( key ),
+						typeid = self.properties[key].typeid,
+						factoredValue = [];
 
 					// Assignment of individual classes
-					switch ( self.properties[key].typeid ) {
+					switch ( typeid ) {
 						case '_wpg':
 							$.map( value, function( w ) {
 								factoredValue.push( new smw.dataItem.wikiPage( w.fulltext, w.fullurl, w.namespace, w.exists ) );
@@ -110,9 +106,27 @@
 								factoredValue.push( new smw.dataItem.time( t ) );
 							} );
 							break;
-						// Assign remaining values that to not have a smw.dataItem
-						// object but belong to smw.dataItem.property
-						default: factoredValue = value;
+						case '_num':
+							$.map( value, function( n ) {
+								factoredValue.push( new smw.dataItem.number( n ) );
+							} );
+							break;
+						case '_qty':
+							$.map( value, function( q ) {
+								factoredValue.push( new smw.dataValue.quantity( q.value, q.unit ) );
+							} );
+							break;
+						case '_str':
+						case '_txt':
+							$.map( value, function( s ) {
+								factoredValue.push( new smw.dataItem.text( s, typeid ) );
+							} );
+							break;
+						default:
+							// Register all non identifiable types as unknown
+							$.map( value, function( v ) {
+								factoredValue.push( new smw.dataItem.unknown( v, typeid ) );
+							} );
 					}
 
 					return $.extend( property, factoredValue );

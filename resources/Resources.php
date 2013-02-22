@@ -68,12 +68,23 @@ return array(
 			'resources/smw.dataitem/ext.smw.dataItem.uri.js',
 			'resources/smw.dataitem/ext.smw.dataItem.time.js',
 			'resources/smw.dataitem/ext.smw.dataItem.property.js',
+			'resources/smw.dataitem/ext.smw.dataItem.unknown.js',
+			'resources/smw.dataitem/ext.smw.dataItem.number.js',
+			'resources/smw.dataitem/ext.smw.dataItem.text.js',
 		),
 		'dependencies' => array(
 			'ext.smw',
 			'mediawiki.Title',
 			'mediawiki.Uri'
 		)
+	),
+
+	// dataValue representation
+	'ext.smw.dataValue' => $moduleTemplate + array(
+		'scripts' => array(
+			'resources/smw.dataitem/ext.smw.dataValue.quantity.js',
+		),
+		'dependencies' => 'ext.smw.dataItem'
 	),
 
 	// Query
@@ -90,6 +101,7 @@ return array(
 		'scripts' => 'resources/smw.api/ext.smw.api.js',
 		'dependencies' => array(
 			'ext.smw.dataItem',
+			'ext.smw.dataValue',
 			'ext.smw.query',
 			'ext.jquery.jStorage',
 			'ext.jquery.md5'

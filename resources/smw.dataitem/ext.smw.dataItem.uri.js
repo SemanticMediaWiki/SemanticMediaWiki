@@ -52,17 +52,12 @@
 		if ( $.type( fullurl ) === 'string' ) {
 			this.constructor( fullurl );
 		} else {
-			throw new Error( 'smw.dataItem.uri: fullurl must be a string' );
+			throw new Error( 'smw.dataItem.uri: invoked fullurl must be a string but is of type ' + $.type( fullurl ) );
 		}
 	};
 
-	/**
-	 * Public methods
-	 *
-	 * @since  1.9
-	 *
-	 * @type object
-	 */
+	/* Public methods */
+
 	smw.dataItem.uri.prototype = {
 
 		constructor: uri,

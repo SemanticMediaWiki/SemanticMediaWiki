@@ -94,7 +94,7 @@
 		 *
 		 * @return {string}
 		 */
-		getName: function() {
+		getFullText: function() {
 			return this.fulltext;
 		},
 
@@ -153,7 +153,8 @@
 		 */
 		getHtml: function( linker ) {
 			if ( linker && this.fullurl !== null ){
-				return html.element( 'a', { 'href': this.fullurl, 'class': ( this.exists ? '' : 'new' ) } , this.fulltext );
+				var attributes = this.exists ? { 'href': this.fullurl } : { 'href': this.fullurl, 'class': 'new' };
+				return html.element( 'a', attributes , this.fulltext );
 			}
 			return this.fulltext;
 		}
@@ -161,7 +162,9 @@
 
 	// Alias
 	fn.exists = fn.isKnown;
-	fn.getPrefixedText = fn.getName;
+	fn.getPrefixedText = fn.getFullText;
+	fn.getName = fn.getFullText;
+	fn.getValue = fn.getFullText;
 
 	// Assign methods
 	smw.dataItem.wikiPage.prototype = fn;

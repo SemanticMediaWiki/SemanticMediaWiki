@@ -46,19 +46,12 @@
 		if ( $.type( property ) === 'string' ) {
 			this.constructor( property );
 		} else {
-			throw new Error( 'smw.dataItem.time: property must be a string' );
+			throw new Error( 'smw.dataItem.property: invoked property must be a string but is of type ' + $.type( property ) );
 		}
 	};
 
-	/**
-	 * Public methods
-	 *
-	 * Invoke methods on the constructor
-	 *
-	 * @since  1.9
-	 *
-	 * @type object
-	 */
+	/* Public methods */
+
 	smw.dataItem.property.prototype = {
 
 		constructor: property,

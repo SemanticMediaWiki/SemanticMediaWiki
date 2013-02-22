@@ -324,6 +324,12 @@ final class SMWHooks {
 				'tests/qunit/smw.dataitem/ext.smw.dataItem.uri.test.js',
 				'tests/qunit/smw.dataitem/ext.smw.dataItem.time.test.js',
 				'tests/qunit/smw.dataitem/ext.smw.dataItem.property.test.js',
+				'tests/qunit/smw.dataitem/ext.smw.dataItem.unknown.test.js',
+				'tests/qunit/smw.dataitem/ext.smw.dataItem.number.test.js',
+				'tests/qunit/smw.dataitem/ext.smw.dataItem.text.test.js',
+
+				// dataValues
+				'tests/qunit/smw.dataitem/ext.smw.dataValue.quantity.test.js',
 
 				// Api / Query
 				'tests/qunit/smw.api/ext.smw.api.test.js',
@@ -333,6 +339,7 @@ final class SMWHooks {
 				'ext.smw',
 				'ext.smw.tooltip',
 				'ext.smw.dataItem',
+				'ext.smw.dataValue',
 				'ext.smw.api'
 			),
 			'position' => 'top',

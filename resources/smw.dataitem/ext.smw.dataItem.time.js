@@ -72,14 +72,9 @@
 		}
 	};
 
-	/**
-	 * Public methods
-	 *
-	 * @since  1.9
-	 *
-	 * @type object
-	 */
-	smw.dataItem.time.prototype = {
+	/* Public methods */
+
+	var fn = {
 
 		constructor: time,
 
@@ -164,22 +159,13 @@
 				monthNames[this.date.getMonth()] + ' ' +
 				this.date.getFullYear() +
 				( this.getTimeString() !== '00:00:00' ? ' ' + this.getTimeString() : '' );
-		},
-
-		/**
-		 * Returns html representation
-		 *
-		 * @since  1.9
-		 *
-		 * @param {boolean}
-		 *
-		 * @return {string}
-		 */
-		getHtml: function( linker ) {
-			return this.getMediaWikiDate();
 		}
 	};
 
 	// Alias
+	fn.getValue = fn.getMwTimestamp;
+
+	// Assign methods
+	smw.dataItem.time.prototype = fn;
 
 } )( jQuery, mediaWiki, semanticMediaWiki );

@@ -24,7 +24,7 @@
 		{ test: [ 'bar', '', 0, true ], expected: [ 'bar', null, 0, 'bar', true ] },
 		{ test: [ 'bar', '', 2, false ], expected: [ 'bar', null, 2, 'bar', false ] },
 		{ test: [ 'fooBar', 'http://fooBar', 0, false ], expected: [ 'fooBar', 'http://fooBar', 0, '<a href=\"http://fooBar\" class=\"new\">fooBar</a>', false ] },
-		{ test: [ 'fooBar', 'http://fooBar', 0, true ], expected: [ 'fooBar', 'http://fooBar', 0, '<a href=\"http://fooBar\" class=\"\">fooBar</a>', true ] }
+		{ test: [ 'fooBar', 'http://fooBar', 0, true ], expected: [ 'fooBar', 'http://fooBar', 0, '<a href=\"http://fooBar\">fooBar</a>', true ] }
 	];
 
 	/**
