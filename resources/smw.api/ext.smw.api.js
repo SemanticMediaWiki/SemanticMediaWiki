@@ -42,7 +42,7 @@
 
 			// Use smw.Api JSON custom parser to resolve raw data and add
 			// type hinting
-			var dataItem = new smw.dataItem();
+			var smwData = new smw.Data();
 
 			if ( !data || typeof data !== 'string' ) {
 				return null;
@@ -53,7 +53,7 @@
 
 			// Attempt to parse using the native JSON parser first
 			if ( window.JSON && window.JSON.parse ) {
-				return JSON.parse( data, function ( key, value ) { return dataItem.factory( key, value ); } );
+				return JSON.parse( data, function ( key, value ) { return smwData.factory( key, value ); } );
 			}
 
 			// If the above fails, use jquery to do the rest

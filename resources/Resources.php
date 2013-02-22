@@ -63,14 +63,13 @@ return array(
 	// dataItem representation
 	'ext.smw.dataItem' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/smw.dataitem/ext.smw.dataItem.js',
-			'resources/smw.dataitem/ext.smw.dataItem.wikiPage.js',
-			'resources/smw.dataitem/ext.smw.dataItem.uri.js',
-			'resources/smw.dataitem/ext.smw.dataItem.time.js',
-			'resources/smw.dataitem/ext.smw.dataItem.property.js',
-			'resources/smw.dataitem/ext.smw.dataItem.unknown.js',
-			'resources/smw.dataitem/ext.smw.dataItem.number.js',
-			'resources/smw.dataitem/ext.smw.dataItem.text.js',
+			'resources/smw.data/ext.smw.dataItem.wikiPage.js',
+			'resources/smw.data/ext.smw.dataItem.uri.js',
+			'resources/smw.data/ext.smw.dataItem.time.js',
+			'resources/smw.data/ext.smw.dataItem.property.js',
+			'resources/smw.data/ext.smw.dataItem.unknown.js',
+			'resources/smw.data/ext.smw.dataItem.number.js',
+			'resources/smw.data/ext.smw.dataItem.text.js',
 		),
 		'dependencies' => array(
 			'ext.smw',
@@ -82,14 +81,23 @@ return array(
 	// dataValue representation
 	'ext.smw.dataValue' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/smw.dataitem/ext.smw.dataValue.quantity.js',
+			'resources/smw.data/ext.smw.dataValue.quantity.js',
 		),
 		'dependencies' => 'ext.smw.dataItem'
 	),
 
+	// dataItem representation
+	'ext.smw.data' => $moduleTemplate + array(
+		'scripts' => 'resources/smw.data/ext.smw.data.js',
+		'dependencies' => array(
+			'ext.smw.dataItem',
+			'ext.smw.dataValue'
+		)
+	),
+
 	// Query
 	'ext.smw.query' => $moduleTemplate + array(
-		'scripts' => 'resources/smw.api/ext.smw.query.js',
+		'scripts' => 'resources/smw.query/ext.smw.query.js',
 		'dependencies' => array(
 			'ext.smw',
 			'mediawiki.util'
@@ -100,8 +108,7 @@ return array(
 	'ext.smw.api' => $moduleTemplate + array(
 		'scripts' => 'resources/smw.api/ext.smw.api.js',
 		'dependencies' => array(
-			'ext.smw.dataItem',
-			'ext.smw.dataValue',
+			'ext.smw.data',
 			'ext.smw.query',
 			'ext.jquery.jStorage',
 			'ext.jquery.md5'
