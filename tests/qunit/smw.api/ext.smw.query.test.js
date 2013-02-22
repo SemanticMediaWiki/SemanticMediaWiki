@@ -121,4 +121,39 @@
 
 	} );
 
+
+	/**
+	 * Test getLink
+	 *
+	 * @since: 1.9
+	 */
+	QUnit.test( 'getLink', 5, function ( assert ) {
+		var result, context;
+
+		var smwApi = new smw.api();
+		var queryObject = smwApi.parse( jsonString );
+
+		result = new smw.query ( queryObject.printouts, queryObject.parameters, queryObject.conditions ).getLink();
+		assert.equal( $.type( result ), 'string', pass + 'the query link returned was a string' );
+
+		// DOM test
+		context = $( '<div></div>', '#qunit-fixture' );
+		context.append( result );
+		assert.equal( context.find( 'a' ).attr( 'class' ), 'query-link', pass + 'DOM object returned class attribute "query-link"' );
+		assert.ok( context.find( 'a' ).attr( 'href' ), pass + 'DOM object returned a href attribute' );
+
+		// Caption text test
+		context = $( '<div></div>', '#qunit-fixture' );
+		queryObject.parameters.searchlabel = 'test';
+		result = new smw.query ( queryObject.printouts, queryObject.parameters, queryObject.conditions ).getLink();
+		context.append( result );
+		assert.equal( context.find( 'a' ).text( ), 'test', pass + 'parameters.searchlabel is used to set the caption text' );
+
+		context = $( '<div></div>', '#qunit-fixture' );
+		result = new smw.query ( queryObject.printouts, queryObject.parameters, queryObject.conditions ).getLink( 'test 2' );
+		context.append( result );
+		assert.equal( context.find( 'a' ).text( ), 'test 2', pass + 'getLink() is used to set the caption text' );
+
+	} );
+
 }( jQuery, mediaWiki, semanticMediaWiki ) );

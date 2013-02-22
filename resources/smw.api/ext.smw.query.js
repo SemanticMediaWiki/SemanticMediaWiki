@@ -1,7 +1,7 @@
 /**
- * SMW Api Query JavaScript representation
+ * SMW Query JavaScript representation
  *
- * @see SMW\Query
+ * @see SMW\Query, SMW\QueryResult
  *
  * @since 1.9
  *
@@ -13,6 +13,9 @@
  */
 ( function( $, mw, smw ) {
 	'use strict';
+
+	/* Private object and methods */
+	var html = mw.html;
 
 	/**
 	 * Query constructor
@@ -48,11 +51,8 @@
 		}
 	};
 
-	/**
-	 * Public methods
-	 *
-	 * @type {Object}
-	 */
+	/* Public methods */
+
 	var fn = {
 
 		constructor: query,
@@ -68,6 +68,32 @@
 		 */
 		getLimit: function() {
 			return this.parameters.limit;
+		},
+
+		/**
+		 * Returns query link
+		 *
+		 * @see SMW\QueryResult::getLink()
+		 *
+		 * Caption text is set either by using parameters.searchlabel or by
+		 * .getLink( 'myCaption' )
+		 *
+		 * @since  1.9
+		 *
+		 * @param {string}
+		 * @return {string}
+		 */
+		getLink: function( caption ) {
+			var c = caption ? caption : this.parameters.searchlabel !== undefined ? this.parameters.searchlabel : '...' ;
+			return html.element( 'a', {
+				'class': 'query-link',
+				'href' : mw.config.get( 'wgScript' ) + '?' + $.param( {
+						title: 'Special:Ask',
+						'q':  $.type( this.conditions ) === 'string' ? this.conditions : this.conditions.join( '' ),
+						'po': this.printouts.join( '\n' ),
+						'p':  this.parameters
+					} )
+			}, c );
 		},
 
 		/**
