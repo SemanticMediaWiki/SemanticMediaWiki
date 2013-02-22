@@ -114,16 +114,20 @@ class DISerializer {
 			$result = array( 'printouts' => array() );
 
 			foreach ( $queryResult->getPrintRequests() as /* SMWPrintRequest */ $printRequest ) {
-				$resultAarray = new SMWResultArray( $diWikiPage, $printRequest, $queryResult->getStore() );
+				$resultArray = new SMWResultArray( $diWikiPage, $printRequest, $queryResult->getStore() );
 
 				if ( $printRequest->getMode() === SMWPrintRequest::PRINT_THIS ) {
-					$dataItems = $resultAarray->getContent();
+					$dataItems = $resultArray->getContent();
 					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
-				} else {
+				} else if ( $resultArray->getContent() !== array() ) {
 					$result['printouts'][$printRequest->getLabel()] = array_map(
 						array( __CLASS__, 'getSerialization' ),
-						$resultAarray->getContent(), array ( $printRequest )
+						$resultArray->getContent(), array ( $printRequest )
 					);
+				} else {
+					// For those objects that are empty return an empty array
+					// to keep the output consistent
+					$result['printouts'][$printRequest->getLabel()] = array();
 				}
 			}
 
