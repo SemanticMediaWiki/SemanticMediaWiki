@@ -1,7 +1,10 @@
 <?php
 
 namespace SMW;
-use SMWQueryResult, SMWQueryProcessor, SMWQuery;
+
+use SMWQueryResult;
+use SMWQueryProcessor;
+use SMWQuery;
 use FormatJSON;
 
 /**
@@ -109,7 +112,8 @@ class JSONResultPrinter extends \SMWExportPrinter {
 				array_merge(
 					$res->serializeToArray(),
 					array ( 'rows' => $res->getCount() )
-				), $this->params['prettyprint']
+				),
+				$this->params['prettyprint']
 			);
 
 		} else {
