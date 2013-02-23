@@ -265,7 +265,7 @@ final class SMWHooks {
 	*
 	* @return boolean
 	*/
-	public static function registerUnitTests ( array &$files ) {
+	public static function registerUnitTests( array &$files ) {
 		$testFiles = array(
 			'Defines',
 			'GlobalFunctions',
@@ -278,7 +278,6 @@ final class SMWHooks {
 			'dataitems/DI_Bool',
 			'dataitems/DI_Number',
 			'dataitems/DI_GeoCoord',
-			'dataitems/DI_String',
 			'dataitems/DISerializer',
 
 			'export/SMWExpElement',
