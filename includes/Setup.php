@@ -244,14 +244,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSparqlStoreQueryEngine'] = $stoDir . 'SMW_SparqlStoreQueryEngine.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
 
-	//compatSQLStore (since 1.8)
-	$stoCompatSQL = $smwgIP . 'includes/storage/compatSQLStore/';
-	$wgAutoloadClasses['SMWSQLStore2']              = $stoCompatSQL . 'SMW_SQLStore2.php';
-	$wgAutoloadClasses['SMWSqlStubSemanticData']    = $stoCompatSQL . 'SMW_SqlStubSemanticData.php';
-	$wgAutoloadClasses['SMWSqlStore2IdCache']       = $stoCompatSQL . 'SMW_SqlStore2IdCache.php';
-	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoCompatSQL . 'SMW_SQLStore2Table.php';
-	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $stoCompatSQL . 'SMW_CompatibilityHelpers.php';
-
 	//SQLStore (since 1.8)
 	$stoDirSQL = $smwgIP . 'includes/storage/SQLStore/';
 	$wgAutoloadClasses['SMW\SQLStore\PropertyStatisticsTable']				= $stoDirSQL . 'PropertyStatisticsTable.php';
