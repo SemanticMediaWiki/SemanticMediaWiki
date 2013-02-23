@@ -1774,7 +1774,7 @@ $messages['be-tarask'] = array(
 	'smw_qc_query_help' => 'Увядзіце запыт з дапамогай формы пададзенай ніжэй для выбару вікі-старонкі па
 Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>),
 Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>),
-Назвам(<strong>[[Нямеччына]]</strong>) і Прасторам назваў (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
+Назвам(<strong>[[Нямеччына]]</strong>) і Прасторам назваў (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Уласьцівасьць</strong>',
 	'smw_qui_prop' => 'Уласьцівасьць:',
 	'smw_qui_labl' => 'Метка:',
@@ -7084,7 +7084,7 @@ Illo assecura que le humanos non se transforma in sitos web.',
 	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de
 Categorias (<strong>[[{{ns:category}}:Actor]]</strong>),
 Proprietates (<strong>[[Localisate in::Germania]]</strong>),
-Nomines (<strong>[[Germania]]</strong>) e Spatios de nomines (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
+Nomines (<strong>[[Germania]]</strong>) e Spatios de nomines (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Proprietate</strong>',
 	'smw_qui_prop' => 'Proprietate:',
 	'smw_qui_labl' => 'Etiquetta:',
@@ -9768,7 +9768,7 @@ $messages['nah'] = array(
 	'smw_smwadmin_return' => 'Titocuepāz īhuīc $1',
 );
 
-/** Norwegian Bokmål (norsk (bokmål)‎)
+/** Norwegian Bokmål (norsk bokmål)
  * @author Audun
  * @author Event
  * @author Harald Khan
@@ -9941,7 +9941,7 @@ Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'smw_qc_query_help' => 'Legg inn en spørring ved hjelp av skjemaet under. Velg wikisider basert på
 Kategorier (<strong>[[{{ns:category}}:Actor]]</strong>),
 Egenskaper (<strong>[[Located in::Germany]]</strong>),
-Navn (<strong>[[Germany]]</strong>) og navnerom (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
+Navn (<strong>[[Germany]]</strong>) og navnerom (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Egenskap</strong>',
 	'smw_qui_prop' => 'Egenskap:',
 	'smw_qui_labl' => 'Ledetekst:',
@@ -11882,7 +11882,7 @@ Gera RDF navegável.',
 Algumas das propriedades existentes podem estar [[Special:UnusedProperties|sem uso]].
 As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
 	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>.
-Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
+Ele certifica-se de que os seres humanos não se tornem em sites da internet.', # Fuzzy
 	'ask' => 'Busca semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
