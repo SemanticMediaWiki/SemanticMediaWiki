@@ -469,11 +469,7 @@ class SMWValueDescription extends SMWDescription {
 	}
 
 	public function isSingleton() {
-		if ( $this->m_comparator == SMW_CMP_EQ ) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->m_comparator == SMW_CMP_EQ;
 	}
 
 	public function getSize() {
