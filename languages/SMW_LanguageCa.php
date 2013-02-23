@@ -25,7 +25,6 @@ class SMWLanguageCa extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Pàgina', // name of page datatype
-		'_str' => 'Cadena',  // name of the string type
 		'_txt' => 'Text',  // name of the text type
 		'_cod' => 'Codi',  // name of the (source) code type
 		'_boo' => 'Booleà',  // name of the boolean type
@@ -45,7 +44,8 @@ class SMWLanguageCa extends SMWLanguage {
 		'URI'         => '_uri',
 		'Decimal'       => '_num',
 		'Enter'     => '_num',
-		'Enumeració' => '_str',
+		'Cadena' => '_txt',  // old name of the string type
+		'Enumeració' => '_txt',
 		'Número de telèfon' => '_tel',
 		'Adreça electrònica'       => '_ema',
 		'Coordenada geogràfica' => '_geo',

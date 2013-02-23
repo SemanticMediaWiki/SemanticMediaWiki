@@ -27,7 +27,6 @@ class SMWLanguageEn extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Page', // name of page datatype
-		'_str' => 'String',  // name of the string type
 		'_txt' => 'Text',  // name of the text type
 		'_cod' => 'Code',  // name of the (source) code type
 		'_boo' => 'Boolean',  // name of the boolean type
@@ -47,7 +46,8 @@ class SMWLanguageEn extends SMWLanguage {
 		'URI'         => '_uri',
 		'Float'       => '_num',
 		'Integer'     => '_num',
-		'Enumeration' => '_str',
+		'Enumeration' => '_txt',
+		'String'      => '_txt',
 		'Phone number' => '_tel',
 		'E-mail'       => '_ema',
 		'Geographic coordinate' => '_geo',

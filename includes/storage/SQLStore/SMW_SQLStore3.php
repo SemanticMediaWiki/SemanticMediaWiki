@@ -180,7 +180,6 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	protected static $di_type_tables = array(
 		SMWDataItem::TYPE_NUMBER     => 'smw_di_number',
-		SMWDataItem::TYPE_STRING     => 'smw_di_blob',
 		SMWDataItem::TYPE_BLOB       => 'smw_di_blob',
 		SMWDataItem::TYPE_BOOLEAN    => 'smw_di_bool',
 		SMWDataItem::TYPE_URI        => 'smw_di_uri',
@@ -230,9 +229,6 @@ class SMWSQLStore3 extends SMWStore {
 			switch ( $diType ) {
 				case SMWDataItem::TYPE_NUMBER:
 					$this->diHandlers[$diType] = new SMWDIHandlerNumber( $this );
-					break;
-				case SMWDataItem::TYPE_STRING:
-					$this->diHandlers[$diType] = new SMWDIHandlerString( $this );
 					break;
 				case SMWDataItem::TYPE_BLOB:
 					$this->diHandlers[$diType] = new SMWDIHandlerBlob( $this );

@@ -95,7 +95,7 @@ class SMWAsk {
 		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
 		// Add query format
 		$propertyDi = new SMWDIProperty( '_ASKFO' );
-		$valueDi = new SMWDIString( $params['format']->getValue() );
+		$valueDi = new SMWDIBlob( $params['format']->getValue() );
 		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
 
 		$propertyDi = new SMWDIProperty( '_ASK' );

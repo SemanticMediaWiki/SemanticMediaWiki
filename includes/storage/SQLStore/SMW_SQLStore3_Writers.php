@@ -136,7 +136,7 @@ class SMWSQLStore3Writers {
 		// Take care of the sortkey
 		$sortkeyDataItems = $data->getPropertyValues( new SMWDIProperty( '_SKEY' ) );
 		$sortkeyDataItem = end( $sortkeyDataItems );
-		if ( $sortkeyDataItem instanceof SMWDIString ) {
+		if ( $sortkeyDataItem instanceof SMWDIBlob ) {
 			$sortkey = $sortkeyDataItem->getString();
 		} else { // default sortkey
 			$sortkey = str_replace( '_', ' ', $subject->getDBkey() );
@@ -357,7 +357,7 @@ class SMWSQLStore3Writers {
 				}
 			}
 		};
-		
+
 		// arrays have to be renumbered because database functions expect an
 		// element with index 0 to be present in the array
 		return array( array_values( $newValues ), array_values( $oldValues ) );

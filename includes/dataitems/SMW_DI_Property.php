@@ -383,7 +383,7 @@ class SMWDIProperty extends SMWDataItem {
 				self::TYPE_SUBOBJECT  =>  array( '_wpg', true ), // "has subobject"
 				'_ASK'   =>  array( '_wpg', false ), // "has query"
 				'_ASKST' =>  array( '_cod', true ), // "has query string"
-				'_ASKFO' =>  array( '_str', true ), // "has query format"
+				'_ASKFO' =>  array( '_txt', true ), // "has query format"
 				'_ASKSI' =>  array( '_num', true ), // "has query size"
 				'_ASKDE' =>  array( '_num', true ), // "has query depth"
 			);

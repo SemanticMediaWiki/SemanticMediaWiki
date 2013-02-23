@@ -33,7 +33,6 @@ class SMWLanguageDe extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Seite', // name of the page datatype
-		'_str' => 'Zeichenkette', // name of the string datatype
 		'_txt' => 'Text', // name of the text datatype
 		'_cod' => 'Quellcode', // name of the (source) code datatype
 		'_boo' => 'Wahrheitswert', // name of the boolean datatype
@@ -53,7 +52,8 @@ class SMWLanguageDe extends SMWLanguage {
 		'URI'			=> '_uri',
 		'Ganze Zahl'		=> '_num',
 		'Dezimalzahl'		=> '_num',
-		'Aufzählung'		=> '_str',
+		'Aufzählung'		=> '_txt',
+		'Zeichenkette'		=> '_txt',
 		'Menge' 		=> '_qty',
 	);
 

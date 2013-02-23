@@ -61,7 +61,6 @@ class SMWDataValueFactory {
 	 */
 	static private $mDefaultDataItemTypeIds = array(
 		SMWDataItem::TYPE_BLOB => '_txt', // Text type
-		SMWDataItem::TYPE_STRING => '_str', // String type
 		SMWDataItem::TYPE_URI => '_uri', // URL/URI type
 		SMWDataItem::TYPE_WIKIPAGE => '_wpg', // Page type
 		SMWDataItem::TYPE_NUMBER => '_num', // Number type
@@ -205,7 +204,7 @@ class SMWDataValueFactory {
 		self::$mTypeClasses = array(
 			'_txt'  => 'SMWStringValue', // Text type
 			'_cod'  => 'SMWStringValue', // Code type
-			'_str'  => 'SMWStringValue', // String type
+			'_str'  => 'SMWStringValue', // DEPRECATED Will vanish after SMW 1.9; use '_txt'
 			'_ema'  => 'SMWURIValue', // Email type
 			'_uri'  => 'SMWURIValue', // URL/URI type
 			'_anu'  => 'SMWURIValue', // Annotation URI type
@@ -240,7 +239,7 @@ class SMWDataValueFactory {
 		self::$mTypeDataItemIds = array(
 			'_txt'  => SMWDataItem::TYPE_BLOB, // Text type
 			'_cod'  => SMWDataItem::TYPE_BLOB, // Code type
-			'_str'  => SMWDataItem::TYPE_STRING, // String type
+			'_str'  => SMWDataItem::TYPE_BLOB, // DEPRECATED Will vanish after SMW 1.9; use '_txt'
 			'_ema'  => SMWDataItem::TYPE_URI, // Email type
 			'_uri'  => SMWDataItem::TYPE_URI, // URL/URI type
 			'_anu'  => SMWDataItem::TYPE_URI, // Annotation URI type
@@ -259,9 +258,9 @@ class SMWDataValueFactory {
 			'_qty'  => SMWDataItem::TYPE_NUMBER, // Type for numbers with units of measurement
 			// Special types are not avaialble directly for users (and have no local language name):
 			'__typ' => SMWDataItem::TYPE_URI, // Special type page type
-			'__pls' => SMWDataItem::TYPE_STRING, // Special type list for decalring _rec properties
+			'__pls' => SMWDataItem::TYPE_BLOB, // Special type list for decalring _rec properties
 			'__con' => SMWDataItem::TYPE_CONCEPT, // Special concept page type
-			'__sps' => SMWDataItem::TYPE_STRING, // Special string type
+			'__sps' => SMWDataItem::TYPE_BLOB, // Special string type
 			'__spu' => SMWDataItem::TYPE_URI, // Special uri type
 			'__sup' => SMWDataItem::TYPE_WIKIPAGE, // Special subproperty type
 			'__suc' => SMWDataItem::TYPE_WIKIPAGE, // Special subcategory type
@@ -269,9 +268,9 @@ class SMWDataValueFactory {
 			'__sin' => SMWDataItem::TYPE_WIKIPAGE, // Special instance of type
 			'__red' => SMWDataItem::TYPE_WIKIPAGE, // Special redirect type
 			'__err' => SMWDataItem::TYPE_ERROR, // Special error type
-			'__imp' => SMWDataItem::TYPE_STRING, // Special import vocabulary type
+			'__imp' => SMWDataItem::TYPE_BLOB, // Special import vocabulary type
 			'__pro' => SMWDataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)
-			'__key' => SMWDataItem::TYPE_STRING, // Sort key of a page
+			'__key' => SMWDataItem::TYPE_BLOB, // Sort key of a page
 		);
 
 		wfRunHooks( 'smwInitDatatypes' );
@@ -335,7 +334,7 @@ class SMWDataValueFactory {
 
 	/**
 	 * Get the translated user label for a given internal ID. If the ID does
-	 * not have a label associated with it in the current language, the 
+	 * not have a label associated with it in the current language, the
 	 * empty string is returned. This is the case both for internal type ids
 	 * and for invalid (unkown) type ids, so this method cannot be used to
 	 * distinguish the two.

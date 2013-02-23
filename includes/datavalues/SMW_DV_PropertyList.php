@@ -50,12 +50,7 @@ class SMWPropertyListValue extends SMWDataValue {
 			$stringValue .= ( $stringValue ? ';' : '' ) . $diProperty->getKey();
 		}
 
-		try {
-			$this->m_dataitem = new SMWDIString( $stringValue );
-		} catch ( SMWStringLengthException $e ) {
-			$this->m_dataitem = new SMWDIString( 'Error' );
-			$this->addError( wfMessage( 'smw_maxstring', $stringValue )->inContentLanguage()->text() );
-		}
+		$this->m_dataitem = new SMWDIBlob( $stringValue );
 	}
 
 	/**

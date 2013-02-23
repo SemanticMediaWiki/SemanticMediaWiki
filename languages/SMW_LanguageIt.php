@@ -25,7 +25,6 @@ class SMWLanguageIt extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Pagina',  // name of page datatypee
-		'_str' => 'Stringa',  // name of the string type
 		'_txt' => 'Testo',   // name of the text type
 		'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 		'_boo' => 'Booleano',  // name of the boolean type
@@ -46,8 +45,9 @@ class SMWLanguageIt extends SMWLanguage {
 		'Float'       => '_num',
 		'Integer'     => '_num',
 		'Intero'      => '_num',
-		'Enumeration' => '_str',
-		'Enumerazione' => '_str'
+		'Enumeration' => '_txt',
+		'Enumerazione' => '_txt',
+		'Stringa'     => '_txt',  // old name of the string type
 	);
 
 	protected $m_SpecialProperties = array(

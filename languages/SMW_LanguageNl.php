@@ -27,7 +27,6 @@ class SMWLanguageNl extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Pagina', // name of page datatype
-		'_str' => 'String',  // name of the string type
 		'_txt' => 'Tekst',  // name of the text type
 		'_cod' => 'Code',  // name of the (source) code type
 		'_boo' => 'Booleaans',  // name of the boolean type
@@ -47,8 +46,8 @@ class SMWLanguageNl extends SMWLanguage {
 		'URI'             => '_uri',
 		'Drijvende komma' => '_num',
 		'Integer'         => '_num',
-		'Opsomming'       => '_str',
-		'Telefoonnummer'  => '_tel',
+		'Opsomming'       => '_txt',
+		'String'          => '_txt',  // old name of the string type
 	);
 
 	protected $m_SpecialProperties = array(
