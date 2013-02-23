@@ -39,18 +39,18 @@ class SMWExpElementTest extends \MediaWikiTestCase {
 
 		$instances[] = new \SMWExpResource( 'foo' );
 		$instances[] = new \SMWExpResource( 'foo', null );
-		$instances[] = new \SMWExpResource( 'foo', new \SMWDIString( 'bar' ) );
+		$instances[] = new \SMWExpResource( 'foo', new \SMWDIBlob( 'bar' ) );
 
 		$instances[] = new \SMWExpNsResource( 'foo', 'bar', 'baz' );
 		$instances[] = new \SMWExpNsResource( 'foo', 'bar', 'baz', null );
-		$instances[] = new \SMWExpNsResource( 'foo', 'bar', 'baz', new \SMWDIString( 'bar' ) );
+		$instances[] = new \SMWExpNsResource( 'foo', 'bar', 'baz', new \SMWDIBlob( 'bar' ) );
 
 		$instances[] = new \SMWExpLiteral( 'foo' );
 		$instances[] = new \SMWExpLiteral( 'foo', '' );
 		$instances[] = new \SMWExpLiteral( 'foo', 'bar' );
 		$instances[] = new \SMWExpLiteral( 'foo', '', null );
-		$instances[] = new \SMWExpLiteral( 'foo', '', new \SMWDIString( 'bar' ) );
-		$instances[] = new \SMWExpLiteral( 'foo', 'baz', new \SMWDIString( 'bar' ) );
+		$instances[] = new \SMWExpLiteral( 'foo', '', new \SMWDIBlob( 'bar' ) );
+		$instances[] = new \SMWExpLiteral( 'foo', 'baz', new \SMWDIBlob( 'bar' ) );
 
 		return $this->arrayWrap( $instances );
 	}

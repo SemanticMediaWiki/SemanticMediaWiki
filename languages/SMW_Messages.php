@@ -117,7 +117,6 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_wrong_namespace' => 'Only pages in namespace "$1" are allowed here.',
 	'smw_manytypes'     => 'More than one type defined for property.',
 	'smw_emptystring'   => 'Empty strings are not accepted.',
-	'smw_maxstring'     => 'String representation $1 is too long.',
 	'smw_notinenum'     => '"$1" is not in the list of possible values ($2) for this property.',
 	'smw_noboolean'     => '"$1" is not recognized as a Boolean (true/false) value.',
 	'smw_true_words'    => 'true,t,yes,y', // comma-separated synonyms for Boolean TRUE besides '1', primary value first
@@ -446,7 +445,7 @@ Estimated progress of current update:',
 $messages['qqq'] = array(
 	'smw-desc' => '{{desc}}',
 	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
-	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language. 
+	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 	{{Identical|And}}',
 	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values. Parameters:
 * $1 holds the name of the page',
@@ -563,8 +562,6 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 holds the name of the namespace that may be used.',
 	'smw_manytypes' => 'This is an error/warning message.',
 	'smw_emptystring' => 'This is an error/warning message.',
-	'smw_maxstring' => 'This is an error/warning message. Parameters:
-* $1 holds the property value causing the error/warning.',
 	'smw_notinenum' => 'This is an error/warning message. Parameters:
 * $1 holds the property value causing the error/warning.
 * $2 holds the property values that may be used.',
@@ -678,7 +675,7 @@ This method is called ''content negotiation''.
 {{doc-important|Do not alter or translate link targets!}}",
 	'ask' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:Ask]].',
 	'smw_ask_doculink' => "{{notranslate}}
-This message should be the URL of the semantic query documentation for that language. For English, this is http://semantic-mediawiki.org/wiki/Help:Semantic_search. For other languages, it should be an ''existing'' page on semantic-mediawiki.org. Note that only some languages have own documentations yet. 
+This message should be the URL of the semantic query documentation for that language. For English, this is http://semantic-mediawiki.org/wiki/Help:Semantic_search. For other languages, it should be an ''existing'' page on semantic-mediawiki.org. Note that only some languages have own documentations yet.
 
 The SMW Project welcomes documentation translators! Please contact Markus Krötzsch (http://semantic-mediawiki.org/wiki/Markus) for getting a login at semantic-mediawiki.org if you wish to create SMW handbooks in another language.",
 	'smw_ask_sortby' => 'This is the text describing the textbox on [[Special:Ask]] available for optionally entering an printout statement for a query.',
@@ -1091,7 +1088,6 @@ $messages['ar'] = array(
 	'smw_wrong_namespace' => 'فقط الصفحات في النطاق "$1" مسموح بها هنا.',
 	'smw_manytypes' => 'أكثر من نوع واحد لتعريف الخاصية.',
 	'smw_emptystring' => 'السلاسل الفارغة غير مقبولة.',
-	'smw_maxstring' => 'تمثيل السلسلة $1 طويل جدا.',
 	'smw_notinenum' => '"$1" ليس ضمن قائمة القيم الممكنة ($2) لهذه الخاصية.',
 	'smw_noboolean' => '"$1" غير متعرف عليها كقيمة بووليان (صواب/خطأ).',
 	'smw_true_words' => 'صحيح،ص،نعم،ن',
@@ -1374,7 +1370,6 @@ $messages['arz'] = array(
 	'smw_wrong_namespace' => 'فقط الصفحات فى النطاق "$1" مسموح بها هنا.',
 	'smw_manytypes' => 'أكثر من نوع واحد لتعريف الخاصيه.',
 	'smw_emptystring' => 'السلاسل الفارغه غير مقبوله.',
-	'smw_maxstring' => 'تمثيل السلسله $1 طويل جدا.',
 	'smw_notinenum' => '"$1" ليس ضمن قائمه القيم الممكنه ($2) لهذه الخاصيه.',
 	'smw_noboolean' => '"$1" غير متعرف عليها كقيمه بووليان (صواب/خطأ).',
 	'smw_true_words' => 'صحيح،ص،نعم،ن',
@@ -1681,7 +1676,6 @@ $messages['be-tarask'] = array(
 	'smw_wrong_namespace' => 'Тут дазволены толькі старонкі з прасторы назваў «$1».',
 	'smw_manytypes' => 'Для ўласьцівасьці вызначана болей аднаго тыпу.',
 	'smw_emptystring' => 'Пустыя радкі не дазволены.',
-	'smw_maxstring' => 'Радковае прадстаўленьне «$1» занадта доўгае.',
 	'smw_notinenum' => '«$1» не ўваходзіць у сьпіс магчымых значэньняў ($2) для гэтай уласьцівасьці.',
 	'smw_noboolean' => '«$1» не зьяўляецца лягічным значэньнем (праўда/няпраўда).',
 	'smw_true_words' => 'праўда,п,так,т',
@@ -1778,8 +1772,8 @@ $messages['be-tarask'] = array(
 	'smw_qc_default' => 'Па змоўчваньні:',
 	'smw_qc_formatopt' => 'Налады фармату',
 	'smw_qc_query_help' => 'Увядзіце запыт з дапамогай формы пададзенай ніжэй для выбару вікі-старонкі па
-Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>), 
-Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>), 
+Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>),
+Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>),
 Назвам(<strong>[[Нямеччына]]</strong>) і Прасторам назваў (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Уласьцівасьць</strong>',
 	'smw_qui_prop' => 'Уласьцівасьць:',
@@ -2045,7 +2039,6 @@ $messages['br'] = array(
 	'smw_wrong_namespace' => 'N\'eo aotreet amañ nemet ar pajennoù eus an esaouenn "$1".',
 	'smw_manytypes' => 'Ouzhpenn ur seurt zo bet termenet evit ar perzh.',
 	'smw_emptystring' => 'Ne zegemerer ket an neudennadoù goullo.',
-	'smw_maxstring' => 'Re hir eo an neudennad $1.',
 	'smw_notinenum' => "« $1 » n'emañ ket er roll talvoudoù posupl ($2) evit ar perzh-mañ.",
 	'smw_noboolean' => 'N\'eo ket anavezet "$1" evel un talvoudenn Boolean (gwir/gaou).',
 	'smw_true_words' => 'gwir,g,ya,true',
@@ -2214,7 +2207,6 @@ $messages['bs'] = array(
 	'smw_iq_moreresults' => '...ostali rezultati',
 	'smw_parseerror' => 'Navedena vrijednost nije razumljiva.',
 	'smw_emptystring' => 'Prazni izrazi nisu prihvatljivi.',
-	'smw_maxstring' => 'Prikazivanje izraza $1 je predugačko.',
 	'smw_nofloat' => '"$1" nije broj.',
 	'smw_nodatetime' => 'Datum "$1" nije razumljiv.',
 	'smw_exportrdf_submit' => 'Izvezi',
@@ -2324,7 +2316,6 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw_wrong_namespace' => 'Aquí només es poden fer servir pàgines en l\'espai de noms "$1".',
 	'smw_manytypes' => "S'ha definit més d'un tipus per la propietat.",
 	'smw_emptystring' => "No s'accepten cadenes buides.",
-	'smw_maxstring' => 'La representació de cadena $1 és massa llarga',
 	'smw_notinenum' => "«$1» no està a la llista de valors possibles ($2) d'aquesta propietat.",
 	'smw_noboolean' => '«$1» no es pot reconèixer com un valor booleà (cert/fals).',
 	'smw_true_words' => 'verdader,vertader,veritat,cert,true,t,sí,s,yes,y',
@@ -2426,9 +2417,9 @@ Té cura que els humans no es tornin en llocs web.',
 	'smw_qc_default' => 'Per defecte:',
 	'smw_qc_formatopt' => 'Opcions de format',
 	'smw_qc_query_help' => 'Introduïu una consulta fent servir el formulari a continuació. Seleccioneu les pàgines wiki en funció de
-Categories (<strong><nowiki>p.ex. [[Categoria:Actor]]</nowiki></strong>), 
-Propietats (<strong><nowiki>p.ex. [[Viu a::Elx]]</nowiki></strong>), 
-Noms (<strong><nowiki>p.ex. [[Lleida]]</nowiki></strong>) i 
+Categories (<strong><nowiki>p.ex. [[Categoria:Actor]]</nowiki></strong>),
+Propietats (<strong><nowiki>p.ex. [[Viu a::Elx]]</nowiki></strong>),
+Noms (<strong><nowiki>p.ex. [[Lleida]]</nowiki></strong>) i
 espais de noms (<strong><nowiki>p.ex. [[Ajuda:+]]</nowiki></strong>)',
 	'smw_qui_property' => '<strong>Propietat</strong>',
 	'smw_qui_prop' => 'Propietat:',
@@ -2642,7 +2633,6 @@ $messages['cs'] = array(
 	'smw_wrong_namespace' => 'Zde jsou povoleny jen stránky ze jmenného prostoru "$1"',
 	'smw_manytypes' => 'Pro vlastnost byl definován více než jeden typ.',
 	'smw_emptystring' => 'Prázdné řetězce nejsou povolené.',
-	'smw_maxstring' => 'Reprezentace řetězce $1 je příliš dlouhá.',
 	'smw_notinenum' => '„$1“ není v seznamu možných hodnot ($2) této vlastnosti.',
 	'smw_noboolean' => '„$1“ nebylo rozpoznáno jako platná hodnota typu boolean (ano/ne).',
 	'smw_nofloat' => '“$1” není číslem.',
@@ -2936,7 +2926,6 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_wrong_namespace' => 'Nur Seiten im Namensraum „$1“ sind hier zulässig.',
 	'smw_manytypes' => 'Dem Attribut wurden mehrere Datentypen zugewiesen.',
 	'smw_emptystring' => 'Leere Zeichenfolgen werden nicht akzeptiert.',
-	'smw_maxstring' => 'Die Zeichenkette „$1“ ist zu lang.',
 	'smw_notinenum' => '„$1“ gehört nicht zu den möglichen Werten dieses Attributs ($2).',
 	'smw_noboolean' => '„$1“ ist kein Wahrheitswert (wahr/falsch).',
 	'smw_true_words' => 'wahr,w,ja,j',
@@ -3280,7 +3269,6 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw_wrong_namespace' => 'Jano boki w mjenjowem rumje "$1" su how dowólone.',
 	'smw_manytypes' => 'Wěcej ako jaden typ za kakosć definěrowany.',
 	'smw_emptystring' => 'Prozne znamješkowe rědy se njeakceptěruju.',
-	'smw_maxstring' => 'Znamješkowy rěd $1 jo pśedłujki.',
 	'smw_notinenum' => '"$1" njejo w lisćinje móžnych gódnotow ($2) za toś tu kakosć.',
 	'smw_noboolean' => '"$1" njejo dowólona gódnota typa Boolean (wěrny/njewěrny).',
 	'smw_true_words' => 'wěrny, w, jo, j',
@@ -3596,7 +3584,6 @@ $messages['el'] = array(
 	'smw_wrong_namespace' => 'Μόνο οι σελίδες που ανήκουν στον ονοματοχώρο «$1» επιτρέπονται εδώ.',
 	'smw_manytypes' => 'Έχουν οριστεί περισσότεροι από έναν τύποι για την ιδιότητα.',
 	'smw_emptystring' => 'Κενές συμβολοσειρές δεν γίνονται δεκτές.',
-	'smw_maxstring' => 'Η αλφαριθμητική αναπαράσταση $1 έχει πολύ μεγάλο μήκος.',
 	'smw_notinenum' => 'Το «$1» δεν είναι στη λίστα πιθανών τιμών ($2) για αυτήν την ιδιότητα.',
 	'smw_noboolean' => 'Το «$1» δεν αναγνωρίζεται ως Μπουλιανή (αληθές/ψευδές) τιμή.',
 	'smw_true_words' => 'αλήθεια,α,ναι,ν',
@@ -3871,7 +3858,6 @@ $messages['eo'] = array(
 	'smw_notitle' => '"$1" ne eblas esti uzata kiel paĝnomo en ĉi tiu vikio.',
 	'smw_manytypes' => 'Pli ol unu tipo estas difinita por atributo.',
 	'smw_emptystring' => 'Malplenaj ĉenoj ne estas akceptitaj.',
-	'smw_maxstring' => 'Ĉena reprezentado $1 estas tro longa.',
 	'smw_notinenum' => '"$1" ne estas en la listo de eblaj valoroj ($2) por ĉi tiu atributo.',
 	'smw_noboolean' => '"$1" ne estas agnoskita kiel Bulea (vera/falsa) valoro.',
 	'smw_true_words' => 'vera,v,jes,j',
@@ -4058,7 +4044,6 @@ Si el problema persiste después de pasado algún tiempo, solicita al administra
 	'smw_wrong_namespace' => 'Solamente paginas en espacio de nombre "$1" estan permitidas aqui.',
 	'smw_manytypes' => 'Demasiados tipos de datos han sido asignados al atributo.',
 	'smw_emptystring' => 'No se aceptan cadenas vacías.',
-	'smw_maxstring' => 'La representación de la cadena $1 es demasiado grande.',
 	'smw_notinenum' => '"$1" no esta en la lista de posibles valores ($2) para este atributo.',
 	'smw_noboolean' => '"$1" no es reconocido como un valor booleano (verdadero/falso).',
 	'smw_true_words' => 'verdadero,t,si,s,true',
@@ -4531,7 +4516,6 @@ $messages['fi'] = array(
 	'smw_wrong_namespace' => 'Vain nimiavaruuden "$1" sivut sallitaan tässä.',
 	'smw_manytypes' => 'Ominaisuudelle on määritelty useampi kuin yksi tyyppi.',
 	'smw_emptystring' => 'Tyhjiä merkkijonoja ei hyväksytä.',
-	'smw_maxstring' => 'Merkkijonon esitysmuoto $1 on liian pitkä.',
 	'smw_notinenum' => '"$1" ei ole tämän ominaisuuden sallittujen arvojen luettelossa ($2).',
 	'smw_noboolean' => '”$1” ei ole tunnistettavissa totuusarvoksi.',
 	'smw_true_words' => 'kyllä,k,y',
@@ -4858,7 +4842,6 @@ $messages['fr'] = array(
 	'smw_wrong_namespace' => 'Seules les pages dans l’espace « $1 » sont autorisées ici.',
 	'smw_manytypes' => 'Plusieurs types de données ont été assignés à cette propriété.',
 	'smw_emptystring' => 'Les chaînes vides ne sont pas acceptées.',
-	'smw_maxstring' => 'La chaîne de représentation $1 est trop grande.',
 	'smw_notinenum' => '« $1 » ne fait pas partie des valeurs possibles ($2) pour cette propriété.',
 	'smw_noboolean' => '« $1 » n’est pas reconnu comme valeur booléenne (vrai/faux).',
 	'smw_true_words' => 'vrai,v,oui,true',
@@ -5029,10 +5012,10 @@ Retour à $1.',
 Aucune action n'a été prise.
 
 Retour à $1.",
-	'smw_smwadmin_updatestopped' => 'Tous les processus de mise à jour existantes ont été arrêtés. 
+	'smw_smwadmin_updatestopped' => 'Tous les processus de mise à jour existantes ont été arrêtés.
 
 Retour à  $1 .',
-	'smw_smwadmin_updatenotstopped' => 'Pour arrêter le processus de mise à jour en cours, vous devez activer la case à cocher pour indiquer que vous êtes vraiment sûr. 
+	'smw_smwadmin_updatenotstopped' => 'Pour arrêter le processus de mise à jour en cours, vous devez activer la case à cocher pour indiquer que vous êtes vraiment sûr.
 
 Revenir à $1.',
 	'smw_smwadmin_docu' => 'Cette page spéciale vous aide pendant l’installation et la mise à niveau de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
@@ -5352,7 +5335,6 @@ $messages['gl'] = array(
 	'smw_wrong_namespace' => 'Aquí só están permitidas as páxinas no espazo de nomes "$1".',
 	'smw_manytypes' => 'Máis dun tipo definido para a propiedade.',
 	'smw_emptystring' => 'As cordas baleiras non están aceptadas.',
-	'smw_maxstring' => 'A representación da corda $1 é demasiado longa.',
 	'smw_notinenum' => '"$1" non é a lista de posibles valores ($2) para esta propiedade.',
 	'smw_noboolean' => '"$1" non é recoñecido como un valor booleano (verdadeiro/falso).',
 	'smw_true_words' => 'verdadeiro,v,si,s',
@@ -5680,7 +5662,6 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_wrong_namespace' => 'Nume Syten im Namensruum „$1“ sin doo zuelässig.',
 	'smw_manytypes' => 'In dr Eigeschaft sin e paar Datetype zuegwise wore.',
 	'smw_emptystring' => 'Lääri Zeichefolge wäre nit akzeptiert.',
-	'smw_maxstring' => 'D Zeichechette „$1“ isch z lang.',
 	'smw_notinenum' => '„$1“ ghert nit zue dr meglige Wärt vu däre Eigeschaft ($2).',
 	'smw_noboolean' => '„$1“ isch kei Wohretswärt (wohr/falsch).',
 	'smw_true_words' => 'wohr,w,jo,j',
@@ -5904,7 +5885,6 @@ $messages['he'] = array(
 	'smw_wrong_namespace' => 'רק דפים ממרחב השם "$1" מורשים כאן.',
 	'smw_manytypes' => 'הוגדר יותר מסוג אחד למאפיין זה.',
 	'smw_emptystring' => '[אופס! לא ניתן להשתמש כאן במחרוזות ריקות]',
-	'smw_maxstring' => 'ייצוג המחרוזת $1 ארוך מדי.',
 	'smw_notinenum' => '"$1" אינו אחד הערכים האפשריים ($2) למאפיין זה.',
 	'smw_noboolean' => '[אופס! "$1" אינו מאפיין מסוג נכון-לאנכון]',
 	'smw_true_words' => 'true,t,yes,y,כן,נכון,אמת,חיובי,כ',
@@ -6160,7 +6140,6 @@ $messages['hr'] = array(
 	'smw_wrong_namespace' => 'Ovdje su dozvoljene samo stranice iz imenskog prostora "$1".',
 	'smw_manytypes' => 'Za svojstvo je definirano više od jednog tipa.',
 	'smw_emptystring' => 'Prazni nizovi se ne prihvaćaju.',
-	'smw_maxstring' => 'Reprezentacija niza $1 je predugačka.',
 	'smw_notinenum' => '"$1" nije na popisu dozvoljenih vrijednosti ($2) za ovo svojstvo.',
 	'smw_noboolean' => '"$1" nije prepoznat kao booleovska vrijednost ("true/false" odn. istina/laž).',
 	'smw_true_words' => 'true,t,yes,y,istina,i,da,d',
@@ -6193,11 +6172,11 @@ Rezultati možda neće biti odgovarajući.',
 	'smw_concept_header' => 'Stranice koncepta "$1"',
 	'smw_conceptarticlecount' => 'Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu.',
 	'exportrdf' => 'Izvezi stranice u RDF',
-	'smw_exportrdf_docu' => 'Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu. 
+	'smw_exportrdf_docu' => 'Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu.
 Da biste izvezli stranice unesite njihove naslove u prozor za uređivanje ispod, jedan naslov po retku.',
 	'smw_exportrdf_recursive' => 'Rekurzivno izvezi sve srodne stranice.
 Imajte na umu da bi rezultat mogao biti velik!',
-	'smw_exportrdf_backlinks' => 'Također izvezi sve stranice koje se referenciraju na izvezene stranice. 
+	'smw_exportrdf_backlinks' => 'Također izvezi sve stranice koje se referenciraju na izvezene stranice.
 Generira RDF za pregled i pretraživanje.',
 	'smw_exportrdf_lastdate' => 'Ne izvozi stranice koje nisu izmijenjene od navedenog datuma.',
 	'smw_exportrdf_submit' => 'Izvezi',
@@ -6403,7 +6382,6 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw_wrong_namespace' => 'Jenož strony w mjenowym rumje "$1" su tu dowolene.',
 	'smw_manytypes' => 'Za kajkosć bu wjace hač jeden typ definowany.',
 	'smw_emptystring' => 'Prózdne znamješkowe slědy so njeakceptuja.',
-	'smw_maxstring' => 'Znamješkowy slěd $1 je předołhi.',
 	'smw_notinenum' => '"$1" w lisćinje móžnych hódnotow ($2) za tutu kajkosć njeje.',
 	'smw_noboolean' => '"$1" płaćiwa hódnota typa boolean (wěrny/njewěrny) njeje.',
 	'smw_true_words' => 'wěrny, haj, true',
@@ -6502,8 +6480,8 @@ Stara so wo to, zo so ludźo z websydłami njestanu.',
 	'smw_qc_outro' => 'Naslědny tekst:',
 	'smw_qc_default' => 'Standard:',
 	'smw_qc_formatopt' => 'Formatowe opcije',
-	'smw_qc_query_help' => 'Prošu wutwor naprašowanje z pomocu slědowaceho formulara. Wubjer wikistrony na zakładźe kategorijow (<strong><nowiki>na př. [[Category:Dźiwadźelnik]]</nowiki></strong>), 
-kajkosćow (<strong><nowiki>na př. [[Leži w::Němskej]]</nowiki></strong>), 
+	'smw_qc_query_help' => 'Prošu wutwor naprašowanje z pomocu slědowaceho formulara. Wubjer wikistrony na zakładźe kategorijow (<strong><nowiki>na př. [[Category:Dźiwadźelnik]]</nowiki></strong>),
+kajkosćow (<strong><nowiki>na př. [[Leži w::Němskej]]</nowiki></strong>),
 mjenow (<strong><nowiki>na př. [[Němska]]</nowiki></strong>) a mjenowych rumow (<strong>[[{{ns:help}}:+]]</strong>)',
 	'smw_qui_property' => '<strong>Kajkosć</strong>',
 	'smw_qui_prop' => 'Kajkosć:',
@@ -6659,7 +6637,6 @@ $messages['ht'] = array(
 	'smw_notitle' => 'Nou pa kapab itilize "$1" tankou non yon paj nan wiki sa.',
 	'smw_manytypes' => 'Plizyè tip done pase  nan atribi.',
 	'smw_emptystring' => 'Chèn mo ou bay an pa dwe vid.',
-	'smw_maxstring' => 'Chèn reprezantasyon $1 an two long.',
 	'smw_notinenum' => '"$1" pa nan lis valè posib pou ($2) pou atribi, pwopryete a.',
 	'smw_noboolean' => '"$1" pa rekonèt tankou yon valè bouleyen (vre/fo).',
 	'smw_true_words' => 'vre,v,wi,w',
@@ -6739,7 +6716,6 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_wrong_namespace' => 'Csak a(z) „$1” névtérbeli lapok engedélyezettek itt.',
 	'smw_manytypes' => 'Egynél több megadott típus a tulajdonsághoz.',
 	'smw_emptystring' => 'Üres sztringek nem elfogadhatóak.',
-	'smw_maxstring' => 'A(z) „$1” szöveges reprezentáció túl hosszú.',
 	'smw_notinenum' => '„$1” nincs a lehetséges értékek listájában ($2) ehhez a tulajdonsághoz.',
 	'smw_noboolean' => '„$1” nem értelmezhető mint logikai (igaz/hamis) érték',
 	'smw_true_words' => 'igaz,igen,i',
@@ -7007,7 +6983,6 @@ $messages['ia'] = array(
 	'smw_wrong_namespace' => 'Solmente le paginas in le spatio de nomines "$1" es permittite hic.',
 	'smw_manytypes' => 'Plus de un typo definite pro proprietate.',
 	'smw_emptystring' => 'Series de characteres vacue non es acceptate.',
-	'smw_maxstring' => 'Le representation de serie de characteres $1 es troppo longe.',
 	'smw_notinenum' => '"$1" non es in le lista de valores possibile ($2) pro iste proprietate.',
 	'smw_noboolean' => '"$1" non es recognoscite como un valor boolean (ver/false).',
 	'smw_true_words' => 'ver,v,si,s',
@@ -7106,9 +7081,9 @@ Illo assecura que le humanos non se transforma in sitos web.',
 	'smw_qc_outro' => 'Postfacio:',
 	'smw_qc_default' => 'Predefinition:',
 	'smw_qc_formatopt' => 'Optiones de formato',
-	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de 
-Categorias (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Proprietates (<strong>[[Localisate in::Germania]]</strong>), 
+	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de
+Categorias (<strong>[[{{ns:category}}:Actor]]</strong>),
+Proprietates (<strong>[[Localisate in::Germania]]</strong>),
 Nomines (<strong>[[Germania]]</strong>) e Spatios de nomines (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Proprietate</strong>',
 	'smw_qui_prop' => 'Proprietate:',
@@ -7302,7 +7277,6 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw_wrong_namespace' => 'Hanya halaman pada ruang nama "$1" yang diizinkan di sini.',
 	'smw_manytypes' => 'Lebih dari satu tipe yang ditetapkan untuk properti.',
 	'smw_emptystring' => 'Untaian kosong tidak diterima.',
-	'smw_maxstring' => 'Representasi untaian $1 terlalu panjang.',
 	'smw_notinenum' => '"$1" tidak ada dalam daftar kemungkinan nilai ($2) untuk properti ini.',
 	'smw_noboolean' => '"$1" tidak dikenali sebagai suatu nilai Boolean (true/false)',
 	'smw_true_words' => 'benar,t,ya,y',
@@ -7565,7 +7539,6 @@ $messages['it'] = array(
 	'smw_wrong_namespace' => 'Qui sono consentite solo pagine del namespace "$1".',
 	'smw_manytypes' => 'È stato definito più di un tipo per la proprietà.',
 	'smw_emptystring' => 'Le stringhe vuote non sono accettate.',
-	'smw_maxstring' => 'La stringa $1 è troppo lunga.',
 	'smw_notinenum' => '"$1" non è nella lista dei valori possibili ($2) per questa proprietà.',
 	'smw_noboolean' => '“$1” non &egrave; riconosciuto come valore Booleano (vero/falso).',
 	'smw_true_words' => 'vero,v,si,s,true,t,yes,y',
@@ -7846,7 +7819,6 @@ $messages['ja'] = array(
 	'smw_wrong_namespace' => 'ここでは、「$1」名前空間のページのみが許可されています。',
 	'smw_manytypes' => 'プロパティに対して複数の型を定義しました。',
 	'smw_emptystring' => '空文字列は受け入れられません。',
-	'smw_maxstring' => '文字列表現 $1 は長すぎます。',
 	'smw_notinenum' => '「$1」は、このプロパティが取りうる値 ($2) の一覧にありません。',
 	'smw_noboolean' => '「$1」はブール値 (真/偽) として認識されません。',
 	'smw_true_words' => 'true,t,yes,y',
@@ -8094,7 +8066,6 @@ $messages['jv'] = array(
 	'smw_notitle' => '“$1” ora bisa dienggo minangka jeneng kaca ing wiki iki.',
 	'smw_manytypes' => 'Sifaté didéfinisi luwih saka sajenis.',
 	'smw_emptystring' => 'Rangkéan kosong ora ditampa.',
-	'smw_maxstring' => 'Répresèntasi string $1 kedawan.',
 	'smw_notinenum' => '“$1” ora ana ing daftar bijih-bijih sing mungkin ($2) kanggo sifat iki.',
 	'smw_noboolean' => '“$1” ora ditepungi minangka sawijining bijih Boolean (bener/salah).',
 	'smw_true_words' => 'bener,t,ya,y',
@@ -8479,7 +8450,6 @@ $messages['ko'] = array(
 	'smw_wrong_namespace' => '"$1" 이름공간의 문서만 여기에 허용합니다.',
 	'smw_manytypes' => '속성에 정의한 하나 이상의 유형입니다.',
 	'smw_emptystring' => '빈 문자열은 허용하지 않습니다.',
-	'smw_maxstring' => '$1 문자열 표현이 너무 깁니다.',
 	'smw_notinenum' => '"$1"(은)는 이 속성에 대한 가능한 값($2)의 목록에 없습니다.',
 	'smw_noboolean' => '"$1"(은)는 부울(참/거짓) 값으로 인식하지 않습니다.',
 	'smw_true_words' => 'true,t,yes,y',
@@ -8769,7 +8739,6 @@ Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.
 	'smw_wrong_namespace' => 'Bloß Sigge uß däm Appachtemang „$1“ sin hee zohjelohße.',
 	'smw_manytypes' => 'Di Eijeschaff es en mieh wi ein Zoot dren.',
 	'smw_emptystring' => 'De jonn kei Reihe uß Boochstabe un Zeishe, woh nit ens ei dofun dren shteiht. Alsu nit leddesch lohße.',
-	'smw_maxstring' => '„$1“ es zoh lang, en Boochshtabe ußjedröck.',
 	'smw_notinenum' => '„$1“ es nit bei dä zohjeloße Wääte för di Eijeschaff, dat wöhre: $2',
 	'smw_noboolean' => '„$1“ es keine vun dä Wääte för „wohr“ un „verkeeht“.',
 	'smw_true_words' => 'wohr,wor,woo,woh,wo,w,j,jo,joh,true,t,yes,y',
@@ -9001,7 +8970,6 @@ $messages['lb'] = array(
 	'smw_notitle' => '"$1" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.',
 	'smw_wrong_namespace' => 'Nëmme Säiten aus dem Nummraum "$1" sinn hei erlaabt.',
 	'smw_emptystring' => 'Eidel Zeeche ginn net akzeptéiert.',
-	'smw_maxstring' => "D'Zeecheketten $1 ass ze laang.",
 	'smw_notinenum' => '"$1" ass net an der Lëscht vun de méigleche Wäerter ($2) fir dës Eegeschaft.',
 	'smw_true_words' => 'wouer,w,jo,j',
 	'smw_false_words' => 'falsch,f,neen,n',
@@ -9145,7 +9113,7 @@ $messages['lt'] = array(
 	'smw_concept_description' => 'Sąvokos "$1" aprašymas',
 	'smw_no_concept_namespace' => 'Sąvokos gali būti apibrėžtos tik Concept: vardų srities puslapiuose.',
 	'smw_multiple_concepts' => 'Kiekviename sąvokos aprašymo puslapyje gali turėti tik vieną sąvokos apibrėžimą.',
-	'smw_concept_cache_miss' => 'Sąvoka "$1" negali būti naudojamas šiuo metu, nes wiki konfigūracija reikalauja ją apskaičiuoti off-line. 
+	'smw_concept_cache_miss' => 'Sąvoka "$1" negali būti naudojamas šiuo metu, nes wiki konfigūracija reikalauja ją apskaičiuoti off-line.
 Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administratorių, kad šią sąvoką padarytų prieinamą.',
 	'smw_noinvannot' => 'Reikšmės negali būti priskiriamos atvirkštinei savybei.',
 	'version-semantic' => 'Semantiniai praplėtimai',
@@ -9184,7 +9152,6 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_wrong_namespace' => 'Čia leidžiami tik puslapiai, priklausantys vardų sričiai "$1".',
 	'smw_manytypes' => 'Savybei apibrėžtas daugiau negu vienas tipas.',
 	'smw_emptystring' => 'Tuščios eilutės yra nepriimtinos.',
-	'smw_maxstring' => 'Simbolių eilutė $1 yra per ilga.',
 	'smw_notinenum' => '"$1" nėra šios savybės galimų reikšmių sąraše ($2).',
 	'smw_noboolean' => '"$1" nėra pripažįstama kaip loginė (true / false) vertė.',
 	'smw_true_words' => 'tiesa,t,taip,yes,y',
@@ -9196,7 +9163,7 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_toomanyclosing' => 'Atrodo, kad yra per daug elementų "$1" užklausoje.',
 	'smw_noclosingbrackets' => 'Kažkuris panaudojimas "<nowiki>[[</nowiki>" jūsų užklausoje nebuvo uždaryta atitikimo "]]".',
 	'smw_misplacedsymbol' => 'Simbolis "$1" buvo panaudotas toje vietoje, kurioje jis nėra naudojamas.',
-	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta. 
+	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta.
 Rezultatas gali būti ne tas, kurio tikėtasi.',
 	'smw_emptysubquery' => 'Kai kurios užklausos dalys turi blogas sąlygas.',
 	'smw-createproperty-isproperty' => 'Tai yra „$1“ tipo savybė.',
@@ -9320,7 +9287,6 @@ $messages['mk'] = array(
 	'smw_wrong_namespace' => 'Тука се дозвоени само страници во именскиот простор „$1“.',
 	'smw_manytypes' => 'За својството е определен повеќе од еден тип.',
 	'smw_emptystring' => 'Не се прифаќаат празни низи.',
-	'smw_maxstring' => 'Низната претстава $1 е предолга.',
 	'smw_notinenum' => '„$1“ не е на списокот на можни вредности ($2) за ова својство.',
 	'smw_noboolean' => '„$1“ не претставува Булова вредност (точно/неточно).',
 	'smw_true_words' => 'вистина,да,в,д,true,t,yes,y',
@@ -9622,7 +9588,6 @@ $messages['mr'] = array(
 	'smw_notitle' => 'या विकिवर “$1” हे पानाच्या शीर्षकात वापरता येत नाही.',
 	'smw_manytypes' => 'गुणधर्माला एकापेक्षा जास्त प्रकार दिलेले आहेत.',
 	'smw_emptystring' => 'रिकाम्या किंमती वापरता येत नाहीत.',
-	'smw_maxstring' => '{{SITENAME}} साठी $1 हे स्ट्रींग रिप्रेझेंटेशन खूप लांब आहे.', # Fuzzy
 	'smw_notinenum' => 'या गुणधर्माच्या योग्य किंमतींच्या ($2) यादीत “$1” नाही आहे.',
 	'smw_noboolean' => '“$1” ही योग्य बुलियन (बरोबर/चूक) किंमत नाही.',
 	'smw_true_words' => 'बरोबर,t,हो,y',
@@ -9879,7 +9844,6 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw_wrong_namespace' => 'Kun sider i navnerommet «$1» er tillatte her.',
 	'smw_manytypes' => 'Mer enn én type definert for egenskapen.',
 	'smw_emptystring' => 'Tomme strenger godtas ikke.',
-	'smw_maxstring' => 'Strengrepresentasjonen $1 er for lang.',
 	'smw_notinenum' => '«$1» er ikke i listen over mulige verdier ($2) for denne egenskapen.',
 	'smw_noboolean' => '«$1» gjenkjennes ikke som en Boolean-verdi (true/false).',
 	'smw_true_words' => 'true,t,yes,y,ja,j,sant,s',
@@ -9975,8 +9939,8 @@ Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'smw_qc_default' => 'Tomspørringstekst:',
 	'smw_qc_formatopt' => 'Formatvalg',
 	'smw_qc_query_help' => 'Legg inn en spørring ved hjelp av skjemaet under. Velg wikisider basert på
-Kategorier (<strong>[[{{ns:category}}:Actor]]</strong>), 
-Egenskaper (<strong>[[Located in::Germany]]</strong>), 
+Kategorier (<strong>[[{{ns:category}}:Actor]]</strong>),
+Egenskaper (<strong>[[Located in::Germany]]</strong>),
 Navn (<strong>[[Germany]]</strong>) og navnerom (<strong>[[{{ns:help}}:+]]</strong>)', # Fuzzy
 	'smw_qui_property' => '<strong>Egenskap</strong>',
 	'smw_qui_prop' => 'Egenskap:',
@@ -10193,7 +10157,6 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_wrong_namespace' => 'Hier zijn alleen pagina\'s uit de naamruimte "$1" toegestaan.',
 	'smw_manytypes' => 'Meer dan één type gedefinieerd voor eigenschap.',
 	'smw_emptystring' => 'Lege strings zijn niet toegestaan.',
-	'smw_maxstring' => 'De stringrepresentatie $1 is te lang.',
 	'smw_notinenum' => '"$1" komt niet voor in de lijst met mogelijke waarden ($2) voor deze eigenschap.',
 	'smw_noboolean' => '"$1" is niet herkend als een booleaanse waarde (waar/onwaar).',
 	'smw_true_words' => 'waar,w,ja,j,true',
@@ -10473,7 +10436,6 @@ Om problemet ikkje går vekk etter noko tid, be sideadministratoren om å gjera 
 	'smw_wrong_namespace' => 'Berre sider i namnerommet «$1» er tillatne her.',
 	'smw_manytypes' => 'Meir enn éin type definert for eigenskapen.',
 	'smw_emptystring' => 'Tomme strenger blir ikkje godtekne.',
-	'smw_maxstring' => 'Strengerepresenteringa $1 er for lang.',
 	'smw_notinenum' => '«$1» er ikkje i lista over moglege verdiar ($2) for denne eigenskapen.',
 	'smw_noboolean' => '«$1» blir ikkje kjend att som ein Boolean-verdi (sant/usant).',
 	'smw_true_words' => 'true,t,yes,y,ja,j,sant,s',
@@ -10663,7 +10625,6 @@ $messages['oc'] = array(
 	'smw_wrong_namespace' => "Solas las paginas de l'espaci de noms « $1 » son autorizadas aicí.",
 	'smw_manytypes' => "Maites tipes de donadas son estats assignats a l'atribut.",
 	'smw_emptystring' => 'Las cadenas voidas son pas acceptadas.',
-	'smw_maxstring' => 'La cadena de representacion $1 es tròp granda.',
 	'smw_notinenum' => '\\"$1\\" fa pas partida de las valors possiblas ($2) per aqueste atribut.',
 	'smw_noboolean' => '\\"$1\\" es pas reconegut coma una valor boleana (verai/fals).',
 	'smw_true_words' => 'verai,v,òc,true',
@@ -10925,7 +10886,6 @@ $messages['pl'] = array(
 	'smw_wrong_namespace' => 'Dozwolone są tutaj tylko strony z przestrzeni nazw „$1”.',
 	'smw_manytypes' => 'Zdefiniowano więcej niż jeden typ dla atrybutu.',
 	'smw_emptystring' => 'Puste łańcuchy znakowe są niedozwolone.',
-	'smw_maxstring' => 'Reprezentacja znakowa $1 jest zbyt długa.',
 	'smw_notinenum' => '“$1” nie jest na liście dozwolonych wartości ($2) dla tego atrybutu.',
 	'smw_noboolean' => '“$1” nie zostało rozpoznane jako wartość logiczna (prawda/fałsz).',
 	'smw_true_words' => 'prawda,t,yes,y,tak,true',
@@ -11100,11 +11060,11 @@ Nie rejestrujemy wiki, które nie są publicznie dostępne. Zapisujemy wyłączn
 	'smw_smwadmin_datarefresh' => 'Naprawa i aktualizacja danych',
 	'smw_smwadmin_datarefreshdocu' => 'Istnieje możliwość przywrócenia wszystkich danych Semantic MediaWiki w oparciu o aktualną zawartość wiki.
 Może to być przydatne do naprawy uszkodzonych danych lub odświeżenia danych, jeśli wewnętrzny format zmienił się z powodu jakichś aktualizacji oprogramowania.
-Aktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychmiast. 
+Aktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychmiast.
 Poniżej przedstawiono, czy aktualizacja jest w toku. Można również uruchomić lub zatrzymać aktualizację (chyba, że ta funkcja została wyłączona przez administratora).',
-	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacja trwa.</strong> 
-To normalne, że aktualizacja postępuje powoli, gdyż odświeżanie danych wykonywane jest w małymi porcjami za każdym razem, gdy użytkownik korzysta z wiki. 
-Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <tt>runJobs.php</tt> (użyj opcji <tt>--maxjobs 1000</tt>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia). 
+	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacja trwa.</strong>
+To normalne, że aktualizacja postępuje powoli, gdyż odświeżanie danych wykonywane jest w małymi porcjami za każdym razem, gdy użytkownik korzysta z wiki.
+Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <tt>runJobs.php</tt> (użyj opcji <tt>--maxjobs 1000</tt>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia).
 Przewidywany postęp bieżącej aktualizacji:',
 	'smw_smwadmin_datarefreshbutton' => 'Rozpocznij aktualizację danych',
 	'smw_smwadmin_datarefreshstop' => 'Zatrzymaj aktualizację danych',
@@ -11215,7 +11175,6 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_wrong_namespace' => "Mach le pàgine ant lë spassi nominal ''$1'' a son possìbij ambelessì.",
 	'smw_manytypes' => 'Pi che un tipo definì për proprietà.',
 	'smw_emptystring' => 'Stringhe veuide a son pa acetà.',
-	'smw_maxstring' => "La rapresentassion dë stringa $1 a l'é tròp longa.",
 	'smw_notinenum' => "''$1'' a l'é pa ant la lista dij valor possìbij ($2) për sta proprietà-sì.",
 	'smw_noboolean' => "''$1'' a l'é pa arconossù 'me valor Boolean (ver/fàuss).",
 	'smw_true_words' => 'ver,v,é!,é',
@@ -11574,7 +11533,6 @@ $messages['pt'] = array(
 	'smw_wrong_namespace' => 'Só são permitidas aqui páginas do espaço nominal "$1".',
 	'smw_manytypes' => 'Foi definido mais de um tipo para a propriedade.',
 	'smw_emptystring' => 'Não são aceites textos vazios.',
-	'smw_maxstring' => 'A representação do texto $1 é demasiado longa.',
 	'smw_notinenum' => '“$1” não está na lista dos valores possíveis ($2) para esta propriedade.',
 	'smw_noboolean' => '“$1” não é reconhecido como um valor booleano (verdadeiro/falso).',
 	'smw_true_words' => 'verdadeiro,v,sim,s',
@@ -11665,7 +11623,7 @@ As propriedades que não têm uma página própria podem ser encontradas na [[Sp
 	'smw_qc_default' => 'Padrão:',
 	'smw_qc_query_help' => 'Introduza uma consulta usando o formulário abaixo. Seleccione páginas da wiki com base em
 Categorias (<strong><nowiki>ex. [[Categoria:Actor]]</nowiki></strong>),
-Propriedades (<strong><nowiki>ex. [[Localizada em::Angola]]</nowiki></strong>), 
+Propriedades (<strong><nowiki>ex. [[Localizada em::Angola]]</nowiki></strong>),
 Nomes (<strong><nowiki>ex. [[Cabo Verde]]</nowiki></strong>) e
 Espaços nominais (<strong><nowiki>ex. [[Ajuda:+]]</nowiki></strong>),',
 	'smw_qui_property' => '<strong>Propriedade</strong>',
@@ -11787,7 +11745,7 @@ $messages['pt-br'] = array(
 	'smw_concept_description' => 'Descrição do conceito "$1"',
 	'smw_no_concept_namespace' => 'Conceitos só podem ser definidos em páginas no domínio Conceito:.',
 	'smw_multiple_concepts' => 'Cada página de conceito pode ter apenas uma definição de conceito.',
-	'smw_concept_cache_miss' => 'O conceito "$1" não pode ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line. 
+	'smw_concept_cache_miss' => 'O conceito "$1" não pode ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line.
 Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça a um administrador deste wiki que este conceito seja disponibilizado.',
 	'smw_noinvannot' => 'Valores não podem ser atribuídos a propriedades inversas.',
 	'version-semantic' => 'Extensões semânticas',
@@ -11858,7 +11816,6 @@ Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça
 	'smw_wrong_namespace' => 'Apenas páginas no domínio "$1" são permitidas aqui.',
 	'smw_manytypes' => 'Mais de um tipo definido para a propriedade.',
 	'smw_emptystring' => 'Cadeias de caracteres vazias não são aceitas.',
-	'smw_maxstring' => 'A cadeia de caracteres $1 é longa demais.',
 	'smw_notinenum' => '"$1" não está na lista de valores possíveis ($2) para esta propriedade.',
 	'smw_noboolean' => '"$1" não é reconhecido como um valor Booleano (verdadeiro/falso).',
 	'smw_true_words' => 'verdadeiro,v,sim,s',
@@ -11924,7 +11881,7 @@ Gera RDF navegável.',
 '''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} sua própria página, e o tipo de dados pretendido está especificado para '''$4''' delas.
 Algumas das propriedades existentes podem estar [[Special:UnusedProperties|sem uso]].
 As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
-	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. 
+	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>.
 Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'ask' => 'Busca semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
@@ -11960,8 +11917,8 @@ Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'smw_qc_formatopt' => 'Opções de formato',
 	'smw_qc_query_help' => 'Introduza uma consulta utilizando o formulário abaixo. Selecione páginas wiki com base em
 Categorias (<strong><nowiki>por exemplo: [[Categoria:Ator]]</nowiki></strong>),
-Propriedades (<strong><nowiki>por exemplo: [[Localizado em::Brasil]]</nowiki></strong>), 
-Nomes (<strong><nowiki>por exemplo: [[Portugal]]</nowiki></strong>) e 
+Propriedades (<strong><nowiki>por exemplo: [[Localizado em::Brasil]]</nowiki></strong>),
+Nomes (<strong><nowiki>por exemplo: [[Portugal]]</nowiki></strong>) e
 Domínios (<strong><nowiki>por exemplo: [[Ajuda:+]]</nowiki></strong>)',
 	'smw_qui_property' => '<strong>Propriedade</strong>',
 	'smw_qui_prop' => 'Propriedade:',
@@ -12372,7 +12329,6 @@ $messages['ru'] = array(
 	'smw_wrong_namespace' => 'Здесь допустимы только страницы из пространства имён «$1».',
 	'smw_manytypes' => 'Более одного типа определено для свойства.',
 	'smw_emptystring' => 'Пустые строки недопустимы.',
-	'smw_maxstring' => 'Строковое представление $1 слишком длинное.',
 	'smw_notinenum' => '"$1" не входит в список допустимых значений ($2) для этого свойства.',
 	'smw_noboolean' => '"$1" не является булевым значением (да/нет).',
 	'smw_true_words' => 'да,t,yes,д,истина,и,true',
@@ -12656,7 +12612,6 @@ $messages['si'] = array(
 	'smw_parseerror' => 'ලබා දුන් අගය තේරුම්ගත නොහැක.',
 	'smw_manytypes' => 'වත්කම සඳහා වර්ගයන් එකකට වඩා අර්ථ දක්වා ඇත.',
 	'smw_emptystring' => 'හිස් තන්තු බාරගනු නොලැබේ.',
-	'smw_maxstring' => '$1 තන්තු නිරූපණය දිග වැඩියි.',
 	'smw_true_words' => 'true,t,yes,y',
 	'smw_false_words' => 'false,f,no,n',
 	'smw_nofloat' => '"$1" යනු ඉලක්කමක් නොවේ.',
@@ -12838,7 +12793,6 @@ $messages['sk'] = array(
 	'smw_wrong_namespace' => 'Sú tu povolené iba stránky v mennom priestore „$1”.',
 	'smw_manytypes' => 'Pre atribút bol definovaný viac ako jeden typ.',
 	'smw_emptystring' => 'Prázdne reťazcie nie sú akceptované.',
-	'smw_maxstring' => 'Reprezentácia reťazca $1 je príliš dlhá.',
 	'smw_notinenum' => '„$1“ nie je v zozname možných hodnôt ($2) tejto vlastnosti.',
 	'smw_noboolean' => '"$1" nebolo rozpoznané ako platná hodnota typy boolean (áno/nie).',
 	'smw_true_words' => 'áno,true',
@@ -12853,7 +12807,7 @@ $messages['sk'] = array(
 Výsledky nemusia byť podľa očakávaní.',
 	'smw_emptysubquery' => 'Niektorá subpožiadavka nemá platný stav.',
 	'smw_misplacedsubquery' => 'Niektorá subpožiadavka bola použitá na mieste, kde nie sú povolené subpožiadavky.',
-	'smw_valuesubquery' => 'Subpožiadavky nie sú podporované pre hodnoty vlastnosti „$1“.',
+	'smw_valuesubquery' => 'Podpožiadavky nie sú podporované pre hodnoty vlastnosti „$1“.',
 	'smw_badqueryatom' => 'Niektorá časť „<nowiki>[[…]]</nowiki>“ nebola pochopená.',
 	'smw_propvalueproblem' => 'Hodnota vlastnosti „$1“ nebola pochopená.',
 	'smw_noqueryfeature' => 'Táto wiki nepodporuje istú časť požiadavky a jej časť bola ignorovaná ($1).',
@@ -13215,7 +13169,6 @@ $messages['sr-ec'] = array(
 	'smw_wrong_namespace' => 'Само странице из именског простора "$1" су дозвољене овде.',
 	'smw_manytypes' => 'Више од једног типа је дефинисано за ову особину.',
 	'smw_emptystring' => 'Празни стрингови нису прихватљиви.',
-	'smw_maxstring' => 'Текстуална представа $1 је предугачка.',
 	'smw_notinenum' => '"$1" није на списку могућих вредности ($2) за ову особину.',
 	'smw_noboolean' => '"$1" није препознат као Болова вредност (истинито/неистинито).',
 	'smw_true_words' => 'истинито, и, да, д',
@@ -13427,7 +13380,6 @@ Ako problem ne nestane za neko vreme, zatražite od administratora sajta da uči
 	'smw_wrong_namespace' => 'Samo stranice iz imenskog prostora "$1" su dozvoljene ovde.',
 	'smw_manytypes' => 'Više od jednog tipa je definisano za ovu osobinu.',
 	'smw_emptystring' => 'Prazni stringovi nisu prihvatljivi.',
-	'smw_maxstring' => 'Tekstualna predstava $1 je predugačka.',
 	'smw_notinenum' => '"$1" nije na spisku mogućih vrednosti ($2) za ovu osobinu.',
 	'smw_noboolean' => '"$1" nije prepoznat kao Bolova vrednost (istinito/neistinito).',
 	'smw_true_words' => 'istinito, i, da, d',
@@ -13680,7 +13632,6 @@ Om problemet inte försvinner efter någon tid, så be din administratör att g�
 	'smw_wrong_namespace' => 'Endast sidor i namnrymden "$1" tillåts här.',
 	'smw_manytypes' => 'Mer än en typ definierad för egenskapen.',
 	'smw_emptystring' => 'Tomma stränger accepteras inte.',
-	'smw_maxstring' => 'Strängrepresentationen $1 är för lång.',
 	'smw_notinenum' => '"$1" är inte i listan över möjliga värden ($2) för den här egenskapen.',
 	'smw_noboolean' => '"$1" är inte ett giltigt booleskt värde (sant/falskt).',
 	'smw_true_words' => 'sant,s,ja,j',
@@ -14183,7 +14134,6 @@ Kapag hindi nawala/naalis ang suliranin makalipas ang ilang panahon, pakihiling 
 	'smw_wrong_namespace' => 'Tanging mga pahinang nasa espasyo ng pangalang "$1" ang pinapahintulutan dito.',
 	'smw_manytypes' => 'Mahigit sa isang uri ang binigyang kahulugan para sa pag-aari.',
 	'smw_emptystring' => 'Hindi tinatanggap ang mga bagting na walang laman.',
-	'smw_maxstring' => 'Napakahaba ng kumakatawan para sa bagting na $1.',
 	'smw_notinenum' => 'Ang "$1" ay wala sa loob ng talaan ng maaaring maging mga halaga ($2) para sa pag-aaring ito.',
 	'smw_noboolean' => "Ang \"\$1\" ay hindi kinikilala bilang isang halaga ng ''Boolean'' (tama/mali).",
 	'smw_true_words' => 'totoo,t,oo,o',
@@ -14284,7 +14234,7 @@ Pinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.',
 	'smw_qc_outro' => 'Pagtatapos:',
 	'smw_qc_default' => 'Likas na katakdaan:',
 	'smw_qc_formatopt' => 'Mga mapagpipilian ng kaanyuan',
-	'smw_qc_query_help' => 'Magpasok ng isang pagsisiyasat na ginagamit ang pormularyong nasa ibaba. Pumili ng mga pahina ng wiki na naaayon sa 
+	'smw_qc_query_help' => 'Magpasok ng isang pagsisiyasat na ginagamit ang pormularyong nasa ibaba. Pumili ng mga pahina ng wiki na naaayon sa
 Mga kategorya (<strong><nowiki>halimbawa [[Kategorya:Aktor]]</nowiki></strong>),
 Mga pag-aari (<strong><nowiki>halimbawa [[Nasa::Alemanya]]</nowiki></strong>),
 Mga pangalan(<strong><nowiki>halimbawa [[Alemanya]]</nowiki></strong>) and
@@ -14457,7 +14407,6 @@ $messages['tr'] = array(
 	'smw-paramdesc-searchlabel' => 'Sonuçlara giden bağlantıdaki metin', # Fuzzy
 	'smw_iq_moreresults' => '... ek sonuçlar',
 	'smw_emptystring' => 'Boş dizgiler kabul edilmemektedir.',
-	'smw_maxstring' => 'Dizgi temsili $1 çok uzun.',
 	'smw_nofloat' => '"$1" bir sayı değil.',
 	'smw_toomanyclosing' => 'Sorguda çok fazla "$1" kullanımı mevcut.',
 	'smw_misplacedsymbol' => '"$1" sembolü, yararlı olmadığı bir noktada kullanıldı.',
@@ -14626,7 +14575,6 @@ $messages['uk'] = array(
 	'smw_wrong_namespace' => 'Тут дозволено лише сторінки в просторі назв «$1».',
 	'smw_manytypes' => 'Для властивості означено більше одного типу даних.',
 	'smw_emptystring' => 'Використовувати пусті рядки не дозволяється.',
-	'smw_maxstring' => 'Рядок «$1» — занадто довгий.',
 	'smw_notinenum' => '«$1» не є у списку дозволених значень ($2) для цієї властивості.',
 	'smw_noboolean' => '«$1» не розпізнається як булове значення (значення «так/ні»).',
 	'smw_true_words' => 'true,t,yes,y,так,т',
@@ -14761,12 +14709,12 @@ $messages['uk'] = array(
 	'smwadmin' => 'Адміністративні функції Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'База даних успішно налаштована.',
 	'smw_smwadmin_return' => 'Повернутись до $1',
-	'smw_smwadmin_updatestarted' => 'Запущено новий процес оновлення семантичних даних. 
-Усі збережені дані буде перебудовано чи відновлено за необхідності. 
+	'smw_smwadmin_updatestarted' => 'Запущено новий процес оновлення семантичних даних.
+Усі збережені дані буде перебудовано чи відновлено за необхідності.
 За процесом оновлення можна стежити на цій сторінці.
 
 Повернення до $1.',
-	'smw_smwadmin_updatenotstarted' => 'Процес оновлення вже працює. 
+	'smw_smwadmin_updatenotstarted' => 'Процес оновлення вже працює.
 Нового запущено не буде.
 
 Поверніться до $1.',
@@ -14953,7 +14901,6 @@ $messages['vi'] = array(
 	'smw_notitle' => 'Không thể dùng “$1” làm tên trang trên wiki này.',
 	'smw_manytypes' => 'Thuộc tính này có nhiều hơn một kiểu',
 	'smw_emptystring' => 'Không chấp nhận chuỗi trống.',
-	'smw_maxstring' => 'Đại diện chuỗi $1 quá dài.',
 	'smw_notinenum' => '“$1” không nằm trong danh sách các giá trị khả dĩ ($2) cho thuộc tính này.',
 	'smw_noboolean' => '“$1” không phải là giá trị Boole (đúng/sai).',
 	'smw_true_words' => 'true,t,yes,y,đúng,đ,có,c',
@@ -15223,7 +15170,6 @@ $messages['zh-cn'] = array(
 	'smw_unknowntype' => '不支持为性质所定义的“$1＂形态。',
 	'smw_manytypes' => '定义此性质的型态已超过了一种以上。',
 	'smw_emptystring' => '不接受空白字串。',
-	'smw_maxstring' => '对本站而言，$1所代表的字串太长了。',
 	'smw_notinenum' => '“$1＂ 并非在此属性有可能的值 ($2)的列表之中',
 	'smw_noboolean' => '“$1＂无法被视为布林值(true/false)。',
 	'smw_true_words' => '是,t,yes,y,true',
@@ -15385,7 +15331,6 @@ $messages['zh-hans'] = array(
 	'smw_wrong_namespace' => '仅允许名字空间“$1”中的页面。',
 	'smw_manytypes' => '此属性定义了一种以上类型。',
 	'smw_emptystring' => '不接受空字符串。',
-	'smw_maxstring' => '代表$1的字符串长度过大。',
 	'smw_notinenum' => '"$1" 不在此属性允许值列表（$2）中。',
 	'smw_noboolean' => '"$1"不是布尔（是非）值',
 	'smw_true_words' => 'true,t,yes,y,是,真,对',
@@ -15680,7 +15625,6 @@ $messages['zh-hant'] = array(
 	'smw_wrong_namespace' => '此處只允許名子空間「$1」中的頁面。',
 	'smw_manytypes' => '此屬性定義了一種以上類型。',
 	'smw_emptystring' => '不接受空字符串。',
-	'smw_maxstring' => '代表 $1 的字符串長度過大。',
 	'smw_notinenum' => '「$1」不在此屬性允許值列表（$2）中。',
 	'smw_noboolean' => '「$1」不是布爾（是非）值',
 	'smw_true_words' => 'true,t,yes,y,是,真,對',
@@ -15914,7 +15858,6 @@ $messages['zh-tw'] = array(
 	'smw_unknowntype' => '不支援為性質所定義的“$1”形態。',
 	'smw_manytypes' => '定義此性質的型態已超過了一種以上。',
 	'smw_emptystring' => '不接受空白字串。',
-	'smw_maxstring' => '對本站而言，$1所代表的字串太長了。',
 	'smw_notinenum' => '“$1” 並非在此屬性有可能的值 ($2)的清單之中',
 	'smw_noboolean' => '“$1”無法被視為布林值(true/false)。',
 	'smw_true_words' => '是,t,yes,y,true',

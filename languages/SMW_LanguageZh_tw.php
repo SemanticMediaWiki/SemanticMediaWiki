@@ -24,7 +24,6 @@ class SMWLanguageZh_tw extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => '頁面',	// 'Page', // name of page datatype
-		'_str' => '字串',	// 'String',  // name of the string type
 		'_txt' => '文字',	// 'Text',  // name of the text type
 		'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 		'_boo' => '布林',	// 'Boolean',  // name of the boolean type
@@ -43,11 +42,12 @@ class SMWLanguageZh_tw extends SMWLanguage {
 	protected $m_DatatypeAliases = array(
 		'浮點數'       => '_num',	// '_num',
 		'整數'         => '_num' ,	// '_num',
-		 '列舉'        => '_str',	// '_str'
+		 '列舉'        => '_txt',	// '_txt'
+		'字串'        => '_txt',		// old name of the string type
 		// SMW0.7 compatibility:
 		'Float'       => '_num',
 		'Integer'     => '_num',
-		'Enumeration' => '_str',
+		'Enumeration' => '_txt',
 		'URI'         => '_uri',
 	);
 

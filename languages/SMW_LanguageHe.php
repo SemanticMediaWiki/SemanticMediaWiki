@@ -24,7 +24,6 @@ class SMWLanguageHe extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'עמוד', // name of page datatype
-		'_str' => 'מחרוזת',  // name of the string type
 		'_txt' => 'טקסט',  // name of the text type (very long strings)
 		'_cod' => 'קוד',  // name of the (source) code type
 		'_boo' => 'נכוןלאנכון',  // name of the boolean type
@@ -41,12 +40,10 @@ class SMWLanguageHe extends SMWLanguage {
 	);
 
 	protected $m_DatatypeAliases = array(
-		'מזהה יחודי'
-		             => '_uri',
-		'שלם'
-		             => '_num',
-		'נקודהצפה'
-		             => '_num',
+		/*LTR hint for text editors*/ 'מזהה יחודי' => '_uri',
+		/*LTR hint for text editors*/ 'שלם' => '_num',
+		/*LTR hint for text editors*/ 'נקודהצפה' => '_num',
+		/*LTR hint for text editors*/ 'מחרוזת' => '_txt', // old name of the string type
 	);
 
 	protected $m_SpecialProperties = array(

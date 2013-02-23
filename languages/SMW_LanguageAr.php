@@ -24,7 +24,6 @@ class SMWLanguageAr extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'الصفحة', // name of page datatype
-		'_str' => 'سلسلة',  // name of the string type
 		'_txt' => 'نص',  // name of the text type
 		'_cod' => 'كود',  // name of the (source) code type
 		'_boo' => 'منطقي',  // name of the boolean type
@@ -44,7 +43,8 @@ class SMWLanguageAr extends SMWLanguage {
 		'URI'         => '_uri',
 		'Float'       => '_num',
 		'Integer'     => '_num',
-		'Enumeration' => '_str'
+		 /*LTR hint for text editors*/ 'سلسلة' => '_txt',  // old name of the string type
+		'Enumeration' => '_txt'
 	);
 
 	protected $m_SpecialProperties = array(

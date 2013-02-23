@@ -24,8 +24,7 @@ class SMWLanguageNo extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Side', // name of page datatype
-		'_str' => 'Kort tekst', // name of the string type
-		'_txt' => 'Lang tekst', // name of the text type (very long strings)
+		'_txt' => 'Tekst', // name of the text type (very long strings)
 		'_cod' => 'Kode', // name of the (source) code type
 		'_boo' => 'Boolsk', // name of the boolean type
 		'_num' => 'Tall', // name for the datatype of numbers
@@ -41,12 +40,13 @@ class SMWLanguageNo extends SMWLanguage {
 	);
 
 	protected $m_DatatypeAliases = array(
-		'Streng'                => '_str',
-		'Linje'                 => '_str',
-		'Tekst'                 => '_txt',
+		'Lang tekst'            => '_txt', // old name of the text type
+		'Kort tekst'            => '_txt', // old name of the string type
+		'Streng'                => '_txt',
+		'Linje'                 => '_txt',
 		'Hellall'               => '_num',
 		'Desimaltall'           => '_num',
-		'Liste'                 => '_str',
+		'Liste'                 => '_txt',
 		'Kildekode'             => '_cod',
 		'Koordinat'             => '_geo',
 		'Epost'                 => '_ema',

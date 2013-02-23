@@ -19,19 +19,7 @@ class SMWStringValue extends SMWDataValue {
 			$this->addError( wfMessage( 'smw_emptystring' )->inContentLanguage()->text() );
 		}
 
-		if ( $this->m_typeid == '_txt' || $this->m_typeid == '_cod' ) {
-			$this->m_dataitem = new SMWDIBlob( $value, $this->m_typeid );
-		} else {
-			try {
-				$this->m_dataitem = new SMWDIString( $value, $this->m_typeid );
-			} catch ( SMWStringLengthException $e ) {
-				$this->addError( wfMessage(
-					'smw_maxstring',
-					'"' . mb_substr( $value, 0, 15 ) . ' … ' . mb_substr( $value, mb_strlen( $value ) - 15 ) . '"'
-				)->inContentLanguage()->text() );
-				$this->m_dataitem = new SMWDIBlob( 'ERROR', $this->m_typeid ); // just to make sure that something is defined here
-			}
-		}
+		$this->m_dataitem = new SMWDIBlob( $value, $this->m_typeid );
 	}
 
 	/**
@@ -97,7 +85,7 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getInfolinks() {
-		if ( ( $this->m_typeid != '_txt' ) && ( $this->m_typeid != '_cod' ) ) {
+		if ( $this->m_typeid != '_cod' ) {
 			return parent::getInfolinks();
 		} else {
 			return $this->m_infolinks;

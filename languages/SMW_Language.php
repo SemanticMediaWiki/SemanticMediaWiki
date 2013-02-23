@@ -52,7 +52,7 @@ abstract class SMWLanguage {
 	static protected $enDatatypeAliases = array(
 		'URL'                   => '_uri',
 		'Page'                  => '_wpg',
-		'String'                => '_str',
+		'String'                => '_txt',
 		'Text'                  => '_txt',
 		'Code'                  => '_cod',
 		'Boolean'               => '_boo',

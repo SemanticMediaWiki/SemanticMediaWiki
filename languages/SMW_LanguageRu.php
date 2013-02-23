@@ -24,7 +24,6 @@ class SMWLanguageRu extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Страница', // name of page datatype
-		'_str' => 'Строка',  // name of the string type
 		'_txt' => 'Текст',  // name of the text type (very long strings)
 		'_cod' => 'Исходный код',  // name of the (source) code type
 		'_boo' => 'Булево',  // name of the boolean type
@@ -45,7 +44,8 @@ class SMWLanguageRu extends SMWLanguage {
 		'Целое'                 => '_num',
 		'Десятичное'            => '_num',
 		'Плавающее'             => '_num',
-		'Перечисление'          => '_str',
+		'Перечисление'          => '_txt',
+		'Строка'                => '_txt',  // old name of the string type
 		'Телефон'               => '_tel',
 	);
 

@@ -33,7 +33,7 @@ class SMWImportValue extends SMWDataValue {
 
 		if ( count( $msglines ) < 2 ) { // error: no elements for this namespace
 			$this->addError( wfMessage( 'smw_unknown_importns', $onto_ns )->inContentLanguage()->text() );
-			$this->m_dataitem = new SMWDIString( 'ERROR' );
+			$this->m_dataitem = new SMWDIBlob( 'ERROR' );
 			return;
 		}
 
@@ -71,15 +71,7 @@ class SMWImportValue extends SMWDataValue {
 			}
 		}
 
-		try {
-			$this->m_dataitem = new SMWDIString( $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri );
-		} catch ( SMWStringLengthException $e ) {
-			$this->addError( wfMessage(
-				'smw_maxstring',
-				'"' . $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri . '"'
-			)->inContentLanguage()->text() );
-			$this->m_dataitem = new SMWDIString( 'ERROR' );
-		}
+		$this->m_dataitem = new SMWDIBlob( $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri );
 
 		// check whether caption is set, otherwise assign link statement to caption
 		if ( $this->m_caption === false ) {

@@ -559,7 +559,7 @@ class SMWExporter {
 			case SMWDataItem::TYPE_NUMBER:
 				$lit = new SMWExpLiteral( $dataItem->getNumber(), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
 				return $lit;
-			case SMWDataItem::TYPE_STRING: case SMWDataItem::TYPE_BLOB:
+			case SMWDataItem::TYPE_BLOB:
 				$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $dataItem->getString() ), 'http://www.w3.org/2001/XMLSchema#string', $dataItem );
 				return $lit;
 			case SMWDataItem::TYPE_BOOLEAN:

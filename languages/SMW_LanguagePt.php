@@ -24,7 +24,6 @@ class SMWLanguagePt extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Página', // name of page datatype
-		'_str' => 'Cadeia',  // name of the string type
 		'_txt' => 'Texto',  // name of the text type (very long strings)
 		'_cod' => 'Código',  // name of the (source) code type //TODO: translate
 		'_boo' => 'Variável Booléen',  // name of the boolean type
@@ -43,8 +42,9 @@ class SMWLanguagePt extends SMWLanguage {
 	protected $m_DatatypeAliases = array(
 		'URI'                   => '_uri',
 		'Número inteiro'        => '_num',
-		'Folga'			         => '_num',
-		'Enumeração'            => '_str',
+		'Folga'                 => '_num',
+		'Enumeração'            => '_txt',
+		'Cadeia'                => '_txt',  // old name of the string type
 	);
 
 	protected $m_SpecialProperties = array(
