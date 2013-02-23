@@ -639,7 +639,7 @@ class SMWExporter {
 	 */
 	static public function getDataItemHelperExpElement( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
-			$lit = new SMWExpLiteral( $dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
+			$lit = new SMWExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
 			return $lit;
 		} else {
 			return null;
