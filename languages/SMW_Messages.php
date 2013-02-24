@@ -10218,6 +10218,7 @@ Genereert door te bladeren RDF.",
 	'smw_purge' => 'Verversen',
 	'types' => 'Typen',
 	'smw_types_docu' => 'Hieronder staat een lijst van alle gegevenstypen die aan eigenschappen kunnen worden toegewezen.',
+	'smw-special-types-no-such-type' => 'Het opgegeven gegevenstype bestaat niet',
 	'semanticstatistics' => 'Semantische statistieken',
 	'smw_semstats_text' => "Deze wiki bevat '''$1''' {{PLURAL:$1|eigenschapwaarde|eigenschapwaarden}} voor '''$2''' verschillende [[Special:Properties|{{PLURAL:$2|eigenschap|verschillende eigenschappen}}]].
 '''$3''' {{PLURAL:$3|eigenschap heeft|eigenschappen hebben}} een eigen pagina en het gegevenstype is voor '''$4''' daarvan aangegeven.
@@ -11876,6 +11877,7 @@ Gera RDF navegável.',
 	'smw_purge' => 'Atualizar',
 	'types' => 'Tipos',
 	'smw_types_docu' => 'A seguinte lista contém todos os tipos de dados que podem ser atribuídos a propriedades.',
+	'smw-special-types-no-such-type' => 'O tipo de dados especificado não existe',
 	'semanticstatistics' => 'Estatísticas de semântica',
 	'smw_semstats_text' => "Este wiki contém '''$1''' {{PLURAL:$1|valor|valores}} de propriedades num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade diferente|propriedades diferentes}}]].
 '''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} sua própria página, e o tipo de dados pretendido está especificado para '''$4''' delas.
@@ -12053,6 +12055,8 @@ Progresso estimado da atualização corrente:',
 	'smw-ui-tooltip-title-warning' => 'Erro',
 	'smw-ui-tooltip-title-parameter' => 'Parâmetro',
 	'smw-ui-tooltip-title-event' => 'Evento',
+	'smw-ui-tooltip-title-note' => 'Nota',
+	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'O tipo dessa propriedade é invalido',
 );
 
