@@ -29,11 +29,14 @@ use Sanitizer, Html;
 
 /**
  * New implementation of SMW's printer for results in lists.
+ * The implementation covers comma-separated lists, ordered and unordered lists.
+ * List items may be formatted using templates, and list output can be in
+ * multiple columns (at least for ordered and unordered lists).
  *
- * Somewhat confusing code, since one has to iterate through lists, inserting texts
- * in between their elements depending on whether the element is the first that is
- * printed, the first that is printed in parentheses, or the last that will be printed.
- * Maybe one could further simplify this.
+ * In the code below, one list item (with all extra information displayed for
+ * it) is called a "row", while one entry in this row is called a "field" to
+ * avoid confusion with the "columns" that we have in multi-column display.
+ * Every field may in turn contain many "values".
  *
  * @ingroup SMWQuery
  */
@@ -45,6 +48,70 @@ class ListResultPrinter extends ResultPrinter {
 	protected $mColumns;
 	protected $mIntroTemplate;
 	protected $mOutroTemplate;
+
+	/**
+	 * The text used to start the list.
+	 * @var string
+	 * @since 1.9
+	 */
+	protected $header;
+	/**
+	 * The text used to end the list.
+	 * @var string
+	 * @since 1.9
+	 */
+	protected $footer;
+	/**
+	 * The text used to start a row in the list.
+	 * @var string
+	 * @since 1.9
+	 */
+	protected $rowstart;
+	/**
+	 * The text used to end a row in the list.
+	 * @var string
+	 * @since 1.9
+	 */
+	protected $rowend;
+	/**
+	 * The text used to separate items in the list, other than the final
+	 * one.
+	 * @var string
+	 * @since 1.9
+	 */
+	protected $listsep;
+	/**
+	 * The text used to separate the last item in the list from the rest.
+	 * @var string
+	 * @since 1.9
+	 */
+	protected $finallistsep;
+	/**
+	 * Width (in percent) of columns in multi-column display.
+	 * @var integer
+	 * @since 1.9
+	 */
+	protected $columnWidth;
+	/**
+	 * Number of results per column in multi-column display.
+	 * @var integer
+	 * @since 1.9
+	 */
+	protected $rowsPerColumn;
+	/**
+	 * Number of results in current column in multi-column display.
+	 * @var integer
+	 * @since 1.9
+	 */
+	protected $numRowsInColumn;
+	/**
+	 * Number of results printed so far (equals index of result
+	 * to print next).
+	 * @var integer
+	 * @since 1.9
+	 */
+	protected $numRows;
+
 
 	/**
 	 * @see SMWResultPrinter::handleParameters
@@ -82,73 +149,30 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getResultText( SMWQueryResult $queryResult, $outputmode ) {
-		if ( ( $this->mFormat == 'template' ) && ( $this->mTemplate == false ) ) {
-			$queryResult->addErrors( array( $this->getContext()->msg( 'smw_notemplategiven' )->inContentLanguage()->text() ) );
+		if ( $this->mFormat == 'template' && !$this->mTemplate ) {
+			$queryResult->addErrors( array(
+				$this->getContext()->msg( 'smw_notemplategiven' )->inContentLanguage()->text()
+			) );
 			return '';
 		}
 
-		// Determine mark-up strings used around list items:
-		if ( ( $this->mFormat == 'ul' ) || ( $this->mFormat == 'ol' ) ) {
-			$header = "<" . $this->mFormat . ">\n";
-			$footer = "</" . $this->mFormat . ">\n";
-			$rowstart = "\t<li>";
-			$rowend = "</li>\n";
-			$plainlist = false;
-		} else { // "list" and "template" format
-			$header = '';
-			$footer = '';
-			$rowstart = '';
-			$rowend = '';
-			$plainlist = true;
+		$this->initializePrintingParameters( $queryResult );
 
-		}
-
-		// SMW 1.9 change default separator handling
-		if ( $this->params['format'] !== 'template' ){
-			// Allow "_" for encoding spaces, as documented
-			$listsep = str_replace( '_', ' ', $this->params['sep'] );
-			$finallistsep = $listsep;
-
-			if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ){
-				// Make default list ", , , and "
-				$listsep = ', ';
-				$finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
-			}
-		} else {
-			// No default separators for format "template"
-			$listsep = '';
-			$finallistsep = '';
-		}
-
-		// Initialise more values
 		$result = '';
-		$column_width = 0;
-		$rows_per_column = -1; // usually unnecessary
-		$rows_in_cur_column = -1;
 
-		// Set up floating divs, if there's more than one column
+		// Set up floating divs if there's more than one column
 		if ( $this->mColumns > 1 ) {
-			$column_width = floor( 100 / $this->mColumns );
-			$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
-			$rows_per_column = ceil( $queryResult->getCount() / $this->mColumns );
-			$rows_in_cur_column = 0;
+			$result .= '<div style="float: left; width: ' . $this->columnWidth . '%">' . "\n";
 		}
 
-		if ( $header !== '' ) {
-			$result .= $header;
-		}
+		$result .= $this->header;
 
 		if ( $this->mIntroTemplate !== '' ) {
 			$result .= "{{" . $this->mIntroTemplate . "}}";
 		}
 
-		// Now print each row
-		$rownum = -1;
 		while ( $row = $queryResult->getNext() ) {
-			$this->printRow( $row, $rownum, $rows_in_cur_column,
-				$rows_per_column, $this->mFormat, $plainlist,
-				$header, $footer, $rowstart, $rowend, $result,
-				$column_width, $queryResult, $listsep, $finallistsep );
+			$result .= $this->getRowText( $row, $queryResult );
 		}
 
 		if ( $this->mOutroTemplate !== '' ) {
@@ -156,82 +180,116 @@ class ListResultPrinter extends ResultPrinter {
 		}
 
 		// Make label for finding further results
-		if ( $this->linkFurtherResults( $queryResult ) && ( ( $this->mFormat != 'ol' ) || ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) ) {
-			$this->showFurtherResults( $result, $queryResult, $rowstart, $rowend, $outputmode );
+		if ( $this->linkFurtherResults( $queryResult ) &&
+			( $this->mFormat != 'ol' || $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) {
+			$result .= $this->getFurtherResultsText( $queryResult, $outputmode );
 		}
 
-		// Print footer
-		if ( $footer !== '' ) {
-			$result .= $footer;
-		}
+		$result .= $this->footer;
 
 		if ( $this->mColumns > 1 ) {
-			$result .= "</div>\n";
+			$result .= "</div>\n" . '<br style="clear: both" />' . "\n";
 		}
 
-		if ( $this->mColumns > 1 ) {
-			$result .= '<br style="clear: both" />' . "\n";
-		}
-
-		// Make sure that if the result set turns empty and if available display default
-		if ( $this->params['default'] !== '' && $result === '' ) {
+		// Display default if the result is empty
+		if ( $result == '' ) {
 			$result = $this->params['default'];
 		}
 
 		return $result;
 	}
 
-	protected function printRow( $row, &$rownum, &$rows_in_cur_column,
-		$rows_per_column, $format, $plainlist, $header, $footer,
-		$rowstart, $rowend, &$result, $column_width, $res, $listsep,
-		$finallistsep ) {
+	/**
+	 * Initialize the internal parameters that should be used to print this
+	 * list, and reset row counters.
+	 *
+	 * @since 1.9
+	 * @param SMWQueryResult $queryResult
+	 */
+	protected function initializePrintingParameters( SMWQueryResult $queryResult ) {
+		$this->numRows = 0;
+		$this->numRowsInColumn = 0;
 
-		$rownum++;
+		$this->columnWidth = floor( 100 / $this->mColumns );
+		$this->rowsPerColumn = ceil( $queryResult->getCount() / $this->mColumns );
 
-		if ( $this->mColumns > 1 ) {
-			if ( $rows_in_cur_column == $rows_per_column ) {
-				// If it's a numbered list, and it's split
-				// into columns, add in the 'start='
-				// attribute so that each additional column
-				// starts at the right place. This attribute
-				// is actually deprecated, but it appears to
-				// still be supported by the major browsers...
-				if ( $format == 'ol' ) {
-					$header = "<ol start=\"" . ( $rownum + 1 ) . "\">";
-				}
-				$result .= <<<END
+		// Determine mark-up strings used around list items:
+		if ( $this->mFormat == 'ul' || $this->mFormat == 'ol' ) {
+			$this->header = "<" . $this->mFormat . ">\n";
+			$this->footer = "</" . $this->mFormat . ">\n";
+			$this->rowstart = "\t<li>";
+			$this->rowend = "</li>\n";
+		} else { // "list" and "template" format
+			$this->header = '';
+			$this->footer = '';
+			$this->rowstart = '';
+			$this->rowend = '';
+		}
 
-				$footer
-				</div>
-				<div style="float: left; width: $column_width%">
-				$header
+		// Define separators for list items
+		if ( $this->params['format'] !== 'template' ){
+			if ( $this->params['format'] === 'list' && $this->params['sep'] === ',' ){
+				// Make default list ", , , and "
+				$this->listsep = ', ';
+				$this->finallistsep = $this->getContext()->msg( 'smw_finallistconjunct' )->inContentLanguage()->text() . ' ';
+			} else {
+				// Allow "_" for encoding spaces, as documented
+				$this->listsep = str_replace( '_', ' ', $this->params['sep'] );
+				$this->finallistsep = $this->listsep;
+			}
+		} else {
+			// No default separators for format "template"
+			$this->listsep = '';
+			$this->finallistsep = '';
+		}
+	}
 
-END;
-				$rows_in_cur_column = 0;
+	/**
+	 * Get result text for one result row as part of getResultText().
+	 *
+	 * @since 1.9
+	 * @param SMWResultArray[] $row
+	 * @param SMWQueryResult $res
+	 * @return string
+	 */
+	protected function getRowText( array $row, SMWQueryResult $res ) {
+		$result = '';
+
+		// Start new column:
+		if ( $this->numRowsInColumn == $this->rowsPerColumn ) {
+			// If it's a numbered list, and it's split
+			// into columns, add in the 'start='
+			// attribute so that each additional column
+			// starts at the right place. This attribute
+			// is actually deprecated, but it appears to
+			// still be supported by the major browsers...
+			if ( $this->mFormat == 'ol' ) {
+				$header = "<ol start=\"" . ( $this->numRows + 1 ) . "\">";
+			} else {
+				$header = $this->header;
 			}
 
-			$rows_in_cur_column++;
+			$this->numRowsInColumn = 0;
+
+			$result .= $this->footer . '</div>' .
+				"<div style=\"float: left; width: {$this->columnWidth}%\">" .
+				$header;
 		}
 
-		$options = array(
-			'rownum' => $rownum,
-			'res' => $res,
-			'plainlist' => $plainlist,
-			'listsep' => $listsep,
-			'finallistsep' => $finallistsep
-		);
-
-		if ( $this->mTemplate !== '' ) {
-			// Build template code
+		if ( $this->mTemplate !== '' ) { // Build template code
 			$this->hasTemplates = true;
-			$content = $this->mTemplate . $this->getTemplateContent( $row, $rownum );
-			$result .= $this->getRowStart( $rowstart, $options ) . '{{' . $content . '}}';
-		} else {
-			// Build simple list
-			$content = $this->getListContent( $row, $rowstart, $options );
-			$result .= $this->getRowStart( $rowstart, $options ) . $content;
+			$content = $this->mTemplate . $this->getTemplateContent( $row );
+			$result .= $this->getRowStart( $res ) . '{{' . $content . '}}';
+		} else { // Build simple list
+			$content = $this->getListContent( $row );
+			$result .= $this->getRowStart( $res ) . $content;
 		}
-		$result .= $rowend;
+
+		$result .= $this->rowend;
+		$this->numRows++;
+		$this->numRowsInColumn++;
+
+		return $result;
 	}
 
 	/**
@@ -239,111 +297,132 @@ END;
 	 *
 	 * @since 1.9
 	 *
-	 * @param $rowstart
-	 * @param array $options
+	 * @param SMWQueryResult $res
 	 *
 	 * @return string
 	 */
-	protected function getRowStart( $rowstart, $options ){
-		if ( $options['rownum'] > 0 && $options['plainlist'] )  {
-			return ( $options['rownum'] <= $options['res']->getCount() ) ? $options['listsep'] : $options['finallistsep']; // the comma between "rows" other than the last one
+	protected function getRowStart( SMWQueryResult $res ){
+		if ( $this->numRows > 0 && $this->isPlainlist() )  {
+			// Use comma between "rows" other than the last one:
+			return ( $this->numRows <= $res->getCount() ) ? $this->listsep : $this->finallistsep;
+		} else {
+			return $this->rowstart;
 		}
-		return $rowstart;
 	}
 
 	/**
-	 * Returns list content
+	 * Returns text for one result row, formatted as a list.
 	 *
 	 * @since 1.9
+	 * @todo The inner lists of values per field should use different separators.
+	 * @todo Some spaces are hard-coded here; should probably be part of separators.
+	 * @bug Bad HTML tag escaping with hardcoded exceptions (for datatype _qty)
 	 *
-	 * @param $row
-	 * @param &$rowstart
-	 * @param array $options
+	 * @param SMWResultArray[] $row
 	 *
 	 * @return string
 	 */
-	protected function getListContent( $row, &$rowstart, $options ) {
-		$first_col = true;
-		$found_values = false; // has anything but the first column been printed?
+	protected function getListContent( array $row ) {
+		$firstField = true; // is this the first entry in this row?
+		$extraFields = false; // has anything but the first field been printed?
 		$result = '';
 
 		foreach ( $row as $field ) {
-			$first_value = true;
+			$firstValue = true; // is this the first value in this field?
 
 			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
 
-				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE && $first_col ){
-					$sortKey = $dataValue->getSortKey();
+				/// TODO Bad design. This overwrites the global rowstart.
+				/// A later "further results" item will be affected by this.
+				/// TODO Document what this is good for.
+				if ( $firstField && $this->params['format'] !== 'list' &&
+					$dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE  ) {
 					// Override the original start element
-					$rowstart = $this->params['format'] !== 'list' ? "\t" . Html::openElement('li', array( 'data-sortkey' => $sortKey[0] )  ) : $rowstart;
+					$sortKey = smwfGetStore()->getWikiPageSortKey( $dataValue->getDataItem() );
+					$this->rowstart = "\t" . Html::openElement('li', array( 'data-sortkey' => $sortKey{0} )  );
 				}
 
-				$text = $dataValue->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) );
+				$text = $dataValue->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $firstField ) );
 
-				if ( !$first_col && !$found_values ) { // first values after first column
+				if ( !$firstField && !$extraFields ) { // first values after first column
 					$result .= ' (';
-					$found_values = true;
-				} elseif ( $found_values || !$first_value ) {
+					$extraFields = true;
+				} elseif ( $extraFields || !$firstValue ) {
 					// any value after '(' or non-first values on first column
-					$result .= $options['listsep'] . " ";
+					$result .= $this->listsep . ' ';
 				}
 
-				if ( $first_value ) { // first value in any column, print header
-					$first_value = false;
+				if ( $firstValue ) { // first value in any field, print header
+					$firstValue = false;
 
 					if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() !== '' ) ) {
 						$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null:$this->mLinker ) ) . ' ';
 					}
 				}
+
 				// Display the text with tags for all non-list type outputs and
 				// where the property is of type _qty (to ensure the highlighter
 				// is displayed) but for others remove tags so that lists are
 				// not distorted by unresolved in-text tags
-				if ( $dataValue->getTypeID() === '_qty' || $options['plainlist'] ) {
+				// FIXME This is a hack that limits extendibility of SMW datatypes
+				// by giving _qty a special status that no other type can have.
+				if ( $dataValue->getTypeID() === '_qty' || $this->isPlainlist() ) {
 					$result .=  $text;
 				} else {
 					$result .= Sanitizer::stripAllTags( $text );
 				}
 			}
 
-			$first_col = false;
+			$firstField = false;
 		}
-		if ( $found_values ) $result .= ')';
+		if ( $extraFields ) $result .= ')';
 
 		return $result;
 	}
 
 	/**
-	 * Returns template content
+	 * Returns text for one result row, formatted as a template call.
 	 *
 	 * @since 1.9
 	 *
 	 * @param $row
-	 * @param $rownum
 	 *
 	 * @return string
 	 */
-	protected function getTemplateContent( $row, $rownum ){
-		$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam" : '';
+	protected function getTemplateContent( $row ){
+		$wikitext = $this->mUserParam ? "|userparam=$this->mUserParam" : '';
 
 		foreach ( $row as $i => $field ) {
 			$wikitext .= '|' . ( $this->mNamedArgs ? '?' . $field->getPrintRequest()->getLabel() : $i + 1 ) . '=';
 			$first_value = true;
 
 			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {
-				if ( $first_value ) $first_value = false; else $wikitext .= ', ';
+				if ( $first_value ) {
+					$first_value = false;
+				} else {
+					$wikitext .= ', ';
+				}
 				$wikitext .= $text;
 			}
 		}
 
-		$wikitext .= "|#=$rownum";
+		$wikitext .= "|#={$this->numRows}";
 		return $wikitext;
 	}
 
-
-	protected function showFurtherResults( &$result, $res, $rowstart, $rowend, $outputMode ) {
+	/**
+	 * Get text for further results link. Used only during getResultText().
+	 *
+	 * @since 1.9
+	 * @param SMWQueryResult $res
+	 * @param integer $outputMode
+	 * @return string
+	 */
+	protected function getFurtherResultsText( SMWQueryResult $res, $outputMode ) {
 		$link = $this->getFurtherResultsLink( $res, $outputMode );
-		$result .= $rowstart . ' '. $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend;
+		return $this->rowstart . ' ' .
+			$link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) .
+			$this->rowend;
 	}
 
 	protected function isPlainlist() {
