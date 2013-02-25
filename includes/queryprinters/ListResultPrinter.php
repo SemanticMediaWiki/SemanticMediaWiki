@@ -1,8 +1,13 @@
 <?php
 
 namespace SMW;
-use SMWQueryResult, SMWDataItem;
-use Sanitizer, Html;
+
+use SMWQueryResult;
+use SMWDataItem;
+use SMWResultArray;
+
+use Sanitizer;
+use Html;
 
 /**
  * Print query results in lists.
