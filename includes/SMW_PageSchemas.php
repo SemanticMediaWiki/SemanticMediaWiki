@@ -153,6 +153,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 		if ( is_null( $allowedValues ) ) {
 			$allowed_val_string = '';
 		} else {
+			foreach ( $allowedValues as $i => $allowedVal ) {
+				$allowedValues[$i] = str_replace( ',', '\,', $allowedVal );
+			}
 			$allowed_val_string = implode( ', ', $allowedValues );
 		}
 		$html_text .= '<p>' . Html::input( 'smw_values_num', $allowed_val_string, 'text', $allowedValsInputAttrs ) . "</p>\n";
