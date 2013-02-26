@@ -777,9 +777,8 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw_qui_dlabel' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the label for a category is expected to be typed in.
 
 {{Identical|Label}}',
-	'smw_qui_dcategory' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where a category is expected to be typed in.
-
-{{identical|Category}}',
+	'smw_qui_dcategory' => 'This is the text describing a textbox within a modal pop-up window on Special:QueryCreator where a category is expected to be typed in.
+{{Identical|Category}}',
 	'smw_qui_dcatyes' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is present is expected to be typed in.',
 	'smw_qui_dcatno' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is absent is expected to be typed in.',
 	'searchbyproperty' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SearchByProperty]].',
