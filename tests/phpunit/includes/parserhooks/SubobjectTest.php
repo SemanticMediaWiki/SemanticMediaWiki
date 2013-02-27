@@ -36,7 +36,7 @@ use SMW\Subobject;
 class SubobjectTest extends \MediaWikiTestCase {
 
 	/**
-	 * Get title object
+	 * Helper method to get title object
 	 *
 	 */
 	private function getSubject( $name ){
@@ -45,61 +45,61 @@ class SubobjectTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Get subobject
+	 * Helper method to get subobject
 	 *
 	 */
 	private function setSubobject( $subject, $name ){
-		return Subobject::Factory( $this->getSubject( $subject ), $name );
+		return new Subobject( $this->getSubject( $subject ), $name );
 	}
 
 	/**
-	 * Test factory method
+	 * Test instance
 	 *
 	 */
-	public function testFactory() {
+	public function testInstance() {
 		$subject = $this->getSubject( 'Foo' );
 
-		$instance = Subobject::Factory( $subject );
+		$instance = new Subobject( $subject );
 		$this->assertInstanceOf( 'SMW\Subobject', $instance );
 	}
 
 	/**
-	 * Test set subject container
+	 * Test setSemanticData()
 	 *
 	 */
-	public function testSetSubjectContainer() {
+	public function testSetSemanticData() {
 		$subject = $this->getSubject( 'Foo' );
-		$subobject = Subobject::Factory( $subject );
+		$subobject = new Subobject( $subject );
 
-		$instance = $subobject->setSubjectContainer( 'Bar' );
+		$instance = $subobject->setSemanticData( 'Bar' );
 		$this->assertInstanceOf( '\SMWContainerSemanticData', $instance );
 	}
 
 	/**
-	 * Test get subobject name
+	 * Test getName()
 	 *
 	 */
-	public function testGetSubobjectName() {
+	public function testGetName() {
 		$subobject = $this->setSubobject( 'Foo' , 'Bar' );
 
-		$name = $subobject->getSubobjectName();
+		$name = $subobject->getName();
 		$this->assertEquals( $name, 'Bar' );
 	}
 
 	/**
-	 * Test get subobject property data item object
+	 * Test getProperty()
 	 *
 	 */
-	public function testGetSubobjectProperty() {
+	public function testGetProperty() {
 		$subobject = $this->setSubobject( 'Foo' , 'Bar' );
 
-		$instance = $subobject->getSubobjectProperty();
+		$instance = $subobject->getProperty();
 		$this->assertInstanceOf( '\SMWDIProperty', $instance );
 	}
 
 
 	/**
-	 * Test add property values
+	 * Test addPropertyValue()
 	 *
 	 */
 	public function testAddPropertyValue() {
@@ -114,16 +114,16 @@ class SubobjectTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test get subobject container
+	 * Test getContainer()
 	 *
 	 */
-	public function testGetSubobjectContainer() {
+	public function testGetContainer() {
 		$subobject = $this->setSubobject( 'Foo' , 'Bar' );
 
 		$subobject->addPropertyValue( 'Foo', 'bar' );
 		$subobject->addPropertyValue( 'Bar', 'foo' );
 
-		$instance = $subobject->getSubobjectContainer();
+		$instance = $subobject->getContainer();
 		$this->assertInstanceOf( '\SMWDIContainer', $instance );
 	}
 }
