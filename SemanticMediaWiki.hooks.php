@@ -287,6 +287,8 @@ final class SMWHooks {
 
 			'printers/ResultPrinters',
 
+			'resources/Resources',
+
 			// Keep store tests near the end, since they are slower due to database access.
 			'storage/Store',
 
