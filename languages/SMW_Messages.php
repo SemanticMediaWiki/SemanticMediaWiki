@@ -443,7 +443,7 @@ Estimated progress of current update:',
  * @author Тест
  */
 $messages['qqq'] = array(
-	'smw-desc' => '{{desc}}',
+	'smw-desc' => '{{desc|name=Semantic MediaWiki|url=http://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}',
 	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 	{{Identical|And}}',
