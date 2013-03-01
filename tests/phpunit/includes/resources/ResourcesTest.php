@@ -40,7 +40,6 @@ class ResourcesTest extends \MediaWikiTestCase {
 
 	/**
 	 * Helper method to load resources only valid for this extension
-	 *
 	 */
 	private function load(){
 		global $smwgIP, $smwgScriptPath;
@@ -64,7 +63,7 @@ class ResourcesTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider moduleDataProvider
 	 */
-	public function testModulesScriptsFilesAreAccessible( $modules, $resourceLoader, $context ){
+	public function testModulesScriptsFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context ){
 
 		foreach ( $modules as $name => $values ){
 
@@ -83,7 +82,7 @@ class ResourcesTest extends \MediaWikiTestCase {
 	 * @dataProvider moduleDataProvider
 	 */
 
-	public function testModulesStylesFilesAreAccessible( $modules, $resourceLoader, $context  ){
+	public function testModulesStylesFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context  ){
 
 		foreach ( $modules as $name => $values ){
 
