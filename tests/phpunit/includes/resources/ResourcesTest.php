@@ -44,7 +44,7 @@ class ResourcesTest extends \MediaWikiTestCase {
 	 */
 	private function load(){
 		global $smwgIP, $smwgScriptPath;
-		return include( $smwgIP . "/resources/Resources.php" );
+		return include($smwgIP . "/resources/Resources.php");
 	}
 
 	/**
