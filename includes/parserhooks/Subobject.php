@@ -67,22 +67,7 @@ class Subobject extends ContextSource {
 		}
 		$this->setContext( $context );
 		$this->subject = $subject;
-		$this->setSubjectContainer( $subobjectName );
-	}
-
-	/**
-	 * Factory method
-	 *
-	 * @since 1.9
-	 *
-	 * @param SMWDIWikiPage $subject
-	 * @param string|null $subobjectName
-	 * @param \IContextSource|null $context
-	 *
-	 * @return SMW\Subobject
-	 */
-	public static function factory( SMWDIWikiPage $subject, $subobjectName = null , IContextSource $context = null ){
-		return new Subobject( $subject, $subobjectName, $context );
+		$this->setSemanticData( $subobjectName );
 	}
 
 	/**
@@ -92,8 +77,20 @@ class Subobject extends ContextSource {
 	 *
 	 * @return string
 	 */
-	public function getSubobjectName(){
+	public function getName(){
 		return $this->subobjectName;
+	}
+
+	/**
+	 * Returns an anonymous identifier
+	 *
+	 * @since 1.9
+	 *
+	 * @param string
+	 * @return string
+	 */
+	public function getAnonymousIdentifier( $string ){
+		return '_' . hash( 'md4', $string , false );
 	}
 
 	/**
@@ -116,7 +113,7 @@ class Subobject extends ContextSource {
 	 *
 	 * @return SMWContainerSemanticData
 	 */
-	public function setSubjectContainer( $subobjectName ){
+	public function setSemanticData( $subobjectName ){
 		if ( $subobjectName !== '' ) {
 			$this->subobjectName = $subobjectName;
 
@@ -136,7 +133,7 @@ class Subobject extends ContextSource {
 	 *
 	 * @return SMWContainerSemanticData
 	 */
-	public function getSubjectContainer(){
+	public function getSemanticData(){
 		return $this->semanticData;
 	}
 
@@ -147,7 +144,7 @@ class Subobject extends ContextSource {
 	 *
 	 * @return SMWDIProperty
 	 */
-	public function getSubobjectProperty(){
+	public function getProperty(){
 		return new SMWDIProperty( SMWDIProperty::TYPE_SUBOBJECT );
 	}
 
@@ -158,12 +155,12 @@ class Subobject extends ContextSource {
 	 *
 	 * @return SMWDIContainer
 	 */
-	public function getSubobjectContainer(){
+	public function getContainer(){
 		return new SMWDIContainer( $this->semanticData );
 	}
 
 	/**
-	 * Add property/value to the semantic data container
+	 * Add property / value to the semantic data container
 	 *
 	 * @since 1.9
 	 *
