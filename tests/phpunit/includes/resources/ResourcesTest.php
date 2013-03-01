@@ -40,10 +40,12 @@ class ResourcesTest extends \MediaWikiTestCase {
 
 	/**
 	 * Helper method to load resources only valid for this extension
+	 *
+	 * @return array
 	 */
-	private function load(){
-		global $smwgIP, $smwgScriptPath;
-		return include($smwgIP . "/resources/Resources.php");
+	private function getSMWResourceModules(){
+		global $smwgIP;
+		return include $smwgIP . '/resources/Resources.php';
 	}
 
 	/**
@@ -53,7 +55,7 @@ class ResourcesTest extends \MediaWikiTestCase {
 	public function moduleDataProvider() {
 		$resourceLoader = new ResourceLoader();
 		$context = ResourceLoaderContext::newDummyContext();
-		$modules = $this->load();
+		$modules = $this->getSMWResourceModules();
 
 		return array( array( $modules, $resourceLoader, $context ) );
 	}
@@ -64,7 +66,6 @@ class ResourcesTest extends \MediaWikiTestCase {
 	 * @dataProvider moduleDataProvider
 	 */
 	public function testModulesScriptsFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context ){
-
 		foreach ( $modules as $name => $values ){
 
 			// Get module details
@@ -81,7 +82,6 @@ class ResourcesTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider moduleDataProvider
 	 */
-
 	public function testModulesStylesFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context  ){
 
 		foreach ( $modules as $name => $values ){
@@ -97,4 +97,5 @@ class ResourcesTest extends \MediaWikiTestCase {
 			}
 		}
 	}
+
 }

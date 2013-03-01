@@ -29,6 +29,8 @@ namespace SMW;
  * @author mwjames
  */
 
+global $smwgIP, $smwgScriptPath;
+
 $moduleTemplate = array(
 	'localBasePath' => $smwgIP ,
 	'remoteBasePath' => $smwgScriptPath,
