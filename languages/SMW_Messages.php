@@ -923,7 +923,8 @@ See also:
 	'smw-ui-tooltip-title-event' => 'A label that is displayed on the info tooltip.
 {{Identical|Event}}',
 	'smw-ui-tooltip-title-note' => 'A label that is displayed on the info tooltip.',
-	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}',
+	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}
+{{Identical|Legend}}',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
 );
 
@@ -8046,6 +8047,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw-ui-tooltip-title-parameter' => 'パラメーター',
 	'smw-ui-tooltip-title-event' => 'イベント',
 	'smw-ui-tooltip-title-note' => '注記',
+	'smw-ui-tooltip-title-legend' => '凡例',
 	'smw_unknowntype' => 'このプロパティの型は無効です',
 );
 
