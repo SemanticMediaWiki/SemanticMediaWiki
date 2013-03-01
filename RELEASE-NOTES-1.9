@@ -13,6 +13,7 @@ production until the actual release.
 * Restored compatibility with SQLite
 * Support for quantity export via API and JSON format (I17a3e046)
 * Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
+* #set_recurring_event create individual subobjects (changes query behaviour for recurring events; for more see [[Help:Recurring_events]]) (I5db911e536)
 
 === New features ===
 
@@ -42,14 +43,22 @@ production until the actual release.
 
 * SMWListResultPrinter, SMWResultPrinter, SMWSubobject, SMWSet
 * SMWFeedResultPrinter, SMWDISerializer
-* SMWDIString, SMWStringLengthException
+* SMWDIString, SMWStringLengthException, SMWSetRecurringEvent
 
 === Unit tests ===
 
-* Add PHPUnit tests FormatFactoryTest.php, QueryProcessorTest.php, ParserParameterTest.php
-:DefinesTest.php, GlobalFunctionsTest.php, HighlighterTest.php, SubobjectTest.php
+* Add PHPUnit tests
+: FormatFactoryTest.php, QueryProcessorTest.php, ParserParameterTest.php
+: DefinesTest.php, GlobalFunctionsTest.php, HighlighterTest.php
+: SubobjectTest.php, SubobjectTest.php, SubobjectHandlerTest.php,
+: RecurringEventsTest.php
 
 * Add QUnit tests ext.smw.test, ext.smw.util.tooltip
+: ext.smw.api.test.js, ext.smw.data.test.js, ext.smw.query.test.js
+: ext.smw.dataItem.number.test.js, ext.smw.dataItem.property.test.js,
+: ext.smw.dataItem.text.test.js, ext.smw.dataItem.time.test.js
+: ext.smw.dataItem.unknown.test.js, ext.smw.dataItem.uri.test.js
+: ext.smw.dataItem.wikiPage.test.js, ext.smw.dataValue.quantity.test.js
 
 === Extended translations ===
 
