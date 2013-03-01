@@ -62,7 +62,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 			$usageCounts[] = array( $propId, mt_rand( 0, 100000 ) );
 		}
 
-		$usageCounts[] = array( 9001, pow( 2 , 31 ) );
+		$usageCounts[] = array( 9001, pow( 2 , 31 ) - 1 );
 
 		return $usageCounts;
 	}
@@ -123,7 +123,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 			1 => 42,
 			2 => 0,
 			9001 => 9001,
-			9002 => pow( 2 , 31 ),
+			9002 => pow( 2 , 31 ) - 1,
 			9003 => 1,
 		);
 
