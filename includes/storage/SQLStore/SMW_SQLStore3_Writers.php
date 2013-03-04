@@ -687,7 +687,7 @@ class SMWSQLStore3Writers {
 			/// redirects are not supported by MW or SMW, the above is maximally correct in this case too.
 			/// NOTE: this temporarily leaves existing redirects to oldtitle point to newtitle as well, which
 			/// will be lost after the next update. Since double redirects are an error anyway, this is not
-			/// a bad behaviour: everything will continue to work until the existing redirects are updated,
+			/// a bad behavior: everything will continue to work until the existing redirects are updated,
 			/// which will hopefully be done to fix the double redirect.
 		} else { // General move method: should always be correct
 			// (equality support respected when updating redirects)

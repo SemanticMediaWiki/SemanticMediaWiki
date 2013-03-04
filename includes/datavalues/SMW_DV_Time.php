@@ -18,7 +18,7 @@
  * purposes, incomplete dates are completed with defaults (usually using the
  * earliest possible time, i.e. interpreting "2008" as "Jan 1 2008 00:00:00").
  * The information on what was unspecified is kept internally for improving
- * behaviour e.g. for outputs (defaults are not printed when querying for a
+ * behavior e.g. for outputs (defaults are not printed when querying for a
  * value). This largely uses the precision handling of SMWDITime.
  *
  *

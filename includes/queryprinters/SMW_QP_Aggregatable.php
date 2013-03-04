@@ -3,7 +3,7 @@
 /**
  * Result printer that supports the distribution parameter,
  * and related parameters. It allows the user to choose between
- * regular behaviour or getting a distribution of values.
+ * regular behavior or getting a distribution of values.
  *
  * For example, this result set: foo bar baz foo bar bar ohi
  * Will be turned into

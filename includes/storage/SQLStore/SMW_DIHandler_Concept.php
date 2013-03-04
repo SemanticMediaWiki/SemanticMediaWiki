@@ -7,7 +7,7 @@
 /**
  * This class implements Store access to Concept data items.
  *
- * @note The table layout and behaviour of this class is not coherent with the
+ * @note The table layout and behavior of this class is not coherent with the
  * way that other DIs work. This is because of the unfortunate use of the
  * concept table to store extra cache data, but also due to the design of
  * concept DIs. This will be cleaned up at some point.

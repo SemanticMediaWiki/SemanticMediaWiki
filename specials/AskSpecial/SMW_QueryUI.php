@@ -1669,7 +1669,7 @@ EOT;
 	 * elements of an array.Use in conjunction with processFormatOptions() to
 	 * supply formats options using ajax. Also, use its complement
 	 * processFormatSelectBox() to decode form data sent by these elements.
-	 * UI's may overload these methods to change behaviour or form
+	 * UI's may overload these methods to change behavior or form
 	 * parameters.
 	 *
 	 * @param string $defaultFormat The default format which remains selected in the form

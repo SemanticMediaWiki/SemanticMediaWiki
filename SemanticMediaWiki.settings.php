@@ -298,7 +298,7 @@ $smwgQFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
 $smwgQDefaultLimit = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
 $smwgQMaxInlineLimit = 500;   // Max number of rows ever printed in a single inline query on a single page.
 $smwgQPrintoutLimit  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
-$smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject" (first column), "all".
+$smwgQDefaultLinking = 'all'; // Default linking behavior. Can be one of "none", "subject" (first column), "all".
 
 
 ###
@@ -474,7 +474,7 @@ $smwgPageSpecialProperties = array( '_MDAT' );
 
 ###
 # Properties (usually given as internal ids or DB key versions of property
-# titles) that are relevant for declaring the behaviour of a property P on a
+# titles) that are relevant for declaring the behavior of a property P on a
 # property page in the sense that changing their values requires that all
 # pages that use P must be processed again. For example, if _PVAL (allowed
 # values) for a property change, then pages must be processed again. This

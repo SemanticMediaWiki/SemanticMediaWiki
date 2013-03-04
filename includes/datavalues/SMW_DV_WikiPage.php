@@ -12,7 +12,7 @@
  * namespace, Whether a namespace is fixed is decided based on the
  * type ID when the object is constructed.
  *
- * The short display simulates the behaviour of the MediaWiki "pipe trick"
+ * The short display simulates the behavior of the MediaWiki "pipe trick"
  * but always includes fragments. This can be overwritten by setting a
  * caption, which is also done by default when generating a value from user
  * input. The long display always includes all relevant information. Only if a
