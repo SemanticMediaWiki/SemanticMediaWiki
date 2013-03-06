@@ -140,7 +140,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		// Set up all property tables as defined:
 		$this->setupPropertyTables( $dbtypes, $db, $reportTo );
 
-		$this->reportProgress( "Database initialised successfully.\n\n", $verbose );
+		$this->reportProgress( "Database initialized successfully.\n\n", $verbose );
 	}
 
 	/**
@@ -275,7 +275,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			$db->query( "ALTER SEQUENCE smw_ids_smw_id_seq RESTART WITH {$max}", __METHOD__ );
 		}
 
-		$this->reportProgress( "Internal properties initialised successfully.\n", $verbose );
+		$this->reportProgress( "Internal properties initialized successfully.\n", $verbose );
 	}
 
 	public function drop( $verbose = true ) {
