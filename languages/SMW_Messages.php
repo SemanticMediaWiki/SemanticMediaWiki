@@ -3828,10 +3828,12 @@ $messages['el'] = array(
 
 /** British English (British English)
  * @author Reedy
+ * @author Shirayuki
  */
 $messages['en-gb'] = array(
 	'smw_printername_ul' => 'Itemisation',
 	'smw_noboolean' => '"$1" is not recognised as a Boolean (true/false) value.',
+	'smw-prefs-intro-text' => 'Options below are provided by [http://semantic-mediawiki.org/ Semantic MediaWiki] (or related extensions) to enable individual customisation on selected functions. For more information, please have a look at this [http://semantic-mediawiki.org/wiki/Help:User_preferences help section].',
 );
 
 /** Esperanto (Esperanto)
