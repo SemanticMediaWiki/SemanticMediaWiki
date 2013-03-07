@@ -913,7 +913,8 @@ See also:
 	'smw-prefs-ask-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ui-tooltip-title-property' => 'A label that is displayed on the info tooltip.
 {{Identical|Property}}',
-	'smw-ui-tooltip-title-quantity' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-quantity' => 'A label that is displayed on the info tooltip.
+{{Identical|Quantity}}',
 	'smw-ui-tooltip-title-info' => 'A label that is displayed on the info tooltip.
 {{Identical|Information}}',
 	'smw-ui-tooltip-title-service' => 'A label that is displayed on the info tooltip.',
