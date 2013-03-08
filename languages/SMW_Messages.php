@@ -360,7 +360,7 @@ The changes made in this step do not affect the rest of the MediaWiki database, 
 This setup function can be executed multiple times without doing any harm, but it is needed only once on installation or upgrade.',
 	'smw_smwadmin_permissionswarn' => 'If the operation fails with SQL errors, the database user employed by your wiki (check your LocalSettings.php) probably does not have sufficient permissions.
 Either grant this user additional pemissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <tt>SMW_setup.php</tt> which can use the credentials of an administrator.',
-	'smw_smwadmin_dbbutton' => 'Initialise or upgrade tables',
+	'smw_smwadmin_dbbutton' => 'Initialize or upgrade tables',
 	'smw_smwadmin_announce' => 'Announce your wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki has a web service for announcing new semantic wiki sites.
 This is used to maintain a list of public sites that use Semantic MediaWiki, mainly to help the <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki project</a> to get an overview of typical uses of Semantic MediaWiki.

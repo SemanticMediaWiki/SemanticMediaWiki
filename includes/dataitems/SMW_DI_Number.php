@@ -22,7 +22,7 @@ class SMWDINumber extends SMWDataItem {
 
 	public function __construct( $number ) {
 		if ( !is_numeric( $number ) ) {
-			throw new SMWDataItemException( "Initialisation value '$number' is not a number." );
+			throw new SMWDataItemException( "Initialization value '$number' is not a number." );
 		}
 		$this->m_number = $number;
 	}

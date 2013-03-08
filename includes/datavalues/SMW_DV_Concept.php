@@ -16,7 +16,7 @@
 class SMWConceptValue extends SMWDataValue {
 
 	protected function parseUserValue( $value ) {
-		throw new Exception( 'Concepts cannot be initialised from user-provided strings. This should not happen.' );
+		throw new Exception( 'Concepts cannot be initialized from user-provided strings. This should not happen.' );
 	}
 
 	/**
