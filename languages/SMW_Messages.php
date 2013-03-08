@@ -2013,6 +2013,7 @@ $messages['br'] = array(
 	'smw_printername_template' => 'Patrom',
 	'smw_printername_rdf' => 'Ezporzh RDF',
 	'smw_printername_category' => 'Rummad',
+	'validator-type-class-SMWParamSource' => 'testenn',
 	'smw-paramdesc-limit' => "An niver uhelañ a zisoc'hoù da adkas",
 	'smw-paramdesc-headers' => 'Diskwel an talbennoù / anvioù ar perzhioù',
 	'smw-paramdesc-mainlabel' => 'Al label hag a ro anv ar bajenn degemer',
@@ -2032,7 +2033,7 @@ $messages['br'] = array(
 	'smw-paramdesc-csv-sep' => "An dispartier d'ober gantañ",
 	'smw-paramdesc-dsv-separator' => "An dispartier d'ober gantañ",
 	'smw-paramdesc-dsv-filename' => 'Anv ar restr DSV',
-	'smw-paramdesc-searchlabel' => "Testenn al liamm davet an disoc'hoù", # Fuzzy
+	'smw-paramdesc-searchlabel' => "Testenn evit kenderc'hel an enklask",
 	'smw_iq_disabled' => 'Diweredekaet eo bet ar goulennoù semantek evit ar wiki-mañ.',
 	'smw_iq_moreresults' => "... disoc'hoù all",
 	'smw_parseerror' => "An talvoud merket n'eo ket bet komprenet.",
@@ -2108,6 +2109,7 @@ Dic'hortoz e c'hall bezañ an disoc'hoù.",
 	'smw_qc_show_addnal_opts' => 'Diskouez dibarzhioù ouzhpenn',
 	'smw_qc_hide_addnal_opts' => "Diskouez nebeutoc'h a zibarzhioù",
 	'smw_qc_otheropt' => 'Dibarzhioù all',
+	'smw_qc_intro' => 'Digoradur :',
 	'smw_qc_default' => 'Dre ziouer:',
 	'smw_qui_property' => "<strong>Perc'henniezh </strong>",
 	'smw_qui_prop' => "Perc'henniezh",
@@ -2181,6 +2183,13 @@ Arabat krouiñ unan all.', # Fuzzy
 	'smw-createproperty-isproperty' => 'Ar perzh-mañ zo eus ar seurt $1.',
 	'smw-createproperty-allowedvals' => 'An talvoudenn{{PLURAL:$1||où}} aotreet evt ar perzh-se a zo :',
 	'smw-paramdesc-category-delim' => 'Ar bevenner',
+	'smw-info-par-message' => 'Kemennadenn da ziskwel.',
+	'smw-ui-tooltip-title-quantity' => 'Kementad',
+	'smw-ui-tooltip-title-warning' => 'Fazi',
+	'smw-ui-tooltip-title-parameter' => 'Arventenn',
+	'smw-ui-tooltip-title-event' => 'Darvoud',
+	'smw-ui-tooltip-title-note' => 'Notenn',
+	'smw-ui-tooltip-title-legend' => "Alc'hwez",
 	'smw_unknowntype' => 'Ar seurt roadennoù "$1" nann skoret a zo distroet d\'an doareenn', # Fuzzy
 );
 
