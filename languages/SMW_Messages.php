@@ -1040,17 +1040,18 @@ $messages['an'] = array(
  * @author Meno25
  * @author OsamaK
  * @author Ouda
+ * @author أحمد
  * @author روخو
  */
 $messages['ar'] = array(
-	'smw-desc' => "جعل الويكي الخاص بك أكثر قابلية للوصول - للآلات ''و'' البشر ([http://semantic-mediawiki.org/wiki/Help:User_manual توثيق على الإنترنت])",
-	'smw_viewasrdf' => 'تلقيم RDF',
+	'smw-desc' => "تجعل الويكي أكثر قابلية للوصول - للآلات ''و'' للبشر ([http://semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
+	'smw_viewasrdf' => 'تلقيمة RDF',
 	'smw_finallistconjunct' => '، و',
 	'smw_factbox_head' => 'حقائق عن $1',
-	'smw_isspecprop' => 'هذه الخاصية هى خاصية خاصة في هذا الويكي.',
-	'smw_concept_description' => 'وصف المبدأ "$1"',
-	'smw_no_concept_namespace' => 'المبادئ يمكن تعريفها فقط في الصفحات في نطاق Concept:',
-	'smw_multiple_concepts' => 'كل صفحة مبدأ يمكن أن تحتوي على تعريف مبدأ واحد.',
+	'smw_isspecprop' => 'هذه خصيصة مميزة في هذا الويكي.',
+	'smw_concept_description' => 'وصف المفهوم "$1"',
+	'smw_no_concept_namespace' => 'المفاهيم يمكن تعريفها فقط في الصفحات في فضاء التسمية Concept',
+	'smw_multiple_concepts' => 'كل صفحة مفهوم لا يمكن أن تضمّ أكثر من تعريف مفهوم واحد.',
 	'smw_concept_cache_miss' => 'المبدأ "$1" لا يمكن استخدامه حاليا، بما أن ضبط الويكي يحتاجه إلى أن يتم حسابه خارجيا. لو أن المشكلة لم تنته بعد بعض الوقت، سل إداري موقعك ليجعل هذا المبدأ متوفرا.',
 	'smw_noinvannot' => 'القيم لا يمكن تعيينها لخصائص معكوسة.',
 	'smw_baduri' => 'URIs من النوع "$1" غير مسموح بها.',
