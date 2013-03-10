@@ -648,6 +648,11 @@ class SMWQueryProcessor {
 			'default' => '',
 		);
 
+		// Give grep a chance to find the usages:
+		// smw-paramdesc-format, smw-paramdesc-source, smw-paramdesc-limit, smw-paramdesc-offset,
+		// smw-paramdesc-link, smw-paramdesc-sort, smw-paramdesc-order, smw-paramdesc-headers,
+		// smw-paramdesc-mainlabel, smw-paramdesc-intro, smw-paramdesc-outro, smw-paramdesc-searchlabel,
+		// smw-paramdesc-default
 		foreach ( $params as $name => &$param ) {
 			if ( is_array( $param ) ) {
 				$param['message'] = 'smw-paramdesc-' . $name;
