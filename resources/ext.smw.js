@@ -8,7 +8,7 @@
 /*global console:true message:true */
 
 // Declare instance
-smw = ( function () {
+var instance = ( function () {
 	'use strict';
 
 	var instance = {};
@@ -42,7 +42,7 @@ smw = ( function () {
 } )();
 
 // Assign namespace
-window.smw = window.semanticMediaWiki = smw;
+window.smw = window.semanticMediaWiki = instance;
 
 ( function( $ ) { 'use strict'; $( document ).ready( function() {
 } ); } )( jQuery );
