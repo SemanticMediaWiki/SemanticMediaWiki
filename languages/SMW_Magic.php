@@ -117,6 +117,11 @@ $magicWords['es'] = array(
 	'declare' => array( 0, 'declarar', 'declara' ),
 );
 
+/** Hebrew (עברית) */
+$magicWords['he'] = array(
+	'ask' => array( 0, 'שאל' ),
+);
+
 /** Indonesian (Bahasa Indonesia) */
 $magicWords['id'] = array(
 	'ask' => array( 0, 'tanya' ),
