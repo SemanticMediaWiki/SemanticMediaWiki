@@ -133,6 +133,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		
 		if ( count( $dataValues ) > 0 ) {
 			$sortkey = $dataValues[0]->getDataItem()->getSortKey();
+			$dataValueType = $dataValues[0]->getTypeID();
 			
 			if ( is_numeric( $sortkey ) ) {
 				$attribs['data-sort-value'] = $sortkey;
@@ -143,7 +144,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
 				$attribs['style'] = "text-align:' . $alignment . ';";
 			}
-			$attribs['class'] = $columnClass;
+			$attribs['class'] = $columnClass . ( $dataValueType !== '' ? ' smwtype' . $dataValueType : '' );
 
 			$content = $this->getCellContent(
 				$dataValues,
