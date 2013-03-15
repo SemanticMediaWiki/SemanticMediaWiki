@@ -198,17 +198,17 @@ function smwfRegisterClasses() {
 
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
-	$wgAutoloadClasses['SMWAsk']                    = $phDir . 'SMW_Ask.php';
-	$wgAutoloadClasses['SMWShow']                   = $phDir . 'SMW_Show.php';
+	$wgAutoloadClasses['SMWAsk']                    = $phDir . 'AskParserFunction.php';
+	$wgAutoloadClasses['SMWShow']                   = $phDir . 'ShowParserFunction.php';
 	$wgAutoloadClasses['SMWInfo']                   = $phDir . 'SMW_Info.php';
-	$wgAutoloadClasses['SMWConcept']                = $phDir . 'SMW_Concept.php';
+	$wgAutoloadClasses['SMWConcept']                = $phDir . 'ConceptParserFunction.php';
 	$wgAutoloadClasses['SMWDeclare']                = $phDir . 'SMW_Declare.php';
 	$wgAutoloadClasses['SMWSMWDoc']                 = $phDir . 'SMW_SMWDoc.php';
 	$wgAutoloadClasses['SMW\ParserParameter']       = $phDir . 'ParserParameter.php';
-	$wgAutoloadClasses['SMW\SetParser']             = $phDir . 'SetParser.php';
-	$wgAutoloadClasses['SMW\SubobjectHandler']      = $phDir . 'SubobjectHandler.php';
+	$wgAutoloadClasses['SMW\SetParser']             = $phDir . 'SetParserFunction.php';
+	$wgAutoloadClasses['SMW\SubobjectHandler']      = $phDir . 'SubobjectParserFunction.php';
 	$wgAutoloadClasses['SMW\Subobject']             = $phDir . 'Subobject.php';
-	$wgAutoloadClasses['SMW\RecurringEventsHandler'] = $phDir . 'RecurringEventsHandler.php';
+	$wgAutoloadClasses['SMW\RecurringEventsHandler'] = $phDir . 'RecurringEventsParserFunction.php';
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $phDir . 'RecurringEvents.php';
 
 	// Stores & queries
