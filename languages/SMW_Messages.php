@@ -12004,8 +12004,8 @@ Gera RDF navegável.',
 '''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} sua própria página, e o tipo de dados pretendido está especificado para '''$4''' delas.
 Algumas das propriedades existentes podem estar [[Special:UnusedProperties|sem uso]].
 As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
-	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>.
-Ele certifica-se de que os seres humanos não se tornem em sites da internet.', # Fuzzy
+	'smw_uri_doc' => 'O resolvedor de URIs implementa a [$1 descoberta TAG do W3C sobre o httpRange-14].
+Ele certifica-se de que os humanos não se tornem sites da Web.',
 	'ask' => 'Busca semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
