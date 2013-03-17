@@ -528,3 +528,21 @@ $smwgAutocompleteInSpecialAsk = true;
 ##
 $smwgAutoRefreshSubject = true;
 ##
+
+###
+# Sets whether or not to refresh semantic data in the store when a page is
+# manually purged (requires $wgMainCacheType to be set)
+#
+# @since 1.9
+##
+$smwgAutoRefreshOnPurge = true;
+##
+
+###
+# Sets whether or not to refresh semantic data in the store when a page was
+# moved (requires $wgMainCacheType to be set)
+#
+# @since 1.9
+##
+$smwgAutoRefreshOnPageMove = true;
+##

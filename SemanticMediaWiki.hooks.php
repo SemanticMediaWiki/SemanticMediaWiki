@@ -456,7 +456,177 @@ final class SMWHooks {
 			$extraStats['smw-statistics']['smw-statistics-property-type'] = $semanticStatistics['DECLPROPS'];
 			$extraStats['smw-statistics']['smw-statistics-query-inline'] = $semanticStatistics['QUERY'];
 		}
+	}
 
+	/**
+	 * Hook: ParserAfterTidy to add some final processing to the
+	 * fully-rendered page output
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
+	 *
+	 * @since  1.9
+	 *
+	 * @param $parser Parser object
+	 * @param $text Represents the text for page
+	 *
+	 * @return true
+	 */
+	public static function onParserAfterTidy( &$parser, &$text ) {
+
+		// Separate globals from local state
+		$options = array(
+			'smwgUseCategoryHierarchy' => $GLOBALS['smwgUseCategoryHierarchy'],
+			'smwgCategoriesAsInstances' => $GLOBALS['smwgCategoriesAsInstances'],
+		);
+
+		$parserData = new SMW\ParserData( $parser->getTitle(), $parser->getOutput(), $options );
+
+		if ( !( $parserData->getData() instanceof SMWSemanticData ) ) {
+			return true;
+		}
+
+		$parserData->addCategories( $parser->getOutput()->getCategoryLinks() );
+		$parserData->addDefaultSort( $parser->getDefaultSort() );
+
+		// If an article was was marked ensure that the store is updated as well
+		if( wfGetMainCache()->get( 'smw:autorefresh:' . $parser->getTitle()->getPrefixedDBkey() ) ){
+			$parserData->storeData( true );
+		}
+		wfGetMainCache()->delete( 'smw:autorefresh:' . $parser->getTitle()->getPrefixedDBkey() );
+
+		return true;
+	}
+
+	/**
+	 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
+	 *
+	 * Hook where the storage of data is triggered. This happens when
+	 * saving an article but possibly also when running update jobs.
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+	 *
+	 * @since  1.9
+	 *
+	 * @param $linksUpdate the LinksUpdate object
+	 *
+	 * @return true
+	 */
+	public static function onLinksUpdateConstructed( $linksUpdate ) {
+		$parserData = new SMW\ParserData( $linksUpdate->getTitle(), $linksUpdate->getParserOutput() );
+		$parserData->storeData( true );
+		return true;
+	}
+
+	/**
+	 * Hook: ArticleDelete occurs whenever the software receives a request
+	 * to delete an article
+	 *
+	 * This method will be called whenever an article is deleted so that
+	 * semantic properties are cleared appropriately.
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
+	 *
+	 * @since  1.9
+	 *
+	 * @param WikiPage $article the article/WikiPage that was delete
+	 * @param User $user the user (object) deleting the article
+	 * @param $reason the reason (string) the article is being deleted
+	 * @param $error if the requested article deletion was prohibited
+	 *
+	 * @return true
+	 */
+	public static function onArticleDelete( &$wikiPage, &$user, &$reason, &$error ) {
+		smwfGetStore()->deleteSubject( $wikiPage->getTitle() );
+		return true;
+	}
+
+	/**
+	 * Hook: ArticlePurge executes before running "&action=purge"
+	 *
+	 * @note Temporary store the article in the main cache (static variable
+	 * didn't work) in order for onParserAfterTidy to identify which article
+	 * was manually purged and update the store accordingly
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
+	 *
+	 * @since  1.9
+	 *
+	 * @param WikiPage $wikiPage article being purged
+	 *
+	 * @return true
+	 */
+	public static function onArticlePurge( &$wikiPage ) {
+		wfGetMainCache()->set(
+			'smw:autorefresh:' . $wikiPage->getTitle()->getPrefixedDBkey(),
+			$GLOBALS['smwgAutoRefreshOnPurge']
+		);
+		return true;
+	}
+
+	/**
+	 * Hook: TitleMoveComplete occurs whenever a request to move an article
+	 * is completed
+	 *
+	 * This method will be called whenever an article is moved so that
+	 * semantic properties are moved accordingly.
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
+	 *
+	 * @since  1.9
+	 *
+	 * @param Title $oldTitle old title
+	 * @param Title $newTitle: new title
+	 * @param Use $user user who did the move
+	 * @param $oldId database ID of the page that's been moved
+	 * @param $newId database ID of the created redirect
+	 *
+	 * @return true
+	 */
+	public static function onTitleMoveComplete( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
+		wfGetMainCache()->set(
+			'smw:autorefresh:' . $newTitle->getPrefixedDBkey(),
+			$GLOBALS['smwgAutoRefreshOnPageMove']
+		);
+
+		smwfGetStore()->changeTitle( $oldTitle, $newTitle, $oldId, $newId );
+		return true;
+	}
+
+	/**
+	 * Hook: NewRevisionFromEditComplete called when a revision was inserted
+	 * due to an edit
+	 *
+	 * Fetch additional information that is related to the saving that has just happened,
+	 * e.g. regarding the last edit date. In runs where this hook is not triggered, the
+	 * last DB entry (of MW) will be used to fill such properties.
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
+	 *
+	 * @since  1.9
+	 *
+	 * @param WikiPage $article the article edited
+	 * @param Revision $rev the new revision. Revision object
+	 * @param $baseId the revision ID this was based off, if any
+	 * @param User $user the revision author. User object
+	 *
+	 * @return true
+	 */
+	public static function onNewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) {
+		$parserOutput = $wikiPage->getParserOutput(
+			$wikiPage->makeParserOptions( $user ),
+			$revision->getId()
+		);
+
+		if ( !( $parserOutput instanceof ParserOutput ) ) {
+			return true;
+		}
+
+		$options = array(
+			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties']
+		);
+
+		$parserData = new SMW\ParserData( $wikiPage->getTitle(), $parserOutput, $options );
+		$parserData->addSpecialProperties( $wikiPage, $revision, $user );
 		return true;
 	}
 }

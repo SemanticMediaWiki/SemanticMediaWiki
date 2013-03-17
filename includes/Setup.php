@@ -54,12 +54,26 @@ function smwfRegisterHooks() {
 	$wgHooks['ParserFirstCallInit'][] = 'SMW\DocumentationParserFunction::staticInit';
 	$wgHooks['ParserFirstCallInit'][] = 'SMW\InfoParserFunction::staticInit';
 
+	// Register wikipage that has been manually purged (?action=purge)
+	$wgHooks['ArticlePurge'][] = 'SMWHooks::onArticlePurge';
+
+	// Fetch some MediaWiki data for replication in SMW's store
+	$wgHooks['ParserAfterTidy'][] = 'SMWHooks::onParserAfterTidy';
+
+	// Update data after template change and at save
+	$wgHooks['LinksUpdateConstructed'][] = 'SMWHooks::onLinksUpdateConstructed';
+
+	// Delete annotations
+	$wgHooks['ArticleDelete'][] = 'SMWHooks::onArticleDelete';
+
+	// Move annotations
+	$wgHooks['TitleMoveComplete'][] = 'SMWHooks::onTitleMoveComplete';
+
+	// Additional special properties (modification date etc.)
+	$wgHooks['NewRevisionFromEditComplete'][] = 'SMWHooks::onNewRevisionFromEditComplete';
+
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
-	$wgHooks['ArticleDelete'][] = 'SMWParseData::onArticleDelete'; // delete annotations
-	$wgHooks['TitleMoveComplete'][] = 'SMWParseData::onTitleMoveComplete'; // move annotations
-	$wgHooks['LinksUpdateConstructed'][] = 'SMWParseData::onLinksUpdateConstructed'; // update data after template change and at save
-	$wgHooks['ParserAfterTidy'][] = 'SMWParseData::onParserAfterTidy'; // fetch some MediaWiki data for replication in SMW's store
-	$wgHooks['NewRevisionFromEditComplete'][] = 'SMWParseData::onNewRevisionFromEditComplete'; // fetch some MediaWiki data for replication in SMW's store
+
 	$wgHooks['OutputPageParserOutput'][] = 'SMWFactbox::onOutputPageParserOutput'; // copy some data for later Factbox display
 	$wgHooks['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle'; // special implementations for property/type articles
 	$wgHooks['ParserFirstCallInit'][] = 'SMWHooks::onParserFirstCallInit';
@@ -76,6 +90,7 @@ function smwfRegisterHooks() {
 
 	// User preference
 	$wgHooks['GetPreferences'][] = 'SMWHooks::onGetPreferences';
+
 
 	// ResourceLoader
 	$wgHooks['ResourceLoaderGetConfigVars'][] = 'SMWHooks::onResourceLoaderGetConfigVars';

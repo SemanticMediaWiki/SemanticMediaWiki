@@ -22,6 +22,20 @@ class SMWDIProperty extends SMWDataItem {
 	const TYPE_SUBOBJECT  = '_SOBJ';
 	// Property improper value data item ID
 	const TYPE_ERROR      = '_ERRP';
+	// Property instance of a category
+	const TYPE_CATEGORY_INSTANCE = '_INST';
+	// Property "subcategory of"
+	const TYPE_SUBCATEGORY = '_SUBC';
+	// Property sort key of a page
+	const TYPE_SORTKEY = '_SKEY';
+	// Property modification date
+	const TYPE_MODIFICATION_DATE = '_MDAT';
+	// Property "creation date"
+	const TYPE_CREATION_DATE = '_CDAT';
+	// Property "last editor is"
+	const TYPE_LAST_EDITOR = '_LEDT';
+	// Property "is a new page"
+	const TYPE_NEW_PAGE = '_NEWP';
 
 	/**
 	 * Array for assigning types to predefined properties. Each
@@ -361,7 +375,7 @@ class SMWDIProperty extends SMWDataItem {
 		SMWDIProperty::$m_prop_types = array(
 				'_TYPE'  =>  array( '__typ', true ), // "has type"
 				'_URI'   =>  array( '__spu', true ), // "equivalent URI"
-				'_INST'  =>  array( '__sin', false ), // instance of a category
+				self::TYPE_CATEGORY_INSTANCE =>  array( '__sin', false ), // instance of a category
 				'_UNIT'  =>  array( '__sps', true ), // "displays unit"
 				'_IMPO'  =>  array( '__imp', true ), // "imported from"
 				'_CONV'  =>  array( '__sps', true ), // "corresponds to"
@@ -369,18 +383,18 @@ class SMWDIProperty extends SMWDataItem {
 				'_PVAL'  =>  array( '__sps', true ), // "allows value"
 				'_REDI'  =>  array( '__red', true ), // redirects to some page
 				'_SUBP'  =>  array( '__sup', true ), // "subproperty of"
-				'_SUBC'  =>  array( '__suc', !$smwgUseCategoryHierarchy ), // "subcategory of"
+				self::TYPE_SUBCATEGORY =>  array( '__suc', !$smwgUseCategoryHierarchy ), // "subcategory of"
 				'_CONC'  =>  array( '__con', false ), // associated concept
-				'_MDAT'  =>  array( '_dat', false ), // "modification date"
-				'_CDAT'  =>  array( '_dat', false ), // "creation date"
-				'_NEWP'  =>  array( '_boo', false ), // "is a new page"
-				'_LEDT'  =>  array( '_wpg', false ), // "last editor is"
+				self::TYPE_MODIFICATION_DATE =>  array( '_dat', false ), // "modification date"
+				self::TYPE_CREATION_DATE =>  array( '_dat', false ), // "creation date"
+				self::TYPE_NEW_PAGE =>  array( '_boo', false ), // "is a new page"
+				self::TYPE_LAST_EDITOR =>  array( '_wpg', false ), // "last editor is"
 				self::TYPE_ERROR  =>  array( '_wpp', false ), // "has improper value for"
 				'_LIST'  =>  array( '__pls', true ), // "has fields"
-				'_SKEY'  =>  array( '__key', false ), // sort key of a page
+				self::TYPE_SORTKEY =>  array( '__key', false ), // sort key of a page
 				'_SF_DF' => array( '__spf', true ), // Semantic Form's default form property
 				'_SF_AF' => array( '__spf', true ),  // Semantic Form's alternate form property
-				self::TYPE_SUBOBJECT  =>  array( '_wpg', true ), // "has subobject"
+				self::TYPE_SUBOBJECT =>  array( '_wpg', true ), // "has subobject"
 				'_ASK'   =>  array( '_wpg', false ), // "has query"
 				'_ASKST' =>  array( '_cod', true ), // "has query string"
 				'_ASKFO' =>  array( '_txt', true ), // "has query format"
