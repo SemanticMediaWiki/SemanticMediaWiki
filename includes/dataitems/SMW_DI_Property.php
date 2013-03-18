@@ -23,7 +23,7 @@ class SMWDIProperty extends SMWDataItem {
 	// Property improper value data item ID
 	const TYPE_ERROR      = '_ERRP';
 	// Property instance of a category
-	const TYPE_CATEGORY_INSTANCE = '_INST';
+	const TYPE_CATEGORY = '_INST';
 	// Property "subcategory of"
 	const TYPE_SUBCATEGORY = '_SUBC';
 	// Property sort key of a page
@@ -36,6 +36,10 @@ class SMWDIProperty extends SMWDataItem {
 	const TYPE_LAST_EDITOR = '_LEDT';
 	// Property "is a new page"
 	const TYPE_NEW_PAGE = '_NEWP';
+	// Property "has type"
+	const TYPE_HAS_TYPE = '_TYPE';
+	// Property "corresponds to"
+	const TYPE_CONVERSION = '_CONV';
 
 	/**
 	 * Array for assigning types to predefined properties. Each
@@ -373,12 +377,12 @@ class SMWDIProperty extends SMWDataItem {
 		// Properties without translation cannot be entered by or
 		// displayed to users, whatever their "show" value below.
 		SMWDIProperty::$m_prop_types = array(
-				'_TYPE'  =>  array( '__typ', true ), // "has type"
+				self::TYPE_HAS_TYPE =>  array( '__typ', true ), // "has type"
 				'_URI'   =>  array( '__spu', true ), // "equivalent URI"
-				self::TYPE_CATEGORY_INSTANCE =>  array( '__sin', false ), // instance of a category
+				self::TYPE_CATEGORY =>  array( '__sin', false ), // instance of a category
 				'_UNIT'  =>  array( '__sps', true ), // "displays unit"
 				'_IMPO'  =>  array( '__imp', true ), // "imported from"
-				'_CONV'  =>  array( '__sps', true ), // "corresponds to"
+				self::TYPE_CONVERSION =>  array( '__sps', true ), // "corresponds to"
 				'_SERV'  =>  array( '__sps', true ), // "provides service"
 				'_PVAL'  =>  array( '__sps', true ), // "allows value"
 				'_REDI'  =>  array( '__red', true ), // redirects to some page

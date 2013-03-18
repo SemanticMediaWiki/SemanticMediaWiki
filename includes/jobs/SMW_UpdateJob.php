@@ -28,6 +28,17 @@ class SMWUpdateJob extends Job {
 	}
 
 	/**
+	 * Returns Title object
+	 *
+	 * @since 1.9
+	 *
+	 * @return \Title
+	 */
+	public function getTitle() {
+		return $this->title;
+	}
+
+	/**
 	 * Run job
 	 * @return boolean success
 	 */
@@ -61,11 +72,15 @@ class SMWUpdateJob extends Job {
 		wfProfileOut( __METHOD__ . '-parse' );
 		wfProfileIn( __METHOD__ . '-update' );
 
-		SMWParseData::storeData( $output, $this->title, false );
-		
+		// @since 1.9
+		// SMWParseData::storeData( $output, $this->title, false );
+		$parserData = new SMW\ParserData( $this->title, $output );
+		$parserData->disableUpdateJobs();
+		$parserData->updateStore();
+
 		wfProfileOut( __METHOD__ . '-update' );
 		wfProfileOut( 'SMWUpdateJob::run (SMW)' );
-		
+
 		return true;
 	}
 
@@ -81,5 +96,5 @@ class SMWUpdateJob extends Job {
 			parent::insert();
 		}
 	}
-	
+
 }

@@ -530,8 +530,19 @@ $smwgAutoRefreshSubject = true;
 ##
 
 ###
+# Sets Semantic MediaWiki object cache and is used to track temporary
+# changes in SMW
+#
+# @see http://www.mediawiki.org/wiki/$wgMainCacheType
+#
+# @since 1.9
+##
+$smwgCacheType = CACHE_ANYTHING;
+##
+
+###
 # Sets whether or not to refresh semantic data in the store when a page is
-# manually purged (requires $wgMainCacheType to be set)
+# manually purged (requires $smwgCacheType be set)
 #
 # @since 1.9
 ##
@@ -540,7 +551,7 @@ $smwgAutoRefreshOnPurge = true;
 
 ###
 # Sets whether or not to refresh semantic data in the store when a page was
-# moved (requires $wgMainCacheType to be set)
+# moved (requires $smwgCacheType be set)
 #
 # @since 1.9
 ##

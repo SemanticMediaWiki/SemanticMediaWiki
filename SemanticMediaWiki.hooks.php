@@ -472,27 +472,26 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onParserAfterTidy( &$parser, &$text ) {
+		$cache = ObjectCache::getInstance( $GLOBALS['smwgCacheType'] );
 
 		// Separate globals from local state
+		// FIXME Do a new SMW\Settings( $GLOBALS );
 		$options = array(
 			'smwgUseCategoryHierarchy' => $GLOBALS['smwgUseCategoryHierarchy'],
 			'smwgCategoriesAsInstances' => $GLOBALS['smwgCategoriesAsInstances'],
 		);
 
 		$parserData = new SMW\ParserData( $parser->getTitle(), $parser->getOutput(), $options );
-
-		if ( !( $parserData->getData() instanceof SMWSemanticData ) ) {
-			return true;
-		}
-
 		$parserData->addCategories( $parser->getOutput()->getCategoryLinks() );
 		$parserData->addDefaultSort( $parser->getDefaultSort() );
 
-		// If an article was was marked ensure that the store is updated as well
-		if( wfGetMainCache()->get( 'smw:autorefresh:' . $parser->getTitle()->getPrefixedDBkey() ) ){
-			$parserData->storeData( true );
+		// If an article was was manually purged/moved ensure that the store is
+		// updated as well for all other cases onLinksUpdateConstructed will
+		// initiate the store update
+		if( $cache->get( 'smw:autorefresh:' . $parser->getTitle()->getPrefixedDBkey() ) ){
+			$parserData->updateStore();
 		}
-		wfGetMainCache()->delete( 'smw:autorefresh:' . $parser->getTitle()->getPrefixedDBkey() );
+		$cache->delete( 'smw:autorefresh:' . $parser->getTitle()->getPrefixedDBkey() );
 
 		return true;
 	}
@@ -513,7 +512,7 @@ final class SMWHooks {
 	 */
 	public static function onLinksUpdateConstructed( $linksUpdate ) {
 		$parserData = new SMW\ParserData( $linksUpdate->getTitle(), $linksUpdate->getParserOutput() );
-		$parserData->storeData( true );
+		$parserData->updateStore();
 		return true;
 	}
 
@@ -556,7 +555,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onArticlePurge( &$wikiPage ) {
-		wfGetMainCache()->set(
+		ObjectCache::getInstance( $GLOBALS['smwgCacheType'] )->set(
 			'smw:autorefresh:' . $wikiPage->getTitle()->getPrefixedDBkey(),
 			$GLOBALS['smwgAutoRefreshOnPurge']
 		);
@@ -583,7 +582,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onTitleMoveComplete( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
-		wfGetMainCache()->set(
+		ObjectCache::getInstance( $GLOBALS['smwgCacheType'] )->set(
 			'smw:autorefresh:' . $newTitle->getPrefixedDBkey(),
 			$GLOBALS['smwgAutoRefreshOnPageMove']
 		);
@@ -599,6 +598,8 @@ final class SMWHooks {
 	 * Fetch additional information that is related to the saving that has just happened,
 	 * e.g. regarding the last edit date. In runs where this hook is not triggered, the
 	 * last DB entry (of MW) will be used to fill such properties.
+	 *
+	 * Called from LocalFile.php, SpecialImport.php, Article.php, Title.php
 	 *
 	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
 	 *
@@ -621,6 +622,7 @@ final class SMWHooks {
 			return true;
 		}
 
+		// FIXME Do a new SMW\Settings( $GLOBALS );
 		$options = array(
 			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties']
 		);

@@ -2,10 +2,10 @@
 /**
  * Static class to collect all functions related to parsing wiki text in SMW.
  * It includes all parser function declarations and hooks.
- * 
+ *
  * @file SMW_ParserExtensions.php
  * @ingroup SMW
- * 
+ *
  * @author Markus Krötzsch
  * @author Denny Vrandecic
  */
@@ -29,7 +29,7 @@ class SMWParserExtensions {
 	static public function onInternalParseBeforeLinks( Parser &$parser, &$text ) {
 		global $smwgStoreAnnotations, $smwgLinksInValues;
 
-		SMWParseData::stripMagicWords( $text, $parser );
+		SMWParserExtensions::stripMagicWords( $text, $parser );
 
 		// Store the results if enabled (we have to parse them in any case,
 		// in order to clean the wiki source for further processing).
@@ -39,7 +39,7 @@ class SMWParserExtensions {
 		// Process redirects, if any (it seems that there is indeed no more direct way of getting this info from MW)
 		if ( $smwgStoreAnnotations ) {
 			$rt = Title::newFromRedirect( $text );
-			
+
 			if ( !is_null( $rt ) ) {
 				$p = new SMWDIProperty( '_REDI' );
 				$di = SMWDIWikiPage::newFromTitle( $rt, '__red' );
@@ -176,6 +176,37 @@ class SMWParserExtensions {
 		wfProfileOut( 'smwfParsePropertiesCallback (SMW)' );
 
 		return $result;
+	}
+
+	/**
+	 * Remove relevant SMW magic words from the given text and return
+	 * an array of the names of all discovered magic words. Moreover,
+	 * store this array in the current parser output, using the variable
+	 * mSMWMagicWords.
+	 *
+	 * @note moved from SMWParseData::stripMagicWords as it is only used
+	 * in here
+	 *
+	 * @since  1.9
+	 */
+	static public function stripMagicWords( &$text, Parser $parser ) {
+		$words = array();
+		$mw = MagicWord::get( 'SMW_NOFACTBOX' );
+
+		if ( $mw->matchAndRemove( $text ) ) {
+			$words[] = 'SMW_NOFACTBOX';
+		}
+
+		$mw = MagicWord::get( 'SMW_SHOWFACTBOX' );
+
+		if ( $mw->matchAndRemove( $text ) ) {
+			$words[] = 'SMW_SHOWFACTBOX';
+		}
+
+		$output = $parser->getOutput();
+		$output->mSMWMagicWords = $words;
+
+		return $words;
 	}
 
 }
