@@ -163,6 +163,16 @@ $specialPageAliases['dv'] = array(
 	'Ask' => array( 'އައްސަވާ' ),
 );
 
+/** Esperanto (Esperanto) */
+$specialPageAliases['eo'] = array(
+	'Ask' => array( 'Peti' ),
+	'Browse' => array( 'Foliumi' ),
+	'ExportRDF' => array( 'Elporti_RDF', 'Eksporti_RDF' ),
+	'PageProperty' => array( 'Ecoj_de_paĝo' ),
+	'Properties' => array( 'Ecoj' ),
+	'Types' => array( 'Specoj' ),
+);
+
 /** Spanish (español) */
 $specialPageAliases['es'] = array(
 	'Types' => array( 'Tipos' ),
