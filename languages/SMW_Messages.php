@@ -620,10 +620,10 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 holds the name of the respective concept.',
 	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". Parameters:
 * $1 holds the number of pages displayed in the current view.',
-	'specialpages-group-smw_group' => 'This is the name of the group of extensions on [[Special:Version]] which are related to or dependant on Semantic MediaWiki.
-
-{{optional}}',
-	'exportrdf' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:ExportRDF]].',
+	'specialpages-group-smw_group' => '{{optional}}
+{{doc-special-group|that=are related to (or depend on) Semantic MediaWiki|like=[[Special:OfflineImportLexicon]], [[Special:Ask]], [[Special:QueryCreator]], [[Special:Browse]], [[Special:PageProperty]], [[Special:SearchByProperty]], [[Special:SMWAdmin]], [[Special:ExportRDF]], [[Special:ObjectEditor]], [[Special:WidgetAssembler]], [[Special:WidgetClone]], [[Special:BrowseWiki]], [[Special:SolrSearch]]}}
+{{Identical|Semantic MediaWiki}}',
+	'exportrdf' => '{{doc-special|ExportRDF}}',
 	'smw_exportrdf_docu' => 'This is the introductory message at the top of [[Special:ExportRDF]].',
 	'smw_exportrdf_recursive' => 'This is the text describing an option available to choose from on [[Special:ExportRDF]].',
 	'smw_exportrdf_backlinks' => 'This is the text describing an option available to choose from on [[Special:ExportRDF]].',
@@ -632,8 +632,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 
 {{Identical|Export}}',
 	'uriresolver' => 'This is the name of [[Special:URIResolver]].',
-	'properties' => 'This is the title of the special page on [[Special:SpecialPages]] showing all properties.
-
+	'properties' => '{{doc-special|Properties}}
 {{Identical|Property}}',
 	'smw_properties_docu' => 'This is the introductory message at the top of [[Special:Properties]].',
 	'smw_property_template' => "This message is used on [[Special:Properties]] to display each property listed. It holds the following parameters:
@@ -648,22 +647,21 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_propertylackstype' => 'This is an error/warning message. Parameters:
 * $1 holds the name of the assumed data type which is in fact always data type Page.',
 	'smw_propertyhardlyused' => 'This is an error/warning message.',
-	'unusedproperties' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:UnusedProperties]].',
+	'unusedproperties' => '{{doc-special|UnusedProperties}}',
 	'smw_unusedproperties_docu' => 'This is the introductory message at the top of [[Special:UnusedProperties]].',
 	'smw_unusedproperty_template' => "This message is used on [[Special:UnusedProperties]] to display each property listed. It holds the following parameters:
 * $1 link to the property's page
 * $2 link to the property's data type page",
-	'wantedproperties' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:WantedProperties]].',
+	'wantedproperties' => '{{doc-special|WantedProperties}}',
 	'smw_wantedproperties_docu' => 'This is the introductory message at the top of [[Special:WantedProperties]].',
 	'smw_wantedproperty_template' => 'This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned data type and how often it is used in the wiki. $1 holds the name of the wanted property. $2 holds the number of values annotated with the wanted property.',
 	'smw_purge' => '{{doc-actionlink}}
 This is the label of a tab of an action item for the content area.',
-	'types' => 'This is the title of the special page on [[Special:SpecialPages]] showing all data types.
-
+	'types' => '{{doc-special|Types}}
 {{Identical|Type}}',
 	'smw_types_docu' => 'This is the introductory message at the top of [[Special:Types]].',
 	'smw-special-types-no-such-type' => 'Error message shown on [[Special:Types]] when specifying an invalid data type.',
-	'semanticstatistics' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SemanticStatistics]].',
+	'semanticstatistics' => '{{doc-special|SemanticStatistics}}',
 	'smw_semstats_text' => 'This it the contents of [[Special:SemanticStatistics]]. Parameters:
 * $1 to $4 hold numerical values.',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
@@ -673,7 +671,7 @@ This is controlled by the HTTP request header. Semantic Web crawlers and browser
 This method is called ''content negotiation''.
 
 {{doc-important|Do not alter or translate link targets!}}",
-	'ask' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:Ask]].',
+	'ask' => '{{doc-special|Ask}}',
 	'smw_ask_doculink' => "{{notranslate}}
 This message should be the URL of the semantic query documentation for that language. For English, this is http://semantic-mediawiki.org/wiki/Help:Semantic_search. For other languages, it should be an ''existing'' page on semantic-mediawiki.org. Note that only some languages have own documentations yet.
 
@@ -710,7 +708,7 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw-ask-delete' => 'This is the text of the action link on [[Special:Ask]] to delete an printout statement from a query.',
 	'smw-ask-sorting' => 'This is the text for the header of the section on [[Special:Ask]] that allows to specify sorting options for specific properties that are queried for.',
 	'smw-ask-format-selection-help' => 'This is a text displayed on [[Special:Ask]] to inform about a help page on [http://semantic-mediawiki.org/wiki/ Semantic MediaWiki]',
-	'querycreator' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:QueryCreator]].',
+	'querycreator' => '{{doc-special|QueryCreator}}',
 	'smw_qc_addmainlabel' => 'This is the text of the action link on [[Special:QueryCreator]].',
 	'smw_qc_show_addnal_opts' => 'This is the text of the action link on [[Special:QueryCreator]] to show the input and selection areas for printout statements of a query.',
 	'smw_qc_hide_addnal_opts' => 'This is the text of the action link on [[Special:QueryCreator]] to hide the input and selection areas for printout statements of a query.',
@@ -781,7 +779,7 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 {{Identical|Category}}',
 	'smw_qui_dcatyes' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is present is expected to be typed in.',
 	'smw_qui_dcatno' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is absent is expected to be typed in.',
-	'searchbyproperty' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SearchByProperty]].',
+	'searchbyproperty' => '{{doc-special|SearchByProperty}}',
 	'smw_sbv_docu' => 'This is the information message shown on [[Special:SearchByProperty]] in case no property and no property value were not yet provided to search for.',
 	'smw_sbv_novalue' => 'This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided. Parameters:
 * $1 holds the name of the property.',
@@ -798,7 +796,7 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw_sbv_submit' => 'This is the name of the submit button on [[Special:SearchByProperty]] to trigger the search.
 
 {{Identical|Find results}}',
-	'browse' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:Browse]].',
+	'browse' => '{{doc-special|Browse}}',
 	'smw_browselink' => 'This is the text of the link shown within the toolbox in the sidebar pointing to [[Special:Browse]]',
 	'smw_browse_article' => 'This is the text describing a textbox on [[Special:Browse]] where the name of a page is expected to be typed in.',
 	'smw_browse_go' => 'This is the name of the submit button on [[Special:Browse]] to trigger the browsing of pages.
@@ -841,7 +839,7 @@ See also:
 	'smw_result_noresults' => 'This is the text on [[Special:Ask]] or [[Special:SearchByProperty]] shown in case a query does not return any results.
 
 {{Identical|Sorry, no results}}',
-	'smwadmin' => 'This is the link text on [[Special:SpecialPages]] pointing to [[Special:SMWAdmin]].',
+	'smwadmin' => '{{doc-special|SMWAdmin}}',
 	'smw_smwadmin_setupsuccess' => "This is the confirmation message at the bottom of the script's report concerning setup or update of the SMW database tables (process triggered from [[Special:SMWAdmin]]).",
 	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]]. Parameters:
 * $1 holds the link back to Special:SMWAdmin.
@@ -906,7 +904,8 @@ See also:
 	'smw-info-par-icon' => 'This is the description of the "icon" parameter of the parser function "[http://semantic-mediawiki.org/wiki/Help:Adding_tooltips #info]".
 
 {{doc-important|Do not translate the possible parameter values "info" and "warning".}}',
-	'prefs-smw' => 'This is the text of a section header on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
+	'prefs-smw' => 'This is the text of a section header on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].
+{{Identical|Semantic MediaWiki}}',
 	'prefs-ask-options' => 'This is the text of a header within a section on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-prefs-intro-text' => 'This is an user preference intro text on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-prefs-ask-options-tooltip-display' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
@@ -12179,6 +12178,14 @@ Progresso estimado da atualização corrente:',
 	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'O tipo dessa propriedade é invalido',
+);
+
+/** Quechua (Runa Simi)
+ * @author AlimanRuna
+ */
+$messages['qu'] = array(
+	'smw_purge' => 'Musuqchay',
+	'smw_browselink' => "Kaqninkunapi wamp'uy",
 );
 
 /** Tarifit (Tarifit)
