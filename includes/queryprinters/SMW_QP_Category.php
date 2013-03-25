@@ -42,6 +42,8 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	}	
 	
 	public function getName() {
+		// Give grep a chance to find the usages:
+		// smw_printername_category
 		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
 

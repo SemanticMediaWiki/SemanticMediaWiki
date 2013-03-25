@@ -12,6 +12,8 @@
 class SMWTableResultPrinter extends SMWResultPrinter {
 
 	public function getName() {
+		// Give grep a chance to find the usages:
+		// smw_printername_table, smw_printername_broadtable
 		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
 
