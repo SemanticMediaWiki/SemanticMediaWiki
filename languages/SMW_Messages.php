@@ -10178,6 +10178,18 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw_unknowntype' => 'Typen «$1» som er definert for egenskapen støttes ikke.', # Fuzzy
 );
 
+/** Low German (Plattdüütsch)
+ * @author Joachim Mos
+ */
+$messages['nds'] = array(
+	'smw_printername_template' => 'Vörlaag',
+	'smw_printername_category' => 'Kategorie',
+	'smw_ask_defaultformat' => 'default',
+	'smw_qui_cancel' => 'Afbreken',
+	'smw_qui_dcategory' => 'Kategorie:',
+	'smw_pp_type' => 'Egenschop',
+);
+
 /** Niuean (ko e vagahau Niuē)
  * @author Jose77
  */
