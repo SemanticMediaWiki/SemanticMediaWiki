@@ -51,7 +51,7 @@ function smwfRegisterHooks() {
 	$wgHooks['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 	$wgHooks['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 
-	$wgHooks['ParserFirstCallInit'][] = 'SMWSMWDoc::staticInit';
+	$wgHooks['ParserFirstCallInit'][] = 'SMW\DocumentationParserFunction::staticInit';
 	$wgHooks['ParserFirstCallInit'][] = 'SMWInfo::staticInit';
 
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
@@ -206,13 +206,13 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWInfo']                   = $phDir . 'SMW_Info.php';
 	$wgAutoloadClasses['SMW\ConceptParserFunction'] = $phDir . 'ConceptParserFunction.php';
 	$wgAutoloadClasses['SMW\DeclareParserFunction'] = $phDir . 'DeclareParserFunction.php';
-	$wgAutoloadClasses['SMWSMWDoc']                 = $phDir . 'SMW_SMWDoc.php';
-	$wgAutoloadClasses['SMW\ParserParameterFormatter'] = $phDir . 'ParserParameterFormatter.php';
-	$wgAutoloadClasses['SMW\SetParserFunction']        = $phDir . 'SetParserFunction.php';
-	$wgAutoloadClasses['SMW\SubobjectParserFunction']  = $phDir . 'SubobjectParserFunction.php';
-	$wgAutoloadClasses['SMW\Subobject']              = $phDir . 'Subobject.php';
-	$wgAutoloadClasses['SMW\RecurringEventsParserFunction'] = $phDir . 'RecurringEventsParserFunction.php';
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $phDir . 'RecurringEvents.php';
+	$wgAutoloadClasses['SMW\Subobject']             = $phDir . 'Subobject.php';
+	$wgAutoloadClasses['SMW\DocumentationParserFunction']   = $phDir . 'DocumentationParserFunction.php';
+	$wgAutoloadClasses['SMW\ParserParameterFormatter']      = $phDir . 'ParserParameterFormatter.php';
+	$wgAutoloadClasses['SMW\SetParserFunction']             = $phDir . 'SetParserFunction.php';
+	$wgAutoloadClasses['SMW\SubobjectParserFunction']       = $phDir . 'SubobjectParserFunction.php';
+	$wgAutoloadClasses['SMW\RecurringEventsParserFunction'] = $phDir . 'RecurringEventsParserFunction.php';
 
 	// Stores & queries
 	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';

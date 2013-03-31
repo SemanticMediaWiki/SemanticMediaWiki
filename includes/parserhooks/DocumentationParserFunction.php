@@ -1,5 +1,10 @@
 <?php
 
+namespace SMW;
+
+use Parser;
+use SMWQueryProcessor;
+
 /**
  * Class for the 'smwdoc' parser hooks,
  * which displays parameter documentation for a specified result format.
@@ -12,7 +17,7 @@
  * @licence GNU GPL v3
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWSMWDoc extends ParserHook {
+class DocumentationParserFunction extends \ParserHook {
 
 	/**
 	 * Field to store the value of the language parameter.
@@ -174,7 +179,7 @@ class SMWSMWDoc extends ParserHook {
 	 *
 	 * @return string
 	 */
-	protected function getDescriptionRow( IParamDefinition $parameter, $hasAliases ) {
+	protected function getDescriptionRow( \IParamDefinition $parameter, $hasAliases ) {
 		if ( $hasAliases ) {
 			$aliases = $parameter->getAliases();
 			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : '-';
@@ -210,7 +215,7 @@ EOT;
 	 */
 	protected function getFormatParameters( $format ) {
 		if ( array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
-			return ParamDefinition::getCleanDefinitions(
+			return \ParamDefinition::getCleanDefinitions(
 				SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
 			);
 		}
