@@ -211,7 +211,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\SetParserFunction']        = $phDir . 'SetParserFunction.php';
 	$wgAutoloadClasses['SMW\SubobjectParserFunction']  = $phDir . 'SubobjectParserFunction.php';
 	$wgAutoloadClasses['SMW\Subobject']              = $phDir . 'Subobject.php';
-	$wgAutoloadClasses['SMW\RecurringEventsHandler'] = $phDir . 'RecurringEventsParserFunction.php';
+	$wgAutoloadClasses['SMW\RecurringEventsParserFunction'] = $phDir . 'RecurringEventsParserFunction.php';
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $phDir . 'RecurringEvents.php';
 
 	// Stores & queries

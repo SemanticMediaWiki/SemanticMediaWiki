@@ -33,7 +33,7 @@ use SMWParseData;
  *
  * @author mwjames
  */
-class RecurringEventsHandler {
+class RecurringEventsParserFunction {
 
 	/**
 	 * Method for handling the set_recurring_event parser function.
@@ -63,13 +63,13 @@ class RecurringEventsHandler {
 			$parameters = $events->getParameters();
 
 			// Add individual date string as parameter in order to be handled
-			// equally by the SubobjectHandler as member of the same instance
+			// equally by the SubobjectParserFunction as member of the same instance
 			// once the ParserParameter class is fixed use a
 			// $parameters->addParameter( key, value ) instead
 			$parameters[$events->getProperty()][] = $date_str;
 
 			// Instantiate subobject handler for each new date
-			$handler = new SubobjectHandler( $subject, $parameters );
+			$handler = new SubobjectParserFunction( $subject, $parameters );
 
 			// Store an individual subobject
 			SMWParseData::getSMWData( $parser )->addPropertyObjectValue(
@@ -81,7 +81,7 @@ class RecurringEventsHandler {
 			$errors = array_merge( $handler->getSubobject()->getErrors(), $errors );
 		}
 
-		// See comments in SubobjectHandler class
+		// See comments in SubobjectParserFunction class
 		return smwfEncodeMessages( $errors , 'warning', '' , false );
 	}
 }
