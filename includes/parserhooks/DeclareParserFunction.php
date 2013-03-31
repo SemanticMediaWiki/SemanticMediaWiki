@@ -1,30 +1,36 @@
 <?php
 
+namespace SMW;
+
+use Parser;
+use SMWParseData;
+use SMWOutputs;
+
 /**
  * Class for the 'declare' parser functions.
  * @see http://semantic-mediawiki.org/wiki/Help:Argument_declaration_in_templates
- * 
+ *
  * @since 1.5.3
- * 
+ *
  * @file SMW_Declare.php
  * @ingroup SMW
  * @ingroup ParserHooks
- * 
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class SMWDeclare {
-	
+class DeclareParserFunction {
+
 	/**
 	 * Method for handling the declare parser function.
-	 * 
+	 *
 	 * @since 1.5.3
-	 * 
+	 *
 	 * @param Parser $parser
 	 * @param PPFrame $frame
 	 * @param array $args
 	 */
-	public static function render( Parser &$parser, PPFrame $frame, array $args ) {
+	public static function render( Parser &$parser, \PPFrame $frame, array $args ) {
 		if ( $frame->isTemplate() ) {
 			foreach ( $args as $arg )
 				if ( trim( $arg ) !== '' ) {
@@ -39,7 +45,7 @@ class SMWDeclare {
 						$argumentname = $parts[1];
 					}
 
-					$property = SMWPropertyValue::makeUserProperty( $propertystring );
+					$property = \SMWPropertyValue::makeUserProperty( $propertystring );
 					$argument = $frame->getArgument( $argumentname );
 					$valuestring = $frame->expand( $argument );
 
@@ -80,8 +86,8 @@ class SMWDeclare {
 		else {
 			SMWOutputs::commitToParser( $parser );
 		}
-		
-		return '';		
+
+		return '';
 	}
-	
+
 }

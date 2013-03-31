@@ -205,7 +205,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ShowParserFunction']    = $phDir . 'ShowParserFunction.php';
 	$wgAutoloadClasses['SMWInfo']                   = $phDir . 'SMW_Info.php';
 	$wgAutoloadClasses['SMW\ConceptParserFunction'] = $phDir . 'ConceptParserFunction.php';
-	$wgAutoloadClasses['SMWDeclare']                = $phDir . 'SMW_Declare.php';
+	$wgAutoloadClasses['SMW\DeclareParserFunction'] = $phDir . 'DeclareParserFunction.php';
 	$wgAutoloadClasses['SMWSMWDoc']                 = $phDir . 'SMW_SMWDoc.php';
 	$wgAutoloadClasses['SMW\ParserParameterFormatter'] = $phDir . 'ParserParameterFormatter.php';
 	$wgAutoloadClasses['SMW\SetParserFunction']        = $phDir . 'SetParserFunction.php';
