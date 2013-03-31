@@ -1,5 +1,13 @@
 <?php
 
+namespace SMW;
+
+use Parser;
+use SMWParseData;
+use SMWDIProperty;
+use SMWOutputs;
+use SMWQueryProcessor;
+
 /**
  * @since 1.5.3
  * @file
@@ -18,7 +26,7 @@
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class SMWConcept {
+class ConceptParserFunction {
 
 	/**
 	 * Method for handling the ask concept function.
@@ -68,12 +76,12 @@ class SMWConcept {
 		$concept_text = $query->getDescription()->getQueryString();
 
 		if ( !is_null( SMWParseData::getSMWData( $parser ) ) ) {
-			$diConcept = new SMWDIConcept( $concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth() );
+			$diConcept = new \SMWDIConcept( $concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth() );
 			SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $pconc, $diConcept );
 		}
 
 		// display concept box:
-		$rdflink = SMWInfolink::newInternalLink(
+		$rdflink = \SMWInfolink::newInternalLink(
 			wfMessage( 'smw_viewasrdf' )->inContentLanguage()->text(),
 			$wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink'
 		);
