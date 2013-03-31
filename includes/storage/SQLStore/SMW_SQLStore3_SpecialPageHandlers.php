@@ -200,7 +200,7 @@ class SMWSQLStore3SpecialPageHandlers {
 		// Count existing inline queries
 		$typeprop = new SMWDIProperty( '_ASK' );
 		$typetable = $proptables[SMWSQLStore3::findPropertyTableID( $typeprop )];
-		$res = $dbr->select( $typetable->name, 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$res = $dbr->select( $typetable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
 		$row = $dbr->fetchObject( $res );
 		$result['QUERY'] = $row->count;
 		$dbr->freeResult( $res );
