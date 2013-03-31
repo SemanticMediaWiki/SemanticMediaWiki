@@ -1,10 +1,10 @@
 <?php
 
 namespace SMW\Test;
-use SMW\ParserParameter;
+use SMW\ParserParameterFormatter;
 
 /**
- * Tests for the SMW\ParserParameter class.
+ * Tests for the SMW\ParserParameterFormatter class.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,13 +33,13 @@ use SMW\ParserParameter;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class ParserParameterTest extends \MediaWikiTestCase {
+class ParserParameterFormatterTest extends \MediaWikiTestCase {
 
 	public function testSingleton() {
-		$instance = ParserParameter::singleton();
+		$instance = ParserParameterFormatter::singleton();
 
-		$this->assertInstanceOf( 'SMW\ParserParameter', $instance );
-		$this->assertTrue( ParserParameter::singleton() === $instance );
+		$this->assertInstanceOf( 'SMW\ParserParameterFormatter', $instance );
+		$this->assertTrue( ParserParameterFormatter::singleton() === $instance );
 	}
 
 	public function getParametersDataProvider() {
@@ -108,7 +108,7 @@ class ParserParameterTest extends \MediaWikiTestCase {
 	 * @dataProvider getParametersDataProvider
 	 */
 	public function testGetParameters( array $params, array $expected ) {
-		$results = ParserParameter::singleton()->getParameters( $params );
+		$results = ParserParameterFormatter::singleton()->getParameters( $params );
 
 		$this->assertTrue( is_array( $results ) );
 		$this->assertEquals( $results, $expected );

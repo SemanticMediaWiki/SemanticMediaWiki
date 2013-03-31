@@ -47,7 +47,7 @@ class SetParser {
 		$params = func_get_args();
 		array_shift( $params );
 
-		foreach ( ParserParameter::singleton()->getParameters( $params ) as $property => $values ){
+		foreach ( ParserParameterFormatter::singleton()->getParameters( $params ) as $property => $values ){
 			foreach ( $values as $value ) {
 				SMWParseData::addProperty( $property, $value, false, $parser, true );
 			}

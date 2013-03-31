@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\RecurringEvents;
-use SMW\ParserParameter;
+use SMW\ParserParameterFormatter;
 
 /**
  * Tests for the SMW\RecurringEvents class.
@@ -114,7 +114,7 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 	 */
 	private function getInstance( array $params ) {
 		// FIXME Class instance
-		$parameters = ParserParameter::singleton()->getParameters( $params );
+		$parameters = ParserParameterFormatter::singleton()->getParameters( $params );
 		$instance = new RecurringEvents( $parameters );
 		return $instance;
 	}

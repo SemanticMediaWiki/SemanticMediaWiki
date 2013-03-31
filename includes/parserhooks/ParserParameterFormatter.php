@@ -27,7 +27,7 @@ namespace SMW;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class ParserParameter {
+class ParserParameterFormatter {
 
 	/**
 	 * Returns a default separator

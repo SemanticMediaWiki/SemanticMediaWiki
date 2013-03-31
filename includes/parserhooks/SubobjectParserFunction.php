@@ -115,7 +115,7 @@ class SubobjectHandler {
 		$name = str_replace( ' ', '_', trim( array_shift( $params ) ) );
 
 		// FIXME Use a class instance here
-		$parameters = ParserParameter::singleton()->getParameters( $params );
+		$parameters = ParserParameterFormatter::singleton()->getParameters( $params );
 
 		// Create handler instance and encapsulate the subobject instance by
 		// returning a value object

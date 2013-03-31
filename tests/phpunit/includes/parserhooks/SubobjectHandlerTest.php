@@ -4,7 +4,7 @@ namespace SMW\Test;
 
 use SMW\SubobjectHandler;
 use SMW\Subobject;
-use SMW\ParserParameter;
+use SMW\ParserParameterFormatter;
 
 use SMWDIWikiPage;
 use Title;
@@ -72,7 +72,7 @@ class SubobjectHandlerTest extends \MediaWikiTestCase {
 		$subject = $this->getSubject( $DBKey );
 
 		// FIXME Class instance
-		$parameters = ParserParameter::singleton()->getParameters( $params );
+		$parameters = ParserParameterFormatter::singleton()->getParameters( $params );
 		$instance = new SubobjectHandler( $subject, $parameters );
 		return $instance;
 	}

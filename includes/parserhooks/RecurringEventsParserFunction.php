@@ -50,7 +50,7 @@ class RecurringEventsHandler {
 		$subject = $mainSemanticData->getSubject();
 
 		// FIXME Use a class instance
-		$parameters = ParserParameter::singleton()->getParameters( $params );
+		$parameters = ParserParameterFormatter::singleton()->getParameters( $params );
 
 		// Get recurring events
 		$events = new RecurringEvents( $parameters );
