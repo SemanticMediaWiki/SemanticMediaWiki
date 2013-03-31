@@ -1,4 +1,8 @@
 <?php
+
+use ParamProcessor\Processor;
+use ParamProcessor\Options;
+
 /**
  * This file contains a static class for accessing functions to generate and execute
  * semantic queries and to serialise their results.
@@ -52,11 +56,11 @@ class SMWQueryProcessor {
 	 * @param array $printRequests
 	 * @param boolean $unknownInvalid
 	 *
-	 * @return array of IParam
+	 * @return IParam[]
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = array(), $unknownInvalid = true ) {
 		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid );
-		$validator->validateParameters();
+		$validator->processParameters();
 		return $validator->getParameters();
 	}
 
@@ -71,14 +75,17 @@ class SMWQueryProcessor {
 	 * @param array $printRequests
 	 * @param boolean $unknownInvalid
 	 *
-	 * @return Validator
+	 * @return Processor
 	 */
 	public static function getValidatorForParams( array $params, array $printRequests = array(), $unknownInvalid = true ) {
 		$paramDefinitions = self::getParameters();
 
 		$paramDefinitions['format']->setPrintRequests( $printRequests );
 
-		$validator = new Validator( 'SMW query', $unknownInvalid );
+		$processorOptions = new Options();
+		$processorOptions->setUnknownInvalid( $unknownInvalid );
+
+		$validator = Processor::newFromOptions( $processorOptions );
 		$validator->setParameters( $params, $paramDefinitions, false );
 
 		return $validator;
@@ -568,7 +575,7 @@ class SMWQueryProcessor {
 	 *
 	 * @since 1.6.2, return element type changed in 1.8
 	 *
-	 * @return array of IParamDefinition
+	 * @return IParamDefinition[]
 	 */
 	public static function getParameters() {
 		$params = array();
