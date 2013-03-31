@@ -425,9 +425,10 @@ final class SMWHooks {
 	* @since 1.9
 	*
 	* @param $extraStats
+	 *
 	* @return boolean
 	*/
-	public static function onSpecialStatsAddExtra( $context, &$extraStats ) {
+	public static function onSpecialStatsAddExtra( array &$extraStats ) {
 		global $wgVersion, $wgLang;
 
 		$semanticStatistics = smwfGetStore()->getStatistics();
@@ -442,10 +443,10 @@ final class SMWHooks {
 		} else {
 			$extraStats['smw-statistics'] = array();
 			$extraStats['smw-statistics']['smw-statistics-property-instance'] = $semanticStatistics['PROPUSES'];
-			$extraStats['smw-statistics']['smw-statistics-property-total']    = $semanticStatistics['USEDPROPS'];
-			$extraStats['smw-statistics']['smw-statistics-property-page']  = $semanticStatistics['OWNPAGE'];
-			$extraStats['smw-statistics']['smw-statistics-property-type']  = $semanticStatistics['DECLPROPS'];
-			$extraStats['smw-statistics']['smw-statistics-query-inline']   = $semanticStatistics['QUERY'];
+			$extraStats['smw-statistics']['smw-statistics-property-total'] = $semanticStatistics['USEDPROPS'];
+			$extraStats['smw-statistics']['smw-statistics-property-page'] = $semanticStatistics['OWNPAGE'];
+			$extraStats['smw-statistics']['smw-statistics-property-type'] = $semanticStatistics['DECLPROPS'];
+			$extraStats['smw-statistics']['smw-statistics-query-inline'] = $semanticStatistics['QUERY'];
 		}
 
 		return true;
