@@ -52,7 +52,7 @@ function smwfRegisterHooks() {
 	$wgHooks['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 
 	$wgHooks['ParserFirstCallInit'][] = 'SMW\DocumentationParserFunction::staticInit';
-	$wgHooks['ParserFirstCallInit'][] = 'SMWInfo::staticInit';
+	$wgHooks['ParserFirstCallInit'][] = 'SMW\InfoParserFunction::staticInit';
 
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
 	$wgHooks['ArticleDelete'][] = 'SMWParseData::onArticleDelete'; // delete annotations
@@ -203,7 +203,7 @@ function smwfRegisterClasses() {
 	$phDir = $smwgIP . 'includes/parserhooks/';
 	$wgAutoloadClasses['SMW\AskParserFunction']     = $phDir . 'AskParserFunction.php';
 	$wgAutoloadClasses['SMW\ShowParserFunction']    = $phDir . 'ShowParserFunction.php';
-	$wgAutoloadClasses['SMWInfo']                   = $phDir . 'SMW_Info.php';
+	$wgAutoloadClasses['SMW\InfoParserFunction']    = $phDir . 'InfoParserFunction.php';
 	$wgAutoloadClasses['SMW\ConceptParserFunction'] = $phDir . 'ConceptParserFunction.php';
 	$wgAutoloadClasses['SMW\DeclareParserFunction'] = $phDir . 'DeclareParserFunction.php';
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $phDir . 'RecurringEvents.php';
