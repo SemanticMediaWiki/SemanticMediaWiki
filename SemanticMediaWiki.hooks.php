@@ -292,6 +292,7 @@ final class SMWHooks {
 			'parserhooks/ConceptParserFunction',
 			'parserhooks/DeclareParserFunction',
 			'parserhooks/DocumentationParserFunction',
+			'parserhooks/InfoParserFunction',
 
 			'printers/ResultPrinters',
 
