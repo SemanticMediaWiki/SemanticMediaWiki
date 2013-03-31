@@ -1,4 +1,11 @@
 <?php
+
+namespace SMW;
+
+use Parser;
+use SMWQueryProcessor;
+use SMWOutputs;
+
 /**
  * @file
  * @since 1.5.3
@@ -17,7 +24,7 @@
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class SMWAsk {
+class AskParserFunction {
 
 	/**
 	 * Method for handling the ask parser function.
@@ -69,38 +76,38 @@ class SMWAsk {
 	 *
 	 * @since 1.8
 	 */
-	public static function addQueryData( $queryKey, SMWQuery $query, array $params, Parser $parser ) {
-		$mainSemanticData = SMWParseData::getSMWData( $parser );
+	public static function addQueryData( $queryKey, \SMWQuery $query, array $params, Parser $parser ) {
+		$mainSemanticData = \SMWParseData::getSMWData( $parser );
 		$subject = $mainSemanticData->getSubject();
 
-		$diSubWikiPage = new SMWDIWikiPage( $subject->getDBkey(),
+		$diSubWikiPage = new \SMWDIWikiPage( $subject->getDBkey(),
 				$subject->getNamespace(), $subject->getInterwiki(),
 				"_QUERY" . $queryKey );
 
-		$semanticData = new SMWContainerSemanticData( $diSubWikiPage );
+		$semanticData = new \SMWContainerSemanticData( $diSubWikiPage );
 
 		$description = $query->getDescription();
 
 		// Add query string
-		$propertyDi = new SMWDIProperty( '_ASKST' );
-		$valueDi = new SMWDIBlob( $description->getQueryString() );
+		$propertyDi = new \SMWDIProperty( '_ASKST' );
+		$valueDi = new \SMWDIBlob( $description->getQueryString() );
 		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
 		// Add query size
-		$propertyDi = new SMWDIProperty( '_ASKSI' );
-		$valueDi = new SMWDINumber( $description->getSize() );
+		$propertyDi = new \SMWDIProperty( '_ASKSI' );
+		$valueDi = new \SMWDINumber( $description->getSize() );
 		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
 		// Add query depth
-		$propertyDi = new SMWDIProperty( '_ASKDE' );
-		$valueDi = new SMWDINumber( $description->getDepth() );
+		$propertyDi = new \SMWDIProperty( '_ASKDE' );
+		$valueDi = new \SMWDINumber( $description->getDepth() );
 		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
 		// Add query format
-		$propertyDi = new SMWDIProperty( '_ASKFO' );
-		$valueDi = new SMWDIBlob( $params['format']->getValue() );
+		$propertyDi = new \SMWDIProperty( '_ASKFO' );
+		$valueDi = new \SMWDIBlob( $params['format']->getValue() );
 		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
 
-		$propertyDi = new SMWDIProperty( '_ASK' );
-		$subObjectDi = new SMWDIContainer( $semanticData );
-		SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $propertyDi, $subObjectDi );
+		$propertyDi = new \SMWDIProperty( '_ASK' );
+		$subObjectDi = new \SMWDIContainer( $semanticData );
+		\SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $propertyDi, $subObjectDi );
 	}
 
 }
