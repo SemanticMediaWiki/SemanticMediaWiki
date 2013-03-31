@@ -192,23 +192,23 @@ class SMWSQLStore3SpecialPageHandlers {
 
 		$dbr = wfGetDB( DB_SLAVE );
 		$result = array();
-		$proptables = SMWSQLStore3::getPropertyTables();
+		$propertyTables = SMWSQLStore3::getPropertyTables();
 
 		// Properties with their own page
 		$result['OWNPAGE'] = $dbr->estimateRowCount( 'page', '*', array( 'page_namespace' => SMW_NS_PROPERTY ) );
 
 		// Count existing inline queries
-		$typeprop = new SMWDIProperty( '_ASK' );
-		$typetable = $proptables[SMWSQLStore3::findPropertyTableID( $typeprop )];
-		$res = $dbr->select( $typetable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$typeProp = new SMWDIProperty( '_ASK' );
+		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
+		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
 		$row = $dbr->fetchObject( $res );
 		$result['QUERY'] = $row->count;
 		$dbr->freeResult( $res );
 
 		// count number of declared properties by counting "has type" annotations
-		$typeprop = new SMWDIProperty( '_TYPE' );
-		$typetable = $proptables[SMWSQLStore3::findPropertyTableID( $typeprop )];
-		$res = $dbr->select( $typetable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$typeProp = new SMWDIProperty( '_TYPE' );
+		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
+		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
 		$row = $dbr->fetchObject( $res );
 		$result['DECLPROPS'] = $row->count;
 		$dbr->freeResult( $res );
@@ -218,20 +218,20 @@ class SMWSQLStore3SpecialPageHandlers {
 		$result['PROPUSES'] = 0;
 		$result['USEDPROPS'] = 0;
 
-		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+		foreach ( SMWSQLStore3::getPropertyTables() as $propertyTable ) {
 			/// Note: subproperties that are part of container values are counted individually;
 			/// It does not seem to be important to filter them by adding more conditions.
-			$res = $dbr->select( $proptable->getName(), 'COUNT(*) AS count', '', 'SMW::getStatistics' );
+			$res = $dbr->select( $propertyTable->getName(), 'COUNT(*) AS count', '', 'SMW::getStatistics' );
 			$row = $dbr->fetchObject( $res );
 			$result['PROPUSES'] += $row->count;
 			$dbr->freeResult( $res );
 
-			if ( !$proptable->isFixedPropertyTable() ) {
-				$res = $dbr->select( $proptable->getName(), 'COUNT(DISTINCT(p_id)) AS count', '', 'SMW::getStatistics' );
+			if ( !$propertyTable->isFixedPropertyTable() ) {
+				$res = $dbr->select( $propertyTable->getName(), 'COUNT(DISTINCT(p_id)) AS count', '', 'SMW::getStatistics' );
 				$row = $dbr->fetchObject( $res );
 				$result['USEDPROPS'] += $row->count;
 			} else {
-				$res = $dbr->select( $proptable->getName(), '*', '', 'SMW::getStatistics', array( 'LIMIT' => 1 ) );
+				$res = $dbr->select( $propertyTable->getName(), '*', '', 'SMW::getStatistics', array( 'LIMIT' => 1 ) );
 				if ( $dbr->numRows( $res ) > 0 )  $result['USEDPROPS']++;
 			}
 
