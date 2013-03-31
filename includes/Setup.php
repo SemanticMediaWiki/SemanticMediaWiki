@@ -202,7 +202,7 @@ function smwfRegisterClasses() {
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
 	$wgAutoloadClasses['SMW\AskParserFunction']     = $phDir . 'AskParserFunction.php';
-	$wgAutoloadClasses['SMWShow']                   = $phDir . 'ShowParserFunction.php';
+	$wgAutoloadClasses['SMW\ShowParserFunction']    = $phDir . 'ShowParserFunction.php';
 	$wgAutoloadClasses['SMWInfo']                   = $phDir . 'SMW_Info.php';
 	$wgAutoloadClasses['SMWConcept']                = $phDir . 'ConceptParserFunction.php';
 	$wgAutoloadClasses['SMWDeclare']                = $phDir . 'SMW_Declare.php';

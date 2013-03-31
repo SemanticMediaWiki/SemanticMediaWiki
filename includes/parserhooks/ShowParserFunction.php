@@ -1,4 +1,11 @@
 <?php
+
+namespace SMW;
+
+use Parser;
+use SMWQueryProcessor;
+use SMWOutputs;
+
 /**
  * @file
  * @since 1.5.3
@@ -18,7 +25,7 @@
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class SMWShow {
+class ShowParserFunction {
 
 	/**
 	 * Method for handling the show parser function.
@@ -41,7 +48,7 @@ class SMWShow {
 			$result = SMWQueryProcessor::getResultFromQuery( $query, $params, SMW_OUTPUT_WIKI, SMWQueryProcessor::INLINE_QUERY );
 
 			$queryKey = hash( 'md4', implode( '|', $rawParams ) , false );
-			SMWAsk::addQueryData( $queryKey, $query, $params, $parser );
+			AskParserFunction::addQueryData( $queryKey, $query, $params, $parser );
 		} else {
 			$result = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
 		}
