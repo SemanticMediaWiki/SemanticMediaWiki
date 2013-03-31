@@ -129,7 +129,7 @@ final class SMWHooks {
 		$parser->setFunctionHook( 'show', array( 'SMWShow', 'render' ) );
 		$parser->setFunctionHook( 'subobject', array( 'SMW\SubobjectParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'concept', array( 'SMWConcept', 'render' ) );
-		$parser->setFunctionHook( 'set', array( 'SMW\SetParser', 'render' ) );
+		$parser->setFunctionHook( 'set', array( 'SMW\SetParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'set_recurring_event', array( 'SMW\RecurringEventsHandler', 'render' ) );
 		$parser->setFunctionHook( 'declare', array( 'SMWDeclare', 'render' ), SFH_OBJECT_ARGS );
 

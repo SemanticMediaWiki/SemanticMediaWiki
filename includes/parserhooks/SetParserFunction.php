@@ -34,7 +34,7 @@ use Parser, SMWParseData;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class SetParser {
+class SetParserFunction {
 
 	/**
 	 * Method for handling the set parser function.
