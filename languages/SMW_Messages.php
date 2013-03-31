@@ -672,6 +672,13 @@ This is the label of a tab of an action item for the content area.',
 	'semanticstatistics' => '{{doc-special|SemanticStatistics}}',
 	'smw_semstats_text' => 'This it the contents of [[Special:SemanticStatistics]]. Parameters:
 * $1 to $4 hold numerical values.',
+	'smw-statistics' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-instance' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-total' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-total-legacy' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-page' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-property-type' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics-query-inline' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
 When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
@@ -934,14 +941,6 @@ See also:
 	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}
 {{Identical|Legend}}',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
-
-	'smw-statistics' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-instance' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-total' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-total-legacy' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-page'  => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-type'  => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-query-inline'   => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
 );
 
 /** Afrikaans (Afrikaans)
@@ -9236,6 +9235,7 @@ Zréck op d'Säit $1.",
 	'smw-ui-tooltip-title-info' => 'Informatioun',
 	'smw-ui-tooltip-title-warning' => 'Feeler',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
+	'smw-ui-tooltip-title-note' => 'Notiz',
 );
 
 /** Lithuanian (lietuvių)
