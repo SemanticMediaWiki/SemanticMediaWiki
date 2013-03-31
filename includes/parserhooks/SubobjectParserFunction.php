@@ -35,7 +35,7 @@ use SMWDIWikiPage;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class SubobjectHandler {
+class SubobjectParserFunction {
 
 	/**
 	 * Defines a subobject instance

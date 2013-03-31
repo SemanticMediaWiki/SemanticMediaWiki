@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\SubobjectHandler;
+use SMW\SubobjectParserFunction;
 use SMW\Subobject;
 use SMW\ParserParameterFormatter;
 
@@ -11,7 +11,7 @@ use Title;
 use MWException;
 
 /**
- * Tests for the SMW\SubobjectHandler class.
+ * Tests for the SMW\SubobjectParserFunction class.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ use MWException;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class SubobjectHandlerTest extends \MediaWikiTestCase {
+class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 
 	/**
 	 * DataProvider
@@ -73,7 +73,7 @@ class SubobjectHandlerTest extends \MediaWikiTestCase {
 
 		// FIXME Class instance
 		$parameters = ParserParameterFormatter::singleton()->getParameters( $params );
-		$instance = new SubobjectHandler( $subject, $parameters );
+		$instance = new SubobjectParserFunction( $subject, $parameters );
 		return $instance;
 	}
 
@@ -87,11 +87,11 @@ class SubobjectHandlerTest extends \MediaWikiTestCase {
 		$subject = $this->getSubject( $expected['DBkey'] );
 
 		// Raises an exception
-		$instance = new SubobjectHandler( $subject );
-		$this->assertInstanceOf( 'SMW\SubobjectHandler', $instance );
+		$instance = new SubobjectParserFunction( $subject );
+		$this->assertInstanceOf( 'SMW\SubobjectParserFunction', $instance );
 
-		$instance = new SubobjectHandler( $subject, $params );
-		$this->assertInstanceOf( 'SMW\SubobjectHandler', $instance );
+		$instance = new SubobjectParserFunction( $subject, $params );
+		$this->assertInstanceOf( 'SMW\SubobjectParserFunction', $instance );
 	}
 
 	/**
