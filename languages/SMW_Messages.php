@@ -188,6 +188,7 @@ Generates browsable RDF.',
 	'smw_propertylackspage'  => 'All properties should be described by a page!',
 	'smw_propertylackstype'  => 'No type was specified for this property (assuming type $1 for now).',
 	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!',
+	'smw-property-name-invalid' => 'Property $1 can not be used (invalid property name).',
 
 	// Messages for Unused Properties Special
 	'unusedproperties' => 'Unused properties',
@@ -465,6 +466,7 @@ $messages['qqq'] = array(
 	'smw_concept_cache_miss' => 'This is an information message. Parameters:
 * $1 holds the name of the [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
 	'smw_noinvannot' => 'This is an information message.',
+	'smw-property-name-invalid' => 'This is an information message.',
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
 	'smw_uri_blacklist' => '{{notranslate}}',
 	'smw_baduri' => 'This is an information message. Parameters:
