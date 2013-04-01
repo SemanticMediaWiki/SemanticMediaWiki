@@ -274,46 +274,77 @@ class SMWQueryUIHelper {
 	 * @global array $smwgResultFormats
 	 * @param array $params
 	 * @param boolean $enableValidation
-	 * @return array of strings
 	 */
 	public function setParams( array $params = array(), $enableValidation = false ) {
 		global $smwgQMaxInlineLimit, $smwgResultFormats;
-		$errors = array();
 
 		// checking for missing parameters and adding them
 		if ( !array_key_exists( 'format', $params ) || ! array_key_exists ( $params['format'], $smwgResultFormats ) ) {
 			$params[ 'format' ] = $this->defaultResultPrinter;
 		}
+		
 		if ( !array_key_exists( 'limit', $params ) ) {
 			$params[ 'limit' ] = 20;
 		}
+
 		$params[ 'limit' ] = min( $params[ 'limit' ], $smwgQMaxInlineLimit );
+
 		if ( !array_key_exists( 'offset', $params ) ) {
 			$params['offset'] = 0;
 		}
 
-		if ( $enableValidation ) { // validating the format
-			if ( !array_key_exists( $params['format'], $smwgResultFormats ) ) {
-				$errors[] = wfMessage( 'smw_qui_invalidformat', $params['format'] )->text();
-				$this->errorsOccurred = true;
-			} else { // validating parameters for result printer
-				$printer = SMWQueryProcessor::getResultPrinter( $params[ 'format' ] );
-				$para_meters = $printer->getParameters();
-				if ( is_array( $para_meters ) ) {
-					$validator = new Validator();
-					$validator->setParameters( $params, $para_meters );
-					$validator->validateParameters();
-					if ( $validator->hasFatalError() ) {
-						array_merge ( $errors, $validator->getErrorMessages () );
-						$this->errorsOccurred = true;
-					}
-				}
-			}
+		if ( $enableValidation ) {
+			$errors = $this->doValidation( $params );
+			$this->addErrors( $errors );
 		}
 
 		$this->parameters = $params;
+	}
+
+	/**
+	 * Registers errors that occurred in the class state.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string[] $errors
+	 */
+	protected function addErrors( $errors ) {
+		if ( !empty( $errors ) ) {
+			$this->errorsOccurred = true;
+		}
+
 		$this->errors = array_merge( $errors, $this->errors );
-		return $errors;
+	}
+
+	/**
+	 * Does validation of the parameters and returns the errors as an array of string.
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 *
+	 * @return string[]
+	 */
+	protected function doValidation( array $params ) {
+		global $smwgResultFormats;
+
+		if ( !array_key_exists( $params['format'], $smwgResultFormats ) ) {
+			$errors[] = wfMessage( 'smw_qui_invalidformat', $params['format'] )->text();
+			$this->errorsOccurred = true;
+		} else { // validating parameters for result printer
+			$printer = SMWQueryProcessor::getResultPrinter( $params[ 'format' ] );
+			$parameterDefinitions = $printer->getParameters();
+
+			$processor = \ParamProcessor\Processor::newDefault();
+			$processor->setParameters( $params, $parameterDefinitions );
+			$processor->processParameters();
+
+			if ( $processor->hasFatalError() ) {
+				return $processor->getErrorMessages();
+			}
+		}
+
+		return array();
 	}
 
 	/**
