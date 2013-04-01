@@ -282,7 +282,7 @@ class SMWQueryUIHelper {
 		if ( !array_key_exists( 'format', $params ) || ! array_key_exists ( $params['format'], $smwgResultFormats ) ) {
 			$params[ 'format' ] = $this->defaultResultPrinter;
 		}
-		
+
 		if ( !array_key_exists( 'limit', $params ) ) {
 			$params[ 'limit' ] = 20;
 		}
@@ -333,7 +333,7 @@ class SMWQueryUIHelper {
 			$this->errorsOccurred = true;
 		} else { // validating parameters for result printer
 			$printer = SMWQueryProcessor::getResultPrinter( $params[ 'format' ] );
-			$parameterDefinitions = $printer->getParameters();
+			$parameterDefinitions = $printer->getParamDefinitions( array() );
 
 			$processor = \ParamProcessor\Processor::newDefault();
 			$processor->setParameters( $params, $parameterDefinitions );
