@@ -86,6 +86,7 @@ class SMWQueryProcessor {
 		$processorOptions->setUnknownInvalid( $unknownInvalid );
 
 		$validator = Processor::newFromOptions( $processorOptions );
+
 		$validator->setParameters( $params, $paramDefinitions, false );
 
 		return $validator;

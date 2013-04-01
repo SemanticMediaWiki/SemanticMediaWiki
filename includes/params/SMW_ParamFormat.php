@@ -4,6 +4,7 @@
  * Definition for the format parameter.
  * 
  * @since 1.6.2
+ * @deprecated since 1.9
  * 
  * @file
  * @ingroup SMW

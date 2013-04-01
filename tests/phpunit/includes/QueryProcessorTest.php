@@ -42,6 +42,7 @@ class SMWQueryProcessorTest extends\ MediaWikiTestCase {
 		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
 
 		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
+
 		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
 
 		$this->assertInstanceOf(
