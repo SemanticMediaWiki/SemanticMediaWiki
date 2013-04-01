@@ -3,12 +3,9 @@
 namespace SMW;
 
 use Parser;
-use SMWParseData;
 
 /**
- * Class handling #set_recurring_event parser function
- *
- * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
+ * {{#set_recurring_event}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,63 +22,107 @@ use SMWParseData;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
+ * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
+ *
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup ParserHooks
  *
  * @author mwjames
  */
-class RecurringEventsParserFunction {
+
+/**
+ * Class that provides the {{#set_recurring_event}} parser hook function
+ *
+ * RecurringEventsParserFunction is a natural extension of the
+ * SubobjectParserFunction therefore inheritance is used to get access to
+ * internal methods only relevant to SubobjectParserFunction.
+ *
+ * @ingroup SMW
+ * @ingroup ParserHooks
+ */
+class RecurringEventsParserFunction extends SubobjectParserFunction {
 
 	/**
-	 * Method for handling the set_recurring_event parser function.
+	 * Parse parameters and return results to the ParserOutput object
+	 *
+	 * @todo Replace options array and invoke GLOBALS using Settings::get( $GLOBALS )
 	 *
 	 * @since 1.9
 	 *
-	 * @param Parser $parser
+	 * @param IParameterFormatter $parameters
+	 *
+	 * @return string|null
 	 */
-	public static function render( Parser &$parser ) {
-		$params = func_get_args();
-		array_shift( $params );
+	public function parse( IParameterFormatter $parameters ) {
 
-		$mainSemanticData = SMWParseData::getSMWData( $parser );
-		$subject = $mainSemanticData->getSubject();
-
-		// FIXME Use a class instance
-		$parameters = ParserParameterFormatter::singleton()->getParameters( $params );
+		// Invoke global settings as options array
+		$options = array(
+			'DefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
+			'MaxNumRecurringEvents'=> $GLOBALS['smwgMaxNumRecurringEvents']
+		);
 
 		// Get recurring events
-		$events = new RecurringEvents( $parameters );
-		$errors = $events->getErrors();
+		$events = new RecurringEvents( $parameters->toArray(), $options );
+		$this->parserData->setError( $events->getErrors() );
 
-		// Go over available recurring events
 		foreach ( $events->getDates() as $date_str ) {
 
-			// Override parameters as only unused parameters are necessary
-			$parameters = $events->getParameters();
+			// Override existing parameters array with the returned
+			// parameters array from recurring events, its holds all
+			// unprocessed parameters needed for further processing
+			$parameters->setParameters( $events->getParameters() );
 
-			// Add individual date string as parameter in order to be handled
-			// equally by the SubobjectParserFunction as member of the same instance
-			// once the ParserParameter class is fixed use a
-			// $parameters->addParameter( key, value ) instead
-			$parameters[$events->getProperty()][] = $date_str;
+			// Add the date string as individual property / value parameter
+			$parameters->addParameter( $events->getProperty(), $date_str );
 
-			// Instantiate subobject handler for each new date
-			$handler = new SubobjectParserFunction( $subject, $parameters );
+			// getFirst() indicates if an event should be directly linked to
+			// the page that embeds the parser call and if so use this value as
+			// user property together with the embedding page as property value
+			if ( $parameters->getFirst() !== null ) {
+				$parameters->addParameter(
+					$parameters->getFirst(),
+					$this->parserData->getTitle()->getPrefixedText()
+				);
+			}
 
-			// Store an individual subobject
-			SMWParseData::getSMWData( $parser )->addPropertyObjectValue(
-				$handler->getSubobject()->getProperty(),
-				$handler->getSubobject()->getContainer()
+			// Register object values to the subobject as anonymous entity
+			// which changes with the set of parameters available
+			// @see SubobjectParserFunction::addSubobjectValues
+			$this->addSubobjectValues( $parameters->toArray() );
+
+			// Add subobject container to the semantic data object
+			// Each previous $parameters->toArray() call will produce a unique
+			// subobject that is now added to the semantic data instance
+			$this->parserData->getData()->addPropertyObjectValue(
+				$this->subobject->getProperty(),
+				$this->subobject->getContainer()
 			);
 
-			// Collect individual errors
-			$errors = array_merge( $handler->getSubobject()->getErrors(), $errors );
+			// Collect possible errors that occurred during processing
+			$this->parserData->setError( $this->subobject->getErrors() );
 		}
 
-		// See comments in SubobjectParserFunction class
-		return smwfEncodeMessages( $errors , 'warning', '' , false );
+		// Update ParserOutput
+		$this->parserData->updateOutput();
+
+		return $this->parserData->getReport();
+	}
+
+	/**
+	 * Method for handling the set parser function.
+	 *
+	 * @param Parser $parser
+	 *
+	 * @return string|null
+	 */
+	public static function render( Parser &$parser ) {
+		$instance = new self(
+			new ParserData( $parser->getTitle(), $parser->getOutput() ),
+			new Subobject( $parser->getTitle() )
+		);
+		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
 	}
 }

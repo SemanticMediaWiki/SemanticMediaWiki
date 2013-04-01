@@ -3,13 +3,9 @@
 namespace SMW;
 
 use Parser;
-use MWException;
-
-use SMWParseData;
-use SMWDIWikiPage;
 
 /**
- * Class for the #subobject parser functions.
+ * {{#subobject}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +22,8 @@ use SMWDIWikiPage;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
+ * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
+ *
  * @since 1.9
  *
  * @file
@@ -33,64 +31,69 @@ use SMWDIWikiPage;
  * @ingroup ParserHooks
  *
  * @author mwjames
- * @author Markus Krötzsch
+ */
+
+/**
+ * Class that provides the {{#subobject}} parser hook function
+ *
+ * @ingroup SMW
+ * @ingroup ParserHooks
  */
 class SubobjectParserFunction {
 
 	/**
-	 * Defines a subobject instance
-	 * @var $subobject
+	 * Represents IParserData
+	 */
+	protected $parserData;
+
+	/**
+	 * Represents Subobject
 	 */
 	protected $subobject;
 
 	/**
-	 * Constructor which returns an immutable value object
+	 * Constructor
 	 *
 	 * @since 1.9
 	 *
-	 * @param SMWDIWikiPage $subject wikipage subject
-	 * @param array $parameters array of parameters
-	 * @param string $identifier named subobject identifier
+	 * @param IParserData $parserData
+	 * @param Subobject $subobject
 	 */
-	public function __construct( SMWDIWikiPage $subject, $parameters = '', $identifier = '' ) {
-		if ( !is_array( $parameters ) ) {
-			throw new MWException( 'Parameters array is not initialized' );
-		}
-
-		$this->subobject = new Subobject( $subject );
-		$this->add( $parameters, $identifier );
+	public function __construct( IParserData $parserData, Subobject $subobject ) {
+		$this->parserData = $parserData;
+		$this->subobject = $subobject;
 	}
 
 	/**
-	 * Returns the subobject instance
+	 * Returns subobject
 	 *
 	 * @since 1.9
 	 *
-	 * @return Subobject
+	 * @return SMW\Subobject
 	 */
 	public function getSubobject() {
 		return $this->subobject;
 	}
 
 	/**
-	 * Add values to the instance
+	 * Add values to the subobject instance
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $parameters array of parameters
 	 * @param string $identifier named subobject identifier
 	 */
-	protected function add( $parameters, $identifier ) {
+	protected function addSubobjectValues( $parameters, $identifier = '' ) {
 
 		// An instance that don't use a named identifier will get an anonymous Id
 		if ( $identifier === '' || $identifier === '-' ){
 			$identifier = $this->subobject->getAnonymousIdentifier( serialize( $parameters ) );
 		}
 
-		// Prepare semantic container
+		// Prepare and set semantic container for the given identifier
 		$this->subobject->setSemanticData( $identifier );
 
-		// Add property / values
+		// Add property / values to the subobject instance
 		foreach ( $parameters as $property => $values ){
 			foreach ( $values as $value ) {
 				$this->subobject->addPropertyValue( $property, $value );
@@ -99,40 +102,50 @@ class SubobjectParserFunction {
 	}
 
 	/**
-	 * Method for handling the subobject parser function.
+	 * Parse parameters and return results to the ParserOutput object
 	 *
 	 * @since 1.9
 	 *
-	 * @param  Parser $parser
+	 * @param array $params
+	 *
+	 * @return string|null
 	 */
-	public static function render( Parser &$parser ) {
+	public function parse( IParameterFormatter $parameters ) {
 
-		$params = func_get_args();
-		array_shift( $params );
-
-		$mainSemanticData = SMWParseData::getSMWData( $parser );
-		$subject = $mainSemanticData->getSubject();
-		$name = str_replace( ' ', '_', trim( array_shift( $params ) ) );
-
-		// FIXME Use a class instance here
-		$parameters = ParserParameterFormatter::singleton()->getParameters( $params );
-
-		// Create handler instance and encapsulate the subobject instance by
-		// returning a value object
-		$handler = new self( $subject, $parameters, $name );
-
-		// Store subobject
-		SMWParseData::getSMWData( $parser )->addPropertyObjectValue(
-			$handler->getSubobject()->getProperty(),
-			$handler->getSubobject()->getContainer()
+		// Add values to the instantiated subobject
+		// getFirst() will indicate if a subobject becomes a named or
+		// anonymous subobject
+		$this->addSubobjectValues(
+			$parameters->toArray(),
+			$parameters->getFirst()
 		);
 
-		// Error output
+		// Store subobject to the semantic data instance
+		$this->parserData->getData()->addPropertyObjectValue(
+			$this->subobject->getProperty(),
+			$this->subobject->getContainer()
+		);
 
-		// FIXME Use a real ErrorReport class where context determines the
-		// message language instead of having the object contain a translated
-		// error message; An error object should only hold a message key which at
-		// the time of the output is translated within context
-		return smwfEncodeMessages( $handler->getSubobject()->getErrors() );
+		$this->parserData->setError( $this->subobject->getErrors() );
+
+		// Update ParserOutput
+		$this->parserData->updateOutput();
+
+		return $this->parserData->getReport();
+	}
+
+	/**
+	 * Method for handling the subobject parser function
+	 *
+	 * @param Parser $parser
+	 *
+	 * @return string|null
+	 */
+	public static function render( Parser &$parser ) {
+		$instance = new self(
+			new ParserData( $parser->getTitle(), $parser->getOutput() ),
+			new Subobject( $parser->getTitle() )
+		);
+		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
 	}
 }

@@ -39,12 +39,9 @@ use SMWDataValueFactory;
 class RecurringEvents {
 
 	/**
-	 * Defines the default / max number of an instances
-	 * var $defaultLimit
-	 * var $maxLimit
+	 * Defines available options from $GLOBALS
 	 */
-	protected $defaultLimit;
-	protected $maxLimit;
+	protected $options = array();
 
 	/**
 	 * Defines the property used
@@ -76,16 +73,14 @@ class RecurringEvents {
 	 * @since 1.9
 	 *
 	 * @param array $parameters
+	 * @param array $options
 	 */
-	public function __construct( $parameters ) {
-		global $smwgDefaultNumRecurringEvents, $smwgMaxNumRecurringEvents;
-
+	public function __construct( $parameters, $options ) {
 		if ( !is_array( $parameters ) ) {
 			throw new MWException( 'Parameters array is not initialized' );
 		}
 
-		$this->defaultLimit = $smwgDefaultNumRecurringEvents;
-		$this->maxLimit = $smwgMaxNumRecurringEvents;
+		$this->options = $options;
 		$this->parse( $parameters );
 	}
 
@@ -145,6 +140,22 @@ class RecurringEvents {
 	}
 
 	/**
+	 * Get value for a specific option
+	 *
+	 * Options are available for local context therefore no public exposure
+	 *
+	 * @since  1.9
+	 *
+	 * @return mixed
+	 */
+	protected function getOption( $name ) {
+		if ( !isset( $this->options[$name] ) ) {
+			throw new MWException( "Option {$name} is not available" );
+		}
+		return $this->options[$name];
+	}
+
+	/**
 	 * Returns the "Julian day" value from an object of type
 	 * SMWTimeValue.
 	 */
@@ -191,8 +202,8 @@ class RecurringEvents {
 						$end_date = SMWDataValueFactory::newTypeIDValue( '_dat', $value );
 						break;
 					case 'limit':
-						// Override default limit with parameter specific limit
-						$this->defaultLimit = (int)$value;
+						// Override default limit with query specific limit
+						$this->options['DefaultNumRecurringEvents'] = (int)$value;
 						break;
 					case 'unit':
 						$unit = $value;
@@ -229,16 +240,17 @@ class RecurringEvents {
 			}
 		}
 
-		// Make sure start date is set
-		if ( !( $start_date->getDataItem() instanceof SMWDITime ) ) {
+		if ( $start_date === null ) {
+			$this->setError( array( 'The start date is missing') );
+			return;
+		} else if ( !( $start_date->getDataItem() instanceof SMWDITime ) ) {
 			$this->setError( $start_date->getErrors() );
 			return;
 		}
 
 		// Check property
 		if ( is_null( $this->property ) ) {
-			// FIXME ErrorReport class should use a message key instead of an
-			// already translated message
+			$this->setError( array( 'The property is missing') );
 			// $this->setError( $this->msg( 'smw-missing-property' )->inContentLanguage()->text() );
 			return;
 		}
@@ -363,9 +375,9 @@ class RecurringEvents {
 
 			// should we stop?
 			if ( is_null( $end_date ) ) {
-				$reached_end_date = $i > $this->defaultLimit;
+				$reached_end_date = $i > $this->getOption( 'DefaultNumRecurringEvents' );
 			} else {
-				$reached_end_date = ( $cur_date_jd > $end_date_jd ) || ( $i > $this->maxLimit );
+				$reached_end_date = ( $cur_date_jd > $end_date_jd ) || ( $i > $this->getOption( 'MaxNumRecurringEvents' ) );
 			}
 		} while ( !$reached_end_date );
 

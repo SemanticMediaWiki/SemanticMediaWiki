@@ -1,11 +1,13 @@
 <?php
 
 namespace SMW;
+
+use Title;
 use MWException, ContextSource, IContextSource, RequestContext;
 use SMWPropertyValue, SMWDataValueFactory, SMWDIProperty, SMWDIWikiPage, SMWContainerSemanticData, SMWDIContainer;
 
 /**
- * Class for the 'subobject' interface functions
+ * Class to interact with a 'subobject'
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,12 +31,17 @@ use SMWPropertyValue, SMWDataValueFactory, SMWDIProperty, SMWDIWikiPage, SMWCont
  *
  * @author mwjames
  */
+
+/**
+ * Class to interact with a 'subobject'
+ * @ingroup SMW
+ */
 class Subobject extends ContextSource {
 
 	/**
 	 * @var subject
 	 */
-	 protected $subject;
+	 protected $title;
 
 	/**
 	 * @var subobjectName
@@ -56,17 +63,17 @@ class Subobject extends ContextSource {
 	 *
 	 * @since 1.9
 	 *
-	 * @param SMWDIWikiPage $subject
+	 * @param Title $subject
 	 * @param string|null $subobjectName
 	 * @param \IContextSource|null $context
 	 *
 	 */
-	public function __construct( SMWDIWikiPage $subject, $subobjectName = null, IContextSource $context = null ) {
+	public function __construct( Title $title, $subobjectName = null, IContextSource $context = null ) {
 		if ( !$context ) {
 			$context = RequestContext::getMain();
 		}
 		$this->setContext( $context );
-		$this->subject = $subject;
+		$this->title = $title;
 		$this->setSemanticData( $subobjectName );
 	}
 
@@ -77,7 +84,7 @@ class Subobject extends ContextSource {
 	 *
 	 * @return string
 	 */
-	public function getName(){
+	public function getName() {
 		return $this->subobjectName;
 	}
 
@@ -89,7 +96,7 @@ class Subobject extends ContextSource {
 	 * @param string
 	 * @return string
 	 */
-	public function getAnonymousIdentifier( $string ){
+	public function getAnonymousIdentifier( $string ) {
 		return '_' . hash( 'md4', $string , false );
 	}
 
@@ -100,7 +107,7 @@ class Subobject extends ContextSource {
 	 *
 	 * @return array
 	 */
-	public function getErrors(){
+	public function getErrors() {
 		return $this->errors;
 	}
 
@@ -113,12 +120,12 @@ class Subobject extends ContextSource {
 	 *
 	 * @return SMWContainerSemanticData
 	 */
-	public function setSemanticData( $subobjectName ){
+	public function setSemanticData( $subobjectName ) {
 		if ( $subobjectName !== '' ) {
 			$this->subobjectName = $subobjectName;
 
-			$diSubWikiPage = new SMWDIWikiPage( $this->subject->getDBkey(),
-				$this->subject->getNamespace(), $this->subject->getInterwiki(),
+			$diSubWikiPage = new SMWDIWikiPage( $this->title->getDBkey(),
+				$this->title->getNamespace(), $this->title->getInterwiki(),
 				$subobjectName );
 
 			return $this->semanticData = new SMWContainerSemanticData( $diSubWikiPage );
@@ -133,7 +140,7 @@ class Subobject extends ContextSource {
 	 *
 	 * @return SMWContainerSemanticData
 	 */
-	public function getSemanticData(){
+	public function getSemanticData() {
 		return $this->semanticData;
 	}
 
@@ -144,7 +151,7 @@ class Subobject extends ContextSource {
 	 *
 	 * @return SMWDIProperty
 	 */
-	public function getProperty(){
+	public function getProperty() {
 		return new SMWDIProperty( SMWDIProperty::TYPE_SUBOBJECT );
 	}
 
@@ -155,7 +162,7 @@ class Subobject extends ContextSource {
 	 *
 	 * @return SMWDIContainer
 	 */
-	public function getContainer(){
+	public function getContainer() {
 		return new SMWDIContainer( $this->semanticData );
 	}
 
@@ -168,14 +175,14 @@ class Subobject extends ContextSource {
 	 * @param string $valueString
 	 */
 	public function addPropertyValue( $propertyName, $valueString ) {
-		if ( $this->semanticData === array() ) {
-			throw new MWException( 'The subject container is not initialized' );
+		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
+			throw new MWException( 'The semantic data container is not initialized' );
 		}
 
 		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
 		$propertyDi = $propertyDv->getDataItem();
 
-		if ( !$propertyDi->isInverse() ) {
+		if ( $propertyDi instanceof \SMWDIProperty && !$propertyDi->isInverse() ) {
 			$valueDv = SMWDataValueFactory::newPropertyObjectValue( $propertyDi, $valueString,
 				false, $this->semanticData->getSubject() );
 			$this->semanticData->addPropertyObjectValue( $propertyDi, $valueDv->getDataItem() );
@@ -186,8 +193,11 @@ class Subobject extends ContextSource {
 					$propertyDi->getDiWikiPage() );
 				$this->errors = array_merge( $this->errors, $valueDv->getErrors() );
 			}
+		} else if ( $propertyDi instanceof \SMWDIProperty && $propertyDi->isInverse() ) {
+			$this->errors[] = wfMessage( 'smw_noinvannot' )->inContentLanguage()->text();
 		} else {
-			$this->errors[] = $this->msg( 'smw_noinvannot' )->inContentLanguage()->text();
+			// FIXME Get message object
+			$this->errors[] = wfMessage( 'smw-property-name-invalid', $propertyName )->inContentLanguage()->text();
 		}
 	}
 }

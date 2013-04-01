@@ -132,7 +132,6 @@ final class SMWHooks {
 		$parser->setFunctionHook( 'set', array( 'SMW\SetParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'set_recurring_event', array( 'SMW\RecurringEventsParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'declare', array( 'SMW\DeclareParserFunction', 'render' ), SFH_OBJECT_ARGS );
-
 		return true;
 	}
 
@@ -272,7 +271,7 @@ final class SMWHooks {
 			'FormatFactory',
 			'Highlighter',
 			'ObservableMessageReporter',
-			'QueryProcessor',
+			// 'QueryProcessor', old test
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
@@ -293,6 +292,8 @@ final class SMWHooks {
 			'parserhooks/DeclareParserFunction',
 			'parserhooks/DocumentationParserFunction',
 			'parserhooks/InfoParserFunction',
+
+			'query/QueryProcessor',
 
 			'printers/ResultPrinters',
 

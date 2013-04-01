@@ -92,6 +92,7 @@ function smwfRegisterHooks() {
 
 /**
  * Register all SMW classes with the MediaWiki autoloader.
+ *
  */
 function smwfRegisterClasses() {
 	global $smwgIP, $wgAutoloadClasses, $wgJobClasses;
@@ -108,7 +109,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
-	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';
+	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php'; // see SMW\ParserData (1.9)
 	$wgAutoloadClasses['SMWParserExtensions']       = $incDir . 'SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
@@ -201,22 +202,32 @@ function smwfRegisterClasses() {
 
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
-	$wgAutoloadClasses['SMW\AskParserFunction']     = $phDir . 'AskParserFunction.php';
-	$wgAutoloadClasses['SMW\ShowParserFunction']    = $phDir . 'ShowParserFunction.php';
 	$wgAutoloadClasses['SMW\InfoParserFunction']    = $phDir . 'InfoParserFunction.php';
 	$wgAutoloadClasses['SMW\ConceptParserFunction'] = $phDir . 'ConceptParserFunction.php';
 	$wgAutoloadClasses['SMW\DeclareParserFunction'] = $phDir . 'DeclareParserFunction.php';
-	$wgAutoloadClasses['SMW\RecurringEvents']       = $phDir . 'RecurringEvents.php';
+	$wgAutoloadClasses['SMW\SetParserFunction']     = $phDir . 'SetParserFunction.php';
 	$wgAutoloadClasses['SMW\Subobject']             = $phDir . 'Subobject.php';
-	$wgAutoloadClasses['SMW\DocumentationParserFunction']   = $phDir . 'DocumentationParserFunction.php';
+	$wgAutoloadClasses['SMW\RecurringEvents']       = $phDir . 'RecurringEvents.php';
+	$wgAutoloadClasses['SMW\IParserData']           = $phDir . 'ParserData.php';
+	$wgAutoloadClasses['SMW\ParserData']            = $phDir . 'ParserData.php';
+	$wgAutoloadClasses['SMW\AskParserFunction']     = $phDir . 'AskParserFunction.php';
+	$wgAutoloadClasses['SMW\ShowParserFunction']    = $phDir . 'ShowParserFunction.php';
+	$wgAutoloadClasses['SMW\ConceptParserFunction'] = $phDir . 'ConceptParserFunction.php';
+	$wgAutoloadClasses['SMW\IParameterFormatter']           = $phDir . 'ParserParameterFormatter.php';
 	$wgAutoloadClasses['SMW\ParserParameterFormatter']      = $phDir . 'ParserParameterFormatter.php';
-	$wgAutoloadClasses['SMW\SetParserFunction']             = $phDir . 'SetParserFunction.php';
 	$wgAutoloadClasses['SMW\SubobjectParserFunction']       = $phDir . 'SubobjectParserFunction.php';
 	$wgAutoloadClasses['SMW\RecurringEventsParserFunction'] = $phDir . 'RecurringEventsParserFunction.php';
+	$wgAutoloadClasses['SMW\DocumentationParserFunction']   = $phDir . 'DocumentationParserFunction.php';
+
+	// Query related classes
+	$qeDir = $smwgIP . 'includes/query/';
+	$wgAutoloadClasses['SMW\QueryProcessor']        = $qeDir . 'QueryProcessor.php';
+	$wgAutoloadClasses['SMW\QueryData']             = $qeDir . 'QueryData.php';
 
 	// Stores & queries
-	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';
+	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php'; // see SMW\QueryProcessor (1.9)
 	$wgAutoloadClasses['SMWQueryParser']            = $smwgIP . 'includes/SMW_QueryParser.php';
+	$wgAutoloadClasses['SMW\IQueryProcessor']       = $smwgIP . 'includes/QueryProcessor.php';
 
 	$wgAutoloadClasses['SMWSparqlDatabase']         = $smwgIP . 'includes/sparql/SMW_SparqlDatabase.php';
 	$wgAutoloadClasses['SMWSparqlDatabase4Store']   = $smwgIP . 'includes/sparql/SMW_SparqlDatabase4Store.php';

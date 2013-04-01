@@ -1,10 +1,11 @@
 <?php
 
 namespace SMW;
-use Parser, SMWParseData;
+
+use Parser;
 
 /**
- * Class for the 'set' parser functions.
+ * {{#set}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +25,7 @@ use Parser, SMWParseData;
  * @see http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Silent_annotations_using_.23set
  * @see http://www.semantic-mediawiki.org/wiki/Help:Setting_values
  *
- * @since 1.5.3
+ * @since 1.9
  *
  * @file
  * @ingroup SMW
@@ -34,24 +35,64 @@ use Parser, SMWParseData;
  * @author Jeroen De Dauw
  * @author mwjames
  */
+
+/**
+ * Class that provides the {{#set}} parser hook function
+ *
+ * @ingroup SMW
+ * @ingroup ParserHooks
+ */
 class SetParserFunction {
+
+	/**
+	 * Represents IParserData
+	 */
+	protected $parserData;
+
+	/**
+	 * Constructor
+	 *
+	 * @since 1.9
+	 *
+	 * @param IParserData $parserData
+	 */
+	public function __construct( IParserData $parserData ) {
+		$this->parserData = $parserData;
+	}
+
+	/**
+	 * Parse parameters and store results to the ParserOutput object
+	 *
+	 * @since  1.9
+	 *
+	 * @param IParserParameter $parameters
+	 *
+	 * @return string|null
+	 */
+	public function parse( IParameterFormatter $parameters ) {
+
+		// Add value strings
+		foreach ( $parameters->toArray() as $property => $values ){
+			foreach ( $values as $value ) {
+				$this->parserData->addPropertyValueString( $property, $value );
+			}
+		}
+
+		// Update ParserOutput
+		$this->parserData->updateOutput();
+
+		return $this->parserData->getReport();
+	}
 
 	/**
 	 * Method for handling the set parser function.
 	 *
-	 * @since 1.5.3
-	 *
 	 * @param Parser $parser
+	 *
+	 * @return string|null
 	 */
 	public static function render( Parser &$parser ) {
-		$params = func_get_args();
-		array_shift( $params );
-
-		foreach ( ParserParameterFormatter::singleton()->getParameters( $params ) as $property => $values ){
-			foreach ( $values as $value ) {
-				SMWParseData::addProperty( $property, $value, false, $parser, true );
-			}
-		}
-		return '';
+		$instance = new self( new ParserData( $parser->getTitle(), $parser->getOutput() ) );
+		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
 	}
 }

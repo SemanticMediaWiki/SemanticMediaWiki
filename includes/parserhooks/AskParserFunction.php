@@ -3,111 +3,138 @@
 namespace SMW;
 
 use Parser;
-use SMWQueryProcessor;
-use SMWOutputs;
 
 /**
- * @file
- * @since 1.5.3
- * @ingroup SMW
- * @ingroup ParserHooks
- */
-
-/**
- * Class for the 'ask' parser functions.
- * @see http://semantic-mediawiki.org/wiki/Help:Inline_queries#Introduction_to_.23ask
+ * {{#ask}} parser function
  *
- * @since 1.5.3
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @see http://www.semantic-mediawiki.org/wiki/Help:Ask
+ *
+ * @since 1.9
+ *
+ * @file
  * @ingroup SMW
  * @ingroup ParserHooks
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
+ * @author mwjames
+ */
+
+/**
+ * Class that provides the {{#ask}} parser hook function
+ *
+ * @ingroup SMW
+ * @ingroup ParserHooks
  */
 class AskParserFunction {
 
 	/**
-	 * Method for handling the ask parser function.
-	 *
-	 * @since 1.5.3
-	 *
-	 * @param Parser $parser
+	 * Represents IParserData
 	 */
-	public static function render( Parser &$parser ) {
-		global $smwgQEnabled, $smwgIQRunningNumber, $wgTitle;
+	protected $parserData;
 
-		if ( $smwgQEnabled ) {
-			$smwgIQRunningNumber++;
+	/**
+	 * Represents IQueryProcessor
+	 */
+	protected $queryProcessor;
 
-			$rawParams = func_get_args();
-			array_shift( $rawParams ); // We already know the $parser ...
+	/**
+	 * Represents QueryData
+	 */
+	protected $queryData;
 
-			list( $query, $params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams( $rawParams, SMW_OUTPUT_WIKI, SMWQueryProcessor::INLINE_QUERY, false );
-
-			$result = SMWQueryProcessor::getResultFromQuery( $query, $params, SMW_OUTPUT_WIKI, SMWQueryProcessor::INLINE_QUERY );
-
-			$queryKey = hash( 'md4', implode( '|', $rawParams ) , false );
-			self::addQueryData( $queryKey, $query, $params, $parser );
-		} else {
-			$result = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
-		}
-
-		if ( !is_null( $wgTitle ) && $wgTitle->isSpecialPage() ) {
-			global $wgOut;
-			SMWOutputs::commitToOutputPage( $wgOut );
-		} else {
-			SMWOutputs::commitToParser( $parser );
-		}
-
-		return $result;
+	/**
+	 * Constructor
+	 *
+	 * @since 1.9
+	 *
+	 * @param IParserData $parserData
+	 * @param IQueryProcessor $queryProcessor
+	 * @param QueryData $queryData
+	 */
+	public function __construct( IParserData $parserData, IQueryProcessor $queryProcessor, QueryData $queryData ) {
+		$this->parserData = $parserData;
+		$this->queryProcessor = $queryProcessor;
+		$this->queryData = $queryData;
 	}
 
 	/**
-	 * Add data about the query and its parameters to the semantic data of
-	 * the given parser. The $queryKey is a string key that uniquely
-	 * identifies the query; this is difficult to create in a stable way
-	 * from the processed query object and parameters, but easy to get from
-	 * the raw user input.
+	 * Parse parameters and return results to the ParserOutput object
 	 *
-	 * @param string $queryKey
-	 * @param SMWQuery $query
+	 * @since 1.9
+	 *
 	 * @param array $params
-	 * @param Parser $parser
+	 * @param boolean $enabled
 	 *
-	 * @since 1.8
+	 * @return string|null
 	 */
-	public static function addQueryData( $queryKey, \SMWQuery $query, array $params, Parser $parser ) {
-		$mainSemanticData = \SMWParseData::getSMWData( $parser );
-		$subject = $mainSemanticData->getSubject();
+	public function parse( array $rawParams, $enabled = true ) {
+		global $smwgIQRunningNumber;
 
-		$diSubWikiPage = new \SMWDIWikiPage( $subject->getDBkey(),
-				$subject->getNamespace(), $subject->getInterwiki(),
-				"_QUERY" . $queryKey );
+		// FIXME $rawParams will be of IParameterFormatter -> QueryParameterFormatter class
 
-		$semanticData = new \SMWContainerSemanticData( $diSubWikiPage );
+		if ( !$enabled ) {
+			// FIXME Replace with IMessageFormatter -> ErrorMessageFormatter class
+			return smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
+		}
 
-		$description = $query->getDescription();
+		// Counter for what? Where and for what is it used?
+		$smwgIQRunningNumber++;
 
-		// Add query string
-		$propertyDi = new \SMWDIProperty( '_ASKST' );
-		$valueDi = new \SMWDIBlob( $description->getQueryString() );
-		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
-		// Add query size
-		$propertyDi = new \SMWDIProperty( '_ASKSI' );
-		$valueDi = new \SMWDINumber( $description->getSize() );
-		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
-		// Add query depth
-		$propertyDi = new \SMWDIProperty( '_ASKDE' );
-		$valueDi = new \SMWDINumber( $description->getDepth() );
-		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
-		// Add query format
-		$propertyDi = new \SMWDIProperty( '_ASKFO' );
-		$valueDi = new \SMWDIBlob( $params['format']->getValue() );
-		$semanticData->addPropertyObjectValue( $propertyDi, $valueDi );
+		// Remove parser object from parameters array
+		array_shift( $rawParams );
 
-		$propertyDi = new \SMWDIProperty( '_ASK' );
-		$subObjectDi = new \SMWDIContainer( $semanticData );
-		\SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $propertyDi, $subObjectDi );
+		// Process parameters
+		$this->queryProcessor->map( $rawParams );
+
+		// Add query data from the query
+		$this->queryData->add(
+			$this->queryProcessor->getQuery(),
+			$this->queryProcessor->getParameters()
+		);
+
+		// Store query data to the semantic data instance
+		$this->parserData->getData()->addPropertyObjectValue(
+			$this->queryData->getProperty(),
+			$this->queryData->getContainer()
+		);
+
+		// Update ParserOutput
+		$this->parserData->updateOutput();
+
+		return $this->queryProcessor->getResult();
 	}
 
+	/**
+	 * Method for handling the {{#ask}} parser function
+	 *
+	 * @since 1.9
+	 *
+	 * @param Parser $parser
+	 *
+	 * @return string
+	 */
+	public static function render( Parser &$parser ) {
+		$instance = new self(
+			new ParserData( $parser->getTitle(), $parser->getOutput() ),
+			new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::INLINE_QUERY, false ),
+			new QueryData( $parser->getTitle() )
+		);
+		return $instance->parse( func_get_args(), $GLOBALS['smwgQEnabled'] );
+	}
 }

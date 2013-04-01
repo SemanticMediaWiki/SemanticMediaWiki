@@ -51,9 +51,21 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 			// |limit=3
 			// }}
 			array(
-				array( 'property=Has birthday', 'start=01 Feb 1970', 'has title=Birthday', 'unit=month', 'period=12', 'limit=3' ),
-				array( 'errors' => 0 ,'dates' => array( '1 February 1970', '1 February 1971 00:00:00', '1 February 1972 00:00:00', '1 February 1973 00:00:00' ), 'property' => 'Has birthday', 'parameters' => array( 'has title' => array( 'Birthday' ) ) )
+				array(
+					'property=Has birthday',
+					'start=01 Feb 1970',
+					'has title=Birthday',
+					'unit=month',
+					'period=12',
+					'limit=3'
 				),
+				array(
+					'errors' => 0,
+					'dates' => array( '1 February 1970', '1 February 1971 00:00:00', '1 February 1972 00:00:00', '1 February 1973 00:00:00' ),
+					'property' => 'Has birthday',
+					'parameters' => array( 'has title' => array( 'Birthday' ) )
+				)
+			),
 
 			// {{#set_recurring_event:property=Has birthday
 			// |start=01 Feb 1972 02:00
@@ -63,9 +75,21 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 			// |limit=3
 			// }}
 			array(
-				array( 'property=Has birthday', 'start=01 Feb 1972 02:00', 'has title=Test 2', 'unit=week', 'period=4', 'limit=3' ),
-				array( 'errors' => 0 ,'dates' => array( '1 February 1972 02:00:00', '29 February 1972 02:00:00', '28 March 1972 02:00:00', '25 April 1972 02:00:00' ), 'property' => 'Has birthday', 'parameters' => array( 'has title' => array( 'Test 2' ) ) )
+				array(
+					'property=Has birthday',
+					'start=01 Feb 1972 02:00',
+					'has title=Test 2',
+					'unit=week',
+					'period=4',
+					'limit=3'
 				),
+				array(
+					'errors' => 0,
+					'dates' => array( '1 February 1972 02:00:00', '29 February 1972 02:00:00', '28 March 1972 02:00:00', '25 April 1972 02:00:00' ),
+					'property' => 'Has birthday',
+					'parameters' => array( 'has title' => array( 'Test 2' ) )
+				)
+			),
 
 			// {{#set_recurring_event:property=Has date
 			// |start=January 4, 2010
@@ -76,9 +100,22 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010
 			// }}
 			array(
-				array( 'property=Has date', 'start=January 4, 2010', 'unit=week', 'period=1', 'limit=4', 'include=March 16, 2010;March 23, 2010', 'exclude=January 18, 2010;January 25, 2010' ),
-				array( 'errors' => 0 ,'dates' => array( '4 January 2010', '11 January 2010 00:00:00', '1 February 2010 00:00:00', 'March 16, 2010', 'March 23, 2010' ), 'property' => 'Has date', 'parameters' => array() )
+				array(
+					'property=Has date',
+					'start=January 4, 2010',
+					'unit=week',
+					'period=1',
+					'limit=4',
+					'include=March 16, 2010;March 23, 2010',
+					'exclude=January 18, 2010;January 25, 2010'
 				),
+				array(
+					'errors' => 0,
+					'dates' => array( '4 January 2010', '11 January 2010 00:00:00', '1 February 2010 00:00:00', 'March 16, 2010', 'March 23, 2010' ),
+					'property' => 'Has date',
+					'parameters' => array()
+				)
+			),
 
 			// {{#set_recurring_event:property=Has date
 			// |start=January 4, 2010
@@ -89,9 +126,26 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010|+sep=;
 			// }}
 			array(
-				array( 'property=Has date', 'start=January 4, 2010', 'unit=week', 'period=1', 'limit=4', 'include=March 16, 2010;March 23, 2010', '+sep=;', 'exclude=January 18, 2010;January 25, 2010', '+sep=;' ),
-				array( 'errors' => 0 ,'dates' => array( '4 January 2010', '11 January 2010 00:00:00', '1 February 2010 00:00:00', 'March 16, 2010', 'March 23, 2010' ), 'property' => 'Has date', 'parameters' => array() )
+				array(
+					'property=Has date',
+					'start=January 4, 2010',
+					'unit=week',
+					'period=1',
+					'limit=4',
+					'include=March 16, 2010;March 23, 2010',
+					'+sep=;',
+					'exclude=January 18, 2010;January 25, 2010',
+					'+sep=;'
 				),
+				array(
+					'errors' => 0,
+					'dates' => array( '4 January 2010', '11 January 2010 00:00:00', '1 February 2010 00:00:00', 'March 16, 2010', 'March 23, 2010' ),
+					'property' => 'Has date',
+					'parameters' => array()
+				)
+			),
+
+			// Simulate start date has wrong type
 
 			// {{#set_recurring_event:property=Has date
 			// |start=???
@@ -102,21 +156,129 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010
 			// }}
 			array(
-				array( 'property=Has date', 'start=???', 'unit=week', 'period=1', 'limit=4', 'include=March 16, 2010;March 23, 2010', 'exclude=January 18, 2010;January 25, 2010' ),
-				array( 'errors' => 1 ,'dates' => array(), 'property' => 'Has date', 'parameters' => array() )
+				array(
+					'property=Has date',
+					'start=???',
+					'unit=week',
+					'period=1',
+					'limit=4',
+					'include=March 16, 2010;March 23, 2010',
+					'exclude=January 18, 2010;January 25, 2010'
+				),
+				array(
+					'errors' => 1,
+					'dates' => array(),
+					'property' => 'Has date',
+					'parameters' => array()
 				)
+			),
+
+			// Simulate missing start date
+
+			// {{#set_recurring_event:property=Has date
+			// |start=
+			// |unit=week
+			// |period=1
+			// |limit=4
+			// |include=March 16, 2010;March 23, 2010
+			// |exclude=January 18, 2010;January 25, 2010
+			// }}
+			array(
+				array(
+					'property=Has date',
+					'start=',
+					'unit=week',
+					'period=1',
+					'limit=4',
+					'include=March 16, 2010;March 23, 2010',
+					'exclude=January 18, 2010;January 25, 2010'
+				),
+				array(
+					'errors' => 1,
+					'dates' => array(),
+					'property' => 'Has date',
+					'parameters' => array()
+				)
+			),
+
+			// Simulate missing property
+
+			// {{#set_recurring_event:property=
+			// |start=January 4, 2010
+			// |unit=week
+			// |period=1
+			// |limit=4
+			// |include=March 16, 2010;March 23, 2010|+sep=;
+			// |exclude=January 18, 2010;January 25, 2010|+sep=;
+			// }}
+			array(
+				array(
+					'property=',
+					'start=January 4, 2010',
+					'unit=week', 'period=1',
+					'limit=4',
+					'include=March 16, 2010;March 23, 2010',
+					'+sep=;',
+					'exclude=January 18, 2010;January 25, 2010',
+					'+sep=;'
+				),
+				array(
+					'errors' => 1,
+					'dates' => array(),
+					'property' => '',
+					'parameters' => array()
+				)
+			),
+
 		);
 	}
 
 	/**
-	 * Helper method
+	 * Helper method that returns parameters
+	 *
+	 */
+	private function getParameters( array $params ) {
+		$parameters = new ParserParameterFormatter( $params );
+		return $parameters->toArray();
+	}
+
+	/**
+	 * Helper method that returns an instance
 	 *
 	 */
 	private function getInstance( array $params ) {
-		// FIXME Class instance
-		$parameters = ParserParameterFormatter::singleton()->getParameters( $params );
-		$instance = new RecurringEvents( $parameters );
-		return $instance;
+		$parameters = $this->getParameters( $params );
+
+		// Options settings
+		$options = array(
+			'DefaultNumRecurringEvents' => 10,
+			'MaxNumRecurringEvents'=> 50
+		);
+
+		return new RecurringEvents( $parameters, $options );
+	}
+
+	/**
+	 * Test parameters exceptions
+	 *
+	 * @expectedException MWException
+	 */
+	public function testMissingParametersExceptions() {
+		$instance = new RecurringEvents( '' , '' );
+		$this->assertInstanceOf( 'SMW\RecurringEvents', $instance );
+	}
+
+	/**
+	 * Test options exceptions
+	 *
+	 * @expectedException MWException
+	 */
+	public function testMissingOptionsExceptions() {
+		$params = array( 'property=Has birthday', 'start=01 Feb 1970', 'has title=Birthday', 'unit=month', 'period=12' );
+		$parameters = $this->getParameters( $params );
+
+		$instance = new RecurringEvents( $parameters, '' );
+		$this->assertInstanceOf( 'SMW\RecurringEvents', $instance );
 	}
 
 	/**
@@ -133,49 +295,44 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 	 * Test getErrors() method
 	 *
 	 * @dataProvider getParametersDataProvider
-	 *
 	 */
 	public function testGetErrors( array $params, array $expected ) {
 		$instance = $this->getInstance( $params );
-		$this->assertEquals( count( $instance->getErrors() ), $expected['errors'] );
+		$this->assertCount( $expected['errors'], $instance->getErrors() );
 	}
 
 	/**
 	 * Test getProperty() method
 	 *
 	 * @dataProvider getParametersDataProvider
-	 *
 	 */
 	public function testGetProperty( array $params, array $expected ) {
 		$instance = $this->getInstance( $params );
-		$this->assertEquals( $instance->getProperty(), $expected['property'] );
+		$this->assertEquals( $expected['property'], $instance->getProperty() );
 	}
 
 	/**
 	 * Test getParameters() method
 	 *
 	 * @dataProvider getParametersDataProvider
-	 *
 	 */
 	public function testGetParameters( array $params, array $expected ) {
 		$instance = $this->getInstance( $params );
-		$this->assertEquals( $instance->getParameters(), $expected['parameters'] );
+		$this->assertEquals( $expected['parameters'], $instance->getParameters() );
 	}
 
 	/**
 	 * Test getDates() method
 	 *
 	 * @dataProvider getParametersDataProvider
-	 *
 	 */
 	public function testGetDates( array $params, array $expected ) {
 		$instance = $this->getInstance( $params );
-		$this->assertEquals( $instance->getDates(), $expected['dates'] );
+		$this->assertEquals( $expected['dates'], $instance->getDates() );
 	}
 
-
 	/**
-	 * Mass insert
+	 * Test mass insert
 	 *
 	 */
 	public function testMassInsert() {
@@ -183,7 +340,7 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 		$expected = array( 'errors' => 0 ,'count' => 501 );
 
 		$instance = $this->getInstance( $params );
-		$this->assertEquals( count ( $instance->getDates() ), $expected['count'] );
+		$this->assertCount( $expected['count'], $instance->getDates() );
 	}
 
 }

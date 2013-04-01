@@ -1,10 +1,15 @@
 <?php
 
 namespace SMW\Test;
+
 use SMW\Subobject;
+use SMWDIWikiPage;
+use SMWDataItem;
+use SMWDataValueFactory;
+use Title;
 
 /**
- * Tests for the SMW\Subobject class.
+ * Tests for the SMW\Subobject class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,94 +41,219 @@ use SMW\Subobject;
 class SubobjectTest extends \MediaWikiTestCase {
 
 	/**
-	 * Helper method to get title object
+	 * DataProvider
 	 *
+	 * @return array
 	 */
-	private function getSubject( $name ){
-		$title = \Title::newFromText( $name );
-		return \SMWDIWikiPage::newFromTitle( $title );
+	public function getDataProvider() {
+		return array(
+			array(
+				// #0
+				'Foo', // Test data
+				array(
+					'identifier' => 'Bar',
+					'property' => array( 'Foo' => 'bar' )
+				),
+				array( // Expected results
+					'name' => 'Bar',
+					'errors' => 0,
+					'propertyLabel' => 'Foo',
+					'propertyValue' => 'Bar'
+				)
+			),
+
+			// #1
+			array(
+				'Foo',
+				array(
+					'identifier' => 'bar',
+					'property' => array( 'FooBar' => 'bar Foo' )
+				),
+				array( // Expected results
+					'name' => 'bar',
+					'errors' => 0,
+					'propertyLabel' => 'FooBar',
+					'propertyValue' => 'Bar Foo',
+				)
+			),
+
+			// #2
+			array(
+				'Bar',
+				array(
+					'identifier' => 'foo',
+					'property' => array( 9001 => 1001 )
+				),
+				array( // Expected results
+					'name' => 'foo',
+					'errors' => 0,
+					'propertyLabel' => array( 9001 ),
+					'propertyValue' => array( 1001 ),
+				)
+			),
+
+			// #3
+			array(
+				'Bar foo',
+				array(
+					'identifier' => 'foo bar',
+					'property' => array( 1001 => 9001, 'Foo' => 'Bar' )
+				),
+				array( // Expected results
+					'name' => 'foo bar',
+					'errors' => 0,
+					'propertyLabel' => array( 1001, 'Foo' ),
+					'propertyValue' => array( 9001, 'Bar' ),
+				)
+			),
+
+			// #4 Property with leading underscore will raise error
+			array(
+				'Foo',
+				array(
+					'identifier' => 'bar',
+					'property' => array( '_FooBar' => 'bar Foo' )
+				),
+				array( // Expected results
+					'name' => 'bar',
+					'errors' => 1,
+					'propertyLabel' => 'FooBar',
+					'propertyValue' => 'Bar Foo',
+				)
+			),
+
+			// #5 Inverse property will raise error
+			array(
+				'Foo',
+				array(
+					'identifier' => 'bar',
+					'property' => array( '-FooBar' => 'bar Foo' )
+				),
+				array( // Expected results
+					'name' => 'bar',
+					'errors' => 1,
+					'propertyLabel' => 'FooBar',
+					'propertyValue' => 'Bar Foo',
+				)
+			),
+
+		);
 	}
 
 	/**
 	 * Helper method to get subobject
 	 *
 	 */
-	private function setSubobject( $subject, $name ){
-		return new Subobject( $this->getSubject( $subject ), $name );
+	private function getSubobject( $title, $name = '' ){
+		return new Subobject( Title::newFromText( $title ), $name );
 	}
 
 	/**
-	 * Test instance
+	 * Test constructor
 	 *
+	 * @dataProvider getDataProvider
 	 */
-	public function testInstance() {
-		$subject = $this->getSubject( 'Foo' );
-
-		$instance = new Subobject( $subject );
+	public function testConstructor( $title ) {
+		$instance = new Subobject( Title::newFromText( $title ) );
 		$this->assertInstanceOf( 'SMW\Subobject', $instance );
 	}
 
 	/**
 	 * Test setSemanticData()
 	 *
+	 * @dataProvider getDataProvider
 	 */
-	public function testSetSemanticData() {
-		$subject = $this->getSubject( 'Foo' );
-		$subobject = new Subobject( $subject );
+	public function testSetSemanticData( $title, array $setup ) {
+		$subobject = new Subobject( Title::newFromText( $title ) );
 
-		$instance = $subobject->setSemanticData( 'Bar' );
+		$instance = $subobject->setSemanticData( $setup['identifier'] );
 		$this->assertInstanceOf( '\SMWContainerSemanticData', $instance );
 	}
 
 	/**
 	 * Test getName()
 	 *
+	 * @dataProvider getDataProvider
 	 */
-	public function testGetName() {
-		$subobject = $this->setSubobject( 'Foo' , 'Bar' );
-
-		$name = $subobject->getName();
-		$this->assertEquals( $name, 'Bar' );
+	public function testGetName( $title, array $setup, array $expected ) {
+		$subobject = $this->getSubobject( $title , $setup['identifier'] );
+		$this->assertEquals( $expected['name'], $subobject->getName() );
 	}
 
 	/**
 	 * Test getProperty()
 	 *
+	 * @dataProvider getDataProvider
 	 */
-	public function testGetProperty() {
-		$subobject = $this->setSubobject( 'Foo' , 'Bar' );
-
-		$instance = $subobject->getProperty();
-		$this->assertInstanceOf( '\SMWDIProperty', $instance );
+	public function testGetProperty( $title, array $setup ) {
+		$subobject = $this->getSubobject( $title, $setup['identifier'] );
+		$this->assertInstanceOf( '\SMWDIProperty', $subobject->getProperty() );
 	}
 
+	/**
+	 * Test addPropertyValueString() exception
+	 *
+	 * @dataProvider getDataProvider
+	 */
+	public function testAddPropertyValueStringException( $title, array $setup ) {
+		$this->setExpectedException( 'MWException' );
+		$subobject = $this->getSubobject( $title );
+
+		foreach ( $setup['property'] as $property => $value ){
+			$subobject->addPropertyValue( $property, $value );
+		}
+	}
 
 	/**
 	 * Test addPropertyValue()
 	 *
+	 * @dataProvider getDataProvider
 	 */
-	public function testAddPropertyValue() {
-		$subobject = $this->setSubobject( 'Foo' , 'Bar' );
+	public function testAddPropertyValue( $title, array $setup, array $expected ) {
+		$subobject = $this->getSubobject( $title, $setup['identifier'] );
 
-		$subobject->addPropertyValue( 'Foo', 'bar' );
-		$subobject->addPropertyValue( 'Bar', 'foo' );
+		foreach ( $setup['property'] as $property => $value ){
+			$subobject->addPropertyValue( $property, $value );
+		}
 
-		$errors = $subobject->getErrors();
-		$this->assertTrue( is_array( $errors ) );
-		$this->assertEmpty( $errors );
+		// Check errors
+		$this->assertCount( $expected['errors'], $subobject->getErrors() );
+
+		// Check added property
+		foreach ( $subobject->getSemanticData()->getProperties() as $key => $diproperty ){
+			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
+			$this->assertContains( $diproperty->getLabel(), $expected['propertyLabel'] );
+
+			// Check added property value
+			foreach ( $subobject->getSemanticData()->getPropertyValues( $diproperty ) as $key => $dataItem ){
+				$this->assertInstanceOf( 'SMWDataItem', $dataItem );
+				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
+				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
+					$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Test getAnonymousIdentifier()
+	 *
+	 * @dataProvider getDataProvider
+	 */
+	public function testGetAnonymousIdentifier( $title, array $setup ) {
+		$subobject = $this->getSubobject( $title );
+		// Looking for the _ instead of comparing the hash key as it
+		// can change with the method applied (md4, sha1 etc.)
+		$this->assertContains( '_', $subobject->getAnonymousIdentifier( $setup['identifier'] ) );
 	}
 
 	/**
 	 * Test getContainer()
 	 *
+	 * @dataProvider getDataProvider
 	 */
-	public function testGetContainer() {
-		$subobject = $this->setSubobject( 'Foo' , 'Bar' );
-
-		$subobject->addPropertyValue( 'Foo', 'bar' );
-		$subobject->addPropertyValue( 'Bar', 'foo' );
-
-		$instance = $subobject->getContainer();
-		$this->assertInstanceOf( '\SMWDIContainer', $instance );
+	public function testGetContainer( $title, array $setup ) {
+		$subobject = $this->getSubobject( $title, $setup['identifier'] );
+		$this->assertInstanceOf( '\SMWDIContainer', $subobject->getContainer() );
 	}
 }

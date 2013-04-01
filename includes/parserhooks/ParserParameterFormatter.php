@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Parser parameter utility class
+ * Interface for handling parameter formatting
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,37 +22,115 @@ namespace SMW;
  *
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class ParserParameterFormatter {
+interface IParameterFormatter {
+
+	// Will also be used for QueryParameterFormatter
 
 	/**
-	 * Returns a default separator
+	 * The constructor requires an array of raw parameters
+	 */
+
+	/**
+	 * Returns transformed parameters
 	 *
 	 * @since 1.9
 	 *
+	 * @return array
+	 */
+	public function toArray();
+
+	/**
+	 * Returns raw parameters
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function getRaw();
+
+}
+
+/**
+ * Handling raw parameters from the parser hook
+ *
+ * @ingroup SMW
+ */
+class ParserParameterFormatter implements IParameterFormatter {
+
+	/**
+	 * Returns a default separator
 	 * @var string
 	 */
 	protected $defaultSeparator = ',';
 
 	/**
-	 * Returns an instance of the current class
+	 * Returns first named identifier
+	 * @var array
+	 */
+	protected $rawParameters;
+
+	/**
+	 * Returns first named identifier
+	 * @var array
+	 */
+	protected $parameters;
+
+	/**
+	 * Returns first named identifier
+	 * @var string
+	 */
+	protected $first = null;
+
+	/**
+	 * Constructor
 	 *
 	 * @since 1.9
 	 *
-	 * @return ParserParameter
+	 * @param array $parameters
 	 */
-	public static function singleton() {
-		static $instance = null;
+	public function __construct( array $parameters ) {
+		$this->rawParameters = $parameters;
+		$this->parameters = $this->map( $this->rawParameters );
+	}
 
-		if ( $instance === null ) {
-			$instance = new self();
-		}
+	/**
+	 * Returns first available parameter
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getFirst() {
+		return $this->first;
+	}
 
-		return $instance;
+	/**
+	 * Map parameters from an external source independent from the invoked
+	 * constructor
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function mapParameters( array $params ) {
+		return $this->map( $params );
+	}
+
+	/**
+	 * Returns raw parameters
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getRaw() {
+		return $this->rawParameters;
 	}
 
 	/**
@@ -60,11 +138,48 @@ class ParserParameterFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $param
+	 * @return string
+	 */
+	public function toArray() {
+		return $this->parameters;
+	}
+
+	/**
+	 * Inject parameters from an outside source
+	 *
+	 * @since 1.9
+	 *
+	 * @param array
+	 */
+	public function setParameters( array $parameters ) {
+		$this->parameters = $parameters;
+	}
+
+	/**
+	 * Add parameter key and value
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function addParameter( $key, $value ) {
+		if( $key !== '' && $value !== '' ) {
+			$this->parameters[$key][] = $value;
+		}
+	}
+
+	/**
+	 * Do mapping of raw parameters array into an 2n-array for simplified
+	 * via [key] => [value1, value2]
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
 	 *
 	 * @return array
 	 */
-	public function getParameters( array $params ) {
+	protected function map( array $params ) {
 		$results = array();
 		$previousProperty = null;
 
@@ -72,7 +187,12 @@ class ParserParameterFormatter {
 			$separator = '';
 			$values = array();
 
-			// Get the current element
+			// Only strings are allowed for processing
+			if( !is_string( current ( $params ) ) ) {
+				next( $params );
+			}
+
+			// Get the current element and divide it into parts
 			$currentElement = explode( '=', trim( current ( $params ) ), 2 );
 
 			// Looking to the next element for comparison
@@ -81,7 +201,7 @@ class ParserParameterFormatter {
 
 				if ( $nextElement !== array() ) {
 					// This allows assignments of type |Has property=Test1,Test2|+sep=,
-					// as a means to support mutliple value declaration
+					// as a means to support multiple value declaration
 					if ( substr( $nextElement[0], - 5 ) === '+sep' ) {
 						$separator = isset( $nextElement[1] ) ? $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator : $this->defaultSeparator;
 						next( $params );
@@ -89,8 +209,13 @@ class ParserParameterFormatter {
 				}
 			}
 
+			// First named parameter
+			if ( count( $currentElement ) == 1 && $previousProperty === null ) {
+				$this->first = str_replace( ' ', '_', $currentElement[0] );
+			}
+
 			// Here we allow to support assignments of type |Has property=Test1|Test2|Test3
-			// for mutliple values with the same preceeding property
+			// for multiple values with the same preceding property
 			if ( count( $currentElement ) == 1 && $previousProperty !== null ) {
 				$currentElement[1] = $currentElement[0];
 				$currentElement[0] = $previousProperty;
@@ -105,13 +230,13 @@ class ParserParameterFormatter {
 				$values[] = $currentElement[1];
 			}
 
-			// Remap properties and values to ouput a simple array
+			// Remap properties and values to output a simple array
 			foreach ( $values as $value ) {
 				if ( $value !== '' ){
 					$results[ $currentElement[0] ][] = $value;
 				}
 			}
 		}
-	return $results;
+		return $results;
 	}
 }
