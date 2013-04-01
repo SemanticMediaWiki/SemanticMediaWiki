@@ -443,6 +443,7 @@ Estimated progress of current update:',
  * @author Markus Krötzsch
  * @author McDutchie
  * @author Meno25
+ * @author Metalhead64
  * @author Pietrodn
  * @author Purodha
  * @author Raymond
@@ -466,7 +467,6 @@ $messages['qqq'] = array(
 	'smw_concept_cache_miss' => 'This is an information message. Parameters:
 * $1 holds the name of the [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
 	'smw_noinvannot' => 'This is an information message.',
-	'smw-property-name-invalid' => 'This is an information message.',
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
 	'smw_uri_blacklist' => '{{notranslate}}',
 	'smw_baduri' => 'This is an information message. Parameters:
@@ -657,6 +657,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_propertylackstype' => 'This is an error/warning message. Parameters:
 * $1 holds the name of the assumed data type which is in fact always data type Page.',
 	'smw_propertyhardlyused' => 'This is an error/warning message.',
+	'smw-property-name-invalid' => 'This is an information message.',
 	'unusedproperties' => '{{doc-special|UnusedProperties}}',
 	'smw_unusedproperties_docu' => 'This is the introductory message at the top of [[Special:UnusedProperties]].',
 	'smw_unusedproperty_template' => "This message is used on [[Special:UnusedProperties]] to display each property listed. It holds the following parameters:
@@ -671,16 +672,18 @@ This is the label of a tab of an action item for the content area.',
 {{Identical|Type}}',
 	'smw_types_docu' => 'This is the introductory message at the top of [[Special:Types]].',
 	'smw-special-types-no-such-type' => 'Error message shown on [[Special:Types]] when specifying an invalid data type.',
-	'semanticstatistics' => '{{doc-special|SemanticStatistics}}',
+	'semanticstatistics' => '{{doc-special|SemanticStatistics}}
+{{Identical|Semantic statistics}}',
 	'smw_semstats_text' => 'This it the contents of [[Special:SemanticStatistics]]. Parameters:
 * $1 to $4 hold numerical values.',
-	'smw-statistics' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-instance' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-total' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-total-legacy' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-page' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-property-type' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
-	'smw-statistics-query-inline' => 'Is a label that is displayed on the [[Special:Statistics Statistics]] page',
+	'smw-statistics' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page.
+{{Identical|Semantic statistics}}',
+	'smw-statistics-property-instance' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-property-total' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-property-total-legacy' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-property-page' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-property-type' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-query-inline' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
 When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
@@ -3108,6 +3111,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_propertylackspage' => 'Alle Attribute sollten auf einer Seite beschrieben werden!',
 	'smw_propertylackstype' => 'Für dieses Attribut wurde kein Datentyp angegeben ($1 wird vorläufig als Typ angenommen).',
 	'smw_propertyhardlyused' => 'Dieses Attribut wird im Wiki kaum verwendet!',
+	'smw-property-name-invalid' => 'Die Eigenschaft „$1“ kann nicht verwendet werden (ungültiger Eigenschaftsname).',
 	'unusedproperties' => 'Verwaiste Attribute',
 	'smw_unusedproperties_docu' => 'Die folgenden Attribute wurden auf einer zugehörigen Seite im Namensraum „Attribut:“ beschrieben, werden aber nicht im Wiki verwendet.',
 	'smw_unusedproperty_template' => '$1 mit Datentyp $2',
@@ -3122,6 +3126,13 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_semstats_text' => "In diesem Wiki {{PLURAL:$1|wurde '''1''' Wert|wurden '''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]] eingegeben. '''$3''' {{PLURAL:$3|Attribut hat|Attribute haben}} eine eigene Seite und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.
 
 Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste gewünschter Attribute]] aufgeführt.",
+	'smw-statistics' => 'Semantische Statistiken',
+	'smw-statistics-property-instance' => 'Eigenschaftswert{{PLURAL:$1|zuweisung|zuweisungen}}',
+	'smw-statistics-property-total' => 'Summe der [[Special:Properties|{{PLURAL:$1|Eigenschaft|unterschiedlichen Eigenschaften}}]]',
+	'smw-statistics-property-total-legacy' => 'Summe der {{PLURAL:$1|Eigenschaft|unterschiedlichen Eigenschaften}}',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Eigenschaft|Eigenschaften}} mit ihrer eigenen Seite',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Eigenschaft|Eigenschaften}} mit einem zugewiesenen Datentyp',
+	'smw-statistics-query-inline' => 'Summe der eingebetteten {{PLURAL:$1|Abfrage|Abfragen}}',
 	'smw_uri_doc' => 'Der URI-Auflöser setzt die Empfehlungen „[$1 W3C TAG finding on httpRange-14]“ um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.',
 	'ask' => 'Semantische Suche',
 	'smw_ask_sortby' => 'Sortiere nach Spalte (optional)',
@@ -4882,6 +4893,7 @@ Nykyisen päivityksen arvioitu eteneminen:',
  * @author LIMAFOX76
  * @author McDutchie
  * @author Meithal
+ * @author Metroitendo
  * @author Nicolas NALLET
  * @author Od1n
  * @author Peter17
@@ -5026,6 +5038,7 @@ $messages['fr'] = array(
 	'smw_propertylackspage' => 'Toute propriété devrait être décrite par une page !',
 	'smw_propertylackstype' => 'Aucun type n’a été spécifié pour cette propriété (type actuellement supposé : $1).',
 	'smw_propertyhardlyused' => 'Cette propriété est à peine utilisée sur ce wiki !',
+	'smw-property-name-invalid' => 'La propriété $1 ne peut pas être utilisée (nom de propriété invalide).',
 	'unusedproperties' => 'Propriétés inutilisées',
 	'smw_unusedproperties_docu' => 'Les propriétés suivantes existent, bien qu’aucune page ne les utilise.',
 	'smw_unusedproperty_template' => '$1 de type $2',
@@ -5041,6 +5054,13 @@ $messages['fr'] = array(
 '''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci.
 Certaines des propriétés existantes peuvent en faite être [[Special:UnusedProperties|inutilisées]].
 Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:WantedProperties|liste des propriétés demandées]].",
+	'smw-statistics' => 'Statistiques sémantiques',
+	'smw-statistics-property-instance' => 'Valeur de la propriété {{PLURAL:$1|affectation|affectations}}',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|propriété|propriétés différents}}]] au total',
+	'smw-statistics-property-total-legacy' => 'Nombre Total de {{PLURAL:$1|propriété|propriétés différentes}}',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Property|Propriétés}} avec leur propre page',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Propriété|Propriétés}} avec un type de données assigné',
+	'smw-statistics-query-inline' => 'Nombre total de {{PLURAL:$1|requête|requêtes}} en ligne',
 	'smw_uri_doc' => 'Le résolveur d’URI implémente la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Conclusion du TAG du W3C à propos du httpRange-14</a>. Il peut veiller à ce que les humains ne deviennent pas des sites web.',
 	'ask' => 'Recherche sémantique',
 	'smw_ask_sortby' => 'Trier par colonnes (optionnel)',
@@ -5394,7 +5414,7 @@ $messages['ga'] = array(
 $messages['gl'] = array(
 	'smw-desc' => "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
 	'smw_viewasrdf' => 'Fonte de novas RDF',
-	'smw_finallistconjunct' => 'e',
+	'smw_finallistconjunct' => ' e',
 	'smw_factbox_head' => 'Feitos acerca de $1',
 	'smw_isspecprop' => 'Esta propiedade é especial neste wiki.',
 	'smw_concept_description' => 'Descrición do concepto "$1"',
@@ -5538,6 +5558,13 @@ Xera un RDF que se pode navegar.',
 '''$3''' {{PLURAL:$3|propiedade ten|propiedades teñen}} unha páxina propia e o tipo de datos desexado está especificado para '''$4''' de elas.
 Algunhas das propiedades existentes poden [[Special:UnusedProperties|non ser usadas]].
 As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:WantedProperties|lista de propiedades desexadas]].",
+	'smw-statistics' => 'Estatísticas semánticas',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Asignacións}} de valores de propiedade',
+	'smw-statistics-property-total' => 'Número total de [[Special:Properties|{{PLURAL:$1|propiedades diferentes}}]]',
+	'smw-statistics-property-total-legacy' => 'Número total de {{PLURAL:$1|propiedades diferentes}}',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Propiedades}} con páxina propia',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Propiedades}} cun tipo de datos asociado',
+	'smw-statistics-query-inline' => 'Número total de {{PLURAL:$1|pescudas}} en liña',
 	'smw_uri_doc' => 'O solucionador de URI pon en práctica o <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descubrimento da ETIQUETA de W3C en httpRange-14</a>. Vixía que os humanos non entren en sitios web.',
 	'ask' => 'Procura semántica',
 	'smw_ask_sortby' => 'Ordenar por columnas (opcional)',
@@ -8021,6 +8048,12 @@ $messages['ja'] = array(
 '''$3''' {{PLURAL:$3|個のプロパティ}}には専用のページがあり、うち '''$4''' 個にはデータ型が指定されています。
 既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。
 まだ専用のページがないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
+	'smw-statistics' => '意味的統計',
+	'smw-statistics-property-instance' => 'プロパティ値の{{PLURAL:$1|割り当て}}',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|プロパティ|異なるプロパティ}}]]の合計',
+	'smw-statistics-property-page' => 'ページを持つ{{PLURAL:$1|プロパティ}}',
+	'smw-statistics-property-type' => '割り当てられたデータ型を持つ{{PLURAL:$1|プロパティ}}',
+	'smw-statistics-query-inline' => 'インライン{{PLURAL:$1|クエリ}}の合計',
 	'smw_uri_doc' => 'URI リゾルバーは [$1 W3C TAG での httpRange-14 に関する議論成果]を実装しています。
 これは人間がウェブサイトに向かわないように取り計らいます。',
 	'ask' => '意味的検索',
@@ -9493,6 +9526,13 @@ $messages['mk'] = array(
 '''$3''' {{PLURAL:$3|својство има|својства имаат}} своја страница, а предвидениот тип на податоци е назначен за '''$4''' од нив.
 Некои од постоечките својства може да се [[Special:UnusedProperties|неискористени]].
 Својствата кои сè уште немаат страница се наведени на [[Special:WantedProperties|списокот на потребни својства]].",
+	'smw-statistics' => 'Семантички статистики',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Зададена вредност на својство|Зададени вредности на својства}}',
+	'smw-statistics-property-total' => 'Вкупно [[Special:Properties|{{PLURAL:$1|својство|разни својства}}]]',
+	'smw-statistics-property-total-legacy' => 'Вкупно {{PLURAL:$1|својство|разни својства}}',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Својство|Својства}} со сопствена страница',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Својство|Својства}} со зададен податочен тип',
+	'smw-statistics-query-inline' => 'Вкупно {{PLURAL:$1|вметнато барање|вметнати барања}}',
 	'smw_uri_doc' => 'URI-претварачот применува <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C пронаоѓање на ознаки на httpRange-14</a>.
 Тој има за задача да внимава луѓето да не се претворат во мрежни места.',
 	'ask' => 'Семантичко пребарување',
@@ -10374,6 +10414,7 @@ Genereert door te bladeren RDF.",
 '''$3''' {{PLURAL:$3|eigenschap heeft|eigenschappen hebben}} een eigen pagina en het gegevenstype is voor '''$4''' daarvan aangegeven.
 Een aantal van de bestaande eigenschappen is wellicht [[Special:UnusedProperties|ongebruikt]].
 Eigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:WantedProperties|lijst met gewenste eigenschappen]].",
+	'smw-statistics' => 'Semantische statistieken',
 	'smw_uri_doc' => 'De URI-resolver implementeert de [$1 W3C TAG finding on httpRange-14].
 Dit zorgt ervoor dat mensen niet veranderen in websites.',
 	'ask' => 'Semantisch zoeken',
