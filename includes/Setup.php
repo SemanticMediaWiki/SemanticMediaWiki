@@ -134,7 +134,7 @@ function smwfRegisterClasses() {
 	$apDir = $smwgIP . 'includes/articlepages/';
 	$wgAutoloadClasses['SMWOrderedListPage']        = $apDir . 'SMW_OrderedListPage.php';
 	$wgAutoloadClasses['SMWPropertyPage']           = $apDir . 'SMW_PropertyPage.php';
-	$wgAutoloadClasses['SMWConceptPage']            = $apDir . 'SMW_ConceptPage.php';
+	$wgAutoloadClasses['SMWConceptPage']            = $apDir . 'ConceptPage.php';
 
 	// Printers
 	$qpDir = $smwgIP . 'includes/queryprinters/';
