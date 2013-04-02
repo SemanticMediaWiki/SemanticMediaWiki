@@ -134,7 +134,7 @@ function smwfRegisterClasses() {
 	$apDir = $smwgIP . 'includes/articlepages/';
 	$wgAutoloadClasses['SMWOrderedListPage']        = $apDir . 'SMW_OrderedListPage.php';
 	$wgAutoloadClasses['SMWPropertyPage']           = $apDir . 'SMW_PropertyPage.php';
-	$wgAutoloadClasses['SMWConceptPage']            = $apDir . 'ConceptPage.php';
+	$wgAutoloadClasses['SMW\ConceptPage']           = $apDir . 'ConceptPage.php';
 
 	// Printers
 	$qpDir = $smwgIP . 'includes/queryprinters/';
@@ -170,13 +170,14 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWDIUri']                  = $diDir . 'SMW_DI_URI.php';
 	$wgAutoloadClasses['SMWDIWikiPage']             = $diDir . 'SMW_DI_WikiPage.php';
 	$wgAutoloadClasses['SMWDITime']                 = $diDir . 'SMW_DI_Time.php';
-	$wgAutoloadClasses['SMWDIConcept']              = $diDir . 'SMW_DI_Concept.php';
 	$wgAutoloadClasses['SMWDIError']                = $diDir . 'SMW_DI_Error.php';
 	$wgAutoloadClasses['SMWDIGeoCoord']             = $diDir . 'SMW_DI_GeoCoord.php';
 	$wgAutoloadClasses['SMWContainerSemanticData']  = $diDir . 'SMW_DI_Container.php';
 	$wgAutoloadClasses['SMWDIContainer']            = $diDir . 'SMW_DI_Container.php';
 	$wgAutoloadClasses['SMWDISerializer']           = $diDir . 'DISerializer.php'; // deprecated in 1.9
 	$wgAutoloadClasses['SMW\DISerializer']          = $diDir . 'DISerializer.php';
+	$wgAutoloadClasses['SMWDIConcept']              = $diDir . 'DIConcept.php'; // deprecated in 1.9
+	$wgAutoloadClasses['SMW\DIConcept']             = $diDir . 'DIConcept.php';
 
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';

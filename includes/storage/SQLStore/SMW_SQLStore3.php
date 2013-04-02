@@ -448,7 +448,8 @@ class SMWSQLStore3 extends SMWStore {
 	 *
 	 * @since 1.8
 	 * @param Title|SMWWikiPageValue $concept
-	 * @return array
+	 *
+	 * @return SMW\DIConcept|null
 	 */
 	public function getConceptCacheStatus( $concept ) {
 		wfProfileIn( 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
@@ -461,17 +462,18 @@ class SMWSQLStore3 extends SMWStore {
 		         array( 's_id' => $cid ), 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
 
 		if ( $row !== false ) {
-			$result = array( 'size' => $row->concept_size, 'depth' => $row->concept_depth, 'features' => $row->concept_features );
+			$dataItem = new SMW\DIConcept( $concept, null, $row->concept_features, $row->concept_size, $row->concept_depth );
 
 			if ( $row->cache_date ) {
-				$result['status'] = 'full';
-				$result['date'] = $row->cache_date;
-				$result['count'] = $row->cache_count;
+				$dataItem->setCacheStatus( 'full' );
+				$dataItem->setCacheDate( $row->cache_date );
+				$dataItem->setCacheCount( $row->cache_count );
 			} else {
-				$result['status'] = 'empty';
+				$dataItem->setCacheStatus( 'empty' );
 			}
+			$result = $dataItem;
 		} else {
-			$result = array( 'status' => 'no' );
+			$result = null;
 		}
 
 		wfProfileOut( 'SMWSQLStore3::getConceptCacheStatus (SMW)' );

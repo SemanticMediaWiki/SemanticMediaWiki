@@ -162,8 +162,6 @@ Results might not be as expected.',
 	'smw_attributearticlecount'   => 'Showing $1 {{PLURAL:$1|page|pages}} using this property.',
 	'smw_subproperty_header'      => 'Subproperties',
 	'smw_subpropertyarticlecount' => 'This property has the following $1 {{PLURAL:$1|subproperty|subproperties}}:',
-	'smw_concept_header'          => 'Pages of concept "$1"',
-	'smw_conceptarticlecount'     => 'Showing $1 {{PLURAL:$1|page|pages}} belonging to that concept.',
 
 	// Group name for SMW special pages
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
@@ -432,6 +430,11 @@ Estimated progress of current update:',
 	'smw-ui-tooltip-title-legend' => 'Legend',
 
 	'smw_unknowntype' => 'The type of this property is invalid',
+
+	// Concept
+	'smw-concept-cache-text'  => 'The concept has a total of $1 {{PLURAL:$1|page|pages}}, and was last updated $2.',
+	'smw_concept_header'      => 'Pages of concept "$1"',
+	'smw_conceptarticlecount' => 'Showing below $1 {{PLURAL:$1|page|pages}}.',
 );
 
 /** Message documentation (Message documentation)
@@ -630,6 +633,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 holds the name of the respective concept.',
 	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". Parameters:
 * $1 holds the number of pages displayed in the current view.',
+	'smw-concept-cache-text' => 'This is the message displays information about the cache status.',
 	'specialpages-group-smw_group' => '{{optional}}
 {{doc-special-group|that=are related to (or depend on) Semantic MediaWiki|like=[[Special:OfflineImportLexicon]], [[Special:Ask]], [[Special:QueryCreator]], [[Special:Browse]], [[Special:PageProperty]], [[Special:SearchByProperty]], [[Special:SMWAdmin]], [[Special:ExportRDF]], [[Special:ObjectEditor]], [[Special:WidgetAssembler]], [[Special:WidgetClone]], [[Special:BrowseWiki]], [[Special:SolrSearch]]}}
 {{Identical|Semantic MediaWiki}}',

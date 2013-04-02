@@ -107,7 +107,7 @@ final class SMWHooks {
 		if ( $title->getNamespace() == SMW_NS_PROPERTY ) {
 			$article = new SMWPropertyPage( $title );
 		} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
-			$article = new SMWConceptPage( $title );
+			$article = new SMW\ConceptPage( $title );
 		}
 
 		return true;
@@ -278,6 +278,7 @@ final class SMWHooks {
 			'dataitems/DI_Number',
 			'dataitems/DI_GeoCoord',
 			'dataitems/DISerializer',
+			'dataitems/DIConcept',
 
 			'export/SMWExpElement',
 

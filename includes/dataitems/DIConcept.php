@@ -1,4 +1,10 @@
 <?php
+
+namespace SMW;
+
+use SMWDataItem;
+use SMWDataItemException;
+
 /**
  * @file
  * @ingroup SMWDataItems
@@ -6,17 +12,19 @@
 
 /**
  * This class implements Concept data items.
- * 
+ *
  * @note These special data items for storing concept declaration data in SMW
  * should vanish at some point since Container values could encode this data
  * just as well.
  *
  * @since 1.6
  *
- * @author Markus Krötzsch
  * @ingroup SMWDataItems
+ *
+ * @author Markus Krötzsch
+ * @author mwjames
  */
-class SMWDIConcept extends SMWDataItem {
+class DIConcept extends \SMWDataItem {
 
 	/**
 	 * Query string for this concept. Possibly long.
@@ -43,6 +51,24 @@ class SMWDIConcept extends SMWDataItem {
 	 * @var integer
 	 */
 	protected $m_depth;
+
+	/**
+	 * Status
+	 * @var integer
+	 */
+	protected $cacheStatus;
+
+	/**
+	 * Date
+	 * @var integer
+	 */
+	protected $cacheDate;
+
+	/**
+	 * Count
+	 * @var integer
+	 */
+	protected $cacheCount;
 
 	/**
 	 * Initialise the concept data.
@@ -93,6 +119,72 @@ class SMWDIConcept extends SMWDataItem {
 	}
 
 	/**
+	 * Sets cache status
+	 *
+	 * @since 1.9
+	 *
+	 * @param string
+	 */
+	public function setCacheStatus( $status ) {
+		$this->cacheStatus = $status;
+	}
+
+	/**
+	 * Sets cache date
+	 *
+	 * @since 1.9
+	 *
+	 * @param string
+	 */
+	public function setCacheDate( $date ) {
+		$this->cacheDate = $date;
+	}
+
+	/**
+	 * Sets cache count
+	 *
+	 * @since 1.9
+	 *
+	 * @param int
+	 */
+	public function setCacheCount( $count ) {
+		$this->cacheCount = $count;
+	}
+
+	/**
+	 * Returns cache status
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getCacheStatus() {
+		return $this->cacheStatus;
+	}
+
+	/**
+	 * Returns cache date
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getCacheDate() {
+		return $this->cacheDate;
+	}
+
+	/**
+	 * Returns cache count
+	 *
+	 * @since 1.9
+	 *
+	 * @return int
+	 */
+	public function getCacheCount() {
+		return $this->cacheCount;
+	}
+
+	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
 	 * @return SMWDIConcept
@@ -112,3 +204,10 @@ class SMWDIConcept extends SMWDataItem {
 		return $di->getSerialization() === $this->getSerialization();
 	}
 }
+
+/**
+ * SMWDIConcept
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
