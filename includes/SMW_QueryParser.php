@@ -25,7 +25,7 @@ class SMWQueryParser {
 	protected $m_conceptPrefixCannonical; // cache canonnical label of concept namespace . ':'
 	protected $m_queryfeatures; // query features to be supported, format similar to $smwgQFeatures
 
-	public function __construct( $queryfeatures = false ) {
+	public function __construct( $queryFeatures = false ) {
 		global $wgContLang, $smwgQFeatures;
 
 		$this->m_categoryprefix = $wgContLang->getNsText( NS_CATEGORY ) . ':';
@@ -34,7 +34,7 @@ class SMWQueryParser {
 		$this->m_conceptPrefixCannonical = 'Concept:';
 
 		$this->m_defaultns = null;
-		$this->m_queryfeatures = $queryfeatures === false ? $smwgQFeatures : $queryfeatures;
+		$this->m_queryfeatures = $queryFeatures === false ? $smwgQFeatures : $queryFeatures;
 	}
 
 	/**
@@ -60,15 +60,15 @@ class SMWQueryParser {
 	 * wrestled from the given string (the most general result being SMWThingDescription if
 	 * no meaningful condition was extracted).
 	 *
-	 * @param string $querystring
+	 * @param string $queryString
 	 *
 	 * @return SMWDescription
 	 */
-	public function getQueryDescription( $querystring ) {
+	public function getQueryDescription( $queryString ) {
 		wfProfileIn( 'SMWQueryParser::getQueryDescription (SMW)' );
 
 		$this->m_errors = array();
-		$this->m_curstring = $querystring;
+		$this->m_curstring = $queryString;
 		$this->m_sepstack = array();
 		$setNS = false;
 		$result = $this->getSubqueryDescription( $setNS );
@@ -304,11 +304,11 @@ class SMWQueryParser {
 	 * suitable description. The "::" is the first chunk on the current
 	 * string.
 	 */
-	protected function getPropertyDescription( $propertyname, &$setNS ) {
+	protected function getPropertyDescription( $propertyName, &$setNS ) {
 		$this->readChunk(); // consume separator ":=" or "::"
 
 		// first process property chain syntax (e.g. "property1.property2::value"), escaped by initial " ":
-		$propertynames = ( $propertyname{0} == ' ' ) ? array( $propertyname ) : explode( '.', $propertyname );
+		$propertynames = ( $propertyName{0} == ' ' ) ? array( $propertyName ) : explode( '.', $propertyName );
 		$properties = array();
 		$typeid = '_wpg';
 		$inverse = false;
@@ -429,8 +429,8 @@ class SMWQueryParser {
 	 * The first chunk behind the "[[" has already been read and is
 	 * passed as a parameter.
 	 */
-	protected function getArticleDescription( $firstchunk, &$setNS ) {
-		$chunk = $firstchunk;
+	protected function getArticleDescription( $firstChunk, &$setNS ) {
+		$chunk = $firstChunk;
 		$result = null;
 		$continue = true;
 		// $innerdesc = null;
