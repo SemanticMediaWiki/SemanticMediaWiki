@@ -456,6 +456,8 @@ final class SMWHooks {
 			$extraStats['smw-statistics']['smw-statistics-property-type'] = $semanticStatistics['DECLPROPS'];
 			$extraStats['smw-statistics']['smw-statistics-query-inline'] = $semanticStatistics['QUERY'];
 		}
+
+		return true;
 	}
 
 	/**
