@@ -433,7 +433,6 @@ class SMWQueryParser {
 		$chunk = $firstChunk;
 		$result = null;
 		$continue = true;
-		// $innerdesc = null;
 
 		while ( $continue ) {
 			if ( $chunk == '<q>' ) { // no subqueries of the form [[<q>...</q>]] (not needed)
