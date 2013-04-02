@@ -12,7 +12,6 @@ use SMWDataItem;
 use SMWDataValueFactory;
 use Title;
 
-
 /**
  * Tests for the SMW\QueryData class
  *
@@ -66,7 +65,6 @@ class QueryDataTest extends \MediaWikiTestCase {
 					'format=list'
 				),
 				array(
-					'result' => false,
 					'queryCount' => 4,
 					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
 					'queryValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
@@ -88,7 +86,6 @@ class QueryDataTest extends \MediaWikiTestCase {
 					'format=list'
 				),
 				array(
-					'result' => false,
 					'queryCount' => 4,
 					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
 					'queryValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
@@ -112,7 +109,6 @@ class QueryDataTest extends \MediaWikiTestCase {
 					'format=bar'
 				),
 				array(
-					'result' => false,
 					'queryCount' => 4,
 					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
 					'queryValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
@@ -129,6 +125,17 @@ class QueryDataTest extends \MediaWikiTestCase {
 	 */
 	private function getTitle( $title ){
 		return Title::newFromText( $title );
+	}
+
+	/**
+	 * Helper method to get queryProcessor object
+	 *
+	 * @return QueryProcessor
+	 */
+	private function getQueryProcessor( array $params ){
+		$queryProcessor = new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::INLINE_QUERY, false );
+		$queryProcessor->map( $params );
+		return $queryProcessor;
 	}
 
 	/**
@@ -177,11 +184,10 @@ class QueryDataTest extends \MediaWikiTestCase {
 	 */
 	public function testInstantiatedQueryData( $title, array $params, array $expected ) {
 		$instance = $this->getInstance( $title );
-
-		$queryProcessor = new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::INLINE_QUERY, false );
-		$queryProcessor->map( $params );
+		$queryProcessor = $this->getQueryProcessor( $params );
 
 		// Add query data from the query
+		$instance->setQueryId( $params );
 		$instance->add(
 			$queryProcessor->getQuery(),
 			$queryProcessor->getParameters()
@@ -213,5 +219,21 @@ class QueryDataTest extends \MediaWikiTestCase {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Test QueryId exception
+	 *
+	 * @dataProvider getDataProvider
+	 */
+	public function testQueryIdException( $title, array $params, array $expected) {
+		$this->setExpectedException( 'MWException' );
+		$instance = $this->getInstance( $title );
+
+		$queryProcessor = $this->getQueryProcessor( $params );
+		$instance->add(
+			$queryProcessor->getQuery(),
+			$queryProcessor->getParameters()
+		);
 	}
 }
