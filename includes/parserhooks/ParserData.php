@@ -356,7 +356,7 @@ class ParserData implements IParserData {
 	 */
 	public function addPropertyValueString( $propertyName, $valueString ) {
 		if ( !( $this->semanticData instanceof SMWSemanticData ) ) {
-			throw new MWException( 'The subject container is not initialized' );
+			throw new MWException( 'The semantic data container is not initialized' );
 		}
 
 		wfProfileIn(  __METHOD__ );
@@ -364,7 +364,7 @@ class ParserData implements IParserData {
 		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
 		$propertyDi = $propertyDv->getDataItem();
 
-		if ( !$propertyDi->isInverse() ) {
+		if ( $propertyDi instanceof \SMWDIProperty && !$propertyDi->isInverse() ) {
 			$valueDv = SMWDataValueFactory::newPropertyObjectValue( $propertyDi, $valueString,
 				false, $this->semanticData->getSubject() );
 			$this->semanticData->addPropertyObjectValue( $propertyDi, $valueDv->getDataItem() );
@@ -377,9 +377,10 @@ class ParserData implements IParserData {
 				);
 				$this->setError( $valueDv->getErrors() );
 			}
-		} else {
-			// FIXME Message object from context
+		} else if ( $propertyDi instanceof \SMWDIProperty && $propertyDi->isInverse() ) {
 			$this->setError( array( wfMessage( 'smw_noinvannot' )->inContentLanguage()->text() ) );
+		} else {
+			$this->setError( array( wfMessage( 'smw-property-name-invalid', $propertyName )->inContentLanguage()->text() ) );
 		}
 
 		wfProfileOut( __METHOD__ );

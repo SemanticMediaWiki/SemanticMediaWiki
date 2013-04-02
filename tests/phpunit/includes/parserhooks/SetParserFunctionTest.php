@@ -108,6 +108,24 @@ class SetParserFunctionTest extends \MediaWikiTestCase {
 					'value' => array( 'Bar', '9001' )
 				)
 			),
+
+			// Multiple data set with an error record
+
+			// {{#set:
+			// |_Foo=9001 --> will raise an error
+			// |Foo=bar
+			// }}
+			array(
+				'Foo', // Title
+				array( 'Foo=bar', '_Foo=9001' ), // Parameters
+				array(
+					'errors' => 1,
+					'propertyCount' => 1,
+					'propertyLabel' => array( 'Foo' ),
+					'value' => array( 'Bar' )
+				)
+			),
+
 		);
 	}
 
@@ -163,9 +181,9 @@ class SetParserFunctionTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider getDataProvider
 	 */
-	public function testParse( $title, array $params ) {
+	public function testParse( $title, array $params, array $expected ) {
 		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertEquals( '', $instance->parse( new ParserParameterFormatter( $params ) ) );
+		$this->assertInternalType( 'string', $instance->parse( new ParserParameterFormatter( $params ) ) );
 	}
 
 	/**
