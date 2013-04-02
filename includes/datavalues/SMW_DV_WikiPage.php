@@ -226,7 +226,6 @@ class SMWWikiPageValue extends SMWDataValue {
 			if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 				return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
 			} else {
-				// Linker::makeLinkObj was deprecated in MW 1.21, since MW 1.16 use link()
 				return $linker->link( $this->getTitle(), $caption );
 			}
 		}
