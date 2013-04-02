@@ -41,12 +41,16 @@ class SMWQueryParser {
 	 * Provide an array of namespace constants that are used as default restrictions.
 	 * If NULL is given, no such default restrictions will be added (faster).
 	 */
-	public function setDefaultNamespaces( $nsarray ) {
+	public function setDefaultNamespaces( $namespaceArray ) {
 		$this->m_defaultns = null;
 
-		if ( !is_null( $nsarray ) ) {
-			foreach ( $nsarray as $ns ) {
-				$this->m_defaultns = $this->addDescription( $this->m_defaultns, new SMWNamespaceDescription( $ns ), false );
+		if ( !is_null( $namespaceArray ) ) {
+			foreach ( $namespaceArray as $ns ) {
+				$this->m_defaultns = $this->addDescription(
+					$this->m_defaultns,
+					new SMWNamespaceDescription( $ns ),
+					false
+				);
 			}
 		}
 	}
