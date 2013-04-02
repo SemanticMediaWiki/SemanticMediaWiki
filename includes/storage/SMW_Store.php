@@ -333,6 +333,9 @@ abstract class SMWStore {
 	 * - 'DECLPROPS': Number of properties that have been declared (i.e. assigned a type)
 	 * - 'OWNPAGE': Number of properties with their own page
 	 * - 'QUERY': Number of inline queries
+	 * - 'QUERYSIZE': Represents collective query size
+	 * - 'CONCEPTS': Number of declared concepts
+	 * - 'SUBOBJECTS': Number of declared subobjects
 	 *
 	 * @return array
 	 */

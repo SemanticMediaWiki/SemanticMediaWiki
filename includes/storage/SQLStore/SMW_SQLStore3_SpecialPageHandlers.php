@@ -187,6 +187,14 @@ class SMWSQLStore3SpecialPageHandlers {
 		return $result;
 	}
 
+	/**
+	 * @see SMWStore::getStatistics
+	 *
+	 * @note Always ensure to set the array initially to 0 to avoid problems when
+	 * accessing the array via a key
+	 *
+	 * @return array
+	 */
 	public function getStatistics() {
 		wfProfileIn( 'SMWSQLStore3::getStatistics (SMW)' );
 
@@ -195,14 +203,43 @@ class SMWSQLStore3SpecialPageHandlers {
 		$propertyTables = SMWSQLStore3::getPropertyTables();
 
 		// Properties with their own page
+		$result['OWNPAGE'] = 0;
 		$result['OWNPAGE'] = $dbr->estimateRowCount( 'page', '*', array( 'page_namespace' => SMW_NS_PROPERTY ) );
 
 		// Count existing inline queries
+		$result['QUERY'] = 0;
 		$typeProp = new SMWDIProperty( '_ASK' );
 		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
 		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
 		$row = $dbr->fetchObject( $res );
 		$result['QUERY'] = $row->count;
+		$dbr->freeResult( $res );
+
+		// Count query size
+		$result['QUERYSIZE'] = 0;
+		$typeProp = new SMWDIProperty( '_ASKSI' );
+		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
+		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$row = $dbr->fetchObject( $res );
+		$result['QUERYSIZE'] = $row->count;
+		$dbr->freeResult( $res );
+
+		// Count existing concepts
+		$result['CONCEPTS'] = 0;
+		$typeProp = new SMWDIProperty( '_CONC' );
+		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
+		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$row = $dbr->fetchObject( $res );
+		$result['CONCEPTS'] = $row->count;
+		$dbr->freeResult( $res );
+
+		// Count existing subobjects
+		$result['SUBOBJECTS'] = 0;
+		$typeProp = new SMWDIProperty( SMWDIProperty::TYPE_SUBOBJECT );
+		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
+		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
+		$row = $dbr->fetchObject( $res );
+		$result['SUBOBJECTS'] = $row->count;
 		$dbr->freeResult( $res );
 
 		// count number of declared properties by counting "has type" annotations
