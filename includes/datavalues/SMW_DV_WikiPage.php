@@ -219,10 +219,13 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( is_null( $linker ) || $linker === false || !$this->isValid() ||
 				$this->m_outformat == '-' || $this->m_caption === '' ) {
-			return htmlspecialchars( $this->m_caption !== false ? $this->m_caption : $this->getWikiValue() );
+
+			$caption = $this->m_caption === false ? $this->getWikiValue() : $this->m_caption;
+			return htmlspecialchars( $caption );
 		} else {
-			$caption = htmlspecialchars(
-				$this->m_caption !== false ? $this->m_caption : $this->getShortCaptionText() );
+			$caption = $this->m_caption === false ? $this->getShortCaptionText() : $this->m_caption;
+			$caption = htmlspecialchars( $caption );
+
 			if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 				return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
 			} else {
