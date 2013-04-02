@@ -103,6 +103,7 @@ class AskParserFunction {
 		$this->queryProcessor->map( $rawParams );
 
 		// Add query data from the query
+		$this->queryData->setQueryId( $rawParams );
 		$this->queryData->add(
 			$this->queryProcessor->getQuery(),
 			$this->queryProcessor->getParameters()

@@ -7,6 +7,7 @@ use SMWDINumber;
 use SMWDIBlob;
 use SMWQuery;
 use Title;
+use MWException;
 
 /**
  * Handles query meta data collected in #ask / #show
@@ -50,6 +51,11 @@ class QueryData {
 	protected $subobject;
 
 	/**
+	 * Represents queryId
+	 */
+	protected $queryId = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 1.9
@@ -69,6 +75,24 @@ class QueryData {
 	 */
 	public function getErrors() {
 		return $this->subobject->getErrors();
+	}
+
+	/**
+	 * Set QueryId
+	 *
+	 * Creates an unique id ( e.g. _QUERYbda2acc317b66b564e39f45e3a18fff3)
+	 * which normally is based on parameters used in a #ask/#set query
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $qualifiers
+	 */
+	public function setQueryId( array $qualifiers ) {
+		$this->queryId = str_replace(
+			'_',
+			'_QUERY',
+			$this->subobject->getAnonymousIdentifier( implode( '|', $qualifiers ) )
+		);
 	}
 
 	/**
@@ -101,10 +125,12 @@ class QueryData {
 	 * @return array
 	 */
 	public function add( SMWQuery $query, array $params ) {
+		if ( $this->queryId === null ) {
+			throw new MWException( '_QUERY Id is not set' );
+		}
 
 		// Prepare subobject semantic container
-		$Id = $this->subobject->getAnonymousIdentifier( serialize( $params ) );
-		$this->subobject->setSemanticData( str_replace( '_', '_QUERY', $Id ) );
+		$this->subobject->setSemanticData( $this->queryId );
 
 		$description = $query->getDescription();
 
