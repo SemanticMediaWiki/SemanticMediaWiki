@@ -331,6 +331,8 @@ abstract class SMWStore {
 	 * - 'PROPUSES': Number of property instances (value assignments) in the datatbase
 	 * - 'USEDPROPS': Number of properties that are used with at least one value
 	 * - 'DECLPROPS': Number of properties that have been declared (i.e. assigned a type)
+	 * - 'OWNPAGE': Number of properties with their own page
+	 * - 'QUERY': Number of inline queries
 	 *
 	 * @return array
 	 */
