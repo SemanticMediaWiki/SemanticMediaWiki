@@ -207,7 +207,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * Display the value as in getShortWikiText() but create HTML.
 	 * The only difference is that images are not embedded.
 	 *
-	 * @param $linker mixed the Linker object to use or null if no linking is desired
+	 * @param Linker $linker mixed the Linker object to use or null if no linking is desired
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
