@@ -294,6 +294,7 @@ final class SMWHooks {
 			'parserhooks/InfoParserFunction',
 
 			'query/QueryProcessor',
+			'query/QueryData',
 
 			'printers/ResultPrinters',
 
