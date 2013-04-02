@@ -1,8 +1,10 @@
 <?php
 
 namespace SMW;
+
 use ParamProcessor\ParamDefinition;
-use Html, Xml;
+use Html;
+use Xml;
 
 /**
  * Simple class to get a HTML input for the parameter.
@@ -12,7 +14,7 @@ use Html, Xml;
  * 
  * TODO: nicify HTML
  * 
- * @since 0.4.6
+ * @since 1.9
  * 
  * @file
  * @ingroup SMW
@@ -25,7 +27,7 @@ class ParameterInput {
 	/**
 	 * The parameter to print an input for.
 	 * 
-	 * @since O.5
+	 * @since 1.9
 	 * 
 	 * @var ParamDefinition
 	 */
@@ -36,7 +38,7 @@ class ParameterInput {
 	 * it'll be used as value for the input, otherwise the
 	 * parameters default value will be used.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @var mixed: string or false
 	 */
@@ -45,7 +47,7 @@ class ParameterInput {
 	/**
 	 * Name for the input.
 	 * 
-	 * @since 0.6.4
+	 * @since 1.9
 	 * 
 	 * @var string
 	 */
@@ -54,7 +56,7 @@ class ParameterInput {
 	/**
 	 * Constructor.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @param ParamDefinition $param
 	 * @param mixed $currentValue
@@ -68,7 +70,7 @@ class ParameterInput {
 	/**
 	 * Sets the current value.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @param mixed $currentValue
 	 */	
@@ -79,7 +81,7 @@ class ParameterInput {
 	/**
 	 * Sets the name for the input; defaults to the name of the parameter.
 	 * 
-	 * @since 0.6.4
+	 * @since 1.9
 	 * 
 	 * @param string $name
 	 */
@@ -90,7 +92,7 @@ class ParameterInput {
 	/**
 	 * Returns the HTML for the parameter input.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @return string
 	 */
@@ -128,7 +130,7 @@ class ParameterInput {
 	/**
 	 * Returns the value to initially display with the input.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @return string
 	 */
@@ -145,7 +147,7 @@ class ParameterInput {
 	/**
 	 * Gets a short text input suitable for numbers.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @return string
 	 */		
@@ -163,7 +165,7 @@ class ParameterInput {
 	/**
 	 * Gets a text input for a string.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @return string
 	 */		
@@ -181,7 +183,7 @@ class ParameterInput {
 	/**
 	 * Gets a checkbox.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @return string
 	 */	
@@ -195,7 +197,7 @@ class ParameterInput {
 	/**
 	 * Gets a select menu for the provided values.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @param array $valueList
 	 * 
@@ -229,7 +231,7 @@ class ParameterInput {
 	/**
 	 * Gets a list of input boxes for the provided values.
 	 * 
-	 * @since 0.4.6
+	 * @since 1.9
 	 * 
 	 * @param array $valueList
 	 * 
