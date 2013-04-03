@@ -810,30 +810,28 @@ class SMWSql3SmwIds {
 	 * @return array
 	 */
 	public function getPropertyTableHashes( $sid ) {
+		$hash = null;
+
 		if ( $this->hashCacheId == $sid ) {
 			//print "Cache hit! " . $this->hitcount++ . "\n";
 			$hash = $this->hashCacheContents;
 		} elseif ( $sid !== 0 ) {
 			//print "Cache miss! $sid is not {$this->hashCacheId} " . $this->misscount++ . "\n";
 			$db = wfGetDB( DB_SLAVE );
+
 			$row = $db->selectRow(
 				self::tableName,
 				array( 'smw_proptable_hash' ),
 				'smw_id=' . $sid ,
 				__METHOD__
 			);
+
 			if ( $row !== false ) {
 				$hash = $row->smw_proptable_hash;
 			}
-		} else { // $sid == 0
-			$hash = null;
 		}
 
-		if ( !is_null( $hash ) ) {
-			return unserialize( $hash );
-		} else {
-			return array();
-		}
+		return is_null( $hash ) ? array() : unserialize( $hash );
 	}
 
 	/**
