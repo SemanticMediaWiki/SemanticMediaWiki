@@ -452,12 +452,19 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		foreach ( $params as $param => $value ) {
 			if ( $param !== 'format' ) {
-				$url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
+				$url .= '&params[' . rawurlencode( $param ) . ']=' . rawurlencode( $value );
 			}
 		}
 
 		$result .= '<br /><span style=vertical-align:middle;">' . wfMessage( 'smw_ask_format_as' )->text() . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
-			'<select id="formatSelector" name="p[format]" data-url="' . $url . '">' . "\n" .
+			Html::openElement(
+				'select',
+				array(
+					 'id' => 'formatSelector',
+					 'name' => 'p[format]',
+					 'data-url' => $url,
+				)
+			) . "\n" .
 			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
 			$printer->getName() . ' (' . wfMessage( 'smw_ask_defaultformat' )->text() . ')</option>' . "\n";
 
