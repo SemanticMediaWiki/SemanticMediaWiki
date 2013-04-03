@@ -120,7 +120,7 @@ class SMWDIHandlerConcept extends SMWDataItemHandler {
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 		if ( is_array( $dbkeys) && count( $dbkeys ) == 5 ) {
-			return new SMWDIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ),
+			return new \SMW\DIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ),
 				$dbkeys[2], $dbkeys[3], $dbkeys[4] );
 		} else {
 			throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
