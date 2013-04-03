@@ -7,7 +7,6 @@ use Html;
 use Title;
 
 use SMWDIProperty;
-use SMWDIConcept;
 use SMWInfolink;
 
 /**
@@ -142,7 +141,7 @@ class ConceptParserFunction {
 		// Store query data to the semantic data instance
 		$this->parserData->getData()->addPropertyObjectValue(
 			$property,
-			new SMWDIConcept(
+			new DIConcept(
 				$conceptQueryString,
 				$conceptDocu,
 				$query->getDescription()->getQueryFeatures(),
