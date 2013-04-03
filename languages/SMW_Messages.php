@@ -214,12 +214,16 @@ Some of the existing properties might be [[Special:UnusedProperties|unused prope
 Properties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].',
 
 	'smw-statistics' => 'Semantic statistics',
-	'smw-statistics-property-instance' => 'Property value {{PLURAL:$1|assignment|assignments}}',
-	'smw-statistics-property-total' => 'Total of [[Special:Properties|{{PLURAL:$1|property|different properties}}]]',
-	'smw-statistics-property-total-legacy' => 'Total of {{PLURAL:$1|property|different properties}}',
-	'smw-statistics-property-page'  => '{{PLURAL:$1|Property|Properties}} with their own page',
-	'smw-statistics-property-type'  => '{{PLURAL:$1|Property|Properties}} with an assigned datatype',
-	'smw-statistics-query-inline'   => 'Total of inline {{PLURAL:$1|query|queries}}',
+	'smw-statistics-property-instance' => 'Property {{PLURAL:$1|value|values}} (total)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Property|Properties}}]] (total)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Property|Properties}} (total)',
+	'smw-statistics-property-page'  => '{{PLURAL:$1|Property|Properties}} (registered with a page)',
+	'smw-statistics-property-type'  => '{{PLURAL:$1|Property|Properties}} (assigned to a datatype)',
+	'smw-statistics-query-inline'   => '{{PLURAL:$1|Query|Queries}}',
+	'smw-statistics-query-size'     => 'Query size',
+	'smw-statistics-concept-count'  => '{{PLURAL:$1|Concept|Concepts}}',
+	'smw-statistics-subobject-count'  => '{{PLURAL:$1|Subobject|Subobjects}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datatype|Datatypes}}]]',
 
 	// Name of the URI Resolver Special (no content)
 	'smw_uri_doc' => 'The URI resolver implements the [$1 W3C TAG finding on httpRange-14].
@@ -688,6 +692,10 @@ This is the label of a tab of an action item for the content area.',
 	'smw-statistics-property-page' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw-statistics-property-type' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw-statistics-query-inline' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-query-size' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-concept-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-subobject-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-datatype-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
 When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
