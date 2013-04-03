@@ -69,7 +69,7 @@ class SubobjectParserFunction {
 	 *
 	 * @since 1.9
 	 *
-	 * @return SMW\Subobject
+	 * @return Subobject
 	 */
 	public function getSubobject() {
 		return $this->subobject;

@@ -27,7 +27,7 @@ class DeclareParserFunction {
 	 * @since 1.5.3
 	 *
 	 * @param Parser $parser
-	 * @param PPFrame $frame
+	 * @param \PPFrame $frame
 	 * @param array $args
 	 */
 	public static function render( Parser &$parser, \PPFrame $frame, array $args ) {

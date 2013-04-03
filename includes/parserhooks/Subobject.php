@@ -39,22 +39,22 @@ use SMWPropertyValue, SMWDataValueFactory, SMWDIProperty, SMWDIWikiPage, SMWCont
 class Subobject extends ContextSource {
 
 	/**
-	 * @var subject
+	 * @var Title
 	 */
 	 protected $title;
 
 	/**
-	 * @var subobjectName
+	 * @var string
 	 */
 	 protected $subobjectName;
 
 	/**
-	 * @var semanticData
+	 * @var SMWContainerSemanticData
 	 */
 	 protected $semanticData;
 
 	/**
-	 * @var errors
+	 * @var string[]
 	 */
 	protected $errors = array();
 

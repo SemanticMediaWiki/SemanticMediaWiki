@@ -174,7 +174,7 @@ class DocumentationParserFunction extends \ParserHook {
 	 *
 	 * @since 1.6
 	 *
-	 * @param IParamDefinition $parameter
+	 * @param \IParamDefinition $parameter
 	 * @param boolean $hasAliases
 	 *
 	 * @return string

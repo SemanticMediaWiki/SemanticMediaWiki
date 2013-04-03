@@ -65,7 +65,7 @@ class SetParserFunction {
 	 *
 	 * @since  1.9
 	 *
-	 * @param IParserParameter $parameters
+	 * @param IParameterFormatter $parameters
 	 *
 	 * @return string|null
 	 */
