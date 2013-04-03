@@ -271,6 +271,7 @@ final class SMWHooks {
 			'FormatFactory',
 			'Highlighter',
 			'ObservableMessageReporter',
+			'ParserData',
 			// 'QueryProcessor', old test
 
 			'dataitems/DI_Blob',

@@ -114,6 +114,14 @@ interface IParserData {
  * Class that provides access to the semantic data object generated from either
  * the ParserOuput or subject provided (no static binding as in SMWParseData)
  *
+ * The responsibility of this class is to handle mainly the parserOutput object,
+ * and one could argue that addPropertyValueString() has to be removed, while
+ * addCategories(), addDefaultSort(), addSpecialProperties() are manipulating
+ * the semantic data container invoked from the parserOutput object.
+ *
+ * UpdateStore(), getDiffPropertyTypes(), getDiffConversionFactors() are
+ * responsible to update the store with the processed semantic data container.
+ *
  * @ingroup SMW
  * @ingroup ParserHooks
  *
