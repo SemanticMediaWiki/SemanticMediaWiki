@@ -199,7 +199,7 @@ class SMWTimeValue extends SMWDataValue {
 		// * yet "." is an essential date separation character in languages such as German
 		$parsevalue = str_replace( array( '/', '.', '&nbsp;', ',' ), array( '-', ' ', ' ', ' ' ), $string );
 
-		$matches = preg_split( "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[a-z,A-Z]+|[0-9]+|[ ])/u", $parsevalue , -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
+		$matches = preg_split( "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[\p{L}]+|[0-9]+|[ ])/u", $parsevalue , -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 		$datecomponents = array();
 		$calendarmodel = $timezoneoffset = $era = $ampm = false;
 		$hours = $minutes = $seconds = $timeoffset = false;
