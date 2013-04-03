@@ -633,11 +633,6 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 holds the name of the respective subproperty.',
 	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property". Parameters:
 * $1 holds the number of subproperty pages displayed in the current view.',
-	'smw_concept_header' => 'This is the header on a page in namespace "Concept". Parameters:
-* $1 holds the name of the respective concept.',
-	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". Parameters:
-* $1 holds the number of pages displayed in the current view.',
-	'smw-concept-cache-text' => 'This is the message displays information about the cache status.',
 	'specialpages-group-smw_group' => '{{optional}}
 {{doc-special-group|that=are related to (or depend on) Semantic MediaWiki|like=[[Special:OfflineImportLexicon]], [[Special:Ask]], [[Special:QueryCreator]], [[Special:Browse]], [[Special:PageProperty]], [[Special:SearchByProperty]], [[Special:SMWAdmin]], [[Special:ExportRDF]], [[Special:ObjectEditor]], [[Special:WidgetAssembler]], [[Special:WidgetClone]], [[Special:BrowseWiki]], [[Special:SolrSearch]]}}
 {{Identical|Semantic MediaWiki}}',
@@ -693,7 +688,8 @@ This is the label of a tab of an action item for the content area.',
 	'smw-statistics-property-type' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw-statistics-query-inline' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw-statistics-query-size' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw-statistics-concept-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-concept-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page.
+{{Identical|Concept}}',
 	'smw-statistics-subobject-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw-statistics-datatype-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
@@ -958,6 +954,15 @@ See also:
 	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}
 {{Identical|Legend}}',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
+	'smw-concept-cache-text' => 'This is the message displays information about the cache status.
+
+Parameters:
+* $1 - number of pages
+* $2 - date (localized, without time)',
+	'smw_concept_header' => 'This is the header on a page in namespace "Concept". Parameters:
+* $1 holds the name of the respective concept.',
+	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". Parameters:
+* $1 holds the number of pages displayed in the current view.',
 );
 
 /** Afrikaans (Afrikaans)
@@ -3107,8 +3112,6 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_attributearticlecount' => 'Es {{PLURAL:$1|wird eine Seiten|werden $1 Seiten}} angezeigt, die dieses Attribut {{PLURAL:$1|verwendet|verwenden}}:',
 	'smw_subproperty_header' => 'Unterattribute',
 	'smw_subpropertyarticlecount' => 'Dieses Attribut hat {{PLURAL:$1|folgendes Unterattribut|folgende $1 Unterattribute}}:',
-	'smw_concept_header' => 'Seiten mit dem Konzept „$1“',
-	'smw_conceptarticlecount' => 'Es {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt, die zu diesem Konzept {{PLURAL:$1|gehört|gehören}}:',
 	'exportrdf' => 'Seiten als RDF exportieren',
 	'smw_exportrdf_docu' => 'Hier können Informationen zu einzelnen Seiten im RDF-Format abgerufen werden. Bitte die Namen der gewünschten Seiten <i>zeilenweise</i> angeben.',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnismengen führen!',
@@ -3139,12 +3142,16 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 
 Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste gewünschter Attribute]] aufgeführt.",
 	'smw-statistics' => 'Semantische Statistiken',
-	'smw-statistics-property-instance' => 'Eigenschaftswert{{PLURAL:$1|zuweisung|zuweisungen}}',
-	'smw-statistics-property-total' => 'Summe der [[Special:Properties|{{PLURAL:$1|Eigenschaft|unterschiedlichen Eigenschaften}}]]',
-	'smw-statistics-property-total-legacy' => 'Summe der {{PLURAL:$1|Eigenschaft|unterschiedlichen Eigenschaften}}',
-	'smw-statistics-property-page' => '{{PLURAL:$1|Eigenschaft|Eigenschaften}} mit ihrer eigenen Seite',
-	'smw-statistics-property-type' => '{{PLURAL:$1|Eigenschaft|Eigenschaften}} mit einem zugewiesenen Datentyp',
-	'smw-statistics-query-inline' => 'Summe der eingebetteten {{PLURAL:$1|Abfrage|Abfragen}}',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Eigenschaftswert|Eigenschaftswerte}} (gesamt)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Eigenschaft|Eigenschaften}}]] (gesamt)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Eigenschaft|Eigenschaften}} (gesamt)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Eigenschaft|Eigenschaften}} (mit einer Seite registriert)',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Eigenschaft|Eigenschaften}} (einem Datentyp zugewiesen)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Abfrage|Abfragen}}',
+	'smw-statistics-query-size' => 'Abfragegröße',
+	'smw-statistics-concept-count' => '{{PLURAL:$1|Konzept|Konzepte}}',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Unterobjekt|Unterobjekte}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datentyp|Datentypen}}]]',
 	'smw_uri_doc' => 'Der URI-Auflöser setzt die Empfehlungen „[$1 W3C TAG finding on httpRange-14]“ um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.',
 	'ask' => 'Semantische Suche',
 	'smw_ask_sortby' => 'Sortiere nach Spalte (optional)',
@@ -3317,6 +3324,9 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-ui-tooltip-title-note' => 'Hinweis',
 	'smw-ui-tooltip-title-legend' => 'Legende',
 	'smw_unknowntype' => 'Der Datentyp dieses Attributs ist ungültig.',
+	'smw-concept-cache-text' => 'Das Konzept hat eine Summe von {{PLURAL:$1|einer Seite|$1 Seiten}} und wurde zuletzt aktualisiert am $2.',
+	'smw_concept_header' => 'Seiten mit dem Konzept „$1“',
+	'smw_conceptarticlecount' => 'Unten {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt.',
 );
 
 /** Zazaki (Zazaki)
@@ -5034,8 +5044,6 @@ $messages['fr'] = array(
 	'smw_attributearticlecount' => 'Afficher {{PLURAL:$1|la page|les $1 pages}} utilisant cette propriété.',
 	'smw_subproperty_header' => 'Sous-propriétés',
 	'smw_subpropertyarticlecount' => 'Cette propriété dispose {{PLURAL:$1|de la sous-propriété suivante|des $1 sous-propriétés suivantes}} :',
-	'smw_concept_header' => 'Page du concept « $1 »',
-	'smw_conceptarticlecount' => 'Afficher {{PLURAL:$1|la page|les $1 pages}} reposant sur ce concept',
 	'specialpages-group-smw_group' => 'MediaWiki sémantique',
 	'exportrdf' => 'Exporter des pages en RDF',
 	'smw_exportrdf_docu' => 'Cette page permet d’obtenir des données d’une page au format RDF. Veuillez entrer le nom des pages souhaitées dans la boîte de texte ci-dessous, un nom par ligne.',
@@ -5067,12 +5075,16 @@ $messages['fr'] = array(
 Certaines des propriétés existantes peuvent en faite être [[Special:UnusedProperties|inutilisées]].
 Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:WantedProperties|liste des propriétés demandées]].",
 	'smw-statistics' => 'Statistiques sémantiques',
-	'smw-statistics-property-instance' => 'Valeur de la propriété {{PLURAL:$1|affectation|affectations}}',
-	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|propriété|propriétés différents}}]] au total',
-	'smw-statistics-property-total-legacy' => 'Nombre Total de {{PLURAL:$1|propriété|propriétés différentes}}',
-	'smw-statistics-property-page' => '{{PLURAL:$1|Property|Propriétés}} avec leur propre page',
-	'smw-statistics-property-type' => '{{PLURAL:$1|Propriété|Propriétés}} avec un type de données assigné',
-	'smw-statistics-query-inline' => 'Nombre total de {{PLURAL:$1|requête|requêtes}} en ligne',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Valeur|Valeurs}} de propriété (total)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Propriété|Propriétés}}]] (total)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Propriété|Propriétés}} (total)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Propriété|Propriétés}} (enregistrées avec une page)',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Propriété|Propriétés}} (assignées à un type de données)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Requête|Requêtes}}',
+	'smw-statistics-query-size' => 'Taille de la requête',
+	'smw-statistics-concept-count' => '{{PLURAL:$1|Concept|Concepts}}',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Sous-objet|Sous-objets}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Type de donnée|Types de donnée}}]]',
 	'smw_uri_doc' => 'Le résolveur d’URI implémente la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Conclusion du TAG du W3C à propos du httpRange-14</a>. Il peut veiller à ce que les humains ne deviennent pas des sites web.',
 	'ask' => 'Recherche sémantique',
 	'smw_ask_sortby' => 'Trier par colonnes (optionnel)',
@@ -5245,6 +5257,9 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-ui-tooltip-title-note' => 'Note',
 	'smw-ui-tooltip-title-legend' => 'Légende',
 	'smw_unknowntype' => "Le type de cette propriété n'est pas valide",
+	'smw-concept-cache-text' => 'Le concept a un total de $1 {{PLURAL:$1|page|pages}}, et a été mis à jour la dernière fois le $2.',
+	'smw_concept_header' => 'Page du concept « $1 »',
+	'smw_conceptarticlecount' => 'Afficher ci-dessous $1 {{PLURAL:$1|page|pages}}.',
 );
 
 /** Franco-Provençal (arpetan)
@@ -5536,8 +5551,6 @@ Pode que os resultados non sexan os agardados.',
 	'smw_attributearticlecount' => 'Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|usa|usan}} esta propiedade.',
 	'smw_subproperty_header' => 'Subpropiedades',
 	'smw_subpropertyarticlecount' => 'Esta propiedade ten {{PLURAL:$1|a seguinte subpropiedade|as seguintes $1 subpropiedades}}:',
-	'smw_concept_header' => 'Páxinas do concepto "$1"',
-	'smw_conceptarticlecount' => 'Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|pertence|pertencen}} a ese concepto.',
 	'exportrdf' => 'Exportar páxinas a RDF',
 	'smw_exportrdf_docu' => 'Esta páxina permítelle obter datos dunha páxina en formato RDF.
 Para exportar páxinas, insira os títulos na caixa de embaixo (un título por liña).',
@@ -5572,12 +5585,12 @@ Xera un RDF que se pode navegar.',
 Algunhas das propiedades existentes poden [[Special:UnusedProperties|non ser usadas]].
 As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:WantedProperties|lista de propiedades desexadas]].",
 	'smw-statistics' => 'Estatísticas semánticas',
-	'smw-statistics-property-instance' => '{{PLURAL:$1|Asignacións}} de valores de propiedade',
-	'smw-statistics-property-total' => 'Número total de [[Special:Properties|{{PLURAL:$1|propiedades diferentes}}]]',
-	'smw-statistics-property-total-legacy' => 'Número total de {{PLURAL:$1|propiedades diferentes}}',
-	'smw-statistics-property-page' => '{{PLURAL:$1|Propiedades}} con páxina propia',
-	'smw-statistics-property-type' => '{{PLURAL:$1|Propiedades}} cun tipo de datos asociado',
-	'smw-statistics-query-inline' => 'Número total de {{PLURAL:$1|pescudas}} en liña',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Asignacións}} de valores de propiedade', # Fuzzy
+	'smw-statistics-property-total' => 'Número total de [[Special:Properties|{{PLURAL:$1|propiedades diferentes}}]]', # Fuzzy
+	'smw-statistics-property-total-legacy' => 'Número total de {{PLURAL:$1|propiedades diferentes}}', # Fuzzy
+	'smw-statistics-property-page' => '{{PLURAL:$1|Propiedades}} con páxina propia', # Fuzzy
+	'smw-statistics-property-type' => '{{PLURAL:$1|Propiedades}} cun tipo de datos asociado', # Fuzzy
+	'smw-statistics-query-inline' => 'Número total de {{PLURAL:$1|pescudas}} en liña', # Fuzzy
 	'smw_uri_doc' => 'O solucionador de URI pon en práctica o <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descubrimento da ETIQUETA de W3C en httpRange-14</a>. Vixía que os humanos non entren en sitios web.',
 	'ask' => 'Procura semántica',
 	'smw_ask_sortby' => 'Ordenar por columnas (opcional)',
@@ -5752,6 +5765,8 @@ Progreso estimado da actualización actual:',
 	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw-ui-tooltip-title-legend' => 'Lenda',
 	'smw_unknowntype' => 'O tipo desta propiedade non é válido',
+	'smw_concept_header' => 'Páxinas do concepto "$1"',
+	'smw_conceptarticlecount' => 'Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|pertence|pertencen}} a ese concepto.', # Fuzzy
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -8027,8 +8042,6 @@ $messages['ja'] = array(
 	'smw_attributearticlecount' => 'このプロパティを使用している $1 {{PLURAL:$1|件のページ}}を表示しています。',
 	'smw_subproperty_header' => '下位プロパティ',
 	'smw_subpropertyarticlecount' => 'このプロパティには以下の $1 {{PLURAL:$1|下位プロパティ}}があります:',
-	'smw_concept_header' => '概念「$1」のページ',
-	'smw_conceptarticlecount' => 'この概念に属する $1 {{PLURAL:$1|件のページ}}を表示しています。',
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
 	'exportrdf' => 'ページをRDFに書き出し',
 	'smw_exportrdf_docu' => 'このページを使用すると、ページからデータをRDF形式で取得できます。
@@ -8063,11 +8076,16 @@ $messages['ja'] = array(
 既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。
 まだ専用のページがないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
 	'smw-statistics' => '意味的統計',
-	'smw-statistics-property-instance' => 'プロパティ値の{{PLURAL:$1|割り当て}}',
-	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|プロパティ|異なるプロパティ}}]]の合計',
-	'smw-statistics-property-page' => 'ページを持つ{{PLURAL:$1|プロパティ}}',
-	'smw-statistics-property-type' => '割り当てられたデータ型を持つ{{PLURAL:$1|プロパティ}}',
-	'smw-statistics-query-inline' => 'インライン{{PLURAL:$1|クエリ}}の合計',
+	'smw-statistics-property-instance' => 'プロパティ{{PLURAL:$1|値}} (合計)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|プロパティ|プロパティ}}]] (合計)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|プロパティ}} (合計)',
+	'smw-statistics-property-page' => 'ページを持つ{{PLURAL:$1|プロパティ}}', # Fuzzy
+	'smw-statistics-property-type' => '割り当てられたデータ型を持つ{{PLURAL:$1|プロパティ}}', # Fuzzy
+	'smw-statistics-query-inline' => '{{PLURAL:$1|クエリ}}',
+	'smw-statistics-query-size' => 'クエリのサイズ',
+	'smw-statistics-concept-count' => '{{PLURAL:$1|概念}}',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|下位オブジェクト}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|データ型}}]]',
 	'smw_uri_doc' => 'URI リゾルバーは [$1 W3C TAG での httpRange-14 に関する議論成果]を実装しています。
 これは人間がウェブサイトに向かわないように取り計らいます。',
 	'ask' => '意味的検索',
@@ -8232,6 +8250,9 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw-ui-tooltip-title-note' => '注記',
 	'smw-ui-tooltip-title-legend' => '凡例',
 	'smw_unknowntype' => 'このプロパティの型は無効です',
+	'smw-concept-cache-text' => '概念には $1 {{PLURAL:$1|件のページ}}があり、最終更新は $2 です。',
+	'smw_concept_header' => '概念「$1」のページ',
+	'smw_conceptarticlecount' => '以下に $1 {{PLURAL:$1|件のページ}}を表示しています。',
 );
 
 /** Javanese (Basa Jawa)
@@ -9167,8 +9188,6 @@ $messages['lb'] = array(
 	'smw_propvalueproblem' => 'De Wäert vun der Eegeschaft "$1" gouf net verstan.',
 	'smw_type_header' => 'Eegeschafte vum Typ "$1"',
 	'smw_attribute_header' => 'Säiten déi d\'Eegeschaft "$1" benotzen',
-	'smw_concept_header' => 'Säite vum Konzept "$1"',
-	'smw_conceptarticlecount' => 'Déi $1 {{PLURAL:$1|Säit|Säite}} weisen déi zu deem Konzept gehéieren.',
 	'exportrdf' => 'Säiten als RDF exportéieren',
 	'smw_exportrdf_backlinks' => 'Och all Säiten déi op déi exportéiert Säite referéieren exportéieren.
 Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
@@ -9285,6 +9304,8 @@ Zréck op d'Säit $1.",
 	'smw-ui-tooltip-title-warning' => 'Feeler',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw-ui-tooltip-title-note' => 'Notiz',
+	'smw_concept_header' => 'Säite vum Konzept "$1"',
+	'smw_conceptarticlecount' => 'Déi $1 {{PLURAL:$1|Säit|Säite}} weisen déi zu deem Konzept gehéieren.', # Fuzzy
 );
 
 /** Lithuanian (lietuvių)
@@ -9505,8 +9526,6 @@ $messages['mk'] = array(
 	'smw_attributearticlecount' => '{{PLURAL:$1|Прикажана е $1 страница која го користи ова својство|Прикажани се $1 страници кои го користат}} ова својство.',
 	'smw_subproperty_header' => 'Потсвојства',
 	'smw_subpropertyarticlecount' => 'Ова својство {{PLURAL:$1|го има следново $1 потсвојство|ги има следниве $1 потсвојства}}:',
-	'smw_concept_header' => 'Страници на концептот „$1“',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Прикажана е $1 страница која му припаѓа|Прикажани се $1 страници кои му припаѓаат}} на тој концепт.',
 	'specialpages-group-smw_group' => 'Семантички МедијаВики',
 	'exportrdf' => 'Извези страници во RDF',
 	'smw_exportrdf_docu' => 'Оваа страница ви овозможува да преземете податоци од страница во RDF формат.
@@ -9542,12 +9561,16 @@ $messages['mk'] = array(
 Некои од постоечките својства може да се [[Special:UnusedProperties|неискористени]].
 Својствата кои сè уште немаат страница се наведени на [[Special:WantedProperties|списокот на потребни својства]].",
 	'smw-statistics' => 'Семантички статистики',
-	'smw-statistics-property-instance' => '{{PLURAL:$1|Зададена вредност на својство|Зададени вредности на својства}}',
-	'smw-statistics-property-total' => 'Вкупно [[Special:Properties|{{PLURAL:$1|својство|разни својства}}]]',
-	'smw-statistics-property-total-legacy' => 'Вкупно {{PLURAL:$1|својство|разни својства}}',
-	'smw-statistics-property-page' => '{{PLURAL:$1|Својство|Својства}} со сопствена страница',
-	'smw-statistics-property-type' => '{{PLURAL:$1|Својство|Својства}} со зададен податочен тип',
-	'smw-statistics-query-inline' => 'Вкупно {{PLURAL:$1|вметнато барање|вметнати барања}}',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Вредност на својство|Вредности на својства}} (вкупно)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Својство|Својства}}]] (вкупно)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Својство|Својства}} (вкупно)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Својство|Својства}} (заведени со страница)',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Својство|Својства}} (назначени на податочен тип)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Барање|Барања}}',
+	'smw-statistics-query-size' => 'Големина на барањето',
+	'smw-statistics-concept-count' => '{{PLURAL:$1|Концепт|Концепти}}',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Подобјект|Подобјекти}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Податочен тип|Податочни типови}}]]',
 	'smw_uri_doc' => 'URI-претварачот применува <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C пронаоѓање на ознаки на httpRange-14</a>.
 Тој има за задача да внимава луѓето да не се претворат во мрежни места.',
 	'ask' => 'Семантичко пребарување',
@@ -9724,6 +9747,9 @@ $messages['mk'] = array(
 	'smw-ui-tooltip-title-note' => 'Белешка',
 	'smw-ui-tooltip-title-legend' => 'Легенда',
 	'smw_unknowntype' => 'Ова својство е од неважечки тип',
+	'smw-concept-cache-text' => 'Концептот има вкупно {{PLURAL:$1|една страница|$1 страници}}, а подновен е на $2.',
+	'smw_concept_header' => 'Страници на концептот „$1“',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Прикажана е $1 страница која му припаѓа|Прикажани се $1 страници кои му припаѓаат}} на тој концепт.',
 );
 
 /** Malayalam (മലയാളം)
@@ -10395,8 +10421,6 @@ De resultaten kunnen afwijken van de verwachting.',
 	'smw_attributearticlecount' => "Er {{PLURAL:$1|is $1 pagina die deze eigenschap gebruikt|zijn $1 pagina's die deze eigenschappen gebruiken}}.",
 	'smw_subproperty_header' => 'Subeigenschappen',
 	'smw_subpropertyarticlecount' => 'Deze eigenschap heeft de volgende $1 {{PLURAL:$1|subeigenschap|subeigenschappen}}:',
-	'smw_concept_header' => 'Pagina\'s met het concept "$1"',
-	'smw_conceptarticlecount' => "$1 {{PLURAL:$1|pagina|pagina's}} die bij dat concept {{PLURAL:$1|hoort|horen}} worden weergegeven.",
 	'exportrdf' => "Pagina's exporteren naar RDF",
 	'smw_exportrdf_docu' => "Deze pagina maakt het mogelijk gegevens te verkrijgen van een pagina in RDF-formaat.
 Voer in het onderstaande invoerveld paginanamen in om pagina's te exporteren.
@@ -10606,6 +10630,8 @@ Geschatte voortgang van de huidige taak:",
 	'smw-ui-tooltip-title-note' => 'Notitie',
 	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
+	'smw_concept_header' => 'Pagina\'s met het concept "$1"',
+	'smw_conceptarticlecount' => "$1 {{PLURAL:$1|pagina|pagina's}} die bij dat concept {{PLURAL:$1|hoort|horen}} worden weergegeven.", # Fuzzy
 );
 
 /** Norwegian Nynorsk (norsk (nynorsk)‎)
@@ -15582,8 +15608,6 @@ $messages['zh-hans'] = array(
 	'smw_attributearticlecount' => '使用此属性显示 $1 {{PLURAL:$1|page|页面}}',
 	'smw_subproperty_header' => '子属性',
 	'smw_subpropertyarticlecount' => '此属性有以下 $1 {{PLURAL:$1|subproperty|子属性}}:',
-	'smw_concept_header' => '概念"$1"的页面',
-	'smw_conceptarticlecount' => '显示属于此概念的$1 {{PLURAL:$1|page|页面}}。',
 	'exportrdf' => '输出页面至RDF',
 	'smw_exportrdf_docu' => '这个页面用于以RDF格式获得页面数据。
 在下方文本框中输入标题以导出页面，每行一个标题。',
@@ -15760,6 +15784,8 @@ $messages['zh-hans'] = array(
 	'smw-ui-tooltip-title-parameter' => '参数',
 	'smw-ui-tooltip-title-note' => '注释',
 	'smw_unknowntype' => '定义的属性类型"$1"不被支持。', # Fuzzy
+	'smw_concept_header' => '概念"$1"的页面',
+	'smw_conceptarticlecount' => '显示属于此概念的$1 {{PLURAL:$1|page|页面}}。', # Fuzzy
 );
 
 /** Traditional Chinese (中文（繁體）‎)
