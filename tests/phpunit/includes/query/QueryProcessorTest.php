@@ -51,71 +51,41 @@ class QueryProcessorTest extends \MediaWikiTestCase {
 					'outputMode' => SMW_OUTPUT_WIKI,
 					'queryContext' => QueryProcessor::INLINE_QUERY,
 					'showMode' => false,
-					'query' => '[[Modification date::+]]|?Modification date|sort=Modification date|order=desc'
+					'query' => array(
+						'[[Modification date::+]]',
+						'?Modification date',
+						'sort=Modification date',
+						'order=desc'
+					)
 				)
 			),
 		);
 	}
 
 	/**
-	 * Helper ...
-	 *
-	 * @return array
-	 */
-	public function toArray( $string ){
-		return preg_split( "/(?<=[^\|])\|(?=[^\|])/", $string );
-	}
-
-	/**
-	 * Helper method
-	 *
-	 * @return SMW\QueryProcessor
-	 */
-	private function getInstance( $outputMode, $queryContext, $showMode ) {
-		//return new QueryProcessor( $outputMode, $queryContext, $showMode  );
-	}
-
-	/**
-	 * Test instance
-	 *
 	 * @dataProvider getDataProvider
 	 *
-	 * @since 1.9
-	 */
-	public function testConstructor( array $setup ) {
-		//$instance = $this->getInstance( $setup['outputMode'], $setup['queryContext'], $setup['showMode'] );
-		//$this->assertInstanceOf( 'SMW\QueryProcessor', $instance );
-		$this->markTestIncomplete( 'This test has not been implemented yet.' );
-	}
-
-	/**
-	 * Test getQuery()
-	 *
-	 * @covers SMW\QueryProcessor::getQuery
-	 * @dataProvider getDataProvider
+	 * @covers QueryProcessor::getQuery
 	 *
 	 * @since 1.9
 	 */
 	public function testGetQuery( array $setup ) {
-		//$instance = $this->getInstance( $setup['outputMode'], $setup['queryContext'], $setup['showMode'] );
-		//$instance->map( $this->toArray( $setup['query'] ) );
-		//$this->assertInstanceOf( 'SMWQuery', $instance->getQuery() );
+		$instance = new QueryProcessor( $setup['outputMode'], $setup['queryContext'], $setup['showMode'] );
+		$instance->map( $setup['query'] );
 
 		$this->markTestIncomplete( 'This test has not been implemented yet.' );
 	}
 
 	/**
-	 * Test getResult()
-	 *
-	 * @covers SMW\QueryProcessor::getResult
 	 * @dataProvider getDataProvider
+	 *
+	 * @covers QueryProcessor::getResult
 	 *
 	 * @since 1.9
 	 */
 	public function testGetResult( array $setup ) {
-		//$instance = $this->getInstance( $setup['outputMode'], $setup['queryContext'], $setup['showMode'] );
-		//$instance->map( $this->toArray( $setup['query'] ) );
-		//$this->assertTrue( is_string( $instance->getResult() ) );
+		$instance = new QueryProcessor( $setup['outputMode'], $setup['queryContext'], $setup['showMode'] );
+		$instance->map( $setup['query'] );
 
 		$this->markTestIncomplete( 'This test has not been implemented yet.' );
 	}
