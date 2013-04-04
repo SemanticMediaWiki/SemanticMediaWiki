@@ -441,7 +441,10 @@ Estimated progress of current update:',
 	'smw_conceptarticlecount' => 'Showing below $1 {{PLURAL:$1|page|pages}}.',
 );
 
-/** Message documentation (Message documentation)
+/** Message documentation (This is the name of the message documentation language code (qqq). Follow the rules of your languages and use small first letter if it doesn't capitalize language names always.
+
+It might be easier to translate it as "translation guidelines" or "translation help".
+{{Identical|Message documentation}})
  * @author EugeneZelenko
  * @author Fryed-peach
  * @author Helix84
@@ -5585,13 +5588,18 @@ Xera un RDF que se pode navegar.',
 Algunhas das propiedades existentes poden [[Special:UnusedProperties|non ser usadas]].
 As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:WantedProperties|lista de propiedades desexadas]].",
 	'smw-statistics' => 'Estatísticas semánticas',
-	'smw-statistics-property-instance' => '{{PLURAL:$1|Asignacións}} de valores de propiedade', # Fuzzy
-	'smw-statistics-property-total' => 'Número total de [[Special:Properties|{{PLURAL:$1|propiedades diferentes}}]]', # Fuzzy
-	'smw-statistics-property-total-legacy' => 'Número total de {{PLURAL:$1|propiedades diferentes}}', # Fuzzy
-	'smw-statistics-property-page' => '{{PLURAL:$1|Propiedades}} con páxina propia', # Fuzzy
-	'smw-statistics-property-type' => '{{PLURAL:$1|Propiedades}} cun tipo de datos asociado', # Fuzzy
-	'smw-statistics-query-inline' => 'Número total de {{PLURAL:$1|pescudas}} en liña', # Fuzzy
-	'smw_uri_doc' => 'O solucionador de URI pon en práctica o <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descubrimento da ETIQUETA de W3C en httpRange-14</a>. Vixía que os humanos non entren en sitios web.',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Valor|Valores}} de propiedade (total)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Propiedade|Propiedades}}]] (total)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Propiedade|Propiedades}} (total)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Propiedade|Propiedades}} ({{PLURAL:$1|rexistrada|rexistradas}} cunha páxina)',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Propiedade|Propiedades}} ({{PLURAL:$1|asociada|asociadas}} a un tipo de datos)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Pescuda|Pescudas}}',
+	'smw-statistics-query-size' => 'Tamaño da pescuda',
+	'smw-statistics-concept-count' => '{{PLURAL:$1|Concepto|Conceptos}}',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Subobxecto|Subobxectos}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Tipo|Tipos}} de datos]]',
+	'smw_uri_doc' => 'O solucionador de URI pon en práctica o [$1 descubrimento da ETIQUETA de W3C en httpRange-14].
+Vixía que os humanos non entren en sitios web.',
 	'ask' => 'Procura semántica',
 	'smw_ask_sortby' => 'Ordenar por columnas (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
@@ -5660,7 +5668,7 @@ espazos de nomes (<strong><nowiki>por exemplo, [[Axuda:+]]</strong>)',
 	'smw_qui_dcatyes' => 'Mostrar o texto cando a categoría estea presente:',
 	'smw_qui_dcatno' => 'Mostrar o texto cando a categoría estea ausente:',
 	'searchbyproperty' => 'Procurar por propiedade',
-	'smw_sbv_docu' => 'Procurar por todas as páxinas que teñen a propiedade e o valor dados.',
+	'smw_sbv_docu' => 'Procurar todas as páxinas que teñen a propiedade e o valor dados.',
 	'smw_sbv_novalue' => 'Por favor, insira un valor válido para a propiedade ou vexa todos os valores das propiedades para "$1".',
 	'smw_sbv_displayresult' => 'Unha lista de todas as páxinas que teñen a propiedade "$1" co valor "$2"',
 	'smw_sbv_displayresultfuzzy' => 'Unha lista con todas as páxinas que teñen a propiedade "$1" co valor "$2".
@@ -5765,8 +5773,9 @@ Progreso estimado da actualización actual:',
 	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw-ui-tooltip-title-legend' => 'Lenda',
 	'smw_unknowntype' => 'O tipo desta propiedade non é válido',
+	'smw-concept-cache-text' => 'O concepto ten {{PLURAL:$1|unha páxina|un total de $1 páxinas}}. A súa última actualización foi o $2.',
 	'smw_concept_header' => 'Páxinas do concepto "$1"',
-	'smw_conceptarticlecount' => 'Mostrando $1 {{PLURAL:$1|páxina|páxinas}} que {{PLURAL:$1|pertence|pertencen}} a ese concepto.', # Fuzzy
+	'smw_conceptarticlecount' => 'A continuación {{PLURAL:$1|móstrase $1 páxina|móstranse $1 páxinas}}.',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -9206,6 +9215,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_purge' => 'Aktualiséieren',
 	'types' => 'Typen',
 	'semanticstatistics' => 'Semantesch Statistiken',
+	'smw-statistics-concept-count' => '{{PLURAL:$1|Konzept|Konzepter}}',
 	'ask' => 'Semantesch sichen',
 	'smw_ask_sortby' => 'No der Kolonn zortéieren (Optioun)',
 	'smw_ask_ascorder' => 'Vu kleng op grouss (croissant)',
