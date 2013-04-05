@@ -718,6 +718,17 @@ class SMWSQLStore3Writers {
 			// (this also updates references in other tables as needed.)
 			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
 			$this->updateRedirects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
+
+			// $redirid == 0 means that the oldTitle was not supposed to be a redirect
+			// (oldTitle is delete from the db) but instead of deleting all
+			// references we will still copy data from old to new during updateRedirects()
+			// and clear the semantic data container for the oldTitle instance
+			// to ensure that no ghost references exists for an deleted oldTitle
+			// @see Title::moveTo(), createRedirect
+			if ( $redirid == 0 ) {
+				// Delete any existing data (including redirects) from old title
+				$this->doDataUpdate( new SMWSemanticData( SMWDIWikiPage::newFromTitle( $oldtitle ) ) );
+			}
 		}
 
 		wfProfileOut( "SMWSQLStore3::changeTitle (SMW)" );
