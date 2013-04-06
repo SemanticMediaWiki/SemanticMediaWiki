@@ -133,6 +133,11 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\IParserData']           = $incDir . 'ParserData.php';
 	$wgAutoloadClasses['SMW\ParserData']            = $incDir . 'ParserData.php';
 
+	$wgAutoloadClasses['SMW\Subobject']             = $incDir . 'Subobject.php';
+	$wgAutoloadClasses['SMW\RecurringEvents']       = $incDir . 'RecurringEvents.php';
+	$wgAutoloadClasses['SMW\IParameterFormatter']      = $incDir . 'ParserParameterFormatter.php';
+	$wgAutoloadClasses['SMW\ParserParameterFormatter'] = $incDir . 'ParserParameterFormatter.php';
+
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
 	$wgAutoloadClasses['SMWOrderedListPage']        = $apDir . 'SMW_OrderedListPage.php';
@@ -225,13 +230,9 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ConceptParserFunction'] = $phDir . 'ConceptParserFunction.php';
 	$wgAutoloadClasses['SMW\DeclareParserFunction'] = $phDir . 'DeclareParserFunction.php';
 	$wgAutoloadClasses['SMW\SetParserFunction']     = $phDir . 'SetParserFunction.php';
-	$wgAutoloadClasses['SMW\Subobject']             = $phDir . 'Subobject.php';
-	$wgAutoloadClasses['SMW\RecurringEvents']       = $phDir . 'RecurringEvents.php';
 	$wgAutoloadClasses['SMW\AskParserFunction']     = $phDir . 'AskParserFunction.php';
 	$wgAutoloadClasses['SMW\ShowParserFunction']    = $phDir . 'ShowParserFunction.php';
 	$wgAutoloadClasses['SMW\ConceptParserFunction'] = $phDir . 'ConceptParserFunction.php';
-	$wgAutoloadClasses['SMW\IParameterFormatter']           = $phDir . 'ParserParameterFormatter.php';
-	$wgAutoloadClasses['SMW\ParserParameterFormatter']      = $phDir . 'ParserParameterFormatter.php';
 	$wgAutoloadClasses['SMW\SubobjectParserFunction']       = $phDir . 'SubobjectParserFunction.php';
 	$wgAutoloadClasses['SMW\RecurringEventsParserFunction'] = $phDir . 'RecurringEventsParserFunction.php';
 	$wgAutoloadClasses['SMW\DocumentationParserFunction']   = $phDir . 'DocumentationParserFunction.php';

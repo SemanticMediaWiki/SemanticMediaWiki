@@ -273,6 +273,9 @@ final class SMWHooks {
 			'ObservableMessageReporter',
 			'ParserData',
 			// 'QueryProcessor', old test
+			'ParserParameterFormatter',
+			'Subobject',
+			'RecurringEvents',
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
@@ -283,10 +286,7 @@ final class SMWHooks {
 
 			'export/SMWExpElement',
 
-			'parserhooks/ParserParameterFormatter',
-			'parserhooks/Subobject',
 			'parserhooks/SubobjectParserFunction',
-			'parserhooks/RecurringEvents',
 			'parserhooks/RecurringEventsParserFunction',
 			'parserhooks/AskParserFunction',
 			'parserhooks/ShowParserFunction',
