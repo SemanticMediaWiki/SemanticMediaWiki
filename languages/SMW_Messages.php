@@ -441,10 +441,7 @@ Estimated progress of current update:',
 	'smw_conceptarticlecount' => 'Showing below $1 {{PLURAL:$1|page|pages}}.',
 );
 
-/** Message documentation (This is the name of the message documentation language code (qqq). Follow the rules of your languages and use small first letter if it doesn't capitalize language names always.
-
-It might be easier to translate it as "translation guidelines" or "translation help".
-{{Identical|Message documentation}})
+/** Message documentation (Message documentation)
  * @author EugeneZelenko
  * @author Fryed-peach
  * @author Helix84
@@ -2214,8 +2211,6 @@ Dic'hortoz e c'hall bezañ an disoc'hoù.",
 	'smw_attributearticlecount' => 'Afficher {{PLURAL:$1|ar bajenn|an $1 pajenn}} a implij ar perzh-mañ.',
 	'smw_subproperty_header' => 'Isperzhioù',
 	'smw_subpropertyarticlecount' => 'Ar perzh he deus an {{PLURAL:$1||$1 }}is-perzh da-heul :',
-	'smw_concept_header' => 'Pajennoù ar meizad « $1 »',
-	'smw_conceptarticlecount' => 'Diskouez {{PLURAL:$1|ar bajenn|ar $1 pajenn}} diazezet war ar meizad-se',
 	'exportrdf' => 'Ezporzhiañ pajennoù en RDF',
 	'smw_exportrdf_lastdate' => "Arabat ezporzhiañ ar pajennoù n'int ket bet kemmet abaoe ar c'houlz merket.",
 	'smw_exportrdf_submit' => 'Ezporzhiañ',
@@ -2257,7 +2252,7 @@ Dic'hortoz e c'hall bezañ an disoc'hoù.",
 	'smw_qc_hide_addnal_opts' => "Diskouez nebeutoc'h a zibarzhioù",
 	'smw_qc_otheropt' => 'Dibarzhioù all',
 	'smw_qc_intro' => 'Digoradur :',
-	'smw_qc_default' => 'Dre ziouer:',
+	'smw_qc_default' => 'Dre ziouer :',
 	'smw_qui_property' => "<strong>Perc'henniezh </strong>",
 	'smw_qui_prop' => "Perc'henniezh",
 	'smw_qui_formt' => 'Furmad :',
@@ -2338,6 +2333,8 @@ Arabat krouiñ unan all.', # Fuzzy
 	'smw-ui-tooltip-title-note' => 'Notenn',
 	'smw-ui-tooltip-title-legend' => "Alc'hwez",
 	'smw_unknowntype' => 'Ar seurt roadennoù "$1" nann skoret a zo distroet d\'an doareenn', # Fuzzy
+	'smw_concept_header' => 'Pajennoù ar meizad « $1 »',
+	'smw_conceptarticlecount' => 'Diskouez {{PLURAL:$1|ar bajenn|ar $1 pajenn}} diazezet war ar meizad-se', # Fuzzy
 );
 
 /** Bosnian (bosanski)
@@ -7767,8 +7764,6 @@ $messages['it'] = array(
 	'smw_attributearticlecount' => 'Visualizzazione di $1 {{PLURAL:$1|pagina che usa|pagine che usano}} questa proprietà.',
 	'smw_subproperty_header' => 'Sottoproprietà',
 	'smw_subpropertyarticlecount' => 'Questa proprietà ha {{PLURAL:$1|la seguente|le seguenti $1}} sottoproprietà.',
-	'smw_concept_header' => 'Pagine del concetto "$1"',
-	'smw_conceptarticlecount' => 'Mostro {{PLURAL:$1|una pagina|$1 pagine}} appartenenti a quel concetto.',
 	'exportrdf' => 'Esporta le pagine in RDF',
 	'smw_exportrdf_docu' => 'Questa pagina consente di ottenere dati da una pagina in formato RDF. Per esportare delle pagine, inseritene i titoli nella casella di testo sottostante, un titolo per riga.',
 	'smw_exportrdf_recursive' => 'Esporta ricorsivamente tutte le pagine correlate. Nota: il risultato potrebbe essere molto grande!',
@@ -7796,6 +7791,7 @@ $messages['it'] = array(
 '''$3''' proprietà {{PLURAL:$3|ha|hanno}} una propria pagina e il tipo di dato inteso è specificato per '''$4''' di queste.
 Alcune delle proprietà esistenti possono essere [[Special:UnusedProperties|proprietà non utilizzate]].
 Le proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:WantedProperties|elenco delle proprietà senza descrizione]].",
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Tipo|Tipi}} di dato]]',
 	'smw_uri_doc' => 'Il risolutore di URI implementa il <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Fa in modo che gli esseri umani non diventino siti Web.',
 	'ask' => 'Ricerca semantica',
 	'smw_ask_sortby' => 'Ordina per colonna (opzionale)',
@@ -7934,6 +7930,8 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw-ui-tooltip-title-event' => 'Evento',
 	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw_unknowntype' => 'Il tipo di questa proprietà non è valido',
+	'smw_concept_header' => 'Pagine del concetto "$1"',
+	'smw_conceptarticlecount' => 'Mostro {{PLURAL:$1|una pagina|$1 pagine}}.',
 );
 
 /** Japanese (日本語)
@@ -8985,8 +8983,6 @@ Heh dä Fähler künnt wider vörbei jonn, udder ene Fähler em Programm för de
 	'smw_attributearticlecount' => '{{PLURAL:$1|Hee kütt ein Sigg|Hee kumme $1 Sigge|Et jitt kei Sigge}} met dä Eijeschaff dren{{PLURAL:$1|:|:|.}}',
 	'smw_subproperty_header' => 'Unger-Eijeschaffte',
 	'smw_subpropertyarticlecount' => 'Di Eijeschaff hät {{PLURAL:$1|ein Onger-Eijeschaff:|$1 Onger-Eijeschaffte:|kein Onger-Eijeschaff.}}',
-	'smw_concept_header' => 'Sigge vun däm Kumzäp „$1“',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Ein Sigg jehööt|$1 Sigge jehüüre|Et jehüüere kein Sigge}} zoh dämm Kumzäp{{PLURAL:$1|:|:|.}}',
 	'specialpages-group-smw_group' => 'Semantesch MediaWiki',
 	'exportrdf' => 'Sigge em Fommaat RDF expoteere',
 	'smw_exportrdf_docu' => 'Hee di Sigg määd et müjjelesch, Daate vun en Sigg em <i lang="en">RDF</i>-Fommaat ze krijje. Öm Sigge ze Expoteere, doon dänne ier Tittele, jeeder_ein en en Reih fö sesch, onge en dat Täx-Feld erin schriive.',
@@ -9007,7 +9003,7 @@ Heh dä Fähler künnt wider vörbei jonn, udder ene Fähler em Programm för de
 	'wantedproperties' => 'Nit aanjelaate Eijeschaffte',
 	'smw_wantedproperties_docu' => 'De Eijeschaffte hee noh wäde em Wiki jebruch, ävver se han noch kei Sigg, die se beschrief, un äkliere deiht.',
 	'smw_wantedproperty_template' => '$1 ({{PLURAL:$2|eimol|$2 mol|nit}} jebruch)',
-	'smw_purge' => 'Nöü Aanzeije',
+	'smw_purge' => 'Nöü Aanzeije!',
 	'types' => 'Date-Tüpe',
 	'smw_types_docu' => 'Hee kütt en Leß met alle Datte-Tüpe, die en Eijeschaff hann künnt.
 Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.', # Fuzzy
@@ -9097,6 +9093,8 @@ Mer donn jetz nit noch ein aanshtüße!', # Fuzzy
 	'smw-createproperty-isproperty' => 'Dat ess_en Eijeschaff vun dä Zoot $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dä einzijje müjjelesche Wäät för di Eijeschaff es:|De müjjelesche Wääte för di Eijeschaff sin:|Mer han kein müjjelesche Wääte för di Eijeschaff.}}',
 	'smw_unknowntype' => 'De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.', # Fuzzy
+	'smw_concept_header' => 'Sigge vun däm Kumzäp „$1“',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Ein Sigg jehööt|$1 Sigge jehüüre|Et jehüüere kein Sigge}} zoh dämm Kumzäp{{PLURAL:$1|:|:|.}}', # Fuzzy
 );
 
 /** Kurdish (Latin script) (Kurdî (latînî)‎)
