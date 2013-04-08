@@ -128,7 +128,7 @@
 			}
 
 			var conditions = '';
-			if ( $.type( this.conditions ) === 'array' ){
+			if ( $.type( this.conditions ) === 'array' || $.type( this.conditions ) === 'object' ){
 				$.each( this.conditions, function( key, value ) {
 					conditions += value;
 				} );

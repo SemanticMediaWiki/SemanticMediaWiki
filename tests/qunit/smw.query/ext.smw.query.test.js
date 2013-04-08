@@ -38,7 +38,7 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'toString sanity test', 10, function ( assert ) {
+	QUnit.test( 'toString sanity test', 11, function ( assert ) {
 		var result;
 
 		QUnit.raises( function() {
@@ -71,11 +71,26 @@
 		result = new smw.query( [], {} , ['[[Modification date::+]]'] ).toString();
 		assert.equal( result, '[[Modification date::+]]', pass + '.toString() returned a string' );
 
-		result = new smw.query( '', {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
-		assert.equal( result, '[[Modification date::+]]|limit=10|offset=0', pass + '.toString() returned a string' );
+		result = new smw.query(
+			'',
+			{'limit' : 10, 'offset': 0 } ,
+			'[[Modification date::+]]'
+		).toString();
+		assert.equal( result, '[[Modification date::+]]|limit=10|offset=0', pass + '(printouts = empty, parameters = object, conditions = array).toString() returned a string,' );
 
-		result = new smw.query( ['?Modification date'], {'limit' : 10, 'offset': 0 } , '[[Modification date::+]]' ).toString();
-		assert.equal( result, '[[Modification date::+]]|?Modification date|limit=10|offset=0', pass + '.toString() returned a string' );
+		result = new smw.query(
+			['?Modification date'],
+			{'limit' : 10, 'offset': 0 } ,
+			'[[Modification date::+]]'
+		).toString();
+		assert.equal( result, '[[Modification date::+]]|?Modification date|limit=10|offset=0', pass + '(printouts = array, parameters = object, conditions = array).toString() returned a string,' );
+
+		result = new smw.query(
+			['?Modification date'],
+			{'limit' : 10, 'offset': 0 } ,
+			{ foo: '[[Modification date::+]]', bar: '[[Modification date::>2013-04-01]]' }
+		).toString();
+		assert.equal( result, '[[Modification date::+]][[Modification date::>2013-04-01]]|?Modification date|limit=10|offset=0', pass + '(printouts = array, parameters = object, conditions = object).toString() returned a string,' );
 
 	} );
 
