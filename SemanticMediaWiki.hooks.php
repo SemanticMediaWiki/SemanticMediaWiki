@@ -276,6 +276,7 @@ final class SMWHooks {
 			'ParserParameterFormatter',
 			'Subobject',
 			'RecurringEvents',
+			'Infolink',
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
