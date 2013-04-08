@@ -10403,7 +10403,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_nofloat' => '"$1" is geen getal.',
 	'smw_infinite' => 'Getallen zo groot als "$1" worden niet ondersteund.',
 	'smw_unitnotallowed' => '"$1" is niet ingesteld als een geldige meeteenheid voor deze eigenschap.',
-	'smw_nounitsdeclared' => 'Er zijn geen meeteenheden aangegeven voor deze eigenschap.',
+	'smw_nounitsdeclared' => 'Er zijn geen meeteenheden opgegeven voor deze eigenschap.',
 	'smw_novalues' => 'Geen waarden opgegeven.',
 	'smw_nodatetime' => 'De datum "$1" kon niet verwerkt worden.',
 	'smw_toomanyclosing' => '"$1" lijkt te vaak voor te komen in de zoekopdracht.',
@@ -10457,8 +10457,8 @@ Genereert door te bladeren RDF.",
 	'smw_types_docu' => 'Hieronder staat een lijst van alle gegevenstypen die aan eigenschappen kunnen worden toegewezen.',
 	'smw-special-types-no-such-type' => 'Het opgegeven gegevenstype bestaat niet',
 	'semanticstatistics' => 'Semantische statistieken',
-	'smw_semstats_text' => "Deze wiki bevat '''$1''' {{PLURAL:$1|eigenschapwaarde|eigenschapwaarden}} voor '''$2''' verschillende [[Special:Properties|{{PLURAL:$2|eigenschap|verschillende eigenschappen}}]].
-'''$3''' {{PLURAL:$3|eigenschap heeft|eigenschappen hebben}} een eigen pagina en het gegevenstype is voor '''$4''' daarvan aangegeven.
+	'smw_semstats_text' => "Deze wiki bevat '''$1''' {{PLURAL:$1|eigenschapswaarde|eigenschapswaarden}} voor '''$2''' [[Special:Properties|{{PLURAL:$2|eigenschap|verschillende eigenschappen}}]].
+'''$3''' {{PLURAL:$3|eigenschap heeft|eigenschappen hebben}} een eigen pagina en het gegevenstype is voor '''$4''' daarvan opgegeven.
 Een aantal van de bestaande eigenschappen is wellicht [[Special:UnusedProperties|ongebruikt]].
 Eigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:WantedProperties|lijst met gewenste eigenschappen]].",
 	'smw-statistics' => 'Semantische statistieken',
