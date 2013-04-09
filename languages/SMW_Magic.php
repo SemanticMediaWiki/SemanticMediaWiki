@@ -62,7 +62,7 @@ $magicWords['arz'] = array(
 	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__', '__SHOWFACTBOX__' ),
 );
 
-/** Assamese (অসমীয়া) */
+/** Assamese (অসমীয়া) */
 $magicWords['as'] = array(
 	'ask' => array( 0, 'সোধক' ),
 	'show' => array( 0, 'দেখুৱাওক' ),

@@ -77,7 +77,7 @@ $specialPageAliases['arz'] = array(
 	'WantedProperties' => array( 'خصايص_مطلوبه' ),
 );
 
-/** Assamese (অসমীয়া) */
+/** Assamese (অসমীয়া) */
 $specialPageAliases['as'] = array(
 	'Ask' => array( 'সোধক' ),
 	'Browse' => array( 'ব্ৰাউজ' ),
@@ -534,7 +534,7 @@ $specialPageAliases['oc'] = array(
 	'WantedProperties' => array( 'Proprietats demandadas', 'ProprietatsDemandadas' ),
 );
 
-/** Oriya (ଓଡ଼ିଆ) */
+/** Oriya (ଓଡ଼ିଆ) */
 $specialPageAliases['or'] = array(
 	'Ask' => array( 'ପଚାରନ୍ତୁ' ),
 	'Browse' => array( 'ଖୋଜିବା' ),
