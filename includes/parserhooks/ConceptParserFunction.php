@@ -8,6 +8,7 @@ use Title;
 
 use SMWDIProperty;
 use SMWInfolink;
+use SMWQueryProcessor;
 
 /**
  * {{#concept}} parser function
@@ -52,21 +53,14 @@ class ConceptParserFunction {
 	protected $parserData;
 
 	/**
-	 * Represents IQueryProcessor
-	 */
-	protected $queryProcessor;
-
-	/**
 	 * Constructor
 	 *
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
-	 * @param IQueryProcessor $queryProcessor
 	 */
-	public function __construct( IParserData $parserData, IQueryProcessor $queryProcessor ) {
+	public function __construct( IParserData $parserData ) {
 		$this->parserData = $parserData;
-		$this->queryProcessor = $queryProcessor;
 	}
 
 	/**
@@ -103,6 +97,26 @@ class ConceptParserFunction {
 	}
 
 	/**
+	 * After some discussion IQueryProcessor/QueryProcessor is not being
+	 * used in 1.9 and instead rely on SMWQueryProcessor
+	 */
+	private function initQueryProcessor( array $rawParams, $showMode = false ) {
+		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+			$rawParams,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY,
+			$showMode
+		);
+
+		$this->result = SMWQueryProcessor::getResultFromQuery(
+			$this->query,
+			$this->params,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY
+		);
+	}
+
+	/**
 	 * Parse parameters and return results to the ParserOutput object
 	 *
 	 * @since 1.9
@@ -133,10 +147,9 @@ class ConceptParserFunction {
 		$conceptDocu = array_shift( $rawParams );
 
 		// Query processor
-		$this->queryProcessor->map( array( $conceptQuery ) );
-		$query = $this->queryProcessor->getQuery();
+		$this->initQueryProcessor( array( $conceptQuery ) );
 
-		$conceptQueryString = $query->getDescription()->getQueryString();
+		$conceptQueryString = $this->query->getDescription()->getQueryString();
 
 		// Store query data to the semantic data instance
 		$this->parserData->getData()->addPropertyObjectValue(
@@ -144,14 +157,14 @@ class ConceptParserFunction {
 			new DIConcept(
 				$conceptQueryString,
 				$conceptDocu,
-				$query->getDescription()->getQueryFeatures(),
-				$query->getDescription()->getSize(),
-				$query->getDescription()->getDepth()
+				$this->query->getDescription()->getQueryFeatures(),
+				$this->query->getDescription()->getSize(),
+				$this->query->getDescription()->getDepth()
 			)
 		);
 
 		// Store query data to the ParserOutput
-		$this->parserData->setError( $query->getErrors() );
+		$this->parserData->setError( $this->query->getErrors() );
 
 		// Update ParserOutput
 		$this->parserData->updateOutput();
@@ -169,9 +182,9 @@ class ConceptParserFunction {
 	 * @return string
 	 */
 	public static function render( Parser &$parser ) {
-		$instance = new self(
-			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::CONCEPT_DESC )
+		$instance = new self( new ParserData(
+			$parser->getTitle(),
+			$parser->getOutput() )
 		);
 		return $instance->parse( func_get_args() );
 	}

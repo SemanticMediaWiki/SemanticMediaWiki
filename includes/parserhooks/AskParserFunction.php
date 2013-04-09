@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Parser;
+use SMWQueryProcessor;
 
 /**
  * {{#ask}} parser function
@@ -49,11 +50,6 @@ class AskParserFunction {
 	protected $parserData;
 
 	/**
-	 * Represents IQueryProcessor
-	 */
-	protected $queryProcessor;
-
-	/**
 	 * Represents QueryData
 	 */
 	protected $queryData;
@@ -64,13 +60,31 @@ class AskParserFunction {
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
-	 * @param IQueryProcessor $queryProcessor
 	 * @param QueryData $queryData
 	 */
-	public function __construct( IParserData $parserData, IQueryProcessor $queryProcessor, QueryData $queryData ) {
+	public function __construct( IParserData $parserData, QueryData $queryData ) {
 		$this->parserData = $parserData;
-		$this->queryProcessor = $queryProcessor;
 		$this->queryData = $queryData;
+	}
+
+	/**
+	 * After some discussion IQueryProcessor/QueryProcessor is not being
+	 * used in 1.9 and instead rely on SMWQueryProcessor
+	 */
+	private function initQueryProcessor( array $rawParams, $showMode = false ) {
+		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+			$rawParams,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY,
+			$showMode
+		);
+
+		$this->result = SMWQueryProcessor::getResultFromQuery(
+			$this->query,
+			$this->params,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY
+		);
 	}
 
 	/**
@@ -83,7 +97,7 @@ class AskParserFunction {
 	 *
 	 * @return string|null
 	 */
-	public function parse( array $rawParams, $enabled = true ) {
+	public function parse( array $rawParams, $enabled = true, $showMode = false ) {
 		global $smwgIQRunningNumber;
 
 		// FIXME $rawParams will be of IParameterFormatter -> QueryParameterFormatter class
@@ -99,14 +113,13 @@ class AskParserFunction {
 		// Remove parser object from parameters array
 		array_shift( $rawParams );
 
-		// Process parameters
-		$this->queryProcessor->map( $rawParams );
+		$this->initQueryProcessor( $rawParams, $showMode );
 
 		// Add query data from the query
 		$this->queryData->setQueryId( $rawParams );
 		$this->queryData->add(
-			$this->queryProcessor->getQuery(),
-			$this->queryProcessor->getParameters()
+			$this->query,
+			$this->params
 		);
 
 		// Store query data to the semantic data instance
@@ -118,7 +131,7 @@ class AskParserFunction {
 		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->queryProcessor->getResult();
+		return $this->result;
 	}
 
 	/**
@@ -133,7 +146,6 @@ class AskParserFunction {
 	public static function render( Parser &$parser ) {
 		$instance = new self(
 			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::INLINE_QUERY, false ),
 			new QueryData( $parser->getTitle() )
 		);
 		return $instance->parse( func_get_args(), $GLOBALS['smwgQEnabled'] );

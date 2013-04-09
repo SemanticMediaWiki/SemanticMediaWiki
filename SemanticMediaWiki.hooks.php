@@ -272,11 +272,11 @@ final class SMWHooks {
 			'Highlighter',
 			'ObservableMessageReporter',
 			'ParserData',
-			// 'QueryProcessor', old test
 			'ParserParameterFormatter',
 			'Subobject',
 			'RecurringEvents',
 			'Infolink',
+			'QueryProcessor',
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
@@ -296,7 +296,6 @@ final class SMWHooks {
 			'parserhooks/DocumentationParserFunction',
 			'parserhooks/InfoParserFunction',
 
-			'query/QueryProcessor',
 			'query/QueryData',
 
 			'printers/ResultPrinters',

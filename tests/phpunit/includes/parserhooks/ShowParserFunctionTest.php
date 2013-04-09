@@ -4,6 +4,7 @@ namespace SMW\Test;
 
 use SMW\ShowParserFunction;
 use SMW\ParserData;
+use SMW\QueryData;
 
 use SMWDIBlob;
 use SMWDINumber;
@@ -119,7 +120,10 @@ class ShowParserFunctionTest extends \MediaWikiTestCase {
 	 * @return SMW\ShowParserFunction
 	 */
 	private function getInstance( $title, $parserOutput = '' ) {
-		return new ShowParserFunction( $this->getTitle( $title ), $parserOutput );
+		return new ShowParserFunction(
+			new ParserData( $this->getTitle( $title ), $parserOutput ),
+			new QueryData( $this->getTitle( $title ) )
+		 );
 	}
 
 	/**
@@ -174,7 +178,7 @@ class ShowParserFunctionTest extends \MediaWikiTestCase {
 		$instance = $this->getInstance( $title, $parserOutput );
 
 		// Black-box approach
-		$instance->parse( $params, true );
+		$instance->parse( $params, true, true);
 
 		// Get semantic data from the ParserOutput that where stored earlier
 		// during parse()

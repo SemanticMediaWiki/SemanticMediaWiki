@@ -44,20 +44,20 @@ class ShowParserFunction {
 	/**
 	 * Local properties
 	 */
-	protected $title;
-	protected $parserOutput;
+	protected $parserData;
+	protected $queryData;
 
 	/**
 	 * Constructor
 	 *
 	 * @since 1.9
 	 *
-	 * @param Title $title
-	 * @param ParserOutput $parserOutput
+	 * @param IParserData $parserData
+	 * @param QueryData $queryData
 	 */
-	public function __construct( Title $title, ParserOutput $parserOutput ) {
-		$this->title = $title;
-		$this->parserOutput = $parserOutput;
+	public function __construct( IParserData $parserData, QueryData $queryData ) {
+		$this->parserData = $parserData;
+		$this->queryData = $queryData;
 	}
 
 	/**
@@ -79,12 +79,8 @@ class ShowParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams, $enabled ) {
-		$instance = new AskParserFunction(
-			new ParserData( $this->title, $this->parserOutput ),
-			new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::INLINE_QUERY, true ),
-			new QueryData( $this->title )
-		);
-		return $instance->parse( $rawParams, $enabled );
+		$instance = new AskParserFunction( $this->parserData, $this->queryData );
+		return $instance->parse( $rawParams, $enabled, true );
 	}
 
 	/**
@@ -97,7 +93,10 @@ class ShowParserFunction {
 	 * @return string
 	 */
 	public static function render( Parser &$parser ) {
-		$instance = new self( $parser->getTitle(), $parser->getOutput() );
+		$instance = new self(
+			new ParserData( $parser->getTitle(), $parser->getOutput() ),
+			new QueryData( $parser->getTitle() )
+		);
 		return $instance->parse( func_get_args(), $GLOBALS['smwgQEnabled'] );
 	}
 }

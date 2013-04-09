@@ -4,7 +4,6 @@ namespace SMW\Test;
 
 use SMW\ConceptParserFunction;
 use SMW\ParserData;
-use SMW\QueryProcessor;
 
 use Title;
 use ParserOutput;
@@ -125,9 +124,7 @@ class ConceptParserFunctionTest extends \MediaWikiTestCase {
 	 */
 	private function getInstance( $title, $parserOutput = '' ) {
 		return new ConceptParserFunction(
-			new ParserData( $this->getTitle( $title ), $parserOutput ),
-			new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::CONCEPT_DESC )
-		);
+			new ParserData( $this->getTitle( $title ), $parserOutput ) );
 	}
 
 	/**

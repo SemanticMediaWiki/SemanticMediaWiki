@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\QueryProcessor;
+use SMWQueryProcessor;
 use SMW\QueryData;
 
 use SMWDIProperty;
@@ -132,10 +132,13 @@ class QueryDataTest extends \MediaWikiTestCase {
 	 *
 	 * @return QueryProcessor
 	 */
-	private function getQueryProcessor( array $params ){
-		$queryProcessor = new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::INLINE_QUERY, false );
-		$queryProcessor->map( $params );
-		return $queryProcessor;
+	private function getQueryProcessor( array $rawParams ) {
+		return SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+			$rawParams,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY,
+			false
+		);
 	}
 
 	/**
@@ -184,14 +187,10 @@ class QueryDataTest extends \MediaWikiTestCase {
 	 */
 	public function testInstantiatedQueryData( $title, array $params, array $expected ) {
 		$instance = $this->getInstance( $title );
-		$queryProcessor = $this->getQueryProcessor( $params );
 
-		// Add query data from the query
+		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
 		$instance->setQueryId( $params );
-		$instance->add(
-			$queryProcessor->getQuery(),
-			$queryProcessor->getParameters()
-		);
+		$instance->add(	$query, $formattedParams );
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $instance->getContainer()->getSemanticData() );
@@ -230,10 +229,7 @@ class QueryDataTest extends \MediaWikiTestCase {
 		$this->setExpectedException( 'MWException' );
 		$instance = $this->getInstance( $title );
 
-		$queryProcessor = $this->getQueryProcessor( $params );
-		$instance->add(
-			$queryProcessor->getQuery(),
-			$queryProcessor->getParameters()
-		);
+		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
+		$instance->add(	$query, $formattedParams );
 	}
 }

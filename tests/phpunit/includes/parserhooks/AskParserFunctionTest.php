@@ -4,7 +4,6 @@ namespace SMW\Test;
 
 use SMW\AskParserFunction;
 use SMW\ParserData;
-use SMW\QueryProcessor;
 use SMW\QueryData;
 
 use SMWDIProperty;
@@ -151,7 +150,6 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 	private function getInstance( $title, $parserOutput = '' ) {
 		return new AskParserFunction(
 			new ParserData( $this->getTitle( $title ), $parserOutput ),
-			new QueryProcessor( SMW_OUTPUT_WIKI, QueryProcessor::INLINE_QUERY, false ),
 			new QueryData( $this->getTitle( $title ) )
 		);
 	}

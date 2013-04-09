@@ -239,13 +239,11 @@ function smwfRegisterClasses() {
 
 	// Query related classes
 	$qeDir = $smwgIP . 'includes/query/';
-	$wgAutoloadClasses['SMW\QueryProcessor']        = $qeDir . 'QueryProcessor.php';
 	$wgAutoloadClasses['SMW\QueryData']             = $qeDir . 'QueryData.php';
 
 	// Stores & queries
-	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php'; // see SMW\QueryProcessor (1.9)
+	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';
 	$wgAutoloadClasses['SMWQueryParser']            = $smwgIP . 'includes/SMW_QueryParser.php';
-	$wgAutoloadClasses['SMW\IQueryProcessor']       = $smwgIP . 'includes/QueryProcessor.php';
 
 	$wgAutoloadClasses['SMWSparqlDatabase']         = $smwgIP . 'includes/sparql/SMW_SparqlDatabase.php';
 	$wgAutoloadClasses['SMWSparqlDatabase4Store']   = $smwgIP . 'includes/sparql/SMW_SparqlDatabase4Store.php';
