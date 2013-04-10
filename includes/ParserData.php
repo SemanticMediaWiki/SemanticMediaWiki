@@ -132,31 +132,31 @@ class ParserData implements IParserData {
 
 	/**
 	 * Represents Title object
-	 * @var $title
+	 * @var Title
 	 */
 	protected $title;
 
 	/**
 	 * Represents ParserOutput object
-	 * @var $parserOutput
+	 * @var ParserOutput
 	 */
 	protected $parserOutput;
 
 	/**
 	 * Represents SMWSemanticData object
-	 * @var $semanticData
+	 * @var SMWSemanticData
 	 */
 	protected $semanticData;
 
 	/**
 	 * Represents collected errors
-	 * @var $errors
+	 * @var array
 	 */
 	protected $errors = array();
 
 	/**
 	 * Represents invoked GLOBALS
-	 * @var $options
+	 * @var array
 	 */
 	protected $options;
 
@@ -290,18 +290,6 @@ class ParserData implements IParserData {
 	 * @return \SMWSemanticData
 	 */
 	public function getData() {
-		return $this->semanticData;
-	}
-
-	/**
-	 * FIXME use getData() instead
-	 * AskParserFunctionTest
-	 *
-	 * @since 1.9
-	 *
-	 * @return \SMWSemanticData
-	 */
-	public function getSemanticData() {
 		return $this->semanticData;
 	}
 

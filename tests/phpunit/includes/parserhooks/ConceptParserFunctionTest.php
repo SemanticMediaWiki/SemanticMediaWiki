@@ -189,16 +189,16 @@ class ConceptParserFunctionTest extends \MediaWikiTestCase {
 		$parserData = new ParserData( $this->getTitle( $title ), $parserOutput );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getSemanticData() );
-		$this->assertCount( $expected['propertyCount'], $parserData->getSemanticData()->getProperties() );
+		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertCount( $expected['propertyCount'], $parserData->getData()->getProperties() );
 
 		// Confirm concept property
-		foreach ( $parserData->getSemanticData()->getProperties() as $key => $diproperty ){
+		foreach ( $parserData->getData()->getProperties() as $key => $diproperty ){
 			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
 			$this->assertEquals( '_CONC' , $diproperty->getKey() );
 
 			// Confirm concept property values
-			foreach ( $parserData->getSemanticData()->getPropertyValues( $diproperty ) as $dataItem ){
+			foreach ( $parserData->getData()->getPropertyValues( $diproperty ) as $dataItem ){
 				$this->assertEquals( $expected['conceptQuery'], $dataItem->getConceptQuery() );
 				$this->assertEquals( $expected['conceptDocu'], $dataItem->getDocumentation() );
 				$this->assertEquals( $expected['conceptSize'], $dataItem->getSize() );
