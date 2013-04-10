@@ -494,6 +494,7 @@ final class SMWHooks {
 		$parserData = new SMW\ParserData( $parser->getTitle(), $parser->getOutput(), $options );
 		$parserData->addCategories( $parser->getOutput()->getCategoryLinks() );
 		$parserData->addDefaultSort( $parser->getDefaultSort() );
+		$parserData->updateOutput();
 
 		// If an article was was manually purged/moved ensure that the store is
 		// updated as well for all other cases onLinksUpdateConstructed will

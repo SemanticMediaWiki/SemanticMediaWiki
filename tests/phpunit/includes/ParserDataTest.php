@@ -64,8 +64,8 @@ class ParserDataTest extends \MediaWikiTestCase {
 	 *
 	 * @return SMW\ParserData
 	 */
-	private function getInstance( $titleName, ParserOutput $parserOutput ) {
-		return new ParserData( $this->getTitle( $titleName ), $parserOutput );
+	private function getInstance( $titleName, ParserOutput $parserOutput, array $settings = array() ) {
+		return new ParserData( $this->getTitle( $titleName ), $parserOutput, $settings );
 	}
 
 	/**
@@ -124,4 +124,52 @@ class ParserDataTest extends \MediaWikiTestCase {
 		}
 	}
 
+	/**
+	 * @covers SMWHooks::onParserAfterTidy
+	 *
+	 * @see Bug 47079
+	 *
+	 * @since 1.9
+	 */
+	public function testOnParserAfterTidy() {
+		$categories = array( 'Foo', 'Bar' );
+		$settings = array(
+			'smwgUseCategoryHierarchy' => true,
+			'smwgCategoriesAsInstances' => true,
+		);
+
+		$instance = $this->getInstance( 'Foo', $this->getParserOutput(), $settings );
+		$instance->addCategories( $categories );
+
+		// Get semantic data from the ParserOutput that where stored/or not
+		$parserData = $this->getInstance( 'Foo', $instance->getOutput(), $settings );
+
+		// Check the returned instance
+		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertCount( 0, $parserData->getErrors() );
+
+		// Bug 47079 updateOutput() was missing therefore resulting in count = 0
+		$this->assertCount( 0, $parserData->getData()->getProperties() );
+
+		// Doing the whole thing again but this time executing updateOutput()
+		$instance = $this->getInstance( 'Bar', $this->getParserOutput(), $settings );
+		$instance->addCategories( $categories );
+		$instance->updateOutput();
+
+		$parserData = $this->getInstance( 'Bar', $instance->getOutput(), $settings );
+
+		// Check the returned instance
+		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertCount( 0, $parserData->getErrors() );
+
+		// Bug 47079 execute updateOutput(), resulting in count = 1
+		$this->assertCount( 1, $parserData->getData()->getProperties() );
+
+		// Category property is available for further processing
+		foreach ( $parserData->getData()->getProperties() as $key => $diproperty ){
+			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
+			$this->assertEquals( '__sin', $diproperty->findPropertyTypeID() );
+			$this->assertCount( 2,  $parserData->getData()->getPropertyValues( $diproperty ) );
+		}
+	}
 }
