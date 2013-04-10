@@ -236,10 +236,10 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 		$parserData = new ParserData( $this->getTitle( $title ), $parserOutput );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getSemanticData() );
+		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
 
 		// Confirm subSemanticData objects for the SemanticData instance
-		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
+		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
 			$this->assertCount( $expected['queryCount'], $containerSemanticData->getProperties() );
 

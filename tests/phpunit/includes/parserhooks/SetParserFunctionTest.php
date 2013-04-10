@@ -202,16 +202,16 @@ class SetParserFunctionTest extends \MediaWikiTestCase {
 		$parserData = new ParserData( $this->getTitle( $title ), $parserOutput );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getSemanticData() );
-		$this->assertCount( $expected['propertyCount'], $parserData->getSemanticData()->getProperties() );
+		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertCount( $expected['propertyCount'], $parserData->getData()->getProperties() );
 
 		// Check added properties
-		foreach ( $parserData->getSemanticData()->getProperties() as $key => $diproperty ){
+		foreach ( $parserData->getData()->getProperties() as $key => $diproperty ){
 			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
 			$this->assertContains( $diproperty->getLabel(), $expected['propertyLabel'] );
 
 			// Check added property values
-			foreach ( $parserData->getSemanticData()->getPropertyValues( $diproperty ) as $dataItem ){
+			foreach ( $parserData->getData()->getPropertyValues( $diproperty ) as $dataItem ){
 				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
 				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
 					$this->assertContains( $dataValue->getWikiValue(), $expected['value'] );

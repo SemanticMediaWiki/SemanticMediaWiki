@@ -42,12 +42,14 @@ use SMWDataItem;
 class ParserDataTest extends \MediaWikiTestCase {
 
 	/**
-	 * Helper method to get title object
+	 * Helper method to get Title object
+	 *
+	 * @param $titleName
 	 *
 	 * @return Title
 	 */
-	private function getTitle( $title ){
-		return Title::newFromText( $title );
+	private function getTitle( $titleName ){
+		return Title::newFromText( $titleName );
 	}
 
 	/**
@@ -62,15 +64,20 @@ class ParserDataTest extends \MediaWikiTestCase {
 	/**
 	 * Helper method
 	 *
-	 * @return SMW\ParserData
+	 * @param $titleName
+	 * @param ParserOutput $parserOutput
+	 * @param array $settings
+	 *
+	 * @return ParserData
 	 */
 	private function getInstance( $titleName, ParserOutput $parserOutput, array $settings = array() ) {
 		return new ParserData( $this->getTitle( $titleName ), $parserOutput, $settings );
 	}
 
 	/**
-	 * Test instance
+	 * @covers ParserData::__construct
 	 *
+	 * @since 1.9
 	 */
 	public function testConstructor() {
 		$instance = $this->getInstance( 'Foo', $this->getParserOutput() );
@@ -93,29 +100,32 @@ class ParserDataTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Add property / value string
-	 *
 	 * @covers SMW\ParserData::addPropertyValueString
+	 *
 	 * @dataProvider getPropertyValueStringDataProvider
 	 *
 	 * @since 1.9
+	 *
+	 * @param $propertyName
+	 * @param $value
+	 * @param $error
 	 */
 	public function testAddPropertyValueString( $propertyName, $value, $error ) {
 		$instance = $this->getInstance( 'Foo', $this->getParserOutput() );
 		$instance->addPropertyValueString( $propertyName, $value );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $instance->getSemanticData() );
+		$this->assertInstanceOf( 'SMWSemanticData', $instance->getData() );
 		$this->assertCount( $error, $instance->getErrors() );
 
 		// Check added properties
-		foreach ( $instance->getSemanticData()->getProperties() as $key => $diproperty ){
+		foreach ( $instance->getData()->getProperties() as $key => $diproperty ){
 
 			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
 			$this->assertContains( $propertyName, $diproperty->getLabel() );
 
 			// Check added property values
-			foreach ( $instance->getSemanticData()->getPropertyValues( $diproperty ) as $dataItem ){
+			foreach ( $instance->getData()->getPropertyValues( $diproperty ) as $dataItem ){
 				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
 				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
 					$this->assertContains( $value, $dataValue->getWikiValue() );
@@ -127,7 +137,7 @@ class ParserDataTest extends \MediaWikiTestCase {
 	/**
 	 * @covers SMWHooks::onParserAfterTidy
 	 *
-	 * @see Bug 47079
+	 * @see Bug 47079 (missing updateOutput())
 	 *
 	 * @since 1.9
 	 */
