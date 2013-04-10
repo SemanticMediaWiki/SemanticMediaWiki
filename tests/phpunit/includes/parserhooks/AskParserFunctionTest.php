@@ -75,6 +75,29 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
+			// #1 Query string with spaces
+			// {{#ask: [[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]
+			// |?Modification date
+			// |?Has title
+			// |format=list
+			// }}
+			array(
+				'Foo',
+				array(
+					'',
+					'[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]',
+					'?Modification date',
+					'?Has title',
+					'format=list'
+				),
+				array(
+					'result' => false,
+					'queryCount' => 4,
+					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'queryValue' => array( 'list', 4, 1, '[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]' )
+				)
+			),
+
 			// {{#ask: [[Modification date::+]][[Category:Foo]]
 			// |?Modification date
 			// |?Has title
