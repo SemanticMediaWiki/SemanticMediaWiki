@@ -10462,6 +10462,12 @@ Genereert door te bladeren RDF.",
 Een aantal van de bestaande eigenschappen is wellicht [[Special:UnusedProperties|ongebruikt]].
 Eigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:WantedProperties|lijst met gewenste eigenschappen]].",
 	'smw-statistics' => 'Semantische statistieken',
+	'smw-statistics-property-total' => '[[Special:Properties|Eigenschap{{PLURAL:$1||pen}}]] (totaal)',
+	'smw-statistics-property-page' => 'Eigenschap{{PLURAL:$1||pen}} (geregistreerd bij een pagina)',
+	'smw-statistics-query-inline' => 'Zoekopdracht{{PLURAL:$1||en}}',
+	'smw-statistics-query-size' => 'Grootte zoekopdracht',
+	'smw-statistics-concept-count' => 'Concept{{PLURAL:$1||en}}',
+	'smw-statistics-subobject-count' => 'Subobject{{PLURAL:$1||en}}',
 	'smw_uri_doc' => 'De URI-resolver implementeert de [$1 W3C TAG finding on httpRange-14].
 Dit zorgt ervoor dat mensen niet veranderen in websites.',
 	'ask' => 'Semantisch zoeken',
@@ -10639,7 +10645,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
 	'smw_concept_header' => 'Pagina\'s met het concept "$1"',
-	'smw_conceptarticlecount' => "$1 {{PLURAL:$1|pagina|pagina's}} die bij dat concept {{PLURAL:$1|hoort|horen}} worden weergegeven.", # Fuzzy
+	'smw_conceptarticlecount' => "Hieronder {{PLURAL:$1|wordt $1 pagina|worden $1 pagina's}} weergegeven.",
 );
 
 /** Norwegian Nynorsk (norsk (nynorsk)‎)
