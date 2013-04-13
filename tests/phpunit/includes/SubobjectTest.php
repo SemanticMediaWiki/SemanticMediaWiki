@@ -46,6 +46,7 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 * @return array
 	 */
 	public function getDataProvider() {
+		$diPropertyError = new \SMWDIProperty( \SMWDIProperty::TYPE_ERROR );
 		return array(
 			array(
 				// #0
@@ -137,6 +138,20 @@ class SubobjectTest extends \MediaWikiTestCase {
 				)
 			),
 
+			// #6 Improper value for wikipage property will add an 'Has improper value for'
+			array(
+				'Bar',
+				array(
+					'identifier' => 'bar',
+					'property' => array( 'Foo' => '' )
+				),
+				array( // Expected results
+					'name' => 'bar',
+					'errors' => 1,
+					'propertyLabel' => array( $diPropertyError->getLabel(), 'Foo' ),
+					'propertyValue' => 'Foo',
+				)
+			),
 		);
 	}
 
