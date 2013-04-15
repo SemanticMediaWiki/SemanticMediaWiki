@@ -2285,12 +2285,12 @@ Dic'hortoz e c'hall bezañ an disoc'hoù.",
 	'smw_sbv_submit' => "Kavout disoc'hoù",
 	'browse' => 'Furchal ar wiki',
 	'smw_browselink' => 'Furchal ar perzhioù',
-	'smw_browse_article' => 'Ebarzhit anv ar bajenn da gregiñ da furchal ganti.',
+	'smw_browse_article' => "Merkit anv ar bajenn ma vo loc'het da verdeiñ diouti.",
 	'smw_browse_go' => 'Mont',
-	'smw_browse_show_incoming' => "diskouez ar perc'henniezhioù a gas betek amañ",
-	'smw_browse_hide_incoming' => "kuzhat ar perc'henniezhioù a gas betek amañ",
+	'smw_browse_show_incoming' => 'diskouez ar pezhioù a gas betek amañ',
+	'smw_browse_hide_incoming' => 'kuzhat ar perzhioù a gas betek amañ',
 	'smw_browse_no_outgoing' => "Ar bajenn-mañ n'he deus perzh ebet.",
-	'smw_browse_no_incoming' => "Perc'henniezh ebet a gas betek ar bajenn-mañ.",
+	'smw_browse_no_incoming' => "Perzh ebet ne gas d'ar bajenn-mañ.",
 	'smw_inverse_label_default' => '$1 eus',
 	'smw_inverse_label_property' => 'Label ar perzh eilpennet',
 	'pageproperty' => 'Klask e perzhioù ar bajenn',
@@ -9007,7 +9007,7 @@ Heh dä Fähler künnt wider vörbei jonn, udder ene Fähler em Programm för de
 	'types' => 'Date-Tüpe',
 	'smw_types_docu' => 'Hee kütt en Leß met alle Datte-Tüpe, die en Eijeschaff hann künnt.
 Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.', # Fuzzy
-	'semanticstatistics' => 'Shtatistik övver de semantesche Date',
+	'semanticstatistics' => 'Schtatistik övver de semantesche Daate',
 	'smw_semstats_text' => "Dat Wiki hät {{PLURAL:$1|'''eine''' Wäät|'''$1''' Wääte|'''nit eine''' Wäät}} för ensjesamp '''{{PLURAL:$2|ein|$2|keine}}''' ongerscheedlijje [[Special:Properties|{{PLURAL:$2|Eijeschaff|Eijeschaffte|Eijeschaff}}]].
 {{PLURAL:$3|'''Ein''' Eijeschaff hät|'''$3''' Eijeschaffte han|'''Kein''' Eijeschaff hät}} en eije Sigg, un en Zoot (dä Datetyp) es för '''{{PLURAL:$4|eine|$4|keine}}'''  dovun aanjejovve. Et künne och [[Special:UnusedProperties|{{lcfirst:{{#special:UnusedProperties}}}}]] dronger sinn. Eijeschaffte ohne eije Sigg sin op dä Sigg met de [[Special:WantedProperties|{{lcfirst:{{#special:WantedProperties}}}}]] opjeleß.",
 	'smw_uri_doc' => 'Dä <i lang="en">URI resolver</i> hät dä Vörschlaach <<i lang="en">a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a></i> opjenumme
@@ -9025,7 +9025,7 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 	'smw_ask_printhead' => 'Zosäzlijje Ußdröcker för aanzezeije',
 	'smw_ask_printdesc' => '(Donn jeede Eijeschaff op ein Reih för sesch enjävve)',
 	'smw_ask_format_as' => 'Fommatteere als:',
-	'smw_ask_defaultformat' => 'Shtandadt-Fommaat',
+	'smw_ask_defaultformat' => 'Schtandatt-Fommaat',
 	'smw_ask_otheroptions' => 'Ander Ußwahle',
 	'smw_ask_show_embed' => 'Donn dä Wiki_Kood zom ennfööje aanzeije',
 	'smw_ask_hide_embed' => 'Donn dä Wiki_Kood zom Ennfööje vershteishe',
@@ -9213,6 +9213,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_purge' => 'Aktualiséieren',
 	'types' => 'Typen',
 	'semanticstatistics' => 'Semantesch Statistiken',
+	'smw-statistics' => 'Semantesch Statistiken',
 	'smw-statistics-concept-count' => '{{PLURAL:$1|Konzept|Konzepter}}',
 	'ask' => 'Semantesch sichen',
 	'smw_ask_sortby' => 'No der Kolonn zortéieren (Optioun)',
@@ -9291,6 +9292,10 @@ Zréck op d'Säit $1.",
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiséieren oder aktualiséieren',
 	'smw_smwadmin_announce' => 'Är wiki ukënnegen',
 	'smw_smwadmin_datarefresh' => 'Donnéeë gi gefléckt an aktualiséiert',
+	'smw_smwadmin_datarefreshprogress' => "<strong>Eng Aktualisatioun ass schonn am Gaang.</strong>
+Et ass normal datt d'Aktualisatioun nëmme lues virugeet well Donnéeë nëmmen a klenge Päck aktualiséiert ginn an zwar ëmmer da wann ee Benotzer op dës Wiki zougräift.
+Fir dës aktualisatioun méi séier fäerdeg ze maache, kann de MediaWiki Script <tt>runJobs.php</tt> (benotzt d'Optioun <tt>--maxjobs 1000</tt> fir d'Zuel vun den Aktualisatiounen déi beienee gemaach ginn ze limitéieren).
+Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	'smw_smwadmin_datarefreshbutton' => "Ufänken Daten z'aktualiséieren",
 	'smw_smwadmin_datarefreshstop' => 'Dësn Update stoppen',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
@@ -9307,13 +9312,15 @@ Zréck op d'Säit $1.",
 	'smw-paramdesc-category-userparam' => 'E Parameter deen der Schabloun iwwergi gëtt',
 	'smw-info-par-message' => 'Message fir ze weisen.',
 	'smw-info-par-icon' => 'Symbol fir entweder "Info" oder "Warnung" ze weisen.',
+	'prefs-smw' => 'Semantic MediaWiki',
+	'prefs-ask-options' => 'Semantesch Sichoptiounen',
 	'smw-ui-tooltip-title-quantity' => 'Quantitéit',
 	'smw-ui-tooltip-title-info' => 'Informatioun',
 	'smw-ui-tooltip-title-warning' => 'Feeler',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw-ui-tooltip-title-note' => 'Notiz',
 	'smw_concept_header' => 'Säite vum Konzept "$1"',
-	'smw_conceptarticlecount' => 'Déi $1 {{PLURAL:$1|Säit|Säite}} weisen déi zu deem Konzept gehéieren.', # Fuzzy
+	'smw_conceptarticlecount' => 'Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.',
 );
 
 /** Lithuanian (lietuvių)
@@ -9406,9 +9413,11 @@ $messages['lv'] = array(
 );
 
 /** Minangkabau (Baso Minangkabau)
+ * @author Iwan Novirion
  * @author Naval Scene
  */
 $messages['min'] = array(
+	'smw_propertylackspage' => 'Sado properti musti dideskripsikan jo suatu laman!',
 	'smw_purge' => 'Pabaharui',
 );
 
@@ -10446,6 +10455,7 @@ Genereert door te bladeren RDF.",
 	'smw_propertylackspage' => 'Alle eigenschappen moeten op een pagina beschreven worden!',
 	'smw_propertylackstype' => 'Er is geen type opgegeven voor deze eigenschap (type $1 wordt verondersteld).',
 	'smw_propertyhardlyused' => 'Deze eigenschap wordt vrijwel niet gebruikt in de wiki.',
+	'smw-property-name-invalid' => 'De eigenschap "$1" kan niet gebruikt worden (ongeldige eigenschapsnaam).',
 	'unusedproperties' => 'Ongebruikte eigenschappen',
 	'smw_unusedproperties_docu' => 'De volgende eigenschappen bestaan, hoewel ze niet gebruikt worden.',
 	'smw_unusedproperty_template' => '$1 van type $2',
@@ -10462,12 +10472,16 @@ Genereert door te bladeren RDF.",
 Een aantal van de bestaande eigenschappen is wellicht [[Special:UnusedProperties|ongebruikt]].
 Eigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:WantedProperties|lijst met gewenste eigenschappen]].",
 	'smw-statistics' => 'Semantische statistieken',
+	'smw-statistics-property-instance' => 'Eigenschapswaarde{{PLURAL:$1||n}} (totaal)',
 	'smw-statistics-property-total' => '[[Special:Properties|Eigenschap{{PLURAL:$1||pen}}]] (totaal)',
+	'smw-statistics-property-total-legacy' => 'Eigenschap{{PLURAL:$1||pen}} (totaal)',
 	'smw-statistics-property-page' => 'Eigenschap{{PLURAL:$1||pen}} (geregistreerd bij een pagina)',
+	'smw-statistics-property-type' => 'Eigenschap{{PLURAL:$1||pen}} (toegewezen aan een gegevenstype)',
 	'smw-statistics-query-inline' => 'Zoekopdracht{{PLURAL:$1||en}}',
 	'smw-statistics-query-size' => 'Grootte zoekopdracht',
 	'smw-statistics-concept-count' => 'Concept{{PLURAL:$1||en}}',
 	'smw-statistics-subobject-count' => 'Subobject{{PLURAL:$1||en}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|Gegevenstype{{PLURAL:$1||n}}]]',
 	'smw_uri_doc' => 'De URI-resolver implementeert de [$1 W3C TAG finding on httpRange-14].
 Dit zorgt ervoor dat mensen niet veranderen in websites.',
 	'ask' => 'Semantisch zoeken',
@@ -10644,6 +10658,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw-ui-tooltip-title-note' => 'Notitie',
 	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'Het type van deze eigenschap is ongeldig',
+	'smw-concept-cache-text' => "Het concept heeft in totaal $1 pagina{{PLURAL:$1||'s}} en is voor het laatst bijgewerkt op $2.",
 	'smw_concept_header' => 'Pagina\'s met het concept "$1"',
 	'smw_conceptarticlecount' => "Hieronder {{PLURAL:$1|wordt $1 pagina|worden $1 pagina's}} weergegeven.",
 );
