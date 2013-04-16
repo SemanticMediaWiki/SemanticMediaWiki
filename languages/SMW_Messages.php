@@ -12506,6 +12506,7 @@ $messages['roa-tara'] = array(
 	'smw_concept_description' => 'Descrizione d\'u congette "$1"',
 	'smw_printername_csv' => 'Esporte CSV',
 	'smw_printername_dsv' => 'Esporte DSV',
+	'smw_printername_json' => 'esporte JSON',
 	'smw_printername_list' => 'Elenghe',
 	'smw_printername_ol' => 'Enumerazione',
 	'smw_printername_table' => 'Tabbelle',
