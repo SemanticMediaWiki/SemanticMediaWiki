@@ -120,7 +120,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ParameterInput']        = $incDir . 'ParameterInput.php';
 	$wgAutoloadClasses['SMW\MessageReporter']        = $incDir . 'MessageReporter.php';
 	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . 'MessageReporter.php';
-	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
@@ -128,6 +127,9 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';
+
+	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'DataValueFactory.php';
+	$wgAutoloadClasses['SMW\DataValueFactory']      = $incDir . 'DataValueFactory.php';
 
 	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';
 	$wgAutoloadClasses['SMW\IParserData']           = $incDir . 'ParserData.php';
