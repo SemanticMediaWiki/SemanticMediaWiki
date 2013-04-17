@@ -138,6 +138,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\IParameterFormatter']      = $incDir . 'ParserParameterFormatter.php';
 	$wgAutoloadClasses['SMW\ParserParameterFormatter'] = $incDir . 'ParserParameterFormatter.php';
 
+	$wgAutoloadClasses['SMW\Settings']              = $incDir . 'Settings.php';
+
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
 	$wgAutoloadClasses['SMWOrderedListPage']        = $apDir . 'SMW_OrderedListPage.php';

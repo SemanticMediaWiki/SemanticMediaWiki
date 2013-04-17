@@ -421,6 +421,19 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 	}
 
 	/**
+	 * Test getSettings()
+	 *
+	 * @covers RecurringEventsParserFunction::getSettings
+	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testSettings( $title ) {
+		$instance = $this->getInstance( $title, $this->getParserOutput() );
+		$this->assertInstanceOf( 'SMW\Settings', $instance->getSettings() );
+	}
+
+	/**
 	 * Test parse()
 	 *
 	 * @dataProvider getDataProvider

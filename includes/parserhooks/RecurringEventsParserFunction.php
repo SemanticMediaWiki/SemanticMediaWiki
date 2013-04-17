@@ -46,9 +46,21 @@ use Parser;
 class RecurringEventsParserFunction extends SubobjectParserFunction {
 
 	/**
-	 * Parse parameters and return results to the ParserOutput object
+	 * Returns parametrized Settings object
 	 *
-	 * @todo Replace options array and invoke GLOBALS using Settings::get( $GLOBALS )
+	 * @since 1.9
+	 *
+	 * @return Settings
+	 */
+	public function getSettings() {
+		return Settings::newFromArray( array(
+			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
+			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'] )
+		);
+	}
+
+	/**
+	 * Parse parameters and return results to the ParserOutput object
 	 *
 	 * @since 1.9
 	 *
@@ -58,14 +70,8 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 */
 	public function parse( IParameterFormatter $parameters ) {
 
-		// Invoke global settings as options array
-		$options = array(
-			'DefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
-			'MaxNumRecurringEvents'=> $GLOBALS['smwgMaxNumRecurringEvents']
-		);
-
 		// Get recurring events
-		$events = new RecurringEvents( $parameters->toArray(), $options );
+		$events = new RecurringEvents( $parameters->toArray(), $this->getSettings() );
 		$this->parserData->setError( $events->getErrors() );
 
 		foreach ( $events->getDates() as $date_str ) {

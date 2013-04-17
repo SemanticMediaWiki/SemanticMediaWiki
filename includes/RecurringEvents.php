@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use MWException;
-
 use SMWDITime;
 use SMWTimeValue;
 use SMWDataValueFactory;
@@ -28,20 +26,28 @@ use SMWDataValueFactory;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
+ *
+ * @file
  * @ingroup SMW
  *
  * @author Yaron Koren
  * @author Jeroen De Dauw
  * @author mwjames
  */
+
+/**
+ * This class determines recurring events based on invoked parameters
+ *
+ * @ingroup SMW
+ */
 class RecurringEvents {
 
 	/**
-	 * Defines available options from $GLOBALS
+	 * Represents Settings object
+	 * @var Settings
 	 */
-	protected $options = array();
+	protected $settings;
 
 	/**
 	 * Defines the property used
@@ -73,14 +79,10 @@ class RecurringEvents {
 	 * @since 1.9
 	 *
 	 * @param array $parameters
-	 * @param array $options
+	 * @param Settings $settings
 	 */
-	public function __construct( $parameters, $options ) {
-		if ( !is_array( $parameters ) ) {
-			throw new MWException( 'Parameters array is not initialized' );
-		}
-
-		$this->options = $options;
+	public function __construct( array $parameters, Settings $settings ) {
+		$this->settings = $settings;
 		$this->parse( $parameters );
 	}
 
@@ -140,22 +142,6 @@ class RecurringEvents {
 	}
 
 	/**
-	 * Get value for a specific option
-	 *
-	 * Options are available for local context therefore no public exposure
-	 *
-	 * @since  1.9
-	 *
-	 * @return mixed
-	 */
-	protected function getOption( $name ) {
-		if ( !isset( $this->options[$name] ) ) {
-			throw new MWException( "Option {$name} is not available" );
-		}
-		return $this->options[$name];
-	}
-
-	/**
 	 * Returns the "Julian day" value from an object of type
 	 * SMWTimeValue.
 	 */
@@ -203,7 +189,7 @@ class RecurringEvents {
 						break;
 					case 'limit':
 						// Override default limit with query specific limit
-						$this->options['DefaultNumRecurringEvents'] = (int)$value;
+						$this->settings->set( 'smwgDefaultNumRecurringEvents', (int)$value );
 						break;
 					case 'unit':
 						$unit = $value;
@@ -375,9 +361,9 @@ class RecurringEvents {
 
 			// should we stop?
 			if ( is_null( $end_date ) ) {
-				$reached_end_date = $i > $this->getOption( 'DefaultNumRecurringEvents' );
+				$reached_end_date = $i > $this->settings->get( 'smwgDefaultNumRecurringEvents' );
 			} else {
-				$reached_end_date = ( $cur_date_jd > $end_date_jd ) || ( $i > $this->getOption( 'MaxNumRecurringEvents' ) );
+				$reached_end_date = ( $cur_date_jd > $end_date_jd ) || ( $i > $this->settings->get( 'smwgMaxNumRecurringEvents' ) );
 			}
 		} while ( !$reached_end_date );
 
@@ -398,5 +384,4 @@ class RecurringEvents {
 		$timeValue->setDataItem( $timeDataItem );
 		return $timeValue;
 	}
-
 }
