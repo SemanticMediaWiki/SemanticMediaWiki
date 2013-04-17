@@ -126,7 +126,7 @@ class SubobjectParserFunction {
 			$this->subobject->getContainer()
 		);
 
-		$this->parserData->setError( $this->subobject->getErrors() );
+		$this->parserData->addError( $this->subobject->getErrors() );
 
 		// Update ParserOutput
 		$this->parserData->updateOutput();
