@@ -277,6 +277,7 @@ final class SMWHooks {
 			'RecurringEvents',
 			'Infolink',
 			'QueryProcessor',
+			'Hooks',
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
