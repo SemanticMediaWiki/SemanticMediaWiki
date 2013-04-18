@@ -34,6 +34,15 @@ use SMWDataItem, SMWPrintRequest, SMWResultArray, SMWQueryResult;
  * @licence GNU GPL v2 or later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
+
+/**
+ * Class for serializing SMWDataItem and SMWQueryResult objects to a context
+ * independent object consisting of arrays and associative arrays, which can
+ * be fed directly to json_encode, the MediaWiki API, and similar serializers.
+ *
+ * @ingroup SMW
+ * @ingroup DataItem
+ */
 class DISerializer {
 
 	/**
@@ -107,6 +116,7 @@ class DISerializer {
 				'label' => $printRequest->getLabel(),
 				'typeid' => $printRequest->getTypeID(),
 				'mode' => $printRequest->getMode(),
+				'format' => $printRequest->getOutputFormat()
 			);
 		}
 
@@ -120,10 +130,11 @@ class DISerializer {
 					$dataItems = $resultArray->getContent();
 					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
 				} else if ( $resultArray->getContent() !== array() ) {
-					$result['printouts'][$printRequest->getLabel()] = array_map(
-						array( __CLASS__, 'getSerialization' ),
-						$resultArray->getContent(), array ( $printRequest )
-					);
+					$values = array();
+					foreach ( $resultArray->getContent() as $dataItem ) {
+						$values[] = self::getSerialization( $dataItem, $printRequest );
+					}
+					$result['printouts'][$printRequest->getLabel()] = $values;
 				} else {
 					// For those objects that are empty return an empty array
 					// to keep the output consistent
