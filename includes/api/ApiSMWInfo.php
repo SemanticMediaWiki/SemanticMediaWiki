@@ -34,6 +34,7 @@ class ApiSMWInfo extends ApiBase {
 			|| in_array( 'proppagecount', $requestedInfo )
 			|| in_array( 'querycount', $requestedInfo )
 			|| in_array( 'querysize', $requestedInfo )
+			|| in_array( 'formatcount', $requestedInfo )
 			|| in_array( 'conceptcount', $requestedInfo )
 			|| in_array( 'subobjectcount', $requestedInfo )
 			|| in_array( 'declaredpropcount', $requestedInfo ) ) {
@@ -54,6 +55,14 @@ class ApiSMWInfo extends ApiBase {
 			foreach ( $map as $apiName => $smwName ) {
 				if ( in_array( $apiName, $requestedInfo ) ) {
 					$resultInfo[$apiName] = $semanticStats[$smwName];
+				}
+			}
+
+			// Output follows ['formatcount'][formatName] = count
+			if ( in_array( 'formatcount', $requestedInfo ) ) {
+				$resultInfo['formatcount'] = array();
+				foreach ( $semanticStats['QUERYFORMATS'] as $name => $count ) {
+					$resultInfo['formatcount'][$name] = $count;
 				}
 			}
 		}
@@ -77,6 +86,7 @@ class ApiSMWInfo extends ApiBase {
 					'proppagecount',
 					'querycount',
 					'querysize',
+					'formatcount',
 					'conceptcount',
 					'subobjectcount'
 				)
