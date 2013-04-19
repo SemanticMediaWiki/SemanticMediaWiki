@@ -224,6 +224,26 @@ class SMWSQLStore3SpecialPageHandlers {
 		$result['QUERYSIZE'] = $row->count;
 		$dbr->freeResult( $res );
 
+		// Count used formats
+		$result['QUERYFORMATS'] = array();
+		$typeProp = new SMWDIProperty( '_ASKFO' );
+		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
+		$res = $dbr->select(
+			$typeTable->getName(),
+			'o_hash, COUNT(s_id) AS count',
+			array(),
+			'SMW::getStatistics',
+			array(
+				'ORDER BY' => 'count DESC',
+				'GROUP BY' => 'o_hash'
+			)
+		);
+
+		foreach ( $res as $row ) {
+			$result['QUERYFORMATS'][$row->o_hash] = (int)$row->count;
+		}
+		$dbr->freeResult( $res );
+
 		// Count existing concepts
 		$result['CONCEPTS'] = 0;
 		$typeProp = new SMWDIProperty( '_CONC' );

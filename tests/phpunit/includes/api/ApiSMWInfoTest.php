@@ -80,11 +80,22 @@ class ApiSMWInfoTest extends \MediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testQueryParameters( $queryParameters ) {
-
 		$data = $this->getAPIResults( $queryParameters );
 
 		// Info array should return with either 0 or > 0
 		$this->assertGreaterThanOrEqual( 0, $data['info'][$queryParameters] );
+	}
+
+	/**
+	 * Test 'formatcount' query parameter
+	 *
+	 * @since 1.9
+	 */
+	public function testFormatCountQueryParameter() {
+		$data = $this->getAPIResults( 'formatcount' );
+
+		// An array is expected as return value
+		$this->assertInternalType( 'array', $data['info']['formatcount'] );
 	}
 
 	/**
@@ -96,8 +107,8 @@ class ApiSMWInfoTest extends \MediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testUnknownQueryParameter() {
-
 		$data = $this->getAPIResults( 'Foo' );
+
 		$this->assertInternalType( 'array', $data['warnings'] );
 	}
 }
