@@ -183,6 +183,62 @@ class SMWDataValueFactory {
 	}
 
 	/**
+	 * This factory method returns a data value object from a given property,
+	 * value string. It is intended to be used on user input to allow to
+	 * turn a property and value strings into a data value object.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $propertyName property string
+	 * @param string $valueString user value string
+	 * @param mixed $caption user-defined caption
+	 * @param SMWDIWikiPage|null $contextPage context for parsing the value string
+	 *
+	 * @return SMWDataValue
+	 */
+	public static function newPropertyValue( $propertyName, $valueString,
+		$caption = false, SMWDIWikiPage $contextPage = null ) {
+
+		wfProfileIn( __METHOD__ );
+
+		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
+
+		if ( !$propertyDV->isValid() ) {
+			wfProfileOut( __METHOD__ );
+			return $propertyDV;
+		}
+
+		$propertyDI = $propertyDV->getDataItem();
+
+		if ( $propertyDI instanceof SMWDIError ) {
+			wfProfileOut( __METHOD__ );
+			return $propertyDV;
+		}
+
+		if ( $propertyDI instanceof SMWDIProperty && !$propertyDI->isInverse() ) {
+			$dataValue = self::newPropertyObjectValue(
+				$propertyDI,
+				$valueString,
+				$caption,
+				$contextPage
+			);
+		} else if ( $propertyDI instanceof SMWDIProperty && $propertyDI->isInverse() ) {
+			$dataValue = new SMWErrorValue( $propertyDV->getPropertyTypeID(),
+				wfMessage( 'smw_noinvannot' )->inContentLanguage()->text(),
+				$valueString, $caption
+			);
+		} else {
+			$dataValue = new SMWErrorValue( $propertyDV->getPropertyTypeID(),
+				wfMessage( 'smw-property-name-invalid', $propertyName )->inContentLanguage()->text(),
+				$valueString, $caption
+			);
+		}
+
+		wfProfileOut( __METHOD__ );
+		return $dataValue;
+	}
+
+	/**
 	 * Gather all available datatypes and label<=>id<=>datatype
 	 * associations. This method is called before most methods of this
 	 * factory.

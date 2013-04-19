@@ -9,10 +9,9 @@ use MWException;
 use Job;
 
 use SMWStore;
+use SMWDataValue;
 use SMWDIWikiPage;
-use SMWPropertyValue;
 use SMWSemanticData;
-use SMWDataValueFactory;
 use SMWDIProperty;
 use SMWDIBlob;
 use SMWDIBoolean;
@@ -257,7 +256,7 @@ class ParserData implements IParserData {
 	 *
 	 * @return array
 	 */
-	public function setError( array $errors ) {
+	public function addError( array $errors ) {
 		return $this->errors = array_merge ( $errors, $this->errors );
 	}
 
@@ -341,42 +340,42 @@ class ParserData implements IParserData {
 	}
 
 	/**
-	 * Add value string to the instantiated semanticData container
+	 * This method adds a data value to the semantic data container
+	 *
+	 * @par Example:
+	 * @code
+	 * $parserData = new SMW\ParserData(
+	 *  $parser->getTitle(),
+	 *  $parser->getOutput(),
+	 *  $settings;
+	 * )
+	 *
+	 * $dataValue = SMWDataValueFactory::newPropertyValue( $userProperty, $userValue )
+	 * $parserData->addPropertyValue( $dataValue )
+	 * @endcode
 	 *
 	 * @since 1.9
 	 *
-	 * @param string $propertyName
-	 * @param string $valueString
-	 *
-	 * @throws MWException
+	 * @param SMWDataValue $dataValue
 	 */
-	public function addPropertyValueString( $propertyName, $valueString ) {
-		if ( !( $this->semanticData instanceof SMWSemanticData ) ) {
-			throw new MWException( 'The semantic data container is not initialized' );
-		}
-
+	public function addPropertyValue( SMWDataValue $dataValue ) {
 		wfProfileIn(  __METHOD__ );
 
-		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
-		$propertyDi = $propertyDv->getDataItem();
-
-		if ( $propertyDi instanceof \SMWDIProperty && !$propertyDi->isInverse() ) {
-			$valueDv = SMWDataValueFactory::newPropertyObjectValue( $propertyDi, $valueString,
-				false, $this->semanticData->getSubject() );
-			$this->semanticData->addPropertyObjectValue( $propertyDi, $valueDv->getDataItem() );
-
-			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
-			if ( !$valueDv->isValid() ) {
+		if ( $dataValue->getProperty() instanceof SMWDIProperty ) {
+			if ( !$dataValue->isValid() ) {
 				$this->semanticData->addPropertyObjectValue(
 					new SMWDIProperty( SMWDIProperty::TYPE_ERROR ),
-					$propertyDi->getDiWikiPage()
+					$dataValue->getProperty()->getDiWikiPage()
 				);
-				$this->setError( $valueDv->getErrors() );
+				$this->addError( $dataValue->getErrors() );
+			} else {
+				$this->semanticData->addPropertyObjectValue(
+					$dataValue->getProperty(),
+					$dataValue->getDataItem()
+				);
 			}
-		} else if ( $propertyDi instanceof \SMWDIProperty && $propertyDi->isInverse() ) {
-			$this->setError( array( wfMessage( 'smw_noinvannot' )->inContentLanguage()->text() ) );
 		} else {
-			$this->setError( array( wfMessage( 'smw-property-name-invalid', $propertyName )->inContentLanguage()->text() ) );
+			$this->addError( $dataValue->getErrors() );
 		}
 
 		wfProfileOut( __METHOD__ );

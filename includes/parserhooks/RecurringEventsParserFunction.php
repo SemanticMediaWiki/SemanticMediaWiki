@@ -72,7 +72,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 
 		// Get recurring events
 		$events = new RecurringEvents( $parameters->toArray(), $this->getSettings() );
-		$this->parserData->setError( $events->getErrors() );
+		$this->parserData->addError( $events->getErrors() );
 
 		foreach ( $events->getDates() as $date_str ) {
 
@@ -108,7 +108,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 			);
 
 			// Collect possible errors that occurred during processing
-			$this->parserData->setError( $this->subobject->getErrors() );
+			$this->parserData->addError( $this->subobject->getErrors() );
 		}
 
 		// Update ParserOutput

@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Parser;
+use SMWDataValueFactory;
 
 /**
  * {{#set}} parser function
@@ -74,7 +75,12 @@ class SetParserFunction {
 		// Add value strings
 		foreach ( $parameters->toArray() as $property => $values ){
 			foreach ( $values as $value ) {
-				$this->parserData->addPropertyValueString( $property, $value );
+				$this->parserData->addPropertyValue(
+					SMWDataValueFactory::newPropertyValue(
+						$property,
+						$value
+					)
+				);
 			}
 		}
 

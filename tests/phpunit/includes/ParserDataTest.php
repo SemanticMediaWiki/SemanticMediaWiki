@@ -89,7 +89,7 @@ class ParserDataTest extends \MediaWikiTestCase {
 	 *
 	 * @return array
 	 */
-	public function getPropertyValueStringDataProvider() {
+	public function getPropertyValueDataProvider() {
 
 		// property, value, errorCount
 		return array(
@@ -100,19 +100,25 @@ class ParserDataTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @covers SMW\ParserData::addPropertyValueString
+	 * @dataProvider getPropertyValueDataProvider
 	 *
-	 * @dataProvider getPropertyValueStringDataProvider
-	 *
+	 * @see SMW\ParserData::addPropertyValue
 	 * @since 1.9
 	 *
 	 * @param $propertyName
 	 * @param $value
 	 * @param $error
 	 */
-	public function testAddPropertyValueString( $propertyName, $value, $error ) {
+	public function testAddPropertyValue( $propertyName, $value, $error ) {
 		$instance = $this->getInstance( 'Foo', $this->getParserOutput() );
-		$instance->addPropertyValueString( $propertyName, $value );
+
+		// Values
+		$instance->addPropertyValue(
+			SMWDataValueFactory::newPropertyValue(
+				$propertyName,
+				$value
+			)
+		);
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $instance->getData() );

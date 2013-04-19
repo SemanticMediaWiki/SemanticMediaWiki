@@ -164,7 +164,7 @@ class ConceptParserFunction {
 		);
 
 		// Store query data to the ParserOutput
-		$this->parserData->setError( $this->query->getErrors() );
+		$this->parserData->addError( $this->query->getErrors() );
 
 		// Update ParserOutput
 		$this->parserData->updateOutput();
