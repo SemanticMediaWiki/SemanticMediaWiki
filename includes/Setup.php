@@ -303,6 +303,9 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWDIHandlerGeoCoord']            = $stoDirSQL . 'SMW_DIHandler_GeoCoord.php';
 
 	// Special pages and closely related helper classes
+	$speDir = $smwgIP . 'includes/specials/';
+	$wgAutoloadClasses['SMW\SpecialSemanticStatistics'] = $speDir . 'SpecialSemanticStatistics.php';
+
 	$specDir = $smwgIP . 'specials/';
 	$wgAutoloadClasses['SMWQueryPage']                 = $specDir . 'QueryPages/SMW_QueryPage.php';
 	$wgAutoloadClasses['SMWAskPage']                   = $specDir . 'AskSpecial/SMW_SpecialAsk.php';
@@ -315,7 +318,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSearchByProperty']          = $specDir . 'SearchTriple/SMW_SpecialSearchByProperty.php';
 	$wgAutoloadClasses['SMWURIResolver']               = $specDir . 'URIResolver/SMW_SpecialURIResolver.php';
 	$wgAutoloadClasses['SMWAdmin']                     = $specDir . 'SMWAdmin/SMW_SpecialSMWAdmin.php';
-	$wgAutoloadClasses['SMWSpecialSemanticStatistics'] = $specDir . 'Statistics/SMW_SpecialStatistics.php';
 	$wgAutoloadClasses['SMWSpecialOWLExport']          = $specDir . 'Export/SMW_SpecialOWLExport.php';
 	$wgAutoloadClasses['SMWSpecialProperties']         = $specDir . 'QueryPages/SMW_SpecialProperties.php';
 	$wgAutoloadClasses['SMWSpecialTypes']              = $specDir . 'QueryPages/SMW_SpecialTypes.php';
@@ -376,7 +378,7 @@ function smwfRegisterSpecialPages() {
 	$wgSpecialPages['SMWAdmin']                     = 'SMWAdmin';
 	$wgSpecialPageGroups['SMWAdmin']                = 'smw_group';
 
-	$wgSpecialPages['SemanticStatistics']           = 'SMWSpecialSemanticStatistics';
+	$wgSpecialPages['SemanticStatistics']           = 'SMW\SpecialSemanticStatistics';
 	$wgSpecialPageGroups['SemanticStatistics']      = 'wiki'; // Similar to Special:Statistics
 
 	$wgSpecialPages['ExportRDF']                    = 'SMWSpecialOWLExport';

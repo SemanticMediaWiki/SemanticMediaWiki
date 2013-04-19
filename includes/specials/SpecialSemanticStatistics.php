@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW;
+
 /**
  * File holding the SMWSpecialSemanticStatistics class for the Special:SemanticStatistics page.
  *
@@ -11,7 +13,7 @@
  * @author Daniel M. Herzig
  * @author Jeroen De Dauw
  */
-class SMWSpecialSemanticStatistics extends SpecialPage {
+class SpecialSemanticStatistics extends \SpecialPage {
 
 	public function __construct() {
 		parent::__construct( 'SemanticStatistics' );
