@@ -160,13 +160,29 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 		$values = array();
 
 		// print all result rows
-		while ( $row = $res->getNext() ) {
-			$dataValue = $row[0]->getNextDataValue();
+		while ( $subject = $res->getNext() ) {
+			$dataValue = $subject[0]->getNextDataValue();
 
 			if ( $dataValue !== false ) {
 				$name = $dataValue->getShortWikiText();
 
-				foreach ( $row as $field ) {
+				foreach ( $subject as $field ) {
+
+					// Aggregated array key depends on the mainlabel which is
+					// either the subject or a printout property
+					if ( $this->params['mainlabel'] === '-' ) {
+						$name = $field->getPrintRequest()->getLabel();
+
+						// In case of '-', getNextDataValue() already shifted the
+						// array forward which means the first column
+						// ( $subject[0] == $field ) contains a possible value
+						// and has to be collected as well
+						if ( ( $subject[0] == $field ) && $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_NUMBER ) {
+							$value = $dataValue->getDataItem( )->getNumber();
+							$values[$name] = isset( $values[$name] ) ?  $values[$name] + $value : $value;
+						}
+					}
+
 					while ( ( /* SMWDataItem */ $dataItem = $field->getNextDataItem() ) !== false ) {
 						$this->addNumbersForDataItem( $dataItem, $values, $name );
 					}
@@ -189,7 +205,9 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	protected function addNumbersForDataItem( SMWDataItem $dataItem, array &$values, $name ) {
 		switch ( $dataItem->getDIType() ) {
 			case SMWDataItem::TYPE_NUMBER:
-				$values[$name] = $dataItem->getNumber();
+				// Collect and aggregate values for the same array key
+				$value = $dataItem->getNumber();
+				$values[$name] = isset( $values[$name] ) ? $values[$name] + $value : $value;
 				break;
 			case SMWDataItem::TYPE_CONTAINER:
 				foreach ( $dataItem->getDataItems() as $di ) {
