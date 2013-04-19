@@ -12,31 +12,24 @@
  * @author Jeroen De Dauw
  */
 class SMWSpecialSemanticStatistics extends SpecialPage {
+
 	public function __construct() {
 		parent::__construct( 'SemanticStatistics' );
 	}
 
 	public function execute( $param ) {
-		global $wgOut, $wgLang;
-
-		$wgOut->setPageTitle( wfMessage( 'semanticstatistics' )->text() );
-
 		$semanticStatistics = smwfGetStore()->getStatistics();
+		$context = $this->getContext();
+		$out = $this->getOutput();
 
-		$dbr = wfGetDB( DB_SLAVE );
-		
-		$propertyPageAmount = $dbr->estimateRowCount(
-			'page',
-			'*',
-			array(
-				'page_namespace' => SMW_NS_PROPERTY
-			)
+		$out->setPageTitle( $context->msg( 'semanticstatistics' )->text() );
+		$out->addHTML( $context->msg( 'smw_semstats_text'
+			)->numParams(
+				$semanticStatistics['PROPUSES'],
+				$semanticStatistics['USEDPROPS'],
+				$semanticStatistics['OWNPAGE'],
+				$semanticStatistics['DECLPROPS']
+			)->parseAsBlock()
 		);
-	
-		$out = wfMessage( 'smw_semstats_text' )->numParams(	$semanticStatistics['PROPUSES'],
-			$semanticStatistics['USEDPROPS'], $propertyPageAmount, $semanticStatistics['DECLPROPS']
-		)->parseAsBlock();
-
-		$wgOut->addHTML( $out );
 	}
 }
