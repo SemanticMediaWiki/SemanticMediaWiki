@@ -670,7 +670,8 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_wantedproperties_docu' => 'This is the introductory message at the top of [[Special:WantedProperties]].',
 	'smw_wantedproperty_template' => 'This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned data type and how often it is used in the wiki. $1 holds the name of the wanted property. $2 holds the number of values annotated with the wanted property.',
 	'smw_purge' => '{{doc-actionlink}}
-This is the label of a tab of an action item for the content area.',
+This is the label of a tab of an action item for the content area.
+{{Identical|Refresh}}',
 	'types' => '{{doc-special|Types}}
 {{Identical|Type}}',
 	'smw_types_docu' => 'This is the introductory message at the top of [[Special:Types]].',
@@ -15770,7 +15771,7 @@ $messages['zh-hans'] = array(
 	'smw_result_noresults' => '没有结果。',
 	'smwadmin' => 'Semantic MediaWiki管理功能',
 	'smw_smwadmin_setupsuccess' => '存储引擎设置成功。',
-	'smw_smwadmin_return' => '返回到$1。',
+	'smw_smwadmin_return' => '返回$1。',
 	'smw_smwadmin_updatestarted' => '更新语义数据过程开始。
 所有已存储数据将被按需重建或修复。
 你可以通过本特殊页面跟踪更新进程。', # Fuzzy
