@@ -1,4 +1,12 @@
 <?php
+
+namespace SMW;
+
+use SMWDataItem;
+use SMWErrorValue;
+use SMWDIProperty;
+use SMWPropertyValue;
+
 /**
  * This file contains the SMWDataValueFactory class.
  *
@@ -23,7 +31,7 @@
  *
  * @ingroup SMWDataValues
  */
-class SMWDataValueFactory {
+class DataValueFactory {
 
 	/**
 	 * Array of type labels indexed by type ids. Used for datatype resolution.
@@ -423,3 +431,10 @@ class SMWDataValueFactory {
 	}
 
 }
+
+/**
+ * SMWDataValueFactory
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
