@@ -39,6 +39,13 @@ use SMWDataItem;
  * @licence GNU GPL v2+
  * @author mwjames
  */
+
+/**
+ * Tests for the SMW\ParserData class
+ *
+ * @ingroup SMW
+ * @ingroup Test
+ */
 class ParserDataTest extends \MediaWikiTestCase {
 
 	/**
@@ -90,26 +97,26 @@ class ParserDataTest extends \MediaWikiTestCase {
 	 * @return array
 	 */
 	public function getPropertyValueDataProvider() {
-
-		// property, value, errorCount
+		// property, value, errorCount, propertyCount
 		return array(
-			array( 'Foo'  , 'Bar', 0 ),
-			array( '-Foo' , 'Bar', 1 ),
-			array( '_Foo' , 'Bar', 1 ),
+			array( 'Foo'  , 'Bar', 0, 1 ),
+			array( '-Foo' , 'Bar', 1, 0 ),
+			array( '_Foo' , 'Bar', 1, 0 ),
 		);
 	}
 
 	/**
-	 * @dataProvider getPropertyValueDataProvider
+	 * Test SMW\ParserData::addPropertyValue
 	 *
-	 * @see SMW\ParserData::addPropertyValue
 	 * @since 1.9
 	 *
+	 * @dataProvider getPropertyValueDataProvider
 	 * @param $propertyName
 	 * @param $value
-	 * @param $error
+	 * @param $errorCount
+	 * @param $propertyCount
 	 */
-	public function testAddPropertyValue( $propertyName, $value, $error ) {
+	public function testAddPropertyValue( $propertyName, $value, $errorCount, $propertyCount ) {
 		$instance = $this->getInstance( 'Foo', $this->getParserOutput() );
 
 		// Values
@@ -122,7 +129,8 @@ class ParserDataTest extends \MediaWikiTestCase {
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $instance->getData() );
-		$this->assertCount( $error, $instance->getErrors() );
+		$this->assertCount( $errorCount, $instance->getErrors() );
+		$this->assertCount( $propertyCount, $instance->getData()->getProperties() );
 
 		// Check added properties
 		foreach ( $instance->getData()->getProperties() as $key => $diproperty ){
