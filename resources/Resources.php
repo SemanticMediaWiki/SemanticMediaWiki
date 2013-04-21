@@ -41,13 +41,13 @@ return array(
 	// SMW core class
 	'ext.smw' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/ext.smw.js'
+			'resources/smw/ext.smw.js'
 		)
 	),
 
 	// Common styles independent from JavaScript
 	'ext.smw.style' => $moduleTemplate + array(
-		'styles' => 'resources/ext.smw.core.css',
+		'styles' => 'resources/smw/ext.smw.css',
 		'position' => 'top'
 	),
 
@@ -65,13 +65,13 @@ return array(
 	// dataItem representation
 	'ext.smw.dataItem' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/smw.data/ext.smw.dataItem.wikiPage.js',
-			'resources/smw.data/ext.smw.dataItem.uri.js',
-			'resources/smw.data/ext.smw.dataItem.time.js',
-			'resources/smw.data/ext.smw.dataItem.property.js',
-			'resources/smw.data/ext.smw.dataItem.unknown.js',
-			'resources/smw.data/ext.smw.dataItem.number.js',
-			'resources/smw.data/ext.smw.dataItem.text.js',
+			'resources/smw/data/ext.smw.dataItem.wikiPage.js',
+			'resources/smw/data/ext.smw.dataItem.uri.js',
+			'resources/smw/data/ext.smw.dataItem.time.js',
+			'resources/smw/data/ext.smw.dataItem.property.js',
+			'resources/smw/data/ext.smw.dataItem.unknown.js',
+			'resources/smw/data/ext.smw.dataItem.number.js',
+			'resources/smw/data/ext.smw.dataItem.text.js',
 		),
 		'dependencies' => array(
 			'ext.smw',
@@ -83,14 +83,14 @@ return array(
 	// dataValue representation
 	'ext.smw.dataValue' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/smw.data/ext.smw.dataValue.quantity.js',
+			'resources/smw/data/ext.smw.dataValue.quantity.js',
 		),
 		'dependencies' => 'ext.smw.dataItem'
 	),
 
 	// dataItem representation
 	'ext.smw.data' => $moduleTemplate + array(
-		'scripts' => 'resources/smw.data/ext.smw.data.js',
+		'scripts' => 'resources/smw/data/ext.smw.data.js',
 		'dependencies' => array(
 			'ext.smw.dataItem',
 			'ext.smw.dataValue'
@@ -99,7 +99,7 @@ return array(
 
 	// Query
 	'ext.smw.query' => $moduleTemplate + array(
-		'scripts' => 'resources/smw.query/ext.smw.query.js',
+		'scripts' => 'resources/smw/query/ext.smw.query.js',
 		'dependencies' => array(
 			'ext.smw',
 			'mediawiki.util'
@@ -108,7 +108,7 @@ return array(
 
 	// API
 	'ext.smw.api' => $moduleTemplate + array(
-		'scripts' => 'resources/smw.api/ext.smw.api.js',
+		'scripts' => 'resources/smw/api/ext.smw.api.js',
 		'dependencies' => array(
 			'ext.smw.data',
 			'ext.smw.query',
@@ -119,7 +119,7 @@ return array(
 
 	// This one is obsolete since SMW_QueryUI.php isn't officially supported
 	'ext.smw.query.ui' => $moduleTemplate + array(
-		'styles' => 'resources/ext.smw.query.ui.css'
+		'styles' => 'resources/smw/special/ext.smw.query.ui.css'
 	),
 
 	// Tooltip qtip2 resources
@@ -129,8 +129,8 @@ return array(
 	),
 	// Tooltip
 	'ext.smw.tooltip' => $moduleTemplate + array(
-		'scripts' => 'resources/ext.smw.util.tooltip.js',
-		'styles' => 'resources/ext.smw.util.tooltip.css',
+		'scripts' => 'resources/smw/util/ext.smw.util.tooltip.js',
+		'styles' => 'resources/smw/util/ext.smw.util.tooltip.css',
 		'dependencies' => array(
 			'ext.smw',
 			'ext.jquery.qtip'
@@ -157,13 +157,13 @@ return array(
 	),
 	// Autocomplete resources
 	'ext.smw.autocomplete' => $moduleTemplate + array(
-		'scripts' => 'resources/ext.smw.util.autocomplete.js',
+		'scripts' => 'resources/smw/util/ext.smw.util.autocomplete.js',
 		'dependencies' => 'jquery.ui.autocomplete'
 	),
 	// Special:Ask
 	'ext.smw.ask' => $moduleTemplate + array(
-		'scripts' => 'resources/ext.smw.special.ask.js',
-		'styles' => 'resources/ext.smw.special.ask.css',
+		'scripts' => 'resources/smw/special/ext.smw.special.ask.js',
+		'styles' => 'resources/smw/special/ext.smw.special.ask.css',
 		'dependencies' => array(
 			'ext.smw.tooltip',
 			'ext.smw.style',
@@ -177,7 +177,7 @@ return array(
 	),
 	// Facts and browse
 	'ext.smw.browse' => $moduleTemplate + array(
-		'scripts' => 'resources/ext.smw.special.browse.js',
+		'scripts' => 'resources/smw/special/ext.smw.special.browse.js',
 		'dependencies' => array(
 			'ext.smw.style',
 			'ext.smw.autocomplete'
@@ -186,7 +186,7 @@ return array(
 	),
 	// Special:SearchByProperty
 	'ext.smw.property' => $moduleTemplate + array(
-		'scripts' => 'resources/ext.smw.special.property.js',
+		'scripts' => 'resources/smw/special/ext.smw.special.property.js',
 		'dependencies' => 'ext.smw.autocomplete'
 	)
 );

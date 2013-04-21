@@ -21,9 +21,9 @@
 }
 
 .smwCollapsedFieldset legend {
-	/* @embed */ background: transparent url(images/collapse-plus.png) no-repeat center left;
+	/* @embed */ background: transparent url(../../images/collapse-plus.png) no-repeat center left;
 }
 
 .smwExpandedFieldset legend {
-	/* @embed */ background: transparent url(images/collapse-minus.png) no-repeat center left;
+	/* @embed */ background: transparent url(../../images/collapse-minus.png) no-repeat center left;
 }

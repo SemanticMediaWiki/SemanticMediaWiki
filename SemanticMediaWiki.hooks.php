@@ -332,25 +332,25 @@ final class SMWHooks {
 	public static function registerQUnitTests( array &$testModules, ResourceLoader &$resourceLoader ) {
 		$testModules['qunit']['ext.smw.tests'] = array(
 			'scripts' => array(
-				'tests/qunit/ext.smw.test.js',
-				'tests/qunit/ext.smw.util.tooltip.test.js',
+				'tests/qunit/smw/ext.smw.test.js',
+				'tests/qunit/smw/util/ext.smw.util.tooltip.test.js',
 
 				// dataItem tests
-				'tests/qunit/smw.data/ext.smw.dataItem.wikiPage.test.js',
-				'tests/qunit/smw.data/ext.smw.dataItem.uri.test.js',
-				'tests/qunit/smw.data/ext.smw.dataItem.time.test.js',
-				'tests/qunit/smw.data/ext.smw.dataItem.property.test.js',
-				'tests/qunit/smw.data/ext.smw.dataItem.unknown.test.js',
-				'tests/qunit/smw.data/ext.smw.dataItem.number.test.js',
-				'tests/qunit/smw.data/ext.smw.dataItem.text.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.wikiPage.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.uri.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.time.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.property.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.unknown.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.number.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.text.test.js',
 
 				// dataValues
-				'tests/qunit/smw.data/ext.smw.dataValue.quantity.test.js',
+				'tests/qunit/smw/data/ext.smw.dataValue.quantity.test.js',
 
 				// Api / Query
-				'tests/qunit/smw.data/ext.smw.data.test.js',
-				'tests/qunit/smw.api/ext.smw.api.test.js',
-				'tests/qunit/smw.query/ext.smw.query.test.js',
+				'tests/qunit/smw/data/ext.smw.data.test.js',
+				'tests/qunit/smw/api/ext.smw.api.test.js',
+				'tests/qunit/smw/query/ext.smw.query.test.js',
 			),
 			'dependencies' => array(
 				'ext.smw',

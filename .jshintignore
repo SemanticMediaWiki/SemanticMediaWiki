@@ -2,8 +2,8 @@
 resources/jquery/
 
 # Those files need overall re-factoring and qunit tests
-resources/ext.smw.special.ask.js
-resources/ext.smw.special.browse.js
-resources/ext.smw.special.property.js
-resources/ext.smw.util.autocomplete.js
-resources/ext.smw.util.tooltip.js
+resources/smw/special/ext.smw.special.ask.js
+resources/smw/special/ext.smw.special.browse.js
+resources/smw/special/ext.smw.special.property.js
+resources/smw/util/ext.smw.util.autocomplete.js
+resources/smw/util/ext.smw.util.tooltip.js

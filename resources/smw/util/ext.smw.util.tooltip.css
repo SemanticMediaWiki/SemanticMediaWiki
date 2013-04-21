@@ -65,20 +65,20 @@ img.smwttimg { /* images for tooltip icons */
 /* Individual assigned icons ( inline-block is important because the icon <span> is empty) */
 .smwtticon.info {
 	display:inline-block;
-	/* @embed */ background: url(images/info.png) no-repeat left bottom;
+	/* @embed */ background: url(../../images/info.png) no-repeat left bottom;
 }
 
 .smwtticon.service {
 	display:inline-block;
-	/* @embed */ background: url(images/info.png) no-repeat left bottom;
+	/* @embed */ background: url(../../images/info.png) no-repeat left bottom;
 }
 
 .smwtticon.warning {
 	display:inline-block;
-	/* @embed */ background: url(images/warning.png) no-repeat left bottom;
+	/* @embed */ background: url(../../images/warning.png) no-repeat left bottom;
 }
 
 .smwtticon.note {
 	display:inline-block;
-	/* @embed */ background: url(images/note.png) no-repeat left bottom;
+	/* @embed */ background: url(../../images/note.png) no-repeat left bottom;
 }
