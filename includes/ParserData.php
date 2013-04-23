@@ -166,18 +166,6 @@ class ParserData implements IParserData {
 	protected $updateJobs = true;
 
 	/**
-	 * Allows explicitly to switch storage method, MW 1.21 comes with a new
-	 * method setExtensionData/getExtensionData in how the ParserOutput
-	 * stores arbitrary data
-	 *
-	 * MW 1.21 unit tests are passed but real page content did vanished
-	 * therefore for now disable this feature for MW 1.21 as well
-	 *
-	 * @var $extensionData
-	 */
-	protected $useExtensionData = false;
-
-	/**
 	 * Constructor
 	 *
 	 * @since 1.9
@@ -302,13 +290,15 @@ class ParserData implements IParserData {
 	}
 
 	/**
-	 * Init semanticData container either from the ParserOutput object
-	 * or if not available use the subject
+	 * Initializes the semantic data container either from the ParserOutput or
+	 * if not available a new container is being created
+	 *
+	 * @note MW 1.21+ use getExtensionData()
 	 *
 	 * @since 1.9
 	 */
 	protected function setData() {
-		if ( method_exists( $this->parserOutput, 'getExtensionData' ) && $this->useExtensionData ) {
+		if ( method_exists( $this->parserOutput, 'getExtensionData' ) ) {
 			$this->semanticData = $this->parserOutput->getExtensionData( 'smwdata' );
 		} elseif ( isset( $this->parserOutput->mSMWData ) ) {
 			$this->semanticData = $this->parserOutput->mSMWData;
@@ -323,6 +313,8 @@ class ParserData implements IParserData {
 	/**
 	 * Update ParserOutput with processed semantic data
 	 *
+	 * @note MW 1.21+ use setExtensionData()
+	 *
 	 * @since 1.9
 	 *
 	 * @throws MWException
@@ -332,7 +324,7 @@ class ParserData implements IParserData {
 			throw new MWException( 'The semantic data container is not available' );
 		}
 
-		if ( method_exists( $this->parserOutput, 'setExtensionData' ) && $this->useExtensionData ) {
+		if ( method_exists( $this->parserOutput, 'setExtensionData' ) ) {
 			$this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
 		} else {
 			$this->parserOutput->mSMWData = $this->semanticData;

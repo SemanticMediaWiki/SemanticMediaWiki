@@ -382,4 +382,19 @@ class HooksTest extends \MediaWikiTestCase {
 			}
 		}
 	}
+
+	/**
+	 * @test SMWHooks::onInternalParseBeforeLinks
+	 * @dataProvider getTextDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param $text
+	 */
+	public function testOnInternalParseBeforeLinks( $text ) {
+		$parser = $this->getParser();
+		$result = SMWHooks::onInternalParseBeforeLinks( $parser, $text );
+
+		$this->assertTrue( $result );
+	}
 }

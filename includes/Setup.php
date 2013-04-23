@@ -72,7 +72,8 @@ function smwfRegisterHooks() {
 	// Additional special properties (modification date etc.)
 	$wgHooks['NewRevisionFromEditComplete'][] = 'SMWHooks::onNewRevisionFromEditComplete';
 
-	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
+	// Parsing [[link::syntax]] and resolves property annotations
+	$wgHooks['InternalParseBeforeLinks'][] = 'SMWHooks::onInternalParseBeforeLinks';
 
 	$wgHooks['OutputPageParserOutput'][] = 'SMWFactbox::onOutputPageParserOutput'; // copy some data for later Factbox display
 	$wgHooks['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle'; // special implementations for property/type articles
@@ -122,7 +123,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
-	$wgAutoloadClasses['SMWParserExtensions']       = $incDir . 'SMW_ParserExtensions.php';
+	$wgAutoloadClasses['SMW\ParserTextProcessor']   = $incDir . 'ParserTextProcessor.php';
 	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';

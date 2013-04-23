@@ -240,6 +240,7 @@ final class SMWHooks {
 			'Hooks',
 			'DataValueFactory',
 			'Settings',
+			'ParserTextProcessor',
 
 			'api/ApiSMWInfo',
 
@@ -608,6 +609,42 @@ final class SMWHooks {
 
 		$parserData = new SMW\ParserData( $wikiPage->getTitle(), $parserOutput, $options );
 		$parserData->addSpecialProperties( $wikiPage, $revision, $user );
+		return true;
+	}
+
+	/**
+	 * Hook: InternalParseBeforeLinks is used to process the expanded wiki
+	 * code after <nowiki>, HTML-comments, and templates have been treated.
+	 *
+	 * This method will be called before an article is displayed or previewed.
+	 * For display and preview we strip out the semantic properties and append them
+	 * at the end of the article.
+	 *
+	 * @note MW 1.20+ see InternalParseBeforeSanitize
+	 *
+	 * @see Parser
+	 * @see http://http://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
+	 *
+	 * @since  1.10
+	 *
+	 * @param Parser $parser
+	 * @param string $text
+	 *
+	 * @return true
+	 */
+	public static function onInternalParseBeforeLinks( Parser &$parser, &$text ) {
+
+		$settings = SMW\Settings::newFromArray( array(
+			'smwgNamespacesWithSemanticLinks' => $GLOBALS['smwgNamespacesWithSemanticLinks'],
+			'smwgLinksInValues' => $GLOBALS['smwgLinksInValues'],
+			'smwgInlineErrors'  => $GLOBALS['smwgInlineErrors']
+		) );
+
+		$processor = new SMW\ParserTextProcessor(
+			new SMW\ParserData( $parser->getTitle(), $parser->getOutput() ),
+			$settings
+		);
+		$processor->parse( $text );
 		return true;
 	}
 }
