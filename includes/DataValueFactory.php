@@ -6,6 +6,8 @@ use SMWDataItem;
 use SMWErrorValue;
 use SMWDIProperty;
 use SMWPropertyValue;
+use SMWDIWikiPage;
+use SMWDIError;
 
 /**
  * This file contains the SMWDataValueFactory class.

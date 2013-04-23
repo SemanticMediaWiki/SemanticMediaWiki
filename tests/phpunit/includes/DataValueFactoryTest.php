@@ -6,6 +6,9 @@ use SMW\DataValueFactory;
 use SMWDataItem;
 use SMWPropertyValue;
 
+use Title;
+use SMWDIWikiPage;
+
 /**
  * Tests for the SMW\DataValueFactory class
  *
@@ -44,6 +47,45 @@ use SMWPropertyValue;
  * @ingroup Test
  */
 class DataValueFactoryTest extends \MediaWikiTestCase {
+
+	/**
+	 * Helper method that returns a random string
+	 *
+	 * @since 1.9
+	 *
+	 * @param $length
+	 *
+	 * @return string
+	 */
+	private function getRandomString( $length = 10 ) {
+		return substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
+	}
+
+	/**
+	 * Helper method to get Title object
+	 *
+	 * @since 1.9
+	 *
+	 * @param $namespace
+	 *
+	 * @return Title
+	 */
+	private function getTitle( $namespace = NS_MAIN ){
+		return Title::newFromText( $this->getRandomString(), $namespace );
+	}
+
+	/**
+	 * Helper method that returns a SMWDIWikiPage object
+	 *
+	 * @since 1.9
+	 *
+	 * @param $namespace
+	 *
+	 * @return \SMWDIWikiPage
+	 */
+	public function getSubject( $namespace = NS_MAIN ) {
+		return SMWDIWikiPage::newFromTitle( $this->getTitle( $namespace ) );
+	}
 
 	/**
 	 * DataProvider
@@ -176,6 +218,15 @@ class DataValueFactoryTest extends \MediaWikiTestCase {
 		} else {
 			$this->assertInternalType( 'array', $dataValue->getErrors() );
 		}
+
+		// Check interface parameters
+		$dataValue = DataValueFactory::newPropertyObjectValue(
+			$propertyDI,
+			$value,
+			$this->getRandomString(),
+			$this->getSubject()
+		);
+		$this->assertInstanceOf( $expectedInstance , $dataValue );
 	}
 
 	/**
@@ -222,6 +273,15 @@ class DataValueFactoryTest extends \MediaWikiTestCase {
 		} else {
 			$this->assertInternalType( 'array', $dataValue->getErrors() );
 		}
+
+		// Check interface parameters
+		$dataValue = DataValueFactory::newPropertyValue(
+			$propertyName,
+			$value,
+			$this->getRandomString(),
+			$this->getSubject()
+		);
+		$this->assertInstanceOf( $expectedInstance , $dataValue );
 	}
 
 	/**
