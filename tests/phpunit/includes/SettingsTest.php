@@ -54,13 +54,13 @@ class SettingsTest extends \MediaWikiTestCase {
 	 */
 	public function dataSettingsProvider() {
 		// Using $this->arrayWrap( $settingArrays ) crashed PHP on Windows
-		return array( array(
-			array(),
-			array( 'foo' => 'bar' ),
-			array( 'foo' => 'bar', 'baz' => 'BAH' ),
-			array( 'bar' => array( '9001' ) ),
-			array( '~[,,_,,]:3' => array( 9001, 4.2 ) ),
-		) );
+		return array( array( array(
+			'',
+			'foo' => 'bar',
+			'foo' => 'bar', 'baz' => 'BAH',
+			'bar' => array( '9001' ),
+			'~[,,_,,]:3' => array( 9001, 4.2 ),
+		) ) );
 	}
 
 	/**
@@ -125,17 +125,36 @@ class SettingsTest extends \MediaWikiTestCase {
 	}
 
 	/**
+	 * Data provider that collects all individual smwg* settings
+	 *
+	 * @return array
+	 */
+	public function dataGlobalsSettingsProvider() {
+		$settings = array_intersect_key( $GLOBALS,
+			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
+		);
+
+		return array( array( $settings ) );
+	}
+
+	/**
 	 * Test Settings::newFromGlobals
 	 *
 	 * @since 1.9
+	 *
+	 * @dataProvider dataGlobalsSettingsProvider
+	 * @param array $settings
 	 */
-	public function testNewFromGlobals() {
+	public function testNewFromGlobals( array $settings ) {
 		$instance = Settings::newFromGlobals();
 		$this->assertInstanceOf( $this->className, $instance );
-		$this->assertEquals(
-			$GLOBALS['smwgDefaultStore'],
-			$instance->get( 'smwgDefaultStore' )
-		);
+
+		foreach ( $settings as $key => $value ) {
+			$this->assertEquals(
+				$GLOBALS[$key],
+				$instance->get( $key )
+			);
+		}
 	}
 
 	/**

@@ -278,6 +278,7 @@ final class SMWHooks {
 			'Infolink',
 			'QueryProcessor',
 			'Hooks',
+			'Settings',
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
