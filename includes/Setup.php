@@ -78,8 +78,8 @@ function smwfRegisterHooks() {
 	$wgHooks['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle'; // special implementations for property/type articles
 	$wgHooks['ParserFirstCallInit'][] = 'SMWHooks::onParserFirstCallInit';
 
-	$wgHooks['SkinTemplateTabs'][] = 'SMWHooks::addRefreshTab'; // basic tab addition
-	$wgHooks['SkinTemplateNavigation'][] = 'SMWHooks::addStructuredRefreshTab'; // structured version for "Vector"-type skins
+	// Alter the structured navigation links in SkinTemplates
+	$wgHooks['SkinTemplateNavigation'][] = 'SMWHooks::onSkinTemplateNavigation';
 
 	//UnitTests
 	$wgHooks['UnitTestsList'][] = 'SMWHooks::registerUnitTests';

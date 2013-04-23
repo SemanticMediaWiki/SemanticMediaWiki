@@ -301,6 +301,33 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
+	 * @test SMWHooks::onSkinTemplateNavigation
+	 *
+	 * @since 1.9
+	 */
+	public function testOnSkinTemplateNavigation() {
+		$skinTemplate = new \SkinTemplate();
+		$skinTemplate->getContext()->setLanguage( \Language::factory( 'en' ) );
+		$links = array();
+
+		$result = SMWHooks::onSkinTemplateNavigation( $skinTemplate, $links );
+		$this->assertTrue( $result );
+	}
+
+
+	/**
+	 * @test SMWHooks::onResourceLoaderGetConfigVars
+	 *
+	 * @since 1.9
+	 */
+	public function testOnResourceLoaderGetConfigVars() {
+		$vars = array();
+
+		$result = SMWHooks::onResourceLoaderGetConfigVars( $vars );
+		$this->assertTrue( $result );
+	}
+
+	/**
 	 * Test SMWHooks::registerUnitTests
 	 *
 	 * Files are normally registered manually in registerUnitTests(). This test
@@ -355,5 +382,4 @@ class HooksTest extends \MediaWikiTestCase {
 			}
 		}
 	}
-
 }

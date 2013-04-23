@@ -202,34 +202,11 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function showBrowseLink( $skintemplate ) {
+
 		if ( $skintemplate->data['isarticle'] ) {
 			$browselink = SMWInfolink::newBrowsingLink( wfMessage( 'smw_browselink' )->text(),
 							$skintemplate->data['titleprefixeddbkey'], false );
 			echo '<li id="t-smwbrowselink">' . $browselink->getHTML() . '</li>';
-		}
-		return true;
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateTabs
-	 * This is here for compatibility with MediaWiki 1.17. Once we can require 1.18, we can ditch this code :)
-	 *
-	 * @since 0.1
-	 *
-	 * @param SkinTemplate $skinTemplate
-	 * @param array $contentActions
-	 *
-	 * @return boolean
-	 */
-	public static function addRefreshTab( SkinTemplate $skinTemplate, array &$contentActions ) {
-		global $wgUser;
-
-		if ( $wgUser->isAllowed( 'purge' ) ) {
-			$contentActions['purge'] = array(
-				'class' => false,
-				'text' => wfMessage( 'smw_purge' )->text(),
-				'href' => $skinTemplate->getTitle()->getLocalUrl( array( 'action' => 'purge' ) )
-			);
 		}
 
 		return true;
@@ -246,10 +223,15 @@ final class SMWHooks {
 	 *
 	 * @return boolean
 	 */
-	public static function addStructuredRefreshTab( SkinTemplate &$skinTemplate, array &$links ) {
-		$actions = $links['actions'];
-		self::addRefreshTab( $skinTemplate, $actions );
-		$links['actions'] = $actions;
+	public static function onSkinTemplateNavigation( SkinTemplate &$skinTemplate, array &$links ) {
+
+		if ( $skinTemplate->getUser()->isAllowed( 'purge' ) ) {
+			$links['actions']['purge'] = array(
+				'class' => false,
+				'text' => $skinTemplate->msg( 'smw_purge' )->text(),
+				'href' => $skinTemplate->getTitle()->getLocalUrl( array( 'action' => 'purge' ) )
+			);
+		}
 
 		return true;
 	}
@@ -426,11 +408,11 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onResourceLoaderGetConfigVars( &$vars ) {
-		$vars['smw'] = array(
+		$vars['smw-config'] = array(
 			'version' => SMW_VERSION,
-			'options' => array(
-				'QMaxLimit' => $GLOBALS['smwgQMaxLimit'],
-				'QMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
+			'settings' => array(
+				'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
+				'smwgQMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
 			)
 		);
 
