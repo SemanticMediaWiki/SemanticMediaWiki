@@ -41,7 +41,12 @@ class SMWParseData {
 		}
 
 		$output = $parser->getOutput();
-		$output->mSMWMagicWords = $words;
+
+		if ( method_exists( $output, 'setExtensionData' ) ) {
+			$output->setExtensionData( 'smwmagicwords', $words );
+		} else {
+			$output->mSMWMagicWords = $words;
+		}
 
 		return $words;
 	}
@@ -77,8 +82,8 @@ class SMWParseData {
 	 * @return SMWSemanticData|null
 	 */
 	public static function getSMWDataFromParserOutput( ParserOutput $output, Title $title = null ) {
-		if ( method_exists( $output, 'getAdditionalData' ) ) {
-			$smwData = $output->getAdditionalData( 'smwdata' );
+		if ( method_exists( $output, 'getExtensionData' ) ) {
+			$smwData = $output->getExtensionData( 'smwdata' );
 		} elseif ( isset( $output->mSMWData ) ) {
 			$smwData = $output->mSMWData;
 		}
@@ -104,8 +109,8 @@ class SMWParseData {
 	 * @param SMWSemanticData $smwData
 	 */
 	public static function setSMWData( ParserOutput $output, SMWSemanticData $smwData ) {
-		if ( method_exists( $output, 'getAdditionalData' ) ) {
-			$output->setAdditionalData( 'smwdata', $smwData );
+		if ( method_exists( $output, 'setExtensionData' ) ) {
+			$output->setExtensionData( 'smwdata', $smwData );
 		}
 		else {
 			$output->mSMWData = $smwData;

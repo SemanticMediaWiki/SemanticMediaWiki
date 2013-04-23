@@ -241,6 +241,7 @@ final class SMWHooks {
 			'DataValueFactory',
 			'Settings',
 			'ParserTextProcessor',
+			'Factbox',
 
 			'api/ApiSMWInfo',
 

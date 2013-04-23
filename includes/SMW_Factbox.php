@@ -16,17 +16,17 @@ class SMWFactbox {
 	 * This function creates wiki text suitable for rendering a Factbox for a given
 	 * SMWSemanticData object that holds all relevant data. It also checks whether the
 	 * given setting of $showfactbox requires displaying the given data at all.
-	 * 
+	 *
 	 * @param SMWSemanticData $semdata
 	 * @param boolean $showfactbox
-	 * 
+	 *
 	 * @return string
 	 */
 	static public function getFactboxText( SMWSemanticData $semdata, $showfactbox = SMW_FACTBOX_NONEMPTY ) {
 		global $wgContLang;
-		
+
 		wfProfileIn( 'SMWFactbox::printFactbox (SMW)' );
-		
+
 		switch ( $showfactbox ) {
 			case SMW_FACTBOX_HIDDEN: // never show
 				wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
@@ -50,9 +50,9 @@ class SMWFactbox {
 		$text = '';
 		if ( wfRunHooks( 'smwShowFactbox', array( &$text, $semdata ) ) ) {
 			$subjectDv = SMWDataValueFactory::newDataItemValue( $semdata->getSubject(), null );
-			
+
 			SMWOutputs::requireResource( 'ext.smw.style' );
-			
+
 			$rdflink = SMWInfolink::newInternalLink(
 				wfMessage( 'smw_viewasrdf' )->inContentLanguage()->text(),
 				$wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' .
@@ -65,7 +65,7 @@ class SMWFactbox {
 				$subjectDv->getWikiValue(),
 				'swmfactboxheadbrowse'
 			);
-			
+
 			$text .= '<div class="smwfact">' .
 				'<span class="smwfactboxhead">' .
 				wfMessage( 'smw_factbox_head', $browselink->getWikiText() )->inContentLanguage()->text() . '</span>' .
@@ -116,17 +116,23 @@ class SMWFactbox {
 	 * information found in a given ParserOutput object. If the required custom data
 	 * is not found in the given ParserOutput, then semantic data for the provided Title
 	 * object is retreived from the store.
-	 * 
+	 *
 	 * @param ParserOutput $parseroutput
 	 * @param Title $title
-	 * 
+	 *
 	 * @return string
 	 */
 	static public function getFactboxTextFromOutput( ParserOutput $parseroutput, Title $title ) {
 		global $wgRequest, $smwgShowFactboxEdit, $smwgShowFactbox;
-		
-		$mws = isset( $parseroutput->mSMWMagicWords ) ? $parseroutput->mSMWMagicWords : array();
-		
+
+		// Prior MW 1.21 use mSMWMagicWords (see SMW\ParserTextProcessor)
+		if ( method_exists( $parseroutput, 'getExtensionData' ) ) {
+			$smwMagicWords = $parseroutput->getExtensionData( 'smwmagicwords' );
+			$mws = $smwMagicWords === null ? array() : $smwMagicWords;
+		} else {
+			$mws = isset( $parseroutput->mSMWMagicWords ) ? $parseroutput->mSMWMagicWords : array();
+		}
+
 		if ( in_array( 'SMW_SHOWFACTBOX', $mws ) ) {
 			$showfactbox = SMW_FACTBOX_NONEMPTY;
 		} elseif ( in_array( 'SMW_NOFACTBOX', $mws ) ) {
@@ -140,14 +146,14 @@ class SMWFactbox {
 		if ( $showfactbox == SMW_FACTBOX_HIDDEN ) { // use shortcut
 			return '';
 		}
-		
+
 		// Deal with complete dataset only if needed:
 		$smwData = SMWParseData::getSMWDataFromParserOutput( $parseroutput );
 
 		if ( $smwData === null || $smwData->stubObject ) {
 			$smwData = smwfGetStore()->getSemanticData( SMWDIWikiPage::newFromTitle( $title ) );
 		}
-		
+
 		return SMWFactbox::getFactboxText( $smwData, $showfactbox );
 	}
 
@@ -155,16 +161,16 @@ class SMWFactbox {
 	 * This hook copies SMW's custom data from the given ParserOutput object to
 	 * the given OutputPage object, since otherwise it is not possible to access
 	 * it later on to build a Factbox.
-	 * 
+	 *
 	 * @param OutputPage $outputpage
 	 * @param ParserOutput $parseroutput
-	 * 
+	 *
 	 * @return true
 	 */
 	static public function onOutputPageParserOutput( OutputPage $outputpage, ParserOutput $parseroutput ) {
 		global $wgParser;
 		$factbox = SMWFactbox::getFactboxTextFromOutput( $parseroutput, $outputpage->getTitle() );
-		
+
 		if ( $factbox !== '' ) {
 			$popts = new ParserOptions();
 			$po = $wgParser->parse( $factbox, $outputpage->getTitle(), $popts );
@@ -173,16 +179,16 @@ class SMWFactbox {
 			SMWOutputs::requireFromParserOutput( $po );
 			SMWOutputs::commitToOutputPage( $outputpage );
 		} // else: nothing shown, don't even set any text
-		
+
 		return true;
 	}
 
 	/**
 	 * This hook is used for inserting the Factbox text directly after the wiki page.
-	 * 
+	 *
 	 * @param OutputPage $outputpage
 	 * @param string $text
-	 * 
+	 *
 	 * @return true
 	 */
 	static public function onOutputPageBeforeHTML( OutputPage $outputpage, &$text ) {
@@ -195,10 +201,10 @@ class SMWFactbox {
 	/**
 	 * This hook is used for inserting the Factbox text after the article contents (including
 	 * categories).
-	 * 
+	 *
 	 * @param string $data
 	 * @param Skin|null $skin
-	 * 
+	 *
 	 * @return true
 	 */
 	static public function onSkinAfterContent( &$data, Skin $skin = null ) {
