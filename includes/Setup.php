@@ -100,7 +100,6 @@ function smwfRegisterHooks() {
 	}
 
 	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
-	$wgHooks['SkinGetPoweredBy'][] = 'SMWHooks::addPoweredBySMW';
 
 	$wgHooks['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
 }
@@ -408,16 +407,10 @@ function smwfRegisterSpecialPages() {
  */
 function smwfSetupExtension() {
 	wfProfileIn( 'smwfSetupExtension (SMW)' );
-	global $smwgScriptPath, $wgFooterIcons, $smwgMasterStore, $smwgIQRunningNumber;
+	global $smwgScriptPath, $smwgMasterStore, $smwgIQRunningNumber;
 
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;
-
-	if ( isset( $wgFooterIcons['poweredby'] )
-	  && isset( $wgFooterIcons['poweredby']['semanticmediawiki'] )
-	  && is_null( $wgFooterIcons['poweredby']['semanticmediawiki']['src'] ) ) {
-		$wgFooterIcons['poweredby']['semanticmediawiki']['src'] = "$smwgScriptPath/resources/images/smw_button.png";
-	}
 
 	wfProfileOut( 'smwfSetupExtension (SMW)' );
 	return true;

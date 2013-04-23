@@ -136,28 +136,6 @@ final class SMWHooks {
 	}
 
 	/**
-	 * Adds the 'Powered by Semantic MediaWiki' button right next to the default
-	 * 'Powered by MediaWiki' button at the bottom of every page. This works
-	 * only with MediaWiki 1.17+.
-	 * It might make sense to make this configurable via a variable, if some
-	 * admins don't want it.
-	 *
-	 * @since 1.7
-	 *
-	 * @param string $text
-	 * @param Skin $skin
-	 *
-	 * @return boolean
-	 */
-	public static function addPoweredBySMW( &$text, $skin ) {
-		global $smwgScriptPath;
-		$url = htmlspecialchars( "$smwgScriptPath/resources/images/smw_button.png" );
-		$text .= ' <a href="http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki"><img src="' . $url . '" alt="Powered by Semantic MediaWiki" /></a>';
-
-		return true;
-	}
-
-	/**
 	 * Adds the 'semantic' extension type to the type list.
 	 *
 	 * @since 1.7.1
