@@ -66,6 +66,14 @@ class HooksTest extends \MediaWikiTestCase {
 		);
 	}
 
+	/**
+	 * Helper method to normalize a path
+	 *
+	 * @since 1.9
+	 */
+	private function normalizePath( $path ) {
+		return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
+	}
 
 	/**
 	 * Helper method that returns a Title object
@@ -268,6 +276,62 @@ class HooksTest extends \MediaWikiTestCase {
 			$this->markTestSkipped(
 				'Skipped test due to missing method (probably MW 1.19 or lower).'
 			);
+		}
+	}
+
+	/**
+	 * Test SMWHooks::registerUnitTests
+	 *
+	 * Files are normally registered manually in registerUnitTests(). This test
+	 * will compare registered files with the files available in the
+	 * test directory.
+	 *
+	 * @since 1.9
+	 */
+	public function testRegisterUnitTests() {
+		$registeredFiles = array();
+		$result = SMWHooks::registerUnitTests( $registeredFiles );
+
+		$this->assertTrue( $result );
+		$this->assertNotEmpty( $registeredFiles );
+
+		// Get all the *.php files
+		// @see http://php.net/manual/en/class.recursivedirectoryiterator.php
+		$testFiles = new \RegexIterator(
+			new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( __DIR__ ) ),
+			'/^.+\.php$/i',
+			\RecursiveRegexIterator::GET_MATCH
+		);
+
+		// Array contains files that are excluded from verification because
+		// those files do not contain any executable tests and therefore are
+		// not registered (such as abstract classes, mock classes etc.)
+		$excludedFiles = array(
+			'dataitems/DataItem',
+			'printers/ResultPrinter'
+		);
+
+		// Normalize excluded files
+		foreach ( $excludedFiles as &$registeredFile ) {
+			$registeredFile = $this->normalizePath( __DIR__ . '/' . $registeredFile . 'Test.php' );
+		}
+
+		// Normalize registered files
+		foreach ( $registeredFiles as &$registeredFile ) {
+			$registeredFile = $this->normalizePath( $registeredFile );
+		}
+
+		// Compare directory files with registered files
+		foreach ( $testFiles as $fileName => $object ){
+			$fileName = $this->normalizePath( $fileName );
+
+			if ( !in_array( $fileName, $excludedFiles ) ) {
+				$this->assertContains(
+					$fileName,
+					$registeredFiles,
+					'Missing registration for ' . $fileName
+				);
+			}
 		}
 	}
 }

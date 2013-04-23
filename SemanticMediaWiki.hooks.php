@@ -278,7 +278,10 @@ final class SMWHooks {
 			'Infolink',
 			'QueryProcessor',
 			'Hooks',
+			'DataValueFactory',
 			'Settings',
+
+			'api/ApiSMWInfo',
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
@@ -297,6 +300,7 @@ final class SMWHooks {
 			'parserhooks/DeclareParserFunction',
 			'parserhooks/DocumentationParserFunction',
 			'parserhooks/InfoParserFunction',
+			'parserhooks/SetParserFunction',
 
 			'query/QueryData',
 
