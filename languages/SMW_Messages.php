@@ -2715,9 +2715,10 @@ Progrés estimat de l'actualització actual:",
 
 /** Chechen (нохчийн)
  * @author Sasan700
+ * @author Умар
  */
 $messages['ce'] = array(
-	'smw_printername_template' => 'Куцкеп',
+	'smw_printername_template' => 'Кеп',
 );
 
 /** Chamorro (Chamoru)
@@ -7699,7 +7700,6 @@ $messages['it'] = array(
 	'smw_concept_cache_miss' => 'Il concetto "$1" non può essere usato ora, siccome la configurazione della wiki richiede che sia elaborato off-line. Se il problema non si risolve dopo un po\' di tempo, chiedi all\'amministratore del tuo sito di rendere disponibile questo concetto.',
 	'smw_noinvannot' => 'Il valore non può essere assegnato alla proprietà inversa.',
 	'smw_baduri' => 'Spiacenti. Gli URI del tipo “$1” non sono consentiti.',
-	'smw_csv_link' => 'CSV',
 	'smw_printername_count' => 'Conta risultati',
 	'smw_printername_csv' => 'Esportazione CSV',
 	'smw_printername_debug' => 'Debug della query (per utenti esperti)',
