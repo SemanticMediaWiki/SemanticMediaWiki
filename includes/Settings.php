@@ -78,11 +78,6 @@ class Settings {
 	 * @return Settings
 	 */
 	public static function newFromGlobals() {
-		// Collect all individual smwg* settings here
-		// $settings = array_intersect_key( $GLOBALS,
-		//	array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
-		//);
-
 		$settings = array(
 			'smwgScriptPath' => $GLOBALS['smwgScriptPath'],
 			'smwgIP' => $GLOBALS['smwgIP'],
@@ -149,6 +144,12 @@ class Settings {
 			'smwgCacheType' => $GLOBALS['smwgCacheType'],
 			'smwgAutoRefreshOnPurge' => $GLOBALS['smwgAutoRefreshOnPurge'],
 			'smwgAutoRefreshOnPageMove' => $GLOBALS['smwgAutoRefreshOnPageMove'],
+			'smwgContLang' => $GLOBALS['smwgContLang'],
+			'smwgMaxPropertyValues' => $GLOBALS['smwgMaxPropertyValues'],
+			'smwgQSubpropertyDepth' => $GLOBALS['smwgQSubpropertyDepth'],
+			'smwgNamespace' => $GLOBALS['smwgNamespace'],
+			'smwgMasterStore' => $GLOBALS['smwgMasterStore'],
+			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'],
 		);
 
 		return self::newFromArray( $settings );
