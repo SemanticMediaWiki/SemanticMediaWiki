@@ -42,8 +42,8 @@ use LinksUpdate;
  */
 
 /**
- * This class tests implemented hooks and verifies consistency among those
- * invoked methods and ensures a hook generally returns with true.
+ * This class is testing implemented hooks and verifies consistency with its
+ * invoked methods to ensure a hook generally returns true.
  *
  * @ingroup SMW
  * @ingroup Test
@@ -58,8 +58,6 @@ class HooksTest extends \MediaWikiTestCase {
 	public function getTextDataProvider() {
 		return array(
 			array(
-				'Fooooobaaaa',
-				'TestUser',
 				"[[Lorem ipsum]] dolor sit amet, consetetur sadipscing elitr, sed diam " .
 				" nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat."
 			),
@@ -70,35 +68,62 @@ class HooksTest extends \MediaWikiTestCase {
 	 * Helper method to normalize a path
 	 *
 	 * @since 1.9
+	 *
+	 * @return string
 	 */
 	private function normalizePath( $path ) {
 		return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
 	}
 
 	/**
+	 * Helper method that returns a random string
+	 *
+	 * @since 1.9
+	 *
+	 * @param $length
+	 *
+	 * @return string
+	 */
+	private function getRandomString( $length = 10 ) {
+		return substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
+	}
+
+	/**
 	 * Helper method that returns a Title object
 	 *
-	 * @param $titleName
+	 * @since 1.9
 	 *
 	 * @return Title
 	 */
-	private function getTitle( $titleName ){
-		return Title::newFromText( $titleName );
+	private function getTitle(){
+		return Title::newFromText( $this->getRandomString() );
+	}
+
+	/**
+	 * Helper method that returns an User object
+	 *
+	 * @since 1.9
+	 *
+	 * @return User
+	 */
+	private function getUser() {
+		return User::newFromName( $this->getRandomString() );
 	}
 
 	/**
 	 * Helper method to create Title/ParserOutput object
-	 *
 	 * @see LinksUpdateTest::makeTitleAndParserOutput
+	 *
+	 * @since 1.9
 	 *
 	 * @param $titleName
 	 * @param $id
 	 *
 	 * @return array
 	 */
-	private function makeTitleAndParserOutput( $name, $id ) {
-		$t = $this->getTitle( $name );
-		$t->resetArticleID( $id );
+	private function makeTitleAndParserOutput() {
+		$t = $this->getTitle();
+		$t->resetArticleID( rand( 1, 1000 ) );
 
 		$po = new ParserOutput();
 		$po->setTitleText( $t->getPrefixedText() );
@@ -109,16 +134,18 @@ class HooksTest extends \MediaWikiTestCase {
 	/**
 	 * Helper method to create Parser object
 	 *
+	 * @since 1.9
+	 *
 	 * @param $titleName
 	 *
 	 * @return Parser
 	 */
-	private function getParser( $titleName ) {
+	private function getParser() {
 		global $wgContLang, $wgParserConf;
 
-		$title = $this->getTitle( $titleName );
-		$wikiPage = new WikiPage(  $title );
-		$user = User::newFromName( $titleName );
+		$title = $this->getTitle();
+		$user = $this->getUser();
+		$wikiPage = new WikiPage( $title );
 		$parserOptions = $wikiPage->makeParserOptions( $user );
 
 		$parser = new Parser( $wgParserConf );
@@ -130,7 +157,7 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test SMWHooks::onArticleFromTitle
+	 * @test SMWHooks::onArticleFromTitle
 	 *
 	 * @since 1.9
 	 */
@@ -149,19 +176,19 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test SMWHooks::onParserFirstCallInit
+	 * @test SMWHooks::onParserFirstCallInit
 	 *
 	 * @since 1.9
 	 */
 	public function testOnParserFirstCallInit() {
-		$parser = $this->getParser( 'FooBaroo' );
+		$parser = $this->getParser();
 		$result = SMWHooks::onParserFirstCallInit( $parser );
 
 		$this->assertTrue( $result );
 	}
 
 	/**
-	 * Test SMWHooks::onSpecialStatsAddExtra
+	 * @test SMWHooks::onSpecialStatsAddExtra
 	 *
 	 * @since 1.9
 	 */
@@ -173,15 +200,15 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test SMWHooks::onParserAfterTidy
+	 * @test SMWHooks::onParserAfterTidy
+	 * @dataProvider getTextDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getTextDataProvider
 	 * @param $text
 	 */
 	public function testOnParserAfterTidy( $text ) {
-		$parser = $this->getParser( 'BarFoo' );
+		$parser = $this->getParser();
 		$result = SMWHooks::onParserAfterTidy(
 			$parser,
 			$text
@@ -191,12 +218,12 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test SMWHooks::onLinksUpdateConstructed
+	 * @test SMWHooks::onLinksUpdateConstructed
 	 *
 	 * @since 1.9
 	 */
 	public function testOnLinksUpdateConstructed() {
-		list( $title, $parserOutput ) = $this->makeTitleAndParserOutput( "Testing", 111 );
+		list( $title, $parserOutput ) = $this->makeTitleAndParserOutput();
 		$update = new LinksUpdate( $title, $parserOutput );
 		$result = SMWHooks::onLinksUpdateConstructed( $update );
 
@@ -204,21 +231,17 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test SMWHooks::onArticleDelete
+	 * @test SMWHooks::onArticleDelete
 	 *
 	 * @since 1.9
-	 *
-	 * @dataProvider getTextDataProvider
-	 * @param $titleName
-	 * @param $userName
 	 */
-	public function testOnArticleDelete( $titleName, $userName ) {
+	public function testOnArticleDelete() {
 		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
 
-			$title = $this->getTitle( $titleName );
+			$title = $this->getTitle();
+			$user = $this->getUser();
 			$wikiPage = new WikiPage(  $title );
 			$revision = $wikiPage->getRevision();
-			$user = User::newFromName( $userName );
 			$reason = '';
 			$error = '';
 
@@ -238,19 +261,18 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test SMWHooks::onNewRevisionFromEditComplete
+	 * @test SMWHooks::onNewRevisionFromEditComplete
+	 * @dataProvider getTextDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getTextDataProvider
-	 * @param $titleName
-	 * @param $userName
 	 * @param $text
 	 */
-	public function testOnNewRevisionFromEditComplete( $titleName, $userName, $text ) {
+	public function testOnNewRevisionFromEditComplete( $text ) {
 		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
 
-			$title = $this->getTitle( $titleName );
+			$title = $this->getTitle();
+			$user = $this->getUser();
 			$wikiPage = new WikiPage(  $title );
 
 			$content = \ContentHandler::makeContent(
@@ -262,7 +284,6 @@ class HooksTest extends \MediaWikiTestCase {
 			$wikiPage->doEditContent( $content, "testing", EDIT_NEW );
 			$this->assertTrue( $wikiPage->getId() > 0, "WikiPage should have new page id" );
 			$revision = $wikiPage->getRevision();
-			$user = User::newFromName( $userName );
 
 			$result = SMWHooks::onNewRevisionFromEditComplete (
 				$wikiPage,
@@ -334,4 +355,5 @@ class HooksTest extends \MediaWikiTestCase {
 			}
 		}
 	}
+
 }
