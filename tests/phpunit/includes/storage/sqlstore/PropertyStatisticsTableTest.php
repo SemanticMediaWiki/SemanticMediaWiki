@@ -35,6 +35,17 @@ use SMW\SQLStore\PropertyStatisticsTable;
  */
 class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 
+	/**
+	 * On the Windows platform pow( 2 , 31 ) returns with
+	 * "MWException: The value to add must be a positive integer" therefore
+	 * return true if this test runs on Windows
+	 *
+	 * @return boolean
+	 */
+	private function isWinOS() {
+		return strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN';
+	}
+
 	public function testDeleteAll() {
 		if ( !( smwfGetStore() instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
@@ -62,7 +73,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 			$usageCounts[] = array( $propId, mt_rand( 0, 100000 ) );
 		}
 
-		$usageCounts[] = array( 9001, pow( 2 , 31 ) - 1 );
+		$usageCounts[] = array( 9001, $this->isWinOS() ? pow( 2 , 30 ) : pow( 2 , 31 ) );
 
 		return $usageCounts;
 	}
@@ -123,7 +134,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 			1 => 42,
 			2 => 0,
 			9001 => 9001,
-			9002 => pow( 2 , 31 ) - 1,
+			9002 => $this->isWinOS() ? pow( 2 , 30 ) : pow( 2 , 31 ),
 			9003 => 1,
 		);
 
