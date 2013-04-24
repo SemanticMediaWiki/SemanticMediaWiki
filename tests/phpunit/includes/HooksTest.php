@@ -47,6 +47,8 @@ use LinksUpdate;
  *
  * @ingroup SMW
  * @ingroup Test
+ * @group Database
+ * ^--- important, causes temporary tables to be used instead of the real database
  */
 class HooksTest extends \MediaWikiTestCase {
 
@@ -291,6 +293,11 @@ class HooksTest extends \MediaWikiTestCase {
 				$wikiPage->getId(),
 				$user
 			);
+
+			// Always make sure the clean-up
+			if ( $wikiPage->exists() ) {
+				$wikiPage->doDeleteArticle( "testing done." );
+			}
 
 			$this->assertTrue( $result );
 		} else {
