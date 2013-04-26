@@ -12396,8 +12396,7 @@ Rezultatele pot fi neașteptate.',
 	'smw_attribute_header' => 'Pagini care folosesc proprietatea „$1”',
 	'smw_subproperty_header' => 'Subproprietăți',
 	'smw_subpropertyarticlecount' => 'Această proprietate are {{PLURAL:$1|următoarea subproprietate|următoarele $1 subproprietăți}}:',
-	'smw_concept_header' => 'Pagini ale conceptului „$1”',
-	'exportrdf' => 'Exportă paginile în RDF',
+	'exportrdf' => 'Exportare pagini în RDF',
 	'smw_exportrdf_submit' => 'Export',
 	'uriresolver' => 'Rezolvator URI',
 	'properties' => 'Proprietăți',
@@ -12494,6 +12493,7 @@ Rezultatele pot fi neașteptate.',
 	'smw-ui-tooltip-title-event' => 'Eveniment',
 	'smw-ui-tooltip-title-note' => 'Notă',
 	'smw_unknowntype' => 'Tipul acestei proprietăți este invalid',
+	'smw_concept_header' => 'Pagini ale conceptului „$1”',
 );
 
 /** tarandíne (tarandíne)
@@ -15837,6 +15837,7 @@ $messages['zh-hans'] = array(
  * @author Frankou
  * @author Gzdavidwong
  * @author Justincheng12345
+ * @author Littletung
  * @author Mark85296341
  * @author Oapbtommy
  * @author Sheepy
@@ -15947,8 +15948,6 @@ $messages['zh-hant'] = array(
 	'smw_attributearticlecount' => '使用此屬性顯示 $1 {{PLURAL:$1|page|頁面}}',
 	'smw_subproperty_header' => '子屬性',
 	'smw_subpropertyarticlecount' => '此屬性有以下 $1 {{PLURAL:$1|subproperty|子屬性}}:',
-	'smw_concept_header' => '概念「$1」的頁面',
-	'smw_conceptarticlecount' => '顯示屬於此概念的 $1 {{PLURAL:$1|page|頁面}}。',
 	'exportrdf' => '輸出頁面到 RDF',
 	'smw_exportrdf_docu' => '這個頁面用於以 RDF 格式獲得頁面數據。
 在下方文字框中輸入標題以匯出頁面，每行一個標題。',
@@ -15961,7 +15960,7 @@ $messages['zh-hant'] = array(
 	'uriresolver' => 'URI 解析器',
 	'properties' => '屬性',
 	'smw_properties_docu' => '本 wiki 使用以下屬性。',
-	'smw_property_template' => '類型為 $2 的屬性 $1（出現 $3 次）', # Fuzzy
+	'smw_property_template' => '類型為 $2 的屬性 $1（出現 $3 次）',
 	'smw_propertylackspage' => '所有屬性均應有一個頁面描述！',
 	'smw_propertylackstype' => '此屬性未指定類型（目前預設為類型 $1）',
 	'smw_propertyhardlyused' => '此屬性在本 wiki 中不常使用。',
@@ -16068,9 +16067,15 @@ $messages['zh-hant'] = array(
 	'smw_smwadmin_return' => '返回到$1。',
 	'smw_smwadmin_updatestarted' => '更新語意數據過程開始。
 所有已儲存數據將被按需重建或修復。
-你可以通過本特殊頁面追蹤更新進程。', # Fuzzy
-	'smw_smwadmin_updatenotstarted' => '已有更新進程正在執行，請勿建立另一個。', # Fuzzy
-	'smw_smwadmin_updatestopped' => '已停止所有更新進程。', # Fuzzy
+你可以通過本特殊頁面追蹤更新進程。
+
+返回到$1。',
+	'smw_smwadmin_updatenotstarted' => '已有更新進程正在執行，請勿建立另一個。
+
+返回到$1。',
+	'smw_smwadmin_updatestopped' => '已停止所有更新進程。
+
+返回到$1。',
 	'smw_smwadmin_updatenotstopped' => '請勾選複選框，以確認確實希望終止正在執行的升級進程。', # Fuzzy
 	'smw_smwadmin_docu' => '這個特殊頁面為您安裝和升級<a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>提供說明。
 請在執行管理功能前備份好資料。',
@@ -16117,6 +16122,8 @@ $messages['zh-hant'] = array(
 	'smw-info-par-message' => '顯示的信息。',
 	'smw-info-par-icon' => '顯示的圖標，“信息”或“警告”。',
 	'smw_unknowntype' => '定義的屬性類型「$1」不被支援。', # Fuzzy
+	'smw_concept_header' => '概念「$1」的頁面',
+	'smw_conceptarticlecount' => '顯示屬於此概念的 $1 {{PLURAL:$1|page|頁面}}。', # Fuzzy
 );
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
