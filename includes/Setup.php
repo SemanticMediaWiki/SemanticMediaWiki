@@ -120,7 +120,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ParameterInput']        = $incDir . 'ParameterInput.php';
 	$wgAutoloadClasses['SMW\MessageReporter']        = $incDir . 'MessageReporter.php';
 	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . 'MessageReporter.php';
-	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
+	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
 	$wgAutoloadClasses['SMW\ParserTextProcessor']   = $incDir . 'ParserTextProcessor.php';
