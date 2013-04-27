@@ -3,13 +3,7 @@
 namespace SMW\Test;
 
 use SMW\ShowParserFunction;
-use SMW\ParserData;
 use SMW\QueryData;
-
-use SMWDIBlob;
-use SMWDINumber;
-use SMWDataItem;
-use SMWDataValueFactory;
 
 use Title;
 use ParserOutput;
@@ -32,10 +26,11 @@ use ParserOutput;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
  *
  * @group SMW
@@ -44,10 +39,26 @@ use ParserOutput;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class ShowParserFunctionTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the SMW\ShowParserFunction class
+ */
+class ShowParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * DataProvider
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\ShowParserFunction';
+	}
+
+	/**
+	 * Provides data sample normally found in connection with the {{#show}}
+	 * parser function. The first array contains parametrized input value while
+	 * the second array contains expected return results for the instantiated
+	 * object.
 	 *
 	 * @return array
 	 */
@@ -58,18 +69,16 @@ class ShowParserFunctionTest extends \MediaWikiTestCase {
 			// |?Modification date
 			// }}
 			array(
-				'Foo',
 				array(
 					'',
 					'Foo',
 					'?Modification date',
 				),
 				array(
-					'result' => false,
 					'output' => '',
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-					'queryValue' => array( 'list', 0, 1, '[[:Foo]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+					'propertyValue' => array( 'list', 0, 1, '[[:Foo]]' )
 				)
 			),
 
@@ -78,7 +87,6 @@ class ShowParserFunctionTest extends \MediaWikiTestCase {
 			// |default=no results
 			// }}
 			array(
-				'Help:Bar',
 				array(
 					'',
 					'Help:Bar',
@@ -86,103 +94,106 @@ class ShowParserFunctionTest extends \MediaWikiTestCase {
 					'default=no results'
 				),
 				array(
-					'result' => true,
 					'output' => 'no results',
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-					'queryValue' => array( 'list', 0, 1, '[[:Help:Bar]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+					'propertyValue' => array( 'list', 0, 1, '[[:Help:Bar]]' )
 				)
 			)
 		);
 	}
 
 	/**
-	 * Helper method to get title object
-	 *
-	 * @return Title
-	 */
-	private function getTitle( $title ){
-		return Title::newFromText( $title );
-	}
-
-	/**
-	 * Helper method to get ParserOutput object
-	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
-	}
-
-	/**
 	 * Helper method
 	 *
+	 * @since 1.9
+	 *
+	 * @param $title
+	 * @param $parserOutput
 	 * @return SMW\ShowParserFunction
 	 */
-	private function getInstance( $title, $parserOutput = '' ) {
+	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new ShowParserFunction(
-			new ParserData( $this->getTitle( $title ), $parserOutput ),
-			new QueryData( $this->getTitle( $title ) )
+			$this->getParserData( $title, $parserOutput ),
+			new QueryData( $title )
 		 );
 	}
 
 	/**
-	 * Test instance
+	 * @test ShowParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructor( $title ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertInstanceOf( 'SMW\ShowParserFunction', $instance );
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
 	 * Test instance exception
+	 * @test ShowParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructorException( $title ) {
+	public function testConstructorException() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance( $title );
+		$instance =  $this->getInstance( $this->getTitle() );
 	}
 
 	/**
-	 * Test parse()
-	 *
+	 * @test ShowParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testParse( $title, array $params, array $expected ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertEquals( $expected['result'], $instance->parse( $params, true ) !== '' );
-		$this->assertEquals( $expected['output'], $instance->parse( $params, true ) );
+	public function testParse( array $params, array $expected ) {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$result = $instance->parse( $params, true );
+		$this->assertEquals( $expected['output'], $result );
 	}
 
 	/**
 	 * Test ($GLOBALS['smwgQEnabled'] = false)
 	 *
+	 * @test ShowParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
 	 */
-	public function testParseDisabledsmwgQEnabled( $title, array $params ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
+	public function testParseDisabledsmwgQEnabled( array $params ) {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$expected = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
-		$this->assertEquals( $expected , $instance->parse( $params, false ) );
+		$result = $instance->parse( $params, false );
+
+		$this->assertEquals( $expected , $result );
 	}
 
 	/**
 	 * Test generated query data
 	 *
+	 * @test ShowParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testInstantiatedQueryData( $title, array $params, array $expected ) {
+	public function testInstantiatedQueryData( array $params, array $expected ) {
 		$parserOutput =  $this->getParserOutput();
-		$instance = $this->getInstance( $title, $parserOutput );
+		$title = $this->getTitle();
 
-		// Black-box approach
+		// Initialize and parse
+		$instance = $this->getInstance( $title, $parserOutput );
 		$instance->parse( $params, true, true);
 
-		// Get semantic data from the ParserOutput that where stored earlier
-		// during parse()
-		$parserData = new ParserData( $this->getTitle( $title ), $parserOutput );
+		// Get semantic data from the ParserOutput
+		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
@@ -190,25 +201,18 @@ class ShowParserFunctionTest extends \MediaWikiTestCase {
 		// Confirm subSemanticData objects for the SemanticData instance
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$this->assertCount( $expected['queryCount'], $containerSemanticData->getProperties() );
-
-			// Confirm added properties
-			foreach ( $containerSemanticData->getProperties() as $key => $diproperty ){
-				$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-				$this->assertContains( $diproperty->getKey(), $expected['queryKey'] );
-
-				// Confirm added property values
-				foreach ( $containerSemanticData->getPropertyValues( $diproperty ) as $dataItem ){
-					$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
-					if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
-						$this->assertContains( $dataValue->getWikiValue(), $expected['queryValue'] );
-					} else if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_NUMBER ){
-						$this->assertContains( $dataValue->getNumber(), $expected['queryValue'] );
-					} else if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_BLOB ){
-						$this->assertContains( $dataValue->getWikiValue(), $expected['queryValue'] );
-					}
-				}
-			}
+			$this->assertSemanticData( $containerSemanticData, $expected );
 		}
+	}
+
+	/**
+	 * @test ShowParserFunction::render
+	 *
+	 * @since 1.9
+	 */
+	public function testStaticRender() {
+		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$result = ShowParserFunction::render( $parser );
+		$this->assertInternalType( 'string', $result );
 	}
 }

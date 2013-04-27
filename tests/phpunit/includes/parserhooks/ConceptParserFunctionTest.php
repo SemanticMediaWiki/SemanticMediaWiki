@@ -38,20 +38,30 @@ use ParserOutput;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class ConceptParserFunctionTest extends \MediaWikiTestCase {
+class ConceptParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * DataProvider
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\ConceptParserFunction';
+	}
+
+	/**
+	 * Provides data sample, the first array contains parametrized input
+	 * value while the second array contains expected return results for the
+	 * instantiated object.
 	 *
 	 * @return array
 	 */
 	public function getDataProvider() {
 		return array(
-
+			// #0
 			// {{#concept: [[Modification date::+]]
 			// }}
 			array(
-				'Concept:Foo',
 				array(
 					'',
 					'[[Modification date::+]]'
@@ -59,18 +69,18 @@ class ConceptParserFunctionTest extends \MediaWikiTestCase {
 				array(
 					'result' => true,
 					'propertyCount' => 1,
-					'conceptQuery' => '[[Modification date::+]]',
-					'conceptDocu' => '',
-					'conceptSize' => 1,
-					'conceptDepth' => 1,
+					'conceptQuery'  => '[[Modification date::+]]',
+					'conceptDocu'   => '',
+					'conceptSize'   => 1,
+					'conceptDepth'  => 1,
 				)
 			),
 
+			// #1
 			// {{#concept: [[Modification date::+]]
 			// |Foooooooo
 			// }}
 			array(
-				'Concept:Bar',
 				array(
 					'',
 					'[[Modification date::+]]',
@@ -79,10 +89,10 @@ class ConceptParserFunctionTest extends \MediaWikiTestCase {
 				array(
 					'result' => true,
 					'propertyCount' => 1,
-					'conceptQuery' => '[[Modification date::+]]',
-					'conceptDocu' => 'Foooooooo',
-					'conceptSize' => 1,
-					'conceptDepth' => 1,
+					'conceptQuery'  => '[[Modification date::+]]',
+					'conceptDocu'   => 'Foooooooo',
+					'conceptSize'   => 1,
+					'conceptDepth'  => 1,
 				)
 			)
 		);
@@ -95,98 +105,102 @@ class ConceptParserFunctionTest extends \MediaWikiTestCase {
 	 */
 	public function getNameSpaceDataProvider() {
 		return array(
-			array( 'Foo', 'Help:252', 'Concepts:Bar' )
+			array( NS_MAIN, NS_HELP, SMW_NS_CONCEPT )
 		);
 	}
 
 	/**
-	 * Helper method to get title object
+	 * Helper method that returns a ConceptParserFunction object
 	 *
-	 * @return Title
-	 */
-	private function getTitle( $title ){
-		return Title::newFromText( $title );
-	}
-
-	/**
-	 * Helper method to get ParserOutput object
+	 * @since 1.9
 	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
-	}
-
-	/**
-	 * Helper method
+	 * @param $title
+	 * @param $parserOutput
 	 *
-	 * @return SMW\ConceptParserFunction
+	 * @return ConceptParserFunction
 	 */
-	private function getInstance( $title, $parserOutput = '' ) {
+	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new ConceptParserFunction(
-			new ParserData( $this->getTitle( $title ), $parserOutput ) );
+			$this->getParserData( $title, $parserOutput ) );
 	}
 
 	/**
-	 * Test instance
+	 * @test ConceptParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructor( $title ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertInstanceOf( 'SMW\ConceptParserFunction', $instance );
+	public function testConstructor() {
+		$instance = $this->getInstance(
+			$this->getTitle( SMW_NS_CONCEPT ),
+			$this->getParserOutput()
+		);
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
 	 * Test instance exception
+	 * @test ConceptParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructorException( $title ) {
+	public function testConstructorException() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance( $title );
+		$instance = $this->getInstance( $this->getTitle( SMW_NS_CONCEPT ) );
 	}
 
 	/**
 	 * Test error on wrong namespace
-	 *
+	 * @test ConceptParserFunction::parse
 	 * @dataProvider getNameSpaceDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param $namespace
 	 */
-	public function testErrorOnNamespace( $title ) {
+	public function testErrorOnNamespace( $namespace ) {
 		$errorMessage = smwfEncodeMessages( array( wfMessage( 'smw_no_concept_namespace' )->inContentLanguage()->text() ) );
 
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
+		$instance = $this->getInstance( $this->getTitle( $namespace ), $this->getParserOutput() );
 		$this->assertEquals( $errorMessage, $instance->parse( array() ) );
 	}
 
 	/**
 	 * Test error on double {{#concept}} use
-	 *
+	 * @test ConceptParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param $namespace
 	 */
-	public function testErrorOnDoubleParse( $title, array $params ) {
+	public function testErrorOnDoubleParse( array $params ) {
 		$errorMessage = smwfEncodeMessages( array( wfMessage( 'smw_multiple_concepts' )->inContentLanguage()->text() ) );
 
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
+		$instance = $this->getInstance( $this->getTitle( SMW_NS_CONCEPT ), $this->getParserOutput() );
  		$instance->parse( $params );
 
 		$this->assertEquals( $errorMessage, $instance->parse( $params ) );
 	}
 
 	/**
-	 * Test instantiated property and value
-	 *
+	 * @test ConceptParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param $params
+	 * @param $expected
 	 */
-	public function testSemanticData( $title, array $params, array $expected ) {
+	public function testParse( array $params, array $expected ) {
 		$parserOutput =  $this->getParserOutput();
-		$instance = $this->getInstance( $title, $parserOutput );
+		$title = $this->getTitle( SMW_NS_CONCEPT );
 
-		// Black-box
+		// Initialize and parse
+		$instance = $this->getInstance( $title, $parserOutput );
 		$instance->parse( $params );
 
 		// Re-read data from stored parserOutput
-		$parserData = new ParserData( $this->getTitle( $title ), $parserOutput );
+		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
@@ -205,5 +219,16 @@ class ConceptParserFunctionTest extends \MediaWikiTestCase {
 				$this->assertEquals( $expected['conceptDepth'], $dataItem->getDepth() );
 			}
 		}
+	}
+
+	/**
+	 * @test ConceptParserFunction::render
+	 *
+	 * @since 1.9
+	 */
+	public function testStaticRender() {
+		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$result = ConceptParserFunction::render( $parser );
+		$this->assertInternalType( 'string', $result );
 	}
 }

@@ -2,12 +2,13 @@
 
 namespace SMW\Test;
 
+use SMW\DataValueFactory;
 use SMW\ParserData;
+use SMW\Settings;
+
 use ParserOutput;
 use Title;
 
-use SMWDataValueFactory;
-use SMWDataItem;
 
 /**
  * Tests for the SMW\ParserData class
@@ -46,26 +47,15 @@ use SMWDataItem;
  * @ingroup SMW
  * @ingroup Test
  */
-class ParserDataTest extends \MediaWikiTestCase {
+class ParserDataTest extends ParserTestCase {
 
 	/**
-	 * Helper method to get Title object
+	 * Helper method
 	 *
-	 * @param $titleName
-	 *
-	 * @return Title
+	 * @return string
 	 */
-	private function getTitle( $titleName ){
-		return Title::newFromText( $titleName );
-	}
-
-	/**
-	 * Helper method to get ParserOutput object
-	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
+	public function getClass() {
+		return '\SMW\ParserData';
 	}
 
 	/**
@@ -77,27 +67,33 @@ class ParserDataTest extends \MediaWikiTestCase {
 	 *
 	 * @return ParserData
 	 */
-	private function getInstance( $titleName, ParserOutput $parserOutput, array $settings = array() ) {
-		return new ParserData( $this->getTitle( $titleName ), $parserOutput, $settings );
+	private function getInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
+		return new ParserData(
+			$title,
+			$parserOutput,
+			$settings
+		);
 	}
 
 	/**
-	 * @covers ParserData::__construct
+	 * @test ParserData::__construct
 	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( 'Foo', $this->getParserOutput() );
-		$this->assertInstanceOf( 'SMW\ParserData', $instance );
+		$instance = $this->getInstance(
+			$this->getTitle(),
+			$this->getParserOutput()
+		);
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
-	 * DataProvider
+	 * Sample data are specified by property, value, errorCount, propertyCount
 	 *
 	 * @return array
 	 */
 	public function getPropertyValueDataProvider() {
-		// property, value, errorCount, propertyCount
 		return array(
 			array( 'Foo'  , 'Bar', 0, 1 ),
 			array( '-Foo' , 'Bar', 1, 0 ),
@@ -117,56 +113,70 @@ class ParserDataTest extends \MediaWikiTestCase {
 	 * @param $propertyCount
 	 */
 	public function testAddPropertyValue( $propertyName, $value, $errorCount, $propertyCount ) {
-		$instance = $this->getInstance( 'Foo', $this->getParserOutput() );
+		$instance = $this->getInstance(
+			$this->getTitle(),
+			$this->getParserOutput()
+		);
 
 		// Values
 		$instance->addPropertyValue(
-			SMWDataValueFactory::newPropertyValue(
+			DataValueFactory::newPropertyValue(
 				$propertyName,
 				$value
 			)
 		);
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $instance->getData() );
-		$this->assertCount( $errorCount, $instance->getErrors() );
-		$this->assertCount( $propertyCount, $instance->getData()->getProperties() );
-
-		// Check added properties
-		foreach ( $instance->getData()->getProperties() as $key => $diproperty ){
-
-			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-			$this->assertContains( $propertyName, $diproperty->getLabel() );
-
-			// Check added property values
-			foreach ( $instance->getData()->getPropertyValues( $diproperty ) as $dataItem ){
-				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
-				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
-					$this->assertContains( $value, $dataValue->getWikiValue() );
-				}
-			}
+		if ( $errorCount === 0 ){
+			$expected['propertyCount'] = $propertyCount;
+			$expected['propertyLabel'] = $propertyName;
+			$expected['propertyValue'] = $value;
+			$this->assertInstanceOf( 'SMWSemanticData', $instance->getData() );
+			$this->assertSemanticData( $instance->getData(), $expected );
+		} else {
+			$this->assertCount( $errorCount, $instance->getErrors() );
 		}
 	}
 
 	/**
+	 * DataProvider
+	 *
+	 * @return array
+	 */
+	public function getCategoriesDataProvider() {
+		return array(
+			array( array( 'Foo', 'Bar' ) )
+		);
+	}
+
+	/**
 	 * @covers SMWHooks::onParserAfterTidy
+	 * @dataProvider getCategoriesDataProvider
 	 *
 	 * @see Bug 47079 (missing updateOutput())
 	 *
 	 * @since 1.9
 	 */
-	public function testOnParserAfterTidy() {
-		$categories = array( 'Foo', 'Bar' );
+	public function testAddCategories( array $categories ) {
 		$settings = array(
 			'smwgUseCategoryHierarchy' => true,
 			'smwgCategoriesAsInstances' => true,
 		);
 
-		$instance = $this->getInstance( 'Foo', $this->getParserOutput(), $settings );
+		$title = $this->getTitle();
+		$instance = $this->getInstance(
+			$title,
+			$this->getParserOutput(),
+			$settings
+		);
 		$instance->addCategories( $categories );
 
 		// Get semantic data from the ParserOutput that where stored/or not
-		$parserData = $this->getInstance( 'Foo', $instance->getOutput(), $settings );
+		$parserData = $this->getInstance(
+			$title,
+			$instance->getOutput(),
+			$settings
+		);
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
@@ -176,11 +186,20 @@ class ParserDataTest extends \MediaWikiTestCase {
 		$this->assertCount( 0, $parserData->getData()->getProperties() );
 
 		// Doing the whole thing again but this time executing updateOutput()
-		$instance = $this->getInstance( 'Bar', $this->getParserOutput(), $settings );
+		$title = $this->getTitle();
+		$instance = $this->getInstance(
+			$title,
+			$this->getParserOutput(),
+			$settings
+		);
 		$instance->addCategories( $categories );
 		$instance->updateOutput();
 
-		$parserData = $this->getInstance( 'Bar', $instance->getOutput(), $settings );
+		$parserData = $this->getInstance(
+			$title,
+			$instance->getOutput(),
+			$settings
+		);
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );

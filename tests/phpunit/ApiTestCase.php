@@ -2,12 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\SpecialSemanticStatistics;
-
-use Title;
+use FauxRequest;
+use RequestContext;
+use ApiMain;
 
 /**
- * Tests for the SMW\SpecialSemanticStatistics class.
+ * Class contains Api related request methods
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,36 +31,36 @@ use Title;
  * @ingroup Test
  *
  * @group SMW
- * @group SMWExtension
+ * @group API
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * This class tests methods provided by the SMW\SpecialSemanticStatistics class
+ * Class contains Api related request methods
  *
  * @ingroup SMW
- * @ingroup Test
  */
-class SpecialSemanticStatisticsTest extends \MediaWikiTestCase {
+abstract class ApiTestCase extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Test SpecialSemanticStatistics::__construct
+	 * Returns API request results
 	 *
-	 * @since 1.9
+	 * The returned value is an array containing
+	 * - the result data (array)
+	 *
+	 * @param array $params
+	 *
+	 * @return array
 	 */
-	public function testConstructor() {
-		$title = Title::newFromText( 'Special:SemanticStatistics' );
-		$context = new \RequestContext;
-		$context->setTitle( $title );
+	protected function doApiRequest( array $params ) {
+		$request = new FauxRequest( $params, true );
+		$context = RequestContext::getMain()->setRequest( $request );
 
-		$statistics = new SpecialSemanticStatistics();
-		$statistics->setContext( $context );
-		$statistics->execute( array() );
-
-		$this->assertTrue( $title->equals( $statistics->getContext()->getTitle() ) );
-		$this->assertNotEmpty( $statistics->getOutput()->getHtml() );
+		$api = new ApiMain( $context, true );
+		$api->execute();
+		return $api->getResultData();
 	}
 
 }

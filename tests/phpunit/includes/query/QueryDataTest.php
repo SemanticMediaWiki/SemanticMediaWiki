@@ -2,14 +2,9 @@
 
 namespace SMW\Test;
 
-use SMWQueryProcessor;
 use SMW\QueryData;
 
-use SMWDIProperty;
-use SMWDIBlob;
-use SMWDINumber;
-use SMWDataItem;
-use SMWDataValueFactory;
+use SMWQueryProcessor;
 use Title;
 
 /**
@@ -42,22 +37,40 @@ use Title;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class QueryDataTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the SMW\QueryData class
+ *
+ * @ingroup SMW
+ * @ingroup Test
+ */
+class QueryDataTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * DataProvider
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\QueryData';
+	}
+
+	/**
+	 * Provides data sample, the first array contains parametrized input
+	 * value while the second array contains expected return results for the
+	 * instantiated object.
 	 *
 	 * @return array
 	 */
 	public function getDataProvider() {
 		return array(
 
+			// #0
 			// {{#ask: [[Modification date::+]]
 			// |?Modification date
 			// |format=list
 			// }}
 			array(
-				'Foo',
 				array(
 					'',
 					'[[Modification date::+]]',
@@ -65,19 +78,19 @@ class QueryDataTest extends \MediaWikiTestCase {
 					'format=list'
 				),
 				array(
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'queryValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'propertyValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
 				)
 			),
 
+			// #1
 			// {{#ask: [[Modification date::+]][[Category:Foo]]
 			// |?Modification date
 			// |?Has title
 			// |format=list
 			// }}
 			array(
-				'Foo',
 				array(
 					'',
 					'[[Modification date::+]][[Category:Foo]]',
@@ -86,21 +99,19 @@ class QueryDataTest extends \MediaWikiTestCase {
 					'format=list'
 				),
 				array(
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'queryValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'propertyValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 				)
 			),
 
-			// Unknown format, default table
-
+			// #2 Unknown format, default table
 			// {{#ask: [[Modification date::+]][[Category:Foo]]
 			// |?Modification date
 			// |?Has title
 			// |format=bar
 			// }}
 			array(
-				'Foo',
 				array(
 					'',
 					'[[Modification date::+]][[Category:Foo]]',
@@ -109,22 +120,13 @@ class QueryDataTest extends \MediaWikiTestCase {
 					'format=bar'
 				),
 				array(
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'queryValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'propertyValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 				)
 			),
 
 		);
-	}
-
-	/**
-	 * Helper method to get title object
-	 *
-	 * @return Title
-	 */
-	private function getTitle( $title ){
-		return Title::newFromText( $title );
 	}
 
 	/**
@@ -146,90 +148,78 @@ class QueryDataTest extends \MediaWikiTestCase {
 	 *
 	 * @return SMW\QueryData
 	 */
-	private function getInstance( $title = '' ) {
-		return new QueryData( $this->getTitle( $title ) );
+	private function getInstance( Title $title = null ) {
+		return new QueryData( $title );
 	}
 
 	/**
-	 * Test instance
+	 * @test QueryData::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructor( $title ) {
-		$instance = $this->getInstance( $title );
-		$this->assertInstanceOf( 'SMW\QueryData', $instance );
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
 	 * Test instance exception
+	 * @test QueryData::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructorException( $title ) {
+	public function testConstructorException() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance( '' );
+		$instance = $this->getInstance();
 	}
 
 	/**
-	 * Test getProperty()
+	 * @test QueryData::getProperty
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testGetProperty( $title ) {
-		$instance = $this->getInstance( $title );
+	public function testGetProperty() {
+		$instance = $this->getInstance( $this->getTitle() );
 		$this->assertInstanceOf( '\SMWDIProperty', $instance->getProperty() );
 	}
 
 	/**
-	 * Test generated query data
-	 *
+	 * @test QueryData::add
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testInstantiatedQueryData( $title, array $params, array $expected ) {
+	public function testInstantiatedQueryData( array $params, array $expected ) {
+		$title = $this->getTitle();
 		$instance = $this->getInstance( $title );
 
 		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
 		$instance->setQueryId( $params );
-		$instance->add(	$query, $formattedParams );
+		$instance->add( $query, $formattedParams );
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $instance->getContainer()->getSemanticData() );
-
-		// Confirm subSemanticData objects for the SemanticData instance
-		foreach ( $instance->getContainer()->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
-			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$this->assertCount( $expected['queryCount'], $containerSemanticData->getProperties() );
-
-			// Confirm added properties
-			foreach ( $containerSemanticData->getProperties() as $key => $diproperty ){
-				$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-				$this->assertContains( $diproperty->getKey(), $expected['queryKey'] );
-
-				// Confirm added property values
-				foreach ( $containerSemanticData->getPropertyValues( $diproperty ) as $dataItem ){
-					$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
-					if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
-						$this->assertContains( $dataValue->getWikiValue(), $expected['queryValue'] );
-					} else if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_NUMBER ){
-						$this->assertContains( $dataValue->getNumber(), $expected['queryValue'] );
-					} else if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_BLOB ){
-						$this->assertContains( $dataValue->getWikiValue(), $expected['queryValue'] );
-					}
-				}
-			}
-		}
+		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
 	}
 
 	/**
-	 * Test QueryId exception
-	 *
+	 * @test QueryData::add
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testQueryIdException( $title, array $params, array $expected) {
+	public function testQueryIdException( array $params, array $expected ) {
 		$this->setExpectedException( 'MWException' );
+		$title = $this->getTitle();
 		$instance = $this->getInstance( $title );
 
 		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
-		$instance->add(	$query, $formattedParams );
+		$instance->add( $query, $formattedParams );
 	}
 }

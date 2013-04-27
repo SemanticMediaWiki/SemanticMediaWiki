@@ -20,9 +20,9 @@ namespace SMW\Test;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
  *
@@ -32,12 +32,23 @@ namespace SMW\Test;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class DefinesTest extends \MediaWikiTestCase {
+class DefinesTest extends  SemanticMediaWikiTestCase {
 
 	/**
-	 * dataProvider
+	 * Helper method
+	 *
+	 * @return string|boolean
 	 */
-	public function getConstants() {
+	public function getClass() {
+		return false;
+	}
+
+	/**
+	 * Provides sample of constants to be tested
+	 *
+	 * @return array
+	 */
+	public function getConstantsDataProvider() {
 		return array(
 			array( SMW_HEADERS_SHOW, 2 ),
 			array( SMW_HEADERS_PLAIN, 1 ),
@@ -53,12 +64,13 @@ class DefinesTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test if constants are accessible
+	 * @test Test if constants are accessible
+	 * @dataProvider getConstantsDataProvider
 	 *
-	 * @covers constants
-	 * @dataProvider getConstants
+	 * @param $constant
+	 * @param $expected
 	 */
-	public function testConstants( $constant, $result ) {
-		$this->assertEquals( $result, $constant );
+	public function testConstants( $constant, $expected ) {
+		$this->assertEquals( $expected, $constant );
 	}
 }

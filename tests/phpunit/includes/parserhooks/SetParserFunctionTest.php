@@ -3,16 +3,12 @@
 namespace SMW\Test;
 
 use SMW\SetParserFunction;
-use SMW\ParserData;
-use SMW\ParserParameterFormatter;
-use SMWDIWikiPage;
-use SMWDataItem;
-use SMWDataValueFactory;
+
 use Title;
 use ParserOutput;
 
 /**
- * Tests for the SMW\SetParserFunction class.
+ * Tests for the SMW\SetParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,88 +37,90 @@ use ParserOutput;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class SetParserFunctionTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the SMW\SetParserFunction class
+ *
+ * @ingroup SMW
+ * @ingroup Test
+ */
+class SetParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * DataProvider
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\SetParserFunction';
+	}
+
+	/**
+	 * Provides data sample normally found in connection with the {{#set}}
+	 * parser function. The first array contains parametrized input value while
+	 * the second array contains expected return results for the instantiated
+	 * object.
 	 *
 	 * @return array
 	 */
 	public function getDataProvider() {
 		return array(
 
-			// Single data set
-
+			// #0 Single data set
 			// {{#set:
 			// |Foo=bar
 			// }}
 			array(
-				// Title　/ subject
-				'Foo',
-				// Parameters
 				array( 'Foo=bar' ),
-				// Expected results
 				array(
 					'errors' => 0,
 					'propertyCount' => 1,
 					'propertyLabel' => 'Foo',
-					'value' => 'Bar'
+					'propertyValue' => 'Bar'
 				)
 			),
 
-			// Empty data set
-
+			// #1 Empty data set
 			// {{#set:
 			// |Foo=
 			// }}
 			array(
-				// Title　/ subject
-				'Foo',
-				// Parameters
 				array( 'Foo=' ),
-				// Expected results
 				array(
 					'errors' => 0,
 					'propertyCount' => 0,
 					'propertyLabel' => '',
-					'value' => ''
+					'propertyValue' => ''
 				)
 			),
 
-			// Multiple data set
-
+			// #2 Multiple data set
 			// {{#set:
 			// |BarFoo=9001
 			// |Foo=bar
 			// }}
 			array(
-				// Title　/ subject
-				'Foo',
-				// Parameters
 				array( 'Foo=bar', 'BarFoo=9001' ),
-				// Expected results
 				array(
 					'errors' => 0,
 					'propertyCount' => 2,
 					'propertyLabel' => array( 'Foo', 'BarFoo' ),
-					'value' => array( 'Bar', '9001' )
+					'propertyValue' => array( 'Bar', '9001' )
 				)
 			),
 
-			// Multiple data set with an error record
-
+			// #3 Multiple data set with an error record
 			// {{#set:
 			// |_Foo=9001 --> will raise an error
 			// |Foo=bar
 			// }}
 			array(
-				'Foo', // Title
-				array( 'Foo=bar', '_Foo=9001' ), // Parameters
+				array( 'Foo=bar', '_Foo=9001' ),
 				array(
 					'errors' => 1,
 					'propertyCount' => 1,
 					'propertyLabel' => array( 'Foo' ),
-					'value' => array( 'Bar' )
+					'propertyValue' => array( 'Bar' )
 				)
 			),
 
@@ -130,93 +128,85 @@ class SetParserFunctionTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method to get Title object
-	 *
-	 * @return Title
-	 */
-	private function getTitle( $title ){
-		return Title::newFromText( $title );
-	}
-
-	/**
-	 * Helper method to get ParserOutput object
-	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
-	}
-
-	/**
 	 * Helper method
 	 *
 	 * @return  SMW\SetParserFunction
 	 */
-	private function getInstance( $title, $parserOutput ) {
-		return new SetParserFunction( new ParserData( $this->getTitle( $title ), $parserOutput ) );
+	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
+		return new SetParserFunction( $this->getParserData( $title, $parserOutput ) );
 	}
 
 	/**
-	 * Test instance
+	 * @test SetParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructor( $title ) {
-		$instance = $this->getInstance( $title , $this->getParserOutput() );
-		$this->assertInstanceOf( 'SMW\SetParserFunction', $instance );
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
 	 * Test instance exception
+	 * @test SetParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructorException( $title ) {
+	public function testConstructorException() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new SetParserFunction( $title );
+		$instance =  $this->getInstance( $this->getTitle() );
 	}
 
 	/**
-	 * Test parse()
-	 *
+	 * @test SetParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testParse( $title, array $params, array $expected ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertInternalType( 'string', $instance->parse( new ParserParameterFormatter( $params ) ) );
+	public function testParse( array $params, array $expected ) {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
+		$this->assertInternalType( 'string', $result );
 	}
 
 	/**
 	 * Test instantiated property and value strings
-	 *
+	 * @test SetParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testInstantiatedPropertyValues( $title, array $params, array $expected ) {
+	public function testInstantiatedPropertyValues( array $params, array $expected ) {
 		$parserOutput =  $this->getParserOutput();
-		$instance = $this->getInstance( $title, $parserOutput );
+		$title = $this->getTitle();
 
-		// Black-box
-		$instance->parse( new ParserParameterFormatter( $params ) );
+		// Initialize and parse
+		$instance = $this->getInstance( $title, $parserOutput );
+		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		// Re-read data from stored parserOutput
-		$parserData = new ParserData( $this->getTitle( $title ), $parserOutput );
+		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
-		$this->assertCount( $expected['propertyCount'], $parserData->getData()->getProperties() );
-
-		// Check added properties
-		foreach ( $parserData->getData()->getProperties() as $key => $diproperty ){
-			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-			$this->assertContains( $diproperty->getLabel(), $expected['propertyLabel'] );
-
-			// Check added property values
-			foreach ( $parserData->getData()->getPropertyValues( $diproperty ) as $dataItem ){
-				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
-				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
-					$this->assertContains( $dataValue->getWikiValue(), $expected['value'] );
-				}
-			}
-		}
+		$this->assertSemanticData( $parserData->getData(), $expected );
 	}
+
+	/**
+	 * @test SetParserFunction::render
+	 *
+	 * @since 1.9
+	 */
+	public function testStaticRender() {
+		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$result = SetParserFunction::render( $parser );
+		$this->assertInternalType( 'string', $result );
+	}
+
 }

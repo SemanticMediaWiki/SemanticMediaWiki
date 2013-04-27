@@ -328,8 +328,12 @@ function smwfRegisterClasses() {
 
 	// Special pages and closely related helper classes
 	$testsDir = $smwgIP . 'tests/phpunit/';
-	$wgAutoloadClasses['SMW\Tests\DataItemTest']		= $testsDir . 'includes/dataitems/DataItemTest.php';
-	$wgAutoloadClasses['SMW\Tests\ResultPrinterTest']	= $testsDir . 'includes/printers/ResultPrinterTest.php';
+	$wgAutoloadClasses['SMW\Tests\DataItemTest']              = $testsDir . 'includes/dataitems/DataItemTest.php';
+	$wgAutoloadClasses['SMW\Tests\ResultPrinterTest']         = $testsDir . 'includes/printers/ResultPrinterTest.php';
+	$wgAutoloadClasses['SMW\Test\SemanticMediaWikiTestCase']  = $testsDir . 'SemanticMediaWikiTestCase.php';
+	$wgAutoloadClasses['SMW\Test\ParserTestCase']             = $testsDir . 'ParserTestCase.php';
+	$wgAutoloadClasses['SMW\Test\ApiTestCase']                = $testsDir . 'ApiTestCase.php';
+	$wgAutoloadClasses['SMW\Test\MockSuperUser']              = $testsDir . 'MockSuperUser.php';
 
 	// Jobs
 	$wgJobClasses['SMWUpdateJob']       = 'SMWUpdateJob';

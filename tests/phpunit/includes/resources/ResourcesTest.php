@@ -36,7 +36,16 @@ use ResourceLoaderContext;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class ResourcesTest extends \MediaWikiTestCase {
+class ResourcesTest extends SemanticMediaWikiTestCase {
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '';
+	}
 
 	/**
 	 * Helper method to load resources only valid for this extension

@@ -4,7 +4,6 @@ namespace SMW\Test;
 
 use SMW\RecurringEvents;
 use SMW\ParserParameterFormatter;
-use SMW\Settings;
 
 /**
  * Tests for the SMW\RecurringEvents class.
@@ -42,9 +41,16 @@ use SMW\Settings;
  *
  * @ingroup SMW
  */
-class RecurringEventsTest extends \MediaWikiTestCase {
+class RecurringEventsTest extends SemanticMediaWikiTestCase {
 
-	protected $className = 'SMW\RecurringEvents';
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\RecurringEvents';
+	}
 
 	/**
 	 * DataProvider
@@ -258,11 +264,11 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 	 *
 	 * @return Settings
 	 */
-	private function getSettings() {
-		return Settings::newFromArray( array(
+	protected function getRecurringEventsSettings() {
+		return $this->getSettings( array(
 			'smwgDefaultNumRecurringEvents' => 10,
-			'smwgMaxNumRecurringEvents' => 50 )
-		);
+			'smwgMaxNumRecurringEvents' => 50
+		) );
 	}
 
 	/**
@@ -273,7 +279,7 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 	private function getInstance( array $params ) {
 		return new RecurringEvents(
 			$this->getParameters( $params ),
-			$this->getSettings()
+			$this->getRecurringEventsSettings()
 		);
 	}
 
@@ -285,7 +291,7 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 	public function testMissingParametersExceptions() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
 		$instance = new RecurringEvents( '' , '' );
-		$this->assertInstanceOf( $this->className, $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
@@ -301,7 +307,7 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 		$parameters = $this->getParameters( $params );
 
 		$instance = new RecurringEvents( $parameters, '' );
-		$this->assertInstanceOf( $this->className, $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
@@ -314,7 +320,7 @@ class RecurringEventsTest extends \MediaWikiTestCase {
 	 */
 	public function testInstance( array $params ) {
 		$instance = $this->getInstance( $params );
-		$this->assertInstanceOf( $this->className, $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**

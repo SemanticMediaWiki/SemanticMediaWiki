@@ -40,7 +40,16 @@ use SMWQueryProcessor;
  * DISerializer test is to verify the exported array structure for content
  * consumers such as the API etc.
  */
-class DISerializerTest extends \MediaWikiTestCase {
+class DISerializerTest extends SemanticMediaWikiTestCase {
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\DISerializer';
+	}
 
 	/**
 	 * DataProvider

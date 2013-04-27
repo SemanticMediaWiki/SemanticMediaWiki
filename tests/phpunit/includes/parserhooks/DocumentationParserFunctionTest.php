@@ -34,9 +34,18 @@ use SMW\DocumentationParserFunction;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class DocumentationParserFunctionTest extends \MediaWikiTestCase {
+class DocumentationParserFunctionTest extends ParserTestCase {
 
 	// Will be extended in a follow-up
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\DocumentationParserFunction';
+	}
 
 	/**
 	 * Test instance
@@ -44,6 +53,17 @@ class DocumentationParserFunctionTest extends \MediaWikiTestCase {
 	 */
 	public function testConstructor() {
 		$instance = new DocumentationParserFunction();
-		$this->assertInstanceOf( 'SMW\DocumentationParserFunction', $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
+	}
+
+	/**
+	 * @test DocumentationParserFunction::staticInit
+	 *
+	 * @since 1.9
+	 */
+	public function testStaticInit() {
+		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$result = DocumentationParserFunction::staticInit( $parser );
+		$this->assertTrue( $result );
 	}
 }

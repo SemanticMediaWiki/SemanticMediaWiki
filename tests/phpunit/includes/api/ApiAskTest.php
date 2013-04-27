@@ -2,10 +2,8 @@
 
 namespace SMW\Test;
 
-use SMWInfolink;
-
 /**
- * Tests for the SMWInfolink class
+ * Tests for the ApiAsk class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,19 +20,29 @@ use SMWInfolink;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
+ * @ingroup API
  *
  * @group SMW
  * @group SMWExtension
+ * @group API
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class InfolinkTest extends SemanticMediaWikiTestCase {
+
+/**
+ * Tests for the ApiAsk class
+ *
+ * @ingroup SMW
+ * @group SMW
+ * @group API
+ */
+class ApiAskTest extends ApiTestCase {
 
 	/**
 	 * Helper method
@@ -42,54 +50,57 @@ class InfolinkTest extends SemanticMediaWikiTestCase {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMWInfolink';
+		return '\ApiAsk';
 	}
 
 	/**
-	 * Parameter dataProvider
+	 * Provides a query array and its expected printrequest array
 	 *
 	 * @return array
 	 */
-	public function getParameterDataProvider() {
+	public function getDataProvider() {
 		return array(
 			array(
-				// #0
+				// #0 Standard query
 				array(
-					'format=template',
-					'link=none'
+					'[[Modification date::+]]',
+					'?Modification date',
+					'limit=10'
 				),
 				array(
-					'format=template/link=none',
-					'x=format%3Dtemplate%2Flink%3Dnone'
-				)
-			),
-
-			// #1 Bug 47010 (space encoding, named args => named%20args)
-			array(
-				array(
-					'format=template',
-					'link=none',
-					'named args=1'
-				),
-				array(
-					'format=template/link=none/named-20args=1',
-					'x=format%3Dtemplate%2Flink%3Dnone%2Fnamed-20args%3D1'
+					array(
+						'label'=> '',
+						'typeid' => '_wpg',
+						'mode' => 2,
+						'format' => false
+					),
+					array(
+						'label'=> 'Modification date',
+						'typeid' => '_dat',
+						'mode' => 1,
+						'format' => ''
+					)
 				)
 			),
 		);
 	}
 
 	/**
-	 * Test encode parameters
+	 * @test ApiAsk::execute
+	 * @dataProvider getDataProvider
 	 *
-	 * @covers SMWInfolink::encodeParameters
-	 * @dataProvider getParameterDataProvider
+	 * @since 1.9
+	 *
+	 * @param array $query
+	 * @param array $expectedPrintrequests
 	 */
-	public function testEncodeParameters( array $params, array $expectedEncode ) {
-		$encodeResult = SMWInfolink::encodeParameters( $params, true );
-		$this->assertEquals( $expectedEncode[0], $encodeResult );
+	public function testExecute( array $query, array $expectedPrintrequests ) {
+		$results = $this->doApiRequest( array(
+				'action' => 'ask',
+				'query' => implode( '|', $query )
+		) );
 
-		$encodeResult = SMWInfolink::encodeParameters( $params, false );
-		$this->assertEquals( $expectedEncode[1], $encodeResult );
+		$this->assertInternalType( 'array', $results );
+		$this->assertEquals( $expectedPrintrequests, $results['query']['printrequests'] );
 	}
 }

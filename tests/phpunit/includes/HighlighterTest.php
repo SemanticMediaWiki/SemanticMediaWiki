@@ -1,6 +1,7 @@
 <?php
 
 namespace SMW\Test;
+
 use SMW\Highlighter;
 
 /**
@@ -21,9 +22,9 @@ use SMW\Highlighter;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
  *
@@ -33,8 +34,29 @@ use SMW\Highlighter;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class HighlighterTest extends \MediaWikiTestCase {
 
+/**
+ * Tests for the SMW\Highlighter class
+ *
+ * @ingroup SMW
+ * @ingroup Test
+ */
+class HighlighterTest extends SemanticMediaWikiTestCase {
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\Highlighter';
+	}
+
+	/**
+	 * Provides test sample
+	 *
+	 * @return array
+	 */
 	public function getTypeDataProvider() {
 		return array(
 			array( '' , Highlighter::TYPE_NOTYPE ),
@@ -48,39 +70,52 @@ class HighlighterTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @covers Highlighter::factory
+	 * @test Highlighter::factory
 	 * @dataProvider getTypeDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param $type
 	 */
 	public function testFactory( $type ) {
 		$instance = Highlighter::factory( $type );
-
-		$this->assertInstanceOf( 'SMW\Highlighter', $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
-	 * @covers Highlighter::getTypeId
+	 * @test Highlighter::getTypeId
 	 * @dataProvider getTypeDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param $type
+	 * @param $expected
 	 */
 	public function testGetTypeId( $type, $expected ) {
 		$results = Highlighter::getTypeId( $type );
 
-		$this->assertTrue( is_int( $results ) );
+		$this->assertInternalType( 'integer',$results );
 		$this->assertEquals( $expected, $results );
 	}
 
 	/**
-	 * @covers Highlighter::getHtml
+	 * @test Highlighter::getHtml
 	 * @dataProvider getTypeDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param $type
 	 */
 	public function testGetHtml( $type ) {
 		$instance = Highlighter::factory( $type );
 
+		$title = $this->getTitle();
 		$instance->setContent( array(
-			'title' => \Title::newMainPage()->getFullText()
+			'title' => $title->getFullText()
 		) );
 
 		// Check without caption/content set
-		$this->assertTrue( is_string( $instance->getHtml() ) );
+		$this->assertInternalType( 'string', $instance->getHtml() );
 
 		$instance->setContent( array(
 			'caption' => '123',
@@ -88,6 +123,6 @@ class HighlighterTest extends \MediaWikiTestCase {
 		) );
 
 		// Check with caption/content set
-		$this->assertTrue( is_string( $instance->getHtml() ) );
+		$this->assertInternalType( 'string', $instance->getHtml() );
 	}
 }

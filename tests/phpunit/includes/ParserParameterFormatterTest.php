@@ -21,9 +21,9 @@ use SMW\ParserParameterFormatter;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
  *
@@ -33,7 +33,23 @@ use SMW\ParserParameterFormatter;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class ParserParameterFormatterTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the SMW\ParserParameterFormatter class
+ *
+ * @ingroup SMW
+ * @ingroup Test
+ */
+class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\ParserParameterFormatter';
+	}
 
 	/**
 	 * DataProvider

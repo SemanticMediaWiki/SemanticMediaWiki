@@ -7,7 +7,6 @@ use SMWDataItem;
 use SMWPropertyValue;
 
 use Title;
-use SMWDIWikiPage;
 
 /**
  * Tests for the SMW\DataValueFactory class
@@ -46,45 +45,15 @@ use SMWDIWikiPage;
  * @ingroup SMW
  * @ingroup Test
  */
-class DataValueFactoryTest extends \MediaWikiTestCase {
+class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method that returns a random string
-	 *
-	 * @since 1.9
-	 *
-	 * @param $length
+	 * Helper method
 	 *
 	 * @return string
 	 */
-	private function getRandomString( $length = 10 ) {
-		return substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
-	}
-
-	/**
-	 * Helper method to get Title object
-	 *
-	 * @since 1.9
-	 *
-	 * @param $namespace
-	 *
-	 * @return Title
-	 */
-	private function getTitle( $namespace = NS_MAIN ){
-		return Title::newFromText( $this->getRandomString(), $namespace );
-	}
-
-	/**
-	 * Helper method that returns a SMWDIWikiPage object
-	 *
-	 * @since 1.9
-	 *
-	 * @param $namespace
-	 *
-	 * @return \SMWDIWikiPage
-	 */
-	public function getSubject( $namespace = NS_MAIN ) {
-		return SMWDIWikiPage::newFromTitle( $this->getTitle( $namespace ) );
+	public function getClass() {
+		return '\SMW\DataValueFactory';
 	}
 
 	/**
@@ -103,10 +72,11 @@ class DataValueFactoryTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test DataValueFactory::getDataItemId
+	 * @test DataValueFactory::getDataItemId
+	 * @dataProvider getDataItemIdDataProvider
+	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getDataItemIdDataProvider
 	 * @param $typeId
 	 * @param $expectedId
 	 */
@@ -140,17 +110,18 @@ class DataValueFactoryTest extends \MediaWikiTestCase {
 			array( '_wpg'  , 'bar'          , 'Bar'          , 'SMWWikiPageValue' ), // #15
 			array( '-_wpg' , 'Bar'          , 'Bar'          , 'SMWErrorValue' ), // #16
 
-			array( '_dat' , '1 Jan 1970', '1 Jan 1970' , 'SMWTimeValue' ), // #0
-			array( '_uri' , 'Foo', 'Foo' , 'SMWURIValue' ), // #0
-			array( '_num' , 9001, '9,001' , 'SMWNumberValue' ), // #0
+			array( '_dat' , '1 Jan 1970'    , '1 Jan 1970'   , 'SMWTimeValue' ), // #0
+			array( '_uri' , 'Foo'           , 'Foo'          , 'SMWURIValue' ), // #0
+			array( '_num' , 9001            , '9,001'        , 'SMWNumberValue' ), // #0
 		);
 	}
 
 	/**
-	 * Test DataValueFactory::newTypeIdValue
+	 * @test DataValueFactory::newTypeIdValue
+	 * @dataProvider getTypeIdValueDataProvider
+	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getTypeIdValueDataProvider
 	 * @param $typeId
 	 * @param $value
 	 * @param $expectedValue
@@ -191,10 +162,11 @@ class DataValueFactoryTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test DataValueFactory::newPropertyObjectValue
+	 * @test DataValueFactory::newPropertyObjectValue
+	 * @dataProvider getPropertyObjectValueDataProvider
+	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getPropertyObjectValueDataProvider
 	 * @param $propertyName
 	 * @param $value
 	 * @param $expectedValue
@@ -249,10 +221,11 @@ class DataValueFactoryTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test DataValueFactory::addPropertyValue
+	 * @test DataValueFactory::addPropertyValue
+	 * @dataProvider getPropertyValueDataProvider
+	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getPropertyValueDataProvider
 	 * @param $propertyName
 	 * @param $value
 	 * @param $expectedValue
@@ -303,15 +276,15 @@ class DataValueFactoryTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test DataValueFactory::findTypeID
+	 * @test DataValueFactory::findTypeID
+	 * @dataProvider getFindTypeIdDataProvider
+	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getFindTypeIdDataProvider
 	 * @param $typeId
 	 * @param $expectedId
 	 */
 	public function testFindTypeID( $typeId, $expectedId ) {
 		$this->assertEquals( $expectedId, DataValueFactory::findTypeID( $typeId ) );
 	}
-
 }

@@ -43,9 +43,16 @@ use MWException;
  * @ingroup SMW
  * @ingroup Test
  */
-class SettingsTest extends \MediaWikiTestCase {
+class SettingsTest extends SemanticMediaWikiTestCase {
 
-	protected $className = 'SMW\Settings';
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\Settings';
+	}
 
 	/**
 	 * Data provider
@@ -84,7 +91,7 @@ class SettingsTest extends \MediaWikiTestCase {
 	 */
 	public function testConstructor( array $settings ) {
 		$instance = $this->getInstance( $settings );
-		$this->assertInstanceOf( $this->className, $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
@@ -147,7 +154,7 @@ class SettingsTest extends \MediaWikiTestCase {
 	 */
 	public function testNewFromGlobals( array $settings ) {
 		$instance = Settings::newFromGlobals();
-		$this->assertInstanceOf( $this->className, $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 
 		foreach ( $settings as $key => $value ) {
 			$this->assertEquals(

@@ -3,9 +3,8 @@
 namespace SMW\Test;
 
 use SMW\Subobject;
-use SMWDIWikiPage;
-use SMWDataItem;
-use SMWDataValueFactory;
+use SMWDIProperty;
+
 use Title;
 
 /**
@@ -26,9 +25,9 @@ use Title;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
  *
@@ -38,7 +37,23 @@ use Title;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class SubobjectTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the SMW\Subobject class
+ *
+ * @ingroup SMW
+ * @ingroup Test
+ */
+class SubobjectTest extends ParserTestCase {
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\Subobject';
+	}
 
 	/**
 	 * DataProvider
@@ -46,18 +61,18 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 * @return array
 	 */
 	public function getDataProvider() {
-		$diPropertyError = new \SMWDIProperty( \SMWDIProperty::TYPE_ERROR );
+		$diPropertyError = new SMWDIProperty( SMWDIProperty::TYPE_ERROR );
 		return array(
+			// #0
 			array(
-				// #0
-				'Foo', // Test data
 				array(
 					'identifier' => 'Bar',
 					'property' => array( 'Foo' => 'bar' )
 				),
-				array( // Expected results
+				array(
 					'name' => 'Bar',
 					'errors' => 0,
+					'propertyCount' => 1,
 					'propertyLabel' => 'Foo',
 					'propertyValue' => 'Bar'
 				)
@@ -65,14 +80,14 @@ class SubobjectTest extends \MediaWikiTestCase {
 
 			// #1
 			array(
-				'Foo',
 				array(
 					'identifier' => 'bar',
 					'property' => array( 'FooBar' => 'bar Foo' )
 				),
-				array( // Expected results
+				array(
 					'name' => 'bar',
 					'errors' => 0,
+					'propertyCount' => 1,
 					'propertyLabel' => 'FooBar',
 					'propertyValue' => 'Bar Foo',
 				)
@@ -80,7 +95,6 @@ class SubobjectTest extends \MediaWikiTestCase {
 
 			// #2
 			array(
-				'Bar',
 				array(
 					'identifier' => 'foo',
 					'property' => array( 9001 => 1001 )
@@ -88,6 +102,7 @@ class SubobjectTest extends \MediaWikiTestCase {
 				array( // Expected results
 					'name' => 'foo',
 					'errors' => 0,
+					'propertyCount' => 1,
 					'propertyLabel' => array( 9001 ),
 					'propertyValue' => array( 1001 ),
 				)
@@ -95,7 +110,6 @@ class SubobjectTest extends \MediaWikiTestCase {
 
 			// #3
 			array(
-				'Bar foo',
 				array(
 					'identifier' => 'foo bar',
 					'property' => array( 1001 => 9001, 'Foo' => 'Bar' )
@@ -103,6 +117,7 @@ class SubobjectTest extends \MediaWikiTestCase {
 				array( // Expected results
 					'name' => 'foo bar',
 					'errors' => 0,
+					'propertyCount' => 2,
 					'propertyLabel' => array( 1001, 'Foo' ),
 					'propertyValue' => array( 9001, 'Bar' ),
 				)
@@ -110,44 +125,44 @@ class SubobjectTest extends \MediaWikiTestCase {
 
 			// #4 Property with leading underscore will raise error
 			array(
-				'Foo',
 				array(
 					'identifier' => 'bar',
 					'property' => array( '_FooBar' => 'bar Foo' )
 				),
-				array( // Expected results
+				array(
 					'name' => 'bar',
 					'errors' => 1,
-					'propertyLabel' => 'FooBar',
-					'propertyValue' => 'Bar Foo',
+					'propertyCount' => 0,
+					'propertyLabel' => '',
+					'propertyValue' => '',
 				)
 			),
 
 			// #5 Inverse property will raise error
 			array(
-				'Foo',
 				array(
 					'identifier' => 'bar',
 					'property' => array( '-FooBar' => 'bar Foo' )
 				),
-				array( // Expected results
+				array(
 					'name' => 'bar',
 					'errors' => 1,
-					'propertyLabel' => 'FooBar',
-					'propertyValue' => 'Bar Foo',
+					'propertyCount' => 0,
+					'propertyLabel' => '',
+					'propertyValue' => '',
 				)
 			),
 
 			// #6 Improper value for wikipage property will add an 'Has improper value for'
 			array(
-				'Bar',
 				array(
 					'identifier' => 'bar',
 					'property' => array( 'Foo' => '' )
 				),
-				array( // Expected results
+				array(
 					'name' => 'bar',
 					'errors' => 1,
+					'propertyCount' => 2,
 					'propertyLabel' => array( $diPropertyError->getLabel(), 'Foo' ),
 					'propertyValue' => 'Foo',
 				)
@@ -156,21 +171,22 @@ class SubobjectTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method to get subobject
+	 * Helper method to get Subobject instance
 	 *
+	 * @return Subobject
 	 */
-	private function getSubobject( $title, $name = '' ){
-		return new Subobject( Title::newFromText( $title ), $name );
+	private function getInstance( Title $title, $name = '') {
+		return new Subobject( $title, $name );
 	}
 
 	/**
-	 * Test constructor
+	 * @test Subobject::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructor( $title ) {
-		$instance = new Subobject( Title::newFromText( $title ) );
-		$this->assertInstanceOf( 'SMW\Subobject', $instance );
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
@@ -178,8 +194,8 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider getDataProvider
 	 */
-	public function testSetSemanticData( $title, array $setup ) {
-		$subobject = new Subobject( Title::newFromText( $title ) );
+	public function testSetSemanticData( array $setup ) {
+		$subobject = $this->getInstance( $this->getTitle() );
 
 		$instance = $subobject->setSemanticData( $setup['identifier'] );
 		$this->assertInstanceOf( '\SMWContainerSemanticData', $instance );
@@ -190,8 +206,8 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider getDataProvider
 	 */
-	public function testGetName( $title, array $setup, array $expected ) {
-		$subobject = $this->getSubobject( $title , $setup['identifier'] );
+	public function testGetName( array $setup, array $expected ) {
+		$subobject = $this->getInstance( $this->getTitle(), $setup['identifier'] );
 		$this->assertEquals( $expected['name'], $subobject->getName() );
 	}
 
@@ -200,8 +216,8 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider getDataProvider
 	 */
-	public function testGetProperty( $title, array $setup ) {
-		$subobject = $this->getSubobject( $title, $setup['identifier'] );
+	public function testGetProperty( array $setup ) {
+		$subobject = $this->getInstance( $this->getTitle(), $setup['identifier'] );
 		$this->assertInstanceOf( '\SMWDIProperty', $subobject->getProperty() );
 	}
 
@@ -210,9 +226,9 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider getDataProvider
 	 */
-	public function testAddPropertyValueStringException( $title, array $setup ) {
+	public function testAddPropertyValueStringException( array $setup ) {
 		$this->setExpectedException( 'MWException' );
-		$subobject = $this->getSubobject( $title );
+		$subobject = $this->getInstance( $this->getTitle() );
 
 		foreach ( $setup['property'] as $property => $value ){
 			$subobject->addPropertyValue( $property, $value );
@@ -224,8 +240,8 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider getDataProvider
 	 */
-	public function testAddPropertyValue( $title, array $setup, array $expected ) {
-		$subobject = $this->getSubobject( $title, $setup['identifier'] );
+	public function testAddPropertyValue( array $setup, array $expected ) {
+		$subobject = $this->getInstance( $this->getTitle(), $setup['identifier'] );
 
 		foreach ( $setup['property'] as $property => $value ){
 			$subobject->addPropertyValue( $property, $value );
@@ -234,20 +250,8 @@ class SubobjectTest extends \MediaWikiTestCase {
 		// Check errors
 		$this->assertCount( $expected['errors'], $subobject->getErrors() );
 
-		// Check added property
-		foreach ( $subobject->getSemanticData()->getProperties() as $key => $diproperty ){
-			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-			$this->assertContains( $diproperty->getLabel(), $expected['propertyLabel'] );
-
-			// Check added property value
-			foreach ( $subobject->getSemanticData()->getPropertyValues( $diproperty ) as $key => $dataItem ){
-				$this->assertInstanceOf( 'SMWDataItem', $dataItem );
-				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
-				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
-					$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
-				}
-			}
-		}
+		$this->assertInstanceOf( 'SMWSemanticData', $subobject->getSemanticData() );
+		$this->assertSemanticData( $subobject->getSemanticData(), $expected );
 	}
 
 	/**
@@ -255,8 +259,8 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider getDataProvider
 	 */
-	public function testGetAnonymousIdentifier( $title, array $setup ) {
-		$subobject = $this->getSubobject( $title );
+	public function testGetAnonymousIdentifier( array $setup ) {
+		$subobject = $this->getInstance( $this->getTitle() );
 		// Looking for the _ instead of comparing the hash key as it
 		// can change with the method applied (md4, sha1 etc.)
 		$this->assertContains( '_', $subobject->getAnonymousIdentifier( $setup['identifier'] ) );
@@ -267,8 +271,8 @@ class SubobjectTest extends \MediaWikiTestCase {
 	 *
 	 * @dataProvider getDataProvider
 	 */
-	public function testGetContainer( $title, array $setup ) {
-		$subobject = $this->getSubobject( $title, $setup['identifier'] );
+	public function testGetContainer( array $setup ) {
+		$subobject = $this->getInstance( $this->getTitle(), $setup['identifier'] );
 		$this->assertInstanceOf( '\SMWDIContainer', $subobject->getContainer() );
 	}
 }

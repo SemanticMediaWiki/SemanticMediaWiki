@@ -244,6 +244,7 @@ final class SMWHooks {
 			'Factbox',
 
 			'api/ApiSMWInfo',
+			'api/ApiAsk',
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
@@ -270,7 +271,7 @@ final class SMWHooks {
 
 			'resources/Resources',
 
-			'specials/SpecialSemanticStatistics',
+			'specials/Specials',
 
 			// Keep store tests near the end, since they are slower due to database access.
 			'storage/Store',

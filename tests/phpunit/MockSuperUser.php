@@ -2,10 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\InfoParserFunction;
+use User;
 
 /**
- * Tests for the SMW\InfoParserFunction class
+ * Instantiate a SuperUser in order to be able to do everything
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,9 @@ use SMW\InfoParserFunction;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
  *
@@ -32,38 +32,22 @@ use SMW\InfoParserFunction;
  * @group SMWExtension
  *
  * @licence GNU GPL v2+
- * @author mwjames
  */
-class InfoParserFunctionTest extends ParserTestCase {
 
-	// Will be extended in a follow-up
-
-	/**
-	 * Helper method
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\InfoParserFunction';
+/**
+ * Instantiate a SuperUser in order to be able to do everything.
+ * Borrowed from Translate/EducationProgram extension :-)
+ */
+class MockSuperUser extends User {
+	public function getId() {
+		return 666;
 	}
 
-	/**
-	 * Test instance
-	 *
-	 */
-	public function testConstructor() {
-		$instance = new InfoParserFunction();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+	public function getName() {
+		return 'SuperUser';
 	}
 
-	/**
-	 * @test InfoParserFunction::staticInit
-	 *
-	 * @since 1.9
-	 */
-	public function testStaticInit() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
-		$result = InfoParserFunction::staticInit( $parser );
-		$this->assertTrue( $result );
+	public function isAllowed( $right = '' ) {
+		return true;
 	}
 }

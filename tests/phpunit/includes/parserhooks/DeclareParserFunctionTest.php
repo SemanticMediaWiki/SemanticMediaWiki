@@ -34,9 +34,18 @@ use SMW\DeclareParserFunction;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class DeclareParserFunctionTest extends \MediaWikiTestCase {
+class DeclareParserFunctionTest extends SemanticMediaWikiTestCase {
 
 	// Will be extended in a follow-up
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\DeclareParserFunction';
+	}
 
 	/**
 	 * Test instance
@@ -44,6 +53,6 @@ class DeclareParserFunctionTest extends \MediaWikiTestCase {
 	 */
 	public function testConstructor() {
 		$instance = new DeclareParserFunction();
-		$this->assertInstanceOf( 'SMW\DeclareParserFunction', $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 }

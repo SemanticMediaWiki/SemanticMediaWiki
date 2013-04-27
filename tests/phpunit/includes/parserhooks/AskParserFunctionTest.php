@@ -3,20 +3,13 @@
 namespace SMW\Test;
 
 use SMW\AskParserFunction;
-use SMW\ParserData;
 use SMW\QueryData;
 
-use SMWDIProperty;
-use SMWDIBlob;
-use SMWDINumber;
-use SMWDataItem;
-use SMWDataValueFactory;
 use Title;
-use MWException;
 use ParserOutput;
 
 /**
- * Tests for the SMW\AskParserFunction class.
+ * Tests for the SMW\AskParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,9 +26,9 @@ use ParserOutput;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
  *
@@ -45,7 +38,23 @@ use ParserOutput;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class AskParserFunctionTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the SMW\AskParserFunction class
+ *
+ * @ingroup SMW
+ * @ingroup Test
+ */
+class AskParserFunctionTest extends ParserTestCase {
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\AskParserFunction';
+	}
 
 	/**
 	 * DataProvider
@@ -60,7 +69,6 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 			// |format=list
 			// }}
 			array(
-				'Foo',
 				array(
 					'',
 					'[[Modification date::+]]',
@@ -69,9 +77,9 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 				),
 				array(
 					'result' => false,
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'queryValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'propertyValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
 				)
 			),
 
@@ -82,7 +90,6 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 			// |format=list
 			// }}
 			array(
-				'Foo',
 				array(
 					'',
 					'[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]',
@@ -92,9 +99,9 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 				),
 				array(
 					'result' => false,
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'queryValue' => array( 'list', 4, 1, '[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'propertyValue' => array( 'list', 4, 1, '[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]' )
 				)
 			),
 
@@ -104,7 +111,6 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 			// |format=list
 			// }}
 			array(
-				'Foo',
 				array(
 					'',
 					'[[Modification date::+]][[Category:Foo]]',
@@ -114,9 +120,9 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 				),
 				array(
 					'result' => false,
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'queryValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'propertyValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 				)
 			),
 
@@ -128,7 +134,6 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 			// |format=bar
 			// }}
 			array(
-				'Foo',
 				array(
 					'',
 					'[[Modification date::+]][[Category:Foo]]',
@@ -138,102 +143,99 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 				),
 				array(
 					'result' => false,
-					'queryCount' => 4,
-					'queryKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'queryValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'propertyValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 				)
 			),
-
 		);
 	}
 
 	/**
-	 * Helper method to get title object
+	 * Helper method that returns a AskParserFunction object
 	 *
-	 * @return Title
-	 */
-	private function getTitle( $title ){
-		return Title::newFromText( $title );
-	}
-
-	/**
-	 * Helper method to get ParserOutput object
+	 * @since 1.9
 	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
-	}
-
-	/**
-	 * Helper method
+	 * @param $title
+	 * @param $parserOutput
 	 *
-	 * @return SMW\AskParserFunction
+	 * @return AskParserFunction
 	 */
-	private function getInstance( $title, $parserOutput = '' ) {
+	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new AskParserFunction(
-			new ParserData( $this->getTitle( $title ), $parserOutput ),
-			new QueryData( $this->getTitle( $title ) )
+			$this->getParserData( $title, $parserOutput ),
+			new QueryData( $title )
 		);
 	}
 
 	/**
-	 * Test instance
+	 * @test AskParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructor( $title ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertInstanceOf( 'SMW\AskParserFunction', $instance );
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
-	 * Test instance exception
+	 * @test AskParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructorException( $title ) {
+	public function testConstructorException() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance( $title );
+		$instance = new $this->getInstance( $this->getTitle() );
 	}
 
 	/**
-	 * Test parse()
-	 *
+	 * @test AskParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testParse( $title, array $params, array $expected ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		// $this->assertEquals( $expected['result'], $instance->parse( $params ) !== '' );
-		$this->assertTrue( is_string( $instance->parse( $params ) ) );
+	public function testParse( array $params, array $expected ) {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$result = $instance->parse( $params );
+		$this->assertInternalType( 'string', $result );
 	}
 
 	/**
 	 * Test ($GLOBALS['smwgQEnabled'] = false)
 	 *
-	 * @dataProvider getDataProvider
+	 * @test AskParserFunction::parse
+	 *
+	 * @since 1.9
 	 */
-	public function testParseDisabledsmwgQEnabled( $title, array $params ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
+	public function testParseDisabledsmwgQEnabled() {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$expected = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
-		$this->assertEquals( $expected , $instance->parse( $params, false ) );
+		$result = $instance->parse( array(), false );
+		$this->assertEquals( $expected , $result );
 	}
 
 	/**
-	 * Test generated query data
-	 *
+	 * @test AskParserFunction::parse
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testInstantiatedQueryData( $title, array $params, array $expected ) {
+	public function testInstantiatedQueryData( array $params, array $expected ) {
 		$parserOutput =  $this->getParserOutput();
-		$instance = $this->getInstance( $title, $parserOutput );
+		$title = $this->getTitle();
 
-		// Black-box approach
+		// Initialize and parse
+		$instance = $this->getInstance( $title, $parserOutput );
 		$instance->parse( $params, true );
 
-		// Get semantic data from the ParserOutput that where stored earlier
-		// during parse()
-		$parserData = new ParserData( $this->getTitle( $title ), $parserOutput );
+		// Get semantic data from the ParserOutput
+		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
@@ -241,25 +243,18 @@ class AskParserFunctionTest extends \MediaWikiTestCase {
 		// Confirm subSemanticData objects for the SemanticData instance
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$this->assertCount( $expected['queryCount'], $containerSemanticData->getProperties() );
-
-			// Confirm added properties
-			foreach ( $containerSemanticData->getProperties() as $key => $diproperty ){
-				$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-				$this->assertContains( $diproperty->getKey(), $expected['queryKey'] );
-
-				// Confirm added property values
-				foreach ( $containerSemanticData->getPropertyValues( $diproperty ) as $dataItem ){
-					$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
-					if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
-						$this->assertContains( $dataValue->getWikiValue(), $expected['queryValue'] );
-					} else if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_NUMBER ){
-						$this->assertContains( $dataValue->getNumber(), $expected['queryValue'] );
-					} else if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_BLOB ){
-						$this->assertContains( $dataValue->getWikiValue(), $expected['queryValue'] );
-					}
-				}
-			}
+			$this->assertSemanticData( $containerSemanticData, $expected );
 		}
+	}
+
+	/**
+	 * @test AskParserFunction::render
+	 *
+	 * @since 1.9
+	 */
+	public function testStaticRender() {
+		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$result = AskParserFunction::render( $parser );
+		$this->assertInternalType( 'string', $result );
 	}
 }

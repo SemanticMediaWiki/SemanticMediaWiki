@@ -3,9 +3,7 @@
 namespace SMW\Test;
 
 use SMWFactbox;
-use SMW\ParserData;
 use SMW\Settings;
-use SMW\ParserTextProcessor;
 
 use Title;
 use ParserOutput;
@@ -47,7 +45,16 @@ use ParserOutput;
  *
  * @ingroup SMW
  */
-class FactboxTest extends \PHPUnit_Framework_TestCase {
+class FactboxTest extends ParserTestCase {
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMWFactbox';
+	}
 
 	/**
 	 * Provides text sample together with the expected magic word and an
@@ -83,69 +90,21 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/**
-	 * Helper method that returns a random string
-	 *
-	 * @since 1.9
-	 *
-	 * @param $length
-	 *
-	 * @return string
-	 */
-	private function getRandomString( $length = 10 ) {
-		return substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
-	}
 
 	/**
-	 * Helper method that returns a Title object
-	 *
-	 * @param $namespace
-	 *
-	 * @return Title
-	 */
-	private function getTitle( $namespace = NS_MAIN ){
-		return Title::newFromText( $this->getRandomString(), $namespace );
-	}
-
-	/**
-	 * Helper method that returns a ParserOutput object
-	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
-	}
-
-	/**
-	 * Helper method that returns a ParserData object
+	 * Helper method that returns a Settings object
 	 *
 	 * @param $title
-	 * @param $parserOutput
 	 *
-	 * @return ParserData
+	 * @return Settings
 	 */
-	private function getParserData( Title $title, ParserOutput $parserOutput ){
-		return new ParserData( $title, $parserOutput );
-	}
-
-	/**
-	 * Helper method that returns a ParserTextProcessor object
-	 *
-	 * @param $title
-	 * @param $parserOutput
-	 *
-	 * @return ParserTextProcessor
-	 */
-	private function getTextProcessor( Title $title, ParserOutput $parserOutput ) {
+	private function getSettingsForTitle( Title $title ) {
 		$settings =array(
 			'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
 			'smwgLinksInValues' => false,
 			'smwgInlineErrors' => true,
 		);
-		return new ParserTextProcessor(
-			$this->getParserData( $title, $parserOutput ),
-			Settings::newFromArray( $settings )
-		);
+		return $this->getSettings( $settings );
 	}
 
 	/**
@@ -157,9 +116,14 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @param $expected
 	 */
 	public function testMagicWordsOutput( $text, array $expected ) {
-		$parserOutput =  $this->getParserOutput();
 		$title = $this->getTitle();
-		$textProcessor = $this->getTextProcessor( $title, $parserOutput );
+		$settings = $this->getSettingsForTitle( $title );
+		$parserOutput  = $this->getParserOutput();
+		$textProcessor = $this->getParserTextProcessor(
+			$title,
+			$parserOutput,
+			$settings
+		);
 
 		// Use the text processor to add text sample
 		$textProcessor->parse( $text );
@@ -188,9 +152,14 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @param $expected
 	 */
 	public function testGetFactboxTextFromOutput( $text, array $expected ) {
-		$parserOutput = $this->getParserOutput();
 		$title = $this->getTitle();
-		$textProcessor = $this->getTextProcessor( $title, $parserOutput );
+		$settings = $this->getSettingsForTitle( $title );
+		$parserOutput  = $this->getParserOutput();
+		$textProcessor = $this->getParserTextProcessor(
+			$title,
+			$parserOutput,
+			$settings
+		);
 
 		// Use the text processor to add text sample
 		$textProcessor->parse( $text );

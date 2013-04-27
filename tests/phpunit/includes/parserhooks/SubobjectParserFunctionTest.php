@@ -3,19 +3,16 @@
 namespace SMW\Test;
 
 use SMW\SubobjectParserFunction;
-use SMW\ParserData;
 use SMW\Subobject;
 use SMW\ParserParameterFormatter;
 
 use SMWDIProperty;
 use SMWDataItem;
-use SMWDataValueFactory;
 use Title;
-use MWException;
 use ParserOutput;
 
 /**
- * Tests for the SMW\SubobjectParserFunction class.
+ * Tests for the SMW\SubobjectParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,10 +29,11 @@ use ParserOutput;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
  *
  * @group SMW
@@ -44,14 +42,30 @@ use ParserOutput;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class SubobjectParserFunctionTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the SMW\SubobjectParserFunction class
+ */
+class SubobjectParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * DataProvider
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\SubobjectParserFunction';
+	}
+
+	/**
+	 * Provides data sample normally found in connection with the {{#subobject}}
+	 * parser function. The first array contains parametrized input value while
+	 * the second array contains expected return results for the instantiated
+	 * object.
 	 *
 	 * @return array
 	 */
-	public function getDataProvider() {
+	public function getSubobjectDataProvider() {
 		// Get the right language for an error object
 		$diPropertyError = new SMWDIProperty( SMWDIProperty::TYPE_ERROR );
 
@@ -62,14 +76,13 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 			// |Foo=bar
 			// }}
 			array(
-				'Foo',
 				array( '', 'Foo=bar' ),
 				array(
 					'errors' => false,
 					'name' => '_',
 					'propertyCount' => 1,
 					'propertyLabel' => 'Foo',
-					'value' => 'Bar'
+					'propertyValue' => 'Bar'
 				)
 			),
 
@@ -78,14 +91,13 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 			// |Foo=1001 9009
 			// }}
 			array(
-				'Foo',
 				array( '-', 'Foo=1001 9009' ),
 				array(
 					'errors' => false,
 					'name' => '_',
 					'propertyCount' => 1,
 					'propertyLabel' => 'Foo',
-					'value' => '1001 9009'
+					'propertyValue' => '1001 9009'
 				)
 			),
 
@@ -94,14 +106,13 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 			// |FooBar=Bar foo
 			// }}
 			array(
-				'Foo',
 				array( 'FooBar', 'FooBar=Bar foo' ),
 				array(
 					'errors' => false,
 					'name' => 'FooBar',
 					'propertyCount' => 1,
 					'propertyLabel' => 'FooBar',
-					'value' => 'Bar foo'
+					'propertyValue' => 'Bar foo'
 				)
 			),
 
@@ -110,14 +121,13 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 			// |Foo=Help:Bar
 			// }}
 			array(
-				'Foo',
 				array( 'Foo bar', 'Foo=Help:Bar' ),
 				array(
 					'errors' => false,
 					'name' => 'Foo_bar',
 					'propertyCount' => 1,
 					'propertyLabel' => 'Foo',
-					'value' => 'Help:Bar'
+					'propertyValue' => 'Help:Bar'
 				)
 			),
 
@@ -126,14 +136,13 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 			// |Bar=foo Bar
 			// }}
 			array(
-				'Foo',
 				array( ' Foo bar foo ', 'Bar=foo Bar' ),
 				array(
 					'errors' => false,
 					'name' => 'Foo_bar_foo',
 					'propertyCount' => 1,
 					'propertyLabel' => 'Bar',
-					'value' => 'Foo Bar'
+					'propertyValue' => 'Foo Bar'
 				)
 			),
 
@@ -143,7 +152,6 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 			// |Bar=http://www.semantic-mediawiki.org/w/index.php?title=Subobject
 			// }}
 			array(
-				'Foo',
 				array(
 					' Foo bar foo ',
 					'状況=超やばい',
@@ -153,7 +161,7 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 					'name' => 'Foo_bar_foo',
 					'propertyCount' => 2,
 					'propertyLabel' => array( '状況', 'Bar' ),
-					'value' => array( '超やばい', 'Http://www.semantic-mediawiki.org/w/index.php?title=Subobject' )
+					'propertyValue' => array( '超やばい', 'Http://www.semantic-mediawiki.org/w/index.php?title=Subobject' )
 				)
 			),
 
@@ -164,107 +172,110 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 			// |Modification date=foo Bar
 			// }}
 			array(
-				'Foo',
 				array( ' Foo bar foo ', 'Modification date=foo Bar' ),
 				array(
 					'errors' => true,
 					'name' => 'Foo_bar_foo',
 					'propertyCount' => 2,
 					'propertyLabel' => array( 'Modification date', $diPropertyError->getLabel() ),
-					'value' => array( 'Foo Bar', 'Modification date' )
+					'propertyValue' => array( 'Foo Bar', 'Modification date' )
 				)
 			),
-
-
 		);
 	}
 
 	/**
-	 * Helper method to get title object
+	 * Helper method that returns a SubobjectParserFunction object
 	 *
-	 * @return Title
-	 */
-	private function getTitle( $title ){
-		return Title::newFromText( $title );
-	}
-
-	/**
-	 * Helper method to get ParserOutput object
+	 * @since 1.9
 	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
-	}
-
-	/**
-	 * Helper method
+	 * @param $title
+	 * @param $parserOutput
 	 *
-	 * @return SMW\SubobjectParserFunction
+	 * @return SubobjectParserFunction
 	 */
-	private function getInstance( $title, $parserOutput ) {
+	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new SubobjectParserFunction(
-			new ParserData( $this->getTitle( $title ), $parserOutput ),
-			new Subobject( $this->getTitle( $title ) )
+			$this->getParserData( $title, $parserOutput ),
+			new Subobject( $title )
 		);
 	}
 
 	/**
-	 * Test instance
+	 * @test SubobjectParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructor( $title ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertInstanceOf( 'SMW\SubobjectParserFunction', $instance );
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
-	 * Test instance exception
+	 * @test SubobjectParserFunction::__construct
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
 	 */
-	public function testConstructorException( $title ) {
+	public function testConstructorException() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new SubobjectParserFunction( $this->getTitle( $title ) );
+		$instance = new $this->getInstance( $this->getTitle() );
 	}
 
 	/**
-	 * Test parse()
+	 * @test SubobjectParserFunction::parse
+	 * @dataProvider getSubobjectDataProvider
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testParse( $title, array $params, array $expected ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertEquals( $expected['errors'], $instance->parse( new ParserParameterFormatter( $params ) ) !== '' );
+	public function testParse( array $params, array $expected ) {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
+		if ( $result !== '' ){
+			$this->assertTrue( $expected['errors'] );
+		} else {
+			$this->assertFalse( $expected['errors'] );
+		}
 	}
 
 	/**
-	 * Test instantiated subobject
+	 * @test SubobjectParserFunction::parse
+	 * @dataProvider getSubobjectDataProvider
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testInstantiatedSubobject( $title, array $params, array $expected ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$instance->parse( new ParserParameterFormatter( $params ) );
+	public function testInstantiatedSubobject( array $params, array $expected ) {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$instance->parse( $this->getParserParameterFormatter( $params ) );
 		$this->assertContains( $expected['name'], $instance->getSubobject()->getName() );
 	}
 
 	/**
 	 * Test instantiated property and value strings
 	 *
-	 * @dataProvider getDataProvider
+	 * @test SubobjectParserFunction::parse
+	 * @dataProvider getSubobjectDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testInstantiatedPropertyValues( $title, array $params, array $expected ) {
+	public function testInstantiatedPropertyValues( array $params, array $expected ) {
 		$parserOutput =  $this->getParserOutput();
+		$title = $this->getTitle();
+
+		// Initialize and parse
 		$instance = $this->getInstance( $title, $parserOutput );
+		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
-		// Black-box approach
-		$instance->parse( new ParserParameterFormatter( $params ) );
-
-		// Get semantic data from the ParserOutput that where stored earlier
-		// during parse()
-		$parserData = new ParserData( $this->getTitle( $title ), $parserOutput );
+		// Get semantic data from the ParserOutput
+		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
@@ -272,21 +283,18 @@ class SubobjectParserFunctionTest extends \MediaWikiTestCase {
 		// Confirm subSemanticData objects for the SemanticData instance
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$this->assertCount( $expected['propertyCount'], $containerSemanticData->getProperties() );
-
-			// Confirm added properties
-			foreach ( $containerSemanticData->getProperties() as $key => $diproperty ){
-				$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-				$this->assertContains( $diproperty->getLabel(), $expected['propertyLabel'] );
-
-				// Confirm added property values
-				foreach ( $containerSemanticData->getPropertyValues( $diproperty ) as $dataItem ){
-					$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
-					if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
-						$this->assertContains( $dataValue->getWikiValue(), $expected['value'] );
-					}
-				}
-			}
+			$this->assertSemanticData( $containerSemanticData, $expected );
 		}
+	}
+
+	/**
+	 * @test SubobjectParserFunction::render
+	 *
+	 * @since 1.9
+	 */
+	public function testStaticRender() {
+		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$result = SubobjectParserFunction::render( $parser );
+		$this->assertInternalType( 'string', $result );
 	}
 }

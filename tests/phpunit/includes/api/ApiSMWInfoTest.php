@@ -20,20 +20,38 @@ namespace SMW\Test;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
- * @ingroup Api
+ * @ingroup API
  *
  * @group SMW
  * @group SMWExtension
+ * @group API
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class ApiSMWInfoTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the ApiSMWInfo class
+ *
+ * @ingroup SMW
+ * @group SMW
+ * @group API
+ */
+class ApiSMWInfoTest extends ApiTestCase {
+
+	/**
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\ApiSMWInfo';
+	}
 
 	/**
 	 * DataProvider
@@ -42,64 +60,46 @@ class ApiSMWInfoTest extends \MediaWikiTestCase {
 	 */
 	public function getDataProvider() {
 		return array(
-			array( 'proppagecount' ),
-			array( 'propcount' ),
-			array( 'querycount' ),
-			array( 'usedpropcount' ),
-			array( 'declaredpropcount' ),
-			array( 'conceptcount' ),
-			array( 'querysize' ),
-			array( 'subobjectcount' )
+			array( 'proppagecount',     'integer' ),
+			array( 'propcount',         'integer' ),
+			array( 'querycount',        'integer' ),
+			array( 'usedpropcount',     'integer' ),
+			array( 'declaredpropcount', 'integer' ),
+			array( 'conceptcount',      'integer' ),
+			array( 'querysize',         'integer' ),
+			array( 'subobjectcount',    'integer' ),
+			array( 'formatcount',       'array'   )
 		);
 	}
 
 	/**
-	 * Helper function info return results from the API
+	 * @test ApiSMWInfo::execute
+	 * @dataProvider getDataProvider
 	 *
-	 * @see https://www.mediawiki.org/wiki/API:Calling_internally
+	 * @since 1.9
 	 *
-	 * @return array
+	 * @param array $query
+	 * @param array $expectedPrintrequests
 	 */
-	private function getAPIResults( $queryParameters ) {
-		$params = new \FauxRequest(
-			array(
+	public function testExecute( $queryParameters, $expectedType ) {
+		$result = $this->doApiRequest( array(
 				'action' => 'smwinfo',
 				'info' => $queryParameters
-			)
-		);
+		) );
 
-		$api = new \ApiMain( $params );
-		$api->execute();
-		return $api->getResultData();
+		// Works only after SMW\StatisticsAggregator is available
+		//$this->assertInternalType( $expectedType, $result['info'][$queryParameters] );
+
+		// Info array should return with either 0 or > 0 for integers
+		if ( $expectedType === 'integer' ) {
+			$this->assertGreaterThanOrEqual( 0, $result['info'][$queryParameters] );
+		} else {
+			$this->assertInternalType( 'array', $result['info'][$queryParameters] );
+		}
 	}
 
 	/**
-	 * Test query parameters
-	 *
-	 * @dataProvider getDataProvider
-	 * @since 1.9
-	 */
-	public function testQueryParameters( $queryParameters ) {
-		$data = $this->getAPIResults( $queryParameters );
-
-		// Info array should return with either 0 or > 0
-		$this->assertGreaterThanOrEqual( 0, $data['info'][$queryParameters] );
-	}
-
-	/**
-	 * Test 'formatcount' query parameter
-	 *
-	 * @since 1.9
-	 */
-	public function testFormatCountQueryParameter() {
-		$data = $this->getAPIResults( 'formatcount' );
-
-		// An array is expected as return value
-		$this->assertInternalType( 'array', $data['info']['formatcount'] );
-	}
-
-	/**
-	 * Test unknown query parameter
+	 * @test ApiSMWInfo::execute (Test unknown query parameter)
 	 *
 	 * A unknown parameter will produce a warnings array and only valid
 	 * parameters will yield an info array
@@ -107,8 +107,10 @@ class ApiSMWInfoTest extends \MediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testUnknownQueryParameter() {
-		$data = $this->getAPIResults( 'Foo' );
-
+		$data = $this->doApiRequest( array(
+				'action' => 'smwinfo',
+				'info' => 'Foo'
+		) );
 		$this->assertInternalType( 'array', $data['warnings'] );
 	}
 }

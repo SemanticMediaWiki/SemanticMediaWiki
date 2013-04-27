@@ -32,10 +32,21 @@ namespace SMW\Test;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class GlobalFunctionsTest extends \MediaWikiTestCase {
+class GlobalFunctionsTest extends  SemanticMediaWikiTestCase {
 
 	/**
-	 * dataProvider
+	 * Helper method
+	 *
+	 * @return string|boolean
+	 */
+	public function getClass() {
+		return false;
+	}
+
+	/**
+	 * Provides available global functions
+	 *
+	 * @return array
 	 */
 	public function getGlobalFunctions() {
 		return array(
@@ -53,7 +64,9 @@ class GlobalFunctionsTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * dataProvider
+	 * Provides messages
+	 *
+	 * @return array
 	 */
 	public function getEncodeMessagesDataProvider() {
 		return array(
@@ -67,20 +80,25 @@ class GlobalFunctionsTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test if global functions are accessible
-	 *
-	 * @covers global functions
+	 * @test Test if global functions are accessible
 	 * @dataProvider getGlobalFunctions
+	 *
+	 * @param $function
 	 */
 	public function testGlobalFunctionsAccessibility( $function ) {
 		$this->assertTrue( function_exists( $function ) );
 	}
 
 	/**
-	 * @covers smwfEncodeMessages
+	 * @test smwfEncodeMessages
 	 * @dataProvider getEncodeMessagesDataProvider
+	 *
+	 * @param $message
+	 * @param $type
+	 * @param $separator
+	 * @param $escape
 	 */
-	public function testSmwfEncodeMessages( $message, $type, $seperator, $escape ) {
+	public function testSmwfEncodeMessages( $message, $type, $separator, $escape ) {
 		$results = smwfEncodeMessages( $message );
 		$this->assertFalse( is_null( $results ) );
 		$this->assertTrue( is_string( $results ) );
@@ -89,11 +107,11 @@ class GlobalFunctionsTest extends \MediaWikiTestCase {
 		$this->assertFalse( is_null( $results ) );
 		$this->assertTrue( is_string( $results ) );
 
-		$results = smwfEncodeMessages( $message, $type, $seperator );
+		$results = smwfEncodeMessages( $message, $type, $separator );
 		$this->assertFalse( is_null( $results ) );
 		$this->assertTrue( is_string( $results ) );
 
-		$results = smwfEncodeMessages( $message, $type, $seperator, $escape );
+		$results = smwfEncodeMessages( $message, $type, $separator, $escape );
 		$this->assertFalse( is_null( $results ) );
 		$this->assertTrue( is_string( $results ) );
 	}

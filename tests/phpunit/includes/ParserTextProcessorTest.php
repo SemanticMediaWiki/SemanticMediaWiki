@@ -3,14 +3,8 @@
 namespace SMW\Test;
 
 use SMW\ParserTextProcessor;
-use SMW\ParserData;
-use SMW\Settings;
 
-use SMWDIProperty;
-use SMWDataItem;
-use SMWDataValueFactory;
 use Title;
-use MWException;
 use ParserOutput;
 use ReflectionClass;
 
@@ -51,12 +45,21 @@ use ReflectionClass;
  *
  * @ingroup SMW
  */
-class ParserTextProcessorTest extends \MediaWikiTestCase {
-
-	protected $className = 'SMW\ParserTextProcessor';
+class ParserTextProcessorTest extends ParserTestCase {
 
 	/**
-	 * Provides text samples
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\ParserTextProcessor';
+	}
+
+	/**
+	 * Provides text sample, following namespace, settings to be used,
+	 * text string, and result array with expected {result text, property count,
+	 * property label, and property value}
 	 *
 	 * @return array
 	 */
@@ -209,51 +212,6 @@ class ParserTextProcessorTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a random string
-	 *
-	 * @since 1.9
-	 *
-	 * @param $length
-	 *
-	 * @return string
-	 */
-	private function getRandomString( $length = 10 ) {
-		return substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
-	}
-
-	/**
-	 * Helper method that returns a Title object
-	 *
-	 * @param $namespace
-	 *
-	 * @return Title
-	 */
-	private function getTitle( $namespace = NS_MAIN ){
-		return Title::newFromText( $this->getRandomString(), $namespace );
-	}
-
-	/**
-	 * Helper method that returns a ParserOutput object
-	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
-	}
-
-	/**
-	 * Helper method that returns a ParserData object
-	 *
-	 * @param $title
-	 * @param $parserOutput
-	 *
-	 * @return ParserData
-	 */
-	private function getParserData( Title $title, ParserOutput $parserOutput ){
-		return new ParserData( $title, $parserOutput );
-	}
-
-	/**
 	 * Helper method that returns a ParserTextProcessor object
 	 *
 	 * @param $title
@@ -265,7 +223,7 @@ class ParserTextProcessorTest extends \MediaWikiTestCase {
 	private function getInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
 		return new ParserTextProcessor(
 			$this->getParserData( $title, $parserOutput ),
-			Settings::newFromArray( $settings )
+			$this->getSettings( $settings )
 		);
 	}
 
@@ -279,7 +237,7 @@ class ParserTextProcessorTest extends \MediaWikiTestCase {
 	 */
 	public function testConstructor( $namespace ) {
 		$instance = $this->getInstance( $this->getTitle( $namespace ), $this->getParserOutput() );
-		$this->assertInstanceOf( $this->className, $instance );
+		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
@@ -288,13 +246,13 @@ class ParserTextProcessorTest extends \MediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testGetRDFUrl() {
-		$reflection = new ReflectionClass( $this->className );
+		$reflection = new ReflectionClass( $this->getClass() );
 
 		$parserOutput = $this->getParserOutput();
 		$title = $this->getTitle();
-		$instance =	$this->getInstance( $title, $parserOutput );
+		$instance = $this->getInstance( $title, $parserOutput );
 
-		// Make proected method accessible
+		// Make protected method accessible
 		$method = $reflection->getMethod( 'getRDFUrl' );
 		$method->setAccessible( true );
 
@@ -317,11 +275,11 @@ class ParserTextProcessorTest extends \MediaWikiTestCase {
 	 * @param $expected
 	 */
 	public function testStripMagicWords( $namespace, $text, array $expected ) {
-		$reflection = new ReflectionClass( $this->className );
+		$reflection = new ReflectionClass( $this->getClass() );
 
 		$parserOutput = $this->getParserOutput();
 		$title = $this->getTitle( $namespace );
-		$instance =	$this->getInstance( $title, $parserOutput );
+		$instance = $this->getInstance( $title, $parserOutput );
 
 		// Make protected method accessible
 		$method = $reflection->getMethod( 'stripMagicWords' );
@@ -370,20 +328,6 @@ class ParserTextProcessorTest extends \MediaWikiTestCase {
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
-		$this->assertCount( $expected['propertyCount'], $parserData->getData()->getProperties() );
-
-		// Check added properties
-		foreach ( $parserData->getData()->getProperties() as $key => $diproperty ){
-			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-			$this->assertContains( $diproperty->getLabel(), $expected['propertyLabel'] );
-
-			// Check added property values
-			foreach ( $parserData->getData()->getPropertyValues( $diproperty ) as $dataItem ){
-				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $diproperty );
-				if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ){
-					$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
-				}
-			}
-		}
+		$this->assertSemanticData( $parserData->getData(), $expected );
 	}
 }

@@ -3,14 +3,9 @@
 namespace SMW\Test;
 
 use SMW\RecurringEventsParserFunction;
-use SMW\ParserData;
 use SMW\Subobject;
-use SMW\ParserParameterFormatter;
 
-use SMWDIWikiPage;
-use SMWDataValueFactory;
 use Title;
-use MWException;
 use ParserOutput;
 
 /**
@@ -31,9 +26,9 @@ use ParserOutput;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
  *
@@ -43,15 +38,35 @@ use ParserOutput;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
+
+/**
+ * Tests for the SMW\RecurringEventsParserFunction class
+ *
+ * @ingroup SMW
+ * @ingroup Test
+ */
+class RecurringEventsParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * DataProvider
+	 * Helper method
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return '\SMW\RecurringEventsParserFunction';
+	}
+
+	/**
+	 * Provides data sample normally found in connection with the {{#set_recurring_event}}
+	 * parser function. The first array contains parametrized input value while
+	 * the second array contains expected return results for the instantiated
+	 * object.
 	 *
 	 * @return array
 	 */
-	public function getDataProvider() {
+	public function getRecurringEventsDataProvider() {
 		return array(
+			// #0
 			// {{#set_recurring_event:property=Has birthday
 			// |start=01 Feb 1970
 			// |has title= Birthday
@@ -60,7 +75,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |limit=3
 			// }}
 			array(
-				'Foo',
 				array(
 					'property=Has birthday',
 					'start=01 Feb 1970',
@@ -76,6 +90,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
+			// #1
 			// {{#set_recurring_event:property=Has birthday
 			// |start=01 Feb 1972 02:00
 			// |has title=Test 12
@@ -84,7 +99,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |limit=3
 			// }}
 			array(
-				'Foo',
 				array(
 					'property=Has birthday',
 					'start=01 Feb 1972 02:00',
@@ -99,6 +113,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
+			// #2
 			// {{#set_recurring_event:property=Has date
 			// |start=January 4, 2010
 			// |unit=week
@@ -108,7 +123,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010
 			// }}
 			array(
-				'Foo',
 				array(
 					'property=Has date',
 					'start=January 4, 2010',
@@ -126,6 +140,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
+			// #3
 			// {{#set_recurring_event:property=Has date
 			// |start=January 4, 2010
 			// |unit=week
@@ -135,7 +150,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010|+sep=;
 			// }}
 			array(
-				'Foo',
 				array(
 					'property=Has date',
 					'start=January 4, 2010',
@@ -154,8 +168,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
-			// Named page reference pointer
-
+			// #4 Named page reference pointer
 			// {{#set_recurring_event:FooBar
 			// |property=Has birthday
 			// |start=January 4, 2010
@@ -166,7 +179,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010|+sep=;
 			// }}
 			array(
-				'Foo',
 				array(
 					'FooBar',
 					'property=Has birthday',
@@ -186,8 +198,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
-			// Simulate first parameter starting being - raising an error
-
+			// #5 Simulate first parameter starting being - raising an error
 			// {{#set_recurring_event:-
 			// property=Has date
 			// |start=January 4, 2010
@@ -198,7 +209,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010
 			// }}
 			array(
-				'Foo',
 				array(
 					'-',
 					'property=Has date',
@@ -217,8 +227,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
-			// Simulate first parameter starting with - raising an error
-
+			// #6 Simulate first parameter starting with - raising an error
 			// {{#set_recurring_event:-Foo
 			// property=Has date
 			// |start=January 4, 2010
@@ -229,7 +238,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010
 			// }}
 			array(
-				'Foo',
 				array(
 					'-',
 					'property=Has date',
@@ -248,8 +256,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
-			// Simulate first parameter starting with a underscore raising an error
-
+			// #7 Simulate first parameter starting with a underscore raising an error
 			// {{#set_recurring_event:_FooBar
 			// property=Has date
 			// |start=January 4, 2010
@@ -260,7 +267,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010
 			// }}
 			array(
-				'Foo',
 				array(
 					'_FooBar',
 					'property=Has date',
@@ -279,8 +285,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
-			// Simulate start date has wrong type
-
+			// #8 Simulate start date has wrong type
 			// {{#set_recurring_event:property=Has date
 			// |start=???
 			// |unit=week
@@ -290,7 +295,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010
 			// }}
 			array(
-				'Foo',
 				array(
 					'property=Has date',
 					'start=???',
@@ -308,8 +312,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
-			// Simulate missing start date
-
+			// #9 Simulate missing start date
 			// {{#set_recurring_event:property=Has date
 			// |start=
 			// |unit=week
@@ -319,7 +322,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010
 			// }}
 			array(
-				'Foo',
 				array(
 					'property=Has date',
 					'start=',
@@ -337,8 +339,7 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 				)
 			),
 
-			// Simulate missing property
-
+			// #10 Simulate missing property
 			// {{#set_recurring_event:property=
 			// |start=January 4, 2010
 			// |unit=week
@@ -348,7 +349,6 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 			// |exclude=January 18, 2010;January 25, 2010|+sep=;
 			// }}
 			array(
-				'Foo',
 				array(
 					'property=',
 					'start=January 4, 2010',
@@ -371,75 +371,80 @@ class RecurringEventsParserFunctionTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method to get title object
+	 * Helper method that returns a RecurringEventsParserFunction object
 	 *
-	 * @return Title
-	 */
-	private function getTitle( $title ){
-		return Title::newFromText( $title );
-	}
-
-	/**
-	 * Helper method to get ParserOutput object
+	 * @since 1.9
 	 *
-	 * @return ParserOutput
-	 */
-	private function getParserOutput(){
-		return new ParserOutput();
-	}
-
-	/**
-	 * Helper method
+	 * @param $title
+	 * @param $parserOutput
 	 *
-	 * @return  SMW\RecurringEventsParserFunction
+	 * @return RecurringEventsParserFunction
 	 */
-	private function getInstance( $title, $parserOutput ) {
+	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new RecurringEventsParserFunction(
-			new ParserData( $this->getTitle( $title ), $parserOutput ),
-			new Subobject( $this->getTitle( $title ) )
+			$this->getParserData( $title, $parserOutput ),
+			new Subobject( $title )
 		);
 	}
 
 	/**
-	 * Test instance
-	 *
-	 * @dataProvider getDataProvider
-	 */
-	public function testConstructor( $title ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertInstanceOf( 'SMW\RecurringEventsParserFunction', $instance );
-	}
-
-	/**
-	 * Test instance exception
-	 *
-	 * @dataProvider getDataProvider
-	 */
-	public function testConstructorException( $title ) {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new RecurringEventsParserFunction( $this->getTitle( $title ) );
-	}
-
-	/**
-	 * Test getSettings()
-	 *
-	 * @covers RecurringEventsParserFunction::getSettings
-	 * @dataProvider getDataProvider
+	 * @test RecurringEventsParserFunction::__construct
 	 *
 	 * @since 1.9
 	 */
-	public function testSettings( $title ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
+	}
+
+	/**
+	 * @test RecurringEventsParserFunction::__construct
+	 *
+	 * @since 1.9
+	 */
+	public function testConstructorException() {
+		$this->setExpectedException( 'PHPUnit_Framework_Error' );
+		$instance = new $this->getInstance( $this->getTitle() );
+	}
+
+	/**
+	 * @test RecurringEventsParserFunction::getSettings
+	 *
+	 * @since 1.9
+	 */
+	public function testSettings() {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$this->assertInstanceOf( 'SMW\Settings', $instance->getSettings() );
 	}
 
 	/**
-	 * Test parse()
+	 * @test RecurringEventsParserFunction::parse
+	 * @dataProvider getRecurringEventsDataProvider
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
-	public function testParse( $title, array $params, array $expected ) {
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
-		$this->assertEquals( $expected['errors'], $instance->parse( new ParserParameterFormatter( $params ) ) !== '' );
+	public function testParse( array $params, array $expected ) {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
+		if ( $result !== '' ){
+			$this->assertTrue( $expected['errors'] );
+		} else {
+			$this->assertFalse( $expected['errors'] );
+		}
 	}
+
+	/**
+	 * @test RecurringEventsParserFunction::render
+	 *
+	 * @since 1.9
+	 */
+	public function testStaticRender() {
+		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$result = RecurringEventsParserFunction::render( $parser );
+		$this->assertInternalType( 'string', $result );
+	}
+
 }
