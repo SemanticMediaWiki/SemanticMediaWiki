@@ -1,5 +1,10 @@
 <?php
 
+namespace SMW;
+
+use SMWQueryResult;
+use SMWDataItem;
+
 /**
  * Result printer that supports the distribution parameter,
  * and related parameters. It allows the user to choose between
@@ -20,7 +25,7 @@
  * @licence GNU GPL v3
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class SMWAggregatablePrinter extends SMWResultPrinter {
+abstract class AggregatablePrinter extends ResultPrinter {
 
 	/**
 	 * Create the formats output given the result data and return it.
@@ -261,3 +266,10 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 	}
 
 }
+
+/**
+ * SMWAggregatablePrinter
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( '\SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );

@@ -52,7 +52,7 @@ class AggregatablePrinterTest extends SemanticMediaWikiTestCase {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMWAggregatablePrinter';
+		return '\SMW\AggregatablePrinter';
 	}
 
 	/**
