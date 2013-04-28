@@ -127,6 +127,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';
+	$wgAutoloadClasses['SMWQueryPage']              = $incDir . 'SMW_QueryPage.php';
 
 	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'DataValueFactory.php';
 	$wgAutoloadClasses['SMW\DataValueFactory']      = $incDir . 'DataValueFactory.php';
@@ -306,26 +307,24 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWDIHandlerGeoCoord']            = $stoDirSQL . 'SMW_DIHandler_GeoCoord.php';
 
 	// Special pages and closely related helper classes
-	$speDir = $smwgIP . 'includes/specials/';
-	$wgAutoloadClasses['SMW\SpecialSemanticStatistics'] = $speDir . 'SpecialSemanticStatistics.php';
+	$specDir = $smwgIP . 'includes/specials/';
+	$wgAutoloadClasses['SMW\SpecialSemanticStatistics'] = $specDir . 'SpecialSemanticStatistics.php';
 
-	$specDir = $smwgIP . 'specials/';
-	$wgAutoloadClasses['SMWQueryPage']                 = $specDir . 'QueryPages/SMW_QueryPage.php';
-	$wgAutoloadClasses['SMWAskPage']                   = $specDir . 'AskSpecial/SMW_SpecialAsk.php';
-	$wgAutoloadClasses['SMWQueryUIHelper']             = $specDir . 'AskSpecial/SMW_QueryUIHelper.php';
-	$wgAutoloadClasses['SMWQueryUI']                   = $specDir . 'AskSpecial/SMW_QueryUI.php';
-	$wgAutoloadClasses['SMWQueryCreatorPage']          = $specDir . 'AskSpecial/SMW_SpecialQueryCreator.php';
-	$wgAutoloadClasses['SMWQuerySpecialPage']          = $specDir . 'AskSpecial/SMW_QuerySpecialPage.php';
-	$wgAutoloadClasses['SMWSpecialBrowse']             = $specDir . 'SearchTriple/SMW_SpecialBrowse.php';
-	$wgAutoloadClasses['SMWPageProperty']              = $specDir . 'SearchTriple/SMW_SpecialPageProperty.php';
-	$wgAutoloadClasses['SMWSearchByProperty']          = $specDir . 'SearchTriple/SMW_SpecialSearchByProperty.php';
-	$wgAutoloadClasses['SMWURIResolver']               = $specDir . 'URIResolver/SMW_SpecialURIResolver.php';
-	$wgAutoloadClasses['SMWAdmin']                     = $specDir . 'SMWAdmin/SMW_SpecialSMWAdmin.php';
-	$wgAutoloadClasses['SMWSpecialOWLExport']          = $specDir . 'Export/SMW_SpecialOWLExport.php';
-	$wgAutoloadClasses['SMWSpecialProperties']         = $specDir . 'QueryPages/SMW_SpecialProperties.php';
-	$wgAutoloadClasses['SMWSpecialTypes']              = $specDir . 'QueryPages/SMW_SpecialTypes.php';
-	$wgAutoloadClasses['SMWSpecialUnusedProperties']   = $specDir . 'QueryPages/SMW_SpecialUnusedProperties.php';
-	$wgAutoloadClasses['SMWSpecialWantedProperties']   = $specDir . 'QueryPages/SMW_SpecialWantedProperties.php';
+	$wgAutoloadClasses['SMWAskPage']                    = $specDir . 'SMW_SpecialAsk.php';
+	$wgAutoloadClasses['SMWQueryUIHelper']              = $specDir . 'SMW_QueryUIHelper.php';
+	$wgAutoloadClasses['SMWQueryUI']                    = $specDir . 'SMW_QueryUI.php';
+	$wgAutoloadClasses['SMWQueryCreatorPage']           = $specDir . 'SMW_SpecialQueryCreator.php';
+	$wgAutoloadClasses['SMWQuerySpecialPage']           = $specDir . 'SMW_QuerySpecialPage.php';
+	$wgAutoloadClasses['SMWSpecialBrowse']              = $specDir . 'SMW_SpecialBrowse.php';
+	$wgAutoloadClasses['SMWPageProperty']               = $specDir . 'SMW_SpecialPageProperty.php';
+	$wgAutoloadClasses['SMWSearchByProperty']           = $specDir . 'SMW_SpecialSearchByProperty.php';
+	$wgAutoloadClasses['SMWURIResolver']                = $specDir . 'SMW_SpecialURIResolver.php';
+	$wgAutoloadClasses['SMWAdmin']                      = $specDir . 'SMW_SpecialSMWAdmin.php';
+	$wgAutoloadClasses['SMWSpecialOWLExport']           = $specDir . 'SMW_SpecialOWLExport.php';
+	$wgAutoloadClasses['SMWSpecialProperties']          = $specDir . 'SMW_SpecialProperties.php';
+	$wgAutoloadClasses['SMWSpecialTypes']               = $specDir . 'SMW_SpecialTypes.php';
+	$wgAutoloadClasses['SMWSpecialUnusedProperties']    = $specDir . 'SMW_SpecialUnusedProperties.php';
+	$wgAutoloadClasses['SMWSpecialWantedProperties']    = $specDir . 'SMW_SpecialWantedProperties.php';
 
 	// Special pages and closely related helper classes
 	$testsDir = $smwgIP . 'tests/phpunit/';
