@@ -268,6 +268,7 @@ final class SMWHooks {
 			'query/QueryData',
 
 			'printers/ResultPrinters',
+			'printers/AggregatablePrinter',
 
 			'resources/Resources',
 

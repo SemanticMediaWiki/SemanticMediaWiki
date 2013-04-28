@@ -207,7 +207,10 @@ abstract class SMWAggregatablePrinter extends SMWResultPrinter {
 			case SMWDataItem::TYPE_NUMBER:
 				// Collect and aggregate values for the same array key
 				$value = $dataItem->getNumber();
-				$values[$name] = isset( $values[$name] ) ? $values[$name] + $value : $value;
+				if ( !isset( $values[$name] ) ) {
+					$values[$name] = 0;
+				}
+				$values[$name] += $value;
 				break;
 			case SMWDataItem::TYPE_CONTAINER:
 				foreach ( $dataItem->getDataItems() as $di ) {
