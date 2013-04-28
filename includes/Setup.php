@@ -124,7 +124,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
 	$wgAutoloadClasses['SMW\ParserTextProcessor']   = $incDir . 'ParserTextProcessor.php';
-	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';
 
@@ -245,11 +244,21 @@ function smwfRegisterClasses() {
 	// Query related classes
 	$qeDir = $smwgIP . 'includes/query/';
 	$wgAutoloadClasses['SMW\QueryData']             = $qeDir . 'QueryData.php';
+	$wgAutoloadClasses['SMWQueryProcessor']         = $qeDir . 'SMW_QueryProcessor.php';
+	$wgAutoloadClasses['SMWQueryParser']            = $qeDir . 'SMW_QueryParser.php';
+	$wgAutoloadClasses['SMWQueryLanguage']          = $qeDir . 'SMW_QueryLanguage.php';
+	$wgAutoloadClasses['SMWQuery']                  = $qeDir . 'SMW_Query.php';
+	$wgAutoloadClasses['SMWPrintRequest']           = $qeDir . 'SMW_PrintRequest.php';
+	$wgAutoloadClasses['SMWThingDescription']       = $qeDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWClassDescription']       = $qeDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWConceptDescription']     = $qeDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWNamespaceDescription']   = $qeDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWValueDescription']       = $qeDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWConjunction']            = $qeDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWDisjunction']            = $qeDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWSomeProperty']           = $qeDir . 'SMW_Description.php';
 
 	// Stores & queries
-	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';
-	$wgAutoloadClasses['SMWQueryParser']            = $smwgIP . 'includes/SMW_QueryParser.php';
-
 	$wgAutoloadClasses['SMWSparqlDatabase']         = $smwgIP . 'includes/sparql/SMW_SparqlDatabase.php';
 	$wgAutoloadClasses['SMWSparqlDatabase4Store']   = $smwgIP . 'includes/sparql/SMW_SparqlDatabase4Store.php';
 	$wgAutoloadClasses['SMWSparqlDatabaseVirtuoso'] = $smwgIP . 'includes/sparql/SMW_SparqlDatabaseVirtuoso.php';
@@ -261,21 +270,11 @@ function smwfRegisterClasses() {
 
 	$wgAutoloadClasses['SMW\Store\PropertyStatisticsRebuilder']			= $stoDir . 'PropertyStatisticsRebuilder.php';
 	$wgAutoloadClasses['SMW\Store\PropertyStatisticsStore']				= $stoDir . 'PropertyStatisticsStore.php';
-	$wgAutoloadClasses['SMWQuery']                  = $stoDir . 'SMW_Query.php';
 	$wgAutoloadClasses['SMWQueryResult']            = $stoDir . 'SMW_QueryResult.php';
 	$wgAutoloadClasses['SMWResultArray']            = $stoDir . 'SMW_ResultArray.php';
 	$wgAutoloadClasses['SMWStore']                  = $stoDir . 'SMW_Store.php';
 	$wgAutoloadClasses['SMWStringCondition']        = $stoDir . 'SMW_Store.php';
 	$wgAutoloadClasses['SMWRequestOptions']         = $stoDir . 'SMW_RequestOptions.php';
-	$wgAutoloadClasses['SMWPrintRequest']           = $stoDir . 'SMW_PrintRequest.php';
-	$wgAutoloadClasses['SMWThingDescription']       = $stoDir . 'SMW_Description.php';
-	$wgAutoloadClasses['SMWClassDescription']       = $stoDir . 'SMW_Description.php';
-	$wgAutoloadClasses['SMWConceptDescription']     = $stoDir . 'SMW_Description.php';
-	$wgAutoloadClasses['SMWNamespaceDescription']   = $stoDir . 'SMW_Description.php';
-	$wgAutoloadClasses['SMWValueDescription']       = $stoDir . 'SMW_Description.php';
-	$wgAutoloadClasses['SMWConjunction']            = $stoDir . 'SMW_Description.php';
-	$wgAutoloadClasses['SMWDisjunction']            = $stoDir . 'SMW_Description.php';
-	$wgAutoloadClasses['SMWSomeProperty']           = $stoDir . 'SMW_Description.php';
 	$wgAutoloadClasses['SMWSparqlStore']            = $stoDir . 'SMW_SparqlStore.php';
 	$wgAutoloadClasses['SMWSparqlStoreQueryEngine'] = $stoDir . 'SMW_SparqlStoreQueryEngine.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
