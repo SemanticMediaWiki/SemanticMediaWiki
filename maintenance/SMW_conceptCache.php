@@ -139,20 +139,21 @@ outputMessage( "\n\nDone.\n" );
 function doAction( $title, $numlines = false ) {
 	global $action, $store, $select_hard, $select_old, $select_update, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures;
 	$errors = array();
-	$status = false;
+	$concept = false;
 	if ( $select_hard || $select_old || $select_update || ( $action == 'status' ) ) {
-		$status = $store->getConceptCacheStatus( $title );
+		$concept = $store->getConceptCacheStatus( $title );
 	}
 	$skip = false;
-	if ( ( $status !== false ) && ( $status['status'] == 'no' ) ) {
+
+	if ( $concept === null ) {
 		$skip = 'page not cachable (no concept description, maybe a redirect)';
-	} elseif ( ( $select_update ) && ( $status['status'] != 'full' ) ) {
+	} elseif ( ( $select_update ) && ( $concept->getCacheStatus() === 'full' ) ) {
 		$skip = 'page not cached yet';
-	} elseif ( ( $select_old ) && ( $status['status'] == 'full' ) && ( $status['date'] > ( strtotime( 'now' ) - $select_old * 60 ) ) ) {
+	} elseif ( ( $select_old ) && ( $concept->getCacheStatus() === 'full' ) && ( $concept->getCacheDate() > ( strtotime( 'now' ) - $select_old * 60 ) ) ) {
 		$skip = 'cache is not old yet';
-	} elseif ( ( $select_hard ) && ( $smwgQMaxSize >= $status['size'] ) &&
-				( $smwgQMaxDepth >= $status['depth'] &&
-				( ( ~( ~( $status['features'] + 0 ) | $smwgQFeatures ) ) == 0 ) ) ) {
+	} elseif ( ( $select_hard ) && ( $smwgQMaxSize >= $concept->getSize() ) &&
+				( $smwgQMaxDepth >= $concept->getDepth() &&
+				( ( ~( ~( $concept->getQueryFeatures() + 0 ) | $smwgQFeatures ) ) == 0 ) ) ) {
 		$skip = 'concept is not "hard" according to wiki settings';
 	}
 	if ( $skip ) {
@@ -173,10 +174,10 @@ function doAction( $title, $numlines = false ) {
 		break;
 		default:
 			outputMessage( 'Status of cache for "' . $title->getPrefixedText() . '": ' );
-			if ( $status['status'] == 'no' ) {
+			if ( $concept === null ) {
 				outputMessage( "Concept not known or redirect.\n" );
-			} elseif ( $status['status'] == 'full' ) {
-				outputMessage( 'Cache created at ' . date( 'Y-m-d H:i:s', $status['date'] ) . ' (' . floor( ( strtotime( 'now' ) - $status['date'] ) / 60 ) . ' minutes old), ' . $status['count'] . " elements in cache\n" );
+			} elseif ( $concept->getCacheStatus() === 'full' ) {
+				outputMessage( 'Cache created at ' . date( 'Y-m-d H:i:s', $concept->getCacheDate() ) . ' (' . floor( ( strtotime( 'now' ) - $concept->getCacheDate() ) / 60 ) . ' minutes old), ' . $concept->getCacheCount() . " elements in cache\n" );
 			} else {
 				outputMessage( "Not cached.\n" );
 			}

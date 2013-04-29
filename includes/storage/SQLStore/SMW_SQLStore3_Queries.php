@@ -144,6 +144,10 @@ class SMWSQLStore3QueryEngine {
 			$desc = $qp->getQueryDescription( $desctxt );
 			$qid = $this->compileQueries( $desc );
 
+			if ( $qid < 0 ) {
+				return;
+			}
+
 			$this->executeQueries( $this->m_queries[$qid] ); // execute query tree, resolve all dependencies
 			$qobj = $this->m_queries[$qid];
 
