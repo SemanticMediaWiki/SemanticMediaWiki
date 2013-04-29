@@ -379,7 +379,9 @@ final class SMWHooks {
 
 	/**
 	 * Hook: ResourceLoaderGetConfigVars called right before
-	 * ResourceLoaderStartUpModule::getConfig returns
+	 * ResourceLoaderStartUpModule::getConfig and exports static configuration
+	 * variables to JavaScript. Things that depend on the current
+	 * page/request state should use MakeGlobalVariablesScript instead
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
 	 *
@@ -397,6 +399,14 @@ final class SMWHooks {
 				'smwgQMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
 			)
 		);
+
+		foreach ( array_keys( $GLOBALS['smwgResultFormats'] ) as $format ) {
+			// Special formats "count" and "debug" currently not supported.
+			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
+				$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
+				$vars['smw-config']['formats'][$format] = $printer->getName();
+			}
+		}
 
 		return true;
 	}

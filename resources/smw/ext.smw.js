@@ -37,7 +37,85 @@ var instance = ( function () {
 		else {
 			return mediaWiki.msg.apply( mediaWiki.msg, arguments );
 		}
+
 	};
+
+	/**
+	 * Declares methods to access information about available formats
+	 */
+	instance.formats = {
+
+		/**
+		 * Returns "real" name in the current page content language of a
+		 * select format
+		 *
+		 * @since 1.9
+		 *
+		 * @param {String} format
+		 *
+		 * @return {String}
+		 */
+		getName: function( format ) {
+			if( typeof format === 'string' ){
+				return mediaWiki.config.get( 'smw-config' ).formats[format];
+			}
+			return undefined;
+		},
+
+		/**
+		 * Returns list of available formats
+		 *
+		 * @since 1.9
+		 *
+		 * @return {Object}
+		 */
+		getList: function() {
+			return mediaWiki.config.get( 'smw-config' ).formats;
+		}
+	};
+
+	/**
+	 * Returns SMW settings array
+	 *
+	 * @see SMW\Settings::newFromGlobals
+	 *
+	 * @since 1.9
+	 *
+	 * @return {Mixed}
+	 */
+	instance.settings = function() {
+		return mediaWiki.config.get( 'smw-config' ).settings;
+	};
+
+	/**
+	 * Returns a specific settings value
+	 *
+	 * @see SMW\Settings::get
+	 *
+	 * @since 1.9
+	 *
+	 * @param  {String} key options to be selected
+	 *
+	 * @return {Mixed}
+	 */
+	instance.settings.get = function( key ) {
+		if( typeof key === 'string' ){
+			return mediaWiki.config.get( 'smw-config' ).settings[key];
+		}
+		return undefined;
+	};
+
+	/**
+	 * Returns SMW version
+	 *
+	 * @since 1.9
+	 *
+	 * @return {String}
+	 */
+	instance.version = function() {
+		return mediaWiki.config.get( 'smw-config' ).version;
+	};
+
 	return instance;
 } )();
 
