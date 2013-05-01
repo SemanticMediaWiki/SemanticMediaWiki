@@ -24,9 +24,11 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function onSchemaUpdate( DatabaseUpdater $updater = null ) {
+		// @codeCoverageIgnoreStart
 		$updater->addExtensionUpdate( array( 'SMWStore::setupStore' ) );
 
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -37,8 +39,11 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function onPageSchemasRegistration() {
+		// @codeCoverageIgnoreStart
 		$GLOBALS['wgPageSchemasHandlerClasses'][] = 'SMWPageSchemas';
+
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -51,6 +56,7 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function addToAdminLinks( ALTree &$admin_links_tree ) {
+		// @codeCoverageIgnoreStart
 		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 
 		$smw_row = new ALRow( 'smw' );
@@ -89,6 +95,7 @@ final class SMWHooks {
 		$browse_search_section->addRow( $smw_row );
 
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 
@@ -132,6 +139,7 @@ final class SMWHooks {
 		$parser->setFunctionHook( 'set', array( 'SMW\SetParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'set_recurring_event', array( 'SMW\RecurringEventsParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'declare', array( 'SMW\DeclareParserFunction', 'render' ), SFH_OBJECT_ARGS );
+
 		return true;
 	}
 
@@ -145,8 +153,10 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function addSemanticExtensionType( array &$aExtensionTypes ) {
+		// @codeCoverageIgnoreStart
 		$aExtensionTypes = array_merge( array( 'semantic' => wfMessage( 'version-semantic' )->text() ), $aExtensionTypes );
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -159,12 +169,14 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function onParserTestTables( array &$tables ) {
+		// @codeCoverageIgnoreStart
 		$tables = array_merge(
 			$tables,
 			smwfGetStore()->getParserTestTables()
 		);
 
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -180,7 +192,7 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function showBrowseLink( $skintemplate ) {
-
+		// @codeCoverageIgnoreStart
 		if ( $skintemplate->data['isarticle'] ) {
 			$browselink = SMWInfolink::newBrowsingLink( wfMessage( 'smw_browselink' )->text(),
 							$skintemplate->data['titleprefixeddbkey'], false );
@@ -188,6 +200,7 @@ final class SMWHooks {
 		}
 
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -202,7 +215,7 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function onSkinTemplateNavigation( SkinTemplate &$skinTemplate, array &$links ) {
-
+		// @codeCoverageIgnoreStart
 		if ( $skinTemplate->getUser()->isAllowed( 'purge' ) ) {
 			$links['actions']['purge'] = array(
 				'class' => false,
@@ -212,6 +225,7 @@ final class SMWHooks {
 		}
 
 		return true;
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -506,6 +520,7 @@ final class SMWHooks {
 	public static function onLinksUpdateConstructed( $linksUpdate ) {
 		$parserData = new SMW\ParserData( $linksUpdate->getTitle(), $linksUpdate->getParserOutput() );
 		$parserData->updateStore();
+
 		return true;
 	}
 
@@ -529,6 +544,7 @@ final class SMWHooks {
 	 */
 	public static function onArticleDelete( &$wikiPage, &$user, &$reason, &$error ) {
 		smwfGetStore()->deleteSubject( $wikiPage->getTitle() );
+
 		return true;
 	}
 
@@ -579,8 +595,8 @@ final class SMWHooks {
 			'smw:autorefresh:' . $newTitle->getPrefixedDBkey(),
 			$GLOBALS['smwgAutoRefreshOnPageMove']
 		);
-
 		smwfGetStore()->changeTitle( $oldTitle, $newTitle, $oldId, $newId );
+
 		return true;
 	}
 
@@ -622,6 +638,7 @@ final class SMWHooks {
 
 		$parserData = new SMW\ParserData( $wikiPage->getTitle(), $parserOutput, $options );
 		$parserData->addSpecialProperties( $wikiPage, $revision, $user );
+
 		return true;
 	}
 
@@ -658,6 +675,7 @@ final class SMWHooks {
 			$settings
 		);
 		$processor->parse( $text );
+
 		return true;
 	}
 }

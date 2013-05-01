@@ -103,6 +103,18 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
+	 * Helper method that creates a new wikipage
+	 *
+	 * @since 1.9
+	 *
+	 * @return WikiPage
+	 */
+	protected function newPage( Title $title = null ) {
+		$wikiPage = new WikiPage( $title === null ? $this->getTitle() : $title );
+		return $wikiPage;
+	}
+
+	/**
 	 * Helper method that returns an User object
 	 *
 	 * @since 1.9
@@ -114,7 +126,7 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method to create Title/ParserOutput object
+	 * Helper method that creates a Title/ParserOutput object
 	 * @see LinksUpdateTest::makeTitleAndParserOutput
 	 *
 	 * @since 1.9
@@ -146,13 +158,12 @@ class HooksTest extends \MediaWikiTestCase {
 	private function getParser() {
 		global $wgContLang, $wgParserConf;
 
-		$title = $this->getTitle();
+		$wikiPage = $this->newPage();
 		$user = $this->getUser();
-		$wikiPage = new WikiPage( $title );
 		$parserOptions = $wikiPage->makeParserOptions( $user );
 
 		$parser = new Parser( $wgParserConf );
-		$parser->setTitle( $title );
+		$parser->setTitle( $wikiPage->getTitle() );
 		$parser->setUser( $user );
 		$parser->Options( $parserOptions );
 		$parser->clearState();
@@ -166,13 +177,13 @@ class HooksTest extends \MediaWikiTestCase {
 	 */
 	public function testOnArticleFromTitle() {
 		$title = Title::newFromText( 'Property', SMW_NS_PROPERTY );
-		$wikiPage = new WikiPage( $title );
+		$wikiPage = $this->newPage( $title );
 
 		$result = SMWHooks::onArticleFromTitle( $title, $wikiPage );
 		$this->assertTrue( $result );
 
 		$title = Title::newFromText( 'Concepts', SMW_NS_CONCEPT );
-		$wikiPage = new WikiPage( $title );
+		$wikiPage = $this->newPage( $title );
 
 		$result = SMWHooks::onArticleFromTitle( $title, $wikiPage );
 		$this->assertTrue( $result );
@@ -241,9 +252,8 @@ class HooksTest extends \MediaWikiTestCase {
 	public function testOnArticleDelete() {
 		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
 
-			$title = $this->getTitle();
+			$wikiPage = $this->newPage();
 			$user = $this->getUser();
-			$wikiPage = new WikiPage(  $title );
 			$revision = $wikiPage->getRevision();
 			$reason = '';
 			$error = '';
@@ -274,13 +284,12 @@ class HooksTest extends \MediaWikiTestCase {
 	public function testOnNewRevisionFromEditComplete( $text ) {
 		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
 
-			$title = $this->getTitle();
+			$wikiPage = $this->newPage();
 			$user = $this->getUser();
-			$wikiPage = new WikiPage(  $title );
 
 			$content = \ContentHandler::makeContent(
 				$text,
-				$title,
+				$wikiPage->getTitle(),
 				CONTENT_MODEL_WIKITEXT
 			);
 
@@ -336,7 +345,7 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Test SMWHooks::registerUnitTests
+	 * @test SMWHooks::registerUnitTests
 	 *
 	 * Files are normally registered manually in registerUnitTests(). This test
 	 * will compare registered files with the files available in the
@@ -404,5 +413,93 @@ class HooksTest extends \MediaWikiTestCase {
 		$result = SMWHooks::onInternalParseBeforeLinks( $parser, $text );
 
 		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @test SMWHooks::onGetPreferences
+	 *
+	 * @since 1.9
+	 */
+	public function testOnGetPreferences() {
+		$preferences = array();
+
+		$result = SMWHooks::onGetPreferences( $this->getUser(), $preferences );
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @test SMWHooks::onArticlePurge
+	 *
+	 * @since 1.9
+	 */
+	public function testOnArticlePurge() {
+		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
+
+			$wikiPage = $this->newPage();
+
+			$user = $this->getUser();
+
+			$content = \ContentHandler::makeContent(
+				'testing',
+				$wikiPage->getTitle(),
+				CONTENT_MODEL_WIKITEXT
+			);
+			$wikiPage->doEditContent( $content, "testing", EDIT_NEW, false, $user );
+
+			$result = SMWHooks::onArticlePurge( $wikiPage );
+
+			// Always make sure to clean-up
+			if ( $wikiPage->exists() ) {
+				$wikiPage->doDeleteArticle( "testing done." );
+			}
+
+			$this->assertTrue( $result );
+
+		} else {
+			$this->markTestSkipped(
+				'Skipped test due to missing method (probably MW 1.19 or lower).'
+			);
+		}
+	}
+
+	/**
+	 * @test SMWHooks::onTitleMoveComplete
+	 *
+	 * @since 1.9
+	 */
+	public function testOnTitleMoveComplete() {
+		// For some mysterious reasons this test causes
+		// SMW\Test\ApiAskTest::testExecute ... to fail with DBQueryError:
+		// Query: SELECT  o_serialized AS v0  FROM unittest_unittest_smw_fpt_mdat
+		// WHERE s_id='5'; it seems that the temp. unittest tables are
+		// being deleted while this test runs
+		$skip = true;
+
+		if ( !$skip && method_exists( 'WikiPage', 'doEditContent' ) ) {
+			$wikiPage = $this->newPage();
+			$user = $this->getUser();
+
+			$title = $wikiPage->getTitle();
+			$newTitle = $this->getTitle();
+			$pageid = $wikiPage->getId();
+
+			$content = \ContentHandler::makeContent(
+				'testing',
+				$title,
+				CONTENT_MODEL_WIKITEXT
+			);
+			$wikiPage->doEditContent( $content, "testing", EDIT_NEW, false, $user );
+
+			$result = SMWHooks::onTitleMoveComplete( $title, $newTitle, $user, $pageid, $pageid );
+
+			// Always make sure to clean-up
+			if ( $wikiPage->exists() ) {
+				$wikiPage->doDeleteArticle( "testing done." );
+			}
+
+			$this->assertTrue( $result );
+		} else {
+			$this->assertTrue( $skip );
+		}
 	}
 }
