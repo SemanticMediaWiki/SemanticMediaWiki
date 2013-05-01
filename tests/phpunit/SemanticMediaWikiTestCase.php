@@ -73,6 +73,17 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Helper method that returns a User object
+	 *
+	 * @since 1.9
+	 *
+	 * @return User
+	 */
+	protected function getUser() {
+		return new MockSuperUser();
+	}
+
+	/**
 	 * Helper method that returns a randomized SMWDIWikiPage object
 	 *
 	 * @since 1.9

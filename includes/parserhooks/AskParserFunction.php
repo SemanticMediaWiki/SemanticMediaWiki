@@ -6,7 +6,7 @@ use Parser;
 use SMWQueryProcessor;
 
 /**
- * {{#ask}} parser function
+ * Class that provides the {{#ask}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ use SMWQueryProcessor;
  *
  * @file
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
@@ -37,26 +37,32 @@ use SMWQueryProcessor;
  */
 
 /**
- * Class that provides the {{#ask}} parser hook function
+ * Class that provides the {{#ask}} parser function
  *
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  */
 class AskParserFunction {
 
 	/**
-	 * Represents IParserData
+	 * Represents IParserData object
+	 * @var QueryData
 	 */
 	protected $parserData;
 
 	/**
-	 * Represents QueryData
+	 * Represents QueryData object
+	 * @var IParserData
 	 */
 	protected $queryData;
 
 	/**
-	 * Constructor
-	 *
+	 * SMWQueryProcessor showMode indicator
+	 * @var boolean
+	 */
+	protected $showMode = false;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
@@ -71,12 +77,12 @@ class AskParserFunction {
 	 * After some discussion IQueryProcessor/QueryProcessor is not being
 	 * used in 1.9 and instead rely on SMWQueryProcessor
 	 */
-	private function initQueryProcessor( array $rawParams, $showMode = false ) {
+	private function initQueryProcessor( array $rawParams ) {
 		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY,
-			$showMode
+			$this->showMode
 		);
 
 		$this->result = SMWQueryProcessor::getResultFromQuery(
@@ -88,34 +94,60 @@ class AskParserFunction {
 	}
 
 	/**
-	 * Parse parameters and return results to the ParserOutput object
+	 * Returns a message about inline queries being disabled
+	 *
+	 * @see $smwgQEnabled
+	 *
+	 * FIXME Replace with IMessageFormatter -> ErrorMessageFormatter class
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	protected function disabled() {
+		return smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
+	}
+
+	/**
+	 * Enable showMode (normally only invoked by {{#show}})
+	 *
+	 * @since 1.9
+	 *
+	 * @return AskParserFunction
+	 */
+	public function useShowMode() {
+		$this->showMode = true;
+		return $this;
+	}
+
+	/**
+	 * Parse parameters, return results from the query printer and update the
+	 * ParserOutput with meta data from the query
+	 *
+	 * FIXME $rawParams use IParameterFormatter -> QueryParameterFormatter class
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $params
-	 * @param boolean $enabled
 	 *
 	 * @return string|null
 	 */
-	public function parse( array $rawParams, $enabled = true, $showMode = false ) {
+	public function parse( array $rawParams ) {
 		global $smwgIQRunningNumber;
-
-		// FIXME $rawParams will be of IParameterFormatter -> QueryParameterFormatter class
-
-		if ( !$enabled ) {
-			// FIXME Replace with IMessageFormatter -> ErrorMessageFormatter class
-			return smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
-		}
 
 		// Counter for what? Where and for what is it used?
 		$smwgIQRunningNumber++;
 
 		// Remove parser object from parameters array
-		array_shift( $rawParams );
+		if( isset( $rawParams[0] ) && $rawParams[0] instanceof Parser ) {
+			array_shift( $rawParams );
+		}
 
-		$this->initQueryProcessor( $rawParams, $showMode );
+		$this->initQueryProcessor( $rawParams );
 
 		// Add query data from the query
+		// Suppose the the query returns with an error, right now we store
+		// the query itself even though it returned with unqualified data
 		$this->queryData->setQueryId( $rawParams );
 		$this->queryData->add(
 			$this->query,
@@ -135,7 +167,7 @@ class AskParserFunction {
 	}
 
 	/**
-	 * Method for handling the {{#ask}} parser function
+	 * Parser::setFunctionHook {{#ask}} handler method
 	 *
 	 * @since 1.9
 	 *
@@ -144,10 +176,10 @@ class AskParserFunction {
 	 * @return string
 	 */
 	public static function render( Parser &$parser ) {
-		$instance = new self(
+		$ask = new self(
 			new ParserData( $parser->getTitle(), $parser->getOutput() ),
 			new QueryData( $parser->getTitle() )
 		);
-		return $instance->parse( func_get_args(), $GLOBALS['smwgQEnabled'] );
+		return $GLOBALS['smwgQEnabled'] ? $ask->parse( func_get_args() ) : $ask->disabled();
 	}
 }

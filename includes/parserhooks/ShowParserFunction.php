@@ -7,7 +7,7 @@ use Title;
 use ParserOutput;
 
 /**
- * {{#show}} parser function
+ * Class that provides the {{#show}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,28 +28,32 @@ use ParserOutput;
  *
  * @file
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  *
  * @author mwjames
  */
 
 /**
- * {{#show}} parser function
+ * Class that provides the {{#show}} parser function
  *
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  */
 class ShowParserFunction {
 
 	/**
-	 * Local properties
+	 * Represents a IParserData object
+	 * @var IParserData
 	 */
 	protected $parserData;
+
+	/**
+	 * Represents a QueryData object
+	 * @var QueryData
+	 */
 	protected $queryData;
 
 	/**
-	 * Constructor
-	 *
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
@@ -61,30 +65,39 @@ class ShowParserFunction {
 	}
 
 	/**
-	 * Parse parameters and return results to the ParserOutput object
+	 * Returns a message about inline queries being disabled
 	 *
-	 * @note The show parser function uses the same parser hook logic as
-	 * SMW\AskParser therefore {{#show}} returns results from an instantiated
-	 * SMW\AskParser object
+	 * @see $smwgQEnabled
 	 *
-	 * @note The SMW\ShowParser constructor is not really needed as it
-	 * could be called directly in render() but an instantiated SMW\ShowParser
-	 * allows separate unit testing
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	protected function disabled() {
+		return smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
+	}
+
+	/**
+	 * Parse parameters, return results from the query printer and update the
+	 * ParserOutput with meta data from the query
+	 *
+	 * @note The {{#show}} parser function internally uses the AskParserFunction
+	 * and while an extra ShowParserFunction constructor is not really necessary
+	 * it allows for separate unit testing
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $params
-	 * @param boolean $showMode
 	 *
 	 * @return string|null
 	 */
-	public function parse( array $rawParams, $enabled ) {
-		$instance = new AskParserFunction( $this->parserData, $this->queryData );
-		return $instance->parse( $rawParams, $enabled, true );
+	public function parse( array $rawParams ) {
+		$ask = new AskParserFunction( $this->parserData, $this->queryData );
+		return $ask->useShowMode()->parse( $rawParams );
 	}
 
 	/**
-	 * Method for handling the show parser
+	 * Parser::setFunctionHook {{#show}} handler method
 	 *
 	 * @since 1.9
 	 *
@@ -93,10 +106,10 @@ class ShowParserFunction {
 	 * @return string
 	 */
 	public static function render( Parser &$parser ) {
-		$instance = new self(
+		$show = new self(
 			new ParserData( $parser->getTitle(), $parser->getOutput() ),
 			new QueryData( $parser->getTitle() )
 		);
-		return $instance->parse( func_get_args(), $GLOBALS['smwgQEnabled'] );
+		return $GLOBALS['smwgQEnabled'] ? $show->parse( func_get_args() ) : $show->disabled();
 	}
 }

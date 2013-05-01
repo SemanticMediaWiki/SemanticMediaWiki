@@ -7,9 +7,10 @@ use SMW\QueryData;
 
 use Title;
 use ParserOutput;
+use ReflectionClass;
 
 /**
- * Tests for the SMW\ShowParserFunction class
+ * Tests for the ShowParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +39,7 @@ use ParserOutput;
  */
 
 /**
- * Tests for the SMW\ShowParserFunction class
+ * Tests for the ShowParserFunction class
  *
  * @ingroup Test
  *
@@ -67,12 +68,12 @@ class ShowParserFunctionTest extends ParserTestCase {
 	public function getDataProvider() {
 		return array(
 
+			// #0
 			// {{#show: Foo
 			// |?Modification date
 			// }}
 			array(
 				array(
-					'',
 					'Foo',
 					'?Modification date',
 				),
@@ -84,13 +85,13 @@ class ShowParserFunctionTest extends ParserTestCase {
 				)
 			),
 
+			// #1
 			// {{#show: Help:Bar
 			// |?Modification date
 			// |default=no results
 			// }}
 			array(
 				array(
-					'',
 					'Help:Bar',
 					'?Modification date',
 					'default=no results'
@@ -101,6 +102,27 @@ class ShowParserFunctionTest extends ParserTestCase {
 					'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
 					'propertyValue' => array( 'list', 0, 1, '[[:Help:Bar]]' )
 				)
+			),
+
+			// #2 [[..]] is not acknowledged therefore displays an error message
+			// {{#show: [[File:Fooo]]
+			// |?Modification date
+			// |default=no results
+			// |format=table
+			// }}
+			array(
+				array(
+					'[[File:Fooo]]',
+					'?Modification date',
+					'default=no results',
+					'format=table'
+				),
+				array(
+					'output' => 'class="smwtticon warning"', // lazy content check for the error
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+					'propertyValue' => array( 'table', 0, 1, '[[:]]' )
+				)
 			)
 		);
 	}
@@ -110,9 +132,10 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $title
-	 * @param $parserOutput
-	 * @return SMW\ShowParserFunction
+	 * @param Title $title
+	 * @param ParserOutput $parserOutput
+	 *
+	 * @return ShowParserFunction
 	 */
 	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new ShowParserFunction(
@@ -153,7 +176,12 @@ class ShowParserFunctionTest extends ParserTestCase {
 	public function testParse( array $params, array $expected ) {
 		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$result = $instance->parse( $params, true );
-		$this->assertEquals( $expected['output'], $result );
+
+		if (  $expected['output'] === '' ) {
+			$this->assertEmpty( $result );
+		} else {
+			$this->assertContains( $expected['output'], $result );
+		}
 	}
 
 	/**
@@ -161,14 +189,17 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $params
 	 */
-	public function testParseDisabledsmwgQEnabled( array $params ) {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+	public function testParseDisabledsmwgQEnabled() {
 		$expected = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
-		$result = $instance->parse( $params, false );
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 
+		// Make protected method accessible
+		$reflection = new ReflectionClass( $this->getClass() );
+		$method = $reflection->getMethod( 'disabled' );
+		$method->setAccessible( true );
+
+		$result = $method->invoke( $instance );
 		$this->assertEquals( $expected , $result );
 	}
 
@@ -187,7 +218,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 
 		// Initialize and parse
 		$instance = $this->getInstance( $title, $parserOutput );
-		$instance->parse( $params, true, true);
+		$instance->parse( $params );
 
 		// Get semantic data from the ParserOutput
 		$parserData = $this->getParserData( $title, $parserOutput );
@@ -208,7 +239,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = ShowParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

@@ -7,6 +7,7 @@ use SMW\QueryData;
 
 use Title;
 use ParserOutput;
+use ReflectionClass;
 
 /**
  * Tests for the AskParserFunction class
@@ -57,20 +58,19 @@ class AskParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * DataProvider
+	 * Provides sample data usually found in {{#ask}} queries
 	 *
 	 * @return array
 	 */
 	public function getDataProvider() {
 		return array(
-
+			// #0
 			// {{#ask: [[Modification date::+]]
 			// |?Modification date
 			// |format=list
 			// }}
 			array(
 				array(
-					'',
 					'[[Modification date::+]]',
 					'?Modification date',
 					'format=list'
@@ -91,7 +91,6 @@ class AskParserFunctionTest extends ParserTestCase {
 			// }}
 			array(
 				array(
-					'',
 					'[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]',
 					'?Modification date',
 					'?Has title',
@@ -105,6 +104,7 @@ class AskParserFunctionTest extends ParserTestCase {
 				)
 			),
 
+			// #2
 			// {{#ask: [[Modification date::+]][[Category:Foo]]
 			// |?Modification date
 			// |?Has title
@@ -112,7 +112,6 @@ class AskParserFunctionTest extends ParserTestCase {
 			// }}
 			array(
 				array(
-					'',
 					'[[Modification date::+]][[Category:Foo]]',
 					'?Modification date',
 					'?Has title',
@@ -126,8 +125,28 @@ class AskParserFunctionTest extends ParserTestCase {
 				)
 			),
 
-			// Unknown format, default table
+			// #3 Known format
+			// {{#ask: [[File:Fooo]]
+			// |?Modification date
+			// |default=no results
+			// |format=feed
+			// }}
+			array(
+				array(
+					'[[File:Fooo]]',
+					'?Modification date',
+					'default=no results',
+					'format=feed'
+				),
+				array(
+					'result' => false,
+					'propertyCount' => 4,
+					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+					'propertyValue' => array( 'feed', 1, 1, '[[:File:Fooo]]' )
+				)
+			),
 
+			// #4 Unknown format, default table
 			// {{#ask: [[Modification date::+]][[Category:Foo]]
 			// |?Modification date
 			// |?Has title
@@ -135,11 +154,10 @@ class AskParserFunctionTest extends ParserTestCase {
 			// }}
 			array(
 				array(
-					'',
 					'[[Modification date::+]][[Category:Foo]]',
 					'?Modification date',
 					'?Has title',
-					'format=bar'
+					'format=lula'
 				),
 				array(
 					'result' => false,
@@ -156,8 +174,8 @@ class AskParserFunctionTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $title
-	 * @param $parserOutput
+	 * @param Title $title
+	 * @param ParserOutput $parserOutput
 	 *
 	 * @return AskParserFunction
 	 */
@@ -209,9 +227,15 @@ class AskParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testParseDisabledsmwgQEnabled() {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$expected = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
-		$result = $instance->parse( array(), false );
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+
+		// Make protected method accessible
+		$reflection = new ReflectionClass( $this->getClass() );
+		$method = $reflection->getMethod( 'disabled' );
+		$method->setAccessible( true );
+
+		$result = $method->invoke( $instance );
 		$this->assertEquals( $expected , $result );
 	}
 
@@ -251,7 +275,7 @@ class AskParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = AskParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}
