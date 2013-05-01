@@ -5,7 +5,7 @@ use SMWIResultPrinter, SMWQueryResult, SMWQuery;
 use ParserOptions, Sanitizer, DummyLinker, SMWInfolink, Title;
 
 /**
- * File with abstract base class for printing query results.
+ * Abstract base class for printing query results.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,22 @@ use ParserOptions, Sanitizer, DummyLinker, SMWInfolink, Title;
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @since 1.9
+ *
+ * @file
  * @ingroup SMWQuery
  *
  * @licence GNU GPL v2 or later
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
+ */
+
+/**
+ * This group contains all members that are relate to query formatting and
+ * printing.
+ *
+ * @defgroup QueryPrinter QueryPrinter
+ * @ingroup SMWQuery
  */
 
 /**

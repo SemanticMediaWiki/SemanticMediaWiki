@@ -439,6 +439,9 @@ Estimated progress of current update:',
 	'smw-concept-cache-text'  => 'The concept has a total of $1 {{PLURAL:$1|page|pages}}, and was last updated $2.',
 	'smw_concept_header'      => 'Pages of concept "$1"',
 	'smw_conceptarticlecount' => 'Showing below $1 {{PLURAL:$1|page|pages}}.',
+
+	// Query printer messages
+	'smw-qp-aggregatable-empty-data' => 'Requested aggregatable data could not be displayed due to some insufficient selection criteria.',
 );
 
 /** Message documentation (Message documentation)
@@ -964,6 +967,7 @@ Parameters:
 * $1 holds the name of the respective concept.',
 	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". Parameters:
 * $1 holds the number of pages displayed in the current view.',
+	'smw-qp-aggregatable-empty-data'  => 'An error message shown for insufficient data.',
 );
 
 /** Afrikaans (Afrikaans)

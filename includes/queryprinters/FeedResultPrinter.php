@@ -5,7 +5,7 @@ use SMWQueryResult, SMWQuery, SMWQueryProcessor, SMWDIWikipage;
 use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
 
 /**
- * Result printer to export results as RSS/Atom feed
+ * Result printer that exports query results as RSS/Atom feed
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,16 @@ use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
  * @since 1.8
  *
  * @file
- * @ingroup SMW\ResultPrinter
- * @ingroup SMW\Query
+ * @ingroup QueryPrinter
  *
  * @licence GNU GPL v2 or later
  * @author mwjames
+ */
+
+/**
+ * Result printer that exports query results as RSS/Atom feed
+ *
+ * @ingroup QueryPrinter
  */
 final class FeedResultPrinter extends \SMWExportPrinter {
 
