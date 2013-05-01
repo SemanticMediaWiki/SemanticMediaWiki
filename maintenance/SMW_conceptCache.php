@@ -147,7 +147,7 @@ function doAction( $title, $numlines = false ) {
 
 	if ( $concept === null ) {
 		$skip = 'page not cachable (no concept description, maybe a redirect)';
-	} elseif ( ( $select_update ) && ( $concept->getCacheStatus() === 'full' ) ) {
+	} elseif ( ( $select_update ) && ( $concept->getCacheStatus() !== 'full' ) ) {
 		$skip = 'page not cached yet';
 	} elseif ( ( $select_old ) && ( $concept->getCacheStatus() === 'full' ) && ( $concept->getCacheDate() > ( strtotime( 'now' ) - $select_old * 60 ) ) ) {
 		$skip = 'cache is not old yet';
