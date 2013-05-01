@@ -3,10 +3,9 @@
 namespace SMW;
 
 use Parser;
-use SMWDataValueFactory;
 
 /**
- * {{#set}} parser function
+ * Class that provides the {{#set}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,29 +29,29 @@ use SMWDataValueFactory;
  *
  * @file
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  *
+ * @licence GNU GPL v2+
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author mwjames
  */
 
 /**
- * Class that provides the {{#set}} parser hook function
+ * Class that provides the {{#set}} parser function
  *
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  */
 class SetParserFunction {
 
 	/**
-	 * Represents IParserData
+	 * Represents IParserData object
+	 * @var IParserData
 	 */
 	protected $parserData;
 
 	/**
-	 * Constructor
-	 *
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
@@ -62,7 +61,7 @@ class SetParserFunction {
 	}
 
 	/**
-	 * Parse parameters and store results to the ParserOutput object
+	 * Parse parameters and store its results to the ParserOutput object
 	 *
 	 * @since  1.9
 	 *
@@ -72,11 +71,11 @@ class SetParserFunction {
 	 */
 	public function parse( IParameterFormatter $parameters ) {
 
-		// Add value strings
+		// Add dataValues
 		foreach ( $parameters->toArray() as $property => $values ){
 			foreach ( $values as $value ) {
 				$this->parserData->addPropertyValue(
-					SMWDataValueFactory::newPropertyValue(
+					DataValueFactory::newPropertyValue(
 						$property,
 						$value
 					)
@@ -91,14 +90,14 @@ class SetParserFunction {
 	}
 
 	/**
-	 * Method for handling the set parser function.
+	 * Parser::setFunctionHook {{#set}} handler method
 	 *
 	 * @param Parser $parser
 	 *
 	 * @return string|null
 	 */
 	public static function render( Parser &$parser ) {
-		$instance = new self( new ParserData( $parser->getTitle(), $parser->getOutput() ) );
-		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
+		$set = new self( new ParserData( $parser->getTitle(), $parser->getOutput() ) );
+		return $set->parse( new ParserParameterFormatter( func_get_args() ) );
 	}
 }

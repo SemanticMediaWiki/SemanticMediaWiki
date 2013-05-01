@@ -11,7 +11,7 @@ use SMWInfolink;
 use SMWQueryProcessor;
 
 /**
- * {{#concept}} parser function
+ * Class that provides the {{#concept}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,29 +32,29 @@ use SMWQueryProcessor;
  *
  * @file
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  *
+ * @licence GNU GPL v2+
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author mwjames
  */
 
 /**
- * Class that provides the {{#concept}} parser hook function
+ * Class that provides the {{#concept}} parser function
  *
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  */
 class ConceptParserFunction {
 
 	/**
-	 * Represents IParserData
+	 * Represents IParserData object
+	 * @var IParserData
 	 */
 	protected $parserData;
 
 	/**
-	 * Constructor
-	 *
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
@@ -67,6 +67,8 @@ class ConceptParserFunction {
 	 * Returns RDF link
 	 *
 	 * @since 1.9
+	 *
+	 * @param Title $title
 	 *
 	 * @return string
 	 */
@@ -81,6 +83,10 @@ class ConceptParserFunction {
 	 * Returns a concept information box as html
 	 *
 	 * @since 1.9
+	 *
+	 * @param Title $title
+	 * @param $queryString
+	 * @param $documentation
 	 *
 	 * @return string
 	 */
@@ -117,7 +123,8 @@ class ConceptParserFunction {
 	}
 
 	/**
-	 * Parse parameters and return results to the ParserOutput object
+	 * Parse parameters, return concept information box and update the
+	 * ParserOutput with the concept object
 	 *
 	 * @since 1.9
 	 *
@@ -137,13 +144,15 @@ class ConceptParserFunction {
 			return smwfEncodeMessages( array( wfMessage( 'smw_multiple_concepts' )->inContentLanguage()->text() ) );
 		}
 
-		// Extinct parser object from parameters array
-		array_shift( $rawParams );
+		// Remove parser object from parameters array
+		if( isset( $rawParams[0] ) && $rawParams[0] instanceof Parser ) {
+			array_shift( $rawParams );
+		}
 
-		// Use first parameter as concept (query) string.
+		// Use first parameter as concept (query) string
 		$conceptQuery = array_shift( $rawParams );
 
-		// second parameter, if any, might be a description
+		// Use second parameter, if any as a description
 		$conceptDocu = array_shift( $rawParams );
 
 		// Query processor
@@ -163,7 +172,7 @@ class ConceptParserFunction {
 			)
 		);
 
-		// Store query data to the ParserOutput
+		// Handling errors from the query
 		$this->parserData->addError( $this->query->getErrors() );
 
 		// Update ParserOutput
@@ -173,7 +182,7 @@ class ConceptParserFunction {
 	}
 
 	/**
-	 * Method for handling the ask parser function
+	 * Parser::setFunctionHook {{#concept}} handler method
 	 *
 	 * @since 1.9
 	 *

@@ -9,7 +9,7 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the SMW\ConceptParserFunction class
+ * Tests for the ConceptParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ use ParserOutput;
  */
 
 /**
- * Tests for the SMW\ConceptParserFunction class
+ * Tests for the ConceptParserFunction class
  *
  * @ingroup Test
  *
@@ -65,12 +65,12 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 */
 	public function getDataProvider() {
 		return array(
+
 			// #0
 			// {{#concept: [[Modification date::+]]
 			// }}
 			array(
 				array(
-					'',
 					'[[Modification date::+]]'
 				),
 				array(
@@ -89,7 +89,6 @@ class ConceptParserFunctionTest extends ParserTestCase {
 			// }}
 			array(
 				array(
-					'',
 					'[[Modification date::+]]',
 					'Foooooooo'
 				),
@@ -231,7 +230,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = ConceptParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

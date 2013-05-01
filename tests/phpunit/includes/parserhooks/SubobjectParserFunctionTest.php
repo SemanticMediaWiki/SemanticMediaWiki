@@ -295,7 +295,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = SubobjectParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

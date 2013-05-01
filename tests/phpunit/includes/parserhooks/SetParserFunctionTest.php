@@ -8,7 +8,7 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the SMW\SetParserFunction class
+ * Tests for the SetParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ use ParserOutput;
  */
 
 /**
- * Tests for the SMW\SetParserFunction class
+ * Tests for the SetParserFunction class
  *
  * @ingroup Test
  *
@@ -130,7 +130,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	/**
 	 * Helper method that returns a SetParserFunction object
 	 *
-	 * @return  SMW\SetParserFunction
+	 * @return  SetParserFunction
 	 */
 	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new SetParserFunction( $this->getParserData( $title, $parserOutput ) );
@@ -202,7 +202,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = SetParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

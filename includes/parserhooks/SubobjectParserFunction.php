@@ -5,7 +5,7 @@ namespace SMW;
 use Parser;
 
 /**
- * {{#subobject}} parser function
+ * Class that provides the {{#subobject}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,32 +28,33 @@ use Parser;
  *
  * @file
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  *
+ * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Class that provides the {{#subobject}} parser hook function
+ * Class that provides the {{#subobject}} parser function
  *
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  */
 class SubobjectParserFunction {
 
 	/**
-	 * Represents IParserData
+	 * Represents a IParserData object
+	 * @var IParserData
 	 */
 	protected $parserData;
 
 	/**
-	 * Represents Subobject
+	 * Represents a Subobject object
+	 * @var Subobject
 	 */
 	protected $subobject;
 
 	/**
-	 * Constructor
-	 *
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
@@ -65,7 +66,7 @@ class SubobjectParserFunction {
 	}
 
 	/**
-	 * Returns subobject
+	 * Returns invoked subobject
 	 *
 	 * @since 1.9
 	 *
@@ -135,7 +136,7 @@ class SubobjectParserFunction {
 	}
 
 	/**
-	 * Method for handling the subobject parser function
+	 * Parser::setFunctionHook {{#subobject}} handler method
 	 *
 	 * @param Parser $parser
 	 *

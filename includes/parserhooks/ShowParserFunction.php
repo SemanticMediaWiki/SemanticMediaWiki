@@ -30,6 +30,7 @@ use ParserOutput;
  * @ingroup SMW
  * @ingroup ParserFunction
  *
+ * @licence GNU GPL v2+
  * @author mwjames
  */
 

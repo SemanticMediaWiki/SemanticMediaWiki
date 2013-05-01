@@ -5,7 +5,7 @@ namespace SMW\Test;
 use SMW\DeclareParserFunction;
 
 /**
- * Tests for the SMW\DeclareParserFunction class
+ * Tests for the DeclareParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ use SMW\DeclareParserFunction;
  */
 
 /**
- * Tests for the SMW\DeclareParserFunction class
+ * Tests for the DeclareParserFunction class
  *
  * @ingroup Test
  *

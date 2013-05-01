@@ -5,7 +5,7 @@ namespace SMW;
 use Parser;
 
 /**
- * {{#set_recurring_event}} parser function
+ * Class that provides the {{#set_recurring_event}} parser function
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,25 +28,26 @@ use Parser;
  *
  * @file
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  *
+ * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Class that provides the {{#set_recurring_event}} parser hook function
+ * Class that provides the {{#set_recurring_event}} parser function
  *
- * RecurringEventsParserFunction is a natural extension of the
- * SubobjectParserFunction therefore inheritance is used to get access to
- * internal methods only relevant to SubobjectParserFunction.
+ * RecurringEventsParserFunction is an extension of the SubobjectParserFunction,
+ * inheritance (instead of composition) is used to get access to internal
+ * methods only relevant to SubobjectParserFunction.
  *
  * @ingroup SMW
- * @ingroup ParserHooks
+ * @ingroup ParserFunction
  */
 class RecurringEventsParserFunction extends SubobjectParserFunction {
 
 	/**
-	 * Returns parametrized Settings object
+	 * Returns necessary Settings object
 	 *
 	 * @since 1.9
 	 *
@@ -60,7 +61,8 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	}
 
 	/**
-	 * Parse parameters and return results to the ParserOutput object
+	 * Parse parameters, and update the ParserOutput with data from the
+	 * RecurringEvents object
 	 *
 	 * @since 1.9
 	 *
@@ -107,7 +109,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 				$this->subobject->getContainer()
 			);
 
-			// Collect possible errors that occurred during processing
+			// Collect errors that occurred during processing
 			$this->parserData->addError( $this->subobject->getErrors() );
 		}
 
@@ -118,7 +120,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	}
 
 	/**
-	 * Method for handling the set parser function.
+	 * Parser::setFunctionHook {{#set_recurring_event}} handler method
 	 *
 	 * @param Parser $parser
 	 *

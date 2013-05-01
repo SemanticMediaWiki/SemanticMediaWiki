@@ -31,6 +31,7 @@ use SMWQueryProcessor;
  * @ingroup SMW
  * @ingroup ParserFunction
  *
+ * @licence GNU GPL v2+
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author mwjames

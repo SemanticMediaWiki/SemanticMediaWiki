@@ -5,7 +5,7 @@ namespace SMW\Test;
 use SMW\DocumentationParserFunction;
 
 /**
- * Tests for the SMW\DocumentationParserFunction class
+ * Tests for the DocumentationParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ use SMW\DocumentationParserFunction;
  */
 
 /**
- * Tests for the SMW\DocumentationParserFunction class
+ * Tests for the DocumentationParserFunction class
  *
  * @ingroup Test
  *
@@ -68,7 +68,7 @@ class DocumentationParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticInit() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = DocumentationParserFunction::staticInit( $parser );
 		$this->assertTrue( $result );
 	}

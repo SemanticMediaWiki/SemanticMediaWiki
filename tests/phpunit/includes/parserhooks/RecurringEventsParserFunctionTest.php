@@ -9,7 +9,7 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the SMW\RecurringEventsParserFunction class.
+ * Tests for the RecurringEventsParserFunction class.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ use ParserOutput;
  */
 
 /**
- * Tests for the SMW\RecurringEventsParserFunction class
+ * Tests for the RecurringEventsParserFunction class
  *
  * @ingroup Test
  *
@@ -442,7 +442,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = RecurringEventsParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

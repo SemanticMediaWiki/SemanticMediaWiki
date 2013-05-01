@@ -5,7 +5,7 @@ namespace SMW\Test;
 use SMW\InfoParserFunction;
 
 /**
- * Tests for the SMW\InfoParserFunction class
+ * Tests for the InfoParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ use SMW\InfoParserFunction;
  */
 
 /**
- * Tests for the SMW\InfoParserFunction class
+ * Tests for the InfoParserFunction class
  *
  * @ingroup Test
  *
@@ -68,7 +68,7 @@ class InfoParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticInit() {
-		$parser = $this->getParser( $this->getTitle(), new MockSuperUser() );
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = InfoParserFunction::staticInit( $parser );
 		$this->assertTrue( $result );
 	}
