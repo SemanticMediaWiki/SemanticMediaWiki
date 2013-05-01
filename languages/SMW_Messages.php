@@ -967,7 +967,7 @@ Parameters:
 * $1 holds the name of the respective concept.',
 	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". Parameters:
 * $1 holds the number of pages displayed in the current view.',
-	'smw-qp-aggregatable-empty-data'  => 'An error message shown for insufficient data.',
+	'smw-qp-aggregatable-empty-data' => 'An error message shown for insufficient data.',
 );
 
 /** Afrikaans (Afrikaans)
@@ -3333,6 +3333,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-concept-cache-text' => 'Das Konzept hat eine Summe von {{PLURAL:$1|einer Seite|$1 Seiten}} und wurde zuletzt aktualisiert am $2.',
 	'smw_concept_header' => 'Seiten mit dem Konzept „$1“',
 	'smw_conceptarticlecount' => 'Unten {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt.',
+	'smw-qp-aggregatable-empty-data' => 'Aufgrund einiger mangelhafter Auswahlkriterien können die angeforderten aggregierbaren Daten nicht angezeigt werden.',
 );
 
 /** Zazaki (Zazaki)
@@ -10668,6 +10669,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw-concept-cache-text' => "Het concept heeft in totaal $1 pagina{{PLURAL:$1||'s}} en is voor het laatst bijgewerkt op $2.",
 	'smw_concept_header' => 'Pagina\'s met het concept "$1"',
 	'smw_conceptarticlecount' => "Hieronder {{PLURAL:$1|wordt $1 pagina|worden $1 pagina's}} weergegeven.",
+	'smw-qp-aggregatable-empty-data' => 'De opgevraagde samen te voegen gegevens kunnen niet weergegeven worden vanwege onvoldoende selectiecriteria.',
 );
 
 /** Norwegian Nynorsk (norsk (nynorsk)‎)
@@ -11736,6 +11738,7 @@ $messages['ps'] = array(
  * @author Crazymadlover
  * @author Hamilton Abreu
  * @author Lijealso
+ * @author Luckas
  * @author Luckas Blade
  * @author Malafaya
  * @author SandroHc
@@ -11835,8 +11838,6 @@ Os resultados poderão não ser os esperados.',
 	'smw_attributearticlecount' => 'A apresentar {{PLURAL:$1|uma página que usa|$1 páginas que usam}} esta propriedade.',
 	'smw_subproperty_header' => 'Subpropriedades',
 	'smw_subpropertyarticlecount' => 'Esta propriedade tem {{PLURAL:$1|a seguinte subpropriedade|as seguintes $1 subpropriedades}}:',
-	'smw_concept_header' => 'Páginas do conceito "$1"',
-	'smw_conceptarticlecount' => 'A apresentar {{PLURAL:$1|uma página pertencente|$1 páginas pertencentes}} ao conceito.',
 	'exportrdf' => 'Exportar páginas para RDF',
 	'smw_exportrdf_docu' => 'Esta página permite-lhe obter dados de uma página com o formato RDF.
 Para exportar páginas, introduza os seus títulos na caixa de texto abaixo, um título por linha.',
@@ -11859,7 +11860,7 @@ Gera um RDF navegável.',
 	'wantedproperties' => 'Propriedades em falta',
 	'smw_wantedproperties_docu' => 'As seguintes propriedades são usadas na wiki mas ainda não têm uma página que as descreva.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|uso|usos}})',
-	'smw_purge' => 'Actualizar',
+	'smw_purge' => 'Atualizar',
 	'types' => 'Tipos',
 	'smw_types_docu' => 'A seguinte lista contém todos os tipos de dados que podem ser atribuídos às propriedades.',
 	'semanticstatistics' => 'Estatísticas de semântica',
@@ -11959,7 +11960,7 @@ As alterações feitas neste passo não afectam o resto da base de dados do Medi
 Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou actualização.',
 	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, é provável que o utilizador da base de dados usado pela sua wiki (consulte o seu LocalSettings.php) não tenha as permissões necessárias.
 Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.", # Fuzzy
-	'smw_smwadmin_dbbutton' => 'Inicializar ou actualizar tabelas',
+	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
 	'smw_smwadmin_announcedocu' => 'O MediaWiki Semântico tem um serviço na internet \'\'(web service)\'\' para anunciar novas wikis semânticas.
 Este é usado para manter uma lista de sites públicos que usam o MediaWiki Semântico, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projecto MediaWiki Semântico</a> a obter uma ideia geral das utilizações típicas do MediaWiki Semântico.
@@ -11990,6 +11991,8 @@ Progresso estimado da actualização em curso:",
 	'smw-createproperty-isproperty' => 'Esta é uma propriedade do tipo $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|O valor permitido para esta propriedade é|Os valores permitidos para esta propriedade são}}:',
 	'smw_unknowntype' => 'Foi definido para a propriedade o tipo não suportado “$1”.', # Fuzzy
+	'smw_concept_header' => 'Páginas do conceito "$1"',
+	'smw_conceptarticlecount' => 'A apresentar {{PLURAL:$1|uma página pertencente|$1 páginas pertencentes}} ao conceito.', # Fuzzy
 );
 
 /** Brazilian Portuguese (português do Brasil)
