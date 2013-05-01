@@ -26,22 +26,29 @@ use ParserOutput;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
+
+/**
+ * Tests for the SMW\ConceptParserFunction class
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ */
 class ConceptParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -114,8 +121,8 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $title
-	 * @param $parserOutput
+	 * @param Title $title
+	 * @param ParserOutput $parserOutput
 	 *
 	 * @return ConceptParserFunction
 	 */
@@ -138,8 +145,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test instance exception
-	 * @test ConceptParserFunction::__construct
+	 * @test ConceptParserFunction::__construct (Test instance exception)
 	 *
 	 * @since 1.9
 	 */
@@ -149,8 +155,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test error on wrong namespace
-	 * @test ConceptParserFunction::parse
+	 * @test ConceptParserFunction::parse (Test error on wrong namespace)
 	 * @dataProvider getNameSpaceDataProvider
 	 *
 	 * @since 1.9
@@ -165,8 +170,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test error on double {{#concept}} use
-	 * @test ConceptParserFunction::parse
+	 * @test ConceptParserFunction::parse (Test error on double {{#concept}} use)
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9

@@ -36,20 +36,22 @@ use ParserOutput;
  * @ingroup ParserFunction
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
  * Tests for the SMW\SubobjectParserFunction class
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class SubobjectParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */

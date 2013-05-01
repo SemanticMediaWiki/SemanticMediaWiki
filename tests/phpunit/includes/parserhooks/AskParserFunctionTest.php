@@ -9,7 +9,7 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the SMW\AskParserFunction class
+ * Tests for the AskParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,25 +30,25 @@ use ParserOutput;
  *
  * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the SMW\AskParserFunction class
+ * Tests for the AskParserFunction class
  *
- * @ingroup SMW
  * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class AskParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -204,9 +204,7 @@ class AskParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test ($GLOBALS['smwgQEnabled'] = false)
-	 *
-	 * @test AskParserFunction::parse
+	 * @test AskParserFunction::parse (Test ($GLOBALS['smwgQEnabled'] = false))
 	 *
 	 * @since 1.9
 	 */

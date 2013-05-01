@@ -1,10 +1,11 @@
 <?php
 
 namespace SMW\Test;
+
 use SMW\ParserParameterFormatter;
 
 /**
- * Tests for the SMW\ParserParameterFormatter class
+ * Tests for the ParserParameterFormatter class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,32 +28,31 @@ use SMW\ParserParameterFormatter;
  * @ingroup SMW
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the SMW\ParserParameterFormatter class
+ * Tests for the ParserParameterFormatter class
  *
- * @ingroup SMW
  * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\ParserParameterFormatter';
 	}
 
 	/**
-	 * DataProvider
+	 * Provides sample data of parameter combinations
 	 *
 	 * @return array
 	 */
@@ -192,7 +192,7 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * DataProvider
+	 * Provides sample data of first parameter combinations
 	 *
 	 * @return array
 	 */
@@ -227,9 +227,12 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test instance
-	 *
+	 * @test ParserParameterFormatter::__construct
 	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
 	 */
 	public function testConstructor( array $params ) {
 		$instance = new ParserParameterFormatter( $params );
@@ -237,9 +240,12 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test instance exception
-	 *
+	 * @test ParserParameterFormatter::__construct (Test instance exception)
 	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
 	 */
 	public function testConstructorException( array $params ) {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
@@ -247,9 +253,13 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test toArray()
-	 *
+	 * @test ParserParameterFormatter::toArray
 	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
 	public function testToArray( array $params, array $expected ) {
 		$instance = new ParserParameterFormatter( $params );
@@ -260,13 +270,16 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test getFirst()
-	 *
+	 * @test ParserParameterFormatter::getFirst
 	 * @dataProvider getFirstDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
 	 */
 	public function testGetFirst( array $params, array $expected ) {
 		$results = new ParserParameterFormatter( $params );
 		$this->assertEquals( $expected['identifier'], $results->getFirst() );
 	}
-
 }

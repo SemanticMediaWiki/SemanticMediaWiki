@@ -6,7 +6,7 @@ use SMW\RecurringEvents;
 use SMW\ParserParameterFormatter;
 
 /**
- * Tests for the SMW\RecurringEvents class.
+ * Tests for the RecurringEvents class.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,31 +29,31 @@ use SMW\ParserParameterFormatter;
  * @ingroup SMW
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the SMW\RecurringEvents class
+ * Tests for the RecurringEvents class
  *
  * @ingroup SMW
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class RecurringEventsTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\RecurringEvents';
 	}
 
 	/**
-	 * DataProvider
+	 * Provides sample data normally found in connection with {{#set_recurring_event}}
 	 *
 	 * @return array
 	 */
@@ -245,14 +245,13 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 					'parameters' => array()
 				)
 			),
-
 		);
 	}
 
 	/**
 	 * Helper method that returns IParameterFormatter object
 	 *
-	 * @return  ParserParameterFormatter
+	 * @return ParserParameterFormatter
 	 */
 	private function getParameters( array $params ) {
 		$parameters = new ParserParameterFormatter( $params );
@@ -268,7 +267,8 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 		return $this->getSettings( array(
 			'smwgDefaultNumRecurringEvents' => 10,
 			'smwgMaxNumRecurringEvents' => 50
-		) );
+			)
+		);
 	}
 
 	/**
@@ -284,7 +284,7 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test RecurringEvents::__construct (parameters exceptions)
+	 * @test RecurringEvents::__construct (parameters exceptions)
 	 *
 	 * @since  1.9
 	 */
@@ -295,11 +295,24 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test RecurringEvents::__construct (options exceptions)
+	 * @test RecurringEvents::__construct
+	 * @dataProvider getParametersDataProvider
 	 *
 	 * @since 1.9
 	 *
+	 * @param array $params
+	 */
+	public function testInstance( array $params ) {
+		$instance = $this->getInstance( $params );
+		$this->assertInstanceOf( $this->getClass(), $instance );
+	}
+
+	/**
+	 * @test RecurringEvents::__construct (options exceptions)
 	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 *
 	 * @param array $params
 	 */
 	public function testMissingOptionsExceptions( array $params ) {
@@ -311,24 +324,11 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test RecurringEvents::__construct
+	 * @test RecurringEvents::getErrors
+	 * @dataProvider getParametersDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getParametersDataProvider
-	 * @param array $params
-	 */
-	public function testInstance( array $params ) {
-		$instance = $this->getInstance( $params );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * Test RecurringEvents::getErrors
-	 *
-	 * @since 1.9
-	 *
-	 * @dataProvider getParametersDataProvider
 	 * @param array $params
 	 * @param array $expected
 	 */
@@ -338,11 +338,11 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test RecurringEvents::getProperty
+	 * @test RecurringEvents::getProperty
+	 * @dataProvider getParametersDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getParametersDataProvider
 	 * @param array $params
 	 * @param array $expected
 	 */
@@ -352,11 +352,11 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test RecurringEvents::getParameters
+	 * @test RecurringEvents::getParameters
+	 * @dataProvider getParametersDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getParametersDataProvider
 	 * @param array $params
 	 * @param array $expected
 	 */
@@ -366,11 +366,11 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test RecurringEvents::getDates
+	 * @test RecurringEvents::getDates
+	 * @dataProvider getParametersDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getParametersDataProvider
 	 * @param array $params
 	 * @param array $expected
 	 */
@@ -380,7 +380,7 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * DataProvider (Mass insert)
+	 * Provides sample data for a mass insert
 	 *
 	 * @return array
 	 */
@@ -405,11 +405,11 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test RecurringEvents::getDates (mass insert)
+	 * @test RecurringEvents::getDates (mass insert)
+	 * @dataProvider getMassInsertDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getMassInsertDataProvider
 	 * @param array $params
 	 * @param array $expected
 	 */

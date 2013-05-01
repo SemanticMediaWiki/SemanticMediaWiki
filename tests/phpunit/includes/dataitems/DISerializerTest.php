@@ -29,9 +29,6 @@ use SMWQueryProcessor;
  * @ingroup SMW
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
@@ -39,11 +36,16 @@ use SMWQueryProcessor;
 /**
  * DISerializer test is to verify the exported array structure for content
  * consumers such as the API etc.
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class DISerializerTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -110,8 +112,9 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper function to return a query result object from a query string
+	 * Helper function that returns a SMWQueryResult object
 	 *
+	 * @return SMWQueryResult
 	 */
 	private function getQueryResult( $queryString ) {
 		list( $query, $formattedParams ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
@@ -125,11 +128,11 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test DISerializer::getSerializedQueryResult
+	 * @test DISerializer::getSerializedQueryResult
+	 * @dataProvider getDataProvider
 	 *
 	 * @since  1.9
 	 *
-	 * @dataProvider getDataProvider
 	 * @param array $test
 	 * @param array $expected
 	 */
@@ -147,11 +150,11 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test SMWQueryResult::toArray
+	 * @test SMWQueryResult::toArray
+	 * @dataProvider getDataProvider
 	 *
 	 * @since  1.9
 	 *
-	 * @dataProvider getDataProvider
 	 * @param array $test
 	 * @param array $expected
 	 */
@@ -168,13 +171,13 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test DISerializer::getSerialization
+	 * @test DISerializer::getSerialization
 	 *
 	 * @since  1.9
 	 */
 	public function testNumberSerialization() {
 
-		// Number
+		// Number serialization
 		$dataItem = new \SMWDINumber( 1001 );
 		$results = DISerializer::getSerialization( $dataItem );
 		$this->assertEquals( $results, 1001 );

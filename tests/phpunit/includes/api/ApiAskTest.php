@@ -27,10 +27,6 @@ namespace SMW\Test;
  * @ingroup Test
  * @ingroup API
  *
- * @group SMW
- * @group SMWExtension
- * @group API
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
@@ -38,14 +34,16 @@ namespace SMW\Test;
 /**
  * Tests for the ApiAsk class
  *
- * @ingroup SMW
+ * @ingroup Test
+ *
  * @group SMW
+ * @group SMWExtension
  * @group API
  */
 class ApiAskTest extends ApiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */

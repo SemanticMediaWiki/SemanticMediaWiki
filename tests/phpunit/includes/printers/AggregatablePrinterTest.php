@@ -8,7 +8,7 @@ use SMWDINumber;
 use ReflectionClass;
 
 /**
- * Tests for the SMW\AggregatablePrinter class
+ * Tests for the AggregatablePrinter class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,17 +31,17 @@ use ReflectionClass;
  * @ingroup QueryPrinter
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the SMW\AggregatablePrinter class
+ * Tests for the AggregatablePrinter class
  *
- * @ingroup QueryPrinter
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class AggregatablePrinterTest extends SemanticMediaWikiTestCase {
 

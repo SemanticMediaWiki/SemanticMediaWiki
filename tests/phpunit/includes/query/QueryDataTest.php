@@ -29,6 +29,7 @@ use Title;
  * @since 1.9
  *
  * @ingroup SMW
+ * @ingroup SMWQuery
  * @ingroup Test
  *
  * @group SMW
@@ -41,15 +42,17 @@ use Title;
 /**
  * Tests for the SMW\QueryData class
  *
- * @ingroup SMW
  * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class QueryDataTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\QueryData';
@@ -130,7 +133,7 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method to get queryProcessor object
+	 * Helper method that returns a SMWQueryProcessor object
 	 *
 	 * @return QueryProcessor
 	 */
@@ -144,9 +147,9 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method
+	 * Helper method that returns a QueryData object
 	 *
-	 * @return SMW\QueryData
+	 * @return QueryData
 	 */
 	private function getInstance( Title $title = null ) {
 		return new QueryData( $title );
@@ -163,8 +166,7 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test instance exception
-	 * @test QueryData::__construct
+	 * @test QueryData::__construct (Test instance exception)
 	 *
 	 * @since 1.9
 	 */
@@ -206,13 +208,14 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test QueryData::add
+	 * @test QueryData::add (Test instance exception)
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $params
 	 * @param array $expected
+	 * @throws MWException
 	 */
 	public function testQueryIdException( array $params, array $expected ) {
 		$this->setExpectedException( 'MWException' );

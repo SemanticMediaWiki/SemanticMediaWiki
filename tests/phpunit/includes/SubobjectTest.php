@@ -8,7 +8,7 @@ use SMWDIProperty;
 use Title;
 
 /**
- * Tests for the SMW\Subobject class
+ * Tests for the Subobject class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,32 +31,32 @@ use Title;
  * @ingroup SMW
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the SMW\Subobject class
+ * Tests for the Subobject class
  *
  * @ingroup SMW
- * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class SubobjectTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\Subobject';
 	}
 
 	/**
-	 * DataProvider
+	 * Provides sample data of combinations used in connection with a
+	 * Subobject instance
 	 *
 	 * @return array
 	 */
@@ -171,7 +171,7 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method to get Subobject instance
+	 * Helper method that returns a Subobject object
 	 *
 	 * @return Subobject
 	 */
@@ -190,9 +190,12 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test setSemanticData()
-	 *
+	 * @test Subobject::setSemanticData
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $setup
 	 */
 	public function testSetSemanticData( array $setup ) {
 		$subobject = $this->getInstance( $this->getTitle() );
@@ -202,9 +205,12 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test getName()
-	 *
+	 * @test Subobject::getName
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $setup
 	 */
 	public function testGetName( array $setup, array $expected ) {
 		$subobject = $this->getInstance( $this->getTitle(), $setup['identifier'] );
@@ -212,9 +218,12 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test getProperty()
-	 *
+	 * @test Subobject::getProperty
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $setup
 	 */
 	public function testGetProperty( array $setup ) {
 		$subobject = $this->getInstance( $this->getTitle(), $setup['identifier'] );
@@ -222,23 +231,13 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test addPropertyValueString() exception
-	 *
+	 * @test Subobject::addPropertyValue
 	 * @dataProvider getDataProvider
-	 */
-	public function testAddPropertyValueStringException( array $setup ) {
-		$this->setExpectedException( 'MWException' );
-		$subobject = $this->getInstance( $this->getTitle() );
-
-		foreach ( $setup['property'] as $property => $value ){
-			$subobject->addPropertyValue( $property, $value );
-		}
-	}
-
-	/**
-	 * Test addPropertyValue()
 	 *
-	 * @dataProvider getDataProvider
+	 * @since 1.9
+	 *
+	 * @param array $setup
+	 * @param array $expected
 	 */
 	public function testAddPropertyValue( array $setup, array $expected ) {
 		$subobject = $this->getInstance( $this->getTitle(), $setup['identifier'] );
@@ -255,9 +254,29 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test getAnonymousIdentifier()
-	 *
+	 * @test Subobject::addPropertyValue (test exception)
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $setup
+	 */
+	public function testAddPropertyValueStringException( array $setup ) {
+		$this->setExpectedException( 'MWException' );
+		$subobject = $this->getInstance( $this->getTitle() );
+
+		foreach ( $setup['property'] as $property => $value ){
+			$subobject->addPropertyValue( $property, $value );
+		}
+	}
+
+	/**
+	 * @test Subobject::getAnonymousIdentifier
+	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $setup
 	 */
 	public function testGetAnonymousIdentifier( array $setup ) {
 		$subobject = $this->getInstance( $this->getTitle() );
@@ -267,9 +286,12 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test getContainer()
-	 *
+	 * @test Subobject::getContainer
 	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $setup
 	 */
 	public function testGetContainer( array $setup ) {
 		$subobject = $this->getInstance( $this->getTitle(), $setup['identifier'] );

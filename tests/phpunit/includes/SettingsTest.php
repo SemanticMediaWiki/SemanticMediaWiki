@@ -6,7 +6,7 @@ use SMW\Settings;
 use MWException;
 
 /**
- * Tests for the SMW\Settings class.
+ * Tests for the Settings class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,38 +29,36 @@ use MWException;
  * @ingroup SMW
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
 
 /**
- * This class tests methods provided by the SMW\Settings class
+ * Tests for the Settings class
  *
  * @ingroup SMW
- * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class SettingsTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\Settings';
 	}
 
 	/**
-	 * Data provider
+	 * Provides sample data to be tested
 	 *
 	 * @return array
 	 */
 	public function dataSettingsProvider() {
-		// Using $this->arrayWrap( $settingArrays ) crashed PHP on Windows
 		return array( array( array(
 			'',
 			'foo' => 'bar',
@@ -68,6 +66,19 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 			'bar' => array( '9001' ),
 			'~[,,_,,]:3' => array( 9001, 4.2 ),
 		) ) );
+	}
+
+	/**
+	 * Provides and collects individual smwg* settings
+	 *
+	 * @return array
+	 */
+	public function dataGlobalsSettingsProvider() {
+		$settings = array_intersect_key( $GLOBALS,
+			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
+		);
+
+		return array( array( $settings ) );
 	}
 
 	/**
@@ -82,11 +93,11 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test Settings::__construct
+	 * @test Settings::__construct
+	 * @dataProvider dataSettingsProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider dataSettingsProvider
 	 * @param array $settings
 	 */
 	public function testConstructor( array $settings ) {
@@ -95,11 +106,11 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test Settings::get
+	 * @test Settings::get
+	 * @dataProvider dataSettingsProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider dataSettingsProvider
 	 * @param array $settings
 	 */
 	public function testGet( array $settings ) {
@@ -113,11 +124,22 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test Settings::set
+	 * @test Settings::get (test exception)
+	 *
+	 * @since 1.9
+	 */
+	public function testSettingsNameExceptions() {
+		$this->setExpectedException( 'MWException' );
+		$settingsObject = $this->getInstance( array( 'Foo' => 'bar' ) );
+		$this->assertEquals( 'bar', $settingsObject->get( 'foo' ) );
+	}
+
+	/**
+	 * @test Settings::set
+	 * @dataProvider dataSettingsProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider dataSettingsProvider
 	 * @param array $settings
 	 */
 	public function testSet( array $settings ) {
@@ -132,24 +154,11 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Data provider that collects all individual smwg* settings
-	 *
-	 * @return array
-	 */
-	public function dataGlobalsSettingsProvider() {
-		$settings = array_intersect_key( $GLOBALS,
-			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
-		);
-
-		return array( array( $settings ) );
-	}
-
-	/**
-	 * Test Settings::newFromGlobals
+	 * @test Settings::newFromGlobals
+	 * @dataProvider dataGlobalsSettingsProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider dataGlobalsSettingsProvider
 	 * @param array $settings
 	 */
 	public function testNewFromGlobals( array $settings ) {
@@ -162,16 +171,5 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 				$instance->get( $key )
 			);
 		}
-	}
-
-	/**
-	 * Test exception
-	 *
-	 * @since 1.9
-	 */
-	public function testSettingsNameExceptions() {
-		$this->setExpectedException( 'MWException' );
-		$settingsObject = $this->getInstance( array( 'Foo' => 'bar' ) );
-		$this->assertEquals( 'bar', $settingsObject->get( 'foo' ) );
 	}
 }

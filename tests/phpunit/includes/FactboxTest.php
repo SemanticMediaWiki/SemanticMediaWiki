@@ -30,25 +30,24 @@ use ParserOutput;
  *
  * @file
  * @ingroup SMW
- * @ingroup SMWParser
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Testing methods provided by the SMWFactbox class
+ * Tests for the SMWFactbox class
  *
- * @ingroup SMW
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class FactboxTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -90,7 +89,6 @@ class FactboxTest extends ParserTestCase {
 		);
 	}
 
-
 	/**
 	 * Helper method that returns a Settings object
 	 *
@@ -108,12 +106,13 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
+	 * @test ParserTextProcessor::parse
 	 * @dataProvider getTextProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param $text
-	 * @param $expected
+	 * @param array $expected
 	 */
 	public function testMagicWordsOutput( $text, array $expected ) {
 		$title = $this->getTitle();
@@ -149,7 +148,7 @@ class FactboxTest extends ParserTestCase {
 	 * @since 1.9
 	 *
 	 * @param $text
-	 * @param $expected
+	 * @param array $expected
 	 */
 	public function testGetFactboxTextFromOutput( $text, array $expected ) {
 		$title = $this->getTitle();

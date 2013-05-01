@@ -25,14 +25,12 @@ use ParserOutput;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
@@ -41,13 +39,15 @@ use ParserOutput;
 /**
  * Tests for the SMW\SetParserFunction class
  *
- * @ingroup SMW
  * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class SetParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -128,7 +128,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method
+	 * Helper method that returns a SetParserFunction object
 	 *
 	 * @return  SMW\SetParserFunction
 	 */
@@ -147,8 +147,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test instance exception
-	 * @test SetParserFunction::__construct
+	 * @test SetParserFunction::__construct (Test instance exception)
 	 *
 	 * @since 1.9
 	 */
@@ -173,8 +172,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test instantiated property and value strings
-	 * @test SetParserFunction::parse
+	 * @test SetParserFunction::parse (Test instantiated property and value strings)
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
@@ -208,5 +206,4 @@ class SetParserFunctionTest extends ParserTestCase {
 		$result = SetParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}
-
 }

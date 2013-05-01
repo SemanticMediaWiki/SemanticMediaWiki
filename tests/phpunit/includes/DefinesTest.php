@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 /**
- * Tests for the global constants being loaded
+ * Tests for global constants being loaded
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,16 +26,22 @@ namespace SMW\Test;
  * @ingroup SMW
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
+ */
+
+/**
+ * Tests for global constants being loaded
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class DefinesTest extends  SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string|boolean
 	 */
@@ -64,7 +70,7 @@ class DefinesTest extends  SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Test if constants are accessible
+	 * Test if constants are accessible
 	 * @dataProvider getConstantsDataProvider
 	 *
 	 * @param $constant

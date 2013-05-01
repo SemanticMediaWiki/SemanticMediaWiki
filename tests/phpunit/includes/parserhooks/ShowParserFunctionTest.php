@@ -33,20 +33,22 @@ use ParserOutput;
  * @ingroup ParserFunction
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
  * Tests for the SMW\ShowParserFunction class
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class ShowParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -104,7 +106,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method
+	 * Helper method that returns a ShowParserFunction object
 	 *
 	 * @since 1.9
 	 *
@@ -130,8 +132,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test instance exception
-	 * @test ShowParserFunction::__construct
+	 * @test ShowParserFunction::__construct (Test instance exception)
 	 *
 	 * @since 1.9
 	 */
@@ -156,9 +157,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test ($GLOBALS['smwgQEnabled'] = false)
-	 *
-	 * @test ShowParserFunction::parse
+	 * @test ShowParserFunction::parse (Test $GLOBALS['smwgQEnabled'] = false)
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
@@ -174,9 +173,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test generated query data
-	 *
-	 * @test ShowParserFunction::parse
+	 * @test ShowParserFunction::parse (Test generated query data)
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9

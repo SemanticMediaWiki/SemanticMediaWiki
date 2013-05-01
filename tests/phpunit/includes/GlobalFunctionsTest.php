@@ -20,24 +20,30 @@ namespace SMW\Test;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class GlobalFunctionsTest extends  SemanticMediaWikiTestCase {
+
+/**
+ * Tests for the GlobalFunctions
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ */
+class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string|boolean
+	 * @return string|false
 	 */
 	public function getClass() {
 		return false;

@@ -27,10 +27,6 @@ namespace SMW\Test;
  * @ingroup Test
  * @ingroup API
  *
- * @group SMW
- * @group SMWExtension
- * @group API
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
@@ -38,16 +34,18 @@ namespace SMW\Test;
 /**
  * Tests for the ApiSMWInfo class
  *
- * @ingroup SMW
+ * @ingroup Test
+ *
  * @group SMW
+ * @group SMWExtension
  * @group API
  */
 class ApiSMWInfoTest extends ApiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\ApiSMWInfo';
@@ -101,8 +99,8 @@ class ApiSMWInfoTest extends ApiTestCase {
 	/**
 	 * @test ApiSMWInfo::execute (Test unknown query parameter)
 	 *
-	 * A unknown parameter will produce a warnings array and only valid
-	 * parameters will yield an info array
+	 * Only valid parameters will yield an info array while an unknown parameter
+	 * will produce a "warnings" array.
 	 *
 	 * @since 1.9
 	 */

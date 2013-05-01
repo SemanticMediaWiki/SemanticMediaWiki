@@ -20,23 +20,29 @@ namespace SMW\Tests;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
+ * @ingroup Test
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+/**
+ * Tests for the SMW\DIConcept class
+ *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
- *
- * @licence GNU GPL v2+
- * @author mwjames
  */
 class DIConceptTest extends DataItemTest {
 
 	/**
-	 * @see DataItemTest::getClass
+	 * Returns the name of the class to be tested
 	 *
 	 * @since 1.8
 	 *
@@ -75,11 +81,16 @@ class DIConceptTest extends DataItemTest {
 	}
 
 	/**
-	 * Test concept cache setter/getter
+	 * @test DIConcept::setCacheStatus
+	 * @test DIConcept::setCacheDate
+	 * @test DIConcept::setCacheCount
+	 * @dataProvider conceptCacheDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider conceptCacheDataProvider
+	 * @param $status
+	 * @param $date
+	 * @param $count
 	 */
 	public function testConceptCacheSetterGetter( $status, $date, $count ) {
 		$reflector = new \ReflectionClass( $this->getClass() );

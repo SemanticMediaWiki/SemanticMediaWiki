@@ -9,7 +9,7 @@ use ParserOutput;
 use ReflectionClass;
 
 /**
- * Tests for the SMW\ParserTextProcessor class
+ * Tests for the ParserTextProcessor class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,35 +30,34 @@ use ReflectionClass;
  *
  * @file
  * @ingroup SMW
- * @ingroup SMWParser
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Testing methods provided by the ParserTextProcessor class
+ * Tests for the ParserTextProcessor class
  *
- * @ingroup SMW
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class ParserTextProcessorTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\ParserTextProcessor';
 	}
 
 	/**
-	 * Provides text sample, following namespace, settings to be used,
-	 * text string, and result array with expected {result text, property count,
+	 * Provides text sample, following namespace, the settings to be used,
+	 * text string, and expected result array with {result text, property count,
 	 * property label, and property value}
 	 *
 	 * @return array
@@ -272,7 +271,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 *
 	 * @param $namespace
 	 * @param $text
-	 * @param $expected
+	 * @param array $expected
 	 */
 	public function testStripMagicWords( $namespace, $text, array $expected ) {
 		$reflection = new ReflectionClass( $this->getClass() );
@@ -308,9 +307,9 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 * @since 1.9
 	 *
 	 * @param $namespace
-	 * @param $settings
+	 * @param array $settings
 	 * @param $text
-	 * @param $expected
+	 * @param array $expected
 	 */
 	public function testParse( $namespace, array $settings, $text, array $expected ) {
 		$parserOutput =  $this->getParserOutput();

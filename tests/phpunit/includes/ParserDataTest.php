@@ -11,7 +11,7 @@ use Title;
 
 
 /**
- * Tests for the SMW\ParserData class
+ * Tests for the ParserData class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,40 +28,39 @@ use Title;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the SMW\ParserData class
+ * Tests for the ParserData class
  *
- * @ingroup SMW
  * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class ParserDataTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\ParserData';
 	}
 
 	/**
-	 * Helper method
+	 * Helper method that returns a ParserData object
 	 *
-	 * @param $titleName
+	 * @param Title $title
 	 * @param ParserOutput $parserOutput
 	 * @param array $settings
 	 *
@@ -89,7 +88,7 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * Sample data are specified by property, value, errorCount, propertyCount
+	 * Provides an array specified by property, value, errorCount, propertyCount
 	 *
 	 * @return array
 	 */
@@ -102,11 +101,11 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test SMW\ParserData::addPropertyValue
+	 * @test ParserData::addPropertyValue
+	 * @dataProvider getPropertyValueDataProvider
 	 *
 	 * @since 1.9
 	 *
-	 * @dataProvider getPropertyValueDataProvider
 	 * @param $propertyName
 	 * @param $value
 	 * @param $errorCount
@@ -139,7 +138,7 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * DataProvider
+	 * Provides array of category names
 	 *
 	 * @return array
 	 */
@@ -150,12 +149,13 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * @covers SMWHooks::onParserAfterTidy
+	 * @test SMWHooks::onParserAfterTidy
+	 * @test ParserData::updateOutput
 	 * @dataProvider getCategoriesDataProvider
 	 *
-	 * @see Bug 47079 (missing updateOutput())
-	 *
 	 * @since 1.9
+	 *
+	 * @param array $categories
 	 */
 	public function testAddCategories( array $categories ) {
 		$settings = array(

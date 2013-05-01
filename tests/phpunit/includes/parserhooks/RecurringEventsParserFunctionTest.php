@@ -30,10 +30,8 @@ use ParserOutput;
  *
  * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
@@ -42,13 +40,15 @@ use ParserOutput;
 /**
  * Tests for the SMW\RecurringEventsParserFunction class
  *
- * @ingroup SMW
  * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class RecurringEventsParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -375,8 +375,8 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $title
-	 * @param $parserOutput
+	 * @param Title $title
+	 * @param ParserOutput $parserOutput
 	 *
 	 * @return RecurringEventsParserFunction
 	 */
@@ -398,7 +398,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test RecurringEventsParserFunction::__construct
+	 * @test RecurringEventsParserFunction::__construct (Test exception)
 	 *
 	 * @since 1.9
 	 */

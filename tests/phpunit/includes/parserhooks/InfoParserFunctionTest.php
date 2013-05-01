@@ -22,24 +22,29 @@ use SMW\InfoParserFunction;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
+
+/**
+ * Tests for the SMW\InfoParserFunction class
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ */
 class InfoParserFunctionTest extends ParserTestCase {
 
-	// Will be extended in a follow-up
-
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -48,8 +53,9 @@ class InfoParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test instance
+	 * @test InfoParserFunction::__construct
 	 *
+	 * @since 1.9
 	 */
 	public function testConstructor() {
 		$instance = new InfoParserFunction();

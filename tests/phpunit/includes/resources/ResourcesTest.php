@@ -7,7 +7,7 @@ use ResourceLoaderModule;
 use ResourceLoaderContext;
 
 /**
- * Tests for resource definitions and files
+ * Verifies registered resource definitions and files
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,42 +24,48 @@ use ResourceLoaderContext;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
+
+/**
+ * Verifies registered resource definitions and files
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ */
 class ResourcesTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
-		return '';
+		return false;
 	}
 
 	/**
-	 * Helper method to load resources only valid for this extension
+	 * Helper method that returns an extension path
 	 *
-	 * @return array
+	 * @return string
 	 */
-	private function getSMWResourceModules(){
-		global $smwgIP;
-		return include $smwgIP . '/resources/Resources.php';
+	private function getSMWResourceModules() {
+		return include $GLOBALS['smwgIP'] . '/resources/Resources.php';
 	}
 
 	/**
 	 * DataProvider
 	 *
+	 * @return array
 	 */
 	public function moduleDataProvider() {
 		$resourceLoader = new ResourceLoader();
@@ -71,10 +77,13 @@ class ResourcesTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Test scripts accessibility
-	 *
 	 * @dataProvider moduleDataProvider
+	 *
+	 * @param $modules
+	 * @param ResourceLoader $resourceLoader
+	 * @param $context
 	 */
-	public function testModulesScriptsFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context ){
+	public function testModulesScriptsFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context ) {
 		foreach ( $modules as $name => $values ){
 
 			// Get module details
@@ -82,16 +91,19 @@ class ResourcesTest extends SemanticMediaWikiTestCase {
 
 			// Get scripts per module
 			$scripts = $module->getScript( $context );
-			$this->assertTrue( is_string( $scripts ) );
+			$this->assertInternalType( 'string', $scripts );
 		}
 	}
 
 	/**
 	 * Test styles accessibility
-	 *
 	 * @dataProvider moduleDataProvider
+	 *
+	 * @param $modules
+	 * @param ResourceLoader $resourceLoader
+	 * @param $context
 	 */
-	public function testModulesStylesFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context  ){
+	public function testModulesStylesFilesAreAccessible( $modules, ResourceLoader $resourceLoader, $context  ) {
 
 		foreach ( $modules as $name => $values ){
 
@@ -102,9 +114,8 @@ class ResourcesTest extends SemanticMediaWikiTestCase {
 			$styles = $module->getStyles( $context );
 
 			foreach ( $styles as $style ){
-				$this->assertTrue( is_string( $style ) );
+			$this->assertInternalType( 'string', $style );
 			}
 		}
 	}
-
 }

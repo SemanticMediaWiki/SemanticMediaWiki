@@ -22,24 +22,30 @@ use SMWInfolink;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
+
+/**
+ * Tests for the SMWInfolink class
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ */
 class InfolinkTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMWInfolink';
@@ -80,10 +86,13 @@ class InfolinkTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test encode parameters
-	 *
-	 * @covers SMWInfolink::encodeParameters
+	 * @test SMWInfolink::encodeParameters
 	 * @dataProvider getParameterDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expectedEncode
 	 */
 	public function testEncodeParameters( array $params, array $expectedEncode ) {
 		$encodeResult = SMWInfolink::encodeParameters( $params, true );

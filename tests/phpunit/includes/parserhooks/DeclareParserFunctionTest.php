@@ -22,24 +22,29 @@ use SMW\DeclareParserFunction;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
-class DeclareParserFunctionTest extends SemanticMediaWikiTestCase {
 
-	// Will be extended in a follow-up
+/**
+ * Tests for the SMW\DeclareParserFunction class
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ */
+class DeclareParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -48,8 +53,9 @@ class DeclareParserFunctionTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Test instance
+	 * @test DeclareParserFunction::__construct
 	 *
+	 * @since 1.9
 	 */
 	public function testConstructor() {
 		$instance = new DeclareParserFunction();

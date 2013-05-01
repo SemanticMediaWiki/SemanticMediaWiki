@@ -22,24 +22,29 @@ use SMW\DocumentationParserFunction;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
+ * @file
  * @ingroup SMW
+ * @ingroup ParserFunction
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
+
+/**
+ * Tests for the SMW\DocumentationParserFunction class
+ *
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ */
 class DocumentationParserFunctionTest extends ParserTestCase {
 
-	// Will be extended in a follow-up
-
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
 	 * @return string
 	 */
@@ -48,8 +53,9 @@ class DocumentationParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test instance
+	 * @test DocumentationParserFunction::__construct
 	 *
+	 * @since 1.9
 	 */
 	public function testConstructor() {
 		$instance = new DocumentationParserFunction();

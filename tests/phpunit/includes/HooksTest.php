@@ -11,7 +11,7 @@ use Parser;
 use LinksUpdate;
 
 /**
- * Tests for the SMW\Hooks class
+ * Tests for the SMWHooks class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,6 @@ use LinksUpdate;
  * @ingroup SMW
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
@@ -45,10 +42,14 @@ use LinksUpdate;
  * This class is testing implemented hooks and verifies consistency with its
  * invoked methods to ensure a hook generally returns true.
  *
- * @ingroup SMW
  * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ *
+ * The database group creates temporary tables which allows for testing without
+ * accessing the production database.
  * @group Database
- * ^--- important, causes temporary tables to be used instead of the real database
  */
 class HooksTest extends \MediaWikiTestCase {
 
@@ -67,7 +68,7 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method to normalize a path
+	 * Helper method that returns a normalized path
 	 *
 	 * @since 1.9
 	 *
@@ -134,7 +135,7 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method to create Parser object
+	 * Helper method that returns a Parser object
 	 *
 	 * @since 1.9
 	 *
