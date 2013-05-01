@@ -25,9 +25,9 @@ use Html, FormatJson;
  * @since 1.9
  *
  * @file
- * @ingroup SemanticResultFormats
- * @licence GNU GPL v2 or later
+ * @ingroup QueryPrinter
  *
+ * @licence GNU GPL v2 or later
  * @author mwjames
  */
 abstract class ApiResultPrinter extends ResultPrinter {

@@ -6,9 +6,38 @@ use SMWQueryResult;
 use SMWDataItem;
 
 /**
- * Result printer that supports the distribution parameter,
- * and related parameters. It allows the user to choose between
- * regular behavior or getting a distribution of values.
+ * Abstract class that supports the aggregation and distributive calculation
+ * of numerical data.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @since 1.9
+ *
+ * @file
+ * @ingroup QueryPrinter
+ *
+ * @licence GNU GPL v2+
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ */
+
+/**
+ * Abstract class that supports the aggregation and distributive calculation
+ * of numerical data. Supports the distribution parameter, and related
+ * parameters that allows the user to choose between regular behavior or
+ * generating a distribution of values.
  *
  * For example, this result set: foo bar baz foo bar bar ohi
  * Will be turned into
@@ -17,13 +46,7 @@ use SMWDataItem;
  * * baz (1)
  * * ohi (1)
  *
- * @since 1.7
- *
- * @file SMW_QP_Aggregatable.php
- * @ingroup SMWQuery
- *
- * @licence GNU GPL v3
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @ingroup QueryPrinter
  */
 abstract class AggregatablePrinter extends ResultPrinter {
 
@@ -50,22 +73,15 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * (non-PHPdoc)
 	 * @see SMWResultPrinter::getResultText()
 	 */
-	protected function getResultText( SMWQueryResult $result, $outputMode ) {
-		$data = $this->getResults( $result, $outputMode );
+	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
+		$data = $this->getResults( $queryResult, $outputMode );
 
-		if ( count( $data ) == 0 ) {
-			// This is wikitext, so no escaping needed.
-			return '<span class="error">' . wfMessage( 'srf-warn-empy-chart' )->inContentLanguage()->text() . '</span>';
-
-			// This makes the parser go mad :/
-//			global $wgParser;
-//			return $wgParser->parse(
-//				'{{#info:' . wfMessage( 'srf-warn-empy-chart' )->inContentLanguage()->text() . '|warning}}',
-//				Title::newMainPage(),
-//				( new ParserOptions() )
-//			)->getText();
-		}
-		else {
+		if ( $data === array() ) {
+			$queryResult->addErrors( array(
+				$this->msg( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text()
+			) );
+			return '';
+		} else {
 			$this->applyDistributionParams( $data );
 			$this->addResources();
 			return $this->getFormatOutput( $data );

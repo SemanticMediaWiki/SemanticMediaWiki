@@ -8,7 +8,7 @@ use SMWDINumber;
 use ReflectionClass;
 
 /**
- * Tests for the SMWAggregatablePrinter class
+ * Tests for the SMW\AggregatablePrinter class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,7 @@ use ReflectionClass;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup ResultPrinter
+ * @ingroup QueryPrinter
  * @ingroup Test
  *
  * @group SMW
@@ -40,19 +39,56 @@ use ReflectionClass;
  */
 
 /**
- * Testing methods provided by the SMWAggregatablePrinter class
+ * Tests for the SMW\AggregatablePrinter class
  *
- * @ingroup SMW
+ * @ingroup QueryPrinter
  */
 class AggregatablePrinterTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\AggregatablePrinter';
+	}
+
+	/**
+	 * @test AggregatablePrinter::getResultText
+	 *
+	 * @since 1.9
+	 */
+	public function testGetResultTextErrorMessage() {
+		$expectedMessage = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
+		$queryString = '[[Lula query]]';
+
+		// Build SMWQuery object
+		$qp = new \SMWQueryParser( $GLOBALS['smwgQFeatures'] );
+		$qp->setDefaultNamespaces( $GLOBALS['smwgQDefaultNamespaces'] );
+		$desc = $qp->getQueryDescription( $queryString );
+		$query = new \SMWQuery( $desc );
+		$query->setQueryString( $queryString );
+
+		// Get SMWQueryResult object
+		$queryResult = smwfGetStore()->getQueryResult( $query );
+
+		// Access abstract class
+		$abstractInstance = $this->getMockForAbstractClass( $this->getClass(), array( 'table' ) );
+
+		// Make protected method accessible
+		$reflection = new ReflectionClass( $this->getClass() );
+		$method = $reflection->getMethod( 'getResultText' );
+		$method->setAccessible( true );
+
+		// Invoke the instance
+		$result = $method->invokeArgs( $abstractInstance, array( $queryResult, SMW_OUTPUT_HTML ) );
+
+		$this->assertEquals( '', $result );
+
+		foreach( $queryResult->getErrors() as $error ) {
+			$this->assertEquals( $expectedMessage, $error );
+		}
 	}
 
 	/**
