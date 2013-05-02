@@ -5267,6 +5267,7 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-concept-cache-text' => 'Le concept a un total de $1 {{PLURAL:$1|page|pages}}, et a été mis à jour la dernière fois le $2.',
 	'smw_concept_header' => 'Page du concept « $1 »',
 	'smw_conceptarticlecount' => 'Afficher ci-dessous $1 {{PLURAL:$1|page|pages}}.',
+	'smw-qp-aggregatable-empty-data' => 'Les données agrégées demandées n’ont pas pu être affichées à cause de critères de sélection insuffisants.',
 );
 
 /** Franco-Provençal (arpetan)
@@ -9775,6 +9776,7 @@ $messages['mk'] = array(
 	'smw-concept-cache-text' => 'Концептот има вкупно {{PLURAL:$1|една страница|$1 страници}}, а подновен е на $2.',
 	'smw_concept_header' => 'Страници на концептот „$1“',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Прикажана е $1 страница која му припаѓа|Прикажани се $1 страници кои му припаѓаат}} на тој концепт.',
+	'smw-qp-aggregatable-empty-data' => 'Побараните податоци за агрегатна употреба не можат да се прикажат поради извесни недоволни услови на избор.',
 );
 
 /** Malayalam (മലയാളം)
