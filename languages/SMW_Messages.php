@@ -1683,12 +1683,13 @@ $messages['arz'] = array(
 );
 
 /** Asturian (asturianu)
+ * @author Tifinaghes
  * @author Xuacu
  */
 $messages['ast'] = array(
 	'smw-desc' => "Facer la to wiki más accesible - pa les máquines ''y'' pa los humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en llinia])",
 	'smw_viewasrdf' => 'Canal RDF',
-	'smw_finallistconjunct' => ', y',
+	'smw_finallistconjunct' => ', ⴷ',
 	'smw_factbox_head' => 'Fechos sobro $1',
 	'smw_isspecprop' => 'Esta propiedá ye una propiedá especial nesta wiki.',
 	'version-semantic' => 'Estensiones semántiques',
@@ -4136,12 +4137,13 @@ $messages['eo'] = array(
  * @author Locos epraix
  * @author MaxSem
  * @author Sanbec
+ * @author Tifinaghes
  * @author Translationista
  */
 $messages['es'] = array(
 	'smw-desc' => "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
 	'smw_viewasrdf' => 'Ver como RDF',
-	'smw_finallistconjunct' => ' y',
+	'smw_finallistconjunct' => ', ⴷ',
 	'smw_factbox_head' => 'Hechos relativos a $1 — Búsqueda de páginas similares con <span class="smwsearchicon">+</span>.',
 	'smw_isspecprop' => 'Esta propiedad es una propiedad especial en este wiki.',
 	'smw_concept_description' => 'Descripción del concepto "$1"',
@@ -4253,8 +4255,6 @@ Los resultados podrían no ser como esperabas.',
 	'smw_attributearticlecount' => 'Mostrando {{PLURAL:$1|una página|$1 páginas}} que {{PLURAL:$1|usa|usan}} esta propiedad.',
 	'smw_subproperty_header' => 'Subpropiedades',
 	'smw_subpropertyarticlecount' => 'Esta propiedad tiene las siguientes $1 {{PLURAL:$1|subpropiedad|subpropiedades}}:',
-	'smw_concept_header' => 'Páginas de concepto "$1"',
-	'smw_conceptarticlecount' => 'Mostrando $1 {{PLURAL:$1|página|páginas}} pertenecientes al concepto.',
 	'exportrdf' => 'Exportar el artículo como RDF',
 	'smw_exportrdf_docu' => ' En esta página, las partes de contenido de un artículo pueden ser exportadas a formato RDF. Introduzca el nombre de las páginas deseadas en el cuadro de texto que se encuentra debajo, <i>un nombre por línea </i>.<p/>',
 	'smw_exportrdf_recursive' => 'Exportar igualmente todas las páginas pertinentes de forma recurrente. Esta posibilidad puede conseguir un gran número de resultados !',
@@ -4454,6 +4454,8 @@ Progeso estimado de la actualización:',
 	'smw-ui-tooltip-title-event' => 'Evento',
 	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw_unknowntype' => 'El tipo de esta propiedad no es válido',
+	'smw_concept_header' => 'Páginas de concepto "$1"',
+	'smw_conceptarticlecount' => 'Mostrando $1 {{PLURAL:$1|página|páginas}} pertenecientes al concepto.', # Fuzzy
 );
 
 /** Estonian (eesti)
@@ -9428,6 +9430,7 @@ $messages['lv'] = array(
 $messages['min'] = array(
 	'smw_propertylackspage' => 'Sado properti musti dideskripsikan jo suatu laman!',
 	'smw_purge' => 'Pabaharui',
+	'smw_browse_go' => 'Tuju',
 );
 
 /** Macedonian (македонски)
