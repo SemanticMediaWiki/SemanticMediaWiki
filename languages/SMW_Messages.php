@@ -5783,6 +5783,7 @@ Progreso estimado da actualización actual:',
 	'smw-concept-cache-text' => 'O concepto ten {{PLURAL:$1|unha páxina|un total de $1 páxinas}}. A súa última actualización foi o $2.',
 	'smw_concept_header' => 'Páxinas do concepto "$1"',
 	'smw_conceptarticlecount' => 'A continuación {{PLURAL:$1|móstrase $1 páxina|móstranse $1 páxinas}}.',
+	'smw-qp-aggregatable-empty-data' => 'Os datos agregados solicitados non se poden mostrar debido a uns criterios de selección insuficientes.',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
