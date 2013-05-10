@@ -2724,6 +2724,7 @@ Progrés estimat de l'actualització actual:",
  */
 $messages['ce'] = array(
 	'smw_printername_template' => 'Кеп',
+	'smw-ask-delete' => '[ДӀаяккха]',
 );
 
 /** Chamorro (Chamoru)
