@@ -678,4 +678,34 @@ final class SMWHooks {
 
 		return true;
 	}
+
+	/**
+	 * Hook: Add changes to the output page, e.g. adding of CSS or JavaScript
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
+	 *
+	 * @since 1.9
+	 *
+	 * @param OutputPage $outputPage
+	 * @param Skin $skin
+	 *
+	 * @return boolean
+	 */
+	public static function onBeforePageDisplay( OutputPage &$outputPage, Skin &$skin ) {
+		$title = $outputPage->getTitle();
+
+		// Add style resources to avoid unstyled content
+		$outputPage->addModules( array( 'ext.smw.style' ) );
+
+		// Add export link to the head
+		if ( $title instanceof Title && !$title->isSpecialPage() ) {
+			$linkarr['rel'] = 'ExportRDF';
+			$linkarr['type'] = 'application/rdf+xml';
+			$linkarr['title'] = $title->getPrefixedText();
+			$linkarr['href'] = SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
+			$outputPage->addLink( $linkarr );
+		}
+
+		return true;
+	}
 }

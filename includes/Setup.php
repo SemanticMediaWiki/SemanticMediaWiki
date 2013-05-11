@@ -92,6 +92,8 @@ function smwfRegisterHooks() {
 	// User preference
 	$wgHooks['GetPreferences'][] = 'SMWHooks::onGetPreferences';
 
+	// Add changes to the output page
+	$wgHooks['BeforePageDisplay'][] = 'SMWHooks::onBeforePageDisplay';
 
 	// ResourceLoader
 	$wgHooks['ResourceLoaderGetConfigVars'][] = 'SMWHooks::onResourceLoaderGetConfigVars';
