@@ -787,7 +787,8 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw_qui_options' => 'This is the text for the header of the section on [[Special:QueryCreator]] allowing to specify various options for the printout statements of a query.
 
 {{Identical|Options}}',
-	'smw_qui_addcategory' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add another category to a query when clicked.',
+	'smw_qui_addcategory' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add another category to a query when clicked.
+{{Identical|Add category}}',
 	'smw_qui_addrescol' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add query-matches to a query when clicked.',
 	'smw_qui_ok' => 'This is the label of the Ok button within a modal pop-up window on [[Special:QueryCreator]] to submit the entries when clicked.
 
@@ -951,7 +952,8 @@ See also:
 	'smw-ui-tooltip-title-service' => 'A label that is displayed on the info tooltip.',
 	'smw-ui-tooltip-title-warning' => 'A label that is displayed on the info tooltip.
 {{Identical|Error}}',
-	'smw-ui-tooltip-title-parameter' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-parameter' => 'A label that is displayed on the info tooltip.
+{{Identical|Parameter}}',
 	'smw-ui-tooltip-title-event' => 'A label that is displayed on the info tooltip.
 {{Identical|Event}}',
 	'smw-ui-tooltip-title-note' => 'A label that is displayed on the info tooltip.',
