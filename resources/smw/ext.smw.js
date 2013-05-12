@@ -17,9 +17,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
- * @file
+ * @since 1.8
  *
- * @since 1.9
+ * @file
+ * @ignore
+ *
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
@@ -28,8 +30,9 @@
  */
 
 /**
- * Declares global smw instance and namespace
+ * Declares methods and properties that are available through the smw namespace
  *
+ * @since  1.8
  * @class smw
  */
 var instance = ( function ( $ ) {
@@ -77,7 +80,18 @@ var instance = ( function ( $ ) {
 	};
 
 	/**
-	 * Returns SMW version
+	 * Returns current debug status
+	 *
+	 * @since 1.9
+	 *
+	 * @return {boolean}
+	 */
+	instance.debug = function() {
+		return mediaWiki.config.get( 'debug' );
+	};
+
+	/**
+	 * Returns Semantic MediaWiki version
 	 *
 	 * @since 1.9
 	 *
@@ -89,6 +103,10 @@ var instance = ( function ( $ ) {
 
 	/**
 	 * Declares methods to access utility functions
+	 *
+	 * @since  1.9
+	 *
+	 * @static
 	 * @class smw.util
 	 * @alias smw.Util
 	 */
@@ -118,14 +136,21 @@ var instance = ( function ( $ ) {
 		 * @param {string} s
 		 * @return {string}
 		 */
-		capitalize: function( s ) {
+		ucFirst: function( s ) {
 			return s.charAt(0).toUpperCase() + s.slice(1);
 		},
 
 		/**
 		 * Declares methods to access information about namespace settings
-		 * @class smw.util.namespace
+
+		 * Example to find localised name:
+		 *         smw.util.namespace.getName( 'property' );
+		 *         smw.util.namespace.getName( 'file' );
+		 *
+		 * @since  1.9
+		 *
 		 * @static
+		 * @class smw.util.namespace
 		 */
 		namespace: {
 
@@ -151,7 +176,7 @@ var instance = ( function ( $ ) {
 			 */
 			getId: function( key ) {
 				if( typeof key === 'string' ) {
-					return this.getList()[ instance.util.capitalize( instance.util.clean( key ) ) ];
+					return this.getList()[ instance.util.ucFirst( instance.util.clean( key ) ) ];
 				}
 				return undefined;
 			},
@@ -172,12 +197,75 @@ var instance = ( function ( $ ) {
 				}
 				return undefined;
 			}
-		}
+		},
 
+		/**
+		 * Declares methods to improve browser responsiveness by loading
+		 * invoked methods asynchronously using the jQuery.eachAsync plug-in
+		 *
+		 * Example:
+		 *         var fn = function( options ) {};
+		 *         smw.util.async.load( $( this ), fn, {} );
+		 *
+		 * @since  1.9
+		 *
+		 * @static
+		 * @class smw.util.async
+		 */
+		async: {
+
+			/**
+			 * Returns if eachAsync is available for asynchronous loading
+			 *
+			 * @return {boolean}
+			 */
+			isEnabled: function() {
+				return $.isFunction( $.fn.eachAsync );
+			},
+
+			/**
+			 * Negotiates and executes asynchronous loading
+			 *
+			 * @since  1.9
+			 *
+			 * @param {object} context
+			 * @param {function} method
+			 * @param {object|string} args
+			 *
+			 * @return {boolean}
+			 * @throws {Error} Missing callback
+			 */
+			load: function( context, method ) {
+				if ( typeof method !== 'function' ) {
+					throw new Error( 'Invoked parameter was not a function' );
+				}
+
+				// Filter arguments that are attached to the caller
+				var args = Array.prototype.slice.call( arguments, 2 );
+
+				if ( this.isEnabled() ) {
+					context.eachAsync( {
+						delay: 100,
+						bulk: 0,
+						loop: function() {
+							method.apply( $( this ), args );
+						}
+					} );
+				} else {
+					context.each( function() {
+						method.apply( $( this ), args );
+					} );
+				}
+			}
+		}
 	};
+
 
 	/**
 	 * Declares methods to access information about available formats
+	 *
+	 * @since  1.9
+	 *
 	 * @class smw.formats
 	 * @alias smw.Formats
 	 */
@@ -213,15 +301,14 @@ var instance = ( function ( $ ) {
 	};
 
 	/**
-	 * Access settings array
+	 * Declares methods to access information about invoked settings (see also
+	 * SMWHooks::onResourceLoaderGetConfigVars)
 	 *
 	 * @since 1.9
 	 *
 	 * @class smw.settings
 	 * @alias smw.Settings
 	 * @static
-	 *
-	 * @return {mixed}
 	 */
 	instance.settings = {
 
@@ -241,7 +328,7 @@ var instance = ( function ( $ ) {
 		 *
 		 * @since 1.9
 		 *
-		 * @param  {string} setting to be selected
+		 * @param  {string} key to be selected
 		 *
 		 * @return {mixed}
 		 */
@@ -253,10 +340,10 @@ var instance = ( function ( $ ) {
 		}
 	};
 
-	// Alias
+	// Define aliases
 	instance.Util = instance.util;
 
-	// Make invoked methods public
+	// Expose invoked methods
 	return instance;
 
 } )( jQuery );

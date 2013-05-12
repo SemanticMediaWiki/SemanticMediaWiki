@@ -40,9 +40,8 @@ $moduleTemplate = array(
 return array(
 	// SMW core class
 	'ext.smw' => $moduleTemplate + array(
-		'scripts' => array(
-			'resources/smw/ext.smw.js'
-		)
+		'scripts' => 'resources/smw/ext.smw.js',
+		'dependencies' => 'jquery.async',
 	),
 
 	// Common styles independent from JavaScript
