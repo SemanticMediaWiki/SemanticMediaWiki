@@ -1,17 +1,35 @@
 /**
- * SMW Api base class
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
  *
- * @since 1.9
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * @file
+ * @ignore
+ *
+ * @since 1.9
  * @ingroup SMW
  *
- * @licence GNU GPL v2 or later
+ * @licence GNU GPL v2+
  * @author mwjames
  */
-/*global md5 */
 ( function( $, mw, smw ) {
 	'use strict';
+
+	/*global md5 */
 
 	/**
 	 * Constructor to create an object to interact with the API and SMW
@@ -19,13 +37,14 @@
 	 * @since 1.9
 	 *
 	 * @class
+	 * @alias smw.Api
 	 * @constructor
 	 */
-	smw.Api = function() {};
+	smw.api = function() {};
 
 	/* Public methods */
 
-	smw.Api.prototype = {
+	smw.api.prototype = {
 
 		/**
 		 * Convenience method to parse and map a JSON string
@@ -131,6 +150,6 @@
 	};
 
 	//Alias
-	smw.api = smw.Api;
+	smw.Api = smw.api;
 
 } )( jQuery, mediaWiki, semanticMediaWiki );

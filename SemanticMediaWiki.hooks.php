@@ -414,6 +414,12 @@ final class SMWHooks {
 			)
 		);
 
+		// Available semantic namespaces
+		foreach ( array_keys( $GLOBALS['smwgNamespacesWithSemanticLinks'] ) as $ns ) {
+			$name = MWNamespace::getCanonicalName( $ns );
+			$vars['smw-config']['settings']['namespace'][$name] = $ns;
+		}
+
 		foreach ( array_keys( $GLOBALS['smwgResultFormats'] ) as $format ) {
 			// Special formats "count" and "debug" currently not supported.
 			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
