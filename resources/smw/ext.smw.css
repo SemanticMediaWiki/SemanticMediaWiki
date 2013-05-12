@@ -1,21 +1,47 @@
 /**
- * CSS related to SMW core
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
  *
- * @licence GNU GPL v2 or later
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * @since 1.8
- * @release 0.1
  *
  * @file
+ * @ignore
+ *
  * @ingroup SMW
  *
+ * @licence GNU GPL v2+
+ * @author Jeroen De Dauw <jeroendedauw at gmail dot com>
+ * @author mwjames
  */
 
-span.smwbuiltin, span.smwttactiveinline span.smwbuiltin { /* highlighting for builtin elements */
+/**
+ * highlighting for builtin elements
+ * @ignore
+ */
+span.smwbuiltin, span.smwttactiveinline span.smwbuiltin {
 	font-style: italic;
 }
 
-div.smwpre { /* make divs look like <pre> */
+/**
+ * make divs look like <pre>
+ * @ignore
+ */
+div.smwpre {
 	white-space: pre;
 	font-family: monospace;
 	padding: 1em;
@@ -27,22 +53,34 @@ div.smwpre { /* make divs look like <pre> */
 	margin-top: 0.5em;
 }
 
-#smwfootbr { /* terminate page contents when inserting stuff below a page, typically used in <br> */
+/**
+ * terminate page contents when inserting stuff below a page, typically used in <br>
+ * @ignore
+ */
+#smwfootbr {
 	clear: both;
 }
 
-/* hide keys for sorting table entries */
+/**
+ * hide keys for sorting table entries
+ * @ignore
+ */
 span.smwsortkey {
 	display: none;
 }
 
-/* buttons for sort-arrows */
+/**
+ * buttons for sort-arrows
+ * @ignore
+ */
 a.sortheader:hover {
 	text-decoration: none;
 }
 
-/* "semantic" span classes for Timeline */
-
+/**
+ * "semantic" span classes for Timeline
+ * @ignore
+ */
 div.smwtimeline {
 	border: 1px solid #AAAAAA;
 	background-color: #F9F9F9;
@@ -62,7 +100,10 @@ span.smwtlcomment {
 	padding: 5px;
 }
 
-/* Factbox */
+/**
+ * Factbox
+ * @ignore
+ */
 div.smwfact {
 	clear: both;
 	background-color: #F9F9F9;
@@ -104,7 +145,10 @@ div.smwhr hr {
 	color: #DDDDDD;
 }
 
-/* warning messages */
+/**
+ * warning messages
+ * @ignore
+ */
 span.smwwarning {
 	color: #888888;
 	font-style: italic;
@@ -112,9 +156,12 @@ span.smwwarning {
 }
 
 
-/* search, browse, RDF icons */
-
-span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be removed from code*/
+/**
+ * search, browse, RDF icons
+ * FIXME: this was only used for Factbox docu, should be removed from code
+ * @ignore
+ */
+span.smwsearchicon {
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #888888;
@@ -196,8 +243,11 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	/* @embed */ background: url(../images/rdf_flyer.18.gif) center right no-repeat;
 }
 
-/* @TODO Browse and Factbox should be split into seperated CSS file*/
-/* CSS style file for Semantic MediaWiki Special Browse. */
+/**
+ * @TODO Browse and Factbox should be split into seperated CSS file
+ * CSS style file for Semantic MediaWiki Special Browse.
+ * @ignore
+ */
 table.smwb-factbox {
 	border-left: 8px solid #DDDDDD;
 	width: 100%
@@ -246,7 +296,10 @@ tr.smwb-center {
 span.smwb-value {
 }
 
-/* Inverse factbox */
+/**
+ * Inverse factbox
+ * @ignore
+ */
 table.smwb-ifactbox {
 	border-right: 8px solid #DDDDDD;
 	width: 100%
@@ -290,14 +343,21 @@ tr.smwb-ipropvalue td {
 span.smwb-ivalue {
 }
 
-/* Added in 1.9 */
+/**
+ * @since 1.9
+ * @ignore
+ */
 .smw-spinner .text {
 	padding-left: 2.1em;
 	font-size: 12px;
 	vertical-align: middle;
 }
 
-/* Spinner for left side in-text*/
+/**
+ * Spinner for left side in-text
+ * @since 1.9
+ * @ignore
+ */
 .smw-spinner.left.mw-small-spinner {
 	background-position:left;
 	vertical-align: middle;
@@ -305,7 +365,11 @@ span.smwb-ivalue {
 	padding: 0px !important;
 }
 
-/* Sppiner for image center*/
+/**
+ * Sppiner for image center
+ * @since 1.9
+ * @ignore
+ */
 .smw-spinner.center.mw-small-spinner {
 	vertical-align: middle;
 	display:inline-block;

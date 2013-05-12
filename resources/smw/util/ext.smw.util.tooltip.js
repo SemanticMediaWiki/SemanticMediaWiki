@@ -1,26 +1,51 @@
 /**
- * JavaScript for SMW tooltip functions
- * @see http://www.semantic-mediawiki.org/wiki/Help:Tooltip
+ * This file is part of the Semantic MediaWiki Tooltip/Highlighter module
+ * @see https://semantic-mediawiki.org/wiki/Help:Tooltip
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * @since 1.8
- * @release 0.3.2
+ * @revision 0.3.2
  *
  * @file
+ * @ignore
+ *
  * @ingroup SMW
  *
- * @licence GNU GPL v2 or later
+ * @licence GNU GPL v2+
  * @author mwjames
  */
 ( function( $, mw, smw ) {
 	'use strict';
 
-	////////////////////////// PRIVATE OBJECTS ////////////////////////
-
-	// Ensure global object is instantiate
-	smw.util = smw.util || {};
-
-	// Helper variable
+	/**
+	 * Helper variable
+	 * @ignore
+	 */
 	var h = mw.html;
+
+	/**
+	 * Inheritance class for the smw.util constructor
+	 *
+	 * @since 1.9
+	 *
+	 * @class
+	 * @abstract
+	 */
+	smw.util = smw.util || {};
 
 	/**
 	 * Default options
@@ -86,23 +111,29 @@
 		}
 	}
 
-	////////////////////////// PUBLIC METHODS ////////////////////////
-
 	/**
-	 * Constructor
-	 * @var Object
+	 * Class constructor
+	 *
+	 * @since 1.8
+	 *
+	 * @class
+	 * @constructor
+	 * @extends smw.util
 	 */
 	smw.util.tooltip = function( settings ) {
 		$.extend( this, defaults, settings );
 	};
 
+	/* Public methods */
+
 	smw.util.tooltip.prototype = {
+
 		/**
 		 * Init method initializes the qtip2 instance
 		 *
-		 * Example
-		 * tooltip = new smw.util.tooltip();
-		 * tooltip.show ( { title: ..., type: ..., content: ..., button: ..., event: ... } );
+		 * Example:
+		 *        tooltip = new smw.util.tooltip();
+		 *        tooltip.show ( { title: ..., type: ..., content: ..., button: ..., event: ... } );
 		 *
 		 * @since 1.8
 		 */
@@ -161,8 +192,11 @@
 		}
 	};
 
-	/////////////////////////////// DOM //////////////////////////////
-
+	/**
+	 * Implementation of a tooltip instance
+	 * @since 1.8
+	 * @ignore
+	 */
 	$( document ).ready( function() {
 
 		// Class reference
@@ -193,4 +227,5 @@
 
 		} );
 	} );
+
 } )( jQuery, mediaWiki, semanticMediaWiki );

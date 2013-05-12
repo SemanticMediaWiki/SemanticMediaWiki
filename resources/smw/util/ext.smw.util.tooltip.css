@@ -1,68 +1,118 @@
 /**
- * CSS related to the tooltip display
+ * This file is part of the Semantic MediaWiki Tooltip/Highlighter module
+ * @see https://semantic-mediawiki.org/
  *
- * @licence: GNU GPL v2 or later
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * @since 1.8
- * @release 0.1
  *
  * @file
+ * @ignore
+ *
  * @ingroup SMW
  *
+ * @licence GNU GPL v2+
  * @author mwjames
  */
 
-/* From SMW_custom.css */
-/* Tooltips */
-
-div.smwtt { /* style for content of the bubble */
+/**
+ * Tooltips, style for content of the bubble
+ * @ignore
+ */
+div.smwtt {
 	color: #000000;
 }
 
-span.smwttpersist span.smwttcontent { /* show persistent tooltips for non-JavaScript clients */
+/**
+ * Tooltips, show persistent tooltips for non-JavaScript clients
+ * @ignore
+ */
+span.smwttpersist span.smwttcontent {
 	color: #888888;
 	font-style: italic;
 	font-size: 90%;
 }
 
-span.smwttinline span.smwttcontent { /* hide inline tooltips for non-JavaScript clients */
+/**
+ * Tooltips, hide inline tooltips for non-JavaScript clients
+ * @ignore
+ */
+span.smwttinline span.smwttcontent {
 	display: none;
 	speak: none;
 }
 
-span.smwtticon { /* style for image anchor for persistent tooltips */
+/**
+ * Tooltips, style for image anchor for persistent tooltips
+ * @ignore
+ */
+span.smwtticon {
 	display: none;
 }
 
-span.smwttactivepersist { /* colored anchors? */
+/**
+ * Tooltips, colored anchors?
+ * @ignore
+ */
+span.smwttactivepersist {
 	cursor: help;
 	color: #0000C8;
 }
 
-span.smwttactiveinline { /* colored anchors */
+/**
+ * Tooltips, colored anchors
+ * @ignore
+ */
+span.smwttactiveinline {
 	color: #BB7700;
 	text-decoration: none;
 }
 
-img.smwttimg { /* images for tooltip icons */
+/**
+ * Tooltips, images for tooltip icons
+ * @ignore
+ */
+img.smwttimg {
 	padding-right: 5px;
 	padding-left: 4px;
 }
 
-/* New tooltip */
-/* Tooltip content is always hidden */
+/**
+ * New tooltip content is always hidden
+ * @ignore
+ */
 .smwttcontent {
 	display:none;
 }
 
-/* Tooltip icon defaults*/
+/**
+ * New tooltip icon defaults
+ * @ignore
+ */
 .smwtticon {
 	padding:14px 12px 0 0;
 	white-space:nowrap;
 	margin-bottom: -1px;
 }
 
-/* Individual assigned icons ( inline-block is important because the icon <span> is empty) */
+/**
+ * New tooltip, Individual assigned icons ( inline-block is important
+ * because the icon <span> is empty)
+ * @ignore
+ */
 .smwtticon.info {
 	display:inline-block;
 	/* @embed */ background: url(../../images/info.png) no-repeat left bottom;

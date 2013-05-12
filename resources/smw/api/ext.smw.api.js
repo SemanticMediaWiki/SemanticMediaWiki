@@ -32,25 +32,25 @@
 	/*global md5 */
 
 	/**
-	 * Constructor to create an object to interact with the API and SMW
+	 * Constructor to create an object to interact with the Semantic
+	 * MediaWiki Api
 	 *
 	 * @since 1.9
 	 *
 	 * @class
-	 * @alias smw.Api
+	 * @alias smw.api
 	 * @constructor
 	 */
-	smw.api = function() {};
+	smw.Api = function() {};
 
 	/* Public methods */
 
-	smw.api.prototype = {
+	smw.Api.prototype = {
 
 		/**
 		 * Convenience method to parse and map a JSON string
 		 *
-		 * Emulates partly $.parseJSON (jquery.js)
-		 * @see http://www.json.org/js.html
+		 * Emulates partly $.parseJSON (jquery.js)(see http://www.json.org/js.html)
 		 *
 		 * @since  1.9
 		 *
@@ -81,16 +81,15 @@
 		},
 
 		/**
-		 * Returns results from the SMWAPI
+		 * Returns results from the SMWApi
 		 *
-		 * On the topic of converters
-		 * @see http://bugs.jquery.com/ticket/9095
+		 * On the topic of converters (see http://bugs.jquery.com/ticket/9095)
 		 *
-		 * var smwApi = new smw.Api();
-		 * smwApi.fetch( query )
-		 *   .done( function ( data ) { } )
-		 *   .fail( function ( error ) { } );
-		 *
+		 * Example:
+		 *         var smwApi = new smw.Api();
+		 *         smwApi.fetch( query )
+		 *           .done( function ( data ) { } )
+		 *           .fail( function ( error ) { } );
 		 *
 		 * @since 1.9
 		 *
@@ -150,6 +149,6 @@
 	};
 
 	//Alias
-	smw.Api = smw.api;
+	smw.api = smw.Api;
 
 } )( jQuery, mediaWiki, semanticMediaWiki );

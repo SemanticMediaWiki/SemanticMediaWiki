@@ -1,20 +1,38 @@
 /**
- * SMW Query JavaScript representation
+ * This file is part of the Semantic MediaWiki JavaScript Query module
+ * @see https://semantic-mediawiki.org/
  *
- * @see SMW\Query, SMW\QueryResult
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * @since 1.9
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * @file
+ * @ignore
+ *
+ * @since 1.9
  * @ingroup SMW
  *
- * @licence GNU GPL v2 or later
+ * @licence GNU GPL v2+
  * @author mwjames
  */
 ( function( $, mw, smw ) {
 	'use strict';
 
-	/* Private object and methods */
+	/**
+	 * Private object and methods
+	 * @ignore
+	 */
 	var html = mw.html;
 
 	/**
@@ -22,9 +40,9 @@
 	 *
 	 * @since  1.9
 	 *
-	 * @param {array}
-	 * @param {array}
-	 * @param {array|string}
+	 * @param {object} printouts
+	 * @param {object} parameters
+	 * @param {object|string} conditions
 	 *
 	 * @return {this}
 	 */
@@ -36,9 +54,13 @@
 	};
 
 	/**
-	 * Constructor
+	 * Constructor to create an object to interact with the Query
 	 *
-	 * @var Object
+	 * @since 1.9
+	 *
+	 * @class
+	 * @alias smw.Query
+	 * @constructor
 	 */
 	smw.Query = function( printouts, parameters, conditions ) {
 
@@ -58,9 +80,7 @@
 		constructor: query,
 
 		/**
-		 * Returns query limit parameter
-		 *
-		 * @see SMW\Query::getLimit()
+		 * Returns query limit parameter (see SMW\Query::getLimit())
 		 *
 		 * @since  1.9
 		 *
@@ -71,9 +91,7 @@
 		},
 
 		/**
-		 * Returns query link
-		 *
-		 * @see SMW\QueryResult::getLink()
+		 * Returns query link (see SMW\QueryResult::getLink())
 		 *
 		 * Caption text is set either by using parameters.searchlabel or by
 		 * .getLink( 'myCaption' )
@@ -97,9 +115,7 @@
 		},
 
 		/**
-		 * Returns query string
-		 *
-		 * @see SMW\Query::getQueryString()
+		 * Returns query string (see SMW\Query::getQueryString())
 		 *
 		 * @since  1.9
 		 *

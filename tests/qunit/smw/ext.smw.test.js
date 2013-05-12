@@ -1,6 +1,6 @@
 /**
- * This file is part of the Semantic MediaWiki Extension
- * @see https://semantic-mediawiki.org/
+ * This file is part of the Semantic MediaWiki QUnit test suite
+ * @see https://semantic-mediawiki.org/wiki/QUnit
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,7 @@
 
 /**
  * Tests methods provided by ext.smw.js
- *
+ * @ignore
  */
 ( function ( $, mw, smw ) {
 	'use strict';
@@ -42,6 +42,7 @@
 	 * Test initialization and accessibility
 	 *
 	 * @since: 1.9
+	 * @ignore
 	 */
 	QUnit.test( 'init', 17, function ( assert ) {
 
@@ -74,6 +75,7 @@
 	 * Test settings function
 	 *
 	 * @since: 1.9
+	 * @ignore
 	 */
 	QUnit.test( 'settings', 4, function ( assert ) {
 
@@ -88,6 +90,7 @@
 	 * Test util function
 	 *
 	 * @since: 1.9
+	 * @ignore
 	 */
 	QUnit.test( 'util', 3, function ( assert ) {
 
@@ -101,6 +104,7 @@
 	 * Test namespace function
 	 *
 	 * @since: 1.9
+	 * @ignore
 	 */
 	QUnit.test( 'util.namespace', 7, function ( assert ) {
 
@@ -120,6 +124,7 @@
 	 * Test async function
 	 *
 	 * @since: 1.9
+	 * @ignore
 	 */
 	QUnit.asyncTest( 'util.async', 7, function ( assert ) {
 
@@ -182,6 +187,7 @@
 	 * Test formats function
 	 *
 	 * @since: 1.9
+	 * @ignore
 	 */
 	QUnit.test( 'formats', 7, function ( assert ) {
 
@@ -200,6 +206,7 @@
 	 * Test version function
 	 *
 	 * @since: 1.9
+	 * @ignore
 	 */
 	QUnit.test( 'version', 1, function ( assert ) {
 

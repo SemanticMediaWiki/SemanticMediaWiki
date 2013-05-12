@@ -1,30 +1,41 @@
 /**
- * JavaScript for supporting functionality in Special:Ask
+ * This file is part of the Semantic MediaWiki Special:Ask module
+ * @see https://semantic-mediawiki.org/
  *
- * @see http://www.semantic-mediawiki.org/wiki/Help:Special:Ask
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * @since 1.8
- * @release 0.1
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * @file
+ * @ignore
+ *
+ * @since 1.9
  * @ingroup SMW
  *
- * @licence GNU GPL v2 or later
+ * @licence GNU GPL v2+
  * @author: Jeroen De Dauw <jeroendedauw at gmail dot com>
  * @author mwjames
  */
-/*global browser:true window document mediaWiki:true*/
 ( function( $, mw, smw ) {
 	'use strict';
 
-	////////////////////////// PRIVATE OBJECTS ////////////////////////
-
+	/**
+	 * Support and helper methods
+	 * @ignore
+	 */
 	var tooltip = new smw.util.tooltip();
 
-	/**
-	 * Support functions
-	 *
-	 */
 	var _init = {
 
 		// Autocomplete
@@ -176,8 +187,11 @@
 		});
 	};
 
-	////////////////////////// DOM HANDLING ////////////////////////
-
+	/**
+	 * Implementation of an Special:Ask instance
+	 * @since 1.8
+	 * @ignore
+	 */
 	$( document ).ready( function() {
 
 		// Get initial format and language settings
@@ -217,7 +231,7 @@
 				'url': $this.data( 'url' ).replace( 'this.value',  $this.val() ),
 				'context': document.body,
 				'success': function( data ) {
-					$( "#other_options" ).html( data );
+					$( '#other_options' ).html( data );
 
 					// Reinitialize functions after each ajax request
 					_init.autocomplete.parameter();
