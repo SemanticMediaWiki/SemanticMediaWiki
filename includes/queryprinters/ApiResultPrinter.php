@@ -5,7 +5,7 @@ use SMWQueryResult, SMWOutputs;
 use Html, FormatJson;
 
 /**
- * Base class for result printers that use the SMWAPI
+ * Base class for result printers that use the Semantic MediaWiki Api
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,12 @@ use Html, FormatJson;
  *
  * @licence GNU GPL v2 or later
  * @author mwjames
+ */
+
+/**
+ * Abstract class for query printers using the Semantic MediaWiki Api
+ *
+ * @ingroup QueryPrinter
  */
 abstract class ApiResultPrinter extends ResultPrinter {
 
@@ -76,7 +82,7 @@ abstract class ApiResultPrinter extends ResultPrinter {
 			Html::element(
 				'p',
 				array( 'class' => 'text' ),
-				$this->getContext()->msg( 'livepreview-loading' )->inContentLanguage()->text()
+				$this->msg( 'livepreview-loading' )->inContentLanguage()->text()
 			)
 		);
 	}
@@ -90,7 +96,10 @@ abstract class ApiResultPrinter extends ResultPrinter {
 	 * @param array $data
 	 */
 	protected function encode( $id, $data ) {
-		SMWOutputs::requireHeadItem( $id, $this->getContext()->getSkin()->makeVariablesScript( array ( $id => FormatJson::encode( $data ) ) ) );
+		SMWOutputs::requireHeadItem(
+			$id,
+			$this->getSkin()->makeVariablesScript( array ( $id => FormatJson::encode( $data ) )
+		) );
 	}
 
 	/**
@@ -108,7 +117,7 @@ abstract class ApiResultPrinter extends ResultPrinter {
 		// Add parameters that are only known to the specific printer
 		$ask = $queryResult->getQuery()->toArray();
 		foreach ( $this->params as $key => $value ) {
-			if ( is_string( $value ) ) {
+			if ( is_string( $value ) || is_integer( $value ) || is_bool( $value ) ) {
 				$ask['parameters'][$key] = $value;
 			}
 		}
