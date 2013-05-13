@@ -1,12 +1,30 @@
-/**
- * QUnit tests
+/*!
+ * This file is part of the Semantic MediaWiki QUnit test suite
+ * @see https://semantic-mediawiki.org/wiki/QUnit
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  *
- * @licence GNU GPL v2 or later
+ * @ingroup SMW
+ * @ingroup Test
+ *
+ * @licence GNU GPL v2+
  * @author mwjames
  */
 ( function ( $, mw, smw ) {
@@ -14,17 +32,48 @@
 
 	QUnit.module( 'ext.smw.dataItem.wikiPage', QUnit.newMwEnvironment() );
 
-	var pass = 'Passes because ';
-
 	// Data provider
 	var testCases = [
-		{ test: [ '', '', '' ], expected: [ null, null, 0 , null, true] } ,
-		{ test: [ 'foo', '', '' ], expected: [ 'foo', null, 0, 'foo', true] },
-		{ test: [ 'bar', '', 6 ], expected: [ 'bar', null, 6, 'bar', true ] },
-		{ test: [ 'bar', '', 0, true ], expected: [ 'bar', null, 0, 'bar', true ] },
-		{ test: [ 'bar', '', 2, false ], expected: [ 'bar', null, 2, 'bar', false ] },
-		{ test: [ 'fooBar', 'http://fooBar', 0, false ], expected: [ 'fooBar', 'http://fooBar', 0, '<a href=\"http://fooBar\" class=\"new\">fooBar</a>', false ] },
-		{ test: [ 'fooBar', 'http://fooBar', 0, true ], expected: [ 'fooBar', 'http://fooBar', 0, '<a href=\"http://fooBar\">fooBar</a>', true ] }
+		{
+			test: [ '', '', '' ],
+			expected: { 'name': null, 'text': null, 'uri': null, 'ns': 0, 'html': null, 'known': true }
+		} ,
+		{
+			test: [ 'foo', '', '' ],
+			expected: { 'name': 'foo', 'text': 'foo', 'uri': null, 'ns': 0, 'html': 'foo', 'known': true }
+		},
+		{
+			test: [ 'bar', '', 6 ],
+			expected: { 'name': 'bar', 'text': 'bar', 'uri': null, 'ns': 6, 'html': 'bar', 'known': true }
+		},
+		{
+			test: [ 'bar', '', 0, true ],
+			expected: { 'name': 'bar', 'text': 'bar', 'uri': null, 'ns': 0, 'html': 'bar', 'known': true }
+		},
+		{
+			test: [ 'bar', '', 2, false ],
+			expected: { 'name': 'bar', 'text': 'bar', 'uri': null, 'ns': 2, 'html': 'bar', 'known': false }
+		},
+		{
+			test: [ 'fooBar', 'http://fooBar', 0, false ],
+			expected: { 'name': 'fooBar', 'text': 'fooBar', 'uri': 'http://fooBar', 'ns': 0, 'html': '<a href=\"http://fooBar\" class=\"new\">fooBar</a>', 'known': false }
+		},
+		{
+			test: [ 'fooBar#_9a0c8abb8ef729b5c7', 'http://fooBar#_9a0c8abb8ef729b5c7', 0, false ],
+			expected: { 'name': 'fooBar#_9a0c8abb8ef729b5c7', 'text': 'fooBar', 'uri': 'http://fooBar#_9a0c8abb8ef729b5c7', 'ns': 0, 'html': '<a href=\"http://fooBar#_9a0c8abb8ef729b5c7\" class=\"new\">fooBar</a>', 'known': false }
+		},
+		{
+			test: [ 'fooBar', 'http://fooBar', 0, true ],
+			expected: { 'name': 'fooBar', 'text': 'fooBar', 'uri': 'http://fooBar', 'ns': 0, 'html': '<a href=\"http://fooBar\">fooBar</a>', 'known': true }
+		},
+		{
+			test: [ 'Foo#_QUERY9a665a578eb95c1', 'http://Foo#_QUERY9a665a578eb95c1', 0, true ],
+			expected: { 'name': 'Foo#_QUERY9a665a578eb95c1', 'text': 'Foo', 'uri': 'http://Foo#_QUERY9a665a578eb95c1', 'ns': 0, 'html': '<a href=\"http://Foo#_QUERY9a665a578eb95c1\">Foo</a>', 'known': true }
+		},
+		{
+			test: [ 'Foo#_QUERY#9a665a578eb95c1', 'http://Foo#_QUERY#9a665a578eb95c1', 0, true ],
+			expected: { 'name': 'Foo#_QUERY#9a665a578eb95c1', 'text': 'Foo', 'uri': 'http://Foo#_QUERY#9a665a578eb95c1', 'ns': 0, 'html': '<a href=\"http://Foo#_QUERY#9a665a578eb95c1\">Foo</a>', 'known': true }
+		}
 	];
 
 	/**
@@ -35,7 +84,7 @@
 	QUnit.test( 'instance', 1, function ( assert ) {
 
 		var result = new smw.dataItem.wikiPage( 'foo', 'bar' );
-		assert.ok( result instanceof Object, pass + 'the smw.dataItem.wikiPage instance was accessible' );
+		assert.ok( result instanceof Object, 'the smw.dataItem.wikiPage instance was accessible' );
 
 	} );
 
@@ -47,21 +96,36 @@
 	QUnit.test( 'getDIType', 1, function ( assert ) {
 
 		var result = new smw.dataItem.wikiPage( 'foo', 'bar' );
-		assert.equal( result.getDIType(), '_wpg', pass + 'returned _wpg' );
+		assert.equal( result.getDIType(), '_wpg', 'returned _wpg' );
 
 	} );
 
 	/**
-	 * Test getName
+	 * Test getPrefixedText
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getName', 7, function ( assert ) {
+	QUnit.test( 'getPrefixedText', 10, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2] );
-			assert.equal( result.getName(), testCase.expected[0] , pass + 'returned ' + testCase.expected[0]  );
+			assert.equal( result.getPrefixedText(), testCase.expected.name , 'returned ' + testCase.expected.name  );
+		} );
+
+	} );
+
+	/**
+	 * Test getText
+	 *
+	 * @since: 1.9
+	 */
+	QUnit.test( 'getText', 10, function ( assert ) {
+		var result;
+
+		$.map( testCases, function ( testCase ) {
+			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2] );
+			assert.equal( result.getText(), testCase.expected.text , 'returned ' + testCase.expected.text  );
 		} );
 
 	} );
@@ -71,27 +135,27 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getUri', 7, function ( assert ) {
+	QUnit.test( 'getUri', 10, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2] );
-			assert.equal( result.getUri(), testCase.expected[1] , pass + 'returned ' + testCase.expected[1]  );
+			assert.equal( result.getUri(), testCase.expected.uri , 'returned ' + testCase.expected.uri  );
 		} );
 
 	} );
 
 	/**
-	 * Test getNamespace
+	 * Test getNamespaceId
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getNamespace', 7, function ( assert ) {
+	QUnit.test( 'getNamespaceId', 10, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2] );
-			assert.equal( result.getNamespace(), testCase.expected[2] , pass + 'returned ' + testCase.expected[2]  );
+			assert.equal( result.getNamespaceId(), testCase.expected.ns , 'returned ' + testCase.expected.ns  );
 		} );
 
 	} );
@@ -101,12 +165,13 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getTitle', 1, function ( assert ) {
+	QUnit.test( 'getTitle', 2, function ( assert ) {
 
 		var wikiPage = new smw.dataItem.wikiPage( 'File:foo', 'bar' );
 		var title = new mw.Title( 'File:foo' );
 
-		assert.deepEqual( wikiPage.getTitle(), title ,pass + 'returned a Title instance' );
+		assert.ok( wikiPage.getTitle() instanceof mw.Title, '.getTitle() returned a Title instance' );
+		assert.deepEqual( wikiPage.getTitle(), title, 'returned a Title instance' );
 
 	} );
 
@@ -115,12 +180,12 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'isKnown', 7, function ( assert ) {
+	QUnit.test( 'isKnown', 10, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2], testCase.test[3] );
-			assert.equal( result.isKnown(), testCase.expected[4] , pass + 'returned ' + testCase.expected[4]  );
+			assert.equal( result.isKnown(), testCase.expected.known, 'returned ' + testCase.expected.known  );
 		} );
 
 	} );
@@ -130,17 +195,27 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'getHtml', 14, function ( assert ) {
+	QUnit.test( 'getHtml( false )', 10, function ( assert ) {
 		var result;
 
 		$.map( testCases, function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2] );
-			assert.equal( result.getHtml(), testCase.expected[0] , pass + 'returned ' + testCase.expected[0]  );
+			assert.equal( result.getHtml( false ), testCase.expected.text, 'returned ' + testCase.expected.text  );
 		} );
+
+	} );
+
+	/**
+	 * Test getHtml
+	 *
+	 * @since: 1.9
+	 */
+	QUnit.test( 'getHtml( true )', 10, function ( assert ) {
+		var result;
 
 		$.map( testCases, function ( testCase ) {
 			result = new smw.dataItem.wikiPage( testCase.test[0], testCase.test[1], testCase.test[2], testCase.test[3] );
-			assert.equal( result.getHtml( true ), testCase.expected[3] , pass + 'returned ' + testCase.expected[3]  );
+			assert.equal( result.getHtml( true ), testCase.expected.html, 'returned ' + testCase.expected.html  );
 		} );
 
 	} );

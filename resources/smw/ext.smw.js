@@ -1,4 +1,4 @@
-/**
+/*!
  * This file is part of the Semantic MediaWiki Extension
  * @see https://semantic-mediawiki.org/
  *
@@ -20,7 +20,6 @@
  * @since 1.8
  *
  * @file
- * @ignore
  *
  * @ingroup SMW
  *
