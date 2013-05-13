@@ -163,6 +163,12 @@ $specialPageAliases['dv'] = array(
 	'Ask' => array( 'އައްސަވާ' ),
 );
 
+/** Greek (Ελληνικά) */
+$specialPageAliases['el'] = array(
+	'PageProperty' => array( 'ΙδιότηταΣελίδας' ),
+	'Properties' => array( 'Ιδιότητες' ),
+);
+
 /** Esperanto (Esperanto) */
 $specialPageAliases['eo'] = array(
 	'Ask' => array( 'Peti' ),
