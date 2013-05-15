@@ -251,7 +251,6 @@ final class SMWHooks {
 			'Subobject',
 			'RecurringEvents',
 			'Infolink',
-			'QueryProcessor',
 			'Hooks',
 			'DataValueFactory',
 			'Settings',
@@ -260,6 +259,8 @@ final class SMWHooks {
 
 			'api/ApiSMWInfo',
 			'api/ApiAsk',
+
+			'query/QueryProcessor',
 
 			'dataitems/DI_Blob',
 			'dataitems/DI_Bool',
