@@ -363,45 +363,67 @@ function smwfRegisterClasses() {
  * Register all SMW special pages with MediaWiki.
  */
 function smwfRegisterSpecialPages() {
-	global $wgSpecialPages, $wgSpecialPageGroups;
+	$specials = array(
+		'Ask' => array(
+			'page' => 'SMWAskPage',
+			'group' => 'smw_group'
+		),
+		'Browse' => array(
+			'page' =>  'SMWSpecialBrowse',
+			'group' => 'smw_group'
+		),
+		'PageProperty' => array(
+			'page' =>  'SMWPageProperty',
+			'group' => 'smw_group'
+		),
+		'SearchByProperty' => array(
+			'page' => 'SMWSearchByProperty',
+			'group' => 'smw_group'
+		),
+		'SMWAdmin' => array(
+			'page' => 'SMWAdmin',
+			'group' => 'smw_group'
+		),
+		'SemanticStatistics' => array(
+			'page' => 'SMW\SpecialSemanticStatistics',
+			'group' => 'wiki'
+		),
+		'ExportRDF' => array(
+			'page' => 'SMWSpecialOWLExport',
+			'group' => 'smw_group'
+		),
+		'Types' => array(
+			'page' => 'SMWSpecialTypes',
+			'group' => 'pages'
+		),
+		'URIResolver' => array(
+			'page' => 'SMWURIResolver'
+		),
+		'Properties' => array(
+			'page' => 'SMWSpecialProperties',
+			'group' => 'pages'
+		),
+		'UnusedProperties' => array(
+			'page' => 'SMWSpecialUnusedProperties',
+			'group' => 'maintenance'
+		),
+		'WantedProperties' => array(
+			'page' => 'SMWSpecialWantedProperties',
+			'group' => 'maintenance'
+		),
+	);
 
-	$wgSpecialPages['Ask']                          = 'SMWAskPage';
-	$wgSpecialPageGroups['Ask']                     = 'smw_group';
+	// Register data
+	foreach ( $specials as $special => $page ) {
+		$GLOBALS['wgSpecialPages'][$special] = $page['page'];
 
-//	$wgSpecialPages['QueryCreator']                 = 'SMWQueryCreatorPage';
-//	$wgSpecialPageGroups['QueryCreator']            = 'smw_group';
+		if ( isset( $page['group'] ) ) {
+			$GLOBALS['wgSpecialPageGroups'][$special] = $page['group'];
+		}
+	}
 
-	$wgSpecialPages['Browse']                       = 'SMWSpecialBrowse';
-	$wgSpecialPageGroups['Browse']                  = 'smw_group';
-
-	$wgSpecialPages['PageProperty']                 = 'SMWPageProperty';
-	$wgSpecialPageGroups['PageProperty']            = 'smw_group';
-
-	$wgSpecialPages['SearchByProperty']             = 'SMWSearchByProperty';
-	$wgSpecialPageGroups['SearchByProperty']        = 'smw_group';
-
-	$wgSpecialPages['URIResolver']                  = 'SMWURIResolver';
-
-	$wgSpecialPages['SMWAdmin']                     = 'SMWAdmin';
-	$wgSpecialPageGroups['SMWAdmin']                = 'smw_group';
-
-	$wgSpecialPages['SemanticStatistics']           = 'SMW\SpecialSemanticStatistics';
-	$wgSpecialPageGroups['SemanticStatistics']      = 'wiki'; // Similar to Special:Statistics
-
-	$wgSpecialPages['ExportRDF']                    = 'SMWSpecialOWLExport';
-	$wgSpecialPageGroups['ExportRDF']               = 'smw_group';
-
-	$wgSpecialPages['Properties']                   = 'SMWSpecialProperties';
-	$wgSpecialPageGroups['Properties']              = 'pages';
-
-	$wgSpecialPages['Types']                        = 'SMWSpecialTypes';
-	$wgSpecialPageGroups['Types']                   = 'pages';
-
-	$wgSpecialPages['UnusedProperties']             = 'SMWSpecialUnusedProperties';
-	$wgSpecialPageGroups['UnusedProperties']        = 'maintenance';
-
-	$wgSpecialPages['WantedProperties']             = 'SMWSpecialWantedProperties';
-	$wgSpecialPageGroups['WantedProperties']        = 'maintenance';
+	//	$wgSpecialPages['QueryCreator']             = 'SMWQueryCreatorPage';
+	//	$wgSpecialPageGroups['QueryCreator']        = 'smw_group';
 }
 
 /**

@@ -6,6 +6,7 @@ use SMW\DataValueFactory;
 use SMW\Settings;
 
 use Title;
+
 use SMWDIWikiPage;
 use SMWSemanticData;
 use SMWDataItem;
@@ -35,9 +36,6 @@ use SMWDataItem;
  * @ingroup SMWParser
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author mwjames
  */
@@ -45,7 +43,8 @@ use SMWDataItem;
 /**
  * Class contains general purpose methods
  *
- * @ingroup SMW
+ * @group SMW
+ * @group SMWExtension
  */
 abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 

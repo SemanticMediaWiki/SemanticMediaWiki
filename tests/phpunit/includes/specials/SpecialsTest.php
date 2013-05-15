@@ -4,10 +4,12 @@ namespace SMW\Test;
 
 use SpecialPageFactory;
 use RequestContext;
+use FauxRequest;
 use SpecialPage;
+use Language;
 
 /**
- * Tests for the special pages class
+ * Tests for registered special pages
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,67 +32,39 @@ use SpecialPage;
  * @ingroup SMW
  * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
- *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author mwjames
  */
 
 /**
- * This class tests special pages to make sure they do not contain fatal errors
+ * Tests for registered special pages
  *
  * Test is borrowed from the EducationProgram extension.
  *
- * @ingroup SMW
  * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 class SpecialsTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
+	 * Returns the name of the class to be tested
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getClass() {
 		return false;
 	}
 
 	/**
-	 * Provides special pages
-	 *
-	 * @return array
-	 */
-	public function specialProvider() {
-		$specials = array(
-			'SemanticStatistics'
-		);
-
-		$argLists = array();
-
-		foreach ( $specials as $special ) {
-			if ( array_key_exists( $special, $GLOBALS['wgSpecialPages'] ) ) {
-				$specialPage = SpecialPageFactory::getPage( $special );
-				$context = RequestContext::newExtraneousContext( $specialPage->getTitle() );
-
-				$specialPage->setContext( clone $context );
-				$argLists[] = array( clone $specialPage );
-
-				$context->setUser( new MockSuperUser() );
-				$specialPage->setContext( $context );
-				$argLists[] = array( $specialPage );
-			}
-		}
-
-		return $argLists;
-	}
-
-	/**
-	 * @dataProvider specialProvider
+	 * @dataProvider getSpecialPageProvider
 	 *
 	 * @param $specialPage
 	 */
 	public function testSpecial( SpecialPage $specialPage ) {
+
 		try {
 			$specialPage->execute( '' );
 		}
@@ -100,6 +74,98 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			}
 		}
 
-		$this->assertTrue( true, 'SpecialPage was run without errors' );
+		$this->assertTrue( true, 'SpecialPage test did run without errors' );
 	}
+
+	/**
+	 * @test SpecialPageFactory::getLocalNameFor
+	 * @dataProvider getSpecialPageProvider
+	 *
+	 * Test created in response to bug 44191
+	 *
+	 * @param $specialPage
+	 */
+	public function testSpecialAliasesContLang( SpecialPage $specialPage ) {
+
+		// Test for languages
+		$langCodes = array( 'en', 'fr', 'de', 'es', 'zh', 'ja' );
+
+		// Test aliases for a specific language
+		foreach ( $langCodes as $langCode ) {
+			$langObj = Language::factory( $langCode );
+			$aliases = $langObj->getSpecialPageAliases();
+			$found = false;
+			$name = $specialPage->getName();
+
+			// Check against available aliases
+			foreach ( $aliases as $n => $values ) {
+				foreach ( $values as $value ) {
+					if( $name === $value ) {
+						$found = true;
+						break;
+					}
+				}
+			}
+
+			$this->assertTrue( $found, "{$name} alias not found in language {$langCode}" );
+		}
+	}
+
+	/**
+	 * Provides special pages
+	 *
+	 * @return array
+	 */
+	public function getSpecialPageProvider() {
+		$request = new FauxRequest( array(), true );
+		$argLists = array();
+
+		$specialPages = array(
+			'Ask',
+			'Browse',
+			'PageProperty',
+			'SearchByProperty',
+			'SMWAdmin',
+			'SemanticStatistics',
+			'ExportRDF',
+			'Types',
+
+			// Can't be tested because of
+
+			// FIXME Test fails with Undefined index: HTTP_ACCEPT
+			// 'URIResolver'
+
+			// FIXME Test fails with (SMWSpecialProperties)
+			// Use of wfViewPrevNext was deprecated in MediaWiki 1.19
+			// 'Properties'
+
+			// FIXME Test fails with (SMWSpecialUnusedProperties)
+			// Use of wfViewPrevNext was deprecated in MediaWiki 1.19.
+			// 'UnusedProperties'
+
+			// FIXME Test fails with (SMWSpecialWantedProperties)
+			// Use of Linker::makeLinkObj was deprecated in MediaWiki 1.21
+			// 'WantedProperties'
+		);
+
+		foreach ( $specialPages as $special ) {
+
+			if ( array_key_exists( $special, $GLOBALS['wgSpecialPages'] ) ) {
+
+				$specialPage = SpecialPageFactory::getPage( $special );
+				$context = RequestContext::newExtraneousContext( $specialPage->getTitle() );
+				$context->setRequest( $request );
+
+				$specialPage->setContext( clone $context );
+				$argLists[] = array( clone $specialPage );
+
+				$context->setUser( $this->getUser() );
+				$specialPage->setContext( $context );
+				$argLists[] = array( $specialPage );
+			}
+		}
+
+		return $argLists;
+	}
+
 }
