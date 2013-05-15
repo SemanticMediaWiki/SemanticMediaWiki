@@ -502,4 +502,24 @@ class HooksTest extends \MediaWikiTestCase {
 			$this->assertTrue( $skip );
 		}
 	}
+
+	/**
+	 * @test SMWHooks::onBeforePageDisplay
+	 *
+	 * @since 1.9
+	 */
+	public function testOnBeforePageDisplay() {
+		$context = new \RequestContext();
+		$context->setTitle( $this->getTitle() );
+		$context->setLanguage( \Language::factory( 'en' ) );
+
+		$skin = new \SkinTemplate();
+		$skin->setContext( $context );
+
+		$outputPage = new \OutputPage( $context );
+
+		$result = SMWHooks::onBeforePageDisplay( $outputPage, $skin );
+		$this->assertTrue( $result );
+	}
+
 }

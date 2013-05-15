@@ -240,30 +240,6 @@ class ParserTextProcessorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserTextProcessor::getRDFUrl
-	 *
-	 * @since 1.9
-	 */
-	public function testGetRDFUrl() {
-		$reflection = new ReflectionClass( $this->getClass() );
-
-		$parserOutput = $this->getParserOutput();
-		$title = $this->getTitle();
-		$instance = $this->getInstance( $title, $parserOutput );
-
-		// Make protected method accessible
-		$method = $reflection->getMethod( 'getRDFUrl' );
-		$method->setAccessible( true );
-
-		// Invoke the instance
-		$result = $method->invoke( $instance, $title );
-
-		// Doing a lazy check, the url has to contain the title text
-		$this->assertInternalType( 'string', $result );
-		$this->assertContains( 'title="' . $title->getText() . '"', $result );
-	}
-
-	/**
 	 * @test ParserTextProcessor::stripMagicWords
 	 * @dataProvider getMagicWordDataProvider
 	 *

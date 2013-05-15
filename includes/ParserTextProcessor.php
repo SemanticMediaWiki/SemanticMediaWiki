@@ -130,9 +130,6 @@ class ParserTextProcessor {
 			$text
 		);
 
-		// Add RDF link to the HTML header.
-		$this->parserData->getOutput()->addHeadItem( "\t\t" . $this->getRDFUrl( $title ) . "\n" );
-
 		// Update ParserOutput
 		$this->parserData->getOutput()->addModules( $this->getModules()  );
 		$this->parserData->updateOutput();
@@ -221,24 +218,6 @@ class ParserTextProcessor {
 				\]\]                  # End of link
 				/xu';
 		}
-	}
-
-	/**
-	 * Returns ExportRDF URL
-	 *
-	 * @since 1.9
-	 *
-	 * @param Title $title
-	 *
-	 * @return string
-	 */
-	protected function getRDFUrl( Title $title ) {
-		return Html::element( 'link', array(
-			'type'  => 'application/rdf+xml',
-			'title' => $title->getPrefixedText(),
-			'href'  => SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' )
-			)
-		);
 	}
 
 	/**
