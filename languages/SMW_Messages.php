@@ -13878,7 +13878,7 @@ $messages['sv'] = array(
 	'smw_concept_cache_miss' => 'Konceptet "$1" kan inte användas för tillfället, eftersom wiki-konfigurationen kräver att det beräknas off-line.
 Om problemet inte försvinner efter någon tid, så be din administratör att göra konceptet tillgängligt.',
 	'smw_noinvannot' => 'Värden kan inte tilldelas inverterade egenskaper.',
-	'version-semantic' => 'semantiska tillägg',
+	'version-semantic' => 'Semantiska tillägg',
 	'smw_baduri' => 'Beklagar, URI:er på formen "$1" är inte tillåtna.',
 	'smw_csv_link' => 'CSV',
 	'smw_dsv_link' => 'DSV',
@@ -13974,8 +13974,6 @@ Vissa resultat kan bli oväntade.',
 	'smw_attributearticlecount' => 'Visar $1 {{PLURAL:$1|sida|sidor}} som använder den här egenskapen.',
 	'smw_subproperty_header' => 'Underegenskaper',
 	'smw_subpropertyarticlecount' => 'Denna egenskap har följande $1 {{PLURAL:$1|underegenskap|underegenskaper}}:',
-	'smw_concept_header' => 'Sidor av konceptet "$1"',
-	'smw_conceptarticlecount' => 'Visar {{PLURAL:$1|en sida|$1 sidor}} som hör till det konceptet.',
 	'exportrdf' => 'Exportera sidor till RDF',
 	'smw_exportrdf_docu' => 'Den här sidan låter dig hämta data från en sida i RDF-format.
 Skriv sidtitlar i textrutan härunder för att exportera sidor (en titel per rad).',
@@ -14178,6 +14176,8 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw-ui-tooltip-title-event' => 'Händelse',
 	'smw_unknowntype' => 'Felaktig parametertyp',
+	'smw_concept_header' => 'Sidor av konceptet "$1"',
+	'smw_conceptarticlecount' => 'Visar {{PLURAL:$1|en sida|$1 sidor}} som hör till det konceptet.', # Fuzzy
 );
 
 /** Tamil (தமிழ்)
@@ -15560,6 +15560,7 @@ $messages['zh-cn'] = array(
 /** Simplified Chinese (中文（简体）‎)
  * @author Anakmalaysia
  * @author Gzdavidwong
+ * @author Li3939108
  * @author Liangent
  * @author Linforest
  * @author Onecountry
@@ -15599,6 +15600,7 @@ $messages['zh-hans'] = array(
 	'smw_printername_template' => '模板',
 	'smw_printername_rdf' => '导出为RDF',
 	'smw_printername_category' => '类别',
+	'validator-type-class-SMWParamSource' => '文本',
 	'smw-paramdesc-limit' => '返回结果最大数目',
 	'smw-paramdesc-offset' => '第一个结果的偏移量',
 	'smw-paramdesc-headers' => '显示头/属性名称',
@@ -15630,6 +15632,7 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-order' => '查询排序的顺序',
 	'smw-paramdesc-searchlabel' => '继续搜索的文本（默认是 «… further results»）', # Fuzzy
 	'smw-paramdesc-named_args' => '请指定传递给该模板的变量',
+	'smw-paramdesc-jsonsyntax' => '将使用的JSON语法',
 	'smw-paramdesc-feedtitle' => '源标题文字',
 	'smw-paramdesc-feeddescription' => '源描述文字',
 	'smw_iq_disabled' => '此维基的语义查询已禁用',

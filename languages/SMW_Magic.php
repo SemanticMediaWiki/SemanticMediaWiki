@@ -200,15 +200,15 @@ $magicWords['ml'] = array(
 
 /** Marathi (मराठी) */
 $magicWords['mr'] = array(
-	'ask' => array( 0, 'विचारा', 'ask' ),
-	'show' => array( 0, 'दाखवा', 'show' ),
-	'info' => array( 0, 'माहिती', 'info' ),
-	'concept' => array( 0, 'कंसेप्ट', 'कल्पना', 'concept' ),
-	'set' => array( 0, 'प्रयुक्त', 'सेट', 'स्थापित', 'set' ),
-	'set_recurring_event' => array( 0, 'प्रयुक्त_पुर्न_कार्य', 'set_recurring_event' ),
-	'declare' => array( 0, 'प्रकटकरा', 'declare' ),
-	'SMW_NOFACTBOX' => array( 0, '__फॅक्टबॉक्सनाही__', '__NOFACTBOX__' ),
-	'SMW_SHOWFACTBOX' => array( 0, '__फॅक्टबॉक्सदाखवा__', '__SHOWFACTBOX__' ),
+	'ask' => array( 0, 'विचारा' ),
+	'show' => array( 0, 'दाखवा' ),
+	'info' => array( 0, 'माहिती' ),
+	'concept' => array( 0, 'कंसेप्ट', 'कल्पना' ),
+	'set' => array( 0, 'प्रयुक्त', 'सेट', 'स्थापित' ),
+	'set_recurring_event' => array( 0, 'प्रयुक्त_पुर्न_कार्य' ),
+	'declare' => array( 0, 'प्रकटकरा' ),
+	'SMW_NOFACTBOX' => array( 0, '__फॅक्टबॉक्सनाही__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__फॅक्टबॉक्सदाखवा__' ),
 );
 
 /** Low Saxon (Netherlands) (Nedersaksies) */
