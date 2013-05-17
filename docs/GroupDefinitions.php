@@ -29,3 +29,10 @@ die("Not a valid entry point\n");
  * @defgroup Test Test
  * @ingroup SMW
  */
+
+/**
+ * This group contains members that are relate to the Semantic MediaWiki Api
+ *
+ * @defgroup Api Api
+ * @ingroup SMW
+ */
