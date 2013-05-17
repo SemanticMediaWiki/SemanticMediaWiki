@@ -28,8 +28,6 @@ use ParserOutput;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  * @ingroup Test
  *
  * @licence GNU GPL v2+
