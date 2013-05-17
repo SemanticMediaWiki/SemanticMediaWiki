@@ -247,7 +247,6 @@ final class SMWHooks {
 			'Highlighter',
 			'ObservableMessageReporter',
 			'ParserData',
-			'ParserParameterFormatter',
 			'Subobject',
 			'RecurringEvents',
 			'Infolink',
@@ -256,6 +255,8 @@ final class SMWHooks {
 			'Settings',
 			'ParserTextProcessor',
 			'Factbox',
+
+			'formatters/ParserParameterFormatter',
 
 			'api/ApiSMWInfo',
 			'api/ApiAsk',

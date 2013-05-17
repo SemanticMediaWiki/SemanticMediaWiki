@@ -23,7 +23,7 @@ namespace SMW;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
+ * @ingroup Formatters
  *
  * @licence GNU GPL v2+
  * @author mwjames
@@ -59,7 +59,7 @@ interface IParameterFormatter {
 /**
  * Handling raw parameters from the parser hook
  *
- * @ingroup SMW
+ * @ingroup Formatters
  */
 class ParserParameterFormatter implements IParameterFormatter {
 

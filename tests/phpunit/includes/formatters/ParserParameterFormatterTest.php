@@ -25,7 +25,6 @@ use SMW\ParserParameterFormatter;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  * @ingroup Test
  *
  * @licence GNU GPL v2+
