@@ -9045,6 +9045,7 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 	'smw_ask_embed_instr' => 'Öm di Frooch en en Sigg em Wiki enzeboue, donn dä Wiki_Koode hee dronger en di Sigg enfööje.',
 	'smw_qui_prop' => 'Eijeschaff:',
 	'smw_qui_formt' => 'Fommaat:',
+	'smw_qui_limt' => 'Bejränze op:',
 	'searchbyproperty' => 'Övver de Eijeschaffte söke',
 	'smw_sbv_docu' => 'Donn noh all dä Sigge söhke, die beshtemmpte Eijeschaff han, un medd_ennem beshtemmpte Wäät för se.',
 	'smw_sbv_novalue' => 'Donn ene jöltijje Wäät för di Eijeschaff aanjevve, udder donn Der all de müjjelesche Wääte för „$1“ aanlooere.',
@@ -12015,6 +12016,7 @@ Progresso estimado da actualização em curso:",
  * @author Helder.wiki
  * @author Heldergeovane
  * @author Jaideraf
+ * @author Luckas
  * @author Luckas Blade
  * @author Rafael Vargas
  * @author Waldir
@@ -12095,6 +12097,7 @@ Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça
 	'smw_iq_disabled' => 'As consultas semânticas foram desativadas neste wiki',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_parseerror' => 'O valor fornecido não foi compreendido.',
+	'smw_decseparator' => ',',
 	'smw_notitle' => '"$1" não pode ser utilizado como nome de página neste wiki.',
 	'smw_noproperty' => '"$1" não pode ser utilizado como um nome de propriedade neste wiki.',
 	'smw_wrong_namespace' => 'Apenas páginas no domínio "$1" são permitidas aqui.',
@@ -15703,8 +15706,10 @@ $messages['zh-hans'] = array(
 	'smw_purge' => '更新',
 	'types' => '类型',
 	'smw_types_docu' => '以下列出了可被赋予属性的所有数据类型。',
+	'smw-special-types-no-such-type' => '指定的数据类型不存在',
 	'semanticstatistics' => '语义统计',
 	'smw_semstats_text' => "此维基包含 '''$1''' 个属性{{PLURAL:$1|值|值}}，源自 '''$2''' 个[[Special:Properties|{{PLURAL:$2|属性|不同属性}}]]。'''$3''' 个{{PLURAL:$3|属性有|属性有}}自己的页，并且预期的数据类型被指定为 '''$4'''。某些已经存在的属性也许是[[Special:UnusedProperties|无用属性]]。缺乏页的属性可以在[[Special:WantedProperties|需要的属性列表]]中找到。",
+	'smw-statistics' => '语义统计',
 	'smw_uri_doc' => 'URI 分析器实现<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C httpRange-14 标记查找</a>。它将处理那些没有网站内容的页。',
 	'ask' => '语义搜索',
 	'smw_ask_sortby' => '按列排序（可选）',

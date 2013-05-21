@@ -723,7 +723,13 @@ $specialPageAliases['vi'] = array(
 	'ExportRDF' => array( 'Xuất_RDF' ),
 	'PageProperty' => array( 'Thuộc_tính_trang' ),
 	'Properties' => array( 'Thuộc_tính' ),
+	'SMWAdmin' => array( 'Quản_lý_SMW', 'Quản_lí_SMW' ),
+	'SearchByProperty' => array( 'Tìm_theo_thuộc_tính' ),
+	'SemanticStatistics' => array( 'Thống_kê_ngữ_nghĩa' ),
+	'Types' => array( 'Kiểu' ),
 	'UnusedProperties' => array( 'Thuộc_tính_không_dùng' ),
+	'WantedProperties' => array( 'Thuộc_tính_cần_thiết' ),
+	'QueryCreator' => array( 'Tạo_truy_vấn' ),
 );
 
 /** Simplified Chinese (中文（简体）‎) */
