@@ -178,6 +178,25 @@ class ParserTextProcessorTest extends ParserTestCase {
 					'propertyValue' => array()
 				)
 			),
+
+			// #4 NS_HELP enabled but no properties or links at all
+			array(
+				NS_HELP,
+				array(
+					'smwgNamespacesWithSemanticLinks' => array( NS_HELP => true ),
+					'smwgLinksInValues' => false,
+					'smwgInlineErrors' => true,
+				),
+				'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+				' Suspendisse tincidunt semper facilisi dolor Aenean.',
+				array(
+					'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+						' Suspendisse tincidunt semper facilisi dolor Aenean.',
+					'propertyCount' => 0,
+					'propertyLabel' => array(),
+					'propertyValue' => array()
+				)
+			),
 		);
 	}
 
@@ -250,13 +269,12 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 * @param array $expected
 	 */
 	public function testStripMagicWords( $namespace, $text, array $expected ) {
-		$reflection = new ReflectionClass( $this->getClass() );
-
 		$parserOutput = $this->getParserOutput();
 		$title = $this->getTitle( $namespace );
 		$instance = $this->getInstance( $title, $parserOutput );
 
 		// Make protected method accessible
+		$reflection = new ReflectionClass( $this->getClass() );
 		$method = $reflection->getMethod( 'stripMagicWords' );
 		$method->setAccessible( true );
 
@@ -305,4 +323,91 @@ class ParserTextProcessorTest extends ParserTestCase {
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
 		$this->assertSemanticData( $parserData->getData(), $expected );
 	}
+
+	/**
+	 * @test ParserTextProcessor::setRedirect
+	 *
+	 * @since 1.9
+	 */
+	public function testSetRedirect() {
+		$namespace = NS_MAIN;
+
+		// Mock Title object to avoid DB access
+		$mockTitle = $this->getMock( 'Title' );
+
+		// Attach isRedirect method
+		$mockTitle->expects( $this->any() )
+			->method( 'isRedirect' )
+			->will( $this->returnValue( true )
+		);
+
+		// Attach getNamespace method
+		$mockTitle->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( $namespace )
+		);
+
+		// Create text processor instance
+		$parserOutput = $this->getParserOutput();
+		$title = $this->getTitle( $namespace );
+		$settings = array(
+			'smwgNamespacesWithSemanticLinks' => array( $namespace => true )
+		);
+
+		$parserData = $this->getParserData( $title, $parserOutput );
+		$instance = new ParserTextProcessor(
+			$parserData,
+			$this->getSettings( $settings )
+		);
+
+		// Make protected methods accessible
+		$reflection = new ReflectionClass( $this->getClass() );
+
+		$method = $reflection->getMethod( 'isSemanticEnabled' );
+		$method->setAccessible( true );
+		$method->invoke( $instance, $mockTitle );
+
+		$method = $reflection->getMethod( 'setRedirect' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $instance, $mockTitle );
+
+		// Build expected results from a successful setRedirect execution
+		$expected['propertyCount'] = 1;
+		$expected['propertyKey'] = '_REDI';
+		$expected['propertyValue'] = ':' . $title->getText();
+
+		// Check the returned instance
+		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertSemanticData( $parserData->getData(), $expected );
+	}
+
+	/**
+	 * @test ParserTextProcessor::process
+	 *
+	 * @since 1.9
+	 */
+	public function testProcess() {
+		$parserOutput =  $this->getParserOutput();
+		$title = $this->getTitle();
+		$instance = $this->getInstance( $title, $parserOutput );
+
+		// Make protected methods accessible
+		$reflection = new ReflectionClass( $this->getClass() );
+
+		$method = $reflection->getMethod( 'process' );
+		$method->setAccessible( true );
+
+		$result = $method->invoke( $instance, array() );
+		$this->assertEmpty( $result );
+
+		$result = $method->invoke( $instance, array( 'Test::foo', 'SMW' , 'lula' ) );
+		$this->assertEmpty( $result );
+
+		$result = $method->invoke( $instance, array( 'Test::bar', 'SMW' , 'on' ) );
+		$this->assertEmpty( $result );
+
+		$result = $method->invoke( $instance, array( 'Test::lula', 'SMW' , 'off' ) );
+		$this->assertEmpty( $result );
+	}
+
 }
