@@ -379,7 +379,9 @@ class ParserTextProcessor {
 		if ( method_exists( $this->parserData->getOutput(), 'setExtensionData' ) ) {
 			$this->parserData->getOutput()->setExtensionData( 'smwmagicwords', $words );
 		} else {
+			// @codeCoverageIgnoreStart
 			$this->parserData->getOutput()->mSMWMagicWords = $words;
+			// @codeCoverageIgnoreEnd
 		}
 
 		return $words;
