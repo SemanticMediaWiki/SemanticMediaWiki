@@ -12,7 +12,7 @@ die("Not a valid entry point\n");
 /**
  * This group contains members that are relate to message, error, and parameter formatting
  *
- * @defgroup Formatters Formatters
+ * @defgroup Formatter Formatter
  * @ingroup SMW
  */
 

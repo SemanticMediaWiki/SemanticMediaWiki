@@ -1,4 +1,4 @@
-/**
+/*!
  * This file is part of the Semantic MediaWiki QUnit test suite
  * @see https://semantic-mediawiki.org/wiki/QUnit
  *
@@ -13,25 +13,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
  *
  * @since 1.9
  *
  * @file
- * @ignore
  *
  * @ingroup SMW
  * @ingroup Test
  *
  * @licence GNU GPL v2+
  * @author mwjames
- */
-
-/**
- * Tests methods provided by ext.smw.js
- * @ignore
  */
 ( function ( $, mw, smw ) {
 	'use strict';
@@ -42,7 +37,6 @@
 	 * Test initialization and accessibility
 	 *
 	 * @since: 1.9
-	 * @ignore
 	 */
 	QUnit.test( 'init', 17, function ( assert ) {
 
@@ -59,8 +53,8 @@
 		assert.equal( $.type( smw.formats.getName ), 'function', '.formats.getName() was accessible' );
 		assert.equal( $.type( smw.formats.getList ), 'function', '.formats.getList() was accessible' );
 
-		assert.equal( $.type( smw.util.async.isEnabled ), 'function', '.util.async.isEnabled() was accessible' );
-		assert.equal( $.type( smw.util.async.load ), 'function', '.util.async.load() was accessible' );
+		assert.equal( $.type( smw.async.isEnabled ), 'function', '.async.isEnabled() was accessible' );
+		assert.equal( $.type( smw.async.load ), 'function', '.async.load() was accessible' );
 
 		assert.equal( $.type( smw.util.clean ), 'function', '.util.clean() was accessible' );
 		assert.equal( $.type( smw.util.ucFirst ), 'function', '.util.ucFirst() was accessible' );
@@ -75,7 +69,6 @@
 	 * Test settings function
 	 *
 	 * @since: 1.9
-	 * @ignore
 	 */
 	QUnit.test( 'settings', 4, function ( assert ) {
 
@@ -90,7 +83,6 @@
 	 * Test util function
 	 *
 	 * @since: 1.9
-	 * @ignore
 	 */
 	QUnit.test( 'util', 3, function ( assert ) {
 
@@ -104,7 +96,6 @@
 	 * Test namespace function
 	 *
 	 * @since: 1.9
-	 * @ignore
 	 */
 	QUnit.test( 'util.namespace', 7, function ( assert ) {
 
@@ -124,16 +115,15 @@
 	 * Test async function
 	 *
 	 * @since: 1.9
-	 * @ignore
 	 */
-	QUnit.asyncTest( 'util.async', 7, function ( assert ) {
+	QUnit.asyncTest( 'async', 7, function ( assert ) {
 
 		var context;
 		var argument;
 		var result;
 
 		QUnit.raises( function() {
-			smw.util.async.load( context );
+			smw.async.load( context );
 		}, '.async.load() thrown an error because of a missing method callback' );
 
 		var test0 = function() {
@@ -141,7 +131,7 @@
 		};
 
 		context = $( '<div id="test-0"></div>', '#qunit-fixture' );
-		result = smw.util.async.load( context, test0 );
+		result = smw.async.load( context, test0 );
 		assert.ok( context.find( '#' + 'test-00' ), '.async.load() was executed and created an element' );
 
 		var test1 = function( id ) {
@@ -150,7 +140,7 @@
 
 		argument = 'lula';
 		context = $( '<div id="test-1"></div>', '#qunit-fixture' );
-		result = smw.util.async.load( context, test1, argument );
+		result = smw.async.load( context, test1, argument );
 		assert.ok( context.find( '#' + argument ), '.async.load() was executed and created an element using the invoked argument' );
 
 		var test2 = function( options ) {
@@ -159,12 +149,12 @@
 
 		argument = { 'id': 'lula-2' };
 		context = $( '<div id="test-2"></div>', '#qunit-fixture' );
-		result = smw.util.async.load( context, test2, argument );
+		result = smw.async.load( context, test2, argument );
 		assert.ok( context.find( '#' + argument.id ), '.async.load() was executed and created an element using the invoked argument' );
 
 		argument = 'lala';
 		context = $( '<div id="test-3"></div>', '#qunit-fixture' );
-		result = smw.util.async.load( context, function( id ) {
+		result = smw.async.load( context, function( id ) {
 			return $( this ).append( '<span id=' + id + '></span>' );
 		}, argument );
 		assert.ok( context.find( '#' + argument ), '.async.load() was executed and created an element using the invoked argument' );
@@ -174,10 +164,10 @@
 			context = $( '<div id="test-4"></div>', '#qunit-fixture' );
 			for ( var i = 0; i < 4; i++ ) {
 				argument = 'lila-' + i;
-				smw.util.async.load( context, test1, argument );
+				smw.async.load( context, test1, argument );
 			}
 			QUnit.start();
-			assert.ok( smw.util.async.isEnabled(), '.async.isEnabled() returned true' );
+			assert.ok( smw.async.isEnabled(), '.async.isEnabled() returned true' );
 			assert.ok( context.find( '#' + argument ), '.async.load() was executed and created an element using the invoked argument in async mode' );
 		} );
 
@@ -187,7 +177,6 @@
 	 * Test formats function
 	 *
 	 * @since: 1.9
-	 * @ignore
 	 */
 	QUnit.test( 'formats', 7, function ( assert ) {
 
@@ -206,7 +195,6 @@
 	 * Test version function
 	 *
 	 * @since: 1.9
-	 * @ignore
 	 */
 	QUnit.test( 'version', 1, function ( assert ) {
 

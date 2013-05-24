@@ -1,0 +1,11 @@
+{
+	"--title": "Semantic MediaWiki Code Documentation",
+	"--categories": "../docs/jsduck.categories.json",
+	"--warnings": ["-no_doc"],
+	"--builtin-classes": true,
+	"--external": "HTMLDocument,Window",
+	"--":[
+		"../resources/docs",
+		"../resources/smw"
+	]
+}
