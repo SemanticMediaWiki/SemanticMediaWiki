@@ -8,7 +8,7 @@ use SMWQueryProcessor;
 use Title;
 
 /**
- * Tests for the SMW\QueryData class
+ * Tests for the QueryData class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,19 +28,14 @@ use Title;
  * @file
  * @since 1.9
  *
- * @ingroup SMW
- * @ingroup SMWQuery
  * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the SMW\QueryData class
+ * Tests for the QueryData class
  *
  * @ingroup Test
  *
@@ -56,6 +51,115 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	 */
 	public function getClass() {
 		return '\SMW\QueryData';
+	}
+
+	/**
+	 * Helper method that returns a SMWQueryProcessor object
+	 *
+	 * @param array rawParams
+	 *
+	 * @return QueryProcessor
+	 */
+	private function getQueryProcessor( array $rawParams ) {
+		return SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+			$rawParams,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY,
+			false
+		);
+	}
+
+	/**
+	 * Helper method that returns a QueryData object
+	 *
+	 * @param Title|null $title
+	 *
+	 * @return QueryData
+	 */
+	private function getInstance( Title $title = null ) {
+		return new QueryData( $title );
+	}
+
+	/**
+	 * @test QueryData::__construct
+	 *
+	 * @since 1.9
+	 */
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
+	}
+
+	/**
+	 * @test QueryData::__construct
+	 *
+	 * @since 1.9
+	 * @throws PHPUnit_Framework_Error
+	 */
+	public function testConstructorException() {
+		$this->setExpectedException( 'PHPUnit_Framework_Error' );
+		$instance = $this->getInstance();
+	}
+
+	/**
+	 * @test QueryData::getProperty
+	 *
+	 * @since 1.9
+	 */
+	public function testGetProperty() {
+		$instance = $this->getInstance( $this->getTitle() );
+		$this->assertInstanceOf( '\SMWDIProperty', $instance->getProperty() );
+	}
+
+	/**
+	 * @test QueryData::getErrors
+	 *
+	 * @since 1.9
+	 */
+	public function testGetErrors() {
+		$instance = $this->getInstance( $this->getTitle() );
+		$this->assertInternalType( 'array', $instance->getErrors() );
+	}
+
+	/**
+	 * @test QueryData::add
+	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
+	 */
+	public function testInstantiatedQueryData( array $params, array $expected ) {
+		$title = $this->getTitle();
+		$instance = $this->getInstance( $title );
+
+		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
+		$instance->setQueryId( $params );
+		$instance->add( $query, $formattedParams );
+
+		// Check the returned instance
+		$this->assertInstanceOf( 'SMWSemanticData', $instance->getContainer()->getSemanticData() );
+		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
+	}
+
+	/**
+	 * @test QueryData::add (Test instance exception)
+	 * @dataProvider getDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
+	 * @throws MWException
+	 */
+	public function testQueryIdException( array $params, array $expected ) {
+		$this->setExpectedException( 'MWException' );
+		$title = $this->getTitle();
+		$instance = $this->getInstance( $title );
+
+		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
+		$instance->add( $query, $formattedParams );
 	}
 
 	/**
@@ -128,101 +232,6 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 					'propertyValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 				)
 			),
-
 		);
-	}
-
-	/**
-	 * Helper method that returns a SMWQueryProcessor object
-	 *
-	 * @return QueryProcessor
-	 */
-	private function getQueryProcessor( array $rawParams ) {
-		return SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
-			$rawParams,
-			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
-			false
-		);
-	}
-
-	/**
-	 * Helper method that returns a QueryData object
-	 *
-	 * @return QueryData
-	 */
-	private function getInstance( Title $title = null ) {
-		return new QueryData( $title );
-	}
-
-	/**
-	 * @test QueryData::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$instance = $this->getInstance( $this->getTitle() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test QueryData::__construct (Test instance exception)
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructorException() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance();
-	}
-
-	/**
-	 * @test QueryData::getProperty
-	 *
-	 * @since 1.9
-	 */
-	public function testGetProperty() {
-		$instance = $this->getInstance( $this->getTitle() );
-		$this->assertInstanceOf( '\SMWDIProperty', $instance->getProperty() );
-	}
-
-	/**
-	 * @test QueryData::add
-	 * @dataProvider getDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testInstantiatedQueryData( array $params, array $expected ) {
-		$title = $this->getTitle();
-		$instance = $this->getInstance( $title );
-
-		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
-		$instance->setQueryId( $params );
-		$instance->add( $query, $formattedParams );
-
-		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $instance->getContainer()->getSemanticData() );
-		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
-	}
-
-	/**
-	 * @test QueryData::add (Test instance exception)
-	 * @dataProvider getDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 * @throws MWException
-	 */
-	public function testQueryIdException( array $params, array $expected ) {
-		$this->setExpectedException( 'MWException' );
-		$title = $this->getTitle();
-		$instance = $this->getInstance( $title );
-
-		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
-		$instance->add( $query, $formattedParams );
 	}
 }
