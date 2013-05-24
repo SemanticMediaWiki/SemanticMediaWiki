@@ -1,0 +1,83 @@
+[
+	{
+		"name": "General",
+		"groups": [
+			{
+				"name": "Instance",
+				"classes": ["smw"]
+			}
+		]
+	},
+	{
+		"name": "DataModel",
+		"groups": [
+			{
+				"name": "Factory",
+				"classes": [
+					"smw.Data"
+				]
+			},
+			{
+				"name": "General",
+				"classes": [
+					"smw.dataItem*",
+					"smw.dataValue*"
+				]
+			}
+		]
+	},
+	{
+		"name": "Api",
+		"groups": [
+			{
+				"name": "General",
+				"classes": ["smw.Api*"]
+			},
+			{
+				"name": "Query",
+				"classes": ["smw.Query*"]
+			}
+		]
+	},
+	{
+		"name": "Utilities",
+		"groups": [
+			{
+				"name": "General",
+				"classes": ["smw.util*"]
+			},
+			{
+				"name": "Support",
+				"classes": ["smw.setting*","smw.async*"]
+			},
+			{
+				"name": "Formats",
+				"classes": ["smw.formats*"]
+			}
+		]
+	},
+	{
+		"name": "Test",
+		"groups": [
+			{
+				"name": "QUnit",
+				"classes": ["QUnit", "QUnit.assert"]
+			}
+		]
+	},
+	{
+		"name": "Upstream",
+		"groups": [
+			{
+				"name": "jQuery",
+				"classes": ["jQuery", "jQuery.Event", "jQuery.Promise", "jQuery.Deferred", "jQuery.jqXHR", "QUnit"]
+			},
+			{
+				"name": "JavaScript",
+				"classes": [
+					"Array", "Boolean", "Date", "Function", "Number", "Object", "RegExp", "String"
+				]
+			}
+		]
+	}
+]

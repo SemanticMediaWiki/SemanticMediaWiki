@@ -13,9 +13,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
  *
  * @since 1.8
  *
@@ -33,6 +34,7 @@
  *
  * @since  1.8
  * @class smw
+ * @singleton
  */
 var instance = ( function ( $ ) {
 	'use strict';
@@ -196,65 +198,65 @@ var instance = ( function ( $ ) {
 				}
 				return undefined;
 			}
+		}
+	};
+
+	/**
+	 * Declares methods to improve browser responsiveness by loading
+	 * invoked methods asynchronously using the jQuery.eachAsync plug-in
+	 *
+	 * Example:
+	 *         var fn = function( options ) {};
+	 *         smw.async.load( $( this ), fn, {} );
+	 *
+	 * @since  1.9
+	 *
+	 * @singleton
+	 * @class smw.async
+	 */
+	instance.async = {
+
+		/**
+		 * Returns if eachAsync is available for asynchronous loading
+		 *
+		 * @return {boolean}
+		 */
+		isEnabled: function() {
+			return $.isFunction( $.fn.eachAsync );
 		},
 
 		/**
-		 * Declares methods to improve browser responsiveness by loading
-		 * invoked methods asynchronously using the jQuery.eachAsync plug-in
-		 *
-		 * Example:
-		 *         var fn = function( options ) {};
-		 *         smw.util.async.load( $( this ), fn, {} );
+		 * Negotiates and executes asynchronous loading
 		 *
 		 * @since  1.9
 		 *
-		 * @static
-		 * @class smw.util.async
+		 * @param {object} context
+		 * @param {function} method
+		 * @param {object|string} args
+		 *
+		 * @return {boolean}
+		 * @throws {Error} Missing callback
 		 */
-		async: {
+		load: function( context, method ) {
+			if ( typeof method !== 'function' ) {
+				throw new Error( 'Invoked parameter was not a function' );
+			}
 
-			/**
-			 * Returns if eachAsync is available for asynchronous loading
-			 *
-			 * @return {boolean}
-			 */
-			isEnabled: function() {
-				return $.isFunction( $.fn.eachAsync );
-			},
+			// Filter arguments that are attached to the caller
+			var args = Array.prototype.slice.call( arguments, 2 );
 
-			/**
-			 * Negotiates and executes asynchronous loading
-			 *
-			 * @since  1.9
-			 *
-			 * @param {object} context
-			 * @param {function} method
-			 * @param {object|string} args
-			 *
-			 * @return {boolean}
-			 * @throws {Error} Missing callback
-			 */
-			load: function( context, method ) {
-				if ( typeof method !== 'function' ) {
-					throw new Error( 'Invoked parameter was not a function' );
-				}
-
-				// Filter arguments that are attached to the caller
-				var args = Array.prototype.slice.call( arguments, 2 );
-
-				if ( this.isEnabled() ) {
-					context.eachAsync( {
-						delay: 100,
-						bulk: 0,
-						loop: function() {
-							method.apply( $( this ), args );
-						}
-					} );
-				} else {
-					context.each( function() {
+			if ( this.isEnabled() ) {
+				context.eachAsync( {
+					delay: 100,
+					bulk: 0,
+					loop: function() {
 						method.apply( $( this ), args );
-					} );
-				}
+					}
+				} );
+			} else {
+				context.each( function() {
+					method.apply( $( this ), args );
+				} );
 			}
 		}
 	};
@@ -306,8 +308,7 @@ var instance = ( function ( $ ) {
 	 * @since 1.9
 	 *
 	 * @class smw.settings
-	 * @alias smw.Settings
-	 * @static
+	 * @singleton
 	 */
 	instance.settings = {
 
