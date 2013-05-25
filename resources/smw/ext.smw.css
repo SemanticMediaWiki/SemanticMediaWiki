@@ -1,4 +1,4 @@
-/**
+/*!
  * This file is part of the Semantic MediaWiki Extension
  * @see https://semantic-mediawiki.org/
  *
@@ -20,8 +20,6 @@
  * @since 1.8
  *
  * @file
- * @ignore
- *
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
@@ -29,18 +27,12 @@
  * @author mwjames
  */
 
-/**
- * highlighting for builtin elements
- * @ignore
- */
+/* highlighting for builtin elements */
 span.smwbuiltin, span.smwttactiveinline span.smwbuiltin {
 	font-style: italic;
 }
 
-/**
- * make divs look like <pre>
- * @ignore
- */
+/* make divs look like <pre> */
 div.smwpre {
 	white-space: pre;
 	font-family: monospace;
@@ -53,34 +45,22 @@ div.smwpre {
 	margin-top: 0.5em;
 }
 
-/**
- * terminate page contents when inserting stuff below a page, typically used in <br>
- * @ignore
- */
+/* terminate page contents when inserting stuff below a page, typically used in <br> */
 #smwfootbr {
 	clear: both;
 }
 
-/**
- * hide keys for sorting table entries
- * @ignore
- */
+/* hide keys for sorting table entries */
 span.smwsortkey {
 	display: none;
 }
 
-/**
- * buttons for sort-arrows
- * @ignore
- */
+/* buttons for sort-arrows */
 a.sortheader:hover {
 	text-decoration: none;
 }
 
-/**
- * "semantic" span classes for Timeline
- * @ignore
- */
+/* "semantic" span classes for Timeline */
 div.smwtimeline {
 	border: 1px solid #AAAAAA;
 	background-color: #F9F9F9;
@@ -100,10 +80,7 @@ span.smwtlcomment {
 	padding: 5px;
 }
 
-/**
- * Factbox
- * @ignore
- */
+/* Factbox */
 div.smwfact {
 	clear: both;
 	background-color: #F9F9F9;
@@ -145,10 +122,7 @@ div.smwhr hr {
 	color: #DDDDDD;
 }
 
-/**
- * warning messages
- * @ignore
- */
+/* warning messages */
 span.smwwarning {
 	color: #888888;
 	font-style: italic;
@@ -156,11 +130,7 @@ span.smwwarning {
 }
 
 
-/**
- * search, browse, RDF icons
- * FIXME: this was only used for Factbox docu, should be removed from code
- * @ignore
- */
+/* Search, browse, RDF icons/ FIXME: this was only used for Factbox docu, should be removed from code */
 span.smwsearchicon {
 	padding-right: 16px;
 	margin-right: 2px;
@@ -243,11 +213,7 @@ span.smwsearchicon {
 	/* @embed */ background: url(../images/rdf_flyer.18.gif) center right no-repeat;
 }
 
-/**
- * @TODO Browse and Factbox should be split into seperated CSS file
- * CSS style file for Semantic MediaWiki Special Browse.
- * @ignore
- */
+/* @TODO Browse and Factbox should be split into seperated CSS file, CSS style file for Semantic MediaWiki Special Browse. */
 table.smwb-factbox {
 	border-left: 8px solid #DDDDDD;
 	width: 100%
@@ -343,21 +309,14 @@ tr.smwb-ipropvalue td {
 span.smwb-ivalue {
 }
 
-/**
- * @since 1.9
- * @ignore
- */
+/* @since 1.9; Spinner */
 .smw-spinner .text {
 	padding-left: 2.1em;
 	font-size: 12px;
 	vertical-align: middle;
 }
 
-/**
- * Spinner for left side in-text
- * @since 1.9
- * @ignore
- */
+/* @since 1.9; Spinner for left side in-text */
 .smw-spinner.left.mw-small-spinner {
 	background-position:left;
 	vertical-align: middle;
@@ -365,11 +324,7 @@ span.smwb-ivalue {
 	padding: 0px !important;
 }
 
-/**
- * Sppiner for image center
- * @since 1.9
- * @ignore
- */
+/* @since 1.9; Sppinner for image center */
 .smw-spinner.center.mw-small-spinner {
 	vertical-align: middle;
 	display:inline-block;
