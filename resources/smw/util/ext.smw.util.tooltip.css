@@ -1,4 +1,4 @@
-/**
+/*!
  * This file is part of the Semantic MediaWiki Tooltip/Highlighter module
  * @see https://semantic-mediawiki.org/
  *
@@ -13,106 +13,74 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
  *
  * @since 1.8
  *
  * @file
- * @ignore
- *
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
 
-/**
- * Tooltips, style for content of the bubble
- * @ignore
- */
+/* Tooltips, style for content of the bubble */
 div.smwtt {
 	color: #000000;
 }
 
-/**
- * Tooltips, show persistent tooltips for non-JavaScript clients
- * @ignore
- */
+/* Tooltips, show persistent tooltips for non-JavaScript clients */
 span.smwttpersist span.smwttcontent {
 	color: #888888;
 	font-style: italic;
 	font-size: 90%;
 }
 
-/**
- * Tooltips, hide inline tooltips for non-JavaScript clients
- * @ignore
- */
+/* Tooltips, hide inline tooltips for non-JavaScript clients */
 span.smwttinline span.smwttcontent {
 	display: none;
 	speak: none;
 }
 
-/**
- * Tooltips, style for image anchor for persistent tooltips
- * @ignore
- */
+/* Tooltips, style for image anchor for persistent tooltips */
 span.smwtticon {
 	display: none;
 }
 
-/**
- * Tooltips, colored anchors?
- * @ignore
- */
+/* Tooltips, colored anchors? */
 span.smwttactivepersist {
 	cursor: help;
 	color: #0000C8;
 }
 
-/**
- * Tooltips, colored anchors
- * @ignore
- */
+/* Tooltips, colored anchors */
 span.smwttactiveinline {
 	color: #BB7700;
 	text-decoration: none;
 }
 
-/**
- * Tooltips, images for tooltip icons
- * @ignore
- */
+/* Tooltips, images for tooltip icons */
 img.smwttimg {
 	padding-right: 5px;
 	padding-left: 4px;
 }
 
-/**
- * New tooltip content is always hidden
- * @ignore
- */
+/* New tooltip content is always hidden */
 .smwttcontent {
 	display:none;
 }
 
-/**
- * New tooltip icon defaults
- * @ignore
- */
+/* New tooltip icon defaults */
 .smwtticon {
 	padding:14px 12px 0 0;
 	white-space:nowrap;
 	margin-bottom: -1px;
 }
 
-/**
- * New tooltip, Individual assigned icons ( inline-block is important
- * because the icon <span> is empty)
- * @ignore
- */
+/* New tooltip, Individual assigned icons ( inline-block is important because the icon <span> is empty) */
 .smwtticon.info {
 	display:inline-block;
 	/* @embed */ background: url(../../images/info.png) no-repeat left bottom;

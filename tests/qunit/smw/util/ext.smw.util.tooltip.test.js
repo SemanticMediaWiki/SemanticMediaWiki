@@ -1,4 +1,4 @@
-/**
+/*!
  * This file is part of the Semantic MediaWiki QUnit test suite
  * @see https://semantic-mediawiki.org/wiki/QUnit
  *
@@ -13,44 +13,34 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
  *
  * @since 1.9
  *
  * @file
- * @ignore
- *
  * @ingroup SMW
  * @ingroup Test
  *
  * @licence GNU GPL v2+
  * @author mwjames
  */
-
-/**
- * Tests methods provided by ext.smw.util.tooltip.js
- * @ignore
- */
 ( function ( $, mw, smw ) {
 	'use strict';
 
 	QUnit.module( 'ext.smw.util.tooltip', QUnit.newMwEnvironment() );
-
-	var pass = 'Passes because ';
 
 	/**
 	 * Test initialization and accessibility
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( 'init', 1, function ( assert ) {
-		var tooltip;
+	QUnit.test( 'instance', 1, function ( assert ) {
+		var tooltip = new smw.util.tooltip();
 
-		tooltip = new smw.util.tooltip();
-
-		assert.ok( tooltip instanceof Object, pass + 'the smw.util.tooltip instance was accessible' );
+		assert.ok( tooltip instanceof Object, 'smw.util.tooltip instance was accessible' );
 
 	} );
 
@@ -59,13 +49,11 @@
 	 *
 	 * @since: 1.9
 	 */
-	QUnit.test( '.show()', 2, function ( assert ) {
-		var tooltip;
+	QUnit.test( 'show', 2, function ( assert ) {
+		var tooltip = new smw.util.tooltip();
 		var fixture = $( '#qunit-fixture' );
 
-		tooltip = new smw.util.tooltip();
-
-		assert.equal( $.type( tooltip.show ), 'function', pass + '.show() was accessible' );
+		assert.equal( $.type( tooltip.show ), 'function', '.show() was accessible' );
 
 		tooltip.show( {
 			context: fixture,
@@ -74,7 +62,34 @@
 			button: false
 		} );
 
-		assert.ok( fixture.data( 'hasqtip' ), pass + '.data( "hasqtip" ) was accessible' );
+		assert.ok( fixture.data( 'hasqtip' ), '.data( "hasqtip" ) was accessible' );
+
+	} );
+
+	/**
+	 * Test .add() function
+	 *
+	 * @since: 1.9
+	 */
+	QUnit.test( 'add', 3, function ( assert ) {
+		var tooltip = new smw.util.tooltip();
+		var fixture = $( '#qunit-fixture' );
+
+		assert.equal( $.type( tooltip.add ), 'function', '.add() was accessible' );
+
+		tooltip.add( {
+			contextClass: 'test',
+			contentClass: 'test-content',
+			targetClass : 'test-target',
+			context: fixture,
+			content: 'Test 2',
+			title: 'Test 2',
+			type: 'info',
+			button: true
+		} );
+
+		assert.ok( fixture.find( '.test' ), 'created context class' );
+		assert.ok( fixture.data( 'hasqtip' ), '.data( "hasqtip" ) was accessible' );
 
 	} );
 
