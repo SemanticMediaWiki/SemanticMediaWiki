@@ -258,6 +258,8 @@ final class SMWHooks {
 
 			'formatters/ParserParameterFormatter',
 
+			'handlers/CacheHandler',
+
 			'api/ApiSMWInfo',
 			'api/ApiAsk',
 
@@ -487,7 +489,8 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onParserAfterTidy( &$parser, &$text ) {
-		$cache = ObjectCache::getInstance( $GLOBALS['smwgCacheType'] );
+		$cache  = \SMW\CacheHandler::newFromId()
+			->key( 'autorefresh', $parser->getTitle()->getArticleID() );
 
 		// Separate globals from local state
 		// FIXME Do a new SMW\Settings( $GLOBALS );
@@ -504,10 +507,10 @@ final class SMWHooks {
 		// If an article was was manually purged/moved ensure that the store is
 		// updated as well for all other cases onLinksUpdateConstructed will
 		// initiate the store update
-		if( $cache->get( 'smw:autorefresh:' . $parser->getTitle()->getPrefixedDBkey() ) ){
+		if( $cache->get() ) {
 			$parserData->updateStore();
 		}
-		$cache->delete( 'smw:autorefresh:' . $parser->getTitle()->getPrefixedDBkey() );
+		$cache->delete();
 
 		return true;
 	}
@@ -573,10 +576,10 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onArticlePurge( &$wikiPage ) {
-		ObjectCache::getInstance( $GLOBALS['smwgCacheType'] )->set(
-			'smw:autorefresh:' . $wikiPage->getTitle()->getPrefixedDBkey(),
-			$GLOBALS['smwgAutoRefreshOnPurge']
-		);
+		\SMW\CacheHandler::newFromId()
+			->key( 'autorefresh', $wikiPage->getTitle()->getArticleID() )
+			->set( $GLOBALS['smwgAutoRefreshOnPurge'] );
+
 		return true;
 	}
 
@@ -600,10 +603,10 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onTitleMoveComplete( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
-		ObjectCache::getInstance( $GLOBALS['smwgCacheType'] )->set(
-			'smw:autorefresh:' . $newTitle->getPrefixedDBkey(),
-			$GLOBALS['smwgAutoRefreshOnPageMove']
-		);
+		\SMW\CacheHandler::newFromId()
+			->key( 'autorefresh', $newTitle->getArticleID() )
+			->set( $GLOBALS['smwgAutoRefreshOnPageMove'] );
+
 		smwfGetStore()->changeTitle( $oldTitle, $newTitle, $oldId, $newId );
 
 		return true;
@@ -662,9 +665,9 @@ final class SMWHooks {
 	 * @note MW 1.20+ see InternalParseBeforeSanitize
 	 *
 	 * @see Parser
-	 * @see http://http://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
 	 *
-	 * @since  1.10
+	 * @since  1.9
 	 *
 	 * @param Parser $parser
 	 * @param string $text

@@ -36,3 +36,11 @@ die("Not a valid entry point\n");
  * @defgroup Api Api
  * @ingroup SMW
  */
+
+/**
+ * This group contains members that are relate to handler classes (including
+ * object handler, hooks handler, instance handler etc.)
+ *
+ * @defgroup Handler Handler
+ * @ingroup SMW
+ */
