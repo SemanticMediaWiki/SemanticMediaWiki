@@ -23,6 +23,8 @@
  * @param boolean $complete
  *
  * @return true
+ *
+ * @codeCoverageIgnore
  */
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
@@ -41,6 +43,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 /**
  * Register all SMW hooks with MediaWiki.
+ *
+ * @codeCoverageIgnore
  */
 function smwfRegisterHooks() {
 	global $wgHooks;
@@ -110,6 +114,7 @@ function smwfRegisterHooks() {
 /**
  * Register all SMW classes with the MediaWiki autoloader.
  *
+ * @codeCoverageIgnore
  */
 function smwfRegisterClasses() {
 	global $smwgIP, $wgAutoloadClasses, $wgJobClasses;
@@ -333,7 +338,7 @@ function smwfRegisterClasses() {
 	// Special pages and closely related helper classes
 	$testsDir = $smwgIP . 'tests/phpunit/';
 	$wgAutoloadClasses['SMW\Tests\DataItemTest']              = $testsDir . 'includes/dataitems/DataItemTest.php';
-	$wgAutoloadClasses['SMW\Tests\ResultPrinterTest']         = $testsDir . 'includes/printers/ResultPrinterTest.php';
+	$wgAutoloadClasses['SMW\Test\ResultPrinterTestCase']      = $testsDir . 'ResultPrinterTestCase.php';
 	$wgAutoloadClasses['SMW\Test\SemanticMediaWikiTestCase']  = $testsDir . 'SemanticMediaWikiTestCase.php';
 	$wgAutoloadClasses['SMW\Test\ParserTestCase']             = $testsDir . 'ParserTestCase.php';
 	$wgAutoloadClasses['SMW\Test\ApiTestCase']                = $testsDir . 'ApiTestCase.php';
@@ -364,6 +369,8 @@ function smwfRegisterClasses() {
 
 /**
  * Register all SMW special pages with MediaWiki.
+ *
+ * @codeCoverageIgnore
  */
 function smwfRegisterSpecialPages() {
 	$specials = array(
@@ -435,6 +442,8 @@ function smwfRegisterSpecialPages() {
  *
  * The main things this function does are: register all hooks, set up extension
  * credits, and init some globals that are not for configuration settings.
+ *
+ * @codeCoverageIgnore
  */
 function smwfSetupExtension() {
 	wfProfileIn( 'smwfSetupExtension (SMW)' );
@@ -453,6 +462,8 @@ function smwfSetupExtension() {
 
 /**
  * Init the additional namespaces used by Semantic MediaWiki.
+ *
+ * @codeCoverageIgnore
  */
 function smwfInitNamespaces() {
 	global $smwgNamespaceIndex, $wgExtraNamespaces, $wgNamespaceAliases, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang;
@@ -502,6 +513,8 @@ function smwfInitNamespaces() {
  * early on, even before user language is known, to determine labels for
  * additional namespaces. In contrast, messages can be initialised much later
  * when they are actually needed.
+ *
+ * @codeCoverageIgnore
  */
 function smwfInitContentLanguage( $langcode ) {
 	global $smwgIP, $smwgContLang;

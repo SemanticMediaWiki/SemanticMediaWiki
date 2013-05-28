@@ -55,7 +55,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return string
 	 */
-	protected abstract function getClass();
+	public abstract function getClass();
 
 	/**
 	 * Helper method that returns a randomized Title object to avoid results

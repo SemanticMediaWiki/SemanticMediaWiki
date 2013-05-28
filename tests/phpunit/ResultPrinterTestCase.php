@@ -1,42 +1,54 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Test;
 
 /**
  * Base class for SMW\ResultPrinter tests.
  *
- * @file
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
  * @since 1.8
  *
- * @ingroup SMW
+ * @file
+ * @ingroup Test
+ *
+ * @licence GNU GPL v2+
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ */
+
+/**
+ * Base class for SMW\ResultPrinter tests
+ *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  * @group ResultPrinters
- *
- * @licence GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class ResultPrinterTest extends \MediaWikiTestCase {
+abstract class ResultPrinterTestCase extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the names of the formats supported by the \SMW\ResultPrinter being tested.
+	 * Returns the names of the formats supported by the
+	 * \SMW\ResultPrinter being tested.
 	 *
 	 * @since 1.8
 	 *
 	 * @return array
 	 */
 	public abstract function getFormats();
-
-	/**
-	 * Returns the name of the \SMW\ResultPrinter deriving class this test tests.
-	 *
-	 * @since 1.8
-	 *
-	 * @return string
-	 */
-	public abstract function getClass();
 
 	/**
 	 * @since 1.8
@@ -62,7 +74,7 @@ abstract class ResultPrinterTest extends \MediaWikiTestCase {
 	 * @param string $format
 	 * @param boolean $isInline
 	 *
-	 * @return \SMWResultPrinter
+	 * @return \SMW\ResultPrinter
 	 */
 	protected function newInstance( $format, $isInline ) {
 		$class = $this->getClass();
@@ -96,7 +108,6 @@ abstract class ResultPrinterTest extends \MediaWikiTestCase {
 	public function testConstructor( $format, $isInline ) {
 		$instance = $this->newInstance( $format, $isInline );
 
-		$this->assertInstanceOf( '\SMWResultPrinter', $instance );
+		$this->assertInstanceOf( '\SMW\ResultPrinter', $instance );
 	}
-
 }

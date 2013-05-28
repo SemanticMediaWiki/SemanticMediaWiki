@@ -21,18 +21,23 @@ use SMW\FormatFactory;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.9
  *
- * @ingroup SMW
+ * @file
+ * @ingroup Test
+ *
+ * @licence GNU GPL v2+
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ */
+
+/**
+ * Tests for the SMW\FormatFactory class.
+ *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  * @group SMWQueries
- *
- * @licence GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class FormatFactoryTest extends \MediaWikiTestCase {
 
@@ -157,4 +162,83 @@ class FormatFactoryTest extends \MediaWikiTestCase {
 		}
 	}
 
+	/**
+	 * @test FormatFactory::getPrinter
+	 *
+	 * @since 1.9
+	 */
+	public function testGetPrinterException() {
+		$this->SetExpectedException( 'MWException' );
+
+		$factory = $this->getNewInstance();
+		$factory->getPrinter( 'lula' );
+
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * @test FormatFactory::getCanonicalName
+	 *
+	 * @since 1.9
+	 */
+	public function testGetCanonicalNameException() {
+		$this->SetExpectedException( 'MWException' );
+
+		$factory = $this->getNewInstance();
+		$factory->getCanonicalName( 9001 );
+
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * @test FormatFactory::registerFormat
+	 * @dataProvider getRegisterFormatExceptioDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testRegisterFormatException( $formatName, $class ) {
+		$this->SetExpectedException( 'MWException' );
+
+		$factory = $this->getNewInstance();
+		$factory->registerFormat( $formatName, $class );
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * @test FormatFactory::registerAliases
+	 * @dataProvider getRegisterAliasesExceptioDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testRegisterAliasesException( $formatName, array $aliases ) {
+		$this->SetExpectedException( 'MWException' );
+
+		$factory = $this->getNewInstance();
+		$factory->registerAliases( $formatName, $aliases );
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * Register format exception data provider
+	 *
+	 * @return array
+	 */
+	public function getRegisterFormatExceptioDataProvider() {
+		return array(
+			array( 1001, 'Foo' ),
+			array( 'Foo', 9001 ),
+		);
+	}
+
+	/**
+	 * Register aliases exception data provider
+	 *
+	 * @return array
+	 */
+	public function getRegisterAliasesExceptioDataProvider() {
+		return array(
+			array( 1001, array( 'Foo' => 'Bar' ) ),
+			array( 'Foo', array( 'Foo' => 9001 ) ),
+		);
+	}
 }

@@ -10,35 +10,36 @@ die("Not a valid entry point\n");
  */
 
 /**
- * This group contains members that are relate to message, error, and parameter formatting
+ * This group contains members that are related to message, error, and parameter
+ * formatting
  *
  * @defgroup Formatter Formatter
  * @ingroup SMW
  */
 
 /**
- * This group contains members that are relate to parser hooks and functions
+ * This group contains members that are related to parser hooks and functions
  *
  * @defgroup ParserFunction ParserFunction
  * @ingroup SMW
  */
 
 /**
- * This group contains members that are relate to unit tests
+ * This group contains members that are related to unit tests
  *
  * @defgroup Test Test
  * @ingroup SMW
  */
 
 /**
- * This group contains members that are relate to the Semantic MediaWiki Api
+ * This group contains members that are related to the Semantic MediaWiki Api
  *
  * @defgroup Api Api
  * @ingroup SMW
  */
 
 /**
- * This group contains members that are relate to handler classes (including
+ * This group contains members that are related to handler classes (including
  * object handler, hooks handler, instance handler etc.)
  *
  * @defgroup Handler Handler
