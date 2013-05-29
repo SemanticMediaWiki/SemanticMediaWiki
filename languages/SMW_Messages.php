@@ -9246,6 +9246,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_ask_format_as' => 'Formatéieren als:',
 	'smw_ask_defaultformat' => 'Standard',
 	'smw_ask_otheroptions' => 'Aner Optiounen',
+	'smw-ask-otheroptions-collapsed-info' => "Benotzt w.e.g. de 'Plus-Icon' fir all disponibel Optiounen ze gesinn",
 	'smw_ask_show_embed' => 'Agebonnene Code weisen',
 	'smw_ask_hide_embed' => 'Agebonnene Code verstoppen',
 	'smw-ask-delete' => '[Läschen]',
@@ -12357,6 +12358,7 @@ Progresso estimado da atualização corrente:',
 	'smw-concept-cache-text' => 'O conceito possui um total de $1 {{PLURAL:$1|página|páginas}} e foi atualizado pela última vez em $2.',
 	'smw_concept_header' => 'Páginas do conceito "$1"',
 	'smw_conceptarticlecount' => 'Exibindo {{PLURAL:$1|uma página|$1 páginas}}.',
+	'smw-qp-aggregatable-empty-data' => 'Os dados agregados requisitados não foram exibidos devido a algum critério de seleção insuficiente.',
 );
 
 /** Quechua (Runa Simi)
