@@ -255,6 +255,34 @@ $magicWords['ps'] = array(
 	'info' => array( 0, 'مالومات', 'info' ),
 );
 
+/** Portuguese (português) */
+$magicWords['pt'] = array(
+	'ask' => array( 0, 'consultar' ),
+	'show' => array( 0, 'mostrar' ),
+	'concept' => array( 0, 'conceito' ),
+	'subobject' => array( 0, 'subobjeto' ),
+	'set' => array( 0, 'definir' ),
+	'set_recurring_event' => array( 0, 'definir_evento_recorrente' ),
+	'declare' => array( 0, 'declarar' ),
+	'SMW_NOFACTBOX' => array( 0, '__SEMCAIXADEFATOS__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__EXIBIRCAIXADEFATOS__' ),
+);
+
+/** Brazilian Portuguese (português do Brasil) */
+$magicWords['pt-br'] = array(
+	'ask' => array( 0, 'consultar' ),
+	'show' => array( 0, 'mostrar' ),
+	'info' => array( 0, 'info' ),
+	'concept' => array( 0, 'conceito' ),
+	'subobject' => array( 0, 'subobjeto' ),
+	'smwdoc' => array( 0, 'smwdoc' ),
+	'set' => array( 0, 'definir' ),
+	'set_recurring_event' => array( 0, 'definir_evento_recorrente' ),
+	'declare' => array( 0, 'declarar' ),
+	'SMW_NOFACTBOX' => array( 0, '__SEMCAIXADEFATOS__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__EXIBIRCAIXADEFATOS__' ),
+);
+
 /** Serbian (Cyrillic script) (српски (ћирилица)‎) */
 $magicWords['sr-ec'] = array(
 	'ask' => array( 0, 'питај' ),

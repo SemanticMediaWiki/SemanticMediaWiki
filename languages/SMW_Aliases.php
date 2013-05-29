@@ -585,16 +585,34 @@ $specialPageAliases['ps'] = array(
 
 /** Portuguese (português) */
 $specialPageAliases['pt'] = array(
-	'Ask' => array( 'Pedir' ),
+	'Ask' => array( 'Consultar' ),
 	'Browse' => array( 'Navegar' ),
-	'ExportRDF' => array( 'Exportar_RDF' ),
+	'ExportRDF' => array( 'ExportarRDF' ),
 	'PageProperty' => array( 'Propriedade_de_página' ),
 	'Properties' => array( 'Propriedades' ),
-	'SearchByProperty' => array( 'Pesquisar_propriedade' ),
+	'SearchByProperty' => array( 'Pesquisa_por_propriedade' ),
 	'SemanticStatistics' => array( 'Estatísticas_de_semântica' ),
 	'Types' => array( 'Tipos' ),
 	'UnusedProperties' => array( 'Propriedades_não_utilizadas' ),
 	'WantedProperties' => array( 'Propriedades_desejadas' ),
+	'QueryCreator' => array( 'Criador_de_consultas' ),
+);
+
+/** Brazilian Portuguese (português do Brasil) */
+$specialPageAliases['pt-br'] = array(
+	'Ask' => array( 'Consultar' ),
+	'Browse' => array( 'Navegar' ),
+	'ExportRDF' => array( 'ExportarRDF' ),
+	'PageProperty' => array( 'Propriedade_de_página' ),
+	'Properties' => array( 'Propriedades' ),
+	'SMWAdmin' => array( 'SMWAdmin' ),
+	'SearchByProperty' => array( 'Pesquisa_por_propriedade' ),
+	'SemanticStatistics' => array( 'Estatísticas_de_semântica' ),
+	'Types' => array( 'Tipos' ),
+	'URIResolver' => array( 'URIResolver' ),
+	'UnusedProperties' => array( 'Propriedades_não_utilizadas' ),
+	'WantedProperties' => array( 'Propriedades_desejadas' ),
+	'QueryCreator' => array( 'Criador_de_consultas' ),
 );
 
 /** Romanian (română) */
