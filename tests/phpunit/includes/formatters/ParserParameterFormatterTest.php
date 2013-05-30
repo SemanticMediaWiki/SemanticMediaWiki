@@ -51,6 +51,89 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * Helper method that returns a ParserParameterFormatter object
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 *
+	 * @return ParserParameterFormatter
+	 */
+	private function getInstance( array $params ) {
+		return new ParserParameterFormatter( $params );
+	}
+
+	/**
+	 * @test ParserParameterFormatter::__construct
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 */
+	public function testConstructor( array $params ) {
+		$instance = $this->getInstance( $params );
+		$this->assertInstanceOf( 'SMW\ParserParameterFormatter', $instance );
+	}
+
+	/**
+	 * @test ParserParameterFormatter::getRaw
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 */
+	public function testGetRaw( array $params ) {
+		$instance = $this->getInstance( $params );
+		$this->assertEquals( $params, $instance->getRaw() );
+	}
+
+	/**
+	 * @test ParserParameterFormatter::__construct (Test instance exception)
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 */
+	public function testConstructorException( array $params ) {
+		$this->setExpectedException( 'PHPUnit_Framework_Error' );
+		$instance = $this->getInstance();
+	}
+
+	/**
+	 * @test ParserParameterFormatter::toArray
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
+	 */
+	public function testToArray( array $params, array $expected ) {
+		$instance = $this->getInstance( $params );
+		$results = $instance->toArray();
+
+		$this->assertTrue( is_array( $results ) );
+		$this->assertEquals( $expected, $results);
+	}
+
+	/**
+	 * @test ParserParameterFormatter::getFirst
+	 * @dataProvider getFirstDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
+	 */
+	public function testGetFirst( array $params, array $expected ) {
+		$results = $this->getInstance( $params );
+		$this->assertEquals( $expected['identifier'], $results->getFirst() );
+	}
+
+	/**
 	 * Provides sample data of parameter combinations
 	 *
 	 * @return array
@@ -223,62 +306,5 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 				array( 'identifier' => '-' )
 			),
 		);
-	}
-
-	/**
-	 * @test ParserParameterFormatter::__construct
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 */
-	public function testConstructor( array $params ) {
-		$instance = new ParserParameterFormatter( $params );
-		$this->assertInstanceOf( 'SMW\ParserParameterFormatter', $instance );
-	}
-
-	/**
-	 * @test ParserParameterFormatter::__construct (Test instance exception)
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 */
-	public function testConstructorException( array $params ) {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new ParserParameterFormatter();
-	}
-
-	/**
-	 * @test ParserParameterFormatter::toArray
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testToArray( array $params, array $expected ) {
-		$instance = new ParserParameterFormatter( $params );
-		$results = $instance->toArray();
-
-		$this->assertTrue( is_array( $results ) );
-		$this->assertEquals( $expected, $results);
-	}
-
-	/**
-	 * @test ParserParameterFormatter::getFirst
-	 * @dataProvider getFirstDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testGetFirst( array $params, array $expected ) {
-		$results = new ParserParameterFormatter( $params );
-		$this->assertEquals( $expected['identifier'], $results->getFirst() );
 	}
 }

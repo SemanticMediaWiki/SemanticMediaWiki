@@ -66,11 +66,11 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 *
 	 * @since 1.9
 	 *
-	 * @param IParameterFormatter $parameters
+	 * @param ArrayFormatter $parameters
 	 *
 	 * @return string|null
 	 */
-	public function parse( IParameterFormatter $parameters ) {
+	public function parse( ArrayFormatter $parameters ) {
 
 		// Get recurring events
 		$events = new RecurringEvents( $parameters->toArray(), $this->getSettings() );

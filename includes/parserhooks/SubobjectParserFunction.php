@@ -107,11 +107,11 @@ class SubobjectParserFunction {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $params
+	 * @param ArrayFormatter $params
 	 *
 	 * @return string|null
 	 */
-	public function parse( IParameterFormatter $parameters ) {
+	public function parse( ArrayFormatter $parameters ) {
 
 		// Add values to the instantiated subobject
 		// getFirst() will indicate if a subobject becomes a named or
