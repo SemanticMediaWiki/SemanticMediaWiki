@@ -65,11 +65,11 @@ class SetParserFunction {
 	 *
 	 * @since  1.9
 	 *
-	 * @param IParameterFormatter $parameters
+	 * @param ArrayFormatter $parameters
 	 *
 	 * @return string|null
 	 */
-	public function parse( IParameterFormatter $parameters ) {
+	public function parse( ArrayFormatter $parameters ) {
 
 		// Add dataValues
 		foreach ( $parameters->toArray() as $property => $values ){

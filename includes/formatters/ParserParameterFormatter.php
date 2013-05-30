@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Interface for handling parameter formatting
+ * Class handling parser parameter formatting
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,75 +28,34 @@ namespace SMW;
  * @licence GNU GPL v2+
  * @author mwjames
  */
-interface IParameterFormatter {
-
-	// Will also be used for QueryParameterFormatter
-
-	/**
-	 * The constructor requires an array of raw parameters
-	 */
-
-	/**
-	 * Returns transformed parameters
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public function toArray();
-
-	/**
-	 * Returns raw parameters
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public function getRaw();
-
-}
 
 /**
  * Handling raw parameters from the parser hook
  *
  * @ingroup Formatter
  */
-class ParserParameterFormatter implements IParameterFormatter {
+class ParserParameterFormatter extends ArrayFormatter {
 
-	/**
-	 * Returns a default separator
-	 * @var string
-	 */
+	/** @var string */
 	protected $defaultSeparator = ',';
 
-	/**
-	 * Returns first named identifier
-	 * @var array
-	 */
+	/** @var array */
 	protected $rawParameters;
 
-	/**
-	 * Returns first named identifier
-	 * @var array
-	 */
+	/** @var array */
 	protected $parameters;
 
-	/**
-	 * Returns first named identifier
-	 * @var string
-	 */
+	/** @var string */
 	protected $first = null;
 
 	/**
-	 * Constructor
-	 *
 	 * @since 1.9
 	 *
 	 * @param array $parameters
 	 */
 	public function __construct( array $parameters ) {
 		$this->rawParameters = $parameters;
-		$this->parameters = $this->map( $this->rawParameters );
+		$this->parameters = $this->format( $this->rawParameters );
 	}
 
 	/**
@@ -108,18 +67,6 @@ class ParserParameterFormatter implements IParameterFormatter {
 	 */
 	public function getFirst() {
 		return $this->first;
-	}
-
-	/**
-	 * Map parameters from an external source independent from the invoked
-	 * constructor
-	 *
-	 * @since 1.9
-	 *
-	 * @return string
-	 */
-	public function mapParameters( array $params ) {
-		return $this->map( $params );
 	}
 
 	/**
@@ -179,7 +126,7 @@ class ParserParameterFormatter implements IParameterFormatter {
 	 *
 	 * @return array
 	 */
-	protected function map( array $params ) {
+	protected function format( array $params ) {
 		$results = array();
 		$previousProperty = null;
 
@@ -237,6 +184,7 @@ class ParserParameterFormatter implements IParameterFormatter {
 				}
 			}
 		}
+
 		return $results;
 	}
 }
