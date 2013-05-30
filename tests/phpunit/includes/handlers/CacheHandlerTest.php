@@ -86,13 +86,13 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 		// Invoke a valid cacheId
 		$instance = CacheHandler::newFromId( 'hash' );
 		$this->assertFalse( $instance->isEnabled() ); // No key means false
-		$instance->key( 'lala' );
+		$instance->setCacheEnabled( true )->key( 'lala' );
 		$this->assertTrue( $instance->isEnabled() ); // An added key results in true
 
-		// Invoke a invalid cacheId
+		// Invoke an invalid cacheId
 		$instance = CacheHandler::newFromId( 'lula' );
 		$this->assertFalse( $instance->isEnabled() ); // No key means false
-		$instance->key( 'lila' );
+		$instance->setCacheEnabled( true )->key( 'lila' );
 		$this->assertFalse( $instance->isEnabled() ); // An added key but invalid cache results in false
 
 	}
