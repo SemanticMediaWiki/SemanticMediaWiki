@@ -50,39 +50,40 @@ class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Provides available global functions
+	 * @test smwfGetLinker
 	 *
-	 * @return array
+	 * @since 1.9
 	 */
-	public function getGlobalFunctions() {
-		return array(
-			array( 'smwfIsSemanticsProcessed' ),
-			array( 'smwfNormalTitleDBKey' ),
-			array( 'smwfNormalTitleText' ),
-			array( 'smwfXMLContentEncode' ),
-			array( 'smwfHTMLtoUTF8' ),
-			array( 'smwfNumberFormat' ),
-			array( 'smwfEncodeMessages' ),
-			array( 'smwfGetStore' ),
-			array( 'smwfGetSparqlDatabase' ),
-			array( 'smwfGetLinker' ),
-		) ;
+	public function testSmwfGetLinker() {
+		$instance = smwfGetLinker();
+
+		$linker = class_exists( 'DummyLinker' ) ? 'DummyLinker' : 'Linker';
+		$this->assertInstanceOf( $linker, $instance );
 	}
 
 	/**
-	 * Provides messages
+	 * @test smwfNormalTitleDBKey
 	 *
-	 * @return array
+	 * @since 1.9
 	 */
-	public function getEncodeMessagesDataProvider() {
-		return array(
-			array( array ( '', '', '' ) , '', '', true ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , '', '', true ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , 'warning', '', true ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , 'info', ',', false ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , null, ',', false ),
-			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , '<span>Test</span>', ',', true ),
-		);
+	public function testSmwfNormalTitleDBKey() {
+		$result = smwfNormalTitleDBKey( ' foo bar ' );
+
+		// Globals are ... but it can't be invoke ... well make my day
+		$expected = $GLOBALS['wgCapitalLinks'] ? 'Foo_bar' : 'foo_bar';
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @test smwfHTMLtoUTF8
+	 *
+	 * @since 1.9
+	 */
+	public function testSmwfHTMLtoUTF8() {
+		$result = smwfHTMLtoUTF8( "\xc4\x88io bonas dans l'\xc3\xa9cole, &#x108;io bonas dans l'&eacute;cole!" );
+
+		$expected = "Ĉio bonas dans l'école, Ĉio bonas dans l'école!";
+		$this->assertEquals( $expected, $result );
 	}
 
 	/**
@@ -120,5 +121,41 @@ class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 		$results = smwfEncodeMessages( $message, $type, $separator, $escape );
 		$this->assertFalse( is_null( $results ) );
 		$this->assertTrue( is_string( $results ) );
+	}
+
+	/**
+	 * Provides available global functions
+	 *
+	 * @return array
+	 */
+	public function getGlobalFunctions() {
+		return array(
+			array( 'smwfIsSemanticsProcessed' ),
+			array( 'smwfNormalTitleDBKey' ),
+			array( 'smwfNormalTitleText' ),
+			array( 'smwfXMLContentEncode' ),
+			array( 'smwfHTMLtoUTF8' ),
+			array( 'smwfNumberFormat' ),
+			array( 'smwfEncodeMessages' ),
+			array( 'smwfGetStore' ),
+			array( 'smwfGetSparqlDatabase' ),
+			array( 'smwfGetLinker' ),
+		) ;
+	}
+
+	/**
+	 * Provides messages
+	 *
+	 * @return array
+	 */
+	public function getEncodeMessagesDataProvider() {
+		return array(
+			array( array ( '', '', '' ) , '', '', true ),
+			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , '', '', true ),
+			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , 'warning', '', true ),
+			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , 'info', ',', false ),
+			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , null, ',', false ),
+			array( array ( 'abc', 'ABC', '<span>Test</span>' ) , '<span>Test</span>', ',', true ),
+		);
 	}
 }

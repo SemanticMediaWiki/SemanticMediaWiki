@@ -80,14 +80,16 @@ function smwfHTMLtoUTF8( $text ) {
 }
 
 /**
-* This method formats a float number value according to the given language and
-* precision settings, with some intelligence to produce readable output. Used
-* to format a number that was not hand-formatted by a user.
-*
-* @param mixed $value input number
-* @param integer $decplaces optional positive integer, controls how many digits after
-* the decimal point are shown
-*/
+ * @codeCoverageIgnore
+ *
+ * This method formats a float number value according to the given language and
+ * precision settings, with some intelligence to produce readable output. Used
+ * to format a number that was not hand-formatted by a user.
+ *
+ * @param mixed $value input number
+ * @param integer $decplaces optional positive integer, controls how many digits after
+ * the decimal point are shown
+ */
 function smwfNumberFormat( $value, $decplaces = 3 ) {
 	global $smwgMaxNonExpNumber;
 
@@ -220,6 +222,8 @@ function &smwfGetStore() {
 }
 
 /**
+ * @codeCoverageIgnore
+ *
  * Get the SMWSparqlDatabase object to use for connecting to a SPARQL store,
  * or null if no SPARQL backend has been set up.
  *
