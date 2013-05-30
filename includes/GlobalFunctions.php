@@ -201,11 +201,6 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 }
 
 /**
- * @deprecated since 1.7, will be removed in 1.9.
- */
-function smwfLoadExtensionMessages( $extensionName ) {}
-
-/**
  * Get a handle for the storage backend that is used to manage the data.
  * Currently, it just returns one globally defined object, but the
  * infrastructure allows to set up load balancing and task-dependent use of
