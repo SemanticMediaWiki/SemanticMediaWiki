@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\Settings;
-use MWException;
 
 /**
  * Tests for the Settings class
@@ -41,6 +40,7 @@ use MWException;
  *
  * @group SMW
  * @group SMWExtension
+ * @covers \SMW\Settings
  */
 class SettingsTest extends SemanticMediaWikiTestCase {
 
@@ -124,12 +124,13 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Settings::get (test exception)
+	 * @test Settings::get
 	 *
 	 * @since 1.9
+	 * @throws SettingsArgumentException
 	 */
 	public function testSettingsNameExceptions() {
-		$this->setExpectedException( 'MWException' );
+		$this->setExpectedException( '\SMW\SettingsArgumentException' );
 		$settingsObject = $this->getInstance( array( 'Foo' => 'bar' ) );
 		$this->assertEquals( 'bar', $settingsObject->get( 'foo' ) );
 	}
@@ -171,5 +172,8 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 				$instance->get( $key )
 			);
 		}
+
+		// Assert that newFromGlobals is a static instance
+		$this->assertTrue( $instance === Settings::newFromGlobals() );
 	}
 }

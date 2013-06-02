@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use MWException;
 use ArrayObject;
 
 /**
@@ -70,7 +69,7 @@ class Settings {
 	 *
 	 * @par Example:
 	 * @code
-	 * $settings = SMW\Settings::newFromGlobals();
+	 *  $defaultStore = \SMW\Settings::newFromGlobals()->get( 'smwgDefaultStore' );
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -78,6 +77,8 @@ class Settings {
 	 * @return Settings
 	 */
 	public static function newFromGlobals() {
+		static $instance = null;
+
 		$settings = array(
 			'smwgScriptPath' => $GLOBALS['smwgScriptPath'],
 			'smwgIP' => $GLOBALS['smwgIP'],
@@ -152,7 +153,11 @@ class Settings {
 			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'],
 		);
 
-		return self::newFromArray( $settings );
+		if ( $instance === null ) {
+			$instance = self::newFromArray( $settings ) ;
+		}
+
+		return $instance;
 	}
 
 	/**
@@ -161,7 +166,7 @@ class Settings {
 	 *
 	 * @par Example:
 	 * @code
-	 * $settings = SMW\Settings::newFromArray( array() );
+	 *  $settings = \SMW\Settings::newFromArray( array() );
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -209,7 +214,7 @@ class Settings {
 	 */
 	public function get( $key ) {
 		if ( !$this->exists( $key ) ) {
-			throw new MWException( "Setting {$key} is not available" );
+			throw new SettingsArgumentException( "{$key} is not a valid settings key" );
 		}
 		return $this->settings->offsetGet( $key );
 	}
