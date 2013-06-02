@@ -341,6 +341,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSpecialTypes']               = $specDir . 'SMW_SpecialTypes.php';
 	$wgAutoloadClasses['SMWSpecialUnusedProperties']    = $specDir . 'SMW_SpecialUnusedProperties.php';
 	$wgAutoloadClasses['SMWSpecialWantedProperties']    = $specDir . 'SMW_SpecialWantedProperties.php';
+	$wgAutoloadClasses['SMWWantedPropertiesPage']       = $specDir . 'SMW_SpecialWantedProperties.php';
 
 	// Special pages and closely related helper classes
 	$testsDir = $smwgIP . 'tests/phpunit/';

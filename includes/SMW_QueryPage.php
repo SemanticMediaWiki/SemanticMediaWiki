@@ -47,7 +47,8 @@ abstract class SMWQueryPage extends QueryPage {
 	 * @param $limit database query limit
 	 */
 	function doQuery( $offset = false, $limit = false ) {
-		global $wgOut, $wgContLang;
+		$out = $this->getOutput();
+		$sk  = $this->getSkin();
 
 		$options = new SMWRequestOptions();
 		$options->limit = $limit;
@@ -56,28 +57,29 @@ abstract class SMWQueryPage extends QueryPage {
 		$res = $this->getResults( $options );
 		$num = count( $res );
 
-		$sk = $this->getSkin();
-		$sname = $this->getName();
-
-		$wgOut->addHTML( $this->getPageHeader() );
+		$out->addHTML( $this->getPageHeader() );
 
 		// if list is empty, show it
 		if ( $num == 0 ) {
-			$wgOut->addHTML( '<p>' . wfMessage( 'specialpage-empty' )->escaped() . '</p>' );
+			$out->addHTML( '<p>' . $this->msg( 'specialpage-empty' )->escaped() . '</p>' );
 			return;
 		}
 
 		$top = wfShowingResults( $offset, $num );
-		$wgOut->addHTML( "<p>{$top}\n" );
+		$out->addHTML( "<p>{$top}\n" );
 
 		// often disable 'next' link when we reach the end
 		$atend = $num < $limit;
+		$sl = $this->getLanguage()->viewPrevNext(
+			$this->getTitleFor( $this->getName() ),
+			$offset,
+			$limit,
+			$this->linkParameters(),
+			$atend
+		);
 
-		$sl = wfViewPrevNext( $offset, $limit ,
-			$wgContLang->specialPage( $sname ),
-			wfArrayToCGI( $this->linkParameters() ), $atend );
-		$wgOut->addHTML( "<br />{$sl}</p>\n" );
-			
+		$out->addHTML( "<br />{$sl}</p>\n" );
+
 		if ( $num > 0 ) {
 			$s = array();
 			if ( ! $this->listoutput )
@@ -92,29 +94,12 @@ abstract class SMWQueryPage extends QueryPage {
 
 			if ( ! $this->listoutput )
 				$s[] = $this->closeList();
-			$str = $this->listoutput ? $wgContLang->listToText( $s ) : implode( '', $s );
-			$wgOut->addHTML( $str );
+			$str = $this->listoutput ? $this->getLanguage()->listToText( $s ) : implode( '', $s );
+			$out->addHTML( $str );
 		}
-		
-		$wgOut->addHTML( "<p>{$sl}</p>\n" );
-		
+
+		$out->addHTML( "<p>{$sl}</p>\n" );
+
 		return $num;
 	}
-
-    /**
-     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
-     *
-     * @since 1.6
-     *
-     * @return Skin
-     */
-    public function getSkin() {
-        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
-            return parent::getSkin();
-        } else {
-            global $wgUser;
-            return $wgUser->getSkin();
-        }
-    }
-
 }

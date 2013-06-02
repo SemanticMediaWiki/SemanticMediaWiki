@@ -29,7 +29,6 @@ use Language;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  * @ingroup Test
  *
  * @licence GNU GPL v2+
@@ -38,14 +37,14 @@ use Language;
  */
 
 /**
- * Tests for registered special pages
- *
- * Test is borrowed from the EducationProgram extension.
+ * Tests for registered special pages (Test base was borrowed from the
+ * EducationProgram extension)
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ * @covers SMWSpecialWantedProperties
  */
 class SpecialsTest extends SemanticMediaWikiTestCase {
 
@@ -129,23 +128,15 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			'SemanticStatistics',
 			'ExportRDF',
 			'Types',
+			'Properties',
+			'UnusedProperties',
+			'WantedProperties'
 
 			// Can't be tested because of
 
 			// FIXME Test fails with Undefined index: HTTP_ACCEPT
 			// 'URIResolver'
 
-			// FIXME Test fails with (SMWSpecialProperties)
-			// Use of wfViewPrevNext was deprecated in MediaWiki 1.19
-			// 'Properties'
-
-			// FIXME Test fails with (SMWSpecialUnusedProperties)
-			// Use of wfViewPrevNext was deprecated in MediaWiki 1.19.
-			// 'UnusedProperties'
-
-			// FIXME Test fails with (SMWSpecialWantedProperties)
-			// Use of Linker::makeLinkObj was deprecated in MediaWiki 1.21
-			// 'WantedProperties'
 		);
 
 		foreach ( $specialPages as $special ) {
@@ -167,5 +158,4 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 
 		return $argLists;
 	}
-
 }
