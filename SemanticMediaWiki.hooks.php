@@ -294,6 +294,7 @@ final class SMWHooks {
 			'specials/Specials',
 
 			// Keep store tests near the end, since they are slower due to database access.
+			'storage/StoreFactory',
 			'storage/Store',
 
 			'storage/sqlstore/PropertyStatisticsTable',

@@ -472,3 +472,9 @@ abstract class SMWStore {
 	}
 
 }
+
+/**
+ * SMW\Store
+ *
+ */
+class_alias( 'SMWStore', 'SMW\Store' );

@@ -152,6 +152,9 @@ function smwfRegisterClasses() {
 
 	$wgAutoloadClasses['SMW\CacheHandler']           = $incDir . '/handlers/CacheHandler.php';
 
+	// Exceptions
+	$wgAutoloadClasses['SMW\StoreInstanceException'] = $incDir . '/exceptions/StoreInstanceException.php';
+
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
 	$wgAutoloadClasses['SMWOrderedListPage']        = $apDir . 'SMW_OrderedListPage.php';
@@ -279,11 +282,14 @@ function smwfRegisterClasses() {
 
 	$stoDir = $smwgIP . 'includes/storage/';
 
-	$wgAutoloadClasses['SMW\Store\PropertyStatisticsRebuilder']			= $stoDir . 'PropertyStatisticsRebuilder.php';
-	$wgAutoloadClasses['SMW\Store\PropertyStatisticsStore']				= $stoDir . 'PropertyStatisticsStore.php';
+	$wgAutoloadClasses['SMW\Store\PropertyStatisticsRebuilder']	= $stoDir . 'PropertyStatisticsRebuilder.php';
+	$wgAutoloadClasses['SMW\Store\PropertyStatisticsStore']     = $stoDir . 'PropertyStatisticsStore.php';
+	$wgAutoloadClasses['SMW\StoreFactory']			= $stoDir . 'StoreFactory.php';
+
 	$wgAutoloadClasses['SMWQueryResult']            = $stoDir . 'SMW_QueryResult.php';
 	$wgAutoloadClasses['SMWResultArray']            = $stoDir . 'SMW_ResultArray.php';
 	$wgAutoloadClasses['SMWStore']                  = $stoDir . 'SMW_Store.php';
+	$wgAutoloadClasses['SMW\Store']                 = $stoDir . 'SMW_Store.php';
 	$wgAutoloadClasses['SMWStringCondition']        = $stoDir . 'SMW_Store.php';
 	$wgAutoloadClasses['SMWRequestOptions']         = $stoDir . 'SMW_RequestOptions.php';
 	$wgAutoloadClasses['SMWSparqlStore']            = $stoDir . 'SMW_SparqlStore.php';

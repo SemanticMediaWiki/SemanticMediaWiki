@@ -45,3 +45,10 @@ die("Not a valid entry point\n");
  * @defgroup Handler Handler
  * @ingroup SMW
  */
+
+/**
+ * This group contains members that are related to the store interface
+ *
+ * @defgroup Store Store
+ * @ingroup SMW
+ */
