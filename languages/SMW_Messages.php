@@ -1550,8 +1550,6 @@ $messages['arz'] = array(
 	'smw_attributearticlecount' => 'عرض {{PLURAL:$1||الصفحه التى تستخدم|الصفحتين اللتين تستخدمان|الصفحات التى تستخدم}} هذه الخاصيه.',
 	'smw_subproperty_header' => 'خواص فرعية',
 	'smw_subpropertyarticlecount' => 'لهذه الخاصيه {{PLURAL:$1||الخاصيه الفرعيه التالية|الخاصيتين الفرعيتين التاليتين|الخصائص الفرعيه التالية}}:',
-	'smw_concept_header' => 'صفحات المبدأ "$1"',
-	'smw_conceptarticlecount' => 'عرض {{PLURAL:$1||صفحه واحده تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحه تنتمي}} إلى هذا المبدأ.',
 	'specialpages-group-smw_group' => 'سيمانتيك ميدياويكى',
 	'exportrdf' => 'آر دی‌ إف إلى صفحات تصدير',
 	'smw_exportrdf_docu' => ' هذه الصفحه تتيح لك الحصول على بيانات من صفحه فى شكل آر دی‌ إف.
@@ -1682,6 +1680,8 @@ $messages['arz'] = array(
 	'smw-createproperty-isproperty' => 'هذه خاصية من نوع $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1||القيمة المسموح بها لهذه الخاصية هي|القيمتان المسموح بهما لهذه الخاصية هما|القيم المسموح بها لهذه الخاصية هي}}:',
 	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.', # Fuzzy
+	'smw_concept_header' => 'صفحات المبدأ "$1"',
+	'smw_conceptarticlecount' => 'عرض {{PLURAL:$1||صفحه واحده تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحه تنتمي}} إلى هذا المبدأ.', # Fuzzy
 );
 
 /** Asturian (asturianu)
@@ -1862,8 +1862,6 @@ $messages['be-tarask'] = array(
 	'smw_attributearticlecount' => '{{PLURAL:$1|Паказаная $1 старонка, якая выкарыстоўвае|Паказаныя $1 старонкі, якія выкарыстоўваюць|Паказаныя $1 старонак, якія выкарыстоўваюць}} гэтую ўласьцівасьць.',
 	'smw_subproperty_header' => 'Падуласьцівасьці',
 	'smw_subpropertyarticlecount' => 'Гэта ўласьцівасьць мае $1 {{PLURAL:$1|падуласьцівасьць|падуласьцівасьці|падуласьцівасьцяў}}:',
-	'smw_concept_header' => 'Старонкі канцэпцыі «$1»',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Паказаная $1 старонка, якая належыць|Паказаныя $1 старонкі, якія належаць|Паказаныя $1 старонак, якія належаць}} гэтай канцэпцыі.',
 	'exportrdf' => 'Экспарт старонак у фармаце RDF',
 	'smw_exportrdf_docu' => 'Гэта старонка дазваляе Вам атрымліваць зьвесткі са старонкі ў фармаце RDF.
 Каб экспартаваць старонкі, увядзіце іх назвы ніжэй у тэкставым полі, па адной назьве на радок.',
@@ -2037,6 +2035,8 @@ $messages['be-tarask'] = array(
 	'smw-createproperty-isproperty' => 'Гэта ўласьцівасьць тыпу $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:',
 	'smw_unknowntype' => 'Тып «$1» не падтрымліваецца для гэтай уласьцівасьці.', # Fuzzy
+	'smw_concept_header' => 'Старонкі канцэпцыі «$1»',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Паказаная $1 старонка, якая належыць|Паказаныя $1 старонкі, якія належаць|Паказаныя $1 старонак, якія належаць}} гэтай канцэпцыі.', # Fuzzy
 );
 
 /** Bulgarian (български)
@@ -2511,8 +2511,6 @@ Els resultats podrien no ser els esperats.",
 	'smw_attributearticlecount' => 'Es {{PLURAL:$1|mostra|mostren}} $1 {{PLURAL:$1|pàgina que fa servir|pàgines que fan servir}} aquesta propietat.',
 	'smw_subproperty_header' => 'Subpropietats',
 	'smw_subpropertyarticlecount' => 'Aquesta propietat té {{PLURAL:$1|la subpropietat següent|les $1 subpropietats següents}}:',
-	'smw_concept_header' => 'Pàgines del concepte "$1"',
-	'smw_conceptarticlecount' => 'Es {{PLURAL:$1|mostra|mostren}} $1 {{PLURAL:$1|pàgina|pàgines}} que pertanyen a aquest concepte.',
 	'exportrdf' => 'Exporta les pàgines a RDF',
 	'smw_exportrdf_docu' => "Aquesta pàgina permet obtenir dades en format RDF d'una pàgina del wiki.
 Per exportar pàgines, entra els títols a la caixa de text següent, un títol per línia.",
@@ -2718,6 +2716,8 @@ Progrés estimat de l'actualització actual:",
 	'smw-ui-tooltip-title-event' => 'Esdeveniment',
 	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw_unknowntype' => "El tipus d'aquesta propietat no és vàlid",
+	'smw_concept_header' => 'Pàgines del concepte "$1"',
+	'smw_conceptarticlecount' => 'Es {{PLURAL:$1|mostra|mostren}} $1 {{PLURAL:$1|pàgina|pàgines}} que pertanyen a aquest concepte.', # Fuzzy
 );
 
 /** Chechen (нохчийн)
@@ -2828,8 +2828,6 @@ Výsledky pravděpodobně nesplní očekávání.',
 	'smw_attributearticlecount' => 'Zobrazeno je $1 {{PLURAL:$1|stránka používající|stránky používající|stránek používajících}} tuto vlastnost.',
 	'smw_subproperty_header' => 'Podvlastnosti',
 	'smw_subpropertyarticlecount' => 'Této vlastnosti náleží $1 {{PLURAL:$1|podvlastnost|podvlastností}}.', # Fuzzy
-	'smw_concept_header' => 'Stran konceptu "$1"',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|zobrazena je|zobrazeny jsou|zobrazeno je}} $1 {{PLURAL:$1|stránka náležející|stránky náležející|stránek náležejících}} tomuto konceptu.',
 	'exportrdf' => 'Export stránek do RDF',
 	'smw_exportrdf_docu' => 'Tato stránka vám umožňuje exportovat části stránek do formátu RDF. Po zadaní názvů stránek do spodního textového pole (jeden název na řádek) můžete exportovat stránky.',
 	'smw_exportrdf_recursive' => 'Rekurzívně exportovat všechny související stránky. Pozor, výsledek může být velmi rozsáhlý!',
@@ -2985,6 +2983,8 @@ Odhadovaný průběh updatu:',
 	'smw-ui-tooltip-title-event' => 'Událost',
 	'smw-ui-tooltip-title-note' => 'Poznámka',
 	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.', # Fuzzy
+	'smw_concept_header' => 'Stran konceptu "$1"',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|zobrazena je|zobrazeny jsou|zobrazeno je}} $1 {{PLURAL:$1|stránka náležející|stránky náležející|stránek náležejících}} tomuto konceptu.', # Fuzzy
 );
 
 /** German (Deutsch)
@@ -3478,8 +3478,6 @@ Wuslědki snaź njejsu ako wócakowane.',
 	'smw_attributearticlecount' => '$1 {{PLURAL:$1|bok pokazujo|boka pokazujotej|boki pokazuju|bokow pokazujo}} se z pomocu toś teje kakosći.',
 	'smw_subproperty_header' => 'Pódkakosći',
 	'smw_subpropertyarticlecount' => 'Toś ta kakosć ma {{PLURAL:$1|slědujucu pódkakosć|slědujucej $1 pódkakosći|slědujuce $1 pódkakosći|slědujucych $1 pódkakosćow}}:',
-	'smw_concept_header' => 'Boki koncepta "$1"',
-	'smw_conceptarticlecount' => '$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słušaju}} k tomu konceptoju.',
 	'exportrdf' => 'Boki ako RDF eksportěrowaś',
 	'smw_exportrdf_docu' => 'Toś ten bok śi dowólujo, daty z boka w formaśe RDF dobyś.
 Aby boki eksportěrował, zapódaj titele do slědujucego tekstowego póla, jaden titel na smužku.',
@@ -3665,6 +3663,8 @@ Licony póstup aktualneje aktualizacije:',
 	'smw-ui-tooltip-title-service' => 'Słužbne wótkaze',
 	'smw-ui-tooltip-title-warning' => 'Zmólka',
 	'smw_unknowntype' => 'Typ toś teje kakosći jo njepłaśiwy',
+	'smw_concept_header' => 'Boki koncepta "$1"',
+	'smw_conceptarticlecount' => '$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słušaju}} k tomu konceptoju.', # Fuzzy
 );
 
 /** Ewe (eʋegbe)
@@ -3795,8 +3795,6 @@ $messages['el'] = array(
 	'smw_attributearticlecount' => 'Εμφάνιση $1 {{PLURAL:$1|σελίδας|σελίδων}} που χρησιμοποιούν αυτήν την ιδιότητα.',
 	'smw_subproperty_header' => 'Υποϊδιότητες',
 	'smw_subpropertyarticlecount' => 'Αυτή η ιδιότητα έχει {{PLURAL:$1|την ακόλουθη $1 υποϊδιότητα|τις ακόλουθες $1 υποϊδιότητες}}:',
-	'smw_concept_header' => 'Σελίδες της έννοιας «$1»',
-	'smw_conceptarticlecount' => 'Εμφάνιση $1 {{PLURAL:$1|σελίδας|σελίδων}} που ανήκουν σε αυτήν την έννοια.',
 	'exportrdf' => 'Εξαγωγή σελίδων σε RDF',
 	'smw_exportrdf_docu' => 'Αυτή η σελίδα σας επιτρέπει τη λήψη δεδομένων από μια σελίδα σε μορφή RDF.
 Για να εξαγάγετε σελίδες, πληκτρολογήστε τους τίτλους τους στο πλαίσιο κειμένου παρακάτω, ένας τίτλος ανά γραμμή.',
@@ -4002,6 +4000,8 @@ $messages['el'] = array(
 	'smw-ui-tooltip-title-note' => 'Σημείωση',
 	'smw-ui-tooltip-title-legend' => 'Υπόμνημα',
 	'smw_unknowntype' => 'Ο τύπος αυτής της ιδιότητας δεν είναι έγκυρος',
+	'smw_concept_header' => 'Σελίδες της έννοιας «$1»',
+	'smw_conceptarticlecount' => 'Εμφάνιση $1 {{PLURAL:$1|σελίδας|σελίδων}} που ανήκουν σε αυτήν την έννοια.', # Fuzzy
 );
 
 /** British English (British English)
@@ -4054,7 +4054,6 @@ $messages['eo'] = array(
 	'smw_attributearticlecount' => 'Jen $1 {{PLURAL:$1|paĝo havanta|paĝoj havantaj}} ĉi tiun atributon.',
 	'smw_subproperty_header' => 'Subatributoj',
 	'smw_subpropertyarticlecount' => 'Ĉi tiu atributo havas la $1 {{PLURAL:$1|jenan subatributon|jenajn subatributojn}}.',
-	'smw_concept_header' => 'Paĝoj de koncepto "$1"',
 	'exportrdf' => 'Eksporti paĝojn al RDF',
 	'smw_exportrdf_submit' => 'Eksporti',
 	'properties' => 'Atributoj',
@@ -4125,6 +4124,7 @@ $messages['eo'] = array(
 	'smw-createproperty-isproperty' => 'Ĉi tiu estas atributo de speco $1.',
 	'smw-createproperty-allowedvals' => 'La {{PLURAL:$1|permesita valoro por ĉi tiu atributo|permesitaj valoroj por ĉi tiuj atributoj}} estas:',
 	'smw_unknowntype' => 'Nesubtenita datumtipo "$1" difinita por atributo.', # Fuzzy
+	'smw_concept_header' => 'Paĝoj de koncepto "$1"',
 );
 
 /** Spanish (español)
@@ -4557,7 +4557,6 @@ $messages['fa'] = array(
 	'smw_printername_category' => 'رده',
 	'validator-type-class-SMWParamSource' => 'متن',
 	'smw_subproperty_header' => 'زیرخصوصیت‌ها',
-	'smw_concept_header' => 'صفحه‌های مفهوم "$1"',
 	'exportrdf' => 'برون‌بری صفحه‌ها به آردی‌اف',
 	'smw_exportrdf_recursive' => 'تمام صفحه‌های مرتبط را به صورت بازگشتی برون‌بری کن.
 توجه کنید که نتیجه می‌تواند بزرگ شود!',
@@ -4621,6 +4620,7 @@ $messages['fa'] = array(
 	'smw-createproperty-isproperty' => 'این یک ویژگی از نوع $1 است.',
 	'smw-createproperty-allowedvals' => 'مقادیر مجاز برای این ویژگی یا صفت این‌ها هستند:', # Fuzzy
 	'smw-ui-tooltip-title-event' => 'رویداد',
+	'smw_concept_header' => 'صفحه‌های مفهوم "$1"',
 );
 
 /** Finnish (suomi)
@@ -4730,8 +4730,6 @@ Tulokset eivät ehkä vastaa odotuksia.',
 	'smw_attributearticlecount' => 'Näytetään $1 tätä ominaisuutta {{PLURAL:$1|käyttävä sivu|käyttävää sivua}}.',
 	'smw_subproperty_header' => 'Alaominaisuudet',
 	'smw_subpropertyarticlecount' => 'Tällä ominaisuudella on $1 {{PLURAL:$1|alaominaisuus|alaominaisuutta}}:',
-	'smw_concept_header' => 'Konseptin "$1" sivut',
-	'smw_conceptarticlecount' => 'Näytetään $1 {{PLURAL:$1|sivu, joka|sivua, jotka}} kuuluvat tähän konseptiin.',
 	'exportrdf' => 'Vie sivut RDF:nä',
 	'smw_exportrdf_docu' => 'Tämän sivun avulla voit noutaa sivun tiedot RDF-muodossa.
 Syötä vietävien sivujen otsikot alla olevaan tekstiruutuun, yksi otsikko yhdellä rivillä.',
@@ -4913,6 +4911,8 @@ Nykyisen päivityksen arvioitu eteneminen:',
 	'smw-ui-tooltip-title-parameter' => 'Parametri',
 	'smw-ui-tooltip-title-event' => 'Tapahtuma',
 	'smw_unknowntype' => 'Tämän ominaisuuden tyyppi on virheellinen',
+	'smw_concept_header' => 'Konseptin "$1" sivut',
+	'smw_conceptarticlecount' => 'Näytetään $1 {{PLURAL:$1|sivu, joka|sivua, jotka}} kuuluvat tähän konseptiin.', # Fuzzy
 );
 
 /** French (français)
@@ -5319,8 +5319,6 @@ $messages['frp'] = array(
 	'smw_attributearticlecount' => 'Fâre vêre l{{PLURAL:$1|a pâge qu’utilise|es $1 pâges qu’utilisont}} ceta propriètât.',
 	'smw_subproperty_header' => 'Sot-propriètâts',
 	'smw_subpropertyarticlecount' => 'Ceta propriètât at cet{{PLURAL:$1|a sot-propriètât|es $1 sot-propriètâts}} :',
-	'smw_concept_header' => 'Pâges du concèpte « $1 »',
-	'smw_conceptarticlecount' => 'Fâre vêre l{{PLURAL:$1|a pâge que repôse|es $1 pâges que repôsont}} sur cél concèpte.',
 	'exportrdf' => 'Èxportar des pâges en RDF',
 	'smw_exportrdf_submit' => 'Èxportar',
 	'uriresolver' => 'Rèsolvior d’URI',
@@ -5426,6 +5424,8 @@ noms (<strong>[[Alemagnes]]</strong>) et los èspâços de noms (<strong>[[{{ns:
 	'smw_adminlinks_inlinequerieshelp' => 'Éde sur les requétes entrebetâs',
 	'smw-createproperty-isproperty' => 'Ceta propriètât est de tipo « $1 ».',
 	'smw-info-par-message' => 'Mèssâjo a fâre vêre.',
+	'smw_concept_header' => 'Pâges du concèpte « $1 »',
+	'smw_conceptarticlecount' => 'Fâre vêre l{{PLURAL:$1|a pâge que repôse|es $1 pâges que repôsont}} sur cél concèpte.', # Fuzzy
 );
 
 /** Irish (Gaeilge)
@@ -5901,8 +5901,6 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_attributearticlecount' => 'S {{PLURAL:$1|wird ei Syten|wäre $1 Syten}} aazeigt, wu die Eigeschaft {{PLURAL:$1|bruucht|bruuche}}:',
 	'smw_subproperty_header' => 'Untereigeschafte',
 	'smw_subpropertyarticlecount' => 'Die Eigeschaft het {{PLURAL:$1|die Untereigeschaft|die $1 Untereigeschafte}}:',
-	'smw_concept_header' => 'Syte vum Konzäpt „$1“',
-	'smw_conceptarticlecount' => 'S {{PLURAL:$1|wird ei Syten|wäre $1 Syten}} aazeigt, wu zue däm Konzäpt {{PLURAL:$1|ghert|ghere}}:',
 	'exportrdf' => 'Syten as RDF exportiere',
 	'smw_exportrdf_docu' => 'Doo chenne Informationen iber einzelni Syten im RDF-Format abgruefe wäre. Bitte gib d Name vu dr Syte  <i>zyylewyys</i> yy.',
 	'smw_exportrdf_recursive' => 'Exportier au alli relevante Syte rekursiv. Dänk dra, ass d Ergebnis chenne arg groß syy!',
@@ -6024,6 +6022,8 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw-createproperty-isproperty' => 'Des isch e Eigeschaft vum Typ $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Dr erlaubt Wärt fir die Eigeschaft isch|Di erlaubte Wärt fir die Eigeschaft sin}}:',
 	'smw_unknowntype' => 'Imn dr Eigeschaft isch dr nit bekannt Datetyp „$1“ zuegwise wore.', # Fuzzy
+	'smw_concept_header' => 'Syte vum Konzäpt „$1“',
+	'smw_conceptarticlecount' => 'S {{PLURAL:$1|wird ei Syten|wäre $1 Syten}} aazeigt, wu zue däm Konzäpt {{PLURAL:$1|ghert|ghere}}:', # Fuzzy
 );
 
 /** Hebrew (עברית)
@@ -6129,8 +6129,6 @@ $messages['he'] = array(
 	'smw_attributearticlecount' => 'הצגת {{PLURAL:$1|דף אחד המשתמש|$1 דפים המשתמשים}} במאפיין זה.',
 	'smw_subproperty_header' => 'מאפייני משנה',
 	'smw_subpropertyarticlecount' => 'למאפיין זה {{PLURAL:$1|קיים מאפיין המשנה הבא|קיימים $1 מאפייני המשנה הבאים}}:',
-	'smw_concept_header' => 'דפים מהרעיון "$1"',
-	'smw_conceptarticlecount' => 'הצגת {{PLURAL:$1|דף אחד השייך|$1 דפים השייכים}} לרעיון זה.',
 	'specialpages-group-smw_group' => 'מדיה־ויקי סמנטית',
 	'exportrdf' => 'ייצוא דפים ל־RDF',
 	'smw_exportrdf_docu' => 'דף זה מאפשר לכם לאחזר נתונים מדף במבנה RDF.
@@ -6272,6 +6270,8 @@ $messages['he'] = array(
 	'smw-createproperty-isproperty' => 'זהו מאפיין מסוג $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|הערך האפשרי למאפיין זה הוא|הערכים האפשריים למאפיין זה הם}}:',
 	'smw_unknowntype' => '[אופס! סוג לא מוכר "$1" הוגדר עבור מאפיין זה]', # Fuzzy
+	'smw_concept_header' => 'דפים מהרעיון "$1"',
+	'smw_conceptarticlecount' => 'הצגת {{PLURAL:$1|דף אחד השייך|$1 דפים השייכים}} לרעיון זה.', # Fuzzy
 );
 
 /** Hindi (हिन्दी)
@@ -6380,8 +6380,6 @@ Rezultati možda neće biti odgovarajući.',
 	'smw_attributearticlecount' => 'Prikazano {{PLURAL:$1|$1 stranica koja koristi|$1 stranice koje koriste|$1 stranica koje koriste}} ovo svojstvo.',
 	'smw_subproperty_header' => 'Podsvojstva',
 	'smw_subpropertyarticlecount' => 'Ovo svojstvo ima {{PLURAL:$1|sljedeće podsvojstvo|sljedeća $1 podsvojstva|sljedećih $1 podsvojstava}}:',
-	'smw_concept_header' => 'Stranice koncepta "$1"',
-	'smw_conceptarticlecount' => 'Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu.',
 	'exportrdf' => 'Izvezi stranice u RDF',
 	'smw_exportrdf_docu' => 'Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu.
 Da biste izvezli stranice unesite njihove naslove u prozor za uređivanje ispod, jedan naslov po retku.',
@@ -6508,6 +6506,8 @@ Procjena napretka osvježavanja:',
 	'smw_adminlinks_displayingdata' => 'Prikaz podataka',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za umetnute upite',
 	'smw_unknowntype' => 'Za svojstvo je definiran nepodržan tip "$1".', # Fuzzy
+	'smw_concept_header' => 'Stranice koncepta "$1"',
+	'smw_conceptarticlecount' => 'Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu.', # Fuzzy
 );
 
 /** Upper Sorbian (hornjoserbsce)
@@ -6626,8 +6626,6 @@ Wuslědki snano kaž wočakowane njejsu.',
 	'smw_attributearticlecount' => '{{PLURAL:$1|Pokazuje so $1 strona, kotraž tutu kajkosć wužiwa|Pokazujetej $1 stronje, kotrejž tutu kajkosć wužiwatej|Pokazuja so $1 strony, kotrež tutu kajksć wužiwaja|Pokazuje so $1 stronow, kotrež tutu kajkosć wužiwa}}.',
 	'smw_subproperty_header' => 'Podkajkosće',
 	'smw_subpropertyarticlecount' => 'Tuta kajkosć ma {{PLURAL:$1|slědowacu podkajkosć|slědowacej $1 podkajkosći|slědowace $1 podkajkosće|slědowacych $1 podkajkosćow}}:',
-	'smw_concept_header' => 'Strony koncepta "$1"',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Pokazuje so $1 strona, kotraž|Pokazujetej so $1 stronje, kotrejž|Pokazuja so $1, kotrež|Pokazuje so $1 stronow, kotrež}} k tutomu konceptej {{PLURAL:$1|słuša|słušatej|słušeja|słuša}}.',
 	'exportrdf' => 'Do RDF eksportować',
 	'smw_exportrdf_docu' => 'Tuta strona ći zmóžnja daty ze strony we formaće RDF wotwołać. Zo by strony eksportował, zapodaj titule w slědowacym kašćiku, jedyn titul na linku.',
 	'smw_exportrdf_recursive' => 'Eksportuj wšě piwuzne strony.
@@ -6829,6 +6827,8 @@ Trochowany staw aktualneje aktualizacije:',
 	'smw-ui-tooltip-title-note' => 'Přispomnjenka',
 	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'Typ tuteje kajkosće je njepłaćiwy',
+	'smw_concept_header' => 'Strony koncepta "$1"',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Pokazuje so $1 strona, kotraž|Pokazujetej so $1 stronje, kotrejž|Pokazuja so $1, kotrež|Pokazuje so $1 stronow, kotrež}} k tutomu konceptej {{PLURAL:$1|słuša|słušatej|słušeja|słuša}}.', # Fuzzy
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -6960,8 +6960,6 @@ Az eredmények eltérhetnek a várttól.',
 	'smw_attributearticlecount' => '{{PLURAL:$1|Egy|$1}} lap megjelenítése ezen tulajdonság használatával.',
 	'smw_subproperty_header' => 'Altulajdonságok',
 	'smw_subpropertyarticlecount' => 'Ez a tulajdonság a következő {{PLURAL:$1|egy|$1}} altulajdonsággal rendelkezik:',
-	'smw_concept_header' => 'A(z) „$1” koncepcióhoz tartozó lapok',
-	'smw_conceptarticlecount' => 'A koncepcióhoz tartozó $1 lap megjelenítése.',
 	'specialpages-group-smw_group' => 'Szemantikus MediaWiki',
 	'exportrdf' => 'Lapok exportálása RDF-be',
 	'smw_exportrdf_docu' => 'Ez a lap lehetőséget teremt adatok beszerzésére egy lapról RDF formátumban.
@@ -7116,6 +7114,8 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw-info-par-message' => 'Megjelenítendő üzenet.',
 	'smw-info-par-icon' => 'Megjelenítendő jel, "info" vagy "warning."',
 	'smw_unknowntype' => 'A megadott „$1” típus nem támogatott a tulajdonságnál.', # Fuzzy
+	'smw_concept_header' => 'A(z) „$1” koncepcióhoz tartozó lapok',
+	'smw_conceptarticlecount' => 'A koncepcióhoz tartozó $1 lap megjelenítése.', # Fuzzy
 );
 
 /** Interlingua (interlingua)
@@ -7227,8 +7227,6 @@ Le resultatos pote non esser como expectate.',
 	'smw_attributearticlecount' => 'Presentation de $1 {{PLURAL:$1|pagina|paginas}} que usa iste proprietate.',
 	'smw_subproperty_header' => 'Subproprietates',
 	'smw_subpropertyarticlecount' => 'Iste proprietate ha le sequente $1 {{PLURAL:$1|subproprietate|subproprietates}}:',
-	'smw_concept_header' => 'Paginas del concepto "$1"',
-	'smw_conceptarticlecount' => 'Presentation de $1 {{PLURAL:$1|pagina|paginas}} que appertine a ille concepto.',
 	'specialpages-group-smw_group' => 'MediaWiki semantic',
 	'exportrdf' => 'Exportar paginas verso RDF',
 	'smw_exportrdf_docu' => 'Iste pagina permitte obtener le datos de un pagina in formato RDF.
@@ -7419,6 +7417,8 @@ Progresso estimate del actualisation currente:',
 	'smw-info-par-message' => 'Le message a monstrar.',
 	'smw-info-par-icon' => 'Le icone a monstrar, o "info" o "attention!".',
 	'smw_unknowntype' => 'Typo non supportate "$1" definite pro proprietate.', # Fuzzy
+	'smw_concept_header' => 'Paginas del concepto "$1"',
+	'smw_conceptarticlecount' => 'Presentation de $1 {{PLURAL:$1|pagina|paginas}} que appertine a ille concepto.', # Fuzzy
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -7520,8 +7520,6 @@ Hasilnya mungkin tidak seperti yang diharapkan.',
 	'smw_attributearticlecount' => 'Menampilkan $1 {{PLURAL:$1|halaman|halaman}} yang menggunakan properti ini.',
 	'smw_subproperty_header' => 'Subproperti',
 	'smw_subpropertyarticlecount' => 'Properti ini memiliki $1 {{PLURAL:$1|subproperti|subproperti}} berikut:',
-	'smw_concept_header' => 'Halaman berkonsep "$1"',
-	'smw_conceptarticlecount' => 'Menampilkan $1 {{PLURAL:$1|halaman|halaman}} yang termasuk konsep ini.',
 	'exportrdf' => 'Ekspor halaman ke RDF',
 	'smw_exportrdf_docu' => 'Halaman ini mengizinkan Anda untuk mendapatkan data dari suatu halaman dalam format RDF.
 Untuk mengekspor halaman, masukkan judul di kotak teks di bawah, satu judul per baris.',
@@ -7662,6 +7660,8 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw-ui-tooltip-title-event' => 'Peristiwa',
 	'smw-ui-tooltip-title-note' => 'Catatan',
 	'smw_unknowntype' => 'Tipe "$1" yang tidak didukung ditetapkan untuk properti.', # Fuzzy
+	'smw_concept_header' => 'Halaman berkonsep "$1"',
+	'smw_conceptarticlecount' => 'Menampilkan $1 {{PLURAL:$1|halaman|halaman}} yang termasuk konsep ini.', # Fuzzy
 );
 
 /** Igbo (Igbo)
@@ -8707,8 +8707,6 @@ $messages['ko'] = array(
 	'smw_attributearticlecount' => '이 속성을 사용하여 {{PLURAL:$1|문서}} $1개를 보여줍니다.',
 	'smw_subproperty_header' => '하위 속성',
 	'smw_subpropertyarticlecount' => '이 속성은 다음 {{PLURAL:$1|하위 속성}} $1개가 있습니다:',
-	'smw_concept_header' => '"$1" 개념의 문서',
-	'smw_conceptarticlecount' => '해당 개넘에 속하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.',
 	'specialpages-group-smw_group' => '시맨틱 미디어위키',
 	'exportrdf' => 'RDF로 문서 내보내기',
 	'smw_exportrdf_docu' => '이 문서는 RDF 형식의 문서에서 데이터를 얻을 수 있습니다.
@@ -8883,6 +8881,8 @@ $1 문서로 돌아갑니다.',
 	'smw-ui-tooltip-title-note' => '참고',
 	'smw-ui-tooltip-title-legend' => '범례',
 	'smw_unknowntype' => '이 속성의 형식이 잘못되었습니다',
+	'smw_concept_header' => '"$1" 개념의 문서',
+	'smw_conceptarticlecount' => '해당 개넘에 속하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.', # Fuzzy
 );
 
 /** Krio (Krio)
@@ -10136,8 +10136,6 @@ Resultatene kan være uventede.',
 	'smw_attributearticlecount' => 'Viser {{PLURAL:$1|én side|$1 sider}} som bruker denne egenskapen.',
 	'smw_subproperty_header' => 'Underegenskaper',
 	'smw_subpropertyarticlecount' => 'Denne egenskapen har følgende {{PLURAL:$|underegenskap|$1 underegenskaper}}:',
-	'smw_concept_header' => 'Sider av konseptet «$1»',
-	'smw_conceptarticlecount' => 'Viser {{PLURAL:$1|én side|$1 sider}} som hører til det konseptet.',
 	'exportrdf' => 'Eksporter sider til RDF',
 	'smw_exportrdf_docu' => 'Denne siden lar deg skaffe data fra en side i RDF-format.
 Skriv inn titler i tekstboksten nedenfor for å eksportere sider, én tittel per linje.',
@@ -10315,6 +10313,8 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw-info-par-message' => 'Melding å vise frem.',
 	'smw-info-par-icon' => 'Ikon for å vise frem enten "info" eller "advarsel".',
 	'smw_unknowntype' => 'Typen «$1» som er definert for egenskapen støttes ikke.', # Fuzzy
+	'smw_concept_header' => 'Sider av konseptet «$1»',
+	'smw_conceptarticlecount' => 'Viser {{PLURAL:$1|én side|$1 sider}} som hører til det konseptet.', # Fuzzy
 );
 
 /** Low German (Plattdüütsch)
@@ -10687,7 +10687,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw-qp-aggregatable-empty-data' => 'De opgevraagde samen te voegen gegevens kunnen niet weergegeven worden vanwege onvoldoende selectiecriteria.',
 );
 
-/** Norwegian Nynorsk (norsk (nynorsk)‎)
+/** Norwegian Nynorsk (norsk nynorsk)
  * @author Gunnernett
  * @author Harald Khan
  * @author Njardarlogar
@@ -10750,8 +10750,6 @@ Resultata kan vera uventa.',
 	'smw_attributearticlecount' => 'Syner {{PLURAL:$1|éi sida|$1 sider}} som nyttar denne eigenskapen.',
 	'smw_subproperty_header' => 'Undereigenskapar',
 	'smw_subpropertyarticlecount' => 'Denne eigenskapen har følgjande {{PLURAL:$|undereigenskap|$1 undereigenskapar}}:',
-	'smw_concept_header' => 'Sider av konseptet «$1»',
-	'smw_conceptarticlecount' => 'Syner {{PLURAL:$1|éi sida|$1 sider}} som høyrer til konseptet.',
 	'exportrdf' => 'Eksporter sider til RDF',
 	'smw_exportrdf_docu' => 'Denne sida lèt deg skaffa data frå ei sida i RDF-format.
 Skriv inn titlar i tekstboksten nedanfor for å eksportera sider, éin tittel per linja.',
@@ -10874,6 +10872,8 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw-createproperty-isproperty' => 'Dette er ein eigenskap av typen $1.',
 	'smw-createproperty-allowedvals' => 'Dei tillatne verdiane for denne eigenskapen er:', # Fuzzy
 	'smw_unknowntype' => 'Typen «$1» som er definert for eigenskapen er ikkje støtta.', # Fuzzy
+	'smw_concept_header' => 'Sider av konseptet «$1»',
+	'smw_conceptarticlecount' => 'Syner {{PLURAL:$1|éi sida|$1 sider}} som høyrer til konseptet.', # Fuzzy
 );
 
 /** Occitan (occitan)
@@ -10938,8 +10938,6 @@ $messages['oc'] = array(
 	'smw_attributearticlecount' => "Afichar {{PLURAL:$1|la pagina qu'utiliza|las $1 paginas qu'utilizan}} aquesta proprietat.",
 	'smw_subproperty_header' => 'Sosproprietats',
 	'smw_subpropertyarticlecount' => 'Aquesta proprietat dispausa {{PLURAL:$1|de la sosproprietat seguenta|de las $1 sosproprietats seguentas}} :',
-	'smw_concept_header' => 'Paginas del concèpte « $1 »',
-	'smw_conceptarticlecount' => 'Afichar {{PLURAL:$1|la pagina que repausa|las $1 paginas que repausan}} sus aqueste concèpte.',
 	'exportrdf' => "Exportar l'article en RDF",
 	'smw_exportrdf_docu' => "Sus aquesta pagina, de partidas del contengut d'un article pòdon èsser exportadas dins lo format RDF. Picatz lo nom de las paginas desiradas dins la bóstia de tèxte çaijós, <i>un nom per linha </i>.",
 	'smw_exportrdf_recursive' => "Exportar tanben totas las paginas pertinentas d'un biais recursiu. Aquesta possibilitat pòt abotir a un fòrt grand nombre de resultats !",
@@ -11061,6 +11059,8 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw-createproperty-isproperty' => 'Aquò es una proprietat del tipe $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :',
 	'smw_unknowntype' => 'Lo tipe de donadas "$1" pas suportat es estat tornat a l\'atribut.', # Fuzzy
+	'smw_concept_header' => 'Paginas del concèpte « $1 »',
+	'smw_conceptarticlecount' => 'Afichar {{PLURAL:$1|la pagina que repausa|las $1 paginas que repausan}} sus aqueste concèpte.', # Fuzzy
 );
 
 /** Ossetic (Ирон)
@@ -11201,8 +11201,6 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw_attributearticlecount' => 'Pokazano $1 {{PLURAL:$1|stronę używającą|strony używające|stron używających}} tego atrybutu.',
 	'smw_subproperty_header' => 'Podwłasności',
 	'smw_subpropertyarticlecount' => 'Ta własność ma {{PLURAL:$1|podwłasność|$1 następujące podwłasności:|$1 następujących podwłasności:}}',
-	'smw_concept_header' => 'Strony koncepcji „$1”',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Wyświetlona jest jedna strona należąca|Wyświetlone zostały $1 strony należące|Wyświetlonych zostało $1 stron należących}} do tej koncepcji.',
 	'exportrdf' => 'Eksport stron do RDF',
 	'smw_exportrdf_docu' => 'Ta strona pozwala eksportować fragmenty artykułu w formacie RDF.  Aby wyeksportować artykuły, wpisz ich tytuły w poniższym polu tekstowym, po jednym tytule w wierszu.',
 	'smw_exportrdf_recursive' => 'Rekursywny eksport wszystkich powiązanych stron.  Zwróć uwagę, że wynik może być olbrzymi!',
@@ -11375,6 +11373,8 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw-ui-tooltip-title-event' => 'Wydarzenie',
 	'smw-ui-tooltip-title-note' => 'Notatka',
 	'smw_unknowntype' => 'Typ atrybutu jest nieprawidłowy.',
+	'smw_concept_header' => 'Strony koncepcji „$1”',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Wyświetlona jest jedna strona należąca|Wyświetlone zostały $1 strony należące|Wyświetlonych zostało $1 stron należących}} do tej koncepcji.', # Fuzzy
 );
 
 /** Piedmontese (Piemontèis)
@@ -11494,8 +11494,6 @@ J\'arzultà a peulo esse pa coma spetà.',
 	'smw_attributearticlecount' => "Smon-e $1 {{PLURAL:$1|la pàgine|le pàgine}} ch'a deuvro sta proprietà-sì.",
 	'smw_subproperty_header' => 'Sot-proprietà',
 	'smw_subpropertyarticlecount' => "Sta proprietà-sì a l'ha le $1 {{PLURAL:$1|sot-proprietà|sot-proprietà}} sì-dapress:",
-	'smw_concept_header' => 'Pàgine dël concet "$1"',
-	'smw_conceptarticlecount' => 'Smon-e $1 {{PLURAL:$1|pàgina|pàgine}} che a aparten-o a col concet.',
 	'exportrdf' => 'Espòrta pàgine an RDF',
 	'smw_exportrdf_docu' => "Sta pàgina-sì a-j përmët d'oten-e dat da na pàgina an formà RDF.
 Për esporté dle pàgine, ch'a anserissa ij tìtoj ant la casela ëd test sì-sota, un tìtol për linia.",
@@ -11700,6 +11698,8 @@ Avansament stimà dla modìfica corenta:",
 	'smw-ui-tooltip-title-note' => 'Nòta',
 	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => "La sòrt ëd costa propietà a l'é pa bon-a.",
+	'smw_concept_header' => 'Pàgine dël concet "$1"',
+	'smw_conceptarticlecount' => 'Smon-e $1 {{PLURAL:$1|pàgina|pàgine}} che a aparten-o a col concet.', # Fuzzy
 );
 
 /** Pashto (پښتو)
@@ -12676,8 +12676,6 @@ $messages['ru'] = array(
 	'smw_attributearticlecount' => '{{PLURAL:$1|Отображается|Отображаются|Отображаются}} $1 {{PLURAL:$1|страница, использующая|страницы, использующие|страниц, использующие}} это свойство.',
 	'smw_subproperty_header' => 'Подсвойства',
 	'smw_subpropertyarticlecount' => 'Это свойство имеет {{PLURAL:$1|следующее $1 подсвойство|следующие $1 подсвойства|следующие $1 подсвойств}}:',
-	'smw_concept_header' => 'Страницы, использующие представление «$1»',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Показана|Показаны|Показаны}} $1 {{PLURAL:$1|страница|страницы|страниц}}, {{PLURAL:$1|принадлежащая|принадлежащие|принадлежащие}} данному представлению.',
 	'exportrdf' => 'Экспорт страниц в RDF',
 	'smw_exportrdf_docu' => 'Эта страница позволяет экспортировать части статьи в формате RDF. Наберите заголовки необходимых статей по одному на строку.',
 	'smw_exportrdf_recursive' => 'Рекурсивный экспорт всех связанных страниц. Результат этой операции может быть очень большим!',
@@ -12851,6 +12849,8 @@ $messages['ru'] = array(
 	'smw-ui-tooltip-title-event' => 'Событие',
 	'smw-ui-tooltip-title-note' => 'Примечание',
 	'smw_unknowntype' => 'Для этого свойства задан некорректный тип',
+	'smw_concept_header' => 'Страницы, использующие представление «$1»',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Показана|Показаны|Показаны}} $1 {{PLURAL:$1|страница|страницы|страниц}}, {{PLURAL:$1|принадлежащая|принадлежащие|принадлежащие}} данному представлению.', # Fuzzy
 );
 
 /** Rusyn (русиньскый)
@@ -12937,7 +12937,6 @@ $messages['si'] = array(
 	'smw_type_header' => '"$1" වර්ගයේ වත්කම්',
 	'smw_attribute_header' => '"$1" වත්කම භාවිතා කරන පිටු',
 	'smw_subproperty_header' => 'උපගුණාංග',
-	'smw_concept_header' => '"$1" සංකල්පයේ පිටු',
 	'exportrdf' => 'RDF වෙත පිටු නිර්යාත කරන්න',
 	'smw_exportrdf_submit' => 'නිර්යාත කරන්න',
 	'uriresolver' => 'URIපිළිවිසඳුව',
@@ -13059,6 +13058,7 @@ $messages['si'] = array(
 	'smw-ui-tooltip-title-note' => 'සටහන',
 	'smw-ui-tooltip-title-legend' => 'ප්‍රබන්ධය',
 	'smw_unknowntype' => 'මෙම වත්කමේ වර්ගය වලංගු නොවේ',
+	'smw_concept_header' => '"$1" සංකල්පයේ පිටු',
 );
 
 /** Slovak (slovenčina)
@@ -13136,8 +13136,6 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_attributearticlecount' => 'Zobrazuje sa $1 {{PLURAL:$1|stránka|stránky|stránok}}, ktoré používajú túto vlastnosť.',
 	'smw_subproperty_header' => 'Podvlastnosti',
 	'smw_subpropertyarticlecount' => 'Táto vlastnosť má {{PLURAL:|nasledovnú podvlastnosť|nasledovné $1 podvlastnosti|nasledovných $1 podvlastností}}:',
-	'smw_concept_header' => 'Návrh „$1”',
-	'smw_conceptarticlecount' => 'Zobrazuje sa $1 {{PLURAL:$1|stránka patriaca|stránky patriace|stránok patriacich}} tomuto návrhu.',
 	'exportrdf' => 'Exportovať stránky do RDF',
 	'smw_exportrdf_docu' => 'Táto stránka vám umožňuje exportovať časti stránok do formátu RDF. Po zadaní názvov stránok do spodného textového poľa, jeden názov na riadok, môžete exportovať stránky.',
 	'smw_exportrdf_recursive' => 'Rekurzívne exportovať všetky súvisiace stránky. Pozor, výsledok môže byť veľmi veľký!',
@@ -13262,6 +13260,8 @@ Odhadovaný priebeh aktualizácie:',
 	'smw-createproperty-isproperty' => 'Toto je vlastnosť typu $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Povolená hodnota|Povolené hodnoty}} tejto vlastnosti {{PLURAL:$1|je|sú}}:',
 	'smw_unknowntype' => 'Pre atribút je definovaný nepodporovaný typ "$1".', # Fuzzy
+	'smw_concept_header' => 'Návrh „$1”',
+	'smw_conceptarticlecount' => 'Zobrazuje sa $1 {{PLURAL:$1|stránka patriaca|stránky patriace|stránok patriacich}} tomuto návrhu.', # Fuzzy
 );
 
 /** Slovenian (slovenščina)
@@ -13318,7 +13318,6 @@ Rezultati morda niso v pravilni.',
 	'smw_attributearticlecount' => 'Prikazujem $1 {{PLURAL:$1|stran|strani}} ki uporabljajo to lastnost.',
 	'smw_subproperty_header' => 'Podlastnosti',
 	'smw_subpropertyarticlecount' => 'Ta lastnost ima {{PLURAL:$1|naslednjo $1 podlastnost|naslednji $1 podlastnosti|naslednje $1 podlastnosti|naslednjih $1 podlastnosti}}:',
-	'smw_concept_header' => 'Strani zasnove »$1«',
 	'exportrdf' => 'Izvoz strani v RDF',
 	'smw_exportrdf_docu' => 'Ta stran vam omogoča, da dobite podatke iz strani v formatu RDF.
 Za izvoz strani vpišite njihove naslove v spodnjem oknu, po en naslov na vrstico.',
@@ -13431,6 +13430,7 @@ Ker je bilo le malo rezultatov, so prikazane strani s približnim ujemanjem.',
 	'smw_smwadmin_mediazilla' => 'Hrošče lahko prijavite na <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
 	'smw_adminlinks_datastructure' => 'Zgradba podatkov',
 	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
+	'smw_concept_header' => 'Strani zasnove »$1«',
 );
 
 /** Serbian (Cyrillic script) (српски (ћирилица)‎)
@@ -13513,8 +13513,6 @@ $messages['sr-ec'] = array(
 	'smw_attributearticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које користе ову особину.',
 	'smw_subproperty_header' => 'Подособине',
 	'smw_subpropertyarticlecount' => 'Ова особина садржи следећу/е $1 {{PLURAL:$1|подособину|подособине}}:',
-	'smw_concept_header' => 'Странице концепта "$1"',
-	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.',
 	'specialpages-group-smw_group' => 'Семантички Медијавики',
 	'exportrdf' => 'Извези странице у RDF',
 	'smw_exportrdf_docu' => 'Ова страница омогућава преузимање података с неке странице у формату RDF.
@@ -13643,6 +13641,8 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_displayingdata' => 'Приказивање података',
 	'smw_adminlinks_inlinequerieshelp' => 'Помоћ за непосредне упите',
 	'smw_unknowntype' => 'Неподржан тип "$1" је дефинисан за особину.', # Fuzzy
+	'smw_concept_header' => 'Странице концепта "$1"',
+	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.', # Fuzzy
 );
 
 /** Serbian (Latin script) (srpski (latinica)‎)
@@ -13724,8 +13724,6 @@ Rezultati mogu biti neočekivani.',
 	'smw_attributearticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje koriste ovu osobinu.',
 	'smw_subproperty_header' => 'Podosobine',
 	'smw_subpropertyarticlecount' => 'Ova osobina sadrži sledeću/e $1 {{PLURAL:$1|podosobinu|podosobine}}:',
-	'smw_concept_header' => 'Stranice koncepta "$1"',
-	'smw_conceptarticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje pripadaju tom konceptu.',
 	'specialpages-group-smw_group' => 'Semantički Medijaviki',
 	'exportrdf' => 'Izvezi stranice u RDF',
 	'smw_exportrdf_docu' => 'Ova stranica omogućava preuzimanje podataka s neke stranice u formatu RDF.
@@ -13854,6 +13852,8 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_adminlinks_displayingdata' => 'Prikazivanje podataka',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za neposredne upite',
 	'smw_unknowntype' => 'Nepodržan tip "$1" je definisan za osobinu.', # Fuzzy
+	'smw_concept_header' => 'Stranice koncepta "$1"',
+	'smw_conceptarticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje pripadaju tom konceptu.', # Fuzzy
 );
 
 /** Swedish (svenska)
@@ -14497,8 +14497,6 @@ Maaaring hindi inaasahan ang magiging mga kinalabasan.',
 	'smw_attributearticlecount' => 'Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng ginagamitan ng ganitong ari-arian.',
 	'smw_subproperty_header' => 'Kabahaging mga pag-aari',
 	'smw_subpropertyarticlecount' => 'Ang pag-aaring ito ay mayroong sumusunod na $1 {{PLURAL:$1|kabahaging ari-arian|kabahaging mga ari-arian}}:',
-	'smw_concept_header' => 'Mga pahina ng diwang "$1"',
-	'smw_conceptarticlecount' => 'Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng kasali sa ganyang diwa.',
 	'specialpages-group-smw_group' => 'Semantikong MediaWiki',
 	'exportrdf' => 'Iluwas/Ipadala ang mga pahina patungo sa RDF',
 	'smw_exportrdf_docu' => 'Ipinapahintulot ng pahinang ito na makakuha ka ng dato mula sa isang pahinang nasa anyong RDF.
@@ -14696,6 +14694,8 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw-prefs-ask-options-tooltip-display' => 'Ipakita ang teksto ng parametro bilang pangkabatiran na payo sa kasangkapan',
 	'smw-prefs-ask-options-collapsed-default' => 'Paganahin ang kahon ng mapagpipilian na paguguhuin ayon sa likas na katakdaan',
 	'smw_unknowntype' => 'Hindi katanggap-tanggap ang uri ng pag-aaring ito',
+	'smw_concept_header' => 'Mga pahina ng diwang "$1"',
+	'smw_conceptarticlecount' => 'Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng kasali sa ganyang diwa.', # Fuzzy
 );
 
 /** толышә зывон (толышә зывон)
@@ -14933,8 +14933,6 @@ $messages['uk'] = array(
 	'smw_attributearticlecount' => '{{PLURAL:$1|Показується|Показуються|Показується}} $1 {{PLURAL:$1|сторінка, що використовує|сторінки, що використовують|сторінок, що використовують}} цю властивість.',
 	'smw_subproperty_header' => 'Підвластивості',
 	'smw_subpropertyarticlecount' => 'Ця властивість має $1 {{PLURAL:$1|підвластивість|підвластивості|підвластивостей}}',
-	'smw_concept_header' => 'Сторінки, що належать до концепції «$1»',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Показується|Показуються|Показується}} $1 {{PLURAL:$1|сторінка, що належить|сторінки, що належать|сторінок, що належать}} цій концепції.',
 	'exportrdf' => 'Експорт сторінок у RDF',
 	'smw_exportrdf_docu' => 'Ця сторінка дозволяє отримати дані із сторінки у форматі RDF. Введіть назви сторінок, по одній у рядку, в текстовому полі, що знаходиться нижче.',
 	'smw_exportrdf_recursive' => 'Рекурсивно експортувати усі пов’язані сторінки. Зауважте: результат може бути об’ємним.',
@@ -15091,6 +15089,8 @@ $messages['uk'] = array(
 	'smw-ui-tooltip-title-event' => 'Подія',
 	'smw-ui-tooltip-title-note' => 'Примітка',
 	'smw_unknowntype' => 'Для властивості означено тип даних «$1», який не підтримується.', # Fuzzy
+	'smw_concept_header' => 'Сторінки, що належать до концепції «$1»',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Показується|Показуються|Показується}} $1 {{PLURAL:$1|сторінка, що належить|сторінки, що належать|сторінок, що належать}} цій концепції.', # Fuzzy
 );
 
 /** Urdu (اردو)
@@ -15257,7 +15257,6 @@ Kết quả có thể không như mong đợi.',
 	'smw_attribute_header' => 'Những trang dùng thuộc tính “$1”',
 	'smw_attributearticlecount' => 'Hiển thị $1 trang dùng thuộc tính này.{{PLURAL:$1||}}',
 	'smw_subproperty_header' => 'Thuộc tính con',
-	'smw_concept_header' => 'Trang về khái niệm “$1”',
 	'exportrdf' => 'Xuất trang ra RDF',
 	'smw_exportrdf_docu' => 'Trang này cho phép bạn lấy dữ liệu từ trang theo dạng RDF.
 Để xuất trang, gõ vào tựa đề trong khung dưới đây, một dòng một tựa đề.',
@@ -15375,6 +15374,7 @@ Xin nhập vào cả một trang và một thuộc tính.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Giá trị|Các giá trị}} cho phép của thuộc tính này là:',
 	'prefs-smw' => 'MediaWiki Ngữ nghĩa',
 	'smw_unknowntype' => 'Kiểu của thuộc tính này không hợp lệ.',
+	'smw_concept_header' => 'Trang về khái niệm “$1”',
 );
 
 /** Volapük (Volapük)
@@ -15412,8 +15412,6 @@ $messages['vo'] = array(
 	'smw_attributearticlecount' => '{{PLURAL:$1|Pad $1 pajonon, kel gebon|Pads $1 pajonons, kels gebons}} patöfi at.',
 	'smw_subproperty_header' => 'Donapatöfs',
 	'smw_subpropertyarticlecount' => 'Patöf at labon {{PLURAL:$1|donapatöfi|donapatöfis}} sököl $1.', # Fuzzy
-	'smw_concept_header' => 'Pads suemoda: „$1“.',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Pajonon pad $1, kel duton|Pajonons pads $1, kels dutons}} lü suemod at.',
 	'exportrdf' => 'Seveigön padis at RDF',
 	'properties' => 'Patöfs',
 	'smw_properties_docu' => 'Patöfs sököl pagebons in vük.',
@@ -15459,6 +15457,8 @@ Bi petuvons pads te aniks, i völads nilöfik palisedons.', # Fuzzy
 	'smw_result_results' => 'Seks.',
 	'smw_result_noresults' => 'Seks nonik.',
 	'smw_smwadmin_return' => 'Geikön lü pad: $1',
+	'smw_concept_header' => 'Pads suemoda: „$1“.',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Pajonon pad $1, kel duton|Pajonons pads $1, kels dutons}} lü suemod at.', # Fuzzy
 );
 
 /** Yiddish (ייִדיש)
