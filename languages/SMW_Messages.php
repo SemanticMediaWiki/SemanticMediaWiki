@@ -9193,6 +9193,7 @@ $messages['lb'] = array(
 	'smw-paramdesc-rdfsyntax' => 'RDF-Syntax déi benotzt gi muss',
 	'smw-paramdesc-dsv-filename' => 'Den Numm fir den DSV-Fichier',
 	'smw-paramdesc-searchlabel' => 'Den Text fir mam Siche virunzefueren',
+	'smw-paramdesc-export' => 'Export-Optiounen',
 	'smw_iq_moreresults' => '… weider Resultater',
 	'smw_parseerror' => 'De Wäert deen Dir aginn hutt gouf net verstan.',
 	'smw_notitle' => '"$1" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.',
