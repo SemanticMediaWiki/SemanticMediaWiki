@@ -561,7 +561,8 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	protected function getNavigationBar( SMWQueryResult $res, array $urlArgs ) {
 		global $smwgQMaxInlineLimit, $wgLang;
 
-		$offset = $this->m_params['offset'];
+		// Bug 49216
+		$offset = $res->getQuery()->getOffset();
 		$limit  = $this->params['limit']->getValue();
 
 		// Prepare navigation bar.
