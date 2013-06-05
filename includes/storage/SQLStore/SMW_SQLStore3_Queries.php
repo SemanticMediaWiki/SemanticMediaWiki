@@ -440,17 +440,28 @@ class SMWSQLStore3QueryEngine {
 		$diHandler = $this->m_store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $this->m_dbs->fetchObject( $res ) ) ) {
-			$count++;
 			if ( $row->iw === '' || $row->iw{0} != ':' )  {
-				$qr[] = $diHandler->dataItemFromDBKeys( array(
+
+				// Catch exception for non-existing predefined properties that
+				// still registered within non-updated pages (@see bug 48711)
+				try {
+					$dataItem = $diHandler->dataItemFromDBKeys( array(
 						$row->t,
 						intval( $row->ns ),
 						$row->iw,
 						'',
 						$row->so
 					) );
-				// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
-				$this->m_store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
+				} catch ( \SMW\PredefinedPropertyException $e ) {
+					wfDebugLog( __CLASS__, __METHOD__ . ': ' . $e->getMessage() );
+				}
+
+				if ( $dataItem instanceof SMWDIWikiPage ) {
+					$count++;
+					$qr[] = $dataItem;
+					// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
+					$this->m_store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
+				}
 			}
 		}
 

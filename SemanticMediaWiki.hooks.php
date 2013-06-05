@@ -299,6 +299,7 @@ final class SMWHooks {
 			'storage/Store',
 
 			'storage/sqlstore/PropertyStatisticsTable',
+			'storage/sqlstore/DIHandlerWikiPage'
 		);
 
 		foreach ( $testFiles as $file ) {

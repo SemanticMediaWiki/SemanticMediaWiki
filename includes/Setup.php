@@ -153,8 +153,9 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\CacheHandler']           = $incDir . '/handlers/CacheHandler.php';
 
 	// Exceptions
-	$wgAutoloadClasses['SMW\StoreInstanceException']    = $incDir . '/exceptions/StoreInstanceException.php';
-	$wgAutoloadClasses['SMW\SettingsArgumentException'] = $incDir . '/exceptions/SettingsArgumentException.php';
+	$wgAutoloadClasses['SMW\StoreInstanceException']      = $incDir . '/exceptions/StoreInstanceException.php';
+	$wgAutoloadClasses['SMW\SettingsArgumentException']   = $incDir . '/exceptions/SettingsArgumentException.php';
+	$wgAutoloadClasses['SMW\PredefinedPropertyException'] = $incDir . '/exceptions/PredefinedPropertyException.php';
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
