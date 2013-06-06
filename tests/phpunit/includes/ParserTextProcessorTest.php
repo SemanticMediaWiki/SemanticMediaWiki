@@ -38,6 +38,7 @@ use ReflectionClass;
 
 /**
  * Tests for the ParserTextProcessor class
+ * @covers \SMW\ParserTextProcessor
  *
  * @ingroup Test
  *

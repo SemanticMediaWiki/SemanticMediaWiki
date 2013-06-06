@@ -25,6 +25,7 @@ use SMW\SQLStore\PropertyStatisticsTable;
  *
  * @ingroup SMW
  * @ingroup Test
+ * @covers \SMW\SQLStore\PropertyStatisticsTable
  *
  * @group SMW
  * @group SMWExtension

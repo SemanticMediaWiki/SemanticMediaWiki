@@ -38,6 +38,7 @@ use Title;
 
 /**
  * Tests for the SMW\DataValueFactory class
+ * @covers \SMW\DataValueFactory
  *
  * @ingroup Test
  *

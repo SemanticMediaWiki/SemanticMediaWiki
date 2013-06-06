@@ -37,6 +37,7 @@ use ParserOutput;
 
 /**
  * Tests for the ConceptParserFunction class
+ * @covers \SMW\ConceptParserFunction
  *
  * @ingroup Test
  *

@@ -40,6 +40,7 @@ use ParserOutput;
 
 /**
  * Tests for the SMW\SubobjectParserFunction class
+ * @covers \SMW\SubobjectParserFunction
  *
  * @ingroup Test
  *

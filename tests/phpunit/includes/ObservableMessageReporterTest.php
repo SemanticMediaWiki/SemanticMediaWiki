@@ -27,6 +27,7 @@ use SMW\MessageReporter;
  *
  * @ingroup SMW
  * @ingroup Test
+ * @covers \SMW\ObservableMessageReporter
  *
  * @group SMW
  * @group SMWExtension

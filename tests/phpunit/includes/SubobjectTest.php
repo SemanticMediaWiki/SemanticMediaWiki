@@ -37,6 +37,7 @@ use Title;
 
 /**
  * Tests for the Subobject class
+ * @covers \SMW\Subobject
  *
  * @ingroup SMW
  *

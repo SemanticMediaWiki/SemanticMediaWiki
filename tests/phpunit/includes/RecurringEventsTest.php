@@ -35,6 +35,7 @@ use SMW\ParserParameterFormatter;
 
 /**
  * Tests for the RecurringEvents class
+ * @covers \SMW\RecurringEvents
  *
  * @ingroup SMW
  *

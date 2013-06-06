@@ -36,6 +36,7 @@ use ParserOutput;
 
 /**
  * Tests for the SetParserFunction class
+ * @covers \SMW\SetParserFunction
  *
  * @ingroup Test
  *

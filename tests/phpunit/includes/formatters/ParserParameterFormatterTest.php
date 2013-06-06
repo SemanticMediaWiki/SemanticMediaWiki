@@ -33,6 +33,7 @@ use SMW\ParserParameterFormatter;
 
 /**
  * Tests for the ParserParameterFormatter class
+ * @covers \SMW\ParserParameterFormatter
  *
  * @ingroup Test
  *

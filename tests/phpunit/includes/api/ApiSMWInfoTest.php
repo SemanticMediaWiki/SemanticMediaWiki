@@ -33,6 +33,7 @@ namespace SMW\Test;
 
 /**
  * Tests for the ApiSMWInfo class
+ * @covers \ApiSMWInfo
  *
  * @ingroup Test
  *

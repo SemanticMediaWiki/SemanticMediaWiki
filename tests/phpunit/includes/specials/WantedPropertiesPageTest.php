@@ -33,12 +33,12 @@ use SMWWantedPropertiesPage;
 
 /**
  * Tests for the WantedPropertiesPage class
+ * @covers SMWWantedPropertiesPage
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
- * @covers SMWWantedPropertiesPage
  */
 class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 

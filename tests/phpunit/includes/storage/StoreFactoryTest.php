@@ -34,12 +34,12 @@ use SMW\Settings;
 
 /**
  * Tests for the StoreFactory class
+ * @covers \SMW\StoreFactory
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
- * @covers \SMW\StoreFactory
  */
 class StoreFactoryTest extends SemanticMediaWikiTestCase {
 

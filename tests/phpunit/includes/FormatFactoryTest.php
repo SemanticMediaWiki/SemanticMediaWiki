@@ -32,6 +32,7 @@ use SMW\FormatFactory;
 
 /**
  * Tests for the SMW\FormatFactory class.
+ * @covers \SMW\FormatFactory
  *
  * @ingroup Test
  *

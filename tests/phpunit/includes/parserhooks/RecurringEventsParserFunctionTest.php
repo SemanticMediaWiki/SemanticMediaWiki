@@ -37,6 +37,7 @@ use ParserOutput;
 
 /**
  * Tests for the RecurringEventsParserFunction class
+ * @covers \SMW\RecurringEventsParserFunction
  *
  * @ingroup Test
  *

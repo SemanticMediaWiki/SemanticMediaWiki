@@ -37,6 +37,7 @@ use ReflectionClass;
 
 /**
  * Tests for the AggregatablePrinter class
+ * @covers \SMW\AggregatablePrinter
  *
  * @ingroup Test
  *

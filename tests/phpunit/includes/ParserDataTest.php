@@ -40,6 +40,7 @@ use Title;
 
 /**
  * Tests for the ParserData class
+ * @covers \SMW\ParserData
  *
  * @ingroup Test
  *

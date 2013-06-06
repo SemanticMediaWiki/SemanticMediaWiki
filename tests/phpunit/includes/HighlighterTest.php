@@ -34,6 +34,7 @@ use SMW\Highlighter;
 
 /**
  * Tests for the Highlighter class
+ * @covers \SMW\Highlighter
  *
  * @ingroup Test
  *

@@ -36,6 +36,7 @@ use Title;
 
 /**
  * Tests for the QueryData class
+ * @covers \SMW\QueryData
  *
  * @ingroup Test
  *

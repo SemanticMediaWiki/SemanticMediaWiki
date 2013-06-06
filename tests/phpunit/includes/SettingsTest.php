@@ -35,12 +35,12 @@ use SMW\Settings;
 
 /**
  * Tests for the Settings class
+ * @covers \SMW\Settings
  *
  * @ingroup SMW
  *
  * @group SMW
  * @group SMWExtension
- * @covers \SMW\Settings
  */
 class SettingsTest extends SemanticMediaWikiTestCase {
 

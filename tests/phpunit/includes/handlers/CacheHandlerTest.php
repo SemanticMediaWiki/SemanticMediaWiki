@@ -35,6 +35,7 @@ use HashBagOStuff;
 
 /**
  * Tests for the CacheHandler class
+ * @covers \SMW\CacheHandler
  *
  * @ingroup Test
  *

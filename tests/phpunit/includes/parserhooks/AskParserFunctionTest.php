@@ -38,6 +38,7 @@ use ReflectionClass;
 
 /**
  * Tests for the AskParserFunction class
+ * @covers \SMW\AskParserFunction
  *
  * @ingroup Test
  *

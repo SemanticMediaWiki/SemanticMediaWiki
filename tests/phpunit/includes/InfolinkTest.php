@@ -34,6 +34,7 @@ use SMWInfolink;
 
 /**
  * Tests for the SMWInfolink class
+ * @covers \SMWInfolink
  *
  * @ingroup Test
  *

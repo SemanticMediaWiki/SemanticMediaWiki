@@ -33,6 +33,7 @@ namespace SMW\Test;
 
 /**
  * Tests for the ApiAsk class
+ * @covers \ApiAsk
  *
  * @ingroup Test
  *
