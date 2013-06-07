@@ -27,7 +27,6 @@ use Parser;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  * @ingroup ParserFunction
  *
  * @licence GNU GPL v2+
@@ -37,7 +36,6 @@ use Parser;
 /**
  * Class that provides the {{#subobject}} parser function
  *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class SubobjectParserFunction {
@@ -97,7 +95,12 @@ class SubobjectParserFunction {
 		// Add property / values to the subobject instance
 		foreach ( $parameters as $property => $values ){
 			foreach ( $values as $value ) {
-				$this->subobject->addPropertyValue( $property, $value );
+				$this->subobject->addPropertyValue(
+					DataValueFactory::newPropertyValue(
+						$property,
+						$value
+					)
+				);
 			}
 		}
 	}

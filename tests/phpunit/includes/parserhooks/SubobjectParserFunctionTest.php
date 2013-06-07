@@ -12,7 +12,7 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the SMW\SubobjectParserFunction class
+ * Tests for the SubobjectParserFunction class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ use ParserOutput;
  */
 
 /**
- * Tests for the SMW\SubobjectParserFunction class
+ * Tests for the SubobjectParserFunction class
  * @covers \SMW\SubobjectParserFunction
  *
  * @ingroup Test
@@ -56,133 +56,6 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	 */
 	public function getClass() {
 		return '\SMW\SubobjectParserFunction';
-	}
-
-	/**
-	 * Provides data sample normally found in connection with the {{#subobject}}
-	 * parser function. The first array contains parametrized input value while
-	 * the second array contains expected return results for the instantiated
-	 * object.
-	 *
-	 * @return array
-	 */
-	public function getSubobjectDataProvider() {
-		// Get the right language for an error object
-		$diPropertyError = new SMWDIProperty( SMWDIProperty::TYPE_ERROR );
-
-		return array(
-
-			// Anonymous identifier
-			// {{#subobject:
-			// |Foo=bar
-			// }}
-			array(
-				array( '', 'Foo=bar' ),
-				array(
-					'errors' => false,
-					'name' => '_',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Foo',
-					'propertyValue' => 'Bar'
-				)
-			),
-
-			// Anonymous identifier
-			// {{#subobject:-
-			// |Foo=1001 9009
-			// }}
-			array(
-				array( '-', 'Foo=1001 9009' ),
-				array(
-					'errors' => false,
-					'name' => '_',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Foo',
-					'propertyValue' => '1001 9009'
-				)
-			),
-
-			// Named identifier
-			// {{#subobject:FooBar
-			// |FooBar=Bar foo
-			// }}
-			array(
-				array( 'FooBar', 'FooBar=Bar foo' ),
-				array(
-					'errors' => false,
-					'name' => 'FooBar',
-					'propertyCount' => 1,
-					'propertyLabel' => 'FooBar',
-					'propertyValue' => 'Bar foo'
-				)
-			),
-
-			// Named identifier
-			// {{#subobject:Foo bar
-			// |Foo=Help:Bar
-			// }}
-			array(
-				array( 'Foo bar', 'Foo=Help:Bar' ),
-				array(
-					'errors' => false,
-					'name' => 'Foo_bar',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Foo',
-					'propertyValue' => 'Help:Bar'
-				)
-			),
-
-			// Named identifier
-			// {{#subobject: Foo bar foo
-			// |Bar=foo Bar
-			// }}
-			array(
-				array( ' Foo bar foo ', 'Bar=foo Bar' ),
-				array(
-					'errors' => false,
-					'name' => 'Foo_bar_foo',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Bar',
-					'propertyValue' => 'Foo Bar'
-				)
-			),
-
-			// Named identifier
-			// {{#subobject: Foo bar foo
-			// |状況=超やばい
-			// |Bar=http://www.semantic-mediawiki.org/w/index.php?title=Subobject
-			// }}
-			array(
-				array(
-					' Foo bar foo ',
-					'状況=超やばい',
-					'Bar=http://www.semantic-mediawiki.org/w/index.php?title=Subobject' ),
-				array(
-					'errors' => false,
-					'name' => 'Foo_bar_foo',
-					'propertyCount' => 2,
-					'propertyLabel' => array( '状況', 'Bar' ),
-					'propertyValue' => array( '超やばい', 'Http://www.semantic-mediawiki.org/w/index.php?title=Subobject' )
-				)
-			),
-
-			// Returns an error due to wrong declaration (see Modification date)
-
-			// {{#subobject: Foo bar foo
-			// |Bar=foo Bar
-			// |Modification date=foo Bar
-			// }}
-			array(
-				array( ' Foo bar foo ', 'Modification date=foo Bar' ),
-				array(
-					'errors' => true,
-					'name' => 'Foo_bar_foo',
-					'propertyCount' => 2,
-					'propertyLabel' => array( 'Modification date', $diPropertyError->getLabel() ),
-					'propertyValue' => array( 'Foo Bar', 'Modification date' )
-				)
-			),
-		);
 	}
 
 	/**
@@ -234,11 +107,8 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	public function testParse( array $params, array $expected ) {
 		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
-		if ( $result !== '' ){
-			$this->assertTrue( $expected['errors'] );
-		} else {
-			$this->assertFalse( $expected['errors'] );
-		}
+		$this->assertEquals( $result !== '' , $expected['errors'] );
+
 	}
 
 	/**
@@ -253,7 +123,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	public function testInstantiatedSubobject( array $params, array $expected ) {
 		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
-		$this->assertContains( $expected['name'], $instance->getSubobject()->getName() );
+		$this->assertContains( $expected['identifier'], $instance->getSubobject()->getId() );
 	}
 
 	/**
@@ -297,5 +167,132 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
 		$result = SubobjectParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
+	}
+
+	/**
+	 * Provides data sample normally found in connection with the {{#subobject}}
+	 * parser function. The first array contains parametrized input value while
+	 * the second array contains expected return results for the instantiated
+	 * object.
+	 *
+	 * @return array
+	 */
+	public function getSubobjectDataProvider() {
+		// Get the right language for an error object
+		$diPropertyError = new SMWDIProperty( SMWDIProperty::TYPE_ERROR );
+
+		return array(
+
+			// Anonymous identifier
+			// {{#subobject:
+			// |Foo=bar
+			// }}
+			array(
+				array( '', 'Foo=bar' ),
+				array(
+					'errors' => false,
+					'identifier' => '_',
+					'propertyCount' => 1,
+					'propertyLabel' => 'Foo',
+					'propertyValue' => 'Bar'
+				)
+			),
+
+			// Anonymous identifier
+			// {{#subobject:-
+			// |Foo=1001 9009
+			// }}
+			array(
+				array( '-', 'Foo=1001 9009' ),
+				array(
+					'errors' => false,
+					'identifier' => '_',
+					'propertyCount' => 1,
+					'propertyLabel' => 'Foo',
+					'propertyValue' => '1001 9009'
+				)
+			),
+
+			// Named identifier
+			// {{#subobject:FooBar
+			// |FooBar=Bar foo
+			// }}
+			array(
+				array( 'FooBar', 'FooBar=Bar foo' ),
+				array(
+					'errors' => false,
+					'identifier' => 'FooBar',
+					'propertyCount' => 1,
+					'propertyLabel' => 'FooBar',
+					'propertyValue' => 'Bar foo'
+				)
+			),
+
+			// Named identifier
+			// {{#subobject:Foo bar
+			// |Foo=Help:Bar
+			// }}
+			array(
+				array( 'Foo bar', 'Foo=Help:Bar' ),
+				array(
+					'errors' => false,
+					'identifier' => 'Foo_bar',
+					'propertyCount' => 1,
+					'propertyLabel' => 'Foo',
+					'propertyValue' => 'Help:Bar'
+				)
+			),
+
+			// Named identifier
+			// {{#subobject: Foo bar foo
+			// |Bar=foo Bar
+			// }}
+			array(
+				array( ' Foo bar foo ', 'Bar=foo Bar' ),
+				array(
+					'errors' => false,
+					'identifier' => 'Foo_bar_foo',
+					'propertyCount' => 1,
+					'propertyLabel' => 'Bar',
+					'propertyValue' => 'Foo Bar'
+				)
+			),
+
+			// Named identifier
+			// {{#subobject: Foo bar foo
+			// |状況=超やばい
+			// |Bar=http://www.semantic-mediawiki.org/w/index.php?title=Subobject
+			// }}
+			array(
+				array(
+					' Foo bar foo ',
+					'状況=超やばい',
+					'Bar=http://www.semantic-mediawiki.org/w/index.php?title=Subobject' ),
+				array(
+					'errors' => false,
+					'identifier' => 'Foo_bar_foo',
+					'propertyCount' => 2,
+					'propertyLabel' => array( '状況', 'Bar' ),
+					'propertyValue' => array( '超やばい', 'Http://www.semantic-mediawiki.org/w/index.php?title=Subobject' )
+				)
+			),
+
+			// Returns an error due to wrong declaration (see Modification date)
+
+			// {{#subobject: Foo bar foo
+			// |Bar=foo Bar
+			// |Modification date=foo Bar
+			// }}
+			array(
+				array( ' Foo bar foo ', 'Bar=foo Bar', 'Modification date=foo Bar' ),
+				array(
+					'errors' => true,
+					'identifier' => 'Foo_bar_foo',
+					'propertyCount' => 2,
+					'propertyLabel' => array( 'Bar', $diPropertyError->getLabel() ),
+					'propertyValue' => array( 'Foo Bar', 'Modification date' )
+				)
+			),
+		);
 	}
 }
