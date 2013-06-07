@@ -46,6 +46,9 @@ class Settings {
 	 */
 	protected $settings;
 
+	/** @var Settings */
+	private static $instance = null;
+
 	/**
 	 * @note Use composition over inheritance, if it necessary this class can
 	 * extended to use the ArrayObject without interrupting the interface
@@ -77,7 +80,6 @@ class Settings {
 	 * @return Settings
 	 */
 	public static function newFromGlobals() {
-		static $instance = null;
 
 		$settings = array(
 			'smwgScriptPath' => $GLOBALS['smwgScriptPath'],
@@ -153,11 +155,11 @@ class Settings {
 			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'],
 		);
 
-		if ( $instance === null ) {
-			$instance = self::newFromArray( $settings ) ;
+		if ( self::$instance === null ) {
+			self::$instance = self::newFromArray( $settings ) ;
 		}
 
-		return $instance;
+		return self::$instance;
 	}
 
 	/**
@@ -217,5 +219,14 @@ class Settings {
 			throw new SettingsArgumentException( "{$key} is not a valid settings key" );
 		}
 		return $this->settings->offsetGet( $key );
+	}
+
+	/**
+	 * Reset instance
+	 *
+	 * @since 1.9
+	 */
+	public static function reset() {
+		self::$instance = null;
 	}
 }

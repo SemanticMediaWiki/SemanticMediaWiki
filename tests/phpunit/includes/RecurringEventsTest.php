@@ -26,7 +26,6 @@ use SMW\ParserParameterFormatter;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  * @ingroup Test
  *
  * @licence GNU GPL v2+
@@ -37,7 +36,7 @@ use SMW\ParserParameterFormatter;
  * Tests for the RecurringEvents class
  * @covers \SMW\RecurringEvents
  *
- * @ingroup SMW
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -79,6 +78,60 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 				array(
 					'errors' => 0,
 					'dates' => array( '1 February 1970', '1 February 1971 00:00:00', '1 February 1972 00:00:00', '1 February 1973 00:00:00' ),
+					'property' => 'Has birthday',
+					'parameters' => array( 'has title' => array( 'Birthday' ) )
+				)
+			),
+
+			// {{#set_recurring_event:property=Has birthday
+			// |start=01 Feb 1970
+			// |end=01 Feb 1972
+			// |has title= Birthday
+			// |unit=year
+			// |period=12
+			// |limit=3
+			// }}
+			array(
+				array(
+					'property=Has birthday',
+					'start=01 Feb 1970',
+					'end=01 Feb 1972',
+					'has title=Birthday',
+					'unit=month',
+					'period=12',
+					'limit=3'
+				),
+				array(
+					'errors' => 0,
+					'dates' => array( '1 February 1970', '1 February 1971 00:00:00', '1 February 1972 00:00:00' ),
+					'property' => 'Has birthday',
+					'parameters' => array( 'has title' => array( 'Birthday' ) )
+				)
+			),
+
+			// {{#set_recurring_event:property=Has birthday
+			// |start=01 Feb 1970
+			// |end=01 Feb 1972
+			// |has title= Birthday
+			// |unit=year
+			// |week number=2
+			// |period=12
+			// |limit=3
+			// }}
+			array(
+				array(
+					'property=Has birthday',
+					'start=01 Feb 1970',
+					'end=01 Feb 1972',
+					'has title=Birthday',
+					'unit=month',
+					'week number=2',
+					'period=12',
+					'limit=3'
+				),
+				array(
+					'errors' => 0,
+					'dates' => array( '1 February 1970', '14 February 1971 00:00:00' ),
 					'property' => 'Has birthday',
 					'parameters' => array( 'has title' => array( 'Birthday' ) )
 				)
@@ -417,5 +470,25 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	public function testMassInsert( array $params, array $expected ) {
 		$instance = $this->getInstance( $params );
 		$this->assertCount( $expected['count'], $instance->getDates() );
+	}
+
+	/**
+	 * @test RecurringEvents::getJulianDay
+	 *
+	 * @since 1.9
+	 */
+	public function testGetJulianDay() {
+		$instance = $this->getInstance( array() );
+
+		// SMWDIWikiPage stub object
+		$dataValue = $this->getMockBuilder( 'SMWTimeValue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( null ) );
+
+		$this->assertEquals( null, $instance->getJulianDay( $dataValue ) );
 	}
 }
