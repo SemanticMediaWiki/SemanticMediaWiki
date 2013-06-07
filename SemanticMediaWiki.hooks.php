@@ -240,70 +240,15 @@ final class SMWHooks {
 	* @return boolean
 	*/
 	public static function registerUnitTests( array &$files ) {
-		$testFiles = array(
-			'Defines',
-			'GlobalFunctions',
-			'FormatFactory',
-			'Highlighter',
-			'ObservableMessageReporter',
-			'ParserData',
-			'Subobject',
-			'RecurringEvents',
-			'Infolink',
-			'Hooks',
-			'DataValueFactory',
-			'Settings',
-			'ParserTextProcessor',
-			'Factbox',
+		$directoryIterator = new RecursiveDirectoryIterator( __DIR__ . '/tests/phpunit/includes/' );
 
-			'formatters/ParserParameterFormatter',
-
-			'handlers/CacheHandler',
-
-			'api/ApiSMWInfo',
-			'api/ApiAsk',
-
-			'query/QueryProcessor',
-
-			'dataitems/DI_Blob',
-			'dataitems/DI_Bool',
-			'dataitems/DI_Number',
-			'dataitems/DI_GeoCoord',
-			'dataitems/DISerializer',
-			'dataitems/DIConcept',
-
-			'export/SMWExpElement',
-
-			'parserhooks/SubobjectParserFunction',
-			'parserhooks/RecurringEventsParserFunction',
-			'parserhooks/AskParserFunction',
-			'parserhooks/ShowParserFunction',
-			'parserhooks/ConceptParserFunction',
-			'parserhooks/DeclareParserFunction',
-			'parserhooks/DocumentationParserFunction',
-			'parserhooks/InfoParserFunction',
-			'parserhooks/SetParserFunction',
-
-			'query/QueryData',
-
-			'printers/ResultPrinters',
-			'printers/AggregatablePrinter',
-
-			'resources/Resources',
-
-			'specials/Specials',
-			'specials/WantedPropertiesPage',
-
-			// Keep store tests near the end, since they are slower due to database access.
-			'storage/StoreFactory',
-			'storage/Store',
-
-			'storage/sqlstore/PropertyStatisticsTable',
-			'storage/sqlstore/DIHandlerWikiPage'
-		);
-
-		foreach ( $testFiles as $file ) {
-			$files[] = dirname( __FILE__ ) . '/tests/phpunit/includes/' . $file . 'Test.php';
+		/**
+		 * @var SplFileInfo $fileInfo
+		 */
+		foreach ( new RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
+			if ( substr( $fileInfo->getFilename(), -8 ) === 'Test.php' ) {
+				$files[] = $fileInfo->getPathname();
+			}
 		}
 
 		return true;
