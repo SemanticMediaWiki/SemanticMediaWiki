@@ -91,6 +91,31 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @test ParserParameterFormatter::setParameters
+	 *
+	 * @since 1.9
+	 */
+	public function testSetParameters() {
+		$instance = $this->getInstance( array() );
+		$parameters = array( 'Foo' => 'Bar' );
+
+		$instance->setParameters( $parameters );
+		$this->assertEquals( $parameters, $instance->toArray() );
+	}
+
+	/**
+	 * @test ParserParameterFormatter::addParameter
+	 *
+	 * @since 1.9
+	 */
+	public function testAddParameter() {
+		$instance = $this->getInstance( array() );
+		$instance->addParameter( 'Foo', 'Bar' );
+
+		$this->assertEquals( array( 'Foo' =>array( 'Bar' ) ), $instance->toArray() );
+	}
+
+	/**
 	 * @test ParserParameterFormatter::__construct (Test instance exception)
 	 * @dataProvider getParametersDataProvider
 	 *
@@ -150,6 +175,22 @@ class ParserParameterFormatterTest extends SemanticMediaWikiTestCase {
 				),
 				array(
 					'Has test 1' => array( 'One' )
+				)
+			),
+
+			// {{#...:
+			// |Has test 1=One
+			// }}
+			array(
+				array(
+					array( 'Foo' ),
+					'Has test 1=One',
+				),
+				array(
+					'Has test 1' => array( 'One' )
+				),
+				array(
+					'msg' => 'Failed to recognize that only strings can be processed'
 				)
 			),
 

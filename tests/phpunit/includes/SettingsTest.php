@@ -175,5 +175,9 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 
 		// Assert that newFromGlobals is a static instance
 		$this->assertTrue( $instance === Settings::newFromGlobals() );
+
+		// Reset instance
+		$instance->reset();
+		$this->assertTrue( $instance !== Settings::newFromGlobals() );
 	}
 }

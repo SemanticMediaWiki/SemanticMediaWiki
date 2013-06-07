@@ -25,7 +25,6 @@ use SMW\Highlighter;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  * @ingroup Test
  *
  * @licence GNU GPL v2+
@@ -61,7 +60,13 @@ class HighlighterTest extends SemanticMediaWikiTestCase {
 		return array(
 			array( '' , Highlighter::TYPE_NOTYPE ),
 			array( 'property', Highlighter::TYPE_PROPERTY ),
-			array( 'PROPERTY', Highlighter::TYPE_PROPERTY ),
+			array( 'text', Highlighter::TYPE_TEXT ),
+			array( 'info', Highlighter::TYPE_INFO ),
+			array( 'help', Highlighter::TYPE_HELP ),
+			array( 'service', Highlighter::TYPE_SERVICE ),
+			array( 'quantity', Highlighter::TYPE_QUANTITY ),
+			array( 'note', Highlighter::TYPE_NOTE ),
+			array( 'warning', Highlighter::TYPE_WARNING ),
 			array( 'PrOpErTy', Highlighter::TYPE_PROPERTY ),
 			array( 'バカなテスト', Highlighter::TYPE_NOTYPE ),
 			array( '<span>Something that should not work</span>', Highlighter::TYPE_NOTYPE ),
