@@ -1,0 +1,37 @@
+{
+	"name": "mediawiki/semantic-mediawiki",
+	"description": "MediaWiki extension that lets you store and query structured data within wiki pages",
+	"keywords": ["SMW", "Semantic MediaWiki"],
+	"homepage": "https://semantic-mediawiki.org/wiki/",
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "Markus Krötzsch",
+			"homepage": "http://korrekt.org",
+			"role": "Creator and core developer"
+		},
+		{
+			"name": "Jeroen De Dauw",
+			"email": "jeroendedauw@gmail.com",
+			"homepage": "http://jeroendedauw.com",
+			"role": "Core developer"
+		},
+		{
+			"name": "James Hong Kong",
+			"homepage": "https://semantic-mediawiki.org/wiki/User:MWJames",
+			"role": "Core developer"
+		}
+	],
+	"support": {
+		"email": "semediawiki-user@lists.sourceforge.net",
+		"issues": "https://bugzilla.wikimedia.org/",
+		"irc": "irc://irc.freenode.net/semantic-mediawiki",
+		"forum": "https://semantic-mediawiki.org/wiki/semantic-mediawiki.org_talk:Community_portal",
+		"wiki": "https://semantic-mediawiki.org/wiki/",
+		"source": "https://github.com/wikimedia/mediawiki-extensions-SemanticMediaWiki"
+	},
+	"require": {
+		"php": ">=5.3.0",
+		"param-processor/param-processor": "dev-master"
+	}
+}

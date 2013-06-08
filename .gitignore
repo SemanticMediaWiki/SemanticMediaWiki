@@ -3,5 +3,8 @@
 *.kate-swp
 .*.swp
 
+vendor/
+composer.phar
+
 !.gitignore
 !.gitreview
