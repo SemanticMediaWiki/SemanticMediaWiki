@@ -189,113 +189,12 @@ class SMWSQLStore3SpecialPageHandlers {
 
 	/**
 	 * @see SMWStore::getStatistics
-	 *
-	 * @note Always ensure to set the array initially to 0 to avoid problems when
-	 * accessing the array via a key
+	 * @see StatisticsCollector:doCollect
 	 *
 	 * @return array
 	 */
 	public function getStatistics() {
-		wfProfileIn( 'SMWSQLStore3::getStatistics (SMW)' );
-
-		$dbr = wfGetDB( DB_SLAVE );
-		$result = array();
-		$propertyTables = SMWSQLStore3::getPropertyTables();
-
-		// Properties with their own page
-		$result['OWNPAGE'] = 0;
-		$result['OWNPAGE'] = $dbr->estimateRowCount( 'page', '*', array( 'page_namespace' => SMW_NS_PROPERTY ) );
-
-		// Count existing inline queries
-		$result['QUERY'] = 0;
-		$typeProp = new SMWDIProperty( '_ASK' );
-		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
-		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
-		$row = $dbr->fetchObject( $res );
-		$result['QUERY'] = $row->count;
-		$dbr->freeResult( $res );
-
-		// Count query size
-		$result['QUERYSIZE'] = 0;
-		$typeProp = new SMWDIProperty( '_ASKSI' );
-		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
-		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
-		$row = $dbr->fetchObject( $res );
-		$result['QUERYSIZE'] = $row->count;
-		$dbr->freeResult( $res );
-
-		// Count used formats
-		$result['QUERYFORMATS'] = array();
-		$typeProp = new SMWDIProperty( '_ASKFO' );
-		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
-		$res = $dbr->select(
-			$typeTable->getName(),
-			'o_hash, COUNT(s_id) AS count',
-			array(),
-			'SMW::getStatistics',
-			array(
-				'ORDER BY' => 'count DESC',
-				'GROUP BY' => 'o_hash'
-			)
-		);
-
-		foreach ( $res as $row ) {
-			$result['QUERYFORMATS'][$row->o_hash] = (int)$row->count;
-		}
-		$dbr->freeResult( $res );
-
-		// Count existing concepts
-		$result['CONCEPTS'] = 0;
-		$typeProp = new SMWDIProperty( '_CONC' );
-		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
-		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
-		$row = $dbr->fetchObject( $res );
-		$result['CONCEPTS'] = $row->count;
-		$dbr->freeResult( $res );
-
-		// Count existing subobjects
-		$result['SUBOBJECTS'] = 0;
-		$typeProp = new SMWDIProperty( SMWDIProperty::TYPE_SUBOBJECT );
-		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
-		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
-		$row = $dbr->fetchObject( $res );
-		$result['SUBOBJECTS'] = $row->count;
-		$dbr->freeResult( $res );
-
-		// count number of declared properties by counting "has type" annotations
-		$typeProp = new SMWDIProperty( '_TYPE' );
-		$typeTable = $propertyTables[SMWSQLStore3::findPropertyTableID( $typeProp )];
-		$res = $dbr->select( $typeTable->getName(), 'COUNT(s_id) AS count', array(), 'SMW::getStatistics' );
-		$row = $dbr->fetchObject( $res );
-		$result['DECLPROPS'] = $row->count;
-		$dbr->freeResult( $res );
-
-		// count property uses by counting rows in property tables,
-		// count used properties by counting distinct properties in each table
-		$result['PROPUSES'] = 0;
-		$result['USEDPROPS'] = 0;
-
-		foreach ( SMWSQLStore3::getPropertyTables() as $propertyTable ) {
-			/// Note: subproperties that are part of container values are counted individually;
-			/// It does not seem to be important to filter them by adding more conditions.
-			$res = $dbr->select( $propertyTable->getName(), 'COUNT(*) AS count', '', 'SMW::getStatistics' );
-			$row = $dbr->fetchObject( $res );
-			$result['PROPUSES'] += $row->count;
-			$dbr->freeResult( $res );
-
-			if ( !$propertyTable->isFixedPropertyTable() ) {
-				$res = $dbr->select( $propertyTable->getName(), 'COUNT(DISTINCT(p_id)) AS count', '', 'SMW::getStatistics' );
-				$row = $dbr->fetchObject( $res );
-				$result['USEDPROPS'] += $row->count;
-			} else {
-				$res = $dbr->select( $propertyTable->getName(), '*', '', 'SMW::getStatistics', array( 'LIMIT' => 1 ) );
-				if ( $dbr->numRows( $res ) > 0 )  $result['USEDPROPS']++;
-			}
-
-			$dbr->freeResult( $res );
-		}
-
-		wfProfileOut( 'SMWSQLStore3::getStatistics (SMW)' );
-		return $result;
+		// Until the settings object is invoke during Store setup, use the factory method here
+		return \SMW\SQLStore\StatisticsCollector::newFromStore( $this->store )->doCollect();
 	}
 }

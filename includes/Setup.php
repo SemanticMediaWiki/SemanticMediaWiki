@@ -145,14 +145,14 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Subobject']             = $incDir . 'Subobject.php';
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $incDir . 'RecurringEvents.php';
 
+	$wgAutoloadClasses['SMW\Settings']              = $incDir . 'Settings.php';
+
 	// Formatters
 	$wgAutoloadClasses['SMW\ArrayFormatter']           = $incDir . 'formatters/ArrayFormatter.php';
 	$wgAutoloadClasses['SMW\ParserParameterFormatter'] = $incDir . 'formatters/ParserParameterFormatter.php';
 	$wgAutoloadClasses['SMW\MessageFormatter']         = $incDir . 'formatters/MessageFormatter.php';
 
-	$wgAutoloadClasses['SMW\Settings']               = $incDir . 'Settings.php';
-
-	$wgAutoloadClasses['SMW\CacheHandler']           = $incDir . '/handlers/CacheHandler.php';
+	$wgAutoloadClasses['SMW\CacheHandler']             = $incDir . '/handlers/CacheHandler.php';
 
 	// Exceptions
 	$wgAutoloadClasses['SMW\StoreInstanceException']       = $incDir . '/exceptions/StoreInstanceException.php';
@@ -305,6 +305,8 @@ function smwfRegisterClasses() {
 	$stoDirSQL = $smwgIP . 'includes/storage/SQLStore/';
 	$wgAutoloadClasses['SMW\SQLStore\PropertyStatisticsTable']				= $stoDirSQL . 'PropertyStatisticsTable.php';
 	$wgAutoloadClasses['SMW\SQLStore\SimplePropertyStatisticsRebuilder']	= $stoDirSQL . 'SimplePropertyStatisticsRebuilder.php';
+	$wgAutoloadClasses['SMW\SQLStore\StatisticsCollector']                  = $stoDirSQL . 'StatisticsCollector.php';
+
 	$wgAutoloadClasses['SMWSQLStore3']                     = $stoDirSQL . 'SMW_SQLStore3.php';
 	$wgAutoloadClasses['SMWSql3StubSemanticData']          = $stoDirSQL . 'SMW_Sql3StubSemanticData.php';
 	$wgAutoloadClasses['SMWSql3SmwIds']                    = $stoDirSQL . 'SMW_Sql3SmwIds.php';

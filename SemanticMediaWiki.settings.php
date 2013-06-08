@@ -557,3 +557,15 @@ $smwgAutoRefreshOnPurge = true;
 ##
 $smwgAutoRefreshOnPageMove = true;
 ##
+
+###
+# Enable to serve statistics from cache using the smwgCacheType setting
+#
+# @since 1.9
+###
+$smwgStatisticsCache = true;
+#
+# Number of seconds before the statistics cache expires
+##
+$smwgStatisticsCacheExpiry = 3600;
+##
