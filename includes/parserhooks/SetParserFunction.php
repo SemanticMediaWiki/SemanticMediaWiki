@@ -45,19 +45,21 @@ use Parser;
  */
 class SetParserFunction {
 
-	/**
-	 * Represents IParserData object
-	 * @var IParserData
-	 */
+	/** @var IParserDate */
 	protected $parserData;
+
+	/** @var MessageFormatter */
+	protected $msgFormatter;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
+	 * @param MessageFormatter $msgFormatter
 	 */
-	public function __construct( IParserData $parserData ) {
+	public function __construct( IParserData $parserData, MessageFormatter $msgFormatter ) {
 		$this->parserData = $parserData;
+		$this->msgFormatter = $msgFormatter;
 	}
 
 	/**
@@ -86,7 +88,7 @@ class SetParserFunction {
 		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->parserData->getReport();
+		return $this->msgFormatter->addFromArray( $this->parserData->getErrors() )->getHtml();
 	}
 
 	/**
@@ -97,7 +99,10 @@ class SetParserFunction {
 	 * @return string|null
 	 */
 	public static function render( Parser &$parser ) {
-		$set = new self( new ParserData( $parser->getTitle(), $parser->getOutput() ) );
+		$set = new self(
+			new ParserData( $parser->getTitle(), $parser->getOutput() ),
+			new MessageFormatter( $parser->getTargetLanguage() )
+		);
 		return $set->parse( new ParserParameterFormatter( func_get_args() ) );
 	}
 }

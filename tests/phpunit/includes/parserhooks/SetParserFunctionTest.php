@@ -3,7 +3,12 @@
 namespace SMW\Test;
 
 use SMW\SetParserFunction;
+use SMW\ParserData;
+use SMW\ParserParameterFormatter;
+use SMW\MessageFormatter;
 
+use SMWDIWikiPage;
+use SMWDataItem;
 use Title;
 use ParserOutput;
 
@@ -132,7 +137,10 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @return  SetParserFunction
 	 */
 	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
-		return new SetParserFunction( $this->getParserData( $title, $parserOutput ) );
+		return new SetParserFunction(
+			$this->getParserData( $title, $parserOutput ),
+			new MessageFormatter( $title->getPageLanguage() )
+		);
 	}
 
 	/**
@@ -167,6 +175,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	public function testParse( array $params, array $expected ) {
 		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
+
 		$this->assertInternalType( 'string', $result );
 	}
 

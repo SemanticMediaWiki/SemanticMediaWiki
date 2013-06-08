@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use Message;
+
 use SMWDITime;
 use SMWTimeValue;
 
@@ -226,7 +228,7 @@ class RecurringEvents {
 		}
 
 		if ( $start_date === null ) {
-			$this->setError( array( 'The start date is missing') );
+			$this->errors[] = new Message( 'smw-events-start-date-missing' );
 			return;
 		} else if ( !( $start_date->getDataItem() instanceof SMWDITime ) ) {
 			$this->setError( $start_date->getErrors() );
@@ -235,8 +237,7 @@ class RecurringEvents {
 
 		// Check property
 		if ( is_null( $this->property ) ) {
-			$this->setError( array( 'The property is missing') );
-			// $this->setError( $this->msg( 'smw-missing-property' )->inContentLanguage()->text() );
+			$this->errors[] = new Message( 'smw-events-property-missing' );
 			return;
 		}
 

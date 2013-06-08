@@ -3,6 +3,9 @@
 namespace SMW\Test;
 
 use SMW\AskParserFunction;
+
+use SMW\MessageFormatter;
+use SMW\ParserData;
 use SMW\QueryData;
 
 use Title;
@@ -181,7 +184,8 @@ class AskParserFunctionTest extends ParserTestCase {
 	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new AskParserFunction(
 			$this->getParserData( $title, $parserOutput ),
-			new QueryData( $title )
+			new QueryData( $title ),
+			new MessageFormatter( $title->getPageLanguage() )
 		);
 	}
 
@@ -226,8 +230,11 @@ class AskParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testParseDisabledsmwgQEnabled() {
-		$expected = smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$title = $this->getTitle();
+		$message = new MessageFormatter( $title->getPageLanguage() );
+		$expected = $message->addFromKey( 'smw_iq_disabled' )->getHtml();
+
+		$instance = $this->getInstance( $title , $this->getParserOutput() );
 
 		// Make protected method accessible
 		$reflection = new ReflectionClass( $this->getClass() );
@@ -253,7 +260,7 @@ class AskParserFunctionTest extends ParserTestCase {
 
 		// Initialize and parse
 		$instance = $this->getInstance( $title, $parserOutput );
-		$instance->parse( $params, true );
+		$instance->parse( $params );
 
 		// Get semantic data from the ParserOutput
 		$parserData = $this->getParserData( $title, $parserOutput );

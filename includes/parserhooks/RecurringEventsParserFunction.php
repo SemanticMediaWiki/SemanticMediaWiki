@@ -74,7 +74,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 
 		// Get recurring events
 		$events = new RecurringEvents( $parameters->toArray(), $this->getSettings() );
-		$this->parserData->addError( $events->getErrors() );
+		$this->msgFormatter->addFromArray( $events->getErrors() );
 
 		foreach ( $events->getDates() as $date_str ) {
 
@@ -110,13 +110,13 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 			);
 
 			// Collect errors that occurred during processing
-			$this->parserData->addError( $this->subobject->getErrors() );
+			$this->msgFormatter->addFromArray( $this->subobject->getErrors() );
 		}
 
 		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->parserData->getReport();
+		return $this->msgFormatter->getHtml();
 	}
 
 	/**
@@ -129,7 +129,8 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	public static function render( Parser &$parser ) {
 		$instance = new self(
 			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new Subobject( $parser->getTitle() )
+			new Subobject( $parser->getTitle() ),
+			new MessageFormatter( $parser->getTargetLanguage() )
 		);
 		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
 	}

@@ -6,6 +6,7 @@ use SMW\DataValueFactory;
 use SMW\Settings;
 
 use Title;
+use Language;
 
 use SMWDIWikiPage;
 use SMWSemanticData;
@@ -80,6 +81,17 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected function getUser() {
 		return new MockSuperUser();
+	}
+
+	/**
+	 * Helper method that returns a Language object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Language
+	 */
+	protected function getLanguage( $langCode = 'en' ) {
+		return Language::factory( $langCode );
 	}
 
 	/**

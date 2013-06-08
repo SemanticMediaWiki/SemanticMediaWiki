@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\ConceptParserFunction;
+use SMW\MessageFormatter;
 use SMW\ParserData;
 
 use Title;
@@ -115,18 +116,25 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ConceptParserFunction object
-	 *
-	 * @since 1.9
-	 *
-	 * @param Title $title
-	 * @param ParserOutput $parserOutput
+	 * Helper method that returns a instance
 	 *
 	 * @return ConceptParserFunction
 	 */
 	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new ConceptParserFunction(
-			$this->getParserData( $title, $parserOutput ) );
+			$this->getParserData( $title, $parserOutput ),
+			new MessageFormatter( $title->getPageLanguage() )
+		);
+	}
+
+	/**
+	 * Helper method that returns a text
+	 *
+	 * @return string
+	 */
+	private function getMessageText( Title $title, $error ) {
+		$message = new MessageFormatter( $title->getPageLanguage() );
+		return $message->addFromKey( $error )->getHtml();
 	}
 
 	/**
@@ -161,9 +169,10 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 * @param $namespace
 	 */
 	public function testErrorOnNamespace( $namespace ) {
-		$errorMessage = smwfEncodeMessages( array( wfMessage( 'smw_no_concept_namespace' )->inContentLanguage()->text() ) );
+		$title = $this->getTitle( $namespace );
+		$errorMessage = $this->getMessageText( $title, 'smw_no_concept_namespace' );
+		$instance = $this->getInstance( $title, $this->getParserOutput() );
 
-		$instance = $this->getInstance( $this->getTitle( $namespace ), $this->getParserOutput() );
 		$this->assertEquals( $errorMessage, $instance->parse( array() ) );
 	}
 
@@ -173,14 +182,19 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $namespace
+	 * @param $params
 	 */
 	public function testErrorOnDoubleParse( array $params ) {
-		$errorMessage = smwfEncodeMessages( array( wfMessage( 'smw_multiple_concepts' )->inContentLanguage()->text() ) );
+		$title = $this->getTitle( SMW_NS_CONCEPT );
+		$errorMessage = $this->getMessageText( $title, 'smw_multiple_concepts' );
 
-		$instance = $this->getInstance( $this->getTitle( SMW_NS_CONCEPT ), $this->getParserOutput() );
+		$instance = $this->getInstance( $title, $this->getParserOutput() );
  		$instance->parse( $params );
 
+		// First call
+		$instance->parse( $params );
+
+		// Second call raises the error
 		$this->assertEquals( $errorMessage, $instance->parse( $params ) );
 	}
 

@@ -42,40 +42,38 @@ use ParserOutput;
  */
 class ShowParserFunction {
 
-	/**
-	 * Represents a IParserData object
-	 * @var IParserData
-	 */
+	/** @var IParserData */
 	protected $parserData;
 
-	/**
-	 * Represents a QueryData object
-	 * @var QueryData
-	 */
+	/** @var QueryData */
 	protected $queryData;
+
+	/** @var MessageFormatter */
+	protected $msgFormatter;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
 	 * @param QueryData $queryData
+	 * @param MessageFormatter $messageList
 	 */
-	public function __construct( IParserData $parserData, QueryData $queryData ) {
+	public function __construct( IParserData $parserData, QueryData $queryData, MessageFormatter $msgFormatter ) {
 		$this->parserData = $parserData;
 		$this->queryData = $queryData;
+		$this->msgFormatter = $msgFormatter;
 	}
 
 	/**
 	 * Returns a message about inline queries being disabled
-	 *
 	 * @see $smwgQEnabled
 	 *
 	 * @since 1.9
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	protected function disabled() {
-		return smwfEncodeMessages( array( wfMessage( 'smw_iq_disabled' )->inContentLanguage()->text() ) );
+		return $this->msgFormatter->addFromKey( 'smw_iq_disabled' )->getHtml();
 	}
 
 	/**
@@ -93,7 +91,7 @@ class ShowParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-		$ask = new AskParserFunction( $this->parserData, $this->queryData );
+		$ask = new AskParserFunction( $this->parserData, $this->queryData, $this->msgFormatter );
 		return $ask->useShowMode()->parse( $rawParams );
 	}
 
@@ -109,7 +107,8 @@ class ShowParserFunction {
 	public static function render( Parser &$parser ) {
 		$show = new self(
 			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new QueryData( $parser->getTitle() )
+			new QueryData( $parser->getTitle() ),
+			new MessageFormatter( $parser->getTargetLanguage() )
 		);
 		return $GLOBALS['smwgQEnabled'] ? $show->parse( func_get_args() ) : $show->disabled();
 	}

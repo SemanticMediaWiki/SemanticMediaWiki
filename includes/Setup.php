@@ -145,8 +145,10 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Subobject']             = $incDir . 'Subobject.php';
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $incDir . 'RecurringEvents.php';
 
+	// Formatters
 	$wgAutoloadClasses['SMW\ArrayFormatter']           = $incDir . 'formatters/ArrayFormatter.php';
 	$wgAutoloadClasses['SMW\ParserParameterFormatter'] = $incDir . 'formatters/ParserParameterFormatter.php';
+	$wgAutoloadClasses['SMW\MessageFormatter']         = $incDir . 'formatters/MessageFormatter.php';
 
 	$wgAutoloadClasses['SMW\Settings']               = $incDir . 'Settings.php';
 

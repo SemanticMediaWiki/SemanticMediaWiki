@@ -48,19 +48,21 @@ use SMWQueryProcessor;
  */
 class ConceptParserFunction {
 
-	/**
-	 * Represents IParserData object
-	 * @var IParserData
-	 */
+	/** @var IParserData */
 	protected $parserData;
+
+	/** @var MessageFormatter */
+	protected $msgFormatter;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
+	 * @param MessageFormatter $msgFormatter
 	 */
-	public function __construct( IParserData $parserData ) {
+	public function __construct( IParserData $parserData, MessageFormatter $msgFormatter ) {
 		$this->parserData = $parserData;
+		$this->msgFormatter = $msgFormatter;
 	}
 
 	/**
@@ -105,6 +107,8 @@ class ConceptParserFunction {
 	/**
 	 * After some discussion IQueryProcessor/QueryProcessor is not being
 	 * used in 1.9 and instead rely on SMWQueryProcessor
+	 *
+	 * @todo Static class SMWQueryProcessor, please fixme
 	 */
 	private function initQueryProcessor( array $rawParams, $showMode = false ) {
 		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
@@ -139,9 +143,9 @@ class ConceptParserFunction {
 		$property = new SMWDIProperty( '_CONC' );
 
 		if ( !( $title->getNamespace() === SMW_NS_CONCEPT ) ) {
-			return smwfEncodeMessages( array( wfMessage( 'smw_no_concept_namespace' )->inContentLanguage()->text() ) );
+			return $this->msgFormatter->addFromKey( 'smw_no_concept_namespace' )->getHtml();
 		} elseif ( count( $this->parserData->getData()->getPropertyValues( $property ) ) > 0 ) {
-			return smwfEncodeMessages( array( wfMessage( 'smw_multiple_concepts' )->inContentLanguage()->text() ) );
+			return $this->msgFormatter->addFromKey( 'smw_multiple_concepts' )->getHtml();
 		}
 
 		// Remove parser object from parameters array
@@ -172,13 +176,13 @@ class ConceptParserFunction {
 			)
 		);
 
-		// Handling errors from the query
-		$this->parserData->addError( $this->query->getErrors() );
+		// Collect possible errors
+		$this->msgFormatter->addFromArray( $this->query->getErrors() )->addFromArray( $this->parserData->getErrors() );
 
 		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->parserData->hasError() ? $this->parserData->getReport() : $this->getHtml( $title, $conceptQueryString, $conceptDocu );
+		return $this->msgFormatter->exists() ? $this->msgFormatter->getHtml() : $this->getHtml( $title, $conceptQueryString, $conceptDocu );
 	}
 
 	/**
@@ -191,10 +195,10 @@ class ConceptParserFunction {
 	 * @return string
 	 */
 	public static function render( Parser &$parser ) {
-		$instance = new self( new ParserData(
-			$parser->getTitle(),
-			$parser->getOutput() )
+		$concept = new self(
+			new ParserData( $parser->getTitle(), $parser->getOutput() ),
+			new MessageFormatter( $parser->getTargetLanguage() )
 		);
-		return $instance->parse( func_get_args() );
+		return $concept->parse( func_get_args() );
 	}
 }

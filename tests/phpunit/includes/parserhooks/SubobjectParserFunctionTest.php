@@ -5,6 +5,7 @@ namespace SMW\Test;
 use SMW\SubobjectParserFunction;
 use SMW\Subobject;
 use SMW\ParserParameterFormatter;
+use SMW\MessageFormatter;
 
 use SMWDIProperty;
 use SMWDataItem;
@@ -71,7 +72,8 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new SubobjectParserFunction(
 			$this->getParserData( $title, $parserOutput ),
-			new Subobject( $title )
+			new Subobject( $title ),
+			new MessageFormatter( $title->getPageLanguage() )
 		);
 	}
 

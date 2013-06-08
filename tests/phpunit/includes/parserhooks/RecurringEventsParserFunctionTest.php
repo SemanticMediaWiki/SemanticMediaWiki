@@ -4,6 +4,8 @@ namespace SMW\Test;
 
 use SMW\RecurringEventsParserFunction;
 use SMW\Subobject;
+use SMW\ParserParameterFormatter;
+use SMW\MessageFormatter;
 
 use Title;
 use ParserOutput;
@@ -382,7 +384,8 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
 		return new RecurringEventsParserFunction(
 			$this->getParserData( $title, $parserOutput ),
-			new Subobject( $title )
+			new Subobject( $title ),
+			new MessageFormatter( $title->getPageLanguage() )
 		);
 	}
 
@@ -445,5 +448,4 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 		$result = RecurringEventsParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}
-
 }

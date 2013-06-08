@@ -99,13 +99,13 @@ interface IParserData {
 	public function updateStore();
 
 	/**
-	 * Returns an report about activities that occurred during processing
+	 * Returns errors that occurred during processing
 	 *
 	 * @since 1.9
 	 *
 	 * @return string
 	 */
-	public function getReport();
+	public function getErrors();
 
 }
 
@@ -223,18 +223,7 @@ class ParserData implements IParserData {
 	 * @return array
 	 */
 	public function getErrors() {
-		return array_unique( $this->errors );
-	}
-
-	/**
-	 * Returns boolean to indicate if an error appeared during processing
-	 *
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
-	public function hasError() {
-		return $this->errors !== array();
+		return $this->errors;
 	}
 
 	/**
@@ -246,17 +235,6 @@ class ParserData implements IParserData {
 	 */
 	public function addError( array $errors ) {
 		return $this->errors = array_merge ( $errors, $this->errors );
-	}
-
-	/**
-	 * Encode and report errors that appeared during processing
-	 *
-	 * @since  1.9
-	 *
-	 * @return string
-	 */
-	public function getReport() {
-		return smwfEncodeMessages( $this->getErrors() );
 	}
 
 	/**

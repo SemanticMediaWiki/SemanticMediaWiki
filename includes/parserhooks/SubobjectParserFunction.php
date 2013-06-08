@@ -40,27 +40,26 @@ use Parser;
  */
 class SubobjectParserFunction {
 
-	/**
-	 * Represents a IParserData object
-	 * @var IParserData
-	 */
+	/** @var IParserData */
 	protected $parserData;
 
-	/**
-	 * Represents a Subobject object
-	 * @var Subobject
-	 */
+	/** @var Subobject */
 	protected $subobject;
+
+	/** @var MessageFormatter */
+	protected $msgFormatter;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param IParserData $parserData
 	 * @param Subobject $subobject
+	 * @param MessageFormatter $msgFormatter
 	 */
-	public function __construct( IParserData $parserData, Subobject $subobject ) {
+	public function __construct( IParserData $parserData, Subobject $subobject, MessageFormatter $msgFormatter ) {
 		$this->parserData = $parserData;
 		$this->subobject = $subobject;
+		$this->msgFormatter = $msgFormatter;
 	}
 
 	/**
@@ -130,12 +129,12 @@ class SubobjectParserFunction {
 			$this->subobject->getContainer()
 		);
 
-		$this->parserData->addError( $this->subobject->getErrors() );
-
 		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->parserData->getReport();
+		return $this->msgFormatter->addFromArray( $this->subobject->getErrors() )
+			->addFromArray( $this->parserData->getErrors() )
+			->getHtml();
 	}
 
 	/**
@@ -148,7 +147,8 @@ class SubobjectParserFunction {
 	public static function render( Parser &$parser ) {
 		$instance = new self(
 			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new Subobject( $parser->getTitle() )
+			new Subobject( $parser->getTitle() ),
+			new MessageFormatter( $parser->getTargetLanguage() )
 		);
 		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
 	}
