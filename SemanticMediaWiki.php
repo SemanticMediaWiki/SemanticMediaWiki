@@ -19,7 +19,15 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'Not an entry point.' );
 }
 
-global $smwgIP;
+// Do not load SMW more then once
+if ( defined( 'SMW_VERSION' ) ) {
+	return;
+}
+
+// The SMW version number.
+define( 'SMW_VERSION', '1.9 alpha' );
+
+global $smwgIP, $wgResourceModules, $wgServer, $wgVersion, $wgExtensionCredits;
 
 if ( version_compare( $wgVersion, '1.19c', '<' ) ) {
 	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.19 or above; use SMW 1.8.x for MediaWiki 1.18.x or 1.17.x.' );
@@ -30,22 +38,23 @@ if ( !defined( 'Validator_VERSION' ) ) {
 	@include_once( __DIR__ . '/../Validator/Validator.php' );
 }
 
+if ( !defined( 'Validator_VERSION' ) && is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+	include_once( __DIR__ . '/vendor/autoload.php' );
+}
+
 // Only initialize the extension when all dependencies are present.
 if ( !defined( 'Validator_VERSION' ) ) {
-	die( '<b>Error:</b> You need to have <a href="https://www.mediawiki.org/wiki/Extension:Validator">Validator</a> installed in order to use <a href="https://www.semantic-mediawiki.org">Semantic MediaWiki</a>.<br />' );
+	throw new Exception( 'You need to have https://www.mediawiki.org/wiki/Extension:ParamProcessor installed in order to use SMW' );
 }
 
 // Version check for Validator, which needs to be at 1.0 or greater.
 if ( version_compare( Validator_VERSION, '1.0c', '<' ) ) {
-	die(
-		'<b>Error:</b> This version of SMW needs <a href="https://www.mediawiki.org/wiki/Extension:Validator">Validator</a> 1.0 or later.
+	throw new Exception(
+		'This version of SMW needs https://www.mediawiki.org/wiki/Extension:ParamProcessor 1.0 or later.
 		You are currently using version ' . Validator_VERSION . '.
 		If for any reason you are stuck at Validator 0.5.x, you can use SMW 1.8.x<br />'
 	);
 }
-
-// The SMW version number.
-define( 'SMW_VERSION', '1.9 alpha' );
 
 // Registration of the extension credits, see Special:Version.
 $wgExtensionCredits['semantic'][] = array(

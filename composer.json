@@ -33,5 +33,6 @@
 	"require": {
 		"php": ">=5.3.0",
 		"param-processor/param-processor": "dev-master"
-	}
+	},
+	"minimum-stability" : "dev"
 }
