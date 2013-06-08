@@ -153,6 +153,8 @@ class Settings {
 			'smwgNamespace' => $GLOBALS['smwgNamespace'],
 			'smwgMasterStore' => $GLOBALS['smwgMasterStore'],
 			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'],
+			'smwgStatisticsCache' => $GLOBALS['smwgStatisticsCache'],
+			'smwgStatisticsCacheExpiry' => $GLOBALS['smwgStatisticsCacheExpiry']
 		);
 
 		if ( self::$instance === null ) {

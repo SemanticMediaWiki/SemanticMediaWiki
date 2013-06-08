@@ -397,7 +397,7 @@ final class SMWHooks {
 	public static function onSpecialStatsAddExtra( array &$extraStats ) {
 		global $wgVersion, $wgLang;
 
-		$semanticStatistics = smwfGetStore()->getStatistics();
+		$semanticStatistics = \SMW\StoreFactory::getStore()->getStatistics();
 
 		if ( version_compare( $wgVersion, '1.21', '<' ) ) {
 			// Legacy approach to display statistical items
