@@ -243,10 +243,8 @@ class Highlighter extends \ContextSource {
 				$settings['state'] = 'persistent';
 				$settings['title'] = 'smw-ui-tooltip-title-info';
 				$settings['captionclass'] = 'smwbuiltin';
-				break;
 		};
 
 		return $settings;
 	}
-
 }
