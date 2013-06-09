@@ -167,5 +167,11 @@ class SMWSQLStore3Table {
 	public function getDiType() {
 		return $this->diType;
 	}
-
 }
+
+/**
+ * \SMW\SQLStore\TableDefinition
+ *
+ * @since 1.9
+ */
+class_alias( 'SMWSQLStore3Table', 'SMW\SQLStore\TableDefinition' );

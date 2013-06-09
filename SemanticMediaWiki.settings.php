@@ -569,3 +569,40 @@ $smwgStatisticsCache = true;
 ##
 $smwgStatisticsCacheExpiry = 3600;
 ##
+
+##
+# These are fixed properties, i.e. user defined properties having a
+# dedicated table for them. Entries in this array have the following format:
+#
+# 		property_key => property_type.
+#
+# The 'property_key' is the title of the property (with underscores instead
+# of _ and capital first letter).
+# The 'property_type' denotes the type of the property and has to be one of the following:
+#		SMWDataItem::TYPE_BLOB
+#		SMWDataItem::TYPE_URI
+#		SMWDataItem::TYPE_WIKIPAGE
+#		SMWDataItem::TYPE_NUMBER
+#		SMWDataItem::TYPE_TIME
+#		SMWDataItem::TYPE_BOOLEAN
+#		SMWDataItem::TYPE_CONTAINER
+#		SMWDataItem::TYPE_GEO
+#		SMWDataItem::TYPE_CONCEPT
+#		SMWDataItem::TYPE_PROPERTY
+#
+# A run of setup using SMWAdmin is needed to create these tables. If an already used property is assigned a new table all old data for this property will
+# become inaccessible for SMW. This can be repaired by either migrating it to the new table (repair data) or will eventually be updated on page edits.
+#
+# Example: If you have a property named 'Age' which is of type 'Number' then add in LocalSettings:
+#
+# 	$smwgFixedProperties = array(
+#		'Age' => SMWDataItem::TYPE_NUMBER
+#  	);
+#
+# @see http://semantic-mediawiki.org/wiki/Fixed_properties
+#
+# @since 1.9
+#
+# @var array
+##
+$smwgFixedProperties = array();

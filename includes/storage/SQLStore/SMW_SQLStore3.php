@@ -190,24 +190,6 @@ class SMWSQLStore3 extends SMWStore {
 	);
 
 	/**
-	* These are fixed properties, i.e. user defined tables having a
-	* dedicated table for them. Entries in this array have the format
-	* property key => property DI type. The key is a DB key (title with
-	* underscores instead of _ and capital first letter). The DI type is
-	* one of the types declared in SMWDataItem, e.g.,
-	* SMWDataItem::TYPE_DATE. The correct DI type for common datatypes
-	* can be found in SMWDataValueFactory.
-	*
-	* See also http://semantic-mediawiki.org/wiki/Fixed_properties
-	*
-	* @todo Move these to somewhere else?
-	*
-	* @since 1.8
-	* @var array
-	*/
-	public static $fixedProperties = array();
-
-	/**
 	 * Constructor.
 	 *
 	 * @since 1.8
@@ -796,58 +778,22 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return SMWSQLStore3Table[]
 	 */
 	public static function getPropertyTables() {
+
+		// Definitions are kept static to prevent them from being initialised twice
 		if ( isset( self::$prop_tables ) ) {
-			return self::$prop_tables; // Don't initialise twice.
+			return self::$prop_tables;
 		}
 
-		/**
-		 * @var SMWSQLStore3Table[] $propertyTables
-		 */
-		$propertyTables = array();
+		$propertyTDBuilder = new \SMW\SQLStore\PropertyTableDefinitionBuilder(
+			self::$di_type_tables,
+			self::$special_tables,
+			\SMW\Settings::newFromGlobals()->get( 'smwgFixedProperties' )
+		);
+		$propertyTDBuilder->doBuild();
 
-		//tables for each DI type
-		foreach( self::$di_type_tables as $tableDIType => $tableName ){
-			$propertyTables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName );
-		}
-
-		//tables for special properties
-		foreach( self::$special_tables as $propertyKey ){
-			$typeId = SMWDIProperty::getPredefinedPropertyTypeId( $propertyKey );
-			$diType = SMWDataValueFactory::getDataItemId( $typeId );
-			$tableName = 'smw_fpt' . strtolower( $propertyKey );
-			$propertyTables[$tableName] = new SMWSQLStore3Table( $diType, $tableName, $propertyKey );
-		}
-
-		// Redirect table uses another subject scheme for historic reasons
-		// TODO This should be changed if possible
-		$propertyTables['smw_fpt_redi']->setUsesIdSubject( false );
-
-		// Get all the tables for the properties that are declared as fixed
-		// (overly used and thus having separate tables)
-		foreach( self::$fixedProperties as $propertyKey => $tableDIType ){
-			$tableName = 'smw_fpt_' . md5( $propertyKey );
-			$propertyTables[$tableName] = new SMWSQLStore3Table( $tableDIType, $tableName, $propertyKey );
-		}
-
-		wfRunHooks( 'SMWPropertyTables', array( &$propertyTables ) );
-
-		self::$prop_tables = $propertyTables;
-
-		// Build index for finding property tables
-		self::$fixedPropertyTableIds = array();
-
-		foreach ( self::$prop_tables as $tid => $propTable ) {
-			if ( $propTable->isFixedPropertyTable() ) {
-				self::$fixedPropertyTableIds[$propTable->getFixedProperty()] = $tid;
-			}
-		}
-
-		// Specifically set properties that must not be stored in any
-		// property table to null here. Any function that hits this
-		// null unprepared is doing something wrong anyway.
-		self::$fixedPropertyTableIds['_SKEY'] = null;
+		self::$prop_tables = $propertyTDBuilder->getTableDefinitions();
+		self::$fixedPropertyTableIds = $propertyTDBuilder->getTableIds();
 
 		return self::$prop_tables;
 	}
-
 }
