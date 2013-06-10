@@ -351,7 +351,7 @@ $specialPageAliases['it'] = array(
 $specialPageAliases['ja'] = array(
 	'Ask' => array( '問い合わせ', '意味的検索' ),
 	'Browse' => array( '閲覧' ),
-	'ExportRDF' => array( 'RDFエクスポート', 'ＲＤＦエクスポート' ),
+	'ExportRDF' => array( 'RDF書き出し', 'RDFエクスポート', 'ＲＤＦエクスポート' ),
 	'PageProperty' => array( 'ページプロパティ' ),
 	'Properties' => array( 'プロパティ一覧' ),
 	'SMWAdmin' => array( 'SMW管理' ),
@@ -411,11 +411,11 @@ $specialPageAliases['ksh'] = array(
 /** Cornish (kernowek) */
 $specialPageAliases['kw'] = array(
 	'Ask' => array( 'Govyn' ),
-	'Browse' => array( 'Peury' ),
-	'ExportRDF' => array( 'EsperthyRDF' ),
+	'Browse' => array( 'Peuri' ),
+	'ExportRDF' => array( 'EsperthiRDF' ),
 	'PageProperty' => array( 'GnasFolen' ),
 	'Properties' => array( 'Gnasow' ),
-	'SearchByProperty' => array( 'WhilasHerwydhGnas' ),
+	'SearchByProperty' => array( 'HwilasHerwydhGnas' ),
 );
 
 /** Luxembourgish (Lëtzebuergesch) */

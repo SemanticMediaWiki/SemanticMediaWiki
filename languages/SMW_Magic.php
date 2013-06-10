@@ -162,7 +162,7 @@ $magicWords['ko'] = array(
 /** Cornish (kernowek) */
 $magicWords['kw'] = array(
 	'ask' => array( 0, 'govyn' ),
-	'show' => array( 0, 'disqwedhes' ),
+	'show' => array( 0, 'diskwedhes' ),
 	'info' => array( 0, 'kedhlow' ),
 	'set' => array( 0, 'settya' ),
 );

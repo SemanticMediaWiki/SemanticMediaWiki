@@ -2347,6 +2347,7 @@ Arabat krouiñ unan all.', # Fuzzy
 
 /** Bosnian (bosanski)
  * @author CERminator
+ * @author Sociologist
  */
 $messages['bs'] = array(
 	'smw_viewasrdf' => 'RDF fid',
@@ -2395,6 +2396,7 @@ $messages['bs'] = array(
  * @author Loupeter
  * @author Pitort
  * @author SMP
+ * @author Sociologist
  * @author Solde
  * @author Toniher
  */
@@ -2725,8 +2727,14 @@ Progrés estimat de l'actualització actual:",
  * @author Умар
  */
 $messages['ce'] = array(
+	'smw_viewasrdf' => 'RDF хьост',
 	'smw_printername_template' => 'Кеп',
+	'smw_nodatetime' => 'Дозушдоцу терахь «$1».',
+	'smw_purge' => 'Карлаяккха',
 	'smw-ask-delete' => '[ДӀаяккха]',
+	'smw_smwadmin_db' => 'Хааман база дӏахӏоттор а керла яккхар а',
+	'smw_smwadmin_datarefresh' => 'Хаам меттахӏоттор а керла баккхар а',
+	'smw_smwadmin_datarefreshbutton' => 'Хаам керла баккха дӏадоладе',
 );
 
 /** Chamorro (Chamoru)
@@ -6302,6 +6310,7 @@ $messages['hil'] = array(
 
 /** Croatian (hrvatski)
  * @author Dalibor Bosits
+ * @author Sociologist
  * @author Tivek
  */
 $messages['hr'] = array(
@@ -8812,7 +8821,7 @@ $messages['ko'] = array(
 	'browse' => '위키 찾아보기',
 	'smw_browselink' => '속성 찾아보기',
 	'smw_browse_article' => '찾아보기를 시작하려면 문서의 이름을 입력하세요.',
-	'smw_browse_go' => '가기',
+	'smw_browse_go' => '보기',
 	'smw_browse_show_incoming' => '여기에 링크 속성을 보이기',
 	'smw_browse_hide_incoming' => '여기에 링크 속성을 숨기기',
 	'smw_browse_no_outgoing' => '이 문서에는 속성이 없습니다.',
@@ -11101,6 +11110,7 @@ $messages['pfl'] = array(
  * @author BeginaFelicysym
  * @author Maikking
  * @author Odie2
+ * @author Sociologist
  * @author Sp5uhe
  * @author ToSter
  * @author Vuh
@@ -13650,6 +13660,7 @@ $messages['sr-ec'] = array(
  * @author Michaello
  * @author Rancher
  * @author Slaven Kosanovic
+ * @author Sociologist
  */
 $messages['sr-el'] = array(
 	'smw_viewasrdf' => 'RDF dovod',
@@ -15146,15 +15157,16 @@ $messages['ur'] = array(
 
 /** Uzbek (oʻzbekcha)
  * @author CoderSI
+ * @author Sociologist
  */
 $messages['uz'] = array(
 	'specialpages-group-smw_group' => "Ma'noviy MediaWiki",
 	'smw_purge' => 'Yangilash',
-	'smw_browselink' => "Xossalarni ko'rish",
+	'smw_browselink' => 'Xossalarni koʻrish',
 	'smw-info-par-message' => 'Tasvirlash uchun xabar',
 	'prefs-smw' => "Ma'noviy MediaWiki",
-	'prefs-ask-options' => "Ma'noviy qidiruv moslamalari",
-	'smw-prefs-ask-options-tooltip-display' => "Ko'rsatkich matnni yo'l ko'rsatuvchi ma'lumot sifatida tasvirlash",
+	'prefs-ask-options' => 'Maʼnoviy qidiruv moslamalari',
+	'smw-prefs-ask-options-tooltip-display' => '«Matn» koʻrsatkichini paydo boʻladigan yordamchi sifatida aks ettirish',
 	'smw-prefs-ask-options-collapsed-default' => "Boshlang'ich holatga yig'ilgan turishi uchun tanlov maydoniga ruxsatlilikni yoqish",
 	'smw_unknowntype' => "Ushbu xossaning tipi noto'g'ri",
 );
