@@ -146,19 +146,21 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $incDir . 'RecurringEvents.php';
 
 	$wgAutoloadClasses['SMW\Settings']              = $incDir . 'Settings.php';
+	$wgAutoloadClasses['SMW\NamespaceExaminer']     = $incDir . 'NamespaceExaminer.php';
+
+	$wgAutoloadClasses['SMW\CacheHandler']             = $incDir . '/handlers/CacheHandler.php';
 
 	// Formatters
 	$wgAutoloadClasses['SMW\ArrayFormatter']           = $incDir . 'formatters/ArrayFormatter.php';
 	$wgAutoloadClasses['SMW\ParserParameterFormatter'] = $incDir . 'formatters/ParserParameterFormatter.php';
 	$wgAutoloadClasses['SMW\MessageFormatter']         = $incDir . 'formatters/MessageFormatter.php';
 
-	$wgAutoloadClasses['SMW\CacheHandler']             = $incDir . '/handlers/CacheHandler.php';
-
 	// Exceptions
 	$wgAutoloadClasses['SMW\StoreInstanceException']       = $incDir . '/exceptions/StoreInstanceException.php';
 	$wgAutoloadClasses['SMW\SettingsArgumentException']    = $incDir . '/exceptions/SettingsArgumentException.php';
 	$wgAutoloadClasses['SMW\PredefinedPropertyException']  = $incDir . '/exceptions/PredefinedPropertyException.php';
 	$wgAutoloadClasses['SMW\InvalidSemanticDataException'] = $incDir . '/exceptions/InvalidSemanticDataException.php';
+	$wgAutoloadClasses['SMW\InvalidNamespaceException']    = $incDir . '/exceptions/InvalidNamespaceException.php';
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';

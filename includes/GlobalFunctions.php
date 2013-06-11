@@ -10,13 +10,13 @@
  */
 
 /**
- * Return true if semantic data should be processed and displayed for a page
- * in the given namespace.
+ * @see NamespaceExaminer
+ *
  * @return boolean
+ * @deprecated since 1.9 and will be removed in 1.11
  */
 function smwfIsSemanticsProcessed( $namespace ) {
-	global $smwgNamespacesWithSemanticLinks;
-	return !empty( $smwgNamespacesWithSemanticLinks[$namespace] );
+	return \SMW\NamespaceExaminer::getInstance()->isSemanticEnabled( $namespace );
 }
 
 /**
