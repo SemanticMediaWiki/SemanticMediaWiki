@@ -442,6 +442,17 @@ Estimated progress of current update:',
 
 	// Query printer messages
 	'smw-qp-aggregatable-empty-data' => 'Requested aggregatable data could not be displayed due to some insufficient selection criteria.',
+
+	// Rights
+	'right-smw-admin' => 'Access administration tasks (Semantic MediaWiki)',
+
+	// Groups
+	'group-smwadministrator' => 'Semantic MediaWiki administrators',
+	'group-smwadministrator-member' => '{{GENDER:$1|administrator (SMW)}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW_administrators',
+
+	// Actions
+	'action-smw-admin' => 'access Semantic MediaWiki administration tasks'
 );
 
 /** Message documentation (Message documentation)
@@ -970,6 +981,11 @@ Parameters:
 	'smw_conceptarticlecount' => 'This is the introductory message below the header on pages in namespace "Concept". Parameters:
 * $1 holds the number of pages displayed in the current view.',
 	'smw-qp-aggregatable-empty-data' => 'An error message shown for insufficient data.',
+	'right-smw-admin' => '{{doc-right|smw-admin}}',
+	'group-smwadministrator' => '{{doc-group|smwadministrator|group}}',
+	'group-smwadministrator-member' => '{{doc-group|smwadministrator|member}}',
+	'grouppage-smwadministrator' => '{{doc-group|smwadministrator|page}}',
+	'action-smw-admin' => '{{doc-action|smw-admin}}',
 );
 
 /** Afrikaans (Afrikaans)

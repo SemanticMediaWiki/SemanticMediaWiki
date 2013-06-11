@@ -119,3 +119,10 @@ $wgFooterIcons['poweredby']['semanticmediawiki'] = array(
 );
 
 $smwgNamespace = parse_url( $wgServer, PHP_URL_HOST );
+
+// Rights
+$wgAvailableRights[] = 'smw-admin';
+
+// User group rights
+$wgGroupPermissions['sysop']['smw-admin'] = true;
+$wgGroupPermissions['smwadministrator']['smw-admin'] = true;
