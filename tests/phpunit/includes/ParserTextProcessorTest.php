@@ -364,9 +364,9 @@ class ParserTextProcessorTest extends ParserTestCase {
 		// Make protected methods accessible
 		$reflection = new ReflectionClass( $this->getClass() );
 
-		$method = $reflection->getMethod( 'isSemanticEnabled' );
-		$method->setAccessible( true );
-		$method->invoke( $instance, $mockTitle );
+		$property = $reflection->getProperty( 'isEnabled' );
+		$property->setAccessible( true );
+		$property->setValue( $instance, true );
 
 		$method = $reflection->getMethod( 'setRedirect' );
 		$method->setAccessible( true );

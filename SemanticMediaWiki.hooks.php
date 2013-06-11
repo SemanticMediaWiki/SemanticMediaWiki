@@ -624,17 +624,15 @@ final class SMWHooks {
 	 */
 	public static function onInternalParseBeforeLinks( Parser &$parser, &$text ) {
 
-		$settings = SMW\Settings::newFromArray( array(
-			'smwgNamespacesWithSemanticLinks' => $GLOBALS['smwgNamespacesWithSemanticLinks'],
-			'smwgLinksInValues' => $GLOBALS['smwgLinksInValues'],
-			'smwgInlineErrors'  => $GLOBALS['smwgInlineErrors']
-		) );
+		if ( !$parser->getTitle()->isSpecialPage() ) {
 
-		$processor = new SMW\ParserTextProcessor(
-			new SMW\ParserData( $parser->getTitle(), $parser->getOutput() ),
-			$settings
-		);
-		$processor->parse( $text );
+			$processor = new SMW\ParserTextProcessor(
+				new \SMW\ParserData( $parser->getTitle(), $parser->getOutput() ),
+				\SMW\Settings::newFromGlobals()
+			);
+
+			$processor->parse( $text );
+		}
 
 		return true;
 	}

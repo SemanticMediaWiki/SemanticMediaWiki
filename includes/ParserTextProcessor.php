@@ -117,7 +117,7 @@ class ParserTextProcessor {
 		$this->stripMagicWords( $text );
 
 		// Attest if semantic data should be processed
-		$this->isSemanticEnabled( $title );
+		$this->isEnabled = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
 
 		// Process redirects
 		$this->setRedirect( $title );
@@ -134,22 +134,6 @@ class ParserTextProcessor {
 		$this->parserData->getOutput()->addModules( $this->getModules()  );
 		$this->parserData->updateOutput();
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
-	}
-
-	/**
-	 * Attest if semantic data should be processed and displayed
-	 * for a page in the given namespace. (have to parse them in
-	 * any case, in order to clean the wiki source for further processing)
-	 *
-	 * @since 1.9
-	 *
-	 * @param Title $title
-	 *
-	 * @return boolean
-	 */
-	protected function isSemanticEnabled( Title $title ) {
-		$namespaces = $this->settings->get( 'smwgNamespacesWithSemanticLinks' );
-		$this->isEnabled = !empty( $namespaces[$title->getNamespace()] );
 	}
 
 	/**
