@@ -3362,6 +3362,11 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw_concept_header' => 'Seiten mit dem Konzept „$1“',
 	'smw_conceptarticlecount' => 'Unten {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt.',
 	'smw-qp-aggregatable-empty-data' => 'Aufgrund von mangelhaften Auswahlkriterien können die angeforderten aggregierbaren Daten nicht angezeigt werden.',
+	'right-smw-admin' => 'Semantic MediaWiki administrieren',
+	'group-smwadministrator' => 'SMW-Administratoren',
+	'group-smwadministrator-member' => '{{GENDER:$1|SMW-Administrator|SMW-Administratorin}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW-Administratoren',
+	'action-smw-admin' => 'Semantic MediaWiki zu administrieren',
 );
 
 /** Zazaki (Zazaki)
@@ -5297,6 +5302,11 @@ Progression estimée de la mise à jour actuelle :',
 	'smw_concept_header' => 'Page du concept « $1 »',
 	'smw_conceptarticlecount' => 'Afficher ci-dessous $1 {{PLURAL:$1|page|pages}}.',
 	'smw-qp-aggregatable-empty-data' => 'Les données agrégées demandées n’ont pas pu être affichées à cause de critères de sélection insuffisants.',
+	'right-smw-admin' => 'Tâches d’administration des accès (MédiaWiki Sémantique)',
+	'group-smwadministrator' => 'Administrateurs de MédiaWiki Sémantique',
+	'group-smwadministrator-member' => '{{GENDER:$1|administrateur(SMW)|administratrice (SMW)}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW_administrators',
+	'action-smw-admin' => 'tâches d’administration des accès à MédiaWiki Sémantique',
 );
 
 /** Franco-Provençal (arpetan)
@@ -5811,6 +5821,11 @@ Progreso estimado da actualización actual:',
 	'smw_concept_header' => 'Páxinas do concepto "$1"',
 	'smw_conceptarticlecount' => 'A continuación {{PLURAL:$1|móstrase $1 páxina|móstranse $1 páxinas}}.',
 	'smw-qp-aggregatable-empty-data' => 'Os datos agregados solicitados non se poden mostrar debido a uns criterios de selección insuficientes.',
+	'right-smw-admin' => 'Acceder ás tarefas administrativas (Semantic MediaWiki)',
+	'group-smwadministrator' => 'Administradores de Semantic MediaWiki',
+	'group-smwadministrator-member' => '{{GENDER:$1|administrador|administradora}} (SMW)',
+	'grouppage-smwadministrator' => '{{ns:project}}:Administradores de SMW',
+	'action-smw-admin' => 'acceder ás tarefas administrativas de Semantic MediaWiki',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -8298,6 +8313,11 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw-concept-cache-text' => '概念には $1 {{PLURAL:$1|件のページ}}があり、最終更新は $2 です。',
 	'smw_concept_header' => '概念「$1」のページ',
 	'smw_conceptarticlecount' => '以下に $1 {{PLURAL:$1|件のページ}}を表示しています。',
+	'right-smw-admin' => 'アクセス管理作業 (Semantic MediaWiki)',
+	'group-smwadministrator' => 'Semantic MediaWiki 管理者',
+	'group-smwadministrator-member' => '{{GENDER:$1|管理者 (SMW)}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW_管理者',
+	'action-smw-admin' => 'Semantic MediaWiki 管理作業へのアクセス',
 );
 
 /** Javanese (Basa Jawa)
@@ -9815,6 +9835,11 @@ $messages['mk'] = array(
 	'smw_concept_header' => 'Страници на концептот „$1“',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Прикажана е $1 страница која му припаѓа|Прикажани се $1 страници кои му припаѓаат}} на тој концепт.',
 	'smw-qp-aggregatable-empty-data' => 'Побараните податоци за агрегатна употреба не можат да се прикажат поради извесни недоволни услови на избор.',
+	'right-smw-admin' => 'Пристап до административни задачи (Семантички МедијаВики)',
+	'group-smwadministrator' => 'Администратори на Семантички МедијаВики',
+	'group-smwadministrator-member' => '{{GENDER:$1|администратор на СМВ}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:Администратори_на_СМВ',
+	'action-smw-admin' => 'пристап до административните задачи на Семантички МедијаВики',
 );
 
 /** Malayalam (മലയാളം)
