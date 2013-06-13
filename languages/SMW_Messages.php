@@ -2363,11 +2363,12 @@ Arabat krouiñ unan all.', # Fuzzy
 
 /** Bosnian (bosanski)
  * @author CERminator
+ * @author DzWiki
  * @author Sociologist
  */
 $messages['bs'] = array(
 	'smw_viewasrdf' => 'RDF fid',
-	'smw_finallistconjunct' => ' i',
+	'smw_finallistconjunct' => ', i',
 	'smw_factbox_head' => 'Činjenice o $1',
 	'smw_isspecprop' => 'Ovo svojstvo je posebna osobina na ovoj wiki.',
 	'smw_concept_description' => 'Opis koncepta "$1"',
