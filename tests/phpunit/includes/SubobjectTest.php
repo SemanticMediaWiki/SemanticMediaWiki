@@ -6,6 +6,7 @@ use SMW\DataValueFactory;
 use SMW\Subobject;
 
 use SMWDIProperty;
+use SMWDIBlob;
 use Title;
 
 /**
@@ -197,6 +198,68 @@ class SubobjectTest extends ParserTestCase {
 
 	/**
 	 * @test Subobject::addPropertyValue
+	 * @dataProvider getDataValueProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $test
+	 * @param array $expected
+	 * @param array $info
+	 */
+	public function testDataValueExaminer( array $test, array $expected ) {
+
+		$subobject = $this->getInstance( $this->getTitle(), $this->getRandomString() );
+
+		// Mock Property object
+		$property = $this->getMockBuilder( $test['property']['DI'] )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$property->expects( $this->any() )
+			->method( 'findPropertyTypeID' )
+			->will( $this->returnValue( $test['property']['typeId'] )
+		);
+
+		$property->expects( $this->any() )
+			->method( 'getKey' )
+			->will( $this->returnValue( $test['property']['key'] )
+		);
+
+		$property->expects( $this->any() )
+			->method( 'getLabel' )
+			->will( $this->returnValue( $test['property']['label'] )
+		);
+
+		// Mock DataValue object
+		$dataValue = $this->getMockBuilder( $test['dataValue']['type'] )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValue->expects( $this->any() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $property )
+		);
+
+		$dataValue->expects( $this->any() )
+			->method( 'isValid' )
+			->will( $this->returnValue( true )
+		);
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $test['dataValue']['dataItem'] )
+		);
+
+		$subobject->addPropertyValue( $dataValue );
+
+		$this->assertCount( $expected['errors'], $subobject->getErrors() );
+		$this->assertInstanceOf( 'SMWSemanticData', $subobject->getSemanticData() );
+		$this->assertSemanticData( $subobject->getSemanticData(), $expected );
+
+	}
+
+	/**
+	 * @test Subobject::addPropertyValue
 	 *
 	 * @since 1.9
 	 *
@@ -369,6 +432,39 @@ class SubobjectTest extends ParserTestCase {
 				),
 				array( 'msg'  => 'Failed asserting that an improper value for a _wpg property would add "Has improper value for"' )
 			)
+		);
+	}
+
+	/**
+	 * Provides sample data for various dataItem/datValues
+	 *
+	 * @return array
+	 */
+	public function getDataValueProvider() {
+
+		return array(
+
+			// #0 Bug 49530
+			array(
+				array(
+					'property' => array(
+						'DI' => 'SMWDIProperty',
+						'typeId' => '_txt',
+						'label'  => 'TextExample',
+						'key'    => 'TextExample'
+					),
+					'dataValue' => array(
+						'type' => 'SMWStringValue',
+						'dataItem' => new SMWDIBlob( '<a href="http://username@example.org/path">Example</a>' )
+					)
+				),
+				array(
+					'errors' => 0,
+					'propertyCount' => 1,
+					'propertyLabel' => 'TextExample',
+					'propertyValue' => '<a href="http://username@example.org/path">Example</a>',
+				)
+			),
 		);
 	}
 }
