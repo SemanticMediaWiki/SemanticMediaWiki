@@ -1,7 +1,6 @@
 .*
 *~
 *.kate-swp
-.*.swp
 
 vendor/
 composer.phar
@@ -9,3 +8,5 @@ composer.lock
 
 !.gitignore
 !.gitreview
+
+!.travis.yml
