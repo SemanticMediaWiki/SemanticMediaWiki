@@ -2,10 +2,10 @@
 
 /**
  * Print query results in tables.
- * 
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * 
+ *
  * @file
  * @ingroup SMWQuery
  */
@@ -19,12 +19,15 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		$result = '';
-		
+
+		$this->isHTML = ( $outputmode === SMW_OUTPUT_HTML );
+		$this->tableFormatter = new \SMW\TableFormatter( $this->isHTML );
+
 		$columnClasses = array();
-		
+
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$headers = array();
-			
+
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
 				$attribs = array();
 				$columnClass = str_replace( array( ' ', '_' ), '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
@@ -33,71 +36,50 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;
 				$text = $pr->getText( $outputmode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null : $this->mLinker ) );
-				
-				$headers[] = Html::rawElement(
-					'th',
-					$attribs,
-					$text === '' ? '&nbsp;' : $text
-				);
-			}
-			
-			$headers = '<tr>' . implode( "\n", $headers ) . '</tr>';
-			
-			if ( $outputmode == SMW_OUTPUT_HTML ) {
-				$headers = '<thead>' . $headers . '</thead>'; 
-			}
-			$headers = "\n$headers\n";
 
-			$result .= $headers;
+				$this->tableFormatter->addTableHeader( ( $text === '' ? '&nbsp;' : $text ), $attribs );
+			}
 		}
-		
-		$tableRows = array();
-		$rowNum = 1;
+
 		while ( $subject = $res->getNext() ) {
-			$tableRows[] = $this->getRowForSubject( $subject, $outputmode, $columnClasses, $rowNum++ );
+			$this->getRowForSubject( $subject, $outputmode, $columnClasses );
+			$this->tableFormatter->addTableRow();
 		}
 
-		$tableRows = implode( "\n", $tableRows );
-		
-		if ( $outputmode == SMW_OUTPUT_HTML ) {
-			$tableRows = '<tbody>' . $tableRows . '</tbody>'; 
-		}
-		
-		$result .= $tableRows;
-		
 		// print further results footer
 		if ( $this->linkFurtherResults( $res ) ) {
 			$link = $this->getFurtherResultsLink( $res, $outputmode );
-			$result .= "\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $link->getText( $outputmode, $this->mLinker ) . "</td></tr>\n";
+
+			$this->tableFormatter->addTableCell(
+					$link->getText( $outputmode, $this->mLinker ),
+					array( 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() )
+			);
+			$this->tableFormatter->addTableRow( array( 'class' => 'smwfooter' ) );
 		}
-		
-		// Put the <table> tag around the whole thing
+
 		$tableAttrs = array( 'class' => $this->params['class'] );
-		
+
 		if ( $this->mFormat == 'broadtable' ) {
 			$tableAttrs['width'] = '100%';
 		}
-		
-		$result = Xml::tags( 'table', $tableAttrs, $result );
 
-		$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
-		
-		return $result;
+		// @note A table is only transposable if header elements are visible
+		// $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose']
+		return $this->tableFormatter->transpose( false )->getTable( $tableAttrs );
 	}
 
 	/**
 	 * Gets a single table row for a subject, ie page.
-	 * 
+	 *
 	 * @since 1.6.1
-	 * 
+	 *
 	 * @param array $subject
 	 * @param $outputmode
-	 * 
+	 *
 	 * @return string
 	 */
-	protected function getRowForSubject( array /* of SMWResultArray */ $subject, $outputmode, $columnClasses, $rowNum ) {
-		$cells = array();
-		
+	protected function getRowForSubject( array /* of SMWResultArray */ $subject, $outputmode, $columnClasses ) {
+
 		foreach ( $subject as $i => $field ) {
 			// $columnClasses will be empty if "headers=hide"
 			// was set.
@@ -106,43 +88,41 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			} else {
 				$columnClass = null;
 			}
-			$cells[] = $this->getCellForPropVals( $field, $outputmode, $columnClass );
+
+			$this->getCellForPropVals( $field, $outputmode, $columnClass );
 		}
-		
-		$rowClass = ( $rowNum % 2 == 1 ) ? 'row-odd' : 'row-even';
-		return "<tr class=\"$rowClass\">\n\t" . implode( "\n\t", $cells ) . "\n</tr>";
 	}
-	
+
 	/**
 	 * Gets a table cell for all values of a property of a subject.
-	 * 
+	 *
 	 * @since 1.6.1
-	 * 
+	 *
 	 * @param SMWResultArray $resultArray
 	 * @param $outputmode
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getCellForPropVals( SMWResultArray $resultArray, $outputmode, $columnClass ) {
 		$dataValues = array();
-		
+
 		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
 			$dataValues[] = $dv;
 		}
-		
+
 		$attribs = array();
 		$content = null;
-		
+
 		if ( count( $dataValues ) > 0 ) {
 			$sortkey = $dataValues[0]->getDataItem()->getSortKey();
 			$dataValueType = $dataValues[0]->getTypeID();
-			
+
 			if ( is_numeric( $sortkey ) ) {
 				$attribs['data-sort-value'] = $sortkey;
 			}
-			
+
 			$alignment = trim( $resultArray->getPrintRequest()->getParameter( 'align' ) );
-		
+
 			if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
 				$attribs['style'] = "text-align:' . $alignment . ';";
 			}
@@ -154,33 +134,29 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				$resultArray->getPrintRequest()->getMode() == SMWPrintRequest::PRINT_THIS
 			);
 		}
-		
-		return Html::rawElement(
-			'td',
-			$attribs,
-			$content
-		);
+
+		$this->tableFormatter->addTableCell( $content, $attribs );
 	}
-	
+
 	/**
 	 * Gets the contents for a table cell for all values of a property of a subject.
-	 * 
+	 *
 	 * @since 1.6.1
-	 * 
+	 *
 	 * @param array $dataValues
 	 * @param $outputmode
 	 * @param boolean $isSubject
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getCellContent( array /* of SMWDataValue */ $dataValues, $outputmode, $isSubject ) {
 		$values = array();
-		
+
 		foreach ( $dataValues as $dv ) {
 			$value = $dv->getShortText( $outputmode, $this->getLinker( $isSubject ) );
 			$values[] = $value;
 		}
-		
+
 		return implode( '<br />', $values );
 	}
 
@@ -202,7 +178,13 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			'default' => 'sortable wikitable smwtable',
 		);
 
+		// Uncomment to enable this feature
+		// $params['transpose'] = array(
+		//	'type' => 'boolean',
+		//	'default' => false,
+		//	'message' => 'smw-paramdesc-table-transpose',
+		// );
+
 		return $params;
 	}
-	
 }

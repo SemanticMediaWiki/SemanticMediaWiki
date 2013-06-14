@@ -154,6 +154,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ArrayFormatter']           = $incDir . 'formatters/ArrayFormatter.php';
 	$wgAutoloadClasses['SMW\ParserParameterFormatter'] = $incDir . 'formatters/ParserParameterFormatter.php';
 	$wgAutoloadClasses['SMW\MessageFormatter']         = $incDir . 'formatters/MessageFormatter.php';
+	$wgAutoloadClasses['SMW\TableFormatter']           = $incDir . 'formatters/TableFormatter.php';
 
 	// Exceptions
 	$wgAutoloadClasses['SMW\StoreInstanceException']       = $incDir . '/exceptions/StoreInstanceException.php';
