@@ -1725,6 +1725,11 @@ $messages['ast'] = array(
 	'smw_printername_template' => 'Plantía',
 	'smw_printername_rdf' => 'Esportación a RDF',
 	'smw_printername_category' => 'Categoría',
+	'right-smw-admin' => 'Entrar nes xeres alministratives (Semantic MediaWiki)',
+	'group-smwadministrator' => 'Alministradores de Semantic MediaWiki',
+	'group-smwadministrator-member' => '{{GENDER:$1|alministrador|alministradora}} (SMW)',
+	'grouppage-smwadministrator' => '{{ns:project}}:Alministradores_SMW',
+	'action-smw-admin' => 'entrar nes xeres alministratives de Semantic MediaWiki',
 );
 
 /** Azerbaijani (azərbaycanca)
@@ -9277,6 +9282,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|mol benotzt|mol benotzt}})',
 	'smw_purge' => 'Aktualiséieren',
 	'types' => 'Typen',
+	'smw-special-types-no-such-type' => 'Den Datentyp deen ugi gouf gëtt et net',
 	'semanticstatistics' => 'Semantesch Statistiken',
 	'smw-statistics' => 'Semantesch Statistiken',
 	'smw-statistics-concept-count' => '{{PLURAL:$1|Konzept|Konzepter}}',
@@ -9306,6 +9312,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_qc_otheropt' => 'Aner Optiounen',
 	'smw_qc_default' => 'Standard:',
 	'smw_qc_formatopt' => 'Optioune fir de Format',
+	'smw_qui_prop' => 'Eegeschaft:',
 	'smw_qui_labl' => 'Etiquette:',
 	'smw_qui_formt' => 'Format:',
 	'smw_qui_limt' => 'Limit:',
@@ -9313,6 +9320,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_qui_invalidformat' => 'Den erausgesichte Format "$1" gëtt et fir dës Wiki net',
 	'smw_qui_nosort' => 'Net zortéieren',
 	'smw_qui_randorder' => 'Zoufall',
+	'smw_qui_addnprop' => 'Eegeschaft derbäisetzen',
 	'smw_qui_delete' => 'Ewechhuelen',
 	'smw_qui_options' => 'Optiounen',
 	'smw_qui_addcategory' => 'Kategorie derbäisetzen',
@@ -9376,18 +9384,21 @@ Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	'smw_adminlinks_datastructure' => 'Datestruktur',
 	'smw_adminlinks_displayingdata' => 'Donnéeë weisen',
 	'smw_adminlinks_inlinequerieshelp' => 'Hëllef fir intern Ufroen',
+	'smw-createproperty-isproperty' => 'Dëst ass en Eegeschaft vum Typ $1-',
 	'smw-paramdesc-category-template' => "Eng Schabloun fir d'Objeten ze formatéieren",
 	'smw-paramdesc-category-userparam' => 'E Parameter deen der Schabloun iwwergi gëtt',
 	'smw-info-par-message' => 'Message fir ze weisen.',
 	'smw-info-par-icon' => 'Symbol fir entweder "Info" oder "Warnung" ze weisen.',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Semantesch Sichoptiounen',
+	'smw-ui-tooltip-title-property' => 'Eegeschaft',
 	'smw-ui-tooltip-title-quantity' => 'Quantitéit',
 	'smw-ui-tooltip-title-info' => 'Informatioun',
 	'smw-ui-tooltip-title-service' => 'Service-Linken',
 	'smw-ui-tooltip-title-warning' => 'Feeler',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
 	'smw-ui-tooltip-title-note' => 'Notiz',
+	'smw-ui-tooltip-title-legend' => 'Erklärung',
 	'smw_concept_header' => 'Säite vum Konzept "$1"',
 	'smw_conceptarticlecount' => 'Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.',
 );
@@ -11154,6 +11165,7 @@ $messages['pfl'] = array(
  * @author BeginaFelicysym
  * @author Maikking
  * @author Odie2
+ * @author Rzuwig
  * @author Sociologist
  * @author Sp5uhe
  * @author ToSter
@@ -11429,6 +11441,8 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw_unknowntype' => 'Typ atrybutu jest nieprawidłowy.',
 	'smw_concept_header' => 'Strony koncepcji „$1”',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Wyświetlona jest jedna strona należąca|Wyświetlone zostały $1 strony należące|Wyświetlonych zostało $1 stron należących}} do tej koncepcji.', # Fuzzy
+	'group-smwadministrator' => 'Administratorzy SMW',
+	'group-smwadministrator-member' => '{{GENDER:$1|administrator SMW|administratorka SMW}}',
 );
 
 /** Piedmontese (Piemontèis)
@@ -15206,6 +15220,7 @@ $messages['ur'] = array(
 $messages['uz'] = array(
 	'specialpages-group-smw_group' => "Ma'noviy MediaWiki",
 	'smw_purge' => 'Yangilash',
+	'smw_qui_addcategory' => 'turkum qoʻshish',
 	'smw_browselink' => 'Xossalarni koʻrish',
 	'smw-info-par-message' => 'Tasvirlash uchun xabar',
 	'prefs-smw' => "Ma'noviy MediaWiki",
