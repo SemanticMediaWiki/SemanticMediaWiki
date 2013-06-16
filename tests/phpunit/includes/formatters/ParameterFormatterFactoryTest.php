@@ -1,9 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Test;
+
+use SMW\ParameterFormatterFactory;
 
 /**
- * Interface related to classes responsible for array formatting
+ * Tests for the ParameterFormatterFactory class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,44 +31,44 @@ namespace SMW;
  */
 
 /**
- * Interface related to classes responsible for array formatting
+ * @covers \SMW\ParameterFormatterFactory
  *
- * @ingroup Formatter
- * @codeCoverageIgnore
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
-abstract class ArrayFormatter {
-
-	/** @var array */
-	protected $errors = array();
+class ParameterFormatterFactoryTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns collected errors
+	 * Returns the name of the class to be tested
 	 *
-	 * @since 1.9
-	 *
-	 * @return array
+	 * @return string|false
 	 */
-	public function getErrors() {
-		return $this->errors;
+	public function getClass() {
+		return '\SMW\ParameterFormatterFactory';
 	}
 
 	/**
-	 * Adds an error
+	 * Helper method that returns a ArrayFormatter object
 	 *
 	 * @since 1.9
 	 *
-	 * @param mixed $error
+	 * @param array $params
+	 *
+	 * @return ArrayFormatter
 	 */
-	public function addError( $error ) {
-		$this->errors = array_merge( (array)$error === $error ? $error : array( $error ), $this->errors );
+	private function getInstance( array $params = array() ) {
+		return ParameterFormatterFactory::newFromArray( $params );
 	}
 
 	/**
-	 * Returns a formatted array
+	 * @test ParameterFormatterFactory::newFromArray
 	 *
 	 * @since 1.9
-	 *
-	 * Implementation is carried out by a subclasses
 	 */
-	abstract public function toArray();
+	public function testNewFromArray() {
+		$instance = $this->getInstance();
+		$this->assertInstanceOf( '\SMW\ArrayFormatter', $instance );
+	}
 }

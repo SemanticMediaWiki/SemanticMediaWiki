@@ -23,9 +23,8 @@ namespace SMW;
  * @since 1.9
  *
  * @file
- * @ingroup Formatter
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 

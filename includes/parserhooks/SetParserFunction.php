@@ -28,10 +28,8 @@ use Parser;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author mwjames
@@ -40,7 +38,6 @@ use Parser;
 /**
  * Class that provides the {{#set}} parser function
  *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class SetParserFunction {
@@ -88,7 +85,9 @@ class SetParserFunction {
 		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->msgFormatter->addFromArray( $this->parserData->getErrors() )->getHtml();
+		return $this->msgFormatter->addFromArray( $this->parserData->getErrors() )
+			->addFromArray( $parameters->getErrors() )
+			->getHtml();
 	}
 
 	/**
@@ -103,6 +102,6 @@ class SetParserFunction {
 			new ParserData( $parser->getTitle(), $parser->getOutput() ),
 			new MessageFormatter( $parser->getTargetLanguage() )
 		);
-		return $set->parse( new ParserParameterFormatter( func_get_args() ) );
+		return $set->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
 	}
 }
