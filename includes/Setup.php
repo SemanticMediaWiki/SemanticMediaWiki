@@ -260,7 +260,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSQLStore3SpecialPageHandlers']  = $stoDirSQL . 'SMW_SQLStore3_SpecialPageHandlers.php';
 	$wgAutoloadClasses['SMWSQLStore3SetupHandlers']        = $stoDirSQL . 'SMW_SQLStore3_SetupHandlers.php';
 	$wgAutoloadClasses['SMWDataItemHandler']              = $stoDirSQL . 'SMW_DataItemHandler.php';
-	$wgAutoloadClasses['SMWDIHandlerProperty']            = $stoDirSQL . 'SMW_DIHandler_Property.php';
 	$wgAutoloadClasses['SMWDIHandlerBoolean']             = $stoDirSQL . 'SMW_DIHandler_Bool.php';
 	$wgAutoloadClasses['SMWDIHandlerNumber']              = $stoDirSQL . 'SMW_DIHandler_Number.php';
 	$wgAutoloadClasses['SMWDIHandlerBlob']                = $stoDirSQL . 'SMW_DIHandler_Blob.php';
