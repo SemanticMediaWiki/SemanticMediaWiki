@@ -27,37 +27,40 @@ use Parser;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
  * Class that provides the {{#set_recurring_event}} parser function
  *
- * RecurringEventsParserFunction is an extension of the SubobjectParserFunction,
- * inheritance (instead of composition) is used to get access to internal
- * methods only relevant to SubobjectParserFunction.
- *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class RecurringEventsParserFunction extends SubobjectParserFunction {
 
+	/** @var MessageFormatter */
+	protected $settings;
+
+	/** @var RecurringEvents */
+	protected $events;
+
 	/**
-	 * Returns necessary Settings object
-	 *
 	 * @since 1.9
 	 *
-	 * @return Settings
+	 * @param IParserData $parserData
+	 * @param Subobject $subobject
+	 * @param MessageFormatter $msgFormatter
+	 * @param Settings $settings
 	 */
-	public function getSettings() {
-		return Settings::newFromArray( array(
-			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
-			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'] )
-		);
+	public function __construct(
+		IParserData $parserData,
+		Subobject $subobject,
+		MessageFormatter $msgFormatter,
+		Settings $settings
+	) {
+		parent::__construct ( $parserData, $subobject, $msgFormatter );
+		$this->settings = $settings;
 	}
 
 	/**
@@ -71,39 +74,27 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 * @return string|null
 	 */
 	public function parse( ArrayFormatter $parameters ) {
+		$this->setObjectReference( true );
 
 		// Get recurring events
-		$events = new RecurringEvents( $parameters->toArray(), $this->getSettings() );
-		$this->msgFormatter->addFromArray( $events->getErrors() );
+		$this->events = new RecurringEvents( $parameters->toArray(), $this->settings );
+		$this->msgFormatter->addFromArray( $this->events->getErrors() );
 
-		foreach ( $events->getDates() as $date_str ) {
+		foreach ( $this->events->getDates() as $date_str ) {
 
 			// Override existing parameters array with the returned
-			// parameters array from recurring events, its holds all
-			// unprocessed parameters needed for further processing
-			$parameters->setParameters( $events->getParameters() );
+			// pre-processed parameters array from recurring events
+			$parameters->setParameters( $this->events->getParameters() );
 
 			// Add the date string as individual property / value parameter
-			$parameters->addParameter( $events->getProperty(), $date_str );
+			$parameters->addParameter( $this->events->getProperty(), $date_str );
 
-			// getFirst() indicates if an event should be directly linked to
-			// the page that embeds the parser call and if so use this value as
-			// user property together with the embedding page as property value
-			if ( $parameters->getFirst() !== null ) {
-				$parameters->addParameter(
-					$parameters->getFirst(),
-					$this->parserData->getTitle()->getPrefixedText()
-				);
-			}
-
-			// Register object values to the subobject as anonymous entity
-			// which changes with the set of parameters available
+			// Register object values
 			// @see SubobjectParserFunction::addSubobjectValues
-			$this->addSubobjectValues( $parameters->toArray() );
+			$this->addSubobjectValues( $parameters );
 
-			// Add subobject container to the semantic data object
-			// Each previous $parameters->toArray() call will produce a unique
-			// subobject that is now added to the semantic data instance
+			//  Each new $parameters set will add an additional subobject
+			//  to the instance
 			$this->parserData->getData()->addPropertyObjectValue(
 				$this->subobject->getProperty(),
 				$this->subobject->getContainer()
@@ -130,8 +121,10 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 		$instance = new self(
 			new ParserData( $parser->getTitle(), $parser->getOutput() ),
 			new Subobject( $parser->getTitle() ),
-			new MessageFormatter( $parser->getTargetLanguage() )
+			new MessageFormatter( $parser->getTargetLanguage() ),
+			Settings::newFromGlobals()
 		);
+
 		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
 	}
 }

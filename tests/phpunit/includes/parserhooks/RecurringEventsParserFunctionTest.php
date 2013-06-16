@@ -3,12 +3,13 @@
 namespace SMW\Test;
 
 use SMW\RecurringEventsParserFunction;
-use SMW\Subobject;
 use SMW\ParserParameterFormatter;
 use SMW\MessageFormatter;
+use SMW\Subobject;
 
 use Title;
 use ParserOutput;
+use ReflectionClass;
 
 /**
  * Tests for the RecurringEventsParserFunction class.
@@ -31,14 +32,12 @@ use ParserOutput;
  * @since 1.9
  *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the RecurringEventsParserFunction class
  * @covers \SMW\RecurringEventsParserFunction
  *
  * @ingroup Test
@@ -55,6 +54,84 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 */
 	public function getClass() {
 		return '\SMW\RecurringEventsParserFunction';
+	}
+
+	/**
+	 * Helper method that returns a RecurringEventsParserFunction object
+	 *
+	 * @since 1.9
+	 *
+	 * @param Title $title
+	 * @param ParserOutput $parserOutput
+	 *
+	 * @return RecurringEventsParserFunction
+	 */
+	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
+		return new RecurringEventsParserFunction(
+			$this->getParserData( $title, $parserOutput ),
+			new Subobject( $title ),
+			new MessageFormatter( $title->getPageLanguage() ),
+			$this->getSettings( array(
+				'smwgDefaultNumRecurringEvents' => 100,
+				'smwgMaxNumRecurringEvents' => 100
+			) )
+		);
+	}
+
+	/**
+	 * @test RecurringEventsParserFunction::__construct
+	 *
+	 * @since 1.9
+	 */
+	public function testConstructor() {
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$this->assertInstanceOf( $this->getClass(), $instance );
+	}
+
+	/**
+	 * @test RecurringEventsParserFunction::__construct (Test exception)
+	 *
+	 * @since 1.9
+	 */
+	public function testConstructorException() {
+		$this->setExpectedException( 'PHPUnit_Framework_Error' );
+		$instance = new $this->getInstance( $this->getTitle() );
+	}
+
+	/**
+	 * @test RecurringEventsParserFunction::parse
+	 * @dataProvider getRecurringEventsDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $params
+	 * @param array $expected
+	 */
+	public function testParse( array $params, array $expected ) {
+
+		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
+
+		$this->assertTrue( $result !== '' ? $expected['errors'] : !$expected['errors'] );
+
+		// Access protected property
+		$reflection = new ReflectionClass( $this->getClass() );
+		$events = $reflection->getProperty( 'events' );
+		$events->setAccessible( true );
+
+		$this->assertEquals( $expected['parameters'], $events->getValue( $instance )->getParameters() );
+
+	}
+
+	/**
+	 * @test RecurringEventsParserFunction::render
+	 *
+	 * @since 1.9
+	 */
+	public function testStaticRender() {
+		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
+		$result = RecurringEventsParserFunction::render( $parser );
+		$this->assertInternalType( 'string', $result );
 	}
 
 	/**
@@ -221,7 +298,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 					'exclude=January 18, 2010;January 25, 2010'
 				),
 				array(
-					'errors' => true,
+					'errors' => false,
 					'dates' => array(),
 					'property' => '',
 					'parameters' => array()
@@ -240,7 +317,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 			// }}
 			array(
 				array(
-					'-',
+					'-Foo',
 					'property=Has date',
 					'start=January 4, 2010',
 					'unit=week',
@@ -367,85 +444,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 					'parameters' => array()
 				)
 			)
-
 		);
 	}
 
-	/**
-	 * Helper method that returns a RecurringEventsParserFunction object
-	 *
-	 * @since 1.9
-	 *
-	 * @param Title $title
-	 * @param ParserOutput $parserOutput
-	 *
-	 * @return RecurringEventsParserFunction
-	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
-		return new RecurringEventsParserFunction(
-			$this->getParserData( $title, $parserOutput ),
-			new Subobject( $title ),
-			new MessageFormatter( $title->getPageLanguage() )
-		);
-	}
-
-	/**
-	 * @test RecurringEventsParserFunction::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test RecurringEventsParserFunction::__construct (Test exception)
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructorException() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new $this->getInstance( $this->getTitle() );
-	}
-
-	/**
-	 * @test RecurringEventsParserFunction::getSettings
-	 *
-	 * @since 1.9
-	 */
-	public function testSettings() {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
-		$this->assertInstanceOf( 'SMW\Settings', $instance->getSettings() );
-	}
-
-	/**
-	 * @test RecurringEventsParserFunction::parse
-	 * @dataProvider getRecurringEventsDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testParse( array $params, array $expected ) {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
-		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
-		if ( $result !== '' ){
-			$this->assertTrue( $expected['errors'] );
-		} else {
-			$this->assertFalse( $expected['errors'] );
-		}
-	}
-
-	/**
-	 * @test RecurringEventsParserFunction::render
-	 *
-	 * @since 1.9
-	 */
-	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
-		$result = RecurringEventsParserFunction::render( $parser );
-		$this->assertInternalType( 'string', $result );
-	}
 }

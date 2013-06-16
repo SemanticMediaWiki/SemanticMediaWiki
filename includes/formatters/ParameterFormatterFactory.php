@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Interface related to classes responsible for array formatting
+ * Factory class handling parameter formatting instances
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,44 +29,37 @@ namespace SMW;
  */
 
 /**
- * Interface related to classes responsible for array formatting
+ * Factory class handling parameter formatting instances
  *
  * @ingroup Formatter
- * @codeCoverageIgnore
  */
-abstract class ArrayFormatter {
-
-	/** @var array */
-	protected $errors = array();
+class ParameterFormatterFactory {
 
 	/**
-	 * Returns collected errors
+	 * Returns an ArrayFormatter instance
 	 *
 	 * @since 1.9
 	 *
-	 * @return array
+	 * @param array $rawParams
+	 *
+	 * @return ArrayFormatter
 	 */
-	public function getErrors() {
-		return $this->errors;
+	public static function newFromArray( array $rawParams ) {
+
+		if ( isset( $rawParams[0] ) && is_object( $rawParams[0] ) ) {
+			array_shift( $rawParams );
+		}
+
+		//$formatter = JsonParameterFormatter::newFromArray( $rawParams );
+
+		//if ( $formatter->isJson() ) {
+		//	$instance = $formatter;
+		//} else {
+		//	$instance = new ParserParameterFormatter( $rawParams );
+		//}
+
+		$instance = new ParserParameterFormatter( $rawParams );
+
+		return $instance;
 	}
-
-	/**
-	 * Adds an error
-	 *
-	 * @since 1.9
-	 *
-	 * @param mixed $error
-	 */
-	public function addError( $error ) {
-		$this->errors = array_merge( (array)$error === $error ? $error : array( $error ), $this->errors );
-	}
-
-	/**
-	 * Returns a formatted array
-	 *
-	 * @since 1.9
-	 *
-	 * Implementation is carried out by a subclasses
-	 */
-	abstract public function toArray();
 }

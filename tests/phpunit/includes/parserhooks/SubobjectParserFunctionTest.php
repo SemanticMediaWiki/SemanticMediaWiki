@@ -33,14 +33,12 @@ use ParserOutput;
  * @since 1.9
  *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the SubobjectParserFunction class
  * @covers \SMW\SubobjectParserFunction
  *
  * @ingroup Test
@@ -126,6 +124,44 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 		$this->assertContains( $expected['identifier'], $instance->getSubobject()->getId() );
+	}
+
+	/**
+	 * @test SubobjectParserFunction::parse
+	 * @dataProvider getObjectReferenceDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param boolean $isEnabled
+	 * @param array $params
+	 * @param array $expected
+	 */
+	public function testObjectReference( $isEnabled, array $params, array $expected, array $info ) {
+
+		$parserOutput =  $this->getParserOutput();
+		$title = $this->getTitle();
+
+		// Initialize and parse
+		$instance = $this->getInstance( $title, $parserOutput );
+		$instance->setObjectReference( $isEnabled );
+		$instance->parse( $this->getParserParameterFormatter( $params ) );
+
+		// If it is enabled only check for the first character {0} that should
+		// contain '_' as the rest is going to be an unknown hash value
+		$id = $instance->getSubobject()->getId();
+		$this->assertEquals( $expected['identifier'], $isEnabled ? $id{0} : $id, $info['msg'] );
+
+		// Get data instance
+		$parserData = $this->getParserData( $title, $parserOutput );
+
+		// Add generated title text as property value due to the auto reference
+		// setting
+		$expected['propertyValue'][] = $title->getText();
+
+		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
+			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
+			$this->assertSemanticData( $containerSemanticData, $expected );
+		}
 	}
 
 	/**
@@ -295,6 +331,50 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 					'propertyValue' => array( 'Foo Bar', 'Modification date' )
 				)
 			),
+		);
+	}
+
+	/**
+	 * Subject reference data provider
+	 *
+	 * @return array
+	 */
+	public function getObjectReferenceDataProvider() {
+		return array(
+
+			// #0
+			// {{#subobject: Foo bar foo
+			// |Bar=foo Bar
+			// }}
+			array(
+				true,
+				array( ' Foo bar foo ', 'Bar=foo Bar' ),
+				array(
+					'errors' => false,
+					'identifier' => '_',
+					'propertyCount' => 2,
+					'propertyLabel' => array( 'Bar', 'Foo bar foo' ),
+					'propertyValue' => array( 'Foo Bar' ) // additional value is added during runtime
+				),
+				array( 'msg' => 'Failed asserting that a named identifier was turned into an anonymous id' )
+			),
+
+			// #1
+			// {{#subobject: Foo bar foo
+			// |Bar=foo Bar
+			// }}
+			array(
+				false,
+				array( ' Foo bar foo ', 'Bar=foo Bar' ),
+				array(
+					'errors' => false,
+					'identifier' => 'Foo_bar_foo',
+					'propertyCount' => 1,
+					'propertyLabel' => array( 'Bar' ),
+					'propertyValue' => array( 'Foo Bar' )
+				),
+				array( 'msg' => 'Failed asserting the validity of the named identifier' )
+			)
 		);
 	}
 }

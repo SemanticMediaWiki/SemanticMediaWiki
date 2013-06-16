@@ -27,9 +27,8 @@ use Parser;
  * @since 1.9
  *
  * @file
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
@@ -48,6 +47,9 @@ class SubobjectParserFunction {
 
 	/** @var MessageFormatter */
 	protected $msgFormatter;
+
+	/** @var boolean */
+	protected $objectReference = false;
 
 	/**
 	 * @since 1.9
@@ -74,31 +76,69 @@ class SubobjectParserFunction {
 	}
 
 	/**
+	 * Enables/disables to create an object reference pointing to the original
+	 * subject
+	 *
+	 * @since 1.9
+	 *
+	 * @param boolean $objectReference
+	 *
+	 * @return SubobjectParserFunction
+	 */
+	public function setObjectReference( $objectReference ) {
+		$this->objectReference = $objectReference;
+		return $this;
+	}
+
+	/**
+	 * Generates an Id in accordance to the available settings
+	 *
+	 * @since 1.9
+	 *
+	 * @param ArrayFormatter $parameters
+	 *
+	 * @return string
+	 */
+	protected function getId( ArrayFormatter $parameters ) {
+
+		$isAnonymous = in_array( $parameters->getFirst(), array( null, '' ,'-' ) );
+
+		if ( $this->objectReference || $isAnonymous ) {
+			$id = $this->subobject->getAnonymousIdentifier( serialize( $parameters ) );
+		} else {
+			$id = $parameters->getFirst();
+		}
+
+		$this->objectReference = $this->objectReference && !$isAnonymous;
+
+		return $id;
+	}
+
+	/**
 	 * Add values to the subobject instance
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $parameters array of parameters
-	 * @param string $identifier named subobject identifier
+	 * @param ArrayFormatter $parameters
 	 */
-	protected function addSubobjectValues( $parameters, $identifier = '' ) {
+	protected function addSubobjectValues( ArrayFormatter $parameters ) {
 
-		// An instance that don't use a named identifier will get an anonymous Id
-		if ( $identifier === '' || $identifier === '-' ){
-			$identifier = $this->subobject->getAnonymousIdentifier( serialize( $parameters ) );
+		// Initialize semantic container for a given identifier
+		$this->subobject->setSemanticData( $this->getId( $parameters ) );
+
+		// Add object reference as additional parameter if enabled
+		if ( $this->objectReference ) {
+			$parameters->addParameter(
+				$parameters->getFirst(),
+				$this->parserData->getTitle()->getPrefixedText()
+			);
 		}
 
-		// Prepare and set semantic container for the given identifier
-		$this->subobject->setSemanticData( $identifier );
-
 		// Add property / values to the subobject instance
-		foreach ( $parameters as $property => $values ){
+		foreach ( $parameters->toArray() as $property => $values ){
 			foreach ( $values as $value ) {
 				$this->subobject->addPropertyValue(
-					DataValueFactory::newPropertyValue(
-						$property,
-						$value
-					)
+					DataValueFactory::newPropertyValue( $property, $value )
 				);
 			}
 		}
@@ -116,12 +156,7 @@ class SubobjectParserFunction {
 	public function parse( ArrayFormatter $parameters ) {
 
 		// Add values to the instantiated subobject
-		// getFirst() will indicate if a subobject becomes a named or
-		// anonymous subobject
-		$this->addSubobjectValues(
-			$parameters->toArray(),
-			$parameters->getFirst()
-		);
+		$this->addSubobjectValues( $parameters );
 
 		// Store subobject to the semantic data instance
 		$this->parserData->getData()->addPropertyObjectValue(
@@ -134,6 +169,7 @@ class SubobjectParserFunction {
 
 		return $this->msgFormatter->addFromArray( $this->subobject->getErrors() )
 			->addFromArray( $this->parserData->getErrors() )
+			->addFromArray( $parameters->getErrors() )
 			->getHtml();
 	}
 
@@ -150,6 +186,7 @@ class SubobjectParserFunction {
 			new Subobject( $parser->getTitle() ),
 			new MessageFormatter( $parser->getTargetLanguage() )
 		);
-		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
+
+		return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
 	}
 }
