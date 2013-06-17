@@ -101,11 +101,6 @@ return array(
 		)
 	),
 
-	// This one is obsolete since SMW_QueryUI.php isn't officially supported
-	'ext.smw.query.ui' => $moduleTemplate + array(
-		'styles' => 'resources/smw/special/ext.smw.query.ui.css'
-	),
-
 	// Tooltip qtip2 resources
 	'ext.jquery.qtip' => $moduleTemplate + array(
 		'scripts' => 'resources/jquery/jquery.qtip.js',

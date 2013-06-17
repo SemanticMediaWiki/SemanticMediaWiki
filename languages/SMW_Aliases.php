@@ -24,7 +24,6 @@ $specialPageAliases['en'] = array(
 	'URIResolver' => array( 'URIResolver' ),
 	'UnusedProperties' => array( 'UnusedProperties' ),
 	'WantedProperties' => array( 'WantedProperties' ),
-	'QueryCreator' => array( 'QueryCreator' ),
 );
 
 /** Afrikaans (Afrikaans) */

@@ -405,9 +405,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\SpecialProperties']         = $specDir . 'SpecialProperties.php';
 
 	$wgAutoloadClasses['SMWAskPage']                    = $specDir . 'SMW_SpecialAsk.php';
-	$wgAutoloadClasses['SMWQueryUIHelper']              = $specDir . 'SMW_QueryUIHelper.php';
-	$wgAutoloadClasses['SMWQueryUI']                    = $specDir . 'SMW_QueryUI.php';
-	$wgAutoloadClasses['SMWQueryCreatorPage']           = $specDir . 'SMW_SpecialQueryCreator.php';
 	$wgAutoloadClasses['SMWQuerySpecialPage']           = $specDir . 'SMW_QuerySpecialPage.php';
 	$wgAutoloadClasses['SMWSpecialBrowse']              = $specDir . 'SMW_SpecialBrowse.php';
 	$wgAutoloadClasses['SMWPageProperty']               = $specDir . 'SMW_SpecialPageProperty.php';
@@ -525,9 +522,6 @@ function smwfRegisterSpecialPages() {
 			$GLOBALS['wgSpecialPageGroups'][$special] = $page['group'];
 		}
 	}
-
-	//	$wgSpecialPages['QueryCreator']             = 'SMWQueryCreatorPage';
-	//	$wgSpecialPageGroups['QueryCreator']        = 'smw_group';
 }
 
 /**
