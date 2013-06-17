@@ -19,8 +19,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'Not an entry point.' );
 }
 
-// Do not load SMW more then once
 if ( defined( 'SMW_VERSION' ) ) {
+	// Do not load SMW more then once
 	return;
 }
 
