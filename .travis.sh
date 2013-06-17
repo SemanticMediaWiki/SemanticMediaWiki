@@ -17,4 +17,9 @@ composer create-project mediawiki/semantic-mediawiki:dev-master SemanticMediaWik
 cd ..
 echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
 
+echo 'error_reporting(E_ALL| E_STRICT);' >> LocalSettings.php
+echo 'ini_set("display_errors", 1);' >> LocalSettings.php
+echo '$wgShowExceptionDetails = true;' >> LocalSettings.php
+echo '$wgDevelopmentWarnings = true;' >> LocalSettings.php
+
 php maintenance/update.php --quick
