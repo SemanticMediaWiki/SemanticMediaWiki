@@ -310,11 +310,14 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\SQLStore\PropertyStatisticsTable']				= $stoDirSQL . 'PropertyStatisticsTable.php';
 	$wgAutoloadClasses['SMW\SQLStore\SimplePropertyStatisticsRebuilder']	= $stoDirSQL . 'SimplePropertyStatisticsRebuilder.php';
 	$wgAutoloadClasses['SMW\SQLStore\StatisticsCollector']                  = $stoDirSQL . 'StatisticsCollector.php';
+	$wgAutoloadClasses['SMW\SQLStore\PropertyTableDefinitionBuilder']	    = $stoDirSQL . 'PropertyTableDefinitionBuilder.php';
+
+	$wgAutoloadClasses['SMWSQLStore3Table']                = $stoDirSQL . 'SMW_SQLStore3Table.php'; // Please fix me ...
+	$wgAutoloadClasses['SMW\SQLStore\TableDefinition']     = $stoDirSQL . 'SMW_SQLStore3Table.php';
 
 	$wgAutoloadClasses['SMWSQLStore3']                     = $stoDirSQL . 'SMW_SQLStore3.php';
 	$wgAutoloadClasses['SMWSql3StubSemanticData']          = $stoDirSQL . 'SMW_Sql3StubSemanticData.php';
 	$wgAutoloadClasses['SMWSql3SmwIds']                    = $stoDirSQL . 'SMW_Sql3SmwIds.php';
-	$wgAutoloadClasses['SMWSQLStore3Table']                = $stoDirSQL . 'SMW_SQLStore3Table.php';
 	$wgAutoloadClasses['SMWSQLStore3Readers']              = $stoDirSQL . 'SMW_SQLStore3_Readers.php';
 	$wgAutoloadClasses['SMWSQLStore3QueryEngine']          = $stoDirSQL . 'SMW_SQLStore3_Queries.php';
 	$wgAutoloadClasses['SMWSQLStore3Query']                = $stoDirSQL . 'SMW_SQLStore3_Queries.php';
