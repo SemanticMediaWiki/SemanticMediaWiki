@@ -163,6 +163,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 * @param array $settings
 	 */
 	public function testNewFromGlobals( array $settings ) {
+
 		$instance = Settings::newFromGlobals();
 		$this->assertInstanceOf( $this->getClass(), $instance );
 
@@ -174,7 +175,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 		$this->assertTrue( $instance !== Settings::newFromGlobals() );
 
 		foreach ( $settings as $key => $value ) {
-			$this->assertEquals( $GLOBALS[$key], $instance->get( $key ), "Failed asserting that {$key} exists" );
+			$this->assertTrue( $instance->exists( $key ), "Failed asserting that {$key} exists" );
 		}
 	}
 }
