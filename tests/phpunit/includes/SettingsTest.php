@@ -166,18 +166,18 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 		$instance = Settings::newFromGlobals();
 		$this->assertInstanceOf( $this->getClass(), $instance );
 
-		foreach ( $settings as $key => $value ) {
-			$this->assertEquals(
-				$GLOBALS[$key],
-				$instance->get( $key )
-			);
-		}
-
 		// Assert that newFromGlobals is a static instance
 		$this->assertTrue( $instance === Settings::newFromGlobals() );
 
 		// Reset instance
 		$instance->reset();
 		$this->assertTrue( $instance !== Settings::newFromGlobals() );
+
+		foreach ( $settings as $key => $value ) {
+			$this->assertEquals(
+				$GLOBALS[$key],
+				$instance->get( $key )
+			);
+		}
 	}
 }
