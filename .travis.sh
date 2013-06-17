@@ -17,7 +17,7 @@ git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SemanticMediaWik
 cd SemanticMediaWiki
 composer install
 
-cd ..
+cd ../..
 echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
 
 php /maintenance/update.php --quick
