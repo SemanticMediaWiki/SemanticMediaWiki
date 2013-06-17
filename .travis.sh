@@ -20,4 +20,4 @@ composer install
 cd ../..
 echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
 
-php /maintenance/update.php --quick
+php maintenance/update.php --quick
