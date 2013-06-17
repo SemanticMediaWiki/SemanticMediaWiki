@@ -1,0 +1,38 @@
+language: php
+
+env:
+  - THENEEDFORTHIS=FAIL
+
+matrix:
+  include:
+    - env: DBTYPE=mysql
+      php: 5.3
+    - env: DBTYPE=mysql
+      php: 5.4
+    - env: DBTYPE=sqlite
+      php: 5.5
+    - env: DBTYPE=postgres
+      php: 5.5
+  exclude:
+    - env: THENEEDFORTHIS=FAIL
+  allow_failures:
+    - env: DBTYPE=postgres
+
+before_script:
+  - bash .travis.sh
+
+script:
+  - cd ../phase3/tests/phpunit
+  - ./phpunit.php --group SMWExtension
+
+notifications:
+  email:
+    recipients:
+      - jeroendedauw@gmail.com
+    on_success: change
+    on_failure: always
+  irc:
+    channels:
+      - "chat.freenode.net#semantic-mediawiki"
+    on_success: change
+    on_failure: always

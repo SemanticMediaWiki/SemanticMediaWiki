@@ -10,3 +10,4 @@ composer.lock
 !.gitreview
 
 !.travis.yml
+!.travis.sh
