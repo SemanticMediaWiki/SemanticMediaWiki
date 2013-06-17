@@ -174,9 +174,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 		$this->assertTrue( $instance !== Settings::newFromGlobals() );
 
 		foreach ( $settings as $key => $value ) {
-			if ( isset( $GLOBALS[$key] ) ) {
-				$this->assertEquals( $GLOBALS[$key], $instance->get( $key ) );
-			}
+			$this->assertEquals( $GLOBALS[$key], $instance->get( $key ), "Failed asserting that {$key} exists" );
 		}
 	}
 }
