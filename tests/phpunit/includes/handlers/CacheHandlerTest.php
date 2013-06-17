@@ -84,11 +84,20 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testNewFromId() {
 
+		CacheHandler::reset();
+
 		// Invoke a valid cacheId
 		$instance = CacheHandler::newFromId( 'hash' );
 		$this->assertFalse( $instance->isEnabled() ); // No key means false
 		$instance->setCacheEnabled( true )->key( 'lala' );
 		$this->assertTrue( $instance->isEnabled() ); // An added key results in true
+
+		// Static
+		$this->assertTrue( $instance === CacheHandler::newFromId( 'hash' ) );
+
+		// Reset
+		$instance->reset();
+		$this->assertTrue( $instance !== CacheHandler::newFromId( 'hash' ) );
 
 		// Invoke an invalid cacheId
 		$instance = CacheHandler::newFromId( 'lula' );
@@ -96,6 +105,12 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 		$instance->setCacheEnabled( true )->key( 'lila' );
 		$this->assertFalse( $instance->isEnabled() ); // An added key but invalid cache results in false
 
+		// Static
+		$this->assertTrue( $instance === CacheHandler::newFromId( 'lula' ) );
+
+		// Reset
+		$instance->reset();
+		$this->assertTrue( $instance !== CacheHandler::newFromId( 'lula' ) );
 	}
 
 	/**

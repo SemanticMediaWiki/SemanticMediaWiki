@@ -50,6 +50,9 @@ final class CacheHandler {
 	/** @var boolean */
 	protected $cacheEnabled = false;
 
+	/** @var CacheHandler[] */
+	private static $instance = array();
+
 	/**
 	 * @since 1.9
 	 *
@@ -93,11 +96,10 @@ final class CacheHandler {
 	 * @return CacheHandler
 	 */
 	public static function newFromId( $id = false ) {
-		static $instance = array();
 
 		$cacheType = $id ? $id : Settings::newFromGlobals()->get( 'smwgCacheType' );
 
-		if ( !isset( $instance[$cacheType] ) ) {
+		if ( !isset( self::$instance[$cacheType] ) ) {
 
 			if ( $cacheType && array_key_exists( $cacheType, $GLOBALS['wgObjectCaches'] ) ) {
 				$cache = new self( ObjectCache::getInstance( $cacheType ) );
@@ -108,10 +110,10 @@ final class CacheHandler {
 			$cache->setCachePrefix( $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'] );
 			$cache->setCacheEnabled( true );
 
-			$instance[$cacheType] = $cache;
+			self::$instance[$cacheType] = $cache;
 		}
 
-		return $instance[$cacheType];
+		return self::$instance[$cacheType];
 	}
 
 	/**
@@ -237,5 +239,14 @@ final class CacheHandler {
 	 */
 	public function isEnabled() {
 		return $this->cacheEnabled && $this->key;
+	}
+
+	/**
+	 * Reset instance
+	 *
+	 * @since 1.9
+	 */
+	public static function reset() {
+		self::$instance = array();
 	}
 }
