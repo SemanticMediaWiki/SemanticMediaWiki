@@ -26,11 +26,6 @@ script:
   - ./phpunit.php --group SMWExtension
 
 notifications:
-  email:
-    recipients:
-      - jeroendedauw@gmail.com
-    on_success: change
-    on_failure: always
   irc:
     channels:
       - "chat.freenode.net#semantic-mediawiki"
