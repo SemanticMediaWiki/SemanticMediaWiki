@@ -171,6 +171,7 @@ $magicWords['kw'] = array(
 $magicWords['lb'] = array(
 	'ask' => array( 0, 'froen' ),
 	'show' => array( 0, 'weisen' ),
+	'concept' => array( 0, 'Konzept' ),
 );
 
 /** Macedonian (македонски) */

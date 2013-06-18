@@ -997,8 +997,7 @@ Parameters:
 Parameters:
 * $1 - Name of the invoked predefined property
 * $2 - Additional text component for a detailed predefined property description such as "{{msg-mw|smw-pa-property-predefined_ask}}"',
-
-	'smw-pa-property-predefined_ask'   => 'Additional text component which describes a predefined property and extends {{msg-mw|smw-pa-property-predefined-intro}}.',
+	'smw-pa-property-predefined_ask' => 'Additional text component which describes a predefined property and extends {{msg-mw|smw-pa-property-predefined-intro}}.',
 	'smw-pa-property-predefined_asksi' => 'Additional text component which describes a predefined property and extends {{msg-mw|smw-pa-property-predefined-intro}}.',
 );
 
