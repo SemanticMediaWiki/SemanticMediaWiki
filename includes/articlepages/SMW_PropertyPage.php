@@ -31,10 +31,41 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function getHtml() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
 
-		$result = $this->getSubpropertyList() . $this->getPropertyValueList();
+		$list = $this->getSubpropertyList() . $this->getPropertyValueList();
+		$result = $this->getPredefinedPropertyIntro() . ( $list !== '' ? Html::element( 'br', array( 'id' => 'smwfootbr' ) ) . $list : '' );
 
 		wfProfileOut( __METHOD__ . ' (SMW)' );
 		return $result;
+	}
+
+
+	/**
+	 * Returns an introductory text for a predefined property
+	 *
+	 * @note In order to enable a more detailed description for a specific
+	 * predefined property a concatenated message key can be used (e.g
+	 * 'smw-pa-property-predefined' + <internal property key> => '_asksi' )
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	protected function getPredefinedPropertyIntro() {
+
+		if ( !$this->mProperty->isUserDefined() ) {
+
+			$propertyName = htmlspecialchars( $this->mTitle->getText() );
+			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
+			$propertyText = wfMessage( $propertyKey )->exists() ? wfMessage( $propertyKey )->text() : '';
+
+			return Html::rawElement(
+				'div',
+				array( 'class' => 'smw-pa-property-predefined-intro' ),
+				wfMessage( 'smw-pa-property-predefined-intro', $propertyName, $propertyText )->parse()
+			);
+		}
+
+		return '';
 	}
 
 	/**

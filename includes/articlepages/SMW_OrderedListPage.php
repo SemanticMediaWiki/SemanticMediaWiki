@@ -80,7 +80,7 @@ abstract class SMWOrderedListPage extends Article {
 		$this->until = $wgRequest->getVal( 'until', '' );
 
 		if ( $this->initParameters() ) {
-			$wgOut->addHTML( "<br id=\"smwfootbr\"/>\n" . $this->getHtml() );
+			$wgOut->addHTML( $this->getHtml() );
 			SMWOutputs::commitToOutputPage( $wgOut );
 		}
 

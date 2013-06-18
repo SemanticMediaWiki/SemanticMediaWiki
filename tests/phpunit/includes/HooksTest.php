@@ -31,14 +31,14 @@ use LinksUpdate;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
+ * @covers \SMWHooks
+ *
  * This class is testing implemented hooks and verifies consistency with its
  * invoked methods to ensure a hook generally returns true.
  *
@@ -98,8 +98,8 @@ class HooksTest extends \MediaWikiTestCase {
 	 *
 	 * @return Title
 	 */
-	private function getTitle(){
-		return Title::newFromText( $this->getRandomString() );
+	private function getTitle( $text = '', $namespace = NS_MAIN ) {
+		return Title::newFromText( $text !== '' ? $text : $this->getRandomString(), $namespace);
 	}
 
 	/**
@@ -144,6 +144,28 @@ class HooksTest extends \MediaWikiTestCase {
 		$po->setTitleText( $t->getPrefixedText() );
 
 		return array( $t, $po );
+	}
+
+	/**
+	 * Helper method that returns a Article mock object
+	 *
+	 * @since 1.9
+	 *
+	 * @param Title $title
+	 *
+	 * @return Article
+	 */
+	private function getArticleMock( Title $title ) {
+
+		$article = $this->getMockBuilder( 'Article' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$article->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		return $article;
 	}
 
 	/**
@@ -242,6 +264,61 @@ class HooksTest extends \MediaWikiTestCase {
 		$result = SMWHooks::onLinksUpdateConstructed( $update );
 
 		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @test SMWHooks::onTitleIsAlwaysKnown
+	 *
+	 * @since 1.9
+	 */
+	public function testOnTitleIsAlwaysKnown() {
+		$result = '';
+
+		// Random Title
+		$this->assertTrue( SMWHooks::onTitleIsAlwaysKnown(
+			$this->getTitle( '', NS_MAIN ), $result ),
+			'Failed asserting "true" for a random NS_MAIN title object'
+		);
+		$this->assertEmpty( $result, 'Failed asserting an empty result object' );
+
+		// Random user-defined property
+		$this->assertTrue( SMWHooks::onTitleIsAlwaysKnown(
+			$this->getTitle( '', SMW_NS_PROPERTY ), $result ),
+			'Failed asserting "true" for a random SMW_NS_PROPERTY title object'
+		);
+		$this->assertEmpty( $result, 'Failed asserting an empty result object' );
+
+		// Predefined property
+		$this->assertTrue( SMWHooks::onTitleIsAlwaysKnown(
+			$this->getTitle( 'Modification date', SMW_NS_PROPERTY ), $result ),
+			'Failed asserting "true" for a predefined property'
+		);
+		$this->assertTrue( $result, 'Failed asserting that the result object is returning true' );
+
+	}
+
+	/**
+	 * @test SMWHooks::onBeforeDisplayNoArticleText
+	 *
+	 * @since 1.9
+	 */
+	public function testOnBeforeDisplayNoArticleText() {
+
+		// Random Title
+		$this->assertTrue( SMWHooks::onBeforeDisplayNoArticleText(
+			$this->getArticleMock( $this->getTitle( '', NS_MAIN ) )
+		), 'Failed asserting "true" for a random NS_MAIN title object' );
+
+		// Random user-defined property
+		$this->assertTrue( SMWHooks::onBeforeDisplayNoArticleText(
+			$this->getArticleMock( $this->getTitle( '', SMW_NS_PROPERTY ) )
+		), 'Failed asserting "true" for a random SMW_NS_PROPERTY title object' );
+
+		// Predefined property
+		$this->assertFalse( SMWHooks::onBeforeDisplayNoArticleText(
+			$this->getArticleMock( $this->getTitle( 'Modification date', SMW_NS_PROPERTY ) )
+		), 'Failed asserting "false" for a predefined property' );
+
 	}
 
 	/**

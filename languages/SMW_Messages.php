@@ -452,7 +452,13 @@ Estimated progress of current update:',
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW_administrators',
 
 	// Actions
-	'action-smw-admin' => 'access Semantic MediaWiki administration tasks'
+	'action-smw-admin' => 'access Semantic MediaWiki administration tasks',
+
+	// Property pages (Predefined properties)
+	'smw-pa-property-predefined-intro' => '$1 is a predefined property (also known as [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property])$2. It is a built-in property that comes with additional administrative privileges but can be used just like any other [https://www.semantic-mediawiki.org/wiki/Property user-defined property].',
+	'smw-pa-property-predefined_ask'   => ' which links to the meta data [https://www.semantic-mediawiki.org/wiki/Subobject subobject] of a query',
+	'smw-pa-property-predefined_asksi' => ' which collects the number of conditions used in a query'
+
 );
 
 /** Message documentation (Message documentation)
@@ -986,6 +992,14 @@ Parameters:
 	'group-smwadministrator-member' => '{{doc-group|smwadministrator|member}}',
 	'grouppage-smwadministrator' => '{{doc-group|smwadministrator|page}}',
 	'action-smw-admin' => '{{doc-action|smw-admin}}',
+	'smw-pa-property-predefined-intro' => 'A patchwork message representing an introductory text for predefined properties such as "{{msg-mw|smw-pa-property-predefined_ask}}".
+
+Parameters:
+* $1 - Name of the invoked predefined property
+* $2 - Additional text component for a detailed predefined property description such as "{{msg-mw|smw-pa-property-predefined_ask}}"',
+
+	'smw-pa-property-predefined_ask'   => 'Additional text component which describes a predefined property and extends {{msg-mw|smw-pa-property-predefined-intro}}.',
+	'smw-pa-property-predefined_asksi' => 'Additional text component which describes a predefined property and extends {{msg-mw|smw-pa-property-predefined-intro}}.',
 );
 
 /** Afrikaans (Afrikaans)

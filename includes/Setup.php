@@ -98,6 +98,8 @@ function smwfRegisterHooks() {
 
 	// Add changes to the output page
 	$wgHooks['BeforePageDisplay'][] = 'SMWHooks::onBeforePageDisplay';
+	$wgHooks['TitleIsAlwaysKnown'][] = 'SMWHooks::onTitleIsAlwaysKnown';
+	$wgHooks['BeforeDisplayNoArticleText'][] = 'SMWHooks::onBeforeDisplayNoArticleText';
 
 	// ResourceLoader
 	$wgHooks['ResourceLoaderGetConfigVars'][] = 'SMWHooks::onResourceLoaderGetConfigVars';
