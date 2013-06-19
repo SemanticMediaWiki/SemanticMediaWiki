@@ -458,3 +458,10 @@ class SMWDIProperty extends SMWDataItem {
 		return $di->getKey() === $this->m_key;
 	}
 }
+
+/**
+ * SMW\DIProperty
+ *
+ * @since 1.9
+ */
+class_alias( 'SMWDIProperty', 'SMW\DIProperty' );
