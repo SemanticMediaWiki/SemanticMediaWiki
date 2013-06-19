@@ -10,6 +10,8 @@ matrix:
     - env: DBTYPE=mysql
       php: 5.4
     - env: DBTYPE=sqlite
+      php: 5.4
+    - env: DBTYPE=sqlite
       php: 5.5
     - env: DBTYPE=postgres
       php: 5.5
