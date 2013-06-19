@@ -17,6 +17,7 @@ matrix:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
     - env: DBTYPE=postgres
+    - php: 5.5
 
 before_script:
   - bash .travis.sh
