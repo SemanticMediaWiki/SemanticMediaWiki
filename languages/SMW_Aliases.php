@@ -16,6 +16,7 @@ $specialPageAliases['en'] = array(
 	'ExportRDF' => array( 'ExportRDF' ),
 	'PageProperty' => array( 'PageProperty' ),
 	'Properties' => array( 'Properties' ),
+	'Concepts' => array( 'Concepts' ),
 	'SMWAdmin' => array( 'SMWAdmin' ),
 	'SearchByProperty' => array( 'SearchByProperty' ),
 	'SemanticStatistics' => array( 'SemanticStatistics' ),

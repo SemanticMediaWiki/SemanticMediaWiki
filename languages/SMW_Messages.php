@@ -188,6 +188,13 @@ Generates browsable RDF.',
 	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!',
 	'smw-property-name-invalid' => 'Property $1 can not be used (invalid property name).',
 
+	// Messages for Concepts Special
+	'concepts'              => 'Concepts',
+	'smw-sp-concept-docu'   => 'A [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] can be viewed as "dynamic category", i.e. as a collection of pages that are not created manually, but that are computed by Semantic MediaWiki from a description of a given query.',
+	'smw-sp-concept-header' => 'List of concepts',
+	'smw-sp-concept-count'  => 'The following {{PLURAL:$1|concept|$1 concepts}} {{PLURAL:$1|is|are}} being listed.',
+	'smw-sp-concept-empty'  => 'No concept was found.',
+
 	// Messages for Unused Properties Special
 	'unusedproperties' => 'Unused properties',
 	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.',
@@ -221,7 +228,8 @@ Properties that still lack a page are found on the [[Special:WantedProperties|li
 	'smw-statistics-property-type'  => '{{PLURAL:$1|Property|Properties}} (assigned to a datatype)',
 	'smw-statistics-query-inline'   => '{{PLURAL:$1|Query|Queries}}',
 	'smw-statistics-query-size'     => 'Query size',
-	'smw-statistics-concept-count'  => '{{PLURAL:$1|Concept|Concepts}}',
+	'smw-statistics-concept-count-legacy'  => '{{PLURAL:$1|Concept|Concepts}}',
+	'smw-statistics-concept-count'  => '[[Special:Concepts|{{PLURAL:$1|Concept|Concepts}}]]',
 	'smw-statistics-subobject-count'  => '{{PLURAL:$1|Subobject|Subobjects}}',
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datatype|Datatypes}}]]',
 
@@ -418,7 +426,7 @@ Estimated progress of current update:',
 	// User preference
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Semantic search options',
-	'smw-prefs-intro-text' => 'Options below are provided by [http://semantic-mediawiki.org/ Semantic MediaWiki] (or related extensions) to enable individual customization on selected functions. For more information, please have a look at this [http://semantic-mediawiki.org/wiki/Help:User_preferences help section].',
+	'smw-prefs-intro-text' => 'Options below are provided by [https://semantic-mediawiki.org/ Semantic MediaWiki] (or related extensions) to enable individual customization on selected functions. For more information, please have a look at this [http://semantic-mediawiki.org/wiki/Help:User_preferences help section].',
 	'smw-prefs-ask-options-tooltip-display' => 'Display parameter text as an info tooltip',
 	'smw-prefs-ask-options-collapsed-default' => 'Enable option box to be collapsed by default',
 
@@ -709,6 +717,7 @@ This is the label of a tab of an action item for the content area.
 	'smw-statistics-property-type' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw-statistics-query-inline' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw-statistics-query-size' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-concept-count-legacy' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page.',
 	'smw-statistics-concept-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page.
 {{Identical|Concept}}',
 	'smw-statistics-subobject-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
@@ -998,6 +1007,11 @@ Parameters:
 * $1 - Name of the invoked predefined property',
 	'smw-pa-property-predefined_ask'   => 'Describes a predefined property.',
 	'smw-pa-property-predefined_asksi' => 'Describes a predefined property.',
+	'concepts'              => '{{doc-special|Concepts}}',
+	'smw-sp-concept-docu'   => 'This is an introductory message at the top of [[Special:Concepts]].',
+	'smw-sp-concept-header' => 'This is a header used on [[Special:Concepts]].',
+	'smw-sp-concept-count'  => 'This is used on [[Special:Concepts]] and to display available concepts',
+	'smw-sp-concept-empty'  => 'This is used on [[Special:Concepts]] and to display that no concepts are available.',
 );
 
 /** Afrikaans (Afrikaans)

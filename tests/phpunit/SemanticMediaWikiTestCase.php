@@ -3,12 +3,12 @@
 namespace SMW\Test;
 
 use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 use SMW\Settings;
 
 use Title;
 use Language;
 
-use SMWDIWikiPage;
 use SMWSemanticData;
 use SMWDataItem;
 
@@ -95,16 +95,16 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Helper method that returns a randomized SMWDIWikiPage object
+	 * Helper method that returns a randomized DIWikiPage object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $namespace
 	 *
-	 * @return SMWDIWikiPage
+	 * @return DIWikiPage
 	 */
 	protected function getSubject( $namespace = NS_MAIN ) {
-		return SMWDIWikiPage::newFromTitle( $this->getTitle( $namespace ) );
+		return DIWikiPage::newFromTitle( $this->getTitle( $namespace ) );
 	}
 
 	/**

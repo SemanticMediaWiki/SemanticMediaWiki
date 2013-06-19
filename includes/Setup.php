@@ -206,6 +206,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWStringLengthException']  = $diDir . 'SMW_DI_String.php';
 	$wgAutoloadClasses['SMWDIUri']                  = $diDir . 'SMW_DI_URI.php';
 	$wgAutoloadClasses['SMWDIWikiPage']             = $diDir . 'SMW_DI_WikiPage.php';
+	$wgAutoloadClasses['SMW\DIWikiPage']            = $diDir . 'SMW_DI_WikiPage.php'; // 1.9
 	$wgAutoloadClasses['SMWDITime']                 = $diDir . 'SMW_DI_Time.php';
 	$wgAutoloadClasses['SMWDIError']                = $diDir . 'SMW_DI_Error.php';
 	$wgAutoloadClasses['SMWDIGeoCoord']             = $diDir . 'SMW_DI_GeoCoord.php';
@@ -223,6 +224,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWErrorValue']             = $dvDir . 'SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWStringValue']            = $dvDir . 'SMW_DV_String.php';
 	$wgAutoloadClasses['SMWWikiPageValue']          = $dvDir . 'SMW_DV_WikiPage.php';
+	$wgAutoloadClasses['SMW\WikiPageValue']         = $dvDir . 'SMW_DV_WikiPage.php'; // 1.9
 	$wgAutoloadClasses['SMWPropertyValue']          = $dvDir . 'SMW_DV_Property.php';
 	$wgAutoloadClasses['SMWURIValue']               = $dvDir . 'SMW_DV_URI.php';
 	$wgAutoloadClasses['SMWTypesValue']             = $dvDir . 'SMW_DV_Types.php';
@@ -339,6 +341,7 @@ function smwfRegisterClasses() {
 	// Special pages and closely related helper classes
 	$specDir = $smwgIP . 'includes/specials/';
 	$wgAutoloadClasses['SMW\SpecialSemanticStatistics'] = $specDir . 'SpecialSemanticStatistics.php';
+	$wgAutoloadClasses['SMW\SpecialConcepts']           = $specDir . 'SpecialConcepts.php';
 
 	$wgAutoloadClasses['SMWAskPage']                    = $specDir . 'SMW_SpecialAsk.php';
 	$wgAutoloadClasses['SMWQueryUIHelper']              = $specDir . 'SMW_QueryUIHelper.php';
@@ -365,6 +368,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Test\ParserTestCase']             = $testsDir . 'ParserTestCase.php';
 	$wgAutoloadClasses['SMW\Test\ApiTestCase']                = $testsDir . 'ApiTestCase.php';
 	$wgAutoloadClasses['SMW\Test\MockSuperUser']              = $testsDir . 'MockSuperUser.php';
+	$wgAutoloadClasses['SMW\Test\SpecialPageTestCase']        = $testsDir . 'SpecialPageTestCase.php';
 
 	// Jobs
 	$wgJobClasses['SMWUpdateJob']       = 'SMWUpdateJob';
@@ -419,6 +423,10 @@ function smwfRegisterSpecialPages() {
 		'SemanticStatistics' => array(
 			'page' => 'SMW\SpecialSemanticStatistics',
 			'group' => 'wiki'
+		),
+		'Concepts' => array(
+			'page' => 'SMW\SpecialConcepts',
+			'group' => 'pages'
 		),
 		'ExportRDF' => array(
 			'page' => 'SMWSpecialOWLExport',

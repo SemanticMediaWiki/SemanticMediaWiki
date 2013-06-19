@@ -465,7 +465,7 @@ final class SMWHooks {
 			$extraStats[wfMessage( 'smw-statistics-property-type' )->text()] = $wgLang->formatNum( $semanticStatistics['DECLPROPS'] );
 			$extraStats[wfMessage( 'smw-statistics-subobject-count' )->text()]  = $wgLang->formatNum( $semanticStatistics['SUBOBJECTS'] );
 			$extraStats[wfMessage( 'smw-statistics-query-inline' )->text()]  = $wgLang->formatNum( $semanticStatistics['QUERY'] );
-			$extraStats[wfMessage( 'smw-statistics-concept-count' )->text()]  = $wgLang->formatNum( $semanticStatistics['CONCEPTS'] );
+			$extraStats[wfMessage( 'smw-statistics-concept-count-legacy' )->text()]  = $wgLang->formatNum( $semanticStatistics['CONCEPTS'] );
 		} else {
 			$extraStats['smw-statistics'] = array();
 			$extraStats['smw-statistics']['smw-statistics-property-instance'] = $semanticStatistics['PROPUSES'];

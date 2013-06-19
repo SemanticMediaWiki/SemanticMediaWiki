@@ -29,7 +29,6 @@ use Language;
  * @since 1.9
  *
  * @file
- * @ingroup Test
  *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -37,14 +36,15 @@ use Language;
  */
 
 /**
- * Tests for registered special pages (Test base was borrowed from the
- * EducationProgram extension)
+ * @covers SMWSpecialWantedProperties
+ * @covers SMW\SpecialConcepts
+ *
+ * @note Test base was borrowed from the EducationProgram extension
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
- * @covers SMWSpecialWantedProperties
  */
 class SpecialsTest extends SemanticMediaWikiTestCase {
 
@@ -130,7 +130,8 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			'Types',
 			'Properties',
 			'UnusedProperties',
-			'WantedProperties'
+			'WantedProperties',
+			'Concepts'
 
 			// Can't be tested because of
 

@@ -283,7 +283,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $linker->makeMediaLinkObj( $this->getTitle(),
 				htmlspecialchars( $this->getLongCaptionText() ) );
 		} else { // all others use default linking, no embedding of images here
-			return $linker->makeLinkObj( $this->getTitle(),
+			return $linker->link( $this->getTitle(),
 				htmlspecialchars( $this->getLongCaptionText() ) );
 		}
 	}
@@ -524,3 +524,9 @@ class SMWWikiPageValue extends SMWDataValue {
 
 }
 
+/**
+ * SMW\WikiPageValue
+ *
+ * @since 1.9
+ */
+class_alias( 'SMWWikiPageValue', 'SMW\WikiPageValue' );

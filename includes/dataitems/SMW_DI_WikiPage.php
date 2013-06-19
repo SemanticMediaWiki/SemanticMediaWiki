@@ -163,3 +163,10 @@ class SMWDIWikiPage extends SMWDataItem {
 		return $di->getSerialization() === $this->getSerialization();
 	}
 }
+
+/**
+ * SMW\DIWikiPage
+ *
+ * @since 1.9
+ */
+class_alias( 'SMWDIWikiPage', 'SMW\DIWikiPage' );
