@@ -495,8 +495,6 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onParserAfterTidy( &$parser, &$text ) {
-		$cache  = \SMW\CacheHandler::newFromId()
-			->key( 'autorefresh', $parser->getTitle()->getArticleID() );
 
 		// Separate globals from local state
 		// FIXME Do a new SMW\Settings( $GLOBALS );
@@ -513,10 +511,12 @@ final class SMWHooks {
 		// If an article was was manually purged/moved ensure that the store is
 		// updated as well for all other cases onLinksUpdateConstructed will
 		// initiate the store update
+		$cache = \SMW\CacheHandler::newFromId()->key( 'autorefresh', $parser->getTitle()->getArticleID() );
+
 		if( $cache->get() ) {
 			$parserData->updateStore();
+			$cache->delete();
 		}
-		$cache->delete();
 
 		return true;
 	}
