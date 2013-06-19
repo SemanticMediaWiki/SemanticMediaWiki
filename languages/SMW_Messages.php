@@ -996,7 +996,7 @@ Parameters:
 
 Parameters:
 * $1 - Name of the invoked predefined property',
-	'smw-pa-property-predefined_ask'   => 'Describes a predefined property.',
+	'smw-pa-property-predefined_ask' => 'Describes a predefined property.',
 	'smw-pa-property-predefined_asksi' => 'Describes a predefined property.',
 );
 
@@ -3385,6 +3385,8 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'group-smwadministrator-member' => '{{GENDER:$1|SMW-Administrator|SMW-Administratorin}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW-Administratoren',
 	'action-smw-admin' => 'Semantic MediaWiki zu administrieren',
+	'smw-pa-property-predefined_ask' => ', das auf das Metadaten-[https://www.semantic-mediawiki.org/wiki/Help:Parsererweiterung_subobject Subobjekt] einer Abfrage verlinkt', # Fuzzy
+	'smw-pa-property-predefined_asksi' => ', das die Anzahl der Bedingungen sammelt, die in einer Abfrage verwendet werden', # Fuzzy
 );
 
 /** Zazaki (Zazaki)
@@ -5325,6 +5327,8 @@ Progression estimée de la mise à jour actuelle :',
 	'group-smwadministrator-member' => '{{GENDER:$1|administrateur(SMW)|administratrice (SMW)}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW_administrators',
 	'action-smw-admin' => 'tâches d’administration des accès à MédiaWiki Sémantique',
+	'smw-pa-property-predefined_ask' => 'qui fait référence à la métadonnée [https://www.semantic-mediawiki.org/wiki/Subobject sous-objet] d’une requête', # Fuzzy
+	'smw-pa-property-predefined_asksi' => 'qui compte le nombre de conditions utilisées dans une requête', # Fuzzy
 );
 
 /** Franco-Provençal (arpetan)
@@ -9866,6 +9870,8 @@ $messages['mk'] = array(
 	'group-smwadministrator-member' => '{{GENDER:$1|администратор на СМВ}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:Администратори_на_СМВ',
 	'action-smw-admin' => 'пристап до административните задачи на Семантички МедијаВики',
+	'smw-pa-property-predefined_ask' => ' што води до метаподатокот [https://www.semantic-mediawiki.org/wiki/Subobject subobject] на барањето', # Fuzzy
+	'smw-pa-property-predefined_asksi' => ' кој ги собира условите што се користат во дадено барање', # Fuzzy
 );
 
 /** Malayalam (മലയാളം)
@@ -12612,15 +12618,22 @@ $messages['roa-tara'] = array(
 	'smw_factbox_head' => 'Fatte sus a "$1"',
 	'smw_isspecprop' => "Sta probbietà jè 'na probbietà speciale jndr'à sta uicchi.",
 	'smw_concept_description' => 'Descrizione d\'u congette "$1"',
+	'version-semantic' => 'Estenziune semandeche',
+	'smw_baduri' => 'Le URI da \'u module "$1" non ge sò permesse.',
+	'smw_printername_count' => "Resultate d'u condegge",
 	'smw_printername_csv' => 'Esporte CSV',
 	'smw_printername_dsv' => 'Esporte DSV',
+	'smw_printername_debug' => "Analise de l'inderrogazione (pe esperte)",
+	'smw_printername_embedded' => "'Ngapsule le pàggene de condenute",
 	'smw_printername_json' => 'esporte JSON',
 	'smw_printername_list' => 'Elenghe',
 	'smw_printername_ol' => 'Enumerazione',
 	'smw_printername_table' => 'Tabbelle',
 	'smw_printername_template' => 'Template',
+	'smw_printername_rdf' => 'Esporte RDF',
 	'smw_printername_category' => 'Categorije',
 	'validator-type-class-SMWParamSource' => 'teste',
+	'smw-paramdesc-limit' => "'U numere massime de resultate da turnà",
 	'smw_true_words' => 'vere,true,t,sine,si,yes,y',
 	'smw_false_words' => 'fause,false,f,none,no,n',
 	'smw_exportrdf_submit' => 'Esporte',
@@ -12629,7 +12642,15 @@ $messages['roa-tara'] = array(
 	'smw_unusedproperty_template' => '$1 de tipe $2',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|ause|ausene}})',
 	'types' => 'Tipe',
+	'smw_ask_ascorder' => 'Inghiananne',
+	'smw_ask_descorder' => 'Scennènne',
+	'smw_ask_submit' => 'Iacchie le resultate',
+	'smw_ask_editquery' => "[Cange l'inderrogazione]",
+	'smw_add_sortcondition' => "[Aggiunge 'a condizione de ordinamende]",
+	'smw_ask_hidequery' => "Scunne l'inderrogazione",
 	'smw_ask_queryhead' => 'Inderroghe',
+	'smw_ask_defaultformat' => 'de base',
+	'smw_ask_otheroptions' => 'Otre opziune',
 	'smw-ask-delete' => '[Scangelle]',
 	'smw_qc_default' => 'De base:',
 	'smw_qui_options' => 'opziune',
