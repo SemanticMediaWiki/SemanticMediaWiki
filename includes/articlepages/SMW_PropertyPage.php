@@ -56,12 +56,12 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 			$propertyName = htmlspecialchars( $this->mTitle->getText() );
 			$propertyKey  = 'smw-pa-property-predefined' . strtolower( $this->mProperty->getKey() );
-			$propertyText = wfMessage( $propertyKey )->exists() ? wfMessage( $propertyKey )->text() : '';
+			$messageKey   = wfMessage( $propertyKey )->exists() ? $propertyKey : 'smw-pa-property-predefined-default';
 
 			return Html::rawElement(
 				'div',
 				array( 'class' => 'smw-pa-property-predefined-intro' ),
-				wfMessage( 'smw-pa-property-predefined-intro', $propertyName, $propertyText )->parse()
+				wfMessage( $messageKey, $propertyName )->parse()
 			);
 		}
 
