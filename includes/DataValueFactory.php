@@ -209,19 +209,19 @@ class DataValueFactory {
 	public static function newPropertyValue( $propertyName, $valueString,
 		$caption = false, SMWDIWikiPage $contextPage = null ) {
 
-		wfProfileIn( __METHOD__ );
+		Profiler::In( __METHOD__, true );
 
 		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
 
 		if ( !$propertyDV->isValid() ) {
-			wfProfileOut( __METHOD__ );
+			Profiler::Out( __METHOD__, true );
 			return $propertyDV;
 		}
 
 		$propertyDI = $propertyDV->getDataItem();
 
 		if ( $propertyDI instanceof SMWDIError ) {
-			wfProfileOut( __METHOD__ );
+			Profiler::Out( __METHOD__, true );
 			return $propertyDV;
 		}
 
@@ -244,7 +244,7 @@ class DataValueFactory {
 			);
 		}
 
-		wfProfileOut( __METHOD__ );
+		Profiler::Out( __METHOD__, true );
 		return $dataValue;
 	}
 

@@ -149,6 +149,7 @@ function smwfRegisterClasses() {
 
 	$wgAutoloadClasses['SMW\Settings']              = $incDir . 'Settings.php';
 	$wgAutoloadClasses['SMW\NamespaceExaminer']     = $incDir . 'NamespaceExaminer.php';
+	$wgAutoloadClasses['SMW\Profiler']              = $incDir . 'Profiler.php';
 
 	$wgAutoloadClasses['SMW\CacheHandler']             = $incDir . '/handlers/CacheHandler.php';
 

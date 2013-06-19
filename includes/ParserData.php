@@ -329,7 +329,7 @@ class ParserData implements IParserData {
 	 * @param SMWDataValue $dataValue
 	 */
 	public function addPropertyValue( SMWDataValue $dataValue ) {
-		wfProfileIn(  __METHOD__ );
+		Profiler::In(  __METHOD__, true );
 
 		if ( $dataValue->getProperty() instanceof SMWDIProperty ) {
 			if ( !$dataValue->isValid() ) {
@@ -348,7 +348,7 @@ class ParserData implements IParserData {
 			$this->addError( $dataValue->getErrors() );
 		}
 
-		wfProfileOut( __METHOD__ );
+		Profiler::Out( __METHOD__, true );
 	}
 
 	/**
@@ -507,7 +507,7 @@ class ParserData implements IParserData {
 	 * @return boolean
 	 */
 	public function updateStore() {
-		wfProfileIn( __METHOD__ );
+		Profiler::In( __METHOD__, true );
 
 		// FIXME get rid of globals and use options array instead while
 		// invoking the constructor
@@ -556,7 +556,7 @@ class ParserData implements IParserData {
 			Job::batchInsert( $jobs );
 		}
 
-		wfProfileOut( __METHOD__ );
+		Profiler::Out( __METHOD__, true );
 
 		return true;
 	}
@@ -573,7 +573,7 @@ class ParserData implements IParserData {
 	 * @param array &$jobs
 	 */
 	protected function getDiffPropertyTypes( SMWStore $store, array &$jobs ) {
-		wfProfileIn( __METHOD__ );
+		Profiler::In( __METHOD__, true );
 
 		$updatejobflag = false;
 		$ptype = new SMWDIProperty( SMWDIProperty::TYPE_HAS_TYPE );
@@ -629,7 +629,7 @@ class ParserData implements IParserData {
 			$this->addJobs( $subjects, $jobs );
 		}
 
-		wfProfileOut( __METHOD__ );
+		Profiler::Out( __METHOD__, true );
 	}
 
 	/**
