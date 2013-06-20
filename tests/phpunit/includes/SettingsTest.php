@@ -5,7 +5,7 @@ namespace SMW\Test;
 use SMW\Settings;
 
 /**
- * Tests for the Settings class
+ * Test for the Settings class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,6 @@ use SMW\Settings;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup Test
  *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -34,10 +32,9 @@ use SMW\Settings;
  */
 
 /**
- * Tests for the Settings class
  * @covers \SMW\Settings
  *
- * @ingroup SMW
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -102,7 +99,9 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testConstructor( array $settings ) {
 		$instance = $this->getInstance( $settings );
+
 		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertFalse( $instance === $this->getInstance( $settings ) );
 	}
 
 	/**
@@ -114,10 +113,10 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 * @param array $settings
 	 */
 	public function testGet( array $settings ) {
-		$settingsObject = $this->getInstance( $settings );
+		$instance = $this->getInstance( $settings );
 
 		foreach ( $settings as $name => $value ) {
-			$this->assertEquals( $value, $settingsObject->get( $name ) );
+			$this->assertEquals( $value, $instance->get( $name ) );
 		}
 
 		$this->assertTrue( true );
@@ -144,11 +143,11 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 * @param array $settings
 	 */
 	public function testSet( array $settings ) {
-		$settingsObject = $this->getInstance( array() );
+		$instance = $this->getInstance( array() );
 
 		foreach ( $settings as $name => $value ) {
-			$settingsObject->set( $name, $value );
-			$this->assertEquals( $value, $settingsObject->get( $name ) );
+			$instance->set( $name, $value );
+			$this->assertEquals( $value, $instance->get( $name ) );
 		}
 
 		$this->assertTrue( true );
@@ -177,5 +176,36 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 		foreach ( $settings as $key => $value ) {
 			$this->assertTrue( $instance->exists( $key ), "Failed asserting that {$key} exists" );
 		}
+	}
+
+	/**
+	 * @test Settings::get
+	 *
+	 * @since 1.9
+	 */
+	public function testNestedSettingsIteration() {
+
+		$instance = $this->getInstance( array(
+			'Foo' => $this->getRandomString(),
+			'Bar' => array(
+				'Lula' => $this->getRandomString(),
+				'Lila' => array(
+					'Lala' => $this->getRandomString(),
+					'Parent' => array(
+						'Child' => array( 'Lisa', 'Lula', array( 'Lila' ) )
+						)
+					)
+				)
+			)
+		);
+
+		$this->assertInternalType( 'string', $instance->get( 'Foo' ) );
+		$this->assertInternalType( 'array',  $instance->get( 'Bar' ) );
+		$this->assertInternalType( 'string', $instance->get( 'Lula' ) );
+		$this->assertInternalType( 'array',  $instance->get( 'Lila' ) );
+		$this->assertInternalType( 'string', $instance->get( 'Lala' ) );
+		$this->assertInternalType( 'array',  $instance->get( 'Parent' ) );
+		$this->assertEquals( array( 'Lisa', 'Lula', array( 'Lila' ) ), $instance->get( 'Child' ) );
+
 	}
 }

@@ -169,6 +169,8 @@ class StoreTest extends \MediaWikiTestCase {
 ///// Special page functions /////
 
 	public function testGetPropertiesSpecial() {
+		// Really bailing out here and making the test database dependant!!
+
 		// This test fails on mysql http://bugs.mysql.com/bug.php?id=10327
 		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
 			$this->assertTrue( true );
@@ -179,6 +181,9 @@ class StoreTest extends \MediaWikiTestCase {
 		$result = $store->getPropertiesSpecial( null );
 		$this->assertTrue( is_array( $result ) );
 
+		// !!! This $result is mostly empty on jenkins (or an initial setup)
+		// which means this foreach assertion is never executed which
+		// means nothing is being verified
 		foreach( $result as $row ) {
 			$this->assertEquals( 2, sizeof( $row ) );
 
@@ -208,8 +213,8 @@ class StoreTest extends \MediaWikiTestCase {
 		$store = smwfGetStore();
 		$result = $store->getWantedPropertiesSpecial( null );
 
-		$this->assertTrue( is_array( $result ) );
-		foreach( $result as $row ) {
+		$this->assertInstanceOf( '\SMW\Store\Collector', $result );
+		foreach( $result->getResults() as $row ) {
 			$this->assertInstanceOf(
 				'\SMWDIProperty',
 				$row[0],

@@ -22,8 +22,8 @@
  * @since 1.9
  *
  * @file
- * @ingroup SpecialPage
  *
+ * @license GNU GPL v2+
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author mwjames
@@ -45,7 +45,7 @@ class SMWSpecialWantedProperties extends SpecialPage {
 	}
 
 	public function execute( $param ) {
-		wfProfileIn( __METHOD__ );
+		\SMW\Profiler::In( __METHOD__ );
 
 		$out = $this->getOutput();
 
@@ -53,6 +53,7 @@ class SMWSpecialWantedProperties extends SpecialPage {
 
 		$rep = new SMWWantedPropertiesPage(
 			\SMW\StoreFactory::getStore(),
+			$this->getContext(),
 			\SMW\Settings::newFromGlobals()
 		);
 
@@ -63,7 +64,7 @@ class SMWSpecialWantedProperties extends SpecialPage {
 		// ?? still needed !!
 		SMWOutputs::commitToOutputPage( $out );
 
-		wfProfileOut( __METHOD__ );
+		\SMW\Profiler::Out( __METHOD__ );
 	}
 
 }
@@ -71,7 +72,6 @@ class SMWSpecialWantedProperties extends SpecialPage {
 /**
  * This query page shows all wanted properties.
  *
- * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  *
  * @author Markus Krötzsch
@@ -80,6 +80,9 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 
 	/** @var Store */
 	protected $store;
+
+	/** @var IContextSource */
+	protected $context;
 
 	/** @var Settings */
 	protected $settings;
@@ -90,8 +93,9 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	 * @param Store $store
 	 * @param Settings $settings
 	 */
-	public function __construct( \SMW\Store $store, \SMW\Settings $settings ) {
+	public function __construct( \SMW\Store $store, \IContextSource $context, \SMW\Settings $settings ) {
 		$this->store = $store;
+		$this->context = $context;
 		$this->settings = $settings;
 	}
 
@@ -124,7 +128,7 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	 * @return string
 	 */
 	function getPageHeader() {
-		return Html::element( 'p', array(), $this->msg( 'smw_wantedproperties_docu' )->text() );
+		return Html::element( 'p', array(), $this->context->msg( 'smw_wantedproperties_docu' )->text() );
 	}
 
 	/**
@@ -148,10 +152,11 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 				new SMWDIProperty( '_TYPE' ) )->getLongHTMLText( $linker );
 		}
 
-		return $this->msg( 'smw_wantedproperty_template', $proplink, $result[1] )->text();
+		return $this->context->msg( 'smw_wantedproperty_template', $proplink, $result[1] )->text();
 	}
 
 	function getResults( $requestoptions ) {
-		return $this->store->getWantedPropertiesSpecial( $requestoptions );
+		// To see whether or not results are cached use ->isCached()
+		return $this->store->getWantedPropertiesSpecial( $requestoptions )->getResults();
 	}
 }

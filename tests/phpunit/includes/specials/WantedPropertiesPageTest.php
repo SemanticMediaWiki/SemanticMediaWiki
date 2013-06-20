@@ -4,6 +4,9 @@ namespace SMW\Test;
 
 use SMWWantedPropertiesPage;
 
+use DerivativeContext;
+use RequestContext;
+
 /**
  * Tests for the WantedPropertiesPage class
  *
@@ -25,14 +28,12 @@ use SMWWantedPropertiesPage;
  * @since 1.9
  *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the WantedPropertiesPage class
  * @covers SMWWantedPropertiesPage
  *
  * @ingroup Test
@@ -62,16 +63,25 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function getInstance( $result = null ) {
 
+		$context = new DerivativeContext( RequestContext::getMain() );
+
+		// Collector stub object
+		$collector = $this->getMockForAbstractClass( '\SMW\Store\Collector' );
+
+		$collector->expects( $this->any() )
+			->method( 'getResults' )
+			->will( $this->returnValue( $result ) );
+
 		// Store stub object
 		$store = $this->getMock( '\SMW\Store' );
 
-		// Override methods with expected return objects
 		$store->expects( $this->any() )
 			->method( 'getWantedPropertiesSpecial' )
-			->will( $this->returnValue( $result ) );
+			->will( $this->returnValue( $collector ) );
 
 		return new SMWWantedPropertiesPage(
 			$store,
+			$context,
 			$this->getSettings()
 		);
 	}

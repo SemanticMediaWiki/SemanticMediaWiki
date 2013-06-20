@@ -300,6 +300,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Store\PropertyStatisticsRebuilder']	= $stoDir . 'PropertyStatisticsRebuilder.php';
 	$wgAutoloadClasses['SMW\Store\PropertyStatisticsStore']     = $stoDir . 'PropertyStatisticsStore.php';
 	$wgAutoloadClasses['SMW\StoreFactory']			= $stoDir . 'StoreFactory.php';
+	$wgAutoloadClasses['SMW\Store\Collectible']     = $stoDir . 'Collectible.php';
+	$wgAutoloadClasses['SMW\Store\Collector']       = $stoDir . 'Collector.php';
 
 	$wgAutoloadClasses['SMWQueryResult']            = $stoDir . 'SMW_QueryResult.php';
 	$wgAutoloadClasses['SMWResultArray']            = $stoDir . 'SMW_ResultArray.php';
@@ -316,7 +318,9 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\SQLStore\PropertyStatisticsTable']				= $stoDirSQL . 'PropertyStatisticsTable.php';
 	$wgAutoloadClasses['SMW\SQLStore\SimplePropertyStatisticsRebuilder']	= $stoDirSQL . 'SimplePropertyStatisticsRebuilder.php';
 	$wgAutoloadClasses['SMW\SQLStore\StatisticsCollector']                  = $stoDirSQL . 'StatisticsCollector.php';
-	$wgAutoloadClasses['SMW\SQLStore\PropertyTableDefinitionBuilder']	    = $stoDirSQL . 'PropertyTableDefinitionBuilder.php';
+	$wgAutoloadClasses['SMW\SQLStore\WantedPropertiesCollector']            = $stoDirSQL . 'WantedPropertiesCollector.php';
+
+	$wgAutoloadClasses['SMW\SQLStore\PropertyTableDefinitionBuilder']       = $stoDirSQL . 'PropertyTableDefinitionBuilder.php';
 
 	$wgAutoloadClasses['SMWSQLStore3Table']                = $stoDirSQL . 'SMW_SQLStore3Table.php'; // Please fix me ...
 	$wgAutoloadClasses['SMW\SQLStore\TableDefinition']     = $stoDirSQL . 'SMW_SQLStore3Table.php';

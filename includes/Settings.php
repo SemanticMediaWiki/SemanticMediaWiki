@@ -5,7 +5,7 @@ namespace SMW;
 use ArrayObject;
 
 /**
- * Encapsulate settings (such as $GLOBALS) in an instantiatable settings class
+ * Encapsulate settings in an instantiatable settings class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,37 +22,34 @@ use ArrayObject;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
+ * @note Initial idea has been borrowed from EducationProgram Extension/Jeroen De Dauw
+ *
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  *
- * @licence GNU GPL v2+
- * @author mwjames (Initial idea has been "stolen" from Jeroen De Dauw)
+ * @license GNU GPL v2+
+ * @author mwjames
  */
 
 /**
- * This class encapsulates settings (such as $GLOBALS) in order to make it
- * an instantiatable object
+ * This class encapsulates settings (mostly retrieved from $GLOBALS) and
+ * make it an instantiatable object
  *
  * @ingroup SMW
  */
 class Settings {
 
-	/**
-	 * Defines settings as static to ensure it is only
-	 * instantiated once per session (e.g. SMWUpdateJobs etc.)
-	 * @var ArrayObject
-	 */
+	/** @var ArrayObject */
 	protected $settings;
 
 	/** @var Settings */
 	private static $instance = null;
 
 	/**
-	 * @note Use composition over inheritance, if it necessary this class can
-	 * extended to use the ArrayObject without interrupting the interface
-	 * therefore use the factory methods for instantiation
+	 * @note Here we use composition over inheritance but if it necessary
+	 * this class can be extended to use the ArrayObject without interrupting
+	 * the interface therefore use the factory method for instantiation
 	 *
 	 * @since 1.9
 	 *
@@ -63,16 +60,16 @@ class Settings {
 	}
 
 	/**
-	 * Assemble individual smwg* settings into one accessible array
-	 * for easy instantiation
-	 *
-	 * Since we don't have unique way of accessing only SMW related settings (
-	 * e.g. $smwgSettings['...']) we need this methods as short cut to
-	 * invoke only smwg* related settings
+	 * Assemble individual SMW related settings into one accessible array for
+	 * easy instantiation since we don't have unique way of accessing only
+	 * SMW related settings ( e.g. $smwgSettings['...']) we need this method
+	 * as short cut to invoke only smwg* related settings
 	 *
 	 * @par Example:
 	 * @code
-	 *  $defaultStore = \SMW\Settings::newFromGlobals()->get( 'smwgDefaultStore' );
+	 *  $settings = \SMW\Settings::newFromGlobals();
+	 *
+	 *  $settings->get( 'smwgDefaultStore' );
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -144,7 +141,6 @@ class Settings {
 			'smwgAdminRefreshStore' => $GLOBALS['smwgAdminRefreshStore'],
 			'smwgAutocompleteInSpecialAsk' => $GLOBALS['smwgAutocompleteInSpecialAsk'],
 			'smwgAutoRefreshSubject' => $GLOBALS['smwgAutoRefreshSubject'],
-			'smwgCacheType' => $GLOBALS['smwgCacheType'],
 			'smwgAutoRefreshOnPurge' => $GLOBALS['smwgAutoRefreshOnPurge'],
 			'smwgAutoRefreshOnPageMove' => $GLOBALS['smwgAutoRefreshOnPageMove'],
 			'smwgContLang' => $GLOBALS['smwgContLang'],
@@ -153,6 +149,8 @@ class Settings {
 			'smwgNamespace' => $GLOBALS['smwgNamespace'],
 			'smwgMasterStore' => $GLOBALS['smwgMasterStore'],
 			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'],
+			'smwgCacheType' => $GLOBALS['smwgCacheType'],
+			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
 			'smwgStatisticsCache' => $GLOBALS['smwgStatisticsCache'],
 			'smwgStatisticsCacheExpiry' => $GLOBALS['smwgStatisticsCacheExpiry'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
@@ -166,12 +164,14 @@ class Settings {
 	}
 
 	/**
-	 * Factory methods to instantiation a Settings object from a normal
-	 * array
+	 * Factory method for immediate instantiation of a settings object for a
+	 * given array
 	 *
 	 * @par Example:
 	 * @code
-	 *  $settings = \SMW\Settings::newFromArray( array() );
+	 *  $settings = \SMW\Settings::newFromArray( array( 'Foo' => 'Bar' ) );
+	 *
+	 *  $settings->get( 'Foo' );
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -183,7 +183,7 @@ class Settings {
 	}
 
 	/**
-	 * Returns if the specified settings is set or not
+	 * Verifies if a specified setting for a given key does exists or not
 	 *
 	 * @since 1.9
 	 *
@@ -196,7 +196,7 @@ class Settings {
 	}
 
 	/**
-	 * Overrides settings for a specific key in a class context
+	 * Overrides settings for a given key
 	 *
 	 * @since 1.9
 	 *
@@ -209,7 +209,19 @@ class Settings {
 	}
 
 	/**
-	 * Returns settings for a specific key
+	 * Returns settings for a given key (nested settings are supported)
+	 *
+	 * @par Example:
+	 * @code
+	 *  $settings = \SMW\Settings::newFromArray( array(
+	 *   'Foo' => 'Bar'
+	 *   'Parent' => array(
+	 *     'Child' => array( 'Lisa', 'Lula', array( 'Lila' ) )
+	 *   )
+	 *  );
+	 *
+	 *  $settings->get( 'Child' ) will return array( 'Lisa', 'Lula', array( 'Lila' ) )
+	 * @endcode
 	 *
 	 * @since 1.9
 	 *
@@ -218,9 +230,19 @@ class Settings {
 	 * @return mixed
 	 */
 	public function get( $key ) {
+
 		if ( !$this->exists( $key ) ) {
+
+			// If the key wasn't found it could be because of a nested array
+			// therefore iterate and verify otherwise throw an exception
+			$value = $this->doIterate( $key );
+			if ( $value !== null ) {
+				return $value;
+			}
+
 			throw new SettingsArgumentException( "{$key} is not a valid settings key" );
 		}
+
 		return $this->settings->offsetGet( $key );
 	}
 
@@ -231,5 +253,29 @@ class Settings {
 	 */
 	public static function reset() {
 		self::$instance = null;
+	}
+
+	/**
+	 * Iterate over nested array to find its value for a given key
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed|null
+	 */
+	private function doIterate( $key ) {
+		$iterator = new \RecursiveIteratorIterator(
+			new \RecursiveArrayIterator( $this->settings ),
+			\RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach( $iterator as $it => $value ) {
+			if ( $key === $it ) {
+				return $value;
+			}
+		}
+
+		return null;
 	}
 }

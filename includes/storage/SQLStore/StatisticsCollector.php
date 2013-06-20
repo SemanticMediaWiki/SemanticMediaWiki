@@ -2,12 +2,13 @@
 
 namespace SMW\SQLStore;
 
+use SMW\Store\Collector;
 use SMW\CacheHandler;
+use SMW\DIProperty;
 use SMW\Settings;
+use SMW\Store;
 
 use DatabaseBase;
-use SMWDIProperty;
-use SMWStore;
 
 /**
  * Collects statistical information provided by the store
@@ -30,30 +31,24 @@ use SMWStore;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
  * This class provides access to store related statistical information
  *
- * @ingroup SMW
+ * @ingroup Collector
+ * @ingroup SQLStore
  */
-class StatisticsCollector {
-
-	/** @var SMWStore */
-	protected $store;
+class StatisticsCollector extends Collector {
 
 	/** @var DatabaseBase */
 	protected $dbConnection;
 
-	/** @var Settings */
-	protected $settings;
-
-	/** @var Boolean */
-	protected $isCached;
+	/** @var array */
+	protected $results = array();
 
 	/**
 	 * // FIXME The store itself should know which database connection is being
@@ -66,11 +61,10 @@ class StatisticsCollector {
 	 * @param DatabaseBase $dbw
 	 * @param Settings $settings
 	 */
-	public function __construct( SMWStore $store, DatabaseBase $dbw, Settings $settings ) {
+	public function __construct( Store $store, DatabaseBase $dbw, Settings $settings ) {
 		$this->store = $store;
 		$this->dbConnection = $dbw;
 		$this->settings = $settings;
-		$this->isCached = false;
 	}
 
 	/**
@@ -78,28 +72,24 @@ class StatisticsCollector {
 	 *
 	 * @par Example:
 	 * @code
-	 * $statistics = \SMW\SQLStore\StatisticsCollector::newFromStore( $store )->doCollect();
+	 * $statistics = \SMW\SQLStore\StatisticsCollector::newFromStore( $store )
+	 *
+	 * $statistics->getResults();
 	 * @endcode
 	 *
 	 * @since 1.9
 	 *
-	 * @param SMWStore $store
+	 * @param Store $store
 	 * @param $dbw Boolean or DatabaseBase:
 	 * - Boolean: whether to use a dedicated DB or Slave
 	 * - DatabaseBase: database connection to use
 	 *
 	 * @return StatisticsCollector
 	 */
-	public static function newFromStore( SMWStore $store, $dbw = false ) {
+	public static function newFromStore( Store $store, $dbw = false ) {
 
 		$dbw = $dbw instanceof DatabaseBase ? $dbw : wfGetDB( DB_SLAVE );
-
-		$settings = Settings::newFromArray( array(
-			'smwgCacheType' => $GLOBALS['smwgCacheType'],
-			'smwgStatisticsCache' => $GLOBALS['smwgStatisticsCache'],
-			'smwgStatisticsCacheExpiry' => $GLOBALS['smwgStatisticsCacheExpiry']
-		) );
-
+		$settings = Settings::newFromGlobals();
 		return new self( $store, $dbw, $settings );
 	}
 
@@ -117,7 +107,7 @@ class StatisticsCollector {
 	 * - 'SUBOBJECTS': Number of declared subobjects
 	 * - 'QUERYFORMATS': Array of used formats and its usage count
 	 *
-	 * @note Results are cacheable if necessary settings are available
+	 * @note Results are cacheable if the necessary settings are available
 	 *
 	 * @see $smwgStatisticsCache
 	 * @see $smwgStatisticsCacheExpiry
@@ -126,32 +116,38 @@ class StatisticsCollector {
 	 *
 	 * @return array
 	 */
-	public function doCollect() {
+	public function getResults() {
 
 		$cache = CacheHandler::newFromId( $this->settings->get( 'smwgCacheType' ) );
-		$cache->setCacheEnabled( $this->settings->get( 'smwgStatisticsCache' ) )->key( 'stats', 'store' );
+		$results = $cache->setCacheEnabled( $this->settings->get( 'smwgStatisticsCache' ) )
+			->key( 'collector', 'stats', 'store' )
+			->get();
 
-		if ( $cache->get() ) {
-			wfDebug( __METHOD__ . ' statistics served from cache' . "\n");
+		if ( $results ) {
+
 			$this->isCached = true;
-			return $cache->get();
+			$this->results = $results;
+			wfDebug( __METHOD__ . ' statistics served from cache' . "\n");
+
+		} else {
+
+			$this->results = array(
+				'OWNPAGE' => $this->getPropertyPageCount(),
+				'QUERY' => $this->getQueryCount(),
+				'QUERYSIZE' => $this->getQuerySize(),
+				'QUERYFORMATS' => $this->getQueryFormatsCount(),
+				'CONCEPTS' => $this->getConceptCount(),
+				'SUBOBJECTS' => $this->getSubobjectCount(),
+				'DECLPROPS' => $this->getDeclaredPropertiesCount(),
+				'PROPUSES' => $this->getPropertyUsageCount(),
+				'USEDPROPS' => $this->getUsedPropertiesCount()
+			);
+
+			$this->isCached = false;
+			$cache->set( $this->results, $this->settings->get( 'smwgStatisticsCacheExpiry' ) );
 		}
 
-		$statistics = array(
-			'OWNPAGE' => $this->getPropertyPageCount(),
-			'QUERY' => $this->getQueryCount(),
-			'QUERYSIZE' => $this->getQuerySize(),
-			'QUERYFORMATS' => $this->getQueryFormatsCount(),
-			'CONCEPTS' => $this->getConceptCount(),
-			'SUBOBJECTS' => $this->getSubobjectCount(),
-			'DECLPROPS' => $this->getDeclaredPropertiesCount(),
-			'PROPUSES' => $this->getPropertyUsageCount(),
-			'USEDPROPS' => $this->getUsedPropertiesCount()
-		);
-
-		$cache->set( $statistics, $this->settings->get( 'smwgStatisticsCacheExpiry' ) );
-
-		return $statistics;
+		return $this->results;
 	}
 
 	/**
@@ -198,7 +194,7 @@ class StatisticsCollector {
 	 * @return number
 	 */
 	public function getSubobjectCount() {
-		return $this->count( SMWDIProperty::TYPE_SUBOBJECT );
+		return $this->count( DIProperty::TYPE_SUBOBJECT );
 	}
 
 	/**
@@ -207,7 +203,7 @@ class StatisticsCollector {
 	 * @return number
 	 */
 	public function getDeclaredPropertiesCount() {
-		return $this->count( SMWDIProperty::TYPE_HAS_TYPE );
+		return $this->count( DIProperty::TYPE_HAS_TYPE );
 	}
 
 	/**
@@ -354,6 +350,9 @@ class StatisticsCollector {
 	/**
 	 * Returns table declaration for a given property type
 	 *
+	 * @note This can be scrapped now that we have direct access
+	 * via the collector class
+	 *
 	 * @since 1.9
 	 *
 	 * @param string $type
@@ -361,8 +360,6 @@ class StatisticsCollector {
 	 * @return array
 	 */
 	protected function getTypeTable( $type ) {
-		$typeProp = new SMWDIProperty( $type );
-		$propertyTables = $this->store->getPropertyTables();
-		return $propertyTables[$this->store->findPropertyTableID( $typeProp )];
+		return $this->getPropertyTables( $type, false );
 	}
 }

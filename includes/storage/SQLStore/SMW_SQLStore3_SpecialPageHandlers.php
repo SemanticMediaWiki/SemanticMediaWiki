@@ -147,54 +147,20 @@ class SMWSQLStore3SpecialPageHandlers {
 	 *
 	 * @param SMWRequestOptions $requestoptions
 	 *
-	 * @return array of array( SMWDIProperty, int )
+	 * @return Collector
 	 */
 	public function getWantedPropertiesSpecial( $requestoptions = null ) {
-		global $smwgPDefaultType;
-
-		wfProfileIn( "SMWSQLStore3::getWantedPropertiesSpecial (SMW)" );
-
-		// Note that Wanted Properties must have the default type.
-		$proptables = SMWSQLStore3::getPropertyTables();
-		$proptable = $proptables[SMWSQLStore3::findTypeTableId( $smwgPDefaultType )];
-
-		$result = array();
-
-		if ( !$proptable->isFixedPropertyTable() ) { // anything else would be crazy, but let's fail gracefully even if the whole world is crazy
-			$dbr = wfGetDB( DB_SLAVE );
-
-			$options = $this->store->getSQLOptions( $requestoptions, 'title' );
-			$options['ORDER BY'] = 'count DESC';
-
-			$res = $dbr->select( // TODO: this is not how JOINS should be specified in the select function
-				$dbr->tableName( $proptable->getName() ) . ' INNER JOIN ' .
-					$dbr->tableName( SMWSql3SmwIds::tableName ) . ' ON p_id=smw_id LEFT JOIN ' .
-					$dbr->tableName( 'page' ) . ' ON (page_namespace=' .
-					$dbr->addQuotes( SMW_NS_PROPERTY ) . ' AND page_title=smw_title)',
-				'smw_title, COUNT(*) as count',
-				'smw_id > 50 AND page_id IS NULL GROUP BY smw_title',
-				'SMW::getWantedPropertiesSpecial',
-				$options
-			);
-
-			foreach ( $res as $row ) {
-				$result[] = array( new SMWDIProperty( $row->smw_title ), $row->count );
-			}
-		}
-
-		wfProfileOut( "SMWSQLStore3::getWantedPropertiesSpecial (SMW)" );
-
-		return $result;
+		return \SMW\SQLStore\WantedPropertiesCollector::newFromStore( $this->store )->setRequestOptions( $requestoptions );
 	}
 
 	/**
 	 * @see SMWStore::getStatistics
-	 * @see StatisticsCollector:doCollect
+	 * @see StatisticsCollector:getResults
 	 *
 	 * @return array
 	 */
 	public function getStatistics() {
 		// Until the settings object is invoke during Store setup, use the factory method here
-		return \SMW\SQLStore\StatisticsCollector::newFromStore( $this->store )->doCollect();
+		return \SMW\SQLStore\StatisticsCollector::newFromStore( $this->store )->getResults();
 	}
 }

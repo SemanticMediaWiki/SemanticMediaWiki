@@ -32,6 +32,20 @@ die("Not a valid entry point\n");
  */
 
 /**
+ * This group contains members that are related to the Store unit tests
+ *
+ * @defgroup StoreTest StoreTest
+ * @ingroup Test
+ */
+
+/**
+ * This group contains members that are related to the SQLStore unit tests
+ *
+ * @defgroup SQLStoreTest SQLStoreTest
+ * @ingroup StoreTest
+ */
+
+/**
  * This group contains members that are related to the Semantic MediaWiki Api
  *
  * @defgroup Api Api
@@ -47,8 +61,22 @@ die("Not a valid entry point\n");
  */
 
 /**
- * This group contains members that are related to the store interface
+ * This group contains members that are related to the Store interface
  *
  * @defgroup Store Store
  * @ingroup SMW
+ */
+
+/**
+ * This group contains members that are related to the SQLStore implementation
+ *
+ * @defgroup SQLStore SQLStore
+ * @ingroup Store
+ */
+
+/**
+ * This group contains members that are related to the Collector interface
+ *
+ * @defgroup Collector Collector
+ * @ingroup Store
  */

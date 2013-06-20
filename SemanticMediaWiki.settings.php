@@ -541,6 +541,27 @@ $smwgCacheType = CACHE_ANYTHING;
 ##
 
 ###
+# An array containing cache related settings used within Semantic MediaWiki
+# and requires $smwgCacheType be set otherwise caching will have no effect.
+#
+# - smwgWantedPropertiesCache Enable to serve wanted properties from cache
+# - smwgWantedPropertiesCacheExpiry Number of seconds before the cache expires
+#
+# - smwgStatisticsCache Enable to serve statistics from cache
+# - smwgStatisticsCacheExpiry Number of seconds before the cache expires
+#
+# @since 1.9
+##
+$smwgCacheUsage = array(
+	'smwgWantedPropertiesCache' => true,
+	'smwgWantedPropertiesCacheExpiry' => 3600,
+);
+
+// Move those two into $smwgCacheUsage
+$smwgStatisticsCache = true;
+$smwgStatisticsCacheExpiry = 3600;
+
+###
 # Sets whether or not to refresh semantic data in the store when a page is
 # manually purged (requires $smwgCacheType be set)
 #
@@ -556,18 +577,6 @@ $smwgAutoRefreshOnPurge = true;
 # @since 1.9
 ##
 $smwgAutoRefreshOnPageMove = true;
-##
-
-###
-# Enable to serve statistics from cache using the smwgCacheType setting
-#
-# @since 1.9
-###
-$smwgStatisticsCache = true;
-#
-# Number of seconds before the statistics cache expires
-##
-$smwgStatisticsCacheExpiry = 3600;
 ##
 
 ##

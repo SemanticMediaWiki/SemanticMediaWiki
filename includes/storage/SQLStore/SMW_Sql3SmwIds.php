@@ -908,4 +908,12 @@ class SMWSql3SmwIds {
 		wfDebug( $debugString );
 	}
 
+	/**
+	 * Returns store Id table name
+	 *
+	 * @return string
+	 */
+	public function getTableName() {
+		return self::tableName;
+	}
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Test\SQLStore;
 
 use SMW\SQLStore\StatisticsCollector;
+use SMW\StoreFactory;
 use SMW\Settings;
 use SMW\Store;
 
 /**
- * Tests for the StatisticsCollector class
+ *Test for the StatisticsCollector class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,22 +28,20 @@ use SMW\Store;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the StatisticsCollector class
+ * @covers \SMW\SQLStore\StatisticsCollector
  *
- * @ingroup Test
+ * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension
  */
-class StatisticsCollectorTest extends SemanticMediaWikiTestCase {
+class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -65,8 +64,7 @@ class StatisticsCollectorTest extends SemanticMediaWikiTestCase {
 	 */
 	private function getInstance( $count = 1, $cacheEnabled = false ) {
 
-		// FIXME Use StoreFactory::getStore()
-		$store = smwfGetStore();
+		$store = StoreFactory::getStore();
 
 		// fetchObject return object
 		$returnFetchObject = new \StdClass;
@@ -121,7 +119,7 @@ class StatisticsCollectorTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testNewFromStore() {
-		$instance = StatisticsCollector::newFromStore( smwfGetStore() );
+		$instance = StatisticsCollector::newFromStore( StoreFactory::getStore() );
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
@@ -147,7 +145,7 @@ class StatisticsCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StatisticsCollector::doCollect
+	 * @test StatisticsCollector::getResults
 	 * @dataProvider getCollectorDataProvider
 	 *
 	 * @since 1.9
@@ -155,15 +153,15 @@ class StatisticsCollectorTest extends SemanticMediaWikiTestCase {
 	 * @param $segment
 	 * @param $expectedType
 	 */
-	public function testDoCollect( $segment, $expectedType ) {
+	public function testGetResults( $segment, $expectedType ) {
 		$instance = $this->getInstance();
-		$result = $instance->doCollect();
+		$result = $instance->getResults();
 
 		$this->assertInternalType( $expectedType, $result[$segment] );
 	}
 
 	/**
-	 * @test StatisticsCollector::doCollect
+	 * @test StatisticsCollector::getResults
 	 * @dataProvider getCacheNonCacheDataProvider
 	 *
 	 * @since 1.9
@@ -175,12 +173,12 @@ class StatisticsCollectorTest extends SemanticMediaWikiTestCase {
 
 		// Sample A
 		$instance = $this->getInstance( $test['A'], $test['cacheEnabled'] );
-		$result = $instance->doCollect();
+		$result = $instance->getResults();
 		$this->assertEquals( $expected['A'], $result['OWNPAGE'] );
 
 		// Sample B
 		$instance = $this->getInstance( $test['B'], $test['cacheEnabled'] );
-		$result = $instance->doCollect();
+		$result = $instance->getResults();
 		$this->assertEquals( $expected['B'], $result['OWNPAGE'] );
 
 		$this->assertEquals( $test['cacheEnabled'], $instance->isCached() );
