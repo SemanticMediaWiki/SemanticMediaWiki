@@ -118,6 +118,7 @@ $specialPageAliases['de'] = array(
 	'ExportRDF' => array( 'RDF_exportieren', 'Exportiere_RDF' ),
 	'PageProperty' => array( 'Seitenattribut' ),
 	'Properties' => array( 'Attribute' ),
+	'Concepts' => array( 'Konzepte' ),
 	'SMWAdmin' => array( 'SMW-Administration', 'SMW-Einrichtung' ),
 	'SearchByProperty' => array( 'Suche_mittels_Attribut' ),
 	'SemanticStatistics' => array( 'Semantische_Statistik' ),
