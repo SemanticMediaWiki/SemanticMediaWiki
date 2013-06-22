@@ -427,6 +427,7 @@ $specialPageAliases['lb'] = array(
 	'ExportRDF' => array( 'RDF_exportéieren' ),
 	'PageProperty' => array( 'Säiten-Eegeschaften' ),
 	'Properties' => array( 'Eegeschaften' ),
+	'Concepts' => array( 'Konzepter' ),
 	'SearchByProperty' => array( 'No_Eegeschaft_sichen' ),
 	'SemanticStatistics' => array( 'Semantesch_Statistiken' ),
 	'Types' => array( 'Datentypen' ),
