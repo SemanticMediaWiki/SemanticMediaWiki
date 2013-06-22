@@ -2,7 +2,8 @@
 
 namespace SMW\Test\SQLStore;
 
-use SMW\SQLStore\WantedPropertiesCollector;
+use SMW\SQLStore\UnusedPropertiesCollector;
+use SMW\MessageFormatter;
 use SMW\StoreFactory;
 use SMW\DIProperty;
 use SMW\Settings;
@@ -10,7 +11,7 @@ use SMW\Settings;
 use SMWRequestOptions;
 
 /**
- * Test for the WantedPropertiesCollector class
+ * Test for the UnusedPropertiesCollector class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,14 +37,14 @@ use SMWRequestOptions;
  */
 
 /**
- * @covers \SMW\SQLStore\WantedPropertiesCollector
+ * @covers \SMW\SQLStore\UnusedPropertiesCollector
  *
  * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension
  */
-class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
+class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -51,28 +52,23 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\SQLStore\WantedPropertiesCollector';
+		return '\SMW\SQLStore\UnusedPropertiesCollector';
 	}
 
 	/**
-	 * Helper method that returns a WantedPropertiesCollector object
+	 * Helper method that returns a Database object
 	 *
 	 * @since 1.9
 	 *
-	 * @param $property
-	 * @param $count
-	 * @param $cacheEnabled
+	 * @param $smwTitle
 	 *
-	 * @return WantedPropertiesCollector
+	 * @return Database
 	 */
-	private function getInstance( $property = 'Foo', $count = 1, $cacheEnabled = false ) {
-
-		$store = StoreFactory::getStore();
+	private function getMockDBConnection( $smwTitle = 'Foo' ) {
 
 		// Injection object expected as the DB fetchObject
 		$returnFetchObject = new \StdClass;
-		$returnFetchObject->count = $count;
-		$returnFetchObject->smw_title = $property;
+		$returnFetchObject->smw_title = $smwTitle;
 
 		// Database stub object to make the test independent from any real DB
 		$connection = $this->getMock( 'DatabaseMysql' );
@@ -82,19 +78,36 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 			->method( 'select' )
 			->will( $this->returnValue( array( $returnFetchObject ) ) );
 
-		// Settings to be used
-		$settings = Settings::newFromArray( array(
-			'smwgPDefaultType' => '_wpg',
-			'smwgCacheType' => 'hash',
-			'smwgWantedPropertiesCache' => $cacheEnabled,
-			'smwgWantedPropertiesCacheExpiry' => 360,
-		) );
-
-		return new WantedPropertiesCollector( $store, $connection, $settings );
+		return $connection;
 	}
 
 	/**
-	 * @test WantedPropertiesCollector::__construct
+	 * Helper method that returns a UnusedPropertiesCollector object
+	 *
+	 * @since 1.9
+	 *
+	 * @param $smwTitle
+	 * @param $cacheEnabled
+	 *
+	 * @return UnusedPropertiesCollector
+	 */
+	private function getInstance( $smwTitle = 'Foo', $cacheEnabled = false ) {
+
+		$store = StoreFactory::getStore();
+		$connection = $this->getMockDBConnection( $smwTitle );
+
+		// Settings to be used
+		$settings = Settings::newFromArray( array(
+			'smwgCacheType' => 'hash',
+			'smwgUnusedPropertiesCache' => $cacheEnabled,
+			'smwgUnusedPropertiesCacheExpiry' => 360,
+		) );
+
+		return new UnusedPropertiesCollector( $store, $connection, $settings );
+	}
+
+	/**
+	 * @test UnusedPropertiesCollector::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -104,31 +117,31 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test WantedPropertiesCollector::newFromStore
+	 * @test UnusedPropertiesCollector::newFromStore
 	 *
 	 * @since 1.9
 	 */
 	public function testNewFromStore() {
-		$instance = WantedPropertiesCollector::newFromStore( smwfGetStore() );
+		$instance = UnusedPropertiesCollector::newFromStore( StoreFactory::getStore() );
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
-	 * @test WantedPropertiesCollector::getResults
-	 * @test WantedPropertiesCollector::count
+	 * @test UnusedPropertiesCollector::getResults
+	 * @test UnusedPropertiesCollector::count
 	 *
 	 * @since 1.9
 	 */
 	public function testGetResults() {
 
-		$count = rand();
 		$property = $this->getRandomString();
-		$expected = array( array( new DIProperty( $property ), $count ) );
+		$expected = array( new DIProperty( $property ) );
 
-		$instance = $this->getInstance( $property, $count );
-		$instance->setRequestOptions(
-			new SMWRequestOptions( $property, SMWRequestOptions::STRCOND_PRE )
-		);
+		$instance = $this->getInstance( $property );
+		$requestOptions = new SMWRequestOptions( $property, SMWRequestOptions::STRCOND_PRE );
+		$requestOptions->limit = 1;
+
+		$instance->setRequestOptions( $requestOptions );
 
 		$this->assertEquals( $expected, $instance->getResults() );
 		$this->assertEquals( 1, $instance->count() );
@@ -136,8 +149,32 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test WantedPropertiesCollector::getResults
-	 * @test WantedPropertiesCollector::isCached
+	 * @test UnusedPropertiesCollector::getResults
+	 *
+	 * InvalidPropertyException is thrown but caught and returning with a
+	 * SMWDIError instead
+	 *
+	 * @since 1.9
+	 */
+	public function testInvalidPropertyException() {
+
+		// -<property> is to raise an error
+		$property = '-Lala';
+		$instance = $this->getInstance( $property );
+
+		$results = $instance->getResults();
+		$message = MessageFormatter::newFromArray( $this->getLanguage(), array( $results[0]->getErrors() ) )->getHtml();
+
+		$this->assertInternalType( 'array', $results );
+		$this->assertEquals( 1, $instance->count() );
+		$this->assertInstanceOf( 'SMWDIError', $results[0] );
+		$this->assertContains( $property, $message );
+
+	}
+
+	/**
+	 * @test UnusedPropertiesCollector::getResults
+	 * @test UnusedPropertiesCollector::isCached
 	 * @dataProvider getCacheNonCacheDataProvider
 	 *
 	 * @since 1.9
@@ -151,7 +188,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		// Sample A
 		$instance = $this->getInstance(
 			$test['A']['property'],
-			$test['A']['count'],
 			$test['cacheEnabled']
 		);
 
@@ -160,7 +196,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		// Sample B
 		$instance = $this->getInstance(
 			$test['B']['property'],
-			$test['B']['count'],
 			$test['cacheEnabled']
 		);
 
@@ -176,8 +211,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	public function getCacheNonCacheDataProvider() {
 		$propertyA = $this->getRandomString();
 		$propertyB = $this->getRandomString();
-		$countA = rand();
-		$countB = rand();
 
 		return array(
 			array(
@@ -185,12 +218,12 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 				// #0 Cached
 				array(
 					'cacheEnabled' => true,
-					'A' => array( 'property' => $propertyA, 'count' => $countA ),
-					'B' => array( 'property' => $propertyB, 'count' => $countB ),
+					'A' => array( 'property' => $propertyA ),
+					'B' => array( 'property' => $propertyB ),
 				),
 				array(
-					'A' => array( array( new DIProperty( $propertyA ), $countA ) ),
-					'B' => array( array( new DIProperty( $propertyA ), $countA ) )
+					'A' => array( new DIProperty( $propertyA ) ),
+					'B' => array( new DIProperty( $propertyA ) )
 				),
 				array( 'msg' => 'Failed asserting that A & B are identical for a cached result' )
 			),
@@ -199,12 +232,12 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 				// #1 Non-cached
 				array(
 					'cacheEnabled' => false,
-					'A' => array( 'property' => $propertyA, 'count' => $countA ),
-					'B' => array( 'property' => $propertyB, 'count' => $countB )
+					'A' => array( 'property' => $propertyA ),
+					'B' => array( 'property' => $propertyB )
 				),
 				array(
-					'A' => array( array( new DIProperty( $propertyA ), $countA ) ),
-					'B' => array( array( new DIProperty( $propertyB ), $countB ) )
+					'A' => array( new DIProperty( $propertyA ) ),
+					'B' => array( new DIProperty( $propertyB ) )
 				),
 				array( 'msg' => 'Failed asserting that A & B are not identical for a non-cached result' )
 			)

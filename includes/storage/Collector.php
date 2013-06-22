@@ -2,8 +2,11 @@
 
 namespace SMW\Store;
 
+use SMW\CacheHandler;
 use SMW\DIProperty;
 use SMW\Settings;
+
+use MWTimestamp;
 
 /**
  * Interface for items of groups of individuals to be sampled into a
@@ -63,6 +66,36 @@ abstract class Collector implements Collectible {
 	 * @since 1.9
 	 */
 	public abstract function isCached();
+
+	/**
+	 * Returns a timestamp
+	 *
+	 * @todo Apparently MW 1.19 does not have a MWTimestamp class, please
+	 * remove this clutter as soon as MW 1.19 is not supported any longer
+	 *
+	 * @since 1.9
+	 *
+	 * @return integer
+	 */
+	public function getTimestamp() {
+		if ( class_exists( 'MWTimestamp' ) ) {
+			$timestamp = new MWTimestamp();
+			return $timestamp->getTimestamp( TS_UNIX );
+		} else {
+			return wfTimestamp( TS_UNIX );
+		}
+	}
+
+	/**
+	 * Returns a CacheHandler instance
+	 *
+	 * @since 1.9
+	 *
+	 * @return CacheHandler
+	 */
+	public function getCache() {
+		return CacheHandler::newFromId( $this->settings->get( 'smwgCacheType' ) );
+	}
 
 	/**
 	 * Returns table definition for a given property type

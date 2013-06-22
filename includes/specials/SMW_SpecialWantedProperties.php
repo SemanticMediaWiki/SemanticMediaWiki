@@ -51,14 +51,14 @@ class SMWSpecialWantedProperties extends SpecialPage {
 
 		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
 
-		$rep = new SMWWantedPropertiesPage(
+		$page = new SMWWantedPropertiesPage(
 			\SMW\StoreFactory::getStore(),
-			$this->getContext(),
 			\SMW\Settings::newFromGlobals()
 		);
+		$page->setContext( $this->getContext() );
 
 		list( $limit, $offset ) = wfCheckLimits();
-		$rep->doQuery( $offset, $limit );
+		$page->doQuery( $offset, $limit );
 
 		// Ensure locally collected output data is pushed to the output!
 		// ?? still needed !!
@@ -81,11 +81,11 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	/** @var Store */
 	protected $store;
 
-	/** @var IContextSource */
-	protected $context;
-
 	/** @var Settings */
 	protected $settings;
+
+	/** @var Collector */
+	protected $collector;
 
 	/**
 	 * @since 1.9
@@ -93,9 +93,8 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	 * @param Store $store
 	 * @param Settings $settings
 	 */
-	public function __construct( \SMW\Store $store, \IContextSource $context, \SMW\Settings $settings ) {
+	public function __construct( \SMW\Store $store, \SMW\Settings $settings ) {
 		$this->store = $store;
-		$this->context = $context;
 		$this->settings = $settings;
 	}
 
@@ -128,7 +127,7 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	 * @return string
 	 */
 	function getPageHeader() {
-		return Html::element( 'p', array(), $this->context->msg( 'smw_wantedproperties_docu' )->text() );
+		return Html::element( 'p', array(), $this->msg( 'smw_wantedproperties_docu' )->text() );
 	}
 
 	/**
@@ -138,25 +137,33 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	 * @return string
 	 */
 	function formatResult( $skin, $result ) {
-		$linker = smwfGetLinker();
 
+		$linker   = smwfGetLinker();
+		$proplink = '';
+
+		// Only display user-defined properties because it can happen that
+		// custom predefined (fixed) properties are mixed within the result
+		// (did not use their own fixedProperty table and therefore were
+		// selected as well e.g _SF_PDF etc.)
 		if ( $result[0]->isUserDefined() ) {
 			$proplink = $linker->link(
 				$result[0]->getDiWikiPage()->getTitle(),
 				htmlspecialchars( $result[0]->getLabel() ),
 				array( 'action' => 'view' )
 			);
-		} else {
-			$proplink = \SMW\DataValueFactory::newDataItemValue(
-				$result[0],
-				new SMWDIProperty( '_TYPE' ) )->getLongHTMLText( $linker );
 		}
 
-		return $this->context->msg( 'smw_wantedproperty_template', $proplink, $result[1] )->text();
+		return $proplink ? $this->msg( 'smw_wantedproperty_template', $proplink, $result[1] )->text() : '';
 	}
 
+	/**
+	 * Get the list of results.
+	 *
+	 * @param SMWRequestOptions $requestOptions
+	 * @return array of SMWDIProperty|SMWDIError
+	 */
 	function getResults( $requestoptions ) {
-		// To see whether or not results are cached use ->isCached()
-		return $this->store->getWantedPropertiesSpecial( $requestoptions )->getResults();
+		$this->collector = $this->store->getWantedPropertiesSpecial( $requestoptions );
+		return $this->collector->getResults();
 	}
 }

@@ -16,6 +16,9 @@
  */
 abstract class SMWQueryPage extends QueryPage {
 
+	/** @var MessageFormatter */
+	protected $msgFormatter;
+
 	/**
 	 * Implemented by subclasses to provide concrete functions.
 	 */
@@ -35,6 +38,20 @@ abstract class SMWQueryPage extends QueryPage {
 
 	function isSyndicated() {
 		return false; // TODO: why not?
+	}
+
+	/**
+	 * Returns a MessageFormatter object
+	 *
+	 * @since  1.9
+	 *
+	 * @return MessageFormatter
+	 */
+	public function getMessageFormatter() {
+		if ( !isset( $this->msgFormatter ) ) {
+			$this->msgFormatter = new \SMW\MessageFormatter( $this->getLanguage() );
+		}
+		return $this->msgFormatter;
 	}
 
 	/**

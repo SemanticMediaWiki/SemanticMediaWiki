@@ -796,4 +796,26 @@ class SMWSQLStore3 extends SMWStore {
 
 		return self::$prop_tables;
 	}
+
+	/**
+	 * Returns SMW Id object
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWSql3SmwIds
+	 */
+	public function getObjectIds() {
+		return $this->smwIds;
+	}
+
+	/**
+	 * Returns the statics table
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getStatisticsTable() {
+		return self::PROPERTY_STATISTICS_TABLE;
+	}
 }

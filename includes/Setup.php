@@ -166,6 +166,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\PredefinedPropertyException']  = $incDir . '/exceptions/PredefinedPropertyException.php';
 	$wgAutoloadClasses['SMW\InvalidSemanticDataException'] = $incDir . '/exceptions/InvalidSemanticDataException.php';
 	$wgAutoloadClasses['SMW\InvalidNamespaceException']    = $incDir . '/exceptions/InvalidNamespaceException.php';
+	$wgAutoloadClasses['SMW\InvalidPropertyException']     = $incDir . '/exceptions/InvalidPropertyException.php';
+	$wgAutoloadClasses['SMW\InvalidResultException']       = $incDir . '/exceptions/InvalidResultException.php';
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
@@ -319,6 +321,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\SQLStore\SimplePropertyStatisticsRebuilder']	= $stoDirSQL . 'SimplePropertyStatisticsRebuilder.php';
 	$wgAutoloadClasses['SMW\SQLStore\StatisticsCollector']                  = $stoDirSQL . 'StatisticsCollector.php';
 	$wgAutoloadClasses['SMW\SQLStore\WantedPropertiesCollector']            = $stoDirSQL . 'WantedPropertiesCollector.php';
+	$wgAutoloadClasses['SMW\SQLStore\UnusedPropertiesCollector']            = $stoDirSQL . 'UnusedPropertiesCollector.php';
 
 	$wgAutoloadClasses['SMW\SQLStore\PropertyTableDefinitionBuilder']       = $stoDirSQL . 'PropertyTableDefinitionBuilder.php';
 
@@ -362,9 +365,10 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWSpecialOWLExport']           = $specDir . 'SMW_SpecialOWLExport.php';
 	$wgAutoloadClasses['SMWSpecialProperties']          = $specDir . 'SMW_SpecialProperties.php';
 	$wgAutoloadClasses['SMWSpecialTypes']               = $specDir . 'SMW_SpecialTypes.php';
-	$wgAutoloadClasses['SMWSpecialUnusedProperties']    = $specDir . 'SMW_SpecialUnusedProperties.php';
 	$wgAutoloadClasses['SMWSpecialWantedProperties']    = $specDir . 'SMW_SpecialWantedProperties.php';
 	$wgAutoloadClasses['SMWWantedPropertiesPage']       = $specDir . 'SMW_SpecialWantedProperties.php';
+	$wgAutoloadClasses['SMWSpecialUnusedProperties']    = $specDir . 'SMW_SpecialUnusedProperties.php';
+	$wgAutoloadClasses['SMWUnusedPropertiesPage']       = $specDir . 'SMW_SpecialUnusedProperties.php';
 
 	// Special pages and closely related helper classes
 	$testsDir = $smwgIP . 'tests/phpunit/';

@@ -555,6 +555,8 @@ $smwgCacheType = CACHE_ANYTHING;
 $smwgCacheUsage = array(
 	'smwgWantedPropertiesCache' => true,
 	'smwgWantedPropertiesCacheExpiry' => 3600,
+	'smwgUnusedPropertiesCache' => true,
+	'smwgUnusedPropertiesCacheExpiry' => 3600,
 );
 
 // Move those two into $smwgCacheUsage

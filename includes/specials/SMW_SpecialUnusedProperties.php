@@ -13,26 +13,31 @@
  * @author Jeroen De Dauw
  */
 class SMWSpecialUnusedProperties extends SpecialPage {
+
 	public function __construct() {
 		parent::__construct( 'UnusedProperties' );
 	}
 
 	public function execute( $param ) {
-		wfProfileIn( 'smwfDoSpecialUnusedProperties (SMW)' );
+		\SMW\Profiler::In( __METHOD__ );
 
-		global $wgOut;
+		$out = $this->getOutput();
 
-		$wgOut->setPageTitle( wfMessage( 'unusedproperties' )->text() );
+		$out->setPageTitle( $this->msg( 'unusedproperties' )->text() );
 
-		$rep = new SMWUnusedPropertiesPage();
+		$page = new SMWUnusedPropertiesPage(
+			\SMW\StoreFactory::getStore(),
+			\SMW\Settings::newFromGlobals()
+		);
+		$page->setContext( $this->getContext() );
 
 		list( $limit, $offset ) = wfCheckLimits();
-		$rep->doQuery( $offset, $limit );
+		$page->doQuery( $offset, $limit );
 
 		// Ensure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $wgOut );
+		SMWOutputs::commitToOutputPage( $out );
 
-		wfProfileOut( 'smwfDoSpecialUnusedProperties (SMW)' );
+		\SMW\Profiler::Out( __METHOD__ );
 	}
 }
 
@@ -46,20 +51,56 @@ class SMWSpecialUnusedProperties extends SpecialPage {
  */
 class SMWUnusedPropertiesPage extends SMWQueryPage {
 
+	/** @var Store */
+	protected $store;
+
+	/** @var Settings */
+	protected $settings;
+
+	/** @var Collector */
+	protected $collector;
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param Store $store
+	 * @param Settings $settings
+	 */
+	public function __construct( \SMW\Store $store, \SMW\Settings $settings ) {
+		$this->store = $store;
+		$this->settings = $settings;
+	}
+
+	/**
+	 * @codeCoverageIgnore
+	 * @return string
+	 */
 	function getName() {
 		return "UnusedProperties";
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @return boolean
+	 */
 	function isExpensive() {
 		return false; // Disables caching for now
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @return boolean
+	 */
 	function isSyndicated() {
 		return false; // TODO: why not?
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @return string
+	 */
 	function getPageHeader() {
-		return '<p>' . wfMessage( 'smw_unusedproperties_docu' )->text() . "</p><br />\n";
+		return Html::element( 'p', array(), $this->msg( 'smw_unusedproperties_docu' )->text() );
 	}
 
 	/**
@@ -70,15 +111,19 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
 	 * @return String
-	 * @throws MWException if the result was not of a supported type
+	 * @throws InvalidResultException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {
-		if ( $result instanceof SMWDIProperty ) {
+
+		if ( $result instanceof \SMW\DIProperty ) {
 			return $this->formatPropertyItem( $result );
 		} elseif ( $result instanceof SMWDIError ) {
-			return smwfEncodeMessages( $result->getErrors() );
+			return $this->getMessageFormatter()->clear()
+				->setType( 'warning' )
+				->addFromArray( array( $result->getErrors() ) )
+				->getHtml();
 		} else {
-			throw MWException( 'SMWUnusedPropertiesPage expects results that are properties or errors.' );
+			throw new \SMW\InvalidResultException( 'SMWUnusedPropertiesPage expects results that are properties or errors.' );
 		}
 	}
 
@@ -91,35 +136,36 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	 * @param SMWDIProperty $property
 	 * @return string
 	 */
-	protected function formatPropertyItem( SMWDIProperty $property ) {
+	protected function formatPropertyItem( \SMW\DIProperty $property ) {
 		$linker = smwfGetLinker();
-		$errors = array();
+
+		// Clear formatter before invoking messages and
+		// avoid having previous data to be present
+		$this->getMessageFormatter()->clear();
 
 		if ( $property->isUserDefined() ) {
-			$proplink = $linker->link(
+
+			$propertyLink = $linker->link(
 				$property->getDiWikiPage()->getTitle(),
 				$property->getLabel()
 			);
 
-			$types = smwfGetStore()->getPropertyValues( $property->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) );
+			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), new \SMW\DIProperty( '_TYPE' ) );
 
 			if ( count( $types ) >= 1 ) {
-				$typeDataValue = SMWDataValueFactory::newDataItemValue( current( $types ), new SMWDIProperty( '_TYPE' ) );
+				$typeDataValue = \SMW\DataValueFactory::newDataItemValue( current( $types ), new \SMW\DIProperty( '_TYPE' ) );
 			} else {
 				$typeDataValue = SMWTypesValue::newFromTypeId( '_wpg' );
-				$errors[] = wfMessage( 'smw_propertylackstype', $typeDataValue->getLongHTMLText() )->text();
+				$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typeDataValue->getLongHTMLText() );
 			}
 
-			$typeString = $typeDataValue->getLongHTMLText( $linker );
 		} else {
-			$typeid = $property->findPropertyTypeID();
-			$typeDataValue = SMWTypesValue::newFromTypeId( $typeid );
-			$typeString = $typeDataValue->getLongHTMLText( $linker );
-			$propertyDataValue = SMWDataValueFactory::newDataItemValue( $property, null );
-			$proplink = $propertyDataValue->getShortHtmlText( $linker );
+			$typeDataValue = SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() );
+			$propertyLink  = \SMW\DataValueFactory::newDataItemValue( $property, null )->getShortHtmlText( $linker );
 		}
 
-		return wfMessage( 'smw_unusedproperty_template', $proplink, $typeString )->text() . ' ' . smwfEncodeMessages( $errors );
+		return $this->msg( 'smw_unusedproperty_template', $propertyLink, $typeDataValue->getLongHTMLText( $linker )	)->text() . ' ' .
+			$this->getMessageFormatter()->getHtml();
 	}
 
 	/**
@@ -129,6 +175,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	 * @return array of SMWDIProperty|SMWDIError
 	 */
 	function getResults( $requestOptions ) {
-		return smwfGetStore()->getUnusedPropertiesSpecial( $requestOptions );
+		$this->collector = $this->store->getUnusedPropertiesSpecial( $requestOptions );
+		return $this->collector->getResults();
 	}
 }

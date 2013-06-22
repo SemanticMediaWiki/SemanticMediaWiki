@@ -3,15 +3,21 @@
 namespace SMW\SQLStore;
 
 use SMW\Store\Collector;
+
+use SMW\InvalidPropertyException;
+use SMW\CacheHandler;
 use SMW\DIProperty;
-use SMW\Profiler;
 use SMW\Settings;
+use SMW\Profiler;
 use SMW\Store;
 
+use SMWDIError;
+
+use Message;
 use DatabaseBase;
 
 /**
- * Collects wanted properties from a store entity
+ * Collects unused properties from a store entity
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,12 +44,11 @@ use DatabaseBase;
  */
 
 /**
- * Collects wanted properties from a store entity
+ * Collects unused properties from a store entity
  *
- * @ingroup Collector
- * @ingroup SQLStore
+ * @ingroup SMW
  */
-class WantedPropertiesCollector extends Collector {
+class UnusedPropertiesCollector extends Collector {
 
 	/** @var DatabaseBase */
 	protected $dbConnection;
@@ -68,11 +73,11 @@ class WantedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Factory method for immediate instantiation of a WantedPropertiesCollector object
+	 * Factory method for immediate instantiation of a UnusedPropertiesCollector object
 	 *
 	 * @par Example:
 	 * @code
-	 *  $properties = \SMW\SQLStore\WantedPropertiesCollector::newFromStore( $store )->getResults();
+	 *  $properties = \SMW\SQLStore\UnusedPropertiesCollector::newFromStore( $store )->getResults();
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -92,18 +97,10 @@ class WantedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Collects and returns wanted properties
+	 * Collects and returns unused properties
 	 *
-	 * @par Example:
-	 * @code
-	 *  $wantedProperties = \SMW\SQLStore\WantedPropertiesCollector::newFromStore( $store );
-	 *
-	 *  $results = $wantedProperties->setRequestOptions( null )->getResults()
-	 *  $count = $wantedProperties->count()
-	 * @endcode
-	 *
-	 * @note This function is very resource intensive and needs to be cached on
-	 * medium/large wikis.
+	 * @see $smwgUnusedPropertiesCache
+	 * @see $smwgUnusedPropertiesCacheExpiry
 	 *
 	 * @since 1.9
 	 *
@@ -111,33 +108,24 @@ class WantedPropertiesCollector extends Collector {
 	 */
 	public function getResults() {
 
-		$type = $this->settings->get( 'smwgPDefaultType' );
-
-		$useCache = $this->settings->get( 'smwgWantedPropertiesCache' );
+		$useCache = $this->settings->get( 'smwgUnusedPropertiesCache' );
 		$results  = $this->getCache()->setCacheEnabled( $useCache )
-			->key( 'collector', md5( 'wanted-' . $type . serialize( $this->requestOptions ) ) )
+			->key( 'collector', md5( 'unused-' . serialize( $this->requestOptions ) ) )
 			->get();
 
 		if ( $results ) {
 
 			$this->isCached = true;
 			$this->results  = isset( $results['data'] ) ? unserialize( $results['data'] ) : array();
-			wfDebug( __METHOD__ . ' served from cache' . "\n");
+			wfDebug( __METHOD__ . ' served from cache' . "\n" );
 
 		} else {
 
-			// Wanted Properties must have the default type
-			$this->propertyTables = $this->getPropertyTables( $type );
-
-			// anything else would be crazy, but let's fail gracefully even if the whole world is crazy
-			if ( !$this->propertyTables->isFixedPropertyTable() ) {
-				$this->results = $this->getWantedProperties();
-			}
-
 			$this->isCached = false;
+			$this->results  = $this->getUnusedProperties();
 			$this->getCache()->setCacheEnabled( $useCache && $this->results !== array() )->set(
 				array( 'time' => $this->getTimestamp(), 'data' => serialize( $this->results ) ),
-				$this->settings->get( 'smwgWantedPropertiesCacheExpiry' )
+				$this->settings->get( 'smwgUnusedPropertiesCacheExpiry' )
 			);
 		}
 
@@ -167,13 +155,13 @@ class WantedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Set options
+	 * Set request options
 	 *
 	 * @since 1.9
 	 *
 	 * @param SMWRequestOptions $requestOptions
 	 *
-	 * @return WantedPropertiesCollector
+	 * @return UnusedPropertiesCollector
 	 */
 	public function setRequestOptions( $requestOptions ) {
 		$this->requestOptions = $requestOptions;
@@ -181,34 +169,52 @@ class WantedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Returns wanted properties
+	 * Returns unused properties
 	 *
 	 * @since 1.9
 	 *
 	 * @return DIProperty[]
 	 */
-	protected function getWantedProperties() {
+	protected function getUnusedProperties() {
 		Profiler::In( __METHOD__ );
 
 		$result = array();
 
-		$options = $this->store->getSQLOptions( $this->requestOptions, 'title' );
-		$options['ORDER BY'] = 'count DESC';
+		// the query needs to do the filtering of internal properties, else LIMIT is wrong
+		$options = array( 'ORDER BY' => 'smw_sortkey' );
 
-		// TODO: this is not how JOINS should be specified in the select function
+		if ( $this->requestOptions !== null ) {
+			if ( $this->requestOptions->limit > 0 ) {
+				$options['LIMIT'] = $this->requestOptions->limit;
+				$options['OFFSET'] = max( $this->requestOptions->offset, 0 );
+			}
+		}
+
+		$conditions = array(
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_iw' => ''
+		);
+
+		$conditions['usage_count'] = 0;
+
 		$res = $this->dbConnection->select(
-			$this->dbConnection->tableName( $this->propertyTables->getName() ) . ' INNER JOIN ' .
-				$this->dbConnection->tableName( $this->store->getObjectIds()->getIdTable() ) . ' ON p_id=smw_id LEFT JOIN ' .
-				$this->dbConnection->tableName( 'page' ) . ' ON (page_namespace=' .
-				$this->dbConnection->addQuotes( SMW_NS_PROPERTY ) . ' AND page_title=smw_title)',
-			'smw_title, COUNT(*) as count',
-			'smw_id > 50 AND page_id IS NULL GROUP BY smw_title',
+			array( $this->store->getObjectIds()->getIdTable(), $this->store->getStatisticsTable() ),
+			array( 'smw_title', 'usage_count' ),
+			$conditions,
 			__METHOD__,
-			$options
+			$options,
+			array( $this->store->getObjectIds()->getIdTable() => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
 		);
 
 		foreach ( $res as $row ) {
-			$result[] = array( new DIProperty( $row->smw_title ), $row->count );
+
+			try {
+				$property = new DIProperty( $row->smw_title );
+			} catch ( InvalidPropertyException $e ) {
+				$property = new SMWDIError( new Message( 'smw_noproperty', array( $row->smw_title ) ) );
+			}
+
+			$result[] = $property;
 		}
 
 		Profiler::Out( __METHOD__ );

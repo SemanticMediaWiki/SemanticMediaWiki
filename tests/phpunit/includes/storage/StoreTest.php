@@ -199,8 +199,8 @@ class StoreTest extends \MediaWikiTestCase {
 		$store = smwfGetStore();
 		$result = $store->getUnusedPropertiesSpecial( null );
 
-		$this->assertTrue( is_array( $result ) );
-		foreach( $result as $row ) {
+		$this->assertInstanceOf( '\SMW\Store\Collector', $result );
+		foreach( $result->getResults() as $row ) {
 			$this->assertInstanceOf(
 				'\SMWDIProperty',
 				$row,
