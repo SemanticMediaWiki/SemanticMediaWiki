@@ -68,35 +68,22 @@ class SMWSQLStore3SpecialPageHandlers {
 			'smw_iw' => ''
 		);
 
-		if ( $unusedProperties ) {
-			$conds['usage_count'] = 0;
+		$res = $dbr->select(
+			SMWSql3SmwIds::tableName,
+			array( 'smw_id', 'smw_title' ),
+			$conds,
+			__METHOD__,
+			$options
+		);
 
-			$res = $dbr->select(
-				array( SMWSql3SmwIds::tableName, SMWSQLStore3::PROPERTY_STATISTICS_TABLE ),
-				array( 'smw_title', 'usage_count' ),
-				$conds,
-				__METHOD__,
-				$options,
-				array( SMWSql3SmwIds::tableName => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
-			);
-		} else {
-			$res = $dbr->select(
-				SMWSql3SmwIds::tableName,
-				array( 'smw_id', 'smw_title' ),
-				$conds,
-				__METHOD__,
-				$options
-			);
+		$propertyIds = array();
 
-			$propertyIds = array();
-
-			foreach ( $res as $row ) {
-				$propertyIds[] = (int)$row->smw_id;
-			}
-
-			$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $dbr );
-			$usageCounts = $statsTable->getUsageCounts( $propertyIds );
+		foreach ( $res as $row ) {
+			$propertyIds[] = (int)$row->smw_id;
 		}
+
+		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $dbr );
+		$usageCounts = $statsTable->getUsageCounts( $propertyIds );
 
 		$result = array();
 		foreach ( $res as $row ) {
@@ -109,14 +96,10 @@ class SMWSQLStore3SpecialPageHandlers {
 				$property = new SMWDIError( array( wfMessage( 'smw_noproperty', $row->smw_title )->inContentLanguage()->text() ) );
 			}
 
-			if ( $unusedProperties){
-				$result[] = $property;
-			} else {
-				// If there is no key entry in the usageCount table for that
-				// particular property it is to be counted with usage 0
-				$count = array_key_exists( (int)$row->smw_id, $usageCounts ) ? $usageCounts[(int)$row->smw_id] : 0;
-				$result[] = array( $property, $count );
-			}
+			// If there is no key entry in the usageCount table for that
+			// particular property it is to be counted with usage 0
+			$count = array_key_exists( (int)$row->smw_id, $usageCounts ) ? $usageCounts[(int)$row->smw_id] : 0;
+			$result[] = array( $property, $count );
 		}
 
 		$dbr->freeResult( $res );
@@ -129,15 +112,15 @@ class SMWSQLStore3SpecialPageHandlers {
 	 * calling getPropertiesSpecial() with additional parameters.
 	 *
 	 * @see SMWStore::getUnusedPropertiesSpecial()
+	 *
 	 * @since 1.8
+	 *
 	 * @param SMWRequestOptions $requestoptions
-	 * @return array
+	 *
+	 * @return Collector
 	 */
 	public function getUnusedPropertiesSpecial( SMWRequestOptions $requestoptions = null ) {
-		wfProfileIn( "SMWSQLStore3::getUnusedPropertiesSpecial (SMW)" );
-		$result = $this->getPropertiesSpecial( $requestoptions, true );
-		wfProfileOut( "SMWSQLStore3::getUnusedPropertiesSpecial (SMW)" );
-		return $result;
+		return \SMW\SQLStore\UnusedPropertiesCollector::newFromStore( $this->store )->setRequestOptions( $requestoptions );
 	}
 
 	/**
@@ -163,4 +146,5 @@ class SMWSQLStore3SpecialPageHandlers {
 		// Until the settings object is invoke during Store setup, use the factory method here
 		return \SMW\SQLStore\StatisticsCollector::newFromStore( $this->store )->getResults();
 	}
+
 }

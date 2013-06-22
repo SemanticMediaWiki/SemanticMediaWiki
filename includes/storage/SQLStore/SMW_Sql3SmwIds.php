@@ -913,7 +913,7 @@ class SMWSql3SmwIds {
 	 *
 	 * @return string
 	 */
-	public function getTableName() {
+	public function getIdTable() {
 		return self::tableName;
 	}
 }

@@ -86,4 +86,29 @@ class SQLStoreTest extends \SMW\Test\SemanticMediaWikiTestCase {
 			$this->assertInstanceOf( '\SMW\SQLStore\TableDefinition', $propTable );
 		}
 	}
+
+	/**
+	 * @test SQLStore::getStatisticsTable
+	 *
+	 * @since 1.9
+	 */
+	public function testGetStatisticsTable() {
+
+		$instance = $this->getInstance();
+		$this->assertInternalType( 'string', $instance->getStatisticsTable() );
+
+	}
+
+	/**
+	 * @test SQLStore::getObjectIds
+	 *
+	 * @since 1.9
+	 */
+	public function testGetObjectIds() {
+
+		$instance = $this->getInstance();
+		$this->assertInternalType( 'object', $instance->getObjectIds() );
+		$this->assertInternalType( 'string', $instance->getObjectIds()->getIdTable() );
+
+	}
 }

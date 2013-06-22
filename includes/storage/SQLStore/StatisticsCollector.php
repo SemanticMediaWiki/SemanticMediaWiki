@@ -3,7 +3,6 @@
 namespace SMW\SQLStore;
 
 use SMW\Store\Collector;
-use SMW\CacheHandler;
 use SMW\DIProperty;
 use SMW\Settings;
 use SMW\Store;
@@ -118,8 +117,7 @@ class StatisticsCollector extends Collector {
 	 */
 	public function getResults() {
 
-		$cache = CacheHandler::newFromId( $this->settings->get( 'smwgCacheType' ) );
-		$results = $cache->setCacheEnabled( $this->settings->get( 'smwgStatisticsCache' ) )
+		$results = $this->getCache()->setCacheEnabled( $this->settings->get( 'smwgStatisticsCache' ) )
 			->key( 'collector', 'stats', 'store' )
 			->get();
 
@@ -144,7 +142,7 @@ class StatisticsCollector extends Collector {
 			);
 
 			$this->isCached = false;
-			$cache->set( $this->results, $this->settings->get( 'smwgStatisticsCacheExpiry' ) );
+			$this->getCache()->set( $this->results, $this->settings->get( 'smwgStatisticsCacheExpiry' ) );
 		}
 
 		return $this->results;

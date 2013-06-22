@@ -100,7 +100,7 @@ class SMWDIProperty extends SMWDataItem {
 	 */
 	public function __construct( $key, $inverse = false ) {
 		if ( ( $key === '' ) || ( $key{0} == '-' ) ) {
-			throw new SMWDataItemException( "Illegal property key \"$key\"." );
+			throw new \SMW\InvalidPropertyException( "Illegal property key \"$key\"." );
 		}
 
 		if ( $key{0} == '_' ) {
