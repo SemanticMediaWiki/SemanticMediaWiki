@@ -12077,7 +12077,7 @@ $messages['pt'] = array(
 	'smw-paramdesc-dsv-filename' => 'O nome para o ficheiro DSV',
 	'smw-smwdoc-description' => 'Apresenta uma tabela de todos os parâmetros que podem ser usados para o formato de resultados especificado, com os respectivos valores por omissão e descrições',
 	'smw-smwdoc-par-format' => 'O formato de resultados para o qual será apresentada a documentação dos parâmetros.',
-	'smw-paramdesc-searchlabel' => 'O texto no link dos resultados', # Fuzzy
+	'smw-paramdesc-searchlabel' => 'Texto para continuação da busca',
 	'smw_iq_disabled' => 'As consultas semânticas foram impossibilitadas nesta wiki.',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_parseerror' => 'O valor fornecido não foi compreendido.',
@@ -12131,7 +12131,7 @@ Gera um RDF navegável.',
 	'uriresolver' => 'Resolvedor de URIs',
 	'properties' => 'Propriedades',
 	'smw_properties_docu' => 'As seguintes propriedades são usadas nesta wiki.',
-	'smw_property_template' => '$1 de tipo $2 ($3)', # Fuzzy
+	'smw_property_template' => '$1 de tipo $2 ($3 {{PLURAL:$3|utilização|utilizações}})',
 	'smw_propertylackspage' => 'Todas as propriedades devem ser descritas por uma página!',
 	'smw_propertylackstype' => 'Não foi especificado nenhum tipo para esta propriedade (a assumir o tipo $1 por agora).',
 	'smw_propertyhardlyused' => 'Esta propriedade é muito pouco usada nesta wiki!',
