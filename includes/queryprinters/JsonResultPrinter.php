@@ -29,15 +29,20 @@ use FormatJSON;
  *
  * @since 1.5.3
  *
- * @file SWM_QP_JSONlink.php
- * @ingroup SMWQuery
+ * @file
  *
- * @licence GNU GPL v2 or later
+ * @license GNU GPL v2 or later
  * @author mwjames
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Fabian Howahl
  */
-class JSONResultPrinter extends \SMWExportPrinter {
+
+/**
+ * Print links to JSON files representing query results.
+ *
+ * @ingroup QueryPrinter
+ */
+class JsonResultPrinter extends \SMWExportPrinter {
 
 	/**
 	 * Returns human readable label for this printer
@@ -45,7 +50,7 @@ class JSONResultPrinter extends \SMWExportPrinter {
 	 * @return string
 	 */
 	public function getName() {
-		return wfMessage( 'smw_printername_json' )->text();
+		return $this->msg( 'smw_printername_json' )->text();
 	}
 
 	/**
@@ -139,7 +144,8 @@ class JSONResultPrinter extends \SMWExportPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$params['searchlabel']->setDefault( wfMessage( 'smw_json_link' )->text() );
+		$params['searchlabel']->setDefault( $this->msg( 'smw_json_link' )->text() );
+
 		$params['limit']->setDefault( 100 );
 
 		$params['prettyprint'] = array(
@@ -157,4 +163,4 @@ class JSONResultPrinter extends \SMWExportPrinter {
  *
  * @deprecated since SMW 1.9
  */
-class_alias( 'SMW\JSONResultPrinter', 'SMWJSONResultPrinter' );
+class_alias( 'SMW\JsonResultPrinter', 'SMWJSONResultPrinter' );

@@ -1,19 +1,45 @@
 <?php
+
+namespace SMW;
+
+use SMWQueryProcessor;
+use SMWQueryResult;
+use Sanitizer;
+use SMWQuery;
+
 /**
  * CSV export for SMW Queries
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @since 1.9
+ *
  * @file
- * @ingroup SMWQuery
+ *
+ * @license GNU GPL v2+
+ * @author Nathan R. Yergler
+ * @author Markus Krötzsch
  */
 
 /**
  * Printer class for generating CSV output
  *
- * @author Nathan R. Yergler
- * @author Markus Krötzsch
- *
- * @ingroup SMWQuery
+ * @ingroup QueryPrinter
  */
-class SMWCsvResultPrinter extends SMWExportPrinter {
+class CsvResultPrinter extends \SMWExportPrinter {
 
 	/**
 	 * @see SMWIExportPrinter::getMimeType
@@ -46,7 +72,7 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 	}
 
 	public function getName() {
-		return wfMessage( 'smw_printername_csv' )->text();
+		return $this->msg( 'smw_printername_csv' )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -107,7 +133,7 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
 
-		$definitions['searchlabel']->setDefault( wfMessage( 'smw_csv_link' )->inContentLanguage()->text() );
+		$definitions['searchlabel']->setDefault( $this->msg( 'smw_csv_link' )->inContentLanguage()->text() );
 
 		$definitions['limit']->setDefault( 100 );
 
@@ -131,5 +157,11 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 
 		return $params;
 	}
-
 }
+
+/**
+ * SMWCsvResultPrinter
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\CsvResultPrinter', 'SMWCsvResultPrinter' );

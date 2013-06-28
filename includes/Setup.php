@@ -183,7 +183,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWTableResultPrinter']     = $qpDir . 'SMW_QP_Table.php';
 	$wgAutoloadClasses['SMWCategoryResultPrinter']  = $qpDir . 'SMW_QP_Category.php';
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter']  = $qpDir . 'SMW_QP_Embedded.php';
-	$wgAutoloadClasses['SMWCsvResultPrinter']       = $qpDir . 'SMW_QP_CSV.php';
+	$wgAutoloadClasses['SMWCsvResultPrinter']       = $qpDir . 'CsvResultPrinter.php';
+	$wgAutoloadClasses['SMW\CsvResultPrinter']      = $qpDir . 'CsvResultPrinter.php'; // 1.9
 	$wgAutoloadClasses['SMWDSVResultPrinter']       = $qpDir . 'SMW_QP_DSV.php';
 	$wgAutoloadClasses['SMWRDFResultPrinter']       = $qpDir . 'SMW_QP_RDF.php';
 	$wgAutoloadClasses['SMWResultPrinter']          = $qpDir . 'ResultPrinter.php';
@@ -193,7 +194,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ListResultPrinter']     = $qpDir . 'ListResultPrinter.php';
 	$wgAutoloadClasses['SMW\FeedResultPrinter']     = $qpDir . 'FeedResultPrinter.php'; // 1.9
 	$wgAutoloadClasses['SMWJSONResultPrinter']      = $qpDir . 'JSONResultPrinter.php';
-	$wgAutoloadClasses['SMW\JSONResultPrinter']     = $qpDir . 'JSONResultPrinter.php'; // 1.9
+	$wgAutoloadClasses['SMW\JsonResultPrinter']     = $qpDir . 'JsonResultPrinter.php'; // 1.9
 	$wgAutoloadClasses['SMWAggregatablePrinter']    = $qpDir . 'AggregatablePrinter.php';
 	$wgAutoloadClasses['SMW\AggregatablePrinter']   = $qpDir . 'AggregatablePrinter.php'; // 1.9
 

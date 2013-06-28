@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMWCsvResultPrinter;
+use SMW\CsvResultPrinter;
 
 use ReflectionClass;
 
@@ -48,7 +48,7 @@ class CsvResultPrinterTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMWCsvResultPrinter';
+		return '\SMW\CsvResultPrinter';
 	}
 
 	/**
@@ -68,25 +68,25 @@ class CsvResultPrinterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWCsvResultPrinter object
+	 * Helper method that returns a CsvResultPrinter object
 	 *
-	 * @return SMWCsvResultPrinter
+	 * @return CsvResultPrinter
 	 */
 	private function getInstance( $parameters = array() ) {
 		$format = 'csv';
 
-		$instance = new SMWCsvResultPrinter( $format );
+		$instance = new CsvResultPrinter( $format );
 
 		$reflector = new ReflectionClass( $this->getClass() );
 		$params = $reflector->getProperty( 'params' );
-		$params->setAccessible(true);
+		$params->setAccessible( true );
 		$params->setValue( $instance, $parameters );
 
 		return $instance;
 	}
 
 	/**
-	 * @test SMWCsvResultPrinter::__construct
+	 * @test CsvResultPrinter::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -95,7 +95,7 @@ class CsvResultPrinterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWCsvResultPrinter::getFileName
+	 * @test CsvResultPrinter::getFileName
 	 *
 	 * @since 1.9
 	 */
