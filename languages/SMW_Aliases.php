@@ -356,6 +356,7 @@ $specialPageAliases['ja'] = array(
 	'ExportRDF' => array( 'RDF書き出し', 'RDFエクスポート', 'ＲＤＦエクスポート' ),
 	'PageProperty' => array( 'ページプロパティ' ),
 	'Properties' => array( 'プロパティ一覧' ),
+	'Concepts' => array( '概念' ),
 	'SMWAdmin' => array( 'SMW管理' ),
 	'SearchByProperty' => array( 'プロパティによる検索' ),
 	'SemanticStatistics' => array( '意味的統計' ),
