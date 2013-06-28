@@ -7,29 +7,13 @@
 
 /**
  * Printer class for generating CSV output
- * 
+ *
  * @author Nathan R. Yergler
  * @author Markus Krötzsch
- * 
+ *
  * @ingroup SMWQuery
  */
 class SMWCsvResultPrinter extends SMWExportPrinter {
-	
-	protected $m_sep;
-
-	/**
-	 * @see SMWResultPrinter::handleParameters
-	 * 
-	 * @since 1.7
-	 *
-	 * @param array $params
-	 * @param $outputmode
-	 */
-	protected function handleParameters( array $params, $outputmode ) {
-		parent::handleParameters( $params, $outputmode );
-		
-		$this->m_sep = str_replace( '_', ' ', $this->params['sep'] );
-	}
 
 	/**
 	 * @see SMWIExportPrinter::getMimeType
@@ -54,7 +38,7 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 	 * @return string|boolean
 	 */
 	public function getFileName( SMWQueryResult $queryResult ) {
-		return 'result.csv';
+		return $this->params['filename'] ;
 	}
 
 	public function getQueryMode( $context ) {
@@ -67,7 +51,7 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		$result = '';
-		
+
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // make CSV file
 			$csv = fopen( 'php://temp', 'r+' );
 			$sep = str_replace( '_', ' ', $this->params['sep'] );
@@ -78,28 +62,28 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 
 			if ( $this->mShowHeaders ) {
 				$header_items = array();
-				
+
 				foreach ( $res->getPrintRequests() as $pr ) {
 					$header_items[] = $pr->getLabel();
 				}
-				
+
 				fputcsv( $csv, $header_items, $sep );
 			}
-			
+
 			while ( $row = $res->getNext() ) {
 				$row_items = array();
-				
+
 				foreach ( $row as /* SMWResultArray */ $field ) {
 					$growing = array();
-					
+
 					while ( ( $object = $field->getNextDataValue() ) !== false ) {
 						$growing[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
-					} 
-					
+					}
+
 					$row_items[] = implode( ',', $growing );
 				}
-				
-				fputcsv( $csv, $row_items, $this->m_sep );
+
+				fputcsv( $csv, $row_items, $sep );
 			}
 
 			rewind( $csv );
@@ -138,6 +122,13 @@ class SMWCsvResultPrinter extends SMWExportPrinter {
 			'default' => false,
 			'message' => 'smw-paramdesc-showsep',
 		);
+
+		$params[] = array(
+			'name' => 'filename',
+			'message' => 'smw-paramdesc-filename',
+			'default' => 'result.csv',
+		);
+
 		return $params;
 	}
 
