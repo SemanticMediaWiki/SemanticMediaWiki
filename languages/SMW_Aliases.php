@@ -448,6 +448,7 @@ $specialPageAliases['mk'] = array(
 	'ExportRDF' => array( 'ИзвезиRDF' ),
 	'PageProperty' => array( 'СвојстваНаСтраница' ),
 	'Properties' => array( 'Својства' ),
+	'Concepts' => array( 'Концепти' ),
 	'SMWAdmin' => array( 'СМВАдминистратор' ),
 	'SearchByProperty' => array( 'ПребарајПоСвојство' ),
 	'SemanticStatistics' => array( 'СемантичкиСтатистики' ),

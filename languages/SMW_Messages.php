@@ -589,7 +589,8 @@ $messages['qqq'] = array(
 	'smw-label-feed-description' => 'This message is displayed as the feed description, e.g. "News on translatewiki.net rss feed".
 Parameters:
 * $1 is a feed description, e.g. "News on translatewiki.net"
-* $2 is a feed type, e.g. "rss"',
+* $2 is a feed type, e.g. "rss"
+{{Identcal|Feed}}',
 	'smw_iq_disabled' => 'This is an information message.',
 	'smw_iq_moreresults' => 'This is the text of the link that points to further results in case the [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline query] has more than currently displayed on the page. See also message {{msg-mw|Smw-paramdesc-searchlabel}}.',
 	'smw_parseerror' => 'This is an error/warning message.',
@@ -904,8 +905,7 @@ See also:
 
 {{Identical|Result}}",
 	'smw_result_noresults' => 'This is the text on [[Special:Ask]] or [[Special:SearchByProperty]] shown in case a query does not return any results.
-
-{{Identical|Sorry, no results}}',
+{{Identical|No result}}',
 	'smwadmin' => '{{doc-special|SMWAdmin}}',
 	'smw_smwadmin_setupsuccess' => "This is the confirmation message at the bottom of the script's report concerning setup or update of the SMW database tables (process triggered from [[Special:SMWAdmin]]).",
 	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]]. Parameters:
@@ -990,7 +990,8 @@ See also:
 {{Identical|Parameter}}',
 	'smw-ui-tooltip-title-event' => 'A label that is displayed on the info tooltip.
 {{Identical|Event}}',
-	'smw-ui-tooltip-title-note' => 'A label that is displayed on the info tooltip.',
+	'smw-ui-tooltip-title-note' => 'A label that is displayed on the info tooltip.
+{{Identical|Note}}',
 	'smw-ui-tooltip-title-legend' => '{{doc-smw-ui-label|legend}}
 {{Identical|Legend}}',
 	'smw_unknowntype' => 'Error message shown for properties that have a type unknown to the system',
