@@ -42,7 +42,17 @@ use SMWQuery;
 class CsvResultPrinter extends \SMWExportPrinter {
 
 	/**
+	 * @codeCoverageIgnore
+	 *
+	 * @return string
+	 */
+	public function getName() {
+		return $this->msg( 'smw_printername_csv' )->text();
+	}
+
+	/**
 	 * @see SMWIExportPrinter::getMimeType
+	 * @codeCoverageIgnore
 	 *
 	 * @since 1.8
 	 *
@@ -69,10 +79,6 @@ class CsvResultPrinter extends \SMWExportPrinter {
 
 	public function getQueryMode( $context ) {
 		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
-	}
-
-	public function getName() {
-		return $this->msg( 'smw_printername_csv' )->text();
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
@@ -123,6 +129,7 @@ class CsvResultPrinter extends \SMWExportPrinter {
 
 	/**
 	 * @see SMWResultPrinter::getParamDefinitions
+	 * @codeCoverageIgnore
 	 *
 	 * @since 1.8
 	 *
@@ -161,6 +168,7 @@ class CsvResultPrinter extends \SMWExportPrinter {
 
 /**
  * SMWCsvResultPrinter
+ * @codeCoverageIgnore
  *
  * @deprecated since SMW 1.9
  */

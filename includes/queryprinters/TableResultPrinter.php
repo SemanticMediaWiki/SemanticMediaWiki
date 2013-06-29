@@ -1,29 +1,73 @@
 <?php
 
+namespace SMW;
+
+use SMWResultArray;
+use SMWQueryResult;
+use SMWQueryProcessor;
+use SMWPrintRequest;
+
 /**
- * Print query results in tables.
+ * Print query results in tables
  *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @since 1.5.3
  *
  * @file
- * @ingroup SMWQuery
+ *
+ * @license GNU GPL v2 or later
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author mwjames
  */
-class SMWTableResultPrinter extends SMWResultPrinter {
 
+/**
+ * Print query results in tables
+ *
+ * @ingroup QueryPrinter
+ */
+class TableResultPrinter extends ResultPrinter {
+
+	/**
+	 * @note grep search smw_printername_table, smw_printername_broadtable
+	 * @codeCoverageIgnore
+	 *
+	 * @return string
+	 */
 	public function getName() {
-		// Give grep a chance to find the usages:
-		// smw_printername_table, smw_printername_broadtable
-		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
+		return $this->msg( 'smw_printername_' . $this->mFormat )->text();
 	}
 
+	/**
+	 * Returns a table
+	 *
+	 * @param SMWQueryResult $res
+	 * @param $outputmode integer
+	 *
+	 * @return string
+	 */
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		$result = '';
 
 		$this->isHTML = ( $outputmode === SMW_OUTPUT_HTML );
-		$this->tableFormatter = new \SMW\TableFormatter( $this->isHTML );
+		$this->tableFormatter = new TableFormatter( $this->isHTML );
 
 		$columnClasses = array();
+
 
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$headers = array();
@@ -65,6 +109,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 		// @note A table is only transposable if header elements are visible
 		// $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose']
+		// if transpose is enabled, please adopt the unit test as well
 		return $this->tableFormatter->transpose( false )->getTable( $tableAttrs );
 	}
 
@@ -162,6 +207,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 	/**
 	 * @see SMWResultPrinter::getParamDefinitions
+	 * @codeCoverageIgnore
 	 *
 	 * @since 1.8
 	 *
@@ -188,3 +234,11 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		return $params;
 	}
 }
+
+/**
+ * SMWTableResultPrinter
+ * @codeCoverageIgnore
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\TableResultPrinter', 'SMWTableResultPrinter' );

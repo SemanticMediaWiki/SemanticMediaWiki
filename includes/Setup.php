@@ -180,7 +180,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWExportPrinter']          = $qpDir . 'SMW_ExportPrinter.php';
 	$wgAutoloadClasses['SMWIExportPrinter']         = $qpDir . 'SMW_IExportPrinter.php';
 	$wgAutoloadClasses['SMWIResultPrinter']         = $qpDir . 'SMW_IResultPrinter.php';
-	$wgAutoloadClasses['SMWTableResultPrinter']     = $qpDir . 'SMW_QP_Table.php';
+	$wgAutoloadClasses['SMWTableResultPrinter']     = $qpDir . 'TableResultPrinter.php';
+	$wgAutoloadClasses['SMW\TableResultPrinter']    = $qpDir . 'TableResultPrinter.php'; // 1.9
 	$wgAutoloadClasses['SMWCategoryResultPrinter']  = $qpDir . 'SMW_QP_Category.php';
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter']  = $qpDir . 'SMW_QP_Embedded.php';
 	$wgAutoloadClasses['SMWCsvResultPrinter']       = $qpDir . 'CsvResultPrinter.php';

@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\CsvResultPrinter;
+use SMW\ResultPrinter;
 
 use ReflectionClass;
 
@@ -68,21 +69,43 @@ class CsvResultPrinterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a CsvResultPrinter object
+	 * Helper method sets result printer parameters
 	 *
-	 * @return CsvResultPrinter
+	 * @param ResultPrinter $instance
+	 * @param array $parameters
+	 *
+	 * @return ResultPrinter
 	 */
-	private function getInstance( $parameters = array() ) {
-		$format = 'csv';
-
-		$instance = new CsvResultPrinter( $format );
+	private function setParameters( ResultPrinter $instance, array $parameters ) {
 
 		$reflector = new ReflectionClass( $this->getClass() );
 		$params = $reflector->getProperty( 'params' );
 		$params->setAccessible( true );
 		$params->setValue( $instance, $parameters );
 
+		if ( isset( $parameters['searchlabel'] ) ) {
+			$searchlabel = $reflector->getProperty( 'mSearchlabel' );
+			$searchlabel->setAccessible( true );
+			$searchlabel->setValue( $instance, $parameters['searchlabel'] );
+		}
+
+		if ( isset( $parameters['headers'] ) ) {
+			$searchlabel = $reflector->getProperty( 'mShowHeaders' );
+			$searchlabel->setAccessible( true );
+			$searchlabel->setValue( $instance, $parameters['headers'] );
+		}
+
 		return $instance;
+
+	}
+
+	/**
+	 * Helper method that returns a CsvResultPrinter object
+	 *
+	 * @return CsvResultPrinter
+	 */
+	private function getInstance( $parameters = array() ) {
+		return $this->setParameters( new CsvResultPrinter( 'csv' ), $parameters );
 	}
 
 	/**

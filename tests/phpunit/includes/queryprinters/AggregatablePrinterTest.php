@@ -56,26 +56,44 @@ class AggregatablePrinterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * Helper method that returns a SMWQueryResult object
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWQueryResult
+	 */
+	private function getMockQueryResult( $error = 'Bar' ) {
+
+		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array( $error ) ) );
+
+		return $queryResult;
+	}
+
+	/**
+	 * Helper method that returns a AggregatablePrinter object
+	 *
+	 * @return AggregatablePrinter
+	 */
+	private function getInstance( $parameters = array() ) {
+		return $this->getMockForAbstractClass( $this->getClass(), array( 'table' ) );
+	}
+
+	/**
 	 * @test AggregatablePrinter::getResultText
 	 *
 	 * @since 1.9
 	 */
 	public function testGetResultTextErrorMessage() {
+
 		$expectedMessage = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
-		$queryString = '[[Lula query]]';
 
-		// Build SMWQuery object
-		$qp = new \SMWQueryParser( $GLOBALS['smwgQFeatures'] );
-		$qp->setDefaultNamespaces( $GLOBALS['smwgQDefaultNamespaces'] );
-		$desc = $qp->getQueryDescription( $queryString );
-		$query = new \SMWQuery( $desc );
-		$query->setQueryString( $queryString );
-
-		// Get SMWQueryResult object
-		$queryResult = smwfGetStore()->getQueryResult( $query );
-
-		// Access abstract class
-		$abstractInstance = $this->getMockForAbstractClass( $this->getClass(), array( 'table' ) );
+		$queryResult = $this->getMockQueryResult( $expectedMessage );
 
 		// Make protected method accessible
 		$reflection = new ReflectionClass( $this->getClass() );
@@ -83,9 +101,9 @@ class AggregatablePrinterTest extends SemanticMediaWikiTestCase {
 		$method->setAccessible( true );
 
 		// Invoke the instance
-		$result = $method->invokeArgs( $abstractInstance, array( $queryResult, SMW_OUTPUT_HTML ) );
+		$result = $method->invoke( $this->getInstance(), $queryResult, SMW_OUTPUT_HTML );
 
-		$this->assertEquals( '', $result );
+		$this->assertEmpty( $result );
 
 		foreach( $queryResult->getErrors() as $error ) {
 			$this->assertEquals( $expectedMessage, $error );
@@ -98,12 +116,10 @@ class AggregatablePrinterTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testAddNumbersForDataItem() {
+
 		$values = array();
 		$expected = array();
 		$keys = array( 'test', 'foo', 'bar' );
-
-		// Access abstract class
-		$abstractInstance = $this->getMockForAbstractClass( $this->getClass(), array( 'table' ) );
 
 		// Make protected method accessible
 		$reflection = new ReflectionClass( $this->getClass() );
@@ -126,7 +142,7 @@ class AggregatablePrinterTest extends SemanticMediaWikiTestCase {
 			$this->assertEquals( SMWDataItem::TYPE_NUMBER, $dataItem->getDIType() );
 
 			// Invoke the instance
-			$result = $method->invokeArgs( $abstractInstance, array( $dataItem, &$values, $name ) );
+			$result = $method->invokeArgs( $this->getInstance(), array( $dataItem, &$values, $name ) );
 
 			$this->assertInternalType( 'integer', $values[$name] );
 			$this->assertEquals( $expected[$name], $values[$name] );

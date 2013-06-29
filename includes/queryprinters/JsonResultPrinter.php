@@ -46,6 +46,7 @@ class JsonResultPrinter extends \SMWExportPrinter {
 
 	/**
 	 * Returns human readable label for this printer
+	 * @codeCoverageIgnore
 	 *
 	 * @return string
 	 */
@@ -134,6 +135,7 @@ class JsonResultPrinter extends \SMWExportPrinter {
 
 	/**
 	 * @see SMWResultPrinter::getParamDefinitions
+	 * @codeCoverageIgnore
 	 *
 	 * @since 1.8
 	 *
@@ -160,6 +162,7 @@ class JsonResultPrinter extends \SMWExportPrinter {
 
 /**
  * SMWJSONResultPrinter
+ * @codeCoverageIgnore
  *
  * @deprecated since SMW 1.9
  */

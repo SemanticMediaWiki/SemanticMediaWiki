@@ -340,11 +340,11 @@ $smwgQConceptCacheLifetime = 24 * 60;
 # 'broadtable' should not be disabled either in order not to break Special:ask.
 ##
 $smwgResultFormats = array(
-	'table'      => 'SMWTableResultPrinter',
+	'table'      => 'SMW\TableResultPrinter',
 	'list'       => 'SMW\ListResultPrinter',
 	'ol'         => 'SMW\ListResultPrinter',
 	'ul'         => 'SMW\ListResultPrinter',
-	'broadtable' => 'SMWTableResultPrinter',
+	'broadtable' => 'SMW\TableResultPrinter',
 	'category'   => 'SMWCategoryResultPrinter',
 	'embedded'   => 'SMWEmbeddedResultPrinter',
 	'template'   => 'SMW\ListResultPrinter',

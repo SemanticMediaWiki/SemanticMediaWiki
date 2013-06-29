@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\JsonResultPrinter;
+use SMW\ResultPrinter;
 
 use ReflectionClass;
 
@@ -76,14 +77,14 @@ class JsonResultPrinterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a JsonResultPrinter object
+	 * Helper method sets result printer parameters
 	 *
-	 * @return JsonResultPrinter
+	 * @param ResultPrinter $instance
+	 * @param array $parameters
+	 *
+	 * @return ResultPrinter
 	 */
-	private function getInstance( $parameters = array() ) {
-		$format = 'json';
-
-		$instance = new JsonResultPrinter( $format );
+	private function setParameters( ResultPrinter $instance, array $parameters ) {
 
 		$reflector = new ReflectionClass( $this->getClass() );
 		$params = $reflector->getProperty( 'params' );
@@ -96,7 +97,23 @@ class JsonResultPrinterTest extends SemanticMediaWikiTestCase {
 			$searchlabel->setValue( $instance, $parameters['searchlabel'] );
 		}
 
+		if ( isset( $parameters['headers'] ) ) {
+			$searchlabel = $reflector->getProperty( 'mShowHeaders' );
+			$searchlabel->setAccessible( true );
+			$searchlabel->setValue( $instance, $parameters['headers'] );
+		}
+
 		return $instance;
+
+	}
+
+	/**
+	 * Helper method that returns a JsonResultPrinter object
+	 *
+	 * @return JsonResultPrinter
+	 */
+	private function getInstance( $parameters = array() ) {
+		return $this->setParameters( new JsonResultPrinter( 'json' ), $parameters );
 	}
 
 	/**
