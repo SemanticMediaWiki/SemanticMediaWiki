@@ -274,6 +274,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\SubobjectParserFunction']       = $phDir . 'SubobjectParserFunction.php';
 	$wgAutoloadClasses['SMW\RecurringEventsParserFunction'] = $phDir . 'RecurringEventsParserFunction.php';
 	$wgAutoloadClasses['SMW\DocumentationParserFunction']   = $phDir . 'DocumentationParserFunction.php';
+	$wgAutoloadClasses['SMW\ParserFunctionFactory']         = $phDir . 'ParserFunctionFactory.php';
 
 	// Query related classes
 	$qeDir = $smwgIP . 'includes/query/';
