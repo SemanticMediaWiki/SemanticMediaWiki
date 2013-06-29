@@ -2,13 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\CsvResultPrinter;
-use SMW\ResultPrinter;
-
-use ReflectionClass;
+use SMW\ApiResultPrinter;
 
 /**
- * Tests for the CsvResultPrinter class
+ * Tests for the ApiResultPrinter class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,14 +31,14 @@ use ReflectionClass;
  */
 
 /**
- * @covers \SMW\CsvResultPrinter
+ * @covers \SMW\ApiResultPrinter
  *
  * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension
  */
-class CsvResultPrinterTest extends QueryPrinterTestCase {
+class ApiResultPrinterTest extends QueryPrinterTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -49,54 +46,25 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\CsvResultPrinter';
+		return '\SMW\ApiResultPrinter';
 	}
 
 	/**
-	 * Helper method that returns a SMWQueryResult object
+	 * Helper method that returns a ApiResultPrinter object
 	 *
-	 * @since 1.9
-	 *
-	 * @return SMWQueryResult
-	 */
-	private function getMockQueryResult() {
-
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		return $queryResult;
-	}
-
-	/**
-	 * Helper method that returns a CsvResultPrinter object
-	 *
-	 * @return CsvResultPrinter
+	 * @return ApiResultPrinter
 	 */
 	private function getInstance( $parameters = array() ) {
-		return $this->setParameters( new CsvResultPrinter( 'csv' ), $parameters );
+		return $this->setParameters( $this->getMockForAbstractClass( $this->getClass(), array( 'api' ) ), $parameters );
 	}
 
 	/**
-	 * @test CsvResultPrinter::__construct
+	 * @test ApiResultPrinter::__construct
 	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
 		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
-	}
-
-	/**
-	 * @test CsvResultPrinter::getFileName
-	 *
-	 * @since 1.9
-	 */
-	public function testGetFileName() {
-
-		$filename = $this->getRandomString() . ' ' . $this->getRandomString();
-		$instance = $this->getInstance( array( 'filename' => $filename ) );
-
-		$this->assertEquals( $filename, $instance->getFileName( $this->getMockQueryResult() ) );
 	}
 
 }

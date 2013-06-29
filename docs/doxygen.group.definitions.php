@@ -32,6 +32,13 @@ die("Not a valid entry point\n");
  */
 
 /**
+ * This group contains members that are related to the QueryPrinter unit tests
+ *
+ * @defgroup QueryPrinterTest QueryPrinterTest
+ * @ingroup Test
+ */
+
+/**
  * This group contains members that are related to the Store unit tests
  *
  * @defgroup StoreTest StoreTest

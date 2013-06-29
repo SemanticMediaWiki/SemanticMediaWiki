@@ -42,7 +42,7 @@ use FormatJSON;
  *
  * @ingroup QueryPrinter
  */
-class JsonResultPrinter extends \SMWExportPrinter {
+class JsonResultPrinter extends FileExportPrinter {
 
 	/**
 	 * Returns human readable label for this printer

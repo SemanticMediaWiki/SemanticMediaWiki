@@ -25,9 +25,8 @@ use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
  * @since 1.8
  *
  * @file
- * @ingroup QueryPrinter
  *
- * @licence GNU GPL v2 or later
+ * @license GNU GPL v2 or later
  * @author mwjames
  */
 
@@ -36,7 +35,7 @@ use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
  *
  * @ingroup QueryPrinter
  */
-final class FeedResultPrinter extends \SMWExportPrinter {
+final class FeedResultPrinter extends FileExportPrinter {
 
 	/**
 	 * Returns human readable label for this printer

@@ -39,7 +39,7 @@ use SMWQuery;
  *
  * @ingroup QueryPrinter
  */
-class CsvResultPrinter extends \SMWExportPrinter {
+class CsvResultPrinter extends FileExportPrinter {
 
 	/**
 	 * @codeCoverageIgnore

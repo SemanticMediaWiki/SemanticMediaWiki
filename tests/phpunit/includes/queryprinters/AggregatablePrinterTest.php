@@ -28,23 +28,20 @@ use ReflectionClass;
  * @since 1.9
  *
  * @file
- * @ingroup QueryPrinter
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the AggregatablePrinter class
  * @covers \SMW\AggregatablePrinter
  *
- * @ingroup Test
+ * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension
  */
-class AggregatablePrinterTest extends SemanticMediaWikiTestCase {
+class AggregatablePrinterTest extends QueryPrinterTestCase {
 
 	/**
 	 * Returns the name of the class to be tested

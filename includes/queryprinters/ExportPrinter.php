@@ -1,5 +1,9 @@
 <?php
 
+namespace SMW;
+
+use SMWQueryResult;
+
 /**
  * Interface for SMW result printers.
  *
@@ -18,15 +22,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.8
  *
- * @ingroup SMW
+ * @file
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-interface SMWIExportPrinter extends SMWIResultPrinter {
+
+/**
+ * Interface for SMW export related result printers
+ *
+ * @ingroup QueryPrinter
+ */
+interface ExportPrinter extends \SMWIResultPrinter {
 
 	/**
 	 * Outputs the result as file.

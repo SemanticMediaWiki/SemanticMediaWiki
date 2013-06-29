@@ -1,5 +1,9 @@
 <?php
 
+namespace SMW;
+
+use SMWQueryResult;
+
 /**
  * Base for export result printers.
  *
@@ -18,18 +22,23 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @file
  * @since 1.8
  *
- * @ingroup SMW
+ * @file
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class SMWExportPrinter extends SMWResultPrinter implements SMWIExportPrinter {
+
+/**
+ * Base class for file export result printers
+ *
+ * @ingroup QueryPrinter
+ */
+abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	/**
-	 * @see SMWIResultPrinter::isExportFormat
+	 * @see ExportPrinter::isExportFormat
 	 *
 	 * @since 1.8
 	 *
@@ -40,7 +49,7 @@ abstract class SMWExportPrinter extends SMWResultPrinter implements SMWIExportPr
 	}
 
 	/**
-	 * @see SMWIExportPrinter::outputAsFile
+	 * @see ExportPrinter::outputAsFile
 	 *
 	 * @since 1.8
 	 *
@@ -62,7 +71,7 @@ abstract class SMWExportPrinter extends SMWResultPrinter implements SMWIExportPr
 	}
 
 	/**
-	 * @see SMWIExportPrinter::getFileName
+	 * @see ExportPrinter::getFileName
 	 *
 	 * @since 1.8
 	 *
@@ -75,3 +84,10 @@ abstract class SMWExportPrinter extends SMWResultPrinter implements SMWIExportPr
 	}
 
 }
+
+/**
+ * SMWExportPrinter
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );

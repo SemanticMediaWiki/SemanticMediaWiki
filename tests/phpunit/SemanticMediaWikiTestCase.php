@@ -33,16 +33,15 @@ use SMWDataItem;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup SMWParser
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
  * Class contains general purpose methods
+ *
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -131,6 +130,28 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected function getRandomString( $length = 10 ) {
 		return substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
+	}
+
+	/**
+	 * Utility method taking an array of elements and wrapping
+	 * each element in it's own array. Useful for data providers
+	 * that only return a single argument.
+	 *
+	 * @see MediaWikiTestCase::arrayWrap
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $elements
+	 *
+	 * @return array
+	 */
+	protected function arrayWrap( array $elements ) {
+		return array_map(
+			function ( $element ) {
+				return array( $element );
+			},
+			$elements
+		);
 	}
 
 	/**

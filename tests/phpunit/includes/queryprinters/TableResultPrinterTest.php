@@ -37,12 +37,12 @@ use ReflectionClass;
 /**
  * @covers \SMW\TableResultPrinter
  *
- * @ingroup Test
+ * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension
  */
-class TableResultPrinterTest extends SemanticMediaWikiTestCase {
+class TableResultPrinterTest extends QueryPrinterTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -178,37 +178,6 @@ class TableResultPrinterTest extends SemanticMediaWikiTestCase {
 			->will( $this->onConsecutiveCalls( $resultArray , false ) );
 
 		return $queryResult;
-	}
-
-	/**
-	 * Helper method sets result printer parameters
-	 *
-	 * @param ResultPrinter $instance
-	 * @param array $parameters
-	 *
-	 * @return ResultPrinter
-	 */
-	private function setParameters( ResultPrinter $instance, array $parameters ) {
-
-		$reflector = new ReflectionClass( $this->getClass() );
-		$params = $reflector->getProperty( 'params' );
-		$params->setAccessible( true );
-		$params->setValue( $instance, $parameters );
-
-		if ( isset( $parameters['searchlabel'] ) ) {
-			$searchlabel = $reflector->getProperty( 'mSearchlabel' );
-			$searchlabel->setAccessible( true );
-			$searchlabel->setValue( $instance, $parameters['searchlabel'] );
-		}
-
-		if ( isset( $parameters['headers'] ) ) {
-			$searchlabel = $reflector->getProperty( 'mShowHeaders' );
-			$searchlabel->setAccessible( true );
-			$searchlabel->setValue( $instance, $parameters['headers'] );
-		}
-
-		return $instance;
-
 	}
 
 	/**

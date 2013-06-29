@@ -23,22 +23,20 @@ namespace SMW\Test;
  * @since 1.8
  *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 
 /**
  * Base class for SMW\ResultPrinter tests
  *
- * @ingroup Test
+ * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension
- * @group ResultPrinters
  */
-abstract class ResultPrinterTestCase extends SemanticMediaWikiTestCase {
+abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 
 	/**
 	 * Returns the names of the formats supported by the
@@ -83,8 +81,8 @@ abstract class ResultPrinterTestCase extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @since 1.8
-	 *
 	 * @return array
+	 *
 	 */
 	public function instanceProvider() {
 		$phpFails = array( $this, 'newInstance' );
@@ -111,3 +109,10 @@ abstract class ResultPrinterTestCase extends SemanticMediaWikiTestCase {
 		$this->assertInstanceOf( '\SMW\ResultPrinter', $instance );
 	}
 }
+
+/**
+ * SMWResultPrinter
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\Test\QueryPrinterRegistryTestCase', 'SMW\Test\ResultPrinterTestCase' );

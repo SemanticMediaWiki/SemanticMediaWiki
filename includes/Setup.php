@@ -177,8 +177,9 @@ function smwfRegisterClasses() {
 
 	// Printers
 	$qpDir = $smwgIP . 'includes/queryprinters/';
-	$wgAutoloadClasses['SMWExportPrinter']          = $qpDir . 'SMW_ExportPrinter.php';
-	$wgAutoloadClasses['SMWIExportPrinter']         = $qpDir . 'SMW_IExportPrinter.php';
+	$wgAutoloadClasses['SMWExportPrinter']          = $qpDir . 'FileExportPrinter.php';
+	$wgAutoloadClasses['SMW\FileExportPrinter']     = $qpDir . 'FileExportPrinter.php';
+	$wgAutoloadClasses['SMW\ExportPrinter']         = $qpDir . 'ExportPrinter.php';
 	$wgAutoloadClasses['SMWIResultPrinter']         = $qpDir . 'SMW_IResultPrinter.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']     = $qpDir . 'TableResultPrinter.php';
 	$wgAutoloadClasses['SMW\TableResultPrinter']    = $qpDir . 'TableResultPrinter.php'; // 1.9
@@ -374,8 +375,10 @@ function smwfRegisterClasses() {
 
 	// Special pages and closely related helper classes
 	$testsDir = $smwgIP . 'tests/phpunit/';
+	$wgAutoloadClasses['SMW\Test\ResultPrinterTestCase']         = $testsDir . 'QueryPrinterRegistryTestCase.php';
+	$wgAutoloadClasses['SMW\Test\QueryPrinterRegistryTestCase']  = $testsDir . 'QueryPrinterRegistryTestCase.php';
+	$wgAutoloadClasses['SMW\Test\QueryPrinterTestCase']          = $testsDir . 'QueryPrinterTestCase.php';
 	$wgAutoloadClasses['SMW\Tests\DataItemTest']              = $testsDir . 'includes/dataitems/DataItemTest.php';
-	$wgAutoloadClasses['SMW\Test\ResultPrinterTestCase']      = $testsDir . 'ResultPrinterTestCase.php';
 	$wgAutoloadClasses['SMW\Test\SemanticMediaWikiTestCase']  = $testsDir . 'SemanticMediaWikiTestCase.php';
 	$wgAutoloadClasses['SMW\Test\ParserTestCase']             = $testsDir . 'ParserTestCase.php';
 	$wgAutoloadClasses['SMW\Test\ApiTestCase']                = $testsDir . 'ApiTestCase.php';

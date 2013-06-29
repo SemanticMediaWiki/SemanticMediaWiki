@@ -36,12 +36,12 @@ use ReflectionClass;
 /**
  * @covers \SMW\JsonResultPrinter
  *
- * @ingroup Test
+ * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension
  */
-class JsonResultPrinterTest extends SemanticMediaWikiTestCase {
+class JsonResultPrinterTest extends QueryPrinterTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -74,37 +74,6 @@ class JsonResultPrinterTest extends SemanticMediaWikiTestCase {
 			->will( $this->returnValue( $result ) );
 
 		return $queryResult;
-	}
-
-	/**
-	 * Helper method sets result printer parameters
-	 *
-	 * @param ResultPrinter $instance
-	 * @param array $parameters
-	 *
-	 * @return ResultPrinter
-	 */
-	private function setParameters( ResultPrinter $instance, array $parameters ) {
-
-		$reflector = new ReflectionClass( $this->getClass() );
-		$params = $reflector->getProperty( 'params' );
-		$params->setAccessible( true );
-		$params->setValue( $instance, $parameters );
-
-		if ( isset( $parameters['searchlabel'] ) ) {
-			$searchlabel = $reflector->getProperty( 'mSearchlabel' );
-			$searchlabel->setAccessible( true );
-			$searchlabel->setValue( $instance, $parameters['searchlabel'] );
-		}
-
-		if ( isset( $parameters['headers'] ) ) {
-			$searchlabel = $reflector->getProperty( 'mShowHeaders' );
-			$searchlabel->setAccessible( true );
-			$searchlabel->setValue( $instance, $parameters['headers'] );
-		}
-
-		return $instance;
-
 	}
 
 	/**

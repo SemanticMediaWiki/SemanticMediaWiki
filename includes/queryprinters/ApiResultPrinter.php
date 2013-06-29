@@ -25,9 +25,8 @@ use Html, FormatJson;
  * @since 1.9
  *
  * @file
- * @ingroup QueryPrinter
  *
- * @licence GNU GPL v2 or later
+ * @license GNU GPL v2 or later
  * @author mwjames
  */
 
