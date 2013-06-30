@@ -3,6 +3,8 @@
 namespace SMW\SQLStore;
 
 use SMW\Store\Collector;
+
+use SMW\ArrayAccessor;
 use SMW\DIProperty;
 use SMW\Settings;
 use SMW\Store;
@@ -43,11 +45,14 @@ use DatabaseBase;
  */
 class StatisticsCollector extends Collector {
 
+	/** @var Store */
+	protected $store;
+
+	/** @var Settings */
+	protected $settings;
+
 	/** @var DatabaseBase */
 	protected $dbConnection;
-
-	/** @var array */
-	protected $results = array();
 
 	/**
 	 * // FIXME The store itself should know which database connection is being
@@ -67,12 +72,11 @@ class StatisticsCollector extends Collector {
 	}
 
 	/**
-	 * Factory method for immediate instantiation of a StatisticsCollector object
+	 * Factory method for an immediate instantiation of a StatisticsCollector object
 	 *
 	 * @par Example:
 	 * @code
 	 * $statistics = \SMW\SQLStore\StatisticsCollector::newFromStore( $store )
-	 *
 	 * $statistics->getResults();
 	 * @endcode
 	 *
@@ -93,7 +97,27 @@ class StatisticsCollector extends Collector {
 	}
 
 	/**
-	 * Collects and returns statistical information as an associative array
+	 * Set-up details used for the Cache instantiation
+	 *
+	 * @see $smwgStatisticsCache
+	 * @see $smwgStatisticsCacheExpiry
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	protected function cacheAccessor() {
+
+		return new ArrayAccessor( array(
+			'id'      => 'smwgStatisticsCache' . json_encode( $this->requestOptions ),
+			'type'    => $this->settings->get( 'smwgCacheType' ),
+			'enabled' => $this->settings->get( 'smwgStatisticsCache' ),
+			'expiry'  => $this->settings->get( 'smwgStatisticsCacheExpiry' )
+		) );
+	}
+
+	/**
+	 * Collects statistical information as an associative array
 	 * with the following keys:
 	 *
 	 * - 'PROPUSES': Number of property instances (value assignments) in the dbConnection
@@ -106,57 +130,23 @@ class StatisticsCollector extends Collector {
 	 * - 'SUBOBJECTS': Number of declared subobjects
 	 * - 'QUERYFORMATS': Array of used formats and its usage count
 	 *
-	 * @note Results are cacheable if the necessary settings are available
-	 *
-	 * @see $smwgStatisticsCache
-	 * @see $smwgStatisticsCacheExpiry
-	 *
 	 * @since 1.9
 	 *
-	 * @return array
+	 * @return DIProperty[]
 	 */
-	public function getResults() {
+	protected function doCollect() {
 
-		$results = $this->getCache()->setCacheEnabled( $this->settings->get( 'smwgStatisticsCache' ) )
-			->key( 'collector', 'stats', 'store' )
-			->get();
-
-		if ( $results ) {
-
-			$this->isCached = true;
-			$this->results = $results;
-			wfDebug( __METHOD__ . ' statistics served from cache' . "\n");
-
-		} else {
-
-			$this->results = array(
-				'OWNPAGE' => $this->getPropertyPageCount(),
-				'QUERY' => $this->getQueryCount(),
-				'QUERYSIZE' => $this->getQuerySize(),
-				'QUERYFORMATS' => $this->getQueryFormatsCount(),
-				'CONCEPTS' => $this->getConceptCount(),
-				'SUBOBJECTS' => $this->getSubobjectCount(),
-				'DECLPROPS' => $this->getDeclaredPropertiesCount(),
-				'PROPUSES' => $this->getPropertyUsageCount(),
-				'USEDPROPS' => $this->getUsedPropertiesCount()
-			);
-
-			$this->isCached = false;
-			$this->getCache()->set( $this->results, $this->settings->get( 'smwgStatisticsCacheExpiry' ) );
-		}
-
-		return $this->results;
-	}
-
-	/**
-	 * Returns if the current collection has been recalled from cache
-	 *
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
-	public function isCached() {
-		return $this->isCached;
+		return array(
+			'OWNPAGE' => $this->getPropertyPageCount(),
+			'QUERY' => $this->getQueryCount(),
+			'QUERYSIZE' => $this->getQuerySize(),
+			'QUERYFORMATS' => $this->getQueryFormatsCount(),
+			'CONCEPTS' => $this->getConceptCount(),
+			'SUBOBJECTS' => $this->getSubobjectCount(),
+			'DECLPROPS' => $this->getDeclaredPropertiesCount(),
+			'PROPUSES' => $this->getPropertyUsageCount(),
+			'USEDPROPS' => $this->getUsedPropertiesCount()
+		);
 	}
 
 	/**

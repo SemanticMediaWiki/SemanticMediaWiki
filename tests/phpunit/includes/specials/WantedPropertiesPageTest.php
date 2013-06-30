@@ -138,6 +138,27 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 		return $property;
 	}
 
+	/**
+	 * Helper method that returns a Collector object
+	 *
+	 * @since 1.9
+	 *
+	 * @param $result
+	 *
+	 * @return Collector
+	 */
+	private function getMockCollector( $result = null ) {
+
+		$collector = $this->getMockBuilder( '\SMW\Store\Collector' )
+			->setMethods( array( 'cacheAccessor', 'doCollect', 'getResults' ) )
+			->getMock();
+
+		$collector->expects( $this->any() )
+			->method( 'getResults' )
+			->will( $this->returnValue( $result ) );
+
+		return $collector;
+	}
 
 	/**
 	 * Helper method that returns a SMWWantedPropertiesPage object
@@ -150,19 +171,12 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function getInstance( $result = null ) {
 
-		// Collector stub object
-		$collector = $this->getMockForAbstractClass( '\SMW\Store\Collector' );
-
-		$collector->expects( $this->any() )
-			->method( 'getResults' )
-			->will( $this->returnValue( $result ) );
-
 		// Store stub object
 		$store = $this->getMockStore();
 
 		$store->expects( $this->any() )
 			->method( 'getWantedPropertiesSpecial' )
-			->will( $this->returnValue( $collector ) );
+			->will( $this->returnValue( $this->getMockCollector( $result ) ) );
 
 		$instance = new SMWWantedPropertiesPage( $store, $this->getSettings() );
 		$instance->setContext( RequestContext::getMain() );

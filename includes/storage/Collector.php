@@ -2,10 +2,11 @@
 
 namespace SMW\Store;
 
-use SMW\CacheHandler;
+use SMW\ResultCacheMapper;
 use SMW\DIProperty;
 use SMW\Settings;
 
+use InvalidArgumentException;
 use MWTimestamp;
 
 /**
@@ -30,72 +31,124 @@ use MWTimestamp;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 interface Collectible {}
 
 /**
- * Collectors base class
+ * Collector base class
  *
- * @ingroup SMW
+ * @ingroup Store
  */
 abstract class Collector implements Collectible {
 
-	/** @var Store */
-	protected $store;
+	/** @var array */
+	protected $results = array();
 
-	/** @var Settings */
-	protected $settings;
+	/** @var SMWRequestOptions */
+	protected $requestOptions = null;
 
 	/** @var boolean */
 	protected $isCached = false;
+
+	/** @var string */
+	protected $cacheDate = null;
 
 	/**
 	 * Collects and returns information in an associative array
 	 *
 	 * @since 1.9
 	 */
-	public abstract function getResults();
+	public function getResults() {
+
+		$resultCache = new ResultCacheMapper( $this->cacheAccessor() );
+
+		$results = $resultCache->fetchFromCache();
+
+		if ( $results ) {
+
+			$this->isCached  = true;
+			$this->results   = $results;
+			$this->cacheDate = $resultCache->getCacheDate();
+			wfDebug( get_called_class() . ' served from cache' . "\n" );
+
+		} else {
+
+			$this->results  = $this->doCollect();
+			$this->isCached = false;
+			$resultCache->recache( $this->results );
+		}
+
+		return $this->results;
+	}
 
 	/**
-	 * Returns if the results are cached
+	 * Set request options
 	 *
 	 * @since 1.9
+	 *
+	 * @param SMWRequestOptions $requestOptions
+	 *
+	 * @return Collector
 	 */
-	public abstract function isCached();
+	public function setRequestOptions( $requestOptions ) {
+		$this->requestOptions = $requestOptions;
+		return $this;
+	}
 
 	/**
-	 * Returns a timestamp
+	 * Returns whether or not results have been cached
 	 *
-	 * @todo Apparently MW 1.19 does not have a MWTimestamp class, please
-	 * remove this clutter as soon as MW 1.19 is not supported any longer
+	 * @since 1.9
+	 *
+	 * @return boolean
+	 */
+	public function isCached() {
+		return $this->isCached;
+	}
+
+	/**
+	 * In case results were cached, it returns the timestamp of the cached
+	 * object
+	 *
+	 * @since 1.9
+	 *
+	 * @return string|null
+	 */
+	public function getCacheDate() {
+		return $this->cacheDate;
+	}
+
+	/**
+	 * Returns number of available results
 	 *
 	 * @since 1.9
 	 *
 	 * @return integer
 	 */
-	public function getTimestamp() {
-		if ( class_exists( 'MWTimestamp' ) ) {
-			$timestamp = new MWTimestamp();
-			return $timestamp->getTimestamp( TS_UNIX );
-		} else {
-			return wfTimestamp( TS_UNIX );
-		}
+	public function getCount() {
+		return count( $this->results );
 	}
 
 	/**
-	 * Returns a CacheHandler instance
+	 * Sub-class is responsible for returning an associative array
 	 *
 	 * @since 1.9
 	 *
-	 * @return CacheHandler
+	 * @return array
 	 */
-	public function getCache() {
-		return CacheHandler::newFromId( $this->settings->get( 'smwgCacheType' ) );
-	}
+	protected abstract function doCollect();
+
+	/**
+	 * Sub-class is responsible for returning a ArrayAccessor object
+	 *
+	 * @since 1.9
+	 *
+	 * @return ArrayAccessor
+	 */
+	protected abstract function cacheAccessor();
 
 	/**
 	 * Returns table definition for a given property type

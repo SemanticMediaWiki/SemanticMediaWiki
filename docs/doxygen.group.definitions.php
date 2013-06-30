@@ -18,6 +18,13 @@ die("Not a valid entry point\n");
  */
 
 /**
+ * This group contains members that are related to accessors
+ *
+ * @defgroup Accessor Accessor
+ * @ingroup SMW
+ */
+
+/**
  * This group contains members that are related to parser hooks and functions
  *
  * @defgroup ParserFunction ParserFunction

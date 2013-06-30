@@ -5,7 +5,7 @@ namespace SMW\SQLStore;
 use SMW\Store\Collector;
 
 use SMW\InvalidPropertyException;
-use SMW\CacheHandler;
+use SMW\ArrayAccessor;
 use SMW\DIProperty;
 use SMW\Settings;
 use SMW\Profiler;
@@ -46,18 +46,19 @@ use DatabaseBase;
 /**
  * Collects unused properties from a store entity
  *
- * @ingroup SMW
+ * @ingroup Collector
+ * @ingroup SQLStore
  */
 class UnusedPropertiesCollector extends Collector {
 
+	/** @var Store */
+	protected $store;
+
+	/** @var Settings */
+	protected $settings;
+
 	/** @var DatabaseBase */
 	protected $dbConnection;
-
-	/** @var SMWRequestOptions */
-	protected $requestOptions = null;
-
-	/** @var array */
-	protected $results = array();
 
 	/**
 	 * @since 1.9
@@ -73,11 +74,12 @@ class UnusedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Factory method for immediate instantiation of a UnusedPropertiesCollector object
+	 * Factory method for an immediate instantiation of a UnusedPropertiesCollector object
 	 *
 	 * @par Example:
 	 * @code
-	 *  $properties = \SMW\SQLStore\UnusedPropertiesCollector::newFromStore( $store )->getResults();
+	 *  $properties = \SMW\SQLStore\UnusedPropertiesCollector::newFromStore( $store )
+	 *  $properties->getResults();
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -97,75 +99,23 @@ class UnusedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Collects and returns unused properties
+	 * Set-up details used for the Cache instantiation
 	 *
 	 * @see $smwgUnusedPropertiesCache
 	 * @see $smwgUnusedPropertiesCacheExpiry
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIProperty[]
+	 * @return array
 	 */
-	public function getResults() {
+	protected function cacheAccessor() {
 
-		$useCache = $this->settings->get( 'smwgUnusedPropertiesCache' );
-		$results  = $this->getCache()->setCacheEnabled( $useCache )
-			->key( 'collector', md5( 'unused-' . serialize( $this->requestOptions ) ) )
-			->get();
-
-		if ( $results ) {
-
-			$this->isCached = true;
-			$this->results  = isset( $results['data'] ) ? unserialize( $results['data'] ) : array();
-			wfDebug( __METHOD__ . ' served from cache' . "\n" );
-
-		} else {
-
-			$this->isCached = false;
-			$this->results  = $this->getUnusedProperties();
-			$this->getCache()->setCacheEnabled( $useCache && $this->results !== array() )->set(
-				array( 'time' => $this->getTimestamp(), 'data' => serialize( $this->results ) ),
-				$this->settings->get( 'smwgUnusedPropertiesCacheExpiry' )
-			);
-		}
-
-		return $this->results;
-	}
-
-	/**
-	 * Whether return results are cached
-	 *
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
-	public function isCached() {
-		return $this->isCached;
-	}
-
-	/**
-	 * Returns number of available results
-	 *
-	 * @since 1.9
-	 *
-	 * @return integer
-	 */
-	public function count() {
-		return count( $this->results );
-	}
-
-	/**
-	 * Set request options
-	 *
-	 * @since 1.9
-	 *
-	 * @param SMWRequestOptions $requestOptions
-	 *
-	 * @return UnusedPropertiesCollector
-	 */
-	public function setRequestOptions( $requestOptions ) {
-		$this->requestOptions = $requestOptions;
-		return $this;
+		return new ArrayAccessor( array(
+			'id'      => 'smwgUnusedPropertiesCache' . json_encode( $this->requestOptions ),
+			'type'    => $this->settings->get( 'smwgCacheType' ),
+			'enabled' => $this->settings->get( 'smwgUnusedPropertiesCache' ),
+			'expiry'  => $this->settings->get( 'smwgUnusedPropertiesCacheExpiry' )
+		) );
 	}
 
 	/**
@@ -175,7 +125,7 @@ class UnusedPropertiesCollector extends Collector {
 	 *
 	 * @return DIProperty[]
 	 */
-	protected function getUnusedProperties() {
+	protected function doCollect() {
 		Profiler::In( __METHOD__ );
 
 		$result = array();

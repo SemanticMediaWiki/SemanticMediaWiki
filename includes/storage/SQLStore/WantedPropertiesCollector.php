@@ -3,6 +3,8 @@
 namespace SMW\SQLStore;
 
 use SMW\Store\Collector;
+
+use SMW\ArrayAccessor;
 use SMW\DIProperty;
 use SMW\Profiler;
 use SMW\Settings;
@@ -45,14 +47,14 @@ use DatabaseBase;
  */
 class WantedPropertiesCollector extends Collector {
 
+	/** @var Store */
+	protected $store;
+
+	/** @var Settings */
+	protected $settings;
+
 	/** @var DatabaseBase */
 	protected $dbConnection;
-
-	/** @var SMWRequestOptions */
-	protected $requestOptions = null;
-
-	/** @var array */
-	protected $results = array();
 
 	/**
 	 * @since 1.9
@@ -68,11 +70,12 @@ class WantedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Factory method for immediate instantiation of a WantedPropertiesCollector object
+	 * Factory method for an immediate instantiation of a WantedPropertiesCollector object
 	 *
 	 * @par Example:
 	 * @code
-	 *  $properties = \SMW\SQLStore\WantedPropertiesCollector::newFromStore( $store )->getResults();
+	 *  $properties = \SMW\SQLStore\WantedPropertiesCollector::newFromStore( $store )
+	 *  $properties->getResults();
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -92,15 +95,46 @@ class WantedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Collects and returns wanted properties
+	 * Set-up details used for the Cache instantiation
 	 *
-	 * @par Example:
-	 * @code
-	 *  $wantedProperties = \SMW\SQLStore\WantedPropertiesCollector::newFromStore( $store );
+	 * @since 1.9
 	 *
-	 *  $results = $wantedProperties->setRequestOptions( null )->getResults()
-	 *  $count = $wantedProperties->count()
-	 * @endcode
+	 * @return array
+	 */
+	protected function cacheAccessor() {
+
+		return new ArrayAccessor( array(
+			'id'      => 'smwgWantedPropertiesCache' . $this->settings->get( 'smwgPDefaultType' ) . json_encode( $this->requestOptions ),
+			'type'    => $this->settings->get( 'smwgCacheType' ),
+			'enabled' => $this->settings->get( 'smwgWantedPropertiesCache' ),
+			'expiry'  => $this->settings->get( 'smwgWantedPropertiesCacheExpiry' )
+		) );
+	}
+
+	/**
+	 * Returns unused properties
+	 *
+	 * @since 1.9
+	 *
+	 * @return DIProperty[]
+	 */
+	protected function doCollect() {
+
+		$result = array();
+
+		// Wanted Properties must have the default type
+		$this->propertyTables = $this->getPropertyTables( $this->settings->get( 'smwgPDefaultType' ) );
+
+		// anything else would be crazy, but let's fail gracefully even if the whole world is crazy
+		if ( !$this->propertyTables->isFixedPropertyTable() ) {
+			$result = $this->doQuery();
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Returns wanted properties
 	 *
 	 * @note This function is very resource intensive and needs to be cached on
 	 * medium/large wikis.
@@ -109,85 +143,7 @@ class WantedPropertiesCollector extends Collector {
 	 *
 	 * @return DIProperty[]
 	 */
-	public function getResults() {
-
-		$type = $this->settings->get( 'smwgPDefaultType' );
-
-		$useCache = $this->settings->get( 'smwgWantedPropertiesCache' );
-		$results  = $this->getCache()->setCacheEnabled( $useCache )
-			->key( 'collector', md5( 'wanted-' . $type . serialize( $this->requestOptions ) ) )
-			->get();
-
-		if ( $results ) {
-
-			$this->isCached = true;
-			$this->results  = isset( $results['data'] ) ? unserialize( $results['data'] ) : array();
-			wfDebug( __METHOD__ . ' served from cache' . "\n");
-
-		} else {
-
-			// Wanted Properties must have the default type
-			$this->propertyTables = $this->getPropertyTables( $type );
-
-			// anything else would be crazy, but let's fail gracefully even if the whole world is crazy
-			if ( !$this->propertyTables->isFixedPropertyTable() ) {
-				$this->results = $this->getWantedProperties();
-			}
-
-			$this->isCached = false;
-			$this->getCache()->setCacheEnabled( $useCache && $this->results !== array() )->set(
-				array( 'time' => $this->getTimestamp(), 'data' => serialize( $this->results ) ),
-				$this->settings->get( 'smwgWantedPropertiesCacheExpiry' )
-			);
-		}
-
-		return $this->results;
-	}
-
-	/**
-	 * Whether return results are cached
-	 *
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
-	public function isCached() {
-		return $this->isCached;
-	}
-
-	/**
-	 * Returns number of available results
-	 *
-	 * @since 1.9
-	 *
-	 * @return integer
-	 */
-	public function count() {
-		return count( $this->results );
-	}
-
-	/**
-	 * Set options
-	 *
-	 * @since 1.9
-	 *
-	 * @param SMWRequestOptions $requestOptions
-	 *
-	 * @return WantedPropertiesCollector
-	 */
-	public function setRequestOptions( $requestOptions ) {
-		$this->requestOptions = $requestOptions;
-		return $this;
-	}
-
-	/**
-	 * Returns wanted properties
-	 *
-	 * @since 1.9
-	 *
-	 * @return DIProperty[]
-	 */
-	protected function getWantedProperties() {
+	protected function doQuery() {
 		Profiler::In( __METHOD__ );
 
 		$result = array();

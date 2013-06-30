@@ -55,6 +55,34 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
+	 * Helper method that returns a Database object
+	 *
+	 * @since 1.9
+	 *
+	 * @param $smwTitle
+	 * @param $count
+	 *
+	 * @return Database
+	 */
+	private function getMockDBConnection( $smwTitle = 'Foo', $count = 1 ) {
+
+		// Injection object expected as the DB fetchObject
+		$returnFetchObject = new \StdClass;
+		$returnFetchObject->count = $count;
+		$returnFetchObject->smw_title = $smwTitle;
+
+		// Database stub object to make the test independent from any real DB
+		$connection = $this->getMock( 'DatabaseMysql' );
+
+		// Override method with expected return objects
+		$connection->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( array( $returnFetchObject ) ) );
+
+		return $connection;
+	}
+
+	/**
 	 * Helper method that returns a WantedPropertiesCollector object
 	 *
 	 * @since 1.9
@@ -68,19 +96,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	private function getInstance( $property = 'Foo', $count = 1, $cacheEnabled = false ) {
 
 		$store = StoreFactory::getStore();
-
-		// Injection object expected as the DB fetchObject
-		$returnFetchObject = new \StdClass;
-		$returnFetchObject->count = $count;
-		$returnFetchObject->smw_title = $property;
-
-		// Database stub object to make the test independent from any real DB
-		$connection = $this->getMock( 'DatabaseMysql' );
-
-		// Override method with expected return objects
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->will( $this->returnValue( array( $returnFetchObject ) ) );
+		$connection = $this->getMockDBConnection( $property, $count );
 
 		// Settings to be used
 		$settings = Settings::newFromArray( array(
@@ -115,7 +131,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 
 	/**
 	 * @test WantedPropertiesCollector::getResults
-	 * @test WantedPropertiesCollector::count
+	 * @test WantedPropertiesCollector::getCount
 	 *
 	 * @since 1.9
 	 */
@@ -131,7 +147,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		);
 
 		$this->assertEquals( $expected, $instance->getResults() );
-		$this->assertEquals( 1, $instance->count() );
+		$this->assertEquals( 1, $instance->getCount() );
 
 	}
 

@@ -128,7 +128,7 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 
 	/**
 	 * @test UnusedPropertiesCollector::getResults
-	 * @test UnusedPropertiesCollector::count
+	 * @test UnusedPropertiesCollector::getCount
 	 *
 	 * @since 1.9
 	 */
@@ -144,7 +144,7 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		$instance->setRequestOptions( $requestOptions );
 
 		$this->assertEquals( $expected, $instance->getResults() );
-		$this->assertEquals( 1, $instance->count() );
+		$this->assertEquals( 1, $instance->getCount() );
 
 	}
 
@@ -166,7 +166,7 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		$message = MessageFormatter::newFromArray( $this->getLanguage(), array( $results[0]->getErrors() ) )->getHtml();
 
 		$this->assertInternalType( 'array', $results );
-		$this->assertEquals( 1, $instance->count() );
+		$this->assertEquals( 1, $instance->getCount() );
 		$this->assertInstanceOf( 'SMWDIError', $results[0] );
 		$this->assertContains( $property, $message );
 

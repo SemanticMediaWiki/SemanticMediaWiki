@@ -160,29 +160,45 @@ class UnusedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWUnusedPropertiesPage object
+	 * Helper method that returns a Collector object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $result
 	 *
-	 * @return SMWUnusedPropertiesPage
+	 * @return Collector
 	 */
-	private function getInstance( $result = null, $values = array() ) {
+	private function getMockCollector( $result = null ) {
 
-		// Collector stub object
-		$collector = $this->getMockForAbstractClass( '\SMW\Store\Collector' );
+		$collector = $this->getMockBuilder( '\SMW\Store\Collector' )
+			->setMethods( array( 'cacheAccessor', 'doCollect', 'getResults' ) )
+			->getMock();
 
 		$collector->expects( $this->any() )
 			->method( 'getResults' )
 			->will( $this->returnValue( $result ) );
+
+		return $collector;
+	}
+
+	/**
+	 * Helper method that returns a SMWUnusedPropertiesPage object
+	 *
+	 * @since 1.9
+	 *
+	 * @param $result
+	 * @param $values
+	 *
+	 * @return SMWUnusedPropertiesPage
+	 */
+	private function getInstance( $result = null, $values = array() ) {
 
 		// Store stub object
 		$store = $this->getMockStore( $values );
 
 		$store->expects( $this->any() )
 			->method( 'getUnusedPropertiesSpecial' )
-			->will( $this->returnValue( $collector ) );
+			->will( $this->returnValue( $this->getMockCollector( $result ) ) );
 
 		$instance = new SMWUnusedPropertiesPage( $store, $this->getSettings() );
 		$instance->setContext( RequestContext::getMain() );
