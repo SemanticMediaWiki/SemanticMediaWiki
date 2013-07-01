@@ -132,17 +132,18 @@ $specialPageAliases['de'] = array(
 /** Zazaki (Zazaki) */
 $specialPageAliases['diq'] = array(
 	'Ask' => array( 'Pers' ),
-	'Browse' => array( 'Bıgeyrê' ),
+	'Browse' => array( 'Bıgeyré' ),
 	'ExportRDF' => array( 'RDFTeberde' ),
-	'PageProperty' => array( 'XısusiyaPela' ),
-	'Properties' => array( 'Xısusiyeti' ),
+	'PageProperty' => array( 'BexsaPeran' ),
+	'Properties' => array( 'Bexsiyeti' ),
+	'Concepts' => array( 'Konsepti' ),
 	'SMWAdmin' => array( 'SMWXızmetkar' ),
 	'SearchByProperty' => array( 'XısusiyetkarCıgeyrayış' ),
-	'SemanticStatistics' => array( 'İstatıstikêFahmkerdışi' ),
+	'SemanticStatistics' => array( 'İstatıstikéFahmkerdışi' ),
 	'Types' => array( 'Babeti' ),
 	'URIResolver' => array( 'URIAgozne' ),
-	'UnusedProperties' => array( 'XısusiyetêNêkarênê' ),
-	'WantedProperties' => array( 'XısusiyetêWaştênê' ),
+	'UnusedProperties' => array( 'XısusiyetéNékaréné' ),
+	'WantedProperties' => array( 'XısusiyetéWaşténé' ),
 	'QueryCreator' => array( 'PesinVıraşter' ),
 );
 
