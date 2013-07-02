@@ -6,6 +6,7 @@ use SMW\ResultCacheMapper;
 use SMW\DIProperty;
 use SMW\Settings;
 
+use SMWRequestOptions;
 use InvalidArgumentException;
 use MWTimestamp;
 
@@ -93,7 +94,7 @@ abstract class Collector implements Collectible {
 	 *
 	 * @return Collector
 	 */
-	public function setRequestOptions( $requestOptions ) {
+	public function setRequestOptions( SMWRequestOptions $requestOptions ) {
 		$this->requestOptions = $requestOptions;
 		return $this;
 	}

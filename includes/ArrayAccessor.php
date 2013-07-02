@@ -68,12 +68,25 @@ interface Accessor {
 
 }
 
+interface Arrayable {
+
+	/**
+	 * Returns an object as array
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function toArray();
+
+}
+
 /**
  * This class enables access to an arbitrary array
  *
  * @ingroup Accessor
  */
-class ArrayAccessor extends ArrayObject implements Accessor {
+class ArrayAccessor extends ArrayObject implements Accessor, Arrayable {
 
 	/**
 	 * Returns if a specified key is set or not

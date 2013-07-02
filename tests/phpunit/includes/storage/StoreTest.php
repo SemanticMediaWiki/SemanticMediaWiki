@@ -8,6 +8,7 @@
 
 namespace SMW\Test;
 use Title, SMWDIProperty, SMWDIWikiPage, SMWQueryProcessor;
+use SMWRequestOptions;
 
 /**
  * Tests for the SMWStore class.
@@ -197,7 +198,7 @@ class StoreTest extends \MediaWikiTestCase {
 
 	public function testGetUnusedPropertiesSpecial() {
 		$store = smwfGetStore();
-		$result = $store->getUnusedPropertiesSpecial( null );
+		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\Store\Collector', $result );
 		foreach( $result->getResults() as $row ) {
@@ -211,7 +212,7 @@ class StoreTest extends \MediaWikiTestCase {
 
 	public function testGetWantedPropertiesSpecial() {
 		$store = smwfGetStore();
-		$result = $store->getWantedPropertiesSpecial( null );
+		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\Store\Collector', $result );
 		foreach( $result->getResults() as $row ) {

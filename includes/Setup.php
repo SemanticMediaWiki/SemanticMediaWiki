@@ -152,6 +152,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Profiler']              = $incDir . 'Profiler.php';
 
 	$wgAutoloadClasses['SMW\Accessor']              = $incDir . 'ArrayAccessor.php';
+	$wgAutoloadClasses['SMW\Arrayable']             = $incDir . 'ArrayAccessor.php';
 	$wgAutoloadClasses['SMW\ArrayAccessor']         = $incDir . 'ArrayAccessor.php';
 
 	$wgAutoloadClasses['SMW\CacheHandler']          = $incDir . '/handlers/CacheHandler.php';
