@@ -694,6 +694,9 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 holds the name of the assumed data type which is in fact always data type Page.',
 	'smw_propertyhardlyused' => 'This is an error/warning message.',
 	'smw-property-name-invalid' => 'This is an information message.',
+	'smw-sp-property-searchform' => 'Introductory text for the property search form.
+
+Used as label for the "Property" input box.',
 	'concepts' => '{{doc-special|Concepts}}
 {{Identical|Concept}}',
 	'smw-sp-concept-docu' => 'This is an introductory message at the top of [[Special:Concepts]].',
@@ -1018,7 +1021,6 @@ Parameters:
 * $1 - Name of the invoked predefined property',
 	'smw-pa-property-predefined_ask' => 'Describes a predefined property.',
 	'smw-pa-property-predefined_asksi' => 'Describes a predefined property.',
-	'smw-sp-property-searchform' => 'Introductory text for the property search form',
 );
 
 /** Afrikaans (Afrikaans)
@@ -3491,6 +3493,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_propertylackstype' => 'Für dieses Attribut wurde kein Datentyp angegeben ($1 wird vorläufig als Typ angenommen).',
 	'smw_propertyhardlyused' => 'Dieses Attribut wird im Wiki kaum verwendet!',
 	'smw-property-name-invalid' => 'Das Attribut „$1“ kann nicht verwendet werden (ungültiger Attributname).',
+	'smw-sp-property-searchform' => 'Attribute anzeigen, die beinhalten:',
 	'concepts' => 'Konzepte',
 	'smw-sp-concept-docu' => 'Ein [https://www.semantic-mediawiki.org/wiki/Help:Konzept Konzept] kann als „dynamische Kategorie“ betrachtet werden, z.&nbsp;B. als Zusammenstellung von Seiten, die nicht manuell erstellt, sondern von Semantic MediaWiki auf Basis einer Abfrage berechnet wurde.',
 	'smw-sp-concept-header' => 'Liste der Konzepte',
@@ -5442,6 +5445,7 @@ $messages['fr'] = array(
 	'smw_propertylackstype' => 'Aucun type n’a été spécifié pour cette propriété (type actuellement supposé : $1).',
 	'smw_propertyhardlyused' => 'Cette propriété est à peine utilisée sur ce wiki !',
 	'smw-property-name-invalid' => 'La propriété $1 ne peut pas être utilisée (nom de propriété invalide).',
+	'smw-sp-property-searchform' => 'Afficher les propriétés qui contiennent :',
 	'concepts' => 'Concepts',
 	'smw-sp-concept-docu' => 'Un [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] peut être vu comme une « catégorie dynamique », c’est-à-dire comme une collection de pages qui ne sont pas créées manuellement, mais sont calculées par MédiaWiki Sémantique depuis la description d’une requête fournie.',
 	'smw-sp-concept-header' => 'Liste des concepts',
@@ -5970,6 +5974,7 @@ Xera un RDF que se pode navegar.',
 	'smw_propertylackstype' => 'Non foi especificado ningún tipo para esta propiedade (asúmese o tipo "$1" polo de agora).',
 	'smw_propertyhardlyused' => 'Esta propiedade apenas ten uso neste wiki!',
 	'smw-property-name-invalid' => 'Non se pode utilizar a propiedade "$1" (nome de propiedade non válido).',
+	'smw-sp-property-searchform' => 'Mostrar as propiedades que conteñan:',
 	'concepts' => 'Conceptos',
 	'smw-sp-concept-docu' => 'Un [https://www.semantic-mediawiki.org/wiki/Help:Concepts concepto] pódese ver como unha "categoría dinámica", é dicir, como unha colección de páxinas que non están creadas manualmente, pero que son computadas por Semantic MediaWiki desde a descrición dunha pescuda proporcionada.',
 	'smw-sp-concept-header' => 'Lista de conceptos',
@@ -8485,6 +8490,7 @@ $messages['ja'] = array(
 	'smw_propertylackstype' => 'このプロパティには型が指定されていません (現時点では型 $1 と想定します)。',
 	'smw_propertyhardlyused' => 'このプロパティはウィキ内でほとんど使用されていません!',
 	'smw-property-name-invalid' => 'プロパティ $1 は使用できません (無効なプロパティ名)。',
+	'smw-sp-property-searchform' => '以下を含むプロパティを表示:',
 	'concepts' => '概念',
 	'smw-sp-concept-header' => '概念一覧',
 	'smw-sp-concept-count' => '以下に{{PLURAL:$1|概念}}を列挙します。',
@@ -10012,6 +10018,7 @@ $messages['mk'] = array(
 	'smw_propertylackstype' => 'Нема назначено тип за ова својство (засега по основно ќе се користи типот $1)',
 	'smw_propertyhardlyused' => 'Ова својство речиси не се користи на викито!',
 	'smw-property-name-invalid' => 'Својството $1 не може да се користи (има неважечко име).',
+	'smw-sp-property-searchform' => 'Прикажи својства што содржат:',
 	'concepts' => 'Концепти',
 	'smw-sp-concept-docu' => '[https://www.semantic-mediawiki.org/wiki/Help:Concepts?uselang=mk Концептот] може да се гледа како „динамична категорија“, т.е. збир страници што не се создадени рачно, туку пресметани од Семантички МедијаВики како опис на дадено барање.',
 	'smw-sp-concept-header' => 'Список на концепти',
@@ -10441,6 +10448,7 @@ Jika masalah ini masih berlarutan selepas beberapa ketika, mintalah pentadbir ta
  * @author පසිඳු කාවින්ද
  */
 $messages['mt'] = array(
+	'smw_purge' => 'Aġġorna',
 	'smw_qui_addcategory' => 'żid kategorija',
 	'smw_qui_ok' => 'Ok',
 	'smw_browse_go' => 'Mur',
