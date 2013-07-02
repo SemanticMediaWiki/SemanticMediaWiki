@@ -41,6 +41,23 @@ abstract class SMWQueryPage extends QueryPage {
 	}
 
 	/**
+	 * @see QueryPage::linkParameters
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function linkParameters() {
+		$parameters = array();
+
+		if ( $this->getRequest()->getCheck( 'property' ) ) {
+			$parameters['property'] = $this->getRequest()->getVal( 'property' );
+		}
+
+		return $parameters;
+	}
+
+	/**
 	 * Returns a MessageFormatter object
 	 *
 	 * @since  1.9
@@ -55,6 +72,23 @@ abstract class SMWQueryPage extends QueryPage {
 	}
 
 	/**
+	 * Generates a search form
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $property
+	 *
+	 * @return string
+	 */
+	public function getSearchForm( $property = '' ) {
+		return	Xml::tags( 'form', array( 'method' => 'get', 'action' => htmlspecialchars( $GLOBALS['wgScript'] ) ),
+				Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
+				Xml::fieldset( $this->msg( 'properties' )->text(),
+					Xml::inputLabel( $this->msg( 'smw-sp-property-searchform' )->text(), 'property', 'property', 20, $property ) . ' ' .
+					Xml::submitButton( $this->msg( 'allpagessubmit' )->text() ) ) );
+	}
+
+	/**
 	 * This is the actual workhorse. It does everything needed to make a
 	 * real, honest-to-gosh query page.
 	 * Alas, we need to overwrite the whole beast since we do not assume
@@ -62,15 +96,21 @@ abstract class SMWQueryPage extends QueryPage {
 	 *
 	 * @param $offset database query offset
 	 * @param $limit database query limit
+	 * @param $property database string query
 	 */
-	function doQuery( $offset = false, $limit = false ) {
-		$out = $this->getOutput();
-		$sk  = $this->getSkin();
+	function doQuery( $offset = false, $limit = false, $property = false ) {
+		$out  = $this->getOutput();
+		$sk   = $this->getSkin();
 
 		$options = new SMWRequestOptions();
 		$options->limit = $limit;
 		$options->offset = $offset;
 		$options->sort = true;
+
+		if ( $property ) {
+			$options->addStringCondition( str_replace( ' ', '_', $property ), SMWStringCondition::STRCOND_MID );
+		}
+
 		$res = $this->getResults( $options );
 		$num = count( $res );
 
