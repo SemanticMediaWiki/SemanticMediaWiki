@@ -189,6 +189,8 @@ Generates browsable RDF.',
 	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!',
 	'smw-property-name-invalid' => 'Property $1 can not be used (invalid property name).',
 
+	'smw-sp-property-searchform' => 'Display properties that contain:',
+
 	// Messages for Concepts Special
 	'concepts'              => 'Concepts',
 	'smw-sp-concept-docu'   => 'A [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] can be viewed as "dynamic category", i.e. as a collection of pages that are not created manually, but that are computed by Semantic MediaWiki from a description of a given query.',
@@ -1016,6 +1018,7 @@ Parameters:
 * $1 - Name of the invoked predefined property',
 	'smw-pa-property-predefined_ask' => 'Describes a predefined property.',
 	'smw-pa-property-predefined_asksi' => 'Describes a predefined property.',
+	'smw-sp-property-searchform' => 'Introductory text for the property search form',
 );
 
 /** Afrikaans (Afrikaans)
