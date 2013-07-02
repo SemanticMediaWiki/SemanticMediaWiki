@@ -1,12 +1,20 @@
-== About ==
+About Semantic MediaWiki
+========================
 
 Semantic MediaWiki is a project for extending MediaWiki with "semantic"
 functions that enable machine-reading of wiki-content. For details and
-further links, see http://semantic-mediawiki.org
+further links, see https://semantic-mediawiki.org
 
 Notes on installing Semantic MediaWiki are found in the file INSTALL.
 
-== Contact ==
+Build status
+------------
+
+* TravisCI: [![Build Status](https://secure.travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki.png?branch=master)](http://travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki)
+* [WMF Jenkins](https://integration.wikimedia.org/ci/job/mwext-SemanticMediaWiki-testextensions-master/lastBuild/)
+
+Contact
+-------
 
 If you have remarks, questions, or suggestions, please send them to
 semediawiki-users@lists.sourceforge.net. You can subscribe to this
@@ -23,7 +31,8 @@ Specific inquiries (e.g. for press releases) should go to Markus Krötzsch,
 markus@semantic-mediawiki.org. Do not contact Markus directly if you just need
 free technical support -- that is what the user list is for.
 
-== Developers ==
+Developers
+----------
 
 Development is coordinated by Jeroen De Dauw and Markus Krötzsch.
 
@@ -34,7 +43,8 @@ projects SEKT, NeOn, and Active. SMW has also been supported in the
 Halo project funded by Vulcan Inc., where development is coordinated
 by ontoprise GmbH, Karlsruhe, Germany.
 
-== Contributors ==
+Contributors
+------------
 
 * Denny Vrandecic is one of the original core developers.
 
@@ -57,14 +67,16 @@ by ontoprise GmbH, Karlsruhe, Germany.
 : were designed and realised by Markus Krötzsch. A previous version of
 : the SMW logo has been realised by Rozana Vrandecic.
 
-== Translations ==
+Translations
+------------
 
 Translations to various languages are provided and maintained by many people.
 In general, main contributors can be found in the message files. Special thanks
 are due to Siebrand Mazeland and the translatewiki.net project for the
 excellent translation service they provide.
 
-== Credits to other projects ==
+Credits to other projects
+-------------------------
 
 * Most icons used by Semantic MediaWiki are derived from the "Crystal Clear"
 : icon theme for KDE, which was created by Everaldo (everaldo.com).
