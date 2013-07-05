@@ -1887,6 +1887,7 @@ Xenera un RDF navegable.',
 	'smw_propertylackstype' => "Nun s'especificó nengún tipu pa esta propiedá (asumiendo tipu $1 de momentu).",
 	'smw_propertyhardlyused' => '¡Esta propiedá apenes tien usu nesta wiki!',
 	'smw-property-name-invalid' => 'Nun se pue usar la propiedá $1 (nome de propiedá inválidu).',
+	'smw-sp-property-searchform' => 'Amosar les propiedaes que contengan:',
 	'concepts' => 'Conceptos',
 	'smw-sp-concept-docu' => 'Un [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceptu] pue vese como una "categoría dinámica", esto ye, una coleición de páxines que nun tan creaes manualmente, sinón que se calculen por Semantic MediaWiki dende una descripción d\'una consulta dada.',
 	'smw-sp-concept-header' => 'Llista de conceptos',
@@ -2035,8 +2036,55 @@ Tornar a "$1".',
 	'smw_smwadmin_updatenotstopped' => "Pa parar el procesu d'actualización n'execución, tien d'activar el cuadru de marca pa indicar que ta daveres seguru.
 
 Tornar a $1.",
+	'smw_smwadmin_docu' => 'Esta páxina especial ayudará-y demientres la instalación y anovamientu de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Recuerde facer una copia de seguridá de los datos importantes antes d\'executar funciones alministratives.',
+	'smw_smwadmin_db' => 'Instalación y anovamientu de la base de datos',
+	'smw_smwadmin_dbdocu' => "Semantic MediaWiki necesita dalgunes estensiones de la base de datos de MediaWiki pa poder almacenar los datos semánticos.
+La función d'abaxo asegura que la base de datos ta correutamente configurada.
+Los cambios fechos nesti pasu nun afeuten al restu de la base de datos de MediaWiki, y puen desfacese fácilmente si se quier.
+Esta función de configuración pue executase múltiples veces ensin peligru, pero namái ye necesaria una vez na instalación o anovamientu.",
+	'smw_smwadmin_permissionswarn' => "Si la operación falla con errores SQL, probablemente l'usuariu de la base de datos qu'emplega la wiki (compruebe'l so LocalSettings.php) nun tien permisos bastantes.
+O bien conceda a esti usuariu más permisos pa crear y desaniciar tables, o ponga temporalmente los datos de conexón del usuariu root de la base de datos en LocalSettings.php, o use'l script de mantenimientu <tt>SMW_setup.php</tt>, que pue usar les credenciales d'un alministrador.",
+	'smw_smwadmin_dbbutton' => 'Aniciar o anovar les tables',
+	'smw_smwadmin_announce' => 'Anuncie la so wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki tien un serviciu web p\'anunciar nuevos sitios wiki semánticos.
+Esto usase pa mantener una llista de sitios públicos qu\'usen Semantic MediaWiki, principalmente p\'ayudar a que\'l <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyeutu Semantic MediaWiki</a> tenga una vista xeneral de los usos típicos de Semantic MediaWiki.
+Vea la páxina principal de Semantic MediaWiki pa <a href="http://semantic-mediawiki.org/wiki/Registry">más información tocante a esti serviciu</a>.',
+	'smw_smwadmin_announcebutton' => 'Calque nel siguiente botón pa unviar la URL de la so wiki a esi serviciu.
+El serviciu nun rexistrará wikis que nun tengan accesu públicu, y sólo almacenará información disponible públicamente.',
+	'smw_smwadmin_datarefresh' => 'Reparación de datos y anovamientu',
+	'smw_smwadmin_datarefreshdocu' => "Ye posible restaurar tolos datos de Semantic MediaWiki basandose nel conteníu actual de la wiki.
+Esto pue ser afayadizo pa reparar datos rotos o pa refrescar os datos si'l formatu internu cambió por un anovamientu del software.
+Esti anovamientu executase páxina a páxina y nun se completará nel intre.
+Lo siguiente amuesa si un anovamientu ta en cursu y permiti-y principialos o detenelos (esceuto si esta carauterística ta desactivada pol alministrador del sitiu).",
+	'smw_smwadmin_datarefreshprogress' => "<strong>Yá hai una anovamientu en cursu.</strong>
+Ye normal que l'anovamientu avance sólo de mou lentu, porque sólo refresca los datos en pequeños trozos cada vez qu'un usuariu entra na wiki.
+P'acabar esti anovamientu más rápido, pue llamar al script de mantenimientu de MediaWiki <tt>runJobs.php</tt> (use la opción <tt>--maxjobs 1000</tt> para restrinxir el númberu d'anovamientos fechos nun llote).
+Progresu estimáu del anovamientu actual:",
+	'smw_smwadmin_datarefreshbutton' => "Principiar l'anovamientu de datos",
+	'smw_smwadmin_datarefreshstop' => 'Detener esti anovamientu',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Sí, toi seguru.',
+	'smw_smwadmin_support' => 'Algamar asistencia',
+	'smw_smwadmin_supportdocu' => 'Hai dellos recursos que podríen ayuda-y en casu de problemes:',
+	'smw_smwadmin_installfile' => 'Si alcuentra problemes cola instalación, principie revisando la guía del <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ficheru INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'La documentación del usuariu completa de Semantic MediaWiki ta en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Pue informar de los errores en <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Si tien más preguntes o suxerencies, xuntese a la conversación del <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foru d\'usuarios de Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Estructura de datos',
+	'smw_adminlinks_displayingdata' => 'Visualización de los datos',
+	'smw_adminlinks_inlinequerieshelp' => 'Ayuda de les consultes en llinia',
+	'smw-createproperty-isproperty' => 'Esta ye una propiedá de tipu $1.',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|El valor permitíu|Los valores permitíos}} pa esta propiedá {{PLURAL:$1|ye|son}}:',
+	'smw-paramdesc-category-delim' => 'El delimitador',
+	'smw-paramdesc-category-template' => 'Una plantía cola que dar formatu a los elementos',
+	'smw-paramdesc-category-userparam' => 'Un parámetru pa pasar a la plantía',
+	'smw-info-par-message' => 'Mensaxe a amosar.',
+	'smw-info-par-icon' => 'Iconu a amosar; o "info" o bien "warning".',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Opciones de gueta semántica',
+	'smw-prefs-intro-text' => "Les opciones d'abaxo ufreles [https://semantic-mediawiki.org/ Semantic MediaWiki] (o les estensiones rellacionaes) pa permitir la personalización individual de les funciones seleicionaes. Pa más información, vea esta [https://semantic-mediawiki.org/wiki/Help:User_preferences seición d'ayuda].",
+	'smw-prefs-ask-options-tooltip-display' => "Amosar el testu del parámetru como información d'ayuda",
+	'smw-prefs-ask-options-collapsed-default' => "Activar que'l cuadru d'opciones tea contraíu de mou predetermináu",
 	'smw-ui-tooltip-title-property' => 'Propiedá',
 	'smw-ui-tooltip-title-quantity' => 'Cantidá',
 	'smw-ui-tooltip-title-info' => 'Información',
@@ -2047,11 +2095,18 @@ Tornar a $1.",
 	'smw-ui-tooltip-title-note' => 'Nota',
 	'smw-ui-tooltip-title-legend' => 'Lleenda',
 	'smw_unknowntype' => "El tipu d'esta propiedá ye inválidu",
+	'smw-concept-cache-text' => "El conceptu tien {{PLURAL:$1|una páxina|un total de $1 páxines}}, y l'últimu anovamientu foi el $2.",
+	'smw_concept_header' => 'Páxines del conceptu "$1"',
+	'smw_conceptarticlecount' => "Abaxo {{PLURAL:$1|s'amuesa $1 páxina|s'amuesen $1 páxines}}.",
+	'smw-qp-aggregatable-empty-data' => 'Los datos agregables solicitaos nun se pudieron amosar por unos criterios de seleición insuficientes.',
 	'right-smw-admin' => 'Entrar nes xeres alministratives (Semantic MediaWiki)',
 	'group-smwadministrator' => 'Alministradores de Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|alministrador|alministradora}} (SMW)',
 	'grouppage-smwadministrator' => '{{ns:project}}:Alministradores_SMW',
 	'action-smw-admin' => 'entrar nes xeres alministratives de Semantic MediaWiki',
+	'smw-pa-property-predefined-default' => '$1 ye una propiedá predefinida (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]). Ye una propiedá integrada que vien con más privilexos alministrativos, pero que se pue usar como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].',
+	'smw-pa-property-predefined_ask' => "$1 ye una propiedá predefinida (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]) qu'enllaza colos metadatos [https://www.semantic-mediawiki.org/wiki/Subobject suboxetu] d'una consulta. Ye una propiedá integrada que vién con más privilexos alministrativos, pero que pue usase como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].",
+	'smw-pa-property-predefined_asksi' => "$1 ye una propiedá predefinida (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]) que recueye'l númberu de condiciones utilizaes nuna consulta. Ye una propiedá integrada que vien con más privilexos alministrativos, pero que se pue usar como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].",
 );
 
 /** Azerbaijani (azərbaycanca)
