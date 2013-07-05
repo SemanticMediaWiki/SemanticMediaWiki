@@ -350,15 +350,26 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testGetPageHeader() {
 
+		$propertySearch = $this->getRandomString();
+
+		$context = $this->newContext( array( 'property' => $propertySearch ) );
+		$context->setTitle( $this->getTitle() );
+
 		$instance = $this->getInstance();
+		$instance->setContext( $context );
 		$instance->getResults( null );
 
 		$matcher = array(
 			'tag' => 'p',
 			'attributes' => array( 'class' => 'smw-sp-properties-docu' ),
+			'tag' => 'input',
+			'attributes' => array( 'name' => 'property', 'value' => $propertySearch ),
+			'tag' => 'input',
+			'attributes' => array( 'type' => 'submit' )
 		);
 
 		$this->assertTag( $matcher, $instance->getPageHeader() );
 
 	}
+
 }

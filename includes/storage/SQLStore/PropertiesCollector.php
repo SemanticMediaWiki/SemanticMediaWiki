@@ -146,6 +146,10 @@ class PropertiesCollector extends Collector {
 				$options['OFFSET'] = max( $this->requestOptions->offset, 0 );
 			}
 
+			if ( $this->requestOptions->getStringConditions() ) {
+				$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_title', false );
+			}
+
 		}
 
 		$res = $this->dbConnection->select(

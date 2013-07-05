@@ -85,11 +85,12 @@ abstract class SMWQueryPage extends QueryPage {
 	 * @return string
 	 */
 	public function getSearchForm( $property = '' ) {
-		return	Xml::tags( 'form', array( 'method' => 'get', 'action' => htmlspecialchars( $GLOBALS['wgScript'] ) ),
-				Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
-				Xml::fieldset( $this->msg( 'properties' )->text(),
-					Xml::inputLabel( $this->msg( 'smw-sp-property-searchform' )->text(), 'property', 'property', 20, $property ) . ' ' .
-					Xml::submitButton( $this->msg( 'allpagessubmit' )->text() ) ) );
+		return Xml::tags( 'form', array( 'method' => 'get', 'action' => htmlspecialchars( $GLOBALS['wgScript'] ) ),
+			Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
+			Xml::fieldset( $this->msg( 'properties' )->text(),
+				Xml::inputLabel( $this->msg( 'smw-sp-property-searchform' )->text(), 'property', 'property', 20, $property ) . ' ' .
+				$this->getMessageFormatter()->setType( 'note' )->addFromKey( 'smw-sp-property-searchform-inputinfo' )->getHtml() . ' ' .
+				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() ) ) );
 	}
 
 	/**

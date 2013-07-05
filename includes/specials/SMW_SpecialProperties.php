@@ -91,7 +91,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 			'p',
 			array( 'class' => 'smw-sp-properties-docu' ),
 			$this->msg( 'smw-sp-properties-docu' )->parse()
-		) .
+		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ) ) .
 		Html::element(
 			'h2',
 			array(),
