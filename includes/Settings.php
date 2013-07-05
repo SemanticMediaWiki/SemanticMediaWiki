@@ -154,6 +154,8 @@ class Settings {
 			'smwgStatisticsCache' => $GLOBALS['smwgStatisticsCache'],
 			'smwgStatisticsCacheExpiry' => $GLOBALS['smwgStatisticsCacheExpiry'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
+			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
+			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
 		);
 
 		if ( self::$instance === null ) {

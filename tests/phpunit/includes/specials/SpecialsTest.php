@@ -26,11 +26,11 @@ use Language;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
@@ -38,6 +38,7 @@ use Language;
 /**
  * @covers SMWSpecialWantedProperties
  * @covers SMWSpecialUnusedProperties
+ * @covers SMWSpecialProperties
  * @covers SMW\SpecialConcepts
  *
  * @note Test base was borrowed from the EducationProgram extension

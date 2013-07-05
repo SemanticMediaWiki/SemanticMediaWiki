@@ -10,6 +10,7 @@
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
+ * @author mwjames
  */
 class SMWSpecialProperties extends SpecialPage {
 
@@ -18,21 +19,25 @@ class SMWSpecialProperties extends SpecialPage {
 	}
 
 	public function execute( $param ) {
-		wfProfileIn( 'smwfDoSpecialProperties (SMW)' );
+		\SMW\Profiler::In( __METHOD__ );
 
-		global $wgOut;
+		$out = $this->getOutput();
 
-		$wgOut->setPageTitle( wfMessage( 'properties' )->text() );
+		$out->setPageTitle( $this->msg( 'properties' )->text() );
 
-		$rep = new SMWPropertiesPage();
+		$page = new SMWPropertiesPage(
+			\SMW\StoreFactory::getStore(),
+			\SMW\Settings::newFromGlobals()
+		);
+		$page->setContext( $this->getContext() );
 
 		list( $limit, $offset ) = wfCheckLimits();
-		$rep->doQuery( $offset, $limit );
+		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
 
 		// Ensure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $wgOut );
+		SMWOutputs::commitToOutputPage( $out );
 
-		wfProfileOut( 'smwfDoSpecialProperties (SMW)' );
+		\SMW\Profiler::Out( __METHOD__ );
 	}
 }
 
@@ -46,10 +51,58 @@ class SMWSpecialProperties extends SpecialPage {
  */
 class SMWPropertiesPage extends SMWQueryPage {
 
-	function getPageHeader() {
-		return '<p>' . wfMessage( 'smw_properties_docu' )->text() . "</p><br />\n";
+	/** @var Store */
+	protected $store;
+
+	/** @var Settings */
+	protected $settings;
+
+	/** @var Collector */
+	protected $collector;
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param Store $store
+	 * @param Settings $settings
+	 */
+	public function __construct( \SMW\Store $store, \SMW\Settings $settings ) {
+		$this->store = $store;
+		$this->settings = $settings;
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * Returns available cache information (takes into account user preferences)
+	 *
+	 * @since 1.9
+	 *
+	 * @return string
+	 */
+	public function getCacheInfo() {
+		return $this->collector->isCached() ? $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->collector->getCacheDate(), $this->getUser() ) )->parse() : '';
+	}
+
+	/**
+	 * @return string
+	 */
+	function getPageHeader() {
+		return Html::rawElement(
+			'p',
+			array( 'class' => 'smw-sp-properties-docu' ),
+			$this->msg( 'smw-sp-properties-docu' )->parse()
+		) .
+		Html::element(
+			'h2',
+			array(),
+			$this->msg( 'smw-sp-properties-header-label' )->text()
+		) . $this->getCacheInfo();
+	}
+
+	/**
+	 * @codeCoverageIgnore
+	 * @return string
+	 */
 	function getName() {
 		return 'Properties';
 	}
@@ -63,17 +116,23 @@ class SMWPropertiesPage extends SMWQueryPage {
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
 	 * @return String
-	 * @throws MWException if the result was not of a supported type
+	 * @throws InvalidResultException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {
+
 		list ( $dataItem, $useCount ) = $result;
 
 		if ( $dataItem instanceof SMWDIProperty ) {
 			return $this->formatPropertyItem( $dataItem, $useCount );
 		} elseif ( $dataItem instanceof SMWDIError ) {
-			return smwfEncodeMessages( $dataItem->getErrors() );
+
+			return $this->getMessageFormatter()->clear()
+				->setType( 'warning' )
+				->addFromArray( array( $dataItem->getErrors() ) )
+				->getHtml();
+
 		} else {
-			throw new MWException( 'SMWUnusedPropertiesPage expects results that are properties or errors.' );
+			throw new \SMW\InvalidResultException( 'SMWPropertiesPage expects results that are properties or errors.' );
 		}
 	}
 
@@ -87,69 +146,115 @@ class SMWPropertiesPage extends SMWQueryPage {
 	 * @param integer $useCount
 	 * @return string
 	 */
-	protected function formatPropertyItem( SMWDIProperty $property, $useCount ) {
-		global $wgLang;
+	protected function formatPropertyItem( \SMW\DIProperty $property, $useCount ) {
 
 		$linker = smwfGetLinker();
 
-		$errors = array();
+		// Clear formatter before invoking messages
+		$this->getMessageFormatter()->clear();
 
 		$diWikiPage = $property->getDiWikiPage();
-		$title = !is_null( $diWikiPage ) ? $diWikiPage->getTitle() : null;
+		$title = $diWikiPage !== null ? $diWikiPage->getTitle() : null;
 
-		if ( $property->isUserDefined() && is_null( $title ) ) {
-			// Show even messed up property names.
-			$typestring = '';
-			$proplink = $property->getLabel();
-			$errors[] = wfMessage( 'smw_notitle', $property->getLabel() )->escaped();
-		} elseif ( $property->isUserDefined() ) {
+		if ( $useCount == 0 && !$this->settings->get( 'smwgPropertyZeroCountDisplay' ) ) {
+			return '';
+		}
 
-			if ( $useCount <= 5 ) {
-				$errors[] = wfMessage( 'smw_propertyhardlyused' )->escaped();
-			}
+		if ( $property->isUserDefined() ) {
 
-			// User defined types default to Page
-			global $smwgPDefaultType;
-			$typeDataValue = SMWTypesValue::newFromTypeId( $smwgPDefaultType );
-			$typestring = $typeDataValue->getLongHTMLText( $linker );
-
-			$label = htmlspecialchars( $property->getLabel() );
-			if ( $title->exists() ) {
-				$typeProperty = new SMWDIProperty( '_TYPE' );
-				$types = smwfGetStore()->getPropertyValues( $diWikiPage, $typeProperty );
-				if ( count( $types ) >= 1 ) {
-					$typeDataValue = SMWDataValueFactory::newDataItemValue( current( $types ), $typeProperty );
-					$typestring = $typeDataValue->getLongHTMLText( $linker );
-				} else {
-					$errors[] = wfMessage( 'smw_propertylackstype' )->rawParams( $typestring )->escaped();
-				}
-
-				$proplink = $linker->link( $title, $label );
+			if (  $title === null ) {
+				// Show even messed up property names.
+				$typestring = '';
+				$proplink = $property->getLabel();
+				$this->getMessageFormatter()->addFromKey( 'smw_notitle', $proplink );
 			} else {
-				$errors[] = wfMessage( 'smw_propertylackspage' )->escaped();
-				$proplink = $linker->link( $title, $label, array(), array( 'action' => 'view' ) );
+				list( $typestring, $proplink ) = $this->getUserDefinedPropertyInfo( $title, $property, $useCount, $linker );
 			}
 
-		} else { // predefined property
-			$typeid = $property->findPropertyTypeID();
-			$typeDataValue = SMWTypesValue::newFromTypeId( $typeid );
-			$typestring = $typeDataValue->getLongHTMLText( $linker );
-			$propertyDataValue = SMWDataValueFactory::newDataItemValue( $property, null );
-			$proplink = $propertyDataValue->getShortHtmlText( $linker );
-		}
-
-		$warnings = smwfEncodeMessages( $errors, 'warning', '', false );
-
-		if ( $typestring === '' ) { // Builtins have no type
-			// @todo Should use numParams for $useCount?
-			return wfMessage( 'smw_property_template_notype' )
-				->rawParams( $proplink )->numParams( $useCount )->text() . ' ' . $warnings;
 		} else {
-			// @todo Should use numParams for $useCount?
-			return wfMessage( 'smw_property_template' )
-				->rawParams( $proplink, $typestring )
-				->numParams( $useCount )->escaped() . ' ' . $warnings;
+			list( $typestring, $proplink ) = $this->getPredefinedPropertyInfo( $property, $linker );
 		}
+
+		if ( $typestring === '' ) { // Built-ins have no type
+
+			// @todo Should use numParams for $useCount?
+			return $this->msg( 'smw_property_template_notype' )
+				->rawParams( $proplink )->numParams( $useCount )->text() . ' ' .
+				$this->getMessageFormatter()->setType( 'warning' )->escape( false )->getHtml();
+
+		} else {
+
+			// @todo Should use numParams for $useCount?
+			return $this->msg( 'smw_property_template' )
+				->rawParams( $proplink, $typestring )->numParams( $useCount )->escaped() . ' ' .
+				$this->getMessageFormatter()->setType( 'warning' )->escape( false )->getHtml();
+
+		}
+	}
+
+	/**
+	 * Returns information related to user-defined properties
+	 *
+	 * @since 1.9
+	 *
+	 * @param Title $title
+	 * @param DIProperty $property
+	 * @param integer $useCount
+	 * @param Linker $linker
+	 *
+	 * @return array
+	 */
+	private function getUserDefinedPropertyInfo( $title, $property, $useCount, $linker ) {
+
+		if ( $useCount <= $this->settings->get( 'smwgPropertyLowUsageThreshold' ) ) {
+			$this->getMessageFormatter()->addFromKey( 'smw_propertyhardlyused' );
+		}
+
+		// User defined types default to Page
+		$typestring = SMWTypesValue::newFromTypeId( $this->settings->get( 'smwgPDefaultType' ) )->getLongHTMLText( $linker );
+
+		$label = htmlspecialchars( $property->getLabel() );
+
+		if ( $title->exists() ) {
+
+			$typeProperty = new \SMW\DIProperty( '_TYPE' );
+			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), $typeProperty );
+
+			if ( count( $types ) >= 1 ) {
+
+				$typeDataValue = \SMW\DataValueFactory::newDataItemValue( current( $types ), $typeProperty );
+				$typestring = $typeDataValue->getLongHTMLText( $linker );
+
+			} else {
+
+				$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typestring );
+			}
+
+			$proplink = $linker->link( $title, $label );
+
+		} else {
+
+			$this->getMessageFormatter()->addFromKey( 'smw_propertylackspage' );
+			$proplink = $linker->link( $title, $label, array(), array( 'action' => 'view' ) );
+		}
+
+		return array( $typestring, $proplink );
+	}
+
+	/**
+	 * Returns information related to predefined properties
+	 *
+	 * @since 1.9
+	 *
+	 * @param DIProperty $property
+	 * @param Linker $linker
+	 *
+	 * @return array
+	 */
+	private function getPredefinedPropertyInfo( $property, $linker ) {
+		$typestring = SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() )->getLongHTMLText( $linker );
+		$proplink = \SMW\DataValueFactory::newDataItemValue( $property, null )->getShortHtmlText( $linker );
+		return array( $typestring, $proplink );
 	}
 
 	/**
@@ -158,7 +263,9 @@ class SMWPropertiesPage extends SMWQueryPage {
 	 * @param SMWRequestOptions $requestOptions
 	 * @return array of array( SMWDIProperty|SMWDIError, integer )
 	 */
-	function getResults( $requestoptions ) {
-		return smwfGetStore()->getPropertiesSpecial( $requestoptions );
+	function getResults( $requestOptions ) {
+		$this->collector = $this->store->getPropertiesSpecial( $requestOptions );
+		return $this->collector->getResults();
 	}
+
 }

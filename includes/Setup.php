@@ -333,6 +333,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\SQLStore\StatisticsCollector']                  = $stoDirSQL . 'StatisticsCollector.php';
 	$wgAutoloadClasses['SMW\SQLStore\WantedPropertiesCollector']            = $stoDirSQL . 'WantedPropertiesCollector.php';
 	$wgAutoloadClasses['SMW\SQLStore\UnusedPropertiesCollector']            = $stoDirSQL . 'UnusedPropertiesCollector.php';
+	$wgAutoloadClasses['SMW\SQLStore\PropertiesCollector']                  = $stoDirSQL . 'PropertiesCollector.php';
 
 	$wgAutoloadClasses['SMW\SQLStore\PropertyTableDefinitionBuilder']       = $stoDirSQL . 'PropertyTableDefinitionBuilder.php';
 
@@ -374,12 +375,13 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWURIResolver']                = $specDir . 'SMW_SpecialURIResolver.php';
 	$wgAutoloadClasses['SMWAdmin']                      = $specDir . 'SMW_SpecialSMWAdmin.php';
 	$wgAutoloadClasses['SMWSpecialOWLExport']           = $specDir . 'SMW_SpecialOWLExport.php';
-	$wgAutoloadClasses['SMWSpecialProperties']          = $specDir . 'SMW_SpecialProperties.php';
 	$wgAutoloadClasses['SMWSpecialTypes']               = $specDir . 'SMW_SpecialTypes.php';
 	$wgAutoloadClasses['SMWSpecialWantedProperties']    = $specDir . 'SMW_SpecialWantedProperties.php';
 	$wgAutoloadClasses['SMWWantedPropertiesPage']       = $specDir . 'SMW_SpecialWantedProperties.php';
 	$wgAutoloadClasses['SMWSpecialUnusedProperties']    = $specDir . 'SMW_SpecialUnusedProperties.php';
 	$wgAutoloadClasses['SMWUnusedPropertiesPage']       = $specDir . 'SMW_SpecialUnusedProperties.php';
+	$wgAutoloadClasses['SMWSpecialProperties']          = $specDir . 'SMW_SpecialProperties.php';
+	$wgAutoloadClasses['SMWPropertiesPage']             = $specDir . 'SMW_SpecialProperties.php';
 
 	// Special pages and closely related helper classes
 	$testsDir = $smwgIP . 'tests/phpunit/';

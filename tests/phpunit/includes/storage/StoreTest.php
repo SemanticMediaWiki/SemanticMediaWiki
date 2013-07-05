@@ -7,6 +7,7 @@
  */
 
 namespace SMW\Test;
+
 use Title, SMWDIProperty, SMWDIWikiPage, SMWQueryProcessor;
 use SMWRequestOptions;
 
@@ -179,13 +180,10 @@ class StoreTest extends \MediaWikiTestCase {
 		}
 
 		$store = smwfGetStore();
-		$result = $store->getPropertiesSpecial( null );
-		$this->assertTrue( is_array( $result ) );
+		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
 
-		// !!! This $result is mostly empty on jenkins (or an initial setup)
-		// which means this foreach assertion is never executed which
-		// means nothing is being verified
-		foreach( $result as $row ) {
+		$this->assertInstanceOf( '\SMW\Store\Collector', $result );
+		foreach( $result->getResults() as $row ) {
 			$this->assertEquals( 2, sizeof( $row ) );
 
 			$this->assertInstanceOf(

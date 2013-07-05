@@ -67,9 +67,11 @@ abstract class SMWQueryPage extends QueryPage {
 	 * @return MessageFormatter
 	 */
 	public function getMessageFormatter() {
+
 		if ( !isset( $this->msgFormatter ) ) {
 			$this->msgFormatter = new \SMW\MessageFormatter( $this->getLanguage() );
 		}
+
 		return $this->msgFormatter;
 	}
 

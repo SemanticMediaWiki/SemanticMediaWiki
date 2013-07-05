@@ -547,6 +547,12 @@ $smwgCacheType = CACHE_ANYTHING;
 # - smwgWantedPropertiesCache Enable to serve wanted properties from cache
 # - smwgWantedPropertiesCacheExpiry Number of seconds before the cache expires
 #
+# - smwgUnusedPropertiesCache Enable to serve unused properties from cache
+# - smwgUnusedPropertiesCacheExpiry Number of seconds before the cache expires
+#
+# - smwgPropertiesCache Enable to serve properties from cache
+# - smwgPropertiesCacheExpiry Number of seconds before the cache expires
+#
 # - smwgStatisticsCache Enable to serve statistics from cache
 # - smwgStatisticsCacheExpiry Number of seconds before the cache expires
 #
@@ -557,6 +563,8 @@ $smwgCacheUsage = array(
 	'smwgWantedPropertiesCacheExpiry' => 3600,
 	'smwgUnusedPropertiesCache' => true,
 	'smwgUnusedPropertiesCacheExpiry' => 3600,
+	'smwgPropertiesCache' => true,
+	'smwgPropertiesCacheExpiry' => 3600,
 );
 
 // Move those two into $smwgCacheUsage
@@ -617,3 +625,24 @@ $smwgAutoRefreshOnPageMove = true;
 # @var array
 ##
 $smwgFixedProperties = array();
+
+###
+# Sets a threshold value for when a property is being highlighted as "hardly
+# begin used" on Special:Properties
+#
+# @since 1.9
+#
+# default = 5
+##
+$smwgPropertyLowUsageThreshold = 5;
+##
+
+###
+# Hide properties where the usage count is zero on Special:Properties
+#
+# @since 1.9
+#
+# default = true (legacy behaviour)
+##
+$smwgPropertyZeroCountDisplay = true;
+##
