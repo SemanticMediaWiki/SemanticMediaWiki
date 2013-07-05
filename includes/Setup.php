@@ -165,6 +165,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\MessageFormatter']           = $incDir . 'formatters/MessageFormatter.php';
 	$wgAutoloadClasses['SMW\TableFormatter']             = $incDir . 'formatters/TableFormatter.php';
 	$wgAutoloadClasses['SMW\ParameterFormatterFactory']  = $incDir . 'formatters/ParameterFormatterFactory.php';
+	$wgAutoloadClasses['SMW\ApiQueryResultFormatter']  = $incDir . 'formatters/ApiQueryResultFormatter.php';
 
 	// Exceptions
 	$wgAutoloadClasses['SMW\StoreInstanceException']       = $incDir . '/exceptions/StoreInstanceException.php';
@@ -390,6 +391,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Test\ParserTestCase']             = $testsDir . 'ParserTestCase.php';
 	$wgAutoloadClasses['SMW\Test\ApiTestCase']                = $testsDir . 'ApiTestCase.php';
 	$wgAutoloadClasses['SMW\Test\MockSuperUser']              = $testsDir . 'MockSuperUser.php';
+	$wgAutoloadClasses['SMW\Test\MockObjectBuilder']          = $testsDir . 'MockObjectBuilder.php';
 	$wgAutoloadClasses['SMW\Test\SpecialPageTestCase']        = $testsDir . 'SpecialPageTestCase.php';
 
 	// Jobs

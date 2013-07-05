@@ -80,39 +80,19 @@ abstract class ApiSMWQuery extends ApiBase {
 	 * @param SMWQueryResult $queryResult
 	 */
 	protected function addQueryResult( SMWQueryResult $queryResult ) {
-		// Changed with SMW 1.9
-		$serialized = $queryResult->toArray();
 		$result = $this->getResult();
 
-		$result->setIndexedTagName( $serialized['results'], 'result' );
-		$result->setIndexedTagName( $serialized['printrequests'], 'printrequest' );
+		$resultFormatter = new SMW\ApiQueryResultFormatter( $queryResult );
+		$resultFormatter->setIsRawMode( $result->getIsRawMode() );
+		$resultFormatter->setFormat( $result->getMain()->getPrinter() !== null ? $result->getMain()->getPrinter()->getFormat() : null );
+		$resultFormatter->doFormat();
 
-		// Added with SMW 1.9
-		$result->setIndexedTagName( $serialized['meta'], 'meta' );
-
-		foreach ( $serialized['results'] as $subjectName => $subject ) {
-			if ( is_array( $subject ) && array_key_exists( 'printouts', $subject ) ) {
-				foreach ( $subject['printouts'] as $property => $values ) {
-					if ( is_array( $values ) ) {
-						$result->setIndexedTagName( $serialized['results'][$subjectName]['printouts'][$property], 'value' );
-					}
-				}
-			}
-		}
-
-		$result->addValue( null, 'query', $serialized );
-
-		// Continuation support
-		if ( $queryResult->hasFurtherResults() ) {
+		if ( $resultFormatter->getContinueOffset() ) {
 			$result->disableSizeCheck();
-
-			$result->addValue(
-				null,
-				'query-continue-offset',
-				$serialized['meta']['count'] + $serialized['meta']['offset']
-			);
-
+			$result->addValue( null, 'query-continue-offset', $resultFormatter->getContinueOffset() );
 			$result->enableSizeCheck();
 		}
+
+		$result->addValue( null, $resultFormatter->getType(), $resultFormatter->getResult() );
 	}
 }

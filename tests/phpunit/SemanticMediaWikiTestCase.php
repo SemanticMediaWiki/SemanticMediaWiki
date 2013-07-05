@@ -6,8 +6,10 @@ use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Settings;
 
-use Title;
+use RequestContext;
+use FauxRequest;
 use Language;
+use Title;
 
 use SMWSemanticData;
 use SMWDataItem;
@@ -91,6 +93,18 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected function getLanguage( $langCode = 'en' ) {
 		return Language::factory( $langCode );
+	}
+
+	/**
+	 * Returns RequestContext object
+	 *
+	 * @param array $params
+	 *
+	 * @return RequestContext
+	 */
+	protected function getContext( array $params = array() ) {
+		$request = new FauxRequest( $params, true );
+		return RequestContext::getMain()->setRequest( $request );
 	}
 
 	/**

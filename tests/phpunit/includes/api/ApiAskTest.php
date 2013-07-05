@@ -81,6 +81,20 @@ class ApiAskTest extends ApiTestCase {
 					)
 				)
 			),
+
+			// #1 Query that produces an error
+			// Don't mind the error content as it depends on the language
+			array(
+				array(
+					'[[Modification date::+!]]',
+					'limit=3'
+				),
+				array(
+					array(
+						'error'=> 'foo',
+					)
+				)
+			)
 		);
 	}
 
@@ -91,15 +105,23 @@ class ApiAskTest extends ApiTestCase {
 	 * @since 1.9
 	 *
 	 * @param array $query
-	 * @param array $expectedPrintrequests
+	 * @param array $expected
 	 */
-	public function testExecute( array $query, array $expectedPrintrequests ) {
+	public function testExecute( array $query, array $expected ) {
+
 		$results = $this->doApiRequest( array(
 				'action' => 'ask',
 				'query' => implode( '|', $query )
 		) );
 
 		$this->assertInternalType( 'array', $results );
-		$this->assertEquals( $expectedPrintrequests, $results['query']['printrequests'] );
+
+		// If their is no printrequests array we expect an error array
+		if ( isset( $results['query']['printrequests'] ) ) {
+			$this->assertEquals( $expected, $results['query']['printrequests'] );
+		} else {
+			$this->assertArrayHasKey( 'error', $results );
+		}
+
 	}
 }

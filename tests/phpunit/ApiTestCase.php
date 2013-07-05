@@ -2,8 +2,7 @@
 
 namespace SMW\Test;
 
-use FauxRequest;
-use RequestContext;
+use ApiResult;
 use ApiMain;
 
 /**
@@ -27,25 +26,42 @@ use ApiMain;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup Test
  *
- * @group SMW
- * @group API
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @author mwjames
  */
 
 /**
  * Class contains Api related request methods
  *
- * @ingroup SMW
+ * @ingroup Api
  */
 abstract class ApiTestCase extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns API request results
+	 * Returns ApiMain
+	 *
+	 * @param array $params
+	 *
+	 * @return ApiMain
+	 */
+	protected function getApiMain( array $params ) {
+		return new ApiMain( $this->getContext( $params ), true );
+	}
+
+	/**
+	 * Returns ApiResult
+	 *
+	 * @param array $params
+	 *
+	 * @return ApiResult
+	 */
+	protected function getApiResult( array $params ) {
+		return new ApiResult( $this->getApiMain( $params ) );
+	}
+
+	/**
+	 * Returns Api results
 	 *
 	 * The returned value is an array containing
 	 * - the result data (array)
@@ -55,10 +71,7 @@ abstract class ApiTestCase extends SemanticMediaWikiTestCase {
 	 * @return array
 	 */
 	protected function doApiRequest( array $params ) {
-		$request = new FauxRequest( $params, true );
-		$context = RequestContext::getMain()->setRequest( $request );
-
-		$api = new ApiMain( $context, true );
+		$api = $this->getApiMain( $params );
 		$api->execute();
 		return $api->getResultData();
 	}
