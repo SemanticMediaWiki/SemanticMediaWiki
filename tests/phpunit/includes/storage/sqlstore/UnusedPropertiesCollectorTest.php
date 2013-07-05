@@ -3,12 +3,15 @@
 namespace SMW\Test\SQLStore;
 
 use SMW\SQLStore\UnusedPropertiesCollector;
+
 use SMW\MessageFormatter;
 use SMW\StoreFactory;
 use SMW\DIProperty;
 use SMW\Settings;
 
 use SMWRequestOptions;
+
+use FakeResultWrapper;
 
 /**
  * Test for the UnusedPropertiesCollector class
@@ -28,11 +31,11 @@ use SMWRequestOptions;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -66,9 +69,9 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 */
 	private function getMockDBConnection( $smwTitle = 'Foo' ) {
 
-		// Injection object expected as the DB fetchObject
-		$returnFetchObject = new \StdClass;
-		$returnFetchObject->smw_title = $smwTitle;
+		$result = array(
+			'smw_title' => $smwTitle,
+		);
 
 		// Database stub object to make the test independent from any real DB
 		$connection = $this->getMock( 'DatabaseMysql' );
@@ -76,7 +79,7 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		// Override method with expected return objects
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $returnFetchObject ) ) );
+			->will( $this->returnValue( new FakeResultWrapper( array( (object)$result ) ) ) );
 
 		return $connection;
 	}

@@ -2,9 +2,6 @@
 
 namespace SMW\Test;
 
-use RequestContext;
-use FauxRequest;
-
 /**
  * Tests for the QueryPage class
  *
@@ -23,11 +20,11 @@ use FauxRequest;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -65,10 +62,8 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 			->setMethods( array( 'getResults', 'formatResult' ) )
 			->getMock();
 
-		$request = new FauxRequest( array( 'property' => $search ) );
-		$context = new RequestContext();
+		$context = $this->newContext( array( 'property' => $search ) );
 		$context->setTitle( $this->getTitle() );
-		$context->setRequest( $request );
 
 		$queryPage->setContext( $context );
 
@@ -87,16 +82,21 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test SMWQueryPage::linkParameters
+	 * @dataProvider linkParametersDataProvider
 	 *
 	 * @since 1.9
+	 *
+	 * @param $test
+	 * @param $expected
 	 */
-	public function testLinkParameters() {
+	public function testLinkParameters( $test, $expected ) {
 
 		$search = $this->getRandomString();
-		$result = $this->getInstance( $search )->linkParameters();
+		$result = $this->getInstance( $test )->linkParameters();
 
 		$this->assertInternalType( 'array', $result );
-		$this->assertEquals( array( 'property' => $search ) , $result );
+		$this->assertEquals( $expected , $result );
+
 	}
 
 	/**
@@ -111,10 +111,30 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 
 		$matcher = array(
 			'tag' => 'form',
-			'descendant' => array( 'tag' => 'input', 'attributes' => array( 'name' => 'property', 'value' => $search ) )
+			'descendant' => array(
+				'tag' => 'input',
+				'attributes' => array( 'name' => 'property', 'value' => $search )
+			)
 		);
 
 		$this->assertInternalType( 'string', $result );
 		$this->assertTag( $matcher, $result );
+	}
+
+	/**
+	 * Provides sample data to be tested
+	 *
+	 * @return array
+	 */
+	public function linkParametersDataProvider() {
+		$random = $this->getRandomString();
+
+		return array(
+			array( ''      , array() ),
+			array( null    , array() ),
+			array( $random , array( 'property' => $random ) ),
+			array( "[{$random}]" , array( 'property' => "[{$random}]" ) ),
+			array( "[&{$random}...]" , array( 'property' => "[&{$random}...]" ) )
+		);
 	}
 }

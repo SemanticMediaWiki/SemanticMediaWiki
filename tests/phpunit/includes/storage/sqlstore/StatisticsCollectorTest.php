@@ -7,6 +7,8 @@ use SMW\StoreFactory;
 use SMW\Settings;
 use SMW\Store;
 
+use FakeResultWrapper;
+
 /**
  *Test for the StatisticsCollector class
  *
@@ -25,11 +27,11 @@ use SMW\Store;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -64,12 +66,16 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 */
 	private function getInstance( $count = 1, $cacheEnabled = false ) {
 
+		// $store = $this->newMockObject( array( 'getPropertyTables' => array( 'smw_test' ) ) )->getMockStore();
 		$store = StoreFactory::getStore();
 
-		// fetchObject return object
-		$returnFetchObject = new \StdClass;
-		$returnFetchObject->count = $count;
-		$returnFetchObject->o_hash ='foo';
+		$result = array(
+			'count'  => $count,
+			'o_hash' => 'foo'
+		);
+
+		$resultWrapper = new FakeResultWrapper( array( (object)$result ) );
+		$resultWrapper->count = $count;
 
 		// Database stub object which makes the test
 		// independent from the real DB
@@ -78,18 +84,14 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 		// Override methods with expected return objects
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $returnFetchObject ) ) );
+			->will( $this->returnValue( $resultWrapper ) );
 
 		$connection->expects( $this->any() )
 			->method( 'fetchObject' )
-			->will( $this->returnValue( $returnFetchObject ) );
+			->will( $this->returnValue( $resultWrapper ) );
 
 		$connection->expects( $this->any() )
 			->method( 'estimateRowCount' )
-			->will( $this->returnValue( $count ) );
-
-		$connection->expects( $this->any() )
-			->method( 'numRows' )
 			->will( $this->returnValue( $count ) );
 
 		// Settings to be used

@@ -5,8 +5,6 @@ namespace SMW\Test;
 use SMWWantedPropertiesPage;
 use SMWDataItem;
 
-use RequestContext;
-
 /**
  * Tests for the WantedPropertiesPage class
  *
@@ -25,11 +23,11 @@ use RequestContext;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -53,89 +51,28 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Store object
-	 *
-	 * @since 1.9
-	 *
-	 * @param $values
-	 *
-	 * @return Store
-	 */
-	private function getMockStore( array $values = array() ) {
-
-		$store = $this->getMock( '\SMW\Store' );
-
-		$store->expects( $this->any() )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( $values ) );
-
-		return $store;
-	}
-
-	/**
 	 * Helper method that returns a DIWikiPage object
 	 *
 	 * @since 1.9
 	 *
 	 * @return DIWikiPage
 	 */
-	private function getMockDIWikiPage() {
+	private function getMockDIWikiPage( $exists = true ) {
 
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
+		$text  = $this->getRandomString();
 
-		$subject->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->getTitle() ) );
+		$title = $this->newMockObject( array(
+			'exists'  => $exists,
+			'getText' => $text,
+			'getNamespace'    => NS_MAIN,
+			'getPrefixedText' => $text
+		) )->getMockTitle();
 
-		$subject->expects( $this->any() )
-			->method( 'getDIType' )
-			->will( $this->returnValue( SMWDataItem::TYPE_WIKIPAGE ) );
+		$diWikiPage = $this->newMockObject( array(
+			'getTitle'  => $title,
+		) )->getMockDIWikiPage();
 
-		return $subject;
-	}
-
-	/**
-	 * Helper method that returns a DIProperty object
-	 *
-	 * @since 1.9
-	 *
-	 * @param $isUserDefined
-	 *
-	 * @return DIProperty
-	 */
-	private function getMockDIProperty( $isUserDefined ) {
-
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$property->expects( $this->any() )
-			->method( 'isUserDefined' )
-			->will( $this->returnValue( $isUserDefined ) );
-
-		$property->expects( $this->any() )
-			->method( 'getDiWikiPage' )
-			->will( $this->returnValue( $this->getMockDIWikiPage() ) );
-
-		$property->expects( $this->any() )
-			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( '_wpg' ) );
-
-		$property->expects( $this->any() )
-			->method( 'getKey' )
-			->will( $this->returnValue( '_wpg' ) );
-
-		$property->expects( $this->any() )
-			->method( 'getDIType' )
-			->will( $this->returnValue( SMWDataItem::TYPE_PROPERTY ) );
-
-		$property->expects( $this->any() )
-			->method( 'getLabel' )
-			->will( $this->returnValue( $this->getRandomString() ) );
-
-		return $property;
+		return $diWikiPage;
 	}
 
 	/**
@@ -171,15 +108,13 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function getInstance( $result = null ) {
 
-		// Store stub object
-		$store = $this->getMockStore();
-
-		$store->expects( $this->any() )
-			->method( 'getWantedPropertiesSpecial' )
-			->will( $this->returnValue( $this->getMockCollector( $result ) ) );
+		$store = $this->newMockObject( array(
+			'getPropertyValues'          => array(),
+			'getWantedPropertiesSpecial' => $this->getMockCollector( $result )
+		) )->getMockStore();
 
 		$instance = new SMWWantedPropertiesPage( $store, $this->getSettings() );
-		$instance->setContext( RequestContext::getMain() );
+		$instance->setContext( $this->newContext() );
 
 		return $instance;
 	}
@@ -206,8 +141,13 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 		$skin     = $this->getMock( 'Skin' );
 
 		$count    = rand();
+		$property = $this->newMockObject( array(
+			'isUserDefined' => $isUserDefined,
+			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
+			'getLabel'      => $this->getRandomString(),
+		) )->getMockDIProperty();
+
 		$expected = $isUserDefined ? (string)$count : '';
-		$property = $this->getMockDIProperty( $isUserDefined );
 		$result   = $instance->formatResult( $skin, array( $property, $count ) );
 
 		$this->assertInternalType( 'string', $result );

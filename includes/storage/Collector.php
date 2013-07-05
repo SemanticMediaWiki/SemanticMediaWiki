@@ -29,11 +29,11 @@ use MWTimestamp;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 interface Collectible {}
@@ -41,6 +41,7 @@ interface Collectible {}
 /**
  * Collector base class
  *
+ * @ingroup Collector
  * @ingroup Store
  */
 abstract class Collector implements Collectible {
@@ -143,7 +144,18 @@ abstract class Collector implements Collectible {
 	protected abstract function doCollect();
 
 	/**
-	 * Sub-class is responsible for returning a ArrayAccessor object
+	 * Sub-class is returning an ArrayAccessor object necessary for
+	 * the ResultCacheMapper instantiation
+	 *
+	 * @par Example:
+	 * @code
+	 *  return new ArrayAccessor( array(
+	 *   'id'      => 'smwgPropertiesCache' . <...>,
+	 *   'type'    => $this->settings->get( 'smwgCacheType' ),
+	 *   'enabled' => $this->settings->get( 'smwgPropertiesCache' ),
+	 *   'expiry'  => $this->settings->get( 'smwgPropertiesCacheExpiry' )
+	 *  ) );
+	 * @endcode
 	 *
 	 * @since 1.9
 	 *

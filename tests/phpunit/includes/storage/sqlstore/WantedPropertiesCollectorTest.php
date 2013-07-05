@@ -9,6 +9,8 @@ use SMW\Settings;
 
 use SMWRequestOptions;
 
+use FakeResultWrapper;
+
 /**
  * Test for the WantedPropertiesCollector class
  *
@@ -27,11 +29,11 @@ use SMWRequestOptions;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -67,9 +69,10 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	private function getMockDBConnection( $smwTitle = 'Foo', $count = 1 ) {
 
 		// Injection object expected as the DB fetchObject
-		$returnFetchObject = new \StdClass;
-		$returnFetchObject->count = $count;
-		$returnFetchObject->smw_title = $smwTitle;
+		$result = array(
+			'count'     => $count,
+			'smw_title' => $smwTitle
+		);
 
 		// Database stub object to make the test independent from any real DB
 		$connection = $this->getMock( 'DatabaseMysql' );
@@ -77,7 +80,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		// Override method with expected return objects
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $returnFetchObject ) ) );
+			->will( $this->returnValue( new FakeResultWrapper( array( (object)$result ) ) ) );
 
 		return $connection;
 	}

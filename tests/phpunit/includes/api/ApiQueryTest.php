@@ -2,7 +2,6 @@
 
 namespace SMW\Test;
 
-use SMW\ArrayAccessor;
 use ReflectionClass;
 use ApiResult;
 
@@ -24,11 +23,11 @@ use ApiResult;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -49,20 +48,6 @@ class ApiQueryTest extends ApiTestCase {
 	 */
 	public function getClass() {
 		return '\ApiSMWQuery';
-	}
-
-	/**
-	 * Helper method that returns a SMWQueryResult object
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $accessor
-	 *
-	 * @return SMWQueryResult
-	 */
-	private function getMockQueryResult( array $accessor = array() ) {
-		$mockObject = new MockObjectBuilder( new ArrayAccessor( $accessor ) );
-		return $mockObject->getQueryResult();
 	}
 
 	/**
@@ -116,11 +101,11 @@ class ApiQueryTest extends ApiTestCase {
 		);
 
 		$apiResult   = $this->getApiResult( array() );
-		$queryResult = $this->getMockQueryResult( array(
+		$queryResult = $this->newMockObject( array(
 			'toArray'           => $test,
 			'getErrors'         => array(),
 			'hasFurtherResults' => true
-		) );
+		) )->getQueryResult();
 
 		// Access protected method
 		$reflector = new ReflectionClass( $this->getClass() );

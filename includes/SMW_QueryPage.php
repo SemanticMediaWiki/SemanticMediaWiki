@@ -48,10 +48,12 @@ abstract class SMWQueryPage extends QueryPage {
 	 * @return array
 	 */
 	public function linkParameters() {
-		$parameters = array();
 
-		if ( $this->getRequest()->getCheck( 'property' ) ) {
-			$parameters['property'] = $this->getRequest()->getVal( 'property' );
+		$parameters = array();
+		$property   = $this->getRequest()->getVal( 'property' );
+
+		if ( $property !== null && $property !== '' ) {
+			$parameters['property'] = $property;
 		}
 
 		return $parameters;

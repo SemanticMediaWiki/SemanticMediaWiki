@@ -3,11 +3,13 @@
 namespace SMW\Test;
 
 use SMW\DataValueFactory;
+use SMW\ArrayAccessor;
 use SMW\DIWikiPage;
 use SMW\Settings;
 
 use RequestContext;
 use FauxRequest;
+use WebRequest;
 use Language;
 use Title;
 
@@ -32,11 +34,11 @@ use SMWDataItem;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -58,6 +60,19 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return string
 	 */
 	public abstract function getClass();
+
+	/**
+	 * Helper method that returns a MockObjectBuilder object
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $accessor
+	 *
+	 * @return MockObjectBuilder
+	 */
+	public function newMockObject( array $accessor = array() ) {
+		return new MockObjectBuilder( new ArrayAccessor( $accessor ) );
+	}
 
 	/**
 	 * Helper method that returns a randomized Title object to avoid results
@@ -102,9 +117,19 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return RequestContext
 	 */
-	protected function getContext( array $params = array() ) {
-		$request = new FauxRequest( $params, true );
-		return RequestContext::getMain()->setRequest( $request );
+	protected function newContext( $request = array() ) {
+
+		$context = new RequestContext();
+
+		if ( $request instanceof WebRequest ) {
+			$context->setRequest( $request );
+		} else {
+			$context->setRequest( new FauxRequest( $request, true ) );
+		}
+
+		$context->setUser( new MockSuperUser() );
+
+		return $context;
 	}
 
 	/**

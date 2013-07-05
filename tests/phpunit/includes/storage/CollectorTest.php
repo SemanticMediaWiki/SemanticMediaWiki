@@ -22,11 +22,10 @@ use SMW\ArrayAccessor;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -92,6 +91,7 @@ class CollectorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testGetResults() {
 
+		// Non-cached scenario
 		$accessor = array(
 			'id'      => rand(),
 			'type'    => false,
@@ -106,7 +106,11 @@ class CollectorTest extends SemanticMediaWikiTestCase {
 
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( $expected, $result );
+		$this->assertNull( $instance->getCacheDate() );
+		$this->assertFalse( $instance->isCached() );
+		$this->assertEquals( count( $expected ), $instance->getCount() );
 
+		// Cached scenario
 		$accessor = array(
 			'id'      => rand(),
 			'type'    => 'hash',
@@ -126,7 +130,10 @@ class CollectorTest extends SemanticMediaWikiTestCase {
 		// has not changed results are expected to be cached and be equal to
 		// the results of the previous initialization
 		$instance = $this->getInstance( array( 'Lula' ), $accessor );
+
 		$this->assertEquals( $result, $instance->getResults() );
+		$this->assertNotNull( $instance->getCacheDate() );
+		$this->assertTrue( $instance->isCached() );
 
 	}
 }

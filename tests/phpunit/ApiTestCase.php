@@ -23,11 +23,11 @@ use ApiMain;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -46,7 +46,7 @@ abstract class ApiTestCase extends SemanticMediaWikiTestCase {
 	 * @return ApiMain
 	 */
 	protected function getApiMain( array $params ) {
-		return new ApiMain( $this->getContext( $params ), true );
+		return new ApiMain( $this->newContext( $params ), true );
 	}
 
 	/**
