@@ -700,9 +700,8 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1 holds the name of the assumed data type which is in fact always data type Page.',
 	'smw_propertyhardlyused' => 'This is an error/warning message.',
 	'smw-property-name-invalid' => 'This is an information message.',
-	'smw-sp-property-searchform' => 'Introductory text for the property search form.
-
-Used as label for the "Property" input box.',
+	'smw-sp-property-searchform' => 'Introductory text for the property search form',
+	'smw-sp-property-searchform-inputinfo' => 'Additional explanatory text about the filtering condition.',
 	'concepts' => '{{doc-special|Concepts}}
 {{Identical|Concept}}',
 	'smw-sp-concept-docu' => 'This is an introductory message at the top of [[Special:Concepts]].',
@@ -1027,14 +1026,12 @@ Parameters:
 * $1 - Name of the invoked predefined property',
 	'smw-pa-property-predefined_ask' => 'Describes a predefined property.',
 	'smw-pa-property-predefined_asksi' => 'Describes a predefined property.',
+	'smw-sp-properties-docu' => 'Extended introductory text for the [[Special:Properties]] page.',
 	'smw-sp-properties-cache-info' => 'Information about the current cache status on a special page
 
 Parameters:
 * $1 - Accommodates a user formatted date',
 	'smw-sp-properties-header-label' => 'A header label',
-	'smw-sp-property-searchform' => 'Introductory text for the property search form',
-	'smw-sp-property-searchform-inputinfo' => 'Additional explanatory text about the filtering condition.',
-	'smw-sp-properties-docu' => 'Extended introductory text for the [[Special:Properties]] page.',
 );
 
 /** Afrikaans (Afrikaans)
@@ -3563,6 +3560,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_propertyhardlyused' => 'Dieses Attribut wird im Wiki kaum verwendet!',
 	'smw-property-name-invalid' => 'Das Attribut „$1“ kann nicht verwendet werden (ungültiger Attributname).',
 	'smw-sp-property-searchform' => 'Attribute anzeigen, die beinhalten:',
+	'smw-sp-property-searchform-inputinfo' => 'Bei der Eingabe wird zwischen Groß- und Kleinschreibung unterschieden. Bei der Filterung werden nur Attribute angezeigt, die der Bedingung entsprechen.',
 	'concepts' => 'Konzepte',
 	'smw-sp-concept-docu' => 'Ein [https://www.semantic-mediawiki.org/wiki/Help:Konzept Konzept] kann als „dynamische Kategorie“ betrachtet werden, z.&nbsp;B. als Zusammenstellung von Seiten, die nicht manuell erstellt, sondern von Semantic MediaWiki auf Basis einer Abfrage berechnet wurde.',
 	'smw-sp-concept-header' => 'Liste der Konzepte',
@@ -3778,6 +3776,9 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-pa-property-predefined-default' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es erfüllt eine besondere Funktion, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
 	'smw-pa-property-predefined_ask' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es verknüpft eine Abfrage mit deren als [https://www.semantic-mediawiki.org/wiki/Help:Parsererweiterung_subobject Subobjekt] gespeicherten Metadaten, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
 	'smw-pa-property-predefined_asksi' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es speichert die Anzahl in einer Abfrage enthaltenen Bedingungen, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
+	'smw-sp-properties-docu' => 'Diese Spezialseite zeigt die verfügbaren [https://www.semantic-mediawiki.org/wiki/Property Attribute]. Falls gefiltert, werden nur benutzerdefinierte Attribute angezeigt, die der Bedingung entsprechen. Für eine differenzierte Ansicht, siehe die Spezialseiten [[Special:UnusedProperties|„Verwaiste Attribute“]] oder [[Special:WantedProperties|„Gewünschte Attribute“]].',
+	'smw-sp-properties-cache-info' => 'Die aufgelisteten Daten stammen aus dem [https://www.semantic-mediawiki.org/wiki/Caching Zwischenspeicher]. Letzte Aktualisierung: $1.',
+	'smw-sp-properties-header-label' => 'Attributliste',
 );
 
 /** Zazaki (Zazaki)
@@ -8560,6 +8561,7 @@ $messages['ja'] = array(
 	'smw_propertyhardlyused' => 'このプロパティはウィキ内でほとんど使用されていません!',
 	'smw-property-name-invalid' => 'プロパティ $1 は使用できません (無効なプロパティ名)。',
 	'smw-sp-property-searchform' => '以下を含むプロパティを表示:',
+	'smw-sp-property-searchform-inputinfo' => '入力した内容は大文字・小文字が区別され、絞り込みに使用されます。条件に該当したプロパティのみが表示されます。',
 	'concepts' => '概念',
 	'smw-sp-concept-header' => '概念一覧',
 	'smw-sp-concept-count' => '以下に{{PLURAL:$1|概念}}を列挙します。',
@@ -8762,6 +8764,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'group-smwadministrator-member' => '{{GENDER:$1|管理者 (SMW)}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW_管理者',
 	'action-smw-admin' => 'Semantic MediaWiki 管理作業へのアクセス',
+	'smw-sp-properties-header-label' => 'プロパティ一覧',
 );
 
 /** Javanese (Basa Jawa)
