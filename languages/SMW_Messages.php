@@ -7306,7 +7306,7 @@ Trochowany staw aktualneje aktualizacije:',
 	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'Typ tuteje kajkosće je njepłaćiwy',
 	'smw_concept_header' => 'Strony koncepta "$1"',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Pokazuje so $1 strona, kotraž|Pokazujetej so $1 stronje, kotrejž|Pokazuja so $1, kotrež|Pokazuje so $1 stronow, kotrež}} k tutomu konceptej {{PLURAL:$1|słuša|słušatej|słušeja|słuša}}.', # Fuzzy
+	'smw_conceptarticlecount' => 'Deleka {{PLURAL:$1|so $1 strona pokazuje|so $1 stronje pokazujetej|so $1 strony pokazuja|so $1 stronow pokazuje}}.',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -10311,6 +10311,7 @@ $messages['mk'] = array(
 	'smw-pa-property-predefined-default' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]). Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
 	'smw-pa-property-predefined_ask' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]) што води до метаподатокот [https://www.semantic-mediawiki.org/wiki/Subobject?uselang=mk subobject] на едно барање. Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
 	'smw-pa-property-predefined_asksi' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]) што собира услови кои се користат во еднобарање. Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
+	'smw-sp-properties-header-label' => 'Список на својства',
 );
 
 /** Malayalam (മലയാളം)
