@@ -382,7 +382,7 @@ The below function ensures that your database is set up properly.
 The changes made in this step do not affect the rest of the MediaWiki database, and can easily be undone if desired.
 This setup function can be executed multiple times without doing any harm, but it is needed only once on installation or upgrade.',
 	'smw_smwadmin_permissionswarn' => 'If the operation fails with SQL errors, the database user employed by your wiki (check your LocalSettings.php) probably does not have sufficient permissions.
-Either grant this user additional pemissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <tt>SMW_setup.php</tt> which can use the credentials of an administrator.',
+Either grant this user additional permissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <code>SMW_setup.php</code> which can use the credentials of an administrator.',
 	'smw_smwadmin_dbbutton' => 'Initialize or upgrade tables',
 	'smw_smwadmin_announce' => 'Announce your wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki has a web service for announcing new semantic wiki sites.
@@ -397,7 +397,7 @@ The update is executed page by page and will not be completed immediately.
 The following shows if an update is in progress and allows you to start or stop updates (unless this feature was disabled by the site administrator).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>An update is already in progress.</strong>
 It is normal that the update progresses only slowly since it only refreshes data in small chunks each time a user accesses the wiki.
-To finish this update more quickly, you can invoke the MediaWiki maintenance script <tt>runJobs.php</tt> (use the option <tt>--maxjobs 1000</tt> to restrict the number of updates done in one batch).
+To finish this update more quickly, you can invoke the MediaWiki maintenance script <code>runJobs.php</code> (use the option <code>--maxjobs 1000</code> to restrict the number of updates done in one batch).
 Estimated progress of current update:',
 	'smw_smwadmin_datarefreshbutton' => 'Start updating data',
 	'smw_smwadmin_datarefreshstop' => 'Stop this update',
