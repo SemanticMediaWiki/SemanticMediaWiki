@@ -2,10 +2,8 @@
 
 namespace SMW;
 
-use ArrayObject;
-
 /**
- * Encapsulate settings in an instantiatable settings class
+ * Encapsulate Semantic MediaWiki settings
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,40 +22,24 @@ use ArrayObject;
  *
  * @note Initial idea has been borrowed from EducationProgram Extension/Jeroen De Dauw
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
- * This class encapsulates settings (mostly retrieved from $GLOBALS) and
- * make it an instantiatable object
+ * Encapsulate Semantic MediaWiki settings to access values through a
+ * specified interface
  *
  * @ingroup SMW
  */
-class Settings {
-
-	/** @var ArrayObject */
-	protected $settings;
+class Settings extends ArrayAccessor {
 
 	/** @var Settings */
 	private static $instance = null;
-
-	/**
-	 * @note Here we use composition over inheritance but if it necessary
-	 * this class can be extended to use the ArrayObject without interrupting
-	 * the interface therefore use the factory method for instantiation
-	 *
-	 * @since 1.9
-	 *
-	 * @param ArrayObject $settings
-	 */
-	protected function __construct( ArrayObject $settings ) {
-		$this->settings = $settings;
-	}
 
 	/**
 	 * Assemble individual SMW related settings into one accessible array for
@@ -151,8 +133,6 @@ class Settings {
 			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'],
 			'smwgCacheType' => $GLOBALS['smwgCacheType'],
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
-			'smwgStatisticsCache' => $GLOBALS['smwgStatisticsCache'],
-			'smwgStatisticsCacheExpiry' => $GLOBALS['smwgStatisticsCacheExpiry'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
@@ -181,33 +161,7 @@ class Settings {
 	 * @return Settings
 	 */
 	public static function newFromArray( array $settings ) {
-		return new self( new ArrayObject( $settings ) );
-	}
-
-	/**
-	 * Verifies if a specified setting for a given key does exists or not
-	 *
-	 * @since 1.9
-	 *
-	 * @param string $key
-	 *
-	 * @return boolean
-	 */
-	public function exists( $key ) {
-		return $this->settings->offsetExists( $key );
-	}
-
-	/**
-	 * Overrides settings for a given key
-	 *
-	 * @since 1.9
-	 *
-	 * @param string $key
-	 * @param string $value
-	 */
-	public function set( $key, $value ) {
-		$this->settings->offsetSet( $key, $value );
-		return $this;
+		return new self( $settings );
 	}
 
 	/**
@@ -233,7 +187,7 @@ class Settings {
 	 */
 	public function get( $key ) {
 
-		if ( !$this->exists( $key ) ) {
+		if ( !$this->has( $key ) ) {
 
 			// If the key wasn't found it could be because of a nested array
 			// therefore iterate and verify otherwise throw an exception
@@ -242,18 +196,18 @@ class Settings {
 				return $value;
 			}
 
-			throw new SettingsArgumentException( "{$key} is not a valid settings key" );
+			throw new InvalidSettingsArgumentException( "'{$key}' is not a valid settings key" );
 		}
 
-		return $this->settings->offsetGet( $key );
+		return $this->offsetGet( $key );
 	}
 
 	/**
-	 * Reset instance
+	 * Reset the instance
 	 *
 	 * @since 1.9
 	 */
-	public static function reset() {
+	public static function clear() {
 		self::$instance = null;
 	}
 
@@ -267,8 +221,9 @@ class Settings {
 	 * @return mixed|null
 	 */
 	private function doIterate( $key ) {
+
 		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveArrayIterator( $this->settings ),
+			new \RecursiveArrayIterator( $this ),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		);
 

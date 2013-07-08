@@ -22,13 +22,13 @@ use SMW\Settings;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
- * @licence GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 
 /**
@@ -51,34 +51,6 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Provides sample data to be tested
-	 *
-	 * @return array
-	 */
-	public function dataSettingsProvider() {
-		return array( array( array(
-			'',
-			'foo' => 'bar',
-			'foo' => 'bar', 'baz' => 'BAH',
-			'bar' => array( '9001' ),
-			'~[,,_,,]:3' => array( 9001, 4.2 ),
-		) ) );
-	}
-
-	/**
-	 * Provides and collects individual smwg* settings
-	 *
-	 * @return array
-	 */
-	public function dataGlobalsSettingsProvider() {
-		$settings = array_intersect_key( $GLOBALS,
-			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
-		);
-
-		return array( array( $settings ) );
-	}
-
-	/**
 	 * Helper method that returns a Settings object
 	 *
 	 * @since 1.9
@@ -91,28 +63,31 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test Settings::__construct
-	 * @dataProvider dataSettingsProvider
+	 * @dataProvider settingsProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $settings
 	 */
 	public function testConstructor( array $settings ) {
+
 		$instance = $this->getInstance( $settings );
 
 		$this->assertInstanceOf( $this->getClass(), $instance );
 		$this->assertFalse( $instance === $this->getInstance( $settings ) );
+
 	}
 
 	/**
 	 * @test Settings::get
-	 * @dataProvider dataSettingsProvider
+	 * @dataProvider settingsProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $settings
 	 */
 	public function testGet( array $settings ) {
+
 		$instance = $this->getInstance( $settings );
 
 		foreach ( $settings as $name => $value ) {
@@ -120,29 +95,33 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 		}
 
 		$this->assertTrue( true );
+
 	}
 
 	/**
 	 * @test Settings::get
 	 *
 	 * @since 1.9
-	 * @throws SettingsArgumentException
+	 * @throws InvalidSettingsArgumentException
 	 */
-	public function testSettingsNameExceptions() {
-		$this->setExpectedException( '\SMW\SettingsArgumentException' );
-		$settingsObject = $this->getInstance( array( 'Foo' => 'bar' ) );
-		$this->assertEquals( 'bar', $settingsObject->get( 'foo' ) );
+	public function testInvalidSettingsArgumentException() {
+
+		$this->setExpectedException( '\SMW\InvalidSettingsArgumentException' );
+
+		$instance = $this->getInstance( array( 'Foo' => 'bar' ) );
+		$this->assertEquals( 'bar', $instance->get( 'foo' ) );
 	}
 
 	/**
 	 * @test Settings::set
-	 * @dataProvider dataSettingsProvider
+	 * @dataProvider settingsProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $settings
 	 */
 	public function testSet( array $settings ) {
+
 		$instance = $this->getInstance( array() );
 
 		foreach ( $settings as $name => $value ) {
@@ -151,11 +130,12 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 		}
 
 		$this->assertTrue( true );
+
 	}
 
 	/**
 	 * @test Settings::newFromGlobals
-	 * @dataProvider dataGlobalsSettingsProvider
+	 * @dataProvider globalsSettingsProvider
 	 *
 	 * @since 1.9
 	 *
@@ -170,42 +150,105 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 		$this->assertTrue( $instance === Settings::newFromGlobals() );
 
 		// Reset instance
-		$instance->reset();
+		$instance->clear();
 		$this->assertTrue( $instance !== Settings::newFromGlobals() );
 
 		foreach ( $settings as $key => $value ) {
-			$this->assertTrue( $instance->exists( $key ), "Failed asserting that {$key} exists" );
+			$this->assertTrue( $instance->has( $key ), "Failed asserting that {$key} exists" );
 		}
 	}
 
 	/**
 	 * @test Settings::get
+	 * @dataProvider nestedSettingsProvider
 	 *
 	 * @since 1.9
+	 *
+	 * @param $test
+	 * @param $key
+	 * @param $expected
 	 */
-	public function testNestedSettingsIteration() {
+	public function testNestedSettingsIteration( $test, $key, $expected ) {
 
-		$instance = $this->getInstance( array(
-			'Foo' => $this->getRandomString(),
-			'Bar' => array(
-				'Lula' => $this->getRandomString(),
-				'Lila' => array(
-					'Lala' => $this->getRandomString(),
-					'Parent' => array(
-						'Child' => array( 'Lisa', 'Lula', array( 'Lila' ) )
-						)
-					)
-				)
-			)
-		);
+		$instance = $this->getInstance( $test );
 
-		$this->assertInternalType( 'string', $instance->get( 'Foo' ) );
-		$this->assertInternalType( 'array',  $instance->get( 'Bar' ) );
-		$this->assertInternalType( 'string', $instance->get( 'Lula' ) );
-		$this->assertInternalType( 'array',  $instance->get( 'Lila' ) );
-		$this->assertInternalType( 'string', $instance->get( 'Lala' ) );
-		$this->assertInternalType( 'array',  $instance->get( 'Parent' ) );
-		$this->assertEquals( array( 'Lisa', 'Lula', array( 'Lila' ) ), $instance->get( 'Child' ) );
+		$this->assertInternalType( $expected['type'],  $instance->get( $key ) );
+		$this->assertEquals( $expected['value'], $instance->get( $key ) );
 
 	}
+
+	/**
+	 * Provides sample data to be tested
+	 *
+	 * @par Example:
+	 * @code
+	 * array(
+	 *	'Foo' => $this->getRandomString(),
+	 *	'Bar' => array(
+	 *		'Lula' => $this->getRandomString(),
+	 *		'Lila' => array(
+	 *			'Lala' => $this->getRandomString(),
+	 *			'parent' => array(
+	 *				'child' => array( 'Lisa', 'Lula', array( 'Lila' ) )
+	 *				)
+	 *			)
+	 *		)
+	 *	)
+	 * @endcode
+	 *
+	 * @return array
+	 */
+	public function nestedSettingsProvider() {
+
+		$Foo  = $this->getRandomString();
+		$Lula = $this->getRandomString();
+		$Lala = $this->getRandomString();
+
+		$child  = array( 'Lisa', 'Lula', array( 'Lila' ) );
+		$parent = array( 'child' => $child );
+
+		$Lila = array( 'Lala' => $Lala, 'parent' => $parent );
+		$Bar  = array( 'Lula' => $Lula, 'Lila'   => $Lila );
+		$test = array( 'Foo'  => $Foo,  'Bar'    => $Bar );
+
+		return array(
+			array( $test, 'Foo',    array( 'type' => 'string', 'value' => $Foo ) ),
+			array( $test, 'Bar',    array( 'type' => 'array',  'value' => $Bar ) ),
+			array( $test, 'Lula',   array( 'type' => 'string', 'value' => $Lula ) ),
+			array( $test, 'Lila',   array( 'type' => 'array',  'value' => $Lila ) ),
+			array( $test, 'Lala',   array( 'type' => 'string', 'value' => $Lala ) ),
+			array( $test, 'parent', array( 'type' => 'array',  'value' => $parent ) ),
+			array( $test, 'child',  array( 'type' => 'array',  'value' => $child ) )
+		);
+	}
+
+	/**
+	 * Provides sample data to be tested
+	 *
+	 * @return array
+	 */
+	public function settingsProvider() {
+		return array( array( array(
+			'',
+			'foo' => 'bar',
+			'foo' => 'bar', 'baz' => 'BAH',
+			'bar' => array( '9001' ),
+			'~[,,_,,]:3' => array( 9001, 4.2 ),
+		) ) );
+	}
+
+	/**
+	 * Provides and collects individual smwg* settings
+	 *
+	 * @return array
+	 */
+	public function globalsSettingsProvider() {
+
+		$settings = array_intersect_key( $GLOBALS,
+			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
+		);
+
+		return array( array( $settings ) );
+	}
+
 }

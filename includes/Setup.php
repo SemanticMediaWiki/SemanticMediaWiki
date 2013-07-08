@@ -167,18 +167,18 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\MessageFormatter']           = $incDir . 'formatters/MessageFormatter.php';
 	$wgAutoloadClasses['SMW\TableFormatter']             = $incDir . 'formatters/TableFormatter.php';
 	$wgAutoloadClasses['SMW\ParameterFormatterFactory']  = $incDir . 'formatters/ParameterFormatterFactory.php';
-	$wgAutoloadClasses['SMW\ApiQueryResultFormatter']  = $incDir . 'formatters/ApiQueryResultFormatter.php';
+	$wgAutoloadClasses['SMW\ApiQueryResultFormatter']    = $incDir . 'formatters/ApiQueryResultFormatter.php';
 
 	// Exceptions
 	$wgAutoloadClasses['SMW\StoreInstanceException']       = $incDir . '/exceptions/StoreInstanceException.php';
-	$wgAutoloadClasses['SMW\SettingsArgumentException']    = $incDir . '/exceptions/SettingsArgumentException.php';
-	$wgAutoloadClasses['SMW\InvalidPredefinedPropertyException']  = $incDir . '/exceptions/InvalidPredefinedPropertyException.php';
 	$wgAutoloadClasses['SMW\InvalidSemanticDataException'] = $incDir . '/exceptions/InvalidSemanticDataException.php';
 	$wgAutoloadClasses['SMW\InvalidNamespaceException']    = $incDir . '/exceptions/InvalidNamespaceException.php';
 	$wgAutoloadClasses['SMW\InvalidPropertyException']     = $incDir . '/exceptions/InvalidPropertyException.php';
 	$wgAutoloadClasses['SMW\InvalidResultException']       = $incDir . '/exceptions/InvalidResultException.php';
 	$wgAutoloadClasses['SMW\DataItemException']            = $incDir . '/exceptions/DataItemException.php'; // 1.9
 	$wgAutoloadClasses['SMWDataItemException']             = $incDir . '/exceptions/DataItemException.php';
+	$wgAutoloadClasses['SMW\InvalidSettingsArgumentException']   = $incDir . '/exceptions/InvalidSettingsArgumentException.php';
+	$wgAutoloadClasses['SMW\InvalidPredefinedPropertyException'] = $incDir . '/exceptions/InvalidPredefinedPropertyException.php';
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';

@@ -565,11 +565,9 @@ $smwgCacheUsage = array(
 	'smwgUnusedPropertiesCacheExpiry' => 3600,
 	'smwgPropertiesCache' => true,
 	'smwgPropertiesCacheExpiry' => 3600,
+	'smwgStatisticsCache' => true,
+	'smwgStatisticsCacheExpiry' => 3600,
 );
-
-// Move those two into $smwgCacheUsage
-$smwgStatisticsCache = true;
-$smwgStatisticsCacheExpiry = 3600;
 
 ###
 # Sets whether or not to refresh semantic data in the store when a page is
