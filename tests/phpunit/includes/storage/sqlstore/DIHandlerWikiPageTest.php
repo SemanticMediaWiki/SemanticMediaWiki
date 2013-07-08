@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\PredefinedPropertyException;
+use SMW\InvalidPredefinedPropertyException;
 use SMW\StoreFactory;
 
 use SMWDIHandlerWikiPage;
@@ -103,7 +103,7 @@ class DIHandlerWikiPageTest extends SemanticMediaWikiTestCase {
 	 * @param $dbKeys
 	 * @param $expected
 	 *
-	 * @throws PredefinedPropertyException
+	 * @throws InvalidPredefinedPropertyException
 	 */
 	public function testDataItemFromDBKeys( $dbKeys, $expected ) {
 
@@ -113,8 +113,8 @@ class DIHandlerWikiPageTest extends SemanticMediaWikiTestCase {
 			$result = $instance->dataItemFromDBKeys( $dbKeys );
 			$this->assertInstanceOf( $expected, $result );
 			return;
-		} catch ( PredefinedPropertyException $e ) {
-			$this->assertEquals( $expected, 'PredefinedPropertyException' );
+		} catch ( InvalidPredefinedPropertyException $e ) {
+			$this->assertEquals( $expected, 'InvalidPredefinedPropertyException' );
 			return;
 		}
 
@@ -141,7 +141,7 @@ class DIHandlerWikiPageTest extends SemanticMediaWikiTestCase {
 
 			// #2 SMW_NS_PROPERTY, pre-defined property (see bug 48711)
 			array(
-				array( '_Foo', SMW_NS_PROPERTY, '', '', '' ), 'PredefinedPropertyException'
+				array( '_Foo', SMW_NS_PROPERTY, '', '', '' ), 'InvalidPredefinedPropertyException'
 			),
 		);
 	}

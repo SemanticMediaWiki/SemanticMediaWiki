@@ -106,7 +106,7 @@ class SMWDIProperty extends SMWDataItem {
 		if ( $key{0} == '_' ) {
 			SMWDIProperty::initPropertyRegistration();
 			if ( !array_key_exists( $key, SMWDIProperty::$m_prop_types ) ) {
-				throw new \SMW\PredefinedPropertyException( "There is no predefined property with \"$key\"." );
+				throw new \SMW\InvalidPredefinedPropertyException( "There is no predefined property with \"$key\"." );
 			}
 		}
 

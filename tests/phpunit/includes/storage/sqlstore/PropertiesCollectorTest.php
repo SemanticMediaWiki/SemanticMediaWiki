@@ -150,7 +150,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	public function testGetResults() {
 
 		$property = $this->getRandomString();
-		$count = rand();
+		$count    = rand();
 		$expected = array( new DIProperty( $property ), $count );
 
 		$instance = $this->getInstance( $property, $count );
@@ -167,25 +167,27 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test PropertiesCollector::getResults
+	 * @dataProvider exceptionDataProvider
 	 *
 	 * InvalidPropertyException is thrown but caught and is retuned as a
 	 * SMWDIError object instead
 	 *
 	 * @since 1.9
+	 *
+	 * @param $property
 	 */
-	public function testInvalidPropertyException() {
+	public function testInvalidPropertyException( $property ) {
 
-		// -<property> is to raise an error
-		$property = '-Lala';
 		$instance = $this->getInstance( $property );
-
-		$results = $instance->getResults();
-		$message = MessageFormatter::newFromArray( $this->getLanguage(), array( $results[0][0]->getErrors() ) )->getHtml();
+		$results  = $instance->getResults();
 
 		$this->assertInternalType( 'array', $results );
 		$this->assertEquals( 1, $instance->getCount() );
 		$this->assertInstanceOf( 'SMWDIError', $results[0][0] );
-		$this->assertContains( $property, $message );
+		$this->assertContains(
+			$property,
+			MessageFormatter::newFromArray( $this->getLanguage(), array( $results[0][0]->getErrors() ) )->getHtml()
+		);
 
 	}
 
@@ -220,6 +222,15 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 
 		$this->assertEquals( $expected['B'], $instance->getResults(), $info['msg'] );
 		$this->assertEquals( $test['cacheEnabled'], $instance->isCached() );
+	}
+
+	/**
+	 * Exception data sample
+	 *
+	 * @return array
+	 */
+	public function exceptionDataProvider() {
+		return array( array( '-Lala' ), array( '_Lila' ) );
 	}
 
 	/**

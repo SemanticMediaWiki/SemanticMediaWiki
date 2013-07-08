@@ -2,8 +2,10 @@
 
 namespace SMW;
 
+use MWException;
+
 /**
- * Exception for an invalid property
+ * Exception to be thrown when data items are created from unsuitable inputs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +27,20 @@ namespace SMW;
  * @license GNU GPL v2+
  * @since   1.9
  *
- * @author mwjames
+ * @author Markus Krötzsch
  */
 
 /**
- * Exception for an invalid property
+ * Exception to be thrown when data items are created from unsuitable inputs
  *
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class InvalidPropertyException extends DataItemException {}
+class DataItemException extends MWException {}
+
+/**
+ * SMWDataItemException
+ *
+ * @deprecated since SMW 1.9
+ */
+class_alias( 'SMW\DataItemException', 'SMWDataItemException' );

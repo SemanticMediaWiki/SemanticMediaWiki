@@ -170,11 +170,13 @@ function smwfRegisterClasses() {
 	// Exceptions
 	$wgAutoloadClasses['SMW\StoreInstanceException']       = $incDir . '/exceptions/StoreInstanceException.php';
 	$wgAutoloadClasses['SMW\SettingsArgumentException']    = $incDir . '/exceptions/SettingsArgumentException.php';
-	$wgAutoloadClasses['SMW\PredefinedPropertyException']  = $incDir . '/exceptions/PredefinedPropertyException.php';
+	$wgAutoloadClasses['SMW\InvalidPredefinedPropertyException']  = $incDir . '/exceptions/InvalidPredefinedPropertyException.php';
 	$wgAutoloadClasses['SMW\InvalidSemanticDataException'] = $incDir . '/exceptions/InvalidSemanticDataException.php';
 	$wgAutoloadClasses['SMW\InvalidNamespaceException']    = $incDir . '/exceptions/InvalidNamespaceException.php';
 	$wgAutoloadClasses['SMW\InvalidPropertyException']     = $incDir . '/exceptions/InvalidPropertyException.php';
 	$wgAutoloadClasses['SMW\InvalidResultException']       = $incDir . '/exceptions/InvalidResultException.php';
+	$wgAutoloadClasses['SMW\DataItemException']            = $incDir . '/exceptions/DataItemException.php'; // 1.9
+	$wgAutoloadClasses['SMWDataItemException']             = $incDir . '/exceptions/DataItemException.php';
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
@@ -210,7 +212,6 @@ function smwfRegisterClasses() {
 	// Data items
 	$diDir = $smwgIP . 'includes/dataitems/';
 	$wgAutoloadClasses['SMWDataItem']               = $diDir . 'SMW_DataItem.php';
-	$wgAutoloadClasses['SMWDataItemException']      = $diDir . 'SMW_DataItem.php';
 	$wgAutoloadClasses['SMWDIProperty']             = $diDir . 'SMW_DI_Property.php';
 	$wgAutoloadClasses['SMW\DIProperty']            = $diDir . 'SMW_DI_Property.php'; // 1.9
 	$wgAutoloadClasses['SMWDIBoolean']              = $diDir . 'SMW_DI_Bool.php';

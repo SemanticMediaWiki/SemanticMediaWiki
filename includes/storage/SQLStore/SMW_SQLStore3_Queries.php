@@ -452,7 +452,7 @@ class SMWSQLStore3QueryEngine {
 						'',
 						$row->so
 					) );
-				} catch ( \SMW\PredefinedPropertyException $e ) {
+				} catch ( \SMW\InvalidPredefinedPropertyException $e ) {
 					wfDebugLog( __CLASS__, __METHOD__ . ': ' . $e->getMessage() );
 				}
 

@@ -17,14 +17,6 @@
  */
 
 /**
- * Exception to be thrown when data items are created from unsuitable inputs.
- *
- * @since 1.6
- */
-class SMWDataItemException extends MWException {
-}
-
-/**
  * Objects of this type represent all that is known about a certain piece of
  * data that could act as the value of some property. Data items only represent
  * the stored data, and are thus at the core of SMW's data model. Data items
