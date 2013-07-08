@@ -10091,6 +10091,7 @@ $messages['mk'] = array(
 	'smw_propertyhardlyused' => 'Ова својство речиси не се користи на викито!',
 	'smw-property-name-invalid' => 'Својството $1 не може да се користи (има неважечко име).',
 	'smw-sp-property-searchform' => 'Прикажи својства што содржат:',
+	'smw-sp-property-searchform-inputinfo' => 'Филтрирањето разликува големи и мали букви, па затоа ќе ви се прикажат само својства што одговараат точно на внесеното.',
 	'concepts' => 'Концепти',
 	'smw-sp-concept-docu' => '[https://www.semantic-mediawiki.org/wiki/Help:Concepts?uselang=mk Концептот] може да се гледа како „динамична категорија“, т.е. збир страници што не се создадени рачно, туку пресметани од Семантички МедијаВики како опис на дадено барање.',
 	'smw-sp-concept-header' => 'Список на концепти',
@@ -10311,6 +10312,8 @@ $messages['mk'] = array(
 	'smw-pa-property-predefined-default' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]). Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
 	'smw-pa-property-predefined_ask' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]) што води до метаподатокот [https://www.semantic-mediawiki.org/wiki/Subobject?uselang=mk subobject] на едно барање. Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
 	'smw-pa-property-predefined_asksi' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]) што собира услови кои се користат во еднобарање. Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
+	'smw-sp-properties-docu' => 'На оваа специјална страница се прикажани [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk својствата] на располагање. При филтрирањето се добиваат само кориснички-зададените својства што одговараат на условот. Друг преглед можете да добиете на страниците [[Special:UnusedProperties|неискористени својства]] и [[Special:WantedProperties|потребни својства]].',
+	'smw-sp-properties-cache-info' => 'Наведените податоци се преземени од [https://www.semantic-mediawiki.org/wiki/Caching?uselang=mk кешот], последен пат изменети на $1.',
 	'smw-sp-properties-header-label' => 'Список на својства',
 );
 
