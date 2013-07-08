@@ -109,9 +109,8 @@ class UnusedPropertiesCollector extends Collector {
 	 * @return array
 	 */
 	protected function cacheAccessor() {
-
 		return new ArrayAccessor( array(
-			'id'      => 'smwgUnusedPropertiesCache' . json_encode( $this->requestOptions ),
+			'id'      => array( 'smwgUnusedPropertiesCache', $this->requestOptions ),
 			'type'    => $this->settings->get( 'smwgCacheType' ),
 			'enabled' => $this->settings->get( 'smwgUnusedPropertiesCache' ),
 			'expiry'  => $this->settings->get( 'smwgUnusedPropertiesCacheExpiry' )

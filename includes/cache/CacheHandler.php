@@ -23,10 +23,10 @@ use BagOStuff;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup Handler
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
  *
  * @author mwjames
  */
@@ -125,6 +125,20 @@ final class CacheHandler {
 	 */
 	public function getKey() {
 		return $this->key;
+	}
+
+	/**
+	 * Sets key
+	 *
+	 * @since 1.9
+	 *
+	 * @param IdGenerator $id
+	 *
+	 * @return CacheHandler
+	 */
+	public function setKey( IdGenerator $id ) {
+		$this->key = $id->generateId();
+		return $this;
 	}
 
 	/**

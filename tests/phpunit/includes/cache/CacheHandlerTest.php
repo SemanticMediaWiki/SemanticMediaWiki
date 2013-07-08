@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\CacheIdGenerator;
 use SMW\CacheHandler;
 
 use HashBagOStuff;
@@ -24,17 +25,15 @@ use HashBagOStuff;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
- * Tests for the CacheHandler class
  * @covers \SMW\CacheHandler
  *
  * @ingroup Test
@@ -119,7 +118,7 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 * @test CacheHandler::get
 	 * @test CacheHandler::delete
 	 * @test CacheHandler::setCacheEnabled
-	 * @dataProvider getDataProvider
+	 * @dataProvider keyItemDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -127,6 +126,7 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 * @param $item
 	 */
 	public function testEnabledCache( $key, $item ) {
+
 		$instance = $this->getInstance();
 
 		// Assert key handling
@@ -139,9 +139,14 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 
 		// Assert deletion
 		$instance->delete();
-		$this->assertEmpty( $instance->get() );
 
+		$this->assertEmpty( $instance->get() );
 		$this->assertEquals( $instanceKey, $instance->getKey() );
+
+		// Set key
+		$instance->setCacheEnabled( true )->setKey( new CacheIdGenerator( $key, 'test-prefix' ) );
+		$this->assertContains( 'test-prefix' , $instance->getKey() );
+
 	}
 
 	/**
@@ -150,7 +155,7 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 * @test CacheHandler::get
 	 * @test CacheHandler::delete
 	 * @test CacheHandler::setCacheEnabled
-	 * @dataProvider getDataProvider
+	 * @dataProvider keyItemDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -158,6 +163,7 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 * @param $item
 	 */
 	public function testDisabledCache( $key, $item ) {
+
 		$instance = $this->getInstance();
 
 		// Assert key handling
@@ -170,17 +176,17 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 
 		// Assert deletion
 		$instance->delete();
-		$this->assertEmpty( $instance->get() );
 
+		$this->assertEmpty( $instance->get() );
 		$this->assertEquals( $instanceKey, $instance->getKey() );
 	}
 
 	/**
-	 * DataProvider
+	 * Provide sample data containing a randomized key and item
 	 *
 	 * @return array
 	 */
-	public function getDataProvider() {
+	public function keyItemDataProvider() {
 
 		// Generates a random key
 		$key = $this->getRandomString( 10 );

@@ -53,15 +53,7 @@ class ResultCacheMapper {
 	/**
 	 * Service function that fetches and returns results from cache
 	 *
-	 * @note Id generation is the responsibility of the object consumer where
-	 * for example "requestOptions" is part of the cache key allowing for
-	 * each individual requestOption setting (limit, offset) to retrieve the
-	 * cache object independently
-	 *
-	 * @note Use json_encode() to stringify the requestOptions object as
-	 * it is comparable faster than serialize()
-	 *
-	 * @note The cache key itself is being represented as mapper:< md5 hash >
+	 * @note Id generation has been delegated to CacheIdGenerator
 	 *
 	 * @since 1.9
 	 *
@@ -71,7 +63,7 @@ class ResultCacheMapper {
 
 		$result = $this->getCache()
 			->setCacheEnabled( $this->cacheAccessor->get( 'enabled' ) )
-			->key( 'mapper', md5( $this->cacheAccessor->get( 'id' ) ) )
+			->setKey( new CacheIdGenerator( $this->cacheAccessor->get( 'id' ), $this->cacheAccessor->get( 'prefix' ) ) )
 			->get();
 
 		return $result ? $this->mapping( $result ) : $result;

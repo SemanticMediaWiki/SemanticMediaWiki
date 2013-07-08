@@ -107,9 +107,8 @@ class StatisticsCollector extends Collector {
 	 * @return array
 	 */
 	protected function cacheAccessor() {
-
 		return new ArrayAccessor( array(
-			'id'      => 'smwgStatisticsCache' . json_encode( $this->requestOptions ),
+			'id'      => array( 'smwgStatisticsCache', $this->requestOptions ),
 			'type'    => $this->settings->get( 'smwgCacheType' ),
 			'enabled' => $this->settings->get( 'smwgStatisticsCache' ),
 			'expiry'  => $this->settings->get( 'smwgStatisticsCacheExpiry' )

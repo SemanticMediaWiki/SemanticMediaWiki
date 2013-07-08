@@ -65,7 +65,7 @@ abstract class Collector implements Collectible {
 	 */
 	public function getResults() {
 
-		$resultCache = new ResultCacheMapper( $this->cacheAccessor() );
+		$resultCache = new ResultCacheMapper( $this->cacheAccessor()->set( 'prefix', 'collector' ) );
 
 		$results = $resultCache->fetchFromCache();
 

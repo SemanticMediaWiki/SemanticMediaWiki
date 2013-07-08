@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\ResultCacheMapper;
-
 use SMW\ArrayAccessor;
 
 /**
@@ -24,11 +23,11 @@ use SMW\ArrayAccessor;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -64,6 +63,7 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 
 		$setup = array(
 			'id'      => $cacheId,
+			'prefix'  => 'test',
 			'type'    => 'hash',
 			'enabled' => $cacheEnabled,
 			'expiry'  => $cacheExpiry
