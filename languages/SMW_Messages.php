@@ -5516,6 +5516,7 @@ $messages['fr'] = array(
 	'smw_propertyhardlyused' => 'Cette propriété est à peine utilisée sur ce wiki !',
 	'smw-property-name-invalid' => 'La propriété $1 ne peut pas être utilisée (nom de propriété invalide).',
 	'smw-sp-property-searchform' => 'Afficher les propriétés qui contiennent :',
+	'smw-sp-property-searchform-inputinfo' => 'L’entrée est sensible à la casse et, quand elle est utilisée pour filtrer, seules les propriétés qui correspondent à la condition sont affichées.',
 	'concepts' => 'Concepts',
 	'smw-sp-concept-docu' => 'Un [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] peut être vu comme une « catégorie dynamique », c’est-à-dire comme une collection de pages qui ne sont pas créées manuellement, mais sont calculées par MédiaWiki Sémantique depuis la description d’une requête fournie.',
 	'smw-sp-concept-header' => 'Liste des concepts',
@@ -5732,6 +5733,9 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-pa-property-predefined-default' => '$1 est une propriété prédéfinie (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]). C’est une propriété intégrée qui est fournie avec des droits d’administration supplémentaires mais peut être utilisée comme n’importe quelle autre [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].',
 	'smw-pa-property-predefined_ask' => '$1 est une propriété prédéfinie (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]) qui se relie à la métadonnée [https://www.semantic-mediawiki.org/wiki/Subobject sous-objet] d’une requête. C’est une propriété intégrée qui est fournie avec des droits d’administration supplémentaires mais peut être simplement utilisée comme n’importe quelle [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].',
 	'smw-pa-property-predefined_asksi' => '$1 est une propriété prédéfinie (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]) qui compte le nombre de conditions utilisées dans une requête. C’est une propriété intégrée qui est fournie avec des droits d’administration supplémentaires mais peut être simplement utilisée comme n’importe quelle [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].',
+	'smw-sp-properties-docu' => 'Cette page spéciale affiche [https://www.semantic-mediawiki.org/wiki/Property les propriétés] qui sont disponibles et, quand elles sont filtrées, seules les propriétés définies par l’utilisateur qui correspondent à la condition sont affichées. Pour un affichage différencié, voyez les pages spéciales [[Special:UnusedProperties|propriétés non utilisées]] ou [[Special:WantedProperties|propriétés souhaitées]].',
+	'smw-sp-properties-cache-info' => 'Les données listées ont été récupérées depuis [https://www.semantic-mediawiki.org/wiki/Caching le cache], et ont été mises à jour le $1.',
+	'smw-sp-properties-header-label' => 'Liste des propriétés',
 );
 
 /** Franco-Provençal (arpetan)
