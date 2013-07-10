@@ -413,7 +413,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['ApiSMWQuery'] = $smwgIP . 'includes/api/ApiSMWQuery.php';
 	$wgAutoloadClasses['ApiAsk'] = $smwgIP . 'includes/api/ApiAsk.php';
 	$wgAutoloadClasses['ApiAskArgs'] = $smwgIP . 'includes/api/ApiAskArgs.php';
-	$wgAutoloadClasses['ApiSMWInfo'] = $smwgIP . 'includes/api/ApiSMWInfo.php';
+	$wgAutoloadClasses['ApiSMWInfo'] = $smwgIP . 'includes/api/ApiInfo.php';
 
 	// Maintenance scripts
 	$wgAutoloadClasses['SMWSetupScript'] = $smwgIP . 'maintenance/SMW_setup.php';
