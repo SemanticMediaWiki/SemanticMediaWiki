@@ -12693,6 +12693,8 @@ Gera RDF navegável.',
 	'smw_propertylackstype' => 'Nenhum tipo foi especificado para esta propriedade (assumindo tipo $1 por enquanto).',
 	'smw_propertyhardlyused' => 'Esta propriedade é muito pouco utilizada neste wiki!',
 	'smw-property-name-invalid' => 'A propriedade $1 não pode ser utilizada (nome de propriedade inválido).',
+	'smw-sp-property-searchform' => 'Exibir propriedades que contenham:',
+	'smw-sp-property-searchform-inputinfo' => 'O texto de entrada é sensível a maiúsculas e, quando utilizado para a filtragem, somente as propriedades que correspondem a condição serão exibidas.',
 	'concepts' => 'Conceitos',
 	'smw-sp-concept-docu' => 'Um [https://www.semantic-mediawiki.org/wiki/Help:Concepts conceito] pode ser visto como uma "categoria dinâmica", isto é, uma coleção de páginas que não é criada manualmente, mas automaticamente computada pelo Semantic MediaWiki a partir de uma descrição de uma dada consulta.',
 	'smw-sp-concept-header' => 'Lista de conceitos',
@@ -12912,6 +12914,9 @@ Progresso estimado da atualização corrente:',
 	'smw-pa-property-predefined-default' => '$1 é uma propriedade predefinida (também conhecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]). É uma propriedade padrão que vem com privilégios administrativos, mas que pode ser utilizada como qualquer outra [https://www.semantic-mediawiki.org/wiki/Property propriedade definida pelo usuário].',
 	'smw-pa-property-predefined_ask' => '$1 é uma propriedade predefinida (também conhecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]) que relaciona aos metadados do [https://www.semantic-mediawiki.org/wiki/Subobject subobjeto] de uma consulta. É uma propriedade padrão que vem com privilégios administrativos, mas que pode ser utilizada como qualquer outra [https://www.semantic-mediawiki.org/wiki/Property propriedade definida pelo usuário].',
 	'smw-pa-property-predefined_asksi' => '$1 é uma propriedade predefinida (também conhecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]) que coleta o número de condições utilizadas em uma consulta. É uma propriedade padrão que vem com privilégios administrativos, mas que pode ser utilizada como qualquer outra [https://www.semantic-mediawiki.org/wiki/Property propriedade definida pelo usuário].',
+	'smw-sp-properties-docu' => 'Esta página especial exibe as [https://www.semantic-mediawiki.org/wiki/Property propriedades] que estão disponíveis e, quando filtradas, somente as propriedades definidas por usuários que correspondem à condição serão exibidas. Para uma visualização diferenciada, veja a página especial [[Special:UnusedProperties|propriedades não utilizadas]] ou  [[Special:WantedProperties|propriedades desejadas]].',
+	'smw-sp-properties-cache-info' => 'Os dados listados foram extraídos do [https://www.semantic-mediawiki.org/wiki/Caching cache] e atualizados pela última vez em $1.',
+	'smw-sp-properties-header-label' => 'Lista de propriedades',
 );
 
 /** Quechua (Runa Simi)
@@ -16460,6 +16465,7 @@ $messages['zh-hans'] = array(
  * @author Sheepy
  * @author Shirayuki
  * @author Simon Shek
+ * @author StephDC
  * @author Wrightbus
  */
 $messages['zh-hant'] = array(
@@ -16500,6 +16506,7 @@ $messages['zh-hant'] = array(
 	'smw-paramdesc-outro' => '查詢結果後顯示的文字',
 	'smw-paramdesc-default' => '查詢結果為空時顯示的文字',
 	'smw-paramdesc-sep' => '值的分隔符',
+	'smw-paramdesc-showsep' => '在CSV文檔的開頭顯示分隔符 （"sep=<值>"）',
 	'smw-paramdesc-distribution' => '不是顯示所有值，而是計算並顯示出現的次數。',
 	'smw-paramdesc-distributionsort' => '按出現次數排序值的分布。',
 	'smw-paramdesc-distributionlimit' => '將值的分布限制在某些值的計數。',
@@ -16515,13 +16522,15 @@ $messages['zh-hant'] = array(
 	'smw-paramdesc-csv-sep' => '要使用的分隔符',
 	'smw-paramdesc-dsv-separator' => '要使用的分隔符',
 	'smw-paramdesc-dsv-filename' => 'DSV文件名稱',
+	'smw-paramdesc-filename' => '輸出檔案的名稱',
 	'smw-smwdoc-description' => '顯示所有參數的表，它們可以與默認值和描述一起用於指定的結果格式。',
 	'smw-smwdoc-par-format' => '顯示參數文檔的結果格式。',
 	'smw-smwdoc-par-parameters' => '要顯示哪些參數。"specific"（專用）表示該格式所添加那些的，"base"（基礎）表示所有格式當中可用的那些，而"all"（全部）表示兩種情況具有。',
 	'smw-paramdesc-sort' => '排序查詢的屬性',
 	'smw-paramdesc-order' => '查詢排序的順序',
-	'smw-paramdesc-searchlabel' => '在指向結果的連結中顯示的文字', # Fuzzy
+	'smw-paramdesc-searchlabel' => '繼續搜索文本',
 	'smw-paramdesc-named_args' => '請指定傳遞給該模板的變量',
+	'smw-paramdesc-export' => '導出選項',
 	'smw-paramdesc-feedtitle' => '源標題文字',
 	'smw-paramdesc-feeddescription' => '源描述文字',
 	'smw_iq_disabled' => '此 wiki 的語義查詢已被停用',
@@ -16581,6 +16590,8 @@ $messages['zh-hant'] = array(
 	'smw_propertylackspage' => '所有屬性均應有一個頁面描述！',
 	'smw_propertylackstype' => '此屬性未指定類型（目前預設為類型 $1）',
 	'smw_propertyhardlyused' => '此屬性在本 wiki 中不常使用。',
+	'concepts' => '概念',
+	'smw-sp-concept-header' => '概念清單',
 	'unusedproperties' => '未使用的屬性',
 	'smw_unusedproperties_docu' => '以下屬性在本 wiki 中存在但未被使用。',
 	'smw_unusedproperty_template' => '類型為 $2 的屬性 $1',
@@ -16592,6 +16603,8 @@ $messages['zh-hant'] = array(
 	'smw_types_docu' => '以下列出了可被賦予屬性的所有數據類型。',
 	'semanticstatistics' => '語意統計',
 	'smw_semstats_text' => "此維基包含 '''$1''' 個屬性{{PLURAL:$1|值|值}}，源自 '''$2''' 個[[Special:Properties|{{PLURAL:$2|屬性|不同屬性}}]]。'''$3''' 個{{PLURAL:$3|屬性有|屬性有}}自己的頁，並且預期的數據類型被指定為 '''$4'''。某些已經存在的屬性也許是[[Special:UnusedProperties|無用屬性]]。缺乏頁的屬性可以在[[Special:WantedProperties|需要的屬性列表]]中找到。",
+	'smw-statistics' => 'Semantic 語義統計',
+	'smw-statistics-query-size' => '隊列長度',
 	'smw_uri_doc' => 'URI 分析器實現<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C httpRange-14 標記查找</a>。它將處理那些沒有網站內容的頁。', # Fuzzy
 	'ask' => '語意搜尋',
 	'smw_ask_sortby' => '按列排序（可選）',
@@ -16611,6 +16624,7 @@ $messages['zh-hant'] = array(
 	'smw_ask_show_embed' => '顯示嵌入代碼',
 	'smw_ask_hide_embed' => '隱藏嵌入的代碼',
 	'smw_ask_embed_instr' => '使用以下代碼將查詢嵌入維基頁面。',
+	'smw-ask-sorting' => '排序',
 	'querycreator' => '問題創建器',
 	'smw_qc_addmainlabel' => '添加主標籤',
 	'smw_qc_show_addnal_opts' => '顯示更多選項',
@@ -16738,7 +16752,15 @@ $messages['zh-hant'] = array(
 	'smw-paramdesc-category-userparam' => '傳遞給模板的參數',
 	'smw-info-par-message' => '顯示的信息。',
 	'smw-info-par-icon' => '顯示的圖標，“信息”或“警告”。',
-	'smw_unknowntype' => '定義的屬性類型「$1」不被支援。', # Fuzzy
+	'smw-ui-tooltip-title-quantity' => '數量',
+	'smw-ui-tooltip-title-info' => '資訊',
+	'smw-ui-tooltip-title-service' => '服務連結',
+	'smw-ui-tooltip-title-warning' => '錯誤',
+	'smw-ui-tooltip-title-parameter' => '參數',
+	'smw-ui-tooltip-title-event' => '事件',
+	'smw-ui-tooltip-title-note' => '註釋',
+	'smw-ui-tooltip-title-legend' => '圖例',
+	'smw_unknowntype' => '此定義的屬性類型不被支援',
 	'smw_concept_header' => '概念「$1」的頁面',
 	'smw_conceptarticlecount' => '顯示屬於此概念的 $1 {{PLURAL:$1|page|頁面}}。', # Fuzzy
 );
