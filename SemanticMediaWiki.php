@@ -107,9 +107,9 @@ smwfRegisterHooks();
 smwfRegisterClasses();
 smwfRegisterSpecialPages();
 
-$wgAPIModules['smwinfo'] = 'ApiSMWInfo';
-$wgAPIModules['ask'] = 'ApiAsk';
-$wgAPIModules['askargs'] = 'ApiAskArgs';
+$wgAPIModules['smwinfo'] = '\SMW\ApiInfo';
+$wgAPIModules['ask']     = '\SMW\ApiAsk';
+$wgAPIModules['askargs'] = '\SMW\ApiAskArgs';
 
 // Adds a poweredby footer icon
 $wgFooterIcons['poweredby']['semanticmediawiki'] = array(

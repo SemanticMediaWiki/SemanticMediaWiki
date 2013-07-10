@@ -162,12 +162,13 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\CacheIdGenerator']      = $incDir . '/cache/CacheIdGenerator.php';
 
 	// Formatters
-	$wgAutoloadClasses['SMW\ArrayFormatter']             = $incDir . 'formatters/ArrayFormatter.php';
-	$wgAutoloadClasses['SMW\ParserParameterFormatter']   = $incDir . 'formatters/ParserParameterFormatter.php';
-	$wgAutoloadClasses['SMW\MessageFormatter']           = $incDir . 'formatters/MessageFormatter.php';
-	$wgAutoloadClasses['SMW\TableFormatter']             = $incDir . 'formatters/TableFormatter.php';
-	$wgAutoloadClasses['SMW\ParameterFormatterFactory']  = $incDir . 'formatters/ParameterFormatterFactory.php';
-	$wgAutoloadClasses['SMW\ApiQueryResultFormatter']    = $incDir . 'formatters/ApiQueryResultFormatter.php';
+	$wgAutoloadClasses['SMW\ArrayFormatter']               = $incDir . 'formatters/ArrayFormatter.php';
+	$wgAutoloadClasses['SMW\ParserParameterFormatter']     = $incDir . 'formatters/ParserParameterFormatter.php';
+	$wgAutoloadClasses['SMW\MessageFormatter']             = $incDir . 'formatters/MessageFormatter.php';
+	$wgAutoloadClasses['SMW\TableFormatter']               = $incDir . 'formatters/TableFormatter.php';
+	$wgAutoloadClasses['SMW\ParameterFormatterFactory']    = $incDir . 'formatters/ParameterFormatterFactory.php';
+	$wgAutoloadClasses['SMW\ApiQueryResultFormatter']      = $incDir . 'formatters/ApiQueryResultFormatter.php';
+	$wgAutoloadClasses['SMW\ApiRequestParameterFormatter'] = $incDir . 'formatters/ApiRequestParameterFormatter.php';
 
 	// Exceptions
 	$wgAutoloadClasses['SMW\StoreInstanceException']       = $incDir . '/exceptions/StoreInstanceException.php';
@@ -410,10 +411,11 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\MigrationJob']    = $smwgIP . 'includes/jobs/MigrationJob.php';
 
 	// API modules
-	$wgAutoloadClasses['ApiSMWQuery'] = $smwgIP . 'includes/api/ApiSMWQuery.php';
-	$wgAutoloadClasses['ApiAsk'] = $smwgIP . 'includes/api/ApiAsk.php';
-	$wgAutoloadClasses['ApiAskArgs'] = $smwgIP . 'includes/api/ApiAskArgs.php';
-	$wgAutoloadClasses['ApiSMWInfo'] = $smwgIP . 'includes/api/ApiInfo.php';
+	$wgAutoloadClasses['SMW\ApiBase']    = $smwgIP . 'includes/api/ApiBase.php';
+	$wgAutoloadClasses['SMW\ApiQuery']   = $smwgIP . 'includes/api/ApiQuery.php';
+	$wgAutoloadClasses['SMW\ApiAsk']     = $smwgIP . 'includes/api/ApiAsk.php';
+	$wgAutoloadClasses['SMW\ApiAskArgs'] = $smwgIP . 'includes/api/ApiAskArgs.php';
+	$wgAutoloadClasses['SMW\ApiInfo']    = $smwgIP . 'includes/api/ApiInfo.php';
 
 	// Maintenance scripts
 	$wgAutoloadClasses['SMWSetupScript'] = $smwgIP . 'maintenance/SMW_setup.php';

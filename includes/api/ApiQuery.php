@@ -1,5 +1,11 @@
 <?php
 
+namespace SMW;
+
+use SMWQueryProcessor;
+use SMWQueryResult;
+use SMWQuery;
+
 /**
  * Base for API modules that query SMW.
  *
@@ -18,23 +24,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.6.2
+ * @file
  *
- * @ingroup SMW
- * @ingroup API
+ * @license GNU GPL v2+
+ * @since   1.6.2
  *
- * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class ApiSMWQuery extends ApiBase {
 
-	/**
-	 * Query parameters.
-	 *
-	 * @since 1.6.2
-	 * @var array
-	 */
-	protected $parameters;
+/**
+ * Base for API modules that query SMW
+ *
+ * @ingroup Api
+ */
+abstract class ApiQuery extends ApiBase {
 
 	/**
 	 * Returns a query object for the provided query string and list of printouts.
@@ -43,16 +46,17 @@ abstract class ApiSMWQuery extends ApiBase {
 	 *
 	 * @param string $queryString
 	 * @param array $printouts
+	 * @param array $parameters
 	 *
 	 * @return SMWQuery
 	 */
-	protected function getQuery( $queryString, array $printouts ) {
-		SMWQueryProcessor::addThisPrintout( $printouts, $this->parameters );
-		$this->parameters = SMWQueryProcessor::getProcessedParams( $this->parameters, $printouts );
+	protected function getQuery( $queryString, array $printouts, array $parameters = array() ) {
+
+		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 
 		return SMWQueryProcessor::createQuery(
 			$queryString,
-			$this->parameters,
+			SMWQueryProcessor::getProcessedParams( $parameters, $printouts ),
 			SMWQueryProcessor::SPECIAL_PAGE,
 			'',
 			$printouts
@@ -69,7 +73,7 @@ abstract class ApiSMWQuery extends ApiBase {
 	 * @return SMWQueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		 return smwfGetStore()->getQueryResult( $query );
+		 return $this->store->getQueryResult( $query );
 	}
 
 	/**
@@ -80,9 +84,10 @@ abstract class ApiSMWQuery extends ApiBase {
 	 * @param SMWQueryResult $queryResult
 	 */
 	protected function addQueryResult( SMWQueryResult $queryResult ) {
+
 		$result = $this->getResult();
 
-		$resultFormatter = new SMW\ApiQueryResultFormatter( $queryResult );
+		$resultFormatter = new ApiQueryResultFormatter( $queryResult );
 		$resultFormatter->setIsRawMode( $result->getIsRawMode() );
 		$resultFormatter->setFormat( $result->getMain()->getPrinter() !== null ? $result->getMain()->getPrinter()->getFormat() : null );
 		$resultFormatter->doFormat();

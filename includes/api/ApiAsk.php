@@ -1,10 +1,8 @@
 <?php
-/**
- * @file
- * @since 1.6.2
- * @ingroup SMW
- * @ingroup API
- */
+
+namespace SMW;
+
+use SMWQueryProcessor;
 
 /**
  * API module to query SMW by providing a query in the ask language.
@@ -24,30 +22,45 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.6.2
+ * @file
  *
- * @ingroup SMW
- * @ingroup API
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.6.2
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ApiAsk extends ApiSMWQuery {
 
+/**
+ * API module to query SMW by providing a query in the ask language.
+ *
+ * @ingroup Api
+ */
+class ApiAsk extends ApiQuery {
+
+	/**
+	 * @see ApiBase::execute
+	 */
 	public function execute() {
-		$params = $this->extractRequestParams();
 
-		$rawParams = preg_split( "/(?<=[^\|])\|(?=[^\|])/", $params['query'] );
+		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 
-		list( $queryString, $this->parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
+		list( $queryString, $parameters, $printouts ) = SMWQueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
 
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$queryString,
-			$printouts
+			$printouts,
+			$parameters
 		) );
 
 		$this->addQueryResult( $queryResult );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getAllowedParams
+	 *
+	 * @return array
+	 */
 	public function getAllowedParams() {
 		return array(
 			'query' => array(
@@ -57,26 +70,50 @@ class ApiAsk extends ApiSMWQuery {
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getParamDescription
+	 *
+	 * @return array
+	 */
 	public function getParamDescription() {
 		return array(
 			'query' => 'The query string in ask-language'
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getDescription
+	 *
+	 * @return array
+	 */
 	public function getDescription() {
 		return array(
 			'API module to query SMW by providing a query in the ask language.'
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getExamples
+	 *
+	 * @return array
+	 */
 	protected function getExamples() {
 		return array(
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getVersion
+	 *
+	 * @return string
+	 */
 	public function getVersion() {
 		return __CLASS__ . '-' . SMW_VERSION;
-	}		
+	}
 
 }
