@@ -194,6 +194,7 @@ $specialPageAliases['fa'] = array(
 	'ExportRDF' => array( 'برونریزی_آردی‌اف' ),
 	'PageProperty' => array( 'جزئیات_صفحه' ),
 	'Properties' => array( 'جزئیات' ),
+	'Concepts' => array( 'مفاهیم' ),
 	'SMWAdmin' => array( 'مدیر_اس‌ام‌دبلیو' ),
 	'SearchByProperty' => array( 'جستجو_بر_پایه_جزئیات' ),
 	'SemanticStatistics' => array( 'آمار_سمانیک' ),
