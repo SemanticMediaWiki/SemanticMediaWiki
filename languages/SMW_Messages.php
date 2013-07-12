@@ -1432,7 +1432,7 @@ $messages['ar'] = array(
 التغييرات المجراة في هذه الخطوة لا تؤثر على بقية قاعدة بيانات ميدياويكي، ويمكن عكسها بسهولة في حالة الرغبة في ذلك.
 وظيفة التنصيب هذه يمكن إجراؤها عدة مرات بلا ضرر، لكنها ليست مطلوبة سوى لمرة واحدة عند التنصيب أو الترقية.',
 	'smw_smwadmin_permissionswarn' => 'لو فشلت العملية بأخطاء SQL فعلى الأغلب أن مستخدم قاعدة البيانات الذي تعمل من خلاله الويكي ليست له صلاحيات كافية (تحقق من LocalSettings.php).
-إما أن تمنح ذلك المستخدم صلاحيات إنشاء و حذف الجداول، أو أن تدخل مؤقتا بيانات ولوج root قاعدة البيانات في LocalSettings.php، أو أن تستخدم سكربت الصيانة <tt>SMW_setup.php</tt> الذي يمكنه استخدام صلاحيات المدير.',
+إما أن تمنح ذلك المستخدم صلاحيات إنشاء و حذف الجداول، أو أن تدخل مؤقتا بيانات ولوج root قاعدة البيانات في LocalSettings.php، أو أن تستخدم سكربت الصيانة <code>SMW_setup.php</code> الذي يمكنه استخدام صلاحيات المدير.',
 	'smw_smwadmin_dbbutton' => 'استبداء أو ترقية الجداول',
 	'smw_smwadmin_announce' => 'أعلن عن هذه الويكي',
 	'smw_smwadmin_announcedocu' => 'ميدياويكي الدلالية لديها خدمة وِب للإعلان عن مواقع الويكي الدلالية الجديدة،
@@ -1447,7 +1447,7 @@ $messages['ar'] = array(
 التالي يعرض ما إذا كان التحديث يجري و يسمح لك ببدء أو وقف التحديثات (إلا لو كانت هذه الخاصية قد عطّلها مدير الموقع).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>يوجد تحديث جارٍ بالفعل.</strong>
 من الطبيعي أن تتقدم عمليات التحديث ببطء بما أنها تجري على البيانات بكميات صغيرة كل مرة يستخدم فيها شخص ما الويكي.
-لإتمام التحديث سريعا يمكنك تشغيل سكربت صيانة ميدياويكي <tt>runJobs.php</tt> (استخدم الخيار <tt>--maxjobs 1000</tt> لتحديد عدد التحديثات المجراة في كل دفعة).
+لإتمام التحديث سريعا يمكنك تشغيل سكربت صيانة ميدياويكي <code>runJobs.php</code> (استخدم الخيار <code>--maxjobs 1000</code> لتحديد عدد التحديثات المجراة في كل دفعة).
 التقدم التقديري للتحديث الحالي:',
 	'smw_smwadmin_datarefreshbutton' => 'أبدا تحديث البيانات',
 	'smw_smwadmin_datarefreshstop' => 'أوقف هذا التحديث',
@@ -1728,7 +1728,7 @@ $messages['arz'] = array(
 التغييرات المعموله فى هذه الخطوه لا تؤثر على بقيه قاعده بيانات ميدياويكى، ويمكن استرجاعها بسهوله فى حاله الرغبه فى ذلك.
 وظيفه التنصيب هذه يمكن تنفيذها عده مرات بدون عمل أى ضرر، لكنها مطلوبه مره واحده عند التنصيب أو الترقيه.',
 	'smw_smwadmin_permissionswarn' => 'لو أن العمليه فشلت مع أخطاء SQL، فقاعده البيانات التى طبقها المستخدم بواسطه الويكى الخاص بك (تحقق من LocalSettings.php الخاص بك) على الأرجح لا تمتلك سماحات كافيه.
-إما أن تمنح هذا المستخدم سماحات إضافيه لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعده بياناتك فى LocalSettings.php، أو استخدم سكريبت الصيانه <tt>SMW_setup.php</tt> الذى يمكنه استخدام تأكيدات AdminSettings.php.', # Fuzzy
+إما أن تمنح هذا المستخدم سماحات إضافيه لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعده بياناتك فى LocalSettings.php، أو استخدم سكريبت الصيانه <code>SMW_setup.php</code> الذى يمكنه استخدام تأكيدات AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'جداول البدء أو الترقية',
 	'smw_smwadmin_announce' => 'أعلن عن الويكى الخاص بك',
 	'smw_smwadmin_announcedocu' => 'سيمانتيك ميدياويكى لديه خدمه وب لإعلان مواقع الويكى السيمانتيك الجديده.
@@ -1743,7 +1743,7 @@ $messages['arz'] = array(
 التالى يعرض ما إذا كان التحديث يجرى ويسمح لك ببدء أو إنهاء التحديثات (إلا لو كانت هذه الخاصيه تم تعطيلها بواسطه إدارى الموقع).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>تحديث يجرى بالفعل.</strong>
 من الطبيعى أن تتقدم عمليات التحديث ببطء فقط بما أنها تحدث البيانات فقط فى كميات صغيره كل مره مستخدم ما يصل إلى الويكى.
-للانتهاء من هذا التحديث سريعا، يمكنك تشغيل سكريبت صيانه ميدياويكى <tt>runJobs.php</tt> (استخدم الخيار <tt>--maxjobs 1000</tt> لتحديد عدد التحديثات المعموله كل مرة).
+للانتهاء من هذا التحديث سريعا، يمكنك تشغيل سكريبت صيانه ميدياويكى <code>runJobs.php</code> (استخدم الخيار <code>--maxjobs 1000</code> لتحديد عدد التحديثات المعموله كل مرة).
 التقدم المقدر للتحديث الحالي:',
 	'smw_smwadmin_datarefreshbutton' => 'أبدا تحديث البيانات',
 	'smw_smwadmin_datarefreshstop' => 'أوقف هذا التحديث',
@@ -2056,7 +2056,7 @@ La función d'abaxo asegura que la base de datos ta correutamente configurada.
 Los cambios fechos nesti pasu nun afeuten al restu de la base de datos de MediaWiki, y puen desfacese fácilmente si se quier.
 Esta función de configuración pue executase múltiples veces ensin peligru, pero namái ye necesaria una vez na instalación o anovamientu.",
 	'smw_smwadmin_permissionswarn' => "Si la operación falla con errores SQL, probablemente l'usuariu de la base de datos qu'emplega la wiki (compruebe'l so LocalSettings.php) nun tien permisos bastantes.
-O bien conceda a esti usuariu más permisos pa crear y desaniciar tables, o ponga temporalmente los datos de conexón del usuariu root de la base de datos en LocalSettings.php, o use'l script de mantenimientu <tt>SMW_setup.php</tt>, que pue usar les credenciales d'un alministrador.",
+O bien conceda a esti usuariu más permisos pa crear y desaniciar tables, o ponga temporalmente los datos de conexón del usuariu root de la base de datos en LocalSettings.php, o use'l script de mantenimientu <code>SMW_setup.php</code>, que pue usar les credenciales d'un alministrador.",
 	'smw_smwadmin_dbbutton' => 'Aniciar o anovar les tables',
 	'smw_smwadmin_announce' => 'Anuncie la so wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki tien un serviciu web p\'anunciar nuevos sitios wiki semánticos.
@@ -2071,7 +2071,7 @@ Esti anovamientu executase páxina a páxina y nun se completará nel intre.
 Lo siguiente amuesa si un anovamientu ta en cursu y permiti-y principialos o detenelos (esceuto si esta carauterística ta desactivada pol alministrador del sitiu).",
 	'smw_smwadmin_datarefreshprogress' => "<strong>Yá hai una anovamientu en cursu.</strong>
 Ye normal que l'anovamientu avance sólo de mou lentu, porque sólo refresca los datos en pequeños trozos cada vez qu'un usuariu entra na wiki.
-P'acabar esti anovamientu más rápido, pue llamar al script de mantenimientu de MediaWiki <tt>runJobs.php</tt> (use la opción <tt>--maxjobs 1000</tt> para restrinxir el númberu d'anovamientos fechos nun llote).
+P'acabar esti anovamientu más rápido, pue llamar al script de mantenimientu de MediaWiki <code>runJobs.php</code> (use la opción <code>--maxjobs 1000</code> para restrinxir el númberu d'anovamientos fechos nun llote).
 Progresu estimáu del anovamientu actual:",
 	'smw_smwadmin_datarefreshbutton' => "Principiar l'anovamientu de datos",
 	'smw_smwadmin_datarefreshstop' => 'Detener esti anovamientu',
@@ -2416,7 +2416,7 @@ $messages['be-tarask'] = array(
 Зьмены, зробленыя на гэтым этапе, не паўплываюць на астатнія базы зьвестак MediaWiki, і могуць быць лёгка адмененыя па жаданьні.
 Гэта ўсталёвачная функцыя можа быць выкананая некалькі разоў без аніякай шкоды, але для ўсталяваньня ці абнаўленьня дастаткова будзе аднаго разу.',
 	'smw_smwadmin_permissionswarn' => 'Калі адбываюцца SQL-памылкі пад час выкананьня апэрацыі, то гэта азначае, што рахунак базы зьвестак, які выкарыстоўвае {{SITENAME}} (праверце Вашыя LocalSettings.php), магчыма ня мае адпаведных правоў.
-Надайце рахунку дадатковыя правы на стварэньне і выдаленьне табліцаў, часова ўвядзіце рахунак адміністратара базы зьвестак у LocalSettings.php, ці карыстайцеся скрыптом падтрымкі <tt>SMW_setup.php</tt>, які можа выкарыстоўваць рахунак з AdminSettings.php.', # Fuzzy
+Надайце рахунку дадатковыя правы на стварэньне і выдаленьне табліцаў, часова ўвядзіце рахунак адміністратара базы зьвестак у LocalSettings.php, ці карыстайцеся скрыптом падтрымкі <code>SMW_setup.php</code>, які можа выкарыстоўваць рахунак з AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Усталяваць ці абнавіць табліцы',
 	'smw_smwadmin_announce' => 'Анансуйце {{GRAMMAR:вінавальны|{{SITENAME}}}}',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki мае сэрвіс для анансаваньня новых сэмантычных вікі-сайтаў.
@@ -2431,7 +2431,7 @@ $messages['be-tarask'] = array(
 Ніжэй паказваецца інфармацыя, ці адбываецца абнаўленьне, якая дазваляе Вам пачынаць ці спыняць абнаўленьне (за выключэньнем выпадкаў, калі гэта магчымасьць забароненая адміністратарам сайта).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Ідзе працэс абнаўленьня.</strong>
 Гэта нармальна, што працэс абнаўленьня запавольваецца, і зьвесткі абнаўляюцца невялікімі кавалкамі.
-Каб скончыць абнаўленьне хутчэй, Вы можаце скарыстацца скрыптом падтрымкі МэдыяВікі <tt>runJobs.php</tt> (выкарыстоўвайце парамэтар <tt>--maxjobs 1000</tt>, каб абмежаваць колькасьць выкананых абнаўленьняў у адным пакеце).
+Каб скончыць абнаўленьне хутчэй, Вы можаце скарыстацца скрыптом падтрымкі МэдыяВікі <code>runJobs.php</code> (выкарыстоўвайце парамэтар <code>--maxjobs 1000</code>, каб абмежаваць колькасьць выкананых абнаўленьняў у адным пакеце).
 Прыкладны час сканчэньня цяперашняга абнаўленьня:',
 	'smw_smwadmin_datarefreshbutton' => 'Пачаць абнаўленьне зьвестак',
 	'smw_smwadmin_datarefreshstop' => 'Спыніць гэта абнаўленьне',
@@ -3083,7 +3083,7 @@ La funció a continuació garanteix que la vostra base de dades està configurad
 Els canvis fets en aquest pas no afecten la resta de la base de dades del MediaWiki, i poden desfer-se fàcilment si així es vol.
 La funció de configuració pot executar-se moltes vegades sense que es faci cap mal, però només cal una vegada per a la instal·lació o l'actualització.",
 	'smw_smwadmin_permissionswarn' => "Si l'operació falla amb errors SQL, l'usuari de la base de dades que utilitza el vostre wiki (comproveu el LocalSettings.php) probablement no té suficients permisos.
-Podeu atorgar l'usuari permisos addicionals per a crear o suprimir taules, introduïu temporalment les dades d'inici de l'administrador (root) de la base de dades al LocalSettings.php, o bé feu servir l'script de manteniment <tt>SMW_setup.php</tt>, que pot utilitzar les credencials d'un administrador.",
+Podeu atorgar l'usuari permisos addicionals per a crear o suprimir taules, introduïu temporalment les dades d'inici de l'administrador (root) de la base de dades al LocalSettings.php, o bé feu servir l'script de manteniment <code>SMW_setup.php</code>, que pot utilitzar les credencials d'un administrador.",
 	'smw_smwadmin_dbbutton' => 'Inicialitza o actualitza les taules',
 	'smw_smwadmin_announce' => 'Feu conèixer el vostre wiki',
 	'smw_smwadmin_announcedocu' => 'El Semantic MediaWiki té un servei web per a anunciar nous llocs wiki semàntics.
@@ -3098,7 +3098,7 @@ L'actualització s'executa pàgina per pàgina i no es completarà immediatament
 A continuació és mostra si l'actualització és en curs i us permet iniciar o aturar les actualitzacions (a menys que aquesta característica estigui inhabilitada per l'administrador del lloc).",
 	'smw_smwadmin_datarefreshprogress' => "<strong>Ja hi ha una actualització en curs.</strong>
 És normal que l'actualització progressi només lentament perquè només refresca les dades en trossos petits cada vegada que l'usuari accedeix al wiki.
-Per a finalitzar l'actualització més ràpidament, podeu cridar l'script de manteniment del MediaWiki <tt>runJobs.php</tt> (empreu l'opció <tt>--maxjobs 1000</tt> per a restringir el nombre d'actualitzacions en un lot).
+Per a finalitzar l'actualització més ràpidament, podeu cridar l'script de manteniment del MediaWiki <code>runJobs.php</code> (empreu l'opció <code>--maxjobs 1000</code> per a restringir el nombre d'actualitzacions en un lot).
 Progrés estimat de l'actualització actual:",
 	'smw_smwadmin_datarefreshbutton' => "Inicia l'actualització de dades",
 	'smw_smwadmin_datarefreshstop' => "Atura l'actualització",
@@ -3368,7 +3368,7 @@ Funkce níže zajišťuje, že je vaše databáze správně nastavena.
 Změny provedené v tomto kroku nemají žádný vliv na zbytek databáze MediaWiki, a lze je snadno vzít zpět.
 Tuto přípravnou funkci můžete spustit vícekrát, aniž by došlo k jakémukoli poškození, ale je to nutné pouze jednou při instalaci nebo upgradu.',
 	'smw_smwadmin_permissionswarn' => 'Selže-li operace s SQL chybami, pak uživatel databáze, kterého vaše wiki používá (zkontrolujte LocalSettings.php) pravděpodobně nemá dostatečná oprávnění.
-Přidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do LocalSettings.php zadejte údaje rootu databáze, nebo použijte údržbový skript <tt>SMW_setup.php</tt>, který používá údaje z AdminSettings.php.', # Fuzzy
+Přidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do LocalSettings.php zadejte údaje rootu databáze, nebo použijte údržbový skript <code>SMW_setup.php</code>, který používá údaje z AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializovat či upgradovat tabulky',
 	'smw_smwadmin_announce' => 'Nahlásit tuto wiki',
 	'smw_smwadmin_announcedocu' => 'Nové sémantické wiki lze ohlásit příslušné webové službě Semantic MediaWiki.
@@ -3383,7 +3383,7 @@ Update se spouští stránku po stránce a nebude dokončen ihned.
 Následující se zobrazuje pokud update právě probíhá a umožňuje vám updaty spouštět či zastavovat (pokud tuto možnost nezakázal administrátor).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Probíhá update.</strong>
 Je normální, že update postupuje pomalu, protože data zpracovává v malých dávkách vždy, když wiki navštíví nějaký uživatel.
-Chcete-li update dokončit rychleji, můžete spustit údržbový skript MediaWiki <tt>runJobs.php</tt> (k omezení počtu updatů provedených v jedné dávce použijte nastavení <tt>--maxjobs 1000</tt>).
+Chcete-li update dokončit rychleji, můžete spustit údržbový skript MediaWiki <code>runJobs.php</code> (k omezení počtu updatů provedených v jedné dávce použijte nastavení <code>--maxjobs 1000</code>).
 Odhadovaný průběh updatu:',
 	'smw_smwadmin_datarefreshbutton' => 'Spustit update dat',
 	'smw_smwadmin_datarefreshstop' => 'Zastavit update',
@@ -3717,7 +3717,7 @@ Die folgende Funktion gewährleistet, dass die Datenbank richtig eingerichtet is
 Die Datenbankänderungen, die in diesem Schritt durchgeführt werden, beeinträchtigen den Rest der MediaWiki-Datenbank nicht. Sie können, sofern dies gewünscht ist, leicht rückgängig gemacht werden.
 Diese Einrichtungsfunktion kann mehrere Male ausgeführt werden, ohne Schaden zu verursachen. Sie braucht allerdings nur einmal, während der Installation oder Aktualisierung von Semantic MediaWiki, durchgeführt werden.',
 	'smw_smwadmin_permissionswarn' => 'Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei LocalSettings.php), über keine ausreichenden Rechte verfügt.
-Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei LocalSettings.php einzutragen, oder aber das Wartungsskript <tt>SMW_setup.php</tt> zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.',
+Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei LocalSettings.php einzutragen, oder aber das Wartungsskript <code>SMW_setup.php</code> zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualisieren',
 	'smw_smwadmin_announce' => 'Wiki bekannt geben',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
@@ -3732,7 +3732,7 @@ Die Datenaktualisierung wird für jede Seite ausgeführt und daher einige Zeit i
 Nachfolgend wird angezeigt, ob eine momentan Aktualisierung läuft bzw. ermöglicht es eine Aktualisierung zu starten oder zu stoppen (sofern diese Funktion nicht vom Websiteadministrator deaktiviert wurde).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Eine Aktualisierung wird bereits durchgeführt.</strong>
 Eine Aktualisierung geht normalerweise nur langsam voran, da die Daten lediglich in kleinen Schritten erneuert werden, und zwar jedes Mal, wenn ein Benutzer auf das Wiki zugreift.
-Um diese Aktualisierung schneller zu Ende zu führen, kann man das MediaWiki-Wartungsskript <tt>runJobs.php</tt> einsetzen. Mit dem Parameter <tt>--maxjobs 1000</tt> beschränkt man dabei die Anzahl der Aktualisierungsschritte, die in einem Durchgang durchgeführt werden, um Probleme bei der Nutzung des hierfür erforderlichen Arbeitsspeichers zu vermeiden.
+Um diese Aktualisierung schneller zu Ende zu führen, kann man das MediaWiki-Wartungsskript <code>runJobs.php</code> einsetzen. Mit dem Parameter <code>--maxjobs 1000</code> beschränkt man dabei die Anzahl der Aktualisierungsschritte, die in einem Durchgang durchgeführt werden, um Probleme bei der Nutzung des hierfür erforderlichen Arbeitsspeichers zu vermeiden.
 Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw_smwadmin_datarefreshbutton' => 'Datenaktualisierung starten',
 	'smw_smwadmin_datarefreshstop' => 'Diese Datenaktualisierung beenden',
@@ -4064,7 +4064,7 @@ Slědk k $1.',
 Změny, kótarež cynje se w toś tom kšacu, njewobwliwuju zbytk datoweje banki MediaWiki a daju se lažko anulěrowaś, jolic póžedane.
 Toś te zarědowańska funkcija móžo se někotare razy wugbaś, mimo až zawinuju škódu, ale jo trěbna jano jaden raz pśi instalaciji abo aktualizaciji.',
 	'smw_smwadmin_permissionswarn' => 'Jolic operacija raźi se z SQL-zmólkami, wužywaŕ datoweje banki, kótaregož twój wiki wužywa (skontrolěruj twóju dataja LocalSettings.php), nejskerjej njama dosegajuce pšawa.
-Pak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tabelow, zapódaj nachylu twójo admininistratorowe wužywarske mě w LocalSettings.php, pak wužyj wótglědowański skript <tt>SMW_setup.php</tt>, kótarež mógu wósobinske pódaśa administratora wužywaś.',
+Pak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tabelow, zapódaj nachylu twójo admininistratorowe wužywarske mě w LocalSettings.php, pak wužyj wótglědowański skript <code>SMW_setup.php</code>, kótarež mógu wósobinske pódaśa administratora wužywaś.',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializěrowaś abo aktualizěrowaś',
 	'smw_smwadmin_announce' => 'Twój wiki pśipowěźeś',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki ma websłužbu za wuzjawjenje nowych semantiskich wikisedłow.
@@ -4079,7 +4079,7 @@ Aktualizacija pśewjedujo se bok pó boku a njebuźo se ned kóńcyś.
 Slědujuce pokazujo, lěc aktualizacija rowno wótběgujo a dowólujo śi aktualizacije startowaś abo zastajiś (snaźkuli toś ta funkcija jo se wót administratora sedła znjemóžniła).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacija se rowno wótměwa.</strong>
 Jo normalne, až aktualizacija jano pómałem póstupujo, dokulaž aktualizěrujo daty jano w małych porcijach kuždy raz, gaž wužywaŕ ma pśistup na wiki.
-Aby skóńcył toś tu aktualizaciju malsnjeje, móžoš wótwardowański skript MediaWiki <tt>runJobs.php</tt> zawołaś (wužyj opciju <tt>--maxjobs 1000</tt>, aby wobgranicował licbu aktualizacijow, kótarež se naraz pśewjadu).
+Aby skóńcył toś tu aktualizaciju malsnjeje, móžoš wótwardowański skript MediaWiki <code>runJobs.php</code> zawołaś (wužyj opciju <code>--maxjobs 1000</code>, aby wobgranicował licbu aktualizacijow, kótarež se naraz pśewjadu).
 Licony póstup aktualneje aktualizacije:',
 	'smw_smwadmin_datarefreshbutton' => 'Aktualizaciju datow zachopiś',
 	'smw_smwadmin_datarefreshstop' => 'Toś tu aktualizaciju zastajiś',
@@ -4394,7 +4394,7 @@ $messages['el'] = array(
 Οι αλλαγές που γίνονται σε αυτό το βήμα δεν επηρεάζουν την υπόλοιπη βάση δεδομένων του MediaWiki, και μπορούν εύκολα να αναιρεθούν εφόσον επιθυμείτε.
 Αυτή η λειτουργία μπορεί να εκτελεσθεί πολλές φορές χωρίς να προκαλεί ζημιά, αλλά είναι αναγκαία μόνο μία φορά κατά την εγκατάσταση ή αναβάθμιση.',
 	'smw_smwadmin_permissionswarn' => 'Εάν η επέμβαση αποτυγχάνει αναφέροντας σφάλματα SQL, ο χρήστης της βάσης δεδομένων τον οποίο χρησιμοποιεί το wiki σας (ελέγξτε το LocalSettings.php σας) μάλλον δεν έχει επαρκή δικαιώματα.
-Ή χορηγήστε σε αυτόν το χρήστη επιπλέον δικαιώματα να δημιουργεί και να διαγράφει πίνακες, ή εισαγάγετε προσωρινά τα στοιχεία του διαχειριστή της βάσης δεδομένων σας στο LocalSettings.php, ή χρησιμοποιήστε το script συντήρησης <tt>SMW_setup.php</tt> το οποίο μπορεί να χρησιμοποιήσει διαπιστευτήρια διαχειριστή.',
+Ή χορηγήστε σε αυτόν το χρήστη επιπλέον δικαιώματα να δημιουργεί και να διαγράφει πίνακες, ή εισαγάγετε προσωρινά τα στοιχεία του διαχειριστή της βάσης δεδομένων σας στο LocalSettings.php, ή χρησιμοποιήστε το script συντήρησης <code>SMW_setup.php</code> το οποίο μπορεί να χρησιμοποιήσει διαπιστευτήρια διαχειριστή.',
 	'smw_smwadmin_dbbutton' => 'Αρχικοποίηση ή αναβάθμιση πινάκων',
 	'smw_smwadmin_announce' => 'Ανακοίνωση του wiki σας',
 	'smw_smwadmin_announcedocu' => 'Το Σημασιολογικό MediaWiki έχει μια διαδικτυακή υπηρεσία για την αναγγελία νέων σημασιολογικών ιστοχώρων wiki.
@@ -4409,7 +4409,7 @@ $messages['el'] = array(
 Το ακόλουθο δείχνει εάν μια ενημέρωση βρίσκεται σε εξέλιξη και σας επιτρέπει να ξεκινήσετε ή να διακόψετε ενημερώσεις (εκτός εάν αυτή η δυνατότητα έχει απενεργοποιηθεί από το διαχειριστή του ιστοχώρου).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Η ενημέρωση είναι ήδη σε εξέλιξη.</strong>
 Είναι φυσικό η ενημέρωση να εξελίσσεται αργά δεδομένου ότι ανανεώνει τα δεδομένα σε μικρά κομμάτια και μόνο κάθε φορά που ένας χρήστης έχει πρόσβαση σε σελίδα του wiki.
-Για να ολοκληρώσετε αυτήν την ενημέρωση πιο γρήγορα, μπορείτε να εκτελέσετε το script συντήρησης <tt>runJobs.php</tt> του MediaWiki (χρησιμοποιήστε την επιλογή <tt>--maxjobs 1000</tt> για να περιορίσετε τον αριθμό των ενημερώσεων που θα γίνονται σε μία δέσμη).
+Για να ολοκληρώσετε αυτήν την ενημέρωση πιο γρήγορα, μπορείτε να εκτελέσετε το script συντήρησης <code>runJobs.php</code> του MediaWiki (χρησιμοποιήστε την επιλογή <code>--maxjobs 1000</code> για να περιορίσετε τον αριθμό των ενημερώσεων που θα γίνονται σε μία δέσμη).
 Εκτιμώμενη πρόοδος της τρέχουσας ενημέρωσης:',
 	'smw_smwadmin_datarefreshbutton' => 'Έναρξη ενημέρωσης δεδομένων',
 	'smw_smwadmin_datarefreshstop' => 'Σταμάτα αυτή την ενημέρωση',
@@ -4853,7 +4853,7 @@ La función indicada abajo asegura que tu base de datos está configurada correc
 Los cambios realizados en este paso no afectan el resto de la base de datos de MediaWiki y pueden ser revertidos fácilmente si así se desea.
 Esta función de configuración puede ejecutarse varias veces sin hacer ningún daño, pero es necesaria sólo una vez para la instalación o actualización.',
 	'smw_smwadmin_permissionswarn' => 'Si la operación falla con errores SQL, la base de datos de usuarios empleada por su wiki (revise su archivo LocalSettings.php) probablemente no tiene permisos suficientes.
-Ud puede conceder a este usuario permisos adicionales para crear y borrar tablas, ingresando temporalmente la clave de acceso de su base de datos raíz en LocalSettings.php, o bien usar el script de mantenimiento <tt>SMW_setup.php</tt>, que puede usar las credenciales de un administrador.',
+Ud puede conceder a este usuario permisos adicionales para crear y borrar tablas, ingresando temporalmente la clave de acceso de su base de datos raíz en LocalSettings.php, o bien usar el script de mantenimiento <code>SMW_setup.php</code>, que puede usar las credenciales de un administrador.',
 	'smw_smwadmin_dbbutton' => 'Inicializar o actualizar tablas',
 	'smw_smwadmin_announce' => 'Anunciar tu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki cuenta con un servicio Web para anunciar nuevos sitios wiki semánticos, que es usado para mantener un listado de sitios Web públicos que usan Semantic MediaWiki, principalmente para ayudar al <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyecto Semantic MediaWiki</a>, para tener una visión general de los usos típicos de Semantic MediaWiki.
@@ -4867,7 +4867,7 @@ La actualización se ejecuta página a página y no se completará de inmediato.
 Lo siguiente muestra es hay una actualización en progreso y le permite iniciar o detener actualizaciones (a menos que esta característica haya sido inhabilitada por el administrador del sitio).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Actualización en progreso.</strong>
 Es normal que el proceso de actualización se retrase ya que sólo actualiza datos en porciones pequeñas cada vez que un usuario ingresa a la wiki.
-Para finalizar esta actualización en forma mas rápida, Ud. puede invocar el script de matenimiento MediaWiki <tt>runJobs.php</tt> (use la opción <tt>--maxjobs 1000</tt>  para restringir el número de actualizaciones hechas en cada paquete).
+Para finalizar esta actualización en forma mas rápida, Ud. puede invocar el script de matenimiento MediaWiki <code>runJobs.php</code> (use la opción <code>--maxjobs 1000</code>  para restringir el número de actualizaciones hechas en cada paquete).
 Progeso estimado de la actualización:',
 	'smw_smwadmin_datarefreshbutton' => 'Comenzar actualización de datos',
 	'smw_smwadmin_datarefreshstop' => 'Detener esta actualización',
@@ -5327,7 +5327,7 @@ Päivitys etenee sivu sivulta eikä valmistu nopeasti.
 Alla näkyy päivityksen eteneminen ja mahdollistaa päivitysten käynnistämisen tai pysäyttämisen (paitsi jos sivuston ylläpitäjä on ottanut toiminnon pois käytöstä).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Päivitys on jo käynnissä.</strong>
 On normaalia, että päivitys etenee hitaasti, sillä tietoja päivitetään pienissä osissa silloin kuin wikin sivuja ladataan.
-Jos haluat päivityksen valmistuvan nopeammin, käytä MediaWikin ylläpitokomentosarjaa <tt>runJobs.php</tt> (käytä valitsinta <tt>--maxjobs 1000</tt> rajoittaaksesi yhdessä erässsä tehtävien päivitysten määrää).
+Jos haluat päivityksen valmistuvan nopeammin, käytä MediaWikin ylläpitokomentosarjaa <code>runJobs.php</code> (käytä valitsinta <code>--maxjobs 1000</code> rajoittaaksesi yhdessä erässsä tehtävien päivitysten määrää).
 Nykyisen päivityksen arvioitu eteneminen:',
 	'smw_smwadmin_datarefreshbutton' => 'Aloita tietojen päivitys',
 	'smw_smwadmin_datarefreshstop' => 'Lopeta tämä päivitys',
@@ -5674,7 +5674,7 @@ La fonction ci-dessous s’assure que votre base de données a été correctemen
 Les modifications faites lors de cette étape n’affecteront pas le reste de la base de données Mediawiki, et peuvent être annulées si nécessaire.
 Cette fonction d’installation peut être lancée plusieurs fois sans causer le moindre dégat, et n’est nécessaire qu’une fois par installation ou mise à niveau.',
 	'smw_smwadmin_permissionswarn' => 'Si l’opération échoue avec des erreurs SQL, l’utilisateur de la base de données utilisée par votre wiki (regardez votre LocalSettings.php) n’a probablement pas les droits suffisants.
-Il faut soit permettre à cet utilisateur de créer et supprimer les tables, soit saisir temporairement les identifiants du compte root de votre base de données dans LocalSettings.php, soit utiliser le script de maintenance <tt>SMW_setup.php</tt> qui peut utiliser les informations de connexion d’un administrateur.',
+Il faut soit permettre à cet utilisateur de créer et supprimer les tables, soit saisir temporairement les identifiants du compte root de votre base de données dans LocalSettings.php, soit utiliser le script de maintenance <code>SMW_setup.php</code> qui peut utiliser les informations de connexion d’un administrateur.',
 	'smw_smwadmin_dbbutton' => 'Initialiser ou mettre à niveau les tables',
 	'smw_smwadmin_announce' => 'Annoncer votre wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispose d’un service Internet pour annoncer de nouveaux sites wiki sémantiques.
@@ -5689,7 +5689,7 @@ La mise à jour est exécutée page par page et se sera pas achevée immédiatem
 La page suivante spécifie si une mise à jour est en cours d’exécution et vous permet de commencer ou d’arrêter celle-ci (à moins que cette fonctionnalité n’ait été désactivée par l’administrateur du site).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Une mise à jour est en cours d’exécution.</strong>
 Il est normal qu’une mise à jour progresse lentement parce qu’elle ne rafraîchit les données que par petits tronçons, au fur et à mesure qu’un utilisateur accède au wiki.
-Pour terminer cette mise à jour plus rapidement, vous pouvez invoquer le script d’entretien Mediawiki <tt>runJobs.php</tt> (utilisez l’option <tt>--maxjobs 1000</tt> pour restreindre le nombre de mises à jour par script lancé).
+Pour terminer cette mise à jour plus rapidement, vous pouvez invoquer le script d’entretien Mediawiki <code>runJobs.php</code> (utilisez l’option <code>--maxjobs 1000</code> pour restreindre le nombre de mises à jour par script lancé).
 Progression estimée de la mise à jour actuelle :',
 	'smw_smwadmin_datarefreshbutton' => 'Commencer la mise à jour des données',
 	'smw_smwadmin_datarefreshstop' => 'Arrêter cette mise à jour',
@@ -6210,7 +6210,7 @@ A función de embaixo asegúrase de que a súa base de datos está configurada a
 Os cambios feitos neste paso non afectarán ao resto da base de datos MediaWiki, e poden ser desfeitos de xeito sinxelo se se desexa.
 Esta función de configuración pode ser executada múltiples veces sen facer ningún dano, pero só é necesaria unha vez na instalación ou actualización.',
 	'smw_smwadmin_permissionswarn' => 'Se a operación falla con erros SQL, probablemente a base de datos empregada polo seu wiki (comprobe o seu LocalSettings.php) non teña os permisos suficientes.
-Fai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <tt>SMW_setup.php</tt>, que pode usar as credenciais dun usuario SysOp.',
+Fai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <code>SMW_setup.php</code>, que pode usar as credenciais dun usuario SysOp.',
 	'smw_smwadmin_dbbutton' => 'Inicialice ou actualice as táboas',
 	'smw_smwadmin_announce' => 'Anunciar o seu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ten un servizo web para anunciar novos wikis semánticos.
@@ -6225,7 +6225,7 @@ Esta actualización é executada páxina a páxina e non será completada inmedi
 O seguinte amosa se unha actualización está en curso e permítelle comezalas ou detelas (a non ser que esta característica fose deshabilitada polo administrador do sitio).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Xa hai unha actualización en curso.</strong>
 É normal que os progresos de actualización vaian lentos, xa que só se refrescan os datos nos pequenos anacos nos que un usuario accede ao wiki.
-Para finalizar esta actualización máis rápido, pode invocar a escritura <tt>runJobs.php</tt> de mantemento de MediaWiki (use a opción <tt>--maxjobs 1000</tt> para restrinxir o número de actualizacións feitas nunha quenda).
+Para finalizar esta actualización máis rápido, pode invocar a escritura <code>runJobs.php</code> de mantemento de MediaWiki (use a opción <code>--maxjobs 1000</code> para restrinxir o número de actualizacións feitas nunha quenda).
 Progreso estimado da actualización actual:',
 	'smw_smwadmin_datarefreshbutton' => 'Comezar a actualizar os datos',
 	'smw_smwadmin_datarefreshstop' => 'Deter esta actualización',
@@ -6479,7 +6479,7 @@ Die Funktion gwährleischtet, ass d Datebank richtig yygrichtet isch.
 D Änderige, wu in däm Schritt gmacht wäre, stere dr Räscht vu dr MediaWiki-Datebank nit un chenne eifach zrugggsetzt wäre, wänn gwinscht.
 Die Setup-Funktion cha e paar Mol uusgfiert wäre ohni Schade z verursache, s isch aber nume eimol netig bi dr  Installation oder em Update.',
 	'smw_smwadmin_permissionswarn' => 'Wänn d Aktion mit eme SQL-Fähler abbricht, chennt s syy, ass dr Datebankbenutzer, wu s Wiki iber en uf d Datenbank zuegryft (lueg d Datei LocalSettings.php), nit d Rächt dezue het.
-Go des Probläm lese  isch s megli, em Benutzer zuesätzligi Rächt fir s Aalege und Lesche vu Tabälle z gee, dr  Datebank-Adminischtrator zytwyys in d LocalSettings.php yyztrage oder s Wartigsskript <tt>SMW_setup.php</tt> z verwände, wu d Benutzerdate us AdminSettings.php cha verwände.', # Fuzzy
+Go des Probläm lese  isch s megli, em Benutzer zuesätzligi Rächt fir s Aalege und Lesche vu Tabälle z gee, dr  Datebank-Adminischtrator zytwyys in d LocalSettings.php yyztrage oder s Wartigsskript <code>SMW_setup.php</code> z verwände, wu d Benutzerdate us AdminSettings.php cha verwände.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Tabällen initialisiere oder aktualisere',
 	'smw_smwadmin_announce' => 'Dyy Wiki aachinde',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki het e Netzservice zum neji semantischi Wikisyte bekannt gee.
@@ -6494,7 +6494,7 @@ S Update wird fir jedi Syte uusgfiert un wird e Wyyli bruuche.
 Doo wird zeigt, eb e Update lauft un Di wird erlaubt e Update z starte oder z stoppe (usser wänn die Funktion vum Sytebetryyber deaktiviert woren isch).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>E Update lauft scho.</strong>
 E Update bruucht nromalerwyys lang, wel d Date nume in chleine Prtione aktualisiert wäre, jedes Mol wänn eber uf s Wiki zuegryft.
-Go des Update schnäller z beände, cha mer s MediaWiki-Wartigsskript <tt>runJobs.php</tt> bruuche (mit em Parameter <tt>--maxjobs 1000</tt> cha d Aazahl vu dr Updates, wu uf eimol durgfiert wäre, bschränkt wäre).
+Go des Update schnäller z beände, cha mer s MediaWiki-Wartigsskript <code>runJobs.php</code> bruuche (mit em Parameter <code>--maxjobs 1000</code> cha d Aazahl vu dr Updates, wu uf eimol durgfiert wäre, bschränkt wäre).
 Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw_smwadmin_datarefreshbutton' => 'Mit dr Datenaktualisierig aafange',
 	'smw_smwadmin_datarefreshstop' => 'Mit däre Aktualisierig ufhere',
@@ -6727,7 +6727,7 @@ $messages['he'] = array(
 השינויים שנעשים בשלב זה אינם משפיעים על שאר בסיס הנתונים של מדיה־ויקי, וניתן לבטלם בקלות אם תרצו בכך.
 ניתן להפעיל את פונקציית ההגדרה הזו מספר פעמים מבלי לגרום לנזק כלשהו, אך היא נדרשת רק פעם אחת עם ההתקנה או עם שדרוג.',
 	'smw_smwadmin_permissionswarn' => 'אם הפעולה נכשלת עם שגיאות SQL, למשתמש של בסיס הנתונים של אתר הוויקי שלכם (תוכלו למצוא אותו בקובץ ה־LocalSettings.php שלכם) אין הרשאות מתאימות.
-אנא הוסיפו למשתמש זה הרשאות ליצירה ולמחיקה של טבלאות, כִתבו את פרטי גישת העל לבסיס הנתונים לקובץ LocalSetting.php באופן זמני, או השתמשו בסקריפט התחזוקה <tt>SMW_setup.php</tt> שיכול להשתמש בהרשאות של הקובץ AdminSettings.php.', # Fuzzy
+אנא הוסיפו למשתמש זה הרשאות ליצירה ולמחיקה של טבלאות, כִתבו את פרטי גישת העל לבסיס הנתונים לקובץ LocalSetting.php באופן זמני, או השתמשו בסקריפט התחזוקה <code>SMW_setup.php</code> שיכול להשתמש בהרשאות של הקובץ AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'אתחול או שדרוג של טבלאות',
 	'smw_smwadmin_announce' => 'הכריזו על הוויקי שלכם',
 	'smw_smwadmin_announcedocu' => 'למדיה־ויקי סמנטי, ישנ שירות מקוון להכרזה על אתרי ויקי סמנטיים חדשים.
@@ -6742,7 +6742,7 @@ $messages['he'] = array(
 המידע להלן מראה האם העדכון מתבצע כעת ומאפשר לכם להתחיל או להפסיק את העדכונים (אלא אם כן תכונה זו בוטלה על ידי מנהל האתר).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>כבר מתבצע תהליך עדכון.</strong>
 מצב בו העדכון מתקדם לאט הוא מצב נורמלי, מאחר שהנתונים מתעדכנים בחלקים קטנים בכל פעם שמשתמש ניגש לוויקי.
-כדי לסיים את העדכון מהר יותר, תוכלו להפעיל את סקריפט התחזוקה <tt>runJobs.php</tt> (השתמשו באפשרות <tt>--maxjobs 1000</tt> כדי להגביל את מספר העדכונים שמתבצעים בבת אחת).
+כדי לסיים את העדכון מהר יותר, תוכלו להפעיל את סקריפט התחזוקה <code>runJobs.php</code> (השתמשו באפשרות <code>--maxjobs 1000</code> כדי להגביל את מספר העדכונים שמתבצעים בבת אחת).
 התקדמות משוערת של העדכון הנוכחי:',
 	'smw_smwadmin_datarefreshbutton' => 'התחלת עדכון הנתונים',
 	'smw_smwadmin_datarefreshstop' => 'עצירת עדכון זה',
@@ -6967,7 +6967,7 @@ Funkcija ispod osigurava da je vaša baza pravilno postavljena.
 Ovaj korak ne utječe na ostatak MediaWiki baze podataka i lako se može poništiti ukoliko to želite.
 Ova se funkcija može izvršiti više puta bez ikakvih štetnih posljedica, no potrebna je samo kod instalacije ili nadgradnje.',
 	'smw_smwadmin_permissionswarn' => 'Ako operacija ne uspije i vrati SQL grešku, baza podataka koju koristi Vaš wiki (provjerite svoj LocalSettings.php) vjerojatno nema dovoljna prava.
-Učinite jedno od sljedećeg: dodijelite ovom korisniku dodatna prava za stvaranje i brisanje tablica, privremeno unesite administratorsko korisničko ime i lozinku Vaše baze podataka u LocalSettings.php, ili pokrenite skriptu za održavanje <tt>SMW_setup.php</tt> koja će koristiti prava iz AdminSettings.php.', # Fuzzy
+Učinite jedno od sljedećeg: dodijelite ovom korisniku dodatna prava za stvaranje i brisanje tablica, privremeno unesite administratorsko korisničko ime i lozinku Vaše baze podataka u LocalSettings.php, ili pokrenite skriptu za održavanje <code>SMW_setup.php</code> koja će koristiti prava iz AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicijaliziraj ili nadogradi tablice',
 	'smw_smwadmin_announce' => 'Najavite svoj wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki pruža web uslugu koja prikazuje i najavljuje nove semantičke wikije.
@@ -6981,7 +6981,7 @@ Osvježavanje se izvršava stranicu po stranicu i neće biti gotovo odmah.
 Prikaz dolje sadrži popis svih osvježavanja u tijeku i omogućuje Vam da zaustavite ili pokrenete osvježavanje (osim ako to nije onemogućio administrator).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Osvježavanje je već u tijeku.</strong>
 Normalno je da osvježavanje napreduje sporo jer se podaci osvježavaju u malim obrocima svaki put kad korisnik pristupi wikiju.
-Da bi ovo osvježavanje završilo čim prije, možete pokrenuti MediaWiki skriptu za održavanje <tt>runJobs.php</tt> (koristite opciju <tt>--maxjobs 1000</tt> kako biste ograničili broj zasebnih osvježavanja po jednoj seriji).
+Da bi ovo osvježavanje završilo čim prije, možete pokrenuti MediaWiki skriptu za održavanje <code>runJobs.php</code> (koristite opciju <code>--maxjobs 1000</code> kako biste ograničili broj zasebnih osvježavanja po jednoj seriji).
 Procjena napretka osvježavanja:',
 	'smw_smwadmin_datarefreshbutton' => 'Pokreni osvježavanje podataka',
 	'smw_smwadmin_datarefreshstop' => 'Zaustavi ovo osvježavanje',
@@ -7267,7 +7267,7 @@ Slědowaca funkcija zawěsćuje, zo twoja datowa banka je prawje zarjadowana.
 Změny, kotrež so w tutym kroku činja, njewobwliwuja zbytk datowje banki MediaWiki a dadźa so lochko cofnyć, jeli požadane.
 Tuta zarjadowanska funkcija da so wjacore razy wuwjesć, bjeztoho zo so škoda zawinuje, je wšak jenož jedyn raz při instalaciji abo aktualizaciji trěbna.',
 	'smw_smwadmin_permissionswarn' => 'Jeli operacija so ze zmylkami SQL njeradźi, najskerje wužiwar datoweje banki, kotrehož twój wiki wužiwa (hlej twoju dataju LocalSettings.php), dosahace prawa nima.
-Zaruč tute přidatne wužiwarske prawa za wutworjenje a wušmórnjenje tabelow, zapodaj nachwilu přizjewjenje twojeho administratora datoweje banki do dataje LocalSettings.php abo wužij wothladowanski skript <tt>SMW_setup.php</tt>, kotryž móže wužiwarske daty administratora wužiwać.',
+Zaruč tute přidatne wužiwarske prawa za wutworjenje a wušmórnjenje tabelow, zapodaj nachwilu přizjewjenje twojeho administratora datoweje banki do dataje LocalSettings.php abo wužij wothladowanski skript <code>SMW_setup.php</code>, kotryž móže wužiwarske daty administratora wužiwać.',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializować abo aktualizować',
 	'smw_smwadmin_announce' => 'Twój wiki připowědźić',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ma websłužbu za wozjewjenje nowych semantiskich wikisydłow.
@@ -7281,7 +7281,7 @@ Aktualizacija so stronu po stronu přewjedźe a njebudźe so hnydom kónčić.
 Naslědne pokazuje, jeli aktualizacija so wotměwa a ći dowoluje aktualizacije startować abo zastajić (chibazo tuta funkcija bu wot administratora sydła znjemóžnjena).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacija so hižo wotměwa.</strong>
 Je normalnje, zo so aktualizacija jenož pomału wotměwa, dokelž daty jenož w małych porcijach kóždy raz, hdyž wužiwar ma přistup na wiki, aktualizuje.
-Zo by tutu aktualizaciju spěšnišo skónčił, móžeš wothladowanski skript MediaWiki <tt>runJobs.php</tt> zawołać (wužij opciju <tt>--maxjobs 1000</tt>, zo by ličbu aktualizacijow, kotrež so z jednym wotmachom přewjedu, wobmjezował).
+Zo by tutu aktualizaciju spěšnišo skónčił, móžeš wothladowanski skript MediaWiki <code>runJobs.php</code> zawołać (wužij opciju <code>--maxjobs 1000</code>, zo by ličbu aktualizacijow, kotrež so z jednym wotmachom přewjedu, wobmjezował).
 Trochowany staw aktualneje aktualizacije:',
 	'smw_smwadmin_datarefreshbutton' => 'Aktualizaciju datow započeć',
 	'smw_smwadmin_datarefreshstop' => 'Tutu aktualizaciju zastajić',
@@ -7568,7 +7568,7 @@ Az alábbi funkció ellenőrzi, hogy az adatbázis megfelelően be van-e állít
 Az ezen lépés során végrehajtott változások nincsenek hatással a MediaWiki adatbázisának többi részére, és egyszerűen visszavonható, amennyiben szükséges.
 Ez a telepítési lépés többször is végrehajtható, anékül, hogy bármilyen kárt tenne, de csak egyszer szükséges a telepítés vagy frissítés során.',
 	'smw_smwadmin_permissionswarn' => 'Ha a művelet SQL-hibákkal leáll, a wikid által használt adatbázis-felhasználó (amit a LocalSettings.php-ben adtál meg) valószínűleg nem rendelkezik a megfelelő jogosultságokkal.
-Adj a felhasználó számára táblák készítéséhez és törléséhez jogosultságot, ideiglenesen add meg a root fiók adatait, vagy használd az <tt>SMW_setup.php</tt> karbantartó parancsfájlt, ami egy adminisztrátor adataival lép be.',
+Adj a felhasználó számára táblák készítéséhez és törléséhez jogosultságot, ideiglenesen add meg a root fiók adatait, vagy használd az <code>SMW_setup.php</code> karbantartó parancsfájlt, ami egy adminisztrátor adataival lép be.',
 	'smw_smwadmin_dbbutton' => 'Táblák inicializálása vagy frissítése',
 	'smw_smwadmin_announce' => 'Wiki bejelentése',
 	'smw_smwadmin_announcedocu' => 'A Szemantikus MediaWikinek van egy webes szolgáltatása az új szemantikus wikioldalak jelzésére.
@@ -7583,7 +7583,7 @@ A frissítés oldalról oldalra van végrehajtva, és nem lesz azonnal kész.
 Alább látható, hogy jelenleg folyamatban van-e ilyen frissítés, és elindíthatod vagy leállíthatod a frissítéseket (kivéve, ha az oldal adminisztrátora letiltotta ezt a lehetőséget).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Frissítés folyamatban.</strong>
 Normális, ha a frissítés lassan halad, hiszen az adatok csak egy kis részét frissíti minden alkalommal, ha egy felhasználó hozzáfér a wikihez.
-Ha gyorsabban be szeretnéd fejezni a frissítést, hívd meg a <tt>runJobs.php</tt> karbantartó parancsfájlt (használd a <tt>--maxjobs 1000</tt> kapcsolót az egy menetben végrehajtott frissítések korlátozásához).
+Ha gyorsabban be szeretnéd fejezni a frissítést, hívd meg a <code>runJobs.php</code> karbantartó parancsfájlt (használd a <code>--maxjobs 1000</code> kapcsolót az egy menetben végrehajtott frissítések korlátozásához).
 A jelenlegi frissítés becsült előrehaladása:',
 	'smw_smwadmin_datarefreshbutton' => 'Adatok frissítésének megkezdése',
 	'smw_smwadmin_datarefreshstop' => 'Frissítés megszakítása',
@@ -7885,7 +7885,7 @@ Le actualisation es executate pagina a pagina e non essera completate immediatem
 Lo sequente monstra si un actualisation es in progresso e permitte comenciar o stoppar le actualisationes (a minus que iste function ha essite disactivate per le administrator del sito).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Un actualisation es ja in curso.</strong>
 Es normal que le actualisation progrede lentemente post que illo refresca datos solmente in micre pecias cata vice que un usator accede al wiki.
-Pro completar iste actualisation plus rapidemente, tu pote invocar le script de mantenentia de MediaWiki <tt>runJobs.php</tt> (usa le option <tt>--maxjobs 1000</tt> pro restringer le numero de actualisationes facite in un lot).
+Pro completar iste actualisation plus rapidemente, tu pote invocar le script de mantenentia de MediaWiki <code>runJobs.php</code> (usa le option <code>--maxjobs 1000</code> pro restringer le numero de actualisationes facite in un lot).
 Progresso estimate del actualisation currente:',
 	'smw_smwadmin_datarefreshbutton' => 'Comenciar le actualisation del datos',
 	'smw_smwadmin_datarefreshstop' => 'Stoppar iste actualisation',
@@ -8113,7 +8113,7 @@ Fungsi berikut memastikan bahwa basis data Anda dipersiapkan dengan baik.
 Perubahan yang dilakukan pada langkah ini tidak memengaruhi bagian lain dari basis data MediaWiki, dan dengan mudah dapat dibatalkan jika diingkan.
 Fungsi persiapan ini dapat dilakukan berulang kali tanpa menyebabkan kerusaan, tapi hanya dibutuhkan sekali sewaktu instalasi atau peningkatan.',
 	'smw_smwadmin_permissionswarn' => 'Jika operasi gagal karena kesalahan SQL, pengguna basis data yang digunakan oleh wiki Anda (cek LocalSettings.php Anda) mungkin tidak mempunyai hak akses yang cukup.
-Anda dapat memberikan hak akses tambahan untuk membuat dan menghapus tabel, memasukkan sementara pengguna root basis data Anda di LocalSettings.php, atau menggunakan skrip pemeliharaan <tt>SMW_setup.php</tt> yang dapat menggunakan hak akses dari AdminSettings.php.', # Fuzzy
+Anda dapat memberikan hak akses tambahan untuk membuat dan menghapus tabel, memasukkan sementara pengguna root basis data Anda di LocalSettings.php, atau menggunakan skrip pemeliharaan <code>SMW_setup.php</code> yang dapat menggunakan hak akses dari AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inisiasi atau tingkatkan tabel',
 	'smw_smwadmin_announce' => 'Umumkan wiki Anda',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki memiliki layanan web untuk mengumumkan situs wiki semantik baru.
@@ -8128,7 +8128,7 @@ Pembaruan dilaksanakan halaman per halaman dan tidak akan langsung selesai.
 Tampilan berikut menunjukkan jika suatu pembaruan sedang berlangsung dan memungkinkan Anda untuk memulai atau menghentikan proses (kecuali jika fitur ini dimatikan oleh pengelola situs).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Suatu pembaruan sedang dalam proses.</strong>
 Adalah wajar jika kemajuan pembaruan berjalan lambat karena ia hanya menyegarkan data sedikit demi sedikit setiap kali seorang pengguna mengakses wiki ini.
-Untuk menyelesaikan pembaruan ini dengan lebih cepat, Anda dapat menjalankan skrip pemeliharaan MediaWiki <tt>runJobs.php</tt> (gunakan opsi <tt>--maxjobs 1000</tt> untuk membatasi jumlah pembaruan yang dilakukan dalam satu saat).
+Untuk menyelesaikan pembaruan ini dengan lebih cepat, Anda dapat menjalankan skrip pemeliharaan MediaWiki <code>runJobs.php</code> (gunakan opsi <code>--maxjobs 1000</code> untuk membatasi jumlah pembaruan yang dilakukan dalam satu saat).
 Perkiraan kemajuan pembaruan saat ini:',
 	'smw_smwadmin_datarefreshbutton' => 'Mulai pembaruan data',
 	'smw_smwadmin_datarefreshstop' => 'Hentikan pembaruan ini',
@@ -8393,7 +8393,7 @@ La funzione qui sotto verifica che il tuo database sia installato correttamente.
 Le modifiche effettuate in questo passaggio non hanno effetto sul resto del database MediaWiki, e possono essere facilmente annullate se necessario.
 Questa funzione di setup può essere rieseguita più volte senza conseguenze indesiderate, ma è richiesta solo una volta all'atto dell'installazione o dell'aggiornamento.",
 	'smw_smwadmin_permissionswarn' => "Se l'operazione avrà esito negativo con errori SQL, l'utente del database usato dal tuo wiki (controlla nel LocalSettings.php) probabilmente non ha permessi sufficienti.
-Puoi assegnare a questo utente permessi aggiuntivi per creare e cancellare tabelle, oppure inserire temporaneamente in LocalSettings.php i dati di accesso root al database, oppure usare lo script di manutenzione <tt>SMW_setup.php</tt> che può utilizzare le credenziali di un utente amministratore di sistema.",
+Puoi assegnare a questo utente permessi aggiuntivi per creare e cancellare tabelle, oppure inserire temporaneamente in LocalSettings.php i dati di accesso root al database, oppure usare lo script di manutenzione <code>SMW_setup.php</code> che può utilizzare le credenziali di un utente amministratore di sistema.",
 	'smw_smwadmin_dbbutton' => 'Inizializza o aggiorna tabelle',
 	'smw_smwadmin_announce' => 'Annuncia il tuo wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispone di un servizio web per dare notizia di nuovi siti wiki semantici.
@@ -8408,7 +8408,7 @@ L'aggiornamento è eseguito pagina per pagina e non sarà completato immediatame
 Qui di seguito si vede se un aggiornamento è in corso e potrai avviare od arrestare gli aggiornamenti (a meno che questa funzionalità non sia stata disattivata dall'amministratore del sito).",
 	'smw_smwadmin_datarefreshprogress' => "<strong>Un aggiornamento è già in corso.</strong>
 Non è anormale che l'aggiornamento proceda solo lentamente, poiché verifica i dati solo a piccoli pacchetti ogni volta che un utente accede al wiki.
-Per terminare il processo pià rapidamente, puoi invocare lo script di manutenzione MediaWiki <tt>runJobs.php</tt> (usa l'opzione <tt>--maxjobs 1000</tt> per restringere il numero di verifiche svolte in ciascuna tornata).
+Per terminare il processo pià rapidamente, puoi invocare lo script di manutenzione MediaWiki <code>runJobs.php</code> (usa l'opzione <code>--maxjobs 1000</code> per restringere il numero di verifiche svolte in ciascuna tornata).
 Progresso stimato dell'aggiornamento in corso:",
 	'smw_smwadmin_datarefreshbutton' => "Inizia l'aggiornamento dei dati",
 	'smw_smwadmin_datarefreshstop' => 'Ferma questo aggiornamento',
@@ -8717,7 +8717,7 @@ $1に戻る。',
 この作業でなされた変更は MediaWiki のデータベースのその他の部分には影響を与えず、必要なら簡単に取り消しができます。
 この機能は複数回実行しても何の害もありませんが、インストールもしくはアップグレード時に一度だけ実行すれば十分です。',
 	'smw_smwadmin_permissionswarn' => 'SQL エラーを出して処理が失敗する場合、おそらくあなたのウィキのデータベース ユーザー (LocalSettings.php を確認してください) に必要な権限がありません。
-LocalSettings.php に一時的にデータベースの root のログイン情報を記入してこのユーザーにテーブルを作成および削除するための追加権限を与えるか、<tt>SMW_setup.php</tt> の認証情報を使用できるメンテナンススクリプト <tt>SMW_setup.php</tt> を使用してください。',
+LocalSettings.php に一時的にデータベースの root のログイン情報を記入してこのユーザーにテーブルを作成および削除するための追加権限を与えるか、<code>SMW_setup.php</code> の認証情報を使用できるメンテナンススクリプト <code>SMW_setup.php</code> を使用してください。',
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
 	'smw_smwadmin_announce' => 'あなたのウィキの発表',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しい意味的ウィキのサイトを発表するためのウェブサービスがあります。
@@ -8732,7 +8732,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 以下に更新が進行中かどうかを表示します。更新を開始または停止できます (サイト管理者が機能を無効にしていない場合のみ)。',
 	'smw_smwadmin_datarefreshprogress' => '<strong>更新が既に進行中です。</strong>
 利用者がウィキにアクセスするたびに少量の塊のデータを更新するのみであるため、更新がゆっくりとしか進まないのは正常な動作です。
-この更新をより早く終えるには、MediaWiki のメンテナンス スクリプト <tt>runJobs.php</tt> を実行してください (1つのバッチで行われる更新の数を制限するには <tt>--maxjobs 1000</tt> オプションを使用してください)。
+この更新をより早く終えるには、MediaWiki のメンテナンス スクリプト <code>runJobs.php</code> を実行してください (1つのバッチで行われる更新の数を制限するには <code>--maxjobs 1000</code> オプションを使用してください)。
 現在の更新の推定進捗:',
 	'smw_smwadmin_datarefreshbutton' => 'データの更新を開始',
 	'smw_smwadmin_datarefreshstop' => 'この更新を停止',
@@ -9827,7 +9827,7 @@ Zréck op d'Säit $1.",
 	'smw_smwadmin_datarefresh' => 'Donnéeë gi gefléckt an aktualiséiert',
 	'smw_smwadmin_datarefreshprogress' => "<strong>Eng Aktualisatioun ass schonn am Gaang.</strong>
 Et ass normal datt d'Aktualisatioun nëmme lues virugeet well Donnéeë nëmmen a klenge Päck aktualiséiert ginn an zwar ëmmer da wann ee Benotzer op dës Wiki zougräift.
-Fir dës aktualisatioun méi séier fäerdeg ze maache, kann de MediaWiki Script <tt>runJobs.php</tt> (benotzt d'Optioun <tt>--maxjobs 1000</tt> fir d'Zuel vun den Aktualisatiounen déi beienee gemaach ginn ze limitéieren).
+Fir dës aktualisatioun méi séier fäerdeg ze maache, kann de MediaWiki Script <code>runJobs.php</code> (benotzt d'Optioun <code>--maxjobs 1000</code> fir d'Zuel vun den Aktualisatiounen déi beienee gemaach ginn ze limitéieren).
 Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	'smw_smwadmin_datarefreshbutton' => "Ufänken Daten z'aktualiséieren",
 	'smw_smwadmin_datarefreshstop' => 'Dësn Update stoppen',
@@ -10261,7 +10261,7 @@ $messages['mk'] = array(
 Промените извршени во овој чекор немаат влијание врз остатокот од базата на МедијаВики, и лесно можат да се вратат по старо ако се јави потреба.
 Оваа функција на поставката може да се врши повеќе пати без тоа да причини било каква штета, но потребна е само еднаш при инсталирање или подновување.',
 	'smw_smwadmin_permissionswarn' => 'Ако операцијата не успее со грешки при исполнувањето на SQL-наредбите, тогаш корисникот на базата на податоци што го употребува вашето вики (проверете ги вашите LocalSettings.php) нема доволно дозволи.
-Доделете му доволно дозволи на корисникот за да може да создава и брише табели, привремено внесете го најавниот корен (root) на вашата база на податоци во LocalSettings.php, или пак употребете ја скриптата за одржување <tt>SMW_setup.php</tt> која може да ги користи акердитивите за пристап од корисник на SysOp.',
+Доделете му доволно дозволи на корисникот за да може да создава и брише табели, привремено внесете го најавниот корен (root) на вашата база на податоци во LocalSettings.php, или пак употребете ја скриптата за одржување <code>SMW_setup.php</code> која може да ги користи акердитивите за пристап од корисник на SysOp.',
 	'smw_smwadmin_dbbutton' => 'Започни или поднови табели',
 	'smw_smwadmin_announce' => 'Објавете го вашето вики',
 	'smw_smwadmin_announcedocu' => 'Семантички МедијаВики има мрежна служба за соопштување на нови семантички вики-страници.
@@ -10276,7 +10276,7 @@ $messages['mk'] = array(
 Подолу е прикажано дали има поднова во тек, и тоа ви овозможува да започнувате или запирате подновувања (освен ако таа можност не е исклучена од администраторот на мрежното место).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Веќе е во тек една поднова.</strong>
 Нормално е подновата да биде бавна, бидејќи податоците се обновуваат во мали делчиња секојпат кога корисникот ќе отиде на викито.
-За да ја убрзате подновата, можете да ја повикате скриптата за одржување на MediaWiki <tt>runJobs.php</tt> (користете ја можноста <tt>--maxjobs 1000</tt> за да го ограничите бројот на поднови во една партија).
+За да ја убрзате подновата, можете да ја повикате скриптата за одржување на MediaWiki <code>runJobs.php</code> (користете ја можноста <code>--maxjobs 1000</code> за да го ограничите бројот на поднови во една партија).
 Проценет напредок на тековната поднова:',
 	'smw_smwadmin_datarefreshbutton' => 'Започни со подновување на податоци',
 	'smw_smwadmin_datarefreshstop' => 'Започни го ова подновување',
@@ -10814,7 +10814,7 @@ Funksjonen under sikrer at databasen din blir satt opp riktig.
 Endringene gjort i dette steget har ingen effekt på resten av MediaWiki-databasen og kan enkelt gjøres om om ønskelig.
 Denne initialiseringsfunksjonen kan bli kjørt flere ganger uten skadevirkning, men den trenger kun kjøres en gang ved installering eller oppgradering.',
 	'smw_smwadmin_permissionswarn' => 'Dersom operasjonen mislykkes med SQL-feil, har databasebrukeren anvendt av din wiki sannsynligvis manglende rettigheter (sjekk LocalSettings.php).
-Enten må denne brukeren gis tilstrekkelige rettigheter til å opprette og slette tabeller, eller en må midlertidig skrive inn innloggingsinformasjonen til database-roten i LocalSettings.php, eller en må bruke vedlikeholdsskriptet <tt>SMW_setup.php</tt> som har rettighetene til AdminSettings.php.', # Fuzzy
+Enten må denne brukeren gis tilstrekkelige rettigheter til å opprette og slette tabeller, eller en må midlertidig skrive inn innloggingsinformasjonen til database-roten i LocalSettings.php, eller en må bruke vedlikeholdsskriptet <code>SMW_setup.php</code> som har rettighetene til AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Initialiser eller oppgrader tabeller',
 	'smw_smwadmin_announce' => 'Kunngjør din wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har en nettjeneste for kunngjøring av nye semantiske wikisider.
@@ -10829,7 +10829,7 @@ Oppdateringen blir utført side for side og vil ikke bli fullført umiddelbart.
 Det følgende viser om en oppdatering er i gang og lar deg starte eller stoppe oppdateringer (ved mindre denne muligheten er gjort utilgjengelig av sidens administratorer).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>En oppdatering er allerede i gang.</strong>
 Det er normalt at oppdateringen går tregt fremover siden den bare oppdaterer data i små biter hver gang en bruker besøker wikien.
-For å fullføre denne oppdateringen raskere kan du starte MediaWiki-vedlikeholdsskriptet <tt>runJobs.php</tt> (bruk valget <tt>--maxjobs 1000</tt> for å avgrense antallet oppdateringer som gjøres sammenhengende).
+For å fullføre denne oppdateringen raskere kan du starte MediaWiki-vedlikeholdsskriptet <code>runJobs.php</code> (bruk valget <code>--maxjobs 1000</code> for å avgrense antallet oppdateringer som gjøres sammenhengende).
 Anslått fremdrift for gjeldende oppdatering:',
 	'smw_smwadmin_datarefreshbutton' => 'Start oppdatering av data',
 	'smw_smwadmin_datarefreshstop' => 'Stopp denne oppdateringen',
@@ -10939,6 +10939,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-csv-sep' => 'Het te gebruiken scheidingsteken',
 	'smw-paramdesc-dsv-separator' => 'Het te gebruiken scheidingsteken',
 	'smw-paramdesc-dsv-filename' => 'De naam voor het DSV-bestand',
+	'smw-paramdesc-filename' => 'De naam van het uitvoerbestand',
 	'smw-smwdoc-description' => 'Geeft een tabel weer met alle parameters die kunnen worden gebruikt met de opgegeven resultaatopmaak samen met standaardwaarden en beschrijvingen.',
 	'smw-smwdoc-par-format' => 'De resultaatopmaak waarvoor parameterdocumentatie weergegeven moet worden.',
 	'smw-smwdoc-par-parameters' => 'Welke parameters weer te geven. "specific" voor parameters toegevoegd door de opmaak, "base" voor de parameteres die beschikbaar zijn in alle opmaken, en "alle" voor beiden.',
@@ -11171,7 +11172,7 @@ De onderstaande functionaliteit zorgt ervoor dat uw database juist is ingesteld.
 De wijzigingen die in deze stap worden gemaakt, hebben geen invloed op de bestaande database van MediaWiki, en zijn eventueel eenvoudig ongedaan te maken.
 Deze instelfunctie kan meerdere keren worden uitgevoerd zonder schade aan te richten, hoewel het uiteraard slechts noodzakelijk is deze een keer uit te voeren per installatie of upgrade.',
 	'smw_smwadmin_permissionswarn' => 'Als de handeling mislukt en er SQL-foutmeldingen worden weergegeven, heeft de databasegebruiker van uw wiki waarschijnlijk onvoldoende rechten (zie LocalSettings.php).
-Geef deze gebruiker de benodigde extra rechten om tabellen aan te maken en te verwijderen, zet tijdelijk de aanmeldgegevens van de hoofdgebruiker (root) van uw databasesysteem in LocalSettings.php, of gebruik het beheerscript <tt>SMW_setup.php</tt> dat de gebruikersnaam en wachtwoord van een beheerder kan gebruiken.',
+Geef deze gebruiker de benodigde extra rechten om tabellen aan te maken en te verwijderen, zet tijdelijk de aanmeldgegevens van de hoofdgebruiker (root) van uw databasesysteem in LocalSettings.php, of gebruik het beheerscript <code>SMW_setup.php</code> dat de gebruikersnaam en wachtwoord van een beheerder kan gebruiken.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiseren of bijwerken',
 	'smw_smwadmin_announce' => 'Uw wiki aankondigen',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki heeft een webservice voor het aankondigen van nieuwe semantische wikisites.
@@ -11186,7 +11187,7 @@ De gegevens worden pagina voor pagina bijgewerkt en het kan enige tijd duren voo
 Hieronder wordt weergegeven of er op dit moment een taak loopt en stelt u in staat een taak te stoppen of te starten (tenzij deze mogelijkheid door de sitebeheerder is uitgeschaked).',
 	'smw_smwadmin_datarefreshprogress' => "<strong>Er loopt een bijwerktaak</strong>
 Het is normaal dat de voortgang langzaam is omdat de gegevens ververst worden in kleine porties iedere keer als een gebruiker de wiki raadpleegt.
-Om het bijwerken sneller te laten verlopen, kunt u het beheerscript <tt>runJobs.php</tt> draaien. Gebruik de optie <tt>--maxjobs 1000</tt> om aan het aantal bij te werken pagina's per handeling te beperken.
+Om het bijwerken sneller te laten verlopen, kunt u het beheerscript <code>runJobs.php</code> draaien. Gebruik de optie <code>--maxjobs 1000</code> om aan het aantal bij te werken pagina's per handeling te beperken.
 Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_datarefreshbutton' => 'Gegevens bijwerken',
 	'smw_smwadmin_datarefreshstop' => 'Bijwerken afbreken',
@@ -11226,6 +11227,8 @@ Geschatte voortgang van de huidige taak:",
 	'smw_concept_header' => 'Pagina\'s met het concept "$1"',
 	'smw_conceptarticlecount' => "Hieronder {{PLURAL:$1|wordt $1 pagina|worden $1 pagina's}} weergegeven.",
 	'smw-qp-aggregatable-empty-data' => 'De opgevraagde samen te voegen gegevens kunnen niet weergegeven worden vanwege onvoldoende selectiecriteria.',
+	'smw-sp-properties-cache-info' => 'Deze gegevens zijn overgenomen uit een [https://www.semantic-mediawiki.org/wiki/Caching cache] en zijn voor het laatst bijgewerkt op $1.',
+	'smw-sp-properties-header-label' => 'Lijst met eigenschappen',
 );
 
 /** Norwegian Nynorsk (norsk nynorsk)
@@ -11384,7 +11387,7 @@ Funksjonen under syter for at databasen din er sett opp rett.
 Endringar gjort i dette steget har ikkje nokon effekt på resten av MediaWiki-databasen og kan enkelt rullast attende om det skulle vera ynskjeleg.
 Denne oppsettsfunksjonen kan køyrast fleire gongen utan at ein gjer nokon skade, men han trengst berre éin gong under installering eller oppgradering.',
 	'smw_smwadmin_permissionswarn' => 'Om operasjonen mislukkast med SQL-feil, har sannsynlegvis ikkje databasebrukaren nytta av wikien din dei rette løyva (sjekk LocalSettings.php).
-Anten gje denne brukaren dei rette løyva til å oppretta og sletta tabellar og mellombels skriv inn innloggingsinformasjonen til database-rooten din i LocalSettings.php, eller køyr vedlikehaldsskriptet <tt>SMW_setup.php</tt> som kan nytta løyva til AdminSettings.php.', # Fuzzy
+Anten gje denne brukaren dei rette løyva til å oppretta og sletta tabellar og mellombels skriv inn innloggingsinformasjonen til database-rooten din i LocalSettings.php, eller køyr vedlikehaldsskriptet <code>SMW_setup.php</code> som kan nytta løyva til AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Set i verk eller oppgrader tabellar',
 	'smw_smwadmin_announce' => 'Kunngjer wikien din',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har ei nettenesta for å kunngjera nye semantiske wikisider.
@@ -11399,7 +11402,7 @@ Oppdateringa blir utført sida for sida og vil ikkje vera ferdig med ein gong.
 Det fylgjande syner om ei oppdatering er på gong og lèt deg byrja eller stoppa oppdateringar (viss ikkje denne moglegheita er deaktivert av sideadministratoren).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Ei oppdatering held allereie på.</strong>
 Det er normalt at oppdateringa går sakte då ho berre oppfriskar data i små bitar kvar gong ein brukar er innom wikien.
-For å fullføra denne oppdateringa på ein kjappare måte, kan du setja i gang MediaWiki-vedlikehaldsskriptet <tt>runJobs.php</tt> (nytt valet <tt>--maxjobs 1000</tt> for å avgrensa talet på oppdetaringar som blir gjort i eitt stykke).
+For å fullføra denne oppdateringa på ein kjappare måte, kan du setja i gang MediaWiki-vedlikehaldsskriptet <code>runJobs.php</code> (nytt valet <code>--maxjobs 1000</code> for å avgrensa talet på oppdetaringar som blir gjort i eitt stykke).
 Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_datarefreshbutton' => 'Start oppdatering',
 	'smw_smwadmin_datarefreshstop' => 'Stopp denne oppdateringa',
@@ -11568,7 +11571,7 @@ La foncion çaijós verifica que vòstra banca de donadas es estada installada c
 Las modificacions fachas al moment d'aquesta etapa afectaràn pas la rèsta de la banca de donadas Mediawiki, e pòt èsser desfacha a volontat.
 Aquesta foncion d’installacion pòt èsser aviada mantun còp sens causar lo mendre degalh, mas una sola installacion o mesa e nivèl es necessària.",
 	'smw_smwadmin_permissionswarn' => "Se l’operacion fracassa amb d'errors SQL, l’utilizaire de la banca de donadas utilizada per vòstre wiki, (agachatz vòstre LocalSettings.php) risca probablament d'aver pas las permissions sufisentas.
-Cal siá permetre a aqueste utilizaire de dispausar de las permissions per crear e suprimir las taulas, siá entrar temporàriament la connexion en root a vòstra banca de donadas dins lo LocalSettings.php, siá utilizar l'escript de mantenença <tt>SMW_setup.php</tt> lo qual pòt utilizar las acreditacions de AdminSettings.php.", # Fuzzy
+Cal siá permetre a aqueste utilizaire de dispausar de las permissions per crear e suprimir las taulas, siá entrar temporàriament la connexion en root a vòstra banca de donadas dins lo LocalSettings.php, siá utilizar l'escript de mantenença <code>SMW_setup.php</code> lo qual pòt utilizar las acreditacions de AdminSettings.php.", # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializa las taulas de mesa a nivèl',
 	'smw_smwadmin_announce' => 'Anonciar vòstre wiki',
 	'smw_smwadmin_announcedocu' => "Semantic MediaWiki dispausa d’un servici internet per anonciar de sites wiki semantics novèls.
@@ -11583,7 +11586,7 @@ La mesa a jorn es executada pagina per pagina e se serà pas acabada immediatame
 La pagina seguenta aficha se una mesa a jorn es en cors d’execucion e vos permet de començar o d’arrestar aquestas (levat s'aquesta foncionalitat est desactivada per l’administrator del site).",
 	'smw_smwadmin_datarefreshprogress' => "<strong>Una mesa a jorn es en cors d’execucion.</strong>
 Es normal qu’una mesa a jorn progresse lentament dempuèi que refresca unicament las donadas dins de troces pichons a cada còp qu’un utilizaire accedís al wiki.
-Per acabar aquesta mesa a jorn mai rapidament, podètz invocar l'escript de mantenença Mediawiki <tt>runJobs.php</tt> (utilizatz l’opcion <tt>--maxjobs 1000</tt> per restrénher lo nombre de las mesas a jorn per escript aviat).
+Per acabar aquesta mesa a jorn mai rapidament, podètz invocar l'escript de mantenença Mediawiki <code>runJobs.php</code> (utilizatz l’opcion <code>--maxjobs 1000</code> per restrénher lo nombre de las mesas a jorn per escript aviat).
 Progression estimada de la mesa a jorn actuala :",
 	'smw_smwadmin_datarefreshbutton' => 'Començar la mesa a jorn de las donadas',
 	'smw_smwadmin_datarefreshstop' => 'Arrestar aquesta mesa a jorn',
@@ -11876,7 +11879,7 @@ Poniższa funkcja zapewnia, że baza danych zostanie poprawnie przygotowana.
 Zmiany wykonane w tym kroku nie mają wpływu na pozostałą część bazy danych MediaWiki i mogą łatwo zostać cofnięte w razie potrzeby.
 Ta operacja może zostać wykonana wielokrotnie bez wyrządzenia szkód ale konieczna jest tylko raz w trakcie instalacji lub aktualizacji.',
 	'smw_smwadmin_permissionswarn' => 'Jeśli operacja nie powiedzie się i wystąpią błędy SQL, najprawdopodobniej użytkownik bazy danych wykorzystywany przez Twoją wiki (sprawdź LocalSettings.php) nie ma wystarczających uprawnień.
-Nadaj użytkownikowi dodatkowe uprawnienia do tworzenia i usuwania tabel, tymczasowo użyj konta root w LocalSettings.php lub użyj skryptu konserwacyjnego <tt>SMW_setup.php</tt>, który ma uprawnienia SysOp.',
+Nadaj użytkownikowi dodatkowe uprawnienia do tworzenia i usuwania tabel, tymczasowo użyj konta root w LocalSettings.php lub użyj skryptu konserwacyjnego <code>SMW_setup.php</code>, który ma uprawnienia SysOp.',
 	'smw_smwadmin_dbbutton' => 'Inicjuj lub aktualizuj tabele',
 	'smw_smwadmin_announce' => 'Opublikuj swoją wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki posiada serwis internetowy do zamieszczania informacji o nowych semantycznych witrynach wiki.
@@ -11891,7 +11894,7 @@ Aktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychm
 Poniżej przedstawiono, czy aktualizacja jest w toku. Można również uruchomić lub zatrzymać aktualizację (chyba, że ta funkcja została wyłączona przez administratora).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacja trwa.</strong>
 To normalne, że aktualizacja postępuje powoli, gdyż odświeżanie danych wykonywane jest w małymi porcjami za każdym razem, gdy użytkownik korzysta z wiki.
-Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <tt>runJobs.php</tt> (użyj opcji <tt>--maxjobs 1000</tt>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia).
+Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <code>runJobs.php</code> (użyj opcji <code>--maxjobs 1000</code>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia).
 Przewidywany postęp bieżącej aktualizacji:',
 	'smw_smwadmin_datarefreshbutton' => 'Rozpocznij aktualizację danych',
 	'smw_smwadmin_datarefreshstop' => 'Zatrzymaj aktualizację danych',
@@ -12192,7 +12195,7 @@ La funsion sì-sota a assicura che soa base ëd dàit a l'é ampostà për da bi
 Ij cangiament fàit an cost pass-sì a toco pa ël rest dla bse ëd dàit mediaWiki, e a l'é bel fé torné andré s'as veul.
 Sta funsion d'ampostassion-sì a peul esse fàita vàire vire sensa fé gnun dann, ma a-i n'a j'é dabzògn mach na vira për l'anstalassion o l'agiornament.",
 	'smw_smwadmin_permissionswarn' => "Se l'operassion a faliss con dj'eror SQL, l'utent dla base ëd dàit dovrà da soa wiki (ch'a contròla sò LocalSettings.php) probabilment a l'ha pa basta 'd përmess.
-O bin ch'a-j daga a st'utent dij përmess adissionaj për creé e scancelé 'd tàule, temporaneament ch'a anserissa l'identificativ dël cont rèis ëd soa base ëd dàit an LocalSettings.php, opura ch'a deuvra ël copion ëd manteniment <tt>SMW_setup.php</tt> ch'a peul dovré le credensiaj ëd n'aministrator.",
+O bin ch'a-j daga a st'utent dij përmess adissionaj për creé e scancelé 'd tàule, temporaneament ch'a anserissa l'identificativ dël cont rèis ëd soa base ëd dàit an LocalSettings.php, opura ch'a deuvra ël copion ëd manteniment <code>SMW_setup.php</code> ch'a peul dovré le credensiaj ëd n'aministrator.",
 	'smw_smwadmin_dbbutton' => 'Inissialisé o agiorné le tàule',
 	'smw_smwadmin_announce' => 'Anonsia toa wiki',
 	'smw_smwadmin_announcedocu' => "Semantic MediaWiki a l'ha un servissi an grija për nonsié ëd sit neuv ëd wiki semàntiche.
@@ -12207,7 +12210,7 @@ La modìfica a l'é fàita pàgina për pàgina e a sarà pa completa sùbit.
 Lòn ch'a-i é sì-sota a mostra se na modìfica a l'é an cors e a-j përmët ëd fé parte o fërmé le modìfiche (gavà che sta possibilità a sia stàita disabilità da l'aministrator dël sit).",
 	'smw_smwadmin_datarefreshprogress' => "<strong>na modìfica a l'é già an cors.</strong>
 A l'é normal che la modìfica a von-a anans mach pian përchè a rinfrësca dat an cite partìe minca vira che n'utent a intra ant la wiki.
-Për fé finì sta modìfica pi an pressa, a peul ciamé ël senari ëd manteniment MediaWiki <tt>runJobs.php</tt> (ch'a deuvra l'opsion <tt>--maxjobs 1000</tt> për strenze ël nùmer ëd modìfiche fàite ant un lòt).
+Për fé finì sta modìfica pi an pressa, a peul ciamé ël copion ëd manteniment MediaWiki <code>runJobs.php</code> (ch'a deuvra l'opsion <code>--maxjobs 1000</code> për strenze ël nùmer ëd modìfiche fàite ant un lòt).
 Avansament stimà dla modìfica corenta:",
 	'smw_smwadmin_datarefreshbutton' => 'Ancamin-a a agiorné ij dat',
 	'smw_smwadmin_datarefreshstop' => 'Ferma sto agiornament-sì',
@@ -12519,7 +12522,7 @@ A função abaixo assegura que a sua base de dados está devidamente preparada.
 As alterações feitas neste passo não afectam o resto da base de dados do MediaWiki, e podem ser facilmente desfeitas se desejado.
 Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou actualização.',
 	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, é provável que o utilizador da base de dados usado pela sua wiki (consulte o seu LocalSettings.php) não tenha as permissões necessárias.
-Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.", # Fuzzy
+Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <code>SMW_setup.php</code>, o qual pode usar as credenciais presentes em AdminSettings.php.", # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
 	'smw_smwadmin_announcedocu' => 'O MediaWiki Semântico tem um serviço na internet \'\'(web service)\'\' para anunciar novas wikis semânticas.
@@ -12534,7 +12537,7 @@ A actualização é executada página a página e não ficará completa de imedi
 Abaixo é mostrado se uma actualização está a decorrer e permite-lhe iniciar ou parar actualizações (a menos que esta funcionalidade tenha sido desactivada por um administrador do site).',
 	'smw_smwadmin_datarefreshprogress' => "<strong>Já se encontra a decorrer uma actualização.</strong>
 É normal que a actualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede à wiki.
-Para terminar esta actualização mais rapidamente, pode executar o ''script'' de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de actualizações feitas em cada bloco).
+Para terminar esta actualização mais rapidamente, pode executar o ''script'' de manutenção do MediaWiki <code>runJobs.php</code> (use a opção <code>--maxjobs 1000</code> para restringir o número de actualizações feitas em cada bloco).
 Progresso estimado da actualização em curso:",
 	'smw_smwadmin_datarefreshbutton' => 'Iniciar a actualização dos dados',
 	'smw_smwadmin_datarefreshstop' => 'Parar esta actualização',
@@ -12859,7 +12862,7 @@ A função abaixo assegura que a sua base de dados está devidamente preparada.
 As alterações feitas neste passo não afetam o resto da base de dados MediaWiki e podem ser facilmente desfeitas se desejado.
 Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou atualização.',
 	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, provavelmente o usuário da base de dados utilizado pelo seu wiki (consulte o seu LocalSettings.php) não possui permissões suficientes.
-Conceda a esse usuário permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu superusuário (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais de um administrador.",
+Conceda a esse usuário permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu superusuário (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <code>SMW_setup.php</code>, o qual pode usar as credenciais de um administrador.",
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie seu wiki',
 	'smw_smwadmin_announcedocu' => 'O Semantic MediaWiki tem um serviço na internet para anunciar novos wikis semânticos.
@@ -12874,7 +12877,7 @@ A atualização é executada página a página e não ficará completa de imedia
 Abaixo é mostrado se uma atualização está em processo e permite-lhe iniciar ou parar atualizações (a menos que esta funcionalidade tenha sido desativada por um administrador do site).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Uma atualização já se encontra em progresso.</strong>
 É normal que a atualização progrida lentamente já que apenas atualiza dados em pequenos blocos de cada vez quando um utilizador acessa o wiki.
-Para terminar esta atualização mais rapidamente, você pode executar o script de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de atualizações feitas em um bloco).
+Para terminar esta atualização mais rapidamente, você pode executar o script de manutenção do MediaWiki <code>runJobs.php</code> (use a opção <code>--maxjobs 1000</code> para restringir o número de atualizações feitas em um bloco).
 Progresso estimado da atualização corrente:',
 	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
 	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
@@ -13384,7 +13387,7 @@ $messages['ru'] = array(
 Изменения, сделанные на этом шаге, не влияют на основную часть базы данных MediaWiki и могут быть при желании легко отменены.
 Хотя эта функция установки может быть выполнена несколько раз не причинив никакого, её запуск необходим только один раз во время установки или обновления.',
 	'smw_smwadmin_permissionswarn' => 'Причиной сбоев при выполнении SQL-команд, может быть отсутствие необходимых прав у пользователя, от имени которого вы подключаетесь к базе данных вики (проверьте свой LocalSettings.php).
-Предоставьте этому пользователю дополнительные права на создание и удаление таблиц, временно введите логин root в LocalSettings.php, или используйте обслуживающий скрипт <tt>SMW_setup.php</tt>, который может использовать настройки администратора.',
+Предоставьте этому пользователю дополнительные права на создание и удаление таблиц, временно введите логин root в LocalSettings.php, или используйте обслуживающий скрипт <code>SMW_setup.php</code>, который может использовать настройки администратора.',
 	'smw_smwadmin_dbbutton' => 'Инициализация или обновление таблиц',
 	'smw_smwadmin_announce' => 'Объявление вашей вики',
 	'smw_smwadmin_announcedocu' => 'У Semantic MediaWiki есть веб-сервис для объявлений новых семантических вики-сайтов.
@@ -13399,7 +13402,7 @@ $messages['ru'] = array(
 Ниже показано как идёт процесс обновления, даётся возможность начать или прекратить обновление (если эта функция не была отключена на администратором сайте).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Обновление уже запущено.</strong>
 Это нормально, что процесс обновления идёт достаточно медленно, поскольку он обновляет данные лишь небольшими порциями, когда пользователь обращается к вики.
-Чтобы закончить данное обновление быстрее, вы можете вызвать скрипт обслуживания MediaWiki <tt>runJobs.php</tt> (используйте настройку <tt>- maxjobs 1000</tt>, чтобы ограничить количество обновлений в одной партии).
+Чтобы закончить данное обновление быстрее, вы можете вызвать скрипт обслуживания MediaWiki <code>runJobs.php</code> (используйте настройку <code>- maxjobs 1000</code>, чтобы ограничить количество обновлений в одной партии).
 Ориентировочный ход выполнения текущего обновления:',
 	'smw_smwadmin_datarefreshbutton' => 'Начать обновление данных',
 	'smw_smwadmin_datarefreshstop' => 'Остановить это обновление',
@@ -13808,7 +13811,7 @@ Funkcia nižšie zabezpečuje správne nastavenie databázy.
 Zmeny vykonané v tomto kroku neovplyvňujú zvyšok databázy MediaWiki a ak je to potrebné, je ich možno jednoducho vrátiť.
 Túto funkcia nastavenia možno vykonať viacnásobne bez akejkoľvek ujmy, ale je potrebná iba raz počas inštalácie či aktualizácie.',
 	'smw_smwadmin_permissionswarn' => 'Ak táto operácia zlyhá na chybách SQL, používateľ databázy, ktorého využíva vaša wiki (pozrite sa do LocalSettings.php) pravdepodobne nemá dostatočné privilégiá.
-Buď udeľte tomuto používateľovi ďalšie privilégiá na vytváranie a mazanie tabuliek, dočasne zadajte prihlasovacie údaje používateľa root databázy do LocalSettings.php alebo použite skript na údržbu t>SMW_setup.php</tt>, ktorý dokáže využiť oprávnenia z AdminSettings.php.', # Fuzzy
+Buď udeľte tomuto používateľovi ďalšie privilégiá na vytváranie a mazanie tabuliek, dočasne zadajte prihlasovacie údaje používateľa root databázy do LocalSettings.php alebo použite skript na údržbu t>SMW_setup.php</code>, ktorý dokáže využiť oprávnenia z AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializovať alebo aktualizovať tabuľky',
 	'smw_smwadmin_announce' => 'Oznámiť vašu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki má webovú službu na oznamovanie nových sémantických wiki lokalít.
@@ -13823,7 +13826,7 @@ Aktualizáciu je možné spustiť na špeciálnej stránke a nebude dokočená o
 Tu sa zobrazuje priebeh aktualizácie a môžete tu spustiť alebo zastaviť aktualizácie (ak túto funkciu správca nevypol).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizácia už prebieha.</strong>
 Je normálne, že aktualizácie prebieha pomaly, pretože obnovuje údaje iba po malých kúskoch naraz, keď používateľ zobrazí stránku wiki.
-Rýchlejšie dokončenie tejto aktualizácie môžete dosiahnuť vyvolaním údržbového skriptu MediaWiki <tt>runJobs.php</tt> (použite voľbu <tt>--maxjobs 1000</tt> na obmedzenie počtu aktualizácií v jednej dávke).
+Rýchlejšie dokončenie tejto aktualizácie môžete dosiahnuť vyvolaním údržbového skriptu MediaWiki <code>runJobs.php</code> (použite voľbu <code>--maxjobs 1000</code> na obmedzenie počtu aktualizácií v jednej dávke).
 Odhadovaný priebeh aktualizácie:',
 	'smw_smwadmin_datarefreshbutton' => 'Spustiť aktualizáciu údajov',
 	'smw_smwadmin_datarefreshstop' => 'Zastaviť túto aktualizáciu',
@@ -14191,7 +14194,7 @@ $messages['sr-ec'] = array(
 Промене које ће се сада извести немају последица за остали део базе података Медијавикија, а по потреби се могу врло лако поништити.
 Ова функција инсталирања се може покретати више пута без бојазни да ће нанети неку штету, али је неопходна само једном приликом инсталирања или ажурирања.',
 	'smw_smwadmin_permissionswarn' => 'Ако се операција заврши са SQL грешкама, корисник базе података (погледајте ваш LocalSettings.php) вероватно нема довољно дозвола за извршавање неопходних операција.
-Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, привремено се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <tt>SMW_setup.php</tt>, која може користити акредитацију из скрипте AdminSettings.php.', # Fuzzy
+Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, привремено се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <code>SMW_setup.php</code>, која може користити акредитацију из скрипте AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Покретање или ажурирање табела базе података',
 	'smw_smwadmin_announce' => 'Дојавите о постојању вашег викија',
 	'smw_smwadmin_announcedocu' => 'Семантички медијавики има веб сервиз за дојаву о постојању нових викија.
@@ -14206,7 +14209,7 @@ $messages['sr-ec'] = array(
 Испод је приказано да ли је ажурирање у току, а то вам омогућава да започнете или зауставите доградње (осим ако ту могућност није искључио администратор).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Једно ажурирање је већ у току.</strong>
 Нормално је да ажурирање напредује споро, пошто се само освежавају мали делови података сваки пут када корисник приступи викију.
-Да би се ово ажурирање брже завршило, можете покренути скрипту за одржавање Медијавикија <tt>runJobs.php</tt> (користите опцију <tt>--maxjobs 1000</tt> за рестрикцију броја ажурирања у једном пакету).
+Да би се ово ажурирање брже завршило, можете покренути скрипту за одржавање Медијавикија <code>runJobs.php</code> (користите опцију <code>--maxjobs 1000</code> за рестрикцију броја ажурирања у једном пакету).
 Процена напредовања тренутног ажурирања:',
 	'smw_smwadmin_datarefreshbutton' => 'Почни ажурирање података',
 	'smw_smwadmin_datarefreshstop' => 'Заустави ово ажурирање',
@@ -14403,7 +14406,7 @@ Donja funkcija potvrđuje da je vaša baza podataka ispravno instalirana.
 Promene koje će se sada izvesti nemaju posledica za ostali deo baze podataka Medijavikija, a po potrebi se mogu vrlo lako poništiti.
 Ova funkcija instaliranja se može pokretati više puta bez bojazni da će naneti neku štetu, ali je neophodna samo jednom prilikom instaliranja ili ažuriranja.',
 	'smw_smwadmin_permissionswarn' => 'Ako se operacija završi sa SQL greškama, korisnik baze podataka (pogledajte vaš LocalSettings.php) verovatno nema dovoljno dozvola za izvršavanje neophodnih operacija.
-Ili dajte neophodne dozvole tom korisniku kako bi mogao da pravi i briše tabele u bazi, privremeno se ulogujte kao root u LocalSettings.php, ili koristite skriptu za održavanje <tt>SMW_setup.php</tt>, koja može koristiti akreditaciju iz skripte AdminSettings.php.', # Fuzzy
+Ili dajte neophodne dozvole tom korisniku kako bi mogao da pravi i briše tabele u bazi, privremeno se ulogujte kao root u LocalSettings.php, ili koristite skriptu za održavanje <code>SMW_setup.php</code>, koja može koristiti akreditaciju iz skripte AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Pokretanje ili ažuriranje tabela baze podataka',
 	'smw_smwadmin_announce' => 'Dojavite o postojanju vašeg vikija',
 	'smw_smwadmin_announcedocu' => 'Semantički medijaviki ima veb serviz za dojavu o postojanju novih vikija.
@@ -14418,7 +14421,7 @@ Ažuriranje će se obaviti stranicu po stranicu i neće se odmah završiti.
 Sledeći prikaz služi za nadgledanje ažuriranja u progresu i omogućava vam da ih pokrenete ili obustavite (osim ako administrator sajta nije isključio ovu mogućnost).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Jedno ažuriranje je već u toku.</strong>
 Normalno je da ažuriranje napreduje sporo, pošto se samo osvežavaju mali delovi podataka svaki put kada korisnik pristupi vikiju.
-Da bi se ovo ažuriranje brže završilo, možete pokrenuti skriptu za održavanje Medijavikija <tt>runJobs.php</tt> (koristite opciju <tt>--maxjobs 1000</tt> za restrikciju broja ažuriranja u jednom paketu).
+Da bi se ovo ažuriranje brže završilo, možete pokrenuti skriptu za održavanje Medijavikija <code>runJobs.php</code> (koristite opciju <code>--maxjobs 1000</code> za restrikciju broja ažuriranja u jednom paketu).
 Procena napredovanja trenutnog ažuriranja:',
 	'smw_smwadmin_datarefreshbutton' => 'Počni ažuriranje podataka',
 	'smw_smwadmin_datarefreshstop' => 'Zaustavi ovo ažuriranje',
@@ -14727,7 +14730,7 @@ Funktionen nedan ser till att din databas konfigureras korrekt.
 Ändringarna som görs i detta steg påverkar inte resten av MediaWiki-databasen, och kan lätt göras ogjorda om så önskas.
 Denna installationsfunktion kan köras flera gånger utan att orsaka någon skada, men det är nödvändigt att köra den en gång vid installation eller uppgradering.',
 	'smw_smwadmin_permissionswarn' => "Om operationen misslyckas och visar SQL-fel så har din användare för databasen (kolla inställningarna i filen LocalSettings.php) förmodligen inte tillräckliga rättigheter.
-Det finns tre sätt att åtgärda detta: Ge rättigheter till användaren att skapa och radera tabeller, ändra temporärt användaren till ''root'' i LocalSettings.php, eller använd underhålls-scriptet <tt>SMW_setup.php</tt>, vilken kan använda rättigheterna för en administratör.",
+Det finns tre sätt att åtgärda detta: Ge rättigheter till användaren att skapa och radera tabeller, ändra temporärt användaren till ''root'' i LocalSettings.php, eller använd underhålls-scriptet <code>SMW_setup.php</code>, vilken kan använda rättigheterna för en administratör.",
 	'smw_smwadmin_dbbutton' => 'Initialisera eller uppgradera tabeller',
 	'smw_smwadmin_announce' => 'Meddela att din wiki finns',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har en webbtjänst för tillkännagivande av nya semantiska wiki-webbplatser.
@@ -14742,7 +14745,7 @@ Uppdateringen utförs sida för sida och blir inte klar omedelbart.
 Det följande visar om en uppdatering pågår och tillåter dig att starta eller stoppa uppdateringar (såvida inte denna finess har stängts av av administratören).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>En uppdatering pågår redan.</strong>
 Det är normalt att uppdateringen fortskrider långsamt, eftersom den endast uppdaterar data i små bitar åt gången varje gång en användare använder wikin.
-För att avsluta uppdateringen snabbare, kan du köra MediaWiki-scriptet <tt>runJobs.php</tt> (använd valet <tt>--maxjobs 1000</tt>  för att begränsa antalet uppdateringar per körning).
+För att avsluta uppdateringen snabbare, kan du köra MediaWiki-scriptet <code>runJobs.php</code> (använd valet <code>--maxjobs 1000</code>  för att begränsa antalet uppdateringar per körning).
 Uppskattning av hur långt uppdateringen har kommit:',
 	'smw_smwadmin_datarefreshbutton' => 'Starta uppdatering av data',
 	'smw_smwadmin_datarefreshstop' => 'Stoppa denna uppdatering',
@@ -15234,7 +15237,7 @@ Tinitiyak ng tungkuling nasa ibaba na tama ang pagkakahanda ng kalipunan ng dato
 Hindi nakakaapekto ang mga pagbabagong ginawa sa hakbang na ito sa iba pang mga bahagi ng kalipunan ng dato ng MediaWiki, at madaling/maginhawang maibabalik kung nanaisin.
 Maaaring isagawa ng maramihang ulit ang tungkulin ng paghahandang ito na hindi nakapagdurulot ng anumang pinsala, subalit isang ulit lamang itong kailangan sa pagluluklok/instalasyon o pagtataas ng uri/grado.',
 	'smw_smwadmin_permissionswarn' => 'Kapag nabigo ang pagsasagawa na mayroong mga kamalian ng SQL, maaaring walang sapat na mga kapahintulutan ang tagagamit ng kalipunan ng dato na hinirang ng wiki mo (siyasatin ang iyong LocalSettings.php).
-Maaaring pagkalooban ang tagagamit na ito ng karagdagang mga kapahintulutan upang makalikha at makapagbura ng mga talahanayan, pansamantalang ipasok ang panglagda ng iyong ugat ng kalipunan ng dato sa LocalSettings.php, o gamitin ang panitik ng pagpapanatili na <tt>SMW_setup.php</tt> na makakagamit ng mga kredensiyal ng isang tagapangasiwa.',
+Maaaring pagkalooban ang tagagamit na ito ng karagdagang mga kapahintulutan upang makalikha at makapagbura ng mga talahanayan, pansamantalang ipasok ang panglagda ng iyong ugat ng kalipunan ng dato sa LocalSettings.php, o gamitin ang panitik ng pagpapanatili na <code>SMW_setup.php</code> na makakagamit ng mga kredensiyal ng isang tagapangasiwa.',
 	'smw_smwadmin_dbbutton' => 'Umpisahan o itaas ang uri (klase) ng mga tabla',
 	'smw_smwadmin_announce' => 'Ipahayag ang wiki mo',
 	'smw_smwadmin_announcedocu' => 'Ang Semantikong Mediawiki ay mayroong isang palingkurang pangweb para sa pagpapahayag ng bagong mga sayt ng bagong wiking semantiko (hinggil sa kahulugan ng mga salita).
@@ -15249,7 +15252,7 @@ Isinasakatuparan ang pagsasapanahon ng pahina sa pahina at hindi agad-agarang ma
 Ipinapakita ng sumusunod kung sumusulong na ang isang pagsasapanahon at magpapahintulot sa iyo upang simulan o pahintuin ang mga pagsasapanahon (maliban na lamang kung hindi pinagana/pinaandar ng tagapangasiwa ng sityo/sayt ang katangiang-kasangkapang ito).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Sumusulong na ang isang pagsasapanahon.</b>
 Pangkaraniwan lamang na mabagal ang pagsulong ng pagsasapanahon dahil sinasariwa lamang nito ang maliliit na tipak ng dato sa bawat panahong pumupunta sa wiki ang isang tagagamit.
-Upang mas mabilisang matapos ang pagsasapanahong ito, maaari mong tawagin ang panitik na pangpagpapanatiling <tt>runJobs.php</tt> (gamitin ang pagpipiliang <tt>--maxjobs 1000</tt> ng MediaWiki upang mabigyan ng hangganan ang bilang ng mga pagsasapanahong ginagawa sa bawat isang bungkos).
+Upang mas mabilisang matapos ang pagsasapanahong ito, maaari mong tawagin ang panitik na pangpagpapanatiling <code>runJobs.php</code> (gamitin ang pagpipiliang <code>--maxjobs 1000</code> ng MediaWiki upang mabigyan ng hangganan ang bilang ng mga pagsasapanahong ginagawa sa bawat isang bungkos).
 Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_datarefreshbutton' => 'Umpisahang isapanahon ang dato',
 	'smw_smwadmin_datarefreshstop' => 'Ihinto ang pagsasapanahong ito',
@@ -15425,6 +15428,7 @@ $messages['ug-latn'] = array(
  * @author Olvin
  * @author Prima klasy4na
  * @author Steve.rusyn
+ * @author SteveR
  * @author Тест
  * @author Юрій Булка
  */
@@ -15636,7 +15640,7 @@ $messages['uk'] = array(
 	'smw_smwadmin_docu' => 'Ця сторінка допоможе при встановленні або оновленні <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Не забудьте зробити резервну копію всіх важливих даних перед запуском адміністративних функцій.',
 	'smw_smwadmin_db' => 'Встановлення та оновлення бази даних',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki потребує розширити базу даних, щоб могти зберігати семантичну інформацію. Подана нижче функція забезпечує правильне налаштування бази даних. Зміни, котрі вона вносить, не зачіпають решти бази даних MediaWiki, та можуть бути легко скасовані. Хоча цю функцію безпечно запускати кілька разів, її використання потрібне лише один раз для встановлення чи оновлення.',
-	'smw_smwadmin_permissionswarn' => 'Якщо ця операція буде зупинена через помилки SQL, вірогідною причиною може бути відсутність необхідних прав користувача, під іменем якого вікі під’єднується до бази даних (він вказується у LocalSettings.php). В такому випадку вам необхідно або дозволити цьому користувачу створювати та вилучати таблиці БД, або тимчасово ввести в LocalSettings.php логін БД «root», або використати сценарій обслуговування <tt>SMW_setup.php</tt>, який може використовувати облікові дані AdminSettings.php.', # Fuzzy
+	'smw_smwadmin_permissionswarn' => 'Якщо ця операція буде зупинена через помилки SQL, вірогідною причиною може бути відсутність необхідних прав користувача, під іменем якого вікі під’єднується до бази даних (він вказується у LocalSettings.php). В такому випадку вам необхідно або дозволити цьому користувачу створювати та вилучати таблиці БД, або тимчасово ввести в LocalSettings.php логін БД «root», або використати сценарій обслуговування <code>SMW_setup.php</code>, який може використовувати облікові дані AdminSettings.php.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Ініціалізація або освіження таблиць',
 	'smw_smwadmin_announce' => 'Заявити про вашу вікі',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki має вебсервіс для заявлення про нові семантичні вікі сайти. Головне призначення цього сервісу — зберігати список відкритих сайтів, що використовують Semantic MediaWiki з метою допомогти проектові <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki</a> мати інформацію про типові варіанти використання цього рушія. Більше інформації можна знайти на <a href="http://semantic-mediawiki.org/wiki/Registry">сайті Semantic MediaWiki</a>.',
@@ -15644,7 +15648,7 @@ $messages['uk'] = array(
 	'smw_smwadmin_datarefresh' => 'Відновлення і оновлення даних',
 	'smw_smwadmin_datarefreshdocu' => 'Можна відновити всі дані Semantic MediaWiki, базуючись на поточному стані вмісту вікі. Це можна використати при відновленні пошкоджених даних або при оновленні даних, якщо внутрішній формат змінився через оновлення програмного забезпечення. Оновлення буде виконувати сторінка за сторінкою, тому займе якийсь час. Нижче показано прогрес процесу оновлення, дається можливість запустити або зупинити оновлення (якщо ця функція не була заблокована адміністратором).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Процес оновлення вже запущено.</strong>
-Процес оновлення відбувається маленькими порціям із кожним відкриттям сторінки користувачами, тому він проходить повільно. Щоб швидше закінчити оновлення, можна скористатись сценарієм обслуговування <tt>runJobs.php</tt> (використовуйте опцію <tt>--maxjobs 1000</tt> щоб обмежити число оновлень в одному пакеті).
+Процес оновлення відбувається маленькими порціям із кожним відкриттям сторінки користувачами, тому він проходить повільно. Щоб швидше закінчити оновлення, можна скористатись сценарієм обслуговування <code>runJobs.php</code> (використовуйте опцію <code>--maxjobs 1000</code> щоб обмежити число оновлень в одному пакеті).
 Приблизний стан запущеного оновлення:',
 	'smw_smwadmin_datarefreshbutton' => 'Почати оновлення даних',
 	'smw_smwadmin_datarefreshstop' => 'Зупинити це оновлення',
@@ -16416,7 +16420,7 @@ $messages['zh-hans'] = array(
 这个步骤所做的修改不会影响MediaWiki数据库的其他部分，如果需要，可以方便地撤销所做的修改。
 这个设置功能可多次执行，不会造成任何危害。但是只需在安装或升级时执行一次即可。',
 	'smw_smwadmin_permissionswarn' => '如果操作因SQL错误而失败，可能是维基的数据库用户（检查LocalSettings.php）没有相应权限。
-你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<tt>SMW_setup.php</tt>，这个脚本可以使用AdminSettings.php中的信息。', # Fuzzy
+你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<code>SMW_setup.php</code>，这个脚本可以使用AdminSettings.php中的信息。', # Fuzzy
 	'smw_smwadmin_dbbutton' => '初始化或升级表格',
 	'smw_smwadmin_announce' => '发布维基',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki提供一个网络服务，用于公告新的语义维基网站。
@@ -16431,7 +16435,7 @@ $messages['zh-hans'] = array(
 下方将显示更新是否正在进行，并允许你开始或终止更新。（此功能可以被网站管理员禁用）',
 	'smw_smwadmin_datarefreshprogress' => '<strong>有一个更新正在进行。</strong>
 更新进程可能会很慢，因为该进程仅在用户访问维基时小块地更新数据。
-可以使用MediaWiki维护脚本<tt>runJobs.php</tt>（使用选项 <tt>--maxjobs 1000</tt> 限制每批更新数目）来加快更新完成速度。
+可以使用MediaWiki维护脚本<code>runJobs.php</code>（使用选项 <code>--maxjobs 1000</code> 限制每批更新数目）来加快更新完成速度。
 目前更新的估计进度：',
 	'smw_smwadmin_datarefreshbutton' => '开始更新数据',
 	'smw_smwadmin_datarefreshstop' => '停止更新',
@@ -16724,7 +16728,7 @@ $messages['zh-hant'] = array(
 這個步驟所做的修改不會影響 MediaWiki 資料庫的其他部分，如果需要，可以方便地撤銷所做的修改。
 這個定射功能可多次執行，不會造成任何危害。但是只需在安裝或升級時執行一次即可。',
 	'smw_smwadmin_permissionswarn' => '如果操作因 SQL 錯誤而失敗，可能是維基的資歷庫用戶（檢查 LocalSettings.php）沒有相應權限。
-你可以向該用戶賦予建立和刪除表格的權限，或臨時將資料庫根用戶的登入資訊輸入 LocalSettings.php。你也可以使用維護腳本<tt>SMW_setup.php</tt>，這個腳本可以使用 AdminSettings.php 中的資訊。', # Fuzzy
+你可以向該用戶賦予建立和刪除表格的權限，或臨時將資料庫根用戶的登入資訊輸入 LocalSettings.php。你也可以使用維護腳本<code>SMW_setup.php</code>，這個腳本可以使用 AdminSettings.php 中的資訊。', # Fuzzy
 	'smw_smwadmin_dbbutton' => '初始化或升級表格',
 	'smw_smwadmin_announce' => '發布 wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki 提供一個網路服務，用於公告新的語意維基網站。
@@ -16739,7 +16743,7 @@ $messages['zh-hant'] = array(
 下方將顯示更新是否正在進行，並允許你開始或終止更新。（此功能可以被網站管理員禁用）',
 	'smw_smwadmin_datarefreshprogress' => '<strong>有一個更新正在進行。</strong>
 更新進程可能會很慢，因為該進程僅在用戶訪問維基時小塊地更新數據。
-可以使用 MediaWiki 維護腳本<tt>runJobs.php</tt>（使用選項 <tt>--maxjobs 1000</tt> 限制每批更新數目）來加快更新完成速度。
+可以使用 MediaWiki 維護腳本<code>runJobs.php</code>（使用選項 <code>--maxjobs 1000</code> 限制每批更新數目）來加快更新完成速度。
 目前更新的估計進度：',
 	'smw_smwadmin_datarefreshbutton' => '開始更新資料',
 	'smw_smwadmin_datarefreshstop' => '停止更新',
