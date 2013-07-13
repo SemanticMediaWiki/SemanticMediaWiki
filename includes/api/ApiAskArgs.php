@@ -1,8 +1,13 @@
 <?php
 
+namespace SMW;
+
+use SMWPropertyValue;
+use SMWPrintRequest;
+
 /**
  * API module to query SMW by providing a query specified as
- * a list of conditions, printouts and parameters. 
+ * a list of conditions, printouts and parameters.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,47 +24,44 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.6.2
+ * @file
  *
- * @ingroup SMW
- * @ingroup API
+ * @license GNU GPL v2+
+ * @since   1.6.2
  *
- * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ApiAskArgs extends ApiSMWQuery {
-	
+
+/**
+ * API module to query SMW by providing a query specified as
+ * a list of conditions, printouts and parameters.
+ *
+ * @ingroup Api
+ */
+class ApiAskArgs extends ApiQuery {
+
+	/**
+	 * @see ApiBase::execute
+	 */
 	public function execute() {
-		$params = $this->extractRequestParams();
 
-		foreach ( $params['parameters'] as $param ) {
-			$parts = explode( '=', $param, 2 );
-			
-			if ( count( $parts ) == 2 ) {
-				$this->parameters[$parts[0]] = $parts[1];
-			}
-		}
-		
-		$query = $this->getQuery( 
-			implode( ' ', array_map( array( __CLASS__, 'wrapCondition' ), $params['conditions'] ) ),
-			array_map( array( __CLASS__, 'printoutFromString' ), $params['printouts'] )
-		);
-		
-		$this->addQueryResult( $this->getQueryResult( $query ) );
-	}
-	
-	public static function wrapCondition( $c ) {
-		return "[[$c]]"; 
-	}
-	
-	public static function printoutFromString( $printout ) {
-		return new SMWPrintRequest(
-			SMWPrintRequest::PRINT_PROP,
-			$printout,
-			SMWPropertyValue::makeUserProperty( $printout )
-		);
+		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
+
+		$queryResult = $this->getQueryResult( $this->getQuery(
+			$parameterFormatter->getAskArgsApiParameters()->get( 'conditions' ),
+			$parameterFormatter->getAskArgsApiParameters()->get( 'printouts' ),
+			$parameterFormatter->getAskArgsApiParameters()->get( 'parameters' )
+		) );
+
+		$this->addQueryResult( $queryResult );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getAllowedParams
+	 *
+	 * @return array
+	 */
 	public function getAllowedParams() {
 		return array(
 			'conditions' => array(
@@ -79,29 +81,53 @@ class ApiAskArgs extends ApiSMWQuery {
 			),
 		);
 	}
-	
+
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getParamDescription
+	 *
+	 * @return array
+	 */
 	public function getParamDescription() {
 		return array(
 			'conditions' => 'The query conditions, i.e. the requirements for a subject to be included',
-			'printouts' => 'The query printouts, i.e. the properties to show per subject',
+			'printouts'  => 'The query printouts, i.e. the properties to show per subject',
 			'parameters' => 'The query parameters, i.e. all non-condition and non-printout arguments',
 		);
 	}
-	
+
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getDescription
+	 *
+	 * @return array
+	 */
 	public function getDescription() {
 		return array(
 			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.'
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getExamples
+	 *
+	 * @return array
+	 */
 	protected function getExamples() {
 		return array(
 			'api.php?action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc',
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getVersion
+	 *
+	 * @return string
+	 */
 	public function getVersion() {
 		return __CLASS__ . '-' . SMW_VERSION;
 	}
-	
+
 }

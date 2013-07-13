@@ -32,7 +32,7 @@ use ApiResult;
  */
 
 /**
- * @covers \ApiSMWQuery
+ * @covers \SMW\ApiQuery
  *
  * @ingroup Test
  *
@@ -47,17 +47,17 @@ class ApiQueryTest extends ApiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\ApiSMWQuery';
+		return '\SMW\ApiQuery';
 	}
 
 	/**
-	 * Helper method that returns a ApiSMWQuery object
+	 * Helper method that returns a ApiQuery object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $result
 	 *
-	 * @return ApiSMWQuery
+	 * @return ApiQuery
 	 */
 	private function getInstance( ApiResult $apiResult = null ) {
 
@@ -69,11 +69,17 @@ class ApiQueryTest extends ApiTestCase {
 			->method( 'getResult' )
 			->will( $this->returnValue( $apiResult ) );
 
+		// FIXME Use a mock store
+		$reflector = new ReflectionClass( $this->getClass() );
+		$store = $reflector->getProperty( 'store' );
+		$store->setAccessible( true );
+		$store->setValue( $apiQuery, \SMW\StoreFactory::getStore() );
+
 		return $apiQuery;
 	}
 
 	/**
-	 * @test ApiSMWQuery::__construct
+	 * @test ApiQuery::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -82,7 +88,34 @@ class ApiQueryTest extends ApiTestCase {
 	}
 
 	/**
-	 * @test ApiSMWQuery::addQueryResult
+	 * @test ApiQuery::getQuery
+	 * @test ApiQuery::getQueryResult
+	 *
+	 * @since 1.9
+	 */
+	public function testQueryAndQueryResult() {
+
+		$reflector = new ReflectionClass( $this->getClass() );
+		$instance  = $this->getInstance();
+
+		// Query object
+		$getQuery = $reflector->getMethod( 'getQuery' );
+		$getQuery->setAccessible( true );
+		$query = $getQuery->invoke( $instance, '[[Modification date::+]]', array(), array() );
+
+		$this->assertInstanceOf( 'SMWQuery', $query );
+
+		// Inject Query object and verify returning QueryResult instance
+		$getQueryResult = $reflector->getMethod( 'getQueryResult' );
+		$getQueryResult->setAccessible( true );
+		$getQueryResult->invoke( $instance, $query );
+
+		$this->assertInstanceOf( 'SMWQueryResult', $getQueryResult->invoke( $instance, $query ) );
+
+	}
+
+	/**
+	 * @test ApiQuery::addQueryResult
 	 *
 	 * @since 1.9
 	 */
@@ -105,7 +138,7 @@ class ApiQueryTest extends ApiTestCase {
 			'toArray'           => $test,
 			'getErrors'         => array(),
 			'hasFurtherResults' => true
-		) )->getQueryResult();
+		) )->getMockQueryResult();
 
 		// Access protected method
 		$reflector = new ReflectionClass( $this->getClass() );

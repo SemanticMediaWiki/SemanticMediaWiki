@@ -29,7 +29,7 @@ namespace SMW\Test;
  */
 
 /**
- * @covers \ApiAsk
+ * @covers \SMW\ApiAsk
  *
  * @ingroup Test
  *
@@ -45,7 +45,7 @@ class ApiAskTest extends ApiTestCase {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\ApiAsk';
+		return '\SMW\ApiAsk';
 	}
 
 	/**

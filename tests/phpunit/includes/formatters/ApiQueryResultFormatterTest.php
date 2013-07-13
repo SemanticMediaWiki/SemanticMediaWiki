@@ -53,20 +53,6 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWQueryResult object
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $accessor
-	 *
-	 * @return SMWQueryResult
-	 */
-	private function getMockQueryResult( array $accessor = array() ) {
-		$mockObject = new MockObjectBuilder( new ArrayAccessor( $accessor ) );
-		return $mockObject->getQueryResult();
-	}
-
-	/**
 	 * Helper method that returns a ApiQueryResultFormatter object
 	 *
 	 * @since 1.9
@@ -85,7 +71,10 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance( $this->getMockQueryResult() ) );
+		$this->assertInstanceOf(
+			$this->getClass(),
+			$this->getInstance( $this->newMockObject()->getMockQueryResult() )
+		);
 	}
 
 	/**
@@ -98,7 +87,7 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 
 		$this->SetExpectedException( 'InvalidArgumentException' );
 
-		$instance = $this->getInstance( $this->getMockQueryResult() );
+		$instance = $this->getInstance( $this->newMockObject()->getMockQueryResult() );
 		$instance->setIsRawMode( true );
 		$index = array();
 
@@ -122,11 +111,11 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testResultFormat( array $test, array $expected ) {
 
-		$queryResult = $this->getMockQueryResult( array(
+		$queryResult = $this->newMockObject( array(
 			'toArray'           => $test['result'],
 			'getErrors'         => array(),
 			'hasFurtherResults' => $test['furtherResults']
-		) );
+		) )->getMockQueryResult();
 
 		$instance = $this->getInstance( $queryResult );
 		$instance->setIsRawMode( $test['rawMode'] );
@@ -153,11 +142,11 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testErrorFormat( array $test, array $expected ) {
 
-		$queryResult = $this->getMockQueryResult( array(
+		$queryResult = $this->newMockObject( array(
 			'toArray'           => array(),
 			'getErrors'         => $test['errors'],
 			'hasFurtherResults' => false
-		) );
+		) )->getMockQueryResult();
 
 		$instance = $this->getInstance( $queryResult );
 

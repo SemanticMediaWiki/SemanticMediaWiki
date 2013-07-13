@@ -1,30 +1,47 @@
 <?php
 
+namespace SMW;
+
 /**
- * API module to obtain info about the SMW install,
- * primerily targeted at usage by the SMW registry.
+ * API module to obtain info about the SMW install, primarily targeted at
+ * usage by the SMW registry.
  *
- * @since 1.6
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * @file ApiSMWInfo.php
- * @ingroup SMW
- * @ingroup API
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * @licence GNU GPL v2+
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @file
+ *
+ * @license GNU GPL v2+
+ * @since   1.6
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ApiSMWInfo extends ApiBase {
 
-	public function __construct( $main, $action ) {
-		parent::__construct( $main, $action );
-	}
+/**
+ * API module to obtain info about the SMW install, primarily targeted at
+ * usage by the SMW registry.
+ *
+ * @ingroup Api
+ */
+class ApiInfo extends ApiBase {
 
 	/**
-	 * Export statistics from the store
-	 *
-	 * @see SMWStore::getStatistics
+	 * @see ApiBase::execute
 	 */
 	public function execute() {
+
 		$params = $this->extractRequestParams();
 		$requestedInfo = $params['info'];
 		$resultInfo = array();
@@ -39,7 +56,7 @@ class ApiSMWInfo extends ApiBase {
 			|| in_array( 'subobjectcount', $requestedInfo )
 			|| in_array( 'declaredpropcount', $requestedInfo ) ) {
 
-			$semanticStats = smwfGetStore()->getStatistics();
+			$semanticStats = $this->store->getStatistics();
 
 			$map = array(
 				'propcount' => 'PROPUSES',
@@ -58,7 +75,6 @@ class ApiSMWInfo extends ApiBase {
 				}
 			}
 
-			// Output follows ['formatcount'][formatName] = count
 			if ( in_array( 'formatcount', $requestedInfo ) ) {
 				$resultInfo['formatcount'] = array();
 				foreach ( $semanticStats['QUERYFORMATS'] as $name => $count ) {
@@ -67,13 +83,15 @@ class ApiSMWInfo extends ApiBase {
 			}
 		}
 
-		$this->getResult()->addValue(
-			null,
-			'info',
-			$resultInfo
-		);
+		$this->getResult()->addValue( null, 'info', $resultInfo );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getAllowedParams
+	 *
+	 * @return array
+	 */
 	public function getAllowedParams() {
 		return array(
 			'info' => array(
@@ -94,24 +112,48 @@ class ApiSMWInfo extends ApiBase {
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getParamDescription
+	 *
+	 * @return array
+	 */
 	public function getParamDescription() {
 		return array(
 			'info' => 'The info to provide.'
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getDescription
+	 *
+	 * @return array
+	 */
 	public function getDescription() {
 		return array(
 			'API module get info about this SMW install.'
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getExamples
+	 *
+	 * @return array
+	 */
 	protected function getExamples() {
 		return array(
 			'api.php?action=smwinfo&info=proppagecount|propcount',
 		);
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getVersion
+	 *
+	 * @return string
+	 */
 	public function getVersion() {
 		return __CLASS__ . ': $Id$';
 	}

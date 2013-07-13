@@ -70,13 +70,29 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Returns a SMWQuery object
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWQuery
+	 */
+	public function getMockQuery() {
+
+		$query = $this->getMockBuilder( 'SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		return $query;
+	}
+
+	/**
 	 * Returns a SMWQueryResult object
 	 *
 	 * @since 1.9
 	 *
 	 * @return SMWQueryResult
 	 */
-	public function getQueryResult() {
+	public function getMockQueryResult() {
 
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -88,7 +104,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $this->set( 'getErrors' ) ) );
+			->will( $this->returnValue( $this->set( 'getErrors', array() ) ) );
 
 		$queryResult->expects( $this->any() )
 			->method( 'hasFurtherResults' )
@@ -244,8 +260,16 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->set( 'getSQLConditions' ) ) );
 
 		$store->expects( $this->any() )
+			->method( 'getStatistics' )
+			->will( $this->returnValue( $this->set( 'getStatistics' ) ) );
+
+		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( $this->set( 'getPropertyTables' ) ) );
+
+		$store->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( is_callable( $this->set( 'getQueryResult' ) ) ? $this->returnCallback( $this->set( 'getQueryResult' ) ) : $this->returnValue( $this->set( 'getQueryResult' ) ) );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
