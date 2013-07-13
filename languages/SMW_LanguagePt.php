@@ -16,7 +16,7 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
 /**
  * Portuguese language labels for important SMW labels (namespaces, datatypes,...).
  *
- * @author Semíramis Herszon, Terry A. Hurlbut
+ * @author Semíramis Herszon, Terry A. Hurlbut, Jaideraf
  * @ingroup SMWLanguage
  * @ingroup Language
  */
@@ -24,56 +24,70 @@ class SMWLanguagePt extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Página', // name of page datatype
-		'_txt' => 'Texto',  // name of the text type (very long strings)
-		'_cod' => 'Código',  // name of the (source) code type //TODO: translate
-		'_boo' => 'Variável Booléen',  // name of the boolean type
-		'_num' => 'Número', // name for the datatype of numbers
+		'_txt' => 'Texto',  // name of the text type
+		'_cod' => 'Código',  // name of the (source) code type
+		'_boo' => 'Booleano',  // name of the boolean type
+		'_num' => 'Número',  // name for the datatype of numbers
 		'_geo' => 'Coordenadas geográficas', // name of the geocoord type
 		'_tem' => 'Temperatura',  // name of the temperature type
 		'_dat' => 'Data',  // name of the datetime (calendar) type
-		'_ema' => 'Email',  // name of the email type (Portuguese does not have another word for this)
-		'_uri' => 'URL',  // name of the URI type
-		'_anu' => 'Anotação-URI',  // name of the annotation URI type (OWL annotation property)
-		'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
-		'_rec' => 'Record', // name of record data type //TODO: translate
-		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
+		'_ema' => 'Email',  // name of the email type
+		'_uri' => 'URL',  // name of the URL type
+		'_anu' => 'URI',  // name of the annotation URI type (OWL annotation property)
+		'_tel' => 'Número de telefone',  // name of the telephone (URI) type
+		'_rec' => 'Registro', // name of record data type
+		'_qty' => 'Quantidade', // name of the number type with units of measurement
 	);
 
 	protected $m_DatatypeAliases = array(
+		'Entidade'              => '_wpg',
+		'Ponto flutuante'       => '_num',
+		'Inteiro'               => '_num',
+		'Coordenadas'           => '_geo',
+		'E-mail'                => '_ema',
+		'Anotação de URI'       => '_uri',
+		'Telefone'              => '_tel',
 		'URI'                   => '_uri',
 		'Número inteiro'        => '_num',
 		'Folga'                 => '_num',
+		'Variável Booléen'      => '_boo',
 		'Enumeração'            => '_txt',
 		'Cadeia'                => '_txt',  // old name of the string type
 	);
 
 	protected $m_SpecialProperties = array(
 		// always start upper-case
-		'_TYPE' => 'Tem o tipo',
-		'_URI'  => 'URI equivalente',
-		'_SUBP' => 'Sub-propriedade de',
-		'_SUBC' => 'Subcategory of', // TODO: translate
-		'_UNIT' => 'Unidades de amostra',
-		'_IMPO' => 'Importado de',
+		'_TYPE' => 'Possui tipo',
+		'_URI'  => 'URI equivalente ',
+		'_SUBP' => 'Subpropriedade de',
+		'_SUBC' => 'Subcategoria de',
+		'_UNIT' => 'Unidades de exibição',
+		'_IMPO' => 'Importada de',
 		'_CONV' => 'Corresponde a',
-		'_SERV' => 'Fornece o serviço',
-		'_PVAL' => 'Permite valor',
-		'_MDAT' => 'Modification date',  // TODO: translate
-		'_CDAT' => 'Creation date', // TODO: translate
-		'_NEWP' => 'Is a new page', // TODO: translate
-		'_LEDT' => 'Last editor is', // TODO: translate
-		'_ERRP' => 'Has improper value for', // TODO: translate
-		'_LIST' => 'Has fields', // TODO: translate
-		'_SOBJ' => 'Has subobject', // TODO: translate
-		'_ASK'  => 'Has query', // TODO: translate
-		'_ASKST'=> 'Query string', // TODO: translate
-		'_ASKFO'=> 'Query format', // TODO: translate
-		'_ASKSI'=> 'Query size', // TODO: translate
-		'_ASKDE'=> 'Query depth', // TODO: translate
+		'_SERV' => 'Fornece serviço',
+		'_PVAL' => 'Perminte valor',
+		'_MDAT' => 'Data de modificação',
+		'_CDAT' => 'Data de criação',
+		'_NEWP' => 'É uma nova página',
+		'_LEDT' => 'O ultimo editor é',
+		'_ERRP' => 'Possui valor impróprio para',
+		'_LIST' => 'Possui campos',
+		'_SOBJ' => 'Possui subobjeto',
+		'_ASK'  => 'Possui consulta',
+		'_ASKST'=> 'Consulta',
+		'_ASKFO'=> 'Formato da consulta',
+		'_ASKSI'=> 'Tamanho da consulta',
+		'_ASKDE'=> 'Profundidade da consulta',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-		'Unidade de amostra'  => '_UNIT'
+		'Exibe unidade' => '_UNIT',
+		'É do tipo' => '_TYPE',
+		'Possui URI equivalente' => '_URI',
+		'Importado de' => '_IMPO',
+		'Corresponde ao' => '_CONV',
+		'Tem o tipo' => '_TYPE',
+		'Unidade de amostra' => '_UNIT'
 	);
 
 	protected $m_Namespaces = array(
@@ -92,5 +106,3 @@ class SMWLanguagePt extends SMWLanguage {
 	protected $m_monthsshort = array( "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez" );
 
 }
-
-
