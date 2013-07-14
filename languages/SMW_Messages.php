@@ -809,7 +809,7 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw_qui_formt' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the format for property is expected to be typed in.
 
 {{Identical|Format}}',
-	'smw_qui_limt' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the limit for results of a property is expected to be typed in.
+	'smw_qui_limt' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the maximum limit of results which should be shown for a property is expected to be typed in. There may be more results though
 
 {{Identical|Limit}}',
 	'smw_qui_shownresults' => 'This is the message next to a checkbox on [[Special:QueryCreatory]] indicating if an item should be shown in the results or not.',
@@ -3563,7 +3563,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_propertylackstype' => 'Für dieses Attribut wurde kein Datentyp angegeben ($1 wird vorläufig als Typ angenommen).',
 	'smw_propertyhardlyused' => 'Dieses Attribut wird im Wiki kaum verwendet!',
 	'smw-property-name-invalid' => 'Das Attribut „$1“ kann nicht verwendet werden (ungültiger Attributname).',
-	'smw-sp-property-searchform' => 'Attribute anzeigen, die beinhalten:',
+	'smw-sp-property-searchform' => 'Attribute anzeigen, die Folgendes enthalten:',
 	'smw-sp-property-searchform-inputinfo' => 'Bei der Eingabe wird zwischen Groß- und Kleinschreibung unterschieden. Bei der Filterung werden nur Attribute angezeigt, die der Bedingung entsprechen.',
 	'concepts' => 'Konzepte',
 	'smw-sp-concept-docu' => 'Ein [https://www.semantic-mediawiki.org/wiki/Help:Konzept Konzept] kann als „dynamische Kategorie“ betrachtet werden, z.&nbsp;B. als Zusammenstellung von Seiten, die nicht manuell erstellt, sondern von Semantic MediaWiki auf Basis einer Abfrage berechnet wurde.',
@@ -3716,8 +3716,8 @@ Zurück zur Seite  $1.',
 Die folgende Funktion gewährleistet, dass die Datenbank richtig eingerichtet ist.
 Die Datenbankänderungen, die in diesem Schritt durchgeführt werden, beeinträchtigen den Rest der MediaWiki-Datenbank nicht. Sie können, sofern dies gewünscht ist, leicht rückgängig gemacht werden.
 Diese Einrichtungsfunktion kann mehrere Male ausgeführt werden, ohne Schaden zu verursachen. Sie braucht allerdings nur einmal, während der Installation oder Aktualisierung von Semantic MediaWiki, durchgeführt werden.',
-	'smw_smwadmin_permissionswarn' => 'Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei LocalSettings.php), über keine ausreichenden Rechte verfügt.
-Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei LocalSettings.php einzutragen, oder aber das Wartungsskript <code>SMW_setup.php</code> zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.',
+	'smw_smwadmin_permissionswarn' => 'Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei <code>LocalSettings.php</code>), über keine ausreichenden Rechte verfügt.
+Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei <code>LocalSettings.php</code> einzutragen, oder aber das Wartungsskript <code>SMW_setup.php</code> zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualisieren',
 	'smw_smwadmin_announce' => 'Wiki bekannt geben',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
@@ -3780,7 +3780,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-pa-property-predefined-default' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es erfüllt eine besondere Funktion, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
 	'smw-pa-property-predefined_ask' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es verknüpft eine Abfrage mit deren als [https://www.semantic-mediawiki.org/wiki/Help:Parsererweiterung_subobject Subobjekt] gespeicherten Metadaten, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
 	'smw-pa-property-predefined_asksi' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es speichert die Anzahl in einer Abfrage enthaltenen Bedingungen, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
-	'smw-sp-properties-docu' => 'Diese Spezialseite zeigt die verfügbaren [https://www.semantic-mediawiki.org/wiki/Property Attribute]. Falls gefiltert, werden nur benutzerdefinierte Attribute angezeigt, die der Bedingung entsprechen. Für eine differenzierte Ansicht, siehe die Spezialseiten [[Special:UnusedProperties|„Verwaiste Attribute“]] oder [[Special:WantedProperties|„Gewünschte Attribute“]].',
+	'smw-sp-properties-docu' => 'Diese Spezialseite zeigt die verfügbaren [https://www.semantic-mediawiki.org/wiki/Property Attribute]. Sofern nach Attributen gefiltert wird, werden nur die benutzerdefinierten Attribute angezeigt und zudem nur diese, die der angegebenen Bedingung entsprechen. Für eine differenzierte Ansicht können die Spezialseiten [[Special:UnusedProperties|„Verwaiste Attribute“]] oder [[Special:WantedProperties|„Gewünschte Attribute“]] eingesehen werden.',
 	'smw-sp-properties-cache-info' => 'Die aufgelisteten Daten stammen aus dem [https://www.semantic-mediawiki.org/wiki/Caching Zwischenspeicher]. Letzte Aktualisierung: $1.',
 	'smw-sp-properties-header-label' => 'Attributliste',
 );

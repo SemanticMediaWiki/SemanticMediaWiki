@@ -117,6 +117,21 @@ $magicWords['es'] = array(
 	'declare' => array( 0, 'declarar', 'declara' ),
 );
 
+/** French (français) */
+$magicWords['fr'] = array(
+	'ask' => array( 0, 'demander' ),
+	'show' => array( 0, 'afficher' ),
+	'info' => array( 0, 'infos' ),
+	'concept' => array( 0, 'concept' ),
+	'subobject' => array( 0, 'sousobjet' ),
+	'smwdoc' => array( 0, 'docsmw' ),
+	'set' => array( 0, 'définit' ),
+	'set_recurring_event' => array( 0, 'définit_périodique' ),
+	'declare' => array( 0, 'déclare' ),
+	'SMW_NOFACTBOX' => array( 0, '__SANSBOÎTEFAITS__', '__SANSBOITEFAITS__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__AFFICHERBOÎTEFAITS__', '__AFFICHERBOITEFAITS__' ),
+);
+
 /** Hebrew (עברית) */
 $magicWords['he'] = array(
 	'ask' => array( 0, 'שאל' ),
