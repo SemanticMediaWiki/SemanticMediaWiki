@@ -119,7 +119,8 @@ final class NamespaceExaminer {
 		}
 
 		if ( !in_array( $namespace, MWNamespace::getValidNamespaces() ) ) {
-			throw new InvalidNamespaceException( "{$namespace} is not a valid namespace" );
+			// Bug 51435
+			return false;
 		}
 
 		return $this->isEnabled( $namespace );

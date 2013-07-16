@@ -104,13 +104,13 @@ class NamespaceExaminerTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @test NamespaceExaminer::isSemanticEnabled
 	 *
+	 * Bug 51435; return false instead of an Exception
+	 *
 	 * @since 1.9
 	 */
 	public function testNoValidNamespaceException() {
-		$this->setExpectedException( '\SMW\InvalidNamespaceException' );
-
 		$instance = $this->getInstance( array( NS_MAIN => true ) );
-		$this->assertTrue( $instance->isSemanticEnabled( 99991001 ) );
+		$this->assertFalse( $instance->isSemanticEnabled( 99991001 ) );
 	}
 
 	/**
