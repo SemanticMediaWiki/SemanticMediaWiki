@@ -38,6 +38,15 @@ use SMW\MessageReporter;
 class ObservableMessageReporterTest extends MessageReporterTest {
 
 	/**
+	 * Returns the name of the class to be tested
+	 *
+	 * @return string|false
+	 */
+	public function getClass() {
+		return '\SMW\ObservableMessageReporter';
+	}
+
+	/**
 	 * @return MessageReporter[]
 	 */
 	public function getInstances() {
@@ -162,7 +171,7 @@ class ObservableMessageReporterTest extends MessageReporterTest {
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class MessageReporterTest extends \MediaWikiTestCase {
+abstract class MessageReporterTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @return MessageReporter[]

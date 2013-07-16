@@ -31,7 +31,6 @@ use SMW\FormatFactory;
  */
 
 /**
- * Tests for the SMW\FormatFactory class.
  * @covers \SMW\FormatFactory
  *
  * @ingroup Test
@@ -40,7 +39,16 @@ use SMW\FormatFactory;
  * @group SMWExtension
  * @group SMWQueries
  */
-class FormatFactoryTest extends \MediaWikiTestCase {
+class FormatFactoryTest extends CompatibilityTestCase {
+
+	/**
+	 * Returns the name of the class to be tested
+	 *
+	 * @return string|false
+	 */
+	public function getClass() {
+		return '\SMW\FormatFactory';
+	}
 
 	public function testSingleton() {
 		$instance = FormatFactory::singleton();

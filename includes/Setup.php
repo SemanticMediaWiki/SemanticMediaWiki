@@ -392,13 +392,14 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Test\ResultPrinterTestCase']         = $testsDir . 'QueryPrinterRegistryTestCase.php';
 	$wgAutoloadClasses['SMW\Test\QueryPrinterRegistryTestCase']  = $testsDir . 'QueryPrinterRegistryTestCase.php';
 	$wgAutoloadClasses['SMW\Test\QueryPrinterTestCase']          = $testsDir . 'QueryPrinterTestCase.php';
-	$wgAutoloadClasses['SMW\Tests\DataItemTest']              = $testsDir . 'includes/dataitems/DataItemTest.php';
-	$wgAutoloadClasses['SMW\Test\SemanticMediaWikiTestCase']  = $testsDir . 'SemanticMediaWikiTestCase.php';
-	$wgAutoloadClasses['SMW\Test\ParserTestCase']             = $testsDir . 'ParserTestCase.php';
-	$wgAutoloadClasses['SMW\Test\ApiTestCase']                = $testsDir . 'ApiTestCase.php';
-	$wgAutoloadClasses['SMW\Test\MockSuperUser']              = $testsDir . 'MockSuperUser.php';
-	$wgAutoloadClasses['SMW\Test\MockObjectBuilder']          = $testsDir . 'MockObjectBuilder.php';
-	$wgAutoloadClasses['SMW\Test\SpecialPageTestCase']        = $testsDir . 'SpecialPageTestCase.php';
+	$wgAutoloadClasses['SMW\Tests\DataItemTest']                 = $testsDir . 'includes/dataitems/DataItemTest.php';
+	$wgAutoloadClasses['SMW\Test\SemanticMediaWikiTestCase']     = $testsDir . 'SemanticMediaWikiTestCase.php';
+	$wgAutoloadClasses['SMW\Test\ParserTestCase']                = $testsDir . 'ParserTestCase.php';
+	$wgAutoloadClasses['SMW\Test\ApiTestCase']                   = $testsDir . 'ApiTestCase.php';
+	$wgAutoloadClasses['SMW\Test\MockSuperUser']                 = $testsDir . 'MockSuperUser.php';
+	$wgAutoloadClasses['SMW\Test\MockObjectBuilder']             = $testsDir . 'MockObjectBuilder.php';
+	$wgAutoloadClasses['SMW\Test\SpecialPageTestCase']           = $testsDir . 'SpecialPageTestCase.php';
+	$wgAutoloadClasses['SMW\Test\CompatibilityTestCase']         = $testsDir . 'CompatibilityTestCase.php';
 
 	// Jobs
 	$wgJobClasses['SMWUpdateJob']       = 'SMWUpdateJob';

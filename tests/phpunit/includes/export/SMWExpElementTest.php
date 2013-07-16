@@ -32,7 +32,16 @@ namespace SMW\Test;
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWExpElementTest extends \MediaWikiTestCase {
+class SMWExpElementTest extends CompatibilityTestCase {
+
+	/**
+	 * Returns the name of the class to be tested
+	 *
+	 * @return string|false
+	 */
+	public function getClass() {
+		return '\SMWExpElement';
+	}
 
 	public function instanceProvider() {
 		$instances = array();
