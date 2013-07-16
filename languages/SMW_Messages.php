@@ -5327,7 +5327,7 @@ Päivitys etenee sivu sivulta eikä valmistu nopeasti.
 Alla näkyy päivityksen eteneminen ja mahdollistaa päivitysten käynnistämisen tai pysäyttämisen (paitsi jos sivuston ylläpitäjä on ottanut toiminnon pois käytöstä).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Päivitys on jo käynnissä.</strong>
 On normaalia, että päivitys etenee hitaasti, sillä tietoja päivitetään pienissä osissa silloin kuin wikin sivuja ladataan.
-Jos haluat päivityksen valmistuvan nopeammin, käytä MediaWikin ylläpitokomentosarjaa <code>runJobs.php</code> (käytä valitsinta <code>--maxjobs 1000</code> rajoittaaksesi yhdessä erässsä tehtävien päivitysten määrää).
+Jos haluat päivityksen valmistuvan nopeammin, käytä MediaWikin ylläpitokomentosarjaa <code>runJobs.php</code> (käytä valitsinta <code>--maxjobs 1000</code> rajoittaaksesi yhdessä erässä tehtävien päivitysten määrää).
 Nykyisen päivityksen arvioitu eteneminen:',
 	'smw_smwadmin_datarefreshbutton' => 'Aloita tietojen päivitys',
 	'smw_smwadmin_datarefreshstop' => 'Lopeta tämä päivitys',
