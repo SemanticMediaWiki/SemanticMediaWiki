@@ -141,6 +141,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';
 	$wgAutoloadClasses['SMW\IParserData']           = $incDir . 'ParserData.php';
 	$wgAutoloadClasses['SMW\ParserData']            = $incDir . 'ParserData.php';
+	$wgAutoloadClasses['SMW\PropertyDisparityDetector']  = $incDir . 'PropertyDisparityDetector.php';
 
 	$wgAutoloadClasses['SMW\Subobject']             = $incDir . 'Subobject.php';
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $incDir . 'RecurringEvents.php';
@@ -173,7 +174,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ApiRequestParameterFormatter'] = $incDir . 'formatters/ApiRequestParameterFormatter.php';
 
 	// Exceptions
-	$wgAutoloadClasses['SMW\InvalidStoreException']       = $incDir . '/exceptions/InvalidStoreException.php';
+	$wgAutoloadClasses['SMW\InvalidStoreException']        = $incDir . '/exceptions/InvalidStoreException.php';
 	$wgAutoloadClasses['SMW\InvalidSemanticDataException'] = $incDir . '/exceptions/InvalidSemanticDataException.php';
 	$wgAutoloadClasses['SMW\InvalidNamespaceException']    = $incDir . '/exceptions/InvalidNamespaceException.php';
 	$wgAutoloadClasses['SMW\InvalidPropertyException']     = $incDir . '/exceptions/InvalidPropertyException.php';
@@ -411,9 +412,12 @@ function smwfRegisterClasses() {
 	// Jobs
 	$wgJobClasses['SMWUpdateJob']       = 'SMWUpdateJob';
 	$wgAutoloadClasses['SMWUpdateJob']  = $smwgIP . 'includes/jobs/SMW_UpdateJob.php';
-	$wgAutoloadClasses['SMW\UpdateJob'] = $smwgIP . 'includes/jobs/SMW_UpdateJob.php';
+	$wgAutoloadClasses['SMW\UpdateJob']  = $smwgIP . 'includes/jobs/SMW_UpdateJob.php'; // 1.9
 	$wgJobClasses['SMWRefreshJob']      = 'SMWRefreshJob';
 	$wgAutoloadClasses['SMWRefreshJob'] = $smwgIP . 'includes/jobs/SMW_RefreshJob.php';
+
+	$wgJobClasses['SMW\PropertySubjectsUpdateDispatcherJob']      = 'SMW\PropertySubjectsUpdateDispatcherJob';
+	$wgAutoloadClasses['SMW\PropertySubjectsUpdateDispatcherJob'] = $smwgIP . 'includes/jobs/PropertySubjectsUpdateDispatcherJob.php';
 
 	// Store migration job class
 	$wgJobClasses['SMWMigrationJob']          = 'SMW\MigrationJob';

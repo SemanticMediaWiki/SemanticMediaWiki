@@ -16,7 +16,6 @@ use SMWDIProperty;
 use SMWDIBlob;
 use SMWDIBoolean;
 use SMWDITime;
-use SMWUpdateJob;
 
 /**
  * Interface handling semantic data storage to a ParserOutput instance
@@ -509,18 +508,24 @@ class ParserData implements IParserData {
 	public function updateStore() {
 		Profiler::In( __METHOD__, true );
 
+		// Protect against namespace -1 see Bug 50153
+		if ( $this->title->isSpecialPage() ) {
+			return true;
+		}
+
+		$dispatcherJob = null;
+
+		$namespace = $this->title->getNamespace();
+		$wikiPage  = WikiPage::factory( $this->title );
+		$revision  = $wikiPage->getRevision();
+		$store     = StoreFactory::getStore();
+
 		// FIXME get rid of globals and use options array instead while
 		// invoking the constructor
 		$this->options = array(
 			'smwgDeclarationProperties' => $GLOBALS['smwgDeclarationProperties'],
 			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties']
 		);
-
-		$namespace = $this->title->getNamespace();
-		$wikiPage = WikiPage::factory( $this->title );
-		$revision = $wikiPage->getRevision();
-		$store    = smwfGetStore();
-		$jobs     = array();
 
 		// Make sure to have a valid revision (null means delete etc.)
 		// Check if semantic data should be processed and displayed for a page in
@@ -535,12 +540,11 @@ class ParserData implements IParserData {
 			$this->semanticData = new SMWSemanticData( $this->getSubject() );
 		}
 
-		// Careful: storage access must happen *before* the storage update;
+		// Comparison must happen *before* the storage update;
 		// even finding uses of a property fails after its type was changed.
-		if ( $this->updateJobs && ( $namespace === SMW_NS_PROPERTY ) ) {
-			$this->getDiffPropertyTypes( $store, $jobs );
-		} else if ( $this->updateJobs && ( $namespace === SMW_NS_TYPE ) ) {
-			$this->getDiffConversionFactors( $store, $jobs );
+		if ( $this->updateJobs ) {
+			$disparityDetector = new PropertyDisparityDetector( $store, $this->semanticData, Settings::newFromGlobals() );
+			$dispatcherJob = $disparityDetector->detectDisparity()->getDispatcherJob();
 		}
 
 		// Actually store semantic data, or at least clear it if needed
@@ -552,8 +556,8 @@ class ParserData implements IParserData {
 
 		// Job::batchInsert was deprecated in MW 1.21
 		// @see JobQueueGroup::singleton()->push( $job );
-		if ( $jobs !== array() ) {
-			Job::batchInsert( $jobs );
+		if ( $dispatcherJob !== null ) {
+			Job::batchInsert( $dispatcherJob );
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -561,199 +565,4 @@ class ParserData implements IParserData {
 		return true;
 	}
 
-	/**
-	 * Helper method to handle diff/change in type property pages
-	 *
-	 * @note If it is a property, then we need to check if the type or the
-	 * allowed values have been changed.
-	 *
-	 * @since 1.9
-	 *
-	 * @param SMWStore $store
-	 * @param array &$jobs
-	 */
-	protected function getDiffPropertyTypes( SMWStore $store, array &$jobs ) {
-		Profiler::In( __METHOD__, true );
-
-		$updatejobflag = false;
-		$ptype = new SMWDIProperty( SMWDIProperty::TYPE_HAS_TYPE );
-
-		// Get values from the store
-		$oldtype = $store->getPropertyValues(
-			$this->semanticData->getSubject(),
-			$ptype
-		);
-
-		// Get values currently hold by the semantic container
-		$newtype = $this->semanticData->getPropertyValues( $ptype );
-
-		// Compare old and new type
-		if ( !$this->equalDatavalues( $oldtype, $newtype ) ) {
-			$updatejobflag = true;
-		} else {
-			// Compare values (in case of _PVAL (allowed values) for a
-			// property change must be processed again)
-			foreach ( $this->options['smwgDeclarationProperties'] as $prop ) {
-
-				$dataItem = new SMWDIProperty( $prop );
-				$oldValues = $store->getPropertyValues(
-					$this->semanticData->getSubject(),
-					$dataItem
-				);
-				$newValues = $this->semanticData->getPropertyValues( $dataItem );
-				$updatejobflag = !$this->equalDatavalues( $oldValues, $newValues );
-			}
-		}
-
-		// Job generation
-		if ( $updatejobflag ) {
-			$prop = new SMWDIProperty( $this->title->getDBkey() );
-
-			// Array of all subjects that have some value for the given property
-			$subjects = $store->getAllPropertySubjects( $prop );
-
-			// Add jobs
-			$this->addJobs( $subjects, $jobs );
-
-			// Hook
-			wfRunHooks( 'smwUpdatePropertySubjects', array( &$jobs ) );
-
-			// Fetch all those that have an error property attached and
-			// re-run it through the job-queue
-			$subjects = $store->getPropertySubjects(
-				new SMWDIProperty( SMWDIProperty::TYPE_ERROR ),
-				$this->semanticData->getSubject()
-			);
-
-			// Add jobs
-			$this->addJobs( $subjects, $jobs );
-		}
-
-		Profiler::Out( __METHOD__, true );
-	}
-
-	/**
-	 * Helper method to handle diff/change of conversion related properties
-	 *
-	 * @note if it is a type we need to check if the conversion factors
-	 * have been changed
-	 *
-	 * @since 1.9
-	 *
-	 * @param SMWStore $store
-	 * @param array &$jo
-	 */
-	protected function getDiffConversionFactors( SMWStore $store, array &$jobs ) {
-		wfProfileIn( __METHOD__ );
-
-		$updatejobflag = false;
-		$pconv = new SMWDIProperty( SMWDIProperty::TYPE_CONVERSION );
-		$ptype = new SMWDIProperty( SMWDIProperty::TYPE_HAS_TYPE );
-
-		$oldfactors = smwfGetStore()->getPropertyValues(
-			$this->semanticData->getSubject(),
-			$pconv
-		);
-		$newfactors = $this->semanticData->getPropertyValues( $pconv );
-
-		// Compare
-		$updatejobflag = !$this->equalDatavalues( $oldfactors, $newfactors );
-
-		// Job generation
-		if ( $updatejobflag ) {
-
-			/// FIXME: this will kill large wikis! Use incremental updates!
-			$dataValue = SMWDataValueFactory::newTypeIdValue( '__typ', $title->getDBkey() );
-			$propertyPages = $store->getPropertySubjects( $ptype, $dataValue );
-
-			foreach ( $propertyPages as $propertyPage ) {
-				// Add jobs
-				$this->addJobs( array( $propertyPage ), $jobs );
-
-				$prop = new SMWDIProperty( $propertyPage->getDBkey() );
-				$subjects = $store->getAllPropertySubjects( $prop );
-
-				// Add jobs
-				$this->addJobs( $subjects, $jobs );
-
-				$subjects = $store->getPropertySubjects(
-					new SMWDIProperty( SMWDIProperty::TYPE_ERROR  ),
-					$prop->getWikiPageValue()
-				);
-
-				// Add jobs
-				$this->addJobs( $subjects, $jobs );
-			}
-		}
-
-		wfProfileOut( __METHOD__ );
-	}
-
-	/**
-	 * Helper method to iterate over an array of SMWDIWikiPage and return and
-	 * array of SMWUpdateJob jobs
-	 *
-	 * Check whether a job with the same getPrefixedDBkey string (prefixed title,
-	 * with underscores and any interwiki and namespace prefixes) is already
-	 * registered and if so don't insert a new job. This is particular important
-	 * for pages that include a large amount of subobjects where the same Title
-	 * and ParserOutput object is used (subobjects are included using the same
-	 * WikiPage which means the resulting ParserOutput object is the same)
-	 *
-	 * @since 1.9
-	 *
-	 * @param SMWDIWikiPage[] $subjects
-	 * @param array &$jobs
-	 */
-	protected function addJobs( array $subjects, &$jobs ) {
-
-		foreach ( $subjects as $subject ) {
-			$duplicate = false;
-			$subjectTitle = $subject->getTitle();
-
-			if ( $subjectTitle instanceof Title ) {
-
-				// Avoid duplicate jobs for the same title object
-				foreach ( $jobs as $job ) {
-					if ( $job->getTitle()->getPrefixedDBkey() === $subjectTitle->getPrefixedDBkey() ){
-						$duplicate = true;
-						break;
-					}
-				}
-				if ( !$duplicate ) {
-					$jobs[] = new SMWUpdateJob( $subjectTitle );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Helper function that compares two arrays of data values to check whether
-	 * they contain the same content. Returns true if the two arrays contain the
-	 * same data values (irrespective of their order), false otherwise.
-	 *
-	 * @since  1.9
-	 */
-	protected function equalDatavalues( $oldDataValue, $newDataValue ) {
-		// The hashes of all values of both arrays are taken, then sorted
-		// and finally concatenated, thus creating one long hash out of each
-		// of the data value arrays. These are compared.
-		$values = array();
-		foreach ( $oldDataValue as $v ) {
-			$values[] = $v->getHash();
-		}
-
-		sort( $values );
-		$oldDataValueHash = implode( '___', $values );
-
-		$values = array();
-		foreach ( $newDataValue as $v ) {
-			$values[] = $v->getHash();
-		}
-
-		sort( $values );
-		$newDataValueHash = implode( '___', $values );
-
-		return ( $oldDataValueHash == $newDataValueHash );
-	}
 }
