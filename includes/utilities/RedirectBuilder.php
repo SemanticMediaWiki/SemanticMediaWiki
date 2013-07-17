@@ -64,7 +64,9 @@ class RedirectBuilder {
 	 *
 	 * @since 1.9
 	 *
-	 * @return string|null
+	 * @param boolean $canBuild
+	 *
+	 * @return RedirectBuilder
 	 */
 	public function canBuild( $canBuild = true ) {
 		$this->canBuild = $canBuild;
@@ -91,15 +93,15 @@ class RedirectBuilder {
 
 		$argument = func_get_arg( 0 );
 
-		if ( is_string( $argument ) ) {
+		if ( $this->canBuild && is_string( $argument ) ) {
 			$title = $this->buildFromText( $argument );
-		} else if ( $argument instanceof Title ) {
+		} else if ( $this->canBuild && $argument instanceof Title ) {
 			$title = $argument;
 		} else {
 			$title = null;
 		}
 
-		if ( $this->canBuild && $title !== null ) {
+		if ( $title !== null ) {
 			$this->semanticData->addPropertyObjectValue( new DIProperty( '_REDI' ), DIWikiPage::newFromTitle( $title, '__red' ) );
 		}
 
@@ -108,6 +110,8 @@ class RedirectBuilder {
 	/**
 	 * Extract a redirect destination from a string and return the Title,
 	 * or null if the text doesn't contain a valid redirect
+	 *
+	 * @note ContentHandler got introduced with Mw 1.21
 	 *
 	 * @since 1.9
 	 *

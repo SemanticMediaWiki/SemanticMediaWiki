@@ -141,7 +141,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		// #4 Disabled
+		// #4 Disabled free text
 		$provider[] = array(
 			array( 'build' => '#REDIRECT [[:Lala]]', 'canBuild' => false ),
 			array(
@@ -152,6 +152,14 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 		// #5 Invalid free text
 		$provider[] = array(
 			array( 'build' => '#REDIR [[:Lala]]', 'canBuild' => true ),
+			array(
+				'propertyCount' => 0,
+			)
+		);
+
+		// #6 Empty
+		$provider[] = array(
+			array( 'build' => '', 'canBuild' => true ),
 			array(
 				'propertyCount' => 0,
 			)

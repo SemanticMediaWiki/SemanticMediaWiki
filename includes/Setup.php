@@ -127,8 +127,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\FormatFactory']       	= $incDir . 'FormatFactory.php';
 	$wgAutoloadClasses['SMW\Highlighter']           = $incDir . 'Highlighter.php';
 	$wgAutoloadClasses['SMW\ParameterInput']        = $incDir . 'ParameterInput.php';
-	$wgAutoloadClasses['SMW\MessageReporter']        = $incDir . 'MessageReporter.php';
-	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . 'MessageReporter.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
@@ -149,21 +147,21 @@ function smwfRegisterClasses() {
 
 	$wgAutoloadClasses['SMW\Settings']              = $incDir . 'Settings.php';
 
-	$wgAutoloadClasses['SMW\Accessor']              = $incDir . 'ArrayAccessor.php';
-	$wgAutoloadClasses['SMW\Arrayable']             = $incDir . 'ArrayAccessor.php';
-	$wgAutoloadClasses['SMW\ArrayAccessor']         = $incDir . 'ArrayAccessor.php';
-
 	$wgAutoloadClasses['SMW\CacheHandler']          = $incDir . '/cache/CacheHandler.php';
 	$wgAutoloadClasses['SMW\ResultCacheMapper']     = $incDir . '/cache/ResultCacheMapper.php';
 	$wgAutoloadClasses['SMW\CacheIdGenerator']      = $incDir . '/cache/CacheIdGenerator.php';
 
 	// Utilities
-	$wgAutoloadClasses['SMW\NamespaceExaminer']     = $incDir . 'NamespaceExaminer.php';
-	$wgAutoloadClasses['SMW\Profiler']              = $incDir . 'Profiler.php';
-	$wgAutoloadClasses['SMW\IdGenerator']           = $incDir . 'HashIdGenerator.php';
-	$wgAutoloadClasses['SMW\HashIdGenerator']       = $incDir . 'HashIdGenerator.php';
-
-	$wgAutoloadClasses['SMW\RedirectBuilder']       = $incDir . '/utilities/RedirectBuilder.php';
+	$wgAutoloadClasses['SMW\NamespaceExaminer']         = $incDir . '/utilities/NamespaceExaminer.php';
+	$wgAutoloadClasses['SMW\Profiler']                  = $incDir . '/utilities/Profiler.php';
+	$wgAutoloadClasses['SMW\IdGenerator']               = $incDir . '/utilities/HashIdGenerator.php';
+	$wgAutoloadClasses['SMW\HashIdGenerator']           = $incDir . '/utilities/HashIdGenerator.php';
+	$wgAutoloadClasses['SMW\Accessor']                  = $incDir . '/utilities/ArrayAccessor.php';
+	$wgAutoloadClasses['SMW\Arrayable']                 = $incDir . '/utilities/ArrayAccessor.php';
+	$wgAutoloadClasses['SMW\ArrayAccessor']             = $incDir . '/utilities/ArrayAccessor.php';
+	$wgAutoloadClasses['SMW\MessageReporter']           = $incDir . '/utilities/MessageReporter.php';
+	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . '/utilities/MessageReporter.php';
+	$wgAutoloadClasses['SMW\RedirectBuilder']           = $incDir . '/utilities/RedirectBuilder.php';
 
 	// Formatters
 	$wgAutoloadClasses['SMW\ArrayFormatter']               = $incDir . 'formatters/ArrayFormatter.php';
