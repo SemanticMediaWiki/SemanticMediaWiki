@@ -13,6 +13,8 @@ use WebRequest;
 use Language;
 use Title;
 
+use ReflectionClass;
+
 use SMWSemanticData;
 use SMWDataItem;
 
@@ -72,6 +74,19 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	public function newMockObject( array $accessor = array() ) {
 		return new MockObjectBuilder( new ArrayAccessor( $accessor ) );
+	}
+
+	/**
+	 * Helper method that returns a ReflectionClass object
+	 *
+	 * @since 1.9
+	 *
+	 * @param string|null $class
+	 *
+	 * @return ReflectionClass
+	 */
+	public function newReflector( $class = null ) {
+		return new ReflectionClass( $class === null ? $this->getClass() : $class );
 	}
 
 	/**
@@ -143,6 +158,19 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected function getSubject( $namespace = NS_MAIN ) {
 		return DIWikiPage::newFromTitle( $this->getTitle( $namespace ) );
+	}
+
+	/**
+	 * Helper method that returns a DIWikiPage object
+	 *
+	 * @since 1.9
+	 *
+	 * @param Title|null $title
+	 *
+	 * @return DIWikiPage
+	 */
+	protected function newSubject( Title $title = null ) {
+		return DIWikiPage::newFromTitle( $title === null ? $this->getTitle() : $title );
 	}
 
 	/**

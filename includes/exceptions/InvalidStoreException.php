@@ -36,4 +36,4 @@ use MWException;
  * @ingroup Exception
  * @codeCoverageIgnore
  */
-class StoreInstanceException extends MWException {}
+class InvalidStoreException extends MWException {}

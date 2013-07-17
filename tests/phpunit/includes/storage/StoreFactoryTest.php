@@ -23,17 +23,15 @@ use SMW\Settings;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
- * Tests for the StoreFactory class
  * @covers \SMW\StoreFactory
  *
  * @ingroup Test
@@ -58,6 +56,7 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testGetStore() {
+
 		$settings = Settings::newFromGlobals();
 
 		// Default is handled by the method itself
@@ -66,6 +65,10 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 
 		// Static instance
 		$this->assertTrue( StoreFactory::getStore() === $instance );
+
+		// Reset static instance
+		StoreFactory::clear();
+		$this->assertTrue( StoreFactory::getStore() !== $instance );
 
 		// Inject default store
 		$defaulStore = $settings->get( 'smwgDefaultStore' );
@@ -80,6 +83,7 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testNewInstance() {
+
 		$settings = Settings::newFromGlobals();
 
 		// Circumvent the static instance
@@ -98,7 +102,7 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testStoreInstanceException() {
-		$this->setExpectedException( '\SMW\StoreInstanceException' );
+		$this->setExpectedException( '\SMW\InvalidStoreException' );
 		$instance = StoreFactory::newInstance( $this->getClass() );
 	}
 

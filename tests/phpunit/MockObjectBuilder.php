@@ -78,7 +78,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 */
 	public function getMockSemanticData() {
 
-		$semanticData = $this->getMockBuilder( 'SMWSemanticData' )
+		$semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -268,9 +268,16 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			) )
 			->getMock();
 
+		/**
+		 * @param $subject mixed SMWDIWikiPage or null
+		 * @param $property SMWDIProperty
+		 * @param $requestoptions SMWRequestOptions
+		 *
+		 * @return array of SMWDataItem
+		 */
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( $this->set( 'getPropertyValues' ) ) );
+			->will( is_callable( $this->set( 'getPropertyValues' ) ) ? $this->returnCallback( $this->set( 'getPropertyValues' ) ) : $this->returnValue( $this->set( 'getPropertyValues' ) ) );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertiesSpecial' )
@@ -299,6 +306,14 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getQueryResult' )
 			->will( is_callable( $this->set( 'getQueryResult' ) ) ? $this->returnCallback( $this->set( 'getQueryResult' ) ) : $this->returnValue( $this->set( 'getQueryResult' ) ) );
+
+		$store->expects( $this->any() )
+			->method( 'getAllPropertySubjects' )
+			->will( is_callable( $this->set( 'getAllPropertySubjects' ) ) ? $this->returnCallback( $this->set( 'getAllPropertySubjects' ) ) : $this->returnValue( $this->set( 'getAllPropertySubjects' ) ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( is_callable( $this->set( 'getPropertySubjects' ) ) ? $this->returnCallback( $this->set( 'getPropertySubjects' ) ) : $this->returnValue( $this->set( 'getPropertySubjects' ) ) );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )

@@ -18,6 +18,13 @@ die("Not a valid entry point\n");
  */
 
 /**
+ * This group contains members that are related to jobs
+ *
+ * @defgroup Job Job
+ * @ingroup SMW
+ */
+
+/**
  * This group contains members that are related to accessors
  *
  * @defgroup Accessor Accessor

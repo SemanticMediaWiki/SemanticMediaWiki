@@ -20,10 +20,10 @@ namespace SMW;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup Store
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
  *
  * @author mwjames
  */
@@ -31,21 +31,12 @@ namespace SMW;
 /**
  * Factory method that handles store instantiation
  *
- * @todo instead of having a single store declaration such as'smwgDefaultStore' => 'MyStore'
- * allow for a more fain-grained definition such as
- *
- * @code
- * 'smwgStores' => array(
- *   'SqlStore' => 'MySqlStore'
- *   'SparqlStore' => 'MySparqlStore'
- *   'HashStore' => 'MyHashStore' // For unit testing to omit direct database access
- *   ...
- * )
- * @endcode
- *
  * @ingroup Store
  */
 class StoreFactory {
+
+	/** @var Store[] */
+	private static $instance = array();
 
 	/**
 	 * Returns a new store instance
@@ -55,14 +46,14 @@ class StoreFactory {
 	 * @param string $store
 	 *
 	 * @return Store
-	 * @throws StoreInstanceException
+	 * @throws InvalidStoreException
 	 */
 	public static function newInstance( $store ) {
 
 		$instance = new $store;
 
 		if ( !( $instance instanceof Store ) ) {
-			throw new StoreInstanceException( "{$store} can not be used as a store instance" );
+			throw new InvalidStoreException( "{$store} can not be used as a store instance" );
 		}
 
 		return $instance;
@@ -73,19 +64,27 @@ class StoreFactory {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean|string $store
+	 * @param string|null $store
 	 *
 	 * @return Store
 	 */
-	public static function getStore( $store = false ) {
-		static $instance = array();
+	public static function getStore( $store = null ) {
 
-		$store = $store === false ? Settings::newFromGlobals()->get( 'smwgDefaultStore' ) : $store;
+		$store = $store === null ? Settings::newFromGlobals()->get( 'smwgDefaultStore' ) : $store;
 
-		if ( !isset( $instance[$store] ) ) {
-			$instance[$store] = self::newInstance( $store );
+		if ( !isset( self::$instance[$store] ) ) {
+			self::$instance[$store] = self::newInstance( $store );
 		}
 
-		return $instance[$store];
+		return self::$instance[$store];
+	}
+
+	/**
+	 * Reset instance
+	 *
+	 * @since 1.9
+	 */
+	public static function clear() {
+		self::$instance = array();
 	}
 }

@@ -529,3 +529,10 @@ class SMWSemanticData {
 	}
 
 }
+
+/**
+ * SMWSemanticData class alias
+ *
+ * @since 1.9
+ */
+class_alias( 'SMWSemanticData', 'SMW\SemanticData' );

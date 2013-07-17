@@ -98,3 +98,10 @@ class SMWUpdateJob extends Job {
 	}
 
 }
+
+/**
+ * SMWUpdateJob class alias
+ *
+ * @since 1.9
+ */
+class_alias( 'SMWUpdateJob', 'SMW\UpdateJob' );

@@ -132,6 +132,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
 	$wgAutoloadClasses['SMW\ParserTextProcessor']   = $incDir . 'ParserTextProcessor.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
+	$wgAutoloadClasses['SMW\SemanticData']          = $incDir . 'SMW_SemanticData.php'; // 1.9
 	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';
 
 	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'DataValueFactory.php';
@@ -172,7 +173,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ApiRequestParameterFormatter'] = $incDir . 'formatters/ApiRequestParameterFormatter.php';
 
 	// Exceptions
-	$wgAutoloadClasses['SMW\StoreInstanceException']       = $incDir . '/exceptions/StoreInstanceException.php';
+	$wgAutoloadClasses['SMW\InvalidStoreException']       = $incDir . '/exceptions/InvalidStoreException.php';
 	$wgAutoloadClasses['SMW\InvalidSemanticDataException'] = $incDir . '/exceptions/InvalidSemanticDataException.php';
 	$wgAutoloadClasses['SMW\InvalidNamespaceException']    = $incDir . '/exceptions/InvalidNamespaceException.php';
 	$wgAutoloadClasses['SMW\InvalidPropertyException']     = $incDir . '/exceptions/InvalidPropertyException.php';
@@ -410,6 +411,7 @@ function smwfRegisterClasses() {
 	// Jobs
 	$wgJobClasses['SMWUpdateJob']       = 'SMWUpdateJob';
 	$wgAutoloadClasses['SMWUpdateJob']  = $smwgIP . 'includes/jobs/SMW_UpdateJob.php';
+	$wgAutoloadClasses['SMW\UpdateJob'] = $smwgIP . 'includes/jobs/SMW_UpdateJob.php';
 	$wgJobClasses['SMWRefreshJob']      = 'SMWRefreshJob';
 	$wgAutoloadClasses['SMWRefreshJob'] = $smwgIP . 'includes/jobs/SMW_RefreshJob.php';
 
