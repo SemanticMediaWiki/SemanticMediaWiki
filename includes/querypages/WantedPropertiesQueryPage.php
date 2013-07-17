@@ -1,8 +1,11 @@
 <?php
 
+namespace SMW;
+
+use Html;
+
 /**
- * Special page (Special:WantedProperties) for MediaWiki shows all
- * wanted properties
+ * Query class that provides content for the Special:WantedProperties page
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,64 +22,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author Markus Krötzsch
- * @author Jeroen De Dauw
  * @author mwjames
  */
 
 /**
- * This special page (Special:WantedProperties) for MediaWiki shows all wanted
- * properties (used but not having a page).
+ * Query class that provides content for the Special:WantedProperties page
  *
- * @ingroup SpecialPage
+ * @ingroup QueryPage
  */
-class SMWSpecialWantedProperties extends SpecialPage {
-
-	/**
-	 * @codeCoverageIgnore
-	 */
-	public function __construct() {
-		parent::__construct( 'WantedProperties' );
-	}
-
-	public function execute( $param ) {
-		\SMW\Profiler::In( __METHOD__ );
-
-		$out = $this->getOutput();
-
-		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
-
-		$page = new SMWWantedPropertiesPage(
-			\SMW\StoreFactory::getStore(),
-			\SMW\Settings::newFromGlobals()
-		);
-		$page->setContext( $this->getContext() );
-
-		list( $limit, $offset ) = wfCheckLimits();
-		$page->doQuery( $offset, $limit );
-
-		// Ensure locally collected output data is pushed to the output!
-		// ?? still needed !!
-		SMWOutputs::commitToOutputPage( $out );
-
-		\SMW\Profiler::Out( __METHOD__ );
-	}
-
-}
-
-/**
- * This query page shows all wanted properties.
- *
- * @ingroup SpecialPage
- *
- * @author Markus Krötzsch
- */
-class SMWWantedPropertiesPage extends SMWQueryPage {
+class WantedPropertiesQueryPage extends QueryPage {
 
 	/** @var Store */
 	protected $store;
@@ -93,7 +53,7 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	 * @param Store $store
 	 * @param Settings $settings
 	 */
-	public function __construct( \SMW\Store $store, \SMW\Settings $settings ) {
+	public function __construct( Store $store, Settings $settings ) {
 		$this->store = $store;
 		$this->settings = $settings;
 	}
@@ -138,7 +98,6 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	 */
 	function formatResult( $skin, $result ) {
 
-		$linker   = smwfGetLinker();
 		$proplink = '';
 
 		// Only display user-defined properties because it can happen that
@@ -146,7 +105,7 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 		// (did not use their own fixedProperty table and therefore were
 		// selected as well e.g _SF_PDF etc.)
 		if ( $result[0]->isUserDefined() ) {
-			$proplink = $linker->link(
+			$proplink = $this->getLinker()->link(
 				$result[0]->getDiWikiPage()->getTitle(),
 				htmlspecialchars( $result[0]->getLabel() ),
 				array( 'action' => 'view' )

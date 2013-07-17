@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMWWantedPropertiesPage;
+use SMW\WantedPropertiesQueryPage;
 use SMWDataItem;
 
 /**
- * Tests for the WantedPropertiesPage class
+ * Tests for the WantedPropertiesQueryPage class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +32,14 @@ use SMWDataItem;
  */
 
 /**
- * @covers SMWWantedPropertiesPage
+ * @covers \SMW\WantedPropertiesQueryPage
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
+class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -47,7 +47,7 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMWWantedPropertiesPage';
+		return '\SMW\WantedPropertiesQueryPage';
 	}
 
 	/**
@@ -98,13 +98,13 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWWantedPropertiesPage object
+	 * Helper method that returns a WantedPropertiesQueryPage object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $result
 	 *
-	 * @return SMWWantedPropertiesPage
+	 * @return WantedPropertiesQueryPage
 	 */
 	private function getInstance( $result = null ) {
 
@@ -113,14 +113,14 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 			'getWantedPropertiesSpecial' => $this->getMockCollector( $result )
 		) )->getMockStore();
 
-		$instance = new SMWWantedPropertiesPage( $store, $this->getSettings() );
+		$instance = new WantedPropertiesQueryPage( $store, $this->getSettings() );
 		$instance->setContext( $this->newContext() );
 
 		return $instance;
 	}
 
 	/**
-	 * @test SMWWantedPropertiesPage::__construct
+	 * @test WantedPropertiesQueryPage::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -130,7 +130,7 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWWantedPropertiesPage::formatResult
+	 * @test WantedPropertiesQueryPage::formatResult
 	 * @dataProvider getUserDefinedDataProvider
 	 *
 	 * @since 1.9
@@ -165,7 +165,7 @@ class WantedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWWantedPropertiesPage::getResults
+	 * @test WantedPropertiesQueryPage::getResults
 	 *
 	 * @since 1.9
 	 */

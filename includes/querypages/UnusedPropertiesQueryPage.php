@@ -1,55 +1,45 @@
 <?php
 
-/**
- * This special page (Special:UnusedProperties) for MediaWiki shows all unused
- * properties.
- *
- * @file SMW_SpecialUnusedProperties.php
- *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- */
-class SMWSpecialUnusedProperties extends SpecialPage {
+namespace SMW;
 
-	public function __construct() {
-		parent::__construct( 'UnusedProperties' );
-	}
+use SMWTypesValue;
+use SMWDIError;
 
-	public function execute( $param ) {
-		\SMW\Profiler::In( __METHOD__ );
-
-		$out = $this->getOutput();
-
-		$out->setPageTitle( $this->msg( 'unusedproperties' )->text() );
-
-		$page = new SMWUnusedPropertiesPage(
-			\SMW\StoreFactory::getStore(),
-			\SMW\Settings::newFromGlobals()
-		);
-		$page->setContext( $this->getContext() );
-
-		list( $limit, $offset ) = wfCheckLimits();
-		$page->doQuery( $offset, $limit );
-
-		// Ensure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $out );
-
-		\SMW\Profiler::Out( __METHOD__ );
-	}
-}
+use Html;
 
 /**
- * This query page shows all unused properties.
+ * Query page that provides content to Special:UnusedProperties
  *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @file
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
  *
  * @author Markus Krötzsch
+ * @author mwjames
  */
-class SMWUnusedPropertiesPage extends SMWQueryPage {
+
+/**
+ * Query page that provides content to Special:UnusedProperties
+ *
+ * @ingroup QueryPage
+ */
+class UnusedPropertiesQueryPage extends QueryPage {
 
 	/** @var Store */
 	protected $store;
@@ -66,7 +56,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	 * @param Store $store
 	 * @param Settings $settings
 	 */
-	public function __construct( \SMW\Store $store, \SMW\Settings $settings ) {
+	public function __construct( Store $store, Settings $settings ) {
 		$this->store = $store;
 		$this->settings = $settings;
 	}
@@ -110,12 +100,13 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	 *
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
+	 *
 	 * @return String
 	 * @throws InvalidResultException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {
 
-		if ( $result instanceof \SMW\DIProperty ) {
+		if ( $result instanceof DIProperty ) {
 			return $this->formatPropertyItem( $result );
 		} elseif ( $result instanceof SMWDIError ) {
 			return $this->getMessageFormatter()->clear()
@@ -123,7 +114,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 				->addFromArray( array( $result->getErrors() ) )
 				->getHtml();
 		} else {
-			throw new \SMW\InvalidResultException( 'SMWUnusedPropertiesPage expects results that are properties or errors.' );
+			throw new InvalidResultException( 'UnusedPropertiesQueryPage expects results that are properties or errors.' );
 		}
 	}
 
@@ -133,11 +124,11 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWDIProperty $property
+	 * @param DIProperty $property
+	 *
 	 * @return string
 	 */
-	protected function formatPropertyItem( \SMW\DIProperty $property ) {
-		$linker = smwfGetLinker();
+	protected function formatPropertyItem( DIProperty $property ) {
 
 		// Clear formatter before invoking messages and
 		// avoid having previous data to be present
@@ -145,15 +136,15 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 
 		if ( $property->isUserDefined() ) {
 
-			$propertyLink = $linker->link(
+			$propertyLink = $this->getLinker()->link(
 				$property->getDiWikiPage()->getTitle(),
 				$property->getLabel()
 			);
 
-			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), new \SMW\DIProperty( '_TYPE' ) );
+			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), new DIProperty( '_TYPE' ) );
 
 			if ( count( $types ) >= 1 ) {
-				$typeDataValue = \SMW\DataValueFactory::newDataItemValue( current( $types ), new \SMW\DIProperty( '_TYPE' ) );
+				$typeDataValue = DataValueFactory::newDataItemValue( current( $types ), new DIProperty( '_TYPE' ) );
 			} else {
 				$typeDataValue = SMWTypesValue::newFromTypeId( '_wpg' );
 				$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typeDataValue->getLongHTMLText() );
@@ -161,10 +152,10 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 
 		} else {
 			$typeDataValue = SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() );
-			$propertyLink  = \SMW\DataValueFactory::newDataItemValue( $property, null )->getShortHtmlText( $linker );
+			$propertyLink  = DataValueFactory::newDataItemValue( $property, null )->getShortHtmlText( $this->getLinker() );
 		}
 
-		return $this->msg( 'smw_unusedproperty_template', $propertyLink, $typeDataValue->getLongHTMLText( $linker )	)->text() . ' ' .
+		return $this->msg( 'smw_unusedproperty_template', $propertyLink, $typeDataValue->getLongHTMLText( $this->getLinker() )	)->text() . ' ' .
 			$this->getMessageFormatter()->getHtml();
 	}
 

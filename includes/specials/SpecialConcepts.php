@@ -4,10 +4,8 @@ namespace SMW;
 
 use SMWThingDescription;
 use SMWSomeProperty;
-use SMWDIProperty;
 use SMWPageLister;
 
-use SpecialPage;
 use Html;
 
 /**
@@ -28,11 +26,11 @@ use Html;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -45,6 +43,7 @@ class SpecialConcepts extends SpecialPage {
 
 	/**
 	 * @see SpecialPage::__construct
+	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
 		parent::__construct( 'Concepts' );
@@ -62,9 +61,9 @@ class SpecialConcepts extends SpecialPage {
 	 * @return DIWikiPage[]
 	 */
 	public function getResults( $limit, $from, $until ) {
-		$description = new SMWSomeProperty( new SMWDIProperty( '_CONC' ), new SMWThingDescription() );
+		$description = new SMWSomeProperty( new DIProperty( '_CONC' ), new SMWThingDescription() );
 		$query = SMWPageLister::getQuery( $description, $limit, $from, $until );
-		return StoreFactory::getStore()->getQueryResult( $query )->getResults();
+		return $this->getStore()->getQueryResult( $query )->getResults();
 	}
 
 	/**
@@ -115,7 +114,7 @@ class SpecialConcepts extends SpecialPage {
 	 * @param array $param
 	 */
 	public function execute( $param ) {
-		wfProfileIn( __METHOD__ );
+		Profiler::In( __METHOD__ );
 
 		$this->getOutput()->setPageTitle( $this->msg( 'concepts' )->text() );
 
@@ -128,6 +127,6 @@ class SpecialConcepts extends SpecialPage {
 
 		$this->getOutput()->addHTML( $this->getHtml( $diWikiPages, $limit, $from , $until ) );
 
-		wfProfileOut( __METHOD__ );
+		Profiler::Out( __METHOD__ );
 	}
 }

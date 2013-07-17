@@ -2,14 +2,14 @@
 
 namespace SMW\Test;
 
+use SMW\PropertiesQueryPage;
 use SMW\MessageFormatter;
 use SMW\ArrayAccessor;
 
-use SMWPropertiesPage;
 use SMWDataItem;
 
 /**
- * Tests for the SMWPropertiesPage class
+ * Tests for the PropertiesQueryPage class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,14 +35,14 @@ use SMWDataItem;
  */
 
 /**
- * @covers SMWPropertiesPage
+ * @covers \SMW\PropertiesQueryPage
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
+class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -50,7 +50,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMWPropertiesPage';
+		return '\SMW\PropertiesQueryPage';
 	}
 
 	/**
@@ -101,13 +101,13 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWPropertiesPage object
+	 * Helper method that returns a PropertiesQueryPage object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $result
 	 *
-	 * @return SMWPropertiesPage
+	 * @return PropertiesQueryPage
 	 */
 	private function getInstance( $result = null, $values = array(), $settings = array() ) {
 
@@ -124,14 +124,14 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 			);
 		}
 
-		$instance = new SMWPropertiesPage( $store, $this->getSettings( $settings ) );
+		$instance = new PropertiesQueryPage( $store, $this->getSettings( $settings ) );
 		$instance->setContext( $this->newContext() );
 
 		return $instance;
 	}
 
 	/**
-	 * @test SMWPropertiesPage::__construct
+	 * @test PropertiesQueryPage::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -140,7 +140,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWPropertiesPage::formatResult
+	 * @test PropertiesQueryPage::formatResult
 	 *
 	 * @since 1.9
 	 */
@@ -162,7 +162,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWPropertiesPage::formatResult
+	 * @test PropertiesQueryPage::formatResult
 	 *
 	 * @since 1.9
 	 */
@@ -178,7 +178,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWPropertiesPage::formatResult
+	 * @test PropertiesQueryPage::formatResult
 	 * @dataProvider getUserDefinedDataProvider
 	 *
 	 * @note Title, wikiPage, and property label are randomized therefore
@@ -243,7 +243,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWPropertiesPage::formatResult
+	 * @test PropertiesQueryPage::formatResult
 	 *
 	 * @since 1.9
 	 */
@@ -269,7 +269,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWPropertiesPage::formatResult
+	 * @test PropertiesQueryPage::formatResult
 	 *
 	 * @since 1.9
 	 */
@@ -293,7 +293,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWPropertiesPage::formatResult
+	 * @test PropertiesQueryPage::formatResult
 	 *
 	 * @since 1.9
 	 */
@@ -330,7 +330,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWPropertiesPage::getResults
+	 * @test PropertiesQueryPage::getResults
 	 *
 	 * @since 1.9
 	 */
@@ -344,7 +344,7 @@ class SMWPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWPropertiesPage::getPageHeader
+	 * @test PropertiesQueryPage::getPageHeader
 	 *
 	 * @since 1.9
 	 */

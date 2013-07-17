@@ -1,55 +1,45 @@
 <?php
 
+namespace SMW;
+
+use SMWTypesValue;
+use SMWDIError;
+
+use Html;
+
 /**
- * This special page for MediaWiki shows all used properties.
+ * Query class that provides content for the Special:Properties page
  *
- * @file SMW_SpecialProperties.php
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @file
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
  *
  * @author Markus Krötzsch
- * @author Jeroen De Dauw
  * @author mwjames
  */
-class SMWSpecialProperties extends SpecialPage {
-
-	public function __construct() {
-		parent::__construct( 'Properties' );
-	}
-
-	public function execute( $param ) {
-		\SMW\Profiler::In( __METHOD__ );
-
-		$out = $this->getOutput();
-
-		$out->setPageTitle( $this->msg( 'properties' )->text() );
-
-		$page = new SMWPropertiesPage(
-			\SMW\StoreFactory::getStore(),
-			\SMW\Settings::newFromGlobals()
-		);
-		$page->setContext( $this->getContext() );
-
-		list( $limit, $offset ) = wfCheckLimits();
-		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
-
-		// Ensure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $out );
-
-		\SMW\Profiler::Out( __METHOD__ );
-	}
-}
 
 /**
- * This query page shows all used properties.
+ * Query class that provides content for the Special:Properties page
  *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * @author Markus Krötzsch
+ * @ingroup QueryPage
  */
-class SMWPropertiesPage extends SMWQueryPage {
+class PropertiesQueryPage extends QueryPage {
 
 	/** @var Store */
 	protected $store;
@@ -66,7 +56,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 	 * @param Store $store
 	 * @param Settings $settings
 	 */
-	public function __construct( \SMW\Store $store, \SMW\Settings $settings ) {
+	public function __construct( Store $store, Settings $settings ) {
 		$this->store = $store;
 		$this->settings = $settings;
 	}
@@ -122,17 +112,15 @@ class SMWPropertiesPage extends SMWQueryPage {
 
 		list ( $dataItem, $useCount ) = $result;
 
-		if ( $dataItem instanceof SMWDIProperty ) {
+		if ( $dataItem instanceof DIProperty ) {
 			return $this->formatPropertyItem( $dataItem, $useCount );
 		} elseif ( $dataItem instanceof SMWDIError ) {
-
 			return $this->getMessageFormatter()->clear()
 				->setType( 'warning' )
 				->addFromArray( array( $dataItem->getErrors() ) )
 				->getHtml();
-
 		} else {
-			throw new \SMW\InvalidResultException( 'SMWPropertiesPage expects results that are properties or errors.' );
+			throw new InvalidResultException( 'PropertiesQueryPage expects results that are properties or errors.' );
 		}
 	}
 
@@ -142,13 +130,11 @@ class SMWPropertiesPage extends SMWQueryPage {
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWDIProperty $property
+	 * @param DIProperty $property
 	 * @param integer $useCount
 	 * @return string
 	 */
-	protected function formatPropertyItem( \SMW\DIProperty $property, $useCount ) {
-
-		$linker = smwfGetLinker();
+	protected function formatPropertyItem( DIProperty $property, $useCount ) {
 
 		// Clear formatter before invoking messages
 		$this->getMessageFormatter()->clear();
@@ -168,11 +154,11 @@ class SMWPropertiesPage extends SMWQueryPage {
 				$proplink = $property->getLabel();
 				$this->getMessageFormatter()->addFromKey( 'smw_notitle', $proplink );
 			} else {
-				list( $typestring, $proplink ) = $this->getUserDefinedPropertyInfo( $title, $property, $useCount, $linker );
+				list( $typestring, $proplink ) = $this->getUserDefinedPropertyInfo( $title, $property, $useCount );
 			}
 
 		} else {
-			list( $typestring, $proplink ) = $this->getPredefinedPropertyInfo( $property, $linker );
+			list( $typestring, $proplink ) = $this->getPredefinedPropertyInfo( $property );
 		}
 
 		if ( $typestring === '' ) { // Built-ins have no type
@@ -200,42 +186,41 @@ class SMWPropertiesPage extends SMWQueryPage {
 	 * @param Title $title
 	 * @param DIProperty $property
 	 * @param integer $useCount
-	 * @param Linker $linker
 	 *
 	 * @return array
 	 */
-	private function getUserDefinedPropertyInfo( $title, $property, $useCount, $linker ) {
+	private function getUserDefinedPropertyInfo( $title, $property, $useCount ) {
 
 		if ( $useCount <= $this->settings->get( 'smwgPropertyLowUsageThreshold' ) ) {
 			$this->getMessageFormatter()->addFromKey( 'smw_propertyhardlyused' );
 		}
 
 		// User defined types default to Page
-		$typestring = SMWTypesValue::newFromTypeId( $this->settings->get( 'smwgPDefaultType' ) )->getLongHTMLText( $linker );
+		$typestring = SMWTypesValue::newFromTypeId( $this->settings->get( 'smwgPDefaultType' ) )->getLongHTMLText( $this->getLinker() );
 
 		$label = htmlspecialchars( $property->getLabel() );
 
 		if ( $title->exists() ) {
 
-			$typeProperty = new \SMW\DIProperty( '_TYPE' );
+			$typeProperty = new DIProperty( '_TYPE' );
 			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), $typeProperty );
 
 			if ( count( $types ) >= 1 ) {
 
-				$typeDataValue = \SMW\DataValueFactory::newDataItemValue( current( $types ), $typeProperty );
-				$typestring = $typeDataValue->getLongHTMLText( $linker );
+				$typeDataValue = DataValueFactory::newDataItemValue( current( $types ), $typeProperty );
+				$typestring = $typeDataValue->getLongHTMLText( $this->getLinker() );
 
 			} else {
 
 				$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typestring );
 			}
 
-			$proplink = $linker->link( $title, $label );
+			$proplink = $this->getLinker()->link( $title, $label );
 
 		} else {
 
 			$this->getMessageFormatter()->addFromKey( 'smw_propertylackspage' );
-			$proplink = $linker->link( $title, $label, array(), array( 'action' => 'view' ) );
+			$proplink = $this->getLinker()->link( $title, $label, array(), array( 'action' => 'view' ) );
 		}
 
 		return array( $typestring, $proplink );
@@ -247,14 +232,14 @@ class SMWPropertiesPage extends SMWQueryPage {
 	 * @since 1.9
 	 *
 	 * @param DIProperty $property
-	 * @param Linker $linker
 	 *
 	 * @return array
 	 */
-	private function getPredefinedPropertyInfo( $property, $linker ) {
-		$typestring = SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() )->getLongHTMLText( $linker );
-		$proplink = \SMW\DataValueFactory::newDataItemValue( $property, null )->getShortHtmlText( $linker );
-		return array( $typestring, $proplink );
+	private function getPredefinedPropertyInfo( DIProperty $property ) {
+		return array(
+			SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() )->getLongHTMLText( $this->getLinker() ),
+			DataValueFactory::newDataItemValue( $property, null )->getShortHtmlText( $this->getLinker() )
+		);
 	}
 
 	/**

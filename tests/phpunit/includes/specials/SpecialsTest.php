@@ -36,10 +36,10 @@ use Language;
  */
 
 /**
- * @covers SMWSpecialWantedProperties
- * @covers SMWSpecialUnusedProperties
- * @covers SMWSpecialProperties
- * @covers SMW\SpecialConcepts
+ * @covers \SMW\SpecialWantedProperties
+ * @covers \SMW\SpecialUnusedProperties
+ * @covers \SMW\SpecialProperties
+ * @covers \SMW\SpecialConcepts
  *
  * @note Test base was borrowed from the EducationProgram extension
  *

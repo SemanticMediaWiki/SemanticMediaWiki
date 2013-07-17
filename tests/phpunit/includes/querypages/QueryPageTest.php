@@ -29,7 +29,7 @@ namespace SMW\Test;
  */
 
 /**
- * @covers \SMWQueryPage
+ * @covers \SMW\QueryPage
  *
  * @ingroup Test
  *
@@ -44,17 +44,17 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMWQueryPage';
+		return '\SMW\QueryPage';
 	}
 
 	/**
-	 * Helper method that returns a SMWQueryPage object
+	 * Helper method that returns a QueryPage object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $result
 	 *
-	 * @return SMWQueryPage
+	 * @return QueryPage
 	 */
 	private function getInstance( $search = '' ) {
 
@@ -71,7 +71,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWQueryPage::__construct
+	 * @test QueryPage::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -81,7 +81,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWQueryPage::linkParameters
+	 * @test QueryPage::linkParameters
 	 * @dataProvider linkParametersDataProvider
 	 *
 	 * @since 1.9
@@ -100,7 +100,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWQueryPage::getSearchForm
+	 * @test QueryPage::getSearchForm
 	 *
 	 * @since 1.9
 	 */

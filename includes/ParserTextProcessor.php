@@ -4,7 +4,6 @@ namespace SMW;
 
 use SMWOutputs;
 
-use SpecialPage;
 use MagicWord;
 use Title;
 use Html;

@@ -133,7 +133,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ParserTextProcessor']   = $incDir . 'ParserTextProcessor.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';
-	$wgAutoloadClasses['SMWQueryPage']              = $incDir . 'SMW_QueryPage.php';
 
 	$wgAutoloadClasses['SMWDataValueFactory']       = $incDir . 'DataValueFactory.php';
 	$wgAutoloadClasses['SMW\DataValueFactory']      = $incDir . 'DataValueFactory.php';
@@ -182,6 +181,13 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWDataItemException']             = $incDir . '/exceptions/DataItemException.php';
 	$wgAutoloadClasses['SMW\InvalidSettingsArgumentException']   = $incDir . '/exceptions/InvalidSettingsArgumentException.php';
 	$wgAutoloadClasses['SMW\InvalidPredefinedPropertyException'] = $incDir . '/exceptions/InvalidPredefinedPropertyException.php';
+
+	// Query pages
+	$wgAutoloadClasses['SMW\QueryPage']                 = $incDir . '/querypages/QueryPage.php';
+	$wgAutoloadClasses['SMW\WantedPropertiesQueryPage'] = $incDir . '/querypages/WantedPropertiesQueryPage.php';
+	$wgAutoloadClasses['SMW\UnusedPropertiesQueryPage'] = $incDir . '/querypages/UnusedPropertiesQueryPage.php';
+	$wgAutoloadClasses['SMW\PropertiesQueryPage']       = $incDir . '/querypages/PropertiesQueryPage.php';
+
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
@@ -367,8 +373,12 @@ function smwfRegisterClasses() {
 
 	// Special pages and closely related helper classes
 	$specDir = $smwgIP . 'includes/specials/';
+	$wgAutoloadClasses['SMW\SpecialPage']               = $specDir . 'SpecialPage.php';
 	$wgAutoloadClasses['SMW\SpecialSemanticStatistics'] = $specDir . 'SpecialSemanticStatistics.php';
 	$wgAutoloadClasses['SMW\SpecialConcepts']           = $specDir . 'SpecialConcepts.php';
+	$wgAutoloadClasses['SMW\SpecialWantedProperties']   = $specDir . 'SpecialWantedProperties.php';
+	$wgAutoloadClasses['SMW\SpecialUnusedProperties']   = $specDir . 'SpecialUnusedProperties.php';
+	$wgAutoloadClasses['SMW\SpecialProperties']         = $specDir . 'SpecialProperties.php';
 
 	$wgAutoloadClasses['SMWAskPage']                    = $specDir . 'SMW_SpecialAsk.php';
 	$wgAutoloadClasses['SMWQueryUIHelper']              = $specDir . 'SMW_QueryUIHelper.php';
@@ -382,12 +392,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWAdmin']                      = $specDir . 'SMW_SpecialSMWAdmin.php';
 	$wgAutoloadClasses['SMWSpecialOWLExport']           = $specDir . 'SMW_SpecialOWLExport.php';
 	$wgAutoloadClasses['SMWSpecialTypes']               = $specDir . 'SMW_SpecialTypes.php';
-	$wgAutoloadClasses['SMWSpecialWantedProperties']    = $specDir . 'SMW_SpecialWantedProperties.php';
-	$wgAutoloadClasses['SMWWantedPropertiesPage']       = $specDir . 'SMW_SpecialWantedProperties.php';
-	$wgAutoloadClasses['SMWSpecialUnusedProperties']    = $specDir . 'SMW_SpecialUnusedProperties.php';
-	$wgAutoloadClasses['SMWUnusedPropertiesPage']       = $specDir . 'SMW_SpecialUnusedProperties.php';
-	$wgAutoloadClasses['SMWSpecialProperties']          = $specDir . 'SMW_SpecialProperties.php';
-	$wgAutoloadClasses['SMWPropertiesPage']             = $specDir . 'SMW_SpecialProperties.php';
 
 	// Special pages and closely related helper classes
 	$testsDir = $smwgIP . 'tests/phpunit/';
@@ -474,15 +478,15 @@ function smwfRegisterSpecialPages() {
 			'page' => 'SMWURIResolver'
 		),
 		'Properties' => array(
-			'page' => 'SMWSpecialProperties',
+			'page' => 'SMW\SpecialProperties',
 			'group' => 'pages'
 		),
 		'UnusedProperties' => array(
-			'page' => 'SMWSpecialUnusedProperties',
+			'page' => 'SMW\SpecialUnusedProperties',
 			'group' => 'maintenance'
 		),
 		'WantedProperties' => array(
-			'page' => 'SMWSpecialWantedProperties',
+			'page' => 'SMW\SpecialWantedProperties',
 			'group' => 'maintenance'
 		),
 	);

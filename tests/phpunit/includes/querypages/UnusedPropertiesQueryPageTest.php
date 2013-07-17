@@ -2,12 +2,13 @@
 
 namespace SMW\Test;
 
+use SMW\UnusedPropertiesQueryPage;
 use SMW\MessageFormatter;
-use SMWUnusedPropertiesPage;
+
 use SMWDataItem;
 
 /**
- * Tests for the UnusedPropertiesPage class
+ * Tests for the UnusedPropertiesQueryPage class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,14 +34,14 @@ use SMWDataItem;
  */
 
 /**
- * @covers SMWUnusedPropertiesPage
+ * @covers \SMW\UnusedPropertiesQueryPage
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class UnusedPropertiesPageTest extends SemanticMediaWikiTestCase {
+class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -48,7 +49,7 @@ class UnusedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMWUnusedPropertiesPage';
+		return '\SMW\UnusedPropertiesQueryPage';
 	}
 
 	/**
@@ -99,14 +100,14 @@ class UnusedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWUnusedPropertiesPage object
+	 * Helper method that returns a UnusedPropertiesQueryPage object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $result
 	 * @param $values
 	 *
-	 * @return SMWUnusedPropertiesPage
+	 * @return UnusedPropertiesQueryPage
 	 */
 	private function getInstance( $result = null, $values = array() ) {
 
@@ -115,14 +116,14 @@ class UnusedPropertiesPageTest extends SemanticMediaWikiTestCase {
 			'getUnusedPropertiesSpecial' => $this->getMockCollector( $result )
 		) )->getMockStore();
 
-		$instance = new SMWUnusedPropertiesPage( $store, $this->getSettings() );
+		$instance = new UnusedPropertiesQueryPage( $store, $this->getSettings() );
 		$instance->setContext( $this->newContext() );
 
 		return $instance;
 	}
 
 	/**
-	 * @test SMWUnusedPropertiesPage::__construct
+	 * @test UnusedPropertiesQueryPage::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -132,7 +133,7 @@ class UnusedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWUnusedPropertiesPage::formatResult
+	 * @test UnusedPropertiesQueryPage::formatResult
 	 * @dataProvider getUserDefinedDataProvider
 	 *
 	 * @since 1.9
@@ -190,7 +191,7 @@ class UnusedPropertiesPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWUnusedPropertiesPage::formatResult
+	 * @test UnusedPropertiesQueryPage::formatResult
 	 *
 	 * @since 1.9
 	 */
