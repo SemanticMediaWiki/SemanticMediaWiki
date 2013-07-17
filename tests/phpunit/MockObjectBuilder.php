@@ -70,6 +70,35 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Returns a SemanticData object
+	 *
+	 * @since 1.9
+	 *
+	 * @return SemanticData
+	 */
+	public function getMockSemanticData() {
+
+		$semanticData = $this->getMockBuilder( 'SMWSemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $this->set( 'getSubject' ) ) );
+
+		// array of SMWDataItem
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( $this->set( 'getPropertyValues' ) ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'addPropertyObjectValue' )
+			->will( is_callable( $this->set( 'addPropertyObjectValue' ) ) ? $this->returnCallback( $this->set( 'addPropertyObjectValue' ) ) : $this->returnValue( $this->set( 'addPropertyObjectValue' ) ) );
+
+		return $semanticData;
+	}
+
+	/**
 	 * Returns a SMWQuery object
 	 *
 	 * @since 1.9

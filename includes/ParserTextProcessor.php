@@ -2,14 +2,12 @@
 
 namespace SMW;
 
+use SMWOutputs;
+
+use SpecialPage;
 use MagicWord;
 use Title;
 use Html;
-use SpecialPage;
-
-use SMWOutputs;
-use SMWDIWikiPage;
-use SMWDIProperty;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are
@@ -119,8 +117,9 @@ class ParserTextProcessor {
 		// Attest if semantic data should be processed
 		$this->isEnabled = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
 
-		// Process redirects
-		$this->setRedirect( $title );
+		// Build redirect
+		$redirect = new RedirectBuilder( $this->parserData->getData() );
+		$redirect->canBuild( $this->isEnabled )->build( $text );
 
 		// Parse links to extract semantic properties
 		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
@@ -148,22 +147,6 @@ class ParserTextProcessor {
 			'ext.smw.style',
 			'ext.smw.tooltips'
 		);
-	}
-
-	/**
-	 * Process and add '_REDI' property in case the current Title is a redirect
-	 *
-	 * @since 1.9
-	 *
-	 * @param Title $title
-	 */
-	protected function setRedirect( Title $title ) {
-		if ( $this->isEnabled && $title->isRedirect() ) {
-			$this->parserData->getData()->addPropertyObjectValue(
-				new SMWDIProperty( '_REDI' ),
-				SMWDIWikiPage::newFromTitle( $title, '__red' )
-			);
-		}
 	}
 
 	/**

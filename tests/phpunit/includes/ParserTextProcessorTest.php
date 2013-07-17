@@ -326,56 +326,33 @@ class ParserTextProcessorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserTextProcessor::setRedirect
+	 * @test ParserTextProcessor::parse
 	 *
 	 * @since 1.9
 	 */
-	public function testSetRedirect() {
+	public function testRedirect() {
+
 		$namespace = NS_MAIN;
-
-		// Mock Title object to avoid DB access
-		$mockTitle = $this->getMock( 'Title' );
-
-		// Attach isRedirect method
-		$mockTitle->expects( $this->any() )
-			->method( 'isRedirect' )
-			->will( $this->returnValue( true )
-		);
-
-		// Attach getNamespace method
-		$mockTitle->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace )
-		);
+		$text      = '#REDIRECT [[:Lala]]';
 
 		// Create text processor instance
 		$parserOutput = $this->getParserOutput();
 		$title = $this->getTitle( $namespace );
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( $namespace => true )
-		);
+		$settings = $this->getSettings( array(
+			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
+			'smwgLinksInValues' => false,
+			'smwgInlineErrors' => true,
+		) );
 
 		$parserData = $this->getParserData( $title, $parserOutput );
-		$instance = new ParserTextProcessor(
-			$parserData,
-			$this->getSettings( $settings )
-		);
 
-		// Make protected methods accessible
-		$reflection = new ReflectionClass( $this->getClass() );
-
-		$property = $reflection->getProperty( 'isEnabled' );
-		$property->setAccessible( true );
-		$property->setValue( $instance, true );
-
-		$method = $reflection->getMethod( 'setRedirect' );
-		$method->setAccessible( true );
-		$result = $method->invoke( $instance, $mockTitle );
+		$instance = new ParserTextProcessor( $parserData, $settings );
+		$instance->parse( $text );
 
 		// Build expected results from a successful setRedirect execution
 		$expected['propertyCount'] = 1;
 		$expected['propertyKey'] = '_REDI';
-		$expected['propertyValue'] = ':' . $title->getText();
+		$expected['propertyValue'] = ':Lala';
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
