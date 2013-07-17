@@ -23,13 +23,11 @@ use SMWOutputs;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.5.3
- *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.5.3
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
@@ -37,7 +35,6 @@ use SMWOutputs;
 /**
  * Class that provides the {{#info}} parser function
  *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class InfoParserFunction extends \ParserHook {

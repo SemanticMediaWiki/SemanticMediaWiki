@@ -24,20 +24,17 @@ use ParserOutput;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
  * Class that provides the {{#show}} parser function
  *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class ShowParserFunction {

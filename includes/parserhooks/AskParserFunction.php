@@ -25,13 +25,11 @@ use SMWQueryProcessor;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Ask
  *
- * @since 1.9
- *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author mwjames
@@ -40,7 +38,6 @@ use SMWQueryProcessor;
 /**
  * Class that provides the {{#ask}} parser function
  *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class AskParserFunction {

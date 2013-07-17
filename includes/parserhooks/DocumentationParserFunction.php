@@ -23,13 +23,11 @@ use SMWQueryProcessor;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.6
- *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.6
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 
@@ -37,7 +35,6 @@ use SMWQueryProcessor;
  * Class that provides the {{#smwdoc}} parser function, which displays parameter
  * documentation for a specified result format.
  *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class DocumentationParserFunction extends \ParserHook {

@@ -22,17 +22,16 @@ use SMW\DocumentationParserFunction;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
- * Tests for the DocumentationParserFunction class
+ * @covers \SMW\DocumentationParserFunction
  *
  * @ingroup Test
  *

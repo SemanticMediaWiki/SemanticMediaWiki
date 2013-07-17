@@ -24,11 +24,11 @@ use Parser;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 

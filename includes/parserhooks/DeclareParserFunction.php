@@ -26,13 +26,11 @@ use SMWOutputs;
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Argument_declaration_in_templates
  *
- * @since 1.5.3
- *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.5.3
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
@@ -40,7 +38,6 @@ use SMWOutputs;
 /**
  * Class that provides the {{#declare}} parser function
  *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class DeclareParserFunction {

@@ -28,13 +28,11 @@ use SMWQueryProcessor;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup SMW
- * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author mwjames
@@ -43,7 +41,6 @@ use SMWQueryProcessor;
 /**
  * Class that provides the {{#concept}} parser function
  *
- * @ingroup SMW
  * @ingroup ParserFunction
  */
 class ConceptParserFunction {

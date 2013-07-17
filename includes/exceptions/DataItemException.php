@@ -42,5 +42,6 @@ class DataItemException extends MWException {}
  * SMWDataItemException
  *
  * @deprecated since SMW 1.9
+ * @codeCoverageIgnore
  */
 class_alias( 'SMW\DataItemException', 'SMWDataItemException' );
