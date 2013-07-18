@@ -12510,17 +12510,19 @@ Introduza a página e a propriedade.',
 	'smw_smwadmin_updatestarted' => 'Foi iniciado um novo processo de actualização para refrescar os dados semânticos.
 Todos os dados armazenados serão reconstruídos ou reparados conforme for necessário.
 Pode seguir o progresso de actualização nesta página especial.', # Fuzzy
-	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de actualização em curso.
-Não foi criado outro.', # Fuzzy
+	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de atualização em curso.
+Não foi criado outro.
+
+Voltar para $1.',
 	'smw_smwadmin_updatestopped' => 'Todos os processos de actualização existentes foram parados.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de actualização em curso, deve marcar a caixa de selecção para indicar que tem realmente a certeza.', # Fuzzy
 	'smw_smwadmin_docu' => 'Esta página especial auxilia-o durante a instalação ou actualização do <a href="http://semantic-mediawiki.org">MediaWiki Semântico</a>.
 Lembre-se de efectuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
-	'smw_smwadmin_db' => 'Instalação e actualização da base de dados',
+	'smw_smwadmin_db' => 'Instalação e atualização da base de dados',
 	'smw_smwadmin_dbdocu' => 'O MediaWiki Semântico requer algumas alterações da base de dados do MediaWiki, de forma a armazenar os dados semânticos.
 A função abaixo assegura que a sua base de dados está devidamente preparada.
-As alterações feitas neste passo não afectam o resto da base de dados do MediaWiki, e podem ser facilmente desfeitas se desejado.
-Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou actualização.',
+As alterações feitas neste passo não afetam o resto da base de dados do MediaWiki, e podem ser facilmente desfeitas se desejado.
+Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou atualização.',
 	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, é provável que o utilizador da base de dados usado pela sua wiki (consulte o seu LocalSettings.php) não tenha as permissões necessárias.
 Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <code>SMW_setup.php</code>, o qual pode usar as credenciais presentes em AdminSettings.php.", # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
@@ -12530,17 +12532,17 @@ Este é usado para manter uma lista de sites públicos que usam o MediaWiki Sem�
 Veja a página inicial do MediaWiki Semântico para <a href="http://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
 	'smw_smwadmin_announcebutton' => 'Clique o seguinte botão para enviar a URL da sua wiki ao serviço.
 O serviço não registará wikis que não estejam publicamente acessíveis e apenas armazenará informação publicamente acessível.',
-	'smw_smwadmin_datarefresh' => 'Reparação de dados e actualização',
-	'smw_smwadmin_datarefreshdocu' => 'É possível restaurar todos os dados do MediaWiki Semântico baseado no conteúdo actual da wiki.
+	'smw_smwadmin_datarefresh' => 'Reparação de dados e atualização',
+	'smw_smwadmin_datarefreshdocu' => 'É possível restaurar todos os dados do MediaWiki Semântico baseado no conteúdo atual da wiki.
 Isto pode ser útil para reparar dados corrompidos ou para refrescar os dados se o formato interno tiver sido alterado devido a alguma evolução do software.
-A actualização é executada página a página e não ficará completa de imediato.
-Abaixo é mostrado se uma actualização está a decorrer e permite-lhe iniciar ou parar actualizações (a menos que esta funcionalidade tenha sido desactivada por um administrador do site).',
+A atualização é executada página a página e não ficará completa de imediato.
+Abaixo é mostrado se uma atualização está a decorrer e permite-lhe iniciar ou parar atualizações (a menos que esta funcionalidade tenha sido desativada por um administrador do site).',
 	'smw_smwadmin_datarefreshprogress' => "<strong>Já se encontra a decorrer uma actualização.</strong>
 É normal que a actualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede à wiki.
 Para terminar esta actualização mais rapidamente, pode executar o ''script'' de manutenção do MediaWiki <code>runJobs.php</code> (use a opção <code>--maxjobs 1000</code> para restringir o número de actualizações feitas em cada bloco).
 Progresso estimado da actualização em curso:",
-	'smw_smwadmin_datarefreshbutton' => 'Iniciar a actualização dos dados',
-	'smw_smwadmin_datarefreshstop' => 'Parar esta actualização',
+	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
+	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, tenho a certeza.',
 	'smw_smwadmin_support' => 'Obtendo suporte',
 	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
