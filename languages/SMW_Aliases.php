@@ -511,7 +511,7 @@ $specialPageAliases['nds-nl'] = array(
 	'Ask' => array( 'Vragen' ),
 	'Browse' => array( 'Bekieken' ),
 	'ExportRDF' => array( 'RDF_uutvoeren' ),
-	'PageProperty' => array( 'Zied-eigenschap' ),
+	'PageProperty' => array( 'Ziedeigenschap' ),
 	'Properties' => array( 'Eigenschappen' ),
 	'Concepts' => array( 'Konsepten' ),
 	'SMWAdmin' => array( 'SMW-beheer' ),
@@ -562,7 +562,7 @@ $specialPageAliases['or'] = array(
 /** Punjabi (ਪੰਜਾਬੀ) */
 $specialPageAliases['pa'] = array(
 	'Ask' => array( 'ਪੁੱਛੋ' ),
-	'Browse' => array( 'ਬ੍ਰਾਊਜ਼' ),
+	'Browse' => array( 'ਫੇਰੀ_ਪਾਓ' ),
 	'Types' => array( 'ਕਿਸਮਾਂ' ),
 );
 

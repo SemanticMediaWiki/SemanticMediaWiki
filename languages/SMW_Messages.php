@@ -3412,6 +3412,13 @@ Odhadovaný průběh updatu:',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|zobrazena je|zobrazeny jsou|zobrazeno je}} $1 {{PLURAL:$1|stránka náležející|stránky náležející|stránek náležejících}} tomuto konceptu.', # Fuzzy
 );
 
+/** Church Slavic (словѣ́ньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ)
+ * @author ОйЛ
+ */
+$messages['cu'] = array(
+	'smw-ui-tooltip-title-warning' => 'блаꙁна',
+);
+
 /** German (Deutsch)
  * @author Als-Holder
  * @author DaSch
