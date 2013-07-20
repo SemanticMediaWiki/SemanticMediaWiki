@@ -418,8 +418,8 @@ function smwfRegisterClasses() {
 
 	// Jobs
 	$wgJobClasses['SMWUpdateJob']       = 'SMWUpdateJob';
-	$wgAutoloadClasses['SMWUpdateJob']  = $smwgIP . 'includes/jobs/SMW_UpdateJob.php';
-	$wgAutoloadClasses['SMW\UpdateJob']  = $smwgIP . 'includes/jobs/SMW_UpdateJob.php'; // 1.9
+	$wgAutoloadClasses['SMWUpdateJob']  = $smwgIP . 'includes/jobs/UpdateJob.php';
+	$wgAutoloadClasses['SMW\UpdateJob']  = $smwgIP . 'includes/jobs/UpdateJob.php'; // 1.9
 	$wgJobClasses['SMWRefreshJob']      = 'SMWRefreshJob';
 	$wgAutoloadClasses['SMWRefreshJob'] = $smwgIP . 'includes/jobs/SMW_RefreshJob.php';
 
