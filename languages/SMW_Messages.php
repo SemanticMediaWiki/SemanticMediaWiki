@@ -9235,6 +9235,10 @@ $messages['ko'] = array(
 	'smw_propertylackspage' => '모든 속성은 문서에서 설명해야 합니다.',
 	'smw_propertylackstype' => '이 속성에 지정한 유형이 없습니다. (지금은 $1 유형으로 가정합니다)',
 	'smw_propertyhardlyused' => '이 속성은 거의 위키 안에 사용하지 않습니다!',
+	'smw-sp-property-searchform' => '다음을 포함하는 속성 보기:',
+	'concepts' => '개념',
+	'smw-sp-concept-header' => '개념 목록',
+	'smw-sp-concept-empty' => '개념을 찾을 수 없습니다.',
 	'unusedproperties' => '사용하지 않는 속성 목록',
 	'smw_unusedproperties_docu' => '다음 속성은 존재하지만 다른 문서에 해당 속성을 사용하지 않습니다.',
 	'smw_unusedproperty_template' => '$2 유형의 $1',
@@ -9246,6 +9250,18 @@ $messages['ko'] = array(
 	'smw_types_docu' => '다음은 속성에 할당할 수 있는 모든 데이터 유형의 목록입니다.',
 	'smw-special-types-no-such-type' => '지정한 데이터 유형이 존재하지 않습니다',
 	'semanticstatistics' => '시맨틱 통계',
+	'smw-statistics' => '시맨틱 통계',
+	'smw-statistics-property-instance' => '속성 {{PLURAL:$1|값}} (총)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|속성}}]] (총)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|속성}} (총)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|속성}} (문서에 등록된)',
+	'smw-statistics-property-type' => '{{PLURAL:$1|속성}} (데이터유형으로 할당된)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|쿼리}}',
+	'smw-statistics-query-size' => '쿼리 크기',
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|개념}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|개념}}]]',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|하위개체}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|데이터유형}}]]',
 	'ask' => '시맨틱 찾기',
 	'smw_ask_sortby' => '열을 기준으로 정렬 (선택 사항)',
 	'smw_ask_ascorder' => '오름차순',
@@ -9394,6 +9410,12 @@ $1 문서로 돌아갑니다.',
 	'smw_unknowntype' => '이 속성의 형식이 잘못되었습니다',
 	'smw_concept_header' => '"$1" 개념의 문서',
 	'smw_conceptarticlecount' => '해당 개넘에 속하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.', # Fuzzy
+	'right-smw-admin' => '관리 작업에 접근 (시맨틱 미디어위키)',
+	'group-smwadministrator' => '시맨틱 미디어위키 관리자',
+	'group-smwadministrator-member' => '{{GENDER:$1|관리자 (SMW)}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW_관리자',
+	'action-smw-admin' => '시맨틱 미디어위키 관리 작업에 접근',
+	'smw-sp-properties-header-label' => '속성 목록',
 );
 
 /** Krio (Krio)
@@ -12522,9 +12544,11 @@ Não foi criado outro.
 
 Voltar para $1.',
 	'smw_smwadmin_updatestopped' => 'Todos os processos de actualização existentes foram parados.', # Fuzzy
-	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de actualização em curso, deve marcar a caixa de selecção para indicar que tem realmente a certeza.', # Fuzzy
-	'smw_smwadmin_docu' => 'Esta página especial auxilia-o durante a instalação ou actualização do <a href="http://semantic-mediawiki.org">MediaWiki Semântico</a>.
-Lembre-se de efectuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
+	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em curso, deve marcar a caixa de seleção para indicar que tem realmente a certeza.
+
+Voltar para $1.',
+	'smw_smwadmin_docu' => 'Esta página especial auxilia-o durante a instalação ou atualização do <a href="http://semantic-mediawiki.org">MediaWiki Semântico</a>.
+Lembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
 	'smw_smwadmin_db' => 'Instalação e atualização da base de dados',
 	'smw_smwadmin_dbdocu' => 'O MediaWiki Semântico requer algumas alterações da base de dados do MediaWiki, de forma a armazenar os dados semânticos.
 A função abaixo assegura que a sua base de dados está devidamente preparada.
