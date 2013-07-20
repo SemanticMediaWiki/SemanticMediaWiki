@@ -126,7 +126,7 @@ interface IParserData {
  * @author Markus Krötzsch
  * @author mwjames
  */
-class ParserData implements IParserData {
+class ParserData extends Observer implements IParserData {
 
 	/**
 	 * Represents Title object
@@ -297,6 +297,7 @@ class ParserData implements IParserData {
 	 * @throws MWException
 	 */
 	public function updateOutput(){
+
 		if ( !( $this->semanticData instanceof SMWSemanticData ) ) {
 			throw new MWException( 'The semantic data container is not available' );
 		}
@@ -306,6 +307,7 @@ class ParserData implements IParserData {
 		} else {
 			$this->parserOutput->mSMWData = $this->semanticData;
 		}
+
 	}
 
 	/**
@@ -348,134 +350,6 @@ class ParserData implements IParserData {
 		}
 
 		Profiler::Out( __METHOD__, true );
-	}
-
-	/**
-	 * Add category information
-	 *
-	 * Part of this code was entangled in SMWParseData::onParserAfterTidy
-	 * which has now been separated and is called from
-	 * SMWHooks::onParserAfterTidy
-	 *
-	 * @note Fetches category information and other final settings
-	 * from parser output, so that they are also replicated in SMW for more
-	 * efficient querying.
-	 *
-	 * @see SMWHooks::onParserAfterTidy
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $categoryLinks
-	 *
-	 * @return boolean|null
-	 */
-	public function addCategories( array $categoryLinks ) {
-		if ( !( $this->semanticData instanceof SMWSemanticData ) ) {
-			return true;
-		}
-
-		// Iterate over available categories
-		foreach ( $categoryLinks as $catname ) {
-			if ( $this->options['smwgCategoriesAsInstances'] && ( $this->getTitle()->getNamespace() !== NS_CATEGORY ) ) {
-				$this->semanticData->addPropertyObjectValue(
-					new SMWDIProperty( SMWDIProperty::TYPE_CATEGORY ),
-					new SMWDIWikiPage( $catname, NS_CATEGORY, '' )
-				);
-			}
-
-			if ( $this->options['smwgUseCategoryHierarchy'] && ( $this->getTitle()->getNamespace() === NS_CATEGORY ) ) {
-				$this->semanticData->addPropertyObjectValue(
-					new SMWDIProperty( SMWDIProperty::TYPE_SUBCATEGORY ),
-					new SMWDIWikiPage( $catname, NS_CATEGORY, '' )
-				);
-			}
-		}
-	}
-
-	/**
-	 * Add default sort
-	 *
-	 * @see SMWHooks::onParserAfterTidy
-	 *
-	 * @since 1.9
-	 *
-	 * @param string $defaultSort
-	 *
-	 * @return boolean|null
-	 */
-	public function addDefaultSort( $defaultSort ) {
-		if ( !( $this->semanticData instanceof SMWSemanticData ) ) {
-			return true;
-		}
-
-		$sortkey = $defaultSort ? $defaultSort : str_replace( '_', ' ', $this->title->getDBkey() );
-		$this->semanticData->addPropertyObjectValue(
-			new SMWDIProperty( SMWDIProperty::TYPE_SORTKEY ),
-			new SMWDIBlob( $sortkey )
-		);
-	}
-
-	/**
-	 * Add additional information that is related to special properties
-	 * e.g. modification date, the last edit date etc.
-	 *
-	 * @since 1.9
-	 *
-	 * @param \WikiPage $wikiPage
-	 * @param \Revision $revision
-	 * @param \User $user
-	 *
-	 * @return boolean|null
-	 */
-	public function addSpecialProperties( \WikiPage $wikiPage, \Revision $revision, \User $user ) {
-		if ( !( $this->semanticData instanceof SMWSemanticData ) ) {
-			return true;
-		}
-
-		// Keeps temporary account over processed properties
-		$processedProperty = array();
-
-		foreach ( $this->options['smwgPageSpecialProperties'] as $propertyId ) {
-
-			// Ensure that only special properties are added that are registered
-			// and only added once
-			if ( ( SMWDIProperty::getPredefinedPropertyTypeId( $propertyId ) === '' ) ||
-				( array_key_exists( $propertyId, $processedProperty ) ) ) {
-				continue;
-			}
-
-			$propertyDI = new SMWDIProperty( $propertyId );
-
-			// Don't do a double round
-			if ( $this->semanticData->getPropertyValues( $propertyDI ) !== array() ) {
-				$processedProperty[ $propertyId ] = true;
-				continue;
-			}
-
-			switch ( $propertyId ) {
-				case SMWDIProperty::TYPE_MODIFICATION_DATE :
-					$dataValue = SMWDITime::newFromTimestamp( $wikiPage->getTimestamp() );
-					break;
-				case SMWDIProperty::TYPE_CREATION_DATE :
-					// Expensive getFirstRevision() initiates a revision table
-					// read and is not cached
-					$dataValue = SMWDITime::newFromTimestamp( $this->title->getFirstRevision()->getTimestamp() );
-					break;
-				case SMWDIProperty::TYPE_NEW_PAGE :
-					// Expensive isNewPage() does a database read
-					// $dataValue = new SMWDIBoolean( $this->title->isNewPage() );
-					$dataValue = new SMWDIBoolean( $revision->getParentId() !== '' );
-					break;
-				case SMWDIProperty::TYPE_LAST_EDITOR :
-					$dataValue = SMWDIWikiPage::newFromTitle( $user->getUserPage() );
-					break;
-			}
-
-			if ( is_a( $dataValue, 'SMWDataItem' ) ) {
-				$processedProperty[ $propertyId ] = true;
-				$this->semanticData->addPropertyObjectValue( $propertyDI, $dataValue );
-			}
-		}
 	}
 
 	/**
@@ -534,7 +408,11 @@ class ParserData implements IParserData {
 
 		if ( $processSemantics ) {
 			$user = \User::newFromId( $revision->getUser() );
-			$this->addSpecialProperties( $wikiPage, $revision, $user );
+
+			$complementor = new PropertyAnnotationComplementor( $this->semanticData, Settings::newFromGlobals() );
+			$complementor->attach( $this );
+			$complementor->addSpecialProperties( $wikiPage, $revision, $user );
+
 		} else {
 			// data found, but do all operations as if it was empty
 			$this->semanticData = new SMWSemanticData( $this->getSubject() );

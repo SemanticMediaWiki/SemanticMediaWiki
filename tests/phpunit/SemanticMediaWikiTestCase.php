@@ -100,7 +100,22 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return Title
 	 */
 	protected function getTitle( $namespace = NS_MAIN ) {
-		return Title::newFromText( $this->getRandomString(), $namespace );
+		return $this->newTitle( $namespace );
+	}
+
+	/**
+	 * Helper method that returns a randomized Title object to avoid results
+	 * are influenced by cross instantiated objects with the same title name
+	 *
+	 * @since 1.9
+	 *
+	 * @param $namespace
+	 * @param $text|null
+	 *
+	 * @return Title
+	 */
+	protected function newTitle( $namespace = NS_MAIN, $text = null ) {
+		return Title::newFromText( $text === null ? $this->getRandomString() : $text, $namespace );
 	}
 
 	/**
@@ -255,6 +270,8 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 					$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
 				} else if ( $DItype === SMWDataItem::TYPE_NUMBER ){
 					$this->assertContains( $dataValue->getNumber(), $expected['propertyValue'] );
+				} else if ( $DItype === SMWDataItem::TYPE_TIME ){
+					$this->assertContains( $dataValue->getISO8601Date(), $expected['propertyValue'] );
 				} else if ( $DItype === SMWDataItem::TYPE_BLOB ){
 					$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
 				}

@@ -82,6 +82,15 @@ abstract class ParserTestCase extends SemanticMediaWikiTestCase {
 	 * @return ParserOutput
 	 */
 	protected function getParserOutput() {
+		return $this->newParserOutput();
+	}
+
+	/**
+	 * Helper method that returns a ParserOutput object
+	 *
+	 * @return ParserOutput
+	 */
+	protected function newParserOutput() {
 		return new ParserOutput();
 	}
 

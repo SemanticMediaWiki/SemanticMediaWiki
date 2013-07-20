@@ -496,17 +496,14 @@ final class SMWHooks {
 	 */
 	public static function onParserAfterTidy( &$parser, &$text ) {
 
-		// Separate globals from local state
-		// FIXME Do a new SMW\Settings( $GLOBALS );
-		$options = array(
-			'smwgUseCategoryHierarchy' => $GLOBALS['smwgUseCategoryHierarchy'],
-			'smwgCategoriesAsInstances' => $GLOBALS['smwgCategoriesAsInstances'],
-		);
+		$settings   = \SMW\Settings::newFromGlobals();
+		$parserData = new SMW\ParserData( $parser->getTitle(), $parser->getOutput() );
 
-		$parserData = new SMW\ParserData( $parser->getTitle(), $parser->getOutput(), $options );
-		$parserData->addCategories( $parser->getOutput()->getCategoryLinks() );
-		$parserData->addDefaultSort( $parser->getDefaultSort() );
-		$parserData->updateOutput();
+		$complementor = new \SMW\PropertyAnnotationComplementor( $parserData->getData(), $settings );
+		$complementor->attach( $parserData );
+
+		$complementor->addCategories( $parser->getOutput()->getCategoryLinks() );
+		$complementor->addDefaultSort( $parser->getDefaultSort() );
 
 		// If an article was was manually purged/moved ensure that the store is
 		// updated as well for all other cases onLinksUpdateConstructed will
@@ -649,13 +646,12 @@ final class SMWHooks {
 			return true;
 		}
 
-		// FIXME Do a new SMW\Settings( $GLOBALS );
-		$options = array(
-			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties']
-		);
+		$settings   = \SMW\Settings::newFromGlobals();
+		$parserData = new SMW\ParserData( $wikiPage->getTitle(), $parserOutput );
 
-		$parserData = new SMW\ParserData( $wikiPage->getTitle(), $parserOutput, $options );
-		$parserData->addSpecialProperties( $wikiPage, $revision, $user );
+		$complementor = new \SMW\PropertyAnnotationComplementor( $parserData->getData(), $settings );
+		$complementor->attach( $parserData );
+		$complementor->addSpecialProperties( $wikiPage, $revision, $user );
 
 		return true;
 	}

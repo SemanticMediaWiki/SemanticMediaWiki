@@ -115,6 +115,69 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Returns a User object
+	 *
+	 * @since 1.9
+	 *
+	 * @return User
+	 */
+	public function getMockUser() {
+
+		$user = $this->getMockBuilder( 'user' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->any() )
+			->method( 'getUserPage' )
+			->will( $this->returnValue( $this->set( 'getUserPage' ) ) );
+
+		return $user;
+	}
+
+	/**
+	 * Returns a WikiPage object
+	 *
+	 * @since 1.9
+	 *
+	 * @return WikiPage
+	 */
+	public function getMockWikiPage() {
+
+		$wikiPage = $this->getMockBuilder( 'WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getTimestamp' )
+			->will( $this->returnValue( $this->set( 'getTimestamp' ) ) );
+
+		return $wikiPage;
+	}
+
+	/**
+	 * Returns a Revision object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Revision
+	 */
+	public function getMockRevision() {
+
+		$revision = $this->getMockBuilder( 'Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision->expects( $this->any() )
+			->method( 'getTimestamp' )
+			->will( $this->returnValue( $this->set( 'getTimestamp' ) ) );
+
+		$revision->expects( $this->any() )
+			->method( 'getParentId' )
+			->will( $this->returnValue( $this->set( 'getParentId' ) ) );
+
+		return $revision;
+	}
+	/**
 	 * Returns a SMWQueryResult object
 	 *
 	 * @since 1.9
@@ -363,6 +426,14 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$title->expects( $this->any() )
+			->method( 'getDBkey' )
+			->will( $this->returnValue( $this->set( 'getDBkey' ) ) );
+
+		$title->expects( $this->any() )
+			->method( 'getInterwiki' )
+			->will( $this->returnValue( $this->set( 'getInterwiki', '' ) ) );
+
+		$title->expects( $this->any() )
 			->method( 'getArticleID' )
 			->will( $this->returnValue( rand( 10, 10000 ) ) );
 
@@ -381,6 +452,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( rand( 10, 5000 ) ) );
+
+		$title->expects( $this->any() )
+			->method( 'getFirstRevision' )
+			->will( $this->returnValue( $this->set( 'getFirstRevision' ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'getText' )

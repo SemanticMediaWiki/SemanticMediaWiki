@@ -9,7 +9,6 @@ use SMW\Settings;
 use ParserOutput;
 use Title;
 
-
 /**
  * Tests for the ParserData class
  *
@@ -28,18 +27,15 @@ use Title;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup SMW
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
- * Tests for the ParserData class
  * @covers \SMW\ParserData
  *
  * @ingroup Test
@@ -138,82 +134,4 @@ class ParserDataTest extends ParserTestCase {
 		}
 	}
 
-	/**
-	 * Provides array of category names
-	 *
-	 * @return array
-	 */
-	public function getCategoriesDataProvider() {
-		return array(
-			array( array( 'Foo', 'Bar' ) )
-		);
-	}
-
-	/**
-	 * @test SMWHooks::onParserAfterTidy
-	 * @test ParserData::updateOutput
-	 * @dataProvider getCategoriesDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $categories
-	 */
-	public function testAddCategories( array $categories ) {
-		$settings = array(
-			'smwgUseCategoryHierarchy' => true,
-			'smwgCategoriesAsInstances' => true,
-		);
-
-		$title = $this->getTitle();
-		$instance = $this->getInstance(
-			$title,
-			$this->getParserOutput(),
-			$settings
-		);
-		$instance->addCategories( $categories );
-
-		// Get semantic data from the ParserOutput that where stored/or not
-		$parserData = $this->getInstance(
-			$title,
-			$instance->getOutput(),
-			$settings
-		);
-
-		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
-		$this->assertCount( 0, $parserData->getErrors() );
-
-		// Bug 47079 updateOutput() was missing therefore resulting in count = 0
-		$this->assertCount( 0, $parserData->getData()->getProperties() );
-
-		// Doing the whole thing again but this time executing updateOutput()
-		$title = $this->getTitle();
-		$instance = $this->getInstance(
-			$title,
-			$this->getParserOutput(),
-			$settings
-		);
-		$instance->addCategories( $categories );
-		$instance->updateOutput();
-
-		$parserData = $this->getInstance(
-			$title,
-			$instance->getOutput(),
-			$settings
-		);
-
-		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
-		$this->assertCount( 0, $parserData->getErrors() );
-
-		// Bug 47079 execute updateOutput(), resulting in count = 1
-		$this->assertCount( 1, $parserData->getData()->getProperties() );
-
-		// Category property is available for further processing
-		foreach ( $parserData->getData()->getProperties() as $key => $diproperty ){
-			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-			$this->assertEquals( '__sin', $diproperty->findPropertyTypeID() );
-			$this->assertCount( 2,  $parserData->getData()->getPropertyValues( $diproperty ) );
-		}
-	}
 }
