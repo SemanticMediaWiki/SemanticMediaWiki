@@ -3149,6 +3149,7 @@ $messages['ce'] = array(
 	'smw_ask_defaultformat' => 'Iад йитарца',
 	'smw-ask-delete' => '[ДӀаяккха]',
 	'smw_qc_default' => 'Iад йитарца:',
+	'smw_result_noresults' => 'Бехк ма биллалаш, хӀума ца карийна.',
 	'smw_smwadmin_db' => 'Хааман база дӏахӏоттор а керла яккхар а',
 	'smw_smwadmin_datarefresh' => 'Хаам меттахӏоттор а керла баккхар а',
 	'smw_smwadmin_datarefreshbutton' => 'Хаам керла баккха дӏадоладе',
@@ -8454,6 +8455,7 @@ Progresso stimato dell'aggiornamento in corso:",
  * @author Shirayuki
  * @author Whym
  * @author 青子守歌
+ * @author 아라
  */
 $messages['ja'] = array(
 	'smw-desc' => 'ウィキを機械や人間にとってよりアクセスしやすいものにする ([http://semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])',
@@ -8640,6 +8642,8 @@ $messages['ja'] = array(
 	'smw_qc_show_addnal_opts' => 'その他のオプションを表示',
 	'smw_qc_hide_addnal_opts' => 'オプションを折り畳む',
 	'smw_qc_otheropt' => 'その他のオプション',
+	'smw_qc_intro' => '接頭辞:',
+	'smw_qc_outro' => '接尾辞:',
 	'smw_qc_default' => '既定:',
 	'smw_qc_formatopt' => '書式オプション',
 	'smw_qc_query_help' => '下記のフォームを使ってクエリを入力します。カテゴリ (<strong><nowiki>例: [[Category:俳優]]</nowiki></strong>)、プロパティ (<strong><nowiki>例: [[Located in::ドイツ]]</nowiki></strong>)、名前 (<strong><nowiki>例: [[ドイツ]]</nowiki></strong>)、名前空間 (<strong><nowiki>[[Help:+]]</nowiki></strong>) などで対象のページを指定します。',
@@ -9161,6 +9165,7 @@ $messages['ko'] = array(
 	'smw-paramdesc-csv-sep' => '사용할 구분자',
 	'smw-paramdesc-dsv-separator' => '사용할 구분자',
 	'smw-paramdesc-dsv-filename' => 'DSV 파일의 이름',
+	'smw-paramdesc-filename' => '출력 파일의 이름',
 	'smw-smwdoc-description' => '기본 값과 설명과 함께 지정한 결과 형식에 사용할 수 있는 모든 변수의 표를 보여줍니다.',
 	'smw-smwdoc-par-format' => '변수 설명문을 보여줄 결과 형식입니다.',
 	'smw-smwdoc-par-parameters' => '보여줄 어떤 변수입니다. 형식에 추가한 변수에 대해서는 "specific", 모든 형식을 사용할 수 있는 변수에 대해서는 "base", 둘 다는 "all"입니다.',
@@ -9251,11 +9256,11 @@ $messages['ko'] = array(
 	'smw-special-types-no-such-type' => '지정한 데이터 유형이 존재하지 않습니다',
 	'semanticstatistics' => '시맨틱 통계',
 	'smw-statistics' => '시맨틱 통계',
-	'smw-statistics-property-instance' => '속성 {{PLURAL:$1|값}} (총)',
-	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|속성}}]] (총)',
-	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|속성}} (총)',
-	'smw-statistics-property-page' => '{{PLURAL:$1|속성}} (문서에 등록된)',
-	'smw-statistics-property-type' => '{{PLURAL:$1|속성}} (데이터유형으로 할당된)',
+	'smw-statistics-property-instance' => '(총) 속성 {{PLURAL:$1|값}}',
+	'smw-statistics-property-total' => '(총) [[Special:Properties|{{PLURAL:$1|속성}}]]',
+	'smw-statistics-property-total-legacy' => '(총) {{PLURAL:$1|속성}}',
+	'smw-statistics-property-page' => '(문서에 등록된) {{PLURAL:$1|속성}}',
+	'smw-statistics-property-type' => '(데이터유형으로 할당된) {{PLURAL:$1|속성}}',
 	'smw-statistics-query-inline' => '{{PLURAL:$1|쿼리}}',
 	'smw-statistics-query-size' => '쿼리 크기',
 	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|개념}}',
@@ -9290,6 +9295,8 @@ $messages['ko'] = array(
 	'smw_qc_show_addnal_opts' => '많은 옵션 보이기',
 	'smw_qc_hide_addnal_opts' => '적은 옵션 보이기',
 	'smw_qc_otheropt' => '다른 옵션',
+	'smw_qc_intro' => '접두어:',
+	'smw_qc_outro' => '접미어:',
 	'smw_qc_default' => '기본값:',
 	'smw_qc_formatopt' => '서식 옵션',
 	'smw_qc_query_help' => '아래에 양식을 사용할 쿼리를 입력하세요.
@@ -9409,7 +9416,7 @@ $1 문서로 돌아갑니다.',
 	'smw-ui-tooltip-title-legend' => '범례',
 	'smw_unknowntype' => '이 속성의 형식이 잘못되었습니다',
 	'smw_concept_header' => '"$1" 개념의 문서',
-	'smw_conceptarticlecount' => '해당 개넘에 속하는 {{PLURAL:$1|문서}} $1개를 보여줍니다.', # Fuzzy
+	'smw_conceptarticlecount' => '아래에 {{PLURAL:$1|문서}} $1개를 보여줍니다.',
 	'right-smw-admin' => '관리 작업에 접근 (시맨틱 미디어위키)',
 	'group-smwadministrator' => '시맨틱 미디어위키 관리자',
 	'group-smwadministrator-member' => '{{GENDER:$1|관리자 (SMW)}}',
