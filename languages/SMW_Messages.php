@@ -3146,6 +3146,7 @@ $messages['ce'] = array(
 	'smw_printername_template' => 'Кеп',
 	'smw_nodatetime' => 'Дозушдоцу терахь «$1».',
 	'smw_purge' => 'Карлаяккха',
+	'smw_ask_submit' => 'Лаха',
 	'smw_ask_defaultformat' => 'Iад йитарца',
 	'smw-ask-delete' => '[ДӀаяккха]',
 	'smw_qc_default' => 'Iад йитарца:',
@@ -10903,6 +10904,14 @@ $messages['nds'] = array(
 	'smw_pp_type' => 'Egenschop',
 );
 
+/** Low Saxon (Netherlands) (Nedersaksies)
+ * @author Servien
+ */
+$messages['nds-nl'] = array(
+	'browse' => 'Wiki bekieken',
+	'smw_browselink' => 'Eigenschappen bekieken',
+);
+
 /** Niuean (ko e vagahau Niuē)
  * @author Jose77
  */
@@ -12550,7 +12559,9 @@ Pode seguir o progresso de actualização nesta página especial.', # Fuzzy
 Não foi criado outro.
 
 Voltar para $1.',
-	'smw_smwadmin_updatestopped' => 'Todos os processos de actualização existentes foram parados.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Todos os processos de atualização existentes foram parados.
+
+Voltar para $1.',
 	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em curso, deve marcar a caixa de seleção para indicar que tem realmente a certeza.
 
 Voltar para $1.',
@@ -12575,10 +12586,10 @@ O serviço não registará wikis que não estejam publicamente acessíveis e ape
 Isto pode ser útil para reparar dados corrompidos ou para refrescar os dados se o formato interno tiver sido alterado devido a alguma evolução do software.
 A atualização é executada página a página e não ficará completa de imediato.
 Abaixo é mostrado se uma atualização está a decorrer e permite-lhe iniciar ou parar atualizações (a menos que esta funcionalidade tenha sido desativada por um administrador do site).',
-	'smw_smwadmin_datarefreshprogress' => "<strong>Já se encontra a decorrer uma actualização.</strong>
-É normal que a actualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede à wiki.
-Para terminar esta actualização mais rapidamente, pode executar o ''script'' de manutenção do MediaWiki <code>runJobs.php</code> (use a opção <code>--maxjobs 1000</code> para restringir o número de actualizações feitas em cada bloco).
-Progresso estimado da actualização em curso:",
+	'smw_smwadmin_datarefreshprogress' => "<strong>Já se encontra em progresso uma atualização.</strong>
+É normal que a atualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acessa a wiki.
+Para terminar esta atualização mais rapidamente, pode executar o ''script'' de manutenção do MediaWiki <code>runJobs.php</code> (use a opção <code>--maxjobs 1000</code> para restringir o número de atualizações feitas em cada bloco).
+Progresso estimado da atualização em curso:",
 	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
 	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, tenho a certeza.',
