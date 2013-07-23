@@ -3,6 +3,7 @@
  * @file
  * @ingroup SMWDataItems
  */
+use SMW\DataItemException;
 
 /**
  * This class implements wiki page data items.
@@ -53,7 +54,7 @@ class SMWDIWikiPage extends SMWDataItem {
 		// Check if the provided value holds an integer
 		// (it can be of type string or float as well, as long as the value is an int)
 		if ( !ctype_digit( ltrim( (string)$namespace, '-' ) ) ) {
-			throw new SMWDataItemException( "Given namespace '$namespace' is not an integer." );
+			throw new DataItemException( "Given namespace '$namespace' is not an integer." );
 		}
 		
 		$this->m_dbkey = $dbkey;
@@ -137,7 +138,7 @@ class SMWDIWikiPage extends SMWDataItem {
 		} elseif ( count( $parts ) == 4 ) {
 			return new SMWDIWikiPage( $parts[0], intval( $parts[1] ), $parts[2], $parts[3] );
 		} else {
-			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
+			throw new DataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
 		} 
 	}
 

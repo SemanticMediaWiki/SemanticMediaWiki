@@ -4,6 +4,8 @@
  * @ingroup SMWDataItems
  */
 
+use SMW\DataItemException;
+
 /**
  * This class implements URI data items.
  *
@@ -50,10 +52,10 @@ class SMWDIUri extends SMWDataItem {
 	 */
 	public function __construct( $scheme, $hierpart, $query, $fragment ) {
 		if ( ( $scheme === '' ) || ( preg_match( '/[^a-zA-Z]/u', $scheme ) ) ) {
-			throw new SMWDataItemException( "Illegal URI scheme \"$scheme\"." );
+			throw new DataItemException( "Illegal URI scheme \"$scheme\"." );
 		}
 		if ( $hierpart === '' ) {
-			throw new SMWDataItemException( "Illegal URI hierpart \"$hierpart\"." );
+			throw new DataItemException( "Illegal URI hierpart \"$hierpart\"." );
 		}
 		$this->m_scheme   = $scheme;
 		$this->m_hierpart = $hierpart;
@@ -112,7 +114,7 @@ class SMWDIUri extends SMWDataItem {
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( ':', $serialization, 2 ); // try to split "schema:rest"
 		if ( count( $parts ) <= 1 ) {
-			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
+			throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
 		}
 		$scheme = $parts[0];
 		$parts = explode( '?', $parts[1], 2 ); // try to split "hier-part?queryfrag"

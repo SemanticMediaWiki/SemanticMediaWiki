@@ -3,6 +3,7 @@
  * @file
  * @ingroup SMWDataItems
  */
+use SMW\DataItemException;
 
 /**
  * This class implements Boolean data items.
@@ -22,7 +23,7 @@ class SMWDIBoolean extends SMWDataItem {
 
 	public function __construct( $boolean ) {
 		if ( !is_bool( $boolean ) ) {
-			throw new SMWDataItemException( "Initialization value '$boolean' is not a boolean." );
+			throw new DataItemException( "Initialization value '$boolean' is not a boolean." );
 		}
 
 		$this->m_boolean = ( $boolean == true );
@@ -55,7 +56,7 @@ class SMWDIBoolean extends SMWDataItem {
 		} elseif  ( $serialization == 'f' ) {
 			return new SMWDIBoolean( false );
 		} else {
-			throw new SMWDataItemException( "Boolean data item unserialised from illegal value '$serialization'" );
+			throw new DataItemException( "Boolean data item unserialised from illegal value '$serialization'" );
 		}
 	}
 
