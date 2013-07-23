@@ -39,10 +39,7 @@ use Job;
  * @ingroup Job
  * @ingroup Dispatcher
  */
-class PropertySubjectsUpdateDispatcherJob extends Job {
-
-	/** $var Store */
-	protected $store = null;
+class PropertySubjectsUpdateDispatcherJob extends JobBase {
 
 	/** $var Job */
 	protected $jobs = array();
@@ -60,17 +57,6 @@ class PropertySubjectsUpdateDispatcherJob extends Job {
 	public function __construct( Title $title, $params = array(), $id = 0 ) {
 		parent::__construct( 'SMW\PropertySubjectsUpdateDispatcherJob', $title, $params, $id );
 		$this->store = StoreFactory::getStore( isset( $params['store'] ) ? $params['store'] : null );
-	}
-
-	/**
-	 * Sets Store object
-	 *
-	 * @since 1.9
-	 *
-	 * @param Store $store
-	 */
-	public function setStore( Store $store ) {
-		$this->store = $store;
 	}
 
 	/**

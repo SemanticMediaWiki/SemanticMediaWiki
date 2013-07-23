@@ -135,6 +135,22 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Returns a ParserOptions object
+	 *
+	 * @since 1.9
+	 *
+	 * @return ParserOptions
+	 */
+	public function getMockParserOptions() {
+
+		$parserOptions = $this->getMockBuilder( 'ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		return $parserOptions;
+	}
+
+	/**
 	 * Returns a WikiPage object
 	 *
 	 * @since 1.9
@@ -150,6 +166,18 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		$wikiPage->expects( $this->any() )
 			->method( 'getTimestamp' )
 			->will( $this->returnValue( $this->set( 'getTimestamp' ) ) );
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $this->set( 'getRevision' ) ) );
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getParserOutput' )
+			->will( $this->returnValue( $this->set( 'getParserOutput' ) ) );
+
+		$wikiPage->expects( $this->any() )
+			->method( 'makeParserOptions' )
+			->will( $this->returnValue( $this->set( 'makeParserOptions' ) ) );
 
 		return $wikiPage;
 	}
@@ -174,6 +202,14 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		$revision->expects( $this->any() )
 			->method( 'getParentId' )
 			->will( $this->returnValue( $this->set( 'getParentId' ) ) );
+
+		$revision->expects( $this->any() )
+			->method( 'getId' )
+			->will( $this->returnValue( $this->set( 'getId' ) ) );
+
+		$revision->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $this->set( 'getUser' ) ) );
 
 		return $revision;
 	}
@@ -347,6 +383,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->set( 'getPropertiesSpecial' ) ) );
 
 		$store->expects( $this->any() )
+			->method( 'deleteSubject' )
+			->will( $this->returnValue( $this->set( 'deleteSubject' ) ) );
+
+		$store->expects( $this->any() )
 			->method( 'getUnusedPropertiesSpecial' )
 			->will( $this->returnValue( $this->set( 'getUnusedPropertiesSpecial' ) ) );
 
@@ -439,7 +479,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $this->set( 'getNamespace' ) ) );
+			->will( $this->returnValue( $this->set( 'getNamespace', NS_MAIN ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'isKnown' )

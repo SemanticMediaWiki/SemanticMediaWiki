@@ -417,9 +417,10 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Test\CompatibilityTestCase']         = $testsDir . 'CompatibilityTestCase.php';
 
 	// Jobs
-	$wgJobClasses['SMWUpdateJob']       = 'SMWUpdateJob';
+	$wgAutoloadClasses['SMW\JobBase']   = $smwgIP . 'includes/jobs/JobBase.php';
+	$wgJobClasses['SMW\UpdateJob']      = 'SMW\UpdateJob';
 	$wgAutoloadClasses['SMWUpdateJob']  = $smwgIP . 'includes/jobs/UpdateJob.php';
-	$wgAutoloadClasses['SMW\UpdateJob']  = $smwgIP . 'includes/jobs/UpdateJob.php'; // 1.9
+	$wgAutoloadClasses['SMW\UpdateJob'] = $smwgIP . 'includes/jobs/UpdateJob.php'; // 1.9
 	$wgJobClasses['SMWRefreshJob']      = 'SMWRefreshJob';
 	$wgAutoloadClasses['SMWRefreshJob'] = $smwgIP . 'includes/jobs/SMW_RefreshJob.php';
 

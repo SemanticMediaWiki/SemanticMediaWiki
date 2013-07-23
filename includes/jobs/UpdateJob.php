@@ -1,16 +1,48 @@
 <?php
+
+namespace SMW;
+
+use ParserOutput;
+use LinkCache;
+use WikiPage;
+use Revision;
+use Title;
+use User;
+use Job;
+
 /**
- * File containing SMWUpdateJob.
+ * UpdateJob is responsible for the asynchronous update of semantic data
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @file
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
  *
  * @author Daniel M. Herzig
  * @author Markus Krötzsch
- * @file
- * @ingroup SMW
+ * @author mwjames
  */
 
 /**
- * SMWUpdateJob updates the semantic data in the database for a given title
- * using the MediaWiki JobQueue. Update jobs are created if, when saving an article,
+ * UpdateJob is responsible for the asynchronous update of semantic data
+ * using MediaWiki's JobQueue infrastructure.
+ *
+ * Update jobs are created if, when saving an article,
  * it is detected that the content of other pages must be re-parsed as well (e.g.
  * due to some type change).
  *
@@ -19,69 +51,98 @@
  * formatting in-page values based on a datatype thathas since been changed), whereas
  * the Factbox and query/browsing interfaces might already show the updated records.
  *
- * @ingroup SMW
+ * @ingroup Job
  */
-class SMWUpdateJob extends Job {
+class UpdateJob extends JobBase {
 
-	function __construct( Title $title ) {
-		parent::__construct( 'SMWUpdateJob', $title );
-	}
+	/** @var WikiPage */
+	protected $wikiPage = null;
+
+	/** @var Revision */
+	protected $revision = null;
+
+	/** @var ParserOutput */
+	protected $parserOutput = null;
 
 	/**
-	 * Returns Title object
+	 * @since  1.9
 	 *
-	 * @since 1.9
-	 *
-	 * @return \Title
+	 * @param Title $title
 	 */
-	public function getTitle() {
-		return $this->title;
+	function __construct( Title $title ) {
+		parent::__construct( 'SMW\UpdateJob', $title );
 	}
 
 	/**
 	 * Run job
 	 * @return boolean success
 	 */
-	function run() {
-		wfProfileIn( 'SMWUpdateJob::run (SMW)' );
-		global $wgParser;
+	public function run() {
+		Profiler::In( __METHOD__ . '-run' );
 
 		LinkCache::singleton()->clear();
 
-		if ( is_null( $this->title ) ) {
-			$this->error = "SMWUpdateJob: Invalid title";
-			wfProfileOut( 'SMWUpdateJob::run (SMW)' );
+		if ( $this->getTitle() === null ) {
+			$this->setLastError( __METHOD__ . ': Invalid title' );
+			Profiler::Out( __METHOD__ . '-run' );
 			return false;
-		} elseif ( !$this->title->exists() ) {
-			smwfGetStore()->deleteSubject( $this->title ); // be sure to clear the data
-			wfProfileOut( 'SMWUpdateJob::run (SMW)' );
+		} elseif ( !$this->getTitle()->exists() ) {
+			$this->getStore()->deleteSubject( $this->getTitle() ); // be sure to clear the data
+			Profiler::Out( __METHOD__ . '-run' );
 			return true;
 		}
 
-		$revision = Revision::newFromTitle( $this->title );
-		if ( !$revision ) {
-			$this->error = 'SMWUpdateJob: Page exists but no revision was found for "' . $this->title->getPrefixedDBkey() . '"';
-			wfProfileOut( 'SMWUpdateJob::run (SMW)' );
+		if ( !$this->getParserOutput() instanceof ParserOutput ) {
 			return false;
 		}
 
-		wfProfileIn( __METHOD__ . '-parse' );
-		$options = new ParserOptions();
-		$output = $wgParser->parse( $revision->getText(), $this->title, $options, true, true, $revision->getID() );
+		Profiler::In( __METHOD__ . '-update' );
 
-		wfProfileOut( __METHOD__ . '-parse' );
-		wfProfileIn( __METHOD__ . '-update' );
-
-		// @since 1.9
-		// SMWParseData::storeData( $output, $this->title, false );
-		$parserData = new SMW\ParserData( $this->title, $output );
+		$parserData = new ParserData( $this->getTitle(), $this->getParserOutput() );
 		$parserData->disableUpdateJobs();
 		$parserData->updateStore();
 
-		wfProfileOut( __METHOD__ . '-update' );
-		wfProfileOut( 'SMWUpdateJob::run (SMW)' );
+		Profiler::Out( __METHOD__ . '-update' );
+		Profiler::Out( __METHOD__ . '-run' );
 
 		return true;
+	}
+
+	/**
+	 * Builds and returns a ParserOutput object
+	 *
+	 * @since 1.9
+	 *
+	 * @return ParserOutput|null
+	 */
+	public function getParserOutput() {
+
+		if ( $this->parserOutput === null ) {
+			Profiler::In( __METHOD__ );
+
+			if ( $this->wikiPage === null ) {
+				$this->wikiPage = WikiPage::factory( $this->getTitle() );
+			}
+
+			if ( $this->revision === null && $this->wikiPage !== null ) {
+				$this->revision = $this->wikiPage->getRevision();
+			}
+
+			if ( !$this->revision || $this->revision === null ) {
+				$this->setLastError( __METHOD__ . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" );
+				Profiler::Out( __METHOD__ );
+				return false;
+			}
+
+			$this->parserOutput = $this->wikiPage->getParserOutput(
+				$this->wikiPage->makeParserOptions( User::newFromId( $this->revision->getUser() ) ),
+				$this->revision->getId()
+			);
+
+			Profiler::Out( __METHOD__ );
+		}
+
+		return $this->parserOutput;
 	}
 
 	/**
@@ -89,19 +150,20 @@ class SMWUpdateJob extends Job {
 	 * disables jobs.
 	 * @note Any method that inserts jobs with Job::batchInsert or otherwise must
 	 * implement this check individually. The below is not called in these cases.
+	 *
+	 * @codeCoverageIgnore
 	 */
 	function insert() {
-		global $smwgEnableUpdateJobs;
-		if ( $smwgEnableUpdateJobs ) {
+		if ( $this->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}
-
 }
 
 /**
- * SMWUpdateJob class alias
+ * SMWUpdateJob
  *
- * @since 1.9
+ * @deprecated since 1.9
+ * @codeCoverageIgnore
  */
-class_alias( 'SMWUpdateJob', 'SMW\UpdateJob' );
+class_alias( 'SMW\UpdateJob', 'SMWUpdateJob' );
