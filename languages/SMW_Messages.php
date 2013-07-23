@@ -984,8 +984,8 @@ See also:
 	'prefs-smw' => 'This is the text of a section header on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].
 {{Identical|Semantic MediaWiki}}',
 	'prefs-ask-options' => 'This is the text of a header within a section on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
-	'smw-prefs-intro-text' => 'This is an user preference intro text on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
-	'smw-prefs-ask-options-tooltip-display' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
+	'smw-prefs-intro-text' => 'This is a user preference intro text on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
+	'smw-prefs-ask-options-tooltip-display' => 'This is the text describing a user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-prefs-ask-options-collapsed-default' => 'This is the text describing an user option on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].',
 	'smw-ui-tooltip-title-property' => 'A label that is displayed on the info tooltip.
 {{Identical|Property}}',
