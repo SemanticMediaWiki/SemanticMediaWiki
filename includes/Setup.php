@@ -427,10 +427,6 @@ function smwfRegisterClasses() {
 	$wgJobClasses['SMW\PropertySubjectsUpdateDispatcherJob']      = 'SMW\PropertySubjectsUpdateDispatcherJob';
 	$wgAutoloadClasses['SMW\PropertySubjectsUpdateDispatcherJob'] = $smwgIP . 'includes/jobs/PropertySubjectsUpdateDispatcherJob.php';
 
-	// Store migration job class
-	$wgJobClasses['SMWMigrationJob']          = 'SMW\MigrationJob';
-	$wgAutoloadClasses['SMW\MigrationJob']    = $smwgIP . 'includes/jobs/MigrationJob.php';
-
 	// API modules
 	$wgAutoloadClasses['SMW\ApiBase']    = $smwgIP . 'includes/api/ApiBase.php';
 	$wgAutoloadClasses['SMW\ApiQuery']   = $smwgIP . 'includes/api/ApiQuery.php';
