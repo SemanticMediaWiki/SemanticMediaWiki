@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\HashIdGenerator;
 use SMW\QueryData;
 
 use SMWQueryProcessor;
@@ -111,29 +112,29 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test QueryData::add
-	 * @dataProvider getDataProvider
+	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $params
 	 * @param array $expected
 	 */
-	public function testInstantiatedQueryData( array $params, array $expected ) {
+	public function testAddQueryData( array $params, array $expected ) {
 		$title = $this->getTitle();
 		$instance = $this->getInstance( $title );
 
 		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
-		$instance->setQueryId( $params );
+		$instance->setQueryId( new HashIdGenerator( $params ) );
 		$instance->add( $query, $formattedParams );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $instance->getContainer()->getSemanticData() );
+		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getContainer()->getSemanticData() );
 		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
 	}
 
 	/**
 	 * @test QueryData::add (Test instance exception)
-	 * @dataProvider getDataProvider
+	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -159,69 +160,71 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return array
 	 */
-	public function getDataProvider() {
-		return array(
+	public function queryDataProvider() {
 
-			// #0
-			// {{#ask: [[Modification date::+]]
-			// |?Modification date
-			// |format=list
-			// }}
-			array(
-				array(
-					'',
-					'[[Modification date::+]]',
-					'?Modification date',
-					'format=list'
-				),
-				array(
-					'propertyCount' => 4,
-					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'propertyValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
-				)
-			),
+		$provider = array();
 
-			// #1
-			// {{#ask: [[Modification date::+]][[Category:Foo]]
-			// |?Modification date
-			// |?Has title
-			// |format=list
-			// }}
+		// #0
+		// {{#ask: [[Modification date::+]]
+		// |?Modification date
+		// |format=list
+		// }}
+		$provider[] = array(
 			array(
-				array(
-					'',
-					'[[Modification date::+]][[Category:Foo]]',
-					'?Modification date',
-					'?Has title',
-					'format=list'
-				),
-				array(
-					'propertyCount' => 4,
-					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'propertyValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
-				)
+				'',
+				'[[Modification date::+]]',
+				'?Modification date',
+				'format=list'
 			),
-
-			// #2 Unknown format, default table
-			// {{#ask: [[Modification date::+]][[Category:Foo]]
-			// |?Modification date
-			// |?Has title
-			// |format=bar
-			// }}
 			array(
-				array(
-					'',
-					'[[Modification date::+]][[Category:Foo]]',
-					'?Modification date',
-					'?Has title',
-					'format=bar'
-				),
-				array(
-					'propertyCount' => 4,
-					'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-					'propertyValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
-				)
-			),
+				'propertyCount' => 4,
+				'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
+			)
 		);
+
+		// #1
+		// {{#ask: [[Modification date::+]][[Category:Foo]]
+		// |?Modification date
+		// |?Has title
+		// |format=list
+		// }}
+		$provider[] = array(
+			array(
+				'',
+				'[[Modification date::+]][[Category:Foo]]',
+				'?Modification date',
+				'?Has title',
+				'format=list'
+			),
+			array(
+				'propertyCount' => 4,
+				'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+			)
+		);
+
+		// #2 Unknown format, default table
+		// {{#ask: [[Modification date::+]][[Category:Foo]]
+		// |?Modification date
+		// |?Has title
+		// |format=bar
+		// }}
+		$provider[] = array(
+			array(
+				'',
+				'[[Modification date::+]][[Category:Foo]]',
+				'?Modification date',
+				'?Has title',
+				'format=bar'
+			),
+			array(
+				'propertyCount' => 4,
+				'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+			)
+		);
+
+		return $provider;
 	}
 }

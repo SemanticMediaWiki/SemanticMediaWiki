@@ -144,11 +144,8 @@ class AskParserFunction {
 		// Add query data from the query
 		// Suppose the the query returns with an error, right now we store
 		// the query itself even though it returned with unqualified data
-		$this->queryData->setQueryId( $rawParams );
-		$this->queryData->add(
-			$this->query,
-			$this->params
-		);
+		$this->queryData->setQueryId( new HashIdGenerator( $rawParams ) );
+		$this->queryData->add( $this->query, $this->params );
 
 		// Store query data to the semantic data instance
 		$this->parserData->getData()->addPropertyObjectValue(

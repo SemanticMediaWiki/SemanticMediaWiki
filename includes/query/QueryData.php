@@ -68,25 +68,20 @@ class QueryData {
 	}
 
 	/**
-	 * Set QueryId
+	 * Sets QueryId
 	 *
-	 * Creates an unique id ( e.g. _QUERYbda2acc317b66b564e39f45e3a18fff3)
-	 * which normally is based on parameters used in a #ask/#set query
+	 * Generates an unique id (e.g. _QUERYbda2acc317b66b564e39f45e3a18fff3)
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $qualifiers
+	 * @param IdGenerator $generator
 	 */
-	public function setQueryId( array $qualifiers ) {
-		$this->queryId = str_replace(
-			'_',
-			'_QUERY',
-			$this->subobject->getAnonymousIdentifier( implode( '|', $qualifiers ) )
-		);
+	public function setQueryId( IdGenerator $generator ) {
+		$this->queryId = '_QUERY' . $generator->generateId();
 	}
 
 	/**
-	 * Returns query data property
+	 * Returns the query meta data property
 	 *
 	 * @since 1.9
 	 *
@@ -97,7 +92,7 @@ class QueryData {
 	}
 
 	/**
-	 * Returns query data subobject container
+	 * Returns the query data subobject container
 	 *
 	 * @since 1.9
 	 *
