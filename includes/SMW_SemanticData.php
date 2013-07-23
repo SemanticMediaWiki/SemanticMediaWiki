@@ -118,6 +118,9 @@ class SMWSemanticData {
 	 */
 	protected $subDataAllowed = true;
 
+	/** @var array */
+	protected $errors = array();
+
 	/**
 	 * Constructor.
 	 *
@@ -182,6 +185,28 @@ class SMWSemanticData {
 		} else {
 			return array();
 		}
+	}
+
+	/**
+	 * Returns collected errors occurred during processing
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * Adds an error array
+	 *
+	 * @since  1.9
+	 *
+	 * @return array
+	 */
+	public function addError( array $errors ) {
+		return $this->errors = array_merge( $errors, $this->errors );
 	}
 
 	/**
@@ -329,6 +354,42 @@ class SMWSemanticData {
 		}
 
 		$this->addPropertyObjectValue( $property, $dataItem );
+	}
+
+	/**
+	 * Adds a DataValue object to the semantic data container
+	 *
+	 * @par Example:
+	 * @code
+	 *  $dataValue = DataValueFactory::newPropertyValue( $userProperty, $userValue )
+	 *  $semanticData->addDataValue( $dataValue )
+	 * @endcode
+	 *
+	 * @since 1.9
+	 *
+	 * @param DataValue $dataValue
+	 */
+	public function addDataValue( SMWDataValue $dataValue ) {
+		\SMW\Profiler::In(  __METHOD__, true );
+
+		if ( $dataValue->getProperty() instanceof \SMW\DIProperty ) {
+			if ( !$dataValue->isValid() ) {
+				$this->addPropertyObjectValue(
+					new \SMW\DIProperty( \SMW\DIProperty::TYPE_ERROR ),
+					$dataValue->getProperty()->getDiWikiPage()
+				);
+				$this->addError( $dataValue->getErrors() );
+			} else {
+				$this->addPropertyObjectValue(
+					$dataValue->getProperty(),
+					$dataValue->getDataItem()
+				);
+			}
+		} else {
+			$this->addError( $dataValue->getErrors() );
+		}
+
+		\SMW\Profiler::Out( __METHOD__, true );
 	}
 
 	/**

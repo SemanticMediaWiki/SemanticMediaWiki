@@ -322,18 +322,12 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 	}
 
 	/**
-	 * This method adds a data value to the semantic data container
+	 * Adds a data value to the semantic data container
 	 *
 	 * @par Example:
 	 * @code
-	 * $parserData = new SMW\ParserData(
-	 *  $parser->getTitle(),
-	 *  $parser->getOutput(),
-	 *  $settings;
-	 * )
-	 *
-	 * $dataValue = SMWDataValueFactory::newPropertyValue( $userProperty, $userValue )
-	 * $parserData->addPropertyValue( $dataValue )
+	 *  $dataValue = DataValueFactory::newPropertyValue( $userProperty, $userValue )
+	 *  $parserData->addPropertyValue( $dataValue )
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -341,26 +335,11 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 	 * @param SMWDataValue $dataValue
 	 */
 	public function addPropertyValue( SMWDataValue $dataValue ) {
-		Profiler::In(  __METHOD__, true );
 
-		if ( $dataValue->getProperty() instanceof SMWDIProperty ) {
-			if ( !$dataValue->isValid() ) {
-				$this->semanticData->addPropertyObjectValue(
-					new SMWDIProperty( SMWDIProperty::TYPE_ERROR ),
-					$dataValue->getProperty()->getDiWikiPage()
-				);
-				$this->addError( $dataValue->getErrors() );
-			} else {
-				$this->semanticData->addPropertyObjectValue(
-					$dataValue->getProperty(),
-					$dataValue->getDataItem()
-				);
-			}
-		} else {
-			$this->addError( $dataValue->getErrors() );
-		}
-
-		Profiler::Out( __METHOD__, true );
+		// FIXME Remove the addPropertyValue method from
+		// the ParserData object
+		$this->semanticData->addDataValue( $dataValue );
+		$this->addError( $this->semanticData->getErrors() );
 	}
 
 	/**

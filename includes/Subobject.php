@@ -198,25 +198,8 @@ class Subobject {
 			throw new InvalidSemanticDataException( 'The semantic data container is not initialized' );
 		}
 
-		wfProfileIn( __METHOD__ );
-
-		if ( $dataValue->getProperty() instanceof DIProperty ) {
-			if ( $dataValue->isValid() ) {
-				$this->semanticData->addPropertyObjectValue(
-					$dataValue->getProperty(),
-					$dataValue->getDataItem()
-				);
-			} else {
-				$this->semanticData->addPropertyObjectValue(
-					new DIProperty( DIProperty::TYPE_ERROR ),
-					$dataValue->getProperty()->getDiWikiPage()
-				);
-				$this->addError( $dataValue->getErrors() );
-			}
-		} else {
-			$this->addError( $dataValue->getErrors() );
-		}
-
-		wfProfileOut( __METHOD__ );
+		$this->semanticData->addDataValue( $dataValue );
+		$this->addError( $this->semanticData->getErrors() );
 	}
+
 }
