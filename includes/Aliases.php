@@ -28,4 +28,8 @@
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 
+throw new Exception( 'Not an actual source file' );
+
 abstract class SMWResultPrinter extends SMW\ResultPrinter {}
+
+class SMWDataItemException extends SMW\DataItemException {}
