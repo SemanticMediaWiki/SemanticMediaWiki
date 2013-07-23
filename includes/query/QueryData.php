@@ -2,15 +2,14 @@
 
 namespace SMW;
 
-use SMWDIProperty;
 use SMWDINumber;
 use SMWDIBlob;
 use SMWQuery;
+
 use Title;
-use MWException;
 
 /**
- * Handles query meta data collected in #ask / #show
+ * Class that provides access to the query meta data
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,37 +26,28 @@ use MWException;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup SMW
- * @ingroup ParserHooks
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
  *
  * @author mwjames
  */
 
 /**
- * Class that provides access to the meta data about a query
+ * Class that provides access to the query meta data
  *
  * @ingroup SMW
- * @ingroup ParserHooks
  */
 class QueryData {
 
-	/**
-	 * Subobject object
-	 * @var $semanticData
-	 */
+	/** @var Subobject */
 	protected $subobject;
 
-	/**
-	 * Represents queryId
-	 */
+	/** @var string */
 	protected $queryId = null;
 
 	/**
-	 * Constructor
-	 *
 	 * @since 1.9
 	 *
 	 * @param Title $Title
@@ -103,7 +93,7 @@ class QueryData {
 	 * @return array
 	 */
 	public function getProperty() {
-		return new SMWDIProperty( '_ASK' );
+		return new DIProperty( '_ASK' );
 	}
 
 	/**
@@ -125,8 +115,9 @@ class QueryData {
 	 * @return array
 	 */
 	public function add( SMWQuery $query, array $params ) {
+
 		if ( $this->queryId === null ) {
-			throw new MWException( '_QUERY Id is not set' );
+			throw new UnknownIdException( '_QUERY Id is not set' );
 		}
 
 		// Prepare subobject semantic container
@@ -135,22 +126,22 @@ class QueryData {
 		$description = $query->getDescription();
 
 		// Add query string
-		$propertyDi = new SMWDIProperty( '_ASKST' );
+		$propertyDi = new DIProperty( '_ASKST' );
 		$valueDi = new SMWDIBlob( $description->getQueryString() );
 		$this->subobject->getSemanticData()->addPropertyObjectValue( $propertyDi, $valueDi );
 
 		// Add query size
-		$propertyDi = new SMWDIProperty( '_ASKSI' );
+		$propertyDi = new DIProperty( '_ASKSI' );
 		$valueDi = new SMWDINumber( $description->getSize() );
 		$this->subobject->getSemanticData()->addPropertyObjectValue( $propertyDi, $valueDi );
 
 		// Add query depth
-		$propertyDi = new SMWDIProperty( '_ASKDE' );
+		$propertyDi = new DIProperty( '_ASKDE' );
 		$valueDi = new SMWDINumber( $description->getDepth() );
 		$this->subobject->getSemanticData()->addPropertyObjectValue( $propertyDi, $valueDi );
 
 		// Add query format
-		$propertyDi = new SMWDIProperty( '_ASKFO' );
+		$propertyDi = new DIProperty( '_ASKFO' );
 		$valueDi = new SMWDIBlob( $params['format']->getValue() );
 		$this->subobject->getSemanticData()->addPropertyObjectValue( $propertyDi, $valueDi );
 	}

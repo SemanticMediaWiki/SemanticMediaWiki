@@ -188,6 +188,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\InvalidResultException']       = $incDir . '/exceptions/InvalidResultException.php';
 	$wgAutoloadClasses['SMW\DataItemException']            = $incDir . '/exceptions/DataItemException.php'; // 1.9
 	$wgAutoloadClasses['SMWDataItemException']             = $incDir . '/exceptions/DataItemException.php';
+	$wgAutoloadClasses['SMW\UnknownIdException']           = $incDir . '/exceptions/UnknownIdException.php';
 	$wgAutoloadClasses['SMW\InvalidSettingsArgumentException']   = $incDir . '/exceptions/InvalidSettingsArgumentException.php';
 	$wgAutoloadClasses['SMW\InvalidPredefinedPropertyException'] = $incDir . '/exceptions/InvalidPredefinedPropertyException.php';
 

@@ -26,16 +26,14 @@ use Title;
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @since 1.9
  *
- * @ingroup Test
+ * @license GNU GPL v2+
+ * @since   1.9
  *
- * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Tests for the QueryData class
  * @covers \SMW\QueryData
  *
  * @ingroup Test
@@ -92,17 +90,6 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test QueryData::__construct
-	 *
-	 * @since 1.9
-	 * @throws PHPUnit_Framework_Error
-	 */
-	public function testConstructorException() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance();
-	}
-
-	/**
 	 * @test QueryData::getProperty
 	 *
 	 * @since 1.9
@@ -155,12 +142,14 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	 * @throws MWException
 	 */
 	public function testQueryIdException( array $params, array $expected ) {
-		$this->setExpectedException( 'MWException' );
+
+		$this->setExpectedException( '\SMW\UnknownIdException' );
 		$title = $this->getTitle();
 		$instance = $this->getInstance( $title );
 
 		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
 		$instance->add( $query, $formattedParams );
+
 	}
 
 	/**
