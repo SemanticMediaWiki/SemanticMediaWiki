@@ -531,7 +531,7 @@ class SMWSemanticData {
 }
 
 /**
- * SMWSemanticData class alias
+ * SMW\SemanticData class alias
  *
  * @since 1.9
  */

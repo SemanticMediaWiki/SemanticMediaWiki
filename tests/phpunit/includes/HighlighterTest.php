@@ -22,17 +22,15 @@ use SMW\Highlighter;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
- * Tests for the Highlighter class
  * @covers \SMW\Highlighter
  *
  * @ingroup Test
@@ -49,29 +47,6 @@ class HighlighterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function getClass() {
 		return '\SMW\Highlighter';
-	}
-
-	/**
-	 * Provides test sample
-	 *
-	 * @return array
-	 */
-	public function getTypeDataProvider() {
-		return array(
-			array( '' , Highlighter::TYPE_NOTYPE ),
-			array( 'property', Highlighter::TYPE_PROPERTY ),
-			array( 'text', Highlighter::TYPE_TEXT ),
-			array( 'info', Highlighter::TYPE_INFO ),
-			array( 'help', Highlighter::TYPE_HELP ),
-			array( 'service', Highlighter::TYPE_SERVICE ),
-			array( 'quantity', Highlighter::TYPE_QUANTITY ),
-			array( 'note', Highlighter::TYPE_NOTE ),
-			array( 'warning', Highlighter::TYPE_WARNING ),
-			array( 'PrOpErTy', Highlighter::TYPE_PROPERTY ),
-			array( 'バカなテスト', Highlighter::TYPE_NOTYPE ),
-			array( '<span>Something that should not work</span>', Highlighter::TYPE_NOTYPE ),
-			array( Highlighter::TYPE_PROPERTY, Highlighter::TYPE_NOTYPE )
-		);
 	}
 
 	/**
@@ -130,4 +105,28 @@ class HighlighterTest extends SemanticMediaWikiTestCase {
 		// Check with caption/content set
 		$this->assertInternalType( 'string', $instance->getHtml() );
 	}
+
+	/**
+	 * Provides test sample
+	 *
+	 * @return array
+	 */
+	public function getTypeDataProvider() {
+		return array(
+			array( '' , Highlighter::TYPE_NOTYPE ),
+			array( 'property', Highlighter::TYPE_PROPERTY ),
+			array( 'text', Highlighter::TYPE_TEXT ),
+			array( 'info', Highlighter::TYPE_INFO ),
+			array( 'help', Highlighter::TYPE_HELP ),
+			array( 'service', Highlighter::TYPE_SERVICE ),
+			array( 'quantity', Highlighter::TYPE_QUANTITY ),
+			array( 'note', Highlighter::TYPE_NOTE ),
+			array( 'warning', Highlighter::TYPE_WARNING ),
+			array( 'PrOpErTy', Highlighter::TYPE_PROPERTY ),
+			array( 'バカなテスト', Highlighter::TYPE_NOTYPE ),
+			array( '<span>Something that should not work</span>', Highlighter::TYPE_NOTYPE ),
+			array( Highlighter::TYPE_PROPERTY, Highlighter::TYPE_NOTYPE )
+		);
+	}
+
 }

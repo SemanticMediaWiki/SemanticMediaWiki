@@ -4,9 +4,7 @@ namespace SMW;
 
 use SMWContainerSemanticData;
 use SMWDIContainer;
-use SMWDIWikiPage;
 use SMWDataValue;
-use SMWDIProperty;
 
 use Title;
 
@@ -28,10 +26,10 @@ use Title;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup SMW
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
  *
  * @author mwjames
  */
@@ -148,7 +146,7 @@ class Subobject {
 		if ( $identifier != '' ) {
 			$this->identifier = $identifier;
 
-			$diSubWikiPage = new SMWDIWikiPage(
+			$diSubWikiPage = new DIWikiPage(
 				$this->title->getDBkey(),
 				$this->title->getNamespace(),
 				$this->title->getInterwiki(),
@@ -176,10 +174,10 @@ class Subobject {
 	 *
 	 * @since 1.9
 	 *
-	 * @return SMWDIProperty
+	 * @return DIProperty
 	 */
 	public function getProperty() {
-		return new SMWDIProperty( SMWDIProperty::TYPE_SUBOBJECT );
+		return new DIProperty( DIProperty::TYPE_SUBOBJECT );
 	}
 
 	/**
@@ -217,7 +215,7 @@ class Subobject {
 
 		wfProfileIn( __METHOD__ );
 
-		if ( $dataValue->getProperty() instanceof SMWDIProperty ) {
+		if ( $dataValue->getProperty() instanceof DIProperty ) {
 			if ( $dataValue->isValid() ) {
 				$this->semanticData->addPropertyObjectValue(
 					$dataValue->getProperty(),
@@ -225,7 +223,7 @@ class Subobject {
 				);
 			} else {
 				$this->semanticData->addPropertyObjectValue(
-					new SMWDIProperty( SMWDIProperty::TYPE_ERROR ),
+					new DIProperty( DIProperty::TYPE_ERROR ),
 					$dataValue->getProperty()->getDiWikiPage()
 				);
 				$this->addError( $dataValue->getErrors() );

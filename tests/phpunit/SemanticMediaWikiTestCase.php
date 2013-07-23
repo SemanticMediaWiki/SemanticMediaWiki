@@ -4,6 +4,7 @@ namespace SMW\Test;
 
 use SMW\DataValueFactory;
 use SMW\ArrayAccessor;
+use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\Settings;
 
@@ -15,7 +16,6 @@ use Title;
 
 use ReflectionClass;
 
-use SMWSemanticData;
 use SMWDataItem;
 
 /**
@@ -245,15 +245,15 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * 'propertyLabel' => array() or 'propertyKey' => array()
 	 * 'propertyValue' => array()
 	 *
-	 * @param SMWSemanticData $semanticData
+	 * @param SemanticData $semanticData
 	 * @param array $expected
 	 */
-	protected function assertSemanticData( SMWSemanticData $semanticData, array $expected ) {
+	protected function assertSemanticData( SemanticData $semanticData, array $expected ) {
 		$this->assertCount( $expected['propertyCount'], $semanticData->getProperties() );
 
 		// Assert expected properties
 		foreach ( $semanticData->getProperties() as $key => $diproperty ) {
-			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
+			$this->assertInstanceOf( '\SMW\DIProperty', $diproperty );
 
 			if ( isset( $expected['propertyKey']) ){
 				$this->assertContains( $diproperty->getKey(), $expected['propertyKey'] );

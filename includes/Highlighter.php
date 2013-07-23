@@ -1,7 +1,14 @@
 <?php
 
 namespace SMW;
-use MWException, IContextSource, Html, SMWOutputs;
+
+use SMWOutputs;
+
+use IContextSource;
+use ContextSource;
+use Html;
+
+use MWException;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
@@ -20,14 +27,20 @@ use MWException, IContextSource, Html, SMWOutputs;
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
- * @since 1.9
- *
  * @file
- * @ingroup SMW
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
  *
  * @author mwjames
  */
-class Highlighter extends \ContextSource {
+
+/**
+ * Highlighter utility function for Semantic MediaWiki
+ *
+ * @ingroup SMW
+ */
+class Highlighter extends ContextSource {
 
 	// Highlighter ID for no types
 	const TYPE_NOTYPE    = 0;

@@ -213,6 +213,35 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
 		return $revision;
 	}
+
+	/**
+	 * Returns a DataValue object
+	 *
+	 * @since 1.9
+	 *
+	 * @return DataValue
+	 */
+	public function getMockDataValue() {
+
+		$dataValue = $this->getMockBuilder( $this->set( 'DataValueType' ) )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValue->expects( $this->any() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $this->set( 'getProperty' ) ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'isValid' )
+			->will( $this->returnValue( $this->set( 'isValid' ) ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->set( 'getDataItem' ) ) );
+
+		return $dataValue;
+	}
+
 	/**
 	 * Returns a SMWQueryResult object
 	 *

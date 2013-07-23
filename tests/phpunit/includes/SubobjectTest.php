@@ -3,9 +3,9 @@
 namespace SMW\Test;
 
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMW\Subobject;
 
-use SMWDIProperty;
 use SMWDIBlob;
 use Title;
 
@@ -27,17 +27,15 @@ use Title;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
- * Tests for the Subobject class
  * @covers \SMW\Subobject
  *
  * @ingroup Test
@@ -128,7 +126,8 @@ class SubobjectTest extends ParserTestCase {
 
 		$instance = $this->getInstance( $this->getTitle() );
 
-		$this->assertInstanceOf( '\SMWContainerSemanticData',
+		$this->assertInstanceOf(
+			'\SMWContainerSemanticData',
 			$instance->setSemanticData( $this->getRandomString() )
 		);
 		$this->assertEmpty( $instance->setSemanticData( '' ) );
@@ -166,7 +165,7 @@ class SubobjectTest extends ParserTestCase {
 	public function testGetProperty( array $test ) {
 
 		$subobject = $this->getInstance( $this->getTitle(), $test['identifier'] );
-		$this->assertInstanceOf( '\SMWDIProperty', $subobject->getProperty() );
+		$this->assertInstanceOf( '\SMW\DIProperty', $subobject->getProperty() );
 
 	}
 
@@ -191,7 +190,7 @@ class SubobjectTest extends ParserTestCase {
 		}
 
 		$this->assertCount( $expected['errors'], $subobject->getErrors(), $info['msg'] );
-		$this->assertInstanceOf( 'SMWSemanticData', $subobject->getSemanticData(), $info['msg'] );
+		$this->assertInstanceOf( '\SMW\SemanticData', $subobject->getSemanticData(), $info['msg'] );
 		$this->assertSemanticData( $subobject->getSemanticData(), $expected );
 
 	}
@@ -204,56 +203,27 @@ class SubobjectTest extends ParserTestCase {
 	 *
 	 * @param array $test
 	 * @param array $expected
-	 * @param array $info
 	 */
 	public function testDataValueExaminer( array $test, array $expected ) {
 
+		$property  = $this->newMockObject( array(
+			'findPropertyTypeID' => $test['property']['typeId'],
+			'getKey'             => $test['property']['key'],
+			'getLabel'           => $test['property']['label'],
+		) )->getMockDIProperty();
+
+		$dataValue = $this->newMockObject( array(
+			'DataValueType' => $test['dataValue']['type'],
+			'getDataItem'   => $test['dataValue']['dataItem'],
+			'getProperty'   => $property,
+			'isValid'       => true,
+		) )->getMockDataValue();
+
 		$subobject = $this->getInstance( $this->getTitle(), $this->getRandomString() );
-
-		// Mock Property object
-		$property = $this->getMockBuilder( $test['property']['DI'] )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$property->expects( $this->any() )
-			->method( 'findPropertyTypeID' )
-			->will( $this->returnValue( $test['property']['typeId'] )
-		);
-
-		$property->expects( $this->any() )
-			->method( 'getKey' )
-			->will( $this->returnValue( $test['property']['key'] )
-		);
-
-		$property->expects( $this->any() )
-			->method( 'getLabel' )
-			->will( $this->returnValue( $test['property']['label'] )
-		);
-
-		// Mock DataValue object
-		$dataValue = $this->getMockBuilder( $test['dataValue']['type'] )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$dataValue->expects( $this->any() )
-			->method( 'getProperty' )
-			->will( $this->returnValue( $property )
-		);
-
-		$dataValue->expects( $this->any() )
-			->method( 'isValid' )
-			->will( $this->returnValue( true )
-		);
-
-		$dataValue->expects( $this->any() )
-			->method( 'getDataItem' )
-			->will( $this->returnValue( $test['dataValue']['dataItem'] )
-		);
-
 		$subobject->addPropertyValue( $dataValue );
 
 		$this->assertCount( $expected['errors'], $subobject->getErrors() );
-		$this->assertInstanceOf( 'SMWSemanticData', $subobject->getSemanticData() );
+		$this->assertInstanceOf( '\SMW\SemanticData', $subobject->getSemanticData() );
 		$this->assertSemanticData( $subobject->getSemanticData(), $expected );
 
 	}
@@ -268,6 +238,7 @@ class SubobjectTest extends ParserTestCase {
 	public function testAddPropertyValueStringException() {
 
 		$this->setExpectedException( '\SMW\InvalidSemanticDataException' );
+
 		$subobject = new Subobject(  $this->getTitle() );
 		$subobject->addPropertyValue( $this->getDataValue( 'Foo', 'Bar' ) );
 
@@ -318,7 +289,7 @@ class SubobjectTest extends ParserTestCase {
 	 * @return array
 	 */
 	public function getDataProvider() {
-		$diPropertyError = new SMWDIProperty( SMWDIProperty::TYPE_ERROR );
+		$diPropertyError = new DIProperty( DIProperty::TYPE_ERROR );
 		return array(
 
 			// #0
