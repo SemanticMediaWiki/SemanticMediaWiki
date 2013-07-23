@@ -187,12 +187,12 @@ class DIConcept extends \SMWDataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return SMWDIConcept
+	 * @return DIConcept
 	 */
 	public static function doUnserialize( $serialization ) {
 		$result = unserialize( $serialization );
 		if ( $result === false ) {
-			throw new SMWDataItemException( "Unserialization failed." );
+			throw new DataItemException( "Unserialization failed." );
 		}
 		return $result;
 	}

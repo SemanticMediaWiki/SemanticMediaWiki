@@ -3,6 +3,7 @@
  * @file
  * @ingroup SMWDataItems
  */
+use SMW\DataItemException;
 
 /**
  * This class implements time data items.
@@ -104,10 +105,10 @@ class SMWDITime extends SMWDataItem {
 	public function __construct( $calendarmodel, $year, $month = false, $day = false,
 	                             $hour = false, $minute = false, $second = false ) {
 		if ( ( $calendarmodel != self::CM_GREGORIAN ) && ( $calendarmodel != self::CM_JULIAN ) ) {
-			throw new SMWDataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
+			throw new DataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
 		if ( $year == 0 ) {
-			throw new SMWDataItemException( "There is no year 0 in Gregorian and Julian calendars." );
+			throw new DataItemException( "There is no year 0 in Gregorian and Julian calendars." );
 		}
 		$this->m_model   = $calendarmodel;
 		$this->m_year    = intval( $year );
@@ -120,10 +121,10 @@ class SMWDITime extends SMWDataItem {
 		     ( $this->m_minutes < 0 ) || ( $this->m_minutes > 59 ) ||
 		     ( $this->m_seconds < 0 ) || ( $this->m_seconds > 59 ) ||
 		     ( $this->m_month < 1 ) || ( $this->m_month > 12 ) ) {
-			throw new SMWDataItemException( "Part of the date is out of bounds." );
+			throw new DataItemException( "Part of the date is out of bounds." );
 		}
 		if ( $this->m_day > self::getDayNumberForMonth( $this->m_month, $this->m_year, $this->m_model ) ) {
-			throw new SMWDataItemException( "Month {$this->m_month} in year {$this->m_year} did not have {$this->m_day} days in this calendar model." );
+			throw new DataItemException( "Month {$this->m_month} in year {$this->m_year} did not have {$this->m_day} days in this calendar model." );
 		}
 		if ( $month === false ) {
 			$this->m_precision = self::PREC_Y;
@@ -291,7 +292,7 @@ class SMWDITime extends SMWDataItem {
 				if ( is_numeric( $parts[$i] ) ) {
 					$values[$i] = intval( $parts[$i] );
 				} else {
-					throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" is no valid datetime specification." );
+					throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid datetime specification." );
 				}
 			} else {
 				$values[$i] = false;
@@ -299,7 +300,7 @@ class SMWDITime extends SMWDataItem {
 		}
 		
 		if ( count( $parts ) <= 1 ) {
-			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
+			throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
 		}
 		
 		return new self( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6] );

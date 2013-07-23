@@ -4,6 +4,8 @@
  * @ingroup SMWDataItems
  */
 
+use SMW\DataItemException;
+
 /**
  * This class implements number data items.
  *
@@ -22,7 +24,7 @@ class SMWDINumber extends SMWDataItem {
 
 	public function __construct( $number ) {
 		if ( !is_numeric( $number ) ) {
-			throw new SMWDataItemException( "Initialization value '$number' is not a number." );
+			throw new DataItemException( "Initialization value '$number' is not a number." );
 		}
 		$this->m_number = $number;
 	}

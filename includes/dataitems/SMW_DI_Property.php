@@ -3,6 +3,7 @@
  * @file
  * @ingroup SMWDataItems
  */
+use SMW\DataItemException;
 
 /**
  * This class implements Property data items.
@@ -204,7 +205,7 @@ class SMWDIProperty extends SMWDataItem {
 
 		try {
 			return new SMWDIWikiPage( $dbkey, SMW_NS_PROPERTY, '', $subobjectName );
-		} catch ( SMWDataItemException $e ) {
+		} catch ( DataItemException $e ) {
 			return null;
 		}
 	}
