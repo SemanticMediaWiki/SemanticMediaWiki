@@ -55,14 +55,8 @@ use Job;
  */
 class UpdateJob extends JobBase {
 
-	/** @var WikiPage */
-	protected $wikiPage = null;
-
-	/** @var Revision */
-	protected $revision = null;
-
-	/** @var ParserOutput */
-	protected $parserOutput = null;
+	/** @var ParserOutputGenerator */
+	protected $outputGenerator = null;
 
 	/**
 	 * @since  1.9
@@ -92,13 +86,14 @@ class UpdateJob extends JobBase {
 			return true;
 		}
 
-		if ( !$this->getParserOutput() instanceof ParserOutput ) {
+		if ( !$this->getOutputGenerator()->getOutput() instanceof ParserOutput ) {
+			$this->setLastError( $this->getOutputGenerator()->getErrors() );
 			return false;
 		}
 
 		Profiler::In( __METHOD__ . '-update' );
 
-		$parserData = new ParserData( $this->getTitle(), $this->getParserOutput() );
+		$parserData = new ParserData( $this->getTitle(), $this->getOutputGenerator()->getOutput() );
 		$parserData->disableUpdateJobs();
 		$parserData->updateStore();
 
@@ -109,40 +104,20 @@ class UpdateJob extends JobBase {
 	}
 
 	/**
-	 * Builds and returns a ParserOutput object
+	 * Returns a ParserOutputGenerator object
 	 *
 	 * @since 1.9
 	 *
-	 * @return ParserOutput|null
+	 * @return ParserOutputGenerator
 	 */
-	public function getParserOutput() {
+	protected function getOutputGenerator() {
 
-		if ( $this->parserOutput === null ) {
-			Profiler::In( __METHOD__ );
-
-			if ( $this->wikiPage === null ) {
-				$this->wikiPage = WikiPage::factory( $this->getTitle() );
-			}
-
-			if ( $this->revision === null && $this->wikiPage !== null ) {
-				$this->revision = $this->wikiPage->getRevision();
-			}
-
-			if ( !$this->revision || $this->revision === null ) {
-				$this->setLastError( __METHOD__ . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" );
-				Profiler::Out( __METHOD__ );
-				return false;
-			}
-
-			$this->parserOutput = $this->wikiPage->getParserOutput(
-				$this->wikiPage->makeParserOptions( User::newFromId( $this->revision->getUser() ) ),
-				$this->revision->getId()
-			);
-
-			Profiler::Out( __METHOD__ );
+		if ( $this->outputGenerator === null ) {
+			$this->outputGenerator = new ParserOutputGenerator( $this->title );
+			$this->outputGenerator->generate();
 		}
 
-		return $this->parserOutput;
+		return $this->outputGenerator;
 	}
 
 	/**

@@ -165,6 +165,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\MessageReporter']           = $incDir . '/utilities/MessageReporter.php';
 	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . '/utilities/MessageReporter.php';
 	$wgAutoloadClasses['SMW\RedirectBuilder']           = $incDir . '/utilities/RedirectBuilder.php';
+	$wgAutoloadClasses['SMW\ParserOutputGenerator']     = $incDir . '/utilities/ParserOutputGenerator.php';
 
 	$wgAutoloadClasses['SMW\Publisher']                 = $incDir . '/utilities/ObserverInterfaceProvider.php';
 	$wgAutoloadClasses['SMW\Subject']                   = $incDir . '/utilities/ObserverInterfaceProvider.php';

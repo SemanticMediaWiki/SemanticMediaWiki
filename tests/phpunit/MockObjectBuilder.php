@@ -147,7 +147,51 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$parserOptions->expects( $this->any() )
+			->method( 'getTargetLanguage' )
+			->will( $this->returnValue( $this->set( 'getTargetLanguage' ) ) );
+
 		return $parserOptions;
+	}
+
+	/**
+	 * Returns a ParserOutputGenerator object
+	 *
+	 * @since 1.9
+	 *
+	 * @return ParserOutputGenerator
+	 */
+	public function getMockParserOutputGenerator() {
+
+		$outputGenerator = $this->getMockBuilder( '\SMW\ParserOutputGenerator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputGenerator->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $this->set( 'getOutput', $this->getMockParserOutput() ) ) );
+
+		$outputGenerator->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( $this->set( 'getErrors', array() ) ) );
+
+		return $outputGenerator;
+	}
+
+	/**
+	 * Returns a ParserOutput object
+	 *
+	 * @since 1.9
+	 *
+	 * @return ParserOutput
+	 */
+	public function getMockParserOutput() {
+
+		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		return $parserOutput;
 	}
 
 	/**
@@ -210,6 +254,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		$revision->expects( $this->any() )
 			->method( 'getUser' )
 			->will( $this->returnValue( $this->set( 'getUser' ) ) );
+
+		$revision->expects( $this->any() )
+			->method( 'getText' )
+			->will( $this->returnValue( $this->set( 'getText' ) ) );
 
 		return $revision;
 	}

@@ -2,11 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\UpdateJob;
+use SMW\ParserOutputGenerator;
 
 use Title;
+
 /**
- * Tests for the UpdateJob class
+ * Tests for the ParserOutputGenerator class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +33,14 @@ use Title;
  */
 
 /**
- * @covers \SMW\UpdateJob
+ * @covers \SMW\ParserOutputGenerator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class UpdateJobTest extends ParserTestCase {
+class ParserOutputGeneratorTest extends ParserTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -47,41 +48,32 @@ class UpdateJobTest extends ParserTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\UpdateJob';
+		return '\SMW\ParserOutputGenerator';
 	}
 
 	/**
-	 * Helper method that returns a UpdateJob object
+	 * Helper method that returns a ParserOutputGenerator object
 	 *
 	 * @since 1.9
 	 *
-	 * @return UpdateJob
+	 * @return ParserOutputGenerator
 	 */
 	private function getInstance( Title $title = null ) {
-		$instance = new UpdateJob( $title === null ? $this->newTitle() : $title );
-
-		// Set smwgEnableUpdateJobs to false in order to avoid having jobs being
-		// inserted as real jobs to the queue
-		$instance->setSettings( $this->getSettings( array( 'smwgEnableUpdateJobs' => false ) ) );
-		return $instance;
+		return new ParserOutputGenerator( $title === null ? $this->newTitle() : $title );
 	}
 
 	/**
-	 * @test UpdateJob::__construct
-	 *
-	 * FIXME Delete SMWUpdateJob assertion after all references to
-	 * SMWUpdateJob have been removed
+	 * @test ParserOutputGenerator::__construct
 	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
 		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
-		$this->assertInstanceOf( 'SMWUpdateJob', $this->getInstance() );
 	}
 
 	/**
-	 * @test UpdateJob::run
-	 * @dataProvider titleWikiPageDataProvider
+	 * @test ParserOutputGenerator::generate
+	 * @dataProvider titleRevisionDataProvider
 	 *
 	 * @since 1.9
 	 */
@@ -89,13 +81,22 @@ class UpdateJobTest extends ParserTestCase {
 
 		$reflector = $this->newReflector();
 		$instance  = $this->getInstance( $test['title'] );
-		$instance->setStore( $this->newMockObject()->getMockStore() );
 
-		$outputGenerator = $reflector->getProperty( 'outputGenerator' );
-		$outputGenerator->setAccessible( true );
-		$outputGenerator->setValue( $instance, $test['outputGenerator'] );
+		$revision  = $reflector->getProperty( 'revision' );
+		$revision->setAccessible( true );
+		$revision->setValue( $instance, $test['revision'] );
 
-		$this->assertEquals( $expected['result'], $instance->run() );
+		$options  = $reflector->getProperty( 'parserOptions' );
+		$options->setAccessible( true );
+		$options->setValue( $instance, $test['parserOptions'] );
+
+		$instance->generate();
+
+		if ( $expected['error'] ) {
+			$this->assertInternalType( 'array', $instance->getErrors() );
+		} else {
+			$this->assertInstanceOf( 'ParserOutput', $instance->getOutput() );
+		}
 	}
 
 	/**
@@ -103,11 +104,16 @@ class UpdateJobTest extends ParserTestCase {
 	 *
 	 * @return array
 	 */
-	public function titleWikiPageDataProvider() {
+	public function titleRevisionDataProvider() {
+
+		// Mocking this object was not really an option as
+		// the Parser is quite complex
+		$parserOptions = new \ParserOptions();
+		$parserOptions->setTargetLanguage( $this->getLanguage() );
 
 		$provider = array();
 
-		// #0 Title does not exists, deleteSubject() is being executed
+		// #0 Title does not exists
 		$title = $this->newMockObject( array(
 			'getDBkey' => 'Lila',
 			'exists'   => false
@@ -115,51 +121,35 @@ class UpdateJobTest extends ParserTestCase {
 
 		$provider[] = array(
 			array(
-				'title'     => $title,
-				'outputGenerator' => null
-			),
-			array(
-				'result'    => true
-			)
-		);
-
-		// #1 No revision, no further activities
-		$title = $this->newMockObject( array(
-			'getDBkey' => 'Lala',
-			'exists'   => true
-		) )->getMockTitle();
-
-		$outputGenerator = $this->newMockobject( array(
-			'getOutput' => null
-		) )->getMockParserOutputGenerator();
-
-		$provider[] = array(
-			array(
 				'title'    => $title,
-				'outputGenerator' => $outputGenerator
+				'revision' => null,
+				'parserOptions' => null
 			),
 			array(
-				'result'   => false
+				'error'   => true
 			)
 		);
 
-		// #2 Valid revision and parserOuput
+		// #1 Valid revision generates a valid ParserOuput object
 		$title = $this->newMockObject( array(
 			'getDBkey' => 'Lula',
 			'exists'   => true
 		) )->getMockTitle();
 
-		$outputGenerator = $this->newMockobject( array(
-			'getOutput' => $this->newMockobject()->getMockParserOutput()
-		) )->getMockParserOutputGenerator();
+		$revision = $this->newMockObject( array(
+			'getId'   => 9001,
+			'getUser' => 'Lala',
+			'getText' => 'Lala',
+		) )->getMockRevision();
 
 		$provider[] = array(
 			array(
 				'title'    => $title,
-				'outputGenerator' => $outputGenerator
+				'revision' => $revision,
+				'parserOptions' => $parserOptions
 			),
 			array(
-				'result'      => true
+				'error'   => false
 			)
 		);
 
