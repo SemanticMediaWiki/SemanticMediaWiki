@@ -1556,6 +1556,7 @@ $messages['arc'] = array(
  * @author Meno25
  * @author Ouda
  * @author Ramsis II
+ * @author 아라
  */
 $messages['arz'] = array(
 	'smw-desc' => "جعل الويكى الخاص بك أكثر قابليه للوصول - للآلات ''و'' البشر ([http://semantic-mediawiki.org/wiki/Help:User_manual توثيق على الإنترنت])",
@@ -1662,7 +1663,7 @@ $messages['arz'] = array(
 '''$3''' {{PLURAL:$3|خاصيه تمتلك|خاصيه تمتلك}} صفحتها الخاصه، ونوع البيانات المقصود محدد ل'''$4''' من هؤلاء.
 بعض الخواص الموجوده ربما تكون [[Special:UnusedProperties|خواص غير مستخدمة]].
 الخواص التى مازالت تفتقد صفحه موجوده فى [[Special:WantedProperties|قائمه الخواص المطلوبة]].",
-	'smw_uri_doc' => 'محلل URI ينفذ <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C على httpRange-14</a>. إنه يتأكد من أن البشر لا يتحولون إلى مواقع ويب.',
+	'smw_uri_doc' => 'محلل URI ينفذ [$1 W3C على httpRange-14]. إنه يتأكد من أن البشر لا يتحولون إلى مواقع ويب.',
 	'ask' => 'بحث سيمانتيك',
 	'smw_ask_sortby' => 'الترتيب حسب العمود (اختياري)',
 	'smw_ask_ascorder' => 'تصاعدي',
@@ -2177,6 +2178,7 @@ $messages['be'] = array(
  * @author Renessaince
  * @author Wizardist
  * @author Zedlik
+ * @author 아라
  */
 $messages['be-tarask'] = array(
 	'smw-desc' => "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([http://semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
@@ -2305,7 +2307,7 @@ $messages['be-tarask'] = array(
 <b>$3</b> {{PLURAL:$3|уласьцівасьць мае|уласьцівасьці маюць|уласьцівасьцяў маюць}} асабістыя старонкі, і пазначаны тып зьвестак падыходзіць для <b>$4</b> зь іх.
 Некаторыя з існуючых уласьцівасьцяў могуць [[Special:UnusedProperties|не выкарыстоўвацца]].
 Уласьцівасьці, якія яшчэ ня маюць асобных старонак, знаходзяцца ў [[Special:WantedProperties|сьпісе старонак, якія патрабуюць апісаньня]].",
-	'smw_uri_doc' => 'Пераўтваральнік URI ажыцьцяўляе <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">пошук W3C TAG у httpRange-14</a>.
+	'smw_uri_doc' => 'Пераўтваральнік URI ажыцьцяўляе [$1 пошук W3C TAG у httpRange-14].
 Гэта забясьпечвае ўпэўненасьць, што людзі не заходзяць на сайты.',
 	'ask' => 'Сэмантычны пошук',
 	'smw_ask_sortby' => 'Сартаваць па слупку (неабавязкова)',
@@ -2814,6 +2816,7 @@ $messages['bs'] = array(
  * @author Sociologist
  * @author Solde
  * @author Toniher
+ * @author 아라
  */
 $messages['ca'] = array(
 	'smw-desc' => 'Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([http://semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])',
@@ -2959,8 +2962,8 @@ Genera un RDF que es pot navegar.',
 '''$3''' {{PLURAL:$3|propietat té|propietats tenen}} una pàgina pròpia, i se n'especifica el tipus de dades amb sagnat per a '''$4'''.
 Algunes de les propietats existents podrien ser [[Special:UnusedProperties|propietats no utilitzades]].
 Les propietats que encara no tenen cap pàgina es poden trobar a la [[Special:WantedProperties|llista de propietats per definir]].",
-	'smw_uri_doc' => 'El resolutor d\'URI implementa la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">cerca de W3C TAG en httpRange-14</a>.
-Té cura que els humans no es tornin en llocs web.',
+	'smw_uri_doc' => "El resolutor d'URI implementa la [$1 cerca de W3C TAG en httpRange-14].
+Té cura que els humans no es tornin en llocs web.",
 	'ask' => 'Cerca semàntica',
 	'smw_ask_sortby' => 'Ordena per columna (opcional)',
 	'smw_ask_ascorder' => 'Ascendent',
@@ -3150,6 +3153,8 @@ $messages['ce'] = array(
 	'smw_ask_defaultformat' => 'Iад йитарца',
 	'smw-ask-delete' => '[ДӀаяккха]',
 	'smw_qc_default' => 'Iад йитарца:',
+	'smw_sbv_value' => 'МаьӀна:',
+	'browse' => 'Сайте хьажа',
 	'smw_result_noresults' => 'Бехк ма биллалаш, хӀума ца карийна.',
 	'smw_smwadmin_db' => 'Хааман база дӏахӏоттор а керла яккхар а',
 	'smw_smwadmin_datarefresh' => 'Хаам меттахӏоттор а керла баккхар а',
@@ -3175,6 +3180,7 @@ $messages['ckb'] = array(
  * @author Mormegil
  * @author Vks
  * @author XenoPheX
+ * @author 아라
  */
 $messages['cs'] = array(
 	'smw-desc' => "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -3282,7 +3288,8 @@ Výsledky pravděpodobně nesplní očekávání.',
 <b>$4</b> vlastností nemá vlastní stránku a zamýšlený datový typ má uvedený <b>$5</b> z nich.
 Některé z existujících vlastností mohou být <a href="$6">nepoužívané</a>.
 Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznamu požadovaných vlastností</a>.', # Fuzzy
-	'smw_uri_doc' => 'URI resolver se stará o implementaci <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG hledání na httpRange-14</a>. Stará se o to, aby se lidé nestali webstránkami.',
+	'smw_uri_doc' => 'URI resolver se stará o implementaci [$1 W3C TAG hledání na httpRange-14].
+Stará se o to, aby se lidé nestali webstránkami.',
 	'ask' => 'Sémantické vyhledávání',
 	'smw_ask_sortby' => 'Řadit podle sloupce', # Fuzzy
 	'smw_ask_ascorder' => 'Vzestupně',
@@ -3833,6 +3840,7 @@ $messages['diq'] = array(
 
 /** Lower Sorbian (dolnoserbski)
  * @author Michawiki
+ * @author 아라
  */
 $messages['dsb'] = array(
 	'smw-desc' => "Twój wiki pśistupnjejšy cyniś - za mašiny ''a'' luźi
@@ -3961,7 +3969,7 @@ Napórajo RDF, kótaryž dajo se pśepytaś.',
 	'smw_semstats_text' => "Toś ten wiki wopśimujo '''$1''' {{PLURAL:$1|kakosćowu gódnotu|kakosćowej gódnośe|kakosćowe gódnoty|kakosćowych gódnotow}} za dogromady '''$2''' [[Special:Properties|{{PLURAL:$2|kakosć|rozdźělnej kakosći|rozdźělne kakosći|rozdźělnych kakosćow}}]].
 '''$3''' {{PLURAL:$3|kakosć ma|kakosći matej|kakosći maju|kakosćow ma}} swójski bok a póžedany datowy typ je za '''$4''' z nich pódany.
 Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewužywane kakosći]] byś. Kakosći, kótarež njamaju bok, su se na [[Special:WantedProperties|lisćinje póžedanych kakosćow]] namakali.",
-	'smw_uri_doc' => 'Rezolwer URI implementěrujo <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>.
+	'smw_uri_doc' => 'Rezolwer URI implementěrujo [$1 W3C TAG finding on httpRange-14].
 Stara se za to, až luźe njebudu websedła.',
 	'ask' => 'Semantiske pytanje',
 	'smw_ask_sortby' => 'Pó słupje sortěrowaś (opcionalny)',
@@ -4597,6 +4605,7 @@ $messages['eo'] = array(
  * @author Sanbec
  * @author Tifinaghes
  * @author Translationista
+ * @author 아라
  */
 $messages['es'] = array(
 	'smw-desc' => "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -4740,7 +4749,8 @@ Los resultados podrían no ser como esperabas.',
 '''$3''' {{PLURAL:$3|propiedad tiene|propiedades tienen}} su propia página, y el tipo de datos previstos se ha especificado para '''$4''' de ellas.
 Algunas de las propiedades existentes pueden estar [[Special:UnusedProperties|sin uso]].
 Las propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|lista de propiedades requeridas]].",
-	'smw_uri_doc' => 'El traductor de URI implementa <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Esto se preocupa de cosas que los humanos no lo hacen en los sitios web..',
+	'smw_uri_doc' => 'El traductor de URI implementa [$1 W3C TAG finding on httpRange-14].
+Esto se preocupa de cosas que los humanos no lo hacen en los sitios web..',
 	'ask' => 'Búsqueda semántica',
 	'smw_ask_sortby' => 'Ordenar por columna',
 	'smw_ask_ascorder' => 'Ascendente',
@@ -5397,6 +5407,7 @@ Nykyisen päivityksen arvioitu eteneminen:',
  * @author Verdy p
  * @author Wyz
  * @author Zetud
+ * @author 아라
  */
 $messages['fr'] = array(
 	'smw-desc' => "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([http://semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -5562,7 +5573,8 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Concept|Concepts}}]]',
 	'smw-statistics-subobject-count' => '{{PLURAL:$1|Sous-objet|Sous-objets}}',
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Type de donnée|Types de donnée}}]]',
-	'smw_uri_doc' => 'Le résolveur d’URI implémente la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Conclusion du TAG du W3C à propos du httpRange-14</a>. Il peut veiller à ce que les humains ne deviennent pas des sites web.',
+	'smw_uri_doc' => 'Le résolveur d’URI implémente la [$1 Conclusion du TAG du W3C à propos du httpRange-14].
+Il peut veiller à ce que les humains ne deviennent pas des sites web.',
 	'ask' => 'Recherche sémantique',
 	'smw_ask_sortby' => 'Trier par colonnes (optionnel)',
 	'smw_ask_ascorder' => 'Croissant',
@@ -6315,6 +6327,7 @@ $messages['grc'] = array(
 /** Swiss German (Alemannisch)
  * @author Als-Chlämens
  * @author Als-Holder
+ * @author 아라
  */
 $messages['gsw'] = array(
 	'smw-desc' => "Dyy Wiki zuegängliger mache - fir Maschine ''un'' Mänsche ([http://semantic-mediawiki.org/wiki/Help:User_manual online-Dokumäntation])",
@@ -6423,7 +6436,8 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_types_docu' => 'Die Datetype chenne Eigeschafte zuegwise wäre. E jede Datetyp het e eigeni Syte, wu gnaueri Informatione druf chenne yytrage wäre.', # Fuzzy
 	'semanticstatistics' => 'Statischtik iber semantischi Date',
 	'smw_semstats_text' => "In däm Wiki {{PLURAL:$1|isch '''1''' Wert|sin '''$1''' Wärt}} fir insgsamt '''$2''' [[Special:Properties|{{PLURAL:$2|Eigeschaft|verschideni Eigeschafte}}]] yygee wore. '''$3''' {{PLURAL:$3|Eigeschaft het|Eigeschafte hän}} e eigeni Syte un dr gwischt Datetyp isch fir '''$4''' vu däne aagee wore. E paar vo dr Eigeschafte, wu s het, chenne [[Special:UnusedProperties|verwaisti Eigeschafte]] syy. Eigeschafte, wu no ne Syte sott aagleit wäre derfir, sin in dr [[Special:WantedProperties|Lischt vu dr gwinschte Eigeschafte]] ufgfiert.",
-	'smw_uri_doc' => 'Dr URI-Ufleser setzt d Empfählige »<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>« um. Är sorgt defir, ass Mänsche nit zue Netzsyte wäre.',
+	'smw_uri_doc' => 'Dr URI-Ufleser setzt d Empfählige »[$1 W3C TAG finding on httpRange-14]« um.
+Är sorgt defir, ass Mänsche nit zue Netzsyte wäre.',
 	'ask' => 'Semantischi Suechi',
 	'smw_ask_sortby' => 'Sortiere no Spalte (optional)',
 	'smw_ask_ascorder' => 'Obsgi',
@@ -6531,6 +6545,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
  * @author Udi Oron אודי אורון
  * @author YaronSh
  * @author חיים
+ * @author 아라
  */
 $messages['he'] = array(
 	'smw-desc' => 'הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([http://semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])',
@@ -6658,7 +6673,7 @@ $messages['he'] = array(
 ל{{PLURAL:מאפיין '''אחד'''|־'''$3''' מאפיינים}} יש דף משלהם, וסוג הנתונים המיועד צוין עבור '''$4''' מאלה.
 ייתכן שכמה ממהמאפיינים הקיימים הם [[Special:UnusedProperties|מאפיינים שאינם בשימוש]].
 מאפיינים שעדיין חסר להם דף נמצאים ב[[Special:WantedProperties|רשימת המאפיינים המבוקשים]].",
-	'smw_uri_doc' => 'פותרן כתובות מיישם את <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">חיפוש W3C TAG ב־httpRange-14</a>. הוא דואג לכך שאנשים לא יהפכו לאתרי אינטרנט.',
+	'smw_uri_doc' => 'פותרן כתובות מיישם את [$1 חיפוש W3C TAG ב־httpRange-14]. הוא דואג לכך שאנשים לא יהפכו לאתרי אינטרנט.',
 	'ask' => 'חיפוש סמנטי',
 	'smw_ask_sortby' => 'מיון לפי טור (אופציונאלי)',
 	'smw_ask_ascorder' => 'בסדר עולה',
@@ -6802,6 +6817,7 @@ $messages['hil'] = array(
  * @author Dalibor Bosits
  * @author Sociologist
  * @author Tivek
+ * @author 아라
  */
 $messages['hr'] = array(
 	'smw-desc' => "Čini Vaš wiki dostupnijim - za strojeve ''i'' ljude ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija])",
@@ -6910,7 +6926,8 @@ Svaki tip podatka ima stranicu koja može pružiti dodatne informacije.', # Fuzz
 '''$3''' {{PLURAL:$3|svojstvo ima|svojstva imaju|svojstava imaju}} vlastitu stranicu i '''$4''' {{PLURAL:$3|ima|od njih imaju|od njih imaju}} zadan tip podatka.
 Neka od postojećih svojstava su možda [[Special:UnusedProperties|nekorištena svojstva]].
 Svojstva koja još uvijek nemaju stranicu nalaze se na [[Special:WantedProperties|popisu traženih svojstava]].",
-	'smw_uri_doc' => 'URI razrješitelj implementira <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C traženje TAGova na httpRange-14</a> koje brine da se ljudi ne pretvore u web stranice.',
+	'smw_uri_doc' => 'URI razrješitelj implementira [$1 W3C traženje TAGova na httpRange-14]
+koje brine da se ljudi ne pretvore u web stranice.',
 	'ask' => 'Smenatička pretraga',
 	'smw_ask_sortby' => 'Razvrstavanje po stupcu (opcionalno)',
 	'smw_ask_ascorder' => 'Rastuće',
@@ -7011,6 +7028,7 @@ Procjena napretka osvježavanja:',
 
 /** Upper Sorbian (hornjoserbsce)
  * @author Michawiki
+ * @author 아라
  */
 $messages['hsb'] = array(
 	'smw-desc' => "Twój wiki přistupniši činić - za mašiny ''a'' ludźi ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
@@ -7154,7 +7172,7 @@ Płodźi přepytujomny RDF.',
 	'smw_semstats_text' => "Tutón wiki wobsahuje '''$1''' {{PLURAL:$1|kajkostnu hódnotu|kajkostnej hódnoće|kajkostne hódnoty|kajkostnych hódnotow}} za dohromady '''$2''' [[Special:Properties|{{PLURAL:$2|kajkosć|rozdźělnej kajkosći|rozdźělne kajkosće|rozdźělnych kajkosćow}}]].
 '''$3''' {{PLURAL:$3|kajkosć ma|kajkosći matej|kajkosće maja|kajkosćow ma}} swójsku stronu, a požadany datowy typ je za '''$4''' z nich podaty.
 Někotre z eksistowacych kajkosćow móhli [[Special:UnusedProperties|njewužiwane kajkosće]] być. Kajkosće, kotrež stronu nimaja, su na [[Special:WantedProperties|lisćinje požadanych kajkosćow]].",
-	'smw_uri_doc' => 'Rozpušćak URI implementuje <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>.
+	'smw_uri_doc' => 'Rozpušćak URI implementuje [$1 W3C TAG finding on httpRange-14].
 Stara so wo to, zo so ludźo z websydłami njestanu.',
 	'ask' => 'Semantiske pytanje',
 	'smw_ask_sortby' => 'Po špalće sortěrować (opcionalny)',
@@ -7360,6 +7378,7 @@ $messages['ht'] = array(
  * @author Dani
  * @author Glanthor Reviol
  * @author TK-999
+ * @author 아라
  */
 $messages['hu'] = array(
 	'smw-desc' => "A wiki elérhetőbbé tétele – gépek ''és'' emberek számára is ([http://semantic-mediawiki.org/wiki/Help:User_manual online dokumentáció])",
@@ -7490,7 +7509,7 @@ Böngészhető RDF-et készít.',
 '''$3''' tulajdonság rendelkezik saját lappal, és '''$4''' adattípusa van megadva.
 A létező tulajdonságok egy része [[Special:UnusedProperties|használaton kívüli]] lehet.
 A lappal nélküli tulajdonságok a [[Special:WantedProperties|keresett tulajdonságok listáján]] tekinthetőek meg.",
-	'smw_uri_doc' => 'Az URI-feloldó implementálja a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>-ben meghatározottakat.
+	'smw_uri_doc' => 'Az URI-feloldó implementálja a [$1 W3C TAG finding on httpRange-14]-ben meghatározottakat.
 Biztosítja, hogy az emberek ne váljanak weboldalakká.',
 	'ask' => 'Szemantikus keresés',
 	'smw_ask_sortby' => 'Rendezés oszlopok szerint (nem kötelező)',
@@ -7619,6 +7638,7 @@ A jelenlegi frissítés becsült előrehaladása:',
 
 /** Interlingua (interlingua)
  * @author McDutchie
+ * @author 아라
  */
 $messages['ia'] = array(
 	'smw-desc' => "Pro render tu wiki plus accessibile – a machinas '''e''' a humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentation in linea])",
@@ -7759,7 +7779,7 @@ Genera un RDF navigabile.',
 <b>$3</b> {{PLURAL:$3|proprietate ha su proprie pagina|proprietates ha lor proprie paginas}}, e le typo de datos intendite es specificate pro '''$4''' de {{PLURAL:$3|illo|illos}}.
 Alcunes del proprietates existente pote esser [[Special:UnusedProperties|proprietates non usate]].
 Le proprietates al quales manca ancora un pagina se trova in le [[Special:WantedProperties|lista de proprietates desirate]].",
-	'smw_uri_doc' => 'Le resolvitor de URL implementa le <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">conclusion del Gruppo de Architectura Technic del W3C a proposito de httpRange-14</a>.
+	'smw_uri_doc' => 'Le resolvitor de URL implementa le [$1 conclusion del Gruppo de Architectura Technic del W3C a proposito de httpRange-14].
 Illo assecura que le humanos non se transforma in sitos web.',
 	'ask' => 'Recerca semantic',
 	'smw_ask_sortby' => 'Ordinar per columna (optional)',
@@ -7928,6 +7948,7 @@ Progresso estimate del actualisation currente:',
  * @author Naval Scene
  * @author Rex
  * @author පසිඳු කාවින්ද
+ * @author 아라
  */
 $messages['id'] = array(
 	'smw-desc' => "Membuat wiki Anda lebih mudah diakses - oleh mesin ''dan'' manusia ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi daring])",
@@ -8050,7 +8071,7 @@ Setiap tipe data memiliki suatu halaman yang memberikan informasi tambahan.', # 
 '''$3''' {{PLURAL:$3|properti|properti}} telah memiliki halaman sendiri, dan tipe data telah diberikan pada '''$4''' di antaranya.
 Beberapa properti yang ada mungkin merupakan [[Special:UnusedProperties|properti yang tak digunakan]].
 Properti yang masih tidak memiliki halaman ditemukan pada [[Special:WantedProperties|daftar properti yang diinginkan]].",
-	'smw_uri_doc' => 'Pengurai URI menerapkan <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C pencarian TAG pada httpRange-14</a>.
+	'smw_uri_doc' => 'Pengurai URI menerapkan [$1 W3C pencarian TAG pada httpRange-14].
 Ini memastikan bahwa manusia tidak berubah menjadi situs web.',
 	'ask' => 'Pencarian semantik',
 	'smw_ask_sortby' => 'Urut berdasar kolom (pilihan)',
@@ -8198,6 +8219,7 @@ $messages['io'] = array(
  * @author Pietrodn
  * @author Ximo17
  * @author පසිඳු කාවින්ද
+ * @author 아라
  */
 $messages['it'] = array(
 	'smw-desc' => "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([http://semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
@@ -8304,7 +8326,7 @@ $messages['it'] = array(
 Alcune delle proprietà esistenti possono essere [[Special:UnusedProperties|proprietà non utilizzate]].
 Le proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:WantedProperties|elenco delle proprietà senza descrizione]].",
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Tipo|Tipi}} di dato]]',
-	'smw_uri_doc' => 'Il risolutore di URI implementa il <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Fa in modo che gli esseri umani non diventino siti Web.',
+	'smw_uri_doc' => 'Il risolutore di URI implementa il [$1 W3C TAG finding on httpRange-14]. Fa in modo che gli esseri umani non diventino siti Web.',
 	'ask' => 'Ricerca semantica',
 	'smw_ask_sortby' => 'Ordina per colonna (opzionale)',
 	'smw_ask_ascorder' => 'Crescente',
@@ -8794,6 +8816,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 /** Javanese (Basa Jawa)
  * @author Meursault2004
  * @author Pras
+ * @author 아라
  */
 $messages['jv'] = array(
 	'smw_viewasrdf' => 'RDF feed',
@@ -8860,7 +8883,7 @@ Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.', 
 '''$3''' {{PLURAL:$3|sifat nduwèni|sifat nduwèni}} kaca dhéwé, lan jinis-data sing dimaksudaké kanggo '''$4'''.
 Sawetara sifat sing ana mbokmanawa [[Special:UnusedProperties|ora dipigunakaké]].
 Sifat-sifat sing isih ora duwé kaca bisa ditemokaké ing [[Special:WantedProperties|dhaptar sifat-sifat sing dikarepaké]].",
-	'smw_uri_doc' => "''URI resolver''-é ngimplèmèntasi <a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG finding on httpRange-14</a>. Iku ngurusi supaya manungsa ora owah lan dadi situs-situs wèb.",
+	'smw_uri_doc' => "''URI resolver''-é ngimplèmèntasi [$1 W3C TAG finding on httpRange-14]. Iku ngurusi supaya manungsa ora owah lan dadi situs-situs wèb.",
 	'ask' => 'Panggolèkan sémantik',
 	'smw_ask_sortby' => 'Sortir miturut kolom (opsional)',
 	'smw_ask_ascorder' => 'Munggah saka ngisor menyang ndhuwur',
@@ -9218,6 +9241,7 @@ $messages['ko'] = array(
 	'smw_querytoolarge' => '쿼리의 길이나 깊이가 위키의 제한 때문에 다음 쿼리 조건은 고려하지 않았습니다: $1',
 	'smw_notemplategiven' => '작동할 이 쿼리 형식에 "틀" 변수에 대한 값을 제공하세요.',
 	'smw_db_sparqlqueryproblem' => '쿼리 결과는 SPARQL 데이터베이스에서 가져올 수 없습니다. 이 오류는 일시적이거나 데이터베이스 소프트웨어의 버그일 수 있습니다.',
+	'smw_db_sparqlqueryincomplete' => '쿼리 응답이 너무 어려운 것으로 밝혀져 중단되었습니다. 일부 결과는 사라졌을 수 있습니다. 가능하면 간단한 쿼리를 대신 사용하세요.',
 	'smw_type_header' => '"$1" 유형의 속성',
 	'smw_typearticlecount' => '이 유형을 사용하여 {{PLURAL:$1|속성}} $1개를 보여줍니다.',
 	'smw_attribute_header' => '"$1" 유형을 사용한 문서',
@@ -9241,9 +9265,13 @@ $messages['ko'] = array(
 	'smw_propertylackspage' => '모든 속성은 문서에서 설명해야 합니다.',
 	'smw_propertylackstype' => '이 속성에 지정한 유형이 없습니다. (지금은 $1 유형으로 가정합니다)',
 	'smw_propertyhardlyused' => '이 속성은 거의 위키 안에 사용하지 않습니다!',
+	'smw-property-name-invalid' => '$1 속성은 사용할 수 없습니다. (잘못된 속성 이름)',
 	'smw-sp-property-searchform' => '다음을 포함하는 속성 보기:',
+	'smw-sp-property-searchform-inputinfo' => '입력은 대소문자를 구분하여 필터에 사용되며, 조건과 일치하는 속성만 보여집니다.',
 	'concepts' => '개념',
+	'smw-sp-concept-docu' => '[https://www.semantic-mediawiki.org/wiki/Help:Concepts 개념]은 "동적 분류", 즉 수동으로 만들어지지 않지만 주어진 쿼리의 설명에서 시맨틱 미디어위키가 계산한 문서의 모음집으로 볼 수 있습니다.',
 	'smw-sp-concept-header' => '개념 목록',
+	'smw-sp-concept-count' => '다음 {{PLURAL:$1|개념|개념 $1개}}{{PLURAL:$1|은|는}} 나열되어 있습니다.',
 	'smw-sp-concept-empty' => '개념을 찾을 수 없습니다.',
 	'unusedproperties' => '사용하지 않는 속성 목록',
 	'smw_unusedproperties_docu' => '다음 속성은 존재하지만 다른 문서에 해당 속성을 사용하지 않습니다.',
@@ -9256,6 +9284,10 @@ $messages['ko'] = array(
 	'smw_types_docu' => '다음은 속성에 할당할 수 있는 모든 데이터 유형의 목록입니다.',
 	'smw-special-types-no-such-type' => '지정한 데이터 유형이 존재하지 않습니다',
 	'semanticstatistics' => '시맨틱 통계',
+	'smw_semstats_text' => "이 위키에는 총 [[Special:Properties|{{PLURAL:$2|속성|다른 속성}}]] '''$2'''개의 속성 {{PLURAL:$1|값}} '''$1'''개를 포함합니다.
+{{PLURAL:$3|속성}} '''$3'''개{{PLURAL:$3|에는}} 자신의 문서가 있고, 이 가운데 '''$4'''개는 구성된 데이터 유형이 지정되어 있습니다.
+기존 속성의 일부는 [[Special:UnusedProperties|사용하지 않는 속성]]일 수 있습니다.
+여전히 문서가 없는 속성은 [[Special:WantedProperties|필요한 속성 목록]]에서 찾을 수 있습니다.",
 	'smw-statistics' => '시맨틱 통계',
 	'smw-statistics-property-instance' => '(총) 속성 {{PLURAL:$1|값}}',
 	'smw-statistics-property-total' => '(총) [[Special:Properties|{{PLURAL:$1|속성}}]]',
@@ -9268,6 +9300,8 @@ $messages['ko'] = array(
 	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|개념}}]]',
 	'smw-statistics-subobject-count' => '{{PLURAL:$1|하위개체}}',
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|데이터유형}}]]',
+	'smw_uri_doc' => 'URI 해결기는 [$1 W3C TAG의 httpRange-14에 찾은 표기]를 구현합니다.
+이것은 사람이 웹사이트에 향하지 않도록 주의합니다.',
 	'ask' => '시맨틱 찾기',
 	'smw_ask_sortby' => '열을 기준으로 정렬 (선택 사항)',
 	'smw_ask_ascorder' => '오름차순',
@@ -9386,6 +9420,10 @@ $1 문서로 돌아갑니다.',
 	'smw_smwadmin_dbbutton' => '표를 초기화하거나 업그레이드',
 	'smw_smwadmin_announce' => '내 위키 발표',
 	'smw_smwadmin_datarefresh' => '데이터 복구와 업그레이드',
+	'smw_smwadmin_datarefreshprogress' => '<strong>업데이트가 이미 진행 중입니다.</strong>
+사용자가 위키에 접근할 때마다 작은 덩어리의 새로 고침 데이터 진행만 있기 때문에 업데이트 진행이 느린 것은 정상입니다.
+더 빠르게 이 업데이트를 마치려면 <code>runJobs.php</code> 미디어위키 유지 보수 스크립트를 호출할 수 있습니다. (일괄 하나에서 수행하는 업데이트의 수를 제한하려면 <code>--maxjobs 1000</code> 옵션을 사용하세요)
+현재 업데이트의 예상된 진행:',
 	'smw_smwadmin_datarefreshbutton' => '데이터 업데이트 시작',
 	'smw_smwadmin_datarefreshstop' => '이 업데이트 중지',
 	'smw_smwadmin_datarefreshstopconfirm' => '예, 확실합니다.',
@@ -9416,13 +9454,17 @@ $1 문서로 돌아갑니다.',
 	'smw-ui-tooltip-title-note' => '참고',
 	'smw-ui-tooltip-title-legend' => '범례',
 	'smw_unknowntype' => '이 속성의 형식이 잘못되었습니다',
+	'smw-concept-cache-text' => '개념은 총 {{PLURAL:$1|문서}} $1개가 있으며, $2에 마지막으로 업데이트했습니다.',
 	'smw_concept_header' => '"$1" 개념의 문서',
 	'smw_conceptarticlecount' => '아래에 {{PLURAL:$1|문서}} $1개를 보여줍니다.',
+	'smw-qp-aggregatable-empty-data' => '요청한 집계할 수 있는 데이터가 일부 충분하지 않은 선택 조건에 따라 보여줄 수 없습니다.',
 	'right-smw-admin' => '관리 작업에 접근 (시맨틱 미디어위키)',
 	'group-smwadministrator' => '시맨틱 미디어위키 관리자',
 	'group-smwadministrator-member' => '{{GENDER:$1|관리자 (SMW)}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW_관리자',
 	'action-smw-admin' => '시맨틱 미디어위키 관리 작업에 접근',
+	'smw-sp-properties-docu' => '이 특수 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자가 정의한 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.',
+	'smw-sp-properties-cache-info' => '나열된 데이터는 [https://www.semantic-mediawiki.org/wiki/Caching 캐시]에서 검색되었고, $1에 마지막으로 업데이트했습니다.',
 	'smw-sp-properties-header-label' => '속성 목록',
 );
 
@@ -9442,6 +9484,7 @@ $messages['krj'] = array(
 
 /** Colognian (Ripoarisch)
  * @author Purodha
+ * @author 아라
  */
 $messages['ksh'] = array(
 	'smw-desc' => 'Määt Ding Wiki besser ze bruche - för Minsche un Maschiene. ([http://semantic-mediawiki.org/wiki/Help:User_manual Handbooch])',
@@ -9564,7 +9607,7 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 	'semanticstatistics' => 'Schtatistik övver de semantesche Daate',
 	'smw_semstats_text' => "Dat Wiki hät {{PLURAL:$1|'''eine''' Wäät|'''$1''' Wääte|'''nit eine''' Wäät}} för ensjesamp '''{{PLURAL:$2|ein|$2|keine}}''' ongerscheedlijje [[Special:Properties|{{PLURAL:$2|Eijeschaff|Eijeschaffte|Eijeschaff}}]].
 {{PLURAL:$3|'''Ein''' Eijeschaff hät|'''$3''' Eijeschaffte han|'''Kein''' Eijeschaff hät}} en eije Sigg, un en Zoot (dä Datetyp) es för '''{{PLURAL:$4|eine|$4|keine}}'''  dovun aanjejovve. Et künne och [[Special:UnusedProperties|{{lcfirst:{{#special:UnusedProperties}}}}]] dronger sinn. Eijeschaffte ohne eije Sigg sin op dä Sigg met de [[Special:WantedProperties|{{lcfirst:{{#special:WantedProperties}}}}]] opjeleß.",
-	'smw_uri_doc' => 'Dä <i lang="en">URI resolver</i> hät dä Vörschlaach <<i lang="en">a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a></i> opjenumme
+	'smw_uri_doc' => 'Dä <i lang="en">URI resolver</i> hät dä Vörschlaach <i lang="en">[$1 W3C TAG finding on httpRange-14]</i> opjenumme
 (-: un sorresch esu doför, dat uß Minsche kei Websigge wääde :-)',
 	'ask' => 'Semantesch Söke',
 	'smw_ask_sortby' => 'Noh de Spallde zotteere (moß ävver nit)',
@@ -10000,6 +10043,7 @@ $messages['min'] = array(
 /** Macedonian (македонски)
  * @author Bjankuloski06
  * @author Rancher
+ * @author 아라
  */
 $messages['mk'] = array(
 	'smw-desc' => "Го прави вашето вики подостапно - за машини ''и'' луѓе ([http://semantic-mediawiki.org/wiki/Help:User_manual?uselang=mk документација])",
@@ -10173,7 +10217,7 @@ $messages['mk'] = array(
 	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Коцепт|Коцепти}}]]',
 	'smw-statistics-subobject-count' => '{{PLURAL:$1|Подобјект|Подобјекти}}',
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Податочен тип|Податочни типови}}]]',
-	'smw_uri_doc' => 'URI-претварачот применува <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C пронаоѓање на ознаки на httpRange-14</a>.
+	'smw_uri_doc' => 'URI-претварачот применува [$1 W3C пронаоѓање на ознаки на httpRange-14].
 Тој има за задача да внимава луѓето да не се претворат во мрежни места.',
 	'ask' => 'Семантичко пребарување',
 	'smw_ask_sortby' => 'Подреди по колона (незадолжително)',
@@ -10408,6 +10452,7 @@ $messages['mn'] = array(
 /** Marathi (मराठी)
  * @author Htt
  * @author Kaustubh
+ * @author 아라
  */
 $messages['mr'] = array(
 	'smw_viewasrdf' => 'RDF फीड',
@@ -10475,7 +10520,8 @@ $messages['mr'] = array(
 <b>$4</b> गुणधर्मांना स्वत:ची पाने आहेत, व त्यापैकी <b>$5</b> गुणधर्मांना जुळणारे डाटा प्रकार दिलेले आहेत.
 यातील काही गुणधर्म हे <a href="$6">न वापरलेले गुणधर्म</a> असण्याची शक्यता आहे.
 ज्या गुणधर्मांना स्वत:चे पान नाही असे गुणधर्म <a href="$7">पाहिजे असलेल्या गुणधर्मांची यादी</a> मध्ये सापडतील.', # Fuzzy
-	'smw_uri_doc' => 'URI रिझॉल्वर मध्ये एक <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C टॅग आहे जो httpRange-14 शोधण्यास मदत करतो</a>. हा मनुष्यप्राणी संकेतस्थळामध्ये बदलणार नाही याची काळजी घेतो.',
+	'smw_uri_doc' => 'URI रिझॉल्वर मध्ये एक [$1 W3C टॅग आहे जो httpRange-14 शोधण्यास मदत करतो].
+हा मनुष्यप्राणी संकेतस्थळामध्ये बदलणार नाही याची काळजी घेतो.',
 	'ask' => 'सिमंटिक शोध',
 	'smw_ask_sortby' => 'रकान्या प्रमाणे लावा (वैकल्पिक)',
 	'smw_ask_ascorder' => 'चढत्या श्रेणीने',
@@ -10609,6 +10655,7 @@ $messages['nah'] = array(
  * @author Laaknor
  * @author Nghtwlkr
  * @author Njardarlogar
+ * @author 아라
  */
 $messages['nb'] = array(
 	'smw-desc' => "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -10741,7 +10788,7 @@ Lager en RDF som kan gås gjennom.',
 {{PLURAL:$3|'''Én''' egenskap|'''$3''' egenskaper}} har en egen side, og den mente datatypen er spesifisert for '''$4''' av disse.
 Enkelte av de eksisterende egenskapene kan være [[Special:UnusedProperties|ubrukte egenskaper]].
 Egenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperties|listen over ønskede egenskaper]].",
-	'smw_uri_doc' => 'URI-løseren implementerer <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">finning av W3C TAG-er på «httpRange-14»</a>.
+	'smw_uri_doc' => 'URI-løseren implementerer [$1 finning av W3C TAG-er på «httpRange-14»].
 Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'ask' => 'Semantisk søk',
 	'smw_ask_sortby' => 'Sorter etter kolonne (valgfritt)',
@@ -11467,6 +11514,7 @@ Estimert framdrift på den noverande oppdateringa:',
 
 /** Occitan (occitan)
  * @author Cedric31
+ * @author 아라
  */
 $messages['oc'] = array(
 	'smw-desc' => "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([http://semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
@@ -11554,7 +11602,7 @@ $messages['oc'] = array(
 '''$3''' {{PLURAL:$3|proprietat a sa|proprietats an lor}} pagina pròprie, e lo tipe de donadas volgut es especificat per '''$4''' d'aquesta.
 Unas de las proprietats existentas pòdon en fach èsser [[Special:UnusedProperties|inutilizadas]].
 Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedProperties|lista de las proprietats demandadas]].",
-	'smw_uri_doc' => 'Lo resolveire d\'URI implementa la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">conclusion del TAG del W3C a prepaus del httpRange-14</a>. Se pòt assegurar que los umans vengan pas de sites web.',
+	'smw_uri_doc' => "Lo resolveire d'URI implementa la [$1 conclusion del TAG del W3C a prepaus del httpRange-14]. Se pòt assegurar que los umans vengan pas de sites web.",
 	'ask' => 'Recèrca semantica',
 	'smw_ask_sortby' => 'Triar per colomnas (opcional)',
 	'smw_ask_ascorder' => 'Creissent',
@@ -11697,6 +11745,7 @@ $messages['pfl'] = array(
  * @author Vuh
  * @author Woytecr
  * @author Łukasz Bolikowski
+ * @author 아라
  */
 $messages['pl'] = array(
 	'smw-desc' => 'Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])',
@@ -11819,7 +11868,7 @@ Wyniki mogą być inne od oczekiwanych.',
 '''$3''' {{PLURAL:$3|właściwość ma swoją własną stronę|właściwości mają swoje własne strony}}. a typ danych został określony dla '''$4''' z nich.
 Niektóre z istniejących właściwości mogą [[Special:UnusedProperties|być obecnie niewykorzystywane]].
 Właściwości, które nie posiadają swojej strony odnaleźć można na stronie [[Special:WantedProperties|spisu brakujących właściwości]].",
-	'smw_uri_doc' => 'Resolver URI implementuje <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Dzięki temu ludzie nie zamieniają się w strony WWW.',
+	'smw_uri_doc' => 'Resolver URI implementuje [$1 W3C TAG finding on httpRange-14]. Dzięki temu ludzie nie zamieniają się w strony WWW.',
 	'ask' => 'Szukanie semantyczne',
 	'smw_ask_sortby' => 'Sortuj według kolumny (opcjonalnie)',
 	'smw_ask_ascorder' => 'Rosnąco',
@@ -12117,7 +12166,7 @@ A génera RDF navigàbij.",
 '''$3''' {{PLURAL:$3|proprietà a l'ha|proprietà a l'han}} na soa pàgina, e ël tipo ëd dat a l'é specificà për '''$4''' ëd lor.
 Cheidun-e dle proprietà esistente a peulo esse [[Special:UnusedProperties|proprietà pa dovrà]].
 Proprietà che a l'han pa ancó na pàgina a peulo esse trovà dzora a la [[Special:WantedProperties|lista dle proprietà vorsùe]].",
-	'smw_uri_doc' => "L'arzolvidor d'URI a realisa la <a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG finding on httpRange-14</a>.
+	'smw_uri_doc' => "L'arzolvidor d'URI a realisa la [$1 conclusion dël TAG dël W3C a propòsit ëd httpRange-14].
 A fa an manera che j'uman a dvento pa ëd sit ëd la Ragnà.",
 	'ask' => 'Arserca semàntica',
 	'smw_ask_sortby' => 'Órdina për colòna (opsional)',
@@ -12351,6 +12400,7 @@ $messages['ps'] = array(
  * @author Malafaya
  * @author SandroHc
  * @author Waldir
+ * @author 아라
  * @author 555
  */
 $messages['pt'] = array(
@@ -12476,7 +12526,8 @@ Gera um RDF navegável.',
 '''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} uma página própria e o tipo de dados pretendido está especificado para '''$4''' delas.
 Algumas das propriedades existentes podem ser [[Special:UnusedProperties|propriedades não usadas]].
 As propriedades que não têm uma página própria podem ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
-	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. Certifica-se de que os seres humanos não se tornem em sites da internet.',
+	'smw_uri_doc' => 'O resolvedor de URIs implementa a [$1 descoberta TAG da W3C sobre o httpRange-14].
+Certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'ask' => 'Pesquisa semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
@@ -13209,6 +13260,7 @@ $messages['roa-tara'] = array(
  * @author QuestPC
  * @author Van de Bugger
  * @author Александр Сигачёв
+ * @author 아라
  */
 $messages['ru'] = array(
 	'smw-desc' => "Делает вашу вики более доступной — для машин ''и'' людей ([http://semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -13337,7 +13389,8 @@ $messages['ru'] = array(
 '''$3''' {{PLURAL:$3|свойство|свойства|свойств}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них.
 Некоторые из существующих свойств могут [[Special:UnusedProperties|не использоваться]].
 Свойства, для которых не созданы страницы описания, перечислены в [[Special:WantedProperties|списке неописанных свойств]].",
-	'smw_uri_doc' => 'Преобразователь URI осуществляет <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C поиск http тэгов с использованием Range-14</a>. Данная возможность упрощает поиск семантической информации.',
+	'smw_uri_doc' => 'Преобразователь URI осуществляет [$1 W3C поиск http тэгов с использованием Range-14].
+Данная возможность упрощает поиск семантической информации.',
 	'ask' => 'Семантический поиск',
 	'smw_ask_sortby' => 'Сортировать по столбцу (необязательно)',
 	'smw_ask_ascorder' => 'По возрастанию',
@@ -13697,6 +13750,7 @@ $messages['si'] = array(
 
 /** Slovak (slovenčina)
  * @author Helix84
+ * @author 아라
  */
 $messages['sk'] = array(
 	'smw-desc' => "Sprístupnenie vašej wiki pre stroje ''aj'' ľudí ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentácia])",
@@ -13796,7 +13850,8 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_semstats_text' => "Táto wiki obsahuje '''$1''' {{PLURAL:$1|hodnotu|hodnoty|hodnôt}} vlastností celkom {{PLURAL:$2|'''jednej''' vlastnosti|'''$2''' rozličných vlastností|'''$2''' rozličných vlastností}}. {{PLURAL:$3|'''Jedna''' vlastnosť má|'''$3''' vlastnosti majú|'''$3''' vlastností má}} vlastnú stránku a zamýšľaný údajový typ {{PLURAL:$4|má uvedený '''$4''' z nich|majú uvedené '''$4''' z nich|má uvedených '''$4''' z nich}}.
 Niektoré z existujúcich vlastností môžu byť [[Special:UnusedProperties|nepoužité]].
 Vlastnosti, ktorým stále chýba stránka sa nachádzajú na [[Special:WantedProperties|zozname žiadaných vlastností]].",
-	'smw_uri_doc' => 'URI resolver sa stará o implementáciu <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG hľadanie na httpRange-14</a>. Stará sa o to, aby sa ľudia nestali webstránkami.',
+	'smw_uri_doc' => 'URI resolver sa stará o implementáciu [$1 W3C TAG hľadanie na httpRange-14].
+Stará sa o to, aby sa ľudia nestali webstránkami.',
 	'ask' => 'Sémantické vyhľadávanie',
 	'smw_ask_sortby' => 'Zoradiť podľa stĺpca',
 	'smw_ask_ascorder' => 'Vzostupne',
@@ -14496,6 +14551,7 @@ Procena napredovanja trenutnog ažuriranja:',
  * @author Eliasb
  * @author Flrn
  * @author Gabbe.g
+ * @author Jopparn
  * @author Lejonel
  * @author Leo Johannes
  * @author M.M.S.
@@ -14506,6 +14562,7 @@ Procena napredovanja trenutnog ažuriranja:',
  * @author Rotsee
  * @author Sannab
  * @author WikiPhoenix
+ * @author 아라
  */
 $messages['sv'] = array(
 	'smw-desc' => "Gör din wiki mer tillgänglig - för maskiner ''och'' människor ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -14638,6 +14695,10 @@ Skapar en RDF som kan gås igenom.',
 	'smw_propertylackstype' => 'Ingen typ specificerades för denna egenskap (antar typ $1 tills vidare).',
 	'smw_propertyhardlyused' => 'Denna egenskap används knappt i wikin!',
 	'smw-property-name-invalid' => 'Egenskapen $1 kan inte användas (ogiltigt egenskapsnamn).',
+	'concepts' => 'Begrepp',
+	'smw-sp-concept-header' => 'Lista över begrepp',
+	'smw-sp-concept-count' => 'Följande {{PLURAL:$1|begrepp|$1 begrepp}} {{PLURAL:$1|är|är}} listade.', # Fuzzy
+	'smw-sp-concept-empty' => 'Inget begrepp hittades.',
 	'unusedproperties' => 'Oanvända egenskaper',
 	'smw_unusedproperties_docu' => 'Följande egenskaper finns fastän ingen annan sida använder dem.',
 	'smw_unusedproperty_template' => '$1 av typen $2',
@@ -14654,10 +14715,12 @@ Skapar en RDF som kan gås igenom.',
 Några av de existerande egenskaperna kan vara [[Special:UnusedProperties|oanvända egenskaper]].
 Egenskaper som fortfarande saknar en egen sida finns på [[Special:WantedProperties|listan över önskade egenskaper]].",
 	'smw-statistics' => 'Semantisk statistik',
+	'smw-statistics-property-instance' => 'Egenskapen {{PLURAL:$1|värde|värden}} (totalt)',
 	'smw-statistics-query-size' => 'Frågestorlek',
 	'smw-statistics-concept-count' => 'Koncept', # Fuzzy
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datatyp|Datatyper}}]]',
-	'smw_uri_doc' => "URI-lösaren implementerar ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG fynden i httpRange-14</a>''. Den ser till så att människor inte blir webbsidor.",
+	'smw_uri_doc' => "URI-lösaren implementerar ''[$1 W3C TAG fynden i httpRange-14]''.
+Den ser till så att människor inte blir webbsidor.",
 	'ask' => 'Semantisk sökning',
 	'smw_ask_sortby' => 'Sortera efter kolumn (valfritt)',
 	'smw_ask_ascorder' => 'Stigande',
@@ -15021,6 +15084,7 @@ $messages['tk'] = array(
 
 /** Tagalog (Tagalog)
  * @author AnakngAraw
+ * @author 아라
  */
 $messages['tl'] = array(
 	'smw-desc' => "Ginagawang mas napupuntahan ang wiki mo - para sa ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasyon habang nasa Internet]) ng mga makina ''at'' mga tao",
@@ -15164,7 +15228,7 @@ Gumagawa ng matitingnan-tingnang RDF.',
 '''$3''' {{PLURAL:$3|pag-aari ang may|mga pag-aari ang may mga}} sariling pahina na, at ang inilalaang uri ng dato ay tinukoy para sa '''$4''' ng mga iyon.
 Ilan sa umiiral na mga ari-arian ay maaaring [[Special:UnusedProperties|hindi ginagamit na mga pag-aari]].
 Ang mga ari-ariang wala pa ring isang pahina ay matatagpuan sa [[Special:WantedProperties|talaan ng ninanais na mga pag-aari]].",
-	'smw_uri_doc' => 'Ipinatutupad ng tagapaglutas na URI ang <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Paghahanap ng W3C TAG sa httpRange-14</a>.
+	'smw_uri_doc' => 'Ipinatutupad ng tagapaglutas na URI ang [$1 Paghahanap ng W3C TAG sa httpRange-14].
 Pinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.',
 	'ask' => 'Paghahanap hinggil sa kahulugan ng mga salita (semantiko)',
 	'smw_ask_sortby' => 'Pagpangkat-pangkating ayon sa pahabang kahanayan (maaaring wala nito)',
@@ -15482,6 +15546,7 @@ $messages['ug-latn'] = array(
  * @author SteveR
  * @author Тест
  * @author Юрій Булка
+ * @author 아라
  */
 $messages['uk'] = array(
 	'smw-desc' => "Робить вашу вікі доступнішою — для машин ''та'' людей ([http://semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
@@ -15593,7 +15658,8 @@ $messages['uk'] = array(
 	'smw_types_docu' => 'Список типів даних, які можуть бути призначені властивостям. Кожен тип даних має сторінку, де модна надати додаткову інформацію.', # Fuzzy
 	'semanticstatistics' => 'Семантична статистика',
 	'smw_semstats_text' => "Ця вікі містить '''$1''' {{PLURAL:$1|значення властивості|значення властивостей|значень властивостей}}, для '''$2''' [[Special:Properties|{{PLURAL:$2|властивості|властивостей|властивостей}}]]. '''$3''' {{PLURAL:$3|властивість має|властивості мають|властивостей мають}} відповідні їм сторінки, і відповідний тип даних вказано у '''$4''' із них. Деякі із наявних властивостей можуть бути [[Special:UnusedProperties|властивостями, що не використовуються]]. Властивості, котрі не мають відповідних їм сторінок, можна знайти в [[Special:WantedProperties|списку пропонованих властивостей]].",
-	'smw_uri_doc' => 'Оброблювач URI виконує <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">«W3C TAG finding on httpRange-14»</a>. Ця функція спрощує пошук семантичної інформації.',
+	'smw_uri_doc' => 'Оброблювач URI виконує [$1 «W3C TAG finding on httpRange-14»].
+Ця функція спрощує пошук семантичної інформації.',
 	'ask' => 'Семантичний пошук',
 	'smw_ask_sortby' => 'Сортувати за стовпцем (необов’язково)',
 	'smw_ask_ascorder' => 'За зростанням',
@@ -15828,6 +15894,7 @@ $messages['vep'] = array(
 /** Vietnamese (Tiếng Việt)
  * @author Minh Nguyen
  * @author Vinhtantran
+ * @author 아라
  */
 $messages['vi'] = array(
 	'smw-desc' => "Làm cho wiki của bạn khả dụng hơn – đối với máy ''cũng như'' con người ([http://semantic-mediawiki.org/wiki/Help:User_manual tài liệu trực tuyến])",
@@ -15925,7 +15992,8 @@ Tạo ra RDF có thể duyệt được.',
 '''$3''' thuộc tính có trang riêng, và kiểu dữ liệu dự tính được chỉ định cho '''$4''' trong số đó.
 Một số thuộc tính hiện có có thể [[Special:UnusedProperties|chưa được sử dụng]].
 Có thể tìm thấy thuộc tính còn thiếu trang tại [[Special:WantedProperties|danh sách các thuộc tính cần có]].",
-	'smw_uri_doc' => 'Bộ giải URI hiện thực <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">THẺ W3C tìm thấy tại httpRange-14</a>. Nó lo việc con người không quay lại trang web.',
+	'smw_uri_doc' => 'Bộ giải URI hiện thực [$1 THẺ W3C tìm thấy tại httpRange-14].
+Nó lo việc con người không quay lại trang web.',
 	'ask' => 'Tìm kiếm ngữ nghĩa',
 	'smw_ask_sortby' => 'Sắp xếp theo cột (tùy chọn)',
 	'smw_ask_ascorder' => 'Tăng dần',
@@ -16229,6 +16297,7 @@ $messages['zh-cn'] = array(
  * @author Xiaomingyan
  * @author Yanmiao liu
  * @author Yfdyh000
+ * @author 아라
  */
 $messages['zh-hans'] = array(
 	'smw-desc' => "让你的wiki更可及——对机器''与''人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -16366,7 +16435,7 @@ $messages['zh-hans'] = array(
 	'semanticstatistics' => '语义统计',
 	'smw_semstats_text' => "此维基包含 '''$1''' 个属性{{PLURAL:$1|值|值}}，源自 '''$2''' 个[[Special:Properties|{{PLURAL:$2|属性|不同属性}}]]。'''$3''' 个{{PLURAL:$3|属性有|属性有}}自己的页，并且预期的数据类型被指定为 '''$4'''。某些已经存在的属性也许是[[Special:UnusedProperties|无用属性]]。缺乏页的属性可以在[[Special:WantedProperties|需要的属性列表]]中找到。",
 	'smw-statistics' => '语义统计',
-	'smw_uri_doc' => 'URI 分析器实现<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C httpRange-14 标记查找</a>。它将处理那些没有网站内容的页。',
+	'smw_uri_doc' => 'URI 分析器实现[$1 W3C httpRange-14 标记查找]。它将处理那些没有网站内容的页。',
 	'ask' => '语义搜索',
 	'smw_ask_sortby' => '按列排序（可选）',
 	'smw_ask_ascorder' => '升序',
@@ -16530,6 +16599,7 @@ $messages['zh-hans'] = array(
  * @author Simon Shek
  * @author StephDC
  * @author Wrightbus
+ * @author 아라
  */
 $messages['zh-hant'] = array(
 	'smw-desc' => '讓你的維基更可及——對機器與人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 網上文檔]）',
@@ -16668,7 +16738,7 @@ $messages['zh-hant'] = array(
 	'smw_semstats_text' => "此維基包含 '''$1''' 個屬性{{PLURAL:$1|值|值}}，源自 '''$2''' 個[[Special:Properties|{{PLURAL:$2|屬性|不同屬性}}]]。'''$3''' 個{{PLURAL:$3|屬性有|屬性有}}自己的頁，並且預期的數據類型被指定為 '''$4'''。某些已經存在的屬性也許是[[Special:UnusedProperties|無用屬性]]。缺乏頁的屬性可以在[[Special:WantedProperties|需要的屬性列表]]中找到。",
 	'smw-statistics' => 'Semantic 語義統計',
 	'smw-statistics-query-size' => '隊列長度',
-	'smw_uri_doc' => 'URI 分析器實現<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C httpRange-14 標記查找</a>。它將處理那些沒有網站內容的頁。', # Fuzzy
+	'smw_uri_doc' => 'URI 分析器實現[$1 W3C httpRange-14 標記查找]。它將處理那些沒有網站內容的頁。',
 	'ask' => '語意搜尋',
 	'smw_ask_sortby' => '按列排序（可選）',
 	'smw_ask_ascorder' => '升冪',
