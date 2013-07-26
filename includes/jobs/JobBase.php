@@ -47,6 +47,19 @@ abstract class JobBase extends Job {
 	protected $cache = null;
 
 	/**
+	 * Returns invoked Title object
+	 *
+	 * Apparently Jobs::getTitle() in MW 1.19 does not exists
+	 *
+	 * @since  1.9
+	 *
+	 * @return Title
+	 */
+	public function getTitle() {
+		return $this->title;
+	}
+
+	/**
 	 * Sets Store object
 	 *
 	 * @since 1.9
