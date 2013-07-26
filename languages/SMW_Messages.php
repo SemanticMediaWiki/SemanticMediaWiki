@@ -3155,6 +3155,7 @@ $messages['ce'] = array(
 	'smw_qc_default' => 'Iад йитарца:',
 	'smw_sbv_value' => 'МаьӀна:',
 	'browse' => 'Сайте хьажа',
+	'smw_browselink' => 'Хьажа агӀонах дерг',
 	'smw_result_noresults' => 'Бехк ма биллалаш, хӀума ца карийна.',
 	'smw_smwadmin_db' => 'Хааман база дӏахӏоттор а керла яккхар а',
 	'smw_smwadmin_datarefresh' => 'Хаам меттахӏоттор а керла баккхар а',
