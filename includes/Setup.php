@@ -141,9 +141,10 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';
 	$wgAutoloadClasses['SMW\IParserData']           = $incDir . 'ParserData.php';
 	$wgAutoloadClasses['SMW\ParserData']            = $incDir . 'ParserData.php';
-	$wgAutoloadClasses['SMW\PropertyDisparityDetector']  = $incDir . 'PropertyDisparityDetector.php';
 
-	$wgAutoloadClasses['SMW\PropertyAnnotationComplementor']  = $incDir . 'PropertyAnnotationComplementor.php';
+	$wgAutoloadClasses['SMW\PropertyChangeNotifier']    = $incDir . 'PropertyChangeNotifier.php';
+	$wgAutoloadClasses['SMW\BasePropertyAnnotator']     = $incDir . 'BasePropertyAnnotator.php';
+	$wgAutoloadClasses['SMW\RedirectPropertyAnnotator'] = $incDir . 'RedirectPropertyAnnotator.php';
 
 	$wgAutoloadClasses['SMW\Subobject']             = $incDir . 'Subobject.php';
 	$wgAutoloadClasses['SMW\RecurringEvents']       = $incDir . 'RecurringEvents.php';
@@ -164,7 +165,6 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ArrayAccessor']             = $incDir . '/utilities/ArrayAccessor.php';
 	$wgAutoloadClasses['SMW\MessageReporter']           = $incDir . '/utilities/MessageReporter.php';
 	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . '/utilities/MessageReporter.php';
-	$wgAutoloadClasses['SMW\RedirectBuilder']           = $incDir . '/utilities/RedirectBuilder.php';
 	$wgAutoloadClasses['SMW\ParserOutputGenerator']     = $incDir . '/utilities/ParserOutputGenerator.php';
 	$wgAutoloadClasses['SMW\ChangeObserver']            = $incDir . '/utilities/ChangeObserver.php';
 	$wgAutoloadClasses['SMW\TitleProvider']             = $incDir . '/utilities/MediaWikiInterfaceProvider.php';

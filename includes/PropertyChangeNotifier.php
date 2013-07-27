@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Class that detects a disparity between the property object and its store data
+ * Class that detects a change between a property and its store data
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,11 +30,11 @@ namespace SMW;
  */
 
 /**
- * Class that detects a disparity between the property object and its store data
+ * Class that detects a change between a property and its store data
  *
  * @ingroup SMW
  */
-class PropertyDisparityDetector extends Subject implements TitleProvider {
+class PropertyChangeNotifier extends Subject implements TitleProvider {
 
 	/** @var Store */
 	protected $store;
@@ -91,7 +91,7 @@ class PropertyDisparityDetector extends Subject implements TitleProvider {
 	 *
 	 * @return PropertyDisparityFinder
 	 */
-	public function detectDisparity() {
+	public function detectChanges() {
 		Profiler::In( __METHOD__, true );
 
 		if ( $this->semanticData->getSubject()->getNamespace() === SMW_NS_PROPERTY ) {

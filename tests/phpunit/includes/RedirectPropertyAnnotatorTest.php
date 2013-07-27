@@ -2,13 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\RedirectBuilder;
+use SMW\RedirectPropertyAnnotator;
 use SMW\DIProperty;
-
-use SMWSemanticData;
+use SMW\SemanticData;
 
 /**
- * Tests for the RedirectBuilder class
+ * Tests for the RedirectPropertyAnnotator class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,14 +33,14 @@ use SMWSemanticData;
  */
 
 /**
- * @covers \SMW\RedirectBuilder
+ * @covers \SMW\RedirectPropertyAnnotator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class RedirectBuilderTest extends SemanticMediaWikiTestCase {
+class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -49,24 +48,24 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\RedirectBuilder';
+		return '\SMW\RedirectPropertyAnnotator';
 	}
 
 	/**
-	 * Helper method that returns a RedirectBuilder object
+	 * Helper method that returns a RedirectPropertyAnnotator object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $data
 	 *
-	 * @return RedirectBuilder
+	 * @return RedirectPropertyAnnotator
 	 */
-	private function getInstance( SMWSemanticData $data = null ) {
-		return new RedirectBuilder( $data === null ? $this->newMockObject()->getMockSemanticData() : $data );
+	private function getInstance( SemanticData $data = null ) {
+		return new RedirectPropertyAnnotator( $data === null ? $this->newMockObject()->getMockSemanticData() : $data );
 	}
 
 	/**
-	 * @test RedirectBuilder::__construct
+	 * @test RedirectPropertyAnnotator::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -75,7 +74,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test RedirectBuilder::build
+	 * @test RedirectPropertyAnnotator::annotate
 	 * @dataProvider redirectsDataProvider
 	 *
 	 * @since 1.9
@@ -85,10 +84,10 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testBuild( $test, $expected ) {
 
-		$semanticData =  new SMWSemanticData( $this->getSubject() );
+		$semanticData =  new SemanticData( $this->getSubject() );
 
 		$instance = $this->getInstance( $semanticData );
-		$instance->canBuild( $test['canBuild'] )->build( $test['build'] );
+		$instance->isEnabled( $test['isEnabled'] )->annotate( $test['text'] );
 
 		$this->assertSemanticData( $semanticData, $expected );
 	}
@@ -105,7 +104,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 
 		// #0 Title
 		$provider[] = array(
-			array( 'build' => $title, 'canBuild' => true ),
+			array( 'text' => $title, 'isEnabled' => true ),
 			array(
 				'propertyCount' => 1,
 				'propertyKey'   => '_REDI',
@@ -115,7 +114,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 
 		// #1 Disabled
 		$provider[] = array(
-			array( 'build' => $title, 'canBuild' => false ),
+			array( 'text' => $title, 'isEnabled' => false ),
 			array(
 				'propertyCount' => 0,
 			)
@@ -123,7 +122,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 
 		// #2 Free text
 		$provider[] = array(
-			array( 'build' => '#REDIRECT [[:Lala]]', 'canBuild' => true ),
+			array( 'text' => '#REDIRECT [[:Lala]]', 'isEnabled' => true ),
 			array(
 				'propertyCount' => 1,
 				'propertyKey'   => '_REDI',
@@ -133,7 +132,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 
 		// #3 Free text
 		$provider[] = array(
-			array( 'build' => '#REDIRECT [[Lala]]', 'canBuild' => true ),
+			array( 'text' => '#REDIRECT [[Lala]]', 'isEnabled' => true ),
 			array(
 				'propertyCount' => 1,
 				'propertyKey'   => '_REDI',
@@ -143,7 +142,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 
 		// #4 Disabled free text
 		$provider[] = array(
-			array( 'build' => '#REDIRECT [[:Lala]]', 'canBuild' => false ),
+			array( 'text' => '#REDIRECT [[:Lala]]', 'isEnabled' => false ),
 			array(
 				'propertyCount' => 0,
 			)
@@ -151,7 +150,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 
 		// #5 Invalid free text
 		$provider[] = array(
-			array( 'build' => '#REDIR [[:Lala]]', 'canBuild' => true ),
+			array( 'text' => '#REDIR [[:Lala]]', 'isEnabled' => true ),
 			array(
 				'propertyCount' => 0,
 			)
@@ -159,7 +158,7 @@ class RedirectBuilderTest extends SemanticMediaWikiTestCase {
 
 		// #6 Empty
 		$provider[] = array(
-			array( 'build' => '', 'canBuild' => true ),
+			array( 'text' => '', 'isEnabled' => true ),
 			array(
 				'propertyCount' => 0,
 			)

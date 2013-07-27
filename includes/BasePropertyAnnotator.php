@@ -12,8 +12,7 @@ use Revision;
 use User;
 
 /**
- * Class acting as agent that complements property annotations during
- * the store update
+ * Class that adss base property annotations (predefined, categories etc.)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,12 +39,11 @@ use User;
  */
 
 /**
- * Class acting as agent that complements property annotations during
- * the store update
+ * Class that adss base property annotations (predefined, categories etc.)S
  *
- * @ingroup SMW
+ * @ingroup Annotator
  */
-class PropertyAnnotationComplementor extends Subject {
+class BasePropertyAnnotator extends Subject {
 
 	/** @var SemanticData */
 	protected $semanticData;

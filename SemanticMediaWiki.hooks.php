@@ -499,7 +499,7 @@ final class SMWHooks {
 		$settings   = \SMW\Settings::newFromGlobals();
 		$parserData = new SMW\ParserData( $parser->getTitle(), $parser->getOutput() );
 
-		$complementor = new \SMW\PropertyAnnotationComplementor( $parserData->getData(), $settings );
+		$complementor = new \SMW\BasePropertyAnnotator( $parserData->getData(), $settings );
 		$complementor->attach( $parserData );
 
 		$complementor->addCategories( $parser->getOutput()->getCategoryLinks() );
@@ -646,7 +646,7 @@ final class SMWHooks {
 		$settings   = \SMW\Settings::newFromGlobals();
 		$parserData = new SMW\ParserData( $wikiPage->getTitle(), $parserOutput );
 
-		$complementor = new \SMW\PropertyAnnotationComplementor( $parserData->getData(), $settings );
+		$complementor = new \SMW\BasePropertyAnnotator( $parserData->getData(), $settings );
 		$complementor->attach( $parserData );
 		$complementor->addSpecialProperties( $wikiPage, $revision, $user );
 

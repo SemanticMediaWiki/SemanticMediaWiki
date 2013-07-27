@@ -2,14 +2,11 @@
 
 namespace SMW;
 
-use SMWSemanticData;
-
 use ContentHandler;
 use Title;
 
 /**
- * Process and builds a '_REDI' property where a redirect
- * object is availavle
+ * Adds a '_REDI' property annotation where a redirect is being indicated
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,26 +32,24 @@ use Title;
  */
 
 /**
- * Process and builds a '_REDI' property where a redirect
- * object is availavle
+ * Adds a '_REDI' property annotation where a redirect is being indicated
  *
- * @ingroup Utility
- * @ingroup Builder
+ * @ingroup Annotator
  */
-class RedirectBuilder {
+class RedirectPropertyAnnotator {
 
-	/** @var SMWSemanticData */
+	/** @var SemanticData */
 	protected $semanticData = null;
 
 	/** @var boolean */
-	protected $canBuild = true;
+	protected $isEnabled = true;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param SMWSemanticData $semanticData
+	 * @param SemanticData $semanticData
 	 */
-	public function __construct( SMWSemanticData $semanticData ) {
+	public function __construct( SemanticData $semanticData ) {
 		$this->semanticData = $semanticData;
 	}
 
@@ -64,12 +59,12 @@ class RedirectBuilder {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $canBuild
+	 * @param boolean $canAnnotate
 	 *
-	 * @return RedirectBuilder
+	 * @return RedirectPropertyAnnotator
 	 */
-	public function canBuild( $canBuild = true ) {
-		$this->canBuild = $canBuild;
+	public function isEnabled( $enabled = true ) {
+		$this->isEnabled = $enabled;
 		return $this;
 	}
 
@@ -79,8 +74,8 @@ class RedirectBuilder {
 	 *
 	 * @par Example:
 	 * @code
-	 *  $redirect = new RedirectBuilder( $semanticData );
-	 *  $redirect->canBuild( true )->build( $text );
+	 *  $redirect = new RedirectPropertyAnnotator( $semanticData );
+	 *  $redirect->isEnabled( true )->annotate( $text );
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -89,13 +84,13 @@ class RedirectBuilder {
 	 *
 	 * @return string
 	 */
-	public function build( /* ... */ ) {
+	public function annotate( /* ... */ ) {
 
 		$argument = func_get_arg( 0 );
 
-		if ( $this->canBuild && is_string( $argument ) ) {
+		if ( $this->isEnabled && is_string( $argument ) ) {
 			$title = $this->buildFromText( $argument );
-		} else if ( $this->canBuild && $argument instanceof Title ) {
+		} else if ( $this->isEnabled && $argument instanceof Title ) {
 			$title = $argument;
 		} else {
 			$title = null;

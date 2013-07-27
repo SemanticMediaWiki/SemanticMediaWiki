@@ -407,7 +407,7 @@ class ParserData extends Observer implements IParserData {
 		if ( $processSemantics ) {
 			$user = \User::newFromId( $revision->getUser() );
 
-			$complementor = new PropertyAnnotationComplementor( $this->semanticData, Settings::newFromGlobals() );
+			$complementor = new BasePropertyAnnotator( $this->semanticData, Settings::newFromGlobals() );
 			$complementor->attach( $this );
 			$complementor->addSpecialProperties( $wikiPage, $revision, $user );
 
@@ -419,9 +419,9 @@ class ParserData extends Observer implements IParserData {
 		// Comparison must happen *before* the storage update;
 		// even finding uses of a property fails after its type was changed.
 		if ( $this->updateJobs ) {
-			$disparityDetector = new PropertyDisparityDetector( $store, $this->semanticData, Settings::newFromGlobals() );
-			$disparityDetector->attach( new ChangeObserver() );
-			$disparityDetector->detectDisparity();
+			$changeNotifier = new PropertyChangeNotifier( $store, $this->semanticData, Settings::newFromGlobals() );
+			$changeNotifier->attach( new ChangeObserver() );
+			$changeNotifier->detectChanges();
 		}
 
 		// Actually store semantic data, or at least clear it if needed

@@ -2,13 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\PropertyDisparityDetector;
+use SMW\PropertyChangeNotifier;
 use SMW\DIProperty;
 
 use Title;
 
 /**
- * Tests for the PropertyDisparityDetector class
+ * Tests for the PropertyChangeNotifier class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,14 +34,14 @@ use Title;
  */
 
 /**
- * @covers \SMW\PropertyDisparityDetector
+ * @covers \SMW\PropertyChangeNotifier
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
+class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 
 	/** @var DIWikiPage[] */
 	protected $storeValues;
@@ -52,11 +52,11 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\PropertyDisparityDetector';
+		return '\SMW\PropertyChangeNotifier';
 	}
 
 	/**
-	 * Helper method that returns a PropertyDisparityDetector object
+	 * Helper method that returns a PropertyChangeNotifier object
 	 *
 	 * @since 1.9
 	 *
@@ -64,7 +64,7 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 	 * @param $data
 	 * @param $setting
 	 *
-	 * @return PropertyDisparityDetector
+	 * @return PropertyChangeNotifier
 	 */
 	private function getInstance( $store = array(), $data = array(), $setting = null ) {
 
@@ -74,11 +74,11 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 			'smwgDeclarationProperties' => $setting === null ? array( '_PVAL' ): $setting
 		) );
 
-		return new PropertyDisparityDetector( $mockStore, $mockData, $settings );
+		return new PropertyChangeNotifier( $mockStore, $mockData, $settings );
 	}
 
 	/**
-	 * @test PropertyDisparityDetector::__construct
+	 * @test PropertyChangeNotifier::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -87,7 +87,7 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertyDisparityDetector::detectDisparity
+	 * @test PropertyChangeNotifier::detectChanges
 	 * @dataProvider dataItemDataProvider
 	 *
 	 * @since 1.9
@@ -109,7 +109,7 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance( $store, $data, $settings );
 		$observer = new MockChangeObserver( $instance );
 
-		$this->assertInstanceOf( $this->getClass(), $instance->detectDisparity() );
+		$this->assertInstanceOf( $this->getClass(), $instance->detectChanges() );
 		$this->assertEquals( $subject->getTitle(), $instance->getTitle() );
 		$this->assertEquals( $expected['change'], $instance->hasDisparity() );
 

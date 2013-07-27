@@ -2,12 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\PropertyAnnotationComplementor;
+use SMW\BasePropertyAnnotator;
 use SMW\SemanticData;
 use SMW\DIProperty;
 
 /**
- * Tests for the PropertyAnnotationComplementor class
+ * Tests for the BasePropertyAnnotator class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,14 +33,14 @@ use SMW\DIProperty;
  */
 
 /**
- * @covers \SMW\PropertyAnnotationComplementor
+ * @covers \SMW\BasePropertyAnnotator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class PropertyAnnotationComplementorTest extends ParserTestCase {
+class BasePropertyAnnotatorTest extends ParserTestCase {
 
 	/** boolean */
 	protected $observerStatus = null;
@@ -51,7 +51,7 @@ class PropertyAnnotationComplementorTest extends ParserTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\PropertyAnnotationComplementor';
+		return '\SMW\BasePropertyAnnotator';
 	}
 
 	/**
@@ -79,22 +79,22 @@ class PropertyAnnotationComplementorTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a PropertyAnnotationComplementor object
+	 * Helper method that returns a BasePropertyAnnotator object
 	 *
 	 * @param SemanticData $semanticData
 	 * @param array $settings
 	 *
-	 * @return PropertyAnnotationComplementor
+	 * @return BasePropertyAnnotator
 	 */
 	private function getInstance( SemanticData $semanticData = null, $settings = array() ) {
-		return new PropertyAnnotationComplementor(
+		return new BasePropertyAnnotator(
 			$semanticData === null ? $this->newMockObject()->getMockSemanticData() : $semanticData,
 			$this->getSettings( $settings )
 		);
 	}
 
 	/**
-	 * @test PropertyAnnotationComplementor::__construct
+	 * @test BasePropertyAnnotator::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -103,7 +103,7 @@ class PropertyAnnotationComplementorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test PropertyAnnotationComplementor::addCategories
+	 * @test BasePropertyAnnotator::addCategories
 	 * @dataProvider categoriesDataProvider
 	 *
 	 * @since 1.9
@@ -127,7 +127,7 @@ class PropertyAnnotationComplementorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test PropertyAnnotationComplementor::addCategories
+	 * @test BasePropertyAnnotator::addCategories
 	 * @dataProvider categoriesDataProvider
 	 *
 	 * @since 1.9
@@ -159,7 +159,7 @@ class PropertyAnnotationComplementorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test PropertyAnnotationComplementor::addCategories
+	 * @test BasePropertyAnnotator::addCategories
 	 * @dataProvider categoriesDataProvider
 	 *
 	 * @since 1.9
@@ -189,7 +189,7 @@ class PropertyAnnotationComplementorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test PropertyAnnotationComplementor::addDefaultSort
+	 * @test BasePropertyAnnotator::addDefaultSort
 	 * @dataProvider defaultSortDataProvider
 	 *
 	 * @since 1.9
@@ -222,7 +222,7 @@ class PropertyAnnotationComplementorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test PropertyAnnotationComplementor::addSpecialProperties
+	 * @test BasePropertyAnnotator::addSpecialProperties
 	 * @dataProvider specialPropertiesDataProvider
 	 *
 	 * @since 1.9
