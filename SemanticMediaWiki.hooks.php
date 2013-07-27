@@ -533,10 +533,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onLinksUpdateConstructed( $linksUpdate ) {
-		$parserData = new SMW\ParserData( $linksUpdate->getTitle(), $linksUpdate->getParserOutput() );
-		$parserData->updateStore();
-
-		return true;
+		return \SMW\HooksLoader::register( new \SMW\LinksUpdateConstructed( $linksUpdate ) )->process();
 	}
 
 	/**
@@ -704,20 +701,6 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function onBeforePageDisplay( OutputPage &$outputPage, Skin &$skin ) {
-		$title = $outputPage->getTitle();
-
-		// Add style resources to avoid unstyled content
-		$outputPage->addModules( array( 'ext.smw.style' ) );
-
-		// Add export link to the head
-		if ( $title instanceof Title && !$title->isSpecialPage() ) {
-			$linkarr['rel'] = 'ExportRDF';
-			$linkarr['type'] = 'application/rdf+xml';
-			$linkarr['title'] = $title->getPrefixedText();
-			$linkarr['href'] = SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
-			$outputPage->addLink( $linkarr );
-		}
-
-		return true;
+		return \SMW\HooksLoader::register( new \SMW\BeforePageDisplay( $outputPage, $skin ) )->process();
 	}
 }

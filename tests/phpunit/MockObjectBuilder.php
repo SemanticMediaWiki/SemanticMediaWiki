@@ -582,7 +582,70 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->method( 'getPrefixedText' )
 			->will( $this->returnValue( $this->set( 'getPrefixedText' ) ) );
 
+		$title->expects( $this->any() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( $this->set( 'isSpecialPage', false ) ) );
+
+		$title->expects( $this->any() )
+			->method( 'getContentModel' )
+			->will( $this->returnValue( $this->set( 'getContentModel' ) ) );
+
+		$title->expects( $this->any() )
+			->method( 'getPageLanguage' )
+			->will( $this->returnValue( $this->set( 'getPageLanguage' ) ) );
+
 		return $title;
+	}
+
+	/**
+	 * Helper method that returns a Skin object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Skin
+	 */
+	public function getMockSkin() {
+
+		$skin = $this->getMockBuilder( 'Skin' )
+		->disableOriginalConstructor()
+		->getMock();
+
+		return $skin;
+	}
+
+	/**
+	 * Helper method that returns a OutputPage object
+	 *
+	 * @since 1.9
+	 *
+	 * @return OutputPage
+	 */
+	public function getMockOutputPage() {
+
+		// getHeadLinksArray doesn't exists in MW 1.19
+
+		$outputPage = $this->getMockBuilder( 'OutputPage' )
+		->disableOriginalConstructor()
+		->setMethods( array( 'getHeadLinksArray' ) )
+		->getMock();
+
+		$outputPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->set( 'getTitle' ) ) );
+
+		$outputPage->expects( $this->any() )
+			->method( 'addModules' )
+			->will( $this->returnValue( $this->set( 'addModules' ) ) );
+
+		$outputPage->expects( $this->any() )
+			->method( 'addLink' )
+			->will( $this->returnValue( $this->set( 'addLink' ) ) );
+
+		$outputPage->expects( $this->any() )
+			->method( 'getHeadLinksArray' )
+			->will( is_callable( $this->set( 'getHeadLinksArray' ) ) ? $this->returnCallback( $this->set( 'getHeadLinksArray' ) ) : $this->returnValue( $this->set( 'getHeadLinksArray' ) ) );
+
+		return $outputPage;
 	}
 
 }
