@@ -174,4 +174,16 @@ class PropertySubjectsUpdateDispatcherJob extends JobBase {
 			}
 		}
 	}
+
+	/**
+	 * @see Job::insert
+	 *
+	 * @since 1.9
+	 * @codeCoverageIgnore
+	 */
+	public function insert() {
+		if ( $this->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+			parent::insert();
+		}
+	}
 }

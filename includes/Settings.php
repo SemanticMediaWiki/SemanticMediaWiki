@@ -136,6 +136,7 @@ class Settings extends ArrayAccessor {
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
+			'smwgDeferredPropertyUpdate' => $GLOBALS['smwgDeferredPropertyUpdate'],
 		);
 
 		if ( self::$instance === null ) {

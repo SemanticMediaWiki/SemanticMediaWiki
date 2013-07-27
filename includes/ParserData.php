@@ -387,8 +387,6 @@ class ParserData extends Observer implements IParserData {
 			return true;
 		}
 
-		$dispatcherJob = null;
-
 		$namespace = $this->title->getNamespace();
 		$wikiPage  = WikiPage::factory( $this->title );
 		$revision  = $wikiPage->getRevision();
@@ -422,7 +420,8 @@ class ParserData extends Observer implements IParserData {
 		// even finding uses of a property fails after its type was changed.
 		if ( $this->updateJobs ) {
 			$disparityDetector = new PropertyDisparityDetector( $store, $this->semanticData, Settings::newFromGlobals() );
-			$dispatcherJob = $disparityDetector->detectDisparity()->getDispatcherJob();
+			$disparityDetector->attach( new ChangeObserver() );
+			$disparityDetector->detectDisparity();
 		}
 
 		// Actually store semantic data, or at least clear it if needed
@@ -432,14 +431,7 @@ class ParserData extends Observer implements IParserData {
 			$store->clearData( $this->semanticData->getSubject() );
 		}
 
-		// Job::batchInsert was deprecated in MW 1.21
-		// @see JobQueueGroup::singleton()->push( $job );
-		if ( $dispatcherJob !== null ) {
-			Job::batchInsert( $dispatcherJob );
-		}
-
 		Profiler::Out( __METHOD__, true );
-
 		return true;
 	}
 

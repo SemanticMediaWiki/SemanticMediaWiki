@@ -86,7 +86,6 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
 	}
 
-
 	/**
 	 * @test PropertyDisparityDetector::detectDisparity
 	 * @dataProvider dataItemDataProvider
@@ -95,7 +94,7 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testFindDisparity( $storeValues, $dataValues, $settings, $expected ) {
 
-		$title = $this->getTitle( SMW_NS_PROPERTY );
+		$subject = $this->newSubject( $this->newTitle( SMW_NS_PROPERTY ) );
 		$this->storeValues = $storeValues;
 
 		$store = array(
@@ -103,16 +102,19 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 		);
 
 		$data  = array(
-			'getSubject'        => $this->newSubject( $title ),
+			'getSubject'        => $subject,
 			'getPropertyValues' => $dataValues
 		);
 
 		$instance = $this->getInstance( $store, $data, $settings );
+		$observer = new MockChangeObserver( $instance );
 
 		$this->assertInstanceOf( $this->getClass(), $instance->detectDisparity() );
-		$this->assertEquals( $expected['disp'], $instance->hasDisparity() );
-		$this->assertInternalType( $expected['type'], $instance->getDispatcherJob() );
-		$this->assertEquals( $expected['count'], count( $instance->getDispatcherJob() ) );
+		$this->assertEquals( $subject->getTitle(), $instance->getTitle() );
+		$this->assertEquals( $expected['change'], $instance->hasDisparity() );
+
+		// Verify that the Observer was notified
+		$this->assertEquals( $expected['notifier'], $observer->getNotifier() );
 
 	}
 
@@ -123,10 +125,14 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function dataItemDataProvider() {
 
+		$notifier = 'runUpdateDispatcher';
+
+		// Single
 		$subject  = array(
 			$this->newSubject()
 		);
 
+		// Multiple
 		$subjects = array(
 			$this->newSubject(),
 			$this->newSubject(),
@@ -135,15 +141,15 @@ class PropertyDisparityDetectorTest extends SemanticMediaWikiTestCase {
 
 		return array(
 			//  $storeValues, $dataValues, $settings,               $expected
-			array( $subjects, array(),   array( '_PVAL', '_LIST' ), array( 'disp' => true,  'type' => 'array', 'count' => 1 ) ),
-			array( array(),   $subjects, array( '_PVAL', '_LIST' ), array( 'disp' => true,  'type' => 'array', 'count' => 1 ) ),
-			array( $subject,  $subjects, array( '_PVAL', '_LIST' ), array( 'disp' => true,  'type' => 'array', 'count' => 1 ) ),
-			array( $subject,  array(),   array( '_PVAL', '_LIST' ), array( 'disp' => true,  'type' => 'array', 'count' => 1 ) ),
-			array( $subject,  array(),   array( '_PVAL' ),          array( 'disp' => true,  'type' => 'array', 'count' => 1 ) ),
-			array( $subjects, $subjects, array( '_PVAL' ),          array( 'disp' => false, 'type' => 'null',  'count' => 0 ) ),
-			array( $subject,  $subject,  array( '_PVAL' ),          array( 'disp' => false, 'type' => 'null',  'count' => 0 ) ),
-			array( $subjects, $subjects, array( '_PVAL', '_LIST' ), array( 'disp' => true,  'type' => 'array', 'count' => 1 ) ),
-			array( $subject,  $subject,  array( '_PVAL', '_LIST' ), array( 'disp' => true,  'type' => 'array', 'count' => 1 ) )
+			array( $subjects, array(),   array( '_PVAL', '_LIST' ), array( 'change' => true,  'notifier' => $notifier ) ),
+			array( array(),   $subjects, array( '_PVAL', '_LIST' ), array( 'change' => true,  'notifier' => $notifier ) ),
+			array( $subject,  $subjects, array( '_PVAL', '_LIST' ), array( 'change' => true,  'notifier' => $notifier ) ),
+			array( $subject,  array(),   array( '_PVAL', '_LIST' ), array( 'change' => true,  'notifier' => $notifier ) ),
+			array( $subject,  array(),   array( '_PVAL'          ), array( 'change' => true,  'notifier' => $notifier ) ),
+			array( $subjects, $subjects, array( '_PVAL'          ), array( 'change' => false, 'notifier' => null      ) ),
+			array( $subject,  $subject,  array( '_PVAL'          ), array( 'change' => false, 'notifier' => null      ) ),
+			array( $subjects, $subjects, array( '_PVAL', '_LIST' ), array( 'change' => true,  'notifier' => $notifier ) ),
+			array( $subject,  $subject,  array( '_PVAL', '_LIST' ), array( 'change' => true,  'notifier' => $notifier ) )
 		);
 	}
 

@@ -644,3 +644,15 @@ $smwgPropertyLowUsageThreshold = 5;
 ##
 $smwgPropertyZeroCountDisplay = true;
 ##
+
+###
+# Support of deferred update of properties using the JobQueue/CacheStore
+# to lighten performance degradation when changing properties
+#
+# In order to enable deferred updates, it requires the CacheStore
+# (e.g smwgCacheType) to be enabled and PropertyPageIdMapper to be present.
+#
+# @since 1.9
+##
+$smwgDeferredPropertyUpdate = false;
+##

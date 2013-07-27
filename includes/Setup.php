@@ -166,6 +166,8 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . '/utilities/MessageReporter.php';
 	$wgAutoloadClasses['SMW\RedirectBuilder']           = $incDir . '/utilities/RedirectBuilder.php';
 	$wgAutoloadClasses['SMW\ParserOutputGenerator']     = $incDir . '/utilities/ParserOutputGenerator.php';
+	$wgAutoloadClasses['SMW\ChangeObserver']            = $incDir . '/utilities/ChangeObserver.php';
+	$wgAutoloadClasses['SMW\TitleProvider']             = $incDir . '/utilities/MediaWikiInterfaceProvider.php';
 
 	$wgAutoloadClasses['SMW\Publisher']                 = $incDir . '/utilities/ObserverInterfaceProvider.php';
 	$wgAutoloadClasses['SMW\Subject']                   = $incDir . '/utilities/ObserverInterfaceProvider.php';
@@ -424,6 +426,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Test\MockObjectBuilder']             = $testsDir . 'MockObjectBuilder.php';
 	$wgAutoloadClasses['SMW\Test\SpecialPageTestCase']           = $testsDir . 'SpecialPageTestCase.php';
 	$wgAutoloadClasses['SMW\Test\CompatibilityTestCase']         = $testsDir . 'CompatibilityTestCase.php';
+	$wgAutoloadClasses['SMW\Test\MockChangeObserver']            = $testsDir . 'MockChangeObserver.php';
 
 	// Jobs
 	$wgAutoloadClasses['SMW\JobBase']   = $smwgIP . 'includes/jobs/JobBase.php';

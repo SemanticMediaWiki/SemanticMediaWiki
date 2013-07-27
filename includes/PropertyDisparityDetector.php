@@ -2,9 +2,6 @@
 
 namespace SMW;
 
-use Title;
-use Job;
-
 /**
  * Class that detects a disparity between the property object and its store data
  *
@@ -37,7 +34,7 @@ use Job;
  *
  * @ingroup SMW
  */
-class PropertyDisparityDetector {
+class PropertyDisparityDetector extends Subject implements TitleProvider {
 
 	/** @var Store */
 	protected $store;
@@ -48,8 +45,8 @@ class PropertyDisparityDetector {
 	/** @var Settings */
 	protected $settings;
 
-	/** @var Job */
-	protected $dispatcherJob = null;
+	/** @var boolean */
+	protected $hasDisparity = false;
 
 	/**
 	 * @since 1.9
@@ -65,14 +62,14 @@ class PropertyDisparityDetector {
 	}
 
 	/**
-	 * Returns update jobs as a result of the data comparison
+	 * Returns a Title object
 	 *
 	 * @since 1.9
 	 *
-	 * @return PropertyDisparityDispatcherJob|null
+	 * @return Title
 	 */
-	public function getDispatcherJob() {
-		return $this->dispatcherJob;
+	public function getTitle() {
+		return $this->semanticData->getSubject()->getTitle();
 	}
 
 	/**
@@ -83,7 +80,7 @@ class PropertyDisparityDetector {
 	 * @return boolean
 	 */
 	public function hasDisparity() {
-		return $this->getDispatcherJob() !== null;
+		return $this->hasDisparity;
 	}
 
 	/**
@@ -179,11 +176,9 @@ class PropertyDisparityDetector {
 	 * @param boolean $addJob
 	 */
 	protected function addDispatchJob( $addJob = true ) {
-		if ( $addJob && $this->dispatcherJob === null ) {
-			$this->dispatcherJob[] = new PropertySubjectsUpdateDispatcherJob(
-				$this->semanticData->getSubject()->getTitle(),
-				array( 'store' => get_class( $this->store ) )
-			);
+		if ( $addJob && !$this->hasDisparity ) {
+			$this->setState( 'runUpdateDispatcher' );
+			$this->hasDisparity = true;
 		}
 	}
 
