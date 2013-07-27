@@ -25,6 +25,17 @@ die("Not a valid entry point\n");
  */
 
 /**
+ * This group contains members that are related to hooks, hook events, and
+ * hook registrations
+ *
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks
+ * @see https://semantic-mediawiki.org/wiki/Hooks‎
+ *
+ * @defgroup Hook Hook
+ * @ingroup SMW
+ */
+
+/**
  * This group contains members that are related to accessors
  *
  * @defgroup Accessor Accessor
