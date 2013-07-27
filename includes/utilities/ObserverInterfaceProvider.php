@@ -139,7 +139,7 @@ abstract class Subject implements Publisher {
 	 * @param Subscriber $observer
 	 */
 	public function attach( Subscriber $observer ) {
-		if ( $this->observers === array() || !isset( $this->observers[$observer] ) ) {
+		if ( $this->contains( $observer ) === null ) {
 			$this->observers[] = $observer;
 		}
 	}
@@ -150,8 +150,9 @@ abstract class Subject implements Publisher {
 	 * @param Subscriber $observer
 	 */
 	public function detach( Subscriber $observer ) {
-		if ( $this->observers !== array() && isset( $this->observers[$observer] ) ) {
-			unset( $this->observers[$observer] );
+		$index = $this->contains( $observer );
+		if ( $index !== null ) {
+			unset( $this->observers[$index] );
 		}
 	}
 
@@ -186,11 +187,8 @@ abstract class Subject implements Publisher {
 	 * @since  1.9
 	 */
 	public function notify() {
-
-		if ( $this->observers !== array() ) {
-			foreach ( $this->observers as $observer ) {
-				$observer->update( $this );
-			}
+		foreach ( $this->observers as $observer ) {
+			$observer->update( $this );
 		}
 	}
 
@@ -199,10 +197,28 @@ abstract class Subject implements Publisher {
 	 *
 	 * @since 1.9
 	 *
-	 * @return arrau
+	 * @return array
 	 */
 	public function getObservers() {
 		return $this->observers;
+	}
+
+	/**
+	 * Returns an index (or null) of a registered Observer
+	 *
+	 * @since  1.9
+	 *
+	 * @param Subscriber $observer
+	 *
+	 * @return integer|null
+	 */
+	protected function contains( Subscriber $observer ) {
+		foreach ( $this->observers as $key => $obs ) {
+			if ( $obs === $observer ) {
+				return $key;
+			}
+		}
+		return null;
 	}
 
 }

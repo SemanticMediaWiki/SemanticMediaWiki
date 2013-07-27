@@ -79,11 +79,13 @@ class JobBaseTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testGetSetStore() {
 
-		$instance = $this->getInstance();
+		$instance  = $this->getInstance();
+		$mockStore = $this->newMockObject()->getMockStore();
 
 		$this->assertInstanceOf( '\SMW\Store', $instance->getStore() );
-		$instance->setStore( $this->newMockObject()->getMockStore() );
+		$this->assertInstanceOf( $this->getClass(), $instance->setStore( $mockStore ) );
 		$this->assertInstanceOf( '\SMW\Store', $instance->getStore() );
+		$this->assertEquals( $mockStore, $instance->getStore() );
 	}
 
 	/**
@@ -95,10 +97,13 @@ class JobBaseTest extends SemanticMediaWikiTestCase {
 	public function testGetSetSettings() {
 
 		$instance = $this->getInstance();
+		$settings = $this->getSettings( array( 'test' => 'lula' ) );
 
 		$this->assertInstanceOf( '\SMW\Settings', $instance->getSettings() );
-		$instance->setSettings( $this->getSettings() );
+		$this->assertInstanceOf( $this->getClass(), $instance->setSettings( $settings ) );
 		$this->assertInstanceOf( '\SMW\Settings', $instance->getSettings() );
+		$this->assertEquals( $settings, $instance->getSettings() );
+
 	}
 
 	/**

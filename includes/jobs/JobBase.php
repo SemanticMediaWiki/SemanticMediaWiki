@@ -49,7 +49,7 @@ abstract class JobBase extends Job {
 	/**
 	 * Returns invoked Title object
 	 *
-	 * Apparently Jobs::getTitle() in MW 1.19 does not exists
+	 * Apparently Job::getTitle() in MW 1.19 does not exists
 	 *
 	 * @since  1.9
 	 *
@@ -68,6 +68,7 @@ abstract class JobBase extends Job {
 	 */
 	public function setStore( Store $store ) {
 		$this->store = $store;
+		return $this;
 	}
 
 	/**
@@ -95,6 +96,7 @@ abstract class JobBase extends Job {
 	 */
 	public function setSettings( Settings $settings ) {
 		$this->settings = $settings;
+		return $this;
 	}
 
 	/**
