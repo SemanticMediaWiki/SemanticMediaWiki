@@ -165,7 +165,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ArrayAccessor']             = $incDir . '/utilities/ArrayAccessor.php';
 	$wgAutoloadClasses['SMW\MessageReporter']           = $incDir . '/utilities/MessageReporter.php';
 	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . '/utilities/MessageReporter.php';
-	$wgAutoloadClasses['SMW\ParserOutputGenerator']     = $incDir . '/utilities/ParserOutputGenerator.php';
+	$wgAutoloadClasses['SMW\ParserOutputGenerator']     = $incDir . '/utilities/ContentParser.php';
 	$wgAutoloadClasses['SMW\ChangeObserver']            = $incDir . '/utilities/ChangeObserver.php';
 	$wgAutoloadClasses['SMW\TitleProvider']             = $incDir . '/utilities/MediaWikiInterfaceProvider.php';
 
