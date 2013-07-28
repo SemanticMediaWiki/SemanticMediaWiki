@@ -8,7 +8,7 @@ use User;
 use Title;
 
 /**
- * Produces a ParserOutput object
+ * Fetch page content
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,11 +34,13 @@ use Title;
  */
 
 /**
- * Produces a ParserOutput object
+ * Fetch page content either by parsing an invoked text compenent, reparsing
+ * a text revision, or accessing the ContentHandler to produce a ParserOutput
+ * object
  *
- * @ingroup Generator
+ * @ingroup SMW
  */
-class ParserOutputGenerator {
+class ContentParser {
 
 	/** @var Title */
 	protected $title;
@@ -54,6 +56,9 @@ class ParserOutputGenerator {
 
 	/** @var Parser */
 	protected $parser = null;
+
+	/** @var string */
+	protected $text = null;
 
 	/** @var array */
 	protected $errors = array();
@@ -79,6 +84,17 @@ class ParserOutputGenerator {
 	}
 
 	/**
+	 * Returns Title object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Title
+	 */
+	public function getTitel() {
+		return $this->title;
+	}
+
+	/**
 	 * Returns ParserOutput object
 	 *
 	 * @since 1.9
@@ -90,58 +106,152 @@ class ParserOutputGenerator {
 	}
 
 	/**
-	 * Generates an object from the page content
+	 * Invokes text to be parsed
 	 *
 	 * @since 1.9
 	 *
-	 * @return ParserOutputGenerator
+	 * @return ContentParser|null
 	 */
-	public function generate() {
+	public function setText( $text ) {
+		$this->text = $text;
+		return $this;
+	}
 
-		$this->buildFromText();
+	/**
+	 * Generates or fetches output content from the appropriate source
+	 *
+	 * @since 1.9
+	 *
+	 * @return ContentParser
+	 */
+	public function parse() {
+
+		if ( $this->text !== null ) {
+			$this->parseText();
+		} else {
 
 		//	if ( class_exists( 'ContentHandler') ) {
-		//		$this->buildFromContent();
-		//	}
+		//		$this->fetchFromContentHandler(); // Add unit test
+		//	} else {}
+			$this->fetchFromParser();
+		}
 
 		return $this;
 	}
 
 	/**
-	 * Generates an object from reparsing the page content
+	 * Parsing text
 	 *
 	 * @since 1.9
 	 */
-	protected function buildFromText() {
+	protected function parseText() {
 		Profiler::In( __METHOD__ );
 
-		// For now nothing can be done to get rid of this global
-		if ( $this->parser === null ) {
-			$this->parser = $GLOBALS['wgParser'];
+		$this->parserOutput = $this->getParser()->parse( $this->text, $this->getTitel(), $this->getParserOptions() );
+
+		Profiler::Out( __METHOD__ );
+	}
+
+	/**
+	 * Using the content handler to return a ParserOutput object
+	 *
+	 * @since 1.9
+	 */
+	protected function fetchFromContentHandler() {
+		Profiler::In( __METHOD__ );
+
+		$content = $this->getRevision()->getContent( Revision::RAW );
+
+		if ( !$content ) {
+			// if there is no content, pretend the content is empty
+			$content = $this->getRevision()->getContentHandler()->makeEmptyContent();
 		}
 
-		if ( $this->revision === null ) {
-			$this->revision = Revision::newFromTitle( $this->title );
-		}
+		// Revision ID must be passed to the parser output to get revision variables correct
+		$this->parserOutput = $content->getParserOutput( $this->getTitle(), $getRevision()->getId(), null, false );
 
-		if ( $this->revision !== null && $this->parserOptions === null ) {
-			$this->parserOptions = new ParserOptions( User::newFromId( $this->revision->getUser() ) );
-		}
+		Profiler::Out( __METHOD__ );
+	}
 
-		if ( $this->revision !== null && $this->parserOptions !== null ) {
-			$this->parserOutput = $this->parser->parse(
-				$this->revision->getText(),
-				$this->title,
-				$this->parserOptions,
+	/**
+	 * Reparsing page content from a revision
+	 *
+	 * @since 1.9
+	 */
+	protected function fetchFromParser() {
+		Profiler::In( __METHOD__ );
+
+		if ( $this->getRevision() !== null ) {
+			$this->parserOutput = $this->getParser()->parse(
+				$this->getRevision()->getText(),
+				$this->getTitel(),
+				$this->getParserOptions(),
 				true,
 				true,
-				$this->revision->getID()
+				$this->getRevision()->getID()
 			);
 		} else {
-			$this->errors = array( __METHOD__ . " No revision available for {$this->title->getPrefixedDBkey()}" );
+			$this->errors = array( __METHOD__ . " No revision available for {$this->getTitel()->getPrefixedDBkey()}" );
 		}
 
 		Profiler::Out( __METHOD__ );
 	}
 
+	/**
+	 * Returns ParserOptions object
+	 *
+	 * @since 1.9
+	 *
+	 * @return ParserOptions
+	 */
+	protected function getParserOptions() {
+
+		if ( $this->parserOptions === null ) {
+			if ( $this->revision === null ) {
+				$this->parserOptions = new ParserOptions();
+			} else {
+				$this->parserOptions = new ParserOptions( User::newFromId( $this->revision->getUser() ) );
+			}
+		}
+
+		return $this->parserOptions;
+	}
+
+	/**
+	 * Returns Revision object
+	 *
+	 * @note Revision::READ_NORMAL does not exists in MW 1.19
+	 *
+	 * @since 1.9
+	 *
+	 * @return Revision
+	 */
+	protected function getRevision() {
+
+		if ( $this->revision === null ) {
+			if ( class_exists( 'ContentHandler') ) {
+				$this->revision = Revision::newFromTitle( $this->getTitel(), false, Revision::READ_NORMAL );
+			} else{
+				$this->revision = Revision::newFromTitle( $this->getTitel() );
+			}
+		}
+
+		return $this->revision;
+	}
+
+	/**
+	 * Returns Parser object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Parser
+	 */
+	protected function getParser() {
+
+		if ( $this->parser === null ) {
+			$this->parser = $GLOBALS['wgParser'];
+		}
+
+		return $this->parser;
+	}
 }

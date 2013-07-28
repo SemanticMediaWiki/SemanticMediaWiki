@@ -5,6 +5,7 @@ namespace SMW\Test;
 use SMW\UpdateJob;
 
 use Title;
+
 /**
  * Tests for the UpdateJob class
  *
@@ -91,9 +92,9 @@ class UpdateJobTest extends ParserTestCase {
 		$instance  = $this->getInstance( $test['title'] );
 		$instance->setStore( $this->newMockObject()->getMockStore() );
 
-		$outputGenerator = $reflector->getProperty( 'outputGenerator' );
-		$outputGenerator->setAccessible( true );
-		$outputGenerator->setValue( $instance, $test['outputGenerator'] );
+		$contentParser = $reflector->getProperty( 'contentParser' );
+		$contentParser->setAccessible( true );
+		$contentParser->setValue( $instance, $test['contentParser'] );
 
 		$this->assertEquals( $expected['result'], $instance->run() );
 	}
@@ -115,11 +116,11 @@ class UpdateJobTest extends ParserTestCase {
 
 		$provider[] = array(
 			array(
-				'title'     => $title,
-				'outputGenerator' => null
+				'title'         => $title,
+				'contentParser' => null
 			),
 			array(
-				'result'    => true
+				'result'        => true
 			)
 		);
 
@@ -129,17 +130,17 @@ class UpdateJobTest extends ParserTestCase {
 			'exists'   => true
 		) )->getMockTitle();
 
-		$outputGenerator = $this->newMockobject( array(
+		$contentParser = $this->newMockobject( array(
 			'getOutput' => null
-		) )->getMockParserOutputGenerator();
+		) )->getMockContentParser();
 
 		$provider[] = array(
 			array(
-				'title'    => $title,
-				'outputGenerator' => $outputGenerator
+				'title'         => $title,
+				'contentParser' => $contentParser
 			),
 			array(
-				'result'   => false
+				'result'        => false
 			)
 		);
 
@@ -149,17 +150,17 @@ class UpdateJobTest extends ParserTestCase {
 			'exists'   => true
 		) )->getMockTitle();
 
-		$outputGenerator = $this->newMockobject( array(
+		$contentParser = $this->newMockobject( array(
 			'getOutput' => $this->newMockobject()->getMockParserOutput()
-		) )->getMockParserOutputGenerator();
+		) )->getMockContentParser();
 
 		$provider[] = array(
 			array(
-				'title'    => $title,
-				'outputGenerator' => $outputGenerator
+				'title'         => $title,
+				'contentParser' => $contentParser
 			),
 			array(
-				'result'      => true
+				'result'        => true
 			)
 		);
 

@@ -198,6 +198,19 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return Settings
 	 */
 	protected function getSettings( array $settings = array() ) {
+		return $this->newSettings( $settings );
+	}
+
+	/**
+	 * Helper method that returns a Settings object
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $settings
+	 *
+	 * @return Settings
+	 */
+	protected function newSettings( array $settings = array() ) {
 		return Settings::newFromArray( $settings );
 	}
 
@@ -210,8 +223,22 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return string
 	 */
-	protected function getRandomString( $length = 10 ) {
-		return substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
+	protected function getRandomString( $length = 10, $prefix = null ) {
+		return $this->newRandomString( $length, $prefix );
+	}
+
+	/**
+	 * Helper method that returns a random string
+	 *
+	 * @since 1.9
+	 *
+	 * @param $length
+	 * @param $prefix identify a specific random string during testing
+	 *
+	 * @return string
+	 */
+	protected function newRandomString( $length = 10, $prefix = null ) {
+		return $prefix . ( $prefix ? '-' : '' ) . substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
 	}
 
 	/**

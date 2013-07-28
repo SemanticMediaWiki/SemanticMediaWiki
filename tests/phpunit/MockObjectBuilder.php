@@ -155,27 +155,27 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Returns a ParserOutputGenerator object
+	 * Returns a ContentParser object
 	 *
 	 * @since 1.9
 	 *
-	 * @return ParserOutputGenerator
+	 * @return ContentParser
 	 */
-	public function getMockParserOutputGenerator() {
+	public function getMockContentParser() {
 
-		$outputGenerator = $this->getMockBuilder( '\SMW\ParserOutputGenerator' )
+		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$outputGenerator->expects( $this->any() )
+		$contentParser->expects( $this->any() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $this->set( 'getOutput', $this->getMockParserOutput() ) ) );
 
-		$outputGenerator->expects( $this->any() )
+		$contentParser->expects( $this->any() )
 			->method( 'getErrors' )
 			->will( $this->returnValue( $this->set( 'getErrors', array() ) ) );
 
-		return $outputGenerator;
+		return $contentParser;
 	}
 
 	/**

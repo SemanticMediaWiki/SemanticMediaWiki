@@ -55,8 +55,8 @@ use Job;
  */
 class UpdateJob extends JobBase {
 
-	/** @var ParserOutputGenerator */
-	protected $outputGenerator = null;
+	/** @var ContentParser */
+	protected $contentParser = null;
 
 	/**
 	 * @since  1.9
@@ -86,14 +86,14 @@ class UpdateJob extends JobBase {
 			return true;
 		}
 
-		if ( !$this->getOutputGenerator()->getOutput() instanceof ParserOutput ) {
-			$this->setLastError( $this->getOutputGenerator()->getErrors() );
+		if ( !$this->getContentParser()->getOutput() instanceof ParserOutput ) {
+			$this->setLastError( $this->getContentParser()->getErrors() );
 			return false;
 		}
 
 		Profiler::In( __METHOD__ . '-update' );
 
-		$parserData = new ParserData( $this->getTitle(), $this->getOutputGenerator()->getOutput() );
+		$parserData = new ParserData( $this->getTitle(), $this->getContentParser()->getOutput() );
 		$parserData->disableUpdateJobs();
 		$parserData->updateStore();
 
@@ -104,20 +104,20 @@ class UpdateJob extends JobBase {
 	}
 
 	/**
-	 * Returns a ParserOutputGenerator object
+	 * Returns a ContentParser object
 	 *
 	 * @since 1.9
 	 *
-	 * @return ParserOutputGenerator
+	 * @return ContentParser
 	 */
-	protected function getOutputGenerator() {
+	protected function getContentParser() {
 
-		if ( $this->outputGenerator === null ) {
-			$this->outputGenerator = new ParserOutputGenerator( $this->title );
-			$this->outputGenerator->generate();
+		if ( $this->contentParser === null ) {
+			$this->contentParser = new ContentParser( $this->title );
+			$this->contentParser->parse();
 		}
 
-		return $this->outputGenerator;
+		return $this->contentParser;
 	}
 
 	/**
