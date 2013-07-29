@@ -12632,7 +12632,7 @@ Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, 
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
 	'smw_smwadmin_announcedocu' => 'O MediaWiki Semântico tem um serviço na internet \'\'(web service)\'\' para anunciar novas wikis semânticas.
-Este é usado para manter uma lista de sites públicos que usam o MediaWiki Semântico, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projecto MediaWiki Semântico</a> a obter uma ideia geral das utilizações típicas do MediaWiki Semântico.
+Este é usado para manter uma lista de sites públicos que usam o MediaWiki Semântico, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projeto MediaWiki Semântico</a> a obter uma ideia geral das utilizações típicas do MediaWiki Semântico.
 Veja a página inicial do MediaWiki Semântico para <a href="http://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
 	'smw_smwadmin_announcebutton' => 'Clique o seguinte botão para enviar a URL da sua wiki ao serviço.
 O serviço não registará wikis que não estejam publicamente acessíveis e apenas armazenará informação publicamente acessível.',
@@ -14127,6 +14127,7 @@ Ker je bilo le malo rezultatov, so prikazane strani s približnim ujemanjem.',
 );
 
 /** Serbian (Cyrillic script) (српски (ћирилица)‎)
+ * @author Milicevic01
  * @author Rancher
  * @author Sasa Stefanovic
  * @author Slaven Kosanovic
@@ -14319,7 +14320,7 @@ $messages['sr-ec'] = array(
 Испод је приказано да ли је ажурирање у току, а то вам омогућава да започнете или зауставите доградње (осим ако ту могућност није искључио администратор).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Једно ажурирање је већ у току.</strong>
 Нормално је да ажурирање напредује споро, пошто се само освежавају мали делови података сваки пут када корисник приступи викију.
-Да би се ово ажурирање брже завршило, можете покренути скрипту за одржавање Медијавикија <code>runJobs.php</code> (користите опцију <code>--maxjobs 1000</code> за рестрикцију броја ажурирања у једном пакету).
+Да би се ово ажурирање брже завршило, можете покренути скрипту за одржавање Медијавикија <code>runJobs.php</code> (користите опцију <code>--maxjobs 1000</code> за ограничење броја ажурирања у једном пакету).
 Процена напредовања тренутног ажурирања:',
 	'smw_smwadmin_datarefreshbutton' => 'Почни ажурирање података',
 	'smw_smwadmin_datarefreshstop' => 'Заустави ово ажурирање',
@@ -14341,6 +14342,7 @@ $messages['sr-ec'] = array(
 /** Serbian (Latin script) (srpski (latinica)‎)
  * @author Liangent
  * @author Michaello
+ * @author Milicevic01
  * @author Rancher
  * @author Slaven Kosanovic
  * @author Sociologist
@@ -14531,7 +14533,7 @@ Ažuriranje će se obaviti stranicu po stranicu i neće se odmah završiti.
 Sledeći prikaz služi za nadgledanje ažuriranja u progresu i omogućava vam da ih pokrenete ili obustavite (osim ako administrator sajta nije isključio ovu mogućnost).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Jedno ažuriranje je već u toku.</strong>
 Normalno je da ažuriranje napreduje sporo, pošto se samo osvežavaju mali delovi podataka svaki put kada korisnik pristupi vikiju.
-Da bi se ovo ažuriranje brže završilo, možete pokrenuti skriptu za održavanje Medijavikija <code>runJobs.php</code> (koristite opciju <code>--maxjobs 1000</code> za restrikciju broja ažuriranja u jednom paketu).
+Da bi se ovo ažuriranje brže završilo, možete pokrenuti skriptu za održavanje Medijavikija <code>runJobs.php</code> (koristite opciju <code>--maxjobs 1000</code> za ograničenje broja ažuriranja u jednom paketu).
 Procena napredovanja trenutnog ažuriranja:',
 	'smw_smwadmin_datarefreshbutton' => 'Počni ažuriranje podataka',
 	'smw_smwadmin_datarefreshstop' => 'Zaustavi ovo ažuriranje',
