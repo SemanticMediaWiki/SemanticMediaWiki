@@ -345,7 +345,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Store\PropertyStatisticsRebuilder']	= $stoDir . 'PropertyStatisticsRebuilder.php';
 	$wgAutoloadClasses['SMW\Store\PropertyStatisticsStore']     = $stoDir . 'PropertyStatisticsStore.php';
 	$wgAutoloadClasses['SMW\StoreFactory']			= $stoDir . 'StoreFactory.php';
-	$wgAutoloadClasses['SMW\Store\Collectible']     = $stoDir . 'Collectible.php';
+	$wgAutoloadClasses['SMW\Store\Collectible']     = $stoDir . 'Collector.php';
 	$wgAutoloadClasses['SMW\Store\Collector']       = $stoDir . 'Collector.php';
 
 	$wgAutoloadClasses['SMWQueryResult']            = $stoDir . 'SMW_QueryResult.php';
