@@ -235,7 +235,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWListResultPrinter']      = $qpDir . 'ListResultPrinter.php';
 	$wgAutoloadClasses['SMW\ListResultPrinter']     = $qpDir . 'ListResultPrinter.php';
 	$wgAutoloadClasses['SMW\FeedResultPrinter']     = $qpDir . 'FeedResultPrinter.php'; // 1.9
-	$wgAutoloadClasses['SMWJSONResultPrinter']      = $qpDir . 'JSONResultPrinter.php';
+	$wgAutoloadClasses['SMWJsonResultPrinter']      = $qpDir . 'JsonResultPrinter.php';
 	$wgAutoloadClasses['SMW\JsonResultPrinter']     = $qpDir . 'JsonResultPrinter.php'; // 1.9
 	$wgAutoloadClasses['SMWAggregatablePrinter']    = $qpDir . 'AggregatablePrinter.php';
 	$wgAutoloadClasses['SMW\AggregatablePrinter']   = $qpDir . 'AggregatablePrinter.php'; // 1.9
