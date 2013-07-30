@@ -169,7 +169,7 @@ class BasePropertyAnnotator extends Subject {
 					// Expensive getFirstRevision() initiates a revision table
 					// read and is not cached
 					$dataItem = SMWDITime::newFromTimestamp(
-						$this->semanticData->getSubject()->getTitle()->getFirstRevision()->getTimestamp()
+						$wikiPage->getTitle()->getFirstRevision()->getTimestamp()
 					);
 					break;
 				case DIProperty::TYPE_NEW_PAGE :

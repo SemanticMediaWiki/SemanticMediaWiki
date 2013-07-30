@@ -317,23 +317,25 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		);
 
 		// TYPE_CREATION_DATE
+		$title = $this->newMockObject( array(
+			'getDBkey'         => 'Lula',
+			'getNamespace'     => NS_MAIN,
+			'getFirstRevision' => $this->newMockObject( array(
+				'getTimestamp' => 1272508903
+			) )->getMockRevision()
+		) )->getMockTitle();
+
 		$subject = $this->newMockObject( array(
-			'getTitle' => $this->newMockObject( array(
-				'getDBkey'         => 'Lula',
-				'getNamespace'     => NS_MAIN,
-				'getFirstRevision' => $this->newMockObject( array(
-					'getTimestamp' => 1272508903
-				) )->getMockRevision()
-			) )->getMockTitle(),
+			'getTitle' => $this->newMockObject()->getMockTitle()
 		) )->getMockDIWikiPage();
 
 		$provider[] = array(
 			array(
-				'subject'    => $subject,
+				'subject'  => $subject,
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_CREATION_DATE )
 				),
-				'wikipage' => array(),
+				'wikipage' => array( 'getTitle' => $title ),
 				'revision' => array(),
 				'user'     => array()
 			),

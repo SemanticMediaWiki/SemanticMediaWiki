@@ -212,6 +212,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->set( 'getTimestamp' ) ) );
 
 		$wikiPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->set( 'getTitle' ) ) );
+
+		$wikiPage->expects( $this->any() )
 			->method( 'getRevision' )
 			->will( $this->returnValue( $this->set( 'getRevision' ) ) );
 
