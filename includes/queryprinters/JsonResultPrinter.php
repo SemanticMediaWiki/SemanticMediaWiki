@@ -64,7 +64,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 * @return string
 	 */
 	public function getMimeType( SMWQueryResult $queryResult ) {
-		return 'application/JSON';
+		return 'application/json';
 	}
 
 	/**
@@ -161,9 +161,9 @@ class JsonResultPrinter extends FileExportPrinter {
 }
 
 /**
- * SMWJSONResultPrinter
+ * SMWJsonResultPrinter
  * @codeCoverageIgnore
  *
  * @deprecated since SMW 1.9
  */
-class_alias( 'SMW\JsonResultPrinter', 'SMWJSONResultPrinter' );
+class_alias( 'SMW\JsonResultPrinter', 'SMWJsonResultPrinter' );
