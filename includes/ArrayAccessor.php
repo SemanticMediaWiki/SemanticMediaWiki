@@ -6,7 +6,7 @@ use ArrayObject;
 use InvalidArgumentException;
 
 /**
- * Interface specifying access to an object
+ * This class enables access to an arbitrary array
  *
  * @file
  *
@@ -15,56 +15,6 @@ use InvalidArgumentException;
  *
  * @author mwjames
  */
-interface Accessor {
-
-	/**
-	 * Returns if a specific key can be accessed
-	 *
-	 * @since 1.9
-	 *
-	 * @param  mixed $key specific key
-	 *
-	 * @return boolean
-	 */
-	public function has( $key );
-
-	/**
-	 * Returns a value for a specific key
-	 *
-	 * @since 1.9
-	 *
-	 * @param  mixed $key specific key
-	 *
-	 * @return mixed
-	 */
-	public function get( $key );
-
-	/**
-	 * Sets a value for a specific key
-	 *
-	 * @since 1.9
-	 *
-	 * @param  mixed $key
-	 * @param  mixed $value
-	 *
-	 * @return boolean
-	 */
-	public function set( $key, $value );
-
-}
-
-interface Arrayable {
-
-	/**
-	 * Returns an object as array
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public function toArray();
-
-}
 
 /**
  * This class enables access to an arbitrary array

@@ -14,24 +14,6 @@ namespace SMW;
  */
 
 /**
- * This interface is responsible for generating an id
- *
- * @ingroup Utility
- */
-interface IdGenerator {
-
-	/**
-	 * Generates an id
-	 *
-	 * @since 1.9
-	 *
-	 * @return string
-	 */
-	public function generateId();
-
-}
-
-/**
  * This class is responsible for generating a Hash Id
  *
  * @ingroup Utility

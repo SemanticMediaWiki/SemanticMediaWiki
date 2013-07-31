@@ -22,7 +22,7 @@ namespace SMW\Test;
  * @group SMW
  * @group SMWExtension
  */
-class ObserverInterfaceTest extends SemanticMediaWikiTestCase {
+class ObserverTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested

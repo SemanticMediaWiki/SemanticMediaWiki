@@ -12,7 +12,6 @@ namespace SMW;
  *
  * @author mwjames
  */
-interface HookBase extends Cacheable, Configurable, StoreAccess {}
 
 /**
  * MediaWikiHook base class

@@ -145,41 +145,38 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\PropertyChangeNotifier']    = $incDir . 'PropertyChangeNotifier.php';
 	$wgAutoloadClasses['SMW\BasePropertyAnnotator']     = $incDir . 'BasePropertyAnnotator.php';
 	$wgAutoloadClasses['SMW\RedirectPropertyAnnotator'] = $incDir . 'RedirectPropertyAnnotator.php';
+	$wgAutoloadClasses['SMW\Subobject']                 = $incDir . 'Subobject.php';
+	$wgAutoloadClasses['SMW\RecurringEvents']           = $incDir . 'RecurringEvents.php';
+	$wgAutoloadClasses['SMW\Settings']                  = $incDir . 'Settings.php';
+	$wgAutoloadClasses['SMW\NamespaceExaminer']         = $incDir . 'NamespaceExaminer.php';
+	$wgAutoloadClasses['SMW\Profiler']                  = $incDir . 'Profiler.php';
+	$wgAutoloadClasses['SMW\IdGenerator']               = $incDir . 'IdGenerator.php';
+	$wgAutoloadClasses['SMW\HashIdGenerator']           = $incDir . 'HashIdGenerator.php';
+	$wgAutoloadClasses['SMW\Accessor']                  = $incDir . 'Accessor.php';
+	$wgAutoloadClasses['SMW\Arrayable']                 = $incDir . 'Arrayable.php';
+	$wgAutoloadClasses['SMW\ArrayAccessor']             = $incDir . 'ArrayAccessor.php';
+	$wgAutoloadClasses['SMW\MessageReporter']           = $incDir . 'MessageReporter.php';
+	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . 'MessageReporter.php';
+	$wgAutoloadClasses['SMW\ContentParser']             = $incDir . 'ContentParser.php';
+	$wgAutoloadClasses['SMW\ChangeObserver']            = $incDir . 'ChangeObserver.php';
+	$wgAutoloadClasses['SMW\TitleProvider']             = $incDir . 'TitleProvider.php';
 
-	$wgAutoloadClasses['SMW\Subobject']             = $incDir . 'Subobject.php';
-	$wgAutoloadClasses['SMW\RecurringEvents']       = $incDir . 'RecurringEvents.php';
+	$wgAutoloadClasses['SMW\Publisher']                 = $incDir . 'Publisher.php';
+	$wgAutoloadClasses['SMW\Subject']                   = $incDir . 'Subject.php';
+	$wgAutoloadClasses['SMW\Observer']                  = $incDir . 'Observer.php';
+	$wgAutoloadClasses['SMW\Subscriber']                = $incDir . 'Subscriber.php';
 
-	$wgAutoloadClasses['SMW\Settings']              = $incDir . 'Settings.php';
+	$wgAutoloadClasses['SMW\Cacheable']                 = $incDir . 'Cacheable.php';
+	$wgAutoloadClasses['SMW\Configurable']              = $incDir . 'Configurable.php';
+	$wgAutoloadClasses['SMW\StoreAccess']               = $incDir . 'StoreAccess.php';
+
 
 	$wgAutoloadClasses['SMW\CacheHandler']          = $incDir . '/cache/CacheHandler.php';
 	$wgAutoloadClasses['SMW\ResultCacheMapper']     = $incDir . '/cache/ResultCacheMapper.php';
 	$wgAutoloadClasses['SMW\CacheIdGenerator']      = $incDir . '/cache/CacheIdGenerator.php';
 
-	// Utilities
-	$wgAutoloadClasses['SMW\NamespaceExaminer']         = $incDir . '/utilities/NamespaceExaminer.php';
-	$wgAutoloadClasses['SMW\Profiler']                  = $incDir . '/utilities/Profiler.php';
-	$wgAutoloadClasses['SMW\IdGenerator']               = $incDir . '/utilities/HashIdGenerator.php';
-	$wgAutoloadClasses['SMW\HashIdGenerator']           = $incDir . '/utilities/HashIdGenerator.php';
-	$wgAutoloadClasses['SMW\Accessor']                  = $incDir . '/utilities/ArrayAccessor.php';
-	$wgAutoloadClasses['SMW\Arrayable']                 = $incDir . '/utilities/ArrayAccessor.php';
-	$wgAutoloadClasses['SMW\ArrayAccessor']             = $incDir . '/utilities/ArrayAccessor.php';
-	$wgAutoloadClasses['SMW\MessageReporter']           = $incDir . '/utilities/MessageReporter.php';
-	$wgAutoloadClasses['SMW\ObservableMessageReporter'] = $incDir . '/utilities/MessageReporter.php';
-	$wgAutoloadClasses['SMW\ContentParser']             = $incDir . '/utilities/ContentParser.php';
-	$wgAutoloadClasses['SMW\ChangeObserver']            = $incDir . '/utilities/ChangeObserver.php';
-	$wgAutoloadClasses['SMW\TitleProvider']             = $incDir . '/utilities/MediaWikiInterfaceProvider.php';
-
-	$wgAutoloadClasses['SMW\Publisher']                 = $incDir . '/utilities/ObserverInterfaceProvider.php';
-	$wgAutoloadClasses['SMW\Subject']                   = $incDir . '/utilities/ObserverInterfaceProvider.php';
-	$wgAutoloadClasses['SMW\Observer']                  = $incDir . '/utilities/ObserverInterfaceProvider.php';
-	$wgAutoloadClasses['SMW\Subscriber']                = $incDir . '/utilities/ObserverInterfaceProvider.php';
-
-	$wgAutoloadClasses['SMW\Cacheable']                 = $incDir . '/utilities/BaseInterfaceProvider.php';
-	$wgAutoloadClasses['SMW\Configurable']              = $incDir . '/utilities/BaseInterfaceProvider.php';
-	$wgAutoloadClasses['SMW\StoreAccess']               = $incDir . '/utilities/BaseInterfaceProvider.php';
-
 	// Hooks
-	$wgAutoloadClasses['SMW\HookBase']                  = $incDir . '/hooks/MediaWikiHook.php';
+	$wgAutoloadClasses['SMW\HookBase']                  = $incDir . '/hooks/HookBase.php';
 	$wgAutoloadClasses['SMW\MediaWikiHook']             = $incDir . '/hooks/MediaWikiHook.php';
 	$wgAutoloadClasses['SMW\HooksLoader']               = $incDir . '/hooks/HooksLoader.php';
 	$wgAutoloadClasses['SMW\LinksUpdateConstructed']    = $incDir . '/hooks/LinksUpdateConstructed.php';
