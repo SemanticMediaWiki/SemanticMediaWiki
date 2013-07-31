@@ -36,6 +36,7 @@ use Language;
  */
 
 /**
+ * @covers \SMW\SpecialSemanticStatistics
  * @covers \SMW\SpecialWantedProperties
  * @covers \SMW\SpecialUnusedProperties
  * @covers \SMW\SpecialProperties
@@ -60,7 +61,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @dataProvider getSpecialPageProvider
+	 * @dataProvider specialPageProvider
 	 *
 	 * @param $specialPage
 	 */
@@ -80,7 +81,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test SpecialPageFactory::getLocalNameFor
-	 * @dataProvider getSpecialPageProvider
+	 * @dataProvider specialPageProvider
 	 *
 	 * Test created in response to bug 44191
 	 *
@@ -117,7 +118,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return array
 	 */
-	public function getSpecialPageProvider() {
+	public function specialPageProvider() {
 		$request = new FauxRequest( array(), true );
 		$argLists = array();
 

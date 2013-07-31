@@ -56,6 +56,20 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Helper method that returns a random string
+	 *
+	 * @since 1.9
+	 *
+	 * @param $length
+	 * @param $prefix identify a specific random string during testing
+	 *
+	 * @return string
+	 */
+	protected function newRandomString( $length = 10, $prefix = null ) {
+		return $prefix . ( $prefix ? '-' : '' ) . substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
+	}
+
+	/**
 	 * Sets value
 	 *
 	 * @since 1.9
@@ -92,10 +106,70 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->set( 'getPropertyValues' ) ) );
 
 		$semanticData->expects( $this->any() )
+			->method( 'hasVisibleSpecialProperties' )
+			->will( $this->returnValue( $this->set( 'hasVisibleSpecialProperties' ) ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'hasVisibleProperties' )
+			->will( $this->returnValue( $this->set( 'hasVisibleProperties' ) ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( $this->set( 'getProperties' ) ) );
+
+		$semanticData->expects( $this->any() )
 			->method( 'addPropertyObjectValue' )
 			->will( is_callable( $this->set( 'addPropertyObjectValue' ) ) ? $this->returnCallback( $this->set( 'addPropertyObjectValue' ) ) : $this->returnValue( $this->set( 'addPropertyObjectValue' ) ) );
 
 		return $semanticData;
+	}
+
+	/**
+	 * Returns a ParserData object
+	 *
+	 * @since 1.9
+	 *
+	 * @return ParserData
+	 */
+	public function getMockParserData() {
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserData->expects( $this->any() )
+			->method( 'getData' )
+			->will( $this->returnValue( $this->set( 'getData' ) ) );
+
+		$parserData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $this->set( 'getSubject' ) ) );
+
+		return $parserData;
+	}
+
+	/**
+	 * Returns a Factbox object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Factbox
+	 */
+	public function getMockFactbox() {
+
+		$factbox = $this->getMockBuilder( '\SMW\Factbox' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$factbox->expects( $this->any() )
+			->method( 'isVisible' )
+			->will( $this->returnValue( $this->set( 'isVisible' ) ) );
+
+		$factbox->expects( $this->any() )
+			->method( 'getContent' )
+			->will( $this->returnValue( $this->set( 'getContent' ) ) );
+
+		return $factbox;
 	}
 
 	/**
@@ -190,6 +264,15 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$parserOutput->expects( $this->any() )
+			->method( 'getExtensionData' )
+			->will( $this->returnValue( $this->set( 'getExtensionData' ) ) );
+
+		$parserOutput->expects( $this->any() )
+			->method( 'setExtensionData' )
+			->will( $this->returnValue( $this->set( 'setExtensionData' ) ) );
+
 
 		return $parserOutput;
 	}
@@ -340,6 +423,14 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->set( 'getTitle' ) ) );
 
 		$diWikiPage->expects( $this->any() )
+			->method( 'getDBkey' )
+			->will( $this->returnValue( $this->set( 'getDBkey', $this->newRandomString( 10, 'DIWikiPage-auto-dbkey' ) ) ) );
+
+		$diWikiPage->expects( $this->any() )
+			->method( 'getPrefixedText' )
+			->will( $this->returnValue( $this->set( 'getPrefixedText', $this->newRandomString( 10, 'DIWikiPage-auto-prefixedText' ) ) ) );
+
+		$diWikiPage->expects( $this->any() )
 			->method( 'getDIType' )
 			->will( $this->returnValue( SMWDataItem::TYPE_WIKIPAGE ) );
 
@@ -378,6 +469,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		$property->expects( $this->any() )
 			->method( 'isUserDefined' )
 			->will( $this->returnValue( $this->set( 'isUserDefined' ) ) );
+
+		$property->expects( $this->any() )
+			->method( 'isShown' )
+			->will( $this->returnValue( $this->set( 'isShown' ) ) );
 
 		$property->expects( $this->any() )
 			->method( 'getDiWikiPage' )
@@ -468,6 +563,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->set( 'deleteSubject' ) ) );
 
 		$store->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $this->set( 'getSemanticData' ) ) );
+
+		$store->expects( $this->any() )
 			->method( 'getUnusedPropertiesSpecial' )
 			->will( $this->returnValue( $this->set( 'getUnusedPropertiesSpecial' ) ) );
 
@@ -548,7 +647,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBkey' )
-			->will( $this->returnValue( $this->set( 'getDBkey' ) ) );
+			->will( $this->returnValue( $this->set( 'getDBkey', $this->newRandomString( 10, 'Title-auto-dbkey' ) ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'getInterwiki' )
@@ -584,7 +683,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getPrefixedText' )
-			->will( $this->returnValue( $this->set( 'getPrefixedText' ) ) );
+			->will( $this->returnValue( $this->set( 'getPrefixedText', $this->newRandomString( 10, 'Title-auto-prefixedtext' ) ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
@@ -611,8 +710,20 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	public function getMockSkin() {
 
 		$skin = $this->getMockBuilder( 'Skin' )
-		->disableOriginalConstructor()
-		->getMock();
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->set( 'getTitle' ) ) );
+
+		$skin->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $this->set( 'getOutput' ) ) );
+
+		$skin->expects( $this->any() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $this->set( 'getContext' ) ) );
 
 		return $skin;
 	}
@@ -630,12 +741,16 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
 		$outputPage = $this->getMockBuilder( 'OutputPage' )
 		->disableOriginalConstructor()
-		->setMethods( array( 'getHeadLinksArray' ) )
+//		->setMethods( array( 'getHeadLinksArray' ) )
 		->getMock();
 
 		$outputPage->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->set( 'getTitle' ) ) );
+
+		$outputPage->expects( $this->any() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $this->set( 'getContext' ) ) );
 
 		$outputPage->expects( $this->any() )
 			->method( 'addModules' )

@@ -64,7 +64,21 @@ abstract class ParserTestCase extends SemanticMediaWikiTestCase {
 	 *
 	 * @return Parser
 	 */
-	protected function getParser( Title $title, User $user) {
+	protected function getParser( Title $title, User $user ) {
+		return $this->newParser( $title, $user );
+	}
+
+	/**
+	 * Helper method to create Parser object
+	 *
+	 * @since 1.9
+	 *
+	 * @param Title $title
+	 * @param User $user
+	 *
+	 * @return Parser
+	 */
+	protected function newParser( Title $title, User $user ) {
 		$wikiPage = new WikiPage( $title );
 		$parserOptions = $wikiPage->makeParserOptions( $user );
 

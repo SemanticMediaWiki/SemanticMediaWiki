@@ -89,7 +89,7 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 			'attributes' => array( 'class' => 'smw-sp-concept-docu' )
 		);
 
-		$this->assertTag( $matches, $this->getOutput() );
+		$this->assertTag( $matches, $this->getText() );
 	}
 
 	/**

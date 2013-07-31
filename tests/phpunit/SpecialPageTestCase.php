@@ -2,8 +2,6 @@
 
 namespace SMW\Test;
 
-use DerivativeContext;
-use RequestContext;
 use FauxRequest;
 use WebRequest;
 use OutputPage;
@@ -26,11 +24,11 @@ use OutputPage;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
@@ -52,21 +50,20 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 	protected abstract function getInstance();
 
 	/**
-	 * This is borrowed from \Wikibase\Test\SpecialPageTestBase
+	 * Borrowed from \Wikibase\Test\SpecialPageTestBase
 	 *
 	 * @param string      $sub The subpage parameter to call the page with
 	 * @param \WebRequest $request Web request that may contain URL parameters, etc
 	 */
 	protected function execute( $sub = '', WebRequest $request = null ) {
 
-		$request = $request === null ? new FauxRequest() : $request;
+		$request  = $request === null ? new FauxRequest() : $request;
 		$response = $request->response();
-
-		$context = new DerivativeContext( RequestContext::getMain() );
-		$context->setRequest( $request );
+		$context  = $this->newContext( $request );
 
 		$out = new OutputPage( $context );
 		$context->setOutput( $out );
+		$context->setLanguage( $this->getLanguage() );
 
 		$page = $this->getInstance();
 		$page->setContext( $context );
@@ -102,7 +99,7 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 	 *
 	 * @return string
 	 */
-	protected function getOutput() {
+	protected function getText() {
 		return $this->text;
 	}
 
@@ -114,4 +111,5 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 	protected function getResponse() {
 		return $this->response;
 	}
+
 }
