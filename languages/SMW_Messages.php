@@ -4278,6 +4278,12 @@ $messages['el'] = array(
 	'smw_propertylackspage' => 'Όλες οι ιδιότητες πρέπει να περιγράφονται από κάποια σελίδα!',
 	'smw_propertylackstype' => 'Δεν έχει καθοριστεί τύπος για την ιδιότητα αυτή (προς το παρόν θεωρείται τύπος $1).',
 	'smw_propertyhardlyused' => 'Αυτή η ιδιότητα δεν χρησιμοποιείται σχεδόν καθόλου εντός του wiki!',
+	'smw-property-name-invalid' => 'Η ιδιότητα  $1  δεν μπορεί να χρησιμοποιηθεί (μη έγκυρο όνομα ιδιότητας).',
+	'smw-sp-property-searchform' => 'Προβολή ιδιοτήτων που περιέχουν:',
+	'concepts' => 'Έννοιες',
+	'smw-sp-concept-docu' => 'Μια [https://www.semantic-mediawiki.org/wiki/Help:Concepts έννοια] μπορεί να θεωρηθεί ως «δυναμική κατηγορία», δηλαδή ως μία συλλογή σελίδων που δεν δημιουργήθηκαν με το χέρι αλλά μέσω υπολογισμών από το Σημασιολογικό MediaWiki από την περιγραφή δεδομένου ερωτήματος.',
+	'smw-sp-concept-header' => 'Κατάλογος εννοιών',
+	'smw-sp-concept-empty' => 'Δεν βρέθηκε κάποια έννοια.',
 	'unusedproperties' => 'Αχρησιμοποίητες ιδιότητες',
 	'smw_unusedproperties_docu' => 'Οι παρακάτω ιδιότητες υπάρχουν παρόλο που καμία άλλη σελίδα δεν τις χρησιμοποιεί.',
 	'smw_unusedproperty_template' => '$1 τύπου $2',
@@ -4287,11 +4293,24 @@ $messages['el'] = array(
 	'smw_purge' => 'Ανανέωση',
 	'types' => 'Τύποι',
 	'smw_types_docu' => 'Τα ακόλουθα είναι μια λίστα όλων των τύπων δεδομένων που μπορούν σε αντιστοιχηθούν σε ιδιότητες.',
+	'smw-special-types-no-such-type' => 'Ο καθορισμένος τύπος δεδομένων δεν υπάρχει.',
 	'semanticstatistics' => 'Σημασιολογικά στατιστικά',
 	'smw_semstats_text' => "Αυτό το wiki περιλαμβάνει '''$1''' {{PLURAL:$1|τιμή ιδιότητας|τιμές ιδιοτήτων}} για συνολικά '''$2''' [[Special:Properties|{{PLURAL:$2|ιδιότητα|διαφορετικές ιδιότητες}}]].
 '''$3''' {{PLURAL:$3|ιδιότητα έχει δική της σελίδα|ιδιότητες έχουν δικές τους σελίδες}}, και έχει οριστεί τύπος δεδομένων για '''$4''' {{PLURAL:$4|ιδιότητα|από αυτές}}.
 Κάποιες από τις υπάρχουσες ιδιότητες μπορεί να είναι [[Special:UnusedProperties|αχρησιμοποίητες ιδιότητες]].
 Ιδιότητες για τις οποίες δεν υπάρχει ακόμα σελίδα μπορούν να βρεθούν στη [[Special:WantedProperties|λίστα με ζητούμενες ιδιότητες]].",
+	'smw-statistics' => 'Σημασιολογικά στατιστικά',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Τιμή ιδιότητας|Τιμές ιδιοτήτων}} (συνολικά)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Ιδιότητα|Ιδιότητες}}]] (συνολικά)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Ιδιότητα|Ιδιότητες}} (συνολικά)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Ιδιότητα (καταχωρισμένη σε σελίδα)|Ιδιότητες (καταχωρισμένες σε σελίδες)}}',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Ιδιότητα (εκχωρισμένη σε τύπο δεδομένων)|Ιδιότητες (εκχωρισμένες σε τύπους δεδομένων)}}',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Ερώτημα|Ερωτήματα}}',
+	'smw-statistics-query-size' => 'Μέγεθος ερωτήματος',
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Έννοια|Έννοιες}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Έννοια|Έννοιες}}]]',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Υπο-αντικείμενο|Υπο-αντικείμενα}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Τύπος δεδομένων|Τύποι δεδομένων}}]]',
 	'smw_uri_doc' => 'Ο αναλυτής URI υλοποιεί το [$1 εύρημα της Ομάδας Τεχνικής Αρχιτεκτονικής του W3C σχετικά με το θέμα «httpRange-14»].
 Ουσιαστικά φροντίζει οι άνθρωποι να μην μεταμορφωθούν σε ιστοσελίδες.',
 	'ask' => 'Σημασιολογική αναζήτηση',
@@ -4467,8 +4486,14 @@ $messages['el'] = array(
 	'smw-ui-tooltip-title-note' => 'Σημείωση',
 	'smw-ui-tooltip-title-legend' => 'Υπόμνημα',
 	'smw_unknowntype' => 'Ο τύπος αυτής της ιδιότητας δεν είναι έγκυρος',
+	'smw-concept-cache-text' => 'Η έννοια διαθέτει συνολικά $1 {{PLURAL:$1|σελίδα|σελίδες}} και ενημερώθηκε τελευταία φορά στις $2.',
 	'smw_concept_header' => 'Σελίδες της έννοιας «$1»',
-	'smw_conceptarticlecount' => 'Εμφάνιση $1 {{PLURAL:$1|σελίδας|σελίδων}} που ανήκουν σε αυτήν την έννοια.', # Fuzzy
+	'smw_conceptarticlecount' => 'Παρακάτω {{PLURAL:$1|εμφανίζεται 1 σελίδα|εμφανίζονται $1 σελίδες}}.',
+	'smw-qp-aggregatable-empty-data' => 'Τα ζητούμενα συναθροίσιμα δεδομένα δεν μπορούν να προβληθούν λόγω ανεπαρκών κριτηρίων επιλογής.',
+	'right-smw-admin' => 'Εργασίες διαχείρισης πρόσβασης (Σημασιολογικό MediaWiki)',
+	'group-smwadministrator' => 'Διαχειριστές Σημασιολογικού MediaWiki',
+	'group-smwadministrator-member' => '{{GENDER:$1|Διαχειριστής|Διαχειρίστρια}} (SMW)',
+	'action-smw-admin' => 'πρόσβαση σε διαχειριστικές εργασίες του Σημασιολογικού MediaWiki',
 );
 
 /** British English (British English)
