@@ -18,3 +18,11 @@ throw new Exception( 'Not an actual source file' );
 abstract class SMWResultPrinter extends SMW\ResultPrinter {}
 
 class SMWDataItemException extends SMW\DataItemException {}
+
+abstract class SMWStore extends SMW\Store {}
+
+class SMWSemanticData extends SMW\SemanticData {}
+
+class SMWDIWikiPage extends SMW\DIWikiPage {}
+
+class SMWDIProperty extends SMW\DIProperty {}
