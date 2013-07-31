@@ -168,7 +168,7 @@ class ContentParser {
 		}
 
 		// Revision ID must be passed to the parser output to get revision variables correct
-		$this->parserOutput = $content->getParserOutput( $this->getTitle(), $getRevision()->getId(), null, false );
+		$this->parserOutput = $content->getParserOutput( $this->getTitle(), $this->getRevision()->getId(), null, false );
 
 		Profiler::Out( __METHOD__ );
 	}
