@@ -84,7 +84,7 @@ interface Arrayable {
 /**
  * This class enables access to an arbitrary array
  *
- * @ingroup Accessor
+ * @ingroup Utility
  */
 class ArrayAccessor extends ArrayObject implements Accessor, Arrayable {
 

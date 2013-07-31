@@ -36,7 +36,7 @@ use MWTimestamp;
  *
  * @ingroup SMW
  */
-class ResultCacheMapper {
+class ResultCacheMapper implements Cacheable {
 
 	/** @var ArrayAccessor */
 	protected $cacheAccessor;
@@ -109,7 +109,7 @@ class ResultCacheMapper {
 	 *
 	 * @return CacheHandler
 	 */
-	protected function getCache() {
+	public function getCache() {
 		return CacheHandler::newFromId( $this->cacheAccessor->get( 'type' ) );
 	}
 

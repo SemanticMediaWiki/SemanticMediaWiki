@@ -27,7 +27,7 @@ namespace SMW;
  *
  * @author mwjames
  */
-interface HookBase {}
+interface HookBase extends Cacheable, Configurable, StoreAccess {}
 
 /**
  * MediaWikiHook base class
@@ -36,13 +36,13 @@ interface HookBase {}
  */
 abstract class MediaWikiHook implements HookBase {
 
-	/** $var Store */
+	/** @var Store */
 	protected $store = null;
 
-	/** $var Settings */
+	/** @var Settings */
 	protected $settings = null;
 
-	/** $var CacheHandler */
+	/** @var CacheHandler */
 	protected $cache = null;
 
 	/**

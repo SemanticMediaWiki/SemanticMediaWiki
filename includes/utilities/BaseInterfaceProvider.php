@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Semantic MediaWiki Api Base class
+ * Semantic MediaWiki base class to enable access to commonly used objects
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,40 +29,65 @@ namespace SMW;
  */
 
 /**
- * Semantic MediaWiki Api Base class
+ * Specifies an interface to access a cachable entity (CacheStore etc.)
  *
- * @ingroup Api
- * @codeCoverageIgnore
+ * @ingroup Utility
  */
-abstract class ApiBase extends \ApiBase implements StoreAccess {
-
-	/** @var Store */
-	protected $store = null;
+interface Cacheable {
 
 	/**
-	 * @see ApiBase::__construct
+	 * Returns cachable entity
 	 *
 	 * @since 1.9
 	 *
-	 * @param ApiMain $main
-	 * @param string $action Name of this module
+	 * @return Cacheable
 	 */
-	public function __construct( $main, $action ) {
-		parent::__construct( $main, $action );
-		$this->store = StoreFactory::getStore();
-	}
+	public function getCache();
+
+}
+
+/**
+ * Specifies an interface to access a configurable object (Settings)
+ *
+ * @ingroup Utility
+ */
+interface Configurable {
 
 	/**
-	 * Sets Store object
+	 * Sets a Settings object
 	 *
 	 * @since 1.9
 	 *
-	 * @param Store $store
+	 * @param Settings $settings
 	 */
-	public function setStore( Store $store ) {
-		$this->store = $store;
-		return $this;
-	}
+	public function setSettings( Settings $settings );
+
+	/**
+	 * Returns Settings object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Settings
+	 */
+	public function getSettings();
+
+}
+
+/**
+ * Specifies an interface to access a Store object
+ *
+ * @ingroup Utility
+ */
+interface StoreAccess {
+
+	/**
+	 * Sets a Store object
+	 *
+	 * @since 1.9
+	 *
+	 * @param Store $settings
+	 */
+	public function setStore( Store $store );
 
 	/**
 	 * Returns Store object
@@ -71,13 +96,6 @@ abstract class ApiBase extends \ApiBase implements StoreAccess {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
-
-		if ( $this->store === null ) {
-			$this->store = StoreFactory::getStore();
-		}
-
-		return $this->store;
-	}
+	public function getStore();
 
 }

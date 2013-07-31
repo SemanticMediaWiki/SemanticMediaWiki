@@ -31,7 +31,7 @@ namespace SMW;
 /**
  * This interface is responsible for generating an id
  *
- * @ingroup SMW
+ * @ingroup Utility
  */
 interface IdGenerator {
 
@@ -49,7 +49,7 @@ interface IdGenerator {
 /**
  * This class is responsible for generating a Hash Id
  *
- * @ingroup SMW
+ * @ingroup Utility
  */
 class HashIdGenerator implements IdGenerator {
 

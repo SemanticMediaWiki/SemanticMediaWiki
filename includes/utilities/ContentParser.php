@@ -38,7 +38,7 @@ use Title;
  * a text revision, or accessing the ContentHandler to produce a ParserOutput
  * object
  *
- * @ingroup SMW
+ * @ingroup Utility
  */
 class ContentParser {
 

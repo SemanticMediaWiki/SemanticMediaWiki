@@ -36,8 +36,9 @@ namespace SMW;
  * @note When testing rountrips, use MockChangeObserver instead
  *
  * @ingroup Observer
+ * @ingroup Utility
  */
-class ChangeObserver extends Observer {
+class ChangeObserver extends Observer implements Cacheable, Configurable, StoreAccess {
 
 	/** @var Settings */
 	protected $settings = null;

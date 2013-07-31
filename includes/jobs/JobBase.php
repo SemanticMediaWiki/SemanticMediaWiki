@@ -35,7 +35,7 @@ use Job;
  *
  * @ingroup Job
  */
-abstract class JobBase extends Job {
+abstract class JobBase extends Job implements Cacheable, Configurable, StoreAccess {
 
 	/** $var Store */
 	protected $store = null;

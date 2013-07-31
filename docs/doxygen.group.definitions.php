@@ -25,6 +25,15 @@ die("Not a valid entry point\n");
  */
 
 /**
+ * This group contains members that are related to special pages
+ *
+ * @see https://www.mediawiki.org/wiki/Manual:Special_pages
+ *
+ * @defgroup SpecialPage SpecialPage
+ * @ingroup SMW
+ */
+
+/**
  * This group contains members that are related to hooks, hook events, and
  * hook registrations
  *
@@ -89,6 +98,14 @@ die("Not a valid entry point\n");
  * object handler, hooks handler, instance handler etc.)
  *
  * @defgroup Handler Handler
+ * @ingroup SMW
+ */
+
+/**
+ * This group contains members that are related to utility classes and support
+ * functions
+ *
+ * @defgroup Utility Utility
  * @ingroup SMW
  */
 

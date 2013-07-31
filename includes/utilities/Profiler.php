@@ -32,7 +32,7 @@ namespace SMW;
  * This class encapsulates MediaWiki's profiling class, if enabled enabled
  * track the process caller allowing it to generate a call tree
  *
- * @ingroup SMW
+ * @ingroup Utility
  */
 class Profiler {
 

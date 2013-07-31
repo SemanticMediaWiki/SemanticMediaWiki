@@ -35,7 +35,7 @@ use MWNamespace;
  * This class examines if a specific namespace is enabled for the usage of the
  * Semantic MediaWiki extension
  *
- * @ingroup SMW
+ * @ingroup Utility
  */
 final class NamespaceExaminer {
 

@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Semantic MediaWiki SpecialPage Base class
+ * Semantic MediaWiki SpecialPage base class
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,12 +29,12 @@ namespace SMW;
  */
 
 /**
- * Semantic MediaWiki SpecialPage Base class
+ * Semantic MediaWiki SpecialPage base class
  *
  * @ingroup SpecialPage
  * @codeCoverageIgnore
  */
-class SpecialPage extends \SpecialPage {
+class SpecialPage extends \SpecialPage implements Configurable, StoreAccess {
 
 	/** @var Store */
 	protected $store = null;
@@ -64,6 +64,7 @@ class SpecialPage extends \SpecialPage {
 	 */
 	public function setStore( Store $store ) {
 		$this->store = $store;
+		return $this;
 	}
 
 	/**
@@ -75,6 +76,18 @@ class SpecialPage extends \SpecialPage {
 	 */
 	public function getStore() {
 		return $this->store;
+	}
+
+	/**
+	 * Sets Settings object
+	 *
+	 * @since 1.9
+	 *
+	 * @param Settings $settings
+	 */
+	public function setSettings( Settings $settings ) {
+		$this->settings = $settings;
+		return $this;
 	}
 
 	/**

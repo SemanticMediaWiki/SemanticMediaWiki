@@ -174,6 +174,10 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Observer']                  = $incDir . '/utilities/ObserverInterfaceProvider.php';
 	$wgAutoloadClasses['SMW\Subscriber']                = $incDir . '/utilities/ObserverInterfaceProvider.php';
 
+	$wgAutoloadClasses['SMW\Cacheable']                 = $incDir . '/utilities/BaseInterfaceProvider.php';
+	$wgAutoloadClasses['SMW\Configurable']              = $incDir . '/utilities/BaseInterfaceProvider.php';
+	$wgAutoloadClasses['SMW\StoreAccess']               = $incDir . '/utilities/BaseInterfaceProvider.php';
+
 	// Hooks
 	$wgAutoloadClasses['SMW\HookBase']                  = $incDir . '/hooks/MediaWikiHook.php';
 	$wgAutoloadClasses['SMW\MediaWikiHook']             = $incDir . '/hooks/MediaWikiHook.php';

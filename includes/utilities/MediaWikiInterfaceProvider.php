@@ -32,6 +32,7 @@ namespace SMW;
  * Interface describing access to a Title object
  *
  * @ingroup Provider
+ * @ingroup Utility
  */
 interface TitleProvider {
 
