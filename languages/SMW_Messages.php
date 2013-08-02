@@ -10901,6 +10901,7 @@ $messages['niu'] = array(
 );
 
 /** Dutch (Nederlands)
+ * @author Hansmuller
  * @author Kghbln
  * @author Rcdeboer
  * @author SPQRobin
@@ -11212,7 +11213,7 @@ Geschatte voortgang van de huidige taak:",
 	'group-smwadministrator' => 'Beheerders voor Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|beheerder (SMW)}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:Beheerders_voor_Semantic_MediaWiki',
-	'action-smw-admin' => 'beheerstaken voor Semantic MediaWiki te raadplegen',
+	'action-smw-admin' => 'beheerstaken voor Semantic MediaWiki raadplegen',
 	'smw-sp-properties-cache-info' => 'Deze gegevens zijn overgenomen uit een [https://www.semantic-mediawiki.org/wiki/Caching cache] en zijn voor het laatst bijgewerkt op $1.',
 	'smw-sp-properties-header-label' => 'Lijst met eigenschappen',
 );
@@ -15464,34 +15465,6 @@ $messages['uk'] = array(
 	'smw_ask_embed_instr' => 'Щоб вбудувати цей запит в вікісторінку, використовуйте поданий нижче код.',
 	'smw-ask-delete' => '[Видалити]',
 	'smw-ask-sorting' => 'Сортування',
-	'smw_qc_show_addnal_opts' => 'Показати додаткові параметри',
-	'smw_qc_hide_addnal_opts' => 'Показати менше параметрів',
-	'smw_qc_otheropt' => 'Інші параметри',
-	'smw_qc_default' => 'Стандартно:',
-	'smw_qui_property' => '<strong>Властивість</strong>',
-	'smw_qui_prop' => 'Властивість:',
-	'smw_qui_labl' => 'Позначка:',
-	'smw_qui_formt' => 'Формат:',
-	'smw_qui_limt' => 'Ліміт:',
-	'smw_qui_shownresults' => 'показувати в результатах',
-	'smw_qui_noquery' => 'Запит не вказано',
-	'smw_qui_nosort' => 'Без сортування',
-	'smw_qui_ascorder' => 'За зростанням',
-	'smw_qui_descorder' => 'За спаданням',
-	'smw_qui_randorder' => 'Випадковий',
-	'smw_qui_addnprop' => 'додати властивість',
-	'smw_qui_delete' => 'Вилучити',
-	'smw_qui_rescol' => 'Відповідності запиту',
-	'smw_qui_options' => 'параметри',
-	'smw_qui_addcategory' => 'додати категорію',
-	'smw_qui_ok' => 'Гаразд',
-	'smw_qui_cancel' => 'Скасувати',
-	'smw_qui_category' => '<strong>Категорія</strong>',
-	'smw_qui_catopts' => 'Параметри категорії',
-	'smw_qui_dlabel' => 'Позначка:',
-	'smw_qui_dcategory' => 'Категорія:',
-	'smw_qui_dcatyes' => 'Показати текст, коли категорія присутня:',
-	'smw_qui_dcatno' => 'Показати текст, коли категорія відсутня:',
 	'searchbyproperty' => 'Шукати за властивістю',
 	'smw_sbv_docu' => 'Шукати всі сторінки, що мають вказану властивість і значення.',
 	'smw_sbv_novalue' => 'Введіть правильне значення властивості або перегляньте всі значення властивості «$1».',
