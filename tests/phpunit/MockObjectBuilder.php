@@ -817,7 +817,8 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 				'affectedRows',
 				'strencode',
 				'getSoftwareLink',
-				'getServerVersion'
+				'getServerVersion',
+				'closeConnection'
 			) )
 			->getMock();
 
