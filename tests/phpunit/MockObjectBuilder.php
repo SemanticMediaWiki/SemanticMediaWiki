@@ -829,4 +829,22 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		return $databaseBase;
 	}
 
+	/**
+	 * Returns a TitleAccess object
+	 *
+	 * @since 1.9
+	 *
+	 * @return TitleAccess
+	 */
+	public function getMockTitleAccess() {
+
+		$titleAccess = $this->getMockForAbstractClass( '\SMW\TitleAccess' );
+
+		$titleAccess->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->setValue( 'getTitle' ) ) );
+
+		return $titleAccess;
+	}
+
 }

@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use \SMW\ChangeObserver;
-use \SMW\TitleProvider;
+use \SMW\TitleAccess;
 
 /**
  * MockChangeAgent should only be used during testing to establish that
@@ -72,8 +72,10 @@ class MockChangeObserver extends ChangeObserver {
 	 * @see ChangeObserver::runUpdateDispatcher
 	 *
 	 * @since 1.9
+	 *
+	 * @param TitleAccess $subject
 	 */
-	public function runUpdateDispatcher( TitleProvider $subject ) {
+	public function runUpdateDispatcher( TitleAccess $subject ) {
 		$this->setNotifier( __FUNCTION__ );
 	}
 

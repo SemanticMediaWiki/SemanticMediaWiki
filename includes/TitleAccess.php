@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Specifies interfaces to access MediaWiki specific objects
+ * Interface describing access to a Title object
  *
  * @file
  *
@@ -19,7 +19,7 @@ namespace SMW;
  * @ingroup Provider
  * @ingroup Utility
  */
-interface TitleProvider {
+interface TitleAccess {
 
 	/**
 	 * Returns a Title object

@@ -127,9 +127,9 @@ class ChangeObserver extends Observer implements Cacheable, Configurable, StoreA
 	 *
 	 * @since 1.9
 	 *
-	 * @param TitleProvider $subject
+	 * @param TitleAccess $subject
 	 */
-	public function runUpdateDispatcher( TitleProvider $subject ) {
+	public function runUpdateDispatcher( TitleAccess $subject ) {
 
 		$dispatcher = new PropertySubjectsUpdateDispatcherJob( $subject->getTitle() );
 		$dispatcher->setSettings( $this->getSettings() );

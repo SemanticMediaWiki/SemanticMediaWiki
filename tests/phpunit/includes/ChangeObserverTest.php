@@ -126,11 +126,9 @@ class ChangeObserverTest extends SemanticMediaWikiTestCase {
 	 */
 	public function titleDataProvider() {
 
-		$title = $this->getMockForAbstractClass( '\SMW\TitleProvider' );
-
-		$title->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->newTitle() ) );
+		$title = $this->newMockObject( array(
+			'getTitle' => $this->newTitle()
+		) )->getMockTitleAccess();
 
 		$provider = array();
 
@@ -138,10 +136,10 @@ class ChangeObserverTest extends SemanticMediaWikiTestCase {
 		$provider[] = array(
 			array(
 				'settings' => array(
-					'smwgEnableUpdateJobs' => false,
+					'smwgEnableUpdateJobs'       => false,
 					'smwgDeferredPropertyUpdate' => false
 				),
-				'title'    => $title
+				'title' => $title
 			),
 			array()
 		);
@@ -150,10 +148,10 @@ class ChangeObserverTest extends SemanticMediaWikiTestCase {
 		$provider[] = array(
 			array(
 				'settings' => array(
-					'smwgEnableUpdateJobs' => false,
+					'smwgEnableUpdateJobs'       => false,
 					'smwgDeferredPropertyUpdate' => true
 				),
-				'title'    => $title
+				'title' => $title
 			),
 			array()
 		);

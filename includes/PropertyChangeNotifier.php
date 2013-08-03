@@ -19,7 +19,7 @@ namespace SMW;
  *
  * @ingroup SMW
  */
-class PropertyChangeNotifier extends Subject implements TitleProvider {
+class PropertyChangeNotifier extends Subject implements TitleAccess {
 
 	/** @var Store */
 	protected $store;
