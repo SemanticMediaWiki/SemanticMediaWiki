@@ -55,7 +55,7 @@ class MockChangeObserver extends ChangeObserver {
 	 *
 	 * @since 1.9
 	 */
-	public function setNotifier( $notifier ) {
+	private function setNotifier( $notifier ) {
 		$this->notifier = method_exists( get_parent_class( $this ), $notifier ) ? $notifier : null;
 	}
 

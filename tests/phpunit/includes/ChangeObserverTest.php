@@ -156,6 +156,38 @@ class ChangeObserverTest extends SemanticMediaWikiTestCase {
 			array()
 		);
 
+		// #2
+		$title = $this->newMockObject( array(
+			'getTitle' => $this->newTitle( SMW_NS_PROPERTY )
+		) )->getMockTitleAccess();
+
+		$provider[] = array(
+			array(
+				'settings' => array(
+					'smwgEnableUpdateJobs'       => false,
+					'smwgDeferredPropertyUpdate' => true
+				),
+				'title' => $title
+			),
+			array()
+		);
+
+		// #3
+		$title = $this->newMockObject( array(
+			'getTitle' => $this->newTitle( SMW_NS_PROPERTY )
+		) )->getMockTitleAccess();
+
+		$provider[] = array(
+			array(
+				'settings' => array(
+					'smwgEnableUpdateJobs'       => false,
+					'smwgDeferredPropertyUpdate' => false
+				),
+				'title' => $title
+			),
+			array()
+		);
+
 		return $provider;
 	}
 
