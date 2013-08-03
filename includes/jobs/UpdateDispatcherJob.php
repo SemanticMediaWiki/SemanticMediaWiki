@@ -6,8 +6,9 @@ use Title;
 use Job;
 
 /**
- * Background dispatch to generate necessary UpdateJob's in order
- * to restore the data parity between a property in its attached subjects
+ * Dispatcher class to either run in deferred or immediate mode to generate
+ * necessary UpdateJob's to restore the data parity between a property
+ * and its attached subjects
  *
  * @file
  *
@@ -18,13 +19,14 @@ use Job;
  */
 
 /**
- * Background dispatch to generate necessary UpdateJob's in order
- * to restore the data parity between a property in its attached subjects
+ * Dispatcher class to either run in deferred or immediate mode to generate
+ * necessary UpdateJob's to restore the data parity between a property
+ * and its attached subjects
  *
  * @ingroup Job
  * @ingroup Dispatcher
  */
-class PropertySubjectsUpdateDispatcherJob extends JobBase {
+class UpdateDispatcherJob extends JobBase {
 
 	/** $var Job */
 	protected $jobs = array();
@@ -40,8 +42,8 @@ class PropertySubjectsUpdateDispatcherJob extends JobBase {
 	 * @param integer $id job id
 	 */
 	public function __construct( Title $title, $params = array(), $id = 0 ) {
-		parent::__construct( 'SMW\PropertySubjectsUpdateDispatcherJob', $title, $params, $id );
-		$this->store = StoreFactory::getStore( isset( $params['store'] ) ? $params['store'] : null );
+		parent::__construct( 'SMW\UpdateDispatcherJob', $title, $params, $id );
+		$this->removeDuplicates = true;
 	}
 
 	/**
@@ -68,7 +70,7 @@ class PropertySubjectsUpdateDispatcherJob extends JobBase {
 		Profiler::In( __METHOD__, true );
 
 		if ( $this->title->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->getSubjects( DIProperty::newFromUserLabel( $this->title->getText() ) )->push();
+			$this->distribute( DIProperty::newFromUserLabel( $this->title->getText() ) )->push();
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -94,11 +96,11 @@ class PropertySubjectsUpdateDispatcherJob extends JobBase {
 	 *
 	 * @param DIProperty $property
 	 */
-	protected function getSubjects( DIProperty $property ) {
+	protected function distribute( DIProperty $property ) {
 		Profiler::In( __METHOD__, true );
 
 		// Array of all subjects that have some value for the given property
-		$subjects = $this->store->getAllPropertySubjects( $property );
+		$subjects = $this->getStore()->getAllPropertySubjects( $property );
 
 		$this->addJobs( $subjects );
 
@@ -110,7 +112,7 @@ class PropertySubjectsUpdateDispatcherJob extends JobBase {
 
 		// Fetch all those that have an error property attached and
 		// re-run it through the job-queue
-		$subjects = $this->store->getPropertySubjects(
+		$subjects = $this->getStore()->getPropertySubjects(
 			new DIProperty( DIProperty::TYPE_ERROR ),
 			DIWikiPage::newFromTitle( $this->title )
 		);

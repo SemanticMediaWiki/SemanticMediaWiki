@@ -2,13 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\PropertySubjectsUpdateDispatcherJob;
+use SMW\UpdateDispatcherJob;
 use SMW\DIProperty;
 
 use Title;
 
 /**
- * Tests for the PropertySubjectsUpdateDispatcherJob class
+ * Tests for the UpdateDispatcherJob class
  *
  * @file
  *
@@ -19,14 +19,14 @@ use Title;
  */
 
 /**
- * @covers \SMW\PropertySubjectsUpdateDispatcherJob
+ * @covers \SMW\UpdateDispatcherJob
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class PropertySubjectsUpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
+class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 
 	/** @var DIProperty */
 	protected $property;
@@ -40,24 +40,24 @@ class PropertySubjectsUpdateDispatcherJobTest extends SemanticMediaWikiTestCase 
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\PropertySubjectsUpdateDispatcherJob';
+		return '\SMW\UpdateDispatcherJob';
 	}
 
 	/**
-	 * Helper method that returns a PropertySubjectsUpdateDispatcherJob object
+	 * Helper method that returns a UpdateDispatcherJob object
 	 *
 	 * @since 1.9
 	 *
 	 * @param Title|null $title
 	 *
-	 * @return PropertySubjectsUpdateDispatcherJob
+	 * @return UpdateDispatcherJob
 	 */
 	private function getInstance( Title $title = null ) {
-		return new PropertySubjectsUpdateDispatcherJob( $title === null ? $this->getTitle() : $title );
+		return new UpdateDispatcherJob( $title === null ? $this->getTitle() : $title );
 	}
 
 	/**
-	 * @test PropertySubjectsUpdateDispatcherJob::__construct
+	 * @test UpdateDispatcherJob::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -66,7 +66,7 @@ class PropertySubjectsUpdateDispatcherJobTest extends SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test PropertySubjectsUpdateDispatcherJob::push
+	 * @test UpdateDispatcherJob::push
 	 *
 	 * Just verify that the push method is accessible
 	 * without inserting any real job
@@ -78,13 +78,22 @@ class PropertySubjectsUpdateDispatcherJobTest extends SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test PropertySubjectsUpdateDispatcherJob::run
+	 * @test UpdateDispatcherJob::run
 	 *
 	 * @since 1.9
 	 */
-	public function testRun() {
+	public function testDBRun() {
+		$this->assertTrue( $this->getInstance( $this->newTitle( SMW_NS_PROPERTY ) )->disable()->run() );
+	}
 
-		$title = $this->getTitle( SMW_NS_PROPERTY );
+	/**
+	 * @test UpdateDispatcherJob::run
+	 *
+	 * @since 1.9
+	 */
+	public function testMockRun() {
+
+		$title = $this->newTitle( SMW_NS_PROPERTY );
 
 		// Set-up expected property, accessible in the mock callback
 		$this->property = DIProperty::newFromUserLabel( $title->getText() );
@@ -108,8 +117,8 @@ class PropertySubjectsUpdateDispatcherJobTest extends SemanticMediaWikiTestCase 
 		$instance = $this->getInstance( $title );
 		$instance->setStore( $mockStore );
 
-		// Disable dispatch jobs to avoid test
-		// jobs being inserted
+		// Disable distribution of generated jobs
+		// being inserted into the"real" JobQueue
 		$instance->disable()->run();
 
 		// Get access to protected jobs property

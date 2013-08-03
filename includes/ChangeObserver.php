@@ -131,10 +131,10 @@ class ChangeObserver extends Observer implements Cacheable, Configurable, StoreA
 	 */
 	public function runUpdateDispatcher( TitleAccess $subject ) {
 
-		$dispatcher = new PropertySubjectsUpdateDispatcherJob( $subject->getTitle() );
+		$dispatcher = new UpdateDispatcherJob( $subject->getTitle() );
 		$dispatcher->setSettings( $this->getSettings() );
 
-		if ( $this->getSettings()->get( 'smwgDeferredPropertyUpdate' ) ) {
+		if ( $this->getSettings()->get( 'smwgDeferredPropertyUpdate' ) && class_exists( '\SMW\PropertyPageIdMapper' ) ) {
 			$dispatcher->insert(); // JobQueue is handling dispatching
 		} else {
 			$dispatcher->run();
