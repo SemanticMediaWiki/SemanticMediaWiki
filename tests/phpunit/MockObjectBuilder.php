@@ -345,6 +345,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->method( 'getText' )
 			->will( $this->returnValue( $this->setValue( 'getText' ) ) );
 
+		$revision->expects( $this->any() )
+			->method( 'getContent' )
+			->will( $this->returnValue( $this->setValue( 'getContent' ) ) );
+
 		return $revision;
 	}
 
@@ -845,6 +849,26 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->setValue( 'getTitle' ) ) );
 
 		return $titleAccess;
+	}
+
+	/**
+	 * Returns a Content object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Content
+	 */
+	public function getMockContent() {
+
+		$content = $this->getMockBuilder( 'Content' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$content->expects( $this->any() )
+			->method( 'getParserOutput' )
+			->will( $this->returnValue( $this->setValue( 'getParserOutput' ) ) );
+
+		return $content;
 	}
 
 }
