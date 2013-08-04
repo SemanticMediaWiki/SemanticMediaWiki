@@ -28,7 +28,7 @@ use User;
  *
  * @ingroup Annotator
  */
-class BasePropertyAnnotator extends Subject {
+class BasePropertyAnnotator extends ObservableSubject {
 
 	/** @var SemanticData */
 	protected $semanticData;

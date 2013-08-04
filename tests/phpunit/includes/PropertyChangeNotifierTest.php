@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\PropertyChangeNotifier;
+use SMW\ObservableSubjectDispatcher;
 use SMW\DIProperty;
 
 use Title;
@@ -77,7 +78,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testFindDisparity( $storeValues, $dataValues, $settings, $expected ) {
+	public function testDetectChanges( $storeValues, $dataValues, $settings, $expected ) {
 
 		$subject = $this->newSubject( $this->newTitle( SMW_NS_PROPERTY ) );
 		$this->storeValues = $storeValues;
@@ -92,7 +93,9 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 		);
 
 		$instance = $this->getInstance( $store, $data, $settings );
-		$observer = new MockChangeObserver( $instance );
+		$observer = new MockChangeObserver();
+
+		$instance->setDispatcher( new ObservableSubjectDispatcher( $observer ) );
 
 		$this->assertInstanceOf( $this->getClass(), $instance->detectChanges() );
 		$this->assertEquals( $subject->getTitle(), $instance->getTitle() );

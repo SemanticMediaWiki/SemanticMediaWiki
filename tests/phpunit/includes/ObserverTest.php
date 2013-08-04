@@ -15,7 +15,7 @@ namespace SMW\Test;
 
 /**
  * @covers \SMW\Observer
- * @covers \SMW\Subject
+ * @covers \SMW\ObservableSubject
  *
  * @ingroup Test
  *
@@ -57,17 +57,17 @@ class ObserverTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Subject object
+	 * Helper method that returns a ObservableSubject object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $data
 	 *
-	 * @return Subject
+	 * @return ObservableSubject
 	 */
-	private function newObserverSubject() {
+	private function newObservableSubject() {
 
-		$subject = $this->getMockBuilder( '\SMW\Subject' )
+		$subject = $this->getMockBuilder( '\SMW\ObservableSubject' )
 			->setMethods( array( 'lulu' ) )
 			->getMock();
 
@@ -84,7 +84,7 @@ class ObserverTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testConstructor() {
 		$this->assertInstanceOf( '\SMW\Observer', $this->newObserver() );
-		$this->assertInstanceOf( '\SMW\Subject', $this->newObserverSubject() );
+		$this->assertInstanceOf( '\SMW\ObservableSubject', $this->newObservableSubject() );
 	}
 
 	/**
@@ -92,7 +92,7 @@ class ObserverTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testInvokeAndDetach() {
 
-		$subject  = $this->getMockForAbstractClass( '\SMW\Subject' );
+		$subject  = $this->getMockForAbstractClass( '\SMW\ObservableSubject' );
 
 		// Same Observer instance attached twice results in only one registered object
 		$observer = $this->getMockForAbstractClass( '\SMW\Observer', array( $subject ) );
@@ -117,7 +117,7 @@ class ObserverTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testNotifyAndUpdate() {
 
-		$subject = $this->newObserverSubject();
+		$subject = $this->newObservableSubject();
 		$subject->attach( $this->newObserver() );
 
 		$this->assertNull( $subject->getState() );

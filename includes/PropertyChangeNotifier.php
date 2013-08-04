@@ -19,7 +19,7 @@ namespace SMW;
  *
  * @ingroup SMW
  */
-class PropertyChangeNotifier extends Subject implements TitleAccess {
+class PropertyChangeNotifier implements TitleAccess, DispatchableSource {
 
 	/** @var Store */
 	protected $store;
@@ -29,6 +29,9 @@ class PropertyChangeNotifier extends Subject implements TitleAccess {
 
 	/** @var Settings */
 	protected $settings;
+
+	/** @var ObservableDispatcher */
+	protected $dispatcher;
 
 	/** @var boolean */
 	protected $hasDisparity = false;
@@ -55,6 +58,18 @@ class PropertyChangeNotifier extends Subject implements TitleAccess {
 	 */
 	public function getTitle() {
 		return $this->semanticData->getSubject()->getTitle();
+	}
+
+	/**
+	 * Invokes an ObservableDispatcher object to deploy state changes to an Observer
+	 *
+	 * @since 1.9
+	 *
+	 * @param ObservableDispatcher $dispatcher
+	 */
+	public function setDispatcher( ObservableDispatcher $dispatcher ) {
+		$this->dispatcher = $dispatcher->setSource( $this );
+		return $this;
 	}
 
 	/**
@@ -89,7 +104,7 @@ class PropertyChangeNotifier extends Subject implements TitleAccess {
 	}
 
 	/**
-	 * Compare and find change related to the property type
+	 * Compare and find changes related to the property type
 	 *
 	 * @since 1.9
 	 */
@@ -133,7 +148,7 @@ class PropertyChangeNotifier extends Subject implements TitleAccess {
 	}
 
 	/**
-	 * Compare and find change related to conversion factor
+	 * Compare and find changes related to conversion factor
 	 *
 	 * @since 1.9
 	 */
@@ -142,11 +157,11 @@ class PropertyChangeNotifier extends Subject implements TitleAccess {
 
 		$pconversion  = new DIProperty( DIProperty::TYPE_CONVERSION );
 
+		$newfactors = $this->semanticData->getPropertyValues( $pconversion );
 		$oldfactors = $this->store->getPropertyValues(
 			$this->semanticData->getSubject(),
 			$pconversion
 		);
-		$newfactors = $this->semanticData->getPropertyValues( $pconversion );
 
 		$this->addDispatchJob( !$this->isEqual( $oldfactors, $newfactors ) );
 
@@ -162,7 +177,7 @@ class PropertyChangeNotifier extends Subject implements TitleAccess {
 	 */
 	protected function addDispatchJob( $addJob = true ) {
 		if ( $addJob && !$this->hasDisparity ) {
-			$this->setState( 'runUpdateDispatcher' );
+			$this->dispatcher->setState( 'runUpdateDispatcher' );
 			$this->hasDisparity = true;
 		}
 	}
@@ -200,4 +215,5 @@ class PropertyChangeNotifier extends Subject implements TitleAccess {
 
 		return ( $oldDataValueHash == $newDataValueHash );
 	}
+
 }

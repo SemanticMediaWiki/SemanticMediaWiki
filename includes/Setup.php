@@ -161,10 +161,16 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\ChangeObserver']            = $incDir . 'ChangeObserver.php';
 	$wgAutoloadClasses['SMW\TitleAccess']               = $incDir . 'TitleAccess.php';
 
-	$wgAutoloadClasses['SMW\Publisher']                 = $incDir . 'Publisher.php';
-	$wgAutoloadClasses['SMW\Subject']                   = $incDir . 'Subject.php';
+	$wgAutoloadClasses['SMW\Observable']                = $incDir . 'ObservableSubject.php';
+	$wgAutoloadClasses['SMW\Publisher']                 = $incDir . 'ObservableSubject.php';
+	$wgAutoloadClasses['SMW\ObservableSubject']         = $incDir . 'ObservableSubject.php';
+
 	$wgAutoloadClasses['SMW\Observer']                  = $incDir . 'Observer.php';
-	$wgAutoloadClasses['SMW\Subscriber']                = $incDir . 'Subscriber.php';
+	$wgAutoloadClasses['SMW\Subscriber']                = $incDir . 'Observer.php';
+
+	$wgAutoloadClasses['SMW\ObservableDispatcher']        = $incDir . 'ObservableSubjectDispatcher.php';
+	$wgAutoloadClasses['SMW\DispatchableSource']          = $incDir . 'ObservableSubjectDispatcher.php';
+	$wgAutoloadClasses['SMW\ObservableSubjectDispatcher'] = $incDir . 'ObservableSubjectDispatcher.php';
 
 	$wgAutoloadClasses['SMW\Cacheable']                 = $incDir . 'Cacheable.php';
 	$wgAutoloadClasses['SMW\Configurable']              = $incDir . 'Configurable.php';
