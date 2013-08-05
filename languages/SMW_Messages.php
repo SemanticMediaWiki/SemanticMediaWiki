@@ -10889,6 +10889,7 @@ $messages['nds'] = array(
  * @author Servien
  */
 $messages['nds-nl'] = array(
+	'smw_ask_descorder' => 'Aoflopend',
 	'browse' => 'Wiki bekieken',
 	'smw_browselink' => 'Eigenschappen bekieken',
 );
