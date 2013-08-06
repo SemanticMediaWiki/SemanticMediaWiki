@@ -15,10 +15,9 @@ php maintenance/install.php --dbtype $DBTYPE --dbuser root --dbname its_a_mw --d
 
 cd extensions
 
-composer create-project mediawiki/semantic-mediawiki:dev-master SemanticMediaWiki -s dev
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git --depth 1
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Validator.git --depth 1
 
-# Replace SemanticMediaWiki with the version that should be tested
-rm -rf SemanticMediaWiki
 mkdir SemanticMediaWiki
 cp -r $originalDirectory/* SemanticMediaWiki
 
