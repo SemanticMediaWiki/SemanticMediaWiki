@@ -13,7 +13,7 @@ cd phase3
 mysql -e 'create database its_a_mw;'
 php maintenance/install.php --dbtype $DBTYPE --dbuser root --dbname its_a_mw --dbpath $(pwd) --pass nyan TravisWiki admin
 
-composer create-project mediawiki/semantic-mediawiki:dev-master -s dev
+composer create-project mediawiki/semantic-mediawiki:dev-master SemanticMediaWiki -s dev
 composer require satooshi/php-coveralls:dev-master
 
 # Replace SemanticMediaWiki with the version that should be tested
