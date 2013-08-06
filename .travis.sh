@@ -21,7 +21,7 @@ rm -rf SemanticMediaWiki
 mkdir SemanticMediaWiki
 cp -r $originalDirectory/* SemanticMediaWiki
 
-echo 'require_once( __DIR__ . "/vendor/mediawiki/semantic-mediawiki/SemanticMediaWiki.php" );' >> LocalSettings.php
+echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
 
 echo 'error_reporting(E_ALL| E_STRICT);' >> LocalSettings.php
 echo 'ini_set("display_errors", 1);' >> LocalSettings.php
