@@ -24,8 +24,8 @@ before_script:
   - bash .travis.sh
 
 script:
-  - cd ../phase3/tests/phpunit ; ./phpunit.php --group SMWExtension
-  - cd ../../extensions/SemanticMediaWiki ; phpunit --coverage-clover build/logs/clover.xml
+  - cd ../phase3/tests/phpunit ; php phpunit.php --group SMWExtension
+  - php phpunit.php --group SMWExtension --coverage-clover ../../build/logs/clover.xml
 
 after_script:
   - php vendor/bin/coveralls -v
