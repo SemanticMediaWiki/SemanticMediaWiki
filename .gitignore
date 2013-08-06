@@ -3,6 +3,8 @@
 *.kate-swp
 
 vendor/
+build/
+
 composer.phar
 composer.lock
 
@@ -11,3 +13,4 @@ composer.lock
 
 !.travis.yml
 !.travis.sh
+!.coveralls.yml

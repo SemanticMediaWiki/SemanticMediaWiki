@@ -24,8 +24,11 @@ before_script:
   - bash .travis.sh
 
 script:
-  - cd ../phase3/tests/phpunit
-  - ./phpunit.php --group SMWExtension
+  - cd ../phase3/tests/phpunit ; ./phpunit.php --group SMWExtension
+  - cd ../../extensions/SemanticMediaWiki ; phpunit --coverage-clover build/logs/clover.xml
+
+after_script:
+  - php vendor/bin/coveralls -v
 
 notifications:
   irc:
