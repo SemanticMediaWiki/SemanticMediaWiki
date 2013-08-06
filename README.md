@@ -7,11 +7,7 @@ further links, see https://semantic-mediawiki.org
 
 Notes on installing Semantic MediaWiki are found in the file INSTALL.
 
-Build status
-------------
-
-* TravisCI: [![Build Status](https://secure.travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki.png?branch=master)](http://travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki)
-* [WMF Jenkins](https://integration.wikimedia.org/ci/job/mwext-SemanticMediaWiki-testextensions-master/lastBuild/)
+[![Build Status](https://secure.travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki.png?branch=master)](http://travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki)
 
 Contact
 -------
