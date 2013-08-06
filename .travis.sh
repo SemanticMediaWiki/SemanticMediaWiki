@@ -2,7 +2,7 @@
 
 set -x
 
-originalDirectory=pwd
+originalDirectory=$(pwd)
 
 cd ..
 
