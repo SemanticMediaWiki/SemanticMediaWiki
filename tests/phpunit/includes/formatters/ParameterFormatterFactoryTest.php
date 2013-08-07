@@ -53,7 +53,21 @@ class ParameterFormatterFactoryTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testNewFromArray() {
-		$instance = $this->getInstance();
+
+		// Object
+		$parameter = array( new \stdClass );
+		$instance = $this->getInstance( $parameter );
+
 		$this->assertInstanceOf( '\SMW\ArrayFormatter', $instance );
+		$this->assertEmpty( $instance->getRaw() );
+
+		// Simple array
+		$parameter = array( 'La' => 'Lu' );
+		$instance = $this->getInstance( $parameter );
+
+		$this->assertInstanceOf( '\SMW\ArrayFormatter', $instance );
+		$this->assertEquals( $parameter, $instance->getRaw() );
+
 	}
+
 }

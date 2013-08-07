@@ -4,6 +4,8 @@ namespace SMW\Test;
 
 use SMW\ArrayAccessor;
 
+use SMWRequestOptions;
+
 /**
  * Tests for the Collector class
  *
@@ -87,6 +89,8 @@ class CollectorTest extends SemanticMediaWikiTestCase {
 		$expected = array( $this->getRandomString() );
 
 		$instance = $this->getInstance( $expected, $accessor );
+		$instance->setRequestOptions( new SMWRequestOptions() );
+
 		$result   = $instance->getResults();
 
 		$this->assertInternalType( 'array', $result );
@@ -121,4 +125,5 @@ class CollectorTest extends SemanticMediaWikiTestCase {
 		$this->assertTrue( $instance->isCached() );
 
 	}
+
 }

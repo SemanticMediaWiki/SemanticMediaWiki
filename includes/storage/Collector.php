@@ -156,6 +156,7 @@ abstract class Collector implements Collectible {
 	 * @param string $type
 	 *
 	 * @return array
+	 * @@codeCoverageIgnore
 	 */
 	protected function getPropertyTables( $type, $dataItemId = true ) {
 

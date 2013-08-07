@@ -65,13 +65,27 @@ class UpdateJobTest extends ParserTestCase {
 		$this->assertInstanceOf( 'SMWUpdateJob', $this->getInstance() );
 	}
 
+
+	/**
+	 * @test UpdateJob::__construct
+	 *
+	 * @since 1.9
+	 */
+	public function testRun() {
+
+		$title    = $this->newMockObject( array( 'exists' => true ) )->getMockTitle();
+		$instance = $this->getInstance( $title );
+		$this->assertFalse( $instance->run() );
+
+	}
+
 	/**
 	 * @test UpdateJob::run
 	 * @dataProvider titleWikiPageDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testRun( $test, $expected ) {
+	public function testMockRun( $test, $expected ) {
 
 		$reflector = $this->newReflector();
 		$instance  = $this->getInstance( $test['title'] );
