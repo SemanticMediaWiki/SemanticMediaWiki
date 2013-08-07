@@ -29,7 +29,7 @@ script:
 after_script:
   - cd ../../extensions/SemanticMediaWiki
   - pwd
-  - ls- lap
+  - ls -lap
   - php ../../vendor/bin/coveralls -v
 
 notifications:
