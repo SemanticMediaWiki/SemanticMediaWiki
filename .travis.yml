@@ -28,9 +28,9 @@ script:
 
 after_script:
   - cd ../../extensions/SemanticMediaWiki
-  - pwd
+  - composer require satooshi/php-coveralls:dev-master
   - ls -lap
-  - php ../../vendor/bin/coveralls -v
+  - php vendor/bin/coveralls -v
 
 notifications:
   irc:

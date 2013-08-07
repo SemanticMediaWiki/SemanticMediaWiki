@@ -22,8 +22,6 @@ cp -r $originalDirectory SemanticMediaWiki
 
 cd ..
 
-composer require satooshi/php-coveralls:dev-master
-
 echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
 
 echo 'error_reporting(E_ALL| E_STRICT);' >> LocalSettings.php
