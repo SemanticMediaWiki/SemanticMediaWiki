@@ -18,8 +18,7 @@ cd extensions
 git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git --depth 1
 git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Validator.git --depth 1
 
-mkdir SemanticMediaWiki
-cp -r $originalDirectory/* SemanticMediaWiki
+cp -r $originalDirectory SemanticMediaWiki
 
 cd ..
 
