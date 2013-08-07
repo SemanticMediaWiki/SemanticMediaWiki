@@ -26,6 +26,7 @@ use Language;
  * @covers \SMW\SpecialUnusedProperties
  * @covers \SMW\SpecialProperties
  * @covers \SMW\SpecialConcepts
+ * @covers \SMW\SpecialPage
  *
  * @note Test base was borrowed from the EducationProgram extension
  *

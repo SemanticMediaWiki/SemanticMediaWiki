@@ -29,6 +29,7 @@ use FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\PropertiesCollector
+ * @covers \SMW\InvalidPropertyException
  *
  * @ingroup SQLStoreTest
  *

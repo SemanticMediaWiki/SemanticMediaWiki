@@ -8,19 +8,16 @@ use SMWQueryProcessor;
 /**
  * Tests for the SMW\DISerializer class
  *
- * @since 1.9
- *
  * @file
- * @ingroup SMW
- * @ingroup Test
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
 /**
- * DISerializer test is to verify the exported array structure for content
- * consumers such as the API etc.
+ * @covers \SMW\DISerializer
  *
  * @ingroup Test
  *
