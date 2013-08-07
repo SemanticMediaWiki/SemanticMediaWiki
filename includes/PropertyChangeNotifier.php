@@ -19,7 +19,7 @@ namespace SMW;
  *
  * @ingroup SMW
  */
-class PropertyChangeNotifier implements TitleAccess, DispatchableSource {
+class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
 
 	/** @var Store */
 	protected $store;
@@ -67,8 +67,8 @@ class PropertyChangeNotifier implements TitleAccess, DispatchableSource {
 	 *
 	 * @param ObservableDispatcher $dispatcher
 	 */
-	public function setDispatcher( ObservableDispatcher $dispatcher ) {
-		$this->dispatcher = $dispatcher->setSource( $this );
+	public function setObservableDispatcher( ObservableDispatcher $dispatcher ) {
+		$this->dispatcher = $dispatcher->setSubject( $this );
 		return $this;
 	}
 

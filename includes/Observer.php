@@ -26,9 +26,9 @@ interface Subscriber {
 	 *
 	 * @since  1.9
 	 *
-	 * @param Observable $source
+	 * @param Observable $observable
 	 */
-	public function update( Observable $source );
+	public function update( Observable $observable );
 
 }
 
@@ -43,12 +43,12 @@ abstract class Observer implements Subscriber {
 	/**
 	 * @since  1.9
 	 *
-	 * @param Observable|null $subject
+	 * @param Observable|null $observable
 	 */
-	public function __construct( Observable $subject = null ) {
+	public function __construct( Observable $observable = null ) {
 
-		if ( $subject instanceof Observable ) {
-			$subject->attach( $this );
+		if ( $observable instanceof Observable ) {
+			$observable->attach( $this );
 		}
 
 	}
@@ -58,14 +58,14 @@ abstract class Observer implements Subscriber {
 	 *
 	 * @since 1.9
 	 *
-	 * @param Observable|null $subject
+	 * @param Observable|null $observable
 	 */
-	public function update( Observable $subject ) {
+	public function update( Observable $observable ) {
 
-		if ( method_exists( $this, $subject->getState() ) ) {
+		if ( method_exists( $this, $observable->getState() ) ) {
 			call_user_func_array(
-				array( $this, $subject->getState() ),
-				array( $subject->getSource() )
+				array( $this, $observable->getState() ),
+				array( $observable->getSubject() )
 			);
 		}
 	}

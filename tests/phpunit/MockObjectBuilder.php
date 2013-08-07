@@ -141,6 +141,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->setValue( 'getData' ) ) );
 
 		$parserData->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->setValue( 'getTitle' ) ) );
+
+		$parserData->expects( $this->any() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( $this->setValue( 'getSubject' ) ) );
 
@@ -548,7 +552,9 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 				'getPropertySubjects',
 				'refreshConceptCache',
 				'deleteConceptCache',
-				'getConceptCacheStatus'
+				'getConceptCacheStatus',
+				'clearData',
+				'updateData'
 			) )
 			->getMock();
 
@@ -598,6 +604,14 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getQueryResult' )
 			->will( $this->setCallback( 'getQueryResult' ) );
+
+		$store->expects( $this->any() )
+			->method( 'updateData' )
+			->will( $this->setCallback( 'updateData' ) );
+
+		$store->expects( $this->any() )
+			->method( 'clearData' )
+			->will( $this->setCallback( 'clearData' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getAllPropertySubjects' )

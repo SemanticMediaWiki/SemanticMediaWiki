@@ -75,7 +75,7 @@ interface Observable extends Publisher {
 	 *
 	 * @since 1.9
 	 */
-	public function getSource();
+	public function getSubject();
 
 }
 
@@ -167,13 +167,13 @@ abstract class ObservableSubject implements Observable {
 	}
 
 	/**
-	 * @see Observable::getSource
+	 * @see Observable::getSubject
 	 *
 	 * @since 1.9
 	 *
 	 * @return Observable
 	 */
-	public function getSource() {
+	public function getSubject() {
 		return $this;
 	}
 

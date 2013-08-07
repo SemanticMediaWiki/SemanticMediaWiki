@@ -169,7 +169,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMW\Subscriber']                = $incDir . 'Observer.php';
 
 	$wgAutoloadClasses['SMW\ObservableDispatcher']        = $incDir . 'ObservableSubjectDispatcher.php';
-	$wgAutoloadClasses['SMW\DispatchableSource']          = $incDir . 'ObservableSubjectDispatcher.php';
+	$wgAutoloadClasses['SMW\DispatchableSubject']         = $incDir . 'ObservableSubjectDispatcher.php';
 	$wgAutoloadClasses['SMW\ObservableSubjectDispatcher'] = $incDir . 'ObservableSubjectDispatcher.php';
 
 	$wgAutoloadClasses['SMW\Cacheable']                 = $incDir . 'Cacheable.php';

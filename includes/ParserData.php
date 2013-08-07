@@ -405,7 +405,7 @@ class ParserData extends Observer implements IParserData {
 		// even finding uses of a property fails after its type was changed.
 		if ( $this->updateJobs ) {
 			$changeNotifier = new PropertyChangeNotifier( $store, $this->semanticData, Settings::newFromGlobals() );
-			$changeNotifier->setDispatcher( new ObservableSubjectDispatcher( new ChangeObserver() ) )->detectChanges();
+			$changeNotifier->setObservableDispatcher( new ObservableSubjectDispatcher( new ChangeObserver() ) )->detectChanges();
 		}
 
 		// Actually store semantic data, or at least clear it if needed

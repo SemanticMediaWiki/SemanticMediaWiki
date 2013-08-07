@@ -95,7 +95,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance( $store, $data, $settings );
 		$observer = new MockChangeObserver();
 
-		$instance->setDispatcher( new ObservableSubjectDispatcher( $observer ) );
+		$instance->setObservableDispatcher( new ObservableSubjectDispatcher( $observer ) );
 
 		$this->assertInstanceOf( $this->getClass(), $instance->detectChanges() );
 		$this->assertEquals( $subject->getTitle(), $instance->getTitle() );

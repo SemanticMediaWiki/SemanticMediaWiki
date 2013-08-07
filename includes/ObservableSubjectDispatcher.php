@@ -15,20 +15,20 @@ namespace SMW;
  */
 
 /**
- * Interface describing a source that is dispatchable
+ * Interface describing a Subject that is dispatchable
  *
  * @ingroup Observer
  */
-interface DispatchableSource {
+interface DispatchableSubject {
 
 	/**
-	 * Frowards requests fo
+	 * Forwards requests to a ObservableDispatcher
 	 *
 	 * @since  1.9
 	 *
-	 * @param Dispatchable $dispatcher
+	 * @param ObservableDispatcher $dispatcher
 	 */
-	public function setDispatcher( ObservableDispatcher $dispatcher );
+	public function setObservableDispatcher( ObservableDispatcher $dispatcher );
 
 }
 
@@ -49,9 +49,9 @@ interface ObservableDispatcher extends Observable {
 	 *
 	 * @since  1.9
 	 *
-	 * @param mixed $source
+	 * @param mixed $subject
 	 */
-	public function setSource( $source );
+	public function setSubject( DispatchableSubject $subject );
 
 }
 
@@ -64,7 +64,7 @@ interface ObservableDispatcher extends Observable {
  * @par Example:
  * @code
  *  $changeNotifier = new PropertyChangeNotifier( ... );
- *  $changeNotifier->setDispatcher( new ObservableSubjectDispatcher( new ChangeObserver() ) );
+ *  $changeNotifier->setObservableDispatcher( new ObservableSubjectDispatcher( new ChangeObserver() ) );
  * @endcode
  *
  * @ingroup Observer
@@ -72,19 +72,19 @@ interface ObservableDispatcher extends Observable {
 class ObservableSubjectDispatcher extends ObservableSubject implements ObservableDispatcher {
 
 	/** @var mixed */
-	protected $source = null;
+	protected $subject = null;
 
 	/**
-	 * Registeres the DispatchableSource
+	 * Registeres a DispatchableSubject
 	 *
 	 * @since 1.9
 	 *
-	 * @param $source
+	 * @param $subject
 	 *
 	 * @return ObservableSubjectDispatcher
 	 */
-	public function setSource( $source ) {
-		$this->source = $source;
+	public function setSubject( DispatchableSubject $subject ) {
+		$this->subject = $subject;
 		return $this;
 	}
 
@@ -97,8 +97,8 @@ class ObservableSubjectDispatcher extends ObservableSubject implements Observabl
 	 *
 	 * @return mixed
 	 */
-	public function getSource() {
-		return $this->source;
+	public function getSubject() {
+		return $this->subject;
 	}
 
 }
