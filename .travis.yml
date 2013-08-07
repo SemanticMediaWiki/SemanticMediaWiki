@@ -27,7 +27,10 @@ script:
   - cd ../phase3/tests/phpunit ; php phpunit.php --group SMWExtension --coverage-clover ../../build/logs/clover.xml
 
 after_script:
-  - cd ../../extensions/SemanticMediaWiki ; php ../../vendor/bin/coveralls -v
+  - cd ../../extensions/SemanticMediaWiki
+  - pwd
+  - ls- lap
+  - php ../../vendor/bin/coveralls -v
 
 notifications:
   irc:
