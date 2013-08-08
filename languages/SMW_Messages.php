@@ -7882,6 +7882,7 @@ Progresso estimate del actualisation currente:',
 /** Indonesian (Bahasa Indonesia)
  * @author Bennylin
  * @author Farras
+ * @author Ilham151096
  * @author Irwangatot
  * @author IvanLanin
  * @author Naval Scene
@@ -7938,7 +7939,7 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw-paramdesc-csv-sep' => 'Pemisah yang dipakai',
 	'smw-paramdesc-dsv-separator' => 'Pemisah yang dipakai',
 	'smw-paramdesc-dsv-filename' => 'Nama berkas DSV',
-	'smw-paramdesc-searchlabel' => 'Tulisan pada pranala menuju hasil', # Fuzzy
+	'smw-paramdesc-searchlabel' => 'Teks untuk melanjutkan pencarian',
 	'smw_iq_disabled' => 'Query semantik telah dinonaktifkan di wiki ini.',
 	'smw_iq_moreresults' => '… hasil lebih lanjut',
 	'smw_parseerror' => 'Nilai yang diberikan tidak dipahami.',
@@ -8003,8 +8004,7 @@ Menghasilkan RDF yang dapat ditelurusi.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|penggunaan|penggunaan}})',
 	'smw_purge' => 'Segarkan',
 	'types' => 'Tipe',
-	'smw_types_docu' => 'Berikut adalah daftar semua tipe data yang dapat diberikan pada properti.
-Setiap tipe data memiliki suatu halaman yang memberikan informasi tambahan.', # Fuzzy
+	'smw_types_docu' => 'Berikut ini adalah daftar semua jenis data yang dapat ditetapkan ke properti.',
 	'semanticstatistics' => 'Statistik semantik',
 	'smw_semstats_text' => "Wiki ini memiliki '''$1''' {{PLURAL:$1|nilai|nilai}} properti dari total '''$2''' [[Special:Properties|{{PLURAL:$2|properti|properti}}]].
 '''$3''' {{PLURAL:$3|properti|properti}} telah memiliki halaman sendiri, dan tipe data telah diberikan pada '''$4''' di antaranya.
@@ -8062,12 +8062,14 @@ Masukkan satu halaman dan satu properti.',
 	'smwadmin' => 'Fungsi admin untuk Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Mesin penyimpanan berhasil disiapkan.',
 	'smw_smwadmin_return' => 'Kembali ke $1',
-	'smw_smwadmin_updatestarted' => 'Suatu proses pembaruan untuk menyegarkan data semantik telah dimulai.
-Semua data tersimpan akan dibangun ulang atau diperbaiki jika diperlukan.
-Anda dapat mengikuti kemajuan pembaruan tersebut di halaman istimewa ini.', # Fuzzy
+	'smw_smwadmin_updatestarted' => 'Proses pemutakhiran baru untuk menyegarkan data semantik dimulai.
+Semua data yang tersimpan akan dibangun kembali atau diperbaiki ketika diperlukan.
+Anda dapat mengikuti kemajuan pembaruan pada halaman khusus ini.
+
+Kembali ke $1.',
 	'smw_smwadmin_updatenotstarted' => 'Sudah ada suatu proses pembaruan yang sedang berjalan.
 Tidak membuat proses lain.', # Fuzzy
-	'smw_smwadmin_updatestopped' => 'Semua proses pembaruan yang ada telah dihentikan.', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Semua proses pemutakhiran yang ada telah dihentikan.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Untuk menghentikan proses pembaruan yang sedang berjalan, Anda harus memilih kotak centang untuk menunjukkan bahwa Anda benar-benar yakin.', # Fuzzy
 	'smw_smwadmin_docu' => 'Halaman istimewa ini akan membantu Anda selama instalasi dan peningkatan dari <a href="http://semantic-mediawiki.org">Semantic MediaWiki.</a>
 Jangan lupa untuk mencadangkan data Anda yang berharga sebelum melaksanakan fungsi administratif.',
@@ -8108,6 +8110,7 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_adminlinks_inlinequerieshelp' => 'Bantuan query sisip',
 	'smw-createproperty-isproperty' => 'Ini adalah properti bertipe $1',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Nilai|Nilai}} yang diizinkan untuk properti ini adalah:',
+	'smw-prefs-intro-text' => 'Pilihan di bawah disediakan oleh [https://semantic-mediawiki.org/ MediaWiki semantik] (atau ekstensi terkait) untuk mengaktifkan kustomisasi individu pada fungsi terpilih. Untuk informasi lebih lanjut, silakan  lihat ini [http://semantic-mediawiki.org/wiki/Help:User_preferences bagian bantuan].',
 	'smw-ui-tooltip-title-info' => 'Informasi',
 	'smw-ui-tooltip-title-warning' => 'Kesalahan',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
