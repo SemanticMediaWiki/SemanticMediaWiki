@@ -101,7 +101,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 			'getUnusedPropertiesSpecial' => $this->getMockCollector( $result )
 		) )->getMockStore();
 
-		$instance = new UnusedPropertiesQueryPage( $store, $this->getSettings() );
+		$instance = new UnusedPropertiesQueryPage( $store, $this->newSettings() );
 		$instance->setContext( $this->newContext() );
 
 		return $instance;
@@ -113,8 +113,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
 	}
 
 	/**

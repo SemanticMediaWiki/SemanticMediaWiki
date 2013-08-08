@@ -127,7 +127,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 */
 	public function testConstructor() {
 		$instance = $this->getInstance(
-			$this->getTitle( SMW_NS_CONCEPT ),
+			$this->newTitle( SMW_NS_CONCEPT ),
 			$this->getParserOutput()
 		);
 		$this->assertInstanceOf( $this->getClass(), $instance );
@@ -140,7 +140,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 */
 	public function testConstructorException() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance( $this->getTitle( SMW_NS_CONCEPT ) );
+		$instance = $this->getInstance( $this->newTitle( SMW_NS_CONCEPT ) );
 	}
 
 	/**
@@ -152,7 +152,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 * @param $namespace
 	 */
 	public function testErrorOnNamespace( $namespace ) {
-		$title = $this->getTitle( $namespace );
+		$title = $this->newTitle( $namespace );
 		$errorMessage = $this->getMessageText( $title, 'smw_no_concept_namespace' );
 		$instance = $this->getInstance( $title, $this->getParserOutput() );
 
@@ -168,7 +168,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 * @param $params
 	 */
 	public function testErrorOnDoubleParse( array $params ) {
-		$title = $this->getTitle( SMW_NS_CONCEPT );
+		$title = $this->newTitle( SMW_NS_CONCEPT );
 		$errorMessage = $this->getMessageText( $title, 'smw_multiple_concepts' );
 
 		$instance = $this->getInstance( $title, $this->getParserOutput() );
@@ -192,7 +192,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 		$parserOutput =  $this->getParserOutput();
-		$title = $this->getTitle( SMW_NS_CONCEPT );
+		$title = $this->newTitle( SMW_NS_CONCEPT );
 
 		// Initialize and parse
 		$instance = $this->getInstance( $title, $parserOutput );
@@ -226,7 +226,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
+		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
 		$result = ConceptParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

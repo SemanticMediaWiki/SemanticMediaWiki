@@ -48,7 +48,7 @@ class ParserFunctionFactoryTest extends ParserTestCase {
 	 * @return ParserFunctionFactory
 	 */
 	private function getInstance() {
-		return ParserFunctionFactory::newFromParser( $this->getParser( $this->getTitle(), $this->getUser() ) );
+		return ParserFunctionFactory::newFromParser( $this->getParser( $this->newTitle(), $this->getUser() ) );
 	}
 
 	/**

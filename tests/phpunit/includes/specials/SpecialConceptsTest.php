@@ -55,8 +55,7 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
 	}
 
 	/**
@@ -96,7 +95,7 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 			'tag' => 'span',
 			'attributes' => array( 'class' => 'smw-sp-concept-count' )
 		);
-		$this->assertTag( $matches, $instance->getHtml( array( $this->getSubject() ), 1, 1, 1 ) );
+		$this->assertTag( $matches, $instance->getHtml( array( $this->newSubject() ), 1, 1, 1 ) );
 
 	}
 }

@@ -42,7 +42,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 	 * @return SemanticData
 	 */
 	private function getInstance() {
-		return new SemanticData( $this->getSubject() );
+		return new SemanticData( $this->newSubject() );
 	}
 
 	/**

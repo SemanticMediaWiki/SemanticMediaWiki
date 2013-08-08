@@ -46,7 +46,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return array
 	 */
-	public function getDataItemIdDataProvider() {
+	public function dataItemIdDataProvider() {
 		return array(
 			array( '_txt' , SMWDataItem::TYPE_BLOB ), // #0
 			array( '_wpg' , SMWDataItem::TYPE_WIKIPAGE ), // #1
@@ -58,7 +58,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test DataValueFactory::getDataItemId
-	 * @dataProvider getDataItemIdDataProvider
+	 * @dataProvider dataItemIdDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -74,7 +74,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return array
 	 */
-	public function getTypeIdValueDataProvider() {
+	public function typeIdValueDataProvider() {
 		return array(
 			array( '_txt'  , 'Bar'          , 'Bar'          , 'SMWStringValue' ), // #0
 			array( '_txt'  , 'Bar[[ Foo ]]' , 'Bar[[ Foo ]]' , 'SMWStringValue' ), // #1
@@ -103,7 +103,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test DataValueFactory::newTypeIdValue
-	 * @dataProvider getTypeIdValueDataProvider
+	 * @dataProvider typeIdValueDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -113,6 +113,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 * @param $expectedInstance
 	 */
 	public function testNewTypeIdValue( $typeId, $value, $expectedValue, $expectedInstance ) {
+
 		$dataValue = DataValueFactory::newTypeIdValue( $typeId, $value );
 		$this->assertInstanceOf( $expectedInstance , $dataValue );
 
@@ -121,6 +122,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		} else {
 			$this->assertInternalType( 'array', $dataValue->getErrors() );
 		}
+
 	}
 
 	/**
@@ -128,7 +130,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return array
 	 */
-	public function getPropertyObjectValueDataProvider() {
+	public function propertyObjectValueDataProvider() {
 		return array(
 			array( 'Foo'  , 'Bar'          , 'Bar'          , 'SMWDataValue' ), // #0
 			array( 'Foo'  , 'Bar[[ Foo ]]' , 'Bar[[ Foo ]]' , 'SMWDataValue' ), // #1
@@ -148,7 +150,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test DataValueFactory::newPropertyObjectValue
-	 * @dataProvider getPropertyObjectValueDataProvider
+	 * @dataProvider propertyObjectValueDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -158,6 +160,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 * @param $expectedInstance
 	 */
 	public function testNewPropertyObjectValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
+
 		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
 		$propertyDI = $propertyDV->getDataItem();
 
@@ -181,8 +184,9 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 			$propertyDI,
 			$value,
 			$this->getRandomString(),
-			$this->getSubject()
+			$this->newSubject()
 		);
+
 		$this->assertInstanceOf( $expectedInstance , $dataValue );
 	}
 
@@ -191,7 +195,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return array
 	 */
-	public function getPropertyValueDataProvider() {
+	public function propertyValueDataProvider() {
 		return array(
 			array( 'Foo'  , 'Bar'          , 'Bar'          , 'SMWDataValue' ), // #0
 			array( 'Foo'  , 'Bar[[ Foo ]]' , 'Bar[[ Foo ]]' , 'SMWDataValue' ), // #1
@@ -207,7 +211,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test DataValueFactory::addPropertyValue
-	 * @dataProvider getPropertyValueDataProvider
+	 * @dataProvider propertyValueDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -217,6 +221,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 * @param $expectedInstance
 	 */
 	public function testAddPropertyValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
+
 		$dataValue = DataValueFactory::newPropertyValue( $propertyName, $value );
 
 		// Check the returned instance
@@ -237,8 +242,9 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 			$propertyName,
 			$value,
 			$this->getRandomString(),
-			$this->getSubject()
+			$this->newSubject()
 		);
+
 		$this->assertInstanceOf( $expectedInstance , $dataValue );
 	}
 
@@ -247,7 +253,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return array
 	 */
-	public function getFindTypeIdDataProvider() {
+	public function findTypeIdDataProvider() {
 		return array(
 			array( 'URL'      , '_uri' ), // #0
 			array( 'Page'     , '_wpg' ), // #1
@@ -262,7 +268,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test DataValueFactory::findTypeID
-	 * @dataProvider getFindTypeIdDataProvider
+	 * @dataProvider findTypeIdDataProvider
 	 *
 	 * @since 1.9
 	 *

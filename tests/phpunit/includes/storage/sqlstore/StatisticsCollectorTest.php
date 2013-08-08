@@ -140,9 +140,10 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 * @param $segment
 	 * @param $expectedType
 	 */
-	public function testGetResults( $segment, $expectedType ) {
+	public function testResultsOnStore( $segment, $expectedType ) {
+
 		$instance = $this->getInstance();
-		$result = $instance->getResults();
+		$result   = $instance->getResults();
 
 		$this->assertInternalType( $expectedType, $result[$segment] );
 	}

@@ -74,7 +74,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	private function getInstance( SemanticData $semanticData = null, $settings = array() ) {
 		return new BasePropertyAnnotator(
 			$semanticData === null ? $this->newMockObject()->getMockSemanticData() : $semanticData,
-			$this->getSettings( $settings )
+			$this->newSettings( $settings )
 		);
 	}
 
@@ -101,7 +101,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		$this->observerStatus = null;
 
 		$semanticData = new SemanticData(
-			$this->newSubject( $this->getTitle( $setup['namespace'] ) )
+			$this->newSubject( $this->newTitle( $setup['namespace'] ) )
 		);
 
 		$instance = $this->getInstance( $semanticData, $setup['settings'] );
@@ -125,7 +125,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		$this->observerStatus = null;
 
 		$semanticData = new SemanticData(
-			$this->newSubject( $this->getTitle( $setup['namespace'] ) )
+			$this->newSubject( $this->newTitle( $setup['namespace'] ) )
 		);
 
 		// Create instance and attach mock Observer
@@ -154,7 +154,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	 */
 	public function testAddCategoriesObserverIntegration( array $setup, array $expected ) {
 
-		$subject  = $this->newSubject( $this->getTitle( $setup['namespace'] ) );
+		$subject  = $this->newSubject( $this->newTitle( $setup['namespace'] ) );
 		$semanticData = new SemanticData( $subject );
 
 		// Test "real" observer integration

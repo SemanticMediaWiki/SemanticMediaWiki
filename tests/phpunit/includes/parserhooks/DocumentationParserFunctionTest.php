@@ -50,7 +50,7 @@ class DocumentationParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticInit() {
-		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
+		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
 		$result = DocumentationParserFunction::staticInit( $parser );
 		$this->assertTrue( $result );
 	}

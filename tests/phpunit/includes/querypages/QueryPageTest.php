@@ -48,7 +48,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 			->getMock();
 
 		$context = $this->newContext( array( 'property' => $search ) );
-		$context->setTitle( $this->getTitle() );
+		$context->setTitle( $this->newTitle() );
 
 		$queryPage->setContext( $context );
 

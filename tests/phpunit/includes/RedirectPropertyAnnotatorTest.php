@@ -69,7 +69,7 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testBuild( $test, $expected ) {
 
-		$semanticData =  new SemanticData( $this->getSubject() );
+		$semanticData =  new SemanticData( $this->newSubject() );
 
 		$instance = $this->getInstance( $semanticData );
 		$instance->isEnabled( $test['isEnabled'] )->annotate( $test['text'] );
@@ -85,7 +85,7 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function redirectsDataProvider() {
 
-		$title = $this->getTitle();
+		$title = $this->newTitle();
 
 		// #0 Title
 		$provider[] = array(

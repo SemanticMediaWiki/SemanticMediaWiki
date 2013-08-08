@@ -3,8 +3,8 @@
 namespace SMW\Test;
 
 use SMW\ShowParserFunction;
-use SMW\QueryData;
 use SMW\MessageFormatter;
+use SMW\QueryData;
 
 use Title;
 use ParserOutput;
@@ -41,76 +41,6 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Provides data sample normally found in connection with the {{#show}}
-	 * parser function. The first array contains parametrized input value while
-	 * the second array contains expected return results for the instantiated
-	 * object.
-	 *
-	 * @return array
-	 */
-	public function getDataProvider() {
-		return array(
-
-			// #0
-			// {{#show: Foo
-			// |?Modification date
-			// }}
-			array(
-				array(
-					'Foo',
-					'?Modification date',
-				),
-				array(
-					'output' => '',
-					'propertyCount' => 4,
-					'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-					'propertyValue' => array( 'list', 0, 1, '[[:Foo]]' )
-				)
-			),
-
-			// #1
-			// {{#show: Help:Bar
-			// |?Modification date
-			// |default=no results
-			// }}
-			array(
-				array(
-					'Help:Bar',
-					'?Modification date',
-					'default=no results'
-				),
-				array(
-					'output' => 'no results',
-					'propertyCount' => 4,
-					'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-					'propertyValue' => array( 'list', 0, 1, '[[:Help:Bar]]' )
-				)
-			),
-
-			// #2 [[..]] is not acknowledged therefore displays an error message
-			// {{#show: [[File:Fooo]]
-			// |?Modification date
-			// |default=no results
-			// |format=table
-			// }}
-			array(
-				array(
-					'[[File:Fooo]]',
-					'?Modification date',
-					'default=no results',
-					'format=table'
-				),
-				array(
-					'output' => 'class="smwtticon warning"', // lazy content check for the error
-					'propertyCount' => 4,
-					'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-					'propertyValue' => array( 'table', 0, 1, '[[:]]' )
-				)
-			)
-		);
-	}
-
-	/**
 	 * Helper method that returns a ShowParserFunction object
 	 *
 	 * @since 1.9
@@ -121,10 +51,14 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @return ShowParserFunction
 	 */
 	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
+
+		$settings = $this->newSettings();
+
 		return new ShowParserFunction(
 			$this->getParserData( $title, $parserOutput ),
 			new QueryData( $title ),
-			new MessageFormatter( $title->getPageLanguage() )
+			new MessageFormatter( $title->getPageLanguage() ),
+			$settings
 		 );
 	}
 
@@ -134,7 +68,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
@@ -158,14 +92,16 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @param array $expected
 	 */
 	public function testParse( array $params, array $expected ) {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
-		$result = $instance->parse( $params, true );
+
+		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
+		$result   = $instance->parse( $params, true );
 
 		if (  $expected['output'] === '' ) {
 			$this->assertEmpty( $result );
 		} else {
 			$this->assertContains( $expected['output'], $result );
 		}
+
 	}
 
 	/**
@@ -175,8 +111,9 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testParseDisabledsmwgQEnabled() {
-		$title = $this->getTitle();
-		$message = new MessageFormatter( $title->getPageLanguage() );
+
+		$title    = $this->newTitle();
+		$message  = new MessageFormatter( $title->getPageLanguage() );
 		$expected = $message->addFromKey( 'smw_iq_disabled' )->getHtml();
 
 		$instance = $this->getInstance( $title, $this->getParserOutput() );
@@ -200,8 +137,9 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @param array $expected
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected ) {
-		$parserOutput =  $this->getParserOutput();
-		$title = $this->getTitle();
+
+		$parserOutput = $this->newParserOutput();
+		$title        = $this->newTitle();
 
 		// Initialize and parse
 		$instance = $this->getInstance( $title, $parserOutput );
@@ -211,13 +149,14 @@ class ShowParserFunctionTest extends ParserTestCase {
 		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
 
 		// Confirm subSemanticData objects for the SemanticData instance
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
 			$this->assertSemanticData( $containerSemanticData, $expected );
 		}
+
 	}
 
 	/**
@@ -226,8 +165,80 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
+		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
 		$result = ShowParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
+	}
+
+	/**
+	 * Provides data sample normally found in connection with the {{#show}}
+	 * parser function. The first array contains parametrized input value while
+	 * the second array contains expected return results for the instantiated
+	 * object.
+	 *
+	 * @return array
+	 */
+	public function getDataProvider() {
+
+		$provider = array();
+
+		// #0
+		// {{#show: Foo
+		// |?Modification date
+		// }}
+		$provider[] = array(
+			array(
+				'Foo',
+				'?Modification date',
+			),
+			array(
+				'output' => '',
+				'propertyCount' => 4,
+				'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+				'propertyValue' => array( 'list', 0, 1, '[[:Foo]]' )
+			)
+		);
+
+		// #1
+		// {{#show: Help:Bar
+		// |?Modification date
+		// |default=no results
+		// }}
+		$provider[] = array(
+			array(
+				'Help:Bar',
+				'?Modification date',
+				'default=no results'
+			),
+			array(
+				'output' => 'no results',
+				'propertyCount' => 4,
+				'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+				'propertyValue' => array( 'list', 0, 1, '[[:Help:Bar]]' )
+			)
+		);
+
+		// #2 [[..]] is not acknowledged therefore displays an error message
+		// {{#show: [[File:Fooo]]
+		// |?Modification date
+		// |default=no results
+		// |format=table
+		// }}
+		$provider[] = array(
+			array(
+				'[[File:Fooo]]',
+				'?Modification date',
+				'default=no results',
+				'format=table'
+			),
+			array(
+				'output' => 'class="smwtticon warning"', // lazy content check for the error
+				'propertyCount' => 4,
+				'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+				'propertyValue' => array( 'table', 0, 1, '[[:]]' )
+			)
+		);
+
+		return $provider;
 	}
 }

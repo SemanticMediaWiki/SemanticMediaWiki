@@ -6,6 +6,7 @@ use SMW\DataValueFactory;
 use SMW\ArrayAccessor;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\Settings;
 
 use RequestContext;
@@ -261,34 +262,68 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param array $expected
 	 */
 	protected function assertSemanticData( SemanticData $semanticData, array $expected ) {
-		$this->assertCount( $expected['propertyCount'], $semanticData->getProperties() );
 
-		// Assert expected properties
-		foreach ( $semanticData->getProperties() as $key => $diproperty ) {
+		$properties = $semanticData->getProperties();
+
+		$this->assertCount( $expected['propertyCount'], $properties );
+		$this->assertProperties(  $semanticData , $properties, $expected );
+
+	}
+
+	/**
+	 * Assert property
+	 *
+	 * @since  1.9
+	 *
+	 * @param  array $expected
+	 * @param  DIProperty $property
+	 */
+	protected function assertProperties( SemanticData $semanticData, array $properties, array $expected ) {
+
+		foreach ( $properties as $key => $diproperty ) {
 			$this->assertInstanceOf( '\SMW\DIProperty', $diproperty );
 
 			if ( isset( $expected['propertyKey']) ){
 				$this->assertContains( $diproperty->getKey(), $expected['propertyKey'] );
-			} else {
+			}
+
+			if ( isset( $expected['propertyLabel']) ){
 				$this->assertContains( $diproperty->getLabel(), $expected['propertyLabel'] );
 			}
 
-			// Assert property values
-			foreach ( $semanticData->getPropertyValues( $diproperty ) as $dataItem ){
-				$dataValue = DataValueFactory::newDataItemValue( $dataItem, $diproperty );
-				$DItype = $dataValue->getDataItem()->getDIType();
-
-				if ( $DItype === SMWDataItem::TYPE_WIKIPAGE ){
-					$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
-				} else if ( $DItype === SMWDataItem::TYPE_NUMBER ){
-					$this->assertContains( $dataValue->getNumber(), $expected['propertyValue'] );
-				} else if ( $DItype === SMWDataItem::TYPE_TIME ){
-					$this->assertContains( $dataValue->getISO8601Date(), $expected['propertyValue'] );
-				} else if ( $DItype === SMWDataItem::TYPE_BLOB ){
-					$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
-				}
-
+			if ( isset( $expected['propertyValue']) ){
+				$this->assertPropertyValues( $diproperty, $semanticData->getPropertyValues( $diproperty ), $expected );
 			}
+
 		}
 	}
+
+	/**
+	 * Assert property values
+	 *
+	 * @since  1.9
+	 *
+	 * @param  array $expected
+	 * @param  DIProperty $property
+	 */
+	protected function assertPropertyValues( DIProperty $property, $dataItems, array $expected ) {
+
+		foreach ( $dataItems as $dataItem ){
+
+			$dataValue = DataValueFactory::newDataItemValue( $dataItem, $property );
+			$DItype = $dataValue->getDataItem()->getDIType();
+
+			if ( $DItype === SMWDataItem::TYPE_WIKIPAGE ){
+				$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
+			} else if ( $DItype === SMWDataItem::TYPE_NUMBER ){
+				$this->assertContains( $dataValue->getNumber(), $expected['propertyValue'] );
+			} else if ( $DItype === SMWDataItem::TYPE_TIME ){
+				$this->assertContains( $dataValue->getISO8601Date(), $expected['propertyValue'] );
+			} else if ( $DItype === SMWDataItem::TYPE_BLOB ){
+				$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
+			}
+
+		}
+	}
+
 }

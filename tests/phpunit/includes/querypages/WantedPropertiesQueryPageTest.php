@@ -98,7 +98,7 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 			'getWantedPropertiesSpecial' => $this->getMockCollector( $result )
 		) )->getMockStore();
 
-		$instance = new WantedPropertiesQueryPage( $store, $this->getSettings() );
+		$instance = new WantedPropertiesQueryPage( $store, $this->newSettings() );
 		$instance->setContext( $this->newContext() );
 
 		return $instance;
@@ -110,8 +110,7 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
 	}
 
 	/**

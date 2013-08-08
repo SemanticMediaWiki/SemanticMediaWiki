@@ -132,7 +132,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
@@ -156,7 +156,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @param array $expected
 	 */
 	public function testParse( array $params, array $expected ) {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
 		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		$this->assertInternalType( 'string', $result );
@@ -172,8 +172,9 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @param array $expected
 	 */
 	public function testInstantiatedPropertyValues( array $params, array $expected ) {
-		$parserOutput =  $this->getParserOutput();
-		$title = $this->getTitle();
+
+		$parserOutput = $this->newParserOutput();
+		$title        = $this->newTitle();
 
 		// Initialize and parse
 		$instance = $this->getInstance( $title, $parserOutput );
@@ -183,7 +184,7 @@ class SetParserFunctionTest extends ParserTestCase {
 		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
 		$this->assertSemanticData( $parserData->getData(), $expected );
 	}
 
@@ -193,7 +194,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
+		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
 		$result = SetParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

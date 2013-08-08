@@ -69,7 +69,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
@@ -80,7 +80,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 */
 	public function testConstructorException() {
 		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new $this->getInstance( $this->getTitle() );
+		$instance = new $this->getInstance( $this->newTitle() );
 	}
 
 	/**
@@ -94,7 +94,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$instance = $this->getInstance( $this->getTitle(), $this->getParserOutput() );
+		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
 		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		$this->assertTrue( $result !== '' ? $expected['errors'] : !$expected['errors'] );
@@ -114,7 +114,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->getTitle(), $this->getUser() );
+		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
 		$result = RecurringEventsParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

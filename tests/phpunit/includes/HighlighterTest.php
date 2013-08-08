@@ -72,9 +72,10 @@ class HighlighterTest extends SemanticMediaWikiTestCase {
 	 * @param $type
 	 */
 	public function testGetHtml( $type ) {
-		$instance = Highlighter::factory( $type );
 
-		$title = $this->getTitle();
+		$instance = Highlighter::factory( $type );
+		$title    = $this->newTitle();
+
 		$instance->setContent( array(
 			'title' => $title->getFullText()
 		) );

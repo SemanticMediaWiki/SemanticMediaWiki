@@ -82,7 +82,7 @@ class JobBaseTest extends SemanticMediaWikiTestCase {
 	public function testGetSetSettings() {
 
 		$instance = $this->getInstance();
-		$settings = $this->getSettings( array( 'test' => 'lula' ) );
+		$settings = $this->newSettings( array( 'test' => 'lula' ) );
 
 		$this->assertInstanceOf( '\SMW\Settings', $instance->getSettings() );
 		$this->assertInstanceOf( $this->getClass(), $instance->setSettings( $settings ) );

@@ -87,7 +87,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		$connection = $this->getMockDBConnection( $property, $count );
 
 		// Settings to be used
-		$settings = Settings::newFromArray( array(
+		$settings = $this->newSettings( array(
 			'smwgPDefaultType' => '_wpg',
 			'smwgCacheType' => 'hash',
 			'smwgWantedPropertiesCache' => $cacheEnabled,

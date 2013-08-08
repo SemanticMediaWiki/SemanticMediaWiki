@@ -56,7 +56,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 
 		$mockStore = $this->newMockObject( $store )->getMockStore();
 		$mockData  = $this->newMockObject( $data )->getMockSemanticData();
-		$settings  = $this->getSettings( array(
+		$settings  = $this->newSettings( array(
 			'smwgDeclarationProperties' => $setting === null ? array( '_PVAL' ): $setting
 		) );
 

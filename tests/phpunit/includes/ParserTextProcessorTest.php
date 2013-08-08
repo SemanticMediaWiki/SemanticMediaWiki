@@ -227,7 +227,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 	private function getInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
 		return new ParserTextProcessor(
 			$this->getParserData( $title, $parserOutput ),
-			$this->getSettings( $settings )
+			$this->newSettings( $settings )
 		);
 	}
 
@@ -240,7 +240,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 * @param $namespace
 	 */
 	public function testConstructor( $namespace ) {
-		$instance = $this->getInstance( $this->getTitle( $namespace ), $this->getParserOutput() );
+		$instance = $this->getInstance( $this->newTitle( $namespace ), $this->newParserOutput() );
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
@@ -255,13 +255,14 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 * @param array $expected
 	 */
 	public function testStripMagicWords( $namespace, $text, array $expected ) {
-		$parserOutput = $this->getParserOutput();
-		$title = $this->getTitle( $namespace );
-		$instance = $this->getInstance( $title, $parserOutput );
+
+		$parserOutput = $this->newParserOutput();
+		$title        = $this->newTitle( $namespace );
+		$instance     = $this->getInstance( $title, $parserOutput );
 
 		// Make protected method accessible
-		$reflection = new ReflectionClass( $this->getClass() );
-		$method = $reflection->getMethod( 'stripMagicWords' );
+		$reflector = $this->newReflector();
+		$method    = $reflector->getMethod( 'stripMagicWords' );
 		$method->setAccessible( true );
 
 		$result = $method->invoke( $instance, array( &$text ) );
@@ -292,9 +293,10 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 * @param array $expected
 	 */
 	public function testParse( $namespace, array $settings, $text, array $expected ) {
-		$parserOutput =  $this->getParserOutput();
-		$title = $this->getTitle( $namespace );
-		$instance = $this->getInstance( $title, $parserOutput, $settings );
+
+		$parserOutput = $this->newParserOutput();
+		$title        = $this->newTitle( $namespace );
+		$instance     = $this->getInstance( $title, $parserOutput, $settings );
 
 		// Text parsing
 		$instance->parse( $text );
@@ -306,7 +308,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
 		$this->assertSemanticData( $parserData->getData(), $expected );
 	}
 
@@ -321,12 +323,13 @@ class ParserTextProcessorTest extends ParserTestCase {
 		$text      = '#REDIRECT [[:Lala]]';
 
 		// Create text processor instance
-		$parserOutput = $this->getParserOutput();
-		$title = $this->getTitle( $namespace );
-		$settings = $this->getSettings( array(
+		$parserOutput = $this->newParserOutput();
+		$title        = $this->newTitle( $namespace );
+
+		$settings = $this->newSettings( array(
 			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
 			'smwgLinksInValues' => false,
-			'smwgInlineErrors' => true,
+			'smwgInlineErrors'  => true,
 		) );
 
 		$parserData = $this->getParserData( $title, $parserOutput );
@@ -336,11 +339,11 @@ class ParserTextProcessorTest extends ParserTestCase {
 
 		// Build expected results from a successful setRedirect execution
 		$expected['propertyCount'] = 1;
-		$expected['propertyKey'] = '_REDI';
+		$expected['propertyKey']   = '_REDI';
 		$expected['propertyValue'] = ':Lala';
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
 		$this->assertSemanticData( $parserData->getData(), $expected );
 	}
 
@@ -350,12 +353,13 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testProcess() {
-		$parserOutput =  $this->getParserOutput();
-		$title = $this->getTitle();
-		$instance = $this->getInstance( $title, $parserOutput );
+
+		$parserOutput = $this->newParserOutput();
+		$title        = $this->newTitle();
+		$instance     = $this->getInstance( $title, $parserOutput );
 
 		// Make protected methods accessible
-		$reflection = new ReflectionClass( $this->getClass() );
+		$reflection = $this->newReflector();
 
 		$method = $reflection->getMethod( 'process' );
 		$method->setAccessible( true );

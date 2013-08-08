@@ -338,7 +338,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$propertySearch = $this->getRandomString();
 
 		$context = $this->newContext( array( 'property' => $propertySearch ) );
-		$context->setTitle( $this->getTitle() );
+		$context->setTitle( $this->newTitle() );
 
 		$instance = $this->getInstance();
 		$instance->setContext( $context );
