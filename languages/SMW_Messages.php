@@ -9073,7 +9073,7 @@ $messages['kn'] = array(
  * @author 아라
  */
 $messages['ko'] = array(
-	'smw-desc' => '위키를 기계와 사람이 더 편리하게 이용할 수 있도록 합니다 ([http://semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])',
+	'smw-desc' => '위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([http://semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])',
 	'smw_viewasrdf' => 'RDF 피드',
 	'smw_finallistconjunct' => ', 그리고',
 	'smw_factbox_head' => '"$1"에 대한 사실',
@@ -9262,50 +9262,6 @@ $messages['ko'] = array(
 	'smw-ask-delete' => '[삭제]',
 	'smw-ask-sorting' => '정렬',
 	'smw-ask-format-selection-help' => '자세한 설명에 대해서는 $1 도움말 문서로 방문하세요.',
-	'querycreator' => '쿼리 생성기',
-	'smw_qc_addmainlabel' => '주 레이블 추가',
-	'smw_qc_show_addnal_opts' => '많은 옵션 보이기',
-	'smw_qc_hide_addnal_opts' => '적은 옵션 보이기',
-	'smw_qc_otheropt' => '다른 옵션',
-	'smw_qc_intro' => '접두어:',
-	'smw_qc_outro' => '접미어:',
-	'smw_qc_default' => '기본값:',
-	'smw_qc_formatopt' => '서식 옵션',
-	'smw_qc_query_help' => '아래에 양식을 사용할 쿼리를 입력하세요.
-분류(<strong><nowiki>예를 들어 [[분류:배우]]</nowiki></strong>),
-속성(<strong><nowiki>예를 들어 [[Located in::독일]]</nowiki></strong>),
-이름(<strong><nowiki>예를 들어 [[독일]]</nowiki></strong>)과
-이름공간(<strong><nowiki>예를 들어 [[도움말:+]]</nowiki></strong>)에 따라 위키 문서를 선택하세요',
-	'smw_qui_property' => '<strong>속성</strong>',
-	'smw_qui_prop' => '속성:',
-	'smw_qui_labl' => '레이블:',
-	'smw_qui_formt' => '형식:',
-	'smw_qui_limt' => '제한:',
-	'smw_qui_shownresults' => '결과에 보이기',
-	'smw_qui_noquery' => '지정한 쿼리가 없습니다',
-	'smw_qui_invalidprop' => '"$1"(은)는 올바른 속성이 아닐 수도 있습니다',
-	'smw_qui_invalidformat' => '선택한 "$1" 서식은 이 위키에 존재하지 않습니다.',
-	'smw_qui_nosort' => '정렬하지 않음',
-	'smw_qui_ascorder' => '오름차순',
-	'smw_qui_descorder' => '내림차순',
-	'smw_qui_randorder' => '임의',
-	'smw_qui_addnprop' => '속성 추가',
-	'smw_qui_delete' => '제거',
-	'smw_qui_rescol' => '쿼리와 일치',
-	'smw_qui_options' => '옵션',
-	'smw_qui_addcategory' => '분류 추가',
-	'smw_qui_addrescol' => '쿼리와 일치 추가',
-	'smw_qui_ok' => '확인',
-	'smw_qui_cancel' => '취소',
-	'smw_qui_category' => '<strong>분류</strong>',
-	'smw_qui_label' => '레이블',
-	'smw_prp_options' => '속성 옵션',
-	'smw_qui_catopts' => '분류 옵션',
-	'smw_qui_mainlabopts' => '결과 옵션',
-	'smw_qui_dlabel' => '레이블:',
-	'smw_qui_dcategory' => '분류:',
-	'smw_qui_dcatyes' => '분류가 있으면 텍스트 보이기:',
-	'smw_qui_dcatno' => '분류가 없으면 텍스트 보이기:',
 	'searchbyproperty' => '속성으로 찾기',
 	'smw_sbv_docu' => '주어진 속성과 값을 가지고 모든 문서를 찾습니다.',
 	'smw_sbv_novalue' => '속성에 대한 올바른 값을 입력하거나 "$1"에 대한 모든 속성 값을 보세요.',
@@ -9353,10 +9309,27 @@ $1 문서로 돌아갑니다.',
 	'smw_smwadmin_updatenotstopped' => '실행하고 있는 업데이트 과정을 중지하려면 정말 확실한지 나타내는 확인란을 활성화해야 합니다.
 
 $1 문서로 돌아갑니다.',
+	'smw_smwadmin_docu' => '이 특수 문서는 <a href="http://semantic-mediawiki.org">시맨틱 미디어위키</a>의 설치와 업그레이드를 하는 동안 도와줍니다.
+관리 기능을 실행하기 전에 중요한 데이터를 백업해야 합니다.',
 	'smw_smwadmin_db' => '데이터베이스 설치와 업그레이드',
+	'smw_smwadmin_dbdocu' => '시맨틱 미디어위키는 시멘틱 데이터를 저장하기 위해 미디어위키 데이터베이스에 몇가지 확장 기능이 필요합니다.
+아래의 기능은 데이터베이스가 제대로 설정되어 있는지 확인합니다.
+이 단계에서 바뀐 내용은 미디어위키 데이터베이스의 나머지에 영향을 주지 않고, 원한다면 쉽게 되돌릴 수 있습니다.
+이 설정 기능은 어떠한 피해 없이 여러 번 실행될 수 있지만, 설치나 업그레이드에 한 번만 필요합니다.',
+	'smw_smwadmin_permissionswarn' => 'SQL 오류로 작업이 실패하면, 위키가 고용한 데이터베이스 사용자(LocalSettings.php를 확인하세요)는 아마도 충분한 권한이 없습니다.
+일시적으로 LocalSettings.php에서 데이터베이스 루트(root)의 로그인을 입력해서, 이 사용자가 테이블을 만들고 삭제할 수 있는 추가적인 권한을 부여하거나, 관리자의 자격 증명을 사용할 수 있는 <code>SMW_setup.php</code> 유지 관리 스크립트를 사용하세요.',
 	'smw_smwadmin_dbbutton' => '표를 초기화하거나 업그레이드',
 	'smw_smwadmin_announce' => '내 위키 발표',
+	'smw_smwadmin_announcedocu' => '시맨틱 미디어위키는 새 시맨틱 위키 사이트를 발표하는 웹 서비스가 있습니다.
+이 서비스는 시맨틱 미디어위키를 사용하는 공개 사이트의 목록을 유지 관리하는 데 사용되며, 주로 <a href="http://semantic-mediawiki.org/wiki/SMW_Project">시맨틱 미디어위키 프로젝트</a>가 시맨틱 미디어위키의 일반적인 사용법을 파악하는 데 에 도움이 됩니다.
+<a href="http://semantic-mediawiki.org/wiki/Registry">이 서비스에 대한 추가적인 정보</a>에 대해서는 시맨틱 미디어위키 홈페이지를 참고하세요.',
+	'smw_smwadmin_announcebutton' => '해당 서비스에 위키 URL을 제출할 다음 버튼을 누르세요.
+서비스는 공개적으로 접근할 수 없는 위키를 등록하지 않으며, 공개적으로 접근할 수 있는 정보만 저장합니다.',
 	'smw_smwadmin_datarefresh' => '데이터 복구와 업그레이드',
+	'smw_smwadmin_datarefreshdocu' => '위키의 현재 내용에 따라 모든 시맨틱 미디어위키 데이터를 복구할 수 있습니다.
+안쪽 형식이 어떤 소프트웨어 업그레이드로 인해 바뀌었으면 깨진 데이터를 복구하거나 데이터를 새로 고치는 데 유용할 수 있습니다.
+업데이트는 문서 단위로 실행되고 즉시 완료되지 않습니다.
+다음은 업데이트가 진행하고 있으면 보여주고 (이 기능이 사이트 관리자가 비활성화하지 않는 한) 업데이트를 시작하거나 멈출 수 있습니다.',
 	'smw_smwadmin_datarefreshprogress' => '<strong>업데이트가 이미 진행 중입니다.</strong>
 사용자가 위키에 접근할 때마다 작은 덩어리의 새로 고침 데이터 진행만 있기 때문에 업데이트 진행이 느린 것은 정상입니다.
 더 빠르게 이 업데이트를 마치려면 <code>runJobs.php</code> 미디어위키 유지 보수 스크립트를 호출할 수 있습니다. (일괄 하나에서 수행하는 업데이트의 수를 제한하려면 <code>--maxjobs 1000</code> 옵션을 사용하세요)
@@ -9366,7 +9339,10 @@ $1 문서로 돌아갑니다.',
 	'smw_smwadmin_datarefreshstopconfirm' => '예, 확실합니다.',
 	'smw_smwadmin_support' => '지원 얻기',
 	'smw_smwadmin_supportdocu' => '문제가 있을 때 다양한 자료가 도움이 될 수도 있습니다:',
+	'smw_smwadmin_installfile' => '설치에 문제가 있으면, <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL 파일</a>에서 지침을 확인하여 시작하세요.',
+	'smw_smwadmin_smwhomepage' => '시맨틱 미디어위키의 완전한 사용자 설명서는 <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>에 있습니다.',
 	'smw_smwadmin_mediazilla' => '버그는 <a href="https://bugzilla.wikimedia.org/">버그질라</a>에 보고할 수 있습니다.',
+	'smw_smwadmin_questions' => '만약 추가적인 질문이나 제안이 있으면, <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">시맨틱 미디어위키 사용자 포럼</a>에서 토론에 참여하세요.',
 	'smw_adminlinks_datastructure' => '데이터 구조',
 	'smw_adminlinks_displayingdata' => '데이터 보이기',
 	'smw_adminlinks_inlinequerieshelp' => '인라인 쿼리 도움말',
@@ -9379,6 +9355,7 @@ $1 문서로 돌아갑니다.',
 	'smw-info-par-icon' => '"info"나 "warning" 중 하나를 보여주는 아이콘입니다.',
 	'prefs-smw' => '시맨틱 미디어위키',
 	'prefs-ask-options' => '시맨틱 찾기 옵션',
+	'smw-prefs-intro-text' => '아래의 옵션은 [https://semantic-mediawiki.org/ 시맨틱 미디어위키](또는 관련된 확장 기능)가 선택된 기능에 대한 개별 사용자 지정을 활성화하기 위해 제공됩니다. 자세한 정보에 대해서는 이 [http://semantic-mediawiki.org/wiki/Help:User_preferences 도움말 문단]에서 보시기 바랍니다.',
 	'smw-prefs-ask-options-tooltip-display' => '정보 툴팁으로 변수 텍스트를 보이기',
 	'smw-prefs-ask-options-collapsed-default' => '옵션 상자를 기본적으로 접도록 활성화',
 	'smw-ui-tooltip-title-property' => '속성',
@@ -9400,6 +9377,9 @@ $1 문서로 돌아갑니다.',
 	'group-smwadministrator-member' => '{{GENDER:$1|관리자 (SMW)}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW_관리자',
 	'action-smw-admin' => '시맨틱 미디어위키 관리 작업에 접근',
+	'smw-pa-property-predefined-default' => '$1(은)는 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
+	'smw-pa-property-predefined_ask' => '$1(은)는 쿼리의 메타 데이터 [https://www.semantic-mediawiki.org/wiki/Subobject 하위 개체]의 링크인 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
+	'smw-pa-property-predefined_asksi' => '$1(은)는 쿼리에서 사용되는 조건의 수를 모으는 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
 	'smw-sp-properties-docu' => '이 특수 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자가 정의한 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.',
 	'smw-sp-properties-cache-info' => '나열된 데이터는 [https://www.semantic-mediawiki.org/wiki/Caching 캐시]에서 검색되었고, $1에 마지막으로 업데이트했습니다.',
 	'smw-sp-properties-header-label' => '속성 목록',
