@@ -9947,6 +9947,13 @@ $messages['lv'] = array(
 	'smw-ui-tooltip-title-note' => 'Piezīme',
 );
 
+/** Malagasy (Malagasy)
+ * @author Jagwar
+ */
+$messages['mg'] = array(
+	'smw_browselink' => 'Hitady tondro',
+);
+
 /** Minangkabau (Baso Minangkabau)
  * @author Iwan Novirion
  * @author Naval Scene
