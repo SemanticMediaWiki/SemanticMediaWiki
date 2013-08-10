@@ -81,6 +81,29 @@ require_once( __DIR__ . '/includes/Defines.php' );
 // Load global functions
 require_once( __DIR__ . '/includes/GlobalFunctions.php' );
 
+/**
+ * Register all SMW classes
+ *
+ * @since  1.9
+ */
+spl_autoload_register( function ( $className ) {
+	// @codeCoverageIgnoreStart
+	static $classes = false;
+
+	if ( $classes === false ) {
+		$classes = include( __DIR__ . '/' . 'SemanticMediaWiki.classes.php' );
+	}
+
+	if ( array_key_exists( $className, $classes ) ) {
+		include_once __DIR__ . '/' . $classes[$className];
+	}
+	// @codeCoverageIgnoreEnd
+} );
+
+// Causes trouble in autoloader during testing because the test returns with
+// Class 'PSExtensionHandler' not found
+$wgAutoloadClasses['SMWPageSchemas'] = __DIR__ . '/' . 'includes/SMW_PageSchemas.php';
+
 // Load setup and autoloader classes
 require_once( __DIR__ . '/includes/Setup.php' );
 
@@ -104,12 +127,15 @@ $wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_A
 $wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
 
 smwfRegisterHooks();
-smwfRegisterClasses();
 smwfRegisterSpecialPages();
 
 $wgAPIModules['smwinfo'] = '\SMW\ApiInfo';
 $wgAPIModules['ask']     = '\SMW\ApiAsk';
 $wgAPIModules['askargs'] = '\SMW\ApiAskArgs';
+
+$wgJobClasses['SMW\UpdateJob']           = 'SMW\UpdateJob';
+$wgJobClasses['SMWRefreshJob']           = 'SMWRefreshJob';
+$wgJobClasses['SMW\UpdateDispatcherJob'] = 'SMW\UpdateDispatcherJob';
 
 // Adds a poweredby footer icon
 $wgFooterIcons['poweredby']['semanticmediawiki'] = array(

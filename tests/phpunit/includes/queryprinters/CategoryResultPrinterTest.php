@@ -2,10 +2,10 @@
 
 namespace SMW\Test;
 
-use SMWDSVResultPrinter;
+use SMWCategoryResultPrinter;
 
 /**
- * Tests for the SMWDSVResultPrinter class
+ * Tests for the SMWCategoryResultPrinter class
  *
  * @file
  *
@@ -16,14 +16,14 @@ use SMWDSVResultPrinter;
  */
 
 /**
- * @covers \SMWDSVResultPrinter
+ * @covers \SMWCategoryResultPrinter
  *
  * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension
  */
-class DsvResultPrinterTest extends QueryPrinterTestCase {
+class CategoryResultPrinterTest extends QueryPrinterTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -31,20 +31,20 @@ class DsvResultPrinterTest extends QueryPrinterTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMWDSVResultPrinter';
+		return '\SMWCategoryResultPrinter';
 	}
 
 	/**
-	 * Helper method that returns a SMWDSVResultPrinter object
+	 * Helper method that returns a SMWCategoryResultPrinter object
 	 *
-	 * @return SMWDSVResultPrinter
+	 * @return SMWCategoryResultPrinter
 	 */
 	private function getInstance( $parameters = array() ) {
-		return $this->setParameters( new SMWDSVResultPrinter( 'dsv' ), $parameters );
+		return $this->setParameters( new SMWCategoryResultPrinter( 'category' ), $parameters );
 	}
 
 	/**
-	 * @test SMWDSVResultPrinter::__construct
+	 * @test SMWCategoryResultPrinter::__construct
 	 *
 	 * @since 1.9
 	 */

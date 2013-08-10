@@ -3,18 +3,15 @@
 namespace SMW\Test;
 
 use SMW\FeedResultPrinter;
-use SMW\ResultPrinter;
-
-use ReflectionClass;
 
 /**
  * Tests for the FeedResultPrinter class
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 

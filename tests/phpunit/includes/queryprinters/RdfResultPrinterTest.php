@@ -3,18 +3,15 @@
 namespace SMW\Test;
 
 use SMWRDFResultPrinter;
-use SMW\ResultPrinter;
-
-use ReflectionClass;
 
 /**
  * Tests for the SMWRDFResultPrinter class
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 

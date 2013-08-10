@@ -7,11 +7,11 @@ use SMW\ApiResultPrinter;
 /**
  * Tests for the ApiResultPrinter class
  *
- * @since 1.9
- *
  * @file
  *
  * @license GNU GPL v2+
+ * @since   1.9
+ *
  * @author mwjames
  */
 
