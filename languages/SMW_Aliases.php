@@ -109,6 +109,14 @@ $specialPageAliases['bs'] = array(
 	'Properties' => array( 'Svojstva' ),
 );
 
+/** Min Dong Chinese (Mìng-dĕ̤ng-ngṳ̄) */
+$specialPageAliases['cdo'] = array(
+	'Ask' => array( '問' ),
+	'Browse' => array( '瀏覽' ),
+	'ExportRDF' => array( '導出RDF' ),
+	'PageProperty' => array( '頁面屬性' ),
+);
+
 /** German (Deutsch) */
 $specialPageAliases['de'] = array(
 	'Ask' => array( 'Semantische_Suche' ),
