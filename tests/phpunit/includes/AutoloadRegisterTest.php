@@ -14,7 +14,8 @@ namespace SMW\Test;
  */
 
 /**
- * @covers spl_autoload_register
+ * Verifies registered classes (spl_autoload_register) against
+ * classes that are accessible to avoid misspellings etc.
  *
  * @ingroup SMW
  *
