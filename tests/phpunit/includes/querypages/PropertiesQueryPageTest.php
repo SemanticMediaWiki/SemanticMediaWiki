@@ -21,6 +21,7 @@ use SMWDataItem;
 
 /**
  * @covers \SMW\PropertiesQueryPage
+ * @covers \SMW\QueryPage
  *
  * @ingroup Test
  *

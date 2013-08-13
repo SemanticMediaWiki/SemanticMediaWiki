@@ -764,6 +764,70 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Helper method that returns a SkinTemplate object
+	 *
+	 * @since 1.9
+	 *
+	 * @return SkinTemplate
+	 */
+	public function getMockSkinTemplate() {
+
+		$skinTemplate = $this->getMockBuilder( 'SkinTemplate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skinTemplate->expects( $this->any() )
+			->method( 'getSkin' )
+			->will( $this->returnValue( $this->setValue( 'getSkin' ) ) );
+
+		return $skinTemplate;
+	}
+
+	/**
+	 * Helper method that returns a Parser object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Parser
+	 */
+	public function getMockParser() {
+
+		$parser = $this->getMockBuilder( 'Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->expects( $this->any() )
+			->method( 'getParserOutput' )
+			->will( $this->returnValue( $this->setValue( 'getParserOutput' ) ) );
+
+		$parser->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->setValue( 'getTitle' ) ) );
+
+		return $parser;
+	}
+
+	/**
+	 * Helper method that returns a LinksUpdate object
+	 *
+	 * @since 1.9
+	 *
+	 * @return LinksUpdate
+	 */
+	public function getMockLinksUpdate() {
+
+		$linksUpdate = $this->getMockBuilder( 'LinksUpdate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$linksUpdate->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->setValue( 'getTitle' ) ) );
+
+		return $linksUpdate;
+	}
+
+	/**
 	 * Helper method that returns a OutputPage object
 	 *
 	 * @since 1.9

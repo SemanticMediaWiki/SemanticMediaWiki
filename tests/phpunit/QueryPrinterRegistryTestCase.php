@@ -20,6 +20,7 @@ namespace SMW\Test;
  *
  * @group SMW
  * @group SMWExtension
+ * @codeCoverageIgnore
  */
 abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 

@@ -20,6 +20,7 @@ use SMWDataItem;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage
+ * @covers \SMW\QueryPage
  *
  * @ingroup Test
  *

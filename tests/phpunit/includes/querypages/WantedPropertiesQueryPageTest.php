@@ -18,6 +18,7 @@ use SMWDataItem;
 
 /**
  * @covers \SMW\WantedPropertiesQueryPage
+ * @covers \SMW\QueryPage
  *
  * @ingroup Test
  *
