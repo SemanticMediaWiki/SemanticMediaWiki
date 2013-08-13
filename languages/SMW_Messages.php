@@ -9214,7 +9214,7 @@ $messages['ko'] = array(
 	'smw_uri_doc' => 'URI 해결기는 [$1 W3C TAG의 httpRange-14에 찾은 표기]를 구현합니다.
 이것은 사람이 웹사이트에 향하지 않도록 주의합니다.',
 	'ask' => '시맨틱 찾기',
-	'smw_ask_sortby' => '열을 기준으로 정렬 (선택 사항)',
+	'smw_ask_sortby' => '열 순서로 정렬 (선택 사항)',
 	'smw_ask_ascorder' => '오름차순',
 	'smw_ask_descorder' => '내림차순',
 	'smw_ask_submit' => '결과 찾기',
