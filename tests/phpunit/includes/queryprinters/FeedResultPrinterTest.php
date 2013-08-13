@@ -39,7 +39,7 @@ class FeedResultPrinterTest extends QueryPrinterTestCase {
 	 *
 	 * @return FeedResultPrinter
 	 */
-	private function getInstance( $parameters = array() ) {
+	private function newInstance( $parameters = array() ) {
 		return $this->setParameters( new FeedResultPrinter( 'feed' ), $parameters );
 	}
 
@@ -49,7 +49,59 @@ class FeedResultPrinterTest extends QueryPrinterTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
+
+	/**
+	 * @test FeedResultPrinter::feedItemDescription
+	 * @dataProvider textDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testFeedItemDescription( $setup, $expected, $message ) {
+
+		$instance = $this->newInstance();
+
+		$reflector = $this->newReflector();
+		$method = $reflector->getMethod( 'feedItemDescription' );
+		$method->setAccessible( true );
+
+		$this->assertEquals(
+			$expected['text'],
+			$method->invoke( $instance, $setup['items'], $setup['pageContent'] ),
+			'Failed asserting ' . $message['info']
+		);
+
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function textDataProvider() {
+
+		$provider = array();
+
+		// #0
+		// http://www.utexas.edu/learn/html/spchar.html
+		$provider[] = array(
+			array(
+				'items'       => array(),
+				'pageContent' => 'Semantic MediaWiki Conference, have been announced: it will be held at' .
+					'[http://www.aohostels.com/en/tagungen/tagungen-berlin/ A&O Berlin Hauptbahnhof]' .
+					'&¢©«»—¡¿,åÃãÆç'
+			),
+			array(
+				'text'        => 'Semantic MediaWiki Conference, have been announced: it will be held at' .
+					'[http://www.aohostels.com/en/tagungen/tagungen-berlin/ A&O Berlin Hauptbahnhof]' .
+					'&¢©«»—¡¿,åÃãÆç'
+			),
+			array( 'info'     => 'text enconding including html special characters' )
+		);
+
+		return $provider;
+
+	}
+
 
 }
