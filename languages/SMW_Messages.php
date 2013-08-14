@@ -575,8 +575,14 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $2 holds the property values that may be used.',
 	'smw_noboolean' => 'This is an error/warning message. Parameters:
 * $1 holds the property value causing the error/warning.',
-	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of data type [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list. See also message {{msg-mw|Smw_false_words}}.',
-	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of data type [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list. See also message {{msg-mw|Smw_true_words}}.',
+	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of data type [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list.
+
+See also:
+* {{msg-mw|Smw false words}}',
+	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of data type [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list.
+
+See also:
+* {{msg-mw|Smw true words}}',
 	'smw_nofloat' => 'This is an error/warning message. Parameters:
 * $1 holds the property value causing the error/warning.',
 	'smw_infinite' => 'This is an error/warning message. Parameters:
@@ -737,78 +743,6 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw-ask-delete' => 'This is the text of the action link on [[Special:Ask]] to delete an printout statement from a query.',
 	'smw-ask-sorting' => 'This is the text for the header of the section on [[Special:Ask]] that allows to specify sorting options for specific properties that are queried for.',
 	'smw-ask-format-selection-help' => 'This is a text displayed on [[Special:Ask]] to inform about a help page on [http://semantic-mediawiki.org/wiki/ Semantic MediaWiki]',
-	'querycreator' => '{{doc-special|QueryCreator}}',
-	'smw_qc_addmainlabel' => 'This is the text of the action link on [[Special:QueryCreator]].',
-	'smw_qc_show_addnal_opts' => 'This is the text of the action link on [[Special:QueryCreator]] to show the input and selection areas for printout statements of a query.',
-	'smw_qc_hide_addnal_opts' => 'This is the text of the action link on [[Special:QueryCreator]] to hide the input and selection areas for printout statements of a query.',
-	'smw_qc_otheropt' => 'This is the text for the header of the section on [[Special:QueryCreator]] containing various different universal options to choose or enter in order to specify printout statements of a query.',
-	'smw_qc_intro' => 'This is the text describing the textbox on [[Special:QueryCreator]] available for optionally entering an printout statement for a query (parameter "intro" - text that is prepended to the output, if at least one result exists).',
-	'smw_qc_outro' => 'This is the text describing the textbox on [[Special:QueryCreator]] available for optionally entering an printout statement for a query (parameter "outro" - text that is appended to the output, if at least one result exists).',
-	'smw_qc_default' => 'This is the text describing the textbox on [[Special:QueryCreator]] available for optionally entering an printout statement for a query (parameter "default" - text that is printed in case no result exists).',
-	'smw_qc_formatopt' => 'This is the text for the header of the section on [[Special:QueryCreator]] containing various different format specific options to choose or enter in order to specify printout statements of a query.',
-	'smw_qc_query_help' => 'This is the introductory message at the top of [[Special:QueryCreator]] containing a simple example.
-
-{{doc-important|You may translate/localise "Actor", "Located in" and "Germany".}}',
-	'smw_qui_property' => 'This is the text describing a textbox on [[Special:QueryCreator]] where a property is expected to be typed in.
-
-{{Identical|Property}}',
-	'smw_qui_prop' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where a property is expected to be typed in.
-
-{{Identical|Property}}',
-	'smw_qui_labl' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the label for a property is expected to be typed in.
-
-{{Identical|Label}}',
-	'smw_qui_formt' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the format for property is expected to be typed in.
-
-{{Identical|Format}}',
-	'smw_qui_limt' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the maximum limit of results which should be shown for a property is expected to be typed in. There may be more results though
-
-{{Identical|Limit}}',
-	'smw_qui_shownresults' => 'This is the message next to a checkbox on [[Special:QueryCreatory]] indicating if an item should be shown in the results or not.',
-	'smw_qui_noquery' => 'This is an error message on [[Special:QueryCreatory]].',
-	'smw_qui_invalidprop' => 'This is an error/warning message on [[Special:QueryCreatory]]. Parameters:
-* $1 holds the property name.',
-	'smw_qui_invalidformat' => 'This is an error/warning message on [[Special:QueryCreatory]]. Parameters:
-* $1 holds the name of the result format.',
-	'smw_qui_nosort' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user does not want any sorting to be done by the given property.',
-	'smw_qui_ascorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in ascending order by the given property.
-{{Identical|Ascending}}',
-	'smw_qui_descorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in descending order by the given property.
-{{Identical|Descending}}',
-	'smw_qui_randorder' => 'This is an option in a drop-down menu on [[Special:QueryCreatory]] indicating that user wants to sort the results in random order by the given property.',
-	'smw_qui_addnprop' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add another property to a query when clicked.',
-	'smw_qui_delete' => 'This is the text of the action link on [[Special:QueryCreator]] which allows to remove the respective query option when clicked.
-
-{{Identical|Remove}}',
-	'smw_qui_rescol' => 'Label for the main result column. See http://semantic-mediawiki.org/wiki/Help:Displaying_information#The_main_result_column/ for further information. The text appears as a label next to an text-box',
-	'smw_qui_options' => 'This is the text for the header of the section on [[Special:QueryCreator]] allowing to specify various options for the printout statements of a query.
-
-{{Identical|Options}}',
-	'smw_qui_addcategory' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add another category to a query when clicked.
-{{Identical|Add category}}',
-	'smw_qui_addrescol' => 'This is the text of the action link on [[Special:QueryCreator]] which shows an new form to add query-matches to a query when clicked.',
-	'smw_qui_ok' => 'This is the label of the Ok button within a modal pop-up window on [[Special:QueryCreator]] to submit the entries when clicked.
-
-{{Identical|OK}}',
-	'smw_qui_cancel' => 'This is the label of the Cancel button within a modal pop-up window on [[Special:QueryCreator]] to abandon the entries when clicked.
-
-{{Identical|Cancel}}',
-	'smw_qui_category' => 'This is the text describing a textbox on [[Special:QueryCreator]] where a category is expected to be typed in.
-
-{{Identical|Category}}',
-	'smw_qui_label' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the label for a category is expected to be typed in.
-
-{{Identical|Label}}',
-	'smw_prp_options' => 'This is the title of a modal pop-up window on [[Special:QueryCreator]] where options for a property are expected to be typed in.',
-	'smw_qui_catopts' => 'This is the title of a modal pop-up window on [[Special:QueryCreator]] where options for a category are expected to be typed in.',
-	'smw_qui_mainlabopts' => 'This is the title of a modal pop-up window on [[Special:QueryCreator]] where options for results are expected to be typed in.',
-	'smw_qui_dlabel' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the label for a category is expected to be typed in.
-
-{{Identical|Label}}',
-	'smw_qui_dcategory' => 'This is the text describing a textbox within a modal pop-up window on Special:QueryCreator where a category is expected to be typed in.
-{{Identical|Category}}',
-	'smw_qui_dcatyes' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is present is expected to be typed in.',
-	'smw_qui_dcatno' => 'This is the text describing a textbox within a modal pop-up window on [[Special:QueryCreator]] where the text to be shown in case a category is absent is expected to be typed in.',
 	'searchbyproperty' => '{{doc-special|SearchByProperty}}',
 	'smw_sbv_docu' => 'This is the information message shown on [[Special:SearchByProperty]] in case no property and no property value were not yet provided to search for.',
 	'smw_sbv_novalue' => 'This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided. Parameters:
@@ -13000,6 +12934,11 @@ $messages['roa-tara'] = array(
 	'smw_printername_category' => 'Categorije',
 	'validator-type-class-SMWParamSource' => 'teste',
 	'smw-paramdesc-limit' => "'U numere massime de resultate da turnà",
+	'smw-paramdesc-link' => 'Fà vedè le calore cumme collegaminde',
+	'smw-paramdesc-csv-sep' => 'Separatore da ausà',
+	'smw-paramdesc-dsv-separator' => 'Separatore da ausà',
+	'smw-paramdesc-dsv-filename' => "'U nome pu file DSV",
+	'smw-paramdesc-filename' => "'U nome pu file d'u resultate",
 	'smw_true_words' => 'vere,true,t,sine,si,yes,y',
 	'smw_false_words' => 'fause,false,f,none,no,n',
 	'smw_exportrdf_submit' => 'Esporte',
@@ -13018,14 +12957,6 @@ $messages['roa-tara'] = array(
 	'smw_ask_defaultformat' => 'de base',
 	'smw_ask_otheroptions' => 'Otre opziune',
 	'smw-ask-delete' => '[Scangelle]',
-	'smw_qc_default' => 'De base:',
-	'smw_qui_options' => 'opziune',
-	'smw_qui_addcategory' => "aggiunge 'na categorije",
-	'smw_qui_ok' => 'Ok',
-	'smw_qui_cancel' => 'Annulle',
-	'smw_qui_label' => 'Etichette',
-	'smw_qui_dlabel' => 'Etichette:',
-	'smw_qui_dcategory' => 'Categorije:',
 	'smw_sbv_property' => 'Probbietà:',
 	'smw_sbv_value' => 'Valore:',
 	'smw_browse_go' => 'Véje',
