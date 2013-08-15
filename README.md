@@ -8,6 +8,11 @@ further links, see https://semantic-mediawiki.org
 Notes on installing Semantic MediaWiki are found in the file INSTALL.
 
 [![Build Status](https://secure.travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki.png?branch=master)](http://travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki)
+[![Coverage Status](https://coveralls.io/repos/wikimedia/mediawiki-extensions-SemanticMediaWiki/badge.png?branch=master)](https://coveralls.io/r/wikimedia/mediawiki-extensions-SemanticMediaWiki?branch=master)
+[![Dependency Status](https://www.versioneye.com/package/php--mediawiki--semantic-mediawiki/badge.png)](https://www.versioneye.com/package/php--mediawiki--semantic-mediawiki)
+
+[![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-mediawiki/version.png)](https://packagist.org/packages/mediawiki/semantic-mediawiki)
+[![Packagist download count](https://poser.pugx.org/mediawiki/semantic-mediawiki/d/total.png)](https://packagist.org/packages/mediawiki/semantic-mediawiki)
 
 Contact
 -------
