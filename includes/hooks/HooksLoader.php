@@ -33,4 +33,14 @@ class HooksLoader {
 		return $hook;
 	}
 
+	/**
+	 * This being temporary to demonstrate the injection of the DependencyBuilder
+	 *
+	 * @since  1.9
+	 */
+	public static function prepare( $hook ) {
+		$hook->setDependencyBuilder( new SimpleDependencyBuilder( new CommonDependencyContainer() ) );
+		return $hook;
+	}
+
 }

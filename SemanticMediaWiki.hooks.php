@@ -563,10 +563,6 @@ final class SMWHooks {
 	/**
 	 * Hook: ArticlePurge executes before running "&action=purge"
 	 *
-	 * @note Temporary store the article in the main cache (static variable
-	 * didn't work) in order for onParserAfterTidy to identify which article
-	 * was manually purged and update the store accordingly
-	 *
 	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
 	 *
 	 * @since  1.9
@@ -576,11 +572,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onArticlePurge( &$wikiPage ) {
-		\SMW\CacheHandler::newFromId()
-			->key( 'autorefresh', $wikiPage->getTitle()->getArticleID() )
-			->set( $GLOBALS['smwgAutoRefreshOnPurge'] );
-
-		return true;
+		return \SMW\HooksLoader::prepare( new \SMW\ArticlePurge( $wikiPage ) )->process();
 	}
 
 	/**
