@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\ObservableSubjectDispatcher;
 use SMW\DataValueFactory;
 use SMW\ParserData;
 use SMW\Settings;
@@ -63,8 +64,8 @@ class ParserDataTest extends ParserTestCase {
 	 */
 	public function testConstructor() {
 		$instance = $this->getInstance(
-			$this->getTitle(),
-			$this->getParserOutput()
+			$this->newTitle(),
+			$this->newParserOutput()
 		);
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
@@ -118,5 +119,29 @@ class ParserDataTest extends ParserTestCase {
 			$this->assertCount( $errorCount, $instance->getErrors() );
 		}
 	}
+
+	/**
+	 * @test ParserData::updateStore
+	 *
+	 * @since 1.9
+	 */
+	public function testUpdateStore() {
+
+		$notifier     = 'runStoreUpdater';
+		$title        = $this->newTitle();
+		$parserOutput = $this->newParserOutput();
+
+		$instance = $this->getInstance( $title, $parserOutput );
+		$observer = new MockUpdateObserver();
+
+		$instance->setObservableDispatcher( new ObservableSubjectDispatcher( $observer ) );
+
+		$this->assertTrue( $instance->updateStore() );
+
+		// Verify that the Observer was notified
+		$this->assertEquals( $notifier, $observer->getNotifier() );
+
+	}
+
 
 }

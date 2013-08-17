@@ -18,12 +18,12 @@ namespace SMW;
  * General purpose change agent to enforce loose coupling by having
  * a Publisher (subject) sent a change notification to this observer
  *
- * @note When testing rountrips, use MockChangeObserver instead
+ * @note When testing rountrips, use MockUpdateObserver instead
  *
  * @ingroup Observer
  * @ingroup Utility
  */
-class ChangeObserver extends Observer implements Cacheable, Configurable, StoreAccess {
+class UpdateObserver extends Observer implements Cacheable, Configurable, StoreAccess {
 
 	/** @var Settings */
 	protected $settings = null;
@@ -108,11 +108,29 @@ class ChangeObserver extends Observer implements Cacheable, Configurable, StoreA
 	}
 
 	/**
+	 * Store updater
+	 *
+	 * @note Is called from UpdateJob::run, LinksUpdateConstructed::process, and
+	 * ParserAfterTidy::process
+	 *
+	 * @since 1.9
+	 *
+	 * @param ParserData $subject
+	 *
+	 * @return true
+	 */
+	public function runStoreUpdater( ParserData $subject ) {
+
+		$updater = new StoreUpdater( $this->getStore(), $subject->getData(), $this->getSettings() );
+		$updater->setUpdateStatus( $subject->getUpdateStatus() )->doUpdate();
+
+		return true;
+	}
+
+	/**
 	 * UpdateJob dispatching
 	 *
-	 * loading of data
-	 *
-	 * Generally by the time the job is execute the store has been updated and
+	 * Normally by the time the job is execute the store has been updated and
 	 * data that belong to a property potentially are no longer are associate
 	 * with a subject.
 	 *

@@ -2,11 +2,12 @@
 
 namespace SMW\Test;
 
-use \SMW\ChangeObserver;
+use \SMW\UpdateObserver;
 use \SMW\TitleAccess;
+use \SMW\ParserData;
 
 /**
- * MockChangeAgent should only be used during testing to establish that
+ * MockUpdateObserver should only be used during testing to establish that
  * a correct behaviour between Observer and Subject has been established.
  *
  * @file
@@ -18,7 +19,7 @@ use \SMW\TitleAccess;
  */
 
 /**
- * MockChangeObserver should only be used during testing to establish that
+ * MockUpdateObserver should only be used during testing to establish that
  * a correct behaviour between Observer and Subject has been established.
  *
  * Use the setNotifier/getNotifier to verify the function that was expected
@@ -31,7 +32,7 @@ use \SMW\TitleAccess;
  *
  * @par Example:
  * @code
- *  $observer = new MockChangeObserver();
+ *  $observer = new MockUpdateObserver();
  *  $instance->attach( $observer );
  *
  *  $this->assertEquals( 'runFoo', $observer->getNotifier() )
@@ -40,7 +41,7 @@ use \SMW\TitleAccess;
  * @ingroup Observer
  * @codeCoverageIgnore
  */
-class MockChangeObserver extends ChangeObserver {
+class MockUpdateObserver extends UpdateObserver {
 
 	/** @var string */
 	protected $notifier = null;
@@ -69,13 +70,24 @@ class MockChangeObserver extends ChangeObserver {
 	}
 
 	/**
-	 * @see ChangeObserver::runUpdateDispatcher
+	 * @see UpdateObserver::runUpdateDispatcher
 	 *
 	 * @since 1.9
 	 *
 	 * @param TitleAccess $subject
 	 */
 	public function runUpdateDispatcher( TitleAccess $subject ) {
+		$this->setNotifier( __FUNCTION__ );
+	}
+
+	/**
+	 * @see UpdateObserver::runStoreUpdater
+	 *
+	 * @since 1.9
+	 *
+	 * @param ParserData $subject
+	 */
+	public function runStoreUpdater( ParserData $subject ) {
 		$this->setNotifier( __FUNCTION__ );
 	}
 

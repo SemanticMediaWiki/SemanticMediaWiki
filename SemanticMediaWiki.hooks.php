@@ -511,7 +511,7 @@ final class SMWHooks {
 		$cache = \SMW\CacheHandler::newFromId()->key( 'autorefresh', $parser->getTitle()->getArticleID() );
 
 		if( $cache->get() ) {
-			$parserData->updateStore();
+			$parserData->setObservableDispatcher( new \SMW\ObservableSubjectDispatcher( new \SMW\UpdateObserver() ) )->updateStore();
 			$cache->delete();
 		}
 

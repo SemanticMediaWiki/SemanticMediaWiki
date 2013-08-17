@@ -55,12 +55,13 @@ return array(
 	'SMW\MessageReporter'           => 'includes/MessageReporter.php',
 	'SMW\ObservableMessageReporter' => 'includes/MessageReporter.php',
 	'SMW\ContentParser'             => 'includes/ContentParser.php',
-	'SMW\ChangeObserver'            => 'includes/ChangeObserver.php',
+	'SMW\UpdateObserver'            => 'includes/UpdateObserver.php',
 	'SMW\TitleAccess'               => 'includes/TitleAccess.php',
 
 	'SMW\Observable'                => 'includes/ObservableSubject.php',
 	'SMW\Publisher'                 => 'includes/ObservableSubject.php',
 	'SMW\ObservableSubject'         => 'includes/ObservableSubject.php',
+	'SMW\StoreUpdater'              => 'includes/StoreUpdater.php',
 
 	'SMW\Observer'                  => 'includes/Observer.php',
 	'SMW\Subscriber'                => 'includes/Observer.php',
@@ -310,7 +311,7 @@ return array(
 	'SMW\Test\MockObjectBuilder'             => 'tests/phpunit/MockObjectBuilder.php',
 	'SMW\Test\SpecialPageTestCase'           => 'tests/phpunit/SpecialPageTestCase.php',
 	'SMW\Test\CompatibilityTestCase'         => 'tests/phpunit/CompatibilityTestCase.php',
-	'SMW\Test\MockChangeObserver'            => 'tests/phpunit/MockChangeObserver.php',
+	'SMW\Test\MockUpdateObserver'            => 'tests/phpunit/MockUpdateObserver.php',
 
 	// Jobs
 	'SMW\UpdateDispatcherJob' => 'includes/jobs/UpdateDispatcherJob.php',

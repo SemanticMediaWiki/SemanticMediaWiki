@@ -46,7 +46,7 @@ class LinksUpdateConstructed extends MediaWikiHook {
 	public function process() {
 
 		$parserData = new ParserData( $this->linksUpdate->getTitle(), $this->linksUpdate->getParserOutput() );
-		$parserData->updateStore();
+		$parserData->setObservableDispatcher( new ObservableSubjectDispatcher( new UpdateObserver() ) )->updateStore();
 
 		return true;
 	}

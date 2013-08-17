@@ -64,7 +64,7 @@ interface ObservableDispatcher extends Observable {
  * @par Example:
  * @code
  *  $changeNotifier = new PropertyChangeNotifier( ... );
- *  $changeNotifier->setObservableDispatcher( new ObservableSubjectDispatcher( new ChangeObserver() ) );
+ *  $changeNotifier->setObservableDispatcher( new ObservableSubjectDispatcher( new UpdateObserver() ) );
  * @endcode
  *
  * @ingroup Observer

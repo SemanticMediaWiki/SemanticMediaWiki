@@ -79,8 +79,9 @@ class UpdateJob extends JobBase {
 		Profiler::In( __METHOD__ . '-update' );
 
 		$parserData = new ParserData( $this->getTitle(), $this->getContentParser()->getOutput() );
-		$parserData->disableUpdateJobs();
-		$parserData->updateStore();
+		$parserData->setObservableDispatcher( new ObservableSubjectDispatcher( new UpdateObserver() ) )
+			->disableUpdateJobs()
+			->updateStore();
 
 		Profiler::Out( __METHOD__ . '-update' );
 		Profiler::Out( __METHOD__ . '-run' );

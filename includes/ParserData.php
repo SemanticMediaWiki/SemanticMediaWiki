@@ -111,7 +111,7 @@ interface IParserData {
  * @author Markus Krötzsch
  * @author mwjames
  */
-class ParserData extends Observer implements IParserData {
+class ParserData extends Observer implements IParserData, DispatchableSubject {
 
 	/**
 	 * Represents Title object
@@ -149,6 +149,9 @@ class ParserData extends Observer implements IParserData {
 	 */
 	protected $updateJobs = true;
 
+	/** @var ObservableDispatcher */
+	protected $dispatcher;
+
 	/**
 	 * Constructor
 	 *
@@ -162,7 +165,6 @@ class ParserData extends Observer implements IParserData {
 		$this->title = $title;
 		$this->parserOutput = $parserOutput;
 		$this->options = $options;
-		$this->updateJobs = $GLOBALS['smwgEnableUpdateJobs'];
 		$this->setData();
 	}
 
@@ -175,6 +177,29 @@ class ParserData extends Observer implements IParserData {
 	 */
 	public function getTitle() {
 		return $this->title;
+	}
+
+	/**
+	 * Returns update status
+	 *
+	 * @since 1.9
+	 *
+	 * @return boolean
+	 */
+	public function getUpdateStatus() {
+		return $this->updateJobs;
+	}
+
+	/**
+	 * Invokes an ObservableDispatcher object to deploy state changes to an Observer
+	 *
+	 * @since 1.9
+	 *
+	 * @param ObservableDispatcher $dispatcher
+	 */
+	public function setObservableDispatcher( ObservableDispatcher $dispatcher ) {
+		$this->dispatcher = $dispatcher->setSubject( $this );
+		return $this;
 	}
 
 	/**
@@ -229,6 +254,7 @@ class ParserData extends Observer implements IParserData {
 	 */
 	public function disableUpdateJobs() {
 		$this->updateJobs = false;
+		return $this;
 	}
 
 	/**
@@ -340,82 +366,12 @@ class ParserData extends Observer implements IParserData {
 	/**
 	 * Updates the store with semantic data attached to a ParserOutput object
 	 *
-	 * This function takes care of storing the collected semantic data and takes
-	 * care of clearing out any outdated entries for the processed page. It assume that
-	 * parsing has happened and that all relevant data is contained in the provided parser
-	 * output.
-	 *
-	 * Optionally, this function also takes care of triggering indirect updates that might be
-	 * needed for overall database consistency. If the saved page describes a property or data type,
-	 * the method checks whether the property type, the data type, the allowed values, or the
-	 * conversion factors have changed. If so, it triggers SMWUpdateJobs for the relevant articles,
-	 * which then asynchronously update the semantic data in the database.
-	 *
-	 * @todo FIXME: Some job generations here might create too many jobs at once
-	 * on a large wiki. Use incremental jobs instead.
-	 *
-	 * To disable jobs either set $smwgEnableUpdateJobs = false or invoke
-	 * SMW\ParserData::disableUpdateJobs()
-	 *
-	 * Called from SMWUpdateJob::run, SMWHooks::onLinksUpdateConstructed,
-	 * SMWHooks::onParserAfterTidy
-	 *
 	 * @since 1.9
 	 *
 	 * @return boolean
 	 */
 	public function updateStore() {
-		Profiler::In( __METHOD__, true );
-
-		// Protect against namespace -1 see Bug 50153
-		if ( $this->title->isSpecialPage() ) {
-			return true;
-		}
-
-		$namespace = $this->title->getNamespace();
-		$wikiPage  = WikiPage::factory( $this->title );
-		$revision  = $wikiPage->getRevision();
-		$store     = StoreFactory::getStore();
-
-		// FIXME get rid of globals and use options array instead while
-		// invoking the constructor
-		$this->options = array(
-			'smwgDeclarationProperties' => $GLOBALS['smwgDeclarationProperties'],
-			'smwgPageSpecialProperties' => $GLOBALS['smwgPageSpecialProperties']
-		);
-
-		// Make sure to have a valid revision (null means delete etc.)
-		// Check if semantic data should be processed and displayed for a page in
-		// the given namespace
-		$processSemantics = $revision !== null ? smwfIsSemanticsProcessed( $namespace ) : false;
-
-		if ( $processSemantics ) {
-			$user = \User::newFromId( $revision->getUser() );
-
-			$complementor = new BasePropertyAnnotator( $this->semanticData, Settings::newFromGlobals() );
-			$complementor->attach( $this );
-			$complementor->addSpecialProperties( $wikiPage, $revision, $user );
-
-		} else {
-			// data found, but do all operations as if it was empty
-			$this->semanticData = new SMWSemanticData( $this->getSubject() );
-		}
-
-		// Comparison must happen *before* the storage update;
-		// even finding uses of a property fails after its type was changed.
-		if ( $this->updateJobs ) {
-			$changeNotifier = new PropertyChangeNotifier( $store, $this->semanticData, Settings::newFromGlobals() );
-			$changeNotifier->setObservableDispatcher( new ObservableSubjectDispatcher( new ChangeObserver() ) )->detectChanges();
-		}
-
-		// Actually store semantic data, or at least clear it if needed
-		if ( $processSemantics ) {
-			$store->updateData( $this->semanticData );
-		} else {
-			$store->clearData( $this->semanticData->getSubject() );
-		}
-
-		Profiler::Out( __METHOD__, true );
+		$this->dispatcher->setState( 'runStoreUpdater' );
 		return true;
 	}
 
