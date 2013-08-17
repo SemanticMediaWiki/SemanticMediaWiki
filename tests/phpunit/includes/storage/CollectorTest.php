@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\ArrayAccessor;
+use SMW\SimpleDictionary;
 
 use SMWRequestOptions;
 
@@ -44,10 +44,10 @@ class CollectorTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return Collector
 	 */
-	private function getInstance( $doCollect = array(), $cacheAccessor = array() ) {
+	private function getInstance( $doCollect = array(), $cacheSetup = array() ) {
 
 		$collector = $this->getMockBuilder( $this->getClass() )
-			->setMethods( array( 'cacheAccessor', 'doCollect' ) )
+			->setMethods( array( 'cacheSetup', 'doCollect' ) )
 			->getMock();
 
 		$collector->expects( $this->any() )
@@ -55,8 +55,8 @@ class CollectorTest extends SemanticMediaWikiTestCase {
 			->will( $this->returnValue( $doCollect ) );
 
 		$collector->expects( $this->any() )
-			->method( 'cacheAccessor' )
-			->will( $this->returnValue( new ArrayAccessor( $cacheAccessor ) ) );
+			->method( 'cacheSetup' )
+			->will( $this->returnValue( new SimpleDictionary( $cacheSetup ) ) );
 
 		return $collector;
 	}

@@ -42,7 +42,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return Settings
 	 */
-	private function getInstance( array $settings ) {
+	private function newInstance( array $settings ) {
 		return Settings::newFromArray( $settings );
 	}
 
@@ -56,10 +56,10 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testConstructor( array $settings ) {
 
-		$instance = $this->getInstance( $settings );
+		$instance = $this->newInstance( $settings );
 
 		$this->assertInstanceOf( $this->getClass(), $instance );
-		$this->assertFalse( $instance === $this->getInstance( $settings ) );
+		$this->assertFalse( $instance === $this->newInstance( $settings ) );
 
 	}
 
@@ -73,7 +73,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testGet( array $settings ) {
 
-		$instance = $this->getInstance( $settings );
+		$instance = $this->newInstance( $settings );
 
 		foreach ( $settings as $name => $value ) {
 			$this->assertEquals( $value, $instance->get( $name ) );
@@ -93,7 +93,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 
 		$this->setExpectedException( '\SMW\InvalidSettingsArgumentException' );
 
-		$instance = $this->getInstance( array( 'Foo' => 'bar' ) );
+		$instance = $this->newInstance( array( 'Foo' => 'bar' ) );
 		$this->assertEquals( 'bar', $instance->get( 'foo' ) );
 	}
 
@@ -107,7 +107,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testSet( array $settings ) {
 
-		$instance = $this->getInstance( array() );
+		$instance = $this->newInstance( array() );
 
 		foreach ( $settings as $name => $value ) {
 			$instance->set( $name, $value );
@@ -155,7 +155,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testNestedSettingsIteration( $test, $key, $expected ) {
 
-		$instance = $this->getInstance( $test );
+		$instance = $this->newInstance( $test );
 
 		$this->assertInternalType( $expected['type'],  $instance->get( $key ) );
 		$this->assertEquals( $expected['value'], $instance->get( $key ) );
@@ -214,10 +214,10 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function settingsProvider() {
 		return array( array( array(
-			'',
 			'foo' => 'bar',
-			'foo' => 'bar', 'baz' => 'BAH',
+			'baz' => 'BAH',
 			'bar' => array( '9001' ),
+			'foo' => array( '9001', array( 9001, 4.2 ) ),
 			'~[,,_,,]:3' => array( 9001, 4.2 ),
 		) ) );
 	}

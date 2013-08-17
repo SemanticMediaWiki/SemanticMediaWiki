@@ -16,6 +16,7 @@
  * Class registration file for Semantic MediaWiki
  *
  * @ingroup SMW
+ * @codeCoverageIgnore
  */
 return array(
 
@@ -49,14 +50,18 @@ return array(
 	'SMW\Profiler'                  => 'includes/Profiler.php',
 	'SMW\IdGenerator'               => 'includes/IdGenerator.php',
 	'SMW\HashIdGenerator'           => 'includes/HashIdGenerator.php',
-	'SMW\Accessor'                  => 'includes/Accessor.php',
-	'SMW\Arrayable'                 => 'includes/Arrayable.php',
-	'SMW\ArrayAccessor'             => 'includes/ArrayAccessor.php',
 	'SMW\MessageReporter'           => 'includes/MessageReporter.php',
 	'SMW\ObservableMessageReporter' => 'includes/MessageReporter.php',
 	'SMW\ContentParser'             => 'includes/ContentParser.php',
 	'SMW\UpdateObserver'            => 'includes/UpdateObserver.php',
 	'SMW\TitleAccess'               => 'includes/TitleAccess.php',
+
+	'SMW\Accessible'                => 'includes/ObjectDictionary.php',
+	'SMW\Changeable'                => 'includes/ObjectDictionary.php',
+	'SMW\Combinable'                => 'includes/ObjectDictionary.php',
+	'SMW\ObjectDictionary'          => 'includes/ObjectDictionary.php',
+	'SMW\ObjectStorage'             => 'includes/ObjectStorage.php',
+	'SMW\SimpleDictionary'          => 'includes/SimpleDictionary.php',
 
 	'SMW\Observable'                => 'includes/ObservableSubject.php',
 	'SMW\Publisher'                 => 'includes/ObservableSubject.php',
@@ -70,13 +75,14 @@ return array(
 	'SMW\DispatchableSubject'         => 'includes/ObservableSubjectDispatcher.php',
 	'SMW\ObservableSubjectDispatcher' => 'includes/ObservableSubjectDispatcher.php',
 
-	'SMW\Cacheable'                 => 'includes/Cacheable.php',
-	'SMW\Configurable'              => 'includes/Configurable.php',
-	'SMW\StoreAccess'               => 'includes/StoreAccess.php',
+	'SMW\Cacheable'                   => 'includes/Cacheable.php',
+	'SMW\Configurable'                => 'includes/Configurable.php',
+	'SMW\StoreAccess'                 => 'includes/StoreAccess.php',
 
-	'SMW\CacheHandler'          => 'includes/cache/CacheHandler.php',
-	'SMW\ResultCacheMapper'     => 'includes/cache/ResultCacheMapper.php',
-	'SMW\CacheIdGenerator'      => 'includes/cache/CacheIdGenerator.php',
+	// Cache
+	'SMW\CacheHandler'                => 'includes/cache/CacheHandler.php',
+	'SMW\ResultCacheMapper'           => 'includes/cache/ResultCacheMapper.php',
+	'SMW\CacheIdGenerator'            => 'includes/cache/CacheIdGenerator.php',
 
 	// Hooks
 	'SMW\HookBase'                  => 'includes/hooks/HookBase.php',
@@ -238,7 +244,6 @@ return array(
 	'SMW\Store\PropertyStatisticsRebuilder' => 'includes/storage/PropertyStatisticsRebuilder.php',
 	'SMW\Store\PropertyStatisticsStore'     => 'includes/storage/PropertyStatisticsStore.php',
 	'SMW\StoreFactory'                      => 'includes/storage/StoreFactory.php',
-	'SMW\Store\Collectible'                 => 'includes/storage/Collector.php',
 	'SMW\Store\Collector'                   => 'includes/storage/Collector.php',
 	'SMWQueryResult'                        => 'includes/storage/SMW_QueryResult.php',
 	'SMWResultArray'                        => 'includes/storage/SMW_ResultArray.php',

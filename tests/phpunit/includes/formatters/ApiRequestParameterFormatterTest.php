@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\ApiRequestParameterFormatter;
-use SMW\ArrayAccessor;
 
 use SMWQueryResult;
 
@@ -85,7 +84,7 @@ class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
 
 		$result = $this->getInstance( array() )->getAskArgsApiParameters();
 
-		$this->assertInstanceOf( '\SMW\ArrayAccessor', $result );
+		$this->assertInstanceOf( '\SMW\ObjectDictionary', $result );
 		$this->assertEmpty( $result->get( 'conditions' ) );
 		$this->assertEmpty( $result->get( 'parameters' ) );
 		$this->assertEmpty( $result->get( 'printouts' ) );
@@ -105,7 +104,7 @@ class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
 
 		$result = $this->getInstance( $test )->getAskArgsApiParameters();
 
-		$this->assertInstanceOf( '\SMW\ArrayAccessor', $result );
+		$this->assertInstanceOf( '\SMW\ObjectDictionary', $result );
 		$this->assertEquals( $expected, $result->get( $type ) );
 	}
 

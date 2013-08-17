@@ -21,7 +21,6 @@ use MWTimestamp;
  *
  * @author mwjames
  */
-interface Collectible {}
 
 /**
  * Collector base class
@@ -29,7 +28,7 @@ interface Collectible {}
  * @ingroup Collector
  * @ingroup Store
  */
-abstract class Collector implements Collectible {
+abstract class Collector {
 
 	/** @var array */
 	protected $results = array();
@@ -50,7 +49,7 @@ abstract class Collector implements Collectible {
 	 */
 	public function getResults() {
 
-		$resultCache = new ResultCacheMapper( $this->cacheAccessor()->set( 'prefix', 'collector' ) );
+		$resultCache = new ResultCacheMapper( $this->cacheSetup()->set( 'prefix', 'collector' ) );
 
 		$results = $resultCache->fetchFromCache();
 
@@ -129,12 +128,12 @@ abstract class Collector implements Collectible {
 	protected abstract function doCollect();
 
 	/**
-	 * Sub-class is returning an ArrayAccessor object necessary for
+	 * Sub-class is returning an ObjectDictionary object necessary for
 	 * the ResultCacheMapper instantiation
 	 *
 	 * @par Example:
 	 * @code
-	 *  return new ArrayAccessor( array(
+	 *  return new SimpleDictionary( array(
 	 *   'id'      => 'smwgPropertiesCache' . <...>,
 	 *   'type'    => $this->settings->get( 'smwgCacheType' ),
 	 *   'enabled' => $this->settings->get( 'smwgPropertiesCache' ),
@@ -144,9 +143,9 @@ abstract class Collector implements Collectible {
 	 *
 	 * @since 1.9
 	 *
-	 * @return ArrayAccessor
+	 * @return ObjectDictionary
 	 */
-	protected abstract function cacheAccessor();
+	protected abstract function cacheSetup();
 
 	/**
 	 * Returns table definition for a given property type

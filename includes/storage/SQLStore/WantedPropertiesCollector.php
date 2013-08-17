@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use SMW\Store\Collector;
 
-use SMW\ArrayAccessor;
+use SMW\SimpleDictionary;
 use SMW\DIProperty;
 use SMW\Profiler;
 use SMW\Settings;
@@ -84,10 +84,10 @@ class WantedPropertiesCollector extends Collector {
 	 *
 	 * @since 1.9
 	 *
-	 * @return array
+	 * @return ObjectDictionary
 	 */
-	protected function cacheAccessor() {
-		return new ArrayAccessor( array(
+	protected function cacheSetup() {
+		return new SimpleDictionary( array(
 			'id'      => array( 'smwgWantedPropertiesCache', $this->settings->get( 'smwgPDefaultType' ), $this->requestOptions ),
 			'type'    => $this->settings->get( 'smwgCacheType' ),
 			'enabled' => $this->settings->get( 'smwgWantedPropertiesCache' ),

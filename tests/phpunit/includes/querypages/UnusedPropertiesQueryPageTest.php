@@ -64,28 +64,6 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Collector object
-	 *
-	 * @since 1.9
-	 *
-	 * @param $result
-	 *
-	 * @return Collector
-	 */
-	private function getMockCollector( $result = null ) {
-
-		$collector = $this->getMockBuilder( '\SMW\Store\Collector' )
-			->setMethods( array( 'cacheAccessor', 'doCollect', 'getResults' ) )
-			->getMock();
-
-		$collector->expects( $this->any() )
-			->method( 'getResults' )
-			->will( $this->returnValue( $result ) );
-
-		return $collector;
-	}
-
-	/**
 	 * Helper method that returns a UnusedPropertiesQueryPage object
 	 *
 	 * @since 1.9
@@ -95,14 +73,16 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return UnusedPropertiesQueryPage
 	 */
-	private function getInstance( $result = null, $values = array() ) {
+	private function newInstance( $result = null, $values = array() ) {
 
-		$store = $this->newMockObject( array(
+		$collector = $this->newMockObject( array( 'getResults' => $result ) )->getMockCollector();
+
+		$mockStore = $this->newMockObject( array(
 			'getPropertyValues'          => $values,
-			'getUnusedPropertiesSpecial' => $this->getMockCollector( $result )
+			'getUnusedPropertiesSpecial' => $collector
 		) )->getMockStore();
 
-		$instance = new UnusedPropertiesQueryPage( $store, $this->newSettings() );
+		$instance = new UnusedPropertiesQueryPage( $mockStore, $this->newSettings() );
 		$instance->setContext( $this->newContext() );
 
 		return $instance;
@@ -114,7 +94,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -129,7 +109,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$skin = $this->getMock( 'Skin' );
 
 		// DIProperty
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 
 		$property = $this->newMockObject( array(
 			'isUserDefined' => $isUserDefined,
@@ -144,7 +124,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$this->assertContains( $expected, $result );
 
 		// Multiple entries
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$multiple = array( $this->getMockDIWikiPage(), $this->getMockDIWikiPage() );
 
 		$property = $this->newMockObject( array(
@@ -154,7 +134,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		) )->getMockDIProperty();
 
 		$expected = $property->getDiWikiPage()->getTitle()->getText();
-		$instance = $this->getInstance( null, $multiple );
+		$instance = $this->newInstance( null, $multiple );
 
 		$result   = $instance->formatResult( $skin, $property );
 
@@ -162,7 +142,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$this->assertContains( $expected, $result );
 
 		// DIError
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$error    = $this->getRandomString();
 
 		$result   = $instance->formatResult(
@@ -184,7 +164,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		$this->setExpectedException( '\SMW\InvalidResultException' );
 
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$skin = $this->getMock( 'Skin' );
 
 		$this->assertInternalType( 'string', $instance->formatResult( $skin, null ) );
@@ -209,7 +189,7 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		$expected = 'Lala';
 
-		$instance = $this->getInstance( $expected );
+		$instance = $this->newInstance( $expected );
 		$this->assertEquals( $expected, $instance->getResults( null ) );
 
 	}

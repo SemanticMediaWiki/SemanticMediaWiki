@@ -110,14 +110,6 @@ die("Not a valid entry point\n");
  */
 
 /**
- * This group contains members that are related to accessors
- *
- * @defgroup Accessor Accessor
- * @ingroup Utility
- */
-
-
-/**
  * This group contains members that are related to unit tests
  *
  * @defgroup Test Test

@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\ResultCacheMapper;
-use SMW\ArrayAccessor;
+use SMW\SimpleDictionary;
 
 /**
  * Tests for the ResultCacheMapper class
@@ -54,7 +54,7 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 			'expiry'  => $cacheExpiry
 		);
 
-		return new ResultCacheMapper( new ArrayAccessor( $setup ) );
+		return new ResultCacheMapper( new SimpleDictionary( $setup ) );
 	}
 
 	/**

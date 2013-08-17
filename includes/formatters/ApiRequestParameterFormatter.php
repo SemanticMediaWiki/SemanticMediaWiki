@@ -26,7 +26,7 @@ final class ApiRequestParameterFormatter {
 	/** @var array */
 	protected $requestParameters = array();
 
-	/** @var ArrayAccessor */
+	/** @var HashArray */
 	protected $results = null;
 
 	/**
@@ -59,7 +59,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @return ArrayAccessor
+	 * @return ObjectDictionary
 	 */
 	public function getAskArgsApiParameters() {
 
@@ -75,11 +75,11 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @return ArrayAccessor
+	 * @return ObjectDictionary
 	 */
 	protected function doAskArgsFormatting() {
 
-		$result = new ArrayAccessor();
+		$result = new SimpleDictionary();
 
 		// Set defaults
 		$result->set( 'conditions', array() );

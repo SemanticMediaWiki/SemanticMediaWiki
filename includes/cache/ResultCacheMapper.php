@@ -23,16 +23,16 @@ use MWTimestamp;
  */
 class ResultCacheMapper implements Cacheable {
 
-	/** @var ArrayAccessor */
-	protected $cacheAccessor;
+	/** @var ObjectDictionary */
+	protected $cacheSetup;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param ArrayAccessor $cacheAccessor
+	 * @param ObjectDictionary $cacheSetup
 	 */
-	public function __construct( ArrayAccessor $cacheAccessor ) {
-		$this->cacheAccessor = $cacheAccessor;
+	public function __construct( ObjectDictionary $cacheSetup ) {
+		$this->cacheSetup = $cacheSetup;
 	}
 
 	/**
@@ -47,8 +47,8 @@ class ResultCacheMapper implements Cacheable {
 	public function fetchFromCache() {
 
 		$result = $this->getCache()
-			->setCacheEnabled( $this->cacheAccessor->get( 'enabled' ) )
-			->setKey( new CacheIdGenerator( $this->cacheAccessor->get( 'id' ), $this->cacheAccessor->get( 'prefix' ) ) )
+			->setCacheEnabled( $this->cacheSetup->get( 'enabled' ) )
+			->setKey( new CacheIdGenerator( $this->cacheSetup->get( 'id' ), $this->cacheSetup->get( 'prefix' ) ) )
 			->get();
 
 		return $result ? $this->mapping( $result ) : $result;
@@ -71,8 +71,8 @@ class ResultCacheMapper implements Cacheable {
 	public function recache( array $results ) {
 
 		$this->getCache()
-			->setCacheEnabled( $this->cacheAccessor->get( 'enabled' ) && $results !== array() )
-			->set( array( 'time' => $this->getTimestamp(), 'result' => serialize( $results ) ), $this->cacheAccessor->get( 'expiry' )
+			->setCacheEnabled( $this->cacheSetup->get( 'enabled' ) && $results !== array() )
+			->set( array( 'time' => $this->getTimestamp(), 'result' => serialize( $results ) ), $this->cacheSetup->get( 'expiry' )
 		);
 	}
 
@@ -84,7 +84,7 @@ class ResultCacheMapper implements Cacheable {
 	 * @return CacheHandler
 	 */
 	public function getCacheDate() {
-		return $this->cacheAccessor->has( 'cacheDate' ) ? $this->cacheAccessor->get( 'cacheDate' ) : null;
+		return $this->cacheSetup->has( 'cacheDate' ) ? $this->cacheSetup->get( 'cacheDate' ) : null;
 	}
 
 	/**
@@ -95,7 +95,7 @@ class ResultCacheMapper implements Cacheable {
 	 * @return CacheHandler
 	 */
 	public function getCache() {
-		return CacheHandler::newFromId( $this->cacheAccessor->get( 'type' ) );
+		return CacheHandler::newFromId( $this->cacheSetup->get( 'type' ) );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class ResultCacheMapper implements Cacheable {
 	 * @return array
 	 */
 	protected function mapping( array $resultCache ) {
-		$this->cacheAccessor->set( 'cacheDate', isset( $resultCache['time'] ) ? $resultCache['time'] : null );
+		$this->cacheSetup->set( 'cacheDate', isset( $resultCache['time'] ) ? $resultCache['time'] : null );
 		return isset( $resultCache['result'] ) ? unserialize( $resultCache['result'] ) : array();
 	}
 

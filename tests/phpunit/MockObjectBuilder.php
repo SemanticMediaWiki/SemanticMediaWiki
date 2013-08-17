@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\ArrayAccessor;
+use SMW\ObjectDictionary;
 use SMWDataItem;
 
 /**
@@ -28,16 +28,16 @@ use SMWDataItem;
  */
 class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
-	/** @var ArrayAccessor */
-	protected $accessor;
+	/** @var ObjectDictionary */
+	protected $dictionary;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param ArrayAccessor $accessor
+	 * @param ObjectDictionary $dictionary
 	 */
-	public function __construct( ArrayAccessor $accessor ) {
-		$this->accessor = $accessor;
+	public function __construct( ObjectDictionary $dictionary ) {
+		$this->dictionary = $dictionary;
 	}
 
 	/**
@@ -65,7 +65,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 * @return mixed|null
 	 */
 	protected function setValue( $key, $default = null ) {
-		return $this->accessor->has( $key ) ? $this->accessor->get( $key ) : $default;
+		return $this->dictionary->has( $key ) ? $this->dictionary->get( $key ) : $default;
 	}
 
 	/**
@@ -121,6 +121,28 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->will( $this->setCallback( 'addPropertyObjectValue' ) );
 
 		return $semanticData;
+	}
+
+	/**
+	 * Helper method that returns a Collector object
+	 *
+	 * @since 1.9
+	 *
+	 * @param $result
+	 *
+	 * @return Collector
+	 */
+	public function getMockCollector() {
+
+		$collector = $this->getMockBuilder( '\SMW\Store\Collector' )
+			->setMethods( array( 'cacheSetup', 'doCollect', 'getResults' ) )
+			->getMock();
+
+		$collector->expects( $this->any() )
+			->method( 'getResults' )
+			->will( $this->returnValue( $this->setValue( 'getResults' ) ) );
+
+		return $collector;
 	}
 
 	/**
@@ -459,7 +481,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 *   'getLabel'      => $this->getRandomString(),
 	 *  );
 	 *
-	 *  $mockObject = new MockObjectBuilder( new ArrayAccessor( $property ) );
+	 *  $mockObject = new MockObjectBuilder( new HashArray( $property ) );
 	 *  $mockObject->getMockDIProperty();
 	 * @endcode
 	 *

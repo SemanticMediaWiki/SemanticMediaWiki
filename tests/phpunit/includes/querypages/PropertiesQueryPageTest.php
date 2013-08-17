@@ -65,28 +65,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Collector object
-	 *
-	 * @since 1.9
-	 *
-	 * @param $result
-	 *
-	 * @return Collector
-	 */
-	private function getMockCollector( $result = null ) {
-
-		$collector = $this->getMockBuilder( '\SMW\Store\Collector' )
-			->setMethods( array( 'cacheAccessor', 'doCollect', 'getResults' ) )
-			->getMock();
-
-		$collector->expects( $this->any() )
-			->method( 'getResults' )
-			->will( $this->returnValue( $result ) );
-
-		return $collector;
-	}
-
-	/**
 	 * Helper method that returns a PropertiesQueryPage object
 	 *
 	 * @since 1.9
@@ -95,11 +73,13 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return PropertiesQueryPage
 	 */
-	private function getInstance( $result = null, $values = array(), $settings = array() ) {
+	private function newInstance( $result = null, $values = array(), $settings = array() ) {
 
-		$store = $this->newMockObject( array(
+		$collector = $this->newMockObject( array( 'getResults' => $result ) )->getMockCollector();
+
+		$mockStore = $this->newMockObject( array(
 			'getPropertyValues'    => $values,
-			'getPropertiesSpecial' => $this->getMockCollector( $result )
+			'getPropertiesSpecial' => $collector
 		) )->getMockStore();
 
 		if ( $settings === array() ) {
@@ -110,7 +90,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 			);
 		}
 
-		$instance = new PropertiesQueryPage( $store, $this->getSettings( $settings ) );
+		$instance = new PropertiesQueryPage( $mockStore, $this->newSettings( $settings ) );
 		$instance->setContext( $this->newContext() );
 
 		return $instance;
@@ -122,7 +102,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -134,7 +114,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		$skin = $this->getMock( 'Skin' );
 
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$error    = $this->getRandomString();
 
 		$result   = $instance->formatResult(
@@ -156,7 +136,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		$this->setExpectedException( '\SMW\InvalidResultException' );
 
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$skin = $this->getMock( 'Skin' );
 
 		$this->assertInternalType( 'string', $instance->formatResult( $skin, null ) );
@@ -179,7 +159,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		// Title exists
 		$count    = rand();
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$property = $this->newMockObject( array(
 			'isUserDefined' => $isUserDefined,
 			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
@@ -194,7 +174,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		// Title does not exists
 		$count    = rand();
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 
 		$property = $this->newMockObject( array(
 			'isUserDefined' => $isUserDefined,
@@ -219,7 +199,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		) )->getMockDIProperty();
 
 		$expected = $property->getDiWikiPage()->getTitle()->getText();
-		$instance = $this->getInstance( null, $multiple );
+		$instance = $this->newInstance( null, $multiple );
 
 		$result   = $instance->formatResult( $skin, array( $property, $count ) );
 
@@ -238,7 +218,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$skin = $this->getMock( 'Skin' );
 
 		$count    = 0;
-		$instance = $this->getInstance( null, array(), array(
+		$instance = $this->newInstance( null, array(), array(
 			'smwgPropertyZeroCountDisplay' => false
 		) );
 
@@ -264,7 +244,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$skin = $this->getMock( 'Skin' );
 
 		$count    = rand();
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 
 		$property = $this->newMockObject( array(
 			'isUserDefined' => true,
@@ -288,7 +268,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$skin = $this->getMock( 'Skin' );
 
 		$count    = rand();
-		$instance = $this->getInstance( null, array(), array(
+		$instance = $this->newInstance( null, array(), array(
 			'smwgPropertyLowUsageThreshold' => $count + 1,
 			'smwgPDefaultType' => '_wpg'
 		) );
@@ -324,7 +304,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		$expected = 'Lala';
 
-		$instance = $this->getInstance( $expected );
+		$instance = $this->newInstance( $expected );
 		$this->assertEquals( $expected, $instance->getResults( null ) );
 
 	}
@@ -341,7 +321,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$context = $this->newContext( array( 'property' => $propertySearch ) );
 		$context->setTitle( $this->newTitle() );
 
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$instance->setContext( $context );
 		$instance->getResults( null );
 

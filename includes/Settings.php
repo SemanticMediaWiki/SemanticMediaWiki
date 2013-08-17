@@ -21,7 +21,7 @@ namespace SMW;
  *
  * @ingroup SMW
  */
-class Settings extends ArrayAccessor {
+class Settings extends SimpleDictionary {
 
 	/** @var Settings */
 	private static $instance = null;
@@ -34,8 +34,7 @@ class Settings extends ArrayAccessor {
 	 *
 	 * @par Example:
 	 * @code
-	 *  $settings = \SMW\Settings::newFromGlobals();
-	 *
+	 *  $settings = Settings::newFromGlobals();
 	 *  $settings->get( 'smwgDefaultStore' );
 	 * @endcode
 	 *
@@ -137,8 +136,7 @@ class Settings extends ArrayAccessor {
 	 *
 	 * @par Example:
 	 * @code
-	 *  $settings = \SMW\Settings::newFromArray( array( 'Foo' => 'Bar' ) );
-	 *
+	 *  $settings = Settings::newFromArray( array( 'Foo' => 'Bar' ) );
 	 *  $settings->get( 'Foo' );
 	 * @endcode
 	 *
@@ -155,7 +153,7 @@ class Settings extends ArrayAccessor {
 	 *
 	 * @par Example:
 	 * @code
-	 *  $settings = \SMW\Settings::newFromArray( array(
+	 *  $settings = Settings::newFromArray( array(
 	 *   'Foo' => 'Bar'
 	 *   'Parent' => array(
 	 *     'Child' => array( 'Lisa', 'Lula', array( 'Lila' ) )
@@ -170,6 +168,7 @@ class Settings extends ArrayAccessor {
 	 * @param string $key
 	 *
 	 * @return mixed
+	 * @throws InvalidSettingsArgumentException
 	 */
 	public function get( $key ) {
 
@@ -185,11 +184,11 @@ class Settings extends ArrayAccessor {
 			throw new InvalidSettingsArgumentException( "'{$key}' is not a valid settings key" );
 		}
 
-		return $this->offsetGet( $key );
+		return $this->lookup( $key );
 	}
 
 	/**
-	 * Reset the instance
+	 * Resets the instance
 	 *
 	 * @since 1.9
 	 */
@@ -198,7 +197,7 @@ class Settings extends ArrayAccessor {
 	}
 
 	/**
-	 * Iterate over nested array to find its value for a given key
+	 * Iterates over a nested array to find a element
 	 *
 	 * @since 1.9
 	 *
@@ -209,7 +208,7 @@ class Settings extends ArrayAccessor {
 	private function doIterate( $key ) {
 
 		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveArrayIterator( $this ),
+			new \RecursiveArrayIterator( $this->toArray() ),
 			\RecursiveIteratorIterator::CHILD_FIRST
 		);
 
