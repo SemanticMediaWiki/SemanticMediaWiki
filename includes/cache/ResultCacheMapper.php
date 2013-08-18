@@ -17,7 +17,22 @@ use MWTimestamp;
  */
 
 /**
- * Handling of cached results
+ * Convenience class that fetches results from cache or recaches the results and
+ * stores meta information (cache time etc.) about each set with the object
+ *
+ * @code
+ *  $dictionary = new SimpleDictionary( array(
+ *   'id'      => ...,
+ *   'type'    => ...,
+ *   'enabled' => ...,
+ *   'expiry'  => ...
+ *  ) );
+ *
+ *  $resultCache = new ResultCacheMapper( $dictionary );
+ *  $resultCache->recache( array() );
+ *  $resultCache->fetchFromCache();
+ *  $resultCache->getCacheDate();
+ * @endcode
  *
  * @ingroup SMW
  */
@@ -36,52 +51,59 @@ class ResultCacheMapper implements Cacheable {
 	}
 
 	/**
-	 * Service function that fetches and returns results from cache
-	 *
-	 * @note Id generation has been delegated to CacheIdGenerator
+	 * Fetches results from cache for a given CacheIdGenerator
 	 *
 	 * @since 1.9
 	 *
 	 * @return array|false
 	 */
 	public function fetchFromCache() {
-
 		$result = $this->getCache()
 			->setCacheEnabled( $this->cacheSetup->get( 'enabled' ) )
-			->setKey( new CacheIdGenerator( $this->cacheSetup->get( 'id' ), $this->cacheSetup->get( 'prefix' ) ) )
-			->get();
+			->setKey( $this->getIdGenerator() )->get();
 
 		return $result ? $this->mapping( $result ) : $result;
 	}
 
 	/**
-	 * Service function that stores results as a cache object
+	 * Stores results in the cache
 	 *
-	 * @note The cache object stores the time and its results as serialized
+	 * @note Each cache object stores the time and its results as serialized
 	 * array in order to allow any arbitrary content to be cacheable
 	 *
 	 * @note Results are serialized as they can contain an array of objects
 	 * where when retrieved from cache those objects are going to be
-	 * unserialized to restore the original object
+	 * unserialized to restore its former condition
 	 *
 	 * @since 1.9
 	 *
 	 * @param array $results
 	 */
 	public function recache( array $results ) {
-
 		$this->getCache()
 			->setCacheEnabled( $this->cacheSetup->get( 'enabled' ) && $results !== array() )
+			->setKey( $this->getIdGenerator() )
 			->set( array( 'time' => $this->getTimestamp(), 'result' => serialize( $results ) ), $this->cacheSetup->get( 'expiry' )
 		);
 	}
 
 	/**
-	 * Returns a CacheHandler instance
+	 * Returns a CacheIdGenerator objects
 	 *
 	 * @since 1.9
 	 *
-	 * @return CacheHandler
+	 * @return CacheIdGenerator
+	 */
+	public function getIdGenerator() {
+		return new CacheIdGenerator( $this->cacheSetup->get( 'id' ), $this->cacheSetup->get( 'prefix' ) );
+	}
+
+	/**
+	 * Returns the timestamp of the cached objects
+	 *
+	 * @since 1.9
+	 *
+	 * @return integer|null
 	 */
 	public function getCacheDate() {
 		return $this->cacheSetup->has( 'cacheDate' ) ? $this->cacheSetup->get( 'cacheDate' ) : null;
@@ -99,8 +121,9 @@ class ResultCacheMapper implements Cacheable {
 	}
 
 	/**
-	 * Service function that remaps an array of cached content and returns
-	 * unserialized objects and the timestamp of the cached content
+	 * Mapping of cached content
+	 *
+	 * Returns unserialized objects and the timestamp of the cached content
 	 *
 	 * @since 1.9
 	 *

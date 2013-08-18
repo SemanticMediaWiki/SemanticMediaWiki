@@ -48,7 +48,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function getMockDIWikiPage( $exists = true ) {
 
-		$text  = $this->getRandomString();
+		$text  = $this->newRandomString();
 
 		$title = $this->newMockObject( array(
 			'exists'  => $exists,
@@ -75,7 +75,9 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newInstance( $result = null, $values = array(), $settings = array() ) {
 
-		$collector = $this->newMockObject( array( 'getResults' => $result ) )->getMockCollector();
+		$collector = $this->newMockObject( array(
+			'getResults' => $result
+		) )->getMockCacheableObjectCollector();
 
 		$mockStore = $this->newMockObject( array(
 			'getPropertyValues'    => $values,
@@ -115,7 +117,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$skin = $this->getMock( 'Skin' );
 
 		$instance = $this->newInstance();
-		$error    = $this->getRandomString();
+		$error    = $this->newRandomString();
 
 		$result   = $instance->formatResult(
 			$skin,
@@ -163,7 +165,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$property = $this->newMockObject( array(
 			'isUserDefined' => $isUserDefined,
 			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
-			'getLabel'      => $this->getRandomString(),
+			'getLabel'      => $this->newRandomString(),
 		) )->getMockDIProperty();
 
 		$expected = $property->getDiWikiPage()->getTitle()->getText();
@@ -179,7 +181,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$property = $this->newMockObject( array(
 			'isUserDefined' => $isUserDefined,
 			'getDiWikiPage' => $this->getMockDIWikiPage( false ),
-			'getLabel'      => $this->getRandomString(),
+			'getLabel'      => $this->newRandomString(),
 		) )->getMockDIProperty();
 
 		$expected = $property->getDiWikiPage()->getTitle()->getText();
@@ -195,7 +197,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$property = $this->newMockObject( array(
 			'isUserDefined' => $isUserDefined,
 			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
-			'getLabel'      => $this->getRandomString(),
+			'getLabel'      => $this->newRandomString(),
 		) )->getMockDIProperty();
 
 		$expected = $property->getDiWikiPage()->getTitle()->getText();
@@ -225,7 +227,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$property = $this->newMockObject( array(
 			'isUserDefined' => true,
 			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
-			'getLabel'      => $this->getRandomString(),
+			'getLabel'      => $this->newRandomString(),
 		) )->getMockDIProperty();
 
 		$result = $instance->formatResult( $skin, array( $property, $count ) );
@@ -248,7 +250,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		$property = $this->newMockObject( array(
 			'isUserDefined' => true,
-			'getLabel'      => $this->getRandomString(),
+			'getLabel'      => $this->newRandomString(),
 		) )->getMockDIProperty();
 
 		$expected = $property->getLabel();
@@ -276,7 +278,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$property = $this->newMockObject( array(
 			'isUserDefined' => true,
 			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
-			'getLabel'      => $this->getRandomString(),
+			'getLabel'      => $this->newRandomString(),
 		) )->getMockDIProperty();
 
 		$expected = $property->getLabel();
@@ -316,7 +318,7 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testGetPageHeader() {
 
-		$propertySearch = $this->getRandomString();
+		$propertySearch = $this->newRandomString();
 
 		$context = $this->newContext( array( 'property' => $propertySearch ) );
 		$context->setTitle( $this->newTitle() );

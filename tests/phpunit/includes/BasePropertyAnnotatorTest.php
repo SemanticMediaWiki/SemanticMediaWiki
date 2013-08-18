@@ -27,7 +27,11 @@ use SMW\DIProperty;
  */
 class BasePropertyAnnotatorTest extends ParserTestCase {
 
-	/** boolean */
+	/**
+	 * Use a callback to set the observerStatus in order to verify an approriate
+	 * response from a Publisher
+	 * @var boolean
+	 */
 	protected $observerStatus = null;
 
 	/**
@@ -40,30 +44,6 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * Returns a Observer object
-	 *
-	 * @note We use a callback to set the observerStatus
-	 * in order to verify if an approriate notifcation
-	 * was sent from the Publisher class
-	 *
-	 * @since 1.9
-	 *
-	 * @return Observer
-	 */
-	public function getMockObsever() {
-
-		$observer = $this->getMockBuilder( 'SMW\Observer' )
-			->setMethods( array( 'updateOutput' ) )
-			->getMock();
-
-		$observer->expects( $this->any() )
-			->method( 'updateOutput' )
-			->will( $this->returnCallback( array( $this, 'mockObserverCallback') ) );
-
-		return $observer;
-	}
-
-	/**
 	 * Helper method that returns a BasePropertyAnnotator object
 	 *
 	 * @param SemanticData $semanticData
@@ -72,10 +52,12 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	 * @return BasePropertyAnnotator
 	 */
 	private function getInstance( SemanticData $semanticData = null, $settings = array() ) {
-		return new BasePropertyAnnotator(
-			$semanticData === null ? $this->newMockObject()->getMockSemanticData() : $semanticData,
-			$this->newSettings( $settings )
-		);
+
+		if ( $semanticData === null ) {
+			$semanticData = $this->newMockObject()->getMockSemanticData();
+		}
+
+		return new BasePropertyAnnotator( $semanticData, $this->newSettings( $settings ) );
 	}
 
 	/**
@@ -120,7 +102,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	 * @param array $setup
 	 * @param array $expected
 	 */
-	public function testAddCategoriesMockObserver( array $setup, array $expected ) {
+	public function testAddCategoriesOnMockObserver( array $setup, array $expected ) {
 
 		$this->observerStatus = null;
 
@@ -128,9 +110,13 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 			$this->newSubject( $this->newTitle( $setup['namespace'] ) )
 		);
 
+		$mockObserver = $this->newMockObject( array(
+			'updateOutput' => array( $this, 'mockObserverCallback' )
+		) )->getMockObsever();
+
 		// Create instance and attach mock Observer
 		$instance = $this->getInstance( $semanticData, $setup['settings'] );
-		$instance->attach( $this->getMockObsever() );
+		$instance->attach( $mockObserver );
 		$instance->addCategories( $setup['categories'] );
 
 		$this->assertSemanticData( $semanticData, $expected );
@@ -182,19 +168,20 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	 * @param array $setup
 	 * @param array $expected
 	 */
-	public function testAddDefaultSortMockObserver( array $setup, array $expected ) {
+	public function testAddDefaultSortOnMockObserver( array $setup, array $expected ) {
 
 		$this->observerStatus = null;
-
-		// Simple add and verify
-		// Test update notification using a Observer mock
 
 		$subject  = $this->newSubject( $setup['title'] );
 		$semanticData = new SemanticData( $subject );
 
+		$mockObserver = $this->newMockObject( array(
+			'updateOutput' => array( $this, 'mockObserverCallback' )
+		) )->getMockObsever();
+
 		// Create instance and attach mock Observer
 		$instance = $this->getInstance( $semanticData );
-		$instance->attach( $this->getMockObsever() );
+		$instance->attach( $mockObserver );
 		$instance->addDefaultSort( $setup['sort'] );
 
 		$this->assertSemanticData( $semanticData, $expected );
@@ -215,15 +202,11 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	 * @param array $setup
 	 * @param array $expected
 	 */
-	public function testAddSpecialPropertiesMockObserver( array $setup, array $expected ) {
+	public function testAddSpecialPropertiesOnMockObserver( array $setup, array $expected ) {
 
 		$this->observerStatus = null;
 
-		// Simple add and verify
-		// Test update notification using a Observer mock
-
-		$subject  = isset( $setup['subject'] ) ? $setup['subject'] : $this->newSubject( $setup['title'] );
-		$semanticData = new SemanticData( $subject );
+		$semanticData = new SemanticData( $setup['subject'] );
 
 		// Setup inidivudal mock objects that will be invoked in order to
 		// control and support only needed functions
@@ -231,9 +214,13 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		$revision = $this->newMockObject( $setup['revision'] )->getMockRevision();
 		$user     = $this->newMockObject( $setup['user'] )->getMockUser();
 
+		$mockObserver = $this->newMockObject( array(
+			'updateOutput' => array( $this, 'mockObserverCallback' )
+		) )->getMockObsever();
+
 		// Create instance and attach mock Observer
 		$instance = $this->getInstance( $semanticData, $setup['settings'] );
-		$instance->attach( $this->getMockObsever() );
+		$instance->attach( $mockObserver );
 		$instance->addSpecialProperties( $wikiPage, $revision, $user );
 
 		$this->assertSemanticData( $semanticData, $expected );
@@ -270,7 +257,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		// Unknown
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle(),
+				'subject'  => $this->newSubject( $this->newTitle() ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( 'Lala', '_Lula', '-Lila', '' )
 				),
@@ -286,7 +273,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		// TYPE_MODIFICATION_DATE
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle(),
+				'subject'  => $this->newSubject( $this->newTitle() ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
 				),
@@ -334,7 +321,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		// TYPE_NEW_PAGE
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle(),
+				'subject'  => $this->newSubject( $this->newTitle() ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_NEW_PAGE )
 				),
@@ -357,7 +344,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle(),
+				'subject'  => $this->newSubject( $this->newTitle() ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_LAST_EDITOR )
 				),
@@ -375,7 +362,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		// Combine entries
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle(),
+				'subject'  => $this->newSubject( $this->newTitle() ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( '_MDAT', '_LEDT' )
 				),

@@ -44,7 +44,7 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return ResultCacheMapper
 	 */
-	private function getInstance( $cacheId = 'Foo', $cacheEnabled = true, $cacheExpiry = 10 ) {
+	private function newInstance( $cacheId = 'Foo', $cacheEnabled = true, $cacheExpiry = 10 ) {
 
 		$setup = array(
 			'id'      => $cacheId,
@@ -63,7 +63,7 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -76,14 +76,14 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 
 		$id       = $this->getRandomString();
 		$expected = array( $this->getRandomString(), $this->getRandomString() );
-		$instance = $this->getInstance( $id, true, rand( 100, 200 ) );
+		$instance = $this->newInstance( $id, true, rand( 100, 200 ) );
 
 		// Initial fetch(without any data present) must fail
 		$result = $instance->fetchFromCache();
 		$this->assertFalse( $result );
 		$this->assertInternalType( 'null', $instance->getCacheDate() );
 
-		// Invoke object
+		// Cache object
 		$instance->recache( $expected );
 
 		// Re-fetch data from cache
@@ -92,5 +92,7 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 		$this->assertInternalType( 'array', $result );
 		$this->assertInternalType( 'string', $instance->getCacheDate() );
 		$this->assertEquals( $expected, $result );
+
 	}
+
 }

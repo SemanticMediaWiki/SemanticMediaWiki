@@ -3,8 +3,7 @@
 namespace SMW;
 
 /**
- * General purpose change agent to enforce loose coupling by having
- * a Publisher (subject) sent a change notification to this observer
+ * Observer for independent update transactions
  *
  * @file
  *
@@ -15,13 +14,16 @@ namespace SMW;
  */
 
 /**
- * General purpose change agent to enforce loose coupling by having
- * a Publisher (subject) sent a change notification to this observer
+ * Observer for independent update transactions
  *
- * @note When testing rountrips, use MockUpdateObserver instead
+ * Using this observer can help to enforce loose coupling by having
+ * a Publisher (ObservableSubject) sent a notification (state change)
+ * to this observer which will independently act from the source of
+ * the notification
+ *
+ * @note When testing rountrips, use the MockUpdateObserver instead
  *
  * @ingroup Observer
- * @ingroup Utility
  */
 class UpdateObserver extends Observer implements Cacheable, Configurable, StoreAccess {
 

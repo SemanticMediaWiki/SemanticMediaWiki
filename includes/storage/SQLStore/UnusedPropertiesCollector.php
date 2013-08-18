@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\Collector;
+use SMW\Store\CacheableObjectCollector;
 
 use SMW\InvalidPropertyException;
 use SMW\SimpleDictionary;
@@ -31,10 +31,10 @@ use DatabaseBase;
 /**
  * Collects unused properties from a store entity
  *
- * @ingroup Collector
+ * @ingroup CacheableObjectCollector
  * @ingroup SQLStore
  */
-class UnusedPropertiesCollector extends Collector {
+class UnusedPropertiesCollector extends CacheableObjectCollector {
 
 	/** @var Store */
 	protected $store;
@@ -74,7 +74,7 @@ class UnusedPropertiesCollector extends Collector {
 	 * - Boolean: whether to use a dedicated DB or Slave
 	 * - DatabaseBase: database connection to use
 	 *
-	 * @return Collector
+	 * @return ObjectCollector
 	 */
 	public static function newFromStore( Store $store, $dbw = false ) {
 
@@ -84,10 +84,7 @@ class UnusedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Set-up details used for the Cache instantiation
-	 *
-	 * @see $smwgUnusedPropertiesCache
-	 * @see $smwgUnusedPropertiesCacheExpiry
+	 * @see CacheableObjectCollector::cacheSetup
 	 *
 	 * @since 1.9
 	 *

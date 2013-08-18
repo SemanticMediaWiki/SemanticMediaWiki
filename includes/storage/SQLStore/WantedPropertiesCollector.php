@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\Collector;
+use SMW\Store\CacheableObjectCollector;
 
 use SMW\SimpleDictionary;
 use SMW\DIProperty;
@@ -27,10 +27,10 @@ use DatabaseBase;
 /**
  * Collects wanted properties from a store entity
  *
- * @ingroup Collector
+ * @ingroup CacheableObjectCollector
  * @ingroup SQLStore
  */
-class WantedPropertiesCollector extends Collector {
+class WantedPropertiesCollector extends CacheableObjectCollector {
 
 	/** @var Store */
 	protected $store;
@@ -70,7 +70,7 @@ class WantedPropertiesCollector extends Collector {
 	 * - Boolean: whether to use a dedicated DB or Slave
 	 * - DatabaseBase: database connection to use
 	 *
-	 * @return Collector
+	 * @return ObjectCollector
 	 */
 	public static function newFromStore( Store $store, $dbw = false ) {
 
@@ -80,7 +80,7 @@ class WantedPropertiesCollector extends Collector {
 	}
 
 	/**
-	 * Set-up details used for the Cache instantiation
+	 * @see CacheableObjectCollector::cacheSetup
 	 *
 	 * @since 1.9
 	 *

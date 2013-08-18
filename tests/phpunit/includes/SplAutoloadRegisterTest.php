@@ -17,17 +17,17 @@ namespace SMW\Test;
  * Verifies registered classes (spl_autoload_register) against
  * classes that are accessible to avoid misspellings etc.
  *
- * @ingroup SMW
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class AutoloadRegisterTest extends \PHPUnit_Framework_TestCase {
+class SplAutoloadRegisterTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @since 1.9
 	 */
-	public function testAutoloadedClasses() {
+	public function testVerifyAutoloadClasses() {
 
 		$classes = include( __DIR__ . '../../../../' . 'SemanticMediaWiki.classes.php' );
 

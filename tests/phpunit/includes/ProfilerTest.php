@@ -20,7 +20,7 @@ use ReflectionClass;
 /**
  * @covers \SMW\Profiler
  *
- * @ingroup SMW
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

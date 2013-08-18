@@ -55,6 +55,19 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Whether the dictonary knows the value
+	 *
+	 * @since 1.9
+	 *
+	 * @param $key
+	 *
+	 * @return boolean
+	 */
+	protected function hasValue( $key ) {
+		return $this->dictionary->has( $key );
+	}
+
+	/**
 	 * Sets value
 	 *
 	 * @since 1.9
@@ -124,25 +137,60 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Helper method that returns a Collector object
+	 * Helper method that returns a CacheableObjectCollector object
 	 *
 	 * @since 1.9
 	 *
-	 * @param $result
-	 *
-	 * @return Collector
+	 * @return CacheableObjectCollector
 	 */
-	public function getMockCollector() {
+	public function getMockCacheableObjectCollector() {
 
-		$collector = $this->getMockBuilder( '\SMW\Store\Collector' )
-			->setMethods( array( 'cacheSetup', 'doCollect', 'getResults' ) )
+		// CacheableObjectCollector is an abstract class therefore necessary methods
+		// are declared by default while other methods are only mocked if needed
+		// because setMethods overrides the original signature
+		$methods = array( 'cacheSetup', 'doCollect' );
+
+		if (  $this->hasValue( 'getResults' ) ) {
+			$methods[] = 'getResults';
+		}
+
+		$collector = $this->getMockBuilder( '\SMW\Store\CacheableObjectCollector' )
+			->setMethods( $methods )
 			->getMock();
+
+		$collector->expects( $this->any() )
+			->method( 'doCollect' )
+			->will( $this->returnValue( $this->setValue( 'doCollect' ) ) );
+
+		$collector->expects( $this->any() )
+			->method( 'cacheSetup' )
+			->will( $this->returnValue( $this->setValue( 'cacheSetup' ) ) );
 
 		$collector->expects( $this->any() )
 			->method( 'getResults' )
 			->will( $this->returnValue( $this->setValue( 'getResults' ) ) );
 
 		return $collector;
+	}
+
+	/**
+	 * Returns an Observer object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Observer
+	 */
+	public function getMockObsever() {
+
+		$observer = $this->getMockBuilder( 'SMW\Observer' )
+			->setMethods( array( 'updateOutput' ) )
+			->getMock();
+
+		$observer->expects( $this->any() )
+			->method( 'updateOutput' )
+			->will( $this->setCallback( 'updateOutput' ) );
+
+		return $observer;
 	}
 
 	/**

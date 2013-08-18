@@ -18,7 +18,7 @@ use SMW\HashIdGenerator;
 /**
  * @covers \SMW\HashIdGenerator
  *
- * @ingroup SMW
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

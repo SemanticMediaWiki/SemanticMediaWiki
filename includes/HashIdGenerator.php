@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * This class is responsible for generating a Hash Id
+ * Generating a Hash Id
  *
  * @file
  *
@@ -14,7 +14,7 @@ namespace SMW;
  */
 
 /**
- * This class is responsible for generating a Hash Id
+ * This generating a Hash Id from an arbitrary content
  *
  * @ingroup Utility
  */
@@ -49,7 +49,9 @@ class HashIdGenerator implements IdGenerator {
 	}
 
 	/**
-	 * Returns a generated concatenated key string
+	 * Generates an Id
+	 *
+	 * It returns a string that is concatenated of a prefix and a md5 value
 	 *
 	 * @par Example:
 	 * @code

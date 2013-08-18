@@ -3,8 +3,7 @@
 namespace SMW;
 
 /**
- * Dispatches notifification (state changes) from a client to registered
- * Observers
+ * Dispatches state changes from a client to registered Observers
  *
  * @file
  *
@@ -22,7 +21,10 @@ namespace SMW;
 interface DispatchableSubject {
 
 	/**
-	 * Forwards requests to a ObservableDispatcher
+	 * Invokes an ObservableDispatcher
+	 *
+	 * This allows requests to be forwarded to Observers registered with an
+	 * ObservableDispatcher
 	 *
 	 * @since  1.9
 	 *
@@ -33,12 +35,12 @@ interface DispatchableSubject {
 }
 
 /**
- * Extends the Observable interface to forward the source
+ * Extends the Observable interface to reset the Subject
  *
- * This ObservableDispatcher enables the emitter (client) of an event not being
- * directly linked to an Observer, freeing it from implementing methods to
- * communicate with it while maintaining capabability to transmitt state changes
- * to Observers that are registered with this dispatcher.
+ * An ObservableDispatcher enables an emitter (client) of an event not being
+ * directly linked to an Observer, freeing it from implementing methods that are
+ * necessary to communicate with it while maintaining a capability to transmitt
+ * state changes to Observers that are registered with a dispatcher
  *
  * @ingroup Observer
  */
@@ -49,7 +51,7 @@ interface ObservableDispatcher extends Observable {
 	 *
 	 * @since  1.9
 	 *
-	 * @param mixed $subject
+	 * @param DispatchableSubject $subject
 	 */
 	public function setSubject( DispatchableSubject $subject );
 
@@ -58,13 +60,15 @@ interface ObservableDispatcher extends Observable {
 /**
  * Implementation of the ObservableDispatcher
  *
- * ObservableDispatcher inherits all methods from ObservableSubject in order to
- * communicate with its Observers.
+ * ObservableSubjectDispatcher inherits all methods from an ObservableSubject
+ * in order to communicate with registered Observers
  *
  * @par Example:
  * @code
  *  $changeNotifier = new PropertyChangeNotifier( ... );
- *  $changeNotifier->setObservableDispatcher( new ObservableSubjectDispatcher( new UpdateObserver() ) );
+ *  $changeNotifier->setObservableDispatcher(
+ *     new ObservableSubjectDispatcher( new UpdateObserver() )
+ *  );
  * @endcode
  *
  * @ingroup Observer
@@ -75,11 +79,11 @@ class ObservableSubjectDispatcher extends ObservableSubject implements Observabl
 	protected $subject = null;
 
 	/**
-	 * Registeres a DispatchableSubject
+	 * Registers a DispatchableSubject
 	 *
 	 * @since 1.9
 	 *
-	 * @param $subject
+	 * @param DispatchableSubject $subject
 	 *
 	 * @return ObservableSubjectDispatcher
 	 */
@@ -89,9 +93,11 @@ class ObservableSubjectDispatcher extends ObservableSubject implements Observabl
 	}
 
 	/**
-	 * Overrides ObservableSubject::getSource to ensure that the emitting client
-	 * is identified as source and not the ObservableDispatcher, in order for
-	 * the Observer to act on the clients behalf
+	 * @see ObservableSubject::getSource
+	 *
+	 * @note Returns a subject to ensure that the emitting client is identified
+	 * as source and not the ObservableDispatcher, in order for the Observer to
+	 * act on the clients behalf
 	 *
 	 * @since 1.9
 	 *

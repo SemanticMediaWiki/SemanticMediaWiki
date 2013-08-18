@@ -14,28 +14,23 @@ use WikiPage;
 use Parser;
 
 /**
- * Class contains methods to access data in connection with the Parser or
- * ParserOutput object
- *
- * @since 1.9
+ * Access methods in connection with the Parser or ParserOutput object
  *
  * @file
- * @ingroup SMW
- * @ingroup SMWParser
- * @ingroup Test
  *
- * @group SMW
- * @group SMWExtension
+ * @license GNU GPL v2+
+ * @since   1.9
  *
- * @licence GNU GPL v2+
  * @author mwjames
  */
 
 /**
- * Class contains methods to access data in connection with the Parser or
- * ParserOutput object
+ * Access methods in connection with the Parser or ParserOutput object
  *
- * @ingroup SMW
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
  */
 abstract class ParserTestCase extends SemanticMediaWikiTestCase {
 

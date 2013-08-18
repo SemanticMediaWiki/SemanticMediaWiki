@@ -16,7 +16,6 @@ use SMWRequestOptions;
  *
  * @since 1.8
  *
- * @ingroup SMW
  * @ingroup Test
  *
  * @group SMW
@@ -182,7 +181,7 @@ class StoreTest extends \MediaWikiTestCase {
 		$store = smwfGetStore();
 		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\Store\Collector', $result );
+		$this->assertInstanceOf( '\SMW\Store\ObjectCollector', $result );
 		foreach( $result->getResults() as $row ) {
 			$this->assertEquals( 2, sizeof( $row ) );
 
@@ -198,7 +197,7 @@ class StoreTest extends \MediaWikiTestCase {
 		$store = smwfGetStore();
 		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\Store\Collector', $result );
+		$this->assertInstanceOf( '\SMW\Store\ObjectCollector', $result );
 		foreach( $result->getResults() as $row ) {
 			$this->assertInstanceOf(
 				'\SMWDIProperty',
@@ -212,7 +211,7 @@ class StoreTest extends \MediaWikiTestCase {
 		$store = smwfGetStore();
 		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\Store\Collector', $result );
+		$this->assertInstanceOf( '\SMW\Store\ObjectCollector', $result );
 		foreach( $result->getResults() as $row ) {
 			$this->assertInstanceOf(
 				'\SMWDIProperty',

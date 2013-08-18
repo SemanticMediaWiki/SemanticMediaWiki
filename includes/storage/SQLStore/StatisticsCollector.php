@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\Collector;
+use SMW\Store\CacheableObjectCollector;
 
 use SMW\SimpleDictionary;
 use SMW\DIProperty;
@@ -25,10 +25,10 @@ use DatabaseBase;
 /**
  * This class provides access to store related statistical information
  *
- * @ingroup Collector
+ * @ingroup CacheableObjectCollector
  * @ingroup SQLStore
  */
-class StatisticsCollector extends Collector {
+class StatisticsCollector extends CacheableObjectCollector {
 
 	/** @var Store */
 	protected $store;
@@ -82,10 +82,7 @@ class StatisticsCollector extends Collector {
 	}
 
 	/**
-	 * Set-up details used for the Cache instantiation
-	 *
-	 * @see $smwgStatisticsCache
-	 * @see $smwgStatisticsCacheExpiry
+	 * @see CacheableObjectCollector::cacheSetup
 	 *
 	 * @since 1.9
 	 *
@@ -323,7 +320,7 @@ class StatisticsCollector extends Collector {
 	 * Returns table declaration for a given property type
 	 *
 	 * @note This can be scrapped now that we have direct access
-	 * via the collector class
+	 * via the CacheableObjectCollector class
 	 *
 	 * @since 1.9
 	 *

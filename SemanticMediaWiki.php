@@ -97,6 +97,18 @@ spl_autoload_register( function ( $className ) {
 	if ( array_key_exists( $className, $classes ) ) {
 		include_once __DIR__ . '/' . $classes[$className];
 	}
+
+	// MW's total disregard for a different autoloading method forces
+	// AutoLoader::autoload to check only the $wgAutoloadLocalClasses classes
+	// which means that any other class registered in a different way is not
+	// being recognized and therefore causes wfDebug "... not found; skipped loading"
+	// messages in the error log
+	foreach ( $classes as $class => $file ) {
+		if ( !array_key_exists( $class, $GLOBALS['wgAutoloadLocalClasses'] ) ) {
+			$GLOBALS['wgAutoloadClasses'][$class] = __DIR__ . '/' . $file;
+		}
+	}
+
 	// @codeCoverageIgnoreEnd
 } );
 

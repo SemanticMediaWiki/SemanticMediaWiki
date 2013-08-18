@@ -11,8 +11,7 @@ use InvalidArgumentException;
 use MWTimestamp;
 
 /**
- * Interface for items of groups of individuals to be sampled into a
- * collection of values
+ * Class specifying an ObjectCollector and its concrete implementation
  *
  * @file
  *
@@ -23,12 +22,31 @@ use MWTimestamp;
  */
 
 /**
- * Collector base class
+ * Interface for items of groups of individuals to be sampled into a
+ * collection of values
+ *
+ * @ingroup Collector
+ */
+interface ObjectCollector {
+
+	/**
+	 * Returns collected information
+	 *
+	 * @since  1.9
+	 *
+	 * @return array
+	 */
+	public function getResults();
+
+}
+
+/**
+ * Base class specifying methods to represent a cacheable ObjectCollector
  *
  * @ingroup Collector
  * @ingroup Store
  */
-abstract class Collector {
+abstract class CacheableObjectCollector implements ObjectCollector {
 
 	/** @var array */
 	protected $results = array();
@@ -77,7 +95,7 @@ abstract class Collector {
 	 *
 	 * @param SMWRequestOptions $requestOptions
 	 *
-	 * @return Collector
+	 * @return CacheableObjectCollector
 	 */
 	public function setRequestOptions( SMWRequestOptions $requestOptions ) {
 		$this->requestOptions = $requestOptions;
@@ -97,7 +115,7 @@ abstract class Collector {
 
 	/**
 	 * In case results were cached, it returns the timestamp of the cached
-	 * object
+	 * results
 	 *
 	 * @since 1.9
 	 *
@@ -128,16 +146,16 @@ abstract class Collector {
 	protected abstract function doCollect();
 
 	/**
-	 * Sub-class is returning an ObjectDictionary object necessary for
-	 * the ResultCacheMapper instantiation
+	 * Sub-class is returning an ObjectDictionary that specifies details needed
+	 * for the ResultCacheMapper instantiation
 	 *
 	 * @par Example:
 	 * @code
 	 *  return new SimpleDictionary( array(
-	 *   'id'      => 'smwgPropertiesCache' . <...>,
-	 *   'type'    => $this->settings->get( 'smwgCacheType' ),
-	 *   'enabled' => $this->settings->get( 'smwgPropertiesCache' ),
-	 *   'expiry'  => $this->settings->get( 'smwgPropertiesCacheExpiry' )
+	 *     'id'      => 'Foo',
+	 *     'type'    => 'FooType',
+	 *     'enabled' => true or false,
+	 *     'expiry'  => 3600
 	 *  ) );
 	 * @endcode
 	 *
