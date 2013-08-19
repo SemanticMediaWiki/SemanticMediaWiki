@@ -14001,11 +14001,19 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_return' => 'Назад на $1',
 	'smw_smwadmin_updatestarted' => 'Започет је нови процес за обнављање семантичких података.
 Сви сачувани подаци ће бити поново обновљени или поправљени по потреби.
-Можете следити ток ажурирања на овој посебној страници.', # Fuzzy
+Можете пратити ток ажурирања на овој посебној страници.
+
+Назад на $1.',
 	'smw_smwadmin_updatenotstarted' => 'Већ је у току један процес ажурирања.
-Не покрећите други.', # Fuzzy
-	'smw_smwadmin_updatestopped' => 'Сви постојећи процеси ажурирања су обустављени.', # Fuzzy
-	'smw_smwadmin_updatenotstopped' => 'Како бисте обуставили покренути процес ажурирања, морате активирати контролни оквир да бисте потврдили да сте сигурни да желите да га обуставите.', # Fuzzy
+Не покрећите други.
+
+Назад на $1.',
+	'smw_smwadmin_updatestopped' => 'Сви постојећи процеси ажурирања су обустављени.
+
+Назад на $1.',
+	'smw_smwadmin_updatenotstopped' => 'Како бисте обуставили покренути процес ажурирања, морате активирати контролни оквир да бисте потврдили да сте сигурни да желите да га обуставите.
+
+Назад на $1.',
 	'smw_smwadmin_docu' => 'Ова посебна страница вам помаже приликом инсталирања и ажурирања <a href="http://semantic-mediawiki.org">Семантичког медијавикија</a>.
 Не заборавите да направите копију вредних података пре него покренете функције администрације.',
 	'smw_smwadmin_db' => 'Инсталирање и ажурирање базе података',
@@ -14014,7 +14022,7 @@ $messages['sr-ec'] = array(
 Промене које ће се сада извести немају последица за остали део базе података Медијавикија, а по потреби се могу врло лако поништити.
 Ова функција инсталирања се може покретати више пута без бојазни да ће нанети неку штету, али је неопходна само једном приликом инсталирања или ажурирања.',
 	'smw_smwadmin_permissionswarn' => 'Ако се операција заврши са SQL грешкама, корисник базе података (погледајте ваш LocalSettings.php) вероватно нема довољно дозвола за извршавање неопходних операција.
-Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, привремено се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <code>SMW_setup.php</code>, која може користити акредитацију из скрипте AdminSettings.php.', # Fuzzy
+Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, привремено се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <tt>SMW_setup.php</tt>, која може користити акредитацију из скрипте AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Покретање или ажурирање табела базе података',
 	'smw_smwadmin_announce' => 'Дојавите о постојању вашег викија',
 	'smw_smwadmin_announcedocu' => 'Семантички медијавики има веб сервиз за дојаву о постојању нових викија.
@@ -14043,7 +14051,7 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_datastructure' => 'Структура података',
 	'smw_adminlinks_displayingdata' => 'Приказивање података',
 	'smw_adminlinks_inlinequerieshelp' => 'Помоћ за непосредне упите',
-	'smw_unknowntype' => 'Неподржан тип "$1" је дефинисан за особину.', # Fuzzy
+	'smw_unknowntype' => 'Тип овог својства је погрешан.',
 	'smw_concept_header' => 'Странице концепта "$1"',
 	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.', # Fuzzy
 );
@@ -14214,11 +14222,19 @@ Unesite oboje, i stranicu, i osobinu.',
 	'smw_smwadmin_return' => 'Nazad na $1',
 	'smw_smwadmin_updatestarted' => 'Započet je novi proces za obnavljanje semantičkih podataka.
 Svi sačuvani podaci će biti ponovo obnovljeni ili popravljeni po potrebi.
-Možete slediti tok ažuriranja na ovoj posebnoj stranici.', # Fuzzy
+Možete pratiti tok ažuriranja na ovoj posebnoj stranici.
+
+Nazad na $1.',
 	'smw_smwadmin_updatenotstarted' => 'Već je u toku jedan proces ažuriranja.
-Ne pokrećite drugi.', # Fuzzy
-	'smw_smwadmin_updatestopped' => 'Svi postojeći procesi ažuriranja su obustavljeni.', # Fuzzy
-	'smw_smwadmin_updatenotstopped' => 'Kako biste obustavili pokrenuti proces ažuriranja, morate aktivirati kontrolni okvir da biste potvrdili da ste sigurni da želite da ga obustavite.', # Fuzzy
+Ne pokrećite drugi.
+
+Nazad na $1.',
+	'smw_smwadmin_updatestopped' => 'Svi postojeći procesi ažuriranja su obustavljeni.
+
+Nazad na $1.',
+	'smw_smwadmin_updatenotstopped' => 'Kako biste obustavili pokrenuti proces ažuriranja, morate aktivirati kontrolni okvir da biste potvrdili da ste sigurni da želite da ga obustavite.
+
+Nazad na $1.',
 	'smw_smwadmin_docu' => 'Ova posebna stranica vam pomaže prilikom instaliranja i ažuriranja <a href="http://semantic-mediawiki.org">Semantičkog medijavikija</a>.
 Ne zaboravite da napravite kopiju vrednih podataka pre nego pokrenete funkcije administracije.',
 	'smw_smwadmin_db' => 'Instaliranje i ažuriranje baze podataka',
@@ -14227,7 +14243,7 @@ Donja funkcija potvrđuje da je vaša baza podataka ispravno instalirana.
 Promene koje će se sada izvesti nemaju posledica za ostali deo baze podataka Medijavikija, a po potrebi se mogu vrlo lako poništiti.
 Ova funkcija instaliranja se može pokretati više puta bez bojazni da će naneti neku štetu, ali je neophodna samo jednom prilikom instaliranja ili ažuriranja.',
 	'smw_smwadmin_permissionswarn' => 'Ako se operacija završi sa SQL greškama, korisnik baze podataka (pogledajte vaš LocalSettings.php) verovatno nema dovoljno dozvola za izvršavanje neophodnih operacija.
-Ili dajte neophodne dozvole tom korisniku kako bi mogao da pravi i briše tabele u bazi, privremeno se ulogujte kao root u LocalSettings.php, ili koristite skriptu za održavanje <code>SMW_setup.php</code>, koja može koristiti akreditaciju iz skripte AdminSettings.php.', # Fuzzy
+Ili dajte neophodne dozvole tom korisniku kako bi mogao da pravi i briše tabele u bazi, privremeno se ulogujte kao root u LocalSettings.php, ili koristite skriptu za održavanje <tt>SMW_setup.php</tt>, koja može koristiti akreditaciju iz skripte AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Pokretanje ili ažuriranje tabela baze podataka',
 	'smw_smwadmin_announce' => 'Dojavite o postojanju vašeg vikija',
 	'smw_smwadmin_announcedocu' => 'Semantički medijaviki ima veb serviz za dojavu o postojanju novih vikija.
@@ -14256,7 +14272,7 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_adminlinks_datastructure' => 'Struktura podataka',
 	'smw_adminlinks_displayingdata' => 'Prikazivanje podataka',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za neposredne upite',
-	'smw_unknowntype' => 'Nepodržan tip "$1" je definisan za osobinu.', # Fuzzy
+	'smw_unknowntype' => 'Tip ovog svojstva je pogrešan.',
 	'smw_concept_header' => 'Stranice koncepta "$1"',
 	'smw_conceptarticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje pripadaju tom konceptu.', # Fuzzy
 );
