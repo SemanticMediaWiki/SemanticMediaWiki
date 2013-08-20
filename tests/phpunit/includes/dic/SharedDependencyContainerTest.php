@@ -2,14 +2,14 @@
 
 namespace SMW\Test;
 
-use SMW\CommonDependencyContainer;
+use SMW\SharedDependencyContainer;
 use SMW\SimpleDependencyBuilder;
 
 use SMW\DependencyBuilder;
 use SMW\DependencyContainer;
 
 /**
- * Tests for the CommonDependencyContainer
+ * Tests for the SharedDependencyContainer
  *
  * @file
  *
@@ -20,16 +20,16 @@ use SMW\DependencyContainer;
  */
 
 /**
- * @covers \SMW\CommonDependencyContainer
+ * @covers \SMW\SharedDependencyContainer
  * @covers \SMW\SimpleDependencyBuilder
- * @covers \SMW\DependencyContainerBase
+ * @covers \SMW\BaseDependencyContainer
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class CommonDependencyContainerTest extends SemanticMediaWikiTestCase {
+class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -60,9 +60,9 @@ class CommonDependencyContainerTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testCommonDependencyContainer() {
+	public function testSharedDependencyContainer() {
 
-		$instance = $this->getInstance( new CommonDependencyContainer() );
+		$instance = $this->getInstance( new SharedDependencyContainer() );
 
 		$this->assertInstanceOf( '\SMW\Settings', $instance->newObject( 'Settings' ) );
 		$this->assertInstanceOf( '\SMW\Store', $instance->newObject( 'Store' ) );

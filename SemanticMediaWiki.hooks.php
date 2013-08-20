@@ -572,7 +572,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onArticlePurge( &$wikiPage ) {
-		return \SMW\HooksLoader::prepare( new \SMW\ArticlePurge( $wikiPage ) )->process();
+		return \SMW\FunctionHookRegistry::register( new \SMW\ArticlePurge( $wikiPage ) )->process();
 	}
 
 	/**

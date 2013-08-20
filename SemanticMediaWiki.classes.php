@@ -76,21 +76,21 @@ return array(
 	'SMW\DispatchableSubject'         => 'includes/ObservableSubjectDispatcher.php',
 	'SMW\ObservableSubjectDispatcher' => 'includes/ObservableSubjectDispatcher.php',
 
-	// Dependency Injection Builder
-	'SMW\DependencyFactory'               => 'includes/DependencyBuilder.php',
-	'SMW\DependencyBuilder'               => 'includes/DependencyBuilder.php',
-	'SMW\SimpleDependencyBuilder'         => 'includes/DependencyBuilder.php',
+	// Dependency Builder
+	'SMW\DependencyFactory'               => 'includes/dic/DependencyBuilder.php',
+	'SMW\DependencyBuilder'               => 'includes/dic/DependencyBuilder.php',
+	'SMW\SimpleDependencyBuilder'         => 'includes/dic/SimpleDependencyBuilder.php',
 
-	// Dependency Injection Container
-	'SMW\DependencyObject'                => 'includes/DependencyContainer.php',
-	'SMW\DependencyContainer'             => 'includes/DependencyContainer.php',
-	'SMW\DependencyContainerBase'         => 'includes/DependencyContainer.php',
-	'SMW\EmptyDependencyContainer'        => 'includes/DependencyContainer.php',
-	'SMW\CommonDependencyContainer'       => 'includes/DependencyContainer.php',
+	// Dependency Container
+	'SMW\DependencyObject'                => 'includes/dic/DependencyContainer.php',
+	'SMW\DependencyContainer'             => 'includes/dic/DependencyContainer.php',
+	'SMW\BaseDependencyContainer'         => 'includes/dic/BaseDependencyContainer.php',
+	'SMW\EmptyDependencyContainer'        => 'includes/dic/EmptyDependencyContainer.php',
+	'SMW\SharedDependencyContainer'       => 'includes/dic/SharedDependencyContainer.php',
 
-	// Dependency Injection Helper
-	'SMW\DependencyRequestor'             => 'includes/DependencyInjector.php',
-	'SMW\DependencyInjector'              => 'includes/DependencyInjector.php',
+	// Dependency Injector
+	'SMW\DependencyRequestor'             => 'includes/dic/DependencyRequestor.php',
+	'SMW\DependencyInjector'              => 'includes/dic/DependencyInjector.php',
 
 	'SMW\Cacheable'                 => 'includes/Cacheable.php',
 	'SMW\Configurable'              => 'includes/Configurable.php',
@@ -108,6 +108,8 @@ return array(
 	'SMW\LinksUpdateConstructed'    => 'includes/hooks/LinksUpdateConstructed.php',
 	'SMW\BeforePageDisplay'         => 'includes/hooks/BeforePageDisplay.php',
 	'SMW\ArticlePurge'              => 'includes/hooks/ArticlePurge.php',
+	'SMW\InjectableHook'            => 'includes/hooks/InjectableHook.php',
+	'SMW\FunctionHookRegistry'      => 'includes/hooks/FunctionHookRegistry.php',
 
 	// Formatters
 	'SMW\ArrayFormatter'               => 'includes/formatters/ArrayFormatter.php',

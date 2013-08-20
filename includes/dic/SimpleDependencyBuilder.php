@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 
 /**
- * DependencyBuilder base class
+ * Implements the DependencyBuilder
  *
  * @file
  *
@@ -17,57 +17,8 @@ use OutOfBoundsException;
  */
 
 /**
- * Specifies a method to create a new object
- *
- * @ingroup DependencyBuilder
- */
-interface DependencyFactory {
-
-	/**
-	 * Returns a dependency object
-	 *
-	 * @since  1.9
-	 */
-	public function newObject( $objectName );
-
-}
-
-/**
- * Extends the DependencyFactory interface, and specifies all methods required
- * to create an injection object
- *
- * @ingroup DependencyBuilder
- */
-interface DependencyBuilder extends DependencyFactory {
-
-	/**
-	 * Returns dependency container object
-	 *
-	 * @since  1.9
-	 *
-	 * @return DependencyContainer
-	 */
-	public function getContainer();
-
-	/**
-	 * Returns an invoked constructor arguments
-	 *
-	 * @since  1.9
-	 */
-	public function getArgument( $key );
-
-	/**
-	 * Adds an arguments that can be used during object creation
-	 *
-	 * @since  1.9
-	 */
-	public function addArgument( $key, $value );
-
-}
-
-/**
- * Basic DependencyBuilder implementation to access DependencyContainer objects
- * and invoked arguments
+ * Basic implementation of the DependencyBuilder interface to enable access to
+ * DependencyContainer objects and other invoked arguments
  *
  * @ingroup DependencyBuilder
  */
@@ -84,7 +35,6 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 * @par Example:
 	 * @code
 	 *  $builder = new SimpleDependencyBuilder() or
-	 *  $builder = new SimpleDependencyBuilder( new CommonDependencyContainer() ) or
 	 *  $builder = new SimpleDependencyBuilder( new EmptyDependencyContainer() )
 	 * @endcode
 	 *
@@ -127,18 +77,17 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * Returns the dependency container
+	 * @see DependencyBuilder::getArgument
 	 *
 	 * @par Example:
 	 * @code
-	 *  $builder = new SimpleDependencyBuilder()
+	 *  $builder = new SimpleDependencyBuilder( new EmptyDependencyContainer() );
+	 *  $builder->getContainer() returns EmptyDependencyContainer
 	 *
-	 *  // Eager loading (do everything when asked for)
+	 *  // Register additional objects during runtime
 	 *  $builder->getContainer()->registerObject( 'Title', new Title() ) or
-	 *
-	 *  // Lazy loading (only do an instanitation when required)
 	 *  $builder->getContainer()->registerObject( 'DIWikiPage', function ( DependencyBuilder $builder ) {
-	 *    return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+	 *  	return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 	 *  } );
 	 * @endcode
 	 *
@@ -174,6 +123,17 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	/**
 	 * Build dynamic entities via magic method __get
 	 *
+	 * @par Example:
+	 * @code
+	 *  $builder = new SimpleDependencyBuilder( ... )
+	 *
+	 *  // Register object using __Set
+	 *  $builder->getContainer()->title = new Title()
+	 *
+	 *  // Retrieve object using __get
+	 *  $builder->title returns Title object
+	 * @endcode
+	 *
 	 * @param string $objectName
 	 */
 	public function __get( $objectName ) {
@@ -181,7 +141,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * Returns an invoked argument
+	 * @see DependencyBuilder::getArgument
 	 *
 	 * @note Arguments are being preceded by a "arg_" to distingiush those
 	 * objects internally from regisered DI objects. The handling is only
@@ -204,7 +164,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * Adds an argument (normally used during object creation)
+	 * @see DependencyBuilder::addArgument
 	 *
 	 * @since 1.9
 	 *
@@ -226,7 +186,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * Register arguments that were used during object invocation
+	 * Auto registeration for arguments that were used during object invocation
 	 *
 	 * @note Only the first array contains arguments relevant to the object
 	 * creation

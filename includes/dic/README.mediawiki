@@ -1,0 +1,97 @@
+A basic dependency injection framework to enable object injection for immutable or service objects in Semantic MediaWiki.
+
+== Overview ==
+* Support of predefined object definitions residing in a DependencyContainer object
+* Support to register of multiple container
+* Support for eager or lazy loading of objects
+* Support for "named" constructor arguments
+
+=== Objects ===
+<pre>
+// Injector
+DependencyRequestor
+	-> DependencyInjector
+
+// Builder
+DependencyFactory
+	-> DependencyBuilder
+		-> SimpleDependencyBuilder
+
+// Definitions
+DependencyObject
+	-> DependencyContainer
+		-> BaseDependencyContainer
+			-> EmptyDependencyContainer
+			-> SharedDependencyContainer
+</pre>
+
+=== Scope ===
+{|
+| Scope
+| Description
+|-
+| prototype (default)
+| Each injection or call of the newObject() method returns a new instance
+|}
+
+== DependencyContainer ==
+* DependencyObject an interface that specifies a method to register a dependency object
+* DependencyContainer an interface that specifies methods to retrieve and store object definitions
+* BaseDependencyContainer implements the DependencyContainer
+* EmptyDependencyContainer an empty container that extends BaseDependencyContainer.
+* SharedDependencyContainer implements common object definitions used during Semantic MediaWiki's life cycle.
+
+== DependencyBuilder  ==
+* DependencyFactory an interface that specifies a method to create a new object
+* DependencyBuilder an interface specifies methods to handle injection container and objects
+* SimpleDependencyBuilder implementing the DependencyBuilder to enable access to DependencyContainer objects and other invoked arguments
+
+== DependencyInjector ==
+* DependencyRequestor an interface specifying access to a DependencyBuilder within a client that requests dependency injection
+* DependencyInjector an abstract class that implements the DependencyRequestor to enable convenience access to an injected DependencyBuilder
+
+== Example ==
+=== SimpleDependencyBuilder ===
+<pre>
+$container = new EmptyDependencyContainer();
+
+// Register object (eager loading)
+$container->title = new Title();
+$container->registerObject( 'Foo', new \stdClass );
+
+// Register object (lazy loading)
+$container->property = function ( DependencyBuilder $builder ) {
+  return new DIProperty( ... );
+} );
+
+$container->registerObject( 'DIWikiPage', function ( DependencyBuilder $builder ) {
+  return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+} );
+
+// Access objects through a builder
+$builder = new SimpleDependencyBuilder( $container );
+
+$builder->newObject( 'Foo' );
+$builder->newObject( 'title' );
+$builder->property;
+
+// Invoke necessary arguments
+$builder->addArgument( 'Title', $builder->newObject( 'title' ) );
+$builder->newObject( 'DIWikiPage' );
+
+// Deferred object registration using the builder
+$builder->getContainer()->registerObject( 'Bar', new Fruits() );
+
+$builder->newObject( 'Bar' );
+</pre>
+=== DependencyInjector  ===
+<pre>
+class FooClass extends DependencyInjector { ... }
+
+$fooClass = new FooClass( ... )
+$fooClass->setDependencyBuilder( new SimpleDependencyBuilder() );
+
+$fooClass->getDependencyBuilder()->newObject( 'Bar' );
+</pre> 
+
+__NOTOC__

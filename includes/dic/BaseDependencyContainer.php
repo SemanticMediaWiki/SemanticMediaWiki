@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Provides objects for dependcy injection
+ * Provides a DependencyContainer base class
  *
  * @file
  *
@@ -14,34 +14,12 @@ namespace SMW;
  */
 
 /**
- * Interface specifying a dependency object
+ * Implements the DependencyContainer interface and is responsible for handling
+ * object storage, and retrieval of object definitions
  *
  * @ingroup DependencyContainer
  */
-interface DependencyObject {
-
-	/**
-	 * Register a dependency object
-	 *
-	 * @since  1.9
-	 */
-	public function registerObject( $objectName, $objectSignature );
-
-}
-
-/**
- * Interface specifying a dependency container
- *
- * @ingroup DependencyContainer
- */
-interface DependencyContainer extends DependencyObject, Accessible, Changeable, Combinable {}
-
-/**
- * Provides a DependencyContainer base class
- *
- * @ingroup DependencyContainer
- */
-abstract class DependencyContainerBase extends ObjectStorage implements DependencyContainer {
+abstract class BaseDependencyContainer extends ObjectStorage implements DependencyContainer {
 
 	/**
 	 * @see ObjectStorage::contains
@@ -96,8 +74,6 @@ abstract class DependencyContainerBase extends ObjectStorage implements Dependen
 	 * @since 1.9
 	 *
 	 * @param array $mergeable
-	 *
-	 * @return HashArray
 	 */
 	public function merge( array $mergeable ) {
 		$this->storage = array_merge( $this->storage, $mergeable );
@@ -151,71 +127,6 @@ abstract class DependencyContainerBase extends ObjectStorage implements Dependen
 	 */
 	public function registerObject( $objectName, $objectSignature ) {
 		$this->set( $objectName, $objectSignature );
-	}
-
-}
-
-/**
- * Implementation of an empty DependencyContainer entity
- *
- * @ingroup DependencyContainer
- */
-class EmptyDependencyContainer extends DependencyContainerBase {}
-
-/**
- * Implementation of a general purpose objects DependencyContainer
- *
- * @ingroup DependencyContainer
- */
-class CommonDependencyContainer extends DependencyContainerBase {
-
-	/**
-	 * @since  1.9
-	 */
-	public function __construct() {
-		$this->load();
-	}
-
-	/**
-	 * Load pre-existing object definitions
-	 *
-	 * @since  1.9
-	 */
-	public function load() {
-
-		$this->registerObject( 'Settings', function () {
-			return Settings::newFromGlobals();
-		} );
-
-		$this->registerObject( 'Store', function ( DependencyBuilder $builder ) {
-			return StoreFactory::getStore( $builder->newObject( 'Settings' )->get( 'smwgDefaultStore' ) );
-		} );
-
-		$this->registerObject( 'CacheHandler', function ( DependencyBuilder $builder ) {
-			return CacheHandler::newFromId( $builder->newObject( 'Settings' )->get( 'smwgCacheType' ) );
-		} );
-
-		$this->registerObject( 'ParserData', function ( DependencyBuilder $builder ) {
-			return new ParserData(
-				$builder->getArgument( 'Title' ),
-				$builder->getArgument( 'ParserOutput' )
-			);
-		} );
-
-		// $this->set( 'FactboxPresenter', function ( DependencyBuilder $builder ) {
-		//	$outputPage = $builder->getArgument( 'OutputPage' );
-		//	return new FactboxPresenter( $outputPage, $builder->newObject( 'Settings' ) );
-		// } );
-
-		// $this->set( 'Factbox', function ( DependencyBuilder $builder ) {
-		//	return new Factbox(
-		//		$builder->newObject( 'Store' ),
-		//		$builder->getArgument( 'SMW\ParserData' ),
-		//		$builder->getArgument( 'SMW\Settings' ),
-		//		$builder->getArgument( 'RequestContext' )
-		//	);
-		// } );
-
 	}
 
 }
