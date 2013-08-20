@@ -22,7 +22,7 @@ use SMW\DIWikiPage;
 /**
  * @covers \SMW\SimpleDependencyBuilder
  * @covers \SMW\DependencyInjector
- * @covers \SMW\DependencyContainerBase
+ * @covers \SMW\BaseDependencyContainer
  *
  * @ingroup Test
  *
