@@ -102,6 +102,38 @@ die("Not a valid entry point\n");
  */
 
 /**
+ * This group contains members that are related to supporting the Dependency
+ * Injection Framework
+ *
+ * @defgroup DependencyInjection Dependency Injection
+ * @ingroup Utility
+ */
+
+/**
+ * This group contains members that are related to building of Dependency
+ * Injection objects
+ *
+ * @defgroup DependencyBuilder Dependency Builder
+ * @ingroup DependencyInjection
+ */
+
+/**
+ * This group contains members that are related for requesting a Dependency
+ * Injection
+ *
+ * @defgroup DependencyRequestor Dependency Requestor
+ * @ingroup DependencyInjection
+ */
+
+/**
+ * This group contains members that are related for speficcation of Dependency
+ * Objects
+ *
+ * @defgroup DependencyContainer Dependency Container
+ * @ingroup DependencyInjection
+ */
+
+/**
  * This group contains members that are related to handler classes (including
  * object handler, hooks handler, instance handler etc.)
  *

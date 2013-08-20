@@ -63,6 +63,7 @@ return array(
 	'SMW\ObjectStorage'             => 'includes/ObjectStorage.php',
 	'SMW\SimpleDictionary'          => 'includes/SimpleDictionary.php',
 
+	// Observer subject pattern
 	'SMW\Observable'                => 'includes/ObservableSubject.php',
 	'SMW\Publisher'                 => 'includes/ObservableSubject.php',
 	'SMW\ObservableSubject'         => 'includes/ObservableSubject.php',
@@ -75,9 +76,25 @@ return array(
 	'SMW\DispatchableSubject'         => 'includes/ObservableSubjectDispatcher.php',
 	'SMW\ObservableSubjectDispatcher' => 'includes/ObservableSubjectDispatcher.php',
 
-	'SMW\Cacheable'                   => 'includes/Cacheable.php',
-	'SMW\Configurable'                => 'includes/Configurable.php',
-	'SMW\StoreAccess'                 => 'includes/StoreAccess.php',
+	// Dependency Injection Builder
+	'SMW\DependencyFactory'               => 'includes/DependencyBuilder.php',
+	'SMW\DependencyBuilder'               => 'includes/DependencyBuilder.php',
+	'SMW\SimpleDependencyBuilder'         => 'includes/DependencyBuilder.php',
+
+	// Dependency Injection Container
+	'SMW\DependencyObject'                => 'includes/DependencyContainer.php',
+	'SMW\DependencyContainer'             => 'includes/DependencyContainer.php',
+	'SMW\DependencyContainerBase'         => 'includes/DependencyContainer.php',
+	'SMW\EmptyDependencyContainer'        => 'includes/DependencyContainer.php',
+	'SMW\CommonDependencyContainer'       => 'includes/DependencyContainer.php',
+
+	// Dependency Injection Helper
+	'SMW\DependencyRequestor'             => 'includes/DependencyInjector.php',
+	'SMW\DependencyInjector'              => 'includes/DependencyInjector.php',
+
+	'SMW\Cacheable'                 => 'includes/Cacheable.php',
+	'SMW\Configurable'              => 'includes/Configurable.php',
+	'SMW\StoreAccess'               => 'includes/StoreAccess.php',
 
 	// Cache
 	'SMW\CacheHandler'                => 'includes/cache/CacheHandler.php',
@@ -90,6 +107,7 @@ return array(
 	'SMW\HooksLoader'               => 'includes/hooks/HooksLoader.php',
 	'SMW\LinksUpdateConstructed'    => 'includes/hooks/LinksUpdateConstructed.php',
 	'SMW\BeforePageDisplay'         => 'includes/hooks/BeforePageDisplay.php',
+	'SMW\ArticlePurge'              => 'includes/hooks/ArticlePurge.php',
 
 	// Formatters
 	'SMW\ArrayFormatter'               => 'includes/formatters/ArrayFormatter.php',
