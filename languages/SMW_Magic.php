@@ -78,6 +78,13 @@ $magicWords['br'] = array(
 	'declare' => array( 0, 'disklêriañ' ),
 );
 
+/** Czech (česky) */
+$magicWords['cs'] = array(
+	'ask' => array( 0, 'otázka' ),
+	'show' => array( 0, 'zobrazit' ),
+	'set' => array( 0, 'nastavit' ),
+);
+
 /** German (Deutsch) */
 $magicWords['de'] = array(
 	'ask' => array( 0, 'frage' ),
