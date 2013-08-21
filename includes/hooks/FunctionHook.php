@@ -18,7 +18,7 @@ namespace SMW;
  *
  * @ingroup Hook
  */
-abstract class InjectableHook extends DependencyInjector {
+abstract class FunctionHook extends DependencyInjector {
 
 	/**
 	 * Main method that initiates the processing of the registered

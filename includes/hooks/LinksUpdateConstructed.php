@@ -22,7 +22,7 @@ use LinksUpdate;
  *
  * @ingroup Hook
  */
-class LinksUpdateConstructed extends MediaWikiHook {
+class LinksUpdateConstructed extends FunctionHook {
 
 	/** @var LinksUpdate */
 	protected $linksUpdate = null;
@@ -45,8 +45,15 @@ class LinksUpdateConstructed extends MediaWikiHook {
 	 */
 	public function process() {
 
-		$parserData = new ParserData( $this->linksUpdate->getTitle(), $this->linksUpdate->getParserOutput() );
-		$parserData->setObservableDispatcher( new ObservableSubjectDispatcher( new UpdateObserver() ) )->updateStore();
+		$observer = new UpdateObserver();
+		$observer->setDependencyBuilder( $this->getDependencyBuilder() );
+
+		$parserData = $this->getDependencyBuilder()
+			->addArgument( 'Title', $this->linksUpdate->getTitle() )
+			->addArgument( 'ParserOutput', $this->linksUpdate->getParserOutput() )
+			->newObject( 'ParserData' );
+
+		$parserData->setObservableDispatcher( new ObservableSubjectDispatcher( $observer ) )->updateStore();
 
 		return true;
 	}

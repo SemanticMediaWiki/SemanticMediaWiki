@@ -25,7 +25,7 @@ if ( defined( 'SMW_VERSION' ) ) {
 }
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.9 alpha' );
+define( 'SMW_VERSION', '1.9 alpha-2' );
 
 global $smwgIP, $wgResourceModules, $wgServer, $wgVersion, $wgExtensionCredits;
 

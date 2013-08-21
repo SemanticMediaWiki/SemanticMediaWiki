@@ -43,8 +43,20 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return UpdateObserver
 	 */
-	private function getInstance() {
-		return new UpdateObserver();
+	private function newInstance() {
+
+		$observer = new UpdateObserver();
+
+		// For now use the default builder set internally by the observer
+		// $observer->setDependencyBuilder( new \SMW\SimpleDependencyBuilder );
+		$observer->setDependencyBuilder( $observer->getDependencyBuilder() );
+
+		// Dependency object registration
+		$observer->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+
+		return $observer;
 	}
 
 	/**
@@ -53,55 +65,7 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
-	}
-
-	/**
-	 * @test UpdateObserver::getStore
-	 * @test UpdateObserver::setStore
-	 *
-	 * @since 1.9
-	 */
-	public function testGetSetStore() {
-
-		$instance  = $this->getInstance();
-		$mockStore = $this->newMockObject()->getMockStore();
-
-		$this->assertInstanceOf( '\SMW\Store', $instance->getStore() );
-		$instance->setStore( $mockStore );
-		$this->assertInstanceOf( '\SMW\Store', $instance->getStore() );
-		$this->assertEquals( $mockStore, $instance->getStore() );
-
-	}
-
-	/**
-	 * @test UpdateObserver::getCache
-	 *
-	 * @since 1.9
-	 */
-	public function testGetCache() {
-
-		$instance = $this->getInstance();
-		$this->assertInstanceOf( '\SMW\CacheHandler', $instance->getCache() );
-	}
-
-	/**
-	 * @test UpdateObserver::setSettings
-	 * @test UpdateObserver::getSettings
-	 * @dataProvider updateDispatcherDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testGetSetSettings( $setup ) {
-
-		$instance = $this->getInstance();
-		$settings = $this->newSettings( $setup['settings'] );
-
-		$this->assertInstanceOf( '\SMW\Settings', $instance->getSettings() );
-
-		$instance->setSettings( $settings );
-		$this->assertEquals( $settings , $instance->getSettings() );
-
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -112,8 +76,12 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testUpdateDispatcherJob( $setup, $expected ) {
 
-		$instance = $this->getInstance();
-		$instance->setSettings( $this->newSettings( $setup['settings'] ) );
+		$instance = $this->newInstance();
+
+		// Dependency object registration
+		$instance->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Settings', $this->newSettings( $setup['settings'] ) );
 
 		$this->assertTrue( $instance->runUpdateDispatcher( $setup['title'] ) );
 	}
@@ -126,8 +94,12 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testStoreUpdater( $setup, $expected ) {
 
-		$instance = $this->getInstance();
-		$instance->setSettings( $this->newSettings( $setup['settings'] ) );
+		$instance = $this->newInstance();
+
+		// Dependency object registration
+		$instance->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Settings', $this->newSettings( $setup['settings'] ) );
 
 		$this->assertTrue( $instance->runStoreUpdater( $setup['parserData'] ) );
 	}

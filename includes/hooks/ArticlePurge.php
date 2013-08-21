@@ -25,7 +25,7 @@ use WikiPage;
  *
  * @ingroup Hook
  */
-class ArticlePurge extends InjectableHook {
+class ArticlePurge extends FunctionHook {
 
 	/** @var OutputPage */
 	protected $wikiPage = null;

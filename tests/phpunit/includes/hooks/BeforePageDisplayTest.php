@@ -44,9 +44,12 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return OutputPage
 	 */
-	private function getOutputPage( Title $title = null ) {
+	private function newOutputPage( Title $title = null ) {
 
-		$title   = $title === null ? $this->newTitle() : $title;
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
 		$context = $this->newContext();
 		$context->setTitle( $title );
 		$context->setLanguage( $this->getLanguage() );
@@ -59,9 +62,14 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function getInstance( OutputPage $outputPage ) {
-		$skin = $this->newMockObject()->getMockSkin();
-		return new BeforePageDisplay( $outputPage, $skin );
+	public function newInstance( OutputPage $outputPage ) {
+
+		$skin     = $this->newMockObject()->getMockSkin();
+		$instance = new BeforePageDisplay( $outputPage, $skin );
+
+		$instance->setDependencyBuilder( $this->newDependencyBuilder() );
+
+		return $instance;
 	}
 
 	/**
@@ -70,7 +78,7 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance( $this->getOutputPage() ) );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance( $this->newOutputPage() ) );
 	}
 
 	/**
@@ -81,8 +89,8 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testProcess( $setup, $expected ) {
 
-		$outputPage = $this->getOutputPage( $setup['title'] );
-		$result     = $this->getInstance( $outputPage )->process();
+		$outputPage = $this->newOutputPage( $setup['title'] );
+		$result     = $this->newInstance( $outputPage )->process();
 
 		$this->assertInternalType( 'boolean', $result );
 		$this->assertTrue( $result );

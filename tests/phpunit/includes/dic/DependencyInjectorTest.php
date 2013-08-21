@@ -41,7 +41,7 @@ class DependencyInjectorTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return DependencyBuilder
 	 */
-	private function newDependencyBuilder() {
+	private function newMockDependencyBuilder() {
 
 		$builder = $this->getMockBuilder( '\SMW\DependencyBuilder' )
 			->disableOriginalConstructor()
@@ -81,7 +81,7 @@ class DependencyInjectorTest extends SemanticMediaWikiTestCase {
 	public function testSetGet() {
 
 		$instance = $this->getInstance();
-		$builder  = $this->newDependencyBuilder();
+		$builder  = $this->newMockDependencyBuilder();
 
 		$instance->setDependencyBuilder( $builder );
 		$this->assertEquals( $builder, $instance->getDependencyBuilder() );

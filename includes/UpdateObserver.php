@@ -25,88 +25,45 @@ namespace SMW;
  *
  * @ingroup Observer
  */
-class UpdateObserver extends Observer implements Cacheable, Configurable, StoreAccess {
+class UpdateObserver extends Observer implements DependencyRequestor {
 
-	/** @var Settings */
-	protected $settings = null;
-
-	/** @var Store */
-	protected $store = null;
-
-	/** @var CacheHandler */
-	protected $cache = null;
+	/** @var DependencyBuilder */
+	protected $dependencyBuilder = null;
 
 	/**
-	 * Sets Store object
+	 * @see DependencyRequestor::setDependencyBuilder
 	 *
 	 * @since 1.9
 	 *
-	 * @param Store $store
+	 * @param DependencyBuilder $builder
 	 */
-	public function setStore( Store $store ) {
-		$this->store = $store;
+	public function setDependencyBuilder( DependencyBuilder $builder ) {
+		$this->dependencyBuilder = $builder;
 	}
 
 	/**
-	 * Returns Store object
+	 * @see DependencyRequestor::getDependencyBuilder
 	 *
 	 * @since 1.9
 	 *
-	 * @return Store
+	 * @return DependencyBuilder
 	 */
-	public function getStore() {
+	public function getDependencyBuilder() {
 
-		if ( $this->store === null ) {
-			$this->store = StoreFactory::getStore();
+		// This is not as clean as it should be but to avoid to make
+		// multipe changes at once we determine a default builder here
+		// which at some point should vanish after pending changes have
+		// been merged
+
+		// LinksUpdateConstructed is injecting the builder via the setter
+		// UpdateJob does not
+		// ParserAfterTidy does not
+
+		if ( $this->dependencyBuilder === null ) {
+			$this->dependencyBuilder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
 		}
 
-		return $this->store;
-	}
-
-	/**
-	 * Sets Settings object
-	 *
-	 * @since 1.9
-	 *
-	 * @param Settings $settings
-	 *
-	 * @return ChangeAgent
-	 */
-	public function setSettings( Settings $settings ) {
-		$this->settings = $settings;
-		return $this;
-	}
-
-	/**
-	 * Returns Settings object
-	 *
-	 * @since 1.9
-	 *
-	 * @return Settings
-	 */
-	public function getSettings() {
-
-		if ( $this->settings === null ) {
-			$this->settings = Settings::newFromGlobals();
-		}
-
-		return $this->settings;
-	}
-
-	/**
-	 * Returns CacheHandler object
-	 *
-	 * @since 1.9
-	 *
-	 * @return CacheHandler
-	 */
-	public function getCache() {
-
-		if ( $this->cache === null ) {
-			$this->cache = CacheHandler::newFromId( $this->getSettings()->get( 'smwgCacheType' ) );
-		}
-
-		return $this->cache;
+		return $this->dependencyBuilder;
 	}
 
 	/**
@@ -123,7 +80,12 @@ class UpdateObserver extends Observer implements Cacheable, Configurable, StoreA
 	 */
 	public function runStoreUpdater( ParserData $subject ) {
 
-		$updater = new StoreUpdater( $this->getStore(), $subject->getData(), $this->getSettings() );
+		$updater = new StoreUpdater(
+			$this->getDependencyBuilder()->newObject( 'Store' ),
+			$subject->getData(),
+			$this->getDependencyBuilder()->newObject( 'Settings' )
+		);
+
 		$updater->setUpdateStatus( $subject->getUpdateStatus() )->doUpdate();
 
 		return true;
@@ -151,11 +113,16 @@ class UpdateObserver extends Observer implements Cacheable, Configurable, StoreA
 	 */
 	public function runUpdateDispatcher( TitleAccess $subject ) {
 
-		$dispatcher = new UpdateDispatcherJob( $subject->getTitle() );
-		$dispatcher->setSettings( $this->getSettings() );
+		$settings   = $this->getDependencyBuilder()->newObject( 'Settings' );
 
-		if ( $this->getSettings()->get( 'smwgDeferredPropertyUpdate' ) && class_exists( '\SMW\PropertyPageIdMapper' ) ) {
+		$dispatcher = new UpdateDispatcherJob( $subject->getTitle() );
+		$dispatcher->setSettings( $settings );
+
+		if ( $settings->get( 'smwgDeferredPropertyUpdate' ) && class_exists( '\SMW\PropertyPageIdMapper' ) ) {
+			// Enable coverage after PropertyPageIdMapper is available
+			// @codeCoverageIgnoreStart
 			$dispatcher->insert(); // JobQueue is handling dispatching
+			// @codeCoverageIgnoreEnd
 		} else {
 			$dispatcher->run();
 		}

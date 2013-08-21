@@ -78,7 +78,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 			'smwgAutoRefreshOnPurge' => $setup['smwgAutoRefreshOnPurge']
 		) );
 
-		$dependencyBuilder = new SimpleDependencyBuilder();
+		$dependencyBuilder = $this->newDependencyBuilder();
 		$dependencyBuilder->getContainer()->registerObject( 'Settings', $settings );
 		$dependencyBuilder->getContainer()->registerObject(
 			'CacheHandler',

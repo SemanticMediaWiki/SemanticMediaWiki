@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\SimpleDependencyBuilder;
+use SMW\DependencyContainer;
 use SMW\DataValueFactory;
 use SMW\SimpleDictionary;
 use SMW\SemanticData;
@@ -60,6 +62,19 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	public function newMockObject( array $dictionary = array() ) {
 		return new MockObjectBuilder( new SimpleDictionary( $dictionary ) );
+	}
+
+	/**
+	 * Helper method that returns a SimpleDependencyBuilder object
+	 *
+	 * @since 1.9
+	 *
+	 * @param DependencyContainer $dependencyContainer
+	 *
+	 * @return SimpleDependencyBuilder
+	 */
+	public function newDependencyBuilder( DependencyContainer $dependencyContainer = null ) {
+		return new SimpleDependencyBuilder( $dependencyContainer );
 	}
 
 	/**

@@ -102,13 +102,10 @@ return array(
 	'SMW\CacheIdGenerator'            => 'includes/cache/CacheIdGenerator.php',
 
 	// Hooks
-	'SMW\HookBase'                  => 'includes/hooks/HookBase.php',
-	'SMW\MediaWikiHook'             => 'includes/hooks/MediaWikiHook.php',
-	'SMW\HooksLoader'               => 'includes/hooks/HooksLoader.php',
 	'SMW\LinksUpdateConstructed'    => 'includes/hooks/LinksUpdateConstructed.php',
 	'SMW\BeforePageDisplay'         => 'includes/hooks/BeforePageDisplay.php',
 	'SMW\ArticlePurge'              => 'includes/hooks/ArticlePurge.php',
-	'SMW\InjectableHook'            => 'includes/hooks/InjectableHook.php',
+	'SMW\FunctionHook'              => 'includes/hooks/FunctionHook.php',
 	'SMW\FunctionHookRegistry'      => 'includes/hooks/FunctionHookRegistry.php',
 
 	// Formatters

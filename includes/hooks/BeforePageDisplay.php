@@ -25,7 +25,7 @@ use Title;
  *
  * @ingroup Hook
  */
-class BeforePageDisplay extends MediaWikiHook {
+class BeforePageDisplay extends FunctionHook {
 
 	/** @var OutputPage */
 	protected $outputPage = null;

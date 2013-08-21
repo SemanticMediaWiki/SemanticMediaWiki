@@ -25,11 +25,11 @@ class FunctionHookRegistry {
 	 *
 	 * @since  1.9
 	 *
-	 * @param InjectableHook $hook
+	 * @param FunctionHook $hook
 	 *
-	 * @return InjectableHook
+	 * @return FunctionHook
 	 */
-	public static function register( InjectableHook $hook ) {
+	public static function register( FunctionHook $hook ) {
 		$hook->setDependencyBuilder( new SimpleDependencyBuilder( new SharedDependencyContainer() ) );
 		return $hook;
 	}

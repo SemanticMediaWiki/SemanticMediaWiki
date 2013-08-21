@@ -47,15 +47,24 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return LinksUpdateConstructed
 	 */
-	private function getInstance( Title $title = null ) {
+	private function newInstance( Title $title = null ) {
 
-		$title = $title === null ? $this->newTitle() : $title;
-		$title->resetArticleID( rand( 1, 1000 ) );
+		if ( $title === null ) {
+			$title = $this->newTitle();
+			$title->resetArticleID( rand( 1, 1000 ) );
+		}
 
 		$parserOutput = new ParserOutput();
 		$parserOutput->setTitleText( $title->getPrefixedText() );
 
-		return new LinksUpdateConstructed( new LinksUpdate( $title, $parserOutput ) );
+		$dependencyBuilder = $this->newDependencyBuilder( new \SMW\SharedDependencyContainer() );
+		$dependencyBuilder->getContainer()
+			->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+
+		$instance = new LinksUpdateConstructed( new LinksUpdate( $title, $parserOutput ) );
+		$instance->setDependencyBuilder( $dependencyBuilder );
+
+		return $instance;
 	}
 
 	/**
@@ -64,7 +73,7 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -73,11 +82,7 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testProcess() {
-
-		$instance = $this->getInstance();
-		$instance->setStore( $this->newMockObject()->getMockStore() );
-
-		$this->assertTrue( $instance->process() );
+		$this->assertTrue( $this->newInstance()->process() );
 	}
 
 }

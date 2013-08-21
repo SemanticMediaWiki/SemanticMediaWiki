@@ -533,7 +533,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onLinksUpdateConstructed( $linksUpdate ) {
-		return \SMW\HooksLoader::register( new \SMW\LinksUpdateConstructed( $linksUpdate ) )->process();
+		return \SMW\FunctionHookRegistry::register( new \SMW\LinksUpdateConstructed( $linksUpdate ) )->process();
 	}
 
 	/**
@@ -693,6 +693,6 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function onBeforePageDisplay( OutputPage &$outputPage, Skin &$skin ) {
-		return \SMW\HooksLoader::register( new \SMW\BeforePageDisplay( $outputPage, $skin ) )->process();
+		return \SMW\FunctionHookRegistry::register( new \SMW\BeforePageDisplay( $outputPage, $skin ) )->process();
 	}
 }

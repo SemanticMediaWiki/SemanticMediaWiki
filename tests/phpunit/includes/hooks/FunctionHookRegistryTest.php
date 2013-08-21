@@ -35,14 +35,14 @@ class FunctionHookRegistryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a InjectableHook object
+	 * Helper method that returns a FunctionHook object
 	 *
 	 * @since 1.9
 	 *
-	 * @return InjectableHook
+	 * @return FunctionHook
 	 */
 	private function newHook() {
-		return $this->getMockForAbstractClass( '\SMW\InjectableHook' );
+		return $this->getMockForAbstractClass( '\SMW\FunctionHook' );
 	}
 
 	/**
@@ -63,9 +63,9 @@ class FunctionHookRegistryTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testConstructor() {
 		$this->assertInstanceOf(
-			'\SMW\InjectableHook',
+			'\SMW\FunctionHook',
 			FunctionHookRegistry::register( $this->newHook() ),
-			'Failed asserting InjectableHook instance'
+			'Failed asserting FunctionHook instance'
 		);
 	}
 
