@@ -66,6 +66,11 @@ class HashIdGeneratorTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance( null, $prefix );
 		$this->assertEquals( $prefix, $instance->getPrefix() );
 
+		// Set prefix
+		$prefix   = $this->getRandomString();
+		$instance = $this->getInstance( null, null );
+		$this->assertEquals( $prefix, $instance->setPrefix( $prefix )->getPrefix() );
+
 	}
 
 	/**

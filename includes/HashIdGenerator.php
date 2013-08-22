@@ -38,6 +38,20 @@ class HashIdGenerator implements IdGenerator {
 	}
 
 	/**
+	 * Sets prefix
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $prefix
+	 *
+	 * @return HashIdGenerator
+	 */
+	public function setPrefix( $prefix ) {
+		$this->prefix = $prefix;
+		return $this;
+	}
+
+	/**
 	 * Returns prefix
 	 *
 	 * @since 1.9
@@ -66,4 +80,5 @@ class HashIdGenerator implements IdGenerator {
 	public function generateId() {
 		return $this->getPrefix() . md5( json_encode( array( $this->hashable ) ) );
 	}
+
 }

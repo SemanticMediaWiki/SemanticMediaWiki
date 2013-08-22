@@ -61,8 +61,8 @@ class QueryData {
 	 *
 	 * @param IdGenerator $generator
 	 */
-	public function setQueryId( IdGenerator $generator ) {
-		$this->queryId = '_QUERY' . $generator->generateId();
+	public function setQueryId( IdGenerator $id ) {
+		$this->queryId = $this->subobject->generateId( $id->setPrefix( '_QUERY' ) );
 	}
 
 	/**

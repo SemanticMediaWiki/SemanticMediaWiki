@@ -82,16 +82,16 @@ class Subobject {
 	}
 
 	/**
-	 * Returns an anonymous identifier
+	 * Returns an generated identifier
 	 *
 	 * @since 1.9
 	 *
-	 * @param string
+	 * @param IdGenerator $id
 	 *
 	 * @return string
 	 */
-	public function getAnonymousIdentifier( $string ) {
-		return '_' . hash( 'md4', $string , false );
+	public function generateId( IdGenerator $id ) {
+		return $id->generateId();
 	}
 
 	/**

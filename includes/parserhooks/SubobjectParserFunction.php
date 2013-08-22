@@ -89,7 +89,7 @@ class SubobjectParserFunction {
 		$isAnonymous = in_array( $parameters->getFirst(), array( null, '' ,'-' ) );
 
 		if ( $this->objectReference || $isAnonymous ) {
-			$id = $this->subobject->getAnonymousIdentifier( serialize( $parameters ) );
+			$id = $this->subobject->generateId( new HashIdGenerator( $parameters->toArray(), '_' ) );
 		} else {
 			$id = $parameters->getFirst();
 		}

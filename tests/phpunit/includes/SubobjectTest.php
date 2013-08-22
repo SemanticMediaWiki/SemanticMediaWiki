@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\DataValueFactory;
+use SMW\HashIdGenerator;
 use SMW\DIProperty;
 use SMW\Subobject;
 
@@ -68,7 +69,7 @@ class SubobjectTest extends ParserTestCase {
 		$instance = new Subobject( $title );
 
 		if ( $id === '' && $id !== null ) {
-			$id = $instance->getAnonymousIdentifier( $this->getRandomString() );
+			$id = $instance->generateId( new HashIdGenerator( $this->getRandomString(), '_' ) );
 		}
 
 		$instance->setSemanticData( $id );
@@ -123,6 +124,9 @@ class SubobjectTest extends ParserTestCase {
 	 * @test Subobject::getId
 	 * @dataProvider getDataProvider
 	 *
+	 * @note For an anonymous identifier we only use the first character
+	 * as comparison
+	 *
 	 * @since 1.9
 	 *
 	 * @param array $test
@@ -132,9 +136,8 @@ class SubobjectTest extends ParserTestCase {
 	public function testGetId( array $test, array $expected, array $info ) {
 
 		$subobject = $this->getInstance( $this->getTitle(), $test['identifier'] );
-		// For an anonymous identifier we only use the first character as comparison
-		$id = $expected['identifier'] === '_' ? substr( $subobject->getId(), 0, 1 ) : $subobject->getId();
 
+		$id = $expected['identifier'] === '_' ? substr( $subobject->getId(), 0, 1 ) : $subobject->getId();
 		$this->assertEquals( $expected['identifier'], $id, $info['msg'] );
 
 	}
@@ -230,7 +233,7 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Subobject::getAnonymousIdentifier
+	 * @test Subobject::generateId
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
@@ -239,12 +242,12 @@ class SubobjectTest extends ParserTestCase {
 	 * @param array $expected
 	 * @param array $info
 	 */
-	public function testGetAnonymousIdentifier( array $test, array $expected, array $info ) {
+	public function testGenerateId( array $test, array $expected, array $info ) {
 
 		$subobject = $this->getInstance( $this->getTitle() );
 		$this->assertEquals(
 			'_',
-			substr( $subobject->getAnonymousIdentifier( $test['identifier'] ), 0, 1 ),
+			substr( $subobject->generateId( new HashIdGenerator( $test['identifier'], '_' ) ), 0, 1 ),
 			$info['msg']
 		);
 
