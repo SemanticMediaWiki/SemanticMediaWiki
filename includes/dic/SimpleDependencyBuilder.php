@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 
 /**
- * Implements the DependencyBuilder
+ * Implements a basic DependencyBuilder
  *
  * @file
  *
@@ -26,6 +26,9 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 
 	/** @var DependencyContainer */
 	protected $dependencyContainer = null;
+
+	/** @var integer */
+	protected $objectScope = null;
 
 	/**
 	 * @note In case no DependencyContainer has been injected during construction
@@ -77,7 +80,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * @see DependencyBuilder::getArgument
+	 * @see DependencyBuilder::getContainer
 	 *
 	 * @par Example:
 	 * @code
@@ -113,38 +116,42 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 * @since  1.9
 	 *
 	 * @param  string $objectName
+	 * @param  array|null $objectArguments
 	 *
 	 * @return mixed
 	 */
-	public function newObject( $objectName ) {
-		return $this->setArguments( func_get_args() )->build( $objectName );
+	public function newObject( $objectName, $objectArguments = null ) {
+		return $this->setArguments( $objectArguments )->build( $objectName );
 	}
 
 	/**
-	 * Build dynamic entities via magic method __get
+	 * Build dynamic object entities via magic method __call
 	 *
 	 * @par Example:
 	 * @code
 	 *  $builder = new SimpleDependencyBuilder( ... )
 	 *
-	 *  // Register object using __Set
+	 *  // Register object
 	 *  $builder->getContainer()->title = new Title()
 	 *
-	 *  // Retrieve object using __get
-	 *  $builder->title returns Title object
+	 *  // Retrieve object
+	 *  $builder->title() returns Title object
 	 * @endcode
 	 *
 	 * @param string $objectName
+	 * @param array|null $objectArguments
+	 *
+	 * @return mixed
 	 */
-	public function __get( $objectName ) {
-		return $this->build( $objectName );
+	public function __call( $objectName, $objectArguments = null ) {
+		return $this->setArguments( $objectArguments )->build( $objectName );
 	}
 
 	/**
 	 * @see DependencyBuilder::getArgument
 	 *
-	 * @note Arguments are being preceded by a "arg_" to distingiush those
-	 * objects internally from regisered DI objects. The handling is only
+	 * @note Arguments are being preceded by a "arg_" to distinguish those
+	 * objects internally from registered DI objects. The handling is only
 	 * relevant for those internal functions and hidden from the public
 	 *
 	 * @since 1.9
@@ -156,11 +163,30 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 */
 	public function getArgument( $key ) {
 
-		if ( !( $this->dependencyContainer->has( 'arg_' . $key ) ) ) {
+		if ( !( $this->hasArgument( $key ) ) ) {
 			throw new OutOfBoundsException( "'{$key}' argument is invalid or unknown." );
 		}
 
 		return $this->dependencyContainer->get( 'arg_' . $key );
+	}
+
+	/**
+	 * @see DependencyBuilder::hasArgument
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 * @throws InvalidArgumentException
+	 */
+	public function hasArgument( $key ) {
+
+		if ( !is_string( $key ) ) {
+			throw new InvalidArgumentException( "Argument is not a string" );
+		}
+
+		return $this->dependencyContainer->has( 'arg_' . $key );
 	}
 
 	/**
@@ -186,21 +212,32 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * Auto registeration for arguments that were used during object invocation
-	 *
-	 * @note Only the first array contains arguments relevant to the object
-	 * creation
+	 * @see DependencyBuilder::setScope
 	 *
 	 * @since  1.9
 	 *
-	 * @param array $args
+	 * @param $objectScope
 	 *
 	 * @return DependencyBuilder
 	 */
-	protected function setArguments( array $args ) {
+	public function setScope( $objectScope ) {
+		$this->objectScope = $objectScope;
+		return $this;
+	}
 
-		if ( isset( $args[1] ) && is_array( $args[1] ) ) {
-			foreach ( $args[1] as $key => $value ) {
+	/**
+	 * Auto registration of arguments
+	 *
+	 * @since  1.9
+	 *
+	 * @param  array|null $objectArguments
+	 *
+	 * @return DependencyBuilder
+	 */
+	protected function setArguments( $objectArguments = null ) {
+
+		if ( $objectArguments !== null && is_array( $objectArguments ) ) {
+			foreach ( $objectArguments as $key => $value ) {
 				$this->addArgument( get_class( $value ), $value );
 			}
 		}
@@ -229,9 +266,70 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 			throw new OutOfBoundsException( "{$objectName} is not registered" );
 		}
 
-		$object = $this->dependencyContainer->get( $objectName );
+		list( $objectSignature, $objectScope ) = $this->dependencyContainer->get( $objectName );
 
-		return is_callable( $object ) ? $object( $this ) : $object;
+		return $this->load( $objectName, $objectSignature, $objectScope );
+	}
+
+	/**
+	 * Resolves object definition and initializes an object in accordance with
+	 * its scope
+	 *
+	 * @note Objects with a singleton scope are internally stored and preceded by
+	 * a 'sing_' as object identifier
+	 *
+	 * @since  1.9
+	 *
+	 * @param string $objectName
+	 * @param mixed $objectSignature
+	 * @param integer $objectScope
+	 *
+	 * @return mixed
+	 */
+	private function load( $objectName, $objectSignature, $objectScope ) {
+
+		// An object scope invoked during the build process has priority over
+		// the original scope definition
+		$objectScope = $this->objectScope !== null ? $this->objectScope : $objectScope;
+
+		if ( $objectScope === DependencyObject::SCOPE_SINGLETON ) {
+
+			$objectName = 'sing_' . $objectName;
+
+			if ( !$this->dependencyContainer->has( $objectName ) ) {
+				$this->dependencyContainer->set( $objectName, $this->singelton( $objectSignature ) );
+			}
+
+			$objectSignature = $this->dependencyContainer->get( $objectName );
+
+		}
+
+		// Reset internal scope variable
+		$this->objectScope = null;
+
+		return is_callable( $objectSignature ) ? $objectSignature( $this ) : $objectSignature;
+	}
+
+	/**
+	 * Build singleton instance
+	 *
+	 * Keep the context within the closure static so any repeated call to
+	 * this closure object will find the static context instead
+	 *
+	 * @param mixed $objectSignature
+	 *
+	 * @return Closure
+	 */
+	private function singelton( $objectSignature ) {
+
+		// Resolve the object and use the result for static injection
+		$object = is_callable( $objectSignature ) ? $objectSignature( $this ) : $objectSignature;
+
+		return function() use ( $object ) {
+			static $singleton;
+			return $singleton = $singleton === null ? $object : $singleton;
+		};
+
 	}
 
 }

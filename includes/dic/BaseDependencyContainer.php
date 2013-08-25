@@ -97,11 +97,11 @@ abstract class BaseDependencyContainer extends ObjectStorage implements Dependen
 	 *
 	 * @since  1.9
 	 *
-	 * @param string $key
-	 * @param mixed $value
+	 * @param string $objectName
+	 * @param mixed $objectSignature
 	 */
 	public function __set( $objectName, $objectSignature ) {
-		$this->set( $objectName, $objectSignature );
+		$this->registerObject( $objectName, $objectSignature );
 	}
 
 	/**
@@ -125,8 +125,14 @@ abstract class BaseDependencyContainer extends ObjectStorage implements Dependen
 	 * @param string $objectName
 	 * @param mixed $signature
 	 */
-	public function registerObject( $objectName, $objectSignature ) {
-		$this->set( $objectName, $objectSignature );
+	public function registerObject( $objectName, $objectSignature, $objectScope = self::SCOPE_PROTOTYPE ) {
+		$this->set( $objectName, array( $objectSignature, $objectScope ) );
 	}
 
+	// Not sure that the overhead would warrant something like
+	// $definition = new DependencyObjectDefinition( $name, $signature, $scope )
+	//
+	// public function registerObject( DependencyObjectDefinition $definition ) {
+	//	$this->set( $definition->getName(), array( $definition->getSignature() , $definition->getScope() ) );
+	// }
 }

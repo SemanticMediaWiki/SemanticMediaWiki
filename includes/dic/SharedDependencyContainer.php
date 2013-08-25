@@ -35,23 +35,75 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	 */
 	public function load() {
 
+		/**
+		 * Settings object definition
+		 *
+		 * @since  1.9
+		 *
+		 * @return Settings
+		 */
 		$this->registerObject( 'Settings', function () {
 			return Settings::newFromGlobals();
-		} );
+		}, self::SCOPE_SINGLETON );
 
+		/**
+		 * Store object definition
+		 *
+		 * @since  1.9
+		 *
+		 * @return Store
+		 */
 		$this->registerObject( 'Store', function ( DependencyBuilder $builder ) {
 			return StoreFactory::getStore( $builder->newObject( 'Settings' )->get( 'smwgDefaultStore' ) );
-		} );
+		}, self::SCOPE_SINGLETON );
 
+		/**
+		 * CacheHandler object definition
+		 *
+		 * @since  1.9
+		 *
+		 * @return CacheHandler
+		 */
 		$this->registerObject( 'CacheHandler', function ( DependencyBuilder $builder ) {
 			return CacheHandler::newFromId( $builder->newObject( 'Settings' )->get( 'smwgCacheType' ) );
-		} );
+		}, self::SCOPE_SINGLETON );
 
+		/**
+		 * ParserData object definition
+		 *
+		 * @since  1.9
+		 *
+		 * @return ParserData
+		 */
 		$this->registerObject( 'ParserData', function ( DependencyBuilder $builder ) {
 			return new ParserData(
 				$builder->getArgument( 'Title' ),
 				$builder->getArgument( 'ParserOutput' )
 			);
+		} );
+
+		/**
+		 * UpdateObserver object definitions
+		 *
+		 * @since  1.9
+		 *
+		 * @return UpdateObserver
+		 */
+		$this->registerObject( 'UpdateObserver', function ( DependencyBuilder $builder ){
+			$updateObserver = new UpdateObserver();
+			$updateObserver->setDependencyBuilder( $builder );
+			return $updateObserver;
+		} );
+
+		/**
+		 * NamespaceExaminer object definitions
+		 *
+		 * @since  1.9
+		 *
+		 * @return NamespaceExaminer
+		 */
+		$this->registerObject( 'NamespaceExaminer', function ( DependencyBuilder $builder ){
+			return NamespaceExaminer::newFromArray( $builder->newObject( 'Settings' )->get( 'smwgNamespacesWithSemanticLinks' ) );
 		} );
 
 		// $this->set( 'FactboxPresenter', function ( DependencyBuilder $builder ) {

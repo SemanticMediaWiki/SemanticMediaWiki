@@ -45,7 +45,7 @@ class DependencyInjectorTest extends SemanticMediaWikiTestCase {
 
 		$builder = $this->getMockBuilder( '\SMW\DependencyBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'newObject', 'getContainer', 'getArgument', 'addArgument' ) )
+			->setMethods( array( 'newObject', 'getContainer', 'getArgument', 'hasArgument', 'addArgument', 'setScope' ) )
 			->getMock();
 
 		return $builder;

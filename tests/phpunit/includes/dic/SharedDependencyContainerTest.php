@@ -49,29 +49,76 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return SimpleDependencyBuilder
 	 */
-	private function getInstance( $container = null ) {
+	private function newInstance( $container = null ) {
 		return new SimpleDependencyBuilder( $container );
 	}
 
 	/**
 	 * @test SimpleDependencyBuilder::newObject
 	 * @test SimpleDependencyBuilder::addArgument
-	 * @test SimpleDependencyBuilder::getArgument
+	 * @dataProvider objectDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testSharedDependencyContainer() {
+	public function testObjectRegistrationAndInstanitation( $objectName, $objectDefinition ) {
 
-		$instance = $this->getInstance( new SharedDependencyContainer() );
+		$instance = $this->newInstance( new SharedDependencyContainer() );
 
-		$this->assertInstanceOf( '\SMW\Settings', $instance->newObject( 'Settings' ) );
-		$this->assertInstanceOf( '\SMW\Store', $instance->newObject( 'Store' ) );
-		$this->assertInstanceOf( '\SMW\CacheHandler', $instance->newObject( 'CacheHandler' ) );
+		foreach ( $objectDefinition as $objectInstance => $arguments ) {
 
-		$instance->addArgument( 'Title', $this->newMockObject()->getMockTitle() );
-		$instance->addArgument( 'ParserOutput', $this->newMockObject()->getMockParserOutput() );
+			foreach ( $arguments as $name => $object ) {
+				$instance->addArgument( $name, $object );
+			}
 
-		$this->assertInstanceOf( '\SMW\ParserData', $instance->newObject( 'ParserData' ) );
+			$this->assertInstanceOf(
+				$objectInstance,
+				$instance->newObject( $objectName ),
+				'asserts that the DI component has created an instance'
+			);
+		}
 
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testObjectRegistrationCompleteness() {
+
+		$instance = new SharedDependencyContainer();
+
+		foreach ( $this->objectDataProvider() as $object ) {
+			$registeredObjects[ $object[0] ] = array() ;
+		}
+
+		foreach ( $instance->toArray() as $objectName => $objectSiganture ) {
+			if ( !array_key_exists( $objectName, $registeredObjects ) ) {
+				$this->markTestIncomplete( "This test is incomplete because of a missing {$objectName} assertion." );
+			}
+		}
+
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function objectDataProvider() {
+
+		$provider = array();
+
+		$provider[] = array( 'Settings',          array( '\SMW\Settings'          => array() ) );
+		$provider[] = array( 'Store',             array( '\SMW\Store'             => array() ) );
+		$provider[] = array( 'CacheHandler',      array( '\SMW\CacheHandler'      => array() ) );
+		$provider[] = array( 'NamespaceExaminer', array( '\SMW\NamespaceExaminer' => array() ) );
+		$provider[] = array( 'UpdateObserver',    array( '\SMW\UpdateObserver'    => array() ) );
+
+		$provider[] = array( 'ParserData' , array(  '\SMW\ParserData' => array(
+				'Title'        => $this->newMockObject()->getMockTitle(),
+				'ParserOutput' => $this->newMockObject()->getMockParserOutput()
+				)
+			)
+		);
+
+		return $provider;
 	}
 }
