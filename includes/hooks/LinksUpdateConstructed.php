@@ -45,15 +45,15 @@ class LinksUpdateConstructed extends FunctionHook {
 	 */
 	public function process() {
 
-		$observer = new UpdateObserver();
-		$observer->setDependencyBuilder( $this->getDependencyBuilder() );
+		/**
+		 * @var ParserData $parserData
+		 */
+		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(
+			'Title'        => $this->linksUpdate->getTitle(),
+			'ParserOutput' => $this->linksUpdate->getParserOutput()
+		) );
 
-		$parserData = $this->getDependencyBuilder()
-			->addArgument( 'Title', $this->linksUpdate->getTitle() )
-			->addArgument( 'ParserOutput', $this->linksUpdate->getParserOutput() )
-			->newObject( 'ParserData' );
-
-		$parserData->setObservableDispatcher( new ObservableSubjectDispatcher( $observer ) )->updateStore();
+		$parserData->updateStore();
 
 		return true;
 	}

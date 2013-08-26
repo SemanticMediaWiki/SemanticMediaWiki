@@ -276,12 +276,17 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param SemanticData $semanticData
 	 * @param array $expected
 	 */
-	protected function assertSemanticData( SemanticData $semanticData, array $expected ) {
+	protected function assertSemanticData( SemanticData $semanticData, array $expected, $message = null ) {
 
 		$properties = $semanticData->getProperties();
 
-		$this->assertCount( $expected['propertyCount'], $properties );
-		$this->assertProperties(  $semanticData , $properties, $expected );
+		$this->assertCount(
+			$expected['propertyCount'],
+			$properties,
+			'asserts whether the SemanticData container contained an expected ammount of properties'
+		);
+
+		$this->assertProperties( $semanticData, $properties, $expected );
 
 	}
 
@@ -299,11 +304,19 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 			$this->assertInstanceOf( '\SMW\DIProperty', $diproperty );
 
 			if ( isset( $expected['propertyKey']) ){
-				$this->assertContains( $diproperty->getKey(), $expected['propertyKey'] );
+				$this->assertContains(
+					$diproperty->getKey(),
+					$expected['propertyKey'],
+					'asserts that the SemanticData container contained a specific property key'
+				);
 			}
 
 			if ( isset( $expected['propertyLabel']) ){
-				$this->assertContains( $diproperty->getLabel(), $expected['propertyLabel'] );
+				$this->assertContains(
+					$diproperty->getLabel(),
+					$expected['propertyLabel'],
+					'aasserts that the SemanticData container contained a specific property label'
+				);
 			}
 
 			if ( isset( $expected['propertyValue']) ){
@@ -329,13 +342,37 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 			$DItype = $dataValue->getDataItem()->getDIType();
 
 			if ( $DItype === SMWDataItem::TYPE_WIKIPAGE ){
-				$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
+
+				$this->assertContains(
+					$dataValue->getWikiValue(),
+					$expected['propertyValue'],
+					'asserts that the SemanticData container contained a property value of TYPE_WIKIPAGE'
+				);
+
 			} else if ( $DItype === SMWDataItem::TYPE_NUMBER ){
-				$this->assertContains( $dataValue->getNumber(), $expected['propertyValue'] );
+
+				$this->assertContains(
+					$dataValue->getNumber(),
+					$expected['propertyValue'],
+					'asserts that the SemanticData container contained a property value of TYPE_NUMBER'
+				);
+
 			} else if ( $DItype === SMWDataItem::TYPE_TIME ){
-				$this->assertContains( $dataValue->getISO8601Date(), $expected['propertyValue'] );
+
+				$this->assertContains(
+					$dataValue->getISO8601Date(),
+					$expected['propertyValue'],
+					'asserts that the SemanticData container contained a property value of TYPE_TIME'
+				);
+
 			} else if ( $DItype === SMWDataItem::TYPE_BLOB ){
-				$this->assertContains( $dataValue->getWikiValue(), $expected['propertyValue'] );
+
+				$this->assertContains(
+					$dataValue->getWikiValue(),
+					$expected['propertyValue'],
+					'asserts that the SemanticData container contained a property value of TYPE_BLOB'
+				);
+
 			}
 
 		}

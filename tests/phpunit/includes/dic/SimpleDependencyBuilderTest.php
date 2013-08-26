@@ -346,31 +346,29 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::getContainer
-	 * @test SimpleDependencyBuilder::addArgument
-	 * @test SimpleDependencyBuilder::getArgument
+	 * @test SimpleDependencyBuilder::newObject
+	 * @dataProvider autoArgumentsDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testAddGetArgumentsAutoRegistration() {
+	public function testAutoArguments( $setup, $expected ) {
 
 		$instance = $this->newInstance();
-		$title    = $this->newTitle( NS_MAIN, 'Lila' );
 
 		$instance->getContainer()->registerObject( 'Test', function ( DependencyBuilder $builder ) {
 			return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 		} );
 
 		$this->assertEquals(
-			$title,
-			$instance->newObject( 'Test', array( $title ) )->getTitle(),
-			'asserts object instance using newObject() constructor'
+			$expected,
+			$instance->newObject( 'Test', $setup )->getTitle(),
+			'asserts that newObject() and arguments return expected results'
 		);
 
 		$this->assertEquals(
-			$title,
-			$instance->Test( $title )->getTitle(),
-			'asserts object instance using __call constructor'
+			$expected,
+			$instance->Test( $setup )->getTitle(),
+			'asserts that __call and arguments return expected results'
 		);
 
 	}
@@ -562,6 +560,15 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 			'asserts that ...'
 		);
 
+		$this->assertEquals(
+			array( $title1, $title2 ),
+			$instance->getArray( array(
+				'Title1' => $title1,
+				'Title2' => $title2
+			) ),
+			'asserts that ...'
+		);
+
 	}
 
 	/**
@@ -692,6 +699,18 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
+	public function testNewObjectArgumentsInvalidArgument() {
+
+		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->newInstance()->newObject( new \stdclass, new \stdclass );
+
+	}
+
+	/**
+	 * @test SimpleDependencyBuilder::newObject
+	 *
+	 * @since 1.9
+	 */
 	public function testUnknownObject() {
 
 		$this->setExpectedException( 'OutOfBoundsException' );
@@ -710,6 +729,21 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 		// Inverse behaviour to the previous assert
 		$provider[] = array( array( 'scope' => 'SCOPE_PROTOTYPE' ), false );
+
+		return $provider;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function autoArgumentsDataProvider() {
+
+		$provider = array();
+		$title    = $this->newTitle( NS_MAIN, 'Lala' );
+
+		$provider[] = array( array( $title ), $title );
+		$provider[] = array( array( $title, $title ), $title );
+		$provider[] = array( array( 'Title' => $title, 'Title2' => $title ), $title );
 
 		return $provider;
 	}

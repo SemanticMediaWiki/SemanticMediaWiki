@@ -76,10 +76,15 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 		 * @return ParserData
 		 */
 		$this->registerObject( 'ParserData', function ( DependencyBuilder $builder ) {
-			return new ParserData(
+
+			$parserData = new ParserData(
 				$builder->getArgument( 'Title' ),
 				$builder->getArgument( 'ParserOutput' )
 			);
+
+			$parserData->setObservableDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
+
+			return $parserData;
 		} );
 
 		/**
@@ -93,6 +98,17 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			$updateObserver = new UpdateObserver();
 			$updateObserver->setDependencyBuilder( $builder );
 			return $updateObserver;
+		} );
+
+		/**
+		 * ObservableSubjectDispatcher object definitions
+		 *
+		 * @since  1.9
+		 *
+		 * @return ObservableSubjectDispatcher
+		 */
+		$this->registerObject( 'ObservableUpdateDispatcher', function ( DependencyBuilder $builder ){
+			return new ObservableSubjectDispatcher( $builder->newObject( 'UpdateObserver' ) );
 		} );
 
 		/**

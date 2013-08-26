@@ -48,10 +48,17 @@ class ArticlePurge extends FunctionHook {
 	 */
 	public function process() {
 
-		$pageId   = $this->wikiPage->getTitle()->getArticleID();
+		$pageId = $this->wikiPage->getTitle()->getArticleID();
 
-		$cache    = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
+		/**
+		 * @var Settings $settings
+		 */
 		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
+
+		/**
+		 * @var CacheHandler $cache
+		 */
+		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
 
 		$cache->setCacheEnabled( $pageId > 0 )
 			->key( 'autorefresh', $pageId )

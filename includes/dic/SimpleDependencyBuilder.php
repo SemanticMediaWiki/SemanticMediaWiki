@@ -20,6 +20,34 @@ use OutOfBoundsException;
  * Basic implementation of the DependencyBuilder interface to enable access to
  * DependencyContainer objects and other invoked arguments
  *
+ * For a more exhaustive description, see /dic/README.mediawiki
+ *
+ * @par Example:
+ * @code
+ *  // Constructor injection
+ *  $builder = new SimpleDependencyBuilder( new EmptyDependencyContainer() )
+ *
+ *  // Setter injection
+ *  $builder->registerContainer( new GenericDependencyContainer() )
+ *
+ *  // Register multiple container
+ *  $builder = new SimpleDependencyBuilder()
+ *  $builder->registerContainer( new GenericDependencyContainer() )
+ *  $builder->registerContainer( new AnotherDependencyContainer() )
+ *
+ *  // Register additional object definitions during runtime
+ *  $builder->getContainer()->registerObject( 'Title', new Title() ) or
+ *  $builder->getContainer()->registerObject( 'DIWikiPage', function ( DependencyBuilder $builder ) {
+ *  	return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+ *  } );
+ *
+ *  // Create an object
+ *  $diWikiPage = $builder->newObject( 'DIWikiPage', array( $title ) ) or
+ *  $diWikiPage = $builder->addArgument( 'Title', $title )->newObject( 'DIWikiPage' ) or
+ *  $diWikiPage = $builder->DIWikiPage( array( 'Title', $title ) )
+ *
+ * @endcode
+ *
  * @ingroup DependencyBuilder
  */
 class SimpleDependencyBuilder implements DependencyBuilder {
@@ -34,12 +62,6 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 * @note In case no DependencyContainer has been injected during construction
 	 * an empty container is set as default to enable registration without the need
 	 * to rely on constructor injection.
-	 *
-	 * @par Example:
-	 * @code
-	 *  $builder = new SimpleDependencyBuilder() or
-	 *  $builder = new SimpleDependencyBuilder( new EmptyDependencyContainer() )
-	 * @endcode
 	 *
 	 * @since  1.9
 	 *
@@ -56,20 +78,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * Registers a DependencyContainer
-	 *
-	 * @par Example:
-	 * @code
-	 *  $builder = new SimpleDependencyBuilder()
-	 *
-	 *  // Setter injection
-	 *  $builder->registerContainer( new GenericDependencyContainer() )
-	 *
-	 *  // Register multiple container
-	 *  $builder = new SimpleDependencyBuilder()
-	 *  $builder->registerContainer( new GenericDependencyContainer() )
-	 *  $builder->registerContainer( new AnotherDependencyContainer() )
-	 * @endcode
+	 * Register DependencyContainer
 	 *
 	 * @since  1.9
 	 *
@@ -82,18 +91,6 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	/**
 	 * @see DependencyBuilder::getContainer
 	 *
-	 * @par Example:
-	 * @code
-	 *  $builder = new SimpleDependencyBuilder( new EmptyDependencyContainer() );
-	 *  $builder->getContainer() returns EmptyDependencyContainer
-	 *
-	 *  // Register additional objects during runtime
-	 *  $builder->getContainer()->registerObject( 'Title', new Title() ) or
-	 *  $builder->getContainer()->registerObject( 'DIWikiPage', function ( DependencyBuilder $builder ) {
-	 *  	return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
-	 *  } );
-	 * @endcode
-	 *
 	 * @since  1.9
 	 *
 	 * @return DependencyContainer
@@ -103,15 +100,19 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * Creates a new object
+	 * Create a new object
 	 *
 	 * @par Example:
 	 * @code
-	 *  $builder = new SimpleDependencyBuilder( ... )
-	 *
-	 *  $diWikiPage = $builder->newObject( 'DIWikiPage', array( $title ) ) or
-	 *  $diWikiPage = $builder->addArgument( 'Title', $title )->newObject( 'DIWikiPage' );
+	 *  $builder->newObject( 'DIWikiPage', array( 'Title', $title ) ) or
+	 *  $builder->DIWikiPage( array( 'Title', $title ) )
 	 * @endcode
+	 *
+	 * @note When adding arguments it is preferable to use type hinting even
+	 * though no types are declared an auto recognition will try to resolve
+	 * the identify but when mock objects are used during testing this will
+	 * cause objects being recognized with their mock name instead of the
+	 * original entity
 	 *
 	 * @since  1.9
 	 *
@@ -119,24 +120,26 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 * @param  array|null $objectArguments
 	 *
 	 * @return mixed
+	 * @throws InvalidArgumentException
 	 */
 	public function newObject( $objectName, $objectArguments = null ) {
-		return $this->setArguments( $objectArguments )->build( $objectName );
+
+		if ( $objectArguments !== null ) {
+
+			if ( !is_array( $objectArguments ) ) {
+				throw new InvalidArgumentException( "Arguments are not an array type" );
+			}
+
+			foreach ( $objectArguments as $key => $value ) {
+				$this->addArgument( is_string( $key ) ? $key : get_class( $value ), $value );
+			}
+		}
+
+		return $this->build( $objectName );
 	}
 
 	/**
-	 * Build dynamic object entities via magic method __call
-	 *
-	 * @par Example:
-	 * @code
-	 *  $builder = new SimpleDependencyBuilder( ... )
-	 *
-	 *  // Register object
-	 *  $builder->getContainer()->title = new Title()
-	 *
-	 *  // Retrieve object
-	 *  $builder->title() returns Title object
-	 * @endcode
+	 * Create a new object using the magic __call method
 	 *
 	 * @param string $objectName
 	 * @param array|null $objectArguments
@@ -144,7 +147,12 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 * @return mixed
 	 */
 	public function __call( $objectName, $objectArguments = null ) {
-		return $this->setArguments( $objectArguments )->build( $objectName );
+
+		if ( isset( $objectArguments[0] ) && is_array( $objectArguments[0] ) ) {
+			$objectArguments = $objectArguments[0];
+		}
+
+		return $this->newObject( $objectName, $objectArguments );
 	}
 
 	/**
@@ -222,26 +230,6 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 */
 	public function setScope( $objectScope ) {
 		$this->objectScope = $objectScope;
-		return $this;
-	}
-
-	/**
-	 * Auto registration of arguments
-	 *
-	 * @since  1.9
-	 *
-	 * @param  array|null $objectArguments
-	 *
-	 * @return DependencyBuilder
-	 */
-	protected function setArguments( $objectArguments = null ) {
-
-		if ( $objectArguments !== null && is_array( $objectArguments ) ) {
-			foreach ( $objectArguments as $key => $value ) {
-				$this->addArgument( get_class( $value ), $value );
-			}
-		}
-
 		return $this;
 	}
 

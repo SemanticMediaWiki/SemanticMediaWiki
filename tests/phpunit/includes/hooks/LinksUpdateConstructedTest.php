@@ -82,7 +82,25 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testProcess() {
-		$this->assertTrue( $this->newInstance()->process() );
+
+		$instance       = $this->newInstance();
+		$updateObserver = new MockUpdateObserver();
+
+		$instance->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'UpdateObserver', $updateObserver );
+
+		$this->assertTrue(
+			$instance->process(),
+			'asserts that process() always returns true'
+		);
+
+		$this->assertEquals(
+			'runStoreUpdater',
+			$updateObserver->getNotifier(),
+			'asserts that the invoked observer was notfied'
+		);
+
 	}
 
 }

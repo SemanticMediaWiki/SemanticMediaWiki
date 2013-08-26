@@ -802,6 +802,10 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			->method( 'getPageLanguage' )
 			->will( $this->returnValue( $this->setValue( 'getPageLanguage' ) ) );
 
+		$title->expects( $this->any() )
+			->method( 'inNamespace' )
+			->will( $this->setCallback( 'inNamespace' ) );
+
 		return $title;
 	}
 
