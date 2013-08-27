@@ -89,11 +89,11 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		$instance->setDependencyBuilder( $dependencyBuilder );
 		$cache = $dependencyBuilder->newObject( 'CacheHandler' );
 
-		$this->assertFalse( $cache->key( 'autorefresh', $pageId )->get() );
+		$this->assertFalse( $cache->setKey( $instance->newIdGenerator( $pageId ) )->get() );
 		$result = $instance->process();
 
 		$this->assertTrue( $result );
-		$this->assertEquals( $expected['result'], $cache->key( 'autorefresh', $pageId )->get() );
+		$this->assertEquals( $expected['result'], $cache->setKey( $instance->newIdGenerator( $pageId ) )->get() );
 
 	}
 
