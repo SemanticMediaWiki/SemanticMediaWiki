@@ -741,6 +741,7 @@ $specialPageAliases['vi'] = array(
 	'ExportRDF' => array( 'Xuất_RDF' ),
 	'PageProperty' => array( 'Thuộc_tính_trang' ),
 	'Properties' => array( 'Thuộc_tính' ),
+	'Concepts' => array( 'Khái_niệm' ),
 	'SMWAdmin' => array( 'Quản_lý_SMW', 'Quản_lí_SMW' ),
 	'SearchByProperty' => array( 'Tìm_theo_thuộc_tính' ),
 	'SemanticStatistics' => array( 'Thống_kê_ngữ_nghĩa' ),

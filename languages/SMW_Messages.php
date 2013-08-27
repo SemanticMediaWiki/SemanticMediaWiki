@@ -626,8 +626,10 @@ See also:
 * $1 holds the name of the respective property.',
 	'smw_attributearticlecount' => 'This is the introductory message below the header on a page in namespace "Property". Parameters:
 * $1 holds the number of property pages displayed in the current view.',
-	'smw_subproperty_header' => 'This is the header for subproperties on a page in namespace "Property". Parameters:
-* $1 holds the name of the respective subproperty.',
+	'smw_subproperty_header' => 'This is the header for subproperties on a page in namespace "Property".
+
+Parameters:
+* $1 - (Optional) the name of the respective subproperty',
 	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property". Parameters:
 * $1 holds the number of subproperty pages displayed in the current view.',
 	'specialpages-group-smw_group' => '{{optional}}
@@ -684,7 +686,10 @@ This is the label of a tab of an action item for the content area.
 	'semanticstatistics' => '{{doc-special|SemanticStatistics}}
 {{Identical|Semantic statistics}}',
 	'smw_semstats_text' => 'This it the contents of [[Special:SemanticStatistics]]. Parameters:
-* $1 to $4 hold numerical values.',
+* $1 - numerical value (prop uses)
+* $2 - numerical value (used props)
+* $3 - numerical value (own page)
+* $4 - numerical value (decl props)',
 	'smw-statistics' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page.
 {{Identical|Semantic statistics}}',
 	'smw-statistics-property-instance' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
@@ -8473,7 +8478,7 @@ $messages['ja'] = array(
 まだ専用のページがないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
 	'smw-statistics' => '意味的統計',
 	'smw-statistics-property-instance' => 'プロパティ{{PLURAL:$1|値}} (合計)',
-	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|プロパティ|プロパティ}}]] (合計)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|プロパティ}}]] (合計)',
 	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|プロパティ}} (合計)',
 	'smw-statistics-property-page' => 'ページを持つ{{PLURAL:$1|プロパティ}}', # Fuzzy
 	'smw-statistics-property-type' => '割り当てられたデータ型を持つ{{PLURAL:$1|プロパティ}}', # Fuzzy
@@ -8507,42 +8512,6 @@ $messages['ja'] = array(
 	'smw-ask-delete' => '[削除]',
 	'smw-ask-sorting' => '並べ替え',
 	'smw-ask-format-selection-help' => '詳細な説明は、$1のヘルプ ページを参照してください。',
-	'querycreator' => 'クエリ作成',
-	'smw_qc_addmainlabel' => 'メイン ラベルを追加',
-	'smw_qc_show_addnal_opts' => 'その他のオプションを表示',
-	'smw_qc_hide_addnal_opts' => 'オプションを折り畳む',
-	'smw_qc_otheropt' => 'その他のオプション',
-	'smw_qc_intro' => '接頭辞:',
-	'smw_qc_outro' => '接尾辞:',
-	'smw_qc_default' => '既定:',
-	'smw_qc_formatopt' => '書式オプション',
-	'smw_qc_query_help' => '下記のフォームを使ってクエリを入力します。カテゴリ (<strong><nowiki>例: [[Category:俳優]]</nowiki></strong>)、プロパティ (<strong><nowiki>例: [[Located in::ドイツ]]</nowiki></strong>)、名前 (<strong><nowiki>例: [[ドイツ]]</nowiki></strong>)、名前空間 (<strong><nowiki>[[Help:+]]</nowiki></strong>) などで対象のページを指定します。',
-	'smw_qui_property' => '<strong>プロパティ</strong>',
-	'smw_qui_prop' => 'プロパティ:',
-	'smw_qui_labl' => 'ラベル:',
-	'smw_qui_formt' => '書式:',
-	'smw_qui_limt' => '制限:',
-	'smw_qui_shownresults' => '結果に表示',
-	'smw_qui_noquery' => 'クエリが指定されていません',
-	'smw_qui_invalidprop' => '「$1」は有効なプロパティではない可能性があります',
-	'smw_qui_invalidformat' => '選択した書式「$1」はこのウィキに存在しません',
-	'smw_qui_nosort' => '並べ替えなし',
-	'smw_qui_ascorder' => '昇順',
-	'smw_qui_descorder' => '降順',
-	'smw_qui_randorder' => '無作為',
-	'smw_qui_addnprop' => 'プロパティを追加',
-	'smw_qui_delete' => '除去',
-	'smw_qui_options' => 'オプション',
-	'smw_qui_addcategory' => 'カテゴリを追加',
-	'smw_qui_ok' => 'OK',
-	'smw_qui_cancel' => 'キャンセル',
-	'smw_qui_category' => '<strong>カテゴリ</strong>',
-	'smw_qui_label' => 'ラベル',
-	'smw_prp_options' => 'プロパティ オプション',
-	'smw_qui_catopts' => 'カテゴリ オプション',
-	'smw_qui_mainlabopts' => '結果オプション',
-	'smw_qui_dlabel' => 'ラベル:',
-	'smw_qui_dcategory' => 'カテゴリ:',
 	'searchbyproperty' => 'プロパティによる検索',
 	'smw_sbv_docu' => '指定したプロパティと値を持つすべてのページを検索します。',
 	'smw_sbv_novalue' => 'そのプロパティに対して有効な値を入力するか、「$1」のすべてのプロパティ値を確認してください。',
