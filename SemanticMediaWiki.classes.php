@@ -102,6 +102,7 @@ return array(
 	'SMW\CacheIdGenerator'            => 'includes/cache/CacheIdGenerator.php',
 
 	// Hooks
+	'SMW\ParserAfterTidy'           => 'includes/hooks/ParserAfterTidy.php',
 	'SMW\LinksUpdateConstructed'    => 'includes/hooks/LinksUpdateConstructed.php',
 	'SMW\BeforePageDisplay'         => 'includes/hooks/BeforePageDisplay.php',
 	'SMW\ArticlePurge'              => 'includes/hooks/ArticlePurge.php',

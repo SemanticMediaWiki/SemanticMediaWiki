@@ -495,27 +495,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onParserAfterTidy( &$parser, &$text ) {
-
-		$settings   = \SMW\Settings::newFromGlobals();
-		$parserData = new SMW\ParserData( $parser->getTitle(), $parser->getOutput() );
-
-		$complementor = new \SMW\BasePropertyAnnotator( $parserData->getData(), $settings );
-		$complementor->attach( $parserData );
-
-		$complementor->addCategories( $parser->getOutput()->getCategoryLinks() );
-		$complementor->addDefaultSort( $parser->getDefaultSort() );
-
-		// If an article was was manually purged/moved ensure that the store is
-		// updated as well for all other cases onLinksUpdateConstructed will
-		// initiate the store update
-		$cache = \SMW\CacheHandler::newFromId()->key( 'autorefresh', $parser->getTitle()->getArticleID() );
-
-		if( $cache->get() ) {
-			$parserData->setObservableDispatcher( new \SMW\ObservableSubjectDispatcher( new \SMW\UpdateObserver() ) )->updateStore();
-			$cache->delete();
-		}
-
-		return true;
+		return \SMW\FunctionHookRegistry::register( new \SMW\ParserAfterTidy( $parser, $text ) )->process();
 	}
 
 	/**
@@ -596,7 +576,7 @@ final class SMWHooks {
 	 */
 	public static function onTitleMoveComplete( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
 		\SMW\CacheHandler::newFromId()
-			->key( 'autorefresh', $newTitle->getArticleID() )
+			->setKey( \SMW\ArticlePurge::newIdGenerator( $newTitle->getArticleID() ) )
 			->set( $GLOBALS['smwgAutoRefreshOnPageMove'] );
 
 		smwfGetStore()->changeTitle( $oldTitle, $newTitle, $oldId, $newId );

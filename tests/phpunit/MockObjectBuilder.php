@@ -746,6 +746,12 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 */
 	public function getMockTitle() {
 
+		// When interacting with a "real" Parser object, the Parser expects in
+		// in 1.21+ a content model to be present while in MW 1.19/1.20 such
+		// object is not required. In order to avoid operational obstruction a
+		// model is set as default and can if necessary individually be overridden
+		$contentModel = class_exists( 'ContentHandler') ? CONTENT_MODEL_WIKITEXT : null;
+
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -796,7 +802,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getContentModel' )
-			->will( $this->returnValue( $this->setValue( 'getContentModel' ) ) );
+			->will( $this->returnValue( $this->setValue( 'getContentModel', $contentModel ) ) );
 
 		$title->expects( $this->any() )
 			->method( 'getPageLanguage' )

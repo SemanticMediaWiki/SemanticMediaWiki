@@ -98,7 +98,7 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 		$this->assertEquals(
 			'runStoreUpdater',
 			$updateObserver->getNotifier(),
-			'asserts that the invoked observer was notfied'
+			'asserts that the invoked observer was notified'
 		);
 
 	}
