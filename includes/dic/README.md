@@ -1,7 +1,5 @@
 ## Overview
-A basic dependency injection framework that enables object injection for immutable or service objects in Semantic MediaWiki.
-
-A dependency injection container (or object assembler) bundles specification and definitions of objects (also known as service objects) that can be used independently for instantiation from an invoking class. The current framework supports:
+A basic dependency injection framework that enables object injection for immutable or service objects in Semantic MediaWiki. The current framework supports:
 
 * Use of predefined object definitions (see SharedDependencyContainer)
 * Use of eager or lazy loading of objects
@@ -11,14 +9,24 @@ A dependency injection container (or object assembler) bundles specification and
 
 This framework does not deploy a DependencyResolver (trying to automatically resolve dependencies) instead injections will have to be declarative within a dependency requestor.
 
-### Usage
+### In a nutshell
+A dependency object (such as service or immutable object etc.) contains specification about how an object ought to be build.
+
+A dependency container (or object assembler) bundles specification and definitions of objects that can be used independently for instantiation from an invoking class.
+
+A dependency builder uses available object specifications (provided by a dependency container) to instantiate an requested object.
+
+For a more exhaustive description about dependency injection, see [Forms of Dependency Injection][mf] and [What is Dependency Injection?][fp].
+
+## Usage
 ```php
-// Traditional instantiation
+/**
+ * Using traditional instantiation
+ */
 $mightyObject = new ElephantineObject();
 
 /**
- * Using DependencyBuilder instantiation
- * @var ElephantineObject $mightyObject
+ * Using the help of a DependencyBuilder for object instantiation
  */
 $mightyObject = $this->getDependencyBuilder()->newObject( 'ElephantineObject' ) or
 $mightyObject = $this->getDependencyBuilder()->ElephantineObject()
@@ -37,46 +45,141 @@ The client has the choice either to implement the DependencyRequestor, extend th
 
 Gaining independence and control over service object instantiation requires appropriate unit testing to ensure that injected containers do contain proper object definitions used within a requestor that will yield proper object instantiation.
 
+## Components
+
+### DependencyObject
+DependencyObject is an interface that specifies a method to resolve an object specification and can be used as free agent.
+
+```php
+class QuuxDependencyObject implements DependencyObject {
+
+	public function resolveObject( DependencyBuilder $builder ) {
+		return new Quux( new Foo( $builder->newObject( 'Bam' ) );
+	}
+
+}
+
+// Register with a container (Lazy loading)
+$container->registerObject( 'Quux', new QuuxDependencyObject() );
+```
+
+```php
+// Register with a container (Lazy loading)
+$container->registerObject( 'Quux', function( DependencyBuilder $builder ) {
+	return new Quux( new Foo( $builder->newObject( 'Bam' ) );
+} );
+```
+### DependencyContainer
+DependencyContainer is an interface that specifies method to register DepencyObjects. BaseDependencyContainer implements the DependencyContainer and declares methods to retrieve and store object definitions. 
+
+EmptyDependencyContainer is an empty container that extends BaseDependencyContainer while SharedDependencyContainer implements most common object definitions used during Semantic MediaWiki's life cycle.
+
+```php
+class FooDependencyContainer extends BaseDependencyContainer {
+
+	/**
+	 * Eager loading object
+	 */
+	$this->Foo = new Foo();
+
+	/**
+	 * Eager loading object
+	 */
+	$this->registerObject( 'Bar', new \stdClass );
+
+	/**
+	 * Lazy loading using a Closure
+	 */
+	$this->Baz = function ( DependencyBuilder $builder ) {
+		return new Baz( $builder->newObject( 'Bar' ) );
+	} );
+
+	/**
+	 * Lazy loading using a Closure
+	 */
+	$this->registerObject( 'Bam', function ( DependencyBuilder $builder ) {
+		return new Bam( $builder->newObject( 'Baz' ) );
+	} );
+
+	/**
+	 * Lazy loading using a DependencyObject
+	 */
+	$this->registerObject( 'Quux', new QuuxDependencyObject() );
+
+}
+```
+
+### DependencyBuilder
+DependencyFactory an interface that specifies a method to create a new object and with DependencyBuilder as interface specifying methods to handle access to container and objects.
+
+SimpleDependencyBuilder implements the DependencyBuilder to enable access to objects and other invoked arguments.
+
+```php
+$builder = new SimpleDependencyBuilder( new FooDependencyContainer() );
+
+/**
+ * Accessing objects
+ */
+$builder->newObject( 'Foo' );
+$builder->Foo();
+
+/**
+ * Accessing objects with arguments
+ */
+$builder->addArgument( 'Foo', $builder->newObject( 'Foo' ) )->newObject( 'Bar' );
+$builder->Bar( array( 'Foo' => $builder->newObject( 'Foo' ) ) );
+$builder->newObject( 'Bar', array( 'Foo' => $builder->newObject( 'Foo' ) ) );
+
+/**
+ * Deferred object registration using the builder
+ */
+$builder->getContainer()->registerObject( 'Xyzzy', new Xyzzy() );
+$builder->newObject( 'Xyzzy' );
+
+```
+
+### DependencyInjector
+DependencyRequestor is an interface specifying access to a DependencyBuilder within a client that requests dependency injection and DependencyInjector (implements DependencyRequestor) provides convenience access.
+
+```php
+class FooClass extends DependencyInjector { ... }
+
+$fooClass = new FooClass( ... )
+$fooClass->setDependencyBuilder( new SimpleDependencyBuilder() );
+
+$fooClass->getDependencyBuilder()->newObject( 'Bar' );
+```
+
 ### Scope
 The scope defines the lifetime of an object and if not declared otherwise an object is alwasy create with a prototypical scope.
 * SCOPE_PROTOTYPE (default) each injection or call to the newObject() method will result in a new instance
 * SCOPE_SINGLETON  scope will return the same instance over the lifetime of a request
 
-## DependencyContainer
-```
-DependencyObject
-	-> DependencyContainer
-		-> BaseDependencyContainer
-			-> EmptyDependencyContainer
-			-> SharedDependencyContainer
+```php
+$container = new EmptyDependencyContainer();
+
+/**
+ * Specify a SCOPE_PROTOTYPE
+ */
+$container->registerObject( 'Foo', function ( return new Foo() ) { ... } )
+$container->registerObject( 'Foo', new Foo() )
+
+$container->registerObject( 'Foo', function ( return new Foo() ) { ... }, DependencyObject::SCOPE_PROTOTYPE )
+
+/**
+ * Specify a SCOPE_SINGLETON
+ */
+$container->registerObject( 'Foo', function ( return new Foo() ) { ... }, DependencyObject::SCOPE_SINGLETON )
+$container->registerObject( 'Foo', new Foo(), DependencyObject::SCOPE_SINGLETON )
+
+/**
+ * Adjust the object scope during build process
+ */
+$builder->setScope( DependencyObject::SCOPE_SINGLETON )->newObject( 'Foo' )
+$builder->setScope( DependencyObject::SCOPE_PROTOTYPE )->Foo()
 ```
 
-A dependency container bundles specification and definitions of objects with each object being responsible to specify an object graph and its internal dependencies. The current framework specifies:
-* DependencyObject an interface that specifies a method to register a dependency object
-* DependencyContainer an interface that specifies methods to retrieve and store object definitions
-* BaseDependencyContainer implements the DependencyContainer
-* EmptyDependencyContainer an empty container that extends BaseDependencyContainer.
-* SharedDependencyContainer implements common object definitions used during Semantic MediaWiki's life cycle.
-
-## DependencyBuilder
-```
-DependencyFactory
-	-> DependencyBuilder
-		-> SimpleDependencyBuilder
-```
-* DependencyFactory an interface that specifies a method to create a new object
-* DependencyBuilder an interface specifies methods to handle injection container and objects
-* SimpleDependencyBuilder implementing the DependencyBuilder to enable access to DependencyContainer objects and other invoked arguments
-
-## DependencyInjector
-```
-DependencyRequestor
-	-> DependencyInjector
-```
-* DependencyRequestor an interface specifying access to a DependencyBuilder within a client that requests dependency injection
-* DependencyInjector an abstract class that implements the DependencyRequestor to enable convenience access to an injected DependencyBuilder
-
-## Examples
+## Example
 ```php
 /**
  * Object specifications
@@ -99,7 +202,7 @@ class ElephantineDependencyContainer extends BaseDependencyContainer {
 /**
  * Object request handler
  */
-class ElephantineRequestor implements DependencyInjector {
+class ElephantineChocolateRequestor implements DependencyInjector {
 
 	public function get( Chocolate $chocolate ) {
 		return $this->getDependencyBuilder()
@@ -112,99 +215,15 @@ class ElephantineRequestor implements DependencyInjector {
 /**
  * Client implementation
  */
-$elephantine = new ElephantineRequestor();
+$elephantineChocolate = new ElephantineChocolateRequestor();
 
-$elephantine->setDependencyBuilder(
+$elephantineChocolate->setDependencyBuilder(
 	new SimpleDependencyBuilder( new ElephantineDependencyContainer() )
 );
 
 /* @var ElephantineObject $mightyObject */
-$mightyObject = $elephantine->get( new OuterRimChocolate() )
+$chocolateObject = $elephantineChocolate->get( new OuterRimChocolate() )
 ```
 
-### DependencyContainer
-#### Register an object (eager loading)
-```php
-$container = new EmptyDependencyContainer();
-
-$container->Title = new Title();
-$container->registerObject( 'Foo', new \stdClass );
-```
-
-### Register an object (lazy loading)
-```php
-$container = new EmptyDependencyContainer();
-
-$container->Foo = function ( DependencyBuilder $builder ) {
-  return new Foo( $builder->newObject( 'Bar' ) );
-} );
-
-$container->registerObject( 'DIWikiPage', function ( DependencyBuilder $builder ) {
-  return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
-} );
-```
-
-### SimpleDependencyBuilder
-#### Access objects
-```php
-$builder = new SimpleDependencyBuilder( $container );
-
-$builder->newObject( 'Foo' );
-$builder->Foo();
-```
-
-#### Access objects with arguments
-```php
-$builder = new SimpleDependencyBuilder( $container );
-
-$builder->addArgument( 'Title', $builder->newObject( 'Title' ) );
-$builder->newObject( 'DIWikiPage' );
-
-$builder->DIWikiPage( $builder->newObject( 'Title' ) );
-$builder->newObject( 'DIWikiPage', array( $builder->Title() ) );
-```
-
-### Deferred object registration using the builder
-```php
-$builder = new SimpleDependencyBuilder( $container );
-
-$builder->getContainer()->registerObject( 'Bar', new Fruits() );
-$builder->newObject( 'Bar' );
-```
-
-### Specifying object scope
-#### Specify object scope (SCOPE_PROTOTYPE)
-```php
-$container = new EmptyDependencyContainer();
-
-$container->registerObject( 'Foo', function ( return new Foo() ) { ... } )
-$container->registerObject( 'Foo', new Foo() )
-
-$container->registerObject( 'Foo', function ( return new Foo() ) { ... }, DependencyObject::SCOPE_PROTOTYPE )
-```
-
-####  Specify object scope (SCOPE_SINGLETON)
-```php
-$container = new EmptyDependencyContainer();
-
-$container->registerObject( 'Foo', function ( return new Foo() ) { ... }, DependencyObject::SCOPE_SINGLETON )
-$container->registerObject( 'Foo', new Foo(), DependencyObject::SCOPE_SINGLETON )
-```
-
-#### Change object scope during build process
-```php
-$builder = new SimpleDependencyBuilder( $container );
-
-$builder->setScope( DependencyObject::SCOPE_SINGLETON )->newObject( 'ElephantineObject' )
-$builder->setScope( DependencyObject::SCOPE_PROTOTYPE )->ElephantineObject()
-```
-
-### Using the DependencyInjector
-```php
-class FooClass extends DependencyInjector { ... }
-
-$fooClass = new FooClass( ... )
-$fooClass->setDependencyBuilder( new SimpleDependencyBuilder() );
-
-$fooClass->getDependencyBuilder()->newObject( 'Bar' );
-```
+[mf]: http://www.martinfowler.com/articles/injection.html#FormsOfDependencyInjection  "Forms of Dependency Injection"
+[fp]: http://fabien.potencier.org/article/11/what-is-dependency-injection "What is Dependency Injection?"
