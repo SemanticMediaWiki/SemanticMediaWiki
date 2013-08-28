@@ -93,10 +93,9 @@ class ParserAfterTidy extends FunctionHook {
 		$cache->setKey( ArticlePurge::newIdGenerator( $title->getArticleID() ) );
 
 		if( $cache->get() && !$title->inNamespace( NS_FILE ) ) {
+			$cache->delete();
 			$parserData->updateStore();
 		}
-
-		$cache->delete();
 
 		return true;
 	}
