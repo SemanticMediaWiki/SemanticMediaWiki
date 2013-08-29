@@ -517,7 +517,10 @@ $messages['qqq'] = array(
 	'smw-paramdesc-distributionsort' => 'This is the description of the "distributionsort" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-distributionlimit' => 'This is the description of the "distributionlimit" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-template' => 'This is the description of the "introtemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-columns' => 'This is the description of the "columns" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-columns' => 'This is the description of the "columns" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].
+
+Parameters:
+* $1 - default value',
 	'smw-paramdesc-userparam' => 'This is the description of the "userparam" parameter for the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-introtemplate' => 'This is the description of the "introtemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-outrotemplate' => 'This is the description of the "outrotemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
@@ -659,15 +662,24 @@ Parameters:
 	'smw_propertylackstype' => 'This is an error/warning message. Parameters:
 * $1 holds the name of the assumed data type which is in fact always data type Page.',
 	'smw_propertyhardlyused' => 'This is an error/warning message.',
-	'smw-property-name-invalid' => 'This is an information message.',
+	'smw-property-name-invalid' => 'This is an information message. Parameters:
+* $1 - property name',
 	'smw-sp-property-searchform' => 'Introductory text for the property search form',
 	'smw-sp-property-searchform-inputinfo' => 'Additional explanatory text about the filtering condition.',
 	'concepts' => '{{doc-special|Concepts}}
 {{Identical|Concept}}',
 	'smw-sp-concept-docu' => 'This is an introductory message at the top of [[Special:Concepts]].',
 	'smw-sp-concept-header' => 'This is a header used on [[Special:Concepts]].',
-	'smw-sp-concept-count' => 'This is used on [[Special:Concepts]] and to display available concepts',
-	'smw-sp-concept-empty' => 'This is used on [[Special:Concepts]] and to display that no concepts are available.',
+	'smw-sp-concept-count' => 'Used on [[Special:Concepts]] and to display available concepts.
+
+If there are no concepts, {{msg-mw|Smw-sp-concept-empty}} is used.
+
+Parameters:
+* $1 - number of concepts',
+	'smw-sp-concept-empty' => 'This is used on [[Special:Concepts]] and to display that no concepts are available.
+
+See also:
+* {{msg-mw|Smw-sp-concept-count}} - if there are concepts',
 	'unusedproperties' => '{{doc-special|UnusedProperties}}',
 	'smw_unusedproperties_docu' => 'This is the introductory message at the top of [[Special:UnusedProperties]].',
 	'smw_unusedproperty_template' => "This message is used on [[Special:UnusedProperties]] to display each property listed. It holds the following parameters:
@@ -692,25 +704,57 @@ This is the label of a tab of an action item for the content area.
 * $4 - numerical value (decl props)',
 	'smw-statistics' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page.
 {{Identical|Semantic statistics}}',
-	'smw-statistics-property-instance' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw-statistics-property-total' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw-statistics-property-total-legacy' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw-statistics-property-page' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw-statistics-property-type' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw-statistics-query-inline' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
+	'smw-statistics-property-instance' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of values',
+	'smw-statistics-property-total' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of properties',
+	'smw-statistics-property-total-legacy' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of properties',
+	'smw-statistics-property-page' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of properties',
+	'smw-statistics-property-type' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of properties',
+	'smw-statistics-query-inline' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of queries',
 	'smw-statistics-query-size' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw-statistics-concept-count-legacy' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page.',
-	'smw-statistics-concept-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page.
+	'smw-statistics-concept-count-legacy' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - concepts',
+	'smw-statistics-concept-count' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of concepts
 {{Identical|Concept}}',
-	'smw-statistics-subobject-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw-statistics-datatype-count' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
-	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
+	'smw-statistics-subobject-count' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of subobjects',
+	'smw-statistics-datatype-count' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
+
+Parameters:
+* $1 - number of datatypes',
+	'smw_uri_doc' => "{{doc-important|Do not alter or translate link targets!}}
+This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
 When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
 This is controlled by the HTTP request header. Semantic Web crawlers and browsers can thus request more metadata on a particular subject, while humans are referred to readable pages.
 This method is called ''content negotiation''.
 
-{{doc-important|Do not alter or translate link targets!}}",
+Parameters:
+* $1 - the URL http://www.w3.org/2001/tag/issues.html#httpRange-14 (hard-coded)",
 	'ask' => '{{doc-special|Ask}}',
 	'smw_ask_doculink' => "{{notranslate}}
 This message should be the URL of the semantic query documentation for that language. For English, this is http://semantic-mediawiki.org/wiki/Help:Semantic_search. For other languages, it should be an ''existing'' page on semantic-mediawiki.org. Note that only some languages have own documentations yet.
@@ -747,7 +791,10 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw_ask_embed_instr' => 'This is an information message for the field on [[Special:Ask]] that contains the code of a query that may be copied and when pasted into a regular page on the wiki..',
 	'smw-ask-delete' => 'This is the text of the action link on [[Special:Ask]] to delete an printout statement from a query.',
 	'smw-ask-sorting' => 'This is the text for the header of the section on [[Special:Ask]] that allows to specify sorting options for specific properties that are queried for.',
-	'smw-ask-format-selection-help' => 'This is a text displayed on [[Special:Ask]] to inform about a help page on [http://semantic-mediawiki.org/wiki/ Semantic MediaWiki]',
+	'smw-ask-format-selection-help' => 'This is a text displayed on [[Special:Ask]] to inform about a help page on [http://semantic-mediawiki.org/wiki/ Semantic MediaWiki].
+
+Parameters:
+* $1 - a link which points to Help: page on semantic-mediawiki.org',
 	'searchbyproperty' => '{{doc-special|SearchByProperty}}',
 	'smw_sbv_docu' => 'This is the information message shown on [[Special:SearchByProperty]] in case no property and no property value were not yet provided to search for.',
 	'smw_sbv_novalue' => 'This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided. Parameters:
@@ -864,7 +911,10 @@ See also:
 	'smw_adminlinks_inlinequerieshelp' => 'This is the link text for a link on [[Special:AdminLinks]] which is needed for the integration of the [[mw:Extension:Admin_Links|Admin Links extension]] into this extension.',
 	'smw-createproperty-isproperty' => 'This an information message at the top on a page in namespace "Property". Parameters:
 * $1 holds the name of the data type which was assigned to the respective property.',
-	'smw-createproperty-allowedvals' => 'This an information message at the top on a page in namespace "Property" which gets inserted in case only certain property values are [http://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed to be used] for the respective property.',
+	'smw-createproperty-allowedvals' => 'This an information message at the top on a page in namespace "Property" which gets inserted in case only certain property values are [http://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed to be used] for the respective property.
+
+Parameters:
+* $1 - number of allowed values',
 	'smw-paramdesc-category-delim' => 'This is the description of the "delim" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-category-template' => 'This is the description of the "template" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-category-userparam' => 'This is the description of the "userparam" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
@@ -915,8 +965,22 @@ Parameters:
 
 Parameters:
 * $1 - Name of the invoked predefined property',
-	'smw-pa-property-predefined_ask' => 'Describes a predefined property.',
-	'smw-pa-property-predefined_asksi' => 'Describes a predefined property.',
+	'smw-pa-property-predefined_ask' => 'Unused at this time.
+
+Describes a predefined property.
+
+Parameters:
+* $1 - predefined property
+See also:
+* {{msg-mw|Smw-pa-property-predefined asksi}}',
+	'smw-pa-property-predefined_asksi' => 'Unused at this time.
+
+Describes a predefined property.
+
+Parameters:
+* $1 - predefined property
+See also:
+* {{msg-mw|Smw-pa-property-predefined ask}}',
 	'smw-sp-properties-docu' => 'Extended introductory text for the [[Special:Properties]] page.',
 	'smw-sp-properties-cache-info' => 'Information about the current cache status on a special page
 
@@ -2099,6 +2163,7 @@ $messages['be-tarask'] = array(
 	'smw_printername_template' => 'Шаблён',
 	'smw_printername_rdf' => 'Экспарт у фармат RDF',
 	'smw_printername_category' => 'Катэгорыя',
+	'validator-type-class-SMWParamSource' => 'тэкст',
 	'smw-paramdesc-limit' => 'Максымальная колькасьць вынікаў для вяртаньня',
 	'smw-paramdesc-offset' => 'Адхіленьне першага выніку',
 	'smw-paramdesc-headers' => 'Паказваць назвы загалоўкаў/уласьцівасьцяў',
@@ -2168,6 +2233,7 @@ $messages['be-tarask'] = array(
 	'smw_attributearticlecount' => '{{PLURAL:$1|Паказаная $1 старонка, якая выкарыстоўвае|Паказаныя $1 старонкі, якія выкарыстоўваюць|Паказаныя $1 старонак, якія выкарыстоўваюць}} гэтую ўласьцівасьць.',
 	'smw_subproperty_header' => 'Падуласьцівасьці',
 	'smw_subpropertyarticlecount' => 'Гэта ўласьцівасьць мае $1 {{PLURAL:$1|падуласьцівасьць|падуласьцівасьці|падуласьцівасьцяў}}:',
+	'specialpages-group-smw_group' => 'Сэмантычная MediaWiki',
 	'exportrdf' => 'Экспарт старонак у фармаце RDF',
 	'smw_exportrdf_docu' => 'Гэта старонка дазваляе Вам атрымліваць зьвесткі са старонкі ў фармаце RDF.
 Каб экспартаваць старонкі, увядзіце іх назвы ніжэй у тэкставым полі, па адной назьве на радок.',
@@ -2219,49 +2285,6 @@ $messages['be-tarask'] = array(
 	'smw_ask_hide_embed' => 'Схаваць убудаваны код',
 	'smw_ask_embed_instr' => 'Каб убудаваць гэты запыт у старонку, выкарыстоўвайце код пададзены ніжэй.',
 	'smw-ask-delete' => '[Выдаліць]',
-	'querycreator' => 'Стваральнік запыту',
-	'smw_qc_addmainlabel' => 'Дадаць галоўную метку',
-	'smw_qc_show_addnal_opts' => 'Паказаць болей наладаў',
-	'smw_qc_hide_addnal_opts' => 'Паказаць меней наладаў',
-	'smw_qc_otheropt' => 'Іншыя налады',
-	'smw_qc_intro' => 'Уступ:',
-	'smw_qc_outro' => 'Заканчэньне:',
-	'smw_qc_default' => 'Па змоўчваньні:',
-	'smw_qc_formatopt' => 'Налады фармату',
-	'smw_qc_query_help' => 'Увядзіце запыт з дапамогай формы пададзенай ніжэй для выбару вікі-старонкі па
-Катэгорыям (<strong>[[{{ns:category}}:Актор]]</strong>),
-Уласьцівасьцям (<strong>[[Знаходзіцца ў::Нямеччыне]]</strong>),
-Назвам(<strong>[[Нямеччына]]</strong>) і Прасторам назваў (<strong>[[{{ns:help}}:+]]</strong>)',
-	'smw_qui_property' => '<strong>Уласьцівасьць</strong>',
-	'smw_qui_prop' => 'Уласьцівасьць:',
-	'smw_qui_labl' => 'Метка:',
-	'smw_qui_formt' => 'Фармат:',
-	'smw_qui_limt' => 'Ліміт:',
-	'smw_qui_shownresults' => 'паказаць у выніках',
-	'smw_qui_noquery' => 'Запыт не пазначаны',
-	'smw_qui_invalidprop' => '«$1» можа не зьяўляецца слушнай уласьцівасьцю',
-	'smw_qui_invalidformat' => 'Выбраны фармат «$1» не існуе ў {{GRAMMAR:месны|{{SITENAME}}}}',
-	'smw_qui_nosort' => 'Няма сартаваньня',
-	'smw_qui_ascorder' => 'Па павелічэньні',
-	'smw_qui_descorder' => 'Па зьмяншэньні',
-	'smw_qui_randorder' => 'Выпадковая',
-	'smw_qui_addnprop' => 'дадаць уласьцівасьць',
-	'smw_qui_delete' => 'Выдаліць',
-	'smw_qui_rescol' => 'Адпаведнасьці запыту',
-	'smw_qui_options' => 'налады',
-	'smw_qui_addcategory' => 'дадаць катэгорыю',
-	'smw_qui_addrescol' => 'дадаць адпаведнасьці запыту',
-	'smw_qui_ok' => 'Добра',
-	'smw_qui_cancel' => 'Скасаваць',
-	'smw_qui_category' => '<strong>Катэгорыя</strong>',
-	'smw_qui_label' => 'Метка',
-	'smw_prp_options' => 'Налады ўласьцівасьці',
-	'smw_qui_catopts' => 'Налады катэгорыі',
-	'smw_qui_mainlabopts' => 'Налады выніку',
-	'smw_qui_dlabel' => 'Метка:',
-	'smw_qui_dcategory' => 'Катэгорыя:',
-	'smw_qui_dcatyes' => 'Паказваць тэкст, калі катэгорыя існуе:',
-	'smw_qui_dcatno' => 'Паказваць тэкст, калі катэгорыі не існуе:',
 	'searchbyproperty' => 'Шукаць па ўласьцівасьці',
 	'smw_sbv_docu' => 'Шукаць усе старонкі, якія ўтрымліваюць пададзеную ўласьцівасьць і значэньне.',
 	'smw_sbv_novalue' => 'Увядзіце значэньне для ўласьцівасьці, ці паглядзіце ўсе значэньні ўласьцівасьцяў для «$1».',
@@ -2340,6 +2363,11 @@ $messages['be-tarask'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Дапамога па ўбудаваных запытах',
 	'smw-createproperty-isproperty' => 'Гэта ўласьцівасьць тыпу $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:',
+	'smw-prefs-intro-text' => 'Ніжэйпададзеныя можнасьці прадастаўленыя [https://semantic-mediawiki.org/ сэмантычнай MediaWiki] (ці зьвязанымі пашырэньнямі), каб улучыць індывідуальныя налады для пэўных функцыяў. Па дадатковую інфармацыю зьвярніцеся, калі ласка, у [http://semantic-mediawiki.org/wiki/Help:User_preferences разьдзел дапамогі].',
+	'smw-prefs-ask-options-tooltip-display' => 'Адлюстроўваць парамэтар у выглядзе інфармацыйнай падказкі',
+	'smw-prefs-ask-options-collapsed-default' => 'Поле парамэтраў дапомна згорнутае',
+	'smw-ui-tooltip-title-note' => 'Камэнтар',
+	'smw-ui-tooltip-title-legend' => 'Легенда',
 	'smw_unknowntype' => 'Тып «$1» не падтрымліваецца для гэтай уласьцівасьці.', # Fuzzy
 	'smw_concept_header' => 'Старонкі канцэпцыі «$1»',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Паказаная $1 старонка, якая належыць|Паказаныя $1 старонкі, якія належаць|Паказаныя $1 старонак, якія належаць}} гэтай канцэпцыі.', # Fuzzy
