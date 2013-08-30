@@ -7,8 +7,6 @@ use SMW\SimpleDependencyBuilder;
 use SMW\DependencyBuilder;
 use SMW\DependencyObject;
 
-use SMW\DIWikiPage;
-
 use Title;
 
 /**
@@ -44,6 +42,18 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * Helper method that returns a scope definition
+	 *
+	 * @since 1.9
+	 *
+	 * @param $data
+	 */
+	protected function getScopeDefinition( $scope ) {
+		$reflector = $this->newReflector( '\SMW\DependencyObject' );
+		return $reflector->getConstant( $scope );
+	}
+
+	/**
 	 * Helper method that returns a DependencyContainer object
 	 *
 	 * @since 1.9
@@ -52,16 +62,27 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return DependencyContainer
 	 */
-	private function newDependencyContainer( $expected = array() ) {
+	private function newDependencyContainer( $toArray = array() ) {
 
 		$container = $this->getMockBuilder( '\SMW\DependencyContainer' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'preload', 'toArray', 'registerObject', 'has', 'get', 'set', 'remove', 'merge' ) )
+			->setMethods( array(
+				'preload',
+				'toArray',
+				'registerObject',
+				'has',
+				'get',
+				'set',
+				'remove',
+				'merge',
+				'loadObjects'
+				)
+			)
 			->getMock();
 
 		$container->expects( $this->any() )
 			->method( 'toArray' )
-			->will( $this->returnValue( $expected ) );
+			->will( $this->returnValue( $toArray ) );
 
 		return $container;
 	}
@@ -212,30 +233,30 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$container = new EmptyDependencyContainer();
 
 		$container->someFunnyTitle = $this->newTitle();
-		$container->diwikipage = function ( DependencyBuilder $builder ) {
-			return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+		$container->FakeWikiPage = function ( DependencyBuilder $builder ) {
+			return FakeWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 		};
 
 		// Register container
 		$instance->registerContainer( $container );
 
-		// Adds necessary argument object needed for the DIWikiPage build process
+		// Adds necessary argument object needed for the FakeWikiPage build process
 		$instance->addArgument( 'Title', $instance->someFunnyTitle() );
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
-			$instance->diwikipage(),
+			'\SMW\Test\FakeWikiPage',
+			$instance->FakeWikiPage(),
 			'asserts invoked instance using __call method'
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
-			$instance->newObject( 'diwikipage' ),
+			'\SMW\Test\FakeWikiPage',
+			$instance->newObject( 'FakeWikiPage' ),
 			'asserts invoked instance using newObject()'
 		);
 
 		$this->assertTrue(
-			$instance->diwikipage() !== $instance->newObject( 'diwikipage' ),
+			$instance->FakeWikiPage() !== $instance->newObject( 'FakeWikiPage' ),
 			'asserts that created instances are different'
 		);
 
@@ -257,26 +278,26 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		// Object is using an argument that where invoked using the __set method
 		// and is evenly accessible during the build process using newObject()
 		// method
-		$instance->getContainer()->thisTitleIsEven = $this->newTitle();
-		$instance->getContainer()->tanomoshi = function ( DependencyBuilder $builder ) {
-			return DIWikiPage::newFromTitle( $builder->newObject( 'thisTitleIsEven' ) );
+		$instance->getContainer()->quux = $this->newTitle();
+		$instance->getContainer()->Baz = function ( DependencyBuilder $builder ) {
+			return FakeWikiPage::newFromTitle( $builder->newObject( 'quux' ) );
 		};
 
 		$this->assertInstanceOf(
 			'Title',
-			$instance->newObject( 'thisTitleIsEven' ),
+			$instance->newObject( 'quux' ),
 			'asserts object instance using newObject() method'
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
-			$instance->newObject( 'tanomoshi' ),
+			'\SMW\Test\FakeWikiPage',
+			$instance->newObject( 'Baz' ),
 			'asserts object instance using newObject() method'
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
-			$instance->tanomoshi(),
+			'\SMW\Test\FakeWikiPage',
+			$instance->Baz(),
 			'asserts object instance using __call method'
 		);
 
@@ -296,13 +317,13 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$title    = $this->newTitle( NS_MAIN, 'Lala' );
 
 		$instance->addArgument( 'Title', $title );
-		$instance->getContainer()->registerObject( 'Test', function ( DependencyBuilder $builder ) {
-			return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+		$instance->getContainer()->registerObject( 'Foo', function ( DependencyBuilder $builder ) {
+			return FakeWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 		} );
 
 		$this->assertEquals(
 			$title,
-			$instance->newObject( 'Test' )->getTitle(),
+			$instance->newObject( 'Foo' )->getTitle(),
 			'asserts object instance using newObject() method'
 		);
 
@@ -321,25 +342,25 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$mockTitle = $this->newMockObject()->getMockTitle();
 
 		$instance->addArgument( 'Title', $mockTitle );
-		$instance->getContainer()->registerObject( 'Test', function ( DependencyBuilder $builder ) {
-			return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+		$instance->getContainer()->registerObject( 'bar', function ( DependencyBuilder $builder ) {
+			return FakeWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 		} );
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
-			$instance->newObject( 'Test' ),
+			'\SMW\Test\FakeWikiPage',
+			$instance->newObject( 'bar' ),
 			'asserts object instance using newObject() method'
 		);
 
 		$this->assertInstanceOf(
 			'Title',
-			$instance->newObject( 'Test' )->getTitle(),
+			$instance->newObject( 'bar' )->getTitle(),
 			'asserts object instance using newObject() method'
 		);
 
 		$this->assertInstanceOf(
 			'Title',
-			$instance->Test()->getTitle(),
+			$instance->bar()->getTitle(),
 			'asserts object instance using __call method'
 		);
 
@@ -355,19 +376,19 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 		$instance = $this->newInstance();
 
-		$instance->getContainer()->registerObject( 'Test', function ( DependencyBuilder $builder ) {
-			return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+		$instance->getContainer()->registerObject( 'Baz', function ( DependencyBuilder $builder ) {
+			return FakeWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 		} );
 
 		$this->assertEquals(
 			$expected,
-			$instance->newObject( 'Test', $setup )->getTitle(),
+			$instance->newObject( 'Baz', $setup )->getTitle(),
 			'asserts that newObject() and arguments return expected results'
 		);
 
 		$this->assertEquals(
 			$expected,
-			$instance->Test( $setup )->getTitle(),
+			$instance->Baz( $setup )->getTitle(),
 			'asserts that __call and arguments return expected results'
 		);
 
@@ -385,14 +406,12 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	public function testCompareScope( $setup, $expected ) {
 
 		$instance  = $this->newInstance();
-		$container = $instance->getContainer();
-		$reflector = $this->newReflector( get_class( $container ) );
-		$scope     = $reflector->getConstant( $setup['scope'] );
+		$scope     = $this->getScopeDefinition( $setup['scope'] );
 		$title     = $this->newTitle( NS_MAIN, 'Lila' );
 
 		// Lazy loading or deferred instantiation
 		$instance->getContainer()->registerObject( 'Test', function ( DependencyBuilder $builder ) {
-			return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+			return FakeWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 		}, $scope );
 
 		$newInstance = $instance->newObject( 'Test', array( $title ) );
@@ -438,7 +457,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$title     = $this->newTitle( NS_MAIN, 'Scope' );
 
 		$instance->getContainer()->registerObject( 'Scope', function ( DependencyBuilder $builder ) {
-			return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+			return FakeWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 		}, DependencyObject::SCOPE_SINGLETON );
 
 		$singleton = $instance->newObject( 'Scope', array( $title ) );
@@ -527,13 +546,13 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$instance  = $this->newInstance();
 		$title     = $this->newTitle( NS_MAIN, 'Lula' );
 
-		$instance->getContainer()->DIWikiPage = function( DependencyBuilder $builder ) {
-			return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
+		$instance->getContainer()->FakeWikiPage = function( DependencyBuilder $builder ) {
+			return FakeWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
 		};
 
 		$this->assertInstanceOf(
 			'Title',
-			$instance->DIWikiPage( $title )->getTitle(),
+			$instance->FakeWikiPage( $title )->getTitle(),
 			'asserts that ...'
 		);
 
@@ -583,35 +602,28 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	public function testSetCallMagicWordScope( $setup, $expected ) {
 
 		$instance  = $this->newInstance();
-		$container = $instance->getContainer();
-		$reflector = $this->newReflector( get_class( $container ) );
-		$scope     = $reflector->getConstant( $setup['scope'] );
+		$scope     = $this->getScopeDefinition( $setup['scope'] );
 		$title     = $this->newTitle( NS_MAIN, 'Lula' );
 
-		$instance->getContainer()->DIWikiPage = function() use( $title ) {
-			return DIWikiPage::newFromTitle( $title );
+		$instance->getContainer()->FakeWikiPage = function() use( $title ) {
+			return new FakeWikiPage( $title );
 		};
 
 		$this->assertFalse(
-			$instance->DIWikiPage() === $instance->newObject( 'DIWikiPage' ),
+			$instance->FakeWikiPage() === $instance->newObject( 'FakeWikiPage' ),
 			'asserts that __set/__call itself are always of type SCOPE_PROTOTYPE'
 		);
 
 		// If __set/__call is embedded in a SCOPE_SINGLETON call which makes indirectly available
 		// through the SINGLETON as it is only executed once during initialization
 		$instance->getContainer()->registerObject( 'a1234', function( $builder ) {
-			return $builder->DIWikiPage();
+			return $builder->FakeWikiPage();
 		}, $scope );
 
 		$this->assertEquals(
 			$expected,
 			$instance->newObject( 'a1234' ) === $instance->a1234(),
 			'asserts whether instances are equal to the selected scope'
-		);
-
-		$this->assertFalse(
-			$instance->a1234()->getTitle() === $instance->newObject( 'a1234' )->getTitle(),
-			'asserts that inherent objects are not of type singleton'
 		);
 
 	}
@@ -642,6 +654,30 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$this->assertFalse(
 			$instance->getContainer()->has( 'Title' ),
 			'asserts that after removal the container does not have a particular object definition'
+		);
+
+	}
+
+	/**
+	 * @test SimpleDependencyBuilder::newObject
+	 * @dataProvider dependencyObjectDataProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @param $setup
+	 * @param $expected
+	 */
+	public function testDeferredLoading( $setup, $expected ) {
+
+		$container = new FakeDependencyContainer();
+		$container->setObjects( array( 'Quux' => $setup ) );
+
+		$instance = $this->newInstance( $container );
+
+		$this->assertEquals(
+			$expected,
+			$instance->newObject( 'Quux' ),
+			'asserts whether object was registered and accessible'
 		);
 
 	}
@@ -702,7 +738,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	public function testNewObjectArgumentsInvalidArgument() {
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$this->newInstance()->newObject( new \stdclass, new \stdclass );
+		$this->newInstance()->newObject( 'Test', new \stdclass );
 
 	}
 
@@ -711,11 +747,26 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testUnknownObject() {
+	public function testNewObjectUnknownObject() {
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 		$this->newInstance()->newObject( 'Foo' );
 
+	}
+
+	/**
+	 * @test SimpleDependencyBuilder::newObject
+	 *
+	 * @since 1.9
+	 */
+	public function testNewObjectDeferredLoadingUnknownObject() {
+
+		$this->setExpectedException( 'OutOfBoundsException' );
+		$instance = $this->newInstance();
+		$instance->getContainer()->registerObject( 'DiObjectMapper', array( 'Title' => 'Title' ) );
+		$instance->newObject( 'Title' );
+
+		$this->assertTrue( true );
 	}
 
 	/**
@@ -746,6 +797,84 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$provider[] = array( array( 'Title' => $title, 'Title2' => $title ), $title );
 
 		return $provider;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function dependencyObjectDataProvider() {
+
+		$provider = array();
+
+		$stdClass = new \stdClass;
+		$closure  = function() use( $stdClass ) { return $stdClass; };
+
+		// #0
+		$dependencyObject = $this->getMockBuilder( '\SMW\DependencyObject' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'defineObject' ) )
+			->getMock();
+
+		$dependencyObject->expects( $this->any() )
+			->method( 'defineObject' )
+			->will( $this->returnValue( $stdClass ) );
+
+		$provider[] = array( $dependencyObject, $stdClass );
+
+		// #1
+		$dependencyObject = $this->getMockBuilder( '\SMW\DependencyObject' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'defineObject' ) )
+			->getMock();
+
+		$dependencyObject->expects( $this->any() )
+			->method( 'defineObject' )
+			->will( $this->returnValue( $closure ) );
+
+		$provider[] = array( $dependencyObject, $stdClass );
+
+		// #3
+		$provider[] = array( $closure, $stdClass );
+
+		return $provider;
+	}
+
+}
+
+/**
+ * A fake dependency container
+ */
+class FakeDependencyContainer extends EmptyDependencyContainer {
+
+	protected $objects;
+
+	public function setObjects( $objects ) {
+		$this->objects = $objects;
+	}
+
+	public function loadObjects() {
+		return $this->objects;
+	}
+
+}
+
+/**
+ * A fake object instance
+ */
+class FakeWikiPage {
+
+	protected $title = null;
+
+	public function __construct( Title $title ) {
+		$this->title = $title;
+	}
+
+	public static function newFromTitle( Title $title ) {
+		return new self( $title );
+	}
+
+	public function getTitle() {
+		return $this->title;
 	}
 
 }

@@ -17,6 +17,8 @@ namespace SMW;
  * Implements the DependencyContainer interface and is responsible for handling
  * object storage, and retrieval of object definitions
  *
+ * Examples and a more exhaustive description can be found at /di/README.md
+ *
  * @ingroup DependencyContainer
  */
 abstract class BaseDependencyContainer extends ObjectStorage implements DependencyContainer {
@@ -82,19 +84,6 @@ abstract class BaseDependencyContainer extends ObjectStorage implements Dependen
 	/**
 	 * Register an object via magic method __set
 	 *
-	 * @par Example:
-	 * @code
-	 *  $container = new EmptyDependencyContainer()
-	 *
-	 *  // Eager loading (do everything when asked)
-	 *  $container->title = new Title() or
-	 *
-	 *  // Lazy loading (only do an instanitation when required)
-	 *  $container->diWikiPage = function ( DependencyBuilder $builder ) {
-	 *    return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
-	 *  } );
-	 * @endcode
-	 *
 	 * @since  1.9
 	 *
 	 * @param string $objectName
@@ -107,32 +96,23 @@ abstract class BaseDependencyContainer extends ObjectStorage implements Dependen
 	/**
 	 * Register an object
 	 *
-	 * @par Example:
-	 * @code
-	 *  $container = new EmptyDependencyContainer()
-	 *
-	 *  // Eager loading (do everything when asked)
-	 *  $container->registerObject( 'Title', new Title() ) or
-	 *
-	 *  // Lazy loading (only do an instanitation when required)
-	 *  $container->registerObject( 'DIWikiPage', function ( DependencyBuilder $builder ) {
-	 *    return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
-	 *  } );
-	 * @endcode
-	 *
 	 * @since  1.9
 	 *
 	 * @param string $objectName
-	 * @param mixed $signature
+	 * @param mixed $objectSignature an arbitrary signature of any kind such Closure, DependencyObject etc.
+	 * @param mixed $objectScope
 	 */
-	public function registerObject( $objectName, $objectSignature, $objectScope = self::SCOPE_PROTOTYPE ) {
+	public function registerObject( $objectName, $objectSignature, $objectScope = DependencyObject::SCOPE_PROTOTYPE ) {
 		$this->set( $objectName, array( $objectSignature, $objectScope ) );
 	}
 
-	// Not sure that the overhead would warrant something like
-	// $definition = new DependencyObjectDefinition( $name, $signature, $scope )
-	//
-	// public function registerObject( DependencyObjectDefinition $definition ) {
-	//	$this->set( $definition->getName(), array( $definition->getSignature() , $definition->getScope() ) );
-	// }
+	/**
+	 * @see DependencyContainer::loadObjects
+	 *
+	 * @since  1.9
+	 */
+	public function loadObjects() {
+		return array();
+	}
+
 }
