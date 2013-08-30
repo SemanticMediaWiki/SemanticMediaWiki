@@ -18,9 +18,9 @@ use OutOfBoundsException;
 
 /**
  * Basic implementation of the DependencyBuilder interface to enable access to
- * DependencyContainer objects and other invoked arguments
+ * DiObjects and invoked arguments
  *
- * For a more exhaustive description, see /dic/README.mediawiki
+ * For a more exhaustive description, see /di/README.md
  *
  * @par Example:
  * @code
@@ -45,7 +45,6 @@ use OutOfBoundsException;
  *  $diWikiPage = $builder->newObject( 'DIWikiPage', array( $title ) ) or
  *  $diWikiPage = $builder->addArgument( 'Title', $title )->newObject( 'DIWikiPage' ) or
  *  $diWikiPage = $builder->DIWikiPage( array( 'Title', $title ) )
- *
  * @endcode
  *
  * @ingroup DependencyBuilder
@@ -109,10 +108,9 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 * @endcode
 	 *
 	 * @note When adding arguments it is preferable to use type hinting even
-	 * though no types are declared an auto recognition will try to resolve
-	 * the identify but when mock objects are used during testing this will
-	 * cause objects being recognized with their mock name instead of the
-	 * original entity
+	 * though auto type recognition is supported but using mock objects during
+	 * testing will cause objects being recognized with their mock name instead
+	 * of the original mocked entity
 	 *
 	 * @since  1.9
 	 *
@@ -123,6 +121,10 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 * @throws InvalidArgumentException
 	 */
 	public function newObject( $objectName, $objectArguments = null ) {
+
+		if ( !is_string( $objectName ) ) {
+			throw new InvalidArgumentException( 'Object name is not a string' );
+		}
 
 		if ( $objectArguments !== null ) {
 
@@ -242,31 +244,35 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 *
 	 * @return mixed
 	 * @throws OutOfBoundsException
-	 * @throws InvalidArgumentException
 	 */
 	protected function build( $objectName ) {
 
-		if ( !is_string( $objectName ) ) {
-			throw new InvalidArgumentException( 'Argument is not a string' );
-		}
-
 		if ( !$this->dependencyContainer->has( $objectName ) ) {
-			throw new OutOfBoundsException( "{$objectName} is not registered" );
+
+			if ( !$this->search( $objectName ) ) {
+				throw new OutOfBoundsException( "{$objectName} is not registered or available as service object" );
+			};
+
 		}
 
 		list( $objectSignature, $objectScope ) = $this->dependencyContainer->get( $objectName );
+
+		if ( is_string( $objectSignature ) && class_exists( $objectSignature ) ) {
+			$objectSignature = new $objectSignature;
+		}
+
+		if ( $objectSignature instanceOf DependencyObject ) {
+			$objectSignature = $objectSignature->defineObject( $this );
+		}
 
 		return $this->load( $objectName, $objectSignature, $objectScope );
 	}
 
 	/**
-	 * Resolves object definition and initializes an object in accordance with
-	 * its scope
+	 * Initializes an object in correspondence with its scope and specification
 	 *
-	 * @note Objects with a singleton scope are internally stored and preceded by
-	 * a 'sing_' as object identifier
-	 *
-	 * @since  1.9
+	 * @note An object scope invoked during the build process has priority
+	 * over the original scope definition
 	 *
 	 * @param string $objectName
 	 * @param mixed $objectSignature
@@ -276,48 +282,75 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 */
 	private function load( $objectName, $objectSignature, $objectScope ) {
 
-		// An object scope invoked during the build process has priority over
-		// the original scope definition
-		$objectScope = $this->objectScope !== null ? $this->objectScope : $objectScope;
-
-		if ( $objectScope === DependencyObject::SCOPE_SINGLETON ) {
-
-			$objectName = 'sing_' . $objectName;
-
-			if ( !$this->dependencyContainer->has( $objectName ) ) {
-				$this->dependencyContainer->set( $objectName, $this->singelton( $objectSignature ) );
-			}
-
-			$objectSignature = $this->dependencyContainer->get( $objectName );
-
+		if ( $this->objectScope !== null ) {
+			$objectScope = $this->objectScope;
 		}
 
-		// Reset internal scope variable
+		if ( $objectScope === DependencyObject::SCOPE_SINGLETON ) {
+			$objectSignature = $this->singelton( $objectName, $objectSignature );
+		}
+
 		$this->objectScope = null;
 
 		return is_callable( $objectSignature ) ? $objectSignature( $this ) : $objectSignature;
 	}
 
 	/**
-	 * Build singleton instance
+	 * Builds singleton instance
 	 *
-	 * Keep the context within the closure static so any repeated call to
-	 * this closure object will find the static context instead
+	 * @note A static context within a closure is kept static for its lifetime
+	 * therefore any repeated call to the same instance within the same request
+	 * will return the static context it was first initialized
+	 *
+	 * @note Objects with a singleton scope are internally stored and preceded by
+	 * a 'sing_' as object identifier
 	 *
 	 * @param mixed $objectSignature
 	 *
 	 * @return Closure
 	 */
-	private function singelton( $objectSignature ) {
+	private function singelton( $objectName, $objectSignature ) {
 
-		// Resolve the object and use the result for static injection
-		$object = is_callable( $objectSignature ) ? $objectSignature( $this ) : $objectSignature;
+		$objectName = 'sing_' . $objectName;
 
-		return function() use ( $object ) {
-			static $singleton;
-			return $singleton = $singleton === null ? $object : $singleton;
-		};
+		if ( !$this->dependencyContainer->has( $objectName ) ) {
 
+			// Resolves an object and uses the result for further processing
+			$object = is_callable( $objectSignature ) ? $objectSignature( $this ) : $objectSignature;
+
+			// Binds static context
+			$singleton = function() use ( $object ) {
+				static $singleton;
+				return $singleton = $singleton === null ? $object : $singleton;
+			};
+
+			$this->dependencyContainer->set( $objectName, $singleton );
+		} else {
+			$singleton = $this->dependencyContainer->get( $objectName );
+		}
+
+		return $singleton;
+	}
+
+	/**
+	 * Locate and register a deferred object
+	 *
+	 * @param string $objectName
+	 *
+	 * @return boolean
+	 */
+	private function search( $objectName ) {
+
+		$objectCatalog = $this->dependencyContainer->loadObjects();
+
+		if ( isset( $objectCatalog[$objectName] ) ) {
+
+			$this->dependencyContainer->registerObject( $objectName, $objectCatalog[$objectName] );
+			return true;
+
+		}
+
+		return false;
 	}
 
 }

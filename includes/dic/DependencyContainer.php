@@ -27,11 +27,13 @@ interface DependencyObject {
 	const SCOPE_SINGLETON = 1;
 
 	/**
-	 * Register a dependency object
+	 * Defines an object
 	 *
 	 * @since  1.9
+	 *
+	 * @param DependencyBuilder $builder
 	 */
-	public function registerObject( $objectName, $objectSignature, $objectScope );
+	public function defineObject( DependencyBuilder $builder );
 
 }
 
@@ -40,4 +42,20 @@ interface DependencyObject {
  *
  * @ingroup DependencyContainer
  */
-interface DependencyContainer extends DependencyObject, Accessible, Changeable, Combinable {}
+interface DependencyContainer extends Accessible, Changeable, Combinable {
+
+	/**
+	 * Register a dependency object
+	 *
+	 * @since  1.9
+	 */
+	public function registerObject( $objectName, $objectSignature, $objectScope );
+
+	/**
+	 * Collects and map objects for deferred registration
+	 *
+	 * @since  1.9
+	 */
+	public function loadObjects();
+
+}

@@ -51,16 +51,17 @@ Gaining independence and control over service object instantiation requires appr
 DependencyObject is an interface that specifies a method to resolve an object specification and can be used as free agent.
 
 ```php
-class QuuxDependencyObject implements DependencyObject {
+class DiQuuxObject implements DependencyObject {
 
-	public function resolveObject( DependencyBuilder $builder ) {
+	public function defineObject( DependencyBuilder $builder ) {
 		return new Quux( new Foo( $builder->newObject( 'Bam' ) );
 	}
 
 }
 
 // Register with a container (Lazy loading)
-$container->registerObject( 'Quux', new QuuxDependencyObject() );
+$container->registerObject( 'Quux', new DiQuuxObject() ) or
+$container->registerObject( 'Quux', 'DiQuuxObject' );
 ```
 
 ```php
@@ -70,7 +71,7 @@ $container->registerObject( 'Quux', function( DependencyBuilder $builder ) {
 } );
 ```
 ### DependencyContainer
-DependencyContainer is an interface that specifies method to register DepencyObjects. BaseDependencyContainer implements the DependencyContainer and declares methods to retrieve and store object definitions. 
+DependencyContainer is an interface that specifies method to register DepencyObjects. BaseDependencyContainer implements the DependencyContainer and declares methods to retrieve and store object definitions.
 
 EmptyDependencyContainer is an empty container that extends BaseDependencyContainer while SharedDependencyContainer implements most common object definitions used during Semantic MediaWiki's life cycle.
 
@@ -104,7 +105,7 @@ class FooDependencyContainer extends BaseDependencyContainer {
 	/**
 	 * Lazy loading using a DependencyObject
 	 */
-	$this->registerObject( 'Quux', new QuuxDependencyObject() );
+	$this->registerObject( 'Quux', new DiQuuxObject() );
 
 }
 ```

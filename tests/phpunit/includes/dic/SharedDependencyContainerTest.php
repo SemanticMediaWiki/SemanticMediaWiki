@@ -23,6 +23,7 @@ use SMW\DependencyContainer;
  * @covers \SMW\SharedDependencyContainer
  * @covers \SMW\SimpleDependencyBuilder
  * @covers \SMW\BaseDependencyContainer
+ * @covers \SMW\DiParserData
  *
  * @ingroup Test
  *
@@ -73,7 +74,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			$this->assertInstanceOf(
 				$objectInstance,
 				$instance->newObject( $objectName ),
-				'asserts that the DI component has created an instance'
+				'asserts that the DiObject was able to create an instance'
 			);
 		}
 
@@ -91,12 +92,23 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		}
 
 		foreach ( $instance->toArray() as $objectName => $objectSiganture ) {
-			if ( !array_key_exists( $objectName, $registeredObjects ) ) {
-				$this->markTestIncomplete( "This test is incomplete because of a missing {$objectName} assertion." );
-			}
+			$this->assertObjectRegistration( $objectName, $registeredObjects );
+		}
+
+		foreach ( $instance->loadObjects() as $objectName => $objectSiganture ) {
+			$this->assertObjectRegistration( $objectName, $registeredObjects );
 		}
 
 		$this->assertTrue( true );
+	}
+
+	/**
+	 * Asserts whether a registered object is being tested
+	 */
+	public function assertObjectRegistration( $name, $objects ) {
+		if ( !array_key_exists( $name, $objects ) ) {
+			$this->markTestIncomplete( "This test is incomplete because of a missing {$name} assertion." );
+		}
 	}
 
 	/**
@@ -113,7 +125,13 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		$provider[] = array( 'UpdateObserver',             array( '\SMW\UpdateObserver'              => array() ) );
 		$provider[] = array( 'ObservableUpdateDispatcher', array( '\SMW\ObservableSubjectDispatcher' => array() ) );
 
-		$provider[] = array( 'ParserData' , array(  '\SMW\ParserData' => array(
+		$provider[] = array( 'ContentParser' , array( '\SMW\ContentParser' => array(
+				'Title'        => $this->newMockObject()->getMockTitle()
+				)
+			)
+		);
+
+		$provider[] = array( 'ParserData' , array( '\SMW\ParserData' => array(
 				'Title'        => $this->newMockObject()->getMockTitle(),
 				'ParserOutput' => $this->newMockObject()->getMockParserOutput()
 				)

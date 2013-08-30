@@ -14,7 +14,7 @@ namespace SMW;
  */
 
 /**
- * Extends the BaseDependencyContainer to provide general purpose dependecy
+ * Extends the BaseDependencyContainer to provide general purpose dependency
  * object definitions
  *
  * @ingroup DependencyContainer
@@ -29,7 +29,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	}
 
 	/**
-	 * Load pre-existing object definitions
+	 * Load object definitions in advance
 	 *
 	 * @since  1.9
 	 */
@@ -44,7 +44,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 		 */
 		$this->registerObject( 'Settings', function () {
 			return Settings::newFromGlobals();
-		}, self::SCOPE_SINGLETON );
+		}, DependencyObject::SCOPE_SINGLETON );
 
 		/**
 		 * Store object definition
@@ -55,7 +55,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 		 */
 		$this->registerObject( 'Store', function ( DependencyBuilder $builder ) {
 			return StoreFactory::getStore( $builder->newObject( 'Settings' )->get( 'smwgDefaultStore' ) );
-		}, self::SCOPE_SINGLETON );
+		}, DependencyObject::SCOPE_SINGLETON );
 
 		/**
 		 * CacheHandler object definition
@@ -66,76 +66,62 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 		 */
 		$this->registerObject( 'CacheHandler', function ( DependencyBuilder $builder ) {
 			return CacheHandler::newFromId( $builder->newObject( 'Settings' )->get( 'smwgCacheType' ) );
-		}, self::SCOPE_SINGLETON );
-
-		/**
-		 * ParserData object definition
-		 *
-		 * @since  1.9
-		 *
-		 * @return ParserData
-		 */
-		$this->registerObject( 'ParserData', function ( DependencyBuilder $builder ) {
-
-			$parserData = new ParserData(
-				$builder->getArgument( 'Title' ),
-				$builder->getArgument( 'ParserOutput' )
-			);
-
-			$parserData->setObservableDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
-
-			return $parserData;
-		} );
-
-		/**
-		 * UpdateObserver object definitions
-		 *
-		 * @since  1.9
-		 *
-		 * @return UpdateObserver
-		 */
-		$this->registerObject( 'UpdateObserver', function ( DependencyBuilder $builder ){
-			$updateObserver = new UpdateObserver();
-			$updateObserver->setDependencyBuilder( $builder );
-			return $updateObserver;
-		} );
-
-		/**
-		 * ObservableSubjectDispatcher object definitions
-		 *
-		 * @since  1.9
-		 *
-		 * @return ObservableSubjectDispatcher
-		 */
-		$this->registerObject( 'ObservableUpdateDispatcher', function ( DependencyBuilder $builder ){
-			return new ObservableSubjectDispatcher( $builder->newObject( 'UpdateObserver' ) );
-		} );
-
-		/**
-		 * NamespaceExaminer object definitions
-		 *
-		 * @since  1.9
-		 *
-		 * @return NamespaceExaminer
-		 */
-		$this->registerObject( 'NamespaceExaminer', function ( DependencyBuilder $builder ){
-			return NamespaceExaminer::newFromArray( $builder->newObject( 'Settings' )->get( 'smwgNamespacesWithSemanticLinks' ) );
-		} );
-
-		// $this->set( 'FactboxPresenter', function ( DependencyBuilder $builder ) {
-		//	$outputPage = $builder->getArgument( 'OutputPage' );
-		//	return new FactboxPresenter( $outputPage, $builder->newObject( 'Settings' ) );
-		// } );
-
-		// $this->set( 'Factbox', function ( DependencyBuilder $builder ) {
-		//	return new Factbox(
-		//		$builder->newObject( 'Store' ),
-		//		$builder->getArgument( 'SMW\ParserData' ),
-		//		$builder->getArgument( 'SMW\Settings' ),
-		//		$builder->getArgument( 'RequestContext' )
-		//	);
-		// } );
+		}, DependencyObject::SCOPE_SINGLETON );
 
 	}
 
+	/**
+	 * Load object definitions on request
+	 *
+	 * @see  DependencyContainer::loadObjects
+	 *
+	 * It is proposed that the requested service object being available as
+	 * individual object class is using the following SMW\Di + <requested service>
+	 * naming pattern
+	 *
+	 * @since  1.9
+	 *
+	 * @return array
+	 */
+	public function loadObjects() {
+		return array(
+			'ParserData'        => '\SMW\DiParserData',
+			'NamespaceExaminer' => $this->getNamespaceExaminer(),
+			'UpdateObserver'    => $this->getUpdateObserver(),
+			'ContentParser'     => function ( DependencyBuilder $builder ) {
+					return new ContentParser( $builder->getArgument( 'Title' ) );
+				},
+			'ObservableUpdateDispatcher' => function ( DependencyBuilder $builder ){
+					return new ObservableSubjectDispatcher( $builder->newObject( 'UpdateObserver' ) );
+				}
+		);
+	}
+
+	/**
+	 * NamespaceExaminer object definition
+	 *
+	 * @since  1.9
+	 *
+	 * @return NamespaceExaminer
+	 */
+	protected function getNamespaceExaminer() {
+		return function ( DependencyBuilder $builder ) {
+			return NamespaceExaminer::newFromArray( $builder->newObject( 'Settings' )->get( 'smwgNamespacesWithSemanticLinks' ) );
+		};
+	}
+
+	/**
+	 * UpdateObserver object definition
+	 *
+	 * @since  1.9
+	 *
+	 * @return UpdateObserver
+	 */
+	protected function getUpdateObserver() {
+		return function ( DependencyBuilder $builder ) {
+			$updateObserver = new UpdateObserver();
+			$updateObserver->setDependencyBuilder( $builder );
+			return $updateObserver;
+		};
+	}
 }

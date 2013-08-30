@@ -92,6 +92,9 @@ return array(
 	'SMW\DependencyRequestor'             => 'includes/dic/DependencyRequestor.php',
 	'SMW\DependencyInjector'              => 'includes/dic/DependencyInjector.php',
 
+	// Service objects
+	'SMW\DiParserData'                   => 'includes/dic/objects/DiParserData.php',
+
 	'SMW\Cacheable'                 => 'includes/Cacheable.php',
 	'SMW\Configurable'              => 'includes/Configurable.php',
 	'SMW\StoreAccess'               => 'includes/StoreAccess.php',
