@@ -86,18 +86,18 @@ class ParserAfterTidyTest extends ParserTestCase {
 		$updateObserver = new MockUpdateObserver();
 		$cacheHandler   = $instance->getDependencyBuilder()->newObject( 'CacheHandler' );
 
-		$container = $instance->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Settings', $settings );
-		$container->registerObject( 'Store', $this->newMockObject()->getMockStore() );
-		$container->registerObject( 'UpdateObserver', $updateObserver );
-		$container->registerObject( 'CacheHandler', $cacheHandler );
-
 		// Simulates a previous state change did cause a cache entry
 		if ( $setup['cache'] ) {
 			$cacheHandler->setKey(
 				\SMW\ArticlePurge::newIdGenerator( $setup['title']->getArticleID() )
 			)->set( __METHOD__ );
 		}
+
+		$container = $instance->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Settings', $settings );
+		$container->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+		$container->registerObject( 'UpdateObserver', $updateObserver );
+		$container->registerObject( 'CacheHandler', $cacheHandler );
 
 		$this->assertTrue(
 			$instance->process(),

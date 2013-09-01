@@ -85,12 +85,22 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	 */
 	public function loadObjects() {
 		return array(
-			'ParserData'        => '\SMW\DiParserData',
-			'NamespaceExaminer' => $this->getNamespaceExaminer(),
-			'UpdateObserver'    => $this->getUpdateObserver(),
-			'ContentParser'     => function ( DependencyBuilder $builder ) {
+			'ParserData'            => '\SMW\DiParserData',
+			'NamespaceExaminer'     => $this->getNamespaceExaminer(),
+			'UpdateObserver'        => $this->getUpdateObserver(),
+			'BasePropertyAnnotator' => $this->getBasePropertyAnnotator(),
+
+			'ContentProcessor' => function ( DependencyBuilder $builder ) {
+					return new ParserTextProcessor(
+						$builder->getArgument( 'ParserData' ),
+						$builder->newObject( 'Settings' )
+					);
+				},
+
+			'ContentParser' => function ( DependencyBuilder $builder ) {
 					return new ContentParser( $builder->getArgument( 'Title' ) );
 				},
+
 			'ObservableUpdateDispatcher' => function ( DependencyBuilder $builder ){
 					return new ObservableSubjectDispatcher( $builder->newObject( 'UpdateObserver' ) );
 				}
@@ -124,4 +134,21 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			return $updateObserver;
 		};
 	}
+
+	/**
+	 * BasePropertyAnnotator object definition
+	 *
+	 * @since  1.9
+	 *
+	 * @return BasePropertyAnnotator
+	 */
+	protected function getBasePropertyAnnotator() {
+		return function ( DependencyBuilder $builder ) {
+			return new BasePropertyAnnotator(
+				$builder->getArgument( 'SemanticData' ),
+				$builder->newObject( 'Settings' )
+			);
+		};
+	}
+
 }
