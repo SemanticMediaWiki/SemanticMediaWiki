@@ -172,8 +172,19 @@ $specialPageAliases['dv'] = array(
 
 /** Greek (Ελληνικά) */
 $specialPageAliases['el'] = array(
+	'Ask' => array( 'Ερώτημα' ),
+	'Browse' => array( 'Περιήγηση' ),
+	'ExportRDF' => array( 'ΕξαγωγήRDF' ),
 	'PageProperty' => array( 'ΙδιότηταΣελίδας' ),
 	'Properties' => array( 'Ιδιότητες' ),
+	'Concepts' => array( 'Έννοιες' ),
+	'SMWAdmin' => array( 'ΔιαχείρισηSMW' ),
+	'SearchByProperty' => array( 'ΑναζήτησηΜεΙδιότητα' ),
+	'SemanticStatistics' => array( 'ΣημασιολογικάΣτατιστικά' ),
+	'Types' => array( 'Τύποι' ),
+	'URIResolver' => array( 'ΑναλυτήςURI' ),
+	'UnusedProperties' => array( 'ΜηΧρησιμοποιούμενεςΙδιότητες' ),
+	'WantedProperties' => array( 'ΖητούμενεςΙδιότητες' ),
 );
 
 /** Esperanto (Esperanto) */
