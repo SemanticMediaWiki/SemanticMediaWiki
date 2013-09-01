@@ -171,6 +171,7 @@ class ParserAfterTidyTest extends ParserTestCase {
 		// #0 Runs store update
 		$title = $this->newMockObject( array(
 			'inNamespace'     => false,
+			'getArticleID'    => 9001
 		) )->getMockTitle();
 
 		$provider[] = array(
