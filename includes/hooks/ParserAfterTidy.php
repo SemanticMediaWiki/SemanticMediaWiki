@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Parser;
+use Title;
 
 /**
  * ParserAfterTidy hook
@@ -43,8 +44,6 @@ class ParserAfterTidy extends FunctionHook {
 	}
 
 	/**
-	 * @see FunctionHook::process
-	 *
 	 * @note Article purge: In case an article was manually purged/moved
 	 * the store is updated as well and for all other cases LinksUpdateConstructed
 	 * will handle the store update
@@ -58,23 +57,7 @@ class ParserAfterTidy extends FunctionHook {
 	 *
 	 * @return true
 	 */
-	public function process() {
-
-		$title = $this->parser->getTitle();
-
-		if ( $title->isSpecialPage() ) {
-			return true;
-		}
-
-		/**
-		 * @var Settings $settings
-		 */
-		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
-
-		/**
-		 * @var CacheHandler $cache
-		 */
-		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
+	protected function performUpdate( Title $title ) {
 
 		/**
 		 * @var ParserData $parserData
@@ -84,11 +67,21 @@ class ParserAfterTidy extends FunctionHook {
 			'ParserOutput' => $this->parser->getOutput()
 		) );
 
-		$annotator = new BasePropertyAnnotator( $parserData->getData(), $settings );
-		$annotator->attach( $parserData );
+		/**
+		 * @var BasePropertyAnnotator $propertyAnnotator
+		 */
+		$propertyAnnotator = $this->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
+			'SemanticData' => $parserData->getData(),
+		) );
 
-		$annotator->addCategories( $this->parser->getOutput()->getCategoryLinks() );
-		$annotator->addDefaultSort( $this->parser->getDefaultSort() );
+		$propertyAnnotator->attach( $parserData )
+			->addCategories( $this->parser->getOutput()->getCategoryLinks() )
+			->addDefaultSort( $this->parser->getDefaultSort() );
+
+		/**
+		 * @var CacheHandler $cache
+		 */
+		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
 
 		$cache->setKey( ArticlePurge::newIdGenerator( $title->getArticleID() ) );
 
@@ -98,6 +91,17 @@ class ParserAfterTidy extends FunctionHook {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @see FunctionHook::process
+	 *
+	 * @since 1.9
+	 *
+	 * @return true
+	 */
+	public function process() {
+		return !$this->parser->getTitle()->isSpecialPage() ? $this->performUpdate( $this->parser->getTitle() ) : true;
 	}
 
 }

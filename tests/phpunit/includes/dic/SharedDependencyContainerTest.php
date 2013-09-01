@@ -125,13 +125,25 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		$provider[] = array( 'UpdateObserver',             array( '\SMW\UpdateObserver'              => array() ) );
 		$provider[] = array( 'ObservableUpdateDispatcher', array( '\SMW\ObservableSubjectDispatcher' => array() ) );
 
-		$provider[] = array( 'ContentParser' , array( '\SMW\ContentParser' => array(
+		$provider[] = array( 'ContentParser', array( '\SMW\ContentParser' => array(
 				'Title'        => $this->newMockObject()->getMockTitle()
 				)
 			)
 		);
 
-		$provider[] = array( 'ParserData' , array( '\SMW\ParserData' => array(
+		$provider[] = array( 'ContentProcessor', array( '\SMW\ParserTextProcessor' => array(
+				'ParserData'  => $this->newMockObject()->getMockParserData()
+				)
+			)
+		);
+
+		$provider[] = array( 'BasePropertyAnnotator', array( '\SMW\BasePropertyAnnotator' => array(
+				'SemanticData' => $this->newMockObject()->getMockSemanticData()
+				)
+			)
+		);
+
+		$provider[] = array( 'ParserData', array( '\SMW\ParserData' => array(
 				'Title'        => $this->newMockObject()->getMockTitle(),
 				'ParserOutput' => $this->newMockObject()->getMockParserOutput()
 				)

@@ -646,18 +646,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onInternalParseBeforeLinks( Parser &$parser, &$text ) {
-
-		if ( !$parser->getTitle()->isSpecialPage() ) {
-
-			$processor = new SMW\ParserTextProcessor(
-				new \SMW\ParserData( $parser->getTitle(), $parser->getOutput() ),
-				\SMW\Settings::newFromGlobals()
-			);
-
-			$processor->parse( $text );
-		}
-
-		return true;
+		return \SMW\FunctionHookRegistry::register( new \SMW\InternalParseBeforeLinks( $parser, $text ) )->process();
 	}
 
 	/**

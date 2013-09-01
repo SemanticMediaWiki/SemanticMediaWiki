@@ -67,7 +67,7 @@ class BasePropertyAnnotator extends ObservableSubject {
 	 *
 	 * @param array $categoryLinks
 	 *
-	 * @return boolean|null
+	 * @return BasePropertyAnnotator
 	 */
 	public function addCategories( array $categoryLinks ) {
 
@@ -89,6 +89,8 @@ class BasePropertyAnnotator extends ObservableSubject {
 		}
 
 		$this->setState( 'updateOutput' );
+
+		return $this;
 	}
 
 	/**
@@ -100,7 +102,7 @@ class BasePropertyAnnotator extends ObservableSubject {
 	 *
 	 * @param string $defaultSort
 	 *
-	 * @return boolean|null
+	 * @return BasePropertyAnnotator
 	 */
 	public function addDefaultSort( $defaultSort ) {
 		$sortkey = $defaultSort ? $defaultSort : str_replace( '_', ' ', $this->semanticData->getSubject()->getTitle()->getDBkey() );
@@ -110,6 +112,8 @@ class BasePropertyAnnotator extends ObservableSubject {
 		);
 
 		$this->setState( 'updateOutput' );
+
+		return $this;
 	}
 
 	/**
@@ -118,11 +122,11 @@ class BasePropertyAnnotator extends ObservableSubject {
 	 *
 	 * @since 1.9
 	 *
-	 * @param \WikiPage $wikiPage
-	 * @param \Revision $revision
-	 * @param \User $user
+	 * @param WikiPage $wikiPage
+	 * @param Revision $revision
+	 * @param User $user
 	 *
-	 * @return boolean|null
+	 * @return BasePropertyAnnotator
 	 */
 	public function addSpecialProperties( WikiPage $wikiPage, Revision $revision, User $user ) {
 
@@ -174,6 +178,8 @@ class BasePropertyAnnotator extends ObservableSubject {
 		}
 
 		$this->setState( 'updateOutput' );
+
+		return $this;
 	}
 
 }
