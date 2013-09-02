@@ -80,12 +80,17 @@ class UpdateObserver extends Observer implements DependencyRequestor {
 	 */
 	public function runStoreUpdater( ParserData $subject ) {
 
-		$updater = new StoreUpdater(
-			$this->getDependencyBuilder()->newObject( 'Store' ),
-			$subject->getData(),
-			$this->getDependencyBuilder()->newObject( 'Settings' )
-		);
+		/**
+		 * @var Settings $settings
+		 */
+		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
 
+		/**
+		 * @var Store $store
+		 */
+		$store = $this->getDependencyBuilder()->newObject( 'Store' );
+
+		$updater = new StoreUpdater( $store, $subject->getData(), $settings );
 		$updater->setUpdateStatus( $subject->getUpdateStatus() )->doUpdate();
 
 		return true;
@@ -113,19 +118,9 @@ class UpdateObserver extends Observer implements DependencyRequestor {
 	 */
 	public function runUpdateDispatcher( TitleAccess $subject ) {
 
-		$settings   = $this->getDependencyBuilder()->newObject( 'Settings' );
-
 		$dispatcher = new UpdateDispatcherJob( $subject->getTitle() );
-		$dispatcher->setSettings( $settings );
-
-		if ( $settings->get( 'smwgDeferredPropertyUpdate' ) && class_exists( '\SMW\PropertyPageIdMapper' ) ) {
-			// Enable coverage after PropertyPageIdMapper is available
-			// @codeCoverageIgnoreStart
-			$dispatcher->insert(); // JobQueue is handling dispatching
-			// @codeCoverageIgnoreEnd
-		} else {
-			$dispatcher->run();
-		}
+		$dispatcher->setDependencyBuilder( $this->getDependencyBuilder() );
+		$dispatcher->run();
 
 		return true;
 	}

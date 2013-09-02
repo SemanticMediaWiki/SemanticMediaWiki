@@ -4,11 +4,7 @@ namespace SMW;
 
 use ParserOutput;
 use LinkCache;
-use WikiPage;
-use Revision;
 use Title;
-use User;
-use Job;
 
 /**
  * UpdateJob is responsible for the asynchronous update of semantic data
@@ -40,9 +36,6 @@ use Job;
  */
 class UpdateJob extends JobBase {
 
-	/** @var ContentParser */
-	protected $contentParser = null;
-
 	/**
 	 * @since  1.9
 	 *
@@ -53,60 +46,97 @@ class UpdateJob extends JobBase {
 	}
 
 	/**
-	 * Run job
-	 * @return boolean success
+	 * @see Job::run
+	 *
+	 * @return boolean
 	 */
 	public function run() {
 		Profiler::In( __METHOD__ . '-run' );
 
 		LinkCache::singleton()->clear();
 
-		if ( $this->getTitle() === null ) {
-			$this->setLastError( __METHOD__ . ': Invalid title' );
-			Profiler::Out( __METHOD__ . '-run' );
-			return false;
-		} elseif ( !$this->getTitle()->exists() ) {
-			$this->getStore()->deleteSubject( $this->getTitle() ); // be sure to clear the data
-			Profiler::Out( __METHOD__ . '-run' );
+		$result = $this->runUpdate();
+
+		Profiler::Out( __METHOD__ . '-run' );
+		return $result;
+	}
+
+	/**
+	 * @since  1.9
+	 *
+	 * @param Title $title
+	 *
+	 * @return boolean
+	 */
+	private function runUpdate() {
+
+		// For non existing titles make sure to clear the data
+		if ( !$this->getTitle()->exists() ) {
+
+			/**
+			 * @var Store $store
+			 */
+			$store = $this->getDependencyBuilder()->newObject( 'Store' );
+
+			$store->deleteSubject( $this->getTitle() );
 			return true;
 		}
 
-		if ( !$this->getContentParser()->getOutput() instanceof ParserOutput ) {
-			$this->setLastError( $this->getContentParser()->getErrors() );
+		return $this->runContentParser();
+	}
+
+	/**
+	 * @since  1.9
+	 *
+	 * @return boolean
+	 */
+	private function runContentParser() {
+
+		/**
+		 * @var ContentParser $contentParser
+		 */
+		$contentParser = $this->getDependencyBuilder()->newObject( 'ContentParser', array(
+			'Title' => $this->getTitle()
+		) );
+
+		$contentParser->parse();
+
+		if ( !( $contentParser->getOutput() instanceof ParserOutput ) ) {
+			$this->setLastError( $contentParser->getErrors() );
 			return false;
 		}
 
+		return $this->runStoreUpdater( $contentParser->getOutput() );
+
+	}
+
+	/**
+	 * @since  1.9
+	 *
+	 * @param ParserOutput $parserOutput
+	 *
+	 * @return true
+	 */
+	private function runStoreUpdater( ParserOutput $parserOutput ) {
 		Profiler::In( __METHOD__ . '-update' );
 
-		$parserData = new ParserData( $this->getTitle(), $this->getContentParser()->getOutput() );
-		$parserData->setObservableDispatcher( new ObservableSubjectDispatcher( new UpdateObserver() ) )
-			->disableUpdateJobs()
-			->updateStore();
+		/**
+		 * @var ParserData $parserData
+		 */
+		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(
+			'Title'        => $this->getTitle(),
+			'ParserOutput' => $parserOutput
+		) );
+
+		$parserData->disableUpdateJobs()->updateStore();
 
 		Profiler::Out( __METHOD__ . '-update' );
-		Profiler::Out( __METHOD__ . '-run' );
-
 		return true;
 	}
 
 	/**
-	 * Returns a ContentParser object
+	 * @see Job::insert
 	 *
-	 * @since 1.9
-	 *
-	 * @return ContentParser
-	 */
-	protected function getContentParser() {
-
-		if ( $this->contentParser === null ) {
-			$this->contentParser = new ContentParser( $this->title );
-			$this->contentParser->parse();
-		}
-
-		return $this->contentParser;
-	}
-
-	/**
 	 * This actually files the job. This is prevented if the configuration of SMW
 	 * disables jobs.
 	 * @note Any method that inserts jobs with Job::batchInsert or otherwise must
@@ -115,7 +145,13 @@ class UpdateJob extends JobBase {
 	 * @codeCoverageIgnore
 	 */
 	function insert() {
-		if ( $this->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+
+		/**
+		 * @var Settings $settings
+		 */
+		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
+
+		if ( $settings->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}

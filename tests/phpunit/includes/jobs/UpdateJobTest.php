@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\SharedDependencyContainer;
 use SMW\UpdateJob;
 
 use Title;
@@ -19,6 +20,7 @@ use Title;
 
 /**
  * @covers \SMW\UpdateJob
+ * @covers \SMW\JobBase
  *
  * @ingroup Test
  *
@@ -43,13 +45,29 @@ class UpdateJobTest extends ParserTestCase {
 	 *
 	 * @return UpdateJob
 	 */
-	private function getInstance( Title $title = null ) {
-		$instance = new UpdateJob( $title === null ? $this->newTitle() : $title );
+	private function newInstance( Title $title = null, $settings = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
 
 		// Set smwgEnableUpdateJobs to false in order to avoid having jobs being
 		// inserted as real jobs to the queue
-		$instance->setSettings( $this->getSettings( array( 'smwgEnableUpdateJobs' => false ) ) );
+		if ( $settings === null ) {
+			$settings = $this->newSettings( array(
+				'smwgCacheType'        => 'hash',
+				'smwgEnableUpdateJobs' => false
+			) );
+		}
+
+		$instance = new UpdateJob( $title );
+
+		$container = $instance->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Settings', $settings );
+		$container->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+
 		return $instance;
+
 	}
 
 	/**
@@ -61,10 +79,9 @@ class UpdateJobTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
-		$this->assertInstanceOf( 'SMWUpdateJob', $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+		$this->assertInstanceOf( $this->getClass(), new \SMWUpdateJob( $this->newTitle() ) );
 	}
-
 
 	/**
 	 * @test UpdateJob::__construct
@@ -73,9 +90,14 @@ class UpdateJobTest extends ParserTestCase {
 	 */
 	public function testRun() {
 
-		$title    = $this->newMockObject( array( 'exists' => true ) )->getMockTitle();
-		$instance = $this->getInstance( $title );
-		$this->assertFalse( $instance->run() );
+		$title = $this->newMockObject( array(
+			'exists' => true
+		) )->getMockTitle();
+
+		$this->assertFalse(
+			$this->newInstance( $title )->run(),
+			'asserts that the run() returns false due to a missing ParserOutput object'
+		);
 
 	}
 
@@ -85,17 +107,19 @@ class UpdateJobTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testMockRun( $test, $expected ) {
+	public function testRunOnMockObjects( $setup, $expected ) {
 
-		$reflector = $this->newReflector();
-		$instance  = $this->getInstance( $test['title'] );
-		$instance->setStore( $this->newMockObject()->getMockStore() );
+		$instance  = $this->newInstance( $setup['title'] );
 
-		$contentParser = $reflector->getProperty( 'contentParser' );
-		$contentParser->setAccessible( true );
-		$contentParser->setValue( $instance, $test['contentParser'] );
+		$instance->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'ContentParser', $setup['contentParser'] );
 
-		$this->assertEquals( $expected['result'], $instance->run() );
+		$this->assertEquals(
+			$expected['result'],
+			$instance->run(),
+			'asserts run() in terms of the available ContentParser object'
+		);
 	}
 
 	/**

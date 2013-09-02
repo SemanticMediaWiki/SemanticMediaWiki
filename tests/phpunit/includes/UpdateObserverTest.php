@@ -47,14 +47,17 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 
 		$observer = new UpdateObserver();
 
-		// For now use the default builder set internally by the observer
-		// $observer->setDependencyBuilder( new \SMW\SimpleDependencyBuilder );
+		// Use the provided default builder
 		$observer->setDependencyBuilder( $observer->getDependencyBuilder() );
 
-		// Dependency object registration
+		$mockStore = $this->newMockObject( array(
+			'getAllPropertySubjects' => array(),
+			'getPropertySubjects'    => array()
+		) )->getMockStore();
+
 		$observer->getDependencyBuilder()
 			->getContainer()
-			->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+			->registerObject( 'Store', $mockStore );
 
 		return $observer;
 	}
@@ -78,12 +81,14 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 
 		$instance = $this->newInstance();
 
-		// Dependency object registration
 		$instance->getDependencyBuilder()
 			->getContainer()
 			->registerObject( 'Settings', $this->newSettings( $setup['settings'] ) );
 
-		$this->assertTrue( $instance->runUpdateDispatcher( $setup['title'] ) );
+		$this->assertTrue(
+			$instance->runUpdateDispatcher( $setup['title'] ),
+			'asserts that runUpdateDispatcher always returns true'
+		);
 	}
 
 	/**
@@ -96,12 +101,14 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 
 		$instance = $this->newInstance();
 
-		// Dependency object registration
 		$instance->getDependencyBuilder()
 			->getContainer()
 			->registerObject( 'Settings', $this->newSettings( $setup['settings'] ) );
 
-		$this->assertTrue( $instance->runStoreUpdater( $setup['parserData'] ) );
+		$this->assertTrue(
+			$instance->runStoreUpdater( $setup['parserData'] ),
+			'asserts that runStoreUpdater always returns true'
+		);
 	}
 
 	/**

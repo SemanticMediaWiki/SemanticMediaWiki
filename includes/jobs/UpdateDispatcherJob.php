@@ -6,9 +6,7 @@ use Title;
 use Job;
 
 /**
- * Dispatcher class to either run in deferred or immediate mode to generate
- * necessary UpdateJob's to restore the data parity between a property
- * and its attached subjects
+ * Dispatcher class to enable to run in deferred or immediate update mode
  *
  * @file
  *
@@ -19,9 +17,8 @@ use Job;
  */
 
 /**
- * Dispatcher class to either run in deferred or immediate mode to generate
- * necessary UpdateJob's to restore the data parity between a property
- * and its attached subjects
+ * Dispatcher class to enable to run UpdateJob in deferred or immediate mode
+ * that restores the data parity between a property and its attached subjects
  *
  * @ingroup Job
  * @ingroup Dispatcher
@@ -69,8 +66,8 @@ class UpdateDispatcherJob extends JobBase {
 	public function run() {
 		Profiler::In( __METHOD__, true );
 
-		if ( $this->title->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->distribute( DIProperty::newFromUserLabel( $this->title->getText() ) )->push();
+		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
+			$this->distribute( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->push();
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -99,8 +96,13 @@ class UpdateDispatcherJob extends JobBase {
 	protected function distribute( DIProperty $property ) {
 		Profiler::In( __METHOD__, true );
 
+		/**
+		 * @var Store $store
+		 */
+		$store = $this->getDependencyBuilder()->newObject( 'Store' );
+
 		// Array of all subjects that have some value for the given property
-		$subjects = $this->getStore()->getAllPropertySubjects( $property );
+		$subjects = $store->getAllPropertySubjects( $property );
 
 		$this->addJobs( $subjects );
 
@@ -112,7 +114,7 @@ class UpdateDispatcherJob extends JobBase {
 
 		// Fetch all those that have an error property attached and
 		// re-run it through the job-queue
-		$subjects = $this->getStore()->getPropertySubjects(
+		$subjects = $store->getPropertySubjects(
 			new DIProperty( DIProperty::TYPE_ERROR ),
 			DIWikiPage::newFromTitle( $this->title )
 		);
@@ -169,7 +171,13 @@ class UpdateDispatcherJob extends JobBase {
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-		if ( $this->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+
+		/**
+		 * @var Settings $settings
+		 */
+		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
+
+		if ( $settings->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}

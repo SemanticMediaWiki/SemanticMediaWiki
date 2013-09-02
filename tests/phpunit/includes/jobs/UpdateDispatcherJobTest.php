@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\SharedDependencyContainer;
 use SMW\UpdateDispatcherJob;
 use SMW\DIProperty;
 
@@ -52,8 +53,30 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return UpdateDispatcherJob
 	 */
-	private function getInstance( Title $title = null ) {
-		return new UpdateDispatcherJob( $title === null ? $this->getTitle() : $title );
+	private function newInstance( Title $title = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
+		$mockStore = $this->newMockObject( array(
+			'getAllPropertySubjects' => array( $this, 'mockStoreAllPropertySubjectsCallback' ),
+			'getPropertySubjects'    => array()
+		) )->getMockStore();
+
+		$settings = $this->newSettings( array(
+			'smwgCacheType'        => 'hash',
+			'smwgEnableUpdateJobs' => false
+		) );
+
+		$container = new SharedDependencyContainer();
+		$container->registerObject( 'Store', $mockStore );
+		$container->registerObject( 'Settings', $settings );
+
+		$instance = new UpdateDispatcherJob( $title );
+		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
+
+		return $instance;
 	}
 
 	/**
@@ -62,7 +85,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -74,7 +97,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testPush() {
-		$this->assertNull( $this->getInstance()->push() );
+		$this->assertNull( $this->newInstance()->push() );
 	}
 
 	/**
@@ -82,43 +105,30 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testDBRun() {
-		$this->assertTrue( $this->getInstance( $this->newTitle( SMW_NS_PROPERTY ) )->disable()->run() );
+	public function testRunOnDB() {
+		$this->assertTrue(
+			$this->newInstance( $this->newTitle( SMW_NS_PROPERTY ) )->disable()->run(),
+			'assert that run() always returns true'
+		);
 	}
 
 	/**
 	 * @test UpdateDispatcherJob::run
+	 * @dataProvider subjectDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testMockRun() {
+	public function testRunOnMockObjects( $setup, $expected ) {
 
-		$title = $this->newTitle( SMW_NS_PROPERTY );
-
-		// Set-up expected property, accessible in the mock callback
-		$this->property = DIProperty::newFromUserLabel( $title->getText() );
+		// Set-up expected property to be accessible in the mock callback
+		$this->property = DIProperty::newFromUserLabel( $setup['title']->getText() );
 
 		// Set-up expected "raw" subjects to be returned (plus duplicate)
-		$duplicate = $this->newSubject();
-		$this->subjects = array(
-			$duplicate,
-			$this->newSubject(),
-			$this->newSubject(),
-			$duplicate,
-			$this->newSubject()
-		);
-		$count = count( $this->subjects ) - 1; // eliminate duplicate count
+		$this->subjects = $setup['subjects'];
 
-		$mockStore = $this->newMockObject( array(
-			'getAllPropertySubjects' => array( $this, 'mockStoreAllPropertySubjectsCallback' ),
-			'getPropertySubjects'    => array()
-		) )->getMockStore();
+		$instance = $this->newInstance( $setup['title'] );
 
-		$instance = $this->getInstance( $title );
-		$instance->setStore( $mockStore );
-
-		// Disable distribution of generated jobs
-		// being inserted into the"real" JobQueue
+		// For tests disable distribution of jobs into the "real" JobQueue
 		$instance->disable()->run();
 
 		// Get access to protected jobs property
@@ -128,11 +138,24 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 
 		$result = $jobs->getValue( $instance );
 
-		$this->assertInternalType( 'array', $result );
-		$this->assertCount( $count, $result );
+		$this->assertInternalType(
+			'array',
+			$result,
+			'asserts that the job result property is of type array'
+		);
+
+		$this->assertCount(
+			$expected['count'],
+			$result,
+			'asserts the amount of available job entries'
+		);
 
 		foreach ( $result as $job ) {
-			$this->assertInstanceOf( 'SMW\UpdateJob', $job );
+			$this->assertInstanceOf(
+				'SMW\UpdateJob',
+				$job,
+				'asserts that the job instance is of type \SMW\UpdateJob'
+			);
 		}
 
 	}
@@ -149,4 +172,36 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 		return $this->property == $property ? $this->subjects : array();
 	}
 
+	/**
+	 * @return array
+	 */
+	public function subjectDataProvider() {
+
+		$provider = array();
+
+		$title = $this->newTitle( SMW_NS_PROPERTY );
+
+		$duplicate = $this->newSubject();
+		$subjects = array(
+			$duplicate,
+			$this->newSubject(),
+			$this->newSubject(),
+			$duplicate,
+			$this->newSubject()
+		);
+
+		$count = count( $subjects ) - 1; // eliminate duplicate count
+
+		$provider[] = array(
+			array(
+				'title'    => $title,
+				'subjects' => $subjects
+			),
+			array(
+				'count' => $count
+			)
+		);
+
+		return $provider;
+	}
 }

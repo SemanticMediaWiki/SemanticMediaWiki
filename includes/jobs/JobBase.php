@@ -20,21 +20,46 @@ use Job;
  *
  * @ingroup Job
  */
-abstract class JobBase extends Job implements Cacheable, Configurable, StoreAccess {
+abstract class JobBase extends Job implements DependencyRequestor {
 
-	/** $var Store */
-	protected $store = null;
+	/** @var DependencyBuilder */
+	protected $dependencyBuilder = null;
 
-	/** $var Settings */
-	protected $settings = null;
+	/**
+	 * @see DependencyRequestor::setDependencyBuilder
+	 *
+	 * @since 1.9
+	 *
+	 * @param DependencyBuilder $builder
+	 */
+	public function setDependencyBuilder( DependencyBuilder $builder ) {
+		$this->dependencyBuilder = $builder;
+	}
 
-	/** $var CacheHandler */
-	protected $cache = null;
+	/**
+	 * @see DependencyRequestor::getDependencyBuilder
+	 *
+	 * @since 1.9
+	 *
+	 * @return DependencyBuilder
+	 */
+	public function getDependencyBuilder() {
+
+		// JobBase is a top-level class and to avoid a non-instantiated object
+		// a default builder is set as for when Jobs are triggered using
+		// command line etc.
+
+		if ( $this->dependencyBuilder === null ) {
+			$this->dependencyBuilder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
+		}
+
+		return $this->dependencyBuilder;
+	}
 
 	/**
 	 * Returns invoked Title object
 	 *
-	 * Apparently Job::getTitle() in MW 1.19 does not exists
+	 * Apparently Job::getTitle() in MW 1.19 does not exist
 	 *
 	 * @since  1.9
 	 *
@@ -44,75 +69,4 @@ abstract class JobBase extends Job implements Cacheable, Configurable, StoreAcce
 		return $this->title;
 	}
 
-	/**
-	 * Sets Store object
-	 *
-	 * @since 1.9
-	 *
-	 * @param Store $store
-	 */
-	public function setStore( Store $store ) {
-		$this->store = $store;
-		return $this;
-	}
-
-	/**
-	 * Returns Store object
-	 *
-	 * @since 1.9
-	 *
-	 * @return Store
-	 */
-	public function getStore() {
-
-		if ( $this->store === null ) {
-			$this->store = StoreFactory::getStore();
-		}
-
-		return $this->store;
-	}
-
-	/**
-	 * Sets Settings object
-	 *
-	 * @since 1.9
-	 *
-	 * @param Store $store
-	 */
-	public function setSettings( Settings $settings ) {
-		$this->settings = $settings;
-		return $this;
-	}
-
-	/**
-	 * Returns Settings object
-	 *
-	 * @since 1.9
-	 *
-	 * @return Settings
-	 */
-	public function getSettings() {
-
-		if ( $this->settings === null ) {
-			$this->settings = Settings::newFromGlobals();
-		}
-
-		return $this->settings;
-	}
-
-	/**
-	 * Returns CacheHandler object
-	 *
-	 * @since 1.9
-	 *
-	 * @return CacheHandler
-	 */
-	public function getCache() {
-
-		if ( $this->cache === null ) {
-			$this->cache = CacheHandler::newFromId( $this->getSettings()->get( 'smwgCacheType' ) );
-		}
-
-		return $this->cache;
-	}
 }
