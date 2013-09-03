@@ -2,7 +2,7 @@
 
 namespace SMW\Store;
 
-use SMW\ResultCacheMapper;
+use SMW\CacheableResultMapper;
 use SMW\DIProperty;
 use SMW\Settings;
 
@@ -67,22 +67,22 @@ abstract class CacheableObjectCollector implements ObjectCollector {
 	 */
 	public function getResults() {
 
-		$resultCache = new ResultCacheMapper( $this->cacheSetup()->set( 'prefix', 'collector' ) );
+		$cacheableResult = new CacheableResultMapper( $this->cacheSetup()->set( 'prefix', 'collector' ) );
 
-		$results = $resultCache->fetchFromCache();
+		$results = $cacheableResult->fetchFromCache();
 
 		if ( $results ) {
 
 			$this->isCached  = true;
 			$this->results   = $results;
-			$this->cacheDate = $resultCache->getCacheDate();
+			$this->cacheDate = $cacheableResult->getCacheDate();
 			wfDebug( get_called_class() . ' served from cache' . "\n" );
 
 		} else {
 
 			$this->results  = $this->doCollect();
 			$this->isCached = false;
-			$resultCache->recache( $this->results );
+			$cacheableResult->recache( $this->results );
 		}
 
 		return $this->results;
@@ -147,7 +147,7 @@ abstract class CacheableObjectCollector implements ObjectCollector {
 
 	/**
 	 * Sub-class is returning an ObjectDictionary that specifies details needed
-	 * for the ResultCacheMapper instantiation
+	 * for the CachedResultMapper instantiation
 	 *
 	 * @par Example:
 	 * @code

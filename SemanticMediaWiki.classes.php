@@ -101,7 +101,7 @@ return array(
 
 	// Cache
 	'SMW\CacheHandler'                => 'includes/cache/CacheHandler.php',
-	'SMW\ResultCacheMapper'           => 'includes/cache/ResultCacheMapper.php',
+	'SMW\CacheableResultMapper'       => 'includes/cache/CacheableResultMapper.php',
 	'SMW\CacheIdGenerator'            => 'includes/cache/CacheIdGenerator.php',
 
 	// Hooks
