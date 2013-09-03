@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\ResultCacheMapper;
+use SMW\CacheableResultMapper;
 use SMW\SimpleDictionary;
 
 /**
- * Tests for the ResultCacheMapper class
+ * Tests for the CacheableResultMapper class
  *
  * @file
  *
@@ -17,14 +17,14 @@ use SMW\SimpleDictionary;
  */
 
 /**
- * @covers \SMW\ResultCacheMapper
+ * @covers \SMW\CacheableResultMapper
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
+class CacheableResultMapperTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -32,17 +32,17 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\ResultCacheMapper';
+		return '\SMW\CacheableResultMapper';
 	}
 
 	/**
-	 * Helper method that returns a ResultCacheMapper object
+	 * Helper method that returns a CacheableResultMapper object
 	 *
 	 * @since 1.9
 	 *
 	 * @param $result
 	 *
-	 * @return ResultCacheMapper
+	 * @return CacheableResultMapper
 	 */
 	private function newInstance( $cacheId = 'Foo', $cacheEnabled = true, $cacheExpiry = 10 ) {
 
@@ -54,11 +54,11 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 			'expiry'  => $cacheExpiry
 		);
 
-		return new ResultCacheMapper( new SimpleDictionary( $setup ) );
+		return new CacheableResultMapper( new SimpleDictionary( $setup ) );
 	}
 
 	/**
-	 * @test ResultCacheMapper::__construct
+	 * @test CacheableResultMapper::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -67,8 +67,8 @@ class ResultCacheMapperTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test ResultCacheMapper::recache
-	 * @test ResultCacheMapper::fetchFromCache
+	 * @test CacheableResultMapper::recache
+	 * @test CacheableResultMapper::fetchFromCache
 	 *
 	 * @since 1.9
 	 */

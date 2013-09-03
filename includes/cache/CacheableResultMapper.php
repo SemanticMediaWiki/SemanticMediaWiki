@@ -28,7 +28,7 @@ use MWTimestamp;
  *   'expiry'  => ...
  *  ) );
  *
- *  $resultCache = new ResultCacheMapper( $dictionary );
+ *  $resultCache = new CacheableResultMapper( $dictionary );
  *  $resultCache->recache( array() );
  *  $resultCache->fetchFromCache();
  *  $resultCache->getCacheDate();
@@ -36,7 +36,7 @@ use MWTimestamp;
  *
  * @ingroup SMW
  */
-class ResultCacheMapper implements Cacheable {
+class CacheableResultMapper implements Cacheable {
 
 	/** @var ObjectDictionary */
 	protected $cacheSetup;
