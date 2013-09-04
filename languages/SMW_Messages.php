@@ -727,7 +727,8 @@ Parameters:
 	'smw-statistics-query-inline' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
 
 Parameters:
-* $1 - number of queries',
+* $1 - number of queries
+{{Identical|Query}}',
 	'smw-statistics-query-size' => 'Is a label that is displayed on the [[Special:Statistics|Statistics]] page',
 	'smw-statistics-concept-count-legacy' => 'Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.
 
