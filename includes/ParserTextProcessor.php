@@ -282,7 +282,7 @@ class ParserTextProcessor {
 			);
 
 			if ( $this->isEnabled && $this->isAnnotation ) {
-				$this->parserData->addPropertyValue( $dataValue );
+				$this->parserData->addDataValue( $dataValue );
 			}
 		}
 

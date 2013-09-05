@@ -49,7 +49,7 @@ class ParserDataTest extends ParserTestCase {
 	 *
 	 * @return ParserData
 	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
+	private function newInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
 		return new ParserData(
 			$title,
 			$parserOutput,
@@ -63,7 +63,7 @@ class ParserDataTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance(
+		$instance = $this->newInstance(
 			$this->newTitle(),
 			$this->newParserOutput()
 		);
@@ -84,7 +84,7 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserData::addPropertyValue
+	 * @test ParserData::addDataValue
 	 * @dataProvider getPropertyValueDataProvider
 	 *
 	 * @since 1.9
@@ -94,14 +94,14 @@ class ParserDataTest extends ParserTestCase {
 	 * @param $errorCount
 	 * @param $propertyCount
 	 */
-	public function testAddPropertyValue( $propertyName, $value, $errorCount, $propertyCount ) {
-		$instance = $this->getInstance(
+	public function testAddDataValue( $propertyName, $value, $errorCount, $propertyCount ) {
+
+		$instance = $this->newInstance(
 			$this->getTitle(),
 			$this->getParserOutput()
 		);
 
-		// Values
-		$instance->addPropertyValue(
+		$instance->addDataValue(
 			DataValueFactory::newPropertyValue(
 				$propertyName,
 				$value
@@ -131,7 +131,7 @@ class ParserDataTest extends ParserTestCase {
 		$title        = $this->newTitle();
 		$parserOutput = $this->newParserOutput();
 
-		$instance = $this->getInstance( $title, $parserOutput );
+		$instance = $this->newInstance( $title, $parserOutput );
 		$observer = new MockUpdateObserver();
 
 		$instance->setObservableDispatcher( new ObservableSubjectDispatcher( $observer ) );
@@ -142,6 +142,5 @@ class ParserDataTest extends ParserTestCase {
 		$this->assertEquals( $notifier, $observer->getNotifier() );
 
 	}
-
 
 }

@@ -54,7 +54,7 @@ class Subobject {
 	 * @par Example:
 	 * @code
 	 *  $subobject = Subobject::newFromId( 'Foo', 'Bar' );
-	 *  $subobject->addPropertyValue( $dataValue )
+	 *  $subobject->addDataValue( $dataValue )
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -183,7 +183,7 @@ class Subobject {
 	 * @code
 	 *  $dataValue = DataValueFactory::newPropertyValue( $userProperty, $userValue )
 	 *
-	 *  Subobject::newFromId( 'Foo', 'Bar' )->addPropertyValue( $dataValue )
+	 *  Subobject::newFromId( 'Foo', 'Bar' )->addDataValue( $dataValue )
 	 * @endcode
 	 *
 	 * @since 1.9
@@ -192,7 +192,7 @@ class Subobject {
 	 *
 	 * @throws InvalidSemanticDataException
 	 */
-	public function addPropertyValue( SMWDataValue $dataValue ) {
+	public function addDataValue( SMWDataValue $dataValue ) {
 
 		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
 			throw new InvalidSemanticDataException( 'The semantic data container is not initialized' );

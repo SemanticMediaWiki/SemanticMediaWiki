@@ -97,14 +97,6 @@ interface IParserData {
  * Class that provides access to the semantic data object generated from either
  * the ParserOuput or subject provided (no static binding as in SMWParseData)
  *
- * The responsibility of this class is to handle mainly the parserOutput object,
- * and one could argue that addPropertyValueString() has to be removed, while
- * addCategories(), addDefaultSort(), addSpecialProperties() are manipulating
- * the semantic data container invoked from the parserOutput object.
- *
- * UpdateStore(), getDiffPropertyTypes(), getDiffConversionFactors() are
- * responsible to update the store with the processed semantic data container.
- *
  * @ingroup SMW
  * @ingroup ParserHooks
  *
@@ -327,16 +319,16 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 	 * @par Example:
 	 * @code
 	 *  $dataValue = DataValueFactory::newPropertyValue( $userProperty, $userValue )
-	 *  $parserData->addPropertyValue( $dataValue )
+	 *  $parserData->addDataValue( $dataValue )
 	 * @endcode
 	 *
 	 * @since 1.9
 	 *
 	 * @param SMWDataValue $dataValue
 	 */
-	public function addPropertyValue( SMWDataValue $dataValue ) {
+	public function addDataValue( SMWDataValue $dataValue ) {
 
-		// FIXME Remove the addPropertyValue method from
+		// FIXME Remove the addDataValue method from
 		// the ParserData object
 		$this->semanticData->addDataValue( $dataValue );
 		$this->addError( $this->semanticData->getErrors() );

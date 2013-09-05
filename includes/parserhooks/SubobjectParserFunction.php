@@ -122,7 +122,7 @@ class SubobjectParserFunction {
 		// Add property / values to the subobject instance
 		foreach ( $parameters->toArray() as $property => $values ){
 			foreach ( $values as $value ) {
-				$this->subobject->addPropertyValue(
+				$this->subobject->addDataValue(
 					DataValueFactory::newPropertyValue( $property, $value )
 				);
 			}

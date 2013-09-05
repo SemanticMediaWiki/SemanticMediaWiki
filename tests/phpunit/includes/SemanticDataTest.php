@@ -42,7 +42,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return SemanticData
 	 */
-	private function getInstance() {
+	private function newInstance() {
 		return new SemanticData( $this->newSubject() );
 	}
 
@@ -52,12 +52,12 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
-		$this->assertInstanceOf( 'SMWSemanticData', $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+		$this->assertInstanceOf( 'SMWSemanticData', $this->newInstance() );
 	}
 
 	/**
-	 * @test SemanticData::addPropertyValue
+	 * @test SemanticData::addDataValue
 	 * @dataProvider dataValueDataProvider
 	 *
 	 * @since 1.9
@@ -67,7 +67,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testAddDataValue( $dataValues, $expected ) {
 
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 
 		foreach ( $dataValues as $dataValue ) {
 			$instance->addDataValue( $dataValue );
