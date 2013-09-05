@@ -453,11 +453,15 @@ $messages['qqq'] = array(
 	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 	{{Identical|And}}',
-	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values. Parameters:
-* $1 holds the name of the page',
+	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values.
+
+Parameters:
+* $1 - the page name',
 	'smw_isspecprop' => 'Used on [[Special:Properties]] to identify a special (build in) property.',
-	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query). Parameters:
-* $1 holds the name of the concept',
+	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query).
+
+Parameters:
+* $1 - the name of the concept',
 	'smw_no_concept_namespace' => 'This is an error/warning message that appears when a concept is added to a page in namespaces other than Concept:.',
 	'smw_multiple_concepts' => 'This is an error/warning message that appears when more than concept is added to a page in namespaces Concept:.',
 	'smw_concept_cache_miss' => 'This is an information message. Parameters:
@@ -633,8 +637,10 @@ See also:
 
 Parameters:
 * $1 - (Optional) the name of the respective subproperty',
-	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property". Parameters:
-* $1 holds the number of subproperty pages displayed in the current view.',
+	'smw_subpropertyarticlecount' => 'This is the introductory message for subproperties below the header for subproperties on pages in namespace "Property".
+
+Parameters:
+* $1 - the number of subproperty pages displayed in the current view',
 	'specialpages-group-smw_group' => '{{optional}}
 {{doc-special-group|that=are related to (or depend on) Semantic MediaWiki|like=[[Special:OfflineImportLexicon]], [[Special:Ask]], [[Special:QueryCreator]], [[Special:Browse]], [[Special:PageProperty]], [[Special:SearchByProperty]], [[Special:SMWAdmin]], [[Special:ExportRDF]], [[Special:ObjectEditor]], [[Special:WidgetAssembler]], [[Special:WidgetClone]], [[Special:BrowseWiki]], [[Special:SolrSearch]]}}
 {{Identical|Semantic MediaWiki}}',
@@ -798,12 +804,20 @@ Parameters:
 * $1 - a link which points to Help: page on semantic-mediawiki.org',
 	'searchbyproperty' => '{{doc-special|SearchByProperty}}',
 	'smw_sbv_docu' => 'This is the information message shown on [[Special:SearchByProperty]] in case no property and no property value were not yet provided to search for.',
-	'smw_sbv_novalue' => 'This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided. Parameters:
-* $1 holds the name of the property.',
-	'smw_sbv_displayresult' => 'This is an information message shown on [[Special:SearchByProperty]] in case more than 20 results were found. Parameters:
-* $1 holds the name of the property and $2 holds the value of the property one searched for.',
-	'smw_sbv_displayresultfuzzy' => 'This is an information message shown on [[Special:SearchByProperty]] in case less than 20 results were found. Parameters:
-* $1 holds the name of the property and $2 holds the value of the property one searched for.',
+	'smw_sbv_novalue' => 'This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided.
+
+Parameters:
+* $1 - the name of the property',
+	'smw_sbv_displayresult' => 'This is an information message shown on [[Special:SearchByProperty]] in case more than 20 results were found.
+
+Parameters:
+* $1 - the name of the property
+* $2 - the value of the property one searched for',
+	'smw_sbv_displayresultfuzzy' => 'This is an information message shown on [[Special:SearchByProperty]] in case less than 20 results were found.
+
+Parameters:
+* $1 - the name of the property
+* $2 - the value of the property one searched for',
 	'smw_sbv_property' => 'This is the text describing a textbox on [[Special:SearchByProperty]] where the name of a property is expected to be typed in.
 
 {{Identical|Property}}',
@@ -857,25 +871,30 @@ See also:
 {{Identical|No result}}',
 	'smwadmin' => '{{doc-special|SMWAdmin}}',
 	'smw_smwadmin_setupsuccess' => "This is the confirmation message at the bottom of the script's report concerning setup or update of the SMW database tables (process triggered from [[Special:SMWAdmin]]).",
-	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]]. Parameters:
-* $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_return' => 'This is the text of the link at the bottom of the report concerning setup or update of the SMW database tables pointing to [[Special:SMWAdmin]].
 
+Parameters:
+* $1 - the link back to Special:SMWAdmin
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started. Parameters:
-* $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_updatestarted' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been started.
 
+Parameters:
+* $1 - the link back to Special:SMWAdmin
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started. Parameters:
-* $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_updatenotstarted' => 'This is the message at the top of [[Special:SMWAdmin]] informing that a new update process will not be started.
 
+Parameters:
+* $1 - the link back to Special:SMWAdmin
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped. Parameters:
-* $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_updatestopped' => 'This is the message at the top of [[Special:SMWAdmin]] confirming that the update process has been stopped.
 
+Parameters:
+* $1 - the link back to Special:SMWAdmin
 {{Identical|Return to $1}}',
-	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process. Parameters:
-* $1 holds the link back to Special:SMWAdmin.
+	'smw_smwadmin_updatenotstopped' => 'This is the message at the top of [[Special:SMWAdmin]] asking for reassurance concerning the termination of the current update process.
 
+Parameters:
+* $1 - the link back to Special:SMWAdmin
 {{Identical|Return to $1}}',
 	'smw_smwadmin_docu' => 'This is the introductory message at the top of [[Special:SMWAdmin]].',
 	'smw_smwadmin_db' => 'This is a section header on [[Special:SMWAdmin]].',
