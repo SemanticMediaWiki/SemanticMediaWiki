@@ -327,6 +327,16 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$instance->setContext( $context );
 		$instance->getResults( null );
 
+		$reflector = $this->newReflector();
+		$selectOptions = $reflector->getProperty( 'selectOptions' );
+		$selectOptions->setAccessible( true );
+		$selectOptions->setValue( $instance, array(
+			'offset' => 1,
+			'limit'  => 2,
+			'end'    => 5,
+			'count'  => 4
+		) );
+
 		$matcher = array(
 			'tag' => 'p',
 			'attributes' => array( 'class' => 'smw-sp-properties-docu' ),

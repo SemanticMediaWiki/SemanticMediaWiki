@@ -41,7 +41,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return QueryPage
 	 */
-	private function getInstance( $search = '' ) {
+	private function newInstance( $search = '' ) {
 
 		$queryPage = $this->getMockBuilder( $this->getClass() )
 			->setMethods( array( 'getResults', 'formatResult' ) )
@@ -61,7 +61,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
@@ -76,8 +76,8 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testLinkParameters( $test, $expected ) {
 
-		$search = $this->getRandomString();
-		$result = $this->getInstance( $test )->linkParameters();
+		$search = $this->newRandomString();
+		$result = $this->newInstance( $test )->linkParameters();
 
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( $expected , $result );
@@ -91,8 +91,20 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testGetSearchForm() {
 
-		$search = $this->getRandomString();
-		$result = $this->getInstance()->getSearchForm( $search );
+		$search   = $this->newRandomString();
+		$instance = $this->newInstance();
+
+		$reflector = $this->newReflector();
+		$selectOptions = $reflector->getProperty( 'selectOptions' );
+		$selectOptions->setAccessible( true );
+		$selectOptions->setValue( $instance, array(
+			'offset' => 1,
+			'limit'  => 2,
+			'end'    => 5,
+			'count'  => 4
+		) );
+
+		$result = $instance->getSearchForm( $search );
 
 		$matcher = array(
 			'tag' => 'form',
@@ -112,7 +124,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 * @return array
 	 */
 	public function linkParametersDataProvider() {
-		$random = $this->getRandomString();
+		$random = $this->newRandomString();
 
 		return array(
 			array( ''      , array() ),
