@@ -105,7 +105,7 @@ class BasePropertyAnnotator extends ObservableSubject {
 	 * @return BasePropertyAnnotator
 	 */
 	public function addDefaultSort( $defaultSort ) {
-		$sortkey = $defaultSort ? $defaultSort : str_replace( '_', ' ', $this->semanticData->getSubject()->getTitle()->getDBkey() );
+		$sortkey = $defaultSort ? $defaultSort : str_replace( '_', ' ', $this->semanticData->getSubject()->getDBkey() );
 		$this->semanticData->addPropertyObjectValue(
 			new DIProperty( DIProperty::TYPE_SORTKEY ),
 			new SMWDIBlob( $sortkey )

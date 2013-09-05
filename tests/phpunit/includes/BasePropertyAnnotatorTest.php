@@ -51,7 +51,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	 *
 	 * @return BasePropertyAnnotator
 	 */
-	private function getInstance( SemanticData $semanticData = null, $settings = array() ) {
+	private function newInstance( SemanticData $semanticData = null, $settings = array() ) {
 
 		if ( $semanticData === null ) {
 			$semanticData = $this->newMockObject()->getMockSemanticData();
@@ -66,7 +66,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -86,10 +86,14 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 			$this->newSubject( $this->newTitle( $setup['namespace'] ) )
 		);
 
-		$instance = $this->getInstance( $semanticData, $setup['settings'] );
+		$instance = $this->newInstance( $semanticData, $setup['settings'] );
 		$instance->addCategories( $setup['categories'] );
 
-		$this->assertSemanticData( $semanticData, $expected );
+		$this->assertSemanticData(
+			$semanticData,
+			$expected,
+			'asserts that addCategories() adds expected triples'
+		);
 
 	}
 
@@ -115,16 +119,19 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		) )->getMockObsever();
 
 		// Create instance and attach mock Observer
-		$instance = $this->getInstance( $semanticData, $setup['settings'] );
+		$instance = $this->newInstance( $semanticData, $setup['settings'] );
 		$instance->attach( $mockObserver );
 		$instance->addCategories( $setup['categories'] );
 
-		$this->assertSemanticData( $semanticData, $expected );
+		$this->assertSemanticData(
+			$semanticData,
+			$expected,
+			'asserts that addCategories() adds expected triples'
+		);
 
-		// Just verify that the Publisher was able to reach the Observer
 		$this->assertTrue(
 			$this->observerStatus,
-			'Failed asserting that the invoked Observer received a notification from the Publisher (Subject)'
+			'asserts that the invoked Observer received a notification from the Publisher (Subject)'
 		);
 
 	}
@@ -149,13 +156,18 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		$parserData   = $this->getParserData( $title, $parserOutput );
 
 		// Create instance and attach mock Observer
-		$instance = $this->getInstance( $parserData->getData(), $setup['settings'] );
+		$instance = $this->newInstance( $parserData->getData(), $setup['settings'] );
 		$instance->attach( $parserData );
 		$instance->addCategories( $setup['categories'] );
 
 		// Re-read data from the $parserOutput object
 		$newParserData = $this->getParserData( $title, $parserOutput );
-		$this->assertSemanticData( $newParserData->getData(), $expected );
+
+		$this->assertSemanticData(
+			$newParserData->getData(),
+			$expected,
+			'asserts that addCategories() adds expected triples'
+		);
 
 	}
 
@@ -180,17 +192,21 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		) )->getMockObsever();
 
 		// Create instance and attach mock Observer
-		$instance = $this->getInstance( $semanticData );
+		$instance = $this->newInstance( $semanticData );
 		$instance->attach( $mockObserver );
 		$instance->addDefaultSort( $setup['sort'] );
 
-		$this->assertSemanticData( $semanticData, $expected );
+		$this->assertSemanticData(
+			$semanticData,
+			$expected,
+			'asserts that addDefaultSort() adds expected triples'
+		);
 
-		// Just verify that the Publisher was able to reach the Observer
 		$this->assertTrue(
 			$this->observerStatus,
-			'Failed asserting that the invoked Observer received a notification from the Publisher (Subject)'
+			'asserts that the invoked Observer received a notification from the Publisher (Subject)'
 		);
+
 	}
 
 	/**
@@ -219,21 +235,29 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		) )->getMockObsever();
 
 		// Create instance and attach mock Observer
-		$instance = $this->getInstance( $semanticData, $setup['settings'] );
+		$instance = $this->newInstance( $semanticData, $setup['settings'] );
 		$instance->attach( $mockObserver );
 		$instance->addSpecialProperties( $wikiPage, $revision, $user );
 
-		$this->assertSemanticData( $semanticData, $expected );
+		$this->assertSemanticData(
+			$semanticData,
+			$expected,
+			'asserts that addSpecialProperties() adds expected triples'
+		);
 
-		// Just verify that the Publisher was able to reach the Observer
 		$this->assertTrue(
 			$this->observerStatus,
-			'Failed asserting that the invoked Observer received a notification from the Publisher (Subject)'
+			'asserts that the invoked Observer received a notification from the Publisher (Subject)'
 		);
 
 		// Check against pre-existing registered special properties
 		$instance->addSpecialProperties( $wikiPage, $revision, $user );
-		$this->assertSemanticData( $semanticData, $expected );
+
+		$this->assertSemanticData(
+			$semanticData,
+			$expected,
+			'asserts that addSpecialProperties() adds expected triples'
+		);
 
 	}
 
