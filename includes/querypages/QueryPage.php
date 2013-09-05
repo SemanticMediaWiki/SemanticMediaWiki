@@ -36,6 +36,12 @@ abstract class QueryPage extends \QueryPage {
 	/** @var Linker */
 	protected $linker;
 
+	/** @var array */
+	protected $selectOptions = array();
+
+	/** @var array */
+	protected $useSerchForm = false;
+
 	/**
 	 * Implemented by subclasses to provide concrete functions.
 	 */
@@ -117,13 +123,35 @@ abstract class QueryPage extends \QueryPage {
 	 *
 	 * @return string
 	 */
-	public function getSearchForm( $property = '' ) {
-		return Xml::tags( 'form', array( 'method' => 'get', 'action' => htmlspecialchars( $GLOBALS['wgScript'] ) ),
-			Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
+	public function getSearchForm( $property = '', $cacheDate = '' ) {
+
+		$this->useSerchForm = true;
+
+		// No need to verify $this->selectOptions because its values are set
+		// during doQuery() which is processed before this form is generated
+		$resultCount = wfShowingResults( $this->selectOptions['offset'], $this->selectOptions['count'] );
+
+		$selection = $this->getLanguage()->viewPrevNext(
+			$this->getContext()->getTitle(),
+			$this->selectOptions['offset'],
+			$this->selectOptions['limit'],
+			$this->linkParameters(),
+			$this->selectOptions['end']
+		);
+
+		return Xml::tags( 'form', array(
+			'method' => 'get',
+			'action' => htmlspecialchars( $GLOBALS['wgScript'] )
+		), Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
 			Xml::fieldset( $this->msg( 'properties' )->text(),
+				Xml::tags( 'p', array(), $resultCount ) .
+				Xml::tags( 'p', array(), $selection ) .
+				Xml::tags( 'p', array(), $cacheDate ) .
+				Xml::tags( 'hr', array( 'style' => 'margin-bottom:10px;' ), '' ) .
 				Xml::inputLabel( $this->msg( 'smw-sp-property-searchform' )->text(), 'property', 'property', 20, $property ) . ' ' .
-				$this->getMessageFormatter()->setType( 'note' )->addFromKey( 'smw-sp-property-searchform-inputinfo' )->getHtml() . ' ' .
-				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() ) ) );
+				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() )
+			)
+		);
 	}
 
 	/**
@@ -152,6 +180,16 @@ abstract class QueryPage extends \QueryPage {
 		$res = $this->getResults( $options );
 		$num = count( $res );
 
+		// often disable 'next' link when we reach the end
+		$atend = $num < $limit;
+
+		$this->selectOptions = array(
+			'offset' => $offset,
+			'limit'  => $limit,
+			'end'    => $atend,
+			'count'  => $num
+		);
+
 		$out->addHTML( $this->getPageHeader() );
 
 		// if list is empty, show it
@@ -160,20 +198,23 @@ abstract class QueryPage extends \QueryPage {
 			return;
 		}
 
-		$top = wfShowingResults( $offset, $num );
-		$out->addHTML( "<p>{$top}\n" );
+		// If unused properties and wanted properties are using the searchForm
+		// then the useSerchForm if-inclusion can be scrapped
+		if ( !$this->useSerchForm ) {
 
-		// often disable 'next' link when we reach the end
-		$atend = $num < $limit;
-		$sl = $this->getLanguage()->viewPrevNext(
-			$this->getTitleFor( $this->getName() ),
-			$offset,
-			$limit,
-			$this->linkParameters(),
-			$atend
-		);
+			$top = wfShowingResults( $offset, $num );
 
-		$out->addHTML( "<br />{$sl}</p>\n" );
+			$sl = $this->getLanguage()->viewPrevNext(
+				$this->getTitleFor( $this->getName() ),
+				$this->selectOptions['offset'],
+				$this->selectOptions['limit'],
+				$this->linkParameters(),
+				$this->selectOptions['end']
+			);
+
+			$out->addHTML( "<p>{$top}\n" );
+			$out->addHTML( "<br />{$sl}</p>\n" );
+		}
 
 		if ( $num > 0 ) {
 			$s = array();
@@ -193,7 +234,9 @@ abstract class QueryPage extends \QueryPage {
 			$out->addHTML( $str );
 		}
 
-		$out->addHTML( "<p>{$sl}</p>\n" );
+		if ( !$this->useSerchForm ) {
+			$out->addHTML( "<p>{$sl}</p>\n" );
+		}
 
 		return $num;
 	}

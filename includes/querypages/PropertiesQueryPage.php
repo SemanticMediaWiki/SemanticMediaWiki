@@ -66,12 +66,12 @@ class PropertiesQueryPage extends QueryPage {
 			'p',
 			array( 'class' => 'smw-sp-properties-docu' ),
 			$this->msg( 'smw-sp-properties-docu' )->parse()
-		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ) ) .
+		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ), $this->getCacheInfo() ) .
 		Html::element(
 			'h2',
 			array(),
 			$this->msg( 'smw-sp-properties-header-label' )->text()
-		) . $this->getCacheInfo();
+		);
 	}
 
 	/**
