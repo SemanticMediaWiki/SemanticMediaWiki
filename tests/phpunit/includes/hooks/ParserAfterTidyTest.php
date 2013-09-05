@@ -36,6 +36,31 @@ class ParserAfterTidyTest extends ParserTestCase {
 	}
 
 	/**
+	 * Helper method that returns a CacheHandler object
+	 *
+	 * @since 1.9
+	 *
+	 * @return CacheHandler
+	 */
+	private function newMockCacheHandler( $id, $status ) {
+
+		$cacheHandler = $this->getMockBuilder( 'SMW\CacheHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cacheHandler->expects( $this->any() )
+			->method( 'setKey' )
+			->with( $this->equalTo( \SMW\ArticlePurge::newIdGenerator( $id ) ) );
+
+		$cacheHandler->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->returnValue( $status ) );
+
+		return $cacheHandler;
+
+	}
+
+	/**
 	 * Helper method that returns a ParserAfterTidy object
 	 *
 	 * @since 1.9
@@ -84,14 +109,8 @@ class ParserAfterTidyTest extends ParserTestCase {
 		) );
 
 		$updateObserver = new MockUpdateObserver();
-		$cacheHandler   = $instance->getDependencyBuilder()->newObject( 'CacheHandler' );
 
-		// Simulates a previous state change did cause a cache entry
-		if ( $setup['cache'] ) {
-			$cacheHandler->setKey(
-				\SMW\ArticlePurge::newIdGenerator( $setup['title']->getArticleID() )
-			)->set( __METHOD__ );
-		}
+		$cacheHandler = $this->newMockCacheHandler( $setup['title']->getArticleID(), $setup['cache']  );
 
 		$container = $instance->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Settings', $settings );

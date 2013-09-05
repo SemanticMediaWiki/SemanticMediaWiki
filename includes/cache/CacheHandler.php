@@ -21,7 +21,7 @@ use BagOStuff;
  *
  * @ingroup Handler
  */
-final class CacheHandler {
+class CacheHandler {
 
 	/** @var BagOStuff */
 	protected $cache = null;
