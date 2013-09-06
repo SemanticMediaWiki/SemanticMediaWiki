@@ -67,7 +67,7 @@ class AskParserFunctionTest extends ParserTestCase {
 		}
 
 		return new AskParserFunction(
-			$this->getParserData( $title, $parserOutput ),
+			$this->newParserData( $title, $parserOutput ),
 			new QueryData( $title ),
 			new MessageFormatter( $title->getPageLanguage() ),
 			$settings
@@ -172,7 +172,7 @@ class AskParserFunctionTest extends ParserTestCase {
 		$instance->parse( $params );
 
 		// Get semantic data from the ParserOutput
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );

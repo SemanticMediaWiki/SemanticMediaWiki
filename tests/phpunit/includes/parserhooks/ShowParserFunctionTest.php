@@ -8,7 +8,6 @@ use SMW\QueryData;
 
 use Title;
 use ParserOutput;
-use ReflectionClass;
 
 /**
  * Tests for the ShowParserFunction class
@@ -63,7 +62,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 		$settings = $this->newSettings();
 
 		return new ShowParserFunction(
-			$this->getParserData( $title, $parserOutput ),
+			$this->newParserData( $title, $parserOutput ),
 			new QueryData( $title ),
 			new MessageFormatter( $title->getPageLanguage() ),
 			$settings
@@ -116,8 +115,8 @@ class ShowParserFunctionTest extends ParserTestCase {
 		$instance = $this->newInstance( $title, $this->getParserOutput() );
 
 		// Make protected method accessible
-		$reflection = new ReflectionClass( $this->getClass() );
-		$method = $reflection->getMethod( 'disabled' );
+		$reflector = $this->newReflector();
+		$method = $reflector->getMethod( 'disabled' );
 		$method->setAccessible( true );
 
 		$result = $method->invoke( $instance );
@@ -143,7 +142,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 		$instance->parse( $params );
 
 		// Get semantic data from the ParserOutput
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
@@ -162,7 +161,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
+		$parser = $this->newParser( $this->newTitle(), $this->getUser() );
 		$result = ShowParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

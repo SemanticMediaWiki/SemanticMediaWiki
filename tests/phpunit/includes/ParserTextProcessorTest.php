@@ -226,7 +226,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 */
 	private function getInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
 		return new ParserTextProcessor(
-			$this->getParserData( $title, $parserOutput ),
+			$this->newParserData( $title, $parserOutput ),
 			$this->newSettings( $settings )
 		);
 	}
@@ -272,7 +272,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 		$this->assertEquals( $expected, $result );
 
 		// Check values against ParserData/ParserOutput object
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
 			$this->assertEquals( $expected, $parserData->getOutput()->getExtensionData( 'smwmagicwords' ) );
@@ -305,7 +305,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 		$this->assertContains( $expected['resultText'], $text );
 
 		// Re-read data from stored parserOutput
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
@@ -332,7 +332,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 			'smwgInlineErrors'  => true,
 		) );
 
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		$instance = new ParserTextProcessor( $parserData, $settings );
 		$instance->parse( $text );

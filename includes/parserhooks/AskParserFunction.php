@@ -27,7 +27,7 @@ use SMWQueryProcessor;
  */
 class AskParserFunction {
 
-	/** @var IParserData */
+	/** @var ParserData */
 	protected $parserData;
 
 	/** @var QueryData */
@@ -46,7 +46,7 @@ class AskParserFunction {
 	 * @param QueryData $queryData
 	 * @param MessageFormatter $msgFormatter
 	 */
-	public function __construct( IParserData $parserData, QueryData $queryData, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, QueryData $queryData, MessageFormatter $msgFormatter ) {
 		$this->parserData = $parserData;
 		$this->queryData = $queryData;
 		$this->msgFormatter = $msgFormatter;

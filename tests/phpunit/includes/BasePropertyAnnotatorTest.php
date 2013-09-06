@@ -153,7 +153,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		// Test "real" observer integration
 		$title        = $subject->getTitle();
 		$parserOutput = $this->newParserOutput();
-		$parserData   = $this->getParserData( $title, $parserOutput );
+		$parserData   = $this->newParserData( $title, $parserOutput );
 
 		// Create instance and attach mock Observer
 		$instance = $this->newInstance( $parserData->getData(), $setup['settings'] );
@@ -161,7 +161,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		$instance->addCategories( $setup['categories'] );
 
 		// Re-read data from the $parserOutput object
-		$newParserData = $this->getParserData( $title, $parserOutput );
+		$newParserData = $this->newParserData( $title, $parserOutput );
 
 		$this->assertSemanticData(
 			$newParserData->getData(),

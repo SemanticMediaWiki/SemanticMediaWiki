@@ -9,7 +9,6 @@ use SMW\Subobject;
 
 use Title;
 use ParserOutput;
-use ReflectionClass;
 
 /**
  * Tests for the RecurringEventsParserFunction class.
@@ -51,12 +50,21 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 *
 	 * @return RecurringEventsParserFunction
 	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
+	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = $this->newParserOutput();
+		}
+
 		return new RecurringEventsParserFunction(
-			$this->getParserData( $title, $parserOutput ),
+			$this->newParserData( $title, $parserOutput ),
 			new Subobject( $title ),
 			new MessageFormatter( $title->getPageLanguage() ),
-			$this->getSettings( array(
+			$this->newSettings( array(
 				'smwgDefaultNumRecurringEvents' => 100,
 				'smwgMaxNumRecurringEvents' => 100
 			) )
@@ -69,23 +77,12 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test RecurringEventsParserFunction::__construct (Test exception)
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructorException() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new $this->getInstance( $this->newTitle() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
 	 * @test RecurringEventsParserFunction::parse
-	 * @dataProvider getRecurringEventsDataProvider
+	 * @dataProvider recurringEventsDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -94,14 +91,14 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
+		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
 		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		$this->assertTrue( $result !== '' ? $expected['errors'] : !$expected['errors'] );
 
 		// Access protected property
-		$reflection = new ReflectionClass( $this->getClass() );
-		$events = $reflection->getProperty( 'events' );
+		$reflector = $this->newReflector();
+		$events = $reflector->getProperty( 'events' );
 		$events->setAccessible( true );
 
 		$this->assertEquals( $expected['parameters'], $events->getValue( $instance )->getParameters() );
@@ -114,7 +111,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
+		$parser = $this->newParser( $this->newTitle(), $this->getUser() );
 		$result = RecurringEventsParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}
@@ -127,7 +124,7 @@ class RecurringEventsParserFunctionTest extends ParserTestCase {
 	 *
 	 * @return array
 	 */
-	public function getRecurringEventsDataProvider() {
+	public function recurringEventsDataProvider() {
 		return array(
 			// #0
 			// {{#set_recurring_event:property=Has birthday

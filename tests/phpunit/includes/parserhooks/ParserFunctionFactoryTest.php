@@ -4,9 +4,6 @@ namespace SMW\Test;
 
 use SMW\ParserFunctionFactory;
 
-use WikiPage;
-use Parser;
-
 /**
  * Tests for the ParserFunctionFactory class
  *
@@ -47,8 +44,8 @@ class ParserFunctionFactoryTest extends ParserTestCase {
 	 *
 	 * @return ParserFunctionFactory
 	 */
-	private function getInstance() {
-		return ParserFunctionFactory::newFromParser( $this->getParser( $this->newTitle(), $this->getUser() ) );
+	private function newInstance() {
+		return ParserFunctionFactory::newFromParser( $this->newParser( $this->newTitle(), $this->getUser() ) );
 	}
 
 	/**
@@ -57,24 +54,30 @@ class ParserFunctionFactoryTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
-	}
-
-	/**
-	 * @test ParserFunctionFactory::getSubobjectParser
-	 *
-	 * @since 1.9
-	 */
-	public function testGetSubobjectParser() {
-		$this->assertInstanceOf( '\SMW\SubobjectParserFunction', $this->getInstance()->getSubobjectParser() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
 	 * @test ParserFunctionFactory::getRecurringEventsParser
+	 * @dataProvider parserFunctionDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testGetRecurringEventsParser() {
-		$this->assertInstanceOf( '\SMW\RecurringEventsParserFunction', $this->getInstance()->getRecurringEventsParser() );
+	public function testParserFunction( $instance, $method ) {
+		$this->assertInstanceOf( $instance, call_user_func_array( array( $this->newInstance(), $method ), array() ) );
 	}
+
+	/**
+	 * @return array
+	 */
+	public function parserFunctionDataProvider() {
+
+		$provider = array();
+
+		$provider[] = array( '\SMW\RecurringEventsParserFunction', 'getRecurringEventsParser' );
+		$provider[] = array( '\SMW\SubobjectParserFunction',       'getSubobjectParser' );
+
+		return $provider;
+	}
+
 }

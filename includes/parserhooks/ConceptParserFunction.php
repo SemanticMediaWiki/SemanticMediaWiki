@@ -30,7 +30,7 @@ use SMWQueryProcessor;
  */
 class ConceptParserFunction {
 
-	/** @var IParserData */
+	/** @var ParserData */
 	protected $parserData;
 
 	/** @var MessageFormatter */
@@ -39,10 +39,10 @@ class ConceptParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param IParserData $parserData
+	 * @param ParserData $parserData
 	 * @param MessageFormatter $msgFormatter
 	 */
-	public function __construct( IParserData $parserData, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, MessageFormatter $msgFormatter ) {
 		$this->parserData = $parserData;
 		$this->msgFormatter = $msgFormatter;
 	}

@@ -33,22 +33,13 @@ use Html;
  */
 class ParserTextProcessor {
 
-	/**
-	 * Represents a Settings object
-	 * @var Settings
-	 */
+	/** @var Settings */
 	protected $settings;
 
-	/**
-	 * Represents a IParserData object
-	 * @var IParserData
-	 */
+	/** @var ParserData */
 	protected $parserData;
 
-	/**
-	 * Represents $smwgNamespacesWithSemanticLinks status
-	 * @var boolean
-	 */
+	/** @var boolean */
 	protected $isEnabled;
 
 	/**
@@ -76,10 +67,10 @@ class ParserTextProcessor {
 	 *
 	 * @since 1.9
 	 *
-	 * @param IParserData $parserData
+	 * @param ParserData $parserData
 	 * @param Settings $settings
 	 */
-	public function __construct( IParserData $parserData, Settings $settings ) {
+	public function __construct( ParserData $parserData, Settings $settings ) {
 		$this->parserData = $parserData;
 		$this->settings = $settings;
 	}

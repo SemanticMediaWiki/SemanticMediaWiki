@@ -37,7 +37,6 @@ return array(
 	'SMW\DataValueFactory'      => 'includes/DataValueFactory.php',
 
 	'SMWParseData'              => 'includes/SMW_ParseData.php',
-	'SMW\IParserData'           => 'includes/ParserData.php',
 	'SMW\ParserData'            => 'includes/ParserData.php',
 
 	'SMW\PropertyChangeNotifier'    => 'includes/PropertyChangeNotifier.php',

@@ -55,7 +55,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 		}
 
 		return new ConceptParserFunction(
-			$this->getParserData( $title, $parserOutput ),
+			$this->newParserData( $title, $parserOutput ),
 			new MessageFormatter( $title->getPageLanguage() )
 		);
 	}
@@ -144,7 +144,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 		$instance->parse( $params );
 
 		// Re-read data from stored parserOutput
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf(

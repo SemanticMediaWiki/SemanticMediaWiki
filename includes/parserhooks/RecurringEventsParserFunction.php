@@ -33,13 +33,13 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param IParserData $parserData
+	 * @param ParserData $parserData
 	 * @param Subobject $subobject
 	 * @param MessageFormatter $msgFormatter
 	 * @param Settings $settings
 	 */
 	public function __construct(
-		IParserData $parserData,
+		ParserData $parserData,
 		Subobject $subobject,
 		MessageFormatter $msgFormatter,
 		Settings $settings

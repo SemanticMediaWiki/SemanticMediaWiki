@@ -24,7 +24,7 @@ use ParserOutput;
  */
 class ShowParserFunction {
 
-	/** @var IParserData */
+	/** @var ParserData */
 	protected $parserData;
 
 	/** @var QueryData */
@@ -36,11 +36,11 @@ class ShowParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param IParserData $parserData
+	 * @param ParserData $parserData
 	 * @param QueryData $queryData
 	 * @param MessageFormatter $messageList
 	 */
-	public function __construct( IParserData $parserData, QueryData $queryData, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, QueryData $queryData, MessageFormatter $msgFormatter ) {
 		$this->parserData = $parserData;
 		$this->queryData = $queryData;
 		$this->msgFormatter = $msgFormatter;

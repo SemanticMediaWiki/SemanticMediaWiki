@@ -52,9 +52,18 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
+	private function newInstance( Title $title= null, ParserOutput $parserOutput = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = $this->newParserOutput();
+		}
+
 		return new SubobjectParserFunction(
-			$this->getParserData( $title, $parserOutput ),
+			$this->newParserData( $title, $parserOutput ),
 			new Subobject( $title ),
 			new MessageFormatter( $title->getPageLanguage() )
 		);
@@ -66,18 +75,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test SubobjectParserFunction::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructorException() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new $this->getInstance( $this->newTitle() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -91,7 +89,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
+		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
 		$result   = $instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		$this->assertEquals( $result !== '' , $expected['errors'] );
@@ -109,7 +107,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	 */
 	public function testInstantiatedSubobject( array $params, array $expected ) {
 
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
+		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		$this->assertContains( $expected['identifier'], $instance->getSubobject()->getId() );
@@ -132,7 +130,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 		$title        = $this->newTitle();
 
 		// Initialize and parse
-		$instance = $this->getInstance( $title, $parserOutput );
+		$instance = $this->newInstance( $title, $parserOutput );
 		$instance->setObjectReference( $isEnabled );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
@@ -142,7 +140,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 		$this->assertEquals( $expected['identifier'], $isEnabled ? $id{0} : $id, $info['msg'] );
 
 		// Get data instance
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		// Add generated title text as property value due to the auto reference
 		// setting
@@ -171,11 +169,11 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 		$title        = $this->newTitle();
 
 		// Initialize and parse
-		$instance = $this->getInstance( $title, $parserOutput );
+		$instance = $this->newInstance( $title, $parserOutput );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		// Get semantic data from the ParserOutput
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
@@ -194,7 +192,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	 */
 	public function testStaticRender() {
 
-		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
+		$parser = $this->newParser( $this->newTitle(), $this->getUser() );
 		$result = SubobjectParserFunction::render( $parser );
 
 		$this->assertInternalType( 'string', $result );

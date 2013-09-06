@@ -119,9 +119,18 @@ class SetParserFunctionTest extends ParserTestCase {
 	 *
 	 * @return  SetParserFunction
 	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
+	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = $this->newParserOutput();
+		}
+
 		return new SetParserFunction(
-			$this->getParserData( $title, $parserOutput ),
+			$this->newParserData( $title, $parserOutput ),
 			new MessageFormatter( $title->getPageLanguage() )
 		);
 	}
@@ -132,18 +141,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test SetParserFunction::__construct (Test instance exception)
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructorException() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance =  $this->getInstance( $this->getTitle() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -156,7 +154,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @param array $expected
 	 */
 	public function testParse( array $params, array $expected ) {
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
+		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
 		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		$this->assertInternalType( 'string', $result );
@@ -177,11 +175,11 @@ class SetParserFunctionTest extends ParserTestCase {
 		$title        = $this->newTitle();
 
 		// Initialize and parse
-		$instance = $this->getInstance( $title, $parserOutput );
+		$instance = $this->newInstance( $title, $parserOutput );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		// Re-read data from stored parserOutput
-		$parserData = $this->getParserData( $title, $parserOutput );
+		$parserData = $this->newParserData( $title, $parserOutput );
 
 		// Check the returned instance
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
@@ -194,7 +192,7 @@ class SetParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
+		$parser = $this->newParser( $this->newTitle(), $this->getUser() );
 		$result = SetParserFunction::render( $parser );
 		$this->assertInternalType( 'string', $result );
 	}

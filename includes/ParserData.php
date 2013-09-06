@@ -2,161 +2,58 @@
 
 namespace SMW;
 
+use SMWDataValue;
+
 use Title;
-use WikiPage;
 use ParserOutput;
 use MWException;
-use Job;
-
-use SMWStore;
-use SMWDataValue;
-use SMWDIWikiPage;
-use SMWSemanticData;
-use SMWDIProperty;
-use SMWDIBlob;
-use SMWDIBoolean;
-use SMWDITime;
 
 /**
- * Interface handling semantic data storage to a ParserOutput instance
+ * Handling semantic data exchange with a ParserOutput object
  *
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup ParserHooks
  *
  * @author mwjames
+ * @author Markus Krötzsch
  */
-interface IParserData {
-
-	/**
-	 * The constructor requires a Title and ParserOutput object
-	 */
-
-	/**
-	 * Returns Title object
-	 *
-	 * @since 1.9
-	 *
-	 * @return Title
-	 */
-	public function getTitle();
-
-	/**
-	 * Returns ParserOutput object
-	 *
-	 * @since 1.9
-	 *
-	 * @return ParserOutput
-	 */
-	public function getOutput();
-
-	/**
-	 * Update ParserOoutput with processed semantic data
-	 *
-	 * @since 1.9
-	 */
-	public function updateOutput();
-
-	/**
-	 * Get semantic data
-	 *
-	 * @since 1.9
-	 *
-	 * @return SMWSemanticData
-	 */
-	public function getData();
-
-	/**
-	 * Clears all data for the given instance
-	 *
-	 * @since 1.9
-	 */
-	public function clearData();
-
-	/**
-	 * Updates the store with semantic data fetched from a ParserOutput object
-	 *
-	 * @since 1.9
-	 */
-	public function updateStore();
-
-	/**
-	 * Returns errors that occurred during processing
-	 *
-	 * @since 1.9
-	 *
-	 * @return string
-	 */
-	public function getErrors();
-
-}
 
 /**
  * Class that provides access to the semantic data object generated from either
  * the ParserOuput or subject provided (no static binding as in SMWParseData)
  *
  * @ingroup SMW
- * @ingroup ParserHooks
- *
- * @author Markus Krötzsch
- * @author mwjames
  */
-class ParserData extends Observer implements IParserData, DispatchableSubject {
+class ParserData extends Observer implements DispatchableSubject {
 
-	/**
-	 * Represents Title object
-	 * @var Title
-	 */
+	/** @var Title */
 	protected $title;
 
-	/**
-	 * Represents ParserOutput object
-	 * @var ParserOutput
-	 */
+	/** @var ParserOutput */
 	protected $parserOutput;
 
-	/**
-	 * Represents SMWSemanticData object
-	 * @var SMWSemanticData
-	 */
+	/** @var SemanticData */
 	protected $semanticData;
 
-	/**
-	 * Represents collected errors
-	 * @var array
-	 */
+	/** @var array */
 	protected $errors = array();
 
-	/**
-	 * Represents invoked GLOBALS
-	 * @var array
-	 */
-	protected $options;
-
-	/**
-	 * Represents invoked $smwgEnableUpdateJobs
-	 * @var $updateJobs
-	 */
+	/** @var $updateJobs */
 	protected $updateJobs = true;
 
 	/** @var ObservableDispatcher */
 	protected $dispatcher;
 
 	/**
-	 * Constructor
-	 *
 	 * @since 1.9
 	 *
-	 * @param \Title $title
-	 * @param \ParserOutput $parserOutput
-	 * @param array $options
+	 * @param Title $title
+	 * @param ParserOutput $parserOutput
 	 */
-	public function __construct( Title $title, ParserOutput $parserOutput, array $options = array() ) {
+	public function __construct( Title $title, ParserOutput $parserOutput ) {
 		$this->title = $title;
 		$this->parserOutput = $parserOutput;
-		$this->options = $options;
 		$this->setData();
 	}
 
@@ -165,7 +62,7 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 	 *
 	 * @since 1.9
 	 *
-	 * @return \Title
+	 * @return Title
 	 */
 	public function getTitle() {
 		return $this->title;
@@ -199,21 +96,21 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 	 *
 	 * @since 1.9
 	 *
-	 * @return \ParserOutput
+	 * @return ParserOutput
 	 */
 	public function getOutput() {
 		return $this->parserOutput;
 	}
 
 	/**
-	 * Returns SMWDIWikiPage object
+	 * Returns DIWikiPage object
 	 *
 	 * @since 1.9
 	 *
-	 * @return \SMWDIWikiPage
+	 * @return DIWikiPage
 	 */
 	public function getSubject() {
-		return SMWDIWikiPage::newFromTitle( $this->title );
+		return DIWikiPage::newFromTitle( $this->title );
 	}
 
 	/**
@@ -254,7 +151,7 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 	 *
 	 * @since 1.9
 	 *
-	 * @return \SMWSemanticData
+	 * @return \SemanticData
 	 */
 	public function getData() {
 		return $this->semanticData;
@@ -266,7 +163,7 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 	 * @since 1.9
 	 */
 	public function clearData() {
-		$this->semanticData = new SMWSemanticData( $this->getSubject() );
+		$this->semanticData = new SemanticData( $this->getSubject() );
 	}
 
 	/**
@@ -285,8 +182,8 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 		}
 
 		// Setup data container
-		if ( !( $this->semanticData instanceof SMWSemanticData ) ) {
-			$this->semanticData = new SMWSemanticData( $this->getSubject() );
+		if ( !( $this->semanticData instanceof SemanticData ) ) {
+			$this->semanticData = new SemanticData( $this->getSubject() );
 		}
 	}
 
@@ -301,7 +198,7 @@ class ParserData extends Observer implements IParserData, DispatchableSubject {
 	 */
 	public function updateOutput(){
 
-		if ( !( $this->semanticData instanceof SMWSemanticData ) ) {
+		if ( !( $this->semanticData instanceof SemanticData ) ) {
 			throw new MWException( 'The semantic data container is not available' );
 		}
 

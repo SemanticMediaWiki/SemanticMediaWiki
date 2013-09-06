@@ -49,12 +49,17 @@ class ParserDataTest extends ParserTestCase {
 	 *
 	 * @return ParserData
 	 */
-	private function newInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
-		return new ParserData(
-			$title,
-			$parserOutput,
-			$settings
-		);
+	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = $this->newParserOutput();
+		}
+
+		return new ParserData( $title, $parserOutput );
 	}
 
 	/**
@@ -63,11 +68,7 @@ class ParserDataTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->newInstance(
-			$this->newTitle(),
-			$this->newParserOutput()
-		);
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -96,10 +97,7 @@ class ParserDataTest extends ParserTestCase {
 	 */
 	public function testAddDataValue( $propertyName, $value, $errorCount, $propertyCount ) {
 
-		$instance = $this->newInstance(
-			$this->getTitle(),
-			$this->getParserOutput()
-		);
+		$instance = $this->newInstance();
 
 		$instance->addDataValue(
 			DataValueFactory::newPropertyValue(

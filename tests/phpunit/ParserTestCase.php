@@ -93,12 +93,11 @@ abstract class ParserTestCase extends SemanticMediaWikiTestCase {
 	 *
 	 * @param Title $title
 	 * @param ParserOutput $parserOutput
-	 * @param array $settings
 	 *
 	 * @return ParserData
 	 */
-	protected function getParserData( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
-		return new ParserData( $title, $parserOutput, $settings );
+	protected function newParserData( Title $title, ParserOutput $parserOutput ) {
+		return new ParserData( $title, $parserOutput );
 	}
 
 	/**
@@ -112,7 +111,7 @@ abstract class ParserTestCase extends SemanticMediaWikiTestCase {
 	 */
 	protected function getParserTextProcessor( Title $title, ParserOutput $parserOutput, Settings $settings ) {
 		return new ParserTextProcessor(
-			$this->getParserData( $title, $parserOutput ),
+			$this->newParserData( $title, $parserOutput ),
 			$settings
 		);
 	}

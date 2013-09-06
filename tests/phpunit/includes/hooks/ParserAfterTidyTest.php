@@ -171,7 +171,7 @@ class ParserAfterTidyTest extends ParserTestCase {
 		);
 
 		// Re-read data from the Parser
-		$parserData = $this->getParserData( $title, $parser->getOutput() );
+		$parserData = $this->newParserData( $title, $parser->getOutput() );
 		$this->assertSemanticData(
 			$parserData->getData(),
 			$expected,

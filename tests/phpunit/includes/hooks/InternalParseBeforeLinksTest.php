@@ -118,7 +118,7 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 		);
 
 		// Re-read data from the Parser
-		$parserData = $this->getParserData( $parser->getTitle(), $parser->getOutput() );
+		$parserData = $this->newParserData( $parser->getTitle(), $parser->getOutput() );
 		$this->assertSemanticData(
 			$parserData->getData(),
 			$expected,

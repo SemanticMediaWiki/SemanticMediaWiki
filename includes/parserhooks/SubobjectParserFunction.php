@@ -24,7 +24,7 @@ use Parser;
  */
 class SubobjectParserFunction {
 
-	/** @var IParserData */
+	/** @var ParserData */
 	protected $parserData;
 
 	/** @var Subobject */
@@ -39,11 +39,11 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param IParserData $parserData
+	 * @param ParserData $parserData
 	 * @param Subobject $subobject
 	 * @param MessageFormatter $msgFormatter
 	 */
-	public function __construct( IParserData $parserData, Subobject $subobject, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, Subobject $subobject, MessageFormatter $msgFormatter ) {
 		$this->parserData = $parserData;
 		$this->subobject = $subobject;
 		$this->msgFormatter = $msgFormatter;
