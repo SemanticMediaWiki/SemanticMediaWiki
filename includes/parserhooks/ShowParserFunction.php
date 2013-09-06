@@ -74,7 +74,7 @@ class ShowParserFunction {
 	 */
 	public function parse( array $rawParams ) {
 		$ask = new AskParserFunction( $this->parserData, $this->queryData, $this->msgFormatter );
-		return $ask->useShowMode()->parse( $rawParams );
+		return $ask->setShowMode( true )->parse( $rawParams );
 	}
 
 	/**

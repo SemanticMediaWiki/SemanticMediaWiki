@@ -92,8 +92,8 @@ class AskParserFunction {
 	 *
 	 * @return AskParserFunction
 	 */
-	public function useShowMode() {
-		$this->showMode = true;
+	public function setShowMode( $mode ) {
+		$this->showMode = $mode;
 		return $this;
 	}
 

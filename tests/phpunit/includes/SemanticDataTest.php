@@ -165,6 +165,17 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
+		// #6 Error (Known predefined property)
+		$provider[] = array(
+			array(
+				DataValueFactory::newPropertyValue( 'Modification date', 'Bar' ),
+			),
+			array(
+				'error'         => 1,
+				'propertyCount' => 0,
+			)
+		);
+
 		return $provider;
 	}
 

@@ -50,7 +50,15 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 *
 	 * @return ShowParserFunction
 	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
+	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = $this->newParserOutput();
+		}
 
 		$settings = $this->newSettings();
 
@@ -68,23 +76,12 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test ShowParserFunction::__construct (Test instance exception)
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructorException() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance =  $this->getInstance( $this->getTitle() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
 	 * @test ShowParserFunction::parse
-	 * @dataProvider getDataProvider
+	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -93,7 +90,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
+		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
 		$result   = $instance->parse( $params, true );
 
 		if (  $expected['output'] === '' ) {
@@ -106,7 +103,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 
 	/**
 	 * @test ShowParserFunction::parse (Test $GLOBALS['smwgQEnabled'] = false)
-	 * @dataProvider getDataProvider
+	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
 	 */
@@ -116,7 +113,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 		$message  = new MessageFormatter( $title->getPageLanguage() );
 		$expected = $message->addFromKey( 'smw_iq_disabled' )->getHtml();
 
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
+		$instance = $this->newInstance( $title, $this->getParserOutput() );
 
 		// Make protected method accessible
 		$reflection = new ReflectionClass( $this->getClass() );
@@ -129,7 +126,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 
 	/**
 	 * @test ShowParserFunction::parse (Test generated query data)
-	 * @dataProvider getDataProvider
+	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -142,7 +139,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 		$title        = $this->newTitle();
 
 		// Initialize and parse
-		$instance = $this->getInstance( $title, $parserOutput );
+		$instance = $this->newInstance( $title, $parserOutput );
 		$instance->parse( $params );
 
 		// Get semantic data from the ParserOutput
@@ -178,7 +175,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 *
 	 * @return array
 	 */
-	public function getDataProvider() {
+	public function queryDataProvider() {
 
 		$provider = array();
 

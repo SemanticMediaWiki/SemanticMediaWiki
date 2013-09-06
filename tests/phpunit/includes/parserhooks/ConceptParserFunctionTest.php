@@ -40,70 +40,20 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Provides data sample, the first array contains parametrized input
-	 * value while the second array contains expected return results for the
-	 * instantiated object.
-	 *
-	 * @return array
-	 */
-	public function getDataProvider() {
-		return array(
-
-			// #0
-			// {{#concept: [[Modification date::+]]
-			// }}
-			array(
-				array(
-					'[[Modification date::+]]'
-				),
-				array(
-					'result' => true,
-					'propertyCount' => 1,
-					'conceptQuery'  => '[[Modification date::+]]',
-					'conceptDocu'   => '',
-					'conceptSize'   => 1,
-					'conceptDepth'  => 1,
-				)
-			),
-
-			// #1
-			// {{#concept: [[Modification date::+]]
-			// |Foooooooo
-			// }}
-			array(
-				array(
-					'[[Modification date::+]]',
-					'Foooooooo'
-				),
-				array(
-					'result' => true,
-					'propertyCount' => 1,
-					'conceptQuery'  => '[[Modification date::+]]',
-					'conceptDocu'   => 'Foooooooo',
-					'conceptSize'   => 1,
-					'conceptDepth'  => 1,
-				)
-			)
-		);
-	}
-
-	/**
-	 * NameSpaceDataProvider
-	 *
-	 * @return array
-	 */
-	public function getNameSpaceDataProvider() {
-		return array(
-			array( NS_MAIN, NS_HELP, SMW_NS_CONCEPT )
-		);
-	}
-
-	/**
 	 * Helper method that returns a instance
 	 *
 	 * @return ConceptParserFunction
 	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput = null ) {
+	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle( SMW_NS_CONCEPT );
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = $this->newParserOutput();
+		}
+
 		return new ConceptParserFunction(
 			$this->getParserData( $title, $parserOutput ),
 			new MessageFormatter( $title->getPageLanguage() )
@@ -126,64 +76,58 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance(
-			$this->newTitle( SMW_NS_CONCEPT ),
-			$this->getParserOutput()
-		);
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test ConceptParserFunction::__construct (Test instance exception)
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructorException() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = $this->getInstance( $this->newTitle( SMW_NS_CONCEPT ) );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
 	 * @test ConceptParserFunction::parse (Test error on wrong namespace)
-	 * @dataProvider getNameSpaceDataProvider
+	 * @dataProvider namespaceDataProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param $namespace
 	 */
 	public function testErrorOnNamespace( $namespace ) {
-		$title = $this->newTitle( $namespace );
-		$errorMessage = $this->getMessageText( $title, 'smw_no_concept_namespace' );
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
 
-		$this->assertEquals( $errorMessage, $instance->parse( array() ) );
+		$title = $this->newTitle( $namespace );
+		$instance = $this->newInstance( $title, $this->newParserOutput() );
+
+		$this->assertEquals(
+			$this->getMessageText( $title, 'smw_no_concept_namespace' ),
+			$instance->parse( array() ),
+			'asserts that an error is raised due to a wrong namespace'
+		);
+
 	}
 
 	/**
 	 * @test ConceptParserFunction::parse (Test error on double {{#concept}} use)
-	 * @dataProvider getDataProvider
+	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param $params
 	 */
 	public function testErrorOnDoubleParse( array $params ) {
-		$title = $this->newTitle( SMW_NS_CONCEPT );
-		$errorMessage = $this->getMessageText( $title, 'smw_multiple_concepts' );
 
-		$instance = $this->getInstance( $title, $this->getParserOutput() );
+		$title = $this->newTitle( SMW_NS_CONCEPT );
+
+		$instance = $this->newInstance( $title, $this->newParserOutput() );
  		$instance->parse( $params );
 
 		// First call
 		$instance->parse( $params );
 
-		// Second call raises the error
-		$this->assertEquals( $errorMessage, $instance->parse( $params ) );
+		$this->assertEquals(
+			$this->getMessageText( $title, 'smw_multiple_concepts' ),
+			$instance->parse( $params ),
+			'assert that the second call raises an error'
+		);
 	}
 
 	/**
 	 * @test ConceptParserFunction::parse
-	 * @dataProvider getDataProvider
+	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -191,19 +135,29 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 * @param $expected
 	 */
 	public function testParse( array $params, array $expected ) {
-		$parserOutput =  $this->getParserOutput();
+
+		$parserOutput =  $this->newParserOutput();
 		$title = $this->newTitle( SMW_NS_CONCEPT );
 
 		// Initialize and parse
-		$instance = $this->getInstance( $title, $parserOutput );
+		$instance = $this->newInstance( $title, $parserOutput );
 		$instance->parse( $params );
 
 		// Re-read data from stored parserOutput
 		$parserData = $this->getParserData( $title, $parserOutput );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
-		$this->assertCount( $expected['propertyCount'], $parserData->getData()->getProperties() );
+		$this->assertInstanceOf(
+			'\SMW\SemanticData',
+			$parserData->getData(),
+			'assert that the returning instance if of type SemanticData'
+		);
+
+		$this->assertCount(
+			$expected['propertyCount'],
+			$parserData->getData()->getProperties(),
+			'asserts the expected amount of properties available through getProperties()'
+		);
 
 		// Confirm concept property
 		foreach ( $parserData->getData()->getProperties() as $key => $diproperty ){
@@ -226,8 +180,95 @@ class ConceptParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testStaticRender() {
-		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
+
+		$parser = $this->newParser( $this->newTitle(), $this->newMockUser() );
 		$result = ConceptParserFunction::render( $parser );
-		$this->assertInternalType( 'string', $result );
+
+		$this->assertInternalType(
+			'string',
+			$result,
+			'asserts that the returning result is always of type string'
+		);
 	}
+
+	/**
+	 * Provides data sample, the first array contains parametrized input
+	 * value while the second array contains expected return results for the
+	 * instantiated object.
+	 *
+	 * @return array
+	 */
+	public function queryDataProvider() {
+
+		$provider = array();
+
+		// #0
+		// {{#concept: [[Modification date::+]]
+		// }}
+		$provider[] = array(
+			array(
+				'[[Modification date::+]]'
+			),
+			array(
+				'result' => true,
+				'propertyCount' => 1,
+				'conceptQuery'  => '[[Modification date::+]]',
+				'conceptDocu'   => '',
+				'conceptSize'   => 1,
+				'conceptDepth'  => 1,
+			)
+		);
+
+		// #1
+		// {{#concept: [[Modification date::+]]
+		// |Foooooooo
+		// }}
+		$provider[] = array(
+			array(
+				'[[Modification date::+]]',
+				'Foooooooo'
+			),
+			array(
+				'result' => true,
+				'propertyCount' => 1,
+				'conceptQuery'  => '[[Modification date::+]]',
+				'conceptDocu'   => 'Foooooooo',
+				'conceptSize'   => 1,
+				'conceptDepth'  => 1,
+			)
+		);
+
+		// #2 (includes Parser object)
+		$provider[] = array(
+			array(
+				$this->newParser( $this->newTitle(), $this->newMockUser() ),
+				'[[Modification date::+]]',
+				'Foooooooo'
+			),
+			array(
+				'result' => true,
+				'propertyCount' => 1,
+				'conceptQuery'  => '[[Modification date::+]]',
+				'conceptDocu'   => 'Foooooooo',
+				'conceptSize'   => 1,
+				'conceptDepth'  => 1,
+			)
+		);
+
+		return $provider;
+
+	}
+
+	/**
+	 * NameSpaceDataProvider
+	 *
+	 * @return array
+	 */
+	public function namespaceDataProvider() {
+		return array(
+			array( NS_MAIN ),
+			array( NS_HELP )
+		);
+	}
+
 }

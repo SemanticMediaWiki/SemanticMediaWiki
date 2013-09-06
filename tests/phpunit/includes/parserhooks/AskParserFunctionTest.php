@@ -52,7 +52,15 @@ class AskParserFunctionTest extends ParserTestCase {
 	 *
 	 * @return AskParserFunction
 	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput = null, Settings $settings = null ) {
+	private function newInstance( Title $title = null, ParserOutput $parserOutput = null, Settings $settings = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = $this->newParserOutput();
+		}
 
 		if ( $settings === null ) {
 			$settings = $this->newSettings();
@@ -72,8 +80,7 @@ class AskParserFunctionTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -87,7 +94,7 @@ class AskParserFunctionTest extends ParserTestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$instance = $this->getInstance( $this->newTitle(), $this->newParserOutput() );
+		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
 		$result  = $instance->parse( $params );
 		$this->assertInternalType( 'string', $result );
 
@@ -102,17 +109,47 @@ class AskParserFunctionTest extends ParserTestCase {
 
 		$title    = $this->newTitle();
 		$message  = new MessageFormatter( $title->getPageLanguage() );
-		$expected = $message->addFromKey( 'smw_iq_disabled' )->getHtml();
 
-		$instance = $this->getInstance( $title , $this->newParserOutput() );
+		$instance = $this->newInstance( $title , $this->newParserOutput() );
 
-		// Make protected method accessible
-		$reflection = new ReflectionClass( $this->getClass() );
-		$method = $reflection->getMethod( 'disabled' );
+		$reflector = $this->newReflector();
+		$method = $reflector->getMethod( 'disabled' );
 		$method->setAccessible( true );
 
 		$result = $method->invoke( $instance );
-		$this->assertEquals( $expected , $result );
+
+		$this->assertEquals(
+			$message->addFromKey( 'smw_iq_disabled' )->getHtml(),
+			$result,
+			'asserts a resutling disabled error message'
+		);
+
+	}
+
+	/**
+	 * @test AskParserFunction::setShowMode
+	 *
+	 * @since 1.9
+	 */
+	public function testSetShowMode() {
+
+		$instance = $this->newInstance();
+
+		$reflector = $this->newReflector();
+		$showMode = $reflector->getProperty( 'showMode' );
+		$showMode->setAccessible( true );
+
+		$this->assertFalse(
+			 $showMode->getValue( $instance ),
+			'asserts that showMode is false by default'
+		);
+
+		$instance->setShowMode( true );
+
+		$this->assertTrue(
+			$showMode->getValue( $instance ),
+			'asserts that showMode is true'
+		);
 
 	}
 
@@ -131,7 +168,7 @@ class AskParserFunctionTest extends ParserTestCase {
 		$title        = $this->newTitle();
 
 		// Initialize and parse
-		$instance = $this->getInstance( $title, $parserOutput, $this->newSettings( $settings ) );
+		$instance = $this->newInstance( $title, $parserOutput, $this->newSettings( $settings ) );
 		$instance->parse( $params );
 
 		// Get semantic data from the ParserOutput

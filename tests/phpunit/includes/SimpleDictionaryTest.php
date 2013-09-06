@@ -127,7 +127,18 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 
 		// Remove
 		$instance->remove( $setup['key'] );
-		$this->assertFalse( $instance->has( $setup['key'] ) );
+
+		$this->assertFalse(
+			$instance->has( $setup['key'] ),
+			'asserts that detach/removal will result alwasy in false'
+		);
+
+		$instance->remove( $setup['key'] );
+
+		$this->assertFalse(
+			$instance->has( $setup['key'] ),
+			'asserts that detach/removal will result alwasy in false'
+		);
 
 	}
 
