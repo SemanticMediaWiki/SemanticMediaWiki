@@ -15,6 +15,7 @@ namespace SMW\Test;
 
 /**
  * @covers \SMW\ApiAsk
+ * @covers \SMW\ApiBase
  *
  * @ingroup Test
  *

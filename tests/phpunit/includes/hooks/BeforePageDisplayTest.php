@@ -20,6 +20,7 @@ use Title;
 
 /**
  * @covers \SMW\BeforePageDisplay
+ * @covers \SMW\FunctionHook
  *
  * @ingroup Test
  *

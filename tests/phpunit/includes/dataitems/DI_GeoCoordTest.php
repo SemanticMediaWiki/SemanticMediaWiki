@@ -3,6 +3,8 @@
 namespace SMW\Tests;
 
 /**
+ * @covers SMWDIGeoCoord
+ * @covers SMWDataItem
  * Tests for the SMWDIGeoCoord class.
  *
  * @file

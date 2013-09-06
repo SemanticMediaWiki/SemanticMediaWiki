@@ -17,6 +17,7 @@ use SMW\ApiAskArgs;
 
 /**
  * @covers \SMW\ApiAskArgs
+ * @covers \SMW\ApiBase
  *
  * @ingroup Test
  *

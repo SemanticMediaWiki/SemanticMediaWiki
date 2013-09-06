@@ -3,6 +3,8 @@
 namespace SMW\Tests;
 
 /**
+ * @covers SMWDINumber
+ * @covers SMWDataItem
  * Tests for the SMWDINumber class.
  *
  * @file

@@ -3,6 +3,8 @@
 namespace SMW\Tests;
 
 /**
+ * @covers SMWDIBoolean
+ * @covers SMWDataItem
  * Tests for the SMWDIBoolean class.
  *
  * @file

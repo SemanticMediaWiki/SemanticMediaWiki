@@ -62,9 +62,14 @@ class UpdateJobTest extends ParserTestCase {
 
 		$instance = new UpdateJob( $title );
 
-		$container = $instance->getDependencyBuilder()->getContainer();
+		$builder = $instance->getDependencyBuilder();
+		$container = $builder->getContainer();
 		$container->registerObject( 'Settings', $settings );
 		$container->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+
+		// This seems redundant but it allows to cover
+		// all necessary methods provided by the JobBase
+		$instance->setDependencyBuilder( $builder );
 
 		return $instance;
 

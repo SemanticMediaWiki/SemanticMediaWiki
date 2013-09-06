@@ -17,6 +17,7 @@ use SMW\ApiInfo;
 
 /**
  * @covers \SMW\ApiInfo
+ * @covers \SMW\ApiBase
  *
  * @ingroup Test
  *
