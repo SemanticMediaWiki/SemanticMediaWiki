@@ -46,7 +46,12 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return ApiQueryResultFormatter
 	 */
-	private function getInstance( SMWQueryResult $queryResult ) {
+	private function newInstance( SMWQueryResult $queryResult = null ) {
+
+		if ( $queryResult === null ) {
+			$queryResult = $this->newMockBuilder()->newObject( 'QueryResult' );
+		}
+
 		return new ApiQueryResultFormatter( $queryResult );
 	}
 
@@ -56,10 +61,7 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf(
-			$this->getClass(),
-			$this->getInstance( $this->newMockObject()->getMockQueryResult() )
-		);
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -72,7 +74,7 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 
 		$this->SetExpectedException( 'InvalidArgumentException' );
 
-		$instance = $this->getInstance( $this->newMockObject()->getMockQueryResult() );
+		$instance = $this->newInstance();
 		$instance->setIsRawMode( true );
 		$index = array();
 
@@ -96,13 +98,13 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testResultFormat( array $test, array $expected ) {
 
-		$queryResult = $this->newMockObject( array(
+		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
 			'toArray'           => $test['result'],
 			'getErrors'         => array(),
 			'hasFurtherResults' => $test['furtherResults']
-		) )->getMockQueryResult();
+		) );
 
-		$instance = $this->getInstance( $queryResult );
+		$instance = $this->newInstance( $queryResult );
 		$instance->setIsRawMode( $test['rawMode'] );
 		$instance->setFormat( $test['format'] );
 		$instance->doFormat();
@@ -127,13 +129,13 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testErrorFormat( array $test, array $expected ) {
 
-		$queryResult = $this->newMockObject( array(
+		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
 			'toArray'           => array(),
 			'getErrors'         => $test['errors'],
 			'hasFurtherResults' => false
-		) )->getMockQueryResult();
+		) );
 
-		$instance = $this->getInstance( $queryResult );
+		$instance = $this->newInstance( $queryResult );
 
 		$instance->setIsRawMode( $test['rawMode'] );
 		$instance->setFormat( $test['format'] );

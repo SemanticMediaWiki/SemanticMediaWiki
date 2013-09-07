@@ -44,7 +44,7 @@ class ApiQueryTest extends ApiTestCase {
 	 *
 	 * @return ApiQuery
 	 */
-	private function getInstance( ApiResult $apiResult = null ) {
+	private function newInstance( ApiResult $apiResult = null ) {
 
 		$apiQuery = $this->getMockBuilder( $this->getClass() )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class ApiQueryTest extends ApiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class ApiQueryTest extends ApiTestCase {
 	public function testQueryAndQueryResult() {
 
 		$reflector = new ReflectionClass( $this->getClass() );
-		$instance  = $this->getInstance();
+		$instance  = $this->newInstance();
 
 		// Query object
 		$getQuery = $reflector->getMethod( 'getQuery' );
@@ -119,18 +119,18 @@ class ApiQueryTest extends ApiTestCase {
 		);
 
 		$apiResult   = $this->getApiResult( array() );
-		$queryResult = $this->newMockObject( array(
+		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
 			'toArray'           => $test,
 			'getErrors'         => array(),
 			'hasFurtherResults' => true
-		) )->getMockQueryResult();
+		) );
 
 		// Access protected method
 		$reflector = new ReflectionClass( $this->getClass() );
 		$method = $reflector->getMethod( 'addQueryResult' );
 		$method->setAccessible( true );
 
-		$instance = $this->getInstance( $apiResult );
+		$instance = $this->newInstance( $apiResult );
 		$method->invoke( $instance, $queryResult );
 
 		// Test against the invoked ApiResult, as the addQueryResult method

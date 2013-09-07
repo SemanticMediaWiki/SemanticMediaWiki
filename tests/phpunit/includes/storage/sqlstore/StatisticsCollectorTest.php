@@ -49,7 +49,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 *
 	 * @return StatisticsCollector
 	 */
-	private function getInstance( $count = 1, $cacheEnabled = false ) {
+	private function newInstance( $count = 1, $cacheEnabled = false ) {
 
 		// $store = $this->newMockObject( array( 'getPropertyTables' => array( 'smw_test' ) ) )->getMockStore();
 		$store = StoreFactory::getStore();
@@ -96,7 +96,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
@@ -125,7 +125,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testFunctions( $function, $expectedType ) {
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$result = call_user_func( array( &$instance, $function ) );
 
 		$this->assertInternalType( $expectedType, $result );
@@ -142,7 +142,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 */
 	public function testResultsOnStore( $segment, $expectedType ) {
 
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$result   = $instance->getResults();
 
 		$this->assertInternalType( $expectedType, $result[$segment] );
@@ -160,12 +160,12 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	public function testCachNoCache( array $test, array $expected ) {
 
 		// Sample A
-		$instance = $this->getInstance( $test['A'], $test['cacheEnabled'] );
+		$instance = $this->newInstance( $test['A'], $test['cacheEnabled'] );
 		$result = $instance->getResults();
 		$this->assertEquals( $expected['A'], $result['OWNPAGE'] );
 
 		// Sample B
-		$instance = $this->getInstance( $test['B'], $test['cacheEnabled'] );
+		$instance = $this->newInstance( $test['B'], $test['cacheEnabled'] );
 		$result = $instance->getResults();
 		$this->assertEquals( $expected['B'], $result['OWNPAGE'] );
 

@@ -45,8 +45,13 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return RedirectPropertyAnnotator
 	 */
-	private function getInstance( SemanticData $data = null ) {
-		return new RedirectPropertyAnnotator( $data === null ? $this->newMockObject()->getMockSemanticData() : $data );
+	private function newInstance( SemanticData $data = null ) {
+
+		if ( $data === null ) {
+			$data = $this->newMockBuilder()->newObject( 'SemanticData' );
+		}
+
+		return new RedirectPropertyAnnotator( $data );
 	}
 
 	/**
@@ -55,7 +60,7 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -69,9 +74,9 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testBuild( $test, $expected ) {
 
-		$semanticData =  new SemanticData( $this->newSubject() );
+		$semanticData = new SemanticData( $this->newSubject() );
 
-		$instance = $this->getInstance( $semanticData );
+		$instance = $this->newInstance( $semanticData );
 		$instance->isEnabled( $test['isEnabled'] )->annotate( $test['text'] );
 
 		$this->assertSemanticData( $semanticData, $expected );

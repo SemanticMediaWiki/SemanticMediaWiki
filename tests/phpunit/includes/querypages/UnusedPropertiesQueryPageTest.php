@@ -49,16 +49,16 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 		$text  = $this->newRandomString();
 
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'exists'  => $exists,
 			'getText' => $text,
 			'getNamespace'    => NS_MAIN,
 			'getPrefixedText' => $text
-		) )->getMockTitle();
+		) );
 
-		$diWikiPage = $this->newMockObject( array(
+		$diWikiPage = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
 			'getTitle'  => $title,
-		) )->getMockDIWikiPage();
+		) );
 
 		return $diWikiPage;
 	}
@@ -75,14 +75,14 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newInstance( $result = null, $values = array() ) {
 
-		$collector = $this->newMockObject( array(
+		$collector = $this->newMockBuilder()->newObject( 'CacheableObjectCollector', array(
 			'getResults' => $result
-		) )->getMockCacheableObjectCollector();
+		) );
 
-		$mockStore = $this->newMockObject( array(
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getPropertyValues'          => $values,
 			'getUnusedPropertiesSpecial' => $collector
-		) )->getMockStore();
+		) );
 
 		$instance = new UnusedPropertiesQueryPage( $mockStore, $this->newSettings() );
 		$instance->setContext( $this->newContext() );
@@ -113,11 +113,11 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		// DIProperty
 		$instance = $this->newInstance();
 
-		$property = $this->newMockObject( array(
+		$property = $this->newMockBuilder()->newObject( 'DIProperty', array(
 			'isUserDefined' => $isUserDefined,
 			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
 			'getLabel'      => $this->newRandomString(),
-		) )->getMockDIProperty();
+		) );
 
 		$expected = $property->getDiWikiPage()->getTitle()->getText();
 		$result   = $instance->formatResult( $skin, $property );
@@ -129,11 +129,11 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance();
 		$multiple = array( $this->getMockDIWikiPage(), $this->getMockDIWikiPage() );
 
-		$property = $this->newMockObject( array(
+		$property = $this->newMockBuilder()->newObject( 'DIProperty', array(
 			'isUserDefined' => $isUserDefined,
 			'getDiWikiPage' => $this->getMockDIWikiPage( true ),
 			'getLabel'      => $this->newRandomString(),
-		) )->getMockDIProperty();
+		) );
 
 		$expected = $property->getDiWikiPage()->getTitle()->getText();
 		$instance = $this->newInstance( null, $multiple );
@@ -146,11 +146,11 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		// DIError
 		$instance = $this->newInstance();
 		$error    = $this->newRandomString();
+		$diError  = $this->newMockBuilder()->newObject( 'DIError', array(
+			'getErrors' => $error
+		) );
 
-		$result   = $instance->formatResult(
-			$skin,
-			$this->newMockobject( array( 'getErrors' => $error ) )->getMockDIError()
-		);
+		$result   = $instance->formatResult( $skin, $diError );
 
 		$this->assertInternalType( 'string', $result );
 		$this->assertContains( $error, $result );

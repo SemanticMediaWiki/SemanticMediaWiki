@@ -59,7 +59,7 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 
 		$dependencyBuilder = $this->newDependencyBuilder( new \SMW\SharedDependencyContainer() );
 		$dependencyBuilder->getContainer()
-			->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+			->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
 
 		$instance = new LinksUpdateConstructed( new LinksUpdate( $title, $parserOutput ) );
 		$instance->setDependencyBuilder( $dependencyBuilder );

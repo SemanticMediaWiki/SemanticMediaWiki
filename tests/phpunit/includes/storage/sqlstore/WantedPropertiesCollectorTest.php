@@ -81,16 +81,15 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 *
 	 * @return WantedPropertiesCollector
 	 */
-	private function getInstance( $property = 'Foo', $count = 1, $cacheEnabled = false ) {
+	private function newInstance( $property = 'Foo', $count = 1, $cacheEnabled = false ) {
 
 		$store = StoreFactory::getStore();
 		$connection = $this->getMockDBConnection( $property, $count );
 
-		// Settings to be used
 		$settings = $this->newSettings( array(
-			'smwgPDefaultType' => '_wpg',
-			'smwgCacheType' => 'hash',
-			'smwgWantedPropertiesCache' => $cacheEnabled,
+			'smwgPDefaultType'                => '_wpg',
+			'smwgCacheType'                   => 'hash',
+			'smwgWantedPropertiesCache'       => $cacheEnabled,
 			'smwgWantedPropertiesCacheExpiry' => 360,
 		) );
 
@@ -103,7 +102,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
@@ -129,7 +128,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		$property = $this->getRandomString();
 		$expected = array( array( new DIProperty( $property ), $count ) );
 
-		$instance = $this->getInstance( $property, $count );
+		$instance = $this->newInstance( $property, $count );
 		$instance->setRequestOptions(
 			new SMWRequestOptions( $property, SMWRequestOptions::STRCOND_PRE )
 		);
@@ -153,7 +152,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	public function testCacheNoCache( array $test, array $expected, array $info ) {
 
 		// Sample A
-		$instance = $this->getInstance(
+		$instance = $this->newInstance(
 			$test['A']['property'],
 			$test['A']['count'],
 			$test['cacheEnabled']
@@ -162,7 +161,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		$this->assertEquals( $expected['A'], $instance->getResults(), $info['msg'] );
 
 		// Sample B
-		$instance = $this->getInstance(
+		$instance = $this->newInstance(
 			$test['B']['property'],
 			$test['B']['count'],
 			$test['cacheEnabled']

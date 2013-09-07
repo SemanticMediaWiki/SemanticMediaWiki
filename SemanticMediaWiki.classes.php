@@ -336,6 +336,7 @@ return array(
 	'SMW\Test\ApiTestCase'                   => 'tests/phpunit/ApiTestCase.php',
 	'SMW\Test\MockSuperUser'                 => 'tests/phpunit/MockSuperUser.php',
 	'SMW\Test\MockObjectBuilder'             => 'tests/phpunit/MockObjectBuilder.php',
+	'SMW\Test\MockObjectRepository'          => 'tests/phpunit/MockObjectRepository.php',
 	'SMW\Test\SpecialPageTestCase'           => 'tests/phpunit/SpecialPageTestCase.php',
 	'SMW\Test\CompatibilityTestCase'         => 'tests/phpunit/CompatibilityTestCase.php',
 	'SMW\Test\MockUpdateObserver'            => 'tests/phpunit/MockUpdateObserver.php',

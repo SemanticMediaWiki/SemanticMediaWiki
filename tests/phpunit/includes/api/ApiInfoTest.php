@@ -79,9 +79,9 @@ class ApiInfoTest extends ApiTestCase {
 	 */
 	public function testExecuteOnMockStore( $test, $type, $expected ) {
 
-		$mockStore = $this->newMockObject( array(
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getStatistics' => $test
-		) )->getMockStore();
+		) );
 
 		$api = new ApiInfo( $this->getApiMain( array( 'info' => $type ) ), 'smwinfo' );
 		$api->setStore( $mockStore );

@@ -339,7 +339,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	public function testAddGetArgumentsOnMockObject() {
 
 		$instance  = $this->newInstance();
-		$mockTitle = $this->newMockObject()->getMockTitle();
+		$mockTitle = $this->newMockBuilder()->newObject( 'Title' );
 
 		$instance->addArgument( 'Title', $mockTitle );
 		$instance->getContainer()->registerObject( 'bar', function ( DependencyBuilder $builder ) {
@@ -642,7 +642,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 			'asserts that the container does not have a particular object definition'
 		);
 
-		$instance->getContainer()->registerObject( 'Title', $this->newMockObject()->getMockTitle() );
+		$instance->getContainer()->registerObject( 'Title', $this->newMockBuilder()->newObject( 'Title' ) );
 
 		$this->assertTrue(
 			$instance->getContainer()->has( 'Title' ),

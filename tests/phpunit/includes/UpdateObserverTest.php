@@ -50,10 +50,10 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 		// Use the provided default builder
 		$observer->setDependencyBuilder( $observer->getDependencyBuilder() );
 
-		$mockStore = $this->newMockObject( array(
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getAllPropertySubjects' => array(),
 			'getPropertySubjects'    => array()
-		) )->getMockStore();
+		) );
 
 		$observer->getDependencyBuilder()
 			->getContainer()
@@ -117,13 +117,13 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	public function storeUpdaterDataProvider() {
 
 		$subject  = $this->newSubject();
-		$mockData = $this->newMockObject( array(
+		$mockData = $this->newMockBuilder()->newObject( 'SemanticData', array(
 			'getSubject' => $subject
-		) )->getMockSemanticData();
+		) );
 
-		$parserData = $this->newMockObject( array(
+		$parserData = $this->newMockBuilder()->newObject( 'ParserData', array(
 			'getData'    => $mockData,
-		) )->getMockParserData();
+		) );
 
 		$provider = array();
 
@@ -151,9 +151,9 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	 */
 	public function updateDispatcherDataProvider() {
 
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'TitleAccess', array(
 			'getTitle' => $this->newTitle()
-		) )->getMockTitleAccess();
+		) );
 
 		$provider = array();
 
@@ -182,9 +182,9 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 		);
 
 		// #2
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'TitleAccess', array(
 			'getTitle' => $this->newTitle( SMW_NS_PROPERTY )
-		) )->getMockTitleAccess();
+		) );
 
 		$provider[] = array(
 			array(
@@ -198,9 +198,9 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 		);
 
 		// #3
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'TitleAccess', array(
 			'getTitle' => $this->newTitle( SMW_NS_PROPERTY )
-		) )->getMockTitleAccess();
+		) );
 
 		$provider[] = array(
 			array(

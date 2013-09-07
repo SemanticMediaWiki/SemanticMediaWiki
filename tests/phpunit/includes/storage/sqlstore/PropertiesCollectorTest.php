@@ -9,7 +9,6 @@ use SMW\Test\SemanticMediaWikiTestCase;
 use SMW\MessageFormatter;
 use SMW\StoreFactory;
 use SMW\DIProperty;
-use SMW\Settings;
 
 use SMWStringCondition;
 use SMWRequestOptions;
@@ -92,19 +91,18 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return PropertiesCollector
 	 */
-	private function getInstance( $smwTitle = 'Foo', $usageCount = 1, $cacheEnabled = false ) {
+	private function newInstance( $smwTitle = 'Foo', $usageCount = 1, $cacheEnabled = false ) {
 
-		$store = $this->newMockObject()->getMockStore();
+		$mockStore  = $this->newMockBuilder()->newObject( 'Store' );
 		$connection = $this->getMockDBConnection( $smwTitle, $usageCount );
 
-		// Settings to be used
-		$settings = Settings::newFromArray( array(
-			'smwgCacheType' => 'hash',
-			'smwgPropertiesCache' => $cacheEnabled,
+		$settings = $this->newSettings( array(
+			'smwgCacheType'             => 'hash',
+			'smwgPropertiesCache'       => $cacheEnabled,
 			'smwgPropertiesCacheExpiry' => 360,
 		) );
 
-		return new PropertiesCollector( $store, $connection, $settings );
+		return new PropertiesCollector( $mockStore, $connection, $settings );
 	}
 
 	/**
@@ -113,8 +111,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -139,7 +136,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 		$count    = rand();
 		$expected = array( new DIProperty( $property ), $count );
 
-		$instance = $this->getInstance( $property, $count );
+		$instance = $this->newInstance( $property, $count );
 		$requestOptions = new SMWRequestOptions();
 		$requestOptions->limit = 1;
 		$requestOptions->addStringCondition( $property, SMWStringCondition::STRCOND_MID  );
@@ -164,7 +161,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testInvalidPropertyException( $property ) {
 
-		$instance = $this->getInstance( $property );
+		$instance = $this->newInstance( $property );
 		$results  = $instance->getResults();
 
 		$this->assertInternalType( 'array', $results );
@@ -191,7 +188,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	public function testCacheNoCache( array $test, array $expected, array $info ) {
 
 		// Sample A
-		$instance = $this->getInstance(
+		$instance = $this->newInstance(
 			$test['A']['property'],
 			$test['A']['count'],
 			$test['cacheEnabled']
@@ -200,7 +197,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 		$this->assertEquals( $expected['A'], $instance->getResults(), $info['msg'] );
 
 		// Sample B
-		$instance = $this->getInstance(
+		$instance = $this->newInstance(
 			$test['B']['property'],
 			$test['B']['count'],
 			$test['cacheEnabled']

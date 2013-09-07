@@ -65,7 +65,7 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	 */
 	public function newInstance( OutputPage $outputPage ) {
 
-		$skin     = $this->newMockObject()->getMockSkin();
+		$skin     = $this->newMockBuilder()->newObject( 'Skin' );
 		$instance = new BeforePageDisplay( $outputPage, $skin );
 
 		$instance->setDependencyBuilder( $this->newDependencyBuilder() );
@@ -126,11 +126,11 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 		// #0 Standard title
 		$provider[] = array(
 			array(
-				'title'  => $this->newMockObject( array(
+				'title'  => $this->newMockBuilder()->newObject( 'Title', array(
 					'isSpecialPage'   => false,
 					'getPageLanguage' => $this->getLanguage(),
 					'getPrefixedText' => $this->getRandomString()
-				) )->getMockTitle()
+				) )
 			),
 			array(
 				'result' => true
@@ -140,11 +140,11 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 		// #1 Title is SpeciaPage
 		$provider[] = array(
 			array(
-				'title'  => $this->newMockObject( array(
+				'title'  => $this->newMockBuilder()->newObject( 'Title', array(
 					'isSpecialPage'   => true,
 					'getPageLanguage' => $this->getLanguage(),
 					'getPrefixedText' => $this->getRandomString()
-				) )->getMockTitle()
+				) )
 			),
 			array(
 				'result' => false

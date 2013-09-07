@@ -5,7 +5,6 @@ namespace SMW\Test;
 use SMW\SimpleDependencyBuilder;
 use SMW\DependencyContainer;
 use SMW\DataValueFactory;
-use SMW\SimpleDictionary;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -56,12 +55,10 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $accessor
-	 *
 	 * @return MockObjectBuilder
 	 */
-	public function newMockObject( array $dictionary = array() ) {
-		return new MockObjectBuilder( new SimpleDictionary( $dictionary ) );
+	public function newMockBuilder() {
+		return new MockObjectBuilder();
 	}
 
 	/**

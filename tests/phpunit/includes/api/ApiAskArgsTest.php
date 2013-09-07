@@ -50,7 +50,7 @@ class ApiAskArgsTest extends ApiTestCase {
 	 * @param array $query
 	 * @param array $expected
 	 */
-	public function testExecuteOnStore( array $query, array $expected ) {
+	public function testExecuteOnDefaultStore( array $query, array $expected ) {
 
 		$results = $this->doApiRequest( array(
 			'action'     => 'askargs',
@@ -98,9 +98,9 @@ class ApiAskArgsTest extends ApiTestCase {
 			)
 		);
 
-		$mockStore = $this->newMockObject( array(
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getQueryResult' => array( $this, 'mockStoreQueryResultCallback' )
-		) )->getMockStore();
+		) );
 
 		$api = new ApiAskArgs( $this->getApiMain( $requestParameters ), 'askargs' );
 		$api->setStore( $mockStore );
@@ -134,10 +134,10 @@ class ApiAskArgsTest extends ApiTestCase {
 			);
 		}
 
-		return $this->newMockObject( array(
+		return $this->newMockBuilder()->newObject( 'QueryResult', array(
 			'toArray'           => $result,
 			'hasFurtherResults' => true
-		) )->getMockQueryResult();
+		) );
 
 	}
 

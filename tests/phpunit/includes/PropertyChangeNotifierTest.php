@@ -52,10 +52,10 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return PropertyChangeNotifier
 	 */
-	private function getInstance( $store = array(), $data = array(), $setting = null ) {
+	private function newInstance( $store = array(), $data = array(), $setting = null ) {
 
-		$mockStore = $this->newMockObject( $store )->getMockStore();
-		$mockData  = $this->newMockObject( $data )->getMockSemanticData();
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', $store );
+		$mockData  = $this->newMockBuilder()->newObject( 'SemanticData', $data );
 		$settings  = $this->newSettings( array(
 			'smwgDeclarationProperties' => $setting === null ? array( '_PVAL' ): $setting
 		) );
@@ -69,7 +69,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -92,7 +92,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 			'getPropertyValues' => $dataValues
 		);
 
-		$instance = $this->getInstance( $store, $data, $settings );
+		$instance = $this->newInstance( $store, $data, $settings );
 		$observer = new MockUpdateObserver();
 
 		$instance->setObservableDispatcher( new ObservableSubjectDispatcher( $observer ) );

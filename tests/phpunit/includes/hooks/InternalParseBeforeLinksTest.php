@@ -138,9 +138,9 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 		$provider[] = array( $this->newTitle() );
 
 		// #1 Title is a special page
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'isSpecialPage'   => true,
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array( $title );
 

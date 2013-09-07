@@ -49,14 +49,14 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return StoreUpdater
 	 */
-	private function getInstance( $store = null, $data = null, $settings = null ) {
+	private function newInstance( $store = null, $data = null, $settings = null ) {
 
 		if ( $store === null ) {
-			$store = $this->newMockObject()->getMockStore();
+			$store = $this->newMockBuilder()->newObject( 'Store' );
 		}
 
 		if ( $data === null ) {
-			$data = $this->newMockObject()->getMockSemanticData();
+			$data = $this->newMockBuilder()->newObject( 'SemanticData' );
 		}
 
 		if ( $settings === null ) {
@@ -75,7 +75,7 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -88,7 +88,7 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 		$store = \SMW\StoreFactory::getStore();
 		$data  = new \SMW\SemanticData( $this->newSubject() );
 
-		$instance = $this->getInstance( $store, $data );
+		$instance = $this->newInstance( $store, $data );
 		$instance->setUpdateStatus( false );
 
 		$this->assertTrue( $instance->doUpdate() );
@@ -106,20 +106,20 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testDoUpdateOnMock( $setup, $expected ) {
 
-		$mockStore = $this->newMockObject( array(
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'updateData' => array( $this, 'mockStoreUpdateDataCallback' ),
 			'clearData'  => array( $this, 'mockStoreClearDataCallback' ),
-		) )->getMockStore();
+		) );
 
-		$mockSubject = $this->newMockObject( array(
+		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
 			'getTitle' => $setup['title']
-		) )->getMockDIWikIPage();
+		) );
 
-		$mockData = $this->newMockObject( array(
+		$mockData = $this->newMockBuilder()->newObject( 'SemanticData', array(
 			'getSubject' => $mockSubject,
-		) )->getMockSemanticData();
+		) );
 
-		$instance = $this->getInstance( $mockStore, $mockData );
+		$instance = $this->newInstance( $mockStore, $mockData );
 		$instance->setUpdateStatus( $setup['updateStatus'] );
 
 		$this->assertEquals( $expected['return'], $instance->doUpdate() );
@@ -170,9 +170,9 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 		// be tested
 
 		// #2 Specialpage
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'isSpecialPage' => true
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(

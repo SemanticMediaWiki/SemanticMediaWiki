@@ -59,10 +59,10 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 			$title = $this->newTitle();
 		}
 
-		$mockStore = $this->newMockObject( array(
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getAllPropertySubjects' => array( $this, 'mockStoreAllPropertySubjectsCallback' ),
 			'getPropertySubjects'    => array()
-		) )->getMockStore();
+		) );
 
 		$settings = $this->newSettings( array(
 			'smwgCacheType'        => 'hash',

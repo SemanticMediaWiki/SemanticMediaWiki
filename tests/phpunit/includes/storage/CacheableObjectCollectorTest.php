@@ -47,10 +47,10 @@ class CacheableObjectCollectorTest extends SemanticMediaWikiTestCase {
 	 */
 	private function getInstance( $doCollect = array(), $cacheSetup = array() ) {
 
-		$collector = $this->newMockObject( array(
+		$collector = $this->newMockBuilder()->newObject( 'CacheableObjectCollector', array(
 			'doCollect'  => $doCollect,
 			'cacheSetup' => new SimpleDictionary( $cacheSetup )
-		) )->getMockCacheableObjectCollector();
+		) );
 
 		return $collector;
 	}
@@ -61,8 +61,7 @@ class CacheableObjectCollectorTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
 	}
 
 	/**

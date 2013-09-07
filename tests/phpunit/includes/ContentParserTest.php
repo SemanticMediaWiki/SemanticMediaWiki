@@ -113,12 +113,12 @@ class ContentParserTest extends ParserTestCase {
 		$expected ='<p>' . $text . "\n" . '</p>';
 
 		// #0 Title does not exists
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey'        => 'Lila',
 			'exists'          => false,
 			'getText'         => null,
 			'getPageLanguage' => $this->getLanguage()
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(
@@ -132,17 +132,17 @@ class ContentParserTest extends ParserTestCase {
 		);
 
 		// #1 Valid revision
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey'        => 'Lula',
 			'exists'          => true,
 			'getPageLanguage' => $this->getLanguage()
-		) )->getMockTitle();
+		) );
 
-		$revision = $this->newMockObject( array(
+		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
 			'getId'   => 9001,
 			'getUser' => 'Lala',
 			'getText' => $text,
-		) )->getMockRevision();
+		) );
 
 		$provider[] = array(
 			array(

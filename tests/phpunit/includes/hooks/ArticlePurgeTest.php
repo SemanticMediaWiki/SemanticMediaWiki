@@ -45,8 +45,12 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return ArticlePurge
 	 */
-	private function getInstance( WikiPage $wikiPage = null ) {
-		$wikiPage = $wikiPage === null ? $this->newMockObject()->getMockWikiPage() : $wikiPage;
+	private function newInstance( WikiPage $wikiPage = null ) {
+
+		if ( $wikiPage === null ) {
+			$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage' );
+		}
+
 		return new ArticlePurge( $wikiPage );
 	}
 
@@ -56,7 +60,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -85,7 +89,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 			CacheHandler::newFromId( $settings->get( 'smwgCacheType' ) )
 		);
 
-		$instance = $this->getInstance( $wikiPage );
+		$instance = $this->newInstance( $wikiPage );
 		$instance->setDependencyBuilder( $dependencyBuilder );
 		$cache = $dependencyBuilder->newObject( 'CacheHandler' );
 
@@ -107,7 +111,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		// #0 Id = cache
 		$provider[] = array(
 			array(
-				'title'  => $this->newMockObject()->getMockTitle(),
+				'title'  => $this->newMockBuilder()->newObject( 'Title' ),
 				'smwgAutoRefreshOnPurge' => true
 			),
 			array(
@@ -118,7 +122,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		// #1 Disabled setting
 		$provider[] = array(
 			array(
-				'title'  => $this->newMockObject()->getMockTitle(),
+				'title'  => $this->newMockBuilder()->newObject( 'Title' ),
 				'smwgAutoRefreshOnPurge' => false
 			),
 			array(
@@ -127,9 +131,9 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		);
 
 		// #2 No Id
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'getArticleID' => 0
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(

@@ -65,7 +65,7 @@ class UpdateJobTest extends ParserTestCase {
 		$builder = $instance->getDependencyBuilder();
 		$container = $builder->getContainer();
 		$container->registerObject( 'Settings', $settings );
-		$container->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+		$container->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
 
 		// This seems redundant but it allows to cover
 		// all necessary methods provided by the JobBase
@@ -95,9 +95,9 @@ class UpdateJobTest extends ParserTestCase {
 	 */
 	public function testRun() {
 
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'exists' => true
-		) )->getMockTitle();
+		) );
 
 		$this->assertFalse(
 			$this->newInstance( $title )->run(),
@@ -137,10 +137,10 @@ class UpdateJobTest extends ParserTestCase {
 		$provider = array();
 
 		// #0 Title does not exists, deleteSubject() is being executed
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey' => 'Lila',
 			'exists'   => false
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(
@@ -153,14 +153,14 @@ class UpdateJobTest extends ParserTestCase {
 		);
 
 		// #1 No revision, no further activities
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey' => 'Lala',
 			'exists'   => true
-		) )->getMockTitle();
+		) );
 
-		$contentParser = $this->newMockobject( array(
+		$contentParser = $this->newMockBuilder()->newObject( 'ContentParser', array(
 			'getOutput' => null
-		) )->getMockContentParser();
+		) );
 
 		$provider[] = array(
 			array(
@@ -173,14 +173,14 @@ class UpdateJobTest extends ParserTestCase {
 		);
 
 		// #2 Valid revision and parserOuput
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey' => 'Lula',
 			'exists'   => true
-		) )->getMockTitle();
+		) );
 
-		$contentParser = $this->newMockobject( array(
-			'getOutput' => $this->newMockobject()->getMockParserOutput()
-		) )->getMockContentParser();
+		$contentParser = $this->newMockBuilder()->newObject( 'ContentParser', array(
+			'getOutput' => $this->newMockBuilder()->newObject( 'ParserOutput' )
+		) );
 
 		$provider[] = array(
 			array(

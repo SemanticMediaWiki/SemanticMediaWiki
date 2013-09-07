@@ -109,12 +109,13 @@ class ParserAfterTidyTest extends ParserTestCase {
 		) );
 
 		$updateObserver = new MockUpdateObserver();
+		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
 
 		$cacheHandler = $this->newMockCacheHandler( $setup['title']->getArticleID(), $setup['cache']  );
 
 		$container = $instance->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Settings', $settings );
-		$container->registerObject( 'Store', $this->newMockObject()->getMockStore() );
+		$container->registerObject( 'Store', $mockStore );
 		$container->registerObject( 'UpdateObserver', $updateObserver );
 		$container->registerObject( 'CacheHandler', $cacheHandler );
 
@@ -188,10 +189,10 @@ class ParserAfterTidyTest extends ParserTestCase {
 		$provider = array();
 
 		// #0 Runs store update
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'inNamespace'     => false,
 			'getArticleID'    => 9001
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(
@@ -204,9 +205,9 @@ class ParserAfterTidyTest extends ParserTestCase {
 		);
 
 		// #1 No cache entry, no store update
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'inNamespace'     => false,
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(
@@ -219,9 +220,9 @@ class ParserAfterTidyTest extends ParserTestCase {
 		);
 
 		// #2 SpecialPage, no store update
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'isSpecialPage'   => true,
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(
@@ -234,10 +235,10 @@ class ParserAfterTidyTest extends ParserTestCase {
 		);
 
 		// #3 NS_FILE, no store update
-		$title = $this->newMockObject( array(
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'inNamespace'     => true,
 			'getNamespace'    => NS_FILE
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(

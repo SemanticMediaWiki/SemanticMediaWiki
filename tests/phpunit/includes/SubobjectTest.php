@@ -64,7 +64,11 @@ class SubobjectTest extends ParserTestCase {
 	 *
 	 * @return Subobject
 	 */
-	private function newInstance( Title $title, $id = '' ) {
+	private function newInstance( Title $title = null, $id = '' ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
 
 		$instance = new Subobject( $title );
 
@@ -82,10 +86,7 @@ class SubobjectTest extends ParserTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-
-		$instance = $this->newInstance( $this->getTitle() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -194,18 +195,18 @@ class SubobjectTest extends ParserTestCase {
 	 */
 	public function testDataValueExaminer( array $test, array $expected ) {
 
-		$property  = $this->newMockObject( array(
+		$property  = $this->newMockBuilder()->newObject( 'DIProperty', array(
 			'findPropertyTypeID' => $test['property']['typeId'],
 			'getKey'             => $test['property']['key'],
 			'getLabel'           => $test['property']['label'],
-		) )->getMockDIProperty();
+		) );
 
-		$dataValue = $this->newMockObject( array(
+		$dataValue = $this->newMockBuilder()->newObject( 'DataValue', array(
 			'DataValueType' => $test['dataValue']['type'],
 			'getDataItem'   => $test['dataValue']['dataItem'],
 			'getProperty'   => $property,
 			'isValid'       => true,
-		) )->getMockDataValue();
+		) );
 
 		$subobject = $this->newInstance( $this->getTitle(), $this->newRandomString() );
 		$subobject->addDataValue( $dataValue );

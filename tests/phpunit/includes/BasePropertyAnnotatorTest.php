@@ -54,7 +54,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	private function newInstance( SemanticData $semanticData = null, $settings = array() ) {
 
 		if ( $semanticData === null ) {
-			$semanticData = $this->newMockObject()->getMockSemanticData();
+			$semanticData = $this->newMockBuilder()->newObject( 'SemanticData' );
 		}
 
 		return new BasePropertyAnnotator( $semanticData, $this->newSettings( $settings ) );
@@ -114,9 +114,9 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 			$this->newSubject( $this->newTitle( $setup['namespace'] ) )
 		);
 
-		$mockObserver = $this->newMockObject( array(
+		$mockObserver = $this->newMockBuilder()->newObject( 'FakeObserver', array(
 			'updateOutput' => array( $this, 'mockObserverCallback' )
-		) )->getMockObsever();
+		) );
 
 		// Create instance and attach mock Observer
 		$instance = $this->newInstance( $semanticData, $setup['settings'] );
@@ -187,9 +187,9 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		$subject  = $this->newSubject( $setup['title'] );
 		$semanticData = new SemanticData( $subject );
 
-		$mockObserver = $this->newMockObject( array(
+		$mockObserver = $this->newMockBuilder()->newObject( 'FakeObserver', array(
 			'updateOutput' => array( $this, 'mockObserverCallback' )
-		) )->getMockObsever();
+		) );
 
 		// Create instance and attach mock Observer
 		$instance = $this->newInstance( $semanticData );
@@ -226,13 +226,13 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 
 		// Setup inidivudal mock objects that will be invoked in order to
 		// control and support only needed functions
-		$wikiPage = $this->newMockObject( $setup['wikipage'] )->getMockWikIPage();
-		$revision = $this->newMockObject( $setup['revision'] )->getMockRevision();
-		$user     = $this->newMockObject( $setup['user'] )->getMockUser();
+		$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage', $setup['wikiPage'] );
+		$revision = $this->newMockBuilder()->newObject( 'Revision', $setup['revision'] );
+		$user     = $this->newMockBuilder()->newObject( 'User', $setup['user'] );
 
-		$mockObserver = $this->newMockObject( array(
+		$mockObserver = $this->newMockBuilder()->newObject( 'FakeObserver', array(
 			'updateOutput' => array( $this, 'mockObserverCallback' )
-		) )->getMockObsever();
+		) );
 
 		// Create instance and attach mock Observer
 		$instance = $this->newInstance( $semanticData, $setup['settings'] );
@@ -285,7 +285,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( 'Lala', '_Lula', '-Lila', '' )
 				),
-				'wikipage' => array(),
+				'wikiPage' => array(),
 				'revision' => array(),
 				'user'     => array()
 			),
@@ -301,7 +301,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
 				),
-				'wikipage' => array( 'getTimestamp' => 1272508903 ),
+				'wikiPage' => array( 'getTimestamp' => 1272508903 ),
 				'revision' => array(),
 				'user'     => array()
 			),
@@ -313,17 +313,19 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		);
 
 		// TYPE_CREATION_DATE
-		$title = $this->newMockObject( array(
+		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+			'getTimestamp' => 1272508903
+		) );
+
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey'         => 'Lula',
 			'getNamespace'     => NS_MAIN,
-			'getFirstRevision' => $this->newMockObject( array(
-				'getTimestamp' => 1272508903
-			) )->getMockRevision()
-		) )->getMockTitle();
+			'getFirstRevision' => $revision
+		) );
 
-		$subject = $this->newMockObject( array(
-			'getTitle' => $this->newMockObject()->getMockTitle()
-		) )->getMockDIWikiPage();
+		$subject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
+			'getTitle' => $this->newMockBuilder()->newObject( 'Title' )
+		) );
 
 		$provider[] = array(
 			array(
@@ -331,7 +333,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_CREATION_DATE )
 				),
-				'wikipage' => array( 'getTitle' => $title ),
+				'wikiPage' => array( 'getTitle' => $title ),
 				'revision' => array(),
 				'user'     => array()
 			),
@@ -349,7 +351,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_NEW_PAGE )
 				),
-				'wikipage' => array(),
+				'wikiPage' => array(),
 				'revision' => array( 'getParentId' => 9001 ),
 				'user'     => array()
 			),
@@ -361,10 +363,10 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 		);
 
 		// TYPE_LAST_EDITOR
-		$userPage = $this->newMockObject( array(
+		$userPage = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey'         => 'Lula',
 			'getNamespace'     => NS_USER,
-		) )->getMockTitle();
+		) );
 
 		$provider[] = array(
 			array(
@@ -372,7 +374,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_LAST_EDITOR )
 				),
-				'wikipage' => array(),
+				'wikiPage' => array(),
 				'revision' => array(),
 				'user'     => array( 'getUserPage' => $userPage )
 			),
@@ -390,7 +392,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( '_MDAT', '_LEDT' )
 				),
-				'wikipage' => array( 'getTimestamp' => 1272508903 ),
+				'wikiPage' => array( 'getTimestamp' => 1272508903 ),
 				'revision' => array(),
 				'user'     => array( 'getUserPage' => $userPage )
 			),
