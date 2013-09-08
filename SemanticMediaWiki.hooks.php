@@ -606,23 +606,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onNewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) {
-		$parserOutput = $wikiPage->getParserOutput(
-			$wikiPage->makeParserOptions( $user ),
-			$revision->getId()
-		);
-
-		if ( !( $parserOutput instanceof ParserOutput ) ) {
-			return true;
-		}
-
-		$settings   = \SMW\Settings::newFromGlobals();
-		$parserData = new SMW\ParserData( $wikiPage->getTitle(), $parserOutput );
-
-		$complementor = new \SMW\BasePropertyAnnotator( $parserData->getData(), $settings );
-		$complementor->attach( $parserData );
-		$complementor->addSpecialProperties( $wikiPage, $revision, $user );
-
-		return true;
+		return \SMW\FunctionHookRegistry::register( new \SMW\NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) )->process();
 	}
 
 	/**

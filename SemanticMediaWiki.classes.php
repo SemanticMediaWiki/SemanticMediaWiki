@@ -104,13 +104,14 @@ return array(
 	'SMW\CacheIdGenerator'            => 'includes/cache/CacheIdGenerator.php',
 
 	// Hooks
-	'SMW\InternalParseBeforeLinks'  => 'includes/hooks/InternalParseBeforeLinks.php',
-	'SMW\ParserAfterTidy'           => 'includes/hooks/ParserAfterTidy.php',
-	'SMW\LinksUpdateConstructed'    => 'includes/hooks/LinksUpdateConstructed.php',
-	'SMW\BeforePageDisplay'         => 'includes/hooks/BeforePageDisplay.php',
-	'SMW\ArticlePurge'              => 'includes/hooks/ArticlePurge.php',
-	'SMW\FunctionHook'              => 'includes/hooks/FunctionHook.php',
-	'SMW\FunctionHookRegistry'      => 'includes/hooks/FunctionHookRegistry.php',
+	'SMW\NewRevisionFromEditComplete'  => 'includes/hooks/NewRevisionFromEditComplete.php',
+	'SMW\InternalParseBeforeLinks'     => 'includes/hooks/InternalParseBeforeLinks.php',
+	'SMW\ParserAfterTidy'              => 'includes/hooks/ParserAfterTidy.php',
+	'SMW\LinksUpdateConstructed'       => 'includes/hooks/LinksUpdateConstructed.php',
+	'SMW\BeforePageDisplay'            => 'includes/hooks/BeforePageDisplay.php',
+	'SMW\ArticlePurge'                 => 'includes/hooks/ArticlePurge.php',
+	'SMW\FunctionHook'                 => 'includes/hooks/FunctionHook.php',
+	'SMW\FunctionHookRegistry'         => 'includes/hooks/FunctionHookRegistry.php',
 
 	// Formatters
 	'SMW\ArrayFormatter'               => 'includes/formatters/ArrayFormatter.php',
