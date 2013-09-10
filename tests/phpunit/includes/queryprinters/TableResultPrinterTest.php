@@ -3,10 +3,6 @@
 namespace SMW\Test;
 
 use SMW\TableResultPrinter;
-use SMW\ResultPrinter;
-use SMWPrintRequest;
-
-use ReflectionClass;
 
 /**
  * Tests for the TableResultPrinter class
@@ -39,139 +35,15 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWPrintRequest object
-	 *
-	 * @since 1.9
-	 *
-	 * @return SMWPrintRequest
-	 */
-	private function getMockPrintRequest( $text = 'Foo' ) {
-
-		$printRequest = $this->getMockBuilder( 'SMWPrintRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$printRequest->expects( $this->any() )
-			->method( 'getText' )
-			->will( $this->returnValue( $text ) );
-
-		$printRequest->expects( $this->any() )
-			->method( 'getMode' )
-			->will( $this->returnValue( SMWPrintRequest::PRINT_THIS ) );
-
-		$printRequest->expects( $this->any() )
-			->method( 'getParameter' )
-			->will( $this->returnValue( 'center' ) );
-
-		return $printRequest;
-	}
-
-
-	/**
-	 * Helper method that returns a SMWDataValue object
-	 *
-	 * @since 1.9
-	 *
-	 * @return SMWDataValue
-	 */
-	private function getMockDataValue( $text = null ) {
-
-		$dataItem = $this->getSubject();
-		$typeId   = '_wpg';
-
-		$dataValue = $this->getMockBuilder( 'SMWWikiPageValue' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$dataValue->expects( $this->any() )
-			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
-
-		$dataValue->expects( $this->any() )
-			->method( 'getTypeID' )
-			->will( $this->returnValue( $typeId ) );
-
-		$dataValue->expects( $this->any() )
-			->method( 'getShortText' )
-			->will( $this->returnValue( $text === null ? $dataItem->getTitle()->getText() : $text ) );
-
-		return $dataValue;
-	}
-
-	/**
-	 * Helper method that returns a SMWResultArray object
-	 *
-	 * @since 1.9
-	 *
-	 * @return SMWResultArray
-	 */
-	private function getMockResultArray( $text = 'Bar' ) {
-
-		$resultArray = $this->getMockBuilder( 'SMWResultArray' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$resultArray->expects( $this->any() )
-			->method( 'getText' )
-			->will( $this->returnValue( $text ) );
-
-		$resultArray->expects( $this->exactly( 2 ) )
-			->method( 'getPrintRequest' )
-			->will( $this->returnValue( $this->getMockPrintRequest() ) );
-
-		$resultArray->expects( $this->any() )
-			->method( 'getNextDataValue' )
-			->will( $this->onConsecutiveCalls( $this->getMockDataValue( $text ), false ) );
-
-		return $resultArray;
-	}
-
-	/**
-	 * Helper method that returns a SMWQueryResult object
-	 *
-	 * @since 1.9
-	 *
-	 * @return SMWQueryResult
-	 */
-	private function getMockQueryResult( array $printRequests, array $resultArray ) {
-
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult->expects( $this->any() )
-			->method( 'getCount' )
-			->will( $this->returnValue( count( $resultArray ) ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getPrintRequests' )
-			->will( $this->returnValue( $printRequests ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( true ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getLink' )
-			->will( $this->returnValue( new \SMWInfolink( true, 'Lala' , 'Lula' ) ) );
-
-		// Word of caution, onConsecutiveCalls is used in order to ensure
-		// that a while() loop is not trapped in an infinite loop and returns
-		// a false at the end
-		$queryResult->expects( $this->any() )
-			->method( 'getNext' )
-			->will( $this->onConsecutiveCalls( $resultArray , false ) );
-
-		return $queryResult;
-	}
-
-	/**
 	 * Helper method that returns a TableResultPrinter object
 	 *
 	 * @return TableResultPrinter
 	 */
-	private function getInstance( $parameters = array() ) {
-		return $this->setParameters( new TableResultPrinter( 'table' ), $parameters );
+	private function newInstance( $parameters = array() ) {
+
+		$format = isset( $parameters['format'] ) ? $parameters['format'] : 'table';
+
+		return $this->setParameters( new TableResultPrinter( $format ), $parameters );
 	}
 
 	/**
@@ -180,23 +52,114 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
 	 * @test TableResultPrinter::getResultText
+	 * @dataProvider standardTableDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testGetResultText() {
+	public function testGetResultText(  $setup, $expected  ) {
 
-		$random = array(
-			'pr-1' => 'PR-' . $this->getRandomString(),
-			'pr-2' => 'PR-' . $this->getRandomString(),
-			'ra-1' => 'RA-' . $this->getRandomString(),
-			'ra-2' => 'RA-' . $this->getRandomString(),
+		$instance  = $this->newInstance( $setup['parameters'] );
+		$reflector = $this->newReflector();
+
+		$property = $reflector->getProperty( 'fullParams' );
+		$property->setAccessible( true );
+		$property->setValue( $instance, array() );
+
+		$method = $reflector->getMethod( 'linkFurtherResults' );
+		$method->setAccessible( true );
+		$method->invoke( $instance, $setup['queryResult'] );
+
+		$method = $reflector->getMethod( 'getResultText' );
+		$method->setAccessible( true );
+
+		$result = $method->invoke( $instance, $setup['queryResult'], $setup['outputMode'] );
+
+		$this->assertInternalType(
+			'string',
+			$result,
+			'assert that the result always returns a string'
 		);
 
+		$this->assertTag(
+			$expected['matcher'],
+			$result,
+			'asserts that tags correspond with invoked matcher'
+		);
+
+	}
+
+	/**
+	 * @return array
+	 */
+	public function standardTableDataProvider() {
+
+		$provider = array();
+
+		$labels = array(
+			'pr-1' => 'PrintRequest-PageValue',
+			'pr-2' => 'PrintRequest-NumberValue',
+			'ra-1' => 'ResultArray-PageValue',
+			'ra-2' =>  9001
+		);
+
+		$printRequests = array();
+
+		$printRequests['pr-1'] = $this->newMockBuilder()->newObject( 'PrintRequest', array(
+			'getText' => $labels['pr-1']
+		) );
+
+		$printRequests['pr-2'] = $this->newMockBuilder()->newObject( 'PrintRequest', array(
+			'getText' => $labels['pr-2']
+		) );
+
+		$datItems = array();
+
+		$datItems['ra-1'] = $this->newSubject( $this->newTitle( NS_MAIN, $labels['ra-1'] ) );
+		$datItems['ra-2'] = $this->newMockBuilder()->newObject( 'DataItem', array( 'getSortKey' => $labels['ra-2'] ) );
+
+		$dataValues = array();
+
+		$dataValues['ra-1'] = $this->newMockBuilder()->newObject( 'DataValue', array(
+			'DataValueType'    => 'SMWWikiPageValue',
+			'getTypeID'        => '_wpg',
+			'getShortText'     => $labels['ra-1'],
+			'getDataItem'      => $datItems['ra-1']
+		) );
+
+		$dataValues['ra-2'] = $this->newMockBuilder()->newObject( 'DataValue', array(
+			'DataValueType'    => 'SMWNumberValue',
+			'getTypeID'        => '_num',
+			'getShortText'     => $labels['ra-2'],
+			'getDataItem'      => $datItems['ra-2']
+		) );
+
+		$resultArray = array();
+
+		$resultArray['ra-1'] = $this->newMockBuilder()->newObject( 'ResultArray', array(
+			'getText'          => $labels['ra-1'],
+			'getPrintRequest'  => $printRequests['pr-1'],
+			'getNextDataValue' => $dataValues['ra-1'],
+		) );
+
+		$resultArray['ra-2'] = $this->newMockBuilder()->newObject( 'ResultArray', array(
+			'getText'          => $labels['ra-2'],
+			'getPrintRequest'  => $printRequests['pr-2'],
+			'getNextDataValue' => $dataValues['ra-2'],
+		) );
+
+		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
+			'getPrintRequests'  => array( $printRequests['pr-1'], $printRequests['pr-2'] ),
+			'getNext'           => array( $resultArray['ra-1'], $resultArray['ra-2'] ),
+			'getLink'           => new \SMWInfolink( true, 'Lala' , 'Lula' ),
+			'hasFurtherResults' => true
+		) );
+
+		// #0 standard table
 		$parameters = array(
 			'headers'   => SMW_HEADERS_PLAIN,
 			'class'     => 'tableClass',
@@ -205,19 +168,17 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'transpose' => false
 		);
 
-		// Table matcher, expecting randomly generate strings
-		// to be present in a certain order and context
 		$matcher = array(
 			'tag' => 'table', 'attributes' => array( 'class' => $parameters['class'] ),
 			'descendant' => array(
-				'tag' => 'th', 'content' => $random['pr-1'], 'attributes' => array( 'class' => $random['pr-1'] ),
-				'tag' => 'th', 'content' => $random['pr-2'], 'attributes' => array( 'class' => $random['pr-2'] ),
+				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
+				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array( 'class' => $labels['pr-2'] ),
 			),
 			'descendant' => array(
 				'tag' => 'tr',
 				'child' => array(
-					'tag' => 'td', 'content' => $random['ra-1'], 'attributes' => array( 'class' => $random['pr-1'] ),
-					'tag' => 'td', 'content' => $random['ra-2'], 'attributes' => array( 'class' => $random['pr-2'] )
+					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
+					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array( 'class' => $labels['pr-2'] )
 				)
 			),
 			'descendant' => array(
@@ -228,35 +189,100 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			)
 		);
 
-		// Set-up and inject necessary objects
-		$instance = $this->getInstance( $parameters );
-
-		$printRequests = array(
-			$this->getMockPrintRequest( $random['pr-1'] ),
-			$this->getMockPrintRequest( $random['pr-2'] )
+		$provider[] = array(
+			array(
+				'parameters'  => $parameters,
+				'queryResult' => $queryResult,
+				'outputMode'  => SMW_OUTPUT_FILE
+			),
+			array(
+				'matcher'     => $matcher
+			)
 		);
-		$resultArray   = array(
-			$this->getMockResultArray( $random['ra-1'] ),
-			$this->getMockResultArray( $random['ra-2'] )
+
+		// #1 broadtable table
+		$parameters = array(
+			'headers'   => SMW_HEADERS_PLAIN,
+			'class'     => 'tableClass',
+			'format'    => 'broadtable',
+			'offset'    => 0,
+			'transpose' => false
 		);
 
-		// Access protected methods and properties
-		$reflector = new ReflectionClass( $this->getClass() );
+		$matcher = array(
+			'tag' => 'table', 'attributes' => array( 'class' => $parameters['class'], 'width' => '100%' ),
+			'descendant' => array(
+				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
+				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array( 'class' => $labels['pr-2'] ),
+			),
+			'descendant' => array(
+				'tag' => 'tr',
+				'child' => array(
+					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
+					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array( 'class' => $labels['pr-2'] )
+				)
+			),
+			'descendant' => array(
+				'tag' => 'tr', 'attributes' => array( 'class' => 'smwfooter' ),
+				'child' => array(
+					'tag' => 'td', 'attributes' => array( 'class' => 'sortbottom' ),
+				)
+			)
+		);
 
-		$property = $reflector->getProperty( 'fullParams' );
-		$property->setAccessible( true );
-		$property->setValue( $instance, array() );
+		$provider[] = array(
+			array(
+				'parameters'  => $parameters,
+				'queryResult' => $queryResult,
+				'outputMode'  => SMW_OUTPUT_FILE
+			),
+			array(
+				'matcher'     => $matcher
+			)
+		);
 
-		$method = $reflector->getMethod( 'linkFurtherResults' );
-		$method->setAccessible( true );
-		$method->invoke( $instance, $this->getMockQueryResult( $printRequests, $resultArray ) );
+		// #2 "headers=hide"
+		$parameters = array(
+			'headers'   => SMW_HEADERS_HIDE,
+			'class'     => 'tableClass',
+			'format'    => 'table',
+			'offset'    => 0,
+			'transpose' => false
+		);
 
-		$method = $reflector->getMethod( 'getResultText' );
-		$method->setAccessible( true );
+		$matcher = array(
+			'tag' => 'table', 'attributes' => array( 'class' => $parameters['class'] ),
+			'descendant' => array(
+				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array(),
+				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array(),
+			),
+			'descendant' => array(
+				'tag' => 'tr',
+				'child' => array(
+					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array(),
+					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array()
+				)
+			),
+			'descendant' => array(
+				'tag' => 'tr', 'attributes' => array( 'class' => 'smwfooter' ),
+				'child' => array(
+					'tag' => 'td', 'attributes' => array( 'class' => 'sortbottom' ),
+				)
+			)
+		);
 
-		$result = $method->invoke( $instance, $this->getMockQueryResult( $printRequests, $resultArray ), SMW_OUTPUT_FILE );
-		$this->assertInternalType( 'string', $result );
-		$this->assertTag( $matcher, $result );
+		$provider[] = array(
+			array(
+				'parameters'  => $parameters,
+				'queryResult' => $queryResult,
+				'outputMode'  => SMW_OUTPUT_FILE
+			),
+			array(
+				'matcher'     => $matcher
+			)
+		);
+
+		return $provider;
 
 	}
 }

@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMWDataItem;
+use SMWPrintRequest;
 
 /**
  * MockObject repository
@@ -403,6 +404,18 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->builder->setValue( 'getDataItem' ) ) );
 
+		$dataValue->expects( $this->any() )
+			->method( 'getTypeID' )
+			->will( $this->returnValue( $this->builder->setValue( 'getTypeID' ) ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getShortText' )
+			->will( $this->returnValue( $this->builder->setValue( 'getShortText' ) ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getShortWikiText' )
+			->will( $this->returnValue( $this->builder->setValue( 'getShortWikiText' ) ) );
+
 		return $dataValue;
 	}
 
@@ -430,6 +443,25 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 		$queryResult->expects( $this->any() )
 			->method( 'hasFurtherResults' )
 			->will( $this->returnValue( $this->builder->setValue( 'hasFurtherResults' ) ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getLink' )
+			->will( $this->returnValue( $this->builder->setValue( 'getLink' ) ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getCount' )
+			->will( $this->returnValue( $this->builder->setValue( 'getCount' ) ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getPrintRequests' )
+			->will( $this->returnValue( $this->builder->setValue( 'getPrintRequests' ) ) );
+
+		// Word of caution, onConsecutiveCalls is used in order to ensure
+		// that a while() loop is not trapped in an infinite loop and returns
+		// a false at the end
+		$queryResult->expects( $this->any() )
+			->method( 'getNext' )
+			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNext' ) , false ) );
 
 		return $queryResult;
 	}
@@ -965,6 +997,95 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->builder->setValue( 'getParserOutput' ) ) );
 
 		return $content;
+	}
+
+	/**
+	 * Returns a SMWDataItem object
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWDataItem
+	 */
+	public function DataItem() {
+
+		$dataItem = $this->getMockBuilder( 'SMWDataItem' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getNumber', 'getDIType', 'getSortKey', 'equals', 'getSerialization' ) )
+			->getMock();
+
+		$dataItem->expects( $this->any() )
+			->method( 'getDIType' )
+			->will( $this->returnValue( $this->builder->setValue( 'getDIType' ) ) );
+
+		$dataItem->expects( $this->any() )
+			->method( 'getSortKey' )
+			->will( $this->returnValue( $this->builder->setValue( 'getSortKey' ) ) );
+
+		$dataItem->expects( $this->any() )
+			->method( 'getNumber' )
+			->will( $this->returnValue( $this->builder->setValue( 'getNumber' ) ) );
+
+		return $dataItem;
+	}
+
+	/**
+	 * Helper method that returns a SMWPrintRequest object
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWPrintRequest
+	 */
+	public function PrintRequest() {
+
+		$printRequest = $this->getMockBuilder( 'SMWPrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$printRequest->expects( $this->any() )
+			->method( 'getText' )
+			->will( $this->returnValue( $this->builder->setValue( 'getText', $this->builder->newRandomString( 10, 'Auto-printRequest' ) ) ) );
+
+		$printRequest->expects( $this->any() )
+			->method( 'getMode' )
+			->will( $this->returnValue( $this->builder->setValue( 'getMode', SMWPrintRequest::PRINT_THIS ) ) );
+
+		$printRequest->expects( $this->any() )
+			->method( 'getParameter' )
+			->will( $this->returnValue( $this->builder->setValue( 'getParameter', 'center' ) ) );
+
+		return $printRequest;
+	}
+
+	/**
+	 * Helper method that returns a SMWResultArray object
+	 *
+	 * @since 1.9
+	 *
+	 * @return SMWResultArray
+	 */
+	public function ResultArray() {
+
+		$resultArray = $this->getMockBuilder( 'SMWResultArray' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$resultArray->expects( $this->any() )
+			->method( 'getText' )
+			->will( $this->returnValue( $this->builder->setValue( 'getText' ) ) );
+
+		$resultArray->expects( $this->any() )
+			->method( 'getPrintRequest' )
+			->will( $this->returnValue( $this->builder->setValue( 'getPrintRequest' ) ) );
+
+		$resultArray->expects( $this->any() )
+			->method( 'getNextDataValue' )
+			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNextDataValue' ), false ) );
+
+		$resultArray->expects( $this->any() )
+			->method( 'getNextDataItem' )
+			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNextDataItem' ), false ) );
+
+		return $resultArray;
 	}
 
 }
