@@ -11,6 +11,6 @@ composer.lock
 !.gitignore
 !.gitreview
 
-!.travis.yml
-!.travis.sh
+!.travis*
+
 !.coveralls.yml
