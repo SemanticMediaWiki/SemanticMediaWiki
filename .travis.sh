@@ -6,7 +6,7 @@ originalDirectory=$(pwd)
 
 cd ..
 
-git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git phase3 --depth 1
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git phase3
 
 cd phase3
 
