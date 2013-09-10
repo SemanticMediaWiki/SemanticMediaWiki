@@ -282,6 +282,30 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			)
 		);
 
+		// #3 "transpose=true"
+		$parameters = array(
+			'headers'   => SMW_HEADERS_PLAIN,
+			'class'     => 'tableClass',
+			'format'    => 'table',
+			'offset'    => 0,
+			'transpose' => true
+		);
+
+		//TODO add proper matching data, which I can't seem to get to work.
+		//MWJames would you mind doing the honors?
+		$matcher = array();
+
+		$provider[] = array(
+			array(
+				'parameters'  => $parameters,
+				'queryResult' => $queryResult,
+				'outputMode'  => SMW_OUTPUT_FILE
+			),
+			array(
+				'matcher'     => $matcher
+			)
+		);
+
 		return $provider;
 
 	}

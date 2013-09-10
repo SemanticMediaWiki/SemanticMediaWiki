@@ -92,10 +92,7 @@ class TableResultPrinter extends ResultPrinter {
 			$tableAttrs['width'] = '100%';
 		}
 
-		// @note A table is only transposable if header elements are visible
-		// $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose']
-		// if transpose is enabled, please adopt the unit test as well
-		return $this->tableFormatter->transpose( false )->getTable( $tableAttrs );
+		return $this->tableFormatter->transpose(  $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose'] )->getTable( $tableAttrs );
 	}
 
 	/**
@@ -209,12 +206,11 @@ class TableResultPrinter extends ResultPrinter {
 			'default' => 'sortable wikitable smwtable',
 		);
 
-		// Uncomment to enable this feature
-		// $params['transpose'] = array(
-		//	'type' => 'boolean',
-		//	'default' => false,
-		//	'message' => 'smw-paramdesc-table-transpose',
-		// );
+		$params['transpose'] = array(
+			'type' => 'boolean',
+			'default' => false,
+			'message' => 'smw-paramdesc-table-transpose',
+		);
 
 		return $params;
 	}
