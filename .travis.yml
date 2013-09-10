@@ -27,7 +27,7 @@ before_script: bash .travis.setup.sh
 script: bash .travis.test.sh
 
 after_script:
-  - cd ../../extensions/SemanticMediaWiki
+  - cd ../phase3/extensions/SemanticMediaWiki
   - composer require satooshi/php-coveralls:dev-master
   - php vendor/bin/coveralls -v
 
