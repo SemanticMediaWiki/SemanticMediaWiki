@@ -5,20 +5,22 @@ env:
 
 matrix:
   include:
-    - env: DBTYPE=mysql
+    - env: DBTYPE=mysql; MW=master
       php: 5.3
-    - env: DBTYPE=mysql
+    - env: DBTYPE=mysql; MW=1.19.0
       php: 5.4
-    - env: DBTYPE=sqlite
-      php: 5.4
-    - env: DBTYPE=sqlite
+    - env: DBTYPE=mysql; MW=1.21.0
       php: 5.5
-    - env: DBTYPE=postgres
+    - env: DBTYPE=sqlite; MW=master
+      php: 5.4
+    - env: DBTYPE=sqlite; MW=1.19.0
+      php: 5.5
+    - env: DBTYPE=postgres; MW=master
       php: 5.5
   exclude:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
-    - env: DBTYPE=postgres
+    - env: DBTYPE=postgres; MW=master
 
 before_script:
   - bash .travis.sh
