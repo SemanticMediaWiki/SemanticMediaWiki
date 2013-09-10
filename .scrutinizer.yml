@@ -1,0 +1,15 @@
+inherit: true
+
+before_commands:
+  - "composer install --prefer-source"
+
+tools:
+    php_code_coverage: true
+    php_code_sniffer: true
+    php_cpd: true
+    php_cs_fixer: true
+    php_loc: true
+    php_mess_detector: true
+    php_pdepend: true
+    php_analyzer: true
+    sensiolabs_security_checker: true
