@@ -1,10 +1,7 @@
 inherit: true
 
-before_commands:
-  - "composer install --prefer-source"
-
 tools:
-    php_code_coverage: true
+    php_code_coverage: false
     php_code_sniffer: true
     php_cpd: true
     php_cs_fixer: true
