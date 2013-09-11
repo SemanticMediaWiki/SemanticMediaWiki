@@ -104,6 +104,7 @@ return array(
 	'SMW\CacheIdGenerator'            => 'includes/cache/CacheIdGenerator.php',
 
 	// Hooks
+	'SMW\SpecialStatsAddExtra'         => 'includes/hooks/SpecialStatsAddExtra.php',
 	'SMW\NewRevisionFromEditComplete'  => 'includes/hooks/NewRevisionFromEditComplete.php',
 	'SMW\InternalParseBeforeLinks'     => 'includes/hooks/InternalParseBeforeLinks.php',
 	'SMW\ParserAfterTidy'              => 'includes/hooks/ParserAfterTidy.php',

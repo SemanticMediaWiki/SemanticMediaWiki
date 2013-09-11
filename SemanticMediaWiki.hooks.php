@@ -453,32 +453,7 @@ final class SMWHooks {
 	* @return boolean
 	*/
 	public static function onSpecialStatsAddExtra( array &$extraStats ) {
-		global $wgVersion, $wgLang;
-
-		$semanticStatistics = \SMW\StoreFactory::getStore()->getStatistics();
-
-		if ( version_compare( $wgVersion, '1.21', '<' ) ) {
-			// Legacy approach to display statistical items
-			$extraStats[wfMessage( 'smw-statistics-property-instance' )->text()] = $wgLang->formatNum( $semanticStatistics['PROPUSES'] );
-			$extraStats[wfMessage( 'smw-statistics-property-total-legacy' )->text()] = $wgLang->formatNum( $semanticStatistics['USEDPROPS'] );
-			$extraStats[wfMessage( 'smw-statistics-property-page' )->text()] = $wgLang->formatNum( $semanticStatistics['OWNPAGE'] );
-			$extraStats[wfMessage( 'smw-statistics-property-type' )->text()] = $wgLang->formatNum( $semanticStatistics['DECLPROPS'] );
-			$extraStats[wfMessage( 'smw-statistics-subobject-count' )->text()]  = $wgLang->formatNum( $semanticStatistics['SUBOBJECTS'] );
-			$extraStats[wfMessage( 'smw-statistics-query-inline' )->text()]  = $wgLang->formatNum( $semanticStatistics['QUERY'] );
-			$extraStats[wfMessage( 'smw-statistics-concept-count-legacy' )->text()]  = $wgLang->formatNum( $semanticStatistics['CONCEPTS'] );
-		} else {
-			$extraStats['smw-statistics'] = array();
-			$extraStats['smw-statistics']['smw-statistics-property-instance'] = $semanticStatistics['PROPUSES'];
-			$extraStats['smw-statistics']['smw-statistics-property-total'] = $semanticStatistics['USEDPROPS'];
-			$extraStats['smw-statistics']['smw-statistics-property-page'] = $semanticStatistics['OWNPAGE'];
-			$extraStats['smw-statistics']['smw-statistics-property-type'] = $semanticStatistics['DECLPROPS'];
-			$extraStats['smw-statistics']['smw-statistics-subobject-count'] = $semanticStatistics['SUBOBJECTS'];
-			$extraStats['smw-statistics']['smw-statistics-datatype-count'] = count( SMWDataValueFactory::getKnownTypeLabels() );
-			$extraStats['smw-statistics']['smw-statistics-query-inline'] = $semanticStatistics['QUERY'];
-			$extraStats['smw-statistics']['smw-statistics-concept-count'] = $semanticStatistics['CONCEPTS'];
-		}
-
-		return true;
+		return \SMW\FunctionHookRegistry::register( new \SMW\SpecialStatsAddExtra( $extraStats, $GLOBALS['wgVersion'], $GLOBALS['wgLang'] ) )->process();
 	}
 
 	/**
