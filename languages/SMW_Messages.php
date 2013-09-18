@@ -11555,6 +11555,7 @@ $messages['pfl'] = array(
  * @author Odie2
  * @author Rzuwig
  * @author Sociologist
+ * @author Sovq
  * @author Sp5uhe
  * @author ToSter
  * @author Vuh
@@ -11683,7 +11684,7 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw-special-types-no-such-type' => 'Określony typ danych nie istnieje',
 	'semanticstatistics' => 'Statystyka semantyczna',
 	'smw_semstats_text' => "Ta wiki zawiera '''$1''' {{PLURAL:$1|wartość|wartości}} własności z ogólnej liczby '''$2''' [[Special:Properties|{{PLURAL:$2|właściwości|różnych właściwości}}]].
-'''$3''' {{PLURAL:$3|właściwość ma swoją własną stronę|właściwości mają swoje własne strony}}. a typ danych został określony dla '''$4''' z nich.
+'''$3''' {{PLURAL:$3|właściwość ma swoją własną stronę|właściwości mają swoje własne strony}}, a typ danych został określony dla '''$4''' z nich.
 Niektóre z istniejących właściwości mogą [[Special:UnusedProperties|być obecnie niewykorzystywane]].
 Właściwości, które nie posiadają swojej strony odnaleźć można na stronie [[Special:WantedProperties|spisu brakujących właściwości]].",
 	'smw-statistics' => 'Statystyka semantyczna',
