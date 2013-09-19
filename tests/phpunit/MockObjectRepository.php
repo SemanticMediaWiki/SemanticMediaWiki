@@ -413,6 +413,10 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->builder->setValue( 'getShortText' ) ) );
 
 		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->will( $this->returnValue( $this->builder->setValue( 'getWikiValue' ) ) );
+
+		$dataValue->expects( $this->any() )
 			->method( 'getShortWikiText' )
 			->will( $this->returnValue( $this->builder->setValue( 'getShortWikiText' ) ) );
 
