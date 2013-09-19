@@ -173,10 +173,15 @@ abstract class AggregatablePrinter extends ResultPrinter {
 
 				foreach ( $subject as $field ) {
 
+					// Use the aggregation parameter to determine the source of
+					// the number composition
+					if ( $this->params['aggregation'] === 'property' ) {
+						$name = $field->getPrintRequest()->getLabel();
+					}
+
 					// Aggregated array key depends on the mainlabel which is
 					// either the subject or a printout property
 					if ( $this->params['mainlabel'] === '-' ) {
-						$name = $field->getPrintRequest()->getLabel();
 
 						// In case of '-', getNextDataValue() already shifted the
 						// array forward which means the first column
@@ -260,6 +265,12 @@ abstract class AggregatablePrinter extends ResultPrinter {
 			'manipulatedefault' => false,
 			'message' => 'smw-paramdesc-distributionlimit',
 			'lowerbound' => 1,
+		);
+
+		$definitions['aggregation'] = array(
+			'message' => 'smw-paramdesc-aggregation',
+			'default' => 'subject',
+			'values' => array( 'property', 'subject' ),
 		);
 
 		return $definitions;

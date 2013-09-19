@@ -1046,6 +1046,10 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->builder->setValue( 'getText', $this->builder->newRandomString( 10, 'Auto-printRequest' ) ) ) );
 
 		$printRequest->expects( $this->any() )
+			->method( 'getLabel' )
+			->will( $this->returnValue( $this->builder->setValue( 'getLabel' ) ) );
+
+		$printRequest->expects( $this->any() )
 			->method( 'getMode' )
 			->will( $this->returnValue( $this->builder->setValue( 'getMode', SMWPrintRequest::PRINT_THIS ) ) );
 
