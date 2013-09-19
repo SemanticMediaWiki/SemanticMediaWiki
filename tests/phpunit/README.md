@@ -74,6 +74,31 @@ public function titleDataProvider() {
 }
 ```
 
+```php
+/**
+ * Demonstrates how to use the MockObjectBuilder for a more complex
+ * object composition
+ */
+public function mockComposition() {
+
+	$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
+		'isSpecialPage' => true
+	) );
+
+	$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
+		'getTitle'  => $mockTitle
+		...
+	) );
+
+	$mockSkin = $this->newMockBuilder()->newObject( 'Skin', array(
+		'getTitle'  => $mockOutputPage->getTitle(),
+		'getOutput' => $mockOutputPage
+		...
+	) );
+
+	return $mockSkin;
+}
+```
 #### Callbacks
 For even greater flexibility, a callback can be invoked to manipulate dependencies where more individual fine tuning is required.
 

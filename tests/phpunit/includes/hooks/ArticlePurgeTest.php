@@ -2,9 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SimpleDependencyBuilder;
+use SMW\SharedDependencyContainer;
 use SMW\ArticlePurge;
-use SMW\CacheHandler;
 
 use WikiPage;
 
@@ -45,13 +44,19 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return ArticlePurge
 	 */
-	private function newInstance( WikiPage $wikiPage = null ) {
+	private function newInstance( WikiPage $wikiPage = null, $settings = array() ) {
 
 		if ( $wikiPage === null ) {
 			$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage' );
 		}
 
-		return new ArticlePurge( $wikiPage );
+		$container = new SharedDependencyContainer();
+		$container->registerObject( 'Settings', $this->newSettings( $settings ) );
+
+		$instance = new ArticlePurge( $wikiPage );
+		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
+
+		return $instance;
 	}
 
 	/**
@@ -77,27 +82,55 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		$wikiPage = new WikiPage( $setup['title'] );
 		$pageId   = $wikiPage->getTitle()->getArticleID();
 
-		$settings = $this->newSettings( array(
-			'smwgCacheType'          => 'hash',
-			'smwgAutoRefreshOnPurge' => $setup['smwgAutoRefreshOnPurge']
-		) );
-
-		$dependencyBuilder = $this->newDependencyBuilder();
-		$dependencyBuilder->getContainer()->registerObject( 'Settings', $settings );
-		$dependencyBuilder->getContainer()->registerObject(
-			'CacheHandler',
-			CacheHandler::newFromId( $settings->get( 'smwgCacheType' ) )
+		$settings = array(
+			'smwgCacheType'                  => 'hash',
+			'smwgAutoRefreshOnPurge'         => $setup['smwgAutoRefreshOnPurge'],
+			'smwgFactboxCacheRefreshOnPurge' => $setup['smwgFactboxCacheRefreshOnPurge']
 		);
 
-		$instance = $this->newInstance( $wikiPage );
-		$instance->setDependencyBuilder( $dependencyBuilder );
-		$cache = $dependencyBuilder->newObject( 'CacheHandler' );
+		$instance = $this->newInstance( $wikiPage, $settings );
+		$cache = $instance->getDependencyBuilder()->newObject( 'CacheHandler' );
 
-		$this->assertFalse( $cache->setKey( $instance->newIdGenerator( $pageId ) )->get() );
+		$id = \SMW\FactboxPresenter::newCacheIdGenerator( $pageId );
+		$cache->setKey( $id )->set( true );
+
+		// Pre-process check
+		$this->assertEquals(
+			$expected['autorefreshPreProcess'],
+			$cache->setKey( $instance->newIdGenerator( $pageId ) )->get(),
+			'Asserts the autorefresh cache status before processing'
+		);
+
+		$this->assertEquals(
+			$expected['factboxPreProcess'],
+			$cache->setKey( $id )->get(),
+			'Asserts the factbox cache status before processing'
+		);
+
+		$this->assertFalse(
+			$cache->setKey( $instance->newIdGenerator( $pageId ) )->get(),
+			'Asserts that before processing ...'
+		);
+
 		$result = $instance->process();
 
-		$this->assertTrue( $result );
-		$this->assertEquals( $expected['result'], $cache->setKey( $instance->newIdGenerator( $pageId ) )->get() );
+		// Post-process check
+		$this->assertTrue(
+			$result,
+			'Asserts that process() always returns true'
+		);
+
+		$this->assertEquals(
+			$expected['autorefreshPostProcess'],
+			$cache->setKey( $instance->newIdGenerator( $pageId ) )->get(),
+			'Asserts the autorefresh cache status after processing'
+		);
+
+		$this->assertEquals(
+			$expected['factboxPostProcess'],
+			$cache->setCacheEnabled( true )->setKey( $id )->get(),
+			'Asserts the factbox cache status after processing'
+		);
 
 	}
 
@@ -112,10 +145,14 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		$provider[] = array(
 			array(
 				'title'  => $this->newMockBuilder()->newObject( 'Title' ),
-				'smwgAutoRefreshOnPurge' => true
+				'smwgAutoRefreshOnPurge'         => true,
+				'smwgFactboxCacheRefreshOnPurge' => true
 			),
 			array(
-				'result' => true
+				'factboxPreProcess'      => true,
+				'autorefreshPreProcess'  => false,
+				'autorefreshPostProcess' => true,
+				'factboxPostProcess'     => false,
 			)
 		);
 
@@ -123,10 +160,14 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		$provider[] = array(
 			array(
 				'title'  => $this->newMockBuilder()->newObject( 'Title' ),
-				'smwgAutoRefreshOnPurge' => false
+				'smwgAutoRefreshOnPurge'         => false,
+				'smwgFactboxCacheRefreshOnPurge' => false
 			),
 			array(
-				'result' => false
+				'factboxPreProcess'      => true,
+				'autorefreshPreProcess'  => false,
+				'autorefreshPostProcess' => false,
+				'factboxPostProcess'     => true,
 			)
 		);
 
@@ -138,10 +179,33 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		$provider[] = array(
 			array(
 				'title'  => $title,
-				'smwgAutoRefreshOnPurge' => true
+				'smwgAutoRefreshOnPurge'         => true,
+				'smwgFactboxCacheRefreshOnPurge' => true
 			),
 			array(
-				'result' => false
+				'factboxPreProcess'      => true,
+				'autorefreshPreProcess'  => false,
+				'autorefreshPostProcess' => false,
+				'factboxPostProcess'     => false,
+			)
+		);
+
+		// #3 No Id
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
+			'getArticleID' => 0
+		) );
+
+		$provider[] = array(
+			array(
+				'title'  => $title,
+				'smwgAutoRefreshOnPurge'         => true,
+				'smwgFactboxCacheRefreshOnPurge' => false
+			),
+			array(
+				'factboxPreProcess'      => true,
+				'autorefreshPreProcess'  => false,
+				'autorefreshPostProcess' => false,
+				'factboxPostProcess'     => true,
 			)
 		);
 

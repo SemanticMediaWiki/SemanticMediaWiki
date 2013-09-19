@@ -550,8 +550,13 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onTitleMoveComplete( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
-		\SMW\CacheHandler::newFromId()
-			->setKey( \SMW\ArticlePurge::newIdGenerator( $newTitle->getArticleID() ) )
+
+		\SMW\CacheHandler::newFromId()->setCacheEnabled( $newId > 0 )
+			->setKey( \SMW\ArticlePurge::newIdGenerator( $newId ) )
+			->set( $GLOBALS['smwgAutoRefreshOnPageMove'] );
+
+		\SMW\CacheHandler::newFromId()->setCacheEnabled( $oldId > 0 )
+			->setKey( \SMW\ArticlePurge::newIdGenerator( $oldId ) )
 			->set( $GLOBALS['smwgAutoRefreshOnPageMove'] );
 
 		smwfGetStore()->changeTitle( $oldTitle, $newTitle, $oldId, $newId );
@@ -623,4 +628,34 @@ final class SMWHooks {
 	public static function onBeforePageDisplay( OutputPage &$outputPage, Skin &$skin ) {
 		return \SMW\FunctionHookRegistry::register( new \SMW\BeforePageDisplay( $outputPage, $skin ) )->process();
 	}
+
+	/**
+	 * Hook: Called after parse, before the HTML is added to the output
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageParserOutput
+	 *
+	 * @param OutputPage $outputPage
+	 * @param ParserOutput $parserOutput
+	 *
+	 * @return true
+	 */
+	public static function onOutputPageParserOutput( OutputPage &$outputPage, ParserOutput $parserOutput ) {
+		return \SMW\FunctionHookRegistry::register( new \SMW\OutputPageParserOutput( $outputPage, $parserOutput ) )->process();
+	}
+
+	/**
+	 * Hook: Allows extensions to add text after the page content and article
+	 * metadata.
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
+	 *
+	 * @param string $data
+	 * @param Skin|null $skin
+	 *
+	 * @return true
+	 */
+	public static function onSkinAfterContent( &$data, Skin $skin = null ) {
+		return \SMW\FunctionHookRegistry::register( new \SMW\SkinAfterContent( $data, $skin ) )->process();
+	}
+
 }

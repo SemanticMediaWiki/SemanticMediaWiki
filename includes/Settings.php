@@ -121,6 +121,8 @@ class Settings extends SimpleDictionary {
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
 			'smwgDeferredPropertyUpdate' => $GLOBALS['smwgDeferredPropertyUpdate'],
+			'smwgFactboxUseCache' => $GLOBALS['smwgFactboxUseCache'],
+			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge']
 		);
 
 		if ( self::$instance === null ) {

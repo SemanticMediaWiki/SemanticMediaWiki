@@ -781,6 +781,10 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->builder->setValue( 'getPageLanguage' ) ) );
 
 		$title->expects( $this->any() )
+			->method( 'isRedirect' )
+			->will( $this->returnValue( $this->builder->setValue( 'isRedirect', false ) ) );
+
+		$title->expects( $this->any() )
 			->method( 'inNamespace' )
 			->will( $this->builder->setCallback( 'inNamespace' ) );
 
@@ -1090,6 +1094,20 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNextDataItem' ), false ) );
 
 		return $resultArray;
+	}
+
+	/**
+	 * Helper method that returns a RequestContext object
+	 *
+	 * @since 1.9
+	 *
+	 * @return RequestContext
+	 */
+	public function RequestContext() {
+
+		$requestContext = $this->getMockForAbstractClass( 'RequestContext' );
+
+		return $requestContext;
 	}
 
 }

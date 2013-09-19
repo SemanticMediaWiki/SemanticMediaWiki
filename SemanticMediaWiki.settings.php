@@ -556,18 +556,24 @@ $smwgCacheUsage = array(
 
 ###
 # Sets whether or not to refresh semantic data in the store when a page is
-# manually purged (requires $smwgCacheType be set)
+# manually purged
 #
 # @since 1.9
+#
+# @requires  $smwgCacheType be set
+# @default true
 ##
 $smwgAutoRefreshOnPurge = true;
 ##
 
 ###
 # Sets whether or not to refresh semantic data in the store when a page was
-# moved (requires $smwgCacheType be set)
+# moved
 #
 # @since 1.9
+#
+# @requires  $smwgCacheType be set
+# @default true
 ##
 $smwgAutoRefreshOnPageMove = true;
 ##
@@ -628,6 +634,38 @@ $smwgPropertyLowUsageThreshold = 5;
 # default = true (legacy behaviour)
 ##
 $smwgPropertyZeroCountDisplay = true;
+
+###
+# Sets whether or not a factbox content should be stored in cache. This will
+# considerable improve page response time as non-changed page content will
+# not cause re-parsing of factbox content and instead is served directly from
+# cache while only a new revision will trigger to re-parse the factbox.
+#
+# If smwgFactboxUseCache is set false (equals legacy behaviour) then every page
+# request will bind the factbox to be re-parsed.
+#
+# @since 1.9
+#
+# @requires $smwgCacheType be set
+# @default true
+##
+$smwgFactboxUseCache = true;
+##
+
+###
+# Sets whether or not a cached factbox should be invalidated on an action=purge
+# event
+#
+# If set false the factbox cache will be only reset after a new page revision
+# but if set true each purge request (no new page revision) will invalidate
+# the factbox cache
+#
+# @since 1.9
+#
+# @requires $smwgCacheType be set
+# @default true
+##
+$smwgFactboxCacheRefreshOnPurge = true;
 ##
 
 ###

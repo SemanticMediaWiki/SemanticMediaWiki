@@ -75,6 +75,10 @@ class ArticlePurge extends FunctionHook {
 			->setKey( $this->newIdGenerator( $pageId ) )
 			->set( $settings->get( 'smwgAutoRefreshOnPurge' ) );
 
+		$cache->setCacheEnabled( $settings->get( 'smwgFactboxCacheRefreshOnPurge' ) )
+			->setKey( FactboxPresenter::newCacheIdGenerator( $pageId ) )
+			->delete();
+
 		return true;
 	}
 

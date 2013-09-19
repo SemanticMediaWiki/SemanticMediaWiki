@@ -25,7 +25,8 @@ return array(
 	'SMW\FormatFactory'         => 'includes/FormatFactory.php',
 	'SMW\Highlighter'           => 'includes/Highlighter.php',
 	'SMW\ParameterInput'        => 'includes/ParameterInput.php',
-	'SMWFactbox'                => 'includes/Factbox.php',
+	'SMW\Factbox'               => 'includes/Factbox.php',
+	'SMW\FactboxPresenter'      => 'includes/FactboxPresenter.php',
 	'SMWInfolink'               => 'includes/SMW_Infolink.php',
 	'SMWOutputs'                => 'includes/SMW_Outputs.php',
 	'SMW\ParserTextProcessor'   => 'includes/ParserTextProcessor.php',
@@ -105,6 +106,8 @@ return array(
 
 	// Hooks
 	'SMW\SpecialStatsAddExtra'         => 'includes/hooks/SpecialStatsAddExtra.php',
+	'SMW\OutputPageParserOutput'       => 'includes/hooks/OutputPageParserOutput.php',
+	'SMW\SkinAfterContent'             => 'includes/hooks/SkinAfterContent.php',
 	'SMW\NewRevisionFromEditComplete'  => 'includes/hooks/NewRevisionFromEditComplete.php',
 	'SMW\InternalParseBeforeLinks'     => 'includes/hooks/InternalParseBeforeLinks.php',
 	'SMW\ParserAfterTidy'              => 'includes/hooks/ParserAfterTidy.php',

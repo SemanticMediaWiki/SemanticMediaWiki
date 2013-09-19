@@ -584,4 +584,35 @@ class HooksTest extends \MediaWikiTestCase {
 		$this->assertTrue( $result );
 	}
 
+	/**
+	 * @test SMWHooks::onSkinAfterContent
+	 *
+	 * @since 1.9
+	 */
+	public function testOnSkinAfterContent() {
+		$data = '';
+		$skin = new \SkinTemplate();
+		$skin->getContext()->setLanguage( \Language::factory( 'en' ) );
+		$skin->getContext()->setTitle( $this->getTitle() );
+
+		$result = SMWHooks::onSkinAfterContent( $data, $skin );
+		$this->assertTrue( $result );
+	}
+
+	/*
+	 * @test SMWHooks::onOutputPageParserOutput
+	 *
+	 * @since 1.9
+	 */
+	public function testOnOutputPageParserOutput() {
+		list( $title, $parserOutput ) = $this->makeTitleAndParserOutput();
+		$update = new LinksUpdate( $title, $parserOutput );
+		$context = \RequestContext::getMain();
+		$context->setTitle( $title );
+		$outputPage = new \OutputPage( $context );
+
+		$result = SMWHooks::onOutputPageParserOutput( $outputPage, $parserOutput );
+		$this->assertTrue( $result );
+	}
+
 }

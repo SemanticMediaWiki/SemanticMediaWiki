@@ -79,7 +79,6 @@ function smwfRegisterHooks() {
 	// Parsing [[link::syntax]] and resolves property annotations
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWHooks::onInternalParseBeforeLinks';
 
-	$wgHooks['OutputPageParserOutput'][] = 'SMWFactbox::onOutputPageParserOutput'; // copy some data for later Factbox display
 	$wgHooks['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle'; // special implementations for property/type articles
 	$wgHooks['ParserFirstCallInit'][] = 'SMWHooks::onParserFirstCallInit';
 
@@ -108,7 +107,11 @@ function smwfRegisterHooks() {
 		$wgHooks['SkinTemplateToolboxEnd'][] = 'SMWHooks::showBrowseLink';
 	}
 
-	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
+	// Draw Factbox below categories
+	$wgHooks['SkinAfterContent'][] = 'SMWHooks::onSkinAfterContent';
+
+	// Copy some data for later Factbox display
+	$wgHooks['OutputPageParserOutput'][] = 'SMWHooks::onOutputPageParserOutput';
 
 	$wgHooks['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
 }
