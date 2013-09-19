@@ -2,7 +2,13 @@ inherit: true
 
 tools:
     php_code_coverage: false
-    php_code_sniffer: true
+    php_code_sniffer:
+        enabled: true
+        config:
+            sniffs:
+                squiz:
+                    php:
+                        commented_out_code_sniff: false
     php_cpd: true
     php_cs_fixer: true
     php_loc: true
