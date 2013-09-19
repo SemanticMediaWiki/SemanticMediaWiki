@@ -14428,7 +14428,7 @@ Skapar en RDF som kan gås igenom.',
 	'smw-property-name-invalid' => 'Egenskapen $1 kan inte användas (ogiltigt egenskapsnamn).',
 	'concepts' => 'Begrepp',
 	'smw-sp-concept-header' => 'Lista över begrepp',
-	'smw-sp-concept-count' => 'Följande {{PLURAL:$1|begrepp|$1 begrepp}} {{PLURAL:$1|är|är}} listade.', # Fuzzy
+	'smw-sp-concept-count' => 'Följande {{PLURAL:$1|begrepp|$1 begrepp}} {{PLURAL:$1|är}} listade.',
 	'smw-sp-concept-empty' => 'Inget begrepp hittades.',
 	'unusedproperties' => 'Oanvända egenskaper',
 	'smw_unusedproperties_docu' => 'Följande egenskaper finns fastän ingen annan sida använder dem.',
@@ -14448,7 +14448,7 @@ Egenskaper som fortfarande saknar en egen sida finns på [[Special:WantedPropert
 	'smw-statistics' => 'Semantisk statistik',
 	'smw-statistics-property-instance' => 'Egenskapen {{PLURAL:$1|värde|värden}} (totalt)',
 	'smw-statistics-query-size' => 'Frågestorlek',
-	'smw-statistics-concept-count' => 'Koncept', # Fuzzy
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Koncept}}]]',
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datatyp|Datatyper}}]]',
 	'smw_uri_doc' => "URI-lösaren implementerar ''[$1 W3C TAG fynden i httpRange-14]''.
 Den ser till så att människor inte blir webbsidor.",
