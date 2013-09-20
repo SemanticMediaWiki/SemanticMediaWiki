@@ -258,3 +258,123 @@ function smwfGetLinker() {
 
 	return $linker;
 }
+
+/**
+ * Function to switch on Semantic MediaWiki. This function must be called in
+ * LocalSettings.php after including SMW_Settings.php. It is used to ensure
+ * that required parameters for SMW are really provided explicitly. For
+ * readability, this is the only global function that does not adhere to the
+ * naming conventions.
+ *
+ * This function also sets up all autoloading, such that all SMW classes are
+ * available as early on. Moreover, jobs and special pages are registered.
+ *
+ * @deprecated since 1.9, just set $smwgNamespace after the inclusion of SemanticMediaWiki.php
+ *
+ * @param mixed $namespace
+ * @param boolean $complete
+ *
+ * @return true
+ *
+ * @codeCoverageIgnore
+ */
+function enableSemantics( $namespace = null, $complete = false ) {
+	global $smwgNamespace;
+
+	if ( !$complete && ( $smwgNamespace !== '' ) ) {
+		// The dot tells that the domain is not complete. It will be completed
+		// in the Export since we do not want to create a title object here when
+		// it is not needed in many cases.
+		$smwgNamespace = '.' . $namespace;
+	} else {
+		$smwgNamespace = $namespace;
+	}
+
+	return true;
+}
+
+/**********************************************/
+/***** namespace settings                 *****/
+/**********************************************/
+
+/**
+ * Init the additional namespaces used by Semantic MediaWiki.
+ *
+ * @codeCoverageIgnore
+ */
+function smwfInitNamespaces() {
+	global $smwgNamespaceIndex, $wgExtraNamespaces, $wgNamespaceAliases, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang;
+
+	if ( !isset( $smwgNamespaceIndex ) ) {
+		$smwgNamespaceIndex = 100;
+	}
+	// 100 and 101 used to be occupied by SMW's now obsolete namespaces "Relation" and "Relation_Talk"
+	define( 'SMW_NS_PROPERTY',       $smwgNamespaceIndex + 2 );
+	define( 'SMW_NS_PROPERTY_TALK',  $smwgNamespaceIndex + 3 );
+	define( 'SMW_NS_TYPE',           $smwgNamespaceIndex + 4 );
+	define( 'SMW_NS_TYPE_TALK',      $smwgNamespaceIndex + 5 );
+	// 106 and 107 are occupied by the Semantic Forms, we define them here to offer some (easy but useful) support to SF
+	define( 'SF_NS_FORM',            $smwgNamespaceIndex + 6 );
+	define( 'SF_NS_FORM_TALK',       $smwgNamespaceIndex + 7 );
+	define( 'SMW_NS_CONCEPT',        $smwgNamespaceIndex + 8 );
+	define( 'SMW_NS_CONCEPT_TALK',   $smwgNamespaceIndex + 9 );
+
+	smwfInitContentLanguage( $wgLanguageCode );
+
+	// Register namespace identifiers
+	if ( !is_array( $wgExtraNamespaces ) ) {
+		$wgExtraNamespaces = array();
+	}
+	$wgExtraNamespaces = $wgExtraNamespaces + $smwgContLang->getNamespaces();
+	$wgNamespaceAliases = $wgNamespaceAliases + $smwgContLang->getNamespaceAliases();
+
+	// Support subpages only for talk pages by default
+	$wgNamespacesWithSubpages = $wgNamespacesWithSubpages + array(
+				SMW_NS_PROPERTY_TALK => true,
+				SMW_NS_TYPE_TALK => true
+	);
+
+	// not modified for Semantic MediaWiki
+	/* $wgNamespacesToBeSearchedDefault = array(
+		NS_MAIN           => true,
+		);
+	*/
+}
+
+/**********************************************/
+/***** language settings                  *****/
+/**********************************************/
+
+/**
+ * Initialise a global language object for content language. This must happen
+ * early on, even before user language is known, to determine labels for
+ * additional namespaces. In contrast, messages can be initialised much later
+ * when they are actually needed.
+ *
+ * @codeCoverageIgnore
+ */
+function smwfInitContentLanguage( $langcode ) {
+	global $smwgIP, $smwgContLang;
+
+	if ( !empty( $smwgContLang ) ) {
+		return;
+	}
+	wfProfileIn( 'smwfInitContentLanguage (SMW)' );
+
+	$smwContLangFile = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
+	$smwContLangClass = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
+
+	if ( file_exists( $smwgIP . 'languages/' . $smwContLangFile . '.php' ) ) {
+		include_once( $smwgIP . 'languages/' . $smwContLangFile . '.php' );
+	}
+
+	// Fallback if language not supported.
+	if ( !class_exists( $smwContLangClass ) ) {
+		include_once( $smwgIP . 'languages/SMW_LanguageEn.php' );
+		$smwContLangClass = 'SMWLanguageEn';
+	}
+
+	$smwgContLang = new $smwContLangClass();
+
+	wfProfileOut( 'smwfInitContentLanguage (SMW)' );
+}

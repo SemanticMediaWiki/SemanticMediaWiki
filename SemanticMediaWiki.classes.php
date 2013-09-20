@@ -22,6 +22,7 @@ return array(
 
 	'SMWHooks'                  => 'SemanticMediaWiki.hooks.php',
 
+	'SMW\Setup'                 => 'includes/Setup.php',
 	'SMW\FormatFactory'         => 'includes/FormatFactory.php',
 	'SMW\Highlighter'           => 'includes/Highlighter.php',
 	'SMW\ParameterInput'        => 'includes/ParameterInput.php',

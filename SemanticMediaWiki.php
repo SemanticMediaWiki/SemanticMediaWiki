@@ -116,51 +116,26 @@ spl_autoload_register( function ( $className ) {
 // Class 'PSExtensionHandler' not found
 $wgAutoloadClasses['SMWPageSchemas'] = __DIR__ . '/' . 'includes/SMW_PageSchemas.php';
 
-// Load setup and autoloader classes
-require_once( __DIR__ . '/includes/Setup.php' );
-
 // Load default settings
 require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
 // Resource definitions
 $wgResourceModules = array_merge( $wgResourceModules, include( __DIR__ . "/resources/Resources.php" ) );
 
-$wgParamDefinitions['smwformat'] = array(
-	'definition'=> 'SMWParamFormat',
-);
-
-$wgParamDefinitions['smwsource'] = array(
-	'definition' => 'SMWParamSource',
-);
-
-$wgExtensionFunctions[] = 'smwfSetupExtension';
-$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
-$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
-$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
-
-smwfRegisterHooks();
-smwfRegisterSpecialPages();
-
-$wgAPIModules['smwinfo'] = '\SMW\ApiInfo';
-$wgAPIModules['ask']     = '\SMW\ApiAsk';
-$wgAPIModules['askargs'] = '\SMW\ApiAskArgs';
-
-$wgJobClasses['SMW\UpdateJob']           = 'SMW\UpdateJob';
-$wgJobClasses['SMWRefreshJob']           = 'SMWRefreshJob';
-$wgJobClasses['SMW\UpdateDispatcherJob'] = 'SMW\UpdateDispatcherJob';
-
-// Adds a poweredby footer icon
-$wgFooterIcons['poweredby']['semanticmediawiki'] = array(
-	'src' => $GLOBALS['smwgScriptPath'] . '/resources/images/smw_button.png',
-	'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
-	'alt' => 'Powered by Semantic MediaWiki',
-);
-
 $smwgNamespace = parse_url( $wgServer, PHP_URL_HOST );
 
-// Rights
-$wgAvailableRights[] = 'smw-admin';
-
-// User group rights
-$wgGroupPermissions['sysop']['smw-admin'] = true;
-$wgGroupPermissions['smwadministrator']['smw-admin'] = true;
+/**
+ * Setup and initialization
+ *
+ * @note $wgExtensionFunctions variable is an array that stores
+ * functions to be called after most of MediaWiki initialization
+ * is complete
+ *
+ * @see https://www.mediawiki.org/wiki/Manual:$wgExtensionFunctions
+ *
+ * @since  1.9
+ */
+$wgExtensionFunctions[] = function() {
+	$setup = new \SMW\Setup( $GLOBALS );
+	$setup->run();
+};
