@@ -30,8 +30,13 @@ return array(
 	),
 
 	// Common styles independent from JavaScript
+	// MW 1.22 loading this as 'dependencies' => 'ext.smw.tooltip.styles'
+	// was not a choice as it showed flashy hiccups
 	'ext.smw.style' => $moduleTemplate + array(
-		'styles' => 'resources/smw/ext.smw.css',
+		'styles' => array(
+			'resources/smw/util/ext.smw.util.tooltip.css',
+			'resources/smw/ext.smw.css'
+		),
 		'position' => 'top'
 	),
 
@@ -106,11 +111,17 @@ return array(
 		'scripts' => 'resources/jquery/jquery.qtip.js',
 		'styles' => 'resources/jquery/jquery.qtip.css',
 	),
+
+	// Tooltip
+	'ext.smw.tooltip.styles' => $moduleTemplate + array(
+		'styles' => 'resources/smw/util/ext.smw.util.tooltip.css',
+	),
+
 	// Tooltip
 	'ext.smw.tooltip' => $moduleTemplate + array(
 		'scripts' => 'resources/smw/util/ext.smw.util.tooltip.js',
-		'styles' => 'resources/smw/util/ext.smw.util.tooltip.css',
 		'dependencies' => array(
+			'ext.smw.tooltip.styles',
 			'ext.smw',
 			'ext.jquery.qtip'
 		),
