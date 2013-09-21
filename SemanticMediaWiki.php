@@ -122,6 +122,11 @@ require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 // Resource definitions
 $wgResourceModules = array_merge( $wgResourceModules, include( __DIR__ . "/resources/Resources.php" ) );
 
+// Because of MW 1.19 we need to register message files here
+$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
+$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
+$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
+
 $smwgNamespace = parse_url( $wgServer, PHP_URL_HOST );
 
 /**
