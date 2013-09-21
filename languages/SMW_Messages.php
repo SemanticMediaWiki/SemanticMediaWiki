@@ -14,7 +14,7 @@ $messages = array();
  *  @author Markus Krötzsch
  */
 $messages['en'] = array(
-	'smw-desc'              => 'Making your wiki more accessible - for machines \'\'and\'\' humans ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])',
+	'smw-desc'              => 'Making your wiki more accessible - for machines \'\'and\'\' humans ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])',
 	'smw_viewasrdf'         => 'RDF feed',
 	'smw_finallistconjunct' => ', and', // used in "A, B, and C"
 	'smw_factbox_head'      => 'Facts about "$1"',
@@ -243,7 +243,7 @@ It takes care that humans do not turn into websites.',
 
 	// Messages for ask Special
 	'ask'                   => 'Semantic search',
-	'smw_ask_doculink'      => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search',
+	'smw_ask_doculink'      => 'https://semantic-mediawiki.org/wiki/Help:Semantic_search',
 	'smw_ask_sortby'        => 'Sort by column (optional)',
 	'smw_ask_ascorder'      => 'Ascending',
 	'smw_ask_descorder'     => 'Descending',
@@ -326,7 +326,7 @@ Return to $1.',
 	'smw_smwadmin_updatenotstopped' => 'To stop the running update process, you must activate the checkbox to indicate that you are really sure.
 
 Return to $1.',
-	'smw_smwadmin_docu' => 'This special page helps you during installation and upgrade of <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'This special page helps you during installation and upgrade of <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Remember to back up valuable data before executing administrative functions.',
 	'smw_smwadmin_db' => 'Database installation and upgrade',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki requires some extensions to the MediaWiki database in order to store the semantic data.
@@ -338,8 +338,8 @@ Either grant this user additional permissions to create and delete tables, tempo
 	'smw_smwadmin_dbbutton' => 'Initialize or upgrade tables',
 	'smw_smwadmin_announce' => 'Announce your wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki has a web service for announcing new semantic wiki sites.
-This is used to maintain a list of public sites that use Semantic MediaWiki, mainly to help the <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki project</a> to get an overview of typical uses of Semantic MediaWiki.
-See the Semantic MediaWiki homepage for <a href="http://semantic-mediawiki.org/wiki/Registry">further information about this service</a>.',
+This is used to maintain a list of public sites that use Semantic MediaWiki, mainly to help the <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki project</a> to get an overview of typical uses of Semantic MediaWiki.
+See the Semantic MediaWiki homepage for <a href="https://semantic-mediawiki.org/wiki/Registry">further information about this service</a>.',
 	'smw_smwadmin_announcebutton' => 'Press the following button to submit your wiki URL to that service.
 The service will not register wikis that are not publicly accessible, and it will only store publicly accessible information.',
 	'smw_smwadmin_datarefresh' => 'Data repair and upgrade',
@@ -357,7 +357,7 @@ Estimated progress of current update:',
 	'smw_smwadmin_support' => 'Getting support',
 	'smw_smwadmin_supportdocu' => 'Various resources might help you in case of problems:',
 	'smw_smwadmin_installfile' => 'If you experience problems with your installation, start by checking the guidelines in the <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL file</a>.',
-	'smw_smwadmin_smwhomepage' => 'The complete user documentation to Semantic MediaWiki is at <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'The complete user documentation to Semantic MediaWiki is at <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Bugs can be reported to <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'If you have further questions or suggestions, join the discussion on <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 
@@ -382,7 +382,7 @@ Estimated progress of current update:',
 	// User preference
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Semantic search options',
-	'smw-prefs-intro-text' => 'Options below are provided by [https://semantic-mediawiki.org/ Semantic MediaWiki] (or related extensions) to enable individual customization on selected functions. For more information, please have a look at this [http://semantic-mediawiki.org/wiki/Help:User_preferences help section].',
+	'smw-prefs-intro-text' => 'Options below are provided by [https://semantic-mediawiki.org/ Semantic MediaWiki] (or related extensions) to enable individual customization on selected functions. For more information, please have a look at this [https://semantic-mediawiki.org/wiki/Help:User_preferences help section].',
 	'smw-prefs-ask-options-tooltip-display' => 'Display parameter text as an info tooltip',
 	'smw-prefs-ask-options-collapsed-default' => 'Enable option box to be collapsed by default',
 
@@ -450,22 +450,22 @@ Estimated progress of current update:',
  */
 $messages['qqq'] = array(
 	'smw-desc' => '{{desc|name=Semantic MediaWiki|url=http://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}',
-	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
+	'smw_viewasrdf' => 'This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [https://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 	{{Identical|And}}',
-	'smw_factbox_head' => 'Title of the box [http://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values.
+	'smw_factbox_head' => 'Title of the box [https://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox] containing information about property values.
 
 Parameters:
 * $1 - the page name',
 	'smw_isspecprop' => 'Used on [[Special:Properties]] to identify a special (build in) property.',
-	'smw_concept_description' => 'Title of the section containing the code of a [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query).
+	'smw_concept_description' => 'Title of the section containing the code of a [https://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query).
 
 Parameters:
 * $1 - the name of the concept',
 	'smw_no_concept_namespace' => 'This is an error/warning message that appears when a concept is added to a page in namespaces other than Concept:.',
 	'smw_multiple_concepts' => 'This is an error/warning message that appears when more than concept is added to a page in namespaces Concept:.',
 	'smw_concept_cache_miss' => 'This is an information message. Parameters:
-* $1 holds the name of the [http://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
+* $1 holds the name of the [https://semantic-mediawiki.org/wiki/Help:Concepts concept] (special precomputable query)',
 	'smw_noinvannot' => 'This is an information message.',
 	'version-semantic' => 'This is the name of the extension group on [[Special:Version]].',
 	'smw_uri_blacklist' => '{{notranslate}}',
@@ -483,74 +483,74 @@ Parameters:
 	'smw_rdf_link' => 'This is the text of the link that is triggering the results export to a RDF-file when clicked.
 
 {{optional}}',
-	'smw_printername_count' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Count_format count].',
-	'smw_printername_csv' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:CSV_format CSV].',
-	'smw_printername_dsv' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:DSV_format DSV].',
-	'smw_printername_debug' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Debug_format Debug].',
-	'smw_printername_embedded' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Embedded_format Embedded].',
-	'smw_printername_json' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:JSON_format JSON].',
-	'smw_printername_list' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:List_format List].
+	'smw_printername_count' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Count_format count].',
+	'smw_printername_csv' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:CSV_format CSV].',
+	'smw_printername_dsv' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:DSV_format DSV].',
+	'smw_printername_debug' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Debug_format Debug].',
+	'smw_printername_embedded' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Embedded_format Embedded].',
+	'smw_printername_json' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:JSON_format JSON].',
+	'smw_printername_list' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:List_format List].
 {{Identical|List}}',
-	'smw_printername_ol' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ol_format Enumeration (numbered list)].',
-	'smw_printername_ul' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Ul_format Itemization (bulleted list)].',
-	'smw_printername_table' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Table_format Table].
+	'smw_printername_ol' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Ol_format Enumeration (numbered list)].',
+	'smw_printername_ul' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Ul_format Itemization (bulleted list)].',
+	'smw_printername_table' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Table_format Table].
 
 {{Identical|Table}}',
-	'smw_printername_broadtable' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Broadtable_format Broadtable].',
-	'smw_printername_template' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Template_format Template].
+	'smw_printername_broadtable' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Broadtable_format Broadtable].',
+	'smw_printername_template' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Template_format Template].
 
 {{Identical|Template}}',
-	'smw_printername_rdf' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:RDF_format RDF].',
-	'smw_printername_category' => 'This is the name of the result format [http://semantic-mediawiki.org/wiki/Help:Category_format Category].
+	'smw_printername_rdf' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:RDF_format RDF].',
+	'smw_printername_category' => 'This is the name of the result format [https://semantic-mediawiki.org/wiki/Help:Category_format Category].
 
 {{Identical|Category}}',
-	'validator-type-class-SMWParamSource' => 'This is the description of the "source" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].
+	'validator-type-class-SMWParamSource' => 'This is the description of the "source" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].
 {{Identical|Text}}',
-	'smw-paramdesc-limit' => 'This is the description of the "limit" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-offset' => 'This is the description of the "offset" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-headers' => 'This is the description of the "headers" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-mainlabel' => 'This is the description of the "mainlabel" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-link' => 'This is the description of the "link" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-intro' => 'This is the description of the "intro" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-outro' => 'This is the description of the "outro" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-default' => 'This is the description of the "default" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-sep' => 'This is the description of the "sep" (value separator) parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-showsep' => 'This is the description of the "showsep" (show value separator at top of csv file) parameter for the "csv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].
+	'smw-paramdesc-limit' => 'This is the description of the "limit" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-offset' => 'This is the description of the "offset" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-headers' => 'This is the description of the "headers" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-mainlabel' => 'This is the description of the "mainlabel" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-link' => 'This is the description of the "link" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-intro' => 'This is the description of the "intro" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-outro' => 'This is the description of the "outro" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-default' => 'This is the description of the "default" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-sep' => 'This is the description of the "sep" (value separator) parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-showsep' => 'This is the description of the "showsep" (show value separator at top of csv file) parameter for the "csv" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].
 {{doc-important|Do not translate the parameter name "sep". However <value> may be translated.}}',
-	'smw-paramdesc-distribution' => 'This is the description of the "distribution" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-distributionsort' => 'This is the description of the "distributionsort" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-distributionlimit' => 'This is the description of the "distributionlimit" parameter for the "jqplotbar" and "jqplotpie" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-template' => 'This is the description of the "introtemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-columns' => 'This is the description of the "columns" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].
+	'smw-paramdesc-distribution' => 'This is the description of the "distribution" parameter for the "jqplotbar" and "jqplotpie" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-distributionsort' => 'This is the description of the "distributionsort" parameter for the "jqplotbar" and "jqplotpie" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-distributionlimit' => 'This is the description of the "distributionlimit" parameter for the "jqplotbar" and "jqplotpie" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-template' => 'This is the description of the "introtemplate" parameter of the "template", "list", "ol" and "ul" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-columns' => 'This is the description of the "columns" parameter of the "category" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].
 
 Parameters:
 * $1 - default value',
-	'smw-paramdesc-userparam' => 'This is the description of the "userparam" parameter for the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-introtemplate' => 'This is the description of the "introtemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-outrotemplate' => 'This is the description of the "outrotemplate" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-embedformat' => 'This is the description of the "embedformat" parameter of the "embedded" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-embedonly' => 'This is the description of the "embedonly" parameter of the "embedded" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-table-class' => 'This is the description of the "css" parameter of the "table" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-rdfsyntax' => 'This is the description of the "syntax" parameter for the "rdf" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-csv-sep' => 'This is the description of the "separator" parameter for the "csv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-dsv-separator' => 'This is the description of the "separator" parameter for the "dsv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-dsv-filename' => 'This is the description of the "filename" parameter for the "dsv" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-filename' => 'This is the description of the "filename" parameter for the [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-smwdoc-description' => 'This is the short description of the [http://semantic-mediawiki.org/wiki/Help:Generating_documentation smwdoc parser function].',
-	'smw-smwdoc-par-format' => 'This is the description of the parameter "format" of the [http://semantic-mediawiki.org/wiki/Help:Generating_documentation smwdoc parser function].',
-	'smw-smwdoc-par-parameters' => 'This is the description of the parameter "parameters" of the [http://semantic-mediawiki.org/wiki/Help:Generating_documentation smwdoc parser function]. {{doc-important|Do not translate the possible parameter values "specific", "base" and "all".}}',
-	'smw-paramdesc-sort' => 'This is the description of the "sort" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-order' => 'This is the description of the "order" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
-	'smw-paramdesc-searchlabel' => 'This is the description of the "searchlabel" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries]. "… further results" must be identical to message {{msg-mw|Smw iq moreresults}}.',
-	'smw-paramdesc-named_args' => 'This is the description of the "named args" parameter of the "template", "list", "ol" and "ul" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-export' => 'This is the description of the "export" parameter of the "json" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-prettyprint' => 'This is the description of the "[[wikipedia:prettyprint|prettyprint]]" parameter of the "JSON" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-source' => 'This is the description of the "source" parameter for [http://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-userparam' => 'This is the description of the "userparam" parameter for the "template", "list", "ol" and "ul" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-introtemplate' => 'This is the description of the "introtemplate" parameter of the "template", "list", "ol" and "ul" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-outrotemplate' => 'This is the description of the "outrotemplate" parameter of the "template", "list", "ol" and "ul" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-embedformat' => 'This is the description of the "embedformat" parameter of the "embedded" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-embedonly' => 'This is the description of the "embedonly" parameter of the "embedded" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-table-class' => 'This is the description of the "css" parameter of the "table" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-rdfsyntax' => 'This is the description of the "syntax" parameter for the "rdf" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-csv-sep' => 'This is the description of the "separator" parameter for the "csv" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-dsv-separator' => 'This is the description of the "separator" parameter for the "dsv" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-dsv-filename' => 'This is the description of the "filename" parameter for the "dsv" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-filename' => 'This is the description of the "filename" parameter for the [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-smwdoc-description' => 'This is the short description of the [https://semantic-mediawiki.org/wiki/Help:Generating_documentation smwdoc parser function].',
+	'smw-smwdoc-par-format' => 'This is the description of the parameter "format" of the [https://semantic-mediawiki.org/wiki/Help:Generating_documentation smwdoc parser function].',
+	'smw-smwdoc-par-parameters' => 'This is the description of the parameter "parameters" of the [https://semantic-mediawiki.org/wiki/Help:Generating_documentation smwdoc parser function]. {{doc-important|Do not translate the possible parameter values "specific", "base" and "all".}}',
+	'smw-paramdesc-sort' => 'This is the description of the "sort" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-order' => 'This is the description of the "order" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
+	'smw-paramdesc-searchlabel' => 'This is the description of the "searchlabel" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries]. "… further results" must be identical to message {{msg-mw|Smw iq moreresults}}.',
+	'smw-paramdesc-named_args' => 'This is the description of the "named args" parameter of the "template", "list", "ol" and "ul" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-export' => 'This is the description of the "export" parameter of the "json" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-prettyprint' => 'This is the description of the "[[wikipedia:prettyprint|prettyprint]]" parameter of the "JSON" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-source' => 'This is the description of the "source" parameter for [https://semantic-mediawiki.org/wiki/Help:Inline_queries#Standard_parameters_for_inline_queries inline queries].',
 	'smw-paramdesc-jsonsyntax' => 'This is the description of the "syntax" parameter used by [http://www.semantic-mediawiki.org/wiki/Help:JSON_format].',
-	'smw-printername-feed' => 'This is the name of the [http://semantic-mediawiki.org/wiki/Help:Feed_format Feed result format].',
+	'smw-printername-feed' => 'This is the name of the [https://semantic-mediawiki.org/wiki/Help:Feed_format Feed result format].',
 	'smw-paramdesc-feedtype' => 'This is the description of the feed type',
-	'smw-paramdesc-feedtitle' => 'This is the description of the "title" parameter of the "feed" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-feeddescription' => 'This is the description of the "description" parameter for the "feed" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-feedtitle' => 'This is the description of the "title" parameter of the "feed" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-feeddescription' => 'This is the description of the "description" parameter for the "feed" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
 	'smw-paramdesc-feedpagecontent' => 'This option allows to enable page content to be generated with the feed',
 	'smw-label-feed-link' => 'This is the text of the link that is triggering the results export to a RSS-file when clicked. {{optional}}',
 	'smw-label-feed-description' => 'This message is displayed as the feed description, e.g. "News on translatewiki.net rss feed".
@@ -560,7 +560,7 @@ Parameters:
 * $2 - a feed type. either "rss" or "atom"
 {{Identical|Feed}}',
 	'smw_iq_disabled' => 'This is an information message.',
-	'smw_iq_moreresults' => 'This is the text of the link that points to further results in case the [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline query] has more than currently displayed on the page. See also message {{msg-mw|Smw-paramdesc-searchlabel}}.',
+	'smw_iq_moreresults' => 'This is the text of the link that points to further results in case the [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline query] has more than currently displayed on the page. See also message {{msg-mw|Smw-paramdesc-searchlabel}}.',
 	'smw_parseerror' => 'This is an error/warning message.',
 	'smw_decseparator' => "{{optional}}
 This message is as a separator symbol for decimal digits in numbers, like \".\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
@@ -583,11 +583,11 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $2 holds the property values that may be used.',
 	'smw_noboolean' => 'This is an error/warning message. Parameters:
 * $1 holds the property value causing the error/warning.',
-	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of data type [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list.
+	'smw_true_words' => 'These are the boolean values for "true" which may be assigned to properties of data type [https://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list.
 
 See also:
 * {{msg-mw|Smw false words}}',
-	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of data type [http://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list.
+	'smw_false_words' => 'These are the boolean values for "false" which may be assigned to properties of data type [https://semantic-mediawiki.org/wiki/Help:Type_Boolean Boolean], given as a comma separated list.
 
 See also:
 * {{msg-mw|Smw true words}}',
@@ -765,9 +765,9 @@ Parameters:
 * $1 - the URL http://www.w3.org/2001/tag/issues.html#httpRange-14 (hard-coded)",
 	'ask' => '{{doc-special|Ask}}',
 	'smw_ask_doculink' => "{{notranslate}}
-This message should be the URL of the semantic query documentation for that language. For English, this is http://semantic-mediawiki.org/wiki/Help:Semantic_search. For other languages, it should be an ''existing'' page on semantic-mediawiki.org. Note that only some languages have own documentations yet.
+This message should be the URL of the semantic query documentation for that language. For English, this is https://semantic-mediawiki.org/wiki/Help:Semantic_search. For other languages, it should be an ''existing'' page on semantic-mediawiki.org. Note that only some languages have own documentations yet.
 
-The SMW Project welcomes documentation translators! Please contact Markus Krötzsch (http://semantic-mediawiki.org/wiki/Markus) for getting a login at semantic-mediawiki.org if you wish to create SMW handbooks in another language.",
+The SMW Project welcomes documentation translators! Please contact Markus Krötzsch (https://semantic-mediawiki.org/wiki/Markus) for getting a login at semantic-mediawiki.org if you wish to create SMW handbooks in another language.",
 	'smw_ask_sortby' => 'This is the text describing the textbox on [[Special:Ask]] available for optionally entering an printout statement for a query.',
 	'smw_ask_ascorder' => 'This is the value in a dropdown menu on [[Special:Ask]] available for selecting an printout statement for a query.
 {{Identical|Ascending}}',
@@ -780,13 +780,13 @@ The SMW Project welcomes documentation translators! Please contact Markus Krötz
 	'smw_add_sortcondition' => '{{doc-actionlink}}
 This is the text of the action link on [[Special:Ask]] to add an printout statement to a query.',
 	'smw_ask_hidequery' => 'This is the text of the action link on [[Special:Ask]] to abandon a query.',
-	'smw_ask_help' => 'This is the text of a link on [[Special:Ask]] pointing to the help page on [http://semantic-mediawiki.org/wiki/Help:Semantic_search semantic search].',
-	'smw_ask_queryhead' => 'This is the header of the edit field available on [[Special:Ask]] to enter the [http://semantic-mediawiki.org/wiki/Help:Selecting_pages query conditions] of the query.
+	'smw_ask_help' => 'This is the text of a link on [[Special:Ask]] pointing to the help page on [https://semantic-mediawiki.org/wiki/Help:Semantic_search semantic search].',
+	'smw_ask_queryhead' => 'This is the header of the edit field available on [[Special:Ask]] to enter the [https://semantic-mediawiki.org/wiki/Help:Selecting_pages query conditions] of the query.
 {{Identical|Query}}',
-	'smw_ask_printhead' => 'This is the header of the edit field available on [[Special:Ask]] to enter the [http://semantic-mediawiki.org/wiki/Help:Displaying_information printout statements] of the query.',
-	'smw_ask_printdesc' => 'This is an additional information message for the header of the edit field available on [[Special:Ask]] to enter the [http://semantic-mediawiki.org/wiki/Help:Displaying_information printout statements] of the query.',
-	'smw_ask_format_as' => 'This is the text describing a dropdown box on [[Special:Ask]] available for choosing the [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for a query.',
-	'smw_ask_defaultformat' => 'This is the label used for indicating the default [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] within a dropdown field.
+	'smw_ask_printhead' => 'This is the header of the edit field available on [[Special:Ask]] to enter the [https://semantic-mediawiki.org/wiki/Help:Displaying_information printout statements] of the query.',
+	'smw_ask_printdesc' => 'This is an additional information message for the header of the edit field available on [[Special:Ask]] to enter the [https://semantic-mediawiki.org/wiki/Help:Displaying_information printout statements] of the query.',
+	'smw_ask_format_as' => 'This is the text describing a dropdown box on [[Special:Ask]] available for choosing the [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for a query.',
+	'smw_ask_defaultformat' => 'This is the label used for indicating the default [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] within a dropdown field.
 
 {{Identical|Default}}',
 	'smw_ask_otheroptions' => 'This is the text for the header of a section on [[Special:Ask]] that is containing various different options to choose or enter in order to specify printout statements of a query.',
@@ -799,7 +799,7 @@ This is the text of the action link on [[Special:Ask]] to hide the code of a que
 	'smw_ask_embed_instr' => 'This is an information message for the field on [[Special:Ask]] that contains the code of a query that may be copied and when pasted into a regular page on the wiki..',
 	'smw-ask-delete' => 'This is the text of the action link on [[Special:Ask]] to delete an printout statement from a query.',
 	'smw-ask-sorting' => 'This is the text for the header of the section on [[Special:Ask]] that allows to specify sorting options for specific properties that are queried for.',
-	'smw-ask-format-selection-help' => 'This is a text displayed on [[Special:Ask]] to inform about a help page on [http://semantic-mediawiki.org/wiki/ Semantic MediaWiki].
+	'smw-ask-format-selection-help' => 'This is a text displayed on [[Special:Ask]] to inform about a help page on [https://semantic-mediawiki.org/wiki/ Semantic MediaWiki].
 
 Parameters:
 * $1 - a link which points to Help: page on semantic-mediawiki.org',
@@ -902,7 +902,7 @@ Parameters:
 	'smw_smwadmin_dbdocu' => 'This is the text describing an available administrative option on [[Special:SMWAdmin]].',
 	'smw_smwadmin_permissionswarn' => 'This is the text describing a problem (including a solution) that may arise when using an available administrative option on [[Special:SMWAdmin]].',
 	'smw_smwadmin_dbbutton' => 'This is the name of the submit button on [[Special:SMWAdmin]] to trigger the respective process.',
-	'smw_smwadmin_announce' => 'This is the section header on [[Special:SMWAdmin]] as well as the name of the submit button to register the wiki at [http://semantic-mediawiki.org/wiki/Special:SMWRegistry semantic-mediawiki.org].',
+	'smw_smwadmin_announce' => 'This is the section header on [[Special:SMWAdmin]] as well as the name of the submit button to register the wiki at [https://semantic-mediawiki.org/wiki/Special:SMWRegistry semantic-mediawiki.org].',
 	'smw_smwadmin_announcedocu' => 'This is the text describing an available administrative option on [[Special:SMWAdmin]].
 
 {{doc-important|Do not alter or translate link targets!}}',
@@ -932,15 +932,15 @@ Parameters:
 	'smw_adminlinks_inlinequerieshelp' => 'This is the link text for a link on [[Special:AdminLinks]] which is needed for the integration of the [[mw:Extension:Admin_Links|Admin Links extension]] into this extension.',
 	'smw-createproperty-isproperty' => 'This an information message at the top on a page in namespace "Property". Parameters:
 * $1 holds the name of the data type which was assigned to the respective property.',
-	'smw-createproperty-allowedvals' => 'This an information message at the top on a page in namespace "Property" which gets inserted in case only certain property values are [http://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed to be used] for the respective property.
+	'smw-createproperty-allowedvals' => 'This an information message at the top on a page in namespace "Property" which gets inserted in case only certain property values are [https://semantic-mediawiki.org/wiki/Help:Special_property_Allows_value allowed to be used] for the respective property.
 
 Parameters:
 * $1 - number of allowed values',
-	'smw-paramdesc-category-delim' => 'This is the description of the "delim" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-category-template' => 'This is the description of the "template" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-paramdesc-category-userparam' => 'This is the description of the "userparam" parameter of the "category" [http://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [http://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
-	'smw-info-par-message' => 'This is the description of the "message" parameter of the parser function "[http://semantic-mediawiki.org/wiki/Help:Adding_tooltips #info]".',
-	'smw-info-par-icon' => 'This is the description of the "icon" parameter of the parser function "[http://semantic-mediawiki.org/wiki/Help:Adding_tooltips #info]".
+	'smw-paramdesc-category-delim' => 'This is the description of the "delim" parameter of the "category" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-category-template' => 'This is the description of the "template" parameter of the "category" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-paramdesc-category-userparam' => 'This is the description of the "userparam" parameter of the "category" [https://semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].',
+	'smw-info-par-message' => 'This is the description of the "message" parameter of the parser function "[https://semantic-mediawiki.org/wiki/Help:Adding_tooltips #info]".',
+	'smw-info-par-icon' => 'This is the description of the "icon" parameter of the parser function "[https://semantic-mediawiki.org/wiki/Help:Adding_tooltips #info]".
 
 {{doc-important|Do not translate the possible parameter values "info" and "warning".}}',
 	'prefs-smw' => 'This is the text of a section header on [[Special:Preferences#mw-prefsection-smw|Special:Preferences]].
@@ -1125,7 +1125,7 @@ $messages['an'] = array(
  * @author روخو
  */
 $messages['ar'] = array(
-	'smw-desc' => "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([http://semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
+	'smw-desc' => "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
 	'smw_viewasrdf' => 'تلقيمة RDF',
 	'smw_finallistconjunct' => ' و',
 	'smw_factbox_head' => 'حقائق عن $1',
@@ -1400,7 +1400,7 @@ $messages['ar'] = array(
 	'smw_smwadmin_updatenotstopped' => 'لوقف عملية التحديث الجارية يجب عليك التأشير في الصندوق للتوكيد.
 
 و إلا فارجع إلى $1.',
-	'smw_smwadmin_docu' => 'هذه الصفحة الخاصة تساعدك خلال تنصيب وترقية <a href="http://semantic-mediawiki.org">ميدياويكي الدلالية</a>.
+	'smw_smwadmin_docu' => 'هذه الصفحة الخاصة تساعدك خلال تنصيب وترقية <a href="https://semantic-mediawiki.org">ميدياويكي الدلالية</a>.
 تذكر أن تحفظ احتياطيا البيانات القيمة قبل إجراء وظائف إدارية.',
 	'smw_smwadmin_db' => 'تنصيب و تحديث قاعدة البيانات',
 	'smw_smwadmin_dbdocu' => 'ميدياويكي الدلالية تتطلب تمديد قاعدة بيانات ميدياويكي لأجل تخزين البيانات الدلالية.
@@ -1412,8 +1412,8 @@ $messages['ar'] = array(
 	'smw_smwadmin_dbbutton' => 'استبداء أو ترقية الجداول',
 	'smw_smwadmin_announce' => 'أعلن عن هذه الويكي',
 	'smw_smwadmin_announcedocu' => 'ميدياويكي الدلالية لديها خدمة وِب للإعلان عن مواقع الويكي الدلالية الجديدة،
-وظيفتها مراكمة قائمة المواقع العمومية التي تستخدم ميدياويكي الدلالية، بهدف مساعدة <a href="http://semantic-mediawiki.org/wiki/SMW_Project">مشروع سيمانتيك ميدياويكي</a> على معرفة استخدامات ميدياويكي الدلالية.
-طالع الصفحة الرئيسية لسيمانتيك ميدياويكي ل<a href="http://semantic-mediawiki.org/wiki/Registry">لمزيد من المعلومات عن هذه الخدمة</a>.',
+وظيفتها مراكمة قائمة المواقع العمومية التي تستخدم ميدياويكي الدلالية، بهدف مساعدة <a href="https://semantic-mediawiki.org/wiki/SMW_Project">مشروع سيمانتيك ميدياويكي</a> على معرفة استخدامات ميدياويكي الدلالية.
+طالع الصفحة الرئيسية لسيمانتيك ميدياويكي ل<a href="https://semantic-mediawiki.org/wiki/Registry">لمزيد من المعلومات عن هذه الخدمة</a>.',
 	'smw_smwadmin_announcebutton' => 'اضغط الزرّ التالي لإرسال مسار هذه الويكي إلى تلك الخدمة.
 الخدمة لن تسجل الويكيات التي لا يمكن للعموم على الإنترنت الوصول إليها، و لن تحفظ سوى البيانات التي يمكن الوصول إليها علينا.',
 	'smw_smwadmin_datarefresh' => 'إصلاح البيانات وتحديثها',
@@ -1431,7 +1431,7 @@ $messages['ar'] = array(
 	'smw_smwadmin_support' => 'الحصول على دعم',
 	'smw_smwadmin_supportdocu' => 'توجد مصادر متعددة للمساعدة في حال حدوث مشاكل:',
 	'smw_smwadmin_installfile' => 'لو واجهتك مشاكل مع تنصيبتك فابدأ بمراجعة الإرشادات في <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ملف INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لميدياويكي الدلالية موجودة في <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لميدياويكي الدلالية موجودة في <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلّات يمكن الإبلاغ عنها في <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
 	'smw_smwadmin_questions' => 'إن كانت لديك أسئلة أو اقتراحات فشارك في النقاش في <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمي سيمانتيك ميدياويكي</a>.',
 	'smw_adminlinks_datastructure' => 'هيكل البيانات',
@@ -1535,7 +1535,7 @@ $messages['arc'] = array(
  * @author 아라
  */
 $messages['arz'] = array(
-	'smw-desc' => "جعل الويكى الخاص بك أكثر قابليه للوصول - للآلات ''و'' البشر ([http://semantic-mediawiki.org/wiki/Help:User_manual توثيق على الإنترنت])",
+	'smw-desc' => "جعل الويكى الخاص بك أكثر قابليه للوصول - للآلات ''و'' البشر ([https://semantic-mediawiki.org/wiki/Help:User_manual توثيق على الإنترنت])",
 	'smw_viewasrdf' => 'تلقيم RDF',
 	'smw_finallistconjunct' => '، و',
 	'smw_factbox_head' => 'حقائق عن $1',
@@ -1697,7 +1697,7 @@ $messages['arz'] = array(
 لا تنشئ واحده أخرى.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجوده تم إيقافها', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'لوقف عمليه التحديث الجاريه، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.', # Fuzzy
-	'smw_smwadmin_docu' => 'هذه الصفحه الخاصه تساعدك خلال تنصيب وترقيه <a href="http://semantic-mediawiki.org">سيمانتيك ميدياويكي</a>.
+	'smw_smwadmin_docu' => 'هذه الصفحه الخاصه تساعدك خلال تنصيب وترقيه <a href="https://semantic-mediawiki.org">سيمانتيك ميدياويكي</a>.
 تذكر أن تخزن احتياطيا البيانات القيمه قبل تنفيذ وظائف إداريه.',
 	'smw_smwadmin_db' => 'تثبيت و تحديث قاعده البيانات',
 	'smw_smwadmin_dbdocu' => 'سيمانتيك ميدياويكى يتطلب بعض الامتدادات لقاعده بيانات ميدياويكى حتى يخزن البيانات السيمانتيك.
@@ -1709,8 +1709,8 @@ $messages['arz'] = array(
 	'smw_smwadmin_dbbutton' => 'جداول البدء أو الترقية',
 	'smw_smwadmin_announce' => 'أعلن عن الويكى الخاص بك',
 	'smw_smwadmin_announcedocu' => 'سيمانتيك ميدياويكى لديه خدمه وب لإعلان مواقع الويكى السيمانتيك الجديده.
-هذا يستخدم للاعتناء بقائمه من المواقع العلنيه التى تستخدم سيمانتيك ميدياويكى، أساسا لمساعده <a href="http://semantic-mediawiki.org/wiki/SMW_Project">مشروع سيمانتيك ميدياويكي</a> للحصول على عرض عام للاستخدامات النمطيه لسيمانتيك ميدياويكى.
-انظر الصفحه الرئيسيه لسيمانتيك ميدياويكى ل<a href="http://semantic-mediawiki.org/wiki/Registry">مزيد من المعلومات حول هذه الخدمة</a>.',
+هذا يستخدم للاعتناء بقائمه من المواقع العلنيه التى تستخدم سيمانتيك ميدياويكى، أساسا لمساعده <a href="https://semantic-mediawiki.org/wiki/SMW_Project">مشروع سيمانتيك ميدياويكي</a> للحصول على عرض عام للاستخدامات النمطيه لسيمانتيك ميدياويكى.
+انظر الصفحه الرئيسيه لسيمانتيك ميدياويكى ل<a href="https://semantic-mediawiki.org/wiki/Registry">مزيد من المعلومات حول هذه الخدمة</a>.',
 	'smw_smwadmin_announcebutton' => 'اضغط على الزر التالى لإرسال مسار الويكى الخاص بك إلى تلك الخدمه.
 الخدمه لن تسجل الويكيات التى لا يمكن الوصول إليها بشكل علنى، وستخزن فقط البيانات التى يمكن الوصول إليها بشكل علنى.',
 	'smw_smwadmin_datarefresh' => 'إصلاح البيانات وتحديثها',
@@ -1728,7 +1728,7 @@ $messages['arz'] = array(
 	'smw_smwadmin_support' => 'أحصل على دعم',
 	'smw_smwadmin_supportdocu' => ':مصادر متعدده يمكن أن تساعده فى حاله مشاكل',
 	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ملف INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكامله لسيمانتيك ميدياويكى موجوده فى <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكامله لسيمانتيك ميدياويكى موجوده فى <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
 	'smw_smwadmin_questions' => 'لو لديك أسئله أو اقتراحات أخرى، انضم إلى النقاش فى <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمى سيمانتيك ميدياويكي</a>.',
 	'smw_adminlinks_datastructure' => 'هيكل البيانات',
@@ -1746,7 +1746,7 @@ $messages['arz'] = array(
  * @author Xuacu
  */
 $messages['ast'] = array(
-	'smw-desc' => "Facer la to wiki más accesible - pa les máquines ''y'' pa los humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en llinia])",
+	'smw-desc' => "Facer la to wiki más accesible - pa les máquines ''y'' pa los humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en llinia])",
 	'smw_viewasrdf' => 'Canal RDF',
 	'smw_finallistconjunct' => ', ⴷ',
 	'smw_factbox_head' => 'Fechos sobro $1',
@@ -2025,7 +2025,7 @@ Tornar a "$1".',
 	'smw_smwadmin_updatenotstopped' => "Pa parar el procesu d'actualización n'execución, tien d'activar el cuadru de marca pa indicar que ta daveres seguru.
 
 Tornar a $1.",
-	'smw_smwadmin_docu' => 'Esta páxina especial ayudará-y demientres la instalación y anovamientu de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Esta páxina especial ayudará-y demientres la instalación y anovamientu de <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Recuerde facer una copia de seguridá de los datos importantes antes d\'executar funciones alministratives.',
 	'smw_smwadmin_db' => 'Instalación y anovamientu de la base de datos',
 	'smw_smwadmin_dbdocu' => "Semantic MediaWiki necesita dalgunes estensiones de la base de datos de MediaWiki pa poder almacenar los datos semánticos.
@@ -2037,8 +2037,8 @@ O bien conceda a esti usuariu más permisos pa crear y desaniciar tables, o pong
 	'smw_smwadmin_dbbutton' => 'Aniciar o anovar les tables',
 	'smw_smwadmin_announce' => 'Anuncie la so wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki tien un serviciu web p\'anunciar nuevos sitios wiki semánticos.
-Esto usase pa mantener una llista de sitios públicos qu\'usen Semantic MediaWiki, principalmente p\'ayudar a que\'l <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyeutu Semantic MediaWiki</a> tenga una vista xeneral de los usos típicos de Semantic MediaWiki.
-Vea la páxina principal de Semantic MediaWiki pa <a href="http://semantic-mediawiki.org/wiki/Registry">más información tocante a esti serviciu</a>.',
+Esto usase pa mantener una llista de sitios públicos qu\'usen Semantic MediaWiki, principalmente p\'ayudar a que\'l <a href="https://semantic-mediawiki.org/wiki/SMW_Project">proyeutu Semantic MediaWiki</a> tenga una vista xeneral de los usos típicos de Semantic MediaWiki.
+Vea la páxina principal de Semantic MediaWiki pa <a href="https://semantic-mediawiki.org/wiki/Registry">más información tocante a esti serviciu</a>.',
 	'smw_smwadmin_announcebutton' => 'Calque nel siguiente botón pa unviar la URL de la so wiki a esi serviciu.
 El serviciu nun rexistrará wikis que nun tengan accesu públicu, y sólo almacenará información disponible públicamente.',
 	'smw_smwadmin_datarefresh' => 'Reparación de datos y anovamientu',
@@ -2056,7 +2056,7 @@ Progresu estimáu del anovamientu actual:",
 	'smw_smwadmin_support' => 'Algamar asistencia',
 	'smw_smwadmin_supportdocu' => 'Hai dellos recursos que podríen ayuda-y en casu de problemes:',
 	'smw_smwadmin_installfile' => 'Si alcuentra problemes cola instalación, principie revisando la guía del <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ficheru INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'La documentación del usuariu completa de Semantic MediaWiki ta en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'La documentación del usuariu completa de Semantic MediaWiki ta en <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Pue informar de los errores en <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si tien más preguntes o suxerencies, xuntese a la conversación del <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foru d\'usuarios de Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Estructura de datos',
@@ -2157,7 +2157,7 @@ $messages['be'] = array(
  * @author 아라
  */
 $messages['be-tarask'] = array(
-	'smw-desc' => "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([http://semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
+	'smw-desc' => "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([https://semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
 	'smw_viewasrdf' => 'RDF-крыніца',
 	'smw_finallistconjunct' => ' і',
 	'smw_factbox_head' => 'Факты аб $1',
@@ -2345,7 +2345,7 @@ $messages['be-tarask'] = array(
 Не стварайце новы.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Усе існуючыя працэсы абнаўленьня былі спынены.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Каб спыніць працэс абнаўленьня, Вам неабходна паставіць паметку ў полі, каб пацьвердзіць Вашыя намеры.', # Fuzzy
-	'smw_smwadmin_docu' => 'Гэта спэцыяльная старонка дапамагае Вам пад час усталяваньня і абнаўленьня <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Гэта спэцыяльная старонка дапамагае Вам пад час усталяваньня і абнаўленьня <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Не забывайце захоўваць каштоўныя зьвесткі перад выкананьнем адміністратарскіх функцыяў.',
 	'smw_smwadmin_db' => 'Усталяваньне і абнаўленьне базы зьвестак',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki патрабуе некаторыя пашырэньні, каб база зьвестак MediaWiki змагла захоўваць сэмантычныя зьвесткі.
@@ -2357,8 +2357,8 @@ $messages['be-tarask'] = array(
 	'smw_smwadmin_dbbutton' => 'Усталяваць ці абнавіць табліцы',
 	'smw_smwadmin_announce' => 'Анансуйце {{GRAMMAR:вінавальны|{{SITENAME}}}}',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki мае сэрвіс для анансаваньня новых сэмантычных вікі-сайтаў.
-Яна выкарыстоўваецца для падтрымкі сьпісу публічных сайтаў, якія выкарыстоўваюць Semantic MediaWiki, у асноўным для таго, каб дапамагчы <a href="http://semantic-mediawiki.org/wiki/SMW_Project">праекту Semantic MediaWiki</a> атрымаць агляд тыповых выкарыстаньняў Semantic MediaWiki.
-Глядзіце хатнюю старонку Semantic MediaWiki для <a href="http://semantic-mediawiki.org/wiki/Registry">атрыманьня дадатковай інфармацыі пра гэты сэрвіс</a>.',
+Яна выкарыстоўваецца для падтрымкі сьпісу публічных сайтаў, якія выкарыстоўваюць Semantic MediaWiki, у асноўным для таго, каб дапамагчы <a href="https://semantic-mediawiki.org/wiki/SMW_Project">праекту Semantic MediaWiki</a> атрымаць агляд тыповых выкарыстаньняў Semantic MediaWiki.
+Глядзіце хатнюю старонку Semantic MediaWiki для <a href="https://semantic-mediawiki.org/wiki/Registry">атрыманьня дадатковай інфармацыі пра гэты сэрвіс</a>.',
 	'smw_smwadmin_announcebutton' => 'Націсьніце наступную кнопку, каб дадаць спасылку на {{GRAMMAR:вінавальны|{{SITENAME}}}} да гэтага сэрвісу.
 Сэрвіс не рэгіструе вікі, якія ня маюць публічнага доступу, таму што ён захоўвае толькі агульнадаступную інфармацыю.',
 	'smw_smwadmin_datarefresh' => 'Выпраўленьне і абнаўленьне зьвестак',
@@ -2376,7 +2376,7 @@ $messages['be-tarask'] = array(
 	'smw_smwadmin_support' => 'Падтрымка',
 	'smw_smwadmin_supportdocu' => 'Вы можаце знайсьці дапамогу ў розных крыніцах у выпадку праблемаў:',
 	'smw_smwadmin_installfile' => 'Калі ўзьнікнуць выпадковыя праблемы з Вашым усталяваньнем, пачніце з рэкамэндацыяў у <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">файле INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Поўная дакумэнтацыя Semantic MediaWiki знаходзіцца на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Поўная дакумэнтацыя Semantic MediaWiki знаходзіцца на <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Можна паведамляць пра памылкі ў <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Калі Вы маеце пытаньні ці прапановы, далучайцеся да дыскусіі на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форуме карыстальнікаў Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Структура зьвестак',
@@ -2384,7 +2384,7 @@ $messages['be-tarask'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Дапамога па ўбудаваных запытах',
 	'smw-createproperty-isproperty' => 'Гэта ўласьцівасьць тыпу $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:',
-	'smw-prefs-intro-text' => 'Ніжэйпададзеныя можнасьці прадастаўленыя [https://semantic-mediawiki.org/ сэмантычнай MediaWiki] (ці зьвязанымі пашырэньнямі), каб улучыць індывідуальныя налады для пэўных функцыяў. Па дадатковую інфармацыю зьвярніцеся, калі ласка, у [http://semantic-mediawiki.org/wiki/Help:User_preferences разьдзел дапамогі].',
+	'smw-prefs-intro-text' => 'Ніжэйпададзеныя можнасьці прадастаўленыя [https://semantic-mediawiki.org/ сэмантычнай MediaWiki] (ці зьвязанымі пашырэньнямі), каб улучыць індывідуальныя налады для пэўных функцыяў. Па дадатковую інфармацыю зьвярніцеся, калі ласка, у [https://semantic-mediawiki.org/wiki/Help:User_preferences разьдзел дапамогі].',
 	'smw-prefs-ask-options-tooltip-display' => 'Адлюстроўваць парамэтар у выглядзе інфармацыйнай падказкі',
 	'smw-prefs-ask-options-collapsed-default' => 'Згортваць поле парамэтраў дапомна',
 	'smw-ui-tooltip-title-note' => 'Камэнтар',
@@ -2494,7 +2494,7 @@ $messages['bn'] = array(
  * @author Y-M D
  */
 $messages['br'] = array(
-	'smw-desc' => "Aesaat monedusted ho wiki - evit ar mekanikoù ''hag'' an dud ([http://semantic-mediawiki.org/wiki/Help:User_manual diellerezh enlinenn])",
+	'smw-desc' => "Aesaat monedusted ho wiki - evit ar mekanikoù ''hag'' an dud ([https://semantic-mediawiki.org/wiki/Help:User_manual diellerezh enlinenn])",
 	'smw_viewasrdf' => 'Gwelet evel RDF',
 	'smw_finallistconjunct' => ', ha',
 	'smw_factbox_head' => 'Fedoù diwar-benn $1',
@@ -2679,7 +2679,7 @@ Arabat krouiñ unan all.', # Fuzzy
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ya, sur on.',
 	'smw_smwadmin_support' => 'Kaout skoazell',
 	'smw_smwadmin_supportdocu' => "Dafar a bep seurt a c'hallfe ho skoazellañ ma vez kudennoù :",
-	'smw_smwadmin_smwhomepage' => 'Emañ teul titouriñ klok implijerien Semantic MediaWiki e <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Emañ teul titouriñ klok implijerien Semantic MediaWiki e <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'An drein a c\'hall bezañ danevellet da <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Ma chom goulennoù ganeoc\'h pe kinnigoù, kemerit perzh er gaoz war <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forom implijerien Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Framm ar roadennoù',
@@ -2759,7 +2759,7 @@ $messages['bs'] = array(
  * @author 아라
  */
 $messages['ca'] = array(
-	'smw-desc' => 'Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([http://semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])',
+	'smw-desc' => 'Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([https://semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])',
 	'smw_viewasrdf' => 'Canal RDF',
 	'smw_finallistconjunct' => ', i',
 	'smw_factbox_head' => 'Dades sobre $1',
@@ -2987,7 +2987,7 @@ Torna a $1.",
 	'smw_smwadmin_updatenotstopped' => "Per a aturar l'execució del procés d'actualització, heu de marcar la casella per tal d'indicar que n'esteu plenament segur.
 
 Torna a $1.",
-	'smw_smwadmin_docu' => 'Aquesta pàgina especial us ajuda durant la instal·lació i l\'actualització del <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Aquesta pàgina especial us ajuda durant la instal·lació i l\'actualització del <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Recordeu fer una còpia de seguretat de les dades importants abans d\'executar cap funció administrativa.',
 	'smw_smwadmin_db' => 'Instal·lació de la base de dades i actualització',
 	'smw_smwadmin_dbdocu' => "El Semantic MediaWiki necessita algunes extensions a la base de dades del MediaWiki per a poder emmagatzemar les dades semàntiques.
@@ -2999,8 +2999,8 @@ Podeu atorgar l'usuari permisos addicionals per a crear o suprimir taules, intro
 	'smw_smwadmin_dbbutton' => 'Inicialitza o actualitza les taules',
 	'smw_smwadmin_announce' => 'Feu conèixer el vostre wiki',
 	'smw_smwadmin_announcedocu' => 'El Semantic MediaWiki té un servei web per a anunciar nous llocs wiki semàntics.
-S\'utilitza per a mantenir una llista de llocs públics que utilitzen el Semantic MediaWiki, majoritàriament per a ajudar el <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projecte Semantic MediaWiki</a> a tenir una visió dels usos típics del Semantic MediaWiki.
-Consulteu la pàgina inicial del Semantic MediaWiki per a <a href="http://semantic-mediawiki.org/wiki/Registry">obtenir més informació del servei</a>.',
+S\'utilitza per a mantenir una llista de llocs públics que utilitzen el Semantic MediaWiki, majoritàriament per a ajudar el <a href="https://semantic-mediawiki.org/wiki/SMW_Project">projecte Semantic MediaWiki</a> a tenir una visió dels usos típics del Semantic MediaWiki.
+Consulteu la pàgina inicial del Semantic MediaWiki per a <a href="https://semantic-mediawiki.org/wiki/Registry">obtenir més informació del servei</a>.',
 	'smw_smwadmin_announcebutton' => "Premeu el botó següent per a trametre l'URL del vostre wiki al servei.
 El servei no registrarà wikis que no són accessibles públicament, i només emmagatzemarà informació que és accessible de forma pública.",
 	'smw_smwadmin_datarefresh' => 'Reparació de les dades i actualització',
@@ -3018,7 +3018,7 @@ Progrés estimat de l'actualització actual:",
 	'smw_smwadmin_support' => 'Com obtenir assistència',
 	'smw_smwadmin_supportdocu' => 'Diferents recursos poden ajudar-vos en cas de problemes:',
 	'smw_smwadmin_installfile' => 'Si us trobeu amb problemes amb la vostra instal·lació, comenceu comprovant les instruccions del <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">fitxer INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Podeu trobar la documentació d\'usuari completa del Semantic MediaWiki a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Podeu trobar la documentació d\'usuari completa del Semantic MediaWiki a <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Es poden enviar informes d\'error al <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si teniu més preguntes o suggeriments, uniu-vos a la discussió al <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">fòrum d\'usuaris del Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Estructura de dades',
@@ -3098,7 +3098,7 @@ $messages['ckb'] = array(
  * @author 아라
  */
 $messages['cs'] = array(
-	'smw-desc' => "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	'smw-desc' => "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_viewasrdf' => 'RDF kanál',
 	'smw_finallistconjunct' => ' a',
 	'smw_factbox_head' => 'Skutečnosti o $1 &mdash; kliknutím na <span class="smwsearchicon">+</span> vyhledáte podobné stránky.',
@@ -3284,7 +3284,7 @@ Průběh updatu můžete sledovat na této speciální stránce.', # Fuzzy
 Další nebyl vytvořen.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Všechny procesy aktualizace byly zastaveny.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Abyste zastavili běžící proces aktualizace, musíte zaškrtnout políčko, čímž potvrdíte, že si jste jisti.', # Fuzzy
-	'smw_smwadmin_docu' => 'Tato speciální stránka vám pomůže s instalací a upgradem <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Tato speciální stránka vám pomůže s instalací a upgradem <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Před spuštěním administrativních funkcí nezapomeňte zálohovat cenná data.',
 	'smw_smwadmin_db' => 'Instalace a upgrade databáze',
 	'smw_smwadmin_dbdocu' => 'Aby mohla Semantic MediaWiki ukládat sémantická data, potřebuje rozšířit databázi MediaWiki.
@@ -3296,8 +3296,8 @@ Přidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabu
 	'smw_smwadmin_dbbutton' => 'Inicializovat či upgradovat tabulky',
 	'smw_smwadmin_announce' => 'Nahlásit tuto wiki',
 	'smw_smwadmin_announcedocu' => 'Nové sémantické wiki lze ohlásit příslušné webové službě Semantic MediaWiki.
-Tato hlášení slouží k údržbě seznamu veřejných stránek, které Semantic MediaWiki používají. <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Projekt Semantic MediaWiki</a> si tak udržuje přehled o typických využitích Semantic MediaWiki.
-Na domovské stránce Semantic MediaWiki můžete najít <a href="http://semantic-mediawiki.org/wiki/Registry">více informací o této službě</a>.',
+Tato hlášení slouží k údržbě seznamu veřejných stránek, které Semantic MediaWiki používají. <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Projekt Semantic MediaWiki</a> si tak udržuje přehled o typických využitích Semantic MediaWiki.
+Na domovské stránce Semantic MediaWiki můžete najít <a href="https://semantic-mediawiki.org/wiki/Registry">více informací o této službě</a>.',
 	'smw_smwadmin_announcebutton' => 'Stisknutím následujícího tlačítka této službě odešlete URL vaší wiki.
 Služba neregistruje wiki, které nejsou veřejně přístupné, a ukládá pouze veřejně přístupné informace.',
 	'smw_smwadmin_datarefresh' => 'Oprava a upgrade dat',
@@ -3315,7 +3315,7 @@ Odhadovaný průběh updatu:',
 	'smw_smwadmin_support' => 'Získání podpory',
 	'smw_smwadmin_supportdocu' => 'V případě problémů vám může pomoci několik zdrojů:',
 	'smw_smwadmin_installfile' => 'Máte-li problémy s instalací, začněte kontrolou podle osnovy v <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">souboru INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Chyby lze hlásit na <a href="https://bugzilla.wikimedia.org/">Bugzille</a>.',
 	'smw_smwadmin_questions' => 'Další otázky či návrhy můžete pokládat v diskuzi v <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">uživatelském fóru Semantic MediaWiki</a>.',
 	'smw-createproperty-isproperty' => 'Toto je vlastnost typu $1.',
@@ -3641,7 +3641,7 @@ Zurück zur Seite  $1.',
 	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu vorzeitig zu beenden, musst das Kontrollkästchen markiert werden, um dadurch anzuzeigen, dass man sich diesbezüglich tatsächlich sicher ist.
 
 Zurück zur Seite  $1.',
-	'smw_smwadmin_docu' => 'Diese Spezialseite bietet während Installation und Aktualisierung von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a> Unterstützung. Wichtige Daten sollten vor der Ausführung administrativer Funktionen gesichert werden.',
+	'smw_smwadmin_docu' => 'Diese Spezialseite bietet während Installation und Aktualisierung von <a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a> Unterstützung. Wichtige Daten sollten vor der Ausführung administrativer Funktionen gesichert werden.',
 	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki benötigt weitere Datentabellen in der MediaWiki-Datenbank, um die semantischen Daten speichern zu können.
 Die folgende Funktion gewährleistet, dass die Datenbank richtig eingerichtet ist.
@@ -3652,8 +3652,8 @@ Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche 
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualisieren',
 	'smw_smwadmin_announce' => 'Wiki bekannt geben',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
-Dieser Service wird genutzt, um eine Liste aller öffentlich zugänglichen Wikis zu erhalten, die Semantic MediaWiki verwenden. Er dient aber auch dazu, dem <a href="http://semantic-mediawiki.org/wiki/SMW_Project">„Semantic MediaWiki“-Projekt</a> einen Überblick über typische Anwendungen von Semantic MediaWiki zu ermöglichen.
-Siehe hierzu die Website von Semantic MediaWiki für <a href="http://semantic-mediawiki.org/wiki/Registry">weiterführende Informationen zu diesem Service</a>.',
+Dieser Service wird genutzt, um eine Liste aller öffentlich zugänglichen Wikis zu erhalten, die Semantic MediaWiki verwenden. Er dient aber auch dazu, dem <a href="https://semantic-mediawiki.org/wiki/SMW_Project">„Semantic MediaWiki“-Projekt</a> einen Überblick über typische Anwendungen von Semantic MediaWiki zu ermöglichen.
+Siehe hierzu die Website von Semantic MediaWiki für <a href="https://semantic-mediawiki.org/wiki/Registry">weiterführende Informationen zu diesem Service</a>.',
 	'smw_smwadmin_announcebutton' => 'Bitte die folgende Schaltfläche anklicken, um dem Verzeichnisdienst die URL dieses Wikis hinzuzufügen.
 Es werden dabei nur öffentlich zugängliche Informationen gespeichert. Es werden keine Wikis aufgenommen, die nicht öffentlich zugänglich sind.',
 	'smw_smwadmin_datarefresh' => 'Datenreparatur oder -aktualisierung',
@@ -3671,7 +3671,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw_smwadmin_support' => 'Unterstützung erhalten',
 	'smw_smwadmin_supportdocu' => 'Verschiedene Hinweise helfen vielleicht im Fall eines Problems:',
 	'smw_smwadmin_installfile' => 'Sofern es Probleme mit der Installation gibt, könnte die Datei <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL</a> weiterhelfen.',
-	'smw_smwadmin_smwhomepage' => 'Die komplette Nutzerdokumentation von Semantic MediaWiki ist auf <b><a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_%E2%80%93_Startseite">semantic-mediawiki.org</a></b> verfügbar.',
+	'smw_smwadmin_smwhomepage' => 'Die komplette Nutzerdokumentation von Semantic MediaWiki ist auf <b><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_%E2%80%93_Startseite">semantic-mediawiki.org</a></b> verfügbar.',
 	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet werden.',
 	'smw_smwadmin_questions' => 'Im Fall weiterer Fragen oder Anregungen kann man sich an den Diskussionen im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Benutzerforum</a> beteiligen.',
 	'smw_adminlinks_datastructure' => 'Datenstruktur',
@@ -3759,7 +3759,7 @@ $messages['diq'] = array(
  */
 $messages['dsb'] = array(
 	'smw-desc' => "Twój wiki pśistupnjejšy cyniś - za mašiny ''a'' luźi
-([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
+([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
 	'smw_viewasrdf' => 'Kanal RDF',
 	'smw_finallistconjunct' => 'a',
 	'smw_factbox_head' => 'Fakty wó $1',
@@ -3990,7 +3990,7 @@ Slědk k $1.',
 	'smw_smwadmin_updatenotstopped' => 'Aby běžecy proces zastajił, musyš kontrolowy kašćik aktiwěrowaś, aby pódał, až sy napšawdu wěsty.
 
 Slědk k $1.',
-	'smw_smwadmin_docu' => 'Toś ten specialny bok śi pomaga za instalaciju a aktualizaciju a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Mysli se na zawěsćenje gódnotnych datow, nježli až wuwjeźoš administratiwne funkcije.',
+	'smw_smwadmin_docu' => 'Toś ten specialny bok śi pomaga za instalaciju a aktualizaciju a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>. Mysli se na zawěsćenje gódnotnych datow, nježli až wuwjeźoš administratiwne funkcije.',
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki trjeba rozšyrjenja za datowu banku MediaWiki, aby semantiske daty składował. Slědujuca funkcija zawěsćijo, až twója datowa banka se pórědnje zarědujo.
 Změny, kótarež cynje se w toś tom kšacu, njewobwliwuju zbytk datoweje banki MediaWiki a daju se lažko anulěrowaś, jolic póžedane.
@@ -4000,8 +4000,8 @@ Pak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tab
 	'smw_smwadmin_dbbutton' => 'Tabele inicializěrowaś abo aktualizěrowaś',
 	'smw_smwadmin_announce' => 'Twój wiki pśipowěźeś',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki ma websłužbu za wuzjawjenje nowych semantiskich wikisedłow.
-To se wužywa, aby wuźaržowało lisćinu zjawnych sedłow, kótarež wužywaju Semantic MediaWiki, głownje aby  pomagało <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projektoju Semantic MediaWiki</a> pśeglěd typiskich wužywanjow Semantic MediaWiki daś.
-Glědaj startowy bok Semantic MediaWiki za <a href="http://semantic-mediawiki.org/wiki/Registry">dalšne informacije wó toś tej słužbje</a>.',
+To se wužywa, aby wuźaržowało lisćinu zjawnych sedłow, kótarež wužywaju Semantic MediaWiki, głownje aby  pomagało <a href="https://semantic-mediawiki.org/wiki/SMW_Project">projektoju Semantic MediaWiki</a> pśeglěd typiskich wužywanjow Semantic MediaWiki daś.
+Glědaj startowy bok Semantic MediaWiki za <a href="https://semantic-mediawiki.org/wiki/Registry">dalšne informacije wó toś tej słužbje</a>.',
 	'smw_smwadmin_announcebutton' => 'Tłoc na slědujucy tłocašk, aby pósłał swój wikiijowy URL k tej słužbje.
 Słužba njebuźo wikije registrěrowaś, kótarež njejsu zjawnje pśistupne a buźo pśistupne informacije jano zjawnje składowaś.',
 	'smw_smwadmin_datarefresh' => 'Reparatura a aktualizacija datow',
@@ -4019,7 +4019,7 @@ Licony póstup aktualneje aktualizacije:',
 	'smw_smwadmin_support' => 'Pódpěru wobstaraś',
 	'smw_smwadmin_supportdocu' => 'Wšake resurse mógli śi w paźe problemow pomagaś:',
 	'smw_smwadmin_installfile' => 'Joli maš problemy ze swójeju instalaciju, pśecytaj směrnice w dataji <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Dopołna wužywarska dokumentacija za Semantic MediaWiki jo na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Dopołna wužywarska dokumentacija za Semantic MediaWiki jo na <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Zmólki daju se na <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> k wěsći daś.',
 	'smw_smwadmin_questions' => 'Jolic maš dalšne pšašanja abo naraźenja, pśizamkni se diskusiji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">wužywarskem forumje Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Datowa struktura',
@@ -4061,7 +4061,7 @@ $messages['ee'] = array(
  * @author ZaDiak
  */
 $messages['el'] = array(
-	'smw-desc' => "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([http://semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
+	'smw-desc' => "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
 	'smw_viewasrdf' => 'Ροή RDF',
 	'smw_finallistconjunct' => ', και',
 	'smw_factbox_head' => 'Γεγονότα για «$1»',
@@ -4294,7 +4294,7 @@ $messages['el'] = array(
 	'smw_smwadmin_updatenotstopped' => 'Για να διακόψετε τη εκτελούμενη διεργασία ενημέρωσης, πρέπει να ενεργοποιήσετε το πλαίσιο ελέγχου για να δηλώσετε ότι είστε πραγματικά βέβαιοι.
 
 Επιστροφή στο $1.',
-	'smw_smwadmin_docu' => 'Αυτή η ειδική σελίδα σάς βοηθά κατά τη διάρκεια της εγκατάστασης και αναβάθμισης του <a href="http://semantic-mediawiki.org">Σημασιολογικού MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Αυτή η ειδική σελίδα σάς βοηθά κατά τη διάρκεια της εγκατάστασης και αναβάθμισης του <a href="https://semantic-mediawiki.org">Σημασιολογικού MediaWiki</a>.
 Να θυμάστε να παίρνετε αντίγραφα ασφαλείας όλων των σημαντικών δεδομένων πριν από την εκτέλεση διαχειριστικών λειτουργιών.',
 	'smw_smwadmin_db' => 'Εγκατάσταση βάσεως δεδομένων και αναβάθμιση',
 	'smw_smwadmin_dbdocu' => 'Το Σημασιολογικό MediaWiki απαιτεί να γίνουν ορισμένες επεκτάσεις στη βάση δεδομένων του MediaWiki για την αποθήκευση σημασιολογικών δεδομένων.
@@ -4306,8 +4306,8 @@ $messages['el'] = array(
 	'smw_smwadmin_dbbutton' => 'Αρχικοποίηση ή αναβάθμιση πινάκων',
 	'smw_smwadmin_announce' => 'Ανακοίνωση του wiki σας',
 	'smw_smwadmin_announcedocu' => 'Το Σημασιολογικό MediaWiki έχει μια διαδικτυακή υπηρεσία για την αναγγελία νέων σημασιολογικών ιστοχώρων wiki.
-Η υπηρεσία χρησιμεύει για τη διατήρηση μιας λίστας των δημόσιων ιστοχώρων που χρησιμοποιούν το Σημασιολογικό MediaWiki, κυρίως για να βοηθήσει το <a href="http://semantic-mediawiki.org/wiki/SMW_Project">εγχείρημα Σημασιολογικό MediaWiki</a> να έχει μια γενική εικόνα των τυπικών χρήσεων του Σημασιολογικού MediaWiki.
-Δείτε την ιστοσελίδα του Σημασιολογικού MediaWiki για <a href="http://semantic-mediawiki.org/wiki/Registry">περισσότερες πληροφορίες σχετικά με αυτήν την υπηρεσία</a>.',
+Η υπηρεσία χρησιμεύει για τη διατήρηση μιας λίστας των δημόσιων ιστοχώρων που χρησιμοποιούν το Σημασιολογικό MediaWiki, κυρίως για να βοηθήσει το <a href="https://semantic-mediawiki.org/wiki/SMW_Project">εγχείρημα Σημασιολογικό MediaWiki</a> να έχει μια γενική εικόνα των τυπικών χρήσεων του Σημασιολογικού MediaWiki.
+Δείτε την ιστοσελίδα του Σημασιολογικού MediaWiki για <a href="https://semantic-mediawiki.org/wiki/Registry">περισσότερες πληροφορίες σχετικά με αυτήν την υπηρεσία</a>.',
 	'smw_smwadmin_announcebutton' => 'Πατήστε το παρακάτω κουμπί για την υποβολή της διεύθυνσης URL του wiki σας στην εν λόγω υπηρεσία.
 Η υπηρεσία δεν καταχωρίζει wiki που δεν είναι δημόσια προσβάσιμα, και θα αποθηκεύει μόνο πληροφορίες προσιτές στο κοινό.',
 	'smw_smwadmin_datarefresh' => 'Επιδιόρθωση και αναβάθμιση δεδομένων',
@@ -4325,7 +4325,7 @@ $messages['el'] = array(
 	'smw_smwadmin_support' => 'Παροχή υποστήριξης',
 	'smw_smwadmin_supportdocu' => 'Διάφορες πηγές ενδέχεται να σας βοηθήσουν σε περίπτωση που αντιμετωπίζετε προβλήματα:',
 	'smw_smwadmin_installfile' => 'Εάν αντιμετωπίζετε προβλήματα με την εγκατάσταση, ξεκινήστε τσεκάροντας τις κατευθυντήριες γραμμές στην <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ΕΓΚΑΤΑΣΤΑΣΗ του αρχείου</a>.',
-	'smw_smwadmin_smwhomepage' => 'Η πλήρης τεκμηρίωση χρήσης του Σημασιολογικού MediaWiki βρίσκεται στο <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Η πλήρης τεκμηρίωση χρήσης του Σημασιολογικού MediaWiki βρίσκεται στο <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Προγραμματιστικά σφάλματα μπορούν να αναφερθούν στο <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Εάν έχετε περαιτέρω ερωτήσεις ή προτάσεις, λάβετε μέρος στη συζήτηση στο <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">φόρουμ χρηστών του Σημασιολογικού MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Δομή δεδομένων',
@@ -4511,7 +4511,7 @@ $messages['eo'] = array(
  * @author 아라
  */
 $messages['es'] = array(
-	'smw-desc' => "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
+	'smw-desc' => "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
 	'smw_viewasrdf' => 'Ver como RDF',
 	'smw_finallistconjunct' => ', ⴷ',
 	'smw_factbox_head' => 'Hechos relativos a $1 — Búsqueda de páginas similares con <span class="smwsearchicon">+</span>.',
@@ -4767,7 +4767,7 @@ Volver a $1.',
 	'smw_smwadmin_updatenotstopped' => 'Para detener el proceso de actualización en ejecución, debes activar la tabla de verificación para indicar que estás realmente seguro.
 
 Volver a $1.',
-	'smw_smwadmin_docu' => 'Esta página especial te ayudará durante la instalación y actualización de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Esta página especial te ayudará durante la instalación y actualización de <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Recuerda respaldar cualquier información importante antes de ejecutar funciones administrativas.',
 	'smw_smwadmin_db' => 'Instalación de la base de datos y actualización',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki necesita algunas extensiones en la base de datos de MediaWiki para poder almacenar la información semántica.
@@ -4778,8 +4778,8 @@ Esta función de configuración puede ejecutarse varias veces sin hacer ningún 
 Ud puede conceder a este usuario permisos adicionales para crear y borrar tablas, ingresando temporalmente la clave de acceso de su base de datos raíz en LocalSettings.php, o bien usar el script de mantenimiento <code>SMW_setup.php</code>, que puede usar las credenciales de un administrador.',
 	'smw_smwadmin_dbbutton' => 'Inicializar o actualizar tablas',
 	'smw_smwadmin_announce' => 'Anunciar tu wiki',
-	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki cuenta con un servicio Web para anunciar nuevos sitios wiki semánticos, que es usado para mantener un listado de sitios Web públicos que usan Semantic MediaWiki, principalmente para ayudar al <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyecto Semantic MediaWiki</a>, para tener una visión general de los usos típicos de Semantic MediaWiki.
-See the Semantic MediaWiki homepage for <a href="http://semantic-mediawiki.org/wiki/Registry">further information about this service</a>.',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki cuenta con un servicio Web para anunciar nuevos sitios wiki semánticos, que es usado para mantener un listado de sitios Web públicos que usan Semantic MediaWiki, principalmente para ayudar al <a href="https://semantic-mediawiki.org/wiki/SMW_Project">proyecto Semantic MediaWiki</a>, para tener una visión general de los usos típicos de Semantic MediaWiki.
+See the Semantic MediaWiki homepage for <a href="https://semantic-mediawiki.org/wiki/Registry">further information about this service</a>.',
 	'smw_smwadmin_announcebutton' => 'Presione el botón siguiente para enviar la URL de su wiki al servicio.
 El servicio no registrará wikis que no sean de acceso público, y solamente guardará información públicamente accesible.',
 	'smw_smwadmin_datarefresh' => 'Reparación de datos y actualización',
@@ -4797,7 +4797,7 @@ Progeso estimado de la actualización:',
 	'smw_smwadmin_support' => 'Obteniendo ayuda',
 	'smw_smwadmin_supportdocu' => 'Varios recursos podrían ayudarlo en caso de problemas:',
 	'smw_smwadmin_installfile' => 'Si experimentas problemas con tu instalación, comienza revisando las líneas guía en el <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">archivo de INSTALACION</a>.',
-	'smw_smwadmin_smwhomepage' => 'La documentación de usuario completa a Semantic MediaWiki está en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'La documentación de usuario completa a Semantic MediaWiki está en <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Los defectos pueden ser reportados a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si tienes preguntas o sugerencias adicionales, únete a la discusión en <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Foro de usuarios de Semantic MediaWiki
 </a>.',
@@ -5002,7 +5002,7 @@ $messages['fa'] = array(
  * @author VezonThunder
  */
 $messages['fi'] = array(
-	'smw-desc' => 'Lisää wikisi helppokäyttöisyyttä - niin koneille "kuin" ihmisillekin ([http://semantic-mediawiki.org/wiki/Help:User_manual käyttäjän opas])',
+	'smw-desc' => 'Lisää wikisi helppokäyttöisyyttä - niin koneille "kuin" ihmisillekin ([https://semantic-mediawiki.org/wiki/Help:User_manual käyttäjän opas])',
 	'smw_viewasrdf' => 'RDF-syöte',
 	'smw_finallistconjunct' => ' ja',
 	'smw_factbox_head' => 'Tietoja kohteesta $1',
@@ -5228,7 +5228,7 @@ Palaa sivulle $1.',
 	'smw_smwadmin_updatenotstopped' => 'Jos haluat pysäyttää käynnissä olevan päivitysprosessin, varmista päätöksesi aktivoimalla valintaruutu.
 
 Palaa sivulle $1.',
-	'smw_smwadmin_docu' => 'Tämä toimintosivu auttaa <a href="http://semantic-mediawiki.org">Semantic MediaWikin</a> asennuksessa ja päivityksessä.
+	'smw_smwadmin_docu' => 'Tämä toimintosivu auttaa <a href="https://semantic-mediawiki.org">Semantic MediaWikin</a> asennuksessa ja päivityksessä.
 Muista tehdä varmuuskopiot tärkeistä tiedoista ennen kuin aloitat ylläpitotoiminnot.',
 	'smw_smwadmin_db' => 'Tietokannan asennus ja päivitys',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki tarvitseen joitain MediaWiki-tietokannan laajennuksia, jotta semanttista tietoa voidaan tallentaa.
@@ -5238,8 +5238,8 @@ Asennus voidaan suorittaa monta kertaa ilman että siitä eiheutuisi vahinkoa, m
 	'smw_smwadmin_dbbutton' => 'Alusta tai päivitä taulukot',
 	'smw_smwadmin_announce' => 'Julkista wikisi',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWikillä on verkkopalvelu, jossa ilmoitetaan uusista semanttista wiki käyttävistä sivustoista.
-Palvelussa ylläpidetään luetteloa Semantic MediaWikiä käyttävistä julkisista sivuista. Sen päätarkoituksena on antaa <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki -hankkeelle</a> yleiskuva siitä, miten Semantic MediaWikiä tyypillisesti käytetään.
-Semantic MediaWikin kotisivuilta <a href="http://semantic-mediawiki.org/wiki/Registry">löytyy lisätietoja tästä palvelusta</a>.',
+Palvelussa ylläpidetään luetteloa Semantic MediaWikiä käyttävistä julkisista sivuista. Sen päätarkoituksena on antaa <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki -hankkeelle</a> yleiskuva siitä, miten Semantic MediaWikiä tyypillisesti käytetään.
+Semantic MediaWikin kotisivuilta <a href="https://semantic-mediawiki.org/wiki/Registry">löytyy lisätietoja tästä palvelusta</a>.',
 	'smw_smwadmin_announcebutton' => 'Paina seuraavaa painiketta, jos haluat lähettää wikisi osoitteen tähän palveluun.
 Palvelu ei rekisteröi wikejä, jotka eivät ole käytettävissä julkisesti. Palvelu tallentaa lisäksi vain julkaistuja tietoja.',
 	'smw_smwadmin_datarefresh' => 'Tietojen korjaus ja päivitys',
@@ -5256,7 +5256,7 @@ Nykyisen päivityksen arvioitu eteneminen:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Kyllä, olen varma.',
 	'smw_smwadmin_support' => 'Tuen hankkiminen',
 	'smw_smwadmin_installfile' => 'Jos asennuksen kanssa on ongelmia, lue ensin <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL-tiedoston</a> ohjeet.',
-	'smw_smwadmin_smwhomepage' => 'Semantic MediaWikin täydellinen käyttäjän opas löytyy osoitteesta <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Semantic MediaWikin täydellinen käyttäjän opas löytyy osoitteesta <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Ohjelmistovirheet voi raportoida <a href="https://bugzilla.wikimedia.org/">Bugzillaan</a>.',
 	'smw_smwadmin_questions' => 'Jos sinulla on kysymyksiä tai ehdotuksia, liity keskusteluun <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semanttisen MediaWikin käyttäjäfoorumilla</a>.',
 	'smw_adminlinks_datastructure' => 'Tietorakenne',
@@ -5313,7 +5313,7 @@ Nykyisen päivityksen arvioitu eteneminen:',
  * @author 아라
  */
 $messages['fr'] = array(
-	'smw-desc' => "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([http://semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
+	'smw-desc' => "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([https://semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
 	'smw_viewasrdf' => 'Voir comme RDF',
 	'smw_finallistconjunct' => ' et',
 	'smw_factbox_head' => 'Faits relatifs à $1 &mdash; Recherche de pages similaires avec <span class="smwsearchicon">+</span>.',
@@ -5590,7 +5590,7 @@ Retour à  $1 .',
 	'smw_smwadmin_updatenotstopped' => 'Pour arrêter le processus de mise à jour en cours, vous devez activer la case à cocher pour indiquer que vous êtes vraiment sûr.
 
 Revenir à $1.',
-	'smw_smwadmin_docu' => 'Cette page spéciale vous aide pendant l’installation et la mise à niveau de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Cette page spéciale vous aide pendant l’installation et la mise à niveau de <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 N’oubliez pas de sauvegarder vos données avant d’exécuter les fonctions d’administration du site.',
 	'smw_smwadmin_db' => 'Installation et mise à niveau de la base de données',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki doit étendre la base de données MediaWiki afin de stocker ses données sémantiques.
@@ -5602,8 +5602,8 @@ Il faut soit permettre à cet utilisateur de créer et supprimer les tables, soi
 	'smw_smwadmin_dbbutton' => 'Initialiser ou mettre à niveau les tables',
 	'smw_smwadmin_announce' => 'Annoncer votre wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispose d’un service Internet pour annoncer de nouveaux sites wiki sémantiques.
-Ce service maintient une liste des sites publics utilisant Semantic MediaWiki, principalement pour aider <a href="http://semantic-mediawiki.org/wiki/SMW_Project">le projet Semantic MediaWiki</a> à obtenir une vue d’ensemble de ses utilisations typiques.
-Voyez la page d’accueil de Semantic MediaWiki pour <a href="http://semantic-mediawiki.org/wiki/Registry">de plus amples informations concernant ce service</a>.',
+Ce service maintient une liste des sites publics utilisant Semantic MediaWiki, principalement pour aider <a href="https://semantic-mediawiki.org/wiki/SMW_Project">le projet Semantic MediaWiki</a> à obtenir une vue d’ensemble de ses utilisations typiques.
+Voyez la page d’accueil de Semantic MediaWiki pour <a href="https://semantic-mediawiki.org/wiki/Registry">de plus amples informations concernant ce service</a>.',
 	'smw_smwadmin_announcebutton' => 'Appuyez sur le bouton suivant pour soumettre l’adresse Internet de votre wiki à ce service.
 Le service n’enregistrera pas les wikis qui ne sont pas accessibles au public, et il ne stockera que les informations publiquement accessibles.',
 	'smw_smwadmin_datarefresh' => 'Réparation et mise à niveau des données',
@@ -5621,7 +5621,7 @@ Progression estimée de la mise à jour actuelle :',
 	'smw_smwadmin_support' => 'Obtenir de l’aide',
 	'smw_smwadmin_supportdocu' => 'Diverses ressources pourraient vous aider en cas de problèmes :',
 	'smw_smwadmin_installfile' => 'Si vous rencontrez des problèmes lors de votre installation, commencez par regarder le guide en ligne dans le <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">fichier INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'La documentation complète de l’utilisateur de Semantic MediaWiki se trouve sur <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'La documentation complète de l’utilisateur de Semantic MediaWiki se trouve sur <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Les bogues peuvent être soumis sur <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si vous avez d’autres questions ou des suggestions, joignez-vous à la discussion sur <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">le forum des utilisateurs de Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Structure des données',
@@ -5843,7 +5843,7 @@ $messages['ga'] = array(
  * @author Toliño
  */
 $messages['gl'] = array(
-	'smw-desc' => "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
+	'smw-desc' => "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
 	'smw_viewasrdf' => 'Fonte de novas RDF',
 	'smw_finallistconjunct' => ' e',
 	'smw_factbox_head' => 'Feitos acerca de $1',
@@ -6126,7 +6126,7 @@ Volver a "$1".',
 	'smw_smwadmin_updatenotstopped' => 'Para deter os procesos de actualización actuais, debe activar a caixa de verificación para indicar que está seguro de facelo.
 
 Volver a "$1".',
-	'smw_smwadmin_docu' => 'Esta páxina especial axúdarao durante a instalación e actualización do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Esta páxina especial axúdarao durante a instalación e actualización do <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Lembre facer unha copia de seguranza dos datos antes de executar funcións administrativas.',
 	'smw_smwadmin_db' => 'Instalación e actualización da base de datos',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki require algunhas extensións da base de datos MediaWiki para almacenar os datos semánticos.
@@ -6138,8 +6138,8 @@ Fai falla conceder a este usuario os permisos para crear e eliminar táboas; tem
 	'smw_smwadmin_dbbutton' => 'Inicialice ou actualice as táboas',
 	'smw_smwadmin_announce' => 'Anunciar o seu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ten un servizo web para anunciar novos wikis semánticos.
-Isto é usado para manter unha lista de sitios públicos que usan Semantic MediaWiki, principalmente para axudar ao <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proxecto Semantic MediaWiki</a> para obter unha vista xeral dos usos típicos de Semantic MediaWiki.
-Vaia á páxina principal de Semantic MediaWiki para <a href="http://semantic-mediawiki.org/wiki/Registry">obter máis información acerca deste servizo</a>.',
+Isto é usado para manter unha lista de sitios públicos que usan Semantic MediaWiki, principalmente para axudar ao <a href="https://semantic-mediawiki.org/wiki/SMW_Project">proxecto Semantic MediaWiki</a> para obter unha vista xeral dos usos típicos de Semantic MediaWiki.
+Vaia á páxina principal de Semantic MediaWiki para <a href="https://semantic-mediawiki.org/wiki/Registry">obter máis información acerca deste servizo</a>.',
 	'smw_smwadmin_announcebutton' => 'Prema o seguinte botón para enviar o enderezo URL do seu wiki a ese servizo.
 O servizo non rexistrará wikis que non sexan publicamente accesibles e só almacenará información publicamente accesible.',
 	'smw_smwadmin_datarefresh' => 'Reparación e actualización dos datos',
@@ -6157,7 +6157,7 @@ Progreso estimado da actualización actual:',
 	'smw_smwadmin_support' => 'Obtendo a asistencia',
 	'smw_smwadmin_supportdocu' => 'Diversas fontes poden axudalo en caso de problemas:',
 	'smw_smwadmin_installfile' => 'Se experimenta problemas durante a súa instalación, comece comprobando a guía no <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ficheiro INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'A documentación do usuario completa de Semantic MediaWiki está en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'A documentación do usuario completa de Semantic MediaWiki está en <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Pode informar dos erros en <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se ten máis preguntas ou suxestións, únase á conversa no <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foro de usuarios de Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Estrutura dos datos',
@@ -6233,7 +6233,7 @@ $messages['grc'] = array(
  * @author 아라
  */
 $messages['gsw'] = array(
-	'smw-desc' => "Dyy Wiki zuegängliger mache - fir Maschine ''un'' Mänsche ([http://semantic-mediawiki.org/wiki/Help:User_manual online-Dokumäntation])",
+	'smw-desc' => "Dyy Wiki zuegängliger mache - fir Maschine ''un'' Mänsche ([https://semantic-mediawiki.org/wiki/Help:User_manual online-Dokumäntation])",
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' un',
 	'smw_factbox_head' => 'Fakte zue $1',
@@ -6397,7 +6397,7 @@ Du chasch dr Fortschritt vum Update uf däre Spezialsyte verfolge.', # Fuzzy
 S wird kei neje aagfange.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Alli Aktualisierigsprozäss, wu s git, sin aaghalte wore.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Go Prozäss aahlate, wu am laufe sin, muesch Du s Kontrollchäschtli aktiviere zum aazeige, ass Du Dir wirkli sicher bisch.', # Fuzzy
-	'smw_smwadmin_docu' => 'Die Spezialsyte hilft währed dr Installation un em Upgrade vu <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Die Spezialsyte hilft währed dr Installation un em Upgrade vu <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Dänk dra, wichtigi Date vor dr Uusfierig vu adminischtrative Funktione z sichere.',
 	'smw_smwadmin_db' => 'Datebankinstallation un -aktualisierig',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki bruucht e paar Erwyterige an dr MediaWiki-Datebank go di semantische Date z spychere.
@@ -6409,8 +6409,8 @@ Go des Probläm lese  isch s megli, em Benutzer zuesätzligi Rächt fir s Aalege
 	'smw_smwadmin_dbbutton' => 'Tabällen initialisiere oder aktualisere',
 	'smw_smwadmin_announce' => 'Dyy Wiki aachinde',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki het e Netzservice zum neji semantischi Wikisyte bekannt gee.
-Dää Service wird bruucht go ne Lischt kriege, weli effentligi Syte Semantic MediaWiki bruuche, in dr Hauptsach aber zum im <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic-MediaWiki-Projäkt</a> e Iberbick iber typischi Aawändige vu  Semantic MediaWiki z gee.
-Lueg d Semantic-MediaWiki-Homepage fir <a href="http://semantic-mediawiki.org/wiki/Registry">meh Informatione iber dää Service</a>.',
+Dää Service wird bruucht go ne Lischt kriege, weli effentligi Syte Semantic MediaWiki bruuche, in dr Hauptsach aber zum im <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic-MediaWiki-Projäkt</a> e Iberbick iber typischi Aawändige vu  Semantic MediaWiki z gee.
+Lueg d Semantic-MediaWiki-Homepage fir <a href="https://semantic-mediawiki.org/wiki/Registry">meh Informatione iber dää Service</a>.',
 	'smw_smwadmin_announcebutton' => 'Druck dää Chnopf go d URL vu Dynem Wiki zue däm Dienscht zuefiege.
 Dää Dienscht nimmt kei Wiki uf, wu nit efffentlig zuegängig sin. Gspycheret wäre au nume effentlig zuegängigi Informatione.',
 	'smw_smwadmin_datarefresh' => 'Datereparatur un -aktualisierig',
@@ -6428,7 +6428,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw_smwadmin_support' => 'Unterstitzig iberchu',
 	'smw_smwadmin_supportdocu' => 'Verschideni Quälle hälfe Dir villicht bi me Problämfall:',
 	'smw_smwadmin_installfile' => 'Wänn s Probläm mit dr Inschtallation git, chennt d Datei <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL</a> villicht wyterhälfe.',
-	'smw_smwadmin_smwhomepage' => 'Di vollständig Benutzerdokumentation vu Semantic MediaWiki findsch uf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Di vollständig Benutzerdokumentation vu Semantic MediaWiki findsch uf <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fähler chennte bi <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet wäre.',
 	'smw_smwadmin_questions' => 'Wänn Du meh Frogen oder Vorschleg hesch, mach mit an dr Diskussion uf <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 	'smw_adminlinks_datastructure' => 'Datestruktur',
@@ -6451,7 +6451,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
  * @author 아라
  */
 $messages['he'] = array(
-	'smw-desc' => 'הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([http://semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])',
+	'smw-desc' => 'הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])',
 	'smw_viewasrdf' => 'הזנת RDF',
 	'smw_finallistconjunct' => ', וגם',
 	'smw_factbox_head' => 'עובדות על $1',
@@ -6646,7 +6646,7 @@ $messages['he'] = array(
 לא ייווצר עוד אחד.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'כל תהליכי העדכון הקיימים נעצרו.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'כדי לעצור תהליך עדכון פעיל, עליכם לסמן את תיבת הסימון כדי לציין שאתם בטוחים בכך.', # Fuzzy
-	'smw_smwadmin_docu' => 'דף מיוחד זה יעזור לכם במהלך ההתקנה והשדרוג של <a href="http://semantic-mediawiki.org">מדיה־ויקי הסמנטית</a>.
+	'smw_smwadmin_docu' => 'דף מיוחד זה יעזור לכם במהלך ההתקנה והשדרוג של <a href="https://semantic-mediawiki.org">מדיה־ויקי הסמנטית</a>.
 זִכרו לגבות את הנתונים החיוניים לכם בטרם הפעלת התכונות הניהוליות.',
 	'smw_smwadmin_db' => 'התקנה ושדרוג של בסיס הנתונים',
 	'smw_smwadmin_dbdocu' => 'מדיה־ויקי סמנטית דורשת כמה הרחבות לבסיס הנתונים של מדיה־ויקי כדי לאחסן את הנתונים הסמנטיים.
@@ -6658,8 +6658,8 @@ $messages['he'] = array(
 	'smw_smwadmin_dbbutton' => 'אתחול או שדרוג של טבלאות',
 	'smw_smwadmin_announce' => 'הכריזו על הוויקי שלכם',
 	'smw_smwadmin_announcedocu' => 'למדיה־ויקי סמנטי, ישנ שירות מקוון להכרזה על אתרי ויקי סמנטיים חדשים.
-שירות זה משמש לאחסון רשימת אתרים ציבוריים המשתמשים במדיה־ויקי סמנטית, לרוב כדי לעזור ל<a href="http://semantic-mediawiki.org/wiki/SMW_Project">מיזם מדיה־ויקי סמנטית</a> לקבל סקירה של שימושים טיפוסיים במדיה־ויקי הסמנטי.
-עיינו בדף הבית של המדיה־ויקי הסמנטי ל<a href="http://semantic-mediawiki.org/wiki/Registry">מידע נוסף על שירות זה</a>.',
+שירות זה משמש לאחסון רשימת אתרים ציבוריים המשתמשים במדיה־ויקי סמנטית, לרוב כדי לעזור ל<a href="https://semantic-mediawiki.org/wiki/SMW_Project">מיזם מדיה־ויקי סמנטית</a> לקבל סקירה של שימושים טיפוסיים במדיה־ויקי הסמנטי.
+עיינו בדף הבית של המדיה־ויקי הסמנטי ל<a href="https://semantic-mediawiki.org/wiki/Registry">מידע נוסף על שירות זה</a>.',
 	'smw_smwadmin_announcebutton' => 'לחצו על הכפתור הבא כדי לשלוח את כתובת הוויקי שלכם לשירות זה.
 השירות לא ירשום אתרי ויקי שאינם נגישים לציבור, והמידע שיישמר יהיה מידע הזמין לציבור בלבד.',
 	'smw_smwadmin_datarefresh' => 'תיקון ושדרוג של נתונים',
@@ -6677,7 +6677,7 @@ $messages['he'] = array(
 	'smw_smwadmin_support' => 'קבלת תמיכה',
 	'smw_smwadmin_supportdocu' => 'מגוון משאבים עומדים לרשותכם במקרה של תקלה:',
 	'smw_smwadmin_installfile' => 'אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות בקובץ <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב<a href="https://bugzilla.wikimedia.org/">באגזילה של מדיה־ויקי</a>.',
 	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">פורום המשתמשים של Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'מבנה הנתונים',
@@ -6723,7 +6723,7 @@ $messages['hil'] = array(
  * @author 아라
  */
 $messages['hr'] = array(
-	'smw-desc' => "Čini Vaš wiki dostupnijim - za strojeve ''i'' ljude ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija])",
+	'smw-desc' => "Čini Vaš wiki dostupnijim - za strojeve ''i'' ljude ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija])",
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ', i',
 	'smw_factbox_head' => 'Činjenice o $1',
@@ -6888,7 +6888,7 @@ Napredak osvježavanja možete pratiti na ovoj posebnoj stranici.', # Fuzzy
 Ne pokrećem novi.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Svi postojeći procesi osvježavanja su zaustavljeni.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Da biste zaustavili proces osvježavanja, označite u potvrdnom okviru da ste zaista sigurni.', # Fuzzy
-	'smw_smwadmin_docu' => 'Ova posebna stranica pomaže prilikom instalacije i nadogradnje <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Ova posebna stranica pomaže prilikom instalacije i nadogradnje <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Ne zaboravite napraviti sigurnosnu kopiju važnih podataka prije izvršavanja administrativnih funkcija.',
 	'smw_smwadmin_db' => 'Instalacija i nadgradnja baze podataka',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki zahtijeva određena proširenja MediaWiki baze podataka za čuvanje semantičkih podataka.
@@ -6900,8 +6900,8 @@ Učinite jedno od sljedećeg: dodijelite ovom korisniku dodatna prava za stvaran
 	'smw_smwadmin_dbbutton' => 'Inicijaliziraj ili nadogradi tablice',
 	'smw_smwadmin_announce' => 'Najavite svoj wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki pruža web uslugu koja prikazuje i najavljuje nove semantičke wikije.
-Time se vodi popis javnih web stranica i projekata koji koriste Semantic MediaWiki, uglavnom kako bi <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Projekt Semantic MediaWiki</a> dobio pregled tipičnih upotreba Semantic MediaWiki.
-Vidi početnu stranicu Semantic MediaWiki za <a href="http://semantic-mediawiki.org/wiki/Registry">više informacija o ovoj usluzi</a>.',
+Time se vodi popis javnih web stranica i projekata koji koriste Semantic MediaWiki, uglavnom kako bi <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Projekt Semantic MediaWiki</a> dobio pregled tipičnih upotreba Semantic MediaWiki.
+Vidi početnu stranicu Semantic MediaWiki za <a href="https://semantic-mediawiki.org/wiki/Registry">više informacija o ovoj usluzi</a>.',
 	'smw_smwadmin_announcebutton' => 'Pritisnite sljedeći gumb kako biste poslali URL svog wikija na tu uslugu.
 Usluga neće registrirati wikije koji nisu javno dostupni i skupljat će samo javno dostupne podatke.',
 	'smw_smwadmin_datarefresh' => 'Popravljanje i nadgradnja podataka',
@@ -6918,7 +6918,7 @@ Procjena napretka osvježavanja:',
 	'smw_smwadmin_support' => 'Zatražite pomoć',
 	'smw_smwadmin_supportdocu' => 'U slučaju problema poslužite se sljedećim izvorima:',
 	'smw_smwadmin_installfile' => 'U slučaju problema s Vašom instalacijom pogledajte naputke u datoteci <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Potpuna korisnička dokumentacija za Semantic MediaWiki nalazi se na <a href="http://semantic-mediawiki.org"><b>semantic-mediawiki.org</b></a>.',
+	'smw_smwadmin_smwhomepage' => 'Potpuna korisnička dokumentacija za Semantic MediaWiki nalazi se na <a href="https://semantic-mediawiki.org"><b>semantic-mediawiki.org</b></a>.',
 	'smw_smwadmin_mediazilla' => 'Greške (bugove) možete prijaviti na <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
 	'smw_smwadmin_questions' => 'Ukoliko imate pitanja ili prijedloge, pridružite se raspravi na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">korisničkom forumu Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struktura podataka',
@@ -6934,7 +6934,7 @@ Procjena napretka osvježavanja:',
  * @author 아라
  */
 $messages['hsb'] = array(
-	'smw-desc' => "Twój wiki přistupniši činić - za mašiny ''a'' ludźi ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
+	'smw-desc' => "Twój wiki přistupniši činić - za mašiny ''a'' ludźi ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
 	'smw_viewasrdf' => 'RDF-kanal',
 	'smw_finallistconjunct' => 'a',
 	'smw_factbox_head' => 'Fakty wo $1',
@@ -7189,7 +7189,7 @@ Wróćo k $1.',
 	'smw_smwadmin_updatenotstopped' => 'Zo by běžny aktualizowanski proces zastajił, dyrbiš kontrolny kašćik aktiwizować, zo by podał, zo sy sej woprawdźe wěsty.
 
 Wróćo k $1.',
-	'smw_smwadmin_docu' => 'Tuta specialna strona ći za instalaciju a akutalizaciju <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a> pomha.
+	'smw_smwadmin_docu' => 'Tuta specialna strona ći za instalaciju a akutalizaciju <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a> pomha.
 Njezabudź hódnotne daty zawěsćić, prjedy hač administratiwne funkcije wuwjedźeš.',
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki trjeba někotre rozšěrjenja na datowej bance MediaWiki, zo by semantiske daty składował.
@@ -7201,8 +7201,8 @@ Zaruč tute přidatne wužiwarske prawa za wutworjenje a wušmórnjenje tabelow,
 	'smw_smwadmin_dbbutton' => 'Tabele inicializować abo aktualizować',
 	'smw_smwadmin_announce' => 'Twój wiki připowědźić',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ma websłužbu za wozjewjenje nowych semantiskich wikisydłow.
-To so wužiwa, zo by so lisćina zjawnych sydłow wothladowała, kotrež Semantic MediaWiki wužiwaja, hłownje, zo by <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projektej Semantic MediaWiki</a> pomhała, zo by přehlad wo typiskich wužiwanskich móžnosćach Semantic MediaWiki dóstał.
-Hlej startowu stronu Semantic MediaWiki za <a href="http://semantic-mediawiki.org/wiki/Registry">dalše informacije wo tutej słužbje</a>.',
+To so wužiwa, zo by so lisćina zjawnych sydłow wothladowała, kotrež Semantic MediaWiki wužiwaja, hłownje, zo by <a href="https://semantic-mediawiki.org/wiki/SMW_Project">projektej Semantic MediaWiki</a> pomhała, zo by přehlad wo typiskich wužiwanskich móžnosćach Semantic MediaWiki dóstał.
+Hlej startowu stronu Semantic MediaWiki za <a href="https://semantic-mediawiki.org/wiki/Registry">dalše informacije wo tutej słužbje</a>.',
 	'smw_smwadmin_announcebutton' => 'Klikń na slědowace tłóčatko, zo by swój wikijowy URL tutej słužbje pósłał.
 Słužba njebudźe wikije registrować, kotrež zjawnje přistupnje njejsu, a budźe jenož zjawnje přistupne informacije składować.',
 	'smw_smwadmin_datarefresh' => 'Porjedźenje a aktualizacija datow',
@@ -7219,7 +7219,7 @@ Trochowany staw aktualneje aktualizacije:',
 	'smw_smwadmin_support' => 'Podpěru dóstać',
 	'smw_smwadmin_supportdocu' => 'Wšelake resursy móhli ći w problemowych padach pomhać:',
 	'smw_smwadmin_installfile' => 'Jeli su problemy z twojej instalaciju, wobhladaj sej směrnicy w <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">dataji INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Kompletna wužiwarska dokumentacija za Semantic MediaWiki je na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Kompletna wužiwarska dokumentacija za Semantic MediaWiki je na <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Zmylki móžeš w systemje <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> zdźělić.',
 	'smw_smwadmin_questions' => 'Jeli maš dalše prašenja abo namjety, wobdźěl so na diskusiji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">wužiwarskim forumje Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struktura datow',
@@ -7284,7 +7284,7 @@ $messages['ht'] = array(
  * @author 아라
  */
 $messages['hu'] = array(
-	'smw-desc' => "A wiki elérhetőbbé tétele – gépek ''és'' emberek számára is ([http://semantic-mediawiki.org/wiki/Help:User_manual online dokumentáció])",
+	'smw-desc' => "A wiki elérhetőbbé tétele – gépek ''és'' emberek számára is ([https://semantic-mediawiki.org/wiki/Help:User_manual online dokumentáció])",
 	'smw_viewasrdf' => 'RDF hírcsatorna',
 	'smw_finallistconjunct' => ', és',
 	'smw_factbox_head' => '$1-tények',
@@ -7491,7 +7491,7 @@ Visszatérés a(z) $1 lapra.',
 	'smw_smwadmin_updatenotstopped' => 'Az éppen futó frissítési folyamat megszakításához aktiválnod kell a jelölőnégyzetet, hogy jelezd, tényleg biztos vagy benne.
 
 Visszatérés a(z) $1 lapra.',
-	'smw_smwadmin_docu' => 'Ez a speciális lap segít a <a href="http://semantic-mediawiki.org">Szemantikus MediaWiki</a> telepítése és frissítése során.
+	'smw_smwadmin_docu' => 'Ez a speciális lap segít a <a href="https://semantic-mediawiki.org">Szemantikus MediaWiki</a> telepítése és frissítése során.
 Ne felejts el másolatot készíteni az értékes adatokról az adminisztratív funkciók használata előtt.',
 	'smw_smwadmin_db' => 'Adatbázistelepítés és -frissítés',
 	'smw_smwadmin_dbdocu' => 'A Szemantikus MediaWikinek szüksége van néhány kiterjesztésre az adatbázison a szemantikus adatok tárolásához.
@@ -7503,8 +7503,8 @@ Adj a felhasználó számára táblák készítéséhez és törléséhez jogosu
 	'smw_smwadmin_dbbutton' => 'Táblák inicializálása vagy frissítése',
 	'smw_smwadmin_announce' => 'Wiki bejelentése',
 	'smw_smwadmin_announcedocu' => 'A Szemantikus MediaWikinek van egy webes szolgáltatása az új szemantikus wikioldalak jelzésére.
-Ezt arra használjuk, hogy karbantartsuk azon nyilvános oldalak listáját, melyek Szemantikus MediaWikit használnak, főként azért, hogy segítsük a <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Szemantikus MediaWiki-projektet</a>, így nyerve áttekintést arról, hogy mire használják általában ezt a kiegészítőt.
-A szolgáltatásról további információkat <a href="http://semantic-mediawiki.org/wiki/Registry">a Szemantikus MediaWiki honlapján</a> találsz.',
+Ezt arra használjuk, hogy karbantartsuk azon nyilvános oldalak listáját, melyek Szemantikus MediaWikit használnak, főként azért, hogy segítsük a <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Szemantikus MediaWiki-projektet</a>, így nyerve áttekintést arról, hogy mire használják általában ezt a kiegészítőt.
+A szolgáltatásról további információkat <a href="https://semantic-mediawiki.org/wiki/Registry">a Szemantikus MediaWiki honlapján</a> találsz.',
 	'smw_smwadmin_announcebutton' => 'Kattints a következő gombra, ha el szeretnéd küldeni a wikid URL-címét ennek a szolgáltatásnak.
 A szolgáltatás nem rögzít olyan wikiket, melyek nem érhetőek el nyilvánosan, és csak mindenki számára elérhető információkat gyűjt.',
 	'smw_smwadmin_datarefresh' => 'Adatok javítása és aktualizálása',
@@ -7522,7 +7522,7 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw_smwadmin_support' => 'Segítséget kérek',
 	'smw_smwadmin_supportdocu' => 'Különböző források, amelyek segíthetnek problémák esetén:',
 	'smw_smwadmin_installfile' => 'Ha problémákat észlelsz a telepítéssel, ellenőrizd az útmutatót az <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL fájlban</a>.',
-	'smw_smwadmin_smwhomepage' => 'A Szemantikus MediaWiki teljes felhasználói dokumentációja a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> címen található.',
+	'smw_smwadmin_smwhomepage' => 'A Szemantikus MediaWiki teljes felhasználói dokumentációja a <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b> címen található.',
 	'smw_smwadmin_mediazilla' => 'A hibákat a <a href="https://bugzilla.wikimedia.org/">Bugzillán</a> lehet jelenteni.',
 	'smw_smwadmin_questions' => 'Ha további kérdéseid vagy javaslataid vannak, csatlakozz a <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Szemantikus MediaWiki felhasználói fórumán</a> folyó beszélgetéshez.',
 	'smw_adminlinks_datastructure' => 'Adatstruktúra',
@@ -7544,7 +7544,7 @@ A jelenlegi frissítés becsült előrehaladása:',
  * @author 아라
  */
 $messages['ia'] = array(
-	'smw-desc' => "Pro render tu wiki plus accessibile – a machinas '''e''' a humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentation in linea])",
+	'smw-desc' => "Pro render tu wiki plus accessibile – a machinas '''e''' a humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentation in linea])",
 	'smw_viewasrdf' => 'Syndication RDF',
 	'smw_finallistconjunct' => ', e',
 	'smw_factbox_head' => 'Factos super $1',
@@ -7794,7 +7794,7 @@ Retornar a $1.',
 	'smw_smwadmin_updatenotstopped' => 'Pro stoppar le processo de actualisation in curso, tu debe marcar le quadrato pro indicar que tu es absolutemente secur de voler facer isto.
 
 Retornar a $1.',
-	'smw_smwadmin_docu' => 'Iste pagina special te adjuta durante le installation e actualisation de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Iste pagina special te adjuta durante le installation e actualisation de <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Non oblida facer un copia de reserva del datos de valor ante de executar un function administrative.',
 	'smw_smwadmin_db' => 'Installation e actualisation del base de datos',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki require alcun extensiones al base de datos de MediaWiki a fin de poter immagazinar le datos semantic.
@@ -7806,8 +7806,8 @@ O da a iste usator le permissiones additional de crear e deler tabulas, o entra 
 	'smw_smwadmin_dbbutton' => 'Initialisar u actualisar tabulas',
 	'smw_smwadmin_announce' => 'Annunciar tu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispone de un servicio web pro annunciar nove sitos de wiki semantic.
-Iste es usate pro mantener un lista de sitos public que usa Semantic MediaWiki, principalmente pro adjutar le <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projecto Semantic MediaWiki</a> a obtener un impression general del usos typic de Semantic MediaWiki.
-Vide le pagina principal de Semantic MediaWiki pro <a href="http://semantic-mediawiki.org/wiki/Registry">ulterior informationes a proposito de iste servicio</a>.',
+Iste es usate pro mantener un lista de sitos public que usa Semantic MediaWiki, principalmente pro adjutar le <a href="https://semantic-mediawiki.org/wiki/SMW_Project">projecto Semantic MediaWiki</a> a obtener un impression general del usos typic de Semantic MediaWiki.
+Vide le pagina principal de Semantic MediaWiki pro <a href="https://semantic-mediawiki.org/wiki/Registry">ulterior informationes a proposito de iste servicio</a>.',
 	'smw_smwadmin_announcebutton' => 'Preme le sequente button pro submitter le adresse URL de tu wiki a iste servicio.
 Le servicio non registrara wikis que non es aperte al publico, e illo retenera solmente le informationes publicamente accessibile.',
 	'smw_smwadmin_datarefresh' => 'Reparation e actualisation de datos',
@@ -7825,7 +7825,7 @@ Progresso estimate del actualisation currente:',
 	'smw_smwadmin_support' => 'Obtener supporto',
 	'smw_smwadmin_supportdocu' => 'Plure ressources poterea adjutar te in caso de problemas:',
 	'smw_smwadmin_installfile' => 'Si tu incontra problemas con tu installation, comencia per verificar le directivas in le <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">file INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Le documentation de usator complete de Semantic MediaWiki se trova a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Le documentation de usator complete de Semantic MediaWiki se trova a <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Le defectos pote esser reportate in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si tu ha ulterior questiones o suggestiones, participa in le discussion al <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foro del usatores de Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Structura de datos',
@@ -7855,7 +7855,7 @@ Progresso estimate del actualisation currente:',
  * @author 아라
  */
 $messages['id'] = array(
-	'smw-desc' => "Membuat wiki Anda lebih mudah diakses - oleh mesin ''dan'' manusia ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi daring])",
+	'smw-desc' => "Membuat wiki Anda lebih mudah diakses - oleh mesin ''dan'' manusia ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi daring])",
 	'smw_viewasrdf' => 'Umpan RDF',
 	'smw_finallistconjunct' => ', dan',
 	'smw_factbox_head' => 'Fakta tentang $1',
@@ -8035,7 +8035,7 @@ Kembali ke $1.',
 Tidak membuat proses lain.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Semua proses pemutakhiran yang ada telah dihentikan.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Untuk menghentikan proses pembaruan yang sedang berjalan, Anda harus memilih kotak centang untuk menunjukkan bahwa Anda benar-benar yakin.', # Fuzzy
-	'smw_smwadmin_docu' => 'Halaman istimewa ini akan membantu Anda selama instalasi dan peningkatan dari <a href="http://semantic-mediawiki.org">Semantic MediaWiki.</a>
+	'smw_smwadmin_docu' => 'Halaman istimewa ini akan membantu Anda selama instalasi dan peningkatan dari <a href="https://semantic-mediawiki.org">Semantic MediaWiki.</a>
 Jangan lupa untuk mencadangkan data Anda yang berharga sebelum melaksanakan fungsi administratif.',
 	'smw_smwadmin_db' => 'Instalasi dan peningkatan basis data',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki mensyaratkan beberapa pengembangan basis data MediaWiki untuk menyimpan data semantik.
@@ -8047,8 +8047,8 @@ Anda dapat memberikan hak akses tambahan untuk membuat dan menghapus tabel, mema
 	'smw_smwadmin_dbbutton' => 'Inisiasi atau tingkatkan tabel',
 	'smw_smwadmin_announce' => 'Umumkan wiki Anda',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki memiliki layanan web untuk mengumumkan situs wiki semantik baru.
-Ini digunakan untuk memelihara suatu daftar situs publik yang menggunakan Semantic MediaWiki, terutama untuk membantu <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyek Semantic MediaWiki</a> untuk mendapat gambaran penggunaan umum dari Semantic MediaWiki.
-Kunjungin beranda Semantic MediaWiki untuk <a href="http://semantic-mediawiki.org/wiki/Registry">informasi lebih lanjut tentang layanan ini</a>.',
+Ini digunakan untuk memelihara suatu daftar situs publik yang menggunakan Semantic MediaWiki, terutama untuk membantu <a href="https://semantic-mediawiki.org/wiki/SMW_Project">proyek Semantic MediaWiki</a> untuk mendapat gambaran penggunaan umum dari Semantic MediaWiki.
+Kunjungin beranda Semantic MediaWiki untuk <a href="https://semantic-mediawiki.org/wiki/Registry">informasi lebih lanjut tentang layanan ini</a>.',
 	'smw_smwadmin_announcebutton' => 'Tekan tombol berikut untuk mengirim URL wiki Anda ke layanan itu.
 Layanan ini tidak akan mendaftarkan wiki yang tidak bisa diakses publik, dan hanya akan menyimpan informasi yang bisa diakses publik.',
 	'smw_smwadmin_datarefresh' => 'Perbaikan dan peningkatan data',
@@ -8066,7 +8066,7 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_smwadmin_support' => 'Cari dukungan',
 	'smw_smwadmin_supportdocu' => 'Berbagai sumber dapat membantu Anda jika ada masalah:',
 	'smw_smwadmin_installfile' => 'Jika Anda menghadapi masalah dengan instalasi Anda, mulailah dengan mengecek pedoman di <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">berkas INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Dokumentasi pengguna lengkap untuk Semantic MediaWiki tersedia di <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Dokumentasi pengguna lengkap untuk Semantic MediaWiki tersedia di <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Bug dapat dilaporkan ke <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Jika Anda memiliki pertanyaan atau saran lain, bergabunglah dengan diskusi di <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum pengguna Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struktur data',
@@ -8074,7 +8074,7 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_adminlinks_inlinequerieshelp' => 'Bantuan query sisip',
 	'smw-createproperty-isproperty' => 'Ini adalah properti bertipe $1',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Nilai|Nilai}} yang diizinkan untuk properti ini adalah:',
-	'smw-prefs-intro-text' => 'Pilihan di bawah disediakan oleh [https://semantic-mediawiki.org/ MediaWiki semantik] (atau ekstensi terkait) untuk mengaktifkan kustomisasi individu pada fungsi terpilih. Untuk informasi lebih lanjut, silakan  lihat ini [http://semantic-mediawiki.org/wiki/Help:User_preferences bagian bantuan].',
+	'smw-prefs-intro-text' => 'Pilihan di bawah disediakan oleh [https://semantic-mediawiki.org/ MediaWiki semantik] (atau ekstensi terkait) untuk mengaktifkan kustomisasi individu pada fungsi terpilih. Untuk informasi lebih lanjut, silakan  lihat ini [https://semantic-mediawiki.org/wiki/Help:User_preferences bagian bantuan].',
 	'smw-ui-tooltip-title-info' => 'Informasi',
 	'smw-ui-tooltip-title-warning' => 'Kesalahan',
 	'smw-ui-tooltip-title-parameter' => 'Parameter',
@@ -8123,7 +8123,7 @@ $messages['io'] = array(
  * @author 아라
  */
 $messages['it'] = array(
-	'smw-desc' => "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([http://semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
+	'smw-desc' => "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
 	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => ' e',
 	'smw_factbox_head' => 'Fatti riguardanti $1',
@@ -8317,7 +8317,7 @@ Torna a $1.',
 	'smw_smwadmin_updatenotstopped' => 'Per arrestare il processo di aggiornamento in corso, devi cliccare nel riquadro per confermare che sei davvero sicuro di volerlo fare.
 
 Torna a $1.',
-	'smw_smwadmin_docu' => 'Questa pagina speciale serve ad aiutarti durante l\'installazione e l\'aggiornamento di <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Questa pagina speciale serve ad aiutarti durante l\'installazione e l\'aggiornamento di <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Ricordati di fare un backup dei dati importanti prima di eseguire funzioni amministrative.',
 	'smw_smwadmin_db' => 'Installazione database e aggiornamento',
 	'smw_smwadmin_dbdocu' => "Semantic MediaWiki richiede alcune estensioni del database MediaWiki per poter registrare i dati semantici.
@@ -8329,8 +8329,8 @@ Puoi assegnare a questo utente permessi aggiuntivi per creare e cancellare tabel
 	'smw_smwadmin_dbbutton' => 'Inizializza o aggiorna tabelle',
 	'smw_smwadmin_announce' => 'Annuncia il tuo wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispone di un servizio web per dare notizia di nuovi siti wiki semantici.
-Il servizio è usato per mantenere una lista di siti pubblici che usano Semantic MediaWiki principalmente per fornire al <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Progetto Semantic MediaWiki</a> una panoramica degli usi tipici del Semantic MediaWiki.
-Visita la Home Page di Semantic MediaWiki per <a href="http://semantic-mediawiki.org/wiki/Registry">maggiori informazioni su questo servizio</a>.',
+Il servizio è usato per mantenere una lista di siti pubblici che usano Semantic MediaWiki principalmente per fornire al <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Progetto Semantic MediaWiki</a> una panoramica degli usi tipici del Semantic MediaWiki.
+Visita la Home Page di Semantic MediaWiki per <a href="https://semantic-mediawiki.org/wiki/Registry">maggiori informazioni su questo servizio</a>.',
 	'smw_smwadmin_announcebutton' => 'Premi il pulsante seguente per inviare la URL del tuo wiki a quel servizio.
 Il servizio non registrerà wiki che non siano pubblicamente accessibili, e conserverà esclusivamente informazioni pubblicamente accessibili.',
 	'smw_smwadmin_datarefresh' => 'Riparazione ed aggiornamento dei dati',
@@ -8348,7 +8348,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_smwadmin_support' => 'Ottenere supporto',
 	'smw_smwadmin_supportdocu' => "Diverse risorse potrebbero esserti d'aiuto in caso di problemi:",
 	'smw_smwadmin_installfile' => 'Se hai problemi con la tua installazione, inizia a verificare le linee guida nel <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">file INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'La documentazione completa per l\'utente di Semantic MediaWiki si trova in <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'La documentazione completa per l\'utente di Semantic MediaWiki si trova in <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'I Bug possono essere riportati a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se hai altre domande o suggerimenti, unisciti alle discussioni sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum degli utenti di Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struttura dei dati',
@@ -8382,7 +8382,7 @@ Progresso stimato dell'aggiornamento in corso:",
  * @author 아라
  */
 $messages['ja'] = array(
-	'smw-desc' => 'ウィキを機械や人間にとってよりアクセスしやすいものにする ([http://semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])',
+	'smw-desc' => 'ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])',
 	'smw_viewasrdf' => 'RDF フィード',
 	'smw_finallistconjunct' => ',',
 	'smw_factbox_head' => '「$1」に関する事実',
@@ -8608,7 +8608,7 @@ $1に戻る。',
 	'smw_smwadmin_updatenotstopped' => '実行中の更新プロセスを停止するには、本当に理解していることを示すためにチェックボックスを選択する必要があります。
 
 $1に戻る。',
-	'smw_smwadmin_docu' => 'この特別ページは <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a> のインストールとアップグレードを支援します。
+	'smw_smwadmin_docu' => 'この特別ページは <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a> のインストールとアップグレードを支援します。
 管理機能を実行する前に、重要なデータをバックアップするようにしてください。',
 	'smw_smwadmin_db' => 'データベースのインストールおよびアップグレード',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki は意味的データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。
@@ -8620,8 +8620,8 @@ LocalSettings.php に一時的にデータベースの root のログイン情�
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
 	'smw_smwadmin_announce' => 'あなたのウィキの発表',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しい意味的ウィキのサイトを発表するためのウェブサービスがあります。
-このサービスは Semantic MediaWiki を使用するサイト一覧の保守に使用されており、主に <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために使用されています。
-Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.org/wiki/Registry">このサービスの詳細情報</a>をご覧ください。',
+このサービスは Semantic MediaWiki を使用するサイト一覧の保守に使用されており、主に <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために使用されています。
+Semantic MediaWiki のホームページで<a href="https://semantic-mediawiki.org/wiki/Registry">このサービスの詳細情報</a>をご覧ください。',
 	'smw_smwadmin_announcebutton' => '以下のボタンを押して、あなたのウィキのURLをこのサービスに送信します。
 このサービスでは、公開されていないウィキを登録せず、公開されている情報のみを保管します。',
 	'smw_smwadmin_datarefresh' => 'データの修復とアップグレード',
@@ -8639,7 +8639,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw_smwadmin_support' => '支援を得る',
 	'smw_smwadmin_supportdocu' => '問題が発生したときにさまざまなリソースが助けとなるかもしれません:',
 	'smw_smwadmin_installfile' => 'インストールに問題を発見した場合、<a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL ファイル</a>にある指針を確認することから始めてください。',
-	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
+	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
 	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> で報告できます。',
 	'smw_smwadmin_questions' => 'さらなる質問や提案がある場合は、<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki 利用者フォーラム</a>での議論に参加してください。',
 	'smw_adminlinks_datastructure' => 'データ構造',
@@ -9001,7 +9001,7 @@ $messages['kn'] = array(
  * @author 아라
  */
 $messages['ko'] = array(
-	'smw-desc' => '위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([http://semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])',
+	'smw-desc' => '위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])',
 	'smw_viewasrdf' => 'RDF 피드',
 	'smw_finallistconjunct' => ', 그리고',
 	'smw_factbox_head' => '"$1"에 대한 사실',
@@ -9237,7 +9237,7 @@ $1 문서로 돌아갑니다.',
 	'smw_smwadmin_updatenotstopped' => '실행하고 있는 업데이트 과정을 중지하려면 정말 확실한지 나타내는 확인란을 활성화해야 합니다.
 
 $1 문서로 돌아갑니다.',
-	'smw_smwadmin_docu' => '이 특수 문서는 <a href="http://semantic-mediawiki.org">시맨틱 미디어위키</a>의 설치와 업그레이드를 하는 동안 도와줍니다.
+	'smw_smwadmin_docu' => '이 특수 문서는 <a href="https://semantic-mediawiki.org">시맨틱 미디어위키</a>의 설치와 업그레이드를 하는 동안 도와줍니다.
 관리 기능을 실행하기 전에 중요한 데이터를 백업해야 합니다.',
 	'smw_smwadmin_db' => '데이터베이스 설치와 업그레이드',
 	'smw_smwadmin_dbdocu' => '시맨틱 미디어위키는 시멘틱 데이터를 저장하기 위해 미디어위키 데이터베이스에 몇가지 확장 기능이 필요합니다.
@@ -9249,8 +9249,8 @@ $1 문서로 돌아갑니다.',
 	'smw_smwadmin_dbbutton' => '표를 초기화하거나 업그레이드',
 	'smw_smwadmin_announce' => '내 위키 발표',
 	'smw_smwadmin_announcedocu' => '시맨틱 미디어위키는 새 시맨틱 위키 사이트를 발표하는 웹 서비스가 있습니다.
-이 서비스는 시맨틱 미디어위키를 사용하는 공개 사이트의 목록을 유지 관리하는 데 사용되며, 주로 <a href="http://semantic-mediawiki.org/wiki/SMW_Project">시맨틱 미디어위키 프로젝트</a>가 시맨틱 미디어위키의 일반적인 사용법을 파악하는 데 에 도움이 됩니다.
-<a href="http://semantic-mediawiki.org/wiki/Registry">이 서비스에 대한 추가적인 정보</a>에 대해서는 시맨틱 미디어위키 홈페이지를 참고하세요.',
+이 서비스는 시맨틱 미디어위키를 사용하는 공개 사이트의 목록을 유지 관리하는 데 사용되며, 주로 <a href="https://semantic-mediawiki.org/wiki/SMW_Project">시맨틱 미디어위키 프로젝트</a>가 시맨틱 미디어위키의 일반적인 사용법을 파악하는 데 에 도움이 됩니다.
+<a href="https://semantic-mediawiki.org/wiki/Registry">이 서비스에 대한 추가적인 정보</a>에 대해서는 시맨틱 미디어위키 홈페이지를 참고하세요.',
 	'smw_smwadmin_announcebutton' => '해당 서비스에 위키 URL을 제출할 다음 버튼을 누르세요.
 서비스는 공개적으로 접근할 수 없는 위키를 등록하지 않으며, 공개적으로 접근할 수 있는 정보만 저장합니다.',
 	'smw_smwadmin_datarefresh' => '데이터 복구와 업그레이드',
@@ -9268,7 +9268,7 @@ $1 문서로 돌아갑니다.',
 	'smw_smwadmin_support' => '지원 얻기',
 	'smw_smwadmin_supportdocu' => '문제가 있을 때 다양한 자료가 도움이 될 수도 있습니다:',
 	'smw_smwadmin_installfile' => '설치에 문제가 있으면, <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL 파일</a>에서 지침을 확인하여 시작하세요.',
-	'smw_smwadmin_smwhomepage' => '시맨틱 미디어위키의 완전한 사용자 설명서는 <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>에 있습니다.',
+	'smw_smwadmin_smwhomepage' => '시맨틱 미디어위키의 완전한 사용자 설명서는 <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>에 있습니다.',
 	'smw_smwadmin_mediazilla' => '버그는 <a href="https://bugzilla.wikimedia.org/">버그질라</a>에 보고할 수 있습니다.',
 	'smw_smwadmin_questions' => '만약 추가적인 질문이나 제안이 있으면, <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">시맨틱 미디어위키 사용자 포럼</a>에서 토론에 참여하세요.',
 	'smw_adminlinks_datastructure' => '데이터 구조',
@@ -9283,7 +9283,7 @@ $1 문서로 돌아갑니다.',
 	'smw-info-par-icon' => '"info"나 "warning" 중 하나를 보여주는 아이콘입니다.',
 	'prefs-smw' => '시맨틱 미디어위키',
 	'prefs-ask-options' => '시맨틱 찾기 옵션',
-	'smw-prefs-intro-text' => '아래의 옵션은 [https://semantic-mediawiki.org/ 시맨틱 미디어위키](또는 관련된 확장 기능)가 선택된 기능에 대한 개별 사용자 지정을 활성화하기 위해 제공됩니다. 자세한 정보에 대해서는 이 [http://semantic-mediawiki.org/wiki/Help:User_preferences 도움말 문단]에서 보시기 바랍니다.',
+	'smw-prefs-intro-text' => '아래의 옵션은 [https://semantic-mediawiki.org/ 시맨틱 미디어위키](또는 관련된 확장 기능)가 선택된 기능에 대한 개별 사용자 지정을 활성화하기 위해 제공됩니다. 자세한 정보에 대해서는 이 [https://semantic-mediawiki.org/wiki/Help:User_preferences 도움말 문단]에서 보시기 바랍니다.',
 	'smw-prefs-ask-options-tooltip-display' => '정보 툴팁으로 변수 텍스트를 보이기',
 	'smw-prefs-ask-options-collapsed-default' => '옵션 상자를 기본적으로 접도록 활성화',
 	'smw-ui-tooltip-title-property' => '속성',
@@ -9332,7 +9332,7 @@ $messages['krj'] = array(
  * @author 아라
  */
 $messages['ksh'] = array(
-	'smw-desc' => 'Määt Ding Wiki besser ze bruche - för Minsche un Maschiene. ([http://semantic-mediawiki.org/wiki/Help:User_manual Handbooch])',
+	'smw-desc' => 'Määt Ding Wiki besser ze bruche - för Minsche un Maschiene. ([https://semantic-mediawiki.org/wiki/Help:User_manual Handbooch])',
 	'smw_viewasrdf' => 'RDF Kannaal',
 	'smw_finallistconjunct' => ', un',
 	'smw_factbox_head' => 'Tatsaache övver $1',
@@ -9512,13 +9512,13 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 Mer donn jetz nit noch ein aanshtüße!', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Alle Projramme för et op der neuste Shtand Bränge, sin jetz aanjehallde woode.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Öm dat Projramm anzehallde, wat ald am Loufe es, moß De dat Höcksche en dat Käßje maache, öm ze zeije, dat De Der janz sesher bes.', # Fuzzy
-	'smw_smwadmin_docu' => 'Hee di Söndersigg hellef beim Enshtallerere un beim op der neue Shtand bränge vum <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Opjepaß: Donn Ding Date seschere, ih dat De di Funkßjohne aanschmiiße deihß!',
+	'smw_smwadmin_docu' => 'Hee di Söndersigg hellef beim Enshtallerere un beim op der neue Shtand bränge vum <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>. Opjepaß: Donn Ding Date seschere, ih dat De di Funkßjohne aanschmiiße deihß!',
 	'smw_smwadmin_db' => 'Datebangk inshtalleere un op der neuste Shatnd bränge',
 	'smw_smwadmin_dbdocu' => 'Semantesch MediaWiki hät bruch eije zosätzlejje Plaz en de Datebangk vum MediaWiki, öm sing semantesche Date ongerzebrenge. De Funkßjuhne hee dronger sorje doför, dat de Datebangk em Wiki öhndlesch för Semantesch MediaWiki opjesaz es. Wat hee verändert weet, dathät keine Enfloß op dä Rääß vun dä Datebangk vum MediaWiki, un mer kann et och eifach widder retuur maache, wann mer well. Di Funkßjuhn zom Opseze kam_mer esu öff loufe lohße, wi mer well, dat schaadt nix, ävver et es bloß eijmohl nüdesch bemm Enreschte, udder bem Ömshteije op en neuere Projrammversion.',
 	'smw_smwadmin_permissionswarn' => 'Wann de Aufjab met enem Fähler em <i lang="en">SQL</i> donävve jeiht, dann künnd et sin, dat dä Name för op de Datebangk zohzejriife en de <code>LocalSettings.php</code> för Ding Wiki nit jenooch Rääschte en dä Datebangk hät. Entweder jiß De dämm dat Rääsch, Tabälle aanzelääje udder fott ze maache, udder donn för der Momang Dinge <i lang="en">English text sample</i> udder Datebank-Köbes en dä <code>tings.php </code> enndraare, udder nemm dat Waadungsprojramm <code>SMW_setup.php</code> wat sesch op de Aanjabe en <code>AdminSettings.php</code> betrecke kann.', # Fuzzy
 	'smw_smwadmin_dbbutton' => 'Tabelle aanlääje udder op der neuste Shatnd bränge',
 	'smw_smwadmin_announce' => 'Donn Ding Wiki annongßeere un bikannt maache',
-	'smw_smwadmin_announcedocu' => 'Semantesch MediaWiki hät en Websigg för neu Semantsche MediaWiki ßaits aanzeköndijje. Doh weed en Leß met de öffentlesche Websaits jehallde, en de Houpsaach, öm dämm <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantesch MediaWiki Projäk</a> zoh enem Övverbleck ze verhellve, wi Semantesch MediaWiki esu enjesaz weed. Op dä Houpäjtsch fun dämm Projäk fengks De <a href="http://semantic-mediawiki.org/wiki/Registry">mieh övver dä Deens</a>.',
+	'smw_smwadmin_announcedocu' => 'Semantesch MediaWiki hät en Websigg för neu Semantsche MediaWiki ßaits aanzeköndijje. Doh weed en Leß met de öffentlesche Websaits jehallde, en de Houpsaach, öm dämm <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantesch MediaWiki Projäk</a> zoh enem Övverbleck ze verhellve, wi Semantesch MediaWiki esu enjesaz weed. Op dä Houpäjtsch fun dämm Projäk fengks De <a href="https://semantic-mediawiki.org/wiki/Registry">mieh övver dä Deens</a>.',
 	'smw_smwadmin_announcebutton' => 'Met dämm Knopp hee deihs De Dingem Wiki sing <i lang="en">URL</i> aan dä Deens schecke. Dä deiht bloß öffentlesch oproofbaare Wikis opnämme, un bloß öffentlesch oproofbaare Enfomazjuhne övvernämme.',
 	'smw_smwadmin_datarefresh' => 'Date repareere un op der neuste Shtand bränge',
 	'smw_smwadmin_datarefreshdocu' => 'Et es müjjelesch, all Date vun Semantesch MediaWiki uß dä nommaale Date em Wiki widder neu zesamme ze krijje. Dat kann joot sin, öm kapodde Date ze repareere, udder de Date op der aktoälle Shtand ze bränge, nohdämm sesh jet draan jeändert hät, dorjen Änderung aan de Projramme. De Aanpassung weed Sigg för Sigg jedonn un weed dröm nit paaftisch fäädesch weede. Heenoh kanns De sin, ov en Aanpassung em Jang es, un Do kanns ein aanfange udder aanhallde, ußer wann ene Wiki_Köbes di Müjjeleschkeit ußjeschalldt hät.',
@@ -9529,7 +9529,7 @@ Mer donn jetz nit noch ein aanshtüße!', # Fuzzy
 	'smw_smwadmin_support' => 'Hölp krijje',
 	'smw_smwadmin_supportdocu' => 'Bei Probleme kriss De velleich Hölp övver en Aanzahl vun Müjjeleschkeite:',
 	'smw_smwadmin_installfile' => 'Wann De Schwiireschkeite met Dinge Enshtallzjuhn häs, dann donn met de Reeschlinnije en dä Dattei <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL</a> anfange, donoh ze söke, wat De donn kanns.',
-	'smw_smwadmin_smwhomepage' => 'De kumplätte Dokku för et <i lang="en">Semantic Mediawiki</i> es op <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> ze fenge.',
+	'smw_smwadmin_smwhomepage' => 'De kumplätte Dokku för et <i lang="en">Semantic Mediawiki</i> es op <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b> ze fenge.',
 	'smw_smwadmin_mediazilla' => 'Fähler kanns De övver <a href="https://bugzilla.wikimedia.org/" lang="en">Bugzilla</a> melde.',
 	'smw_smwadmin_questions' => 'Wann De noch Froore häß odder Vörschlääsch maache odder klaafe wells, jangk op et <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user"><i lang="en">Semantic MediaWiki</i> Metmaacher Forum</a> un donn doh metschwaade.',
 	'smw_adminlinks_datastructure' => 'De Daateschtroktuur',
@@ -9580,7 +9580,7 @@ $messages['ky'] = array(
  * @author Robby
  */
 $messages['lb'] = array(
-	'smw-desc' => "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	'smw-desc' => "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ', an',
 	'smw_factbox_head' => 'Fakten iwwer $1',
@@ -9760,7 +9760,7 @@ Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	'smw_smwadmin_support' => 'Ënnerstëtzung kréien',
 	'smw_smwadmin_supportdocu' => 'Verschidde Quellen kéinten Iech bei Problemer hëllefen:',
 	'smw_smwadmin_installfile' => 'Wann Dir Problemer bäi der Installatioun hutt, da kuckt d\'Directiven am <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL Fichier</a> no.',
-	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> gemellt ginn.',
 	'smw_smwadmin_questions' => 'Wann dir nach Froen oder Propositiounen hutt, da bedeelegt Iech un der Diskussioun op dem <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki Benotzer-Forum</a>.',
 	'smw_adminlinks_datastructure' => 'Datestruktur',
@@ -9790,7 +9790,7 @@ Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
  * @author Vpovilaitis
  */
 $messages['lt'] = array(
-	'smw-desc' => "Padaryti Jūsų wiki labiau prieinamą - mašinoms ''ir'' žmonėms ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	'smw-desc' => "Padaryti Jūsų wiki labiau prieinamą - mašinoms ''ir'' žmonėms ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_finallistconjunct' => ', ir',
 	'smw_factbox_head' => 'Faktai apie $1',
 	'smw_isspecprop' => 'Ši savybė yra speciali šioje wiki.',
@@ -9898,7 +9898,7 @@ $messages['min'] = array(
  * @author 아라
  */
 $messages['mk'] = array(
-	'smw-desc' => "Го прави вашето вики подостапно - за машини ''и'' луѓе ([http://semantic-mediawiki.org/wiki/Help:User_manual?uselang=mk документација])",
+	'smw-desc' => "Го прави вашето вики подостапно - за машини ''и'' луѓе ([https://semantic-mediawiki.org/wiki/Help:User_manual?uselang=mk документација])",
 	'smw_viewasrdf' => 'RDF канал',
 	'smw_finallistconjunct' => ' и',
 	'smw_factbox_head' => 'Факти за $1',
@@ -10186,7 +10186,7 @@ $messages['mk'] = array(
 	'smw_smwadmin_updatenotstopped' => 'За да го запрете текот на подновата, мора да го активирате кутивчето за избор кое укажува на тоа дека сте навистина сигурни дека сакате да направите така.
 
 Назад на $1.',
-	'smw_smwadmin_docu' => 'Оваа специјална страница ви помага во текот на инсталацијата и подновата на <a href="http://semantic-mediawiki.org/?uselang=mk">Семантички МедијаВики</a>.
+	'smw_smwadmin_docu' => 'Оваа специјална страница ви помага во текот на инсталацијата и подновата на <a href="https://semantic-mediawiki.org/?uselang=mk">Семантички МедијаВики</a>.
 Не заборавајте да направите резервни примероци од значајни податоци пред да вршите административни постапки.',
 	'smw_smwadmin_db' => 'Инсталација и поднова на базата на податоци',
 	'smw_smwadmin_dbdocu' => 'Семантички МедијаВики бара додавање на извесни додатоци кон базата на податоци на МедијаВики за да складира семантички податоци.
@@ -10198,8 +10198,8 @@ $messages['mk'] = array(
 	'smw_smwadmin_dbbutton' => 'Започни или поднови табели',
 	'smw_smwadmin_announce' => 'Објавете го вашето вики',
 	'smw_smwadmin_announcedocu' => 'Семантички МедијаВики има мрежна служба за соопштување на нови семантички вики-страници.
-Ова се користи за одржување на список на јавни мрежни места кои го користат Семантички МедијаВики, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project?uselang=mk">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Семантички МедијаВики.
-Погледајте го мрежното место на Семантички МедијаВики за <a href="http://semantic-mediawiki.org/wiki/Registry?uselang=mk">повеќе информации за оваа служба</a>.',
+Ова се користи за одржување на список на јавни мрежни места кои го користат Семантички МедијаВики, главно со цел да му се помогне на <a href="https://semantic-mediawiki.org/wiki/SMW_Project?uselang=mk">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Семантички МедијаВики.
+Погледајте го мрежното место на Семантички МедијаВики за <a href="https://semantic-mediawiki.org/wiki/Registry?uselang=mk">повеќе информации за оваа служба</a>.',
 	'smw_smwadmin_announcebutton' => 'Притиснете го следново копче за да ја испратите URL-адресата на вашето вики во таа служба.
 Службата нема да регистрира викија што не се јавно достапни, и ќе складира само достапни информации.',
 	'smw_smwadmin_datarefresh' => 'Поправка и поднова на податоци',
@@ -10217,7 +10217,7 @@ $messages['mk'] = array(
 	'smw_smwadmin_support' => 'Како да добиете поддршка',
 	'smw_smwadmin_supportdocu' => 'Различни ресурси кои можат да ви помогнат во случај на проблеми:',
 	'smw_smwadmin_installfile' => 'Ако наидете на проблеми при инсталацијата, најпрвин прочитајте ги напатствијата во <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">податотеката INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Целосната корисничка документација за Семантички МедијаВики ќе ја најдете на <b><a href="http://semantic-mediawiki.org?uselang=mk">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Целосната корисничка документација за Семантички МедијаВики ќе ја најдете на <b><a href="https://semantic-mediawiki.org?uselang=mk">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Бубачките (грешките) можат да се пријават на <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Ако имате некои други прашања или предлози, приклучете ѝ се на дискусијата на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форумот за корисници на Семантички МедијаВики</a>.',
 	'smw_adminlinks_datastructure' => 'Структура на податоците',
@@ -10414,7 +10414,7 @@ $messages['mr'] = array(
  * @author Anakmalaysia
  */
 $messages['ms'] = array(
-	'smw-desc' => 'Meningkatkan kebolehcapaian wiki anda – baik untuk mesin mahupun manusia ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi])',
+	'smw-desc' => 'Meningkatkan kebolehcapaian wiki anda – baik untuk mesin mahupun manusia ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi])',
 	'smw_viewasrdf' => 'Suapan RDF',
 	'smw_finallistconjunct' => ', dan',
 	'smw_factbox_head' => 'Fakta-fakta tentang $1',
@@ -10510,7 +10510,7 @@ $messages['nah'] = array(
  * @author 아라
  */
 $messages['nb'] = array(
-	'smw-desc' => "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	'smw-desc' => "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_viewasrdf' => 'RDF-kilde',
 	'smw_finallistconjunct' => ' og',
 	'smw_factbox_head' => 'Fakta om $1',
@@ -10742,7 +10742,7 @@ Du kan følge med på fremgangen til oppdateringen på denne spesialsiden.', # F
 Starter derfor ikke enda en.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Alle eksisterende oppdateringsprosesser har blitt stoppet.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'For å stoppe den kjørende oppdateringsprosessen må du markere avkrysningsboksen for å vise at du er helt sikker.', # Fuzzy
-	'smw_smwadmin_docu' => 'Denne spesialsiden hjelper deg under innstallasjon og oppgradering av <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Denne spesialsiden hjelper deg under innstallasjon og oppgradering av <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Husk å ta sikkerhetskopier av viktige data før du starter administrerende funksjoner.',
 	'smw_smwadmin_db' => 'Databaseinstallering og -oppgradering',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki krever noen utvidelser i MediaWiki-databasen for å kunne lagre semantiske data.
@@ -10754,8 +10754,8 @@ Enten må denne brukeren gis tilstrekkelige rettigheter til å opprette og slett
 	'smw_smwadmin_dbbutton' => 'Initialiser eller oppgrader tabeller',
 	'smw_smwadmin_announce' => 'Kunngjør din wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har en nettjeneste for kunngjøring av nye semantiske wikisider.
-Dette er brukt for å opprettholde en liste over offentlige nettsteder som bruker Semantic MediaWiki, hovedsaklig for å hjelpe <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki</a> med å få et overblikk over typiske bruksområder av Semantic MediaWiki.
-Se hjemmesiden til Semantic MediaWiki for <a href="http://semantic-mediawiki.org/wiki/Registry">mer informasjon om denne tjenesten</a>.',
+Dette er brukt for å opprettholde en liste over offentlige nettsteder som bruker Semantic MediaWiki, hovedsaklig for å hjelpe <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki</a> med å få et overblikk over typiske bruksområder av Semantic MediaWiki.
+Se hjemmesiden til Semantic MediaWiki for <a href="https://semantic-mediawiki.org/wiki/Registry">mer informasjon om denne tjenesten</a>.',
 	'smw_smwadmin_announcebutton' => 'Trykk på følgende knapp for å oppgi din wikis URL til den tjenesten.
 Tjenesten vil ikke registrere wikier som ikke er offentlig tilgjengelig, og den vil bare lagre offentlig tilgjengelig informasjon.',
 	'smw_smwadmin_datarefresh' => 'Datareparering og -oppgradering',
@@ -10773,7 +10773,7 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw_smwadmin_support' => 'Få støtte',
 	'smw_smwadmin_supportdocu' => 'Følgende ressurser kan kanskje hjelpe deg om du skulle ha problemer:',
 	'smw_smwadmin_installfile' => 'Hvis du opplever problemer med installeringen, start med å sjekke retningslinjene i <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL-filen</a>.',
-	'smw_smwadmin_smwhomepage' => 'Den komplette brukerdokumentasjonen til Semantic MediaWiki finnes på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Den komplette brukerdokumentasjonen til Semantic MediaWiki finnes på <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feil kan rapporteres til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Hvis du har ytterligere spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki brukerforum</a>.',
 	'smw_adminlinks_datastructure' => 'Datastruktur',
@@ -10830,7 +10830,7 @@ $messages['niu'] = array(
  * @author Wiki13
  */
 $messages['nl'] = array(
-	'smw-desc' => "Maakt uw wiki toegankelijker - voor machines ''en'' mensen ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
+	'smw-desc' => "Maakt uw wiki toegankelijker - voor machines ''en'' mensen ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
 	'smw_viewasrdf' => 'RDF-feed',
 	'smw_finallistconjunct' => ', en',
 	'smw_factbox_head' => 'Feiten over $1',
@@ -11066,7 +11066,7 @@ Terug naar $1.',
 	'smw_smwadmin_updatenotstopped' => 'Om de lopende processen te stoppen, moet u het vinkje inschakelen om aan te geven dat u het zeker weet.
 
 Terug naar $1.',
-	'smw_smwadmin_docu' => 'Deze speciale pagina assisteert u tijdens de installatie en het bijwerken van <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Deze speciale pagina assisteert u tijdens de installatie en het bijwerken van <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Denk eraan een back-up te maken van uw waardevolle gegevens voordat u beheershandelingen uitvoert.',
 	'smw_smwadmin_db' => 'Database installeren en bijwerken',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki heeft een aantal uitbreidingen aan de database van MediaWiki nodig om de semantische gegevens op te kunnen slaan.
@@ -11078,8 +11078,8 @@ Geef deze gebruiker de benodigde extra rechten om tabellen aan te maken en te ve
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiseren of bijwerken',
 	'smw_smwadmin_announce' => 'Uw wiki aankondigen',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki heeft een webservice voor het aankondigen van nieuwe semantische wikisites.
-Deze dienst wordt gebruikt om een lijst bij te houden van publiek toegankelijke sites die Semantic MediaWiki gebruiken, voornamelijk om het <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki-project</a> inzicht te geven in het typische gebruik van Semantic MediaWiki.
-Op de homepage van Semantic MediaWiki staat <a href="http://semantic-mediawiki.org/wiki/Registry">meer informatie over deze dienst</a>.',
+Deze dienst wordt gebruikt om een lijst bij te houden van publiek toegankelijke sites die Semantic MediaWiki gebruiken, voornamelijk om het <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki-project</a> inzicht te geven in het typische gebruik van Semantic MediaWiki.
+Op de homepage van Semantic MediaWiki staat <a href="https://semantic-mediawiki.org/wiki/Registry">meer informatie over deze dienst</a>.',
 	'smw_smwadmin_announcebutton' => "Klik op de knop om de URL van uw wiki naar de dienst te sturen.
 De dienst registreert geen wiki's die niet publiek toegankelijk zijn en slaat alleen publiek toegankelijke informatie op.",
 	'smw_smwadmin_datarefresh' => 'Gegevens repareren en bijwerken',
@@ -11097,7 +11097,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_support' => 'Ondersteuning krijgen',
 	'smw_smwadmin_supportdocu' => 'Een aantal bronnen kunnen u ondersteunen als u problemen ondervindt:',
 	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan de richlijnen in het bestand <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_-_startpagina">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_-_startpagina">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Problemen en suggesties kunt u rapporteren in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op het <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki gebruikersforum</a>.',
 	'smw_adminlinks_datastructure' => 'Gegevensstructuur',
@@ -11285,7 +11285,7 @@ Du kan fylgja med på framgangen til oppdateringa på denne spesialsida.', # Fuz
 Startar ikkje ein ny ein.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Alle eksisterande oppdateringsprosessar har blitt stoppa.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'For å stoppa oppdateringsprosessen som køyrer, må du markera boksen for å syna at du verkeleg meiner det.', # Fuzzy
-	'smw_smwadmin_docu' => 'Denne spesialsida hjelper deg under installering og oppgradering av <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Denne spesialsida hjelper deg under installering og oppgradering av <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Hugs å ta kopiar av viktige data før du køyrer administrerande funksjonar.',
 	'smw_smwadmin_db' => 'Databaseinnstallering og -oppgradering',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki krev nokre utvidingar i MediaWiki-databasen for å kunna lagra semantiske data.
@@ -11297,8 +11297,8 @@ Anten gje denne brukaren dei rette løyva til å oppretta og sletta tabellar og 
 	'smw_smwadmin_dbbutton' => 'Set i verk eller oppgrader tabellar',
 	'smw_smwadmin_announce' => 'Kunngjer wikien din',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har ei nettenesta for å kunngjera nye semantiske wikisider.
-Dette er gjort for å vedlikehalda ei lista over offentlege sider som nyttar Semantic MediaWiki, hovudsakleg for å hjelpa <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki-prosjektet</a> med å få eit oversyn over typiske nytteområde av Semantic MediaWiki.
-Sjå heimesida til Semantic MediaWiki for <a href="http://semantic-mediawiki.org/wiki/Registry">meir informasjon om denne tenesta</a>.',
+Dette er gjort for å vedlikehalda ei lista over offentlege sider som nyttar Semantic MediaWiki, hovudsakleg for å hjelpa <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki-prosjektet</a> med å få eit oversyn over typiske nytteområde av Semantic MediaWiki.
+Sjå heimesida til Semantic MediaWiki for <a href="https://semantic-mediawiki.org/wiki/Registry">meir informasjon om denne tenesta</a>.',
 	'smw_smwadmin_announcebutton' => 'Trykk den fylgjande knappen for å gje wikiadressa di til tenesta.
 Tenesta vil ikkje registrera wikiar som ikkje er opne offentleg, og ho vil berre lagra informasjon som er offentleg tilgjengeleg.',
 	'smw_smwadmin_datarefresh' => 'Datareparasjon eller -oppgradering',
@@ -11316,7 +11316,7 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_support' => 'Får støtta',
 	'smw_smwadmin_supportdocu' => 'Diverse ressursar kan kanskje hjelpa deg om du skulle få problem:',
 	'smw_smwadmin_installfile' => 'Om du møter på problem under installeringa, start med å studera retningslinene i <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL-fila</a>.',
-	'smw_smwadmin_smwhomepage' => 'Den komplette brukardokumentasjonen for Semantic MediaWiki finn du på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Den komplette brukardokumentasjonen for Semantic MediaWiki finn du på <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feil kan bli rapporterte til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki-brukarforumet</a>.',
 	'smw-createproperty-isproperty' => 'Dette er ein eigenskap av typen $1.',
@@ -11331,7 +11331,7 @@ Estimert framdrift på den noverande oppdateringa:',
  * @author 아라
  */
 $messages['oc'] = array(
-	'smw-desc' => "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([http://semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
+	'smw-desc' => "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([https://semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
 	'smw_viewasrdf' => 'Veire coma RDF',
 	'smw_finallistconjunct' => ' e',
 	'smw_factbox_head' => 'Faches relatius a $1 &mdash; Recèrca de paginas similaras amb <span class="smwsearchicon">+</span>.',
@@ -11470,7 +11470,7 @@ Podètz seguir la progression de la mesa a jorn sus aquesta pagina especiala.', 
 Ne creetz pas un autre.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Totes los processús de mesa a jorn son estats arrestats.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Per arrestar lo processús en cors de mesa a jorn, vos cal marcar la casa per indicar que ne sètz vertadièrament segur(a).', # Fuzzy
-	'smw_smwadmin_docu' => 'Aquesta pagina especiala vos ajuda pendent l’installacion e la mesa a nivèl de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Aquesta pagina especiala vos ajuda pendent l’installacion e la mesa a nivèl de <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Doblidetz pas de salvar las donadas abans las foncions d’administracion del site.',
 	'smw_smwadmin_db' => 'Installacion e mesa a nivèl de la banca de donadas',
 	'smw_smwadmin_dbdocu' => "Semantic MediaWiki requerís maitas extensions per la banca de donadas MediaWiki en òrdre per emmagazinar las donadas de semantica.
@@ -11482,8 +11482,8 @@ Cal siá permetre a aqueste utilizaire de dispausar de las permissions per crear
 	'smw_smwadmin_dbbutton' => 'Inicializa las taulas de mesa a nivèl',
 	'smw_smwadmin_announce' => 'Anonciar vòstre wiki',
 	'smw_smwadmin_announcedocu' => "Semantic MediaWiki dispausa d’un servici internet per anonciar de sites wiki semantics novèls.
-Aquò's utilizat per manténer una lista dels sites publics qu'utilizan Semantic MediaWiki, principalament per ajudar <a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">lo projècte Semantic MediaWiki</a> a obténer una vista d’ensemble dels usatges tipics d'aqueste projècte.
-Vejatz la pagina d’acuèlh de Semantic MediaWiki <a href=\"http://semantic-mediawiki.org/wiki/Registry\">per mai d'entresenhas a prepaus d'aqueste servici</a>.",
+Aquò's utilizat per manténer una lista dels sites publics qu'utilizan Semantic MediaWiki, principalament per ajudar <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">lo projècte Semantic MediaWiki</a> a obténer una vista d’ensemble dels usatges tipics d'aqueste projècte.
+Vejatz la pagina d’acuèlh de Semantic MediaWiki <a href=\"https://semantic-mediawiki.org/wiki/Registry\">per mai d'entresenhas a prepaus d'aqueste servici</a>.",
 	'smw_smwadmin_announcebutton' => 'Quichatz sul boton seguent per sometre l’adreça internet de vòstre wiki a aqueste servici.
 Lo servici enregistrarà pas los wiki que son pas accessibles al public, e estocarà pas que las informacions publicament accessiblas.',
 	'smw_smwadmin_datarefresh' => 'Reparacion e mesa a nivèl de las donadas',
@@ -11501,7 +11501,7 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_smwadmin_support' => 'Obtencion d’un supòrt',
 	'smw_smwadmin_supportdocu' => 'De ressorsas divèrsas vos poiriàn ajudar en cas de problèmas :',
 	'smw_smwadmin_installfile' => 'S\'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">fichièr INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'La documentacion completa de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'La documentacion completa de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Los bògs pòdon èsser someses sus <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum dels utilizaires de Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Estructura de las donadas',
@@ -11564,7 +11564,7 @@ $messages['pfl'] = array(
  * @author 아라
  */
 $messages['pl'] = array(
-	'smw-desc' => 'Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])',
+	'smw-desc' => 'Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])',
 	'smw_viewasrdf' => 'Kanał RDF',
 	'smw_finallistconjunct' => ' i',
 	'smw_factbox_head' => 'Fakty o $1',
@@ -11765,7 +11765,7 @@ Powrót do $1.',
 	'smw_smwadmin_updatenotstopped' => 'W celu zatrzymania uruchomionego procesu aktualizacji należy zaznaczyć pole wyboru, aby potwierdzić decyzję.
 
 Powrót do $1.',
-	'smw_smwadmin_docu' => 'Ta strona specjalna pomoże Ci w instalacji i modernizacji <a href="http://semantic-mediawiki.org">Semantycznego MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Ta strona specjalna pomoże Ci w instalacji i modernizacji <a href="https://semantic-mediawiki.org">Semantycznego MediaWiki</a>.
 Pamiętaj przed wykonaniem funkcji administracyjnych o utworzeniu kopii zapasowej ważnych danych.',
 	'smw_smwadmin_db' => 'Instalacja i aktualizacja bazy danych',
 	'smw_smwadmin_dbdocu' => 'Semantyczne MediaWiki wymaga rozszerzeń do bazy danych MediaWiki, które umożliwiają przechowywanie danych semantycznych.
@@ -11777,8 +11777,8 @@ Nadaj użytkownikowi dodatkowe uprawnienia do tworzenia i usuwania tabel, tymcza
 	'smw_smwadmin_dbbutton' => 'Inicjuj lub aktualizuj tabele',
 	'smw_smwadmin_announce' => 'Opublikuj swoją wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki posiada serwis internetowy do zamieszczania informacji o nowych semantycznych witrynach wiki.
-Informacja ta jest wykorzystywana do generowania spisu publicznych witryn, które korzystają z Semantic MediaWiki, oraz przede wszystkim pomaga <a href="http://semantic-mediawiki.org/wiki/SMW_Project">twórcom Semantic MediaWiki</a>, określić typowe zastosowania Semantic MediaWiki.
-Zobacz stronę główną Semantic MediaWiki jeśli szukasz <a href="http://semantic-mediawiki.org/wiki/Registry">dalszych informacji na temat tej usługi</a>.',
+Informacja ta jest wykorzystywana do generowania spisu publicznych witryn, które korzystają z Semantic MediaWiki, oraz przede wszystkim pomaga <a href="https://semantic-mediawiki.org/wiki/SMW_Project">twórcom Semantic MediaWiki</a>, określić typowe zastosowania Semantic MediaWiki.
+Zobacz stronę główną Semantic MediaWiki jeśli szukasz <a href="https://semantic-mediawiki.org/wiki/Registry">dalszych informacji na temat tej usługi</a>.',
 	'smw_smwadmin_announcebutton' => 'Naciśnij przycisk, aby zapisać adres URL swojej wiki w tym serwisie.
 Nie rejestrujemy wiki, które nie są publicznie dostępne. Zapisujemy wyłącznie publicznie dostępne informacje.',
 	'smw_smwadmin_datarefresh' => 'Naprawa i aktualizacja danych',
@@ -11796,7 +11796,7 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw_smwadmin_support' => 'Jak otrzymać wsparcie',
 	'smw_smwadmin_supportdocu' => 'Różnorodne źródła informacji mogą okazać się przydatne jeśli wystąpią problemy:',
 	'smw_smwadmin_installfile' => 'Jeśli doświadczysz problemów z instalacją, zacznij od sprawdzenia wskazówek w <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">pliku INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Kompletna dokumentacja Semantic MediaWiki znajduje się na stronie <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Kompletna dokumentacja Semantic MediaWiki znajduje się na stronie <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Błędy możesz zgłaszać w <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
 	'smw_smwadmin_questions' => 'Jeśli nadal masz pytania lub sugestie przyłącz się do dyskusji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum użytkowników Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struktura danych',
@@ -11830,7 +11830,7 @@ Przewidywany postęp bieżącej aktualizacji:',
  * @author Dragonòt
  */
 $messages['pms'] = array(
-	'smw-desc' => "Rende soa wiki pì acessìbil - për le màchine ''e'' j'uman ([http://semantic-mediawiki.org/wiki/Help:User_manual documentassion an linia])",
+	'smw-desc' => "Rende soa wiki pì acessìbil - për le màchine ''e'' j'uman ([https://semantic-mediawiki.org/wiki/Help:User_manual documentassion an linia])",
 	'smw_viewasrdf' => 'Fluss RDF',
 	'smw_finallistconjunct' => 'e',
 	'smw_factbox_head' => 'Fàit a propòsit ëd $1',
@@ -12043,7 +12043,7 @@ Artorna a $1.',
 	'smw_smwadmin_updatenotstopped' => "Për fërmé ël process ëd modìfica an cors, a dev ativé la casela për indiché ch'a l'é pròpi sicur.
 
 Torné andré a $1.",
-	'smw_smwadmin_docu' => "Sta pàgina special-sì a lo giuta durant l'instalassion e l'agiornament ëd <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => "Sta pàgina special-sì a lo giuta durant l'instalassion e l'agiornament ëd <a href=\"https://semantic-mediawiki.org\">Semantic MediaWiki</a>.
 Ch'as visa ëd salvé ij dat ëd valor prima ëd fé le funsion aministrative.",
 	'smw_smwadmin_db' => 'Anstalassion e agiornament dla base ëd dàit',
 	'smw_smwadmin_dbdocu' => "Semantic MediaWiki a l'ha dabzògn ëd chèiche estension a la base ëd dàit MediaWiki për memorisé ij dat semàntich.
@@ -12055,8 +12055,8 @@ O bin ch'a-j daga a st'utent dij përmess adissionaj për creé e scancelé 'd t
 	'smw_smwadmin_dbbutton' => 'Inissialisé o agiorné le tàule',
 	'smw_smwadmin_announce' => 'Anonsia toa wiki',
 	'smw_smwadmin_announcedocu' => "Semantic MediaWiki a l'ha un servissi an grija për nonsié ëd sit neuv ëd wiki semàntiche.
-Sòn a l'é dovrà për manten-e na lista ëd sit pùblich che a deuvro Semantic MediaWiki, pi che d'àutr për giuté ël <a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">proget Semantic MediaWiki</a> a avèj na vision dj'usagi tìpich ëd Semantic MediaWiki.
-Ch'a bèica la pàgina ëd Semantic MediaWiki për <a href=\"http://semantic-mediawiki.org/wiki/Registry\">d'àutre anformassion su 's servissi</a>.",
+Sòn a l'é dovrà për manten-e na lista ëd sit pùblich che a deuvro Semantic MediaWiki, pi che d'àutr për giuté ël <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">proget Semantic MediaWiki</a> a avèj na vision dj'usagi tìpich ëd Semantic MediaWiki.
+Ch'a bèica la pàgina ëd Semantic MediaWiki për <a href=\"https://semantic-mediawiki.org/wiki/Registry\">d'àutre anformassion su 's servissi</a>.",
 	'smw_smwadmin_announcebutton' => "Ch'a sgnaca ël boton sì-sota për mandé adrësse dl'aragnà wiki a col servissi là.
 Ël servissi a registrërà pa le wiki ch'a son pa acessìbij pùblicament, e a memorisërà mach j'anformassion acessìbij publicament.",
 	'smw_smwadmin_datarefresh' => 'Riparassion ëd dat e agiornament',
@@ -12074,7 +12074,7 @@ Avansament stimà dla modìfica corenta:",
 	'smw_smwadmin_support' => "Oteniment ëd n'agiut",
 	'smw_smwadmin_supportdocu' => 'Vàire arsorse a peulo giutelo an cas ëd problema:',
 	'smw_smwadmin_installfile' => "S'a treuva ëd problema con soa anstalassion, ch'a ancamin-a a controlé le linie guida ant l'<a href=\"https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD\">archivi INSTALL</a>.",
-	'smw_smwadmin_smwhomepage' => 'La documentassion utent completa ëd Semantich WikiMedia a l\'é a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'La documentassion utent completa ëd Semantich WikiMedia a l\'é a <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Ij bigat a peulo esse arportà a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => "S'a l'ha d'àutre chestion o sugeriment, ch'a vada a la discussion dzora a la <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">piassa dj'utent ëd Semantic MediaWiki</a>.",
 	'smw_adminlinks_datastructure' => 'Strutura dij dat',
@@ -12166,7 +12166,7 @@ $messages['ps'] = array(
  * @author 555
  */
 $messages['pt'] = array(
-	'smw-desc' => "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
+	'smw-desc' => "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
 	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => 'e',
 	'smw_factbox_head' => 'Factos sobre $1',
@@ -12353,7 +12353,7 @@ Voltar para $1.',
 	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em curso, deve marcar a caixa de seleção para indicar que tem realmente a certeza.
 
 Voltar para $1.',
-	'smw_smwadmin_docu' => 'Esta página especial auxilia-o durante a instalação ou atualização do <a href="http://semantic-mediawiki.org">MediaWiki Semântico</a>.
+	'smw_smwadmin_docu' => 'Esta página especial auxilia-o durante a instalação ou atualização do <a href="https://semantic-mediawiki.org">MediaWiki Semântico</a>.
 Lembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
 	'smw_smwadmin_db' => 'Instalação e atualização da base de dados',
 	'smw_smwadmin_dbdocu' => 'O MediaWiki Semântico requer algumas alterações da base de dados do MediaWiki, de forma a armazenar os dados semânticos.
@@ -12365,8 +12365,8 @@ Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, 
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
 	'smw_smwadmin_announcedocu' => 'O MediaWiki Semântico tem um serviço na internet \'\'(web service)\'\' para anunciar novas wikis semânticas.
-Este é usado para manter uma lista de sites públicos que usam o MediaWiki Semântico, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projeto MediaWiki Semântico</a> a obter uma ideia geral das utilizações típicas do MediaWiki Semântico.
-Veja a página inicial do MediaWiki Semântico para <a href="http://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
+Este é usado para manter uma lista de sites públicos que usam o MediaWiki Semântico, principalmente para auxiliar o <a href="https://semantic-mediawiki.org/wiki/SMW_Project">projeto MediaWiki Semântico</a> a obter uma ideia geral das utilizações típicas do MediaWiki Semântico.
+Veja a página inicial do MediaWiki Semântico para <a href="https://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
 	'smw_smwadmin_announcebutton' => 'Clique o seguinte botão para enviar a URL da sua wiki ao serviço.
 O serviço não registará wikis que não estejam publicamente acessíveis e apenas armazenará informação publicamente acessível.',
 	'smw_smwadmin_datarefresh' => 'Reparação de dados e atualização',
@@ -12384,7 +12384,7 @@ Progresso estimado da atualização em curso:",
 	'smw_smwadmin_support' => 'Obtendo suporte',
 	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
 	'smw_smwadmin_installfile' => 'Se tiver problemas com a sua instalação, comece por rever as linhas orientadoras no <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ficheiro INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do MediaWiki Semântico está em <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do MediaWiki Semântico está em <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Pode reportar defeitos no <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se tem mais questões ou sugestões, junte-se à discussão no <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">fórum dos utilizadores do MediaWiki Semântico</a>.',
 	'smw_adminlinks_datastructure' => 'Estrutura de dados',
@@ -12412,7 +12412,7 @@ Progresso estimado da atualização em curso:",
  * @author 555
  */
 $messages['pt-br'] = array(
-	'smw-desc' => "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
+	'smw-desc' => "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
 	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => ' e',
 	'smw_factbox_head' => 'Dados sobre $1',
@@ -12693,7 +12693,7 @@ Retornar para $1.',
 	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em execução, você precisa ativar a caixa de seleção para indicar que realmente tem certeza.
 
 Retornar para $1.',
-	'smw_smwadmin_docu' => 'Esta página especial ajuda-o durante a instalação ou atualização do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Esta página especial ajuda-o durante a instalação ou atualização do <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Lembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
 	'smw_smwadmin_db' => 'Instalação e atualização da base de dados',
 	'smw_smwadmin_dbdocu' => 'O Semantic MediaWiki requer algumas extensões à base de dados MediaWiki de forma a armazenar os dados semânticos.
@@ -12705,8 +12705,8 @@ Conceda a esse usuário permissões adicionais para criar e eliminar tabelas, in
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie seu wiki',
 	'smw_smwadmin_announcedocu' => 'O Semantic MediaWiki tem um serviço na internet para anunciar novos wikis semânticos.
-Este é usado para manter uma lista de sites públicos que usam o Semantic MediaWiki, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projeto Semantic MediaWiki</a> a obter uma ideia geral das utilizações típicas do software.
-Veja a página inicial do Semantic MediaWiki para <a href="http://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
+Este é usado para manter uma lista de sites públicos que usam o Semantic MediaWiki, principalmente para auxiliar o <a href="https://semantic-mediawiki.org/wiki/SMW_Project">projeto Semantic MediaWiki</a> a obter uma ideia geral das utilizações típicas do software.
+Veja a página inicial do Semantic MediaWiki para <a href="https://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
 	'smw_smwadmin_announcebutton' => 'Clique o seguinte botão para submeter a URL do seu wiki ao serviço.
 O serviço não registará wikis que não estejam publicamente acessíveis e apenas armazenará informação publicamente acessível.',
 	'smw_smwadmin_datarefresh' => 'Reparação de dados e atualização',
@@ -12724,7 +12724,7 @@ Progresso estimado da atualização corrente:',
 	'smw_smwadmin_support' => 'Obtendo suporte',
 	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
 	'smw_smwadmin_installfile' => 'Se tiver problemas com a sua instalação, comece por rever as orientações no <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">arquivo INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do Semantic MediaWiki está em <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do Semantic MediaWiki está em <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Defeitos podem ser reportados no <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se você tem mais questões ou sugestões, junte-se à discussão em <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Fórum de usuários do Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Estrutura de dados',
@@ -12792,7 +12792,7 @@ $messages['rif'] = array(
  * @author Stelistcristi
  */
 $messages['ro'] = array(
-	'smw-desc' => "Wikiul dumneavoastră devine mai accesibil — pentru mașini ''și'' oameni ([http://semantic-mediawiki.org/wiki/Help:User_manual documentație on-line])",
+	'smw-desc' => "Wikiul dumneavoastră devine mai accesibil — pentru mașini ''și'' oameni ([https://semantic-mediawiki.org/wiki/Help:User_manual documentație on-line])",
 	'smw_viewasrdf' => 'Flux RDF',
 	'smw_finallistconjunct' => 'și',
 	'smw_factbox_head' => 'Informații despre „$1”',
@@ -12997,7 +12997,7 @@ $messages['roa-tara'] = array(
  * @author 아라
  */
 $messages['ru'] = array(
-	'smw-desc' => "Делает вашу вики более доступной — для машин ''и'' людей ([http://semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
+	'smw-desc' => "Делает вашу вики более доступной — для машин ''и'' людей ([https://semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
 	'smw_viewasrdf' => 'RDF источник',
 	'smw_finallistconjunct' => ' и',
 	'smw_factbox_head' => 'Факты: $1',
@@ -13192,7 +13192,7 @@ $messages['ru'] = array(
 	'smw_smwadmin_updatenotstopped' => 'Чтобы остановить запущенный процесс обновления, вы должны поставить отметку, подтверждающую, что вы действительно уверены в этом решении.
 
 Возврат к $1.',
-	'smw_smwadmin_docu' => 'Эта служебная страница поможет вам в процессе установки и обновления <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Эта служебная страница поможет вам в процессе установки и обновления <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Не забудьте произвести резервное копирование значимых данных перед выполнением административных действий.',
 	'smw_smwadmin_db' => 'Установка и обновление базы данных',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki требует наличия некоторых расширений к базе данных MediaWiki, позволяющих хранить семантические данные.
@@ -13204,8 +13204,8 @@ $messages['ru'] = array(
 	'smw_smwadmin_dbbutton' => 'Инициализация или обновление таблиц',
 	'smw_smwadmin_announce' => 'Объявление вашей вики',
 	'smw_smwadmin_announcedocu' => 'У Semantic MediaWiki есть веб-сервис для объявлений новых семантических вики-сайтов.
-Он используется для поддержки списка общественно доступных сайтов, использующих Semantic MediaWiki, это помогает проекту <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki project</a> получить представление о типовых использованиях Semantic MediaWiki.
-<a href="http://semantic-mediawiki.org/wiki/Registry">Более подробную информацию</a> можно найти на домашней странице Semantic MediaWiki.',
+Он используется для поддержки списка общественно доступных сайтов, использующих Semantic MediaWiki, это помогает проекту <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki project</a> получить представление о типовых использованиях Semantic MediaWiki.
+<a href="https://semantic-mediawiki.org/wiki/Registry">Более подробную информацию</a> можно найти на домашней странице Semantic MediaWiki.',
 	'smw_smwadmin_announcebutton' => 'Нажмите на следующую кнопку, чтобы отправить адрес вашей вики в этот сервис.
 Сервис не будет регистрировать вики, не являются публично доступными, он будет хранить только публично доступную информацию.',
 	'smw_smwadmin_datarefresh' => 'Восстановление и обновление данных',
@@ -13223,7 +13223,7 @@ $messages['ru'] = array(
 	'smw_smwadmin_support' => 'Получить поддержку',
 	'smw_smwadmin_supportdocu' => 'Различные ресурсы, которые могут помочь в случае проблем:',
 	'smw_smwadmin_installfile' => 'Если вы испытываете затруднения при установке, прочтите руководство в <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">файле INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Полная документация пользователя Semantic MediaWiki на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Полная документация пользователя Semantic MediaWiki на <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Ошибки могут быть сообщены в <a href="https://bugzilla.wikimedia.org/">Багзиллу</a>.',
 	'smw_smwadmin_questions' => 'Если у вас есть дополнительные вопросы или предложения, присоединяйтесь к обсуждению на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форуме пользователей Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Структура данных',
@@ -13466,7 +13466,7 @@ $messages['si'] = array(
  * @author 아라
  */
 $messages['sk'] = array(
-	'smw-desc' => "Sprístupnenie vašej wiki pre stroje ''aj'' ľudí ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentácia])",
+	'smw-desc' => "Sprístupnenie vašej wiki pre stroje ''aj'' ľudí ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentácia])",
 	'smw_viewasrdf' => 'RDF kanál',
 	'smw_finallistconjunct' => ' a',
 	'smw_factbox_head' => 'Skutočnosti o $1 &mdash; Kliknutím na <span class="smwsearchicon">+</span> vyhľadáte podobné stránky.',
@@ -13622,7 +13622,7 @@ Na tejto špeciálnej stránke môžete sledovať priebeh aktualizácie.', # Fuz
 Nespustí sa ďalší.', # Fuzzy
 	'smw_smwadmin_updatestopped' => 'Všetky bežiace procesy aktualizácie boli zastavené.', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => 'Bežiaci proces aktualizácie môžete zastaviť označením zaškrtávacieho poľa, čím potvrdíte, že ste si naozaj istý.', # Fuzzy
-	'smw_smwadmin_docu' => 'Táto špeciálna stránka vám pomôže počas inštalácie a aktualizácie <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Táto špeciálna stránka vám pomôže počas inštalácie a aktualizácie <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Pamätajte na zálohovanie dôležitých údajov pred vykonávaním správcovských funkcií.',
 	'smw_smwadmin_db' => 'Inštalácia a aktualizácia databázy',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki vyžaduje niektoré rozšírenia databázy MediaWiki, aby molo ukladať sémantické údaje.
@@ -13634,8 +13634,8 @@ Buď udeľte tomuto používateľovi ďalšie privilégiá na vytváranie a maza
 	'smw_smwadmin_dbbutton' => 'Inicializovať alebo aktualizovať tabuľky',
 	'smw_smwadmin_announce' => 'Oznámiť vašu wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki má webovú službu na oznamovanie nových sémantických wiki lokalít.
-Tým pomáha  udržiavať zoznam verejných lokalít používajúcich Semantic MediaWiki. najmä aby pomohla <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projektu Semantic MediaWiki</a> získať prehľad typických využití Semantic MediaWiki.
-ďalšie informácie o tejto službe nájdete na <a href="http://semantic-mediawiki.org/wiki/Registry">domovskej stránke Semantic MediaWiki</a>.',
+Tým pomáha  udržiavať zoznam verejných lokalít používajúcich Semantic MediaWiki. najmä aby pomohla <a href="https://semantic-mediawiki.org/wiki/SMW_Project">projektu Semantic MediaWiki</a> získať prehľad typických využití Semantic MediaWiki.
+ďalšie informácie o tejto službe nájdete na <a href="https://semantic-mediawiki.org/wiki/Registry">domovskej stránke Semantic MediaWiki</a>.',
 	'smw_smwadmin_announcebutton' => 'Stlačením nasledovného tlačidla odošlete URL vašej wiki tejto službe.
 Služba nebude registrovať wiki, ktoré nie sú verejne prístupné a bude ukladať iba verejne dostupné informácie.',
 	'smw_smwadmin_datarefresh' => 'Oprava a aktualizácia dát',
@@ -13653,7 +13653,7 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_smwadmin_support' => 'Ako získať podporu',
 	'smw_smwadmin_supportdocu' => 'V prípade problémov vám môžu pomôcť rozličné zdroje:',
 	'smw_smwadmin_installfile' => 'Ak budete mať s inštaláciou problém, začnite kontrolou smerníc <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">v súbore INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Úplná používateľská dokumentácia Semantic MediaWiki sa nachádza na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Úplná používateľská dokumentácia Semantic MediaWiki sa nachádza na <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Chyby môžete oznamovať v systéme <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Ak máte ďalšie otázky alebo návrhy, zapojte sa do diskusie <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">na používateľskom fóre Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Štruktúra údajov',
@@ -13671,7 +13671,7 @@ Odhadovaný priebeh aktualizácie:',
  * @author Lesko987
  */
 $messages['sl'] = array(
-	'smw-desc' => "Naredi vaš wiki dostopnejši – za stroje ''in'' ljudi ([http://semantic-mediawiki.org/wiki/Help:User_manual spletna dokumentacija])",
+	'smw-desc' => "Naredi vaš wiki dostopnejši – za stroje ''in'' ljudi ([https://semantic-mediawiki.org/wiki/Help:User_manual spletna dokumentacija])",
 	'smw_viewasrdf' => 'Vir RDF',
 	'smw_finallistconjunct' => 'in',
 	'smw_factbox_head' => 'Dejstva o $1',
@@ -14014,7 +14014,7 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_updatenotstopped' => 'Како бисте обуставили покренути процес ажурирања, морате активирати контролни оквир да бисте потврдили да сте сигурни да желите да га обуставите.
 
 Назад на $1.',
-	'smw_smwadmin_docu' => 'Ова посебна страница вам помаже приликом инсталирања и ажурирања <a href="http://semantic-mediawiki.org">Семантичког медијавикија</a>.
+	'smw_smwadmin_docu' => 'Ова посебна страница вам помаже приликом инсталирања и ажурирања <a href="https://semantic-mediawiki.org">Семантичког медијавикија</a>.
 Не заборавите да направите копију вредних података пре него покренете функције администрације.',
 	'smw_smwadmin_db' => 'Инсталирање и ажурирање базе података',
 	'smw_smwadmin_dbdocu' => 'Семантички медијавики захтева неке додатке у бази података Медијавикија, како би се могли чувати семантички подаци.
@@ -14026,8 +14026,8 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_dbbutton' => 'Покретање или ажурирање табела базе података',
 	'smw_smwadmin_announce' => 'Дојавите о постојању вашег викија',
 	'smw_smwadmin_announcedocu' => 'Семантички медијавики има веб сервиз за дојаву о постојању нових викија.
-Тај сајт се користи за одржавање списка јавно доступних сајтова који користе Семантички медијавики, углавном ради помоћи <a href="http://semantic-mediawiki.org/wiki/SMW_Project">пројекту Семантички медијавики</a> да прикупи информације о типичним коришћењима Семантичког медијавикија.
-Погледајте главну страну Семаничког медијавикија за <a href="http://semantic-mediawiki.org/wiki/Registry">више информација о овом сервизу</a>.',
+Тај сајт се користи за одржавање списка јавно доступних сајтова који користе Семантички медијавики, углавном ради помоћи <a href="https://semantic-mediawiki.org/wiki/SMW_Project">пројекту Семантички медијавики</a> да прикупи информације о типичним коришћењима Семантичког медијавикија.
+Погледајте главну страну Семаничког медијавикија за <a href="https://semantic-mediawiki.org/wiki/Registry">више информација о овом сервизу</a>.',
 	'smw_smwadmin_announcebutton' => 'Кликните на следеће дугме за слање URL-а вашег викија том сервису.
 Сервис неће регистровати викије који нису јавно доступни, а једино ће сачувати јавно доступне информације.',
 	'smw_smwadmin_datarefresh' => 'Поправљање података и ажурирање',
@@ -14045,7 +14045,7 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_support' => 'Добијање подршке',
 	'smw_smwadmin_supportdocu' => 'Постоји више места која могу помоћи у случају проблема:',
 	'smw_smwadmin_installfile' => 'Ако наиђете на проблем при инсталацији, најпре прочитајте смернице у <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">датотеци INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Потпуна корисничка документација за Семантички медијавики, налази се на сајту <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Потпуна корисничка документација за Семантички медијавики, налази се на сајту <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Багови се могу пријављивати на <a href="https://bugzilla.wikimedia.org/">Медијазилу</a>.',
 	'smw_smwadmin_questions' => 'Ако имате даљих питања или сугестија, укључите се у дискусију на листи <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 	'smw_adminlinks_datastructure' => 'Структура података',
@@ -14235,7 +14235,7 @@ Nazad na $1.',
 	'smw_smwadmin_updatenotstopped' => 'Kako biste obustavili pokrenuti proces ažuriranja, morate aktivirati kontrolni okvir da biste potvrdili da ste sigurni da želite da ga obustavite.
 
 Nazad na $1.',
-	'smw_smwadmin_docu' => 'Ova posebna stranica vam pomaže prilikom instaliranja i ažuriranja <a href="http://semantic-mediawiki.org">Semantičkog medijavikija</a>.
+	'smw_smwadmin_docu' => 'Ova posebna stranica vam pomaže prilikom instaliranja i ažuriranja <a href="https://semantic-mediawiki.org">Semantičkog medijavikija</a>.
 Ne zaboravite da napravite kopiju vrednih podataka pre nego pokrenete funkcije administracije.',
 	'smw_smwadmin_db' => 'Instaliranje i ažuriranje baze podataka',
 	'smw_smwadmin_dbdocu' => 'Semantički medijaviki zahteva neke dodatke u bazi podataka Medijavikija, kako bi se mogli čuvati semantički podaci.
@@ -14247,8 +14247,8 @@ Ili dajte neophodne dozvole tom korisniku kako bi mogao da pravi i briše tabele
 	'smw_smwadmin_dbbutton' => 'Pokretanje ili ažuriranje tabela baze podataka',
 	'smw_smwadmin_announce' => 'Dojavite o postojanju vašeg vikija',
 	'smw_smwadmin_announcedocu' => 'Semantički medijaviki ima veb serviz za dojavu o postojanju novih vikija.
-Taj sajt se koristi za održavanje spiska javno dostupnih sajtova koji koriste Semantički medijaviki, uglavnom radi pomoći <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projektu Semantički medijaviki</a> da prikupi informacije o tipičnim korišćenjima Semantičkog medijavikija.
-Pogledajte glavnu stranu Semaničkog medijavikija za <a href="http://semantic-mediawiki.org/wiki/Registry">više informacija o ovom servizu</a>.',
+Taj sajt se koristi za održavanje spiska javno dostupnih sajtova koji koriste Semantički medijaviki, uglavnom radi pomoći <a href="https://semantic-mediawiki.org/wiki/SMW_Project">projektu Semantički medijaviki</a> da prikupi informacije o tipičnim korišćenjima Semantičkog medijavikija.
+Pogledajte glavnu stranu Semaničkog medijavikija za <a href="https://semantic-mediawiki.org/wiki/Registry">više informacija o ovom servizu</a>.',
 	'smw_smwadmin_announcebutton' => 'Kliknite na sledeće dugme za slanje URL-a vašeg vikija tom servisu.
 Servis neće registrovati vikije koji nisu javno dostupni, a jedino će sačuvati javno dostupne informacije.',
 	'smw_smwadmin_datarefresh' => 'Popravljanje podataka i ažuriranje',
@@ -14266,7 +14266,7 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_smwadmin_support' => 'Dobijanje podrške',
 	'smw_smwadmin_supportdocu' => 'Postoji više mesta koja mogu pomoći u slučaju problema:',
 	'smw_smwadmin_installfile' => 'Ako se nađete u problemima sa vašom instalacijom, pogledajte vodič u <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">fajlu INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Potpuna korisnička dokumentacija za Semantički medijaviki, nalazi se na sajtu <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Potpuna korisnička dokumentacija za Semantički medijaviki, nalazi se na sajtu <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Bagovi se mogu prijavljivati na <a href="https://bugzilla.wikimedia.org/">Medijazilu</a>.',
 	'smw_smwadmin_questions' => 'Ako imate daljih pitanja ili sugestija, uključite se u diskusiju na listi <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 	'smw_adminlinks_datastructure' => 'Struktura podataka',
@@ -14296,7 +14296,7 @@ Procena napredovanja trenutnog ažuriranja:',
  * @author 아라
  */
 $messages['sv'] = array(
-	'smw-desc' => "Gör din wiki mer tillgänglig - för maskiner ''och'' människor ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
+	'smw-desc' => "Gör din wiki mer tillgänglig - för maskiner ''och'' människor ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
 	'smw_viewasrdf' => 'RDF-matning',
 	'smw_finallistconjunct' => 'och',
 	'smw_factbox_head' => 'Fakta om $1',
@@ -14523,7 +14523,7 @@ Startar ingen ny process.
 	'smw_smwadmin_updatenotstopped' => 'För att avsluta uppdaterings-processen måste du aktivera kryss-rutan.
 
 Återgå till $1.',
-	'smw_smwadmin_docu' => 'Denna specialsida hjälper dig under installation och uppgradering av <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Denna specialsida hjälper dig under installation och uppgradering av <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Kom ihåg att ta backup på värdefulla data innan du kör administrativa funktioner.',
 	'smw_smwadmin_db' => 'Databasinstallation och -uppgradering',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki behöver några tillägg till MediaWiki-databasen för att kunna lagra semantiska data.
@@ -14535,8 +14535,8 @@ Det finns tre sätt att åtgärda detta: Ge rättigheter till användaren att sk
 	'smw_smwadmin_dbbutton' => 'Initialisera eller uppgradera tabeller',
 	'smw_smwadmin_announce' => 'Meddela att din wiki finns',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har en webbtjänst för tillkännagivande av nya semantiska wiki-webbplatser.
-Den används för att upprätthålla en lista över publika webbplatser som använder Semantic MediaWiki, huvudsakligen för att hjälpa <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki-projektet</a> att få överblick över typiska användningsområden av Semantic MediaWiki.
-Se hemsidan för Semantic MediaWiki för <a href="http://semantic-mediawiki.org/wiki/Registry">mer information om denna tjänst</a>.',
+Den används för att upprätthålla en lista över publika webbplatser som använder Semantic MediaWiki, huvudsakligen för att hjälpa <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki-projektet</a> att få överblick över typiska användningsområden av Semantic MediaWiki.
+Se hemsidan för Semantic MediaWiki för <a href="https://semantic-mediawiki.org/wiki/Registry">mer information om denna tjänst</a>.',
 	'smw_smwadmin_announcebutton' => 'Tryck på följande knapp för att skicka din wikis URL till den tjänsten.
 Tjänsten registrerar inte wiki:er som inte är publikt åtkomliga, och den lagrar endast publikt åtkomlig information.',
 	'smw_smwadmin_datarefresh' => 'Datareparation och -uppgradering',
@@ -14554,7 +14554,7 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw_smwadmin_support' => 'Få support',
 	'smw_smwadmin_supportdocu' => 'Flera resurser kan hjälpa dig om du får problem:',
 	'smw_smwadmin_installfile' => 'Om du upplever problem med din installation så börja med att studera anvisningarna i filen <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Den kompletta användardokumentationen till Semantic MediaWiki finns på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Den kompletta användardokumentationen till Semantic MediaWiki finns på <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fel kan rapporteras till <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Om du har ytterligare frågor eller förslag, gå med i diskussionen på  <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki användarforum</a>.',
 	'smw_adminlinks_datastructure' => 'Datastruktur',
@@ -14774,7 +14774,7 @@ $messages['tk'] = array(
  * @author 아라
  */
 $messages['tl'] = array(
-	'smw-desc' => "Ginagawang mas napupuntahan ang wiki mo - para sa ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasyon habang nasa Internet]) ng mga makina ''at'' mga tao",
+	'smw-desc' => "Ginagawang mas napupuntahan ang wiki mo - para sa ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentasyon habang nasa Internet]) ng mga makina ''at'' mga tao",
 	'smw_viewasrdf' => 'Pasubo/pakaing RDF',
 	'smw_finallistconjunct' => ', at',
 	'smw_factbox_head' => 'Totoong mga bagay hinggil sa $1',
@@ -15031,7 +15031,7 @@ Bumalik sa $1.',
 	'smw_smwadmin_updatenotstopped' => 'Upang mapahinto ang tumatakbong proseso ng pagsasapanahon, dapat mong pasiglahin ang kahong lagayan ng tsek upang maipahiwatig na talagang nakatitiyak ka.
 
 Bumalik sa $1.',
-	'smw_smwadmin_docu' => 'Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href="http://semantic-mediawiki.org">Semantikong MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href="https://semantic-mediawiki.org">Semantikong MediaWiki</a>.
 Huwag kalimutang gumawa ng karagdagang sipi ng mahalagang dato bago isagawa ang mga tungkuling pangtagapangasiwa.',
 	'smw_smwadmin_db' => 'Pagluluklok (instalasyon) at pagtataas ng uri (grado/klase) ng kalipunan ng dato',
 	'smw_smwadmin_dbdocu' => 'Nangangailangan ang Semantikong Mediawiki ng ilang mga karugtong sa kalipunan ng dato ng MediaWiki upang maitabi ang datong hinggil sa kahulugan ng mga salita.
@@ -15043,8 +15043,8 @@ Maaaring pagkalooban ang tagagamit na ito ng karagdagang mga kapahintulutan upan
 	'smw_smwadmin_dbbutton' => 'Umpisahan o itaas ang uri (klase) ng mga tabla',
 	'smw_smwadmin_announce' => 'Ipahayag ang wiki mo',
 	'smw_smwadmin_announcedocu' => 'Ang Semantikong Mediawiki ay mayroong isang palingkurang pangweb para sa pagpapahayag ng bagong mga sayt ng bagong wiking semantiko (hinggil sa kahulugan ng mga salita).
-Ginagamit ito upang makapagpanatili ng isang talaan ng mga sityong pangmadala/pampublikong gumagamit ng Semantikong MediaWiki, pangunahin na upang tulungan ang <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyektong Semantikong MediaWiki</a> upang makakuha ng pang-ibabaw/pangunahing paglalarawan ng karaniwang mga paggamit ng Semantikong MediaWiki.
-Tingnan ang tahanang pahina ng Semantikong MediaWiki para sa <a href="http://semantic-mediawiki.org/wiki/Registry">karagdagan pang kabatiran hinggil sa serbisyong ito</a>.',
+Ginagamit ito upang makapagpanatili ng isang talaan ng mga sityong pangmadala/pampublikong gumagamit ng Semantikong MediaWiki, pangunahin na upang tulungan ang <a href="https://semantic-mediawiki.org/wiki/SMW_Project">proyektong Semantikong MediaWiki</a> upang makakuha ng pang-ibabaw/pangunahing paglalarawan ng karaniwang mga paggamit ng Semantikong MediaWiki.
+Tingnan ang tahanang pahina ng Semantikong MediaWiki para sa <a href="https://semantic-mediawiki.org/wiki/Registry">karagdagan pang kabatiran hinggil sa serbisyong ito</a>.',
 	'smw_smwadmin_announcebutton' => 'Pindutin ang sumusunod na pindutan upang maipasa/maipadala ang URL mong pangwiki patungo sa palingkurang iyan.
 Hindi itatala ng palingkuran ang mga wiki na hindi mapupuntahan ng madla, at itatago lamang nito ang kabatiran napupuntahan ng publiko.',
 	'smw_smwadmin_datarefresh' => 'Pagkukumpuni at pagtataas ng uri (grado/klase) ng dato',
@@ -15062,7 +15062,7 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_support' => 'Pagkuha ng suporta',
 	'smw_smwadmin_supportdocu' => 'Maaaring makatulong sa iyo ang sari-saring kapakipakinabang na mga bagay-bagay kung sakaling magkaroon ng mga suliranin:',
 	'smw_smwadmin_installfile' => 'Kung sakaling makaranas ka ng mga suliranin sa pagluluklok mo, magsimula sa pamamagitan ng pagsusuri ng mga patnubay na nasa loob ng <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">ILUKLOK ang talaksan</a>.',
-	'smw_smwadmin_smwhomepage' => 'Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://bugzilla.wikimedia.org/\">Bugzilla</a>.",
 	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan o mga mungkahi, makilahok sa usapang nasa <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Pangmadlang talakayan ng tagagamit ng MediaWiking Semantiko</a>.',
 	'smw_adminlinks_datastructure' => 'Kayarian ng dato',
@@ -15237,7 +15237,7 @@ $messages['ug-latn'] = array(
  * @author 아라
  */
 $messages['uk'] = array(
-	'smw-desc' => "Робить вашу вікі доступнішою — для машин ''та'' людей ([http://semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
+	'smw-desc' => "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
 	'smw_viewasrdf' => 'вивід RDF',
 	'smw_finallistconjunct' => ' і',
 	'smw_factbox_head' => 'Відомості про $1',
@@ -15462,13 +15462,13 @@ $messages['uk'] = array(
 	'smw_smwadmin_updatenotstopped' => 'Щоб зупинити запущений процес оновлення, Ви маєте поставити позначку, аби засвідчити, що ви справді впевнені в цьому.
 
 Повернення до $1.',
-	'smw_smwadmin_docu' => 'Ця сторінка допоможе при встановленні або оновленні <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Не забудьте зробити резервну копію всіх важливих даних перед запуском адміністративних функцій.',
+	'smw_smwadmin_docu' => 'Ця сторінка допоможе при встановленні або оновленні <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>. Не забудьте зробити резервну копію всіх важливих даних перед запуском адміністративних функцій.',
 	'smw_smwadmin_db' => 'Встановлення та оновлення бази даних',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki потребує розширити базу даних, щоб могти зберігати семантичну інформацію. Подана нижче функція забезпечує правильне налаштування бази даних. Зміни, котрі вона вносить, не зачіпають решти бази даних MediaWiki, та можуть бути легко скасовані. Хоча цю функцію безпечно запускати кілька разів, її використання потрібне лише один раз для встановлення чи оновлення.',
 	'smw_smwadmin_permissionswarn' => "Якщо ця операція буде зупинена через помилки SQL, вірогідною причиною може бути відсутність необхідних прав користувача, під іменем якого вікі під'єднується до бази даних (він вказується у LocalSettings.php). В такому випадку вам необхідно або дозволити цьому користувачу створювати та вилучати таблиці БД, або тимчасово ввести в LocalSettings.php ім'я користувача БД «root», або використати сценарій обслуговування <code>SMW_setup.php</code>, який може використовувати облікові дані адміністратора.",
 	'smw_smwadmin_dbbutton' => 'Ініціалізація або освіження таблиць',
 	'smw_smwadmin_announce' => 'Заявити про вашу вікі',
-	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki має вебсервіс для заявлення про нові семантичні вікі сайти. Головне призначення цього сервісу — зберігати список відкритих сайтів, що використовують Semantic MediaWiki з метою допомогти проектові <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki</a> мати інформацію про типові варіанти використання цього рушія. Більше інформації можна знайти на <a href="http://semantic-mediawiki.org/wiki/Registry">сайті Semantic MediaWiki</a>.',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki має вебсервіс для заявлення про нові семантичні вікі сайти. Головне призначення цього сервісу — зберігати список відкритих сайтів, що використовують Semantic MediaWiki з метою допомогти проектові <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki</a> мати інформацію про типові варіанти використання цього рушія. Більше інформації можна знайти на <a href="https://semantic-mediawiki.org/wiki/Registry">сайті Semantic MediaWiki</a>.',
 	'smw_smwadmin_announcebutton' => 'Натисніть наступну кнопку, щоб відправити адресу цього вікі до нашого сервісу. Сервіс не буде реєструвати вікі, які не є публічно доступними, і буде зберігати інформацію, що є публічно доступною.',
 	'smw_smwadmin_datarefresh' => 'Відновлення і оновлення даних',
 	'smw_smwadmin_datarefreshdocu' => 'Можна відновити всі дані Semantic MediaWiki, базуючись на поточному стані вмісту вікі. Це можна використати при відновленні пошкоджених даних або при оновленні даних, якщо внутрішній формат змінився через оновлення програмного забезпечення. Оновлення буде виконувати сторінка за сторінкою, тому займе якийсь час. Нижче показано прогрес процесу оновлення, дається можливість запустити або зупинити оновлення (якщо ця функція не була заблокована адміністратором).',
@@ -15481,7 +15481,7 @@ $messages['uk'] = array(
 	'smw_smwadmin_support' => 'Отримання підтримки',
 	'smw_smwadmin_supportdocu' => 'Є різні ресурси, що можуть стати в пригоді у разі виникнення проблем:',
 	'smw_smwadmin_installfile' => 'Якщо у вас виникли проблеми із встановленням, насамперед подивіться поради в <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">файлі INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Повна довідка із користування Semantic MediaWiki знаходиться на сайті <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Повна довідка із користування Semantic MediaWiki знаходиться на сайті <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Повідомлення про помилки відсилайте через <a href="https://bugzilla.wikimedia.org/">Баґзиллу</a>.',
 	'smw_smwadmin_questions' => 'Якщо у вас є додаткові запитання чи побажання, приєднуйтесь до обговорень на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форумі з користування Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Структура даних',
@@ -15496,7 +15496,7 @@ $messages['uk'] = array(
 	'smw-info-par-icon' => 'Значок, щоб показати "info" або "warning".',
 	'prefs-smw' => 'Семантична Медіавікі',
 	'prefs-ask-options' => 'Параметри семантичного пошуку',
-	'smw-prefs-intro-text' => "Параметри наводяться за [https://semantic-mediawiki.org/ Семантична Медіавікі] (або пов'язаними розширеннями), щоб увімкнути окремі налаштування для обраних функцій. Для отримання додаткової інформації, будь ласка, перегляньте це [http://semantic-mediawiki.org/wiki/Help:User_preferences розділ довідки].",
+	'smw-prefs-intro-text' => "Параметри наводяться за [https://semantic-mediawiki.org/ Семантична Медіавікі] (або пов'язаними розширеннями), щоб увімкнути окремі налаштування для обраних функцій. Для отримання додаткової інформації, будь ласка, перегляньте це [https://semantic-mediawiki.org/wiki/Help:User_preferences розділ довідки].",
 	'smw-prefs-ask-options-tooltip-display' => 'Відображати параметр текст у вигляді інформаційної підказки',
 	'smw-prefs-ask-options-collapsed-default' => 'Увімкнути поле параметрів типово згорнутим',
 	'smw-ui-tooltip-title-property' => 'Властивість',
@@ -15628,7 +15628,7 @@ $messages['vep'] = array(
  * @author 아라
  */
 $messages['vi'] = array(
-	'smw-desc' => "Làm cho wiki của bạn khả dụng hơn – đối với máy ''cũng như'' con người ([http://semantic-mediawiki.org/wiki/Help:User_manual tài liệu trực tuyến])",
+	'smw-desc' => "Làm cho wiki của bạn khả dụng hơn – đối với máy ''cũng như'' con người ([https://semantic-mediawiki.org/wiki/Help:User_manual tài liệu trực tuyến])",
 	'smw_viewasrdf' => 'Tin RDF',
 	'smw_finallistconjunct' => ', và',
 	'smw_factbox_head' => 'Sự thật về $1',
@@ -15802,7 +15802,7 @@ Xin nhập vào cả một trang và một thuộc tính.',
 	'smw_smwadmin_datarefreshstop' => 'Ngừng việc nâng cấp',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Có chắc',
 	'smw_smwadmin_support' => 'Trợ giúp',
-	'smw_smwadmin_smwhomepage' => 'Tài liệu sử dụng đầy đủ của MediaWiki Ngữ nghĩa có sẵn tại <b><a href="http://semantic-mediawiki.org/?uselang=vi">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Tài liệu sử dụng đầy đủ của MediaWiki Ngữ nghĩa có sẵn tại <b><a href="https://semantic-mediawiki.org/?uselang=vi">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Hãy báo cáo lỗi tại <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_adminlinks_datastructure' => 'Cấu trúc dữ liệu',
 	'smw_adminlinks_displayingdata' => 'Hiển thị dữ liệu',
@@ -16031,7 +16031,7 @@ $messages['zh-cn'] = array(
  * @author 아라
  */
 $messages['zh-hans'] = array(
-	'smw-desc' => "让你的wiki更可及——对机器''与''人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
+	'smw-desc' => "让你的wiki更可及——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
 	'smw_viewasrdf' => 'RDF源',
 	'smw_finallistconjunct' => '和',
 	'smw_factbox_head' => '关于 $1 的信息',
@@ -16263,7 +16263,7 @@ $messages['zh-hans'] = array(
 	'smw_smwadmin_updatenotstarted' => '已有更新进程正在运行，请勿新建另一个。', # Fuzzy
 	'smw_smwadmin_updatestopped' => '已停止所有更新进程。', # Fuzzy
 	'smw_smwadmin_updatenotstopped' => '请勾选复选框，以确认确实希望终止正在运行的升级进程。', # Fuzzy
-	'smw_smwadmin_docu' => '这个特殊页面为您安装和升级<a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>提供帮助。
+	'smw_smwadmin_docu' => '这个特殊页面为您安装和升级<a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>提供帮助。
 请在执行管理功能前备份好数据。',
 	'smw_smwadmin_db' => '数据库安装和升级',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki将MediaWiki数据库做一些扩展，以存储语义数据。
@@ -16275,8 +16275,8 @@ $messages['zh-hans'] = array(
 	'smw_smwadmin_dbbutton' => '初始化或升级表格',
 	'smw_smwadmin_announce' => '发布维基',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki提供一个网络服务，用于公告新的语义维基网站。
-这个服务用于维护一个使用Semantic MediaWiki的公共网站列表，主要用于帮助<a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki 项目</a>了解Semantic MediaWiki的典型使用的概貌。
-<a href="http://semantic-mediawiki.org/wiki/SMW_Project">关于此服务的更多信息</a>请查看Semantic MediaWiki主页。',
+这个服务用于维护一个使用Semantic MediaWiki的公共网站列表，主要用于帮助<a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki 项目</a>了解Semantic MediaWiki的典型使用的概貌。
+<a href="https://semantic-mediawiki.org/wiki/SMW_Project">关于此服务的更多信息</a>请查看Semantic MediaWiki主页。',
 	'smw_smwadmin_announcebutton' => '按下以下按钮以将你的维基网址提交给该服务。
 这个服务只储存公众访问信息，不对公众无法访问的维基进行注册，',
 	'smw_smwadmin_datarefresh' => '数据修复和升级',
@@ -16294,7 +16294,7 @@ $messages['zh-hans'] = array(
 	'smw_smwadmin_support' => '获得协助',
 	'smw_smwadmin_supportdocu' => '遇到问题时，可以使用以下资源获得帮助：',
 	'smw_smwadmin_installfile' => '如果安装遇到问题，请先仔细阅读<a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL文件</a>中的指引。',
-	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki的完整用户文档请查阅 <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
+	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki的完整用户文档请查阅 <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
 	'smw_smwadmin_mediazilla' => '程序问题请到<a href="https://bugzilla.wikimedia.org/">Bugzilla</a>报告。',
 	'smw_smwadmin_questions' => '如果有问题或建议，可加入<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki用户论坛</a>参与讨论。',
 	'smw_adminlinks_datastructure' => '数据结构',
@@ -16333,7 +16333,7 @@ $messages['zh-hans'] = array(
  * @author 아라
  */
 $messages['zh-hant'] = array(
-	'smw-desc' => '讓你的維基更可及——對機器與人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 網上文檔]）',
+	'smw-desc' => '讓你的維基更可及——對機器與人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 網上文檔]）',
 	'smw_viewasrdf' => 'RDF 源',
 	'smw_finallistconjunct' => '和',
 	'smw_factbox_head' => '關於「$1」的訊息',
@@ -16572,7 +16572,7 @@ $messages['zh-hant'] = array(
 
 返回到$1。',
 	'smw_smwadmin_updatenotstopped' => '請勾選複選框，以確認確實希望終止正在執行的升級進程。', # Fuzzy
-	'smw_smwadmin_docu' => '這個特殊頁面為您安裝和升級<a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>提供說明。
+	'smw_smwadmin_docu' => '這個特殊頁面為您安裝和升級<a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>提供說明。
 請在執行管理功能前備份好資料。',
 	'smw_smwadmin_db' => '資料庫安裝和升級',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki 將 MediaWiki 資料庫做一些擴充套件，以儲存語意數據。
@@ -16584,8 +16584,8 @@ $messages['zh-hant'] = array(
 	'smw_smwadmin_dbbutton' => '初始化或升級表格',
 	'smw_smwadmin_announce' => '發布 wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki 提供一個網路服務，用於公告新的語意維基網站。
-這個服務用於維護一個使用 Semantic MediaWiki 的公共網站列表，主要用於幫助<a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki 項目</a>了解 Semantic MediaWiki 的典型使用的概貌。
-<a href="http://semantic-mediawiki.org/wiki/SMW_Project">關於此服務的更多資訊</a>請檢視 Semantic MediaWiki 首頁。',
+這個服務用於維護一個使用 Semantic MediaWiki 的公共網站列表，主要用於幫助<a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki 項目</a>了解 Semantic MediaWiki 的典型使用的概貌。
+<a href="https://semantic-mediawiki.org/wiki/SMW_Project">關於此服務的更多資訊</a>請檢視 Semantic MediaWiki 首頁。',
 	'smw_smwadmin_announcebutton' => '按下以下按鈕以將你的 wiki 網址提交給該服務。
 這個服務只儲存公眾訪問資訊，不對公眾無法訪問的維基進行註冊，',
 	'smw_smwadmin_datarefresh' => '資料修復和升級',
@@ -16603,7 +16603,7 @@ $messages['zh-hant'] = array(
 	'smw_smwadmin_support' => '獲得協助',
 	'smw_smwadmin_supportdocu' => '遇到問題時，可以使用以下資源獲得幫助：',
 	'smw_smwadmin_installfile' => '如果安裝遇到問題，請先仔細閱讀<a href=「http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL 文件</a>中的指引。',
-	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki的完整用戶文檔請查閱 <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
+	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki的完整用戶文檔請查閱 <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
 	'smw_smwadmin_mediazilla' => '臭蟲可到<a href="https://bugzilla.wikimedia.org/">Bugzilla</a>報告。',
 	'smw_smwadmin_questions' => '如果有問題或建議，可加入<a href= 「http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user」>Semantic MediaWiki 用戶論壇</a>參與討論。',
 	'smw_adminlinks_datastructure' => '資料結構',
@@ -16753,7 +16753,7 @@ $messages['zh-tw'] = array(
 所有現存所需的資料將被重建及修復。
 您可依循在此特殊頁面的更新程序。',
 	'smw_smwadmin_updatenotstarted' => '目前某項更新程序下在進行中，不可重覆啟動另一項程序。',
-	'smw_smwadmin_docu' => '此特殊頁面協助您在安裝及升級<a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>的期間。請記得在執行管理功能(administrative functions)之前須備份重要的資料。',
+	'smw_smwadmin_docu' => '此特殊頁面協助您在安裝及升級<a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>的期間。請記得在執行管理功能(administrative functions)之前須備份重要的資料。',
 	'smw_smwadmin_db' => '資料庫安裝及升級',
 	'smw_smwadmin_announce' => '公告您的wiki',
 	'smw_smwadmin_datarefresh' => '資料修理及升級',
@@ -16761,7 +16761,7 @@ $messages['zh-tw'] = array(
 	'smw_smwadmin_datarefreshstop' => '停止此次的更新',
 	'smw_smwadmin_datarefreshstopconfirm' => '是的，我確定。',
 	'smw_smwadmin_support' => '取得支援',
-	'smw_smwadmin_smwhomepage' => '完整的Semantic MediaWiki用戶文件在<b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
+	'smw_smwadmin_smwhomepage' => '完整的Semantic MediaWiki用戶文件在<b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
 	'smw_smwadmin_mediazilla' => '臭蟲(程式的缺陷)可回報至<a href="https://bugzilla.wikimedia.org/">Bugzilla</a>。',
 	'smw_smwadmin_questions' => '如果您有進一步的問題或建議，請參與在<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>此處的討論。',
 	'smw_adminlinks_datastructure' => '資料結構',
