@@ -3,10 +3,10 @@
 namespace SMW\Test;
 
 use SMW\SharedDependencyContainer;
-use SMW\FactboxPresenter;
+use SMW\FactboxCache;
 
 /**
- * Tests for the FactboxPresenter class
+ * Tests for the FactboxCache class
  *
  * @file
  *
@@ -17,14 +17,14 @@ use SMW\FactboxPresenter;
  */
 
 /**
- * @covers \SMW\FactboxPresenter
+ * @covers \SMW\FactboxCache
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  */
-class FactboxPresenterTest extends ParserTestCase {
+class FactboxCacheTest extends ParserTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -32,15 +32,15 @@ class FactboxPresenterTest extends ParserTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\FactboxPresenter';
+		return '\SMW\FactboxCache';
 	}
 
 	/**
-	 * Helper method that returns a FactboxPresenter object
+	 * Helper method that returns a FactboxCache object
 	 *
 	 * @since 1.9
 	 *
-	 * @return FactboxPresenter
+	 * @return FactboxCache
 	 */
 	private function newInstance( &$outputPage = null ) {
 
@@ -52,14 +52,14 @@ class FactboxPresenterTest extends ParserTestCase {
 		$container->registerObject( 'Settings', $this->newSettings() );
 		$container->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
 
-		$instance = new FactboxPresenter( $outputPage );
+		$instance = new FactboxCache( $outputPage );
 		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
 
 		return $instance;
 	}
 
 	/**
-	 * @test FactboxPresenter::__construct
+	 * @test FactboxCache::__construct
 	 *
 	 * @since 1.9
 	 */
@@ -68,8 +68,8 @@ class FactboxPresenterTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test FactboxPresenter::process
-	 * @test FactboxPresenter::retrieveContent
+	 * @test FactboxCache::process
+	 * @test FactboxCache::retrieveContent
 	 * @dataProvider outputDataProvider
 	 *
 	 * @since 1.9
@@ -92,12 +92,10 @@ class FactboxPresenterTest extends ParserTestCase {
 		$container = $instance->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Settings', $this->newSettings( $settings ) );
 
-		$parserData = $this->newParserData( $outputPage->getTitle(), $setup['parserOutput'] );
-
 		// Verifies that no previous content is cached
 		$this->assertEmpty( $instance->retrieveContent() );
 
-		$instance->process( $parserData );
+		$instance->process( $setup['parserOutput'] );
 		$result = $outputPage->mSMWFactboxText;
 
 		if ( $expected['text'] ) {
@@ -124,7 +122,7 @@ class FactboxPresenterTest extends ParserTestCase {
 		}
 
 		// Re-run on the same instance
-		$instance->process( $parserData );
+		$instance->process( $setup['parserOutput'] );
 
 		$this->assertEquals(
 			$result,

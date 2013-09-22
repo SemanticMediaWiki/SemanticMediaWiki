@@ -96,12 +96,12 @@ class OutputPageParserOutputTest extends ParserTestCase {
 		$instance->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
 
 		// Verify that for the invoked objects no previsous content is cached
-		$presenter = $instance->getDependencyBuilder()->newObject( 'FactboxPresenter', array(
+		$factboxCache = $instance->getDependencyBuilder()->newObject( 'FactboxCache', array(
 			'OutputPage' => $outputPage
 		) );
 
 		$this->assertEmpty(
-			$presenter->retrieveContent(),
+			$factboxCache->retrieveContent(),
 			'Asserts that retrieveContent() returns an empty result before process()'
 		);
 
@@ -117,7 +117,7 @@ class OutputPageParserOutputTest extends ParserTestCase {
 			$this->assertContains( $expected['text'], $text );
 			$this->assertEquals(
 				$text,
-				$presenter->retrieveContent(),
+				$factboxCache->retrieveContent(),
 				'Asserts that retrieveContent() returns an expected text'
 			);
 
@@ -126,7 +126,7 @@ class OutputPageParserOutputTest extends ParserTestCase {
 			unset( $outputPage->mSMWFactboxText );
 			$this->assertEquals(
 				$text,
-				$presenter->retrieveContent(),
+				$factboxCache->retrieveContent(),
 				'Asserts that retrieveContent() is returning text from cache'
 			);
 

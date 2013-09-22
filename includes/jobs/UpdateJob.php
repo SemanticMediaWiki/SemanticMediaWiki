@@ -121,6 +121,12 @@ class UpdateJob extends JobBase {
 		Profiler::In( __METHOD__ . '-update' );
 
 		/**
+		 * @var CacheHandler $cache
+		 */
+		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache->setKey( FactboxCache::newCacheId( $this->getTitle()->getArticleID() ) )->delete();
+
+		/**
 		 * @var ParserData $parserData
 		 */
 		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(

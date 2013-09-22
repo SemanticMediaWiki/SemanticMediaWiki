@@ -27,7 +27,7 @@ return array(
 	'SMW\Highlighter'           => 'includes/Highlighter.php',
 	'SMW\ParameterInput'        => 'includes/ParameterInput.php',
 	'SMW\Factbox'               => 'includes/Factbox.php',
-	'SMW\FactboxPresenter'      => 'includes/FactboxPresenter.php',
+	'SMW\FactboxCache'          => 'includes/FactboxCache.php',
 	'SMWInfolink'               => 'includes/SMW_Infolink.php',
 	'SMWOutputs'                => 'includes/SMW_Outputs.php',
 	'SMW\ParserTextProcessor'   => 'includes/ParserTextProcessor.php',
@@ -92,9 +92,6 @@ return array(
 	// Dependency Injector
 	'SMW\DependencyRequestor'             => 'includes/dic/DependencyRequestor.php',
 	'SMW\DependencyInjector'              => 'includes/dic/DependencyInjector.php',
-
-	// Service objects
-	'SMW\DiParserData'                   => 'includes/dic/objects/DiParserData.php',
 
 	'SMW\Cacheable'                 => 'includes/Cacheable.php',
 	'SMW\Configurable'              => 'includes/Configurable.php',

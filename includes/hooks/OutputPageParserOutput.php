@@ -58,7 +58,7 @@ class OutputPageParserOutput extends FunctionHook {
 	 * @return true
 	 */
 	public function process() {
-		return $this->isValid( $this->outputPage->getTitle() ) ? $this->performUpdate( $this->outputPage->getTitle() ) : true;
+		return $this->isValid( $this->outputPage->getTitle() ) ? $this->performUpdate() : true;
 	}
 
 	/**
@@ -79,27 +79,16 @@ class OutputPageParserOutput extends FunctionHook {
 	 *
 	 * @return true
 	 */
-	protected function performUpdate( Title $title ) {
+	protected function performUpdate() {
 
 		/**
-		 * @var ParserData $parserData
+		 * @var FactboxCache $factboxCache
 		 */
-		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $title,
-			'ParserOutput' => $this->parserOutput
-		) );
-
-		/**
-		 * @var FactboxPresenter $presenter
-		 */
-		$presenter = $this->getDependencyBuilder()->newObject( 'FactboxPresenter', array(
+		$factboxCache = $this->getDependencyBuilder()->newObject( 'FactboxCache', array(
 			'OutputPage' => $this->outputPage
 		) );
 
-		// Instead of inject the ParserData object here, we could just use
-		// parserOutput and let the DependencyBuilder handle the object build
-		// in the background if needed
-		$presenter->process( $parserData );
+		$factboxCache->process( $this->parserOutput );
 
 		// @Legacy code
 		// Not sure why this was ever needed but to monitor any

@@ -50,16 +50,12 @@ class SkinAfterContent extends FunctionHook {
 	/**
 	 * @see FunctionHook::process
 	 *
-	 * @note Check invoked action to avoid having the factbox being displayed
-	 * in "edit" mode where facts are likly being outdated due to the editing
-	 * process
-	 *
 	 * @since 1.9
 	 *
 	 * @return true
 	 */
 	public function process() {
-		return $this->skin->getContext()->getRequest()->getVal( 'action' ) !== 'edit' ? $this->performUpdate( $this->skin->getOutput() ) : true;
+		return $this->performUpdate( $this->skin->getOutput() );
 	}
 
 	/**
@@ -70,13 +66,13 @@ class SkinAfterContent extends FunctionHook {
 	protected function performUpdate( OutputPage $outputPage ) {
 
 		/**
-		 * @var FactboxPresenter $presenter
+		 * @var FactboxCache $factboxCache
 		 */
-		$presenter = $this->getDependencyBuilder()->newObject( 'FactboxPresenter', array(
+		$factboxCache = $this->getDependencyBuilder()->newObject( 'FactboxCache', array(
 			'OutputPage' => $outputPage
 		) );
 
-		$this->data .= $presenter->retrieveContent();
+		$this->data .= $factboxCache->retrieveContent();
 
 		return true;
 	}

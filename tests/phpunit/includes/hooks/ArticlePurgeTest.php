@@ -91,13 +91,13 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $wikiPage, $settings );
 		$cache = $instance->getDependencyBuilder()->newObject( 'CacheHandler' );
 
-		$id = \SMW\FactboxPresenter::newCacheIdGenerator( $pageId );
+		$id = \SMW\FactboxCache::newCacheId( $pageId );
 	//	$cache->setKey( $id )->set( true );
 
 		// Pre-process check
 		$this->assertEquals(
 			$expected['autorefreshPreProcess'],
-			$cache->setKey( $instance->newIdGenerator( $pageId ) )->get(),
+			$cache->setKey( $instance->newCacheId( $pageId ) )->get(),
 			'Asserts the autorefresh cache status before processing'
 		);
 
@@ -109,7 +109,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		);
 
 		$this->assertFalse(
-			$cache->setKey( $instance->newIdGenerator( $pageId ) )->get(),
+			$cache->setKey( $instance->newCacheId( $pageId ) )->get(),
 			'Asserts that before processing ...'
 		);
 
@@ -123,7 +123,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 
 		$this->assertEquals(
 			$expected['autorefreshPostProcess'],
-			$cache->setKey( $instance->newIdGenerator( $pageId ) )->get(),
+			$cache->setKey( $instance->newCacheId( $pageId ) )->get(),
 			'Asserts the autorefresh cache status after processing'
 		);
 

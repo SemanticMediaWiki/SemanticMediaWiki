@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use ParserOutput;
 use OutputPage;
 use Title;
 
@@ -25,9 +26,9 @@ use Title;
  *
  * @ingroup SMW
  */
-class FactboxPresenter extends DependencyInjector {
+class FactboxCache extends DependencyInjector {
 
-	/** @var Factbox */
+	/** @var OutputPage */
 	protected $outputPage = null;
 
 	/** @var boolean */
@@ -38,14 +39,14 @@ class FactboxPresenter extends DependencyInjector {
 	 *
 	 * @param OutputPage &$outputPage
 	 *
-	 * @return FactboxPresenter
+	 * @return FactboxCache
 	 */
 	public function __construct( OutputPage &$outputPage ) {
 		$this->outputPage = $outputPage;
 	}
 
 	/**
-	 * Prepare and update the OutputPage object
+	 * Prepare and update the OutputPage property
 	 *
 	 * Factbox content is either retrived from CacheStore or re-parsed from
 	 * the invoked Factbox object
@@ -59,9 +60,9 @@ class FactboxPresenter extends DependencyInjector {
 	 *
 	 * @since 1.9
 	 *
-	 * @param ParserData $parserData
+	 * @param ParserOutput $parserOutput
 	 */
-	public function process( ParserData $parserData ) {
+	public function process( ParserOutput $parserOutput ) {
 
 		Profiler::In( __METHOD__ );
 
@@ -77,7 +78,7 @@ class FactboxPresenter extends DependencyInjector {
 		} else {
 
 			$this->isCached = false;
-			$this->outputPage->mSMWFactboxText = $this->parse( $parserData );
+			$this->outputPage->mSMWFactboxText = $this->rebuild( $parserOutput );
 			$resultMapper->recache( array(
 				'revId' => $title->getLatestRevID(),
 				'text'  => $this->outputPage->mSMWFactboxText
@@ -88,8 +89,8 @@ class FactboxPresenter extends DependencyInjector {
 	}
 
 	/**
-	 * Returns parsed Factbox content from either the OutputPage
-	 * or the CacheStore
+	 * Returns parsed Factbox content from either the OutputPage property
+	 * or from the CacheStore
 	 *
 	 * @since 1.9
 	 *
@@ -128,7 +129,7 @@ class FactboxPresenter extends DependencyInjector {
 	 *
 	 * @return CacheIdGenerator
 	 */
-	public static function newCacheIdGenerator( $pageId ) {
+	public static function newCacheId( $pageId ) {
 		return new CacheIdGenerator( $pageId, 'factbox' );
 	}
 
@@ -166,16 +167,21 @@ class FactboxPresenter extends DependencyInjector {
 	 *
 	 * @return string|null
 	 */
-	protected function parse( ParserData $parserData ) {
+	protected function rebuild( ParserOutput $parserOutput ) {
 
 		$text = null;
+
+		/**
+		 * @var RequestContext
+		 */
+		$this->getDependencyBuilder()->getContainer()->registerObject( 'RequestContext', $this->outputPage->getContext() );
 
 		/**
 		 * @var Factbox $factbox
 		 */
 		$factbox = $this->getDependencyBuilder()->newObject( 'Factbox', array(
-			'ParserData'     => $parserData,
-			'RequestContext' => $this->outputPage->getContext()
+			'Title'          => $this->outputPage->getTitle(),
+			'ParserOutput'   => $parserOutput
 		) );
 
 		if ( $factbox->doBuild()->isVisible() ) {

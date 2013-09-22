@@ -44,6 +44,17 @@ class ParserAfterTidy extends FunctionHook {
 	}
 
 	/**
+	 * @see FunctionHook::process
+	 *
+	 * @since 1.9
+	 *
+	 * @return true
+	 */
+	public function process() {
+		return !$this->parser->getTitle()->isSpecialPage() ? $this->performUpdate( $this->parser->getTitle() ) : true;
+	}
+
+	/**
 	 * @note Article purge: In case an article was manually purged/moved
 	 * the store is updated as well and for all other cases LinksUpdateConstructed
 	 * will handle the store update
@@ -83,7 +94,7 @@ class ParserAfterTidy extends FunctionHook {
 		 */
 		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
 
-		$cache->setKey( ArticlePurge::newIdGenerator( $title->getArticleID() ) );
+		$cache->setKey( ArticlePurge::newCacheId( $title->getArticleID() ) );
 
 		if( $cache->get() && !$title->inNamespace( NS_FILE ) ) {
 			$cache->delete();
@@ -91,17 +102,6 @@ class ParserAfterTidy extends FunctionHook {
 		}
 
 		return true;
-	}
-
-	/**
-	 * @see FunctionHook::process
-	 *
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
-	public function process() {
-		return !$this->parser->getTitle()->isSpecialPage() ? $this->performUpdate( $this->parser->getTitle() ) : true;
 	}
 
 }

@@ -46,7 +46,7 @@ class ArticlePurge extends FunctionHook {
 	 *
 	 * @return CacheIdGenerator
 	 */
-	public static function newIdGenerator( $pageId ) {
+	public static function newCacheId( $pageId ) {
 		return new CacheIdGenerator( $pageId, 'autorefresh' );
 	}
 
@@ -72,11 +72,11 @@ class ArticlePurge extends FunctionHook {
 		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
 
 		$cache->setCacheEnabled( $pageId > 0 )
-			->setKey( $this->newIdGenerator( $pageId ) )
+			->setKey( $this->newCacheId( $pageId ) )
 			->set( $settings->get( 'smwgAutoRefreshOnPurge' ) );
 
 		$cache->setCacheEnabled( $settings->get( 'smwgFactboxCacheRefreshOnPurge' ) )
-			->setKey( FactboxPresenter::newCacheIdGenerator( $pageId ) )
+			->setKey( FactboxCache::newCacheId( $pageId ) )
 			->delete();
 
 		return true;

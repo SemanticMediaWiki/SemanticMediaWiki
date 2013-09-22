@@ -124,6 +124,20 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		$provider[] = array( 'NamespaceExaminer',          array( '\SMW\NamespaceExaminer'           => array() ) );
 		$provider[] = array( 'UpdateObserver',             array( '\SMW\UpdateObserver'              => array() ) );
 		$provider[] = array( 'ObservableUpdateDispatcher', array( '\SMW\ObservableSubjectDispatcher' => array() ) );
+		$provider[] = array( 'RequestContext',             array( '\IContextSource'                  => array() ) );
+
+		$provider[] = array( 'RequestContext', array( '\IContextSource' => array(
+				'Title'    => $this->newMockBuilder()->newObject( 'Title' ),
+				'Language' => $this->newMockBuilder()->newObject( 'Language' )
+				)
+			)
+		);
+
+		$provider[] = array( 'WikiPage', array( '\WikiPage' => array(
+				'Title' => $this->newMockBuilder()->newObject( 'Title' )
+				)
+			)
+		);
 
 		$provider[] = array( 'ContentParser', array( '\SMW\ContentParser' => array(
 				'Title'        => $this->newMockBuilder()->newObject( 'Title' )
@@ -138,13 +152,13 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		);
 
 		$provider[] = array( 'Factbox', array( '\SMW\Factbox' => array(
-				'ParserData'     => $this->newMockBuilder()->newObject( 'ParserData' ),
-				'RequestContext' => $this->newMockBuilder()->newObject( 'RequestContext' )
+				'Title'          => $this->newMockBuilder()->newObject( 'Title' ),
+				'ParserOutput'   => $this->newMockBuilder()->newObject( 'ParserOutput' ),
 				)
 			)
 		);
 
-		$provider[] = array( 'FactboxPresenter', array( '\SMW\FactboxPresenter' => array(
+		$provider[] = array( 'FactboxCache', array( '\SMW\FactboxCache' => array(
 				'OutputPage'  => $this->newMockBuilder()->newObject( 'OutputPage' )
 				)
 			)

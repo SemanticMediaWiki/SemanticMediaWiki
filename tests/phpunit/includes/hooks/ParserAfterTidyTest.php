@@ -50,7 +50,7 @@ class ParserAfterTidyTest extends ParserTestCase {
 
 		$cacheHandler->expects( $this->any() )
 			->method( 'setKey' )
-			->with( $this->equalTo( \SMW\ArticlePurge::newIdGenerator( $id ) ) );
+			->with( $this->equalTo( \SMW\ArticlePurge::newCacheId( $id ) ) );
 
 		$cacheHandler->expects( $this->any() )
 			->method( 'get' )

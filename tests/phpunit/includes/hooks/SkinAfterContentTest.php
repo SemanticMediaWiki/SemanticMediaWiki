@@ -90,11 +90,11 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 		// Inject fake content into the FactboxPresenter
 		if ( isset( $setup['title'] ) ) {
 
-			$presenter = $instance->getDependencyBuilder()->newObject( 'FactboxPresenter', array(
+			$factboxCache = $instance->getDependencyBuilder()->newObject( 'FactboxCache', array(
 				'OutputPage' => $setup['skin']->getOutput()
 			) );
 
-			$resultMapper = $presenter->getResultMapper( $setup['title']->getArticleID() );
+			$resultMapper = $factboxCache->getResultMapper( $setup['title']->getArticleID() );
 			$resultMapper->recache( array(
 				'revId' => null,
 				'text'  => $setup['text']
@@ -160,7 +160,7 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 			array( 'text' => $text )
 		);
 
-		// #2 Special page, empty return
+		// #2 Special page
 		$text  = __METHOD__ . 'text-2';
 
 		$title = $this->newMockBuilder()->newObject( 'Title', array(
@@ -171,6 +171,8 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 			'getTitle' => $title
 		) );
 
+		$outputPage->mSMWFactboxText = $text;
+
 		$skin = $this->newMockBuilder()->newObject( 'Skin', array(
 			'getTitle'   => $outputPage->getTitle(),
 			'getOutput'  => $outputPage,
@@ -179,15 +181,17 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 
 		$provider[] = array(
 			array( 'skin' => $skin, 'text' => $text ),
-			array( 'text' => '' )
+			array( 'text' => $text )
 		);
 
-		// #3 "edit" request, empty return
+		// #3 "edit" request
 		$text   = __METHOD__ . 'text-3';
 
 		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
 			'getTitle' => $this->newMockBuilder()->newObject( 'Title' )
 		) );
+
+		$outputPage->mSMWFactboxText = $text;
 
 		$skin = $this->newMockBuilder()->newObject( 'Skin', array(
 			'getTitle'   => $outputPage->getTitle(),
@@ -197,7 +201,7 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 
 		$provider[] = array(
 			array( 'skin' => $skin, 'text' => $text ),
-			array( 'text' => '' )
+			array( 'text' => $text )
 		);
 
 		return $provider;

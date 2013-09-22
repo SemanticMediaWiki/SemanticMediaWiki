@@ -1114,4 +1114,20 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 		return $requestContext;
 	}
 
+	/**
+	 * Returns a Language object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Language
+	 */
+	public function Language() {
+
+		$language = $this->getMockBuilder( 'Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		return $language;
+	}
+
 }

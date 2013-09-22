@@ -75,17 +75,13 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	 *
 	 * @see  DependencyContainer::loadObjects
 	 *
-	 * It is proposed that the requested service object being available as
-	 * individual object class is using the following SMW\Di + <requested service>
-	 * naming pattern
-	 *
 	 * @since  1.9
 	 *
 	 * @return array
 	 */
 	public function loadObjects() {
 		return array(
-			'ParserData'            => '\SMW\DiParserData',
+			'ParserData'            => $this->getParserData(),
 			'NamespaceExaminer'     => $this->getNamespaceExaminer(),
 			'UpdateObserver'        => $this->getUpdateObserver(),
 			'BasePropertyAnnotator' => $this->getBasePropertyAnnotator(),
@@ -108,23 +104,77 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'Factbox' => function ( DependencyBuilder $builder ) {
 				return new Factbox(
 					$builder->newObject( 'Store' ),
-					$builder->getArgument( 'ParserData' ),
+					$builder->newObject( 'ParserData' ),
 					$builder->newObject( 'Settings' ),
-					$builder->getArgument( 'RequestContext' )
+					$builder->newObject( 'RequestContext' )
 				);
 			},
 
-			'FactboxPresenter' => function ( DependencyBuilder $builder ) {
+			'FactboxCache' => function ( DependencyBuilder $builder ) {
 
 				$outputPage = $builder->getArgument( 'OutputPage' );
 
-				$instance = new FactboxPresenter( $outputPage );
+				$instance = new FactboxCache( $outputPage );
 				$instance->setDependencyBuilder( $builder );
 
 				return $instance;
+			},
+
+			/**
+			 * IContextSource object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return IContextSource
+			 */
+			'RequestContext' => function ( DependencyBuilder $builder ) {
+
+				$instance = new \RequestContext();
+
+				if ( $builder->hasArgument( 'Title' ) ) {
+					$instance->setTitle( $builder->getArgument( 'Title' ) );
+				}
+
+				if ( $builder->hasArgument( 'Language' ) ) {
+					$instance->setLanguage( $builder->getArgument( 'Language' ) );
+				}
+
+				return $instance;
+			},
+
+			/**
+			 * WikiPage object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return WikiPage
+			 */
+			'WikiPage' => function ( DependencyBuilder $builder ) {
+				return \WikiPage::factory( $builder->getArgument( 'Title' ) );
 			}
 
 		);
+	}
+
+	/**
+	 * ParserData object definition
+	 *
+	 * @since  1.9
+	 *
+	 * @return ParserData
+	 */
+	protected function getParserData() {
+		return function ( DependencyBuilder $builder ) {
+
+			$instance = new ParserData(
+				$builder->getArgument( 'Title' ),
+				$builder->getArgument( 'ParserOutput' )
+			);
+
+			$instance->setObservableDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
+
+			return $instance;
+		};
 	}
 
 	/**
