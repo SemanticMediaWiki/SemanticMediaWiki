@@ -23,7 +23,6 @@ use SMW\DependencyContainer;
  * @covers \SMW\SharedDependencyContainer
  * @covers \SMW\SimpleDependencyBuilder
  * @covers \SMW\BaseDependencyContainer
- * @covers \SMW\DiParserData
  *
  * @ingroup Test
  *
