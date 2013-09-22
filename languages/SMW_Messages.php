@@ -8102,7 +8102,7 @@ $1に戻る。',
 	'smw_smwadmin_updatenotstopped' => '実行中の更新プロセスを停止するには、本当に理解していることを示すためにチェックボックスを選択する必要があります。
 
 $1に戻る。',
-	'smw_smwadmin_docu' => 'この特別ページは <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a> のインストールとアップグレードを支援します。
+	'smw_smwadmin_docu' => 'この特別ページは <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a> のインストールとアップグレードを支援します。
 管理機能を実行する前に、重要なデータをバックアップするようにしてください。',
 	'smw_smwadmin_db' => 'データベースのインストールおよびアップグレード',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki は意味的データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。
@@ -8114,8 +8114,8 @@ LocalSettings.php に一時的にデータベースの root のログイン情�
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
 	'smw_smwadmin_announce' => 'あなたのウィキの発表',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しい意味的ウィキのサイトを発表するためのウェブサービスがあります。
-このサービスは Semantic MediaWiki を使用するサイト一覧の保守に使用されており、主に <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために使用されています。
-Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.org/wiki/Registry">このサービスの詳細情報</a>をご覧ください。',
+このサービスは Semantic MediaWiki を使用するサイト一覧の保守に使用されており、主に <a href="https://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために使用されています。
+Semantic MediaWiki のホームページで<a href="https://semantic-mediawiki.org/wiki/Registry">このサービスの詳細情報</a>をご覧ください。',
 	'smw_smwadmin_announcebutton' => '以下のボタンを押して、あなたのウィキのURLをこのサービスに送信します。
 このサービスでは、公開されていないウィキを登録せず、公開されている情報のみを保管します。',
 	'smw_smwadmin_datarefresh' => 'データの修復とアップグレード',
@@ -8133,7 +8133,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw_smwadmin_support' => '支援を得る',
 	'smw_smwadmin_supportdocu' => '問題が発生したときにさまざまなリソースが助けとなるかもしれません:',
 	'smw_smwadmin_installfile' => 'インストールに問題を発見した場合、<a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL ファイル</a>にある指針を確認することから始めてください。',
-	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
+	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki 利用者用の完全なドキュメントは <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
 	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> で報告できます。',
 	'smw_smwadmin_questions' => 'さらなる質問や提案がある場合は、<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki 利用者フォーラム</a>での議論に参加してください。',
 	'smw_adminlinks_datastructure' => 'データ構造',
@@ -9209,6 +9209,8 @@ Zréck op d'Säit $1.",
 	'smw_smwadmin_updatestopped' => "All Aktualisatiouns-Prozesser goufe gestoppt.
 
 Zréck op d'Säit $1.",
+	'smw_smwadmin_docu' => 'Dës Spezialsäit hëlleft Iech während der Installatioun an der Aktualisatioun vu <a href="https://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Denkt drun fir wichteg Donnéeën ze späicheren ier Dir administrativ Funktiounen ausféiert.',
 	'smw_smwadmin_db' => 'Datebankinstallatioun and -aktualiséierung',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiséieren oder aktualiséieren',
 	'smw_smwadmin_announce' => 'Är wiki ukënnegen',
