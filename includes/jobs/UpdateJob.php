@@ -164,9 +164,9 @@ class UpdateJob extends JobBase {
 }
 
 /**
+ * @codeCoverageIgnore
  * SMWUpdateJob
  *
  * @deprecated since 1.9
- * @codeCoverageIgnore
  */
 class_alias( 'SMW\UpdateJob', 'SMWUpdateJob' );

@@ -836,6 +836,9 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		// #3
 		$provider[] = array( $closure, $stdClass );
 
+		// #4
+		$provider[] = array( 'stdClass', $stdClass );
+
 		return $provider;
 	}
 

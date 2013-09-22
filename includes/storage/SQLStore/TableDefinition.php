@@ -1,5 +1,9 @@
 <?php
 
+namespace SMW\SQLStore;
+
+use OutOfBoundsException;
+
 /**
  * Simple data container for storing information about property tables. A
  * property table is a DB table that is used to store subject-property-value
@@ -16,7 +20,7 @@
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWSQLStore3Table {
+class TableDefinition {
 
 	/**
 	 * Name of the table in the DB.
@@ -86,7 +90,7 @@ class SMWSQLStore3Table {
 	*
 	* @return array
 	*/
-	public function getFields( SMWSQLStore3 $store ) {
+	public function getFields( \SMWSQLStore3 $store ) {
 		$diHandler = $store->getDataItemHandlerForDIType( $this->diType );
 		return $diHandler->getTableFields();
 	}
@@ -123,11 +127,12 @@ class SMWSQLStore3Table {
 	 * @since 1.8
 	 *
 	 * @return string
-	 * @throws MWException
+	 * @throws OutOfBoundsException
 	 */
 	public function getFixedProperty() {
+
 		if ( $this->fixedProperty === false ) {
-			throw new MWException( 'Attempt to get the fixed property from a table that does not hold one' );
+			throw new OutOfBoundsException( 'Attempt to get the fixed property from a table that does not hold one' );
 		}
 
 		return $this->fixedProperty;
@@ -170,8 +175,9 @@ class SMWSQLStore3Table {
 }
 
 /**
+ * @codeCoverageIgnore
  * \SMW\SQLStore\TableDefinition
  *
  * @since 1.9
  */
-class_alias( 'SMWSQLStore3Table', 'SMW\SQLStore\TableDefinition' );
+class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );

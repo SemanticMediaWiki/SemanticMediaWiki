@@ -457,6 +457,11 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->builder->setValue( 'getCount' ) ) );
 
 		$queryResult->expects( $this->any() )
+			->method( 'serializeToArray' )
+			->will( $this->returnValue( $this->builder->setValue( 'serializeToArray' ) ) );
+
+
+		$queryResult->expects( $this->any() )
 			->method( 'getPrintRequests' )
 			->will( $this->returnValue( $this->builder->setValue( 'getPrintRequests' ) ) );
 

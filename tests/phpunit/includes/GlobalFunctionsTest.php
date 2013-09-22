@@ -35,6 +35,7 @@ class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @covers ::smwfGetLinker
 	 * @test smwfGetLinker
 	 *
 	 * @since 1.9
@@ -47,6 +48,7 @@ class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @covers ::smwfNormalTitleDBKey
 	 * @test smwfNormalTitleDBKey
 	 *
 	 * @since 1.9
@@ -60,6 +62,7 @@ class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @covers ::smwfHTMLtoUTF8
 	 * @test smwfHTMLtoUTF8
 	 *
 	 * @since 1.9
@@ -82,6 +85,7 @@ class GlobalFunctionsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @covers ::smwfEncodeMessages
 	 * @test smwfEncodeMessages
 	 * @dataProvider getEncodeMessagesDataProvider
 	 *

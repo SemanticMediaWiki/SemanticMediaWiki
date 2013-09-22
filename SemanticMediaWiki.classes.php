@@ -289,8 +289,8 @@ return array(
 	'SMW\SQLStore\PropertiesCollector'               => 'includes/storage/SQLStore/PropertiesCollector.php',
 	'SMW\SQLStore\PropertyTableDefinitionBuilder'    => 'includes/storage/SQLStore/PropertyTableDefinitionBuilder.php',
 
-	'SMWSQLStore3Table'                => 'includes/storage/SQLStore/SMW_SQLStore3Table.php', // Please fix me ...
-	'SMW\SQLStore\TableDefinition'     => 'includes/storage/SQLStore/SMW_SQLStore3Table.php',
+	'SMWSQLStore3Table'                => 'includes/storage/SQLStore/TableDefinition.php',
+	'SMW\SQLStore\TableDefinition'     => 'includes/storage/SQLStore/TableDefinition.php',
 
 	'SMWSQLStore3'                     => 'includes/storage/SQLStore/SMW_SQLStore3.php',
 	'SMWSql3StubSemanticData'          => 'includes/storage/SQLStore/SMW_Sql3StubSemanticData.php',

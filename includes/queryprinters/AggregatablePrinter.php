@@ -232,6 +232,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	}
 
 	/**
+	 * @codeCoverageIgnore
 	 * @see SMWResultPrinter::getParamDefinitions
 	 *
 	 * @since 1.8
@@ -279,6 +280,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 }
 
 /**
+ * @codeCoverageIgnore
  * SMWAggregatablePrinter
  *
  * @deprecated since SMW 1.9

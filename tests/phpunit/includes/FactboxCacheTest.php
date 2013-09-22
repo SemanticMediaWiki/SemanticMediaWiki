@@ -68,6 +68,15 @@ class FactboxCacheTest extends ParserTestCase {
 	}
 
 	/**
+	 * @test FactboxCache::newCacheId
+	 *
+	 * @since 1.9
+	 */
+	public function testNewCacheId() {
+		$this->assertInstanceOf( '\SMW\CacheIdGenerator', FactboxCache::newCacheId( 9001 ) );
+	}
+
+	/**
 	 * @test FactboxCache::process
 	 * @test FactboxCache::retrieveContent
 	 * @dataProvider outputDataProvider

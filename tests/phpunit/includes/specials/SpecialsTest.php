@@ -27,6 +27,10 @@ use Language;
  * @covers \SMW\SpecialProperties
  * @covers \SMW\SpecialConcepts
  * @covers \SMW\SpecialPage
+ * @covers SMWAskPage
+ * @covers SMWSpecialBrowse
+ * @covers SMWAdmin
+ * @covers SMWSearchByProperty
  *
  * @note Test base was borrowed from the EducationProgram extension
  *
