@@ -508,6 +508,10 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->method( 'findPropertyTypeID' )
 			->will( $this->returnValue( $this->builder->setValue( 'findPropertyTypeID', '_wpg' ) ) );
 
+		$diWikiPage->expects( $this->any() )
+			->method( 'getSubobjectName' )
+			->will( $this->returnValue( $this->builder->setValue( 'getSubobjectName', '' ) ) );
+
 		return $diWikiPage;
 	}
 

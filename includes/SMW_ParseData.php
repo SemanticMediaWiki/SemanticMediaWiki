@@ -10,6 +10,13 @@
  */
 
 /**
+ * @codeCoverageIgnore
+ *
+ * THIS CLASS IS OBSOLETE AND SHOULD NOT BE USED BEYOND SMW 1.8. THIS CLASS
+ * WILL BE REMOVED IN SMW 1.10.
+ *
+ * Use SMW\ParserData instead
+ *
  * Static class for managing semantic data collected during parsing, including
  * some hooks that can be used for updating and storing the data for some
  * article. All methods in this class are stateless: data is stored persistently
