@@ -103,6 +103,7 @@ return array(
 	'SMW\CacheIdGenerator'            => 'includes/cache/CacheIdGenerator.php',
 
 	// Hooks
+	'SMW\TitleMoveComplete'            => 'includes/hooks/TitleMoveComplete.php',
 	'SMW\SpecialStatsAddExtra'         => 'includes/hooks/SpecialStatsAddExtra.php',
 	'SMW\OutputPageParserOutput'       => 'includes/hooks/OutputPageParserOutput.php',
 	'SMW\SkinAfterContent'             => 'includes/hooks/SkinAfterContent.php',
