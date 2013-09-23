@@ -550,18 +550,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function onTitleMoveComplete( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
-
-		\SMW\CacheHandler::newFromId()->setCacheEnabled( $newId > 0 )
-			->setKey( \SMW\ArticlePurge::newIdGenerator( $newId ) )
-			->set( $GLOBALS['smwgAutoRefreshOnPageMove'] );
-
-		\SMW\CacheHandler::newFromId()->setCacheEnabled( $oldId > 0 )
-			->setKey( \SMW\ArticlePurge::newIdGenerator( $oldId ) )
-			->set( $GLOBALS['smwgAutoRefreshOnPageMove'] );
-
-		smwfGetStore()->changeTitle( $oldTitle, $newTitle, $oldId, $newId );
-
-		return true;
+		return \SMW\FunctionHookRegistry::register( new \SMW\TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) )->process();
 	}
 
 	/**

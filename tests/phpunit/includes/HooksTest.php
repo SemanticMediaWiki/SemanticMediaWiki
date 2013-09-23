@@ -525,47 +525,6 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWHooks::onTitleMoveComplete
-	 *
-	 * @since 1.9
-	 */
-	public function testOnTitleMoveComplete() {
-		// For some mysterious reasons this test causes
-		// SMW\Test\ApiAskTest::testExecute ... to fail with DBQueryError:
-		// Query: SELECT  o_serialized AS v0  FROM unittest_unittest_smw_fpt_mdat
-		// WHERE s_id='5'; it seems that the temp. unittest tables are
-		// being deleted while this test runs
-		$skip = true;
-
-		if ( !$skip && method_exists( 'WikiPage', 'doEditContent' ) ) {
-			$wikiPage = $this->newPage();
-			$user = $this->getUser();
-
-			$title = $wikiPage->getTitle();
-			$newTitle = $this->getTitle();
-			$pageid = $wikiPage->getId();
-
-			$content = \ContentHandler::makeContent(
-				'testing',
-				$title,
-				CONTENT_MODEL_WIKITEXT
-			);
-			$wikiPage->doEditContent( $content, "testing", EDIT_NEW, false, $user );
-
-			$result = SMWHooks::onTitleMoveComplete( $title, $newTitle, $user, $pageid, $pageid );
-
-			// Always make sure to clean-up
-			if ( $wikiPage->exists() ) {
-				$wikiPage->doDeleteArticle( "testing done." );
-			}
-
-			$this->assertTrue( $result );
-		} else {
-			$this->assertTrue( $skip );
-		}
-	}
-
-	/**
 	 * @test SMWHooks::onBeforePageDisplay
 	 *
 	 * @since 1.9
