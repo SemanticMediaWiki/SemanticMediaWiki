@@ -12302,6 +12302,7 @@ $messages['roa-tara'] = array(
  * @author Innv
  * @author Kaganer
  * @author Lockal
+ * @author Okras
  * @author Pastakhov
  * @author QuestPC
  * @author Van de Bugger
@@ -12558,7 +12559,7 @@ $messages['ru'] = array(
 	'smw-ui-tooltip-title-note' => 'Примечание',
 	'smw_unknowntype' => 'Для этого свойства задан некорректный тип',
 	'smw_concept_header' => 'Страницы, использующие представление «$1»',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Показана|Показаны|Показаны}} $1 {{PLURAL:$1|страница|страницы|страниц}}, {{PLURAL:$1|принадлежащая|принадлежащие|принадлежащие}} данному представлению.', # Fuzzy
+	'smw_conceptarticlecount' => 'Ниже {{PLURAL:$1|показана|показаны|показано}} $1 {{PLURAL:$1|страница|страницы|страниц}}.',
 	'group-smwadministrator' => 'Администраторы Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|администратор (SMW)}}',
 	'action-smw-admin' => 'доступ к задачам администратора Semantic MediaWiki',
