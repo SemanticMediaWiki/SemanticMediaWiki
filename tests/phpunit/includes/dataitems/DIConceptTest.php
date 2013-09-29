@@ -34,8 +34,20 @@ class DIConceptTest extends DataItemTest {
 	 */
 	public function constructorProvider() {
 		return array(
-			array( true, 'Foo', '', '', '', '' ),
-			array( false, 'Bar' ),
+			array( 'Foo', '', '', '', '' ),
+		);
+	}
+
+	/**
+	 * @see DataItemTest::invalidConstructorArgsProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function invalidConstructorArgsProvider() {
+		return array(
+			array( 'Bar' ),
 		);
 	}
 

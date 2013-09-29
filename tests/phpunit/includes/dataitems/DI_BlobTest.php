@@ -41,8 +41,8 @@ class DIBlobTest extends DataItemTest {
 	 */
 	public function constructorProvider() {
 		return array(
-			array( true, 'I love Semantic MediaWiki' ),
-			array( true, 'It is open source' ),
+			array( 'I love Semantic MediaWiki' ),
+			array( 'It is open source' ),
 		);
 	}
 

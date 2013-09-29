@@ -6,11 +6,6 @@ use SMWDataItem;
 use SMWDataItemException;
 
 /**
- * @file
- * @ingroup SMWDataItems
- */
-
-/**
  * This class implements Concept data items.
  *
  * @note These special data items for storing concept declaration data in SMW
@@ -71,12 +66,11 @@ class DIConcept extends \SMWDataItem {
 	protected $cacheCount;
 
 	/**
-	 * Initialise the concept data.
-	 * @param $concept the concept query string
-	 * @param $docu string with user documentation
-	 * @param $queryefeatures integer flags about query features
-	 * @param $size integer concept query size
-	 * @param $depth integer concept query depth
+	 * @param string $concept the concept query string
+	 * @param string $docu user documentation
+	 * @param integer $queryefeatures flags about query features
+	 * @param integer $size concept query size
+	 * @param integer $depth concept query depth
 	 */
 	public function __construct( $concept, $docu, $queryfeatures, $size, $depth ) {
 		$this->m_concept  = $concept;

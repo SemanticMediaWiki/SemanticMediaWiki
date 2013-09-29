@@ -36,9 +36,9 @@ class DIWikiPageTest extends DataItemTest {
 	 */
 	public function constructorProvider() {
 		return array(
-			array( true, 'Foo', NS_MAIN, '' ),
-			array( true, 'Foo_Bar', NS_MAIN, '' ),
-			array( true, 'Foo_Bar_Baz', NS_MAIN, '', 'spam' ),
+			array( 'Foo', NS_MAIN, '' ),
+			array( 'Foo_Bar', NS_MAIN, '' ),
+			array( 'Foo_Bar_Baz', NS_MAIN, '', 'spam' ),
 		);
 	}
 

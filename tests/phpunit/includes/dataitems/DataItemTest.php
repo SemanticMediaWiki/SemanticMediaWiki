@@ -32,9 +32,6 @@ abstract class DataItemTest extends \MediaWikiTestCase {
 	public abstract function getClass();
 
 	/**
-	 * First element can be a boolean indication if the successive values are valid,
-	 * or a string indicating the type of exception that should be thrown (ie not valid either).
-	 *
 	 * @since 1.8
 	 *
 	 * @return array
@@ -42,11 +39,37 @@ abstract class DataItemTest extends \MediaWikiTestCase {
 	public abstract function constructorProvider();
 
 	/**
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function invalidConstructorArgsProvider() {
+		return array();
+	}
+
+	public function testConstructWithInvalidArgsThrowsException() {
+		$this->assertTrue( true );
+
+		foreach ( $this->invalidConstructorArgsProvider() as $argList ) {
+			$this->assertConstructWithInvalidArgsThrowsException( $argList );
+		}
+	}
+
+	protected function assertConstructWithInvalidArgsThrowsException( array $argList ) {
+		$this->setExpectedException( 'Exception' );
+
+		call_user_func_array(
+			array( $this, 'newInstance' ),
+			$argList
+		);
+	}
+
+	/**
 	 * Creates and returns a new instance of the data item.
 	 *
 	 * @since 1.8
 	 *
-	 * @return \SMWDataItem
+	 * @return SMWDataItem
 	 */
 	public function newInstance() {
 		$reflector = new \ReflectionClass( $this->getClass() );
@@ -63,19 +86,12 @@ abstract class DataItemTest extends \MediaWikiTestCase {
 	public function instanceProvider() {
 		$phpFails = array( $this, 'newInstance' );
 
-		return array_filter( array_map(
+		return array_map(
 			function( array $args ) use ( $phpFails ) {
-				$isValid = array_shift( $args ) === true;
-
-				if ( $isValid ) {
-					return array( call_user_func_array( $phpFails, $args ) );
-				}
-				else {
-					return false;
-				}
+				return array( call_user_func_array( $phpFails, $args ) );
 			},
 			$this->constructorProvider()
-		), 'is_array' );
+		);
 	}
 
 	/**
@@ -84,27 +100,13 @@ abstract class DataItemTest extends \MediaWikiTestCase {
 	 * @since 1.8
 	 */
 	public function testConstructor() {
-		$args = func_get_args();
+		$dataItem = call_user_func_array(
+			array( $this, 'newInstance' ),
+			func_get_args()
+		);
 
-		$valid = array_shift( $args );
-		$pokemons = null;
-
-		try {
-			$dataItem = call_user_func_array( array( $this, 'newInstance' ), $args );
-			$this->assertInstanceOf( '\SMWDataItem', $dataItem );
-		}
-		catch ( \Exception $pokemons ) {
-			if ( $valid === true ) {
-				throw $pokemons;
-			}
-
-			if ( is_string( $valid ) ) {
-				$this->assertEquals( $valid, get_class( $pokemons ) );
-			}
-			else {
-				$this->assertTrue( true );
-			}
-		}
+		$this->assertInstanceOf( '\SMWDataItem', $dataItem );
+		$this->assertInstanceOf( $this->getClass(), $dataItem );
 	}
 
 	/**

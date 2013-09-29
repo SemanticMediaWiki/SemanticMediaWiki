@@ -35,11 +35,23 @@ class DIPropertyTest extends DataItemTest {
 	 */
 	public function constructorProvider() {
 		return array(
-			array( true, 0 ),
-			array( true, 243.35353 ),
-			array( true, 'ohi there' ),
-			array( false, array() ),
-			array( false, true ),
+			array( 0 ),
+			array( 243.35353 ),
+			array( 'ohi there' ),
+		);
+	}
+
+	/**
+	 * @see DataItemTest::invalidConstructorArgsProvider
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function invalidConstructorArgsProvider() {
+		return array(
+			array( true ),
+			array( array() ),
 		);
 	}
 
