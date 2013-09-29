@@ -4,25 +4,16 @@ namespace SMW\Test;
 
 use SMW\DISerializer;
 use SMWQueryProcessor;
-
-/**
- * Tests for the SMW\DISerializer class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
+use SMWQueryResult;
 
 /**
  * @covers \SMW\DISerializer
  *
- * @ingroup Test
- *
  * @group SMW
  * @group SMWExtension
+ *
+ * @license GNU GPL v2+
+ * @author mwjames
  */
 class DISerializerTest extends SemanticMediaWikiTestCase {
 
@@ -164,4 +155,5 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 		$results = DISerializer::getSerialization( $dataItem );
 		$this->assertEquals( $results, 1001 );
 	}
+
 }

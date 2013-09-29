@@ -1,5 +1,7 @@
 <?php
 
+use SMW\DISerializer;
+
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
  * provide access to the query result and printed data, and to some
@@ -281,12 +283,12 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * @see SMWDISerializer::getSerializedQueryResult
+	 * @see DISerializer::getSerializedQueryResult
 	 * @since 1.7
 	 * @return array
 	 */
 	public function serializeToArray() {
-		return SMWDISerializer::getSerializedQueryResult( $this );
+		return DISerializer::getSerializedQueryResult( $this );
 	}
 
 	/**

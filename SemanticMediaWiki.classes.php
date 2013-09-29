@@ -55,6 +55,7 @@ return array(
 	'SMW\ContentParser'             => 'includes/ContentParser.php',
 	'SMW\UpdateObserver'            => 'includes/UpdateObserver.php',
 	'SMW\TitleAccess'               => 'includes/TitleAccess.php',
+	'SMW\DISerializer'              => 'includes/DISerializer.php', // 1.9
 
 	'SMW\Accessible'                => 'includes/ObjectDictionary.php',
 	'SMW\Changeable'                => 'includes/ObjectDictionary.php',
@@ -186,8 +187,6 @@ return array(
 	'SMWDIGeoCoord'             => 'includes/dataitems/SMW_DI_GeoCoord.php',
 	'SMWContainerSemanticData'  => 'includes/dataitems/SMW_DI_Container.php',
 	'SMWDIContainer'            => 'includes/dataitems/SMW_DI_Container.php',
-	'SMWDISerializer'           => 'includes/dataitems/DISerializer.php',
-	'SMW\DISerializer'          => 'includes/dataitems/DISerializer.php', // 1.9
 	'SMWDIConcept'              => 'includes/dataitems/DIConcept.php',
 	'SMW\DIConcept'             => 'includes/dataitems/DIConcept.php', // 1.9
 

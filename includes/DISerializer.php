@@ -1,7 +1,11 @@
 <?php
 
 namespace SMW;
-use SMWDataItem, SMWPrintRequest, SMWResultArray, SMWQueryResult;
+
+use SMWDataItem;
+use SMWPrintRequest;
+use SMWResultArray;
+use SMWQueryResult;
 
 /**
  * Class for serializing SMWDataItem and SMWQueryResult objects to a context
@@ -13,20 +17,8 @@ use SMWDataItem, SMWPrintRequest, SMWResultArray, SMWQueryResult;
  *
  * @since 1.7
  *
- * @file
- * @ingroup SMW
- *
  * @licence GNU GPL v2 or later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
- * Class for serializing SMWDataItem and SMWQueryResult objects to a context
- * independent object consisting of arrays and associative arrays, which can
- * be fed directly to json_encode, the MediaWiki API, and similar serializers.
- *
- * @ingroup SMW
- * @ingroup DataItem
  */
 class DISerializer {
 
@@ -59,7 +51,7 @@ class DISerializer {
 				// (unit is part of the datavalue object)
 				if ( $printRequest !== null && $printRequest->getTypeID() === '_qty' ) {
 					$diProperty = $printRequest->getData()->getDataItem();
-					$dataValue = \SMWDataValueFactory::newDataItemValue( $dataItem, $diProperty );
+					$dataValue = DataValueFactory::newDataItemValue( $dataItem, $diProperty );
 
 					$result = array(
 						'value' => $dataValue->getNumber(),
@@ -96,7 +88,7 @@ class DISerializer {
 		$results = array();
 		$printRequests = array();
 
-		foreach ( $queryResult->getPrintRequests() as /* SMWPrintRequest */ $printRequest ) {
+		foreach ( $queryResult->getPrintRequests() as $printRequest ) {
 			$printRequests[] = array(
 				'label' => $printRequest->getLabel(),
 				'typeid' => $printRequest->getTypeID(),
@@ -105,10 +97,14 @@ class DISerializer {
 			);
 		}
 
-		foreach ( $queryResult->getResults() as /* SMWDIWikiPage */ $diWikiPage ) {
+		/**
+		 * @var DIWikiPage $diWikiPage
+		 * @var SMWPrintRequest $printRequest
+		 */
+		foreach ( $queryResult->getResults() as $diWikiPage ) {
 			$result = array( 'printouts' => array() );
 
-			foreach ( $queryResult->getPrintRequests() as /* SMWPrintRequest */ $printRequest ) {
+			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
 				$resultArray = new SMWResultArray( $diWikiPage, $printRequest, $queryResult->getStore() );
 
 				if ( $printRequest->getMode() === SMWPrintRequest::PRINT_THIS ) {
@@ -116,6 +112,7 @@ class DISerializer {
 					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
 				} else if ( $resultArray->getContent() !== array() ) {
 					$values = array();
+
 					foreach ( $resultArray->getContent() as $dataItem ) {
 						$values[] = self::getSerialization( $dataItem, $printRequest );
 					}
@@ -133,10 +130,3 @@ class DISerializer {
 		return array( 'printrequests' => $printRequests, 'results' => $results);
 	}
 }
-
-/**
- * SMWDISerializer
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\DISerializer', 'SMWDISerializer' );
