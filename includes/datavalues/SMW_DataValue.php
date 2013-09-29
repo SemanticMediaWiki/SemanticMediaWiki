@@ -421,10 +421,10 @@ abstract class SMWDataValue {
 
 		$this->setUserValue( $value );
 
-		if ( !$this->isValid() ) {
-			return new SMWThingDescription();
-		} else {
+		if ( $this->isValid() ) {
 			return new SMWValueDescription( $this->getDataItem(), $this->m_property, $comparator );
+		} else {
+			return new SMWThingDescription();
 		}
 	}
 
