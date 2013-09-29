@@ -223,7 +223,7 @@ class StatisticsCollector extends CacheableObjectCollector {
 	}
 
 	/**
-	 * Count property uses by counting rows in property tables
+	 * Count property uses by summing up property statistics table
 	 *
 	 * @note subproperties that are part of container values are counted
 	 * individually and it does not seem to be important to filter them by
@@ -237,16 +237,14 @@ class StatisticsCollector extends CacheableObjectCollector {
 		wfProfileIn( __METHOD__ );
 
 		$count = 0;
-		foreach ( $this->store->getPropertyTables() as $propertyTable ) {
-			$res = $this->dbConnection->select(
-				$propertyTable->getName(),
-				'COUNT(*) AS count',
-				array(),
-				__METHOD__
-			);
-			$row = $this->dbConnection->fetchObject( $res );
-			$count += $row->count;
-		}
+		$row = $this->dbConnection->selectRow(
+			array( $this->store->getStatisticsTable() ),
+			'SUM( usage_count ) AS count',
+			array(),
+			__METHOD__
+		);
+
+		$count = $row ? $row->count : $count;
 
 		wfProfileOut( __METHOD__ );
 		return (int)$count;
@@ -261,30 +259,14 @@ class StatisticsCollector extends CacheableObjectCollector {
 		wfProfileIn( __METHOD__ );
 
 		$count = 0;
-		foreach ( $this->store->getPropertyTables() as $propertyTable ) {
-			if ( !$propertyTable->isFixedPropertyTable() ) {
-				$res = $this->dbConnection->select(
-					$propertyTable->getName(),
-					'COUNT(DISTINCT(p_id)) AS count',
-					array(),
-					__METHOD__
-				);
-				$row = $this->dbConnection->fetchObject( $res );
-				$count += $row->count;
-			} else {
-				$res = $this->dbConnection->select(
-					$propertyTable->getName(),
-					'*',
-					array(),
-					__METHOD__,
-					array( 'LIMIT' => 1 )
-				);
+		$row = $this->dbConnection->selectRow(
+			array( $this->store->getStatisticsTable() ),
+			'Count( * ) AS count',
+			array( 'usage_count > 0' ),
+			__METHOD__
+		);
 
-				if ( $this->dbConnection->numRows( $res ) > 0 ) {
-					$count++;
-				}
-			}
-		}
+		$count = $row ? $row->count : $count;
 
 		wfProfileOut( __METHOD__ );
 		return (int)$count;
