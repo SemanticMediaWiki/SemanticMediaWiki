@@ -99,19 +99,15 @@ class DIWikiPage extends SMWDataItem {
 	 * Create a MediaWiki Title object for this DIWikiPage. The result
 	 * can be null if an error occurred.
 	 *
-	 * @todo From MW 1.17 on, makeTitleSafe supports interwiki prefixes.
-	 * This function can be simplified when compatibility to MW 1.16 is
-	 * dropped.
-	 * @return mixed Title or null
+	 * @return Title|null
 	 */
 	public function getTitle() {
-		if ( $this->m_interwiki === '' ) {
-			return Title::makeTitleSafe( $this->m_namespace, $this->m_dbkey, $this->m_subobjectname );
-		} else { // TODO inefficient; incomplete for fragments (see above commment)
-			$datavalue = new SMWWikiPageValue( '_wpg' );
-			$datavalue->setDataItem( $this );
-			return Title::newFromText( $datavalue->getPrefixedText() );
-		}
+		return Title::makeTitleSafe(
+			$this->m_namespace,
+			$this->m_dbkey,
+			$this->m_subobjectname,
+			$this->m_interwiki
+		);
 	}
 
 	public function getSerialization() {
