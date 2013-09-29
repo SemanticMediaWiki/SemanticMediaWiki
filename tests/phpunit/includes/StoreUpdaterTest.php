@@ -2,22 +2,11 @@
 
 namespace SMW\Test;
 
+use SMW\StoreFactory;
 use SMW\StoreUpdater;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
-
 use Title;
-
-/**
- * Tests for the StoreUpdater class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
  * @covers \SMW\StoreUpdater
@@ -26,13 +15,16 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @author mwjames
+ * @license GNU GPL v2+
  */
 class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
 	 *
-	 * @return string|false
+	 * @return string
 	 */
 	public function getClass() {
 		return '\SMW\StoreUpdater';
@@ -85,8 +77,8 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testDoUpdate() {
 
-		$store = \SMW\StoreFactory::getStore();
-		$data  = new \SMW\SemanticData( $this->newSubject() );
+		$store = StoreFactory::getStore();
+		$data  = new SemanticData( $this->newSubject() );
 
 		$instance = $this->newInstance( $store, $data );
 		$instance->setUpdateStatus( false );
@@ -107,8 +99,12 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	public function testDoUpdateOnMock( $setup, $expected ) {
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'updateData' => array( $this, 'mockStoreUpdateDataCallback' ),
-			'clearData'  => array( $this, 'mockStoreClearDataCallback' ),
+			'updateData' => function( SemanticData $data ) {
+				return $data->getSubject()->getTitle()->getText() === 'Lila' ? $data->mockCallback = 'clear' : null;
+			},
+			'clearData'  => function( DIWikiPage $di ) {
+				return $di->getTitle()->getText() === 'ClearData' ? $di->mockCallback = 'clear' : null;
+			},
 		) );
 
 		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
@@ -129,7 +125,6 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 		if ( $expected['mockCallback'] ) {
 			$this->assertEquals( $expected['mockCallback'], $mockData->getSubject()->mockCallback );
 		}
-
 	}
 
 	/**
@@ -189,18 +184,16 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 
 	}
 
-	/**
-	 * @since  1.9
-	 */
-	public function mockStoreUpdateDataCallback( SemanticData $data ) {
-		return $data->getSubject()->getTitle()->getText() === 'Lila' ? $data->mockCallback = 'clear' : null;
-	}
+	public function testDoUpdateForTitleInUnknownNs() {
+		$wikiPage = new DIWikiPage(
+			'Foo',
+			7201010, // This naemspace does not exist
+			''
+		);
 
-	/**
-	 * @since  1.9
-	 */
-	public function mockStoreClearDataCallback( DIWikiPage $di ) {
-		return $di->getTitle()->getText() === 'ClearData' ? $di->mockCallback = 'clear' : null;
+		$updater = $this->newInstance( null, new SemanticData( $wikiPage ) );
+
+		$this->assertFalse( $updater->doUpdate() );
 	}
 
 }

@@ -9,18 +9,10 @@ use User;
 /**
  * Initiates update of the Store
  *
- * @file
+ * @since 1.9
  *
  * @license GNU GPL v2+
- * @since   1.9
- *
  * @author mwjames
- */
-
-/**
- * Initiates update of the Store
- *
- * @ingroup SMW
  */
 class StoreUpdater {
 
@@ -36,12 +28,6 @@ class StoreUpdater {
 	/** @var $updateJobs */
 	protected $updateJobs = null;
 
-	/**
-	 * @since 1.9
-	 *
-	 * @param SemanticData $semanticData
-	 * @param Settings $settings
-	 */
 	public function __construct( Store $store, SemanticData $semanticData, Settings $settings ) {
 		$this->store        = $store;
 		$this->semanticData = $semanticData;
@@ -88,12 +74,16 @@ class StoreUpdater {
 	 *
 	 * @since 1.9
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public function doUpdate() {
 		Profiler::In( __METHOD__, true );
 
 		$title = $this->getSubject()->getTitle();
+
+		if ( $title === null ) {
+			return false;
+		}
 
 		// Protect against namespace -1 see Bug 50153
 		if ( $title->isSpecialPage() ) {
