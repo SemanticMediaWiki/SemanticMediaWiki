@@ -186,17 +186,6 @@ class AskParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test AskParserFunction::render
-	 *
-	 * @since 1.9
-	 */
-	public function testStaticRender() {
-		$parser = $this->getParser( $this->newTitle(), $this->getUser() );
-		$result = AskParserFunction::render( $parser );
-		$this->assertInternalType( 'string', $result );
-	}
-
-	/**
 	 * Provides sample data usually found in {{#ask}} queries
 	 *
 	 * @return array

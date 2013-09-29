@@ -335,19 +335,33 @@ final class Setup {
 	 */
 	protected function registerParserHooks() {
 
-		// FIXME Registration should follow
+		$settings = $this->settings;
 
-		// $objectBuilder = $this->getDependencyBuilder();
-		// $settings = $this->settings;
+		// Inject the ObjectBuilder using the DefaultContext
+		$objectBuilder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
+		$objectBuilder->getContainer()->registerObject( 'Settings', $settings );
 
-		// $this->globals['wgHooks']['ParserFirstCallInit'][] = function ( Parser &$parser ) use ( $objectBuilder, $settings ) {
-		//
-		//	$ask = $objectBuilder->newObject( 'AskParserFunction' , array( 'Parser', $parser );
-		//
-		//	$parser->setFunctionHook( 'ask', function( $parser ) use ( $ask, $settings ) {
-		//		return $settings->get( 'smwgQEnabled' ) ? $ask->parse( func_get_args() ) : $ask->disabled();
-		//	} );
-		// };
+		/**
+		 * Called when the parser initialises for the first time
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
+		 *
+		 * @since  1.9
+		 */
+		$this->globals['wgHooks']['ParserFirstCallInit'][] = function ( \Parser &$parser ) use ( $objectBuilder, $settings ) {
+
+			/**
+			 * {{#ask}}
+			 *
+			 * @since  1.9
+			 */
+			$parser->setFunctionHook( 'ask', function( $parser ) use ( $objectBuilder, $settings ) {
+				$ask = $objectBuilder->newObject( 'AskParserFunction', array( 'Parser' => $parser ) );
+				return $settings->get( 'smwgQEnabled' ) ? $ask->parse( func_get_args() ) : $ask->disabled();
+			} );
+
+			return true;
+		};
 
 		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMW\DocumentationParserFunction::staticInit';
 		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMW\InfoParserFunction::staticInit';

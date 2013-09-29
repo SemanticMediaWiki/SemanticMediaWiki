@@ -176,6 +176,30 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
+		$provider[] = array( 'QueryData', array( '\SMW\QueryData' => array(
+				'Title' => $this->newMockBuilder()->newObject( 'Title' )
+				)
+			)
+		);
+
+		$provider[] = array( 'MessageFormatter', array( '\SMW\MessageFormatter' => array(
+				'Language' => $this->newMockBuilder()->newObject( 'Language' )
+				)
+			)
+		);
+
+		$parser = $this->newMockBuilder()->newObject( 'Parser', array(
+			'getTitle'          => $this->newMockBuilder()->newObject( 'Title' ),
+			'getOutput'         => $this->newMockBuilder()->newObject( 'ParserOutput' ),
+			'getTargetLanguage' => $this->newMockBuilder()->newObject( 'Language' )
+		) );
+
+		$provider[] = array( 'AskParserFunction', array( '\SMW\AskParserFunction' => array(
+				'Parser' => $parser
+				)
+			)
+		);
+
 		return $provider;
 	}
 }

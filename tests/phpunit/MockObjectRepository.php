@@ -866,12 +866,16 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$parser->expects( $this->any() )
-			->method( 'getParserOutput' )
-			->will( $this->returnValue( $this->builder->setValue( 'getParserOutput' ) ) );
+			->method( 'getOutput' )
+			->will( $this->returnValue( $this->builder->setValue( 'getOutput' ) ) );
 
 		$parser->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
+
+		$parser->expects( $this->any() )
+			->method( 'getTargetLanguage' )
+			->will( $this->returnValue( $this->builder->setValue( 'getTargetLanguage' ) ) );
 
 		return $parser;
 	}

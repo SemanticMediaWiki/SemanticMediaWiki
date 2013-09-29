@@ -121,11 +121,11 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			},
 
 			/**
-			 * IContextSource object definition
+			 * RequestContext object definition
 			 *
 			 * @since  1.9
 			 *
-			 * @return IContextSource
+			 * @return RequestContext
 			 */
 			'RequestContext' => function ( DependencyBuilder $builder ) {
 
@@ -151,6 +151,64 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 */
 			'WikiPage' => function ( DependencyBuilder $builder ) {
 				return \WikiPage::factory( $builder->getArgument( 'Title' ) );
+			},
+
+			/**
+			 * MessageFormatter object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return MessageFormatter
+			 */
+			'MessageFormatter' => function ( DependencyBuilder $builder ) {
+				return new MessageFormatter( $builder->getArgument( 'Language' ) );
+			},
+
+			/**
+			 * QueryData object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return QueryData
+			 */
+			'QueryData' => function ( DependencyBuilder $builder ) {
+				return new QueryData( $builder->getArgument( 'Title' ) );
+			},
+
+			/**
+			 * AskParserFunction object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return AskParserFunction
+			 */
+			'AskParserFunction' => function ( DependencyBuilder $builder ) {
+
+				$parser = $builder->getArgument( 'Parser' );
+
+				$parserData = $builder->newObject( 'ParserData', array(
+					'Title'        => $parser->getTitle(),
+					'ParserOutput' => $parser->getOutput()
+				) );
+
+				// FIXME Inject a Context instead so that QueryData
+				// and MessageFormatter are only instantiated when
+				// requested
+
+				// $context = $builder->getArgument( 'BaseContext' );
+				// $context->setObjectBuilder( $builder );
+
+				$queryData = $builder->newObject( 'QueryData', array(
+					'Title' => $parser->getTitle()
+				) );
+
+				$messageFormatter = $builder->newObject( 'MessageFormatter', array(
+					'Language' => $parser->getTargetLanguage()
+				) );
+
+				$instance = new AskParserFunction( $parserData, $queryData, $messageFormatter );
+
+				return $instance;
 			}
 
 		);

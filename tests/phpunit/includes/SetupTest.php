@@ -48,11 +48,50 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @test Setup::run
-	 * @dataProvider hooksDataProvider
+	 * @dataProvider functionHooksProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testRegisterFunctionHooksAndParserHooks( $hook, $setup ) {
+	public function testRegisterFunctionHooks( $hook, $setup ) {
+
+		$this->assertHook( $hook, $setup, 1 );
+
+	}
+
+	/**
+	 * @test Setup::run
+	 * @dataProvider parserHooksProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testParserHooks( $hook, $setup ) {
+
+		// 4 because of having hooks registered without using a callback, after
+		// all parser hooks being registered using a callback this can be
+		// reduced to 1
+		$this->assertHook( $hook, $setup, 4 );
+
+		// Verify that registered closures are executable otherwise
+		// malicious code could hide if not properly checked
+		$result = $this->executeHookOnMock( $hook, $setup['wgHooks'][$hook][0] );
+
+		if ( $result !== null ) {
+			$this->assertTrue( $result );
+		} else {
+			$this->markTestIncomplete( "Test is incomplete because of a missing {$hook} closure verification" );
+		}
+
+	}
+
+	/**
+	 * Asserts a hook
+	 *
+	 * @since  1.9
+	 *
+	 * @param $hook
+	 * @param $object
+	 */
+	private function assertHook( $hook, &$setup, $count ) {
 
 		$instance = $this->newInstance( $setup );
 
@@ -64,24 +103,11 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 		$instance->run();
 
-		// A bit of a heck for now until the ParserHook use callbacks
-		$count = $hook === 'ParserFirstCallInit' ? 3 : 1;
-
 		$this->assertCount(
 			$count,
 			$setup['wgHooks'][$hook],
 			"Asserts that after run() the entry counts {$count}"
 		);
-
-		// Verify that registered closures are executable otherwise
-		// malicious code could hide if not properly checked
-		// $result = $this->callFunctionHookOnMock( $hook, $setup['wgHooks'][$hook][0] );
-
-		//if ( $result !== null ) {
-		//	$this->assertTrue( $result );
-		//} else {
-		//	$this->markTestIncomplete( "Test is incomplete because of a missing {$hook} closure verification" );
-		//}
 
 	}
 
@@ -93,15 +119,15 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 * @param $hook
 	 * @param $object
 	 */
-	private function callFunctionHookOnMock( $hook, $object ) {
+	private function executeHookOnMock( $hook, $object ) {
 
 		$empty = '';
 
 		// Evade execution by setting the title object as isSpecialPage
 		// the hook class should always ensure that isSpecialPage is checked
-		$title = $this->newMockObject( array(
+		$title =  $this->newMockBuilder()->newObject( 'Title', array(
 			'isSpecialPage' => true
-		) )->getMockTitle();
+		) );
 
 		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
 			'getTitle' => $title
@@ -405,7 +431,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	public function hooksDataProvider() {
+	public function functionHooksProvider() {
 
 		$provider = array();
 
@@ -434,6 +460,26 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'SkinAfterContent',
 			'OutputPageParserOutput',
 			'ExtensionTypes',
+		);
+
+		foreach ( $hooks as $hook ) {
+			$provider[] = array(
+				$hook,
+				array( 'wgHooks' => array( $hook => array() ) ),
+			);
+		}
+
+		return $provider;
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function parserHooksProvider() {
+
+		$provider = array();
+
+		$hooks = array(
 			'ParserFirstCallInit'
 		);
 

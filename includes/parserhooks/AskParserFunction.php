@@ -144,21 +144,4 @@ class AskParserFunction {
 		return $this->result;
 	}
 
-	/**
-	 * Parser::setFunctionHook {{#ask}} handler method
-	 *
-	 * @since 1.9
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return string
-	 */
-	public static function render( Parser &$parser ) {
-		$ask = new self(
-			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new QueryData( $parser->getTitle() ),
-			new MessageFormatter( $parser->getTargetLanguage() )
-		);
-		return $GLOBALS['smwgQEnabled'] ? $ask->parse( func_get_args() ) : $ask->disabled();
-	}
 }
