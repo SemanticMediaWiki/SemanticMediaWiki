@@ -197,7 +197,7 @@ class DIConcept extends \SMWDataItem {
 		return $result;
 	}
 
-	public function equals( $di ) {
+	public function equals( SMWDataItem $di ) {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_CONCEPT ) {
 			return false;
 		}

@@ -60,7 +60,7 @@ class SMWDIBoolean extends SMWDataItem {
 		}
 	}
 
-	public function equals( $di ) {
+	public function equals( SMWDataItem $di ) {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_BOOLEAN ) {
 			return false;
 		}

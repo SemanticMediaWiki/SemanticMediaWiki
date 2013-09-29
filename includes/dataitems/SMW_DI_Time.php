@@ -1,8 +1,5 @@
 <?php
-/**
- * @file
- * @ingroup SMWDataItems
- */
+
 use SMW\DataItemException;
 
 /**
@@ -462,10 +459,11 @@ class SMWDITime extends SMWDataItem {
 		}
 	}
 
-	public function equals( $di ) {
+	public function equals( SMWDataItem $di ) {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_TIME ) {
 			return false;
 		}
+
 		return $di->getSortKey() === $this->getSortKey();
 	}
 }

@@ -1,19 +1,21 @@
 <?php
-/**
- * @file
- * @ingroup SMWDataItems
- */
+
+namespace SMW;
+
 use SMW\DataItemException;
+use SMWDataItem;
+use SMWWikiPageValue;
+use Title;
 
 /**
  * This class implements wiki page data items.
  *
  * @since 1.6
- *
- * @author Markus Krötzsch
  * @ingroup SMWDataItems
+ * 
+ * @author Markus Krötzsch
  */
-class SMWDIWikiPage extends SMWDataItem {
+class DIWikiPage extends SMWDataItem {
 
 	/**
 	 * MediaWiki DB key string
@@ -94,7 +96,7 @@ class SMWDIWikiPage extends SMWDataItem {
 	}
 
 	/**
-	 * Create a MediaWiki Title object for this SMWDIWikiPage. The result
+	 * Create a MediaWiki Title object for this DIWikiPage. The result
 	 * can be null if an error occurred.
 	 *
 	 * @todo From MW 1.17 on, makeTitleSafe supports interwiki prefixes.
@@ -127,16 +129,20 @@ class SMWDIWikiPage extends SMWDataItem {
 	}
 
 	/**
-	 * Create a data item from the provided serialization string and type
-	 * ID.
-	 * @return SMWDIWikiPage
+	 * Create a data item from the provided serialization string and type ID.
+	 *
+	 * @param string $serialization
+	 *
+	 * @return DIWikiPage
+	 * @throws DataItemException
 	 */
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '#', $serialization, 4 );
+
 		if ( count( $parts ) == 3 ) {
-			return new SMWDIWikiPage( $parts[0], intval( $parts[1] ), $parts[2] );
+			return new self( $parts[0], intval( $parts[1] ), $parts[2] );
 		} elseif ( count( $parts ) == 4 ) {
-			return new SMWDIWikiPage( $parts[0], intval( $parts[1] ), $parts[2], $parts[3] );
+			return new self( $parts[0], intval( $parts[1] ), $parts[2], $parts[3] );
 		} else {
 			throw new DataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
 		} 
@@ -146,10 +152,10 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * Create a data item from a MediaWiki Title.
 	 *
 	 * @param $title Title
-	 * @return SMWDIWikiPage
+	 * @return DIWikiPage
 	 */
 	public static function newFromTitle( Title $title ) {
-		return new SMWDIWikiPage(
+		return new self(
 			$title->getDBkey(),
 			$title->getNamespace(),
 			$title->getInterwiki(),
@@ -157,17 +163,12 @@ class SMWDIWikiPage extends SMWDataItem {
 		);
 	}
 
-	public function equals( $di ) {
+	public function equals( SMWDataItem $di ) {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) {
 			return false;
 		}
+
 		return $di->getSerialization() === $this->getSerialization();
 	}
 }
 
-/**
- * SMW\DIWikiPage
- *
- * @since 1.9
- */
-class_alias( 'SMWDIWikiPage', 'SMW\DIWikiPage' );

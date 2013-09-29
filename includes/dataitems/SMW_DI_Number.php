@@ -64,10 +64,11 @@ class SMWDINumber extends SMWDataItem {
 		return new SMWDINumber( floatval( $serialization ) );
 	}
 
-	public function equals( $di ) {
+	public function equals( SMWDataItem $di ) {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_NUMBER ) {
 			return false;
 		}
+
 		return $di->getNumber() === $this->m_number;
 	}
 

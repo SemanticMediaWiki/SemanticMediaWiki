@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * @ingroup SMWDataItems
- */
 
 /**
  * Unused class, kept for compatibilty.

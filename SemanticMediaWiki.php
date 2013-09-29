@@ -71,16 +71,6 @@ $wgExtensionCredits['semantic'][] = array(
 	'descriptionmsg' => 'smw-desc'
 );
 
-// A flag used to indicate SMW defines a semantic extension type for extension credits.
-// @deprecated, removal in SMW 1.11
-define( 'SEMANTIC_EXTENSION_TYPE', true );
-
-// Load global constants
-require_once( __DIR__ . '/includes/Defines.php' );
-
-// Load global functions
-require_once( __DIR__ . '/includes/GlobalFunctions.php' );
-
 /**
  * Register all SMW classes
  *
@@ -111,6 +101,22 @@ spl_autoload_register( function ( $className ) {
 
 	// @codeCoverageIgnoreEnd
 } );
+
+// Compatibility aliases for classes that got moved into the SMW namespace in 1.9.
+class_alias( 'SMW\Store', 'SMWStore' );
+class_alias( 'SMW\SemanticData', 'SMWSemanticData' );
+class_alias( 'SMW\DIWikiPage', 'SMWDIWikiPage' );
+class_alias( 'SMW\DIProperty', 'SMWDIProperty' );
+
+// A flag used to indicate SMW defines a semantic extension type for extension credits.
+// @deprecated, removal in SMW 1.11
+define( 'SEMANTIC_EXTENSION_TYPE', true );
+
+// Load global constants
+require_once( __DIR__ . '/includes/Defines.php' );
+
+// Load global functions
+require_once( __DIR__ . '/includes/GlobalFunctions.php' );
 
 // Causes trouble in autoloader during testing because the test returns with
 // Class 'PSExtensionHandler' not found

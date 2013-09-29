@@ -189,10 +189,11 @@ class SMWDIContainer extends SMWDataItem {
 		return new SMWDIContainer( $data );
 	}
 
-	public function equals( $di ) {
+	public function equals( SMWDataItem $di ) {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_CONTAINER ) {
 			return false;
 		}
+
 		return $di->getSerialization() === $this->getSerialization();
 	}
 }

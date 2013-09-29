@@ -1,14 +1,15 @@
 <?php
-/**
- * The class in this file provides a container for chunks of subject-centred
- * data.
- *
- * @file
- * @ingroup SMW
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- */
+
+namespace SMW;
+
+use MWException;
+use SMWDataValue;
+use SMWDIContainer;
+use SMWDIProperty;
+use SMWDIWikiPage;
+use SMWDataItem;
+use SMWContainerSemanticData;
+use SMWPropertyValue;
 
 /**
  * Class for representing chunks of semantic data for one given
@@ -24,8 +25,11 @@
  * Since SMW cannot annotate pages with inverses, this is not a limitation.
  *
  * @ingroup SMW
+ *
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  */
-class SMWSemanticData {
+class SemanticData {
 
 	/**
 	 * Cache for the localized version of the namespace prefix "Property:".
@@ -48,14 +52,14 @@ class SMWSemanticData {
 	 * Array mapping property keys (string) to arrays of SMWDataItem
 	 * objects.
 	 *
-	 * @var array
+	 * @var SMWDataItem[]
 	 */
 	protected $mPropVals = array();
 
 	/**
 	 * Array mapping property keys (string) to SMWDIProperty objects.
 	 *
-	 * @var array
+	 * @var SMWDIProperty[]
 	 */
 	protected $mProperties = array();
 
@@ -104,7 +108,7 @@ class SMWSemanticData {
 	 * These key-value pairs of subObjectName (string) =>SMWSemanticData.
 	 *
 	 * @since 1.8
-	 * @var Array
+	 * @var SemanticData[]
 	 */
 	protected $subSemanticData = array();
 
@@ -172,8 +176,8 @@ class SMWSemanticData {
 	/**
 	 * Get the array of all stored values for some property.
 	 *
-	 * @param $property SMWDIProperty
-	 * @return array of SMWDataItem
+	 * @param SMWDIProperty $property
+	 * @return SMWDataItem[]
 	 */
 	public function getPropertyValues( SMWDIProperty $property ) {
 		if ( $property->isInverse() ) { // we never have any data for inverses
@@ -251,7 +255,7 @@ class SMWSemanticData {
 	 * Return the array of subSemanticData objects for this SemanticData
 	 *
 	 * @since 1.8
-	 * @return array of subobject => SMWContainerSemanticData objects
+	 * @return SMWContainerSemanticData[] subobject => SMWContainerSemanticData
 	 */
 	public function getSubSemanticData() {
 		return $this->subSemanticData;
@@ -367,15 +371,15 @@ class SMWSemanticData {
 	 *
 	 * @since 1.9
 	 *
-	 * @param DataValue $dataValue
+	 * @param SMWDataValue $dataValue
 	 */
 	public function addDataValue( SMWDataValue $dataValue ) {
 		\SMW\Profiler::In(  __METHOD__, true );
 
-		if ( $dataValue->getProperty() instanceof \SMW\DIProperty ) {
+		if ( $dataValue->getProperty() instanceof DIProperty ) {
 			if ( !$dataValue->isValid() ) {
 				$this->addPropertyObjectValue(
-					new \SMW\DIProperty( \SMW\DIProperty::TYPE_ERROR ),
+					new DIProperty( DIProperty::TYPE_ERROR ),
 					$dataValue->getProperty()->getDiWikiPage()
 				);
 				$this->addError( $dataValue->getErrors() );
@@ -470,11 +474,12 @@ class SMWSemanticData {
 	 * this SMWSemanticData; an exception is thrown otherwise.
 	 *
 	 * @since 1.7
-	 * @throws MWException if subjects do not match
 	 *
-	 * @param $semanticData SMWSemanticData object to copy from
+	 * @param SemanticData $semanticData object to copy from
+	 *
+	 * @throws MWException if subjects do not match
 	 */
-	public function importDataFrom( SMWSemanticData $semanticData ) {
+	public function importDataFrom( SemanticData $semanticData ) {
 		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			throw new MWException( "SMWSemanticData can only represent data about one subject. Importing data for another subject is not possible." );
 		}
@@ -485,14 +490,17 @@ class SMWSemanticData {
 		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
 			$this->mProperties = $semanticData->getProperties();
 			$this->mPropVals = array();
+
 			foreach ( $this->mProperties as $property ) {
 				$this->mPropVals[$property->getKey()] = $semanticData->getPropertyValues( $property );
 			}
+
 			$this->mHasVisibleProps = $semanticData->hasVisibleProperties();
 			$this->mHasVisibleSpecs = $semanticData->hasVisibleSpecialProperties();
 		} else {
 			foreach ( $semanticData->getProperties() as $property ) {
 				$values = $semanticData->getPropertyValues( $property );
+
 				foreach ( $values as $dataItem ) {
 					$this->addPropertyObjectValue( $property, $dataItem);
 				}
@@ -513,35 +521,39 @@ class SMWSemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @param $semanticData SMWSemanticData
+	 * @param SemanticData $semanticData
 	 */
-	public function removeDataFrom( SMWSemanticData $semanticData ) {
+	public function removeDataFrom( SemanticData $semanticData ) {
 		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			return;
 		}
+
 		foreach ( $semanticData->getProperties() as $property ) {
 			$values = $semanticData->getPropertyValues( $property );
 			foreach ( $values as $dataItem ) {
 				$this->removePropertyObjectValue( $property, $dataItem );
 			}
 		}
+
 		foreach( $semanticData->getSubSemanticData() as $semData ) {
 			$this->removeSubSemanticData( $semData );
 		}
 	}
 
 	/**
-	* Add data about subobjects.
-	* Will only work if the data that is added is about a subobject of
-	* this SMWSemanticData's subject. Otherwise an exception is thrown.
-	* The SMWSemanticData object that is given will belong to this object
-	* after the operation; it should not be modified further by the caller.
-	*
-	* @since 1.8
-	* @throws MWException if not adding data about a subobject of this data
-	* @param SMWSemanticData
-	*/
-	public function addSubSemanticData( SMWSemanticData $semanticData ) {
+	 * Add data about subobjects.
+	 * Will only work if the data that is added is about a subobject of
+	 * this SMWSemanticData's subject. Otherwise an exception is thrown.
+	 * The SMWSemanticData object that is given will belong to this object
+	 * after the operation; it should not be modified further by the caller.
+	 *
+	 * @since 1.8
+	 *
+	 * @param SemanticData $semanticData
+	 *
+	 * @throws MWException if not adding data about a subobject of this data
+	 */
+	public function addSubSemanticData( SemanticData $semanticData ) {
 		if ( !$this->subDataAllowed ) {
 			throw new MWException( "Cannot add subdata. Are you trying to add data to an SMWSemanticData object that is already used as a subdata object?" );
 		}
@@ -574,12 +586,12 @@ class SMWSemanticData {
 	* @since 1.8
 	* @param SMWSemanticData
 	*/
-	public function removeSubSemanticData( SMWSemanticData $semanticData ) {
+	public function removeSubSemanticData( SemanticData $semanticData ) {
 		if( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
 			return;
 		}
 
-		$subobjectName = $container->getSubject()->getSubobjectName();
+		$subobjectName = $semanticData->getSubject()->getSubobjectName();
 		if( array_key_exists( $subobjectName, $this->subSemanticData ) ) {
 			$this->subSemanticData[$subobjectName]->removeDataFrom( $semanticData );
 
@@ -590,10 +602,3 @@ class SMWSemanticData {
 	}
 
 }
-
-/**
- * SMW\SemanticData class alias
- *
- * @since 1.9
- */
-class_alias( 'SMWSemanticData', 'SMW\SemanticData' );

@@ -364,13 +364,19 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return boolean stating whether a month was found
 	 */
 	protected static function parseMonthString( $string, &$monthname ) {
+		/**
+		 * @var SMWLanguage $smwgContLang
+		 */
 		global $smwgContLang;
+
 		$monthnum = $smwgContLang->findMonth( $string ); // takes precedence over English month names!
+
 		if ( $monthnum !== false ) {
 			$monthnum -= 1;
 		} else {
 			$monthnum = array_search( $string, self::$m_months ); // check English names
 		}
+
 		if ( $monthnum !== false ) {
 			$monthname = self::$m_monthsshort[ $monthnum ];
 			return true;
@@ -802,7 +808,11 @@ class SMWTimeValue extends SMWDataValue {
 	 * @todo Internationalize the CE and BCE strings.
 	 */
 	public function getCaptionFromDataitem( SMWDITime $dataitem ) {
+		/**
+		 * @var SMWLanguage $smwgContLang
+		 */
 		global $smwgContLang;
+
 		if ( $dataitem->getYear() > 0 ) {
 			$cestring = '';
 			$result = number_format( $dataitem->getYear(), 0, '.', '' ) . ( $cestring ? ( ' ' . $cestring ) : '' );
@@ -810,15 +820,19 @@ class SMWTimeValue extends SMWDataValue {
 			$bcestring = 'BC';
 			$result = number_format( -( $dataitem->getYear() ), 0, '.', '' ) . ( $bcestring ? ( ' ' . $bcestring ) : '' );
 		}
+
 		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YM ) {
 			$result = $smwgContLang->getMonthLabel( $dataitem->getMonth() ) . " " . $result;
 		}
+
 		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YMD ) {
 			$result = $dataitem->getDay() . " " . $result;
 		}
+
 		if ( $dataitem->getPrecision() >= SMWDITime::PREC_YMDT ) {
 			$result .= " " . $this->getTimeString();
 		}
+
 		return $result;
 	}
 

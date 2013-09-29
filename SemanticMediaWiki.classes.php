@@ -31,8 +31,7 @@ return array(
 	'SMWInfolink'               => 'includes/SMW_Infolink.php',
 	'SMWOutputs'                => 'includes/SMW_Outputs.php',
 	'SMW\ParserTextProcessor'   => 'includes/ParserTextProcessor.php',
-	'SMWSemanticData'           => 'includes/SMW_SemanticData.php',
-	'SMW\SemanticData'          => 'includes/SMW_SemanticData.php', // 1.9
+	'SMW\SemanticData'          => 'includes/SMW_SemanticData.php',
 	'SMWPageLister'             => 'includes/SMW_PageLister.php',
 
 	'SMWDataValueFactory'       => 'includes/DataValueFactory.php',
@@ -174,7 +173,6 @@ return array(
 
 	// Data items
 	'SMWDataItem'               => 'includes/dataitems/SMW_DataItem.php',
-	'SMWDIProperty'             => 'includes/dataitems/SMW_DI_Property.php',
 	'SMW\DIProperty'            => 'includes/dataitems/SMW_DI_Property.php', // 1.9
 	'SMWDIBoolean'              => 'includes/dataitems/SMW_DI_Bool.php',
 	'SMWDINumber'               => 'includes/dataitems/SMW_DI_Number.php',
@@ -182,7 +180,6 @@ return array(
 	'SMWDIString'               => 'includes/dataitems/SMW_DI_String.php',
 	'SMWStringLengthException'  => 'includes/dataitems/SMW_DI_String.php',
 	'SMWDIUri'                  => 'includes/dataitems/SMW_DI_URI.php',
-	'SMWDIWikiPage'             => 'includes/dataitems/SMW_DI_WikiPage.php',
 	'SMW\DIWikiPage'            => 'includes/dataitems/SMW_DI_WikiPage.php', // 1.9
 	'SMWDITime'                 => 'includes/dataitems/SMW_DI_Time.php',
 	'SMWDIError'                => 'includes/dataitems/SMW_DI_Error.php',
@@ -236,7 +233,6 @@ return array(
 	'SMW\SetParserFunction'              => 'includes/parserhooks/SetParserFunction.php',
 	'SMW\AskParserFunction'              => 'includes/parserhooks/AskParserFunction.php',
 	'SMW\ShowParserFunction'             => 'includes/parserhooks/ShowParserFunction.php',
-	'SMW\ConceptParserFunction'          => 'includes/parserhooks/ConceptParserFunction.php',
 	'SMW\SubobjectParserFunction'        => 'includes/parserhooks/SubobjectParserFunction.php',
 	'SMW\RecurringEventsParserFunction'  => 'includes/parserhooks/RecurringEventsParserFunction.php',
 	'SMW\DocumentationParserFunction'    => 'includes/parserhooks/DocumentationParserFunction.php',
@@ -273,9 +269,8 @@ return array(
 	'SMW\Store\CacheableObjectCollector'    => 'includes/storage/CacheableObjectCollector.php',
 	'SMWQueryResult'                        => 'includes/storage/SMW_QueryResult.php',
 	'SMWResultArray'                        => 'includes/storage/SMW_ResultArray.php',
-	'SMWStore'                              => 'includes/storage/SMW_Store.php',
 	'SMW\Store'                             => 'includes/storage/SMW_Store.php',
-	'SMWStringCondition'                    => 'includes/storage/SMW_Store.php',
+	'SMWStringCondition'                    => 'includes/storage/StringCondition.php',
 	'SMWRequestOptions'                     => 'includes/storage/SMW_RequestOptions.php',
 	'SMWSparqlStore'                        => 'includes/storage/SMW_SparqlStore.php',
 	'SMWSparqlStoreQueryEngine'             => 'includes/storage/SMW_SparqlStoreQueryEngine.php',

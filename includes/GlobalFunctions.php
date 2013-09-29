@@ -325,6 +325,10 @@ function smwfInitNamespaces() {
 	if ( !is_array( $wgExtraNamespaces ) ) {
 		$wgExtraNamespaces = array();
 	}
+
+	/**
+	 * @var SMWLanguage $smwgContLang
+	 */
 	$wgExtraNamespaces = $wgExtraNamespaces + $smwgContLang->getNamespaces();
 	$wgNamespaceAliases = $wgNamespaceAliases + $smwgContLang->getNamespaceAliases();
 

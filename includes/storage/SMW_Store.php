@@ -1,12 +1,16 @@
 <?php
-/**
- * Basic abstract classes for SMW's storage abstraction layer.
- *
- * @file
- * @ingroup SMWStore
- *
- * @author Markus Krötzsch
- */
+
+namespace SMW;
+
+use HTMLFileCache;
+use SMWDataItem;
+use SMWDIProperty;
+use SMWDIWikiPage;
+use SMWQuery;
+use SMWQueryResult;
+use SMWRequestOptions;
+use SMWSemanticData;
+use Title;
 
 /**
  * This group contains all parts of SMW that relate to storing and retrieving
@@ -18,38 +22,6 @@
  */
 
 /**
- * Small data container class for describing filtering conditions on the string
- * label of some entity. States that a given string should either be prefix,
- * postfix, or some arbitrary part of labels.
- *
- * @ingroup SMWStore
- *
- * @author Markus Krötzsch
- */
-class SMWStringCondition {
-	const STRCOND_PRE = 0;
-	const STRCOND_POST = 1;
-	const STRCOND_MID = 2;
-
-	/**
-	 * String to match.
-	 */
-	public $string;
-
-	/**
-	 * Condition. One of STRCOND_PRE (string matches prefix),
-	 * STRCOND_POST (string matches postfix), STRCOND_MID
-	 * (string matches to some inner part).
-	 */
-	public $condition;
-
-	public function __construct( $string, $condition ) {
-		$this->string = $string;
-		$this->condition = $condition;
-	}
-}
-
-/**
  * The abstract base class for all classes that implement access to some
  * semantic store. Besides the relevant interface, this class provides default
  * implementations for some optional methods, which inform the caller that
@@ -59,7 +31,7 @@ class SMWStringCondition {
  *
  * @author Markus Krötzsch
  */
-abstract class SMWStore {
+abstract class Store {
 
 ///// Reading methods /////
 
@@ -397,7 +369,7 @@ abstract class SMWStore {
 	 * @param $namespaces mixed array or false
 	 * @param $usejobs boolean
 	 *
-	 * @return decimal between 0 and 1 to indicate the overall progress of the refreshing
+	 * @return float between 0 and 1 to indicate the overall progress of the refreshing
 	 */
 	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true );
 
@@ -472,9 +444,3 @@ abstract class SMWStore {
 	}
 
 }
-
-/**
- * SMW\Store
- *
- */
-class_alias( 'SMWStore', 'SMW\Store' );

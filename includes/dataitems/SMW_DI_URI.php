@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * @ingroup SMWDataItems
- */
 
 use SMW\DataItemException;
 
@@ -135,10 +131,11 @@ class SMWDIUri extends SMWDataItem {
 		return new SMWDIUri( $scheme, $hierpart, $query, $fragment );
 	}
 
-	public function equals( $di ) {
+	public function equals( SMWDataItem $di ) {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_URI ) {
 			return false;
 		}
+
 		return $di->getURI() === $this->getURI();
 	}
 }

@@ -5,6 +5,7 @@ namespace SMW;
 use SMWDataItem;
 use SMWErrorValue;
 use SMWDIProperty;
+use SMWLanguage;
 use SMWPropertyValue;
 use SMWDIWikiPage;
 use SMWDIError;
@@ -254,6 +255,9 @@ class DataValueFactory {
 	 * factory.
 	 */
 	static protected function initDatatypes() {
+		/**
+		 * @var SMWLanguage $smwgContLang
+		 */
 		global $smwgContLang;
 
 		if ( is_array( self::$mTypeLabels ) ) {
