@@ -5,7 +5,6 @@ namespace SMW\Tests;
 /**
  * @covers SMWDIBoolean
  * @covers SMWDataItem
- * Tests for the SMWDIBoolean class.
  *
  * @file
  * @since 1.8

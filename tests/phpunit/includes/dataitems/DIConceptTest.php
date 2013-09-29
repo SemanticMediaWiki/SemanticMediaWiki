@@ -3,24 +3,14 @@
 namespace SMW\Tests;
 
 /**
- * Tests for the SMW\DIConcept class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\DIConcept
- *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
+ *
+ * @license GNU GPL v2+
+ * @author mwjames
  */
 class DIConceptTest extends DataItemTest {
 

@@ -6,12 +6,6 @@ namespace SMW\Tests;
  * @covers \SMW\DIProperty
  * @covers SMWDataItem
  *
- * @file
- * @since 1.8\SMW\DIProperty
- *
- * @ingroup SMW
- * @ingroup Test
- *
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems

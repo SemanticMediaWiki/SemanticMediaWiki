@@ -5,7 +5,6 @@ namespace SMW\Tests;
 /**
  * @covers SMWDIBlob
  * @covers SMWDataItem
- * Tests for the SMWDIBlob class.
  *
  * @file
  * @since 1.8

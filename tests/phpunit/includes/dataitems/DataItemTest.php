@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use SMWDataItem;
+
 /**
  * Base class for SMW\DataItem tests.
  *
@@ -119,6 +121,20 @@ abstract class DataItemTest extends \MediaWikiTestCase {
 			$dataItem,
 			$class::doUnserialize( $dataItem->getSerialization() )
 		);
+	}
+
+	/**
+	 * @dataProvider instanceProvider
+	 */
+	public function testInstanceEqualsItself( SMWDataItem $di ) {
+		$this->assertTrue( $di->equals( $di ) );
+	}
+
+	/**
+	 * @dataProvider instanceProvider
+	 */
+	public function testInstanceDoesNotEqualNyanData( SMWDataItem $di ) {
+		$this->assertFalse( $di->equals( new \SMWDIBlob( '~=[,,_,,]:3' ) ) );
 	}
 
 }
