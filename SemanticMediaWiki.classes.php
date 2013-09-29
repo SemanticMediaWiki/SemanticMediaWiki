@@ -342,7 +342,6 @@ return array(
 	// Jobs
 	'SMW\UpdateDispatcherJob' => 'includes/jobs/UpdateDispatcherJob.php',
 	'SMW\JobBase'             => 'includes/jobs/JobBase.php',
-	'SMWUpdateJob'            => 'includes/jobs/UpdateJob.php',
 	'SMW\UpdateJob'           => 'includes/jobs/UpdateJob.php', // 1.9
 	'SMWRefreshJob'           => 'includes/jobs/SMW_RefreshJob.php',
 

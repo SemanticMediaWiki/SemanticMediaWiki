@@ -104,6 +104,7 @@ spl_autoload_register( function ( $className ) {
 
 // Compatibility aliases for classes that got moved into the SMW namespace in 1.9.
 class_alias( 'SMW\Store', 'SMWStore' );
+class_alias( 'SMW\UpdateJob', 'SMWUpdateJob' );
 class_alias( 'SMW\SemanticData', 'SMWSemanticData' );
 class_alias( 'SMW\DIWikiPage', 'SMWDIWikiPage' );
 class_alias( 'SMW\DIProperty', 'SMWDIProperty' );

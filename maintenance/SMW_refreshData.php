@@ -144,7 +144,9 @@ if ( $pages == false ) {
 		if ( $verbose ) {
 			print "($num_files) Processing ID " . $id . " ...\n";
 		}
+
 		smwfGetStore()->refreshData( $id, 1, $filter, false );
+
 		if ( $delay !== false ) {
 			usleep( $delay );
 		}
@@ -153,6 +155,7 @@ if ( $pages == false ) {
 			$linkCache->clear(); // avoid memory leaks
 		}
 	}
+
 	if ( $writeToStartidfile ) {
 		file_put_contents( $options['startidfile'], "$id" );
 	}

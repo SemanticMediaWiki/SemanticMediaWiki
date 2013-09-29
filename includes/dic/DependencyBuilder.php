@@ -28,7 +28,7 @@ interface DependencyFactory {
 	 * @param string $objectName
 	 * @param mixed $objectArguments
 	 */
-	public function newObject( $objectName, $objectArguments );
+	public function newObject( $objectName, $objectArguments = null );
 
 }
 

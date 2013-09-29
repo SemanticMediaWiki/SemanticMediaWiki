@@ -3,22 +3,13 @@
 namespace SMW;
 
 use Job;
+use Title;
 
 /**
- * Job base class
- *
- * @file
+ * @since 1.9
  *
  * @license GNU GPL v2+
- * @since   1.9
- *
  * @author mwjames
- */
-
-/**
- * Job base class
- *
- * @ingroup Job
  */
 abstract class JobBase extends Job implements DependencyRequestor {
 

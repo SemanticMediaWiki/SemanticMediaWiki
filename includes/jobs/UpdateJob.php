@@ -8,19 +8,6 @@ use Title;
 
 /**
  * UpdateJob is responsible for the asynchronous update of semantic data
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author Daniel M. Herzig
- * @author Markus Krötzsch
- * @author mwjames
- */
-
-/**
- * UpdateJob is responsible for the asynchronous update of semantic data
  * using MediaWiki's JobQueue infrastructure.
  *
  * Update jobs are created if, when saving an article,
@@ -32,7 +19,11 @@ use Title;
  * formatting in-page values based on a datatype thathas since been changed), whereas
  * the Factbox and query/browsing interfaces might already show the updated records.
  *
- * @ingroup Job
+ * @since   1.9
+ *
+ * @author Daniel M. Herzig
+ * @author Markus Krötzsch
+ * @author mwjames
  */
 class UpdateJob extends JobBase {
 
@@ -62,36 +53,30 @@ class UpdateJob extends JobBase {
 	}
 
 	/**
-	 * @since  1.9
-	 *
-	 * @param Title $title
-	 *
 	 * @return boolean
 	 */
 	private function runUpdate() {
-
-		// For non existing titles make sure to clear the data
-		if ( !$this->getTitle()->exists() ) {
-
-			/**
-			 * @var Store $store
-			 */
-			$store = $this->getDependencyBuilder()->newObject( 'Store' );
-
-			$store->deleteSubject( $this->getTitle() );
-			return true;
-		}
-
-		return $this->runContentParser();
+		return $this->getTitle()->exists() ? $this->runContentParser() : $this->clearData();
 	}
 
 	/**
-	 * @since  1.9
-	 *
+	 * @return boolean
+	 */
+	private function clearData() {
+		/**
+		 * @var Store $store
+		 */
+		$store = $this->getDependencyBuilder()->newObject( 'Store' );
+
+		$store->deleteSubject( $this->getTitle() );
+
+		return true;
+	}
+
+	/**
 	 * @return boolean
 	 */
 	private function runContentParser() {
-
 		/**
 		 * @var ContentParser $contentParser
 		 */
@@ -107,12 +92,9 @@ class UpdateJob extends JobBase {
 		}
 
 		return $this->runStoreUpdater( $contentParser->getOutput() );
-
 	}
 
 	/**
-	 * @since  1.9
-	 *
 	 * @param ParserOutput $parserOutput
 	 *
 	 * @return true
@@ -150,7 +132,7 @@ class UpdateJob extends JobBase {
 	 *
 	 * @codeCoverageIgnore
 	 */
-	function insert() {
+	public function insert() {
 
 		/**
 		 * @var Settings $settings
@@ -161,12 +143,5 @@ class UpdateJob extends JobBase {
 			parent::insert();
 		}
 	}
-}
 
-/**
- * @codeCoverageIgnore
- * SMWUpdateJob
- *
- * @deprecated since 1.9
- */
-class_alias( 'SMW\UpdateJob', 'SMWUpdateJob' );
+}

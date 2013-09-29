@@ -28,3 +28,5 @@ class SMWDIWikiPage extends SMW\DIWikiPage {}
 class SMWDIProperty extends SMW\DIProperty {}
 
 class SMWDISerializer extends SMW\DISerializer {}
+
+class SMWUpdateJob extends SMW\UpdateJob {}
