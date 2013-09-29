@@ -209,6 +209,17 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 				$instance = new AskParserFunction( $parserData, $queryData, $messageFormatter );
 
 				return $instance;
+			},
+
+			/**
+			 * FunctionHookRegistry object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return FunctionHookRegistry
+			 */
+			'FunctionHookRegistry' => function ( DependencyBuilder $builder ) {
+				return new FunctionHookRegistry();
 			}
 
 		);

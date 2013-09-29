@@ -123,6 +123,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		$provider[] = array( 'NamespaceExaminer',          array( '\SMW\NamespaceExaminer'           => array() ) );
 		$provider[] = array( 'UpdateObserver',             array( '\SMW\UpdateObserver'              => array() ) );
 		$provider[] = array( 'ObservableUpdateDispatcher', array( '\SMW\ObservableSubjectDispatcher' => array() ) );
+
 		$provider[] = array( 'RequestContext',             array( '\IContextSource'                  => array() ) );
 
 		$provider[] = array( 'RequestContext', array( '\IContextSource' => array(
@@ -137,6 +138,8 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 				)
 			)
 		);
+
+		$provider[] = array( 'FunctionHookRegistry',       array( '\SMW\FunctionHookRegistry'        => array() ) );
 
 		$provider[] = array( 'ContentParser', array( '\SMW\ContentParser' => array(
 				'Title'        => $this->newMockBuilder()->newObject( 'Title' )

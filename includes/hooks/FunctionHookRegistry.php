@@ -30,6 +30,9 @@ class FunctionHookRegistry {
 	 * @return FunctionHook
 	 */
 	public static function register( FunctionHook $hook ) {
+
+		// FIXME Expecting a context object to derive a builder
+
 		$hook->setDependencyBuilder( new SimpleDependencyBuilder( new SharedDependencyContainer() ) );
 		return $hook;
 	}

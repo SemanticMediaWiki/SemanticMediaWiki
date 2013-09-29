@@ -104,6 +104,7 @@ return array(
 
 	// Hooks
 	'SMW\TitleMoveComplete'            => 'includes/hooks/TitleMoveComplete.php',
+	'SMW\BaseTemplateToolbox'          => 'includes/hooks/BaseTemplateToolbox.php',
 	'SMW\SpecialStatsAddExtra'         => 'includes/hooks/SpecialStatsAddExtra.php',
 	'SMW\OutputPageParserOutput'       => 'includes/hooks/OutputPageParserOutput.php',
 	'SMW\SkinAfterContent'             => 'includes/hooks/SkinAfterContent.php',

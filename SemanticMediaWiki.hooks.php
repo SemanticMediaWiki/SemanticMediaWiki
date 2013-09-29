@@ -238,30 +238,6 @@ final class SMWHooks {
 	}
 
 	/**
-	 * Add a link to the toolbox to view the properties of the current page in
-	 * Special:Browse. The links has the CSS id "t-smwbrowselink" so that it can be
-	 * skinned or hidden with all standard mechanisms (also by individual users
-	 * with custom CSS).
-	 *
-	 * @since 1.7.1
-	 *
-	 * @param $skintemplate
-	 *
-	 * @return boolean
-	 */
-	public static function showBrowseLink( $skintemplate ) {
-		// @codeCoverageIgnoreStart
-		if ( $skintemplate->data['isarticle'] ) {
-			$browselink = SMWInfolink::newBrowsingLink( wfMessage( 'smw_browselink' )->text(),
-							$skintemplate->data['titleprefixeddbkey'], false );
-			echo '<li id="t-smwbrowselink">' . $browselink->getHTML() . '</li>';
-		}
-
-		return true;
-		// @codeCoverageIgnoreEnd
-	}
-
-	/**
 	 * Alter the structured navigation links in SkinTemplates.
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
 	 *

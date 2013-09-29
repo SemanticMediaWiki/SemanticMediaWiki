@@ -460,6 +460,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'SkinAfterContent',
 			'OutputPageParserOutput',
 			'ExtensionTypes',
+			'BaseTemplateToolbox'
 		);
 
 		foreach ( $hooks as $hook ) {

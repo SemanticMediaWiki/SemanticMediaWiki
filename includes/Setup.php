@@ -29,6 +29,9 @@ final class Setup {
 	/** @var Settings */
 	protected $settings;
 
+	/** @var DependencyBuilder */
+	protected $dependencyBuilder = null;
+
 	/**
 	 * @since 1.9
 	 *
@@ -101,6 +104,22 @@ final class Setup {
 
 		$this->settings = Settings::newFromGlobals( $this->globals );
 
+	}
+
+	/**
+	 * Returns a DependencyBuilder
+	 *
+	 * @since 1.9
+	 */
+	protected function getDependencyBuilder() {
+
+		// Use the DefaultContext to determine the builder
+		if ( $this->dependencyBuilder === null ) {
+			$this->dependencyBuilder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
+			$this->dependencyBuilder->getContainer()->registerObject( 'Settings', $this->settings );
+		}
+
+		return $this->dependencyBuilder;
 	}
 
 	/**
@@ -288,13 +307,21 @@ final class Setup {
 	 */
 	protected function registerFunctionHooks() {
 
-		// FIXME Registration should follow
+		$hookRegistry = $this->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
 
-		// $hookRegistry = new FunctionHookRegistry( $this->settings );
+		/**
+		 * Hook: Called by BaseTemplate when building the toolbox array and
+		 * returning it for the skin to output.
+		 *
+		 * @see http://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
+		 *
+		 * @since  1.9
+		 */
+		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) use ( $hookRegistry ) {
+			return $hookRegistry->register( new BaseTemplateToolbox( $skinTemplate, $toolbox ) )->process();
+		};
 
-		// $this->globals['wgHooks']['BeforePageDisplay'][] = function ( OutputPage &$outputPage, Skin &$skin ) use ( $hookRegistry ) {
-		//	return $hookRegistry->register( new BeforePageDisplay( $outputPage, $skin ) )->process();
-		// };
+		// Old-style registration
 
 		$this->globals['wgHooks']['LoadExtensionSchemaUpdates'][] = 'SMWHooks::onSchemaUpdate';
 		$this->globals['wgHooks']['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
@@ -321,11 +348,6 @@ final class Setup {
 		$this->globals['wgHooks']['SkinAfterContent'][] = 'SMWHooks::onSkinAfterContent';
 		$this->globals['wgHooks']['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
 
-		// FIXME Use BaseTemplateToolbox instead
-		if ( $this->settings->get( 'smwgToolboxBrowseLink' ) ) {
-			$this->globals['wgHooks']['SkinTemplateToolboxEnd'][] = 'SMWHooks::showBrowseLink';
-		}
-
 	}
 
 	/**
@@ -336,10 +358,7 @@ final class Setup {
 	protected function registerParserHooks() {
 
 		$settings = $this->settings;
-
-		// Inject the ObjectBuilder using the DefaultContext
-		$objectBuilder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
-		$objectBuilder->getContainer()->registerObject( 'Settings', $settings );
+		$objectBuilder = $this->getDependencyBuilder();
 
 		/**
 		 * Called when the parser initialises for the first time
