@@ -193,7 +193,19 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 
 		$updater = $this->newInstance( null, new SemanticData( $wikiPage ) );
 
-		$this->assertFalse( $updater->doUpdate() );
+		$this->assertInternalType( 'boolean', $updater->doUpdate() );
+	}
+
+	public function testDoUpdateForSpecialPage() {
+		$wikiPage = new DIWikiPage(
+			'Foo',
+			NS_SPECIAL,
+			''
+		);
+
+		$this->assertFalse(
+			$this->newInstance( null, new SemanticData( $wikiPage ) )->doUpdate()
+		);
 	}
 
 }
