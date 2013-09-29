@@ -187,7 +187,7 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	public function testDoUpdateForTitleInUnknownNs() {
 		$wikiPage = new DIWikiPage(
 			'Foo',
-			7201010, // This naemspace does not exist
+			-7201010, // This namespace does not exist
 			''
 		);
 

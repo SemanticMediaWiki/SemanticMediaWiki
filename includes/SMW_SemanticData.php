@@ -5,8 +5,6 @@ namespace SMW;
 use MWException;
 use SMWDataValue;
 use SMWDIContainer;
-use SMWDIProperty;
-use SMWDIWikiPage;
 use SMWDataItem;
 use SMWContainerSemanticData;
 use SMWPropertyValue;
@@ -57,9 +55,9 @@ class SemanticData {
 	protected $mPropVals = array();
 
 	/**
-	 * Array mapping property keys (string) to SMWDIProperty objects.
+	 * Array mapping property keys (string) to DIProperty objects.
 	 *
-	 * @var SMWDIProperty[]
+	 * @var DIProperty[]
 	 */
 	protected $mProperties = array();
 
@@ -94,11 +92,11 @@ class SemanticData {
 	protected $mNoDuplicates;
 
 	/**
-	 * SMWDIWikiPage object that is the subject of this container.
+	 * DIWikiPage object that is the subject of this container.
 	 * Subjects can never be null (and this is ensured in all methods setting
 	 * them in this class).
 	 *
-	 * @var SMWDIWikiPage
+	 * @var DIWikiPage
 	 */
 	protected $mSubject;
 
@@ -128,10 +126,10 @@ class SemanticData {
 	/**
 	 * Constructor.
 	 *
-	 * @param SMWDIWikiPage $subject to which this data refers
+	 * @param DIWikiPage $subject to which this data refers
 	 * @param boolean $noDuplicates stating if duplicate data should be avoided
 	 */
-	public function __construct( SMWDIWikiPage $subject, $noDuplicates = true ) {
+	public function __construct( DIWikiPage $subject, $noDuplicates = true ) {
 		$this->clear();
 		$this->mSubject = $subject;
 		$this->mNoDuplicates = $noDuplicates;
@@ -157,7 +155,7 @@ class SemanticData {
 	/**
 	 * Return subject to which the stored semantic annotations refer to.
 	 *
-	 * @return SMWDIWikiPage subject
+	 * @return DIWikiPage subject
 	 */
 	public function getSubject() {
 		return $this->mSubject;
@@ -166,7 +164,7 @@ class SemanticData {
 	/**
 	 * Get the array of all properties that have stored values.
 	 *
-	 * @return array of SMWDIProperty objects
+	 * @return array of DIProperty objects
 	 */
 	public function getProperties() {
 		ksort( $this->mProperties, SORT_STRING );
@@ -176,10 +174,10 @@ class SemanticData {
 	/**
 	 * Get the array of all stored values for some property.
 	 *
-	 * @param SMWDIProperty $property
+	 * @param DIProperty $property
 	 * @return SMWDataItem[]
 	 */
-	public function getPropertyValues( SMWDIProperty $property ) {
+	public function getPropertyValues( DIProperty $property ) {
 		if ( $property->isInverse() ) { // we never have any data for inverses
 			return array();
 		}
@@ -265,7 +263,7 @@ class SemanticData {
 	 * Return true if there are any visible properties.
 	 *
 	 * @note While called "visible" this check actually refers to the
-	 * function SMWDIProperty::isShown(). The name is kept for
+	 * function DIProperty::isShown(). The name is kept for
 	 * compatibility.
 	 *
 	 * @return boolean
@@ -279,7 +277,7 @@ class SemanticData {
 	 * be displayed.
 	 *
 	 * @note While called "visible" this check actually refers to the
-	 * function SMWDIProperty::isShown(). The name is kept for
+	 * function DIProperty::isShown(). The name is kept for
 	 * compatibility.
 	 *
 	 * @return boolean
@@ -296,10 +294,10 @@ class SemanticData {
 	 * change, all parts of SMW are prepared to handle mismatched data item
 	 * types anyway.
 	 *
-	 * @param $property SMWDIProperty
+	 * @param $property DIProperty
 	 * @param $dataItem SMWDataItem
 	 */
-	public function addPropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
+	public function addPropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
 		if( $dataItem instanceof SMWDIContainer ) {
 			$this->addSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
@@ -407,12 +405,12 @@ class SemanticData {
 	 * change, all parts of SMW are prepared to handle mismatched data item
 	 * types anyway.
 	 *
-	 * @param $property SMWDIProperty
+	 * @param $property DIProperty
 	 * @param $dataItem SMWDataItem
 	 *
 	 * @since 1.8
 	 */
-	public function removePropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
+	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
 		//delete associated subSemanticData
 		if( $dataItem instanceof SMWDIContainer ) {
 			$this->removeSubSemanticData( $dataItem->getSemanticData() );
