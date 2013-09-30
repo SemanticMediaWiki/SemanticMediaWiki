@@ -49,14 +49,14 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 *
 	 * @return StatisticsCollector
 	 */
-	private function newInstance( $count = 1, $cacheEnabled = false ) {
+	private function newInstance( $count = 1, $cacheEnabled = false, $hash = 'foo' ) {
 
 		// $store = $this->newMockObject( array( 'getPropertyTables' => array( 'smw_test' ) ) )->getMockStore();
 		$store = StoreFactory::getStore();
 
 		$result = array(
 			'count'  => $count,
-			'o_hash' => 'foo'
+			'o_hash' => $hash
 		);
 
 		$resultWrapper = new FakeResultWrapper( array( (object)$result ) );
@@ -72,6 +72,10 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 			->will( $this->returnValue( $resultWrapper ) );
 
 		$connection->expects( $this->any() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( $resultWrapper ) );
+
+		$connection->expects( $this->any() )
 			->method( 'fetchObject' )
 			->will( $this->returnValue( $resultWrapper ) );
 
@@ -80,8 +84,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 			->will( $this->returnValue( $count ) );
 
 		// Settings to be used
-		// hash = HashBagOStuff is used for testing only
-		$settings = Settings::newFromArray( array(
+		$settings = $this->newSettings( array(
 			'smwgCacheType' => 'hash',
 			'smwgStatisticsCache' => $cacheEnabled,
 			'smwgStatisticsCacheExpiry' => 3600
@@ -123,12 +126,22 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 * @dataProvider getFunctionDataProvider
 	 *
 	 * @since 1.9
+	 *
+	 * @param $function
+	 * @param $expectedType
 	 */
 	public function testFunctions( $function, $expectedType ) {
-		$instance = $this->newInstance();
+
+		$count = rand();
+		$hash  = 'Quxxey';
+		$expectedCount = $expectedType === 'array' ? array( $hash => $count ) : $count;
+
+		$instance = $this->newInstance( $count, false, $hash );
+
 		$result = call_user_func( array( &$instance, $function ) );
 
 		$this->assertInternalType( $expectedType, $result );
+		$this->assertEquals( $expectedCount, $result );
 	}
 
 	/**
