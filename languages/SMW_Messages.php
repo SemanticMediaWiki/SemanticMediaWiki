@@ -9201,7 +9201,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_result_next' => 'Nächst',
 	'smw_result_results' => 'Resultater',
 	'smw_result_noresults' => 'Pardon, et gouf näischt fonnt.',
-	'smwadmin' => 'Admin-Fonctiounen fir Semantic MediaWiki',
+	'smwadmin' => 'Admin-Funktioune fir Semantic MediaWiki',
 	'smw_smwadmin_return' => 'Zréck op $1',
 	'smw_smwadmin_updatenotstarted' => "Et ass schonn een Aktualiséiereungs-Prozess amgaang.
 Et ka keen neien ugefaang ginn.
@@ -11063,7 +11063,7 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw_semstats_text' => "Ta wiki zawiera '''$1''' {{PLURAL:$1|wartość|wartości}} własności z ogólnej liczby '''$2''' [[Special:Properties|{{PLURAL:$2|właściwości|różnych właściwości}}]].
 '''$3''' {{PLURAL:$3|właściwość ma swoją własną stronę|właściwości mają swoje własne strony}}, a typ danych został określony dla '''$4''' z nich.
 Niektóre z istniejących właściwości mogą [[Special:UnusedProperties|być obecnie niewykorzystywane]].
-Właściwości, które nie posiadają swojej strony odnaleźć można na stronie [[Special:WantedProperties|spisu brakujących właściwości]].",
+Właściwości, które nie posiadają swojej strony, można odnaleźć na stronie [[Special:WantedProperties|spisu brakujących właściwości]].",
 	'smw-statistics' => 'Statystyka semantyczna',
 	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Właściwość|Właściwości}}]] (łącznie)',
 	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Właściwość|Właściwości}} (łącznie)',
@@ -13749,8 +13749,8 @@ It takes care that humans do not turn into websites.',
 	'smw_ask_otheroptions' => 'Andra alternativ',
 	'smw-ask-otheroptions-info' => 'Den här delen innehåller alternativ som påverkar ”printout statements”. Beskrivningar av parametrarna visas när du för muspekaren över dem.',
 	'smw-ask-otheroptions-collapsed-info' => 'Använd plus-tecknet för att visa alla tillgänliga alternativ.',
-	'smw_ask_show_embed' => 'Visa inbäddningskod',
-	'smw_ask_hide_embed' => 'Göm inbäddningskod',
+	'smw_ask_show_embed' => 'Visa inbäddad kod',
+	'smw_ask_hide_embed' => 'Göm inbäddad kod',
 	'smw_ask_embed_instr' => 'Använd koden nedan för att lägga in den här frågan i en wiki-sida.',
 	'smw-ask-delete' => '[Ta bort]',
 	'smw-ask-sorting' => 'Sortering',
