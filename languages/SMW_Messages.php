@@ -12973,6 +12973,7 @@ Odhadovaný priebeh aktualizácie:',
 
 /** Slovenian (slovenščina)
  * @author Dbc334
+ * @author Eleassar
  * @author Lesko987
  */
 $messages['sl'] = array(
@@ -13095,10 +13096,13 @@ Ker je bilo le malo rezultatov, so prikazane strani s približnim ujemanjem.',
 	'smw_result_results' => 'Rezultati',
 	'smw_result_noresults' => 'Ni zadetkov.',
 	'smw_smwadmin_return' => 'Vrnitev na $1',
+	'smw_smwadmin_docu' => 'Ta posebna stran vam pomaga pri namestitvi in nadgradnji <a href="https://semantic-mediawiki.org">Semantičnega MediaWiki</a>.
+Pred izvajanje administrativnih dejanj ustvarite varnostno kopijo uporabnih podatkov.',
 	'smw_smwadmin_datarefresh' => 'Nadgraditev in popravilo podatkov',
 	'smw_smwadmin_datarefreshbutton' => 'Začni posodabljati podatke',
 	'smw_smwadmin_datarefreshstop' => 'Ustavi to posodobitev',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, prepričan sem.',
+	'smw_smwadmin_smwhomepage' => 'Celotna uporabniška dokumentacija za Semantic MediaWiki je na razpolago na naslovu <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Hrošče lahko prijavite na <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
 	'smw_adminlinks_datastructure' => 'Zgradba podatkov',
 	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
