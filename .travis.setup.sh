@@ -17,12 +17,12 @@ php maintenance/install.php --dbtype $DBTYPE --dbuser root --dbname its_a_mw --d
 
 cd extensions
 
-git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git --depth 1
-git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Validator.git --depth 1
-
 cp -r $originalDirectory SemanticMediaWiki
 
-cd ..
+cd SemanticMediaWiki
+composer install
+
+cd ../..
 
 echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
 
