@@ -683,6 +683,54 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @test SimpleDependencyBuilder::newObject
+	 *
+	 * A object definition depends on previous definitions in order to build a
+	 * requested object instance
+	 *
+	 * @since 1.9
+	 */
+	public function testDeferredLoadingWithScopeChangeAndRecursiveObjectGraph() {
+
+		$container = new FakeDependencyContainer();
+		$container->setObjects( array(
+
+			'Title' => function( $builder ) {
+				return new Title();
+			},
+
+			'FakeWikiPage' => function( $builder ) {
+				return new FakeWikiPage( $builder->newObject( 'Title' ) );
+			},
+
+			'Bar' => function( $builder ) {
+				return $builder->newObject( 'FakeWikiPage' );
+			},
+
+			'Quux' => function( $builder ) {
+				return $builder->newObject( 'Bar' );
+			}
+
+		) );
+
+		$instance = $this->newInstance( $container );
+
+		$iQuux = $instance->setScope( DependencyObject::SCOPE_SINGLETON )->newObject( 'Quux' );
+
+		$this->assertTrue(
+			$iQuux->getTitle() === $instance->setScope( DependencyObject::SCOPE_SINGLETON )->newObject( 'Quux' )->getTitle(),
+			'Asserts that the scope was altered despite its original definition'
+		);
+
+		$this->assertFalse(
+			$iQuux->getTitle() === $instance->newObject( 'Quux' )->getTitle(),
+			'Asserts that the original scope definition has been restored'
+		);
+
+	}
+
+
+	/**
 	 * @test SimpleDependencyBuilder::getArgument
 	 *
 	 * @since 1.9
@@ -767,6 +815,81 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$instance->newObject( 'Title' );
 
 		$this->assertTrue( true );
+	}
+
+	/**
+	 * @test SimpleDependencyBuilder::newObject
+	 *
+	 * @since 1.9
+	 */
+	public function testSingletonCircularReferenceDetectionOutOfBoundsException() {
+
+		$this->setExpectedException( 'OutOfBoundsException' );
+
+		$instance = $this->newInstance();
+		$instance->getContainer()->registerObject( 'Foo', function( $builder ) {
+			return $builder->newObject( 'Foo' );
+		}, DependencyObject::SCOPE_SINGLETON );
+
+		$instance->newObject( 'Foo' );
+
+	}
+
+	/**
+	 * @test SimpleDependencyBuilder::newObject
+	 *
+	 * @since 1.9
+	 */
+	public function testPrototypeCircularReferenceDetectionOutOfBoundsException() {
+
+		$this->setExpectedException( 'OutOfBoundsException' );
+
+		$instance = $this->newInstance();
+		$instance->getContainer()->registerObject( 'Bar', function( $builder ) {
+			return $builder->newObject( 'Bar' );
+		}, DependencyObject::SCOPE_PROTOTYPE );
+
+		$instance->newObject( 'Foo' );
+
+	}
+
+	/**
+	 * @test SimpleDependencyBuilder::newObject
+	 *
+	 * @since 1.9
+	 */
+	public function testDeferredPrototypeCircularReferenceDetectionOutOfBoundsException() {
+
+		$this->setExpectedException( 'OutOfBoundsException' );
+
+		$container = new FakeDependencyContainer();
+		$container->setObjects( array(
+
+			'Title' => function( $builder ) {
+				return $builder->newObject( 'Title' );  // self-reference
+			},
+
+			'FakeWikiPage' => function( $builder ) {
+				return new FakeWikiPage( $builder->newObject( 'Title' ) );
+			},
+
+			'Bar' => function( $builder ) {
+				return $builder->newObject( 'FakeWikiPage' );
+			},
+
+			'Foo' => function( $builder ) {
+				return $builder->newObject( 'Bar' );
+			},
+
+			'Quux' => function( $builder ) {
+				return $builder->newObject( 'Foo' );
+			}
+
+		) );
+
+		$instance = $this->newInstance( $container );
+		$instance->newObject( 'Quux' );
+
 	}
 
 	/**

@@ -115,6 +115,8 @@ DependencyFactory an interface that specifies a method to create a new object an
 
 SimpleDependencyBuilder implements the DependencyBuilder to enable access to objects and other invoked arguments.
 
+The builder will detect a ciruclar reference within an object definition that might occur when using a self-reference within its defintion.
+
 ```php
 $builder = new SimpleDependencyBuilder( new FooDependencyContainer() );
 

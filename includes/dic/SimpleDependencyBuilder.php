@@ -17,35 +17,11 @@ use OutOfBoundsException;
  */
 
 /**
- * Basic implementation of the DependencyBuilder interface to enable access to
- * DiObjects and invoked arguments
- *
- * For a more exhaustive description, see /di/README.md
+ * Implements a basic DependencyBuilder
  *
  * @par Example:
- * @code
- *  // Constructor injection
- *  $builder = new SimpleDependencyBuilder( new EmptyDependencyContainer() )
- *
- *  // Setter injection
- *  $builder->registerContainer( new GenericDependencyContainer() )
- *
- *  // Register multiple container
- *  $builder = new SimpleDependencyBuilder()
- *  $builder->registerContainer( new GenericDependencyContainer() )
- *  $builder->registerContainer( new AnotherDependencyContainer() )
- *
- *  // Register additional object definitions during runtime
- *  $builder->getContainer()->registerObject( 'Title', new Title() ) or
- *  $builder->getContainer()->registerObject( 'DIWikiPage', function ( DependencyBuilder $builder ) {
- *  	return DIWikiPage::newFromTitle( $builder->getArgument( 'Title' ) );
- *  } );
- *
- *  // Create an object
- *  $diWikiPage = $builder->newObject( 'DIWikiPage', array( $title ) ) or
- *  $diWikiPage = $builder->addArgument( 'Title', $title )->newObject( 'DIWikiPage' ) or
- *  $diWikiPage = $builder->DIWikiPage( array( 'Title', $title ) )
- * @endcode
+ * For a more exhaustive description and examples on how to "work with
+ * a DependencyBuilder/Container", see /dic/README.md
  *
  * @ingroup DependencyBuilder
  */
@@ -56,6 +32,26 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 
 	/** @var integer */
 	protected $objectScope = null;
+
+	/**
+	 * Iteration counter which indicates the level of iteration over resolving an
+	 * object graph for a single definition. It is expected that a certain level
+	 * of recursion is necessary to fully expand an object but it is in anticipation
+	 * that no definition will have a depth greater than $recursionDepth
+	 *
+	 * @var integer
+	 */
+	protected $recursionLevel = 0;
+
+	/**
+	 * Specifies a depth (or threshold) for a dependency graph. In case a build
+	 * will overstep this limit it is assumed that the builder is caught in an
+	 * infinite loop due to a self-reference (circular reference) within its
+	 * object definition
+	 *
+	 * @var integer
+	 */
+	protected $recursionDepth = 10;
 
 	/**
 	 * @note In case no DependencyContainer has been injected during construction
@@ -100,12 +96,6 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 
 	/**
 	 * Create a new object
-	 *
-	 * @par Example:
-	 * @code
-	 *  $builder->newObject( 'DIWikiPage', array( 'Title', $title ) ) or
-	 *  $builder->DIWikiPage( array( 'Title', $title ) )
-	 * @endcode
 	 *
 	 * @note When adding arguments it is preferable to use type hinting even
 	 * though auto type recognition is supported but using mock objects during
@@ -255,6 +245,10 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 
 		}
 
+		if ( $this->recursionLevel++ > $this->recursionDepth ) {
+			throw new OutOfBoundsException( "Possible circular reference for '{$objectName}' has been detected" );
+		}
+
 		list( $objectSignature, $objectScope ) = $this->dependencyContainer->get( $objectName );
 
 		if ( is_string( $objectSignature ) && class_exists( $objectSignature ) ) {
@@ -290,9 +284,12 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 			$objectSignature = $this->singelton( $objectName, $objectSignature );
 		}
 
-		$this->objectScope = null;
+		$instance = is_callable( $objectSignature ) ? $objectSignature( $this ) : $objectSignature;
 
-		return is_callable( $objectSignature ) ? $objectSignature( $this ) : $objectSignature;
+		$this->objectScope = null;
+		$this->recursionLevel--;
+
+		return $instance;
 	}
 
 	/**

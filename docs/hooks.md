@@ -46,7 +46,7 @@ $GLOBALS['wgHooks']['SMW::SQLStore::updatePropertyTableDefinitions'][] = functio
 ```
 
 ## List of available hooks
-Following hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
+Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
 
 * <code>\SMW\DIProperty</code>, smwInitProperties (SMW::DataItem::initProperties)
 * <code>\SMW\DataValueFactory</code>, smwInitDatatypes (SMW::DataValue::initDataTypes)
