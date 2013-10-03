@@ -224,11 +224,11 @@ class Factbox {
 		$this->tableFormatter = new TableFormatter();
 		$text = '';
 
-		// Hook deprecated with 1.9
+		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
 		wfRunHooks( 'smwShowFactbox', array( &$text, $semanticData ) );
 
 		// Hook since 1.9
-		if ( wfRunHooks( 'SMW::Display::FactboxContent', array( &$text, $semanticData ) ) ) {
+		if ( wfRunHooks( 'SMW::Factbox::showContent', array( $semanticData, &$text ) ) ) {
 
 			$this->getTableHeader( $semanticData->getSubject() );
 			$this->getTableContent( $semanticData );

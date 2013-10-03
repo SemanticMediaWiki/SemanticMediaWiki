@@ -58,7 +58,7 @@ class PropertyTableDefinitionBuilder {
 		$this->getSpecialProperties( $this->specialProperties );
 		$this->getFixedProperties( $this->fixedProperties );
 
-		wfRunHooks( 'SMW::SQLStore::PropertyTableDefinition', array( &$this->propertyTables ) );
+		wfRunHooks( 'SMW::SQLStore::updatePropertyTableDefinitions', array( &$this->propertyTables ) );
 
 		$this->getFixedPropertyTableIds( $this->propertyTables );
 
