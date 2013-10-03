@@ -33,13 +33,13 @@ if ( version_compare( $wgVersion, '1.19c', '<' ) ) {
 	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.19 or above; use SMW 1.8.x for MediaWiki 1.18.x or 1.17.x.' );
 }
 
+if ( !defined( 'Validator_VERSION' ) && is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+	include_once( __DIR__ . '/vendor/autoload.php' );
+}
+
 // Include the Validator extension if that hasn't been done yet, since it's required for SMW to work.
 if ( !defined( 'Validator_VERSION' ) ) {
 	@include_once( __DIR__ . '/../Validator/Validator.php' );
-}
-
-if ( !defined( 'Validator_VERSION' ) && is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
-	include_once( __DIR__ . '/vendor/autoload.php' );
 }
 
 // Only initialize the extension when all dependencies are present.
