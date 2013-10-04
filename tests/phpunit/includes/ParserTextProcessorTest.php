@@ -42,180 +42,6 @@ class ParserTextProcessorTest extends ParserTestCase {
 	}
 
 	/**
-	 * Provides text sample, following namespace, the settings to be used,
-	 * text string, and expected result array with {result text, property count,
-	 * property label, and property value}
-	 *
-	 * @return array
-	 */
-	public function getTextDataProvider() {
-		return array(
-
-			// #0 NS_MAIN; [[FooBar...]] with a different caption
-			array(
-				NS_MAIN,
-				array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgLinksInValues' => false,
-					'smwgInlineErrors' => true,
-				),
-				'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-				' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
-				' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
-				array(
-					'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-						' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
-						' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
-						' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
-					'propertyCount' => 3,
-					'propertyLabel' => array( 'Foo', 'Bar', 'FooBar' ),
-					'propertyValue' => array( 'Dictumst', 'Tincidunt semper', '9001' )
-				)
-			),
-
-			// #1 NS_MAIN; [[FooBar...]] with a different caption and smwgLinksInValues = true
-			array(
-				NS_MAIN,
-				array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgLinksInValues' => true,
-					'smwgInlineErrors' => true,
-				),
-				'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-				' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::[[tincidunt semper]]]] facilisi dolor Aenean. Ut' .
-				' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::[http:://www/foo/9001] ]] et Donec.',
-				array(
-					'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-						' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
-						' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
-						' Aliquam {{volutpat}} arcu ultrices eu Ut quis'.
-						' [[:Http:://www/foo/9001|http:://www/foo/9001]] et Donec.',
-					'propertyCount' => 3,
-					'propertyLabel' => array( 'Foo', 'Bar', 'FooBar' ),
-					'propertyValue' => array( 'Dictumst', 'Tincidunt semper', 'Http:://www/foo/9001' )
-				)
-			),
-
-			// #1 NS_MAIN, [[-FooBar...]] produces an error with inlineErrors = true
-			// (only check for an indication of an error in 'resultText' )
-			array(
-				NS_MAIN,
-				array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgLinksInValues' => false,
-					'smwgInlineErrors' => true,
-				),
-				'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-				' [[-FooBar::dictumst|重い]] cursus. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
-				' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
-				array(
-					'resultText'    => 'class="smw-highlighter" data-type="4" data-state="inline"',
-					'propertyCount' => 2,
-					'propertyLabel' => array( 'Foo', 'Bar' ),
-					'propertyValue' => array( 'Tincidunt semper', '9001' )
-				)
-			),
-
-			// #2 NS_MAIN, [[-FooBar...]] produces an error but inlineErrors = false
-			array(
-				NS_MAIN,
-				array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-					'smwgLinksInValues' => false,
-					'smwgInlineErrors' => false,
-				),
-				'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-				' [[-FooBar::dictumst|軽い]] cursus. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
-				' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
-				array(
-					'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-						' 軽い cursus. Nisl sit condimentum Quisque facilisis' .
-						' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
-						' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
-					'propertyCount' => 2,
-					'propertyLabel' => array( 'Foo', 'Bar' ),
-					'propertyValue' => array( 'Tincidunt semper', '9001' )
-				)
-			),
-
-			// #3 NS_HELP disabled
-			array(
-				NS_HELP,
-				array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_HELP => false ),
-					'smwgLinksInValues' => false,
-					'smwgInlineErrors' => true,
-				),
-				'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-				' [[FooBar::dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
-				' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
-				array(
-					'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-						' [[:Dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
-						' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
-						' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
-					'propertyCount' => 0,
-					'propertyLabel' => array(),
-					'propertyValue' => array()
-				)
-			),
-
-			// #4 NS_HELP enabled but no properties or links at all
-			array(
-				NS_HELP,
-				array(
-					'smwgNamespacesWithSemanticLinks' => array( NS_HELP => true ),
-					'smwgLinksInValues' => false,
-					'smwgInlineErrors' => true,
-				),
-				'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-				' Suspendisse tincidunt semper facilisi dolor Aenean.',
-				array(
-					'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
-						' Suspendisse tincidunt semper facilisi dolor Aenean.',
-					'propertyCount' => 0,
-					'propertyLabel' => array(),
-					'propertyValue' => array()
-				)
-			),
-		);
-	}
-
-	/**
-	 * Provides magic words sample text
-	 *
-	 * @return array
-	 */
-	public function getMagicWordDataProvider() {
-		return array(
-			// #0 __NOFACTBOX__
-			array(
-				NS_MAIN,
-				'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
-				' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
-				' __NOFACTBOX__ ',
-				array( 'SMW_NOFACTBOX' )
-			),
-
-			// #1 __SHOWFACTBOX__
-			array(
-				NS_HELP,
-				'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
-				' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
-				' __SHOWFACTBOX__',
-				array( 'SMW_SHOWFACTBOX' )
-			),
-		);
-	}
-
-	/**
 	 * Helper method that returns a ParserTextProcessor object
 	 *
 	 * @param $title
@@ -224,7 +50,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 	 *
 	 * @return ParserTextProcessor
 	 */
-	private function getInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
+	private function newInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
 		return new ParserTextProcessor(
 			$this->newParserData( $title, $parserOutput ),
 			$this->newSettings( $settings )
@@ -233,20 +59,20 @@ class ParserTextProcessorTest extends ParserTestCase {
 
 	/**
 	 * @test ParserTextProcessor::__construct
-	 * @dataProvider getTextDataProvider
+	 * @dataProvider textDataProvider
 	 *
 	 * @since 1.9
 	 *
 	 * @param $namespace
 	 */
 	public function testConstructor( $namespace ) {
-		$instance = $this->getInstance( $this->newTitle( $namespace ), $this->newParserOutput() );
+		$instance = $this->newInstance( $this->newTitle( $namespace ), $this->newParserOutput() );
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
 	 * @test ParserTextProcessor::stripMagicWords
-	 * @dataProvider getMagicWordDataProvider
+	 * @dataProvider magicWordDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -258,7 +84,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 
 		$parserOutput = $this->newParserOutput();
 		$title        = $this->newTitle( $namespace );
-		$instance     = $this->getInstance( $title, $parserOutput );
+		$instance     = $this->newInstance( $title, $parserOutput );
 
 		// Make protected method accessible
 		$reflector = $this->newReflector();
@@ -283,7 +109,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 
 	/**
 	 * @test ParserTextProcessor::parse
-	 * @dataProvider getTextDataProvider
+	 * @dataProvider textDataProvider
 	 *
 	 * @since 1.9
 	 *
@@ -296,7 +122,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 
 		$parserOutput = $this->newParserOutput();
 		$title        = $this->newTitle( $namespace );
-		$instance     = $this->getInstance( $title, $parserOutput, $settings );
+		$instance     = $this->newInstance( $title, $parserOutput, $settings );
 
 		// Text parsing
 		$instance->parse( $text );
@@ -356,7 +182,7 @@ class ParserTextProcessorTest extends ParserTestCase {
 
 		$parserOutput = $this->newParserOutput();
 		$title        = $this->newTitle();
-		$instance     = $this->getInstance( $title, $parserOutput );
+		$instance     = $this->newInstance( $title, $parserOutput );
 
 		// Make protected methods accessible
 		$reflection = $this->newReflector();
@@ -375,6 +201,200 @@ class ParserTextProcessorTest extends ParserTestCase {
 
 		$result = $method->invoke( $instance, array( 'Test::lula', 'SMW' , 'off' ) );
 		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * Provides text sample, following namespace, the settings to be used,
+	 * text string, and expected result array with {result text, property count,
+	 * property label, and property value}
+	 *
+	 * @return array
+	 */
+	public function textDataProvider() {
+
+		$provider = array();
+
+		// #0 NS_MAIN; [[FooBar...]] with a different caption
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors' => true,
+			),
+			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+			' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
+			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
+			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
+			array(
+				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+					' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
+					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
+					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
+				'propertyCount' => 3,
+				'propertyLabel' => array( 'Foo', 'Bar', 'FooBar' ),
+				'propertyValue' => array( 'Dictumst', 'Tincidunt semper', '9001' )
+			)
+		);
+
+		// #1 NS_MAIN; [[FooBar...]] with a different caption and smwgLinksInValues = true
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => true,
+				'smwgInlineErrors' => true,
+			),
+			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+			' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
+			' Suspendisse [[Bar::[[tincidunt semper]]]] facilisi dolor Aenean. Ut' .
+			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::[http:://www/foo/9001] ]] et Donec.',
+			array(
+				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+					' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
+					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
+					' Aliquam {{volutpat}} arcu ultrices eu Ut quis'.
+					' [[:Http:://www/foo/9001|http:://www/foo/9001]] et Donec.',
+				'propertyCount' => 3,
+				'propertyLabel' => array( 'Foo', 'Bar', 'FooBar' ),
+				'propertyValue' => array( 'Dictumst', 'Tincidunt semper', 'Http:://www/foo/9001' )
+			)
+		);
+
+		// #2 NS_MAIN, [[-FooBar...]] produces an error with inlineErrors = true
+		// (only check for an indication of an error in 'resultText' )
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors' => true,
+			),
+			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+			' [[-FooBar::dictumst|重い]] cursus. Nisl sit condimentum Quisque facilisis' .
+			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
+			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
+			array(
+				'resultText'    => 'class="smw-highlighter" data-type="4" data-state="inline"',
+				'propertyCount' => 2,
+				'propertyLabel' => array( 'Foo', 'Bar' ),
+				'propertyValue' => array( 'Tincidunt semper', '9001' )
+			)
+		);
+
+		// #3 NS_MAIN, [[-FooBar...]] produces an error but inlineErrors = false
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors' => false,
+			),
+			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+			' [[-FooBar::dictumst|軽い]] cursus. Nisl sit condimentum Quisque facilisis' .
+			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
+			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
+			array(
+				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+					' 軽い cursus. Nisl sit condimentum Quisque facilisis' .
+					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
+					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
+				'propertyCount' => 2,
+				'propertyLabel' => array( 'Foo', 'Bar' ),
+				'propertyValue' => array( 'Tincidunt semper', '9001' )
+			)
+		);
+
+		// #4 NS_HELP disabled
+		$provider[] = array(
+			NS_HELP,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_HELP => false ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors' => true,
+			),
+			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+			' [[FooBar::dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
+			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
+			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
+			array(
+				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+					' [[:Dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
+					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
+					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
+				'propertyCount' => 0,
+				'propertyLabel' => array(),
+				'propertyValue' => array()
+			)
+		);
+
+		// #5 NS_HELP enabled but no properties or links at all
+		$provider[] = array(
+			NS_HELP,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_HELP => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors' => true,
+			),
+			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+			' Suspendisse tincidunt semper facilisi dolor Aenean.',
+			array(
+				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
+					' Suspendisse tincidunt semper facilisi dolor Aenean.',
+				'propertyCount' => 0,
+				'propertyLabel' => array(),
+				'propertyValue' => array()
+			)
+		);
+
+		// #6 Bug 54967
+		// see also ParserTextProcessorTemplateTransclusionTest
+		$provider[] = array(
+			NS_MAIN,
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgLinksInValues' => false,
+				'smwgInlineErrors'  => true,
+			),
+			'[[Foo::?bar]], [[Foo::Baz?]], [[Quxey::B?am]]',
+			array(
+				'resultText'    => '[[:?bar|?bar]], [[:Baz?|Baz?]], [[:B?am|B?am]]',
+				'propertyCount' => 2,
+				'propertyLabel' => array( 'Foo', 'Quxey' ),
+				'propertyValue' => array( '?bar', 'Baz?', 'B?am' )
+			)
+		);
+
+		return $provider;
+	}
+
+	/**
+	 * Provides magic words sample text
+	 *
+	 * @return array
+	 */
+	public function magicWordDataProvider() {
+		return array(
+			// #0 __NOFACTBOX__
+			array(
+				NS_MAIN,
+				'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
+				' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
+				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
+				' __NOFACTBOX__ ',
+				array( 'SMW_NOFACTBOX' )
+			),
+
+			// #1 __SHOWFACTBOX__
+			array(
+				NS_HELP,
+				'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
+				' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
+				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
+				' __SHOWFACTBOX__',
+				array( 'SMW_SHOWFACTBOX' )
+			),
+		);
 	}
 
 }
