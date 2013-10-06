@@ -6,6 +6,7 @@
  * @ingroup Extensions
  * @ingroup SMWLanguage
  */
+// @codingStandardsIgnoreFile
 
 $specialPageAliases = array();
 
@@ -537,6 +538,7 @@ $specialPageAliases['nl'] = array(
 	'ExportRDF' => array( 'RDFExporteren' ),
 	'PageProperty' => array( 'Paginaeigenschap' ),
 	'Properties' => array( 'Eigenschappen' ),
+	'Concepts' => array( 'Concepten' ),
 	'SMWAdmin' => array( 'SMWBeheer' ),
 	'SearchByProperty' => array( 'OpEigenschapZoeken' ),
 	'SemanticStatistics' => array( 'SemantischeStatistieken' ),

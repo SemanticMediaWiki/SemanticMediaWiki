@@ -3209,6 +3209,7 @@ Odhadovaný průběh updatu:',
 	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.', # Fuzzy
 	'smw_concept_header' => 'Stran konceptu "$1"',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|zobrazena je|zobrazeny jsou|zobrazeno je}} $1 {{PLURAL:$1|stránka náležející|stránky náležející|stránek náležejících}} tomuto konceptu.', # Fuzzy
+	'group-smwadministrator-member' => '{{GENDER:$1|správce|správkyně|správce}} (SMW)',
 );
 
 /** Church Slavic (словѣ́ньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ)
