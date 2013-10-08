@@ -52,7 +52,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	private function newInstance( $count = 1, $cacheEnabled = false, $hash = 'foo' ) {
 
 		// $store = $this->newMockObject( array( 'getPropertyTables' => array( 'smw_test' ) ) )->getMockStore();
-		$store = StoreFactory::getStore();
+		$store = StoreFactory::getStore( 'SMWSQLStore3' );
 
 		$result = array(
 			'count'  => $count,

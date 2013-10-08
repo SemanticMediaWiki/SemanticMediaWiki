@@ -45,7 +45,9 @@ class ApiInfoTest extends ApiTestCase {
 	 * @param array $queryParameters
 	 * @param array $expectedType
 	 */
-	public function testExecuteOnStore( $queryParameters, $expectedType ) {
+	public function testExecuteOnSQLStore( $queryParameters, $expectedType ) {
+
+		$this->runOnlyOnSQLStore();
 
 		$result = $this->doApiRequest( array(
 				'action' => 'smwinfo',

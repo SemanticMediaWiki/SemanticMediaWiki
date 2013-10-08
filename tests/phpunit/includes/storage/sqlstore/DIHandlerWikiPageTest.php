@@ -47,7 +47,7 @@ class DIHandlerWikiPageTest extends SemanticMediaWikiTestCase {
 	 * @return SMWDIHandlerWikiPage
 	 */
 	private function getInstance() {
-		return new SMWDIHandlerWikiPage( StoreFactory::getStore() );
+		return new SMWDIHandlerWikiPage( StoreFactory::getStore( 'SMWSQLStore3' ) );
 	}
 
 	/**

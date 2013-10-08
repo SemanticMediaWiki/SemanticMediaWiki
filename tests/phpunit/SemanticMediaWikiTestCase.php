@@ -251,6 +251,19 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Helper method to skip the test if it is not a SQLStore
+	 *
+	 * @since 1.9
+	 */
+	protected function runOnlyOnSQLStore() {
+
+		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
+			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
+		}
+
+	}
+
+	/**
 	 * Utility method taking an array of elements and wrapping
 	 * each element in it's own array. Useful for data providers
 	 * that only return a single argument.

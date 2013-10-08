@@ -83,7 +83,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 */
 	private function newInstance( $property = 'Foo', $count = 1, $cacheEnabled = false ) {
 
-		$store = StoreFactory::getStore();
+		$store = StoreFactory::getStore( 'SMWSQLStore3' );
 		$connection = $this->getMockDBConnection( $property, $count );
 
 		$settings = $this->newSettings( array(

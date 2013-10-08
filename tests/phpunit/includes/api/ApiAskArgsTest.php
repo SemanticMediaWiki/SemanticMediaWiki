@@ -50,13 +50,15 @@ class ApiAskArgsTest extends ApiTestCase {
 	 * @param array $query
 	 * @param array $expected
 	 */
-	public function testExecuteOnDefaultStore( array $query, array $expected ) {
+	public function testExecuteOnSQLStore( array $query, array $expected ) {
+
+		$this->runOnlyOnSQLStore();
 
 		$results = $this->doApiRequest( array(
 			'action'     => 'askargs',
 			'conditions' => $query['conditions'],
 			'printouts'  => $query['printouts'],
-			'parameters' => $query['parameters']
+			'parameters' => $query['parameters'],
 		) );
 
 		$this->assertInternalType( 'array', $results );

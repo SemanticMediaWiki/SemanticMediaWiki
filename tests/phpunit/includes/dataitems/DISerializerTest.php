@@ -90,6 +90,9 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 	 * @return SMWQueryResult
 	 */
 	private function getQueryResult( $queryString ) {
+
+		$this->runOnlyOnSQLStore();
+
 		list( $query, $formattedParams ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$queryString,
 			SMW_OUTPUT_WIKI,
