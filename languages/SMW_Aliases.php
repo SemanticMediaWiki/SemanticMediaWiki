@@ -245,6 +245,7 @@ $specialPageAliases['gl'] = array(
 	'ExportRDF' => array( 'Exportar_RDF' ),
 	'PageProperty' => array( 'Propiedades_da_páxina' ),
 	'Properties' => array( 'Propiedades' ),
+	'Concepts' => array( 'Conceptos' ),
 	'SearchByProperty' => array( 'Procurar_por_propiedades' ),
 	'SemanticStatistics' => array( 'Estatísticas_semánticas' ),
 	'Types' => array( 'Tipos' ),
