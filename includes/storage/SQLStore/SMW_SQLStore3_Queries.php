@@ -43,6 +43,9 @@ class SMWSQLStore3Query {
 	/// of given properties (only joinfield relevant: (disjunctive) array
 	/// of unquoted values).
 	const Q_PROP_HIERARCHY = 6;
+	/// Type of query that is a negation of other query
+	/// (joinfield/jointable empty; only components relevant).
+	const Q_NEGATION = 7;
 
 	public $type = SMWSQLStore3Query::Q_TABLE;
 	public $jointable = '';
@@ -516,6 +519,18 @@ class SMWSQLStore3QueryEngine {
 			if ( count( $query->components ) == 0 ) {
 				$query->type = SMWSQLStore3Query::Q_NOQUERY;
 			}
+		} elseif ( $description instanceof SMWNegation ) {
+			$query->type = SMWSQLStore3Query::Q_NEGATION;
+
+			$sub = $this->compileQueries( $description->getDescription() );
+			if ( $sub >= 0 ) {
+				$query->components[$sub] = true;
+			}
+
+			// All subconditions failed, drop this as well.
+			if ( count( $query->components ) == 0 ) {
+				$query->type = SMWSQLStore3Query::Q_NOQUERY;
+			}
 		} elseif ( $description instanceof SMWClassDescription ) {
 			$cqid = SMWSQLStore3Query::$qnum;
 			$cquery = new SMWSQLStore3Query();
@@ -863,7 +878,8 @@ throw new MWException("Debug -- this code might be dead.");
 					$this->executeQueries( $subquery );
 
 					if ( $subquery->jointable !== '' ) { // Join with jointable.joinfield
-						$query->from .= ' INNER JOIN ' . $this->m_dbs->tableName( $subquery->jointable ) . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
+						$joinType = isset($subquery->jointype) ? $subquery->jointype : 'INNER';
+						$query->from .= " $joinType JOIN " . $this->m_dbs->tableName( $subquery->jointable ) . " AS $subquery->alias ON " . $subquery->joinfield . "=$joinfield";
 					} elseif ( $subquery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 						$condition = '';
 
@@ -946,10 +962,22 @@ throw new MWException("Debug -- this code might be dead.");
 					$sql = '';
 
 					if ( $subquery->jointable !== '' ) {
-						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
-						       $this->m_dbs->tableName( $query->alias ) .
-							   " SELECT $subquery->joinfield FROM " . $this->m_dbs->tableName( $subquery->jointable ) .
-							   " AS $subquery->alias $subquery->from" . ( $subquery->where ? " WHERE $subquery->where":'' );
+						if ( isset( $subquery->jointype ) && $subquery->type == SMWSQLStore3Query::Q_NEGATION) {
+							// SMWNegation
+							reset($subquery->components);
+							list( $key, $tmp ) = each( $subquery->components );
+							$sub = $this->m_queries[$key];
+							$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
+								   $this->m_dbs->tableName( $query->alias ) .
+								   " SELECT $sub->joinfield FROM " . $this->m_dbs->tableName( $sub->jointable ) .
+								   " AS $sub->alias  $subquery->jointype JOIN " . $this->m_dbs->tableName( $subquery->jointable ) .
+								   " AS $subquery->alias ON " . $subquery->joinfield . "=" . $sub->joinfield . ( $subquery->where ? " WHERE $subquery->where":'' );
+						} else {
+							$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
+								   $this->m_dbs->tableName( $query->alias ) .
+								   " SELECT $subquery->joinfield FROM " . $this->m_dbs->tableName( $subquery->jointable ) .
+								   " AS $subquery->alias $subquery->from" . ( $subquery->where ? " WHERE $subquery->where":'' );
+						}
 					} elseif ( $subquery->joinfield !== '' ) {
 						// NOTE: this works only for single "unconditional" values without further
 						// WHERE or FROM. The execution must take care of not creating any others.
@@ -974,6 +1002,47 @@ throw new MWException("Debug -- this code might be dead.");
 				$query->joinfield = "$query->alias.id";
 				$query->sortfields = array(); // Make sure we got no sortfields.
 				// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
+			break;
+			case SMWSQLStore3Query::Q_NEGATION:
+				// pick one subquery with jointable as anchor point ...
+				reset( $query->components );
+				list ( $key, $tmp ) = each( $query->components );
+
+				if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
+					$this->m_dbs->query( $this->getCreateTempIDTableSQL( $this->m_dbs->tableName( $query->alias ) ), 'SMW::executeQueries' );
+				}
+				$result = $this->m_queries[$key];
+				$this->executeQueries( $result );
+
+				if ( $result->jointable !== '' ) {
+					$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
+						   $this->m_dbs->tableName( $query->alias ) .
+						   " SELECT $result->joinfield FROM " . $this->m_dbs->tableName( $result->jointable ) .
+						   " AS $result->alias $result->from" . ( $result->where ? " WHERE $result->where":'' )
+					;
+				} elseif ( $result->joinfield !== '' ) {
+					// NOTE: this works only for single "unconditional" values without further
+					// WHERE or FROM. The execution must take care of not creating any others.
+					$values = '';
+
+					foreach ( $result->joinfield as $value ) {
+						$values .= ( $values ? ',' : '' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
+					}
+
+					$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) .  'INTO ' . $this->m_dbs->tableName( $query->alias ) . " (id) VALUES $values";
+				}
+				if ($sql) {
+					$this->m_querylog[$query->alias][] = $sql;
+
+					if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
+						$this->m_dbs->query( $sql , 'SMW::executeQueries' );
+					}
+				}
+				$query->jointype = 'LEFT';
+				$query->jointable = $query->alias;
+				$query->joinfield = "$query->alias.id";
+				$query->where = "$query->alias.id IS NULL";
+				$query->sortfields = array(); // Make sure we got no sortfields.
 			break;
 			case SMWSQLStore3Query::Q_PROP_HIERARCHY:
 			case SMWSQLStore3Query::Q_CLASS_HIERARCHY: // make a saturated hierarchy

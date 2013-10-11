@@ -277,7 +277,8 @@ $GLOBALS['smwgQMaxDepth'] = 4; // Maximal property depth of queries, e.g. [[rel:
 // anything but disjunctions:  $GLOBALS['smwgQFeatures'] = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
 // The default is to support all basic features.
 $GLOBALS['smwgQFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
-                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
+                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY |
+                 SMW_NEGATION_QUERY;
 
 ### Settings about printout of (especially inline) queries:
 $GLOBALS['smwgQDefaultLimit'] = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
