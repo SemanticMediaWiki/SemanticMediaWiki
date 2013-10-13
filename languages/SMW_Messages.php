@@ -2935,7 +2935,10 @@ Progrés estimat de l'actualització actual:",
  */
 $messages['ce'] = array(
 	'smw_viewasrdf' => 'RDF хьост',
+	'smw_printername_list' => 'МогӀа',
+	'smw_printername_ul' => 'МогӀа',
 	'smw_printername_template' => 'Кеп',
+	'smw_iq_moreresults' => '… тӀехьа догӀург',
 	'smw_nodatetime' => 'Дозушдоцу терахь «$1».',
 	'smw_purge' => 'Карлаяккха',
 	'smw_ask_submit' => 'Лаха',
@@ -14997,6 +15000,7 @@ $messages['zh-cn'] = array(
  * @author Li3939108
  * @author Liangent
  * @author Linforest
+ * @author Liuxinyu970226
  * @author Onecountry
  * @author PhiLiP
  * @author Richarddong
@@ -15161,6 +15165,7 @@ $messages['zh-hans'] = array(
 	'smw_ask_show_embed' => '显示嵌入代码',
 	'smw_ask_hide_embed' => '隐藏嵌入的代码',
 	'smw_ask_embed_instr' => '使用以下代码将查询嵌入维基页面。',
+	'smw-ask-delete' => '[删除]',
 	'searchbyproperty' => '按属性查询',
 	'smw_sbv_docu' => '搜索所有已设定属性和值的页面。',
 	'smw_sbv_novalue' => '为此属性输入一个有效值，或者显示所有"$1"的属性值。',
@@ -15243,14 +15248,20 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-category-userparam' => '传递给模板的参数',
 	'smw-info-par-message' => '显示的信息。',
 	'smw-info-par-icon' => '显示的图标，“信息”或“警告”。',
+	'prefs-smw' => '赛门铁克MediaWiki',
+	'prefs-ask-options' => '赛门铁克搜索选项',
 	'smw-ui-tooltip-title-property' => '属性',
 	'smw-ui-tooltip-title-info' => '信息',
 	'smw-ui-tooltip-title-warning' => '错误',
 	'smw-ui-tooltip-title-parameter' => '参数',
+	'smw-ui-tooltip-title-event' => '活动',
 	'smw-ui-tooltip-title-note' => '注释',
+	'smw-ui-tooltip-title-legend' => '图例',
 	'smw_unknowntype' => '定义的属性类型"$1"不被支持。', # Fuzzy
 	'smw_concept_header' => '概念"$1"的页面',
 	'smw_conceptarticlecount' => '显示属于此概念的$1 {{PLURAL:$1|page|页面}}。', # Fuzzy
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW管理员',
+	'smw-sp-properties-header-label' => '属性列表',
 );
 
 /** Traditional Chinese (中文（繁體）‎)
