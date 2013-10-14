@@ -2,6 +2,11 @@
 
 namespace SMW;
 
+use SMW\Serializers\Serializer;
+use SMW\Deserializers\Deserializer;
+use SMW\Serializers\SemanticDataSerializer;
+use SMW\Deserializers\SemanticDataDeserializer;
+
 use OutOfBoundsException;
 
 /**
@@ -40,7 +45,7 @@ class SerializerFactory {
 			$serializer = new SemanticDataSerializer;
 		}
 
-		if ( !( $serializer instanceof SerializerInterface ) ) {
+		if ( !( $serializer instanceof Serializer ) ) {
 			throw new OutOfBoundsException( 'For the object no serializer has been registered' );
 		}
 
@@ -59,19 +64,27 @@ class SerializerFactory {
 	 *
 	 * @return mixed
 	 */
-	public static function unserialize( array $object ) {
+	public static function deserialize( array $object ) {
 
-		$serializer = null;
+		$deserializer = null;
 
-		if ( isset( $object['serializer'] ) && $object['serializer'] !== '' ) {
-			$serializer = new $object['serializer'];
+		if ( isset( $object['serializer'] ) ) {
+
+			switch ( $object['serializer'] ) {
+				case 'SMW\Serializers\SemanticDataSerializer':
+					$deserializer = new SemanticDataDeserializer;
+					break;
+				default:
+					$deserializer = null;
+			}
+
 		}
 
-		if ( !( $serializer instanceof SerializerInterface ) ) {
-			throw new OutOfBoundsException( 'The array has no unserializer reference point' );
+		if ( !( $deserializer instanceof Deserializer ) ) {
+			throw new OutOfBoundsException( 'For the object no deserializer has been registered' );
 		}
 
-		return $serializer->unserialize( $object );
+		return $deserializer->deserialize( $object );
 	}
 
 }

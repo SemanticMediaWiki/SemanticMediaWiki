@@ -2,15 +2,14 @@
 
 namespace SMW\Test;
 
-use SMW\SemanticDataSerializer;
+use SMW\Serializers\SemanticDataSerializer;
+
 use SMW\DataValueFactory;
 use SMw\SemanticData;
 use SMW\DIWikiPage;
 use SMW\Subobject;
 
 /**
- * Tests for the SemanticDataSerializer class
- *
  * @file
  *
  * @license GNU GPL v2+
@@ -20,7 +19,7 @@ use SMW\Subobject;
  */
 
 /**
- * @covers \SMW\SemanticDataSerializer
+ * @covers \SMW\Serializers\SemanticDataSerializer
  *
  * @ingroup Test
  *
@@ -35,19 +34,15 @@ class SemanticDataSerializerTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\SemanticDataSerializer';
+		return 'SMW\Serializers\SemanticDataSerializer';
 	}
 
 	/**
 	 * Helper method that returns a SemanticDataSerializer object
 	 *
 	 * @since 1.9
-	 *
-	 * @param $data
-	 *
-	 * @return SemanticDataSerializer
 	 */
-	private function newInstance() {
+	private function newSerializerInstance() {
 		return new SemanticDataSerializer();
 	}
 
@@ -55,54 +50,18 @@ class SemanticDataSerializerTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newSerializerInstance() );
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function testSerializeOutOfBoundsException() {
+	public function testSerializerOutOfBoundsException() {
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 
-		$instance = $this->newInstance();
+		$instance = $this->newSerializerInstance();
 		$instance->serialize( 'Foo' );
-
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testUnserializeInvalidVersionOutOfBoundsException() {
-
-		$this->setExpectedException( 'OutOfBoundsException' );
-
-		$instance = $this->newInstance();
-		$instance->unserialize( array( 'version' => 'Foo' ) );
-
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testUnserializeInvalidSubjectDataItemException() {
-
-		$this->setExpectedException( '\SMW\DataItemException' );
-
-		$instance = $this->newInstance();
-		$instance->unserialize( array( 'subject' => '--#Foo' ) );
-
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testUnserializeMissingSubjectOutOfBoundsException() {
-
-		$this->setExpectedException( 'OutOfBoundsException' );
-
-		$instance = $this->newInstance();
-		$instance->unserialize( array() );
 
 	}
 
@@ -111,54 +70,14 @@ class SemanticDataSerializerTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testSerializerUnserializerRountrip( $data ) {
+	public function testSerializerDeserializerRountrip( $data ) {
 
-		$instance   = $this->newInstance();
-		$serialized = $instance->serialize( $data );
+		$serialized = $this->newSerializerInstance()->serialize( $data );
 
-		$this->assertEquals(
+		$this->assertInternalType(
+			'array',
 			$serialized,
-			$instance->serialize( $instance->unserialize( $serialized ) ),
-			'Asserts that the intial serialized container is equal to a container after a roundtrip'
-		);
-
-
-		$this->assertEquals(
-			$data->getHash(),
-			$instance->unserialize( $serialized )->getHash(),
-			'Asserts that the hash of the orginal SemanticData container equals that of the serialized-un-serialized container'
-		);
-	}
-
-	/**
-	 * @dataProvider typeChangeSemanticDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testForcedTypeErrorDuringRountrip( $data, $type ) {
-
-		$instance   = $this->newInstance();
-		$serialized = $instance->serialize( $data );
-
-		// Injects a different type to cause an error (this would normally
-		// happen when a property definition is changed such as page -> text
-		// etc.)
-		$reflector = $this->newReflector();
-		$property  = $reflector->getProperty( 'dataItemTypeIdCache' );
-		$property->setAccessible( true );
-		$property->setValue( $instance, array( $type => 2 ) );
-
-		$unserialized = $instance->unserialize( $serialized );
-
-		$this->assertInstanceOf(
-			'SMW\SemanticData',
-			$unserialized,
-			'Asserts the instance'
-		);
-
-		$this->assertNotEmpty(
-			$unserialized->getErrors(),
-			'Asserts that getErrors() returns not empty'
+			'Asserts that serialize() returns an array'
 		);
 
 	}
@@ -208,41 +127,6 @@ class SemanticDataSerializerTest extends SemanticMediaWikiTestCase {
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 
 		$provider[] = array( $foo );
-
-		return $provider;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function typeChangeSemanticDataProvider() {
-
-		$provider = array();
-		$title = $this->newTitle( NS_MAIN, 'Foo' );
-
-		// #0 Single entry
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
-
-		$provider[] = array( $foo, 'Has_fooQuex' );
-
-		// #1 Single subobject entry
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-
-		$subobject = new Subobject( $title );
-		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has fomQuex', 'Bam' ) );
-
-		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
-
-		$provider[] = array( $foo, 'Has_fomQuex' );
-
-		// #2 Combined
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
-		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
-
-		$provider[] = array( $foo, 'Has_fomQuex' );
 
 		return $provider;
 	}

@@ -98,9 +98,11 @@ return array(
 	'SMW\StoreAccess'               => 'includes/StoreAccess.php',
 
 	// Serializer
-	'SMW\SerializerFactory'            => 'includes/serializer/SerializerFactory.php',
-	'SMW\SerializerInterface'          => 'includes/serializer/SerializerInterface.php',
-	'SMW\SemanticDataSerializer'       => 'includes/serializer/SemanticDataSerializer.php',
+	'SMW\SerializerFactory'                       => 'includes/serializer/SerializerFactory.php',
+	'SMW\Serializers\Serializer'                  => 'includes/serializer/Serializer.php',
+	'SMW\Deserializers\Deserializer'              => 'includes/serializer/Deserializer.php',
+	'SMW\Serializers\SemanticDataSerializer'      => 'includes/serializer/Serializers/SemanticDataSerializer.php',
+	'SMW\Deserializers\SemanticDataDeserializer'  => 'includes/serializer/Deserializers/SemanticDataDeserializer.php',
 
 	// Cache
 	'SMW\CacheHandler'                => 'includes/cache/CacheHandler.php',

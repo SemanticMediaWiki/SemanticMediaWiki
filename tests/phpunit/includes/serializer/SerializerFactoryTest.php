@@ -48,13 +48,14 @@ class SerializerFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @dataProvider exceptionDataProvider
 	 * @since 1.9
 	 */
-	public function testUnregisteredUnserializeObjectOutOfBoundsException() {
+	public function testUnregisteredDeserializerObjectOutOfBoundsException( $setup ) {
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 
-		SerializerFactory::unserialize( array() );
+		SerializerFactory::deserialize( $setup );
 
 	}
 
@@ -76,20 +77,36 @@ class SerializerFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @dataProvider unserializerDataProvider
+	 * @dataProvider deserializerDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testRegisteredUnserializerFactory( $object, $instance ) {
+	public function testRegisteredDeserializerFactory( $object, $instance ) {
 
-		$unserialized = SerializerFactory::unserialize( $object );
+		$unserialized = SerializerFactory::deserialize( $object );
 
 		$this->assertInstanceOf(
 			$instance,
 			$unserialized,
-			"Asserts that unserialize() returns a {$instance} instance"
+			"Asserts that deserialize() returns a {$instance} instance"
 		);
 
+	}
+
+	/**
+	 * @return array
+	 */
+	public function exceptionDataProvider() {
+
+		$provider = array();
+
+		// #0
+		$provider[] = array( array() );
+
+		// #1
+		$provider[] = array( array( 'serializer' => 'Foo' ) );
+
+		return $provider;
 	}
 
 	/**
@@ -110,12 +127,12 @@ class SerializerFactoryTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @return array
 	 */
-	public function unserializerDataProvider() {
+	public function deserializerDataProvider() {
 
 		$provider = array();
 
 		// #0 SemanticData
-		$provider[] = array( array( 'serializer' => '\SMW\SemanticDataSerializer', 'subject' => 'Foo#0#' ), '\SMW\SemanticData' );
+		$provider[] = array( array( 'serializer' => 'SMW\Serializers\SemanticDataSerializer', 'subject' => 'Foo#0#' ), '\SMW\SemanticData' );
 
 		return $provider;
 	}

@@ -1,6 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Deserializers;
+
+use SMW\SemanticData;
+use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 use SMWContainerSemanticData;
 use SMWDIContainer as DIContainer;
@@ -10,7 +15,7 @@ use SMWErrorValue as ErrorValue;
 use OutOfBoundsException;
 
 /**
- * SemanticData serializer / unserializer
+ * SemanticData deserializer
  *
  * @file
  *
@@ -21,21 +26,11 @@ use OutOfBoundsException;
  */
 
 /**
- * SemanticData serializer / unserializer
+ * SemanticData deserializer
  *
  * @ingroup SMW
  */
-class SemanticDataSerializer implements SerializerInterface {
-
-	/**
-	 * The version number is an indicator among serialized data to track structural
-	 * integrity which means that any change in its output format is to be accompanied
-	 * by a version number change
-	 *
-	 * The unserializer will raise an exception if the version of the incoming
-	 * data does not match with the version number found in this class.
-	 */
-	const VERSION = 0.1;
+class SemanticDataDeserializer implements Deserializer {
 
 	/**
 	 * Cache for already processed Id's which is to minimize lock-up performance
@@ -46,35 +41,18 @@ class SemanticDataSerializer implements SerializerInterface {
 	protected $dataItemTypeIdCache = array();
 
 	/**
-	 * Initiates serialization of a SemanticData object
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 * @throws OutOfBoundsException
-	 */
-	public function serialize( $semanticData ) {
-
-		if ( !( $semanticData instanceOf SemanticData ) ) {
-			throw new OutOfBoundsException( 'Object was not identified as a SemanticData instance' );
-		}
-
-		return $this->serializeSemanticData( $semanticData ) + array( 'serializer' => __CLASS__, 'version' => self::VERSION );
-	}
-
-	/**
-	 * Initiates unserialization of an object
+	 * @see Deserializers::deserialize
 	 *
 	 * @since 1.9
 	 *
 	 * @return SemanticData
 	 * @throws OutOfBoundsException
 	 */
-	public function unserialize( array $data ) {
+	public function deserialize( $data ) {
 
 		$semanticData = null;
 
-		if ( isset( $data['version'] ) && $data['version'] !== self::VERSION ) {
+		if ( isset( $data['version'] ) && $data['version'] !== 0.1 ) {
 			throw new OutOfBoundsException( 'Serializer/Unserializer version do not match, please update your data' );
 		}
 
@@ -82,7 +60,7 @@ class SemanticDataSerializer implements SerializerInterface {
 			$semanticData = new SemanticData( DIWikiPage::doUnserialize( $data['subject'] ) );
 		}
 
-		if ( !( $semanticData instanceOf SemanticData ) ) {
+		if ( !( $this->isDeserializerFor( $semanticData ) ) ) {
 			throw new OutOfBoundsException( 'SemanticData could not be created probably due to a missing subject' );
 		}
 
@@ -92,78 +70,14 @@ class SemanticDataSerializer implements SerializerInterface {
 	}
 
 	/**
-	 * Returns serialized SemanticData
+	 * @see Deserializers::isDeserializerFor
 	 *
-	 * @return array
+	 * @since 1.9
+	 *
+	 * @return boolean
 	 */
-	protected function serializeSemanticData( SemanticData $semanticData ) {
-
-		$output = array();
-
-		$output['subject'] = $semanticData->getSubject()->getSerialization();
-
-		/**
-		 * Build property and dataItem serialization record
-		 */
-		foreach ( $semanticData->getProperties() as $key => $property ) {
-
-			$prop = array();
-
-			$prop['property'] = $property->getSerialization();
-
-			foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
-				$prop['dataitem'][] = $this->serializeDataItem( $dataItem );
-			}
-
-			$output['data'][] = $prop;
-
-		}
-
-		$this->serializeSubobject( $semanticData->getSubSemanticData(), $output );
-
-		return $output;
-	}
-
-	/**
-	 * Returns DataItem serialization
-	 *
-	 * @note 'type' is added to ensure that during unserialization the type
-	 * definition of the requested data is in alignment with the definition found
-	 * in the system (type changes that can occur during the time between
-	 * serialization and unserialization)
-	 *
-	 * @note 'sobj' is only added for when a subobject is present
-	 *
-	 * @return array
-	 */
-	protected function serializeDataItem( DataItem $dataItem ) {
-
-		$di = array(
-			'type' => $dataItem->getDIType(),
-			'item' => $dataItem->getSerialization()
-		);
-
-		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE && $dataItem->getSubobjectName() ) {
-			$di += array( 'sobj' => $dataItem->getSubobjectName() );
-		}
-
-		return $di;
-	}
-
-	/**
-	 * Returns all subobjects of a SemanticData instance
-	 *
-	 * @note The subobject name is used as reference key as it is the only
-	 * reliable unique key to allow a performable lookup during unserialization
-	 *
-	 * @return array
-	 */
-	protected function serializeSubobject( $subSemanticData, &$output ) {
-
-		foreach ( $subSemanticData as $semanticData ) {
-			$output['sobj'][] = $this->serializeSemanticData( $semanticData );
-		}
-
+	public function isDeserializerFor( $semanticData ) {
+		return $semanticData instanceOf SemanticData;
 	}
 
 	/**
