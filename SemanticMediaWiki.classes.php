@@ -97,6 +97,11 @@ return array(
 	'SMW\Configurable'              => 'includes/Configurable.php',
 	'SMW\StoreAccess'               => 'includes/StoreAccess.php',
 
+	// Serializer
+	'SMW\SerializerFactory'            => 'includes/serializer/SerializerFactory.php',
+	'SMW\SerializerInterface'          => 'includes/serializer/SerializerInterface.php',
+	'SMW\SemanticDataSerializer'       => 'includes/serializer/SemanticDataSerializer.php',
+
 	// Cache
 	'SMW\CacheHandler'                => 'includes/cache/CacheHandler.php',
 	'SMW\CacheableResultMapper'       => 'includes/cache/CacheableResultMapper.php',
