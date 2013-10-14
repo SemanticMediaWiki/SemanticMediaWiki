@@ -26,7 +26,7 @@ class SemanticDataSerializer implements Serializer {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
-		return $this->serializeSemanticData( $object );
+		return $this->serializeSemanticData( $object ) + array( 'serializer' => __CLASS__, 'version' => 0.1 );
 	}
 
 	/**
@@ -68,7 +68,7 @@ class SemanticDataSerializer implements Serializer {
 
 		$this->serializeSubobject( $semanticData->getSubSemanticData(), $output );
 
-		return $output + array( 'serializer' => __CLASS__, 'version' => 0.1 );
+		return $output;
 	}
 
 	/**
