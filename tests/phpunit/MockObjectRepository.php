@@ -457,6 +457,14 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->builder->setValue( 'getCount' ) ) );
 
 		$queryResult->expects( $this->any() )
+			->method( 'getResults' )
+			->will( $this->returnValue( $this->builder->setValue( 'getResults' ) ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $this->builder->setValue( 'getStore' ) ) );
+
+		$queryResult->expects( $this->any() )
 			->method( 'serializeToArray' )
 			->will( $this->returnValue( $this->builder->setValue( 'serializeToArray' ) ) );
 
@@ -1075,6 +1083,14 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->builder->setValue( 'getMode', SMWPrintRequest::PRINT_THIS ) ) );
 
 		$printRequest->expects( $this->any() )
+			->method( 'getTypeID' )
+			->will( $this->returnValue( $this->builder->setValue( 'getTypeID' ) ) );
+
+		$printRequest->expects( $this->any() )
+			->method( 'getOutputFormat' )
+			->will( $this->returnValue( $this->builder->setValue( 'getOutputFormat' ) ) );
+
+		$printRequest->expects( $this->any() )
 			->method( 'getParameter' )
 			->will( $this->returnValue( $this->builder->setValue( 'getParameter', 'center' ) ) );
 
@@ -1101,6 +1117,10 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 		$resultArray->expects( $this->any() )
 			->method( 'getPrintRequest' )
 			->will( $this->returnValue( $this->builder->setValue( 'getPrintRequest' ) ) );
+
+		$resultArray->expects( $this->any() )
+			->method( 'getContent' )
+			->will( $this->returnValue( $this->builder->setValue( 'getContent' ) ) );
 
 		$resultArray->expects( $this->any() )
 			->method( 'getNextDataValue' )

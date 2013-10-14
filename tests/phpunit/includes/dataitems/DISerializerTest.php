@@ -5,6 +5,7 @@ namespace SMW\Test;
 use SMW\DISerializer;
 use SMWQueryProcessor;
 use SMWQueryResult;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\DISerializer
@@ -27,136 +28,99 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * DataProvider
+	 * @dataProvider numberDataProvider
 	 *
+	 * @since  1.9
+	 */
+	public function testQueryResultSerializerOnMock( $setup, $expected ) {
+
+		$results = DISerializer::getSerializedQueryResult( $setup['queryResult'] );
+
+		$this->assertInternalType( 'array' , $results );
+		$this->assertEquals( $expected['printrequests'], $results['printrequests'] );
+
+	}
+
+	/**
 	 * @return array
 	 */
-	public function getDataProvider() {
-		return array(
-			array(
+	public function numberDataProvider() {
 
-				// #1 Standard query
-				array( 'query' => array(
-					'[[Modification date::+]]',
-					'?Modification date',
-					'limit=10'
-					)
-				),
-				array(
-					array(
-						'label'=> '',
-						'typeid' => '_wpg',
-						'mode' => 2,
-						'format' => false
-					),
-					array(
-						'label'=> 'Modification date',
-						'typeid' => '_dat',
-						'mode' => 1,
-						'format' => ''
-					)
-				)
-			),
+		$provider = array();
 
-			// #2 Query containing a printrequest formatting
-			array(
-				array( 'query' => array(
-					'[[Modification date::+]]',
-					'?Modification date#ISO',
-					'limit=10'
-					)
-				),
-				array(
-					array(
-						'label'=> '',
-						'typeid' => '_wpg',
-						'mode' => 2,
-						'format' => false
-					),
-					array(
-						'label'=> 'Modification date',
-						'typeid' => '_dat',
-						'mode' => 1,
-						'format' => 'ISO'
-					)
-				)
-			),
-		);
-	}
-
-	/**
-	 * Helper function that returns a SMWQueryResult object
-	 *
-	 * @return SMWQueryResult
-	 */
-	private function getQueryResult( $queryString ) {
-
-		$this->runOnlyOnSQLStore();
-
-		list( $query, $formattedParams ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
-			$queryString,
-			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
-			false
+		$setup = array(
+			array( 'printRequest' => 'Foo-1', 'typeId' => '_num', 'number' => 10, 'dataValue' => 'Quuey' ),
+			array( 'printRequest' => 'Foo-2', 'typeId' => '_num', 'number' => 20, 'dataValue' => 'Vey' ),
 		);
 
-		return smwfGetStore()->getQueryResult( $query );
+		$provider[] = array(
+			array(
+				'queryResult' => $this->buildMockQueryResult( $setup )
+				),
+			array(
+				'printrequests' => array(
+					array( 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false ),
+					array( 'label' => 'Foo-2', 'typeid' => '_num', 'mode' => 2, 'format' => false )
+				),
+			)
+		);
+
+		return $provider;
 	}
 
 	/**
-	 * @test DISerializer::getSerializedQueryResult
-	 * @dataProvider getDataProvider
-	 *
-	 * @since  1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
+	 * @return QueryResult
 	 */
-	public function testDISerializerQueryResult( array $test, array $expected ) {
+	private function buildMockQueryResult( $setup ) {
 
-		$queryResult = $this->getQueryResult( $test['query'] );
-		$this->assertInstanceOf( '\SMWQueryResult', $queryResult );
+		$printRequests = array();
+		$resultArray   = array();
+		$getResults    = array();
 
-		$results = DISerializer::getSerializedQueryResult( $queryResult );
-		$this->assertInternalType( 'array' , $results );
+		foreach ( $setup as $value ) {
 
-		//  Compare array structure
-		$this->assertEquals( $expected[0], $results['printrequests'][0] );
-		$this->assertEquals( $expected[1], $results['printrequests'][1] );
-	}
+			$printRequest = $this->newMockBuilder()->newObject( 'PrintRequest', array(
+				'getText'   => $value['printRequest'],
+				'getLabel'  => $value['printRequest'],
+				'getTypeID' => $value['typeId'],
+				'getOutputFormat' => false
+			) );
 
-	/**
-	 * @test SMWQueryResult::toArray
-	 * @dataProvider getDataProvider
-	 *
-	 * @since  1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
-	 */
-	public function testQueryResulttoArray( array $test, array $expected ) {
+			$printRequests[] = $printRequest;
+			$getResults[] = \SMW\DIWikipage::newFromTitle( $this->newTitle( NS_MAIN, $value['printRequest'] ) );
 
-		$queryResult = $this->getQueryResult( $test['query'] );
-		$this->assertInstanceOf( '\SMWQueryResult', $queryResult );
+			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
+				'getDIType' => DataItem::TYPE_NUMBER,
+				'getNumber' => $value['number']
+			) );
 
-		$results = $queryResult->toArray();
+			$dataValue = $this->newMockBuilder()->newObject( 'DataValue', array(
+				'DataValueType'    => 'SMWNumberValue',
+				'getTypeID'        => '_num',
+				'getShortWikiText' => $value['dataValue'],
+				'getDataItem'      => $dataItem
+			) );
 
-		//  Compare array structure
-		$this->assertEquals( $expected[0], $results['printrequests'][0] );
-		$this->assertEquals( $expected[1], $results['printrequests'][1] );
-	}
+			$resultArray[] = $this->newMockBuilder()->newObject( 'ResultArray', array(
+				'getText'          => $value['printRequest'],
+				'getPrintRequest'  => $printRequest,
+				'getNextDataValue' => $dataValue,
+				'getNextDataItem'  => $dataItem,
+				'getContent'       => $dataItem
+			) );
 
-	/**
-	 * @test DISerializer::getSerialization
-	 *
-	 * @since  1.9
-	 */
-	public function testNumberSerialization() {
+		}
 
-		// Number serialization
-		$dataItem = new \SMWDINumber( 1001 );
-		$results = DISerializer::getSerialization( $dataItem );
-		$this->assertEquals( $results, 1001 );
+		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
+			'getPrintRequests'  => $printRequests,
+			'getNext'           => $resultArray,
+			'getResults'        => $getResults,
+			'getStore'          => $this->newMockBuilder()->newObject( 'Store' ),
+			'getLink'           => new \SMWInfolink( true, 'Lala' , 'Lula' ),
+			'hasFurtherResults' => true
+		) );
+
+		return $queryResult;
 	}
 
 }
