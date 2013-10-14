@@ -1,6 +1,6 @@
 <?php
 
-use SMW\DISerializer;
+use SMW\SerializerFactory;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -288,7 +288,7 @@ class SMWQueryResult {
 	 * @return array
 	 */
 	public function serializeToArray() {
-		return DISerializer::getSerializedQueryResult( $this );
+		return SerializerFactory::serialize( $this );
 	}
 
 	/**

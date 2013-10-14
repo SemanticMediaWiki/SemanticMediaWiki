@@ -1,11 +1,13 @@
 <?php
 
-namespace SMW;
+namespace SMW\Serializers;
 
 use SMWDataItem;
 use SMWPrintRequest;
 use SMWResultArray;
-use SMWQueryResult;
+use SMWQueryResult as QueryResult;
+
+use OutOfBoundsException;
 
 /**
  * Class for serializing SMWDataItem and SMWQueryResult objects to a context
@@ -20,7 +22,33 @@ use SMWQueryResult;
  * @licence GNU GPL v2 or later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DISerializer {
+class QueryResultSerializer implements Serializer {
+
+	/**
+	 * @see SerializerInterface::serialize
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 * @throws OutOfBoundsException
+	 */
+	public function serialize( $queryResult ) {
+
+		if ( !( $this->isSerializerFor( $queryResult ) ) ) {
+			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
+		}
+
+		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => 0.5 );
+	}
+
+	/**
+	 * @see Serializers::isSerializerFor
+	 *
+	 * @since  1.9
+	 */
+	public function isSerializerFor( $queryResult ) {
+		return $queryResult instanceof QueryResult;
+	}
 
 	/**
 	 * Get the serialization for the provided data item.
@@ -84,7 +112,7 @@ class DISerializer {
 	 *
 	 * @return array
 	 */
-	public static function getSerializedQueryResult( SMWQueryResult $queryResult ) {
+	public static function getSerializedQueryResult( QueryResult $queryResult ) {
 		$results = array();
 		$printRequests = array();
 
