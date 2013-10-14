@@ -2786,7 +2786,7 @@ Les propietats que encara no tenen cap pàgina es poden trobar a la [[Special:Wa
 	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Concepte|Conceptes}}',
 	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Concepte|Conceptes}}]]',
 	'smw-statistics-subobject-count' => '{{PLURAL:$1|Subobjecte|Subobjectes}}',
-	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Tipus de dades|Tipus de dades}}]]', # Fuzzy
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Tipus de dades}}]]',
 	'smw_uri_doc' => "El resolutor d'URI implementa la [$1 cerca de W3C TAG en httpRange-14].
 Té cura que els humans no es tornin en llocs web.",
 	'ask' => 'Cerca semàntica',
@@ -2926,6 +2926,7 @@ Progrés estimat de l'actualització actual:",
 	'group-smwadministrator' => 'Administradors de Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|administrador (SMW)|administratora (SMW)}}',
 	'action-smw-admin' => "accedeix a les tasques d'administració de Semantic MediaWiki",
+	'smw-sp-properties-cache-info' => "Les dades llistades s'han recuperat de la [https://www.semantic-mediawiki.org/wiki/Caching memòria cau], i s'han actualitzat el $1.",
 	'smw-sp-properties-header-label' => 'Llista de propietats',
 );
 
