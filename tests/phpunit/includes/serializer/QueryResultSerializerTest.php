@@ -8,7 +8,7 @@ use SMWQueryResult;
 use SMWDataItem as DataItem;
 
 /**
- * @covers \SMW\QueryResultSerializer
+ * @covers \SMW\Serializers\QueryResultSerializer
  *
  * @group SMW
  * @group SMWExtension
