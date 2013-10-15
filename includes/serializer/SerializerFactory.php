@@ -6,7 +6,9 @@ use SMW\Serializers\Serializer;
 use SMW\Deserializers\Deserializer;
 use SMW\Serializers\SemanticDataSerializer;
 use SMW\Deserializers\SemanticDataDeserializer;
+use SMW\Serializers\QueryResultSerializer;
 
+use SMWQueryResult as QueryResult;
 use OutOfBoundsException;
 
 /**
@@ -43,6 +45,8 @@ class SerializerFactory {
 
 		if ( $object instanceof SemanticData ) {
 			$serializer = new SemanticDataSerializer;
+		} elseif ( $object instanceof QueryResult ) {
+			$serializer = new QueryResultSerializer;
 		}
 
 		if ( !( $serializer instanceof Serializer ) ) {

@@ -108,7 +108,7 @@ class_alias( 'SMW\UpdateJob', 'SMWUpdateJob' );
 class_alias( 'SMW\SemanticData', 'SMWSemanticData' );
 class_alias( 'SMW\DIWikiPage', 'SMWDIWikiPage' );
 class_alias( 'SMW\DIProperty', 'SMWDIProperty' );
-class_alias( 'SMW\DISerializer', 'SMWDISerializer' );
+class_alias( 'SMW\Serializers\QueryResultSerializer', 'SMWDISerializer' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 1.11

@@ -109,6 +109,6 @@ For a page called "Foo" that contains <code>[[Has property::Bar]]</code>, <code>
 ```
 
 ### QueryResultSerializer
-N/A (see \SMW\DISerializer)
+Implements the SerializerInterface for the SMWQueryResult object.
 
 [serialization]: [https://github.com/wikimedia/mediawiki-extensions-Serialization]

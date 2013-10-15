@@ -2,13 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\DISerializer;
+use SMW\Serializers\QueryResultSerializer;
 use SMWQueryProcessor;
 use SMWQueryResult;
 use SMWDataItem as DataItem;
 
 /**
- * @covers \SMW\DISerializer
+ * @covers \SMW\QueryResultSerializer
  *
  * @group SMW
  * @group SMWExtension
@@ -16,7 +16,7 @@ use SMWDataItem as DataItem;
  * @license GNU GPL v2+
  * @author mwjames
  */
-class DISerializerTest extends SemanticMediaWikiTestCase {
+class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -24,7 +24,35 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMW\DISerializer';
+		return '\SMW\Serializers\QueryResultSerializer';
+	}
+
+	/**
+	 * Helper method that returns a QueryResultSerializer object
+	 *
+	 * @since 1.9
+	 */
+	private function newSerializerInstance() {
+		return new QueryResultSerializer();
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testConstructor() {
+		$this->assertInstanceOf( $this->getClass(), $this->newSerializerInstance() );
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testSerializeOutOfBoundsException() {
+
+		$this->setExpectedException( 'OutOfBoundsException' );
+
+		$instance = $this->newSerializerInstance();
+		$instance->serialize( 'Foo' );
+
 	}
 
 	/**
@@ -34,7 +62,7 @@ class DISerializerTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testQueryResultSerializerOnMock( $setup, $expected ) {
 
-		$results = DISerializer::getSerializedQueryResult( $setup['queryResult'] );
+		$results = $this->newSerializerInstance()->serialize( $setup['queryResult'] );
 
 		$this->assertInternalType( 'array' , $results );
 		$this->assertEquals( $expected['printrequests'], $results['printrequests'] );

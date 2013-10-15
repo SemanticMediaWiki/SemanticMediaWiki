@@ -55,7 +55,6 @@ return array(
 	'SMW\ContentParser'             => 'includes/ContentParser.php',
 	'SMW\UpdateObserver'            => 'includes/UpdateObserver.php',
 	'SMW\TitleAccess'               => 'includes/TitleAccess.php',
-	'SMW\DISerializer'              => 'includes/DISerializer.php', // 1.9
 
 	'SMW\Accessible'                => 'includes/ObjectDictionary.php',
 	'SMW\Changeable'                => 'includes/ObjectDictionary.php',
@@ -103,6 +102,7 @@ return array(
 	'SMW\Deserializers\Deserializer'              => 'includes/serializer/Deserializer.php',
 	'SMW\Serializers\SemanticDataSerializer'      => 'includes/serializer/Serializers/SemanticDataSerializer.php',
 	'SMW\Deserializers\SemanticDataDeserializer'  => 'includes/serializer/Deserializers/SemanticDataDeserializer.php',
+	'SMW\Serializers\QueryResultSerializer'        => 'includes/serializer/Serializers/QueryResultSerializer.php',
 
 	// Cache
 	'SMW\CacheHandler'                => 'includes/cache/CacheHandler.php',

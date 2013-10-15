@@ -121,6 +121,14 @@ class SerializerFactoryTest extends SemanticMediaWikiTestCase {
 			 new SemanticData( DIWikiPage::newFromTitle( $this->newTitle() ) ),
 		);
 
+		// #1 QueryResult
+		$provider[] = array(
+			$this->newMockBuilder()->newObject( 'QueryResult', array(
+				'getResults'       => array(),
+				'getPrintRequests' => array()
+			) )
+		);
+
 		return $provider;
 	}
 
