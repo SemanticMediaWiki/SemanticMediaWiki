@@ -359,6 +359,7 @@ return array(
 	'SMW\ApiAsk'     => 'includes/api/ApiAsk.php',
 	'SMW\ApiAskArgs' => 'includes/api/ApiAskArgs.php',
 	'SMW\ApiInfo'    => 'includes/api/ApiInfo.php',
+	'SMW\ApiBrowse'  => 'includes/api/ApiBrowse.php',
 
 	// Maintenance scripts
 	'SMWSetupScript' => 'maintenance/SMW_setup.php',

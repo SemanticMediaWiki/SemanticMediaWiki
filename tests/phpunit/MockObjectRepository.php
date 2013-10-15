@@ -642,7 +642,7 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->builder->setValue( 'getSemanticData' ) ) );
+			->will( $this->builder->setCallback( 'getSemanticData' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getUnusedPropertiesSpecial' )

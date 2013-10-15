@@ -151,6 +151,7 @@ final class Setup {
 		$this->globals['wgAPIModules']['smwinfo'] = '\SMW\ApiInfo';
 		$this->globals['wgAPIModules']['ask']     = '\SMW\ApiAsk';
 		$this->globals['wgAPIModules']['askargs'] = '\SMW\ApiAskArgs';
+		$this->globals['wgAPIModules']['browse']  = '\SMW\ApiBrowse';
 
 	}
 

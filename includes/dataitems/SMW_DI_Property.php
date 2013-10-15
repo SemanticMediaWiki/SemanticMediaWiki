@@ -43,6 +43,8 @@ class DIProperty extends SMWDataItem {
 	const TYPE_HAS_TYPE = '_TYPE';
 	// Property "corresponds to"
 	const TYPE_CONVERSION = '_CONV';
+	// Property "has query"
+	const TYPE_ASKQUERY = '_ASK';
 
 	/**
 	 * Array for assigning types to predefined properties. Each
@@ -408,7 +410,7 @@ class DIProperty extends SMWDataItem {
 				'_SF_DF' => array( '__spf', true ), // Semantic Form's default form property
 				'_SF_AF' => array( '__spf', true ),  // Semantic Form's alternate form property
 				self::TYPE_SUBOBJECT =>  array( '_wpg', true ), // "has subobject"
-				'_ASK'   =>  array( '_wpg', false ), // "has query"
+				self::TYPE_ASKQUERY  =>  array( '_wpg', false ), // "has query"
 				'_ASKST' =>  array( '_cod', true ), // "has query string"
 				'_ASKFO' =>  array( '_txt', true ), // "has query format"
 				'_ASKSI' =>  array( '_num', true ), // "has query size"

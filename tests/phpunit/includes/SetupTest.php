@@ -394,6 +394,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'ask',
 			'smwinfo',
 			'askargs',
+			'browse',
 		);
 
 		foreach ( $modules as $module ) {
