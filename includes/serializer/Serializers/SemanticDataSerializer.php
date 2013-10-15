@@ -52,7 +52,7 @@ class SemanticDataSerializer implements Serializer {
 		/**
 		 * Build property and dataItem serialization record
 		 */
-		foreach ( $semanticData->getProperties() as $key => $property ) {
+		foreach ( $semanticData->getProperties() as $property ) {
 
 			$prop = array();
 
@@ -95,22 +95,15 @@ class SemanticDataSerializer implements Serializer {
 	 * in the system (type changes that can occur during the time between
 	 * serialization and unserialization)
 	 *
-	 * @note 'sobj' is only added for when a subobject is present
-	 *
 	 * @return array
 	 */
 	protected function serializeDataItem( DataItem $dataItem ) {
 
-		$di = array(
+		return array(
 			'type' => $dataItem->getDIType(),
 			'item' => $dataItem->getSerialization()
 		);
 
-		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE && $dataItem->getSubobjectName() ) {
-			$di += array( 'sobj' => $dataItem->getSubobjectName() );
-		}
-
-		return $di;
 	}
 
 }

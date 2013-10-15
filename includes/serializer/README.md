@@ -11,7 +11,7 @@ A factory class that assigns registered serializers to an object and identifies 
 ```php
 $foo = new Foo( ... );
 $serialized = SerializerFactory::serialize( $foo );
-$unserialized = SerializerFactory::unserialize( $serialized );
+$unserialized = SerializerFactory::deserialize( $serialized );
 ```
 
 ### SemanticDataSerializer
@@ -19,93 +19,112 @@ Implements the Serializer interface for the SMW\SemanticData object.
 
 #### Data model
 ```php
-[subject] -> Subject serialization
-[data] -> array container
-	[property] -> Property serialization
-	[dataitem] -> DataItem serialization
-	...
-[sobj] -> array container
-	[subject] -> Subobject subject serialization
-	[data] -> array container
-		[property] -> Property serialization
-		[dataitem] -> DataItem serialization
-		...
-[serializer] -> Class of the generator and entry point for the un-serializer
-[version] -> Number to compare structural integrity between serialization and un-serialization
+"subject": -> Subject serialization,
+"data": [
+	{
+		"property": -> Property serialization,
+		"dataitem": [
+			{
+				"type": -> DataItemType,
+				"item": -> DataItem serialization
+			}
+		]
+	}
+]
+"sobj": [
+	{
+		"subject": ...,
+		"data": [
+			{
+				"property": ...,
+				"dataitem": [
+					{
+						"type": ...,
+						"item": ...
+					}
+				]
+			},
+	},
+],
+"serializer": -> Class of the generator and entry point for the un-serializer,
+"version": -> Number to compare structural integrity between serialization and un-serialization
 ```
 #### Example
-For a page called "Foo" that contains <code>[[Has property::Bar]]</code>, <code>{{#subobject:|Has subobjects=Bam}}</code>, <code>{{#ask:Has subobjects::Bam}}</code>, the Serializer will output:
+For a page called "Foo" that contains <code>[[Has property::Bar]]</code>, <code>{{#subobject:|Has subobjects=Bam}}</code>, <code>{{#ask:[[Has subobjects::Bam]]}}</code>, the Serializer will output:
 
 ```php
-[subject] => Foo#0#
-[data] => Array (
-	[0] => Array (
-		[property] => Has_property
-		[dataitem] => Array (
-			[0] => Array (
-				[type] => 9
-				[item] => Bar#0#
-			)
-		)
-	)
-	[1] => Array (
-		[property] => _ASK
-		[dataitem] => Array (
-			[0] => Array (
-				[type] => 9
-				[item] => Foo#0##_QUERYc8606da8f325fc05aa8e8b958821c3b4
-				[sobj] => _QUERYc8606da8f325fc05aa8e8b958821c3b4
-			)
-		)
-	)
-	[2] => Array (
-		[property] => _MDAT
-		[dataitem] => Array (
-			[0] => Array (
-				[type] => 6
-				[item] => 1/2013/10/10/14/55/40
-			)
-		)
-	)
-	[3] => Array (
-		[property] => _SKEY
-		[dataitem] => Array (
-			[0] => Array (
-				[type] => 2
-				[item] => Foo
-			)
-		)
-	)
-	[4] => Array (
-		[property] => _SOBJ
-		[dataitem] => Array (
-			[0] => Array (
-				[type] => 9
-				[item] => Foo#0##_fc4b104aabf80eb06429e946aa8f7070
-				[sobj] => _fc4b104aabf80eb06429e946aa8f7070
-			)
-		)
-	)
-)
-[sobj] => Array (
-	[0] => Array (
-		[subject] => Foo#0##_fc4b104aabf80eb06429e946aa8f7070
-		[data] => Array (
-			[0] => Array (
-				[property] => Has_subobjects
-				[dataitem] => Array (
-					[0] => Array (
-						[type] => 9
-						[item] => Bam#0#
-					)
-				)
-			)
-		)
-	)
+"subject": "Foo#0#",
+"data": [
+	{
+		"property": "Has_property",
+		"dataitem": [
+			{
+				"type": 9,
+				"item": "Bar#0#"
+			}
+		]
+	},
+	{
+		"property": "_ASK",
+		"dataitem": [
+			{
+				"type": 9,
+				"item": "Foo#0##_QUERYc8606da8f325fc05aa8e8b958821c3b4"
+			}
+		]
+	},
 	...
-)
-[serializer] => SMW\Serializers\SemanticDataSerializer
-[version] => 0.1
+	{
+		"property": "_SOBJ",
+		"dataitem": [
+			{
+				"type": 9,
+				"item": "Foo#0##_fc4b104aabf80eb06429e946aa8f7070"
+			}
+		]
+	}
+],
+"sobj": [
+	{
+		"subject": "Foo#0##_QUERYc8606da8f325fc05aa8e8b958821c3b4",
+		"data": [
+			{
+				"property": "_ASKDE",
+				"dataitem": [
+					{
+						"type": 1,
+						"item": "1"
+					}
+				]
+			},
+	},
+	...
+	{
+		"subject": "Foo#0##_fc4b104aabf80eb06429e946aa8f7070",
+		"data": [
+			{
+				"property": "Has_subobjects",
+				"dataitem": [
+					{
+						"type": 9,
+						"item": "Bam#0#"
+					}
+				]
+			},
+			{
+				"property": "_SKEY",
+				"dataitem": [
+					{
+						"type": 2,
+						"item": "Foo"
+					}
+				]
+			}
+		]
+	}
+],
+"serializer": "SMW\\Serializers\\SemanticDataSerializer",
+"version": 0.1
 ```
 
 ### QueryResultSerializer

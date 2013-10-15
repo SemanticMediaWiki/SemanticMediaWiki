@@ -143,7 +143,7 @@ class SemanticDataDeserializer implements Deserializer {
 		}
 
 		// Check whether the current dataItem has a subobject reference
-		if ( isset( $value['sobj'] ) && $value['sobj'] !== null ) {
+		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE && $dataItem->getSubobjectName() !== '' ) {
 
 			$dataItem = $this->unserializeSubobject(
 				$data,
