@@ -2786,7 +2786,7 @@ Les propietats que encara no tenen cap pàgina es poden trobar a la [[Special:Wa
 	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Concepte|Conceptes}}',
 	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Concepte|Conceptes}}]]',
 	'smw-statistics-subobject-count' => '{{PLURAL:$1|Subobjecte|Subobjectes}}',
-	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Tipus de dades|Tipus de dades}}]]', # Fuzzy
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Tipus de dades}}]]',
 	'smw_uri_doc' => "El resolutor d'URI implementa la [$1 cerca de W3C TAG en httpRange-14].
 Té cura que els humans no es tornin en llocs web.",
 	'ask' => 'Cerca semàntica',
@@ -2926,6 +2926,7 @@ Progrés estimat de l'actualització actual:",
 	'group-smwadministrator' => 'Administradors de Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|administrador (SMW)|administratora (SMW)}}',
 	'action-smw-admin' => "accedeix a les tasques d'administració de Semantic MediaWiki",
+	'smw-sp-properties-cache-info' => "Les dades llistades s'han recuperat de la [https://www.semantic-mediawiki.org/wiki/Caching memòria cau], i s'han actualitzat el $1.",
 	'smw-sp-properties-header-label' => 'Llista de propietats',
 );
 
@@ -3009,12 +3010,29 @@ $messages['cs'] = array(
 	'smw-paramdesc-sep' => 'Oddělovač hodnot',
 	'smw-paramdesc-showsep' => 'Zobrazit na začátku CSV souboru oddělovač ("sep=<hodnota>")',
 	'smw-paramdesc-distribution' => 'Místo zobrazení všech hodnot spočítat kolikrát se která vyskytuje a zobrazit tyto počty.',
+	'smw-paramdesc-template' => 'Název šablony, pomocí které zobrazit výpisy',
+	'smw-paramdesc-columns' => 'Počet sloupců, ve kterých se zobrazí výsledky (výchozí počet je $1)',
+	'smw-paramdesc-userparam' => 'Hodnota předávaná každému volání šablony, je-li užita šablona',
+	'smw-paramdesc-introtemplate' => 'Název šablony, která se má zobrazit před výsledkem dotazu, je-li nějaký',
+	'smw-paramdesc-outrotemplate' => 'Název šablony, která se má zobrazit po výsledku dotazu, je-li nějaký',
+	'smw-paramdesc-embedformat' => 'HTML tag, kterým jsou definovány nadpisy',
+	'smw-paramdesc-embedonly' => 'Nezobrazovat nadpisy',
+	'smw-paramdesc-table-class' => 'Další CSS třída, která bude nastavena tabulce',
 	'smw-paramdesc-csv-sep' => 'Oddělovač, který má být použit',
 	'smw-paramdesc-dsv-separator' => 'Oddělovač, který má být použit',
 	'smw-paramdesc-dsv-filename' => 'Název DSV souboru',
+	'smw-paramdesc-filename' => 'Název výstupního souboru',
+	'smw-smwdoc-description' => 'Zobrazí tabulku všech parametrů, které lze pro daný formát výsledků použít, spolu s výchozími hodnotami a popisy.',
+	'smw-smwdoc-par-format' => 'Formát výsledků, pro který se zobrazí dokumentace.',
 	'smw-paramdesc-sort' => 'Vlastnost, podle které výsledky řadit',
 	'smw-paramdesc-order' => 'Způsob řazení výsledků dotazu',
 	'smw-paramdesc-export' => 'Možnosti exportu',
+	'smw-printername-feed' => 'Kanál RSS a Atom',
+	'smw-paramdesc-feedtype' => 'Typ kanálu',
+	'smw-paramdesc-feedtitle' => 'Text, který bude užit jako titulek kanálu',
+	'smw-paramdesc-feeddescription' => 'Text, který bude užit jako popis kanálu',
+	'smw-paramdesc-feedpagecontent' => 'Obsah stránky, který bude zobrazen v kanálu',
+	'smw-label-feed-description' => '$2 kanál $1',
 	'smw_iq_disabled' => 'Promiňtě, semantické dotazy byly pro tuto wiki zakázány.',
 	'smw_iq_moreresults' => '…další výsledky',
 	'smw_parseerror' => 'Zadaná hodnota nebyla pochopená.',
@@ -3067,12 +3085,17 @@ Výsledky pravděpodobně nesplní očekávání.',
 	'smw_propertylackspage' => 'Všechny vlastnosti by měly mít stránku s popisem!',
 	'smw_propertylackstype' => 'Této vlastnosti nebyl definován žádný typ (předpokládá se prozatím typ $1)',
 	'smw_propertyhardlyused' => 'Tato vlastnost se na wiki téměř nepoužívá!',
+	'smw-sp-property-searchform' => 'Zobrazit vlastnosti, které obsahují:',
+	'smw-sp-property-searchform-inputinfo' => 'Vstup je citlivý na velikost písmen a je-li použit pro filtrování, zobrazí se jen vlastnosti, které splňují danou podmínku.',
+	'concepts' => 'Koncepty',
+	'smw-sp-concept-header' => 'Seznam konceptů',
+	'smw-sp-concept-empty' => 'Nebyl nalezen žádný koncept.',
 	'unusedproperties' => 'Nepoužité vlastnosti',
 	'smw_unusedproperties_docu' => 'Nasledující vlastnosti existují i když je nevyužívá žádná jiná stránka.',
 	'smw_unusedproperty_template' => '$1 typu $2',
 	'wantedproperties' => 'Požadované vlastnosti',
 	'smw_wantedproperties_docu' => 'Následující vlastnosti, které existují na této wiki, zatím nemají popisnou stránku.',
-	'smw_wantedproperty_template' => '$1 (užité $2-krát)', # Fuzzy
+	'smw_wantedproperty_template' => '$1 ($2 užití)', # Fuzzy
 	'smw_purge' => 'Obnovit',
 	'types' => 'Typy',
 	'smw_types_docu' => 'Následuje seznam všech údajových typů, které je možné přiřadit vlastnostem. Každý údajový typ má stránku, kde je možné uvést dodatečné informace.', # Fuzzy
@@ -3081,6 +3104,12 @@ Výsledky pravděpodobně nesplní očekávání.',
 <b>$4</b> vlastností nemá vlastní stránku a zamýšlený datový typ má uvedený <b>$5</b> z nich.
 Některé z existujících vlastností mohou být <a href="$6">nepoužívané</a>.
 Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznamu požadovaných vlastností</a>.', # Fuzzy
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Vlastnost|Vlastnosti}} (celkem)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Vlastnost (registrovaná|Vlastnosti (registrované}} se stránkou)', # Fuzzy
+	'smw-statistics-property-type' => '{{PLURAL:$1|Vlastnost (přiřazená|Vlastnosti (přiřazené}} datovému typu)', # Fuzzy
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Koncept|Koncepty}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Koncept|Koncepty}}]]',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Podobjekt|Podobjekty}}',
 	'smw_uri_doc' => 'URI resolver se stará o implementaci [$1 W3C TAG hledání na httpRange-14].
 Stará se o to, aby se lidé nestali webstránkami.',
 	'ask' => 'Sémantické vyhledávání',
@@ -3098,6 +3127,7 @@ Stará se o to, aby se lidé nestali webstránkami.',
 	'smw_ask_format_as' => 'Formát výstupu:',
 	'smw_ask_defaultformat' => 'výchozí',
 	'smw_ask_otheroptions' => 'Další možnosti',
+	'smw-ask-otheroptions-collapsed-info' => 'Pro zobrazení všech dostupných možností prosím použijte ikonu plus',
 	'smw_ask_show_embed' => 'Zobrazit kód pro vložení do stránky',
 	'smw_ask_hide_embed' => 'Skrýt kód pro vložení do stránky',
 	'smw_ask_embed_instr' => 'Tento kód použijte ke vložení tohoto dotazu do textu stránky na wiki.',
@@ -3187,7 +3217,10 @@ Odhadovaný průběh updatu:',
 	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.', # Fuzzy
 	'smw_concept_header' => 'Stran konceptu "$1"',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|zobrazena je|zobrazeny jsou|zobrazeno je}} $1 {{PLURAL:$1|stránka náležející|stránky náležející|stránek náležejících}} tomuto konceptu.', # Fuzzy
+	'group-smwadministrator' => 'Správci Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|správce|správkyně|správce}} (SMW)',
+	'smw-sp-properties-cache-info' => 'Uvedená data pocházejí z [https://www.semantic-mediawiki.org/wiki/Caching cache] a byla naposledy aktualizována $1.',
+	'smw-sp-properties-header-label' => 'Seznam vlastností',
 );
 
 /** Church Slavic (словѣ́ньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ)
