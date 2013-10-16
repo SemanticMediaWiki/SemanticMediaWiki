@@ -2,7 +2,8 @@
 
 namespace SMW\Serializers;
 
-use SMWDataItem;
+use SMW\DataValueFactory;
+use SMWDataItem as DataItem;
 use SMWPrintRequest;
 use SMWResultArray;
 use SMWQueryResult as QueryResult;
@@ -59,9 +60,9 @@ class QueryResultSerializer implements Serializer {
 	 *
 	 * @return mixed
 	 */
-	public static function getSerialization( SMWDataItem $dataItem, $printRequest = null ) {
+	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
 		switch ( $dataItem->getDIType() ) {
-			case SMWDataItem::TYPE_WIKIPAGE:
+			case DataItem::TYPE_WIKIPAGE:
 				$title = $dataItem->getTitle();
 				$result = array(
 					'fulltext' => $title->getFullText(),
@@ -70,7 +71,7 @@ class QueryResultSerializer implements Serializer {
 					'exists' => $title->isKnown()
 				);
 				break;
-			case SMWDataItem::TYPE_NUMBER:
+			case DataItem::TYPE_NUMBER:
 				// dataitems and datavalues
 				// Quantity is a datavalue type that belongs to dataitem
 				// type number which means in order to identify the correct
@@ -89,10 +90,10 @@ class QueryResultSerializer implements Serializer {
 					$result = $dataItem->getNumber();
 				}
 				break;
-			case SMWDataItem::TYPE_GEO:
+			case DataItem::TYPE_GEO:
 				$result = $dataItem->getCoordinateSet();
 				break;
-			case SMWDataItem::TYPE_TIME:
+			case DataItem::TYPE_TIME:
 				$result = $dataItem->getMwTimestamp();
 				break;
 			default:
