@@ -2,30 +2,22 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\UpdateDispatcherJob;
+use SMW\BaseContext;
 use SMW\DIProperty;
 
 use Title;
 
 /**
- * Tests for the UpdateDispatcherJob class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\UpdateDispatcherJob
  *
- * @ingroup Test
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @author mwjames
  */
 class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 
@@ -36,8 +28,6 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	protected $subjects;
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -45,11 +35,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a UpdateDispatcherJob object
-	 *
 	 * @since 1.9
-	 *
-	 * @param Title|null $title
 	 *
 	 * @return UpdateDispatcherJob
 	 */
@@ -69,19 +55,19 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 			'smwgEnableUpdateJobs' => false
 		) );
 
-		$container = new SharedDependencyContainer();
+		$context   = new BaseContext();
+
+		$container = $context->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Store', $mockStore );
 		$container->registerObject( 'Settings', $settings );
 
 		$instance = new UpdateDispatcherJob( $title );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
+		$instance->invokeContext( $context );
 
 		return $instance;
 	}
 
 	/**
-	 * @test UpdateDispatcherJob::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -89,10 +75,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test UpdateDispatcherJob::push
-	 *
-	 * Just verify that the push method is accessible
-	 * without inserting any real job
+	 * Just verify that the push method is accessible without inserting any real job
 	 *
 	 * @since 1.9
 	 */
@@ -101,8 +84,6 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test UpdateDispatcherJob::run
-	 *
 	 * @since 1.9
 	 */
 	public function testRunOnDB() {
@@ -113,7 +94,6 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test UpdateDispatcherJob::run
 	 * @dataProvider subjectDataProvider
 	 *
 	 * @since 1.9

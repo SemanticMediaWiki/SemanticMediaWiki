@@ -63,13 +63,7 @@ class UpdateJob extends JobBase {
 	 * @return boolean
 	 */
 	private function clearData() {
-		/**
-		 * @var Store $store
-		 */
-		$store = $this->getDependencyBuilder()->newObject( 'Store' );
-
-		$store->deleteSubject( $this->getTitle() );
-
+		$this->withContext()->getStore()->deleteSubject( $this->getTitle() );
 		return true;
 	}
 
@@ -77,10 +71,11 @@ class UpdateJob extends JobBase {
 	 * @return boolean
 	 */
 	private function runContentParser() {
+
 		/**
 		 * @var ContentParser $contentParser
 		 */
-		$contentParser = $this->getDependencyBuilder()->newObject( 'ContentParser', array(
+		$contentParser = $this->withContext()->getDependencyBuilder()->newObject( 'ContentParser', array(
 			'Title' => $this->getTitle()
 		) );
 
@@ -105,13 +100,13 @@ class UpdateJob extends JobBase {
 		/**
 		 * @var CacheHandler $cache
 		 */
-		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
 		$cache->setKey( FactboxCache::newCacheId( $this->getTitle()->getArticleID() ) )->delete();
 
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(
+		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
 			'Title'        => $this->getTitle(),
 			'ParserOutput' => $parserOutput
 		) );
@@ -127,19 +122,14 @@ class UpdateJob extends JobBase {
 	 *
 	 * This actually files the job. This is prevented if the configuration of SMW
 	 * disables jobs.
+	 *
 	 * @note Any method that inserts jobs with Job::batchInsert or otherwise must
 	 * implement this check individually. The below is not called in these cases.
 	 *
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-
-		/**
-		 * @var Settings $settings
-		 */
-		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
-
-		if ( $settings->get( 'smwgEnableUpdateJobs' ) ) {
+		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}

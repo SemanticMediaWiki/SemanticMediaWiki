@@ -5,53 +5,43 @@ namespace SMW;
 /**
  * Observer for independent update transactions
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * Observer for independent update transactions
- *
  * Using this observer can help to enforce loose coupling by having
  * a Publisher (ObservableSubject) sent a notification (state change)
  * to this observer which will independently act from the source of
  * the notification
  *
- * @note When testing rountrips, use the MockUpdateObserver instead
+ * @note When testing round-trips, use the MockUpdateObserver instead
  *
- * @ingroup Observer
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
-class UpdateObserver extends Observer implements DependencyRequestor {
+class UpdateObserver extends Observer implements ContextAware, ContextInjector {
 
-	/** @var DependencyBuilder */
-	protected $dependencyBuilder = null;
+	/** @var ContextResource */
+	protected $context = null;
 
 	/**
-	 * @see DependencyRequestor::setDependencyBuilder
-	 *
 	 * @since 1.9
 	 *
-	 * @param DependencyBuilder $builder
+	 * @param ContextResource
 	 */
-	public function setDependencyBuilder( DependencyBuilder $builder ) {
-		$this->dependencyBuilder = $builder;
+	public function invokeContext( ContextResource $context ) {
+		$this->context = $context;
 	}
 
 	/**
-	 * @see DependencyRequestor::getDependencyBuilder
+	 * @see ContextAware::withContext
 	 *
 	 * @since 1.9
 	 *
-	 * @return DependencyBuilder
+	 * @return ContextResource
 	 */
-	public function getDependencyBuilder() {
+	public function withContext() {
 
 		// This is not as clean as it should be but to avoid to make
-		// multipe changes at once we determine a default builder here
+		// multiple changes at once we determine a default builder here
 		// which at some point should vanish after pending changes have
 		// been merged
 
@@ -59,11 +49,11 @@ class UpdateObserver extends Observer implements DependencyRequestor {
 		// UpdateJob does not
 		// ParserAfterTidy does not
 
-		if ( $this->dependencyBuilder === null ) {
-			$this->dependencyBuilder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
+		if ( $this->context === null ) {
+			$this->context = new BaseContext();
 		}
 
-		return $this->dependencyBuilder;
+		return $this->context;
 	}
 
 	/**
@@ -80,17 +70,12 @@ class UpdateObserver extends Observer implements DependencyRequestor {
 	 */
 	public function runStoreUpdater( ParserData $subject ) {
 
-		/**
-		 * @var Settings $settings
-		 */
-		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
+		$updater = new StoreUpdater(
+			$this->withContext()->getStore(),
+			$subject->getData(),
+			$this->withContext()->getSettings()
+		);
 
-		/**
-		 * @var Store $store
-		 */
-		$store = $this->getDependencyBuilder()->newObject( 'Store' );
-
-		$updater = new StoreUpdater( $store, $subject->getData(), $settings );
 		$updater->setUpdateStatus( $subject->getUpdateStatus() )->doUpdate();
 
 		return true;
@@ -119,7 +104,7 @@ class UpdateObserver extends Observer implements DependencyRequestor {
 	public function runUpdateDispatcher( TitleAccess $subject ) {
 
 		$dispatcher = new UpdateDispatcherJob( $subject->getTitle() );
-		$dispatcher->setDependencyBuilder( $this->getDependencyBuilder() );
+		$dispatcher->invokeContext( $this->withContext() );
 		$dispatcher->run();
 
 		return true;

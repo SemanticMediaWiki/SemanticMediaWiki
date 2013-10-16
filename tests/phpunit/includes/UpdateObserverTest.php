@@ -3,31 +3,22 @@
 namespace SMW\Test;
 
 use SMW\UpdateObserver;
-
-/**
- * Tests for the UpdateObserver class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
+use SMW\BaseContext;
 
 /**
  * @covers \SMW\UpdateObserver
  *
- * @ingroup Test
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @author mwjames
  */
 class UpdateObserverTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -35,36 +26,30 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a UpdateObserver object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return UpdateObserver
 	 */
-	private function newInstance() {
-
-		$observer = new UpdateObserver();
-
-		// Use the provided default builder
-		$observer->setDependencyBuilder( $observer->getDependencyBuilder() );
+	private function newInstance( $settings = array() ) {
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getAllPropertySubjects' => array(),
 			'getPropertySubjects'    => array()
 		) );
 
-		$observer->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'Store', $mockStore );
+		$context   = new BaseContext();
 
-		return $observer;
+		$container = $context->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Store', $mockStore );
+		$container->registerObject( 'Settings', $this->newSettings( $settings ) );
+
+		$instance = new UpdateObserver();
+		$instance->invokeContext( $context );
+
+		return $instance;
 	}
 
 	/**
-	 * @test UpdateObserver::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -72,42 +57,32 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test UpdateObserver::runUpdateDispatcher
 	 * @dataProvider updateDispatcherDataProvider
 	 *
 	 * @since 1.9
 	 */
 	public function testUpdateDispatcherJob( $setup, $expected ) {
 
-		$instance = $this->newInstance();
-
-		$instance->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'Settings', $this->newSettings( $setup['settings'] ) );
+		$instance = $this->newInstance( $setup['settings'] );
 
 		$this->assertTrue(
 			$instance->runUpdateDispatcher( $setup['title'] ),
-			'asserts that runUpdateDispatcher always returns true'
+			'Asserts that runUpdateDispatcher always returns true'
 		);
 	}
 
 	/**
-	 * @test UpdateObserver::runUpdateDispatcher
 	 * @dataProvider storeUpdaterDataProvider
 	 *
 	 * @since 1.9
 	 */
 	public function testStoreUpdater( $setup, $expected ) {
 
-		$instance = $this->newInstance();
-
-		$instance->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'Settings', $this->newSettings( $setup['settings'] ) );
+		$instance = $this->newInstance( $setup['settings'] );
 
 		$this->assertTrue(
 			$instance->runStoreUpdater( $setup['parserData'] ),
-			'asserts that runStoreUpdater always returns true'
+			'Asserts that runStoreUpdater always returns true'
 		);
 	}
 

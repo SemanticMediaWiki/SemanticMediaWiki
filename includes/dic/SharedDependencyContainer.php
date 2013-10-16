@@ -280,7 +280,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	protected function getUpdateObserver() {
 		return function ( DependencyBuilder $builder ) {
 			$updateObserver = new UpdateObserver();
-			$updateObserver->setDependencyBuilder( $builder );
+			$updateObserver->invokeContext( $builder->newObject( 'BaseContext' ) );
 			return $updateObserver;
 		};
 	}

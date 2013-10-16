@@ -2,36 +2,26 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
+use SMW\BaseContext;
 use SMW\UpdateJob;
 
 use Title;
 
 /**
- * Tests for the UpdateJob class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\UpdateJob
  * @covers \SMW\JobBase
  *
- * @ingroup Test
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @author mwjames
  */
 class UpdateJobTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -39,45 +29,36 @@ class UpdateJobTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a UpdateJob object
-	 *
 	 * @since 1.9
 	 *
 	 * @return UpdateJob
 	 */
-	private function newInstance( Title $title = null, $settings = null ) {
+	private function newInstance( Title $title = null ) {
 
 		if ( $title === null ) {
 			$title = $this->newTitle();
 		}
 
-		// Set smwgEnableUpdateJobs to false in order to avoid having jobs being
-		// inserted as real jobs to the queue
-		if ( $settings === null ) {
-			$settings = $this->newSettings( array(
-				'smwgCacheType'        => 'hash',
-				'smwgEnableUpdateJobs' => false
-			) );
-		}
+		$settings = $this->newSettings( array(
+			'smwgCacheType'        => 'hash',
+			'smwgEnableUpdateJobs' => false // false in order to avoid having jobs being inserted
+		) );
+
+		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
+
+		$context   = new BaseContext();
+
+		$container = $context->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Store', $mockStore );
+		$container->registerObject( 'Settings', $settings );
 
 		$instance = new UpdateJob( $title );
-
-		$builder = $instance->getDependencyBuilder();
-		$container = $builder->getContainer();
-		$container->registerObject( 'Settings', $settings );
-		$container->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
-
-		// This seems redundant but it allows to cover
-		// all necessary methods provided by the JobBase
-		$instance->setDependencyBuilder( $builder );
+		$instance->invokeContext( $context );
 
 		return $instance;
-
 	}
 
 	/**
-	 * @test UpdateJob::__construct
-	 *
 	 * FIXME Delete SMWUpdateJob assertion after all references to
 	 * SMWUpdateJob have been removed
 	 *
@@ -89,8 +70,6 @@ class UpdateJobTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test UpdateJob::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testRun() {
@@ -101,13 +80,12 @@ class UpdateJobTest extends ParserTestCase {
 
 		$this->assertFalse(
 			$this->newInstance( $title )->run(),
-			'asserts that the run() returns false due to a missing ParserOutput object'
+			'Asserts that the run() returns false due to a missing ParserOutput object'
 		);
 
 	}
 
 	/**
-	 * @test UpdateJob::run
 	 * @dataProvider titleWikiPageDataProvider
 	 *
 	 * @since 1.9
@@ -116,20 +94,19 @@ class UpdateJobTest extends ParserTestCase {
 
 		$instance  = $this->newInstance( $setup['title'] );
 
-		$instance->getDependencyBuilder()
+		$instance->withContext()
+			->getDependencyBuilder()
 			->getContainer()
 			->registerObject( 'ContentParser', $setup['contentParser'] );
 
 		$this->assertEquals(
 			$expected['result'],
 			$instance->run(),
-			'asserts run() in terms of the available ContentParser object'
+			'Asserts run() in terms of the available ContentParser object'
 		);
 	}
 
 	/**
-	 * Provides title and wikiPage samples
-	 *
 	 * @return array
 	 */
 	public function titleWikiPageDataProvider() {

@@ -6,45 +6,44 @@ use Job;
 use Title;
 
 /**
+ * Job base class
+ *
+ * @licence GNU GPL v2+
  * @since 1.9
  *
- * @license GNU GPL v2+
  * @author mwjames
  */
-abstract class JobBase extends Job implements DependencyRequestor {
+abstract class JobBase extends Job implements ContextAware, ContextInjector {
 
-	/** @var DependencyBuilder */
-	protected $dependencyBuilder = null;
+	/** @var ContextResource */
+	protected $context = null;
 
 	/**
-	 * @see DependencyRequestor::setDependencyBuilder
-	 *
 	 * @since 1.9
 	 *
-	 * @param DependencyBuilder $builder
+	 * @param ContextResource
 	 */
-	public function setDependencyBuilder( DependencyBuilder $builder ) {
-		$this->dependencyBuilder = $builder;
+	public function invokeContext( ContextResource $context ) {
+		$this->context = $context;
 	}
 
 	/**
-	 * @see DependencyRequestor::getDependencyBuilder
+	 * @see ContextAware::withContext
 	 *
 	 * @since 1.9
 	 *
-	 * @return DependencyBuilder
+	 * @return ContextResource
 	 */
-	public function getDependencyBuilder() {
+	public function withContext() {
 
 		// JobBase is a top-level class and to avoid a non-instantiated object
-		// a default builder is set as for when Jobs are triggered using
-		// command line etc.
-
-		if ( $this->dependencyBuilder === null ) {
-			$this->dependencyBuilder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
+		// a default builder is set as for when Jobs are triggered without
+		// injected context (during command line etc.)
+		if ( $this->context === null ) {
+			$this->context = new BaseContext();
 		}
 
-		return $this->dependencyBuilder;
+		return $this->context;
 	}
 
 	/**

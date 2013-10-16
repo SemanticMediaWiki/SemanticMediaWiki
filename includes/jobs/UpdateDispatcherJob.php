@@ -6,22 +6,15 @@ use Title;
 use Job;
 
 /**
- * Dispatcher class to enable to run in deferred or immediate update mode
+ * Dispatcher class to invoke UpdateJob's
  *
- * @file
+ * Can be run either in deferred or immediate mode to restore the data parity
+ * between a property and its attached subjects
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * Dispatcher class to enable to run UpdateJob in deferred or immediate mode
- * that restores the data parity between a property and its attached subjects
- *
- * @ingroup Job
- * @ingroup Dispatcher
  */
 class UpdateDispatcherJob extends JobBase {
 
@@ -99,7 +92,7 @@ class UpdateDispatcherJob extends JobBase {
 		/**
 		 * @var Store $store
 		 */
-		$store = $this->getDependencyBuilder()->newObject( 'Store' );
+		$store = $this->withContext()->getStore();
 
 		// Array of all subjects that have some value for the given property
 		$subjects = $store->getAllPropertySubjects( $property );
@@ -171,13 +164,7 @@ class UpdateDispatcherJob extends JobBase {
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-
-		/**
-		 * @var Settings $settings
-		 */
-		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
-
-		if ( $settings->get( 'smwgEnableUpdateJobs' ) ) {
+		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}
