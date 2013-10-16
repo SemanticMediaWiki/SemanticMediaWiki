@@ -64,19 +64,14 @@ class UpdateObserver extends Observer implements ContextAware, ContextInjector {
 	 *
 	 * @since 1.9
 	 *
-	 * @param ParserData $subject
+	 * @param ParserData $parserData
 	 *
 	 * @return true
 	 */
-	public function runStoreUpdater( ParserData $subject ) {
+	public function runStoreUpdater( ParserData $parserData ) {
 
-		$updater = new StoreUpdater(
-			$this->withContext()->getStore(),
-			$subject->getData(),
-			$this->withContext()->getSettings()
-		);
-
-		$updater->setUpdateStatus( $subject->getUpdateStatus() )->doUpdate();
+		$updater = new StoreUpdater( $parserData->getData(), $this->withContext() );
+		$updater->setUpdateStatus( $parserData->getUpdateStatus() )->doUpdate();
 
 		return true;
 	}

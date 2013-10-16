@@ -231,6 +231,26 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 */
 			'BaseContext' => function ( DependencyBuilder $builder ) {
 				return new BaseContext( $builder );
+			},
+
+			/**
+			 * PropertyChangeNotifier object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return PropertyChangeNotifier
+			 */
+			'PropertyChangeNotifier' => function ( DependencyBuilder $builder ) {
+
+				$instance = new PropertyChangeNotifier(
+					$builder->newObject( 'Store' ),
+					$builder->getArgument( 'SemanticData' ),
+					$builder->newObject( 'Settings' )
+				);
+
+				$instance->setObservableDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
+
+				return $instance;
 			}
 
 		);

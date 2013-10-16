@@ -9,31 +9,21 @@ use SMW\DependencyBuilder;
 use SMW\DependencyContainer;
 
 /**
- * Tests for the SharedDependencyContainer
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SharedDependencyContainer
  * @covers \SMW\SimpleDependencyBuilder
  * @covers \SMW\BaseDependencyContainer
  *
- * @ingroup Test
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @author mwjames
  */
 class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -41,11 +31,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SimpleDependencyBuilder object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return SimpleDependencyBuilder
 	 */
@@ -54,8 +40,6 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 * @test SimpleDependencyBuilder::addArgument
 	 * @dataProvider objectDataProvider
 	 *
 	 * @since 1.9
@@ -168,6 +152,12 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		);
 
 		$provider[] = array( 'BasePropertyAnnotator', array( '\SMW\BasePropertyAnnotator' => array(
+				'SemanticData' => $this->newMockBuilder()->newObject( 'SemanticData' )
+				)
+			)
+		);
+
+		$provider[] = array( 'PropertyChangeNotifier', array( '\SMW\PropertyChangeNotifier' => array(
 				'SemanticData' => $this->newMockBuilder()->newObject( 'SemanticData' )
 				)
 			)

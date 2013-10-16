@@ -7,33 +7,40 @@ use Title;
 use User;
 
 /**
- * Initiates update of the Store
+ * Initiates an update of the Store
  *
+ * @licence GNU GPL v2+
  * @since 1.9
  *
- * @license GNU GPL v2+
  * @author mwjames
  */
-class StoreUpdater {
-
-	/** @var Store */
-	protected $store;
+class StoreUpdater implements ContextAware {
 
 	/** @var SemanticData */
 	protected $semanticData;
 
-	/** @var Settings */
-	protected $settings;
+	/** @var ContextResource */
+	protected $context;
 
 	/** @var $updateJobs */
 	protected $updateJobs = null;
 
-	public function __construct( Store $store, SemanticData $semanticData, Settings $settings ) {
-		$this->store        = $store;
+	public function __construct( SemanticData $semanticData, ContextResource $context ) {
 		$this->semanticData = $semanticData;
-		$this->settings     = $settings;
+		$this->context      = $context;
 
-		$this->setUpdateStatus( $settings->get( 'smwgEnableUpdateJobs' ) );
+		$this->setUpdateStatus( $this->context->getSettings()->get( 'smwgEnableUpdateJobs' ) );
+	}
+
+	/**
+	 * @see ContextAware::withContext
+	 *
+	 * @since 1.9
+	 *
+	 * @return ContextResource
+	 */
+	public function withContext() {
+		return $this->context;
 	}
 
 	/**
@@ -102,7 +109,10 @@ class StoreUpdater {
 
 			$user = User::newFromId( $revision->getUser() );
 
-			$propertyAnnotator = new BasePropertyAnnotator( $this->semanticData, $this->settings );
+			$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
+				'SemanticData' => $this->semanticData
+			) );
+
 			$propertyAnnotator->addSpecialProperties( $wikiPage, $revision, $user );
 
 		} else {
@@ -113,15 +123,19 @@ class StoreUpdater {
 		// Comparison must happen *before* the storage update;
 		// even finding uses of a property fails after its type changed.
 		if ( $this->updateJobs ) {
-			$changeNotifier = new PropertyChangeNotifier( $this->store, $this->semanticData, $this->settings );
-			$changeNotifier->setObservableDispatcher( new ObservableSubjectDispatcher( new UpdateObserver() ) )->detectChanges();
+
+			$changeNotifier = $this->withContext()->getDependencyBuilder()->newObject( 'PropertyChangeNotifier', array(
+				'SemanticData' => $this->semanticData
+			) );
+
+			$changeNotifier->detectChanges();
 		}
 
 		// Actually store semantic data, or at least clear it if needed
 		if ( $processSemantics ) {
-			$this->store->updateData( $this->semanticData );
+			$this->withContext()->getStore()->updateData( $this->semanticData );
 		} else {
-			$this->store->clearData( $this->semanticData->getSubject() );
+			$this->withContext()->getStore()->clearData( $this->semanticData->getSubject() );
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -138,7 +152,7 @@ class StoreUpdater {
 	 * @return boolean
 	 */
 	protected function isValid( Title $title ) {
-		return NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
+		return $this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

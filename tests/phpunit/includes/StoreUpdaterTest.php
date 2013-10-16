@@ -5,25 +5,25 @@ namespace SMW\Test;
 use SMW\StoreFactory;
 use SMW\StoreUpdater;
 use SMW\SemanticData;
+use SMW\BaseContext;
 use SMW\DIWikiPage;
+
 use Title;
 
 /**
  * @covers \SMW\StoreUpdater
  *
- * @ingroup Test
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @group SMW
  * @group SMWExtension
  *
  * @author mwjames
- * @license GNU GPL v2+
  */
 class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -31,17 +31,11 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a StoreUpdater object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $store
-	 * @param $data
-	 * @param $settings
 	 *
 	 * @return StoreUpdater
 	 */
-	private function newInstance( $store = null, $data = null, $settings = null ) {
+	private function newInstance( $store = null, $data = null ) {
 
 		if ( $store === null ) {
 			$store = $this->newMockBuilder()->newObject( 'Store' );
@@ -51,19 +45,21 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 			$data = $this->newMockBuilder()->newObject( 'SemanticData' );
 		}
 
-		if ( $settings === null ) {
-			$settings  = $this->getSettings( array(
-				'smwgEnableUpdateJobs'            => false,
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
-			) );
-		}
+		$settings  = $this->newSettings( array(
+			'smwgEnableUpdateJobs'            => false,
+			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
+		) );
 
-		return new StoreUpdater( $store, $data, $settings );
+		$context   = new BaseContext();
+
+		$container = $context->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Store', $store );
+		$container->registerObject( 'Settings', $settings );
+
+		return new StoreUpdater( $data, $context );
 	}
 
 	/**
-	 * @test StoreUpdater::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -71,8 +67,6 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StoreUpdater::doUpdate
-	 *
 	 * @since 1.9
 	 */
 	public function testDoUpdate() {
@@ -88,13 +82,9 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StoreUpdater::doUpdate
 	 * @dataProvider titleDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testDoUpdateOnMock( $setup, $expected ) {
 

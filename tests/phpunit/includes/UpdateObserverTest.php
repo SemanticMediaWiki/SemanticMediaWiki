@@ -57,6 +57,13 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @since 1.9
+	 */
+	public function testDefaultContext() {
+		$this->assertInstanceOf( '\SMW\ContextResource', $this->newInstance()->withContext() );
+	}
+
+	/**
 	 * @dataProvider updateDispatcherDataProvider
 	 *
 	 * @since 1.9

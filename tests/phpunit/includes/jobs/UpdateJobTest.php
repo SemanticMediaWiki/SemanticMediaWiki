@@ -72,6 +72,13 @@ class UpdateJobTest extends ParserTestCase {
 	/**
 	 * @since 1.9
 	 */
+	public function testDefaultContext() {
+		$this->assertInstanceOf( '\SMW\ContextResource', $this->newInstance()->withContext() );
+	}
+
+	/**
+	 * @since 1.9
+	 */
 	public function testRun() {
 
 		$title = $this->newMockBuilder()->newObject( 'Title', array(
