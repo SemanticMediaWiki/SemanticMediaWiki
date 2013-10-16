@@ -123,6 +123,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		$provider[] = array( 'NamespaceExaminer',          array( '\SMW\NamespaceExaminer'           => array() ) );
 		$provider[] = array( 'UpdateObserver',             array( '\SMW\UpdateObserver'              => array() ) );
 		$provider[] = array( 'ObservableUpdateDispatcher', array( '\SMW\ObservableSubjectDispatcher' => array() ) );
+		$provider[] = array( 'BaseContext',                array( '\SMW\BaseContext'                 => array() ) );
 
 		$provider[] = array( 'RequestContext',             array( '\IContextSource'                  => array() ) );
 

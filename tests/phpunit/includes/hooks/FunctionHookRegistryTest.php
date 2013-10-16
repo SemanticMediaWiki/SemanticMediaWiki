@@ -38,8 +38,6 @@ class FunctionHookRegistryTest extends SemanticMediaWikiTestCase {
 	 * Helper method that returns a FunctionHook object
 	 *
 	 * @since 1.9
-	 *
-	 * @return FunctionHook
 	 */
 	private function newHook() {
 		return $this->getMockForAbstractClass( '\SMW\FunctionHook' );
@@ -49,24 +47,41 @@ class FunctionHookRegistryTest extends SemanticMediaWikiTestCase {
 	 * Helper method that returns a FunctionHookRegistry object
 	 *
 	 * @since 1.9
-	 *
-	 * @return FunctionHookRegistry
 	 */
-	private function newInstance() {
-		return new FunctionHookRegistry();
+	private function newInstance( $context = null ) {
+		return new FunctionHookRegistry( $context );
 	}
 
 	/**
-	 * @test FunctionHookRegistry::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
+
 		$this->assertInstanceOf(
 			'\SMW\FunctionHook',
 			FunctionHookRegistry::register( $this->newHook() ),
-			'Failed asserting FunctionHook instance'
+			'Asserts that register() returns a FunctionHook instance'
 		);
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testWithContext() {
+
+		$this->assertInstanceOf(
+			'\SMW\ContextResource',
+			$this->newInstance()->withContext(),
+			'Asserts that getContext() returns a default context'
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\EmptyContext',
+			$this->newInstance( new \SMW\EmptyContext() )->withContext(),
+			'Asserts that getContext() returns a empty context'
+		);
+
 	}
 
 }

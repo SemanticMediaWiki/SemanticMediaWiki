@@ -18,7 +18,10 @@ namespace SMW;
  *
  * @ingroup Hook
  */
-abstract class FunctionHook extends DependencyInjector {
+abstract class FunctionHook extends DependencyInjector implements ContextInjector {
+
+	/** @var ContextResource */
+	protected $context;
 
 	/**
 	 * Main method that initiates the processing of the registered
@@ -29,5 +32,14 @@ abstract class FunctionHook extends DependencyInjector {
 	 * @return true
 	 */
 	public abstract function process();
+
+	/**
+	 * @see ContextInjector::invokeContext
+	 *
+	 * @since  1.9
+	 */
+	public function invokeContext( ContextResource $context ) {
+		$this->context = $context;
+	}
 
 }

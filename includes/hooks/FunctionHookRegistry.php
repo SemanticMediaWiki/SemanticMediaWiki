@@ -18,10 +18,56 @@ namespace SMW;
  *
  * @ingroup Hook
  */
-class FunctionHookRegistry {
+class FunctionHookRegistry implements ContextAware {
+
+	/** @var ContextResource */
+	protected $context;
 
 	/**
-	 * Method to register a hook and its DependencyBuilder
+	 * @since 1.9
+	 *
+	 * @param ContextResource $contextObject
+	 */
+	public function __construct( ContextResource $context = null ) {
+		$this->context = $context;
+	}
+
+	/**
+	 * @see ContextAware::withContext
+	 *
+	 * @since 1.9
+	 *
+	 * @return ContextResource
+	 */
+	public function withContext() {
+
+		if ( $this->context === null ) {
+			$this->context = new BaseContext();
+		}
+
+		return $this->context;
+	}
+
+	/**
+	 * Load the hook and inject it with an appropriate context
+	 *
+	 * @since  1.9
+	 *
+	 * @param FunctionHook $hook
+	 *
+	 * @return FunctionHook
+	 */
+	public function load( FunctionHook $hook ) {
+
+		// FIXME legacy use the context instead
+		$hook->setDependencyBuilder( $this->withContext()->getDependencyBuilder() );
+		$hook->invokeContext( $this->withContext() );
+
+		return $hook;
+	}
+
+	/**
+	 * Method to register a hook
 	 *
 	 * @since  1.9
 	 *
@@ -30,11 +76,8 @@ class FunctionHookRegistry {
 	 * @return FunctionHook
 	 */
 	public static function register( FunctionHook $hook ) {
-
-		// FIXME Expecting a context object to derive a builder
-
-		$hook->setDependencyBuilder( new SimpleDependencyBuilder( new SharedDependencyContainer() ) );
-		return $hook;
+		$instance = new self();
+		return $instance->load( $hook );
 	}
 
 }

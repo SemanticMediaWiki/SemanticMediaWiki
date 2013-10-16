@@ -104,6 +104,13 @@ return array(
 	'SMW\Deserializers\SemanticDataDeserializer'  => 'includes/serializer/Deserializers/SemanticDataDeserializer.php',
 	'SMW\Serializers\QueryResultSerializer'        => 'includes/serializer/Serializers/QueryResultSerializer.php',
 
+	// Context
+	'SMW\EmptyContext'              => 'includes/context/EmptyContext.php',
+	'SMW\BaseContext'               => 'includes/context/BaseContext.php',
+	'SMW\ContextResource'           => 'includes/context/ContextResource.php',
+	'SMW\ContextAware'              => 'includes/context/ContextAware.php',
+	'SMW\ContextInjector'           => 'includes/context/ContextInjector.php',
+
 	// Cache
 	'SMW\CacheHandler'                => 'includes/cache/CacheHandler.php',
 	'SMW\CacheableResultMapper'       => 'includes/cache/CacheableResultMapper.php',

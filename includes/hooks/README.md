@@ -18,7 +18,16 @@ NewRevisionFromEditComplete called when a new revision was inserted due to an ed
 #### ParserAfterTidy
 ParserAfterTidy is used to re-introduce content, update base annotations (e.g. special properties, categories etc.) and in case of a manual article purge initiates a store update (LinksUpdateConstructed wouldn't work because it acts only on link changes and therefore would not trigger a LinksUpdateConstructed event).
 
-### SpecialStatsAddExtra
+#### SpecialStatsAddExtra
 SpecialStatsAddExtra is used to add additional statistic being shown at Special:Statistics.
+
+#### SkinAfterContent
+Extend the display with content from the Factbox.
+
+#### OutputPageParserOutput
+Rendering the Factbox and updating the FactboxCache.
+
+#### TitleMoveComplete
+Update the Store after an article has been deleted.
 
 [hooks]: https://www.mediawiki.org/wiki/Hooks "Manual:Hooks"

@@ -219,7 +219,18 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 * @return FunctionHookRegistry
 			 */
 			'FunctionHookRegistry' => function ( DependencyBuilder $builder ) {
-				return new FunctionHookRegistry();
+				return new FunctionHookRegistry( $builder->newObject( 'BaseContext' ) );
+			},
+
+			/**
+			 * BaseContext object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return BaseContext
+			 */
+			'BaseContext' => function ( DependencyBuilder $builder ) {
+				return new BaseContext( $builder );
 			}
 
 		);

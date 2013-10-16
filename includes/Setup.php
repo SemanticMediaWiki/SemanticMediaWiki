@@ -21,7 +21,7 @@ namespace SMW;
  *
  * @ingroup SMW
  */
-final class Setup {
+final class Setup implements ContextAware {
 
 	/** @var array */
 	protected $globals;
@@ -29,16 +29,18 @@ final class Setup {
 	/** @var Settings */
 	protected $settings;
 
-	/** @var DependencyBuilder */
-	protected $dependencyBuilder = null;
+	/** @var ContextResource */
+	protected $context = null;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param array &$globals
+	 * @param ContextResource|null $context
 	 */
-	public function __construct( &$globals ) {
+	public function __construct( &$globals, ContextResource $context = null ) {
 		$this->globals =& $globals;
+		$this->context = $context;
 	}
 
 	/**
@@ -96,30 +98,38 @@ final class Setup {
 	}
 
 	/**
+	 * @see ContextAware::withContext
+	 *
+	 * @since 1.9
+	 *
+	 * @return ContextResource
+	 */
+	public function withContext() {
+
+		if ( $this->context === null ) {
+			$this->context = new BaseContext();
+		}
+
+		return $this->context;
+	}
+
+	/**
 	 * Load Semantic MediaWiki specific settings
 	 *
 	 * @since 1.9
 	 */
 	protected function loadSettings() {
-
-		$this->settings = Settings::newFromGlobals( $this->globals );
-
+		$this->settings = $this->registerSettings( Settings::newFromGlobals( $this->globals ) );
 	}
 
 	/**
-	 * Returns a DependencyBuilder
+	 * Register settings
 	 *
 	 * @since 1.9
 	 */
-	protected function getDependencyBuilder() {
-
-		// Use the DefaultContext to determine the builder
-		if ( $this->dependencyBuilder === null ) {
-			$this->dependencyBuilder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
-			$this->dependencyBuilder->getContainer()->registerObject( 'Settings', $this->settings );
-		}
-
-		return $this->dependencyBuilder;
+	protected function registerSettings( Settings $settings ) {
+		$this->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
+		return $settings;
 	}
 
 	/**
@@ -308,7 +318,7 @@ final class Setup {
 	 */
 	protected function registerFunctionHooks() {
 
-		$hookRegistry = $this->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
+		$hookRegistry = $this->withContext()->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
 
 		/**
 		 * Hook: Called by BaseTemplate when building the toolbox array and
@@ -319,7 +329,7 @@ final class Setup {
 		 * @since  1.9
 		 */
 		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) use ( $hookRegistry ) {
-			return $hookRegistry->register( new BaseTemplateToolbox( $skinTemplate, $toolbox ) )->process();
+			return $hookRegistry->load( new BaseTemplateToolbox( $skinTemplate, $toolbox ) )->process();
 		};
 
 		// Old-style registration
@@ -359,7 +369,7 @@ final class Setup {
 	protected function registerParserHooks() {
 
 		$settings = $this->settings;
-		$objectBuilder = $this->getDependencyBuilder();
+		$objectBuilder = $this->withContext()->getDependencyBuilder();
 
 		/**
 		 * Called when the parser initialises for the first time
