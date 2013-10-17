@@ -11,14 +11,15 @@ production until the actual release.
 * Deleted pre SMW 1.5.1 entry point (includes/SMW_Settings.php), the main entry point is SemanticMediaWiki.php
 * Changed minimum Validator version from 0.5 to 1.0.
 * Restored compatibility with SQLite
-* Support for quantity export via API and JSON format (I17a3e046)
-* Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
-* #set_recurring_event create individual subobjects (changes query behavior for recurring events; for more see [[Help:Recurring_events]]) (I5db911e536)
+* (I17a3e0) Support for quantity export via API and JSON format
+* (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
+* (I5db911) #set_recurring_event using subobjects (changes query behavior for recurring events; for more see [[Help:Recurring_events]])
 
 === New features ===
 
 * Added maintenance script to rebuild the property statistics
-* The property type String is now an alias for Text and has no more length restrictions
+* (271864f) The property type String is now an alias for Text and has no more length restrictions
+* (9714d04) \SMW\ApiBrowse enables to browse a subject via the Api
 
 === Enhancements ===
 
@@ -30,16 +31,72 @@ production until the actual release.
 * (Bug 43932) Enable html tags support for non-list results in SMW\ListResultPrinter
 * (Bug 44275) Enable .data( 'sortkey' ) support in SMW\ListResultPrinter
 
+* (40e7572) Renamed SMWDISerializer to \SMW\Serializers\QueryResultSerializer
+* (a0b08fe) Add \SMW\Serializes\SemanticDataSerializer
+* (02635a1) Replace SkinTemplateToolboxEnd hook with SMW\BaseTemplat...
+* (a7351c5) Register #ask as callback
+* (058c2fc) Separate extension registration using SMW\Setup
+* (5a82da8) Improve SMW\Factbox and introduce SMW\FactboxCache ($smwgFactboxUseCache, $smwgFactboxCacheRefreshOnPurge)
+* (24cca37) introducing SMW\Test\MockObjectBuilder and SMW\Test\MockObjectRepository
+* (ed52df7) (Bug 50844) Special:Properties search form
+* (332982b) SMW\Subobject, SMW\SubobjectParserFunction use SMW\HashIdGenerator
+* (ec5dd46) Introducing SMW\SimpleDependencyBuilder and SMW\SharedDependencyContainer
+* (18d17a5) Adds SMW\StoreUpdater
+* (71dbba1) Adds SMW\ObservableDispatcher
+* (6d5a3c5) Adss SMW\JobBase
+* (dc28899) Adds SMW\UpdateDispatcherJob
+* (be56922) Adds SMW\FunctionHookRegistry
+* (83fee62) (Bug 51498) SMW\RedirectBuilder
+* (c8a2f97) SMW\ApiAsk + SMW\ApiAskArgs fix bug 51091
+* (8bcee83) (Bug 44696) AskApi to support valid XML
+* (a949f04) (Bug 33181) Special:Concepts
+* (92b67bd) Use SMW\TableFormatter for the table query printer
+* (6c06567) SMW\SQLStore\PropertyTableDefinitionBuilder
+* (b8aea6c) (Bug 48840) Create "smw-admin"
+* (2164a25) SMW\SQLStore\StatisticsCollector
+* (87b214f) SMW\Settings
+* (5a33d2d) SMW\CacheHandler
+* (3e706ef) (Bug 47927) $concept->getCacheStatus()
+* (0c971f8) (Bug 46458) ApiSMWInfo add count information
+* (bb35e8a) (Bug 47123) Aggregate numbers based on the mainlabel
+* (5cda766) (Bug 46930) changeTitle only create redirect
+* (6dd845e) (Bug 34477) SMW\ConceptPage display concept cache info
+* (f216a41) ParserHook re-factoring
+* (38499a8) Display statistics using the SpecialStatsAddExtra hook
+* (e4a5fb8) (Bug 31880) add column class (based on dataValue typeId)
+* (e4a2035) SMW\RecurringEvents eliminate restrictions and use subobj
+* (a957596) SMW\JSONResultPrinter delete clutter
+* (395b584) Add ResourceLoaderGetConfigVars
+* (7c60e50) SMW\ApiResultPrinter
+* (cb6c6ad) SMW\ResultPrinter class turn RequestContext aware
+* (7d1e2ad) (Bug 34782) Add note to #info parser function
+
 === Dropped features ===
 
-*
+* (6f7625f) Remove Special:QueryCreator
+* (5a3f6ed) (Bug 50755) Remove MigrationJob/SMWMigrate
+* (f9cff2b) Remove smwfLoadExtensionMessages
 
 === Bug fixes ===
 
 * The property statistics rebuilding is no longer done whenever you run update.php.
 * (Bug 42321) Fixed issue frequently causing notices in SQLStore3
+* (5fdbb83) Fix offset display in Special:Ask
+* (9113ad1) (Bug 47010) SMWInfoLink
+* (af0cbe0) Fix escaping issue on Special:Ask
+* (ba74804) Fix construction of SMWExpLiteral
+* (d16a103) (Bug 45053) SMW\ListResultPrinter support _qty tooltip display
+* (9b2b5c7) (Bug 44518) Don't display <li> elements for |format=list
+* (f226c5a) SMW\ListResultPrinter (bug 43932) + (bug 44275)
+* (fcb7da9) bug 42324: fix sqlite support in sqlstore3
 
-== Deprecated classes ==
+=== Deprecated methods/classes ===
+If not noted otherwise, deprecated methods or classes will be removed in SMW 1.11.
+
+* (b4664be) smwfIsSemanticsProcessed was replaced by SMW\NamespaceExaminer
+* (3ba701f) smwfEncodeMessages was replaced by SMW\Highlighter, SMW\MessageFormatter
+* (534548b) smwfGetStore was replaced by SMW\StoreFactory
+* SMWParseData was replaced by a non-static SMW\ParserData class
 
 * SMWListResultPrinter, SMWResultPrinter, SMWSubobject, SMWSet
 * SMWFeedResultPrinter, SMWDISerializer
@@ -47,18 +104,11 @@ production until the actual release.
 
 === Unit tests ===
 
-* Add PHPUnit tests
-: FormatFactoryTest.php, QueryProcessorTest.php, ParserParameterTest.php
-: DefinesTest.php, GlobalFunctionsTest.php, HighlighterTest.php
-: SubobjectTest.php, SubobjectTest.php, SubobjectHandlerTest.php,
-: RecurringEventsTest.php
+* More than 80 PHPUnit tests have been added
+* More than 10 QUnit tests have been added
 
-* Add QUnit tests ext.smw.test, ext.smw.util.tooltip
-: ext.smw.api.test.js, ext.smw.data.test.js, ext.smw.query.test.js
-: ext.smw.dataItem.number.test.js, ext.smw.dataItem.property.test.js,
-: ext.smw.dataItem.text.test.js, ext.smw.dataItem.time.test.js
-: ext.smw.dataItem.unknown.test.js, ext.smw.dataItem.uri.test.js
-: ext.smw.dataItem.wikiPage.test.js, ext.smw.dataValue.quantity.test.js
+=== Documentation ===
+Additional documentation has been added, see /docs/
 
 === Extended translations ===
 
