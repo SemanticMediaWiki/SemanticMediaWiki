@@ -7,20 +7,13 @@ use SMWQueryResult;
 use SMWQuery;
 
 /**
- * Base for API modules that query SMW.
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.6.2
- *
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
  * Base for API modules that query SMW
  *
- * @ingroup Api
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author mwjames
  */
 abstract class ApiQuery extends ApiBase {
 
@@ -58,7 +51,7 @@ abstract class ApiQuery extends ApiBase {
 	 * @return SMWQueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		 return $this->store->getQueryResult( $query );
+		 return $this->withContext()->getStore()->getQueryResult( $query );
 	}
 
 	/**

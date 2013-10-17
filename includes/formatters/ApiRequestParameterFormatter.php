@@ -8,25 +8,17 @@ use SMWPrintRequest;
 /**
  * This class handles Api related request parameter formatting
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * This class handles Api related request parameter formatting
- *
- * @ingroup Formatter
  */
 final class ApiRequestParameterFormatter {
 
 	/** @var array */
 	protected $requestParameters = array();
 
-	/** @var HashArray */
+	/** @var ObjectDictionary */
 	protected $results = null;
 
 	/**
@@ -59,15 +51,15 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @return ObjectDictionary
+	 * @return array
 	 */
-	public function getAskArgsApiParameters() {
+	public function getAskArgsApiParameter( $key ) {
 
 		if ( $this->results === null ) {
-			$this->results = $this->doAskArgsFormatting();
+			$this->results = $this->formatAskArgs();
 		}
 
-		return $this->results;
+		return $this->results->get( $key );
 	}
 
 	/**
@@ -77,7 +69,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return ObjectDictionary
 	 */
-	protected function doAskArgsFormatting() {
+	protected function formatAskArgs() {
 
 		$result = new SimpleDictionary();
 

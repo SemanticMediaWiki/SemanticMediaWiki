@@ -12,13 +12,13 @@ use SMW\Subobject;
 /**
  * @covers \SMW\ApiBrowse
  *
- * @since 1.9
- *
  * @group SMW
  * @group SMWExtension
  * @group API
  *
  * @licence GNU GPL v2+
+ * @since 1.9
+ *
  * @author mwjames
  */
 class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
@@ -46,7 +46,7 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 	public function testExecuteOnRawModeAndMockStore( $setup ) {
 
 		$api = new ApiBrowse( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browse' );
-		$api->setStore( $setup['store'] );
+		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $setup['store'] );
 		$api->getMain()->getResult()->setRawMode();
 
 		$api->execute();
@@ -63,7 +63,7 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 	public function testExecuteOnMockStore( $setup ) {
 
 		$api = new ApiBrowse( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browse' );
-		$api->setStore( $setup['store'] );
+		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $setup['store'] );
 		$api->execute();
 
 		$result = $api->getResultData();

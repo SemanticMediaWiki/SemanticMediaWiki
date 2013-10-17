@@ -19,7 +19,7 @@ namespace SMW;
  * @ingroup SpecialPage
  * @codeCoverageIgnore
  */
-class SpecialPage extends \SpecialPage implements Configurable, StoreAccess {
+class SpecialPage extends \SpecialPage implements Configurable {
 
 	/** @var Store */
 	protected $store = null;

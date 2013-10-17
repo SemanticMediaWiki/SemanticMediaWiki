@@ -7,18 +7,11 @@ use SMWQueryProcessor;
 /**
  * API module to query SMW by providing a query in the ask language.
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.6.2
+ * @licence GNU GPL v2+
+ * @since 1.6.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
- * API module to query SMW by providing a query in the ask language.
- *
- * @ingroup Api
+ * @author mwjames
  */
 class ApiAsk extends ApiQuery {
 

@@ -5,24 +5,15 @@ namespace SMW;
 /**
  * Semantic MediaWiki Api Base class
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
+abstract class ApiBase extends \ApiBase implements ContextAware, ContextInjector {
 
-/**
- * Semantic MediaWiki Api Base class
- *
- * @ingroup Api
- * @codeCoverageIgnore
- */
-abstract class ApiBase extends \ApiBase implements StoreAccess {
-
-	/** @var Store */
-	protected $store = null;
+	/** @var ContextResource */
+	protected $context = null;
 
 	/**
 	 * @see ApiBase::__construct
@@ -34,35 +25,33 @@ abstract class ApiBase extends \ApiBase implements StoreAccess {
 	 */
 	public function __construct( $main, $action ) {
 		parent::__construct( $main, $action );
-		$this->store = StoreFactory::getStore();
 	}
 
 	/**
-	 * Sets Store object
+	 * @see ContextInjector::invokeContext
 	 *
 	 * @since 1.9
 	 *
-	 * @param Store $store
+	 * @param ContextResource
 	 */
-	public function setStore( Store $store ) {
-		$this->store = $store;
-		return $this;
+	public function invokeContext( ContextResource $context ) {
+		$this->context = $context;
 	}
 
 	/**
-	 * Returns Store object
+	 * @see ContextAware::withContext
 	 *
 	 * @since 1.9
 	 *
-	 * @return Store
+	 * @return ContextResource
 	 */
-	public function getStore() {
+	public function withContext() {
 
-		if ( $this->store === null ) {
-			$this->store = StoreFactory::getStore();
+		if ( $this->context === null ) {
+			$this->context = new BaseContext();
 		}
 
-		return $this->store;
+		return $this->context;
 	}
 
 }

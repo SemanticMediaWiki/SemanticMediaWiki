@@ -94,7 +94,6 @@ return array(
 
 	'SMW\Cacheable'                 => 'includes/Cacheable.php',
 	'SMW\Configurable'              => 'includes/Configurable.php',
-	'SMW\StoreAccess'               => 'includes/StoreAccess.php',
 
 	// Serializer
 	'SMW\SerializerFactory'                       => 'includes/serializer/SerializerFactory.php',

@@ -6,19 +6,10 @@ namespace SMW;
  * API module to obtain info about the SMW install, primarily targeted at
  * usage by the SMW registry.
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.6
+ * @licence GNU GPL v2+
+ * @since 1.6
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
- * API module to obtain info about the SMW install, primarily targeted at
- * usage by the SMW registry.
- *
- * @ingroup Api
  */
 class ApiInfo extends ApiBase {
 
@@ -41,7 +32,7 @@ class ApiInfo extends ApiBase {
 			|| in_array( 'subobjectcount', $requestedInfo )
 			|| in_array( 'declaredpropcount', $requestedInfo ) ) {
 
-			$semanticStats = $this->store->getStatistics();
+			$semanticStats = $this->withContext()->getStore()->getStatistics();
 
 			$map = array(
 				'propcount' => 'PROPUSES',

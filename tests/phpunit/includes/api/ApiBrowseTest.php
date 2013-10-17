@@ -9,13 +9,13 @@ use SMW\DIWikiPage;
 /**
  * @covers \SMW\ApiBrowse
  *
- * @since 1.9
- *
  * @group SMW
  * @group SMWExtension
  * @group API
  *
  * @licence GNU GPL v2+
+ * @since 1.9
+ *
  * @author mwjames
  */
 class ApiBrowseTest extends ApiTestCase {

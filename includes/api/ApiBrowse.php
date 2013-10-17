@@ -7,9 +7,9 @@ use Title;
 /**
  * Api module to browse a subject
  *
+ * @licence GNU GPL v2+
  * @since 1.9
  *
- * @licence GNU GPL v2+
  * @author mwjames
  */
 class ApiBrowse extends ApiBase {
@@ -55,7 +55,7 @@ class ApiBrowse extends ApiBase {
 	 */
 	protected function getSemanticData( DIWikiPage $subject ) {
 
-		$semanticData = $this->getStore()->getSemanticData( $subject );
+		$semanticData = $this->withContext()->getStore()->getSemanticData( $subject );
 
 		foreach ( $semanticData->getProperties() as $property ) {
 			if ( $property->getKey() === DIProperty::TYPE_SUBOBJECT || $property->getKey() === DIProperty::TYPE_ASKQUERY ) {
@@ -84,7 +84,7 @@ class ApiBrowse extends ApiBase {
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $value ) {
 			if ( $value instanceOf DIWikiPage && !isset( $subSemanticData[ $value->getSubobjectName() ] ) ) {
-				$semanticData->addSubSemanticData( $this->getStore()->getSemanticData( $value ) );
+				$semanticData->addSubSemanticData( $this->withContext()->getStore()->getSemanticData( $value ) );
 			}
 		}
 	}

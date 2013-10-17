@@ -5,31 +5,21 @@ namespace SMW\Test;
 use SMW\ApiInfo;
 
 /**
- * Tests for the ApiInfo class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\ApiInfo
  * @covers \SMW\ApiBase
- *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  * @group API
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ApiInfoTest extends ApiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -37,13 +27,9 @@ class ApiInfoTest extends ApiTestCase {
 	}
 
 	/**
-	 * @test ApiInfo::execute
 	 * @dataProvider typeDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $queryParameters
-	 * @param array $expectedType
 	 */
 	public function testExecuteOnSQLStore( $queryParameters, $expectedType ) {
 
@@ -53,9 +39,6 @@ class ApiInfoTest extends ApiTestCase {
 				'action' => 'smwinfo',
 				'info' => $queryParameters
 		) );
-
-		// Works only after SMW\StatisticsAggregator is available
-		//$this->assertInternalType( $expectedType, $result['info'][$queryParameters] );
 
 		// Info array should return with either 0 or > 0 for integers
 		if ( $expectedType === 'integer' ) {
@@ -67,17 +50,12 @@ class ApiInfoTest extends ApiTestCase {
 	}
 
 	/**
-	 * @test ApiInfo::execute
 	 * @dataProvider countDataProvider
 	 *
 	 * Test against a mock store to ensure that methods are executed
 	 * regardless whether a "real" Store is available or not
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
-	 * @param string $type
-	 * @param array $expected
 	 */
 	public function testExecuteOnMockStore( $test, $type, $expected ) {
 
@@ -86,7 +64,7 @@ class ApiInfoTest extends ApiTestCase {
 		) );
 
 		$api = new ApiInfo( $this->getApiMain( array( 'info' => $type ) ), 'smwinfo' );
-		$api->setStore( $mockStore );
+		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
 		$api->execute();
 
 		$result = $api->getResultData();
@@ -95,7 +73,7 @@ class ApiInfoTest extends ApiTestCase {
 	}
 
 	/**
-	 * @test ApiInfo::execute (Test unknown query parameter)
+	 * Test unknown query parameter
 	 *
 	 * Only valid parameters will yield an info array while an unknown parameter
 	 * will produce a "warnings" array.
@@ -114,8 +92,6 @@ class ApiInfoTest extends ApiTestCase {
 	}
 
 	/**
-	 * Verify count and mapping results
-	 *
 	 * @return array
 	 */
 	public function countDataProvider() {
@@ -133,8 +109,6 @@ class ApiInfoTest extends ApiTestCase {
 	}
 
 	/**
-	 * Verify types
-	 *
 	 * @return array
 	 */
 	public function typeDataProvider() {

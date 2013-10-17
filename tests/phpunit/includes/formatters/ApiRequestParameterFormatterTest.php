@@ -7,29 +7,19 @@ use SMW\ApiRequestParameterFormatter;
 use SMWQueryResult;
 
 /**
- * Tests for the ApiRequestParameterFormatter class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\ApiRequestParameterFormatter
- *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -37,11 +27,7 @@ class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWPrintRequest object
-	 *
 	 * @since 1.9
-	 *
-	 * @param string $printout
 	 *
 	 * @return SMWPrintRequest
 	 */
@@ -54,72 +40,53 @@ class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ApiRequestParameterFormatter object
-	 *
 	 * @since 1.9
-	 *
-	 * @param array $parameters
 	 *
 	 * @return ApiRequestParameterFormatter
 	 */
-	private function getInstance( array $parameters ) {
+	private function newInstance( array $parameters ) {
 		return new ApiRequestParameterFormatter( $parameters );
 	}
 
 	/**
-	 * @test ApiRequestParameterFormatter::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance( array() ) );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance( array() ) );
 	}
 
 	/**
-	 * @test ApiRequestParameterFormatter::getAskArgsApiParameters
-	 *
 	 * @since 1.9
 	 */
-	public function testGetAskArgsApiParametersEmpty() {
+	public function testGetAskArgsApiParameterEmpty() {
 
-		$result = $this->getInstance( array() )->getAskArgsApiParameters();
+		$nstance = $this->newInstance( array() );
 
-		$this->assertInstanceOf( '\SMW\ObjectDictionary', $result );
-		$this->assertEmpty( $result->get( 'conditions' ) );
-		$this->assertEmpty( $result->get( 'parameters' ) );
-		$this->assertEmpty( $result->get( 'printouts' ) );
+		$this->assertEmpty( $nstance->getAskArgsApiParameter( 'conditions' ) );
+		$this->assertEmpty( $nstance->getAskArgsApiParameter( 'parameters' ) );
+		$this->assertEmpty( $nstance->getAskArgsApiParameter( 'printouts' ) );
 	}
 
 	/**
-	 * @test ApiRequestParameterFormatter::getAskArgsApiParameters
 	 * @dataProvider requestArgsApiParametersDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $test
-	 * @param $type
-	 * @param $expected
 	 */
-	public function testGetAskArgsApiParameters( $test, $type, $expected ) {
+	public function testGetAskArgsApiParameter( $test, $type, $expected ) {
 
-		$result = $this->getInstance( $test )->getAskArgsApiParameters();
+		$nstance = $this->newInstance( $test );
 
-		$this->assertInstanceOf( '\SMW\ObjectDictionary', $result );
-		$this->assertEquals( $expected, $result->get( $type ) );
+		$this->assertEquals( $expected, $nstance->getAskArgsApiParameter( $type ) );
 	}
 
 	/**
-	 * @test ApiRequestParameterFormatter::getAskApiParameters
 	 * @dataProvider requestAskApiParametersDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $test
-	 * @param $expected
 	 */
 	public function testGetAskApiParameters( $test, $expected ) {
 
-		$result = $this->getInstance( $test )->getAskApiParameters();
+		$result = $this->newInstance( $test )->getAskApiParameters();
 
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( $expected, $result );

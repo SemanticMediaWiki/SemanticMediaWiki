@@ -5,31 +5,21 @@ namespace SMW\Test;
 use SMW\ApiAskArgs;
 
 /**
- * Tests for the ApiAskArgs class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\ApiAskArgs
  * @covers \SMW\ApiBase
- *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  * @group API
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ApiAskArgsTest extends ApiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -37,7 +27,6 @@ class ApiAskArgsTest extends ApiTestCase {
 	}
 
 	/**
-	 * @test ApiAskArgs::execute
 	 * @dataProvider queryDataProvider
 	 *
 	 * This test only verifies if either an error result or
@@ -46,9 +35,6 @@ class ApiAskArgsTest extends ApiTestCase {
 	 * "Modification date" printrequests
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $query
-	 * @param array $expected
 	 */
 	public function testExecuteOnSQLStore( array $query, array $expected ) {
 
@@ -72,8 +58,6 @@ class ApiAskArgsTest extends ApiTestCase {
 	}
 
 	/**
-	 * @test ApiAskArgs::execute
-	 *
 	 * Test against a mock store to ensure that methods are executed
 	 * regardless whether a "real" Store is available or not
 	 *
@@ -105,7 +89,7 @@ class ApiAskArgsTest extends ApiTestCase {
 		) );
 
 		$api = new ApiAskArgs( $this->getApiMain( $requestParameters ), 'askargs' );
-		$api->setStore( $mockStore );
+		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
 		$api->execute();
 
 		$result = $api->getResultData();

@@ -2,33 +2,25 @@
 
 namespace SMW\Test;
 
-use ReflectionClass;
+use SMW\EmptyContext;
+use SMW\StoreFactory;
 use ApiResult;
-
-/**
- * Tests for the ApiQuery class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
  * @covers \SMW\ApiQuery
  *
- * @ingroup Test
- *
  * @group SMW
  * @group SMWExtension
+ * @group API
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ApiQueryTest extends ApiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -36,15 +28,14 @@ class ApiQueryTest extends ApiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ApiQuery object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $result
 	 *
 	 * @return ApiQuery
 	 */
-	private function newInstance( ApiResult $apiResult = null ) {
+	private function newInstance( ApiResult $apiResult = null, $store = null ) {
+
+		$context = new EmptyContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $store );
 
 		$apiQuery = $this->getMockBuilder( $this->getClass() )
 			->disableOriginalConstructor()
@@ -54,18 +45,14 @@ class ApiQueryTest extends ApiTestCase {
 			->method( 'getResult' )
 			->will( $this->returnValue( $apiResult ) );
 
-		// FIXME Use a mock store
-		$reflector = new ReflectionClass( $this->getClass() );
-		$store = $reflector->getProperty( 'store' );
-		$store->setAccessible( true );
-		$store->setValue( $apiQuery, \SMW\StoreFactory::getStore() );
+		$apiQuery->expects( $this->any() )
+			->method( 'withContext' )
+			->will( $this->returnValue( $context ) );
 
 		return $apiQuery;
 	}
 
 	/**
-	 * @test ApiQuery::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -73,38 +60,36 @@ class ApiQueryTest extends ApiTestCase {
 	}
 
 	/**
-	 * @test ApiQuery::getQuery
-	 * @test ApiQuery::getQueryResult
-	 *
 	 * @since 1.9
 	 */
-	public function testQueryAndQueryResult() {
+	public function testQueryAndQueryResultOnSQLStore() {
 
-		$reflector = new ReflectionClass( $this->getClass() );
-		$instance  = $this->newInstance();
+		$instance  = $this->newInstance( null, StoreFactory::getStore( 'SMWSQLStore3' ) );
 
 		// Query object
-		$getQuery = $reflector->getMethod( 'getQuery' );
+		$reflector = $this->newReflector();
+		$getQuery  = $reflector->getMethod( 'getQuery' );
 		$getQuery->setAccessible( true );
 		$query = $getQuery->invoke( $instance, '[[Modification date::+]]', array(), array() );
 
 		$this->assertInstanceOf( 'SMWQuery', $query );
 
-		// Inject Query object and verify returning QueryResult instance
+		// QueryResult object
 		$getQueryResult = $reflector->getMethod( 'getQueryResult' );
 		$getQueryResult->setAccessible( true );
-		$getQueryResult->invoke( $instance, $query );
 
-		$this->assertInstanceOf( 'SMWQueryResult', $getQueryResult->invoke( $instance, $query ) );
+		$result = $getQueryResult->invoke( $instance, $query );
+
+		$this->assertInstanceOf( 'SMWQueryResult', $result );
 
 	}
 
 	/**
-	 * @test ApiQuery::addQueryResult
-	 *
 	 * @since 1.9
 	 */
-	public function testAddQueryResult() {
+	public function testAddQueryResultOnMockStore() {
+
+		$store = $this->newMockBuilder()->newObject( 'Store' );
 
 		// Minimalistic test case to verify executability
 		// For a full coverage, use ApiQueryResultFormatterTest
@@ -126,11 +111,11 @@ class ApiQueryTest extends ApiTestCase {
 		) );
 
 		// Access protected method
-		$reflector = new ReflectionClass( $this->getClass() );
+		$reflector = $this->newReflector();
 		$method = $reflector->getMethod( 'addQueryResult' );
 		$method->setAccessible( true );
 
-		$instance = $this->newInstance( $apiResult );
+		$instance = $this->newInstance( $apiResult, $store );
 		$method->invoke( $instance, $queryResult );
 
 		// Test against the invoked ApiResult, as the addQueryResult method
@@ -139,4 +124,5 @@ class ApiQueryTest extends ApiTestCase {
 		$this->assertEquals( array( 'query' => $test, 'query-continue-offset' => 10 ), $apiResult->getData() );
 
 	}
+
 }

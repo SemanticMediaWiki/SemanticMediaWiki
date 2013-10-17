@@ -9,19 +9,10 @@ use SMWPrintRequest;
  * API module to query SMW by providing a query specified as
  * a list of conditions, printouts and parameters.
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.6.2
+ * @licence GNU GPL v2+
+ * @since 1.6.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
- * API module to query SMW by providing a query specified as
- * a list of conditions, printouts and parameters.
- *
- * @ingroup Api
  */
 class ApiAskArgs extends ApiQuery {
 
@@ -33,9 +24,9 @@ class ApiAskArgs extends ApiQuery {
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 
 		$queryResult = $this->getQueryResult( $this->getQuery(
-			$parameterFormatter->getAskArgsApiParameters()->get( 'conditions' ),
-			$parameterFormatter->getAskArgsApiParameters()->get( 'printouts' ),
-			$parameterFormatter->getAskArgsApiParameters()->get( 'parameters' )
+			$parameterFormatter->getAskArgsApiParameter( 'conditions' ),
+			$parameterFormatter->getAskArgsApiParameter( 'printouts' ),
+			$parameterFormatter->getAskArgsApiParameter( 'parameters' )
 		) );
 
 		$this->addQueryResult( $queryResult );
