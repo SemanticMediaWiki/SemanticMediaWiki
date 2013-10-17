@@ -39,6 +39,24 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 
 	/**
 	 * @dataProvider semanticDataProvider
+	 * @see Bugzilla 55826
+	 *
+	 * @since 1.9
+	 */
+	public function testExecuteOnRawModeAndMockStore( $setup ) {
+
+		$api = new ApiBrowse( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browse' );
+		$api->setStore( $setup['store'] );
+		$api->getMain()->getResult()->setRawMode();
+
+		$api->execute();
+
+		$this->assertStructuralIntegrity( $setup, $api->getResultData() );
+
+	}
+
+	/**
+	 * @dataProvider semanticDataProvider
 	 *
 	 * @since 1.9
 	 */
@@ -110,11 +128,12 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 
 		$provider[] = array(
 			array(
-				'subject' => 'Foo-0',
-				'store'   => $mockStore,
-				'data'    => $data,
-				'hasData' => false,
-				'hasSobj' => false
+				'subject'   => 'Foo-0',
+				'store'     => $mockStore,
+				'data'      => $data,
+				'hasResult' => true,
+				'hasData'   => false,
+				'hasSobj'   => false
 			)
 		);
 
@@ -128,11 +147,12 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 
 		$provider[] = array(
 			array(
-				'subject' => 'Foo-1',
-				'store'   => $mockStore,
-				'data'    => $data,
-				'hasData' => true,
-				'hasSobj' => false
+				'subject'   => 'Foo-1',
+				'store'     => $mockStore,
+				'data'      => $data,
+				'hasResult' => true,
+				'hasData'   => true,
+				'hasSobj'   => false
 			)
 		);
 
@@ -156,11 +176,12 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 
 		$provider[] = array(
 			array(
-				'subject' => 'Foo-2',
-				'store'   => $mockStore,
-				'data'    => $data,
-				'hasData' => true,
-				'hasSobj' => true
+				'subject'   => 'Foo-2',
+				'store'     => $mockStore,
+				'data'      => $data,
+				'hasResult' => true,
+				'hasData'   => true,
+				'hasSobj'   => true
 			)
 		);
 
@@ -181,11 +202,12 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 
 		$provider[] = array(
 			array(
-				'subject' => 'Foo-3',
-				'store'   => $mockStore,
-				'data'    => $data,
-				'hasData' => true,
-				'hasSobj' => true
+				'subject'   => 'Foo-3',
+				'store'     => $mockStore,
+				'data'      => $data,
+				'hasResult' => true,
+				'hasData'   => true,
+				'hasSobj'   => true
 			)
 		);
 
