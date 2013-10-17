@@ -141,7 +141,7 @@ class SMWSparqlStore extends SMWStore {
 	 * @see SMWStore::doDataUpdate()
 	 * @since 1.6
 	 */
-	public function doDataUpdate( SMWSemanticData $data ) {
+	protected function doDataUpdate( SMWSemanticData $data ) {
 		$this->baseStore->doDataUpdate( $data );
 
 		$expDataArray = $this->prepareUpdateExpData( $data );

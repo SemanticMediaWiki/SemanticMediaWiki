@@ -303,11 +303,11 @@ class SMWSQLStore3 extends SMWStore {
 		return $this->writer;
 	}
 
-	public function deleteSubject ( Title $subject ) {
+	public function deleteSubject( Title $subject ) {
 		return $this->getWriter()->deleteSubject( $subject );
 	}
 
-	public function doDataUpdate( SMWSemanticData $data ) {
+	protected function doDataUpdate( SMWSemanticData $data ) {
 		return $this->getWriter()->doDataUpdate( $data );
 	}
 

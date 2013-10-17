@@ -172,7 +172,7 @@ abstract class Store {
 	 *
 	 * @param SMWSemanticData $data
 	 */
-	public abstract function doDataUpdate( SMWSemanticData $data );
+	protected abstract function doDataUpdate( SMWSemanticData $data );
 
 	/**
 	 * Update the semantic data stored for some individual. The data is
