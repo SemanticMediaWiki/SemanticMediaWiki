@@ -2,57 +2,45 @@
 
 namespace SMW\Test;
 
-use SMW\ParserTextProcessor;
+use SMW\ContentProcessor;
+use SMW\EmptyContext;
 
 use Title;
 use ParserOutput;
 
 /**
- * Tests for the ParserTextProcessor class
- *
- * @since 1.9
- *
- * @file
- * @ingroup SMW
- * @ingroup Test
- *
- * @licence GNU GPL v2+
- * @author mwjames
- */
-
-/**
- * @covers \SMW\ParserTextProcessor
- *
- * @ingroup Test
+ * @covers \SMW\ContentProcessor
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
-class ParserTextProcessorTemplateTransclusionTest extends ParserTestCase {
+class ContentProcessorTemplateTransclusionTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\ParserTextProcessor';
+		return '\SMW\ContentProcessor';
 	}
 
 	/**
-	 * Helper method that returns a ParserTextProcessor object
+	 * @since  1.9
 	 *
-	 * @param $title
-	 * @param $parserOutput
-	 * @param $settings
-	 *
-	 * @return ParserTextProcessor
+	 * @return ContentProcessor
 	 */
 	private function newInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
-		return new ParserTextProcessor(
-			$this->newParserData( $title, $parserOutput ),
-			$this->newSettings( $settings )
-		);
+
+		$context = new EmptyContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
+
+		$parserData = $this->newParserData( $title, $parserOutput );
+
+		return new ContentProcessor( $parserData, $context );
 	}
 
 	/**
@@ -61,6 +49,8 @@ class ParserTextProcessorTemplateTransclusionTest extends ParserTestCase {
 	 * process in order to access a Template
 	 *
 	 * @note Part of the routine has been taken from MW's ExtraParserTest
+	 *
+	 * @since 1.9
 	 *
 	 * @param $title
 	 * @param $text
@@ -89,16 +79,9 @@ class ParserTextProcessorTemplateTransclusionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserTextProcessor::parse
 	 * @dataProvider templateDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $namespace
-	 * @param array $settings
-	 * @param $text
-	 * @param $tmplValue
-	 * @param array $expected
 	 */
 	public function testPreprocessTemplateAndParse( $namespace, array $settings, $text, $tmplValue, array $expected ) {
 

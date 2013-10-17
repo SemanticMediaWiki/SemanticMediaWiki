@@ -30,7 +30,7 @@ return array(
 	'SMW\FactboxCache'          => 'includes/FactboxCache.php',
 	'SMWInfolink'               => 'includes/SMW_Infolink.php',
 	'SMWOutputs'                => 'includes/SMW_Outputs.php',
-	'SMW\ParserTextProcessor'   => 'includes/ParserTextProcessor.php',
+	'SMW\ContentProcessor'      => 'includes/ContentProcessor.php',
 	'SMW\SemanticData'          => 'includes/SMW_SemanticData.php',
 	'SMWPageLister'             => 'includes/SMW_PageLister.php',
 

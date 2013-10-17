@@ -2,68 +2,52 @@
 
 namespace SMW\Test;
 
-use SMW\ParserTextProcessor;
+use SMW\ContentProcessor;
+use SMW\EmptyContext;
 
 use Title;
 use ParserOutput;
 use ReflectionClass;
 
 /**
- * Tests for the ParserTextProcessor class
- *
- * @since 1.9
- *
- * @file
- * @ingroup SMW
- * @ingroup Test
- *
- * @licence GNU GPL v2+
- * @author mwjames
- */
-
-/**
- * Tests for the ParserTextProcessor class
- * @covers \SMW\ParserTextProcessor
- *
- * @ingroup Test
+ * @covers \SMW\ContentProcessor
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
-class ParserTextProcessorTest extends ParserTestCase {
+class ContentProcessorTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\ParserTextProcessor';
+		return '\SMW\ContentProcessor';
 	}
 
 	/**
-	 * Helper method that returns a ParserTextProcessor object
+	 * @since  1.9
 	 *
-	 * @param $title
-	 * @param $parserOutput
-	 * @param $settings
-	 *
-	 * @return ParserTextProcessor
+	 * @return ContentProcessor
 	 */
 	private function newInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
-		return new ParserTextProcessor(
-			$this->newParserData( $title, $parserOutput ),
-			$this->newSettings( $settings )
-		);
+
+		$context = new EmptyContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
+
+		$parserData = $this->newParserData( $title, $parserOutput );
+
+		return new ContentProcessor( $parserData, $context );
 	}
 
 	/**
-	 * @test ParserTextProcessor::__construct
 	 * @dataProvider textDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $namespace
 	 */
 	public function testConstructor( $namespace ) {
 		$instance = $this->newInstance( $this->newTitle( $namespace ), $this->newParserOutput() );
@@ -71,14 +55,9 @@ class ParserTextProcessorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserTextProcessor::stripMagicWords
 	 * @dataProvider magicWordDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $namespace
-	 * @param $text
-	 * @param array $expected
 	 */
 	public function testStripMagicWords( $namespace, $text, array $expected ) {
 
@@ -108,15 +87,9 @@ class ParserTextProcessorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserTextProcessor::parse
 	 * @dataProvider textDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $namespace
-	 * @param array $settings
-	 * @param $text
-	 * @param array $expected
 	 */
 	public function testParse( $namespace, array $settings, $text, array $expected ) {
 
@@ -139,8 +112,6 @@ class ParserTextProcessorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserTextProcessor::parse
-	 *
 	 * @since 1.9
 	 */
 	public function testRedirect() {
@@ -160,7 +131,10 @@ class ParserTextProcessorTest extends ParserTestCase {
 
 		$parserData = $this->newParserData( $title, $parserOutput );
 
-		$instance = new ParserTextProcessor( $parserData, $settings );
+		$context = new EmptyContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
+
+		$instance = new ContentProcessor( $parserData, $context );
 		$instance->parse( $text );
 
 		// Build expected results from a successful setRedirect execution
@@ -174,8 +148,6 @@ class ParserTextProcessorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserTextProcessor::process
-	 *
 	 * @since 1.9
 	 */
 	public function testProcess() {
@@ -369,8 +341,6 @@ class ParserTextProcessorTest extends ParserTestCase {
 	}
 
 	/**
-	 * Provides magic words sample text
-	 *
 	 * @return array
 	 */
 	public function magicWordDataProvider() {

@@ -86,12 +86,19 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'UpdateObserver'        => $this->getUpdateObserver(),
 			'BasePropertyAnnotator' => $this->getBasePropertyAnnotator(),
 
+			/**
+			 * ContentProcessor object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return ContentProcessor
+			 */
 			'ContentProcessor' => function ( DependencyBuilder $builder ) {
-					return new ParserTextProcessor(
-						$builder->getArgument( 'ParserData' ),
-						$builder->newObject( 'Settings' )
-					);
-				},
+				return new ContentProcessor(
+					$builder->getArgument( 'ParserData' ),
+					$builder->newObject( 'BaseContext' )
+				);
+			},
 
 			'ContentParser' => function ( DependencyBuilder $builder ) {
 					return new ContentParser( $builder->getArgument( 'Title' ) );

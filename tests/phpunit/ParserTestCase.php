@@ -3,9 +3,10 @@
 namespace SMW\Test;
 
 use SMW\ParserParameterFormatter;
-use SMW\ParserTextProcessor;
+use SMW\ContentProcessor;
 use SMW\ParserData;
 use SMW\Settings;
+use SMW\EmptyContext;
 
 use ParserOutput;
 use Title;
@@ -110,10 +111,13 @@ abstract class ParserTestCase extends SemanticMediaWikiTestCase {
 	 * @return ParserTextProcessor
 	 */
 	protected function getParserTextProcessor( Title $title, ParserOutput $parserOutput, Settings $settings ) {
-		return new ParserTextProcessor(
-			$this->newParserData( $title, $parserOutput ),
-			$settings
-		);
+
+		$context = new EmptyContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
+
+		$parserData = $this->newParserData( $title, $parserOutput );
+
+		return new ContentProcessor( $parserData, $context );
 	}
 
 	/**

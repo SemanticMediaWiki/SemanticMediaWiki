@@ -132,7 +132,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$provider[] = array( 'ContentProcessor', array( '\SMW\ParserTextProcessor' => array(
+		$provider[] = array( 'ContentProcessor', array( '\SMW\ContentProcessor' => array(
 				'ParserData'  => $this->newMockBuilder()->newObject( 'ParserData' )
 				)
 			)

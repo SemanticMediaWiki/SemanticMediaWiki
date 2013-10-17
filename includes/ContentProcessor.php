@@ -12,29 +12,26 @@ use Html;
  * Class collects all functions for wiki text parsing / processing that are
  * relevant for SMW
  *
- * @since 1.9
+ * This class is contains all functions necessary for parsing wiki text before
+ * it is displayed or previewed while identifying SMW related annotations.
  *
- * @file
- * @ingroup SMW
- * @ingroup Parser
+ * @note Settings involve smwgNamespacesWithSemanticLinks, smwgLinksInValues,
+ * smwgInlineErrors
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author Markus Krötzsch
  * @author Denny Vrandecic
  * @author mwjames
  */
+class ContentProcessor implements ContextAware {
 
-/**
- * This class is contains all functions necessary for parsing wiki text before
- * it is displayed or previewed while identifying SMW related
- * annotations.
- *
- * @ingroup SMW
- * @ingroup Parser
- */
-class ParserTextProcessor {
+	/** @var ContextResource */
+	protected $context = null;
 
 	/** @var Settings */
-	protected $settings;
+	protected $settings = null;
 
 	/** @var ParserData */
 	protected $parserData;
@@ -50,29 +47,25 @@ class ParserTextProcessor {
 	protected $isAnnotation = true;
 
 	/**
-	 * @par Example:
-	 * @code
-	 * $settings = Settings::newFromArray( array(
-	 *  'smwgNamespacesWithSemanticLinks' => $GLOBALS['smwgNamespacesWithSemanticLinks'],
-	 *  'smwgLinksInValues' => $GLOBALS['smwgLinksInValues'],
-	 *  'smwgInlineErrors'  => $GLOBALS['smwgInlineErrors']
-	 * ) );
-	 *
-	 * $parserData = new ParserData( $title, $parserOutput );
-	 *
-	 * new ParserTextProcessor( $parserData, $settings );
-	 * @endcode
-	 *
-	 * @see SMWHooks::onInternalParseBeforeLinks
-	 *
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param Settings $settings
+	 * @param ContextResource $context
 	 */
-	public function __construct( ParserData $parserData, Settings $settings ) {
+	public function __construct( ParserData $parserData, ContextResource $context ) {
 		$this->parserData = $parserData;
-		$this->settings = $settings;
+		$this->context = $context;
+	}
+
+	/**
+	 * @see ContextAware::withContext
+	 *
+	 * @since 1.9
+	 *
+	 * @return ContextResource
+	 */
+	public function withContext() {
+		return $this->context;
 	}
 
 	/**
@@ -85,6 +78,7 @@ class ParserTextProcessor {
 	 */
 	public function parse( &$text ) {
 		$title = $this->parserData->getTitle();
+		$this->settings = $this->withContext()->getSettings();
 
 		// Strip magic words from text body
 		$this->stripMagicWords( $text );
