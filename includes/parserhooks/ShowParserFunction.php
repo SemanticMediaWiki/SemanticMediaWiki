@@ -2,25 +2,13 @@
 
 namespace SMW;
 
-use Parser;
-use Title;
-use ParserOutput;
-
 /**
  * Class that provides the {{#show}} parser function
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * Class that provides the {{#show}} parser function
- *
- * @ingroup ParserFunction
  */
 class ShowParserFunction {
 
@@ -77,21 +65,4 @@ class ShowParserFunction {
 		return $ask->setShowMode( true )->parse( $rawParams );
 	}
 
-	/**
-	 * Parser::setFunctionHook {{#show}} handler method
-	 *
-	 * @since 1.9
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return string
-	 */
-	public static function render( Parser &$parser ) {
-		$show = new self(
-			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new QueryData( $parser->getTitle() ),
-			new MessageFormatter( $parser->getTargetLanguage() )
-		);
-		return $GLOBALS['smwgQEnabled'] ? $show->parse( func_get_args() ) : $show->disabled();
-	}
 }

@@ -10,23 +10,15 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the ShowParserFunction class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\ShowParserFunction
- *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ShowParserFunctionTest extends ParserTestCase {
 
@@ -153,17 +145,6 @@ class ShowParserFunctionTest extends ParserTestCase {
 			$this->assertSemanticData( $containerSemanticData, $expected );
 		}
 
-	}
-
-	/**
-	 * @test ShowParserFunction::render
-	 *
-	 * @since 1.9
-	 */
-	public function testStaticRender() {
-		$parser = $this->newParser( $this->newTitle(), $this->getUser() );
-		$result = ShowParserFunction::render( $parser );
-		$this->assertInternalType( 'string', $result );
 	}
 
 	/**
