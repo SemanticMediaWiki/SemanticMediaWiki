@@ -4645,6 +4645,7 @@ $messages['eu'] = array(
 );
 
 /** Persian (فارسی)
+ * @author Ebraminio
  * @author Huji
  * @author Mjbmr
  * @author Momeni
@@ -4684,7 +4685,7 @@ $messages['fa'] = array(
 	'wantedproperties' => 'خصوصیت‌های خواسته شده',
 	'smw_wantedproperties_docu' => 'خصوصیت‌های زیر در این ویکی استفاده شده‌اند ولی هنوز صفحه‌ای برای توصیف آن‌ها وجود ندارد.',
 	'smw_wantedproperty_template' => '$1 ($2 استفاده شده)', # Fuzzy
-	'smw_purge' => 'بازخوانی',
+	'smw_purge' => 'بازآوردن',
 	'types' => 'نوع‌ها',
 	'smw_types_docu' => 'در ذیل لیستی از تمام نوع‌داده‌هایی که می‌تواند به خصوصیت‌ها انتصاب شود، آمده است.
 هر نوع‌داده یک صفحه دارد که اطلاعات اضافه می‌تواند در آن فراهم آورده شود.', # Fuzzy
