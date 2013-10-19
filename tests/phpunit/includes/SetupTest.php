@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\Setup;
+use SMW\BaseContext;
 
 /**
  * @covers \SMW\Setup
@@ -10,16 +11,14 @@ use SMW\Setup;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
 class SetupTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -27,19 +26,15 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Setup object
-	 *
 	 * @since 1.9
 	 *
 	 * @return Setup
 	 */
-	private function newInstance( &$test = array() ) {
-		return new Setup( $test );
+	private function newInstance( &$test = array(), $context = null ) {
+		return new Setup( $test, $context );
 	}
 
 	/**
-	 * @test Setup::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -47,32 +42,26 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Setup::run
 	 * @dataProvider functionHooksProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testRegisterFunctionHooks( $hook, $setup ) {
+	public function testRegisterFunctionHooksWithoutExecution( $hook, $setup ) {
 
 		$this->assertHook( $hook, $setup, 1 );
 
 	}
 
 	/**
-	 * @test Setup::run
-	 * @dataProvider parserHooksProvider
+	 * @dataProvider functionHookForExecutionProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testParserHooks( $hook, $setup ) {
+	public function testRegisterFunctionHookWithExecution( $hook, $setup ) {
 
-		// 4 because of having hooks registered without using a callback, after
-		// all parser hooks being registered using a callback this can be
-		// reduced to 1
-		$this->assertHook( $hook, $setup, 4 );
+		$this->assertHook( $hook, $setup, 1 );
 
-		// Verify that registered closures are executable otherwise
-		// malicious code could hide if not properly checked
+		// Verify that registered closures are executable
 		$result = $this->executeHookOnMock( $hook, $setup['wgHooks'][$hook][0] );
 
 		if ( $result !== null ) {
@@ -84,16 +73,43 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Asserts a hook
+	 * @dataProvider parserHooksProvider
 	 *
+	 * @since 1.9
+	 */
+	public function testParserHooksWithExecution( $hook, $setup ) {
+
+		// 4 because of having hooks registered without using a callback, after
+		// all parser hooks being registered using a callback this can be
+		// reduced to 1
+		$this->assertHook( $hook, $setup, 4 );
+
+		// Verify that registered closures are executable
+		$result = $this->executeHookOnMock( $hook, $setup['wgHooks'][$hook][0] );
+
+		if ( $result !== null ) {
+			$this->assertTrue( $result );
+		} else {
+			$this->markTestIncomplete( "Test is incomplete because of a missing {$hook} closure verification" );
+		}
+
+	}
+
+	/**
 	 * @since  1.9
-	 *
-	 * @param $hook
-	 * @param $object
 	 */
 	private function assertHook( $hook, &$setup, $count ) {
 
-		$instance = $this->newInstance( $setup );
+		$mockLang  = $this->newMockBuilder()->newObject( 'Language' );
+		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
+
+		$context = new BaseContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
+
+		$setup['wgVersion'] = '1.21';
+		$setup['wgLang']    = $mockLang;
+
+		$instance = $this->newInstance( $setup, $context );
 
 		$this->assertCount(
 			0,
@@ -115,19 +131,19 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 * Verifies that a registered closure can be executed
 	 *
 	 * @since  1.9
-	 *
-	 * @param $hook
-	 * @param $object
 	 */
 	private function executeHookOnMock( $hook, $object ) {
 
 		$empty = '';
+		$emptyArray = array();
 
 		// Evade execution by setting the title object as isSpecialPage
 		// the hook class should always ensure that isSpecialPage is checked
 		$title =  $this->newMockBuilder()->newObject( 'Title', array(
 			'isSpecialPage' => true
 		) );
+
+		$parserOutput = $this->newMockBuilder()->newObject( 'ParserOutput' );
 
 		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
 			'getTitle' => $title
@@ -138,22 +154,47 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		) );
 
 		$linksUpdate = $this->newMockBuilder()->newObject( 'LinksUpdate', array(
-			'getTitle' => $title
+			'getTitle'        => $title,
+			'getParserOutput' => $parserOutput
 		) );
 
 		$skin = $this->newMockBuilder()->newObject( 'Skin', array(
-			'getTitle' => $title
+			'getTitle'  => $title,
+			'getOutput' => $outputPage
 		) );
 
 		$skinTemplate = $this->newMockBuilder()->newObject( 'SkinTemplate', array(
 			'getSkin' => $skin
 		) );
 
+		$parserOptions = $this->newMockBuilder()->newObject( 'ParserOptions' );
+
+		$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
+			'getTitle'          => $title,
+			'getParserOutput'   => null,
+			'makeParserOptions' => $parserOptions
+		) );
+
+		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+			'getTitle' => $title
+		) );
+
+		$user = $this->newMockBuilder()->newObject( 'User' );
+
 		switch ( $hook ) {
+			case 'SkinAfterContent':
+				$result = $this->callObject( $object, array( &$empty, $skin ) );
+				break;
+			case 'OutputPageParserOutput':
+				$result = $this->callObject( $object, array( &$outputPage, $parserOutput ) );
+				break;
 			case 'BeforePageDisplay':
 				$result = $this->callObject( $object, array( &$outputPage, &$skin ) );
 				break;
 			case 'InternalParseBeforeLinks':
+				$result = $this->callObject( $object, array( &$parser, &$empty ) );
+				break;
+			case 'ParserAfterTidy':
 				$result = $this->callObject( $object, array( &$parser, &$empty ) );
 				break;
 			case 'LinksUpdateConstructed':
@@ -161,6 +202,21 @@ class SetupTest extends SemanticMediaWikiTestCase {
 				break;
 			case 'BaseTemplateToolbox':
 				$result = $this->callObject( $object, array( $skinTemplate, &$empty ) );
+				break;
+			case 'NewRevisionFromEditComplete':
+				$result = $this->callObject( $object, array( $wikiPage, $revision, $empty, $user ) );
+				break;
+			case 'TitleMoveComplete':
+				$result = $this->callObject( $object, array( &$title, &$title, &$user, $empty, $empty ) );
+				break;
+			case 'ArticlePurge':
+				$result = $this->callObject( $object, array( &$wikiPage ) );
+				break;
+			case 'ArticleDelete':
+				$result = $this->callObject( $object, array( &$wikiPage, &$user, &$empty, &$empty ) );
+				break;
+			case 'SpecialStatsAddExtra':
+				$result = $this->callObject( $object, array( &$emptyArray ) );
 				break;
 			case 'ParserFirstCallInit':
 
@@ -178,8 +234,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Executes a closure
-	 *
 	 * @since  1.9
 	 *
 	 * @return boolean
@@ -189,7 +243,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Setup::run
 	 * @dataProvider apiModulesDataProvider
 	 *
 	 * @since 1.9
@@ -207,7 +260,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Setup::run
 	 * @dataProvider jobClassesDataProvider
 	 *
 	 * @since 1.9
@@ -225,7 +277,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Setup::run
 	 * @dataProvider messagesFilesDataProvider
 	 *
 	 * @since 1.9
@@ -243,8 +294,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Setup::run
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterRights() {
@@ -271,8 +320,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Setup::run
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterParamDefinitions() {
@@ -293,8 +340,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Setup::run
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterFooterIcon() {
@@ -312,7 +357,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Setup::run
 	 * @dataProvider specialPageDataProvider
 	 *
 	 * @since 1.9
@@ -330,7 +374,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @since 1.9
+	 * @return array
 	 */
 	public function specialPageDataProvider() {
 
@@ -362,7 +406,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @since 1.9
+	 * @return array
 	 */
 	public function jobClassesDataProvider() {
 
@@ -384,7 +428,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @since 1.9
+	 * @return array
 	 */
 	public function apiModulesDataProvider() {
 
@@ -408,7 +452,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 
 	/**
-	 * @since 1.9
+	 * @return array
 	 */
 	public function messagesFilesDataProvider() {
 
@@ -430,7 +474,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @since 1.9
+	 * @return array
 	 */
 	public function functionHooksProvider() {
 
@@ -441,26 +485,46 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'ParserTestTables',
 			'AdminLinks',
 			'PageSchemasRegisterHandlers',
-			'ArticlePurge',
-			'ParserAfterTidy',
-			'LinksUpdateConstructed',
-			'ArticleDelete',
-			'TitleMoveComplete',
-			'NewRevisionFromEditComplete',
-			'InternalParseBeforeLinks',
 			'ArticleFromTitle',
 			'SkinTemplateNavigation',
 			'UnitTestsList',
 			'ResourceLoaderTestModules',
 			'ResourceLoaderGetConfigVars',
-			'SpecialStatsAddExtra',
 			'GetPreferences',
-			'BeforePageDisplay',
 			'TitleIsAlwaysKnown',
 			'BeforeDisplayNoArticleText',
+			'ExtensionTypes',
+		);
+
+		foreach ( $hooks as $hook ) {
+			$provider[] = array(
+				$hook,
+				array( 'wgHooks' => array( $hook => array() ) ),
+			);
+		}
+
+		return $provider;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function functionHookForExecutionProvider() {
+
+		$provider = array();
+
+		$hooks = array(
 			'SkinAfterContent',
 			'OutputPageParserOutput',
-			'ExtensionTypes',
+			'BeforePageDisplay',
+			'InternalParseBeforeLinks',
+			'TitleMoveComplete',
+			'NewRevisionFromEditComplete',
+			'ArticlePurge',
+			'ArticleDelete',
+			'ParserAfterTidy',
+			'LinksUpdateConstructed',
+			'SpecialStatsAddExtra',
 			'BaseTemplateToolbox'
 		);
 
@@ -475,7 +539,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @since 1.9
+	 * @return array
 	 */
 	public function parserHooksProvider() {
 

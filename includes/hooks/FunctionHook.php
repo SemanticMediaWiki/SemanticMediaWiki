@@ -5,20 +5,14 @@ namespace SMW;
 /**
  * Specifies an injectable hook class
  *
- * @file
+ * @ingroup FunctionHook
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
-
-/**
- * Specifies an injectable hook class
- *
- * @ingroup Hook
- */
-abstract class FunctionHook extends DependencyInjector implements ContextInjector {
+abstract class FunctionHook extends DependencyInjector implements ContextAware, ContextInjector {
 
 	/** @var ContextResource */
 	protected $context;
@@ -40,6 +34,17 @@ abstract class FunctionHook extends DependencyInjector implements ContextInjecto
 	 */
 	public function invokeContext( ContextResource $context ) {
 		$this->context = $context;
+	}
+
+	/**
+	 * @see ContextAware::withContext
+	 *
+	 * @since 1.9
+	 *
+	 * @return ContextResource
+	 */
+	public function withContext() {
+		return $this->context;
 	}
 
 }

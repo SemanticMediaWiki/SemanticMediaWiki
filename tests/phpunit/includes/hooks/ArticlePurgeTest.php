@@ -8,38 +8,66 @@ use SMW\ArticlePurge;
 use WikiPage;
 
 /**
- * Tests for the ArticlePurge class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\ArticlePurge
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\ArticlePurge';
 	}
 
-	/**
-	 * Helper method that returns a ArticlePurge object
+	// RECYCLE
+
+	/*
+	 * @test SMWHooks::onArticlePurge
 	 *
+	 * @since 1.9
+	 *
+	public function testOnArticlePurge() {
+		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
+
+			$wikiPage = $this->newPage();
+
+			$user = $this->getUser();
+
+			$content = \ContentHandler::makeContent(
+				'testing',
+				$wikiPage->getTitle(),
+				CONTENT_MODEL_WIKITEXT
+			);
+			$wikiPage->doEditContent( $content, "testing", EDIT_NEW, false, $user );
+
+			$result = SMWHooks::onArticlePurge( $wikiPage );
+
+			// Always make sure to clean-up
+			if ( $wikiPage->exists() ) {
+				$wikiPage->doDeleteArticle( "testing done." );
+			}
+
+			$this->assertTrue( $result );
+
+		} else {
+			$this->markTestSkipped(
+				'Skipped test due to missing method (probably MW 1.19 or lower).'
+			);
+		}
+	}*/
+
+
+	/**
 	 * @since 1.9
 	 *
 	 * @return ArticlePurge
@@ -60,8 +88,6 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test ArticlePurge::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -69,13 +95,9 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test ArticlePurge::process
 	 * @dataProvider titleDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testProcess( $setup, $expected ) {
 

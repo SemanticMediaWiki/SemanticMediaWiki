@@ -5,21 +5,13 @@ namespace SMW;
 /**
  * Extension setup and registration
  *
- * @file
+ * Register all hooks, set up extension credits etc.
+ * @ingroup SMW
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * Extension setup and registration
- *
- * The main things this function does are: register all hooks, set up extension
- * credits etc.
- *
- * @ingroup SMW
  */
 final class Setup implements ContextAware {
 
@@ -318,18 +310,147 @@ final class Setup implements ContextAware {
 	 */
 	protected function registerFunctionHooks() {
 
-		$hookRegistry = $this->withContext()->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
+		$globals  = $this->globals;
+		$context  = $this->withContext();
+		$registry = $context->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
 
 		/**
 		 * Hook: Called by BaseTemplate when building the toolbox array and
 		 * returning it for the skin to output.
 		 *
-		 * @see http://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
 		 *
 		 * @since  1.9
 		 */
-		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) use ( $hookRegistry ) {
-			return $hookRegistry->load( new BaseTemplateToolbox( $skinTemplate, $toolbox ) )->process();
+		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) use ( $registry ) {
+			return $registry->register( new BaseTemplateToolbox( $skinTemplate, $toolbox ) )->process();
+		};
+
+		/**
+		 * Hook: Allows extensions to add text after the page content and article
+		 * metadata.
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
+		 *
+		 * @since  1.9
+		 */
+		$this->globals['wgHooks']['SkinAfterContent'][] = function ( &$data, $skin = null ) use ( $registry ) {
+			return $registry->register( new SkinAfterContent( $data, $skin ) )->process();
+		};
+
+		/**
+		 * Hook: Called after parse, before the HTML is added to the output
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageParserOutput
+		 *
+		 * @since  1.9
+		 */
+		$this->globals['wgHooks']['OutputPageParserOutput'][] = function ( &$outputPage, $parserOutput ) use ( $registry ) {
+			return $registry->register( new OutputPageParserOutput( $outputPage, $parserOutput ) )->process();
+		};
+
+		/**
+		 * Hook: Add changes to the output page, e.g. adding of CSS or JavaScript
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['BeforePageDisplay'][] = function ( &$outputPage, &$skin ) use ( $registry ) {
+			return $registry->register( new BeforePageDisplay( $outputPage, $skin ) )->process();
+		};
+
+		/**
+		 * Hook: InternalParseBeforeLinks is used to process the expanded wiki
+		 * code after <nowiki>, HTML-comments, and templates have been treated.
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = function ( &$parser, &$text ) use ( $registry ) {
+			return $registry->register( new InternalParseBeforeLinks( $parser, $text ) )->process();
+		};
+
+		/**
+		 * Hook: NewRevisionFromEditComplete called when a revision was inserted
+		 * due to an edit
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['NewRevisionFromEditComplete'][] = function ( $wikiPage, $revision, $baseId, $user ) use ( $registry ) {
+			return $registry->register( new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) )->process();
+		};
+
+		/**
+		 * Hook: TitleMoveComplete occurs whenever a request to move an article
+		 * is completed
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['TitleMoveComplete'][] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) use ( $registry ) {
+			return $registry->register( new TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) )->process();
+		};
+
+		/**
+		 * Hook: ArticlePurge executes before running "&action=purge"
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['ArticlePurge'][] = function ( &$wikiPage ) use ( $registry ) {
+			return $registry->register( new ArticlePurge( $wikiPage ) )->process();
+		};
+
+		/**
+		 * Hook: ArticleDelete occurs whenever the software receives a request
+		 * to delete an article
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $context ) {
+			$context->getStore()->deleteSubject( $wikiPage->getTitle() );
+			return true;
+		};
+
+		/**
+		 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['LinksUpdateConstructed'][] = function ( $linksUpdate ) use ( $registry ) {
+			return $registry->register( new LinksUpdateConstructed( $linksUpdate ) )->process();
+		};
+
+		/**
+		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['ParserAfterTidy'][] = function ( &$parser, &$text ) use ( $registry ) {
+			return $registry->register( new ParserAfterTidy( $parser, $text ) )->process();
+		};
+
+		/**
+		 * Hook: Add extra statistic at the end of Special:Statistics
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = function ( &$extraStats ) use ( $registry, $globals ) {
+			return $registry->register( new SpecialStatsAddExtra( $extraStats, $globals['wgVersion'], $globals['wgLang'] ) )->process();
 		};
 
 		// Old-style registration
@@ -338,25 +459,14 @@ final class Setup implements ContextAware {
 		$this->globals['wgHooks']['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
 		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
-		$this->globals['wgHooks']['ArticlePurge'][] = 'SMWHooks::onArticlePurge';
-		$this->globals['wgHooks']['ParserAfterTidy'][] = 'SMWHooks::onParserAfterTidy';
-		$this->globals['wgHooks']['LinksUpdateConstructed'][] = 'SMWHooks::onLinksUpdateConstructed';
-		$this->globals['wgHooks']['ArticleDelete'][] = 'SMWHooks::onArticleDelete';
-		$this->globals['wgHooks']['TitleMoveComplete'][] = 'SMWHooks::onTitleMoveComplete';
-		$this->globals['wgHooks']['NewRevisionFromEditComplete'][] = 'SMWHooks::onNewRevisionFromEditComplete';
-		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = 'SMWHooks::onInternalParseBeforeLinks';
-		$this->globals['wgHooks']['OutputPageParserOutput'][] = 'SMWHooks::onOutputPageParserOutput';
 		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
 		$this->globals['wgHooks']['SkinTemplateNavigation'][] = 'SMWHooks::onSkinTemplateNavigation';
 		$this->globals['wgHooks']['UnitTestsList'][] = 'SMWHooks::registerUnitTests';
 		$this->globals['wgHooks']['ResourceLoaderTestModules'][] = 'SMWHooks::registerQUnitTests';
-		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = 'SMWHooks::onSpecialStatsAddExtra';
 		$this->globals['wgHooks']['GetPreferences'][] = 'SMWHooks::onGetPreferences';
-		$this->globals['wgHooks']['BeforePageDisplay'][] = 'SMWHooks::onBeforePageDisplay';
 		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = 'SMWHooks::onTitleIsAlwaysKnown';
 		$this->globals['wgHooks']['BeforeDisplayNoArticleText'][] = 'SMWHooks::onBeforeDisplayNoArticleText';
 		$this->globals['wgHooks']['ResourceLoaderGetConfigVars'][] = 'SMWHooks::onResourceLoaderGetConfigVars';
-		$this->globals['wgHooks']['SkinAfterContent'][] = 'SMWHooks::onSkinAfterContent';
 		$this->globals['wgHooks']['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
 
 	}
@@ -369,7 +479,7 @@ final class Setup implements ContextAware {
 	protected function registerParserHooks() {
 
 		$settings = $this->settings;
-		$objectBuilder = $this->withContext()->getDependencyBuilder();
+		$builder  = $this->withContext()->getDependencyBuilder();
 
 		/**
 		 * Called when the parser initialises for the first time
@@ -378,15 +488,15 @@ final class Setup implements ContextAware {
 		 *
 		 * @since  1.9
 		 */
-		$this->globals['wgHooks']['ParserFirstCallInit'][] = function ( \Parser &$parser ) use ( $objectBuilder, $settings ) {
+		$this->globals['wgHooks']['ParserFirstCallInit'][] = function ( \Parser &$parser ) use ( $builder, $settings ) {
 
 			/**
 			 * {{#ask}}
 			 *
 			 * @since  1.9
 			 */
-			$parser->setFunctionHook( 'ask', function( $parser ) use ( $objectBuilder, $settings ) {
-				$ask = $objectBuilder->newObject( 'AskParserFunction', array( 'Parser' => $parser ) );
+			$parser->setFunctionHook( 'ask', function( $parser ) use ( $builder, $settings ) {
+				$ask = $builder->newObject( 'AskParserFunction', array( 'Parser' => $parser ) );
 				return $settings->get( 'smwgQEnabled' ) ? $ask->parse( func_get_args() ) : $ask->disabled();
 			} );
 
@@ -395,8 +505,8 @@ final class Setup implements ContextAware {
 			 *
 			 * @since  1.9
 			 */
-			$parser->setFunctionHook( 'show', function( $parser ) use ( $objectBuilder, $settings ) {
-				$show = $objectBuilder->newObject( 'ShowParserFunction', array( 'Parser' => $parser ) );
+			$parser->setFunctionHook( 'show', function( $parser ) use ( $builder, $settings ) {
+				$show = $builder->newObject( 'ShowParserFunction', array( 'Parser' => $parser ) );
 				return $settings->get( 'smwgQEnabled' ) ? $show->parse( func_get_args() ) : $show->disabled();
 			} );
 

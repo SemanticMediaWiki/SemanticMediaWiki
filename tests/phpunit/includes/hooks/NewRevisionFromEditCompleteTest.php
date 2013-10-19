@@ -10,38 +10,68 @@ use WikiPage;
 use Revision;
 
 /**
- * Tests for the NewRevisionFromEditComplete class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\NewRevisionFromEditComplete
- *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class NewRevisionFromEditCompleteTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\NewRevisionFromEditComplete';
 	}
 
-	/**
-	 * Helper method that returns a NewRevisionFromEditComplete object
+	// RECYCLE
+
+	/*
+	 * @since 1.9
 	 *
+	public function testOnNewRevisionFromEditComplete( $text ) {
+		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
+
+			$wikiPage = $this->newPage();
+			$user = $this->getUser();
+
+			$content = \ContentHandler::makeContent(
+				$text,
+				$wikiPage->getTitle(),
+				CONTENT_MODEL_WIKITEXT
+			);
+
+			$wikiPage->doEditContent( $content, "testing", EDIT_NEW );
+			$this->assertTrue( $wikiPage->getId() > 0, "WikiPage should have new page id" );
+			$revision = $wikiPage->getRevision();
+
+			$result = SMWHooks::onNewRevisionFromEditComplete (
+				$wikiPage,
+				$revision,
+				$wikiPage->getId(),
+				$user
+			);
+
+			// Always make sure the clean-up
+			if ( $wikiPage->exists() ) {
+				$wikiPage->doDeleteArticle( "testing done." );
+			}
+
+			$this->assertTrue( $result );
+		} else {
+			$this->markTestSkipped(
+				'Skipped test due to missing method (probably MW 1.19 or lower).'
+			);
+		}
+	}*/
+
+
+	/**
 	 * @since 1.9
 	 *
 	 * @return NewRevisionFromEditComplete
@@ -66,8 +96,6 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test NewRevisionFromEditComplete::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -75,13 +103,9 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test NewRevisionFromEditComplete::process
 	 * @dataProvider titleDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testProcess( $setup, $expected ) {
 
@@ -95,13 +119,9 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test NewRevisionFromEditComplete::process
 	 * @dataProvider titleDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testProcessAnnotationIntegration( $setup, $expected ) {
 

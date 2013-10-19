@@ -8,35 +8,44 @@ use OutputPage;
 use Title;
 
 /**
- * Tests for the BeforePageDisplay class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\BeforePageDisplay
  * @covers \SMW\FunctionHook
  *
- * @ingroup Test
- *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\BeforePageDisplay';
 	}
+
+	// RECYCLE
+
+	/*
+	 * @since 1.9
+	 *
+	public function testOnBeforePageDisplay() {
+		$context = new \RequestContext();
+		$context->setTitle( $this->getTitle() );
+		$context->setLanguage( \Language::factory( 'en' ) );
+
+		$skin = new \SkinTemplate();
+		$skin->setContext( $context );
+
+		$outputPage = new \OutputPage( $context );
+
+		$result = SMWHooks::onBeforePageDisplay( $outputPage, $skin );
+		$this->assertTrue( $result );
+	}*/
 
 	/**
 	 * Helper method that returns a OutputPage object

@@ -5,18 +5,12 @@ namespace SMW;
 /**
  * Register a function hook
  *
- * @file
+ * @ingroup FunctionHook
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * Register a function hook
- *
- * @ingroup Hook
  */
 class FunctionHookRegistry implements ContextAware {
 
@@ -26,7 +20,7 @@ class FunctionHookRegistry implements ContextAware {
 	/**
 	 * @since 1.9
 	 *
-	 * @param ContextResource $contextObject
+	 * @param ContextResource $context
 	 */
 	public function __construct( ContextResource $context = null ) {
 		$this->context = $context;
@@ -49,7 +43,7 @@ class FunctionHookRegistry implements ContextAware {
 	}
 
 	/**
-	 * Load the hook and inject it with an appropriate context
+	 * Register a FunctionHook and inject an appropriate context
 	 *
 	 * @since  1.9
 	 *
@@ -57,27 +51,13 @@ class FunctionHookRegistry implements ContextAware {
 	 *
 	 * @return FunctionHook
 	 */
-	public function load( FunctionHook $hook ) {
+	public function register( FunctionHook $hook ) {
 
 		// FIXME legacy use the context instead
 		$hook->setDependencyBuilder( $this->withContext()->getDependencyBuilder() );
 		$hook->invokeContext( $this->withContext() );
 
 		return $hook;
-	}
-
-	/**
-	 * Method to register a hook
-	 *
-	 * @since  1.9
-	 *
-	 * @param FunctionHook $hook
-	 *
-	 * @return FunctionHook
-	 */
-	public static function register( FunctionHook $hook ) {
-		$instance = new self();
-		return $instance->load( $hook );
 	}
 
 }

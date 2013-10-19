@@ -39,20 +39,6 @@ use LinksUpdate;
 class HooksTest extends \MediaWikiTestCase {
 
 	/**
-	 * DataProvider
-	 *
-	 * @return array
-	 */
-	public function getTextDataProvider() {
-		return array(
-			array(
-				"[[Lorem ipsum]] dolor sit amet, consetetur sadipscing elitr, sed diam " .
-				" nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat."
-			),
-		);
-	}
-
-	/**
 	 * Helper method that returns a normalized path
 	 *
 	 * @since 1.9
@@ -209,49 +195,6 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWHooks::onSpecialStatsAddExtra
-	 *
-	 * @since 1.9
-	 */
-	public function testOnSpecialStatsAddExtra() {
-		$extraStats = array();
-		$result = SMWHooks::onSpecialStatsAddExtra( $extraStats );
-
-		$this->assertTrue( $result );
-	}
-
-	/**
-	 * @test SMWHooks::onParserAfterTidy
-	 * @dataProvider getTextDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $text
-	 */
-	public function testOnParserAfterTidy( $text ) {
-		$parser = $this->getParser();
-		$result = SMWHooks::onParserAfterTidy(
-			$parser,
-			$text
-		);
-
-		$this->assertTrue( $result );
-	}
-
-	/**
-	 * @test SMWHooks::onLinksUpdateConstructed
-	 *
-	 * @since 1.9
-	 */
-	public function testOnLinksUpdateConstructed() {
-		list( $title, $parserOutput ) = $this->makeTitleAndParserOutput();
-		$update = new LinksUpdate( $title, $parserOutput );
-		$result = SMWHooks::onLinksUpdateConstructed( $update );
-
-		$this->assertTrue( $result );
-	}
-
-	/**
 	 * @test SMWHooks::onTitleIsAlwaysKnown
 	 *
 	 * @since 1.9
@@ -306,11 +249,11 @@ class HooksTest extends \MediaWikiTestCase {
 
 	}
 
-	/**
+	/*
 	 * @test SMWHooks::onArticleDelete
 	 *
 	 * @since 1.9
-	 */
+	 *
 	public function testOnArticleDelete() {
 		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
 
@@ -333,51 +276,7 @@ class HooksTest extends \MediaWikiTestCase {
 				'Skipped test due to missing method (probably MW 1.19 or lower).'
 			);
 		}
-	}
-
-	/**
-	 * @test SMWHooks::onNewRevisionFromEditComplete
-	 * @dataProvider getTextDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $text
-	 */
-	public function testOnNewRevisionFromEditComplete( $text ) {
-		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
-
-			$wikiPage = $this->newPage();
-			$user = $this->getUser();
-
-			$content = \ContentHandler::makeContent(
-				$text,
-				$wikiPage->getTitle(),
-				CONTENT_MODEL_WIKITEXT
-			);
-
-			$wikiPage->doEditContent( $content, "testing", EDIT_NEW );
-			$this->assertTrue( $wikiPage->getId() > 0, "WikiPage should have new page id" );
-			$revision = $wikiPage->getRevision();
-
-			$result = SMWHooks::onNewRevisionFromEditComplete (
-				$wikiPage,
-				$revision,
-				$wikiPage->getId(),
-				$user
-			);
-
-			// Always make sure the clean-up
-			if ( $wikiPage->exists() ) {
-				$wikiPage->doDeleteArticle( "testing done." );
-			}
-
-			$this->assertTrue( $result );
-		} else {
-			$this->markTestSkipped(
-				'Skipped test due to missing method (probably MW 1.19 or lower).'
-			);
-		}
-	}
+	}*/
 
 	/**
 	 * @test SMWHooks::onSkinTemplateNavigation
@@ -463,21 +362,6 @@ class HooksTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWHooks::onInternalParseBeforeLinks
-	 * @dataProvider getTextDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $text
-	 */
-	public function testOnInternalParseBeforeLinks( $text ) {
-		$parser = $this->getParser();
-		$result = SMWHooks::onInternalParseBeforeLinks( $parser, $text );
-
-		$this->assertTrue( $result );
-	}
-
-	/**
 	 * @test SMWHooks::onGetPreferences
 	 *
 	 * @since 1.9
@@ -488,91 +372,5 @@ class HooksTest extends \MediaWikiTestCase {
 		$result = SMWHooks::onGetPreferences( $this->getUser(), $preferences );
 		$this->assertTrue( $result );
 	}
-
-	/**
-	 * @test SMWHooks::onArticlePurge
-	 *
-	 * @since 1.9
-	 */
-	public function testOnArticlePurge() {
-		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
-
-			$wikiPage = $this->newPage();
-
-			$user = $this->getUser();
-
-			$content = \ContentHandler::makeContent(
-				'testing',
-				$wikiPage->getTitle(),
-				CONTENT_MODEL_WIKITEXT
-			);
-			$wikiPage->doEditContent( $content, "testing", EDIT_NEW, false, $user );
-
-			$result = SMWHooks::onArticlePurge( $wikiPage );
-
-			// Always make sure to clean-up
-			if ( $wikiPage->exists() ) {
-				$wikiPage->doDeleteArticle( "testing done." );
-			}
-
-			$this->assertTrue( $result );
-
-		} else {
-			$this->markTestSkipped(
-				'Skipped test due to missing method (probably MW 1.19 or lower).'
-			);
-		}
-	}
-
-	/**
-	 * @test SMWHooks::onBeforePageDisplay
-	 *
-	 * @since 1.9
-	 */
-	public function testOnBeforePageDisplay() {
-		$context = new \RequestContext();
-		$context->setTitle( $this->getTitle() );
-		$context->setLanguage( \Language::factory( 'en' ) );
-
-		$skin = new \SkinTemplate();
-		$skin->setContext( $context );
-
-		$outputPage = new \OutputPage( $context );
-
-		$result = SMWHooks::onBeforePageDisplay( $outputPage, $skin );
-		$this->assertTrue( $result );
-	}
-
-	/**
-	 * @test SMWHooks::onSkinAfterContent
-	 *
-	 * @since 1.9
-	 */
-	public function testOnSkinAfterContent() {
-		$data = '';
-		$skin = new \SkinTemplate();
-		$skin->getContext()->setLanguage( \Language::factory( 'en' ) );
-		$skin->getContext()->setTitle( $this->getTitle() );
-
-		$result = SMWHooks::onSkinAfterContent( $data, $skin );
-		$this->assertTrue( $result );
-	}
-
-	/* @ Travis #209.3 LinkCache doesn't currently know ...
-	 * @test SMWHooks::onOutputPageParserOutput
-	 *
-	 * @since 1.9
-	 *
-	public function testOnOutputPageParserOutput() {
-		list( $title, $parserOutput ) = $this->makeTitleAndParserOutput();
-		$update = new LinksUpdate( $title, $parserOutput );
-		$context = \RequestContext::getMain();
-		$context->setTitle( $title );
-		$outputPage = new \OutputPage( $context );
-
-		$result = SMWHooks::onOutputPageParserOutput( $outputPage, $parserOutput );
-		$this->assertTrue( $result );
-	}
-	*/
 
 }

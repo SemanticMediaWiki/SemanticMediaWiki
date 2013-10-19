@@ -10,6 +10,24 @@ die("Not a valid entry point\n");
  */
 
 /**
+ * @mainpage Introduction
+ *
+ * Welcome to the auto-generated Semantic MediaWiki code documentation
+ *
+ * For information about how to install or configure Semantic MediaWiki,
+ * please visit the main site:
+ *
+ * https://www.semantic-mediawiki.org/
+ */
+
+/**
+ * This file does not hold any code. It is used mainly during the doxygen
+ * auto-documentation process
+ *
+ * @file
+ */
+
+/**
  * This group contains members that are related to the Semantic MediaWiki Api
  *
  * @defgroup Api Api
@@ -52,7 +70,7 @@ die("Not a valid entry point\n");
  * @see https://www.mediawiki.org/wiki/Manual:Hooks
  * @see https://semantic-mediawiki.org/wiki/Hooks‎
  *
- * @defgroup Hook Hook
+ * @defgroup FunctionHook FunctionHook
  * @ingroup SMW
  */
 

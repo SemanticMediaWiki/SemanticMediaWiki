@@ -6,38 +6,46 @@ use SMW\SharedDependencyContainer;
 use SMW\OutputPageParserOutput;
 
 /**
- * Tests for the OutputPageParserOutput class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\OutputPageParserOutput
- *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class OutputPageParserOutputTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\OutputPageParserOutput';
 	}
 
-	/**
-	 * Helper method that returns a OutputPageParserOutput object
+	// RECYCLE
+
+	/* @ Travis #209.3 LinkCache doesn't currently know ...
+	 * @test SMWHooks::onOutputPageParserOutput
 	 *
+	 * @since 1.9
+	 *
+	public function testOnOutputPageParserOutput() {
+		list( $title, $parserOutput ) = $this->makeTitleAndParserOutput();
+		$update = new LinksUpdate( $title, $parserOutput );
+		$context = \RequestContext::getMain();
+		$context->setTitle( $title );
+		$outputPage = new \OutputPage( $context );
+
+		$result = SMWHooks::onOutputPageParserOutput( $outputPage, $parserOutput );
+		$this->assertTrue( $result );
+	}
+	*/
+
+
+	/**
 	 * @since 1.9
 	 *
 	 * @return OutputPageParserOutput
@@ -62,8 +70,6 @@ class OutputPageParserOutputTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test OutputPageParserOutput::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -71,7 +77,6 @@ class OutputPageParserOutputTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test OutputPageParserOutput::parseText
 	 * @dataProvider outputDataProvider
 	 *
 	 * Verify that parseText works in isolation and independently from the

@@ -5,29 +5,24 @@ namespace SMW;
 use WikiPage;
 
 /**
- * ArticlePurge hook
+ * A function hook being executed before running "&action=purge"
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * ArticlePurge hook executes before running "&action=purge"
- *
- * @note Create a CacheStore entry about the article in order
- * for ParserAfterTidy to initiate a Store update.
+ * No direct action is taken within the hooks, it is only used as an initiator
+ * to mark an article to be parged which will be used by another hook to follow
+ * up on the marking.
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ArticlePurge extends FunctionHook {
 
-	/** @var OutputPage */
+	/** @var WikiPage */
 	protected $wikiPage = null;
 
 	/**
@@ -51,7 +46,7 @@ class ArticlePurge extends FunctionHook {
 	}
 
 	/**
-	 * @see HookBase::process
+	 * @see FunctionHook::process
 	 *
 	 * @since 1.9
 	 *

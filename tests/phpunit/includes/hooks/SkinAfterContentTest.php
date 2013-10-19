@@ -4,46 +4,44 @@ namespace SMW\Test;
 
 use SMW\SharedDependencyContainer;
 use SMW\SkinAfterContent;
-use SMW\CacheIdGenerator;
-use SMW\CacheableResultMapper;
-use SMW\SimpleDictionary;
-
-/**
- * Tests for the SkinAfterContent class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
  * @covers \SMW\SkinAfterContent
  *
- * @ingroup Test
- *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
 		return '\SMW\SkinAfterContent';
 	}
 
-	/**
-	 * Helper method that returns a SkinAfterContent object
-	 *
+	// RECYCLE
+
+	/*
 	 * @since 1.9
 	 *
-	 * @param array $params
+	public function testOnSkinAfterContent() {
+		$data = '';
+		$skin = new \SkinTemplate();
+		$skin->getContext()->setLanguage( \Language::factory( 'en' ) );
+		$skin->getContext()->setTitle( $this->getTitle() );
+
+		$result = SMWHooks::onSkinAfterContent( $data, $skin );
+		$this->assertTrue( $result );
+	} */
+
+	/**
+	 * @since 1.9
 	 *
 	 * @return SkinAfterContent
 	 */
@@ -68,8 +66,6 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SkinAfterContent::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -77,7 +73,6 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SkinAfterContent::process
 	 * @dataProvider outputDataProvider
 	 *
 	 * @since 1.9
