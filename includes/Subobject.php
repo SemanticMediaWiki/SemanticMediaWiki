@@ -7,22 +7,19 @@ use SMWDIContainer;
 use SMWDataValue;
 
 use Title;
+use InvalidArgumentException;
 
 /**
- * Class to interact with a 'subobject'
+ * Provides a subobject
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * Class to interact with a 'subobject'
+ * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
  *
  * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class Subobject {
 
@@ -48,26 +45,14 @@ class Subobject {
 	}
 
 	/**
-	 * Convenience method for immediate object instantiation that creates a
-	 * subobject for a given title and identifier
-	 *
-	 * @par Example:
-	 * @code
-	 *  $subobject = Subobject::newFromId( 'Foo', 'Bar' );
-	 *  $subobject->addDataValue( $dataValue )
-	 * @endcode
+	 * Returns the Title object
 	 *
 	 * @since 1.9
 	 *
-	 * @param Title $title
-	 * @param string|false $identifier
-	 *
-	 * @return Subobject
+	 * @return Title
 	 */
-	public static function newFromId( Title $title, $identifier = false ) {
-		$instance = new self( $title );
-		$instance->setSemanticData( $identifier );
-		return $instance;
+	public function getTitle() {
+		return $this->title;
 	}
 
 	/**
@@ -124,22 +109,24 @@ class Subobject {
 	 *
 	 * @param string $identifier
 	 *
-	 * @return SMWContainerSemanticData
+	 * @throws InvalidArgumentException
 	 */
 	public function setSemanticData( $identifier ) {
 
-		if ( $identifier != '' ) {
-			$this->identifier = $identifier;
-
-			$diSubWikiPage = new DIWikiPage(
-				$this->title->getDBkey(),
-				$this->title->getNamespace(),
-				$this->title->getInterwiki(),
-				$identifier
-			);
-
-			return $this->semanticData = new SMWContainerSemanticData( $diSubWikiPage );
+		if ( $identifier === '' ) {
+			throw new InvalidArgumentException( 'The identifier is empty' );
 		}
+
+		$this->identifier = $identifier;
+
+		$subWikiPage = new DIWikiPage(
+			$this->title->getDBkey(),
+			$this->title->getNamespace(),
+			$this->title->getInterwiki(),
+			$identifier
+		);
+
+		$this->semanticData = new SMWContainerSemanticData( $subWikiPage );
 
 	}
 
@@ -183,7 +170,9 @@ class Subobject {
 	 * @code
 	 *  $dataValue = DataValueFactory::newPropertyValue( $userProperty, $userValue )
 	 *
-	 *  Subobject::newFromId( 'Foo', 'Bar' )->addDataValue( $dataValue )
+	 *  $subobject = new Subobject( 'Foo' );
+	 *  $subobject->setSemanticData( 'Bar' );
+	 *  $subobject->addDataValue( $dataValue )
 	 * @endcode
 	 *
 	 * @since 1.9

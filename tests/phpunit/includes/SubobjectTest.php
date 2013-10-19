@@ -11,29 +11,21 @@ use SMWDIBlob;
 use Title;
 
 /**
- * Tests for the Subobject class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\Subobject
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SubobjectTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -41,26 +33,16 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a DataValue object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $propertyName
-	 * @param $value
 	 *
 	 * @return SMWDataValue
 	 */
-	private function getDataValue( $propertyName, $value ){
+	private function newDataValue( $propertyName, $value ){
 		return DataValueFactory::newPropertyValue( $propertyName, $value );
 	}
 
 	/**
-	 * Helper method that returns a Subobject object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $title
-	 * @param $id
 	 *
 	 * @return Subobject
 	 */
@@ -81,8 +63,6 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Subobject::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -90,53 +70,55 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Subobject::newFromId
-	 *
 	 * @since 1.9
 	 */
-	public function testNewFromId() {
+	public function testSetSemanticDataInvalidArgumentException() {
 
-		$id = 'Foo';
-		$instance = Subobject::newFromId( $this->getTitle(), $id );
+		$this->setExpectedException( 'InvalidArgumentException' );
 
-		$this->assertInstanceOf( $this->getClass(), $instance );
-		$this->assertEquals( $id, $instance->getId() );
+		$instance = new Subobject( $this->newTitle() );
+		$instance->setSemanticData( '' );
 
 	}
 
 	/**
-	 * @test Subobject::setSemanticData
-	 *
 	 * @since 1.9
 	 */
 	public function testSetSemanticData() {
 
-		$instance = $this->newInstance( $this->getTitle() );
+		$instance = $this->newInstance( $this->newTitle() );
+
+		$instance->setSemanticData( 'Foo' );
+
+		$this->assertInstanceOf(
+			'\Title',
+			$instance->getTitle()
+		);
 
 		$this->assertInstanceOf(
 			'\SMWContainerSemanticData',
-			$instance->setSemanticData( $this->newRandomString() )
+			$instance->getSemanticData()
 		);
-		$this->assertEmpty( $instance->setSemanticData( '' ) );
+
+		$this->assertEquals(
+			'Foo',
+			$instance->getSemanticData()->getSubject()->getSubobjectname(),
+			'Asserts that getSubobjectname() returns with an expected result'
+		);
 
 	}
 
 	/**
-	 * @test Subobject::getId
 	 * @dataProvider getDataProvider
 	 *
 	 * @note For an anonymous identifier we only use the first character
 	 * as comparison
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
-	 * @param array $info
 	 */
 	public function testGetId( array $test, array $expected, array $info ) {
 
-		$subobject = $this->newInstance( $this->getTitle(), $test['identifier'] );
+		$subobject = $this->newInstance( $this->newTitle(), $test['identifier'] );
 
 		$id = $expected['identifier'] === '_' ? substr( $subobject->getId(), 0, 1 ) : $subobject->getId();
 		$this->assertEquals( $expected['identifier'], $id, $info['msg'] );
@@ -144,37 +126,29 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Subobject::getProperty
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
 	 */
 	public function testGetProperty( array $test ) {
 
-		$subobject = $this->newInstance( $this->getTitle(), $test['identifier'] );
+		$subobject = $this->newInstance( $this->newTitle(), $test['identifier'] );
 		$this->assertInstanceOf( '\SMW\DIProperty', $subobject->getProperty() );
 
 	}
 
 	/**
-	 * @test Subobject::addDataValue
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
-	 * @param array $info
 	 */
 	public function testaddDataValue( array $test, array $expected, array $info ) {
 
-		$subobject = $this->newInstance( $this->getTitle(), $test['identifier'] );
+		$subobject = $this->newInstance( $this->newTitle(), $test['identifier'] );
 
 		foreach ( $test['properties'] as $property => $value ){
 			$subobject->addDataValue(
-				$this->getDataValue( $property, $value )
+				$this->newDataValue( $property, $value )
 			);
 		}
 
@@ -185,13 +159,9 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Subobject::addDataValue
-	 * @dataProvider getDataValueProvider
+	 * @dataProvider newDataValueProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
 	 */
 	public function testDataValueExaminer( array $test, array $expected ) {
 
@@ -208,7 +178,7 @@ class SubobjectTest extends ParserTestCase {
 			'isValid'       => true,
 		) );
 
-		$subobject = $this->newInstance( $this->getTitle(), $this->newRandomString() );
+		$subobject = $this->newInstance( $this->newTitle(), $this->newRandomString() );
 		$subobject->addDataValue( $dataValue );
 
 		$this->assertCount( $expected['errors'], $subobject->getErrors() );
@@ -218,8 +188,6 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Subobject::addDataValue
-	 *
 	 * @since 1.9
 	 *
 	 * @throws InvalidSemanticDataException
@@ -228,24 +196,19 @@ class SubobjectTest extends ParserTestCase {
 
 		$this->setExpectedException( '\SMW\InvalidSemanticDataException' );
 
-		$subobject = new Subobject(  $this->getTitle() );
-		$subobject->addDataValue( $this->getDataValue( 'Foo', 'Bar' ) );
+		$subobject = new Subobject( $this->newTitle() );
+		$subobject->addDataValue( $this->newDataValue( 'Foo', 'Bar' ) );
 
 	}
 
 	/**
-	 * @test Subobject::generateId
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
-	 * @param array $info
 	 */
 	public function testGenerateId( array $test, array $expected, array $info ) {
 
-		$subobject = $this->newInstance( $this->getTitle() );
+		$subobject = $this->newInstance( $this->newTitle() );
 		$this->assertEquals(
 			'_',
 			substr( $subobject->generateId( new HashIdGenerator( $test['identifier'], '_' ) ), 0, 1 ),
@@ -255,26 +218,18 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Subobject::getContainer
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
-	 * @param array $info
 	 */
 	public function testGetContainer( array $test, array $expected, array $info  ) {
 
-		$subobject = $this->newInstance( $this->getTitle(), $test['identifier'] );
+		$subobject = $this->newInstance( $this->newTitle(), $test['identifier'] );
 		$this->assertInstanceOf( '\SMWDIContainer', $subobject->getContainer(), $info['msg'] );
 
 	}
 
 	/**
-	 * Provides sample data of combinations used in connection with a
-	 * Subobject instance
-	 *
 	 * @return array
 	 */
 	public function getDataProvider() {
@@ -400,7 +355,7 @@ class SubobjectTest extends ParserTestCase {
 	 *
 	 * @return array
 	 */
-	public function getDataValueProvider() {
+	public function newDataValueProvider() {
 
 		return array(
 

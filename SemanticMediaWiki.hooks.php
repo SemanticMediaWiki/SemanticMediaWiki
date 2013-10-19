@@ -191,7 +191,6 @@ final class SMWHooks {
 	 * @return boolean
 	 */
 	public static function onParserFirstCallInit( Parser &$parser ) {
-		$parser->setFunctionHook( 'subobject', array( 'SMW\SubobjectParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'concept', array( 'SMW\ConceptParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'set', array( 'SMW\SetParserFunction', 'render' ) );
 		$parser->setFunctionHook( 'set_recurring_event', array( 'SMW\RecurringEventsParserFunction', 'render' ) );

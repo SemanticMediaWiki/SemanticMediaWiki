@@ -510,6 +510,16 @@ final class Setup implements ContextAware {
 				return $settings->get( 'smwgQEnabled' ) ? $show->parse( func_get_args() ) : $show->disabled();
 			} );
 
+			/**
+			 * {{#subobject}}
+			 *
+			 * @since  1.9
+			 */
+			$parser->setFunctionHook( 'subobject', function( $parser ) use ( $builder ) {
+				$instance = $builder->newObject( 'SubobjectParserFunction', array( 'Parser' => $parser ) );
+				return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
+			} );
+
 			return true;
 		};
 

@@ -200,6 +200,12 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
+		$provider[] = array( 'SubobjectParserFunction', array( '\SMW\SubobjectParserFunction' => array(
+				'Parser' => $parser
+				)
+			)
+		);
+
 		return $provider;
 	}
 }

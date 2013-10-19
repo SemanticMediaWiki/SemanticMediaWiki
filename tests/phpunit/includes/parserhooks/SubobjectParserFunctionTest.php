@@ -13,29 +13,21 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the SubobjectParserFunction class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SubobjectParserFunction
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SubobjectParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -43,19 +35,14 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SubobjectParserFunction object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $title
-	 * @param $parserOutput
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	private function newInstance( Title $title= null, ParserOutput $parserOutput = null ) {
+	private function newInstance( Subobject $subobject = null, ParserOutput $parserOutput = null ) {
 
-		if ( $title === null ) {
-			$title = $this->newTitle();
+		if ( $subobject === null ) {
+			$subobject = new Subobject( $this->newTitle() );
 		}
 
 		if ( $parserOutput === null ) {
@@ -63,15 +50,13 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 		}
 
 		return new SubobjectParserFunction(
-			$this->newParserData( $title, $parserOutput ),
-			new Subobject( $title ),
-			new MessageFormatter( $title->getPageLanguage() )
+			$this->newParserData( $subobject->getTitle(), $parserOutput ),
+			$subobject,
+			new MessageFormatter( $subobject->getTitle()->getPageLanguage() )
 		);
 	}
 
 	/**
-	 * @test SubobjectParserFunction::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -79,17 +64,13 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test SubobjectParserFunction::parse
-	 * @dataProvider getSubobjectDataProvider
+	 * @dataProvider parameterDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
+		$instance = $this->newInstance();
 		$result   = $instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		$this->assertEquals( $result !== '' , $expected['errors'] );
@@ -97,46 +78,40 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test SubobjectParserFunction::parse
-	 * @dataProvider getSubobjectDataProvider
+	 * @dataProvider parameterDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testInstantiatedSubobject( array $params, array $expected ) {
 
-		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
+		$subobject = new Subobject( $this->newTitle() );
+
+		$instance = $this->newInstance( $subobject );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
-		$this->assertContains( $expected['identifier'], $instance->getSubobject()->getId() );
+		$this->assertContains( $expected['identifier'], $subobject->getId() );
 
 	}
 
 	/**
-	 * @test SubobjectParserFunction::parse
 	 * @dataProvider getObjectReferenceDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param boolean $isEnabled
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testObjectReference( $isEnabled, array $params, array $expected, array $info ) {
 
 		$parserOutput = $this->newParserOutput();
 		$title        = $this->newTitle();
+		$subobject    = new Subobject( $title );
 
 		// Initialize and parse
-		$instance = $this->newInstance( $title, $parserOutput );
+		$instance = $this->newInstance( $subobject, $parserOutput );
 		$instance->setObjectReference( $isEnabled );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		// If it is enabled only check for the first character {0} that should
 		// contain '_' as the rest is going to be an unknown hash value
-		$id = $instance->getSubobject()->getId();
+		$id = $subobject->getId();
 		$this->assertEquals( $expected['identifier'], $isEnabled ? $id{0} : $id, $info['msg'] );
 
 		// Get data instance
@@ -153,29 +128,23 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Test instantiated property and value strings
-	 *
-	 * @test SubobjectParserFunction::parse
-	 * @dataProvider getSubobjectDataProvider
+	 * @dataProvider parameterDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testInstantiatedPropertyValues( array $params, array $expected ) {
 
 		$parserOutput = $this->newParserOutput();
 		$title        = $this->newTitle();
+		$subobject    = new Subobject( $title );
 
 		// Initialize and parse
-		$instance = $this->newInstance( $title, $parserOutput );
+		$instance = $this->newInstance( $subobject, $parserOutput );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		// Get semantic data from the ParserOutput
 		$parserData = $this->newParserData( $title, $parserOutput );
 
-		// Check the returned instance
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
 
 		// Confirm subSemanticData objects for the SemanticData instance
@@ -186,27 +155,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test SubobjectParserFunction::render
-	 *
-	 * @since 1.9
-	 */
-	public function testStaticRender() {
-
-		$parser = $this->newParser( $this->newTitle(), $this->getUser() );
-		$result = SubobjectParserFunction::render( $parser );
-
-		$this->assertInternalType( 'string', $result );
-	}
-
-	/**
-	 * Provides data sample normally found in connection with the {{#subobject}}
-	 * parser function. The first array contains parametrized input value while
-	 * the second array contains expected return results for the instantiated
-	 * object.
-	 *
 	 * @return array
 	 */
-	public function getSubobjectDataProvider() {
+	public function parameterDataProvider() {
 		// Get the right language for an error object
 		$diPropertyError = new SMWDIProperty( SMWDIProperty::TYPE_ERROR );
 

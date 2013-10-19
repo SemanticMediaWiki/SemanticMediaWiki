@@ -5,29 +5,21 @@ namespace SMW\Test;
 use SMW\ParserFunctionFactory;
 
 /**
- * Tests for the ParserFunctionFactory class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\ParserFunctionFactory
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ParserFunctionFactoryTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -35,12 +27,7 @@ class ParserFunctionFactoryTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ParserFunctionFactory object
-	 *
 	 * @since 1.9
-	 *
-	 * @param Title $title
-	 * @param ParserOutput $parserOutput
 	 *
 	 * @return ParserFunctionFactory
 	 */
@@ -49,8 +36,6 @@ class ParserFunctionFactoryTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserFunctionFactory::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -58,7 +43,6 @@ class ParserFunctionFactoryTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserFunctionFactory::getRecurringEventsParser
 	 * @dataProvider parserFunctionDataProvider
 	 *
 	 * @since 1.9

@@ -248,6 +248,33 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			},
 
 			/**
+			 * SubobjectParserFunction object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return SubobjectParserFunction
+			 */
+			'SubobjectParserFunction' => function ( DependencyBuilder $builder ) {
+
+				$parser = $builder->getArgument( 'Parser' );
+
+				$parserData = $builder->newObject( 'ParserData', array(
+					'Title'        => $parser->getTitle(),
+					'ParserOutput' => $parser->getOutput()
+				) );
+
+				$subobject = new Subobject( $parser->getTitle() );
+
+				$messageFormatter = $builder->newObject( 'MessageFormatter', array(
+					'Language' => $parser->getTargetLanguage()
+				) );
+
+				$instance = new SubobjectParserFunction( $parserData, $subobject, $messageFormatter );
+
+				return $instance;
+			},
+
+			/**
 			 * FunctionHookRegistry object definition
 			 *
 			 * @since  1.9

@@ -5,22 +5,16 @@ namespace SMW;
 use Parser;
 
 /**
- * Class that provides the {{#subobject}} parser function
+ * Provides the {{#subobject}} parser function
  *
- * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * Class that provides the {{#subobject}} parser function
+ * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
  *
  * @ingroup ParserFunction
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SubobjectParserFunction {
 
@@ -47,17 +41,6 @@ class SubobjectParserFunction {
 		$this->parserData = $parserData;
 		$this->subobject = $subobject;
 		$this->msgFormatter = $msgFormatter;
-	}
-
-	/**
-	 * Returns invoked subobject
-	 *
-	 * @since 1.9
-	 *
-	 * @return Subobject
-	 */
-	public function getSubobject() {
-		return $this->subobject;
 	}
 
 	/**
@@ -158,20 +141,4 @@ class SubobjectParserFunction {
 			->getHtml();
 	}
 
-	/**
-	 * Parser::setFunctionHook {{#subobject}} handler method
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return string|null
-	 */
-	public static function render( Parser &$parser ) {
-		$instance = new self(
-			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new Subobject( $parser->getTitle() ),
-			new MessageFormatter( $parser->getTargetLanguage() )
-		);
-
-		return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
-	}
 }

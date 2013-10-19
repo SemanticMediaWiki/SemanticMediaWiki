@@ -7,31 +7,32 @@ use Parser;
 /**
  * Factory class for convenience parser function instantiation
  *
- * @file
+ * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @ingroup ParserFunction
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
-
-/**
- * Factory class for convenience parser function instantiation
- *
- * @ingroup ParserFunction
- */
-class ParserFunctionFactory {
+class ParserFunctionFactory implements ContextAware {
 
 	/** @var Parser */
 	protected $parser;
+
+	/** @var ContextResource */
+	protected $context = null;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Parser $parser
+	 * @param ContextResource|null $context
 	 */
-	public function __construct( Parser $parser ) {
+	public function __construct( Parser $parser, ContextResource $context = null ) {
 		$this->parser = $parser;
+		$this->context = $context;
 	}
 
 	/**
@@ -48,6 +49,22 @@ class ParserFunctionFactory {
 	}
 
 	/**
+	 * @see ContextAware::withContext
+	 *
+	 * @since 1.9
+	 *
+	 * @return ContextResource
+	 */
+	public function withContext() {
+
+		if ( $this->context === null ) {
+			$this->context = new BaseContext();
+		}
+
+		return $this->context;
+	}
+
+	/**
 	 * Convenience instantiation of a SubobjectParserFunction object
 	 *
 	 * @since 1.9
@@ -55,11 +72,7 @@ class ParserFunctionFactory {
 	 * @return SubobjectParserFunction
 	 */
 	public function getSubobjectParser() {
-		return new SubobjectParserFunction(
-			new ParserData( $this->parser->getTitle(), $this->parser->getOutput() ),
-			new Subobject( $this->parser->getTitle() ),
-			new MessageFormatter( $this->parser->getTargetLanguage() )
-		);
+		return $this->withContext()->getDependencyBuilder()->newObject( 'SubobjectParserFunction', array( 'Parser' => $this->parser ) );
 	}
 
 	/**
