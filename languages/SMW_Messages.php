@@ -2926,6 +2926,7 @@ Progrés estimat de l'actualització actual:",
 	'group-smwadministrator' => 'Administradors de Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|administrador (SMW)|administratora (SMW)}}',
 	'action-smw-admin' => "accedeix a les tasques d'administració de Semantic MediaWiki",
+	'smw-pa-property-predefined-default' => "$1 és una propietat predefinida (també coneguda com [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propietat especial]). És una propietat predeterminada que incorpora privilegis administratius addicionals, però que es pot fer servir com qualsevol altre [https://www.semantic-mediawiki.org/wiki/Property propietat definida per l'usuari].",
 	'smw-sp-properties-cache-info' => "Les dades llistades s'han recuperat de la [https://www.semantic-mediawiki.org/wiki/Caching memòria cau], i s'han actualitzat el $1.",
 	'smw-sp-properties-header-label' => 'Llista de propietats',
 );
@@ -2948,11 +2949,14 @@ $messages['ce'] = array(
 	'smw_sbv_value' => 'МаьӀна:',
 	'browse' => 'Сайте хьажа',
 	'smw_browselink' => 'Хьажа агӀонах дерг',
+	'smw_browse_go' => 'Дехьа гӀо',
 	'smw_pp_from' => 'АгӀона чура',
 	'smw_result_noresults' => 'Бехк ма биллалаш, хӀума ца карийна.',
 	'smw_smwadmin_db' => 'Хааман база дӏахӏоттор а керла яккхар а',
 	'smw_smwadmin_datarefresh' => 'Хаам меттахӏоттор а керла баккхар а',
 	'smw_smwadmin_datarefreshbutton' => 'Хаам керла баккха дӏадоладе',
+	'smw-paramdesc-category-delim' => 'ДӀасакъастораг',
+	'smw-ui-tooltip-title-note' => 'Билгалдаккхар',
 );
 
 /** Chamorro (Chamoru)
