@@ -2,11 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\OutputPageParserOutput;
+use SMW\BaseContext;
 
 /**
  * @covers \SMW\OutputPageParserOutput
+ *
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -25,26 +27,6 @@ class OutputPageParserOutputTest extends ParserTestCase {
 		return '\SMW\OutputPageParserOutput';
 	}
 
-	// RECYCLE
-
-	/* @ Travis #209.3 LinkCache doesn't currently know ...
-	 * @test SMWHooks::onOutputPageParserOutput
-	 *
-	 * @since 1.9
-	 *
-	public function testOnOutputPageParserOutput() {
-		list( $title, $parserOutput ) = $this->makeTitleAndParserOutput();
-		$update = new LinksUpdate( $title, $parserOutput );
-		$context = \RequestContext::getMain();
-		$context->setTitle( $title );
-		$outputPage = new \OutputPage( $context );
-
-		$result = SMWHooks::onOutputPageParserOutput( $outputPage, $parserOutput );
-		$this->assertTrue( $result );
-	}
-	*/
-
-
 	/**
 	 * @since 1.9
 	 *
@@ -60,11 +42,13 @@ class OutputPageParserOutputTest extends ParserTestCase {
 			$outputPage = $this->newMockBuilder()->newObject( 'OutputPage' );
 		}
 
-		$container = new SharedDependencyContainer();
-		$container->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
+		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
+
+		$context = new BaseContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
 
 		$instance = new OutputPageParserOutput( $outputPage, $parserOutput );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
+		$instance->invokeContext( $context );
 
 		return $instance;
 	}
@@ -98,10 +82,10 @@ class OutputPageParserOutputTest extends ParserTestCase {
 		$parserOutput = $setup['parserOutput'];
 
 		$instance = $this->newInstance( $outputPage, $parserOutput );
-		$instance->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
+		$instance->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
 
 		// Verify that for the invoked objects no previsous content is cached
-		$factboxCache = $instance->getDependencyBuilder()->newObject( 'FactboxCache', array(
+		$factboxCache = $instance->withContext()->getDependencyBuilder()->newObject( 'FactboxCache', array(
 			'OutputPage' => $outputPage
 		) );
 

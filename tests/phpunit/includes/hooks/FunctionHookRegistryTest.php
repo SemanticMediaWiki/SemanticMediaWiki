@@ -8,6 +8,8 @@ use SMW\EmptyContext;
 /**
  * @covers \SMW\FunctionHookRegistry
  *
+ * @ingroup Test
+ *
  * @group SMW
  * @group SMWExtension
  *

@@ -3,17 +3,6 @@
 namespace SMW;
 
 /**
- * TitleMoveComplete hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * TitleMoveComplete occurs whenever a request to move an article
  * is completed
  *
@@ -22,7 +11,12 @@ namespace SMW;
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class TitleMoveComplete extends FunctionHook {
 
@@ -68,19 +62,14 @@ class TitleMoveComplete extends FunctionHook {
 	public function process() {
 
 		/**
-		 * @var Store $store
-		 */
-		$store = $this->getDependencyBuilder()->newObject( 'Store' );
-
-		/**
 		 * @var Settings $settings
 		 */
-		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
+		$settings = $this->withContext()->getSettings();
 
 		/**
 		 * @var CacheHandler $cache
 		 */
-		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
 
 		$cache->setCacheEnabled( $this->newId > 0 )
 			->setKey( ArticlePurge::newCacheId( $this->newId ) )
@@ -90,7 +79,9 @@ class TitleMoveComplete extends FunctionHook {
 			->setKey( ArticlePurge::newCacheId( $this->oldId ) )
 			->set( $settings->get( 'smwgAutoRefreshOnPageMove' ) );
 
-		$store->changeTitle( $this->oldTitle, $this->newTitle, $this->oldId, $this->newId );
+		$this->withContext()
+			->getStore()
+			->changeTitle( $this->oldTitle, $this->newTitle, $this->oldId, $this->newId );
 
 		return true;
 	}

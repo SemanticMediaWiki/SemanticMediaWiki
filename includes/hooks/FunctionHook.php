@@ -12,7 +12,7 @@ namespace SMW;
  *
  * @author mwjames
  */
-abstract class FunctionHook extends DependencyInjector implements ContextAware, ContextInjector {
+abstract class FunctionHook implements ContextAware, ContextInjector {
 
 	/** @var ContextResource */
 	protected $context;

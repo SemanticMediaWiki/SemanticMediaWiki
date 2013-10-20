@@ -6,17 +6,6 @@ use Parser;
 use Title;
 
 /**
- * InternalParseBeforeLinks hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Hook: InternalParseBeforeLinks is used to process the expanded wiki
  * code after <nowiki>, HTML-comments, and templates have been treated.
  *
@@ -28,7 +17,12 @@ use Title;
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class InternalParseBeforeLinks extends FunctionHook {
 
@@ -50,6 +44,17 @@ class InternalParseBeforeLinks extends FunctionHook {
 	}
 
 	/**
+	 * @see FunctionHook::process
+	 *
+	 * @since 1.9
+	 *
+	 * @return true
+	 */
+	public function process() {
+		return !$this->parser->getTitle()->isSpecialPage() ? $this->performUpdate( $this->parser->getTitle() ) : true;
+	}
+
+	/**
 	 * Performs [[link::syntax]] parsing and adding of property annotations
 	 * to the ParserOutput
 	 *
@@ -62,7 +67,7 @@ class InternalParseBeforeLinks extends FunctionHook {
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(
+		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
 			'Title'        => $title,
 			'ParserOutput' => $this->parser->getOutput()
 		) );
@@ -70,24 +75,13 @@ class InternalParseBeforeLinks extends FunctionHook {
 		/**
 		 * @var ParserTextProcessor $contentProcessor
 		 */
-		$contentProcessor = $this->getDependencyBuilder()->newObject( 'ContentProcessor', array(
+		$contentProcessor = $this->withContext()->getDependencyBuilder()->newObject( 'ContentProcessor', array(
 			'ParserData' => $parserData
 		) );
 
 		$contentProcessor->parse( $this->text );
 
 		return true;
-	}
-
-	/**
-	 * @see FunctionHook::process
-	 *
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
-	public function process() {
-		return !$this->parser->getTitle()->isSpecialPage() ? $this->performUpdate( $this->parser->getTitle() ) : true;
 	}
 
 }

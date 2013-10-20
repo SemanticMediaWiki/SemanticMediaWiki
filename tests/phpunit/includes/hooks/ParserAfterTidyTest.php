@@ -2,19 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\ParserAfterTidy;
-
-/**
- * Tests for the ParserAfterTidy class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
+use SMW\BaseContext;
 
 /**
  * @covers \SMW\ParserAfterTidy
@@ -23,12 +12,15 @@ use SMW\ParserAfterTidy;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ParserAfterTidyTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -36,8 +28,6 @@ class ParserAfterTidyTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a CacheHandler object
-	 *
 	 * @since 1.9
 	 *
 	 * @return CacheHandler
@@ -61,8 +51,6 @@ class ParserAfterTidyTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ParserAfterTidy object
-	 *
 	 * @since 1.9
 	 *
 	 * @return ParserAfterTidy
@@ -74,14 +62,12 @@ class ParserAfterTidyTest extends ParserTestCase {
 		}
 
 		$instance = new ParserAfterTidy( $parser, $text );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( new SharedDependencyContainer() ) );
+		$instance->invokeContext( new BaseContext() );
 
 		return $instance;
 	}
 
 	/**
-	 * @test ParserAfterTidy::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -89,13 +75,9 @@ class ParserAfterTidyTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserAfterTidy::process
 	 * @dataProvider titleDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testProcess( $setup, $expected ) {
 
@@ -113,7 +95,7 @@ class ParserAfterTidyTest extends ParserTestCase {
 
 		$cacheHandler = $this->newMockCacheHandler( $setup['title']->getArticleID(), $setup['cache']  );
 
-		$container = $instance->getDependencyBuilder()->getContainer();
+		$container = $instance->withContext()->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Settings', $settings );
 		$container->registerObject( 'Store', $mockStore );
 		$container->registerObject( 'UpdateObserver', $updateObserver );
@@ -133,8 +115,6 @@ class ParserAfterTidyTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserAfterTidy::process
-	 *
 	 * @since 1.9
 	 */
 	public function testSemanticDataParserOuputUpdateIntegration() {
@@ -163,8 +143,10 @@ class ParserAfterTidyTest extends ParserTestCase {
 			'smwgCategoriesAsInstances' => true
 		) );
 
-		$container = $instance->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Settings', $settings );
+		$instance->withContext()
+			->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Settings', $settings );
 
 		$this->assertTrue(
 			$instance->process(),

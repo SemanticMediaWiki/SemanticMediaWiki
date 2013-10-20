@@ -2,21 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\InternalParseBeforeLinks;
+use SMW\BaseContext;
 
 use Title;
-
-/**
- * Tests for the InternalParseBeforeLinks class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
  * @covers \SMW\InternalParseBeforeLinks
@@ -25,12 +14,15 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class InternalParseBeforeLinksTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -38,12 +30,7 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 	}
 
 	/**
-	 * Returns a InternalParseBeforeLinks object
-	 *
 	 * @since 1.9
-	 *
-	 * @param Title|null $title
-	 * @param &$text
 	 *
 	 * @return InternalParseBeforeLinks
 	 */
@@ -54,14 +41,12 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 		}
 
 		$instance = new InternalParseBeforeLinks( $parser, $text );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( new SharedDependencyContainer() ) );
+		$instance->invokeContext( new BaseContext() );
 
 		return $instance;
 	}
 
 	/**
-	 * @test InternalParseBeforeLinks::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -69,7 +54,6 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test InternalParseBeforeLinks::process
 	 * @dataProvider titleDataProvider
 	 *
 	 * @since 1.9
@@ -86,15 +70,11 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test InternalParseBeforeLinks::process
 	 * @dataProvider textDataProvider
 	 *
 	 * @see ParserTextProcessorTest
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $setup
-	 * @param array $expected
 	 */
 	public function testSemanticDataParserOuputUpdateIntegration( $setup, $expected ) {
 
@@ -102,7 +82,8 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 		$parser   = $this->newParser( $setup['title'], $this->getUser() );
 		$instance = $this->newInstance( $parser, $text );
 
-		$instance->getDependencyBuilder()
+		$instance->withContext()
+			->getDependencyBuilder()
 			->getContainer()
 			->registerObject( 'Settings', $this->newSettings( $setup['settings'] ) );
 

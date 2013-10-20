@@ -5,22 +5,16 @@ namespace SMW;
 use LinksUpdate;
 
 /**
- * LinksUpdateConstructed hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate() is contruction
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class LinksUpdateConstructed extends FunctionHook {
 
@@ -37,7 +31,7 @@ class LinksUpdateConstructed extends FunctionHook {
 	}
 
 	/**
-	 * @see HookBase::process
+	 * @see FunctionHook::process
 	 *
 	 * @since 1.9
 	 *
@@ -48,7 +42,7 @@ class LinksUpdateConstructed extends FunctionHook {
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(
+		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
 			'Title'        => $this->linksUpdate->getTitle(),
 			'ParserOutput' => $this->linksUpdate->getParserOutput()
 		) );

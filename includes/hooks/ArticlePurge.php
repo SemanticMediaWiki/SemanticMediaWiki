@@ -59,12 +59,12 @@ class ArticlePurge extends FunctionHook {
 		/**
 		 * @var Settings $settings
 		 */
-		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
+		$settings = $this->withContext()->getSettings();
 
 		/**
 		 * @var CacheHandler $cache
 		 */
-		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
 
 		$cache->setCacheEnabled( $pageId > 0 )
 			->setKey( $this->newCacheId( $pageId ) )

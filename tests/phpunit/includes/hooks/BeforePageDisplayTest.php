@@ -3,13 +3,15 @@
 namespace SMW\Test;
 
 use SMW\BeforePageDisplay;
+use SMW\BaseContext;
 
 use OutputPage;
 use Title;
 
 /**
  * @covers \SMW\BeforePageDisplay
- * @covers \SMW\FunctionHook
+ *
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -27,25 +29,6 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	public function getClass() {
 		return '\SMW\BeforePageDisplay';
 	}
-
-	// RECYCLE
-
-	/*
-	 * @since 1.9
-	 *
-	public function testOnBeforePageDisplay() {
-		$context = new \RequestContext();
-		$context->setTitle( $this->getTitle() );
-		$context->setLanguage( \Language::factory( 'en' ) );
-
-		$skin = new \SkinTemplate();
-		$skin->setContext( $context );
-
-		$outputPage = new \OutputPage( $context );
-
-		$result = SMWHooks::onBeforePageDisplay( $outputPage, $skin );
-		$this->assertTrue( $result );
-	}*/
 
 	/**
 	 * Helper method that returns a OutputPage object
@@ -76,8 +59,7 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 
 		$skin     = $this->newMockBuilder()->newObject( 'Skin' );
 		$instance = new BeforePageDisplay( $outputPage, $skin );
-
-		$instance->setDependencyBuilder( $this->newDependencyBuilder() );
+		$instance->invokeContext( new BaseContext() );
 
 		return $instance;
 	}

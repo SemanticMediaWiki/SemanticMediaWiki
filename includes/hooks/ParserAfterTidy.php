@@ -6,23 +6,17 @@ use Parser;
 use Title;
 
 /**
- * ParserAfterTidy hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Hook: ParserAfterTidy to add some final processing to the
  * fully-rendered page output
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ParserAfterTidy extends FunctionHook {
 
@@ -73,7 +67,7 @@ class ParserAfterTidy extends FunctionHook {
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(
+		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
 			'Title'        => $title,
 			'ParserOutput' => $this->parser->getOutput()
 		) );
@@ -81,7 +75,7 @@ class ParserAfterTidy extends FunctionHook {
 		/**
 		 * @var BasePropertyAnnotator $propertyAnnotator
 		 */
-		$propertyAnnotator = $this->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
+		$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
 			'SemanticData' => $parserData->getData(),
 		) );
 
@@ -92,7 +86,7 @@ class ParserAfterTidy extends FunctionHook {
 		/**
 		 * @var CacheHandler $cache
 		 */
-		$cache = $this->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
 
 		$cache->setKey( ArticlePurge::newCacheId( $title->getArticleID() ) );
 

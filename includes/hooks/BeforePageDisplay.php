@@ -7,23 +7,17 @@ use Skin;
 use Title;
 
 /**
- * BeforePageDisplay hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * BeforePageDisplay hook which allows last minute changes to the
  * output page, e.g. adding of CSS or JavaScript
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class BeforePageDisplay extends FunctionHook {
 

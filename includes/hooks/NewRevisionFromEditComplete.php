@@ -6,17 +6,6 @@ use ParserOutput;
 use Title;
 
 /**
- * NewRevisionFromEditComplete hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Hook: NewRevisionFromEditComplete called when a revision was inserted
  * due to an edit
  *
@@ -28,7 +17,12 @@ use Title;
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class NewRevisionFromEditComplete extends FunctionHook {
 
@@ -60,36 +54,6 @@ class NewRevisionFromEditComplete extends FunctionHook {
 	}
 
 	/**
-	 * @since 1.9
-	 *
-	 * @param ParserOutput $parserOutput
-	 *
-	 * @return true
-	 */
-	protected function performUpdate( ParserOutput $parserOutput ) {
-
-		/**
-		 * @var ParserData $parserData
-		 */
-		$parserData = $this->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $this->wikiPage->getTitle(),
-			'ParserOutput' => $parserOutput
-		) );
-
-		/**
-		 * @var BasePropertyAnnotator $propertyAnnotator
-		 */
-		$propertyAnnotator = $this->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
-			'SemanticData' => $parserData->getData(),
-		) );
-
-		$propertyAnnotator->attach( $parserData )
-			->addSpecialProperties( $this->wikiPage, $this->revision, $this->user );
-
-		return true;
-	}
-
-	/**
 	 * @see FunctionHook::process
 	 *
 	 * @since 1.9
@@ -104,6 +68,36 @@ class NewRevisionFromEditComplete extends FunctionHook {
 		);
 
 		return $parserOutput instanceof ParserOutput ? $this->performUpdate( $parserOutput ) : true;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param ParserOutput $parserOutput
+	 *
+	 * @return true
+	 */
+	protected function performUpdate( ParserOutput $parserOutput ) {
+
+		/**
+		 * @var ParserData $parserData
+		 */
+		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
+			'Title'        => $this->wikiPage->getTitle(),
+			'ParserOutput' => $parserOutput
+		) );
+
+		/**
+		 * @var BasePropertyAnnotator $propertyAnnotator
+		 */
+		$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
+			'SemanticData' => $parserData->getData(),
+		) );
+
+		$propertyAnnotator->attach( $parserData )
+			->addSpecialProperties( $this->wikiPage, $this->revision, $this->user );
+
+		return true;
 	}
 
 }

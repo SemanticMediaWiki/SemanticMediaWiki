@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\ArticlePurge;
+use SMW\BaseContext;
 
 use WikiPage;
 
@@ -29,44 +29,6 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		return '\SMW\ArticlePurge';
 	}
 
-	// RECYCLE
-
-	/*
-	 * @test SMWHooks::onArticlePurge
-	 *
-	 * @since 1.9
-	 *
-	public function testOnArticlePurge() {
-		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
-
-			$wikiPage = $this->newPage();
-
-			$user = $this->getUser();
-
-			$content = \ContentHandler::makeContent(
-				'testing',
-				$wikiPage->getTitle(),
-				CONTENT_MODEL_WIKITEXT
-			);
-			$wikiPage->doEditContent( $content, "testing", EDIT_NEW, false, $user );
-
-			$result = SMWHooks::onArticlePurge( $wikiPage );
-
-			// Always make sure to clean-up
-			if ( $wikiPage->exists() ) {
-				$wikiPage->doDeleteArticle( "testing done." );
-			}
-
-			$this->assertTrue( $result );
-
-		} else {
-			$this->markTestSkipped(
-				'Skipped test due to missing method (probably MW 1.19 or lower).'
-			);
-		}
-	}*/
-
-
 	/**
 	 * @since 1.9
 	 *
@@ -78,11 +40,11 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 			$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage' );
 		}
 
-		$container = new SharedDependencyContainer();
-		$container->registerObject( 'Settings', $this->newSettings( $settings ) );
+		$context = new BaseContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
 
 		$instance = new ArticlePurge( $wikiPage );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
+		$instance->invokeContext( $context );
 
 		return $instance;
 	}
@@ -111,7 +73,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		);
 
 		$instance = $this->newInstance( $wikiPage, $settings );
-		$cache = $instance->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = $instance->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
 
 		$id = \SMW\FactboxCache::newCacheId( $pageId );
 	//	$cache->setKey( $id )->set( true );

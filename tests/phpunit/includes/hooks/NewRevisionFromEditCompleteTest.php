@@ -3,14 +3,16 @@
 namespace SMW\Test;
 
 use SMW\NewRevisionFromEditComplete;
-use SMW\SharedDependencyContainer;
 use SMW\DIProperty;
+use SMW\BaseContext;
 
 use WikiPage;
 use Revision;
 
 /**
  * @covers \SMW\NewRevisionFromEditComplete
+ *
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -28,48 +30,6 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 	public function getClass() {
 		return '\SMW\NewRevisionFromEditComplete';
 	}
-
-	// RECYCLE
-
-	/*
-	 * @since 1.9
-	 *
-	public function testOnNewRevisionFromEditComplete( $text ) {
-		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
-
-			$wikiPage = $this->newPage();
-			$user = $this->getUser();
-
-			$content = \ContentHandler::makeContent(
-				$text,
-				$wikiPage->getTitle(),
-				CONTENT_MODEL_WIKITEXT
-			);
-
-			$wikiPage->doEditContent( $content, "testing", EDIT_NEW );
-			$this->assertTrue( $wikiPage->getId() > 0, "WikiPage should have new page id" );
-			$revision = $wikiPage->getRevision();
-
-			$result = SMWHooks::onNewRevisionFromEditComplete (
-				$wikiPage,
-				$revision,
-				$wikiPage->getId(),
-				$user
-			);
-
-			// Always make sure the clean-up
-			if ( $wikiPage->exists() ) {
-				$wikiPage->doDeleteArticle( "testing done." );
-			}
-
-			$this->assertTrue( $result );
-		} else {
-			$this->markTestSkipped(
-				'Skipped test due to missing method (probably MW 1.19 or lower).'
-			);
-		}
-	}*/
-
 
 	/**
 	 * @since 1.9
@@ -90,7 +50,7 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 		}
 
 		$instance = new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( new SharedDependencyContainer() ) );
+		$instance->invokeContext( new BaseContext() );
 
 		return $instance;
 	}
@@ -128,7 +88,7 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 		$settings = $this->newSettings( $setup['settings'] );
 		$instance = $this->newInstance( $setup['wikiPage'], $setup['revision'] );
 
-		$instance->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
+		$instance->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
 
 		$this->assertTrue(
 			$instance->process(),

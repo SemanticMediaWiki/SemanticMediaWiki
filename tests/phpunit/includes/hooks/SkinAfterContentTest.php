@@ -2,11 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\SkinAfterContent;
+use SMW\BaseContext;
 
 /**
  * @covers \SMW\SkinAfterContent
+ *
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -25,21 +27,6 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 		return '\SMW\SkinAfterContent';
 	}
 
-	// RECYCLE
-
-	/*
-	 * @since 1.9
-	 *
-	public function testOnSkinAfterContent() {
-		$data = '';
-		$skin = new \SkinTemplate();
-		$skin->getContext()->setLanguage( \Language::factory( 'en' ) );
-		$skin->getContext()->setTitle( $this->getTitle() );
-
-		$result = SMWHooks::onSkinAfterContent( $data, $skin );
-		$this->assertTrue( $result );
-	} */
-
 	/**
 	 * @since 1.9
 	 *
@@ -56,11 +43,11 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 			$skin = $this->newMockBuilder()->newObject( 'Skin' );
 		}
 
-		$container = new SharedDependencyContainer();
-		$container->registerObject( 'Settings', $settings );
+		$context = new BaseContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
 
 		$instance = new SkinAfterContent( $data, $skin );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
+		$instance->invokeContext( $context );
 
 		return $instance;
 	}
@@ -85,7 +72,7 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 		// Inject fake content into the FactboxPresenter
 		if ( isset( $setup['title'] ) ) {
 
-			$factboxCache = $instance->getDependencyBuilder()->newObject( 'FactboxCache', array(
+			$factboxCache = $instance->withContext()->getDependencyBuilder()->newObject( 'FactboxCache', array(
 				'OutputPage' => $setup['skin']->getOutput()
 			) );
 

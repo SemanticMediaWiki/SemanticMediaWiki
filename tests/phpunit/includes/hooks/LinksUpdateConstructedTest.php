@@ -3,21 +3,11 @@
 namespace SMW\Test;
 
 use SMW\LinksUpdateConstructed;
+use SMW\BaseContext;
 
 use ParserOutput;
 use LinksUpdate;
 use Title;
-
-/**
- * Tests for the LinksUpdateConstructed class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
  * @covers \SMW\LinksUpdateConstructed
@@ -26,12 +16,15 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -39,11 +32,7 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a LinksUpdateConstructed object
-	 *
 	 * @since 1.9
-	 *
-	 * @param Title $title
 	 *
 	 * @return LinksUpdateConstructed
 	 */
@@ -54,22 +43,23 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 			$title->resetArticleID( rand( 1, 1000 ) );
 		}
 
+		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
+
 		$parserOutput = new ParserOutput();
 		$parserOutput->setTitleText( $title->getPrefixedText() );
 
-		$dependencyBuilder = $this->newDependencyBuilder( new \SMW\SharedDependencyContainer() );
-		$dependencyBuilder->getContainer()
-			->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
+		$context = new BaseContext();
+		$context->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Store', $mockStore );
 
 		$instance = new LinksUpdateConstructed( new LinksUpdate( $title, $parserOutput ) );
-		$instance->setDependencyBuilder( $dependencyBuilder );
+		$instance->invokeContext( $context );
 
 		return $instance;
 	}
 
 	/**
-	 * @test LinksUpdateConstructed::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -77,8 +67,6 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test LinksUpdateConstructed::process
-	 *
 	 * @since 1.9
 	 */
 	public function testProcess() {
@@ -86,7 +74,8 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 		$instance       = $this->newInstance();
 		$updateObserver = new MockUpdateObserver();
 
-		$instance->getDependencyBuilder()
+		$instance->withContext()
+			->getDependencyBuilder()
 			->getContainer()
 			->registerObject( 'UpdateObserver', $updateObserver );
 

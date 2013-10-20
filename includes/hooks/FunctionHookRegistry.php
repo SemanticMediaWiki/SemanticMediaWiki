@@ -52,11 +52,7 @@ class FunctionHookRegistry implements ContextAware {
 	 * @return FunctionHook
 	 */
 	public function register( FunctionHook $hook ) {
-
-		// FIXME legacy use the context instead
-		$hook->setDependencyBuilder( $this->withContext()->getDependencyBuilder() );
 		$hook->invokeContext( $this->withContext() );
-
 		return $hook;
 	}
 

@@ -5,17 +5,6 @@ namespace SMW;
 use Title;
 
 /**
- * BaseTemplateToolbox hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Hook: Called by BaseTemplate when building the toolbox array and
  * returning it for the skin to output.
  *
@@ -26,9 +15,12 @@ use Title;
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
  *
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
  * @since 1.9
  *
- * @ingroup Hook
+ * @author mwjames
  */
 class BaseTemplateToolbox extends FunctionHook {
 
@@ -61,8 +53,8 @@ class BaseTemplateToolbox extends FunctionHook {
 	 */
 	protected function isValid( Title $title ) {
 		return !$title->isSpecialPage() &&
-			$this->getDependencyBuilder()->newObject( 'Settings' )->get( 'smwgToolboxBrowseLink' ) &&
-			$this->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() ) &&
+			$this->withContext()->getDependencyBuilder()->newObject( 'Settings' )->get( 'smwgToolboxBrowseLink' ) &&
+			$this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() ) &&
 			$this->skinTemplate->data['isarticle'];
 	}
 

@@ -7,17 +7,6 @@ use Title;
 use Skin;
 
 /**
- * SkinAfterContent hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * SkinAfterContent hook to add text after the page content and
  * article metadata
  *
@@ -26,7 +15,12 @@ use Skin;
  * @note This hook is used for inserting the Factbox text after the
  * article contents (including categories).
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SkinAfterContent extends FunctionHook {
 
@@ -68,7 +62,7 @@ class SkinAfterContent extends FunctionHook {
 		/**
 		 * @var FactboxCache $factboxCache
 		 */
-		$factboxCache = $this->getDependencyBuilder()->newObject( 'FactboxCache', array(
+		$factboxCache = $this->withContext()->getDependencyBuilder()->newObject( 'FactboxCache', array(
 			'OutputPage' => $outputPage
 		) );
 

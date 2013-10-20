@@ -9,17 +9,6 @@ use Title;
 use SMWOutputs;
 
 /**
- * OutputPageParserOutput hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * OutputPageParserOutput hook is called after parse, before the HTML is
  * added to the output
  *
@@ -29,7 +18,12 @@ use SMWOutputs;
  * the given OutputPage object, since otherwise it is not possible to access
  * it later on to build a Factbox.
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class OutputPageParserOutput extends FunctionHook {
 
@@ -71,7 +65,7 @@ class OutputPageParserOutput extends FunctionHook {
 	protected function isValid( Title $title ) {
 		return !$title->isSpecialPage() &&
 			!$title->isRedirect() &&
-			$this->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() );
+			$this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() );
 	}
 
 	/**
@@ -84,7 +78,7 @@ class OutputPageParserOutput extends FunctionHook {
 		/**
 		 * @var FactboxCache $factboxCache
 		 */
-		$factboxCache = $this->getDependencyBuilder()->newObject( 'FactboxCache', array(
+		$factboxCache = $this->withContext()->getDependencyBuilder()->newObject( 'FactboxCache', array(
 			'OutputPage' => $this->outputPage
 		) );
 

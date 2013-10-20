@@ -2,19 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\SpecialStatsAddExtra;
-
-/**
- * Tests for the SpecialStatsAddExtra class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
+use SMW\BaseContext;
 
 /**
  * @covers \SMW\SpecialStatsAddExtra
@@ -23,12 +12,15 @@ use SMW\SpecialStatsAddExtra;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -36,8 +28,6 @@ class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SpecialStatsAddExtra object
-	 *
 	 * @since 1.9
 	 *
 	 * @return SpecialStatsAddExtra
@@ -48,19 +38,18 @@ class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 			$version = '1.21';
 		}
 
-		$instance = new SpecialStatsAddExtra( $extraStats, $version, $this->getLanguage() );
+		$context = new BaseContext();
+		$context->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
 
-		$instance->setDependencyBuilder( $this->newDependencyBuilder() );
-		$instance->getDependencyBuilder()->getContainer()->registerObject(
-			'Store', $this->newMockBuilder()->newObject( 'Store' )
-		);
+		$instance = new SpecialStatsAddExtra( $extraStats, $version, $this->getLanguage() );
+		$instance->invokeContext( $context );
 
 		return $instance;
 	}
 
 	/**
-	 * @test SpecialStatsAddExtra::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -68,12 +57,7 @@ class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SpecialStatsAddExtra::process
-	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testProcess() {
 
@@ -81,19 +65,15 @@ class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 
 		$this->assertTrue(
 			$instance->process(),
-			'asserts that process() always returns true'
+			'Asserts that process() always returns true'
 		);
 
 	}
 
 	/**
-	 * @test SpecialStatsAddExtra::process
 	 * @dataProvider statisticsDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testProcessOnMockStore( $setup, $expected ) {
 
@@ -103,34 +83,34 @@ class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 
 		$extraStats = $setup['extraStats'];
 		$instance   = $this->newInstance( $extraStats, $setup['version'] );
-		$instance->getDependencyBuilder()->getContainer()->registerObject(
-			'Store', $mockStore
-		);
+		$instance->withContext()
+			->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Store', $mockStore );
 
 		$this->assertTrue(
 			$instance->process(),
-			'asserts that process() always returns true'
+			'Asserts that process() always returns true'
 		);
 
 		$this->assertTrue(
-			$this->assertArrayMatch( $extraStats, $expected['statistics'] ),
-			'asserts that $extraStats contains an expected value'
+			$this->matchArray( $extraStats, $expected['statistics'] ),
+			'Asserts that $extraStats contains an expected value'
 		);
 
 	}
 
 	/**
-	 * @test SpecialStatsAddExtra::process
-	 *
 	 * @since 1.9
 	 */
 	public function testProcessOnSQLStore() {
 
 		$extraStats = array();
 		$instance   = $this->newInstance( $extraStats, '1.21' );
-		$instance->getDependencyBuilder()->getContainer()->registerObject(
-			'Store', \SMW\StoreFactory::getStore()
-		);
+		$instance->withContext()
+			->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Store', \SMW\StoreFactory::getStore() );
 
 		$this->assertTrue(
 			$instance->process(),
@@ -141,18 +121,16 @@ class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 		// value therefore we use a message key as only known constant to verify
 		// that the matching process was successful
 		$this->assertTrue(
-			$this->assertArrayMatch( $extraStats, 'smw-statistics-property-instance' ),
+			$this->matchArray( $extraStats, 'smw-statistics-property-instance' ),
 			'asserts that $extraStats contains an expected key'
 		);
 
 	}
 
 	/**
-	 * Tries to match a search value with the content of an arbitrary array
-	 *
 	 * @return boolean
 	 */
-	public function assertArrayMatch( array $matcher, $searchValue ) {
+	public function matchArray( array $matcher, $searchValue ) {
 
 		foreach ( $matcher as $key => $value ) {
 
@@ -161,7 +139,7 @@ class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 			};
 
 			if ( is_array( $value ) ) {
-				return $this->assertArrayMatch( $value, $searchValue );
+				return $this->matchArray( $value, $searchValue );
 			};
 
 		}

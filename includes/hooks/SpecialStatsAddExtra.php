@@ -2,27 +2,19 @@
 
 namespace SMW;
 
-use SMWDataValueFactory;
-
 use Language;
-
-/**
- * SpecialStatsAddExtra hook
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
 * Add extra statistic at the end of Special:Statistics
 *
 * @see http://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
  *
- * @ingroup Hook
+ * @ingroup FunctionHook
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SpecialStatsAddExtra extends FunctionHook {
 
@@ -71,13 +63,24 @@ class SpecialStatsAddExtra extends FunctionHook {
 	}
 
 	/**
+	 * @see FunctionHook::process
+	 *
+	 * @since 1.9
+	 *
+	 * @return true
+	 */
+	public function process() {
+		return version_compare( $this->version, '1.21', '<' ) ? $this->copyLegacyStatistics() : $this->copyStatistics();
+	}
+
+	/**
 	 * @since 1.9
 	 *
 	 * @return true
 	 */
 	protected function copyStatistics() {
 
-		$statistics = $this->getDependencyBuilder()->newObject( 'Store' )->getStatistics();
+		$statistics = $this->withContext()->getStore()->getStatistics();
 
 		$this->extraStats['smw-statistics'] = array();
 
@@ -88,7 +91,7 @@ class SpecialStatsAddExtra extends FunctionHook {
 			}
 		}
 
-		$this->extraStats['smw-statistics']['smw-statistics-datatype-count'] = count( SMWDataValueFactory::getKnownTypeLabels() );
+		$this->extraStats['smw-statistics']['smw-statistics-datatype-count'] = count( DataValueFactory::getKnownTypeLabels() );
 
 		return true;
 
@@ -103,7 +106,7 @@ class SpecialStatsAddExtra extends FunctionHook {
 	 */
 	protected function copyLegacyStatistics() {
 
-		$statistics = $this->getDependencyBuilder()->newObject( 'Store' )->getStatistics();
+		$statistics = $this->withContext()->getStore()->getStatistics();
 
 		foreach ( $this->legacyMessageMapper as $key => $message ) {
 
@@ -113,17 +116,6 @@ class SpecialStatsAddExtra extends FunctionHook {
 		}
 
 		return true;
-	}
-
-	/**
-	 * @see FunctionHook::process
-	 *
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
-	public function process() {
-		return version_compare( $this->version, '1.21', '<' ) ? $this->copyLegacyStatistics() : $this->copyStatistics();
 	}
 
 }

@@ -2,19 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\BaseTemplateToolbox;
-
-/**
- * Tests for the BaseTemplateToolbox class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
+use SMW\BaseContext;
 
 /**
  * @covers \SMW\BaseTemplateToolbox
@@ -23,12 +12,15 @@ use SMW\BaseTemplateToolbox;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class BaseTemplateToolboxTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -36,8 +28,6 @@ class BaseTemplateToolboxTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a BaseTemplateToolbox object
-	 *
 	 * @since 1.9
 	 *
 	 * @return BaseTemplateToolbox
@@ -48,18 +38,16 @@ class BaseTemplateToolboxTest extends SemanticMediaWikiTestCase {
 			$skinTemplate = $this->newMockBuilder()->newObject( 'SkinTemplate' );
 		}
 
-		$instance = new BaseTemplateToolbox( $skinTemplate, $toolbox );
+		$context = new BaseContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
 
-		$container = new SharedDependencyContainer();
-		$container->registerObject( 'Settings', $this->newSettings( $settings ) );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
+		$instance = new BaseTemplateToolbox( $skinTemplate, $toolbox );
+		$instance->invokeContext( $context );
 
 		return $instance;
 	}
 
 	/**
-	 * @test BaseTemplateToolbox::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -67,13 +55,9 @@ class BaseTemplateToolboxTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test BaseTemplateToolbox::process
 	 * @dataProvider skinTemplateDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testProcess( $setup, $expected ) {
 
