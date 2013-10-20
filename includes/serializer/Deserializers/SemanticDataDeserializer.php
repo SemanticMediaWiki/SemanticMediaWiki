@@ -17,18 +17,12 @@ use OutOfBoundsException;
 /**
  * SemanticData deserializer
  *
- * @file
+ * @ingroup Deserializers
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * SemanticData deserializer
- *
- * @ingroup SMW
  */
 class SemanticDataDeserializer implements Deserializer {
 

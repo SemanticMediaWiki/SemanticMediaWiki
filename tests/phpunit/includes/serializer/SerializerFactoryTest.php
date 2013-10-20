@@ -7,23 +7,17 @@ use SMw\SemanticData;
 use SMW\DIWikiPage;
 
 /**
- * Tests for the SerializerFactory class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SerializerFactory
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SerializerFactoryTest extends SemanticMediaWikiTestCase {
 

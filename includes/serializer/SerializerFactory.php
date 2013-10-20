@@ -12,21 +12,17 @@ use SMWQueryResult as QueryResult;
 use OutOfBoundsException;
 
 /**
- * Serializer handler for a serializable object
+ * Factory class for a serializable object
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * A factory class that assigns registered serializers to an object and
  * identifies an unserializer based on the invoked array.
  *
- * @ingroup SMW
+ * @ingroup Serializers
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SerializerFactory {
 

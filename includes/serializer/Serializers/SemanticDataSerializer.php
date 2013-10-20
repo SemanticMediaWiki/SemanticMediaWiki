@@ -8,9 +8,13 @@ use SMWDataItem as DataItem;
 use OutOfBoundsException;
 
 /**
- * @since 1.9
+ * SemanticData serializer
+ *
+ * @ingroup Serializers
  *
  * @licence GNU GPL v2+
+ * @since 1.9
+ *
  * @author mwjames
  */
 class SemanticDataSerializer implements Serializer {

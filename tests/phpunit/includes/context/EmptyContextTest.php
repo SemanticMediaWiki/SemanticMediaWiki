@@ -7,19 +7,19 @@ use SMW\EmptyContext;
 /**
  * @covers \SMW\EmptyContext
  *
- * @licence GNU GPL v2+
- * @since 1.9
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
 class EmptyContextTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -27,9 +27,9 @@ class EmptyContextTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a EmptyContext object
-	 *
 	 * @since 1.9
+	 *
+	 * @return EmptyContext
 	 */
 	private function newInstance() {
 		return new EmptyContext();

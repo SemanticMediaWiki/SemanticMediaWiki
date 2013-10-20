@@ -18,9 +18,11 @@ use OutOfBoundsException;
  * This class is distinct from SMWSerializer and the SMWExpData object
  * it takes, in that here semantic context is lost.
  *
+ * @ingroup Serializers
+ *
+ * @licence GNU GPL v2+
  * @since 1.7
  *
- * @licence GNU GPL v2 or later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class QueryResultSerializer implements Serializer {

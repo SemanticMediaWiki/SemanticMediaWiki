@@ -10,10 +10,14 @@ use SMWDataItem as DataItem;
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
  *
+ * @ingroup Test
+ *
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
  * @author mwjames
  */
 class QueryResultSerializerTest extends SemanticMediaWikiTestCase {

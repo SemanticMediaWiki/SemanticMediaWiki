@@ -3,17 +3,6 @@
 namespace SMW;
 
 /**
- * Abstract class that implements the DependencyRequestor
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Abstract class that implements the DependencyRequestor to enable convenience
  * access to an injected DependencyBuilder
  *
@@ -29,9 +18,12 @@ namespace SMW;
  *  $fooClass->getDependencyBuilder()->newObject( 'Bar' );
  * @endcode
  *
- * @since  1.9
- *
  * @ingroup DependencyRequestor
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 abstract class DependencyInjector implements DependencyRequestor {
 

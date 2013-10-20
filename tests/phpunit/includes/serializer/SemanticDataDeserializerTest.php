@@ -5,21 +5,17 @@ namespace SMW\Test;
 use SMW\Deserializers\SemanticDataDeserializer;
 
 /**
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\Deserializers\SemanticDataDeserializer
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SemanticDataDeserializerTest extends SemanticMediaWikiTestCase {
 

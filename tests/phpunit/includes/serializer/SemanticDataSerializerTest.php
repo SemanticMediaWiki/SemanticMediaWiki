@@ -10,21 +10,17 @@ use SMW\DIWikiPage;
 use SMW\Subobject;
 
 /**
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\Serializers\SemanticDataSerializer
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SemanticDataSerializerTest extends SemanticMediaWikiTestCase {
 

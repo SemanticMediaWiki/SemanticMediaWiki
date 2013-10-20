@@ -7,19 +7,19 @@ use SMW\BaseContext;
 /**
  * @covers \SMW\BaseContext
  *
- * @licence GNU GPL v2+
- * @since 1.9
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
 class BaseContextTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -27,9 +27,9 @@ class BaseContextTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a BaseContext object
-	 *
 	 * @since 1.9
+	 *
+	 * @return BaseContext
 	 */
 	private function newInstance( $builder = null ) {
 		return new BaseContext( $builder );

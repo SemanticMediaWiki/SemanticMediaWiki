@@ -3,21 +3,15 @@
 namespace SMW;
 
 /**
- * Extends the BaseDependencyContainer
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Extends the BaseDependencyContainer to provide general purpose dependency
  * object definitions
  *
  * @ingroup DependencyContainer
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SharedDependencyContainer extends BaseDependencyContainer {
 

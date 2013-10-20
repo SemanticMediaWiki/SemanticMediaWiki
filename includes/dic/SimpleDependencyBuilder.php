@@ -8,22 +8,16 @@ use OutOfBoundsException;
 /**
  * Implements a basic DependencyBuilder
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * Implements a basic DependencyBuilder
- *
  * @par Example:
  * For a more exhaustive description and examples on how to "work with
  * a DependencyBuilder/Container", see /dic/README.md
  *
  * @ingroup DependencyBuilder
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SimpleDependencyBuilder implements DependencyBuilder {
 

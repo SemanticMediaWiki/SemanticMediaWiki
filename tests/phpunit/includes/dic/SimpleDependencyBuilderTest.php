@@ -10,17 +10,6 @@ use SMW\DependencyObject;
 use Title;
 
 /**
- * Tests for the SimpleDependencyBuilder
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SimpleDependencyBuilder
  * @covers \SMW\BaseDependencyContainer
  * @covers \SMW\DependencyInjector
@@ -29,12 +18,15 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -42,8 +34,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a scope definition
-	 *
 	 * @since 1.9
 	 *
 	 * @param $data
@@ -54,11 +44,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a DependencyContainer object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return DependencyContainer
 	 */
@@ -88,11 +74,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SimpleDependencyBuilder object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return SimpleDependencyBuilder
 	 */
@@ -101,8 +83,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -110,9 +90,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::registerContainer
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterContainer() {
@@ -146,9 +123,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::registerContainer
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * Register another container containing the same identifier but
 	 * with a different definition
 	 *
@@ -177,10 +151,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::getContainer
-	 * @test SimpleDependencyBuilder::registerObject
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterObject() {
@@ -198,9 +168,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::registerObject
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterObjectUsingMagicMethodEagerLoading() {
@@ -222,9 +189,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::registerObject
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterObjectUsingMagicMethodLazyLoading() {
@@ -263,9 +227,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::registerObject
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterObjectUsingMagicMethodViaBuilder() {
@@ -304,10 +265,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::getContainer
-	 * @test SimpleDependencyBuilder::addArgument
-	 * @test SimpleDependencyBuilder::getArgument
-	 *
 	 * @since 1.9
 	 */
 	public function testAddGetArguments() {
@@ -330,10 +287,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::getContainer
-	 * @test SimpleDependencyBuilder::addArgument
-	 * @test SimpleDependencyBuilder::getArgument
-	 *
 	 * @since 1.9
 	 */
 	public function testAddGetArgumentsOnMockObject() {
@@ -367,7 +320,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
 	 * @dataProvider autoArgumentsDataProvider
 	 *
 	 * @since 1.9
@@ -395,13 +347,9 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
 	 * @dataProvider scopeDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testCompareScope( $setup, $expected ) {
 
@@ -442,13 +390,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 * @test SimpleDependencyBuilder::setScope
-	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testResetScopeLazyLoading() {
 
@@ -495,13 +437,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 * @test SimpleDependencyBuilder::setScope
-	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testSetScope() {
 
@@ -537,8 +473,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testSetCall() {
@@ -559,8 +493,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testSetCallMultipleArguments() {
@@ -591,13 +523,9 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
 	 * @dataProvider scopeDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testSetCallMagicWordScope( $setup, $expected ) {
 
@@ -629,8 +557,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::registerObject
-	 *
 	 * @since 1.9
 	 */
 	public function testRegisterObjectAndRemove() {
@@ -659,13 +585,9 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
 	 * @dataProvider dependencyObjectDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $setup
-	 * @param $expected
 	 */
 	public function testDeferredLoading( $setup, $expected ) {
 
@@ -683,8 +605,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * A object definition depends on previous definitions in order to build a
 	 * requested object instance
 	 *
@@ -731,8 +651,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 
 	/**
-	 * @test SimpleDependencyBuilder::getArgument
-	 *
 	 * @since 1.9
 	 */
 	public function testGetArgumentOutOfBoundsException() {
@@ -743,8 +661,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::hasArgument
-	 *
 	 * @since 1.9
 	 */
 	public function testHasArgumentInvalidArgument() {
@@ -755,8 +671,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::addArgument
-	 *
 	 * @since 1.9
 	 */
 	public function testAddArgumentInvalidArgument() {
@@ -767,8 +681,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testNewObjectInvalidArgument() {
@@ -779,8 +691,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testNewObjectArgumentsInvalidArgument() {
@@ -791,8 +701,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testNewObjectUnknownObject() {
@@ -803,8 +711,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testNewObjectDeferredLoadingUnknownObject() {
@@ -818,8 +724,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testSingletonCircularReferenceDetectionOutOfBoundsException() {
@@ -836,8 +740,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testPrototypeCircularReferenceDetectionOutOfBoundsException() {
@@ -854,8 +756,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDependencyBuilder::newObject
-	 *
 	 * @since 1.9
 	 */
 	public function testDeferredPrototypeCircularReferenceDetectionOutOfBoundsException() {

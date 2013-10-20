@@ -11,15 +11,6 @@ use SMW\DIWikiPage;
 use SMW\Subobject;
 
 /**
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\Deserializers\SemanticDataDeserializer
  * @covers \SMW\Serializers\SemanticDataSerializer
  *
@@ -27,6 +18,11 @@ use SMW\Subobject;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
 
