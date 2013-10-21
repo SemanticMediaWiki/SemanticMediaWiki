@@ -3,40 +3,28 @@
 namespace SMW\Test;
 
 /**
- * Tests for the ApiAsk class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * @covers \SMW\ApiAsk
- * @covers \SMW\ApiBase
- *
- * @ingroup Test
+ * @covers \SMW\Api\Ask
+ * @covers \SMW\Api\Base
  *
  * @group SMW
  * @group SMWExtension
  * @group API
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
-class ApiAskTest extends ApiTestCase {
+class AskTest extends ApiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMW\ApiAsk';
+		return '\SMW\Api\Ask';
 	}
 
 	/**
-	 * Provides a query array and its expected printrequest array
-	 *
 	 * @return array
 	 */
 	public function getDataProvider() {
@@ -81,13 +69,9 @@ class ApiAskTest extends ApiTestCase {
 	}
 
 	/**
-	 * @test ApiAsk::execute
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $query
-	 * @param array $expected
 	 */
 	public function testExecute( array $query, array $expected ) {
 

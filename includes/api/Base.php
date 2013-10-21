@@ -1,6 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Api;
+
+use SMW\ContextInjector;
+use SMW\ContextResource;
+use SMW\ContextAware;
+use SMW\BaseContext;
 
 /**
  * Semantic MediaWiki Api Base class
@@ -12,7 +17,7 @@ namespace SMW;
  *
  * @author mwjames
  */
-abstract class ApiBase extends \ApiBase implements ContextAware, ContextInjector {
+abstract class Base extends \ApiBase implements ContextAware, ContextInjector {
 
 	/** @var ContextResource */
 	protected $context = null;

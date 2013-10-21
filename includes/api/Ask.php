@@ -1,8 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Api;
 
+use SMW\ApiRequestParameterFormatter;
 use SMWQueryProcessor;
+
+use ApiBase;
 
 /**
  * API module to query SMW by providing a query in the ask language.
@@ -15,7 +18,7 @@ use SMWQueryProcessor;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
-class ApiAsk extends ApiQuery {
+class Ask extends Query {
 
 	/**
 	 * @see ApiBase::execute

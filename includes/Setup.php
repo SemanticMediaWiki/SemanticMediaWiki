@@ -150,10 +150,10 @@ final class Setup implements ContextAware {
 	 */
 	protected function registerApiModules() {
 
-		$this->globals['wgAPIModules']['smwinfo'] = '\SMW\ApiInfo';
-		$this->globals['wgAPIModules']['ask']     = '\SMW\ApiAsk';
-		$this->globals['wgAPIModules']['askargs'] = '\SMW\ApiAskArgs';
-		$this->globals['wgAPIModules']['browse']  = '\SMW\ApiBrowse';
+		$this->globals['wgAPIModules']['smwinfo'] = '\SMW\Api\Info';
+		$this->globals['wgAPIModules']['ask']     = '\SMW\Api\Ask';
+		$this->globals['wgAPIModules']['askargs'] = '\SMW\Api\AskArgs';
+		$this->globals['wgAPIModules']['browsebysubject']  = '\SMW\Api\BrowseBySubject';
 
 	}
 

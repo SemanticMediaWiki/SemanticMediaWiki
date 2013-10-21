@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\ApiAskArgs;
+use SMW\Api\AskArgs;
 
 /**
- * @covers \SMW\ApiAskArgs
- * @covers \SMW\ApiBase
+ * @covers \SMW\Api\AskArgs
+ * @covers \SMW\Api\Base
  *
  * @group SMW
  * @group SMWExtension
@@ -17,13 +17,13 @@ use SMW\ApiAskArgs;
  *
  * @author mwjames
  */
-class ApiAskArgsTest extends ApiTestCase {
+class AskArgsTest extends ApiTestCase {
 
 	/**
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMW\ApiAskArgs';
+		return '\SMW\Api\AskArgs';
 	}
 
 	/**
@@ -88,7 +88,7 @@ class ApiAskArgsTest extends ApiTestCase {
 			'getQueryResult' => array( $this, 'mockStoreQueryResultCallback' )
 		) );
 
-		$api = new ApiAskArgs( $this->getApiMain( $requestParameters ), 'askargs' );
+		$api = new AskArgs( $this->getApiMain( $requestParameters ), 'askargs' );
 		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
 		$api->execute();
 

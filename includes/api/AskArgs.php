@@ -1,9 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\Api;
 
+use SMW\ApiRequestParameterFormatter;
 use SMWPropertyValue;
 use SMWPrintRequest;
+
+use ApiBase;
 
 /**
  * API module to query SMW by providing a query specified as
@@ -14,7 +17,7 @@ use SMWPrintRequest;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ApiAskArgs extends ApiQuery {
+class AskArgs extends Query {
 
 	/**
 	 * @see ApiBase::execute

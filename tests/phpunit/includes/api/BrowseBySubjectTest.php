@@ -2,12 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\ApiBrowse;
+use SMW\Api\BrowseBySubject;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\ApiBrowse
+ * @covers \SMW\Api\BrowseBySubject
  *
  * @group SMW
  * @group SMWExtension
@@ -18,13 +18,13 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class ApiBrowseTest extends ApiTestCase {
+class BrowseBySubjectTest extends ApiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\ApiBrowse';
+		return '\SMW\Api\BrowseBySubject';
 	}
 
 	/**
@@ -44,7 +44,7 @@ class ApiBrowseTest extends ApiTestCase {
 		$this->runOnlyOnSQLStore();
 
 		$result = $this->doApiRequest( array(
-			'action'  => 'browse',
+			'action'  => 'browsebysubject',
 			'subject' => $setup['subject']
 		) );
 
@@ -64,7 +64,7 @@ class ApiBrowseTest extends ApiTestCase {
 		$this->setExpectedException( 'Exception' );
 
 		$result = $this->doApiRequest( array(
-			'action'  => 'browse',
+			'action'  => 'browsebysubject',
 			'subject' => $setup['subject']
 		) );
 

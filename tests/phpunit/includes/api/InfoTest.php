@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\ApiInfo;
+use SMW\Api\Info;
 
 /**
- * @covers \SMW\ApiInfo
- * @covers \SMW\ApiBase
+ * @covers \SMW\Api\Info
+ * @covers \SMW\Api\Base
  *
  * @group SMW
  * @group SMWExtension
@@ -17,13 +17,13 @@ use SMW\ApiInfo;
  *
  * @author mwjames
  */
-class ApiInfoTest extends ApiTestCase {
+class InfoTest extends ApiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\ApiInfo';
+		return '\SMW\Api\Info';
 	}
 
 	/**
@@ -63,7 +63,7 @@ class ApiInfoTest extends ApiTestCase {
 			'getStatistics' => $test
 		) );
 
-		$api = new ApiInfo( $this->getApiMain( array( 'info' => $type ) ), 'smwinfo' );
+		$api = new Info( $this->getApiMain( array( 'info' => $type ) ), 'smwinfo' );
 		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
 		$api->execute();
 

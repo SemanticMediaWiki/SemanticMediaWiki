@@ -1,8 +1,13 @@
 <?php
 
-namespace SMW;
+namespace SMW\Api;
+
+use SMW\SerializerFactory;
+use SMW\DIWikiPage;
+use SMW\DIProperty;
 
 use Title;
+use ApiBase;
 
 /**
  * Api module to browse a subject
@@ -14,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class ApiBrowse extends ApiBase {
+class BrowseBySubject extends Base {
 
 	/**
 	 * @see ApiBase::execute
@@ -177,7 +182,7 @@ class ApiBrowse extends ApiBase {
 	 */
 	protected function getExamples() {
 		return array(
-			'api.php?action=browse&subject=Main_Page',
+			'api.php?action=browsebysubject&subject=Main_Page',
 		);
 	}
 

@@ -7,7 +7,7 @@ use SMW\StoreFactory;
 use ApiResult;
 
 /**
- * @covers \SMW\ApiQuery
+ * @covers \SMW\Api\Query
  *
  * @group SMW
  * @group SMWExtension
@@ -18,38 +18,38 @@ use ApiResult;
  *
  * @author mwjames
  */
-class ApiQueryTest extends ApiTestCase {
+class QueryTest extends ApiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\ApiQuery';
+		return '\SMW\Api\Query';
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return ApiQuery
+	 * @return Api\Query
 	 */
 	private function newInstance( ApiResult $apiResult = null, $store = null ) {
 
 		$context = new EmptyContext();
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $store );
 
-		$apiQuery = $this->getMockBuilder( $this->getClass() )
+		$query = $this->getMockBuilder( $this->getClass() )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$apiQuery->expects( $this->any() )
+		$query->expects( $this->any() )
 			->method( 'getResult' )
 			->will( $this->returnValue( $apiResult ) );
 
-		$apiQuery->expects( $this->any() )
+		$query->expects( $this->any() )
 			->method( 'withContext' )
 			->will( $this->returnValue( $context ) );
 
-		return $apiQuery;
+		return $query;
 	}
 
 	/**
@@ -92,7 +92,7 @@ class ApiQueryTest extends ApiTestCase {
 		$store = $this->newMockBuilder()->newObject( 'Store' );
 
 		// Minimalistic test case to verify executability
-		// For a full coverage, use ApiQueryResultFormatterTest
+		// For a full coverage, use Api\QueryResultFormatterTest
 		$test = array(
 			'results' => array(
 				'Foo' => array(
