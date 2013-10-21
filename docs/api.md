@@ -91,7 +91,7 @@ The following parameters are available and can be concatenate using the "|" char
 The parameter "formatcount" will output an array of used formats together with its count information.
 
 ## BrowseApi
-An interface to browse facts of a subject (wikipage).
+An interface to browse facts of a subject (wikipage) including special properties and subobjects.
 
 > api.php?action=browse&subject=Main%20Page
 
