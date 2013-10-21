@@ -7,6 +7,8 @@ use SMWQueryProcessor;
 /**
  * API module to query SMW by providing a query in the ask language.
  *
+ * @ingroup Api
+ *
  * @licence GNU GPL v2+
  * @since 1.6.2
  *
