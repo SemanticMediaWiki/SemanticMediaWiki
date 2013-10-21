@@ -2,15 +2,15 @@
 
 namespace SMW\Test;
 
+use SMW\Api\BrowseBySubject;
 use SMW\SerializerFactory;
 use SMW\DataValueFactory;
-use SMW\ApiBrowse;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\Subobject;
 
 /**
- * @covers \SMW\ApiBrowse
+ * @covers \SMW\Api\BrowseBySubject
  *
  * @group SMW
  * @group SMWExtension
@@ -21,13 +21,13 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
+class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\ApiBrowse';
+		return '\SMW\Api\BrowseBySubject';
 	}
 
 	/**
@@ -45,7 +45,7 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 	 */
 	public function testExecuteOnRawModeAndMockStore( $setup ) {
 
-		$api = new ApiBrowse( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browse' );
+		$api = new BrowseBySubject( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browsebysubject' );
 		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $setup['store'] );
 		$api->getMain()->getResult()->setRawMode();
 
@@ -62,7 +62,7 @@ class ApiBrowseSerializationRoundtripTest extends ApiTestCase {
 	 */
 	public function testExecuteOnMockStore( $setup ) {
 
-		$api = new ApiBrowse( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browse' );
+		$api = new BrowseBySubject( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browsebysubject' );
 		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $setup['store'] );
 		$api->execute();
 

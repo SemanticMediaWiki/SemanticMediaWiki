@@ -360,12 +360,12 @@ return array(
 	'SMWRefreshJob'           => 'includes/jobs/SMW_RefreshJob.php',
 
 	// API modules
-	'SMW\ApiBase'    => 'includes/api/ApiBase.php',
-	'SMW\ApiQuery'   => 'includes/api/ApiQuery.php',
-	'SMW\ApiAsk'     => 'includes/api/ApiAsk.php',
-	'SMW\ApiAskArgs' => 'includes/api/ApiAskArgs.php',
-	'SMW\ApiInfo'    => 'includes/api/ApiInfo.php',
-	'SMW\ApiBrowse'  => 'includes/api/ApiBrowse.php',
+	'SMW\Api\Base'             => 'includes/api/Base.php',
+	'SMW\Api\Query'            => 'includes/api/Query.php',
+	'SMW\Api\Ask'              => 'includes/api/Ask.php',
+	'SMW\Api\AskArgs'          => 'includes/api/AskArgs.php',
+	'SMW\Api\Info'             => 'includes/api/Info.php',
+	'SMW\Api\BrowseBySubject'  => 'includes/api/BrowseBySubject.php',
 
 	// Maintenance scripts
 	'SMWSetupScript' => 'maintenance/SMW_setup.php',

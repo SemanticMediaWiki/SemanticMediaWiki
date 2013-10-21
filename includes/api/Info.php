@@ -1,17 +1,21 @@
 <?php
 
-namespace SMW;
+namespace SMW\Api;
+
+use ApiBase;
 
 /**
  * API module to obtain info about the SMW install, primarily targeted at
  * usage by the SMW registry.
+ *
+ * @ingroup Api
  *
  * @licence GNU GPL v2+
  * @since 1.6
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ApiInfo extends ApiBase {
+class Info extends Base {
 
 	/**
 	 * @see ApiBase::execute

@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\Api;
 
+use SMW\ApiQueryResultFormatter;
 use SMWQueryProcessor;
 use SMWQueryResult;
 use SMWQuery;
@@ -17,7 +18,7 @@ use SMWQuery;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
-abstract class ApiQuery extends ApiBase {
+abstract class Query extends Base {
 
 	/**
 	 * Returns a query object for the provided query string and list of printouts.
