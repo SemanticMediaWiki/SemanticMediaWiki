@@ -3,20 +3,8 @@
 namespace SMW\Test;
 
 use SMW\ApiQueryResultFormatter;
-use SMW\ArrayAccessor;
 
 use SMWQueryResult;
-
-/**
- * Tests for the ApiQueryResultFormatter class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
  * @covers \SMW\ApiQueryResultFormatter
@@ -25,12 +13,15 @@ use SMWQueryResult;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -38,11 +29,7 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ApiQueryResultFormatter object
-	 *
 	 * @since 1.9
-	 *
-	 * @param SMWQueryResult $queryResult
 	 *
 	 * @return ApiQueryResultFormatter
 	 */
@@ -56,8 +43,6 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test ApiQueryResultFormatter::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -65,9 +50,6 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test ApiQueryResultFormatter::setIndexedTagName
-	 * @test ApiQueryResultFormatter::setIsRawMode
-	 *
 	 * @since 1.9
 	 */
 	public function testSetIndexedTagNameException() {
@@ -76,25 +58,19 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 
 		$instance = $this->newInstance();
 		$instance->setIsRawMode( true );
-		$index = array();
 
-		$instance->setIndexedTagName( $index, null );
-		$this->assertTrue( true );
+		$reflector = $this->newReflector();
+		$method = $reflector->getMethod( 'setIndexedTagName' );
+		$method->setAccessible( true );
+
+		$this->assertTrue( $method->invoke( $instance, array(), null ) );
 
 	}
 
 	/**
-	 * @test ApiQueryResultFormatter::doFormat
-	 * @test ApiQueryResultFormatter::setIsRawMode
-	 * @test ApiQueryResultFormatter::setFormat
-	 * @test ApiQueryResultFormatter::getResult
-	 * @test ApiQueryResultFormatter::getContinueOffset
 	 * @dataProvider resultDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
 	 */
 	public function testResultFormat( array $test, array $expected ) {
 
@@ -106,8 +82,7 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 
 		$instance = $this->newInstance( $queryResult );
 		$instance->setIsRawMode( $test['rawMode'] );
-		$instance->setFormat( $test['format'] );
-		$instance->doFormat();
+		$instance->runFormatter();
 
 		$this->assertEquals( 'query', $instance->getType() );
 		$this->assertEquals( $expected['result'], $instance->getResult() );
@@ -116,16 +91,9 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test ApiQueryResultFormatter::doFormat
-	 * @test ApiQueryResultFormatter::setIsRawMode
-	 * @test ApiQueryResultFormatter::setFormat
-	 * @test ApiQueryResultFormatter::getResult
 	 * @dataProvider errorDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $test
-	 * @param array $expected
 	 */
 	public function testErrorFormat( array $test, array $expected ) {
 
@@ -138,8 +106,7 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $queryResult );
 
 		$instance->setIsRawMode( $test['rawMode'] );
-		$instance->setFormat( $test['format'] );
-		$instance->doFormat();
+		$instance->runFormatter();
 
 		$this->assertEquals( 'error', $instance->getType() );
 		$this->assertEquals( $expected, $instance->getResult() );
@@ -147,11 +114,10 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Provides a query array and its expected printrequest array
-	 *
 	 * @return array
 	 */
 	public function resultDataProvider() {
+
 		$result = array(
 			'results' => array(
 				'Foo' => array(
@@ -178,238 +144,203 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 			'meta' => array( 'count' => 5, 'offset' => 5, '_element' => 'meta' )
 		);
 
-		return array(
+		$provider = array();
 
-			// #0 Without further results
+		// #0 Without further results
+		$provider[] = array(
 			array(
-				array(
-					'result'  => $result,
-					'rawMode' => false,
-					'format'  => 'lala',
-					'furtherResults' => false
-				),
-				array(
-					'result' => $result,
-					'continueOffset' => false
-				)
+				'result'  => $result,
+				'rawMode' => false,
+				'furtherResults' => false
 			),
-
-			// #1 Without further results + XML
 			array(
-				array(
-					'result'  => $result,
-					'rawMode' => true,
-					'format'  => 'XML',
-					'furtherResults' => false
-				),
-				array(
-					'result' => $xml,
-					'continueOffset' => false
-				)
-			),
-
-			// #2 With further results
-			array(
-				array(
-					'result' => $result,
-					'rawMode' => false,
-					'format'  => 'lala',
-					'furtherResults' => true
-				),
-				array(
-					'result' => $result,
-					'continueOffset' => 10
-				)
-			),
-
-			// #3 With further results + XML
-			array(
-				array(
-					'result' => $result,
-					'rawMode' => true,
-					'format'  => 'XML',
-					'furtherResults' => true
-				),
-				array(
-					'result' => $xml,
-					'continueOffset' => 10
-				)
-			),
-
-			// #4 Extended subject data + XML
-			array(
-				array(
-
-					'result' => array(
-						'results' => array(
-							'Foo' => array(
-								'printouts' => array(
-									'lula' => array( 'lila' ) ),
-								'fulltext' => 'Foo' )
-							),
-						'printrequests' => array( 'Bar' ),
-						'meta' => array(
-							'count' => 5,
-							'offset' => 5
-						)
-					),
-					'rawMode' => true,
-					'format'  => 'XML',
-					'furtherResults' => true
-				),
-				array(
-					'result' =>  array(
-						'results' => array(
-							array(
-								'printouts' => array(
-									array(
-										'label' => 'lula',
-										'lila', '_element' => 'value'
-									), '_element' => 'property' ),
-								'fulltext' => 'Foo'
-								), '_element' => 'subject'
-							),
-						'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
-						'meta' => array(
-							'count' => 5,
-							'offset' => 5,
-							'_element' => 'meta'
-						)
-					),
-					'continueOffset' => 10
-				)
-			),
-
-			// #5 printouts without values + XML
-			array(
-				array(
-
-					'result' => array(
-						'results' => array(
-							'Foo' => array(
-								'printouts' => array( 'lula' ),
-								'fulltext' => 'Foo' )
-							),
-						'printrequests' => array( 'Bar' ),
-						'meta' => array(
-							'count' => 5,
-							'offset' => 5
-						)
-					),
-					'rawMode' => true,
-					'format'  => 'XML',
-					'furtherResults' => true
-				),
-				array(
-					'result' =>  array(
-						'results' => array(
-							array(
-								'printouts' => array( '_element' => 'property' ),
-								'fulltext' => 'Foo'
-								),
-							'_element' => 'subject'
-							),
-						'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
-						'meta' => array(
-							'count' => 5,
-							'offset' => 5,
-							'_element' => 'meta'
-						)
-					),
-					'continueOffset' => 10
-				)
-			),
-
-			// #6 empty results + XML
-			array(
-				array(
-
-					'result' => array(
-						'results' => array(),
-						'printrequests' => array( 'Bar' ),
-						'meta' => array(
-							'count' => 0,
-							'offset' => 0
-						)
-					),
-					'rawMode' => true,
-					'format'  => 'XML',
-					'furtherResults' => false
-				),
-				array(
-					'result' =>  array(
-						'results' => array(),
-						'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
-						'meta' => array(
-							'count' => 0,
-							'offset' => 0,
-							'_element' => 'meta'
-						)
-					),
-					'continueOffset' => 0
-				)
+				'result' => $result,
+				'continueOffset' => false
 			)
-
 		);
+
+		// #1 Without further results + XML
+		$provider[] = array(
+			array(
+				'result'  => $result,
+				'rawMode' => true,
+				'furtherResults' => false
+			),
+			array(
+				'result' => $xml,
+				'continueOffset' => false
+			)
+		);
+
+		// #2 With further results
+		$provider[] = array(
+			array(
+				'result' => $result,
+				'rawMode' => false,
+				'furtherResults' => true
+			),
+			array(
+				'result' => $result,
+				'continueOffset' => 10
+			)
+		);
+
+		// #3 With further results + XML
+		$provider[] = array(
+			array(
+				'result' => $result,
+				'rawMode' => true,
+				'furtherResults' => true
+			),
+			array(
+				'result' => $xml,
+				'continueOffset' => 10
+			)
+		);
+
+
+		// #4 Extended subject data + XML
+		$provider[] = array(
+			array(
+				'result' => array(
+					'results' => array(
+						'Foo' => array(
+							'printouts' => array(
+								'lula' => array( 'lila' ) ),
+							'fulltext' => 'Foo' )
+						),
+					'printrequests' => array( 'Bar' ),
+					'meta' => array(
+						'count' => 5,
+						'offset' => 5
+					)
+				),
+				'rawMode' => true,
+				'furtherResults' => true
+			),
+			array(
+				'result' =>  array(
+					'results' => array(
+						array(
+							'printouts' => array(
+								array(
+									'label' => 'lula',
+									'lila', '_element' => 'value'
+								), '_element' => 'property' ),
+							'fulltext' => 'Foo'
+							), '_element' => 'subject'
+						),
+					'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
+					'meta' => array(
+						'count' => 5,
+						'offset' => 5,
+						'_element' => 'meta'
+					)
+				),
+				'continueOffset' => 10
+			)
+		);
+
+		// #5 printouts without values + XML
+		$provider[] = array(
+			array(
+				'result' => array(
+					'results' => array(
+						'Foo' => array(
+							'printouts' => array( 'lula' ),
+							'fulltext' => 'Foo' )
+						),
+					'printrequests' => array( 'Bar' ),
+					'meta' => array(
+						'count' => 5,
+						'offset' => 5
+					)
+				),
+				'rawMode' => true,
+				'furtherResults' => true
+			),
+			array(
+				'result' =>  array(
+					'results' => array(
+						array(
+							'printouts' => array( '_element' => 'property' ),
+							'fulltext' => 'Foo'
+							),
+						'_element' => 'subject'
+						),
+					'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
+					'meta' => array(
+						'count' => 5,
+						'offset' => 5,
+						'_element' => 'meta'
+					)
+				),
+				'continueOffset' => 10
+			)
+		);
+
+		// #6 empty results + XML
+		$provider[] = array(
+			array(
+				'result' => array(
+					'results' => array(),
+					'printrequests' => array( 'Bar' ),
+					'meta' => array(
+						'count' => 0,
+						'offset' => 0
+					)
+				),
+				'rawMode' => true,
+				'furtherResults' => false
+			),
+			array(
+				'result' =>  array(
+					'results' => array(),
+					'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
+					'meta' => array(
+						'count' => 0,
+						'offset' => 0,
+						'_element' => 'meta'
+					)
+				),
+				'continueOffset' => 0
+			)
+		);
+
+		return $provider;
 	}
 
 	/**
-	 * Provides error samples
-	 *
 	 * @return array
 	 */
 	public function errorDataProvider() {
+
 		$errors = array( 'Foo', 'Bar' );
 
-		return array(
+		$provider = array();
 
-			// #0
+		// #0
+		$provider[] = array(
 			array(
-				array(
-					'rawMode'=> false,
-					'format' => 'lala',
-					'errors' => $errors
-				),
-				array(
-					'query' => $errors
-				)
+				'rawMode'=> false,
+				'errors' => $errors
 			),
-
-			// #1
 			array(
-				array(
-					'rawMode'=> true,
-					'format' => 'lala',
-					'errors' => $errors
-				),
-				array(
-					'query' => $errors
-				)
-			),
-
-			// #2
-			array(
-				array(
-					'rawMode'=> false,
-					'format' => 'XML',
-					'errors' => $errors
-				),
-				array(
-					'query' => $errors
-				)
-			),
-
-			// #3
-			array(
-				array(
-					'rawMode'=> true,
-					'format' => 'XML',
-					'errors' => $errors
-				),
-				array(
-					'query' => array_merge( $errors, array( '_element' => 'info' ) )
-				)
+				'query' => $errors
 			)
 		);
+
+		// #1
+		$provider[] = array(
+			array(
+				'rawMode'=> true,
+				'errors' => $errors
+			),
+			array(
+				'query' => array_merge( $errors, array( '_element' => 'info' ) )
+			)
+		);
+
+		return $provider;
 	}
 }

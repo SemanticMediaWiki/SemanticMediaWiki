@@ -5,6 +5,8 @@ namespace SMW;
 /**
  * Semantic MediaWiki Api Base class
  *
+ * @ingroup Api
+ *
  * @licence GNU GPL v2+
  * @since 1.9
  *
@@ -14,18 +16,6 @@ abstract class ApiBase extends \ApiBase implements ContextAware, ContextInjector
 
 	/** @var ContextResource */
 	protected $context = null;
-
-	/**
-	 * @see ApiBase::__construct
-	 *
-	 * @since 1.9
-	 *
-	 * @param ApiMain $main
-	 * @param string $action Name of this module
-	 */
-	public function __construct( $main, $action ) {
-		parent::__construct( $main, $action );
-	}
 
 	/**
 	 * @see ContextInjector::invokeContext

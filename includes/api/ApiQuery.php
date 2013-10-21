@@ -9,6 +9,8 @@ use SMWQuery;
 /**
  * Base for API modules that query SMW
  *
+ * @ingroup Api
+ *
  * @licence GNU GPL v2+
  * @since 1.9
  *
@@ -67,8 +69,7 @@ abstract class ApiQuery extends ApiBase {
 
 		$resultFormatter = new ApiQueryResultFormatter( $queryResult );
 		$resultFormatter->setIsRawMode( $result->getIsRawMode() );
-		$resultFormatter->setFormat( $result->getMain()->getPrinter() !== null ? $result->getMain()->getPrinter()->getFormat() : null );
-		$resultFormatter->doFormat();
+		$resultFormatter->runFormatter();
 
 		if ( $resultFormatter->getContinueOffset() ) {
 			$result->disableSizeCheck();
@@ -78,4 +79,5 @@ abstract class ApiQuery extends ApiBase {
 
 		$result->addValue( null, $resultFormatter->getType(), $resultFormatter->getResult() );
 	}
+
 }

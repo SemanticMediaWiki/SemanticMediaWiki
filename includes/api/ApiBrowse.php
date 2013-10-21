@@ -7,6 +7,8 @@ use Title;
 /**
  * Api module to browse a subject
  *
+ * @ingroup Api
+ *
  * @licence GNU GPL v2+
  * @since 1.9
  *
@@ -55,11 +57,12 @@ class ApiBrowse extends ApiBase {
 	 */
 	protected function getSemanticData( DIWikiPage $subject ) {
 
-		$semanticData = $this->withContext()->getStore()->getSemanticData( $subject );
+		$store = $this->withContext()->getStore();
+		$semanticData = $store->getSemanticData( $subject );
 
 		foreach ( $semanticData->getProperties() as $property ) {
 			if ( $property->getKey() === DIProperty::TYPE_SUBOBJECT || $property->getKey() === DIProperty::TYPE_ASKQUERY ) {
-				$this->addSubSemanticData( $property, $semanticData );
+				$this->addSubSemanticData( $store, $property, $semanticData );
 			}
 		}
 
@@ -78,13 +81,13 @@ class ApiBrowse extends ApiBase {
 	 *
 	 * @since 1.9
 	 */
-	protected function addSubSemanticData( $property, &$semanticData ) {
+	protected function addSubSemanticData( $store, $property, &$semanticData ) {
 
 		$subSemanticData = $semanticData->getSubSemanticData();
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $value ) {
 			if ( $value instanceOf DIWikiPage && !isset( $subSemanticData[ $value->getSubobjectName() ] ) ) {
-				$semanticData->addSubSemanticData( $this->withContext()->getStore()->getSemanticData( $value ) );
+				$semanticData->addSubSemanticData( $store->getSemanticData( $value ) );
 			}
 		}
 	}
