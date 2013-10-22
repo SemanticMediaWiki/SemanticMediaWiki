@@ -187,7 +187,9 @@ class ParserData extends Observer implements DispatchableSubject {
 		if ( method_exists( $this->parserOutput, 'setExtensionData' ) ) {
 			$this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
 		} else {
+			// @codeCoverageIgnoreStart
 			$this->parserOutput->mSMWData = $this->semanticData;
+			// @codeCoverageIgnoreEnd
 		}
 
 	}
@@ -233,7 +235,9 @@ class ParserData extends Observer implements DispatchableSubject {
 		if ( method_exists( $this->parserOutput, 'getExtensionData' ) ) {
 			$this->semanticData = $this->parserOutput->getExtensionData( 'smwdata' );
 		} elseif ( isset( $this->parserOutput->mSMWData ) ) {
+			// @codeCoverageIgnoreStart
 			$this->semanticData = $this->parserOutput->mSMWData;
+			// @codeCoverageIgnoreEnd
 		}
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {

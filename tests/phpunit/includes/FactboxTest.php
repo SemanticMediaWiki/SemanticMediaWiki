@@ -263,6 +263,7 @@ class FactboxTest extends ParserTestCase {
 
 	/**
 	 * @dataProvider fetchContentDataProvider
+	 *
 	 * @since 1.9
 	 */
 	public function testFetchContent( $mockParserData ) {
@@ -275,6 +276,24 @@ class FactboxTest extends ParserTestCase {
 
 		$this->assertInternalType( 'string', $fetchContent->invoke( $instance, SMW_FACTBOX_NONEMPTY ) );
 		$this->assertEmpty( $fetchContent->invoke( $instance, SMW_FACTBOX_HIDDEN ) );
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testCreateTableOnHistoricalData() {
+
+		$parserData = $this->newParserData( $this->getTitle(), $this->newParserOutput() );
+		$instance   = $this->newInstance( $parserData, null, $this->newContext( array( 'oldid' => 9001 ) ) );
+
+		$reflector  = $this->newReflector();
+
+		$createTable = $reflector->getMethod( 'createTable' );
+		$createTable->setAccessible( true );
+
+		$result = $createTable->invoke( $instance, $parserData->getData() );
+		$this->assertInternalType( 'string', $result );
 
 	}
 

@@ -8,11 +8,13 @@ use SMW\BaseContext;
 /**
  * @covers \SMW\UpdateObserver
  *
- * @licence GNU GPL v2+
- * @since 1.9
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
@@ -60,7 +62,8 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testDefaultContext() {
-		$this->assertInstanceOf( '\SMW\ContextResource', $this->newInstance()->withContext() );
+		$instance = new UpdateObserver();
+		$this->assertInstanceOf( '\SMW\ContextResource', $instance->withContext() );
 	}
 
 	/**

@@ -8,6 +8,8 @@ use Title;
 /**
  * Job base class
  *
+ * @ingroup SMW
+ *
  * @licence GNU GPL v2+
  * @since 1.9
  *

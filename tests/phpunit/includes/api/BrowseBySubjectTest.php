@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Api\BrowseBySubject
+ * @covers \SMW\Api\Base
  *
  * @group SMW
  * @group SMWExtension
@@ -32,6 +33,14 @@ class BrowseBySubjectTest extends ApiTestCase {
 	 */
 	private function newSemanticData( $text ) {
 		return $data = new SemanticData( DIWikiPage::newFromTitle( $this->newTitle( NS_MAIN, $text ) ) );
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testDefaultContext() {
+		$instance = new BrowseBySubject( $this->getApiMain( array( 'subject' => 'Foo' ) ), 'browsebysubject' );
+		$this->assertInstanceOf( '\SMW\ContextResource', $instance->withContext() );
 	}
 
 	/**
