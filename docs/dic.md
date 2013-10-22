@@ -53,7 +53,7 @@ DependencyObject is an interface that specifies a method to resolve an object sp
 ```php
 class DiQuuxObject implements DependencyObject {
 
-	public function defineObject( DependencyBuilder $builder ) {
+	public function inheritDescription( DependencyBuilder $builder ) {
 		return new Quux( new Foo( $builder->newObject( 'Bam' ) );
 	}
 

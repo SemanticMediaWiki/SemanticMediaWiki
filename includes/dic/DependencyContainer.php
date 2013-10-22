@@ -33,7 +33,7 @@ interface DependencyObject {
 	 *
 	 * @param DependencyBuilder $builder
 	 */
-	public function defineObject( DependencyBuilder $builder );
+	public function inheritDescription( DependencyBuilder $builder );
 
 }
 

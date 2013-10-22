@@ -835,11 +835,11 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		// #0
 		$dependencyObject = $this->getMockBuilder( '\SMW\DependencyObject' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'defineObject' ) )
+			->setMethods( array( 'inheritDescription' ) )
 			->getMock();
 
 		$dependencyObject->expects( $this->any() )
-			->method( 'defineObject' )
+			->method( 'inheritDescription' )
 			->will( $this->returnValue( $stdClass ) );
 
 		$provider[] = array( $dependencyObject, $stdClass );
@@ -847,11 +847,11 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		// #1
 		$dependencyObject = $this->getMockBuilder( '\SMW\DependencyObject' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'defineObject' ) )
+			->setMethods( array( 'inheritDescription' ) )
 			->getMock();
 
 		$dependencyObject->expects( $this->any() )
-			->method( 'defineObject' )
+			->method( 'inheritDescription' )
 			->will( $this->returnValue( $closure ) );
 
 		$provider[] = array( $dependencyObject, $stdClass );

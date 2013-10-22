@@ -10,7 +10,7 @@ use OutOfBoundsException;
  *
  * @par Example:
  * For a more exhaustive description and examples on how to "work with
- * a DependencyBuilder/Container", see /dic/README.md
+ * a DependencyBuilder/Container", see /docs/dic.md
  *
  * @ingroup DependencyBuilder
  *
@@ -250,7 +250,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 		}
 
 		if ( $objectSignature instanceOf DependencyObject ) {
-			$objectSignature = $objectSignature->defineObject( $this );
+			$objectSignature = $objectSignature->inheritDescription( $this );
 		}
 
 		return $this->load( $objectName, $objectSignature, $objectScope );
