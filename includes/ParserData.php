@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMWDataValue;
+use SMWDataValue as DataValue;
 
 use Title;
 use ParserOutput;
@@ -11,8 +11,8 @@ use MWException;
 /**
  * Handling semantic data exchange with a ParserOutput object
  *
- * Class that provides access to the semantic data object generated from either
- * the ParserOuput or subject provided (no static binding as in SMWParseData)
+ * Provides access to a semantic data container that is generated
+ * either from the ParserOutput or is a newly created container
  *
  * @ingroup SMW
  *
@@ -33,14 +33,14 @@ class ParserData extends Observer implements DispatchableSubject {
 	/** @var SemanticData */
 	protected $semanticData;
 
+	/** @var ObservableDispatcher */
+	protected $dispatcher;
+
 	/** @var array */
 	protected $errors = array();
 
 	/** @var $updateJobs */
 	protected $updateJobs = true;
-
-	/** @var ObservableDispatcher */
-	protected $dispatcher;
 
 	/**
 	 * @since 1.9
@@ -67,26 +67,14 @@ class ParserData extends Observer implements DispatchableSubject {
 	}
 
 	/**
-	 * Returns update status
+	 * Returns DIWikiPage object
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return DIWikiPage
 	 */
-	public function getUpdateStatus() {
-		return $this->updateJobs;
-	}
-
-	/**
-	 * Invokes an ObservableDispatcher object to deploy state changes to an Observer
-	 *
-	 * @since 1.9
-	 *
-	 * @param ObservableDispatcher $dispatcher
-	 */
-	public function setObservableDispatcher( ObservableDispatcher $dispatcher ) {
-		$this->dispatcher = $dispatcher->setSubject( $this );
-		return $this;
+	public function getSubject() {
+		return DIWikiPage::newFromTitle( $this->title );
 	}
 
 	/**
@@ -101,14 +89,39 @@ class ParserData extends Observer implements DispatchableSubject {
 	}
 
 	/**
-	 * Returns DIWikiPage object
+	 * @see DispatchableSubject::setObservableDispatcher
+	 *
+	 * An ObservableDispatcher to deploy state changes to an Observer
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIWikiPage
+	 * @param ObservableDispatcher $dispatcher
 	 */
-	public function getSubject() {
-		return DIWikiPage::newFromTitle( $this->title );
+	public function setObservableDispatcher( ObservableDispatcher $dispatcher ) {
+		$this->dispatcher = $dispatcher->setSubject( $this );
+		return $this;
+	}
+
+	/**
+	 * Explicitly disable update jobs (e.g when running store update
+	 * in the job queue)
+	 *
+	 * @since 1.9
+	 */
+	public function disableUpdateJobs() {
+		$this->updateJobs = false;
+		return $this;
+	}
+
+	/**
+	 * Returns update status
+	 *
+	 * @since 1.9
+	 *
+	 * @return boolean
+	 */
+	public function getUpdateStatus() {
+		return $this->updateJobs;
 	}
 
 	/**
@@ -134,14 +147,14 @@ class ParserData extends Observer implements DispatchableSubject {
 	}
 
 	/**
-	 * Explicitly disable update jobs (e.g when running store update
-	 * in the job queue)
+	 * Updates the semantic data
 	 *
 	 * @since 1.9
+	 *
+	 * @param SemanticData $semanticData
 	 */
-	public function disableUpdateJobs() {
-		$this->updateJobs = false;
-		return $this;
+	public function setData( SemanticData $semanticData ) {
+		$this->semanticData = $semanticData;
 	}
 
 	/**
@@ -161,18 +174,7 @@ class ParserData extends Observer implements DispatchableSubject {
 	 * @since 1.9
 	 */
 	public function clearData() {
-		$this->semanticData = new SemanticData( $this->getSubject() );
-	}
-
-	/**
-	 * Updates the semantic data
-	 *
-	 * @since 1.9
-	 *
-	 * @param SemanticData $semanticData
-	 */
-	public function setData( SemanticData $semanticData ) {
-		$this->semanticData = $semanticData;
+		$this->setData( new SemanticData( $this->getSubject() ) );
 	}
 
 	/**
@@ -207,7 +209,7 @@ class ParserData extends Observer implements DispatchableSubject {
 	 *
 	 * @param SMWDataValue $dataValue
 	 */
-	public function addDataValue( SMWDataValue $dataValue ) {
+	public function addDataValue( DataValue $dataValue ) {
 		$this->semanticData->addDataValue( $dataValue );
 		$this->addError( $this->semanticData->getErrors() );
 	}

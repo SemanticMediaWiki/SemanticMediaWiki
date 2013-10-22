@@ -9,6 +9,8 @@ use User;
 /**
  * Initiates an update of the Store
  *
+ * @ingroup SMW
+ *
  * @licence GNU GPL v2+
  * @since 1.9
  *
@@ -29,7 +31,7 @@ class StoreUpdater implements ContextAware {
 		$this->semanticData = $semanticData;
 		$this->context      = $context;
 
-		$this->setUpdateStatus( $this->context->getSettings()->get( 'smwgEnableUpdateJobs' ) );
+		$this->setUpdateJobs( $this->context->getSettings()->get( 'smwgEnableUpdateJobs' ) );
 	}
 
 	/**
@@ -59,7 +61,7 @@ class StoreUpdater implements ContextAware {
 	 *
 	 * @since 1.9
 	 */
-	public function setUpdateStatus( $status ) {
+	public function setUpdateJobs( $status ) {
 		$this->updateJobs = (bool)$status;
 		return $this;
 	}
@@ -83,27 +85,35 @@ class StoreUpdater implements ContextAware {
 	 *
 	 * @return boolean
 	 */
-	public function doUpdate() {
-		Profiler::In( __METHOD__, true );
+	public function runUpdater() {
 
 		$title = $this->getSubject()->getTitle();
 
-		if ( $title === null ) {
+		// Protect against null and namespace -1 see Bug 50153
+		if ( $title === null || $title->isSpecialPage() ) {
 			return false;
 		}
 
-		// Protect against namespace -1 see Bug 50153
-		if ( $title->isSpecialPage() ) {
-			return false;
-		}
+		return $this->performUpdate( WikiPage::factory( $title ) );
+	}
 
-		$wikiPage = WikiPage::factory( $title );
+	/**
+	 * @since 1.9
+	 *
+	 * @param WikiPage $wikiPage
+	 *
+	 * @return boolean
+	 */
+	protected function performUpdate( WikiPage $wikiPage ) {
+
+		Profiler::In( __METHOD__, true );
+
 		$revision = $wikiPage->getRevision();
 
 		// Make sure to have a valid revision (null means delete etc.)
 		// Check if semantic data should be processed and displayed for a page in
 		// the given namespace
-		$processSemantics = $revision !== null && $this->isValid( $title );
+		$processSemantics = $revision !== null && $this->isValid( $wikiPage );
 
 		if ( $processSemantics ) {
 
@@ -143,16 +153,16 @@ class StoreUpdater implements ContextAware {
 	}
 
 	/**
-	 * Returns whether the current Title is valid
+	 * Returns whether the current WikiPage is valid
 	 *
 	 * @since 1.9
 	 *
-	 * @param Title $title
+	 * @param WikiPage $wikiPage
 	 *
 	 * @return boolean
 	 */
-	protected function isValid( Title $title ) {
-		return $this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() );
+	protected function isValid( WikiPage $wikiPage ) {
+		return $this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $wikiPage->getTitle()->getNamespace() );
 	}
 
 }

@@ -13,11 +13,11 @@ use Title;
 /**
  * @covers \SMW\StoreUpdater
  *
- * @licence GNU GPL v2+
- * @since 1.9
- *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
@@ -46,6 +46,7 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 		}
 
 		$settings  = $this->newSettings( array(
+			'smwgPageSpecialProperties'       => array(),
 			'smwgEnableUpdateJobs'            => false,
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
 		) );
@@ -69,15 +70,15 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	public function testDoUpdate() {
+	public function testRunUpdaterOnSQLStore() {
 
 		$store = StoreFactory::getStore();
 		$data  = new SemanticData( $this->newSubject() );
 
 		$instance = $this->newInstance( $store, $data );
-		$instance->setUpdateStatus( false );
+		$instance->setUpdateJobs( false );
 
-		$this->assertTrue( $instance->doUpdate() );
+		$this->assertTrue( $instance->runUpdater() );
 
 	}
 
@@ -86,35 +87,32 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testDoUpdateOnMock( $setup, $expected ) {
+	public function testRunUpdaterOnMock( $setup, $expected ) {
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'updateData' => function( SemanticData $data ) {
-				return $data->getSubject()->getTitle()->getText() === 'Lila' ? $data->mockCallback = 'clear' : null;
-			},
-			'clearData'  => function( DIWikiPage $di ) {
-				return $di->getTitle()->getText() === 'ClearData' ? $di->mockCallback = 'clear' : null;
-			},
-		) );
+		$instance = $this->newInstance( $setup['store'], $setup['data'] );
+		$instance->setUpdateJobs( $setup['updateStatus'] );
 
-		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
-			'getTitle' => $setup['title']
-		) );
+		$reflector = $this->newReflector();
+		$performUpdate = $reflector->getMethod( 'performUpdate' );
+		$performUpdate->setAccessible( true );
 
-		$mockData = $this->newMockBuilder()->newObject( 'SemanticData', array(
-			'getSubject' => $mockSubject,
-		) );
+		$result = $performUpdate->invoke( $instance, $setup['wikiPage'] );
 
-		$instance = $this->newInstance( $mockStore, $mockData );
-		$instance->setUpdateStatus( $setup['updateStatus'] );
+		$this->assertEquals( $expected['return'], $result );
+		$this->assertMockCallback( $setup, $expected );
 
-		$this->assertEquals( $expected['return'], $instance->doUpdate() );
+	}
 
-		// Callback adds a property, this is only done for this test to verify
-		// that an expected function did run through the mock object
+	/**
+	 * Callback adds a property, this is only done during this test in order
+	 * to verify that an expected function did run through the mock object
+	 */
+	protected function assertMockCallback( $setup, $expected ) {
+
 		if ( $expected['mockCallback'] ) {
-			$this->assertEquals( $expected['mockCallback'], $mockData->getSubject()->mockCallback );
+			$this->assertEquals( $expected['mockCallback'], $setup['data']->getSubject()->mockCallback );
 		}
+
 	}
 
 	/**
@@ -122,12 +120,38 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function titleDataProvider() {
 
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
+			'updateData' => function( SemanticData $data ) {
+				return $data->getSubject()->getTitle()->getText() === 'UpdateData' ? $data->getSubject()->mockCallback = 'update' : null;
+			},
+			'clearData'  => function( DIWikiPage $di ) {
+				return $di->getTitle()->getText() === 'ClearData' ? $di->mockCallback = 'clear' : null;
+			},
+		) );
+
 		$provider = array();
 
 		// #0 Clear data, updateStatus = false
+		$title = $this->newTitle( NS_MAIN, 'ClearData' );
+
+		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
+			'getTitle' => $title
+		) );
+
+		$mockData = $this->newMockBuilder()->newObject( 'SemanticData', array(
+			'getSubject' => $mockSubject,
+		) );
+
+		$mockWikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
+			'getTitle'    => $title,
+			'getRevision' => null
+		) );
+
 		$provider[] = array(
 			array(
-				'title'        => $this->newTitle( NS_MAIN, 'ClearData' ),
+				'wikiPage'     => $mockWikiPage,
+				'store'        => $mockStore,
+				'data'         => $mockData,
 				'updateStatus' => false
 			),
 			array(
@@ -139,7 +163,9 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 		// #1 Clear data, updateStatus = true
 		$provider[] = array(
 			array(
-				'title'        => $this->newTitle( NS_MAIN, 'ClearData' ),
+				'store'        => $mockStore,
+				'data'         => $mockData,
+				'wikiPage'     => $mockWikiPage,
 				'updateStatus' => true
 			),
 			array(
@@ -148,32 +174,46 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		// FIXME $wikiPage = WikiPage::factory( $title );
-		//
-		// Needs DI framework to create wikipage object in order
-		// to inject a revision, as for the momement it can't
-		// be tested
+		// #2 Update data, valid revision
+		$title = $this->newTitle( NS_MAIN, 'UpdateData' );
 
-		// #2 Specialpage
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'isSpecialPage' => true
+		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
+			'getTitle' => $title
+		) );
+
+		$mockData = $this->newMockBuilder()->newObject( 'SemanticData', array(
+			'getSubject' => $mockSubject,
+		) );
+
+		$mockRevision = $this->newMockBuilder()->newObject( 'Revision', array(
+			'getId'   => 9001,
+			'getUser' => 'Lala'
+		) );
+
+		$mockWikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
+			'getTitle'    => $title,
+			'getRevision' => $mockRevision
 		) );
 
 		$provider[] = array(
 			array(
-				'title'        => $title,
+				'store'        => $mockStore,
+				'data'         => $mockData,
+				'wikiPage'     => $mockWikiPage,
 				'updateStatus' => false
 			),
 			array(
-				'return'       => false,
-				'mockCallback' => false
+				'return'       => true,
+				'mockCallback' => 'update'
 			)
 		);
 
 		return $provider;
-
 	}
 
+	/**
+	 * @since 1.9
+	 */
 	public function testDoUpdateForTitleInUnknownNs() {
 		$wikiPage = new DIWikiPage(
 			'Foo',
@@ -183,9 +223,12 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 
 		$updater = $this->newInstance( null, new SemanticData( $wikiPage ) );
 
-		$this->assertInternalType( 'boolean', $updater->doUpdate() );
+		$this->assertInternalType( 'boolean', $updater->runUpdater() );
 	}
 
+	/**
+	 * @since 1.9
+	 */
 	public function testDoUpdateForSpecialPage() {
 		$wikiPage = new DIWikiPage(
 			'Foo',
@@ -194,7 +237,7 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 		);
 
 		$this->assertFalse(
-			$this->newInstance( null, new SemanticData( $wikiPage ) )->doUpdate()
+			$this->newInstance( null, new SemanticData( $wikiPage ) )->runUpdater()
 		);
 	}
 

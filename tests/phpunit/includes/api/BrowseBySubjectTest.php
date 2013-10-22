@@ -38,9 +38,16 @@ class BrowseBySubjectTest extends ApiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	public function testDefaultContext() {
+	public function testInvokeContext() {
+
 		$instance = new BrowseBySubject( $this->getApiMain( array( 'subject' => 'Foo' ) ), 'browsebysubject' );
-		$this->assertInstanceOf( '\SMW\ContextResource', $instance->withContext() );
+		$context  = $instance->withContext();
+
+		$this->assertInstanceOf( '\SMW\ContextResource', $context );
+
+		$instance->invokeContext( $instance->withContext() );
+		$this->assertTrue( $context === $instance->withContext() );
+
 	}
 
 	/**

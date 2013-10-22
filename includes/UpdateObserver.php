@@ -71,7 +71,7 @@ class UpdateObserver extends Observer implements ContextAware, ContextInjector {
 	public function runStoreUpdater( ParserData $parserData ) {
 
 		$updater = new StoreUpdater( $parserData->getData(), $this->withContext() );
-		$updater->setUpdateStatus( $parserData->getUpdateStatus() )->doUpdate();
+		$updater->setUpdateJobs( $parserData->getUpdateStatus() )->runUpdater();
 
 		return true;
 	}
