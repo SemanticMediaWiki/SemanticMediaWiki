@@ -11,22 +11,16 @@ use WikiPage;
 use Revision;
 use User;
 
-/**
- * Class that adss base property annotations (predefined, categories etc.)
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- * @author Markus Krötzsch
- */
 
 /**
- * Class that adss base property annotations (predefined, categories etc.)S
+ * Class that adds base property annotations (predefined, categories etc.)
  *
- * @ingroup Annotator
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class BasePropertyAnnotator extends ObservableSubject {
 
@@ -73,6 +67,7 @@ class BasePropertyAnnotator extends ObservableSubject {
 
 		// Iterate over available categories
 		foreach ( $categoryLinks as $catname ) {
+
 			if ( $this->settings->get( 'smwgCategoriesAsInstances' ) && ( $this->semanticData->getSubject()->getNamespace() !== NS_CATEGORY ) ) {
 				$this->semanticData->addPropertyObjectValue(
 					new DIProperty( DIProperty::TYPE_CATEGORY ),

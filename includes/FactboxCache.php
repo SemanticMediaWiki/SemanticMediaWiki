@@ -5,26 +5,20 @@ namespace SMW;
 use ParserOutput;
 use OutputPage;
 use Title;
+use Html;
 
 /**
- * Factbox output factory class
+ * Factbox output caching
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * Factbox output factory class
- *
- * Enabling ($smwgFactboxUseCache) to use the CacheStore avoids non-changed
- * content being re-parsed every time the hook is executed where in reality
- * page content has not been altered.
+ * Enable ($smwgFactboxUseCache) to use a CacheStore to avoid unaltered
+ * content being re-parsed every time the OutputPage hook is executed
  *
  * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class FactboxCache extends DependencyInjector {
 
@@ -67,10 +61,11 @@ class FactboxCache extends DependencyInjector {
 		Profiler::In( __METHOD__ );
 
 		$title        = $this->outputPage->getTitle();
+		$revId        = $this->getRevisionId( $title );
 		$resultMapper = $this->getResultMapper( $title->getArticleID() );
 		$content      = $resultMapper->fetchFromCache();
 
-		if ( isset( $content['revId'] ) && ( $content['revId'] === $title->getLatestRevID() ) ) {
+		if ( isset( $content['revId'] ) && ( $content['revId'] === $revId ) && $content['text'] !== null ) {
 
 			$this->isCached = true;
 			$this->outputPage->mSMWFactboxText = $content['text'];
@@ -80,7 +75,7 @@ class FactboxCache extends DependencyInjector {
 			$this->isCached = false;
 			$this->outputPage->mSMWFactboxText = $this->rebuild( $parserOutput );
 			$resultMapper->recache( array(
-				'revId' => $title->getLatestRevID(),
+				'revId' => $revId,
 				'text'  => $this->outputPage->mSMWFactboxText
 			) );
 		}
@@ -156,6 +151,24 @@ class FactboxCache extends DependencyInjector {
 			'enabled' => $settings->get( 'smwgFactboxUseCache' ),
 			'expiry'  => 0
 		) ) );
+	}
+
+	/**
+	 * Return a revisionId either from the WebRequest object (display an old
+	 * revision or permalink etc.) or from the title object
+	 *
+	 * @since  1.9
+	 * @param  Title $title
+	 *
+	 * @return integer
+	 */
+	protected function getRevisionId( Title $title ) {
+
+		if ( $this->outputPage->getContext()->getRequest()->getCheck( 'oldid' ) ) {
+			return (int)$this->outputPage->getContext()->getRequest()->getVal( 'oldid' );
+		}
+
+		return $title->getLatestRevID();
 	}
 
 	/**

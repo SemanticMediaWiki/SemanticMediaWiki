@@ -7,20 +7,10 @@ use SMW\TableFormatter;
 use SMW\ParserData;
 use SMW\Factbox;
 use SMW\Settings;
+use SMW\DIProperty;
 
 use ParserOutput;
 use Title;
-
-/**
- * Tests for the Factbox class
- *
- * @since 1.9
- *
- * @file
- *
- * @license GNU GPL v2+
- * @author mwjames
- */
 
 /**
  * @covers \SMW\Factbox
@@ -29,12 +19,15 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class FactboxTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -42,11 +35,7 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Factbox object
-	 *
-	 * @param $parserData
-	 * @param $settings
-	 * @param $context
+	 * @since 1.9
 	 *
 	 * @return Factbox
 	 */
@@ -71,8 +60,6 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -80,7 +67,6 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::getMagicWords
 	 * @dataProvider textDataProvider
 	 *
 	 * One can argue if this test really belongs in here since it mainly tests
@@ -89,9 +75,6 @@ class FactboxTest extends ParserTestCase {
 	 * ParserOutput object, we do test this as well.
 	 *
 	 * @since 1.9
-	 *
-	 * @param $text
-	 * @param array $expected
 	 */
 	public function testMagicWordsFromParserOutputExtension( $text, array $expected ) {
 
@@ -124,16 +107,12 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::getMagicWords
 	 * @dataProvider textDataProvider
 	 *
 	 * Simulate and verify all combinations that can occur during processing
 	 * of getMagicWords
 	 *
 	 * @since 1.9
-	 *
-	 * @param string $text
-	 * @param array $expected
 	 */
 	public function testGetMagicWords( $text, array $expected ) {
 
@@ -178,9 +157,6 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::getContent
-	 * @test Factbox::isVisible
-	 *
 	 * Use a mock/stub object to verify the return value to getContent and
 	 * isolate the method from other dependencies during test
 	 *
@@ -227,8 +203,6 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::getContent
-	 *
 	 * @since 1.9
 	 */
 	public function testGetContentRoundTrip() {
@@ -259,13 +233,7 @@ class FactboxTest extends ParserTestCase {
 			'getProperties'        => array( $mockDIProperty )
 		) );
 
-		$parserOutput = $this->newParserOutput();
-
-		if ( method_exists( $parserOutput, 'setExtensionData' ) ) {
-			$parserOutput->setExtensionData( 'smwdata', $mockSemanticData );
-		} else {
-			$parserOutput->mSMWData = $mockSemanticData;
-		}
+		$parserOutput = $this->setupParserOutput( $mockSemanticData );
 
 		$instance = $this->newInstance( $this->newParserData( $mockTitle , $parserOutput ), $settings );
 		$result   = $instance->doBuild()->getContent();
@@ -277,8 +245,6 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::createTable
-	 *
 	 * @since 1.9
 	 */
 	public function testCreateTable() {
@@ -296,16 +262,14 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::fetchContent
-	 *
+	 * @dataProvider fetchContentDataProvider
 	 * @since 1.9
 	 */
-	public function testFetchContent() {
+	public function testFetchContent( $mockParserData ) {
 
-		$parserData = $this->newParserData( $this->getTitle(), $this->newParserOutput() );
-		$instance   = $this->newInstance( $parserData );
+		$instance   = $this->newInstance( $mockParserData );
+		$reflector  = $this->newReflector();
 
-		$reflector    = $this->newReflector();
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 		$fetchContent->setAccessible( true );
 
@@ -315,22 +279,19 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::fetchContent
 	 * @dataProvider contentDataProvider
 	 *
 	 * Use a mock/stub in order for getTable to return canned content to test
 	 * fetchContent.
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $setup
-	 * @param $expected
 	 */
-	public function testGetContentDataSimulation( array $setup, $expected ) {
+	public function testGetContentDataSimulation( $setup, $expected ) {
 
 		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
 			'hasVisibleSpecialProperties' => $setup['hasVisibleSpecialProperties'],
-			'hasVisibleProperties'        => $setup['hasVisibleProperties']
+			'hasVisibleProperties'        => $setup['hasVisibleProperties'],
+			'isEmpty'                     => $setup['isEmpty']
 		) );
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
@@ -382,6 +343,18 @@ class FactboxTest extends ParserTestCase {
 			array(
 				'hasVisibleSpecialProperties' => true,
 				'hasVisibleProperties'        => true,
+				'isEmpty'                     => false,
+				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
+				'invokedContent'              => $text,
+			),
+			$text // expected return
+		);
+
+		$provider[] = array(
+			array(
+				'hasVisibleSpecialProperties' => true,
+				'hasVisibleProperties'        => true,
+				'isEmpty'                     => true,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
 			),
@@ -392,6 +365,7 @@ class FactboxTest extends ParserTestCase {
 			array(
 				'hasVisibleSpecialProperties' => false,
 				'hasVisibleProperties'        => true,
+				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_SPECIAL,
 				'invokedContent'              => $text,
 			),
@@ -402,6 +376,7 @@ class FactboxTest extends ParserTestCase {
 			array(
 				'hasVisibleSpecialProperties' => false,
 				'hasVisibleProperties'        => false,
+				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
 			),
@@ -412,6 +387,7 @@ class FactboxTest extends ParserTestCase {
 			array(
 				'hasVisibleSpecialProperties' => true,
 				'hasVisibleProperties'        => false,
+				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
 			),
@@ -422,8 +398,6 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::getTableHeader
-	 *
 	 * Get access to the tableFormatter object in order to verify that the
 	 * getTableHeader does return some expected content
 	 *
@@ -457,7 +431,6 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test Factbox::getTableContent
 	 * @dataProvider tableContentDataProvider
 	 *
 	 * @since 1.9
@@ -542,6 +515,42 @@ class FactboxTest extends ParserTestCase {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function fetchContentDataProvider() {
+
+		$provider = array();
+
+		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
+			'isEmpty' => false,
+			'getPropertyValues' => array()
+		) );
+
+		$mockParserData = $this->newMockBuilder()->newObject( 'ParserData', array(
+			'getTitle'   => $this->newTitle(),
+			'getSubject' => $this->newMockBuilder()->newObject( 'DIWikiPage' ),
+			'getData'    => $mockSemanticData,
+		) );
+
+		$provider[] = array( $mockParserData );
+
+		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
+			'isEmpty' => false,
+			'getPropertyValues' => array( new DIProperty( '_SKEY') ),
+		) );
+
+		$mockParserData = $this->newMockBuilder()->newObject( 'ParserData', array(
+			'getTitle'   => $this->newTitle(),
+			'getSubject' => $this->newMockBuilder()->newObject( 'DIWikiPage' ),
+			'getData'    => $mockSemanticData,
+		) );
+
+		$provider[] = array( $mockParserData );
+
+		return $provider;
+	}
+
+	/**
 	 * Provides text sample together with the expected magic word and an
 	 * indication of a possible output string
 	 *
@@ -603,5 +612,22 @@ class FactboxTest extends ParserTestCase {
 		);
 
 		return $provider;
+	}
+
+	/**
+	 * @return ParserOutput
+	 */
+	protected function setupParserOutput( $semanticData ) {
+
+		$parserOutput = $this->newParserOutput();
+
+		if ( method_exists( $parserOutput, 'setExtensionData' ) ) {
+			$parserOutput->setExtensionData( 'smwdata', $semanticData );
+		} else {
+			$parserOutput->mSMWData = $semanticData;
+		}
+
+		return $parserOutput;
+
 	}
 }

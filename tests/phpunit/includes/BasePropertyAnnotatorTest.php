@@ -7,23 +7,17 @@ use SMW\SemanticData;
 use SMW\DIProperty;
 
 /**
- * Tests for the BasePropertyAnnotator class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\BasePropertyAnnotator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class BasePropertyAnnotatorTest extends ParserTestCase {
 
@@ -35,8 +29,6 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	protected $observerStatus = null;
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -44,10 +36,7 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a BasePropertyAnnotator object
-	 *
-	 * @param SemanticData $semanticData
-	 * @param array $settings
+	 * @since 1.9
 	 *
 	 * @return BasePropertyAnnotator
 	 */
@@ -61,8 +50,6 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test BasePropertyAnnotator::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -70,13 +57,9 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test BasePropertyAnnotator::addCategories
 	 * @dataProvider categoriesDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $setup
-	 * @param array $expected
 	 */
 	public function testAddCategories( array $setup, array $expected ) {
 
@@ -98,13 +81,9 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test BasePropertyAnnotator::addCategories
 	 * @dataProvider categoriesDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $setup
-	 * @param array $expected
 	 */
 	public function testAddCategoriesOnMockObserver( array $setup, array $expected ) {
 
@@ -137,13 +116,9 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test BasePropertyAnnotator::addCategories
 	 * @dataProvider categoriesDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $setup
-	 * @param array $expected
 	 */
 	public function testAddCategoriesObserverIntegration( array $setup, array $expected ) {
 
@@ -172,13 +147,9 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test BasePropertyAnnotator::addDefaultSort
 	 * @dataProvider defaultSortDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $setup
-	 * @param array $expected
 	 */
 	public function testAddDefaultSortOnMockObserver( array $setup, array $expected ) {
 
@@ -210,13 +181,9 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test BasePropertyAnnotator::addSpecialProperties
 	 * @dataProvider specialPropertiesDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $setup
-	 * @param array $expected
 	 */
 	public function testAddSpecialPropertiesOnMockObserver( array $setup, array $expected ) {
 
@@ -270,8 +237,6 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * Provides array of special properties
-	 *
 	 * @return array
 	 */
 	public function specialPropertiesDataProvider() {
@@ -407,8 +372,6 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * Provides array of defaultSortkeys
-	 *
 	 * @return array
 	 */
 	public function defaultSortDataProvider() {
@@ -446,8 +409,6 @@ class BasePropertyAnnotatorTest extends ParserTestCase {
 	}
 
 	/**
-	 * Provides array of category names
-	 *
 	 * @return array
 	 */
 	public function categoriesDataProvider() {

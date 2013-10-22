@@ -75,6 +75,10 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $this->builder->setValue( 'getProperties' ) ) );
 
 		$semanticData->expects( $this->any() )
+			->method( 'isEmpty' )
+			->will( $this->returnValue( $this->builder->setValue( 'isEmpty' ) ) );
+
+		$semanticData->expects( $this->any() )
 			->method( 'addPropertyObjectValue' )
 			->will( $this->builder->setCallback( 'addPropertyObjectValue' ) );
 

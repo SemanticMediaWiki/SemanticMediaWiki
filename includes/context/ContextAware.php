@@ -3,10 +3,12 @@
 namespace SMW;
 
 /**
- * Interface that describes access to a context object
+ * Interface that describes access to a ContextResource object
  *
  * @note It is expected that a context object is either injected using a constructor
- * or the implements a Contextinjector interface
+ * or implements the ContextInjector interface
+ *
+ * @ingroup SMW
  *
  * @licence GNU GPL v2+
  * @since 1.9

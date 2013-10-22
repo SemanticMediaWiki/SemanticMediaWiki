@@ -14,19 +14,12 @@ use Html;
 /**
  * Class handling the "Factbox" content rendering
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author Markus Krötzsch
- * @author mwjames
- */
-
-/**
- * Class handling the "Factbox" content rendering
- *
  * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class Factbox {
 
@@ -194,7 +187,7 @@ class Factbox {
 
 		$semanticData = $this->parserData->getData();
 
-		if ( $semanticData === null || $semanticData->stubObject ) {
+		if ( $semanticData === null || $semanticData->stubObject || $this->isEmpty( $semanticData ) ) {
 			$semanticData = $this->store->getSemanticData( $this->parserData->getSubject() );
 		}
 
@@ -210,6 +203,31 @@ class Factbox {
 	}
 
 	/**
+	 * Ensure that the SemanticData container is really empty and not filled
+	 * with a single "pseudo" property that obscures from re-reading the data
+	 *
+	 * MW's internal Parser does iterate the ParserOuput object several times
+	 * which can leave a '_SKEY' property while in fact the the container is
+	 * empty.
+	 *
+	 * @since 1.9
+	 *
+	 * @param SemanticData $semanticData
+	 *
+	 * @return boolean
+	 */
+	protected function isEmpty( SemanticData $semanticData ) {
+
+		$property = new DIProperty( '_SKEY' );
+
+		foreach( $semanticData->getPropertyValues( $property ) as $dataItem ) {
+			$semanticData->removePropertyObjectValue( $property, $dataItem );
+		}
+
+		return $semanticData->isEmpty();
+	}
+
+	/**
 	 * Returns a formatted factbox table
 	 *
 	 * @since 1.9
@@ -220,6 +238,11 @@ class Factbox {
 	 */
 	protected function createTable( SemanticData $semanticData ) {
 		Profiler::In( __METHOD__ );
+
+		// 'oldid' indicates a request to display historial data has been made
+		if ( $this->context->getRequest()->getCheck( 'oldid' ) ) {
+			return Html::rawElement( 'div', array( 'class' => 'smwfact' ), 'Historical data can not be displayed in a Factbox' );
+		}
 
 		$this->tableFormatter = new TableFormatter();
 		$text = '';

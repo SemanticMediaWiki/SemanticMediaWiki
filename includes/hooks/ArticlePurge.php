@@ -7,9 +7,8 @@ use WikiPage;
 /**
  * A function hook being executed before running "&action=purge"
  *
- * No direct action is taken within the hooks, it is only used as an initiator
- * to mark an article to be parged which will be used by another hook to follow
- * up on the marking.
+ * A temporary cache entry is created to mark and identify the
+ * Article that has been purged.
  *
  * @see http://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
  *

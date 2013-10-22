@@ -11,19 +11,16 @@ use MWException;
 /**
  * Handling semantic data exchange with a ParserOutput object
  *
- * @since 1.9
- *
- * @file
- *
- * @author mwjames
- * @author Markus Krötzsch
- */
-
-/**
  * Class that provides access to the semantic data object generated from either
  * the ParserOuput or subject provided (no static binding as in SMWParseData)
  *
  * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
+ * @author Markus Krötzsch
  */
 class ParserData extends Observer implements DispatchableSubject {
 
@@ -54,7 +51,8 @@ class ParserData extends Observer implements DispatchableSubject {
 	public function __construct( Title $title, ParserOutput $parserOutput ) {
 		$this->title = $title;
 		$this->parserOutput = $parserOutput;
-		$this->setData();
+
+		$this->setup();
 	}
 
 	/**
@@ -92,7 +90,7 @@ class ParserData extends Observer implements DispatchableSubject {
 	}
 
 	/**
-	 * Returns ParserOutput object
+	 * Returns the ParserOutput object
 	 *
 	 * @since 1.9
 	 *
@@ -125,14 +123,14 @@ class ParserData extends Observer implements DispatchableSubject {
 	}
 
 	/**
-	 * Collect and set error array
+	 * Collect errors
 	 *
 	 * @since  1.9
 	 *
 	 * @return array
 	 */
 	public function addError( array $errors ) {
-		return $this->errors = array_merge ( $errors, $this->errors );
+		return $this->errors = array_merge( $errors, $this->errors );
 	}
 
 	/**
@@ -147,11 +145,11 @@ class ParserData extends Observer implements DispatchableSubject {
 	}
 
 	/**
-	 * Returns instantiated semanticData container
+	 * Returns semanticData container
 	 *
 	 * @since 1.9
 	 *
-	 * @return \SemanticData
+	 * @return SemanticData
 	 */
 	public function getData() {
 		return $this->semanticData;
@@ -167,40 +165,24 @@ class ParserData extends Observer implements DispatchableSubject {
 	}
 
 	/**
-	 * Initializes the semantic data container either from the ParserOutput or
-	 * if not available a new container is being created
-	 *
-	 * @note MW 1.21+ use getExtensionData()
+	 * Updates the semantic data
 	 *
 	 * @since 1.9
+	 *
+	 * @param SemanticData $semanticData
 	 */
-	protected function setData() {
-		if ( method_exists( $this->parserOutput, 'getExtensionData' ) ) {
-			$this->semanticData = $this->parserOutput->getExtensionData( 'smwdata' );
-		} elseif ( isset( $this->parserOutput->mSMWData ) ) {
-			$this->semanticData = $this->parserOutput->mSMWData;
-		}
-
-		// Setup data container
-		if ( !( $this->semanticData instanceof SemanticData ) ) {
-			$this->semanticData = new SemanticData( $this->getSubject() );
-		}
+	public function setData( SemanticData $semanticData ) {
+		$this->semanticData = $semanticData;
 	}
 
 	/**
 	 * Update ParserOutput with processed semantic data
 	 *
-	 * @note MW 1.21+ use setExtensionData()
+	 * @note MW 1.21+ is using setExtensionData()
 	 *
 	 * @since 1.9
-	 *
-	 * @throws MWException
 	 */
 	public function updateOutput(){
-
-		if ( !( $this->semanticData instanceof SemanticData ) ) {
-			throw new MWException( 'The semantic data container is not available' );
-		}
 
 		if ( method_exists( $this->parserOutput, 'setExtensionData' ) ) {
 			$this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
@@ -224,15 +206,12 @@ class ParserData extends Observer implements DispatchableSubject {
 	 * @param SMWDataValue $dataValue
 	 */
 	public function addDataValue( SMWDataValue $dataValue ) {
-
-		// FIXME Remove the addDataValue method from
-		// the ParserData object
 		$this->semanticData->addDataValue( $dataValue );
 		$this->addError( $this->semanticData->getErrors() );
 	}
 
 	/**
-	 * Updates the store with semantic data attached to a ParserOutput object
+	 * Updates the Store with data attached to the ParserOutput object
 	 *
 	 * @since 1.9
 	 *
@@ -241,6 +220,25 @@ class ParserData extends Observer implements DispatchableSubject {
 	public function updateStore() {
 		$this->dispatcher->setState( 'runStoreUpdater' );
 		return true;
+	}
+
+	/**
+	 * Setup the semantic data container either from the ParserOutput or
+	 * if not available create an empty container
+	 *
+	 * @since 1.9
+	 */
+	protected function setup() {
+
+		if ( method_exists( $this->parserOutput, 'getExtensionData' ) ) {
+			$this->semanticData = $this->parserOutput->getExtensionData( 'smwdata' );
+		} elseif ( isset( $this->parserOutput->mSMWData ) ) {
+			$this->semanticData = $this->parserOutput->mSMWData;
+		}
+
+		if ( !( $this->semanticData instanceof SemanticData ) ) {
+			$this->clearData();
+		}
 	}
 
 }

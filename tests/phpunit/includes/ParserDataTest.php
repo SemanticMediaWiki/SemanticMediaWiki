@@ -4,22 +4,11 @@ namespace SMW\Test;
 
 use SMW\ObservableSubjectDispatcher;
 use SMW\DataValueFactory;
+use SMw\SemanticData;
 use SMW\ParserData;
-use SMW\Settings;
 
 use ParserOutput;
 use Title;
-
-/**
- * Tests for the ParserData class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
  * @covers \SMW\ParserData
@@ -28,12 +17,15 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ParserDataTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -41,11 +33,7 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ParserData object
-	 *
-	 * @param Title $title
-	 * @param ParserOutput $parserOutput
-	 * @param array $settings
+	 * @since  1.9
 	 *
 	 * @return ParserData
 	 */
@@ -63,8 +51,6 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserData::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -72,8 +58,124 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * Provides an array specified by property, value, errorCount, propertyCount
-	 *
+	 * @since 1.9
+	 */
+	public function testInitialDataIsEmpty() {
+		$this->assertTrue( $this->newInstance()->getData()->isEmpty() );
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testUpdateStatus() {
+
+		$instance = $this->newInstance();
+
+		$this->assertTrue( $instance->getUpdateStatus() );
+
+		$instance->disableUpdateJobs();
+
+		$this->assertFalse( $instance->getUpdateStatus() );
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testGetTitleAndDIWikiPageAndParserOutput() {
+
+		$instance = $this->newInstance();
+
+		$this->assertInstanceOf( 'Title', $instance->getTitle() );
+		$this->assertInstanceOf( 'ParserOutput', $instance->getOutput() );
+		$this->assertInstanceOf( '\SMW\DIWikiPage', $instance->getSubject() );
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testAddAndClearData() {
+
+		$instance = $this->newInstance();
+
+		$this->assertTrue(
+			$instance->getData()->isEmpty(),
+			'Asserts that the initial container is empty'
+		);
+
+		$instance->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+
+		$this->assertFalse(
+			$instance->getData()->isEmpty(),
+			'Asserts that the container is longer empty'
+		);
+
+		$instance->clearData();
+
+		$this->assertTrue(
+			$instance->getData()->isEmpty(),
+			'Asserts that clearData() yields an empty container'
+		);
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testAddAndUpdateOutput() {
+
+		$instance = $this->newInstance();
+
+		$instance->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+
+		$this->assertFalse(
+			$instance->getData()->isEmpty(),
+			'Asserts that the container is no longer empty'
+		);
+
+		$instance->updateOutput();
+
+		$newInstance = $this->newInstance( null, $instance->getOutput() );
+
+		$this->assertTrue(
+			$instance->getData()->getHash() === $newInstance->getData()->getHash(),
+			'Asserts that updateOutput() yielded an update, resulting with an identical hash in both containers'
+		);
+
+	}
+
+
+	/**
+	 * @since 1.9
+	 */
+	public function testSetGetData() {
+
+		$instance = $this->newInstance();
+
+		$this->assertTrue(
+			$instance->getData()->isEmpty(),
+			'Asserts that the container is empty'
+		);
+
+		$data = new SemanticData( $this->newSubject() );
+		$data->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+
+		$instance->setData( $data );
+
+		$this->assertFalse(
+			$instance->getData()->isEmpty(),
+			'Asserts that the container is no longer empty'
+		);
+
+		$this->assertTrue(
+			$data->getHash() === $instance->getData()->getHash(),
+			'Asserts that both containers are identical'
+		);
+
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getPropertyValueDataProvider() {
@@ -85,15 +187,9 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserData::addDataValue
 	 * @dataProvider getPropertyValueDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $propertyName
-	 * @param $value
-	 * @param $errorCount
-	 * @param $propertyCount
 	 */
 	public function testAddDataValue( $propertyName, $value, $errorCount, $propertyCount ) {
 
@@ -119,8 +215,6 @@ class ParserDataTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ParserData::updateStore
-	 *
 	 * @since 1.9
 	 */
 	public function testUpdateStore() {
