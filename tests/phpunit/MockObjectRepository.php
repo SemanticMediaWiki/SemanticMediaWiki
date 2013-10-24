@@ -375,6 +375,10 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->method( 'getContent' )
 			->will( $this->returnValue( $this->builder->setValue( 'getContent' ) ) );
 
+		$revision->expects( $this->any() )
+			->method( 'getContentHandler' )
+			->will( $this->returnValue( $this->builder->setValue( 'getContentHandler' ) ) );
+
 		return $revision;
 	}
 

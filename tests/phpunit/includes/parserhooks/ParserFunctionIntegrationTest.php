@@ -7,31 +7,21 @@ use SMW\ContentParser;
 use Title;
 
 /**
- * Integration tests for registered ParserFunction
+ * @covers \SMW\ContentParser
+ * @covers \SMW\AskParserFunction
+ * @covers \SMW\ShowParserFunction
  *
- * @file
+ * @group SMW
+ * @group SMWExtension
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
-
-/**
- * @covers \SMW\ContentParser
- * @covers \SMW\AskParserFunction
- * @covers \SMW\ShowParserFunction
- *
- * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
- */
 class ParserFunctionIntegrationTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -39,13 +29,11 @@ class ParserFunctionIntegrationTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ContentParser object
-	 *
 	 * @since 1.9
 	 *
 	 * @return ContentParser
 	 */
-	private function newInstance( Title $title = null ) {
+	private function newContentParser( Title $title = null, $context = null ) {
 
 		if( $title === null ) {
 			$title = $this->newTitle();
@@ -55,28 +43,28 @@ class ParserFunctionIntegrationTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @dataProvider textDataProvider
+	 *
 	 * Check that registered parser functions (especially those as closures) are
 	 * generally executable during parsing of a standard text
-	 *
-	 * @test ContentParser::parse
-	 * @dataProvider textDataProvider
 	 *
 	 * @since 1.9
 	 */
 	public function testParseFromText( $text ) {
 
-		$instance = $this->newInstance();
-		$instance->setText( $text )->parse();
+		$instance = $this->newContentParser();
+		$instance->parse( $text );
 
 		$this->assertInstanceOf(
-			'ParserOutput', $instance->getOutput(),
-			'asstert that a ParserOutput object is available'
+			'ParserOutput',
+			$instance->getOutput(),
+			'Asserts that a ParserOutput object is available'
 			);
 
 		$this->assertInternalType(
 			'string',
 			$instance->getOutput()->getText(),
-			'asserts that getText() is returning a string'
+			'Asserts that getText() is returning a string'
 		);
 
 	}

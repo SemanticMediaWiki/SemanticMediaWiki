@@ -4,18 +4,12 @@ namespace SMW\Test;
 
 use SMW\ContentParser;
 
+use TextContentHandler;
+use ContentHandler;
+use TextContent;
+use Revision;
 use Title;
-
-/**
- * Tests for the ContentParser class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
+use Parser;
 
 /**
  * @covers \SMW\ContentParser
@@ -24,12 +18,15 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
+ * @author mwjames
  */
 class ContentParserTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -37,79 +34,158 @@ class ContentParserTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ContentParser object
-	 *
 	 * @since 1.9
 	 *
 	 * @return ContentParser
 	 */
-	private function getInstance( Title $title = null ) {
-		return new ContentParser( $title === null ? $this->newTitle() : $title );
+	private function newInstance( Title $title = null, $parser = null ) {
+
+		if ( $title === null ) {
+			$title = $this->newTitle();
+		}
+
+		return new ContentParser( $title, $parser );
 	}
 
 	/**
-	 * @test ContentParser::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
-	 * @test ContentParser::parse
-	 *
+	 * @since 1.9
+	 */
+	public function testParse() {
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance()->parse() );
+	}
+
+	/**
 	 * @since 1.9
 	 */
 	public function testParseFromText() {
 
-		$text     = $this->newRandomString( 20, __METHOD__ );
-		$expected ='<p>' . $text . "\n" . '</p>';
+		$text     = 'Foo-1-' . __METHOD__;
+		$expected = '<p>' . $text . "\n" . '</p>';
 
-		$instance = $this->getInstance();
-		$instance->setText( $text )->parse();
+		$instance = $this->newInstance();
+		$instance->parse( $text );
 
-		$this->assertInstanceOf( 'ParserOutput', $instance->getOutput() );
-		$this->assertEquals( $expected, $instance->getOutput()->getText() );
+		$this->assertParserOutput( $expected, $instance );
 
 	}
 
 	/**
-	 * @test ContentParser::parse
 	 * @dataProvider titleRevisionDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testParseFromRevision( $setup, $expected ) {
+	public function testFetchFromParser( $setup, $expected ) {
 
+		$instance  = $this->newInstance( $setup['title'], new Parser() );
 		$reflector = $this->newReflector();
-		$instance  = $this->getInstance( $setup['title'] );
 
-		$revision  = $reflector->getProperty( 'revision' );
-		$revision->setAccessible( true );
-		$revision->setValue( $instance, $setup['revision'] );
+		$fetchFromParser = $reflector->getMethod( 'fetchFromParser' );
+		$fetchFromParser->setAccessible( true );
 
-		$instance->parse();
+		$fetchFromParser->invoke( $instance, $setup['revision'] );
 
 		if ( $expected['error'] ) {
-			$this->assertInternalType( 'array', $instance->getErrors() );
+			$this->assertError( $instance );
 		} else {
-			$this->assertInstanceOf( 'ParserOutput', $instance->getOutput() );
-			$this->assertEquals( $expected['text'], $instance->getOutput()->getText() );
+			$this->assertParserOutput( $expected['text'], $instance );
 		}
 
 	}
 
 	/**
-	 * Provides title and wikiPage samples
+	 * @dataProvider contentDataProvider
 	 *
+	 * @since 1.9
+	 */
+	public function testFetchFromContent( $setup, $expected ) {
+
+		if ( !class_exists( 'ContentHandler') ) {
+			$this->markTestSkipped(
+				'Skipping test due to a missing class (probably MW 1.20 or lower).'
+			);
+		}
+
+		$instance  = $this->newInstance( $setup['title'], new Parser() );
+		$reflector = $this->newReflector();
+
+		$fetchFromContent = $reflector->getMethod( 'fetchFromContent' );
+		$fetchFromContent->setAccessible( true );
+
+		$fetchFromContent->invoke( $instance, $setup['revision'] );
+
+		$this->assertEquals( $setup['title'], $instance->getTitle() );
+
+		if ( $expected['error'] ) {
+			$this->assertError( $instance );
+		} else {
+			$this->assertParserOutput( $expected['text'], $instance );
+		}
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function assertError( $instance ) {
+
+		$this->assertInternalType(
+			'array',
+			$instance->getErrors(),
+			'Asserts that getErrors() returns an array'
+		);
+
+		$this->assertNotEmpty(
+			$instance->getErrors(),
+			'Asserts that getErrors() is not empty'
+		);
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function assertParserOutput( $text, $instance ) {
+
+		$this->assertInstanceOf(
+			'ParserOutput',
+			$instance->getOutput(),
+			'Asserts the expected ParserOutput instance'
+		);
+
+		if ( $text !== '' ) {
+
+			$this->assertContains(
+				$text,
+				$instance->getOutput()->getText(),
+				'Asserts that getText() returns expected text component'
+			);
+
+		} else {
+
+			$this->assertEmpty(
+				$instance->getOutput()->getText(),
+				'Asserts that getText() returns empty'
+			);
+
+		}
+
+	}
+
+	/**
 	 * @return array
 	 */
 	public function titleRevisionDataProvider() {
 
 		$provider = array();
 
-		$text     = $this->newRandomString( 20, __METHOD__ );
+		$text     = 'Foo-2-' . __METHOD__;
 		$expected ='<p>' . $text . "\n" . '</p>';
 
 		// #0 Title does not exists
@@ -152,6 +228,142 @@ class ContentParserTest extends ParserTestCase {
 			array(
 				'error'    => false,
 				'text'     => $expected
+			)
+		);
+
+		// #2 Null revision
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
+			'getDBkey'        => 'Lula',
+			'exists'          => true,
+			'getPageLanguage' => $this->getLanguage()
+		) );
+
+		$revision = null;
+
+		$provider[] = array(
+			array(
+				'title'    => $title,
+				'revision' => $revision,
+			),
+			array(
+				'error'    => true,
+				'text'     => ''
+			)
+		);
+
+		return $provider;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function contentDataProvider() {
+
+		$provider = array();
+
+		if ( !class_exists( 'ContentHandler') ) {
+			$provider[] = array( array(), array() );
+			return $provider;
+		}
+
+		$text     = 'Foo-3-' . __METHOD__;
+
+		// #0 Title does not exists
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
+			'getDBkey'        => 'Lila',
+			'exists'          => false,
+			'getText'         => null,
+			'getPageLanguage' => $this->getLanguage()
+		) );
+
+		$provider[] = array(
+			array(
+				'title'    => $title,
+				'revision' => null,
+			),
+			array(
+				'error'    => true,
+				'text'     => ''
+			)
+		);
+
+		// #1 Valid revision
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
+			'getDBkey'        => 'Lula',
+			'exists'          => true,
+			'getPageLanguage' => $this->getLanguage()
+		) );
+
+		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+			'getId'      => 9001,
+			'getUser'    => 'Lala',
+			'getContent' => new TextContent( $text )
+		) );
+
+		$provider[] = array(
+			array(
+				'title'    => $title,
+				'revision' => $revision,
+			),
+			array(
+				'error'    => false,
+				'text'     => $text
+			)
+		);
+
+		// #1 Empty content
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
+			'getDBkey'        => 'Lula',
+			'exists'          => true,
+			'getPageLanguage' => $this->getLanguage(),
+			'getContentModel' => CONTENT_MODEL_WIKITEXT
+		) );
+
+		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
+			'getId'             => 9001,
+			'getUser'           => 'Lala',
+			'getContent'        => false,
+			'getContentHandler' => new TextContentHandler()
+		) );
+
+		$provider[] = array(
+			array(
+				'title'    => $title,
+				'revision' => $revision,
+			),
+			array(
+				'error'    => false,
+				'text'     => ''
+			)
+		);
+
+		// #2 "real" revision and content
+		$title    = $this->newTitle();
+		$content  = ContentHandler::makeContent( $text, $title, CONTENT_MODEL_WIKITEXT, null );
+
+		$revision = new Revision(
+			array(
+				'id'         => 42,
+				'page'       => 23,
+				'title'      => $title,
+
+				'content'    => $content,
+				'length'     => $content->getSize(),
+				'comment'    => "testing",
+				'minor_edit' => false,
+
+				'content_format' => null,
+			)
+		);
+
+		$provider[] = array(
+			array(
+				'title'    => $title,
+				'revision' => $revision,
+			),
+			array(
+				'error'    => false,
+				'text'     => $text
 			)
 		);
 

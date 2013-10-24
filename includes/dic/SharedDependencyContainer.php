@@ -94,13 +94,27 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 				);
 			},
 
+			/**
+			 * ContentParser object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return ContentParser
+			 */
 			'ContentParser' => function ( DependencyBuilder $builder ) {
-					return new ContentParser( $builder->getArgument( 'Title' ) );
-				},
+				return new ContentParser( $builder->getArgument( 'Title' ) );
+			},
 
+			/**
+			 * ObservableSubjectDispatcher object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return ObservableSubjectDispatcher
+			 */
 			'ObservableUpdateDispatcher' => function ( DependencyBuilder $builder ) {
-					return new ObservableSubjectDispatcher( $builder->newObject( 'UpdateObserver' ) );
-				},
+				return new ObservableSubjectDispatcher( $builder->newObject( 'UpdateObserver' ) );
+			},
 
 			'Factbox' => function ( DependencyBuilder $builder ) {
 				return new Factbox(

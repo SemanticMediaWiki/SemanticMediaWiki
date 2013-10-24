@@ -206,8 +206,7 @@ class FactboxCache extends DependencyInjector {
 				'Title' => $this->outputPage->getTitle()
 			) );
 
-			$contentParser->setText( $factbox->getContent() )->parse(); // old style
-		//	$contentParser->parse( $factbox->getContent() );
+			$contentParser->parse( $factbox->getContent() );
 			$text = $contentParser->getOutput()->getText();
 
 		}
