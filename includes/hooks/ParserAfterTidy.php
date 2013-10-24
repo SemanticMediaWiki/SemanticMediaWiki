@@ -79,9 +79,9 @@ class ParserAfterTidy extends FunctionHook {
 			'SemanticData' => $parserData->getData(),
 		) );
 
-		$propertyAnnotator->attach( $parserData )
-			->addCategories( $this->parser->getOutput()->getCategoryLinks() )
-			->addDefaultSort( $this->parser->getDefaultSort() );
+		$propertyAnnotator->attach( $parserData );
+		$propertyAnnotator->addCategories( $this->parser->getOutput()->getCategoryLinks() );
+		$propertyAnnotator->addDefaultSort( $this->parser->getDefaultSort() );
 
 		/**
 		 * @var CacheHandler $cache

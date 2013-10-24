@@ -42,12 +42,11 @@ class FactboxCache extends DependencyInjector {
 	/**
 	 * Prepare and update the OutputPage property
 	 *
-	 * Factbox content is either retrived from CacheStore or re-parsed from
-	 * the invoked Factbox object
+	 * Factbox content is either retrived from a CacheStore or re-parsed from
+	 * the Factbox object
 	 *
-	 * Altered content is tracked using the revision id (getTouched() is not a
-	 * good measure for comparison where getLatestRevID() only changes after a
-	 * content modification has occurred).
+	 * Altered content is tracked using the revision Id, getLatestRevID() only
+	 * changes after a content modification has occurred.
 	 *
 	 * Cached content is stored in an associative array following:
 	 * { 'revId' => $revisionId, 'text' => (...) }
@@ -62,7 +61,7 @@ class FactboxCache extends DependencyInjector {
 
 		$title        = $this->outputPage->getTitle();
 		$revId        = $this->getRevisionId( $title );
-		$resultMapper = $this->getResultMapper( $title->getArticleID() );
+		$resultMapper = $this->newResultMapper( $title->getArticleID() );
 		$content      = $resultMapper->fetchFromCache();
 
 		if ( isset( $content['revId'] ) && ( $content['revId'] === $revId ) && $content['text'] !== null ) {
@@ -73,11 +72,19 @@ class FactboxCache extends DependencyInjector {
 		} else {
 
 			$this->isCached = false;
-			$this->outputPage->mSMWFactboxText = $this->rebuild( $parserOutput );
+
+			$text = $this->rebuild(
+				$title,
+				$parserOutput,
+				$this->outputPage->getContext()
+			);
+
 			$resultMapper->recache( array(
 				'revId' => $revId,
-				'text'  => $this->outputPage->mSMWFactboxText
+				'text'  => $text
 			) );
+
+			$this->outputPage->mSMWFactboxText = $text;
 		}
 
 		Profiler::Out( __METHOD__ );
@@ -99,7 +106,7 @@ class FactboxCache extends DependencyInjector {
 			$text = $this->outputPage->mSMWFactboxText;
 		} else if ( $this->outputPage->getTitle() instanceof Title &&
 			!$this->outputPage->getTitle()->isSpecialPage() ) {
-			$content = $this->getResultMapper( $this->outputPage->getTitle()->getArticleID() )->fetchFromCache();
+			$content = $this->newResultMapper( $this->outputPage->getTitle()->getArticleID() )->fetchFromCache();
 			$text = isset( $content['text'] ) ? $content['text'] : '';
 		}
 
@@ -137,7 +144,7 @@ class FactboxCache extends DependencyInjector {
 	 *
 	 * @return CacheableResultMapper
 	 */
-	public function getResultMapper( $pageId ) {
+	public function newResultMapper( $pageId ) {
 
 		/**
 		 * @var Settings $settings
@@ -158,6 +165,7 @@ class FactboxCache extends DependencyInjector {
 	 * revision or permalink etc.) or from the title object
 	 *
 	 * @since  1.9
+	 *
 	 * @param  Title $title
 	 *
 	 * @return integer
@@ -180,20 +188,20 @@ class FactboxCache extends DependencyInjector {
 	 *
 	 * @return string|null
 	 */
-	protected function rebuild( ParserOutput $parserOutput ) {
+	protected function rebuild( Title $title, ParserOutput $parserOutput, $requestContext ) {
 
 		$text = null;
 
 		/**
 		 * @var RequestContext
 		 */
-		$this->getDependencyBuilder()->getContainer()->registerObject( 'RequestContext', $this->outputPage->getContext() );
+		$this->getDependencyBuilder()->getContainer()->registerObject( 'RequestContext', $requestContext );
 
 		/**
 		 * @var Factbox $factbox
 		 */
 		$factbox = $this->getDependencyBuilder()->newObject( 'Factbox', array(
-			'Title'          => $this->outputPage->getTitle(),
+			'Title'          => $title,
 			'ParserOutput'   => $parserOutput
 		) );
 
@@ -203,7 +211,7 @@ class FactboxCache extends DependencyInjector {
 			 * @var ContentParser $contentParser
 			 */
 			$contentParser = $this->getDependencyBuilder()->newObject( 'ContentParser', array(
-				'Title' => $this->outputPage->getTitle()
+				'Title' => $title
 			) );
 
 			$contentParser->parse( $factbox->getContent() );

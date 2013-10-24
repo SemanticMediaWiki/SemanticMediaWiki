@@ -98,6 +98,10 @@ class StoreUpdater implements ContextAware {
 	}
 
 	/**
+	 * @note Make sure to have a valid revision (null means delete etc.) and
+	 * check if semantic data should be processed and displayed for a page in
+	 * the given namespace
+	 *
 	 * @since 1.9
 	 *
 	 * @param WikiPage $wikiPage
@@ -106,13 +110,10 @@ class StoreUpdater implements ContextAware {
 	 */
 	protected function performUpdate( WikiPage $wikiPage ) {
 
-		Profiler::In( __METHOD__, true );
+		Profiler::In();
 
 		$revision = $wikiPage->getRevision();
 
-		// Make sure to have a valid revision (null means delete etc.)
-		// Check if semantic data should be processed and displayed for a page in
-		// the given namespace
 		$processSemantics = $revision !== null && $this->isValid( $wikiPage );
 
 		if ( $processSemantics ) {
@@ -130,8 +131,20 @@ class StoreUpdater implements ContextAware {
 			$this->semanticData = new SemanticData( $this->getSubject() );
 		}
 
-		// Comparison must happen *before* the storage update;
-		// even finding uses of a property fails after its type changed.
+		Profiler::Out();
+		return $this->updateStore( $this->detectChanges( $processSemantics ) );
+	}
+
+	/**
+	 * @note Comparison must happen *before* the storage update;
+	 * even finding uses of a property fails after its type changed.
+	 *
+	 * @since 1.9
+	 *
+	 * @return boolean
+	 */
+	protected function detectChanges( $processSemantics ) {
+
 		if ( $this->updateJobs ) {
 
 			$changeNotifier = $this->withContext()->getDependencyBuilder()->newObject( 'PropertyChangeNotifier', array(
@@ -141,6 +154,18 @@ class StoreUpdater implements ContextAware {
 			$changeNotifier->detectChanges();
 		}
 
+		return $processSemantics;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return boolean
+	 */
+	protected function updateStore( $processSemantics ) {
+
+		Profiler::In();
+
 		// Actually store semantic data, or at least clear it if needed
 		if ( $processSemantics ) {
 			$this->withContext()->getStore()->updateData( $this->semanticData );
@@ -148,7 +173,7 @@ class StoreUpdater implements ContextAware {
 			$this->withContext()->getStore()->clearData( $this->semanticData->getSubject() );
 		}
 
-		Profiler::Out( __METHOD__, true );
+		Profiler::Out();
 		return true;
 	}
 

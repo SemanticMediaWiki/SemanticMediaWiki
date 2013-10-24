@@ -40,15 +40,6 @@ class UpdateObserver extends Observer implements ContextAware, ContextInjector {
 	 */
 	public function withContext() {
 
-		// This is not as clean as it should be but to avoid to make
-		// multiple changes at once we determine a default builder here
-		// which at some point should vanish after pending changes have
-		// been merged
-
-		// LinksUpdateConstructed is injecting the builder via the setter
-		// UpdateJob does not
-		// ParserAfterTidy does not
-
 		if ( $this->context === null ) {
 			$this->context = new BaseContext();
 		}

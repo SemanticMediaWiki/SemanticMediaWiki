@@ -20,21 +20,21 @@ use OutOfBoundsException;
 class SemanticDataSerializer implements Serializer {
 
 	/**
-	 * @see Serializers::serialize
+	 * @see Serializer::serialize
 	 *
 	 * @since  1.9
 	 */
-	public function serialize( $object ) {
+	public function serialize( $semanticData ) {
 
-		if ( !$this->isSerializerFor( $object ) ) {
+		if ( !$this->isSerializerFor( $semanticData ) ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
-		return $this->serializeSemanticData( $object ) + array( 'serializer' => __CLASS__, 'version' => 0.1 );
+		return $this->serializeSemanticData( $semanticData ) + array( 'serializer' => __CLASS__, 'version' => 0.1 );
 	}
 
 	/**
-	 * @see Serializers::isSerializerFor
+	 * @see Serializer::isSerializerFor
 	 *
 	 * @since  1.9
 	 */
@@ -49,46 +49,37 @@ class SemanticDataSerializer implements Serializer {
 	 */
 	protected function serializeSemanticData( SemanticData $semanticData ) {
 
-		$output = array();
+		$data = array(
+			'subject' => $semanticData->getSubject()->getSerialization(),
+			'data'    => $this->serializeProperty( $semanticData )
+		);
 
-		$output['subject'] = $semanticData->getSubject()->getSerialization();
+		$subobjects = $this->serializeSubobject( $semanticData->getSubSemanticData() );
 
-		/**
-		 * Build property and dataItem serialization record
-		 */
-		foreach ( $semanticData->getProperties() as $property ) {
-
-			$prop = array();
-
-			$prop['property'] = $property->getSerialization();
-
-			foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
-				$prop['dataitem'][] = $this->serializeDataItem( $dataItem );
-			}
-
-			$output['data'][] = $prop;
-
+		if ( $subobjects !== array() ) {
+			$data['sobj'] = $subobjects;
 		}
 
-		$this->serializeSubobject( $semanticData->getSubSemanticData(), $output );
-
-		return $output;
+		return $data;
 	}
 
 	/**
-	 * Returns all subobjects of a SemanticData instance
-	 *
-	 * @note The subobject name is used as reference key as it is the only
-	 * reliable unique key to allow a performable lookup during unserialization
+	 * Build property and dataItem serialization record
 	 *
 	 * @return array
 	 */
-	protected function serializeSubobject( $subSemanticData, &$output ) {
+	protected function serializeProperty( $semanticData ) {
 
-		foreach ( $subSemanticData as $semanticData ) {
-			$output['sobj'][] = $this->serializeSemanticData( $semanticData );
+		$properties = array();
+
+		foreach ( $semanticData->getProperties() as $property ) {
+			$properties[] = array(
+				'property' => $property->getSerialization(),
+				'dataitem' => $this->serializeDataItem( $semanticData, $property )
+			);
 		}
 
+		return $properties;
 	}
 
 	/**
@@ -101,13 +92,34 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	protected function serializeDataItem( DataItem $dataItem ) {
+	protected function serializeDataItem( $semanticData, $property ) {
 
-		return array(
-			'type' => $dataItem->getDIType(),
-			'item' => $dataItem->getSerialization()
-		);
+		$dataItems = array();
 
+		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
+			$dataItems[] = array(
+				'type' => $dataItem->getDIType(),
+				'item' => $dataItem->getSerialization()
+			);
+		}
+
+		return $dataItems;
+	}
+
+	/**
+	 * Returns all subobjects of a SemanticData instance
+	 *
+	 * @return array
+	 */
+	protected function serializeSubobject( $subSemanticData ) {
+
+		$subobjects = array();
+
+		foreach ( $subSemanticData as $semanticData ) {
+			$subobjects[] = $this->serializeSemanticData( $semanticData );
+		}
+
+		return $subobjects;
 	}
 
 }

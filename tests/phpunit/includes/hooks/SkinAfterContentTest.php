@@ -76,7 +76,7 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 				'OutputPage' => $setup['skin']->getOutput()
 			) );
 
-			$resultMapper = $factboxCache->getResultMapper( $setup['title']->getArticleID() );
+			$resultMapper = $factboxCache->newResultMapper( $setup['title']->getArticleID() );
 			$resultMapper->recache( array(
 				'revId' => null,
 				'text'  => $setup['text']
