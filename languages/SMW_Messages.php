@@ -4688,7 +4688,7 @@ $messages['fa'] = array(
 	'smw_properties_docu' => 'خصوصیت‌های زیر در این ویکی استفاده شده‌اند.',
 	'smw_property_template' => '$1 از نوع $2 ($3)', # Fuzzy
 	'smw_propertylackspage' => 'تمام خصوصیت‌ها باید توسط یک صفحه توصیف شوند.',
-	'smw_propertylackstype' => 'هیچ نوعی برای این خصوصیت مشخص نشده است (با فرض نوع $1 برای اکنون).',
+	'smw_propertylackstype' => 'هیچ نوعی برای این خصوصیت مشخص نشده‌است (با فرض نوع $1 برای اکنون).',
 	'smw_propertyhardlyused' => 'این خصوصیت به ندرت در این ویکی استفاده شده است.',
 	'unusedproperties' => 'خصوصیت‌های استفاده نشده',
 	'smw_unusedproperties_docu' => 'خصوصیت‌های زیر با وجود این‌که هیچ صفحه‌ای از آن‌ها استفاده نمی‌کند، وجود دارند.',
@@ -4730,6 +4730,7 @@ $messages['fa'] = array(
 	'smw_adminlinks_displayingdata' => 'نمایش داده‌ها',
 	'smw-createproperty-isproperty' => 'این یک ویژگی از نوع $1 است.',
 	'smw-createproperty-allowedvals' => 'مقادیر مجاز برای این ویژگی یا صفت این‌ها هستند:', # Fuzzy
+	'smw-paramdesc-category-delim' => 'جداکننده',
 	'smw-ui-tooltip-title-event' => 'رویداد',
 	'smw_concept_header' => 'صفحه‌های مفهوم "$1"',
 );
@@ -13603,7 +13604,7 @@ Egenskaper som fortfarande saknar en egen sida finns på [[Special:WantedPropert
 	'smw-statistics-query-size' => 'Frågestorlek',
 	'smw-statistics-concept-count-legacy' => 'Koncept', # Fuzzy
 	'smw-statistics-concept-count' => '[[Special:Concepts|Koncept]]', # Fuzzy
-	'smw-statistics-subobject-count' => 'Subobjekt', # Fuzzy
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Underobjekt}}',
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datatyp|Datatyper}}]]',
 	'smw_uri_doc' => 'The URI resolver implements the [$1 W3C TAG finding on httpRange-14].
 It takes care that humans do not turn into websites.',
@@ -15187,7 +15188,7 @@ $messages['zh-hans'] = array(
 	'wantedproperties' => '需要的属性',
 	'smw_wantedproperties_docu' => '以下属性已在本维基中使用，但是尚未创建描述页面。',
 	'smw_wantedproperty_template' => '$1（$2{{PLURAL:$2|次使用}}）',
-	'smw_purge' => '更新',
+	'smw_purge' => '刷新',
 	'types' => '类型',
 	'smw_types_docu' => '以下列出了可被赋予属性的所有数据类型。',
 	'smw-special-types-no-such-type' => '指定的数据类型不存在',
