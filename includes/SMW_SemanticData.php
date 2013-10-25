@@ -214,10 +214,10 @@ class SemanticData {
 	/**
 	 * Generate a hash value to simplify the comparison of this data
 	 * container with other containers. Subdata is taken into account.
-	 * 
+	 *
 	 * The hash uses PHP's md5 implementation, which is among the fastest
 	 * hash algorithms that PHP offers.
-	 * 
+	 *
 	 * @note This function may be used to obtain keys for SemanticData
 	 * objects or to do simple equalitiy tests. Equal hashes with very
 	 * high probability indicate equal data. However, the hash is
@@ -372,7 +372,7 @@ class SemanticData {
 	 * @param SMWDataValue $dataValue
 	 */
 	public function addDataValue( SMWDataValue $dataValue ) {
-		\SMW\Profiler::In(  __METHOD__, true );
+		Profiler::In(  __METHOD__, true );
 
 		if ( $dataValue->getProperty() instanceof DIProperty ) {
 			if ( !$dataValue->isValid() ) {
@@ -391,7 +391,7 @@ class SemanticData {
 			$this->addError( $dataValue->getErrors() );
 		}
 
-		\SMW\Profiler::Out( __METHOD__, true );
+		Profiler::Out( __METHOD__, true );
 	}
 
 	/**
@@ -478,6 +478,7 @@ class SemanticData {
 	 * @throws MWException if subjects do not match
 	 */
 	public function importDataFrom( SemanticData $semanticData ) {
+
 		if( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			throw new MWException( "SMWSemanticData can only represent data about one subject. Importing data for another subject is not possible." );
 		}
@@ -539,6 +540,43 @@ class SemanticData {
 	}
 
 	/**
+	 * Whether the SemanticData has a SubSemanticData container and if
+	 * specified has a particluar subobject using its name as identifier
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $subobjectName|null
+	 *
+	 * @return boolean
+	 */
+	public function hasSubSemanticData( $subobjectName = null ) {
+
+		if ( $this->subSemanticData === array() ) {
+			return false;
+		}
+
+		return $subobjectName !== null ? isset( $this->subSemanticData[ $subobjectName ] ) : true;
+	}
+
+	/**
+	 * Find a particular subobject container using its name as identifier
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $subobjectName
+	 *
+	 * @return SMWContainerSemanticData|[]
+	 */
+	public function findSubSemanticData( $subobjectName ) {
+
+		if ( $this->hasSubSemanticData( $subobjectName ) ) {
+			return $this->subSemanticData[ $subobjectName ];
+		}
+
+		return array();
+	}
+
+	/**
 	 * Add data about subobjects.
 	 * Will only work if the data that is added is about a subobject of
 	 * this SMWSemanticData's subject. Otherwise an exception is thrown.
@@ -563,7 +601,7 @@ class SemanticData {
 			throw new MWException( "Data for a subobject of {$semanticData->getSubject()->getDBkey()} cannot be added to {$this->getSubject()->getDBkey()}." );
 		}
 
-		if( array_key_exists( $subobjectName, $this->subSemanticData ) ) {
+		if( $this->hasSubSemanticData( $subobjectName ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
 		} else {
 			$semanticData->subDataAllowed = false;
@@ -590,7 +628,8 @@ class SemanticData {
 		}
 
 		$subobjectName = $semanticData->getSubject()->getSubobjectName();
-		if( array_key_exists( $subobjectName, $this->subSemanticData ) ) {
+
+		if( $this->hasSubSemanticData( $subobjectName ) ) {
 			$this->subSemanticData[$subobjectName]->removeDataFrom( $semanticData );
 
 			if( $this->subSemanticData[$subobjectName]->isEmpty() ) {

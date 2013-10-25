@@ -88,10 +88,8 @@ class BrowseBySubject extends Base {
 	 */
 	protected function addSubSemanticData( $store, $property, &$semanticData ) {
 
-		$subSemanticData = $semanticData->getSubSemanticData();
-
 		foreach ( $semanticData->getPropertyValues( $property ) as $value ) {
-			if ( $value instanceOf DIWikiPage && !isset( $subSemanticData[ $value->getSubobjectName() ] ) ) {
+			if ( $value instanceOf DIWikiPage && !$semanticData->hasSubSemanticData( $value->getSubobjectName() ) ) {
 				$semanticData->addSubSemanticData( $store->getSemanticData( $value ) );
 			}
 		}
