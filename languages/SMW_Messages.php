@@ -9640,6 +9640,7 @@ $messages['mn'] = array(
 /** Marathi (मराठी)
  * @author Htt
  * @author Kaustubh
+ * @author V.narsikar
  * @author 아라
  */
 $messages['mr'] = array(
@@ -9686,7 +9687,7 @@ $messages['mr'] = array(
 	'smw_exportrdf_backlinks' => 'निर्यात केलेल्या पानांचे संदर्भ देणारी पाने सुद्धा निर्यात करा.
 ब्राउजेबल RDF तयार होईल.',
 	'smw_exportrdf_lastdate' => 'दिलेल्या वेळेनंतर ज्या पानांमध्ये बदल झालेले नाहीत अशी पाने निर्यात करू नका.',
-	'uriresolver' => 'URI रिजल्व्हर',
+	'uriresolver' => 'URI रिझॉल्व्हर',
 	'properties' => 'गुणधर्म',
 	'smw_properties_docu' => 'या विकिवर खालील गुणधर्म वापरलेले आहेत.',
 	'smw_property_template' => '$2 प्रकारची $1 ($3)', # Fuzzy
@@ -9716,7 +9717,7 @@ $messages['mr'] = array(
 	'smw_ask_descorder' => 'उतरत्या श्रेणीने',
 	'smw_ask_submit' => 'निकाल शोधा',
 	'smw_ask_editquery' => '[पृच्छा संपादा]',
-	'smw_add_sortcondition' => '[लावण्याची अट वाढवा]',
+	'smw_add_sortcondition' => '[निवडण्याची अट जोडा]',
 	'smw_ask_hidequery' => 'पृच्छा लपवा',
 	'smw_ask_help' => 'पृच्छा करण्यासाठी मदत',
 	'smw_ask_queryhead' => 'पॄच्छा',
