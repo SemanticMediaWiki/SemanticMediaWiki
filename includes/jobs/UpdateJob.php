@@ -19,7 +19,10 @@ use Title;
  * formatting in-page values based on a datatype thathas since been changed), whereas
  * the Factbox and query/browsing interfaces might already show the updated records.
  *
- * @since   1.9
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author Daniel M. Herzig
  * @author Markus Krötzsch

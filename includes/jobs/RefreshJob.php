@@ -1,24 +1,28 @@
 <?php
-/**
- * @file
- * @ingroup SMW
- */
+
+namespace SMW;
 
 /**
- * SMWRefreshJob iterates over all page ids of the wiki, to perform an update
+ * RefreshJob iterates over all page ids of the wiki, to perform an update
  * action for all of them in sequence. This corresponds to the in-wiki version
- * of the SMW_refreshData.php script for updating the whole wiki, but it also
- * fixes problems with SMWSQLStore2 (which may have objects in its database
- * that are not proper wiki pages).
+ * of the SMW_refreshData.php script for updating the whole wiki.
  *
  * @note This class ignores $smwgEnableUpdateJobs and always creates updates.
  * In fact, it might be needed specifically on wikis that do not use update
  * jobs in normal operation.
  *
- * @author Markus Krötzsch
  * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author Markus Krötzsch
+ * @author mwjames
  */
-class SMWRefreshJob extends Job {
+class RefreshJob extends JobBase {
+
+	/** $var boolean */
+	protected $enabled = true;
 
 	/**
 	 * Constructor. The parameters optionally specified in the second
@@ -32,39 +36,17 @@ class SMWRefreshJob extends Job {
 	 * @param $title Title not relevant but needed for MW jobs
 	 * @param $params array (associative) as explained above
 	 */
-	function __construct( $title, $params = array( 'spos' => 1, 'prog' => 0, 'rc' => 1 ) ) {
-		parent::__construct( 'SMWRefreshJob', $title, $params );
+	public function __construct( $title, $params = array( 'spos' => 1, 'prog' => 0, 'rc' => 1 ) ) {
+		parent::__construct( 'SMW\RefreshJob', $title, $params );
 	}
 
 	/**
-	 * Run job
+	 * @since 1.9
 	 *
 	 * @return boolean success
 	 */
-	function run() {
-		wfProfileIn( 'SMWRefreshJob::run (SMW)' );
-
-		if ( !array_key_exists( 'spos', $this->params ) ) {
-			wfProfileOut( 'SMWRefreshJob::run (SMW)' );
-			return true;
-		}
-
-		$run = array_key_exists( 'run', $this->params ) ? $this->params['run']:1;
-		$spos = $this->params['spos'];
-		$namespaces = ( ( $this->params['rc'] > 1 ) && ( $run == 1 ) ) ? array( SMW_NS_PROPERTY, SMW_NS_TYPE ):false;
-		$progress = smwfGetStore()->refreshData( $spos, 20, $namespaces );
-
-		if ( $spos > 0 ) {
-			$nextjob = new SMWRefreshJob( $this->title, array( 'spos' => $spos, 'prog' => $progress, 'rc' => $this->params['rc'], 'run' => $run ) );
-			$nextjob->insert();
-		} elseif ( $this->params['rc'] > $run ) { // do another run from the beginning
-			$nextjob = new SMWRefreshJob( $this->title, array( 'spos' => 1, 'prog' => 0, 'rc' => $this->params['rc'], 'run' => $run + 1 ) );
-			$nextjob->insert();
-		}
-
-		wfProfileOut( 'SMWRefreshJob::run (SMW)' );
-
-		return true;
+	public function run() {
+		return $this->hasParameter( 'spos' ) ? $this->refreshData( $this->getParameter( 'spos' ) ) : true;
 	}
 
 	/**
@@ -75,9 +57,89 @@ class SMWRefreshJob extends Job {
 	 * @return double
 	 */
 	public function getProgress() {
-		$prog = array_key_exists( 'prog', $this->params ) ? $this->params['prog'] : 0;
-		$run = array_key_exists( 'run', $this->params ) ? $this->params['run'] : 1;
-		return ( $run - 1 + $prog ) / $this->params['rc'];
+
+		$prog = $this->hasParameter( 'prog' ) ? $this->getParameter( 'prog' ) : 0;
+		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ): 1;
+		$rc   = $this->hasParameter( 'rc' ) ? $this->getParameter( 'rc' ) : 1;
+
+		return ( $run - 1 + $prog ) / $rc;
 	}
-	
+
+	/**
+	 * Disables ability to insert jobs into the JobQueue and is normally only
+	 * executed when running unit tests
+	 *
+	 * @since 1.9
+	 *
+	 * @return RefreshJob
+	 */
+	public function disable() {
+		$this->enabled = false;
+		return $this;
+	}
+
+	/**
+	 * @see Job::insert
+	 * @codeCoverageIgnore
+	 */
+	public function insert() {
+		if ( $this->enabled ) {
+			parent::insert();
+		}
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param $spos start index
+	 *
+	 * @return boolean success
+	 */
+	protected function refreshData( $spos ) {
+		Profiler::In();
+
+		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
+		$prog = $this->withContext()->getStore()->refreshData( $spos, 20, $this->getNamespace( $run ) );
+
+		if ( $spos > 0 ) {
+
+			$this->createNextJob( array(
+				'spos' => $spos,
+				'prog' => $prog,
+				'rc'   => $this->getParameter( 'rc' ),
+				'run'  => $run
+			) );
+
+		} elseif ( $this->getParameter( 'rc' ) > $run ) { // do another run from the beginning
+
+			$this->createNextJob( array(
+				'spos' => 1,
+				'prog' => 0,
+				'rc'   => $this->getParameter( 'rc' ),
+				'run'  => $run + 1
+			) );
+
+		}
+
+		Profiler::Out();
+		return true;
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected function createNextJob( array $parameters ) {
+		$nextjob = new self( $this->getTitle(), $parameters );
+		$nextjob->insert();
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return array|false
+	 */
+	protected function getNamespace( $run ) {
+		return ( ( $this->getParameter( 'rc' ) > 1 ) && ( $run == 1 ) ) ? array( SMW_NS_PROPERTY, SMW_NS_TYPE ) : false;
+	}
+
 }

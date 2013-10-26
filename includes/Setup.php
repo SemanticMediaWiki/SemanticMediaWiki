@@ -167,7 +167,7 @@ final class Setup implements ContextAware {
 	protected function registerJobClasses() {
 
 		$this->globals['wgJobClasses']['SMW\UpdateJob']           = 'SMW\UpdateJob';
-		$this->globals['wgJobClasses']['SMWRefreshJob']           = 'SMWRefreshJob';
+		$this->globals['wgJobClasses']['SMW\RefreshJob']          = 'SMW\RefreshJob';
 		$this->globals['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\UpdateDispatcherJob';
 
 	}

@@ -356,8 +356,8 @@ return array(
 	// Jobs
 	'SMW\UpdateDispatcherJob' => 'includes/jobs/UpdateDispatcherJob.php',
 	'SMW\JobBase'             => 'includes/jobs/JobBase.php',
-	'SMW\UpdateJob'           => 'includes/jobs/UpdateJob.php', // 1.9
-	'SMWRefreshJob'           => 'includes/jobs/RefreshJob.php',
+	'SMW\UpdateJob'           => 'includes/jobs/UpdateJob.php',
+	'SMW\RefreshJob'          => 'includes/jobs/RefreshJob.php',
 
 	// API modules
 	'SMW\Api\Base'             => 'includes/api/Base.php',

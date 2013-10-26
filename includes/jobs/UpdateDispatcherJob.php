@@ -11,6 +11,8 @@ use Job;
  * Can be run either in deferred or immediate mode to restore the data parity
  * between a property and its attached subjects
  *
+ * @ingroup SMW
+ *
  * @licence GNU GPL v2+
  * @since 1.9
  *

@@ -40,9 +40,16 @@ class SMWAdmin extends SpecialPage {
 
 		$this->setHeaders();
 
+		// FIXME Searching the job table needs to be fixed
+		//
+		// SMW shouldn't expose itself to an internal MW DB table at
+		// this level. If an official Api doesn't provide needed
+		// functionality, the DB call should be encapsulate within its
+		// own class
+
 		/**** Get status of refresh job, if any ****/
 		$dbr = wfGetDB( DB_SLAVE );
-		$row = $dbr->selectRow( 'job', '*', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );
+		$row = $dbr->selectRow( 'job', '*', array( 'job_cmd' => 'SMW\RefreshJob' ), __METHOD__ );
 		if ( $row !== false ) { // similar to Job::pop_type, but without deleting the job
 			$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title );
 			$blob = (string)$row->job_params !== '' ? unserialize( $row->job_params ) : false;
@@ -77,16 +84,19 @@ class SMWAdmin extends SpecialPage {
 			$title = SpecialPage::getTitleFor( 'SMWAdmin' );
 			if ( $sure == 'yes' ) {
 				if ( is_null( $refreshjob ) ) { // careful, there might be race conditions here
-					$newjob = new SMWRefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
+					$newjob = new \SMW\RefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
 					$newjob->insert();
 					$wgOut->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
 				} else {
 					$wgOut->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatenotstarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
 				}
 			} elseif ( $sure == 'stop' ) {
+
+				// FIXME See above comments !!
+
 				$dbw = wfGetDB( DB_MASTER );
 				// delete (all) existing iteration jobs
-				$dbw->delete( 'job', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );
+				$dbw->delete( 'job', array( 'job_cmd' => 'SMW\RefreshJob' ), __METHOD__ );
 				$wgOut->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestopped', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
 			} else {
 				$wgOut->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatenotstopped', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );

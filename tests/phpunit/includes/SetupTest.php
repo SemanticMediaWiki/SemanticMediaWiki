@@ -414,7 +414,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 		$jobs = array(
 			'SMW\UpdateJob',
-			'SMWRefreshJob',
+			'SMW\RefreshJob',
 			'SMW\UpdateDispatcherJob',
 		);
 

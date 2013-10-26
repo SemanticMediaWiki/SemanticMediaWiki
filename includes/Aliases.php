@@ -30,3 +30,5 @@ class SMWDIProperty extends SMW\DIProperty {}
 class SMWDISerializer extends SMW\Serializers\QueryResultSerializer {}
 
 class SMWUpdateJob extends SMW\UpdateJob {}
+
+class SMWRefreshJob extends SMW\RefreshJob {}

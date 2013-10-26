@@ -61,4 +61,30 @@ abstract class JobBase extends Job implements ContextAware, ContextInjector {
 		return $this->title;
 	}
 
+	/**
+	 * Whether the parameters contain an element for a given key
+	 *
+	 * @since  1.9
+	 *
+	 * @param mixed $key
+	 *
+	 * @return boolean
+	 */
+	public function hasParameter( $key ) {
+		return isset( $this->params[ $key ] ) || array_key_exists( $key, $this->params );
+	}
+
+	/**
+	 * Returns a parameter value for a given key
+	 *
+	 * @since  1.9
+	 *
+	 * @param mixed $key
+	 *
+	 * @return boolean
+	 */
+	public function getParameter( $key ) {
+		return $this->params[ $key ];
+	}
+
 }
