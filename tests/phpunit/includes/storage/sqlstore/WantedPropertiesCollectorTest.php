@@ -62,9 +62,12 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 *
 	 * @return WantedPropertiesCollector
 	 */
-	private function newInstance( $property = 'Foo', $count = 1, $cacheEnabled = false ) {
+	private function newInstance( $store = null, $property = 'Foo', $count = 1, $cacheEnabled = false ) {
 
-		$store = StoreFactory::getStore( 'SMWSQLStore3' );
+		if ( $store === null ) {
+			$store = $this->newMockBuilder()->newObject( 'Store' );
+		}
+
 		$connection = $this->getMockDBConnection( $property, $count );
 
 		$settings = $this->newSettings( array(
@@ -87,13 +90,15 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	/**
 	 * @since 1.9
 	 */
-	public function testGetResults() {
+	public function testGetResultsOnSQLStore() {
+
+		$store = StoreFactory::getStore( 'SMWSQLStore3' );
 
 		$count = rand();
-		$property = $this->getRandomString();
+		$property = $this->newRandomString();
 		$expected = array( array( new DIProperty( $property ), $count ) );
 
-		$instance = $this->newInstance( $property, $count );
+		$instance = $this->newInstance( $store, $property, $count );
 		$instance->setRequestOptions(
 			new SMWRequestOptions( $property, SMWRequestOptions::STRCOND_PRE )
 		);
@@ -104,14 +109,46 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
+	 * @since 1.9
+	 */
+	public function testIsFixedPropertyTableOnSQLMockStore() {
+
+		$tableDefinition = $this->newMockBuilder()->newObject( 'SQLStoreTableDefinition', array(
+			'isFixedPropertyTable' => true
+		) );
+
+		$store = $this->newMockBuilder()->newObject( 'Store', array(
+			'getPropertyTables' => array( 'Foo' => $tableDefinition ),
+			'findTypeTableId'   => 'Foo'
+		) );
+
+		$result = $this->newInstance( $store )->runCollector();
+
+		$this->assertInternalType(
+			'array',
+			$result,
+			'Asserts that runCollector() returns an array'
+		);
+
+		$this->assertEmpty(
+			$result,
+			'Asserts that runCollector() returns an empty array'
+		);
+
+	}
+
+	/**
 	 * @dataProvider getCacheNonCacheDataProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testCacheNoCache( array $test, array $expected, array $info ) {
+	public function testCacheNoCacheOnSQLStore( array $test, array $expected, array $info ) {
+
+		$store = StoreFactory::getStore( 'SMWSQLStore3' );
 
 		// Sample A
 		$instance = $this->newInstance(
+			$store,
 			$test['A']['property'],
 			$test['A']['count'],
 			$test['cacheEnabled']
@@ -121,6 +158,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 
 		// Sample B
 		$instance = $this->newInstance(
+			$store,
 			$test['B']['property'],
 			$test['B']['count'],
 			$test['cacheEnabled']
@@ -134,8 +172,8 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 * @return array
 	 */
 	public function getCacheNonCacheDataProvider() {
-		$propertyA = $this->getRandomString();
-		$propertyB = $this->getRandomString();
+		$propertyA = $this->newRandomString();
+		$propertyB = $this->newRandomString();
 		$countA = rand();
 		$countB = rand();
 

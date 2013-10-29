@@ -47,34 +47,13 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData->expects( $this->any() )
-			->method( 'getSubject' )
-			->will( $this->returnValue( $this->builder->setValue( 'getSubject' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
-		// array of SMWDataItem
-		$semanticData->expects( $this->any() )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( $this->builder->setValue( 'getPropertyValues' ) ) );
+			$semanticData->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
 
-		$semanticData->expects( $this->any() )
-			->method( 'hasVisibleSpecialProperties' )
-			->will( $this->returnValue( $this->builder->setValue( 'hasVisibleSpecialProperties' ) ) );
-
-		$semanticData->expects( $this->any() )
-			->method( 'hasVisibleProperties' )
-			->will( $this->returnValue( $this->builder->setValue( 'hasVisibleProperties' ) ) );
-
-		$semanticData->expects( $this->any() )
-			->method( 'getProperties' )
-			->will( $this->returnValue( $this->builder->setValue( 'getProperties' ) ) );
-
-		$semanticData->expects( $this->any() )
-			->method( 'isEmpty' )
-			->will( $this->returnValue( $this->builder->setValue( 'isEmpty' ) ) );
-
-		$semanticData->expects( $this->any() )
-			->method( 'addPropertyObjectValue' )
-			->will( $this->builder->setCallback( 'addPropertyObjectValue' ) );
+		}
 
 		return $semanticData;
 	}
@@ -549,6 +528,36 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 
 		// SMW\Store is an abstract class, use setMethods to implement
 		// required abstract methods
+		$requiredAbstractMethods = array(
+			'setup',
+			'drop',
+			'getStatisticsTable',
+			'getObjectIds',
+			'refreshData',
+			'getStatistics',
+			'getQueryResult',
+			'getPropertiesSpecial',
+			'getUnusedPropertiesSpecial',
+			'getWantedPropertiesSpecial',
+			'getPropertyTables',
+			'deleteSubject',
+			'doDataUpdate',
+			'changeTitle',
+			'getProperties',
+			'getInProperties',
+			'getAllPropertySubjects',
+			'getSQLConditions',
+			'getSemanticData',
+			'getPropertyValues',
+			'getPropertySubjects',
+			'refreshConceptCache',
+			'deleteConceptCache',
+			'getConceptCacheStatus',
+			'clearData',
+			'updateData'
+		);
+
+		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
 		$idTable = $this->getMock( 'stdClass', array( 'getIdTable') );
 
@@ -558,114 +567,8 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array(
-				'setup',
-				'drop',
-				'getStatisticsTable',
-				'getObjectIds',
-				'refreshData',
-				'getStatistics',
-				'getQueryResult',
-				'getPropertiesSpecial',
-				'getUnusedPropertiesSpecial',
-				'getWantedPropertiesSpecial',
-				'getPropertyTables',
-				'deleteSubject',
-				'doDataUpdate',
-				'changeTitle',
-				'getProperties',
-				'getInProperties',
-				'getAllPropertySubjects',
-				'getSQLConditions',
-				'getSemanticData',
-				'getPropertyValues',
-				'getPropertySubjects',
-				'refreshConceptCache',
-				'deleteConceptCache',
-				'getConceptCacheStatus',
-				'clearData',
-				'updateData'
-			) )
+			->setMethods( $methods )
 			->getMock();
-
-		/**
-		 * @param $subject mixed SMWDIWikiPage or null
-		 * @param $property SMWDIProperty
-		 * @param $requestoptions SMWRequestOptions
-		 *
-		 * @return array of SMWDataItem
-		 */
-		$store->expects( $this->any() )
-			->method( 'getPropertyValues' )
-			->will( $this->builder->setCallback( 'getPropertyValues' ) );
-
-		$store->expects( $this->any() )
-			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $this->builder->setValue( 'getPropertiesSpecial' ) ) );
-
-		$store->expects( $this->any() )
-			->method( 'deleteSubject' )
-			->will( $this->returnValue( $this->builder->setValue( 'deleteSubject' ) ) );
-
-		$store->expects( $this->any() )
-			->method( 'getSemanticData' )
-			->will( $this->builder->setCallback( 'getSemanticData' ) );
-
-		$store->expects( $this->any() )
-			->method( 'refreshData' )
-			->will( $this->builder->setCallback( 'refreshData' ) );
-
-		$store->expects( $this->any() )
-			->method( 'getUnusedPropertiesSpecial' )
-			->will( $this->returnValue( $this->builder->setValue( 'getUnusedPropertiesSpecial' ) ) );
-
-		$store->expects( $this->any() )
-			->method( 'getWantedPropertiesSpecial' )
-			->will( $this->returnValue( $this->builder->setValue( 'getWantedPropertiesSpecial' ) ) );
-
-		$store->expects( $this->any() )
-			->method( 'getSQLConditions' )
-			->will( $this->returnValue( $this->builder->setValue( 'getSQLConditions' ) ) );
-
-		$store->expects( $this->any() )
-			->method( 'getStatistics' )
-			->will( $this->returnValue( $this->builder->setValue( 'getStatistics' ) ) );
-
-		$store->expects( $this->any() )
-			->method( 'getPropertyTables' )
-			->will( $this->returnValue( $this->builder->setValue( 'getPropertyTables' ) ) );
-
-		$store->expects( $this->any() )
-			->method( 'getQueryResult' )
-			->will( $this->builder->setCallback( 'getQueryResult' ) );
-
-		$store->expects( $this->any() )
-			->method( 'updateData' )
-			->will( $this->builder->setCallback( 'updateData' ) );
-
-		$store->expects( $this->any() )
-			->method( 'clearData' )
-			->will( $this->builder->setCallback( 'clearData' ) );
-
-		$store->expects( $this->any() )
-			->method( 'getAllPropertySubjects' )
-			->will( $this->builder->setCallback( 'getAllPropertySubjects' ) );
-
-		$store->expects( $this->any() )
-			->method( 'getPropertySubjects' )
-			->will( $this->builder->setCallback( 'getPropertySubjects' ) );
-
-		$store->expects( $this->any() )
-			->method( 'refreshConceptCache' )
-			->will( $this->builder->setCallback( 'refreshConceptCache' ) );
-
-		$store->expects( $this->any() )
-			->method( 'deleteConceptCache' )
-			->will( $this->builder->setCallback( 'deleteConceptCache' ) );
-
-		$store->expects( $this->any() )
-			->method( 'getConceptCacheStatus' )
-			->will( $this->builder->setCallback( 'getConceptCacheStatus' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
@@ -675,7 +578,39 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->method( 'getStatisticsTable' )
 			->will( $this->returnValue( 'smw_statistics_table_test' ) );
 
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
+
+			$store->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
 		return $store;
+	}
+
+	/**
+	 * Returns a TableDefinition object
+	 *
+	 * @since 1.9
+	 *
+	 * @return TableDefinition
+	 */
+	public function SQLStoreTableDefinition() {
+
+		$tableDefinition = $this->getMockBuilder( 'SMW\SQLStore\TableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
+
+			$tableDefinition->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $tableDefinition;
 	}
 
 	/**

@@ -5,6 +5,7 @@ namespace SMW\Test;
 use SMW\SimpleDependencyBuilder;
 use SMW\DependencyContainer;
 use SMW\DataValueFactory;
+use SMW\StoreFactory;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -255,9 +256,13 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @since 1.9
 	 */
-	protected function runOnlyOnSQLStore() {
+	protected function runOnlyOnSQLStore( $store = null ) {
 
-		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
+		if ( $store === null ) {
+			$store = StoreFactory::getStore();
+		}
+
+		if ( !( $store instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 

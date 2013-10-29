@@ -236,9 +236,9 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 
 		if ( method_exists( $this->parserOutput, 'getExtensionData' ) ) {
 			$this->semanticData = $this->parserOutput->getExtensionData( 'smwdata' );
-		} elseif ( isset( $this->parserOutput->mSMWData ) ) {
+		} else {
 			// @codeCoverageIgnoreStart
-			$this->semanticData = $this->parserOutput->mSMWData;
+			$this->semanticData = isset( $this->parserOutput->mSMWData ) ? $this->parserOutput->mSMWData : null;
 			// @codeCoverageIgnoreEnd
 		}
 
