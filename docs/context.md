@@ -67,6 +67,6 @@ $bar->invokeContext( new BaseContext() );
 $baz = $bar->getBaz();
 ```
 
-For information about "how to use" the DependencyBuilder, please see /dic/README.md.
+For information on "how to use" the DependencyBuilder, see [here](dic.md).
 
 [ak]: http://accu.org/index.php/journals/246  "The Encapsulate Context Pattern"
