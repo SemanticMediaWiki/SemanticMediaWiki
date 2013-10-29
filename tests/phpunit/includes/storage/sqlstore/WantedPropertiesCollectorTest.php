@@ -12,29 +12,21 @@ use SMWRequestOptions;
 use FakeResultWrapper;
 
 /**
- * Test for the WantedPropertiesCollector class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SQLStore\WantedPropertiesCollector
  *
  * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -42,12 +34,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * Helper method that returns a Database object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $smwTitle
-	 * @param $count
 	 *
 	 * @return Database
 	 */
@@ -71,13 +58,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * Helper method that returns a WantedPropertiesCollector object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $property
-	 * @param $count
-	 * @param $cacheEnabled
 	 *
 	 * @return WantedPropertiesCollector
 	 */
@@ -97,29 +78,13 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test WantedPropertiesCollector::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->newInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
-	 * @test WantedPropertiesCollector::newFromStore
-	 *
-	 * @since 1.9
-	 */
-	public function testNewFromStore() {
-		$instance = WantedPropertiesCollector::newFromStore( smwfGetStore() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test WantedPropertiesCollector::getResults
-	 * @test WantedPropertiesCollector::getCount
-	 *
 	 * @since 1.9
 	 */
 	public function testGetResults() {
@@ -139,15 +104,9 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test WantedPropertiesCollector::getResults
-	 * @test WantedPropertiesCollector::isCached
 	 * @dataProvider getCacheNonCacheDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $test
-	 * @param $expected
-	 * @param $info
 	 */
 	public function testCacheNoCache( array $test, array $expected, array $info ) {
 
@@ -172,8 +131,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * Cache and non-cache data tests sample
-	 *
 	 * @return array
 	 */
 	public function getCacheNonCacheDataProvider() {

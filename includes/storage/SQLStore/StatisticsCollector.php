@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\CacheableObjectCollector;
+use SMW\Store\CacheableResultCollector;
 
 use SMW\SimpleDictionary;
 use SMW\DIProperty;
@@ -14,21 +14,15 @@ use DatabaseBase;
 /**
  * Collects statistical information provided by the store
  *
- * @file
+ * @ingroup SQLStore
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
+ * @author Nischay Nahata
  */
-
-/**
- * This class provides access to store related statistical information
- *
- * @ingroup CacheableObjectCollector
- * @ingroup SQLStore
- */
-class StatisticsCollector extends CacheableObjectCollector {
+class StatisticsCollector extends CacheableResultCollector {
 
 	/** @var Store */
 	protected $store;
@@ -40,10 +34,6 @@ class StatisticsCollector extends CacheableObjectCollector {
 	protected $dbConnection;
 
 	/**
-	 * // FIXME The store itself should know which database connection is being
-	 * used therefore this info should come from the store object rather than
-	 * doing an extra injection here
-	 *
 	 * @since 1.9
 	 *
 	 * @param Store $store
@@ -54,47 +44,6 @@ class StatisticsCollector extends CacheableObjectCollector {
 		$this->store = $store;
 		$this->dbConnection = $dbw;
 		$this->settings = $settings;
-	}
-
-	/**
-	 * Factory method for an immediate instantiation of a StatisticsCollector object
-	 *
-	 * @par Example:
-	 * @code
-	 * $statistics = \SMW\SQLStore\StatisticsCollector::newFromStore( $store )
-	 * $statistics->getResults();
-	 * @endcode
-	 *
-	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param $dbw Boolean or DatabaseBase:
-	 * - Boolean: whether to use a dedicated DB or Slave
-	 * - DatabaseBase: database connection to use
-	 *
-	 * @return StatisticsCollector
-	 */
-	public static function newFromStore( Store $store, $dbw = false ) {
-
-		$dbw = $dbw instanceof DatabaseBase ? $dbw : wfGetDB( DB_SLAVE );
-		$settings = Settings::newFromGlobals();
-		return new self( $store, $dbw, $settings );
-	}
-
-	/**
-	 * @see CacheableObjectCollector::cacheSetup
-	 *
-	 * @since 1.9
-	 *
-	 * @return ObjectDictionary
-	 */
-	protected function cacheSetup() {
-		return new SimpleDictionary( array(
-			'id'      => array( 'smwgStatisticsCache', $this->requestOptions ),
-			'type'    => $this->settings->get( 'smwgCacheType' ),
-			'enabled' => $this->settings->get( 'smwgStatisticsCache' ),
-			'expiry'  => $this->settings->get( 'smwgStatisticsCacheExpiry' )
-		) );
 	}
 
 	/**
@@ -115,7 +64,7 @@ class StatisticsCollector extends CacheableObjectCollector {
 	 *
 	 * @return DIProperty[]
 	 */
-	protected function doCollect() {
+	public function runCollector() {
 
 		return array(
 			'OWNPAGE' => $this->getPropertyPageCount(),
@@ -185,7 +134,7 @@ class StatisticsCollector extends CacheableObjectCollector {
 
 		$count = array();
 		$res = $this->dbConnection->select(
-			$this->getTypeTable( '_ASKFO' )->getName(),
+			$this->findPropertyTableByType( '_ASKFO' )->getName(),
 			'o_hash, COUNT(s_id) AS count',
 			array(),
 			__METHOD__,
@@ -287,7 +236,7 @@ class StatisticsCollector extends CacheableObjectCollector {
 
 		$count = 0;
 		$res = $this->dbConnection->select(
-			$this->getTypeTable( $type )->getName(),
+			$this->findPropertyTableByType( $type )->getName(),
 			'COUNT(s_id) AS count',
 			array(),
 			__METHOD__
@@ -299,18 +248,19 @@ class StatisticsCollector extends CacheableObjectCollector {
 	}
 
 	/**
-	 * Returns table declaration for a given property type
-	 *
-	 * @note This can be scrapped now that we have direct access
-	 * via the CacheableObjectCollector class
+	 * @see CacheableObjectCollector::cacheSetup
 	 *
 	 * @since 1.9
 	 *
-	 * @param string $type
-	 *
-	 * @return array
+	 * @return ObjectDictionary
 	 */
-	protected function getTypeTable( $type ) {
-		return $this->getPropertyTables( $type, false );
+	protected function cacheSetup() {
+		return new SimpleDictionary( array(
+			'id'      => array( 'smwgStatisticsCache', $this->requestOptions ),
+			'type'    => $this->settings->get( 'smwgCacheType' ),
+			'enabled' => $this->settings->get( 'smwgStatisticsCache' ),
+			'expiry'  => $this->settings->get( 'smwgStatisticsCacheExpiry' )
+		) );
 	}
+
 }

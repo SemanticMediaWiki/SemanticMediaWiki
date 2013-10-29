@@ -7,29 +7,21 @@ use SMW\SQLStore\PropertyTableDefinitionBuilder;
 use SMWDataItem;
 
 /**
- * Tests for the PropertyTableBuilder class
- *
- * @since 1.9
- *
- * @file
- *
- * @licence GNU GPL v2+
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SQLStore\PropertyTableDefinitionBuilder
  *
  * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -37,49 +29,30 @@ class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTest
 	}
 
 	/**
-	 * Helper method that returns a PropertyTableDefinitionBuilder object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $dataItemDefinitions
-	 * @param $specialProperties
-	 * @param $fixedProperties
 	 *
 	 * @return PropertyTableDefinitionBuilder
 	 */
-	private function getInstance(
-		$dataItemDefinitions = array(),
-		$specialProperties = array(),
-		$fixedProperties = array()
-	) {
-		return new PropertyTableDefinitionBuilder(
-			$dataItemDefinitions,
-			$specialProperties,
-			$fixedProperties
-		);
+	private function newInstance( $dataItems = array(), $specials = array(), $fixed = array() ) {
+		return new PropertyTableDefinitionBuilder( $dataItems, $specials, $fixed );
 	}
 
 	/**
-	 * @test PropertyTableDefinitionBuilder::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
-	 * @test PropertyTableDefinitionBuilder::doBuild
-	 *
 	 * @since 1.9
 	 */
 	public function testDITypes() {
 
 		$test = array( SMWDataItem::TYPE_NUMBER => 'smw_di_number' );
 
-		$instance = $this->getInstance( $test );
-		$instance->doBuild();
+		$instance = $this->newInstance( $test );
+		$instance->runBuilder();
 
 		$definition = $instance->getDefinition( SMWDataItem::TYPE_NUMBER, 'smw_di_number' );
 		$expected = array( 'smw_di_number' => $definition );
@@ -89,8 +62,6 @@ class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTest
 	}
 
 	/**
-	 * @test PropertyTableDefinitionBuilder::doBuild
-	 *
 	 * @since 1.9
 	 */
 	public function testFixedProperties() {
@@ -98,8 +69,8 @@ class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTest
 		$propertyKey = $this->getRandomString();
 		$test = array( $propertyKey => SMWDataItem::TYPE_NUMBER );
 
-		$instance = $this->getInstance( array(), array(), $test );
-		$instance->doBuild();
+		$instance = $this->newInstance( array(), array(), $test );
+		$instance->runBuilder();
 
 		$tableName = $instance->getTablePrefix() . '_' . md5( $propertyKey );
 		$definition = $instance->getDefinition( SMWDataItem::TYPE_NUMBER, $tableName, $propertyKey );
@@ -114,8 +85,6 @@ class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTest
 	}
 
 	/**
-	 * @test PropertyTableDefinitionBuilder::doBuild
-	 *
 	 * @since 1.9
 	 */
 	public function testSpecialProperties() {
@@ -123,8 +92,8 @@ class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTest
 		$propertyKey = '_MDAT';
 		$test = array( $propertyKey );
 
-		$instance = $this->getInstance( array(), $test, array() );
-		$instance->doBuild();
+		$instance = $this->newInstance( array(), $test, array() );
+		$instance->runBuilder();
 
 		$tableName = $instance->getTablePrefix() . strtolower( $propertyKey );
 		$definition = $instance->getDefinition( SMWDataItem::TYPE_TIME, $tableName, $propertyKey );
@@ -135,8 +104,6 @@ class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTest
 	}
 
 	/**
-	 * @test PropertyTableDefinitionBuilder::doBuild (redirect)
-	 *
 	 * @since 1.9
 	 */
 	public function testRedirects() {
@@ -144,8 +111,8 @@ class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTest
 		$propertyKey = '_REDI';
 		$test = array( $propertyKey );
 
-		$instance = $this->getInstance( array(), $test, array() );
-		$instance->doBuild();
+		$instance = $this->newInstance( array(), $test, array() );
+		$instance->runBuilder();
 
 		$tableName = $instance->getTablePrefix() . strtolower( $propertyKey );
 		$definition = $instance->getDefinition( SMWDataItem::TYPE_WIKIPAGE, $tableName, $propertyKey );

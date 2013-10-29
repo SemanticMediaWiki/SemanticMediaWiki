@@ -1,22 +1,16 @@
 <?php
 
 /**
- * Class registration file for Semantic MediaWiki
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
+ * @codeCoverageIgnore
  * Class registration file for Semantic MediaWiki
  *
  * @ingroup SMW
- * @codeCoverageIgnore
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 return array(
 
@@ -34,7 +28,6 @@ return array(
 	'SMW\SemanticData'          => 'includes/SMW_SemanticData.php',
 	'SMWPageLister'             => 'includes/SMW_PageLister.php',
 
-	'SMWDataValueFactory'       => 'includes/DataValueFactory.php',
 	'SMW\DataValueFactory'      => 'includes/DataValueFactory.php',
 
 	'SMWParseData'              => 'includes/SMW_ParseData.php',
@@ -48,33 +41,35 @@ return array(
 	'SMW\Settings'                  => 'includes/Settings.php',
 	'SMW\NamespaceExaminer'         => 'includes/NamespaceExaminer.php',
 	'SMW\Profiler'                  => 'includes/Profiler.php',
-	'SMW\IdGenerator'               => 'includes/IdGenerator.php',
 	'SMW\HashIdGenerator'           => 'includes/HashIdGenerator.php',
-	'SMW\MessageReporter'           => 'includes/MessageReporter.php',
-	'SMW\ObservableMessageReporter' => 'includes/MessageReporter.php',
 	'SMW\ContentParser'             => 'includes/ContentParser.php',
 	'SMW\UpdateObserver'            => 'includes/UpdateObserver.php',
-	'SMW\TitleAccess'               => 'includes/TitleAccess.php',
 
-	'SMW\Accessible'                => 'includes/ObjectDictionary.php',
-	'SMW\Changeable'                => 'includes/ObjectDictionary.php',
-	'SMW\Combinable'                => 'includes/ObjectDictionary.php',
-	'SMW\ObjectDictionary'          => 'includes/ObjectDictionary.php',
 	'SMW\ObjectStorage'             => 'includes/ObjectStorage.php',
 	'SMW\SimpleDictionary'          => 'includes/SimpleDictionary.php',
-
-	// Observer subject pattern
-	'SMW\Observable'                => 'includes/ObservableSubject.php',
-	'SMW\Publisher'                 => 'includes/ObservableSubject.php',
-	'SMW\ObservableSubject'         => 'includes/ObservableSubject.php',
 	'SMW\StoreUpdater'              => 'includes/StoreUpdater.php',
+	'SMW\LazyDBConnectionProvider'  => 'includes/LazyDBConnectionProvider.php',
 
-	'SMW\Observer'                  => 'includes/Observer.php',
-	'SMW\Subscriber'                => 'includes/Observer.php',
+	'SMW\TitleAccess'               => 'includes/interfaces/TitleAccess.php',
+	'SMW\ResultCollector'           => 'includes/interfaces/ResultCollector.php',
+	'SMW\IdGenerator'               => 'includes/interfaces/IdGenerator.php',
+	'SMW\Accessible'                => 'includes/interfaces/ObjectDictionary.php',
+	'SMW\Changeable'                => 'includes/interfaces/ObjectDictionary.php',
+	'SMW\Combinable'                => 'includes/interfaces/ObjectDictionary.php',
+	'SMW\ObjectDictionary'          => 'includes/interfaces/ObjectDictionary.php',
+	'SMW\DBConnectionProvider'      => 'includes/interfaces/DBConnectionProvider.php',
+	'SMW\MessageReporter'           => 'includes/interfaces/MessageReporter.php',
 
-	'SMW\ObservableDispatcher'        => 'includes/ObservableSubjectDispatcher.php',
-	'SMW\DispatchableSubject'         => 'includes/ObservableSubjectDispatcher.php',
+	// Observer pattern
+	'SMW\Observable'                  => 'includes/interfaces/Observable.php',
+	'SMW\ObservableDispatcher'        => 'includes/interfaces/ObservableDispatcher.php',
+	'SMW\DispatchableSubject'         => 'includes/interfaces/DispatchableSubject.php',
+	'SMW\Observer'                    => 'includes/interfaces/Observer.php',
+
+	'SMW\BaseObserver'                => 'includes/BaseObserver.php',
 	'SMW\ObservableSubjectDispatcher' => 'includes/ObservableSubjectDispatcher.php',
+	'SMW\ObservableSubject'           => 'includes/ObservableSubject.php',
+	'SMW\ObservableMessageReporter'   => 'includes/ObservableMessageReporter.php',
 
 	// Dependency Builder
 	'SMW\DependencyFactory'               => 'includes/dic/DependencyBuilder.php',
@@ -92,16 +87,13 @@ return array(
 	'SMW\DependencyRequestor'             => 'includes/dic/DependencyRequestor.php',
 	'SMW\DependencyInjector'              => 'includes/dic/DependencyInjector.php',
 
-	'SMW\Cacheable'                 => 'includes/Cacheable.php',
-	'SMW\Configurable'              => 'includes/Configurable.php',
-
 	// Serializer
 	'SMW\SerializerFactory'                       => 'includes/serializer/SerializerFactory.php',
 	'SMW\Serializers\Serializer'                  => 'includes/serializer/Serializer.php',
 	'SMW\Deserializers\Deserializer'              => 'includes/serializer/Deserializer.php',
 	'SMW\Serializers\SemanticDataSerializer'      => 'includes/serializer/Serializers/SemanticDataSerializer.php',
 	'SMW\Deserializers\SemanticDataDeserializer'  => 'includes/serializer/Deserializers/SemanticDataDeserializer.php',
-	'SMW\Serializers\QueryResultSerializer'        => 'includes/serializer/Serializers/QueryResultSerializer.php',
+	'SMW\Serializers\QueryResultSerializer'       => 'includes/serializer/Serializers/QueryResultSerializer.php',
 
 	// Context
 	'SMW\EmptyContext'              => 'includes/context/EmptyContext.php',
@@ -145,8 +137,7 @@ return array(
 	'SMW\InvalidNamespaceException'    => 'includes/exceptions/InvalidNamespaceException.php',
 	'SMW\InvalidPropertyException'     => 'includes/exceptions/InvalidPropertyException.php',
 	'SMW\InvalidResultException'       => 'includes/exceptions/InvalidResultException.php',
-	'SMW\DataItemException'            => 'includes/exceptions/DataItemException.php', // 1.9
-	'SMWDataItemException'             => 'includes/exceptions/DataItemException.php',
+	'SMW\DataItemException'            => 'includes/exceptions/DataItemException.php',
 	'SMW\UnknownIdException'           => 'includes/exceptions/UnknownIdException.php',
 	'SMW\InvalidSettingsArgumentException'   => 'includes/exceptions/InvalidSettingsArgumentException.php',
 	'SMW\InvalidPredefinedPropertyException' => 'includes/exceptions/InvalidPredefinedPropertyException.php',
@@ -163,7 +154,6 @@ return array(
 	'SMW\ConceptPage'           => 'includes/articlepages/ConceptPage.php',
 
 	// Printers
-	'SMWExportPrinter'          => 'includes/queryprinters/FileExportPrinter.php',
 	'SMW\FileExportPrinter'     => 'includes/queryprinters/FileExportPrinter.php',
 	'SMW\ExportPrinter'         => 'includes/queryprinters/ExportPrinter.php',
 	'SMWIResultPrinter'         => 'includes/queryprinters/SMW_IResultPrinter.php',
@@ -175,8 +165,7 @@ return array(
 	'SMW\CsvResultPrinter'      => 'includes/queryprinters/CsvResultPrinter.php', // 1.9
 	'SMWDSVResultPrinter'       => 'includes/queryprinters/SMW_QP_DSV.php',
 	'SMWRDFResultPrinter'       => 'includes/queryprinters/SMW_QP_RDF.php',
-	'SMWResultPrinter'          => 'includes/queryprinters/ResultPrinter.php',
-	'SMW\ResultPrinter'         => 'includes/queryprinters/ResultPrinter.php', // 1.9
+	'SMW\ResultPrinter'         => 'includes/queryprinters/ResultPrinter.php',
 	'SMW\ApiResultPrinter'      => 'includes/queryprinters/ApiResultPrinter.php',
 	'SMWListResultPrinter'      => 'includes/queryprinters/ListResultPrinter.php',
 	'SMW\ListResultPrinter'     => 'includes/queryprinters/ListResultPrinter.php',
@@ -278,8 +267,7 @@ return array(
 	'SMW\Store\PropertyStatisticsRebuilder' => 'includes/storage/PropertyStatisticsRebuilder.php',
 	'SMW\Store\PropertyStatisticsStore'     => 'includes/storage/PropertyStatisticsStore.php',
 	'SMW\StoreFactory'                      => 'includes/storage/StoreFactory.php',
-	'SMW\Store\ObjectCollector'             => 'includes/storage/CacheableObjectCollector.php',
-	'SMW\Store\CacheableObjectCollector'    => 'includes/storage/CacheableObjectCollector.php',
+	'SMW\Store\CacheableResultCollector'    => 'includes/storage/CacheableResultCollector.php',
 	'SMWQueryResult'                        => 'includes/storage/SMW_QueryResult.php',
 	'SMWResultArray'                        => 'includes/storage/SMW_ResultArray.php',
 	'SMW\Store'                             => 'includes/storage/SMW_Store.php',
@@ -298,7 +286,6 @@ return array(
 	'SMW\SQLStore\PropertiesCollector'               => 'includes/storage/SQLStore/PropertiesCollector.php',
 	'SMW\SQLStore\PropertyTableDefinitionBuilder'    => 'includes/storage/SQLStore/PropertyTableDefinitionBuilder.php',
 
-	'SMWSQLStore3Table'                => 'includes/storage/SQLStore/TableDefinition.php',
 	'SMW\SQLStore\TableDefinition'     => 'includes/storage/SQLStore/TableDefinition.php',
 
 	'SMWSQLStore3'                     => 'includes/storage/SQLStore/SMW_SQLStore3.php',
@@ -308,7 +295,6 @@ return array(
 	'SMWSQLStore3QueryEngine'          => 'includes/storage/SQLStore/SMW_SQLStore3_Queries.php',
 	'SMWSQLStore3Query'                => 'includes/storage/SQLStore/SMW_SQLStore3_Queries.php',
 	'SMWSQLStore3Writers'              => 'includes/storage/SQLStore/SMW_SQLStore3_Writers.php',
-	'SMWSQLStore3SpecialPageHandlers'  => 'includes/storage/SQLStore/SMW_SQLStore3_SpecialPageHandlers.php',
 	'SMWSQLStore3SetupHandlers'        => 'includes/storage/SQLStore/SMW_SQLStore3_SetupHandlers.php',
 	'SMWDataItemHandler'               => 'includes/storage/SQLStore/SMW_DataItemHandler.php',
 	'SMWDIHandlerBoolean'              => 'includes/storage/SQLStore/SMW_DIHandler_Bool.php',

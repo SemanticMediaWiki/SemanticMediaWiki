@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\CacheableObjectCollector;
+use SMW\Store\CacheableResultCollector;
 
 use SMW\InvalidPropertyException;
 use SMW\SimpleDictionary;
@@ -19,22 +19,15 @@ use DatabaseBase;
 /**
  * Collects unused properties from a store entity
  *
- * @file
+ * @ingroup SQLStore
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  * @author Nischay Nahata
  */
-
-/**
- * Collects unused properties from a store entity
- *
- * @ingroup CacheableObjectCollector
- * @ingroup SQLStore
- */
-class UnusedPropertiesCollector extends CacheableObjectCollector {
+class UnusedPropertiesCollector extends CacheableResultCollector {
 
 	/** @var Store */
 	protected $store;
@@ -59,28 +52,14 @@ class UnusedPropertiesCollector extends CacheableObjectCollector {
 	}
 
 	/**
-	 * Factory method for an immediate instantiation of a UnusedPropertiesCollector object
-	 *
-	 * @par Example:
-	 * @code
-	 *  $properties = \SMW\SQLStore\UnusedPropertiesCollector::newFromStore( $store )
-	 *  $properties->getResults();
-	 * @endcode
+	 * Returns unused properties
 	 *
 	 * @since 1.9
 	 *
-	 * @param Store $store
-	 * @param $dbw Boolean or DatabaseBase:
-	 * - Boolean: whether to use a dedicated DB or Slave
-	 * - DatabaseBase: database connection to use
-	 *
-	 * @return ObjectCollector
+	 * @return DIProperty[]
 	 */
-	public static function newFromStore( Store $store, $dbw = false ) {
-
-		$dbw = $dbw instanceof DatabaseBase ? $dbw : wfGetDB( DB_SLAVE );
-		$settings = Settings::newFromGlobals();
-		return new self( $store, $dbw, $settings );
+	public function runCollector() {
+		return $this->getProperties( $this->doQuery() );
 	}
 
 	/**
@@ -100,16 +79,12 @@ class UnusedPropertiesCollector extends CacheableObjectCollector {
 	}
 
 	/**
-	 * Returns unused properties
-	 *
 	 * @since 1.9
 	 *
-	 * @return DIProperty[]
+	 * @return array
 	 */
-	protected function doCollect() {
+	protected function doQuery() {
 		Profiler::In( __METHOD__ );
-
-		$result = array();
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$options = array( 'ORDER BY' => 'smw_sortkey' );
@@ -137,6 +112,20 @@ class UnusedPropertiesCollector extends CacheableObjectCollector {
 			array( $this->store->getObjectIds()->getIdTable() => array( 'INNER JOIN', array( 'smw_id=p_id' ) ) )
 		);
 
+		Profiler::Out( __METHOD__ );
+		return $res;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return DIProperty[]
+	 */
+	protected function getProperties( $res ) {
+		Profiler::In( __METHOD__ );
+
+		$result = array();
+
 		foreach ( $res as $row ) {
 
 			try {
@@ -151,4 +140,5 @@ class UnusedPropertiesCollector extends CacheableObjectCollector {
 		Profiler::Out( __METHOD__ );
 		return $result;
 	}
+
 }

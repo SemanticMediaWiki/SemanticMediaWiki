@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\CacheableObjectCollector;
+use SMW\Store\CacheableResultCollector;
 
 use SMW\SimpleDictionary;
 use SMW\DIProperty;
@@ -15,22 +15,15 @@ use DatabaseBase;
 /**
  * Collects wanted properties from a store entity
  *
- * @file
+ * @ingroup SQLStore
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  * @author Nischay Nahata
  */
-
-/**
- * Collects wanted properties from a store entity
- *
- * @ingroup CacheableObjectCollector
- * @ingroup SQLStore
- */
-class WantedPropertiesCollector extends CacheableObjectCollector {
+class WantedPropertiesCollector extends CacheableResultCollector {
 
 	/** @var Store */
 	protected $store;
@@ -55,28 +48,21 @@ class WantedPropertiesCollector extends CacheableObjectCollector {
 	}
 
 	/**
-	 * Factory method for an immediate instantiation of a WantedPropertiesCollector object
-	 *
-	 * @par Example:
-	 * @code
-	 *  $properties = \SMW\SQLStore\WantedPropertiesCollector::newFromStore( $store )
-	 *  $properties->getResults();
-	 * @endcode
-	 *
 	 * @since 1.9
 	 *
-	 * @param Store $store
-	 * @param $dbw Boolean or DatabaseBase:
-	 * - Boolean: whether to use a dedicated DB or Slave
-	 * - DatabaseBase: database connection to use
-	 *
-	 * @return ObjectCollector
+	 * @return DIProperty[]
 	 */
-	public static function newFromStore( Store $store, $dbw = false ) {
+	public function runCollector() {
 
-		$dbw = $dbw instanceof DatabaseBase ? $dbw : wfGetDB( DB_SLAVE );
-		$settings = Settings::newFromGlobals();
-		return new self( $store, $dbw, $settings );
+		// Wanted Properties must have the default type
+		$this->propertyTable = $this->findPropertyTableByType( $this->settings->get( 'smwgPDefaultType' ), true );
+
+		// anything else would be crazy, but let's fail gracefully even if the whole world is crazy
+		if ( $this->propertyTable->isFixedPropertyTable() ) {
+			return array();
+		}
+
+		return $this->getProperties( $this->doQuery() );
 	}
 
 	/**
@@ -96,28 +82,6 @@ class WantedPropertiesCollector extends CacheableObjectCollector {
 	}
 
 	/**
-	 * Returns unused properties
-	 *
-	 * @since 1.9
-	 *
-	 * @return DIProperty[]
-	 */
-	protected function doCollect() {
-
-		$result = array();
-
-		// Wanted Properties must have the default type
-		$this->propertyTables = $this->getPropertyTables( $this->settings->get( 'smwgPDefaultType' ) );
-
-		// anything else would be crazy, but let's fail gracefully even if the whole world is crazy
-		if ( !$this->propertyTables->isFixedPropertyTable() ) {
-			$result = $this->doQuery();
-		}
-
-		return $result;
-	}
-
-	/**
 	 * Returns wanted properties
 	 *
 	 * @note This function is very resource intensive and needs to be cached on
@@ -130,14 +94,12 @@ class WantedPropertiesCollector extends CacheableObjectCollector {
 	protected function doQuery() {
 		Profiler::In( __METHOD__ );
 
-		$result = array();
-
 		$options = $this->store->getSQLOptions( $this->requestOptions, 'title' );
 		$options['ORDER BY'] = 'count DESC';
 
 		// TODO: this is not how JOINS should be specified in the select function
 		$res = $this->dbConnection->select(
-			$this->dbConnection->tableName( $this->propertyTables->getName() ) . ' INNER JOIN ' .
+			$this->dbConnection->tableName( $this->propertyTable->getName() ) . ' INNER JOIN ' .
 				$this->dbConnection->tableName( $this->store->getObjectIds()->getIdTable() ) . ' ON p_id=smw_id LEFT JOIN ' .
 				$this->dbConnection->tableName( 'page' ) . ' ON (page_namespace=' .
 				$this->dbConnection->addQuotes( SMW_NS_PROPERTY ) . ' AND page_title=smw_title)',
@@ -147,6 +109,20 @@ class WantedPropertiesCollector extends CacheableObjectCollector {
 			$options
 		);
 
+		Profiler::Out( __METHOD__ );
+		return $res;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return DIProperty[]
+	 */
+	protected function getProperties( $res ) {
+		Profiler::In( __METHOD__ );
+
+		$result = array();
+
 		foreach ( $res as $row ) {
 			$result[] = array( new DIProperty( $row->smw_title ), $row->count );
 		}
@@ -154,4 +130,5 @@ class WantedPropertiesCollector extends CacheableObjectCollector {
 		Profiler::Out( __METHOD__ );
 		return $result;
 	}
+
 }

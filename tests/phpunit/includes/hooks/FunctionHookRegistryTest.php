@@ -7,6 +7,7 @@ use SMW\EmptyContext;
 
 /**
  * @covers \SMW\FunctionHookRegistry
+ * @covers \SMW\FunctionHook
  *
  * @ingroup Test
  *

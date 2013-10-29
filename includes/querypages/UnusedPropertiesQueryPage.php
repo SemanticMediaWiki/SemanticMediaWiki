@@ -10,19 +10,13 @@ use Html;
 /**
  * Query page that provides content to Special:UnusedProperties
  *
- * @file
+ * @ingroup QueryPage
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author Markus Krötzsch
  * @author mwjames
- */
-
-/**
- * Query page that provides content to Special:UnusedProperties
- *
- * @ingroup QueryPage
  */
 class UnusedPropertiesQueryPage extends QueryPage {
 

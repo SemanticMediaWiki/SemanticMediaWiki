@@ -13,30 +13,21 @@ use SMWRequestOptions;
 use FakeResultWrapper;
 
 /**
- * Test for the UnusedPropertiesCollector class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SQLStore\UnusedPropertiesCollector
- * @covers \SMW\InvalidPropertyException
  *
  * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -44,11 +35,7 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * Helper method that returns a Database object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $smwTitle
 	 *
 	 * @return Database
 	 */
@@ -70,12 +57,7 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * Helper method that returns a UnusedPropertiesCollector object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $smwTitle
-	 * @param $cacheEnabled
 	 *
 	 * @return UnusedPropertiesCollector
 	 */
@@ -94,29 +76,13 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test UnusedPropertiesCollector::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->newInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
-	 * @test UnusedPropertiesCollector::newFromStore
-	 *
-	 * @since 1.9
-	 */
-	public function testNewFromStore() {
-		$instance = UnusedPropertiesCollector::newFromStore( StoreFactory::getStore() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test UnusedPropertiesCollector::getResults
-	 * @test UnusedPropertiesCollector::getCount
-	 *
 	 * @since 1.9
 	 */
 	public function testGetResults() {
@@ -136,15 +102,12 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test UnusedPropertiesCollector::getResults
 	 * @dataProvider exceptionDataProvider
 	 *
 	 * InvalidPropertyException is thrown but caught and returning with a
 	 * SMWDIError instead
 	 *
 	 * @since 1.9
-	 *
-	 * @param $property
 	 */
 	public function testInvalidPropertyException( $property ) {
 
@@ -162,15 +125,9 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * @test UnusedPropertiesCollector::getResults
-	 * @test UnusedPropertiesCollector::isCached
 	 * @dataProvider getCacheNonCacheDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $test
-	 * @param $expected
-	 * @param $info
 	 */
 	public function testCacheNoCache( array $test, array $expected, array $info ) {
 
@@ -193,8 +150,6 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * Exception data sample
-	 *
 	 * @return array
 	 */
 	public function exceptionDataProvider() {
@@ -202,8 +157,6 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	}
 
 	/**
-	 * Cache and non-cache data tests sample
-	 *
 	 * @return array
 	 */
 	public function getCacheNonCacheDataProvider() {

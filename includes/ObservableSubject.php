@@ -3,83 +3,6 @@
 namespace SMW;
 
 /**
- * Interface and abstract class defining the operations for
- * attaching and de-attaching observers
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * Base Publisher interface
- *
- * @ingroup Observer
- */
-interface Publisher {
-
-	/**
-	 * Attaches a Subscriber
-	 *
-	 * @since  1.9
-	 *
-	 * @param Subscriber $subscriber
-	 */
-	public function attach( Subscriber $subscriber );
-
-	/**
-	 * Detaches a Subscriber
-	 *
-	 * @since  1.9
-	 *
-	 * @param Subscriber $subscriber
-	 */
-	public function detach( Subscriber $subscriber );
-
-	/**
-	 * Notifies attached Subscribers
-	 *
-	 * @since  1.9
-	 */
-	public function notify();
-
-}
-
-/**
- * Extended Publisher interface specifying access to
- * source and state changes
- *
- * @ingroup Observer
- */
-interface Observable extends Publisher {
-
-	/**
-	 * Returns the invoked state change
-	 *
-	 * @since 1.9
-	 */
-	public function getState();
-
-	/**
-	 * Registers a state change
-	 *
-	 * @since 1.9
-	 */
-	public function setState( $state );
-
-	/**
-	 * Returns the emitter of the state change
-	 *
-	 * @since 1.9
-	 */
-	public function getSubject();
-
-}
-
-/**
  * Implements the Pubisher/Observable interface as base class
  *
  * @note In the GOF book this class/interface is known as Subject
@@ -88,10 +11,15 @@ interface Observable extends Publisher {
  * mistaken with Semantic MediaWiki's own "Subject" (DIWikiPage) object
  *
  * @ingroup Observer
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 abstract class ObservableSubject implements Observable {
 
-	/** @var Subscriber[] */
+	/** @var Observer[] */
 	protected $observers = array();
 
 	/** string */
@@ -100,12 +28,14 @@ abstract class ObservableSubject implements Observable {
 	/**
 	 * @since  1.9
 	 *
-	 * @param Subscriber|null $subject
+	 * @param Observer|null $subject
 	 */
-	public function __construct( Subscriber $observer = null ) {
-		if ( $observer instanceof Subscriber ) {
+	public function __construct( Observer $observer = null ) {
+
+		if ( $observer instanceof Observer ) {
 			$this->attach( $observer );
 		}
+
 	}
 
 	/**
@@ -113,9 +43,9 @@ abstract class ObservableSubject implements Observable {
 	 *
 	 * @since 1.9
 	 *
-	 * @param Subscriber $observer
+	 * @param Observer $observer
 	 */
-	public function attach( Subscriber $observer ) {
+	public function attach( Observer $observer ) {
 
 		if ( $this->contains( $observer ) === null ) {
 			$this->observers[] = $observer;
@@ -129,9 +59,9 @@ abstract class ObservableSubject implements Observable {
 	 *
 	 * @since  1.9
 	 *
-	 * @param Subscriber $observer
+	 * @param Observer $observer
 	 */
-	public function detach( Subscriber $observer ) {
+	public function detach( Observer $observer ) {
 
 		$index = $this->contains( $observer );
 
@@ -204,11 +134,11 @@ abstract class ObservableSubject implements Observable {
 	 *
 	 * @since  1.9
 	 *
-	 * @param Subscriber $observer
+	 * @param Observer $observer
 	 *
 	 * @return integer|null
 	 */
-	private function contains( Subscriber $observer ) {
+	private function contains( Observer $observer ) {
 
 		foreach ( $this->observers as $key => $obs ) {
 			if ( $obs === $observer ) {

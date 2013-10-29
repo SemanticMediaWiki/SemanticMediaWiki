@@ -10,17 +10,8 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 
 /**
- * MockObject builder
+ * @codeCoverageIgnore
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * MockObject builder provides methods that are being used by the mock repository
  * to define and create a mock object
  *
@@ -34,7 +25,10 @@ use OutOfBoundsException;
  * @group SMW
  * @group SMWExtension
  *
- * @codeCoverageIgnore
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 
@@ -88,6 +82,17 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->configuration = $configuration;
+	}
+
+	/**
+	 * Returns invoked configuration keys
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public function getInvokedMethods() {
+		return array_keys( $this->configuration->toArray() );
 	}
 
 	/**

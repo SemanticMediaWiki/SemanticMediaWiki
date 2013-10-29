@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\CacheableObjectCollector;
+use SMW\Store\CacheableResultCollector;
 
 use SMW\InvalidPropertyException;
 use SMW\SimpleDictionary;
@@ -19,22 +19,15 @@ use DatabaseBase;
 /**
  * Collects properties from a store entity
  *
- * @file
+ * @ingroup SQLStore
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  * @author Nischay Nahata
  */
-
-/**
- * Collects properties from a store entity
- *
- * @ingroup CacheableObjectCollector
- * @ingroup SQLStore
- */
-class PropertiesCollector extends CacheableObjectCollector {
+class PropertiesCollector extends CacheableResultCollector {
 
 	/** @var Store */
 	protected $store;
@@ -59,28 +52,12 @@ class PropertiesCollector extends CacheableObjectCollector {
 	}
 
 	/**
-	 * Factory method for an immediate instantiation of a PropertiesCollector object
-	 *
-	 * @par Example:
-	 * @code
-	 *  $properties = \SMW\SQLStore\PropertiesCollector::newFromStore( $store )
-	 *  $properties->getResults();
-	 * @endcode
-	 *
 	 * @since 1.9
 	 *
-	 * @param Store $store
-	 * @param $dbw Boolean or DatabaseBase:
-	 * - Boolean: whether to use a dedicated DB or Slave
-	 * - DatabaseBase: database connection to use
-	 *
-	 * @return ObjectCollector
+	 * @return DIProperty[]
 	 */
-	public static function newFromStore( Store $store, $dbw = false ) {
-
-		$dbw = $dbw instanceof DatabaseBase ? $dbw : wfGetDB( DB_SLAVE );
-		$settings = Settings::newFromGlobals();
-		return new self( $store, $dbw, $settings );
+	public function runCollector() {
+		return $this->getProperties( $this->doQuery() );
 	}
 
 	/**
@@ -100,20 +77,12 @@ class PropertiesCollector extends CacheableObjectCollector {
 	}
 
 	/**
-	 * Returns properties
-	 *
-	 * Collect all properties in the SMW IDs table (based on their namespace) and
-	 * getting their usage from the property statistics table.
-	 *
 	 * @since 1.9
 	 *
-	 * @return DIProperty[]
+	 * @return array
 	 */
-	protected function doCollect() {
+	protected function doQuery() {
 		Profiler::In( __METHOD__ );
-
-		$result = array();
-		$propertyIds = array();
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$options = array( 'ORDER BY' => 'smw_sortkey' );
@@ -147,6 +116,24 @@ class PropertiesCollector extends CacheableObjectCollector {
 			$options
 		);
 
+		Profiler::Out( __METHOD__ );
+		return $res;
+	}
+
+	/**
+	 * Collect all properties in the SMW IDs table (based on their namespace) and
+	 * getting their usage from the property statistics table.
+	 *
+	 * @since 1.9
+	 *
+	 * @return DIProperty[]
+	 */
+	protected function getProperties( $res ) {
+		Profiler::In( __METHOD__ );
+
+		$result = array();
+		$propertyIds = array();
+
 		foreach ( $res as $row ) {
 			$propertyIds[] = (int)$row->smw_id;
 		}
@@ -171,4 +158,5 @@ class PropertiesCollector extends CacheableObjectCollector {
 		Profiler::Out( __METHOD__ );
 		return $result;
 	}
+
 }

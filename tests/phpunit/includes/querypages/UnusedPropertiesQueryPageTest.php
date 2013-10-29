@@ -8,17 +8,6 @@ use SMW\MessageFormatter;
 use SMWDataItem;
 
 /**
- * Tests for the UnusedPropertiesQueryPage class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\UnusedPropertiesQueryPage
  * @covers \SMW\QueryPage
  *
@@ -26,12 +15,15 @@ use SMWDataItem;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -39,8 +31,6 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a DIWikiPage object
-	 *
 	 * @since 1.9
 	 *
 	 * @return DIWikiPage
@@ -64,18 +54,13 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a UnusedPropertiesQueryPage object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $result
-	 * @param $values
 	 *
 	 * @return UnusedPropertiesQueryPage
 	 */
 	private function newInstance( $result = null, $values = array() ) {
 
-		$collector = $this->newMockBuilder()->newObject( 'CacheableObjectCollector', array(
+		$collector = $this->newMockBuilder()->newObject( 'CacheableResultCollector', array(
 			'getResults' => $result
 		) );
 
@@ -91,8 +76,6 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test UnusedPropertiesQueryPage::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -100,7 +83,6 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test UnusedPropertiesQueryPage::formatResult
 	 * @dataProvider getUserDefinedDataProvider
 	 *
 	 * @since 1.9
@@ -158,8 +140,6 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test UnusedPropertiesQueryPage::formatResult
-	 *
 	 * @since 1.9
 	 */
 	public function testInvalidResultException() {
@@ -174,8 +154,6 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * isUserDefined switcher
-	 *
 	 * @return array
 	 */
 	public function getUserDefinedDataProvider() {
@@ -183,8 +161,6 @@ class UnusedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SMWUnusedPropertiesPage::getResults
-	 *
 	 * @since 1.9
 	 */
 	public function testGetResults() {

@@ -69,10 +69,3 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	}
 
 }
-
-/**
- * SMWExportPrinter
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );

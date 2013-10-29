@@ -5,22 +5,15 @@ namespace SMW;
 use MWNamespace;
 
 /**
- * This Class examines if a specific namespace is enabled for the usage of the
+ * Examines if a specific namespace is enabled for the usage of the
  * Semantic MediaWiki extension
  *
- * @file
+ * @ingroup SMW
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * This class examines if a specific namespace is enabled for the usage of the
- * Semantic MediaWiki extension
- *
- * @ingroup Utility
  */
 final class NamespaceExaminer {
 
@@ -123,4 +116,5 @@ final class NamespaceExaminer {
 	protected function isEnabled( $namespace ) {
 		return !empty( $this->registeredNamespaces[$namespace] );
 	}
+
 }

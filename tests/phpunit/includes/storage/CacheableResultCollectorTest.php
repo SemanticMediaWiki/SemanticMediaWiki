@@ -7,57 +7,43 @@ use SMW\SimpleDictionary;
 use SMWRequestOptions;
 
 /**
- * Tests for the CacheableObjectCollector class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * @covers \SMW\Store\CacheableObjectCollector
+ * @covers \SMW\Store\CacheableResultCollector
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
-class CacheableObjectCollectorTest extends SemanticMediaWikiTestCase {
+class CacheableResultCollectorTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\Store\CacheableObjectCollector';
+		return '\SMW\Store\CacheableResultCollector';
 	}
 
 	/**
-	 * Helper method that returns a CacheableObjectCollector object
-	 *
 	 * @since 1.9
 	 *
-	 * @param $result
-	 *
-	 * @return CacheableObjectCollector
+	 * @return CacheableResultCollector
 	 */
 	private function getInstance( $doCollect = array(), $cacheSetup = array() ) {
 
-		$collector = $this->newMockBuilder()->newObject( 'CacheableObjectCollector', array(
-			'doCollect'  => $doCollect,
-			'cacheSetup' => new SimpleDictionary( $cacheSetup )
+		$collector = $this->newMockBuilder()->newObject( 'CacheableResultCollector', array(
+			'runCollector'  => $doCollect,
+			'cacheSetup'    => new SimpleDictionary( $cacheSetup )
 		) );
 
 		return $collector;
 	}
 
 	/**
-	 * @test CacheableObjectCollector::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -65,7 +51,6 @@ class CacheableObjectCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test CacheableObjectCollector::getResults
 	 * @dataProvider resultDataProvider
 	 *
 	 * @since 1.9

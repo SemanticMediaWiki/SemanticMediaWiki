@@ -173,11 +173,3 @@ class TableDefinition {
 		return $this->diType;
 	}
 }
-
-/**
- * @codeCoverageIgnore
- * \SMW\SQLStore\TableDefinition
- *
- * @since 1.9
- */
-class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );

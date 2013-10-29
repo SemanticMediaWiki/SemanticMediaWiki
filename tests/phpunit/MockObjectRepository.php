@@ -6,17 +6,8 @@ use SMWDataItem;
 use SMWPrintRequest;
 
 /**
- * MockObject repository
+ * @codeCoverageIgnore
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * MockObject repository holds specifications on mock objects
  *
  * @ingroup Test
@@ -24,7 +15,10 @@ use SMWPrintRequest;
  * @group SMW
  * @group SMWExtension
  *
- * @codeCoverageIgnore
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 
@@ -86,30 +80,30 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Helper method that returns a CacheableObjectCollector object
+	 * Helper method that returns a CacheableResultCollector object
 	 *
 	 * @since 1.9
 	 *
-	 * @return CacheableObjectCollector
+	 * @return CacheableResultCollector
 	 */
-	public function CacheableObjectCollector() {
+	public function CacheableResultCollector() {
 
-		// CacheableObjectCollector is an abstract class therefore necessary methods
+		// CacheableResultCollector is an abstract class therefore necessary methods
 		// are declared by default while other methods are only mocked if needed
 		// because setMethods overrides the original signature
-		$methods = array( 'cacheSetup', 'doCollect' );
+		$methods = array( 'cacheSetup', 'runCollector' );
 
-		if (  $this->builder->hasValue( 'getResults' ) ) {
+		if ( $this->builder->hasValue( 'getResults' ) ) {
 			$methods[] = 'getResults';
 		}
 
-		$collector = $this->getMockBuilder( '\SMW\Store\CacheableObjectCollector' )
+		$collector = $this->getMockBuilder( '\SMW\Store\CacheableResultCollector' )
 			->setMethods( $methods )
 			->getMock();
 
 		$collector->expects( $this->any() )
-			->method( 'doCollect' )
-			->will( $this->returnValue( $this->builder->setValue( 'doCollect' ) ) );
+			->method( 'runCollector' )
+			->will( $this->returnValue( $this->builder->setValue( 'runCollector' ) ) );
 
 		$collector->expects( $this->any() )
 			->method( 'cacheSetup' )
@@ -134,13 +128,45 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 		// Observer is an obstract class therefore create a FakeObserver
 		// that can include different methods from different observers
 
-		$observer = $this->getMockBuilder( 'SMW\Observer' )
-			->setMethods( array( 'updateOutput' ) )
+		$methods = $this->builder->getInvokedMethods();
+
+		$observer = $this->getMockBuilder( 'SMW\BaseObserver' )
+			->setMethods( $methods )
 			->getMock();
 
-		$observer->expects( $this->any() )
-			->method( 'updateOutput' )
-			->will( $this->builder->setCallback( 'updateOutput' ) );
+		foreach ( $methods as $method ) {
+
+			$observer->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $observer;
+	}
+
+	/**
+	 * Returns an ObservableSubject object
+	 *
+	 * @since 1.9
+	 *
+	 * @return ObservableSubject
+	 */
+	public function FakeObservableSubject() {
+
+		$methods = $this->builder->getInvokedMethods();
+
+		$observer = $this->getMockBuilder( 'SMW\ObservableSubject' )
+			->setMethods( $methods )
+			->getMock();
+
+		foreach ( $methods as $method ) {
+
+			$observer->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
 
 		return $observer;
 	}
@@ -154,21 +180,19 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 	 */
 	public function ParserData() {
 
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$methods = $this->builder->getInvokedMethods();
+
+		$parserData = $this->getMockBuilder( 'SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserData->expects( $this->any() )
-			->method( 'getData' )
-			->will( $this->returnValue( $this->builder->setValue( 'getData' ) ) );
+		foreach ( $methods as $method ) {
 
-		$parserData->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
+			$parserData->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
 
-		$parserData->expects( $this->any() )
-			->method( 'getSubject' )
-			->will( $this->returnValue( $this->builder->setValue( 'getSubject' ) ) );
+		}
 
 		return $parserData;
 	}
@@ -351,33 +375,13 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision->expects( $this->any() )
-			->method( 'getTimestamp' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTimestamp' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
-		$revision->expects( $this->any() )
-			->method( 'getParentId' )
-			->will( $this->returnValue( $this->builder->setValue( 'getParentId' ) ) );
+			$revision->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
 
-		$revision->expects( $this->any() )
-			->method( 'getId' )
-			->will( $this->returnValue( $this->builder->setValue( 'getId' ) ) );
-
-		$revision->expects( $this->any() )
-			->method( 'getUser' )
-			->will( $this->returnValue( $this->builder->setValue( 'getUser' ) ) );
-
-		$revision->expects( $this->any() )
-			->method( 'getText' )
-			->will( $this->returnValue( $this->builder->setValue( 'getText' ) ) );
-
-		$revision->expects( $this->any() )
-			->method( 'getContent' )
-			->will( $this->returnValue( $this->builder->setValue( 'getContent' ) ) );
-
-		$revision->expects( $this->any() )
-			->method( 'getContentHandler' )
-			->will( $this->returnValue( $this->builder->setValue( 'getContentHandler' ) ) );
+		}
 
 		return $revision;
 	}
@@ -400,33 +404,13 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataValue->expects( $this->any() )
-			->method( 'getProperty' )
-			->will( $this->returnValue( $this->builder->setValue( 'getProperty' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
-		$dataValue->expects( $this->any() )
-			->method( 'isValid' )
-			->will( $this->returnValue( $this->builder->setValue( 'isValid' ) ) );
+			$dataValue->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
 
-		$dataValue->expects( $this->any() )
-			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->builder->setValue( 'getDataItem' ) ) );
-
-		$dataValue->expects( $this->any() )
-			->method( 'getTypeID' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTypeID' ) ) );
-
-		$dataValue->expects( $this->any() )
-			->method( 'getShortText' )
-			->will( $this->returnValue( $this->builder->setValue( 'getShortText' ) ) );
-
-		$dataValue->expects( $this->any() )
-			->method( 'getWikiValue' )
-			->will( $this->returnValue( $this->builder->setValue( 'getWikiValue' ) ) );
-
-		$dataValue->expects( $this->any() )
-			->method( 'getShortWikiText' )
-			->will( $this->returnValue( $this->builder->setValue( 'getShortWikiText' ) ) );
+		}
 
 		return $dataValue;
 	}
@@ -445,41 +429,8 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$queryResult->expects( $this->any() )
-			->method( 'toArray' )
-			->will( $this->returnValue( $this->builder->setValue( 'toArray' ) ) );
-
-		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
 			->will( $this->returnValue( $this->builder->setValue( 'getErrors', array() ) ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( $this->builder->setValue( 'hasFurtherResults' ) ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getLink' )
-			->will( $this->returnValue( $this->builder->setValue( 'getLink' ) ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getCount' )
-			->will( $this->returnValue( $this->builder->setValue( 'getCount' ) ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getResults' )
-			->will( $this->returnValue( $this->builder->setValue( 'getResults' ) ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getStore' )
-			->will( $this->returnValue( $this->builder->setValue( 'getStore' ) ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'serializeToArray' )
-			->will( $this->returnValue( $this->builder->setValue( 'serializeToArray' ) ) );
-
-
-		$queryResult->expects( $this->any() )
-			->method( 'getPrintRequests' )
-			->will( $this->returnValue( $this->builder->setValue( 'getPrintRequests' ) ) );
 
 		// Word of caution, onConsecutiveCalls is used in order to ensure
 		// that a while() loop is not trapped in an infinite loop and returns
@@ -487,6 +438,14 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
 			->will( $this->onConsecutiveCalls( $this->builder->setValue( 'getNext' ) , false ) );
+
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
+
+			$queryResult->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
 
 		return $queryResult;
 	}

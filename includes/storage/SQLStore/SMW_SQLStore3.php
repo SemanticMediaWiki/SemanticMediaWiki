@@ -1,5 +1,13 @@
 <?php
 
+use SMW\SQLStore\PropertyTableDefinitionBuilder;
+use SMW\SQLStore\WantedPropertiesCollector;
+use SMW\SQLStore\UnusedPropertiesCollector;
+use SMW\SQLStore\PropertiesCollector;
+use SMW\SQLStore\StatisticsCollector;
+use SMW\DataValueFactory;
+use SMW\Settings;
+
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
  *
@@ -79,16 +87,6 @@ class SMWSQLStore3 extends SMWStore {
 	protected $writer = false;
 
 	/**
-	 * The SpecialPageHandler object used by this store. Initialized by
-	 * getSpecialPageHandler(), which is the only way in which it should
-	 * be accessed.
-	 *
-	 * @since 1.8
-	 * @var SMWSQLStore3SpecialPageHandlers
-	 */
-	protected $specialPageHandler = false;
-
-	/**
 	 * The SetupHandler object used by this store. Initialized by getSetupHandler(),
 	 * which is the only way in which it should be accessed.
 	 *
@@ -130,7 +128,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * Access this only by calling getPropertyTables().
 	 *
 	 * @since 1.8
-	 * @var SMWSQLStore3Table[]
+	 * @var TableDefinition[]
 	 */
 	protected static $prop_tables;
 
@@ -255,7 +253,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return SMWDataItemHandler
 	 */
 	public function getDataItemHandlerForDatatype( $typeid ) {
-		$dataItemId = SMWDataValueFactory::getDataItemId( $typeid );
+		$dataItemId = DataValueFactory::getDataItemId( $typeid );
 		return $this->getDataItemHandlerForDIType( $dataItemId );
 	}
 
@@ -337,27 +335,48 @@ class SMWSQLStore3 extends SMWStore {
 
 ///// Special page functions /////
 
-	public function getSpecialPageHandler() {
-		if( $this->specialPageHandler == false )
-			$this->specialPageHandler = new SMWSQLStore3SpecialPageHandlers( $this );//Initialize if not done already
-
-		return $this->specialPageHandler;
-	}
-
 	public function getPropertiesSpecial( $requestoptions = null ) {
-		return $this->getSpecialPageHandler()->getPropertiesSpecial( $requestoptions );
+
+		$propertiesCollector = new PropertiesCollector(
+			$this,
+			wfGetDB( DB_SLAVE ),
+			Settings::newFromGlobals()
+		);
+
+		return $propertiesCollector->setRequestOptions( $requestoptions );
 	}
 
 	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
-		return $this->getSpecialPageHandler()->getUnusedPropertiesSpecial( $requestoptions );
+
+		$unusedPropertiesCollector = new UnusedPropertiesCollector(
+			$this,
+			wfGetDB( DB_SLAVE ),
+			Settings::newFromGlobals()
+		);
+
+		return $unusedPropertiesCollector->setRequestOptions( $requestoptions );
 	}
 
 	public function getWantedPropertiesSpecial( $requestoptions = null ) {
-		return $this->getSpecialPageHandler()->getWantedPropertiesSpecial( $requestoptions );
+
+		$wantedPropertiesCollector = new WantedPropertiesCollector(
+			$this,
+			wfGetDB( DB_SLAVE ),
+			Settings::newFromGlobals()
+		);
+
+		return $wantedPropertiesCollector->setRequestOptions( $requestoptions );
 	}
 
 	public function getStatistics() {
-		return $this->getSpecialPageHandler()->getStatistics();
+
+		$statisticsCollector = new StatisticsCollector(
+			$this,
+			wfGetDB( DB_SLAVE ),
+			Settings::newFromGlobals()
+		);
+
+		return $statisticsCollector->getResults();
 	}
 
 
@@ -658,7 +677,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return string
 	 */
 	public static function findTypeTableId( $typeid ) {
-		$dataItemId = SMWDataValueFactory::getDataItemId( $typeid );
+		$dataItemId = DataValueFactory::getDataItemId( $typeid );
 		return self::findDiTypeTableId( $dataItemId );
 	}
 
@@ -784,15 +803,16 @@ class SMWSQLStore3 extends SMWStore {
 			return self::$prop_tables;
 		}
 
-		$propertyTDBuilder = new \SMW\SQLStore\PropertyTableDefinitionBuilder(
+		$definitionBuilder = new PropertyTableDefinitionBuilder(
 			self::$di_type_tables,
 			self::$special_tables,
-			\SMW\Settings::newFromGlobals()->get( 'smwgFixedProperties' )
+			Settings::newFromGlobals()->get( 'smwgFixedProperties' )
 		);
-		$propertyTDBuilder->doBuild();
 
-		self::$prop_tables = $propertyTDBuilder->getTableDefinitions();
-		self::$fixedPropertyTableIds = $propertyTDBuilder->getTableIds();
+		$definitionBuilder->runBuilder();
+
+		self::$prop_tables = $definitionBuilder->getTableDefinitions();
+		self::$fixedPropertyTableIds = $definitionBuilder->getTableIds();
 
 		return self::$prop_tables;
 	}

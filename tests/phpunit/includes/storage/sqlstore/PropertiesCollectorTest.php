@@ -16,30 +16,21 @@ use SMWRequestOptions;
 use FakeResultWrapper;
 
 /**
- * Test for the PropertiesCollector class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SQLStore\PropertiesCollector
- * @covers \SMW\InvalidPropertyException
  *
  * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -47,12 +38,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Database object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $smwTitle
-	 * @param $usageCount
 	 *
 	 * @return Database
 	 */
@@ -82,12 +68,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a PropertiesCollector object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $smwTitle
-	 * @param $cacheEnabled
 	 *
 	 * @return PropertiesCollector
 	 */
@@ -106,8 +87,6 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesCollector::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -115,19 +94,6 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesCollector::newFromStore
-	 *
-	 * @since 1.9
-	 */
-	public function testNewFromStore() {
-		$instance = PropertiesCollector::newFromStore( StoreFactory::getStore() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test PropertiesCollector::getResults
-	 * @test PropertiesCollector::getCount
-	 *
 	 * @since 1.9
 	 */
 	public function testGetResults() {
@@ -149,15 +115,12 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesCollector::getResults
 	 * @dataProvider exceptionDataProvider
 	 *
 	 * InvalidPropertyException is thrown but caught and is retuned as a
 	 * SMWDIError object instead
 	 *
 	 * @since 1.9
-	 *
-	 * @param $property
 	 */
 	public function testInvalidPropertyException( $property ) {
 
@@ -175,15 +138,9 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesCollector::getResults
-	 * @test PropertiesCollector::isCached
 	 * @dataProvider getCacheNonCacheDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $test
-	 * @param $expected
-	 * @param $info
 	 */
 	public function testCacheNoCache( array $test, array $expected, array $info ) {
 
@@ -208,8 +165,6 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Exception data sample
-	 *
 	 * @return array
 	 */
 	public function exceptionDataProvider() {
@@ -217,8 +172,6 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Cache and non-cache data tests sample
-	 *
 	 * @return array
 	 */
 	public function getCacheNonCacheDataProvider() {

@@ -319,7 +319,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 					$builder->newObject( 'Settings' )
 				);
 
-				$instance->setObservableDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
+				$instance->registerDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
 
 				return $instance;
 			}
@@ -342,7 +342,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 				$builder->getArgument( 'ParserOutput' )
 			);
 
-			$instance->setObservableDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
+			$instance->registerDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
 
 			return $instance;
 		};

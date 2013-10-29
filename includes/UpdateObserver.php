@@ -17,7 +17,7 @@ namespace SMW;
  *
  * @author mwjames
  */
-class UpdateObserver extends Observer implements ContextAware, ContextInjector {
+class UpdateObserver extends BaseObserver implements ContextAware, ContextInjector {
 
 	/** @var ContextResource */
 	protected $context = null;

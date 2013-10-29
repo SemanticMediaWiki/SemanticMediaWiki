@@ -80,4 +80,18 @@ class SemanticDataDeserializerTest extends SemanticMediaWikiTestCase {
 
 	}
 
+	/**
+	 * @since 1.9
+	 */
+	public function testDeserializerSubjectWithoutData() {
+
+		$instance = $this->newDeserializerInstance();
+
+		$this->assertInstanceOf(
+			'SMW\SemanticData',
+			$instance->deserialize( array( 'subject' => 'Foo#0#' ) )
+		);
+
+	}
+
 }

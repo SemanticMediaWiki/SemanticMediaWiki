@@ -22,7 +22,7 @@ use MWException;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class ParserData extends Observer implements DispatchableSubject {
+class ParserData extends BaseObserver implements DispatchableSubject {
 
 	/** @var Title */
 	protected $title;
@@ -89,7 +89,7 @@ class ParserData extends Observer implements DispatchableSubject {
 	}
 
 	/**
-	 * @see DispatchableSubject::setObservableDispatcher
+	 * @see DispatchableSubject::registerDispatcher
 	 *
 	 * An ObservableDispatcher to deploy state changes to an Observer
 	 *
@@ -97,8 +97,8 @@ class ParserData extends Observer implements DispatchableSubject {
 	 *
 	 * @param ObservableDispatcher $dispatcher
 	 */
-	public function setObservableDispatcher( ObservableDispatcher $dispatcher ) {
-		$this->dispatcher = $dispatcher->setSubject( $this );
+	public function registerDispatcher( ObservableDispatcher $dispatcher ) {
+		$this->dispatcher = $dispatcher->setObservableSubject( $this );
 		return $this;
 	}
 

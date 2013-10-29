@@ -6,19 +6,12 @@ namespace SMW;
  * Class implementing non-persistent storage and retrieval of objects using an
  * associative array
  *
- * @file
+ * @ingroup SMW
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * Class implementing non-persistent storage and retrieval of objects using an
- * associative array
- *
- * @ingroup Utility
  */
 abstract class ObjectStorage {
 

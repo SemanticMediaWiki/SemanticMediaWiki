@@ -110,6 +110,11 @@ class_alias( 'SMW\SemanticData', 'SMWSemanticData' );
 class_alias( 'SMW\DIWikiPage', 'SMWDIWikiPage' );
 class_alias( 'SMW\DIProperty', 'SMWDIProperty' );
 class_alias( 'SMW\Serializers\QueryResultSerializer', 'SMWDISerializer' );
+class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
+class_alias( 'SMW\DataItemException', 'SMWDataItemException' );
+class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );
+class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
+class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 1.11

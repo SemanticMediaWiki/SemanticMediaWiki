@@ -8,15 +8,6 @@ use MWTimestamp;
 /**
  * Handling of cached results
  *
- * @since 1.9
- *
- * @file
- *
- * @license GNU GPL v2+
- * @author mwjames
- */
-
-/**
  * Convenience class that fetches results from cache or recaches the results and
  * stores meta information (cache time etc.) about each set with the object
  *
@@ -35,8 +26,13 @@ use MWTimestamp;
  * @endcode
  *
  * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
-class CacheableResultMapper implements Cacheable {
+class CacheableResultMapper {
 
 	/** @var ObjectDictionary */
 	protected $cacheSetup;
@@ -147,6 +143,7 @@ class CacheableResultMapper implements Cacheable {
 	 * @return integer
 	 */
 	protected function getTimestamp() {
+
 		if ( class_exists( 'MWTimestamp' ) ) {
 			$timestamp = new MWTimestamp();
 			return $timestamp->getTimestamp( TS_UNIX );
@@ -155,5 +152,7 @@ class CacheableResultMapper implements Cacheable {
 			return wfTimestamp( TS_UNIX );
 			// @codeCoverageIgnoreEnd
 		}
+
 	}
+
 }

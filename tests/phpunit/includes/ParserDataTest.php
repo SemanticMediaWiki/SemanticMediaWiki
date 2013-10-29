@@ -226,7 +226,7 @@ class ParserDataTest extends ParserTestCase {
 		$instance = $this->newInstance( $title, $parserOutput );
 		$observer = new MockUpdateObserver();
 
-		$instance->setObservableDispatcher( new ObservableSubjectDispatcher( $observer ) );
+		$instance->registerDispatcher( new ObservableSubjectDispatcher( $observer ) );
 
 		$this->assertTrue( $instance->updateStore() );
 

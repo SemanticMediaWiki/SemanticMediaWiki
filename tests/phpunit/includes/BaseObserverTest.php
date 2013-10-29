@@ -3,30 +3,22 @@
 namespace SMW\Test;
 
 /**
- * Tests for the Observer/Subject pattern
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * @covers \SMW\Observer
+ * @covers \SMW\BaseObserver
  * @covers \SMW\ObservableSubject
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ObserverTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -34,48 +26,28 @@ class ObserverTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Observer object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return Observer
 	 */
 	private function newObserver() {
 
-		$observer = $this->getMockBuilder( '\SMW\Observer' )
-			->setMethods( array( 'lila' ) )
-			->getMock();
-
-		$observer->expects( $this->any() )
-			->method( 'lila' )
-			->will( $this->returnCallback( array( $this, 'lilaObserverCallback' ) ) );
-
-		return $observer;
+		return $this->newMockBuilder()->newObject( 'FakeObserver', array(
+			'lila' => array( $this, 'lilaObserverCallback' )
+		) );
 
 	}
 
 	/**
-	 * Helper method that returns a ObservableSubject object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return ObservableSubject
 	 */
 	private function newObservableSubject() {
 
-		$subject = $this->getMockBuilder( '\SMW\ObservableSubject' )
-			->setMethods( array( 'lulu' ) )
-			->getMock();
-
-		$subject->expects( $this->any() )
-			->method( 'lulu' )
-			->will( $this->returnCallback( array( $this, 'luluSubjectCallback' ) ) );
-
-		return $subject;
+		return $this->newMockBuilder()->newObject( 'FakeObservableSubject', array(
+			'lulu' => array( $this, 'luluSubjectCallback' )
+		) );
 
 	}
 
@@ -95,7 +67,7 @@ class ObserverTest extends SemanticMediaWikiTestCase {
 		$subject  = $this->getMockForAbstractClass( '\SMW\ObservableSubject' );
 
 		// Same Observer instance attached twice results in only one registered object
-		$observer = $this->getMockForAbstractClass( '\SMW\Observer', array( $subject ) );
+		$observer = $this->getMockForAbstractClass( '\SMW\BaseObserver', array( $subject ) );
 		$subject->attach( $observer );
 
 		$this->assertCount( 1, $subject->getObservers() );
@@ -103,8 +75,8 @@ class ObserverTest extends SemanticMediaWikiTestCase {
 		$this->assertCount( 0, $subject->getObservers() );
 
 		// Two different instances of an Observer
-		$this->getMockForAbstractClass( '\SMW\Observer', array( $subject ) );
-		$observer = $this->getMockForAbstractClass( '\SMW\Observer', array( $subject ) );
+		$this->getMockForAbstractClass( '\SMW\BaseObserver', array( $subject ) );
+		$observer = $this->getMockForAbstractClass( '\SMW\BaseObserver', array( $subject ) );
 
 		$this->assertCount( 2, $subject->getObservers() );
 		$subject->detach( $observer );

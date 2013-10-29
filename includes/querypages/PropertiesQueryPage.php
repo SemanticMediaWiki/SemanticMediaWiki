@@ -10,19 +10,13 @@ use Html;
 /**
  * Query class that provides content for the Special:Properties page
  *
- * @file
+ * @ingroup QueryPage
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author Markus Krötzsch
  * @author mwjames
- */
-
-/**
- * Query class that provides content for the Special:Properties page
- *
- * @ingroup QueryPage
  */
 class PropertiesQueryPage extends QueryPage {
 

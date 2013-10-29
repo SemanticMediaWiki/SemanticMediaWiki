@@ -5,19 +5,13 @@ namespace SMW;
 /**
  * Class that detects a change between a property and its store data
  *
- * @file
+ * @ingroup SMW
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  * @author Markus Krötzsch
- */
-
-/**
- * Class that detects a change between a property and its store data
- *
- * @ingroup SMW
  */
 class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
 
@@ -61,14 +55,14 @@ class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
 	}
 
 	/**
-	 * Invokes an ObservableDispatcher object to deploy state changes to an Observer
+	 * @see DispatchableSubject::registerDispatcher
 	 *
 	 * @since 1.9
 	 *
 	 * @param ObservableDispatcher $dispatcher
 	 */
-	public function setObservableDispatcher( ObservableDispatcher $dispatcher ) {
-		$this->dispatcher = $dispatcher->setSubject( $this );
+	public function registerDispatcher( ObservableDispatcher $dispatcher ) {
+		$this->dispatcher = $dispatcher->setObservableSubject( $this );
 		return $this;
 	}
 

@@ -6,18 +6,7 @@ use SMW\ObservableSubjectDispatcher;
 use SMW\ObservableDispatcher;
 
 /**
- * Tests for the Observer/Subject pattern
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * @covers \SMW\Observer
+ * @covers \SMW\BaseObserver
  * @covers \SMW\ObservableSubject
  * @covers \SMW\ObservableSubjectDispatcher
  *
@@ -25,14 +14,17 @@ use SMW\ObservableDispatcher;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class ObservableSubjectDispatcherTest extends SemanticMediaWikiTestCase {
 
 	protected $subject = null;
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -40,61 +32,43 @@ class ObservableSubjectDispatcherTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a DispatchableSubject object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return DispatchableSubject
 	 */
 	private function newDispatchableSubject() {
 
 		$source = $this->getMockBuilder( '\SMW\DispatchableSubject' )
-			->setMethods( array( 'setObservableDispatcher' ) )
+			->setMethods( array( 'registerDispatcher' ) )
 			->getMock();
 
 		$source->expects( $this->any() )
-			->method( 'setObservableDispatcher' )
-			->will( $this->returnCallback( array( $this, 'setObservableDispatcherCallback' ) ) );
+			->method( 'registerDispatcher' )
+			->will( $this->returnCallback( array( $this, 'registerDispatcherCallback' ) ) );
 
 		return $source;
 
 	}
 
 	/**
-	 * Helper method that returns a Observer object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return Observer
 	 */
 	private function newObserver() {
 
-		$observer = $this->getMockBuilder( '\SMW\Observer' )
-			->setMethods( array( 'lila' ) )
-			->getMock();
-
-		$observer->expects( $this->any() )
-			->method( 'lila' )
-			->will( $this->returnCallback( array( $this, 'lilaObserverCallback' ) ) );
-
-		return $observer;
+		return $this->newMockBuilder()->newObject( 'FakeObserver', array(
+			'lila' => array( $this, 'lilaObserverCallback' )
+		) );
 
 	}
 
 	/**
-	 * Helper method that returns a ObservableSubjectDispatcher object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $data
 	 *
 	 * @return ObservableSubjectDispatcher
 	 */
-	private function getInstance( $observer = null ) {
+	private function newInstance( $observer = null ) {
 		return new ObservableSubjectDispatcher( $observer );
 
 	}
@@ -103,7 +77,7 @@ class ObservableSubjectDispatcherTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -111,7 +85,7 @@ class ObservableSubjectDispatcherTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testAttachDetach() {
 
-		$dispatcher = $this->getInstance();
+		$dispatcher = $this->newInstance();
 
 		$observer = $this->newObserver();
 		$dispatcher->attach( $observer );
@@ -120,7 +94,7 @@ class ObservableSubjectDispatcherTest extends SemanticMediaWikiTestCase {
 		$dispatcher->detach( $observer );
 		$this->assertCount( 0, $dispatcher->getObservers() );
 
-		$dispatcher = $this->getInstance( $this->newObserver() );
+		$dispatcher = $this->newInstance( $this->newObserver() );
 		$this->assertCount( 1, $dispatcher->getObservers() );
 
 	}
@@ -131,11 +105,11 @@ class ObservableSubjectDispatcherTest extends SemanticMediaWikiTestCase {
 	public function testSourceDispatching() {
 
 		// Register Observer with the dispatcher
-		$dispatcher = $this->getInstance( $this->newObserver() );
+		$dispatcher = $this->newInstance( $this->newObserver() );
 
 		// Register dispatcher with a source
 		$source = $this->newDispatchableSubject();
-		$source->setObservableDispatcher( $dispatcher );
+		$source->registerDispatcher( $dispatcher );
 
 		// Rather being the source itself, the dispatcher returns the invoked instance
 		$this->assertInstanceOf( '\SMW\DispatchableSubject', $this->subject );
@@ -149,30 +123,22 @@ class ObservableSubjectDispatcherTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Verifies that the Observer was acting on the invoked Subject
-	 *
 	 * @since 1.9
-	 *
-	 * @param $subject
 	 */
 	public function lilaObserverCallback( $subject ) {
 		return $subject->ObserverSentAMessage = 'lilaObserver was informed by source';
 	}
 
 	/**
-	 * Sets the source
-	 *
 	 * @since 1.9
-	 *
-	 * @param ObservableDispatcher $dispatcher
 	 */
-	public function setObservableDispatcherCallback( ObservableDispatcher $dispatcher ) {
+	public function registerDispatcherCallback( ObservableDispatcher $dispatcher ) {
 
 		$this->subject = $this->getMockBuilder( '\SMW\DispatchableSubject' )
-			->setMethods( array( 'setObservableDispatcher' ) )
+			->setMethods( array( 'registerDispatcher' ) )
 			->getMock();
 
-		$dispatcher->setSubject( $this->subject );
+		$dispatcher->setObservableSubject( $this->subject );
 	}
 
 }

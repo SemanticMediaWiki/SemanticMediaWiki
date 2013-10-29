@@ -3,6 +3,7 @@
 namespace SMW\Store;
 
 use SMW\CacheableResultMapper;
+use SMW\ResultCollector;
 use SMW\DIProperty;
 use SMW\Settings;
 
@@ -11,42 +12,16 @@ use InvalidArgumentException;
 use MWTimestamp;
 
 /**
- * Class specifying an ObjectCollector and its concrete implementation
+ * Base class thats represents a cacheable ResultCollector
  *
- * @file
+ * @ingroup Store
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
  */
-
-/**
- * Interface for items of groups of individuals to be sampled into a
- * collection of values
- *
- * @ingroup Collector
- */
-interface ObjectCollector {
-
-	/**
-	 * Returns collected information
-	 *
-	 * @since  1.9
-	 *
-	 * @return array
-	 */
-	public function getResults();
-
-}
-
-/**
- * Base class specifying methods to represent a cacheable ObjectCollector
- *
- * @ingroup Collector
- * @ingroup Store
- */
-abstract class CacheableObjectCollector implements ObjectCollector {
+abstract class CacheableResultCollector implements ResultCollector {
 
 	/** @var array */
 	protected $results = array();
@@ -61,9 +36,11 @@ abstract class CacheableObjectCollector implements ObjectCollector {
 	protected $cacheDate = null;
 
 	/**
-	 * Collects and returns information in an associative array
+	 * @see ResultCollector::getResults
 	 *
 	 * @since 1.9
+	 *
+	 * @return array
 	 */
 	public function getResults() {
 
@@ -80,7 +57,7 @@ abstract class CacheableObjectCollector implements ObjectCollector {
 
 		} else {
 
-			$this->results  = $this->doCollect();
+			$this->results  = $this->runCollector();
 			$this->isCached = false;
 			$cacheableResult->recache( $this->results );
 		}
@@ -95,7 +72,7 @@ abstract class CacheableObjectCollector implements ObjectCollector {
 	 *
 	 * @param SMWRequestOptions $requestOptions
 	 *
-	 * @return CacheableObjectCollector
+	 * @return CacheableResultCollector
 	 */
 	public function setRequestOptions( SMWRequestOptions $requestOptions ) {
 		$this->requestOptions = $requestOptions;
@@ -137,17 +114,8 @@ abstract class CacheableObjectCollector implements ObjectCollector {
 	}
 
 	/**
-	 * Sub-class is responsible for returning an associative array
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	protected abstract function doCollect();
-
-	/**
 	 * Sub-class is returning an ObjectDictionary that specifies details needed
-	 * for the CachedResultMapper instantiation
+	 * for the CacheableResultMapper instantiation
 	 *
 	 * @par Example:
 	 * @code
@@ -166,16 +134,14 @@ abstract class CacheableObjectCollector implements ObjectCollector {
 	protected abstract function cacheSetup();
 
 	/**
-	 * Returns table definition for a given property type
-	 *
+	 * @codeCoverageIgnore
 	 * @since 1.9
 	 *
 	 * @param string $type
 	 *
-	 * @return array
-	 * @@codeCoverageIgnore
+	 * @return TableDefinition
 	 */
-	protected function getPropertyTables( $type, $dataItemId = true ) {
+	protected function findPropertyTableByType( $type, $dataItemId = false ) {
 
 		$propertyTables = $this->store->getPropertyTables();
 
@@ -187,4 +153,5 @@ abstract class CacheableObjectCollector implements ObjectCollector {
 
 		return $propertyTables[$id];
 	}
+
 }

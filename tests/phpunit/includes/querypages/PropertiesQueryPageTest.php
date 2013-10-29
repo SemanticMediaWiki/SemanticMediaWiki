@@ -9,17 +9,6 @@ use SMW\ArrayAccessor;
 use SMWDataItem;
 
 /**
- * Tests for the PropertiesQueryPage class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\PropertiesQueryPage
  * @covers \SMW\QueryPage
  *
@@ -27,12 +16,15 @@ use SMWDataItem;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -40,8 +32,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a DIWikiPage object
-	 *
 	 * @since 1.9
 	 *
 	 * @return DIWikiPage
@@ -65,17 +55,13 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a PropertiesQueryPage object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $result
 	 *
 	 * @return PropertiesQueryPage
 	 */
 	private function newInstance( $result = null, $values = array(), $settings = array() ) {
 
-		$collector = $this->newMockBuilder()->newObject( 'CacheableObjectCollector', array(
+		$collector = $this->newMockBuilder()->newObject( 'CacheableResultCollector', array(
 			'getResults' => $result
 		) );
 
@@ -99,8 +85,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -108,8 +92,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::formatResult
-	 *
 	 * @since 1.9
 	 */
 	public function testFormatResultDIError() {
@@ -133,8 +115,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::formatResult
-	 *
 	 * @since 1.9
 	 */
 	public function testInvalidResultException() {
@@ -149,7 +129,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::formatResult
 	 * @dataProvider getUserDefinedDataProvider
 	 *
 	 * @note Title, wikiPage, and property label are randomized therefore
@@ -214,8 +193,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::formatResult
-	 *
 	 * @since 1.9
 	 */
 	public function testFormatPropertyItemZeroDisplay() {
@@ -240,8 +217,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::formatResult
-	 *
 	 * @since 1.9
 	 */
 	public function testFormatPropertyItemTitleNull() {
@@ -264,8 +239,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::formatResult
-	 *
 	 * @since 1.9
 	 */
 	public function testFormatPropertyItemLowUsageThreshold() {
@@ -292,8 +265,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * isUserDefined switcher
-	 *
 	 * @return array
 	 */
 	public function getUserDefinedDataProvider() {
@@ -301,8 +272,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::getResults
-	 *
 	 * @since 1.9
 	 */
 	public function testGetResults() {
@@ -315,8 +284,6 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertiesQueryPage::getPageHeader
-	 *
 	 * @since 1.9
 	 */
 	public function testGetPageHeader() {

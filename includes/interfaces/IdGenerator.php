@@ -5,18 +5,12 @@ namespace SMW;
 /**
  * Interface describing a Id generrator
  *
- * @file
+ * @ingroup SMW
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * Interface describing a Id generrator
- *
- * @ingroup Utility
  */
 interface IdGenerator {
 

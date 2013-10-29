@@ -6,17 +6,6 @@ use SMW\WantedPropertiesQueryPage;
 use SMWDataItem;
 
 /**
- * Tests for the WantedPropertiesQueryPage class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\WantedPropertiesQueryPage
  * @covers \SMW\QueryPage
  *
@@ -24,12 +13,15 @@ use SMWDataItem;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -37,8 +29,6 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a DIWikiPage object
-	 *
 	 * @since 1.9
 	 *
 	 * @return DIWikiPage
@@ -62,17 +52,13 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a WantedPropertiesQueryPage object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $result
 	 *
 	 * @return WantedPropertiesQueryPage
 	 */
 	private function newInstance( $result = null ) {
 
-		$collector = $this->newMockBuilder()->newObject( 'CacheableObjectCollector', array(
+		$collector = $this->newMockBuilder()->newObject( 'CacheableResultCollector', array(
 			'getResults' => $result
 		) );
 
@@ -88,8 +74,6 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test WantedPropertiesQueryPage::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -97,7 +81,6 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test WantedPropertiesQueryPage::formatResult
 	 * @dataProvider getUserDefinedDataProvider
 	 *
 	 * @since 1.9
@@ -123,8 +106,6 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * isUserDefined switcher
-	 *
 	 * @return array
 	 */
 	public function getUserDefinedDataProvider() {
@@ -132,8 +113,6 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test WantedPropertiesQueryPage::getResults
-	 *
 	 * @since 1.9
 	 */
 	public function testGetResults() {

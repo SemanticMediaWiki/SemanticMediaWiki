@@ -6,20 +6,14 @@ use SMW\DataValueFactory;
 use SMWDIProperty;
 
 /**
- * Class that generates property table definition
- *
- * @since 1.9
- *
- * @file
- *
- * @licence GNU GPL v2+
- * @author mwjames
- */
-
-/**
  * Class that generates property table definitions
  *
  * @ingroup SQLStore
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class PropertyTableDefinitionBuilder {
 
@@ -51,7 +45,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @since 1.9
 	 */
-	public function doBuild() {
+	public function runBuilder() {
 		wfProfileIn( __METHOD__ );
 
 		$this->getDITypes( $this->diTypes );

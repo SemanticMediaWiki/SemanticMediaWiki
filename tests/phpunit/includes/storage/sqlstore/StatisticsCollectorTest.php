@@ -10,29 +10,21 @@ use SMW\Store;
 use FakeResultWrapper;
 
 /**
- *Test for the StatisticsCollector class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SQLStore\StatisticsCollector
  *
  * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -40,12 +32,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a StatisticsCollector object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $count
-	 * @param $cacheEnabled
 	 *
 	 * @return StatisticsCollector
 	 */
@@ -94,41 +81,16 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StatisticsCollector::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->newInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
-	 * @test StatisticsCollector::newFromStore
-	 *
-	 * @since 1.9
-	 */
-	public function testNewFromStore() {
-		$instance = StatisticsCollector::newFromStore( StoreFactory::getStore() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test StatisticsCollector::getUsedPropertiesCount
-	 * @test StatisticsCollector::getPropertyUsageCount
-	 * @test StatisticsCollector::getDeclaredPropertiesCount
-	 * @test StatisticsCollector::getSubobjectCount
-	 * @test StatisticsCollector::getConceptCount
-	 * @test StatisticsCollector::getQueryFormatsCount
-	 * @test StatisticsCollector::getQuerySize
-	 * @test StatisticsCollector::getQueryCount
-	 * @test StatisticsCollector::getPropertyPageCount
 	 * @dataProvider getFunctionDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $function
-	 * @param $expectedType
 	 */
 	public function testFunctions( $function, $expectedType ) {
 
@@ -145,13 +107,9 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StatisticsCollector::getResults
 	 * @dataProvider getCollectorDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $segment
-	 * @param $expectedType
 	 */
 	public function testResultsOnStore( $segment, $expectedType ) {
 
@@ -162,13 +120,9 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StatisticsCollector::getResults
 	 * @dataProvider getCacheNonCacheDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $test
-	 * @param $expected
 	 */
 	public function testCachNoCache( array $test, array $expected ) {
 
@@ -187,8 +141,6 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * DataProvider
-	 *
 	 * @return array
 	 */
 	public function getFunctionDataProvider() {
@@ -206,8 +158,6 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * DataProvider
-	 *
 	 * @return array
 	 */
 	public function getCollectorDataProvider() {
@@ -225,8 +175,6 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Cache and non-cache data tests sample
-	 *
 	 * @return array
 	 */
 	public function getCacheNonCacheDataProvider() {

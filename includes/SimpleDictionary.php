@@ -6,22 +6,10 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 
 /**
- * Class handling the implementation of a dictionary
+ * Class handling the implementation of a simple dictionary
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Implementing a dictionary (associative array, hash array) which is a
- * collections of key, value pairs.
- *
- * @note Type casting ( (string)$key === $key ) is used instead of is_string()
- * because of measurable performance implications
+ * collection of key, value pairs.
  *
  * @par Example:
  * @code
@@ -33,7 +21,12 @@ use OutOfBoundsException;
  * $dictionary->remove( 'Foo' )
  * @endcode
  *
- * @ingroup Utility
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SimpleDictionary extends ObjectStorage implements ObjectDictionary {
 
@@ -64,7 +57,7 @@ class SimpleDictionary extends ObjectStorage implements ObjectDictionary {
 	 * @param string $key
 	 * @param mixed $value
 	 *
-	 * @return HashArray
+	 * @return SimpleDictionary
 	 * @throws InvalidArgumentException
 	 */
 	public function set( $key, $value ) {
@@ -103,7 +96,7 @@ class SimpleDictionary extends ObjectStorage implements ObjectDictionary {
 	 *
 	 * @param string $key
 	 *
-	 * @return HashArray
+	 * @return SimpleDictionary
 	 * @throws InvalidArgumentException
 	 */
 	public function remove( $key ) {
@@ -134,7 +127,7 @@ class SimpleDictionary extends ObjectStorage implements ObjectDictionary {
 	 *
 	 * @param array $mergeable
 	 *
-	 * @return HashArray
+	 * @return SimpleDictionary
 	 */
 	public function merge( array $mergeable ) {
 		$this->storage = array_merge( $this->storage, $mergeable );

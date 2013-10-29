@@ -9,23 +9,17 @@ use SMW\DIProperty;
 use Title;
 
 /**
- * Tests for the PropertyChangeNotifier class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\PropertyChangeNotifier
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 
@@ -33,8 +27,6 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	protected $storeValues;
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -42,13 +34,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a PropertyChangeNotifier object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $store
-	 * @param $data
-	 * @param $setting
 	 *
 	 * @return PropertyChangeNotifier
 	 */
@@ -64,8 +50,6 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertyChangeNotifier::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -73,7 +57,6 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test PropertyChangeNotifier::detectChanges
 	 * @dataProvider dataItemDataProvider
 	 *
 	 * @since 1.9
@@ -95,7 +78,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $store, $data, $settings );
 		$observer = new MockUpdateObserver();
 
-		$instance->setObservableDispatcher( new ObservableSubjectDispatcher( $observer ) );
+		$instance->registerDispatcher( new ObservableSubjectDispatcher( $observer ) );
 
 		$this->assertInstanceOf( $this->getClass(), $instance->detectChanges() );
 		$this->assertEquals( $subject->getTitle(), $instance->getTitle() );
@@ -107,8 +90,6 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Provides array of dataItems
-	 *
 	 * @return array
 	 */
 	public function dataItemDataProvider() {

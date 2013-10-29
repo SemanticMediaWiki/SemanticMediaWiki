@@ -2,24 +2,15 @@
 
 namespace SMW;
 
-use InvalidArgumentException;
-use OutOfBoundsException;
-
-/**
- * Interfaces specifying a object dictionary
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
 /**
  * Interface specifying methods for an accessible object
  *
- * @ingroup Utility
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 interface Accessible {
 

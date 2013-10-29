@@ -437,10 +437,3 @@ class DataValueFactory {
 	}
 
 }
-
-/**
- * SMWDataValueFactory
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );

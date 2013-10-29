@@ -38,21 +38,17 @@ class RefreshJobTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return RefreshJob
 	 */
-	private function newInstance( Title $title = null, $parameters = array() ) {
+	private function newInstance( $store = null, $parameters = array() ) {
 
-		if ( $title === null ) {
-			$title = $this->newTitle();
+		if ( $store === null ) {
+			$store = $this->newMockBuilder()->newObject( 'Store' );
 		}
-
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'refreshData' => array( $this, 'refreshDataCallback' )
-		) );
 
 		$context   = new EmptyContext();
 		$container = $context->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Store', $mockStore );
+		$container->registerObject( 'Store', $store );
 
-		$instance = new RefreshJob( $title, $parameters );
+		$instance = new RefreshJob( $this->newTitle(), $parameters );
 		$instance->invokeContext( $context );
 
 		return $instance;
@@ -74,9 +70,13 @@ class RefreshJobTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testRun( $parameter, $expected ) {
+	public function testRunOnMockStore( $parameter, $expected ) {
 
-		$instance = $this->newInstance( null, $parameter );
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
+			'refreshData' => array( $this, 'refreshDataCallback' )
+		) );
+
+		$instance = $this->newInstance( $mockStore, $parameter );
 
 		$this->assertTrue(
 			$instance->disable()->run(),

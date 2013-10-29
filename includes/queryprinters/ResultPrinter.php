@@ -638,10 +638,3 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 	}
 
 }
-
-/**
- * SMWResultPrinter
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
