@@ -1,5 +1,4 @@
-## Overview
-A basic dependency injection framework that enables object injection for immutable or service objects in Semantic MediaWiki. The current framework supports:
+This document contains information about a basic dependency injection framework that enables object injection for immutable and/or service objects in Semantic MediaWiki. The current framework supports:
 
 * Use of predefined object definitions (see SharedDependencyContainer)
 * Use of eager or lazy loading of objects
@@ -7,14 +6,12 @@ A basic dependency injection framework that enables object injection for immutab
 * Registration of multiple container
 * Prototypical (default) and singleton scope
 
-This framework does not deploy a DependencyResolver (trying to automatically resolve dependencies) instead injections will have to be declarative within a dependency requestor.
+This framework does not deploy a DependencyResolver (trying to automatically resolve dependencies) instead injections will have to be declarative within a dependency requestor or a [context object](context.md).
 
 ### In a nutshell
-A dependency object (such as service or immutable object etc.) contains specification about how an object ought to be build.
+A dependency object (service or value object) contains the specification about how an object ought to be build while the dependency container (or object assembler) bundles those specification into a coherent object that can be used independently for instantiation from a dependency builder.
 
-A dependency container (or object assembler) bundles specification and definitions of objects that can be used independently for instantiation from an invoking class.
-
-A dependency builder uses available object specifications (provided by a dependency container) to instantiate an requested object.
+A dependency builder uses available object specifications (provided by a dependency container) to resolve dependencies and initiates an object creation.
 
 For a more exhaustive description about dependency injection, see [Forms of Dependency Injection][mf] and [What is Dependency Injection?][fp].
 
@@ -32,7 +29,7 @@ $mightyObject = $this->getDependencyBuilder()->newObject( 'ElephantineObject' ) 
 $mightyObject = $this->getDependencyBuilder()->ElephantineObject()
 ```
 
-When constructing objects using the DI framework we avoid using the “new” keyword to create objects and instead rely on a builder to resolve an object graph and its instantiation. The use of dependency injection and for that matter of a dependency injection framework can help:
+When constructing objects using the DI framework we avoid using the “new” keyword to create objects and instead rely on a builder to resolve an [object graph][objg] and its dependencies. The use of dependency injection and for that matter of a dependency injection framework can help:
 * Reduce reliance on hard-coded dependencies
 * Achieve separation of concerns
 * Improve mocking of objects
@@ -43,12 +40,12 @@ The requesting client (class that consumes the dependency) is normally unaware o
 
 The client has the choice either to implement the DependencyRequestor, extend the DependencyInjector for convenience (in both instances a builder itself becomes a dependency), or inject a builder using a constructor or setter (to reduce the DependencyRequestor interface dependency from a client).
 
-Gaining independence and control over service object instantiation requires appropriate unit testing to ensure that injected containers do contain proper object definitions used within a requestor that will yield proper object instantiation.
+Gaining independence and control over service object instantiation requires appropriate unit testing to ensure that injected containers do contain proper object definitions that are used within a requestor.
 
 ## Components
 
 ### DependencyObject
-DependencyObject is an interface that specifies a method to resolve an object specification and can be used as free agent.
+* DependencyObject is an interface that specifies how to resolve an object specification
 
 ```php
 class DiQuuxObject implements DependencyObject {
@@ -71,9 +68,10 @@ $container->registerObject( 'Quux', function( DependencyBuilder $builder ) {
 } );
 ```
 ### DependencyContainer
-DependencyContainer is an interface that specifies method to register DepencyObjects. BaseDependencyContainer implements the DependencyContainer and declares methods to retrieve and store object definitions.
-
-EmptyDependencyContainer is an empty container that extends BaseDependencyContainer while SharedDependencyContainer implements most common object definitions used during Semantic MediaWiki's life cycle.
+* DependencyContainer is an interface that specifies how to register a DepencyObject.
+* BaseDependencyContainer implements the DependencyContainer and declares methods to retrieve and store object definitions
+* EmptyDependencyContainer is an empty container that extends BaseDependencyContainer
+* SharedDependencyContainer implements most common object definitions that are used within Semantic MediaWiki
 
 ```php
 class FooDependencyContainer extends BaseDependencyContainer {
@@ -111,11 +109,9 @@ class FooDependencyContainer extends BaseDependencyContainer {
 ```
 
 ### DependencyBuilder
-DependencyFactory an interface that specifies a method to create a new object and with DependencyBuilder as interface specifying methods to handle access to container and objects.
-
-SimpleDependencyBuilder implements the DependencyBuilder to enable access to objects and other invoked arguments.
-
-The builder will detect a ciruclar reference within an object definition that might occur when using a self-reference within its defintion.
+* DependencyFactory is an interface that specifies how to create a new object
+* DependencyBuilder is an interface that is specifying how to handle access to container and its objects
+* SimpleDependencyBuilder implements the DependencyBuilder which feature such as singleton/prototypical scope and the ability to detect circular references within its invoked containers
 
 ```php
 $builder = new SimpleDependencyBuilder( new FooDependencyContainer() );
@@ -141,8 +137,9 @@ $builder->newObject( 'Xyzzy' );
 
 ```
 
-### DependencyInjector
-DependencyRequestor is an interface specifying access to a DependencyBuilder within a client that requests dependency injection and DependencyInjector (implements DependencyRequestor) provides convenience access.
+### DependencyRequestor
+* DependencyRequestor is an interface specifying access to a DependencyBuilder that requests dependency injection
+* DependencyInjector is implementing the DependencyRequestor for convenience
 
 ```php
 class FooClass extends DependencyInjector { ... }
@@ -154,7 +151,7 @@ $fooClass->getDependencyBuilder()->newObject( 'Bar' );
 ```
 
 ### Scope
-The scope defines the lifetime of an object and if not declared otherwise an object is alwasy create with a prototypical scope.
+The scope defines the lifetime of an object and if not declared otherwise an object is always specified as prototypical scope.
 * SCOPE_PROTOTYPE (default) each injection or call to the newObject() method will result in a new instance
 * SCOPE_SINGLETON  scope will return the same instance over the lifetime of a request
 
@@ -230,3 +227,4 @@ $chocolateObject = $elephantineChocolate->get( new OuterRimChocolate() )
 
 [mf]: http://www.martinfowler.com/articles/injection.html#FormsOfDependencyInjection  "Forms of Dependency Injection"
 [fp]: http://fabien.potencier.org/article/11/what-is-dependency-injection "What is Dependency Injection?"
+[objg]: http://semantic-mediawiki.org/w/images/d/d6/Example-dependency-builder-resolving-an-object-graph.png
