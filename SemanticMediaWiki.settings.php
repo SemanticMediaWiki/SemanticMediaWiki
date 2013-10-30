@@ -39,14 +39,14 @@ $GLOBALS['smwgScriptPath'] = ( $GLOBALS['wgExtensionAssetsPath'] === false ? $GL
 # If needed, you can also change this path in LocalSettings.php after including
 # this file.
 ##
-$smwgIP = dirname( __FILE__ ) . '/';
+$GLOBALS['smwgIP'] = dirname( __FILE__ ) . '/';
 ##
 
 ###
 # Use another storage backend for Semantic MediaWiki. The default is suitable
 # for most uses of SMW.
 ##
-$smwgDefaultStore = "SMWSQLStore3";
+$GLOBALS['smwgDefaultStore'] = "SMWSQLStore3";
 ##
 
 ###
@@ -70,11 +70,11 @@ $smwgDefaultStore = "SMWSQLStore3";
 # supports this. Different wikis should normally use different default graphs
 # unless there is a good reason to share one graph.
 ##
-$smwgSparqlDatabase = 'SMWSparqlDatabase';
-$smwgSparqlQueryEndpoint = 'http://localhost:8080/sparql/';
-$smwgSparqlUpdateEndpoint = 'http://localhost:8080/update/';
-$smwgSparqlDataEndpoint = 'http://localhost:8080/data/';
-$smwgSparqlDefaultGraph = '';
+$GLOBALS['smwgSparqlDatabase'] = 'SMWSparqlDatabase';
+$GLOBALS['smwgSparqlQueryEndpoint'] = 'http://localhost:8080/sparql/';
+$GLOBALS['smwgSparqlUpdateEndpoint'] = 'http://localhost:8080/update/';
+$GLOBALS['smwgSparqlDataEndpoint'] = 'http://localhost:8080/data/';
+$GLOBALS['smwgSparqlDefaultGraph'] = '';
 ##
 
 ###
@@ -85,13 +85,13 @@ $smwgSparqlDefaultGraph = '';
 # existing pages in this namespace cannot be found in the wiki.
 ##
 if ( !isset( $smwgHistoricTypeNamespace ) ) {
-	$smwgHistoricTypeNamespace = false;
+	$GLOBALS['smwgHistoricTypeNamespace'] = false;
 }
 ##
 
 ###
 # If you already have custom namespaces on your site, insert
-#    $smwgNamespaceIndex = ???;
+#    $GLOBALS['smwgNamespaceIndex'] = ???;
 # into your LocalSettings.php *before* including this file. The number ??? must
 # be the smallest even namespace number that is not in use yet. However, it
 # must not be smaller than 100.
@@ -104,16 +104,16 @@ smwfInitNamespaces();
 # __HIDEFACTBOX__ can be used to control Factbox display for individual pages.
 # Other options for this setting include:
 ##
-// $smwgShowFactbox = SMW_FACTBOX_NONEMPTY; # show only those factboxes that have some content
-// $smwgShowFactbox = SMW_FACTBOX_SPECIAL # show only if special properties were set
-$smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
-// $smwgShowFactbox = SMW_FACTBOX_SHOWN;  # show always, buggy and not recommended
+// $GLOBALS['smwgShowFactbox'] = SMW_FACTBOX_NONEMPTY; # show only those factboxes that have some content
+// $GLOBALS['smwgShowFactbox'] = SMW_FACTBOX_SPECIAL # show only if special properties were set
+$GLOBALS['smwgShowFactbox'] = SMW_FACTBOX_HIDDEN; # hide always
+// $GLOBALS['smwgShowFactbox'] = SMW_FACTBOX_SHOWN;  # show always, buggy and not recommended
 ##
 
 ###
 # Same as $smwgShowFactbox but for edit mode and same possible values.
 ##
-$smwgShowFactboxEdit = SMW_FACTBOX_NONEMPTY;
+$GLOBALS['smwgShowFactboxEdit'] = SMW_FACTBOX_NONEMPTY;
 ##
 
 ###
@@ -121,7 +121,7 @@ $smwgShowFactboxEdit = SMW_FACTBOX_NONEMPTY;
 # of that page using Special:Browse? This is a useful way to access properties
 # and it is somewhat more subtle than showing a Factbox on every page.
 ##
-$smwgToolboxBrowseLink = true;
+$GLOBALS['smwgToolboxBrowseLink'] = true;
 ##
 
 ###
@@ -129,7 +129,7 @@ $smwgToolboxBrowseLink = true;
 # This affects only semantic annotations, not warnings that are displayed by
 # inline queries or other features.
 ##
-$smwgInlineErrors = true;
+$GLOBALS['smwgInlineErrors'] = true;
 ##
 
 ###
@@ -141,7 +141,7 @@ $smwgInlineErrors = true;
 # category page. Only if the setting is false will such annotations be shown in
 # the factbox (if enabled).
 ##
-$smwgUseCategoryHierarchy = true;
+$GLOBALS['smwgUseCategoryHierarchy'] = true;
 ##
 
 ###
@@ -150,7 +150,7 @@ $smwgUseCategoryHierarchy = true;
 # category pages elements of other categories. See also the above setting
 # $smwgUseCategoryHierarchy.
 ##
-$smwgCategoriesAsInstances = true;
+$GLOBALS['smwgCategoriesAsInstances'] = true;
 ##
 
 ###
@@ -162,7 +162,7 @@ $smwgCategoriesAsInstances = true;
 # or be offered to download "index.php". It might be okay to enable this if
 # such problems are not observed in your wiki.
 ##
-$smwgLinksInValues = false;
+$GLOBALS['smwgLinksInValues'] = false;
 ##
 
 ###
@@ -170,22 +170,22 @@ $smwgLinksInValues = false;
 # function: the default number of instances defined, if no end date is set;
 # and the maximum number that can be defined, regardless of end date.
 ##
-$smwgDefaultNumRecurringEvents = 100;
-$smwgMaxNumRecurringEvents = 500;
+$GLOBALS['smwgDefaultNumRecurringEvents'] = 100;
+$GLOBALS['smwgMaxNumRecurringEvents'] = 500;
 ##
 
 ###
 # Should the browse view for incoming links show the incoming links via its
 # inverses, or shall they be displayed on the other side?
 ##
-$smwgBrowseShowInverse = false;
+$GLOBALS['smwgBrowseShowInverse'] = false;
 ##
 
 ###
 # Should the browse view always show the incoming links as well, and more of
 # the incoming values?
 ##
-$smwgBrowseShowAll = true;
+$GLOBALS['smwgBrowseShowAll'] = true;
 ##
 
 ###
@@ -193,7 +193,7 @@ $smwgBrowseShowAll = true;
 # are only a few results with the exact value? Switch this off if this page has
 # performance problems.
 ##
-$smwgSearchByPropertyFuzzy = true;
+$GLOBALS['smwgSearchByPropertyFuzzy'] = true;
 ##
 
 ###
@@ -201,15 +201,15 @@ $smwgSearchByPropertyFuzzy = true;
 # Type, and Concept. If a value of 0 is given, the respective listings are
 # hidden completely.
 ##
-$smwgTypePagingLimit = 200;    // same number as for categories
-$smwgConceptPagingLimit = 200; // same number as for categories
-$smwgPropertyPagingLimit = 25; // use smaller value since property lists need more space
+$GLOBALS['smwgTypePagingLimit'] = 200;    // same number as for categories
+$GLOBALS['smwgConceptPagingLimit'] = 200; // same number as for categories
+$GLOBALS['smwgPropertyPagingLimit'] = 25; // use smaller value since property lists need more space
 ##
 
 ###
 # How many values should at most be displayed for a page on the Property page?
 ##
-$smwgMaxPropertyValues = 3; // if large values are desired, consider reducing $smwgPropertyPagingLimit for better performance
+$GLOBALS['smwgMaxPropertyValues'] = 3; // if large values are desired, consider reducing $smwgPropertyPagingLimit for better performance
 ##
 
 ###
@@ -218,23 +218,23 @@ $smwgMaxPropertyValues = 3; // if large values are desired, consider reducing $s
 # to complex queries. The following settings affect all queries, wherever they
 # occur.
 ##
-$smwgQEnabled = true;   // (De)activates all query related features and interfaces
-$smwgQMaxLimit = 10000; // Max number of results *ever* retrieved, even when using special query pages.
-$smwgIgnoreQueryErrors = true; // Should queries be executed even if some errors were detected?
+$GLOBALS['smwgQEnabled'] = true;   // (De)activates all query related features and interfaces
+$GLOBALS['smwgQMaxLimit'] = 10000; // Max number of results *ever* retrieved, even when using special query pages.
+$GLOBALS['smwgIgnoreQueryErrors'] = true; // Should queries be executed even if some errors were detected?
                                // A hint that points out errors is shown in any case.
 
-$smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
-$smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
+$GLOBALS['smwgQSubcategoryDepth'] = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
+$GLOBALS['smwgQSubpropertyDepth'] = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
                               // (Use 0 to disable hierarchy-inferencing in queries)
-$smwgQEqualitySupport = SMW_EQ_SOME; // Evaluate #redirects as equality between page names, with possible
+$GLOBALS['smwgQEqualitySupport'] = SMW_EQ_SOME; // Evaluate #redirects as equality between page names, with possible
                                      // performance-relevant restrictions depending on the storage engine
-  // $smwgQEqualitySupport = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
-  // $smwgQEqualitySupport = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
+  // $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
+  // $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
 $smwgQSortingSupport     = true; // (De)activate sorting of results.
-$smwgQRandSortingSupport = true; // (De)activate random sorting of results.
-$smwgQDefaultNamespaces = null; // Which namespaces should be searched by default?
+$GLOBALS['smwgQRandSortingSupport'] = true; // (De)activate random sorting of results.
+$GLOBALS['smwgQDefaultNamespaces'] = null; // Which namespaces should be searched by default?
                                 // (value NULL switches off default restrictions on searching -- this is faster)
-                                // Example with namespaces: $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE);
+                                // Example with namespaces: $GLOBALS['smwgQDefaultNamespaces'] = array(NS_MAIN, NS_IMAGE);
 
 /**
  * List of comparator characters supported by queries, separated by '|', for use in a regex.
@@ -252,7 +252,7 @@ $smwgQDefaultNamespaces = null; // Which namespaces should be searched by defaul
  *
  * @var string
  */
-$smwgQComparators = '<|>|!~|!|~|≤|≥|<<|>>';
+$GLOBALS['smwgQComparators'] = '<|>|!~|!|~|≤|≥|<<|>>';
 
 ###
 # Sets whether the > and < comparators should be strict or not. If they are strict,
@@ -267,23 +267,23 @@ $smwStrictComparators = false;
 # queries that should immediately be answered by the wiki, using whatever
 # computations are needed.
 ##
-$smwgQMaxSize = 12; // Maximal number of conditions in queries, use format=debug for example sizes
-$smwgQMaxDepth = 4; // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
+$GLOBALS['smwgQMaxSize'] = 12; // Maximal number of conditions in queries, use format=debug for example sizes
+$GLOBALS['smwgQMaxDepth'] = 4; // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
 
 // The below setting defines which query features should be available by default.
 // Examples:
-// only cateory intersections: $smwgQFeatures = SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY;
-// only single concepts:       $smwgQFeatures = SMW_CONCEPT_QUERY;
-// anything but disjunctions:  $smwgQFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
+// only cateory intersections: $GLOBALS['smwgQFeatures'] = SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY;
+// only single concepts:       $GLOBALS['smwgQFeatures'] = SMW_CONCEPT_QUERY;
+// anything but disjunctions:  $GLOBALS['smwgQFeatures'] = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
 // The default is to support all basic features.
-$smwgQFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
+$GLOBALS['smwgQFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
                  SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 
 ### Settings about printout of (especially inline) queries:
-$smwgQDefaultLimit = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
-$smwgQMaxInlineLimit = 500;   // Max number of rows ever printed in a single inline query on a single page.
+$GLOBALS['smwgQDefaultLimit'] = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
+$GLOBALS['smwgQMaxInlineLimit'] = 500;   // Max number of rows ever printed in a single inline query on a single page.
 $smwgQPrintoutLimit  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
-$smwgQDefaultLinking = 'all'; // Default linking behavior. Can be one of "none", "subject" (first column), "all".
+$GLOBALS['smwgQDefaultLinking'] = 'all'; // Default linking behavior. Can be one of "none", "subject" (first column), "all".
 
 
 ###
@@ -298,22 +298,22 @@ $smwgQDefaultLinking = 'all'; // Default linking behavior. Can be one of "none",
 # complex queries responably. Other users can employ thus defined concepts in
 # their queries.
 ##
-$smwgQConceptCaching = CONCEPT_CACHE_HARD; // Which concepts should be displayed only if available from cache?
+$GLOBALS['smwgQConceptCaching'] = CONCEPT_CACHE_HARD; // Which concepts should be displayed only if available from cache?
        // CONCEPT_CACHE_ALL   -- show concept elements anywhere only if they are cached
        // CONCEPT_CACHE_HARD  -- show without cache if concept is not harder than permitted inline queries
        // CONCEPT_CACHE_NONE  -- show all concepts even without any cache
        // In any cases, caches will always be used if available.
-$smwgQConceptMaxSize = 20; // Same as $smwgQMaxSize, but for concepts
-$smwgQConceptMaxDepth = 8; // Same as $smwgQMaxDepth, but for concepts
+$GLOBALS['smwgQConceptMaxSize'] = 20; // Same as $smwgQMaxSize, but for concepts
+$GLOBALS['smwgQConceptMaxDepth'] = 8; // Same as $smwgQMaxDepth, but for concepts
 
 // Same as $smwgQFeatures but for concepts (note: using concepts in concepts is currently not supported!)
-$smwgQConceptFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY |
+$GLOBALS['smwgQConceptFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY |
                         SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 
 // Cache life time in minutes. If a concept cache exists but is older than
 // this, SMW tries to recompute it, and will only use the cache if this is not
 // allowed due to settings above:
-$smwgQConceptCacheLifetime = 24 * 60;
+$GLOBALS['smwgQConceptCacheLifetime'] = 24 * 60;
 
 
 ### Predefined result formats for queries
@@ -324,7 +324,7 @@ $smwgQConceptCacheLifetime = 24 * 60;
 # formats 'table' and 'list' are defaults that cannot be disabled. The format
 # 'broadtable' should not be disabled either in order not to break Special:ask.
 ##
-$smwgResultFormats = array(
+$GLOBALS['smwgResultFormats'] = array(
 	'table'      => 'SMW\TableResultPrinter',
 	'list'       => 'SMW\ListResultPrinter',
 	'ol'         => 'SMW\ListResultPrinter',
@@ -349,7 +349,7 @@ $smwgResultFormats = array(
 # To disable an alias, do "unset($smwgResultAliases['alias']);" Disabled
 # aliases will be treated like if the alias parameter had been omitted.
 ##
-$smwgResultAliases = array( 'feed' => array( 'rss' ) );
+$GLOBALS['smwgResultAliases'] = array( 'feed' => array( 'rss' ) );
 ##
 
 ### Predefined sources for queries
@@ -360,7 +360,7 @@ $smwgResultAliases = array( 'feed' => array( 'rss' ) );
 # the local source (which in turn cannot be disabled or set explicitly).
 # Set a new store like this: $smwgQuerySources['freebase'] = "SMWFreebaseStore";
 ##
-$smwgQuerySources = array(
+$GLOBALS['smwgQuerySources'] = array(
 //	'local'      => '',
 );
 ##
@@ -371,16 +371,16 @@ $smwgQuerySources = array(
 # See the file languages/SMW_LanguageXX.php to find what IDs to use for
 # datatpyes in your language. The default corresponds to "Type:Page".
 ##
-$smwgPDefaultType = '_wpg';
+$GLOBALS['smwgPDefaultType'] = '_wpg';
 ##
 
 ###
 # Settings for OWL/RDF export
 ##
-$smwgAllowRecursiveExport = false; // can normal users request recursive export?
-$smwgExportBacklinks = true; // should backlinks be included by default?
+$GLOBALS['smwgAllowRecursiveExport'] = false; // can normal users request recursive export?
+$GLOBALS['smwgExportBacklinks'] = true; // should backlinks be included by default?
 // global $smwgNamespace;                     // The Namespace of exported URIs.
-// $smwgNamespace = "http://example.org/id/"; // Will be set automatically if
+// $GLOBALS['smwgNamespace'] = "http://example.org/id/"; // Will be set automatically if
 // nothing is given, but in order to make pretty URIs you will need to set this
 // to something nice and adapt your Apache configuration appropriately. This is
 // done, e.g., on semanticweb.org, where URIs are of the form
@@ -392,7 +392,7 @@ $smwgExportBacklinks = true; // should backlinks be included by default?
 # notation. The deafult is rather large since some users have problems understanding
 # exponents. Scineitfic applications may prefer a smaller value for concise display.
 ##
-$smwgMaxNonExpNumber = 1000000000000000;
+$GLOBALS['smwgMaxNonExpNumber'] = 1000000000000000;
 ##
 
 ###
@@ -405,7 +405,7 @@ $smwgMaxNonExpNumber = 1000000000000000;
 # parts of the semantic data to get out of date, so that manual modifications
 # or the use of SMW_refreshData.php might be needed.
 ##
-$smwgEnableUpdateJobs = true;
+$GLOBALS['smwgEnableUpdateJobs'] = true;
 ##
 
 ###
@@ -418,7 +418,7 @@ $smwgEnableUpdateJobs = true;
 # during full RDF export, unless they are referred to from another
 # article.
 ##
-$smwgNamespacesWithSemanticLinks = array(
+$GLOBALS['smwgNamespacesWithSemanticLinks'] = array(
 	              NS_MAIN => true,
 	              NS_TALK => false,
 	              NS_USER => true,
@@ -451,11 +451,11 @@ $smwgNamespacesWithSemanticLinks = array(
 # Or:
 #     array_merge( $smwgPageSpecialProperties, array( '_CDAT' ) );
 # Or rewrite entire array:
-#     $smwgPageSpecialProperties = array( '_MDAT', '_CDAT' );
+#     $GLOBALS['smwgPageSpecialProperties'] = array( '_MDAT', '_CDAT' );
 # However, DO NOT use `+=' operator! This DOES NOT work:
 #     $smwgPageSpecialProperties += array( '_MDAT' );
 ##
-$smwgPageSpecialProperties = array( '_MDAT' );
+$GLOBALS['smwgPageSpecialProperties'] = array( '_MDAT' );
 
 ###
 # Properties (usually given as internal ids or DB key versions of property
@@ -466,7 +466,7 @@ $smwgPageSpecialProperties = array( '_MDAT' );
 # setting is not normally changed by users but by extensions that add new
 # types that have their own additional declaration properties.
 ##
-$smwgDeclarationProperties = array( '_PVAL', '_LIST' );
+$GLOBALS['smwgDeclarationProperties'] = array( '_PVAL', '_LIST' );
 ##
 
 // some default settings which usually need no modification
@@ -476,7 +476,7 @@ $smwgDeclarationProperties = array( '_PVAL', '_LIST' );
 # Setting this to true allows to translate all the labels within
 # the browser GIVEN that they have interwiki links.
 ##
-$smwgTranslate = false;
+$GLOBALS['smwgTranslate'] = false;
 
 ###
 # -- FEATURE IS DISABLED --
@@ -489,29 +489,29 @@ $smwgTranslate = false;
 # highly experimental at the moment, and may not do what you
 # extect.
 ##
-// $smwgRAPPath = $smwgIP . 'libs/rdfapi-php';
-// $smwgRAPPath = '/another/example/path/rdfapi-php';
+// $GLOBALS['smwgRAPPath'] = $smwgIP . 'libs/rdfapi-php';
+// $GLOBALS['smwgRAPPath'] = '/another/example/path/rdfapi-php';
 ##
 
 ###
 # If the following is set to true, it is possible to initiate the repairing
 # or updating of all wiki data using the interface on Special:SMWAdmin.
 ##
-$smwgAdminRefreshStore = true;
+$GLOBALS['smwgAdminRefreshStore'] = true;
 ##
 
 ###
 # Sets whether or not the 'printouts' textarea should have autocompletion
 # on property names.
 ##
-$smwgAutocompleteInSpecialAsk = true;
+$GLOBALS['smwgAutocompleteInSpecialAsk'] = true;
 ##
 
 ###
 # Sets whether or not to refresh the pages of which semantic data is stored.
 # Introduced in SMW 1.5.6
 ##
-$smwgAutoRefreshSubject = true;
+$GLOBALS['smwgAutoRefreshSubject'] = true;
 ##
 
 ###
@@ -522,7 +522,7 @@ $smwgAutoRefreshSubject = true;
 #
 # @since 1.9
 ##
-$smwgCacheType = CACHE_ANYTHING;
+$GLOBALS['smwgCacheType'] = CACHE_ANYTHING;
 ##
 
 ###
@@ -543,7 +543,7 @@ $smwgCacheType = CACHE_ANYTHING;
 #
 # @since 1.9
 ##
-$smwgCacheUsage = array(
+$GLOBALS['smwgCacheUsage'] = array(
 	'smwgWantedPropertiesCache' => true,
 	'smwgWantedPropertiesCacheExpiry' => 3600,
 	'smwgUnusedPropertiesCache' => true,
@@ -563,7 +563,7 @@ $smwgCacheUsage = array(
 # @requires  $smwgCacheType be set
 # @default true
 ##
-$smwgAutoRefreshOnPurge = true;
+$GLOBALS['smwgAutoRefreshOnPurge'] = true;
 ##
 
 ###
@@ -575,7 +575,7 @@ $smwgAutoRefreshOnPurge = true;
 # @requires  $smwgCacheType be set
 # @default true
 ##
-$smwgAutoRefreshOnPageMove = true;
+$GLOBALS['smwgAutoRefreshOnPageMove'] = true;
 ##
 
 ##
@@ -603,7 +603,7 @@ $smwgAutoRefreshOnPageMove = true;
 #
 # Example: If you have a property named 'Age' which is of type 'Number' then add in LocalSettings:
 #
-# 	$smwgFixedProperties = array(
+# 	$GLOBALS['smwgFixedProperties'] = array(
 #		'Age' => SMWDataItem::TYPE_NUMBER
 #  	);
 #
@@ -613,7 +613,7 @@ $smwgAutoRefreshOnPageMove = true;
 #
 # @var array
 ##
-$smwgFixedProperties = array();
+$GLOBALS['smwgFixedProperties'] = array();
 
 ###
 # Sets a threshold value for when a property is being highlighted as "hardly
@@ -623,7 +623,7 @@ $smwgFixedProperties = array();
 #
 # default = 5
 ##
-$smwgPropertyLowUsageThreshold = 5;
+$GLOBALS['smwgPropertyLowUsageThreshold'] = 5;
 ##
 
 ###
@@ -633,7 +633,7 @@ $smwgPropertyLowUsageThreshold = 5;
 #
 # default = true (legacy behaviour)
 ##
-$smwgPropertyZeroCountDisplay = true;
+$GLOBALS['smwgPropertyZeroCountDisplay'] = true;
 
 ###
 # Sets whether or not a factbox content should be stored in cache. This will
@@ -649,7 +649,7 @@ $smwgPropertyZeroCountDisplay = true;
 # @requires $smwgCacheType be set
 # @default true
 ##
-$smwgFactboxUseCache = true;
+$GLOBALS['smwgFactboxUseCache'] = true;
 ##
 
 ###
@@ -665,7 +665,7 @@ $smwgFactboxUseCache = true;
 # @requires $smwgCacheType be set
 # @default true
 ##
-$smwgFactboxCacheRefreshOnPurge = true;
+$GLOBALS['smwgFactboxCacheRefreshOnPurge'] = true;
 ##
 
 ###
@@ -677,5 +677,5 @@ $smwgFactboxCacheRefreshOnPurge = true;
 #
 # @since 1.9
 ##
-$smwgDeferredPropertyUpdate = false;
+$GLOBALS['smwgDeferredPropertyUpdate'] = false;
 ##
