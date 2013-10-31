@@ -12,6 +12,12 @@ use ApiBase;
 /**
  * Api module to browse a subject
  *
+ * @note Browsing of a subobject subject is limited to its "parent" subject,
+ * meaning that a request for a "Foo#_ed5a9979db6609b32733eda3fb747d21" subject
+ * will produce information for "Foo" as a whole including its subobjects
+ * because MW's WebRequest (responsible for handling request data sent by a
+ * browser) will eliminate any fragments (indicated by "#") to an Api consumer
+ *
  * @ingroup Api
  *
  * @licence GNU GPL v2+
@@ -39,22 +45,44 @@ class BrowseBySubject extends Base {
 	 * @since 1.9
 	 */
 	protected function getSubject( $text ) {
-		return DIWikiPage::newFromTitle( $this->newFromText( $text ) );
+		return DIWikiPage::newFromTitle(
+			$this->assertValidTitle( Title::newFromText( $text ) )
+		);
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param Title|null $title
+	 *
+	 * @return Title
+	 */
+	protected function assertValidTitle( $title ) {
+
+		if ( $title instanceOf Title && $title->isRedirect() ) {
+
+			$page = $this->withContext()->getDependencyBuilder()->newObject( 'WikiPage', array(
+				'Title' => $title
+			) );
+
+			$title = $this->assertValidTitle( $page->getRedirectTarget() );
+		}
+
+		if ( $title instanceof Title && $title->isValidRedirectTarget() ) {
+			return $title;
+		}
+
+		$this->isInvalidTitle( $title );
 	}
 
 	/**
 	 * @codeCoverageIgnore
+	 *
 	 * @since 1.9
+	 * @throws UsageException
 	 */
-	protected function newFromText( $text ) {
-
-		$title = Title::newFromText( $text );
-
-		if ( $title instanceOf Title ) {
-			return $title;
-		}
-
-		$this->dieUsageMsg( array( 'invalidtitle', $text ) );
+	protected function isInvalidTitle( $title ) {
+		$this->dieUsageMsg( array( 'invalidtitle', $title ) );
 	}
 
 	/**
@@ -82,7 +110,7 @@ class BrowseBySubject extends Base {
 	 *
 	 * @note If the subobject already exists within the current SemanticData
 	 * instance it will not be imported again (this avoids calling the Store
-	 * again)
+	 * repeatedly)
 	 *
 	 * @since 1.9
 	 */

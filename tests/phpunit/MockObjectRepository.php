@@ -318,25 +318,13 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$wikiPage->expects( $this->any() )
-			->method( 'getTimestamp' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTimestamp' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
-		$wikiPage->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
+			$wikiPage->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'getRevision' )
-			->will( $this->returnValue( $this->builder->setValue( 'getRevision' ) ) );
-
-		$wikiPage->expects( $this->any() )
-			->method( 'getParserOutput' )
-			->will( $this->returnValue( $this->builder->setValue( 'getParserOutput' ) ) );
-
-		$wikiPage->expects( $this->any() )
-			->method( 'makeParserOptions' )
-			->will( $this->returnValue( $this->builder->setValue( 'makeParserOptions' ) ) );
+		}
 
 		return $wikiPage;
 	}

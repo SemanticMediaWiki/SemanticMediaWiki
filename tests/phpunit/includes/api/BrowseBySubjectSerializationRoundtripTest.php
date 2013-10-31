@@ -34,7 +34,9 @@ class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 	 * @since 1.9
 	 */
 	private function newSemanticData( $text ) {
-		return $data = new SemanticData( DIWikiPage::newFromTitle( $this->newTitle( NS_MAIN, $text ) ) );
+		return $data = new SemanticData(
+			DIWikiPage::newFromTitle( $this->newTitle( NS_MAIN, $text ) )
+		);
 	}
 
 	/**
@@ -45,13 +47,18 @@ class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 	 */
 	public function testExecuteOnRawModeAndMockStore( $setup ) {
 
-		$api = new BrowseBySubject( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browsebysubject' );
-		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $setup['store'] );
-		$api->getMain()->getResult()->setRawMode();
+		$apiMain  = $this->getApiMain( array( 'subject' => $setup['subject'] ) );
+		$instance = new BrowseBySubject( $apiMain, 'browsebysubject' );
 
-		$api->execute();
+		$instance->withContext()
+			->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Store', $setup['store'] );
 
-		$this->assertStructuralIntegrity( $setup, $api->getResultData() );
+		$instance->getMain()->getResult()->setRawMode();
+		$instance->execute();
+
+		$this->assertStructuralIntegrity( $setup, $instance->getResultData() );
 
 	}
 
@@ -62,11 +69,17 @@ class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 	 */
 	public function testExecuteOnMockStore( $setup ) {
 
-		$api = new BrowseBySubject( $this->getApiMain( array( 'subject' => $setup['subject'] ) ), 'browsebysubject' );
-		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $setup['store'] );
-		$api->execute();
+		$apiMain  = $this->getApiMain( array( 'subject' => $setup['subject'] ) );
+		$instance = new BrowseBySubject( $apiMain, 'browsebysubject' );
 
-		$result = $api->getResultData();
+		$instance->withContext()
+			->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Store', $setup['store'] );
+
+		$instance->execute();
+
+		$result = $instance->getResultData();
 
 		$this->assertStructuralIntegrity( $setup, $result );
 

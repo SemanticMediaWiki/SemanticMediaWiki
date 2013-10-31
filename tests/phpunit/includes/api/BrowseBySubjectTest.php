@@ -89,6 +89,38 @@ class BrowseBySubjectTest extends ApiTestCase {
 	}
 
 	/**
+	 * @dataProvider redirectDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testRedirectTitleOnMockStore( $setup ) {
+
+		$apiMain  = $this->getApiMain( array('subject' => 'Foo' ) );
+		$instance = new BrowseBySubject( $apiMain, 'browsebysubject' );
+
+		$container = $instance->withContext()->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Store', $setup['store'] );
+		$container->registerObject( 'WikiPage', $setup['wikiPage'] );
+
+		$reflector = $this->newReflector();
+		$assertValidTitle = $reflector->getMethod( 'assertValidTitle' );
+		$assertValidTitle->setAccessible( true );
+
+		try {
+
+			$assertValidTitle->invoke( $instance, $setup['title'] );
+			$instance->getMain()->getResult()->setRawMode();
+			$instance->execute();
+
+		} catch ( \UsageException $e ) {
+			$this->assertTrue( true );
+		};
+
+		$this->assertStructuralIntegrity( $setup, $instance->getResultData() );
+
+	}
+
+	/**
 	 * The Serializer enforces a specific output format therefore expected
 	 * elements are verified
 	 *
@@ -131,6 +163,53 @@ class BrowseBySubjectTest extends ApiTestCase {
 				'subject'    => 'Main_Page',
 				'hasSubject' => true,
 				'hasResult'  => true
+			)
+		);
+
+		return $provider;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function redirectDataProvider() {
+
+		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
+			'getSemanticData' => $this->newSemanticData( 'Foo-redirect' )
+		) );
+
+		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
+			'isRedirect' => true
+		) );
+
+		$mockWikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
+			'getRedirectTarget' => $this->newTitle()
+		) );
+
+		$provider = array();
+
+		// #0 Valid
+		$provider[] = array(
+			array(
+				'store'      => $mockStore,
+				'wikiPage'   => $mockWikiPage,
+				'title'      => $mockTitle,
+				'hasSubject' => true,
+				'hasResult'  => true
+			)
+		);
+
+		// #1 Invalid, throws UsageException
+		$mockWikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
+			'getRedirectTarget'     => null,
+			'isValidRedirectTarget' => false
+		) );
+
+		$provider[] = array(
+			array(
+				'store'     => $mockStore,
+				'wikiPage'  => $mockWikiPage,
+				'title'     => $mockTitle,
 			)
 		);
 
