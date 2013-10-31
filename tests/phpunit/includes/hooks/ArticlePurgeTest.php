@@ -85,11 +85,13 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 			'Asserts the autorefresh cache status before processing'
 		);
 
-		// Travis 210.5
+		// Travis 210.5, 305.3
+		$travis = $cache->setKey( $id )->get();
+		$travisText = json_encode( $travis );
 		$this->assertEquals(
 			$expected['factboxPreProcess'],
-			$cache->setKey( $id )->get(),
-			'Asserts the factbox cache status before processing'
+			$travis,
+			"Asserts the factbox cache status before processing, {$travisText}"
 		);
 
 		$this->assertFalse(
