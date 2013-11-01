@@ -5,30 +5,22 @@ namespace SMW\Test;
 use SMW\Settings;
 
 /**
- * Test for the Settings class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
  * @covers \SMW\Settings
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SettingsTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -36,8 +28,6 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a Settings object
-	 *
 	 * @since 1.9
 	 *
 	 * @return Settings
@@ -47,12 +37,9 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Settings::__construct
 	 * @dataProvider settingsProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $settings
 	 */
 	public function testConstructor( array $settings ) {
 
@@ -64,12 +51,9 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Settings::get
 	 * @dataProvider settingsProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $settings
 	 */
 	public function testGet( array $settings ) {
 
@@ -84,10 +68,7 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Settings::get
-	 *
 	 * @since 1.9
-	 * @throws InvalidSettingsArgumentException
 	 */
 	public function testInvalidSettingsArgumentException() {
 
@@ -98,12 +79,9 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Settings::set
 	 * @dataProvider settingsProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $settings
 	 */
 	public function testSet( array $settings ) {
 
@@ -119,12 +97,9 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Settings::newFromGlobals
 	 * @dataProvider globalsSettingsProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $settings
 	 */
 	public function testNewFromGlobals( array $settings ) {
 
@@ -144,14 +119,9 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test Settings::get
 	 * @dataProvider nestedSettingsProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $test
-	 * @param $key
-	 * @param $expected
 	 */
 	public function testNestedSettingsIteration( $test, $key, $expected ) {
 
@@ -168,11 +138,11 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 * @par Example:
 	 * @code
 	 * array(
-	 *	'Foo' => $this->getRandomString(),
+	 *	'Foo' => $this->newRandomString(),
 	 *	'Bar' => array(
-	 *		'Lula' => $this->getRandomString(),
+	 *		'Lula' => $this->newRandomString(),
 	 *		'Lila' => array(
-	 *			'Lala' => $this->getRandomString(),
+	 *			'Lala' => $this->newRandomString(),
 	 *			'parent' => array(
 	 *				'child' => array( 'Lisa', 'Lula', array( 'Lila' ) )
 	 *				)
@@ -185,9 +155,9 @@ class SettingsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function nestedSettingsProvider() {
 
-		$Foo  = $this->getRandomString();
-		$Lula = $this->getRandomString();
-		$Lala = $this->getRandomString();
+		$Foo  = $this->newRandomString();
+		$Lula = $this->newRandomString();
+		$Lala = $this->newRandomString();
 
 		$child  = array( 'Lisa', 'Lula', array( 'Lila' ) );
 		$parent = array( 'child' => $child );

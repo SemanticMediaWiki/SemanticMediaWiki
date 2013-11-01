@@ -34,7 +34,7 @@ class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 	 * @since 1.9
 	 */
 	private function newSemanticData( $text ) {
-		return $data = new SemanticData(
+		return new SemanticData(
 			DIWikiPage::newFromTitle( $this->newTitle( NS_MAIN, $text ) )
 		);
 	}

@@ -5,17 +5,6 @@ namespace SMW\Test;
 use SMW\SimpleDictionary;
 
 /**
- * Tests for the SimpleDictionary class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\SimpleDictionary
  * @covers \SMW\ObjectStorage
  *
@@ -23,12 +12,15 @@ use SMW\SimpleDictionary;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -36,11 +28,7 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SimpleDictionary object
-	 *
 	 * @since 1.9
-	 *
-	 * @param array $SimpleDictionary
 	 *
 	 * @return SimpleDictionary
 	 */
@@ -49,8 +37,6 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDictionary::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -58,8 +44,6 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDictionary::has
-	 *
 	 * @since 1.9
 	 */
 	public function testInvalidArgumentExceptionHas() {
@@ -69,8 +53,6 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDictionary::set
-	 *
 	 * @since 1.9
 	 */
 	public function testInvalidArgumentExceptionSet() {
@@ -80,8 +62,6 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDictionary::remove
-	 *
 	 * @since 1.9
 	 */
 	public function testInvalidArgumentExceptionRemove() {
@@ -91,8 +71,6 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDictionary::get
-	 *
 	 * @since 1.9
 	 */
 	public function testOutOfBoundsException() {
@@ -102,17 +80,13 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDictionary::get
-	 * @test SimpleDictionary::set
-	 * @test SimpleDictionary::toArray
-	 * @test SimpleDictionary::remove
 	 * @dataProvider arrayDataProvider
 	 *
 	 * @since 1.9
 	 */
 	public function testRoundTrip( $setup, $expected ) {
 
-		$newValue = $this->getRandomString();
+		$newValue = $this->newRandomString();
 		$instance = $this->newInstance( $setup['array'] );
 
 		// Get
@@ -143,9 +117,6 @@ class SimpleDictionaryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test SimpleDictionary::merge
-	 * @test SimpleDictionary::toArray
-	 *
 	 * @since 1.9
 	 */
 	public function testMerge() {

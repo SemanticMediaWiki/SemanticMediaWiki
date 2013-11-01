@@ -22,23 +22,19 @@ use ReflectionClass;
 use SMWDataItem;
 
 /**
- * Class contains general purpose methods
+ * @codeCoverageIgnore
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Class contains general purpose methods
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 
@@ -95,26 +91,12 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 *
 	 * @param $namespace
-	 *
-	 * @return Title
-	 */
-	protected function getTitle( $namespace = NS_MAIN ) {
-		return $this->newTitle( $namespace );
-	}
-
-	/**
-	 * Helper method that returns a randomized Title object to avoid results
-	 * are influenced by cross instantiated objects with the same title name
-	 *
-	 * @since 1.9
-	 *
-	 * @param $namespace
 	 * @param $text|null
 	 *
 	 * @return Title
 	 */
 	protected function newTitle( $namespace = NS_MAIN, $text = null ) {
-		return Title::newFromText( $text === null ? $this->getRandomString() : $text, $namespace );
+		return Title::newFromText( $text === null ? $this->newRandomString() : $text, $namespace );
 	}
 
 	/**
@@ -182,7 +164,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return DIWikiPage
 	 */
 	protected function getSubject( $namespace = NS_MAIN ) {
-		return DIWikiPage::newFromTitle( $this->getTitle( $namespace ) );
+		return DIWikiPage::newFromTitle( $this->newTitle( $namespace ) );
 	}
 
 	/**
@@ -195,20 +177,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return DIWikiPage
 	 */
 	protected function newSubject( Title $title = null ) {
-		return DIWikiPage::newFromTitle( $title === null ? $this->getTitle() : $title );
-	}
-
-	/**
-	 * Helper method that returns a Settings object
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $settings
-	 *
-	 * @return Settings
-	 */
-	protected function getSettings( array $settings = array() ) {
-		return $this->newSettings( $settings );
+		return DIWikiPage::newFromTitle( $title === null ? $this->newTitle() : $title );
 	}
 
 	/**
@@ -222,19 +191,6 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected function newSettings( array $settings = array() ) {
 		return Settings::newFromArray( $settings );
-	}
-
-	/**
-	 * Helper method that returns a random string
-	 *
-	 * @since 1.9
-	 *
-	 * @param $length
-	 *
-	 * @return string
-	 */
-	protected function getRandomString( $length = 10, $prefix = null ) {
-		return $this->newRandomString( $length, $prefix );
 	}
 
 	/**
@@ -362,12 +318,12 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected function assertPropertyValues( DIProperty $property, $dataItems, array $expected ) {
 
-		foreach ( $dataItems as $dataItem ){
+		foreach ( $dataItems as $dataItem ) {
 
 			$dataValue = DataValueFactory::newDataItemValue( $dataItem, $property );
 			$DItype = $dataValue->getDataItem()->getDIType();
 
-			if ( $DItype === SMWDataItem::TYPE_WIKIPAGE ){
+			if ( $DItype === SMWDataItem::TYPE_WIKIPAGE ) {
 
 				$this->assertContains(
 					$dataValue->getWikiValue(),
@@ -375,7 +331,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 					'asserts that the SemanticData container contained a property value of TYPE_WIKIPAGE'
 				);
 
-			} else if ( $DItype === SMWDataItem::TYPE_NUMBER ){
+			} else if ( $DItype === SMWDataItem::TYPE_NUMBER ) {
 
 				$this->assertContains(
 					$dataValue->getNumber(),
@@ -383,7 +339,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 					'asserts that the SemanticData container contained a property value of TYPE_NUMBER'
 				);
 
-			} else if ( $DItype === SMWDataItem::TYPE_TIME ){
+			} else if ( $DItype === SMWDataItem::TYPE_TIME ) {
 
 				$this->assertContains(
 					$dataValue->getISO8601Date(),
@@ -391,7 +347,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 					'asserts that the SemanticData container contained a property value of TYPE_TIME'
 				);
 
-			} else if ( $DItype === SMWDataItem::TYPE_BLOB ){
+			} else if ( $DItype === SMWDataItem::TYPE_BLOB ) {
 
 				$this->assertContains(
 					$dataValue->getWikiValue(),

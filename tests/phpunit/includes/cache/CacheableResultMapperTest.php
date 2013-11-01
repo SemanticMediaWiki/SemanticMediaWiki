@@ -6,29 +6,21 @@ use SMW\CacheableResultMapper;
 use SMW\SimpleDictionary;
 
 /**
- * Tests for the CacheableResultMapper class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\CacheableResultMapper
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class CacheableResultMapperTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -36,11 +28,7 @@ class CacheableResultMapperTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a CacheableResultMapper object
-	 *
 	 * @since 1.9
-	 *
-	 * @param $result
 	 *
 	 * @return CacheableResultMapper
 	 */
@@ -58,8 +46,6 @@ class CacheableResultMapperTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test CacheableResultMapper::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -67,15 +53,12 @@ class CacheableResultMapperTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test CacheableResultMapper::recache
-	 * @test CacheableResultMapper::fetchFromCache
-	 *
 	 * @since 1.9
 	 */
 	public function testRoundTrip() {
 
-		$id       = $this->getRandomString();
-		$expected = array( $this->getRandomString(), $this->getRandomString() );
+		$id       = $this->newRandomString();
+		$expected = array( $this->newRandomString(), $this->newRandomString() );
 		$instance = $this->newInstance( $id, true, rand( 100, 200 ) );
 
 		// Initial fetch(without any data present) must fail

@@ -6,31 +6,21 @@ use SMW\RecurringEvents;
 use SMW\ParserParameterFormatter;
 
 /**
- * Tests for the RecurringEvents class.
- *
- * @since 1.9
- *
- * @file
- * @ingroup Test
- *
- * @licence GNU GPL v2+
- * @author mwjames
- */
-
-/**
- * Tests for the RecurringEvents class
  * @covers \SMW\RecurringEvents
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class RecurringEventsTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -38,8 +28,143 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Provides sample data normally found in connection with {{#set_recurring_event}}
+	 * @since  1.9
 	 *
+	 * @return RecurringEvents
+	 */
+	private function newInstance( array $params ) {
+
+		$parameters = new ParserParameterFormatter( $params );
+
+		$settings = $this->newSettings( array(
+			'smwgDefaultNumRecurringEvents' => 10,
+			'smwgMaxNumRecurringEvents' => 50
+		) );
+
+		return new RecurringEvents( $parameters->toArray(), $settings );
+	}
+
+	/**
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testConstructor( array $params ) {
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance( $params ) );
+	}
+
+	/**
+	 * @since  1.9
+	 */
+	public function testMissingParametersExceptions() {
+
+		$this->setExpectedException( 'PHPUnit_Framework_Error' );
+		$this->assertInstanceOf( $this->getClass(), new RecurringEvents( '' , ''  ) );
+
+	}
+
+	/**
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testMissingOptionsExceptions( array $params ) {
+		$this->setExpectedException( 'PHPUnit_Framework_Error' );
+		$parameters = new ParserParameterFormatter( $params );
+
+		$instance = new RecurringEvents( $parameters, '' );
+		$this->assertInstanceOf( $this->getClass(), $instance );
+	}
+
+	/**
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testGetErrors( array $params, array $expected ) {
+		$this->assertCount( $expected['errors'], $this->newInstance( $params )->getErrors() );
+	}
+
+	/**
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testGetProperty( array $params, array $expected ) {
+		$this->assertEquals( $expected['property'], $this->newInstance( $params )->getProperty() );
+	}
+
+	/**
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testGetParameters( array $params, array $expected ) {
+		$this->assertEquals( $expected['parameters'], $this->newInstance( $params )->getParameters() );
+	}
+
+	/**
+	 * @dataProvider getParametersDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testGetDates( array $params, array $expected ) {
+		$this->assertEquals( $expected['dates'], $this->newInstance( $params )->getDates() );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getMassInsertDataProvider() {
+		return array(
+			array(
+				array(
+					'property=Has birthday',
+					'start=01 Feb 1970',
+					'Has title=Birthday',
+					'unit=month', 'period=12',
+					'limit=500',
+				),
+				array(
+					'errors' => 0,
+					'count' => 501,
+					'property' => '',
+					'parameters' => array()
+				)
+			)
+		);
+	}
+
+	/**
+	 * @dataProvider getMassInsertDataProvider
+	 *
+	 * @since 1.
+	 */
+	public function testMassInsert( array $params, array $expected ) {
+		$this->assertCount( $expected['count'], $this->newInstance( $params )->getDates() );
+	}
+
+	/**
+	 * @test RecurringEvents::getJulianDay
+	 *
+	 * @since 1.9
+	 */
+	public function testGetJulianDay() {
+		$instance = $this->newInstance( array() );
+
+		// SMWDIWikiPage stub object
+		$dataValue = $this->getMockBuilder( 'SMWTimeValue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( null ) );
+
+		$this->assertEquals( null, $instance->getJulianDay( $dataValue ) );
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getParametersDataProvider() {
@@ -285,195 +410,5 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 				)
 			),
 		);
-	}
-
-	/**
-	 * Helper method that returns IParameterFormatter object
-	 *
-	 * @return ParserParameterFormatter
-	 */
-	private function getParameters( array $params ) {
-		$parameters = new ParserParameterFormatter( $params );
-		return $parameters->toArray();
-	}
-
-	/**
-	 * Helper method that returns Settings object
-	 *
-	 * @return Settings
-	 */
-	protected function getRecurringEventsSettings() {
-		return $this->getSettings( array(
-			'smwgDefaultNumRecurringEvents' => 10,
-			'smwgMaxNumRecurringEvents' => 50
-			)
-		);
-	}
-
-	/**
-	 * Helper method that returns an RecurringEvents object
-	 *
-	 * @return RecurringEvents
-	 */
-	private function getInstance( array $params ) {
-		return new RecurringEvents(
-			$this->getParameters( $params ),
-			$this->getRecurringEventsSettings()
-		);
-	}
-
-	/**
-	 * @test RecurringEvents::__construct (parameters exceptions)
-	 *
-	 * @since  1.9
-	 */
-	public function testMissingParametersExceptions() {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$instance = new RecurringEvents( '' , '' );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test RecurringEvents::__construct
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 */
-	public function testInstance( array $params ) {
-		$instance = $this->getInstance( $params );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test RecurringEvents::__construct (options exceptions)
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 */
-	public function testMissingOptionsExceptions( array $params ) {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$parameters = $this->getParameters( $params );
-
-		$instance = new RecurringEvents( $parameters, '' );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
-	 * @test RecurringEvents::getErrors
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testGetErrors( array $params, array $expected ) {
-		$instance = $this->getInstance( $params );
-		$this->assertCount( $expected['errors'], $instance->getErrors() );
-	}
-
-	/**
-	 * @test RecurringEvents::getProperty
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testGetProperty( array $params, array $expected ) {
-		$instance = $this->getInstance( $params );
-		$this->assertEquals( $expected['property'], $instance->getProperty() );
-	}
-
-	/**
-	 * @test RecurringEvents::getParameters
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testGetParameters( array $params, array $expected ) {
-		$instance = $this->getInstance( $params );
-		$this->assertEquals( $expected['parameters'], $instance->getParameters() );
-	}
-
-	/**
-	 * @test RecurringEvents::getDates
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testGetDates( array $params, array $expected ) {
-		$instance = $this->getInstance( $params );
-		$this->assertEquals( $expected['dates'], $instance->getDates() );
-	}
-
-	/**
-	 * Provides sample data for a mass insert
-	 *
-	 * @return array
-	 */
-	public function getMassInsertDataProvider() {
-		return array(
-			array(
-				array(
-					'property=Has birthday',
-					'start=01 Feb 1970',
-					'Has title=Birthday',
-					'unit=month', 'period=12',
-					'limit=500',
-				),
-				array(
-					'errors' => 0,
-					'count' => 501,
-					'property' => '',
-					'parameters' => array()
-				)
-			)
-		);
-	}
-
-	/**
-	 * @test RecurringEvents::getDates (mass insert)
-	 * @dataProvider getMassInsertDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 */
-	public function testMassInsert( array $params, array $expected ) {
-		$instance = $this->getInstance( $params );
-		$this->assertCount( $expected['count'], $instance->getDates() );
-	}
-
-	/**
-	 * @test RecurringEvents::getJulianDay
-	 *
-	 * @since 1.9
-	 */
-	public function testGetJulianDay() {
-		$instance = $this->getInstance( array() );
-
-		// SMWDIWikiPage stub object
-		$dataValue = $this->getMockBuilder( 'SMWTimeValue' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$dataValue->expects( $this->any() )
-			->method( 'getDataItem' )
-			->will( $this->returnValue( null ) );
-
-		$this->assertEquals( null, $instance->getJulianDay( $dataValue ) );
 	}
 }

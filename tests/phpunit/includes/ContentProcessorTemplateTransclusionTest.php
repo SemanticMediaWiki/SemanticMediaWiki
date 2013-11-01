@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\ContentProcessor;
-use SMW\EmptyContext;
+use SMW\BaseContext;
 
 use Title;
 use ParserOutput;
@@ -35,7 +35,7 @@ class ContentProcessorTemplateTransclusionTest extends ParserTestCase {
 	 */
 	private function newInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
 
-		$context = new EmptyContext();
+		$context = new BaseContext();
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
 
 		$parserData = $this->newParserData( $title, $parserOutput );

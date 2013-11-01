@@ -5,29 +5,21 @@ namespace SMW\Test;
 use SMW\HashIdGenerator;
 
 /**
- * Tests for the HashIdGenerator class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\HashIdGenerator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class HashIdGeneratorTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -35,58 +27,50 @@ class HashIdGeneratorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a HashIdGenerator object
-	 *
 	 * @return HashIdGenerator
 	 */
-	private function getInstance( $hashable = null, $prefix = null ) {
+	private function newInstance( $hashable = null, $prefix = null ) {
 		return new HashIdGenerator( $hashable, $prefix );
 	}
 
 	/**
-	 * @test HashIdGenerator::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
-	 * @test HashIdGenerator::getPrefix
-	 *
 	 * @since 1.9
 	 */
 	public function testGetPrefix() {
 
-		$instance = $this->getInstance( null, null );
+		$instance = $this->newInstance( null, null );
 		$this->assertNull( $instance->getPrefix() );
 
-		$prefix   = $this->getRandomString();
-		$instance = $this->getInstance( null, $prefix );
+		$prefix   = $this->newRandomString();
+		$instance = $this->newInstance( null, $prefix );
 		$this->assertEquals( $prefix, $instance->getPrefix() );
 
 		// Set prefix
-		$prefix   = $this->getRandomString();
-		$instance = $this->getInstance( null, null );
+		$prefix   = $this->newRandomString();
+		$instance = $this->newInstance( null, null );
 		$this->assertEquals( $prefix, $instance->setPrefix( $prefix )->getPrefix() );
 
 	}
 
 	/**
-	 * @test HashIdGenerator::generateId
-	 *
 	 * @since 1.9
 	 */
 	public function testGenerateId() {
 
-		$hashable = $this->getRandomString();
-		$prefix   = $this->getRandomString();
+		$hashable = $this->newRandomString();
+		$prefix   = $this->newRandomString();
 
-		$instance = $this->getInstance( $hashable, null );
+		$instance = $this->newInstance( $hashable, null );
 		$this->assertInternalType( 'string', $instance->generateId() );
 
-		$instance = $this->getInstance( $hashable, $prefix );
+		$instance = $this->newInstance( $hashable, $prefix );
 		$this->assertInternalType( 'string', $instance->generateId() );
 		$this->assertContains( $prefix, $instance->generateId() );
 

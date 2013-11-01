@@ -100,7 +100,7 @@ class CacheableResultCollectorTest extends SemanticMediaWikiTestCase {
 
 		// #1 Cached scenario
 		$id = rand();
-		$result = array( $this->getRandomString(), $this->getRandomString() );
+		$result = array( $this->newRandomString(), $this->newRandomString() );
 
 		$provider[] = array(
 			array(

@@ -66,7 +66,7 @@ class PropertyTableDefinitionBuilderTest extends \SMW\Test\SemanticMediaWikiTest
 	 */
 	public function testFixedProperties() {
 
-		$propertyKey = $this->getRandomString();
+		$propertyKey = $this->newRandomString();
 		$test = array( $propertyKey => SMWDataItem::TYPE_NUMBER );
 
 		$instance = $this->newInstance( array(), array(), $test );

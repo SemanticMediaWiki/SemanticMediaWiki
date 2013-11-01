@@ -8,29 +8,21 @@ use SMW\CacheHandler;
 use HashBagOStuff;
 
 /**
- * Tests for the CacheHandler class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\CacheHandler
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class CacheHandlerTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -38,8 +30,6 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a CacheHandler object
-	 *
 	 * @note HashBagOStuff is used as test interface because it stores
 	 * content in an associative array (which is not going to persist)
 	 *
@@ -50,9 +40,6 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test CacheHandler::__construct
-	 * @test CacheHandler::getCache
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -61,9 +48,6 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test CacheHandler::newFromId
-	 * @test CacheHandler::isEnabled
-	 *
 	 * @since 1.9
 	 */
 	public function testNewFromId() {
@@ -98,17 +82,9 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test CacheHandler::key
-	 * @test CacheHandler::set
-	 * @test CacheHandler::get
-	 * @test CacheHandler::delete
-	 * @test CacheHandler::setCacheEnabled
 	 * @dataProvider keyItemDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $key
-	 * @param $item
 	 */
 	public function testEnabledCache( $key, $item ) {
 
@@ -135,17 +111,9 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test CacheHandler::key
-	 * @test CacheHandler::set
-	 * @test CacheHandler::get
-	 * @test CacheHandler::delete
-	 * @test CacheHandler::setCacheEnabled
 	 * @dataProvider keyItemDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $key
-	 * @param $item
 	 */
 	public function testDisabledCache( $key, $item ) {
 
@@ -167,19 +135,17 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Provide sample data containing a randomized key and item
-	 *
 	 * @return array
 	 */
 	public function keyItemDataProvider() {
 
 		// Generates a random key
-		$key = $this->getRandomString( 10 );
+		$key = $this->newRandomString( 10 );
 
 		// Generates a random text object
 		$item = array(
-			$this->getRandomString( 10 ),
-			$this->getRandomString( 20 )
+			$this->newRandomString( 10 ),
+			$this->newRandomString( 20 )
 		);
 
 		return array( array( $key, $item ) );

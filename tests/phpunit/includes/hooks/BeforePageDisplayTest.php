@@ -51,8 +51,6 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Returns a BeforePageDisplay object
-	 *
 	 * @since 1.9
 	 */
 	public function newInstance( OutputPage $outputPage ) {
@@ -65,8 +63,6 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test BeforePageDisplay::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -74,7 +70,6 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test BeforePageDisplay::process
 	 * @dataProvider titleDataProvider
 	 *
 	 * @since 1.9
@@ -120,7 +115,7 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 				'title'  => $this->newMockBuilder()->newObject( 'Title', array(
 					'isSpecialPage'   => false,
 					'getPageLanguage' => $this->getLanguage(),
-					'getPrefixedText' => $this->getRandomString()
+					'getPrefixedText' => $this->newRandomString()
 				) )
 			),
 			array(
@@ -134,7 +129,7 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 				'title'  => $this->newMockBuilder()->newObject( 'Title', array(
 					'isSpecialPage'   => true,
 					'getPageLanguage' => $this->getLanguage(),
-					'getPrefixedText' => $this->getRandomString()
+					'getPrefixedText' => $this->newRandomString()
 				) )
 			),
 			array(

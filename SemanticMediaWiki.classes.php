@@ -332,12 +332,12 @@ return array(
 	'SMW\Test\SemanticMediaWikiTestCase'     => 'tests/phpunit/SemanticMediaWikiTestCase.php',
 	'SMW\Test\ParserTestCase'                => 'tests/phpunit/ParserTestCase.php',
 	'SMW\Test\ApiTestCase'                   => 'tests/phpunit/ApiTestCase.php',
-	'SMW\Test\MockSuperUser'                 => 'tests/phpunit/MockSuperUser.php',
-	'SMW\Test\MockObjectBuilder'             => 'tests/phpunit/MockObjectBuilder.php',
-	'SMW\Test\MockObjectRepository'          => 'tests/phpunit/MockObjectRepository.php',
 	'SMW\Test\SpecialPageTestCase'           => 'tests/phpunit/SpecialPageTestCase.php',
 	'SMW\Test\CompatibilityTestCase'         => 'tests/phpunit/CompatibilityTestCase.php',
-	'SMW\Test\MockUpdateObserver'            => 'tests/phpunit/MockUpdateObserver.php',
+	'SMW\Test\MockSuperUser'                 => 'tests/phpunit/mocks/MockSuperUser.php',
+	'SMW\Test\MockObjectBuilder'             => 'tests/phpunit/mocks/MockObjectBuilder.php',
+	'SMW\Test\MockObjectRepository'          => 'tests/phpunit/mocks/MockObjectRepository.php',
+	'SMW\Test\MockUpdateObserver'            => 'tests/phpunit/mocks/MockUpdateObserver.php',
 
 	// Jobs
 	'SMW\UpdateDispatcherJob' => 'includes/jobs/UpdateDispatcherJob.php',

@@ -87,7 +87,7 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 */
 	public function testGetResults() {
 
-		$property = $this->getRandomString();
+		$property = $this->newRandomString();
 		$expected = array( new DIProperty( $property ) );
 
 		$instance = $this->newInstance( $property );
@@ -160,8 +160,8 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	 * @return array
 	 */
 	public function getCacheNonCacheDataProvider() {
-		$propertyA = $this->getRandomString();
-		$propertyB = $this->getRandomString();
+		$propertyA = $this->newRandomString();
+		$propertyB = $this->newRandomString();
 
 		return array(
 			array(

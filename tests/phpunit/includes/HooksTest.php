@@ -11,17 +11,6 @@ use Parser;
 use LinksUpdate;
 
 /**
- * Tests for the SMWHooks class
- *
- * @since 1.9
- *
- * @file
- *
- * @license GNU GPL v2+
- * @author mwjames
- */
-
-/**
  * @covers \SMWHooks
  *
  * This class is testing implemented hooks and verifies consistency with its
@@ -31,6 +20,11 @@ use LinksUpdate;
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  *
  * The database group creates temporary tables which allows for testing without
  * accessing the production database.
@@ -58,7 +52,7 @@ class HooksTest extends \MediaWikiTestCase {
 	 *
 	 * @return string
 	 */
-	private function getRandomString( $length = 10 ) {
+	private function newRandomString( $length = 10 ) {
 		return substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
 	}
 
@@ -70,7 +64,7 @@ class HooksTest extends \MediaWikiTestCase {
 	 * @return Title
 	 */
 	private function getTitle( $text = '', $namespace = NS_MAIN ) {
-		return Title::newFromText( $text !== '' ? $text : $this->getRandomString(), $namespace);
+		return Title::newFromText( $text !== '' ? $text : $this->newRandomString(), $namespace);
 	}
 
 	/**
@@ -93,7 +87,7 @@ class HooksTest extends \MediaWikiTestCase {
 	 * @return User
 	 */
 	private function getUser() {
-		return User::newFromName( $this->getRandomString() );
+		return User::newFromName( $this->newRandomString() );
 	}
 
 	/**

@@ -5,23 +5,17 @@ namespace SMW\Test;
 use SMW\CacheIdGenerator;
 
 /**
- * Tests for the CacheIdGenerator class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\CacheIdGenerator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class CacheIdGeneratorTest extends SemanticMediaWikiTestCase {
 
@@ -48,8 +42,6 @@ class CacheIdGeneratorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -57,36 +49,32 @@ class CacheIdGeneratorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a CacheIdGenerator object
+	 * @since 1.9
 	 *
 	 * @return CacheIdGenerator
 	 */
-	private function getInstance( $hashable = null, $prefix = null ) {
+	private function newInstance( $hashable = null, $prefix = null ) {
 		return new CacheIdGenerator( $hashable, $prefix );
 	}
 
 	/**
-	 * @test CacheIdGenerator::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
-	 * @test CacheIdGenerator::getPrefix
-	 *
 	 * @since 1.9
 	 */
 	public function testGetPrefix() {
 
-		$instance = $this->getInstance( null, null );
+		$instance = $this->newInstance( null, null );
 		$this->assertInternalType( 'string', $instance->getPrefix() );
 		$this->assertContains( 'smw-test:smw', $instance->getPrefix() );
 
-		$prefix   = $this->getRandomString();
-		$instance = $this->getInstance( null, $prefix );
+		$prefix   = $this->newRandomString();
+		$instance = $this->newInstance( null, $prefix );
 
 		$this->assertInternalType( 'string', $instance->getPrefix() );
 		$this->assertContains( 'smw-test:smw:' . $prefix, $instance->getPrefix() );
@@ -94,19 +82,17 @@ class CacheIdGeneratorTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test CacheIdGenerator::generateId
-	 *
 	 * @since 1.9
 	 */
 	public function testGenerateId() {
 
-		$hashable = $this->getRandomString();
-		$prefix   = $this->getRandomString();
+		$hashable = $this->newRandomString();
+		$prefix   = $this->newRandomString();
 
-		$instance = $this->getInstance( $hashable, null );
+		$instance = $this->newInstance( $hashable, null );
 		$this->assertInternalType( 'string', $instance->generateId() );
 
-		$instance = $this->getInstance( $hashable, $prefix );
+		$instance = $this->newInstance( $hashable, $prefix );
 		$this->assertInternalType( 'string', $instance->generateId() );
 		$this->assertContains( $prefix, $instance->generateId() );
 

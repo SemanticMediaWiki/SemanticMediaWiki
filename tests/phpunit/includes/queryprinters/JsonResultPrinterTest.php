@@ -6,29 +6,22 @@ use SMW\JsonResultPrinter;
 use SMW\ResultPrinter;
 
 /**
- * Tests for the JsonResultPrinter class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\JsonResultPrinter
  *
  * @ingroup QueryPrinterTest
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class JsonResultPrinterTest extends QueryPrinterTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -36,7 +29,7 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 	}
 
 	/**
-	 * Helper method that returns a JsonResultPrinter object
+	 * @since 1.9
 	 *
 	 * @return JsonResultPrinter
 	 */
@@ -45,8 +38,6 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 	}
 
 	/**
-	 * @test JsonResultPrinter::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -54,8 +45,6 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 	}
 
 	/**
-	 * @test JsonResultPrinter::getMimeType
-	 *
 	 * @since 1.9
 	 */
 	public function testGetMimeType() {
@@ -69,7 +58,6 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 	}
 
 	/**
-	 * @test JsonResultPrinter::getFileName
 	 * @dataProvider filenameDataProvider
 	 *
 	 * @since 1.9
@@ -96,20 +84,16 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 		$provider[] = array( '' , 'result.json');
 
 		return $provider;
-
-
 	}
 
 	/**
-	 * @test JsonResultPrinter::getResultText
-	 *
 	 * @since 1.9
 	 */
 	public function testGetResultText() {
 
 		$result = array(
-			'lala' => $this->getRandomString(),
-			'lula' => $this->getRandomString()
+			'lala' => $this->newRandomString(),
+			'lula' => $this->newRandomString()
 		);
 
 		$expected = array_merge( $result, array( 'rows' => count( $result ) ) );

@@ -9,25 +9,17 @@ use SMWPropertyValue;
 use Title;
 
 /**
- * Tests for the SMW\DataValueFactory class
- *
- * @since 1.9
- *
- * @file
- * @ingroup SMW
- * @ingroup Test
- *
- * @licence GNU GPL v2+
- * @author mwjames
- */
-
-/**
  * @covers \SMW\DataValueFactory
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 
@@ -41,28 +33,18 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test DataValueFactory::getDataItemId
 	 * @dataProvider dataItemIdDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $typeId
-	 * @param $expectedId
 	 */
 	public function testGetDataItemId( $typeId, $expectedId ) {
 		$this->assertEquals( $expectedId, DataValueFactory::getDataItemId( $typeId ) );
 	}
 
 	/**
-	 * @test DataValueFactory::newTypeIdValue
 	 * @dataProvider typeIdValueDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $typeId
-	 * @param $value
-	 * @param $expectedValue
-	 * @param $expectedInstance
 	 */
 	public function testNewTypeIdValue( $typeId, $value, $expectedValue, $expectedInstance ) {
 
@@ -78,15 +60,9 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test DataValueFactory::newPropertyObjectValue
 	 * @dataProvider propertyObjectValueDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $propertyName
-	 * @param $value
-	 * @param $expectedValue
-	 * @param $expectedInstance
 	 */
 	public function testNewPropertyObjectValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
 
@@ -112,7 +88,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		$dataValue = DataValueFactory::newPropertyObjectValue(
 			$propertyDI,
 			$value,
-			$this->getRandomString(),
+			$this->newRandomString(),
 			$this->newSubject()
 		);
 
@@ -120,15 +96,9 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test DataValueFactory::addPropertyValue
 	 * @dataProvider propertyValueDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $propertyName
-	 * @param $value
-	 * @param $expectedValue
-	 * @param $expectedInstance
 	 */
 	public function testAddPropertyValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
 
@@ -151,7 +121,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		$dataValue = DataValueFactory::newPropertyValue(
 			$propertyName,
 			$value,
-			$this->getRandomString(),
+			$this->newRandomString(),
 			$this->newSubject()
 		);
 
@@ -159,26 +129,18 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test DataValueFactory::findTypeID
 	 * @dataProvider findTypeIdDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $typeId
-	 * @param $expectedId
 	 */
 	public function testFindTypeID( $typeId, $expectedId ) {
 		$this->assertEquals( $expectedId, DataValueFactory::findTypeID( $typeId ) );
 	}
 
 	/**
-	 * @test DataValueFactory::findTypeID
 	 * @dataProvider findTypeIdDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $typeId
-	 * @param $expectedId
 	 */
 	public function testFindTypeLabel( $textId, $id ) {
 
@@ -193,12 +155,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test DataValueFactory::getKnownTypeLabels
-	 *
 	 * @since 1.9
-	 *
-	 * @param $typeId
-	 * @param $expectedId
 	 */
 	public function testGetKnownTypeLabels() {
 
@@ -211,12 +168,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test DataValueFactory::registerDatatypeAlias
-	 *
 	 * @since 1.9
-	 *
-	 * @param $typeId
-	 * @param $expectedId
 	 */
 	public function testRegisterDatatypeAlias() {
 
@@ -231,13 +183,9 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test DataValueFactory::newDataItemValue
 	 * @dataProvider newDataItemValueDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param $typeId
-	 * @param $expectedId
 	 */
 	public function testNewDataItemValue( $setup ) {
 

@@ -9,29 +9,21 @@ use SMWQueryProcessor;
 use Title;
 
 /**
- * Tests for the QueryData class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\QueryData
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class QueryDataTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
@@ -39,9 +31,7 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a SMWQueryProcessor object
-	 *
-	 * @param array rawParams
+	 * @since 1.9
 	 *
 	 * @return QueryProcessor
 	 */
@@ -55,58 +45,44 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Helper method that returns a QueryData object
-	 *
-	 * @param Title|null $title
-	 *
-	 * @return QueryData
+	 * @since 1.9
 	 */
-	private function getInstance( Title $title = null ) {
+	private function newInstance( Title $title = null ) {
 		return new QueryData( $title );
 	}
 
 	/**
-	 * @test QueryData::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$instance = $this->getInstance( $this->getTitle() );
+		$instance = $this->newInstance( $this->newTitle() );
 		$this->assertInstanceOf( $this->getClass(), $instance );
 	}
 
 	/**
-	 * @test QueryData::getProperty
-	 *
 	 * @since 1.9
 	 */
 	public function testGetProperty() {
-		$instance = $this->getInstance( $this->getTitle() );
+		$instance = $this->newInstance( $this->newTitle() );
 		$this->assertInstanceOf( '\SMWDIProperty', $instance->getProperty() );
 	}
 
 	/**
-	 * @test QueryData::getErrors
-	 *
 	 * @since 1.9
 	 */
 	public function testGetErrors() {
-		$instance = $this->getInstance( $this->getTitle() );
+		$instance = $this->newInstance( $this->newTitle() );
 		$this->assertInternalType( 'array', $instance->getErrors() );
 	}
 
 	/**
-	 * @test QueryData::add
 	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testAddQueryData( array $params, array $expected ) {
-		$title = $this->getTitle();
-		$instance = $this->getInstance( $title );
+		$title = $this->newTitle();
+		$instance = $this->newInstance( $title );
 
 		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
 		$instance->setQueryId( new HashIdGenerator( $params ) );
@@ -118,20 +94,15 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test QueryData::add (Test instance exception)
 	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
-	 * @throws MWException
 	 */
 	public function testQueryIdException( array $params, array $expected ) {
 
 		$this->setExpectedException( '\SMW\UnknownIdException' );
-		$title = $this->getTitle();
-		$instance = $this->getInstance( $title );
+		$title = $this->newTitle();
+		$instance = $this->newInstance( $title );
 
 		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
 		$instance->add( $query, $formattedParams );
@@ -139,10 +110,6 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Provides data sample, the first array contains parametrized input
-	 * value while the second array contains expected return results for the
-	 * instantiated object.
-	 *
 	 * @return array
 	 */
 	public function queryDataProvider() {

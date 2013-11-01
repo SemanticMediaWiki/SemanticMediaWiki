@@ -98,7 +98,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testGetResults() {
 
-		$property = $this->getRandomString();
+		$property = $this->newRandomString();
 		$count    = rand();
 		$expected = array( new DIProperty( $property ), $count );
 
@@ -175,8 +175,8 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	 * @return array
 	 */
 	public function getCacheNonCacheDataProvider() {
-		$propertyA = $this->getRandomString();
-		$propertyB = $this->getRandomString();
+		$propertyA = $this->newRandomString();
+		$propertyB = $this->newRandomString();
 		$countA = rand();
 		$countB = rand();
 
