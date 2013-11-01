@@ -19,15 +19,13 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	 * @since  1.9
 	 */
 	public function __construct() {
-		$this->load();
+		$this->loadAtInstantiation();
 	}
 
 	/**
-	 * Load object definitions in advance
-	 *
 	 * @since  1.9
 	 */
-	public function load() {
+	protected function loadAtInstantiation() {
 
 		/**
 		 * Settings object definition
@@ -65,15 +63,13 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	}
 
 	/**
-	 * Load object definitions on request
-	 *
-	 * @see  DependencyContainer::loadObjects
+	 * @see BaseDependencyContainer::registerDefinitions
 	 *
 	 * @since  1.9
 	 *
 	 * @return array
 	 */
-	public function loadObjects() {
+	protected function getDefinitions() {
 		return array(
 			'ParserData'            => $this->getParserData(),
 			'NamespaceExaminer'     => $this->getNamespaceExaminer(),

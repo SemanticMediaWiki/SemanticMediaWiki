@@ -70,7 +70,7 @@ $container->registerObject( 'Quux', function( DependencyBuilder $builder ) {
 ### DependencyContainer
 * DependencyContainer is an interface that specifies how to register a DepencyObject.
 * BaseDependencyContainer implements the DependencyContainer and declares methods to retrieve and store object definitions
-* EmptyDependencyContainer is an empty container that extends BaseDependencyContainer
+* NullDependencyContainer is an empty container that extends BaseDependencyContainer
 * SharedDependencyContainer implements most common object definitions that are used within Semantic MediaWiki
 
 ```php

@@ -3,20 +3,14 @@
 namespace SMW;
 
 /**
- * Provides interfaces for dependency injection
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Interface specifying a dependency object
  *
  * @ingroup DependencyContainer
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 interface DependencyObject {
 
@@ -33,7 +27,7 @@ interface DependencyObject {
 	 *
 	 * @param DependencyBuilder $builder
 	 */
-	public function inheritDescription( DependencyBuilder $builder );
+	public function retrieveDefinition( DependencyBuilder $builder );
 
 }
 
@@ -52,10 +46,10 @@ interface DependencyContainer extends Accessible, Changeable, Combinable {
 	public function registerObject( $objectName, $objectSignature, $objectScope );
 
 	/**
-	 * Collects and map objects for deferred registration
+	 * Retrieves object definitions
 	 *
 	 * @since  1.9
 	 */
-	public function loadObjects();
+	public function loadAllDefinitions();
 
 }

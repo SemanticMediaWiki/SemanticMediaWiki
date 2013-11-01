@@ -80,7 +80,7 @@ return array(
 	'SMW\DependencyObject'                => 'includes/dic/DependencyContainer.php',
 	'SMW\DependencyContainer'             => 'includes/dic/DependencyContainer.php',
 	'SMW\BaseDependencyContainer'         => 'includes/dic/BaseDependencyContainer.php',
-	'SMW\EmptyDependencyContainer'        => 'includes/dic/EmptyDependencyContainer.php',
+	'SMW\NullDependencyContainer'         => 'includes/dic/NullDependencyContainer.php',
 	'SMW\SharedDependencyContainer'       => 'includes/dic/SharedDependencyContainer.php',
 
 	// Dependency Injector

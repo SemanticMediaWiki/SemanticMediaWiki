@@ -3,23 +3,17 @@
 namespace SMW;
 
 /**
- * Provides a DependencyContainer base class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * Implements the DependencyContainer interface and is responsible for handling
  * object storage, and retrieval of object definitions
  *
- * Examples and a more exhaustive description can be found at /di/README.md
+ * Examples and a more exhaustive description can be found at /docs/dic.md
  *
  * @ingroup DependencyContainer
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 abstract class BaseDependencyContainer extends ObjectStorage implements DependencyContainer {
 
@@ -60,11 +54,9 @@ abstract class BaseDependencyContainer extends ObjectStorage implements Dependen
 	}
 
 	/**
-	 * Returns storage array
+	 * @see ObjectStorage::detach
 	 *
-	 * @since 1.9
-	 *
-	 * @return array
+	 * @since  1.9
 	 */
 	public function toArray() {
 		return $this->storage;
@@ -75,10 +67,10 @@ abstract class BaseDependencyContainer extends ObjectStorage implements Dependen
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $mergeable
+	 * @return array
 	 */
 	public function merge( array $mergeable ) {
-		$this->storage = array_merge( $this->storage, $mergeable );
+		$this->storage = array_merge_recursive( $this->storage, $mergeable );
 	}
 
 	/**
@@ -94,7 +86,7 @@ abstract class BaseDependencyContainer extends ObjectStorage implements Dependen
 	}
 
 	/**
-	 * Register an object
+	 * @see DependencyContainer::registerObject
 	 *
 	 * @since  1.9
 	 *
@@ -107,12 +99,26 @@ abstract class BaseDependencyContainer extends ObjectStorage implements Dependen
 	}
 
 	/**
-	 * @see DependencyContainer::loadObjects
+	 * @see DependencyContainer::loadAllDefinitions
 	 *
 	 * @since  1.9
+	 *
+	 * @return array
 	 */
-	public function loadObjects() {
-		return array();
+	public function loadAllDefinitions() {
+
+		if ( !$this->has( 'def_' ) ) {
+			$this->set( 'def_', $this->getDefinitions() );
+		}
+
+		return $this->get( 'def_' );
 	}
+
+	/**
+	 * @since  1.9
+	 *
+	 * @return array
+	 */
+	protected abstract function getDefinitions();
 
 }

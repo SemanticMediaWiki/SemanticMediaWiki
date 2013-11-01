@@ -63,7 +63,7 @@ class EmptyContext implements ContextResource {
 	protected function register( DependencyBuilder $builder = null ) {
 
 		if ( $builder === null ) {
-			$builder = new SimpleDependencyBuilder( new EmptyDependencyContainer() );
+			$builder = new SimpleDependencyBuilder( new NullDependencyContainer() );
 		}
 
 		$builder->getContainer()->registerObject( 'Settings', null );

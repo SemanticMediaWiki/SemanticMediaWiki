@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\EmptyDependencyContainer;
+use SMW\NullDependencyContainer;
 use SMW\SimpleDependencyBuilder;
 use SMW\DependencyBuilder;
 use SMW\DependencyObject;
@@ -46,36 +46,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 *
-	 * @return DependencyContainer
-	 */
-	private function newDependencyContainer( $toArray = array() ) {
-
-		$container = $this->getMockBuilder( '\SMW\DependencyContainer' )
-			->disableOriginalConstructor()
-			->setMethods( array(
-				'preload',
-				'toArray',
-				'registerObject',
-				'has',
-				'get',
-				'set',
-				'remove',
-				'merge',
-				'loadObjects'
-				)
-			)
-			->getMock();
-
-		$container->expects( $this->any() )
-			->method( 'toArray' )
-			->will( $this->returnValue( $toArray ) );
-
-		return $container;
-	}
-
-	/**
-	 * @since 1.9
-	 *
 	 * @return SimpleDependencyBuilder
 	 */
 	private function newInstance( $dependencyContainer = null ) {
@@ -96,8 +66,12 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 		$instance = $this->newInstance();
 
+		$container = $this->newMockBuilder()->newObject( 'FakeDependencyContainer', array(
+			'toArray' => array( 'Test' => array( '123', 0 ) )
+		) );
+
 		// Register container
-		$instance->registerContainer( $this->newDependencyContainer( array( 'Test' => array( '123', 0 ) ) ) );
+		$instance->registerContainer( $container );
 
 		$this->assertEquals(
 			'123',
@@ -105,8 +79,12 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 			'asserts object creation'
 		);
 
+		$container = $this->newMockBuilder()->newObject( 'FakeDependencyContainer', array(
+			'toArray' => array( 'Test2' => array( 9001, 1 ) )
+		) );
+
 		// Register additional container and asserts that both objects are available
-		$instance->registerContainer( $this->newDependencyContainer( array( 'Test2' => array( 9001, 1 ) ) ) );
+		$instance->registerContainer( $container );
 
 		$this->assertEquals(
 			'123',
@@ -132,20 +110,28 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 		$instance = $this->newInstance();
 
-		$instance->registerContainer( $this->newDependencyContainer( array( 'Test' => array( 9001, 1 ) ) ) );
+		$container = $this->newMockBuilder()->newObject( 'FakeDependencyContainer', array(
+			'toArray' => array( 'Test' => array( 9001, 1 ) )
+		) );
+
+		$instance->registerContainer( $container );
 
 		$this->assertEquals(
 			9001,
 			$instance->newObject( 'Test' ),
-			'asserts object creation after container merge'
+			'Asserts object creation after container merge'
 		);
 
-		$instance->registerContainer( $this->newDependencyContainer( array( 'Test' => array( 1009, 0 ) ) ) );
+		$container = $this->newMockBuilder()->newObject( 'FakeDependencyContainer', array(
+			'toArray' => array( 'Test' => array( 1009, 0 ) )
+		) );
+
+		$instance->registerContainer( $container );
 
 		$this->assertEquals(
-			1009,
+			9001,
 			$instance->newObject( 'Test' ),
-			'asserts object definition has been overridden'
+			'Asserts object definition has not been overridden'
 		);
 
 	}
@@ -173,7 +159,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	public function testRegisterObjectUsingMagicMethodEagerLoading() {
 
 		$instance  = $this->newInstance();
-		$container = new EmptyDependencyContainer();
+		$container = new NullDependencyContainer();
 
 		// Eager loading
 		$container->someFunnyTitle = $this->newTitle();
@@ -194,7 +180,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	public function testRegisterObjectUsingMagicMethodLazyLoading() {
 
 		$instance  = $this->newInstance();
-		$container = new EmptyDependencyContainer();
+		$container = new NullDependencyContainer();
 
 		$container->someFunnyTitle = $this->newTitle();
 		$container->FakeWikiPage = function ( DependencyBuilder $builder ) {
@@ -234,7 +220,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$instance  = $this->newInstance();
 
 		// Clear registered container
-		$instance->registerContainer( new EmptyDependencyContainer() );
+		$instance->registerContainer( new NullDependencyContainer() );
 
 		// Object is using an argument that where invoked using the __set method
 		// and is evenly accessible during the build process using newObject()
@@ -591,8 +577,9 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testDeferredLoading( $setup, $expected ) {
 
-		$container = new FakeDependencyContainer();
-		$container->setObjects( array( 'Quux' => $setup ) );
+		$container = $this->newMockBuilder()->newObject( 'FakeDependencyContainer', array(
+			'getDefinitions' => array( 'Quux' => $setup )
+		) );
 
 		$instance = $this->newInstance( $container );
 
@@ -612,8 +599,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testDeferredLoadingWithScopeChangeAndRecursiveObjectGraph() {
 
-		$container = new FakeDependencyContainer();
-		$container->setObjects( array(
+		$objectGraph = array(
 
 			'Title' => function( $builder ) {
 				return new Title();
@@ -631,6 +617,10 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 				return $builder->newObject( 'Bar' );
 			}
 
+		);
+
+		$container = $this->newMockBuilder()->newObject( 'FakeDependencyContainer', array(
+			'getDefinitions' => $objectGraph
 		) );
 
 		$instance = $this->newInstance( $container );
@@ -762,8 +752,7 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 
-		$container = new FakeDependencyContainer();
-		$container->setObjects( array(
+		$objectGraph = array(
 
 			'Title' => function( $builder ) {
 				return $builder->newObject( 'Title' );  // self-reference
@@ -785,6 +774,10 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 				return $builder->newObject( 'Foo' );
 			}
 
+		);
+
+		$container = $this->newMockBuilder()->newObject( 'FakeDependencyContainer', array(
+			'getDefinitions' => $objectGraph
 		) );
 
 		$instance = $this->newInstance( $container );
@@ -833,26 +826,16 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 		$closure  = function() use( $stdClass ) { return $stdClass; };
 
 		// #0
-		$dependencyObject = $this->getMockBuilder( '\SMW\DependencyObject' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'inheritDescription' ) )
-			->getMock();
-
-		$dependencyObject->expects( $this->any() )
-			->method( 'inheritDescription' )
-			->will( $this->returnValue( $stdClass ) );
+		$dependencyObject = $this->newMockBuilder()->newObject( 'DependencyObject', array(
+			'retrieveDefinition' => $stdClass
+		) );
 
 		$provider[] = array( $dependencyObject, $stdClass );
 
 		// #1
-		$dependencyObject = $this->getMockBuilder( '\SMW\DependencyObject' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'inheritDescription' ) )
-			->getMock();
-
-		$dependencyObject->expects( $this->any() )
-			->method( 'inheritDescription' )
-			->will( $this->returnValue( $closure ) );
+		$dependencyObject = $this->newMockBuilder()->newObject( 'DependencyObject', array(
+			'retrieveDefinition' => $closure
+		) );
 
 		$provider[] = array( $dependencyObject, $stdClass );
 
@@ -867,22 +850,6 @@ class SimpleDependencyBuilderTest extends SemanticMediaWikiTestCase {
 
 }
 
-/**
- * A fake dependency container
- */
-class FakeDependencyContainer extends EmptyDependencyContainer {
-
-	protected $objects;
-
-	public function setObjects( $objects ) {
-		$this->objects = $objects;
-	}
-
-	public function loadObjects() {
-		return $this->objects;
-	}
-
-}
 
 /**
  * A fake object instance

@@ -38,7 +38,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	protected $recursionLevel = 0;
 
 	/**
-	 * Specifies a depth (or threshold) for a dependency graph. In case a build
+	 * Specifies a max depth (or threshold) for a dependency graph. In case a build
 	 * will overstep this limit it is assumed that the builder is caught in an
 	 * infinite loop due to a self-reference (circular reference) within its
 	 * object definition
@@ -61,19 +61,23 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 		$this->dependencyContainer = $dependencyContainer;
 
 		if ( $this->dependencyContainer === null ) {
-			$this->dependencyContainer = new EmptyDependencyContainer();
+			$this->dependencyContainer = new NullDependencyContainer();
 		}
 
 	}
 
 	/**
-	 * Register DependencyContainer
+	 * Register a DependencyContainer
 	 *
 	 * @since  1.9
 	 *
 	 * @param DependencyContainer $container
 	 */
 	public function registerContainer( DependencyContainer $container ) {
+
+		$this->dependencyContainer->loadAllDefinitions();
+		$container->loadAllDefinitions();
+
 		$this->dependencyContainer->merge( $container->toArray() );
 	}
 
@@ -233,7 +237,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 
 		if ( !$this->dependencyContainer->has( $objectName ) ) {
 
-			if ( !$this->search( $objectName ) ) {
+			if ( !$this->searchObjectByName( $objectName ) ) {
 				throw new OutOfBoundsException( "{$objectName} is not registered or available as service object" );
 			};
 
@@ -250,7 +254,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 		}
 
 		if ( $objectSignature instanceOf DependencyObject ) {
-			$objectSignature = $objectSignature->inheritDescription( $this );
+			$objectSignature = $objectSignature->retrieveDefinition( $this );
 		}
 
 		return $this->load( $objectName, $objectSignature, $objectScope );
@@ -324,15 +328,13 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	}
 
 	/**
-	 * Locate and register a deferred object
-	 *
-	 * @param string $objectName
+	 * @since  1.9
 	 *
 	 * @return boolean
 	 */
-	private function search( $objectName ) {
+	private function searchObjectByName( $objectName ) {
 
-		$objectCatalog = $this->dependencyContainer->loadObjects();
+		$objectCatalog = $this->dependencyContainer->loadAllDefinitions();
 
 		if ( isset( $objectCatalog[$objectName] ) ) {
 

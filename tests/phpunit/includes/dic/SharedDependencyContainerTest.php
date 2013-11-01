@@ -88,7 +88,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			$this->assertObjectRegistration( $objectName, $registeredObjects );
 		}
 
-		foreach ( $instance->loadObjects() as $objectName => $objectSiganture ) {
+		foreach ( $instance->loadAllDefinitions() as $objectName => $objectSiganture ) {
 			$this->assertObjectRegistration( $objectName, $registeredObjects );
 		}
 

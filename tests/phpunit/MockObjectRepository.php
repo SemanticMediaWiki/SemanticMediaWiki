@@ -151,6 +151,58 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Returns an DependencyObject object
+	 *
+	 * @since 1.9
+	 *
+	 * @return DependencyObject
+	 */
+	public function DependencyObject() {
+
+		$methods = $this->builder->getInvokedMethods();
+
+		$dependencyObject = $this->getMockBuilder( 'SMW\DependencyObject' )
+			->setMethods( $methods )
+			->getMock();
+
+		foreach ( $methods as $method ) {
+
+			$dependencyObject->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $dependencyObject;
+	}
+
+	/**
+	 * Returns an Observer object
+	 *
+	 * @since 1.9
+	 *
+	 * @return Observer
+	 */
+	public function FakeDependencyContainer() {
+
+		$methods = $this->builder->getInvokedMethods();
+
+		$dependencyObject = $this->getMockBuilder( 'SMW\NullDependencyContainer' )
+			->setMethods( $methods )
+			->getMock();
+
+		foreach ( $methods as $method ) {
+
+			$dependencyObject->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $dependencyObject;
+	}
+
+	/**
 	 * Returns a ParserData object
 	 *
 	 * @since 1.9
