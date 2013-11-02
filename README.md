@@ -3,9 +3,9 @@ About Semantic MediaWiki
 
 Semantic MediaWiki is a project for extending MediaWiki with "semantic"
 functions that enable machine-reading of wiki-content. For details and
-further links, see https://semantic-mediawiki.org
+further links, see [the SMW wiki](https://semantic-mediawiki.org).
 
-Notes on installing Semantic MediaWiki are found in the file INSTALL.
+Notes on installing Semantic MediaWiki are found in the [INSTALL file](INSTALL).
 
 [![Build Status](https://secure.travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki.png?branch=master)](http://travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki)
 [![Coverage Status](https://coveralls.io/repos/wikimedia/mediawiki-extensions-SemanticMediaWiki/badge.png?branch=master)](https://coveralls.io/r/wikimedia/mediawiki-extensions-SemanticMediaWiki?branch=master)
@@ -19,10 +19,9 @@ Contact
 
 If you have remarks, questions, or suggestions, please send them to
 semediawiki-users@lists.sourceforge.net. You can subscribe to this
-list at
-http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user.
+list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
 
-Bugs should be filed at MediaZilla, http://bugzilla.wikimedia.org/.
+Bugs should be filed at [Bugzilla](http://bugzilla.wikimedia.org/).
 (Mark product as MediaWiki extensions and Component as Semantic MediaWiki)
 
 People who want to contribute work to the project should subscribe to
@@ -63,10 +62,9 @@ Contributors
 : Roi Avinoam, Richard Cyganiak, Sanyam Goyal, Devayon Das, Nischay Nahata,
 : James HK, Sam Reed, Karsten Hoffmeyer, Niklas Laxström.
 
-* The logo and related artwork for Semantic MediaWiki as found on
-: http://semantic-mediawiki.org/wiki/SMW_Logo
-: were designed and realised by Markus Krötzsch. A previous version of
-: the SMW logo has been realised by Rozana Vrandecic.
+* [The logo](http://semantic-mediawiki.org/wiki/SMW_Logo) and related artwork for
+: Semantic MediaWiki were designed and realised by Markus Krötzsch. A previous 
+: version of the SMW logo has been realised by Rozana Vrandecic.
 
 Translations
 ------------
@@ -80,7 +78,7 @@ Credits to other projects
 -------------------------
 
 * Most icons used by Semantic MediaWiki are derived from the "Crystal Clear"
-: icon theme for KDE, which was created by Everaldo (everaldo.com).
+: icon theme for KDE, which was created by [Everaldo](http://everaldo.com).
 
 * Many people have contributed to the project by providing helpful comments and
 : suggestions. Among them are the members of the Semantic Wiki Interest Group
