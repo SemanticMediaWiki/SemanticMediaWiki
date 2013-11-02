@@ -19,8 +19,7 @@ Contact
 
 If you have remarks, questions, or suggestions, please send them to
 semediawiki-users@lists.sourceforge.net. You can subscribe to this
-list at
-http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user.
+list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
 
 Bugs should be filed at [Bugzilla](http://bugzilla.wikimedia.org/).
 (Mark product as MediaWiki extensions and Component as Semantic MediaWiki)
