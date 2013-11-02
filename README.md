@@ -22,7 +22,7 @@ semediawiki-users@lists.sourceforge.net. You can subscribe to this
 list at
 http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user.
 
-Bugs should be filed at MediaZilla, http://bugzilla.wikimedia.org/.
+Bugs should be filed at [Bugzilla](http://bugzilla.wikimedia.org/).
 (Mark product as MediaWiki extensions and Component as Semantic MediaWiki)
 
 People who want to contribute work to the project should subscribe to
@@ -63,10 +63,9 @@ Contributors
 : Roi Avinoam, Richard Cyganiak, Sanyam Goyal, Devayon Das, Nischay Nahata,
 : James HK, Sam Reed, Karsten Hoffmeyer, Niklas Laxström.
 
-* The logo and related artwork for Semantic MediaWiki as found on
-: http://semantic-mediawiki.org/wiki/SMW_Logo
-: were designed and realised by Markus Krötzsch. A previous version of
-: the SMW logo has been realised by Rozana Vrandecic.
+* [The logo](http://semantic-mediawiki.org/wiki/SMW_Logo) and related artwork for
+: Semantic MediaWiki were designed and realised by Markus Krötzsch. A previous 
+: version of the SMW logo has been realised by Rozana Vrandecic.
 
 Translations
 ------------
