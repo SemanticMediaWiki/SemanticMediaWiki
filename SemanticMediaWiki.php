@@ -27,9 +27,7 @@ if ( defined( 'SMW_VERSION' ) ) {
 // The SMW version number.
 define( 'SMW_VERSION', '1.9 alpha-3' );
 
-global $smwgIP, $wgResourceModules, $wgServer, $wgVersion, $wgExtensionCredits;
-
-if ( version_compare( $wgVersion, '1.19c', '<' ) ) {
+if ( version_compare( $GLOBALS['wgVersion'], '1.19c', '<' ) ) {
 	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.19 or above; use SMW 1.8.x for MediaWiki 1.18.x or 1.17.x.' );
 }
 
@@ -57,7 +55,7 @@ if ( version_compare( Validator_VERSION, '1.0c', '<' ) ) {
 }
 
 // Registration of the extension credits, see Special:Version.
-$wgExtensionCredits['semantic'][] = array(
+$GLOBALS['wgExtensionCredits']['semantic'][] = array(
 	'path' => __FILE__,
 	'name' => 'Semantic MediaWiki',
 	'version' => SMW_VERSION,
@@ -128,20 +126,20 @@ require_once( __DIR__ . '/includes/GlobalFunctions.php' );
 
 // Causes trouble in autoloader during testing because the test returns with
 // Class 'PSExtensionHandler' not found
-$wgAutoloadClasses['SMWPageSchemas'] = __DIR__ . '/' . 'includes/SMW_PageSchemas.php';
+$GLOBALS['wgAutoloadClasses']['SMWPageSchemas'] = __DIR__ . '/' . 'includes/SMW_PageSchemas.php';
 
 // Load default settings
 require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
 // Resource definitions
-$wgResourceModules = array_merge( $wgResourceModules, include( __DIR__ . "/resources/Resources.php" ) );
+$GLOBALS['wgResourceModules'] = array_merge( $GLOBALS['wgResourceModules'], include( __DIR__ . "/resources/Resources.php" ) );
 
 // Because of MW 1.19 we need to register message files here
-$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
-$wgExtensionMessagesFiles['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
-$wgExtensionMessagesFiles['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
+$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'languages/SMW_Messages.php';
+$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'languages/SMW_Aliases.php';
+$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgIP'] . 'languages/SMW_Magic.php';
 
-$smwgNamespace = parse_url( $wgServer, PHP_URL_HOST );
+$GLOBALS['smwgNamespace'] = parse_url( $GLOBALS['wgServer'], PHP_URL_HOST );
 
 /**
  * Setup and initialization
@@ -154,7 +152,7 @@ $smwgNamespace = parse_url( $wgServer, PHP_URL_HOST );
  *
  * @since  1.9
  */
-$wgExtensionFunctions[] = function() {
+$GLOBALS['wgExtensionFunctions'][] = function() {
 	$setup = new \SMW\Setup( $GLOBALS );
 	$setup->run();
 };
