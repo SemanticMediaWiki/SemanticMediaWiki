@@ -34,7 +34,7 @@
 		"irc": "irc://irc.freenode.net/semantic-mediawiki",
 		"forum": "https://semantic-mediawiki.org/wiki/semantic-mediawiki.org_talk:Community_portal",
 		"wiki": "https://semantic-mediawiki.org/wiki/",
-		"source": "https://github.com/wikimedia/mediawiki-extensions-SemanticMediaWiki"
+		"source": "https://github.com/SemanticMediaWiki/SemanticMediaWiki"
 	},
 	"require": {
 		"php": ">=5.3.0",
