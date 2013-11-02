@@ -15,12 +15,8 @@ matrix:
       php: 5.4
     - env: DBTYPE=sqlite; MW=1.19.0
       php: 5.5
-    - env: DBTYPE=postgres; MW=master
-      php: 5.5
   exclude:
     - env: THENEEDFORTHIS=FAIL
-  allow_failures:
-    - env: DBTYPE=postgres; MW=master
 
 before_script: bash .travis.setup.sh
 
