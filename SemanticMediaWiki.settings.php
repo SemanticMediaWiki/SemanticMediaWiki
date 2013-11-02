@@ -84,7 +84,7 @@ $GLOBALS['smwgSparqlDefaultGraph'] = '';
 # move their content to other pages. If the namespace is not registered, then
 # existing pages in this namespace cannot be found in the wiki.
 ##
-if ( !isset( $smwgHistoricTypeNamespace ) ) {
+if ( !isset( $GLOBALS['smwgHistoricTypeNamespace'] ) ) {
 	$GLOBALS['smwgHistoricTypeNamespace'] = false;
 }
 ##
@@ -230,7 +230,7 @@ $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_SOME; // Evaluate #redirects as equali
                                      // performance-relevant restrictions depending on the storage engine
   // $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
   // $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
-$smwgQSortingSupport     = true; // (De)activate sorting of results.
+$GLOBALS['smwgQSortingSupport']     = true; // (De)activate sorting of results.
 $GLOBALS['smwgQRandSortingSupport'] = true; // (De)activate random sorting of results.
 $GLOBALS['smwgQDefaultNamespaces'] = null; // Which namespaces should be searched by default?
                                 // (value NULL switches off default restrictions on searching -- this is faster)
@@ -258,7 +258,7 @@ $GLOBALS['smwgQComparators'] = '<|>|!~|!|~|≤|≥|<<|>>';
 # Sets whether the > and < comparators should be strict or not. If they are strict,
 # values that are equal will not be accepted.
 ##
-$smwStrictComparators = false;
+$GLOBALS['smwStrictComparators'] = false;
 ##
 
 ###
@@ -282,7 +282,7 @@ $GLOBALS['smwgQFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEP
 ### Settings about printout of (especially inline) queries:
 $GLOBALS['smwgQDefaultLimit'] = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
 $GLOBALS['smwgQMaxInlineLimit'] = 500;   // Max number of rows ever printed in a single inline query on a single page.
-$smwgQPrintoutLimit  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
+$GLOBALS['smwgQPrintoutLimit']  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
 $GLOBALS['smwgQDefaultLinking'] = 'all'; // Default linking behavior. Can be one of "none", "subject" (first column), "all".
 
 
