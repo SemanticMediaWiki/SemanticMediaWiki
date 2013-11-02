@@ -3,7 +3,7 @@ About Semantic MediaWiki
 
 Semantic MediaWiki is a project for extending MediaWiki with "semantic"
 functions that enable machine-reading of wiki-content. For details and
-further links, see https://semantic-mediawiki.org
+further links, see [the SMW wiki](https://semantic-mediawiki.org).
 
 Notes on installing Semantic MediaWiki are found in the file INSTALL.
 
@@ -78,7 +78,7 @@ Credits to other projects
 -------------------------
 
 * Most icons used by Semantic MediaWiki are derived from the "Crystal Clear"
-: icon theme for KDE, which was created by Everaldo (everaldo.com).
+: icon theme for KDE, which was created by [Everaldo](http://everaldo.com).
 
 * Many people have contributed to the project by providing helpful comments and
 : suggestions. Among them are the members of the Semantic Wiki Interest Group
