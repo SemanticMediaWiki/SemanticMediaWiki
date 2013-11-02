@@ -78,7 +78,7 @@ $magicWords['br'] = array(
 	'declare' => array( 0, 'disklêriañ' ),
 );
 
-/** Czech (česky) */
+/** Czech (čeština) */
 $magicWords['cs'] = array(
 	'ask' => array( 0, 'otázka' ),
 	'show' => array( 0, 'zobrazit' ),
