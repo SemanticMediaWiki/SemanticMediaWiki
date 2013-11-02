@@ -5,7 +5,7 @@ Semantic MediaWiki is a project for extending MediaWiki with "semantic"
 functions that enable machine-reading of wiki-content. For details and
 further links, see [the SMW wiki](https://semantic-mediawiki.org).
 
-Notes on installing Semantic MediaWiki are found in the file INSTALL.
+Notes on installing Semantic MediaWiki are found in the [INSTALL file](INSTALL).
 
 [![Build Status](https://secure.travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki.png?branch=master)](http://travis-ci.org/wikimedia/mediawiki-extensions-SemanticMediaWiki)
 [![Coverage Status](https://coveralls.io/repos/wikimedia/mediawiki-extensions-SemanticMediaWiki/badge.png?branch=master)](https://coveralls.io/r/wikimedia/mediawiki-extensions-SemanticMediaWiki?branch=master)
