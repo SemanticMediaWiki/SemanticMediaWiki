@@ -35,7 +35,7 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return CacheHandler
 	 */
-	private function getInstance() {
+	private function newInstance() {
 		return new CacheHandler( new HashBagOStuff );
 	}
 
@@ -43,8 +43,8 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
-		$this->assertInstanceOf( 'BagOStuff', $this->getInstance()->getCache() );
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+		$this->assertInstanceOf( 'BagOStuff', $this->newInstance()->getCache() );
 	}
 
 	/**
@@ -54,31 +54,58 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 
 		CacheHandler::reset();
 
-		// Invoke a valid cacheId
 		$instance = CacheHandler::newFromId( 'hash' );
-		$this->assertFalse( $instance->isEnabled() ); // No key means false
-		$instance->setCacheEnabled( true )->key( 'lala' );
-		$this->assertTrue( $instance->isEnabled() ); // An added key results in true
+
+		$this->assertFalse(
+			$instance->isEnabled(),
+			'Asserts that with no key and valid cacheId, the cache is disabled'
+		);
+
+		$instance->setCacheEnabled( true )->setKey( new CacheIdGenerator( 'lila' ) );
+		$this->assertTrue(
+			$instance->isEnabled(),
+			'Asserts that with an avilable key and valid cacheId, the cache is enabled'
+		);
 
 		// Static
-		$this->assertTrue( $instance === CacheHandler::newFromId( 'hash' ) );
+		$this->assertTrue(
+			$instance === CacheHandler::newFromId( 'hash' ),
+			'Asserts a static instance'
+		);
 
-		// Reset
 		$instance->reset();
-		$this->assertTrue( $instance !== CacheHandler::newFromId( 'hash' ) );
 
-		// Invoke an invalid cacheId
+		$this->assertTrue(
+			$instance !== CacheHandler::newFromId( 'hash' ),
+			'Asserts that the instance have been reset'
+		);
+
 		$instance = CacheHandler::newFromId( 'lula' );
-		$this->assertFalse( $instance->isEnabled() ); // No key means false
-		$instance->setCacheEnabled( true )->key( 'lila' );
-		$this->assertFalse( $instance->isEnabled() ); // An added key but invalid cache results in false
 
-		// Static
-		$this->assertTrue( $instance === CacheHandler::newFromId( 'lula' ) );
+		$this->assertFalse(
+			$instance->isEnabled(),
+			'Asserts that with no key and invalid cacheId, the cache is disabled'
+		);
 
-		// Reset
+		$instance->setCacheEnabled( true )->setKey( new CacheIdGenerator( 'lila' ) );
+
+		$this->assertFalse(
+			$instance->isEnabled(),
+			'Asserts that with an available key but invalid cacheId, the cache is disabled'
+		);
+
+		$this->assertTrue(
+			$instance === CacheHandler::newFromId( 'lula' ),
+			'Asserts a static instance'
+		);
+
 		$instance->reset();
-		$this->assertTrue( $instance !== CacheHandler::newFromId( 'lula' ) );
+
+		$this->assertTrue(
+			$instance !== CacheHandler::newFromId( 'lula' ),
+			'Asserts that the instance have been reset'
+		);
+
 	}
 
 	/**
@@ -88,10 +115,10 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testEnabledCache( $key, $item ) {
 
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 
 		// Assert key handling
-		$instance->setCacheEnabled( true )->key( $key );
+		$instance->setCacheEnabled( true )->setKey( new CacheIdGenerator( $key ) );
 		$instanceKey = $instance->getKey();
 
 		// Assert storage and retrieval
@@ -117,10 +144,10 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testDisabledCache( $key, $item ) {
 
-		$instance = $this->getInstance();
+		$instance = $this->newInstance();
 
 		// Assert key handling
-		$instance->setCacheEnabled( false )->key( $key );
+		$instance->setCacheEnabled( false )->setKey( new CacheIdGenerator( $key ) );
 		$instanceKey = $instance->getKey();
 
 		// Assert storage and retrieval
@@ -139,10 +166,8 @@ class CacheHandlerTest extends SemanticMediaWikiTestCase {
 	 */
 	public function keyItemDataProvider() {
 
-		// Generates a random key
 		$key = $this->newRandomString( 10 );
 
-		// Generates a random text object
 		$item = array(
 			$this->newRandomString( 10 ),
 			$this->newRandomString( 20 )

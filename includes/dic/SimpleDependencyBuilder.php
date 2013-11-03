@@ -279,7 +279,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 		}
 
 		if ( $objectScope === DependencyObject::SCOPE_SINGLETON ) {
-			$objectSignature = $this->singelton( $objectName, $objectSignature );
+			$objectSignature = $this->singleton( $objectName, $objectSignature );
 		}
 
 		$instance = is_callable( $objectSignature ) ? $objectSignature( $this ) : $objectSignature;
@@ -304,7 +304,7 @@ class SimpleDependencyBuilder implements DependencyBuilder {
 	 *
 	 * @return Closure
 	 */
-	private function singelton( $objectName, $objectSignature ) {
+	private function singleton( $objectName, $objectSignature ) {
 
 		$objectName = 'sing_' . $objectName;
 
