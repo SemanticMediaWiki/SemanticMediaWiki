@@ -9140,7 +9140,7 @@ Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
 	'smw_smwadmin_support' => 'Ënnerstëtzung kréien',
 	'smw_smwadmin_supportdocu' => 'Verschidde Quellen kéinten Iech bei Problemer hëllefen:',
-	'smw_smwadmin_installfile' => 'Wann Dir Problemer bäi der Installatioun hutt, da kuckt d\'Directiven am <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL Fichier</a> no.',
+	'smw_smwadmin_installfile' => 'Wann Dir Problemer bei der Installatioun hutt, da kuckt d\'Directiven am <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">INSTALL Fichier</a> no.',
 	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> gemellt ginn.',
 	'smw_smwadmin_questions' => 'Wann dir nach Froen oder Propositiounen hutt, da bedeelegt Iech un der Diskussioun op dem <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki Benotzer-Forum</a>.',
@@ -10799,7 +10799,7 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :',
 	'smw_unknowntype' => 'Lo tipe de donadas "$1" pas suportat es estat tornat a l\'atribut.', # Fuzzy
 	'smw_concept_header' => 'Paginas del concèpte « $1 »',
-	'smw_conceptarticlecount' => 'Afichar {{PLURAL:$1|la pagina que repausa|las $1 paginas que repausan}} sus aqueste concèpte.', # Fuzzy
+	'smw_conceptarticlecount' => 'Afichar çaijós $1 {{PLURAL:$1|pagina|paginas}}.',
 );
 
 /** Ossetic (Ирон)
