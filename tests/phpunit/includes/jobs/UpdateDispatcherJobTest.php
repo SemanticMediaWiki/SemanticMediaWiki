@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\UpdateDispatcherJob;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 use SMW\DIProperty;
 
 use Title;
@@ -57,7 +57,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 			'smwgEnableUpdateJobs' => false
 		) );
 
-		$context   = new BaseContext();
+		$context   = new ExtensionContext();
 
 		$container = $context->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Store', $mockStore );

@@ -25,7 +25,7 @@ return array(
 	'SMWInfolink'               => 'includes/SMW_Infolink.php',
 	'SMWOutputs'                => 'includes/SMW_Outputs.php',
 	'SMW\ContentProcessor'      => 'includes/ContentProcessor.php',
-	'SMW\SemanticData'          => 'includes/SMW_SemanticData.php',
+	'SMW\SemanticData'          => 'includes/SemanticData.php',
 	'SMWPageLister'             => 'includes/SMW_PageLister.php',
 
 	'SMW\DataValueFactory'      => 'includes/DataValueFactory.php',
@@ -104,7 +104,7 @@ return array(
 
 	// Context
 	'SMW\EmptyContext'              => 'includes/context/EmptyContext.php',
-	'SMW\BaseContext'               => 'includes/context/BaseContext.php',
+	'SMW\ExtensionContext'          => 'includes/context/ExtensionContext.php',
 	'SMW\ContextResource'           => 'includes/context/ContextResource.php',
 	'SMW\ContextAware'              => 'includes/context/ContextAware.php',
 	'SMW\ContextInjector'           => 'includes/context/ContextInjector.php',

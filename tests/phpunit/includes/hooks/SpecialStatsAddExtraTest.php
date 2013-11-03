@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\SpecialStatsAddExtra;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
  * @covers \SMW\SpecialStatsAddExtra
@@ -38,7 +38,7 @@ class SpecialStatsAddExtraTest extends SemanticMediaWikiTestCase {
 			$version = '1.21';
 		}
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()
 			->getContainer()
 			->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );

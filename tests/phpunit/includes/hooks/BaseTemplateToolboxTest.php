@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\BaseTemplateToolbox;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
  * @covers \SMW\BaseTemplateToolbox
@@ -38,7 +38,7 @@ class BaseTemplateToolboxTest extends SemanticMediaWikiTestCase {
 			$skinTemplate = $this->newMockBuilder()->newObject( 'SkinTemplate' );
 		}
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
 
 		$instance = new BaseTemplateToolbox( $skinTemplate, $toolbox );

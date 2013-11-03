@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\OutputPageParserOutput;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
  * @covers \SMW\OutputPageParserOutput
@@ -44,7 +44,7 @@ class OutputPageParserOutputTest extends ParserTestCase {
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
 
 		$instance = new OutputPageParserOutput( $outputPage, $parserOutput );

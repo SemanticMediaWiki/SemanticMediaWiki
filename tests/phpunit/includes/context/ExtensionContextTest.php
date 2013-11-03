@@ -2,10 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
- * @covers \SMW\BaseContext
+ * @covers \SMW\ExtensionContext
  *
  * @ingroup Test
  *
@@ -17,22 +17,22 @@ use SMW\BaseContext;
  *
  * @author mwjames
  */
-class BaseContextTest extends SemanticMediaWikiTestCase {
+class ExtensionContextTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\BaseContext';
+		return '\SMW\ExtensionContext';
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return BaseContext
+	 * @return ExtensionContext
 	 */
 	private function newInstance( $builder = null ) {
-		return new BaseContext( $builder );
+		return new ExtensionContext( $builder );
 	}
 
 	/**

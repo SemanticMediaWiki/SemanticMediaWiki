@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\ParserAfterTidy;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
  * @covers \SMW\ParserAfterTidy
@@ -62,7 +62,7 @@ class ParserAfterTidyTest extends ParserTestCase {
 		}
 
 		$instance = new ParserAfterTidy( $parser, $text );
-		$instance->invokeContext( new BaseContext() );
+		$instance->invokeContext( new ExtensionContext() );
 
 		return $instance;
 	}

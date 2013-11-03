@@ -5,7 +5,7 @@ namespace SMW\Test;
 use SMW\StoreFactory;
 use SMW\StoreUpdater;
 use SMW\SemanticData;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 use SMW\DIWikiPage;
 
 use Title;
@@ -51,7 +51,7 @@ class StoreUpdaterTest extends SemanticMediaWikiTestCase {
 			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
 		) );
 
-		$context   = new BaseContext();
+		$context   = new ExtensionContext();
 
 		$container = $context->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Store', $store );

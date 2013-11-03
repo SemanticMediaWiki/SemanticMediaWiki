@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\TitleMoveComplete;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 use WikiPage;
 
@@ -48,7 +48,7 @@ class TitleMoveCompleteTest extends SemanticMediaWikiTestCase {
 			$user = $this->getUser();
 		}
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()
 			->getContainer()
 			->registerObject( 'Settings', $this->newSettings( $settings ) );

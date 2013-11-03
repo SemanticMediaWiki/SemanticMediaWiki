@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\SkinAfterContent;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
  * @covers \SMW\SkinAfterContent
@@ -43,7 +43,7 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 			$skin = $this->newMockBuilder()->newObject( 'Skin' );
 		}
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
 
 		$instance = new SkinAfterContent( $data, $skin );

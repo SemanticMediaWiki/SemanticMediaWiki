@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\Setup;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
  * @covers \SMW\Setup
@@ -103,7 +103,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		$mockLang  = $this->newMockBuilder()->newObject( 'Language' );
 		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
 
 		$setup['wgVersion'] = '1.21';

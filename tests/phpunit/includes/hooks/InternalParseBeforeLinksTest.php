@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\InternalParseBeforeLinks;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 use Title;
 
@@ -41,7 +41,7 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 		}
 
 		$instance = new InternalParseBeforeLinks( $parser, $text );
-		$instance->invokeContext( new BaseContext() );
+		$instance->invokeContext( new ExtensionContext() );
 
 		return $instance;
 	}

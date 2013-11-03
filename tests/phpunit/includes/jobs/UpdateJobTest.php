@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 use SMW\UpdateJob;
 
 use Title;
@@ -48,7 +48,7 @@ class UpdateJobTest extends ParserTestCase {
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
 
-		$context   = new BaseContext();
+		$context   = new ExtensionContext();
 
 		$container = $context->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Store', $mockStore );

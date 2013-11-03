@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\UpdateObserver;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
  * @covers \SMW\UpdateObserver
@@ -39,7 +39,7 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 			'getPropertySubjects'    => array()
 		) );
 
-		$context   = new BaseContext();
+		$context   = new ExtensionContext();
 
 		$container = $context->getDependencyBuilder()->getContainer();
 		$container->registerObject( 'Store', $mockStore );

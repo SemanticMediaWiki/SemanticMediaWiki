@@ -4,7 +4,7 @@ A context object (see [Encapsulate Context Pattern][ak]) collects commonly used 
 * ContextResource describes an interface to access Store, Settings, and a DependencyBuilder context
 * ContextAware describes an interface to access a context object
 * ContextInjector describes an interface to inject an context object
-* BaseContext implements the ContextResource interface
+* ExtensionContext implements the ContextResource interface
 * EmptyContext implements the ContextResource interface, returning null objects
 
 #### Example
@@ -26,7 +26,7 @@ class Foo implements ContextAware {
 	public function withContext() {
 
 		if ( $this->context === null ) {
-			$this->context = new BaseContext();
+			$this->context = new ExtensionContext();
 		}
 
 		return $this->context;
@@ -59,11 +59,11 @@ class Bar implements ContextAware, ContextInjector {
 }
 ```
 ```php
-$foo = new Foo( new BaseContext() );
+$foo = new Foo( new ExtensionContext() );
 $baz = $foo->getBaz();
 
 $bar = new Bar();
-$bar->invokeContext( new BaseContext() );
+$bar->invokeContext( new ExtensionContext() );
 $baz = $bar->getBaz();
 ```
 

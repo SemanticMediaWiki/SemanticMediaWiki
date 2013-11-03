@@ -41,7 +41,7 @@ class UpdateObserver extends BaseObserver implements ContextAware, ContextInject
 	public function withContext() {
 
 		if ( $this->context === null ) {
-			$this->context = new BaseContext();
+			$this->context = new ExtensionContext();
 		}
 
 		return $this->context;

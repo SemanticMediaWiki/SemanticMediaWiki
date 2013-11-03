@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\BeforePageDisplay;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 use OutputPage;
 use Title;
@@ -57,7 +57,7 @@ class BeforePageDisplayTest extends SemanticMediaWikiTestCase {
 
 		$skin     = $this->newMockBuilder()->newObject( 'Skin' );
 		$instance = new BeforePageDisplay( $outputPage, $skin );
-		$instance->invokeContext( new BaseContext() );
+		$instance->invokeContext( new ExtensionContext() );
 
 		return $instance;
 	}

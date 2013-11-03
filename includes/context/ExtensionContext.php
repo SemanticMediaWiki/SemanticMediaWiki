@@ -12,7 +12,7 @@ namespace SMW;
  *
  * @author mwjames
  */
-class BaseContext implements ContextResource {
+class ExtensionContext implements ContextResource {
 
 	/** @var DependencyBuilder */
 	private $dependencyBuilder = null;
@@ -74,7 +74,7 @@ class BaseContext implements ContextResource {
 			$builder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
 		}
 
-		$builder->getContainer()->registerObject( 'BaseContext', $this );
+		$builder->getContainer()->registerObject( 'ExtensionContext', $this );
 		return $builder;
 	}
 

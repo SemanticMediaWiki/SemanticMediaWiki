@@ -99,7 +99,7 @@ final class Setup implements ContextAware {
 	public function withContext() {
 
 		if ( $this->context === null ) {
-			$this->context = new BaseContext();
+			$this->context = new ExtensionContext();
 		}
 
 		return $this->context;

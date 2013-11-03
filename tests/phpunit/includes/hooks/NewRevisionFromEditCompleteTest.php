@@ -4,7 +4,7 @@ namespace SMW\Test;
 
 use SMW\NewRevisionFromEditComplete;
 use SMW\DIProperty;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 use WikiPage;
 use Revision;
@@ -50,7 +50,7 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 		}
 
 		$instance = new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user );
-		$instance->invokeContext( new BaseContext() );
+		$instance->invokeContext( new ExtensionContext() );
 
 		return $instance;
 	}

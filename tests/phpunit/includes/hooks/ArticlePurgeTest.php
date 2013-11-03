@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\ArticlePurge;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 use WikiPage;
 
@@ -40,7 +40,7 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 			$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage' );
 		}
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
 
 		$instance = new ArticlePurge( $wikiPage );

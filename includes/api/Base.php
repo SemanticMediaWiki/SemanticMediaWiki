@@ -5,7 +5,7 @@ namespace SMW\Api;
 use SMW\ContextInjector;
 use SMW\ContextResource;
 use SMW\ContextAware;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 /**
  * Semantic MediaWiki Api Base class
@@ -43,7 +43,7 @@ abstract class Base extends \ApiBase implements ContextAware, ContextInjector {
 	public function withContext() {
 
 		if ( $this->context === null ) {
-			$this->context = new BaseContext();
+			$this->context = new ExtensionContext();
 		}
 
 		return $this->context;

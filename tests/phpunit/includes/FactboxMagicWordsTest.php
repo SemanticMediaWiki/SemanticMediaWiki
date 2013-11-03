@@ -5,7 +5,7 @@ namespace SMW\Test;
 use SMW\ContentProcessor;
 use SMW\ParserData;
 use SMW\Settings;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 use SMW\Factbox;
 
 use ParserOutput;
@@ -62,7 +62,7 @@ class FactboxMagicWordsTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
 
 		$parserData = new ParserData( $title, $parserOutput );

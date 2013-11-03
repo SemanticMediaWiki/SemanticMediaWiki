@@ -3,7 +3,7 @@
 namespace SMW\Test;
 
 use SMW\LinksUpdateConstructed;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 use ParserOutput;
 use LinksUpdate;
@@ -48,7 +48,7 @@ class LinksUpdateConstructedTest extends SemanticMediaWikiTestCase {
 		$parserOutput = new ParserOutput();
 		$parserOutput->setTitleText( $title->getPrefixedText() );
 
-		$context = new BaseContext();
+		$context = new ExtensionContext();
 		$context->getDependencyBuilder()
 			->getContainer()
 			->registerObject( 'Store', $mockStore );

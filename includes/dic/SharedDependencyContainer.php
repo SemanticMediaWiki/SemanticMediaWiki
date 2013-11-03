@@ -89,7 +89,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'ContentProcessor' => function ( DependencyBuilder $builder ) {
 				return new ContentProcessor(
 					$builder->getArgument( 'ParserData' ),
-					$builder->newObject( 'BaseContext' )
+					$builder->newObject( 'ExtensionContext' )
 				);
 			},
 
@@ -209,7 +209,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 				// and MessageFormatter are only instantiated when
 				// requested
 
-				// $context = $builder->getArgument( 'BaseContext' );
+				// $context = $builder->getArgument( 'ExtensionContext' );
 				// $context->setObjectBuilder( $builder );
 
 				$queryData = $builder->newObject( 'QueryData', array(
@@ -289,18 +289,18 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 * @return FunctionHookRegistry
 			 */
 			'FunctionHookRegistry' => function ( DependencyBuilder $builder ) {
-				return new FunctionHookRegistry( $builder->newObject( 'BaseContext' ) );
+				return new FunctionHookRegistry( $builder->newObject( 'ExtensionContext' ) );
 			},
 
 			/**
-			 * BaseContext object definition
+			 * ExtensionContext object definition
 			 *
 			 * @since  1.9
 			 *
-			 * @return BaseContext
+			 * @return ExtensionContext
 			 */
-			'BaseContext' => function ( DependencyBuilder $builder ) {
-				return new BaseContext( $builder );
+			'ExtensionContext' => function ( DependencyBuilder $builder ) {
+				return new ExtensionContext( $builder );
 			},
 
 			/**
@@ -370,7 +370,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	protected function getUpdateObserver() {
 		return function ( DependencyBuilder $builder ) {
 			$updateObserver = new UpdateObserver();
-			$updateObserver->invokeContext( $builder->newObject( 'BaseContext' ) );
+			$updateObserver->invokeContext( $builder->newObject( 'ExtensionContext' ) );
 			return $updateObserver;
 		};
 	}
@@ -386,7 +386,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 		return function ( DependencyBuilder $builder ) {
 			return new NullPropertyAnnotator(
 				$builder->getArgument( 'SemanticData' ),
-				$builder->newObject( 'BaseContext' )
+				$builder->newObject( 'ExtensionContext' )
 			);
 		};
 	}

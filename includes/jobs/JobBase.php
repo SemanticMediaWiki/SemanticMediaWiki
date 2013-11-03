@@ -42,7 +42,7 @@ abstract class JobBase extends Job implements ContextAware, ContextInjector {
 		// a default builder is set as for when Jobs are triggered without
 		// injected context (during command line etc.)
 		if ( $this->context === null ) {
-			$this->context = new BaseContext();
+			$this->context = new ExtensionContext();
 		}
 
 		return $this->context;

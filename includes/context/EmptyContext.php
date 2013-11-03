@@ -68,7 +68,7 @@ class EmptyContext implements ContextResource {
 
 		$builder->getContainer()->registerObject( 'Settings', null );
 		$builder->getContainer()->registerObject( 'Store', null );
-		$builder->getContainer()->registerObject( 'BaseContext', $this );
+		$builder->getContainer()->registerObject( 'ExtensionContext', $this );
 
 		return $builder;
 	}

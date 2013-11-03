@@ -5,7 +5,7 @@ namespace SMW\Test;
 use SMW\NewRevisionFromEditComplete;
 use SMW\OutputPageParserOutput;
 use SMW\ArticlePurge;
-use SMW\BaseContext;
+use SMW\ExtensionContext;
 
 use WikiPage;
 use Title;
@@ -66,7 +66,7 @@ class FunctionHookIntegrationTest extends \MediaWikiTestCase {
 		$wikiPage = $this->newWikiPage();
 
 		$instance = new ArticlePurge( $wikiPage );
-		$instance->invokeContext( new BaseContext() );
+		$instance->invokeContext( new ExtensionContext() );
 
 		$this->assertTrue( $instance->process() );
 
@@ -89,7 +89,7 @@ class FunctionHookIntegrationTest extends \MediaWikiTestCase {
 		$user = new MockSuperUser();
 
 		$instance = new NewRevisionFromEditComplete( $wikiPage, $revision, $wikiPage->getId(), $user );
-		$instance->invokeContext( new BaseContext() );
+		$instance->invokeContext( new ExtensionContext() );
 
 		$this->assertTrue( $instance->process() );
 
@@ -118,7 +118,7 @@ class FunctionHookIntegrationTest extends \MediaWikiTestCase {
 		$outputPage = new \OutputPage( $context );
 
 		$instance = new OutputPageParserOutput( $outputPage, $parserOutput );
-		$instance->invokeContext( new BaseContext() );
+		$instance->invokeContext( new ExtensionContext() );
 
 		$this->assertTrue( $instance->process() );
 
