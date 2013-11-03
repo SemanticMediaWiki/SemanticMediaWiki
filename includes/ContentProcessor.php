@@ -86,9 +86,7 @@ class ContentProcessor implements ContextAware {
 		// Attest if semantic data should be processed
 		$this->isEnabled = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
 
-		// Annotate redirects
-		$redirect = new RedirectPropertyAnnotator( $this->parserData->getData() );
-		$redirect->isEnabled( $this->isEnabled )->annotate( $text );
+		$this->isRedirect( $text );
 
 		// Parse links to extract semantic properties
 		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
@@ -102,6 +100,26 @@ class ContentProcessor implements ContextAware {
 		$this->parserData->getOutput()->addModules( $this->getModules()  );
 		$this->parserData->updateOutput();
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected function isRedirect( $text ) {
+
+		if ( $this->isEnabled ) {
+
+			/**
+			 * @var PropertyAnnotator $propertyAnnotator
+			 */
+			$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'RedirectPropertyAnnotator', array(
+				'SemanticData' => $this->parserData->getData(),
+				'Text'         => $text
+			) );
+
+			$propertyAnnotator->addAnnotation();
+		}
+
 	}
 
 	/**

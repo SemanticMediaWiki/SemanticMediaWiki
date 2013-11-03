@@ -120,11 +120,14 @@ class StoreUpdater implements ContextAware {
 
 			$user = User::newFromId( $revision->getUser() );
 
-			$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
-				'SemanticData' => $this->semanticData
+			$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'PredefinedPropertyAnnotator', array(
+				'SemanticData' => $this->semanticData,
+				'WikiPage' => $wikiPage,
+				'Revision' => $revision,
+				'User'     => $user
 			) );
 
-			$propertyAnnotator->addSpecialProperties( $wikiPage, $revision, $user );
+			$propertyAnnotator->addAnnotation();
 
 		} else {
 			// data found, but do all operations as if it was empty

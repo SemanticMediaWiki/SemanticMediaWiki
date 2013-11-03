@@ -88,14 +88,16 @@ class NewRevisionFromEditComplete extends FunctionHook {
 		) );
 
 		/**
-		 * @var BasePropertyAnnotator $propertyAnnotator
+		 * @var PropertyAnnotator $propertyAnnotator
 		 */
-		$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
+		$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'PredefinedPropertyAnnotator', array(
 			'SemanticData' => $parserData->getData(),
+			'WikiPage' => $this->wikiPage,
+			'Revision' => $this->revision,
+			'User'     => $this->user
 		) );
 
-		$propertyAnnotator->attach( $parserData )
-			->addSpecialProperties( $this->wikiPage, $this->revision, $this->user );
+		$propertyAnnotator->attach( $parserData )->addAnnotation();
 
 		return true;
 	}

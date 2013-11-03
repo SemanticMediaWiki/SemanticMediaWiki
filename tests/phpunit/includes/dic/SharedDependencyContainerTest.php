@@ -161,8 +161,32 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$provider[] = array( 'BasePropertyAnnotator', array( '\SMW\BasePropertyAnnotator' => array(
+		$provider[] = array( 'NullPropertyAnnotator', array( '\SMW\NullPropertyAnnotator' => array(
 				'SemanticData' => $this->newMockBuilder()->newObject( 'SemanticData' )
+				)
+			)
+		);
+
+		$provider[] = array( 'CommonPropertyAnnotator', array( '\SMW\PropertyAnnotator' => array(
+				'SemanticData'  => $this->newMockBuilder()->newObject( 'SemanticData' ),
+				'DefaultSort'   => 'Foo',
+				'CategoryLinks' => array( 'Bar' )
+				)
+			)
+		);
+
+		$provider[] = array( 'PredefinedPropertyAnnotator', array( '\SMW\PropertyAnnotator' => array(
+				'SemanticData' => $this->newMockBuilder()->newObject( 'SemanticData' ),
+				'WikiPage' => $this->newMockBuilder()->newObject( 'WikiPage' ),
+				'Revision' => $this->newMockBuilder()->newObject( 'Revision' ),
+				'User'     => $this->newMockBuilder()->newObject( 'User' ),
+				)
+			)
+		);
+
+		$provider[] = array( 'RedirectPropertyAnnotator', array( '\SMW\PropertyAnnotator' => array(
+				'SemanticData'  => $this->newMockBuilder()->newObject( 'SemanticData' ),
+				'Text' => 'Foo'
 				)
 			)
 		);

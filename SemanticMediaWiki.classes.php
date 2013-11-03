@@ -34,8 +34,6 @@ return array(
 	'SMW\ParserData'            => 'includes/ParserData.php',
 
 	'SMW\PropertyChangeNotifier'    => 'includes/PropertyChangeNotifier.php',
-	'SMW\BasePropertyAnnotator'     => 'includes/BasePropertyAnnotator.php',
-	'SMW\RedirectPropertyAnnotator' => 'includes/RedirectPropertyAnnotator.php',
 	'SMW\Subobject'                 => 'includes/Subobject.php',
 	'SMW\RecurringEvents'           => 'includes/RecurringEvents.php',
 	'SMW\Settings'                  => 'includes/Settings.php',
@@ -49,6 +47,15 @@ return array(
 	'SMW\SimpleDictionary'          => 'includes/SimpleDictionary.php',
 	'SMW\StoreUpdater'              => 'includes/StoreUpdater.php',
 	'SMW\LazyDBConnectionProvider'  => 'includes/LazyDBConnectionProvider.php',
+
+	// Annotator
+	'SMW\PropertyAnnotator'                  => 'includes/annotator/PropertyAnnotator.php',
+	'SMW\NullPropertyAnnotator'              => 'includes/annotator/NullPropertyAnnotator.php',
+	'SMW\PropertyAnnotatorDecorator'         => 'includes/annotator/PropertyAnnotatorDecorator.php',
+	'SMW\CategoryPropertyAnnotator'          => 'includes/annotator/CategoryPropertyAnnotator.php',
+	'SMW\SortKeyPropertyAnnotator'           => 'includes/annotator/SortKeyPropertyAnnotator.php',
+	'SMW\PredefinedPropertyAnnotator'        => 'includes/annotator/PredefinedPropertyAnnotator.php',
+	'SMW\RedirectPropertyAnnotator'          => 'includes/annotator/RedirectPropertyAnnotator.php',
 
 	'SMW\TitleAccess'               => 'includes/interfaces/TitleAccess.php',
 	'SMW\ResultCollector'           => 'includes/interfaces/ResultCollector.php',

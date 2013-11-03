@@ -71,10 +71,13 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	 */
 	protected function getDefinitions() {
 		return array(
-			'ParserData'            => $this->getParserData(),
-			'NamespaceExaminer'     => $this->getNamespaceExaminer(),
-			'UpdateObserver'        => $this->getUpdateObserver(),
-			'BasePropertyAnnotator' => $this->getBasePropertyAnnotator(),
+			'ParserData'        => $this->getParserData(),
+			'NamespaceExaminer' => $this->getNamespaceExaminer(),
+			'UpdateObserver'    => $this->getUpdateObserver(),
+			'NullPropertyAnnotator'   => $this->NullPropertyAnnotator(),
+			'CommonPropertyAnnotator' => $this->CommonPropertyAnnotator(),
+			'PredefinedPropertyAnnotator' => $this->PredefinedPropertyAnnotator(),
+			'RedirectPropertyAnnotator'   => $this->RedirectPropertyAnnotator(),
 
 			/**
 			 * ContentProcessor object definition
@@ -373,17 +376,87 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	}
 
 	/**
-	 * BasePropertyAnnotator object definition
+	 * NullPropertyAnnotator object definition
 	 *
 	 * @since  1.9
 	 *
-	 * @return BasePropertyAnnotator
+	 * @return NullPropertyAnnotator
 	 */
-	protected function getBasePropertyAnnotator() {
+	protected function NullPropertyAnnotator() {
 		return function ( DependencyBuilder $builder ) {
-			return new BasePropertyAnnotator(
+			return new NullPropertyAnnotator(
 				$builder->getArgument( 'SemanticData' ),
-				$builder->newObject( 'Settings' )
+				$builder->newObject( 'BaseContext' )
+			);
+		};
+	}
+
+	/**
+	 * PropertyAnnotator object definition
+	 *
+	 * @since  1.9
+	 *
+	 * @return PropertyAnnotator
+	 */
+	protected function CommonPropertyAnnotator() {
+		return function ( DependencyBuilder $builder ) {
+
+			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
+
+			if ( $builder->hasArgument( 'DefaultSort' ) ) {
+				$annotator = new SortKeyPropertyAnnotator(
+					$annotator,
+					$builder->getArgument( 'DefaultSort' )
+				);
+			}
+
+			if ( $builder->hasArgument( 'CategoryLinks' ) ) {
+				$annotator = new CategoryPropertyAnnotator(
+					$annotator,
+					$builder->getArgument( 'CategoryLinks' )
+				);
+			}
+
+			return $annotator;
+		};
+	}
+
+	/**
+	 * PredefinedPropertyAnnotator object definition
+	 *
+	 * @since  1.9
+	 *
+	 * @return PredefinedPropertyAnnotator
+	 */
+	protected function PredefinedPropertyAnnotator() {
+		return function ( DependencyBuilder $builder ) {
+
+			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
+
+			return new PredefinedPropertyAnnotator(
+				$annotator,
+				$builder->getArgument( 'WikiPage' ),
+				$builder->getArgument( 'Revision' ),
+				$builder->getArgument( 'User' )
+			);
+		};
+	}
+
+	/**
+	 * RedirectPropertyAnnotator object definition
+	 *
+	 * @since  1.9
+	 *
+	 * @return RedirectPropertyAnnotator
+	 */
+	protected function RedirectPropertyAnnotator() {
+		return function ( DependencyBuilder $builder ) {
+
+			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
+
+			return new RedirectPropertyAnnotator(
+				$annotator,
+				$builder->getArgument( 'Text' )
 			);
 		};
 	}

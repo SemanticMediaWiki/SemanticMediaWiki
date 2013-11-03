@@ -73,15 +73,15 @@ class ParserAfterTidy extends FunctionHook {
 		) );
 
 		/**
-		 * @var BasePropertyAnnotator $propertyAnnotator
+		 * @var PropertyAnnotator $propertyAnnotator
 		 */
-		$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'BasePropertyAnnotator', array(
-			'SemanticData' => $parserData->getData(),
+		$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'CommonPropertyAnnotator', array(
+			'SemanticData'  => $parserData->getData(),
+			'CategoryLinks' => $this->parser->getOutput()->getCategoryLinks(),
+			'DefaultSort'   => $this->parser->getDefaultSort()
 		) );
 
-		$propertyAnnotator->attach( $parserData );
-		$propertyAnnotator->addCategories( $this->parser->getOutput()->getCategoryLinks() );
-		$propertyAnnotator->addDefaultSort( $this->parser->getDefaultSort() );
+		$propertyAnnotator->attach( $parserData )->addAnnotation();
 
 		/**
 		 * @var CacheHandler $cache
