@@ -6,20 +6,14 @@ use ObjectCache;
 use BagOStuff;
 
 /**
- * This class is handling access to cacheable entities
+ * Encapsulate access to MW's BagOStuff class
  *
- * @file
+ * @ingroup SMW
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author mwjames
- */
-
-/**
- * This class is handling access to cacheable entities
- *
- * @ingroup Handler
  */
 class CacheHandler {
 
@@ -28,9 +22,6 @@ class CacheHandler {
 
 	/** @var string */
 	protected $key = false;
-
-	/** @var string */
-	protected $prefix;
 
 	/** @var boolean */
 	protected $cacheEnabled = false;
@@ -54,7 +45,7 @@ class CacheHandler {
 	 *
 	 * @par Example:
 	 * @code
-	 *  $cache = new CacheHandler::newFromId()->key( 'Foo', 'Bar' )
+	 *  $cache = new CacheHandler::newFromId()->setkey( new CachIdGenerator( 'Foo' ) )
 	 *
 	 *  $cache->set( 'CacheableObject' )
 	 *  $cache->get() returns 'CacheableObject'
@@ -92,7 +83,6 @@ class CacheHandler {
 				$cache = new self;
 			}
 
-			$cache->setCachePrefix( $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'] );
 			$cache->setCacheEnabled( true );
 
 			self::$instance[$cacheType] = $cache;
@@ -135,27 +125,6 @@ class CacheHandler {
 	 */
 	public function getCache() {
 		return $this->cache;
-	}
-
-	/**
-	 * Generates and invokes a concatenated string containing <prefix>:smw:<key>
-	 *
-	 * @par Example:
-	 * @code
-	 *  $cache = new CacheHandler::newFromId()
-	 *
-	 *  $cache->key( 'Foo', 'Bar' ) generates <prefix>:smw:Foo:Bar
-	 * @endcode
-	 *
-	 * @since 1.9
-	 *
-	 * @param varargs
-	 *
-	 * @return CacheHandler
-	 */
-	public function key( /* ... */ ) {
-		$this->key = $this->prefix . ':' . 'smw' . ':' . str_replace( ' ', '_', implode( ':', func_get_args() ) );
-		return $this;
 	}
 
 	/**
@@ -210,22 +179,6 @@ class CacheHandler {
 	 */
 	public function setCacheEnabled( $cacheEnabled ) {
 		$this->cacheEnabled = $this->getCache() instanceof BagOStuff ? (bool)$cacheEnabled : false;
-		return $this;
-	}
-
-	/**
-	 * Sets cache prefix
-	 *
-	 * @see $wgCachePrefix
-	 *
-	 * @since 1.9
-	 *
-	 * @param string $prefix
-	 *
-	 * @return CacheHandler
-	 */
-	public function setCachePrefix( $prefix ) {
-		$this->prefix = $prefix;
 		return $this;
 	}
 
