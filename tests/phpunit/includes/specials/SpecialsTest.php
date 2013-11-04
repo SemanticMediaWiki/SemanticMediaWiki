@@ -38,6 +38,7 @@ use Language;
  *
  * @group SMW
  * @group SMWExtension
+ * @group medium
  */
 class SpecialsTest extends SemanticMediaWikiTestCase {
 

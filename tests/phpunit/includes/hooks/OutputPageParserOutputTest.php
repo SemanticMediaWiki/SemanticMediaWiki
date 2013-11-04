@@ -12,6 +12,7 @@ use SMW\ExtensionContext;
  *
  * @group SMW
  * @group SMWExtension
+ * @group medium
  *
  * @licence GNU GPL v2+
  * @since 1.9
