@@ -62,7 +62,7 @@ Contributors
 : Roi Avinoam, Richard Cyganiak, Sanyam Goyal, Devayon Das, Nischay Nahata,
 : James HK, Sam Reed, Karsten Hoffmeyer, Niklas Laxström.
 
-* [The logo](http://semantic-mediawiki.org/wiki/SMW_Logo) and related artwork for
+* The [logo](http://semantic-mediawiki.org/wiki/SMW_logo) and related artwork for
 : Semantic MediaWiki were designed and realised by Markus Krötzsch. A previous 
 : version of the SMW logo has been realised by Rozana Vrandecic.
 
