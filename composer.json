@@ -41,5 +41,10 @@
 		"composer/installers": ">=1.0.1",
 		"param-processor/param-processor": "dev-master"
 	},
-	"minimum-stability" : "dev"
+	"minimum-stability" : "dev",
+	"autoload": {
+		"files" : [
+			"SemanticMediaWiki.composer.php"
+		]
+	}
 }
