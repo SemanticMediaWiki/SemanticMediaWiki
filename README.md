@@ -49,22 +49,22 @@ Contributors
 * Denny Vrandecic is one of the original core developers.
 
 * Heiko Haller and Max Völkel contributed to the initial design and basic
-: architectural decisions.
+architectural decisions.
 
 * The German company Doccheck (doccheck.com) helped to get the implementation
-: going at the early stages of the project, and set up the first testing wiki.
-: The first implementation was done by Klaus Lassleben.
+going at the early stages of the project, and set up the first testing wiki.
+The first implementation was done by Klaus Lassleben.
 
 * Code has been contributed by (in no particular order) S Page, Kai Hüner,
-: Fernando Correia, Yaron Koren, Nick Grandy, Jörg Heizmann, Daniel Herzig,
-: Nikolas Iwan, Tobias Matzner, Thomas Bleher, Felix Kratzer, Frank Dengler,
-: Nathan R. Yergler, Daniel Friesen, Fabian Howahl, Jie Bao, Marcel Gsteiger,
-: Roi Avinoam, Richard Cyganiak, Sanyam Goyal, Devayon Das, Nischay Nahata,
-: James HK, Sam Reed, Karsten Hoffmeyer, Niklas Laxström.
+Fernando Correia, Yaron Koren, Nick Grandy, Jörg Heizmann, Daniel Herzig,
+Nikolas Iwan, Tobias Matzner, Thomas Bleher, Felix Kratzer, Frank Dengler,
+Nathan R. Yergler, Daniel Friesen, Fabian Howahl, Jie Bao, Marcel Gsteiger,
+Roi Avinoam, Richard Cyganiak, Sanyam Goyal, Devayon Das, Nischay Nahata,
+James HK, Sam Reed, Karsten Hoffmeyer, Niklas Laxström.
 
 * The [logo](http://semantic-mediawiki.org/wiki/SMW_logo) and related artwork for
-: Semantic MediaWiki were designed and realised by Markus Krötzsch. A previous 
-: version of the SMW logo has been realised by Rozana Vrandecic.
+Semantic MediaWiki were designed and realised by Markus Krötzsch. A previous 
+version of the SMW logo has been realised by Rozana Vrandecic.
 
 Translations
 ------------
@@ -78,9 +78,9 @@ Credits to other projects
 -------------------------
 
 * Most icons used by Semantic MediaWiki are derived from the "Crystal Clear"
-: icon theme for KDE, which was created by [Everaldo](http://everaldo.com).
+icon theme for KDE, which was created by [Everaldo](http://everaldo.com).
 
 * Many people have contributed to the project by providing helpful comments and
-: suggestions. Among them are the members of the Semantic Wiki Interest Group
-: (swikig@aifb.uni-karlsruhe.de; see semanticweb.org), the people at the project
-: mailing lists, and a number of anonymous reviewers. Thanks a lot!
+suggestions. Among them are the members of the Semantic Wiki Interest Group
+(swikig@aifb.uni-karlsruhe.de; see semanticweb.org), the people at the project
+mailing lists, and a number of anonymous reviewers. Thanks a lot!
