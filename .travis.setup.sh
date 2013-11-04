@@ -6,7 +6,12 @@ originalDirectory=$(pwd)
 
 cd ..
 
-git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git phase3
+if [ "$MW" == "master" ]
+then
+	git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git phase3 --depth 1
+else
+	git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git phase3
+fi
 
 cd phase3
 
