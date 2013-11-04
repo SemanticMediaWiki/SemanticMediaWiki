@@ -26,5 +26,5 @@ notifications:
   irc:
     channels:
       - "chat.freenode.net#semantic-mediawiki"
-    on_success: change
+    on_success: never
     on_failure: always
