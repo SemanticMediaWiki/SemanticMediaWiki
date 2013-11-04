@@ -1,6 +1,6 @@
 #! /bin/bash
 
-cd cd ../phase3/tests/phpunit
+cd ../phase3/tests/phpunit
 
 if [ "$MW-$DBTYPE" == "master-mysql" ]
 then
