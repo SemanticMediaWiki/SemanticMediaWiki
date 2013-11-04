@@ -137,8 +137,11 @@ abstract class SMWDataValue {
 	 * The given value is a string as supplied by some user. An alternative
 	 * label for printout might also be specified.
 	 *
+	 * The third argument was added in SMW 1.9 and should not be used from outside SMW.
+	 *
 	 * @param string $value
 	 * @param mixed $caption
+	 * @param boolean $ignoreAllowedValues
 	 */
 	public function setUserValue( $value, $caption = false, $ignoreAllowedValues = false ) {
 		wfProfileIn( 'SMWDataValue::setUserValue (SMW)' );
