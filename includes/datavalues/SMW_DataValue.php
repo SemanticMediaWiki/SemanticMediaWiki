@@ -140,7 +140,7 @@ abstract class SMWDataValue {
 	 * @param string $value
 	 * @param mixed $caption
 	 */
-	public function setUserValue( $value, $caption = false ) {
+	public function setUserValue( $value, $caption = false, $ignoreAllowedValues = false ) {
 		wfProfileIn( 'SMWDataValue::setUserValue (SMW)' );
 
 		$this->m_dataitem = null;
@@ -163,7 +163,7 @@ abstract class SMWDataValue {
 			$this->addError( wfMessage( 'smw_parseerror' )->inContentLanguage()->text() );
 		}
 
-		if ( $this->isValid() ) {
+		if ( $this->isValid() && !$ignoreAllowedValues ) {
 			$this->checkAllowedValues();
 		}
 
@@ -419,7 +419,12 @@ abstract class SMWDataValue {
 
 		self::prepareValue( $value, $comparator );
 
-		$this->setUserValue( $value );
+		if( $comparator == SMW_CMP_LIKE ) {
+			// ignore allowed values when the LIKE comparator is used (BUG 21893)
+			$this->setUserValue( $value, false, true );
+		} else {
+			$this->setUserValue( $value );
+		}
 
 		if ( $this->isValid() ) {
 			return new SMWValueDescription( $this->getDataItem(), $this->m_property, $comparator );
