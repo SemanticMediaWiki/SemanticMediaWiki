@@ -10,7 +10,9 @@ if [ "$MW" == "master" ]
 then
 	git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git phase3 --depth 1
 else
-	git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git phase3
+	wget https://github.com/wikimedia/mediawiki-core/archive/$MW.tar.gz
+	tar -zxvf $MW.tar.gz
+	mv mediawiki-core-$MW phase3
 fi
 
 cd phase3
