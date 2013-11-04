@@ -21,7 +21,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 
 if ( defined( 'SMW_VERSION' ) ) {
 	// Do not load SMW more then once
-	return;
+	return 1;
 }
 
 // The SMW version number.
