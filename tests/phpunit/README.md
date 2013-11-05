@@ -14,10 +14,9 @@ ParserTestCase derives from SemanticMediaWikiTestCase and provides methods norma
 QueryPrinterTestCase base class for all query printers.
 
 ### MockObjectBuilder
-Semantic MediaWiki makes it a bit easier to create readable mock objects by using the MockObjectBuilder while object definitions are kept in the MockObjectRepository class.
+Semantic MediaWiki makes it a bit easier to create readable mock objects by using its own MockObjectBuilder with object definitions specified in the MockObjectRepository class.
 
-For example, if a test would need to create a 'Title' mock object it would need to create the following in each test that where rely on a mocked Title.
-
+For example, if a test would need to create a 'Title' mock object it would need to add the follwing to each test that where rely on a mocked Title.
 
 ```php
 $mockTitle = $this->getMockBuilder( 'Title' )
@@ -31,11 +30,7 @@ $mockTitle->expects( $this->any() )
 ...
 ```
 
-Fortunately, Semantic MediaWiki provides a short cut for most common used mock objects within its test environment.
-
-```php
-$this->newMockBuilder()->newObject( 'aConcreteObject', array( ... ) );
-```
+Fortunately, Semantic MediaWiki provides a short cut for most common mock objects used within its test environment.
 
 ```php
 $mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
@@ -108,8 +103,12 @@ $this->newMockBuilder()->newObject( 'Store', array(
 ) );
 ```
 
-### MockUpdateObserver
+### Other mock objects
+#### MockUpdateObserver
 MockUpdateObserver is used during testing to verify that a correct behaviour between the UpdateObserver and a Observable has been established.
+
+#### MockSuperUser
+Object to interact with MW's User class.
 
 [phpunit]: http://phpunit.de/manual/3.7/en/index.html
 [smw]: https://www.semantic-mediawiki.org/wiki/PHPUnit_tests
