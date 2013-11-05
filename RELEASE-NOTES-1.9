@@ -1,19 +1,14 @@
 THIS IS NOT A RELEASE YET
 
-Semantic MediaWiki 1.9 is currently in alpha-quality and is not recommended for use in
+Semantic MediaWiki 1.9 is currently in beta-quality and is not recommended for use in
 production until the actual release.
 
-=== Compatibility changes ===
+=== Requirements changes ===
 
 * Changed minimum MediaWiki version from 1.17 to 1.19.
-* Changed minimum PHP version from 5.2.x. to 5.3.x.
-* Full compatibility with MediaWiki 1.19 and forward-compatibility with 1.21.
-* Deleted pre SMW 1.5.1 entry point (includes/SMW_Settings.php), the main entry point is SemanticMediaWiki.php
+* Changed minimum PHP version from 5.2. to 5.3.2.
+* Full compatibility with MediaWiki 1.19, 1.20, 1.21, 1.22 and forward-compatibility with 1.23.
 * Changed minimum Validator version from 0.5 to 1.0.
-* Restored compatibility with SQLite
-* (I17a3e0) Support for quantity export via API and JSON format
-* (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
-* (I5db911) #set_recurring_event using subobjects (changes query behavior for recurring events; for more see [[Help:Recurring_events]])
 
 === New features ===
 
@@ -81,6 +76,13 @@ production until the actual release.
 * (5a3f6ed) (Bug 50755) Remove MigrationJob/SMWMigrate
 * (f9cff2b) Remove smwfLoadExtensionMessages
 
+=== Compatibility changes ===
+
+* Deleted pre SMW 1.5.1 entry point (includes/SMW_Settings.php), the main entry point is SemanticMediaWiki.php
+* (I17a3e0) Support for quantity export via API and JSON format
+* (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
+* (I5db911) #set_recurring_event using subobjects (changes query behavior for recurring events; for more see [[Help:Recurring_events]])
+
 === Bug fixes ===
 
 * The property statistics rebuilding is no longer done whenever you run update.php.
@@ -113,6 +115,7 @@ If not noted otherwise, deprecated methods or classes will be removed in SMW 1.1
 * More than 10 QUnit tests have been added
 
 === Documentation ===
+
 Additional documentation has been added, see /docs/
 
 === Extended translations ===
