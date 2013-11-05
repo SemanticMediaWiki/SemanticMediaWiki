@@ -25,7 +25,7 @@ if ( defined( 'SMW_VERSION' ) ) {
 }
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.9 alpha-3' );
+define( 'SMW_VERSION', '1.9 beta-1' );
 
 if ( version_compare( $GLOBALS['wgVersion'], '1.19c', '<' ) ) {
 	die( '<b>Error:</b> This version of Semantic MediaWiki requires MediaWiki 1.19 or above; use SMW 1.8.x for MediaWiki 1.18.x or 1.17.x.' );
