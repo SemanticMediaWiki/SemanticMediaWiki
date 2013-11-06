@@ -557,7 +557,7 @@ class SMWExporter {
 	static public function getDataItemExpElement( SMWDataItem $dataItem ) {
 		switch ( $dataItem->getDIType() ) {
 			case SMWDataItem::TYPE_NUMBER:
-				$lit = new SMWExpLiteral( $dataItem->getNumber(), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
+				$lit = new SMWExpLiteral( strval( $dataItem->getNumber() ), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
 				return $lit;
 			case SMWDataItem::TYPE_BLOB:
 				$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $dataItem->getString() ), 'http://www.w3.org/2001/XMLSchema#string', $dataItem );
