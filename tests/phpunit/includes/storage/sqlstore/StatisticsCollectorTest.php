@@ -36,10 +36,17 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 	 *
 	 * @return StatisticsCollector
 	 */
-	private function newInstance( $count = 1, $cacheEnabled = false, $hash = 'foo' ) {
+	private function newInstance( $count = 55, $cacheEnabled = false, $hash = 'foo' ) {
 
-		// $store = $this->newMockObject( array( 'getPropertyTables' => array( 'smw_test' ) ) )->getMockStore();
-		$store = StoreFactory::getStore( 'SMWSQLStore3' );
+		$tableDefinition = $this->newMockBuilder()->newObject( 'SQLStoreTableDefinition', array(
+			'isFixedPropertyTable' => true
+		) );
+
+		$store = $this->newMockBuilder()->newObject( 'Store', array(
+			'getPropertyTables'   => array( 'Foo' => $tableDefinition ),
+			'findTypeTableId'     => 'Foo',
+			'findPropertyTableID' => 'Foo'
+		) );
 
 		$result = array(
 			'count'  => $count,
@@ -49,28 +56,13 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 		$resultWrapper = new FakeResultWrapper( array( (object)$result ) );
 		$resultWrapper->count = $count;
 
-		// Database stub object which makes the test
-		// independent from the real DB
-		$connection = $this->getMock( 'DatabaseMysql' );
+		$connection = $this->newMockBuilder()->newObject( 'DatabaseBase', array(
+			'select'      => $resultWrapper,
+			'selectRow'   => $resultWrapper,
+			'fetchObject' => $resultWrapper,
+			'estimateRowCount' => $count
+		) );
 
-		// Override methods with expected return objects
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->will( $this->returnValue( $resultWrapper ) );
-
-		$connection->expects( $this->any() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( $resultWrapper ) );
-
-		$connection->expects( $this->any() )
-			->method( 'fetchObject' )
-			->will( $this->returnValue( $resultWrapper ) );
-
-		$connection->expects( $this->any() )
-			->method( 'estimateRowCount' )
-			->will( $this->returnValue( $count ) );
-
-		// Settings to be used
 		$settings = $this->newSettings( array(
 			'smwgCacheType' => 'hash',
 			'smwgStatisticsCache' => $cacheEnabled,
@@ -129,6 +121,7 @@ class StatisticsCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase {
 		// Sample A
 		$instance = $this->newInstance( $test['A'], $test['cacheEnabled'] );
 		$result = $instance->getResults();
+
 		$this->assertEquals( $expected['A'], $result['OWNPAGE'] );
 
 		// Sample B

@@ -27,10 +27,32 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @since 1.9
+	 */
+	private function newExtensionContext( $store = null ) {
+
+		$context = new ExtensionContext();
+
+		$settings = $context->getSettings();
+		$settings->set( 'smwgCacheType', CACHE_NONE );
+
+		$context->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
+
+		return $context;
+	}
+
+	/**
+	 * @since 1.9
 	 *
 	 * @return Setup
 	 */
 	private function newInstance( &$test = array(), $context = null ) {
+
+		if ( $context === null ) {
+			$context = $this->newExtensionContext();
+		}
+
 		return new Setup( $test, $context );
 	}
 
@@ -100,16 +122,12 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 */
 	private function assertHook( $hook, &$setup, $count ) {
 
-		$mockLang  = $this->newMockBuilder()->newObject( 'Language' );
-		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
-
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
+		$mockLang = $this->newMockBuilder()->newObject( 'Language' );
 
 		$setup['wgVersion'] = '1.21';
 		$setup['wgLang']    = $mockLang;
 
-		$instance = $this->newInstance( $setup, $context );
+		$instance = $this->newInstance( $setup );
 
 		$this->assertCount(
 			0,

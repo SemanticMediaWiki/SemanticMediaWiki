@@ -345,14 +345,14 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput->expects( $this->any() )
-			->method( 'getExtensionData' )
-			->will( $this->returnValue( $this->builder->setValue( 'getExtensionData' ) ) );
 
-		$parserOutput->expects( $this->any() )
-			->method( 'setExtensionData' )
-			->will( $this->returnValue( $this->builder->setValue( 'setExtensionData' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
+			$parserOutput->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
 
 		return $parserOutput;
 	}
@@ -523,18 +523,6 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$property->expects( $this->any() )
-			->method( 'isUserDefined' )
-			->will( $this->returnValue( $this->builder->setValue( 'isUserDefined' ) ) );
-
-		$property->expects( $this->any() )
-			->method( 'isShown' )
-			->will( $this->returnValue( $this->builder->setValue( 'isShown' ) ) );
-
-		$property->expects( $this->any() )
-			->method( 'getDiWikiPage' )
-			->will( $this->returnValue( $this->builder->setValue( 'getDiWikiPage' ) ) );
-
-		$property->expects( $this->any() )
 			->method( 'findPropertyTypeID' )
 			->will( $this->returnValue( $this->builder->setValue( 'findPropertyTypeID', '_wpg' ) ) );
 
@@ -546,9 +534,13 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->method( 'getDIType' )
 			->will( $this->returnValue( SMWDataItem::TYPE_PROPERTY ) );
 
-		$property->expects( $this->any() )
-			->method( 'getLabel' )
-			->will( $this->returnValue( $this->builder->setValue( 'getLabel' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
+
+			$property->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
 
 		return $property;
 	}
@@ -771,17 +763,13 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$skin->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
-		$skin->expects( $this->any() )
-			->method( 'getOutput' )
-			->will( $this->returnValue( $this->builder->setValue( 'getOutput' ) ) );
+			$skin->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
 
-		$skin->expects( $this->any() )
-			->method( 'getContext' )
-			->will( $this->returnValue( $this->builder->setValue( 'getContext' ) ) );
+		}
 
 		return $skin;
 	}
@@ -819,17 +807,13 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser->expects( $this->any() )
-			->method( 'getOutput' )
-			->will( $this->returnValue( $this->builder->setValue( 'getOutput' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
-		$parser->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
+			$parser->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
 
-		$parser->expects( $this->any() )
-			->method( 'getTargetLanguage' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTargetLanguage' ) ) );
+		}
 
 		return $parser;
 	}
@@ -847,13 +831,13 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$linksUpdate->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
-		$linksUpdate->expects( $this->any() )
-			->method( 'getParserOutput' )
-			->will( $this->returnValue( $this->builder->setValue( 'getParserOutput' ) ) );
+			$linksUpdate->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
 
 		return $linksUpdate;
 	}
@@ -906,36 +890,43 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 
 		// DatabaseBase is an abstract class, use setMethods to implement
 		// required abstract methods
+		$requiredAbstractMethods = array(
+			'selectField',
+			'doQuery',
+			'getType',
+			'open',
+			'fetchObject',
+			'fetchRow',
+			'numRows',
+			'numFields',
+			'fieldName',
+			'insertId',
+			'dataSeek',
+			'lastErrno',
+			'lastError',
+			'fieldInfo',
+			'indexInfo',
+			'affectedRows',
+			'strencode',
+			'getSoftwareLink',
+			'getServerVersion',
+			'closeConnection'
+		);
+
+		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
 		$databaseBase = $this->getMockBuilder( 'DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array(
-				'selectField',
-				'doQuery',
-				'getType',
-				'open',
-				'fetchObject',
-				'fetchRow',
-				'numRows',
-				'numFields',
-				'fieldName',
-				'insertId',
-				'dataSeek',
-				'lastErrno',
-				'lastError',
-				'fieldInfo',
-				'indexInfo',
-				'affectedRows',
-				'strencode',
-				'getSoftwareLink',
-				'getServerVersion',
-				'closeConnection'
-			) )
+			->setMethods( $methods )
 			->getMock();
 
-		$databaseBase->expects( $this->any() )
-			->method( 'selectField' )
-			->will( $this->returnValue( $this->builder->setValue( 'selectField' ) ) );
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
+
+			$databaseBase->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
 
 		return $databaseBase;
 	}

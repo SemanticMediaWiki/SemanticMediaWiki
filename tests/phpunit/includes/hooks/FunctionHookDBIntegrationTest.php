@@ -24,13 +24,38 @@ use Title;
  *
  * @author mwjames
  */
-class FunctionHookIntegrationTest extends \MediaWikiTestCase {
+class FunctionHookDBIntegrationTest extends \MediaWikiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
 		return false;
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function newExtensionContext() {
+
+		$context = new ExtensionContext();
+
+		$settings = $context->getSettings();
+		$settings->set( 'smwgCacheType', CACHE_NONE );
+
+		$mockBuilder = new MockObjectBuilder();
+
+		$data = $mockBuilder->newObject( 'SemanticData', array(
+			'hasVisibleProperties' => false,
+		) );
+
+		$store = $mockBuilder->newObject( 'Store', array(
+			'getSemanticData' => $data,
+		) );
+
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $store );
+
+		return $context;
 	}
 
 	/**
@@ -63,10 +88,10 @@ class FunctionHookIntegrationTest extends \MediaWikiTestCase {
 	 */
 	public function testOnArticlePurgeOnDatabase() {
 
-		$wikiPage = $this->newWikiPage();
+		$wikiPage = $this->newWikiPage( __METHOD__ );
 
 		$instance = new ArticlePurge( $wikiPage );
-		$instance->invokeContext( new ExtensionContext() );
+		$instance->invokeContext( $this->newExtensionContext() );
 
 		$this->assertTrue( $instance->process() );
 
@@ -82,14 +107,14 @@ class FunctionHookIntegrationTest extends \MediaWikiTestCase {
 	 */
 	public function testOnNewRevisionFromEditCompleteOnDatabase() {
 
-		$wikiPage = $this->newWikiPage( 'Bam' );
+		$wikiPage = $this->newWikiPage( __METHOD__ );
 
 		$this->assertTrue( $wikiPage->getId() > 0, "WikiPage should have new page id" );
 		$revision = $wikiPage->getRevision();
 		$user = new MockSuperUser();
 
 		$instance = new NewRevisionFromEditComplete( $wikiPage, $revision, $wikiPage->getId(), $user );
-		$instance->invokeContext( new ExtensionContext() );
+		$instance->invokeContext( $this->newExtensionContext() );
 
 		$this->assertTrue( $instance->process() );
 
@@ -106,7 +131,7 @@ class FunctionHookIntegrationTest extends \MediaWikiTestCase {
 	public function testOnOutputPageParserOutputeOnDatabase() {
 
 		$text = __METHOD__;
-		$wikiPage = $this->newWikiPage( 'Bar' );
+		$wikiPage = $this->newWikiPage( __METHOD__ );
 
 		$title = $wikiPage->getTitle();
 
@@ -118,7 +143,7 @@ class FunctionHookIntegrationTest extends \MediaWikiTestCase {
 		$outputPage = new \OutputPage( $context );
 
 		$instance = new OutputPageParserOutput( $outputPage, $parserOutput );
-		$instance->invokeContext( new ExtensionContext() );
+		$instance->invokeContext( $this->newExtensionContext() );
 
 		$this->assertTrue( $instance->process() );
 

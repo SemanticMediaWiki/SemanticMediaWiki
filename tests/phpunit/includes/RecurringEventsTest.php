@@ -55,29 +55,6 @@ class RecurringEventsTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @since  1.9
-	 */
-	public function testMissingParametersExceptions() {
-
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$this->assertInstanceOf( $this->getClass(), new RecurringEvents( '' , ''  ) );
-
-	}
-
-	/**
-	 * @dataProvider getParametersDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testMissingOptionsExceptions( array $params ) {
-		$this->setExpectedException( 'PHPUnit_Framework_Error' );
-		$parameters = new ParserParameterFormatter( $params );
-
-		$instance = new RecurringEvents( $parameters, '' );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
-
-	/**
 	 * @dataProvider getParametersDataProvider
 	 *
 	 * @since 1.9

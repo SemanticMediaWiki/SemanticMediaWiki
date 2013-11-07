@@ -36,42 +36,23 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Initialisation of the extension
-	 *
 	 * @since 1.9
 	 */
 	public function run() {
 		Profiler::In();
 
 		$this->init();
-
 		$this->loadSettings();
 
-		// Register messages files
-		$this->registerMessageFiles();
-
-		// Register Api modules
-		$this->registerApiModules();
-
-		// Register Job classes
+		$this->registerI18n();
+		$this->registerWebApi();
 		$this->registerJobClasses();
-
-		// Register Special pages
 		$this->registerSpecialPages();
+		$this->registerPermissions();
 
-		// Rights and groups
-		$this->registerRights();
-
-		// ParamDefinitions
 		$this->registerParamDefinitions();
-
-		//FooterIcons
 		$this->registerFooterIcon();
-
-		// Register hooks (needs to be loaded after settings are initialized)
 		$this->registerFunctionHooks();
-
-		// Register parser hooks
 		$this->registerParserHooks();
 
 		Profiler::Out();
@@ -115,8 +96,6 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register settings
-	 *
 	 * @since 1.9
 	 */
 	protected function registerSettings( Settings $settings ) {
@@ -125,11 +104,11 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register messages files
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgExtensionMessagesFiles
 	 *
 	 * @since 1.9
 	 */
-	protected function registerMessageFiles() {
+	protected function registerI18n() {
 
 		$smwgIP = $this->settings->get( 'smwgIP' );
 
@@ -140,15 +119,11 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register Api modules
-	 *
-	 * @note Associative array mapping module name to class name
-	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgAPIModules
 	 *
 	 * @since 1.9
 	 */
-	protected function registerApiModules() {
+	protected function registerWebApi() {
 
 		$this->globals['wgAPIModules']['smwinfo'] = '\SMW\Api\Info';
 		$this->globals['wgAPIModules']['ask']     = '\SMW\Api\Ask';
@@ -158,29 +133,25 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register Job classes to their handling classes
-	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
 	 *
 	 * @since 1.9
 	 */
 	protected function registerJobClasses() {
 
-		$this->globals['wgJobClasses']['SMW\UpdateJob']           = 'SMW\UpdateJob';
-		$this->globals['wgJobClasses']['SMW\RefreshJob']          = 'SMW\RefreshJob';
+		$this->globals['wgJobClasses']['SMW\UpdateJob']  = 'SMW\UpdateJob';
+		$this->globals['wgJobClasses']['SMW\RefreshJob'] = 'SMW\RefreshJob';
 		$this->globals['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\UpdateDispatcherJob';
 
 	}
 
 	/**
-	 * Register rights and groups
-	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgAvailableRights
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgGroupPermissions
 	 *
 	 * @since 1.9
 	 */
-	protected function registerRights() {
+	protected function registerPermissions() {
 
 		// Rights
 		$this->globals['wgAvailableRights'][] = 'smw-admin';
@@ -192,8 +163,6 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register special pages
-	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgSpecialPages
 	 *
 	 * @since 1.9
@@ -266,8 +235,6 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register
-	 *
 	 * @since 1.9
 	 */
 	protected function registerParamDefinitions() {
@@ -283,8 +250,6 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register poweredby footer icon
-	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
 	 *
 	 * @since 1.9
@@ -299,12 +264,10 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register function hooks
+	 * @see https://www.mediawiki.org/wiki/Manual:$this->globals['wgHooks']
 	 *
 	 * @note $this->globals['wgHooks'] contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:$this->globals['wgHooks']
 	 *
 	 * @since 1.9
 	 */
@@ -312,7 +275,7 @@ final class Setup implements ContextAware {
 
 		$globals  = $this->globals;
 		$context  = $this->withContext();
-		$registry = $context->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
+		$functionHook = $context->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
 
 		/**
 		 * Hook: Called by BaseTemplate when building the toolbox array and
@@ -322,8 +285,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since  1.9
 		 */
-		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) use ( $registry ) {
-			return $registry->register( new BaseTemplateToolbox( $skinTemplate, $toolbox ) )->process();
+		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) use ( $functionHook ) {
+			return $functionHook->register( new BaseTemplateToolbox( $skinTemplate, $toolbox ) )->process();
 		};
 
 		/**
@@ -334,8 +297,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since  1.9
 		 */
-		$this->globals['wgHooks']['SkinAfterContent'][] = function ( &$data, $skin = null ) use ( $registry ) {
-			return $registry->register( new SkinAfterContent( $data, $skin ) )->process();
+		$this->globals['wgHooks']['SkinAfterContent'][] = function ( &$data, $skin = null ) use ( $functionHook ) {
+			return $functionHook->register( new SkinAfterContent( $data, $skin ) )->process();
 		};
 
 		/**
@@ -345,8 +308,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since  1.9
 		 */
-		$this->globals['wgHooks']['OutputPageParserOutput'][] = function ( &$outputPage, $parserOutput ) use ( $registry ) {
-			return $registry->register( new OutputPageParserOutput( $outputPage, $parserOutput ) )->process();
+		$this->globals['wgHooks']['OutputPageParserOutput'][] = function ( &$outputPage, $parserOutput ) use ( $functionHook ) {
+			return $functionHook->register( new OutputPageParserOutput( $outputPage, $parserOutput ) )->process();
 		};
 
 		/**
@@ -356,8 +319,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['BeforePageDisplay'][] = function ( &$outputPage, &$skin ) use ( $registry ) {
-			return $registry->register( new BeforePageDisplay( $outputPage, $skin ) )->process();
+		$this->globals['wgHooks']['BeforePageDisplay'][] = function ( &$outputPage, &$skin ) use ( $functionHook ) {
+			return $functionHook->register( new BeforePageDisplay( $outputPage, $skin ) )->process();
 		};
 
 		/**
@@ -368,8 +331,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = function ( &$parser, &$text ) use ( $registry ) {
-			return $registry->register( new InternalParseBeforeLinks( $parser, $text ) )->process();
+		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = function ( &$parser, &$text ) use ( $functionHook ) {
+			return $functionHook->register( new InternalParseBeforeLinks( $parser, $text ) )->process();
 		};
 
 		/**
@@ -380,8 +343,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['NewRevisionFromEditComplete'][] = function ( $wikiPage, $revision, $baseId, $user ) use ( $registry ) {
-			return $registry->register( new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) )->process();
+		$this->globals['wgHooks']['NewRevisionFromEditComplete'][] = function ( $wikiPage, $revision, $baseId, $user ) use ( $functionHook ) {
+			return $functionHook->register( new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) )->process();
 		};
 
 		/**
@@ -392,8 +355,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['TitleMoveComplete'][] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) use ( $registry ) {
-			return $registry->register( new TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) )->process();
+		$this->globals['wgHooks']['TitleMoveComplete'][] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) use ( $functionHook ) {
+			return $functionHook->register( new TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) )->process();
 		};
 
 		/**
@@ -403,8 +366,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['ArticlePurge'][] = function ( &$wikiPage ) use ( $registry ) {
-			return $registry->register( new ArticlePurge( $wikiPage ) )->process();
+		$this->globals['wgHooks']['ArticlePurge'][] = function ( &$wikiPage ) use ( $functionHook ) {
+			return $functionHook->register( new ArticlePurge( $wikiPage ) )->process();
 		};
 
 		/**
@@ -427,8 +390,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['LinksUpdateConstructed'][] = function ( $linksUpdate ) use ( $registry ) {
-			return $registry->register( new LinksUpdateConstructed( $linksUpdate ) )->process();
+		$this->globals['wgHooks']['LinksUpdateConstructed'][] = function ( $linksUpdate ) use ( $functionHook ) {
+			return $functionHook->register( new LinksUpdateConstructed( $linksUpdate ) )->process();
 		};
 
 		/**
@@ -438,8 +401,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['ParserAfterTidy'][] = function ( &$parser, &$text ) use ( $registry ) {
-			return $registry->register( new ParserAfterTidy( $parser, $text ) )->process();
+		$this->globals['wgHooks']['ParserAfterTidy'][] = function ( &$parser, &$text ) use ( $functionHook ) {
+			return $functionHook->register( new ParserAfterTidy( $parser, $text ) )->process();
 		};
 
 		/**
@@ -449,8 +412,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = function ( &$extraStats ) use ( $registry, $globals ) {
-			return $registry->register( new SpecialStatsAddExtra( $extraStats, $globals['wgVersion'], $globals['wgLang'] ) )->process();
+		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = function ( &$extraStats ) use ( $functionHook, $globals ) {
+			return $functionHook->register( new SpecialStatsAddExtra( $extraStats, $globals['wgVersion'], $globals['wgLang'] ) )->process();
 		};
 
 		// Old-style registration
@@ -472,8 +435,6 @@ final class Setup implements ContextAware {
 	}
 
 	/**
-	 * Register parser hooks
-	 *
 	 * @since 1.9
 	 */
 	protected function registerParserHooks() {
