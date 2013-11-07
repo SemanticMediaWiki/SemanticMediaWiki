@@ -56,13 +56,9 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 			'usage_count' => (string)$usageCount // PropertyStatisticsTable assert ctype_digit
 		);
 
-		// Database stub object to make the test independent from any real DB
-		$connection = $this->getMock( 'DatabaseMysql' );
-
-		// Override method with expected return objects
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->will( $this->returnValue( new FakeResultWrapper( array( (object)$result ) ) ) );
+		$connection = $this->newMockBuilder()->newObject( 'DatabaseBase', array(
+			'select' => new FakeResultWrapper( array( (object)$result ) )
+		) );
 
 		return $connection;
 	}
