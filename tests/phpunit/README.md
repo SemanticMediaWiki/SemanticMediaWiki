@@ -1,5 +1,16 @@
 [PHPUnit][phpunit] provides the necessary environment to execute the in the subsequent directories provided unit tests together with the following base elements. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw].
 
+### TestTypes
+
+#### Unit test
+Testing technical specifications of a unit, module, or class.
+
+#### Integration test
+An approach where multiple components are combined together to verify the interplay between those modules.
+
+#### System test
+The system (and its individual modules) is treated as "black-box" in order to observe its behaviour as a whole rather than its units.
+
 ### TestCases
 #### SemanticMediaWikiTestCase
 SemanticMediaWikiTestCase derives directly from PHPUnit_Framework_TestCase and adds some convenient functions and a assertSemanticData() method.

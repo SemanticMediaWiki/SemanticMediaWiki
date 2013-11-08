@@ -271,7 +271,7 @@ final class SMWHooks {
 	* @return boolean
 	*/
 	public static function registerUnitTests( array &$files ) {
-		$directoryIterator = new RecursiveDirectoryIterator( __DIR__ . '/tests/phpunit/includes/' );
+		$directoryIterator = new RecursiveDirectoryIterator( __DIR__ . '/tests/phpunit/' );
 
 		/**
 		 * @var SplFileInfo $fileInfo

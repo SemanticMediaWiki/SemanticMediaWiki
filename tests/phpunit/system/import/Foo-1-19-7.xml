@@ -1,0 +1,112 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="en-gb">
+  <siteinfo>
+    <sitename>MW-19</sitename>
+    <base>http://localhost:8080/mw-19/index.php/Main_Page</base>
+    <generator>MediaWiki 1.19.7</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">MW-19</namespace>
+      <namespace key="5" case="first-letter">MW-19 talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+      <namespace key="160" case="first-letter">Foo</namespace>
+      <namespace key="161" case="first-letter">Foo talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Foo-1-19-7</title>
+    <ns>0</ns>
+    <id>158</id>
+      <sha1>kyhp4t0b6nu2rvzftnzcxnbrxxwfa9d</sha1>
+    <revision>
+      <id>399</id>
+      <timestamp>2013-11-07T23:09:16Z</timestamp>
+      <contributor>
+        <ip>127.0.0.1</ip>
+      </contributor>
+      <text xml:space="preserve" bytes="267">[[Quux::garply]], {{#subobject:|Qeey=bam}}, {{#show: Foo-1-19-7|?Foo}}, {{#ask: [[Modification date::+]]|?Modification date}}
+
+{{FooTemplate|Foo=bar}}, {{FooSubobject|Qeey=bam}}, {{FooShow|Page=Foo-1-19-7}}, {{FooAsk|Query=[[Modification date::+]]}}
+
+[[Category:Foo]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:FooAsk</title>
+    <ns>10</ns>
+    <id>163</id>
+      <sha1>rxf4lv2hmwxsgr5n4wk6oiqcpgk5gcq</sha1>
+    <revision>
+      <id>394</id>
+      <timestamp>2013-11-07T19:39:59Z</timestamp>
+      <contributor>
+        <ip>127.0.0.1</ip>
+      </contributor>
+      <comment>Created page with &quot;{{#ask: {{{Query}}} |?Modification date}}&quot;</comment>
+      <text xml:space="preserve" bytes="41">{{#ask: {{{Query}}} |?Modification date}}</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:FooShow</title>
+    <ns>10</ns>
+    <id>162</id>
+      <sha1>lmye013mwzch8f6pzb1zpirqmaju4y4</sha1>
+    <revision>
+      <id>393</id>
+      <timestamp>2013-11-07T19:38:58Z</timestamp>
+      <contributor>
+        <ip>127.0.0.1</ip>
+      </contributor>
+      <comment>Created page with &quot;{{#show: {{{Page}}} |?Foo}}&quot;</comment>
+      <text xml:space="preserve" bytes="27">{{#show: {{{Page}}} |?Foo}}</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:FooSubobject</title>
+    <ns>10</ns>
+    <id>161</id>
+      <sha1>0ae8yc3i99f9n266mhtwnt63unxvsa5</sha1>
+    <revision>
+      <id>392</id>
+      <timestamp>2013-11-07T19:37:53Z</timestamp>
+      <contributor>
+        <ip>127.0.0.1</ip>
+      </contributor>
+      <comment>Created page with &quot;{{#subobject:|Qeey={{{Qeey}}} }}&quot;</comment>
+      <text xml:space="preserve" bytes="32">{{#subobject:|Qeey={{{Qeey}}} }}</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:FooTemplate</title>
+    <ns>10</ns>
+    <id>160</id>
+      <sha1>c2jf6txk9oex7bcfoggqg31n7fm9kxn</sha1>
+    <revision>
+      <id>391</id>
+      <timestamp>2013-11-07T19:34:39Z</timestamp>
+      <contributor>
+        <ip>127.0.0.1</ip>
+      </contributor>
+      <comment>Created page with &quot;[[Foo::{{{Foo}}}]]&quot;</comment>
+      <text xml:space="preserve" bytes="18">[[Foo::{{{Foo}}}]]</text>
+    </revision>
+  </page>
+</mediawiki>
