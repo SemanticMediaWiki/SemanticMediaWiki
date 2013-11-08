@@ -119,10 +119,10 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 	protected function reportFailedImport( $result, $exception ) {
 
 		if ( $exception ) {
-			var_dump( $exception->getMessage() );
+			var_dump( 'exception: ', $exception->getMessage(), $exception->getTraceAsString() );
 		}
 
-		var_dump( $result->getWikiText() );
+		var_dump( 'result: ', $result->getWikiText() );
 	}
 
 	/**
