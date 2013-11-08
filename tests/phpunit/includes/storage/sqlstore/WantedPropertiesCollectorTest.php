@@ -36,30 +36,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	/**
 	 * @since 1.9
 	 *
-	 * @return Database
-	 */
-	private function getMockDBConnection( $smwTitle = 'Foo', $count = 1 ) {
-
-		// Injection object expected as the DB fetchObject
-		$result = array(
-			'count'     => $count,
-			'smw_title' => $smwTitle
-		);
-
-		// Database stub object to make the test independent from any real DB
-		$connection = $this->getMock( 'DatabaseMysql' );
-
-		// Override method with expected return objects
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->will( $this->returnValue( new FakeResultWrapper( array( (object)$result ) ) ) );
-
-		return $connection;
-	}
-
-	/**
-	 * @since 1.9
-	 *
 	 * @return WantedPropertiesCollector
 	 */
 	private function newInstance( $store = null, $property = 'Foo', $count = 1, $cacheEnabled = false ) {
@@ -68,7 +44,14 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 			$store = $this->newMockBuilder()->newObject( 'Store' );
 		}
 
-		$connection = $this->getMockDBConnection( $property, $count );
+		$result = array(
+			'count'     => $count,
+			'smw_title' => $property
+		);
+
+		$connection = $this->newMockBuilder()->newObject( 'DatabaseBase', array(
+			'select' => new FakeResultWrapper( array( (object)$result ) )
+		) );
 
 		$settings = $this->newSettings( array(
 			'smwgPDefaultType'                => '_wpg',

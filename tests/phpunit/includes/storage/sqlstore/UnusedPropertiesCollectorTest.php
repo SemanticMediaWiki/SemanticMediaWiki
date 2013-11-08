@@ -37,34 +37,19 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 	/**
 	 * @since 1.9
 	 *
-	 * @return Database
-	 */
-	private function getMockDBConnection( $smwTitle = 'Foo' ) {
-
-		$result = array(
-			'smw_title' => $smwTitle,
-		);
-
-		// Database stub object to make the test independent from any real DB
-		$connection = $this->getMock( 'DatabaseMysql' );
-
-		// Override method with expected return objects
-		$connection->expects( $this->any() )
-			->method( 'select' )
-			->will( $this->returnValue( new FakeResultWrapper( array( (object)$result ) ) ) );
-
-		return $connection;
-	}
-
-	/**
-	 * @since 1.9
-	 *
 	 * @return UnusedPropertiesCollector
 	 */
 	private function newInstance( $smwTitle = 'Foo', $cacheEnabled = false ) {
 
 		$mockStore  = $this->newMockBuilder()->newObject( 'Store' );
-		$connection = $this->getMockDBConnection( $smwTitle );
+
+		$result = array(
+			'smw_title' => $smwTitle,
+		);
+
+		$connection = $this->newMockBuilder()->newObject( 'DatabaseBase', array(
+			'select' => new FakeResultWrapper( array( (object)$result ) )
+		) );
 
 		$settings = $this->newSettings( array(
 			'smwgCacheType'                   => 'hash',
