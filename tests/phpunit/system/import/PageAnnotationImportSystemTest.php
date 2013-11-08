@@ -47,7 +47,11 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 			'Asserts that the Title does not exist prior the import'
 		);
 
-		$this->assertTrue( $this->runImporter( $setup['file'] ) );
+		list( $result, $exception ) = $this->runWikiImporter( $setup['file'] );
+
+		if ( !$result->isGood() ) {
+			$this->reportFailedImport( $result, $exception );
+		}
 
 		$this->assertTrue(
 			$title->exists(),
@@ -75,13 +79,13 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	protected function runImporter( $file ) {
+	protected function runWikiImporter( $file ) {
 
 		$source = ImportStreamSource::newFromFile( $file );
 
 		$this->assertTrue(
 			$source->isGood(),
-			'Assert that the source was available'
+			'Assert that the file source was available'
 		);
 
 		$importer = new WikiImporter( $source->value );
@@ -106,12 +110,19 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 
 		$result = $reporter->close();
 
-		$this->assertTrue(
-			$result->isGood(),
-			'Asserts that the import was successful'
-		);
+		return array( $result, $exception );
+	}
 
-		return true;
+	/**
+	 * @since 1.9
+	 */
+	protected function reportFailedImport( $result, $exception ) {
+
+		if ( $exception ) {
+			var_dump( $exception->getMessage() );
+		}
+
+		var_dump( $result->getWikiText() );
 	}
 
 	/**
