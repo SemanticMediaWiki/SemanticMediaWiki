@@ -418,7 +418,7 @@ class SMWSql3SmwIds {
 				__METHOD__
 			);
 
-			$id = $db->insertId();
+			$id = (int)$db->insertId();
 
 			// Properties also need to be in the property statistics table
 			if( $namespace == SMW_NS_PROPERTY ) {
@@ -496,8 +496,15 @@ class SMWSql3SmwIds {
 		if ( array_key_exists( $property->getKey(), self::$special_ids ) ) {
 			return self::$special_ids[$property->getKey()];
 		} else {
-			$sortkey = '';
-			return $this->makeDatabaseId( $property->getKey(), SMW_NS_PROPERTY, $this->getPropertyInterwiki( $property ), '', true, $property->getLabel(), false );
+			return $this->makeDatabaseId(
+				$property->getKey(),
+				SMW_NS_PROPERTY,
+				$this->getPropertyInterwiki( $property ),
+				'',
+				true,
+				$property->getLabel(),
+				false
+			);
 		}
 	}
 
