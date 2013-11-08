@@ -2,7 +2,7 @@
 *.kate-swp
 
 vendor/
-build/
+build/logs/
 
 composer.phar
 composer.lock

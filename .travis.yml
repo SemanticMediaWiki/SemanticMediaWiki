@@ -18,9 +18,11 @@ matrix:
   exclude:
     - env: THENEEDFORTHIS=FAIL
 
-before_script: bash .travis.setup.sh
+before_script: bash ./build/travis/before_script.sh
 
-script: bash .travis.test.sh
+script: bash ./build/travis/script.sh
+
+after_success: bash ./build/travis/after_success.sh
 
 notifications:
   irc:
