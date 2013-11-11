@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMWInfolink as Infolink;
 use Title;
 
 /**
@@ -67,11 +68,19 @@ class BaseTemplateToolbox extends FunctionHook {
 
 		$this->toolbox['smw-browse'] = array(
 			'text' => $this->skinTemplate->getSkin()->getContext()->msg( 'smw_browselink' )->text(),
-			'href' => \SpecialPage::getTitleFor( 'Browse', $this->skinTemplate->getSkin()->getTitle() )->getLocalUrl(),
+			'href' => \SpecialPage::getTitleFor( 'Browse', $this->encodeTitle() )->getLocalUrl(),
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'smw-browse'
 		);
 
 		return true;
 	}
+
+	/**
+	 * @since 1.9
+	 */
+	private function encodeTitle() {
+		return Infolink::encodeParameters( array( $this->skinTemplate->getSkin()->getTitle()->getPrefixedDBkey() ), true );
+	}
+
 }
