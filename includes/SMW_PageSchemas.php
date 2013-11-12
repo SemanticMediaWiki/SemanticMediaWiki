@@ -16,8 +16,27 @@ class SMWPageSchemas extends PSExtensionHandler {
 		return '#DEF';
 	}
 
+	public static function getTemplateDisplayString() {
+		return 'Connecting property';
+	}
+
 	public static function getFieldDisplayString() {
 		return 'Semantic property';
+	}
+
+	/**
+	 * Returns the display info for the "connecting property" (if any)
+	 * of the #subobject call (if any) in this template.
+	 */
+	public static function getTemplateDisplayValues( $templateXML ) {
+		foreach ( $templateXML->children() as $tag => $child ) {
+			if ( $tag == "semanticmediawiki_ConnectingProperty" ) {
+				$propName = $child->attributes()->name;
+				$values = array();
+				return array( $propName, $values );
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -63,11 +82,46 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
+	 * Constructs XML for the "connecting property", based on what was
+	 * submitted in the 'edit schema' form.
+	 */
+	public static function createTemplateXMLFromForm() {
+		global $wgRequest;
+
+		$xmlPerTemplate = array();
+		foreach ( $wgRequest->getValues() as $var => $val ) {
+			if ( substr( $var, 0, 24 ) == 'smw_connecting_property_' ) {
+				$templateNum = substr( $var, 24 );
+				$xml = '<semanticmediawiki_ConnectingProperty name="' . $val . '" />';
+				$xmlPerTemplate[$templateNum] = $xml;
+			}
+		}
+		return $xmlPerTemplate;
+	}
+
+	static function getConnectingPropertyName( $psTemplate ) {
+		// TODO - there should be a more direct way to get
+		// this data.
+		$smwConnectingPropertyArray = $psTemplate->getObject( 'semanticmediawiki_ConnectingProperty' );
+		return PageSchemas::getValueFromObject( $smwConnectingPropertyArray, 'name' );
+	}
+
+	/**
 	 * Sets the list of property pages defined by the passed-in
 	 * Page Schemas object.
 	 */
 	public static function getPagesToGenerate( $pageSchemaObj ) {
 		$pagesToGenerate = array();
+
+		$psTemplates = $pageSchemaObj->getTemplates();
+		foreach ( $psTemplates as $psTemplate ) {
+			$smwConnectingPropertyName = self::getConnectingPropertyName( $psTemplate );
+			if ( is_null( $smwConnectingPropertyName ) ) {
+				continue;
+			}
+			$pagesToGenerate[] = Title::makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
+		}
+
 		$propertyDataArray = self::getAllPropertyData( $pageSchemaObj );
 		foreach ( $propertyDataArray as $propertyData ) {
 			$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
@@ -113,6 +167,32 @@ class SMWPageSchemas extends PSExtensionHandler {
 
 	/**
 	 * Returns the HTML necessary for getting information about the
+	 * "connecting property" within the Page Schemas 'editschema' page.
+	 */
+	public static function getTemplateEditingHTML( $psTemplate) {
+		// Only display this if the Semantic Internal Objects extension
+		// isn't displaying something similar.
+		if ( class_exists( 'SIOPageSchemas' ) ) {
+			return null;
+		}
+
+		$prop_array = array();
+		$hasExistingValues = false;
+		if ( !is_null( $psTemplate ) ) {
+			$prop_array = $psTemplate->getObject( 'semanticmediawiki_ConnectingProperty' );
+			if ( !is_null( $prop_array ) ) {
+				$hasExistingValues = true;
+			}
+		}
+		$text = '<p>' . 'Name of property to connect this template\'s fields to the rest of the page:' . ' ' . '(should only be used if this template can have multiple instances)' . ' ';
+		$propName = PageSchemas::getValueFromObject( $prop_array, 'name' );
+		$text .= Html::input( 'smw_connecting_property_num', $propName, array( 'size' => 15 ) ) . "\n";
+
+		return array( $text, $hasExistingValues );
+	}
+
+	/**
+	 * Returns the HTML necessary for getting information about a regular
 	 * semantic property within the Page Schemas 'editschema' page.
 	 */
 	public static function getFieldEditingHTML( $psTemplateField ) {
@@ -153,9 +233,6 @@ class SMWPageSchemas extends PSExtensionHandler {
 		if ( is_null( $allowedValues ) ) {
 			$allowed_val_string = '';
 		} else {
-			foreach ( $allowedValues as $i => $allowedVal ) {
-				$allowedValues[$i] = str_replace( ',', '\,', $allowedVal );
-			}
 			$allowed_val_string = implode( ', ', $allowedValues );
 		}
 		$html_text .= '<p>' . Html::input( 'smw_values_num', $allowed_val_string, 'text', $allowedValsInputAttrs ) . "</p>\n";
@@ -168,11 +245,32 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * passed-in Page Schemas XML object.
 	 */
 	public static function generatePages( $pageSchemaObj, $selectedPages ) {
-		global $wgUser;
+		global $smwgContLang, $wgUser;
+
+		$datatypeLabels = $smwgContLang->getDatatypeLabels();
+		$pageTypeLabel = $datatypeLabels['_wpg'];
 
 		$jobs = array();
 		$jobParams = array();
 		$jobParams['user_id'] = $wgUser->getId();
+
+		// First, create jobs for all "connecting properties".
+		$psTemplates = $pageSchemaObj->getTemplates();
+		foreach ( $psTemplates as $psTemplate ) {
+			$smwConnectingPropertyName = self::getConnectingPropertyName( $psTemplate );
+			if ( is_null( $smwConnectingPropertyName ) ) {
+				continue;
+			}
+			$propTitle = Title::makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
+			if ( !in_array( $propTitle, $selectedPages ) ) {
+				continue;
+			}
+
+			$jobParams['page_text'] = self::createPropertyText( $pageTypeLabel, null );
+			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
+		}
+
+		// Second, create jobs for all regular properties.
 		$propertyDataArray = self::getAllPropertyData( $pageSchemaObj );
 		foreach ( $propertyDataArray as $propertyData ) {
 			$propTitle = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
@@ -188,7 +286,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Creates the text for a property page.
 	 */
-	protected function createPropertyText( $propertyType, $allowedValues ) {
+	public function createPropertyText( $propertyType, $allowedValues ) {
 		/**
 		 * @var SMWLanguage $smwgContLang
 		 */
@@ -218,11 +316,23 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-	 * Returns the property based on the XML passed from the Page Schemas
-	 * extension.
+	 * Returns either the "connecting property", or a field property, based
+	 * on the XML passed from the Page Schemas extension.
 	*/
 	public static function createPageSchemasObject( $tagName, $xml ) {
-		if ( $tagName == "semanticmediawiki_Property" ) {
+		if ( $tagName == "semanticmediawiki_ConnectingProperty" ) {
+			foreach ( $xml->children() as $tag => $child ) {
+				if ( $tag == $tagName ) {
+					$smw_array = array();
+					$propName = $child->attributes()->name;
+					$smw_array['name'] = (string)$propName;
+					foreach ( $child->children() as $prop => $value ) {
+						$smw_array[$prop] = (string)$value;
+					}
+					return $smw_array;
+				}
+			}
+		} elseif ( $tagName == "semanticmediawiki_Property" ) {
 			foreach ( $xml->children() as $tag => $child ) {
 				if ( $tag == $tagName ) {
 					$smw_array = array();
