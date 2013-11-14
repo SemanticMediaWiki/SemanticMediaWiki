@@ -15,35 +15,18 @@ class ShowParserFunction {
 	/** @var ParserData */
 	protected $parserData;
 
-	/** @var QueryData */
-	protected $queryData;
-
-	/** @var MessageFormatter */
-	protected $msgFormatter;
+	/** @var ContextResource */
+	protected $context;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param QueryData $queryData
-	 * @param MessageFormatter $messageList
+	 * @param ContextResource $context
 	 */
-	public function __construct( ParserData $parserData, QueryData $queryData, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, ContextResource $context ) {
 		$this->parserData = $parserData;
-		$this->queryData = $queryData;
-		$this->msgFormatter = $msgFormatter;
-	}
-
-	/**
-	 * Returns a message about inline queries being disabled
-	 * @see $smwgQEnabled
-	 *
-	 * @since 1.9
-	 *
-	 * @return string|null
-	 */
-	protected function disabled() {
-		return $this->msgFormatter->addFromKey( 'smw_iq_disabled' )->getHtml();
+		$this->context = $context;
 	}
 
 	/**
@@ -61,8 +44,23 @@ class ShowParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-		$ask = new AskParserFunction( $this->parserData, $this->queryData, $this->msgFormatter );
+		$ask = new AskParserFunction( $this->parserData, $this->context );
 		return $ask->setShowMode( true )->parse( $rawParams );
+	}
+
+	/**
+	 * Returns a message about inline queries being disabled
+	 * @see $smwgQEnabled
+	 *
+	 * @since 1.9
+	 *
+	 * @return string|null
+	 */
+	public function disabled() {
+		return $this->context->getDependencyBuilder()
+			->newObject( 'MessageFormatter' )
+			->addFromKey( 'smw_iq_disabled' )
+			->getHtml();
 	}
 
 }

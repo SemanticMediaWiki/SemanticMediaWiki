@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\ExtensionContext;
 use SMW\ShowParserFunction;
 use SMW\MessageFormatter;
 use SMW\QueryData;
@@ -11,6 +12,8 @@ use ParserOutput;
 
 /**
  * @covers \SMW\ShowParserFunction
+ *
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -23,8 +26,6 @@ use ParserOutput;
 class ShowParserFunctionTest extends ParserTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -32,12 +33,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a ShowParserFunction object
-	 *
 	 * @since 1.9
-	 *
-	 * @param Title $title
-	 * @param ParserOutput $parserOutput
 	 *
 	 * @return ShowParserFunction
 	 */
@@ -51,13 +47,14 @@ class ShowParserFunctionTest extends ParserTestCase {
 			$parserOutput = $this->newParserOutput();
 		}
 
-		$settings = $this->newSettings();
+		$context = new ExtensionContext();
+		$context->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'MessageFormatter', new MessageFormatter( $title->getPageLanguage() ) );
 
 		return new ShowParserFunction(
 			$this->newParserData( $title, $parserOutput ),
-			new QueryData( $title ),
-			new MessageFormatter( $title->getPageLanguage() ),
-			$settings
+			$context
 		 );
 	}
 
@@ -106,13 +103,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 
 		$instance = $this->newInstance( $title, $this->getParserOutput() );
 
-		// Make protected method accessible
-		$reflector = $this->newReflector();
-		$method = $reflector->getMethod( 'disabled' );
-		$method->setAccessible( true );
-
-		$result = $method->invoke( $instance );
-		$this->assertEquals( $expected , $result );
+		$this->assertEquals( $expected , $instance->disabled() );
 	}
 
 	/**

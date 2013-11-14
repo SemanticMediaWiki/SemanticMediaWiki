@@ -269,6 +269,35 @@ class MockObjectRepository extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @since 1.9
+	 *
+	 * @return SMWDescription
+	 */
+	public function QueryDescription() {
+
+		$requiredAbstractMethods = array(
+			'getQueryString',
+			'isSingleton'
+		);
+
+		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
+
+		$queryDescription = $this->getMockBuilder( '\SMWDescription' )
+			->setMethods( $methods )
+			->getMock();
+
+		foreach ( $methods as $method ) {
+
+			$queryDescription->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $queryDescription;
+	}
+
+	/**
 	 * Returns a User object
 	 *
 	 * @since 1.9

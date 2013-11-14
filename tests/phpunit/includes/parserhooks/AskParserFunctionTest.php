@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\ExtensionContext;
 use SMW\AskParserFunction;
 use SMW\MessageFormatter;
 use SMW\ParserData;
@@ -13,23 +14,17 @@ use ParserOutput;
 use ReflectionClass;
 
 /**
- * Tests for the AskParserFunction class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\AskParserFunction
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class AskParserFunctionTest extends ParserTestCase {
 
@@ -43,12 +38,7 @@ class AskParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * Helper method that returns a AskParserFunction object
-	 *
 	 * @since 1.9
-	 *
-	 * @param Title $title
-	 * @param ParserOutput $parserOutput
 	 *
 	 * @return AskParserFunction
 	 */
@@ -66,11 +56,14 @@ class AskParserFunctionTest extends ParserTestCase {
 			$settings = $this->newSettings();
 		}
 
+		$context = new ExtensionContext();
+		$context->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'MessageFormatter', new MessageFormatter( $title->getPageLanguage() ) );
+
 		return new AskParserFunction(
 			$this->newParserData( $title, $parserOutput ),
-			new QueryData( $title ),
-			new MessageFormatter( $title->getPageLanguage() ),
-			$settings
+			$context
 		);
 	}
 
@@ -112,15 +105,9 @@ class AskParserFunctionTest extends ParserTestCase {
 
 		$instance = $this->newInstance( $title , $this->newParserOutput() );
 
-		$reflector = $this->newReflector();
-		$method = $reflector->getMethod( 'disabled' );
-		$method->setAccessible( true );
-
-		$result = $method->invoke( $instance );
-
 		$this->assertEquals(
 			$message->addFromKey( 'smw_iq_disabled' )->getHtml(),
-			$result,
+			$instance->disabled(),
 			'asserts a resutling disabled error message'
 		);
 
@@ -175,7 +162,7 @@ class AskParserFunctionTest extends ParserTestCase {
 		$parserData = $this->newParserData( $title, $parserOutput );
 
 		// Check the returned instance
-		$this->assertInstanceOf( 'SMWSemanticData', $parserData->getData() );
+		$this->assertInstanceOf( 'SMW\SemanticData', $parserData->getData() );
 
 		// Confirm subSemanticData objects for the SemanticData instance
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){

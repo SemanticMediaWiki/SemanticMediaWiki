@@ -78,6 +78,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'CommonPropertyAnnotator' => $this->CommonPropertyAnnotator(),
 			'PredefinedPropertyAnnotator' => $this->PredefinedPropertyAnnotator(),
 			'RedirectPropertyAnnotator'   => $this->RedirectPropertyAnnotator(),
+			'QueryProfiler' => $this->QueryProfiler(),
 
 			/**
 			 * ContentProcessor object definition
@@ -179,17 +180,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			},
 
 			/**
-			 * QueryData object definition
-			 *
-			 * @since  1.9
-			 *
-			 * @return QueryData
-			 */
-			'QueryData' => function ( DependencyBuilder $builder ) {
-				return new QueryData( $builder->getArgument( 'Title' ) );
-			},
-
-			/**
 			 * AskParserFunction object definition
 			 *
 			 * @since  1.9
@@ -199,28 +189,14 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'AskParserFunction' => function ( DependencyBuilder $builder ) {
 
 				$parser = $builder->getArgument( 'Parser' );
+				$builder->addArgument( 'Language', $parser->getTargetLanguage() );
 
 				$parserData = $builder->newObject( 'ParserData', array(
 					'Title'        => $parser->getTitle(),
 					'ParserOutput' => $parser->getOutput()
 				) );
 
-				// FIXME Inject a Context instead so that QueryData
-				// and MessageFormatter are only instantiated when
-				// requested
-
-				// $context = $builder->getArgument( 'ExtensionContext' );
-				// $context->setObjectBuilder( $builder );
-
-				$queryData = $builder->newObject( 'QueryData', array(
-					'Title' => $parser->getTitle()
-				) );
-
-				$messageFormatter = $builder->newObject( 'MessageFormatter', array(
-					'Language' => $parser->getTargetLanguage()
-				) );
-
-				$instance = new AskParserFunction( $parserData, $queryData, $messageFormatter );
+				$instance = new AskParserFunction( $parserData, $builder->newObject( 'ExtensionContext' ) );
 
 				return $instance;
 			},
@@ -235,21 +211,14 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'ShowParserFunction' => function ( DependencyBuilder $builder ) {
 
 				$parser = $builder->getArgument( 'Parser' );
+				$builder->addArgument( 'Language', $parser->getTargetLanguage() );
 
 				$parserData = $builder->newObject( 'ParserData', array(
 					'Title'        => $parser->getTitle(),
 					'ParserOutput' => $parser->getOutput()
 				) );
 
-				$queryData = $builder->newObject( 'QueryData', array(
-					'Title' => $parser->getTitle()
-				) );
-
-				$messageFormatter = $builder->newObject( 'MessageFormatter', array(
-					'Language' => $parser->getTargetLanguage()
-				) );
-
-				$instance = new ShowParserFunction( $parserData, $queryData, $messageFormatter );
+				$instance = new ShowParserFunction( $parserData, $builder->newObject( 'ExtensionContext' ) );
 
 				return $instance;
 			},
@@ -458,6 +427,26 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 				$annotator,
 				$builder->getArgument( 'Text' )
 			);
+		};
+	}
+
+	/**
+	 * @since  1.9
+	 *
+	 * @return QueryProfiler
+	 */
+	protected function QueryProfiler() {
+		return function ( DependencyBuilder $builder ) {
+
+			$profiler = new NullProfiler(
+				new Subobject( $builder->getArgument( 'Title' ) ),
+				new HashIdGenerator( $builder->getArgument( 'QueryParameters' ) )
+			);
+
+			$profiler = new DescriptionProfiler( $profiler, $builder->getArgument( 'QueryDescription' ) );
+			$profiler = new FormatProfiler( $profiler, $builder->getArgument( 'QueryFormat' ) );
+
+			return $profiler;
 		};
 	}
 
