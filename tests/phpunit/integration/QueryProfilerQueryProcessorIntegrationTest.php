@@ -2,14 +2,17 @@
 
 namespace SMW\Test;
 
+use SMW\DescriptionProfiler;
+use SMW\FormatProfiler;
 use SMW\HashIdGenerator;
-use SMW\QueryData;
+use SMW\NullProfiler;
+use SMW\Subobject;
 
 use SMWQueryProcessor;
 use Title;
 
 /**
- * @covers \SMW\QueryData
+ * @covers \SMWQueryProcessor
  *
  * @ingroup Test
  *
@@ -21,21 +24,21 @@ use Title;
  *
  * @author mwjames
  */
-class QueryDataTest extends SemanticMediaWikiTestCase {
+class QueryProfilerQueryProcessorIntegrationTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\QueryData';
+		return false;
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return QueryProcessor
+	 * @return array
 	 */
-	private function getQueryProcessor( array $rawParams ) {
+	private function runQueryProcessor( array $rawParams ) {
 		return SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
@@ -47,32 +50,17 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	private function newInstance( Title $title = null ) {
-		return new QueryData( $title );
-	}
+	private function newInstance( $rawparams, $description, $format ) {
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$instance = $this->newInstance( $this->newTitle() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
-	}
+		$instance = new NullProfiler(
+			new Subobject( $this->newTitle() ),
+			new HashIdGenerator( $rawparams )
+		);
 
-	/**
-	 * @since 1.9
-	 */
-	public function testGetProperty() {
-		$instance = $this->newInstance( $this->newTitle() );
-		$this->assertInstanceOf( '\SMWDIProperty', $instance->getProperty() );
-	}
+		$instance = new DescriptionProfiler( $instance, $description );
+		$instance = new FormatProfiler( $instance, $format );
 
-	/**
-	 * @since 1.9
-	 */
-	public function testGetErrors() {
-		$instance = $this->newInstance( $this->newTitle() );
-		$this->assertInternalType( 'array', $instance->getErrors() );
+		return $instance;
 	}
 
 	/**
@@ -80,33 +68,20 @@ class QueryDataTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testAddQueryData( array $params, array $expected ) {
-		$title = $this->newTitle();
-		$instance = $this->newInstance( $title );
+	public function testCreateProfile( array $rawparams, array $expected ) {
 
-		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
-		$instance->setQueryId( new HashIdGenerator( $params ) );
-		$instance->add( $query, $formattedParams );
+		list( $query, $formattedParams ) = $this->runQueryProcessor( $rawparams );
 
-		// Check the returned instance
+		$instance = $this->newInstance(
+			$rawparams,
+			$query->getDescription(),
+			$formattedParams['format']->getValue()
+		);
+
+		$instance->createProfile();
+
 		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getContainer()->getSemanticData() );
 		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
-	}
-
-	/**
-	 * @dataProvider queryDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testQueryIdException( array $params, array $expected ) {
-
-		$this->setExpectedException( '\SMW\UnknownIdException' );
-		$title = $this->newTitle();
-		$instance = $this->newInstance( $title );
-
-		list( $query, $formattedParams ) = $this->getQueryProcessor( $params );
-		$instance->add( $query, $formattedParams );
-
 	}
 
 	/**

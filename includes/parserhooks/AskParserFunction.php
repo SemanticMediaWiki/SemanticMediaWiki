@@ -6,35 +6,26 @@ use Parser;
 use SMWQueryProcessor;
 
 /**
- * Class that provides the {{#ask}} parser function
+ * Provides the {{#ask}} parser function
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Ask
  *
- * @file
+ * @ingroup ParserFunction
  *
- * @license GNU GPL v2+
- * @since   1.9
+ * @licence GNU GPL v2+
+ * @since 1.9
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author mwjames
- */
-
-/**
- * Class that provides the {{#ask}} parser function
- *
- * @ingroup ParserFunction
  */
 class AskParserFunction {
 
 	/** @var ParserData */
 	protected $parserData;
 
-	/** @var QueryData */
-	protected $queryData;
-
-	/** @var MessageFormatter */
-	protected $msgFormatter;
+	/** @var ContextResource */
+	protected $context;
 
 	/** @var boolean */
 	protected $showMode = false;
@@ -42,47 +33,12 @@ class AskParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param IParserData $parserData
-	 * @param QueryData $queryData
-	 * @param MessageFormatter $msgFormatter
+	 * @param ParserData $parserData
+	 * @param ContextResource $context
 	 */
-	public function __construct( ParserData $parserData, QueryData $queryData, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, ContextResource $context ) {
 		$this->parserData = $parserData;
-		$this->queryData = $queryData;
-		$this->msgFormatter = $msgFormatter;
-	}
-
-	/**
-	 * {{#ask}} is disabled (see $smwgQEnabled)
-	 *
-	 * @since 1.9
-	 *
-	 * @return string|null
-	 */
-	protected function disabled() {
-		return $this->msgFormatter->addFromKey( 'smw_iq_disabled' )->getHtml();
-	}
-
-	/**
-	 * After some discussion IQueryProcessor/QueryProcessor is not being
-	 * used in 1.9 and instead rely on SMWQueryProcessor
-	 *
-	 * @todo Static class SMWQueryProcessor, please fixme
-	 */
-	private function initQueryProcessor( array $rawParams ) {
-		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
-			$rawParams,
-			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
-			$this->showMode
-		);
-
-		$this->result = SMWQueryProcessor::getResultFromQuery(
-			$this->query,
-			$this->params,
-			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY
-		);
+		$this->context = $context;
 	}
 
 	/**
@@ -115,6 +71,7 @@ class AskParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
+
 		// Counter for what? Where and for what is it used?
 		global $smwgIQRunningNumber;
 		$smwgIQRunningNumber++;
@@ -124,24 +81,66 @@ class AskParserFunction {
 			array_shift( $rawParams );
 		}
 
-		$this->initQueryProcessor( $rawParams );
+		$this->runQueryProcessor( $rawParams );
+		$this->runQueryProfiler( $rawParams );
 
-		// Add query data from the query
-		// Suppose the the query returns with an error, right now we store
-		// the query itself even though it returned with unqualified data
-		$this->queryData->setQueryId( new HashIdGenerator( $rawParams ) );
-		$this->queryData->add( $this->query, $this->params );
-
-		// Store query data to the semantic data instance
-		$this->parserData->getData()->addPropertyObjectValue(
-			$this->queryData->getProperty(),
-			$this->queryData->getContainer()
-		);
-
-		// Update ParserOutput
 		$this->parserData->updateOutput();
 
 		return $this->result;
+	}
+
+	/**
+	 * {{#ask}} is disabled (see $smwgQEnabled)
+	 *
+	 * @since 1.9
+	 *
+	 * @return string|null
+	 */
+	public function disabled() {
+		return $this->context->getDependencyBuilder()
+			->newObject( 'MessageFormatter' )
+			->addFromKey( 'smw_iq_disabled' )
+			->getHtml();
+	}
+
+	/**
+	 * @since  1.9
+	 */
+	private function runQueryProcessor( array $rawParams ) {
+		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+			$rawParams,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY,
+			$this->showMode
+		);
+
+		$this->result = SMWQueryProcessor::getResultFromQuery(
+			$this->query,
+			$this->params,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::INLINE_QUERY
+		);
+	}
+
+	/**
+	 * @since  1.9
+	 */
+	private function runQueryProfiler( array $rawParams ) {
+
+		$profiler = $this->context->getDependencyBuilder()->newObject( 'QueryProfiler', array(
+			'QueryDescription' => $this->query->getDescription(),
+			'QueryParameters'  => $rawParams,
+			'QueryFormat'      => $this->params['format']->getValue(),
+			'Title'            => $this->parserData->getTitle(),
+		) );
+
+		$profiler->createProfile();
+
+		$this->parserData->getData()->addPropertyObjectValue(
+			$profiler->getProperty(),
+			$profiler->getContainer()
+		);
+
 	}
 
 }

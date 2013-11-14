@@ -14,6 +14,15 @@ PropertyAnnotator interface is mainly responsible for adding annotations to the 
 * PredefinedPropertyAnnotator responsible for adding predefined annotations
 * RedirectPropertyAnnotator responsible for adding a "_REDI" annotation
 
+#### QueryProfilerDecorator
+QueryProfiler responsible for specifying an interface for adding query profile data to the SemanticData container.
+
+* QueryProfiler describes an interface for handling and adding profile data
+* QueryProfilerDecorator
+* NullProfiler contains the initial setup for storing query profile data
+* DescriptionProfiler responsible for adding query description data
+* FormatProfiler responsible for adding format data
+
 ## Observer pattern
 The [observer pattern][obp] can help to decrease shared interdependencies, separating object responsibilities, and lower [cyclomatic complexity][crap].
 

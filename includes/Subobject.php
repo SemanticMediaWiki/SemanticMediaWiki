@@ -138,6 +138,11 @@ class Subobject {
 	 * @return SMWContainerSemanticData
 	 */
 	public function getSemanticData() {
+
+		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
+			throw new InvalidSemanticDataException( 'The semantic data container is not initialized' );
+		}
+
 		return $this->semanticData;
 	}
 
@@ -160,7 +165,7 @@ class Subobject {
 	 * @return SMWDIContainer
 	 */
 	public function getContainer() {
-		return new SMWDIContainer( $this->semanticData );
+		return new SMWDIContainer( $this->getSemanticData() );
 	}
 
 	/**

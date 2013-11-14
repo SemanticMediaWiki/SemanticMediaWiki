@@ -202,6 +202,20 @@ class SubobjectTest extends ParserTestCase {
 	}
 
 	/**
+	 * @since 1.9
+	 *
+	 * @throws InvalidSemanticDataException
+	 */
+	public function testGetSemanticDataInvalidSemanticDataException() {
+
+		$this->setExpectedException( '\SMW\InvalidSemanticDataException' );
+
+		$subobject = new Subobject( $this->newTitle() );
+		$subobject->getSemanticData();
+
+	}
+
+	/**
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
