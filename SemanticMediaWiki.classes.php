@@ -351,6 +351,8 @@ return array(
 	'SMW\Test\MockSuperUser'                 => 'tests/phpunit/mocks/MockSuperUser.php',
 	'SMW\Test\MockObjectBuilder'             => 'tests/phpunit/mocks/MockObjectBuilder.php',
 	'SMW\Test\MockObjectRepository'          => 'tests/phpunit/mocks/MockObjectRepository.php',
+	'SMW\Test\CoreMockObjectRepository'      => 'tests/phpunit/mocks/CoreMockObjectRepository.php',
+	'SMW\Test\MediaWikiMockObjectRepository' => 'tests/phpunit/mocks/MediaWikiMockObjectRepository.php',
 	'SMW\Test\MockUpdateObserver'            => 'tests/phpunit/mocks/MockUpdateObserver.php',
 
 	// Jobs

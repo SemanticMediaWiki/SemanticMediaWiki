@@ -35,6 +35,32 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	/** @var ObjectDictionary */
 	protected $configuration;
 
+	/** @var MockObjectRepository */
+	protected $repository = array();
+
+	/**
+	 * @since  1.9
+	 *
+	 * @param MockObjectRepository|null $repository
+	 */
+	public function __construct( MockObjectRepository $repository = null ) {
+
+		if ( $repository === null ) {
+			$repository = new CoreMockObjectRepository();
+		}
+
+		$this->registerRepository( $repository );
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param MockObjectRepository $repository
+	 */
+	public function registerRepository( MockObjectRepository $repository ) {
+		$this->repository[] = $repository;
+	}
+
 	/**
 	 * Helper method that stores configuration settings
 	 *
@@ -55,33 +81,16 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 			throw new InvalidArgumentException( "Arguments are not an array type" );
 		}
 
-		$repository = new MockObjectRepository( $this );
+		$repository = $this->findRepositoryForObject( $objectName );
 
-		if ( !method_exists( $repository, $objectName ) ) {
+		if ( !$repository instanceof MockObjectRepository ) {
 			throw new OutOfBoundsException( "{$objectName} method doesn't exists" );
 		}
 
+		$repository->registerBuilder( $this );
 		$this->setupConfiguration( $objectArguments );
 
 		return $repository->{$objectName}();
-	}
-
-	/**
-	 * Helper method that stores configuration settings
-	 *
-	 * @since 1.9
-	 *
-	 * @param $config
-	 */
-	protected function setupConfiguration( $config ) {
-
-		$configuration = new SimpleDictionary( $config );
-
-		if ( $this->configuration instanceof SimpleDictionary ) {
-			return $this->configuration->merge( $configuration->toArray() );
-		}
-
-		$this->configuration = $configuration;
 	}
 
 	/**
@@ -148,6 +157,40 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 */
 	public function setCallback( $key, $default = null ) {
 		return is_callable( $this->setValue( $key ) ) ? $this->returnCallback( $this->setValue( $key ) ) : $this->returnValue( $this->setValue( $key, $default ) );
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param $objectName
+	 *
+	 * @return MockObjectRepository|null
+	 */
+	protected function findRepositoryForObject( $objectName ) {
+
+		foreach ( $this->repository as $repository ) {
+			if ( method_exists( $repository, $objectName ) ) {
+				return $repository;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param $config
+	 */
+	protected function setupConfiguration( $config ) {
+
+		$configuration = new SimpleDictionary( $config );
+
+		if ( $this->configuration instanceof SimpleDictionary ) {
+			return $this->configuration->merge( $configuration->toArray() );
+		}
+
+		$this->configuration = $configuration;
 	}
 
 }

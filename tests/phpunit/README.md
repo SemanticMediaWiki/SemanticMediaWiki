@@ -27,6 +27,35 @@ QueryPrinterTestCase base class for all query printers.
 ### MockObjectBuilder
 Semantic MediaWiki makes it a bit easier to create readable mock objects by using its own MockObjectBuilder with object definitions specified in the MockObjectRepository class.
 
+```php
+public function newMockBuilder() {
+
+	$builder = new MockObjectBuilder();
+	$builder->registerRepository( new CoreMockObjectRepository() );
+	$builder->registerRepository( new MediaWikiMockObjectRepository() );
+
+	return $builder;
+}
+```
+
+Semantic MediaWiki provides a short cut for most common mock objects used within its test environment.
+```php
+$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
+	'isSpecialPage' => true
+) );
+```
+
+#### Example
+```php
+/**
+ * @dataProvider titleDataProvider
+ * @since 1.9
+ */
+public function testTitleInstanceOnMock( $title ) {
+	$this->assertInstanceOf( 'Title', $title );
+}
+```
+
 For example, if a test would need to create a 'Title' mock object it would need to add the follwing to each test that where rely on a mocked Title.
 
 ```php
@@ -41,24 +70,7 @@ $mockTitle->expects( $this->any() )
 ...
 ```
 
-Fortunately, Semantic MediaWiki provides a short cut for most common mock objects used within its test environment.
-
 ```php
-$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
-	'isSpecialPage' => true
-) );
-```
-
-#### Example
-```php
-/**
- * @dataProvider titleDataProvider
- * @since 1.9
- */
-public function testTitleInstanceOnMock( $title, $message ) {
-	$this->assertInstanceOf( 'Title', $title, $message );
-}
-
 /**
  * @return array
  */
@@ -67,13 +79,15 @@ public function titleDataProvider() {
 	$provider = array();
 
 	$provider[] = array(
-		$this->newMockBuilder()->newObject( 'Title', array( 'isSpecialPage' => false ) ),
-		'asserts that Title is a not a special page'
+		$this->newMockBuilder()->newObject( 'Title', array(
+			'isSpecialPage' => false
+		) )
 	);
 
 	$provider[] = array(
-		$this->newMockBuilder()->newObject( 'Title', array( 'isSpecialPage' => true ) ),
-		'asserts that Title is a special page'
+		$this->newMockBuilder()->newObject( 'Title', array(
+			'isSpecialPage' => true
+		) )
 	);
 
 	return $provider;
@@ -85,7 +99,7 @@ public function titleDataProvider() {
  * Demonstrates how to use the MockObjectBuilder for a more complex
  * object composition
  */
-public function mockComposition() {
+public function mockSkinComposition() {
 
 	$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
 		'isSpecialPage' => true

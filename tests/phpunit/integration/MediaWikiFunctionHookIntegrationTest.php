@@ -24,7 +24,7 @@ use Title;
  *
  * @author mwjames
  */
-class FunctionHookDBIntegrationTest extends \MediaWikiTestCase {
+class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 
 	/**
 	 * @return string|false
@@ -39,21 +39,17 @@ class FunctionHookDBIntegrationTest extends \MediaWikiTestCase {
 	public function newExtensionContext() {
 
 		$context = new ExtensionContext();
+		$context->getSettings()->set( 'smwgCacheType', CACHE_NONE );
 
-		$settings = $context->getSettings();
-		$settings->set( 'smwgCacheType', CACHE_NONE );
+		$mockBuilder = new MockObjectBuilder( new CoreMockObjectRepository() );
 
-		$mockBuilder = new MockObjectBuilder();
-
-		$data = $mockBuilder->newObject( 'SemanticData', array(
-			'hasVisibleProperties' => false,
+		$mockStore = $mockBuilder->newObject( 'Store', array(
+			'getSemanticData' => $mockBuilder->newObject( 'SemanticData', array(
+				'hasVisibleProperties' => false,
+			) )
 		) );
 
-		$store = $mockBuilder->newObject( 'Store', array(
-			'getSemanticData' => $data,
-		) );
-
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $store );
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
 
 		return $context;
 	}

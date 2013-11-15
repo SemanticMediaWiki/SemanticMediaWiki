@@ -55,7 +55,12 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return MockObjectBuilder
 	 */
 	public function newMockBuilder() {
-		return new MockObjectBuilder();
+
+		$builder = new MockObjectBuilder();
+		$builder->registerRepository( new CoreMockObjectRepository() );
+		$builder->registerRepository( new MediaWikiMockObjectRepository() );
+
+		return $builder;
 	}
 
 	/**
