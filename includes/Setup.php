@@ -458,7 +458,7 @@ final class Setup implements ContextAware {
 			 */
 			$parser->setFunctionHook( 'ask', function( $parser ) use ( $builder, $settings ) {
 				$ask = $builder->newObject( 'AskParserFunction', array( 'Parser' => $parser ) );
-				return $settings->get( 'smwgQEnabled' ) ? $ask->parse( func_get_args() ) : $ask->disabled();
+				return $settings->get( 'smwgQEnabled' ) ? $ask->parse( func_get_args() ) : $ask->isQueryDisabled();
 			} );
 
 			/**
@@ -468,7 +468,7 @@ final class Setup implements ContextAware {
 			 */
 			$parser->setFunctionHook( 'show', function( $parser ) use ( $builder, $settings ) {
 				$show = $builder->newObject( 'ShowParserFunction', array( 'Parser' => $parser ) );
-				return $settings->get( 'smwgQEnabled' ) ? $show->parse( func_get_args() ) : $show->disabled();
+				return $settings->get( 'smwgQEnabled' ) ? $show->parse( func_get_args() ) : $show->isQueryDisabled();
 			} );
 
 			/**

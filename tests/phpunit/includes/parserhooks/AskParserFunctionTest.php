@@ -98,7 +98,7 @@ class AskParserFunctionTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testParseDisabledsmwgQEnabled() {
+	public function testIsQueryDisabled() {
 
 		$title    = $this->newTitle();
 		$message  = new MessageFormatter( $title->getPageLanguage() );
@@ -107,7 +107,7 @@ class AskParserFunctionTest extends ParserTestCase {
 
 		$this->assertEquals(
 			$message->addFromKey( 'smw_iq_disabled' )->getHtml(),
-			$instance->disabled(),
+			$instance->isQueryDisabled(),
 			'asserts a resutling disabled error message'
 		);
 

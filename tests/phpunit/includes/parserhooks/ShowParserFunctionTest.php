@@ -95,7 +95,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testParseDisabledsmwgQEnabled() {
+	public function testIsQueryDisabled() {
 
 		$title    = $this->newTitle();
 		$message  = new MessageFormatter( $title->getPageLanguage() );
@@ -103,7 +103,7 @@ class ShowParserFunctionTest extends ParserTestCase {
 
 		$instance = $this->newInstance( $title, $this->getParserOutput() );
 
-		$this->assertEquals( $expected , $instance->disabled() );
+		$this->assertEquals( $expected , $instance->isQueryDisabled() );
 	}
 
 	/**
