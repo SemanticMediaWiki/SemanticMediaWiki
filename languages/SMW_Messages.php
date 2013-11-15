@@ -8118,6 +8118,13 @@ Semantic MediaWiki のホームページで<a href="https://semantic-mediawiki.o
 	'smw-sp-properties-header-label' => 'プロパティ一覧',
 );
 
+/** Lojban (Lojban)
+ * @author Gleki
+ */
+$messages['jbo'] = array(
+	'smw_browselink' => 'zgana lo se ckaji',
+);
+
 /** Javanese (Basa Jawa)
  * @author Meursault2004
  * @author Pras
