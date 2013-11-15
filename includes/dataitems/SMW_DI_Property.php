@@ -379,8 +379,8 @@ class DIProperty extends SMWDataItem {
 
 		$datatypeLabels = $smwgContLang->getDatatypeLabels();
 
-		self::$m_prop_labels  = $smwgContLang->getPropertyLabels();
-		self::$m_prop_aliases = $smwgContLang->getPropertyAliases();
+		self::$m_prop_labels  = $smwgContLang->getPropertyLabels() + $datatypeLabels;
+		self::$m_prop_aliases = $smwgContLang->getPropertyAliases() + $smwgContLang->getDatatypeAliases();
 
 		// Setup built-in predefined properties.
 		// NOTE: all ids must start with underscores. The translation
