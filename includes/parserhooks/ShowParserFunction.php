@@ -56,7 +56,7 @@ class ShowParserFunction {
 	 *
 	 * @return string|null
 	 */
-	public function disabled() {
+	public function isQueryDisabled() {
 		return $this->context->getDependencyBuilder()
 			->newObject( 'MessageFormatter' )
 			->addFromKey( 'smw_iq_disabled' )
