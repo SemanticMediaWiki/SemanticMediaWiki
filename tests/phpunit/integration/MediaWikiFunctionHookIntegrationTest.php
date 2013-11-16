@@ -4,9 +4,14 @@ namespace SMW\Test;
 
 use SMW\NewRevisionFromEditComplete;
 use SMW\OutputPageParserOutput;
-use SMW\ArticlePurge;
 use SMW\ExtensionContext;
+use SMW\SemanticData;
+use SMW\ArticlePurge;
+use SMW\ParserData;
+use SMW\DIProperty;
+use SMW\Setup;
 
+use RequestContext;
 use WikiPage;
 use Title;
 
@@ -18,6 +23,7 @@ use Title;
  * @group SMW
  * @group SMWExtension
  * @group Database
+ * @group medium
  *
  * @licence GNU GPL v2+
  * @since 1.9
@@ -25,6 +31,9 @@ use Title;
  * @author mwjames
  */
 class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
+
+	/** @var array */
+	private $hooks = array();
 
 	/**
 	 * @return string|false
@@ -34,19 +43,61 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 	}
 
 	/**
+	 * @return 1.9
+	 */
+	protected function setUp() {
+		$this->removeFunctionHookRegistrationBeforeTest();
+		parent::setUp();
+
+	}
+
+	/**
+	 * @return 1.9
+	 */
+	protected function tearDown() {
+		parent::tearDown();
+		$this->restoreFuntionHookRegistrationAfterTest();
+	}
+
+	/**
+	 * In order for the test not being influenced by an exisiting setup
+	 * registration we remove the configuration from the GLOBALS temporary
+	 * and enable to assign hook definitions freely during testing
+	 *
+	 * @return 1.9
+	 */
+	protected function removeFunctionHookRegistrationBeforeTest() {
+		$this->hooks = $GLOBALS['wgHooks'];
+		$GLOBALS['wgHooks'] = array();
+	}
+
+	/**
+	 * @return 1.9
+	 */
+	protected function restoreFuntionHookRegistrationAfterTest() {
+		$GLOBALS['wgHooks'] = $this->hooks;
+	}
+
+	/**
 	 * @since 1.9
 	 */
-	public function newExtensionContext() {
+	protected function newExtensionContext() {
 
 		$context = new ExtensionContext();
-		$context->getSettings()->set( 'smwgCacheType', CACHE_NONE );
+		$context->getSettings()->set( 'smwgPageSpecialProperties', array( DIProperty::TYPE_MODIFICATION_DATE ) );
+		$context->getSettings()->set( 'smwgNamespacesWithSemanticLinks', array( NS_MAIN => true ) );
+		$context->getSettings()->set( 'smwgCacheType', 'hash' );
+		$context->getSettings()->set( 'smwgAutoRefreshOnPurge', true );
 
 		$mockBuilder = new MockObjectBuilder( new CoreMockObjectRepository() );
 
+		$mockData = $mockBuilder->newObject( 'SemanticData', array(
+			'hasVisibleProperties' => false,
+		) );
+
 		$mockStore = $mockBuilder->newObject( 'Store', array(
-			'getSemanticData' => $mockBuilder->newObject( 'SemanticData', array(
-				'hasVisibleProperties' => false,
-			) )
+			'getSemanticData' => $mockData,
+			'changeTitle'     => array( $this, 'mockStoreOnChangeTitle' )
 		) );
 
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
@@ -55,28 +106,11 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @since 1.9
+	 * @return 1.9
 	 */
-	public function newWikiPage( $text = 'Foo' ) {
-
-		if ( !method_exists( 'WikiPage', 'doEditContent' ) ) {
-			$this->markTestSkipped(
-				'Skipped test due to missing method (probably MW 1.19 or lower).'
-			);
-		}
-
-		$wikiPage = new WikiPage( Title::newFromText( $text ) );
-		$user = new MockSuperUser();
-
-		$content = \ContentHandler::makeContent(
-			'testing',
-			$wikiPage->getTitle(),
-			CONTENT_MODEL_WIKITEXT
-		);
-
-		$wikiPage->doEditContent( $content, "testing " . __METHOD__, EDIT_NEW, false, $user );
-
-		return $wikiPage;
+	protected function runExtensionSetup( $context ) {
+		$setup = new Setup( $GLOBALS, $context );
+		$setup->run();
 	}
 
 	/**
@@ -84,17 +118,26 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 	 */
 	public function testOnArticlePurgeOnDatabase() {
 
-		$wikiPage = $this->newWikiPage( __METHOD__ );
+		$context = $this->newExtensionContext();
 
-		$instance = new ArticlePurge( $wikiPage );
-		$instance->invokeContext( $this->newExtensionContext() );
+		$this->runExtensionSetup( $context );
 
-		$this->assertTrue( $instance->process() );
+		$wikiPage = new WikiPage( Title::newFromText( __METHOD__ ) );
+		$this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
 
-		// Always make sure to clean-up
-		if ( $wikiPage->exists() ) {
-			$wikiPage->doDeleteArticle( "testing done on " . __METHOD__ );
-		}
+		$wikiPage->doPurge();
+
+		$result = $context->getDependencyBuilder()
+			->newObject( 'CacheHandler' )
+			->setKey( ArticlePurge::newCacheId( $wikiPage->getTitle()->getArticleID() ) )
+			->get();
+
+		$this->assertTrue(
+			$result,
+			'Asserts that the ArticlePurge hooks was executed and created an entry'
+		);
+
+		$this->deletePage( $wikiPage, __METHOD__ );
 
 	}
 
@@ -103,21 +146,23 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 	 */
 	public function testOnNewRevisionFromEditCompleteOnDatabase() {
 
-		$wikiPage = $this->newWikiPage( __METHOD__ );
+		$this->runExtensionSetup( $this->newExtensionContext() );
 
-		$this->assertTrue( $wikiPage->getId() > 0, "WikiPage should have new page id" );
-		$revision = $wikiPage->getRevision();
-		$user = new MockSuperUser();
+		$text = '[[Quuy::bar]]';
 
-		$instance = new NewRevisionFromEditComplete( $wikiPage, $revision, $wikiPage->getId(), $user );
-		$instance->invokeContext( $this->newExtensionContext() );
+		$wikiPage = new WikiPage( Title::newFromText( __METHOD__ ) );
+		$editInfo = $this->editPageAndFetchInfo( $wikiPage, __METHOD__, $text );
 
-		$this->assertTrue( $instance->process() );
+		$this->assertInstanceOf( 'ParserOutput', $editInfo->output );
+		$parserData = new ParserData( $wikiPage->getTitle(), $editInfo->output );
 
-		// Always make sure the clean-up
-		if ( $wikiPage->exists() ) {
-			$wikiPage->doDeleteArticle( "testing done on " . __METHOD__ );
-		}
+		$expected = array(
+			'propertyKey' => array( '_SKEY', '_MDAT', 'Quuy' )
+		);
+
+		$this->assertPropertiesAreSet( $parserData->getData(), $expected );
+
+		$this->deletePage( $wikiPage, __METHOD__ );
 
 	}
 
@@ -126,27 +171,19 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 	 */
 	public function testOnOutputPageParserOutputeOnDatabase() {
 
-		$text = __METHOD__;
-		$wikiPage = $this->newWikiPage( __METHOD__ );
+		$this->runExtensionSetup( $this->newExtensionContext() );
 
-		$title = $wikiPage->getTitle();
+		$wikiPage = new WikiPage( Title::newFromText( __METHOD__ ) );
+		$editInfo = $this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
+		$parserOutput = $editInfo->output;
 
-		$parserOutput = new \ParserOutput();
-		$parserOutput->setTitleText( $title->getPrefixedText() );
+		$this->assertInstanceOf( 'ParserOutput', $parserOutput );
 
-		$context = new \RequestContext();
-		$context->setTitle( $title );
-		$outputPage = new \OutputPage( $context );
+		$context = new RequestContext();
+		$context->setTitle( $wikiPage->getTitle() );
+		$context->getOutput()->addParserOutputNoText( $parserOutput );
 
-		$instance = new OutputPageParserOutput( $outputPage, $parserOutput );
-		$instance->invokeContext( $this->newExtensionContext() );
-
-		$this->assertTrue( $instance->process() );
-
-		// Always make sure the clean-up
-		if ( $wikiPage->exists() ) {
-			$wikiPage->doDeleteArticle( "testing done on " . __METHOD__ );
-		}
+		$this->deletePage( $wikiPage, __METHOD__ );
 
 	}
 
@@ -155,38 +192,87 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 	 */
 	public function testTitleMoveCompleteOnDatabase() {
 
-		// For some mysterious reasons this test causes
-		// SMW\Test\ApiAskTest::testExecute ... to fail with DBQueryError:
-		// Query: SELECT  o_serialized AS v0  FROM unittest_unittest_smw_fpt_mdat
-		// WHERE s_id='5'; it seems that the temp. unittest tables are
-		// being deleted while this test runs
-		$skip = true;
+		$this->runExtensionSetup( $this->newExtensionContext() );
 
-		if ( !$skip && method_exists( 'WikiPage', 'doEditContent' ) ) {
-			$wikiPage = $this->newPage();
-			$user = $this->getUser();
+		$newTitle = Title::newFromText( __METHOD__ . '-new' );
+		$wikiPage = new WikiPage( Title::newFromText( __METHOD__ ) );
+		$editInfo = $this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
 
-			$title = $wikiPage->getTitle();
-			$newTitle = $this->getTitle();
-			$pageid = $wikiPage->getId();
+		$result = $wikiPage->getTitle()->moveTo( $newTitle, false, 'test', true );
+
+		$this->assertTrue( $result );
+		$this->assertTrue( $newTitle->runOnMockStoreChangeTitleMethod );
+
+		$this->deletePage( $wikiPage, __METHOD__ );
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function mockStoreOnChangeTitle( $oldTitle, $newTitle, $oldId, $newId ) {
+		$newTitle->runOnMockStoreChangeTitleMethod = true ;
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected function editPageAndFetchInfo( WikiPage $wikiPage, $on, $text = 'Foo' ) {
+
+		$user = new MockSuperUser();
+
+		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
 
 			$content = \ContentHandler::makeContent(
-				'testing',
-				$title,
+				$text,
+				$wikiPage->getTitle(),
 				CONTENT_MODEL_WIKITEXT
 			);
-			$wikiPage->doEditContent( $content, "testing", EDIT_NEW, false, $user );
 
-		//	$result = SMWHooks::onTitleMoveComplete( $title, $newTitle, $user, $pageid, $pageid );
+			$wikiPage->doEditContent( $content, "testing " . $on, EDIT_NEW, false, $user );
 
-			// Always make sure to clean-up
-			if ( $wikiPage->exists() ) {
-				$wikiPage->doDeleteArticle( "testing done." );
-			}
+			$content = $wikiPage->getRevision()->getContent();
+			$format  = $content->getContentHandler()->getDefaultFormat();
 
-			$this->assertTrue( $result );
-		} else {
-			$this->assertTrue( $skip );
+			return $wikiPage->prepareContentForEdit( $content, null, $user, $format );
+
+		}
+
+		$wikiPage->doEdit( $text, "testing " . $on, EDIT_NEW, false, $user );
+
+		return $wikiPage->prepareTextForEdit(
+			$wikiPage->getRevision()->getRawText(),
+			null,
+			$user
+		);
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected function deletePage( WikiPage $wikiPage, $on ) {
+
+		if ( $wikiPage->exists() ) {
+			$wikiPage->doDeleteArticle( "testing done on " . $on );
+		}
+
+	}
+
+	/**
+	 * @since  1.9
+	 */
+	protected function assertPropertiesAreSet( SemanticData $semanticData, array $expected ) {
+
+		foreach ( $semanticData->getProperties() as $property ) {
+
+			$this->assertInstanceOf( '\SMW\DIProperty', $property );
+
+			$this->assertContains(
+				$property->getKey(),
+				$expected['propertyKey'],
+				'Asserts that a specific property key is set'
+			);
+
 		}
 	}
 
