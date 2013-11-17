@@ -391,8 +391,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	}
 
 	/**
-	 * PredefinedPropertyAnnotator object definition
-	 *
 	 * @since  1.9
 	 *
 	 * @return PredefinedPropertyAnnotator
@@ -402,12 +400,13 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 
 			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
 
-			return new PredefinedPropertyAnnotator(
-				$annotator,
+			$valueProvider = new MediaWikiPageInfoProvider(
 				$builder->getArgument( 'WikiPage' ),
 				$builder->getArgument( 'Revision' ),
 				$builder->getArgument( 'User' )
 			);
+
+			return new PredefinedPropertyAnnotator( $annotator, $valueProvider );
 		};
 	}
 
