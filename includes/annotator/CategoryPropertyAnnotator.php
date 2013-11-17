@@ -17,6 +17,9 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/** @var array */
 	protected $categories;
 
+	/** @var array|null */
+	protected $hiddenCategories = null;
+
 	/**
 	 * @since 1.9
 	 *
@@ -40,6 +43,10 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		foreach ( $this->categories as $catname ) {
 
+			if ( !$settings->get( 'smwgShowHiddenCategories' ) && $this->isHiddenCategory( $catname ) ) {
+				continue;
+			}
+
 			if ( $settings->get( 'smwgCategoriesAsInstances' ) && ( $namespace !== NS_CATEGORY ) ) {
 				$this->getSemanticData()->addPropertyObjectValue(
 					new DIProperty( DIProperty::TYPE_CATEGORY ),
@@ -58,6 +65,33 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->setState( 'updateOutput' );
 
 		return $this;
+	}
+
+	/**
+	 * Whether a category is specified as hidden
+	 *
+	 * @since 1.9
+	 *
+	 * @param  $catName
+	 *
+	 * @return boolean
+	 */
+	protected function isHiddenCategory( $catName ) {
+
+		if ( $this->hiddenCategories === null ) {
+			$wikipage = Wikipage::factory( $this->semanticData->getSubject()->getTitle() );
+			$this->hiddenCategories = $wikipage->getHiddenCategories();
+		}
+
+		foreach ( $this->hiddenCategories as $hiddenCategory ) {
+
+			if ( $hiddenCategory->getText() === $catName ) {
+				return true;
+			};
+
+		}
+
+		return false;
 	}
 
 }

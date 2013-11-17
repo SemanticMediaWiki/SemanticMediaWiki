@@ -120,7 +120,7 @@ class Settings extends SimpleDictionary {
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
-			'smwgDeferredPropertyUpdate' => $GLOBALS['smwgDeferredPropertyUpdate'],
+			'smwgShowHiddenCategories' => $GLOBALS['smwgShowHiddenCategories'],
 			'smwgFactboxUseCache' => $GLOBALS['smwgFactboxUseCache'],
 			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge']
 		);

@@ -117,7 +117,7 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		);
 
 		$this->assertEquals(
-			$instance->verifyCallback,
+			$instance->verifyObserverWasCalled,
 			'updateOutputCallback',
 			'Asserts that the invoked Observer was notified'
 		);
@@ -148,9 +148,36 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 	}
 
+
 	/**
-	 * Verify that the Observer is reachable
+	 * @dataProvider hiddenCategoriesDataProvider
 	 *
+	 * @since 1.9
+	 */
+	public function testAddCategoriesWithHiddenCategories( array $setup, array $expected ) {
+
+		$semanticData = new SemanticData(
+			$this->newSubject( $this->newTitle( $setup['namespace'] ) )
+		);
+
+		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['categories'] );
+		$reflector = $this->newReflector();
+
+		$hiddenCategories = $reflector->getProperty( 'hiddenCategories' );
+		$hiddenCategories->setAccessible( true );
+		$hiddenCategories->setValue( $instance, $setup['hidCategories'] );
+
+		$instance->addAnnotation();
+
+		$this->assertSemanticData(
+			$semanticData,
+			$expected,
+			'Asserts that addAnnotation() adds expected triples'
+		);
+
+	}
+
+	/**
 	 * @since 1.9
 	 */
 	public function updateOutputCallback( $instance ) {
@@ -158,7 +185,7 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getSemanticData() );
 		$this->assertInstanceOf( '\SMW\ContextResource', $instance->withContext() );
 
-		return $instance->verifyCallback = 'updateOutputCallback';
+		return $instance->verifyObserverWasCalled = 'updateOutputCallback';
 	}
 
 	/**
@@ -175,7 +202,8 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'categories' => array( 'Foo', 'Bar' ),
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => false,
-					'smwgCategoriesAsInstances' => true
+					'smwgCategoriesAsInstances' => true,
+					'smwgShowHiddenCategories'  => true
 				)
 			),
 			array(
@@ -192,13 +220,105 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'categories' => array( 'Foo', 'Bar' ),
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => true,
-					'smwgCategoriesAsInstances' => false
+					'smwgCategoriesAsInstances' => false,
+					'smwgShowHiddenCategories'  => true
 				)
 			),
 			array(
 				'propertyCount' => 1,
 				'propertyKey'   => '_SUBC',
 				'propertyValue' => array( 'Foo',  'Bar' ),
+			)
+		);
+
+		return $provider;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function hiddenCategoriesDataProvider() {
+
+		$provider = array();
+
+		$hidCategory = $this->newMockBuilder()->newObject( 'Title', array(
+			'getNamespace' => NS_CATEGORY,
+			'getText'      => 'Bar'
+		) );
+
+		// #0 Standard category, show hidden category
+		$provider[] = array(
+			array(
+				'namespace'     => NS_MAIN,
+				'categories'    => array( 'Foo', 'Bar' ),
+				'hidCategories' => array( $hidCategory ),
+				'settings'   => array(
+					'smwgUseCategoryHierarchy'  => false,
+					'smwgCategoriesAsInstances' => true,
+					'smwgShowHiddenCategories'  => true
+				)
+			),
+			array(
+				'propertyCount' => 1,
+				'propertyKey'   => '_INST',
+				'propertyValue' => array( 'Foo', 'Bar' ),
+			)
+		);
+
+		// #1 Standard category, omit hidden category
+		$provider[] = array(
+			array(
+				'namespace'     => NS_MAIN,
+				'categories'    => array( 'Foo', 'Bar' ),
+				'hidCategories' => array( $hidCategory ),
+				'settings'   => array(
+					'smwgUseCategoryHierarchy'  => false,
+					'smwgCategoriesAsInstances' => true,
+					'smwgShowHiddenCategories'  => false
+				)
+			),
+			array(
+				'propertyCount' => 1,
+				'propertyKey'   => '_INST',
+				'propertyValue' => array( 'Foo' ),
+			)
+		);
+
+		// #2 Category hierarchy or Sub-category, show hidden category
+		$provider[] = array(
+			array(
+				'namespace'     => NS_CATEGORY,
+				'categories'    => array( 'Foo', 'Bar' ),
+				'hidCategories' => array( $hidCategory ),
+				'settings'   => array(
+					'smwgUseCategoryHierarchy'  => true,
+					'smwgCategoriesAsInstances' => false,
+					'smwgShowHiddenCategories'  => true
+				)
+			),
+			array(
+				'propertyCount' => 1,
+				'propertyKey'   => '_SUBC',
+				'propertyValue' => array( 'Foo', 'Bar' ),
+			)
+		);
+
+		// #3 Category hierarchy or Sub-category, omit hidden category
+		$provider[] = array(
+			array(
+				'namespace'     => NS_CATEGORY,
+				'categories'    => array( 'Foo', 'Bar' ),
+				'hidCategories' => array( $hidCategory ),
+				'settings'   => array(
+					'smwgUseCategoryHierarchy'  => true,
+					'smwgCategoriesAsInstances' => false,
+					'smwgShowHiddenCategories'  => false
+				)
+			),
+			array(
+				'propertyCount' => 1,
+				'propertyKey'   => '_SUBC',
+				'propertyValue' => array( 'Foo' ),
 			)
 		);
 
