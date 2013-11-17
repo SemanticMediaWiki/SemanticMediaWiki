@@ -3,9 +3,10 @@
 namespace SMW\Test;
 
 use SMW\NewRevisionFromEditComplete;
-use SMW\DIProperty;
 use SMW\ExtensionContext;
+use SMW\DIProperty;
 
+use ParserOutput;
 use WikiPage;
 use Revision;
 
@@ -63,7 +64,7 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 	}
 
 	/**
-	 * @dataProvider titleDataProvider
+	 * @dataProvider wikiPageDataProvider
 	 *
 	 * @since 1.9
 	 */
@@ -79,7 +80,7 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 	}
 
 	/**
-	 * @dataProvider titleDataProvider
+	 * @dataProvider wikiPageDataProvider
 	 *
 	 * @since 1.9
 	 */
@@ -92,25 +93,22 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 
 		$this->assertTrue(
 			$instance->process(),
-			'asserts that process() always returns true'
+			'Asserts that process() always returns true'
 		);
 
-		$parserOutput = $setup['wikiPage']->getParserOutput(
-			$setup['wikiPage']->makeParserOptions( $this->newMockUser() ),
-			$setup['revision']->getId()
-		);
+		$editInfo = $setup['editInfo'];
 
-		if ( $parserOutput !== null ) {
+		if ( $editInfo && $editInfo->output instanceof ParserOutput ) {
 
 			$parserData = $this->newParserData(
 				$setup['wikiPage']->getTitle(),
-				$parserOutput
+				$editInfo->output
 			);
 
 			$this->assertSemanticData(
 				$parserData->getData(),
 				$expected,
-				"asserts whether addSpecialProperties() adds the {$expected['propertyKey']} annotation"
+				"Asserts whether addSpecialProperties() adds the {$expected['propertyKey']} annotation"
 			);
 
 		}
@@ -120,22 +118,27 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 	/**
 	 * @return array
 	 */
-	public function titleDataProvider() {
+	public function wikiPageDataProvider() {
 
 		$provider = array();
 
 		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
-			'getId' => 1001
+			'getRawText' => 'Foo',
+			'getContent' => $this->newMockContent()
 		) );
 
 		// #0 No parserOutput object
+		$editInfo = (object)array();
+		$editInfo->output = null;
+
 		$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
-			'getParserOutput'   => null,
-			'makeParserOptions' => $this->newMockBuilder()->newObject( 'ParserOptions' )
+			'prepareContentForEdit' => $editInfo,
+			'prepareTextForEdit'    => $editInfo
 		) );
 
 		$provider[] = array(
 			array(
+				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $revision,
 				'settings' => array()
@@ -145,14 +148,34 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 
 		// #1
 		$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
-			'getTitle'          => $this->newTitle(),
-			'getParserOutput'   => $this->newParserOutput(),
-			'makeParserOptions' => $this->newMockBuilder()->newObject( 'ParserOptions' ),
-			'getTimestamp'      => 1272508903
+			'prepareContentForEdit' => false,
+			'prepareTextForEdit'    => false
 		) );
 
 		$provider[] = array(
 			array(
+				'editInfo' => false,
+				'wikiPage' => $wikiPage,
+				'revision' => $revision,
+				'settings' => array()
+			),
+			array()
+		);
+
+		// #2
+		$editInfo = (object)array();
+		$editInfo->output = $this->newParserOutput();
+
+		$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
+			'prepareContentForEdit' => $editInfo,
+			'prepareTextForEdit'    => $editInfo,
+			'getTitle'     => $this->newTitle(),
+			'getTimestamp' => 1272508903
+		) );
+
+		$provider[] = array(
+			array(
+				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $revision,
 				'settings' => array(
@@ -168,5 +191,28 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 
 		return $provider;
 	}
+
+
+	/**
+	 * @return Content|null
+	 */
+	public function newMockContent() {
+
+		$content = null;
+
+		if ( class_exists( 'ContentHandler' ) ) {
+
+			$contentHandler = $this->newMockBuilder()->newObject( 'ContentHandler', array(
+				'getDefaultFormat' => 'Foo'
+			) );
+
+			$content = $this->newMockBuilder()->newObject( 'Content', array(
+				'getContentHandler' => $contentHandler,
+			) );
+		}
+
+		return $content;
+	}
+
 
 }

@@ -389,15 +389,52 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	 */
 	public function Content() {
 
+		$methods = $this->builder->getInvokedMethods();
+
 		$content = $this->getMockBuilder( 'Content' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$content->expects( $this->any() )
-			->method( 'getParserOutput' )
-			->will( $this->returnValue( $this->builder->setValue( 'getParserOutput' ) ) );
+		foreach ( $methods as $method ) {
+
+			$content->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
 
 		return $content;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return ContentHandler
+	 */
+	public function ContentHandler() {
+
+		$requiredAbstractMethods = array(
+			'serializeContent',
+			'unserializeContent',
+			'makeEmptyContent'
+		);
+
+		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
+
+		$contentHandler = $this->getMockBuilder( 'ContentHandler' )
+			->disableOriginalConstructor()
+			->setMethods( $methods )
+			->getMock();
+
+		foreach ( $methods as $method ) {
+
+			$contentHandler->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $contentHandler;
 	}
 
 	/**

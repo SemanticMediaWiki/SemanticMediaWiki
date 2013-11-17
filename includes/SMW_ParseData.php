@@ -67,6 +67,8 @@ class SMWParseData {
 	 * @return SMWSemanticData
 	 */
 	static public function getSMWdata( Parser $parser ) {
+		wfDeprecated( __METHOD__, '1.9' );
+
 		$output = $parser->getOutput();
 		$title = $parser->getTitle();
 
@@ -89,6 +91,8 @@ class SMWParseData {
 	 * @return SMWSemanticData|null
 	 */
 	public static function getSMWDataFromParserOutput( ParserOutput $output, Title $title = null ) {
+		wfDeprecated( __METHOD__, '1.9' );
+
 		if ( method_exists( $output, 'getExtensionData' ) ) {
 			$smwData = $output->getExtensionData( 'smwdata' );
 		} elseif ( isset( $output->mSMWData ) ) {
@@ -116,6 +120,8 @@ class SMWParseData {
 	 * @param SMWSemanticData $smwData
 	 */
 	public static function setSMWData( ParserOutput $output, SMWSemanticData $smwData ) {
+		wfDeprecated( __METHOD__, '1.9' );
+
 		if ( method_exists( $output, 'setExtensionData' ) ) {
 			$output->setExtensionData( 'smwdata', $smwData );
 		}
@@ -130,6 +136,8 @@ class SMWParseData {
 	 * @param Parser $parser
 	 */
 	static public function clearStorage( Parser $parser ) {
+		wfDeprecated( __METHOD__, '1.9' );
+
 		$title = $parser->getTitle();
 
 		if ( !isset( $title ) ) {
@@ -157,6 +165,8 @@ class SMWParseData {
 	 * @return SMWDataValue
 	 */
 	static public function addProperty( $propertyName, $value, $caption, Parser $parser, $storeAnnotation = true ) {
+		wfDeprecated( __METHOD__, '1.9' );
+
 		wfProfileIn( 'SMWParseData::addProperty (SMW)' );
 
 		// See if this property is a special one, such as e.g. "has type".
@@ -222,6 +232,8 @@ class SMWParseData {
 	 * @todo FIXME: Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
+		wfDeprecated( __METHOD__, '1.9' );
+
 		global $smwgEnableUpdateJobs, $smwgDeclarationProperties, $smwgPageSpecialProperties;
 
 		$semdata = self::getSMWDataFromParserOutput( $parseroutput, $title );
@@ -422,126 +434,6 @@ class SMWParseData {
 		$dv2hash = implode( '___', $values );
 
 		return ( $dv1hash == $dv2hash );
-	}
-
-	/**
-	 * Hook function fetches category information and other final settings
-	 * from parser output, so that they are also replicated in SMW for more
-	 * efficient querying.
-	 */
-	static public function onParserAfterTidy( &$parser, &$text ) {
-		global $smwgUseCategoryHierarchy, $smwgCategoriesAsInstances;
-
-		if ( is_null( self::getSMWData( $parser ) ) ) {
-			return true;
-		}
-
-		$categories = $parser->mOutput->getCategoryLinks();
-		foreach ( $categories as $catname ) {
-			if ( $smwgCategoriesAsInstances && ( self::getSMWData( $parser )->getSubject()->getNamespace() != NS_CATEGORY ) ) {
-				$pinst = new SMWDIProperty( '_INST' );
-				$categoryDi = new SMWDIWikiPage( $catname, NS_CATEGORY, '' );
-				self::getSMWData( $parser )->addPropertyObjectValue( $pinst, $categoryDi );
-			}
-
-			if ( $smwgUseCategoryHierarchy && ( self::getSMWData( $parser )->getSubject()->getNamespace() == NS_CATEGORY ) ) {
-				$psubc = new SMWDIProperty( '_SUBC' );
-				$categoryDi = new SMWDIWikiPage( $catname, NS_CATEGORY, '' );
-				self::getSMWData( $parser )->addPropertyObjectValue( $psubc, $categoryDi );
-			}
-		}
-
-		$sortkey = $parser->mDefaultSort ? $parser->mDefaultSort :
-		            str_replace( '_', ' ', self::getSMWData( $parser )->getSubject()->getDBkey() );
-		$pskey = new SMWDIProperty( '_SKEY' );
-		$sortkeyDi = new SMWDIBlob( $sortkey );
-		self::getSMWData( $parser )->addPropertyObjectValue( $pskey, $sortkeyDi );
-
-		return true;
-	}
-
-	/**
-	 * Fetch additional information that is related to the saving that has just happened,
-	 * e.g. regarding the last edit date. In runs where this hook is not triggered, the
-	 * last DB entry (of MW) will be used to fill such properties.
-	 *
-	 * @note This method directly accesses a member of Article that is informally declared to
-	 * be private. However, there is no way to otherwise access an article's parseroutput for
-	 * the purpose of adding information there. If the private access ever becomes a problem,
-	 * a global/static variable appears to be the only way to get more article data to
-	 * LinksUpdate.
-	 *
-	 * @param WikiPage|Article $article WikiPage on 1.19 and later
-	 * @param Revision $rev
-	 * @param integer $baseID
-	 * @param User $user
-	 *
-	 * @return true
-	 */
-	static public function onNewRevisionFromEditComplete( /* WikiPage */ $article, Revision $rev, $baseID, User $user ) {
-		global $smwgPageSpecialProperties;
-
-		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
-			$semdata = self::getSMWDataFromParserOutput(
-				$article->mPreparedEdit->output,
-				$article->getTitle()
-			);
-		} else { // give up, just keep the old data
-			return true;
-		}
-
-		if ( in_array( '_MDAT', $smwgPageSpecialProperties ) ) {
-			$timestamp = $article->getTimestamp();
-			$di = self::getDataItemFromMWTimestamp( $timestamp );
-
-			if ( !is_null( $di ) ) {
-				$semdata->addPropertyObjectValue( new SMWDIProperty( '_MDAT' ), $di );
-			}
-		}
-
-		if ( in_array( '_LEDT', $smwgPageSpecialProperties ) ) {
-			$di = SMWDIWikiPage::newFromTitle( $user->getUserPage() );
-
-			if ( !is_null( $di ) ) {
-				$semdata->addPropertyObjectValue( new SMWDIProperty( '_LEDT' ), $di );
-			}
-		}
-
-		if ( in_array( '_NEWP', $smwgPageSpecialProperties ) ) {
-			$semdata->addPropertyObjectValue(
-				new SMWDIProperty( '_NEWP' ),
-				new SMWDIBoolean( is_null( $rev->getParentId() ) )
-			);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Hook where the storage of data is triggered. This happens when
-	 * saving an article but possibly also when running update jobs.
-	 */
-	static public function onLinksUpdateConstructed( $links_update ) {
-		self::storeData( $links_update->mParserOutput, $links_update->mTitle, true );
-		return true;
-	}
-
-	/**
-	 * This method will be called whenever an article is deleted so that
-	 * semantic properties are cleared appropriately.
-	 */
-	static public function onArticleDelete( &$article, &$user, &$reason ) {
-		smwfGetStore()->deleteSubject( $article->getTitle() );
-		return true; // always return true, in order not to stop MW's hook processing!
-	}
-
-	/**
-	 * This method will be called whenever an article is moved so that
-	 * semantic properties are moved accordingly.
-	 */
-	static public function onTitleMoveComplete( &$old_title, &$new_title, &$user, $pageid, $redirid ) {
-		smwfGetStore()->changeTitle( $old_title, $new_title, $pageid, $redirid );
-		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
 	/**
