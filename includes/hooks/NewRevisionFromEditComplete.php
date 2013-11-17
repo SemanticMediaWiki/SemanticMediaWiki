@@ -62,12 +62,42 @@ class NewRevisionFromEditComplete extends FunctionHook {
 	 */
 	public function process() {
 
-		$parserOutput = $this->wikiPage->getParserOutput(
-			$this->wikiPage->makeParserOptions( $this->user ),
-			$this->revision->getId()
-		);
+		$parserOutput = $this->retrieveParserOutput();
 
 		return $parserOutput instanceof ParserOutput ? $this->performUpdate( $parserOutput ) : true;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return ParserOutput|null
+	 */
+	protected function retrieveParserOutput() {
+
+		$editInfo = false;
+
+		if ( method_exists( 'WikiPage', 'prepareContentForEdit' ) ) {
+
+			$content  = $this->revision->getContent();
+
+			$editInfo = $this->wikiPage->prepareContentForEdit(
+				$content,
+				null,
+				$this->user,
+				$content->getContentHandler()->getDefaultFormat()
+			);
+
+		} else {
+
+			$editInfo = $this->wikiPage->prepareTextForEdit(
+				$this->revision->getRawText(),
+				null,
+				$this->user
+			);
+
+		}
+
+		return $editInfo ? $editInfo->output : null;
 	}
 
 	/**

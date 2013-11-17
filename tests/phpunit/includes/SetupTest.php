@@ -10,6 +10,7 @@ use SMW\ExtensionContext;
  *
  * @group SMW
  * @group SMWExtension
+ * @group medium
  *
  * @licence GNU GPL v2+
  * @since 1.9
@@ -155,6 +156,9 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		$empty = '';
 		$emptyArray = array();
 
+		$editInfo = (object)array();
+		$editInfo->output = null;
+
 		// Evade execution by setting the title object as isSpecialPage
 		// the hook class should always ensure that isSpecialPage is checked
 		$title =  $this->newMockBuilder()->newObject( 'Title', array(
@@ -188,13 +192,15 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		$parserOptions = $this->newMockBuilder()->newObject( 'ParserOptions' );
 
 		$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
-			'getTitle'          => $title,
-			'getParserOutput'   => null,
-			'makeParserOptions' => $parserOptions
+			'prepareContentForEdit' => $editInfo,
+			'prepareTextForEdit'    => $editInfo,
+			'getTitle' => $title,
 		) );
 
 		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
-			'getTitle' => $title
+			'getTitle'   => $title,
+			'getRawText' => 'Foo',
+			'getContent' => $this->newMockContent()
 		) );
 
 		$user = $this->newMockBuilder()->newObject( 'User' );
@@ -577,4 +583,24 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		return $provider;
 	}
 
+	/**
+	 * @return Content|null
+	 */
+	public function newMockContent() {
+
+		$content = null;
+
+		if ( class_exists( 'ContentHandler' ) ) {
+
+			$contentHandler = $this->newMockBuilder()->newObject( 'ContentHandler', array(
+				'getDefaultFormat' => 'Foo'
+			) );
+
+			$content = $this->newMockBuilder()->newObject( 'Content', array(
+				'getContentHandler' => $contentHandler,
+			) );
+		}
+
+		return $content;
+	}
 }
