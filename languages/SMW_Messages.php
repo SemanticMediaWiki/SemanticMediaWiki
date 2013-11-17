@@ -3241,6 +3241,13 @@ $messages['cu'] = array(
 	'smw-ui-tooltip-title-warning' => 'блаꙁна',
 );
 
+/** Danish (dansk)
+ * @author Christian List
+ */
+$messages['da'] = array(
+	'validator-type-class-SMWParamSource' => 'tekst',
+);
+
 /** German (Deutsch)
  * @author Als-Holder
  * @author DaSch
