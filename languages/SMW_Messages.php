@@ -149,6 +149,7 @@ Results might not be as expected.',
 	'smw_noqueryfeature'    => 'Some query feature was not supported in this wiki and part of the query was dropped ($1).',
 	'smw_noconjunctions'    => 'Conjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
 	'smw_nodisjunctions'    => 'Disjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
+	'smw_nonegations'       => 'Negations in queries are not supported in this wiki and part of the query was dropped ($1).',
 	'smw_querytoolarge'     => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.',
 	'smw_notemplategiven'   => 'Provide a value for the parameter "template" for this query format to work.',
 
@@ -620,6 +621,8 @@ See also:
 	'smw_noconjunctions' => 'This is an error/warning message. Parameters:
 * $1 holds the part(s) of the query which were dropped.',
 	'smw_nodisjunctions' => 'This is an error/warning message. Parameters:
+* $1 holds the part(s) of the query which were dropped.',
+	'smw_nonegations' => 'This is an error/warning message. Parameters:
 * $1 holds the part(s) of the query which were dropped.',
 	'smw_querytoolarge' => 'This is an error/warning message. Parameters:
 * $1 holds the part(s) of the query which were dropped.',
@@ -12312,6 +12315,7 @@ $messages['ru'] = array(
 	'smw_noqueryfeature' => 'Часть запроса была опущена, так как некоторые из возможностей языка запросов не поддерживаются на этом вики-сайте ($1).',
 	'smw_noconjunctions' => 'Часть запроса была опущена, так как операция «Логическое И» не поддерживается на этом вики-сайте ($1).',
 	'smw_nodisjunctions' => 'Ошибка: Дизъюнкции (логическое ИЛИ) не поддерживаются данным сайтом, поэтому использующая их часть запроса была проигнорирована ($1).',
+	'smw_nonegations' => 'Ошибка: Логическое отрицание не поддерживаются данным сайтом, поэтому использующая их часть запроса была проигнорирована ($1).',
 	'smw_querytoolarge' => 'Ошибка: Указанные условия запроса “$1” не могут быть выполнены из-за ограничения на глубину или размер запроса.',
 	'smw_notemplategiven' => 'Чтобы данный запрос выполнялся, необходимо задать значение для параметра «template».',
 	'smw_db_sparqlqueryproblem' => 'Не удалось получить результат запроса к базе данных SPARQL. Эта может быть временная ошибка или проблема в программном обеспечении базы данных.',

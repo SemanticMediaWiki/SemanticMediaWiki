@@ -57,6 +57,7 @@ define( 'SMW_CONCEPT_QUERY', 4 );      // [[Concept:...]]
 define( 'SMW_NAMESPACE_QUERY', 8 );    // [[User:+]] etc.
 define( 'SMW_CONJUNCTION_QUERY', 16 ); // any conjunctions
 define( 'SMW_DISJUNCTION_QUERY', 32 ); // any disjunctions (OR, ||)
+define( 'SMW_NEGATION_QUERY', 64 );     // any negation (!)
 define( 'SMW_ANY_QUERY', 0xFFFFFFFF );  // subsumes all other options
 /**@}*/
 

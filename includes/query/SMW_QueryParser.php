@@ -139,6 +139,31 @@ class SMWQueryParser {
 			$setsubNS = false;
 
 			switch ( $chunk ) {
+				case '!':
+					$count = 0;
+					while ( $chunk == '!' ) {
+						$count ++;
+						$chunk = $this->readChunk();
+					}
+					if ( $chunk == '<q>' ) {
+						$this->pushDelimiter( '</q>' );
+						$ld = $this->getSubqueryDescription( $setsubNS );
+						if ( $ld instanceof SMWDisjunction )
+						{
+							foreach ( $ld->getDescriptions() as $desc )
+							{
+								$conjunction = $this->addDescription( $conjunction, $desc, SMW_NEGATION_QUERY );
+							}
+						} else {
+							$conjunction = $this->addDescription( $conjunction, $ld, SMW_NEGATION_QUERY );
+						}
+					} else {
+						$ld = $this->getLinkDescription( $setsubNS );
+						if ( !is_null( $ld ) ) {
+							$conjunction = $this->addDescription( $conjunction, $ld, $count % 2 == 0 ? SMW_CONJUNCTION_QUERY : SMW_NEGATION_QUERY );
+						}
+					}
+				break;
 				case '[[': // start new link block
 					$ld = $this->getLinkDescription( $setsubNS );
 
@@ -219,7 +244,7 @@ class SMWQueryParser {
 					$setNS = false;
 					return null;
 				} else {
-					$result = $this->addDescription( $result, $d, false );
+					$result = $this->addDescription( $result, $d, SMW_DISJUNCTION_QUERY );
 				}
 			}
 		} else {
@@ -343,9 +368,9 @@ class SMWQueryParser {
 			switch ( $chunk ) {
 				case '+': // wildcard, add namespaces for page-type properties
 					if ( !is_null( $this->m_defaultns ) && ( ( $typeid == '_wpg' ) || $inverse ) ) {
-						$innerdesc = $this->addDescription( $innerdesc, $this->m_defaultns, false );
+						$innerdesc = $this->addDescription( $innerdesc, $this->m_defaultns, SMW_DISJUNCTION_QUERY );
 					} else {
-						$innerdesc = $this->addDescription( $innerdesc, new SMWThingDescription(), false );
+						$innerdesc = $this->addDescription( $innerdesc, new SMWThingDescription(), SMW_DISJUNCTION_QUERY );
 					}
 					$chunk = $this->readChunk();
 				break;
@@ -353,16 +378,27 @@ class SMWQueryParser {
 					if ( ( $typeid == '_wpg' ) || $inverse ) {
 						$this->pushDelimiter( '</q>' );
 						$setsubNS = true;
-						$innerdesc = $this->addDescription( $innerdesc, $this->getSubqueryDescription( $setsubNS ), false );
+						$innerdesc = $this->addDescription( $innerdesc, $this->getSubqueryDescription( $setsubNS ), SMW_DISJUNCTION_QUERY );
 					} else { // no subqueries allowed for non-pages
 						$this->m_errors[] = wfMessage(
 							'smw_valuesubquery',
 							end( $propertynames )
 						)->inContentLanguage()->text();
-						$innerdesc = $this->addDescription( $innerdesc, new SMWThingDescription(), false );
+						$innerdesc = $this->addDescription( $innerdesc, new SMWThingDescription(), SMW_DISJUNCTION_QUERY );
 					}
 					$chunk = $this->readChunk();
 				break;
+				case '!': // neagation of subquery
+					$nextChunk = $this->readChunk();
+					if ( $nextChunk == '<q>' ) {
+						$this->pushDelimiter( '</q>' );
+						$setsubNS = true;
+						$innerdesc = $this->addDescription( $innerdesc, $this->getSubqueryDescription( $setsubNS ), SMW_NEGATION_QUERY );
+						$chunk = $this->readChunk();
+						break;
+					} else {
+						$chunk .= $nextChunk;
+					}
 				default: // normal object value
 					// read value(s), possibly with inner [[...]]
 					$open = 1;
@@ -392,10 +428,9 @@ class SMWQueryParser {
 							$value .= $chunk;
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
-
 					$dv = SMWDataValueFactory::newPropertyObjectValue( $property->getDataItem() );
 					$vd = $dv->getQueryDescription( $value );
-					$innerdesc = $this->addDescription( $innerdesc, $vd, false );
+					$innerdesc = $this->addDescription( $innerdesc, $vd, SMW_DISJUNCTION_QUERY );
 					$this->m_errors = $this->m_errors + $dv->getErrors();
 			}
 			$continue = ( $chunk == '||' );
@@ -403,8 +438,8 @@ class SMWQueryParser {
 
 		if ( is_null( $innerdesc ) ) { // make a wildcard search
 			$innerdesc = ( !is_null( $this->m_defaultns ) && ( $typeid == '_wpg' ) ) ?
-							$this->addDescription( $innerdesc, $this->m_defaultns, false ) :
-							$this->addDescription( $innerdesc, new SMWThingDescription(), false );
+							$this->addDescription( $innerdesc, $this->m_defaultns, SMW_DISJUNCTION_QUERY ) :
+							$this->addDescription( $innerdesc, new SMWThingDescription(), SMW_DISJUNCTION_QUERY );
 			$this->m_errors[] = wfMessage(
 				'smw_propvalueproblem',
 				$property->getWikiValue()
@@ -541,7 +576,7 @@ class SMWQueryParser {
 	 */
 	protected function readChunk( $stoppattern = '', $consume = true, $trim = true ) {
 		if ( $stoppattern === '' ) {
-			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>' .
+			$stoppattern = '\!|\[\[|\]\]|::|:=|<q>|<\/q>' .//
 				'|^' . $this->m_categoryprefix . '|^' . $this->m_categoryPrefixCannonical .
 				'|^' . $this->m_conceptprefix . '|^' . $this->m_conceptPrefixCannonical .
 				'|\|\||\|';
@@ -602,7 +637,7 @@ class SMWQueryParser {
 	 * The return value is the expected combined description. The object $curdesc will
 	 * also be changed (if it was non-NULL).
 	 */
-	protected function addDescription( $curdesc, $newdesc, $conjunction = true ) {
+	protected function addDescription( $curdesc, $newdesc, $queryType = SMW_CONJUNCTION_QUERY ) {
 		$notallowedmessage = 'smw_noqueryfeature';
 		if ( $newdesc instanceof SMWSomeProperty ) {
 			$allowed = $this->m_queryfeatures & SMW_PROPERTY_QUERY;
@@ -631,13 +666,17 @@ class SMWQueryParser {
 		if ( is_null( $newdesc ) ) {
 			return $curdesc;
 		} elseif ( is_null( $curdesc ) ) {
-			return $newdesc;
+			if ( ( $queryType & SMW_NEGATION_QUERY ) != 0 ) {
+				return $newdesc instanceof SMWNegation ? $newdesc->getDescription() : new SMWNegation( $newdesc );
+			} else {
+				return $newdesc;
+			}
 		} else { // we already found descriptions
-			if ( ( ( $conjunction ) && ( $curdesc instanceof SMWConjunction ) ) ||
-			     ( ( !$conjunction ) && ( $curdesc instanceof SMWDisjunction ) ) ) { // use existing container
+			if ( ( ( ( $queryType & SMW_CONJUNCTION_QUERY ) != 0 ) && ( $curdesc instanceof SMWConjunction ) ) ||
+			     ( ( ( $queryType & SMW_DISJUNCTION_QUERY ) != 0 ) && ( $curdesc instanceof SMWDisjunction ) ) ) { // use existing container
 				$curdesc->addDescription( $newdesc );
 				return $curdesc;
-			} elseif ( $conjunction ) { // make new conjunction
+			} elseif ( ( $queryType & SMW_CONJUNCTION_QUERY ) != 0 ) { // make new conjunction
 				if ( $this->m_queryfeatures & SMW_CONJUNCTION_QUERY ) {
 					return new SMWConjunction( array( $curdesc, $newdesc ) );
 				} else {
@@ -647,12 +686,22 @@ class SMWQueryParser {
 					)->inContentLanguage()->text();
 					return $curdesc;
 				}
-			} else { // make new disjunction
+			} elseif ( ( $queryType & SMW_DISJUNCTION_QUERY ) != 0 ) { // make new disjunction
 				if ( $this->m_queryfeatures & SMW_DISJUNCTION_QUERY ) {
 					return new SMWDisjunction( array( $curdesc, $newdesc ) );
 				} else {
 					$this->m_errors[] = wfMessage(
 						'smw_nodisjunctions',
+						str_replace( '[', '&#x005B;', $newdesc->getQueryString() )
+					)->inContentLanguage()->text();
+					return $curdesc;
+				}
+			} elseif ( ( $queryType & SMW_NEGATION_QUERY ) != 0 ) {
+				if ( $this->m_queryfeatures & SMW_NEGATION_QUERY ) {
+					return new SMWConjunction( array( $curdesc, $newdesc instanceof SMWNegation ? $newdesc->getDescription() : new SMWNegation( $newdesc ) ) );
+				} else {
+					$this->m_errors[] = wfMessage(
+						'smw_nonegations',
 						str_replace( '[', '&#x005B;', $newdesc->getQueryString() )
 					)->inContentLanguage()->text();
 					return $curdesc;
