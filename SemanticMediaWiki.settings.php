@@ -669,13 +669,15 @@ $GLOBALS['smwgFactboxCacheRefreshOnPurge'] = true;
 ##
 
 ###
-# Support of deferred update of properties using the JobQueue/CacheStore
-# to lighten performance degradation when changing properties
+# This option enables to omit categories (marked with __HIDDENCAT__) from
+# the annotation process.
 #
-# In order to enable deferred updates, it requires the CacheStore
-# (e.g smwgCacheType) to be enabled and PropertyPageIdMapper to be present.
+# If a category is updated of either being hidden or visible, pages need to
+# be refreshed to ensure that the StoreUpdater can make use of the changed
+# environment.
 #
 # @since 1.9
+# @default true (true = legacy behaviour, false = not to show hidden categories)
 ##
-$GLOBALS['smwgDeferredPropertyUpdate'] = false;
+$GLOBALS['smwgShowHiddenCategories'] = true;
 ##

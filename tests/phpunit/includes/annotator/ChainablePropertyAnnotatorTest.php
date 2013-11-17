@@ -97,6 +97,7 @@ class ChainablePropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => false,
 					'smwgCategoriesAsInstances' => true,
+					'smwgShowHiddenCategories'  => true,
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
 				)
 			),

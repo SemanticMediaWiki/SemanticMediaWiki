@@ -140,7 +140,8 @@ class ParserAfterTidyTest extends ParserTestCase {
 			'smwgCacheType'             => 'hash',
 			'smwgEnableUpdateJobs'      => false,
 			'smwgUseCategoryHierarchy'  => false,
-			'smwgCategoriesAsInstances' => true
+			'smwgCategoriesAsInstances' => true,
+			'smwgShowHiddenCategories'  => true
 		) );
 
 		$instance->withContext()
