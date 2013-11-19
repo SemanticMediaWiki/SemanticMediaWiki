@@ -12270,6 +12270,7 @@ $messages['ru'] = array(
 	'smw-paramdesc-sep' => 'Разделитель значений',
 	'smw-paramdesc-showsep' => 'Показать разделитель в верхней части файла CSV ("sep=<value>")',
 	'smw-paramdesc-distribution' => 'Вместо отображения всех значений, подсчитать и отобразить их вхождения.',
+	'smw-paramdesc-distributionsort' => 'Сортировать распределение значений по частоте появления.',
 	'smw-paramdesc-template' => 'Название шаблона, с помощью которого будут выводиться данные',
 	'smw-paramdesc-columns' => 'Количество столбцов для вывода результатов поиска (по умолчанию $1)',
 	'smw-paramdesc-userparam' => 'Значение, передаваемое в каждый вызов шаблонов, если шаблон используется',
@@ -12290,6 +12291,8 @@ $messages['ru'] = array(
 	'smw-paramdesc-export' => 'Параметры экспорта',
 	'smw-paramdesc-source' => 'Альтернативный источник запроса',
 	'smw-paramdesc-feedtype' => 'Тип канала',
+	'smw-paramdesc-feedpagecontent' => 'Содержимое страницы, которое будет отображаться на канале',
+	'smw-label-feed-description' => '$2-канал $1',
 	'smw_iq_disabled' => 'Извините, но встроенные запросы отключены для этого сайта.',
 	'smw_iq_moreresults' => '… следующие результаты',
 	'smw_parseerror' => 'Переданное значение не было понято.',
@@ -12355,12 +12358,15 @@ $messages['ru'] = array(
 	'smw_purge' => 'Обновить',
 	'types' => 'Типы',
 	'smw_types_docu' => 'В нижеприведённом списке перечислены все типы данных, которые можно задавать для свойств.',
+	'smw-special-types-no-such-type' => 'Указанный тип данных не существует',
 	'semanticstatistics' => 'Семантическая статистика',
 	'smw_semstats_text' => "Данный сайт содержит '''$1''' {{PLURAL:$1|значение|значения|значений}} свойств, общее число которых составляет '''$2''' [[Special:Properties|{{PLURAL:$2|свойство|различных свойства|различных свойств}}]].
 '''$3''' {{PLURAL:$3|свойство|свойства|свойств}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них.
 Некоторые из существующих свойств могут [[Special:UnusedProperties|не использоваться]].
 Свойства, для которых не созданы страницы описания, перечислены в [[Special:WantedProperties|списке неописанных свойств]].",
 	'smw-statistics' => 'Семантическая статистика',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Значение|Значения}} свойства (всего)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Запрос|Запросы}}',
 	'smw-statistics-query-size' => 'Размер запроса',
 	'smw_uri_doc' => 'Преобразователь URI осуществляет [$1 W3C поиск http тэгов с использованием Range-14].
 Данная возможность упрощает поиск семантической информации.',
@@ -12472,6 +12478,7 @@ $messages['ru'] = array(
 	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|допускается следующее значение|допускаются следующие значения}}:',
 	'smw-paramdesc-category-delim' => 'Разделитель',
 	'smw-info-par-message' => 'Сообщение для отображения.',
+	'prefs-smw' => 'Семантическая МедиаВики',
 	'prefs-ask-options' => 'Параметры семантического поиска',
 	'smw-prefs-ask-options-tooltip-display' => 'Отображать параметр «текст» в виде всплывающей подсказки',
 	'smw-prefs-ask-options-collapsed-default' => 'Включить панель параметров свёрнутой по умолчанию',
@@ -12483,12 +12490,14 @@ $messages['ru'] = array(
 	'smw-ui-tooltip-title-parameter' => 'Параметр',
 	'smw-ui-tooltip-title-event' => 'Событие',
 	'smw-ui-tooltip-title-note' => 'Примечание',
+	'smw-ui-tooltip-title-legend' => 'Легенда',
 	'smw_unknowntype' => 'Для этого свойства задан некорректный тип',
 	'smw_concept_header' => 'Страницы, использующие представление «$1»',
 	'smw_conceptarticlecount' => 'Ниже {{PLURAL:$1|показана|показаны|показано}} $1 {{PLURAL:$1|страница|страницы|страниц}}.',
 	'group-smwadministrator' => 'Администраторы Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|администратор (SMW)}}',
 	'action-smw-admin' => 'доступ к задачам администратора Semantic MediaWiki',
+	'smw-sp-properties-cache-info' => 'Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.',
 	'smw-sp-properties-header-label' => 'Список свойств',
 );
 
