@@ -3241,6 +3241,13 @@ $messages['cu'] = array(
 	'smw-ui-tooltip-title-warning' => 'блаꙁна',
 );
 
+/** Danish (dansk)
+ * @author Christian List
+ */
+$messages['da'] = array(
+	'validator-type-class-SMWParamSource' => 'tekst',
+);
+
 /** German (Deutsch)
  * @author Als-Holder
  * @author DaSch
@@ -3572,6 +3579,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 
 /** Zazaki (Zazaki)
  * @author Erdemaslancan
+ * @author Marmase
  * @author Mirzali
  */
 $messages['diq'] = array(
@@ -3582,7 +3590,7 @@ $messages['diq'] = array(
 	'smw_printername_table' => 'Tablo',
 	'smw_printername_template' => 'Şablon',
 	'smw_printername_rdf' => 'RDF teberdayış',
-	'smw_printername_category' => 'Kategoriye',
+	'smw_printername_category' => 'Kategori',
 	'smw-paramdesc-export' => 'Weçenegê teberdayışi',
 	'smw_true_words' => 'raştay,r,eya,e',
 	'smw_false_words' => 'zuray,z,nê,n',
@@ -10117,6 +10125,7 @@ $messages['niu'] = array(
 /** Dutch (Nederlands)
  * @author Hansmuller
  * @author Kghbln
+ * @author McDutchie
  * @author Rcdeboer
  * @author SPQRobin
  * @author Saruman
@@ -10424,10 +10433,11 @@ Geschatte voortgang van de huidige taak:",
 	'smw_concept_header' => 'Pagina\'s met het concept "$1"',
 	'smw_conceptarticlecount' => "Hieronder {{PLURAL:$1|wordt $1 pagina|worden $1 pagina's}} weergegeven.",
 	'smw-qp-aggregatable-empty-data' => 'De opgevraagde samen te voegen gegevens kunnen niet weergegeven worden vanwege onvoldoende selectiecriteria.',
+	'right-smw-admin' => 'Semantic MediaWiki beheren',
 	'group-smwadministrator' => 'Beheerders voor Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|beheerder (SMW)}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:Beheerders_voor_Semantic_MediaWiki',
-	'action-smw-admin' => 'beheerstaken voor Semantic MediaWiki raadplegen',
+	'action-smw-admin' => 'Semantic MediaWiki te beheren',
 	'smw-sp-properties-cache-info' => 'Deze gegevens zijn overgenomen uit een [https://www.semantic-mediawiki.org/wiki/Caching cache] en zijn voor het laatst bijgewerkt op $1.',
 	'smw-sp-properties-header-label' => 'Lijst met eigenschappen',
 );
@@ -11714,7 +11724,7 @@ Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça
 	'smw_dsv_link' => 'DSV',
 	'smw_printername_count' => 'Contar resultados',
 	'smw_printername_csv' => 'Exportação em CSV',
-	'smw_printername_dsv' => 'Exportação em DVS',
+	'smw_printername_dsv' => 'Exportação em DSV',
 	'smw_printername_debug' => 'Depurar consulta (para especialistas)',
 	'smw_printername_embedded' => 'Incorporar o conteúdo da página',
 	'smw_printername_json' => 'Exportação em JSON',
