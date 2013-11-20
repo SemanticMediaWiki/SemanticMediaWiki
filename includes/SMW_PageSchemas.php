@@ -3,7 +3,7 @@
 /**
  * Functions for handling Semantic MediaWiki data within the Page Schemas
  * extension.
- * 
+ *
  * @author Ankit Garg
  * @author Yaron Koren
  * @file SMW_PageSchemas.php
@@ -145,6 +145,8 @@ class SMWPageSchemas extends PSExtensionHandler {
 				$xml = '<semanticmediawiki_Property name="' . $val . '" >';
 			} elseif ( substr( $var, 0, 18 ) == 'smw_property_type_'){
 				$xml .= '<Type>' . $val . '</Type>';
+			} elseif ( substr( $var, 0, 16 ) == 'smw_linked_form_') {
+				$xml .= '<LinkedForm>' . $val . '</LinkedForm>';
 			} elseif ( substr( $var, 0, 11 ) == 'smw_values_') {
 				if ( $val !== '' ) {
 					// replace the comma substitution character that has no chance of
@@ -225,6 +227,16 @@ class SMWPageSchemas extends PSExtensionHandler {
 			'value' => $propType
 		);
 		$html_text .= "Type: " . Xml::tags( 'select', $propertyDropdownAttrs, $select_body ) . "</p>\n";
+
+		// This can't be last, because of the hacky way the XML is
+		// ocnstructed from this form's output.
+		if ( defined( 'SF_VERSION' ) ) {
+			$html_text .= '<p>' . wfMessage( 'sf_createproperty_linktoform' )->text() . ' ';
+			$linkedForm = PageSchemas::getValueFromObject( $prop_array, 'LinkedForm' );
+			$html_text .= Html::input( 'smw_linked_form_num', $linkedForm, array( 'size' => 15 ) ) . "\n";
+			$html_text .= "(for Page properties only)</p>\n";
+		}
+
 		$html_text .= '<p>If you want this property to only be allowed to have certain values, enter the list of allowed values, separated by commas (if a value contains a comma, replace it with "\,"):</p>';
 		$allowedValsInputAttrs = array(
 			'size' => 80
@@ -266,7 +278,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 				continue;
 			}
 
-			$jobParams['page_text'] = self::createPropertyText( $pageTypeLabel, null );
+			$jobParams['page_text'] = self::createPropertyText( $pageTypeLabel, null, null );
 			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
 		}
 
@@ -277,7 +289,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			if ( !in_array( $propTitle, $selectedPages ) ) {
 				continue;
 			}
-			$jobParams['page_text'] = self::createPropertyText( $propertyData['Type'], $propertyData['allowed_values'] );
+			$jobParams['page_text'] = self::createPropertyText( $propertyData['Type'], $propertyData['allowed_values'], $propertyData['LinkedForm'] );
 			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
 		}
 		Job::batchInsert( $jobs );
@@ -286,7 +298,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Creates the text for a property page.
 	 */
-	public function createPropertyText( $propertyType, $allowedValues ) {
+	public function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
 		/**
 		 * @var SMWLanguage $smwgContLang
 		 */
@@ -296,6 +308,13 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$hasTypeLabel = $propLabels['_TYPE'];
 		$typeTag = "[[$hasTypeLabel::$propertyType]]";
 		$text = wfMessage( 'smw-createproperty-isproperty', $typeTag )->inContentLanguage()->text();
+
+		if ( $linkedForm !== '' && defined( 'SF_VERSION' ) ) {
+			global $sfgContLang;
+			$sfPropLabels = $sfgContLang->getPropertyLabels();
+			$defaultFormTag = "[[{$sfPropLabels[SF_SP_HAS_DEFAULT_FORM]}::$linkedForm]]";
+			$text .= ' ' . wfMessage( 'sf_property_linkstoform', $defaultFormTag )->inContentLanguage()->text();
+		}
 
 		if ( $allowedValues != null) {
 			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', $wgContLang->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
