@@ -104,7 +104,7 @@ production until the actual release.
 * (I17a3e0) Support for quantity export via API and JSON format
 * (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
 * (I5db911) #set_recurring_event using subobjects (changes query behavior
-* for recurring events; for more see Help:Recurring_events)
+for recurring events; for more see Help:Recurring_events)
 
 ### Deprecated code
 
