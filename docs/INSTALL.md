@@ -101,9 +101,18 @@ The package name is "mediawiki/semantic-mediawiki", so your composer.json file s
 The "minimum-stability" section needs to be added as well for now.
 This need for this will be removed when SMW 1.9 is released.
 
+### Using the tarball
+
+Alternatively you can obtain the SMW code by getting one of the release tarballs. These tarballs
+include all dependencies of SMW. This open exists mainly for those that have no command line access.
+If you do, using the Composer approach is preferred.
+
+(This section will be updated with details and links before the SMW 1.9 release)
+
+
 ### Manual installation
 
-Alternatively you can obtain the SMW code and the code of all its dependencies yourself, and load them all.
+You can also obtain the SMW code and the code of all its dependencies yourself, and load them all.
 This is highly discouraged as it is labour intensive and is quite brittle.
 
 You can find a list of the dependencies in the "requires" section of the [composer.json file]
