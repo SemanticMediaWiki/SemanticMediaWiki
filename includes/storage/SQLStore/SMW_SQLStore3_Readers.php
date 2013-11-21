@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- * @ingroup SMWStore
- * @since 1.8
- */
+
+use SMW\DataTypeRegistry;
 
 /**
  * Class to provide all basic read methods for SMWSQLStore3.
@@ -64,7 +61,7 @@ class SMWSQLStore3Readers {
 			if ( $filter !== false ) {
 				$relevant = false;
 				foreach ( $filter as $typeId ) {
-					$diType = SMWDataValueFactory::getDataItemId( $typeId );
+					$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
 					$relevant = $relevant || ( $proptable->getDiType() == $diType );
 					if ( $relevant ) break;
 				}
@@ -191,7 +188,7 @@ class SMWSQLStore3Readers {
 			$data = $this->fetchSemanticData( $pid, $property, $proptables[$tableid], false, $requestoptions );
 			$result = array();
 			$propertyTypeId = $property->findPropertyTypeID();
-			$propertyDiId = SMWDataValueFactory::getDataItemId( $propertyTypeId );
+			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
 
 			foreach ( $data as $dbkeys ) {
 				try {

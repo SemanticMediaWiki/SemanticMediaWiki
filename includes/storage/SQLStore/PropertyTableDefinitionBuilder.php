@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DataValueFactory;
+use SMW\DataTypeRegistry;
 use SMWDIProperty;
 
 /**
@@ -143,7 +143,7 @@ class PropertyTableDefinitionBuilder {
 	protected function getSpecialProperties( array $specialProperties ) {
 		foreach( $specialProperties as $propertyKey ) {
 			$this->addPropertyTable(
-				DataValueFactory::getDataItemId( SMWDIProperty::getPredefinedPropertyTypeId( $propertyKey ) ),
+				DataTypeRegistry::getInstance()->getDataItemId( SMWDIProperty::getPredefinedPropertyTypeId( $propertyKey ) ),
 				$this->getTablePrefix() . strtolower( $propertyKey ),
 				$propertyKey
 			);

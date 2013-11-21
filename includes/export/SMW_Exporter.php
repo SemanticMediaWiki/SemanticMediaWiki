@@ -1,8 +1,7 @@
 <?php
-/**
- * @file
- * @ingroup SMW
- */
+
+use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into
@@ -280,7 +279,7 @@ class SMWExporter {
 		}
 
 		if ( $importURI ) {
-			$importValue = SMWDataValueFactory::newDataItemValue( current( $importDis ), $importProperty );
+			$importValue = DataValueFactory::getInstance()->newDataItemValue( current( $importDis ), $importProperty );
 			$namespace = $importValue->getNS();
 			$namespaceId = $importValue->getNSID();
 			$localName = $importValue->getLocalName();
@@ -373,7 +372,7 @@ class SMWExporter {
 	 */
 	static public function getOWLPropertyType( $type = '' ) {
 		if ( $type instanceof SMWDIWikiPage ) {
-			$type = SMWDataValueFactory::findTypeID( str_replace( '_', ' ', $type->getDBkey() ) );
+			$type = DataTypeRegistry::getInstance()->findTypeId( str_replace( '_', ' ', $type->getDBkey() ) );
 		} elseif ( $type == false ) {
 			$type = '';
 		} // else keep $type

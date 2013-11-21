@@ -1,8 +1,6 @@
 <?php
-/**
- * @file
- * @ingroup SMWDataValues
- */
+
+use SMW\DataTypeRegistry;
 
 /**
  * This datavalue implements special processing suitable for defining types of
@@ -55,12 +53,12 @@ class SMWTypesValue extends SMWDataValue {
 		}
 
 		$this->m_givenLabel = smwfNormalTitleText( $value );
-		$this->m_typeId = SMWDataValueFactory::findTypeID( $this->m_givenLabel );
+		$this->m_typeId = DataTypeRegistry::getInstance()->findTypeId( $this->m_givenLabel );
 		if ( $this->m_typeId === '' ) {
 			$this->addError( wfMessage( 'smw_unknowntype', $this->m_givenLabel )->inContentLanguage()->text() );
 			$this->m_realLabel = $this->m_givenLabel;
 		} else {
-			$this->m_realLabel = SMWDataValueFactory::findTypeLabel( $this->m_typeId );
+			$this->m_realLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
 		}
 		$this->m_isAlias = ( $this->m_realLabel === $this->m_givenLabel ) ? false : true;
 
@@ -83,7 +81,7 @@ class SMWTypesValue extends SMWDataValue {
 		     ( $dataItem->getQuery() === '' ) ) {
 			$this->m_isAlias = false;
 			$this->m_typeId = $dataItem->getFragment();
-			$this->m_realLabel = SMWDataValueFactory::findTypeLabel( $this->m_typeId );
+			$this->m_realLabel = DataTypeRegistry::getInstance()->findTypeLabel( $this->m_typeId );
 			$this->m_caption = $this->m_givenLabel = $this->m_realLabel;
 			$this->m_dataitem = $dataItem;
 			return true;
@@ -162,7 +160,7 @@ class SMWTypesValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getDBkey() {
-		return ( $this->isValid() ) ? SMWDataValueFactory::findTypeID( $this->m_realLabel ) : '';
+		return ( $this->isValid() ) ? DataTypeRegistry::getInstance()->findTypeID( $this->m_realLabel ) : '';
 	}
 
 	/**

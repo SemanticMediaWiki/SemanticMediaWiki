@@ -5,7 +5,7 @@ use SMW\SQLStore\WantedPropertiesCollector;
 use SMW\SQLStore\UnusedPropertiesCollector;
 use SMW\SQLStore\PropertiesCollector;
 use SMW\SQLStore\StatisticsCollector;
-use SMW\DataValueFactory;
+use SMW\DataTypeRegistry;
 use SMW\Settings;
 
 /**
@@ -253,7 +253,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return SMWDataItemHandler
 	 */
 	public function getDataItemHandlerForDatatype( $typeid ) {
-		$dataItemId = DataValueFactory::getDataItemId( $typeid );
+		$dataItemId = DataTypeRegistry::getInstance()->getDataItemId( $typeid );
 		return $this->getDataItemHandlerForDIType( $dataItemId );
 	}
 
@@ -677,7 +677,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return string
 	 */
 	public static function findTypeTableId( $typeid ) {
-		$dataItemId = DataValueFactory::getDataItemId( $typeid );
+		$dataItemId = DataTypeRegistry::getInstance()->getDataItemId( $typeid );
 		return self::findDiTypeTableId( $dataItemId );
 	}
 

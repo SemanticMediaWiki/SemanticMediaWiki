@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- * @ingroup SMWStore
- * @since 1.8
- */
+
+use SMW\DataTypeRegistry;
 
 /**
  * This class provides a subclass of SMWSemanticData that can store
@@ -117,7 +114,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 			// Not catching exception here; the
 			$this->unstubProperty( $property->getKey(), $property );
 			$propertyTypeId = $property->findPropertyTypeID();
-			$propertyDiId = SMWDataValueFactory::getDataItemId( $propertyTypeId );
+			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
 
 			foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {
 				try {

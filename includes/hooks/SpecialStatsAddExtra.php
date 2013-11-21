@@ -91,7 +91,8 @@ class SpecialStatsAddExtra extends FunctionHook {
 			}
 		}
 
-		$this->extraStats['smw-statistics']['smw-statistics-datatype-count'] = count( DataValueFactory::getKnownTypeLabels() );
+		$count = count( DataTypeRegistry::getInstance()->getKnownTypeLabels() );
+		$this->extraStats['smw-statistics']['smw-statistics-datatype-count'] = $count;
 
 		return true;
 

@@ -3,7 +3,7 @@
 namespace SMW\Deserializers;
 
 use SMW\SemanticData;
-use SMW\DataValueFactory;
+use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
@@ -198,7 +198,7 @@ class SemanticDataDeserializer implements Deserializer {
 	protected function getDataItemId( DIProperty $property ) {
 
 		if ( !isset( $this->dataItemTypeIdCache[ $property->getKey() ] ) ) {
-			$this->dataItemTypeIdCache[ $property->getKey() ] = DataValueFactory::getDataItemId( $property->findPropertyTypeID() );
+			$this->dataItemTypeIdCache[ $property->getKey() ] = DataTypeRegistry::getInstance()->getDataItemId( $property->findPropertyTypeID() );
 		}
 
 		return $this->dataItemTypeIdCache[ $property->getKey() ];

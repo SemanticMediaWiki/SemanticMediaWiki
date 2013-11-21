@@ -277,7 +277,7 @@ class ContentProcessor implements ContextAware {
 
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {
-			$dataValue = DataValueFactory::newPropertyValue(
+			$dataValue = DataValueFactory::getInstance()->newPropertyValue(
 				$property,
 				$value,
 				$valueCaption,

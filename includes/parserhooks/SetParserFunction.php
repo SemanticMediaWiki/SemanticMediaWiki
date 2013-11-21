@@ -59,7 +59,7 @@ class SetParserFunction {
 		foreach ( $parameters->toArray() as $property => $values ){
 			foreach ( $values as $value ) {
 				$this->parserData->addDataValue(
-					DataValueFactory::newPropertyValue(
+					DataValueFactory::getInstance()->newPropertyValue(
 						$property,
 						$value
 					)

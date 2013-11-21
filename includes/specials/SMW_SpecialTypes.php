@@ -1,13 +1,16 @@
 <?php
 
+use SMW\DataTypeRegistry;
+use SMW\DataValueFactory;
+
 /**
- * This special page for MediaWiki provides information about types. Type information is 
+ * This special page for MediaWiki provides information about types. Type information is
  * stored in the smw_attributes database table, gathered both from the annotations in
  * articles, and from metadata already some global variables managed by SMWTypeHandlerFactory,
  * and in Type: Wiki pages. This only reports on the Type: Wiki pages.
- * 
+ *
  * @file SMW_SpecialTypes.php
- * 
+ *
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  *
@@ -37,13 +40,13 @@ class SMWSpecialTypes extends SpecialPage {
 		$wgOut->addHTML( $html );
 		SMWOutputs::commitToOutputPage( $wgOut );
 
-		wfProfileOut( 'smwfDoSpecialTypes (SMW)' );	
+		wfProfileOut( 'smwfDoSpecialTypes (SMW)' );
 	}
 
 	protected function getTypesList() {
 		$html = '<p>' . wfMessage( 'smw_types_docu' )->escaped() . "</p><br />\n";
 
-		$typeLabels = SMWDataValueFactory::getKnownTypeLabels();
+		$typeLabels = DataTypeRegistry::getInstance()->getKnownTypeLabels();
 		asort( $typeLabels, SORT_STRING );
 
 		$html .= "<ul>\n";
@@ -63,7 +66,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$from = $wgRequest->getVal( 'from' );
 		$until = $wgRequest->getVal( 'until' );
-		$typeValue = SMWDataValueFactory::newTypeIDValue( '__typ', $typeLabel );
+		$typeValue = DataValueFactory::getInstance()->newTypeIDValue( '__typ', $typeLabel );
 
 		if ( !$typeValue->isValid() ) {
 			return $this->msg( 'smw-special-types-no-such-type' )->escaped();

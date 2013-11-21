@@ -699,8 +699,7 @@ class SMWSparqlStoreQueryEngine {
 		}
 
 		//*** Build the condition ***//
-		$typeId = $diProperty->findPropertyTypeID();
-		$diType = SMWDataValueFactory::getDataItemId( $typeId );
+		$diType = DataTypeRegistry::getInstance()->getDataItemId( $diProperty->findPropertyTypeID() );
 		// for types that use helper properties in encoding values, refer to this helper property:
 		if ( SMWExporter::hasHelperExpElement( $diType ) ) {
 			$propertyExpElement = SMWExporter::getResourceElementForProperty( $diNonInverseProperty, true );
@@ -893,8 +892,7 @@ class SMWSparqlStoreQueryEngine {
 		}
 
 		if ( $diType == SMWDataItem::TYPE_NOTYPE ) {
-			$typeId = $orderByProperty->findPropertyTypeID();
-			$diType = SMWDataValueFactory::getDataItemId( $typeId );
+			$diType = DataTypeRegistry::getInstance()->getDataItemId( $orderByProperty->findPropertyTypeID() );
 		}
 
 		$this->addOrderByData( $sparqlCondition, $mainVariable, $diType );

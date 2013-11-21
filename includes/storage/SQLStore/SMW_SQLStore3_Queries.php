@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- * @ingroup SMWStore
- * @since 1.8
- */
+
+use SMW\DataTypeRegistry;
 
 /**
  * Class for representing a single (sub)query description. Simple data
@@ -684,7 +681,7 @@ class SMWSQLStore3QueryEngine {
 		}
 
 		$typeid = $property->findPropertyTypeID();
-		$diType = SMWDataValueFactory::getDataItemId( $typeid );
+		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeid );
 		if ( $property->isInverse() && $diType != SMWDataItem::TYPE_WIKIPAGE ) {
 			// can only invert properties that point to pages
 			$query->type = SMWSQLStore3Query::Q_NOQUERY;
