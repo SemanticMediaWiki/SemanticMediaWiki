@@ -124,13 +124,12 @@ If not noted otherwise, deprecated methods or classes will be removed in SMW 1.1
 * Over 80 PHPUnit tests have been added
 * Over 10 QUnit tests have been added
 * The tests now [run on TravisCI](https://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
-** Compatibility is now ensured against all supported MediaWiki and PHP versions
-** Compatibility is now ensured for all supported databases
+    * Compatibility is now ensured against all supported MediaWiki and PHP versions
+    * Compatibility is now ensured for all supported databases
 
 ### Documentation
 
-The documentation bundled with the SMW source code has been updated. It can be found in
-[the docs folder](docs).
+The documentation bundled with the SMW source code has been updated. It can be found in the docs folder.
 
 ### Extended translations
 
