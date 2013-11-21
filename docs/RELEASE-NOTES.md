@@ -1,16 +1,18 @@
+#SMW 1.9
+
 THIS IS NOT A RELEASE YET
 
 Semantic MediaWiki 1.9 is currently in beta-quality and is not recommended for use in
 production until the actual release.
 
-=== Requirements changes ===
+### Requirements changes
 
 * Changed minimum MediaWiki version from 1.17 to 1.19.
 * Changed minimum PHP version from 5.2. to 5.3.2.
 * Full compatibility with MediaWiki 1.19, 1.20, 1.21, 1.22 and forward-compatibility with 1.23.
 * Changed minimum Validator version from 0.5 to 1.0.
 
-=== New features ===
+### New features
 
 * Added maintenance script to rebuild the property statistics
 * (271864f) The property type String is now an alias for Text and has no more length restrictions
@@ -22,7 +24,7 @@ production until the actual release.
 * The new "browsebysubject" API module allows fetching the semantic data for a given page
 * Added Special:Concepts special page that lists the available concepts
 
-=== Enhancements ===
+### Enhancements
 
 * (Bug 36309) Enable +sep= as multiple values identifier in #set
 * (Bug 39019) Enable +sep= as multiple values identifier in #subobject
@@ -76,7 +78,7 @@ production until the actual release.
 * (cb6c6ad) SMW\ResultPrinter class turn RequestContext aware
 * (7d1e2ad) (Bug 34782) Add note to #info parser function
 
-=== Bug fixes ===
+### Bug fixes
 
 * The property statistics rebuilding is no longer done whenever you run update.php.
 * (Bug 42321) Fixed issue frequently causing notices in SQLStore3
@@ -90,20 +92,20 @@ production until the actual release.
 * (fcb7da9) (Bug 42324) fix sqlite support in sqlstore3
 * (3507f84) (Bug 21893) Fixed queries that use the like comparator for properties with a restricted set of values
 
-=== Dropped features ===
+### Dropped features
 
 * (6f7625f) Remove Special:QueryCreator
 * (5a3f6ed) (Bug 50755) Remove MigrationJob/SMWMigrate
 * (f9cff2b) Remove smwfLoadExtensionMessages
 
-=== Compatibility changes ===
+### Compatibility changes
 
 * Deleted pre SMW 1.5.1 entry point (includes/SMW_Settings.php), the main entry point is SemanticMediaWiki.php
 * (I17a3e0) Support for quantity export via API and JSON format
 * (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
 * (I5db911) #set_recurring_event using subobjects (changes query behavior for recurring events; for more see [[Help:Recurring_events]])
 
-=== Deprecated methods/classes ===
+### Deprecated methods/classes
 
 If not noted otherwise, deprecated methods or classes will be removed in SMW 1.11.
 
@@ -116,16 +118,16 @@ If not noted otherwise, deprecated methods or classes will be removed in SMW 1.1
 * SMWFeedResultPrinter, SMWDISerializer
 * SMWDIString, SMWStringLengthException, SMWSetRecurringEvent
 
-=== Unit tests ===
+### Unit tests
 
 * More than 80 PHPUnit tests have been added
 * More than 10 QUnit tests have been added
 
-=== Documentation ===
+### Documentation
 
 Additional documentation has been added, see /docs/
 
-=== Extended translations ===
+### Extended translations
 
 As usual, translations have been extended thanks to the [[Translatewiki.net|Translatewiki.net project]].
 In addition, the core strings (SMW properties and datatypes) for Slovak have been updated.
