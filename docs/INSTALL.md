@@ -21,7 +21,7 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 1.9.x</a></th>
 		<td>Development version</td>
 		<td>Estimate: December 2013</td>
-		<td>5.3.2+ (ensured up to 5.5.x)</td>
+		<td>5.3.2 - 5.5.x</td>
 		<td>1.19 - 1.23</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
@@ -29,7 +29,7 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/releasenotes/RELEASE-NOTES-1.8.md">SMW 1.8.x</a></th>
 		<td>Stable release</td>
 		<td>2012</td>
-		<td>5.2+ (ensured up to 5.5.x)</td>
+		<td>5.2 - 5.5.x</td>
 		<td>1.17 - 1.22</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.8.x">1.8.x</a></td>
 	</tr>
@@ -37,11 +37,14 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/releasenotes/RELEASE-NOTES-1.7.1.md">SMW 1.7.1</a></th>
 		<td>Legacy release</td>
 		<td>2012-03-05</td>
-		<td>5.2+ (ensured up to 5.4.x)</td>
+		<td>5.2 - 5.4.x</td>
 		<td>1.16 - 1.19</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.7.1">1.7.1</a></td>
 	</tr>
 </table>
+
+The PHP and MediaWiki version ranges listed are those in which SMW is known to work. It might also
+work with more recent versions of PHP and MediaWiki, though this is not guaranteed.
 
 ## Download and installation
 
