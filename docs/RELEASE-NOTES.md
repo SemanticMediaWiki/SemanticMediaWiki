@@ -34,7 +34,6 @@ production until the actual release.
 * (I2e509e08) Improved efficiency of property statistics rebuilding script
 * (Bug 43932) Enable html tags support for non-list results in SMW\ListResultPrinter
 * (Bug 44275) Enable .data( 'sortkey' ) support in SMW\ListResultPrinter
-
 * (eb764db) Add \SMW\PropertyAnnotatorDecorator
 * (e0f3f4d) Refactor	\SMW\RefreshJob
 * (2a44b00) Register #show as callback
@@ -114,7 +113,6 @@ If not noted otherwise, deprecated methods or classes will be removed in SMW 1.1
 * (3ba701f) smwfEncodeMessages was replaced by SMW\Highlighter, SMW\MessageFormatter
 * (534548b) smwfGetStore was replaced by SMW\StoreFactory
 * SMWParseData was replaced by a non-static SMW\ParserData class
-
 * SMWListResultPrinter, SMWResultPrinter, SMWSubobject, SMWSet
 * SMWFeedResultPrinter, SMWDISerializer
 * SMWDIString, SMWStringLengthException, SMWSetRecurringEvent
