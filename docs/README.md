@@ -1,14 +1,16 @@
-This document contains resources that can improve the understanding on "how Semantic MediaWiki is working" from an implementation and development point of view.
+# SMW documentation
 
-## Development
-* [Using the WebApi](api.md)
-* [Using the Dependency Builder/Container](dic.md)
-* [Interacting with Serializers](serializers.md)
-* [Using the context object](context.md)
-* [Working with design patterns](patterns.md)
+The documentation for SMW can primaritly be found on the [SMW wiki](https://semantic-mediawiki.org).
+Some core documentation is included together with the source code, and can mostly be found in the
+docs/ directory. This documentation includes basic installation instructions, release notes and
+technical documentation. The later can be found in [docs/technical](technical/README/md).
 
-## Testing
-* [Working with mock objects](/tests/phpunit/README.md)
+## Site admin documentation
 
-## Enhancements
-* [List of hooks provided by Semantic MediaWiki](hooks.md)
+* [Installation instructions](INSTALL.md)
+* [Latest release notes](RELEASE-NOTES.md)
+* [Release note archive](releasenotes)
+
+## Developer documentation
+
+See the [developer documentation overview](technical/README.md).
