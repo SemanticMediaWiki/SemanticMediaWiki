@@ -46,6 +46,35 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 The PHP and MediaWiki version ranges listed are those in which SMW is known to work. It might also
 work with more recent versions of PHP and MediaWiki, though this is not guaranteed.
 
+### Database support
+
+<table>
+	<tr>
+		<th></th>
+		<th>MySQL</th>
+		<th>SQLite</th>
+		<th>PostgreSQL</th>
+	</tr>
+	<tr>
+		<th>SMW 1.9.x</th>
+		<td>Full support</td>
+		<td>Full support</td>
+		<td>Experimental</td>
+	</tr>
+	<tr>
+		<th>SMW 1.8.x</th>
+		<td>Full support</td>
+		<td>Full support</td>
+		<td>Experimental</td>
+	</tr>
+	<tr>
+		<th>SMW 1.7.1</th>
+		<td>Full support</td>
+		<td>Experimental</td>
+		<td>Experimental</td>
+	</tr>
+</table>
+
 ## Download and installation
 
 ### With Composer
