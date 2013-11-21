@@ -105,7 +105,7 @@ production until the actual release.
 * (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
 * (I5db911) #set_recurring_event using subobjects (changes query behavior for recurring events; for more see [[Help:Recurring_events]])
 
-### Deprecated methods/classes
+### Deprecated code
 
 If not noted otherwise, deprecated methods or classes will be removed in SMW 1.11.
 
