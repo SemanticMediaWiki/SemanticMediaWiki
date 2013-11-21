@@ -8619,7 +8619,7 @@ $messages['ko'] = array(
 	'smw-ask-sorting' => '정렬',
 	'smw-ask-format-selection-help' => '자세한 설명에 대해서는 $1 도움말 문서로 방문하세요.',
 	'searchbyproperty' => '속성으로 찾기',
-	'smw_sbv_docu' => '주어진 속성과 값을 가지고 모든 문서를 찾습니다.',
+	'smw_sbv_docu' => '주어진 속성과 값을 가지고 모든 문서를 검색합니다.',
 	'smw_sbv_novalue' => '속성에 대한 올바른 값을 입력하거나 "$1"에 대한 모든 속성 값을 보세요.',
 	'smw_sbv_displayresult' => '"$2" 값으로 "$1" 속성을 가진 모든 문서의 목록입니다',
 	'smw_sbv_displayresultfuzzy' => '"$2" 값으로 "$1" 속성을 가진 모든 문서의 목록입니다.
@@ -8638,7 +8638,7 @@ $messages['ko'] = array(
 	'smw_inverse_label_default' => '$1입니다',
 	'smw_inverse_label_property' => '역 속성 레이블',
 	'pageproperty' => '문서 속성 찾기',
-	'smw_pp_docu' => '주어진 문서어 속성의 모든 값을 찾습니다.
+	'smw_pp_docu' => '주어진 문서에 속성의 모든 값을 검색합니다.
 문서와 속성을 둘 다 입력하세요.',
 	'smw_pp_from' => '대상 문서',
 	'smw_pp_type' => '속성',
