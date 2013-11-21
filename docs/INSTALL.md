@@ -54,13 +54,11 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 		<th>MySQL</th>
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
-		<th>Virtuoso</th>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
-		<td>Experimental</td>
 		<td>Experimental</td>
 	</tr>
 	<tr>
@@ -68,14 +66,12 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 		<td>Full support</td>
 		<td>Full support</td>
 		<td>Experimental</td>
-		<td>Experimental</td>
 	</tr>
 	<tr>
 		<th>SMW 1.7.1</th>
 		<td>Full support</td>
 		<td>Experimental</td>
 		<td>None</td>
-		<td>Experimental</td>
 	</tr>
 </table>
 
