@@ -17,6 +17,7 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
  * Hebrew language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author Udi Oron אודי אורון
+ * @author eranroz
  * @ingroup SMWLanguage
  * @ingroup Language
  */
@@ -51,24 +52,24 @@ class SMWLanguageHe extends SMWLanguage {
 		'_TYPE' => 'מטיפוס',
 		'_URI'  => 'מזהה יחודי תואם',
 		'_SUBP' => 'רכוש כפוף ל',
-		'_SUBC' => 'Subcategory of', // TODO: translate
+		'_SUBC' => 'תת קטגוריה של',
 		'_UNIT' => 'יחידות מידה',
 		'_IMPO' => 'יובא מ',
 		'_CONV' => 'מתורגם ל',
 		'_SERV' => 'מספק שירות',
 		'_PVAL' => 'ערך אפשרי',
 		'_MDAT' => 'תאריך לשינוי',
-		'_CDAT' => 'Creation date', // TODO: translate
-		'_NEWP' => 'Is a new page', // TODO: translate
-		'_LEDT' => 'Last editor is', // TODO: translate
+		'_CDAT' => 'תאריך יצירה',
+		'_NEWP' => 'האם הדף חדש',
+		'_LEDT' => 'העורך האחרון ',
 		'_ERRP' => 'יש ערך תקין בשביל',
 		'_LIST' => 'Has fields', // TODO: translate
 		'_SOBJ' => 'Has subobject', // TODO: translate
 		'_ASK'  => 'Has query', // TODO: translate
-		'_ASKST'=> 'Query string', // TODO: translate
-		'_ASKFO'=> 'Query format', // TODO: translate
-		'_ASKSI'=> 'Query size', // TODO: translate
-		'_ASKDE'=> 'Query depth', // TODO: translate
+		'_ASKST'=> 'מחרוזת השאילתא',
+		'_ASKFO'=> 'פורמט השאילתא',
+		'_ASKSI'=> 'גודל השאילתא',
+		'_ASKDE'=> 'עומק שאילתא',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
@@ -89,8 +90,8 @@ class SMWLanguageHe extends SMWLanguage {
 
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
 
-	protected $m_months = array( "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" );
+	protected $m_months = array( "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר" );
 
-	protected $m_monthsshort = array( "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" );
+	protected $m_monthsshort = array( "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר" );
 
 }
