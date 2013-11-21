@@ -1,4 +1,4 @@
-#SMW 1.9
+# Semantic MediaWiki 1.9
 
 THIS IS NOT A RELEASE YET
 
@@ -14,6 +14,7 @@ production until the actual release.
 
 ### New features
 
+* SMW (and its dependencies) can now be installed via Composer
 * Added maintenance script to rebuild the property statistics
 * (271864f) The property type String is now an alias for Text and has no more length restrictions
 * (9714d04) \SMW\ApiBrowse enables to browse a subject via the Api
@@ -118,14 +119,18 @@ If not noted otherwise, deprecated methods or classes will be removed in SMW 1.1
 * SMWFeedResultPrinter, SMWDISerializer
 * SMWDIString, SMWStringLengthException, SMWSetRecurringEvent
 
-### Unit tests
+### Platform stability
 
-* More than 80 PHPUnit tests have been added
-* More than 10 QUnit tests have been added
+* Over 80 PHPUnit tests have been added
+* Over 10 QUnit tests have been added
+* The tests now [run on TravisCI](https://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
+** Compatibility is now ensured against all supported MediaWiki and PHP versions
+** Compatibility is now ensured for all supported databases
 
 ### Documentation
 
-Additional documentation has been added, see /docs/
+The documentation bundled with the SMW source code has been updated. It can be found in
+[the docs folder](docs).
 
 ### Extended translations
 
