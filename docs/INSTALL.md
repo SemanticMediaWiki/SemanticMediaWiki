@@ -101,7 +101,7 @@ The package name is "mediawiki/semantic-mediawiki", so your composer.json file s
 The "minimum-stability" section needs to be added as well for now.
 This need for this will be removed when SMW 1.9 is released.
 
-### Using the tarball
+### Using a tarball
 
 Alternatively you can obtain the SMW code by getting one of the release tarballs. These tarballs
 include all dependencies of SMW. This open exists mainly for those that have no command line access.
@@ -130,3 +130,10 @@ The only remaining step is to include SemanticMediaWiki in your LocalSettings.ph
 ```php
 require_once( "$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );
 ```
+
+## More instructions
+
+* [Verbose installation instructions](https://semantic-mediawiki.org/wiki/Help:Installation)
+* [Upgrading instructions](https://semantic-mediawiki.org/wiki/Help:Installation#Upgrading_existing_installations)
+* [Configuration instructions](https://semantic-mediawiki.org/wiki/Help:Configuration)
+* [Administrator manual](https://semantic-mediawiki.org/wiki/Help:Administrator_manual)
