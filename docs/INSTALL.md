@@ -1,5 +1,3 @@
-[[Semantic MediaWiki 1.9]]
-
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
 
