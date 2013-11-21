@@ -6,7 +6,6 @@ use SMW\PredefinedPropertyAnnotator;
 use SMW\NullPropertyAnnotator;
 use SMW\EmptyContext;
 use SMW\SemanticData;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
 
 /**
@@ -50,23 +49,13 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return PredefinedPropertyAnnotator
 	 */
-	private function newInstance( $semanticData = null, $settings = array(), $wikiPage = null, $revision = null, $user = null ) {
+	private function newInstance( $semanticData = null, $settings = array(), $pageInfo = array() ) {
 
 		if ( $semanticData === null ) {
 			$semanticData = $this->newMockBuilder()->newObject( 'SemanticData' );
 		}
 
-		if ( $wikiPage === null ) {
-			$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage' );
-		}
-
-		if ( $revision === null ) {
-			$revision = $this->newMockBuilder()->newObject( 'Revision' );
-		}
-
-		if ( $user === null ) {
-			$user = $this->newMockBuilder()->newObject( 'User' );
-		}
+		$predefinedProperty = $this->newMockBuilder()->newObject( 'PageInfoProvider', $pageInfo );
 
 		$settings = $this->newSettings( $settings );
 
@@ -74,12 +63,8 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
 
 		return new PredefinedPropertyAnnotator(
-			new NullPropertyAnnotator( $semanticData, $context ),
-			$wikiPage,
-			$revision,
-			$user
+			new NullPropertyAnnotator( $semanticData, $context ), $predefinedProperty
 		);
-
 	}
 
 	/**
@@ -98,14 +83,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$semanticData = new SemanticData( $setup['subject'] );
 
-		$instance = $this->newInstance(
-			$semanticData,
-			$setup['settings'],
-			$this->newMockBuilder()->newObject( 'WikiPage', $setup['wikiPage'] ),
-			$this->newMockBuilder()->newObject( 'Revision', $setup['revision'] ),
-			$this->newMockBuilder()->newObject( 'User', $setup['user'] )
-		);
-
+		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['pageInfo'] );
 		$instance->attach( $this->newObserver() )->addAnnotation();
 
 		$this->assertSemanticData(
@@ -149,9 +127,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( 'Lala', '_Lula', '-Lila', '' )
 				),
-				'wikiPage' => array(),
-				'revision' => array(),
-				'user'     => array()
+				'pageInfo' => array(),
 			),
 			array(
 				'propertyCount' => 0,
@@ -165,9 +141,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
 				),
-				'wikiPage' => array( 'getTimestamp' => 1272508903 ),
-				'revision' => array(),
-				'user'     => array()
+				'pageInfo' => array( 'getModificationDate' => 1272508903 )
 			),
 			array(
 				'propertyCount' => 1,
@@ -177,29 +151,13 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		);
 
 		// TYPE_CREATION_DATE
-		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
-			'getTimestamp' => 1272508903
-		) );
-
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'getDBkey'         => 'Lula',
-			'getNamespace'     => NS_MAIN,
-			'getFirstRevision' => $revision
-		) );
-
-		$subject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
-			'getTitle' => $this->newMockBuilder()->newObject( 'Title' )
-		) );
-
 		$provider[] = array(
 			array(
-				'subject'  => $subject,
+				'subject'  => $this->newSubject( $this->newTitle() ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_CREATION_DATE )
 				),
-				'wikiPage' => array( 'getTitle' => $title ),
-				'revision' => array(),
-				'user'     => array()
+				'pageInfo' => array( 'getCreationDate' => 1272508903 )
 			),
 			array(
 				'propertyCount' => 1,
@@ -215,9 +173,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_NEW_PAGE )
 				),
-				'wikiPage' => array(),
-				'revision' => array( 'getParentId' => 9001 ),
-				'user'     => array()
+				'pageInfo' => array( 'isNewPage' => true )
 			),
 			array(
 				'propertyCount' => 1,
@@ -238,9 +194,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_LAST_EDITOR )
 				),
-				'wikiPage' => array(),
-				'revision' => array(),
-				'user'     => array( 'getUserPage' => $userPage )
+				'pageInfo' => array( 'getLastEditor' => $userPage )
 			),
 			array(
 				'propertyCount' => 1,
@@ -249,16 +203,17 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		// Combine entries
+		// Combined entries
 		$provider[] = array(
 			array(
 				'subject'  => $this->newSubject( $this->newTitle() ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( '_MDAT', '_LEDT' )
 				),
-				'wikiPage' => array( 'getTimestamp' => 1272508903 ),
-				'revision' => array(),
-				'user'     => array( 'getUserPage' => $userPage )
+				'pageInfo' => array(
+					'getModificationDate' => 1272508903,
+					'getLastEditor'      => $userPage
+				)
 			),
 			array(
 				'propertyCount' => 2,

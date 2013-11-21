@@ -662,4 +662,28 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 		return $queryDescription;
 	}
 
+	/**
+	 * @since 1.9
+	 *
+	 * @return PageInfoProvider
+	 */
+	public function PageInfoProvider() {
+
+		$methods = $this->builder->getInvokedMethods();
+
+		$adapter = $this->getMockBuilder( 'SMW\PageInfoProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		foreach ( $methods as $method ) {
+
+			$adapter->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $adapter;
+	}
+
 }

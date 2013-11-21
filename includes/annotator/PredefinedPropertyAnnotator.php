@@ -7,10 +7,6 @@ use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDITime as DITime;
 
-use WikiPage;
-use Revision;
-use User;
-
 /**
  * Handling predefined property annotations
  *
@@ -23,28 +19,18 @@ use User;
  */
 class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/** @var WikiPage */
-	protected $wikiPage;
-
-	/** @var Revision */
-	protected $revision;
-
-	/** @var User */
-	protected $user;
+	/** @var PageInfoProvider */
+	protected $pageInfo;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param WikiPage $wikiPage
-	 * @param Revision $revision
-	 * @param User $user
+	 * @param PageInfoProvider $pageInfo
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, WikiPage $wikiPage, Revision $revision, User $user ) {
+	public function __construct( PropertyAnnotator $propertyAnnotator, PageInfoProvider $pageInfo ) {
 		parent::__construct( $propertyAnnotator );
-		$this->wikiPage = $wikiPage;
-		$this->revision = $revision;
-		$this->user = $user;
+		$this->pageInfo = $pageInfo;
 	}
 
 	/**
@@ -59,41 +45,18 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		foreach ( $predefinedProperties as $propertyId ) {
 
-			// Ensure that only special properties are added that are registered
-			// and only added once
-			if ( ( DIProperty::getPredefinedPropertyTypeId( $propertyId ) === '' ) ||
-				( array_key_exists( $propertyId, $cachedProperties ) ) ) {
+			if ( $this->assertRegisteredPropertyId( $propertyId, $cachedProperties ) ) {
 				continue;
 			}
 
 			$propertyDI = new DIProperty( $propertyId );
 
-			// Don't do a double round
 			if ( $this->getSemanticData()->getPropertyValues( $propertyDI ) !== array() ) {
 				$cachedProperties[ $propertyId ] = true;
 				continue;
 			}
 
-			switch ( $propertyId ) {
-				case DIProperty::TYPE_MODIFICATION_DATE :
-					$dataItem = DITime::newFromTimestamp( $this->wikiPage->getTimestamp() );
-					break;
-				case DIProperty::TYPE_CREATION_DATE :
-					// Expensive getFirstRevision() initiates a revision table
-					// read and is not cached
-					$dataItem = DITime::newFromTimestamp(
-						$this->wikiPage->getTitle()->getFirstRevision()->getTimestamp()
-					);
-					break;
-				case DIProperty::TYPE_NEW_PAGE :
-					// Expensive isNewPage() does a database read
-					// $dataValue = new SMWDIBoolean( $this->title->isNewPage() );
-					$dataItem = new DIBoolean( $this->revision->getParentId() !== '' );
-					break;
-				case DIProperty::TYPE_LAST_EDITOR :
-					$dataItem = DIWikiPage::newFromTitle( $this->user->getUserPage() );
-					break;
-			}
+			$dataItem = $this->createDataItemByPropertyId( $propertyId );
 
 			if ( $dataItem instanceof DataItem ) {
 				$cachedProperties[ $propertyId ] = true;
@@ -104,6 +67,39 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->setState( 'updateOutput' );
 
 		return $this;
+	}
+
+	/**
+	 * @since  1.9
+	 */
+	protected function assertRegisteredPropertyId( $propertyId, $cachedProperties ) {
+		return ( DIProperty::getPredefinedPropertyTypeId( $propertyId ) === '' ) ||
+			array_key_exists( $propertyId, $cachedProperties );
+	}
+
+	/**
+	 * @since  1.9
+	 */
+	protected function createDataItemByPropertyId( $propertyId ) {
+
+		$dataItem = null;
+
+		switch ( $propertyId ) {
+			case DIProperty::TYPE_MODIFICATION_DATE :
+				$dataItem = DITime::newFromTimestamp( $this->pageInfo->getModificationDate() );
+				break;
+			case DIProperty::TYPE_CREATION_DATE :
+				$dataItem = DITime::newFromTimestamp( $this->pageInfo->getCreationDate() );
+				break;
+			case DIProperty::TYPE_NEW_PAGE :
+				$dataItem = new DIBoolean( $this->pageInfo->isNewPage() );
+				break;
+			case DIProperty::TYPE_LAST_EDITOR :
+				$dataItem = DIWikiPage::newFromTitle( $this->pageInfo->getLastEditor() );
+				break;
+		}
+
+		return $dataItem;
 	}
 
 }
