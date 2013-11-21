@@ -103,7 +103,8 @@ production until the actual release.
 * Deleted pre SMW 1.5.1 entry point (includes/SMW_Settings.php), the main entry point is SemanticMediaWiki.php
 * (I17a3e0) Support for quantity export via API and JSON format
 * (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
-* (I5db911) #set_recurring_event using subobjects (changes query behavior for recurring events; for more see [[Help:Recurring_events]])
+* (I5db911) #set_recurring_event using subobjects (changes query behavior
+* for recurring events; for more see Help:Recurring_events)
 
 ### Deprecated code
 
@@ -131,5 +132,5 @@ The documentation bundled with the SMW source code has been updated. It can be f
 
 ### Extended translations
 
-As usual, translations have been extended thanks to the [[Translatewiki.net|Translatewiki.net project]].
+As usual, translations have been extended thanks to the [Translatewiki.net project](https://translatewiki.net).
 In addition, the core strings (SMW properties and datatypes) for Slovak have been updated.
