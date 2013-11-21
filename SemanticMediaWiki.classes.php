@@ -28,6 +28,7 @@ return array(
 	'SMW\SemanticData'          => 'includes/SemanticData.php',
 	'SMWPageLister'             => 'includes/SMW_PageLister.php',
 
+	'SMW\DataTypeRegistry'      => 'includes/DataTypeRegistry.php',
 	'SMW\DataValueFactory'      => 'includes/DataValueFactory.php',
 
 	'SMWParseData'              => 'includes/SMW_ParseData.php',

@@ -29,7 +29,20 @@ $GLOBALS['wgHooks']['SMW::Dispatcher::updateJobs'][] = function ( \SMW\DIPropert
 	return true;
 };
 ```
-Before 1.9 was called smwUpdatePropertySubjects with a different interface.
+Before 1.9 it was called smwUpdatePropertySubjects with a different interface.
+
+### SMW::DataType::initTypes (SMW 1.9)
+Adds support for additional DataTypes.
+
+```php
+$GLOBALS['wgHooks']['SMW::DataType::initTypes'][] = function () {
+
+	DataTypeRegistry::getInstance()->registerDataType( '_foo', '\SMW\FooValue', \SMW\DataItem::TYPE_GEO );
+
+	return true;
+};
+```
+Before 1.9 it was called smwInitDatatypes.
 
 ## SQLStore
 ### SMW::SQLStore::updatePropertyTableDefinitions (SMW 1.9)
