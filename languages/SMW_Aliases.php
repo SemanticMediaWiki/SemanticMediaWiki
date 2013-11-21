@@ -354,6 +354,7 @@ $specialPageAliases['it'] = array(
 	'ExportRDF' => array( 'EsportaRDF' ),
 	'PageProperty' => array( 'ProprietàPagina' ),
 	'Properties' => array( 'Proprietà' ),
+	'Concepts' => array( 'Concetti' ),
 	'SMWAdmin' => array( 'AdminSMW' ),
 	'SearchByProperty' => array( 'CercaPerProprietà' ),
 	'SemanticStatistics' => array( 'StatisticheSemantiche' ),

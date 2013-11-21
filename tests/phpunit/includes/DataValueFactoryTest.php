@@ -6,8 +6,6 @@ use SMW\DataValueFactory;
 use SMWDataItem;
 use SMWPropertyValue;
 
-use Title;
-
 /**
  * @covers \SMW\DataValueFactory
  *
@@ -30,6 +28,13 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 */
 	public function getClass() {
 		return '\SMW\DataValueFactory';
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testGetInstance() {
+		$this->assertInstanceOf( $this->getClass(), DataValueFactory::getInstance() );
 	}
 
 	/**
@@ -170,6 +175,29 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
+	public function testRegisterDatatype() {
+
+		DataValueFactory::registerDatatype( '_foo', '\SMW\FooValue', SMWDataItem::TYPE_NOTYPE, 'FooValue' );
+
+		$this->assertEquals(
+			'FooValue',
+			DataValueFactory::findTypeLabel( '_foo' ),
+			'Asserts that findTypeLabel() returns the registered label'
+		);
+
+		DataValueFactory::getInstance()->registerDatatype( '_foo', '\SMW\FooValue', SMWDataItem::TYPE_NOTYPE, 'FooValue' );
+
+		$this->assertEquals(
+			'FooValue',
+			DataValueFactory::getInstance()->findTypeLabel( '_foo' ),
+			'Asserts that findTypeLabel() returns the registered label'
+		);
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
 	public function testRegisterDatatypeAlias() {
 
 		DataValueFactory::registerDatatypeAlias( '_foo', 'Bar' );
@@ -180,6 +208,13 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 			'Asserts that registerDatatypeAlias() registered an alias'
 		);
 
+		DataValueFactory::getInstance()->registerDatatypeAlias( '_foo', 'Bar' );
+
+		$this->assertEquals(
+			'_foo',
+			DataValueFactory::getInstance()->findTypeID( 'Bar' ),
+			'Asserts that registerDatatypeAlias() registered an alias'
+		);
 	}
 
 	/**
