@@ -20,3 +20,5 @@ Released on March 5, 2012.
 * Fixed broken +index=x for records (bug 30284).
 * Fixed querying of subobjects using 4store as a datastore.
 * Fixed issue with namespace internationalization (bug 34383).
+
+Also see the [SMW 1.7 release notes](RELEASE-NOTES-1.7.md)
