@@ -107,7 +107,8 @@ Alternatively you can obtain the SMW code and the code of all its dependencies y
 
 You can find a list of the dependencies in the "requires" section of the [composer.json file]
 (../composer.json). These packages are also linked on the [SMW Packagist page]
-(https://packagist.org/packages/mediawiki/semantic-mediawiki).
+(https://packagist.org/packages/mediawiki/semantic-mediawiki). Note that this process is resurive
+and needs to be applied on the dependencies as well, since they can have further dependencies.
 
 You can get the SMW code itself:
 
