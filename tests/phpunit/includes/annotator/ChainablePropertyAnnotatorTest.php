@@ -63,9 +63,7 @@ class ChainablePropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$instance = new PredefinedPropertyAnnotator(
 			$instance,
-			$this->newMockBuilder()->newObject( 'WikiPage', $setup['wikiPage'] ),
-			$this->newMockBuilder()->newObject( 'Revision', $setup['revision'] ),
-			$this->newMockBuilder()->newObject( 'User', $setup['user'] )
+			$this->newMockBuilder()->newObject( 'PageInfoProvider', $setup['pageInfo'] )
 		);
 
 		$instance->addAnnotation();
@@ -88,12 +86,10 @@ class ChainablePropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		// #0
 		$provider[] = array(
 			array(
+				'pageInfo' => array( 'getModificationDate' => 1272508903 ),
 				'namespace'  => NS_MAIN,
 				'categories' => array( 'Foo', 'Bar' ),
 				'sortkey'    => 'Lala',
-				'wikiPage'   => array( 'getTimestamp' => 1272508903 ),
-				'revision'   => array(),
-				'user'       => array(),
 				'settings'   => array(
 					'smwgUseCategoryHierarchy'  => false,
 					'smwgCategoriesAsInstances' => true,
