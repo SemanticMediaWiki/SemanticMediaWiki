@@ -26,7 +26,7 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/releasenotes/RELEASE-NOTES-1.8.md">SMW 1.8.x</a></th>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.8.0">SMW 1.8.x</a></th>
 		<td>Stable release</td>
 		<td>2012-12-02</td>
 		<td>5.2.0 - 5.5.x</td>
@@ -34,7 +34,7 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.8.x">1.8.x</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/releasenotes/RELEASE-NOTES-1.7.1.md">SMW 1.7.1</a></th>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.7.1">SMW 1.7.1</a></th>
 		<td>Legacy release</td>
 		<td>2012-03-05</td>
 		<td>5.2.0 - 5.4.x</td>
