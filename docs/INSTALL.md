@@ -107,6 +107,10 @@ Run the MediaWiki update script. The location of this script is maintenance/upda
 
     php maintenance/update.php
 
+##### Verify installation success
+
+As final step, you can verify SMW got installed by looking at the Special:Version page on your wiki.
+
 ### Using a tarball
 
 Alternatively you can obtain the SMW code by getting one of the release tarballs. These tarballs
