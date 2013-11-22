@@ -23,7 +23,7 @@ abstract class PropertyAnnotatorDecorator extends ObservableSubject implements P
 	 * @param PropertyAnnotator $propertyAnnotator
 	 */
 	public function __construct( PropertyAnnotator $propertyAnnotator ) {
-		$this->propertyAnnotator = $propertyAnnotator->addAnnotation();
+		$this->propertyAnnotator = $propertyAnnotator;
 	}
 
 	/**
@@ -47,5 +47,25 @@ abstract class PropertyAnnotatorDecorator extends ObservableSubject implements P
 	public function getSemanticData() {
 		return $this->propertyAnnotator->getSemanticData();
 	}
+
+	/**
+	 * @see PropertyAnnotator::addAnnotation
+	 *
+	 * @since 1.9
+	 *
+	 * @return PropertyAnnotator
+	 */
+	public function addAnnotation() {
+
+		$this->propertyAnnotator->addAnnotation();
+		$this->addPropertyValues();
+
+		return $this;
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected abstract function addPropertyValues();
 
 }

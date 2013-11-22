@@ -31,11 +31,9 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::addAnnotation
-	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation() {
+	protected function addPropertyValues() {
 
 		$sortkey = $this->defaultSort ? $this->defaultSort : str_replace( '_', ' ', $this->getSemanticData()->getSubject()->getDBkey() );
 
@@ -45,8 +43,6 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 
 		$this->setState( 'updateOutput' );
-
-		return $this;
 	}
 
 }

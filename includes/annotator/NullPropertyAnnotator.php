@@ -48,7 +48,7 @@ class NullPropertyAnnotator extends ObservableSubject implements PropertyAnnotat
 	 *
 	 * @since 1.9
 	 */
-	public function getSemanticData(){
+	public function getSemanticData() {
 		return $this->semanticData;
 	}
 
@@ -57,7 +57,7 @@ class NullPropertyAnnotator extends ObservableSubject implements PropertyAnnotat
 	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation(){
+	public function addAnnotation() {
 		return $this;
 	}
 
