@@ -442,6 +442,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 
 			$profiler = new \SMW\Query\Profiler\DescriptionProfile( $profiler, $builder->getArgument( 'QueryDescription' ) );
 			$profiler = new \SMW\Query\Profiler\FormatProfile( $profiler, $builder->getArgument( 'QueryFormat' ) );
+			$profiler = new \SMW\Query\Profiler\DurationProfile( $profiler, $builder->getArgument( 'QueryDuration' ) );
 
 			return $profiler;
 		};

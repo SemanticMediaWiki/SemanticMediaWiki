@@ -47,10 +47,15 @@ class ShowParserFunctionTest extends ParserTestCase {
 			$parserOutput = $this->newParserOutput();
 		}
 
+		$settings = $this->newSettings( array(
+			'smwgQueryDurationEnabled' => false
+		) );
+
 		$context = new ExtensionContext();
-		$context->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'MessageFormatter', new MessageFormatter( $title->getPageLanguage() ) );
+		$container = $context->getDependencyBuilder()->getContainer();
+
+		$container->registerObject( 'MessageFormatter', new MessageFormatter( $title->getPageLanguage() ) );
+		$container->registerObject( 'Settings', $settings );
 
 		return new ShowParserFunction(
 			$this->newParserData( $title, $parserOutput ),

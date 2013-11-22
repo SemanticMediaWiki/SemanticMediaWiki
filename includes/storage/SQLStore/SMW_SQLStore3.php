@@ -155,7 +155,7 @@ class SMWSQLStore3 extends SMWStore {
 		// property declarations
 		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV',
 		// query statistics (very frequently used)
-		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST',
+		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST', '_ASKDU',
 		// subproperties, classes, and instances
 		'_SUBP', '_SUBC', '_INST',
 		// redirects

@@ -91,6 +91,7 @@ abstract class SMWLanguage {
 		'Has query format'  => '_ASKFO',
 		'Has query size'    => '_ASKSI',
 		'Has query depth'   => '_ASKDE',
+		'Has query duration' => '_ASKDU',
 	);
 
 	public function __construct() {

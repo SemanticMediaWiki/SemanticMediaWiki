@@ -53,13 +53,16 @@ class AskParserFunctionTest extends ParserTestCase {
 		}
 
 		if ( $settings === null ) {
-			$settings = $this->newSettings();
+			$settings = $this->newSettings( array(
+				'smwgQueryDurationEnabled' => false
+			) );
 		}
 
 		$context = new ExtensionContext();
-		$context->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'MessageFormatter', new MessageFormatter( $title->getPageLanguage() ) );
+		$container = $context->getDependencyBuilder()->getContainer();
+
+		$container->registerObject( 'MessageFormatter', new MessageFormatter( $title->getPageLanguage() ) );
+		$container->registerObject( 'Settings', $settings );
 
 		return new AskParserFunction(
 			$this->newParserData( $title, $parserOutput ),
@@ -291,6 +294,23 @@ class AskParserFunctionTest extends ParserTestCase {
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
+			)
+		);
+
+		// #5 QueryTime enabled
+		$provider[] = array(
+			array(
+				'[[Modification date::+]][[Category:Foo]]',
+				'?Modification date',
+				'?Has title',
+				'format=lula'
+			),
+			array(
+				'propertyCount' => 5,
+				'propertyKey'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO', '_ASKDU' ),
+			),
+			array(
+				'smwgQueryDurationEnabled' => true
 			)
 		);
 
