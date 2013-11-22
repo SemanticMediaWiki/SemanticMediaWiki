@@ -34,7 +34,7 @@ return array(
 	'SMWParseData'              => 'includes/SMW_ParseData.php',
 	'SMW\ParserData'            => 'includes/ParserData.php',
 
-	'SMW\PropertyChangeNotifier'    => 'includes/PropertyChangeNotifier.php',
+	'SMW\PropertyTypeComparator'    => 'includes/PropertyTypeComparator.php',
 	'SMW\Subobject'                 => 'includes/Subobject.php',
 	'SMW\RecurringEvents'           => 'includes/RecurringEvents.php',
 	'SMW\Settings'                  => 'includes/Settings.php',

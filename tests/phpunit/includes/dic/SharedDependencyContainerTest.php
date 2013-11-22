@@ -191,7 +191,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$provider[] = array( 'PropertyChangeNotifier', array( '\SMW\PropertyChangeNotifier' => array(
+		$provider[] = array( 'PropertyTypeComparator', array( '\SMW\PropertyTypeComparator' => array(
 				'SemanticData' => $this->newMockBuilder()->newObject( 'SemanticData' )
 				)
 			)

@@ -2,14 +2,14 @@
 
 namespace SMW\Test;
 
-use SMW\PropertyChangeNotifier;
+use SMW\PropertyTypeComparator;
 use SMW\ObservableSubjectDispatcher;
 use SMW\DIProperty;
 
 use Title;
 
 /**
- * @covers \SMW\PropertyChangeNotifier
+ * @covers \SMW\PropertyTypeComparator
  *
  * @ingroup Test
  *
@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
+class PropertyTypeComparatorTest extends SemanticMediaWikiTestCase {
 
 	/** @var DIWikiPage[] */
 	protected $storeValues;
@@ -30,13 +30,13 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\PropertyChangeNotifier';
+		return '\SMW\PropertyTypeComparator';
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return PropertyChangeNotifier
+	 * @return PropertyTypeComparator
 	 */
 	private function newInstance( $store = array(), $data = array(), $setting = null ) {
 
@@ -46,7 +46,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 			'smwgDeclarationProperties' => $setting === null ? array( '_PVAL' ): $setting
 		) );
 
-		return new PropertyChangeNotifier( $mockStore, $mockData, $settings );
+		return new PropertyTypeComparator( $mockStore, $mockData, $settings );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class PropertyChangeNotifierTest extends SemanticMediaWikiTestCase {
 
 		$instance->registerDispatcher( new ObservableSubjectDispatcher( $observer ) );
 
-		$this->assertInstanceOf( $this->getClass(), $instance->detectChanges() );
+		$this->assertInstanceOf( $this->getClass(), $instance->runComparator() );
 		$this->assertEquals( $subject->getTitle(), $instance->getTitle() );
 		$this->assertEquals( $expected['change'], $instance->hasDisparity() );
 
