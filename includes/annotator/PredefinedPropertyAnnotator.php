@@ -34,11 +34,9 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::addAnnotation
-	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation() {
+	protected function addPropertyValues() {
 
 		$predefinedProperties = $this->withContext()->getSettings()->get( 'smwgPageSpecialProperties' );
 		$cachedProperties = array();
@@ -65,8 +63,6 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 
 		$this->setState( 'updateOutput' );
-
-		return $this;
 	}
 
 	/**

@@ -20,22 +20,22 @@ use User;
 class MediaWikiPageInfoProvider implements PageInfoProvider {
 
 	/** @var WikiPage */
-	protected $wikiPage;
+	protected $wikiPage = null;
 
 	/** @var Revision */
-	protected $revision;
+	protected $revision = null;
 
 	/** @var User */
-	protected $user;
+	protected $user = null;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param WikiPage $wikiPage
-	 * @param Revision $revision
-	 * @param User $user
+	 * @param Revision|null $revision
+	 * @param User|null $user
 	 */
-	public function __construct( WikiPage $wikiPage, Revision $revision, User $user ) {
+	public function __construct( WikiPage $wikiPage, Revision $revision = null, User $user = null ) {
 		$this->wikiPage = $wikiPage;
 		$this->revision = $revision;
 		$this->user = $user;

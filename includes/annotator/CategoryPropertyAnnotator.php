@@ -32,11 +32,9 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::addAnnotation
-	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation() {
+	protected function addPropertyValues() {
 
 		$settings  = $this->withContext()->getSettings();
 		$namespace = $this->getSemanticData()->getSubject()->getNamespace();
@@ -63,8 +61,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 
 		$this->setState( 'updateOutput' );
-
-		return $this;
 	}
 
 	/**

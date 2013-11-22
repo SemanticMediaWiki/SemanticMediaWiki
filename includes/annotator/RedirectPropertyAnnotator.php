@@ -32,13 +32,11 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::addAnnotation
-	 *
 	 * @since 1.9
 	 */
-	public function addAnnotation() {
+	protected function addPropertyValues() {
 
-		$title = $this->newTitleFromText( $this->text );
+		$title = $this->newRedirectTargetFromText( $this->text );
 
 		if ( $title !== null ) {
 			$this->getSemanticData()->addPropertyObjectValue(
@@ -59,7 +57,7 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @return Title|null
 	 */
-	protected function newTitleFromText( $text ) {
+	protected function newRedirectTargetFromText( $text ) {
 
 		$title = null;
 
