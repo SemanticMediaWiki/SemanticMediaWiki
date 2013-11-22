@@ -79,23 +79,33 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 
 ### With Composer
 
-The recommended way to install Semantic MediaWiki is with [Composer](http://getcomposer.org).
-See the [extension installation with Composer](https://www.mediawiki.org/wiki/Composer) instructions.
+The recommended way to install Semantic MediaWiki is with [Composer](http://getcomposer.org), using
+the [MediaWiki extension installation with Composer](https://www.mediawiki.org/wiki/Composer) support.
 
-The package name is "mediawiki/semantic-mediawiki", so your composer.json file should look as follows:
+##### Step 1
 
-```javascript
-{
-	"require": {
-		// ...
-		"mediawiki/semantic-mediawiki": "~1.9.0"
-	},
-	"minimum-stability" : "dev"
-}
-```
+If you have MediaWiki 1.22 or later, simply go to the root directory of your MediaWiki installation,
+and skip ahead to step 2. When using an older version of MediaWiki, follow these instructions: 
 
-The "minimum-stability" section needs to be added as well for now.
-This need for this will be removed when SMW 1.9 is released.
+Install the [Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md).
+(Click this link for instructions).
+
+Once you are done installing the Extension Installer, go to its directory.
+
+    cd extensions/ExtensionInstaller
+
+##### Step 2
+
+To install, run the following commands
+
+    wget http://getcomposer.org/composer.phar
+    php composer.phar require mediawiki/semantic-mediawiki 1.9@dev
+
+##### Step 3
+
+Run the MediaWiki update script. The location of this script is maintenance/update.php. It can be run as follows:
+
+    php maintenance/update.php
 
 ### Using a tarball
 
