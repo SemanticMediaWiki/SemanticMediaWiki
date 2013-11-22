@@ -99,7 +99,7 @@ Once you are done installing the Extension Installer, go to its directory.
 To install, run the following commands
 
     wget http://getcomposer.org/composer.phar
-    php composer.phar require mediawiki/semantic-mediawiki 1.9@dev
+    php composer.phar require mediawiki/semantic-mediawiki dev-master
 
 ##### Step 3
 
