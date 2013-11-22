@@ -186,7 +186,7 @@ class PropertiesQueryPage extends QueryPage {
 
 			if ( count( $types ) >= 1 ) {
 
-				$typeDataValue = DataValueFactory::newDataItemValue( current( $types ), $typeProperty );
+				$typeDataValue = DataValueFactory::getInstance()->newDataItemValue( current( $types ), $typeProperty );
 				$typestring = $typeDataValue->getLongHTMLText( $this->getLinker() );
 
 			} else {
@@ -217,7 +217,7 @@ class PropertiesQueryPage extends QueryPage {
 	private function getPredefinedPropertyInfo( DIProperty $property ) {
 		return array(
 			SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() )->getLongHTMLText( $this->getLinker() ),
-			DataValueFactory::newDataItemValue( $property, null )->getShortHtmlText( $this->getLinker() )
+			DataValueFactory::getInstance()->newDataItemValue( $property, null )->getShortHtmlText( $this->getLinker() )
 		);
 	}
 

@@ -393,7 +393,7 @@ class SMWQueryParser {
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
 
-					$dv = SMWDataValueFactory::newPropertyObjectValue( $property->getDataItem() );
+					$dv = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $property->getDataItem() );
 					$vd = $dv->getQueryDescription( $value );
 					$innerdesc = $this->addDescription( $innerdesc, $vd, false );
 					$this->m_errors = $this->m_errors + $dv->getErrors();
@@ -454,7 +454,7 @@ class SMWQueryParser {
 					$result = $this->addDescription( $result, new SMWNamespaceDescription( $idx ), false );
 				}
 			} else {
-				$value = SMWDataValueFactory::newTypeIDValue( '_wpg', $chunk );
+				$value = \SMW\DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $chunk );
 				if ( $value->isValid() ) {
 					$result = $this->addDescription( $result, new SMWValueDescription( $value->getDataItem(), null ), false );
 				}

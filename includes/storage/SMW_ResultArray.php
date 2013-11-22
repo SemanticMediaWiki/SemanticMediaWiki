@@ -146,7 +146,7 @@ class SMWResultArray {
 			// Not efficient, but correct: we need to find the right property for
 			// the selected index of the record here.
 			$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
-			$recordValue = SMWDataValueFactory::newDataItemValue( $di,
+			$recordValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di,
 				$this->mPrintRequest->getData()->getDataItem() );
 			$diProperties = $recordValue->getPropertyDataItems();
 
@@ -161,7 +161,7 @@ class SMWResultArray {
 		} else {
 			$diProperty = null;
 		}
-		$dv = SMWDataValueFactory::newDataItemValue( $di, $diProperty );
+		$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );
 		if ( $this->mPrintRequest->getOutputFormat() ) {
 			$dv->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
@@ -230,7 +230,7 @@ class SMWResultArray {
 					$newcontent = array();
 
 					foreach ( $this->mContent as $diContainer ) {
-						/* SMWRecordValue */ $recordValue = SMWDataValueFactory::newDataItemValue( $diContainer, $propertyValue->getDataItem() );
+						/* SMWRecordValue */ $recordValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diContainer, $propertyValue->getDataItem() );
 						$dataItems = $recordValue->getDataItems();
 						
 						if ( array_key_exists( $pos, $dataItems ) &&

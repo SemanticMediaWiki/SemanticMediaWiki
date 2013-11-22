@@ -218,7 +218,7 @@ class SMWClassDescription extends SMWDescription {
 	public function getQueryString( $asValue = false ) {
 		$first = true;
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
-			$wikiValue = SMWDataValueFactory::newDataItemValue( $wikiPage, null );
+			$wikiValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $wikiPage, null );
 			if ( $first ) {
 				$result = '[[' . $wikiValue->getPrefixedText();
 				$first = false;
@@ -310,7 +310,7 @@ class SMWConceptDescription extends SMWDescription {
 	}
 
 	public function getQueryString( $asValue = false ) {
-		$pageValue = SMWDataValueFactory::newDataItemValue( $this->m_concept, null );
+		$pageValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $this->m_concept, null );
 		$result = '[[' . $pageValue->getPrefixedText() . ']]';
 		if ( $asValue ) {
 			return ' <q>' . $result . '</q> ';
@@ -426,7 +426,7 @@ class SMWValueDescription extends SMWDescription {
 	}
 
 	/**
-	 * @deprecated Use getDataItem() and SMWDataValueFactory::newDataItemValue() if needed. Vanishes before SMW 1.7
+	 * @deprecated Use getDataItem() and \SMW\DataValueFactory::getInstance()->newDataItemValue() if needed. Vanishes before SMW 1.7
 	 * @return SMWDataItem
 	 */
 	public function getDataValue() {
@@ -455,7 +455,7 @@ class SMWValueDescription extends SMWDescription {
 	 */
 	public function getQueryString( $asValue = false ) {
 		$comparator = SMWQueryLanguage::getStringForComparator( $this->m_comparator );
-		$dataValue = SMWDataValueFactory::newDataItemValue( $this->m_dataItem, $this->m_property );
+		$dataValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $this->m_dataItem, $this->m_property );
 
 		if ( $asValue ) {
 			return $comparator . $dataValue->getWikiValue();

@@ -201,7 +201,7 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	 *
 	 * @par Example:
 	 * @code
-	 *  $dataValue = DataValueFactory::newPropertyValue( $userProperty, $userValue )
+	 *  $dataValue = DataValueFactory::getInstance()->newPropertyValue( $userProperty, $userValue )
 	 *  $parserData->addDataValue( $dataValue )
 	 * @endcode
 	 *

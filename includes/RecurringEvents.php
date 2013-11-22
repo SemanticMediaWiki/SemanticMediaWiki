@@ -168,10 +168,10 @@ class RecurringEvents {
 						$this->property = $value;
 						break;
 					case 'start':
-						$start_date = DataValueFactory::newTypeIDValue( '_dat', $value );
+						$start_date = DataValueFactory::getInstance()->newTypeIDValue( '_dat', $value );
 						break;
 					case 'end':
-						$end_date = DataValueFactory::newTypeIDValue( '_dat', $value );
+						$end_date = DataValueFactory::getInstance()->newTypeIDValue( '_dat', $value );
 						break;
 					case 'limit':
 						// Override default limit with query specific limit
@@ -229,7 +229,7 @@ class RecurringEvents {
 		// Exclude dates
 		foreach ( $excluded_dates as $date_str ) {
 			$excluded_dates_jd[] = $this->getJulianDay(
-				DataValueFactory::newTypeIDValue( '_dat', $date_str )
+				DataValueFactory::getInstance()->newTypeIDValue( '_dat', $date_str )
 			);
 		}
 
@@ -295,7 +295,7 @@ class RecurringEvents {
 				}
 
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
-				$cur_date = DataValueFactory::newTypeIDValue( '_dat', $date_str );
+				$cur_date = DataValueFactory::getInstance()->newTypeIDValue( '_dat', $date_str );
 				$all_date_strings = array_merge( $all_date_strings, $included_dates);
 				$cur_date_jd = $cur_date->getDataItem()->getJD();
 			} elseif ( $unit == 'dayofweekinmonth' ) {

@@ -60,7 +60,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			$this->articletext = current( $params );
 		}
 		
-		$this->subject = SMWDataValueFactory::newTypeIDValue( '_wpg', $this->articletext );
+		$this->subject = \SMW\DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $this->articletext );
 		$offsettext = $wgRequest->getVal( 'offset' );
 		$this->offset = ( is_null( $offsettext ) ) ? 0 : intval( $offsettext );
 		
@@ -154,7 +154,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		$diProperties = $data->getProperties();
 		$noresult = true;
 		foreach ( $diProperties as $key => $diProperty ) {
-			$dvProperty = SMWDataValueFactory::newDataItemValue( $diProperty, null );
+			$dvProperty = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diProperty, null );
 
 			if ( $dvProperty->isVisible() ) {
 				$dvProperty->setCaption( $this->getPropertyLabel( $dvProperty, $incoming ) );
@@ -189,9 +189,9 @@ class SMWSpecialBrowse extends SpecialPage {
 				}
 
 				if ( $incoming ) {
-					$dv = SMWDataValueFactory::newDataItemValue( $di, null );
+					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, null );
 				} else {
-					$dv = SMWDataValueFactory::newDataItemValue( $di, $diProperty );
+					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );
 				}
 				
 				$body .= "<span class=\"{$ccsPrefix}value\">" .

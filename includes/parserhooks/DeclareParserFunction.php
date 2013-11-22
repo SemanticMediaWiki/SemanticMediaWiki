@@ -76,7 +76,7 @@ class DeclareParserFunction {
 								SMWParseData::addProperty( $propertystring, $valuestring, false, $parser, true );
 						}
 
-						// $value = SMWDataValueFactory::newPropertyObjectValue( $property->getDataItem(), $valuestring );
+						// $value = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $property->getDataItem(), $valuestring );
 						// if (!$value->isValid()) continue;
 					}
 				}

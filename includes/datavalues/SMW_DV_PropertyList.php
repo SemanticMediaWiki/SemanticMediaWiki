@@ -116,7 +116,7 @@ class SMWPropertyListValue extends SMWDataValue {
 		$sep = ( $type == 4 ) ? '; ' : ', ';
 		foreach ( $this->m_diProperties as $diProperty ) {
 			if ( $result !== '' ) $result .= $sep;
-			$propertyValue = SMWDataValueFactory::newDataItemValue( $diProperty, null );
+			$propertyValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diProperty, null );
 			$result .= $this->makeValueOutputText( $type, $propertyValue, $linker );
 		}
 		return $result;

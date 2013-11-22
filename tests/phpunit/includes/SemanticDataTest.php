@@ -43,7 +43,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( $property, $value ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( $property, $value ) );
 
 		return $subobject;
 	}
@@ -134,7 +134,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 
 		$title = $this->newTitle();
 		$instance = $this->newInstance( $title );
-		$instance->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$instance->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = $this->newSubobject( $title );
 		$instance->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
@@ -343,7 +343,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 
 		$title = $this->newTitle();
 		$instance = $this->newInstance( $title );
-		$instance->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$instance->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$this->assertTrue(
 			$instance->hasVisibleProperties() ,
@@ -463,7 +463,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		// #0 Single DataValue is added
 		$provider[] = array(
 			array(
-				DataValueFactory::newPropertyValue( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' ),
 			),
 			array(
 				'error'         => 0,
@@ -476,8 +476,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		// #1 Equal Datavalues will only result in one added object
 		$provider[] = array(
 			array(
-				DataValueFactory::newPropertyValue( 'Foo', 'Bar' ),
-				DataValueFactory::newPropertyValue( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' ),
 			),
 			array(
 				'error'         => 0,
@@ -490,8 +490,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		// #2 Two different DataValue objects
 		$provider[] = array(
 			array(
-				DataValueFactory::newPropertyValue( 'Foo', 'Bar' ),
-				DataValueFactory::newPropertyValue( 'Lila', 'Lula' ),
+				DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( 'Lila', 'Lula' ),
 			),
 			array(
 				'error'         => 0,
@@ -504,7 +504,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		// #3 Error (Inverse)
 		$provider[] = array(
 			array(
-				DataValueFactory::newPropertyValue( '-Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( '-Foo', 'Bar' ),
 			),
 			array(
 				'error'         => 1,
@@ -515,8 +515,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		// #4 One valid DataValue + an error object
 		$provider[] = array(
 			array(
-				DataValueFactory::newPropertyValue( 'Foo', 'Bar' ),
-				DataValueFactory::newPropertyValue( '-Foo', 'bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( 'Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( '-Foo', 'bar' ),
 			),
 			array(
 				'error'         => 1,
@@ -530,7 +530,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		// #5 Error (Predefined)
 		$provider[] = array(
 			array(
-				DataValueFactory::newPropertyValue( '_Foo', 'Bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( '_Foo', 'Bar' ),
 			),
 			array(
 				'error'         => 1,
@@ -541,7 +541,7 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		// #6 Error (Known predefined property)
 		$provider[] = array(
 			array(
-				DataValueFactory::newPropertyValue( 'Modification date', 'Bar' ),
+				DataValueFactory::getInstance()->newPropertyValue( 'Modification date', 'Bar' ),
 			),
 			array(
 				'error'         => 1,

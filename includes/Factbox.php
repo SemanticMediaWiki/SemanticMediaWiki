@@ -276,7 +276,7 @@ class Factbox {
 	 */
 	protected function getTableHeader( DIWikiPage $subject ) {
 
-		$dataValue = DataValueFactory::newDataItemValue( $subject, null );
+		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $subject, null );
 
 		$browselink = SMWInfolink::newBrowsingLink(
 			$dataValue->getText(),
@@ -317,7 +317,7 @@ class Factbox {
 		$attributes = array();
 
 		foreach ( $semanticData->getProperties() as $propertyDi ) {
-			$propertyDv = DataValueFactory::newDataItemValue( $propertyDi, null );
+			$propertyDv = DataValueFactory::getInstance()->newDataItemValue( $propertyDi, null );
 
 			if ( !$propertyDi->isShown() ) {
 				// showing this is not desired, hide
@@ -342,7 +342,7 @@ class Factbox {
 			$valuesHtml = array();
 			foreach ( $semanticData->getPropertyValues( $propertyDi ) as $dataItem ) {
 
-				$dataValue = DataValueFactory::newDataItemValue( $dataItem, $propertyDi );
+				$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $propertyDi );
 
 				if ( $dataValue->isValid() ) {
 					$valuesHtml[] = Sanitizer::removeHTMLtags(

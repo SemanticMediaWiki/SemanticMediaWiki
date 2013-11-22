@@ -185,7 +185,7 @@ class SMWParseData {
 
 		$semandticData = self::getSMWData( $parser );
 
-		$result = SMWDataValueFactory::newPropertyObjectValue(
+		$result = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue(
 			$propertyDi,
 			$value,
 			$caption,
@@ -356,7 +356,7 @@ class SMWParseData {
 				$store = \SMW\StoreFactory::getStore();
 
 				/// FIXME: this will kill large wikis! Use incremental updates!
-				$dv = SMWDataValueFactory::newTypeIdValue( '__typ', $title->getDBkey() );
+				$dv = \SMW\DataValueFactory::getInstance()->newTypeIdValue( '__typ', $title->getDBkey() );
 				$proppages = $store->getPropertySubjects( $ptype, $dv );
 
 				foreach ( $proppages as $proppage ) {

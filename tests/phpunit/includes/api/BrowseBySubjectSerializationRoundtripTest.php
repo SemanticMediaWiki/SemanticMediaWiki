@@ -152,7 +152,7 @@ class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 
 		// #1 Single entry
 		$data = $this->newSemanticData( 'Foo-1' );
-		$data->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$data->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getSemanticData' => $data
@@ -172,11 +172,11 @@ class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 		// #2 Single + single subobject entry
 		$title = $this->newTitle( NS_MAIN, 'Foo-2' );
 		$data  = $this->newSemanticData( 'Foo-2' );
-		$data->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$data->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo-sub' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has subobjects', 'Bam' ) );
 
 		// Adding a reference but not the container itself
 		$data->addPropertyObjectValue( $subobject->getProperty(), $subobject->getSemanticData()->getSubject() );
@@ -201,11 +201,11 @@ class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 		// #3 Single + single subobject where the subobject already exists
 		$title = $this->newTitle( NS_MAIN, 'Foo-3' );
 		$data  = $this->newSemanticData( 'Foo-3' );
-		$data->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$data->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo-sub' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has subobjects', 'Bam' ) );
 
 		$data->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 

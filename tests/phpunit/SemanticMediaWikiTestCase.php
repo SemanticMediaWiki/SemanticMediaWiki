@@ -325,7 +325,7 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $dataItems as $dataItem ) {
 
-			$dataValue = DataValueFactory::newDataItemValue( $dataItem, $property );
+			$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $property );
 			$DItype = $dataValue->getDataItem()->getDIType();
 
 			if ( $DItype === SMWDataItem::TYPE_WIKIPAGE ) {

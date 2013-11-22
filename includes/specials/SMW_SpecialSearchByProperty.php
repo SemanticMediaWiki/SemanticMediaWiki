@@ -85,7 +85,7 @@ class SMWSearchByProperty extends SpecialPage {
 			$this->valuestring = $inputValueString;
 		} else {
 			$this->propertystring = $this->property->getWikiValue();
-			$this->value = SMWDataValueFactory::newPropertyObjectValue(
+			$this->value = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue(
 						$this->property->getDataItem(),
 						$inputValueString
 					);
@@ -371,7 +371,7 @@ class SMWSearchByProperty extends SpecialPage {
 		$results = array();
 		foreach ( $res as $result ) {
 			$results[] = array(
-					SMWDataValueFactory::newDataItemValue( $result, null ),
+					\SMW\DataValueFactory::getInstance()->newDataItemValue( $result, null ),
 					$this->value
 				);
 		}
