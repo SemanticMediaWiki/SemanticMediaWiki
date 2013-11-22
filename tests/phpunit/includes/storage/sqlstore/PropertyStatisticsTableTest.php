@@ -33,7 +33,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	}
 
 	public function testDeleteAll() {
-		if ( !( smwfGetStore() instanceof \SMWSQLStore3 ) ) {
+		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 
@@ -85,7 +85,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	 * @param int $usageCount
 	 */
 	public function testInsertUsageCount( $propId, $usageCount ) {
-		if ( !( smwfGetStore() instanceof \SMWSQLStore3 ) ) {
+		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 
@@ -109,7 +109,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	}
 
 	public function testAddToUsageCounts() {
-		if ( !( smwfGetStore() instanceof \SMWSQLStore3 ) ) {
+		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 

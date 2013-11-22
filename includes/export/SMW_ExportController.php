@@ -161,7 +161,7 @@ class SMWExportController {
 			// if they were serialised at recdepth 0 only).  
 			if ( $this->add_backlinks ) {
 				wfProfileIn( "RDF::PrintPages::GetBacklinks" );
-				$inprops = smwfGetStore()->getInProperties( $diWikiPage );
+				$inprops = \SMW\StoreFactory::getStore()->getInProperties( $diWikiPage );
 				
 				foreach ( $inprops as $inprop ) {
 					$propWikiPage = $inprop->getDiWikiPage();
@@ -170,7 +170,7 @@ class SMWExportController {
 						$this->queuePage( $propWikiPage, 0 ); // no real recursion along properties
 					}
 					
-					$inSubs = smwfGetStore()->getPropertySubjects( $inprop, $diWikiPage );
+					$inSubs = \SMW\StoreFactory::getStore()->getPropertySubjects( $inprop, $diWikiPage );
 					
 					foreach ( $inSubs as $inSub ) {
 						if ( !$this->isPageDone( $inSub, $subrecdepth ) ) {
@@ -185,7 +185,7 @@ class SMWExportController {
 				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) { // also print elements of categories
 					$options = new SMWRequestOptions();
 					$options->limit = 100; // Categories can be large, always use limit
-					$instances = smwfGetStore()->getPropertySubjects( new SMWDIProperty( '_INST' ), $diWikiPage, $options );
+					$instances = \SMW\StoreFactory::getStore()->getPropertySubjects( new SMWDIProperty( '_INST' ), $diWikiPage, $options );
 					$pinst = new SMWDIProperty( '_INST' );
 	
 					foreach ( $instances as $instance ) {
@@ -202,7 +202,7 @@ class SMWExportController {
 					$query = new SMWQuery( $desc );
 					$query->setLimit( 100 );
 	
-					$res = smwfGetStore()->getQueryResult( $query );
+					$res = \SMW\StoreFactory::getStore()->getQueryResult( $query );
 					$resarray = $res->getNext();
 					$pinst = new SMWDIProperty( '_INST' );
 	
@@ -287,7 +287,7 @@ class SMWExportController {
 	 * caching purposes elsewhere.
 	 */
 	protected function getSemanticData( SMWDIWikiPage $diWikiPage, $core_props_only ) {
-		$semdata = smwfGetStore()->getSemanticData( $diWikiPage, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // advise store to retrieve only core things
+		$semdata = \SMW\StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // advise store to retrieve only core things
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
 			$result = new SMWSemanticData( $diWikiPage );
 			foreach ( array( '_URI', '_TYPE', '_IMPO' ) as $propid ) {

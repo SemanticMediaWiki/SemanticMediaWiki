@@ -45,7 +45,7 @@ class SMWParamSource extends StringParam {
 
 		$this->setAutoDefault( $source, $definitions['source']->getAllowedValues() );
 
-		return $source === '' ? smwfGetStore() : new $GLOBALS['smwgQuerySources'][$source]();
+		return $source === '' ? \SMW\StoreFactory::getStore() : new $GLOBALS['smwgQuerySources'][$source]();
 	}
 	/**
 	 * Determines an auto default value for cases where default is to be used

@@ -75,7 +75,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getSubpropertyList() {
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$options = new SMWRequestOptions();
 		$options->sort = true;
 		$options->ascending = true;
@@ -114,7 +114,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getPropertyValueList() {
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
-			$store = smwfGetStore();
+			$store = \SMW\StoreFactory::getStore();
 			$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
 			$diWikiPages = $store->getAllPropertySubjects( $this->mProperty, $options );
 
@@ -156,7 +156,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function subjectObjectList( array $diWikiPages ) {
 		global $wgContLang, $smwgMaxPropertyValues;
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 
 		$ac = count( $diWikiPages );
 
@@ -177,7 +177,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		for ( $index = $start; $index < $ac; $index++ ) {
 			$diWikiPage = $diWikiPages[$index];
 			$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage, null );
-			$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPage );
+			$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPage );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
 			// Header for index letters

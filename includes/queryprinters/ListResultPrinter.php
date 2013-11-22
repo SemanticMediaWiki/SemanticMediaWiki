@@ -330,7 +330,7 @@ class ListResultPrinter extends ResultPrinter {
 				if ( $firstField && $this->params['format'] !== 'list' &&
 					$dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE  ) {
 					// Override the original start element
-					$sortKey = smwfGetStore()->getWikiPageSortKey( $dataValue->getDataItem() );
+					$sortKey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $dataValue->getDataItem() );
 					$this->rowstart = "\t" . Html::openElement('li', array( 'data-sortkey' => $sortKey{0} )  );
 				}
 

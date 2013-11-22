@@ -93,7 +93,7 @@ if ( !isset( $smwgIP ) ) {
 
 require_once( $smwgIP . 'includes/GlobalFunctions.php' );
 
-$store = smwfGetStore();
+$store = \SMW\StoreFactory::getStore();
 $db = wfGetDB( DB_SLAVE );
 
 $select_hard   = array_key_exists( 'hard', $options );

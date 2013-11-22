@@ -124,7 +124,7 @@ class SMWSetupScript extends Maintenance {
 
 		$this->output( "\nSelected storage \"$smwgDefaultStore\" for update!\n\n" );
 
-		return smwfGetStore();
+		return \SMW\StoreFactory::getStore();
 	}
 
 	/**

@@ -228,7 +228,7 @@ class DIProperty extends SMWDataItem {
 		if ( !isset( $this->m_proptypeid ) ) {
 			if ( $this->isUserDefined() ) { // normal property
 				$diWikiPage = new SMWDIWikiPage( $this->getKey(), SMW_NS_PROPERTY, '' );
-				$typearray = smwfGetStore()->getPropertyValues( $diWikiPage, new self( '_TYPE' ) );
+				$typearray = \SMW\StoreFactory::getStore()->getPropertyValues( $diWikiPage, new self( '_TYPE' ) );
 
 				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
 					$typeDataItem = reset( $typearray );

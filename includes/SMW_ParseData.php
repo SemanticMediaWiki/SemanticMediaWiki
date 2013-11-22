@@ -307,7 +307,7 @@ class SMWParseData {
 		if ( $makejobs && $smwgEnableUpdateJobs && ( $namespace == SMW_NS_PROPERTY ) ) {
 			// If it is a property, then we need to check if the type or the allowed values have been changed.
 			$ptype = new SMWDIProperty( '_TYPE' );
-			$oldtype = smwfGetStore()->getPropertyValues( $semdata->getSubject(), $ptype );
+			$oldtype = \SMW\StoreFactory::getStore()->getPropertyValues( $semdata->getSubject(), $ptype );
 			$newtype = $semdata->getPropertyValues( $ptype );
 
 			if ( !self::equalDatavalues( $oldtype, $newtype ) ) {
@@ -315,7 +315,7 @@ class SMWParseData {
 			} else {
 				foreach ( $smwgDeclarationProperties as $prop ) {
 					$pv = new SMWDIProperty( $prop );
-					$oldvalues = smwfGetStore()->getPropertyValues( $semdata->getSubject(), $pv );
+					$oldvalues = \SMW\StoreFactory::getStore()->getPropertyValues( $semdata->getSubject(), $pv );
 					$newvalues = $semdata->getPropertyValues( $pv );
 					$updatejobflag = !self::equalDatavalues( $oldvalues, $newvalues );
 				}
@@ -323,7 +323,7 @@ class SMWParseData {
 
 			if ( $updatejobflag ) {
 				$prop = new SMWDIProperty( $title->getDBkey() );
-				$subjects = smwfGetStore()->getAllPropertySubjects( $prop );
+				$subjects = \SMW\StoreFactory::getStore()->getAllPropertySubjects( $prop );
 
 				foreach ( $subjects as $subject ) {
 					$subjectTitle = $subject->getTitle();
@@ -333,7 +333,7 @@ class SMWParseData {
 				}
 				wfRunHooks( 'smwUpdatePropertySubjects', array( &$jobs ) );
 
-				$subjects = smwfGetStore()->getPropertySubjects( new SMWDIProperty( '_ERRP' ), $semdata->getSubject() );
+				$subjects = \SMW\StoreFactory::getStore()->getPropertySubjects( new SMWDIProperty( '_ERRP' ), $semdata->getSubject() );
 
 				foreach ( $subjects as $subject ) {
 					$subjectTitle = $subject->getTitle();
@@ -348,12 +348,12 @@ class SMWParseData {
 			$pconv = new SMWDIProperty( '_CONV' );
 			$ptype = new SMWDIProperty( '_TYPE' );
 
-			$oldfactors = smwfGetStore()->getPropertyValues( $semdata->getSubject(), $pconv );
+			$oldfactors = \SMW\StoreFactory::getStore()->getPropertyValues( $semdata->getSubject(), $pconv );
 			$newfactors = $semdata->getPropertyValues( $pconv );
 			$updatejobflag = !self::equalDatavalues( $oldfactors, $newfactors );
 
 			if ( $updatejobflag ) {
-				$store = smwfGetStore();
+				$store = \SMW\StoreFactory::getStore();
 
 				/// FIXME: this will kill large wikis! Use incremental updates!
 				$dv = SMWDataValueFactory::newTypeIdValue( '__typ', $title->getDBkey() );
@@ -377,7 +377,7 @@ class SMWParseData {
 						}
 					}
 
-					$subjects = smwfGetStore()->getPropertySubjects(
+					$subjects = \SMW\StoreFactory::getStore()->getPropertySubjects(
 						new SMWDIProperty( '_ERRP' ),
 						$prop->getWikiPageValue()
 					);
@@ -395,9 +395,9 @@ class SMWParseData {
 
 		// Actually store semantic data, or at least clear it if needed
 		if ( $processSemantics ) {
-			smwfGetStore()->updateData( $semdata );
+			\SMW\StoreFactory::getStore()->updateData( $semdata );
  		} else {
-			smwfGetStore()->clearData( $semdata->getSubject() );
+			\SMW\StoreFactory::getStore()->clearData( $semdata->getSubject() );
 		}
 
 		// Finally trigger relevant Updatejobs if necessary

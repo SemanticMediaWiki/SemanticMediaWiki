@@ -6,29 +6,21 @@ use SMW\StoreFactory;
 use SMW\Settings;
 
 /**
- * Tests for the StoreFactory class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\StoreFactory
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class StoreFactoryTest extends SemanticMediaWikiTestCase {
 
 	/**
-	 * Helper method
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -36,8 +28,6 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StoreFactory::getStore
-	 *
 	 * @since 1.9
 	 */
 	public function testGetStore() {
@@ -63,8 +53,6 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StoreFactory::newInstance
-	 *
 	 * @since 1.9
 	 */
 	public function testNewInstance() {
@@ -82,8 +70,6 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test StoreFactory::newInstance
-	 *
 	 * @since 1.9
 	 */
 	public function testStoreInstanceException() {
@@ -92,8 +78,6 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test smwfGetStore
-	 *
 	 * smwfGetStore is deprecated but due to its dependency do a quick check here
 	 *
 	 * FIXME Delete this test in 1.11

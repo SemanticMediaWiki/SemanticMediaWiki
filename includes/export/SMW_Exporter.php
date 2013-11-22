@@ -106,7 +106,7 @@ class SMWExporter {
 				break;
 				case SMW_NS_PROPERTY:
 					if ( $typesvalueforproperty == null ) {
-						$types = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
+						$types = \SMW\StoreFactory::getStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
 						$typesvalueforproperty = end( $types );
 					}
 					$maintype_pe = self::getSpecialNsResource( 'owl', self::getOWLPropertyType( $typesvalueforproperty ) );
@@ -272,7 +272,7 @@ class SMWExporter {
 
 		if ( $modifier === '' ) {
 			$importProperty = new SMWDIProperty( '_IMPO' );
-			$importDis = smwfGetStore()->getPropertyValues( $diWikiPage, $importProperty );
+			$importDis = \SMW\StoreFactory::getStore()->getPropertyValues( $diWikiPage, $importProperty );
 			$importURI = ( count( $importDis ) > 0 );
 		} else {
 			$importURI = false;

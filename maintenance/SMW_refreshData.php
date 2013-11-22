@@ -118,7 +118,7 @@ if (  array_key_exists( 'f', $options ) ) {
 	print 'Abort with control-c in the next five seconds ...  ';
 	wfCountDown( 6 );
 
-	smwfGetStore()->drop( $verbose );
+	\SMW\StoreFactory::getStore()->drop( $verbose );
 	wfRunHooks( 'smwDropTables' );
 	print "\n";
 	SMWStore::setupStore( $verbose );
@@ -145,7 +145,7 @@ if ( $pages == false ) {
 			print "($num_files) Processing ID " . $id . " ...\n";
 		}
 
-		smwfGetStore()->refreshData( $id, 1, $filter, false );
+		\SMW\StoreFactory::getStore()->refreshData( $id, 1, $filter, false );
 
 		if ( $delay !== false ) {
 			usleep( $delay );

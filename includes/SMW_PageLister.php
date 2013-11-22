@@ -63,7 +63,7 @@ class SMWPageLister {
 
 		if ( !is_null( $this->mUntil ) && $this->mUntil !== '' ) {
 			if ( $beyondLimit ) {
-				$first = smwfGetStore()->getWikiPageSortKey( $this->mDiWikiPages[1] );
+				$first = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $this->mDiWikiPages[1] );
 			} else {
 				$first = '';
 			}
@@ -73,7 +73,7 @@ class SMWPageLister {
 			$first = $this->mFrom;
 
 			if ( $beyondLimit ) {
-				$last = smwfGetStore()->getWikiPageSortKey( $this->mDiWikiPages[$resultCount - 1] );
+				$last = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $this->mDiWikiPages[$resultCount - 1] );
 			} else {
 				$last = '';
 			}
@@ -229,7 +229,7 @@ class SMWPageLister {
 			for ( $index = $startChunk ; $index < $endChunk && $index < $end; ++$index ) {
 				$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index], $diProperty );
 				// check for change of starting letter or begining of chunk
-				$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$index] );
+				$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
 				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
 				if ( ( $index == $startChunk ) ||
@@ -280,7 +280,7 @@ class SMWPageLister {
 		global $wgContLang;
 
 		$startDv = SMWDataValueFactory::newDataItemValue( $diWikiPages[$start], $diProperty );
-		$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$start] );
+		$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$start] );
 		$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
 		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
@@ -288,7 +288,7 @@ class SMWPageLister {
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
 			$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index], $diProperty );
-			$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$index] );
+			$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
 			$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
 			if ( $startChar != $prevStartChar ) {

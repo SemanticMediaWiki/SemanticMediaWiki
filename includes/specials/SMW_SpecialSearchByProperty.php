@@ -363,7 +363,7 @@ class SMWSearchByProperty extends SpecialPage {
 		$options->offset = $this->offset;
 		$options->sort = true;
 
-		$res = smwfGetStore()->getPropertySubjects(
+		$res = \SMW\StoreFactory::getStore()->getPropertySubjects(
 			$this->property->getDataItem(),
 			$this->value->getDataItem(),
 			$options );
@@ -418,7 +418,7 @@ class SMWSearchByProperty extends SpecialPage {
 		);
 		$query->setExtraPrintouts( $printouts );
 
-		$queryResults = smwfGetStore()->getQueryResult( $query );
+		$queryResults = \SMW\StoreFactory::getStore()->getQueryResult( $query );
 
 		$result = array();
 		while ( $resultArrays = $queryResults->getNext() ) {
