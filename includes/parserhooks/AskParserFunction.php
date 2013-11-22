@@ -107,6 +107,14 @@ class AskParserFunction {
 	 * @since  1.9
 	 */
 	private function runQueryProcessor( array $rawParams ) {
+
+		// FIXME QueryDuration should be a property of the QueryProcessor or
+		// QueryEngine but since we don't want to open the pandora's box and
+		// increase issues within the current QueryProcessor implementation
+		// we will track the time outside of the actual execution framework
+		$this->queryDuration = 0;
+		$start = microtime( true );
+
 		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
@@ -120,6 +128,11 @@ class AskParserFunction {
 			SMW_OUTPUT_WIKI,
 			SMWQueryProcessor::INLINE_QUERY
 		);
+
+		if ( $this->context->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
+			$this->queryDuration = microtime( true ) - $start;
+		}
+
 	}
 
 	/**
@@ -131,6 +144,7 @@ class AskParserFunction {
 			'QueryDescription' => $this->query->getDescription(),
 			'QueryParameters'  => $rawParams,
 			'QueryFormat'      => $this->params['format']->getValue(),
+			'QueryDuration'    => $this->queryDuration,
 			'Title'            => $this->parserData->getTitle(),
 		) );
 

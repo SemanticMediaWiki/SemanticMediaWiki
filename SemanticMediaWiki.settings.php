@@ -681,3 +681,19 @@ $GLOBALS['smwgFactboxCacheRefreshOnPurge'] = true;
 ##
 $GLOBALS['smwgShowHiddenCategories'] = true;
 ##
+
+###
+# QueryProfiler related setting to enable/disable specific monitorable profile
+# data
+#
+# @note If these settings are changed, please ensure to run update.php
+#
+# - smwgQueryDurationEnabled to record query duration (the time
+# between the query result selection and output its)
+#
+# @since 1.9
+##
+$GLOBALS['smwgQueryProfiler'] = array(
+	'smwgQueryDurationEnabled' => false,
+);
+##

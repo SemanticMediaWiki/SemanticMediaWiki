@@ -122,7 +122,8 @@ class Settings extends SimpleDictionary {
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
 			'smwgShowHiddenCategories' => $GLOBALS['smwgShowHiddenCategories'],
 			'smwgFactboxUseCache' => $GLOBALS['smwgFactboxUseCache'],
-			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge']
+			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge'],
+			'smwgQueryProfiler' => $GLOBALS['smwgQueryProfiler']
 		);
 
 		if ( self::$instance === null ) {

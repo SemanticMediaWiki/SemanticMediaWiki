@@ -415,6 +415,7 @@ class DIProperty extends SMWDataItem {
 				'_ASKFO' =>  array( '_txt', true ), // "has query format"
 				'_ASKSI' =>  array( '_num', true ), // "has query size"
 				'_ASKDE' =>  array( '_num', true ), // "has query depth"
+				'_ASKDU' =>  array( '_num', true ), // "has query duration"
 			);
 
 		foreach ( $datatypeLabels as $typeid => $label ) {
