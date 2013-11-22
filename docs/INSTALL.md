@@ -113,12 +113,11 @@ As final step, you can verify SMW got installed by looking at the Special:Versio
 
 ### Using a tarball
 
-Alternatively you can obtain the SMW code by getting one of the release tarballs. These tarballs
-include all dependencies of SMW. This open exists mainly for those that have no command line access.
+As alternative to the first two installation steps, you can obtain the SMW code by getting one of the release tarballs.
+These tarballs include all dependencies of SMW. This open exists mainly for those that have no command line access.
 If you do, using the Composer approach is preferred.
 
 (This section will be updated with details and links before the SMW 1.9 release)
-
 
 ### Manual installation
 
