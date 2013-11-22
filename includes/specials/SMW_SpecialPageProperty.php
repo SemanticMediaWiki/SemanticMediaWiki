@@ -65,7 +65,7 @@ class SMWPageProperty extends SpecialPage {
 			$options->limit = $limit + 1;
 			$options->offset = $offset;
 			$options->sort = true;
-			$results = smwfGetStore()->getPropertyValues( $pagename !== '' ? $subject->getDataItem() : null, $property->getDataItem(), $options );
+			$results = \SMW\StoreFactory::getStore()->getPropertyValues( $pagename !== '' ? $subject->getDataItem() : null, $property->getDataItem(), $options );
 
 			// prepare navigation bar if needed
 			$navigation = '';

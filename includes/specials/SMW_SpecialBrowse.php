@@ -103,7 +103,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			$html .= $this->displayHead();
 			
 			if ( $this->showoutgoing ) {
-				$data = smwfGetStore()->getSemanticData( $this->subject->getDataItem() );
+				$data = \SMW\StoreFactory::getStore()->getSemanticData( $this->subject->getDataItem() );
 				$html .= $this->displayData( $data, $leftside );
 				$html .= $this->displayCenter();
 			}
@@ -350,7 +350,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		$options->limit = SMWSpecialBrowse::$incomingpropertiescount;
 		if ( $this->offset > 0 ) $options->offset = $this->offset;
 
-		$inproperties = smwfGetStore()->getInProperties( $this->subject->getDataItem(), $options );
+		$inproperties = \SMW\StoreFactory::getStore()->getInProperties( $this->subject->getDataItem(), $options );
 
 		if ( count( $inproperties ) == SMWSpecialBrowse::$incomingpropertiescount ) {
 			$more = true;
@@ -364,7 +364,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		$valoptions->limit = SMWSpecialBrowse::$incomingvaluescount;
 
 		foreach ( $inproperties as $property ) {
-			$values = smwfGetStore()->getPropertySubjects( $property, $this->subject->getDataItem(), $valoptions );
+			$values = \SMW\StoreFactory::getStore()->getPropertySubjects( $property, $this->subject->getDataItem(), $valoptions );
 			foreach ( $values as $value ) {
 				$indata->addPropertyObjectValue( $property, $value );
 			}
@@ -388,7 +388,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 		if ( $incoming && $smwgBrowseShowInverse ) {
 			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMessage( 'smw_inverse_label_property' )->text() );
-			$labelarray = &smwfGetStore()->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
+			$labelarray = &\SMW\StoreFactory::getStore()->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
 			$rv = ( count( $labelarray ) > 0 ) ? $labelarray[0]->getLongWikiText():
 				wfMessage( 'smw_inverse_label_default', $property->getWikiValue() )->text();
 		} else {

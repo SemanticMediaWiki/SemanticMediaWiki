@@ -228,7 +228,7 @@ final class SMWHooks {
 		// @codeCoverageIgnoreStart
 		$tables = array_merge(
 			$tables,
-			smwfGetStore()->getParserTestTables()
+			\SMW\StoreFactory::getStore()->getParserTestTables()
 		);
 
 		return true;

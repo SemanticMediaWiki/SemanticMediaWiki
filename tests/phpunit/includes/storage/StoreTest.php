@@ -43,7 +43,7 @@ class StoreTest extends \MediaWikiTestCase {
 	public function testGetSemanticData( $titleText ,$filter = false) {
 		$title = Title::newFromText( $titleText );
 		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 
 		$this->assertInstanceOf(
 			'\SMWSemanticData',
@@ -67,7 +67,7 @@ class StoreTest extends \MediaWikiTestCase {
 	public function testGetPropertyValues( $titleText, SMWDIProperty $property, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
@@ -93,7 +93,7 @@ class StoreTest extends \MediaWikiTestCase {
 	* @dataProvider getPropertySubjectsDataProvider
 	*/
 	public function testGetPropertySubjects( SMWDIProperty $property, $value, $requestOptions = null ) {
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
@@ -121,7 +121,7 @@ class StoreTest extends \MediaWikiTestCase {
 	public function testGetProperties( $titleText, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$result = $store->getProperties( $subject, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
@@ -155,7 +155,7 @@ class StoreTest extends \MediaWikiTestCase {
 //		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 //		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
 //		$smwQuery = SMWQueryProcessor::createQuery( $queryString, $parameters, SMWQueryProcessor::SPECIAL_PAGE, '', $printouts );
-//		$store = smwfGetStore();
+//		$store = \SMW\StoreFactory::getStore();
 //		$queryResult = $store->getQueryResult( $smwQuery );
 //
 //		$this->assertInstanceOf(
@@ -178,7 +178,7 @@ class StoreTest extends \MediaWikiTestCase {
 			return;
 		}
 
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
@@ -194,7 +194,7 @@ class StoreTest extends \MediaWikiTestCase {
 	}
 
 	public function testGetUnusedPropertiesSpecial() {
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
@@ -208,7 +208,7 @@ class StoreTest extends \MediaWikiTestCase {
 	}
 
 	public function testGetWantedPropertiesSpecial() {
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
@@ -222,7 +222,7 @@ class StoreTest extends \MediaWikiTestCase {
 	}
 
 	public function testGetStatistics() {
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$result = $store->getStatistics();
 
 		$this->assertTrue( is_array( $result ) );

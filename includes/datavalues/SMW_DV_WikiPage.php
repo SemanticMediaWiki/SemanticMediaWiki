@@ -483,7 +483,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string sortkey
 	 */
 	public function getSortKey() {
-		return smwfGetStore()->getWikiPageSortKey( $this->m_dataitem );
+		return \SMW\StoreFactory::getStore()->getWikiPageSortKey( $this->m_dataitem );
 	}
 
 	/**

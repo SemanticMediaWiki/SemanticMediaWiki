@@ -72,7 +72,7 @@ class SMWSpecialTypes extends SpecialPage {
 			return $this->msg( 'smw-special-types-no-such-type' )->escaped();
 		}
 
-		$store = smwfGetStore();
+		$store = \SMW\StoreFactory::getStore();
 		$options = SMWPageLister::getRequestOptions( $smwgTypePagingLimit, $from, $until );
 		$diWikiPages = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typeValue->getDataItem(), $options );
 

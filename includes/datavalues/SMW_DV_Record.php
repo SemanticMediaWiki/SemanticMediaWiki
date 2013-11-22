@@ -135,7 +135,7 @@ class SMWRecordValue extends SMWDataValue {
 			return true;
 		} elseif ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
 			$semanticData = new SMWContainerSemanticData( $dataItem );
-			$semanticData->copyDataFrom( smwfGetStore()->getSemanticData( $dataItem ) );
+			$semanticData->copyDataFrom( \SMW\StoreFactory::getStore()->getSemanticData( $dataItem ) );
 			$this->m_dataitem = new SMWDIContainer( $semanticData );
 			return true;
 		} else {
@@ -268,7 +268,7 @@ class SMWRecordValue extends SMWDataValue {
 
 			if ( !is_null( $propertyDiWikiPage ) ) {
 				$listDiProperty = new SMWDIProperty( '_LIST' );
-				$dataItems = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
+				$dataItems = \SMW\StoreFactory::getStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
 
 				if ( count( $dataItems ) == 1 ) {
 					$propertyListValue = new SMWPropertyListValue( '__pls' );

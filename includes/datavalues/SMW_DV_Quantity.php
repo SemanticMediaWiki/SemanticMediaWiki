@@ -156,7 +156,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			return; // we cannot find conversion factors without the property
 		}
 
-		$factors = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_CONV' ) );
+		$factors = \SMW\StoreFactory::getStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_CONV' ) );
 		if ( count( $factors ) == 0 ) { // no custom type
 			$this->addError( wfMessage( 'smw_nounitsdeclared' )->inContentLanguage()->text() );
 			return;
@@ -212,7 +212,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			return;
 		}
 
-		$dataItems = smwfGetStore()->getPropertyValues( $this->m_property->getDIWikiPage(), new SMWDIProperty( '_UNIT' ) );
+		$dataItems = \SMW\StoreFactory::getStore()->getPropertyValues( $this->m_property->getDIWikiPage(), new SMWDIProperty( '_UNIT' ) );
 		$units = array();
 
 		foreach ( $dataItems as $di ) { // Join all if many annotations exist. Discouraged (random order) but possible.
