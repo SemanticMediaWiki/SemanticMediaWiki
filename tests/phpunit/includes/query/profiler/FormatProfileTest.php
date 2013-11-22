@@ -2,13 +2,13 @@
 
 namespace SMW\Test;
 
+use SMW\Query\Profiler\FormatProfile;
+use SMW\Query\Profiler\NullProfile;
 use SMW\HashIdGenerator;
-use SMW\FormatProfiler;
-use SMW\NullProfiler;
 use SMW\Subobject;
 
 /**
- * @covers \SMW\FormatProfiler
+ * @covers \SMW\Query\Profiler\FormatProfile
  *
  * @ingroup Test
  *
@@ -20,28 +20,28 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class FormatProfilerTest extends SemanticMediaWikiTestCase {
+class FormatProfileTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\FormatProfiler';
+		return '\SMW\Query\Profiler\FormatProfile';
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return FormatProfiler
+	 * @return FormatProfile
 	 */
 	private function newInstance( $format = 'Foo' ) {
 
-		$profiler = new NullProfiler(
+		$profiler = new NullProfile(
 			new Subobject( $this->newTitle() ),
 			new HashIdGenerator( 'Foo' )
 		);
 
-		return new FormatProfiler( $profiler, $format );
+		return new FormatProfile( $profiler, $format );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class FormatProfilerTest extends SemanticMediaWikiTestCase {
 	public function testCreateProfile() {
 
 		$instance = $this->newInstance( 'Foo' );
-		$instance->createProfile();
+		$instance->addAnnotation();
 
 		$expected = array(
 			'propertyCount' => 1,

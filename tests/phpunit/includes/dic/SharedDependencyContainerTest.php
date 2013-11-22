@@ -204,7 +204,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$provider[] = array( 'QueryProfiler', array( '\SMW\QueryProfiler' => array(
+		$provider[] = array( 'QueryProfiler', array( '\SMW\Query\Profiler\ProfileAnnotator' => array(
 				'QueryDescription' => $this->newMockBuilder()->newObject( 'QueryDescription' ),
 				'QueryParameters'  => array( 'Foo' ),
 				'QueryFormat'      => 'Foo',

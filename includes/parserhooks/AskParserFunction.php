@@ -134,7 +134,7 @@ class AskParserFunction {
 			'Title'            => $this->parserData->getTitle(),
 		) );
 
-		$profiler->createProfile();
+		$profiler->addAnnotation();
 
 		$this->parserData->getData()->addPropertyObjectValue(
 			$profiler->getProperty(),

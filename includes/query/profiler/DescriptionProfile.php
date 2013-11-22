@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\Profiler;
+
+use SMW\DIProperty;
 
 use SMWDescription as QueryDescription;
-
 use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
-
-use Title;
 
 /**
  * Provides access to some QueryDescription profiling data
@@ -19,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class DescriptionProfiler extends QueryProfilerDecorator {
+class DescriptionProfile extends ProfileAnnotatorDecorator {
 
 	/** @var QueryDescription */
 	protected $description;
@@ -27,10 +26,10 @@ class DescriptionProfiler extends QueryProfilerDecorator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param QueryProfiler $queryProfiler
+	 * @param ProfileAnnotator $profileAnnotator
 	 */
-	public function __construct( QueryProfiler $queryProfiler, QueryDescription $description ) {
-		parent::__construct( $queryProfiler );
+	public function __construct( ProfileAnnotator $profileAnnotator, QueryDescription $description ) {
+		parent::__construct( $profileAnnotator );
 		$this->description = $description;
 	}
 

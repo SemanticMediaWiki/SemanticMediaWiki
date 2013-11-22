@@ -250,12 +250,12 @@ return array(
 	'SMW\DocumentationParserFunction'    => 'includes/parserhooks/DocumentationParserFunction.php',
 	'SMW\ParserFunctionFactory'          => 'includes/parserhooks/ParserFunctionFactory.php',
 
-	// QueryProfiler
-	'SMW\QueryProfiler'          => 'includes/query/profiler/QueryProfiler.php',
-	'SMW\QueryProfilerDecorator' => 'includes/query/profiler/QueryProfilerDecorator.php',
-	'SMW\NullProfiler'           => 'includes/query/profiler/NullProfiler.php',
-	'SMW\DescriptionProfiler'    => 'includes/query/profiler/DescriptionProfiler.php',
-	'SMW\FormatProfiler'         => 'includes/query/profiler/FormatProfiler.php',
+	// ProfileAnnotator
+	'SMW\Query\Profiler\ProfileAnnotator'          => 'includes/query/profiler/ProfileAnnotator.php',
+	'SMW\Query\Profiler\ProfileAnnotatorDecorator' => 'includes/query/profiler/ProfileAnnotatorDecorator.php',
+	'SMW\Query\Profiler\NullProfile'           => 'includes/query/profiler/NullProfile.php',
+	'SMW\Query\Profiler\DescriptionProfile'    => 'includes/query/profiler/DescriptionProfile.php',
+	'SMW\Query\Profiler\FormatProfile'         => 'includes/query/profiler/FormatProfile.php',
 
 	// Query related classes
 	'SMWQueryProcessor'          => 'includes/query/SMW_QueryProcessor.php',
