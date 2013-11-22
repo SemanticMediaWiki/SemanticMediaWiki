@@ -2,13 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\DescriptionProfiler;
+use SMW\Query\Profiler\DescriptionProfile;
+use SMW\Query\Profiler\NullProfile;
 use SMW\HashIdGenerator;
-use SMW\NullProfiler;
 use SMW\Subobject;
 
 /**
- * @covers \SMW\DescriptionProfiler
+ * @covers \SMW\Query\Profiler\DescriptionProfile
  *
  * @ingroup Test
  *
@@ -20,19 +20,19 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class DescriptionProfilerTest extends SemanticMediaWikiTestCase {
+class DescriptionProfileTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\DescriptionProfiler';
+		return '\SMW\Query\Profiler\DescriptionProfile';
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return DescriptionProfiler
+	 * @return DescriptionProfile
 	 */
 	private function newInstance( $description = null ) {
 
@@ -40,12 +40,12 @@ class DescriptionProfilerTest extends SemanticMediaWikiTestCase {
 			$description = $this->newMockBuilder()->newObject( 'QueryDescription' );
 		}
 
-		$profiler = new NullProfiler(
+		$profiler = new NullProfile(
 			new Subobject( $this->newTitle() ),
 			new HashIdGenerator( 'Foo' )
 		);
 
-		return new DescriptionProfiler( $profiler, $description );
+		return new DescriptionProfile( $profiler, $description );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class DescriptionProfilerTest extends SemanticMediaWikiTestCase {
 		) );
 
 		$instance = $this->newInstance( $description );
-		$instance->createProfile();
+		$instance->addAnnotation();
 
 		$expected = array(
 			'propertyCount' => 3,

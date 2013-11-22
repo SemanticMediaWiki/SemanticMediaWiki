@@ -1,9 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\Profiler;
+
+use SMW\PropertyAnnotator;
 
 /**
- * Specifing the QueryProfiler interface
+ * Specifing the ProfileAnnotator interface
  *
  * @ingroup SMW
  *
@@ -12,16 +14,7 @@ namespace SMW;
  *
  * @author mwjames
  */
-interface QueryProfiler {
-
-	/**
-	 * Returns a SemanticData container
-	 *
-	 * @since 1.9
-	 *
-	 * @return SemanticData
-	 */
-	public function getSemanticData();
+interface ProfileAnnotator extends PropertyAnnotator {
 
 	/**
 	 * Returns the query meta data property
@@ -40,14 +33,5 @@ interface QueryProfiler {
 	 * @return DIContainer
 	 */
 	public function getContainer();
-
-	/**
-	 * Create a query profile
-	 *
-	 * @since 1.9
-	 *
-	 * @return QueryProfiler
-	 */
-	public function createProfile();
 
 }

@@ -3,11 +3,11 @@
 namespace SMW\Test;
 
 use SMW\HashIdGenerator;
-use SMW\NullProfiler;
+use SMW\Query\Profiler\NullProfile;
 use SMW\Subobject;
 
 /**
- * @covers \SMW\NullProfiler
+ * @covers \SMW\Query\Profiler\NullProfile
  *
  * @ingroup Test
  *
@@ -19,22 +19,22 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class NullProfilerTest extends SemanticMediaWikiTestCase {
+class NullProfileTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMW\NullProfiler';
+		return '\SMW\Query\Profiler\NullProfile';
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return NullProfiler
+	 * @return NullProfile
 	 */
 	private function newInstance() {
-		return new NullProfiler(
+		return new NullProfile(
 			new Subobject( $this->newTitle() ),
 			new HashIdGenerator( 'Foo' )
 		);
@@ -53,7 +53,7 @@ class NullProfilerTest extends SemanticMediaWikiTestCase {
 	public function testAvailableMethods() {
 
 		$instance = $this->newInstance();
-		$instance->createProfile();
+		$instance->addAnnotation();
 
 		$this->assertInstanceOf( '\SMW\DIProperty', $instance->getProperty() );
 		$this->assertInstanceOf( '\SMWDIContainer', $instance->getContainer() );

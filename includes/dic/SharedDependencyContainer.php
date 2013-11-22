@@ -432,18 +432,18 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	/**
 	 * @since  1.9
 	 *
-	 * @return QueryProfiler
+	 * @return ProfileAnnotator
 	 */
 	protected function QueryProfiler() {
 		return function ( DependencyBuilder $builder ) {
 
-			$profiler = new NullProfiler(
+			$profiler = new \SMW\Query\Profiler\NullProfile(
 				new Subobject( $builder->getArgument( 'Title' ) ),
 				new HashIdGenerator( $builder->getArgument( 'QueryParameters' ) )
 			);
 
-			$profiler = new DescriptionProfiler( $profiler, $builder->getArgument( 'QueryDescription' ) );
-			$profiler = new FormatProfiler( $profiler, $builder->getArgument( 'QueryFormat' ) );
+			$profiler = new \SMW\Query\Profiler\DescriptionProfile( $profiler, $builder->getArgument( 'QueryDescription' ) );
+			$profiler = new \SMW\Query\Profiler\FormatProfile( $profiler, $builder->getArgument( 'QueryFormat' ) );
 
 			return $profiler;
 		};

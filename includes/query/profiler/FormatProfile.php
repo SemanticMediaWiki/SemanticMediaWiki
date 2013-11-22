@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\Profiler;
 
+use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -14,7 +15,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class FormatProfiler extends QueryProfilerDecorator {
+class FormatProfile extends ProfileAnnotatorDecorator {
 
 	/** @var array */
 	protected $format;
@@ -22,10 +23,10 @@ class FormatProfiler extends QueryProfilerDecorator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param QueryProfiler $queryProfiler
+	 * @param ProfileAnnotator $profileAnnotator
 	 */
-	public function __construct( QueryProfiler $queryProfiler, $format ) {
-		parent::__construct( $queryProfiler );
+	public function __construct( ProfileAnnotator $profileAnnotator, $format ) {
+		parent::__construct( $profileAnnotator );
 		$this->format = $format;
 	}
 

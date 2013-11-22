@@ -2,14 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\DescriptionProfiler;
-use SMW\FormatProfiler;
+use SMW\Query\Profiler\DescriptionProfile;
+use SMW\Query\Profiler\FormatProfile;
+use SMW\Query\Profiler\NullProfile;
 use SMW\HashIdGenerator;
-use SMW\NullProfiler;
 use SMW\Subobject;
 
 use SMWQueryProcessor;
-use Title;
 
 /**
  * @covers \SMWQueryProcessor
@@ -24,7 +23,7 @@ use Title;
  *
  * @author mwjames
  */
-class QueryProfilerQueryProcessorIntegrationTest extends SemanticMediaWikiTestCase {
+class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @return string|false
@@ -52,13 +51,13 @@ class QueryProfilerQueryProcessorIntegrationTest extends SemanticMediaWikiTestCa
 	 */
 	private function newInstance( $rawparams, $description, $format ) {
 
-		$instance = new NullProfiler(
+		$instance = new NullProfile(
 			new Subobject( $this->newTitle() ),
 			new HashIdGenerator( $rawparams )
 		);
 
-		$instance = new DescriptionProfiler( $instance, $description );
-		$instance = new FormatProfiler( $instance, $format );
+		$instance = new DescriptionProfile( $instance, $description );
+		$instance = new FormatProfile( $instance, $format );
 
 		return $instance;
 	}
@@ -78,7 +77,7 @@ class QueryProfilerQueryProcessorIntegrationTest extends SemanticMediaWikiTestCa
 			$formattedParams['format']->getValue()
 		);
 
-		$instance->createProfile();
+		$instance->addAnnotation();
 
 		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getContainer()->getSemanticData() );
 		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
