@@ -91,8 +91,8 @@ SMW\UpdateObserver->runStoreUpdater( )
 SMW\StoreUpdater->runUpdater( )
 ```
 
-#### PropertyChangeNotifier
-PropertyChangeNotifier class implements the DispatchableSubject and is responsible to identify differences between the current SemanticData and the Store data and schedules a call to UpdateDispatcherJob if it finds a disparity. This class does not have to know how to resolve the data difference, therefore it notifies the dispatcher to find an Observer that has a 'runUpdateDispatcher' process available.
+#### PropertyTypeComparator
+PropertyTypeComparator class implements the DispatchableSubject and is responsible to identify differences between the current SemanticData and the Store data and schedules a call to UpdateDispatcherJob if it finds a disparity. This class does not have to know how to resolve the data difference, therefore it notifies the dispatcher to find an Observer that has a 'runUpdateDispatcher' process available.
 
 ```php
 protected function addDispatchJob( $addJob = true ) {
@@ -100,9 +100,9 @@ protected function addDispatchJob( $addJob = true ) {
 }
 ```
 ```php
-SMW\PropertyChangeNotifier->detectChanges( )
-SMW\PropertyChangeNotifier->compareConversionFactors( )
-SMW\PropertyChangeNotifier->addDispatchJob( )
+SMW\PropertyTypeComparator->runComparator( )
+SMW\PropertyTypeComparator->compareConversionTypedFactors( )
+SMW\PropertyTypeComparator->notifyDispatcher( )
 SMW\ObservableSubject->setState( )
 SMW\ObservableSubject->notify( )
 SMW\Observer->update( )

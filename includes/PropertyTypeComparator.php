@@ -13,7 +13,7 @@ namespace SMW;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
+class PropertyTypeComparator implements TitleAccess, DispatchableSubject {
 
 	/** @var Store */
 	protected $store;
@@ -83,14 +83,14 @@ class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
 	 *
 	 * @since 1.9
 	 *
-	 * @return PropertyDisparityFinder
+	 * @return PropertyTypeComparator
 	 */
-	public function detectChanges() {
+	public function runComparator() {
 		Profiler::In( __METHOD__, true );
 
 		if ( $this->semanticData->getSubject()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->comparePropertyTypes();
-			$this->compareConversionFactors();
+			$this->compareConversionTypedFactors();
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -136,7 +136,7 @@ class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
 			}
 		}
 
-		$this->addDispatchJob( $update );
+		$this->notifyDispatcher( $update );
 
 		Profiler::Out( __METHOD__, true );
 	}
@@ -146,7 +146,7 @@ class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
 	 *
 	 * @since 1.9
 	 */
-	protected function compareConversionFactors() {
+	protected function compareConversionTypedFactors() {
 		Profiler::In( __METHOD__, true );
 
 		$pconversion  = new DIProperty( DIProperty::TYPE_CONVERSION );
@@ -157,7 +157,7 @@ class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
 			$pconversion
 		);
 
-		$this->addDispatchJob( !$this->isEqual( $oldfactors, $newfactors ) );
+		$this->notifyDispatcher( !$this->isEqual( $oldfactors, $newfactors ) );
 
 		Profiler::Out( __METHOD__, true );
 	}
@@ -169,7 +169,7 @@ class PropertyChangeNotifier implements TitleAccess, DispatchableSubject {
 	 *
 	 * @param boolean $addJob
 	 */
-	protected function addDispatchJob( $addJob = true ) {
+	protected function notifyDispatcher( $addJob = true ) {
 		if ( $addJob && !$this->hasDisparity ) {
 			$this->dispatcher->setState( 'runUpdateDispatcher' );
 			$this->hasDisparity = true;

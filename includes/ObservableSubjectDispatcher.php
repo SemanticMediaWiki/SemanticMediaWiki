@@ -10,7 +10,7 @@ namespace SMW;
  *
  * @par Example:
  * @code
- *  $notifier = new PropertyChangeNotifier( ... );
+ *  $notifier = new PropertyTypeComparator( ... );
  *  $notifier->registerDispatcher(
  *     new ObservableSubjectDispatcher( new UpdateObserver() )
  *  );

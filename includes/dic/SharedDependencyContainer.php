@@ -273,15 +273,13 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			},
 
 			/**
-			 * PropertyChangeNotifier object definition
-			 *
 			 * @since  1.9
 			 *
-			 * @return PropertyChangeNotifier
+			 * @return PropertyTypeComparator
 			 */
-			'PropertyChangeNotifier' => function ( DependencyBuilder $builder ) {
+			'PropertyTypeComparator' => function ( DependencyBuilder $builder ) {
 
-				$instance = new PropertyChangeNotifier(
+				$instance = new PropertyTypeComparator(
 					$builder->newObject( 'Store' ),
 					$builder->getArgument( 'SemanticData' ),
 					$builder->newObject( 'Settings' )

@@ -135,7 +135,7 @@ class StoreUpdater implements ContextAware {
 		}
 
 		Profiler::Out();
-		return $this->updateStore( $this->detectChanges( $processSemantics ) );
+		return $this->updateStore( $this->inspectPropertyType( $processSemantics ) );
 	}
 
 	/**
@@ -146,15 +146,15 @@ class StoreUpdater implements ContextAware {
 	 *
 	 * @return boolean
 	 */
-	protected function detectChanges( $processSemantics ) {
+	protected function inspectPropertyType( $processSemantics ) {
 
 		if ( $this->updateJobs ) {
 
-			$changeNotifier = $this->withContext()->getDependencyBuilder()->newObject( 'PropertyChangeNotifier', array(
+			$propertyComparator = $this->withContext()->getDependencyBuilder()->newObject( 'PropertyTypeComparator', array(
 				'SemanticData' => $this->semanticData
 			) );
 
-			$changeNotifier->detectChanges();
+			$propertyComparator->runComparator();
 		}
 
 		return $processSemantics;
