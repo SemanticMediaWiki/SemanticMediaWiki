@@ -92,16 +92,16 @@ class SemanticDataSerializerTest extends SemanticMediaWikiTestCase {
 
 		// #1 Single entry
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 		$provider[] = array( $foo );
 
 		// #2 Single + single subobject entry
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has subobjects', 'Bam' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 
@@ -109,16 +109,16 @@ class SemanticDataSerializerTest extends SemanticMediaWikiTestCase {
 
 		// #3 Multiple entries
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has queez', 'Xeey' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has queez', 'Xeey' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has subobjects', 'Bam' ) );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Fuz' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
 
 		$subobject->setSemanticData( 'Bar' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Fuz' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 

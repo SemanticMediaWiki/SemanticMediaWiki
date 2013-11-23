@@ -173,7 +173,7 @@ class Subobject {
 	 *
 	 * @par Example:
 	 * @code
-	 *  $dataValue = DataValueFactory::newPropertyValue( $userProperty, $userValue )
+	 *  $dataValue = DataValueFactory::getInstance()->newPropertyValue( $userProperty, $userValue )
 	 *
 	 *  $subobject = new Subobject( 'Foo' );
 	 *  $subobject->setSemanticData( 'Bar' );

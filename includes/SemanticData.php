@@ -363,7 +363,7 @@ class SemanticData {
 	 *
 	 * @par Example:
 	 * @code
-	 *  $dataValue = DataValueFactory::newPropertyValue( $userProperty, $userValue )
+	 *  $dataValue = DataValueFactory::getInstance()->newPropertyValue( $userProperty, $userValue )
 	 *  $semanticData->addDataValue( $dataValue )
 	 * @endcode
 	 *

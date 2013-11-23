@@ -104,7 +104,7 @@ class ParserDataTest extends ParserTestCase {
 			'Asserts that the initial container is empty'
 		);
 
-		$instance->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$instance->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$this->assertFalse(
 			$instance->getData()->isEmpty(),
@@ -127,7 +127,7 @@ class ParserDataTest extends ParserTestCase {
 
 		$instance = $this->newInstance();
 
-		$instance->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$instance->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$this->assertFalse(
 			$instance->getData()->isEmpty(),
@@ -159,7 +159,7 @@ class ParserDataTest extends ParserTestCase {
 		);
 
 		$data = new SemanticData( $this->newSubject() );
-		$data->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$data->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$instance->setData( $data );
 
@@ -196,7 +196,7 @@ class ParserDataTest extends ParserTestCase {
 		$instance = $this->newInstance();
 
 		$instance->addDataValue(
-			DataValueFactory::newPropertyValue(
+			DataValueFactory::getInstance()->newPropertyValue(
 				$propertyName,
 				$value
 			)

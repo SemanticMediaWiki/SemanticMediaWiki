@@ -227,7 +227,7 @@ class SMWPageLister {
 
 			// output all diWikiPages
 			for ( $index = $startChunk ; $index < $endChunk && $index < $end; ++$index ) {
-				$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index], $diProperty );
+				$dataValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPages[$index], $diProperty );
 				// check for change of starting letter or begining of chunk
 				$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
 				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
@@ -279,7 +279,7 @@ class SMWPageLister {
 	public static function getShortList( $start, $end, array $diWikiPages, $diProperty ) {
 		global $wgContLang;
 
-		$startDv = SMWDataValueFactory::newDataItemValue( $diWikiPages[$start], $diProperty );
+		$startDv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPages[$start], $diProperty );
 		$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$start] );
 		$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
@@ -287,7 +287,7 @@ class SMWPageLister {
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
-			$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index], $diProperty );
+			$dataValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPages[$index], $diProperty );
 			$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
 			$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 

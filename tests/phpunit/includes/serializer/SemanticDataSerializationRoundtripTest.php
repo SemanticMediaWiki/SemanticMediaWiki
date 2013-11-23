@@ -131,16 +131,16 @@ class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
 
 		// #1 Single entry
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 		$provider[] = array( $foo );
 
 		// #2 Single + single subobject entry
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has subobjects', 'Bam' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 
@@ -148,16 +148,16 @@ class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
 
 		// #3 Multiple entries
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has queez', 'Xeey' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has queez', 'Xeey' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has subobjects', 'Bam' ) );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Fuz' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
 
 		$subobject->setSemanticData( 'Bar' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Fuz' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 
@@ -176,7 +176,7 @@ class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
 
 		// #0 Single entry
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$provider[] = array( $foo, 'Has_fooQuex' );
 
@@ -185,7 +185,7 @@ class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::newPropertyValue( 'Has fomQuex', 'Bam' ) );
+		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fomQuex', 'Bam' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 
@@ -193,7 +193,7 @@ class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
 
 		// #2 Combined
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 
 		$provider[] = array( $foo, 'Has_fomQuex' );

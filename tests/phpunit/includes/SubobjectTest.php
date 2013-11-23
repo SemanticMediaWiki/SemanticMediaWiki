@@ -38,7 +38,7 @@ class SubobjectTest extends ParserTestCase {
 	 * @return SMWDataValue
 	 */
 	private function newDataValue( $propertyName, $value ){
-		return DataValueFactory::newPropertyValue( $propertyName, $value );
+		return DataValueFactory::getInstance()->newPropertyValue( $propertyName, $value );
 	}
 
 	/**

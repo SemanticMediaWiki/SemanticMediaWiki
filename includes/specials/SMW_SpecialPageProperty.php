@@ -47,7 +47,7 @@ class SMWPageProperty extends SpecialPage {
 			}
 		}
 
-		$subject = SMWDataValueFactory::newTypeIDValue( '_wpg', $pagename );
+		$subject = \SMW\DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $pagename );
 		$pagename = $subject->isValid() ? $subject->getPrefixedText() : '';
 		$property = SMWPropertyValue::makeUserProperty( $propname );
 		$propname = $property->isValid() ? $property->getWikiValue() : '';
@@ -125,7 +125,7 @@ class SMWPageProperty extends SpecialPage {
 					$count--;
 					if ( $count < 1 ) continue;
 
-					$dv = SMWDataValueFactory::newDataItemValue( $di, $property->getDataItem() );
+					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $property->getDataItem() );
 					$html .= '<li>' . $dv->getLongHTMLText( $linker ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
 
 					if ( $property->getDataItem()->findPropertyTypeID() == '_wpg' ) {

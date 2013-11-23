@@ -53,7 +53,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testNewTypeIdValue( $typeId, $value, $expectedValue, $expectedInstance ) {
 
-		$dataValue = DataValueFactory::newTypeIdValue( $typeId, $value );
+		$dataValue = DataValueFactory::getInstance()->newTypeIdValue( $typeId, $value );
 		$this->assertInstanceOf( $expectedInstance , $dataValue );
 
 		if ( $dataValue->getErrors() === array() ){
@@ -74,7 +74,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		$propertyDV = SMWPropertyValue::makeUserProperty( $propertyName );
 		$propertyDI = $propertyDV->getDataItem();
 
-		$dataValue = DataValueFactory::newPropertyObjectValue( $propertyDI, $value );
+		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue( $propertyDI, $value );
 
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance , $dataValue );
@@ -90,7 +90,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		}
 
 		// Check interface parameters
-		$dataValue = DataValueFactory::newPropertyObjectValue(
+		$dataValue = DataValueFactory::getInstance()->newPropertyObjectValue(
 			$propertyDI,
 			$value,
 			$this->newRandomString(),
@@ -107,7 +107,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testAddPropertyValue( $propertyName, $value, $expectedValue, $expectedInstance ) {
 
-		$dataValue = DataValueFactory::newPropertyValue( $propertyName, $value );
+		$dataValue = DataValueFactory::getInstance()->newPropertyValue( $propertyName, $value );
 
 		// Check the returned instance
 		$this->assertInstanceOf( $expectedInstance , $dataValue );
@@ -123,7 +123,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 		}
 
 		// Check interface parameters
-		$dataValue = DataValueFactory::newPropertyValue(
+		$dataValue = DataValueFactory::getInstance()->newPropertyValue(
 			$propertyName,
 			$value,
 			$this->newRandomString(),
@@ -224,7 +224,7 @@ class DataValueFactoryTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testNewDataItemValue( $setup ) {
 
-		$dataValue = DataValueFactory::newDataItemValue( $setup['dataItem'], $setup['property'], $setup['caption'] );
+		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $setup['dataItem'], $setup['property'], $setup['caption'] );
 
 		$this->assertInstanceOf(
 			'SMWDataValue',

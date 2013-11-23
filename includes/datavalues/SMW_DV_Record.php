@@ -78,7 +78,7 @@ class SMWRecordValue extends SMWDataValue {
 			if ( ( $values[$valueIndex] === '' ) || ( $values[$valueIndex] == '?' ) ) { // explicit omission
 				$valueIndex++;
 			} else {
-				$dataValue = SMWDataValueFactory::newPropertyObjectValue( $diProperty, $values[$valueIndex] );
+				$dataValue = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $diProperty, $values[$valueIndex] );
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
 					if ( $queryMode ) {
@@ -303,7 +303,7 @@ class SMWRecordValue extends SMWDataValue {
 			$propertyValues = $this->m_dataitem->getSemanticData()->getPropertyValues( $propertyDataItem ); // combining this with next line violates PHP strict standards
 			$dataItem = reset( $propertyValues );
 			if ( $dataItem !== false ) {
-				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $propertyDataItem );
+				$dataValue = \SMW\DataValueFactory::getInstance()->newDataItemValue( $dataItem, $propertyDataItem );
 				$result .= $this->makeValueOutputText( $type, $dataValue, $linker );
 			} else {
 				$result .= '?';

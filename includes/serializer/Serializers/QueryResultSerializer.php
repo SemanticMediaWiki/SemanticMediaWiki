@@ -82,7 +82,7 @@ class QueryResultSerializer implements Serializer {
 				// (unit is part of the datavalue object)
 				if ( $printRequest !== null && $printRequest->getTypeID() === '_qty' ) {
 					$diProperty = $printRequest->getData()->getDataItem();
-					$dataValue = DataValueFactory::newDataItemValue( $dataItem, $diProperty );
+					$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $diProperty );
 
 					$result = array(
 						'value' => $dataValue->getNumber(),

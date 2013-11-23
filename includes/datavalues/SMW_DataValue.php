@@ -736,7 +736,7 @@ abstract class SMWDataValue {
 		}
 
 		$hash = $this->m_dataitem->getHash();
-		$testdv = DataValueFactory::newTypeIDValue( $this->getTypeID() );
+		$testdv = DataValueFactory::getInstance()->newTypeIDValue( $this->getTypeID() );
 		$accept = false;
 		$valuestring = '';
 
