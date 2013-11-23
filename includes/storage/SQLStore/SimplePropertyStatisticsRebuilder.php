@@ -1,7 +1,6 @@
 <?php
 
 namespace SMW\SQLStore;
-use MWException;
 use SMW\MessageReporter;
 use SMW\Store\PropertyStatisticsStore;
 

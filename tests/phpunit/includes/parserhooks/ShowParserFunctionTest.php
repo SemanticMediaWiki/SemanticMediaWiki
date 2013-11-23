@@ -2,13 +2,13 @@
 
 namespace SMW\Test;
 
+use ParserOutput;
 use SMW\ExtensionContext;
-use SMW\ShowParserFunction;
 use SMW\MessageFormatter;
 use SMW\QueryData;
 
+use SMW\ShowParserFunction;
 use Title;
-use ParserOutput;
 
 /**
  * @covers \SMW\ShowParserFunction

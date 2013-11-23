@@ -2,12 +2,12 @@
 
 namespace SMW\Test;
 
+use SMW\HashIdGenerator;
 use SMW\Query\Profiler\DescriptionProfile;
 use SMW\Query\Profiler\FormatProfile;
 use SMW\Query\Profiler\NullProfile;
-use SMW\HashIdGenerator;
-use SMW\Subobject;
 
+use SMW\Subobject;
 use SMWQueryProcessor;
 
 /**

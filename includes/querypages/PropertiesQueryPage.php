@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMWTypesValue;
+use Html;
 use SMWDIError;
 
-use Html;
+use SMWTypesValue;
 
 /**
  * Query class that provides content for the Special:Properties page

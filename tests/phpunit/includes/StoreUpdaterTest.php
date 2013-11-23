@@ -2,13 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\StoreFactory;
-use SMW\StoreUpdater;
-use SMW\SemanticData;
-use SMW\ExtensionContext;
 use SMW\DIWikiPage;
+use SMW\ExtensionContext;
+use SMW\SemanticData;
+use SMW\StoreFactory;
 
-use Title;
+use SMW\StoreUpdater;
 
 /**
  * @covers \SMW\StoreUpdater

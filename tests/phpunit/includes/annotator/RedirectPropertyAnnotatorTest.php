@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\RedirectPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\EmptyContext;
+use SMW\NullPropertyAnnotator;
+use SMW\RedirectPropertyAnnotator;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\RedirectPropertyAnnotator

@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\NullDependencyContainer;
-use SMW\SimpleDependencyBuilder;
 use SMW\DependencyBuilder;
 use SMW\DependencyObject;
+use SMW\NullDependencyContainer;
 
+use SMW\SimpleDependencyBuilder;
 use Title;
 
 /**

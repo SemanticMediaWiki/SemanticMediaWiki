@@ -2,17 +2,17 @@
 
 namespace SMW\Test;
 
-use SMW\ParserParameterFormatter;
-use SMW\ContentProcessor;
-use SMW\ParserData;
-use SMW\Settings;
-use SMW\EmptyContext;
-
+use Parser;
 use ParserOutput;
+use SMW\ContentProcessor;
+use SMW\EmptyContext;
+use SMW\ParserData;
+use SMW\ParserParameterFormatter;
+
+use SMW\Settings;
 use Title;
 use User;
 use WikiPage;
-use Parser;
 
 /**
  * Access methods in connection with the Parser or ParserOutput object

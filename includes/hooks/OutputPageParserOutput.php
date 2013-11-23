@@ -2,11 +2,10 @@
 
 namespace SMW;
 
-use ParserOutput;
 use OutputPage;
-use Title;
+use ParserOutput;
 
-use SMWOutputs;
+use Title;
 
 /**
  * OutputPageParserOutput hook is called after parse, before the HTML is

@@ -3,10 +3,9 @@
 namespace SMW;
 
 use SMWDataItem;
-use SMWErrorValue;
-use SMWLanguage;
-use SMWPropertyValue;
 use SMWDIError;
+use SMWErrorValue;
+use SMWPropertyValue;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or

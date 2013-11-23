@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMWPropertyValue;
 use SMWPrintRequest;
+use SMWPropertyValue;
 
 /**
  * This class handles Api related request parameter formatting

@@ -2,12 +2,9 @@
 
 namespace SMW\Test\SQLStore;
 
-use SMW\SQLStore\StatisticsCollector;
-use SMW\StoreFactory;
-use SMW\Settings;
-use SMW\Store;
-
 use FakeResultWrapper;
+use SMW\SQLStore\StatisticsCollector;
+use SMW\Store;
 
 /**
  * @covers \SMW\SQLStore\StatisticsCollector

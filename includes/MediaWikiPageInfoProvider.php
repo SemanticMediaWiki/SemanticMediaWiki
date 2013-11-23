@@ -2,9 +2,9 @@
 
 namespace SMW;
 
-use WikiPage;
 use Revision;
 use User;
+use WikiPage;
 
 /**
  * Provide access to MediaWiki objects relevant for the predefined property

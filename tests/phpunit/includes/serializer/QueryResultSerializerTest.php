@@ -3,8 +3,6 @@
 namespace SMW\Test;
 
 use SMW\Serializers\QueryResultSerializer;
-use SMWQueryProcessor;
-use SMWQueryResult;
 use SMWDataItem as DataItem;
 
 /**

@@ -3,10 +3,8 @@
 namespace SMW\Test;
 
 use SMW\SharedDependencyContainer;
-use SMW\SimpleDependencyBuilder;
 
-use SMW\DependencyBuilder;
-use SMW\DependencyContainer;
+use SMW\SimpleDependencyBuilder;
 
 /**
  * @covers \SMW\SharedDependencyContainer

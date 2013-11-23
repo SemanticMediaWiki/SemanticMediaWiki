@@ -3,9 +3,9 @@
 namespace SMW\Api;
 
 use SMW\ApiQueryResultFormatter;
+use SMWQuery;
 use SMWQueryProcessor;
 use SMWQueryResult;
-use SMWQuery;
 
 /**
  * Base for API modules that query SMW

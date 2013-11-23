@@ -2,18 +2,16 @@
 
 namespace SMW\Test\SQLStore;
 
+use FakeResultWrapper;
+use SMW\DIProperty;
+use SMW\MessageFormatter;
+
 use SMW\SQLStore\PropertiesCollector;
 
 use SMW\Test\SemanticMediaWikiTestCase;
-
-use SMW\MessageFormatter;
-use SMW\StoreFactory;
-use SMW\DIProperty;
-
-use SMWStringCondition;
 use SMWRequestOptions;
 
-use FakeResultWrapper;
+use SMWStringCondition;
 
 /**
  * @covers \SMW\SQLStore\PropertiesCollector

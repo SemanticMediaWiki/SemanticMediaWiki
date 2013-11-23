@@ -3,10 +3,10 @@
 namespace SMW\Test;
 
 use SMW\Api\BrowseBySubject;
-use SMW\SerializerFactory;
 use SMW\DataValueFactory;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMW\SerializerFactory;
 use SMW\Subobject;
 
 /**

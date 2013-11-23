@@ -2,11 +2,9 @@
 
 namespace SMW;
 
-use SMWOutputs;
-
 use MagicWord;
-use Title;
-use Html;
+
+use SMWOutputs;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are

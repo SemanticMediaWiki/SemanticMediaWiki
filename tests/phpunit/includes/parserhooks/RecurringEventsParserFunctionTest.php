@@ -2,13 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\RecurringEventsParserFunction;
-use SMW\ParserParameterFormatter;
-use SMW\MessageFormatter;
-use SMW\Subobject;
-
-use Title;
 use ParserOutput;
+use SMW\MessageFormatter;
+use SMW\RecurringEventsParserFunction;
+
+use SMW\Subobject;
+use Title;
 
 /**
  * Tests for the RecurringEventsParserFunction class.

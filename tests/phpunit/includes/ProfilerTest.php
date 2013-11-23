@@ -4,8 +4,6 @@ namespace SMW\Test;
 
 use SMW\Profiler;
 
-use ReflectionClass;
-
 /**
  * Tests for the Profiler class
  *

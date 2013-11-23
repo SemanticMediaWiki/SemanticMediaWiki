@@ -2,15 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\SetParserFunction;
-use SMW\ParserData;
-use SMW\ParserParameterFormatter;
+use ParserOutput;
 use SMW\MessageFormatter;
 
-use SMWDIWikiPage;
-use SMWDataItem;
+use SMW\SetParserFunction;
 use Title;
-use ParserOutput;
 
 /**
  * Tests for the SetParserFunction class

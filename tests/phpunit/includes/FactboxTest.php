@@ -2,15 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\DataValueFactory;
-use SMW\TableFormatter;
-use SMW\ParserData;
-use SMW\Factbox;
-use SMW\Settings;
-use SMW\DIProperty;
-
 use ParserOutput;
-use Title;
+use SMW\DIProperty;
+use SMW\Factbox;
+use SMW\ParserData;
+use SMW\Settings;
+
+use SMW\TableFormatter;
 
 /**
  * @covers \SMW\Factbox

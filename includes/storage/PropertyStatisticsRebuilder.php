@@ -1,7 +1,6 @@
 <?php
 
 namespace SMW\Store;
-use MWException;
 
 /**
  * Interface for PropertyStatisticsStore rebuilders.

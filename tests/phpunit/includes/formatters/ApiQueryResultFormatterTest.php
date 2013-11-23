@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\ApiQueryResultFormatter;
-
 use SMWQueryResult;
 
 /**

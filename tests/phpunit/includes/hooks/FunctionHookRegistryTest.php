@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\FunctionHookRegistry;
 use SMW\EmptyContext;
+use SMW\FunctionHookRegistry;
 
 /**
  * @covers \SMW\FunctionHookRegistry

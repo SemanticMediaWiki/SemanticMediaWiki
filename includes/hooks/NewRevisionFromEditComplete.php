@@ -3,7 +3,6 @@
 namespace SMW;
 
 use ParserOutput;
-use Title;
 
 /**
  * Hook: NewRevisionFromEditComplete called when a revision was inserted

@@ -2,17 +2,17 @@
 
 namespace SMW\Deserializers;
 
-use SMW\SemanticData;
+use OutOfBoundsException;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
+use SMW\SemanticData;
 use SMWContainerSemanticData;
-use SMWDIContainer as DIContainer;
 use SMWDataItem as DataItem;
-use SMWErrorValue as ErrorValue;
+use SMWDIContainer as DIContainer;
 
-use OutOfBoundsException;
+use SMWErrorValue as ErrorValue;
 
 /**
  * SemanticData deserializer

@@ -3,10 +3,9 @@
 namespace SMW\Test;
 
 use SMW\InvalidPredefinedPropertyException;
-use SMW\StoreFactory;
 
+use SMW\StoreFactory;
 use SMWDIHandlerWikiPage;
-use SMWDIProperty;
 
 /**
  * Tests for the SMWDIHandlerWikiPage class

@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\WantedPropertiesQueryPage;
-use SMWDataItem;
 
 /**
  * @covers \SMW\WantedPropertiesQueryPage

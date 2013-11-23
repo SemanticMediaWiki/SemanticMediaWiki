@@ -2,12 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\ObservableSubjectDispatcher;
+use ParserOutput;
 use SMW\DataValueFactory;
-use SMw\SemanticData;
+use SMW\ObservableSubjectDispatcher;
 use SMW\ParserData;
 
-use ParserOutput;
 use Title;
 
 /**

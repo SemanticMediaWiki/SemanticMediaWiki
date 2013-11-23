@@ -3,13 +3,13 @@
 namespace SMW\Test;
 
 use SMW\DataValueFactory;
-use SMW\SemanticData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
+
 use SMW\Subobject;
 
 use SMWDITime as DITime;
-
 use Title;
 
 /**

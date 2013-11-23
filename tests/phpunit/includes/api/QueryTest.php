@@ -2,9 +2,9 @@
 
 namespace SMW\Test;
 
+use ApiResult;
 use SMW\EmptyContext;
 use SMW\StoreFactory;
-use ApiResult;
 
 /**
  * @covers \SMW\Api\Query

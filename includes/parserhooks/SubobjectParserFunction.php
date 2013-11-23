@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use Parser;
-
 /**
  * Provides the {{#subobject}} parser function
  *

@@ -2,11 +2,8 @@
 
 namespace SMW\Api;
 
-use SMW\ApiRequestParameterFormatter;
-use SMWPropertyValue;
-use SMWPrintRequest;
-
 use ApiBase;
+use SMW\ApiRequestParameterFormatter;
 
 /**
  * API module to query SMW by providing a query specified as

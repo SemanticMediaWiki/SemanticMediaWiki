@@ -3,7 +3,6 @@
 namespace SMW\Test\SQLStore;
 
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
-
 use SMWDataItem;
 
 /**

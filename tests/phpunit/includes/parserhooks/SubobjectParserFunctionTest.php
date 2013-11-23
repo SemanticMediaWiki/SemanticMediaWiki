@@ -2,15 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\SubobjectParserFunction;
-use SMW\Subobject;
-use SMW\ParserParameterFormatter;
-use SMW\MessageFormatter;
-
-use SMWDIProperty;
-use SMWDataItem;
-use Title;
 use ParserOutput;
+use SMW\MessageFormatter;
+use SMW\Subobject;
+
+use SMW\SubobjectParserFunction;
+use SMWDIProperty;
 
 /**
  * @covers \SMW\SubobjectParserFunction

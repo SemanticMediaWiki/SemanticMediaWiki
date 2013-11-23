@@ -3,9 +3,6 @@
 namespace SMW\Test;
 
 use SMW\UnusedPropertiesQueryPage;
-use SMW\MessageFormatter;
-
-use SMWDataItem;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage

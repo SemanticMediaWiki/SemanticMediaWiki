@@ -2,10 +2,10 @@
 
 namespace SMW\Api;
 
-use SMW\ApiRequestParameterFormatter;
-use SMWQueryProcessor;
-
 use ApiBase;
+use SMW\ApiRequestParameterFormatter;
+
+use SMWQueryProcessor;
 
 /**
  * API module to query SMW by providing a query in the ask language.

@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\LinksUpdateConstructed;
+use LinksUpdate;
+use ParserOutput;
 use SMW\ExtensionContext;
 
-use ParserOutput;
-use LinksUpdate;
+use SMW\LinksUpdateConstructed;
 use Title;
 
 /**

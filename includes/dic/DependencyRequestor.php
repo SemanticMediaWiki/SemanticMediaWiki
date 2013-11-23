@@ -2,9 +2,6 @@
 
 namespace SMW;
 
-use InvalidArgumentException;
-use OutOfBoundsException;
-
 /**
  * Interface specifying access to a DependencyBuilder
  *

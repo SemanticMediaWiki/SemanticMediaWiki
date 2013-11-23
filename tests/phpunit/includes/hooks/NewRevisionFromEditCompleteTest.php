@@ -2,13 +2,13 @@
 
 namespace SMW\Test;
 
-use SMW\NewRevisionFromEditComplete;
-use SMW\ExtensionContext;
-use SMW\DIProperty;
-
 use ParserOutput;
-use WikiPage;
 use Revision;
+use SMW\DIProperty;
+use SMW\ExtensionContext;
+
+use SMW\NewRevisionFromEditComplete;
+use WikiPage;
 
 /**
  * @covers \SMW\NewRevisionFromEditComplete

@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SkinAfterContent;
 use SMW\ExtensionContext;
+use SMW\SkinAfterContent;
 
 /**
  * @covers \SMW\SkinAfterContent

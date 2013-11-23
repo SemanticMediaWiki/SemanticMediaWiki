@@ -3,9 +3,8 @@
 namespace SMW\Test;
 
 use SMW\EmptyContext;
-use SMW\RefreshJob;
 
-use Title;
+use SMW\RefreshJob;
 
 /**
  * @covers \SMW\RefreshJob

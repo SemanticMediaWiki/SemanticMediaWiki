@@ -2,12 +2,12 @@
 
 namespace SMW;
 
+use InvalidArgumentException;
 use SMWContainerSemanticData;
-use SMWDIContainer;
 use SMWDataValue;
 
+use SMWDIContainer;
 use Title;
-use InvalidArgumentException;
 
 /**
  * Provides a subobject

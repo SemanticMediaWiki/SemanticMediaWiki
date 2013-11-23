@@ -1,8 +1,10 @@
 <?php
 
 namespace SMW;
-use SMWQueryResult, SMWOutputs;
-use Html, FormatJson;
+use FormatJson;
+use Html;
+use SMWOutputs;
+use SMWQueryResult;
 
 /**
  * Base class for result printers that use the Semantic MediaWiki Api

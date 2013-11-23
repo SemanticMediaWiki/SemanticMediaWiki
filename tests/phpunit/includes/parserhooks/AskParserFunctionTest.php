@@ -2,16 +2,14 @@
 
 namespace SMW\Test;
 
-use SMW\ExtensionContext;
-use SMW\AskParserFunction;
-use SMW\MessageFormatter;
-use SMW\ParserData;
-use SMW\QueryData;
-use SMW\Settings;
-
-use Title;
 use ParserOutput;
-use ReflectionClass;
+use SMW\AskParserFunction;
+use SMW\ExtensionContext;
+use SMW\MessageFormatter;
+use SMW\QueryData;
+
+use SMW\Settings;
+use Title;
 
 /**
  * @covers \SMW\AskParserFunction

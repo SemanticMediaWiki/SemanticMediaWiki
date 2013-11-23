@@ -2,13 +2,12 @@
 
 namespace SMW\Test;
 
-use SMWHooks;
-use User;
-use Title;
-use WikiPage;
-use ParserOutput;
 use Parser;
-use LinksUpdate;
+use ParserOutput;
+use SMWHooks;
+use Title;
+use User;
+use WikiPage;
 
 /**
  * @covers \SMWHooks

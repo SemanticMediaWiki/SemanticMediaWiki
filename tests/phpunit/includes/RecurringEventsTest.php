@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\RecurringEvents;
 use SMW\ParserParameterFormatter;
+use SMW\RecurringEvents;
 
 /**
  * @covers \SMW\RecurringEvents

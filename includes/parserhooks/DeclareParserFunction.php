@@ -3,8 +3,8 @@
 namespace SMW;
 
 use Parser;
-use SMWParseData;
 use SMWOutputs;
+use SMWParseData;
 
 /**
  * Class that provides the {{#declare}} parser function

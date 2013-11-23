@@ -1,8 +1,14 @@
 <?php
 
 namespace SMW;
-use SMWIResultPrinter, SMWQueryResult, SMWQuery;
-use ParserOptions, Sanitizer, DummyLinker, SMWInfolink, Title;
+use DummyLinker;
+use ParserOptions;
+use Sanitizer;
+use SMWInfolink;
+use SMWIResultPrinter;
+use SMWQuery;
+use SMWQueryResult;
+use Title;
 
 /**
  * Abstract base class for printing query results.

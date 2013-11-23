@@ -2,14 +2,13 @@
 
 namespace SMW\Test\SQLStore;
 
-use SMW\SQLStore\WantedPropertiesCollector;
-use SMW\StoreFactory;
+use FakeResultWrapper;
 use SMW\DIProperty;
-use SMW\Settings;
+use SMW\SQLStore\WantedPropertiesCollector;
+
+use SMW\StoreFactory;
 
 use SMWRequestOptions;
-
-use FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\WantedPropertiesCollector

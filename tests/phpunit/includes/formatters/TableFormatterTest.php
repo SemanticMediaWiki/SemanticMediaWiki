@@ -2,9 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\TableFormatter;
-
 use ReflectionClass;
+
+use SMW\TableFormatter;
 
 /**
  * Tests for the TableFormatter class

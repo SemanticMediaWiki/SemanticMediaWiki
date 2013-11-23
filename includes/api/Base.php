@@ -2,9 +2,9 @@
 
 namespace SMW\Api;
 
+use SMW\ContextAware;
 use SMW\ContextInjector;
 use SMW\ContextResource;
-use SMW\ContextAware;
 use SMW\ExtensionContext;
 
 /**

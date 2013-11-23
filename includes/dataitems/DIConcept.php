@@ -3,7 +3,6 @@
 namespace SMW;
 
 use SMWDataItem;
-use SMWDataItemException;
 
 /**
  * This class implements Concept data items.

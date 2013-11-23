@@ -2,9 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\MessageFormatter;
 use Message;
 use ReflectionClass;
+use SMW\MessageFormatter;
 
 /**
  * Tests for the MessageFormatter class

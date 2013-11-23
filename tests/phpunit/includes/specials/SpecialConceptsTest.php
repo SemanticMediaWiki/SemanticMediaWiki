@@ -3,8 +3,6 @@
 namespace SMW\Test;
 
 use SMW\SpecialConcepts;
-use SMW\DIWikiPage;
-use SMWDataItem;
 
 /**
  * Tests for the SpecialConcepts class

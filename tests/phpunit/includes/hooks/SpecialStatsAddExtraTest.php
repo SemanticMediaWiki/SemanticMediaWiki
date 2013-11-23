@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SpecialStatsAddExtra;
 use SMW\ExtensionContext;
+use SMW\SpecialStatsAddExtra;
 
 /**
  * @covers \SMW\SpecialStatsAddExtra

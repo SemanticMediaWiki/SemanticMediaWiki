@@ -3,8 +3,8 @@
 namespace SMW\Test;
 
 use SMW\ExtensionContext;
-use SMW\UpdateJob;
 
+use SMW\UpdateJob;
 use Title;
 
 /**

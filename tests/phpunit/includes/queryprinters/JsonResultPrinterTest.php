@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\JsonResultPrinter;
-use SMW\ResultPrinter;
 
 /**
  * @covers \SMW\JsonResultPrinter

@@ -2,15 +2,13 @@
 
 namespace SMW\Test\SQLStore;
 
+use FakeResultWrapper;
+use SMW\DIProperty;
+use SMW\MessageFormatter;
+
 use SMW\SQLStore\UnusedPropertiesCollector;
 
-use SMW\MessageFormatter;
-use SMW\StoreFactory;
-use SMW\DIProperty;
-
 use SMWRequestOptions;
-
-use FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\UnusedPropertiesCollector
