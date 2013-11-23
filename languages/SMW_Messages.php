@@ -6028,6 +6028,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
  * @author Udi Oron אודי אורון
  * @author YaronSh
  * @author חיים
+ * @author ערן
  * @author 아라
  */
 $messages['he'] = array(
@@ -6059,6 +6060,7 @@ $messages['he'] = array(
 	'smw_printername_template' => 'תבנית',
 	'smw_printername_rdf' => 'יצוא RDF',
 	'smw_printername_category' => 'קטגוריה',
+	'validator-type-class-SMWParamSource' => 'טקסט',
 	'smw-paramdesc-limit' => 'מספר התוצאות המרבי להחזרה',
 	'smw-paramdesc-offset' => 'ההיסט של התוצאה הראשונה',
 	'smw-paramdesc-headers' => 'הצגת הכותרות או שמות המאפיינים',
@@ -6083,6 +6085,7 @@ $messages['he'] = array(
 	'smw-paramdesc-csv-sep' => 'תו הפרדה',
 	'smw-paramdesc-dsv-separator' => 'באיזה תו הפרדה להשתמש',
 	'smw-paramdesc-dsv-filename' => 'שם קובץ DSV',
+	'smw-paramdesc-filename' => 'שם קובץ הפלט',
 	'smw-paramdesc-searchlabel' => 'טקסט עבור המשך החיפוש',
 	'smw_iq_disabled' => 'שאילתות סמנטיות בוטלו באתר ויקי זה.',
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
@@ -6175,6 +6178,7 @@ $messages['he'] = array(
 	'smw_ask_show_embed' => 'הצגת קוד הטמעה',
 	'smw_ask_hide_embed' => 'הסתרת קוד הטמעה',
 	'smw_ask_embed_instr' => 'כדי לשבץ את השאילתה הזאת אל תוך דף ויקי, השתמשו בקוד להלן.',
+	'smw-ask-sorting' => 'מיון',
 	'searchbyproperty' => 'חיפוש לפי מאפיין',
 	'smw_sbv_docu' => 'חיפוש כל הדפים שיש להם מאפיין וערך מסוימים.',
 	'smw_sbv_novalue' => 'כתבו ערך תקין למאפיין, או צפו בכל ערכי המאפיינים עבור "$1".',
@@ -6256,6 +6260,7 @@ $messages['he'] = array(
 	'smw_unknowntype' => '[אופס! סוג לא מוכר "$1" הוגדר עבור מאפיין זה]', # Fuzzy
 	'smw_concept_header' => 'דפים מהרעיון "$1"',
 	'smw_conceptarticlecount' => 'הצגת {{PLURAL:$1|דף אחד השייך|$1 דפים השייכים}} לרעיון זה.', # Fuzzy
+	'group-smwadministrator' => 'מנהלי מדיה-ויקי סמנטית',
 );
 
 /** Hindi (हिन्दी)
@@ -8488,7 +8493,7 @@ $messages['ko'] = array(
 	'smw-smwdoc-par-parameters' => '보여줄 어떤 변수입니다. 형식에 추가한 변수에 대해서는 "specific", 모든 형식을 사용할 수 있는 변수에 대해서는 "base", 둘 다는 "all"입니다.',
 	'smw-paramdesc-sort' => '쿼리를 정렬하는 속성',
 	'smw-paramdesc-order' => '쿼리 정렬의 순서',
-	'smw-paramdesc-searchlabel' => '찾기를 계속에 대한 텍스트',
+	'smw-paramdesc-searchlabel' => '검색을 계속하기에 대한 텍스트',
 	'smw-paramdesc-named_args' => '틀에 전달한 인수의 이름을 지정',
 	'smw-paramdesc-export' => '내보내기 옵션',
 	'smw-paramdesc-prettyprint' => '추가적인 들여 쓰기와 줄 바꿈을 보여주는 예쁜 인쇄 출력',
@@ -8595,7 +8600,7 @@ $messages['ko'] = array(
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|데이터유형}}]]',
 	'smw_uri_doc' => 'URI 해결기는 [$1 W3C TAG의 httpRange-14에 찾은 표기]를 구현합니다.
 이것은 사람이 웹사이트에 향하지 않도록 주의합니다.',
-	'ask' => '시맨틱 찾기',
+	'ask' => '시맨틱 검색',
 	'smw_ask_sortby' => '열 순서로 정렬 (선택 사항)',
 	'smw_ask_ascorder' => '오름차순',
 	'smw_ask_descorder' => '내림차순',
@@ -8618,7 +8623,7 @@ $messages['ko'] = array(
 	'smw-ask-delete' => '[삭제]',
 	'smw-ask-sorting' => '정렬',
 	'smw-ask-format-selection-help' => '자세한 설명에 대해서는 $1 도움말 문서로 방문하세요.',
-	'searchbyproperty' => '속성으로 찾기',
+	'searchbyproperty' => '속성으로 검색',
 	'smw_sbv_docu' => '주어진 속성과 값을 가지고 모든 문서를 검색합니다.',
 	'smw_sbv_novalue' => '속성에 대한 올바른 값을 입력하거나 "$1"에 대한 모든 속성 값을 보세요.',
 	'smw_sbv_displayresult' => '"$2" 값으로 "$1" 속성을 가진 모든 문서의 목록입니다',
@@ -8637,7 +8642,7 @@ $messages['ko'] = array(
 	'smw_browse_no_incoming' => '이 문서에 링크한 속성이 없습니다.',
 	'smw_inverse_label_default' => '$1입니다',
 	'smw_inverse_label_property' => '역 속성 레이블',
-	'pageproperty' => '문서 속성 찾기',
+	'pageproperty' => '문서 속성 검색',
 	'smw_pp_docu' => '주어진 문서에 속성의 모든 값을 검색합니다.
 문서와 속성을 둘 다 입력하세요.',
 	'smw_pp_from' => '대상 문서',
@@ -8710,7 +8715,7 @@ $1 문서로 돌아갑니다.',
 	'smw-info-par-message' => '보여줄 메시지입니다.',
 	'smw-info-par-icon' => '"info"나 "warning" 중 하나를 보여주는 아이콘입니다.',
 	'prefs-smw' => '시맨틱 미디어위키',
-	'prefs-ask-options' => '시맨틱 찾기 옵션',
+	'prefs-ask-options' => '시맨틱 검색 설정',
 	'smw-prefs-intro-text' => '아래의 옵션은 [https://semantic-mediawiki.org/ 시맨틱 미디어위키](또는 관련된 확장 기능)가 선택된 기능에 대한 개별 사용자 지정을 활성화하기 위해 제공됩니다. 자세한 정보에 대해서는 이 [http://semantic-mediawiki.org/wiki/Help:User_preferences 도움말 문단]에서 보시기 바랍니다.',
 	'smw-prefs-ask-options-tooltip-display' => '정보 툴팁으로 변수 텍스트를 보이기',
 	'smw-prefs-ask-options-collapsed-default' => '옵션 상자를 기본적으로 접도록 활성화',
@@ -12366,6 +12371,8 @@ $messages['ru'] = array(
 Свойства, для которых не созданы страницы описания, перечислены в [[Special:WantedProperties|списке неописанных свойств]].",
 	'smw-statistics' => 'Семантическая статистика',
 	'smw-statistics-property-instance' => '{{PLURAL:$1|Значение|Значения}} свойства (всего)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Свойство|Свойства}}]] (всего)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Свойство|Свойства}} (всего)',
 	'smw-statistics-query-inline' => '{{PLURAL:$1|Запрос|Запросы}}',
 	'smw-statistics-query-size' => 'Размер запроса',
 	'smw_uri_doc' => 'Преобразователь URI осуществляет [$1 W3C поиск http тэгов с использованием Range-14].
