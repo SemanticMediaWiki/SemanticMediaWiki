@@ -4,7 +4,6 @@ namespace SMW;
 
 use SMWDataItem;
 use SMWErrorValue;
-use SMWLanguage;
 use SMWPropertyValue;
 use SMWDIError;
 
