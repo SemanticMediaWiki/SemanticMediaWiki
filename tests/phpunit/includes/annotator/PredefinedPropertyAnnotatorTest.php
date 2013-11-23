@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\PredefinedPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
 use SMW\DIProperty;
+use SMW\EmptyContext;
+use SMW\NullPropertyAnnotator;
+use SMW\PredefinedPropertyAnnotator;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\PredefinedPropertyAnnotator

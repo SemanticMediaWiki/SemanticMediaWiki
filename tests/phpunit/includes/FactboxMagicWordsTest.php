@@ -2,14 +2,13 @@
 
 namespace SMW\Test;
 
+use ParserOutput;
 use SMW\ContentProcessor;
-use SMW\ParserData;
-use SMW\Settings;
 use SMW\ExtensionContext;
 use SMW\Factbox;
+use SMW\ParserData;
 
-use ParserOutput;
-use Title;
+use SMW\Settings;
 
 /**
  * @covers \SMW\Factbox

@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use ApiResult;
 use ApiMain;
+use ApiResult;
 
 /**
  * Class contains Api related request methods

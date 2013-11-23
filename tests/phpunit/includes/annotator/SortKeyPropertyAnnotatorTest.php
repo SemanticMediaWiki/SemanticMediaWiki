@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\SortKeyPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\EmptyContext;
+use SMW\NullPropertyAnnotator;
+use SMW\SemanticData;
+use SMW\SortKeyPropertyAnnotator;
 
 /**
  * @covers \SMW\SortKeyPropertyAnnotator

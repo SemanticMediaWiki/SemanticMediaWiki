@@ -2,18 +2,16 @@
 
 namespace SMW\Test;
 
-use SMW\NewRevisionFromEditComplete;
-use SMW\OutputPageParserOutput;
-use SMW\ExtensionContext;
-use SMW\SemanticData;
-use SMW\ArticlePurge;
-use SMW\ParserData;
-use SMW\DIProperty;
-use SMW\Setup;
-
 use RequestContext;
-use WikiPage;
+use SMW\ArticlePurge;
+use SMW\DIProperty;
+use SMW\ExtensionContext;
+use SMW\ParserData;
+use SMW\SemanticData;
+
+use SMW\Setup;
 use Title;
+use WikiPage;
 
 /**
  * @covers \SMW\FunctionHook

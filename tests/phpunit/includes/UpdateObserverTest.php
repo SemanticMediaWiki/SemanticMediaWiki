@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\UpdateObserver;
 use SMW\ExtensionContext;
+use SMW\UpdateObserver;
 
 /**
  * @covers \SMW\UpdateObserver

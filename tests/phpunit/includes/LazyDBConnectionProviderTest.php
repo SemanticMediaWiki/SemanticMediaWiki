@@ -4,8 +4,6 @@ namespace SMW\Test;
 
 use SMW\LazyDBConnectionProvider;
 
-use DatabaseBase;
-
 /**
  * @covers \SMW\LazyDBConnectionProvider
  *

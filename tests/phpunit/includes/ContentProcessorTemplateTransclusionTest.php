@@ -2,11 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\ContentProcessor;
-use SMW\ExtensionContext;
-
-use Title;
 use ParserOutput;
+use SMW\ContentProcessor;
+
+use SMW\ExtensionContext;
+use Title;
 
 /**
  * @covers \SMW\ContentProcessor

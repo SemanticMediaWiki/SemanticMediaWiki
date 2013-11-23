@@ -2,24 +2,23 @@
 
 namespace SMW\Test;
 
-use SMW\SimpleDependencyBuilder;
-use SMW\DependencyContainer;
-use SMW\DataValueFactory;
-use SMW\StoreFactory;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\Settings;
-
-use RequestContext;
 use FauxRequest;
-use WebRequest;
 use Language;
+use ReflectionClass;
+use RequestContext;
+use SMW\DataValueFactory;
+use SMW\DependencyContainer;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMW\Settings;
+use SMW\SimpleDependencyBuilder;
+
+use SMW\StoreFactory;
+use SMWDataItem;
 use Title;
 
-use ReflectionClass;
-
-use SMWDataItem;
+use WebRequest;
 
 /**
  * @codeCoverageIgnore

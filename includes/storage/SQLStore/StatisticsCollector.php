@@ -2,14 +2,13 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\CacheableResultCollector;
-
-use SMW\SimpleDictionary;
+use DatabaseBase;
 use SMW\DIProperty;
 use SMW\Settings;
-use SMW\Store;
+use SMW\SimpleDictionary;
 
-use DatabaseBase;
+use SMW\Store\CacheableResultCollector;
+use SMW\Store;
 
 /**
  * Collects statistical information provided by the store

@@ -2,9 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SerializerFactory;
-use SMw\SemanticData;
 use SMW\DIWikiPage;
+use SMW\SerializerFactory;
 
 /**
  * @covers \SMW\SerializerFactory

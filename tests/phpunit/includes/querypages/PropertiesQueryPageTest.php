@@ -2,11 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\PropertiesQueryPage;
-use SMW\MessageFormatter;
 use SMW\ArrayAccessor;
 
-use SMWDataItem;
+use SMW\PropertiesQueryPage;
 
 /**
  * @covers \SMW\PropertiesQueryPage

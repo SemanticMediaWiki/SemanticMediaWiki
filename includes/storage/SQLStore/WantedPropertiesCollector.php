@@ -2,15 +2,14 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\CacheableResultCollector;
-
-use SMW\SimpleDictionary;
+use DatabaseBase;
 use SMW\DIProperty;
 use SMW\Profiler;
 use SMW\Settings;
-use SMW\Store;
+use SMW\SimpleDictionary;
 
-use DatabaseBase;
+use SMW\Store\CacheableResultCollector;
+use SMW\Store;
 
 /**
  * Collects wanted properties from a store entity

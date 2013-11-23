@@ -3,8 +3,8 @@
 namespace SMW\Test\SQLStore;
 
 use SMW\SQLStore\TableDefinition;
-use SMW\StoreFactory;
 
+use SMW\StoreFactory;
 use SMWDataItem;
 
 /**

@@ -2,9 +2,8 @@
 
 namespace SMW;
 
-use WikiPage;
-use Title;
 use User;
+use WikiPage;
 
 /**
  * Initiates an update of the Store

@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\ParserAfterTidy;
 use SMW\ExtensionContext;
+use SMW\ParserAfterTidy;
 
 /**
  * @covers \SMW\ParserAfterTidy

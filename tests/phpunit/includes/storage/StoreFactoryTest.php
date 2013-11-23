@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\StoreFactory;
 use SMW\Settings;
+use SMW\StoreFactory;
 
 /**
  * @covers \SMW\StoreFactory

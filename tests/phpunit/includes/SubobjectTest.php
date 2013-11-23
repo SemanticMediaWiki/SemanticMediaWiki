@@ -3,10 +3,10 @@
 namespace SMW\Test;
 
 use SMW\DataValueFactory;
-use SMW\HashIdGenerator;
 use SMW\DIProperty;
-use SMW\Subobject;
+use SMW\HashIdGenerator;
 
+use SMW\Subobject;
 use SMWDIBlob;
 use Title;
 

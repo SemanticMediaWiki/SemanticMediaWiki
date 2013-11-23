@@ -1,7 +1,6 @@
 <?php
 
 namespace SMW\Test\SQLStore;
-use SMW\SQLStore\PropertyStatisticsTable;
 /**
  * Tests for the SMW\ObservableMessageReporter class.
  *

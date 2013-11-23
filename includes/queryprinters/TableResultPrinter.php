@@ -2,10 +2,9 @@
 
 namespace SMW;
 
-use SMWResultArray;
-use SMWQueryResult;
-use SMWQueryProcessor;
 use SMWPrintRequest;
+use SMWQueryResult;
+use SMWResultArray;
 
 /**
  * Print query results in tables

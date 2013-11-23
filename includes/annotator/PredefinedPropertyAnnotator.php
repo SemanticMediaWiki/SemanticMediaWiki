@@ -3,7 +3,6 @@
 namespace SMW;
 
 use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDITime as DITime;
 

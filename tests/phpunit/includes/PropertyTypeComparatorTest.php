@@ -2,11 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\PropertyTypeComparator;
-use SMW\ObservableSubjectDispatcher;
 use SMW\DIProperty;
+use SMW\ObservableSubjectDispatcher;
 
-use Title;
+use SMW\PropertyTypeComparator;
 
 /**
  * @covers \SMW\PropertyTypeComparator

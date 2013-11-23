@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\NullPropertyAnnotator;
 use SMW\EmptyContext;
+use SMW\NullPropertyAnnotator;
 
 /**
  * @covers \SMW\NullPropertyAnnotator

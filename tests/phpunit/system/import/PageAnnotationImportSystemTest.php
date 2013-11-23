@@ -2,17 +2,17 @@
 
 namespace SMW\Test;
 
-use SMw\SemanticData;
-use SMW\ParserData;
-
-use ImportStreamSource;
 use ImportReporter;
-use WikiImporter;
+use ImportStreamSource;
 use MWException;
 use RequestContext;
-use WikiPage;
+use SMW\ParserData;
+
+use SMw\SemanticData;
 use Title;
 use User;
+use WikiImporter;
+use WikiPage;
 
 /**
  * This test is being used to run a sanity check to verify that necessary

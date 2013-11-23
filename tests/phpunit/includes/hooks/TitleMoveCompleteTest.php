@@ -2,10 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\TitleMoveComplete;
 use SMW\ExtensionContext;
 
-use WikiPage;
+use SMW\TitleMoveComplete;
 
 /**
  * @covers \SMW\TitleMoveComplete

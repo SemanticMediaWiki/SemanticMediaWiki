@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use Title;
 use Job;
+use Title;
 
 /**
  * Dispatcher class to invoke UpdateJob's

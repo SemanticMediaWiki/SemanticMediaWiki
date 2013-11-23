@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMWTypesValue;
+use Html;
 use SMWDIError;
 
-use Html;
+use SMWTypesValue;
 
 /**
  * Query page that provides content to Special:UnusedProperties

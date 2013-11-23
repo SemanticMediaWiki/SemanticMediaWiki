@@ -2,19 +2,18 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\CacheableResultCollector;
-
-use SMW\InvalidPropertyException;
-use SMW\SimpleDictionary;
+use DatabaseBase;
+use Message;
 use SMW\DIProperty;
-use SMW\Settings;
+use SMW\InvalidPropertyException;
 use SMW\Profiler;
+use SMW\Settings;
+use SMW\SimpleDictionary;
+
+use SMW\Store\CacheableResultCollector;
 use SMW\Store;
 
 use SMWDIError;
-
-use Message;
-use DatabaseBase;
 
 /**
  * Collects unused properties from a store entity

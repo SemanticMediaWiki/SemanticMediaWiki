@@ -2,12 +2,12 @@
 
 namespace SMW\Api;
 
-use SMW\SerializerFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-
-use Title;
 use ApiBase;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+
+use SMW\SerializerFactory;
+use Title;
 
 /**
  * Api module to browse a subject

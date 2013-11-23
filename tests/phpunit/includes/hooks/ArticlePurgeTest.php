@@ -3,8 +3,8 @@
 namespace SMW\Test;
 
 use SMW\ArticlePurge;
-use SMW\ExtensionContext;
 
+use SMW\ExtensionContext;
 use WikiPage;
 
 /**

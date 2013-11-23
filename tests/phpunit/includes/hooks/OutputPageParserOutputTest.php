@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\OutputPageParserOutput;
 use SMW\ExtensionContext;
+use SMW\OutputPageParserOutput;
 
 /**
  * @covers \SMW\OutputPageParserOutput

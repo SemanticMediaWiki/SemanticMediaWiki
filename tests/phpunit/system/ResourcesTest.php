@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use ResourceLoader;
-use ResourceLoaderModule;
 use ResourceLoaderContext;
 
 /**

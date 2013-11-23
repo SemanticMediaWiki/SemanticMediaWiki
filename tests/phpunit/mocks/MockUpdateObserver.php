@@ -2,9 +2,9 @@
 
 namespace SMW\Test;
 
-use \SMW\UpdateObserver;
-use \SMW\TitleAccess;
-use \SMW\ParserData;
+use SMW\ParserData;
+use SMW\TitleAccess;
+use SMW\UpdateObserver;
 
 /**
  * MockUpdateObserver should only be used during testing to establish that

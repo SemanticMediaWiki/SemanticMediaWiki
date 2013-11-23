@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\SimpleDictionary;
-
 use SMWRequestOptions;
 
 /**

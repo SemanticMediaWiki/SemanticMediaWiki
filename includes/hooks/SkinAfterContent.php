@@ -3,7 +3,6 @@
 namespace SMW;
 
 use OutputPage;
-use Title;
 use Skin;
 
 /**

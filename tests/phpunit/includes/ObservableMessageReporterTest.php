@@ -1,8 +1,8 @@
 <?php
 
 namespace SMW\Test;
-use SMW\ObservableMessageReporter;
 use SMW\MessageReporter;
+use SMW\ObservableMessageReporter;
 
 /**
  * Tests for the SMW\ObservableMessageReporter class.

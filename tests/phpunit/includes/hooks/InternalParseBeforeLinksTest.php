@@ -2,10 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\InternalParseBeforeLinks;
 use SMW\ExtensionContext;
 
-use Title;
+use SMW\InternalParseBeforeLinks;
 
 /**
  * @covers \SMW\InternalParseBeforeLinks

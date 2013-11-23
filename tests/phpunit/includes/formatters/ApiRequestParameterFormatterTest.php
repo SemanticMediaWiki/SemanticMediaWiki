@@ -4,8 +4,6 @@ namespace SMW\Test;
 
 use SMW\ApiRequestParameterFormatter;
 
-use SMWQueryResult;
-
 /**
  * @covers \SMW\ApiRequestParameterFormatter
  *

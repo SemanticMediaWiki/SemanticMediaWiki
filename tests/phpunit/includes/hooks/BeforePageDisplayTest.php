@@ -2,10 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\BeforePageDisplay;
-use SMW\ExtensionContext;
-
 use OutputPage;
+use SMW\BeforePageDisplay;
+
+use SMW\ExtensionContext;
 use Title;
 
 /**

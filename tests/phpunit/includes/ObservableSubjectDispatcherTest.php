@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\ObservableSubjectDispatcher;
 use SMW\ObservableDispatcher;
+use SMW\ObservableSubjectDispatcher;
 
 /**
  * @covers \SMW\BaseObserver

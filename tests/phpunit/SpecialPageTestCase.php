@@ -3,8 +3,8 @@
 namespace SMW\Test;
 
 use FauxRequest;
-use WebRequest;
 use OutputPage;
+use WebRequest;
 
 /**
  * Class contains methods to access SpecialPages

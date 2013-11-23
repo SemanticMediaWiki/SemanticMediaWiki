@@ -2,14 +2,14 @@
 
 namespace SMW\Test;
 
-use SMW\ContentParser;
-
-use TextContentHandler;
 use ContentHandler;
-use TextContent;
-use Revision;
-use Title;
 use Parser;
+use Revision;
+
+use SMW\ContentParser;
+use TextContent;
+use TextContentHandler;
+use Title;
 
 /**
  * @covers \SMW\ContentParser

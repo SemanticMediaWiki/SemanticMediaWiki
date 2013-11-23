@@ -2,11 +2,11 @@
 
 namespace SMW;
 
-use SMWThingDescription;
-use SMWSomeProperty;
-use SMWPageLister;
-
 use Html;
+use SMWPageLister;
+use SMWSomeProperty;
+
+use SMWThingDescription;
 
 /**
  * Special page that lists available concepts

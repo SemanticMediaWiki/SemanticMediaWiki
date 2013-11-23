@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\Setup;
 use SMW\ExtensionContext;
+use SMW\Setup;
 
 /**
  * @covers \SMW\Setup

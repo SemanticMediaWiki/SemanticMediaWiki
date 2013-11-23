@@ -3,8 +3,8 @@
 namespace SMW\Test;
 
 use SMW\Api\BrowseBySubject;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\Api\BrowseBySubject

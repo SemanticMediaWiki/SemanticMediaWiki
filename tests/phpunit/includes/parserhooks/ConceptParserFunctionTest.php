@@ -2,12 +2,11 @@
 
 namespace SMW\Test;
 
+use ParserOutput;
 use SMW\ConceptParserFunction;
 use SMW\MessageFormatter;
-use SMW\ParserData;
 
 use Title;
-use ParserOutput;
 
 /**
  * Tests for the ConceptParserFunction class

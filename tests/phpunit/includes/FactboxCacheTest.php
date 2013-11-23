@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
 use SMW\FactboxCache;
+use SMW\SharedDependencyContainer;
 
 /**
  * @covers \SMW\FactboxCache

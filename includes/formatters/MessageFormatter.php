@@ -3,8 +3,8 @@
 namespace SMW;
 
 use Html;
-use Message;
 use Language;
+use Message;
 
 /**
  * Class implementing message output formatting

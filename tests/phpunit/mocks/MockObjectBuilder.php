@@ -2,12 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\ObjectDictionary;
-use SMW\SimpleDictionary;
-use SMWDataItem;
-
 use InvalidArgumentException;
 use OutOfBoundsException;
+use SMW\ObjectDictionary;
+use SMW\SimpleDictionary;
 
 /**
  * @codeCoverageIgnore

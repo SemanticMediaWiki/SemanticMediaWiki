@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use ParserOutput;
 use LinkCache;
+use ParserOutput;
 use Title;
 
 /**

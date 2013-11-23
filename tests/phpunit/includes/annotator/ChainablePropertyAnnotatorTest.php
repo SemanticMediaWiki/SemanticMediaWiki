@@ -2,14 +2,14 @@
 
 namespace SMW\Test;
 
-use SMW\PredefinedPropertyAnnotator;
 use SMW\CategoryPropertyAnnotator;
-use SMW\SortKeyPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\EmptyContext;
+use SMW\NullPropertyAnnotator;
+use SMW\PredefinedPropertyAnnotator;
+use SMW\SemanticData;
+use SMW\SortKeyPropertyAnnotator;
 
 /**
  * @covers \SMW\PredefinedPropertyAnnotator

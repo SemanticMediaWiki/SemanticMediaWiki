@@ -2,12 +2,11 @@
 
 namespace SMW\Test;
 
-use SMW\ExtensionContext;
-use SMW\ContentParser;
-use SMW\Setup;
-
-use Title;
 use Parser;
+use SMW\ContentParser;
+use SMW\ExtensionContext;
+
+use SMW\Setup;
 
 /**
  * @covers \SMW\AskParserFunction

@@ -3,10 +3,10 @@
 namespace SMW\Test;
 
 use SMW\CategoryPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\EmptyContext;
+use SMW\NullPropertyAnnotator;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\CategoryPropertyAnnotator

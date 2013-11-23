@@ -2,10 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\UpdateDispatcherJob;
-use SMW\ExtensionContext;
 use SMW\DIProperty;
+use SMW\ExtensionContext;
 
+use SMW\UpdateDispatcherJob;
 use Title;
 
 /**

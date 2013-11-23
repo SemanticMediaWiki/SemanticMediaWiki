@@ -2,9 +2,9 @@
 
 namespace SMW;
 
+use Parser;
 use ParserOptions;
 use Revision;
-use Parser;
 use Title;
 use User;
 

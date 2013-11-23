@@ -8,8 +8,10 @@
 
 namespace SMW\Test;
 
-use Title, SMWDIProperty, SMWDIWikiPage, SMWQueryProcessor;
+use SMWDIProperty;
+use SMWDIWikiPage;
 use SMWRequestOptions;
+use Title;
 
 /**
  * Tests for the SMWStore class.

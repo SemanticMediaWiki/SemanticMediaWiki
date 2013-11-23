@@ -2,10 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\CacheIdGenerator;
+use HashBagOStuff;
 use SMW\CacheHandler;
 
-use HashBagOStuff;
+use SMW\CacheIdGenerator;
 
 /**
  * @covers \SMW\CacheHandler
