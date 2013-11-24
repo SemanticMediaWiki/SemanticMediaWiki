@@ -4612,7 +4612,7 @@ $messages['et'] = array(
 	'smw_printername_category' => 'Kategooria',
 	'validator-type-class-SMWParamSource' => 'tekst',
 	'smw-paramdesc-embedonly' => 'Näita ilma pealkirjadeta',
-	'smw-paramdesc-feedtype' => 'Toite tüüp',
+	'smw-paramdesc-feedtype' => 'Vootüüp',
 	'smw_true_words' => 'tõene,t,jah,j',
 	'smw_false_words' => 'väär,v,ei,e',
 	'smw_nofloat' => '"$1" pole number.',
@@ -8135,6 +8135,7 @@ Semantic MediaWiki のホームページで<a href="https://semantic-mediawiki.o
  * @author Gleki
  */
 $messages['jbo'] = array(
+	'smw_purge' => 'vifnygau',
 	'smw_browselink' => 'zgana lo se ckaji',
 );
 
