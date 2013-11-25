@@ -81,7 +81,8 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 
 The recommended way to install Semantic MediaWiki is with [Composer](http://getcomposer.org) using
 [MediaWiki 1.22 built-in support for Composer](https://www.mediawiki.org/wiki/Composer). MediaWiki
-versions prior to 1.22 can use Composer via the [Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md)
+versions prior to 1.22 can use Composer via the
+[Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md)
 extension.
 
 ##### Step 1
@@ -89,9 +90,11 @@ extension.
 If you have MediaWiki 1.22 or later, go to the root directory of your MediaWiki installation,
 and go to step 2. You do not need to install any extensions to support composer.
 
-For MediaWiki 1.21.x and earlier you need to install the [Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md) extension.
+For MediaWiki 1.21.x and earlier you need to install the
+[Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md) extension.
 
-Once you are done installing the Extension Installer, go to its directory so composer.phar is installed in the right place.
+Once you are done installing the Extension Installer, go to its directory so composer.phar
+is installed in the right place.
 
     cd extensions/ExtensionInstaller
 
@@ -103,10 +106,7 @@ To install Composer:
 
     wget http://getcomposer.org/composer.phar
 
-Note that you may be prompted to alter settings for the Sohusin extension and modify its whitelist. If required, moake this
-modification and then rerun the command above.
-
-#### Step 3
+##### Step 3
     
 Now using Composer, install Semantic MediaWiki.
     
@@ -121,8 +121,7 @@ Run the MediaWiki update script. The location of this script is maintenance/upda
 ##### Verify installation success
 
 As final step, you can verify SMW got installed by looking at the Special:Version page on your wiki and verifying the
-Semantic MediaWiki section is listed, as well as the Special:Statistics page and looking for the Semantic MediaWiki section
-of statistics.
+Semantic MediaWiki section is listed.
 
 ### Using a tarball
 
