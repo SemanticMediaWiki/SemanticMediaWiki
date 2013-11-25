@@ -77,31 +77,42 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 
 ## Download and installation
 
-### With Composer
+### Composer Installation
 
-The recommended way to install Semantic MediaWiki is with [Composer](http://getcomposer.org), using
-the [MediaWiki extension installation with Composer](https://www.mediawiki.org/wiki/Composer) support.
+The recommended way to install Semantic MediaWiki is with [Composer](http://getcomposer.org) using
+[MediaWiki 1.22 built-in support for Composer](https://www.mediawiki.org/wiki/Composer). MediaWiki
+versions prior to 1.22 can use Composer via the
+[Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md)
+extension.
 
 ##### Step 1
 
-If you have MediaWiki 1.22 or later, simply go to the root directory of your MediaWiki installation,
-and skip ahead to step 2. When using an older version of MediaWiki, follow these instructions: 
+If you have MediaWiki 1.22 or later, go to the root directory of your MediaWiki installation,
+and go to step 2. You do not need to install any extensions to support composer.
 
-Install the [Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md).
-(Click this link for instructions).
+For MediaWiki 1.21.x and earlier you need to install the
+[Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md) extension.
 
-Once you are done installing the Extension Installer, go to its directory.
+Once you are done installing the Extension Installer, go to its directory so composer.phar
+is installed in the right place.
 
     cd extensions/ExtensionInstaller
 
 ##### Step 2
 
-To install, run the following commands
+If you have previously installed Composer skip to step 3.
+
+To install Composer:
 
     wget http://getcomposer.org/composer.phar
-    php composer.phar require mediawiki/semantic-mediawiki dev-master
 
 ##### Step 3
+    
+Now using Composer, install Semantic MediaWiki.
+    
+    php composer.phar require mediawiki/semantic-mediawiki dev-master
+
+##### Step 4
 
 Run the MediaWiki update script. The location of this script is maintenance/update.php. It can be run as follows:
 
@@ -109,7 +120,8 @@ Run the MediaWiki update script. The location of this script is maintenance/upda
 
 ##### Verify installation success
 
-As final step, you can verify SMW got installed by looking at the Special:Version page on your wiki.
+As final step, you can verify SMW got installed by looking at the Special:Version page on your wiki and verifying the
+Semantic MediaWiki section is listed.
 
 ### Using a tarball
 
