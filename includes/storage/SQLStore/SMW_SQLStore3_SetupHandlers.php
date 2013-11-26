@@ -267,12 +267,14 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$this->reportProgress( " done.\n", $verbose );
 
 		if ( $wgDBtype == 'postgres' ) {
-			$this->reportProgress( " ... updating smw_ids_smw_id_seq sequence accordingly.\n", $verbose );
+			$sequenceIndex = SMWSql3SmwIds::tableName . '_smw_id_seq';
+
+			$this->reportProgress( " ... updating {$sequenceIndex} sequence accordingly.\n", $verbose );
 
 			$max = $db->selectField( SMWSql3SmwIds::tableName, 'max(smw_id)', array(), __METHOD__ );
 			$max += 1;
 
-			$db->query( "ALTER SEQUENCE smw_ids_smw_id_seq RESTART WITH {$max}", __METHOD__ );
+			$db->query( "ALTER SEQUENCE {$sequenceIndex} RESTART WITH {$max}", __METHOD__ );
 		}
 
 		$this->reportProgress( "Internal properties initialized successfully.\n", $verbose );
