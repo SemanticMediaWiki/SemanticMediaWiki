@@ -4612,7 +4612,7 @@ $messages['et'] = array(
 	'smw_printername_category' => 'Kategooria',
 	'validator-type-class-SMWParamSource' => 'tekst',
 	'smw-paramdesc-embedonly' => 'Näita ilma pealkirjadeta',
-	'smw-paramdesc-feedtype' => 'Toite tüüp',
+	'smw-paramdesc-feedtype' => 'Vootüüp',
 	'smw_true_words' => 'tõene,t,jah,j',
 	'smw_false_words' => 'väär,v,ei,e',
 	'smw_nofloat' => '"$1" pole number.',
@@ -8135,6 +8135,7 @@ Semantic MediaWiki のホームページで<a href="https://semantic-mediawiki.o
  * @author Gleki
  */
 $messages['jbo'] = array(
+	'smw_purge' => 'vifnygau',
 	'smw_browselink' => 'zgana lo se ckaji',
 );
 
@@ -11129,8 +11130,10 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw_unknowntype' => 'Typ atrybutu jest nieprawidłowy.',
 	'smw_concept_header' => 'Strony koncepcji „$1”',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Wyświetlona jest jedna strona należąca|Wyświetlone zostały $1 strony należące|Wyświetlonych zostało $1 stron należących}} do tej koncepcji.', # Fuzzy
+	'right-smw-admin' => 'Dostęp do zarządzania (Semantyczna MediaWiki)',
 	'group-smwadministrator' => 'Administratorzy SMW',
 	'group-smwadministrator-member' => '{{GENDER:$1|administrator SMW|administratorka SMW}}',
+	'action-smw-admin' => 'dostęp do zarządzania semantycznej MediaWiki',
 	'smw-sp-properties-cache-info' => 'Wymienione dane zostały pobrane z [https://www.semantic-mediawiki.org/wiki/Caching cache] i były ostatnio aktualizowane $1.',
 	'smw-sp-properties-header-label' => 'Lista właściwości',
 );
@@ -12295,6 +12298,7 @@ $messages['ru'] = array(
 	'smw-paramdesc-named_args' => 'Имена аргументов, передаваемых в шаблон',
 	'smw-paramdesc-export' => 'Параметры экспорта',
 	'smw-paramdesc-source' => 'Альтернативный источник запроса',
+	'smw-printername-feed' => 'Лента RSS и Atom',
 	'smw-paramdesc-feedtype' => 'Тип канала',
 	'smw-paramdesc-feedpagecontent' => 'Содержимое страницы, которое будет отображаться на канале',
 	'smw-label-feed-description' => '$2-канал $1',
@@ -12354,6 +12358,10 @@ $messages['ru'] = array(
 	'smw_propertylackstype' => 'Данному свойству не сопоставлен тип данных (по умолчанию будет использоваться тип $1).',
 	'smw_propertyhardlyused' => 'Это свойство почти не используется на сайте.',
 	'smw-sp-property-searchform' => 'Показать свойства, которые содержат:',
+	'concepts' => 'Концепты',
+	'smw-sp-concept-header' => 'Список концептов',
+	'smw-sp-concept-count' => 'В списке {{PLURAL:$1|числится следующий|числятся следующие}} {{PLURAL:$1|концепт|$1 концепта|$1 концептов}}',
+	'smw-sp-concept-empty' => 'Концепты не найдены.',
 	'unusedproperties' => 'Неиспользуемые свойства',
 	'smw_unusedproperties_docu' => 'Следующие свойства определены, но не используются ни в одной из статей.',
 	'smw_unusedproperty_template' => '$1 имеет тип $2',
@@ -12375,6 +12383,8 @@ $messages['ru'] = array(
 	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Свойство|Свойства}} (всего)',
 	'smw-statistics-query-inline' => '{{PLURAL:$1|Запрос|Запросы}}',
 	'smw-statistics-query-size' => 'Размер запроса',
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Концепт|Концепты}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Концепт|Концепты}}]]',
 	'smw_uri_doc' => 'Преобразователь URI осуществляет [$1 W3C поиск http тэгов с использованием Range-14].
 Данная возможность упрощает поиск семантической информации.',
 	'ask' => 'Семантический поиск',
@@ -12398,6 +12408,7 @@ $messages['ru'] = array(
 	'smw_ask_embed_instr' => 'Для линейного встраивания этого запроса в вики-страницу, используйте приведённых ниже код.',
 	'smw-ask-delete' => '[Удалить]',
 	'smw-ask-sorting' => 'Сортировка',
+	'smw-ask-format-selection-help' => 'Для подробного описания, пожалуйста, посетите страницу справки $1.',
 	'searchbyproperty' => 'Искать по свойству',
 	'smw_sbv_docu' => 'Искать все страницы, которые содержат указаннок свойство и значение.',
 	'smw_sbv_novalue' => 'Укажите значение или просмотрите все значения свойства $1.',
@@ -12484,7 +12495,9 @@ $messages['ru'] = array(
 	'smw-createproperty-isproperty' => 'Это свойство типа $1.',
 	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|допускается следующее значение|допускаются следующие значения}}:',
 	'smw-paramdesc-category-delim' => 'Разделитель',
+	'smw-paramdesc-category-userparam' => 'Параметр для передачи шаблону',
 	'smw-info-par-message' => 'Сообщение для отображения.',
+	'smw-info-par-icon' => 'Значок для отображения («информация» или «предупреждение»).',
 	'prefs-smw' => 'Семантическая МедиаВики',
 	'prefs-ask-options' => 'Параметры семантического поиска',
 	'smw-prefs-ask-options-tooltip-display' => 'Отображать параметр «текст» в виде всплывающей подсказки',
@@ -12504,6 +12517,7 @@ $messages['ru'] = array(
 	'group-smwadministrator' => 'Администраторы Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|администратор (SMW)}}',
 	'action-smw-admin' => 'доступ к задачам администратора Semantic MediaWiki',
+	'smw-sp-properties-docu' => 'Эта специальная страница показывает доступные [https://www.semantic-mediawiki.org/wiki/Property свойства], после фильтрации которых отображаются только совпавшие определённые пользователем свойства. Для дифференцированного представления, смотрите специальную страницу [[Special:UnusedProperties|неиспользованные свойства]] или [[Special:WantedProperties|требуемые свойства]].',
 	'smw-sp-properties-cache-info' => 'Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.',
 	'smw-sp-properties-header-label' => 'Список свойств',
 );
