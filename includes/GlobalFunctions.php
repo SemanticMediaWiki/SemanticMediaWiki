@@ -206,7 +206,6 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
  * Returns an instance for the storage back-end
  *
  * @return SMWStore
- * @deprecated since 1.9 and will be removed in 1.11
  */
 function &smwfGetStore() {
 	$store = \SMW\StoreFactory::getStore();
