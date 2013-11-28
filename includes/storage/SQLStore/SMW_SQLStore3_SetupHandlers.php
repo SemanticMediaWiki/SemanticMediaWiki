@@ -129,7 +129,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
 			array(
 				'p_id' => $dbtypes['p'],
-				'usage_count' => $dbtypes['i']
+				'usage_count' => ( $wgDBtype == 'postgres' ?  $dbtypes['i'] :  $dbtypes['j'] )
 			),
 			$db,
 			$reportTo
