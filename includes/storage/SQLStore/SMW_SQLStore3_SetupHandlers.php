@@ -65,7 +65,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			't' => SMWSQLHelpers::getStandardDBType( 'title' ),
 			'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
 			'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
-			'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
+			'i' => ( $wgDBtype == 'postgres' ? 'bigint' : 'INT(8)' ),
 			'j' => ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
 			'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
 			'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
@@ -129,7 +129,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
 			array(
 				'p_id' => $dbtypes['p'],
-				'usage_count' => $dbtypes['j']
+				'usage_count' => ( $wgDBtype == 'postgres' ?  $dbtypes['i'] :  $dbtypes['j'] )
 			),
 			$db,
 			$reportTo
