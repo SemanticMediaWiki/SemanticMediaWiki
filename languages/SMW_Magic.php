@@ -343,3 +343,9 @@ $magicWords['tt-cyrl'] = array(
 	'show' => array( 0, 'күрсәт' ),
 	'info' => array( 0, 'мәгълүмат' ),
 );
+
+/** Simplified Chinese (中文（简体）‎) */
+$magicWords['zh-hans'] = array(
+	'ask' => array( 0, '问' ),
+	'show' => array( 0, '显示' ),
+);
