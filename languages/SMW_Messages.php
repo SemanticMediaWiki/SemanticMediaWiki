@@ -2963,6 +2963,7 @@ $messages['ce'] = array(
 	'smw_smwadmin_datarefresh' => 'Хаам меттахӏоттор а керла баккхар а',
 	'smw_smwadmin_datarefreshbutton' => 'Хаам керла баккха дӏадоладе',
 	'smw-paramdesc-category-delim' => 'ДӀасакъастораг',
+	'smw-ui-tooltip-title-info' => 'Хаам',
 	'smw-ui-tooltip-title-note' => 'Билгалдаккхар',
 );
 
@@ -3246,6 +3247,7 @@ $messages['cu'] = array(
  */
 $messages['da'] = array(
 	'validator-type-class-SMWParamSource' => 'tekst',
+	'smw-ui-tooltip-title-legend' => 'Forklaring',
 );
 
 /** German (Deutsch)
