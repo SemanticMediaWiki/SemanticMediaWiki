@@ -74,6 +74,29 @@ class QueryResultSerializerTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @since  1.9
+	 */
+	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
+
+		$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
+			'getDIType' => DataItem::TYPE_WIKIPAGE,
+			'getTitle'  => null
+		) );
+
+		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
+			'getPrintRequests'  => array(),
+			'getResults'        => array( $dataItem ),
+		) );
+
+		$results = $this->newSerializerInstance()->serialize( $queryResult );
+
+		$this->assertInternalType( 'array' , $results );
+		$this->assertEmpty( $results['printrequests'] );
+		$this->assertEmpty( $results['results'] );
+
+	}
+
+	/**
 	 * @return array
 	 */
 	public function numberDataProvider() {
