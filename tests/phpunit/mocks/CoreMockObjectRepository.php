@@ -541,22 +541,28 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	 */
 	public function DataItem() {
 
+		$requiredMethods = array(
+			'getNumber',
+			'getDIType',
+			'getSortKey',
+			'equals',
+			'getSerialization',
+		);
+
+		$methods = array_unique( array_merge( $requiredMethods, $this->builder->getInvokedMethods() ) );
+
 		$dataItem = $this->getMockBuilder( 'SMWDataItem' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getNumber', 'getDIType', 'getSortKey', 'equals', 'getSerialization' ) )
+			->setMethods( $methods )
 			->getMock();
 
-		$dataItem->expects( $this->any() )
-			->method( 'getDIType' )
-			->will( $this->returnValue( $this->builder->setValue( 'getDIType' ) ) );
+		foreach ( $methods as $method ) {
 
-		$dataItem->expects( $this->any() )
-			->method( 'getSortKey' )
-			->will( $this->returnValue( $this->builder->setValue( 'getSortKey' ) ) );
+			$dataItem->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
 
-		$dataItem->expects( $this->any() )
-			->method( 'getNumber' )
-			->will( $this->returnValue( $this->builder->setValue( 'getNumber' ) ) );
+		}
 
 		return $dataItem;
 	}

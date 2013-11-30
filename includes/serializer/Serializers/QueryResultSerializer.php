@@ -9,6 +9,7 @@ use SMWResultArray;
 use SMWQueryResult as QueryResult;
 
 use OutOfBoundsException;
+use Title;
 
 /**
  * Class for serializing SMWDataItem and SMWQueryResult objects to a context
@@ -63,6 +64,8 @@ class QueryResultSerializer implements Serializer {
 	 * @return mixed
 	 */
 	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
+		$result = array();
+
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
 				$title = $dataItem->getTitle();
@@ -133,6 +136,11 @@ class QueryResultSerializer implements Serializer {
 		 * @var SMWPrintRequest $printRequest
 		 */
 		foreach ( $queryResult->getResults() as $diWikiPage ) {
+
+			if ( !($diWikiPage->getTitle() instanceof Title ) ) {
+				continue;
+			}
+
 			$result = array( 'printouts' => array() );
 
 			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
@@ -156,6 +164,7 @@ class QueryResultSerializer implements Serializer {
 			}
 
 			$results[$diWikiPage->getTitle()->getFullText()] = $result;
+
 		}
 
 		return array( 'printrequests' => $printRequests, 'results' => $results);
