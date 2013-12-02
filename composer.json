@@ -1,5 +1,5 @@
 {
-	"name": "mediawiki/semantic-mediawiki",
+	"name": "mediawiki/semantic-media-wiki",
 	"type": "mediawiki-extension",
 	"description": "MediaWiki extension that lets you store and query structured data within wiki pages",
 	"keywords": [
@@ -41,6 +41,9 @@
 		"composer/installers": ">=1.0.1",
 		"mediawiki/validator": ">=1.0.0.1"
 	},
+	"replace": {
+		"mediawiki/semantic-media-wiki": "*"
+	}
 	"autoload": {
 		"files" : [
 			"SemanticMediaWiki.php"
