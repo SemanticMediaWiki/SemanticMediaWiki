@@ -404,11 +404,12 @@ class SMWSql3SmwIds {
 		if ( $id == 0 ) {
 			$db = wfGetDB( DB_MASTER );
 			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
+			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
 
 			$db->insert(
 				self::tableName,
 				array(
-					'smw_id' => $db->nextSequenceValue( 'smw_ids_smw_id_seq' ),
+					'smw_id' => $sequenceValue,
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
@@ -577,10 +578,12 @@ class SMWSql3SmwIds {
 		if ( $row === false ) return; // no id at current position, ignore
 
 		if ( $targetid == 0 ) { // append new id
+			$sequenceValue = $db->nextSequenceValue( $this->getIdTable() . '_smw_id_seq' ); // Bug 42659
+
 			$db->insert(
 				self::tableName,
 				array(
-					'smw_id' => $db->nextSequenceValue( 'smw_ids_smw_id_seq' ),
+					'smw_id' => $sequenceValue,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,

@@ -65,7 +65,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			't' => SMWSQLHelpers::getStandardDBType( 'title' ),
 			'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
 			'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
-			'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
+			'i' => ( $wgDBtype == 'postgres' ? 'bigint' : 'INT(8)' ),
 			'j' => ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
 			'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
 			'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
@@ -129,7 +129,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
 			array(
 				'p_id' => $dbtypes['p'],
-				'usage_count' => $dbtypes['j']
+				'usage_count' => ( $wgDBtype == 'postgres' ?  $dbtypes['i'] :  $dbtypes['j'] )
 			),
 			$db,
 			$reportTo
@@ -267,12 +267,14 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$this->reportProgress( " done.\n", $verbose );
 
 		if ( $wgDBtype == 'postgres' ) {
-			$this->reportProgress( " ... updating smw_ids_smw_id_seq sequence accordingly.\n", $verbose );
+			$sequenceIndex = SMWSql3SmwIds::tableName . '_smw_id_seq';
+
+			$this->reportProgress( " ... updating {$sequenceIndex} sequence accordingly.\n", $verbose );
 
 			$max = $db->selectField( SMWSql3SmwIds::tableName, 'max(smw_id)', array(), __METHOD__ );
 			$max += 1;
 
-			$db->query( "ALTER SEQUENCE smw_ids_smw_id_seq RESTART WITH {$max}", __METHOD__ );
+			$db->query( "ALTER SEQUENCE {$sequenceIndex} RESTART WITH {$max}", __METHOD__ );
 		}
 
 		$this->reportProgress( "Internal properties initialized successfully.\n", $verbose );

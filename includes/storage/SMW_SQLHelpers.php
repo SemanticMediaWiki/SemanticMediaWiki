@@ -492,7 +492,8 @@ EOT;
 		self::reportProgress( "   ... creating new index $columns ...", $reportTo );
 		if ( $wgDBtype == 'postgres' ) { // postgresql
 			if ( $db->indexInfo( $tableName, $indexName ) === false ) {
-				$db->query( "CREATE $type $tableName ON $tableName USING btree($columns)", __METHOD__ );
+				$emptyIndexName = ''; // bug 42659
+				$db->query( "CREATE $type $emptyIndexName ON $tableName USING btree($columns)", __METHOD__ );
 			}
 		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
 			$db->query( "CREATE $type $indexName ON $tableName ($columns)", __METHOD__ );
