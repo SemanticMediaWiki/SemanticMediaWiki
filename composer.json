@@ -43,7 +43,7 @@
 	},
 	"replace": {
 		"mediawiki/semantic-media-wiki": "*"
-	}
+	},
 	"autoload": {
 		"files" : [
 			"SemanticMediaWiki.php"
