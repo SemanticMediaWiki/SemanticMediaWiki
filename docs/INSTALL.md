@@ -110,7 +110,7 @@ To install Composer:
     
 Now using Composer, install Semantic MediaWiki.
     
-    php composer.phar require mediawiki/semantic-mediawiki dev-master
+    php composer.phar require mediawiki/semantic-media-wiki "*"
 
 ##### Step 4
 
