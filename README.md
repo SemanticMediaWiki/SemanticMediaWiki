@@ -11,9 +11,9 @@ Notes on installing Semantic MediaWiki are found in the [INSTALL file](docs/INST
 [![Coverage Status](https://coveralls.io/repos/SemanticMediaWiki/SemanticMediaWiki/badge.png?branch=master)](https://coveralls.io/r/SemanticMediaWiki/SemanticMediaWiki?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/52755050632bac69e800000f/badge.png)](https://www.versioneye.com/user/projects/52755050632bac69e800000f)
 
-On [Packagist](https://packagist.org/packages/mediawiki/semantic-mediawiki):
-[![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-mediawiki/version.png)](https://packagist.org/packages/mediawiki/semantic-mediawiki)
-[![Packagist download count](https://poser.pugx.org/mediawiki/semantic-mediawiki/d/total.png)](https://packagist.org/packages/mediawiki/semantic-mediawiki)
+On [Packagist](https://packagist.org/packages/mediawiki/semantic-media-wiki):
+[![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-media-wiki/version.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
+[![Packagist download count](https://poser.pugx.org/mediawiki/semantic-media-wiki/d/total.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
 
 Contact
 -------
