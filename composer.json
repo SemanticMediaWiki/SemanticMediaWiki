@@ -42,7 +42,7 @@
 		"mediawiki/validator": ">=1.0.0.1"
 	},
 	"replace": {
-		"mediawiki/semantic-media-wiki": "*"
+		"mediawiki/semantic-mediawiki": "*"
 	},
 	"autoload": {
 		"files" : [
