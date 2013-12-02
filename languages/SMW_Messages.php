@@ -13658,8 +13658,8 @@ Egenskaper som fortfarande saknar en egen sida finns på [[Special:WantedPropert
 	'smw-statistics-property-type' => '{{PLURAL:$1|Egenskap|Egenskaper}} (som har tilldelats en datatyp)',
 	'smw-statistics-query-inline' => '{{PLURAL:$1|Fråga|Frågor}}',
 	'smw-statistics-query-size' => 'Frågestorlek',
-	'smw-statistics-concept-count-legacy' => 'Koncept', # Fuzzy
-	'smw-statistics-concept-count' => '[[Special:Concepts|Koncept]]', # Fuzzy
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Koncept}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Koncept}}]]',
 	'smw-statistics-subobject-count' => '{{PLURAL:$1|Underobjekt}}',
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datatyp|Datatyper}}]]',
 	'smw_uri_doc' => 'The URI resolver implements the [$1 W3C TAG finding on httpRange-14].
@@ -13797,7 +13797,7 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw_concept_header' => 'Sidor som hör till konceptet "$1"',
 	'smw_conceptarticlecount' => 'Visar {{PLURAL:$1|en sida|$1 sidor}}',
 	'group-smwadministrator' => 'Semantic MediaWiki-administratörer',
-	'group-smwadministrator-member' => 'administratör (SMW)', # Fuzzy
+	'group-smwadministrator-member' => '{{GENDER:$1|administratör (SMW)}}',
 	'smw-pa-property-predefined-default' => "$1 är en fördefinierad egenskap (även ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]''). Det är en inbyggd egenskap med en särskild betydelse, men användas precis som en vanlig [https://www.semantic-mediawiki.org/wiki/Property användardefinierad egenskap].",
 	'smw-sp-properties-header-label' => 'Lista med egenskaper',
 );
