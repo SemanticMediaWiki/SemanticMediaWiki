@@ -2,7 +2,7 @@
 
 set -x
 
-if [ "$MW-$DBTYPE" == "master-mysql" ]
+if [ "$TYPE" == "coverage" ]
 then
 	cd ../../extensions/SemanticMediaWiki
 	composer require satooshi/php-coveralls:dev-master

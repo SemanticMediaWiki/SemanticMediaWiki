@@ -28,14 +28,32 @@ else
   php maintenance/install.php --dbtype $DBTYPE --dbuser root --dbname its_a_mw --dbpath $(pwd) --pass nyan TravisWiki admin --scriptpath /TravisWiki
 fi
 
-cd extensions
+if [ "$TYPE" == "composer" ]
+then
+	composer require mediawiki/semantic-media-wiki "dev-master"
 
-cp -r $originalDirectory SemanticMediaWiki
+	cd extensions
+	cd SemanticMediaWiki
 
-cd SemanticMediaWiki
-composer install
+	# Pull request number, "false" if it's not a pull request
+	if [ "$TRAVIS_PULL_REQUEST" != "false" ]
+	then
+		git fetch origin +refs/pull/"$TRAVIS_PULL_REQUEST"/merge:
+		git checkout -qf FETCH_HEAD
+	else
+		git fetch origin "$TRAVIS_BRANCH"
+		git checkout -qf FETCH_HEAD
+	fi
 
-cd ../..
+	cd ../..
+
+else
+	cd extensions
+	cp -r $originalDirectory SemanticMediaWiki
+	cd SemanticMediaWiki
+	composer install
+	cd ../..
+fi
 
 echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
 
