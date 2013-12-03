@@ -39,11 +39,12 @@ then
 	if [ "$TRAVIS_PULL_REQUEST" != "false" ]
 	then
 		git fetch origin +refs/pull/"$TRAVIS_PULL_REQUEST"/merge:
+		git checkout -qf FETCH_HEAD
 	else
 		git fetch origin "$TRAVIS_BRANCH"
+		git checkout -qf FETCH_HEAD
 	fi
 
-	git checkout -qf FETCH_HEAD
 	cd ../..
 
 else
