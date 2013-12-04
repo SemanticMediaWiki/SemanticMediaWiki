@@ -47,6 +47,9 @@
 	"autoload": {
 		"files" : [
 			"SemanticMediaWiki.php"
+		],
+		"classmap": [
+			"includes/"
 		]
 	}
 }
