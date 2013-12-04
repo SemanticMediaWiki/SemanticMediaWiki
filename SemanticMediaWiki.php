@@ -100,6 +100,15 @@ $GLOBALS['wgAutoloadClasses']['SMWPageSchemas'] = __DIR__ . '/' . 'includes/SMW_
 // Load default settings
 require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
+###
+# If you already have custom namespaces on your site, insert
+#    $GLOBALS['smwgNamespaceIndex'] = ???;
+# into your LocalSettings.php *before* including this file. The number ??? must
+# be the smallest even namespace number that is not in use yet. However, it
+# must not be smaller than 100.
+##
+$GLOBALS['wgExtensionFunctions'][] = 'smwfInitNamespaces';
+
 // Resource definitions
 $GLOBALS['wgResourceModules'] = array_merge( $GLOBALS['wgResourceModules'], include( __DIR__ . "/resources/Resources.php" ) );
 
