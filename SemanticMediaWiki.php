@@ -131,24 +131,10 @@ $GLOBALS['wgAutoloadClasses']['SMWPageSchemas'] = __DIR__ . '/' . 'includes/SMW_
 // Load default settings
 require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
-###
-# If you already have custom namespaces on your site, insert
-#    $GLOBALS['smwgNamespaceIndex'] = ???;
-# into your LocalSettings.php *before* including this file. The number ??? must
-# be the smallest even namespace number that is not in use yet. However, it
-# must not be smaller than 100.
-##
-$GLOBALS['wgExtensionFunctions'][] = 'smwfInitNamespaces';
-
-// Resource definitions
-$GLOBALS['wgResourceModules'] = array_merge( $GLOBALS['wgResourceModules'], include( __DIR__ . "/resources/Resources.php" ) );
-
 // Because of MW 1.19 we need to register message files here
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'languages/SMW_Messages.php';
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'languages/SMW_Aliases.php';
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgIP'] . 'languages/SMW_Magic.php';
-
-$GLOBALS['smwgNamespace'] = parse_url( $GLOBALS['wgServer'], PHP_URL_HOST );
 
 /**
  * Setup and initialization
@@ -162,6 +148,21 @@ $GLOBALS['smwgNamespace'] = parse_url( $GLOBALS['wgServer'], PHP_URL_HOST );
  * @since  1.9
  */
 $GLOBALS['wgExtensionFunctions'][] = function() {
+	$GLOBALS['smwgNamespace'] = parse_url( $GLOBALS['wgServer'], PHP_URL_HOST );
+
+	###
+	# This is the path to your installation of Semantic MediaWiki as seen from the
+	# web. Change it if required ($wgScriptPath is the path to the base directory
+	# of your wiki). No final slash.
+	##
+	$GLOBALS['smwgScriptPath'] = ( $GLOBALS['wgExtensionAssetsPath'] === false ? $GLOBALS['wgScriptPath'] . '/extensions' : $GLOBALS['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
+	##
+
+	// Resource definitions
+	$GLOBALS['wgResourceModules'] = array_merge( $GLOBALS['wgResourceModules'], include( __DIR__ . "/resources/Resources.php" ) );
+
+	smwfInitNamespaces();
+
 	$setup = new \SMW\Setup( $GLOBALS );
 	$setup->run();
 };
