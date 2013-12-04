@@ -49,7 +49,9 @@
 			"SemanticMediaWiki.php"
 		],
 		"classmap": [
-			"includes/"
+			"SemanticMediaWiki.hooks.php",
+			"includes/",
+			"languages/SMW_Language.php"
 		]
 	}
 }
