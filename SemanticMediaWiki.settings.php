@@ -26,14 +26,6 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 }
 
 ###
-# This is the path to your installation of Semantic MediaWiki as seen from the
-# web. Change it if required ($wgScriptPath is the path to the base directory
-# of your wiki). No final slash.
-##
-$GLOBALS['smwgScriptPath'] = ( $GLOBALS['wgExtensionAssetsPath'] === false ? $GLOBALS['wgScriptPath'] . '/extensions' : $GLOBALS['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
-##
-
-###
 # This is the path to your installation of Semantic MediaWiki as seen on your
 # local filesystem. Used against some PHP file path issues.
 # If needed, you can also change this path in LocalSettings.php after including
@@ -87,6 +79,14 @@ $GLOBALS['smwgSparqlDefaultGraph'] = '';
 if ( !isset( $GLOBALS['smwgHistoricTypeNamespace'] ) ) {
 	$GLOBALS['smwgHistoricTypeNamespace'] = false;
 }
+##
+
+###
+# If you already have custom namespaces on your site, insert
+#    $GLOBALS['smwgNamespaceIndex'] = ???;
+# into your LocalSettings.php *before* including this file. The number ??? must
+# be the smallest even namespace number that is not in use yet. However, it
+# must not be smaller than 100.
 ##
 
 ###
