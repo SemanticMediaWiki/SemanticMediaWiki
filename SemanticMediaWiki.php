@@ -35,23 +35,9 @@ if ( !defined( 'Validator_VERSION' ) && is_readable( __DIR__ . '/vendor/autoload
 	include_once( __DIR__ . '/vendor/autoload.php' );
 }
 
-// Include the Validator extension if that hasn't been done yet, since it's required for SMW to work.
-if ( !defined( 'Validator_VERSION' ) ) {
-	@include_once( __DIR__ . '/../Validator/Validator.php' );
-}
-
 // Only initialize the extension when all dependencies are present.
 if ( !defined( 'Validator_VERSION' ) ) {
 	throw new Exception( 'You need to have https://www.mediawiki.org/wiki/Extension:ParamProcessor installed in order to use SMW' );
-}
-
-// Version check for Validator, which needs to be at 1.0 or greater.
-if ( version_compare( Validator_VERSION, '1.0c', '<' ) ) {
-	throw new Exception(
-		'This version of SMW needs https://www.mediawiki.org/wiki/Extension:ParamProcessor 1.0 or later.
-		You are currently using version ' . Validator_VERSION . '.
-		If for any reason you are stuck at Validator 0.5.x, you can use SMW 1.8.x<br />'
-	);
 }
 
 // Registration of the extension credits, see Special:Version.
