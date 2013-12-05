@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMWLanguage;
+
 /**
  * Extension setup and registration
  *
@@ -64,10 +66,8 @@ final class Setup implements ContextAware {
 	 * @since 1.9
 	 */
 	protected function init() {
-
 		$this->globals['smwgMasterStore'] = null;
 		$this->globals['smwgIQRunningNumber'] = 0;
-
 	}
 
 	/**

@@ -278,11 +278,3 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	}
 
 }
-
-/**
- * @codeCoverageIgnore
- * SMWAggregatablePrinter
- *
- * @deprecated since SMW 1.9
- */
-class_alias( '\SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );

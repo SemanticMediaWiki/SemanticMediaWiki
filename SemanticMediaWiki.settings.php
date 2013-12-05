@@ -26,14 +26,6 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 }
 
 ###
-# This is the path to your installation of Semantic MediaWiki as seen from the
-# web. Change it if required ($wgScriptPath is the path to the base directory
-# of your wiki). No final slash.
-##
-$GLOBALS['smwgScriptPath'] = ( $GLOBALS['wgExtensionAssetsPath'] === false ? $GLOBALS['wgScriptPath'] . '/extensions' : $GLOBALS['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
-##
-
-###
 # This is the path to your installation of Semantic MediaWiki as seen on your
 # local filesystem. Used against some PHP file path issues.
 # If needed, you can also change this path in LocalSettings.php after including
@@ -96,7 +88,6 @@ if ( !isset( $GLOBALS['smwgHistoricTypeNamespace'] ) ) {
 # be the smallest even namespace number that is not in use yet. However, it
 # must not be smaller than 100.
 ##
-smwfInitNamespaces();
 
 ###
 # This setting allows you to select in which cases you want to have a factbox
@@ -406,42 +397,6 @@ $GLOBALS['smwgMaxNonExpNumber'] = 1000000000000000;
 # or the use of SMW_refreshData.php might be needed.
 ##
 $GLOBALS['smwgEnableUpdateJobs'] = true;
-##
-
-###
-# Overwriting the following array, you can define for which namespaces
-# the semantic links and annotations are to be evaluated. On other
-# pages, annotations can be given but are silently ignored. This is
-# useful since, e.g., talk pages usually do not have attributes and
-# the like. In fact, is is not obvious what a meaningful attribute of
-# a talk page could be. Pages without annotations will also be ignored
-# during full RDF export, unless they are referred to from another
-# article.
-##
-$GLOBALS['smwgNamespacesWithSemanticLinks'] = array(
-	              NS_MAIN => true,
-	              NS_TALK => false,
-	              NS_USER => true,
-	         NS_USER_TALK => false,
-	           NS_PROJECT => true,
-	      NS_PROJECT_TALK => false,
-	             NS_IMAGE => true,
-	        NS_IMAGE_TALK => false,
-	         NS_MEDIAWIKI => false,
-	    NS_MEDIAWIKI_TALK => false,
-	          NS_TEMPLATE => false,
-	     NS_TEMPLATE_TALK => false,
-	              NS_HELP => true,
-	         NS_HELP_TALK => false,
-	          NS_CATEGORY => true,
-	     NS_CATEGORY_TALK => false,
-	     SMW_NS_PROPERTY  => true,
-	SMW_NS_PROPERTY_TALK  => false,
-	          SMW_NS_TYPE => true,
-	     SMW_NS_TYPE_TALK => false,
-	       SMW_NS_CONCEPT => true,
-	  SMW_NS_CONCEPT_TALK => false,
-);
 ##
 
 ### List of enabled special page properties.

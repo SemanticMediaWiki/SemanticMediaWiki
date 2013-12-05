@@ -70,7 +70,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testRegisterFunctionHooksWithoutExecution( $hook, $setup ) {
-
 		$this->assertHook( $hook, $setup, 1 );
 
 	}
