@@ -22,7 +22,7 @@ matrix:
   exclude:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
-    - env: DBTYPE=postgres; MW=1.21.0
+    - env: DBTYPE=postgres; MW=master
 
 before_script: bash ./build/travis/before_script.sh
 
