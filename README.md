@@ -9,6 +9,7 @@ Notes on installing Semantic MediaWiki are found in the [INSTALL file](docs/INST
 
 [![Build Status](https://secure.travis-ci.org/SemanticMediaWiki/SemanticMediaWiki.png?branch=master)](http://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
 [![Coverage Status](https://coveralls.io/repos/SemanticMediaWiki/SemanticMediaWiki/badge.png?branch=master)](https://coveralls.io/r/SemanticMediaWiki/SemanticMediaWiki?branch=master)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/quality-score.png?s=d9aac7e68e6554f95b0a89608cbc36985429d819)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
 [![Dependency Status](https://www.versioneye.com/user/projects/52755050632bac69e800000f/badge.png)](https://www.versioneye.com/user/projects/52755050632bac69e800000f)
 
 On [Packagist](https://packagist.org/packages/mediawiki/semantic-media-wiki):
