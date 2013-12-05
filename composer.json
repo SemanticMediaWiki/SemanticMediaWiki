@@ -47,6 +47,12 @@
 	"autoload": {
 		"files" : [
 			"SemanticMediaWiki.php"
+		],
+		"classmap": [
+			"SemanticMediaWiki.hooks.php",
+			"includes/",
+			"languages/SMW_Language.php",
+			"tests/phpunit/"
 		]
 	}
 }
