@@ -82,6 +82,7 @@ class_alias( 'SMW\DataItemException', 'SMWDataItemException' );
 class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );
 class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
 class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );
+class_alias( 'SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 1.11
