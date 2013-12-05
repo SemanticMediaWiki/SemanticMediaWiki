@@ -21,8 +21,6 @@ matrix:
       php: 5.4
   exclude:
     - env: THENEEDFORTHIS=FAIL
-  allow_failures:
-    - env: DBTYPE=postgres; MW=1.19.0
 
 before_script: bash ./build/travis/before_script.sh
 
