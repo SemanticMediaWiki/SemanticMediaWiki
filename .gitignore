@@ -2,6 +2,7 @@
 *.kate-swp
 
 vendor/
+extensions/
 build/logs/
 
 composer.phar
