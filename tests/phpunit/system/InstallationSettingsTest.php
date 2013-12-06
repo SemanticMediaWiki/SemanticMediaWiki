@@ -35,4 +35,60 @@ class InstallationSettingsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 	}
+
+	/**
+	 * @dataProvider smwgNamespacesWithSemanticLinksProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testNamespacesWithSemanticLinksOnTravisCustomNamespace( $type, $container ) {
+
+		if ( !defined( 'NS_TRAVIS' ) ) {
+			$this->markTestSkipped( 'Test can only be executed with a specified NS_TRAVIS' );
+		}
+
+		$namespace = NS_TRAVIS;
+
+		$this->assertTrue(
+			isset( $GLOBALS['wgExtraNamespaces'][$namespace] ),
+			"Asserts that wgExtraNamespaces contains the expected {$namespace} NS"
+		);
+
+		$foundNamespaceEntry = false;
+
+		foreach ( $container as $key => $value ) {
+			if ( $key === $namespace ) {
+				$foundNamespaceEntry = true;
+				break;
+			}
+		}
+
+		$this->assertTrue(
+			$foundNamespaceEntry,
+			"Asserts that smwgNamespacesWithSemanticLinks retrieved from {$type} contains the expected {$namespace} NS"
+		);
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function smwgNamespacesWithSemanticLinksProvider() {
+
+		$provider = array();
+
+		$provider[] = array(
+			'GLOBALS',
+			$GLOBALS['smwgNamespacesWithSemanticLinks']
+		);
+
+		$provider[] = array(
+			'Settings',
+			Settings::newFromGlobals()->get( 'smwgNamespacesWithSemanticLinks' )
+		);
+
+		return $provider;
+	}
+
+
 }

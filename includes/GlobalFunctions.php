@@ -307,6 +307,7 @@ function smwfInitNamespaces() {
 	if ( !isset( $smwgNamespaceIndex ) ) {
 		$smwgNamespaceIndex = 100;
 	}
+
 	// 100 and 101 used to be occupied by SMW's now obsolete namespaces "Relation" and "Relation_Talk"
 	define( 'SMW_NS_PROPERTY',       $smwgNamespaceIndex + 2 );
 	define( 'SMW_NS_PROPERTY_TALK',  $smwgNamespaceIndex + 3 );
@@ -333,8 +334,8 @@ function smwfInitNamespaces() {
 
 	// Support subpages only for talk pages by default
 	$wgNamespacesWithSubpages = $wgNamespacesWithSubpages + array(
-				SMW_NS_PROPERTY_TALK => true,
-				SMW_NS_TYPE_TALK => true
+		SMW_NS_PROPERTY_TALK => true,
+		SMW_NS_TYPE_TALK => true
 	);
 
 	// not modified for Semantic MediaWiki
@@ -343,33 +344,11 @@ function smwfInitNamespaces() {
 		);
 	*/
 
-	###
-	# Overwriting the following array, you can define for which namespaces
-	# the semantic links and annotations are to be evaluated. On other
-	# pages, annotations can be given but are silently ignored. This is
-	# useful since, e.g., talk pages usually do not have attributes and
-	# the like. In fact, is is not obvious what a meaningful attribute of
-	# a talk page could be. Pages without annotations will also be ignored
-	# during full RDF export, unless they are referred to from another
-	# article.
-	##
-	$GLOBALS['smwgNamespacesWithSemanticLinks'] = array(
-		NS_MAIN => true,
-		NS_TALK => false,
-		NS_USER => true,
-		NS_USER_TALK => false,
-		NS_PROJECT => true,
-		NS_PROJECT_TALK => false,
-		NS_IMAGE => true,
-		NS_IMAGE_TALK => false,
-		NS_MEDIAWIKI => false,
-		NS_MEDIAWIKI_TALK => false,
-		NS_TEMPLATE => false,
-		NS_TEMPLATE_TALK => false,
-		NS_HELP => true,
-		NS_HELP_TALK => false,
-		NS_CATEGORY => true,
-		NS_CATEGORY_TALK => false,
+	/**
+	 * Default settings for the SMW specific NS which can only
+	 * be defined after SMW_NS_PROPERTY is declared
+	 */
+	$smwNamespacesSettings = array(
 		SMW_NS_PROPERTY  => true,
 		SMW_NS_PROPERTY_TALK  => false,
 		SMW_NS_TYPE => true,
@@ -377,6 +356,14 @@ function smwfInitNamespaces() {
 		SMW_NS_CONCEPT => true,
 		SMW_NS_CONCEPT_TALK => false,
 	);
+
+	// Combine default values with values specified in other places
+	// (LocalSettings etc.)
+	$GLOBALS['smwgNamespacesWithSemanticLinks'] = array_replace(
+		$smwNamespacesSettings,
+		$GLOBALS['smwgNamespacesWithSemanticLinks']
+	);
+
 ##
 }
 
