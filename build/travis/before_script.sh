@@ -73,6 +73,7 @@ function runSettingsGenerator {
 	echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
 
 	echo '$smwgNamespacesWithSemanticLinks = array( NS_MAIN => true, NS_IMAGE => true, NS_TRAVIS => true );' >> LocalSettings.php
+	echo '$smwgNamespace = "http://example.org/id/";' >> LocalSettings.php
 
 	# Error reporting
 	echo 'error_reporting(E_ALL| E_STRICT);' >> LocalSettings.php

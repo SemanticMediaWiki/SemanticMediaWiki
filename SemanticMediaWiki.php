@@ -104,7 +104,10 @@ $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgI
  * @since  1.9
  */
 $GLOBALS['wgExtensionFunctions'][] = function() {
-	$GLOBALS['smwgNamespace'] = parse_url( $GLOBALS['wgServer'], PHP_URL_HOST );
+
+	if ( !isset( $GLOBALS['smwgNamespace']) ) {
+		$GLOBALS['smwgNamespace'] = parse_url( $GLOBALS['wgServer'], PHP_URL_HOST );
+	}
 
 	###
 	# This is the path to your installation of Semantic MediaWiki as seen from the

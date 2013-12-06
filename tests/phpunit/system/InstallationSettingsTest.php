@@ -37,6 +37,24 @@ class InstallationSettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @since 1.9
+	 */
+	public function testNamespaceSettingOnExampleIfSet() {
+
+		$expected = 'http://example.org/id/';
+
+		if ( $GLOBALS['smwgNamespace'] !== $expected ) {
+			$this->markTestSkipped( "Skip test due to missing {$expected} setting" );
+		}
+
+		$this->assertTrue(
+			$GLOBALS['smwgNamespace'] === Settings::newFromGlobals()->get( 'smwgNamespace' ),
+			"Asserts that smwgNamespace contains the expected {$expected}"
+		);
+
+	}
+
+	/**
 	 * @dataProvider smwgNamespacesWithSemanticLinksProvider
 	 *
 	 * @since 1.9
