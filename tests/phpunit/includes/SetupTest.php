@@ -50,11 +50,22 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newInstance( &$test = array(), $context = null ) {
 
+		$default = array(
+			'wgExtensionAssetsPath' => false,
+			'wgResourceModules'     => array(),
+			'wgScriptPath' => '/Foo',
+			'wgServer'     => 'http://example.org',
+			'wgVersion'    => '1.21',
+			'wgLang'       => $this->newMockBuilder()->newObject( 'Language' )
+		);
+
+		$test = array_merge( $default, $test );
+
 		if ( $context === null ) {
 			$context = $this->newExtensionContext();
 		}
 
-		return new Setup( $test, $context );
+		return new Setup( $test, 'Foo', $context );
 	}
 
 	/**
@@ -121,11 +132,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 * @since  1.9
 	 */
 	private function assertHook( $hook, &$setup, $count ) {
-
-		$mockLang = $this->newMockBuilder()->newObject( 'Language' );
-
-		$setup['wgVersion'] = '1.21';
-		$setup['wgLang']    = $mockLang;
 
 		$instance = $this->newInstance( $setup );
 
@@ -401,8 +407,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 */
 	public function specialPageDataProvider() {
 
-		$provider = array();
-
 		$specials = array(
 			'Ask',
 			'Browse',
@@ -419,13 +423,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'WantedProperties',
 		);
 
-		foreach ( $specials as $special ) {
-			$provider[] = array(
-				$special,
-				array( 'wgSpecialPages' => array( $special => '' ) ) );
-		}
-
-		return $provider;
+		return $this->buildDataProvider( 'wgSpecialPages', $specials, '' );
 	}
 
 	/**
@@ -433,29 +431,19 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 */
 	public function jobClassesDataProvider() {
 
-		$provider = array();
-
 		$jobs = array(
 			'SMW\UpdateJob',
 			'SMW\RefreshJob',
 			'SMW\UpdateDispatcherJob',
 		);
 
-		foreach ( $jobs as $job ) {
-			$provider[] = array(
-				$job,
-				array( 'wgJobClasses' => array( $job => '' ) ) );
-		}
-
-		return $provider;
+		return $this->buildDataProvider( 'wgJobClasses', $jobs, '' );
 	}
 
 	/**
 	 * @return array
 	 */
 	public function apiModulesDataProvider() {
-
-		$provider = array();
 
 		$modules = array(
 			'ask',
@@ -464,13 +452,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'browsebysubject',
 		);
 
-		foreach ( $modules as $module ) {
-			$provider[] = array(
-				$module,
-				array( 'wgAPIModules' => array( $module => '' ) ) );
-		}
-
-		return $provider;
+		return $this->buildDataProvider( 'wgAPIModules', $modules, '' );
 	}
 
 
@@ -479,29 +461,19 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 */
 	public function messagesFilesDataProvider() {
 
-		$provider = array();
-
 		$modules = array(
 			'SemanticMediaWiki',
 			'SemanticMediaWikiAlias',
 			'SemanticMediaWikiMagic',
 		);
 
-		foreach ( $modules as $module ) {
-			$provider[] = array(
-				$module,
-				array( 'wgExtensionMessagesFiles' => array( $module => '' ) ) );
-		}
-
-		return $provider;
+		return $this->buildDataProvider( 'wgExtensionMessagesFiles', $modules, '' );
 	}
 
 	/**
 	 * @return array
 	 */
 	public function functionHooksProvider() {
-
-		$provider = array();
 
 		$hooks = array(
 			'LoadExtensionSchemaUpdates',
@@ -519,22 +491,13 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'ExtensionTypes',
 		);
 
-		foreach ( $hooks as $hook ) {
-			$provider[] = array(
-				$hook,
-				array( 'wgHooks' => array( $hook => array() ) ),
-			);
-		}
-
-		return $provider;
+		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
 	}
 
 	/**
 	 * @return array
 	 */
 	public function functionHookForExecutionProvider() {
-
-		$provider = array();
 
 		$hooks = array(
 			'SkinAfterContent',
@@ -551,14 +514,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'BaseTemplateToolbox'
 		);
 
-		foreach ( $hooks as $hook ) {
-			$provider[] = array(
-				$hook,
-				array( 'wgHooks' => array( $hook => array() ) ),
-			);
-		}
-
-		return $provider;
+		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
 	}
 
 	/**
@@ -566,16 +522,24 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 */
 	public function parserHooksProvider() {
 
-		$provider = array();
-
 		$hooks = array(
 			'ParserFirstCallInit'
 		);
 
-		foreach ( $hooks as $hook ) {
+		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function buildDataProvider( $id, $definitions, $default ) {
+
+		$provider = array();
+
+		foreach ( $definitions as $definition ) {
 			$provider[] = array(
-				$hook,
-				array( 'wgHooks' => array( $hook => array() ) ),
+				$definition,
+				array( $id => array( $definition => $default ) ),
 			);
 		}
 

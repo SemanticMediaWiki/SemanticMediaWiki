@@ -37,9 +37,8 @@ function runSMWInstaller {
 		cp -r $originalDirectory SemanticMediaWiki
 		cd SemanticMediaWiki
 		composer install
+		cd ../..
 	fi
-
-	cd ../..
 }
 
 # Run Composer installation from the MW root directory
@@ -58,6 +57,11 @@ function runComposerInstallByMediaWiki {
 		git fetch origin "$TRAVIS_BRANCH"
 		git checkout -qf FETCH_HEAD
 	fi
+
+	cd ../..
+
+	# Rebuild the class map for added classes during git fetch
+	composer dump-autoload
 }
 
 ## Generate LocalSettings

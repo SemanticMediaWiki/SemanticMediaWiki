@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use SMWLanguage;
-
 /**
  * Extension setup and registration
  *
@@ -20,6 +18,9 @@ final class Setup implements ContextAware {
 	/** @var array */
 	protected $globals;
 
+	/** @var string */
+	protected $directory;
+
 	/** @var Settings */
 	protected $settings;
 
@@ -30,10 +31,12 @@ final class Setup implements ContextAware {
 	 * @since 1.9
 	 *
 	 * @param array &$globals
+	 * @param string $directory
 	 * @param ContextResource|null $context
 	 */
-	public function __construct( &$globals, ContextResource $context = null ) {
+	public function __construct( &$globals, $directory, ContextResource $context = null ) {
 		$this->globals =& $globals;
+		$this->directory = $directory;
 		$this->context = $context;
 	}
 
@@ -66,8 +69,21 @@ final class Setup implements ContextAware {
 	 * @since 1.9
 	 */
 	protected function init() {
+
 		$this->globals['smwgMasterStore'] = null;
 		$this->globals['smwgIQRunningNumber'] = 0;
+
+		if ( !isset( $this->globals['smwgNamespace'] ) ) {
+			$this->globals['smwgNamespace'] = parse_url( $this->globals['wgServer'], PHP_URL_HOST );
+		}
+
+		if ( !isset( $this->globals['smwgScriptPath'] ) ) {
+			$this->globals['smwgScriptPath'] = ( $this->globals['wgExtensionAssetsPath'] === false ? $this->globals['wgScriptPath'] . '/extensions' : $this->globals['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
+		}
+
+		if ( is_file( $this->directory . "/resources/Resources.php" ) ) {
+			$this->globals['wgResourceModules'] = array_merge( $this->globals['wgResourceModules'], include( $this->directory . "/resources/Resources.php" ) );
+		}
 	}
 
 	/**
@@ -78,11 +94,6 @@ final class Setup implements ContextAware {
 	 * @return ContextResource
 	 */
 	public function withContext() {
-
-		if ( $this->context === null ) {
-			$this->context = new ExtensionContext();
-		}
-
 		return $this->context;
 	}
 

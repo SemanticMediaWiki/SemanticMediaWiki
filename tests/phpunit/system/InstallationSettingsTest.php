@@ -28,10 +28,15 @@ class InstallationSettingsTest extends \PHPUnit_Framework_TestCase {
 		$smwgScriptPath = Settings::newFromGlobals()->get( 'smwgScriptPath' );
 		$expectedPath   = $wgScriptPath . '/extensions/SemanticMediaWiki';
 
-		$this->assertEquals(
-			$expectedPath,
-			$smwgScriptPath,
-			"Asserts that smwgScriptPath contains an expected path, with wgScriptPath being {$wgScriptPath}"
+		$this->assertTrue(
+			$GLOBALS['smwgScriptPath'] === Settings::newFromGlobals()->get( 'smwgScriptPath' ),
+			"Asserts that smwgScriptPath contains the expected patch"
+		);
+
+		$this->assertContains(
+			'SemanticMediaWiki',
+			Settings::newFromGlobals()->get( 'smwgScriptPath' ),
+			"Asserts that smwgScriptPath contains SemanticMediaWiki"
 		);
 
 	}

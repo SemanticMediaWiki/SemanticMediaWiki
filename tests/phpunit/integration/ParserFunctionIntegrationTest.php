@@ -94,10 +94,18 @@ class ParserFunctionIntegrationTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newContentParser( $smwgQEnabled = true ) {
 
-		$registration = array();
+		$registration = array(
+			'wgExtensionAssetsPath' => false,
+			'wgResourceModules'     => array(),
+			'wgScriptPath' => '/Foo',
+			'wgServer'     => 'http://example.org',
+			'wgVersion'    => '1.21',
+			'wgLang'       => $this->newMockBuilder()->newObject( 'Language' )
+		);
+
 		$title = $this->newTitle();
 
-		$setup = new Setup( $registration, $this->newExtensionContext( $smwgQEnabled ) );
+		$setup = new Setup( $registration, 'Foo', $this->newExtensionContext( $smwgQEnabled ) );
 		$setup->run();
 
 		$parser = new Parser();
