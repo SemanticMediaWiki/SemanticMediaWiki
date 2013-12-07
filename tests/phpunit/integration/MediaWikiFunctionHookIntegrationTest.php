@@ -109,7 +109,7 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 	 * @return 1.9
 	 */
 	protected function runExtensionSetup( $context ) {
-		$setup = new Setup( $GLOBALS, $context );
+		$setup = new Setup( $GLOBALS, 'Foo', $context );
 		$setup->run();
 	}
 

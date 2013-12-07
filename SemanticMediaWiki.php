@@ -1,8 +1,10 @@
 <?php
 
-/**
- * Main entry point for the Semantic MediaWiki extension.
- */
+use SMW\SimpleDependencyBuilder;
+use SMW\SharedDependencyContainer;
+use SMW\ExtensionContext;
+use SMW\NamespaceCustomizer;
+use SMW\Setup;
 
 /**
  * This documentation group collects source code files belonging to Semantic
@@ -80,10 +82,6 @@ require_once( __DIR__ . '/includes/Defines.php' );
 // Load global functions
 require_once( __DIR__ . '/includes/GlobalFunctions.php' );
 
-// Causes trouble in autoloader during testing because the test returns with
-// Class 'PSExtensionHandler' not found
-$GLOBALS['wgAutoloadClasses']['SMWPageSchemas'] = __DIR__ . '/' . 'includes/SMW_PageSchemas.php';
-
 // Load default settings
 require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 
@@ -104,21 +102,14 @@ $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgI
  * @since  1.9
  */
 $GLOBALS['wgExtensionFunctions'][] = function() {
-	$GLOBALS['smwgNamespace'] = parse_url( $GLOBALS['wgServer'], PHP_URL_HOST );
 
-	###
-	# This is the path to your installation of Semantic MediaWiki as seen from the
-	# web. Change it if required ($wgScriptPath is the path to the base directory
-	# of your wiki). No final slash.
-	##
-	$GLOBALS['smwgScriptPath'] = ( $GLOBALS['wgExtensionAssetsPath'] === false ? $GLOBALS['wgScriptPath'] . '/extensions' : $GLOBALS['wgExtensionAssetsPath'] ) . '/SemanticMediaWiki';
-	##
+	$builder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
+	$context = new ExtensionContext( $builder );
 
-	// Resource definitions
-	$GLOBALS['wgResourceModules'] = array_merge( $GLOBALS['wgResourceModules'], include( __DIR__ . "/resources/Resources.php" ) );
+	$namespace = new NamespaceCustomizer( $GLOBALS, __DIR__ );
+	$namespace->run();
 
-	smwfInitNamespaces();
-
-	$setup = new \SMW\Setup( $GLOBALS );
+	$setup = new Setup( $GLOBALS, __DIR__, $context );
 	$setup->run();
+
 };

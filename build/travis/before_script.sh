@@ -37,9 +37,8 @@ function runSMWInstaller {
 		cp -r $originalDirectory SemanticMediaWiki
 		cd SemanticMediaWiki
 		composer install
+		cd ../..
 	fi
-
-	cd ../..
 }
 
 # Run Composer installation from the MW root directory
@@ -58,11 +57,27 @@ function runComposerInstallByMediaWiki {
 		git fetch origin "$TRAVIS_BRANCH"
 		git checkout -qf FETCH_HEAD
 	fi
+
+	cd ../..
+
+	# Rebuild the class map for added classes during git fetch
+	composer dump-autoload
 }
 
 ## Generate LocalSettings
 function runSettingsGenerator {
+
+	# Namespace related settings
+	echo 'define("NS_TRAVIS", 998);' >> LocalSettings.php
+	echo 'define("NS_TRAVIS_TALK", 999);' >> LocalSettings.php
+	echo '$wgExtraNamespaces[NS_TRAVIS] = "Travis";' >> LocalSettings.php
+	echo '$wgExtraNamespaces[NS_TRAVIS_TALK] = "Travis_talk";' >> LocalSettings.php
+	echo '$wgNamespacesWithSubpages[NS_TRAVIS] = true;' >> LocalSettings.php
+
 	echo 'require_once( __DIR__ . "/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );' >> LocalSettings.php
+
+	echo '$smwgNamespacesWithSemanticLinks = array( NS_MAIN => true, NS_IMAGE => true, NS_TRAVIS => true );' >> LocalSettings.php
+	echo '$smwgNamespace = "http://example.org/id/";' >> LocalSettings.php
 
 	# Error reporting
 	echo 'error_reporting(E_ALL| E_STRICT);' >> LocalSettings.php
