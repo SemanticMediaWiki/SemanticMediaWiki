@@ -2980,7 +2980,7 @@ $messages['ckb'] = array(
 	'smw_browse_go' => 'بڕۆ',
 );
 
-/** Czech (česky)
+/** Czech (čeština)
  * @author Kjbenes
  * @author Matěj Grabovský
  * @author Mormegil
@@ -3235,7 +3235,7 @@ Odhadovaný průběh updatu:',
 	'smw-sp-properties-header-label' => 'Seznam vlastností',
 );
 
-/** Church Slavic (словѣ́ньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ)
+/** Church Slavic (словѣньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ)
  * @author ОйЛ
  */
 $messages['cu'] = array(
