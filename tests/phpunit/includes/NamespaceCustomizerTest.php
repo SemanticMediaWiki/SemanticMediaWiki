@@ -67,4 +67,24 @@ class NamespaceCustomizerTest extends SemanticMediaWikiTestCase {
 
 	}
 
+	/**
+	 * @since 1.9
+	 */
+	public function testGetCanonicalNames() {
+
+		$test = array();
+		$result = NamespaceCustomizer::getCanonicalNames( $test );
+
+		$this->assertCount( 6, $test );
+		$this->assertTrue( $result );
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function testBuildCustomNamespaceIndex() {
+		$this->assertInternalType( 'array', NamespaceCustomizer::buildCustomNamespaceIndex( 100 ) );
+	}
+
 }

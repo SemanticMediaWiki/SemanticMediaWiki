@@ -238,6 +238,9 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			case 'TitleMoveComplete':
 				$result = $this->callObject( $object, array( &$title, &$title, &$user, $empty, $empty ) );
 				break;
+			case 'CanonicalNamespaces':
+				$result = $this->callObject( $object, array( &$emptyArray ) );
+				break;
 			case 'ArticlePurge':
 				$result = $this->callObject( $object, array( &$wikiPage ) );
 				break;
@@ -465,6 +468,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'SemanticMediaWiki',
 			'SemanticMediaWikiAlias',
 			'SemanticMediaWikiMagic',
+			'SemanticMediaWikiNamespaces'
 		);
 
 		return $this->buildDataProvider( 'wgExtensionMessagesFiles', $modules, '' );
@@ -511,7 +515,8 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'ParserAfterTidy',
 			'LinksUpdateConstructed',
 			'SpecialStatsAddExtra',
-			'BaseTemplateToolbox'
+			'BaseTemplateToolbox',
+			'CanonicalNamespaces'
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );

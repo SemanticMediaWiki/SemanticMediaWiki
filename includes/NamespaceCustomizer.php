@@ -32,6 +32,52 @@ final class NamespaceCustomizer {
 	}
 
 	/**
+	 * Adds canonical names and called during Hooks:CanonicalNamespaces initialization
+	 *
+	 * @since 1.9
+	 *
+	 * @return boolean
+	 */
+	public static function getCanonicalNames( &$namespaces ) {
+
+		$namespaces[SMW_NS_PROPERTY]      = 'Property';
+		$namespaces[SMW_NS_PROPERTY_TALK] = 'Property_talk';
+		$namespaces[SMW_NS_TYPE]          = 'Type';
+		$namespaces[SMW_NS_TYPE_TALK]     = 'Type_talk';
+		$namespaces[SMW_NS_CONCEPT]       = 'Concept';
+		$namespaces[SMW_NS_CONCEPT_TALK]  = 'Concept_talk';
+
+		return true;
+	}
+
+	/**
+	 * 100 and 101 used to be occupied by SMW's now obsolete namespaces
+	 * "Relation" and "Relation_Talk"
+	 *
+	 * 106 and 107 are occupied by the Semantic Forms, we define them here
+	 * to offer some (easy but useful) support to SF
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
+	public static function buildCustomNamespaceIndex( $offset ) {
+
+		$namespaceIndex = array(
+			'SMW_NS_PROPERTY'      => $offset + 2,
+			'SMW_NS_PROPERTY_TALK' => $offset + 3,
+			'SMW_NS_TYPE'          => $offset + 4,
+			'SMW_NS_TYPE_TALK'     => $offset + 5,
+			'SF_NS_FORM'           => $offset + 6,
+			'SF_NS_FORM_TALK'      => $offset + 7,
+			'SMW_NS_CONCEPT'       => $offset + 8,
+			'SMW_NS_CONCEPT_TALK'  => $offset + 9,
+		);
+
+		return $namespaceIndex;
+	}
+
+	/**
 	 * @since 1.9
 	 */
 	protected function initNamespaces() {
@@ -40,25 +86,7 @@ final class NamespaceCustomizer {
 			$this->globals['smwgNamespaceIndex'] = 100;
 		}
 
-		/**
-		 * 100 and 101 used to be occupied by SMW's now obsolete namespaces
-		 * "Relation" and "Relation_Talk"
-		 *
-		 * 106 and 107 are occupied by the Semantic Forms, we define them here
-		 * to offer some (easy but useful) support to SF
-		 */
-		$namespaceIndex = array(
-			'SMW_NS_PROPERTY'      => $this->globals['smwgNamespaceIndex'] + 2,
-			'SMW_NS_PROPERTY_TALK' => $this->globals['smwgNamespaceIndex'] + 3,
-			'SMW_NS_TYPE'          => $this->globals['smwgNamespaceIndex'] + 4,
-			'SMW_NS_TYPE_TALK'     => $this->globals['smwgNamespaceIndex'] + 5,
-			'SF_NS_FORM'           => $this->globals['smwgNamespaceIndex'] + 6,
-			'SF_NS_FORM_TALK'      => $this->globals['smwgNamespaceIndex'] + 7,
-			'SMW_NS_CONCEPT'       => $this->globals['smwgNamespaceIndex'] + 8,
-			'SMW_NS_CONCEPT_TALK'  => $this->globals['smwgNamespaceIndex'] + 9,
-		);
-
-		foreach ( $namespaceIndex as $ns => $index ) {
+		foreach ( $this->buildCustomNamespaceIndex( $this->globals['smwgNamespaceIndex'] ) as $ns => $index ) {
 			$this->assertIsDefined( $ns, $index );
 		}
 

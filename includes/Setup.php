@@ -126,6 +126,7 @@ final class Setup implements ContextAware {
 		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
 		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
 		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';
+		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWikiNamespaces'] = $smwgIP . 'languages/SemanticMediaWiki.namespaces.php';
 
 	}
 
@@ -425,6 +426,18 @@ final class Setup implements ContextAware {
 		 */
 		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = function ( &$extraStats ) use ( $functionHook, $globals ) {
 			return $functionHook->register( new SpecialStatsAddExtra( $extraStats, $globals['wgVersion'], $globals['wgLang'] ) )->process();
+		};
+
+		/**
+		 * Hook: For extensions adding their own namespaces or altering the defaults
+		 *
+		 * @Bug 34383
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
+		 *
+		 * @since 1.9
+		 */
+		$this->globals['wgHooks']['CanonicalNamespaces'][] = function ( &$list ) {
+			return NamespaceCustomizer::getCanonicalNames( $list );
 		};
 
 		// Old-style registration
