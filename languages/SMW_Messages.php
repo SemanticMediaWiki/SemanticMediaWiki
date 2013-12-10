@@ -12309,6 +12309,7 @@ $messages['ru'] = array(
 	'smw-paramdesc-named_args' => 'Имена аргументов, передаваемых в шаблон',
 	'smw-paramdesc-export' => 'Параметры экспорта',
 	'smw-paramdesc-source' => 'Альтернативный источник запроса',
+	'smw-paramdesc-jsonsyntax' => 'Синтаксис JSON, который будет использоваться',
 	'smw-printername-feed' => 'Лента RSS и Atom',
 	'smw-paramdesc-feedtype' => 'Тип канала',
 	'smw-paramdesc-feedtitle' => 'Текст для использования в качестве названия канала',
