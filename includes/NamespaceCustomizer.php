@@ -28,7 +28,12 @@ final class NamespaceCustomizer {
 	 * @since 1.9
 	 */
 	public function run() {
-		$this->initNamespaces();
+
+		if ( !defined( 'SMW_NS_PROPERTY' ) ) {
+			$this->initCustomNamespace( $this->globals );
+		}
+
+		$this->addNamespaceSettings();
 	}
 
 	/**
@@ -51,12 +56,6 @@ final class NamespaceCustomizer {
 	}
 
 	/**
-	 * 100 and 101 used to be occupied by SMW's now obsolete namespaces
-	 * "Relation" and "Relation_Talk"
-	 *
-	 * 106 and 107 are occupied by the Semantic Forms, we define them here
-	 * to offer some (easy but useful) support to SF
-	 *
 	 * @since 1.9
 	 *
 	 * @return array
@@ -78,17 +77,33 @@ final class NamespaceCustomizer {
 	}
 
 	/**
+	 * 100 and 101 used to be occupied by SMW's now obsolete namespaces
+	 * "Relation" and "Relation_Talk"
+	 *
+	 * 106 and 107 are occupied by the Semantic Forms, we define them here
+	 * to offer some (easy but useful) support to SF
+	 *
+	 * @since 1.9
+	 *
+	 * @param array $globals
+	 */
+	public static function initCustomNamespace( &$globals ) {
+
+		if ( !isset( $globals['smwgNamespaceIndex'] ) ) {
+			$globals['smwgNamespaceIndex'] = 100;
+		}
+
+		foreach ( self::buildCustomNamespaceIndex( $globals['smwgNamespaceIndex'] ) as $ns => $index ) {
+			if ( !defined( $ns ) ) {
+				define( $ns, $index );
+			};
+		}
+	}
+
+	/**
 	 * @since 1.9
 	 */
-	protected function initNamespaces() {
-
-		if ( !isset( $this->globals['smwgNamespaceIndex'] ) ) {
-			$this->globals['smwgNamespaceIndex'] = 100;
-		}
-
-		foreach ( $this->buildCustomNamespaceIndex( $this->globals['smwgNamespaceIndex'] ) as $ns => $index ) {
-			$this->assertIsDefined( $ns, $index );
-		}
+	protected function addNamespaceSettings() {
 
 		if ( empty( $this->globals['smwgContLang'] ) ) {
 			$this->initContentLanguage( $this->globals['wgLanguageCode'] );
@@ -137,13 +152,6 @@ final class NamespaceCustomizer {
 			$this->globals['smwgNamespacesWithSemanticLinks']
 		);
 
-	}
-
-	/**
-	 * @since  1.9
-	 */
-	protected function assertIsDefined( $ns, $index ) {
-		return defined( $ns ) ? true : define( $ns, $index );
 	}
 
 	/**
