@@ -8,7 +8,7 @@ further links, see [the SMW wiki](https://semantic-mediawiki.org).
 Notes on installing Semantic MediaWiki are found in the [INSTALL file](docs/INSTALL.md).
 
 [![Build Status](https://secure.travis-ci.org/SemanticMediaWiki/SemanticMediaWiki.png?branch=master)](http://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
-[![Coverage Status](https://coveralls.io/repos/SemanticMediaWiki/SemanticMediaWiki/badge.png?branch=master)](https://coveralls.io/r/SemanticMediaWiki/SemanticMediaWiki?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/coverage.png?s=f3501ede0bcc98824aa51501eb3647ecf71218c0)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/quality-score.png?s=d9aac7e68e6554f95b0a89608cbc36985429d819)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
 [![Dependency Status](https://www.versioneye.com/php/mediawiki:semantic-mediawiki/badge.png)](https://www.versioneye.com/php/mediawiki:semantic-mediawiki)
 
