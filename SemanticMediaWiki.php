@@ -3,7 +3,7 @@
 use SMW\SimpleDependencyBuilder;
 use SMW\SharedDependencyContainer;
 use SMW\ExtensionContext;
-use SMW\NamespaceCustomizer;
+use SMW\NamespaceManager;
 use SMW\Setup;
 
 /**
@@ -89,6 +89,7 @@ require_once __DIR__ . '/SemanticMediaWiki.settings.php';
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'languages/SMW_Messages.php';
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'languages/SMW_Aliases.php';
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgIP'] . 'languages/SMW_Magic.php';
+$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiNamespaces'] = $GLOBALS['smwgIP'] . 'languages/SemanticMediaWiki.namespaces.php';
 
 /**
  * Setup and initialization
@@ -106,7 +107,7 @@ $GLOBALS['wgExtensionFunctions'][] = function() {
 	$builder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
 	$context = new ExtensionContext( $builder );
 
-	$namespace = new NamespaceCustomizer( $GLOBALS, __DIR__ );
+	$namespace = new NamespaceManager( $GLOBALS, __DIR__ );
 	$namespace->run();
 
 	$setup = new Setup( $GLOBALS, __DIR__, $context );

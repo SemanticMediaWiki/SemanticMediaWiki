@@ -1,4 +1,7 @@
 <?php
+
+use SMW\NamespaceManager;
+
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
  * tried to fit functions in suitable classes as static methods if they clearly
@@ -268,8 +271,6 @@ function smwfGetLinker() {
  * This function also sets up all autoloading, such that all SMW classes are
  * available as early on. Moreover, jobs and special pages are registered.
  *
- * @deprecated since 1.9, just set $smwgNamespace after the inclusion of SemanticMediaWiki.php
- *
  * @param mixed $namespace
  * @param boolean $complete
  *
@@ -279,6 +280,11 @@ function smwfGetLinker() {
  */
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
+
+	// $GLOBALS ought to be injected from the top-level but that would require
+	// to change the interface which would bring no benefits for the end user
+	// as enableSemantics() is only targeted to be included in LocalSettings
+	NamespaceManager::initCustomNamespace( $GLOBALS );
 
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
 		// The dot tells that the domain is not complete. It will be completed
