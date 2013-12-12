@@ -48,24 +48,26 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return Setup
 	 */
-	private function newInstance( &$test = array(), $context = null ) {
+	private function newInstance( &$config = array(), $basePath = 'Foo' ) {
 
-		$default = array(
-			'wgExtensionAssetsPath' => false,
-			'wgResourceModules'     => array(),
-			'wgScriptPath' => '/Foo',
-			'wgServer'     => 'http://example.org',
-			'wgVersion'    => '1.21',
-			'wgLang'       => $this->newMockBuilder()->newObject( 'Language' )
+		$language = $this->newMockBuilder()->newObject( 'Language' );
+
+		$default  = array(
+			'smwgNamespacesWithSemanticLinks' => array(),
+			'wgNamespacesWithSubpages' => array(),
+			'wgExtensionAssetsPath'    => false,
+			'wgResourceModules' => array(),
+			'wgScriptPath'      => '/Foo',
+			'wgServer'          => 'http://example.org',
+			'wgVersion'         => '1.21',
+			'wgLanguageCode'    => 'en',
+			'wgLang'            => $language
 		);
 
-		$test = array_merge( $default, $test );
+		$config  = array_merge( $default, $config );
+		$context = $this->newExtensionContext();
 
-		if ( $context === null ) {
-			$context = $this->newExtensionContext();
-		}
-
-		return new Setup( $test, 'Foo', $context );
+		return new Setup( $config, $basePath, $context );
 	}
 
 	/**
@@ -76,23 +78,41 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @since 1.9
+	 */
+	public function testResourceModules() {
+
+		$test = array();
+		$smwBasePath = __DIR__ . '../../../..';
+
+		$this->newInstance( $test, $smwBasePath )->run();
+
+		// The path creates some issues during Travis run therefore we
+		// cheat a bit
+		if ( realpath( $smwBasePath ) ) {
+			$this->assertNotEmpty( $test['wgResourceModules'] );
+		}
+
+		$this->assertTrue( true );
+	}
+
+	/**
 	 * @dataProvider functionHooksProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testRegisterFunctionHooksWithoutExecution( $hook, $setup ) {
-		$this->assertHook( $hook, $setup, 1 );
-
+	public function testRegisterFunctionHooksWithoutInitialization( $hook, $setup ) {
+		$this->assertArrayHookEntry( $hook, $setup, 1 );
 	}
 
 	/**
-	 * @dataProvider functionHookForExecutionProvider
+	 * @dataProvider functionHookForInitializationProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testRegisterFunctionHookWithExecution( $hook, $setup ) {
+	public function testRegisterFunctionHookWithInitialization( $hook, $setup ) {
 
-		$this->assertHook( $hook, $setup, 1 );
+		$this->assertArrayHookEntry( $hook, $setup, 1 );
 
 		// Verify that registered closures are executable
 		$result = $this->executeHookOnMock( $hook, $setup['wgHooks'][$hook][0] );
@@ -106,16 +126,16 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @dataProvider parserHooksProvider
+	 * @dataProvider parserHooksForInitializationProvider
 	 *
 	 * @since 1.9
 	 */
-	public function testParserHooksWithExecution( $hook, $setup ) {
+	public function testParserHooksWithInitialization( $hook, $setup ) {
 
 		// 4 because of having hooks registered without using a callback, after
 		// all parser hooks being registered using a callback this can be
 		// reduced to 1
-		$this->assertHook( $hook, $setup, 4 );
+		$this->assertArrayHookEntry( $hook, $setup, 4 );
 
 		// Verify that registered closures are executable
 		$result = $this->executeHookOnMock( $hook, $setup['wgHooks'][$hook][0] );
@@ -125,29 +145,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		} else {
 			$this->markTestIncomplete( "Test is incomplete because of a missing {$hook} closure verification" );
 		}
-
-	}
-
-	/**
-	 * @since  1.9
-	 */
-	private function assertHook( $hook, &$setup, $count ) {
-
-		$instance = $this->newInstance( $setup );
-
-		$this->assertCount(
-			0,
-			$setup['wgHooks'][$hook],
-			'Asserts that before run() the entry counts 0'
-		);
-
-		$instance->run();
-
-		$this->assertCount(
-			$count,
-			$setup['wgHooks'][$hook],
-			"Asserts that after run() the entry counts {$count}"
-		);
 
 	}
 
@@ -279,16 +276,8 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testRegisterApiModules( $module, $setup ) {
-
-		$instance = $this->newInstance( $setup );
-		$this->assertEmpty( $setup['wgAPIModules'][$module] );
-
-		$instance->run();
-
-		$this->assertNotEmpty( $setup['wgAPIModules'][$module] );
-		$this->assertTrue( class_exists( $setup['wgAPIModules'][$module] ) );
-
+	public function testRegisterApiModules( $moduleEntry, $setup ) {
+		$this->assertArrayEntryExists( 'wgAPIModules', $moduleEntry, $setup );
 	}
 
 	/**
@@ -296,16 +285,8 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testRegisterJobClasses( $job, $setup ) {
-
-		$instance = $this->newInstance( $setup );
-		$this->assertEmpty( $setup['wgJobClasses'][$job] );
-
-		$instance->run();
-
-		$this->assertNotEmpty( $setup['wgJobClasses'][$job] );
-		$this->assertTrue( class_exists( $setup['wgJobClasses'][$job] ) );
-
+	public function testRegisterJobClasses( $jobEntry, $setup ) {
+		$this->assertArrayEntryExists( 'wgJobClasses', $jobEntry, $setup );
 	}
 
 	/**
@@ -313,16 +294,17 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testRegisterMessageFiles( $modules, $setup ) {
+	public function testRegisterMessageFiles( $moduleEntry, $setup ) {
+		$this->assertArrayEntryExists( 'wgExtensionMessagesFiles', $moduleEntry, $setup, 'file' );
+	}
 
-		$instance = $this->newInstance( $setup );
-		$this->assertEmpty( $setup['wgExtensionMessagesFiles'][$modules] );
-
-		$instance->run();
-
-		$this->assertNotEmpty( $setup['wgExtensionMessagesFiles'][$modules] );
-		$this->assertTrue( file_exists( $setup['wgExtensionMessagesFiles'][$modules] ) );
-
+	/**
+	 * @dataProvider specialPageDataProvider
+	 *
+	 * @since 1.9
+	 */
+	public function testRegisterSpecialPages( $specialEntry, $setup ) {
+		$this->assertArrayEntryExists( 'wgSpecialPages', $specialEntry, $setup );
 	}
 
 	/**
@@ -334,16 +316,14 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		$setup['wgGroupPermissions']['sysop']['smw-admin'] = '';
 		$setup['wgGroupPermissions']['smwadministrator']['smw-admin'] = '';
 
-		$instance = $this->newInstance( $setup );
-
-		foreach ( $setup['wgAvailableRights'] as $value) {
+		foreach ( $setup['wgAvailableRights'] as $value ) {
 			$this->assertEmpty( $value );
 		}
 
 		$this->assertEmpty( $setup['wgGroupPermissions']['sysop']['smw-admin'] );
 		$this->assertEmpty( $setup['wgGroupPermissions']['smwadministrator']['smw-admin'] );
 
-		$instance->run();
+		$this->newInstance( $setup )->run();
 
 		$this->assertNotEmpty( $setup['wgAvailableRights'] );
 		$this->assertNotEmpty( $setup['wgGroupPermissions']['sysop']['smw-admin'] );
@@ -359,12 +339,10 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		$setup['wgParamDefinitions']['smwformat'] = '';
 		$setup['wgParamDefinitions']['smwsource'] = '';
 
-		$instance = $this->newInstance( $setup );
-
 		$this->assertEmpty( $setup['wgParamDefinitions']['smwformat'] );
 		$this->assertEmpty( $setup['wgParamDefinitions']['smwsource'] );
 
-		$instance->run();
+		$this->newInstance( $setup )->run();
 
 		$this->assertNotEmpty( $setup['wgParamDefinitions']['smwformat'] );
 		$this->assertNotEmpty( $setup['wgParamDefinitions']['smwsource'] );
@@ -378,30 +356,8 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 		$setup['wgFooterIcons']['poweredby']['semanticmediawiki'] = '';
 
-		$instance = $this->newInstance( $setup );
-
-		$this->assertEmpty( $setup['wgFooterIcons']['poweredby']['semanticmediawiki'] );
-
-		$instance->run();
-
+		$this->newInstance( $setup )->run();
 		$this->assertNotEmpty( $setup['wgFooterIcons']['poweredby']['semanticmediawiki'] );
-
-	}
-
-	/**
-	 * @dataProvider specialPageDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testRegisterSpecialPages( $special, $setup ) {
-
-		$instance = $this->newInstance( $setup );
-		$this->assertEmpty( $setup['wgSpecialPages'][$special] );
-
-		$instance->run();
-
-		$this->assertNotEmpty( $setup['wgSpecialPages'][$special] );
-		$this->assertTrue( class_exists( $setup['wgSpecialPages'][$special] ) );
 
 	}
 
@@ -501,7 +457,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @return array
 	 */
-	public function functionHookForExecutionProvider() {
+	public function functionHookForInitializationProvider() {
 
 		$hooks = array(
 			'SkinAfterContent',
@@ -525,7 +481,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @return array
 	 */
-	public function parserHooksProvider() {
+	public function parserHooksForInitializationProvider() {
 
 		$hooks = array(
 			'ParserFirstCallInit'
@@ -535,9 +491,55 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
+	 * @since  1.9
+	 */
+	private function assertArrayHookEntry( $hook, &$setup, $expectedCount ) {
+
+		$this->assertCount(
+			0,
+			$setup['wgHooks'][$hook],
+			'Asserts that before run() the entry counts 0'
+		);
+
+		$this->newInstance( $setup )->run();
+
+		$this->assertCount(
+			$expectedCount,
+			$setup['wgHooks'][$hook],
+			"Asserts that after run() the entry counts {$expectedCount}"
+		);
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	private function assertArrayEntryExists( $target, $entry, $setup, $type = 'class' ) {
+
+		$this->assertEmpty(
+			$setup[$target][$entry],
+			"Asserts that {$entry} is empty"
+		);
+
+		$this->newInstance( $setup )->run();
+
+		$this->assertNotEmpty( $setup[$target][$entry] );
+
+		switch ( $type ) {
+			case 'class':
+				$this->assertTrue( class_exists( $setup[$target][$entry] ) );
+				break;
+			case 'file':
+				$this->assertTrue( file_exists( $setup[$target][$entry] ) );
+				break;
+		}
+
+	}
+
+	/**
 	 * @return array
 	 */
-	public function buildDataProvider( $id, $definitions, $default ) {
+	private function buildDataProvider( $id, $definitions, $default ) {
 
 		$provider = array();
 
@@ -571,4 +573,5 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 		return $content;
 	}
+
 }

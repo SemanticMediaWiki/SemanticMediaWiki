@@ -3,7 +3,7 @@
 use SMW\SimpleDependencyBuilder;
 use SMW\SharedDependencyContainer;
 use SMW\ExtensionContext;
-use SMW\NamespaceCustomizer;
+use SMW\NamespaceManager;
 use SMW\Setup;
 
 /**
@@ -107,7 +107,7 @@ $GLOBALS['wgExtensionFunctions'][] = function() {
 	$builder = new SimpleDependencyBuilder( new SharedDependencyContainer() );
 	$context = new ExtensionContext( $builder );
 
-	$namespace = new NamespaceCustomizer( $GLOBALS, __DIR__ );
+	$namespace = new NamespaceManager( $GLOBALS, __DIR__ );
 	$namespace->run();
 
 	$setup = new Setup( $GLOBALS, __DIR__, $context );

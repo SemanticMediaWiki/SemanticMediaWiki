@@ -1,6 +1,6 @@
 <?php
 
-use SMW\NamespaceCustomizer;
+use SMW\NamespaceManager;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -281,7 +281,10 @@ function smwfGetLinker() {
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 
-	NamespaceCustomizer::initCustomNamespace( $GLOBALS );
+	// $GLOBALS ought to be injected from the top-level but that would require
+	// to change the interface which would bring no benefits for the end user
+	// as enableSemantics() is only targeted to be included in LocalSettings
+	NamespaceManager::initCustomNamespace( $GLOBALS );
 
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
 		// The dot tells that the domain is not complete. It will be completed

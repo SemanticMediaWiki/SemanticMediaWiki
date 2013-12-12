@@ -2,12 +2,12 @@
 
 namespace SMW\Test;
 
-use SMW\NamespaceCustomizer;
+use SMW\NamespaceManager;
 use SMW\Settings;
 use MWNamespace;
 
 /**
- * @covers \SMW\NamespaceCustomizer
+ * @covers \SMW\NamespaceManager
  *
  * @ingroup Test
  *
@@ -26,23 +26,29 @@ class MediaWikiNamespaceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCanonicalNames() {
 
-		$names   = array();
+		$count = 0;
+		$index = NamespaceManager::buildNamespaceIndex( Settings::newFromGlobals()->get( 'smwgNamespaceIndex' ) );
+		$names = NamespaceManager::getCanonicalNames();
 
-		$offset  = Settings::newFromGlobals()->get( 'smwgNamespaceIndex' );
-		$result  = NamespaceCustomizer::getCanonicalNames( $names );
-		$nsIndex = NamespaceCustomizer::buildCustomNamespaceIndex( $offset );
+		$this->assertInternalType( 'array', $names );
+		$this->assertInternalType( 'array', $index );
 
-		$this->assertTrue( $result );
+		foreach ( $index as $ns => $idx ) {
 
-		foreach ( $nsIndex as $ns => $index ) {
-
-			$mwNamespace = MWNamespace::getCanonicalName( $index );
+			$mwNamespace = MWNamespace::getCanonicalName( $idx );
 
 			if ( $mwNamespace ) {
-				$this->assertEquals( $mwNamespace, $names[$index] );
+				$this->assertEquals( $mwNamespace, $names[$idx] );
+				$count++;
 			}
 
 		}
+
+		$this->assertCount(
+			$count,
+			$names,
+			"Asserts that expected amount of cannonical names have been verified"
+		);
 
 	}
 

@@ -84,6 +84,7 @@ final class Setup implements ContextAware {
 		if ( is_file( $this->directory . "/resources/Resources.php" ) ) {
 			$this->globals['wgResourceModules'] = array_merge( $this->globals['wgResourceModules'], include( $this->directory . "/resources/Resources.php" ) );
 		}
+
 	}
 
 	/**
@@ -437,7 +438,8 @@ final class Setup implements ContextAware {
 		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['CanonicalNamespaces'][] = function ( &$list ) {
-			return NamespaceCustomizer::getCanonicalNames( $list );
+			$list = $list + NamespaceManager::getCanonicalNames();
+			return true;
 		};
 
 		// Old-style registration

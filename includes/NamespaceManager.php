@@ -8,8 +8,10 @@ namespace SMW;
  * @licence GNU GPL v2+
  * @since 1.9
  *
+ * @author mwjames
+ * @author others
  */
-final class NamespaceCustomizer {
+final class NamespaceManager {
 
 	/** @var array */
 	protected $globals;
@@ -33,34 +35,44 @@ final class NamespaceCustomizer {
 			$this->initCustomNamespace( $this->globals );
 		}
 
+		if ( empty( $this->globals['smwgContLang'] ) ) {
+			$this->initContentLanguage( $this->globals['wgLanguageCode'] );
+		}
+
 		$this->addNamespaceSettings();
 	}
 
 	/**
-	 * Adds canonical names and called during Hooks:CanonicalNamespaces initialization
+	 * Returns canonical names
+	 *
+	 * @see Hooks:CanonicalNamespaces
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return array
 	 */
-	public static function getCanonicalNames( &$namespaces ) {
+	public static function getCanonicalNames() {
 
-		$namespaces[SMW_NS_PROPERTY]      = 'Property';
-		$namespaces[SMW_NS_PROPERTY_TALK] = 'Property_talk';
-		$namespaces[SMW_NS_TYPE]          = 'Type';
-		$namespaces[SMW_NS_TYPE_TALK]     = 'Type_talk';
-		$namespaces[SMW_NS_CONCEPT]       = 'Concept';
-		$namespaces[SMW_NS_CONCEPT_TALK]  = 'Concept_talk';
+		$canonicalNames = array(
+			SMW_NS_PROPERTY      => 'Property',
+			SMW_NS_PROPERTY_TALK => 'Property_talk',
+			SMW_NS_TYPE          => 'Type',
+			SMW_NS_TYPE_TALK     => 'Type_talk',
+			SMW_NS_CONCEPT       => 'Concept',
+			SMW_NS_CONCEPT_TALK  => 'Concept_talk'
+		);
 
-		return true;
+		return $canonicalNames;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param integer offset
+	 *
 	 * @return array
 	 */
-	public static function buildCustomNamespaceIndex( $offset ) {
+	public static function buildNamespaceIndex( $offset ) {
 
 		$namespaceIndex = array(
 			'SMW_NS_PROPERTY'      => $offset + 2,
@@ -93,7 +105,7 @@ final class NamespaceCustomizer {
 			$globals['smwgNamespaceIndex'] = 100;
 		}
 
-		foreach ( self::buildCustomNamespaceIndex( $globals['smwgNamespaceIndex'] ) as $ns => $index ) {
+		foreach ( self::buildNamespaceIndex( $globals['smwgNamespaceIndex'] ) as $ns => $index ) {
 			if ( !defined( $ns ) ) {
 				define( $ns, $index );
 			};
@@ -105,14 +117,8 @@ final class NamespaceCustomizer {
 	 */
 	protected function addNamespaceSettings() {
 
-		if ( empty( $this->globals['smwgContLang'] ) ) {
-			$this->initContentLanguage( $this->globals['wgLanguageCode'] );
-		}
-
-		// Register namespace identifiers
-		if ( !is_array( $this->globals['wgExtraNamespaces'] ) ) {
-			$this->globals['wgExtraNamespaces'] = array();
-		}
+		$this->assertIsArrayOrSetDefault( 'wgExtraNamespaces' );
+		$this->assertIsArrayOrSetDefault( 'wgNamespaceAliases' );
 
 		/**
 		 * @var SMWLanguage $smwgContLang
@@ -159,27 +165,51 @@ final class NamespaceCustomizer {
 	 * early on, even before user language is known, to determine labels for
 	 * additional namespaces. In contrast, messages can be initialised much later
 	 * when they are actually needed.
+	 *
 	 * @since 1.9
 	 */
 	protected function initContentLanguage( $langcode ) {
 		Profiler::In();
 
-		$this->globals['smwContLangFile'] = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
-		$this->globals['smwContLangClass'] = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
-
-		if ( file_exists( $this->directory . '/' . 'languages/' . $this->globals['smwContLangFile'] . '.php' ) ) {
-			include_once( $this->directory . '/' . 'languages/' . $this->globals['smwContLangFile'] . '.php' );
-		}
-
-		// Fallback if language not supported.
-		if ( !class_exists( $this->globals['smwContLangClass'] ) ) {
-			include_once( $this->directory . '/' . 'languages/SMW_LanguageEn.php' );
-			$this->globals['smwContLangClass'] = 'SMWLanguageEn';
-		}
+		$this->setLanguage( $langcode );
+		$this->assertValidLanguageOrSetFallback( 'en' );
 
 		$this->globals['smwgContLang'] = new $this->globals['smwContLangClass'];
 
 		Profiler::Out();
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected function setLanguage( $langcode ) {
+
+		$this->globals['smwContLangFile'] = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
+		$this->globals['smwContLangClass'] = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
+
+		$file = $this->directory . '/' . 'languages' . '/' . $this->globals['smwContLangFile'] . '.php';
+
+		if ( file_exists( $file ) ) {
+			include_once( $file );
+		}
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected function assertIsArrayOrSetDefault( $element ) {
+		if ( !isset( $this->globals[$element] ) || !is_array( $this->globals[$element] ) ) {
+			$this->globals[$element] = array();
+		}
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected function assertValidLanguageOrSetFallback( $fallbackLanguageCode ) {
+		if ( !class_exists( $this->globals['smwContLangClass'] ) ) {
+			$this->setLanguage( $fallbackLanguageCode );
+		}
 	}
 
 }
