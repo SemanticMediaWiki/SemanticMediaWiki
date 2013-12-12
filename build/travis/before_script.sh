@@ -36,7 +36,7 @@ function runSMWInstaller {
 		cd extensions
 		cp -r $originalDirectory SemanticMediaWiki
 		cd SemanticMediaWiki
-		composer install
+		composer install --prefer-source
 		cd ../..
 	fi
 }
