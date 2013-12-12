@@ -29,6 +29,13 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
+	private function normalizePath( $path ) {
+		return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
+	}
+
+	/**
+	 * @since 1.9
+	 */
 	private function newExtensionContext( $store = null ) {
 
 		$context = new ExtensionContext();
@@ -48,7 +55,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return Setup
 	 */
-	private function newInstance( &$config = array(), $basePath = 'Foo' ) {
+	private function newInstance( &$config = array(), $basePath = 'Foo', $context = null ) {
 
 		$language = $this->newMockBuilder()->newObject( 'Language' );
 
@@ -65,7 +72,10 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		);
 
 		$config  = array_merge( $default, $config );
-		$context = $this->newExtensionContext();
+
+		if( $context === null ) {
+			$context = $this->newExtensionContext();
+		}
 
 		return new Setup( $config, $basePath, $context );
 	}
@@ -82,18 +92,13 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testResourceModules() {
 
-		$test = array();
-		$smwBasePath = __DIR__ . '../../../..';
+		$config   = array();
+		$context  = $this->newExtensionContext();
+		$basepath = $context->getSettings()->get( 'smwgIP' );
 
-		$this->newInstance( $test, $smwBasePath )->run();
+		$this->newInstance( $config, $basepath, $context )->run();
+		$this->assertNotEmpty( $config['wgResourceModules'] );
 
-		// The path creates some issues during Travis run therefore we
-		// cheat a bit
-		if ( realpath( $smwBasePath ) ) {
-			$this->assertNotEmpty( $test['wgResourceModules'] );
-		}
-
-		$this->assertTrue( true );
 	}
 
 	/**
