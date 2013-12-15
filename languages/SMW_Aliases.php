@@ -140,16 +140,16 @@ $specialPageAliases['diq'] = array(
 	'Ask' => array( 'Pers' ),
 	'Browse' => array( 'Bıgeyré' ),
 	'ExportRDF' => array( 'RDFTeberde' ),
-	'PageProperty' => array( 'BexsaPeran' ),
+	'PageProperty' => array( 'BeğsaPeran' ),
 	'Properties' => array( 'Bexsiyeti' ),
 	'Concepts' => array( 'Konsepti' ),
 	'SMWAdmin' => array( 'SMWXızmetkar' ),
-	'SearchByProperty' => array( 'XısusiyetkarCıgeyrayış' ),
+	'SearchByProperty' => array( 'ĞısusiyetkarCıgeyrayış' ),
 	'SemanticStatistics' => array( 'İstatıstikéFahmkerdışi' ),
 	'Types' => array( 'Babeti' ),
 	'URIResolver' => array( 'URIAgozne' ),
-	'UnusedProperties' => array( 'XısusiyetéNékaréné' ),
-	'WantedProperties' => array( 'XısusiyetéWaşténé' ),
+	'UnusedProperties' => array( 'ĞısusiyetéNékaréné' ),
+	'WantedProperties' => array( 'ĞısusiyetéWaşténé' ),
 );
 
 /** Lower Sorbian (dolnoserbski) */
