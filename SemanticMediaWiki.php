@@ -79,6 +79,9 @@ define( 'SEMANTIC_EXTENSION_TYPE', true );
 // Load global constants
 require_once( __DIR__ . '/includes/Defines.php' );
 
+// Temporary measure to ease Composer/MW 1.22 migration
+require_once __DIR__ . '/includes/NamespaceManager.php';
+
 // Load global functions
 require_once( __DIR__ . '/includes/GlobalFunctions.php' );
 
