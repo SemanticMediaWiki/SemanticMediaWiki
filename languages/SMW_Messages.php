@@ -10170,6 +10170,8 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW_administratorer',
 	'action-smw-admin' => 'gå til administrasjonsoppgaver for Semantic MediaWiki',
 	'smw-pa-property-predefined-default' => "$1 er en predefinert egenskap (også kjent som ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties spesialegenskap]''). Dette er en innebygd egenskap med en spesiell betydning, men brukes akkurat som en vanlig [https://www.semantic-mediawiki.org/wiki/Property brukerdefinert egenskap].",
+	'smw-pa-property-predefined_ask' => '$1 er en predefinert egenskap (også kjent som [https://www.semantic-mediawiki.org/wiki/Help:Special_properties spesialegenskap]) som lenker til metadata [https://www.semantic-mediawiki.org/wiki/Subobject underobjekt] av en spørring. Dette er en innebygd egenskap som kommer med  administrative tilleggsrettigheter, men kan brukes akkurat som en [https://www.semantic-mediawiki.org/wiki/Property brukerdefinert egenskap].',
+	'smw-sp-properties-header-label' => 'Liste av egenskaper',
 );
 
 /** Low German (Plattdüütsch)
