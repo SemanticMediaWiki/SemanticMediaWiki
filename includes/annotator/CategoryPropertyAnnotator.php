@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use Wikipage;
+
 /**
  * Handling category annotation
  *
@@ -75,7 +77,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	protected function isHiddenCategory( $catName ) {
 
 		if ( $this->hiddenCategories === null ) {
-			$wikipage = Wikipage::factory( $this->semanticData->getSubject()->getTitle() );
+			$wikipage = Wikipage::factory( $this->getSemanticData()->getSubject()->getTitle() );
 			$this->hiddenCategories = $wikipage->getHiddenCategories();
 		}
 
