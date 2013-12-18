@@ -7758,7 +7758,7 @@ Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
 	'smwadmin' => 'Funzioni amministrative per Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Il motore di storage è stato installato correttamente.',
 	'smw_smwadmin_return' => 'Torna a $1',
-	'smw_smwadmin_updatestarted' => "E' iniziato un nuovo processo di aggiornamento per ricaricare i dati semantici.
+	'smw_smwadmin_updatestarted' => "È iniziato un nuovo processo di aggiornamento per ricaricare i dati semantici.
 Tutti i dati registrati saranno ricostruiti o riparati se necessario.
 Puoi seguire i progressi dell'aggiornamento in questa pagina speciale.
 
@@ -7805,7 +7805,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_smwadmin_supportdocu' => "Diverse risorse potrebbero esserti d'aiuto in caso di problemi:",
 	'smw_smwadmin_installfile' => 'Se hai problemi con la tua installazione, inizia a verificare le linee guida nel <a href="https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/SemanticMediaWiki.git;a=blob_plain;f=INSTALL;hb=HEAD">file INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'La documentazione completa per l\'utente di Semantic MediaWiki si trova in <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'I Bug possono essere riportati a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_mediazilla' => 'Gli errori/bachi possono essere segnalati in <a href="https://bugzilla.wikimedia.org/">bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se hai altre domande o suggerimenti, unisciti alle discussioni sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum degli utenti di Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struttura dei dati',
 	'smw_adminlinks_displayingdata' => 'Visualizzazione dati',
@@ -9896,6 +9896,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw_printername_template' => 'Mal',
 	'smw_printername_rdf' => 'RDF-eksport',
 	'smw_printername_category' => 'Kategori',
+	'validator-type-class-SMWParamSource' => 'Tekst',
 	'smw-paramdesc-limit' => 'Maksimalt antall resultat som skal returneres',
 	'smw-paramdesc-offset' => 'Forskyvningen av det første resultet',
 	'smw-paramdesc-headers' => 'Viser overskriftene/egenskapsnavnene',
@@ -9905,6 +9906,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw-paramdesc-outro' => 'Tekst som skal vises etter spørringsresultat, dersom det er noen',
 	'smw-paramdesc-default' => 'Tekst som skal vises dersom det ikke er noen resultat for spørringen',
 	'smw-paramdesc-sep' => 'Separatorverdier',
+	'smw-paramdesc-showsep' => 'Vis skilletegn i starten av CSV-filen ("sep=<verdi>")',
 	'smw-paramdesc-distribution' => 'Istedenfor å vise hver av verdiene vises antall verdier',
 	'smw-paramdesc-distributionsort' => 'Sorter verdifordelingen mot forekomstantallet',
 	'smw-paramdesc-distributionlimit' => 'Begrens verdifordelingen til antallet av visse verdier.',
@@ -9920,12 +9922,24 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw-paramdesc-csv-sep' => 'Skilletegnet som blir brukt',
 	'smw-paramdesc-dsv-separator' => 'Skilletegnet som blir brukt',
 	'smw-paramdesc-dsv-filename' => 'Navnet på DSV-filen',
+	'smw-paramdesc-filename' => 'Navnet på utdatafilen',
 	'smw-smwdoc-description' => 'Viser en tabell over alle parametre som kan brukes for det angitte resultatformatet sammen med standardverdier og beskrivelser.',
 	'smw-smwdoc-par-format' => 'Resultatformatet for å vise parameterdokumentasjon.',
 	'smw-smwdoc-par-parameters' => 'Hvilke parametre som skal vises. "specific" for dem som er lagt til av formatet, "base" for dem som er tilgjengelig i alle formater og "all" for begge.',
 	'smw-paramdesc-sort' => 'Egenskap som spørringen skal sorteres etter',
 	'smw-paramdesc-order' => 'Sorteringsrekkefølge for spørringen',
-	'smw-paramdesc-searchlabel' => 'Tekst som forteller om fortsatt søk (standard er «… flere resultater»)', # Fuzzy
+	'smw-paramdesc-searchlabel' => 'Tekst for å fortsette søket',
+	'smw-paramdesc-named_args' => 'Navngi argumentene gitt til malen',
+	'smw-paramdesc-export' => 'Eksportvalg',
+	'smw-paramdesc-prettyprint' => 'En ryddig-utskrift som bruker ekstra innrykk og linjeskift',
+	'smw-paramdesc-source' => 'Alternativ spørringskilde',
+	'smw-paramdesc-jsonsyntax' => 'JSON-syntaks som brukes',
+	'smw-printername-feed' => 'RSS- og Atom-mating',
+	'smw-paramdesc-feedtype' => 'Matingstype',
+	'smw-paramdesc-feedtitle' => 'Teksten som brukes som tittel på matingen',
+	'smw-paramdesc-feeddescription' => '‎Teksten som brukes som beskrivelse på matingen',
+	'smw-paramdesc-feedpagecontent' => 'Sideinnholdet som vises av matingen',
+	'smw-label-feed-description' => '$1 $2 mating',
 	'smw_iq_disabled' => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
 	'smw_iq_moreresults' => '… flere resultater',
 	'smw_parseerror' => 'Den gitte verdien ble ikke forstått.',
@@ -9979,10 +9993,18 @@ Lager en RDF som kan gås gjennom.',
 	'uriresolver' => 'URI-løser',
 	'properties' => 'Egenskaper',
 	'smw_properties_docu' => 'Følgende egenskaper brukes på wikien.',
-	'smw_property_template' => '$1 av type $2 ($3)', # Fuzzy
+	'smw_property_template' => '$1 av type $2 ($3 {{PLURAL:$3|bruker}})',
 	'smw_propertylackspage' => 'Alle egenskaper burde beskrives av en side.',
 	'smw_propertylackstype' => 'Ingen type spesifisert for denne egenskapen (bruker foreløpig typen $1).',
 	'smw_propertyhardlyused' => 'Denne egenskapen brukes nesten ikke på wikien.',
+	'smw-property-name-invalid' => 'Egenskap $1 ikke ikke brukes (ugyldig egenskapsnavn).',
+	'smw-sp-property-searchform' => 'Vis egenskaper som inneholder:',
+	'smw-sp-property-searchform-inputinfo' => 'Det skilles mellom store og små bokstaver i inndata, og når disse brukes for filtrering, vil bare egenskaper vises som passer med betingelsen.',
+	'concepts' => 'Begreper',
+	'smw-sp-concept-docu' => 'Et [https://www.semantic-mediawiki.org/wiki/Help:Concepts konsept] kan betraktes som en "dynamisk kategori", dvs. som en samling sider som ikke opprettes manuelt, men som settes sammen av Semantic MediaWiki fra en beskrivelse av en gitt spørring.',
+	'smw-sp-concept-header' => 'Liste av konsepter',
+	'smw-sp-concept-count' => 'Følgende {{PLURAL:$1|konsept|$1 konsepter}} {{PLURAL:$1|}} vises.',
+	'smw-sp-concept-empty' => 'Ingen konsepter ble funnet.',
 	'unusedproperties' => 'Ubrukte egenskaper',
 	'smw_unusedproperties_docu' => 'Følgende egenskaper finnes, selv om ingen andre sider bruker dem.',
 	'smw_unusedproperty_template' => '$1 av type $2',
@@ -9992,11 +10014,24 @@ Lager en RDF som kan gås gjennom.',
 	'smw_purge' => 'Gjenoppfrisk',
 	'types' => 'Typer',
 	'smw_types_docu' => 'Følgende er en liste over alle datatyper som kan knyttes til egenskaper.',
+	'smw-special-types-no-such-type' => 'Den angitte datatypen finnes ikke',
 	'semanticstatistics' => 'Semantisk statistikk',
 	'smw_semstats_text' => "Denne wikien inneholder {{PLURAL:$1|'''én''' egenskapsverdi|'''$1''' egenskapsverdier}} for totalt [[Special:Properties|{{PLURAL:$2|'''én''' egenskap|'''$2''' forskjellige egenskaper}}]].
 {{PLURAL:$3|'''Én''' egenskap|'''$3''' egenskaper}} har en egen side, og den mente datatypen er spesifisert for '''$4''' av disse.
 Enkelte av de eksisterende egenskapene kan være [[Special:UnusedProperties|ubrukte egenskaper]].
 Egenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperties|listen over ønskede egenskaper]].",
+	'smw-statistics' => 'Semantisk statistikk',
+	'smw-statistics-property-instance' => 'Egenskap {{PLURAL:$1|verdi|verdier}} (totalt)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Egenskap|Egenskaper}}]] (totalt)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Egenskap|Egenskaper}} (totalt)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Egenskap|Egenskaper}} (som har en egen side)',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Egenskap|Egenskaper}} (som er tildelt en datatype)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Spørring|Spørringer}}',
+	'smw-statistics-query-size' => 'Størrelse på spørringen',
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Konsept|Konsepter}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Konsept|Konsepter}}]]',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Underobjekt|Underobjekter}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datatype|Datatyper}}]]',
 	'smw_uri_doc' => 'URI-løseren implementerer [$1 finning av W3C TAG-er på «httpRange-14»].
 Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'ask' => 'Semantisk søk',
@@ -10014,9 +10049,14 @@ Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'smw_ask_format_as' => 'Formater som:',
 	'smw_ask_defaultformat' => 'standard',
 	'smw_ask_otheroptions' => 'Andre valgmuligheter',
+	'smw-ask-otheroptions-info' => 'Dette avsnittet innholder valg som påvirker utdata. Parameterbeskrivelser vises når musepekeren føres over dem.',
+	'smw-ask-otheroptions-collapsed-info' => 'Vennligst bruk pluss-ikonet for å vise alle valgmuligheter',
 	'smw_ask_show_embed' => 'Vis innkapslet kode',
 	'smw_ask_hide_embed' => 'Skjul innkapslet kode',
 	'smw_ask_embed_instr' => 'For å bygge inn denne spørringen i en wikiside, bruk koden nedenfor.',
+	'smw-ask-delete' => '[Slett]',
+	'smw-ask-sorting' => 'Sortering',
+	'smw-ask-format-selection-help' => 'For en detaljer beskrivelse, vennligst besøk hjelpesiden for $1.',
 	'searchbyproperty' => 'Søk etter egenskap',
 	'smw_sbv_docu' => 'Søk etter alle sider som har en gitt egenskap og verdi.',
 	'smw_sbv_novalue' => 'Skriv inn en gyldig verdi for egenskapen, eller vis alle egenskapsverdier for «$1».',
@@ -10051,11 +10091,19 @@ Skriv inn både sidenavn og egenskap.',
 	'smw_smwadmin_return' => 'Gå tilbake til $1',
 	'smw_smwadmin_updatestarted' => 'En ny oppdateringsprosess for oppfriskning av de semantiske dataene ble startet.
 Alle lagrede data vil bli bygd på nytt eller reparert der det trengs.
-Du kan følge med på fremgangen til oppdateringen på denne spesialsiden.', # Fuzzy
+Du kan følge med på fremgangen til oppdateringen på denne spesialsiden.
+
+Tilbake til $1.',
 	'smw_smwadmin_updatenotstarted' => 'Det kjører allerede en oppdateringsprosess.
-Starter derfor ikke enda en.', # Fuzzy
-	'smw_smwadmin_updatestopped' => 'Alle eksisterende oppdateringsprosesser har blitt stoppet.', # Fuzzy
-	'smw_smwadmin_updatenotstopped' => 'For å stoppe den kjørende oppdateringsprosessen må du markere avkrysningsboksen for å vise at du er helt sikker.', # Fuzzy
+Starter derfor ikke enda en.
+
+Tilbake til $1.',
+	'smw_smwadmin_updatestopped' => 'Alle eksisterende oppdateringsprosesser har blitt stoppet.
+
+Tilbake til $1.',
+	'smw_smwadmin_updatenotstopped' => 'For å stoppe den kjørende oppdateringsprosessen må du markere avkrysningsboksen for å vise at du er helt sikker.
+
+Tilbake til $1.',
 	'smw_smwadmin_docu' => 'Denne spesialsiden hjelper deg under innstallasjon og oppgradering av <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Husk å ta sikkerhetskopier av viktige data før du starter administrerende funksjoner.',
 	'smw_smwadmin_db' => 'Databaseinstallering og -oppgradering',
@@ -10063,8 +10111,8 @@ Husk å ta sikkerhetskopier av viktige data før du starter administrerende funk
 Funksjonen under sikrer at databasen din blir satt opp riktig.
 Endringene gjort i dette steget har ingen effekt på resten av MediaWiki-databasen og kan enkelt gjøres om om ønskelig.
 Denne initialiseringsfunksjonen kan bli kjørt flere ganger uten skadevirkning, men den trenger kun kjøres en gang ved installering eller oppgradering.',
-	'smw_smwadmin_permissionswarn' => 'Dersom operasjonen mislykkes med SQL-feil, har databasebrukeren anvendt av din wiki sannsynligvis manglende rettigheter (sjekk LocalSettings.php).
-Enten må denne brukeren gis tilstrekkelige rettigheter til å opprette og slette tabeller, eller en må midlertidig skrive inn innloggingsinformasjonen til database-roten i LocalSettings.php, eller en må bruke vedlikeholdsskriptet <code>SMW_setup.php</code> som har rettighetene til AdminSettings.php.', # Fuzzy
+	'smw_smwadmin_permissionswarn' => 'Dersom operasjonen mislykkes med SQL-feil, har databasebrukeren som brukes av din wiki sannsynligvis manglende rettigheter (sjekk LocalSettings.php).
+Enten må denne brukeren gis tilstrekkelige rettigheter til å opprette og slette tabeller, eller en må midlertidig skrive inn innloggingsinformasjonen til database-roten i LocalSettings.php, eller en må bruke vedlikeholdsskriptet <code>SMW_setup.php</code> som har rettighetene til AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Initialiser eller oppgrader tabeller',
 	'smw_smwadmin_announce' => 'Kunngjør din wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har en nettjeneste for kunngjøring av nye semantiske wikisider.
@@ -10100,9 +10148,30 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw-paramdesc-category-userparam' => 'En parameter som gis til malen',
 	'smw-info-par-message' => 'Melding å vise frem.',
 	'smw-info-par-icon' => 'Ikon for å vise frem enten "info" eller "advarsel".',
-	'smw_unknowntype' => 'Typen «$1» som er definert for egenskapen støttes ikke.', # Fuzzy
+	'prefs-ask-options' => 'Valgmuligheter for semantiske søk',
+	'smw-prefs-intro-text' => 'Valgmulighetene nedenfor er hentet fra [https://semantic-mediawiki.org/ Semantic MediaWiki] (eller andre semantiske utvidelser) for å muliggjøre individuelle tilpasninger for utvalgte funksjoner. Ytterligere informasjon finnes her: [https://semantic-mediawiki.org/wiki/Help:User_preferences help section].',
+	'smw-prefs-ask-options-tooltip-display' => 'Vis parameterteksten som hinttekst.',
+	'smw-prefs-ask-options-collapsed-default' => 'Gjør at valgboksen er ikke-ekspandert som standard',
+	'smw-ui-tooltip-title-property' => 'Egenskap',
+	'smw-ui-tooltip-title-quantity' => 'Størrelse',
+	'smw-ui-tooltip-title-info' => 'Informasjon',
+	'smw-ui-tooltip-title-service' => 'Tjenestelenker',
+	'smw-ui-tooltip-title-warning' => 'Feil',
+	'smw-ui-tooltip-title-event' => 'Hendelse',
+	'smw-ui-tooltip-title-note' => 'Merknad',
+	'smw-ui-tooltip-title-legend' => 'Tegnforklaring',
+	'smw_unknowntype' => 'Typen som er brukt for denne egenskapen er ugyldig.',
+	'smw-concept-cache-text' => 'Dette konseptet beskriver {{PLURAL:$1|en side|$1 sider}}, og ble sist oppdatert $2.',
 	'smw_concept_header' => 'Sider av konseptet «$1»',
-	'smw_conceptarticlecount' => 'Viser {{PLURAL:$1|én side|$1 sider}} som hører til det konseptet.', # Fuzzy
+	'smw_conceptarticlecount' => 'Viser nedenfor {{PLURAL:$1|én side|$1 sider}}.',
+	'smw-qp-aggregatable-empty-data' => 'Angitte gruppe av data kunne ikke vises pga. mangler i utvalgskriteriene.',
+	'right-smw-admin' => 'Administrasjonsoppgaver for tilgang (Semantic MediaWiki)',
+	'group-smwadministrator' => 'Administratorer for Semantic MediaWiki',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW_administratorer',
+	'action-smw-admin' => 'gå til administrasjonsoppgaver for Semantic MediaWiki',
+	'smw-pa-property-predefined-default' => "$1 er en predefinert egenskap (også kjent som ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties spesialegenskap]''). Dette er en innebygd egenskap med en spesiell betydning, men brukes akkurat som en vanlig [https://www.semantic-mediawiki.org/wiki/Property brukerdefinert egenskap].",
+	'smw-pa-property-predefined_ask' => '$1 er en predefinert egenskap (også kjent som [https://www.semantic-mediawiki.org/wiki/Help:Special_properties spesialegenskap]) som lenker til metadata [https://www.semantic-mediawiki.org/wiki/Subobject underobjekt] av en spørring. Dette er en innebygd egenskap som kommer med  administrative tilleggsrettigheter, men kan brukes akkurat som en [https://www.semantic-mediawiki.org/wiki/Property brukerdefinert egenskap].',
+	'smw-sp-properties-header-label' => 'Liste av egenskaper',
 );
 
 /** Low German (Plattdüütsch)
@@ -15182,13 +15251,16 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-csv-sep' => '要使用的分隔符',
 	'smw-paramdesc-dsv-separator' => '要使用的分隔符',
 	'smw-paramdesc-dsv-filename' => 'DSV文件名称',
+	'smw-paramdesc-filename' => '输出文件的名称',
 	'smw-smwdoc-description' => '显示所有参数的表，它们可以与默认值和描述一起用于指定的结果格式。',
 	'smw-smwdoc-par-format' => '显示参数文档的结果格式。',
 	'smw-smwdoc-par-parameters' => '要显示哪些参数。"specific"（专用）表示该格式所添加那些的，"base"（基础）表示所有格式当中可用的那些，而"all"（全部）表示两种情况具有。',
 	'smw-paramdesc-sort' => '排序查询的属性',
 	'smw-paramdesc-order' => '查询排序的顺序',
-	'smw-paramdesc-searchlabel' => '继续搜索的文本（默认是 «… further results»）', # Fuzzy
+	'smw-paramdesc-searchlabel' => '继续搜索的文本',
 	'smw-paramdesc-named_args' => '请指定传递给该模板的变量',
+	'smw-paramdesc-export' => '导出选项',
+	'smw-paramdesc-source' => '另一种查询来源',
 	'smw-paramdesc-jsonsyntax' => '将使用的JSON语法',
 	'smw-printername-feed' => 'RSS和Atom订阅',
 	'smw-paramdesc-feedtype' => '订阅类型',
@@ -15254,6 +15326,7 @@ $messages['zh-hans'] = array(
 	'smw_propertylackstype' => '此属性未指定类型（目前默认为类型$1）',
 	'smw_propertyhardlyused' => '此属性在本维基中不常使用。',
 	'smw-property-name-invalid' => '属性$1不能使用（无效的属性名称）。',
+	'smw-sp-property-searchform' => '显示包含...的属性：',
 	'unusedproperties' => '未使用特性',
 	'smw_unusedproperties_docu' => '以下属性在本维基中存在但未被使用。',
 	'smw_unusedproperty_template' => '类型为$2的属性$1',
@@ -15267,6 +15340,7 @@ $messages['zh-hans'] = array(
 	'semanticstatistics' => '语义统计',
 	'smw_semstats_text' => "此维基包含 '''$1''' 个属性{{PLURAL:$1|值|值}}，源自 '''$2''' 个[[Special:Properties|{{PLURAL:$2|属性|不同属性}}]]。'''$3''' 个{{PLURAL:$3|属性有|属性有}}自己的页，并且预期的数据类型被指定为 '''$4'''。某些已经存在的属性也许是[[Special:UnusedProperties|无用属性]]。缺乏页的属性可以在[[Special:WantedProperties|需要的属性列表]]中找到。",
 	'smw-statistics' => '语义统计',
+	'smw-statistics-query-size' => '查询大小',
 	'smw_uri_doc' => 'URI 分析器实现[$1 W3C httpRange-14 标记查找]。它将处理那些没有网站内容的页。',
 	'ask' => '语义搜索',
 	'smw_ask_sortby' => '按列排序（可选）',
@@ -15283,10 +15357,12 @@ $messages['zh-hans'] = array(
 	'smw_ask_format_as' => '格式：',
 	'smw_ask_defaultformat' => '默认',
 	'smw_ask_otheroptions' => '其他选项',
+	'smw-ask-otheroptions-collapsed-info' => '请使用加号图标查看所有可用的选项',
 	'smw_ask_show_embed' => '显示嵌入代码',
 	'smw_ask_hide_embed' => '隐藏嵌入的代码',
 	'smw_ask_embed_instr' => '使用以下代码将查询嵌入维基页面。',
 	'smw-ask-delete' => '[删除]',
+	'smw-ask-sorting' => '排序',
 	'searchbyproperty' => '按属性查询',
 	'smw_sbv_docu' => '搜索所有已设定属性和值的页面。',
 	'smw_sbv_novalue' => '为此属性输入一个有效值，或者显示所有"$1"的属性值。',
@@ -15372,6 +15448,7 @@ $messages['zh-hans'] = array(
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => '语义搜索选项',
 	'smw-ui-tooltip-title-property' => '属性',
+	'smw-ui-tooltip-title-quantity' => '数量',
 	'smw-ui-tooltip-title-info' => '信息',
 	'smw-ui-tooltip-title-service' => '服务连接',
 	'smw-ui-tooltip-title-warning' => '错误',
