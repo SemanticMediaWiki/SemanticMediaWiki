@@ -3,15 +3,9 @@
 ## Fetching MediaWiki installation base
 function runMWInstaller {
 
-	if [ "$MW" == "master" ]
-	then
-		git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git phase3 --depth 1
-		git checkout $MW
-	else
-		wget https://github.com/wikimedia/mediawiki-core/archive/$MW.tar.gz
-		tar -zxf $MW.tar.gz
-		mv mediawiki-core-$MW phase3
-	fi
+	wget https://github.com/wikimedia/mediawiki-core/archive/$MW.tar.gz
+	tar -zxf $MW.tar.gz
+	mv mediawiki-core-$MW phase3
 
 	cd phase3
 
