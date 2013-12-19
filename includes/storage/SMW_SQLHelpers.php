@@ -89,7 +89,7 @@ class SMWSQLHelpers {
 	 * @param object $reportTo object to report back to.
 	 */
 	protected static function createTable( $tableName, array $fields, $db, $reportTo ) {
-		global $wgDBtype, $wgDBTableOptions, $wgDBname;
+		global $wgDBtype, $wgDBname;
 
 		$sql = 'CREATE TABLE ' . ( ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ) ? '' : "`$wgDBname`." ) . $tableName . ' (';
 
@@ -102,7 +102,8 @@ class SMWSQLHelpers {
 		$sql .= implode( ',', $fieldSql ) . ') ';
 
 		if ( $wgDBtype != 'postgres' && $wgDBtype != 'sqlite' ) {
-			$sql .= $wgDBTableOptions;
+			// This replacement is needed for compatibility, see http://bugs.mysql.com/bug.php?id=17501
+			$sql .= str_replace( 'TYPE', 'ENGINE', $GLOBALS['wgDBTableOptions'] );
 		}
 
 		$db->query( $sql, __METHOD__ );
