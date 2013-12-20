@@ -387,7 +387,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
 				$diWikiPage = new SMWDIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 				$emptySemanticData = new SMWSemanticData( $diWikiPage );
-				$this->store->doDataUpdate( $emptySemanticData );
+				$this->store->updateData( $emptySemanticData );
 			}
 		}
 		$dbr->freeResult( $res );
