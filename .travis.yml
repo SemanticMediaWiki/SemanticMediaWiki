@@ -9,8 +9,6 @@ matrix:
       php: 5.3
     - env: DBTYPE=sqlite; MW=master; TYPE=composer
       php: 5.3
-    - env: DBTYPE=postgres; MW=1.22.0
-      php: 5.5
     - env: DBTYPE=mysql; MW=1.19.0
       php: 5.4
     - env: DBTYPE=sqlite; MW=1.19.0
