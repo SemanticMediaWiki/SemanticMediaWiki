@@ -3270,6 +3270,7 @@ $messages['da'] = array(
  * @author Revolus
  * @author The Evil IP address
  * @author Umherirrender
+ * @author Wnme
  */
 $messages['de'] = array(
 	'smw-desc' => "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
