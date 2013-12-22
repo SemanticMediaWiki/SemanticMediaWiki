@@ -3270,6 +3270,7 @@ $messages['da'] = array(
  * @author Revolus
  * @author The Evil IP address
  * @author Umherirrender
+ * @author Wnme
  */
 $messages['de'] = array(
 	'smw-desc' => "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://semantic-mediawiki.org/wiki/Help:Nutzeranleitung Dokumentation])",
@@ -7588,6 +7589,7 @@ $messages['io'] = array(
 
 /** Italian (italiano)
  * @author Beta16
+ * @author Candalua
  * @author Civvì
  * @author Cruccone
  * @author Darth Kule
@@ -7820,6 +7822,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw-ui-tooltip-title-parameter' => 'Parametro',
 	'smw-ui-tooltip-title-event' => 'Evento',
 	'smw-ui-tooltip-title-note' => 'Nota',
+	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'Il tipo di questa proprietà non è valido',
 	'smw_concept_header' => 'Pagine del concetto "$1"',
 	'smw_conceptarticlecount' => 'Mostro {{PLURAL:$1|una pagina|$1 pagine}}.',
@@ -9261,6 +9264,7 @@ Rezultatas gali būti ne tas, kurio tikėtasi.',
 );
 
 /** Latvian (latviešu)
+ * @author Edgars2007
  * @author Papuass
  */
 $messages['lv'] = array(
@@ -9277,6 +9281,7 @@ $messages['lv'] = array(
 	'smw-ui-tooltip-title-parameter' => 'Parametrs',
 	'smw-ui-tooltip-title-event' => 'Notikums',
 	'smw-ui-tooltip-title-note' => 'Piezīme',
+	'smw-ui-tooltip-title-legend' => 'Apzīmējumi',
 );
 
 /** Malagasy (Malagasy)
@@ -10359,7 +10364,7 @@ Genereert door te bladeren RDF.",
 	'wantedproperties' => 'Gewenste eigenschappen',
 	'smw_wantedproperties_docu' => 'De volgende eigenschapen worden gebruikt in de wiki, maar hebben geen pagina waarop ze worden beschreven.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|keer|keren}} gebruikt)',
-	'smw_purge' => 'Verversen',
+	'smw_purge' => 'Vernieuwen',
 	'types' => 'Typen',
 	'smw_types_docu' => 'Hieronder staat een lijst van alle gegevenstypen die aan eigenschappen kunnen worden toegewezen.',
 	'smw-special-types-no-such-type' => 'Het opgegeven gegevenstype bestaat niet',
@@ -10470,7 +10475,7 @@ Op de homepage van Semantic MediaWiki staat <a href="http://semantic-mediawiki.o
 De dienst registreert geen wiki's die niet publiek toegankelijk zijn en slaat alleen publiek toegankelijke informatie op.",
 	'smw_smwadmin_datarefresh' => 'Gegevens repareren en bijwerken',
 	'smw_smwadmin_datarefreshdocu' => 'Het is mogelijk om alle gegevens van Semantic MediaWiki opnieuw te genereren op basis van de huidige inhoud van de wiki.
-Dit kan handig zijn om gegevens te repareren of de gegevens te verversen als de interne opmaak gewijzigd is bij een softwareupdate.
+Dit kan handig zijn om gegevens te repareren of de gegevens te vernieuwen als de interne opmaak gewijzigd is bij een softwareupdate.
 De gegevens worden pagina voor pagina bijgewerkt en het kan enige tijd duren voor de taak is afgerond.
 Hieronder wordt weergegeven of er op dit moment een taak loopt en stelt u in staat een taak te stoppen of te starten (tenzij deze mogelijkheid door de sitebeheerder is uitgeschaked).',
 	'smw_smwadmin_datarefreshprogress' => "<strong>Er loopt een bijwerktaak</strong>
