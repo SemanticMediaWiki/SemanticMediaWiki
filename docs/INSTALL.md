@@ -43,24 +43,28 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th>PHP</th>
 		<th>MediaWiki</th>
 		<th>Composer</th>
+		<th>Validator</th>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>5.3.2 - 5.5.x</td>
 		<td>1.19 - 1.23</td>
 		<td>Required</td>
+		<td>1.0.x</td>
 	</tr>
 	<tr>
 		<th>SMW 1.8.x</th>
 		<td>5.2.0 - 5.5.x</td>
 		<td>1.17 - 1.22</td>
 		<td>Not supported</td>
+		<td>0.5.1</td>
 	</tr>
 	<tr>
 		<th>SMW 1.7.1</th>
 		<td>5.2.0 - 5.4.x</td>
 		<td>1.16 - 1.19</td>
 		<td>Not supported</td>
+		<td>0.4.13 or 0.4.14</td>
 	</tr>
 </table>
 
