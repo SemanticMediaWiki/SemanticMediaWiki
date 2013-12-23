@@ -3867,7 +3867,7 @@ Licony póstup aktualneje aktualizacije:',
 	'smw-ui-tooltip-title-warning' => 'Zmólka',
 	'smw_unknowntype' => 'Typ toś teje kakosći jo njepłaśiwy',
 	'smw_concept_header' => 'Boki koncepta "$1"',
-	'smw_conceptarticlecount' => '$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słušaju}} k tomu konceptoju.', # Fuzzy
+	'smw_conceptarticlecount' => '$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słuša}} k tomu konceptoju.',
 );
 
 /** Ewe (eʋegbe)
