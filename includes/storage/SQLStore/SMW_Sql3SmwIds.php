@@ -816,25 +816,29 @@ class SMWSql3SmwIds {
 	 * property-value table when updating data
 	 *
 	 * @since 1.8
-	 * @param integer $sid ID of the page as stored in the SMW IDs table
+	 *
+	 * @param integer $subjectId ID of the page as stored in the SMW IDs table
+	 *
 	 * @return array
 	 */
-	public function getPropertyTableHashes( $sid ) {
+	public function getPropertyTableHashes( $subjectId ) {
 		$hash = null;
 
-		if ( $this->hashCacheId == $sid ) {
-			//print "Cache hit! " . $this->hitcount++ . "\n";
+		if ( $this->hashCacheId == $subjectId ) {
 			$hash = $this->hashCacheContents;
-		} elseif ( $sid !== 0 ) {
-			//print "Cache miss! $sid is not {$this->hashCacheId} " . $this->misscount++ . "\n";
+		} elseif ( $subjectId !== 0 ) {
 			$db = wfGetDB( DB_SLAVE );
 
 			$row = $db->selectRow(
 				self::tableName,
 				array( 'smw_proptable_hash' ),
-				'smw_id=' . $sid ,
+				'smw_id=' . $subjectId ,
 				__METHOD__
 			);
+
+			if ( $GLOBALS['wgDBtype'] == 'postgres' ) {
+				$hash = pg_unescape_bytea( $hash );
+			}
 
 			if ( $row !== false ) {
 				$hash = $row->smw_proptable_hash;
@@ -849,7 +853,7 @@ class SMWSql3SmwIds {
 	 *
 	 * @since 1.8
 	 * @param integer $sid ID of the page as stored in SMW IDs table
-	 * @param array of hash values with tablename as keys
+	 * @param string[] of hash values with table names as keys
 	 */
 	public function setPropertyTableHashes( $sid, array $newTableHashes ) {
 		$db = wfGetDB( DB_MASTER );
