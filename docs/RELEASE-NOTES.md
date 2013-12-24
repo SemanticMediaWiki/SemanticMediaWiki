@@ -35,41 +35,52 @@ production until the actual release.
 * (40e7572) Renamed SMWDISerializer to \SMW\Serializers\QueryResultSerializer
 * (a0b08fe) Add SMW\Serializes\SemanticDataSerializer in order for SemanticData to be serializable
 * (02635a1) Replace SkinTemplateToolboxEnd hook with SMW\BaseTemplate
-* (ec5dd46) Add SMW\SimpleDependencyBuilder and SMW\SharedDependencyContainer as simple framework that allows for individual object factoring and dependency injection
+* (ec5dd46) Add SMW\SimpleDependencyBuilder and SMW\SharedDependencyContainer as simple framework that
+allows for individual object factoring and dependency injection
 * (8bcee83) (Bug 44696) Fix XML output for SMW\Api\Ask
 * (92b67bd) Add SMW\TableFormatter for the table query printer
 * (5a33d2d) Add SMW\CacheHandler to separate MediaWiki specific cache injection
 * (bb35e8a) (Bug 47123) Aggregate numbers based on the mainlabel
-* (5cda766) (Bug 46930) SMWSQLStore3Writers::changeTitle only create redirects when appropriate conditions are met
+* (5cda766) (Bug 46930) SMWSQLStore3Writers::changeTitle only create redirects when appropriate
+conditions are met
 * (e4a5fb8) (Bug 31880) add column class (based on dataValue typeId)
-* (e4a2035) Modify SMW\RecurringEvents in order to use subobject as datamodel to represent individual events within a page
+* (e4a2035) Modify SMW\RecurringEvents in order to use subobject as datamodel to represent
+individual events within a page
 * (a957596) SMW\JsonResultPrinter remove obsolete serialization
 * (395b584) Add ResourceLoaderGetConfigVars to populate SMW related configuration details for JavaScript
-* (7c60e50) Add SMW\ApiResultPrinter to support query printers to use Ajax/WebApi interface for query result updates
+* (7c60e50) Add SMW\ApiResultPrinter to support query printers to use Ajax/WebApi interface for
+query result updates
 * (cb6c6ad) SMW\ResultPrinter class turn RequestContext aware
 * (7d1e2ad) (Bug 34782) Add note parameter to #info parser function
 
-The following classes and interfaces were re-factored and/or added in order to improve testability
+The following classes and interfaces were re-factored and/or added in order to improve testability:
+
 * (e0f3f4d) Rename and re-factor \SMW\RefreshJob
 * (058c2fc) Add SMW\Setup to separate extension registration and initialization for parser function
-* (87b214f) Add SMW\Settings to remove GLOBAL state and to allow to inject individual configuration details during runtime
+* (87b214f) Add SMW\Settings to remove GLOBAL state and to allow to inject individual configuration
+details during runtime
 * (5a82da8) Improve SMW\Factbox and add SMW\FactboxCache to minimize content parsing
-* (24cca37) Add SMW\Test\MockObjectBuilder and SMW\Test\CoreMockObjectRepository, SMW\Test\MediaWikiMockObjectRepository
+* (24cca37) Add SMW\Test\MockObjectBuilder and SMW\Test\CoreMockObjectRepository,
+SMW\Test\MediaWikiMockObjectRepository
 * (6d5a3c5) Add SMW\JobBase to enable dependency injection
 * (71dbba1) Add SMW\ObservableDispatcher to enable Observes to act as an observable subject itself
-* (dc28899) (18d17a5) Add SMW\StoreUpdater, SMW\UpdateDispatcherJob, and SMW\PropertyTypeComparator to separate responsibilities during the update process
+* (dc28899) (18d17a5) Add SMW\StoreUpdater, SMW\UpdateDispatcherJob, and SMW\PropertyTypeComparator
+to separate responsibilities during the update process
 * (6c06567) Add SMW\SQLStore\PropertyTableDefinitionBuilder to separate build definition
-* (2164a25) Add SMW\Store\CacheableResultCollector (SMW\SQLStore\StatisticsCollector, SMW\SQLStore\PropertiesCollector etc.) to enable cacheable results when executing Special:Statistics or Special:Properties
+* (2164a25) Add SMW\Store\CacheableResultCollector (SMW\SQLStore\StatisticsCollector,
+SMW\SQLStore\PropertiesCollector etc.) to enable cacheable results when executing Special:Statistics
+or Special:Properties
 * (c8a2f97) (Bug 51091) Add SMW\Api\Ask and SMW\Api\AskArgs
 
-* Additional configuration parameters
-   * $smwgQueryProfiler
-   * $smwgShowHiddenCategories
-   * $smwgFactboxUseCache, $smwgFactboxCacheRefreshOnPurge
-   * $smwgPropertyZeroCountDisplay, $smwgPropertyLowUsageThreshold
-   * $smwgFixedProperties
-   * $smwgAutoRefreshOnPageMove, $smwgAutoRefreshOnPurge
-   * $smwgCacheType, $smwgCacheUsage
+#### New configuration parameters
+
+* $smwgQueryProfiler
+* $smwgShowHiddenCategories
+* $smwgFactboxUseCache, $smwgFactboxCacheRefreshOnPurge
+* $smwgPropertyZeroCountDisplay, $smwgPropertyLowUsageThreshold
+* $smwgFixedProperties
+* $smwgAutoRefreshOnPageMove, $smwgAutoRefreshOnPurge
+* $smwgCacheType, $smwgCacheUsage
 
 ### Bug fixes
 
@@ -84,7 +95,8 @@ The following classes and interfaces were re-factored and/or added in order to i
 * (Bug 43932) Fix html tag support for non-list results in SMW\ListResultPrinter
 * (Bug 44275) Fix .data( 'sortkey' ) support in SMW\ListResultPrinter
 * (fcb7da9) (Bug 42324) fix SQlite support in sqlstore3
-* (3507f84) (Bug 21893) Fixed queries that use the like comparator for properties with a restricted set of values
+* (3507f84) (Bug 21893) Fixed queries that use the like comparator for properties with a restricted
+set of values
 
 ### Dropped features
 
