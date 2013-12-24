@@ -4,7 +4,6 @@ namespace SMW\Test;
 
 use SMW\StoreFactory;
 
-use ContentHandler;
 use WikiPage;
 use Title;
 
@@ -26,10 +25,70 @@ use Title;
 class MwDatabaseSQLStoreIntegrationTest extends \MediaWikiTestCase {
 
 	/**
-	 * @since 1.9
+	 * @var Title
 	 */
-	public function getStore() {
+	protected $title;
 
+	public function titleProvider() {
+		$provider = array();
+
+		$provider[] = array( NS_MAIN, 'withInterWiki', 'foo' );
+		$provider[] = array( NS_MAIN, 'normalTite', '' );
+		$provider[] = array( NS_MAIN, 'useUpdateJobs', '' );
+
+		return $provider;
+	}
+
+	/**
+	 * @dataProvider titleProvider
+	 */
+	public function testAfterPageCreation_StoreHasDataToRefreshWithoutJobs( $ns, $name, $iw ) {
+		$this->title = Title::makeTitle( $ns, $name, '', $iw );
+
+		$this->createPage();
+
+		$this->assertStoreHasDataToRefresh( false );
+	}
+
+	/**
+	 * @dataProvider titleProvider
+	 */
+	public function testAfterPageCreation_StoreHasDataToRefreshWitJobs( $ns, $name, $iw ) {
+		$this->title = Title::makeTitle( $ns, $name, '', $iw );
+
+		$this->createPage();
+
+		$this->assertStoreHasDataToRefresh( true );
+	}
+
+	protected function createPage() {
+		$pageCreator = new PageCreator();
+		$pageCreator->createPage( $this->title );
+	}
+
+	public function tearDown() {
+		if ( $this->title !== null ) {
+			$pageDeleter = new PageDeleter();
+			$pageDeleter->deletePage( $this->title );
+		}
+
+		parent::tearDown();
+	}
+
+	protected function assertStoreHasDataToRefresh( $useJobs ) {
+		$refreshPosition = $this->title->getArticleID();
+
+		$refreshProgress = $this->getStore()->refreshData(
+			$refreshPosition,
+			1,
+			false,
+			$useJobs
+		);
+
+		$this->assertGreaterThan( 0, $refreshProgress );
+	}
+
+	protected function getStore() {
 		$store = StoreFactory::getStore();
 
 		if ( !( $store instanceof \SMWSQLStore3 ) ) {
@@ -39,82 +98,36 @@ class MwDatabaseSQLStoreIntegrationTest extends \MediaWikiTestCase {
 		return $store;
 	}
 
-	/**
-	 * @dataProvider titleProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testStoreRefreshDataOnDatabase( $ns, $name, $fragment, $iw, $useJobs ) {
+}
 
-		$store = $this->getStore();
+class PageCreator {
 
-		$title = Title::makeTitle( $ns, $name, $fragment, $iw );
-		$wikiPage = new WikiPage( $title );
-		$this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
+	public function createPage( Title $title ) {
+		$page = new \WikiPage( $title );
 
-		$id = $title->getArticleId();
-		$this->assertGreaterThan( 0, $store->refreshData( $id, 1, false, $useJobs ) );
+		$pageContent = 'Content of ' . $title->getFullText();
+		$editMessage = 'SMW system test: create page';
 
-		$this->deletePage( $wikiPage, __METHOD__ );
+		if ( class_exists( 'WikitextContent' ) ) {
+			$content = new \WikitextContent( $pageContent );
 
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function titleProvider( $title ) {
-
-		$provider = array();
-
-		$provider[] = array( NS_MAIN, __METHOD__ . '-withInterWiki', '', 'foo', false );
-		$provider[] = array( NS_MAIN, __METHOD__ . '-normalTite', '', '', false );
-		$provider[] = array( NS_MAIN, __METHOD__ . '-useUpdateJobs', '', '', true );
-
-		return $provider;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	protected function editPageAndFetchInfo( WikiPage $wikiPage, $on, $text = 'Foo' ) {
-
-		$user = new MockSuperUser();
-
-		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
-
-			$content = ContentHandler::makeContent(
-				$text,
-				$wikiPage->getTitle(),
-				CONTENT_MODEL_WIKITEXT
+			$page->doEditContent(
+				$content,
+				$editMessage
 			);
-
-			$wikiPage->doEditContent( $content, "testing " . $on, EDIT_NEW, false, $user );
-
-			$content = $wikiPage->getRevision()->getContent();
-			$format  = $content->getContentHandler()->getDefaultFormat();
-
-			return $wikiPage->prepareContentForEdit( $content, null, $user, $format );
-
 		}
-
-		$wikiPage->doEdit( $text, "testing " . $on, EDIT_NEW, false, $user );
-
-		return $wikiPage->prepareTextForEdit(
-			$wikiPage->getRevision()->getRawText(),
-			null,
-			$user
-		);
+		else {
+			$page->doEdit( $pageContent, $editMessage );
+		}
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	protected function deletePage( WikiPage $wikiPage, $on ) {
+}
 
-		if ( $wikiPage->exists() ) {
-			$wikiPage->doDeleteArticle( $on .  " testing done" );
-		}
+class PageDeleter {
 
+	public function deletePage( Title $title ) {
+		$page = new \WikiPage( $title );
+		$page->doDeleteArticle( 'SMW system test: delete page' );
 	}
 
 }
