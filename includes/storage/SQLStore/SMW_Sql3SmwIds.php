@@ -836,12 +836,12 @@ class SMWSql3SmwIds {
 				__METHOD__
 			);
 
+			if ( $GLOBALS['wgDBtype'] == 'postgres' ) {
+				$hash = pg_unescape_bytea( $hash );
+			}
+
 			if ( $row !== false ) {
 				$hash = $row->smw_proptable_hash;
-
-				if ( $GLOBALS['wgDBtype'] == 'postgres' ) {
-					$hash = pg_unescape_bytea( $hash );
-				}
 			}
 		}
 
