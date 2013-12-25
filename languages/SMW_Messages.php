@@ -424,7 +424,7 @@ Estimated progress of current update:',
 	'smw-pa-property-predefined_asksi' => '$1 is a predefined property (also known as [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property]) which collects the number of conditions used in a query. It is a built-in property that comes with additional administrative privileges but can be used just like any other [https://www.semantic-mediawiki.org/wiki/Property user-defined property].',
 
 	// Special:Properties
-	'smw-sp-properties-docu' => 'This special page shows [https://www.semantic-mediawiki.org/wiki/Property properties] that are available and when filtered, only user-defined properties that match the condition are displayed. For a differentiated view, see the special page [[Special:UnusedProperties|unused properties]] or [[Special:WantedProperties|wanted properties]].',
+	'smw-sp-properties-docu' => 'This page shows [https://www.semantic-mediawiki.org/wiki/Property properties] that are available and when filtered, only user-defined properties that match the condition are displayed. For a differentiated view, see the special page [[Special:UnusedProperties|unused properties]] or [[Special:WantedProperties|wanted properties]].',
 	'smw-sp-properties-cache-info' => 'The listed data have been retrieved from [https://www.semantic-mediawiki.org/wiki/Caching cache], and were last updated $1.',
 	'smw-sp-properties-header-label' => 'List of properties',
 
