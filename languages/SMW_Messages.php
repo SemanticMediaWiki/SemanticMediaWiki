@@ -848,7 +848,7 @@ See also:
 	'smw_browse_no_outgoing' => 'This is the information message shown on [[Special:Browse]] in case the browsed page does not contain any properties.',
 	'smw_browse_no_incoming' => 'This is the information message shown on [[Special:Browse]] in case no properties link to the browsed page.',
 	'smw_inverse_label_default' => 'Inverse label default. Parameters:
-* $1 is a place marker',
+* $1 - a place marker',
 	'smw_inverse_label_property' => 'Can as well be translated as "Name of", or "Denomination of the inverse propery". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property "is child of" is the inverse propery of "is parent of".',
 	'pageproperty' => 'This is the name of [[Special:PageProperty]].',
 	'smw_pp_docu' => 'This is the introductory message at the top of [[Special:PageProperty]].',
@@ -8438,6 +8438,7 @@ $messages['kn'] = array(
 /** Korean (한국어)
  * @author Albamhandae
  * @author Kwj2772
+ * @author Priviet
  * @author 아라
  */
 $messages['ko'] = array(
@@ -8572,7 +8573,7 @@ $messages['ko'] = array(
 	'smw_propertyhardlyused' => '이 속성은 거의 위키 안에 사용하지 않습니다!',
 	'smw-property-name-invalid' => '$1 속성은 사용할 수 없습니다. (잘못된 속성 이름)',
 	'smw-sp-property-searchform' => '다음을 포함하는 속성 보기:',
-	'smw-sp-property-searchform-inputinfo' => '입력은 대소문자를 구분하여 필터에 사용되며, 조건과 일치하는 속성만 보여집니다.',
+	'smw-sp-property-searchform-inputinfo' => '입력은 대소문자를 구분하여 필터에 사용되며, 조건과 일치하는 속성만 보입니다.',
 	'concepts' => '개념',
 	'smw-sp-concept-docu' => '[https://www.semantic-mediawiki.org/wiki/Help:Concepts 개념]은 "동적 분류", 즉 수동으로 만들어지지 않지만 주어진 쿼리의 설명에서 시맨틱 미디어위키가 계산한 문서의 모음집으로 볼 수 있습니다.',
 	'smw-sp-concept-header' => '개념 목록',
@@ -8635,7 +8636,7 @@ $messages['ko'] = array(
 	'smw_sbv_novalue' => '속성에 대한 올바른 값을 입력하거나 "$1"에 대한 모든 속성 값을 보세요.',
 	'smw_sbv_displayresult' => '"$2" 값으로 "$1" 속성을 가진 모든 문서의 목록입니다',
 	'smw_sbv_displayresultfuzzy' => '"$2" 값으로 "$1" 속성을 가진 모든 문서의 목록입니다.
-또한 거의 적은 결과가 보여졌기 때문에 가까운 값이 보여집니다.',
+또한 거의 적은 결과가 보여졌기 때문에 가까운 값이 보입니다.',
 	'smw_sbv_property' => '속성:',
 	'smw_sbv_value' => '값:',
 	'smw_sbv_submit' => '결과 찾기',
@@ -8748,7 +8749,7 @@ $1 문서로 돌아갑니다.',
 	'smw-pa-property-predefined-default' => '$1(은)는 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
 	'smw-pa-property-predefined_ask' => '$1(은)는 쿼리의 메타데이터 [https://www.semantic-mediawiki.org/wiki/Subobject 하위 개체]의 링크인 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
 	'smw-pa-property-predefined_asksi' => '$1(은)는 쿼리에서 사용되는 조건의 수를 모으는 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
-	'smw-sp-properties-docu' => '이 특수 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자가 정의한 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.',
+	'smw-sp-properties-docu' => '이 특수 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자가 정의한 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.', # Fuzzy
 	'smw-sp-properties-cache-info' => '나열된 데이터는 [https://www.semantic-mediawiki.org/wiki/Caching 캐시]에서 검색되었고, $1에 마지막으로 업데이트했습니다.',
 	'smw-sp-properties-header-label' => '속성 목록',
 );
@@ -14749,7 +14750,7 @@ $messages['uk'] = array(
 	'smw-pa-property-predefined-default' => '$1 попередньо визначена властивість (також відома як [https://www.semantic-mediawiki.org/wiki/Help:Special_properties спеціальна властивість]). Це вбудована властивість, яка поставляється з додатковими правами адміністратора, але може використовуватися як і будь-яка інші [https://www.semantic-mediawiki.org/wiki/Property визначена користувачем властивість].',
 	'smw-pa-property-predefined_ask' => "$1 попередньо визначена властивість (також відома як [https://www.semantic-mediawiki.org/wiki/Help:Special_properties спеціальна властивість]), яка зв'язує метадані [https://www.semantic-mediawiki.org/wiki/Subobject підоб'єкт] запиту. Це вбудована властивість, яка поставляється з додатковими правами адміністратора, але може використовуватися як і будь-яка інші [https://www.semantic-mediawiki.org/wiki/Property визначена користувачем властивість].",
 	'smw-pa-property-predefined_asksi' => '$1 попередньо визначена властивість (також відома як [https://www.semantic-mediawiki.org/wiki/Help:Special_properties спеціальна властивість]), яка збирає ряд умов, використаних у запиті. Це вбудована властивість, яка поставляється з додатковими правами адміністратора, але може використовуватися як і будь-яка інші [https://www.semantic-mediawiki.org/wiki/Property визначена користувачем властивість].',
-	'smw-sp-properties-docu' => 'Ця спеціальна сторінка показує [https://www.semantic-mediawiki.org/wiki/Property властивості], які доступні, і при фільтрації відображає лише визначені користувачем властивості, які відповідають умові. Для диференційованого перегляду почитайте спеціальну сторінку  [[Special:UnusedProperties|невикористані властивості]] або [[Special:WantedProperties|бажані властивості]].',
+	'smw-sp-properties-docu' => 'Ця сторінка показує [https://www.semantic-mediawiki.org/wiki/Property властивості], які доступні, і при фільтрації відображає лише визначені користувачем властивості, які відповідають умові. Для диференційованого перегляду почитайте спеціальну сторінку  [[Special:UnusedProperties|невикористані властивості]] або [[Special:WantedProperties|бажані властивості]].',
 	'smw-sp-properties-cache-info' => 'Перераховані дані отримані з [https://www.semantic-mediawiki.org/wiki/Caching кеш], і востаннє оновлені $1.',
 	'smw-sp-properties-header-label' => 'Список властивостей',
 );
