@@ -1687,6 +1687,13 @@ $messages['arz'] = array(
 	'smw_conceptarticlecount' => 'عرض {{PLURAL:$1||صفحه واحده تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحه تنتمي}} إلى هذا المبدأ.', # Fuzzy
 );
 
+/** Assamese (অসমীয়া)
+ * @author Gitartha.bordoloi
+ */
+$messages['as'] = array(
+	'smw_result_results' => 'ফলাফল',
+);
+
 /** Asturian (asturianu)
  * @author Tifinaghes
  * @author Xuacu
@@ -9935,7 +9942,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw-paramdesc-sort' => 'Egenskap som spørringen skal sorteres etter',
 	'smw-paramdesc-order' => 'Sorteringsrekkefølge for spørringen',
 	'smw-paramdesc-searchlabel' => 'Tekst for å fortsette søket',
-	'smw-paramdesc-named_args' => 'Navngi argumentene gitt til malen',
+	'smw-paramdesc-named_args' => 'Navngi parameterne for malen',
 	'smw-paramdesc-export' => 'Eksportvalg',
 	'smw-paramdesc-prettyprint' => 'En ryddig-utskrift som bruker ekstra innrykk og linjeskift',
 	'smw-paramdesc-source' => 'Alternativ spørringskilde',
