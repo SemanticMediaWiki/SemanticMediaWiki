@@ -141,9 +141,7 @@ class SMWTypesValue extends SMWDataValue {
 	 * @return string
 	 */
 	protected function getSpecialPageTitleText() {
-		return is_callable( array( 'SpecialPageFactory', 'getLocalNameFor' ) ) ?
-			SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel )
-			: SpecialPage::getLocalNameFor( 'Types', $this->m_realLabel );
+		return SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
 	}
 
 	public function getWikiValue() {
