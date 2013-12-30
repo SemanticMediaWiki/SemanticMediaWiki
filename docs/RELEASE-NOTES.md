@@ -14,8 +14,8 @@ production until the actual release.
 
 ### New features
 
-* SMW (and its dependencies) can now be installed via Composer
-* Added maintenance script to rebuild the property statistics
+* SMW (and its dependencies) can now be installed via [Composer](https://getcomposer.org/)
+* Added maintenance script [rebuildPropertyStatistics.php](https://semantic-mediawiki.org/wiki/Help:RebuildPropertyStatistics.php) to rebuild the property statistics
 * (271864f) The property type String is now an alias for Text and has no more length restrictions
 * (38499a8) Special:Statistics now shows a "semantic statistics" version (only when using a recent version of MediaWiki)
 * (9714d04) (a33411f) Add new "browsebysubject" API module allows fetching the semantic data for a given page
@@ -110,7 +110,7 @@ set of values
 * (I17a3e0) Support for quantity export via API and JSON format
 * (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
 * (I5db911) #set_recurring_event using subobjects (changes query behavior
-for recurring events; for more see Help:Recurring_events)
+for recurring events; for more see [Help:Recurring_events](https://semantic-mediawiki.org/wiki/Help:Recurring_events "Recurring events")
 
 ### Deprecated code
 
