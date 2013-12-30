@@ -20,7 +20,7 @@ production until the actual release.
 * (38499a8) Special:Statistics now shows a "semantic statistics" version (only when using a recent version of MediaWiki)
 * (9714d04) (a33411f) Add new "browsebysubject" API module allows fetching the semantic data for a given page
 * (ed52df7) (Bug 50844) Special:Properties now has a search form
-* (a949f04) (Bug 33181) Add Special:Concepts page that lists available concepts
+* (a949f04) (Bug 33181) Add page [Special:Concepts](https://semantic-mediawiki.org/wiki/Help:Special:Concepts) that lists available concepts
 * (0c971f8) (Bug 46458) Extend smwinfo API module to provide additional information
 * (b8aea6c) (Bug 48840) Add a smw-admin right to enable restricted access to Special:SMWAdmin
 
@@ -74,13 +74,13 @@ or Special:Properties
 
 #### New configuration parameters
 
-* $smwgQueryProfiler
-* $smwgShowHiddenCategories
-* $smwgFactboxUseCache, $smwgFactboxCacheRefreshOnPurge
-* $smwgPropertyZeroCountDisplay, $smwgPropertyLowUsageThreshold
-* $smwgFixedProperties
-* $smwgAutoRefreshOnPageMove, $smwgAutoRefreshOnPurge
-* $smwgCacheType, $smwgCacheUsage
+* [$smwgQueryProfiler](https://semantic-mediawiki.org/wiki/Help:$smwgQueryProfiler)
+* [$smwgShowHiddenCategories](https://semantic-mediawiki.org/wiki/Help:$smwgShowHiddenCategories)
+* [$smwgFactboxUseCache](https://semantic-mediawiki.org/wiki/Help:$smwgFactboxUseCache), [$smwgFactboxCacheRefreshOnPurge](https://semantic-mediawiki.org/wiki/Help:$smwgFactboxCacheRefreshOnPurge)
+* [$smwgPropertyZeroCountDisplay](https://semantic-mediawiki.org/wiki/Help:$smwgPropertyZeroCountDisplay), [$smwgPropertyLowUsageThreshold](https://semantic-mediawiki.org/wiki/Help:$smwgPropertyLowUsageThreshold)
+* [$smwgFixedProperties](https://semantic-mediawiki.org/wiki/Help:$smwgFixedProperties)
+* [$smwgAutoRefreshOnPageMove](https://semantic-mediawiki.org/wiki/Help:$smwgAutoRefreshOnPageMove), [$smwgAutoRefreshOnPurge](https://semantic-mediawiki.org/wiki/Help:$smwgAutoRefreshOnPurge)
+* [$smwgCacheType](https://semantic-mediawiki.org/wiki/Help:$smwgCacheType), [$smwgCacheUsage](https://semantic-mediawiki.org/wiki/Help:$smwgCacheUsage)
 
 ### Bug fixes
 
