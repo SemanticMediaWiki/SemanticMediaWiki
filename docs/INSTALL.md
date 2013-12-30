@@ -138,7 +138,7 @@ Now using Composer, install Semantic MediaWiki.
 
 If you do not have a composer.json file yet, copy the composer-example.json file to composer.json. If you are using the ExtensionInstaller, the file to copy will be named example.json, rather than composer-example.json. When this is done, run:
     
-    php composer.phar require mediawiki/semantic-media-wiki @dev
+    php composer.phar require "mediawiki/semantic-media-wiki": "1.9.*"
 
 ##### Step 4
 
@@ -177,12 +177,12 @@ You can get the SMW code itself:
 The only remaining step is to include SemanticMediaWiki in your LocalSettings.php file:
 
 ```php
-require_once( "$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );
+require_once "$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php";
 ```
 
 ## More instructions
 
 * [Verbose installation instructions](https://semantic-mediawiki.org/wiki/Help:Installation)
-* [Upgrading instructions](https://semantic-mediawiki.org/wiki/Help:Installation#Upgrading_existing_installations)
+* [Upgrading instructions](https://semantic-mediawiki.org/wiki/Help:Installation#Upgrading)
 * [Configuration instructions](https://semantic-mediawiki.org/wiki/Help:Configuration)
 * [Administrator manual](https://semantic-mediawiki.org/wiki/Help:Administrator_manual)
