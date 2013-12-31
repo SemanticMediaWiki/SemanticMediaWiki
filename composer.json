@@ -52,6 +52,7 @@
 			"SemanticMediaWiki.hooks.php",
 			"includes/",
 			"languages/SMW_Language.php",
+			"maintenance/",
 			"tests/phpunit/"
 		]
 	}
