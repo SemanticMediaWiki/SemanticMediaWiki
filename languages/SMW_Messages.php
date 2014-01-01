@@ -2973,6 +2973,7 @@ $messages['ce'] = array(
 	'smw-paramdesc-category-delim' => 'ДӀасакъастораг',
 	'smw-ui-tooltip-title-info' => 'Хаам',
 	'smw-ui-tooltip-title-note' => 'Билгалдаккхар',
+	'group-smwadministrator' => 'Куьйгалхой Semantic MediaWiki',
 );
 
 /** Chamorro (Chamoru)
