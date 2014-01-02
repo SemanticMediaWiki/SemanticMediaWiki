@@ -334,10 +334,13 @@ class SMWAskPage extends SMWQuerySpecialPage {
 
 		$result = '';
 
+		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
+		$title = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
+
 		if ( $this->m_editquery ) {
 			$result .= Html::openElement( 'form',
 				array( 'action' => $wgScript, 'name' => 'ask', 'method' => 'get' ) );
-			$result .= Html::hidden( 'title', $this->getTitle()->getPrefixedDBKey() );
+			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
 			$result .= '<table style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->text() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->text() . "<br />\n" .
