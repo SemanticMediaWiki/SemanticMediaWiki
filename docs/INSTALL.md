@@ -16,10 +16,16 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 1.9.x</a></th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 1.9.0.x</a></th>
 		<td>Development version</td>
-		<td>Estimate: January 3rd</td>
+		<td>-</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.0">SMW 1.9.0</a></th>
+		<td>Stable release</td>
+		<td>2014-01-03</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.0">1.9.0</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.8.0">SMW 1.8.x</a></th>

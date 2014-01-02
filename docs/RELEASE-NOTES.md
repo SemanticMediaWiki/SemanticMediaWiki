@@ -1,10 +1,5 @@
 # Semantic MediaWiki 1.9
 
-THIS IS NOT A RELEASE YET
-
-Semantic MediaWiki 1.9 is currently in beta-quality and is not recommended for use in
-production until the actual release.
-
 ### Requirements changes
 
 * Changed minimum MediaWiki version from 1.17 to 1.19.
