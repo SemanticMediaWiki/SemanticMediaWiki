@@ -18,7 +18,7 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 1.9.x</a></th>
 		<td>Development version</td>
-		<td>Estimate: December 2013</td>
+		<td>Estimate: January 3rd</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
