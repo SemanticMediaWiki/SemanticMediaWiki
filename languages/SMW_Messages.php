@@ -848,7 +848,7 @@ See also:
 	'smw_browse_no_outgoing' => 'This is the information message shown on [[Special:Browse]] in case the browsed page does not contain any properties.',
 	'smw_browse_no_incoming' => 'This is the information message shown on [[Special:Browse]] in case no properties link to the browsed page.',
 	'smw_inverse_label_default' => 'Inverse label default. Parameters:
-* $1 is a place marker',
+* $1 - a place marker',
 	'smw_inverse_label_property' => 'Can as well be translated as "Name of", or "Denomination of the inverse propery". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property "is child of" is the inverse propery of "is parent of".',
 	'pageproperty' => 'This is the name of [[Special:PageProperty]].',
 	'smw_pp_docu' => 'This is the introductory message at the top of [[Special:PageProperty]].',
@@ -1685,6 +1685,13 @@ $messages['arz'] = array(
 	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.', # Fuzzy
 	'smw_concept_header' => 'صفحات المبدأ "$1"',
 	'smw_conceptarticlecount' => 'عرض {{PLURAL:$1||صفحه واحده تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحه تنتمي}} إلى هذا المبدأ.', # Fuzzy
+);
+
+/** Assamese (অসমীয়া)
+ * @author Gitartha.bordoloi
+ */
+$messages['as'] = array(
+	'smw_result_results' => 'ফলাফল',
 );
 
 /** Asturian (asturianu)
@@ -2966,6 +2973,7 @@ $messages['ce'] = array(
 	'smw-paramdesc-category-delim' => 'ДӀасакъастораг',
 	'smw-ui-tooltip-title-info' => 'Хаам',
 	'smw-ui-tooltip-title-note' => 'Билгалдаккхар',
+	'group-smwadministrator' => 'Куьйгалхой Semantic MediaWiki',
 );
 
 /** Chamorro (Chamoru)
@@ -3576,7 +3584,7 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-pa-property-predefined-default' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es erfüllt eine besondere Funktion, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
 	'smw-pa-property-predefined_ask' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es verknüpft eine Abfrage mit deren als [https://www.semantic-mediawiki.org/wiki/Help:Parsererweiterung_subobject Subobjekt] gespeicherten Metadaten, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
 	'smw-pa-property-predefined_asksi' => '$1 ist ein [https://www.semantic-mediawiki.org/wiki/Help:Spezialattribute Spezialattribut] und softwareseitig fest definiert. Es speichert die Anzahl in einer Abfrage enthaltenen Bedingungen, kann aber wie jedes andere [https://www.semantic-mediawiki.org/wiki/Help:Attribute_und_Datentypen#Attribute benutzerdefinierte Attribut] verwendet werden.',
-	'smw-sp-properties-docu' => 'Diese Seite zeigt die verfügbaren [https://www.semantic-mediawiki.org/wiki/Property Attribute]. Sofern nach Attributen gefiltert wird, werden nur die benutzerdefinierten Attribute angezeigt und zudem nur diese, die der angegebenen Bedingung entsprechen. Für eine differenzierte Ansicht können die Spezialseiten [[Special:UnusedProperties|„Verwaiste Attribute“]] oder [[Special:WantedProperties|„Gewünschte Attribute“]] eingesehen werden.',
+	'smw-sp-properties-docu' => 'Diese Spezialseite zeigt die verfügbaren [https://www.semantic-mediawiki.org/wiki/Property Attribute]. Sofern nach Attributen gefiltert wird, werden nur die benutzerdefinierten Attribute angezeigt und zudem nur diese, die der angegebenen Bedingung entsprechen. Für eine differenzierte Ansicht können die Spezialseiten [[Special:UnusedProperties|„Verwaiste Attribute“]] oder [[Special:WantedProperties|„Gewünschte Attribute“]] eingesehen werden.',
 	'smw-sp-properties-cache-info' => 'Die aufgelisteten Daten stammen aus dem [https://www.semantic-mediawiki.org/wiki/Caching Zwischenspeicher]. Letzte Aktualisierung: $1.',
 	'smw-sp-properties-header-label' => 'Attributliste',
 );
@@ -3649,7 +3657,9 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw_printername_template' => 'Pśedłoga',
 	'smw_printername_rdf' => 'RDF-eksport',
 	'smw_printername_category' => 'Kategorija',
+	'validator-type-class-SMWParamSource' => 'tekst',
 	'smw-paramdesc-limit' => 'Maksimalna licba wuslědkow, kótarež maju se wrośiś',
+	'smw-paramdesc-offset' => 'Pozicija prědnego wuslědka',
 	'smw-paramdesc-headers' => 'Mjenja głowow resp. atributow zwobrazniś',
 	'smw-paramdesc-mainlabel' => 'Pomjenjenje, kótarež ma se głownemu bokoju daś',
 	'smw-paramdesc-link' => 'Gódnoty ako wótkaze pokazaś',
@@ -3657,6 +3667,9 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw-paramdesc-outro' => 'Tekst, kótaryž ma se za napšašowańskimi wuslědkami zwobrazniś, jolic take su',
 	'smw-paramdesc-default' => 'Tekst, kótaryž ma se zwobrazniś, jolic napšašowańske wuslědki njejsu',
 	'smw-paramdesc-sep' => 'Źěleńske znamuško za gódnoty',
+	'smw-paramdesc-showsep' => 'Źěleńske znamuško górjejce w CSV-dataji pokazaś ("sep=<value>")',
+	'smw-paramdesc-distribution' => 'Město aby se wšykne gódnoty zwobraznili, jich wustupowanja licyś a te pokazaś.',
+	'smw-paramdesc-distributionsort' => 'Rozdźělenje gódnotow pó licbje wustupowanjow sortěrowaś.',
 	'smw-paramdesc-distributionlimit' => 'Rozdźělenje gódnotow na wěste gódnoty wobgranicowaś.',
 	'smw-paramdesc-template' => 'Mjenja pśedłogi, z kótarejuž wuśišće maju se zwobrazniś',
 	'smw-paramdesc-columns' => 'Licba słupow, w kótarychž maju se wuslědki zwobrazniś (standard jo $1)',
@@ -3670,14 +3683,24 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw-paramdesc-csv-sep' => 'Źěleńske znamuško, kótarež ma se wužywaś',
 	'smw-paramdesc-dsv-separator' => 'Źěleńske znamuško, kótarež ma se wužywaś',
 	'smw-paramdesc-dsv-filename' => 'Mě za DSV-dataju',
+	'smw-paramdesc-filename' => 'Mě za wudawańsku dataju',
+	'smw-smwdoc-description' => 'Pokazujo tabelu wšych parametrow, kótarež daju se za pódany wuslědkowy format gromaźe ze standardnymi gódnotami a wopisanjami wužywaś.',
 	'smw-smwdoc-par-format' => 'Wuslědkowy format, za kótaregož parametry dokumentacija ma se zwobrazniś.',
+	'smw-smwdoc-par-parameters' => 'Parametry, kótarež maju se pokazaś: "specific" za toś te, kótarež pśidawaju se pśez format, "base" za toś te, kótarež stoje we wšych formatach k dispoziciji a "all" za wobej.',
 	'smw-paramdesc-sort' => 'Kakosć, pó kótarejž napšašowanje ma se sortěrowaś',
+	'smw-paramdesc-order' => 'Sortěrowański pórěd za napšašowanje',
 	'smw-paramdesc-searchlabel' => 'Tekst za dalšne pytańske wuslědki',
 	'smw-paramdesc-named_args' => 'Argumenty, kótarež maju se pśedłoze pśepódaś',
 	'smw-paramdesc-export' => 'Eksportowe nastajenje',
 	'smw-paramdesc-prettyprint' => 'Njeformatěrowane wudaśe, kótarež zwobraznja pśidatne zasunjenja a nowe smužki',
 	'smw-paramdesc-source' => 'Alternatiwne napšašowańske žrědło',
 	'smw-paramdesc-jsonsyntax' => 'JSON-syntaksa, kótaraž ma se wužywaś',
+	'smw-printername-feed' => 'RSS- a Atom-kanal',
+	'smw-paramdesc-feedtype' => 'Kanalowy typ',
+	'smw-paramdesc-feedtitle' => 'Tekst, kótaryž ma se ako titel kanala wužywaś',
+	'smw-paramdesc-feeddescription' => 'Tekst, kótaryž ma se ako wopisanje kanala wužywaś',
+	'smw-paramdesc-feedpagecontent' => 'Wopśimjeśe boka, kótarež ma se z komentarom zwobrazniś',
+	'smw-label-feed-description' => '$2-kanal: $1',
 	'smw_iq_disabled' => 'Semantiske wótpšašanja su se znjemóžnili za toś ten wiki.',
 	'smw_iq_moreresults' => '... dalšne wuslědki',
 	'smw_parseerror' => 'Zapódana gódnota njejo se rozměła.',
@@ -3711,6 +3734,7 @@ Wuslědki snaź njejsu ako wócakowane.',
 	'smw_nodisjunctions' => 'Disjunkcije (zwězanja ABO) we wótpšašanjach njepódpěraju se w toś tom wikiju a źěl wótpšašanja jo se wótpórał ($1).',
 	'smw_querytoolarge' => 'Dla wikijowych wobgranicowanjow we wjelikosći abo dłymokosći njejo było móžno slědujuce wótpšašańske wuměnjenja zapśimjeś: $1',
 	'smw_notemplategiven' => 'Pódaj gódnotu za parameter "template", aby napšašowański format funkcioněrował.',
+	'smw_db_sparqlqueryproblem' => 'Napšašowański wuslědk njedajo se z datoweje banki SPARQL wótwołaś. Toś ta zmólka by mógła nachylna byś abo programowa zmólka w datowej bance byś.',
 	'smw_type_header' => 'Kakosći typa "$1"',
 	'smw_typearticlecount' => '$1 {{PLURAL:$1|kakosć pokazujo|kakosći pokazujotej|kakosći pokazuju|kakosćow pokazujo}} se z pomocu toś togo typa.',
 	'smw_attribute_header' => 'Boki, kótarež wužywaju kakosć "$1"',
@@ -3733,6 +3757,13 @@ Napórajo RDF, kótaryž dajo se pśepytaś.',
 	'smw_propertylackspage' => 'Wše kakosći měli se pśez bok wopisaś!',
 	'smw_propertylackstype' => 'Za toś tu kakosć njejo se žeden typ pódał (mysli se tuchylu typ $1).',
 	'smw_propertyhardlyused' => 'Toś ta kakosć se lěbda we wikiju wužywa!',
+	'smw-property-name-invalid' => 'Kakosć $1 njedajo se wužywaś (njepłaśiwe kakostne mě)',
+	'smw-sp-property-searchform' => 'Kakosći zwobrazniś, kótarež wopśimuju:',
+	'smw-sp-property-searchform-inputinfo' => 'Wudaśe źiwa na wjelikopisanje. Za filtrowanje zwobraznjuju se jano kakosći, kótarež wótpowěduju wuměnjenjeju.',
+	'concepts' => 'Koncepty',
+	'smw-sp-concept-header' => 'Lisćina konceptow',
+	'smw-sp-concept-count' => '{{PLURAL:$1|Slědujucy koncept|Slědujucej $1 koncepta|Slědujuce $1 koncepty|Slědujucych $1 konceptow}} {{PLURAL:$1|eksistěrujo|eksistěrujotej|eksistěruju|eksistěrujo}}.',
+	'smw-sp-concept-empty' => 'Njejo se žeden koncept namakał.',
 	'unusedproperties' => 'Njewužywane kakosći',
 	'smw_unusedproperties_docu' => 'Slědujuce kakosći eksistěruju, lěcrownož žeden drugi bok je njewužywa.',
 	'smw_unusedproperty_template' => '$1 typa $2',
@@ -3742,10 +3773,23 @@ Napórajo RDF, kótaryž dajo se pśepytaś.',
 	'smw_purge' => 'Aktualizěrowaś',
 	'types' => 'Typy',
 	'smw_types_docu' => 'Slědujuca lisćina wšych datowych typow, kótarež daju se kakosćam pśipokazaś.',
+	'smw-special-types-no-such-type' => 'Pódany datowy typ njeeksistěrujo',
 	'semanticstatistics' => 'Semantiska statistika',
 	'smw_semstats_text' => "Toś ten wiki wopśimujo '''$1''' {{PLURAL:$1|kakosćowu gódnotu|kakosćowej gódnośe|kakosćowe gódnoty|kakosćowych gódnotow}} za dogromady '''$2''' [[Special:Properties|{{PLURAL:$2|kakosć|rozdźělnej kakosći|rozdźělne kakosći|rozdźělnych kakosćow}}]].
 '''$3''' {{PLURAL:$3|kakosć ma|kakosći matej|kakosći maju|kakosćow ma}} swójski bok a póžedany datowy typ je za '''$4''' z nich pódany.
 Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewužywane kakosći]] byś. Kakosći, kótarež njamaju bok, su se na [[Special:WantedProperties|lisćinje póžedanych kakosćow]] namakali.",
+	'smw-statistics' => 'Semantiska statistika',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Kakostna gódnota|Kakostnej gódnośe|Kakostne gódnoty}} (dogromady)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Kakosć|Kakosći}}]] (dogromady)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Kakosć|Kakosći}} (dogromady)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Kakosć|Kakosći}} (z bokom zregistrěrowane)',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Kakosć|Kajkosći}} (datowemu typoju pśipokazane)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Napšašowanje|Napšašowani|Napšašowanja}}',
+	'smw-statistics-query-size' => 'Wjelikosć napšašowanja',
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Koncept|Koncepta|Koncepty}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Koncept|Koncepta|Koncepty}}]]',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Podobjekt|Podobjekta|Podobjekty}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datowy typ|Datowej typa|Datowe typy}}]]',
 	'smw_uri_doc' => 'Rezolwer URI implementěrujo [$1 W3C TAG finding on httpRange-14].
 Stara se za to, až luźe njebudu websedła.',
 	'ask' => 'Semantiske pytanje',
@@ -3769,6 +3813,7 @@ Stara se za to, až luźe njebudu websedła.',
 	'smw_ask_embed_instr' => 'Aby toś to wótpšašanje do wikiboka zasajźił, wužyj slědujucy kod.',
 	'smw-ask-delete' => '[Lašowaś]',
 	'smw-ask-sorting' => 'Sortěrowanje',
+	'smw-ask-format-selection-help' => 'Za nadrobne wopisanje glej bok $1 pomocy.',
 	'searchbyproperty' => 'Pó kakosći pytaś',
 	'smw_sbv_docu' => 'Wšykne boki pytaś, kótarež maju wěstu kakosć a gódnotu.',
 	'smw_sbv_novalue' => 'Zapódaj płaśiwu gódnotu za kakosć abo woglědaj se wšykne gódnoty za kakosć "$1".',
@@ -3861,13 +3906,27 @@ Licony póstup aktualneje aktualizacije:',
 	'prefs-smw' => 'Semantic MediaWiki',
 	'prefs-ask-options' => 'Semantiske pytańske opcije',
 	'smw-prefs-ask-options-tooltip-display' => 'Parametrowy tekst ako spěšne info zwobrazniś',
+	'smw-prefs-ask-options-collapsed-default' => 'Kašćik opcijow pó standarźe złožony',
 	'smw-ui-tooltip-title-property' => 'Kakosć',
+	'smw-ui-tooltip-title-quantity' => 'Tšocha',
 	'smw-ui-tooltip-title-info' => 'Informacije',
 	'smw-ui-tooltip-title-service' => 'Słužbne wótkaze',
 	'smw-ui-tooltip-title-warning' => 'Zmólka',
+	'smw-ui-tooltip-title-parameter' => 'Parameter',
+	'smw-ui-tooltip-title-event' => 'Tšojenje',
+	'smw-ui-tooltip-title-note' => 'Pokazka',
+	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'Typ toś teje kakosći jo njepłaśiwy',
+	'smw-concept-cache-text' => 'Koncept ma dogromady $1 {{PLURAL:$1|bok|boka|boki|bokow}} a jo se $2 slědny raz zaktualizěrował.',
 	'smw_concept_header' => 'Boki koncepta "$1"',
 	'smw_conceptarticlecount' => '$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słuša}} k tomu konceptoju.',
+	'smw-qp-aggregatable-empty-data' => 'Pominane kopjobne daty njejsu dali se zwobrazniś dla njedosegajucych wuběrańskich kriterijow.',
+	'right-smw-admin' => 'Administraciske nadawki (Semantic MediaWiki)',
+	'group-smwadministrator' => 'Administratory Semantic MediaWiki',
+	'group-smwadministrator-member' => '{{GENDER:$1|SMW-administrator|SMW-administratorka}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW-administratory',
+	'action-smw-admin' => 'administraciske nadawki Semantic MediaWiki',
+	'smw-sp-properties-header-label' => 'Lisćina kakosćow',
 );
 
 /** Ewe (eʋegbe)
@@ -4672,6 +4731,7 @@ $messages['eu'] = array(
  * @author Huji
  * @author Mjbmr
  * @author Momeni
+ * @author Reza1615
  * @author ZxxZxxZ
  */
 $messages['fa'] = array(
@@ -4686,9 +4746,11 @@ $messages['fa'] = array(
 	'smw_printername_json' => 'برون‌بری در قالب JSON',
 	'smw_printername_list' => 'فهرست',
 	'smw_printername_table' => 'جدول',
+	'smw_printername_template' => 'الگو',
 	'smw_printername_rdf' => 'برون‌بری در قالب RDF',
 	'smw_printername_category' => 'رده',
 	'validator-type-class-SMWParamSource' => 'متن',
+	'smw_kiloseparator' => '،',
 	'smw_subproperty_header' => 'زیرخصوصیت‌ها',
 	'exportrdf' => 'برون‌بری صفحه‌ها به آردی‌اف',
 	'smw_exportrdf_recursive' => 'تمام صفحه‌های مرتبط را به صورت بازگشتی برون‌بری کن.
@@ -4696,9 +4758,10 @@ $messages['fa'] = array(
 	'smw_exportrdf_backlinks' => 'همچنین تمام صفحه‌هایی را که به صفحه‌های برون‌بری شده ارجاع دارند، برون‌بری کن.
 آردی‌اف قابل مرور تولید می‌کند.',
 	'smw_exportrdf_lastdate' => 'صفحه‌هایی را که از زمان داده شده تغییری نکرده‌اند، برون‌بری نکن.',
+	'smw_exportrdf_submit' => 'برون‌ریزی',
 	'properties' => 'ویژگی‌ها',
 	'smw_properties_docu' => 'خصوصیت‌های زیر در این ویکی استفاده شده‌اند.',
-	'smw_property_template' => '$1 از نوع $2 ($3)', # Fuzzy
+	'smw_property_template' => '$1 از نوع $2 ($3 {{PLURAL:$3|استفاده|استفاده}})',
 	'smw_propertylackspage' => 'تمام خصوصیت‌ها باید توسط یک صفحه توصیف شوند.',
 	'smw_propertylackstype' => 'هیچ نوعی برای این خصوصیت مشخص نشده‌است (با فرض نوع $1 برای اکنون).',
 	'smw_propertyhardlyused' => 'این خصوصیت به ندرت در این ویکی استفاده شده‌است.',
@@ -4707,11 +4770,10 @@ $messages['fa'] = array(
 	'smw_unusedproperty_template' => '$1 از نوع $2',
 	'wantedproperties' => 'خصوصیت‌های خواسته شده',
 	'smw_wantedproperties_docu' => 'خصوصیت‌های زیر در این ویکی استفاده شده‌اند ولی هنوز صفحه‌ای برای توصیف آن‌ها وجود ندارد.',
-	'smw_wantedproperty_template' => '$1 ($2 استفاده شده)', # Fuzzy
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|استفاده|استفاده}})',
 	'smw_purge' => 'بازآوردن',
 	'types' => 'نوع‌ها',
-	'smw_types_docu' => 'در ذیل لیستی از تمام نوع‌داده‌هایی که می‌تواند به خصوصیت‌ها انتصاب شود، آمده است.
-هر نوع‌داده یک صفحه دارد که اطلاعات اضافه می‌تواند در آن فراهم آورده شود.', # Fuzzy
+	'smw_types_docu' => 'در زیر فهرستی از تمام انواع داده است که می‌تواند به ویژگی‌ها اختصاص داده‌شده‌باشد.',
 	'semanticstatistics' => 'آمار معنایی',
 	'ask' => 'جستجوی معنایی',
 	'smw_ask_sortby' => 'مرتب‌سازی با ستون (اختیاری)',
@@ -4737,13 +4799,21 @@ $messages['fa'] = array(
 	'smw_inverse_label_default' => '$1 از',
 	'smw_inverse_label_property' => 'برچسب خصوصیت برعکس',
 	'pageproperty' => 'جستجوی خصوصیت صفحه',
+	'smw_result_prev' => 'قبلی',
+	'smw_result_next' => 'بعدی',
+	'smw_result_results' => 'نتایج',
+	'smw_result_noresults' => 'بدون نتیجه',
 	'smwadmin' => 'عملکردهای مدیریتی برای مدیاویکی معنایی',
 	'smw_adminlinks_datastructure' => 'ساختار داده‌ها',
 	'smw_adminlinks_displayingdata' => 'نمایش داده‌ها',
 	'smw-createproperty-isproperty' => 'این یک ویژگی از نوع $1 است.',
-	'smw-createproperty-allowedvals' => 'مقادیر مجاز برای این ویژگی یا صفت این‌ها هستند:', # Fuzzy
+	'smw-createproperty-allowedvals' => ' {{PLURAL:$1|مقدار مجاز برای این خصوصیت|مقادیر مجاز برای این خصوصیت}}:',
 	'smw-paramdesc-category-delim' => 'جداکننده',
+	'smw-ui-tooltip-title-warning' => 'خطا',
+	'smw-ui-tooltip-title-parameter' => 'پارامتر',
 	'smw-ui-tooltip-title-event' => 'رویداد',
+	'smw-ui-tooltip-title-note' => 'یادداشت',
+	'smw-ui-tooltip-title-legend' => 'افسانه',
 	'smw_concept_header' => 'صفحه‌های مفهوم "$1"',
 );
 
@@ -5335,7 +5405,7 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-pa-property-predefined-default' => '$1 est une propriété prédéfinie (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]). C’est une propriété intégrée qui est fournie avec des droits d’administration supplémentaires mais peut être utilisée comme n’importe quelle autre [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].',
 	'smw-pa-property-predefined_ask' => '$1 est une propriété prédéfinie (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]) qui se relie à la métadonnée [https://www.semantic-mediawiki.org/wiki/Subobject sous-objet] d’une requête. C’est une propriété intégrée qui est fournie avec des droits d’administration supplémentaires mais peut être simplement utilisée comme n’importe quelle [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].',
 	'smw-pa-property-predefined_asksi' => '$1 est une propriété prédéfinie (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]) qui compte le nombre de conditions utilisées dans une requête. C’est une propriété intégrée qui est fournie avec des droits d’administration supplémentaires mais peut être simplement utilisée comme n’importe quelle [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].',
-	'smw-sp-properties-docu' => 'Cette page spéciale affiche [https://www.semantic-mediawiki.org/wiki/Property les propriétés] qui sont disponibles et, quand elles sont filtrées, seules les propriétés définies par l’utilisateur qui correspondent à la condition sont affichées. Pour un affichage différencié, voyez les pages spéciales [[Special:UnusedProperties|propriétés non utilisées]] ou [[Special:WantedProperties|propriétés souhaitées]].',
+	'smw-sp-properties-docu' => 'Cette page affiche [https://www.semantic-mediawiki.org/wiki/Property les propriétés] qui sont disponibles et, quand elles sont filtrées, seules les propriétés définies par l’utilisateur qui correspondent à la condition sont affichées. Pour un affichage différencié, voyez les pages spéciales [[Special:UnusedProperties|propriétés non utilisées]] ou [[Special:WantedProperties|propriétés souhaitées]].',
 	'smw-sp-properties-cache-info' => 'Les données listées ont été récupérées depuis [https://www.semantic-mediawiki.org/wiki/Caching le cache], et ont été mises à jour le $1.',
 	'smw-sp-properties-header-label' => 'Liste des propriétés',
 );
@@ -6565,7 +6635,8 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw-paramdesc-csv-sep' => 'Dźělatko, kotrež ma so wužywać',
 	'smw-paramdesc-dsv-separator' => 'Dźělatko, kotrež ma so wužywać',
 	'smw-paramdesc-dsv-filename' => 'Mjeno za DSV-dataju',
-	'smw-smwdoc-description' => 'Pokazuje tabelu wšěch parametrow, kotrež dadźa so za podaty wuslědkowy format hromadźe ze standardnymi hótnotami a wopisanjemi wužiwać.',
+	'smw-paramdesc-filename' => 'Mjeno za wudawansku dataju',
+	'smw-smwdoc-description' => 'Pokazuje tabelu wšěch parametrow, kotrež dadźa so za podaty wuslědkowy format hromadźe ze standardnymi hódnotami a wopisanjemi wužiwać.',
 	'smw-smwdoc-par-format' => 'Wuslědkowy format, za kotrehož parametry dokumentacija ma so zwobraznić.',
 	'smw-smwdoc-par-parameters' => 'Parametry, kotrež maja so pokazać: "specific" za tute, kotrež so přez format přidawaja, "base" za tute, kotrež su we wšěch formatach k dispoziciji a "all" za wobaj.',
 	'smw-paramdesc-sort' => 'Kajkosć, po kotrejž naprašowanje ma so sortěrować',
@@ -6581,7 +6652,7 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw-paramdesc-feedtitle' => 'Tekst, kotryž ma so jako titul kanala wužiwać',
 	'smw-paramdesc-feeddescription' => 'Tekst, kotryž ma so jako wopisanje kanala wužiwać',
 	'smw-paramdesc-feedpagecontent' => 'Wobsah strony, kotryž ma so z komentarom zwobraznić',
-	'smw-label-feed-description' => '$1 $2 kanal',
+	'smw-label-feed-description' => '$2-kanal: $1',
 	'smw_iq_disabled' => 'Semantiske naprašowanja su w tutym wikiju znjemóžnjene.',
 	'smw_iq_moreresults' => '... dalše wuslědki',
 	'smw_parseerror' => 'Podata hódnota njebu zrozumjena.',
@@ -6638,6 +6709,14 @@ Płodźi přepytujomny RDF.',
 	'smw_propertylackspage' => 'Wšě kajkosće měli so přez stronu wopisać!',
 	'smw_propertylackstype' => 'Za tutu kajkosć njeje so žadyn typ podał (mjeztym so typ $1 předpokładuje).',
 	'smw_propertyhardlyused' => 'Tuta kajkosć so we wikiju lědma wužiwa!',
+	'smw-property-name-invalid' => 'Kajkosć $1 njeda so wužiwać (njepłaćiwe kajkostne mjeno)',
+	'smw-sp-property-searchform' => 'Kajkosće zwobraznić, kotrež wobsahuja:',
+	'smw-sp-property-searchform-inputinfo' => 'Wudaće dźiwa na wulkopisanje. Za filtrowanje so jenož kajkosće zwobraznjeja, kotrež wuměnjenju wotpowěduja.',
+	'concepts' => 'Koncepty',
+	'smw-sp-concept-docu' => '[https://www.semantic-mediawiki.org/wiki/Help:Concepts Koncept] hodźi so jako "dynamiska kategorija" wobhladać, t.r. jako zběrka stronow, kotrež so manuelnje njewutworjeja, ale so přez Semantic mediaWiki z wopisanja dateho naprašowanja wobličuja.',
+	'smw-sp-concept-header' => 'Lisćina konceptow',
+	'smw-sp-concept-count' => '{{PLURAL:$1|Slědowacy koncept|Slědowacej $1 konceptaj|Slědowace $1 koncepty|Slědowacych $1 konceptow}} {{PLURAL:$1|eksistuje|eksistujetej|eksistuja|eksistuje}}.',
+	'smw-sp-concept-empty' => 'Njeje so žadyn koncept namakał.',
 	'unusedproperties' => 'Njewužiwane kajkosće',
 	'smw_unusedproperties_docu' => 'Slědowace kajkosće eksistuja, hačrunjež žana druha strona je wužiwa.',
 	'smw_unusedproperty_template' => '$1 typa $2',
@@ -6652,6 +6731,18 @@ Płodźi přepytujomny RDF.',
 	'smw_semstats_text' => "Tutón wiki wobsahuje '''$1''' {{PLURAL:$1|kajkostnu hódnotu|kajkostnej hódnoće|kajkostne hódnoty|kajkostnych hódnotow}} za dohromady '''$2''' [[Special:Properties|{{PLURAL:$2|kajkosć|rozdźělnej kajkosći|rozdźělne kajkosće|rozdźělnych kajkosćow}}]].
 '''$3''' {{PLURAL:$3|kajkosć ma|kajkosći matej|kajkosće maja|kajkosćow ma}} swójsku stronu, a požadany datowy typ je za '''$4''' z nich podaty.
 Někotre z eksistowacych kajkosćow móhli [[Special:UnusedProperties|njewužiwane kajkosće]] być. Kajkosće, kotrež stronu nimaja, su na [[Special:WantedProperties|lisćinje požadanych kajkosćow]].",
+	'smw-statistics' => 'Semantiska statistika',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|Kajkostna hódnota|Kajkostnej hódnoće|Kajkostne hódnoty}} (dohromady)',
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Kajkosć|Kajkosći|Kajkosće}}]] (dohromady)',
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Kajkosć|Kajkosći|Kajkosće}} (dohromady)',
+	'smw-statistics-property-page' => '{{PLURAL:$1|Kajkosć|Kajkosći|Kajkosće}} (ze stronu zregistrowane)',
+	'smw-statistics-property-type' => '{{PLURAL:$1|Kajkosć|Kajkosći|Kajkosće}} (datowemu typej připokazane)',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|Naprašowanje|Naprašowani|Naprašowanja}}',
+	'smw-statistics-query-size' => 'Wulkosć naprašowanja',
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Koncept|Konceptaj|Koncepty}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Koncept|Konceptaj|Koncepty}}]]',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|Podobjekt|Podobjektaj|Podobjekty}}',
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Datowy typ|Datowej typaj|Datowe typy}}]]',
 	'smw_uri_doc' => 'Rozpušćak URI implementuje [$1 W3C TAG finding on httpRange-14].
 Stara so wo to, zo so ludźo z websydłami njestanu.',
 	'ask' => 'Semantiske pytanje',
@@ -6782,8 +6873,17 @@ Trochowany staw aktualneje aktualizacije:',
 	'smw-ui-tooltip-title-note' => 'Přispomnjenka',
 	'smw-ui-tooltip-title-legend' => 'Legenda',
 	'smw_unknowntype' => 'Typ tuteje kajkosće je njepłaćiwy',
+	'smw-concept-cache-text' => 'Koncept ma dohromady $1 {{PLURAL:$1|stronu|stronje|strony|stronow}} a je so $2 posledni raz zaktualizował.',
 	'smw_concept_header' => 'Strony koncepta "$1"',
 	'smw_conceptarticlecount' => 'Deleka {{PLURAL:$1|so $1 strona pokazuje|so $1 stronje pokazujetej|so $1 strony pokazuja|so $1 stronow pokazuje}}.',
+	'smw-qp-aggregatable-empty-data' => 'Požadane nahromadźujomne daty njedachu so njedosahacych wuběranskich kriterijow dla zwobraznić.',
+	'right-smw-admin' => 'Administraciske nadawki (Semantic MediaWiki)',
+	'group-smwadministrator' => 'SMW-Administratorojo',
+	'group-smwadministrator-member' => '{{GENDER:$1|SMW-administrator|SMW-administratorka}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW-administratorojo',
+	'action-smw-admin' => 'administraciske nadawki Semantic MediaWiki',
+	'smw-sp-properties-cache-info' => 'Nalistowane daty pochadźeja z [https://www.semantic-mediawiki.org/wiki/Caching pufrowaka] a su so $1 posledni raz zaktualozowali.',
+	'smw-sp-properties-header-label' => 'Lisćina kajkosćow',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -8438,6 +8538,7 @@ $messages['kn'] = array(
 /** Korean (한국어)
  * @author Albamhandae
  * @author Kwj2772
+ * @author Priviet
  * @author 아라
  */
 $messages['ko'] = array(
@@ -8572,7 +8673,7 @@ $messages['ko'] = array(
 	'smw_propertyhardlyused' => '이 속성은 거의 위키 안에 사용하지 않습니다!',
 	'smw-property-name-invalid' => '$1 속성은 사용할 수 없습니다. (잘못된 속성 이름)',
 	'smw-sp-property-searchform' => '다음을 포함하는 속성 보기:',
-	'smw-sp-property-searchform-inputinfo' => '입력은 대소문자를 구분하여 필터에 사용되며, 조건과 일치하는 속성만 보여집니다.',
+	'smw-sp-property-searchform-inputinfo' => '입력은 대소문자를 구분하여 필터에 사용되며, 조건과 일치하는 속성만 보입니다.',
 	'concepts' => '개념',
 	'smw-sp-concept-docu' => '[https://www.semantic-mediawiki.org/wiki/Help:Concepts 개념]은 "동적 분류", 즉 수동으로 만들어지지 않지만 주어진 쿼리의 설명에서 시맨틱 미디어위키가 계산한 문서의 모음집으로 볼 수 있습니다.',
 	'smw-sp-concept-header' => '개념 목록',
@@ -8635,7 +8736,7 @@ $messages['ko'] = array(
 	'smw_sbv_novalue' => '속성에 대한 올바른 값을 입력하거나 "$1"에 대한 모든 속성 값을 보세요.',
 	'smw_sbv_displayresult' => '"$2" 값으로 "$1" 속성을 가진 모든 문서의 목록입니다',
 	'smw_sbv_displayresultfuzzy' => '"$2" 값으로 "$1" 속성을 가진 모든 문서의 목록입니다.
-또한 거의 적은 결과가 보여졌기 때문에 가까운 값이 보여집니다.',
+또한 거의 적은 결과가 보여졌기 때문에 가까운 값이 보입니다.',
 	'smw_sbv_property' => '속성:',
 	'smw_sbv_value' => '값:',
 	'smw_sbv_submit' => '결과 찾기',
@@ -8748,7 +8849,7 @@ $1 문서로 돌아갑니다.',
 	'smw-pa-property-predefined-default' => '$1(은)는 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
 	'smw-pa-property-predefined_ask' => '$1(은)는 쿼리의 메타데이터 [https://www.semantic-mediawiki.org/wiki/Subobject 하위 개체]의 링크인 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
 	'smw-pa-property-predefined_asksi' => '$1(은)는 쿼리에서 사용되는 조건의 수를 모으는 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
-	'smw-sp-properties-docu' => '이 특수 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자가 정의한 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.',
+	'smw-sp-properties-docu' => '이 특수 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자가 정의한 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.', # Fuzzy
 	'smw-sp-properties-cache-info' => '나열된 데이터는 [https://www.semantic-mediawiki.org/wiki/Caching 캐시]에서 검색되었고, $1에 마지막으로 업데이트했습니다.',
 	'smw-sp-properties-header-label' => '속성 목록',
 );
@@ -9622,7 +9723,7 @@ $messages['mk'] = array(
 	'smw-pa-property-predefined-default' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]). Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
 	'smw-pa-property-predefined_ask' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]) што води до метаподатокот [https://www.semantic-mediawiki.org/wiki/Subobject?uselang=mk subobject] на едно барање. Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
 	'smw-pa-property-predefined_asksi' => '$1 е предодредено својство (познато и како [https://www.semantic-mediawiki.org/wiki/Help:Special_properties?uselang=mk специјално својство]) што собира услови кои се користат во еднобарање. Ова е вградено својство што со себе носи дополнителни административни привилегии, но може да се користи како секое друго [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk кориснички-зададено својство].',
-	'smw-sp-properties-docu' => 'На оваа специјална страница се прикажани [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk својствата] на располагање. При филтрирањето се добиваат само кориснички-зададените својства што одговараат на условот. Друг преглед можете да добиете на страниците [[Special:UnusedProperties|неискористени својства]] и [[Special:WantedProperties|потребни својства]].',
+	'smw-sp-properties-docu' => 'На оваа страница се прикажани [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk својствата] на располагање. При филтрирањето се добиваат само кориснички-зададените својства што одговараат на условот. Друг преглед можете да добиете на страниците [[Special:UnusedProperties|неискористени својства]] и [[Special:WantedProperties|потребни својства]].',
 	'smw-sp-properties-cache-info' => 'Наведените податоци се преземени од [https://www.semantic-mediawiki.org/wiki/Caching?uselang=mk кешот], последен пат изменети на $1.',
 	'smw-sp-properties-header-label' => 'Список на својства',
 );
@@ -9934,7 +10035,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw-paramdesc-sort' => 'Egenskap som spørringen skal sorteres etter',
 	'smw-paramdesc-order' => 'Sorteringsrekkefølge for spørringen',
 	'smw-paramdesc-searchlabel' => 'Tekst for å fortsette søket',
-	'smw-paramdesc-named_args' => 'Navngi argumentene gitt til malen',
+	'smw-paramdesc-named_args' => 'Navngi parameterne for malen',
 	'smw-paramdesc-export' => 'Eksportvalg',
 	'smw-paramdesc-prettyprint' => 'En ryddig-utskrift som bruker ekstra innrykk og linjeskift',
 	'smw-paramdesc-source' => 'Alternativ spørringskilde',
@@ -12109,7 +12210,7 @@ Progresso estimado da atualização corrente:',
 	'smw-pa-property-predefined-default' => '$1 é uma propriedade predefinida (também conhecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]). É uma propriedade padrão que vem com privilégios administrativos, mas que pode ser utilizada como qualquer outra [https://www.semantic-mediawiki.org/wiki/Property propriedade definida pelo usuário].',
 	'smw-pa-property-predefined_ask' => '$1 é uma propriedade predefinida (também conhecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]) que relaciona aos metadados do [https://www.semantic-mediawiki.org/wiki/Subobject subobjeto] de uma consulta. É uma propriedade padrão que vem com privilégios administrativos, mas que pode ser utilizada como qualquer outra [https://www.semantic-mediawiki.org/wiki/Property propriedade definida pelo usuário].',
 	'smw-pa-property-predefined_asksi' => '$1 é uma propriedade predefinida (também conhecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]) que coleta o número de condições utilizadas em uma consulta. É uma propriedade padrão que vem com privilégios administrativos, mas que pode ser utilizada como qualquer outra [https://www.semantic-mediawiki.org/wiki/Property propriedade definida pelo usuário].',
-	'smw-sp-properties-docu' => 'Esta página especial exibe as [https://www.semantic-mediawiki.org/wiki/Property propriedades] que estão disponíveis e, quando filtradas, somente as propriedades definidas por usuários que correspondem à condição serão exibidas. Para uma visualização diferenciada, veja a página especial [[Special:UnusedProperties|propriedades não utilizadas]] ou  [[Special:WantedProperties|propriedades desejadas]].',
+	'smw-sp-properties-docu' => 'Esta página exibe as [https://www.semantic-mediawiki.org/wiki/Property propriedades] que estão disponíveis e, quando filtradas, somente as propriedades definidas por usuários que correspondem à condição serão exibidas. Para uma visualização diferenciada, veja a página especial [[Special:UnusedProperties|propriedades não utilizadas]] ou [[Special:WantedProperties|propriedades desejadas]].',
 	'smw-sp-properties-cache-info' => 'Os dados listados foram extraídos do [https://www.semantic-mediawiki.org/wiki/Caching cache] e atualizados pela última vez em $1.',
 	'smw-sp-properties-header-label' => 'Lista de propriedades',
 );
@@ -14749,7 +14850,7 @@ $messages['uk'] = array(
 	'smw-pa-property-predefined-default' => '$1 попередньо визначена властивість (також відома як [https://www.semantic-mediawiki.org/wiki/Help:Special_properties спеціальна властивість]). Це вбудована властивість, яка поставляється з додатковими правами адміністратора, але може використовуватися як і будь-яка інші [https://www.semantic-mediawiki.org/wiki/Property визначена користувачем властивість].',
 	'smw-pa-property-predefined_ask' => "$1 попередньо визначена властивість (також відома як [https://www.semantic-mediawiki.org/wiki/Help:Special_properties спеціальна властивість]), яка зв'язує метадані [https://www.semantic-mediawiki.org/wiki/Subobject підоб'єкт] запиту. Це вбудована властивість, яка поставляється з додатковими правами адміністратора, але може використовуватися як і будь-яка інші [https://www.semantic-mediawiki.org/wiki/Property визначена користувачем властивість].",
 	'smw-pa-property-predefined_asksi' => '$1 попередньо визначена властивість (також відома як [https://www.semantic-mediawiki.org/wiki/Help:Special_properties спеціальна властивість]), яка збирає ряд умов, використаних у запиті. Це вбудована властивість, яка поставляється з додатковими правами адміністратора, але може використовуватися як і будь-яка інші [https://www.semantic-mediawiki.org/wiki/Property визначена користувачем властивість].',
-	'smw-sp-properties-docu' => 'Ця спеціальна сторінка показує [https://www.semantic-mediawiki.org/wiki/Property властивості], які доступні, і при фільтрації відображає лише визначені користувачем властивості, які відповідають умові. Для диференційованого перегляду почитайте спеціальну сторінку  [[Special:UnusedProperties|невикористані властивості]] або [[Special:WantedProperties|бажані властивості]].',
+	'smw-sp-properties-docu' => 'Ця сторінка показує [https://www.semantic-mediawiki.org/wiki/Property властивості], які доступні, і при фільтрації відображає лише визначені користувачем властивості, які відповідають умові. Для диференційованого перегляду почитайте спеціальну сторінку  [[Special:UnusedProperties|невикористані властивості]] або [[Special:WantedProperties|бажані властивості]].',
 	'smw-sp-properties-cache-info' => 'Перераховані дані отримані з [https://www.semantic-mediawiki.org/wiki/Caching кеш], і востаннє оновлені $1.',
 	'smw-sp-properties-header-label' => 'Список властивостей',
 );
