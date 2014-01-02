@@ -195,6 +195,10 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 			->will( $this->returnValue( $this->builder->setValue( 'isSpecialPage', false ) ) );
 
 		$title->expects( $this->any() )
+			->method( 'isSpecial' )
+			->will( $this->returnValue( $this->builder->setValue( 'isSpecial', false ) ) );
+
+		$title->expects( $this->any() )
 			->method( 'getContentModel' )
 			->will( $this->returnValue( $this->builder->setValue( 'getContentModel', $contentModel ) ) );
 

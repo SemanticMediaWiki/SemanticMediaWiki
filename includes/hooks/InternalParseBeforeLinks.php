@@ -51,7 +51,29 @@ class InternalParseBeforeLinks extends FunctionHook {
 	 * @return true
 	 */
 	public function process() {
-		return !$this->parser->getTitle()->isSpecialPage() ? $this->performUpdate( $this->parser->getTitle() ) : true;
+		return $this->canPerformUpdate() ? $this->performUpdate() : true;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @return boolean
+	 */
+	protected function canPerformUpdate() {
+
+		if ( !$this->parser->getTitle()->isSpecialPage() ) {
+			return true;
+		}
+
+		$isEnabledSpecialPage = $this->withContext()->getSettings()->get( 'smwgEnabledSpecialPage' );
+
+		foreach ( $isEnabledSpecialPage as $specialPage ) {
+			if ( $this->parser->getTitle()->isSpecial( $specialPage ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -62,18 +84,18 @@ class InternalParseBeforeLinks extends FunctionHook {
 	 *
 	 * @return true
 	 */
-	protected function performUpdate( Title $title ) {
+	protected function performUpdate() {
 
 		/**
 		 * @var ParserData $parserData
 		 */
 		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $title,
+			'Title'        => $this->parser->getTitle(),
 			'ParserOutput' => $this->parser->getOutput()
 		) );
 
 		/**
-		 * @var ParserTextProcessor $contentProcessor
+		 * @var ContentProcessor $contentProcessor
 		 */
 		$contentProcessor = $this->withContext()->getDependencyBuilder()->newObject( 'ContentProcessor', array(
 			'ParserData' => $parserData

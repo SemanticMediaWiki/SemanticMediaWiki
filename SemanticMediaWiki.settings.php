@@ -681,3 +681,11 @@ $GLOBALS['smwgQueryProfiler'] = array(
 	'smwgQueryDurationEnabled' => false,
 );
 ##
+
+###
+# Enables SMW specific annotation and content processing for listed SpecialPages
+#
+# @since 1.9
+##
+$GLOBALS['smwgEnabledSpecialPage'] = array( 'Ask' );
+##
