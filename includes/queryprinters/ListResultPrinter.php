@@ -467,10 +467,3 @@ class ListResultPrinter extends ResultPrinter {
 		return $params;
 	}
 }
-
-/**
- * SMWListResultPrinter
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
