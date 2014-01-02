@@ -55,7 +55,10 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 		$page = $this->getInstance();
 		$page->setContext( $context );
 
-		$out->setTitle( $page->getTitle() );
+		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
+		$title = method_exists( $page, 'getPageTitle') ? $page->getPageTitle() : $page->getTitle();
+
+		$out->setTitle( $title );
 
 		ob_start();
 		$page->execute( $sub );

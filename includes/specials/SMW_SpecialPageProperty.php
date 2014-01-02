@@ -142,8 +142,10 @@ class SMWPageProperty extends SpecialPage {
 			$html .= $navigation;
 		}
 
+		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
+		$spectitle = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
+
 		// Display query form
-		$spectitle = $this->getTitle();
 		$html .= '<p>&#160;</p>';
 		$html .= '<form name="pageproperty" action="' . htmlspecialchars( $spectitle->getLocalURL() ) . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;

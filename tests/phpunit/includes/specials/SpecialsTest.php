@@ -139,7 +139,11 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			if ( array_key_exists( $special, $GLOBALS['wgSpecialPages'] ) ) {
 
 				$specialPage = SpecialPageFactory::getPage( $special );
-				$context = RequestContext::newExtraneousContext( $specialPage->getTitle() );
+
+				// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
+				$title = method_exists( $specialPage, 'getPageTitle') ? $specialPage->getPageTitle() : $specialPage->getTitle();
+
+				$context = RequestContext::newExtraneousContext( $title );
 				$context->setRequest( $request );
 
 				$specialPage->setContext( clone $context );

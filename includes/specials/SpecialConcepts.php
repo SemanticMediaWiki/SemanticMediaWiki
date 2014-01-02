@@ -68,6 +68,9 @@ class SpecialConcepts extends SpecialPage {
 		$pageLister   = new SMWPageLister( $diWikiPages, null, $limit, $from, $until );
 		$key = $resultNumber == 0 ? 'smw-sp-concept-empty' : 'smw-sp-concept-count';
 
+		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
+		$title = method_exists( $this, 'getPageTitle') ? $this->getPageTitle() : $this->getTitle();
+
 		return Html::rawElement(
 			'span',
 			array( 'class' => 'smw-sp-concept-docu' ),
@@ -86,7 +89,7 @@ class SpecialConcepts extends SpecialPage {
 					array( 'class' => $key ),
 					$this->msg( $key, $resultNumber )->parse()
 				) .	' ' .
-				$pageLister->getNavigationLinks( $this->getTitle() ) .
+				$pageLister->getNavigationLinks( $title ) .
 				$pageLister->formatList()
 			);
 	}
