@@ -91,7 +91,7 @@ or Special:Properties
 * (af0cbe0) Fix escaping issue on Special:Ask
 * (ba74804) Fix construction of SMWExpLiteral
 * (d16a103) (Bug 45053) Fix quantity display support in SMW\ListResultPrinter
-* (9b2b5c7) (Bug 44518) Don't display <li> elements for |format=list
+* (9b2b5c7) (Bug 44518) Do not display &#60;li&#62; elements for |format=list
 * (Bug 43932) Fix html tag support for non-list results in SMW\ListResultPrinter
 * (Bug 44275) Fix .data( 'sortkey' ) support in SMW\ListResultPrinter
 * (fcb7da9) (Bug 42324) fix SQlite support in sqlstore3
@@ -110,7 +110,7 @@ set of values
 * (I17a3e0) Support for quantity export via API and JSON format
 * (50c5109) Removed old storage implementation SMWSQLStore2, superseded by SMWSQLStore3 in SMW 1.8
 * (I5db911) #set_recurring_event using subobjects (changes query behavior
-for recurring events; for more see [Help:Recurring_events](https://semantic-mediawiki.org/wiki/Help:Recurring_events "Recurring events")
+for recurring events; for more see the help page on [recurring events](https://semantic-mediawiki.org/wiki/Help:Recurring_events "Recurring events")
 
 ### Deprecated code
 
