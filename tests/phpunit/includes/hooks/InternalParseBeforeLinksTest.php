@@ -120,7 +120,19 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 
 		// #1 Title is a special page
 		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'isSpecialPage'   => true,
+			'isSpecialPage' => true,
+		) );
+
+		// #2 Title is a special page
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
+			'isSpecialPage' => true,
+			'isSpecial'     => true,
+		) );
+
+		// #3 Title is a special page
+		$title = $this->newMockBuilder()->newObject( 'Title', array(
+			'isSpecialPage' => true,
+			'isSpecial'     => false,
 		) );
 
 		$provider[] = array( $title );
@@ -155,6 +167,50 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 					'propertyCount' => 3,
 					'propertyLabel' => array( 'Foo', 'Bar', 'FooBar' ),
 					'propertyValue' => array( 'Dictumst', 'Tincidunt semper', '9001' )
+				)
+		);
+
+		// #1 NS_SPECIAL, processed but no annotations
+		$provider[] = array(
+			array(
+				'title'    => $this->newTitle( NS_SPECIAL, 'Ask' ),
+				'settings' => array(
+					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+					'smwgLinksInValues' => false,
+					'smwgInlineErrors'  => true,
+					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
+				),
+				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
+					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
+					' [[foo::9001]] et Donec.',
+				),
+				array(
+					'resultText' => 'Lorem ipsum dolor sit &$% [[:Dictumst|寒い]]' .
+						' [[:Tincidunt semper|tincidunt semper]] facilisi {{volutpat}} Ut quis' .
+						' [[:9001|9001]] et Donec.',
+					'propertyCount' => 0
+				)
+		);
+
+		// #2 NS_SPECIAL, not processed
+		$provider[] = array(
+			array(
+				'title'    => $this->newTitle( NS_SPECIAL, 'Foo' ),
+				'settings' => array(
+					'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+					'smwgLinksInValues' => false,
+					'smwgInlineErrors'  => true,
+					'smwgEnabledSpecialPage' => array( 'Ask', 'Foo' )
+				),
+				'text'  => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
+					' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
+					' [[foo::9001]] et Donec.',
+				),
+				array(
+					'resultText' => 'Lorem ipsum dolor sit &$% [[FooBar::dictumst|寒い]]' .
+						' [[Bar::tincidunt semper]] facilisi {{volutpat}} Ut quis' .
+						' [[foo::9001]] et Donec.',
+					'propertyCount' => 0
 				)
 		);
 
