@@ -25,7 +25,7 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.0">SMW 1.9.0</a></th>
 		<td>Stable release</td>
 		<td>2014-01-03</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.0">1.9.0</a></td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9">1.9.0</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.8.0">SMW 1.8.x</a></th>
