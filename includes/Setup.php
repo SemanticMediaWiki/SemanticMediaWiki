@@ -392,7 +392,17 @@ final class Setup implements ContextAware {
 		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $context ) {
+
+			// Clean-up of related subjects to a property has to be done before store data
+			// are modified which means that either run UpdateDispatcherJob before the
+			// deleteSubject in "online" mode or put both in a subsequent DeferredSubjectRemovalJob
+			// to ensure synchronize execution
+			$dispatcher = new UpdateDispatcherJob( $wikiPage->getTitle() );
+			$dispatcher->invokeContext( $context );
+			$dispatcher->run();
+
 			$context->getStore()->deleteSubject( $wikiPage->getTitle() );
+
 			return true;
 		};
 

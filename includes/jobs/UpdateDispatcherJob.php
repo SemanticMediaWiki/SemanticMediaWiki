@@ -62,7 +62,9 @@ class UpdateDispatcherJob extends JobBase {
 		Profiler::In( __METHOD__, true );
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->distribute( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->push();
+			$this->dispatchSubjectsByProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->push();
+		} else{
+			$this->dispatchSubjects( DIWikiPage::newFromTitle( $this->getTitle() ) )->push();
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -86,9 +88,35 @@ class UpdateDispatcherJob extends JobBase {
 	 *
 	 * @since 1.9
 	 *
+	 * @param DIWikiPage $subject
+	 */
+	protected function dispatchSubjects( DIWikiPage $subject ) {
+		Profiler::In( __METHOD__, true );
+
+		/**
+		 * @var Store $store
+		 */
+		$store = $this->withContext()->getStore();
+		$properties = $store->getProperties( $subject );
+
+		if ( is_array( $properties ) ) {
+			foreach ( $properties as $property ) {
+				$this->addJobs( $store->getAllPropertySubjects( $property ) );
+			}
+		}
+
+		Profiler::Out( __METHOD__, true );
+		return $this;
+	}
+
+	/**
+	 * Generates list of involved subjects
+	 *
+	 * @since 1.9
+	 *
 	 * @param DIProperty $property
 	 */
-	protected function distribute( DIProperty $property ) {
+	protected function dispatchSubjectsByProperty( DIProperty $property ) {
 		Profiler::In( __METHOD__, true );
 
 		/**
