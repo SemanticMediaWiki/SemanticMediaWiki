@@ -22,7 +22,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 }
 
 if ( defined( 'SMW_VERSION' ) ) {
-	// Do not load SMW more then once
+	// Do not load SMW more than once
 	return 1;
 }
 
