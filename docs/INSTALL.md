@@ -125,7 +125,7 @@ and go to step 2. You do not need to install any extensions to support composer.
 For MediaWiki 1.21.x and earlier you need to install the
 [Extension Installer](https://github.com/JeroenDeDauw/ExtensionInstaller/blob/master/README.md) extension.
 
-Once you are done installing the Extension Installer, go to its directory so composer.phar
+Once you are done installing the Extension Installer extension, go to its directory so composer.phar
 is installed in the right place.
 
     cd extensions/ExtensionInstaller
@@ -142,7 +142,7 @@ To install Composer:
     
 Now using Composer, install Semantic MediaWiki.
 
-If you do not have a composer.json file yet, copy the composer-example.json file to composer.json. If you are using the ExtensionInstaller, the file to copy will be named example.json, rather than composer-example.json. When this is done, run:
+If you do not have a composer.json file yet, copy the composer-example.json file to composer.json. If you are using the Extension Installer extension, the file to copy will be named example.json, rather than composer-example.json. When this is done, run:
     
     php composer.phar require mediawiki/semantic-media-wiki 1.9.*
 
@@ -160,15 +160,15 @@ Add the following line to the end of your LocalSettings.php file.
 
 ##### Verify installation success
 
-As final step, you can verify SMW got installed by looking at the Special:Version page on your wiki and verifying the
+As final step, you can verify SMW got installed by looking at the "Special:Version" page on your wiki and verifying the
 Semantic MediaWiki section is listed.
 
 ### Installation without shell access
 
-As alternative to the first two installation steps, you can obtain the SMW code by getting one of the release tarballs.
+As an alternative to installing via Composer, you can obtain the SMW code by getting one of the release tarballs.
 These tarballs include all dependencies of SMW.
 
-This open exists mainly for those that have no command line access. A drawback of this appraoch is that it makes
+This option exists mainly for those that have no command line access. A drawback of this approach is that it makes
 your setup incompatible with extensions that share dependencies with SMW. You are thus highly encouraged to use
 the Composer approach if you have command line access.
 
