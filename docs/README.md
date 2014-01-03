@@ -8,7 +8,8 @@ technical documentation. The later can be found in [docs/technical](technical/RE
 ## Site admin documentation
 
 * [Installation instructions](INSTALL.md)
-* [Latest release notes](RELEASE-NOTES.md)
+* [SMW 1.9 release notes](releasenotes/RELEASE-NOTES-1.9.md)
+* [SMW alpha release notes](RELEASE-NOTES.md)
 * [Release note archive](releasenotes)
 
 ## Developer documentation
