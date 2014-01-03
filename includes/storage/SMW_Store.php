@@ -88,10 +88,12 @@ abstract class Store {
 	 * Get an array of all properties for which the given subject has some
 	 * value. The result is an array of SMWDIProperty objects.
 	 *
-	 * @param $subject SMWDIWikiPage denoting the subject
-	 * @param $requestoptions SMWRequestOptions optionally defining further options
+	 * @param SMWDIWikiPage $subject denoting the subject
+	 * @param SMWRequestOptions|null $requestOptions optionally defining further options
+	 *
+	 * @return SMWDataItem
 	 */
-	public abstract function getProperties( SMWDIWikiPage $subject, $requestoptions = null );
+	public abstract function getProperties( SMWDIWikiPage $subject, $requestOptions = null );
 
 	/**
 	 * Get an array of all properties for which there is some subject that

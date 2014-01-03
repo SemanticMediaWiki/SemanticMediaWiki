@@ -506,14 +506,21 @@ class SMWSQLStore3Readers {
 	}
 
 	/**
-	 * @see SMWStore::getProperties
+	 * @see Store::getProperties
 	 *
 	 * @param SMWDIWikiPage $subject
-	 * @param SMWRequestOptions $requestoptions
+	 * @param SMWRequestOptions|null $requestOptions
+	 *
+	 * @return SMWDataItem[]
 	 */
-	public function getProperties( SMWDIWikiPage $subject, $requestoptions = null ) {
+	public function getProperties( SMWDIWikiPage $subject, $requestOptions = null ) {
 		wfProfileIn( "SMWSQLStore3::getProperties (SMW)" );
-		$sid = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName() );
+		$sid = $this->store->smwIds->getSMWPageID(
+			$subject->getDBkey(),
+			$subject->getNamespace(),
+			$subject->getInterwiki(),
+			$subject->getSubobjectName()
+		);
 
 		if ( $sid == 0 ) { // no id, no page, no properties
 			wfProfileOut( "SMWSQLStore3::getProperties (SMW)" );
@@ -523,18 +530,17 @@ class SMWSQLStore3Readers {
 		$db = wfGetDB( DB_SLAVE );
 		$result = array();
 
-		if ( $requestoptions !== null ) { // potentially need to get more results, since options apply to union
-			$suboptions = clone $requestoptions;
-			$suboptions->limit = $requestoptions->limit + $requestoptions->offset;
+		// potentially need to get more results, since options apply to union
+		if ( $requestOptions !== null ) {
+			$suboptions = clone $requestOptions;
+			$suboptions->limit = $requestOptions->limit + $requestOptions->offset;
 			$suboptions->offset = 0;
 		} else {
 			$suboptions = null;
 		}
 
-		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
-			$from = $db->tableName( $proptable->getName() );
-
-			if ( $proptable->usesIdSubject() ) {
+		foreach ( SMWSQLStore3::getPropertyTables() as $propertyTable ) {
+			if ( $propertyTable->usesIdSubject() ) {
 				$where = 's_id=' . $db->addQuotes( $sid );
 			} elseif ( $subject->getInterwiki() === '' ) {
 				$where = 's_title=' . $db->addQuotes( $subject->getDBkey() ) . ' AND s_namespace=' . $db->addQuotes( $subject->getNamespace() );
@@ -542,7 +548,25 @@ class SMWSQLStore3Readers {
 				continue;
 			}
 
-			if ( !$proptable->isFixedPropertyTable() ) { // select all properties
+			if ( $propertyTable->isFixedPropertyTable() ) {
+				// just check if subject occurs in table
+				$res = $db->select(
+					$propertyTable->getName(),
+					'*',
+					$where,
+					'SMW::getProperties',
+					array( 'LIMIT' => 1 )
+				);
+
+				if ( $db->numRows( $res ) > 0 ) {
+					$result[] = new SMWDIProperty( $propertyTable->getFixedProperty() );
+				}
+
+
+			} else {
+				// select all properties
+				$from = $db->tableName( $propertyTable->getName() );
+
 				$from .= " INNER JOIN " . $db->tableName( SMWSql3SmwIds::tableName ) . " ON smw_id=p_id";
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
 					// (select sortkey since it might be used in ordering (needed by Postgres))
@@ -552,21 +576,14 @@ class SMWSQLStore3Readers {
 				foreach ( $res as $row ) {
 					$result[] = new SMWDIProperty( $row->smw_title );
 				}
-			} else { // just check if subject occurs in table
-
-				var_dump( '$from ' . $from . ' getName ' . $proptable->getName() );
-
-				$res = $db->select( $from, '*', $where, 'SMW::getProperties', array( 'LIMIT' => 1 ) );
-
-				if ( $db->numRows( $res ) > 0 ) {
-					$result[] = new SMWDIProperty( $proptable->getFixedProperty() );
-				}
 			}
 
 			$db->freeResult( $res );
 		}
 
-		$result = $this->store->applyRequestOptions( $result, $requestoptions ); // apply options to overall result
+		// apply options to overall result
+		$result = $this->store->applyRequestOptions( $result, $requestOptions );
+
 		wfProfileOut( "SMWSQLStore3::getProperties (SMW)" );
 
 		return $result;

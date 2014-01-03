@@ -7,6 +7,7 @@ use SMW\SQLStore\PropertiesCollector;
 use SMW\SQLStore\StatisticsCollector;
 use SMW\DataTypeRegistry;
 use SMW\Settings;
+use SMW\SQLStore\TableDefinition;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
@@ -570,7 +571,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.8
 	 * @param array $data array of SMWDataItem objects
 	 * @param SMWRequestOptions|null $requestoptions
-	 * @return array of SMWDataItem objects
+	 * @return SMWDataItem[]
 	 */
 	public function applyRequestOptions( array $data, SMWRequestOptions $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore3::applyRequestOptions (SMW)" );
@@ -794,7 +795,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * the table that they refer to.
 	 *
 	 * @since 1.8
-	 * @return SMWSQLStore3Table[]
+	 * @return TableDefinition[]
 	 */
 	public static function getPropertyTables() {
 
