@@ -2288,7 +2288,7 @@ $messages['be-tarask'] = array(
 	'smw_adminlinks_displayingdata' => 'Паказ зьвестак',
 	'smw_adminlinks_inlinequerieshelp' => 'Дапамога па ўбудаваных запытах',
 	'smw-createproperty-isproperty' => 'Гэта ўласьцівасьць тыпу $1.',
-	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|1=Дазволенае значэньне|Дазволеныя значэньні}} для гэтай уласьцівасьці:', # Fuzzy
 	'smw-prefs-intro-text' => 'Ніжэйпададзеныя можнасьці прадастаўленыя [https://semantic-mediawiki.org/ сэмантычнай MediaWiki] (ці зьвязанымі пашырэньнямі), каб улучыць індывідуальныя налады для пэўных функцыяў. Па дадатковую інфармацыю зьвярніцеся, калі ласка, у [https://semantic-mediawiki.org/wiki/Help:User_preferences разьдзел дапамогі].',
 	'smw-prefs-ask-options-tooltip-display' => 'Адлюстроўваць парамэтар у выглядзе інфармацыйнай падказкі',
 	'smw-prefs-ask-options-collapsed-default' => 'Згортваць поле парамэтраў дапомна',
@@ -12528,11 +12528,11 @@ $messages['ru'] = array(
 	'smw_db_sparqlqueryproblem' => 'Не удалось получить результат запроса к базе данных SPARQL. Эта может быть временная ошибка или проблема в программном обеспечении базы данных.',
 	'smw_db_sparqlqueryincomplete' => 'Поиск ответа на запрос оказался слишком сложным и был прерван. Некоторые результаты могут быть не показаны. По возможности попробуйте упростить запрос.',
 	'smw_type_header' => 'Свойства типа “$1”',
-	'smw_typearticlecount' => '{{PLURAL:$1|Отображается|Отображаются|Отображаются}} $1 {{PLURAL:$1|свойство|свойства|свойств}} этого типа.',
+	'smw_typearticlecount' => '{{PLURAL:$1|Отображается|Отображаются|Отображаются}} $1 {{PLURAL:$1|свойство|свойств|свойства}} этого типа.', # Fuzzy
 	'smw_attribute_header' => 'Страницы, использующие свойство “$1”',
-	'smw_attributearticlecount' => '{{PLURAL:$1|Отображается|Отображаются|Отображаются}} $1 {{PLURAL:$1|страница, использующая|страницы, использующие|страниц, использующие}} это свойство.',
+	'smw_attributearticlecount' => '{{PLURAL:$1|Отображается|Отображаются|Отображаются}} $1 {{PLURAL:$1|страница, использующая|страниц, использующие|страницы, использующие}} это свойство.', # Fuzzy
 	'smw_subproperty_header' => 'Подсвойства',
-	'smw_subpropertyarticlecount' => 'Это свойство имеет {{PLURAL:$1|следующее $1 подсвойство|следующие $1 подсвойства|следующие $1 подсвойств}}:',
+	'smw_subpropertyarticlecount' => 'Это свойство имеет {{PLURAL:$1|следующее $1 подсвойство|следующие $1 подсвойств|следующие $1 подсвойства}}:', # Fuzzy
 	'exportrdf' => 'Экспорт страниц в RDF',
 	'smw_exportrdf_docu' => 'Эта страница позволяет экспортировать части статьи в формате RDF. Наберите заголовки необходимых статей по одному на строку.',
 	'smw_exportrdf_recursive' => 'Рекурсивный экспорт всех связанных страниц. Результат этой операции может быть очень большим!',
@@ -12542,7 +12542,7 @@ $messages['ru'] = array(
 	'uriresolver' => 'Преобразователь URI',
 	'properties' => 'Свойства',
 	'smw_properties_docu' => 'Следующие свойства используются на данном сайте.',
-	'smw_property_template' => '$1 имеет тип $2, ($3 {{PLURAL:$3|использование|использования|использований}})',
+	'smw_property_template' => '$1 имеет тип $2, ($3 {{PLURAL:$3|использование|использований|использования}})', # Fuzzy
 	'smw_propertylackspage' => 'Каждое свойство должно иметь свою страницу описания!',
 	'smw_propertylackstype' => 'Данному свойству не сопоставлен тип данных (по умолчанию будет использоваться тип $1).',
 	'smw_propertyhardlyused' => 'Это свойство почти не используется на сайте.',
@@ -12550,32 +12550,32 @@ $messages['ru'] = array(
 	'smw-sp-property-searchform' => 'Показать свойства, которые содержат:',
 	'concepts' => 'Концепты',
 	'smw-sp-concept-header' => 'Список концептов',
-	'smw-sp-concept-count' => 'В списке {{PLURAL:$1|числится следующий|числятся следующие}} {{PLURAL:$1|концепт|$1 концепта|$1 концептов}}',
+	'smw-sp-concept-count' => 'В списке {{PLURAL:$1|1=числится следующий|числятся следующие}} {{PLURAL:$1|концепт|$1 концептов|$1 концепта}}', # Fuzzy
 	'smw-sp-concept-empty' => 'Концепты не найдены.',
 	'unusedproperties' => 'Неиспользуемые свойства',
 	'smw_unusedproperties_docu' => 'Следующие свойства определены, но не используются ни в одной из статей.',
 	'smw_unusedproperty_template' => '$1 имеет тип $2',
 	'wantedproperties' => 'Неописанные свойства',
 	'smw_wantedproperties_docu' => 'Следующие свойства используются в статьях данного сайта, но не имеют соответствующих им страниц описаний.',
-	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|использование|использования|использований}})',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|использование|использований|использования}})', # Fuzzy
 	'smw_purge' => 'Обновить',
 	'types' => 'Типы',
 	'smw_types_docu' => 'В нижеприведённом списке перечислены все типы данных, которые можно задавать для свойств.',
 	'smw-special-types-no-such-type' => 'Указанный тип данных не существует',
 	'semanticstatistics' => 'Семантическая статистика',
-	'smw_semstats_text' => "Данный сайт содержит '''$1''' {{PLURAL:$1|значение|значения|значений}} свойств, общее число которых составляет '''$2''' [[Special:Properties|{{PLURAL:$2|свойство|различных свойства|различных свойств}}]].
-'''$3''' {{PLURAL:$3|свойство|свойства|свойств}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них.
+	'smw_semstats_text' => "Данный сайт содержит '''$1''' {{PLURAL:$1|значение|значений|значения}} свойств, общее число которых составляет '''$2''' [[Special:Properties|{{PLURAL:$2|свойство|различных свойств|различных свойства}}]].
+'''$3''' {{PLURAL:$3|свойство|свойств|свойства}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них.
 Некоторые из существующих свойств могут [[Special:UnusedProperties|не использоваться]].
-Свойства, для которых не созданы страницы описания, перечислены в [[Special:WantedProperties|списке неописанных свойств]].",
+Свойства, для которых не созданы страницы описания, перечислены в [[Special:WantedProperties|списке неописанных свойств]].", # Fuzzy
 	'smw-statistics' => 'Семантическая статистика',
-	'smw-statistics-property-instance' => '{{PLURAL:$1|Значение|Значения}} свойства (всего)',
-	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Свойство|Свойства}}]] (всего)',
-	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Свойство|Свойства}} (всего)',
-	'smw-statistics-query-inline' => '{{PLURAL:$1|Запрос|Запросы}}',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|1=Значение|Значения}} свойства (всего)', # Fuzzy
+	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|1=Свойство|Свойства}}]] (всего)', # Fuzzy
+	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|1=Свойство|Свойства}} (всего)', # Fuzzy
+	'smw-statistics-query-inline' => '{{PLURAL:$1|1=Запрос|Запросы}}', # Fuzzy
 	'smw-statistics-query-size' => 'Размер запроса',
-	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|Концепт|Концепты}}',
-	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|Концепт|Концепты}}]]',
-	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|Тип данных|Типы данных}}]]',
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|1=Концепт|Концепты}}', # Fuzzy
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|1=Концепт|Концепты}}]]', # Fuzzy
+	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|1=Тип данных|Типы данных}}]]', # Fuzzy
 	'smw_uri_doc' => 'Преобразователь URI осуществляет [$1 W3C поиск http тэгов с использованием Range-14].
 Данная возможность упрощает поиск семантической информации.',
 	'ask' => 'Семантический поиск',
@@ -12684,7 +12684,7 @@ $messages['ru'] = array(
 	'smw_adminlinks_displayingdata' => 'Отображение данных',
 	'smw_adminlinks_inlinequerieshelp' => 'Справка по встроенным запросам',
 	'smw-createproperty-isproperty' => 'Это свойство типа $1.',
-	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|допускается следующее значение|допускаются следующие значения}}:',
+	'smw-createproperty-allowedvals' => 'Для данного свойства {{PLURAL:$1|1=допускается следующее значение|допускаются следующие значения}}:', # Fuzzy
 	'smw-paramdesc-category-delim' => 'Разделитель',
 	'smw-paramdesc-category-template' => 'Шаблон, с помощью которого форматируются элементы',
 	'smw-paramdesc-category-userparam' => 'Параметр для передачи шаблону',
@@ -12704,13 +12704,13 @@ $messages['ru'] = array(
 	'smw-ui-tooltip-title-note' => 'Примечание',
 	'smw-ui-tooltip-title-legend' => 'Легенда',
 	'smw_unknowntype' => 'Для этого свойства задан некорректный тип',
-	'smw-concept-cache-text' => 'Концепт имеет в общей сложности $1 {{PLURAL:$1|страницу|страницы|страниц}} и последний раз обновлялся $2.',
+	'smw-concept-cache-text' => 'Концепт имеет в общей сложности $1 {{PLURAL:$1|страницу|страниц|страницы}} и последний раз обновлялся $2.', # Fuzzy
 	'smw_concept_header' => 'Страницы, использующие представление «$1»',
-	'smw_conceptarticlecount' => 'Ниже {{PLURAL:$1|показана|показаны|показано}} $1 {{PLURAL:$1|страница|страницы|страниц}}.',
+	'smw_conceptarticlecount' => 'Ниже {{PLURAL:$1|показана|показано|показаны}} $1 {{PLURAL:$1|страница|страниц|страницы}}.', # Fuzzy
 	'group-smwadministrator' => 'Администраторы Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|администратор (SMW)}}',
 	'action-smw-admin' => 'доступ к задачам администратора Semantic MediaWiki',
-	'smw-sp-properties-docu' => 'Эта специальная страница показывает доступные [https://www.semantic-mediawiki.org/wiki/Property свойства], после фильтрации которых отображаются только совпавшие определённые пользователем свойства. Для дифференцированного представления, смотрите специальную страницу [[Special:UnusedProperties|неиспользованные свойства]] или [[Special:WantedProperties|требуемые свойства]].',
+	'smw-sp-properties-docu' => 'Эта специальная страница показывает доступные [https://www.semantic-mediawiki.org/wiki/Property свойства], после фильтрации которых отображаются только совпавшие определённые пользователем свойства. Для дифференцированного представления, смотрите специальную страницу [[Special:UnusedProperties|неиспользованные свойства]] или [[Special:WantedProperties|требуемые свойства]].', # Fuzzy
 	'smw-sp-properties-cache-info' => 'Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.',
 	'smw-sp-properties-header-label' => 'Список свойств',
 );
@@ -13304,11 +13304,11 @@ $messages['sr-ec'] = array(
 	'smw_querytoolarge' => 'Следеће услове упита није могуће разматрати због рестрикција викија за дужину и обим упита: $1.',
 	'smw_notemplategiven' => 'Понудите вредност за параметар ”шаблон”, како би овај формат упита дао резултат.',
 	'smw_type_header' => 'Особине типа "$1"',
-	'smw_typearticlecount' => 'Приказ $1 {{PLURAL:$1|особине|особина}} за овај тип.',
+	'smw_typearticlecount' => 'Приказ $1 {{PLURAL:$1|1=особине|особина}} за овај тип.', # Fuzzy
 	'smw_attribute_header' => 'Странице које користе особину "$1"',
-	'smw_attributearticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које користе ову особину.',
+	'smw_attributearticlecount' => 'Приказ $1 {{PLURAL:$1|1=странице|страница}} које користе ову особину.', # Fuzzy
 	'smw_subproperty_header' => 'Подособине',
-	'smw_subpropertyarticlecount' => 'Ова особина садржи следећу/е $1 {{PLURAL:$1|подособину|подособине}}:',
+	'smw_subpropertyarticlecount' => 'Ова особина садржи следећу/е $1 {{PLURAL:$1|1=подособину|подособине}}:', # Fuzzy
 	'specialpages-group-smw_group' => 'Семантички Медијавики',
 	'exportrdf' => 'Извези странице у RDF',
 	'smw_exportrdf_docu' => 'Ова страница омогућава преузимање података с неке странице у формату RDF.
@@ -13332,7 +13332,7 @@ $messages['sr-ec'] = array(
 	'smw_unusedproperty_template' => '$1 типа $2',
 	'wantedproperties' => 'Тражене особине',
 	'smw_wantedproperties_docu' => 'Следеће особине се користе на викију, али још увек немају своју страницу са описом.',
-	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|употреба|употреба}})',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|1=употреба|употреба}})', # Fuzzy
 	'smw_purge' => 'Освежи',
 	'types' => 'Типови',
 	'smw_types_docu' => 'Ово је списак свих врста података који могу да се додељују својствима.',
@@ -13446,7 +13446,7 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Помоћ за непосредне упите',
 	'smw_unknowntype' => 'Тип овог својства је погрешан.',
 	'smw_concept_header' => 'Странице концепта "$1"',
-	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.', # Fuzzy
+	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|1=странице|страница}} које припадају том концепту.', # Fuzzy
 );
 
 /** Serbian (Latin script) (srpski (latinica)‎)
@@ -13525,11 +13525,11 @@ Rezultati mogu biti neočekivani.',
 	'smw_querytoolarge' => 'Sledeće uslove upita nije moguće razmatrati zbog restrikcija vikija za dužinu i obim upita: $1.',
 	'smw_notemplategiven' => 'Ponudite vrednost za parametar ”šablon”, kako bi ovaj format upita dao rezultat.',
 	'smw_type_header' => 'Osobine tipa "$1"',
-	'smw_typearticlecount' => 'Prikaz $1 {{PLURAL:$1|osobine|osobina}} za ovaj tip.',
+	'smw_typearticlecount' => 'Prikaz $1 {{PLURAL:$1|1=osobine|osobina}} za ovaj tip.', # Fuzzy
 	'smw_attribute_header' => 'Stranice koje koriste osobinu "$1"',
-	'smw_attributearticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje koriste ovu osobinu.',
+	'smw_attributearticlecount' => 'Prikaz $1 {{PLURAL:$1|1=stranice|stranica}} koje koriste ovu osobinu.', # Fuzzy
 	'smw_subproperty_header' => 'Podosobine',
-	'smw_subpropertyarticlecount' => 'Ova osobina sadrži sledeću/e $1 {{PLURAL:$1|podosobinu|podosobine}}:',
+	'smw_subpropertyarticlecount' => 'Ova osobina sadrži sledeću/e $1 {{PLURAL:$1|1=podosobinu|podosobine}}:', # Fuzzy
 	'specialpages-group-smw_group' => 'Semantički Medijaviki',
 	'exportrdf' => 'Izvezi stranice u RDF',
 	'smw_exportrdf_docu' => 'Ova stranica omogućava preuzimanje podataka s neke stranice u formatu RDF.
@@ -13553,7 +13553,7 @@ Generiše RDF koji je moguće pregledati.',
 	'smw_unusedproperty_template' => '$1 tipa $2',
 	'wantedproperties' => 'Tražene osobine',
 	'smw_wantedproperties_docu' => 'Sledeće osobine se koriste na vikiju, ali još uvek nemaju svoju stranicu sa opisom.',
-	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|upotreba|upotreba}})',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|1=upotreba|upotreba}})', # Fuzzy
 	'smw_purge' => 'Osveži',
 	'types' => 'Tipovi',
 	'smw_types_docu' => 'Ovo je spisak svih vrsta podataka koji mogu da se dodeljuju svojstvima.',
@@ -13667,7 +13667,7 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za neposredne upite',
 	'smw_unknowntype' => 'Tip ovog svojstva je pogrešan.',
 	'smw_concept_header' => 'Stranice koncepta "$1"',
-	'smw_conceptarticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje pripadaju tom konceptu.', # Fuzzy
+	'smw_conceptarticlecount' => 'Prikaz $1 {{PLURAL:$1|1=stranice|stranica}} koje pripadaju tom konceptu.', # Fuzzy
 );
 
 /** Swedish (svenska)
@@ -14685,7 +14685,7 @@ $messages['uk'] = array(
 	'uriresolver' => 'Оброблювач URI',
 	'properties' => 'Властивості',
 	'smw_properties_docu' => 'Наступні властивості використовуються у цій вікі.',
-	'smw_property_template' => '$1 із типом $2 ($3 {{PLURAL:$3|використання|використань}})',
+	'smw_property_template' => '$1 із типом $2 ($3 {{PLURAL:$3|1=використання|використань}})',
 	'smw_propertylackspage' => 'Кожна властивість повинна мати сторінку, що її описує.',
 	'smw_propertylackstype' => 'Для цієї властивості не було означено типу даних (поки що використовується $1).',
 	'smw_propertyhardlyused' => 'Ця властивість використовується рушієм вікі.',
@@ -14710,7 +14710,7 @@ $messages['uk'] = array(
 	'semanticstatistics' => 'Семантична статистика',
 	'smw_semstats_text' => "Ця вікі містить '''$1''' {{PLURAL:$1|значення властивості|значення властивостей|значень властивостей}}, для '''$2''' [[Special:Properties|{{PLURAL:$2|властивості|властивостей|властивостей}}]]. '''$3''' {{PLURAL:$3|властивість має|властивості мають|властивостей мають}} відповідні їм сторінки, і відповідний тип даних вказано у '''$4''' із них. Деякі із наявних властивостей можуть бути [[Special:UnusedProperties|властивостями, що не використовуються]]. Властивості, котрі не мають відповідних їм сторінок, можна знайти в [[Special:WantedProperties|списку пропонованих властивостей]].",
 	'smw-statistics' => 'Семантична статистика',
-	'smw-statistics-property-instance' => '{{PLURAL:$1| Значення|Значення}} властивості (всього)',
+	'smw-statistics-property-instance' => '{{PLURAL:$1|1= Значення|Значення}} властивості (всього)',
 	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Властивість|Властивості|Властивостей}}]] (всього)',
 	'smw-statistics-property-total-legacy' => '{{PLURAL:$1|Властивість|Властивості|Властивостей}} (всього)',
 	'smw-statistics-property-page' => '{{PLURAL:$1|Властивість|Властивості|Властивостей}} (зареєстровано на сторінці)',
@@ -14817,7 +14817,7 @@ $messages['uk'] = array(
 	'smw_adminlinks_displayingdata' => 'Відображення даних',
 	'smw_adminlinks_inlinequerieshelp' => 'Довідка із вбудованих запитів',
 	'smw-createproperty-isproperty' => 'Це властивість типу $1.',
-	'smw-createproperty-allowedvals' => '{{PLURAL:$1|Дозволене значення для цієї властивості є|Дозволені значення значення для цієї властивості є}}:',
+	'smw-createproperty-allowedvals' => '{{PLURAL:$1|1=Дозволене значення для цієї властивості є|Дозволені значення значення для цієї властивості є}}:',
 	'smw-paramdesc-category-delim' => 'Розділювач',
 	'smw-paramdesc-category-template' => 'Шаблон для форматування елементів із',
 	'smw-paramdesc-category-userparam' => 'Параметр, який передається в шаблон',
@@ -14840,7 +14840,7 @@ $messages['uk'] = array(
 	'smw_unknowntype' => 'Для цього властивості вказано некоректний тип',
 	'smw-concept-cache-text' => 'Поняття має $1 {{PLURAL:$1|сторінку|сторінки|сторінок}}, і востаннє було оновлено $2.',
 	'smw_concept_header' => 'Сторінки, що належать до концепції «$1»',
-	'smw_conceptarticlecount' => '{{PLURAL:$1|Показана|Показані}} нижче $1 {{PLURAL:$1|сторінка|сторінки|сторінок}}.',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|1=Показана|Показані}} нижче $1 {{PLURAL:$1|сторінка|сторінки|сторінок}}.',
 	'smw-qp-aggregatable-empty-data' => 'Запитані накопичені дані не можуть відображатися через деякий недостатній критерій відбору.',
 	'right-smw-admin' => 'Доступ до завдань адміністрування (семантичне Медіавікі)',
 	'group-smwadministrator' => 'Адміністратори семантичної Медіавікі',
