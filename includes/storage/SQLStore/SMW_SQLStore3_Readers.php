@@ -553,6 +553,9 @@ class SMWSQLStore3Readers {
 					$result[] = new SMWDIProperty( $row->smw_title );
 				}
 			} else { // just check if subject occurs in table
+
+				var_dump( '$from ' . $from . ' getName ' . $proptable->getName() );
+
 				$res = $db->select( $from, '*', $where, 'SMW::getProperties', array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
