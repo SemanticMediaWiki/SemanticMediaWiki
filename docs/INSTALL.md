@@ -163,7 +163,8 @@ As alternative to the first two installation steps, you can obtain the SMW code 
 These tarballs include all dependencies of SMW. This open exists mainly for those that have no command line access.
 If you do, using the Composer approach is preferred.
 
-(This section will be updated with details and links before the SMW 1.9 release)
+* [Download tarball of the latest SMW release](https://sourceforge.net/projects/semediawiki/files/latest/download)
+* [List of SMW tarballs](https://sourceforge.net/projects/semediawiki/files/semediawiki/)
 
 ### Manual installation
 
