@@ -152,40 +152,52 @@ Run the MediaWiki update script. The location of this script is maintenance/upda
 
     php maintenance/update.php
 
+##### Step 5
+
+Add the following line to the end of your LocalSettings.php file.
+
+    enableSemantics( 'example.org' );
+
 ##### Verify installation success
 
 As final step, you can verify SMW got installed by looking at the Special:Version page on your wiki and verifying the
 Semantic MediaWiki section is listed.
 
-### Using a tarball
+### Installation without shell access
 
 As alternative to the first two installation steps, you can obtain the SMW code by getting one of the release tarballs.
-These tarballs include all dependencies of SMW. This open exists mainly for those that have no command line access.
-If you do, using the Composer approach is preferred.
+These tarballs include all dependencies of SMW.
+
+This open exists mainly for those that have no command line access. A drawback of this appraoch is that it makes
+your setup incompatible with extensions that share dependencies with SMW. You are thus highly encouraged to use
+the Composer approach if you have command line access.
+
+##### Step 1
+
+Download an SMW tarball and extract it into your extensions directory.
 
 * [Download tarball of the latest SMW release](https://sourceforge.net/projects/semediawiki/files/latest/download)
 * [List of SMW tarballs](https://sourceforge.net/projects/semediawiki/files/semediawiki/)
 
-### Manual installation
+##### Step 2
 
-You can also obtain the SMW code and the code of all its dependencies yourself, and load them all.
-This is highly discouraged as it is labour intensive and is quite brittle.
+Add the following lines to the end of your LocalSettings.php file.
 
-You can find a list of the dependencies in the "requires" section of the [composer.json file]
-(../composer.json). These packages are also linked on the [SMW Packagist page]
-(https://packagist.org/packages/mediawiki/semantic-mediawiki). Note that this process is recursive
-and needs to be applied on the dependencies as well, since they can have further dependencies.
+    require_once "$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php";
+    enableSemantics( 'example.org' );
 
-You can get the SMW code itself:
+###### Step 3
 
-* Via git: git clone https://github.com/SemanticMediaWiki/SemanticMediaWiki.git
-* As Tarball: https://github.com/SemanticMediaWiki/SemanticMediaWiki/releases
+Log in as a user with administrator permission to your wiki and go to the page "Special:SMWAdmin": 
 
-The only remaining step is to include SemanticMediaWiki in your LocalSettings.php file:
+* Click on the "Database installation and upgrade" button to setup the database.
+* Click on the "Data repair and upgrade" button to activate the [automatic data update]
+(https://semantic-mediawiki.org/wiki/Repairing_SMW).
 
-```php
-require_once "$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php";
-```
+##### Verify installation success
+
+As final step, you can verify SMW got installed by looking at the Special:Version page on your wiki and verifying the
+Semantic MediaWiki section is listed.
 
 ## More instructions
 
