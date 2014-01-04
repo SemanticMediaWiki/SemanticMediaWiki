@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ## Fetching MediaWiki installation base
-function runMWInstaller {
+function installMediaWiki {
 
 	wget https://github.com/wikimedia/mediawiki-core/archive/$MW.tar.gz
 	tar -zxf $MW.tar.gz
@@ -22,21 +22,20 @@ function runMWInstaller {
 }
 
 ## Run SemanticMediaWiki dependency install
-function runSMWInstaller {
+function installSMW {
 	if [ "$TYPE" == "composer" ]
 	then
-		runComposerInstallByMediaWiki
+		installSmwIntoMwWithComposer
+	elif [ "$TYPE" == "relbuild" ]
+	then
+		installSmwAsTarballLikeBuild
 	else
-		cd extensions
-		cp -r $originalDirectory SemanticMediaWiki
-		cd SemanticMediaWiki
-		composer install --prefer-source
-		cd ../..
+		installSmwByRunningComposerInstallInIt
 	fi
 }
 
 # Run Composer installation from the MW root directory
-function runComposerInstallByMediaWiki {
+function installSmwIntoMwWithComposer {
 	composer require mediawiki/semantic-media-wiki "dev-master"
 
 	cd extensions
@@ -58,8 +57,24 @@ function runComposerInstallByMediaWiki {
 	composer dump-autoload
 }
 
+# This will likely not get the submitted version.
+# We do however want to ensure noticing any breakage of this process before we prepare a release.
+function installSmwAsTarballLikeBuild {
+	cd extensions
+	composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki dev-master -s dev --prefer-dist --no-dev
+	cd ..
+}
+
+function installSmwByRunningComposerInstallInIt {
+	cd extensions
+	cp -r $originalDirectory SemanticMediaWiki
+	cd SemanticMediaWiki
+	composer install --prefer-source
+	cd ../..
+}
+
 ## Generate LocalSettings
-function runSettingsGenerator {
+function configureLocalSettings {
 
 	# Namespace related settings
 	echo 'define("NS_TRAVIS", 998);' >> LocalSettings.php
@@ -87,8 +102,8 @@ originalDirectory=$(pwd)
 
 cd ..
 
-runMWInstaller
-runSMWInstaller
-runSettingsGenerator
+installMediaWiki
+installSMW
+configureLocalSettings
 
 php maintenance/update.php --quick
