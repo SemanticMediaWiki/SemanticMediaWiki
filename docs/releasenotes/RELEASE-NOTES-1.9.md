@@ -1,11 +1,12 @@
 # Semantic MediaWiki 1.9
 
-### Requirements changes
+### Platform compatibility changes
 
-* Changed minimum MediaWiki version from 1.17 to 1.19.
 * Changed minimum PHP version from 5.2. to 5.3.2.
+* Changed minimum MediaWiki version from 1.17 to 1.19.
 * Full compatibility with MediaWiki 1.19, 1.20, 1.21, 1.22 and forward-compatibility with 1.23.
 * Changed minimum Validator version from 0.5 to 1.0.
+* Added beta support for PostgreSQL.
 
 ### New features
 
