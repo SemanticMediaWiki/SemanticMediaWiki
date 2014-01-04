@@ -29,19 +29,13 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	private function normalizePath( $path ) {
-		return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	private function newExtensionContext( $store = null ) {
 
 		$context = new ExtensionContext();
 
 		$settings = $context->getSettings();
 		$settings->set( 'smwgCacheType', CACHE_NONE );
+		$settings->set( 'smwgEnableUpdateJobs', false );
 
 		$context->getDependencyBuilder()
 			->getContainer()
@@ -61,6 +55,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 		$default  = array(
 			'smwgNamespacesWithSemanticLinks' => array(),
+			'smwgEnableUpdateJobs' => false,
 			'wgNamespacesWithSubpages' => array(),
 			'wgExtensionAssetsPath'    => false,
 			'wgResourceModules' => array(),
@@ -399,6 +394,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'SMW\UpdateJob',
 			'SMW\RefreshJob',
 			'SMW\UpdateDispatcherJob',
+			'SMW\DeleteSubjectJob'
 		);
 
 		return $this->buildDataProvider( 'wgJobClasses', $jobs, '' );

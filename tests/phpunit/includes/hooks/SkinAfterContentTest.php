@@ -163,7 +163,7 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 
 		$provider[] = array(
 			array( 'skin' => $skin, 'text' => $text ),
-			array( 'text' => $text )
+			array( 'text' => '' )
 		);
 
 		// #3 "edit" request

@@ -689,3 +689,31 @@ $GLOBALS['smwgQueryProfiler'] = array(
 ##
 $GLOBALS['smwgEnabledSpecialPage'] = array( 'Ask' );
 ##
+
+###
+# Page / subject deletion (action=delete)
+#
+# Configuration to improve the update process for when a page / property and its
+# value assignments are deleted. Due to performance implications it is advisable
+# that in case of 'smwgDeleteSubjectWithAssociatesRefresh' => TRUE the deletion
+# process is being handled as deferred background job
+# 'smwgDeleteSubjectAsDeferredJob' => TRUE
+#
+# In case the deletion is executed as deferred job it is further suggested that the
+# JobQueue is being run repeatedly within a narrow time frame to avoid an increased
+# backlog.
+#
+# Legacy behaviour where a subject is directly deleted when action=delete is executed
+# -'smwgDeleteSubjectAsDeferredJob' => false
+# -'smwgDeleteSubjectWithAssociatesRefresh' => false
+#
+# If 'smwgEnableUpdateJobs' is disabled then the deletion process will always run
+# directly even though 'smwgDeleteSubjectAsDeferredJob' is enabled.
+#
+# @since 1.9.0.1
+##
+$GLOBALS['smwgOnDeleteAction'] = array(
+	'smwgDeleteSubjectAsDeferredJob' => false,
+	'smwgDeleteSubjectWithAssociatesRefresh' => false
+);
+##
