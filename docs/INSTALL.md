@@ -29,7 +29,7 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 	</tr>
 	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.8.0">SMW 1.8.x</a></th>
-		<td>Stable release</td>
+		<td>Legacy release</td>
 		<td>2012-12-02</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.8.x">1.8.x</a></td>
 	</tr>
