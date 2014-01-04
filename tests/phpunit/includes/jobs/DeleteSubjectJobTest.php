@@ -116,7 +116,6 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		);
 
 		foreach ( $result as $job ) {
-
 			$this->assertInstanceOf(
 				$this->getClass(),
 				$job,
