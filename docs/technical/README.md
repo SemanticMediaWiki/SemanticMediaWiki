@@ -1,6 +1,9 @@
 This document contains resources that can improve the understanding on
 "how Semantic MediaWiki is working" from an implementation and development point of view.
 
+If you are new to SMW development, have a look at the [Programmer's guide to SMW]
+(https://www.semantic-mediawiki.org/wiki/Programmer%27s_guide_to_SMW) first.
+
 ## SMW core
 
 * [Using the Dependency Builder/Container](dic.md)
