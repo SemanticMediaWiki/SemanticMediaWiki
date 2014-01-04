@@ -277,6 +277,52 @@ class FactboxCacheTest extends ParserTestCase {
 			)
 		);
 
+		// #4 SpecialPage
+		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
+			'isSpecialPage' => true,
+		) );
+
+		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
+			'getTitle'   => $mockTitle,
+			'getContext' => $this->newContext()
+		) );
+
+		$provider[] = array(
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
+				'outputPage'      => $mockOutputPage,
+				'store'           => $mockStore,
+				'parserOutput'    => $this->setupParserOutput( null ),
+			),
+			array(
+				'text'            => ''
+			)
+		);
+
+		// #5 isDeleted
+		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
+			'isDeleted' => true,
+		) );
+
+		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
+			'getTitle'   => $mockTitle,
+			'getContext' => $this->newContext()
+		) );
+
+		$provider[] = array(
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
+				'outputPage'      => $mockOutputPage,
+				'store'           => $mockStore,
+				'parserOutput'    => $this->setupParserOutput( null ),
+			),
+			array(
+				'text'            => ''
+			)
+		);
+
 		return $provider;
 	}
 

@@ -5,6 +5,7 @@ namespace SMW\Test;
 use SMW\UpdateDispatcherJob;
 use SMW\ExtensionContext;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 use Title;
 
@@ -41,7 +42,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return UpdateDispatcherJob
 	 */
-	private function newInstance( Title $title = null ) {
+	private function newInstance( Title $title = null, $properties = array() ) {
 
 		if ( $title === null ) {
 			$title = $this->newTitle();
@@ -49,7 +50,8 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getAllPropertySubjects' => array( $this, 'mockStoreAllPropertySubjectsCallback' ),
-			'getPropertySubjects'    => array()
+			'getPropertySubjects'    => array(),
+			'getProperties'          => $properties
 		) );
 
 		$settings = $this->newSettings( array(
@@ -89,10 +91,17 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testRunOnDB() {
+
 		$this->assertTrue(
 			$this->newInstance( $this->newTitle( SMW_NS_PROPERTY ) )->disable()->run(),
 			'assert that run() always returns true'
 		);
+
+		$this->assertTrue(
+			$this->newInstance( $this->newTitle( NS_MAIN ) )->disable()->run(),
+			'assert that run() always returns true'
+		);
+
 	}
 
 	/**
@@ -103,17 +112,25 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	public function testRunOnMockObjects( $setup, $expected ) {
 
 		// Set-up expected property to be accessible in the mock callback
-		$this->property = DIProperty::newFromUserLabel( $setup['title']->getText() );
+		$this->property = $setup['property'];
 
 		// Set-up expected "raw" subjects to be returned (plus duplicate)
 		$this->subjects = $setup['subjects'];
 
-		$instance = $this->newInstance( $setup['title'] );
+		$instance = $this->newInstance( $setup['title'], $setup['properties'] );
 
 		// For tests disable distribution of jobs into the "real" JobQueue
 		$instance->disable()->run();
 
-		// Get access to protected jobs property
+		$this->assertJobsAndJobCount( $expected['count'], $instance );
+
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public function assertJobsAndJobCount( $count, $instance ) {
+
 		$reflector = $this->newReflector();
 		$jobs = $reflector->getProperty( 'jobs' );
 		$jobs->setAccessible( true );
@@ -127,7 +144,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 		);
 
 		$this->assertCount(
-			$expected['count'],
+			$count,
 			$result,
 			'asserts the amount of available job entries'
 		);
@@ -161,8 +178,6 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 
 		$provider = array();
 
-		$title = $this->newTitle( SMW_NS_PROPERTY );
-
 		$duplicate = $this->newSubject();
 		$subjects = array(
 			$duplicate,
@@ -173,14 +188,33 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 		);
 
 		$count = count( $subjects ) - 1; // eliminate duplicate count
+		$title = $this->newTitle( SMW_NS_PROPERTY );
+		$property = DIProperty::newFromUserLabel( $title->getText() );
 
 		$provider[] = array(
 			array(
-				'title'    => $title,
-				'subjects' => $subjects
+				'title'      => $title,
+				'subjects'   => $subjects,
+				'property'   => $property,
+				'properties' => array()
 			),
 			array(
 				'count' => $count
+			)
+		);
+
+		$title = $this->newTitle( NS_MAIN );
+		$property = DIProperty::newFromUserLabel( $title->getText() );
+
+		$provider[] = array(
+			array(
+				'title'      => $title,
+				'subjects'   => array( DIWikiPage::newFromTitle( $title ) ),
+				'property'   => $property,
+				'properties' => array( $property )
+			),
+			array(
+				'count' => 1
 			)
 		);
 

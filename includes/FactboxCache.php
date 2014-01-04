@@ -64,7 +64,7 @@ class FactboxCache extends DependencyInjector {
 		$resultMapper = $this->newResultMapper( $title->getArticleID() );
 		$content      = $resultMapper->fetchFromCache();
 
-		if ( isset( $content['revId'] ) && ( $content['revId'] === $revId ) && $content['text'] !== null ) {
+		if ( $revId !== 0 && isset( $content['revId'] ) && ( $content['revId'] === $revId ) && $content['text'] !== null ) {
 
 			$this->isCached = true;
 			$this->outputPage->mSMWFactboxText = $content['text'];
@@ -101,12 +101,16 @@ class FactboxCache extends DependencyInjector {
 	public function retrieveContent() {
 
 		$text = '';
+		$title = $this->outputPage->getTitle();
+
+		if ( $title instanceof Title && ( $title->isSpecialPage() || $title->isDeleted() ) ) {
+			return $text;
+		}
 
 		if ( isset( $this->outputPage->mSMWFactboxText ) ) {
 			$text = $this->outputPage->mSMWFactboxText;
-		} else if ( $this->outputPage->getTitle() instanceof Title &&
-			!$this->outputPage->getTitle()->isSpecialPage() ) {
-			$content = $this->newResultMapper( $this->outputPage->getTitle()->getArticleID() )->fetchFromCache();
+		} else if ( $title instanceof Title ) {
+			$content = $this->newResultMapper( $title->getArticleID() )->fetchFromCache();
 			$text = isset( $content['text'] ) ? $content['text'] : '';
 		}
 

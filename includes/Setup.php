@@ -155,6 +155,7 @@ final class Setup implements ContextAware {
 		$this->globals['wgJobClasses']['SMW\UpdateJob']  = 'SMW\UpdateJob';
 		$this->globals['wgJobClasses']['SMW\RefreshJob'] = 'SMW\RefreshJob';
 		$this->globals['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\UpdateDispatcherJob';
+		$this->globals['wgJobClasses']['SMW\DeleteSubjectJob'] = 'SMW\DeleteSubjectJob';
 
 	}
 
@@ -286,6 +287,7 @@ final class Setup implements ContextAware {
 	 */
 	protected function registerFunctionHooks() {
 
+		$settings = $this->settings;
 		$globals  = $this->globals;
 		$context  = $this->withContext();
 		$functionHook = $context->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
@@ -391,19 +393,16 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $context ) {
+		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $settings, $context ) {
 
-			// Clean-up of related subjects to a property has to be done before store data
-			// are modified which means that either run UpdateDispatcherJob before the
-			// deleteSubject in "online" mode or put both in a subsequent DeferredSubjectRemovalJob
-			// to ensure synchronize execution
-			$dispatcher = new UpdateDispatcherJob( $wikiPage->getTitle() );
-			$dispatcher->invokeContext( $context );
-			$dispatcher->run();
+			$deleteSubject = new DeleteSubjectJob( $wikiPage->getTitle(), array(
+				'asDeferredJob' => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
+				'withRefresh'   => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
+			) );
 
-			$context->getStore()->deleteSubject( $wikiPage->getTitle() );
+			$deleteSubject->invokeContext( $context );
 
-			return true;
+			return $deleteSubject->execute();
 		};
 
 		/**
