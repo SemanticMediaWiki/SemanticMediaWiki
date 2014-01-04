@@ -121,7 +121,7 @@ If not noted otherwise, deprecated methods or classes will be removed in SMW 1.1
 
 ### Platform stability
 
-* Over 80 PHPUnit tests have been added
+* Over 130 PHPUnit tests have been added
 * Over 10 QUnit tests have been added
 * The tests now [run on TravisCI](https://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
     * Compatibility is now ensured against all supported MediaWiki and PHP versions
