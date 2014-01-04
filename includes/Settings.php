@@ -124,7 +124,8 @@ class Settings extends SimpleDictionary {
 			'smwgFactboxUseCache' => $GLOBALS['smwgFactboxUseCache'],
 			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge'],
 			'smwgQueryProfiler' => $GLOBALS['smwgQueryProfiler'],
-			'smwgEnabledSpecialPage' => $GLOBALS['smwgEnabledSpecialPage']
+			'smwgEnabledSpecialPage' => $GLOBALS['smwgEnabledSpecialPage'],
+			'smwgOnDeleteAction' => $GLOBALS['smwgOnDeleteAction']
 		);
 
 		if ( self::$instance === null ) {

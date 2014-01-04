@@ -155,6 +155,7 @@ final class Setup implements ContextAware {
 		$this->globals['wgJobClasses']['SMW\UpdateJob']  = 'SMW\UpdateJob';
 		$this->globals['wgJobClasses']['SMW\RefreshJob'] = 'SMW\RefreshJob';
 		$this->globals['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\UpdateDispatcherJob';
+		$this->globals['wgJobClasses']['SMW\DeleteSubjectJob'] = 'SMW\DeleteSubjectJob';
 
 	}
 
@@ -286,6 +287,7 @@ final class Setup implements ContextAware {
 	 */
 	protected function registerFunctionHooks() {
 
+		$settings = $this->settings;
 		$globals  = $this->globals;
 		$context  = $this->withContext();
 		$functionHook = $context->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
@@ -391,9 +393,16 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $context ) {
-			$context->getStore()->deleteSubject( $wikiPage->getTitle() );
-			return true;
+		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $settings, $context ) {
+
+			$deleteSubject = new DeleteSubjectJob( $wikiPage->getTitle(), array(
+				'asDeferredJob' => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
+				'withRefresh'   => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
+			) );
+
+			$deleteSubject->invokeContext( $context );
+
+			return $deleteSubject->execute();
 		};
 
 		/**
