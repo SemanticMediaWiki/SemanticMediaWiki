@@ -1,5 +1,7 @@
 <?php
 
+use SMW\DataTypeRegistry;
+
 /**
  * Class mapping SMWDescription objects to SPARQL query conditions.
  *
