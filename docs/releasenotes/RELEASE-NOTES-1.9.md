@@ -14,59 +14,26 @@
 * Added maintenance script [rebuildPropertyStatistics.php](https://semantic-mediawiki.org/wiki/Help:RebuildPropertyStatistics.php) to rebuild the property statistics
 * (271864f) The property type String is now an alias for Text and has no more length restrictions
 * (38499a8) Special:Statistics now shows a "semantic statistics" version (only when using a recent version of MediaWiki)
-* (9714d04) (a33411f) Add new "browsebysubject" API module allows fetching the semantic data for a given page
-* (ed52df7) (Bug 50844) Special:Properties now has a search form
+* (ed52df7) (Bug 50844) Special:Properties now provides a form to search user-defined properties
 * (a949f04) (Bug 33181) Add page [Special:Concepts](https://semantic-mediawiki.org/wiki/Help:Special:Concepts) that lists available concepts
 * (0c971f8) (Bug 46458) Extend smwinfo API module to provide additional information
 * (b8aea6c) (Bug 48840) Add a smw-admin right to enable restricted access to Special:SMWAdmin
+* (9714d04) (a33411f) Add new "browsebysubject" API module to fetch semantic data for a given subject
 
 ### Enhancements
 
 * (Bug 36309) and (Bug 39019) Add +sep= as multiple value separator for #set and #subobject parser function
 * (6dd845e) (Bug 34477) Add cache information to concept pages
-* (Bug 34172) Add individual CSS class injection for further result links
+* (Bug 34172) Add [individual CSS class](https://www.semantic-mediawiki.org/wiki/Help:Further_results) injection for further result links
 * (I2e509e) Improved efficiency of property statistics rebuilding script
-* (eb764db) Add SMW\PropertyAnnotatorDecorator for handling individual "standard" properties
-* (f33fd12) Add SMW\ExtensionContext and \SMW\ContextAware
-* (40e7572) Renamed SMWDISerializer to \SMW\Serializers\QueryResultSerializer
-* (a0b08fe) Add SMW\Serializes\SemanticDataSerializer in order for SemanticData to be serializable
-* (02635a1) Replace SkinTemplateToolboxEnd hook with SMW\BaseTemplate
-* (ec5dd46) Add SMW\SimpleDependencyBuilder and SMW\SharedDependencyContainer as simple framework that
-allows for individual object factoring and dependency injection
-* (8bcee83) (Bug 44696) Fix XML output for SMW\Api\Ask
-* (92b67bd) Add SMW\TableFormatter for the table query printer
-* (5a33d2d) Add SMW\CacheHandler to separate MediaWiki specific cache injection
-* (bb35e8a) (Bug 47123) Aggregate numbers based on the mainlabel
+* (8bcee83) (Bug 44696) Fix XML output for AskApi
+* (bb35e8a) (Bug 47123) Aggregate numbers based on the label/group
 * (5cda766) (Bug 46930) SMWSQLStore3Writers::changeTitle only create redirects when appropriate
 conditions are met
-* (e4a5fb8) (Bug 31880) add column class (based on dataValue typeId)
-* (e4a2035) Modify SMW\RecurringEvents in order to use subobject as datamodel to represent
+* (e4a5fb8) (Bug 31880) Formatting numbers in tables based based on a customizible typeId
+* (e4a2035) Modify SMW\RecurringEvents to use a subobject as datamodel to represent
 individual events within a page
-* (a957596) SMW\JsonResultPrinter remove obsolete serialization
-* (395b584) Add ResourceLoaderGetConfigVars to populate SMW related configuration details for JavaScript
-* (7c60e50) Add SMW\ApiResultPrinter to support query printers to use Ajax/WebApi interface for
-query result updates
-* (cb6c6ad) SMW\ResultPrinter class turn RequestContext aware
 * (7d1e2ad) (Bug 34782) Add note parameter to #info parser function
-
-The following classes and interfaces were re-factored and/or added in order to improve testability:
-
-* (e0f3f4d) Rename and re-factor \SMW\RefreshJob
-* (058c2fc) Add SMW\Setup to separate extension registration and initialization for parser function
-* (87b214f) Add SMW\Settings to remove GLOBAL state and to allow to inject individual configuration
-details during runtime
-* (5a82da8) Improve SMW\Factbox and add SMW\FactboxCache to minimize content parsing
-* (24cca37) Add SMW\Test\MockObjectBuilder and SMW\Test\CoreMockObjectRepository,
-SMW\Test\MediaWikiMockObjectRepository
-* (6d5a3c5) Add SMW\JobBase to enable dependency injection
-* (71dbba1) Add SMW\ObservableDispatcher to enable Observes to act as an observable subject itself
-* (dc28899) (18d17a5) Add SMW\StoreUpdater, SMW\UpdateDispatcherJob, and SMW\PropertyTypeComparator
-to separate responsibilities during the update process
-* (6c06567) Add SMW\SQLStore\PropertyTableDefinitionBuilder to separate build definition
-* (2164a25) Add SMW\Store\CacheableResultCollector (SMW\SQLStore\StatisticsCollector,
-SMW\SQLStore\PropertiesCollector etc.) to enable cacheable results when executing Special:Statistics
-or Special:Properties
-* (c8a2f97) (Bug 51091) Add SMW\Api\Ask and SMW\Api\AskArgs
 
 #### New configuration parameters
 
@@ -95,12 +62,6 @@ or Special:Properties
 * (3507f84) (Bug 21893) Fixed queries that use the like comparator for properties with a restricted
 set of values
 
-### Dropped features
-
-* (6f7625f) Remove Special:QueryCreator
-* (5a3f6ed) (Bug 50755) Remove MigrationJob/SMWMigrate
-* (f9cff2b) Remove smwfLoadExtensionMessages
-
 ### Compatibility changes
 
 * Deleted pre SMW 1.5.1 entry point (includes/SMW_Settings.php), the main entry point is SemanticMediaWiki.php
@@ -109,7 +70,7 @@ set of values
 * (I5db911) #set_recurring_event using subobjects (changes query behavior
 for recurring events; for more see the help page on [recurring events](https://semantic-mediawiki.org/wiki/Help:Recurring_events "Recurring events")
 
-### Deprecated code
+### Deprecated classes
 
 If not noted otherwise, deprecated methods or classes will be removed in SMW 1.11.
 
@@ -119,6 +80,47 @@ If not noted otherwise, deprecated methods or classes will be removed in SMW 1.1
 * SMWListResultPrinter, SMWResultPrinter, SMWSubobject, SMWSet
 * SMWFeedResultPrinter, SMWDISerializer
 * SMWDIString, SMWStringLengthException, SMWSetRecurringEvent
+
+### Added or changed classes 
+
+* (eb764db) Add SMW\PropertyAnnotatorDecorator for handling individual "standard" properties
+* (f33fd12) Add SMW\ExtensionContext and \SMW\ContextAware
+* (40e7572) Renamed SMWDISerializer to \SMW\Serializers\QueryResultSerializer
+* (a0b08fe) Add SMW\Serializes\SemanticDataSerializer in order for SemanticData to be serializable
+* (02635a1) Replace SkinTemplateToolboxEnd hook with SMW\BaseTemplate
+* (ec5dd46) Add SMW\SimpleDependencyBuilder and SMW\SharedDependencyContainer as simple framework that
+allows for individual object factoring and dependency injection
+* (92b67bd) Add SMW\TableFormatter for the table query printer
+* (5a33d2d) Add SMW\CacheHandler to separate MediaWiki specific cache injection
+* (395b584) Add ResourceLoaderGetConfigVars to populate SMW related configuration details for JavaScript
+* (7c60e50) Add SMW\ApiResultPrinter to support query printers to use Ajax/WebApi interface for
+query result updates
+* (cb6c6ad) SMW\ResultPrinter class turn RequestContext aware
+
+The following classes and interfaces were re-factored and/or added in order to promote testability:
+
+* (e0f3f4d) Rename and re-factor \SMW\RefreshJob
+* (I3b41d4) Rename and re-factor \SMW\UpdateJob
+* (6d5a3c5) Add SMW\JobBase to enable dependency injection
+* (058c2fc) Add SMW\Setup to separate extension registration and initialization
+* (87b214f) Add SMW\Settings class to remove GLOBAL state and enable injection of individual configuration
+details during runtime
+* (5a82da8) Re-factor SMW\Factbox and add SMW\FactboxCache to minimize content parsing
+* (24cca37) Add SMW\Test\MockObjectBuilder to easily manage MW and SMW mock objects
+* (71dbba1) Add SMW\ObservableDispatcher to enable Observes to act as an observable subject itself
+* (dc28899) (18d17a5) Add SMW\StoreUpdater, SMW\UpdateDispatcherJob, and SMW\PropertyTypeComparator
+to separate responsibilities during the update
+* (6c06567) Add SMW\SQLStore\PropertyTableDefinitionBuilder to separate build definition
+* (2164a25) Add \SMW\ResultCollector interface to support cacheable results when executing Special:Statistics or Special:Properties
+* (c8a2f97) (Bug 51091) Rename and re-factor SMW\Api\Ask and SMW\Api\AskArgs
+
+### Removed features
+
+* (6f7625f) Remove Special:QueryCreator
+* (5a3f6ed) (Bug 50755) Remove MigrationJob/SMWMigrate
+* (f9cff2b) Remove smwfLoadExtensionMessages
+* (a957596) SMW\JsonResultPrinter remove obsolete serialization
+
 
 ### Platform stability
 
