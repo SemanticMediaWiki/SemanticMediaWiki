@@ -38,7 +38,7 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @return DeleteSubjectJob
 	 */
-	private function newInstance( Title $title = null, $settings = array() ) {
+	protected function newInstance( Title $title = null, $settings = array() ) {
 
 		if ( $title === null ) {
 			$title = $this->newTitle();
@@ -64,23 +64,28 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		$container->registerObject( 'Store', $mockStore );
 		$container->registerObject( 'Settings', $settings );
 
-		$parameter = array(
+		$parameters = array(
 			'asDeferredJob' => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
 			'withRefresh'   => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
 		);
 
-		$instance = new DeleteSubjectJob( $title, $parameter );
+		$instance = new DeleteSubjectJob( $title, $parameters );
 		$instance->invokeContext( $context );
 
 		return $instance;
 	}
 
-	public function testCanConstructor() {
+	/**
+	 * @since 1.9.0.1
+	 */
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
 	 * @dataProvider settingsProvider
+	 *
+	 * @since 1.9.0.1
 	 */
 	public function testExecuteOnMockStore( $setup, $expected ) {
 
@@ -95,42 +100,11 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		unset( $this->titleToBeDeleted );
 	}
 
-	public function assertJobsAndJobCount( $count, $instance ) {
-
-		$reflector = $this->newReflector();
-		$jobs = $reflector->getProperty( 'jobs' );
-		$jobs->setAccessible( true );
-
-		$result = $jobs->getValue( $instance );
-
-		$this->assertInternalType(
-			'array',
-			$result,
-			'Asserts that the job result property is of type array'
-		);
-
-		$this->assertCount(
-			$count,
-			$result,
-			'Asserts the amount of available job entries'
-		);
-
-		foreach ( $result as $job ) {
-			$this->assertInstanceOf(
-				$this->getClass(),
-				$job,
-				"Asserts that the job instance is of type {$this->getClass()}"
-			);
-
-			$this->assertTrue( $job->hasParameter( 'asDeferredJob' ) );
-			$this->assertTrue( $job->hasParameter( 'withRefresh' ) );
-
-		}
-
-	}
 
 	/**
 	 * @see Store::deleteSubject
+	 *
+	 * @since 1.9.0.1
 	 */
 	public function mockStoreDeleteSubjectCallback( Title $title ) {
 		$this->deleteSubjectWasCalled = $this->titleToBeDeleted === $title;
@@ -208,6 +182,40 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		);
 
 		return $provider;
+	}
+
+	protected function assertJobsAndJobCount( $count, $instance ) {
+
+		$reflector = $this->newReflector();
+		$jobs = $reflector->getProperty( 'jobs' );
+		$jobs->setAccessible( true );
+
+		$result = $jobs->getValue( $instance );
+
+		$this->assertInternalType(
+			'array',
+			$result,
+			'Asserts that the job result property is of type array'
+		);
+
+		$this->assertCount(
+			$count,
+			$result,
+			'Asserts the amount of available job entries'
+		);
+
+		foreach ( $result as $job ) {
+			$this->assertInstanceOf(
+				$this->getClass(),
+				$job,
+				"Asserts that the job instance is of type {$this->getClass()}"
+			);
+
+			$this->assertTrue( $job->hasParameter( 'asDeferredJob' ) );
+			$this->assertTrue( $job->hasParameter( 'withRefresh' ) );
+
+		}
+
 	}
 
 }

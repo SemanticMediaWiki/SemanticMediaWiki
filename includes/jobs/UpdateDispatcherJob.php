@@ -97,12 +97,9 @@ class UpdateDispatcherJob extends JobBase {
 		 * @var Store $store
 		 */
 		$store = $this->withContext()->getStore();
-		$properties = $store->getProperties( $subject );
 
-		if ( is_array( $properties ) ) {
-			foreach ( $properties as $property ) {
-				$this->addJobs( $store->getAllPropertySubjects( $property ) );
-			}
+		foreach ( $store->getProperties( $subject ) as $property ) {
+			$this->addJobs( $store->getAllPropertySubjects( $property ) );
 		}
 
 		Profiler::Out( __METHOD__, true );
