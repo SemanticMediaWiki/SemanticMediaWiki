@@ -70,6 +70,7 @@ or Special:Properties
 
 #### New configuration parameters
 
+* [$smwgEnabledSpecialPage](https://semantic-mediawiki.org/wiki/Help:$smwgEnabledSpecialPage)
 * [$smwgQueryProfiler](https://semantic-mediawiki.org/wiki/Help:$smwgQueryProfiler)
 * [$smwgShowHiddenCategories](https://semantic-mediawiki.org/wiki/Help:$smwgShowHiddenCategories)
 * [$smwgFactboxUseCache](https://semantic-mediawiki.org/wiki/Help:$smwgFactboxUseCache), [$smwgFactboxCacheRefreshOnPurge](https://semantic-mediawiki.org/wiki/Help:$smwgFactboxCacheRefreshOnPurge)
