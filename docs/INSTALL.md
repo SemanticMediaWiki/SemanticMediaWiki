@@ -190,9 +190,8 @@ Add the following lines to the end of your LocalSettings.php file.
 
 Log in as a user with administrator permission to your wiki and go to the page "Special:SMWAdmin": 
 
-* Click on the "Database installation and upgrade" button to setup the database.
-* Click on the "Data repair and upgrade" button to activate the [automatic data update]
-(https://semantic-mediawiki.org/wiki/Repairing_SMW).
+* Click on the "Initialise or upgrade tables" button in the "Database installation and upgrade" section to setup the database.
+* Click on the "Start updating data" button in the "Data repair and upgrade" section to activate the [automatic data update](https://semantic-mediawiki.org/wiki/Repairing_SMW).
 
 ##### Verify installation success
 
