@@ -9,7 +9,8 @@ use SMW\SemanticData;
 use SMW\ArticlePurge;
 use SMW\ParserData;
 use SMW\DIProperty;
-use SMW\Setup;
+use SMW\DIWikiPage;
+use SMW\StoreFactory;
 
 use RequestContext;
 use WikiPage;
@@ -30,57 +31,8 @@ use Title;
  *
  * @author mwjames
  */
-class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
+class MwFunctionHookIntegrationTest extends MwIntegrationTestCase {
 
-	/** @var array */
-	private $hooks = array();
-
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return false;
-	}
-
-	/**
-	 * @return 1.9
-	 */
-	protected function setUp() {
-		$this->removeFunctionHookRegistrationBeforeTest();
-		parent::setUp();
-
-	}
-
-	/**
-	 * @return 1.9
-	 */
-	protected function tearDown() {
-		parent::tearDown();
-		$this->restoreFuntionHookRegistrationAfterTest();
-	}
-
-	/**
-	 * In order for the test not being influenced by an exisiting setup
-	 * registration we remove the configuration from the GLOBALS temporary
-	 * and enable to assign hook definitions freely during testing
-	 *
-	 * @return 1.9
-	 */
-	protected function removeFunctionHookRegistrationBeforeTest() {
-		$this->hooks = $GLOBALS['wgHooks'];
-		$GLOBALS['wgHooks'] = array();
-	}
-
-	/**
-	 * @return 1.9
-	 */
-	protected function restoreFuntionHookRegistrationAfterTest() {
-		$GLOBALS['wgHooks'] = $this->hooks;
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	protected function newExtensionContext() {
 
 		$context = new ExtensionContext();
@@ -106,23 +58,17 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * @return 1.9
-	 */
-	protected function runExtensionSetup( $context ) {
-		$setup = new Setup( $GLOBALS, 'Foo', $context );
-		$setup->run();
-	}
-
-	/**
 	 * @since 1.9
 	 */
-	public function testOnArticlePurgeOnDatabase() {
+	public function testArticlePurgeOnDatabase() {
 
 		$context = $this->newExtensionContext();
 
 		$this->runExtensionSetup( $context );
 
-		$wikiPage = new WikiPage( Title::newFromText( __METHOD__ ) );
+		$title    = Title::newFromText( __METHOD__ );
+		$wikiPage = new WikiPage( $title );
+
 		$this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
 
 		$wikiPage->doPurge();
@@ -137,7 +83,35 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 			'Asserts that the ArticlePurge hooks was executed and created an entry'
 		);
 
-		$this->deletePage( $wikiPage, __METHOD__ );
+		$this->deletePage( $title );
+
+	}
+
+	/**
+	 * A job related test can be found MwJobWithSQLStoreIntegrationTest
+	 *
+	 * @since 1.9.0.1
+	 */
+	public function testArticleDeleteOnDatabaseAndSQLStore() {
+
+		$store   = $this->getStore();
+		$context = $this->newExtensionContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $store );
+		$context->getSettings()->set( 'smwgDeleteSubjectAsDeferredJob', false );
+		$context->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', false );
+
+		$this->runExtensionSetup( $context );
+
+		$title    = Title::newFromText( __METHOD__ );
+		$wikiPage = new WikiPage( $title );
+
+		$dataItem = DIWikiPage::newFromTitle( $wikiPage->getTitle() );
+
+		$this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
+		$this->assertSemanticDataIsNotEmpty( $store->getSemanticData( $dataItem ) );
+
+		$this->deletePage( $title );
+		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $dataItem ) );
 
 	}
 
@@ -150,7 +124,9 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 
 		$text = '[[Quuy::bar]]';
 
-		$wikiPage = new WikiPage( Title::newFromText( __METHOD__ ) );
+		$title    = Title::newFromText( __METHOD__ );
+		$wikiPage = new WikiPage( $title );
+
 		$editInfo = $this->editPageAndFetchInfo( $wikiPage, __METHOD__, $text );
 
 		$this->assertInstanceOf( 'ParserOutput', $editInfo->output );
@@ -162,7 +138,7 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 
 		$this->assertPropertiesAreSet( $parserData->getData(), $expected );
 
-		$this->deletePage( $wikiPage, __METHOD__ );
+		$this->deletePage( $title );
 
 	}
 
@@ -173,7 +149,9 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 
 		$this->runExtensionSetup( $this->newExtensionContext() );
 
-		$wikiPage = new WikiPage( Title::newFromText( __METHOD__ ) );
+		$title    = Title::newFromText( __METHOD__ );
+		$wikiPage = new WikiPage( $title );
+
 		$editInfo = $this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
 		$parserOutput = $editInfo->output;
 
@@ -183,7 +161,7 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 		$context->setTitle( $wikiPage->getTitle() );
 		$context->getOutput()->addParserOutputNoText( $parserOutput );
 
-		$this->deletePage( $wikiPage, __METHOD__ );
+		$this->deletePage( $title );
 
 	}
 
@@ -194,8 +172,10 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 
 		$this->runExtensionSetup( $this->newExtensionContext() );
 
+		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
-		$wikiPage = new WikiPage( Title::newFromText( __METHOD__ ) );
+
+		$wikiPage = new WikiPage( $oldTitle );
 		$editInfo = $this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
 
 		$result = $wikiPage->getTitle()->moveTo( $newTitle, false, 'test', true );
@@ -203,7 +183,7 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 		$this->assertTrue( $result );
 		$this->assertTrue( $newTitle->runOnMockStoreChangeTitleMethod );
 
-		$this->deletePage( $wikiPage, __METHOD__ );
+		$this->deletePage( $oldTitle );
 
 	}
 
@@ -214,9 +194,6 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 		$newTitle->runOnMockStoreChangeTitleMethod = true ;
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function editPageAndFetchInfo( WikiPage $wikiPage, $on, $text = 'Foo' ) {
 
 		$user = new MockSuperUser();
@@ -247,20 +224,6 @@ class MediaWikiFunctionHookIntegrationTest extends \MediaWikiTestCase {
 		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	protected function deletePage( WikiPage $wikiPage, $on ) {
-
-		if ( $wikiPage->exists() ) {
-			$wikiPage->doDeleteArticle( "testing done on " . $on );
-		}
-
-	}
-
-	/**
-	 * @since  1.9
-	 */
 	protected function assertPropertiesAreSet( SemanticData $semanticData, array $expected ) {
 
 		foreach ( $semanticData->getProperties() as $property ) {

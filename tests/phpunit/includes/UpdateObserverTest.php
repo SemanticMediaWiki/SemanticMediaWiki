@@ -36,7 +36,8 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getAllPropertySubjects' => array(),
-			'getPropertySubjects'    => array()
+			'getPropertySubjects'    => array(),
+			'getProperties'          => array()
 		) );
 
 		$context   = new ExtensionContext();

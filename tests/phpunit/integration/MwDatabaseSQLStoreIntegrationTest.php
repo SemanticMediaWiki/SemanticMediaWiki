@@ -2,7 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\StoreFactory;
+use SMW\ExtensionContext;
 
 use WikiPage;
 use Title;
@@ -22,12 +22,15 @@ use Title;
  *
  * @author mwjames
  */
-class MwDatabaseSQLStoreIntegrationTest extends \MediaWikiTestCase {
+class MwDatabaseSQLStoreIntegrationTest extends MwIntegrationTestCase {
 
-	/**
-	 * @var Title
-	 */
+	/* @var Title */
 	protected $title;
+
+	protected function setUp() {
+		$this->runExtensionSetup( new ExtensionContext() );
+		parent::setUp();
+	}
 
 	public function titleProvider() {
 		$provider = array();
@@ -45,7 +48,7 @@ class MwDatabaseSQLStoreIntegrationTest extends \MediaWikiTestCase {
 	public function testAfterPageCreation_StoreHasDataToRefreshWithoutJobs( $ns, $name, $iw ) {
 		$this->title = Title::makeTitle( $ns, $name, '', $iw );
 
-		$this->createPage();
+		$this->createPage( $this->title  );
 
 		$this->assertStoreHasDataToRefresh( false );
 	}
@@ -56,20 +59,14 @@ class MwDatabaseSQLStoreIntegrationTest extends \MediaWikiTestCase {
 	public function testAfterPageCreation_StoreHasDataToRefreshWitJobs( $ns, $name, $iw ) {
 		$this->title = Title::makeTitle( $ns, $name, '', $iw );
 
-		$this->createPage();
+		$this->createPage( $this->title );
 
 		$this->assertStoreHasDataToRefresh( true );
 	}
 
-	protected function createPage() {
-		$pageCreator = new PageCreator();
-		$pageCreator->createPage( $this->title );
-	}
-
 	public function tearDown() {
 		if ( $this->title !== null ) {
-			$pageDeleter = new PageDeleter();
-			$pageDeleter->deletePage( $this->title );
+			$this->deletePage( $this->title );
 		}
 
 		parent::tearDown();
@@ -86,48 +83,6 @@ class MwDatabaseSQLStoreIntegrationTest extends \MediaWikiTestCase {
 		);
 
 		$this->assertGreaterThan( 0, $refreshProgress );
-	}
-
-	protected function getStore() {
-		$store = StoreFactory::getStore();
-
-		if ( !( $store instanceof \SMWSQLStore3 ) ) {
-			$this->markTestSkipped( 'Test only applicable for SMWSQLStore3' );
-		}
-
-		return $store;
-	}
-
-}
-
-class PageCreator {
-
-	public function createPage( Title $title ) {
-		$page = new \WikiPage( $title );
-
-		$pageContent = 'Content of ' . $title->getFullText();
-		$editMessage = 'SMW system test: create page';
-
-		if ( class_exists( 'WikitextContent' ) ) {
-			$content = new \WikitextContent( $pageContent );
-
-			$page->doEditContent(
-				$content,
-				$editMessage
-			);
-		}
-		else {
-			$page->doEdit( $pageContent, $editMessage );
-		}
-	}
-
-}
-
-class PageDeleter {
-
-	public function deletePage( Title $title ) {
-		$page = new \WikiPage( $title );
-		$page->doDeleteArticle( 'SMW system test: delete page' );
 	}
 
 }
