@@ -69,10 +69,10 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 		// is causing this issue
 		// SMW_SQLStore3_Readers.php:328 is causing the error
 
-		// $this->assertPropertiesAreSet(
-		//	$this->fetchSemanticDataFromOutput( $title ),
-		//	$expected
-		// );
+		$this->assertPropertiesAreSet(
+			$this->fetchSemanticDataFromOutput( $title ),
+			$expected
+		);
 
 	}
 
