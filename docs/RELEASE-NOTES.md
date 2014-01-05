@@ -7,4 +7,4 @@
 
 ### New configuration parameters
 
-* [$smwgDeleteSubjectAsDeferredJob](https://semantic-mediawiki.org/wiki/Help:$smwgDeleteSubjectAsDeferredJob), [$smwgDeleteSubjectWithAssociatesRefresh](https://semantic-mediawiki.org/wiki/Help:$smwgDeleteSubjectWithAssociatesRefresh)
+* [$smwgOnDeleteAction](https://semantic-mediawiki.org/wiki/Help:$smwgOnDeleteAction) (incl. $smwgDeleteSubjectAsDeferredJob, $smwgDeleteSubjectWithAssociatesRefresh)
