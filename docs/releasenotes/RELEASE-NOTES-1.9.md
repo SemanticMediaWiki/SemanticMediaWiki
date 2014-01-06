@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.9
 
+Released January 3rd, 2014.
+
 ### Platform compatibility changes
 
 * Changed minimum PHP version from 5.2. to 5.3.2.
