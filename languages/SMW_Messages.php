@@ -1013,10 +1013,17 @@ See also:
 Parameters:
 * $1 - Accommodates a user formatted date',
 	'smw-sp-properties-header-label' => 'A header label',
+	'smw-sp-admin-settings-title' => 'A header title.
 
-	'smw-sp-admin-settings-title' => 'A header title',
-	'smw-sp-admin-settings-docu' => 'Introductory text for the settings section in [[Special:SMWAdmin]]',
-	'smw-sp-admin-settings-button' => 'A button text',
+Followed by introduction:
+* {{msg-mw|smw-sp-admin-settings-docu}}',
+	'smw-sp-admin-settings-docu' => 'Introductory text for the settings section in [[Special:SMWAdmin]].
+
+Preceded by the heading {{msg-mw|Smw-sp-admin-settings-title}}.',
+	'smw-sp-admin-settings-button' => 'A button text.
+
+Preceded by introduction:
+* {{msg-mw|Smw-sp-admin-settings-docu}}',
 );
 
 /** Afrikaans (Afrikaans)
@@ -1399,7 +1406,7 @@ $messages['ar'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
 	'smw_smwadmin_support' => 'الحصول على دعم',
 	'smw_smwadmin_supportdocu' => 'توجد مصادر متعددة للمساعدة في حال حدوث مشاكل:',
-	'smw_smwadmin_installfile' => 'لو واجهتك مشاكل مع تنصيبتك فابدأ بمراجعة الإرشادات في <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ملف INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'لو واجهتك مشاكل مع تنصيبتك فابدأ بمراجعة الإرشادات في <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ملف INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لميدياويكي الدلالية موجودة في <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلّات يمكن الإبلاغ عنها في <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
 	'smw_smwadmin_questions' => 'إن كانت لديك أسئلة أو اقتراحات فشارك في النقاش في <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمي سيمانتيك ميدياويكي</a>.',
@@ -1682,7 +1689,7 @@ $messages['arz'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
 	'smw_smwadmin_support' => 'أحصل على دعم',
 	'smw_smwadmin_supportdocu' => ':مصادر متعدده يمكن أن تساعده فى حاله مشاكل',
-	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ملف INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ملف INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكامله لسيمانتيك ميدياويكى موجوده فى <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
 	'smw_smwadmin_questions' => 'لو لديك أسئله أو اقتراحات أخرى، انضم إلى النقاش فى <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمى سيمانتيك ميدياويكي</a>.',
@@ -2014,9 +2021,12 @@ Progresu estimáu del anovamientu actual:",
 	'smw-pa-property-predefined-default' => '$1 ye una propiedá predefinida (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]). Ye una propiedá integrada que vien con más privilexos alministrativos, pero que se pue usar como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].',
 	'smw-pa-property-predefined_ask' => "$1 ye una propiedá predefinida (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]) qu'enllaza colos metadatos [https://www.semantic-mediawiki.org/wiki/Subobject suboxetu] d'una consulta. Ye una propiedá integrada que vién con más privilexos alministrativos, pero que pue usase como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].",
 	'smw-pa-property-predefined_asksi' => "$1 ye una propiedá predefinida (tamién conocida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedá especial]) que recueye'l númberu de condiciones utilizaes nuna consulta. Ye una propiedá integrada que vien con más privilexos alministrativos, pero que se pue usar como cualquier otra [https://www.semantic-mediawiki.org/wiki/Property propiedá definida pol usuariu].",
-	'smw-sp-properties-docu' => 'Esta páxina especial amuesa les [https://www.semantic-mediawiki.org/wiki/Property propiedaes] disponibles y cuando se filtria, namái apaecen les propiedaes definíes pol usuariu que casen cola condición. Pa una vista diferenciada, vea la páxina especial [[Special:UnusedProperties|propiedaes ensin usu]] o [[Special:WantedProperties|propiedaes buscaes]].',
+	'smw-sp-properties-docu' => 'Esta páxina amuesa les [https://www.semantic-mediawiki.org/wiki/Property propiedaes] disponibles y cuando se filtria, namái apaecen les propiedaes definíes pol usuariu que casen cola condición. Pa una vista diferenciada, vea la páxina especial [[Special:UnusedProperties|propiedaes ensin usu]] o [[Special:WantedProperties|propiedaes buscaes]].',
 	'smw-sp-properties-cache-info' => 'Los datos de la llista recuperaronse de la [https://www.semantic-mediawiki.org/wiki/Caching cache], y anovaronse por última vez el $1.',
 	'smw-sp-properties-header-label' => 'Llista de propiedaes',
+	'smw-sp-admin-settings-title' => 'Axustes de configuración',
+	'smw-sp-admin-settings-docu' => "Amuesa la llista de tolos axustes <code>predeterminaos</code> y <code>llocalizaos</code> que tan rellacionaos col entornu de MediaWiki Semántica. Pa los detalles de los axustes individuales, consulte la páxina d'ayuda de la [https://semantic-mediawiki.org/wiki/Help:Configuration configuración].",
+	'smw-sp-admin-settings-button' => "Xenerar la llista d'axustes",
 );
 
 /** Azerbaijani (azərbaycanca)
@@ -2289,7 +2299,7 @@ $messages['be-tarask'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Так, я ўпэўнены.',
 	'smw_smwadmin_support' => 'Падтрымка',
 	'smw_smwadmin_supportdocu' => 'Вы можаце знайсьці дапамогу ў розных крыніцах у выпадку праблемаў:',
-	'smw_smwadmin_installfile' => 'Калі ўзьнікнуць выпадковыя праблемы з Вашым усталяваньнем, пачніце з рэкамэндацыяў у <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">файле INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Калі ўзьнікнуць выпадковыя праблемы з Вашым усталяваньнем, пачніце з рэкамэндацыяў у <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">файле INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Поўная дакумэнтацыя Semantic MediaWiki знаходзіцца на <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Можна паведамляць пра памылкі ў <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Калі Вы маеце пытаньні ці прапановы, далучайцеся да дыскусіі на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форуме карыстальнікаў Semantic MediaWiki</a>.',
@@ -2911,7 +2921,7 @@ Progrés estimat de l'actualització actual:",
 	'smw_smwadmin_datarefreshstopconfirm' => "Sí, n'estic segur.",
 	'smw_smwadmin_support' => 'Com obtenir assistència',
 	'smw_smwadmin_supportdocu' => 'Diferents recursos poden ajudar-vos en cas de problemes:',
-	'smw_smwadmin_installfile' => 'Si us trobeu amb problemes amb la vostra instal·lació, comenceu comprovant les instruccions del <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fitxer INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Si us trobeu amb problemes amb la vostra instal·lació, comenceu comprovant les instruccions del <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fitxer INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Podeu trobar la documentació d\'usuari completa del Semantic MediaWiki a <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Es poden enviar informes d\'error al <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si teniu més preguntes o suggeriments, uniu-vos a la discussió al <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">fòrum d\'usuaris del Semantic MediaWiki</a>.',
@@ -2982,6 +2992,7 @@ $messages['ce'] = array(
 	'smw_smwadmin_datarefreshbutton' => 'Хаам керла баккха дӏадоладе',
 	'smw-paramdesc-category-delim' => 'ДӀасакъастораг',
 	'smw-ui-tooltip-title-info' => 'Хаам',
+	'smw-ui-tooltip-title-warning' => 'ГӀалат',
 	'smw-ui-tooltip-title-note' => 'Билгалдаккхар',
 	'group-smwadministrator' => 'Куьйгалхой Semantic MediaWiki',
 );
@@ -3228,7 +3239,7 @@ Odhadovaný průběh updatu:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ano, jsem si jistý/á.',
 	'smw_smwadmin_support' => 'Získání podpory',
 	'smw_smwadmin_supportdocu' => 'V případě problémů vám může pomoci několik zdrojů:',
-	'smw_smwadmin_installfile' => 'Máte-li problémy s instalací, začněte kontrolou podle osnovy v <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">souboru INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Máte-li problémy s instalací, začněte kontrolou podle osnovy v <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">souboru INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Chyby lze hlásit na <a href="https://bugzilla.wikimedia.org/">Bugzille</a>.',
 	'smw_smwadmin_questions' => 'Další otázky či návrhy můžete pokládat v diskuzi v <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">uživatelském fóru Semantic MediaWiki</a>.',
@@ -3597,6 +3608,9 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw-sp-properties-docu' => 'Diese Spezialseite zeigt die verfügbaren [https://www.semantic-mediawiki.org/wiki/Property Attribute]. Sofern nach Attributen gefiltert wird, werden nur die benutzerdefinierten Attribute angezeigt und zudem nur diese, die der angegebenen Bedingung entsprechen. Für eine differenzierte Ansicht können die Spezialseiten [[Special:UnusedProperties|„Verwaiste Attribute“]] oder [[Special:WantedProperties|„Gewünschte Attribute“]] eingesehen werden.',
 	'smw-sp-properties-cache-info' => 'Die aufgelisteten Daten stammen aus dem [https://www.semantic-mediawiki.org/wiki/Caching Zwischenspeicher]. Letzte Aktualisierung: $1.',
 	'smw-sp-properties-header-label' => 'Attributliste',
+	'smw-sp-admin-settings-title' => 'Konfigurationseinstellungen',
+	'smw-sp-admin-settings-docu' => 'Zeigt eine Liste der Standardeinstellungen sowie der für dieses Wiki angepassten Einstellungen zu Semantic MediaWiki an. Weitergehende Informationen sind auf der Hilfeseite zu den [https://semantic-mediawiki.org/wiki/Help:Configuration Konfigurationseinstellungen] verfügbar.',
+	'smw-sp-admin-settings-button' => 'Liste erstellen',
 );
 
 /** Zazaki (Zazaki)
@@ -3937,6 +3951,8 @@ Licony póstup aktualneje aktualizacije:',
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW-administratory',
 	'action-smw-admin' => 'administraciske nadawki Semantic MediaWiki',
 	'smw-sp-properties-header-label' => 'Lisćina kakosćow',
+	'smw-sp-admin-settings-title' => 'Konfiguraciske nastajenja',
+	'smw-sp-admin-settings-button' => 'Lisćinu nastajenjow napóraś',
 );
 
 /** Ewe (eʋegbe)
@@ -4260,7 +4276,7 @@ $messages['el'] = array(
 	'smw-pa-property-predefined-default' => 'Το $1 είναι μια προκαθορισμένη ιδιότητα (γνωστή επίσης ως [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ειδική ιδιότητα]). Είναι μια ενσωματωμένη ιδιότητα που συνοδεύεται από επιπλέον διαχειριστικά προνόμια αλλά μπορεί να χρησιμοποιηθεί όπως οποιαδήποτε άλλη [https://www.semantic-mediawiki.org/wiki/Property ιδιότητα που ορίζεται από χρήστη].',
 	'smw-pa-property-predefined_ask' => 'Το $1 είναι μια προκαθορισμένη ιδιότητα (γνωστή επίσης ως [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ειδική ιδιότητα]) η οποία συνδέει με το [https://www.semantic-mediawiki.org/wiki/Subobject υποαντικείμενο] μεταδεδομένων ενός ερωτήματος. Είναι μια ενσωματωμένη ιδιότητα που συνοδεύεται από επιπλέον διαχειριστικά προνόμια αλλά μπορεί να χρησιμοποιηθεί όπως οποιαδήποτε άλλη [https://www.semantic-mediawiki.org/wiki/Property ιδιότητα που ορίζεται από χρήστη].',
 	'smw-pa-property-predefined_asksi' => 'Το $1 είναι μια προκαθορισμένη ιδιότητα (γνωστή επίσης ως [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ειδική ιδιότητα]) η οποία συλλέγει τον αριθμό των συνθηκών που χρησιμοποιούνται σε ένα ερώτημα. Είναι μια ενσωματωμένη ιδιότητα που συνοδεύεται από επιπλέον διαχειριστικά προνόμια αλλά μπορεί να χρησιμοποιηθεί όπως οποιαδήποτε άλλη [https://www.semantic-mediawiki.org/wiki/Property ιδιότητα που ορίζεται από χρήστη].',
-	'smw-sp-properties-docu' => 'Αυτή η ειδική σελίδα δείχνει τις διαθέσιμες [https://www.semantic-mediawiki.org/wiki/Property ιδιότητες] και όταν φιλτράρεται εμφανίζονται μόνο ιδιότητες ορισμένες από χρήστη οι οποίες ικανοποιούν τη συνθήκη. Για μια διαφοροποιημένη προβολή, βλ. τις ειδικές σελίδες [[Special:UnusedProperties|μη χρησιμοποιούμενες ιδιότητες]] ή [[Special:WantedProperties|ζητούμενες ιδιότητες]].',
+	'smw-sp-properties-docu' => 'Αυτή η ειδική σελίδα δείχνει τις διαθέσιμες [https://www.semantic-mediawiki.org/wiki/Property ιδιότητες] και όταν φιλτράρεται εμφανίζονται μόνο ιδιότητες ορισμένες από χρήστη οι οποίες ικανοποιούν τη συνθήκη. Για μια διαφοροποιημένη προβολή, βλ. τις ειδικές σελίδες [[Special:UnusedProperties|μη χρησιμοποιούμενες ιδιότητες]] ή [[Special:WantedProperties|ζητούμενες ιδιότητες]].', # Fuzzy
 	'smw-sp-properties-header-label' => 'Κατάλογος ιδιοτήτων',
 );
 
@@ -4639,7 +4655,7 @@ Progeso estimado de la actualización:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sí, estoy seguro.',
 	'smw_smwadmin_support' => 'Obteniendo ayuda',
 	'smw_smwadmin_supportdocu' => 'Varios recursos podrían ayudarlo en caso de problemas:',
-	'smw_smwadmin_installfile' => 'Si experimentas problemas con tu instalación, comienza revisando las líneas guía en el <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">archivo de INSTALACION</a>.',
+	'smw_smwadmin_installfile' => 'Si experimentas problemas con tu instalación, comienza revisando las líneas guía en el <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">archivo de INSTALACION</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'La documentación de usuario completa a Semantic MediaWiki está en <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Los defectos pueden ser reportados a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si tienes preguntas o sugerencias adicionales, únete a la discusión en <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Foro de usuarios de Semantic MediaWiki
@@ -5053,7 +5069,7 @@ Nykyisen päivityksen arvioitu eteneminen:',
 	'smw_smwadmin_datarefreshstop' => 'Lopeta tämä päivitys',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Kyllä, olen varma.',
 	'smw_smwadmin_support' => 'Tuen hankkiminen',
-	'smw_smwadmin_installfile' => 'Jos asennuksen kanssa on ongelmia, lue ensin <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL-tiedoston</a> ohjeet.',
+	'smw_smwadmin_installfile' => 'Jos asennuksen kanssa on ongelmia, lue ensin <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL-tiedoston</a> ohjeet.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Semantic MediaWikin täydellinen käyttäjän opas löytyy osoitteesta <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Ohjelmistovirheet voi raportoida <a href="https://bugzilla.wikimedia.org/">Bugzillaan</a>.',
 	'smw_smwadmin_questions' => 'Jos sinulla on kysymyksiä tai ehdotuksia, liity keskusteluun <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semanttisen MediaWikin käyttäjäfoorumilla</a>.',
@@ -5418,6 +5434,9 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-sp-properties-docu' => 'Cette page affiche [https://www.semantic-mediawiki.org/wiki/Property les propriétés] qui sont disponibles et, quand elles sont filtrées, seules les propriétés définies par l’utilisateur qui correspondent à la condition sont affichées. Pour un affichage différencié, voyez les pages spéciales [[Special:UnusedProperties|propriétés non utilisées]] ou [[Special:WantedProperties|propriétés souhaitées]].',
 	'smw-sp-properties-cache-info' => 'Les données listées ont été récupérées depuis [https://www.semantic-mediawiki.org/wiki/Caching le cache], et ont été mises à jour le $1.',
 	'smw-sp-properties-header-label' => 'Liste des propriétés',
+	'smw-sp-admin-settings-title' => 'Paramètres de configuration',
+	'smw-sp-admin-settings-docu' => 'Affiche une liste de tous les <code>paramètres par défaut</code> et <code>paramètres localisés</code> qui se rapportent à l’environnement Médiawiki Sémantique. Pour le détail des paramètres individuels, veuillez consulter la page d’aide de [https://semantic-mediawiki.org/wiki/Help:Configuration configuration].',
+	'smw-sp-admin-settings-button' => 'Générer la liste des paramètres',
 );
 
 /** Franco-Provençal (arpetan)
@@ -5820,7 +5839,7 @@ Progreso estimado da actualización actual:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Si, estou seguro.',
 	'smw_smwadmin_support' => 'Obtendo a asistencia',
 	'smw_smwadmin_supportdocu' => 'Diversas fontes poden axudalo en caso de problemas:',
-	'smw_smwadmin_installfile' => 'Se experimenta problemas durante a súa instalación, comece comprobando a guía no <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ficheiro INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Se experimenta problemas durante a súa instalación, comece comprobando a guía no <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ficheiro INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'A documentación de usuario completa de Semantic MediaWiki está en <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Pode informar dos erros en <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se ten máis preguntas ou suxestións, únase á conversa no <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foro de usuarios de Semantic MediaWiki</a>.',
@@ -5861,7 +5880,7 @@ Progreso estimado da actualización actual:',
 	'smw-pa-property-predefined-default' => '"$1" é unha propiedade predefinida (tamén coñecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedade especial]). É unha propiedade integrada que vén con privilexios administrativos adicionais, pero que se pode usar como calquera outra [https://www.semantic-mediawiki.org/wiki/Property propiedade definida polo usuario].',
 	'smw-pa-property-predefined_ask' => '"$1" é unha propiedade predefinida (tamén coñecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedade especial]) que liga cos metadatos [https://www.semantic-mediawiki.org/wiki/Subobject subobxecto] dunha pescuda. É unha propiedade integrada que vén con privilexios administrativos adicionais, pero que se pode usar como calquera outra [https://www.semantic-mediawiki.org/wiki/Property propiedade definida polo usuario].',
 	'smw-pa-property-predefined_asksi' => '"$1" é unha propiedade predefinida (tamén coñecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propiedade especial]) que recolle o número de condicións utilizadas nunha pescuda. É unha propiedade integrada que vén con privilexios administrativos adicionais, pero que se pode usar como calquera outra [https://www.semantic-mediawiki.org/wiki/Property propiedade definida polo usuario].',
-	'smw-sp-properties-docu' => 'Esta páxina especial mostra as [https://www.semantic-mediawiki.org/wiki/Property propiedades] que están dispoñibles e, ao filtralas, só se mostran aquelas propiedades definidas polos usuarios que coincidan coa condición. Para unha vista diferenciada, véxase a páxina especial das [[Special:UnusedProperties|propiedades non usadas]] ou as [[Special:WantedProperties|propiedades requiridas]].',
+	'smw-sp-properties-docu' => 'Esta páxina especial mostra as [https://www.semantic-mediawiki.org/wiki/Property propiedades] que están dispoñibles e, ao filtralas, só se mostran aquelas propiedades definidas polos usuarios que coincidan coa condición. Para unha vista diferenciada, véxase a páxina especial das [[Special:UnusedProperties|propiedades non usadas]] ou as [[Special:WantedProperties|propiedades requiridas]].', # Fuzzy
 	'smw-sp-properties-cache-info' => 'Os datos da lista obtivéronse da [https://www.semantic-mediawiki.org/wiki/Caching caché], e actualizáronse o $1.',
 	'smw-sp-properties-header-label' => 'Lista de propiedades',
 );
@@ -6091,7 +6110,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ich bi mer sicher.',
 	'smw_smwadmin_support' => 'Unterstitzig iberchu',
 	'smw_smwadmin_supportdocu' => 'Verschideni Quälle hälfe Dir villicht bi me Problämfall:',
-	'smw_smwadmin_installfile' => 'Wänn s Probläm mit dr Inschtallation git, chennt d Datei <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a> villicht wyterhälfe.',
+	'smw_smwadmin_installfile' => 'Wänn s Probläm mit dr Inschtallation git, chennt d Datei <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a> villicht wyterhälfe.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Di vollständig Benutzerdokumentation vu Semantic MediaWiki findsch uf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fähler chennte bi <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet wäre.',
 	'smw_smwadmin_questions' => 'Wänn Du meh Frogen oder Vorschleg hesch, mach mit an dr Diskussion uf <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
@@ -6154,6 +6173,7 @@ $messages['he'] = array(
 	'smw-paramdesc-outro' => 'הטקסט להצגה לאחר תוצאות התשאול, אם יש כאלו',
 	'smw-paramdesc-default' => 'הטקסט להצגה אם אין תוצאות תשאול',
 	'smw-paramdesc-sep' => 'המפריד בין הערכים',
+	'smw-paramdesc-showsep' => 'הצגת מפריד בתחילת קובץ CSV ("מפריד=<ערך>")',
 	'smw-paramdesc-distribution' => 'במקום להציג את כל הערכים, לספור את המופעים שלהם ולהציג אותם.',
 	'smw-paramdesc-distributionsort' => 'למיין את התפלגות הערכים לפי מניין המופעים.',
 	'smw-paramdesc-distributionlimit' => 'להגביל את התפלגות הערכים לפי מניין של ערכים מסוימים בלבד.',
@@ -6170,7 +6190,11 @@ $messages['he'] = array(
 	'smw-paramdesc-dsv-separator' => 'באיזה תו הפרדה להשתמש',
 	'smw-paramdesc-dsv-filename' => 'שם קובץ DSV',
 	'smw-paramdesc-filename' => 'שם קובץ הפלט',
+	'smw-paramdesc-sort' => 'המאפיין שלפיו השאילתה תמויין',
+	'smw-paramdesc-order' => 'סדר מיון השאילתה',
 	'smw-paramdesc-searchlabel' => 'טקסט עבור המשך החיפוש',
+	'smw-paramdesc-named_args' => 'שמות הפרמטרים שיועברו לתבנית',
+	'smw-paramdesc-export' => 'אפשרות ייצוא',
 	'smw_iq_disabled' => 'שאילתות סמנטיות בוטלו באתר ויקי זה.',
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
 	'smw_parseerror' => 'הערך הניתן אינו ניתן לפענוח.',
@@ -6243,6 +6267,9 @@ $messages['he'] = array(
 ל{{PLURAL:מאפיין '''אחד'''|־'''$3''' מאפיינים}} יש דף משלהם, וסוג הנתונים המיועד צוין עבור '''$4''' מאלה.
 ייתכן שכמה ממהמאפיינים הקיימים הם [[Special:UnusedProperties|מאפיינים שאינם בשימוש]].
 מאפיינים שעדיין חסר להם דף נמצאים ב[[Special:WantedProperties|רשימת המאפיינים המבוקשים]].",
+	'smw-statistics' => 'סטטיסטיקה סמנטית',
+	'smw-statistics-query-inline' => '{{PLURAL:$1|שאילתה|שאילתות}}',
+	'smw-statistics-query-size' => 'גודל השאילתה',
 	'smw_uri_doc' => 'פותרן כתובות מיישם את [$1 חיפוש W3C TAG ב־httpRange-14]. הוא דואג לכך שאנשים לא יהפכו לאתרי אינטרנט.',
 	'ask' => 'חיפוש סמנטי',
 	'smw_ask_sortby' => 'מיון לפי טור (אופציונאלי)',
@@ -6262,7 +6289,9 @@ $messages['he'] = array(
 	'smw_ask_show_embed' => 'הצגת קוד הטמעה',
 	'smw_ask_hide_embed' => 'הסתרת קוד הטמעה',
 	'smw_ask_embed_instr' => 'כדי לשבץ את השאילתה הזאת אל תוך דף ויקי, השתמשו בקוד להלן.',
+	'smw-ask-delete' => '[מחיקה]',
 	'smw-ask-sorting' => 'מיון',
+	'smw-ask-format-selection-help' => 'למידע נוסף, אנא בקרו בדף העזרה $1.',
 	'searchbyproperty' => 'חיפוש לפי מאפיין',
 	'smw_sbv_docu' => 'חיפוש כל הדפים שיש להם מאפיין וערך מסוימים.',
 	'smw_sbv_novalue' => 'כתבו ערך תקין למאפיין, או צפו בכל ערכי המאפיינים עבור "$1".',
@@ -6332,7 +6361,7 @@ $messages['he'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'כן, אנו בטוחים.',
 	'smw_smwadmin_support' => 'קבלת תמיכה',
 	'smw_smwadmin_supportdocu' => 'מגוון משאבים עומדים לרשותכם במקרה של תקלה:',
-	'smw_smwadmin_installfile' => 'אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות בקובץ <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות בקובץ <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב<a href="https://bugzilla.wikimedia.org/">באגזילה של מדיה־ויקי</a>.',
 	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">פורום המשתמשים של Semantic MediaWiki</a>.',
@@ -6341,10 +6370,17 @@ $messages['he'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'עזרה על שאילתות משובצות',
 	'smw-createproperty-isproperty' => 'זהו מאפיין מסוג $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|הערך האפשרי למאפיין זה הוא|הערכים האפשריים למאפיין זה הם}}:',
+	'smw-info-par-message' => 'הודעה להצגה.',
+	'prefs-ask-options' => 'אפשרויות חיפוש סמנטי',
+	'smw-prefs-intro-text' => 'האפשרויות הבאות מסופקות על ידי [https://semantic-mediawiki.org/ מדיה ויקי סמנטית] (או הרחבות קשורות) כדי לאפשר התאמה אישית על פונקציות נבחרות. לקבלת מידע נוסף, ניתן לפנות לדף [https://semantic-mediawiki.org/wiki/Help:User_preferences העזרה בנושא].',
+	'smw-ui-tooltip-title-property' => 'מאפיין',
 	'smw_unknowntype' => '[אופס! סוג לא מוכר "$1" הוגדר עבור מאפיין זה]', # Fuzzy
 	'smw_concept_header' => 'דפים מהרעיון "$1"',
 	'smw_conceptarticlecount' => 'הצגת {{PLURAL:$1|דף אחד השייך|$1 דפים השייכים}} לרעיון זה.', # Fuzzy
 	'group-smwadministrator' => 'מנהלי מדיה-ויקי סמנטית',
+	'smw-sp-properties-header-label' => 'רשימת מאפיינים',
+	'smw-sp-admin-settings-title' => 'הגדרות תצורה',
+	'smw-sp-admin-settings-button' => 'יצירת רשימת הגדרות',
 );
 
 /** Hindi (हिन्दी)
@@ -6574,7 +6610,7 @@ Procjena napretka osvježavanja:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, siguran sam.',
 	'smw_smwadmin_support' => 'Zatražite pomoć',
 	'smw_smwadmin_supportdocu' => 'U slučaju problema poslužite se sljedećim izvorima:',
-	'smw_smwadmin_installfile' => 'U slučaju problema s Vašom instalacijom pogledajte naputke u datoteci <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'U slučaju problema s Vašom instalacijom pogledajte naputke u datoteci <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Potpuna korisnička dokumentacija za Semantic MediaWiki nalazi se na <a href="http://semantic-mediawiki.org"><b>semantic-mediawiki.org</b></a>.',
 	'smw_smwadmin_mediazilla' => 'Greške (bugove) možete prijaviti na <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
 	'smw_smwadmin_questions' => 'Ukoliko imate pitanja ili prijedloge, pridružite se raspravi na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">korisničkom forumu Semantic MediaWiki</a>.',
@@ -6894,6 +6930,8 @@ Trochowany staw aktualneje aktualizacije:',
 	'action-smw-admin' => 'administraciske nadawki Semantic MediaWiki',
 	'smw-sp-properties-cache-info' => 'Nalistowane daty pochadźeja z [https://www.semantic-mediawiki.org/wiki/Caching pufrowaka] a su so $1 posledni raz zaktualozowali.',
 	'smw-sp-properties-header-label' => 'Lisćina kajkosćow',
+	'smw-sp-admin-settings-title' => 'Konfiguraciske nastajenja',
+	'smw-sp-admin-settings-button' => 'Lisćinu nastajenjow wutworić',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -7155,7 +7193,7 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Igen, biztos vagyok benne.',
 	'smw_smwadmin_support' => 'Segítséget kérek',
 	'smw_smwadmin_supportdocu' => 'Különböző források, amelyek segíthetnek problémák esetén:',
-	'smw_smwadmin_installfile' => 'Ha problémákat észlelsz a telepítéssel, ellenőrizd az útmutatót az <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL fájlban</a>.',
+	'smw_smwadmin_installfile' => 'Ha problémákat észlelsz a telepítéssel, ellenőrizd az útmutatót az <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL fájlban</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'A Szemantikus MediaWiki teljes felhasználói dokumentációja a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> címen található.',
 	'smw_smwadmin_mediazilla' => 'A hibákat a <a href="https://bugzilla.wikimedia.org/">Bugzillán</a> lehet jelenteni.',
 	'smw_smwadmin_questions' => 'Ha további kérdéseid vagy javaslataid vannak, csatlakozz a <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Szemantikus MediaWiki felhasználói fórumán</a> folyó beszélgetéshez.',
@@ -7415,7 +7453,7 @@ Progresso estimate del actualisation currente:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Si, io es secur.',
 	'smw_smwadmin_support' => 'Obtener supporto',
 	'smw_smwadmin_supportdocu' => 'Plure ressources poterea adjutar te in caso de problemas:',
-	'smw_smwadmin_installfile' => 'Si tu incontra problemas con tu installation, comencia per verificar le directivas in le <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">file INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Si tu incontra problemas con tu installation, comencia per verificar le directivas in le <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">file INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Le documentation de usator complete de Semantic MediaWiki se trova a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Le defectos pote esser reportate in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si tu ha ulterior questiones o suggestiones, participa in le discussion al <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foro del usatores de Semantic MediaWiki</a>.',
@@ -7656,7 +7694,7 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ya, saya yakin.',
 	'smw_smwadmin_support' => 'Cari dukungan',
 	'smw_smwadmin_supportdocu' => 'Berbagai sumber dapat membantu Anda jika ada masalah:',
-	'smw_smwadmin_installfile' => 'Jika Anda menghadapi masalah dengan instalasi Anda, mulailah dengan mengecek pedoman di <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">berkas INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Jika Anda menghadapi masalah dengan instalasi Anda, mulailah dengan mengecek pedoman di <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">berkas INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Dokumentasi pengguna lengkap untuk Semantic MediaWiki tersedia di <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Bug dapat dilaporkan ke <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Jika Anda memiliki pertanyaan atau saran lain, bergabunglah dengan diskusi di <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum pengguna Semantic MediaWiki</a>.',
@@ -7915,7 +7953,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sì, sono sicuro.',
 	'smw_smwadmin_support' => 'Ottenere supporto',
 	'smw_smwadmin_supportdocu' => "Diverse risorse potrebbero esserti d'aiuto in caso di problemi:",
-	'smw_smwadmin_installfile' => 'Se hai problemi con la tua installazione, inizia a verificare le linee guida nel <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">file INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Se hai problemi con la tua installazione, inizia a verificare le linee guida nel <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">file INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'La documentazione completa per l\'utente di Semantic MediaWiki si trova in <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Gli errori/bachi possono essere segnalati in <a href="https://bugzilla.wikimedia.org/">bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se hai altre domande o suggerimenti, unisciti alle discussioni sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum degli utenti di Semantic MediaWiki</a>.',
@@ -8245,6 +8283,7 @@ Semantic MediaWiki のホームページで<a href="https://semantic-mediawiki.o
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW_管理者',
 	'action-smw-admin' => 'Semantic MediaWiki 管理作業へのアクセス',
 	'smw-sp-properties-header-label' => 'プロパティ一覧',
+	'smw-sp-admin-settings-button' => '設定の一覧を生成',
 );
 
 /** Lojban (Lojban)
@@ -8818,7 +8857,7 @@ $1 문서로 돌아갑니다.',
 	'smw_smwadmin_datarefreshstopconfirm' => '예, 확실합니다.',
 	'smw_smwadmin_support' => '지원 얻기',
 	'smw_smwadmin_supportdocu' => '문제가 있을 때 다양한 자료가 도움이 될 수도 있습니다:',
-	'smw_smwadmin_installfile' => '설치에 문제가 있으면, <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL 파일</a>에서 지침을 확인하여 시작하세요.',
+	'smw_smwadmin_installfile' => '설치에 문제가 있으면, <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL 파일</a>에서 지침을 확인하여 시작하세요.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => '시맨틱 미디어위키의 완전한 사용자 설명서는 <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>에 있습니다.',
 	'smw_smwadmin_mediazilla' => '버그는 <a href="https://bugzilla.wikimedia.org/">버그질라</a>에 보고할 수 있습니다.',
 	'smw_smwadmin_questions' => '만약 추가적인 질문이나 제안이 있으면, <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">시맨틱 미디어위키 사용자 포럼</a>에서 토론에 참여하세요.',
@@ -9076,7 +9115,7 @@ Mer donn jetz nit noch ein aanshtüße!', # Fuzzy
 	'smw_smwadmin_datarefreshstopconfirm' => 'Joh, esch ben mer sescher, esch well dat han.',
 	'smw_smwadmin_support' => 'Hölp krijje',
 	'smw_smwadmin_supportdocu' => 'Bei Probleme kriss De velleich Hölp övver en Aanzahl vun Müjjeleschkeite:',
-	'smw_smwadmin_installfile' => 'Wann De Schwiireschkeite met Dinge Enshtallzjuhn häs, dann donn met de Reeschlinnije en dä Dattei <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a> anfange, donoh ze söke, wat De donn kanns.',
+	'smw_smwadmin_installfile' => 'Wann De Schwiireschkeite met Dinge Enshtallzjuhn häs, dann donn met de Reeschlinnije en dä Dattei <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a> anfange, donoh ze söke, wat De donn kanns.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'De kumplätte Dokku för et <i lang="en">Semantic Mediawiki</i> es op <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> ze fenge.',
 	'smw_smwadmin_mediazilla' => 'Fähler kanns De övver <a href="https://bugzilla.wikimedia.org/" lang="en">Bugzilla</a> melde.',
 	'smw_smwadmin_questions' => 'Wann De noch Froore häß odder Vörschlääsch maache odder klaafe wells, jangk op et <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user"><i lang="en">Semantic MediaWiki</i> Metmaacher Forum</a> un donn doh metschwaade.',
@@ -9088,6 +9127,7 @@ Mer donn jetz nit noch ein aanshtüße!', # Fuzzy
 	'smw_unknowntype' => 'De Zoot „$1“ för de Eijeschaff dom_mer nit ongershtöze.', # Fuzzy
 	'smw_concept_header' => 'Sigge vun däm Kumzäp „$1“',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Ein Sigg jehööt|$1 Sigge jehüüre|Et jehüüere kein Sigge}} zoh dämm Kumzäp{{PLURAL:$1|:|:|.}}', # Fuzzy
+	'smw-sp-admin-settings-title' => 'Enschtällonge',
 );
 
 /** Kurdish (Latin script) (Kurdî (latînî)‎)
@@ -9278,7 +9318,7 @@ Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
 	'smw_smwadmin_support' => 'Ënnerstëtzung kréien',
 	'smw_smwadmin_supportdocu' => 'Verschidde Quellen kéinten Iech bei Problemer hëllefen:',
-	'smw_smwadmin_installfile' => 'Wann Dir Problemer bei der Installatioun hutt, da kuckt d\'Directiven am <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL Fichier</a> no.',
+	'smw_smwadmin_installfile' => 'Wann Dir Problemer bei der Installatioun hutt, da kuckt d\'Directiven am <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL Fichier</a> no.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> gemellt ginn.',
 	'smw_smwadmin_questions' => 'Wann dir nach Froen oder Propositiounen hutt, da bedeelegt Iech un der Diskussioun op dem <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki Benotzer-Forum</a>.',
@@ -9736,6 +9776,9 @@ $messages['mk'] = array(
 	'smw-sp-properties-docu' => 'На оваа страница се прикажани [https://www.semantic-mediawiki.org/wiki/Property?uselang=mk својствата] на располагање. При филтрирањето се добиваат само кориснички-зададените својства што одговараат на условот. Друг преглед можете да добиете на страниците [[Special:UnusedProperties|неискористени својства]] и [[Special:WantedProperties|потребни својства]].',
 	'smw-sp-properties-cache-info' => 'Наведените податоци се преземени од [https://www.semantic-mediawiki.org/wiki/Caching?uselang=mk кешот], последен пат изменети на $1.',
 	'smw-sp-properties-header-label' => 'Список на својства',
+	'smw-sp-admin-settings-title' => 'Нагодувања за поставките',
+	'smw-sp-admin-settings-docu' => 'Прикажува список на сите <code>стандардни</code> и <code>локализирани поставки</code> што се однесуваат на дадената околина во Семантички МедијВики. Повеќе за поединечните поставки ќе најдете на страницата за [https://semantic-mediawiki.org/wiki/Help:Configuration помош со поставки].',
+	'smw-sp-admin-settings-button' => 'Создај список на поставки',
 );
 
 /** Malayalam (മലയാളം)
@@ -10250,7 +10293,7 @@ Anslått fremdrift for gjeldende oppdatering:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, jeg er sikker.',
 	'smw_smwadmin_support' => 'Få støtte',
 	'smw_smwadmin_supportdocu' => 'Følgende ressurser kan kanskje hjelpe deg om du skulle ha problemer:',
-	'smw_smwadmin_installfile' => 'Hvis du opplever problemer med installeringen, start med å sjekke retningslinjene i <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL-filen</a>.',
+	'smw_smwadmin_installfile' => 'Hvis du opplever problemer med installeringen, start med å sjekke retningslinjene i <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL-filen</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Den komplette brukerdokumentasjonen til Semantic MediaWiki finnes på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feil kan rapporteres til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Hvis du har ytterligere spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki brukerforum</a>.',
@@ -10598,7 +10641,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, ik weet het zeker.',
 	'smw_smwadmin_support' => 'Ondersteuning krijgen',
 	'smw_smwadmin_supportdocu' => 'Een aantal bronnen kunnen u ondersteunen als u problemen ondervindt:',
-	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan de richlijnen in het bestand <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan de richlijnen in het bestand <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_-_startpagina">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Problemen en suggesties kunt u rapporteren in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op het <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki gebruikersforum</a>.',
@@ -10822,7 +10865,7 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, eg er sikker.',
 	'smw_smwadmin_support' => 'Får støtta',
 	'smw_smwadmin_supportdocu' => 'Diverse ressursar kan kanskje hjelpa deg om du skulle få problem:',
-	'smw_smwadmin_installfile' => 'Om du møter på problem under installeringa, start med å studera retningslinene i <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL-fila</a>.',
+	'smw_smwadmin_installfile' => 'Om du møter på problem under installeringa, start med å studera retningslinene i <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL-fila</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Den komplette brukardokumentasjonen for Semantic MediaWiki finn du på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feil kan bli rapporterte til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki-brukarforumet</a>.',
@@ -11007,7 +11050,7 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Òc, ne soi segur(a).',
 	'smw_smwadmin_support' => 'Obtencion d’un supòrt',
 	'smw_smwadmin_supportdocu' => 'De ressorsas divèrsas vos poiriàn ajudar en cas de problèmas :',
-	'smw_smwadmin_installfile' => 'S\'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fichièr INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'S\'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fichièr INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'La documentacion completa de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Los bògs pòdon èsser someses sus <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum dels utilizaires de Semantic MediaWiki</a>.',
@@ -11302,7 +11345,7 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Tak, jestem pewien.',
 	'smw_smwadmin_support' => 'Jak otrzymać wsparcie',
 	'smw_smwadmin_supportdocu' => 'Różnorodne źródła informacji mogą okazać się przydatne jeśli wystąpią problemy:',
-	'smw_smwadmin_installfile' => 'Jeśli doświadczysz problemów z instalacją, zacznij od sprawdzenia wskazówek w <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">pliku INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Jeśli doświadczysz problemów z instalacją, zacznij od sprawdzenia wskazówek w <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">pliku INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Kompletna dokumentacja Semantic MediaWiki znajduje się na stronie <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Błędy możesz zgłaszać w <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
 	'smw_smwadmin_questions' => 'Jeśli nadal masz pytania lub sugestie przyłącz się do dyskusji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum użytkowników Semantic MediaWiki</a>.',
@@ -11316,6 +11359,7 @@ Przewidywany postęp bieżącej aktualizacji:',
 	'smw-info-par-message' => 'Wiadomość do wyświetlenia.',
 	'prefs-smw' => 'Semantyczna MediaWiki',
 	'prefs-ask-options' => 'Opcje wyszukiwania semantycznego',
+	'smw-prefs-intro-text' => 'Opcje poniżej są dostarczane przez [https://semantic-mediawiki.org/ semantyczną MediaWiki] (lub powiązane rozszerzenia), aby umożliwić indywidualne dostosowanie do wybranych funkcji. Więcej informacji na ten temat można uzyskać w [https://semantic-mediawiki.org/wiki/Help:User_preferences sekcji pomocy].',
 	'smw-ui-tooltip-title-property' => 'Właściwość',
 	'smw-ui-tooltip-title-info' => 'Informacja',
 	'smw-ui-tooltip-title-warning' => 'Błąd',
@@ -11582,7 +11626,7 @@ Avansament stimà dla modìfica corenta:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Bò, i son sicur.',
 	'smw_smwadmin_support' => "Oteniment ëd n'agiut",
 	'smw_smwadmin_supportdocu' => 'Vàire arsorse a peulo giutelo an cas ëd problema:',
-	'smw_smwadmin_installfile' => "S'a treuva ëd problema con soa anstalassion, ch'a ancamin-a a controlé le linie guida ant l'<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">archivi INSTALL</a>.",
+	'smw_smwadmin_installfile' => "S'a treuva ëd problema con soa anstalassion, ch'a ancamin-a a controlé le linie guida ant l'<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">archivi INSTALL</a>.", # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'La documentassion utent completa ëd Semantich WikiMedia a l\'é a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Ij bigat a peulo esse arportà a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => "S'a l'ha d'àutre chestion o sugeriment, ch'a vada a la discussion dzora a la <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">piassa dj'utent ëd Semantic MediaWiki</a>.",
@@ -11883,7 +11927,7 @@ Progresso estimado da atualização em curso:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, tenho a certeza.',
 	'smw_smwadmin_support' => 'Obtendo suporte',
 	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
-	'smw_smwadmin_installfile' => 'Se tiver problemas com a sua instalação, comece por rever as linhas orientadoras no <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ficheiro INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Se tiver problemas com a sua instalação, comece por rever as linhas orientadoras no <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ficheiro INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do MediaWiki Semântico está em <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Pode reportar defeitos no <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se tem mais questões ou sugestões, junte-se à discussão no <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">fórum dos utilizadores do MediaWiki Semântico</a>.',
@@ -12686,7 +12730,7 @@ $messages['ru'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Да, я уверен.',
 	'smw_smwadmin_support' => 'Получить поддержку',
 	'smw_smwadmin_supportdocu' => 'Различные ресурсы, которые могут помочь в случае проблем:',
-	'smw_smwadmin_installfile' => 'Если вы испытываете затруднения при установке, прочтите руководство в <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">файле INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Если вы испытываете затруднения при установке, прочтите руководство в <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">файле INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Полная документация пользователя Semantic MediaWiki на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Ошибки могут быть сообщены в <a href="https://bugzilla.wikimedia.org/">Багзиллу</a>.',
 	'smw_smwadmin_questions' => 'Если у вас есть дополнительные вопросы или предложения, присоединяйтесь к обсуждению на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форуме пользователей Semantic MediaWiki</a>.',
@@ -13086,7 +13130,7 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Áno, som si istý.',
 	'smw_smwadmin_support' => 'Ako získať podporu',
 	'smw_smwadmin_supportdocu' => 'V prípade problémov vám môžu pomôcť rozličné zdroje:',
-	'smw_smwadmin_installfile' => 'Ak budete mať s inštaláciou problém, začnite kontrolou smerníc <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">v súbore INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Ak budete mať s inštaláciou problém, začnite kontrolou smerníc <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">v súbore INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Úplná používateľská dokumentácia Semantic MediaWiki sa nachádza na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Chyby môžete oznamovať v systéme <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Ak máte ďalšie otázky alebo návrhy, zapojte sa do diskusie <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">na používateľskom fóre Semantic MediaWiki</a>.',
@@ -13447,7 +13491,7 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Да, сигуран/-на сам',
 	'smw_smwadmin_support' => 'Добијање подршке',
 	'smw_smwadmin_supportdocu' => 'Постоји више места која могу помоћи у случају проблема:',
-	'smw_smwadmin_installfile' => 'Ако наиђете на проблем при инсталацији, најпре прочитајте смернице у <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">датотеци INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Ако наиђете на проблем при инсталацији, најпре прочитајте смернице у <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">датотеци INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Потпуна корисничка документација за Семантички медијавики, налази се на сајту <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Багови се могу пријављивати на <a href="https://bugzilla.wikimedia.org/">Медијазилу</a>.',
 	'smw_smwadmin_questions' => 'Ако имате даљих питања или сугестија, укључите се у дискусију на листи <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
@@ -13668,7 +13712,7 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, siguran/-na sam',
 	'smw_smwadmin_support' => 'Dobijanje podrške',
 	'smw_smwadmin_supportdocu' => 'Postoji više mesta koja mogu pomoći u slučaju problema:',
-	'smw_smwadmin_installfile' => 'Ako se nađete u problemima sa vašom instalacijom, pogledajte vodič u <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fajlu INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Ako se nađete u problemima sa vašom instalacijom, pogledajte vodič u <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fajlu INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Potpuna korisnička dokumentacija za Semantički medijaviki, nalazi se na sajtu <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Bagovi se mogu prijavljivati na <a href="https://bugzilla.wikimedia.org/">Medijazilu</a>.',
 	'smw_smwadmin_questions' => 'Ako imate daljih pitanja ili sugestija, uključite se u diskusiju na listi <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
@@ -13966,7 +14010,7 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, jag är säker.',
 	'smw_smwadmin_support' => 'Få support',
 	'smw_smwadmin_supportdocu' => 'Det finns flera ställen att få hjälp på, om du får problem:',
-	'smw_smwadmin_installfile' => 'Om du har problem med din installation så börja med att läsa instruktionena i filen <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Om du har problem med din installation så börja med att läsa instruktionena i filen <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Den kompletta användardokumentationen till Semantic MediaWiki finns på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fel kan rapporteras till <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Om du har ytterligare frågor eller förslag, diskutera dem på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki användarforum</a>!',
@@ -14400,7 +14444,7 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Oo, nakatitiyak ako.',
 	'smw_smwadmin_support' => 'Pagkuha ng suporta',
 	'smw_smwadmin_supportdocu' => 'Maaaring makatulong sa iyo ang sari-saring kapakipakinabang na mga bagay-bagay kung sakaling magkaroon ng mga suliranin:',
-	'smw_smwadmin_installfile' => 'Kung sakaling makaranas ka ng mga suliranin sa pagluluklok mo, magsimula sa pamamagitan ng pagsusuri ng mga patnubay na nasa loob ng <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ILUKLOK ang talaksan</a>.',
+	'smw_smwadmin_installfile' => 'Kung sakaling makaranas ka ng mga suliranin sa pagluluklok mo, magsimula sa pamamagitan ng pagsusuri ng mga patnubay na nasa loob ng <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">ILUKLOK ang talaksan</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://bugzilla.wikimedia.org/\">Bugzilla</a>.",
 	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan o mga mungkahi, makilahok sa usapang nasa <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Pangmadlang talakayan ng tagagamit ng MediaWiking Semantiko</a>.',
@@ -14819,7 +14863,7 @@ $messages['uk'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Так, я впевнений.',
 	'smw_smwadmin_support' => 'Отримання підтримки',
 	'smw_smwadmin_supportdocu' => 'Є різні ресурси, що можуть стати в пригоді у разі виникнення проблем:',
-	'smw_smwadmin_installfile' => 'Якщо у вас виникли проблеми із встановленням, насамперед подивіться поради в <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">файлі INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Якщо у вас виникли проблеми із встановленням, насамперед подивіться поради у <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">файлі INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Повна довідка із користування Semantic MediaWiki знаходиться на сайті <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Повідомлення про помилки відсилайте через <a href="https://bugzilla.wikimedia.org/">Баґзиллу</a>.',
 	'smw_smwadmin_questions' => 'Якщо у вас є додаткові запитання чи побажання, приєднуйтесь до обговорень на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форумі з користування Semantic MediaWiki</a>.',
@@ -14863,6 +14907,9 @@ $messages['uk'] = array(
 	'smw-sp-properties-docu' => 'Ця сторінка показує [https://www.semantic-mediawiki.org/wiki/Property властивості], які доступні, і при фільтрації відображає лише визначені користувачем властивості, які відповідають умові. Для диференційованого перегляду почитайте спеціальну сторінку  [[Special:UnusedProperties|невикористані властивості]] або [[Special:WantedProperties|бажані властивості]].',
 	'smw-sp-properties-cache-info' => 'Перераховані дані отримані з [https://www.semantic-mediawiki.org/wiki/Caching кеш], і востаннє оновлені $1.',
 	'smw-sp-properties-header-label' => 'Список властивостей',
+	'smw-sp-admin-settings-title' => 'Параметри конфігурації',
+	'smw-sp-admin-settings-docu' => 'Відображає список всіх <code>default</code> і <code>localized settings</code> , які мають відношення до навколишнього середовища семантичного MediaWiki. За детальною інформацією про окремі параметри зверніться до сторінки довідки [https://semantic-mediawiki.org/wiki/Help:Configuration configuration].',
+	'smw-sp-admin-settings-button' => 'Створити список налаштувань',
 );
 
 /** Urdu (اردو)
@@ -15513,10 +15560,18 @@ $messages['zh-hans'] = array(
 	'smw_smwadmin_return' => '返回$1。',
 	'smw_smwadmin_updatestarted' => '更新语义数据过程开始。
 所有已存储数据将被按需重建或修复。
-你可以通过本特殊页面跟踪更新进程。', # Fuzzy
-	'smw_smwadmin_updatenotstarted' => '已有更新进程正在运行，请勿新建另一个。', # Fuzzy
-	'smw_smwadmin_updatestopped' => '已停止所有更新进程。', # Fuzzy
-	'smw_smwadmin_updatenotstopped' => '请勾选复选框，以确认确实希望终止正在运行的升级进程。', # Fuzzy
+你可以通过本特殊页面跟踪更新进程。
+
+回到$1。',
+	'smw_smwadmin_updatenotstarted' => '已有更新进程正在运行。请勿新建另一个。
+
+回到$1。',
+	'smw_smwadmin_updatestopped' => '已停止所有更新进程。
+
+回到$1。',
+	'smw_smwadmin_updatenotstopped' => '请勾选复选框，以确认确实希望终止正在运行的升级进程。
+
+回到$1。',
 	'smw_smwadmin_docu' => '这个特殊页面为您安装和升级<a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>提供帮助。
 请在执行管理功能前备份好数据。',
 	'smw_smwadmin_db' => '数据库安装和升级',
@@ -15525,7 +15580,7 @@ $messages['zh-hans'] = array(
 这个步骤所做的修改不会影响MediaWiki数据库的其他部分，如果需要，可以方便地撤销所做的修改。
 这个设置功能可多次执行，不会造成任何危害。但是只需在安装或升级时执行一次即可。',
 	'smw_smwadmin_permissionswarn' => '如果操作因SQL错误而失败，可能是维基的数据库用户（检查LocalSettings.php）没有相应权限。
-你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<code>SMW_setup.php</code>，这个脚本可以使用AdminSettings.php中的信息。', # Fuzzy
+你可以向该用户赋予创建和删除表格的权限，或临时将数据库根用户的登录信息输入LocalSettings.php。你也可以使用维护脚本<code>SMW_setup.php</code>，这个脚本可以使用管理员的信息。',
 	'smw_smwadmin_dbbutton' => '初始化或升级表格',
 	'smw_smwadmin_announce' => '发布维基',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki提供一个网络服务，用于公告新的语义维基网站。
@@ -15574,7 +15629,7 @@ $messages['zh-hans'] = array(
 	'smw-ui-tooltip-title-legend' => '图例',
 	'smw_unknowntype' => '这种属性的类型不受支持',
 	'smw_concept_header' => '概念"$1"的页面',
-	'smw_conceptarticlecount' => '显示属于此概念的$1 {{PLURAL:$1|page|页面}}。', # Fuzzy
+	'smw_conceptarticlecount' => '显示属于此概念的$1个页面。',
 	'right-smw-admin' => '连接管理员工作组（Semantic MediaWiki）',
 	'group-smwadministrator' => 'Semantic MediaWiki管理员',
 	'group-smwadministrator-member' => '{{GENDER:$1|管理员（SMW）}}',
