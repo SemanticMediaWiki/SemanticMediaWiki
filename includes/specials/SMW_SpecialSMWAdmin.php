@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- */
+
+use SMW\Settings;
 
 /**
  * @defgroup SMWSpecialPage
@@ -22,17 +19,14 @@
  * @ingroup SpecialPage
  */
 class SMWAdmin extends SpecialPage {
-	/**
-	 * Constructor
-	 */
+
 	public function __construct() {
 		parent::__construct( 'SMWAdmin', 'smw-admin' );
 	}
 
 	public function execute( $par ) {
-		global $wgOut, $wgRequest, $wgServer, $wgArticlePath, $wgUser, $smwgAdminRefreshStore;
 
-		if ( !$this->userCanExecute( $wgUser ) ) {
+		if ( !$this->userCanExecute( $GLOBALS['wgUser'] ) ) {
 			// If the user is not authorized, show an error.
 			$this->displayRestrictionError();
 			return;
@@ -59,49 +53,13 @@ class SMWAdmin extends SpecialPage {
 		}
 
 		/**** Execute actions if any ****/
-		$action = $wgRequest->getText( 'action' );
-		if ( $action == 'updatetables' ) {
-			$sure = $wgRequest->getText( 'udsure' );
-			if ( $sure == 'yes' ) {
-				$wgOut->disable(); // raw output
-				ob_start();
-				print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" dir=\"ltr\">\n<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><title>Setting up Storage for Semantic MediaWiki</title></head><body><p><pre>";
-				header( "Content-type: text/html; charset=UTF-8" );
-				$result = SMWStore::setupStore();
-				print '</pre></p>';
-				if ( $result === true ) {
-					print '<p><b>' . wfMessage( 'smw_smwadmin_setupsuccess' )->text() . "</b></p>\n";
-				}
-				$returntitle = SpecialPage::getTitleFor( 'SMWAdmin' );
-				print '<p> ' . wfMessage( 'smw_smwadmin_return', '<a href="' . htmlspecialchars( $returntitle->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . "</p>\n";
-				print '</body></html>';
-				ob_flush();
-				flush();
-				return;
-			}
-		} elseif ( $smwgAdminRefreshStore && ( $action == 'refreshstore' ) ) { // managing refresh jobs for the store
-			$sure = $wgRequest->getText( 'rfsure' );
-			$title = SpecialPage::getTitleFor( 'SMWAdmin' );
-			if ( $sure == 'yes' ) {
-				if ( is_null( $refreshjob ) ) { // careful, there might be race conditions here
-					$newjob = new \SMW\RefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
-					$newjob->insert();
-					$wgOut->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
-				} else {
-					$wgOut->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatenotstarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
-				}
-			} elseif ( $sure == 'stop' ) {
-
-				// FIXME See above comments !!
-
-				$dbw = wfGetDB( DB_MASTER );
-				// delete (all) existing iteration jobs
-				$dbw->delete( 'job', array( 'job_cmd' => 'SMW\RefreshJob' ), __METHOD__ );
-				$wgOut->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestopped', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
-			} else {
-				$wgOut->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatenotstopped', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
-			}
-			return;
+		switch ( $GLOBALS['wgRequest']->getText( 'action' ) ) {
+			case 'listsettings':
+				return $this->actionListSettings();
+			case 'updatetables':
+				return $this->actionUpdateTables();
+			case 'refreshstore':
+				return $this->actionRefreshStore( $refreshjob );
 		}
 
 		/**** Normal output ****/
@@ -123,7 +81,7 @@ class SMWAdmin extends SpecialPage {
 			$html .= '<p>' . wfMessage( 'smw_smwadmin_datarefreshprogress' )->text() . "</p>\n" .
 			'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .
 				round( $prog * 300 ) . 'px; height: 20px; "> </div></div> &#160;' . round( $prog * 100, 4 ) . '%</p><br /><br />';
-			if ( $smwgAdminRefreshStore ) {
+			if ( $GLOBALS['smwgAdminRefreshStore'] ) {
 				$html .=
 				'<form name="refreshwiki" action="" method="POST">' .
 				'<input type="hidden" name="action" value="refreshstore" />' .
@@ -131,7 +89,7 @@ class SMWAdmin extends SpecialPage {
 				' <input type="checkbox" name="rfsure" value="stop"/> ' . wfMessage( 'smw_smwadmin_datarefreshstopconfirm' )->escaped() .
 				'</form>' . "\n";
 			}
-		} elseif ( $smwgAdminRefreshStore ) {
+		} elseif ( $GLOBALS['smwgAdminRefreshStore'] ) {
 			$html .=
 				'<form name="refreshwiki" action="" method="POST">' .
 				'<input type="hidden" name="action" value="refreshstore" />' .
@@ -140,23 +98,107 @@ class SMWAdmin extends SpecialPage {
 				'</form>' . "\n";
 		}
 
-		$html .= '<br /><h2>' . wfMessage( 'smw_smwadmin_announce' )->text() . "</h2>\n" .
-				'<p>' . wfMessage( 'smw_smwadmin_announcedocu' )->text() . "</p>\n" .
-				'<p>' . wfMessage( 'smw_smwadmin_announcebutton' )->text() . "</p>\n" .
-				 '<form name="announcewiki" action="http://semantic-mediawiki.org/wiki/Special:SMWRegistry" method="GET">' .
-				 '<input type="hidden" name="url" value="' . $wgServer . str_replace( '$1', '', $wgArticlePath ) . '" />' .
-				 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
-				 '<input type="submit" value="' . wfMessage( 'smw_smwadmin_announce' )->text() . '"/></form>' . "\n";
+		$html .= $this->getSettingsSection();
+		$html .= $this->getAnnounceSection();
+		$html .= $this->getSupportSection();
 
-		$html .= '<br /><h2>' . wfMessage( 'smw_smwadmin_support' )->text() . "</h2>\n" .
-				'<p>' . wfMessage( 'smw_smwadmin_supportdocu' )->text() . "</p>\n" .
-				"<ul>\n" .
-				'<li>' . wfMessage( 'smw_smwadmin_installfile' )->text() . "</li>\n" .
-				'<li>' . wfMessage( 'smw_smwadmin_smwhomepage' )->text() . "</li>\n" .
-				'<li>' . wfMessage( 'smw_smwadmin_mediazilla' )->text() . "</li>\n" .
-				'<li>' . wfMessage( 'smw_smwadmin_questions' )->text() . "</li>\n" .
-				"</ul>\n";
-
-		$wgOut->addHTML( $html );
+		$this->getOutput()->addHTML( $html );
 	}
+
+	protected function getSettingsSection() {
+		return '<br /><h2>' . $this->msg( 'smw-sp-admin-settings-title' )->text() . "</h2>\n" .
+			'<p>' . $this->msg( 'smw-sp-admin-settings-docu' )->parse() . "</p>\n".
+			'<form name="listsettings" action="" method="POST">' .
+			'<input type="hidden" name="action" value="listsettings" />' .
+			'<input type="submit" value="' . $this->msg( 'smw-sp-admin-settings-button' )->text() . '"/>' .
+			'</form>' . "\n";
+	}
+
+	protected function getAnnounceSection() {
+		return '<br /><h2>' . wfMessage( 'smw_smwadmin_announce' )->text() . "</h2>\n" .
+			'<p>' . wfMessage( 'smw_smwadmin_announcedocu' )->text() . "</p>\n" .
+			'<p>' . wfMessage( 'smw_smwadmin_announcebutton' )->text() . "</p>\n" .
+			 '<form name="announcewiki" action="http://semantic-mediawiki.org/wiki/Special:SMWRegistry" method="GET">' .
+			 '<input type="hidden" name="url" value="' . $GLOBALS['wgServer'] . str_replace( '$1', '', $GLOBALS['wgArticlePath'] ) . '" />' .
+			 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
+			 '<input type="submit" value="' . wfMessage( 'smw_smwadmin_announce' )->text() . '"/></form>' . "\n";
+	}
+
+	protected function getSupportSection() {
+		return '<br /><h2>' . wfMessage( 'smw_smwadmin_support' )->text() . "</h2>\n" .
+			'<p>' . wfMessage( 'smw_smwadmin_supportdocu' )->text() . "</p>\n" .
+			"<ul>\n" .
+			'<li>' . wfMessage( 'smw_smwadmin_installfile' )->text() . "</li>\n" .
+			'<li>' . wfMessage( 'smw_smwadmin_smwhomepage' )->text() . "</li>\n" .
+			'<li>' . wfMessage( 'smw_smwadmin_mediazilla' )->text() . "</li>\n" .
+			'<li>' . wfMessage( 'smw_smwadmin_questions' )->text() . "</li>\n" .
+			"</ul>\n";
+	}
+
+	protected function actionUpdateTables() {
+		if ( $GLOBALS['wgRequest']->getText( 'udsure' ) == 'yes' ) {
+
+			$this->printRawOutput( function() {
+				$result = SMWStore::setupStore();
+				if ( $result === true ) {
+					print '<p><b>' . wfMessage( 'smw_smwadmin_setupsuccess' )->text() . "</b></p>\n";
+				}
+			} );
+
+		}
+	}
+
+	protected function actionRefreshStore( $refreshjob ) {
+
+		if ( $GLOBALS['smwgAdminRefreshStore'] ) {
+
+			$sure = $GLOBALS['wgRequest']->getText( 'rfsure' );
+			$title = SpecialPage::getTitleFor( 'SMWAdmin' );
+
+			if ( $sure == 'yes' ) {
+				if ( is_null( $refreshjob ) ) { // careful, there might be race conditions here
+					$newjob = new \SMW\RefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
+					$newjob->insert();
+					$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
+				} else {
+					$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatenotstarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
+				}
+
+			} elseif ( $sure == 'stop' ) {
+
+				// FIXME See above comments !!
+
+				$dbw = wfGetDB( DB_MASTER );
+				// delete (all) existing iteration jobs
+				$dbw->delete( 'job', array( 'job_cmd' => 'SMW\RefreshJob' ), __METHOD__ );
+				$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestopped', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
+			} else {
+				$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatenotstopped', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
+			}
+
+		}
+
+	}
+
+	protected function actionListSettings() {
+		$this->printRawOutput( function() {
+			print '<pre>' . json_encode( Settings::newFromGlobals()->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</pre>';
+		} );
+	}
+
+	protected function printRawOutput( $text ) {
+		$this->getOutput()->disable(); // raw output
+		ob_start();
+
+		print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" dir=\"ltr\">\n<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><title>Semantic MediaWiki</title></head><body><p><pre>";
+		header( "Content-type: text/html; charset=UTF-8" );
+		is_callable( $text ) ? $text( $this ) : $text;
+		print '</pre></p>';
+		print '<b> ' . wfMessage( 'smw_smwadmin_return', '<a href="' . htmlspecialchars( SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . "</b>\n";
+		print '</body></html>';
+
+		ob_flush();
+		flush();
+	}
+
 }

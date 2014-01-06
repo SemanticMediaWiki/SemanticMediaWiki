@@ -428,6 +428,11 @@ Estimated progress of current update:',
 	'smw-sp-properties-cache-info' => 'The listed data have been retrieved from [https://www.semantic-mediawiki.org/wiki/Caching cache], and were last updated $1.',
 	'smw-sp-properties-header-label' => 'List of properties',
 
+	// Special:SMWAdmin
+	'smw-sp-admin-settings-title' => 'Configuration settings',
+	'smw-sp-admin-settings-docu' => 'Displays a list of all <code>default</code> and <code>localized settings</code> that are relevant to the Semantic MediaWiki environment. For details on individual settings, please consult the [https://semantic-mediawiki.org/wiki/Help:Configuration configuration] help page.',
+	'smw-sp-admin-settings-button' => 'Generate settings list',
+
 );
 
 /** Message documentation (Message documentation)
@@ -1008,6 +1013,10 @@ See also:
 Parameters:
 * $1 - Accommodates a user formatted date',
 	'smw-sp-properties-header-label' => 'A header label',
+
+	'smw-sp-admin-settings-title' => 'A header title',
+	'smw-sp-admin-settings-docu' => 'Introductory text for the settings section in [[Special:SMWAdmin]]',
+	'smw-sp-admin-settings-button' => 'A button text',
 );
 
 /** Afrikaans (Afrikaans)
