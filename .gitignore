@@ -4,6 +4,7 @@
 vendor/
 extensions/
 build/logs/
+build/release/build-*
 
 composer.phar
 composer.lock
