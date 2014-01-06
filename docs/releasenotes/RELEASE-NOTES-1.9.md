@@ -32,7 +32,7 @@ Released January 3rd, 2014.
 * (bb35e8a) (Bug 47123) Aggregate numbers based on the label/group
 * (5cda766) (Bug 46930) SMWSQLStore3Writers::changeTitle only create redirects when appropriate
 conditions are met
-* (e4a5fb8) (Bug 31880) Formatting numbers in tables based based on a customizible typeId
+* (e4a5fb8) (Bug 31880) Formatting numbers in tables based based on a customizable typeId
 * (e4a2035) Modify SMW\RecurringEvents to use a subobject as datamodel to represent
 individual events within a page
 * (7d1e2ad) (Bug 34782) Add note parameter to #info parser function
