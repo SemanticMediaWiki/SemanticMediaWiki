@@ -10,7 +10,8 @@ Released January 6th, 2014.
 
 * (Bug 59204) Fixed removal of properties on deletion of pages in custom namespaces.
 * (Issue 73) Fixed double table prefixing issue causing problems when using SQLite.
-* (Issue 84) The link to the INSTALL file on Special:SMWAmin has been fixed.
+* (Issue 84) Fixed the link to the INSTALL file on Special:SMWAmin.
+* (9ac5288) Fixed reference to DataTypeRegistry in the SPARQL store.
 
 ### New configuration parameters
 
