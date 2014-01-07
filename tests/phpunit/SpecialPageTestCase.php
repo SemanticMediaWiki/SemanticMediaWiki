@@ -2,22 +2,10 @@
 
 namespace SMW\Test;
 
+use SpecialPage;
 use FauxRequest;
 use WebRequest;
 use OutputPage;
-
-/**
- * Class contains methods to access SpecialPages
- *
- * @since 1.9
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
 
 /**
  * Class contains methods to access SpecialPages
@@ -26,6 +14,12 @@ use OutputPage;
  *
  * @group SMW
  * @group SMWExtension
+ * @group medium
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9.0.2
+ *
+ * @author mwjames
  */
 abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 
@@ -46,23 +40,11 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 
 		$request  = $request === null ? new FauxRequest() : $request;
 		$response = $request->response();
-		$context  = $this->newContext( $request );
-
-		$out = new OutputPage( $context );
-		$context->setOutput( $out );
-		$context->setLanguage( $this->getLanguage() );
-
-		if ( $user !== null ) {
-			$context->setUser( $user );
-		}
 
 		$page = $this->getInstance();
-		$page->setContext( $context );
+		$page->setContext( $this->getContext( $request, $user, $this->getTitle( $page ) ) );
 
-		// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-		$title = method_exists( $page, 'getPageTitle') ? $page->getPageTitle() : $page->getTitle();
-
-		$out->setTitle( $title );
+		$out = $page->getOutput();
 
 		ob_start();
 		$page->execute( $sub );
@@ -89,8 +71,6 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Returns output text
-	 *
 	 * @return string
 	 */
 	protected function getText() {
@@ -98,12 +78,39 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * Returns response object
-	 *
 	 * @return FauxResponse
 	 */
 	protected function getResponse() {
 		return $this->response;
+	}
+
+	/**
+	 * @return RequestContext
+	 */
+	protected function getContext( $request, $user, $title ) {
+
+		$context  = $this->newContext( $request );
+
+		$out = new OutputPage( $context );
+		$out->setTitle( $title );
+
+		$context->setOutput( $out );
+		$context->setLanguage( $this->getLanguage() );
+
+		if ( $user !== null ) {
+			$context->setUser( $user );
+		}
+
+		return $context;
+	}
+
+	/**
+	 * Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
+	 *
+	 * @return Title
+	 */
+	protected function getTitle( SpecialPage $page ) {
+		return method_exists( $page, 'getPageTitle') ? $page->getPageTitle() : $page->getTitle();
 	}
 
 }
