@@ -26,7 +26,7 @@ class SMWAdmin extends SpecialPage {
 
 	public function execute( $par ) {
 
-		if ( !$this->userCanExecute( $GLOBALS['wgUser'] ) ) {
+		if ( !$this->userCanExecute( $this->getUser() ) ) {
 			// If the user is not authorized, show an error.
 			$this->displayRestrictionError();
 			return;
@@ -53,7 +53,7 @@ class SMWAdmin extends SpecialPage {
 		}
 
 		/**** Execute actions if any ****/
-		switch ( $GLOBALS['wgRequest']->getText( 'action' ) ) {
+		switch ( $this->getRequest()->getText( 'action' ) ) {
 			case 'listsettings':
 				return $this->actionListSettings();
 			case 'updatetables':
@@ -181,8 +181,8 @@ class SMWAdmin extends SpecialPage {
 	}
 
 	protected function actionListSettings() {
-		$this->printRawOutput( function() {
-			print '<pre>' . json_encode( Settings::newFromGlobals()->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</pre>';
+		$this->printRawOutput( function( $instance ) {
+			print '<pre>' . $instance->encodeJson( Settings::newFromGlobals()->toArray() ) . '</pre>';
 		} );
 	}
 
@@ -191,7 +191,7 @@ class SMWAdmin extends SpecialPage {
 		ob_start();
 
 		print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" dir=\"ltr\">\n<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><title>Semantic MediaWiki</title></head><body><p><pre>";
-		header( "Content-type: text/html; charset=UTF-8" );
+		// header( "Content-type: text/html; charset=UTF-8" );
 		is_callable( $text ) ? $text( $this ) : $text;
 		print '</pre></p>';
 		print '<b> ' . wfMessage( 'smw_smwadmin_return', '<a href="' . htmlspecialchars( SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . "</b>\n";
@@ -199,6 +199,19 @@ class SMWAdmin extends SpecialPage {
 
 		ob_flush();
 		flush();
+	}
+
+	/**
+	 * @note JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES, and
+	 * JSON_UNESCAPED_UNICOD were only added with 5.4
+	 */
+	public function encodeJson( array $input ) {
+
+		if ( defined( 'JSON_PRETTY_PRINT' ) ) {
+			return json_encode( $input, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		}
+
+		return FormatJson::encode( $input, true );
 	}
 
 }
