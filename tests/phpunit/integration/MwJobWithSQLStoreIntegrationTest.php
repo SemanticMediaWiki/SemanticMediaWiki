@@ -9,6 +9,7 @@ use SMW\DIWikiPage;
 
 use WikiPage;
 use Title;
+use Job;
 
 /**
  * @ingroup Test
@@ -56,8 +57,44 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 
 	}
 
-	protected function assertJobRun( $type ) {
-		$job = \Job::pop_type( $type );
+	/**
+	 * @dataProvider jobFactoryProvider
+	 *
+	 * @since 1.9.0.2
+	 */
+	public function testJobFactory( $jobName, $type ) {
+
+		$context = new ExtensionContext();
+		$context->getSettings()->set( 'smwgEnableUpdateJobs', true );
+
+		$this->runExtensionSetup( $context );
+
+		$job = Job::factory( $jobName, Title::newFromText( __METHOD__ . $jobName ), array() );
+		$this->assertJobRun( $type, $job );
+
+	}
+
+	/**
+	 * @return array
+	 */
+	public function jobFactoryProvider() {
+
+		$provider = array();
+
+		$provider[] = array( 'SMW\UpdateJob', 'SMW\UpdateJob' );
+		$provider[] = array( 'SMWUpdateJob', 'SMW\UpdateJob' );
+
+		$provider[] = array( 'SMW\RefreshJob', 'SMW\RefreshJob' );
+		$provider[] = array( 'SMWRefreshJob', 'SMW\RefreshJob' );
+
+		return $provider;
+	}
+
+	protected function assertJobRun( $type, Job $job = null ) {
+
+		if ( $job === null ) {
+			$job = Job::pop_type( $type );
+		}
 
 		$this->assertTrue(
 			$job->run(),
