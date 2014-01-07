@@ -9318,7 +9318,7 @@ Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
 	'smw_smwadmin_support' => 'Ënnerstëtzung kréien',
 	'smw_smwadmin_supportdocu' => 'Verschidde Quellen kéinten Iech bei Problemer hëllefen:',
-	'smw_smwadmin_installfile' => 'Wann Dir Problemer bei der Installatioun hutt, da kuckt d\'Directiven am <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL Fichier</a> no.', # Fuzzy
+	'smw_smwadmin_installfile' => 'Wann Dir Problemer bei der Installatioun hutt, da fänkt un andeem Dir d\'Directiven am <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL Fichier</a> nokuckt.',
 	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> gemellt ginn.',
 	'smw_smwadmin_questions' => 'Wann dir nach Froen oder Propositiounen hutt, da bedeelegt Iech un der Diskussioun op dem <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki Benotzer-Forum</a>.',
