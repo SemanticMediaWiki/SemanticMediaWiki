@@ -42,7 +42,7 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 	 * @param string      $sub The subpage parameter to call the page with
 	 * @param \WebRequest $request Web request that may contain URL parameters, etc
 	 */
-	protected function execute( $sub = '', WebRequest $request = null ) {
+	protected function execute( $sub = '', WebRequest $request = null, $user = null ) {
 
 		$request  = $request === null ? new FauxRequest() : $request;
 		$response = $request->response();
@@ -51,6 +51,10 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 		$out = new OutputPage( $context );
 		$context->setOutput( $out );
 		$context->setLanguage( $this->getLanguage() );
+
+		if ( $user !== null ) {
+			$context->setUser( $user );
+		}
 
 		$page = $this->getInstance();
 		$page->setContext( $context );

@@ -128,6 +128,10 @@ class Settings extends SimpleDictionary {
 			'smwgOnDeleteAction' => $GLOBALS['smwgOnDeleteAction']
 		);
 
+		$settings = $settings + array(
+			'smwgCanonicalNames' => NamespaceManager::getCanonicalNames()
+		);
+
 		if ( self::$instance === null ) {
 			self::$instance = self::newFromArray( $settings ) ;
 		}
