@@ -96,33 +96,22 @@ class BrowseBySubjectSerializationRoundtripTest extends ApiTestCase {
 	}
 
 	/**
-	 * The Serializer enforces a specific output format therefore expected
-	 * elements are verified
-	 *
 	 * @since 1.9
 	 */
-	public function assertStructuralIntegrity( $type, $result ) {
+	public function assertStructuralIntegrity( $setup, $result ) {
 
-		if ( isset( $type['hasError'] ) && $type['hasError'] ) {
-			$this->assertInternalType( 'array', $result['error'] );
+		$this->assertInternalArrayStructure( $setup, $result, 'hasError',   'array',  function( $r ) { return $r['error']; } );
+		$this->assertInternalArrayStructure( $setup, $result, 'hasResult',  'array',  function( $r ) { return $r['query']; } );
+		$this->assertInternalArrayStructure( $setup, $result, 'hasSubject', 'string', function( $r ) { return $r['query']['subject']; } );
+		$this->assertInternalArrayStructure( $setup, $result, 'hasData',    'array',  function( $r ) { return $r['query']['data']; } );
+		$this->assertInternalArrayStructure( $setup, $result, 'hasSobj',    'array',  function( $r ) { return $r['query']['sobj']; } );
+
+	}
+
+	protected function assertInternalArrayStructure( $setup, $result, $field, $internalType, $definition ) {
+		if ( isset( $setup[$field] ) && $setup[$field] ) {
+			$this->assertInternalType( $internalType, is_callable( $definition ) ? $definition( $result ) : $definition );
 		}
-
-		if ( isset( $type['hasResult'] ) && $type['hasResult'] ) {
-			$this->assertInternalType( 'array', $result['query'] );
-		}
-
-		if ( isset( $type['hasSubject'] ) && $type['hasSubject'] ) {
-			$this->assertInternalType( 'string', $result['query']['subject'] );
-		}
-
-		if ( isset( $type['hasData'] ) && $type['hasData'] ) {
-			$this->assertInternalType( 'array', $result['query']['data'] );
-		}
-
-		if ( isset( $type['hasSobj'] ) && $type['hasSobj'] ) {
-			$this->assertInternalType( 'array', $result['query']['sobj'] );
-		}
-
 	}
 
 	/**
