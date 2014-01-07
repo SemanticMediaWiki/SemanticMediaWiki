@@ -148,7 +148,6 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 	}
 
-
 	/**
 	 * @dataProvider hiddenCategoriesDataProvider
 	 *
@@ -173,6 +172,28 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 			$semanticData,
 			$expected,
 			'Asserts that addAnnotation() adds expected triples'
+		);
+
+	}
+
+	/**
+	 * @since 1.9.0.2
+	 */
+	public function testPublicizeHiddenCategorieUsingWikiPagefactory() {
+
+		$semanticData = new SemanticData(
+			$this->newSubject( $this->newTitle() )
+		);
+
+		$instance = $this->newInstance( $semanticData );
+		$reflector = $this->newReflector();
+
+		$isHiddenCategory = $reflector->getMethod( 'isHiddenCategory' );
+		$isHiddenCategory->setAccessible( true );
+
+		$this->assertFalse(
+			$isHiddenCategory->invoke( $instance, 'Foo' ),
+			'Asserts that false is returned for non-existing hidden categories'
 		);
 
 	}

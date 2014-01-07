@@ -11,7 +11,7 @@ namespace SMW;
  * @author mwjames
  * @author others
  */
-final class NamespaceManager {
+class NamespaceManager {
 
 	/** @var array */
 	protected $globals;
@@ -31,7 +31,7 @@ final class NamespaceManager {
 	 */
 	public function run() {
 
-		if ( !defined( 'SMW_NS_PROPERTY' ) ) {
+		if ( !$this->assertConstantIsDefined( 'SMW_NS_PROPERTY' ) ) {
 			$this->initCustomNamespace( $this->globals );
 		}
 
@@ -40,6 +40,8 @@ final class NamespaceManager {
 		}
 
 		$this->addNamespaceSettings();
+
+		return true;
 	}
 
 	/**
@@ -106,7 +108,7 @@ final class NamespaceManager {
 		}
 
 		foreach ( self::buildNamespaceIndex( $globals['smwgNamespaceIndex'] ) as $ns => $index ) {
-			if ( !defined( $ns ) ) {
+			if ( !self::assertConstantIsDefined( $ns ) ) {
 				define( $ns, $index );
 			};
 		}
@@ -210,6 +212,13 @@ final class NamespaceManager {
 		if ( !class_exists( $this->globals['smwContLangClass'] ) ) {
 			$this->setLanguage( $fallbackLanguageCode );
 		}
+	}
+
+	/**
+	 * @since 1.9.0.2
+	 */
+	protected static function assertConstantIsDefined( $constant ) {
+		return defined( $constant );
 	}
 
 }
