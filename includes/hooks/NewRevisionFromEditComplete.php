@@ -76,7 +76,7 @@ class NewRevisionFromEditComplete extends FunctionHook {
 
 		$editInfo = false;
 
-		if ( method_exists( 'WikiPage', 'prepareContentForEdit' ) ) {
+		if ( $this->hasContentForEditMethod() ) {
 
 			$content  = $this->revision->getContent();
 
@@ -130,6 +130,13 @@ class NewRevisionFromEditComplete extends FunctionHook {
 		$propertyAnnotator->attach( $parserData )->addAnnotation();
 
 		return true;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function hasContentForEditMethod() {
+		return method_exists( 'WikiPage', 'prepareContentForEdit' );
 	}
 
 }
