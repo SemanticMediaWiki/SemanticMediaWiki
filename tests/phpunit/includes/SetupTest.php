@@ -394,7 +394,11 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'SMW\UpdateJob',
 			'SMW\RefreshJob',
 			'SMW\UpdateDispatcherJob',
-			'SMW\DeleteSubjectJob'
+			'SMW\DeleteSubjectJob',
+
+			// Legacy
+			'SMWUpdateJob',
+			'SMWRefreshJob',
 		);
 
 		return $this->buildDataProvider( 'wgJobClasses', $jobs, '' );

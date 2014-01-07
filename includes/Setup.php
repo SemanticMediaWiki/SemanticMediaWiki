@@ -157,6 +157,10 @@ final class Setup implements ContextAware {
 		$this->globals['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\UpdateDispatcherJob';
 		$this->globals['wgJobClasses']['SMW\DeleteSubjectJob'] = 'SMW\DeleteSubjectJob';
 
+		// Legacy definition to be removed with 1.10
+		$this->globals['wgJobClasses']['SMWUpdateJob']  = 'SMW\UpdateJob';
+		$this->globals['wgJobClasses']['SMWRefreshJob'] = 'SMW\RefreshJob';
+
 	}
 
 	/**
