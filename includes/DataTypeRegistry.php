@@ -75,12 +75,12 @@ class DataTypeRegistry {
 	);
 
 	/**
-	 * @since 1.9
+	 * @since 1.9.0.2
 	 *
 	 * @param array $typeLabels
 	 * @param array $typeAliases
 	 */
-	protected function __construct( array $typeLabels, array $typeAliases ) {
+	public function __construct( array $typeLabels, array $typeAliases ) {
 		$this->typeLabels = $typeLabels;
 		$this->typeAliases = $typeAliases;
 	}

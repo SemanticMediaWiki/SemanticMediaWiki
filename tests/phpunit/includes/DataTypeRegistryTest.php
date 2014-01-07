@@ -82,12 +82,28 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			'Asserts that findTypeLabel() returns the registered label'
 		);
 
+		$this->assertEmpty(
+			DataTypeRegistry::getInstance()->findTypeLabel( 'FooNoLabel' ),
+			'Asserts that findTypeLabel() returns an empty label'
+		);
+
+		$this->assertEquals(
+			DataItem::TYPE_NOTYPE,
+			DataTypeRegistry::getInstance()->getDataItemId( 'FooBar' ),
+			'Asserts TYPE_NOTYPE is returned for non-registered type'
+		);
+
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function testRegisterDatatypeAlias() {
+	public function testRegisterDatatypeIdAndAlias() {
+
+		$this->assertEmpty(
+			DataTypeRegistry::getInstance()->findTypeId( 'FooBar' ),
+			'Asserts that findTypeID returns empty label'
+		);
 
 		DataTypeRegistry::getInstance()->registerDataTypeAlias( '_foo', 'FooBar' );
 
@@ -96,6 +112,31 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			DataTypeRegistry::getInstance()->findTypeId( 'FooBar' ),
 			'Asserts that findTypeID returns the registered alias label'
 		);
+
+	}
+
+	/**
+	 * @since 1.9.0.2
+	 */
+	public function testTypeIdAndLabelAsLanguageIndependantInvocation() {
+
+		$instance = new DataTypeRegistry(
+			array( '_wpg' => 'Page' ),
+			array( 'URI'  => '_uri' )
+		);
+
+		$this->assertEquals(
+			'_wpg',
+			$instance->findTypeId( 'Page' ),
+			'Asserts that findTypeID returns empty label'
+		);
+
+		$this->assertEquals(
+			array( '_wpg' => 'Page' ),
+			$instance->getKnownTypeLabels(),
+			'Asserts that getKnownTypeLabels returns an array'
+		);
+
 
 	}
 

@@ -72,16 +72,6 @@ class BrowseBySubject extends Base {
 			return $title;
 		}
 
-		$this->isInvalidTitle( $title );
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 *
-	 * @since 1.9
-	 * @throws UsageException
-	 */
-	protected function isInvalidTitle( $title ) {
 		$this->dieUsageMsg( array( 'invalidtitle', $title ) );
 	}
 

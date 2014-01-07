@@ -82,6 +82,36 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 	/**
 	 * @dataProvider wikiPageDataProvider
 	 *
+	 * @since 1.9.0.2
+	 */
+	public function testProcessWithDisabledContentHandler( $setup, $expected ) {
+
+		$instance = $this->getMock( $this->getClass(),
+			array( 'hasContentForEditMethod' ),
+			array(
+				$setup['wikiPage'],
+				$setup['revision'],
+				1001,
+				$this->newMockUser()
+			)
+		);
+
+		$instance->expects( $this->any() )
+			->method( 'hasContentForEditMethod' )
+			->will( $this->returnValue( false ) );
+
+		$instance->invokeContext( new ExtensionContext() );
+
+		$this->assertTrue(
+			$instance->process(),
+			'Asserts that process() always returns true'
+		);
+
+	}
+
+	/**
+	 * @dataProvider wikiPageDataProvider
+	 *
 	 * @since 1.9
 	 */
 	public function testProcessAnnotationIntegration( $setup, $expected ) {

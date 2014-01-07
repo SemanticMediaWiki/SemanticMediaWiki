@@ -62,6 +62,26 @@ class ContentParserTest extends ParserTestCase {
 	}
 
 	/**
+	 * @since 1.9.0.2
+	 */
+	public function testRunParseWithDisabledContentHandler() {
+
+		$instance = $this->getMock( $this->getClass(),
+			array( 'hasContentHandler' ),
+			array(
+				$this->newTitle()
+			)
+		);
+
+		$instance->expects( $this->any() )
+			->method( 'hasContentHandler' )
+			->will( $this->returnValue( false ) );
+
+		$this->assertInstanceOf( $this->getClass(), $instance->parse() );
+
+	}
+
+	/**
 	 * @since 1.9
 	 */
 	public function testParseFromText() {
