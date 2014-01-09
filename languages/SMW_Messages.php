@@ -8904,6 +8904,13 @@ $1 문서로 돌아갑니다.',
 	'smw-sp-properties-header-label' => '속성 목록',
 );
 
+/** Karachay-Balkar (къарачай-малкъар)
+ * @author Iltever
+ */
+$messages['krc'] = array(
+	'smw_purge' => 'Джангырт',
+);
+
 /** Krio (Krio)
  * @author Jose77
  */
@@ -14011,7 +14018,7 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, jag är säker.',
 	'smw_smwadmin_support' => 'Få support',
 	'smw_smwadmin_supportdocu' => 'Det finns flera ställen att få hjälp på, om du får problem:',
-	'smw_smwadmin_installfile' => 'Om du har problem med din installation så börja med att läsa instruktionena i filen <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.', # Fuzzy
+	'smw_smwadmin_installfile' => 'Om du har problem med din installation, börja med att läsa instruktionerna i <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">installationsfilen</a>.',
 	'smw_smwadmin_smwhomepage' => 'Den kompletta användardokumentationen till Semantic MediaWiki finns på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fel kan rapporteras till <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Om du har ytterligare frågor eller förslag, diskutera dem på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki användarforum</a>!',
@@ -14046,6 +14053,7 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'group-smwadministrator-member' => '{{GENDER:$1|administratör (SMW)}}',
 	'smw-pa-property-predefined-default' => "$1 är en fördefinierad egenskap (även ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]''). Det är en inbyggd egenskap med en särskild betydelse, men användas precis som en vanlig [https://www.semantic-mediawiki.org/wiki/Property användardefinierad egenskap].",
 	'smw-sp-properties-header-label' => 'Lista med egenskaper',
+	'smw-sp-admin-settings-title' => 'Konfigurationsinställningar',
 );
 
 /** Tamil (தமிழ்)
