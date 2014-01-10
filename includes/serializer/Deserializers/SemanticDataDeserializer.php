@@ -153,7 +153,7 @@ class SemanticDataDeserializer implements Deserializer {
 			$semanticData->addError( $dataItem->getSemanticData()->getErrors() );
 		}
 
-		if ( $property !== null ) {
+		if ( $property !== null && $dataItem !== null ) {
 			$semanticData->addPropertyObjectValue( $property, $dataItem );
 		}
 
@@ -162,9 +162,17 @@ class SemanticDataDeserializer implements Deserializer {
 	/**
 	 * Resolves properties and dataitems assigned to a subobject recursively
 	 *
-	 * @return DIContainer
+	 * @note The serializer has to make sure to provide a complete data set
+	 * otherwise the subobject is neglected (of course one could set an error
+	 * value to the DIContainer but as of now that seems unnecessary)
+	 *
+	 * @return DIContainer|null
 	 */
 	protected function unserializeSubobject( $data, $id, $semanticData ) {
+
+		if ( !isset( $data['sobj'] ) ) {
+			return null;
+		}
 
 		foreach ( $data['sobj'] as $subobject ) {
 
@@ -180,17 +188,14 @@ class SemanticDataDeserializer implements Deserializer {
 	/**
 	 * Returns DataItemId for a property
 	 *
-	 * @note Not sure why matching can only be done with the help of DataValueFactory
-	 * because it is the only place the holds both definitions
-	 *
-	 * Word of caution, findPropertyTypeID is calling the Store to find the
+	 * @note findPropertyTypeID is calling the Store to find the
 	 * typeId reference this is costly but at the moment there is no other
-	 * way to determine the typeId without the Store being involved
+	 * way to determine the typeId
 	 *
-	 * Reason for this check is to ensure that during unserialization the
-	 * correct item in terms of its definition is being sought otherwise
-	 * inconsistencies can occur due to type changes of a property between
-	 * the time of serialization and its unserialization (e.g for when the
+	 * This check is to ensure that during unserialization the correct item
+	 * in terms of its definition is being sought otherwise inconsistencies
+	 * can occur due to type changes of a property between the time of
+	 * the serialization and the deserialization (e.g for when the
 	 * serialization object is stored in cache, DB etc.)
 	 *
 	 * @return integer
