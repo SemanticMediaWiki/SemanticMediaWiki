@@ -3011,6 +3011,7 @@ $messages['ckb'] = array(
 );
 
 /** Czech (čeština)
+ * @author DemonioCZ
  * @author Kjbenes
  * @author Matěj Grabovský
  * @author Mormegil
@@ -3239,7 +3240,7 @@ Odhadovaný průběh updatu:',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ano, jsem si jistý/á.',
 	'smw_smwadmin_support' => 'Získání podpory',
 	'smw_smwadmin_supportdocu' => 'V případě problémů vám může pomoci několik zdrojů:',
-	'smw_smwadmin_installfile' => 'Máte-li problémy s instalací, začněte kontrolou podle osnovy v <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">souboru INSTALL</a>.', # Fuzzy
+	'smw_smwadmin_installfile' => 'Máte-li problémy s instalací, přečtěte si návod k instalaci v <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">souboru INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Chyby lze hlásit na <a href="https://bugzilla.wikimedia.org/">Bugzille</a>.',
 	'smw_smwadmin_questions' => 'Další otázky či návrhy můžete pokládat v diskuzi v <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">uživatelském fóru Semantic MediaWiki</a>.',
