@@ -4,6 +4,8 @@ namespace SMW\Test;
 
 use SMW\ExtensionContext;
 use SMW\DeleteSubjectJob;
+use SMW\DIWikiPage;
+use SMW\SemanticData;
 
 use Title;
 
@@ -54,8 +56,8 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		$settings  = $this->newSettings( array_merge( $defaultSettings, $settings ) );
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'deleteSubject' => array( $this, 'mockStoreDeleteSubjectCallback' ),
-			'getProperties' => array()
+			'deleteSubject'   => array( $this, 'mockStoreDeleteSubjectCallback' ),
+			'getSemanticData' => new SemanticData( DIWikiPage::newFromTitle( $title ) )
 		) );
 
 		$context   = new ExtensionContext();
@@ -65,8 +67,8 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		$container->registerObject( 'Settings', $settings );
 
 		$parameters = array(
-			'asDeferredJob' => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
-			'withRefresh'   => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
+			'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
+			'withAssociates' => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
 		);
 
 		$instance = new DeleteSubjectJob( $title, $parameters );
@@ -145,7 +147,7 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 			),
 			array(
 				'jobCount' => 1,
-				'deleteSubjectWasCalled' => false
+				'deleteSubjectWasCalled' => true
 			)
 		);
 
@@ -211,8 +213,9 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 				"Asserts that the job instance is of type {$this->getClass()}"
 			);
 
+			$this->assertTrue( $job->hasParameter( 'withAssociates' ) );
 			$this->assertTrue( $job->hasParameter( 'asDeferredJob' ) );
-			$this->assertTrue( $job->hasParameter( 'withRefresh' ) );
+			$this->assertTrue( $job->hasParameter( 'semanticData' ) );
 
 		}
 

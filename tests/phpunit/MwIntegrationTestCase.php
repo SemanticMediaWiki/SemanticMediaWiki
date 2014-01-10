@@ -99,9 +99,9 @@ abstract class MwIntegrationTestCase extends \MediaWikiTestCase {
 		return $store;
 	}
 
-	protected function createPage( Title $title ) {
+	protected function createPage( Title $title, $editContent = '' ) {
 		$pageCreator = new PageCreator();
-		$pageCreator->createPage( $title );
+		$pageCreator->createPage( $title, $editContent );
 	}
 
 	protected function deletePage( Title $title ) {
@@ -113,10 +113,10 @@ abstract class MwIntegrationTestCase extends \MediaWikiTestCase {
 
 class PageCreator {
 
-	public function createPage( Title $title ) {
+	public function createPage( Title $title, $editContent = '' ) {
 		$page = new \WikiPage( $title );
 
-		$pageContent = 'Content of ' . $title->getFullText();
+		$pageContent = 'Content of ' . $title->getFullText() . ' ' . $editContent;
 		$editMessage = 'SMW system test: create page';
 
 		if ( class_exists( 'WikitextContent' ) ) {

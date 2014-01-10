@@ -693,22 +693,23 @@ $GLOBALS['smwgEnabledSpecialPage'] = array( 'Ask' );
 ###
 # Page / subject deletion (action=delete)
 #
-# Configuration to improve the update process for when a page / property and its
-# value assignments are deleted. Due to performance implications it is advisable
-# that in case of 'smwgDeleteSubjectWithAssociatesRefresh' => TRUE the deletion
-# process is being handled as deferred background job
-# 'smwgDeleteSubjectAsDeferredJob' => TRUE
+# In case of 'smwgDeleteSubjectWithAssociatesRefresh' => TRUE the deletion
+# process will initiate a refresh/update process of associative entities.
 #
-# In case the deletion is executed as deferred job it is further suggested that the
-# JobQueue is being run repeatedly within a narrow time frame to avoid an increased
-# backlog.
+# It is suggested that the clean-up process of those entities are being
+# carried out as deferred job 'smwgDeleteSubjectAsDeferredJob' => TRUE to minimize
+# any performance degradation that can occur when a large pool of associates
+# is assigned to the deleted subject.
 #
-# Legacy behaviour where a subject is directly deleted when action=delete is executed
+# The subject (wikipage) is always removed directly (without delay).
+#
+# Legacy behaviour
 # -'smwgDeleteSubjectAsDeferredJob' => false
 # -'smwgDeleteSubjectWithAssociatesRefresh' => false
 #
-# If 'smwgEnableUpdateJobs' is disabled then the deletion process will always run
-# directly even though 'smwgDeleteSubjectAsDeferredJob' is enabled.
+# MW 1.19/1.20 will return a 'Array to string conversion in JobQueue' because of an
+# oudated JobQueue class it is therefore advised to update to a newer MW version
+# or not to use this feature (leaving the default values as is).
 #
 # @since 1.9.0.1
 ##

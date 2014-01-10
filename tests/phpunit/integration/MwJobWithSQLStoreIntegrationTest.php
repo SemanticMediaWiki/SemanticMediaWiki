@@ -29,7 +29,7 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 	/**
 	 * @since 1.9.0.1
 	 */
-	public function testArticleDeleteAsDeferredJob() {
+	public function testArticleDeleteAssociativeEntitiesRefreshAsDeferredJob() {
 
 		$store   = $this->getStore();
 		$context = new ExtensionContext();
@@ -39,6 +39,8 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 		$context->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', true );
 		$context->getSettings()->set( 'smwgEnableUpdateJobs', true );
 
+		$hasParameters = array( 'withAssociates', 'asDeferredJob', 'semanticData' );
+
 		$this->runExtensionSetup( $context );
 
 		$title = Title::newFromText( __METHOD__ );
@@ -46,14 +48,14 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 
 		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $dataItem ) );
 
-		$this->createPage( $title );
+		$this->createPage( $title, '{{#set:|DeferredJobFoo=DeferredJobBar}}' );
 		$this->assertSemanticDataIsNotEmpty( $store->getSemanticData( $dataItem ) );
 
 		$this->deletePage( $title );
-		$this->assertSemanticDataIsNotEmpty( $store->getSemanticData( $dataItem ) );
-
-		$this->assertJobRun( 'SMW\DeleteSubjectJob' );
 		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $dataItem ) );
+
+		$this->assertJobRun( 'SMW\DeleteSubjectJob', null, $hasParameters );
+		$this->assertJobRun( 'SMW\UpdateJob' );
 
 	}
 
@@ -90,16 +92,23 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 		return $provider;
 	}
 
-	protected function assertJobRun( $type, Job $job = null ) {
+	protected function assertJobRun( $type, Job $job = null, $hasParameters = array() ) {
 
 		if ( $job === null ) {
 			$job = Job::pop_type( $type );
 		}
 
+		$this->assertInstanceOf( 'Job', $job );
+
 		$this->assertTrue(
 			$job->run(),
 			'Asserts a successful Job execution'
 		);
+
+		foreach ( $hasParameters as $hasParameter ) {
+			$this->assertTrue( $job->hasParameter( $hasParameter ) );
+		}
+
 	}
 
 }

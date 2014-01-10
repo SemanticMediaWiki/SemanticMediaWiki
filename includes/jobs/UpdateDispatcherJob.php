@@ -26,6 +26,9 @@ class UpdateDispatcherJob extends JobBase {
 	/** $var boolean */
 	protected $enabled = true;
 
+	/** $var Store */
+	protected $store = null;
+
 	/**
 	 * @since  1.9
 	 *
@@ -61,6 +64,11 @@ class UpdateDispatcherJob extends JobBase {
 	public function run() {
 		Profiler::In( __METHOD__, true );
 
+		/**
+		 * @var Store $store
+		 */
+		$this->store = $this->withContext()->getStore();
+
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->dispatchSubjectsByProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->push();
 		} else{
@@ -93,13 +101,11 @@ class UpdateDispatcherJob extends JobBase {
 	protected function dispatchSubjects( DIWikiPage $subject ) {
 		Profiler::In( __METHOD__, true );
 
-		/**
-		 * @var Store $store
-		 */
-		$store = $this->withContext()->getStore();
+		$this->getAllPropertySubjectsAndAddUpdateJobs( $this->store->getProperties( $subject ) );
 
-		foreach ( $store->getProperties( $subject ) as $property ) {
-			$this->addJobs( $store->getAllPropertySubjects( $property ) );
+		if ( $this->hasParameter( 'semanticData' ) ) {
+			$semanticData = SerializerFactory::deserialize( $this->getParameter( 'semanticData' ) );
+			$this->getAllPropertySubjectsAndAddUpdateJobs( $semanticData->getProperties() );
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -116,33 +122,38 @@ class UpdateDispatcherJob extends JobBase {
 	protected function dispatchSubjectsByProperty( DIProperty $property ) {
 		Profiler::In( __METHOD__, true );
 
-		/**
-		 * @var Store $store
-		 */
-		$store = $this->withContext()->getStore();
-
-		// Array of all subjects that have some value for the given property
-		$subjects = $store->getAllPropertySubjects( $property );
-
-		$this->addJobs( $subjects );
+		$this->getAllPropertySubjectsAndAddUpdateJobs( array( $property ) );
 
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
 		wfRunHooks( 'smwUpdatePropertySubjects', array( &$this->jobs ) );
 
 		// Hook since 1.9
-		wfRunHooks( 'SMW::Dispatcher::updateJobs', array( $property, &$this->jobs ) );
+		wfRunHooks( 'SMW::Dispatcher::updateJobs', array( &$this->jobs, $property ) );
 
-		// Fetch all those that have an error property attached and
-		// re-run it through the job-queue
-		$subjects = $store->getPropertySubjects(
-			new DIProperty( DIProperty::TYPE_ERROR ),
-			DIWikiPage::newFromTitle( $this->title )
-		);
-
-		$this->addJobs( $subjects );
+		$this->getPropertySubjectsWithErrorAndAddUpdateJobs();
 
 		Profiler::Out( __METHOD__, true );
 		return $this;
+	}
+
+	protected function getAllPropertySubjectsAndAddUpdateJobs( array $properties ) {
+		foreach ( $properties as $property ) {
+
+			if ( !$property->isUserDefined() ) {
+				continue;
+			}
+
+			$this->addJobs( $this->store->getAllPropertySubjects( $property ) );
+		}
+	}
+
+	protected function getPropertySubjectsWithErrorAndAddUpdateJobs() {
+		$subjects = $this->store->getPropertySubjects(
+			new DIProperty( DIProperty::TYPE_ERROR ),
+			DIWikiPage::newFromTitle( $this->getTitle() )
+		);
+
+		$this->addJobs( $subjects );
 	}
 
 	/**
@@ -182,6 +193,7 @@ class UpdateDispatcherJob extends JobBase {
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -195,4 +207,5 @@ class UpdateDispatcherJob extends JobBase {
 			parent::insert();
 		}
 	}
+
 }
