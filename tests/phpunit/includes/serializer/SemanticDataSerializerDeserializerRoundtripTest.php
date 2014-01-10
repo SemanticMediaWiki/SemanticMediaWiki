@@ -24,7 +24,7 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
+class SemanticDataSerializerDeserializerRoundtripTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -82,6 +82,23 @@ class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
 			$this->newDeserializerInstance()->deserialize( $serialized )->getHash(),
 			'Asserts that the hash of the orginal SemanticData container equals that of the serialized-un-serialized container'
 		);
+	}
+
+	/**
+	 * @dataProvider incompleteSubobjectDataProvider
+	 *
+	 * @since 1.9.0.2
+	 */
+	public function testSerializerDeserializerWithIncompleteSubobjectData( $data ) {
+
+		$serialized = $this->newSerializerInstance()->serialize( $data );
+
+		$this->assertInstanceOf(
+			'SMW\SemanticData',
+			$this->newDeserializerInstance()->deserialize( $serialized ),
+			'Asserts that SemanticData instance is returned for an incomplete data set'
+		);
+
 	}
 
 	/**
@@ -160,6 +177,27 @@ class SemanticDataSerializationRoundtripTest extends SemanticMediaWikiTestCase {
 		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
 
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
+
+		$provider[] = array( $foo );
+
+		return $provider;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function incompleteSubobjectDataProvider() {
+
+		$provider = array();
+
+		$title = $this->newTitle( NS_MAIN, 'Foo' );
+
+		$subobject = new Subobject( $title );
+		$subobject->setSemanticData( 'Foo' );
+
+		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getSemanticData()->getSubject() );
 
 		$provider[] = array( $foo );
 
