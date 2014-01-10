@@ -197,7 +197,7 @@ class ContentParser {
 	 * @return boolean
 	 */
 	protected function hasContentHandler() {
-		return class_exists( 'ContentHandler');
+		return class_exists( 'ContentHandler' );
 	}
 
 	/**

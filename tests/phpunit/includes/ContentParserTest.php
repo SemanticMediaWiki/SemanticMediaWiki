@@ -24,7 +24,7 @@ use Parser;
  *
  * @author mwjames
  */
-class ContentParserTest extends ParserTestCase {
+class ContentParserTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @return string|false
@@ -50,66 +50,53 @@ class ContentParserTest extends ParserTestCase {
 	/**
 	 * @since 1.9
 	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function testParse() {
+	public function testCanParseOnInstance() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance()->parse() );
-	}
-
-	/**
-	 * @since 1.9.0.2
-	 */
-	public function testRunParseWithDisabledContentHandler() {
-
-		$instance = $this->getMock( $this->getClass(),
-			array( 'hasContentHandler' ),
-			array(
-				$this->newTitle()
-			)
-		);
-
-		$instance->expects( $this->any() )
-			->method( 'hasContentHandler' )
-			->will( $this->returnValue( false ) );
-
-		$this->assertInstanceOf( $this->getClass(), $instance->parse() );
-
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function testParseFromText() {
+	public function testRunParseOnText() {
 
 		$text     = 'Foo-1-' . __METHOD__;
 		$expected = '<p>' . $text . "\n" . '</p>';
 
-		$instance = $this->newInstance();
-		$instance->parse( $text );
-
-		$this->assertParserOutput( $expected, $instance );
+		$this->assertParserOutput( $expected, $this->newInstance()->parse( $text ) );
 
 	}
 
 	/**
 	 * @dataProvider titleRevisionDataProvider
 	 *
-	 * @since 1.9
+	 * @since 1.9.0.2
 	 */
-	public function testFetchFromParser( $setup, $expected ) {
+	public function testRunParseOnTitle( $setup, $expected, $withContentHandler = false ) {
 
-		$instance  = $this->newInstance( $setup['title'], new Parser() );
-		$reflector = $this->newReflector();
+		$instance = $this->getMock( $this->getClass(),
+			array( 'hasContentHandler', 'newRevision' ),
+			array(
+				$setup['title'],
+				new Parser()
+			)
+		);
 
-		$fetchFromParser = $reflector->getMethod( 'fetchFromParser' );
-		$fetchFromParser->setAccessible( true );
+		$instance->expects( $this->any() )
+			->method( 'hasContentHandler' )
+			->will( $this->returnValue( $withContentHandler ) );
 
-		$fetchFromParser->invoke( $instance, $setup['revision'] );
+		$instance->expects( $this->any() )
+			->method( 'newRevision' )
+			->will( $this->returnValue( $setup['revision'] ) );
+
+		$this->assertInstanceOf( $this->getClass(), $instance->parse() );
 
 		if ( $expected['error'] ) {
 			$this->assertError( $instance );
@@ -124,29 +111,15 @@ class ContentParserTest extends ParserTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testFetchFromContent( $setup, $expected ) {
+	public function testRunParseOnTitleWithContentHandler( $setup, $expected ) {
 
 		if ( !class_exists( 'ContentHandler') ) {
 			$this->markTestSkipped(
-				'Skipping test due to a missing class (probably MW 1.20 or lower).'
+				'Skipping test due to missing class (probably MW 1.21 or lower).'
 			);
 		}
 
-		$instance  = $this->newInstance( $setup['title'], new Parser() );
-		$reflector = $this->newReflector();
-
-		$fetchFromContent = $reflector->getMethod( 'fetchFromContent' );
-		$fetchFromContent->setAccessible( true );
-
-		$fetchFromContent->invoke( $instance, $setup['revision'] );
-
-		$this->assertEquals( $setup['title'], $instance->getTitle() );
-
-		if ( $expected['error'] ) {
-			$this->assertError( $instance );
-		} else {
-			$this->assertParserOutput( $expected['text'], $instance );
-		}
+		$this->testRunParseOnTitle( $setup, $expected, true );
 
 	}
 
@@ -181,20 +154,18 @@ class ContentParserTest extends ParserTestCase {
 
 		if ( $text !== '' ) {
 
-			$this->assertContains(
+			return $this->assertContains(
 				$text,
 				$instance->getOutput()->getText(),
 				'Asserts that getText() returns expected text component'
 			);
 
-		} else {
-
-			$this->assertEmpty(
-				$instance->getOutput()->getText(),
-				'Asserts that getText() returns empty'
-			);
-
 		}
+
+		$this->assertEmpty(
+			$instance->getOutput()->getText(),
+			'Asserts that getText() returns empty'
+		);
 
 	}
 
