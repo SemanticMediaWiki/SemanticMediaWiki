@@ -6,6 +6,7 @@ tools:
     php_mess_detector:
         config:
             controversial_rules: { superglobals: false }
+            design_rules: { coupling_between_objects: 15 }
     php_cpd: true
     php_pdepend: true
     external_code_coverage: true
