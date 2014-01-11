@@ -261,7 +261,8 @@ class SMWSQLStore3Readers {
 		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
 
 		// ***  First build $from, $select, and $where for the DB query  ***//
-		$from   = $db->tableName( $proptable->getName() ); // always use actual table
+		$from   = $proptable->getName(); // always use actual table
+
 		$select = '';
 		$where  = '';
 

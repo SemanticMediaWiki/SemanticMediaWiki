@@ -6,6 +6,8 @@ use SMW\UpdateDispatcherJob;
 use SMW\ExtensionContext;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SerializerFactory;
+use SMW\SemanticData;
 
 use Title;
 
@@ -42,7 +44,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return UpdateDispatcherJob
 	 */
-	private function newInstance( Title $title = null, $properties = array() ) {
+	private function newInstance( Title $title = null, $properties = array(), $parameters = array() ) {
 
 		if ( $title === null ) {
 			$title = $this->newTitle();
@@ -51,7 +53,8 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
 			'getAllPropertySubjects' => array( $this, 'mockStoreAllPropertySubjectsCallback' ),
 			'getPropertySubjects'    => array(),
-			'getProperties'          => $properties
+			'getProperties'          => $properties,
+			'getInProperties'        => $properties
 		) );
 
 		$settings = $this->newSettings( array(
@@ -65,7 +68,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 		$container->registerObject( 'Store', $mockStore );
 		$container->registerObject( 'Settings', $settings );
 
-		$instance = new UpdateDispatcherJob( $title );
+		$instance = new UpdateDispatcherJob( $title, $parameters );
 		$instance->invokeContext( $context );
 
 		return $instance;
@@ -109,7 +112,29 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testRunOnMockObjects( $setup, $expected ) {
+	public function testRunJobOnMockWithOutParameters( $setup, $expected ) {
+		$this->runJobTestOnMock( $setup, $expected, array() );
+	}
+
+	/**
+	 * @dataProvider subjectDataProvider
+	 *
+	 * @since 1.9.0.2
+	 */
+	public function testRunJobOnMockWithParameters( $setup, $expected ) {
+
+		$parameters = array(
+			'semanticData' => SerializerFactory::serialize(
+			new SemanticData( DIWikiPage::newFromTitle( $setup['title'] )
+		) ) );
+
+		$this->runJobTestOnMock( $setup, $expected, $parameters );
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	protected function runJobTestOnMock( $setup, $expected, $parameters = array() ) {
 
 		// Set-up expected property to be accessible in the mock callback
 		$this->property = $setup['property'];
@@ -129,7 +154,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	public function assertJobsAndJobCount( $count, $instance ) {
+	protected function assertJobsAndJobCount( $count, $instance ) {
 
 		$reflector = $this->newReflector();
 		$jobs = $reflector->getProperty( 'jobs' );
