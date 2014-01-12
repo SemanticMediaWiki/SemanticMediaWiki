@@ -3649,6 +3649,7 @@ $messages['diq'] = array(
 );
 
 /** Lower Sorbian (dolnoserbski)
+ * @author Derbeth
  * @author Michawiki
  * @author 아라
  */
@@ -3801,8 +3802,8 @@ Napórajo RDF, kótaryž dajo se pśepytaś.',
 	'smw-special-types-no-such-type' => 'Pódany datowy typ njeeksistěrujo',
 	'semanticstatistics' => 'Semantiska statistika',
 	'smw_semstats_text' => "Toś ten wiki wopśimujo '''$1''' {{PLURAL:$1|kakosćowu gódnotu|kakosćowej gódnośe|kakosćowe gódnoty|kakosćowych gódnotow}} za dogromady '''$2''' [[Special:Properties|{{PLURAL:$2|kakosć|rozdźělnej kakosći|rozdźělne kakosći|rozdźělnych kakosćow}}]].
-'''$3''' {{PLURAL:$3|kakosć ma|kakosći matej|kakosći maju|kakosćow ma}} swójski bok a póžedany datowy typ je za '''$4''' z nich pódany.
-Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewužywane kakosći]] byś. Kakosći, kótarež njamaju bok, su se na [[Special:WantedProperties|lisćinje póžedanych kakosćow]] namakali.",
+'''$3''' {{PLURAL:$3|kakosć ma|kakosći matej|kakosći maju|kakosćow ma}} swójski bok a póžedany datowy typ jo za '''$4''' z nich pódany.
+Někotare eksistěrowace kakosći mógu byś [[Special:UnusedProperties|njewužywane]]. Kakosći, kótarež njamaju bok, su se na [[Special:WantedProperties|lisćinje póžedanych kakosćow]] namakali.",
 	'smw-statistics' => 'Semantiska statistika',
 	'smw-statistics-property-instance' => '{{PLURAL:$1|Kakostna gódnota|Kakostnej gódnośe|Kakostne gódnoty}} (dogromady)',
 	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|Kakosć|Kakosći}}]] (dogromady)',
@@ -9352,6 +9353,7 @@ Geschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	'smw-ui-tooltip-title-legend' => 'Erklärung',
 	'smw_concept_header' => 'Säite vum Konzept "$1"',
 	'smw_conceptarticlecount' => 'Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.',
+	'smw-sp-admin-settings-title' => 'Astellunge vun der Konfiguratioun',
 );
 
 /** Lithuanian (lietuvių)
@@ -11217,6 +11219,7 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw_attributearticlecount' => 'Pokazano $1 {{PLURAL:$1|stronę używającą|strony używające|stron używających}} tego atrybutu.',
 	'smw_subproperty_header' => 'Podwłasności',
 	'smw_subpropertyarticlecount' => 'Ta właściwość ma {{PLURAL:$1|podwłaściwość|$1 następujące podwłaściwości:|$1 następujących podwłaściwości:}}',
+	'specialpages-group-smw_group' => 'Semantyczna MediaWiki',
 	'exportrdf' => 'Eksport stron do RDF',
 	'smw_exportrdf_docu' => 'Ta strona pozwala eksportować fragmenty artykułu w formacie RDF.  Aby wyeksportować artykuły, wpisz ich tytuły w poniższym polu tekstowym, po jednym tytule w wierszu.',
 	'smw_exportrdf_recursive' => 'Rekursywny eksport wszystkich powiązanych stron.  Zwróć uwagę, że wynik może być olbrzymi!',
