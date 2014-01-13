@@ -5,18 +5,19 @@ env:
 
 matrix:
   include:
-    - env: DBTYPE=mysql; MW=master; TYPE=coverage
-      php: 5.3
+    - env: DBTYPE=mysql; MW=master
+      php: hhvm
     - env: DBTYPE=sqlite; MW=master; TYPE=composer
-      php: 5.3
-    - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
-      php: 5.4
-    - env: DBTYPE=sqlite; MW=1.19.0
-      php: 5.5
-    - env: DBTYPE=postgres; MW=1.19.0
-      php: 5.4
+      php: hhvm
   exclude:
     - env: THENEEDFORTHIS=FAIL
+  allow_failures:
+    - env: DBTYPE=mysql; MW=master
+    - env: DBTYPE=sqlite; MW=master; TYPE=composer
+
+branches:
+   only:
+     - hhvm
 
 before_script: bash ./build/travis/before_script.sh
 
