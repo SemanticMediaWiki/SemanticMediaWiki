@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DataTypeRegistry;
+use SMW\DIProperty;
 
 /**
  * This class provides a subclass of SMWSemanticData that can store
@@ -101,11 +102,11 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @param $property SMWDIProperty
+	 * @param DIProperty $property
 	 *
 	 * @return array of SMWDataItem
 	 */
-	public function getPropertyValues( SMWDIProperty $property ) {
+	public function getPropertyValues( DIProperty $property ) {
 		if ( $property->isInverse() ) { // we never have any data for inverses
 			return array();
 		}
@@ -153,7 +154,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 *
 	 * @since 1.8
 	 */
-	public function removePropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
+	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
 		$this->unstubProperties();
 		$this->getPropertyValues( $property );
 		parent::removePropertyObjectValue($property, $dataItem);
@@ -243,7 +244,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	protected function unstubProperty( $propertyKey, $diProperty = null ) {
 		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
 			if ( is_null( $diProperty ) ) {
-				$diProperty = new SMWDIProperty( $propertyKey, false );
+				$diProperty = new DIProperty( $propertyKey, false );
 			}
 
 			$this->mProperties[$propertyKey] = $diProperty;
