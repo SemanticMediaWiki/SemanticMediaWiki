@@ -400,8 +400,8 @@ final class Setup implements ContextAware {
 		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $settings, $context ) {
 
 			$deleteSubject = new DeleteSubjectJob( $wikiPage->getTitle(), array(
-				'asDeferredJob' => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
-				'withRefresh'   => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
+				'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
+				'withAssociates' => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
 			) );
 
 			$deleteSubject->invokeContext( $context );

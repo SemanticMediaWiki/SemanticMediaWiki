@@ -17,10 +17,10 @@ use Job;
  */
 class DeleteSubjectJob extends JobBase {
 
-	/** $var Job */
+	/** @var Job */
 	protected $jobs = array();
 
-	/** $var boolean */
+	/** @var boolean */
 	protected $enabledJob = true;
 
 	/**
@@ -45,9 +45,11 @@ class DeleteSubjectJob extends JobBase {
 	}
 
 	/**
-	 * A deferred job mode is being introduced to avoid a performance penalty which
-	 * can occur during processing if a large group of associate assignments are
-	 * connected to the deleted subject
+	 * deleteSubject() will eliminate any associative reference to a subject
+	 * therefore when run as `DeferredJob` and before the actual removal SemanticData
+	 * are serialized and attached to the dispatch job, this allows to decouple
+	 * deletion from an update process (prioritization between subject deletion
+	 * and data refresh process)
 	 *
 	 * @since  1.9.0.1
 	 *
@@ -58,7 +60,8 @@ class DeleteSubjectJob extends JobBase {
 		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) &&
 			$this->hasParameter( 'asDeferredJob' ) &&
 			$this->getParameter( 'asDeferredJob' ) ) {
-			return $this->instertAsDeferredJob()->push();
+			$this->instertAsDeferredJobWithSemanticData()->push();
+			return $this->deleteSubject();
 		}
 
 		return $this->run();
@@ -67,15 +70,12 @@ class DeleteSubjectJob extends JobBase {
 	/**
 	 * @see Job::run
 	 *
-	 * @note UpdateDispatcherJob has to be executed before any store data is
-	 * being modified (before deleteSubject) to ensure synchronize execution
-	 *
 	 * @since  1.9.0.1
 	 */
 	public function run() {
 
-		if ( $this->hasParameter( 'withRefresh' ) && $this->getParameter( 'withRefresh' ) ) {
-			$this->findAssociatesAndRefresh();
+		if ( $this->hasParameter( 'withAssociates' ) && $this->getParameter( 'withAssociates' ) ) {
+			$this->runUpdateDispatcherJob();
 		}
 
 		return $this->deleteSubject();
@@ -86,8 +86,8 @@ class DeleteSubjectJob extends JobBase {
 		return true;
 	}
 
-	protected function findAssociatesAndRefresh() {
-		$dispatcher = new UpdateDispatcherJob( $this->getTitle() );
+	protected function runUpdateDispatcherJob() {
+		$dispatcher = new UpdateDispatcherJob( $this->getTitle(), $this->params );
 		$dispatcher->invokeContext( $this->withContext() );
 		$dispatcher->run();
 	}
@@ -97,9 +97,18 @@ class DeleteSubjectJob extends JobBase {
 		return true;
 	}
 
-	protected function instertAsDeferredJob() {
+	protected function instertAsDeferredJobWithSemanticData() {
+
+		$this->addSerializedSemanticData();
+
 		$this->jobs[] = new self( $this->getTitle(), $this->params );
 		return $this;
+	}
+
+	protected function addSerializedSemanticData() {
+		$this->params['semanticData'] = SerializerFactory::serialize(
+			$this->withContext()->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->getTitle() ) )
+		);
 	}
 
 }

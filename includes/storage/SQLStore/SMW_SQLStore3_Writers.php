@@ -60,8 +60,10 @@ class SMWSQLStore3Writers {
 			$db->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
 		}
 
-		///FIXME: if a property page is deleted, more pages may need to be updated by jobs!
-		///TODO: who is responsible for these updates? Some update jobs are currently created in SMW_Hooks, some internally in the store
+		// 1.9.0.1
+		// The update of possible associative entities is handled by DeleteSubjectJob which is invoked during
+		// the ArticleDelete hook
+
 		///TODO: Possibly delete ID here (at least for non-properties/categories, if not used in any place in rels2)
 
 		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $subject ) );

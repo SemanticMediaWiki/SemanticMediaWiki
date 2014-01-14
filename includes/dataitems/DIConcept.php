@@ -197,11 +197,5 @@ class DIConcept extends \SMWDataItem {
 		}
 		return $di->getSerialization() === $this->getSerialization();
 	}
-}
 
-/**
- * SMWDIConcept
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
+}

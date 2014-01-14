@@ -468,6 +468,10 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 			->will( $this->builder->setCallback( 'getProperties', array() ) );
 
 		$store->expects( $this->any() )
+			->method( 'getInProperties' )
+			->will( $this->builder->setCallback( 'getInProperties', array() ) );
+
+		$store->expects( $this->any() )
 			->method( 'getStatisticsTable' )
 			->will( $this->returnValue( 'smw_statistics_table_test' ) );
 

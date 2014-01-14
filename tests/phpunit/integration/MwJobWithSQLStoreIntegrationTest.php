@@ -27,9 +27,11 @@ use Job;
 class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 
 	/**
+	 * @dataProvider titleProvider
+	 *
 	 * @since 1.9.0.1
 	 */
-	public function testArticleDeleteAsDeferredJob() {
+	public function testArticleDeleteAssociativeEntitiesRefreshAsDeferredJob( $source, $associate ) {
 
 		$store   = $this->getStore();
 		$context = new ExtensionContext();
@@ -41,19 +43,22 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 
 		$this->runExtensionSetup( $context );
 
-		$title = Title::newFromText( __METHOD__ );
-		$dataItem = DIWikiPage::newFromTitle( $title );
+		$subject = DIWikiPage::newFromTitle( $source['title'] );
 
-		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $dataItem ) );
+		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $subject ) );
 
-		$this->createPage( $title );
-		$this->assertSemanticDataIsNotEmpty( $store->getSemanticData( $dataItem ) );
+		$this->createPage( $source['title'], $source['edit'] );
+		$this->createPage( $associate['title'], $associate['edit']  );
 
-		$this->deletePage( $title );
-		$this->assertSemanticDataIsNotEmpty( $store->getSemanticData( $dataItem ) );
+		$this->assertSemanticDataIsNotEmpty( $store->getSemanticData( $subject ) );
 
-		$this->assertJobRun( 'SMW\DeleteSubjectJob' );
-		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $dataItem ) );
+		$this->deletePage( $source['title'] );
+
+		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $subject ) );
+		$this->assertJobRun( 'SMW\DeleteSubjectJob', null, array( 'withAssociates', 'asDeferredJob', 'semanticData' ) );
+		$this->assertJobRun( 'SMW\UpdateJob' );
+
+		$this->deletePage( $associate['title'] );
 
 	}
 
@@ -90,16 +95,55 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 		return $provider;
 	}
 
-	protected function assertJobRun( $type, Job $job = null ) {
+	/**
+	 * @return array
+	 */
+	public function titleProvider() {
+
+		$provider = array();
+
+		// #0 Simple property reference
+		$provider[] = array( array(
+				'title' => Title::newFromText( __METHOD__ . '-foo' ),
+				'edit'  => '{{#set:|DeferredJobFoo=DeferredJobBar}}'
+			), array(
+				'title' => Title::newFromText( __METHOD__ . '-bar' ),
+				'edit'  => '{{#set:|DeferredJobFoo=DeferredJobBar}}'
+			)
+		);
+
+		// #1 Source page in-property reference
+		$title = Title::newFromText( __METHOD__ . '-foo' );
+
+		$provider[] = array( array(
+				'title' => $title,
+				'edit'  => ''
+			), array(
+				'title' => Title::newFromText( __METHOD__ . '-bar' ),
+				'edit'  => '{{#set:|DeferredJobFoo=' . $title->getPrefixedText() . '}}'
+			)
+		);
+
+		return $provider;
+	}
+
+	protected function assertJobRun( $type, Job $job = null, $hasParameters = array() ) {
 
 		if ( $job === null ) {
 			$job = Job::pop_type( $type );
 		}
 
+		$this->assertInstanceOf( 'Job', $job );
+
 		$this->assertTrue(
 			$job->run(),
 			'Asserts a successful Job execution'
 		);
+
+		foreach ( $hasParameters as $hasParameter ) {
+			$this->assertTrue( $job->hasParameter( $hasParameter ) );
+		}
+
 	}
 
 }

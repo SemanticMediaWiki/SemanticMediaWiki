@@ -20,11 +20,14 @@ use Job;
  */
 class UpdateDispatcherJob extends JobBase {
 
-	/** $var Job */
+	/** @var Job */
 	protected $jobs = array();
 
-	/** $var boolean */
+	/** @var boolean */
 	protected $enabled = true;
+
+	/** @var Store */
+	protected $store = null;
 
 	/**
 	 * @since  1.9
@@ -61,10 +64,15 @@ class UpdateDispatcherJob extends JobBase {
 	public function run() {
 		Profiler::In( __METHOD__, true );
 
+		/**
+		 * @var Store $store
+		 */
+		$this->store = $this->withContext()->getStore();
+
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->dispatchSubjectsByProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->push();
-		} else{
-			$this->dispatchSubjects( DIWikiPage::newFromTitle( $this->getTitle() ) )->push();
+			$this->dispatchUpdateForProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->push();
+		} else {
+			$this->dispatchUpdateForSubject( DIWikiPage::newFromTitle( $this->getTitle() ) )->push();
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -84,22 +92,19 @@ class UpdateDispatcherJob extends JobBase {
 	}
 
 	/**
-	 * Generates list of involved subjects
-	 *
-	 * @since 1.9
+	 * @since 1.9.0.1
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	protected function dispatchSubjects( DIWikiPage $subject ) {
+	protected function dispatchUpdateForSubject( DIWikiPage $subject ) {
 		Profiler::In( __METHOD__, true );
 
-		/**
-		 * @var Store $store
-		 */
-		$store = $this->withContext()->getStore();
+		$this->addUpdateJobsForProperties( $this->store->getProperties( $subject ) );
+		$this->addUpdateJobsForProperties( $this->store->getInProperties( $subject ) );
 
-		foreach ( $store->getProperties( $subject ) as $property ) {
-			$this->addJobs( $store->getAllPropertySubjects( $property ) );
+		if ( $this->hasParameter( 'semanticData' ) ) {
+			$semanticData = SerializerFactory::deserialize( $this->getParameter( 'semanticData' ) );
+			$this->addUpdateJobsForProperties( $semanticData->getProperties() );
 		}
 
 		Profiler::Out( __METHOD__, true );
@@ -113,36 +118,40 @@ class UpdateDispatcherJob extends JobBase {
 	 *
 	 * @param DIProperty $property
 	 */
-	protected function dispatchSubjectsByProperty( DIProperty $property ) {
+	protected function dispatchUpdateForProperty( DIProperty $property ) {
 		Profiler::In( __METHOD__, true );
 
-		/**
-		 * @var Store $store
-		 */
-		$store = $this->withContext()->getStore();
-
-		// Array of all subjects that have some value for the given property
-		$subjects = $store->getAllPropertySubjects( $property );
-
-		$this->addJobs( $subjects );
+		$this->addUpdateJobsForProperties( array( $property ) );
 
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
 		wfRunHooks( 'smwUpdatePropertySubjects', array( &$this->jobs ) );
 
 		// Hook since 1.9
-		wfRunHooks( 'SMW::Dispatcher::updateJobs', array( $property, &$this->jobs ) );
+		wfRunHooks( 'SMW::Dispatcher::updateJobs', array( &$this->jobs, $property ) );
 
-		// Fetch all those that have an error property attached and
-		// re-run it through the job-queue
-		$subjects = $store->getPropertySubjects(
-			new DIProperty( DIProperty::TYPE_ERROR ),
-			DIWikiPage::newFromTitle( $this->title )
-		);
-
-		$this->addJobs( $subjects );
+		$this->addUpdateJobsForPropertyWithTypeError();
 
 		Profiler::Out( __METHOD__, true );
 		return $this;
+	}
+
+	protected function addUpdateJobsForProperties( array $properties ) {
+		foreach ( $properties as $property ) {
+
+			if ( $property->isUserDefined() ) {
+				$this->addUpdateJobs( $this->store->getAllPropertySubjects( $property ) );
+			}
+
+		}
+	}
+
+	protected function addUpdateJobsForPropertyWithTypeError() {
+		$subjects = $this->store->getPropertySubjects(
+			new DIProperty( DIProperty::TYPE_ERROR ),
+			DIWikiPage::newFromTitle( $this->getTitle() )
+		);
+
+		$this->addUpdateJobs( $subjects );
 	}
 
 	/**
@@ -160,7 +169,7 @@ class UpdateDispatcherJob extends JobBase {
 	 *
 	 * @param DIWikiPage[] $subjects
 	 */
-	protected function addJobs( array $subjects = array() ) {
+	protected function addUpdateJobs( array $subjects = array() ) {
 
 		foreach ( $subjects as $subject ) {
 
@@ -182,6 +191,7 @@ class UpdateDispatcherJob extends JobBase {
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -195,4 +205,5 @@ class UpdateDispatcherJob extends JobBase {
 			parent::insert();
 		}
 	}
+
 }
