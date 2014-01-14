@@ -229,6 +229,16 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit_Framework_TestCase {
 
 	}
 
+	protected function getStore() {
+		$store = StoreFactory::getStore();
+
+		if ( !( $store instanceof \SMWSQLStore3 ) ) {
+			$this->markTestSkipped( 'Test only applicable for SMWSQLStore3' );
+		}
+
+		return $store;
+	}
+
 	/**
 	 * Utility method taking an array of elements and wrapping
 	 * each element in it's own array. Useful for data providers
