@@ -325,6 +325,8 @@ class SMWSQLStore3Readers {
 					$this->store->getSQLOptions( $requestoptions, $valueField )
 				) );
 
+		$this->assertDatabaseQueryResult( $res, $from, $select, $where, 'SMW::getSemanticData' );
+
 		foreach ( $res as $row ) {
 			if ( $issubject ) { // use joined or predefined property name
 				$propertykey = $proptable->isFixedPropertyTable() ? $proptable->getFixedProperty() : $row->prop;
@@ -654,6 +656,24 @@ class SMWSQLStore3Readers {
 
 		$result = $this->store->applyRequestOptions( $result, $requestoptions ); // apply options to overall result
 		wfProfileOut( "SMWSQLStore3::getInProperties (SMW)" );
+
+		return $result;
+	}
+
+	/**
+	 * @since  1.9.0.2
+	 */
+	private function assertDatabaseQueryResult( $result, $from, $select, $where, $method ) {
+
+		if ( !( $result instanceof ResultWrapper ) ) {
+			throw new UnexpectedValueException(
+				'Missing ResultWrapper instance for query: ' .
+				$from .
+				$select .
+				$where .
+				$method
+			);
+		}
 
 		return $result;
 	}
