@@ -261,7 +261,13 @@ class SMWSQLStore3Readers {
 		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
 
 		// ***  First build $from, $select, and $where for the DB query  ***//
-		$from   = $proptable->getName(); // always use actual table
+
+		// Bug 60092
+		if ( $db instanceof \DatabaseMysqli ) {
+			$from = $db->tableName( $proptable->getName() );
+		} else {
+			$from = $proptable->getName(); // always use actual table
+		}
 
 		$select = '';
 		$where  = '';
