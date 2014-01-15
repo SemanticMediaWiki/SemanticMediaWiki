@@ -7,6 +7,8 @@ matrix:
   include:
     - env: DBTYPE=mysql; MW=master; TYPE=coverage
       php: 5.3
+    - env: DBTYPE=mysqli; MW=master; TYPE=composer
+      php: 5.4
     - env: DBTYPE=sqlite; MW=master; TYPE=composer
       php: 5.3
     - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
