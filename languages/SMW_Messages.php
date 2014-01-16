@@ -3627,7 +3627,7 @@ $messages['diq'] = array(
 	'smw_printername_table' => 'Tablo',
 	'smw_printername_template' => 'Şablon',
 	'smw_printername_rdf' => 'RDF teberdayış',
-	'smw_printername_category' => 'Kategori',
+	'smw_printername_category' => 'Kategoriye',
 	'smw-paramdesc-export' => 'Weçenegê teberdayışi',
 	'smw_true_words' => 'raştay,r,eya,e',
 	'smw_false_words' => 'zuray,z,nê,n',
@@ -7779,6 +7779,7 @@ $messages['it'] = array(
 	'smw_printername_broadtable' => 'Tabella estesa',
 	'smw_printername_template' => 'Template',
 	'smw_printername_category' => 'Categoria',
+	'validator-type-class-SMWParamSource' => 'testo',
 	'smw-paramdesc-limit' => 'Il numero massimo di risultati da restituire',
 	'smw-paramdesc-headers' => 'Mostra i nomi di header/proprietà',
 	'smw-paramdesc-mainlabel' => "L'etichetta da dare al nome della pagina principale",
@@ -7956,7 +7957,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sì, sono sicuro.',
 	'smw_smwadmin_support' => 'Ottenere supporto',
 	'smw_smwadmin_supportdocu' => "Diverse risorse potrebbero esserti d'aiuto in caso di problemi:",
-	'smw_smwadmin_installfile' => 'Se hai problemi con la tua installazione, inizia a verificare le linee guida nel <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">file INSTALL</a>.', # Fuzzy
+	'smw_smwadmin_installfile' => 'Se hai problemi con la tua installazione, inizia a verificare le linee guida nel <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">file INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'La documentazione completa per l\'utente di Semantic MediaWiki si trova in <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Gli errori/bachi possono essere segnalati in <a href="https://bugzilla.wikimedia.org/">bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se hai altre domande o suggerimenti, unisciti alle discussioni sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum degli utenti di Semantic MediaWiki</a>.',
@@ -12779,6 +12780,8 @@ $messages['ru'] = array(
 	'smw-sp-properties-docu' => 'Эта служебная страница показывает доступные [https://www.semantic-mediawiki.org/wiki/Property свойства], после фильтрации которых отображаются только совпавшие определённые пользователем свойства. Для дифференцированного представления, см. служебные страницы со списком [[Special:UnusedProperties|неиспользованных свойств]] или [[Special:WantedProperties|требуемых свойств]].',
 	'smw-sp-properties-cache-info' => 'Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.',
 	'smw-sp-properties-header-label' => 'Список свойств',
+	'smw-sp-admin-settings-title' => 'Параметры конфигурации',
+	'smw-sp-admin-settings-button' => 'Создать список настроек',
 );
 
 /** Rusyn (русиньскый)
