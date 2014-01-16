@@ -11,8 +11,6 @@ Semantic MediaWiki (SMW) is a free, open-source extension to [MediaWiki]
 (https://semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
 powers Wikipedia – that lets you store and query data within the wiki's pages.
 
-### About the project
-
 Semantic MediaWiki is also a full-fledged framework, in conjunction with
 many spinoff extensions, that can turn a wiki into a powerful and flexible
 knowledge management system. All data created within SMW can easily be
@@ -41,6 +39,7 @@ Many people have contributed to SMW. You can find an overview [on the SMW wiki]
 (https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
 
 ## License
+
 The COPYING file explains SMW's copyright and license (GNU General Public License, version 2 or later).
 
 ## Contact
