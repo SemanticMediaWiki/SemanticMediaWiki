@@ -1,11 +1,20 @@
-About Semantic MediaWiki
-========================
+# Semantic MediaWiki
 
-Semantic MediaWiki is a project for extending MediaWiki with "semantic"
-functions that enable machine-reading of wiki-content. For details and
-further links, see [the SMW wiki](https://semantic-mediawiki.org).
+Semantic MediaWiki (SMW) is a free, open-source extension to [MediaWiki]
+(https://semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
+powers Wikipedia – that lets you store and query data within the wiki's pages.
 
-Notes on installing Semantic MediaWiki are found in the [INSTALL file](docs/INSTALL.md).
+Semantic MediaWiki is also a full-fledged framework, in conjunction with
+many spinoff extensions, that can turn a wiki into a powerful and flexible
+knowledge management system. All data created within SMW can easily be
+published via the [Semantic Web](https://semantic-mediawiki.org/wiki/Semantic_Web),
+allowing other systems to use this data seamlessly.
+
+For details and further links, see [the SMW wiki](https://semantic-mediawiki.org).
+
+## About the project
+
+### Status
 
 [![Build Status](https://secure.travis-ci.org/SemanticMediaWiki/SemanticMediaWiki.png?branch=master)](http://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
 [![Code Coverage](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/coverage.png?s=f3501ede0bcc98824aa51501eb3647ecf71218c0)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
@@ -16,73 +25,35 @@ On [Packagist](https://packagist.org/packages/mediawiki/semantic-media-wiki):
 [![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-media-wiki/version.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
 [![Packagist download count](https://poser.pugx.org/mediawiki/semantic-media-wiki/d/total.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
 
-Contact
--------
+### Contributors
 
-If you have remarks, questions, or suggestions, please send them to
-semediawiki-users@lists.sourceforge.net. You can subscribe to this
-list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
+Many people have contributed to SMW. You can find an overview [on the SMW wiki]
+(https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
 
-Bugs should be filed at [Bugzilla](http://bugzilla.wikimedia.org/).
-(Mark product as MediaWiki extensions and Component as Semantic MediaWiki)
+### Contact
 
-People who want to contribute work to the project should subscribe to
-the developers list, semediawiki-devel@lists.sourceforge.net.
+If you have remarks, questions, or suggestions, please send them to [our mailing list]
+(https://semantic-mediawiki.org/wiki/Mailing_list). Alternatively you can join
+our #semantic-mediawiki IRC chatroom on Freenode.
 
-Specific inquiries (e.g. for press releases) should go to Markus Krötzsch,
-markus@semantic-mediawiki.org. Do not contact Markus directly if you just need
-free technical support -- that is what the user list is for.
+Bugs can be filed [on our GitHub project]
+(https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues).
+You are also welcome to submit [pull requests]
+(https://github.com/SemanticMediaWiki/SemanticMediaWiki/pulls)
+against this project.
 
-Developers
-----------
+[![Twitter](https://semantic-mediawiki.org/w/images/c/c9/Twitter_icon.jpg)](https://twitter.com/#!/semanticmw)
+[![Facebook](https://semantic-mediawiki.org/w/images/thumb/7/77/677166248.png/30px-677166248.png)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
+[![Google+](https://semantic-mediawiki.org/w/images/a/ae/30px-Google%2B.png)](https://plus.google.com/115301028320198614441/posts)
 
-Development is coordinated by Jeroen De Dauw and Markus Krötzsch.
+## Documentation
 
-Semantic MediaWiki development is partially funded by Institut AIFB of the
-Karlsruhe Institute of Technology in Germany; see http://www.aifb.kit.edu
-Specific development tasks have been supported by the European Union under the
-projects SEKT, NeOn, and Active. SMW has also been supported in the
-Halo project funded by Vulcan Inc., where development is coordinated
-by ontoprise GmbH, Karlsruhe, Germany.
+Most of the documentation can be found on the [SMW wiki](https://semantic-mediawiki.org).
+A small core of documentation also comes bundled with the software itself. This documentation
+is minimalistic and less explanatory then what can be found on the SMW wiki. It is however
+always kept up to date, and applies to the version of the code it comes bundled with.
+The most important files are linked below.
 
-Contributors
-------------
-
-* Denny Vrandecic is one of the original core developers.
-
-* Heiko Haller and Max Völkel contributed to the initial design and basic
-architectural decisions.
-
-* The German company Doccheck (doccheck.com) helped to get the implementation
-going at the early stages of the project, and set up the first testing wiki.
-The first implementation was done by Klaus Lassleben.
-
-* Code has been contributed by (in no particular order) S Page, Kai Hüner,
-Fernando Correia, Yaron Koren, Nick Grandy, Jörg Heizmann, Daniel Herzig,
-Nikolas Iwan, Tobias Matzner, Thomas Bleher, Felix Kratzer, Frank Dengler,
-Nathan R. Yergler, Daniel Friesen, Fabian Howahl, Jie Bao, Marcel Gsteiger,
-Roi Avinoam, Richard Cyganiak, Sanyam Goyal, Devayon Das, Nischay Nahata,
-James HK, Sam Reed, Karsten Hoffmeyer, Niklas Laxström.
-
-* The [logo](http://semantic-mediawiki.org/wiki/SMW_logo) and related artwork for
-Semantic MediaWiki were designed and realised by Markus Krötzsch. A previous 
-version of the SMW logo has been realised by Rozana Vrandecic.
-
-Translations
-------------
-
-Translations to various languages are provided and maintained by many people.
-In general, main contributors can be found in the message files. Special thanks
-are due to Siebrand Mazeland and the translatewiki.net project for the
-excellent translation service they provide.
-
-Credits to other projects
--------------------------
-
-* Most icons used by Semantic MediaWiki are derived from the "Crystal Clear"
-icon theme for KDE, which was created by [Everaldo](http://everaldo.com).
-
-* Many people have contributed to the project by providing helpful comments and
-suggestions. Among them are the members of the Semantic Wiki Interest Group
-(swikig@aifb.uni-karlsruhe.de; see semanticweb.org), the people at the project
-mailing lists, and a number of anonymous reviewers. Thanks a lot!
+* [Installation instructions](docs/INSTALL.md).
+* [User documentation overview](docs/README.md)
+* [Developer documentation overview](docs/technical/README.md)
