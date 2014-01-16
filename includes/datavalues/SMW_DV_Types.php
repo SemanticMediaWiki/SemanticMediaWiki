@@ -132,9 +132,6 @@ class SMWTypesValue extends SMWDataValue {
 
 	/**
 	 * Gets the title text for the types special page.
-	 * Takes care of compatibility changes in MW 1.17 and 1.18.
-	 * 1.17 introduces SpecialPageFactory
-	 * 1.18 deprecates SpecialPage::getLocalNameFor
 	 *
 	 * @since 1.6
 	 *
