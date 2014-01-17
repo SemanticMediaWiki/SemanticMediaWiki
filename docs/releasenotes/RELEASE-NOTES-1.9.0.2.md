@@ -1,5 +1,7 @@
 # Semantic MediaWiki 1.9.0.2
 
+Released January 17th, 2014.
+
 ### Bug fixes
 
 * #85 Fixed compatibility issue with PHP 5.3 on Special:SMWAdmin and added regression test
