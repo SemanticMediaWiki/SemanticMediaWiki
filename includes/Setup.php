@@ -273,9 +273,8 @@ final class Setup implements ContextAware {
 	 * @since 1.9
 	 */
 	protected function registerFooterIcon() {
-
 		$this->globals['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(
-			'src' => $this->settings->get( 'smwgScriptPath' ) . '/resources/images/smw_button.png',
+			'src' => substr( __DIR__, strlen( $GLOBALS['IP'] ) - strlen( $GLOBALS['wgScriptPath'] ), -strlen( 'includes/' ) ) . '/resources/images/smw_button.png',
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',
 		);

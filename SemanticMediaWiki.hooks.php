@@ -328,7 +328,7 @@ final class SMWHooks {
 			),
 			'position' => 'top',
 			'localBasePath' => __DIR__,
-			'remoteExtPath' => 'SemanticMediaWiki',
+			'remoteExtPath' => '..' . substr( __DIR__, strlen( $GLOBALS['IP'] ) ),
 		);
 
 		return true;

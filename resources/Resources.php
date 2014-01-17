@@ -14,18 +14,16 @@ namespace SMW;
  * @author mwjames
  */
 
-global $smwgIP, $smwgScriptPath;
-
 $moduleTemplate = array(
-	'localBasePath' => $smwgIP ,
-	'remoteBasePath' => $smwgScriptPath,
+	'localBasePath' => __DIR__,
+	'remoteExtPath' => '..' . substr( __DIR__, strlen( $GLOBALS['IP'] ) ),
 	'group' => 'ext.smw'
 );
 
 return array(
 	// SMW core class
 	'ext.smw' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/ext.smw.js',
+		'scripts' => 'smw/ext.smw.js',
 		'dependencies' => 'jquery.async',
 	),
 
@@ -34,33 +32,33 @@ return array(
 	// was not a choice as it showed flashy hiccups
 	'ext.smw.style' => $moduleTemplate + array(
 		'styles' => array(
-			'resources/smw/util/ext.smw.util.tooltip.css',
-			'resources/smw/ext.smw.css'
+			'smw/util/ext.smw.util.tooltip.css',
+			'smw/ext.smw.css'
 		),
 		'position' => 'top'
 	),
 
 	// jStorage was added in MW 1.20
 	'ext.jquery.jStorage' => $moduleTemplate + array(
-		'scripts' => 'resources/jquery/jquery.jstorage.js',
+		'scripts' => 'jquery/jquery.jstorage.js',
 		'dependencies' => 'jquery.json',
 	),
 
 	// md5 hash key generator
 	'ext.jquery.md5' => $moduleTemplate + array(
-		'scripts' => 'resources/jquery/jquery.md5.js'
+		'scripts' => 'jquery/jquery.md5.js'
 	),
 
 	// dataItem representation
 	'ext.smw.dataItem' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/smw/data/ext.smw.dataItem.wikiPage.js',
-			'resources/smw/data/ext.smw.dataItem.uri.js',
-			'resources/smw/data/ext.smw.dataItem.time.js',
-			'resources/smw/data/ext.smw.dataItem.property.js',
-			'resources/smw/data/ext.smw.dataItem.unknown.js',
-			'resources/smw/data/ext.smw.dataItem.number.js',
-			'resources/smw/data/ext.smw.dataItem.text.js',
+			'smw/data/ext.smw.dataItem.wikiPage.js',
+			'smw/data/ext.smw.dataItem.uri.js',
+			'smw/data/ext.smw.dataItem.time.js',
+			'smw/data/ext.smw.dataItem.property.js',
+			'smw/data/ext.smw.dataItem.unknown.js',
+			'smw/data/ext.smw.dataItem.number.js',
+			'smw/data/ext.smw.dataItem.text.js',
 		),
 		'dependencies' => array(
 			'ext.smw',
@@ -72,14 +70,14 @@ return array(
 	// dataValue representation
 	'ext.smw.dataValue' => $moduleTemplate + array(
 		'scripts' => array(
-			'resources/smw/data/ext.smw.dataValue.quantity.js',
+			'smw/data/ext.smw.dataValue.quantity.js',
 		),
 		'dependencies' => 'ext.smw.dataItem'
 	),
 
 	// dataItem representation
 	'ext.smw.data' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/data/ext.smw.data.js',
+		'scripts' => 'smw/data/ext.smw.data.js',
 		'dependencies' => array(
 			'ext.smw.dataItem',
 			'ext.smw.dataValue'
@@ -88,7 +86,7 @@ return array(
 
 	// Query
 	'ext.smw.query' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/query/ext.smw.query.js',
+		'scripts' => 'smw/query/ext.smw.query.js',
 		'dependencies' => array(
 			'ext.smw',
 			'mediawiki.util'
@@ -97,7 +95,7 @@ return array(
 
 	// API
 	'ext.smw.api' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/api/ext.smw.api.js',
+		'scripts' => 'smw/api/ext.smw.api.js',
 		'dependencies' => array(
 			'ext.smw.data',
 			'ext.smw.query',
@@ -108,18 +106,18 @@ return array(
 
 	// Tooltip qtip2 resources
 	'ext.jquery.qtip' => $moduleTemplate + array(
-		'scripts' => 'resources/jquery/jquery.qtip.js',
-		'styles' => 'resources/jquery/jquery.qtip.css',
+		'scripts' => 'jquery/jquery.qtip.js',
+		'styles' => 'jquery/jquery.qtip.css',
 	),
 
 	// Tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + array(
-		'styles' => 'resources/smw/util/ext.smw.util.tooltip.css',
+		'styles' => 'smw/util/ext.smw.util.tooltip.css',
 	),
 
 	// Tooltip
 	'ext.smw.tooltip' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/util/ext.smw.util.tooltip.js',
+		'scripts' => 'smw/util/ext.smw.util.tooltip.js',
 		'dependencies' => array(
 			'ext.smw.tooltip.styles',
 			'ext.smw',
@@ -147,13 +145,13 @@ return array(
 	),
 	// Autocomplete resources
 	'ext.smw.autocomplete' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/util/ext.smw.util.autocomplete.js',
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.js',
 		'dependencies' => 'jquery.ui.autocomplete'
 	),
 	// Special:Ask
 	'ext.smw.ask' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/special/ext.smw.special.ask.js',
-		'styles' => 'resources/smw/special/ext.smw.special.ask.css',
+		'scripts' => 'smw/special/ext.smw.special.ask.js',
+		'styles' => 'smw/special/ext.smw.special.ask.css',
 		'dependencies' => array(
 			'ext.smw.tooltip',
 			'ext.smw.style',
@@ -167,7 +165,7 @@ return array(
 	),
 	// Facts and browse
 	'ext.smw.browse' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/special/ext.smw.special.browse.js',
+		'scripts' => 'smw/special/ext.smw.special.browse.js',
 		'dependencies' => array(
 			'ext.smw.style',
 			'ext.smw.autocomplete'
@@ -176,7 +174,7 @@ return array(
 	),
 	// Special:SearchByProperty
 	'ext.smw.property' => $moduleTemplate + array(
-		'scripts' => 'resources/smw/special/ext.smw.special.property.js',
+		'scripts' => 'smw/special/ext.smw.special.property.js',
 		'dependencies' => 'ext.smw.autocomplete'
 	)
 );
