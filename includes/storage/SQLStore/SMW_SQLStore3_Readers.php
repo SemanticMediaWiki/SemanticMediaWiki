@@ -256,12 +256,12 @@ class SMWSQLStore3Readers {
 
 		wfProfileIn( "SMWSQLStore3::fetchSemanticData-" . $proptable->getName() .  " (SMW)" );
 		$result = array();
-		$db = wfGetDB( DB_SLAVE );
+		$db = $this->store->getDatabase();
 
 		$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
 
 		// ***  First build $from, $select, and $where for the DB query  ***//
-		$from   = $proptable->getName(); // always use actual table
+		$from = $db->tableName( $proptable->getName() ); // always use actual table
 
 		$select = '';
 		$where  = '';
@@ -319,13 +319,11 @@ class SMWSQLStore3Readers {
 		}
 
 		// ***  Now execute the query and read the results  ***//
-		$res = $db->select( $from, $select, $where, 'SMW::getSemanticData',
+		$res = $db->select( $from, $select, $where, __METHOD__,
 				( $usedistinct ?
 					$this->store->getSQLOptions( $requestoptions, $valueField ) + array( 'DISTINCT' ) :
 					$this->store->getSQLOptions( $requestoptions, $valueField )
 				) );
-
-		$this->assertDatabaseQueryResult( $res, $from, $select, $where, 'SMW::getSemanticData' );
 
 		foreach ( $res as $row ) {
 			if ( $issubject ) { // use joined or predefined property name
@@ -391,7 +389,7 @@ class SMWSQLStore3Readers {
 
 		$proptables = SMWSQLStore3::getPropertyTables();
 		$proptable = $proptables[$tableid];
-		$db = wfGetDB( DB_SLAVE );
+		$db = $this->store->getDatabase();
 
 		if ( $proptable->usesIdSubject() ) { // join with ID table to get title data
 			$from = $db->tableName( SMWSql3SmwIds::tableName ) . " INNER JOIN " . $db->tableName( $proptable->getName() ) . " AS t1 ON t1.s_id=smw_id";
@@ -411,8 +409,7 @@ class SMWSQLStore3Readers {
 		$result = array();
 		$res = $db->select( $from, 'DISTINCT ' . $select,
 		                    $where . $this->store->getSQLConditions( $requestoptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
-		                    'SMW::getPropertySubjects',
-		                    $this->store->getSQLOptions( $requestoptions, 'smw_sortkey' ) );
+		                    __METHOD__, $this->store->getSQLOptions( $requestoptions, 'smw_sortkey' ) );
 
 		$diHandler = $this->store->getDataItemHandlerForDIType( SMWDataItem::TYPE_WIKIPAGE );
 
@@ -454,7 +451,7 @@ class SMWSQLStore3Readers {
 	 * @param integer $tableindex
 	 */
 	protected function prepareValueQuery( &$from, &$where, $proptable, $value, $tableindex = 1 ) {
-		$db = wfGetDB( DB_SLAVE );
+		$db = $this->store->getDatabase();
 
 		if ( $value instanceof SMWDIContainer ) { // recursive handling of containers
 			$keys = array_keys( $proptable->getFields( $this->store ) );
@@ -530,7 +527,7 @@ class SMWSQLStore3Readers {
 			return array();
 		}
 
-		$db = wfGetDB( DB_SLAVE );
+		$db = $this->store->getDatabase();
 		$result = array();
 
 		// potentially need to get more results, since options apply to union
@@ -557,7 +554,7 @@ class SMWSQLStore3Readers {
 					$propertyTable->getName(),
 					'*',
 					$where,
-					'SMW::getProperties',
+					__METHOD__,
 					array( 'LIMIT' => 1 )
 				);
 
@@ -574,7 +571,7 @@ class SMWSQLStore3Readers {
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
 					// (select sortkey since it might be used in ordering (needed by Postgres))
 					$where . $this->store->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey' ),
-					'SMW::getProperties', $this->store->getSQLOptions( $suboptions, 'smw_sortkey' ) );
+					__METHOD__, $this->store->getSQLOptions( $suboptions, 'smw_sortkey' ) );
 
 				foreach ( $res as $row ) {
 					$result[] = new SMWDIProperty( $row->smw_title );
@@ -606,7 +603,7 @@ class SMWSQLStore3Readers {
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore3::getInProperties (SMW)" );
 
-		$db = wfGetDB( DB_SLAVE );
+		$db = $this->store->getDatabase();
 		$result = array();
 
 		// Potentially need to get more results, since options apply to union.
@@ -633,7 +630,7 @@ class SMWSQLStore3Readers {
 				$res = $db->select( $from, 'DISTINCT smw_title,smw_sortkey',
 						// select sortkey since it might be used in ordering (needed by Postgres)
 						$where . $this->store->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey', $where !== '' ),
-						'SMW::getInProperties', $this->store->getSQLOptions( $suboptions, 'smw_sortkey' ) );
+						__METHOD__, $this->store->getSQLOptions( $suboptions, 'smw_sortkey' ) );
 
 				foreach ( $res as $row ) {
 					try {
@@ -645,7 +642,7 @@ class SMWSQLStore3Readers {
 			} else {
 				$from = $db->tableName( $proptable->getName() ) . " AS t1";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
-				$res = $db->select( $from, '*', $where, 'SMW::getInProperties', array( 'LIMIT' => 1 ) );
+				$res = $db->select( $from, '*', $where, __METHOD__, array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
 					$result[] = new SMWDIProperty( $proptable->getFixedProperty() );
@@ -656,24 +653,6 @@ class SMWSQLStore3Readers {
 
 		$result = $this->store->applyRequestOptions( $result, $requestoptions ); // apply options to overall result
 		wfProfileOut( "SMWSQLStore3::getInProperties (SMW)" );
-
-		return $result;
-	}
-
-	/**
-	 * @since  1.9.0.2
-	 */
-	private function assertDatabaseQueryResult( $result, $from, $select, $where, $method ) {
-
-		if ( !( $result instanceof ResultWrapper ) ) {
-			throw new UnexpectedValueException(
-				'Missing ResultWrapper instance for query: ' .
-				$from .
-				$select .
-				$where .
-				$method
-			);
-		}
 
 		return $result;
 	}
