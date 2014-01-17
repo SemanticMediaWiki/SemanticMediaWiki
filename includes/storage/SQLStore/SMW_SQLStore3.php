@@ -8,6 +8,8 @@ use SMW\SQLStore\StatisticsCollector;
 use SMW\DataTypeRegistry;
 use SMW\Settings;
 use SMW\SQLStore\TableDefinition;
+use SMW\MediaWiki\Database;
+use SMW\LazyDBConnectionProvider as DBConnectionProvider;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
@@ -68,6 +70,12 @@ class SMWSQLStore3 extends SMWStore {
 	 * @var SMWSql3SmwIds
 	 */
 	public $smwIds;
+
+	/**
+	 * @var Database
+	 * @since  1.9.0.2
+	 */
+	protected $database = null;
 
 	/**
 	 * The reader object used by this store. Initialized by getReader()
@@ -839,4 +847,32 @@ class SMWSQLStore3 extends SMWStore {
 	public function getStatisticsTable() {
 		return self::PROPERTY_STATISTICS_TABLE;
 	}
+
+	/**
+	 * @since  1.9.0.2
+	 *
+	 * @param Database $database
+	 */
+	public function setDatabase( Database $database ) {
+		$this->database = $database;
+		return $this;
+	}
+
+	/**
+	 * @note DB_SLAVE (for read queries) or DB_MASTER (for write queries and read
+	 * queries that need the newest information)
+	 *
+	 * @since  1.9.0.2
+	 *
+	 * @return Database
+	 */
+	public function getDatabase() {
+
+		if ( $this->database === null ) {
+			$this->database = new Database( new DBConnectionProvider( DB_SLAVE ) );
+		}
+
+		return $this->database;
+	}
+
 }

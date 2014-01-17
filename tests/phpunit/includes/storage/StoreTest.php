@@ -1,14 +1,13 @@
 <?php
-/**
- * @file
- * @since 1.8
- * @ingroup SMW
- * @ingroup Test
- */
 
 namespace SMW\Test;
 
-use Title, SMWDIProperty, SMWDIWikiPage, SMWQueryProcessor;
+use SMW\StoreFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+
+use Title;
+use SMWQueryProcessor;
 use SMWRequestOptions;
 
 /**
@@ -42,11 +41,11 @@ class StoreTest extends \MediaWikiTestCase {
 	*/
 	public function testGetSemanticData( $titleText ,$filter = false) {
 		$title = Title::newFromText( $titleText );
-		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = \SMW\StoreFactory::getStore();
+		$subject = DIWikiPage::newFromTitle( $title );
+		$store = StoreFactory::getStore();
 
 		$this->assertInstanceOf(
-			'\SMWSemanticData',
+			'\SMW\SemanticData',
 			$store->getSemanticData( $subject, $filter ),
 			"Result should be instance of SMWSemanticData."
 		);
@@ -54,8 +53,8 @@ class StoreTest extends \MediaWikiTestCase {
 
 	public function getPropertyValuesDataProvider() {
 		return array(
-			array( Title::newMainPage()->getFullText(), new SMWDIProperty('_MDAT') ),
-			array( Title::newMainPage()->getFullText(), SMWDIProperty::newFromUserLabel('Age') ),
+			array( Title::newMainPage()->getFullText(), new DIProperty('_MDAT') ),
+			array( Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel('Age') ),
 			#add more pages and properties here, make sure they exist
 			#array( Test, Property ),
 		);
@@ -64,10 +63,10 @@ class StoreTest extends \MediaWikiTestCase {
 	/**
 	* @dataProvider getPropertyValuesDataProvider
 	*/
-	public function testGetPropertyValues( $titleText, SMWDIProperty $property, $requestOptions = null ) {
+	public function testGetPropertyValues( $titleText, DIProperty $property, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
-		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = \SMW\StoreFactory::getStore();
+		$subject = DIWikiPage::newFromTitle( $title );
+		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
@@ -83,7 +82,7 @@ class StoreTest extends \MediaWikiTestCase {
 
 	public function getPropertySubjectsDataProvider() {
 		return array(
-			array( new SMWDIProperty('_MDAT'), null ),
+			array( new DIProperty('_MDAT'), null ),
 			#add more properties and values (SMWDataItem) here, make sure they exist
 			#array( Property, value ),
 		);
@@ -92,17 +91,17 @@ class StoreTest extends \MediaWikiTestCase {
 	/**
 	* @dataProvider getPropertySubjectsDataProvider
 	*/
-	public function testGetPropertySubjects( SMWDIProperty $property, $value, $requestOptions = null ) {
-		$store = \SMW\StoreFactory::getStore();
+	public function testGetPropertySubjects( DIProperty $property, $value, $requestOptions = null ) {
+		$store = StoreFactory::getStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
 
 		foreach( $result as $page ) {
 			$this->assertInstanceOf(
-				'\SMWDIWikiPage',
+				'\SMW\DIWikiPage',
 				$page,
-				"Result should be instance of SMWDIWikiPage."
+				"Result should be instance of DIWikiPage."
 			);
 		}
 	}
@@ -120,17 +119,17 @@ class StoreTest extends \MediaWikiTestCase {
 	*/
 	public function testGetProperties( $titleText, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
-		$subject = SMWDIWikiPage::newFromTitle( $title );
-		$store = \SMW\StoreFactory::getStore();
+		$subject = DIWikiPage::newFromTitle( $title );
+		$store = StoreFactory::getStore();
 		$result = $store->getProperties( $subject, $requestOptions );
 
 		$this->assertTrue( is_array( $result ) );
 
 		foreach( $result as $property ) {
 			$this->assertInstanceOf(
-				'\SMWDIProperty',
+				'\SMW\DIProperty',
 				$property,
-				"Result should be instance of SMWDIProperty."
+				"Result should be instance of DIProperty."
 			);
 		}
 	}
@@ -186,9 +185,9 @@ class StoreTest extends \MediaWikiTestCase {
 			$this->assertEquals( 2, sizeof( $row ) );
 
 			$this->assertInstanceOf(
-				'\SMWDIProperty',
+				'\DIProperty',
 				$row[0],
-				"Result should be instance of SMWDIProperty."
+				"Result should be instance of DIProperty."
 			);
 		}
 	}
@@ -200,35 +199,45 @@ class StoreTest extends \MediaWikiTestCase {
 		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
 		foreach( $result->getResults() as $row ) {
 			$this->assertInstanceOf(
-				'\SMWDIProperty',
+				'\DIProperty',
 				$row,
-				"Result should be instance of SMWDIProperty."
+				"Result should be instance of DIProperty."
 			);
 		}
 	}
 
 	public function testGetWantedPropertiesSpecial() {
-		$store = \SMW\StoreFactory::getStore();
+		$store = StoreFactory::getStore();
 		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
 		foreach( $result->getResults() as $row ) {
 			$this->assertInstanceOf(
-				'\SMWDIProperty',
+				'\SMW\DIProperty',
 				$row[0],
-				"Result should be instance of SMWDIProperty."
+				"Result should be instance of DIProperty."
 			);
 		}
 	}
 
 	public function testGetStatistics() {
-		$store = \SMW\StoreFactory::getStore();
+		$store = StoreFactory::getStore();
 		$result = $store->getStatistics();
 
 		$this->assertTrue( is_array( $result ) );
 		$this->assertArrayHasKey( 'PROPUSES', $result );
 		$this->assertArrayHasKey( 'USEDPROPS', $result );
 		$this->assertArrayHasKey( 'DECLPROPS', $result );
+	}
+
+	public function testSetGetDatabase() {
+
+		$store = StoreFactory::getStore();
+		$database = $store->getDatabase();
+
+		$this->assertInstanceOf( '\SMW\MediaWiki\Database', $database );
+		$this->assertTrue( $database === $store->setDatabase( $database )->getDatabase() );
+
 	}
 
 }
