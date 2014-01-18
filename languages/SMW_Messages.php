@@ -8861,7 +8861,7 @@ $1 문서로 돌아갑니다.',
 	'smw_smwadmin_datarefreshstopconfirm' => '예, 확실합니다.',
 	'smw_smwadmin_support' => '지원 얻기',
 	'smw_smwadmin_supportdocu' => '문제가 있을 때 다양한 자료가 도움이 될 수도 있습니다:',
-	'smw_smwadmin_installfile' => '설치에 문제가 있으면, <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL 파일</a>에서 지침을 확인하여 시작하세요.', # Fuzzy
+	'smw_smwadmin_installfile' => '설치하는 데 문제가 발생하였다면, <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL 파일</a>에서 지침을 확인하고 시작하세요.',
 	'smw_smwadmin_smwhomepage' => '시맨틱 미디어위키의 완전한 사용자 설명서는 <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>에 있습니다.',
 	'smw_smwadmin_mediazilla' => '버그는 <a href="https://bugzilla.wikimedia.org/">버그질라</a>에 보고할 수 있습니다.',
 	'smw_smwadmin_questions' => '만약 추가적인 질문이나 제안이 있으면, <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">시맨틱 미디어위키 사용자 포럼</a>에서 토론에 참여하세요.',
@@ -8902,7 +8902,7 @@ $1 문서로 돌아갑니다.',
 	'smw-pa-property-predefined-default' => '$1(은)는 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
 	'smw-pa-property-predefined_ask' => '$1(은)는 쿼리의 메타데이터 [https://www.semantic-mediawiki.org/wiki/Subobject 하위 개체]의 링크인 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
 	'smw-pa-property-predefined_asksi' => '$1(은)는 쿼리에서 사용되는 조건의 수를 모으는 ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties 특수 속성]으로 알려진) 미리 정의된 속성입니다. 이 속성은 추가 관리 권한을 제공하는 내장된 속성이지만 다른 [https://www.semantic-mediawiki.org/wiki/Property 사용자 정의된 속성]처럼 사용할 수 있습니다.',
-	'smw-sp-properties-docu' => '이 특수 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자가 정의한 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.', # Fuzzy
+	'smw-sp-properties-docu' => '이 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자 정의 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.',
 	'smw-sp-properties-cache-info' => '나열된 데이터는 [https://www.semantic-mediawiki.org/wiki/Caching 캐시]에서 검색되었고, $1에 마지막으로 업데이트했습니다.',
 	'smw-sp-properties-header-label' => '속성 목록',
 );
