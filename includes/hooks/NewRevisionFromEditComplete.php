@@ -38,6 +38,9 @@ class NewRevisionFromEditComplete extends FunctionHook {
 	/** @var Parser */
 	protected $user = null;
 
+	/** @var ParserOutput */
+	protected $parserOutput = null;
+
 	/**
 	 * @since  1.9
 	 *
@@ -61,10 +64,7 @@ class NewRevisionFromEditComplete extends FunctionHook {
 	 * @return true
 	 */
 	public function process() {
-
-		$parserOutput = $this->retrieveParserOutput();
-
-		return $parserOutput instanceof ParserOutput ? $this->performUpdate( $parserOutput ) : true;
+		return $this->retrieveParserOutput() instanceof ParserOutput ? $this->performUpdate() : true;
 	}
 
 	/**
@@ -97,24 +97,22 @@ class NewRevisionFromEditComplete extends FunctionHook {
 
 		}
 
-		return $editInfo ? $editInfo->output : null;
+		return $this->parserOutput = $editInfo ? $editInfo->output : null;
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param ParserOutput $parserOutput
-	 *
 	 * @return true
 	 */
-	protected function performUpdate( ParserOutput $parserOutput ) {
+	protected function performUpdate() {
 
 		/**
 		 * @var ParserData $parserData
 		 */
 		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
 			'Title'        => $this->wikiPage->getTitle(),
-			'ParserOutput' => $parserOutput
+			'ParserOutput' => $this->parserOutput
 		) );
 
 		/**

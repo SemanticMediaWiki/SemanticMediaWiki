@@ -46,7 +46,7 @@ class Database {
 	 */
 	public function tableName( $tableName ) {
 
-		if ( $GLOBALS['wgDBtype'] == 'sqlite' ) {
+		if ( $this->getDB()->getType() == 'sqlite' ) {
 			return $tableName;
 		}
 

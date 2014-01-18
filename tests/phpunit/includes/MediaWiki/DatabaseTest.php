@@ -30,15 +30,45 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testMethodsWithSimpleReturnCoverage() {
+	public function testNumRowsMethod() {
 
-		$resultWrapper = $this->getMockBuilder( 'ResultWrapper' )
-			->disableOriginalConstructor()
-			->getMock();
+		$mock = new MockDBConnectionProvider( $this );
+		$connection = $mock->getConnection();
 
-		$connection = $this->getMockBuilder( 'DatabaseMysql' )
-			->disableOriginalConstructor()
-			->getMock();
+		$connection->expects( $this->once() )
+			->method( 'numRows' )
+			->with( $this->equalTo( 'Fuyu' ) )
+			->will( $this->returnValue( 1 ) );
+
+		$instance = new Database( $mock->getConnectionProvider() );
+
+		$this->assertEquals( 1, $instance->numRows( 'Fuyu' ) );
+
+	}
+
+	public function testAddQuotesMethod() {
+
+		$mock = new MockDBConnectionProvider( $this );
+		$connection = $mock->getConnection();
+
+		$connection->expects( $this->once() )
+			->method( 'addQuotes' )
+			->with( $this->equalTo( 'Fan' ) )
+			->will( $this->returnValue( 'Fan' ) );
+
+		$instance = new Database( $mock->getConnectionProvider() );
+
+		$this->assertEquals( 'Fan', $instance->addQuotes( 'Fan' ) );
+
+	}
+
+	/**
+	 * @dataProvider typeProvider
+	 */
+	public function testTableNameMethod( $type ) {
+
+		$mock = new MockDBConnectionProvider( $this );
+		$connection = $mock->getConnection();
 
 		$connection->expects( $this->any() )
 			->method( 'tableName' )
@@ -46,30 +76,30 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Foo' ) );
 
 		$connection->expects( $this->once() )
-			->method( 'addQuotes' )
-			->with( $this->equalTo( 'Fan' ) )
-			->will( $this->returnValue( 'Fan' ) );
+			->method( 'getType' )
+			->will( $this->returnValue( $type ) );
 
-		$connection->expects( $this->once() )
-			->method( 'numRows' )
-			->with( $this->equalTo( 'Fuyu' ) )
-			->will( $this->returnValue( 1 ) );
+		$instance = new Database( $mock->getConnectionProvider() );
+
+		$this->assertEquals( 'Foo', $instance->tableName( 'Foo' ) );
+
+	}
+
+	public function testSelectMethod() {
+
+		$resultWrapper = $this->getMockBuilder( 'ResultWrapper' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mock = new MockDBConnectionProvider( $this );
+		$connection = $mock->getConnection();
 
 		$connection->expects( $this->once() )
 			->method( 'select' )
 			->will( $this->returnValue( $resultWrapper ) );
 
-		$provider = $this->getMockForAbstractClass( '\SMW\DBConnectionProvider' );
+		$instance = new Database( $mock->getConnectionProvider() );
 
-		$provider->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
-		$instance = new Database( $provider );
-
-		$this->assertEquals( 'Foo', $instance->tableName( 'Foo' ) );
-		$this->assertEquals( 'Fan', $instance->addQuotes( 'Fan' ) );
-		$this->assertEquals( 1, $instance->numRows( 'Fuyu' ) );
 		$this->assertInstanceOf( 'ResultWrapper', $instance->select( 'Foo', 'Bar', '', __METHOD__ ) );
 
 	}
@@ -78,20 +108,48 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setExpectedException( 'UnexpectedValueException' );
 
-		$connection = $this->getMockBuilder( 'DatabaseMysql' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$provider = $this->getMockForAbstractClass( '\SMW\DBConnectionProvider' );
-
-		$provider->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
-		$instance = new Database( $provider );
+		$mock = new MockDBConnectionProvider( $this );
+		$instance = new Database( $mock->getConnectionProvider() );
 
 		$this->assertInstanceOf( 'ResultWrapper', $instance->select( 'Foo', 'Bar', '', __METHOD__ ) );
 
+	}
+
+	public function typeProvider() {
+		return array(
+			array( 'mysql' ),
+			array( 'sqlite' )
+		);
+	}
+
+}
+
+class MockDBConnectionProvider {
+
+	public function __construct( \PHPUnit_Framework_TestCase $framework ) {
+		$this->framework = $framework;
+	}
+
+	public function getConnection() {
+
+		if ( !isset( $this->connection ) ) {
+			$this->connection = $this->framework->getMockBuilder( 'DatabaseMysql' )
+				->disableOriginalConstructor()
+				->getMock();
+		}
+
+		return $this->connection;
+	}
+
+	public function getConnectionProvider() {
+
+		$provider = $this->framework->getMockForAbstractClass( '\SMW\DBConnectionProvider' );
+
+		$provider->expects( $this->framework->any() )
+			->method( 'getConnection' )
+			->will( $this->framework->returnValue( $this->getConnection() ) );
+
+		return $provider;
 	}
 
 }
