@@ -2,6 +2,7 @@
          backupStaticAttributes="false"
          cacheTokens="false"
          colors="true"
+         forceCoversAnnotation="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
