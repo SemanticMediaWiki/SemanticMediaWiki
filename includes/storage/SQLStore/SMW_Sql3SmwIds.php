@@ -633,12 +633,12 @@ class SMWSql3SmwIds {
 		}
 		if ( $namespace == SMW_NS_PROPERTY && $interwiki === '' && $subobject === '' ) {
 			$this->checkPropertySizeLimit();
-			$this->prop_ids[$title] = $id;
+			$this->prop_ids[$title] = (int)$id;
 			$this->prop_sortkeys[$title] = $sortkey;
 		} else {
 			$hashKey = self::getRegularHashKey( $title, $namespace, $interwiki, $subobject );
 			$this->checkRegularSizeLimit();
-			$this->regular_ids[$hashKey] = $id;
+			$this->regular_ids[$hashKey] = (int)$id;
 			$this->regular_sortkeys[$hashKey] = $sortkey;
 		}
 		if ( $interwiki == SMW_SQL3_SMWREDIIW ) { // speed up detection of redirects when fetching IDs
