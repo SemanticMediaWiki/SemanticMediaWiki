@@ -2921,7 +2921,7 @@ Progrés estimat de l'actualització actual:",
 	'smw_smwadmin_datarefreshstopconfirm' => "Sí, n'estic segur.",
 	'smw_smwadmin_support' => 'Com obtenir assistència',
 	'smw_smwadmin_supportdocu' => 'Diferents recursos poden ajudar-vos en cas de problemes:',
-	'smw_smwadmin_installfile' => 'Si us trobeu amb problemes amb la vostra instal·lació, comenceu comprovant les instruccions del <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fitxer INSTALL</a>.', # Fuzzy
+	'smw_smwadmin_installfile' => 'Si us trobeu amb problemes amb la vostra instal·lació, comenceu comprovant les instruccions del <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fitxer INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Podeu trobar la documentació d\'usuari completa del Semantic MediaWiki a <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Es poden enviar informes d\'error al <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si teniu més preguntes o suggeriments, uniu-vos a la discussió al <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">fòrum d\'usuaris del Semantic MediaWiki</a>.',
@@ -2957,10 +2957,14 @@ Progrés estimat de l'actualització actual:",
 	'right-smw-admin' => "Accedeix a les tasques d'administració (Semantic MediaWiki)",
 	'group-smwadministrator' => 'Administradors de Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|administrador (SMW)|administratora (SMW)}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:Administrators_SMW',
 	'action-smw-admin' => "accedeix a les tasques d'administració de Semantic MediaWiki",
 	'smw-pa-property-predefined-default' => "$1 és una propietat predefinida (també coneguda com [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propietat especial]). És una propietat predeterminada que incorpora privilegis administratius addicionals, però que es pot fer servir com qualsevol altre [https://www.semantic-mediawiki.org/wiki/Property propietat definida per l'usuari].",
 	'smw-sp-properties-cache-info' => "Les dades llistades s'han recuperat de la [https://www.semantic-mediawiki.org/wiki/Caching memòria cau], i s'han actualitzat el $1.",
 	'smw-sp-properties-header-label' => 'Llista de propietats',
+	'smw-sp-admin-settings-title' => 'Paràmetres de configuració',
+	'smw-sp-admin-settings-docu' => "Mostra una llista de tots els paràmetres <code>per defecte</code> i <code>localitzats</code> que són rellevants per a un entorn de Semantic MediaWiki. Per a més detalls sobre cada paràmetre en particular, consulteu la pàgina d'ajuda de la [https://semantic-mediawiki.org/wiki/Help:Configuration configuració].",
+	'smw-sp-admin-settings-button' => 'Genera la llista de paràmetres',
 );
 
 /** Chechen (нохчийн)
@@ -8905,6 +8909,8 @@ $1 문서로 돌아갑니다.',
 	'smw-sp-properties-docu' => '이 문서는 사용할 수 있는 [https://www.semantic-mediawiki.org/wiki/Property 속성]을 보여주고 필터한 경우에 조건과 일치하는 사용자 정의 속성만 보여줍니다. 차별화된 보기에 대해서는 [[Special:UnusedProperties|사용하지 않는 속성 목록]]이나 [[Special:WantedProperties|필요한 속성 목록]]을 참고하세요.',
 	'smw-sp-properties-cache-info' => '나열된 데이터는 [https://www.semantic-mediawiki.org/wiki/Caching 캐시]에서 검색되었고, $1에 마지막으로 업데이트했습니다.',
 	'smw-sp-properties-header-label' => '속성 목록',
+	'smw-sp-admin-settings-title' => '구성 설정',
+	'smw-sp-admin-settings-button' => '설정 목록 생성',
 );
 
 /** Karachay-Balkar (къарачай-малкъар)
