@@ -33,7 +33,7 @@ use User;
  */
 class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 
-	protected $enabledAssertOnMySql = true;
+	protected $enabledAssertOnMySql = false;
 
 	function run( \PHPUnit_Framework_TestResult $result = null ) {
 
@@ -42,9 +42,11 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 			// Only where teardownTestDB is available (excludes 1.19/1.20), we are
 			// able to rebuild the DB (exclude temporary table usage) otherwise
 			// some tests will fail with "Error: 1137 Can't reopen table" on mysql
-			$this->enabledAssertOnMySql = method_exists( $this, 'teardownTestDB' );
+			if ( method_exists( $this, 'teardownTestDB' ) ) {
+				$this->enabledOnMySql = true;
+				$this->teardownTestDB();
+			}
 
-			$this->teardownTestDB();
 			$this->setCliArg( 'use-normal-tables', true );
 		}
 
