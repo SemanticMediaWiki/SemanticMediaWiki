@@ -33,6 +33,24 @@ use User;
  */
 class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 
+	protected $enabledAssertOnMySql = true;
+
+	function run( \PHPUnit_Framework_TestResult $result = null ) {
+
+		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
+
+			// Only where teardownTestDB is available (excludes 1.19/1.20), we are
+			// able to rebuild the DB (exclude temporary table usage) otherwise
+			// some tests will fail with "Error: 1137 Can't reopen table" on mysql
+			$this->enabledAssertOnMySql = method_exists( $this, 'teardownTestDB' );
+
+			$this->teardownTestDB();
+			$this->setCliArg( 'use-normal-tables', true );
+		}
+
+		parent::run( $result );
+	}
+
 	/**
 	 * @dataProvider importProvider
 	 *
@@ -58,21 +76,10 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 			'Asserts that the Title does exist after the import'
 		);
 
-		// FIXME Apparently accessing the Store using the DB unit test table
-		// will cause:
-		//
-		// DBQueryError: A database error has occurred.
-		// Function: SMW::getSemanticData
-		// Error: 1137 Can't reopen table: 'p' (localhost)
-		//
-		// We suspend running this particular test until it is clear what
-		// is causing this issue
-		// SMW_SQLStore3_Readers.php:328 is causing the error
-
-		// $this->assertPropertiesAreSet(
-		//	$this->fetchSemanticDataFromOutput( $title ),
-		//	$expected
-		// );
+		$this->assertPropertiesAreSet(
+			$this->fetchSemanticDataFromOutput( $title ),
+			$expected
+		);
 
 	}
 
@@ -143,10 +150,20 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 		return $parserData->getData();
 	}
 
+	protected function assertIsEnabled() {
+		if ( !$this->enabledAssertOnMySql ) {
+			$this->markTestSkipped(
+				'Database could not be rebuild to satisfy test requirements (probably MW 1.19/1.20)'
+			);
+		}
+	}
+
 	/**
 	 * @since  1.9
 	 */
 	protected function assertPropertiesAreSet( SemanticData $semanticData, array $expected ) {
+
+		$this->assertIsEnabled();
 
 		foreach ( $semanticData->getProperties() as $property ) {
 
