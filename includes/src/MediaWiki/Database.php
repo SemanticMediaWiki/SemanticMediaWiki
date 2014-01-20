@@ -67,6 +67,19 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::fetchObject
+	 *
+	 * @since 1.9.0.3
+	 *
+	 * @param string $tableName
+	 *
+	 * @return string
+	 */
+	public function fetchObject( $res ) {
+		return $this->getDB()->fetchObject( $res );
+	}
+
+	/**
 	 * @see DatabaseBase::numRows
 	 *
 	 * @since 1.9.0.2
@@ -123,6 +136,40 @@ class Database {
 			$fields . '#' .
 			$conditions
 		);
+	}
+
+	/**
+	 * @see DatabaseBase::query
+	 *
+	 * @since 1.9.0.3
+	 *
+	 * @param string $sql
+	 * @param $fname
+	 *
+	 * @return ResultWrapper
+	 */
+	public function query( $sql, $fname = __METHOD__ ) {
+		return $this->getDB()->query( $sql, $fname );
+	}
+
+	/**
+	 * @return int
+	 */
+	function affectedRows() {
+		return $this->getDB()->affectedRows();
+	}
+
+	/**
+	 * @see DatabaseBase::makeSelectOptions
+	 *
+	 * @since 1.9.0.3
+	 *
+	 * @param array $options
+	 *
+	 * @return array
+	 */
+	public function makeSelectOptions( $options ) {
+		return $this->getDB()->makeSelectOptions( $options );
 	}
 
 }

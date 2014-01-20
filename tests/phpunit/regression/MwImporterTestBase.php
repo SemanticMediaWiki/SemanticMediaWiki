@@ -161,7 +161,7 @@ abstract class MwImporterTestBase extends \MediaWikiTestCase {
 
 		if ( !$this->enabledDB ) {
 			$this->markTestSkipped(
-				'MySQL DB setup did not satisfy the test requirements (probably MW 1.19/1.20)'
+				'DB setup did not satisfy the test requirements (probably MW 1.19/1.20)'
 			);
 		}
 
