@@ -60,6 +60,8 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 	 */
 	public function testImportRunner( $setup, $expected ) {
 
+		$this->assertIsEnabled();
+
 		$title = Title::newFromText( $setup['title'] );
 
 		$this->assertFalse(
@@ -164,8 +166,6 @@ class PageAnnotationImportSystemTest extends \MediaWikiTestCase {
 	 * @since  1.9
 	 */
 	protected function assertPropertiesAreSet( SemanticData $semanticData, array $expected ) {
-
-		$this->assertIsEnabled();
 
 		foreach ( $semanticData->getProperties() as $property ) {
 
