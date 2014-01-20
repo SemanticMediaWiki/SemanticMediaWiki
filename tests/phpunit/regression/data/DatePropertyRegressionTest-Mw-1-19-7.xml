@@ -1,0 +1,135 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="en-gb">
+  <siteinfo>
+    <sitename>MW-19</sitename>
+    <base>http://localhost:8080/w/index.php/Main_Page</base>
+    <generator>MediaWiki 1.19.7</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">MW-19</namespace>
+      <namespace key="5" case="first-letter">MW-19 talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="104" case="first-letter">Type</namespace>
+      <namespace key="105" case="first-letter">Type talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+      <namespace key="160" case="first-letter">Foo</namespace>
+      <namespace key="161" case="first-letter">Foo talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Property:Has date</title>
+    <ns>102</ns>
+    <id>14</id>
+      <sha1>qry1h86awxxalbl5f7vuhstlf0l4mz1</sha1>
+    <revision>
+      <id>25</id>
+      <timestamp>2013-07-22T11:32:17Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[has type::date]]&quot;</comment>
+      <text xml:space="preserve" bytes="18">[[has type::date]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has date for query</title>
+    <ns>102</ns>
+    <id>406</id>
+      <sha1>annvc3ivc6e8dmmd3ljtgkv150g9plg</sha1>
+    <revision>
+      <id>879</id>
+      <timestamp>2014-01-19T20:37:43Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::date]]&quot;</comment>
+      <text xml:space="preserve" bytes="18">[[Has type::date]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>DatePropertyRegressionTest</title>
+    <ns>0</ns>
+    <id>404</id>
+      <sha1>den9qxda6ea18n6ltokpye7klu521xv</sha1>
+    <revision>
+      <id>893</id>
+      <timestamp>2014-01-20T10:45:22Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <minor/>
+      <comment>Tester moved page [[DateProperty-RegressionTest]] to [[DatePropertyRegressionTest]]</comment>
+      <text xml:space="preserve" bytes="2665">== Synopsis == 
+@MainTitle {{PAGENAME}}, a regression test for date type properties.
+
+== Examples ==
+[http://www.semantic-mediawiki.org/wiki/Help:Type_Date Examples] of typical input dates in English language are:
+{| class=&quot;wikitable&quot;
+|-
+|'''annotation'''||'''result'''||'''remark'''
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::Feb 11 2000 10:00:01]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::Feb 11 2000 10:00:01]]||complete date with time
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::Feb 11 2000]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::Feb 11 2000]]||just date
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::2000]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::2000]]||year by itself
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::Feb 11 2000 10:00:01 PM]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::Feb 11 2000 10:00:01 PM]]||complete date with time, PM
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::Feb 11 2000 22:00:01]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::Feb 11 2000 22:00:01]]||complete date with 24h time
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::2000-02-11T22:00:01]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::2000-02-11T22:00:01]]||ISO-style date
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::2000-02-11T22:00:01+02:00]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::2000-02-11T22:00:01+02:00]]||ISO-style date with offset
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::2000 February 2]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::2000 February 2]]||varying order of inputs is supported
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::2-3-2000]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::2-3-2000]]||preferred interpretation, month or day, sometimes depends on language settings
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::2/3/2000]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::2/3/2000]]||various kinds of separators are recognized in all languages
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::Jan 1 300 BC]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::Jan 1 300 BC]]||dates BC/before common era are supported
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::14000000000 BC]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::14000000000 BC]]||estimated age of the universe
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::Feb 11 2000 Jl]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::Feb 11 2000 Jl]]||date of the Julian Calendar
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::Feb 11 1492 Gr]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::Feb 11 1492 Gr]]||date is treated as Gregorian
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::Feb 11 2000 10:00 GMT]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::Feb 11 2000 10:00 GMT]]||date with time zone shortcut
+|-
+|&lt;tt&gt;&lt;nowiki&gt;[[Has date::2000-02-22]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::2000-02-22]]||MySQL date format
+|}
+
+== Query 1 ==
+{{#ask: [[Has date for query::+]]|?Has date for query|?Has date for query#ISO|?Has date for query#GR}}
+
+== Query 2 ==
+{{#set:|Has date for query=January 4, 2010 7:00 pm|Has date for query=June 8, 2011|Has date for query=01 Jan 1980}}
+
+{{#ask: [[Has date::+]][[Category:Regression test]]|?Has date|?Has date#ISO=as ISO|?Has date#GR=as GR|?Has date#JL=as JL}}
+
+[[Category:Regression test]] __NOTOC__</text>
+    </revision>
+  </page>
+</mediawiki>
