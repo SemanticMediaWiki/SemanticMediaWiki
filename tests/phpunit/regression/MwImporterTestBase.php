@@ -2,20 +2,8 @@
 
 namespace SMW\Test;
 
-use SMW\DataValueFactory;
-use SMW\SemanticData;
-use SMW\ParserData;
 use SMW\StoreFactory;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-
-use SMWDataItem as DataItem;
-
-use WikiPage;
 use Title;
-use User;
-
-use RuntimeException;
 
 /**
  * MwImporterTestBase being used mostly to run regression and integration tests
@@ -111,143 +99,16 @@ abstract class MwImporterTestBase extends \MediaWikiTestCase {
 
 	}
 
-	protected function assertTitleIsNotKnownBeforeImport( $titles ) {
-		$this->assertTitleExists( false, $titles );
+	protected function newSemanticDataAsserts() {
+		return new SemanticDataAsserts;
 	}
 
-	protected function assertTitleIsKnownAfterImport( $titles ) {
-		$this->assertTitleExists( true, $titles );
+	protected function newSemanticDataFetcher() {
+		return new SemanticDataFetcher;
 	}
 
 	protected function getStore() {
 		return StoreFactory::getStore();
-	}
-
-	protected function fetchSemanticDataFromStore( Title $title ) {
-		return $this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $title ) );
-	}
-
-	protected function fetchSemanticDataFromOutput( Title $title ) {
-		$contentFetcher = new ContentFetcher( $title );
-		$parserData = new ParserData( $title, $contentFetcher->fetchOutput() );
-		return $parserData->getData();
-	}
-
-	protected function assertPropertiesAreSet( array $expected, SemanticData $semanticData ) {
-
-		$runPropertyAssert = false;
-
-		foreach ( $semanticData->getProperties() as $property ) {
-
-			$this->assertInstanceOf( '\SMW\DIProperty', $property );
-
-			if ( isset( $expected['propertyKey']) ){
-				$runPropertyAssert = true;
-
-				$this->assertContains(
-					$property->getKey(),
-					$expected['propertyKey'],
-					'Asserts that the SemanticData container contains a specific property key'
-				);
-			}
-
-			if ( isset( $expected['propertyLabel']) ){
-				$runPropertyAssert = true;
-
-				$this->assertContains(
-					$property->getLabel(),
-					$expected['propertyLabel'],
-					'Asserts that the SemanticData container contains a specific property label'
-				);
-			}
-
-		}
-
-		$this->assertTrue( $runPropertyAssert, 'Assert that properties were checked' );
-
-	}
-
-	protected function assertPropertyValuesAreSet( array $expected, DIProperty $property, $dataItems ) {
-
-		$runPropertyValueAssert = false;
-
-		foreach ( $dataItems as $dataItem ) {
-
-			$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $property );
-			$DIType = $dataValue->getDataItem()->getDIType();
-
-			if ( $DIType === DataItem::TYPE_WIKIPAGE ) {
-				$runPropertyValueAssert = true;
-
-				$this->assertContains(
-					$dataValue->getWikiValue(),
-					$expected['propertyValue'],
-					'Asserts that the SemanticData contains a property value of TYPE_WIKIPAGE'
-				);
-
-			} else if ( $DIType === DataItem::TYPE_NUMBER ) {
-				$runPropertyValueAssert = true;
-
-				$this->assertContains(
-					$dataValue->getNumber(),
-					$expected['propertyValue'],
-					'Asserts that the SemanticData contains a property value of TYPE_NUMBER'
-				);
-
-			} else if ( $DIType === DataItem::TYPE_TIME ) {
-				$runPropertyValueAssert = true;
-
-				$this->assertContains(
-					$dataValue->getISO8601Date(),
-					$expected['propertyValue'],
-					'Asserts that the SemanticData contains a property value of TYPE_TIME'
-				);
-
-			} else if ( $DIType === DataItem::TYPE_BLOB ) {
-				$runPropertyValueAssert = true;
-
-				$this->assertContains(
-					$dataValue->getWikiValue(),
-					$expected['propertyValue'],
-					'Asserts that the SemanticData contains a property value of TYPE_BLOB'
-				);
-
-			}
-
-		}
-
-		$this->assertTrue( $runPropertyValueAssert, 'Assert that property values were checked' );
-	}
-
-	protected function assertCategoryInstance( $expected, $semanticData ) {
-
-		$runCategoryInstanceAssert = false;
-
-		foreach ( $semanticData->getProperties() as $property ) {
-
-			if ( $property->getKey() === DIProperty::TYPE_CATEGORY && $property->getKey() === $expected['propertyKey'] ) {
-				$runCategoryInstanceAssert = true;
-
-				$this->assertPropertyValuesAreSet(
-					$expected,
-					$property,
-					$semanticData->getPropertyValues( $property )
-				);
-			}
-
-			if ( $property->getKey() === DIProperty::TYPE_SUBCATEGORY && $property->getKey() === $expected['propertyKey'] ) {
-				$runCategoryInstanceAssert = true;
-
-				$this->assertPropertyValuesAreSet(
-					$expected,
-					$property,
-					$semanticData->getPropertyValues( $property )
-				);
-			}
-
-		}
-
-		$this->assertTrue( $runCategoryInstanceAssert, 'Assert that a category instance were checked' );
 	}
 
 	protected function isEnabledDatabase() {
@@ -261,12 +122,20 @@ abstract class MwImporterTestBase extends \MediaWikiTestCase {
 		return true;
 	}
 
+	private function assertTitleIsNotKnownBeforeImport( $titles ) {
+		$this->assertTitleExists( false, $titles );
+	}
+
+	private function assertTitleIsKnownAfterImport( $titles ) {
+		$this->assertTitleExists( true, $titles );
+	}
+
 	private function assertTitleExists( $expected, $titles ) {
 		foreach ( $titles as $title ) {
 			$this->assertEquals(
 				$expected,
 				Title::newFromText( $title )->exists(),
-				"Assert title {$title}"
+				__METHOD__ . "Assert title {$title}"
 			);
 		}
 	}

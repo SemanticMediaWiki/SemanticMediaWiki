@@ -34,29 +34,13 @@
     </namespaces>
   </siteinfo>
   <page>
-    <title>Property:Has date</title>
+    <title>Property:Has calendar date</title>
     <ns>102</ns>
-    <id>14</id>
-      <sha1>qry1h86awxxalbl5f7vuhstlf0l4mz1</sha1>
-    <revision>
-      <id>25</id>
-      <timestamp>2013-07-22T11:32:17Z</timestamp>
-      <contributor>
-        <username>Tester</username>
-        <id>1</id>
-      </contributor>
-      <comment>Created page with &quot;[[has type::date]]&quot;</comment>
-      <text xml:space="preserve" bytes="18">[[has type::date]]</text>
-    </revision>
-  </page>
-  <page>
-    <title>Property:Has date for query</title>
-    <ns>102</ns>
-    <id>406</id>
+    <id>412</id>
       <sha1>annvc3ivc6e8dmmd3ljtgkv150g9plg</sha1>
     <revision>
-      <id>879</id>
-      <timestamp>2014-01-19T20:37:43Z</timestamp>
+      <id>908</id>
+      <timestamp>2014-01-21T06:13:12Z</timestamp>
       <contributor>
         <username>Tester</username>
         <id>1</id>
@@ -66,24 +50,52 @@
     </revision>
   </page>
   <page>
-    <title>DatePropertyRegressionTest</title>
-    <ns>0</ns>
-    <id>404</id>
-      <sha1>den9qxda6ea18n6ltokpye7klu521xv</sha1>
+    <title>Property:Has query date</title>
+    <ns>102</ns>
+    <id>413</id>
+      <sha1>annvc3ivc6e8dmmd3ljtgkv150g9plg</sha1>
     <revision>
-      <id>893</id>
-      <timestamp>2014-01-20T10:45:22Z</timestamp>
+      <id>909</id>
+      <timestamp>2014-01-21T06:13:16Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::date]]&quot;</comment>
+      <text xml:space="preserve" bytes="18">[[Has type::date]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has date</title>
+    <ns>102</ns>
+    <id>14</id>
+      <sha1>qry1h86awxxalbl5f7vuhstlf0l4mz1</sha1>
+    <revision>
+      <id>901</id>
+      <timestamp>2014-01-20T13:27:26Z</timestamp>
       <contributor>
         <username>Tester</username>
         <id>1</id>
       </contributor>
       <minor/>
-      <comment>Tester moved page [[DateProperty-RegressionTest]] to [[DatePropertyRegressionTest]]</comment>
-      <text xml:space="preserve" bytes="2665">== Synopsis == 
-@MainTitle {{PAGENAME}}, a regression test for date type properties.
-
-== Examples ==
-[http://www.semantic-mediawiki.org/wiki/Help:Type_Date Examples] of typical input dates in English language are:
+      <comment>1 revision</comment>
+      <text xml:space="preserve" bytes="18">[[has type::date]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>DatePropertyRegressionTest</title>
+    <ns>0</ns>
+    <id>404</id>
+      <sha1>10ig4ph0ci93sq8o9l47yh5nt4j33fl</sha1>
+    <revision>
+      <id>910</id>
+      <timestamp>2014-01-21T06:13:59Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="2792">== Synopsis == 
+A regression test for date type properties. [http://www.semantic-mediawiki.org/wiki/Help:Type_Date Examples] of typical input dates in English language are:
 {| class=&quot;wikitable&quot;
 |-
 |'''annotation'''||'''result'''||'''remark'''
@@ -121,15 +133,27 @@
 |&lt;tt&gt;&lt;nowiki&gt;[[Has date::2000-02-22]]&lt;/nowiki&gt;&lt;/tt&gt;||[[Has date::2000-02-22]]||MySQL date format
 |}
 
-== Query 1 ==
-{{#ask: [[Has date for query::+]]|?Has date for query|?Has date for query#ISO|?Has date for query#GR}}
+{{#set:
+ |Has query date=January 4, 2010 7:00 pm
+ |Has query date=June 8, 2011
+ |Has query date=01 Jan 1980
+ |Has query date=Feb 11 2000 10:00 GMT
+ |Has query date=2/3/2000
+}}
 
-== Query 2 ==
-{{#set:|Has date for query=January 4, 2010 7:00 pm|Has date for query=June 8, 2011|Has date for query=01 Jan 1980}}
+{{#set:
+ |Has calendar date=Jan 1 300 BC
+ |Has calendar date=14000000000 BC
+ |Has calendar date=Feb 11 2000 Jl
+ |Has calendar date=Feb 11 1492 Gr
+}}
+
+== Query ==
+{{#ask: [[Has query date::+]]|?Has query date|?Has query date#ISO|?Has query date#GR}}
 
 {{#ask: [[Has date::+]][[Category:Regression test]]|?Has date|?Has date#ISO=as ISO|?Has date#GR=as GR|?Has date#JL=as JL}}
 
-[[Category:Regression test]] __NOTOC__</text>
+[[Category:Regression test]]</text>
     </revision>
   </page>
 </mediawiki>

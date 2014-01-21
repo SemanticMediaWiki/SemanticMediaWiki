@@ -52,9 +52,11 @@ class PageWithTemplateInclusionRegressionTest extends MwImporterTestBase {
 		);
 
 		$title = Title::newFromText( 'Foo-1-19-7' );
-		$semanticData = $this->fetchSemanticDataFromOutput( $title );
 
-		$this->assertPropertiesAreSet( $expectedProperties, $semanticData );
+		$this->newSemanticDataAsserts()->assertThatPropertiesAreSet(
+			$expectedProperties,
+			$this->newSemanticDataFetcher()->setTitle( $title )->fetchFromOutput()
+		);
 	}
 
 }
