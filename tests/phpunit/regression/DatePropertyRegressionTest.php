@@ -30,7 +30,7 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 		return __DIR__ . '/data/' . 'DatePropertyRegressionTest-Mw-1-19-7.xml';
 	}
 
-	public function getTitles() {
+	public function acquirePoolOfTitles() {
 		return array(
 			'DatePropertyRegressionTest',
 			'Property:Has date for query',
@@ -38,7 +38,14 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 		);
 	}
 
-	public function assertSemanticData() {
+	public function assertDataImport() {
+
+		$expectedCategoryAsWikiValue = array(
+			'propertyKey' => '_INST',
+			'propertyValue' => array(
+				'Regression test'
+			)
+		);
 
 		$expectedProperties = array(
 			'propertyKey' => array(
@@ -53,7 +60,7 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 			)
 		);
 
-		$expectedDateValues = array(
+		$expectedDateValuesAsISOValues = array(
 			'propertyLabel' => 'Has date for query',
 			'propertyValue' => array(
 				'2010-01-04T19:00:00',
@@ -63,22 +70,28 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 		);
 
 		$title = Title::newFromText( 'DatePropertyRegressionTest' );
+		$semanticData = $this->fetchSemanticDataFromOutput( $title );
 
-		$this->assertSemanticDataFromSource(
-			$expectedProperties,
-			$expectedDateValues,
-			$this->fetchSemanticDataFromOutput( $title )
+		$this->assertCategoryInstance(
+			$expectedCategoryAsWikiValue,
+			$semanticData
 		);
 
-		$this->assertSemanticDataFromSource(
+		$this->assertSemanticData(
 			$expectedProperties,
-			$expectedDateValues,
+			$expectedDateValuesAsISOValues,
+			$semanticData
+		);
+
+		$this->assertSemanticData(
+			$expectedProperties,
+			$expectedDateValuesAsISOValues,
 			$this->fetchSemanticDataFromStore( $title )
 		);
 
 	}
 
-	protected function assertSemanticDataFromSource( $expectedProperties, $expectedDateValues, $semanticData ) {
+	protected function assertSemanticData( $expectedProperties, $expectedDateValues, $semanticData ) {
 		$this->assertPropertiesAreSet( $expectedProperties, $semanticData );
 		$this->assertDateProperty( $expectedDateValues, $semanticData );
 	}
@@ -88,23 +101,13 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 		foreach ( $semanticData->getProperties() as $property ) {
 
 			if ( $property->findPropertyTypeID() === '_dat' && $expected['propertyLabel'] === $property->getLabel() ) {
-				$this->assertPropertyValues( $expected , $property, $semanticData->getPropertyValues( $property ) );
+				$this->assertPropertyValuesAreSet(
+					$expected,
+					$property,
+					$semanticData->getPropertyValues( $property )
+				);
 			}
 
-		}
-	}
-
-	protected function assertPropertyValues( $expected, $property, $dataItems ) {
-
-		foreach ( $dataItems as $dataItem ) {
-
-			$dataValue = DataValueFactory::getInstance()->newDataItemValue( $dataItem, $property );
-
-			$this->assertContains(
-				$dataValue->getISO8601Date(),
-				$expected['propertyValue'],
-				"Asserts to contain a property value"
-			);
 		}
 	}
 

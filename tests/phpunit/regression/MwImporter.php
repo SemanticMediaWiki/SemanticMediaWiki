@@ -24,27 +24,47 @@ use RuntimeException;
 class MwImporter {
 
 	protected $file = null;
+	protected $requestContext = null;
 	protected $exception = false;
+	protected $result = null;
 	protected $verbose = false;
 
-	public function __construct( $file = null, $verbose = false ) {
+	public function __construct( $file = null ) {
 		$this->file = $file;
-		$this->verbose = $verbose;
 
 		if ( !is_readable( $this->file ) ) {
-			throw new RuntimeException( "Source file is not accessible" );
+			throw new RuntimeException( "Source file {$this->file} is not accessible" );
 		}
 
 	}
 
+	/**
+	 * @param boolean $verbose
+	 */
+	public function setVerbose( $verbose = true ) {
+		$this->verbose = $verbose;
+	}
+
+	/**
+	 * @param RequestContext $requestContext
+	 */
+	public function setRequestContext( RequestContext $requestContext ) {
+		$this->requestContext = $requestContext;
+	}
+
+	/**
+	 * @throws RuntimeException
+	 * @return Status
+	 */
 	public function run() {
 
 		$this->unregisterUploadsource();
+		$start = microtime( true );
 
 		$source = ImportStreamSource::newFromFile( $this->file );
 
 		if ( !$source->isGood() ) {
-			throw new RuntimeException( "ImportStreamSource was not available" );
+			throw new RuntimeException( 'Import contained errors ' . serialize( $source->errors ) );
 		}
 
 		$importer = new WikiImporter( $source->value );
@@ -57,7 +77,7 @@ class MwImporter {
 			false
 		);
 
-		$reporter->setContext( new RequestContext() );
+		$reporter->setContext( $this->acquireRequestContext() );
 		$reporter->open();
 
 		try {
@@ -66,16 +86,44 @@ class MwImporter {
 			$this->exception = $e;
 		}
 
-		return $reporter->close();
+		$this->result = $reporter->close();
+		$this->importTime = microtime( true ) - $start;
+
+		return $this->result;
 	}
 
+	/**
+	 * @throws RuntimeException
+	 */
 	public function reportFailedImport() {
 
+		$exceptionAsString = '';
+
 		if ( $this->exception ) {
-			var_dump( 'exception: ', $this->exception->getMessage(), $this->exception->getTraceAsString() );
+			$exceptionAsString = $this->exception->getMessage() . '#' . $this->exception->getTraceAsString();
 		}
 
-		var_dump( 'result: ', $this->result->getWikiText() );
+		throw new RuntimeException(
+			'Import failed with ' . '#' .
+			$exceptionAsString . '#' .
+			$this->result->getWikiText()
+		);
+	}
+
+	/**
+	 * @return integer
+	 */
+	public function getImportTimeAsSeconds() {
+		return round( $this->importTime , 7 );
+	}
+
+	protected function acquireRequestContext() {
+
+		if ( $this->requestContext === null ) {
+			$this->requestContext = new RequestContext();
+		}
+
+		return $this->requestContext;
 	}
 
 	/**

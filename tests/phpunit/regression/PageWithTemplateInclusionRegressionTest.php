@@ -26,7 +26,7 @@ class PageWithTemplateInclusionRegressionTest extends MwImporterTestBase {
 		return __DIR__ . '/data/' . 'PageWithTemplateInclusionRegressionTest-Mw-1-19-7.xml';
 	}
 
-	public function getTitles() {
+	public function acquirePoolOfTitles() {
 		return array(
 			'Foo-1-19-7',
 			'Template:FooAsk',
@@ -36,10 +36,7 @@ class PageWithTemplateInclusionRegressionTest extends MwImporterTestBase {
 		);
 	}
 
-	public function assertSemanticData() {
-
-		$title = Title::newFromText( 'Foo-1-19-7' );
-		$semanticData = $this->fetchSemanticDataFromOutput( $title );
+	public function assertDataImport() {
 
 		$expectedProperties = array(
 			'propertyKey' => array(
@@ -53,6 +50,9 @@ class PageWithTemplateInclusionRegressionTest extends MwImporterTestBase {
 				'_INST'
 			)
 		);
+
+		$title = Title::newFromText( 'Foo-1-19-7' );
+		$semanticData = $this->fetchSemanticDataFromOutput( $title );
 
 		$this->assertPropertiesAreSet( $expectedProperties, $semanticData );
 	}

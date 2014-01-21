@@ -71,7 +71,7 @@ class Database {
 	 *
 	 * @since 1.9.0.3
 	 *
-	 * @param string $tableName
+	 * @param ResultWrapper $res
 	 *
 	 * @return string
 	 */
@@ -97,10 +97,10 @@ class Database {
 	 *
 	 * @since 1.9.0.2
 	 *
-	 * @param ResultWrapper $results
+	 * @param ResultWrapper $res
 	 */
-	public function freeResult( $results ) {
-		$this->getDB()->freeResult( $results );
+	public function freeResult( $res ) {
+		$this->getDB()->freeResult( $res );
 	}
 
 	/**
@@ -145,14 +145,20 @@ class Database {
 	 *
 	 * @param string $sql
 	 * @param $fname
+	 * @param $ignoreException
 	 *
 	 * @return ResultWrapper
+	 * @throws MWException
 	 */
-	public function query( $sql, $fname = __METHOD__ ) {
-		return $this->getDB()->query( $sql, $fname );
+	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
+		return $this->getDB()->query( $sql, $fname, $ignoreException );
 	}
 
 	/**
+	 * @see DatabaseBase::affectedRows
+	 *
+	 * @since 1.9.0.3
+	 *
 	 * @return int
 	 */
 	function affectedRows() {
