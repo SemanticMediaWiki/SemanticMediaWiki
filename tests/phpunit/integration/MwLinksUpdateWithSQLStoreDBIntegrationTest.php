@@ -25,7 +25,7 @@ use UnexpectedValueException;
  * @group medium
  *
  * @licence GNU GPL v2+
- * @since 1.9
+ * @since 1.9.0.3
  *
  * @author mwjames
  */
@@ -34,12 +34,16 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 	/** @var Title */
 	protected $title = null;
 
-	public function testTriggerLinksUpdateManually() {
+	protected function setUp() {
+		parent::setUp();
 
 		$context = new ExtensionContext();
 		$context->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
 
 		$this->runExtensionSetup( $context );
+	}
+
+	public function testPageCreationAndRevisionHandlingBeforeLinksUpdate() {
 
 		$this->title = Title::newFromText( __METHOD__ );
 
@@ -49,57 +53,34 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 		$afterAlterationRevId = $this->alterPageContentToCreateNewRevisionWithoutAnnotations();
 		$this->assertSemanticDataAfterContentAlteration();
 
-		$this->assertFalse(
-			$beforeAlterationRevId === $afterAlterationRevId,
-			'Asserts that the revId is different before and after content alteration'
+		$this->assertNotSame(
+			$beforeAlterationRevId,
+			$afterAlterationRevId,
+			'Asserts that the revId is different'
 		);
 
-		// Above verifies the environment and ensures that two revisions are
-		// available one with and the other without annotations
+	}
 
-		// beforeAlterationRevId contains a total of four properties
-		$expected = array(
-			'poBefore'  => array(
-				'count' => 3,
-				'msg'   => 'Asserts property Aa, Fuyu, and _SKEY exists before the update'
-			),
-			'storeBefore' => array(
-				'count'   => 2,
-				'msg'     => 'Asserts property _SKEY and _MDAT exists in Store before the update'
-			),
-			'poAfter'    => array(
-				'count'  => 4,
-				'msg'    => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists after the update'
-			),
-			'storeAfter' => array(
-				'count'  => 4,
-				'msg'    => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists after the update'
-			)
+	/**
+	 * @depends testPageCreationAndRevisionHandlingBeforeLinksUpdate
+	 * @dataProvider propertyCountProvider
+	 */
+	public function testLinksUpdateAndVerifyStoreUpdate( $expected ) {
+
+		$this->title = Title::newFromText( __METHOD__ );
+
+		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
+		$afterAlterationRevId  = $this->alterPageContentToCreateNewRevisionWithoutAnnotations();
+
+		$this->fetchRevisionAndRunLinksUpdater(
+			$expected['beforeAlterationRevId'],
+			$beforeAlterationRevId
 		);
 
-		$this->fetchRevisionAndRunLinksUpdater( $expected, $beforeAlterationRevId );
-
-		// afterAlterationRevId contains no Annotatios
-		$expected = array(
-			'poBefore'  => array(
-				'count' => 1,
-				'msg'   => 'Asserts property _SKEY exists only before the update'
-			),
-			'storeBefore' => array(
-				'count'   => 4,
-				'msg'     => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT from the previous state as no update has been made yet'
-			),
-			'poAfter'    => array(
-				'count'  => 2,
-				'msg'    => 'Asserts property _SKEY, _MDAT exists after the update'
-			),
-			'storeAfter' => array(
-				'count'  => 2,
-				'msg'    => 'Asserts property _SKEY, _MDAT exists after the update'
-			)
+		$this->fetchRevisionAndRunLinksUpdater(
+			$expected['afterAlterationRevId'],
+			$afterAlterationRevId
 		);
-
-		$this->fetchRevisionAndRunLinksUpdater( $expected, $afterAlterationRevId );
 
 	}
 
@@ -123,18 +104,16 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 		$parserData = $this->retrieveAndLoadData();
 		$this->assertCount( 3, $parserData->getData()->getProperties() );
 
-		$parserData = $this->retrieveAndLoadData();
-		$this->assertCount( 3, $parserData->getData()->getProperties() );
-
 		$this->assertEquals(
 			$parserData->getData(),
 			$this->retrieveAndLoadData( $revision->getId() )->getData(),
-			'Asserts that both SemanticData with/out revision are equal'
+			'Asserts that data are equals with or without a revision'
 		);
 
 		$this->assertCount(
 			4,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties()
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties(),
+			'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists'
 		);
 
 	}
@@ -142,47 +121,36 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 	protected function assertSemanticDataAfterContentAlteration() {
 		$this->assertCount(
 			2,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties()
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties(),
+			'Asserts property _SKEY and _MDAT exists'
 		);
 	}
 
 	protected function fetchRevisionAndRunLinksUpdater( array $expected, $revId ) {
 
-		// Property _SKEY always exsists even within an empty container
-
-		$subject    = DIWikiPage::newFromTitle( $this->title );
 		$parserData = $this->retrieveAndLoadData( $revId );
 
-		$this->assertCount(
-			$expected['poBefore']['count'],
-			$parserData->getData()->getProperties(),
-			$expected['poBefore']['msg']
-		);
+		// Status before the update
+		$this->assertPropertyCount( $expected['poBefore'], $expected['storeBefore'], $parserData );
 
-		$this->assertCount(
-			$expected['storeBefore']['count'],
-			$this->getStore()->getSemanticData( $subject )->getProperties(),
-			$expected['storeBefore']['msg']
-		);
-
-		// Above confirms the status of the Store and ParserOutput
-		// "doUpdate" will initiate an appropriate of the Store and also
-		// add pre-defined properties
 		$this->runLinksUpdater( $this->title, $parserData->getOutput() );
 
-		// Output and store object have been updated
+		// Status after the update
+		$this->assertPropertyCount( $expected['poAfter'], $expected['storeAfter'], $parserData );
+	}
+
+	protected function assertPropertyCount( $poExpected, $storeExpected, $parserData ) {
 		$this->assertCount(
-			$expected['poAfter']['count'],
+			$poExpected['count'],
 			$parserData->getData()->getProperties(),
-			$expected['poAfter']['msg']
+			$poExpected['msg']
 		);
 
 		$this->assertCount(
-			$expected['storeAfter']['count'],
-			$this->getStore()->getSemanticData( $subject )->getProperties(),
-			$expected['storeAfter']['msg']
+			$storeExpected['count'],
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties(),
+			$storeExpected['msg']
 		);
-
 	}
 
 	protected function runLinksUpdater( Title $title, $parserOutput ) {
@@ -204,6 +172,55 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 		throw new UnexpectedValueException( 'ParserOutput is missing' );
 	}
 
+	public function propertyCountProvider() {
+
+		// Property _SKEY is always present even within an empty container
+		// po = ParserOutput, before means prior LinksUpdate
+
+		$provider = array();
+
+		$provider[] = array( array(
+			'beforeAlterationRevId' => array(
+				'poBefore'  => array(
+					'count' => 3,
+					'msg'   => 'Asserts property Aa, Fuyu, and _SKEY exists before the update'
+				),
+				'storeBefore' => array(
+					'count'   => 2,
+					'msg'     => 'Asserts property _SKEY and _MDAT exists in Store before the update'
+				),
+				'poAfter'    => array(
+					'count'  => 4,
+					'msg'    => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists after the update'
+				),
+				'storeAfter' => array(
+					'count'  => 4,
+					'msg'    => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists after the update'
+				)
+			),
+			'afterAlterationRevId' => array(
+				'poBefore'  => array(
+					'count' => 1,
+					'msg'   => 'Asserts property _SKEY exists only before the update'
+				),
+				'storeBefore' => array(
+					'count'   => 4,
+					'msg'     => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT from the previous state as no update has been made yet'
+				),
+				'poAfter'    => array(
+					'count'  => 2,
+					'msg'    => 'Asserts property _SKEY, _MDAT exists after the update'
+				),
+				'storeAfter' => array(
+					'count'  => 2,
+					'msg'    => 'Asserts property _SKEY, _MDAT exists after the update'
+				)
+			)
+		) );
+
+		return $provider;
+	}
+
 	protected function tearDown() {
 
 		if ( $this->title !== null ) {
@@ -212,5 +229,4 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 
 		parent::tearDown();
 	}
-
 }
