@@ -26,18 +26,10 @@ use Parser;
  */
 class ContentParserTest extends SemanticMediaWikiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\ContentParser';
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return ContentParser
-	 */
 	private function newInstance( Title $title = null, $parser = null ) {
 
 		if ( $title === null ) {
@@ -47,23 +39,14 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 		return new ContentParser( $title, $parser );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testCanParseOnInstance() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance()->parse() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testRunParseOnText() {
 
 		$text     = 'Foo-1-' . __METHOD__;
@@ -81,7 +64,7 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 	public function testRunParseOnTitle( $setup, $expected, $withContentHandler = false ) {
 
 		$instance = $this->getMock( $this->getClass(),
-			array( 'hasContentHandler', 'newRevision' ),
+			array( 'hasContentHandler' ),
 			array(
 				$setup['title'],
 				new Parser()
@@ -92,9 +75,7 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 			->method( 'hasContentHandler' )
 			->will( $this->returnValue( $withContentHandler ) );
 
-		$instance->expects( $this->any() )
-			->method( 'newRevision' )
-			->will( $this->returnValue( $setup['revision'] ) );
+		$instance->setRevision( $setup['revision'] );
 
 		$this->assertInstanceOf( $this->getClass(), $instance->parse() );
 

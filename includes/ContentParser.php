@@ -9,8 +9,6 @@ use Title;
 use User;
 
 /**
- * Parse page content and generating a ParserOutput object
- *
  * Fetches the ParserOutput either by parsing an invoked text component,
  * re-parsing a text revision, or accessing the ContentHandler to generate a
  * ParserOutput object
@@ -33,6 +31,9 @@ class ContentParser {
 	/** @var ParserOutput */
 	protected $parserOutput = null;
 
+	/** @var Revision */
+	protected $revision = null;
+
 	/** @var array */
 	protected $errors = array();
 
@@ -53,7 +54,16 @@ class ContentParser {
 		if ( $this->parser === null ) {
 			$this->parser = $GLOBALS['wgParser'];
 		}
+	}
 
+	/**
+	 * @since 1.9.0.3
+	 *
+	 * @return ContentParser
+	 */
+	public function setRevision( Revision $revision = null ) {
+		$this->revision = $revision;
+		return $this;
 	}
 
 	/**
@@ -101,14 +111,14 @@ class ContentParser {
 	public function parse( $text = null ) {
 
 		if ( $text !== null ) {
-			$this->parseText( $text );
-		} elseif ( $this->hasContentHandler() ) {
-			 $this->fetchFromContent( $this->newRevision() );
-		} else {
-			$this->fetchFromParser( $this->newRevision() );
+			return $this->parseText( $text );
 		}
 
-		return $this;
+		if ( $this->hasContentHandler() ) {
+			return $this->fetchFromContent();
+		}
+
+		return $this->fetchFromParser();
 	}
 
 	/**
@@ -126,6 +136,7 @@ class ContentParser {
 		);
 
 		Profiler::Out( __METHOD__ );
+		return $this;
 	}
 
 	/**
@@ -138,20 +149,20 @@ class ContentParser {
 	 *
 	 * @since 1.9
 	 */
-	protected function fetchFromContent( $revision ) {
+	protected function fetchFromContent() {
 		Profiler::In( __METHOD__ );
 
-		if ( $revision !== null ) {
+		if ( $this->getRevision() !== null ) {
 
-			$content = $revision->getContent( Revision::RAW );
+			$content = $this->getRevision()->getContent( Revision::RAW );
 
 			if ( !$content ) {
-				$content = $revision->getContentHandler()->makeEmptyContent();
+				$content = $this->getRevision()->getContentHandler()->makeEmptyContent();
 			}
 
 			$this->parserOutput = $content->getParserOutput(
 				$this->getTitle(),
-				$revision->getId(),
+				$this->getRevision()->getId(),
 				null,
 				true
 			);
@@ -161,6 +172,7 @@ class ContentParser {
 		}
 
 		Profiler::Out( __METHOD__ );
+		return $this;
 	}
 
 	/**
@@ -168,18 +180,18 @@ class ContentParser {
 	 *
 	 * @since 1.9
 	 */
-	protected function fetchFromParser( $revision ) {
+	protected function fetchFromParser() {
 		Profiler::In( __METHOD__ );
 
-		if ( $revision !== null ) {
+		if ( $this->getRevision() !== null ) {
 
 			$this->parserOutput = $this->parser->parse(
-				$revision->getText(),
+				$this->getRevision()->getText(),
 				$this->getTitle(),
-				$this->newParserOptions( $revision ),
+				$this->newParserOptions(),
 				true,
 				true,
-				$revision->getID()
+				$this->getRevision()->getID()
 			);
 
 		} else {
@@ -187,12 +199,11 @@ class ContentParser {
 		}
 
 		Profiler::Out( __METHOD__ );
+		return $this;
 	}
 
 	/**
 	 * @note ContentHandler does not exist prior MW 1.21
-	 *
-	 * @since  1.9
 	 *
 	 * @return boolean
 	 */
@@ -201,16 +212,14 @@ class ContentParser {
 	}
 
 	/**
-	 * @since  1.9
-	 *
 	 * @return ParserOptions
 	 */
-	protected function newParserOptions( $revision = null ) {
+	protected function newParserOptions() {
 
 		$user = null;
 
-		if ( $revision !== null ) {
-			$user = User::newFromId( $revision->getUser() );
+		if ( $this->getRevision() !== null ) {
+			$user = User::newFromId( $this->getRevision()->getUser() );
 		}
 
 		return new ParserOptions( $user );
@@ -219,21 +228,21 @@ class ContentParser {
 	/**
 	 * @note Revision::READ_NORMAL is not defined in MW 1.19
 	 *
-	 * @since  1.9
-	 *
 	 * @return Revision
 	 */
-	protected function newRevision() {
+	protected function getRevision() {
 
-		$revision = null;
-
-		if ( defined( 'Revision::READ_NORMAL' ) ) {
-			$revision = Revision::newFromTitle( $this->getTitle(), false, Revision::READ_NORMAL );
-		} else {
-			$revision = Revision::newFromTitle( $this->getTitle() );
+		if ( $this->revision instanceOf Revision ) {
+			return $this->revision;
 		}
 
-		return $revision;
+		if ( defined( 'Revision::READ_NORMAL' ) ) {
+			$this->revision = Revision::newFromTitle( $this->getTitle(), false, Revision::READ_NORMAL );
+		} else {
+			$this->revision = Revision::newFromTitle( $this->getTitle() );
+		}
+
+		return $this->revision;
 	}
 
 }
