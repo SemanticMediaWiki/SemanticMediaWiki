@@ -9,6 +9,7 @@ use SMW\DIProperty;
 use SMW\Setup;
 
 use Title;
+use UnexpectedValueException;
 
 /**
  * This TestCase should only be used in case a real Database integration with
@@ -113,25 +114,59 @@ abstract class MwIntegrationTestCase extends \MediaWikiTestCase {
 
 class PageCreator {
 
+	/** @var WikiPage */
+	protected $page = null;
+
+	/**
+	 * @since 1.9.0.3
+	 *
+	 * @return WikiPage
+	 * @throws UnexpectedValueException
+	 */
+	public function getPage() {
+
+		if ( $this->page instanceof \WikiPage ) {
+			return $this->page;
+		}
+
+		throw new UnexpectedValueException( 'Expected a WikiPage instance, use createPage first' );
+	}
+
+	/**
+	 * @since 1.9.0.3
+	 *
+	 * @return PageCreator
+	 */
 	public function createPage( Title $title, $editContent = '' ) {
-		$page = new \WikiPage( $title );
+
+		$this->page = new \WikiPage( $title );
 
 		$pageContent = 'Content of ' . $title->getFullText() . ' ' . $editContent;
 		$editMessage = 'SMW system test: create page';
 
+		return $this->doEdit( $pageContent, $editMessage );
+	}
+
+	/**
+	 * @since 1.9.0.3
+	 *
+	 * @return PageCreator
+	 */
+	public function doEdit( $pageContent = '', $editMessage = '' ) {
+
 		if ( class_exists( 'WikitextContent' ) ) {
 			$content = new \WikitextContent( $pageContent );
 
-			$page->doEditContent(
+			$this->getPage()->doEditContent(
 				$content,
 				$editMessage
 			);
-		}
-		else {
-			$page->doEdit( $pageContent, $editMessage );
+
+		} else {
+			$this->getPage()->doEdit( $pageContent, $editMessage );
 		}
 
-		return $page;
+		return $this;
 	}
 
 }
