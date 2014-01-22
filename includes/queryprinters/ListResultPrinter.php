@@ -201,6 +201,7 @@ class ListResultPrinter extends ResultPrinter {
 	protected function initializePrintingParameters( SMWQueryResult $queryResult ) {
 		$this->numRows = 0;
 		$this->numRowsInColumn = 0;
+		$this->rowSortkey = '';
 
 		$this->columnWidth = floor( 100 / $this->mColumns );
 		$this->rowsPerColumn = ceil( $queryResult->getCount() / $this->mColumns );
@@ -273,13 +274,14 @@ class ListResultPrinter extends ResultPrinter {
 			$content = $this->mTemplate . $this->getTemplateContent( $row );
 			$result .= $this->getRowStart( $res ) . '{{' . $content . '}}';
 		} else { // Build simple list
-			$content = $this->getListContent( $row );
+			$content = $this->getRowListContent( $row );
 			$result .= $this->getRowStart( $res ) . $content;
 		}
 
 		$result .= $this->rowend;
 		$this->numRows++;
 		$this->numRowsInColumn++;
+		$this->rowSortkey = '';
 
 		return $result;
 	}
@@ -294,12 +296,19 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getRowStart( SMWQueryResult $res ){
+
 		if ( $this->numRows > 0 && $this->isPlainlist() )  {
 			// Use comma between "rows" other than the last one:
 			return ( $this->numRows <= $res->getCount() ) ? $this->listsep : $this->finallistsep;
-		} else {
-			return $this->rowstart;
 		}
+
+		if ( $this->rowSortkey !== '' ) {
+			return "\t" . Html::openElement( 'li',
+				array( 'data-sortkey' => mb_substr( $this->rowSortkey, 0, 1 ) )
+			);
+		}
+
+		return $this->rowstart;
 	}
 
 	/**
@@ -314,7 +323,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getListContent( array $row ) {
+	protected function getRowListContent( array $row ) {
 		$firstField = true; // is this the first entry in this row?
 		$extraFields = false; // has anything but the first field been printed?
 		$result = '';
@@ -324,14 +333,10 @@ class ListResultPrinter extends ResultPrinter {
 
 			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
 
-				/// TODO Bad design. This overwrites the global rowstart.
-				/// A later "further results" item will be affected by this.
-				/// TODO Document what this is good for.
+				// Add sortkey for all non-list formats
 				if ( $firstField && $this->params['format'] !== 'list' &&
 					$dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE  ) {
-					// Override the original start element
-					$sortKey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $dataValue->getDataItem() );
-					$this->rowstart = "\t" . Html::openElement('li', array( 'data-sortkey' => $sortKey{0} )  );
+					$this->rowSortkey = StoreFactory::getStore()->getWikiPageSortKey( $dataValue->getDataItem() );
 				}
 
 				$text = $dataValue->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $firstField ) );
