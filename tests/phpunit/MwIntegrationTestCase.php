@@ -113,25 +113,38 @@ abstract class MwIntegrationTestCase extends \MediaWikiTestCase {
 
 class PageCreator {
 
+	protected $page = null;
+
+	public function getPage() {
+		return $this->page;
+	}
+
 	public function createPage( Title $title, $editContent = '' ) {
-		$page = new \WikiPage( $title );
+		$this->page = new \WikiPage( $title );
 
 		$pageContent = 'Content of ' . $title->getFullText() . ' ' . $editContent;
 		$editMessage = 'SMW system test: create page';
 
+		$this->doEdit( $pageContent, $editMessage );
+
+		return $this;
+	}
+
+	public function doEdit( $pageContent = '', $editMessage = '' ) {
+
 		if ( class_exists( 'WikitextContent' ) ) {
 			$content = new \WikitextContent( $pageContent );
 
-			$page->doEditContent(
+			$this->page->doEditContent(
 				$content,
 				$editMessage
 			);
-		}
-		else {
-			$page->doEdit( $pageContent, $editMessage );
+
+		} else {
+			$this->page->doEdit( $pageContent, $editMessage );
 		}
 
-		return $page;
+		return $this;
 	}
 
 }
