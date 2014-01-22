@@ -67,8 +67,6 @@ class ContentParser {
 	}
 
 	/**
-	 * Returns Title object
-	 *
 	 * @since 1.9
 	 *
 	 * @return Title
@@ -78,8 +76,6 @@ class ContentParser {
 	}
 
 	/**
-	 * Returns ParserOutput object
-	 *
 	 * @since 1.9
 	 *
 	 * @return ParserOutput|null
@@ -89,8 +85,6 @@ class ContentParser {
 	}
 
 	/**
-	 * Returns collected errors occurred during processing
-	 *
 	 * @since 1.9
 	 *
 	 * @return array
@@ -121,11 +115,6 @@ class ContentParser {
 		return $this->fetchFromParser();
 	}
 
-	/**
-	 * Parsing text
-	 *
-	 * @since 1.9
-	 */
 	protected function parseText( $text ) {
 		Profiler::In( __METHOD__ );
 
@@ -140,14 +129,10 @@ class ContentParser {
 	}
 
 	/**
-	 * Using the content handler to return a ParserOutput object
-	 *
 	 * @note Revision ID must be passed to the parser output to
 	 * get revision variables correct
 	 *
 	 * @note If no content is available create an empty object
-	 *
-	 * @since 1.9
 	 */
 	protected function fetchFromContent() {
 		Profiler::In( __METHOD__ );
@@ -175,11 +160,6 @@ class ContentParser {
 		return $this;
 	}
 
-	/**
-	 * Re-parsing page content from a revision
-	 *
-	 * @since 1.9
-	 */
 	protected function fetchFromParser() {
 		Profiler::In( __METHOD__ );
 
@@ -202,18 +182,10 @@ class ContentParser {
 		return $this;
 	}
 
-	/**
-	 * @note ContentHandler does not exist prior MW 1.21
-	 *
-	 * @return boolean
-	 */
 	protected function hasContentHandler() {
 		return class_exists( 'ContentHandler' );
 	}
 
-	/**
-	 * @return ParserOptions
-	 */
 	protected function newParserOptions() {
 
 		$user = null;
@@ -225,17 +197,13 @@ class ContentParser {
 		return new ParserOptions( $user );
 	}
 
-	/**
-	 * @note Revision::READ_NORMAL is not defined in MW 1.19
-	 *
-	 * @return Revision
-	 */
 	protected function getRevision() {
 
 		if ( $this->revision instanceOf Revision ) {
 			return $this->revision;
 		}
-
+		
+		// Revision::READ_NORMAL is not specified in MW 1.19
 		if ( defined( 'Revision::READ_NORMAL' ) ) {
 			$this->revision = Revision::newFromTitle( $this->getTitle(), false, Revision::READ_NORMAL );
 		} else {
