@@ -8,6 +8,8 @@ use SMW\EmptyContext;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 
+use Title;
+
 /**
  * @covers \SMW\RedirectPropertyAnnotator
  *
@@ -23,22 +25,19 @@ use SMW\DIWikiPage;
  */
 class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\RedirectPropertyAnnotator';
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return RedirectPropertyAnnotator
 	 */
 	private function newInstance( $semanticData = null, $text = '' ) {
 
 		if ( $semanticData === null ) {
-			$semanticData = $this->newMockBuilder()->newObject( 'SemanticData' );
+			$semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
+				->disableOriginalConstructor()
+				->getMock();
 		}
 
 		$context  = new EmptyContext();
@@ -50,25 +49,51 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
 	 * @dataProvider redirectsDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testAddCategoriesWithOutObserver( array $setup, array $expected ) {
+	public function testAddAnnotationWithOutObserver( array $parameter, array $expected ) {
 
 		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( $this->newTitle() )
+			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
 		);
 
-		$instance = $this->newInstance( $semanticData, $setup['text'] );
+		$instance = $this->newInstance( $semanticData, $parameter['text'] );
+		$instance->addAnnotation();
+
+		$this->assertSemanticData(
+			$instance->getSemanticData(),
+			$expected,
+			'Asserts that addAnnotation() adds expected triples'
+		);
+
+	}
+
+	/**
+	 * @dataProvider redirectsDataProvider
+	 */
+	public function testAddAnnotationWithDisabledContentHandler( $parameter, $expected ) {
+
+		$semanticData = new SemanticData(
+			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
+		);
+
+		$instance = $this->getMock( $this->getClass(),
+			array( 'hasContentHandler' ),
+			array(
+				new NullPropertyAnnotator( $semanticData, new EmptyContext() ),
+				$parameter['text']
+			)
+		);
+
+		$instance->expects( $this->any() )
+			->method( 'hasContentHandler' )
+			->will( $this->returnValue( false ) );
+
 		$instance->addAnnotation();
 
 		$this->assertSemanticData(
