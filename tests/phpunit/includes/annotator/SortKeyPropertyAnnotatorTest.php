@@ -81,11 +81,8 @@ class SortKeyPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $semanticData, $setup['sort'] );
 		$instance->attach( $this->newObserver() )->addAnnotation();
 
-		$this->assertSemanticData(
-			$instance->getSemanticData(),
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
 
 		$this->assertEquals(
 			$instance->verifyCallback,
@@ -122,9 +119,9 @@ class SortKeyPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'sort'  => 'Lala'
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_SKEY',
-				'propertyValue' => array( 'Lala' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_SKEY',
+				'propertyValues' => array( 'Lala' ),
 			)
 		);
 
@@ -136,9 +133,9 @@ class SortKeyPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'sort'  => ''
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_SKEY',
-				'propertyValue' => array( $title->getDBkey() ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_SKEY',
+				'propertyValues' => array( $title->getDBkey() ),
 			)
 		);
 

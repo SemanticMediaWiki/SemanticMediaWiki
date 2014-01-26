@@ -25,9 +25,6 @@ use SMWQueryProcessor;
  */
 class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return false;
 	}
@@ -80,7 +77,10 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTes
 		$instance->addAnnotation();
 
 		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getContainer()->getSemanticData() );
-		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
+
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getContainer()->getSemanticData() );
+
 	}
 
 	/**
@@ -103,9 +103,9 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTes
 				'format=list'
 			),
 			array(
-				'propertyCount' => 4,
-				'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]' )
 			)
 		);
 
@@ -124,9 +124,9 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTes
 				'format=list'
 			),
 			array(
-				'propertyCount' => 4,
-				'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 			)
 		);
 
@@ -145,9 +145,9 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTes
 				'format=bar'
 			),
 			array(
-				'propertyCount' => 4,
-				'propertyKey' => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 			)
 		);
 

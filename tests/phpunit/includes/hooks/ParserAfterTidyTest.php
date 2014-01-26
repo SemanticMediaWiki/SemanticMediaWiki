@@ -129,9 +129,9 @@ class ParserAfterTidyTest extends ParserTestCase {
 
 		// Expected semantic data
 		$expected = array(
-			'propertyCount' => 2,
-			'propertyKey'   => array( '_INST', '_SKEY' ),
-			'propertyValue' => array( 'Foo', 'Bar', $title->getText() ),
+			'propertyCount'  => 2,
+			'propertyKeys'   => array( '_INST', '_SKEY' ),
+			'propertyValues' => array( 'Foo', 'Bar', $title->getText() ),
 		);
 
 		$instance = $this->newInstance( $parser, $text );
@@ -156,11 +156,9 @@ class ParserAfterTidyTest extends ParserTestCase {
 
 		// Re-read data from the Parser
 		$parserData = $this->newParserData( $title, $parser->getOutput() );
-		$this->assertSemanticData(
-			$parserData->getData(),
-			$expected,
-			'asserts whether the container contains expected triples'
-		);
+
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $parserData->getSemanticData() );
 
 	}
 

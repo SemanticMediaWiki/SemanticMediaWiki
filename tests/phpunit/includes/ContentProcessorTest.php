@@ -108,7 +108,14 @@ class ContentProcessorTest extends ParserTestCase {
 
 		// Check the returned instance
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
-		$this->assertSemanticData( $parserData->getData(), $expected );
+
+		$semanticDataValidator = new SemanticDataValidator;
+
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getData()
+		);
+
 	}
 
 	/**
@@ -144,7 +151,14 @@ class ContentProcessorTest extends ParserTestCase {
 
 		// Check the returned instance
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
-		$this->assertSemanticData( $parserData->getData(), $expected );
+
+		$semanticDataValidator = new SemanticDataValidator;
+
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getData()
+		);
+
 	}
 
 	/**
@@ -203,9 +217,9 @@ class ContentProcessorTest extends ParserTestCase {
 					' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
-				'propertyCount' => 3,
-				'propertyLabel' => array( 'Foo', 'Bar', 'FooBar' ),
-				'propertyValue' => array( 'Dictumst', 'Tincidunt semper', '9001' )
+				'propertyCount'  => 3,
+				'propertyLabels' => array( 'Foo', 'Bar', 'FooBar' ),
+				'propertyValues' => array( 'Dictumst', 'Tincidunt semper', '9001' )
 			)
 		);
 
@@ -215,7 +229,7 @@ class ContentProcessorTest extends ParserTestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => true,
-				'smwgInlineErrors' => true,
+				'smwgInlineErrors'  => true,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[FooBar::dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
@@ -227,9 +241,9 @@ class ContentProcessorTest extends ParserTestCase {
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis'.
 					' [[:Http:://www/foo/9001|http:://www/foo/9001]] et Donec.',
-				'propertyCount' => 3,
-				'propertyLabel' => array( 'Foo', 'Bar', 'FooBar' ),
-				'propertyValue' => array( 'Dictumst', 'Tincidunt semper', 'Http:://www/foo/9001' )
+				'propertyCount'  => 3,
+				'propertyLabels' => array( 'Foo', 'Bar', 'FooBar' ),
+				'propertyValues' => array( 'Dictumst', 'Tincidunt semper', 'Http:://www/foo/9001' )
 			)
 		);
 
@@ -247,10 +261,10 @@ class ContentProcessorTest extends ParserTestCase {
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[foo::9001]] et Donec.',
 			array(
-				'resultText'    => 'class="smw-highlighter" data-type="4" data-state="inline"',
-				'propertyCount' => 2,
-				'propertyLabel' => array( 'Foo', 'Bar' ),
-				'propertyValue' => array( 'Tincidunt semper', '9001' )
+				'resultText'     => 'class="smw-highlighter" data-type="4" data-state="inline"',
+				'propertyCount'  => 2,
+				'propertyLabels' => array( 'Foo', 'Bar' ),
+				'propertyValues' => array( 'Tincidunt semper', '9001' )
 			)
 		);
 
@@ -260,7 +274,7 @@ class ContentProcessorTest extends ParserTestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors' => false,
+				'smwgInlineErrors'  => false,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[-FooBar::dictumst|軽い]] cursus. Nisl sit condimentum Quisque facilisis' .
@@ -271,9 +285,9 @@ class ContentProcessorTest extends ParserTestCase {
 					' 軽い cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
-				'propertyCount' => 2,
-				'propertyLabel' => array( 'Foo', 'Bar' ),
-				'propertyValue' => array( 'Tincidunt semper', '9001' )
+				'propertyCount'  => 2,
+				'propertyLabels' => array( 'Foo', 'Bar' ),
+				'propertyValues' => array( 'Tincidunt semper', '9001' )
 			)
 		);
 
@@ -283,7 +297,7 @@ class ContentProcessorTest extends ParserTestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_HELP => false ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors' => true,
+				'smwgInlineErrors'  => true,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' [[FooBar::dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
@@ -294,9 +308,9 @@ class ContentProcessorTest extends ParserTestCase {
 					' [[:Dictumst|おもろい]] cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
 					' Aliquam {{volutpat}} arcu ultrices eu Ut quis [[:9001|9001]] et Donec.',
-				'propertyCount' => 0,
-				'propertyLabel' => array(),
-				'propertyValue' => array()
+				'propertyCount'  => 0,
+				'propertyLabels' => array(),
+				'propertyValues' => array()
 			)
 		);
 
@@ -306,16 +320,16 @@ class ContentProcessorTest extends ParserTestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_HELP => true ),
 				'smwgLinksInValues' => false,
-				'smwgInlineErrors' => true,
+				'smwgInlineErrors'  => true,
 			),
 			'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 			' Suspendisse tincidunt semper facilisi dolor Aenean.',
 			array(
 				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 					' Suspendisse tincidunt semper facilisi dolor Aenean.',
-				'propertyCount' => 0,
-				'propertyLabel' => array(),
-				'propertyValue' => array()
+				'propertyCount'  => 0,
+				'propertyLabels' => array(),
+				'propertyValues' => array()
 			)
 		);
 
@@ -330,10 +344,10 @@ class ContentProcessorTest extends ParserTestCase {
 			),
 			'[[Foo::?bar]], [[Foo::Baz?]], [[Quxey::B?am]]',
 			array(
-				'resultText'    => '[[:?bar|?bar]], [[:Baz?|Baz?]], [[:B?am|B?am]]',
-				'propertyCount' => 2,
-				'propertyLabel' => array( 'Foo', 'Quxey' ),
-				'propertyValue' => array( '?bar', 'Baz?', 'B?am' )
+				'resultText'     => '[[:?bar|?bar]], [[:Baz?|Baz?]], [[:B?am|B?am]]',
+				'propertyCount'  => 2,
+				'propertyLabels' => array( 'Foo', 'Quxey' ),
+				'propertyValues' => array( '?bar', 'Baz?', 'B?am' )
 			)
 		);
 

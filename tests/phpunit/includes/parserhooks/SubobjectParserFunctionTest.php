@@ -119,11 +119,12 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 
 		// Add generated title text as property value due to the auto reference
 		// setting
-		$expected['propertyValue'][] = $title->getText();
+		$expected['propertyValues'][] = $title->getText();
+		$semanticDataValidator = new SemanticDataValidator;
 
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$this->assertSemanticData( $containerSemanticData, $expected );
+			$semanticDataValidator->assertThatPropertiesAreSet( $expected, $containerSemanticData );
 		}
 	}
 
@@ -146,11 +147,12 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 		$parserData = $this->newParserData( $title, $parserOutput );
 
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
+		$semanticDataValidator = new SemanticDataValidator;
 
 		// Confirm subSemanticData objects for the SemanticData instance
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$this->assertSemanticData( $containerSemanticData, $expected );
+			$semanticDataValidator->assertThatPropertiesAreSet( $expected, $containerSemanticData );
 		}
 	}
 
@@ -172,9 +174,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => false,
 					'identifier' => '_',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Foo',
-					'propertyValue' => 'Bar'
+					'propertyCount'  => 1,
+					'propertyLabels' => 'Foo',
+					'propertyValues' => 'Bar'
 				)
 			),
 
@@ -187,9 +189,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => false,
 					'identifier' => '_',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Foo',
-					'propertyValue' => '1001 9009'
+					'propertyCount'  => 1,
+					'propertyLabels' => 'Foo',
+					'propertyValues' => '1001 9009'
 				)
 			),
 
@@ -202,9 +204,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => false,
 					'identifier' => 'FooBar',
-					'propertyCount' => 1,
-					'propertyLabel' => 'FooBar',
-					'propertyValue' => 'Bar foo'
+					'propertyCount'  => 1,
+					'propertyLabels' => 'FooBar',
+					'propertyValues' => 'Bar foo'
 				)
 			),
 
@@ -217,9 +219,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => false,
 					'identifier' => 'Foo_bar',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Foo',
-					'propertyValue' => 'Help:Bar'
+					'propertyCount'  => 1,
+					'propertyLabels' => 'Foo',
+					'propertyValues' => 'Help:Bar'
 				)
 			),
 
@@ -232,9 +234,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => false,
 					'identifier' => 'Foo_bar_foo',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Bar',
-					'propertyValue' => 'Foo Bar'
+					'propertyCount'  => 1,
+					'propertyLabels' => 'Bar',
+					'propertyValues' => 'Foo Bar'
 				)
 			),
 
@@ -251,9 +253,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => false,
 					'identifier' => 'Foo_bar_foo',
-					'propertyCount' => 2,
-					'propertyLabel' => array( '状況', 'Bar' ),
-					'propertyValue' => array( '超やばい', 'Http://www.semantic-mediawiki.org/w/index.php?title=Subobject' )
+					'propertyCount'  => 2,
+					'propertyLabels' => array( '状況', 'Bar' ),
+					'propertyValues' => array( '超やばい', 'Http://www.semantic-mediawiki.org/w/index.php?title=Subobject' )
 				)
 			),
 
@@ -268,9 +270,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => true,
 					'identifier' => 'Foo_bar_foo',
-					'propertyCount' => 2,
-					'propertyLabel' => array( 'Bar', $diPropertyError->getLabel() ),
-					'propertyValue' => array( 'Foo Bar', 'Modification date' )
+					'propertyCount'  => 2,
+					'propertyLabels' => array( 'Bar', $diPropertyError->getLabel() ),
+					'propertyValues' => array( 'Foo Bar', 'Modification date' )
 				)
 			),
 		);
@@ -294,9 +296,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => false,
 					'identifier' => '_',
-					'propertyCount' => 2,
-					'propertyLabel' => array( 'Bar', 'Foo bar foo' ),
-					'propertyValue' => array( 'Foo Bar' ) // additional value is added during runtime
+					'propertyCount'  => 2,
+					'propertyLabels' => array( 'Bar', 'Foo bar foo' ),
+					'propertyValues' => array( 'Foo Bar' ) // additional value is added during runtime
 				),
 				array( 'msg' => 'Failed asserting that a named identifier was turned into an anonymous id' )
 			),
@@ -311,9 +313,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 				array(
 					'errors' => false,
 					'identifier' => 'Foo_bar_foo',
-					'propertyCount' => 1,
-					'propertyLabel' => array( 'Bar' ),
-					'propertyValue' => array( 'Foo Bar' )
+					'propertyCount'  => 1,
+					'propertyLabels' => array( 'Bar' ),
+					'propertyValues' => array( 'Foo Bar' )
 				),
 				array( 'msg' => 'Failed asserting the validity of the named identifier' )
 			)

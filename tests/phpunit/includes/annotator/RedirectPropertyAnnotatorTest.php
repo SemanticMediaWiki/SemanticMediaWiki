@@ -65,11 +65,8 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $semanticData, $parameter['text'] );
 		$instance->addAnnotation();
 
-		$this->assertSemanticData(
-			$instance->getSemanticData(),
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
 
 	}
 
@@ -96,11 +93,8 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$instance->addAnnotation();
 
-		$this->assertSemanticData(
-			$instance->getSemanticData(),
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
 
 	}
 
@@ -113,9 +107,9 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$provider[] = array(
 			array( 'text' => '#REDIRECT [[:Lala]]' ),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_REDI',
-				'propertyValue' => ':Lala'
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_REDI',
+				'propertyValues' => ':Lala'
 			)
 		);
 
@@ -123,9 +117,9 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$provider[] = array(
 			array( 'text' => '#REDIRECT [[Lala]]' ),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_REDI',
-				'propertyValue' => ':Lala'
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_REDI',
+				'propertyValues' => ':Lala'
 			)
 		);
 

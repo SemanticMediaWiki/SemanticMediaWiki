@@ -7,6 +7,8 @@ use SMW\Query\Profiler\NullProfile;
 use SMW\HashIdGenerator;
 use SMW\Subobject;
 
+use Title;
+
 /**
  * @covers \SMW\Query\Profiler\DurationProfile
  *
@@ -20,24 +22,19 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class DurationProfileTest extends SemanticMediaWikiTestCase {
+class DurationProfileTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\Query\Profiler\DurationProfile';
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return DurationProfile
 	 */
 	private function newInstance( $duration = 0 ) {
 
 		$profiler = new NullProfile(
-			new Subobject( $this->newTitle() ),
+			new Subobject( Title::newFromText( __METHOD__ ) ),
 			new HashIdGenerator( 'Foo' )
 		);
 
@@ -47,7 +44,7 @@ class DurationProfileTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
@@ -61,7 +58,11 @@ class DurationProfileTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $duration );
 		$instance->addAnnotation();
 
-		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getContainer()->getSemanticData()
+		);
 
 	}
 
@@ -77,9 +78,9 @@ class DurationProfileTest extends SemanticMediaWikiTestCase {
 		) );
 
 		$provider[] = array( 0.9001, array(
-			'propertyCount' => 1,
-			'propertyKey'   => array( '_ASKDU' ),
-			'propertyValue' => array( 0.9001 )
+			'propertyCount'  => 1,
+			'propertyKeys'   => array( '_ASKDU' ),
+			'propertyValues' => array( 0.9001 )
 		) );
 
 		return $provider;

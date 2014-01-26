@@ -88,11 +88,8 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['categories'] );
 		$instance->addAnnotation();
 
-		$this->assertSemanticData(
-			$instance->getSemanticData(),
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
 
 	}
 
@@ -110,11 +107,8 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['categories'] );
 		$instance->attach( $this->newObserver() )->addAnnotation();
 
-		$this->assertSemanticData(
-			$instance->getSemanticData(),
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
 
 		$this->assertEquals(
 			$instance->verifyObserverWasCalled,
@@ -140,11 +134,8 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$recreateParserDataFromOutput = new \SMW\ParserData( $title, $parserOutput );
 
-		$this->assertSemanticData(
-			$recreateParserDataFromOutput->getData(),
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $recreateParserDataFromOutput->getData() );
 
 	}
 
@@ -168,11 +159,8 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$instance->addAnnotation();
 
-		$this->assertSemanticData(
-			$semanticData,
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $semanticData );
 
 	}
 
@@ -228,9 +216,9 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_INST',
-				'propertyValue' => array( 'Foo',  'Bar' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_INST',
+				'propertyValues' => array( 'Foo',  'Bar' ),
 			)
 		);
 
@@ -246,9 +234,9 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_SUBC',
-				'propertyValue' => array( 'Foo',  'Bar' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_SUBC',
+				'propertyValues' => array( 'Foo',  'Bar' ),
 			)
 		);
 
@@ -280,9 +268,9 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_INST',
-				'propertyValue' => array( 'Foo', 'Bar' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_INST',
+				'propertyValues' => array( 'Foo', 'Bar' ),
 			)
 		);
 
@@ -299,9 +287,9 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_INST',
-				'propertyValue' => array( 'Foo' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_INST',
+				'propertyValues' => array( 'Foo' ),
 			)
 		);
 
@@ -318,9 +306,9 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_SUBC',
-				'propertyValue' => array( 'Foo', 'Bar' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_SUBC',
+				'propertyValues' => array( 'Foo', 'Bar' ),
 			)
 		);
 
@@ -337,9 +325,9 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_SUBC',
-				'propertyValue' => array( 'Foo' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_SUBC',
+				'propertyValues' => array( 'Foo' ),
 			)
 		);
 

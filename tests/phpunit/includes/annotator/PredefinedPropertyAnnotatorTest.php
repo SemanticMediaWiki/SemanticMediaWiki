@@ -86,11 +86,8 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['pageInfo'] );
 		$instance->attach( $this->newObserver() )->addAnnotation();
 
-		$this->assertSemanticData(
-			$instance->getSemanticData(),
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
 
 		$this->assertEquals(
 			$instance->verifyCallback,
@@ -144,9 +141,9 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'pageInfo' => array( 'getModificationDate' => 1272508903 )
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_MDAT',
-				'propertyValue' => array( '2010-04-29T02:41:43' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_MDAT',
+				'propertyValues' => array( '2010-04-29T02:41:43' ),
 			)
 		);
 
@@ -160,9 +157,9 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'pageInfo' => array( 'getCreationDate' => 1272508903 )
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_CDAT',
-				'propertyValue' => array( '2010-04-29T02:41:43' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_CDAT',
+				'propertyValues' => array( '2010-04-29T02:41:43' ),
 			)
 		);
 
@@ -176,9 +173,9 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'pageInfo' => array( 'isNewPage' => true )
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_NEWP',
-				'propertyValue' => array( true ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_NEWP',
+				'propertyValues' => array( true ),
 			)
 		);
 
@@ -197,9 +194,9 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'pageInfo' => array( 'getLastEditor' => $userPage )
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_LEDT',
-				'propertyValue' => array( 'User:Lula' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_LEDT',
+				'propertyValues' => array( 'User:Lula' ),
 			)
 		);
 
@@ -216,9 +213,9 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 2,
-				'propertyKey'   => array( '_MDAT', '_LEDT' ),
-				'propertyValue' => array( '2010-04-29T02:41:43', 'User:Lula' ),
+				'propertyCount'  => 2,
+				'propertyKeys'   => array( '_MDAT', '_LEDT' ),
+				'propertyValues' => array( '2010-04-29T02:41:43', 'User:Lula' ),
 			)
 		);
 

@@ -166,11 +166,12 @@ class AskParserFunctionTest extends ParserTestCase {
 
 		// Check the returned instance
 		$this->assertInstanceOf( 'SMW\SemanticData', $parserData->getData() );
+		$semanticDataValidator = new SemanticDataValidator;
 
 		// Confirm subSemanticData objects for the SemanticData instance
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$this->assertSemanticData( $containerSemanticData, $expected );
+			$semanticDataValidator->assertThatPropertiesAreSet( $expected, $containerSemanticData );
 		}
 
 	}
@@ -196,9 +197,9 @@ class AskParserFunctionTest extends ParserTestCase {
 				'format=list'
 			),
 			array(
-				'propertyCount' => 4,
-				'propertyKey'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValue' => array( 'list', 1, 1, '[[Modification date::+]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]' )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
@@ -219,9 +220,9 @@ class AskParserFunctionTest extends ParserTestCase {
 				'format=list'
 			),
 			array(
-				'propertyCount' => 4,
-				'propertyKey'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValue' => array( 'list', 4, 1, '[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'list', 4, 1, '[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]' )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
@@ -242,9 +243,9 @@ class AskParserFunctionTest extends ParserTestCase {
 				'format=list'
 			),
 			array(
-				'propertyCount' => 4,
-				'propertyKey'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValue' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'list', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
@@ -265,9 +266,9 @@ class AskParserFunctionTest extends ParserTestCase {
 				'format=feed'
 			),
 			array(
-				'propertyCount' => 4,
-				'propertyKey'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValue' => array( 'feed', 1, 1, '[[:File:Fooo]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'feed', 1, 1, '[[:File:Fooo]]' )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
@@ -288,9 +289,9 @@ class AskParserFunctionTest extends ParserTestCase {
 				'format=lula'
 			),
 			array(
-				'propertyCount' => 4,
-				'propertyKey'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValue' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
+				'propertyValues' => array( 'table', 2, 1, '[[Modification date::+]] [[Category:Foo]]' )
 			),
 			array(
 				'smwgQueryDurationEnabled' => false
@@ -306,8 +307,8 @@ class AskParserFunctionTest extends ParserTestCase {
 				'format=lula'
 			),
 			array(
-				'propertyCount' => 5,
-				'propertyKey'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO', '_ASKDU' ),
+				'propertyCount'  => 5,
+				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO', '_ASKDU' ),
 			),
 			array(
 				'smwgQueryDurationEnabled' => true

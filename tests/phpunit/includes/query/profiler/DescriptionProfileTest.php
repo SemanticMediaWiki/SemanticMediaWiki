@@ -7,6 +7,8 @@ use SMW\Query\Profiler\NullProfile;
 use SMW\HashIdGenerator;
 use SMW\Subobject;
 
+use Title;
+
 /**
  * @covers \SMW\Query\Profiler\DescriptionProfile
  *
@@ -20,28 +22,24 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class DescriptionProfileTest extends SemanticMediaWikiTestCase {
+class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\Query\Profiler\DescriptionProfile';
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return DescriptionProfile
 	 */
 	private function newInstance( $description = null ) {
 
 		if ( $description === null ) {
-			$description = $this->newMockBuilder()->newObject( 'QueryDescription' );
+			$mockBuilder = new MockObjectBuilder( new CoreMockObjectRepository() );
+			$description = $mockBuilder->newObject( 'QueryDescription' );
 		}
 
 		$profiler = new NullProfile(
-			new Subobject( $this->newTitle() ),
+			new Subobject( Title::newFromText( __METHOD__ ) ),
 			new HashIdGenerator( 'Foo' )
 		);
 
@@ -51,7 +49,7 @@ class DescriptionProfileTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
@@ -60,7 +58,8 @@ class DescriptionProfileTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testCreateProfile() {
 
-		$description = $this->newMockBuilder()->newObject( 'QueryDescription', array(
+		$mockBuilder = new MockObjectBuilder( new CoreMockObjectRepository() );
+		$description = $mockBuilder->newObject( 'QueryDescription', array(
 			'getQueryString' => 'Foo',
 			'getSize'  => 55,
 			'getDepth' => 9001
@@ -70,12 +69,16 @@ class DescriptionProfileTest extends SemanticMediaWikiTestCase {
 		$instance->addAnnotation();
 
 		$expected = array(
-			'propertyCount' => 3,
-			'propertyKey'   => array( '_ASKST', '_ASKSI', '_ASKDE' ),
-			'propertyValue' => array( 'Foo', 55, 9001 )
+			'propertyCount'  => 3,
+			'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE' ),
+			'propertyValues' => array( 'Foo', 55, 9001 )
 		);
 
-		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getContainer()->getSemanticData()
+		);
 
 	}
 

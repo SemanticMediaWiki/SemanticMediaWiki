@@ -45,6 +45,7 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 
 	public function testPageCreationAndRevisionHandlingBeforeLinksUpdate() {
 
+		$this->semanticDataValidator = new SemanticDataValidator;
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
@@ -67,6 +68,7 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 	 */
 	public function testLinksUpdateAndVerifyStoreUpdate( $expected ) {
 
+		$this->semanticDataValidator = new SemanticDataValidator;
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
@@ -110,18 +112,19 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 			'Asserts that data are equals with or without a revision'
 		);
 
-		$this->assertCount(
+		$this->semanticDataValidator->assertThatSemanticDataHasPropertyCountOf(
 			4,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties(),
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) ),
 			'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists'
+
 		);
 
 	}
 
 	protected function assertSemanticDataAfterContentAlteration() {
-		$this->assertCount(
+		$this->semanticDataValidator->assertThatSemanticDataHasPropertyCountOf(
 			2,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties(),
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) ),
 			'Asserts property _SKEY and _MDAT exists'
 		);
 	}
@@ -140,15 +143,15 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 	}
 
 	protected function assertPropertyCount( $poExpected, $storeExpected, $parserData ) {
-		$this->assertCount(
+		$this->semanticDataValidator->assertThatSemanticDataHasPropertyCountOf(
 			$poExpected['count'],
-			$parserData->getData()->getProperties(),
+			$parserData->getData(),
 			$poExpected['msg']
 		);
 
-		$this->assertCount(
+		$this->semanticDataValidator->assertThatSemanticDataHasPropertyCountOf(
 			$storeExpected['count'],
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties(),
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) ),
 			$storeExpected['msg']
 		);
 	}

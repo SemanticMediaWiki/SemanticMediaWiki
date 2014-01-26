@@ -26,6 +26,19 @@ use Job;
  */
 class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 
+	protected function setUp() {
+		parent::setUp();
+
+		$context = new ExtensionContext();
+
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $this->getStore() );
+		$context->getSettings()->set( 'smwgDeleteSubjectAsDeferredJob', true );
+		$context->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', true );
+		$context->getSettings()->set( 'smwgEnableUpdateJobs', true );
+
+		$this->runExtensionSetup( $context );
+	}
+
 	/**
 	 * @dataProvider titleProvider
 	 *
@@ -33,28 +46,20 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 	 */
 	public function testArticleDeleteAssociativeEntitiesRefreshAsDeferredJob( $source, $associate ) {
 
-		$store   = $this->getStore();
-		$context = new ExtensionContext();
-
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $store );
-		$context->getSettings()->set( 'smwgDeleteSubjectAsDeferredJob', true );
-		$context->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', true );
-		$context->getSettings()->set( 'smwgEnableUpdateJobs', true );
-
-		$this->runExtensionSetup( $context );
+		$semanticDataValidator = new SemanticDataValidator;
 
 		$subject = DIWikiPage::newFromTitle( $source['title'] );
 
-		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $subject ) );
+		$semanticDataValidator->assertThatSemanticDataIsEmpty( $this->getStore()->getSemanticData( $subject ) );
 
 		$this->createPage( $source['title'], $source['edit'] );
 		$this->createPage( $associate['title'], $associate['edit']  );
 
-		$this->assertSemanticDataIsNotEmpty( $store->getSemanticData( $subject ) );
+		$semanticDataValidator->assertThatSemanticDataIsNotEmpty( $this->getStore()->getSemanticData( $subject ) );
 
 		$this->deletePage( $source['title'] );
 
-		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $subject ) );
+		$semanticDataValidator->assertThatSemanticDataIsEmpty( $this->getStore()->getSemanticData( $subject ) );
 		$this->assertJobRun( 'SMW\DeleteSubjectJob', null, array( 'withAssociates', 'asDeferredJob', 'semanticData' ) );
 		$this->assertJobRun( 'SMW\UpdateJob' );
 
@@ -68,15 +73,8 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 	 * @since 1.9.0.2
 	 */
 	public function testJobFactory( $jobName, $type ) {
-
-		$context = new ExtensionContext();
-		$context->getSettings()->set( 'smwgEnableUpdateJobs', true );
-
-		$this->runExtensionSetup( $context );
-
 		$job = Job::factory( $jobName, Title::newFromText( __METHOD__ . $jobName ), array() );
 		$this->assertJobRun( $type, $job );
-
 	}
 
 	/**
@@ -131,6 +129,10 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 
 		if ( $job === null ) {
 			$job = Job::pop_type( $type );
+		}
+
+		if ( !$job ) {
+			$this->markTestSkipped( "Test only applicable for when a {$type} JobQueue entry is available" );
 		}
 
 		$this->assertInstanceOf( 'Job', $job );

@@ -7,6 +7,8 @@ use SMW\Query\Profiler\NullProfile;
 use SMW\HashIdGenerator;
 use SMW\Subobject;
 
+use Title;
+
 /**
  * @covers \SMW\Query\Profiler\FormatProfile
  *
@@ -20,24 +22,19 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class FormatProfileTest extends SemanticMediaWikiTestCase {
+class FormatProfileTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\Query\Profiler\FormatProfile';
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return FormatProfile
 	 */
 	private function newInstance( $format = 'Foo' ) {
 
 		$profiler = new NullProfile(
-			new Subobject( $this->newTitle() ),
+			new Subobject( Title::newFromText( __METHOD__ ) ),
 			new HashIdGenerator( 'Foo' )
 		);
 
@@ -47,7 +44,7 @@ class FormatProfileTest extends SemanticMediaWikiTestCase {
 	/**
 	 * @since 1.9
 	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
@@ -60,12 +57,16 @@ class FormatProfileTest extends SemanticMediaWikiTestCase {
 		$instance->addAnnotation();
 
 		$expected = array(
-			'propertyCount' => 1,
-			'propertyKey'   => array( '_ASKFO' ),
-			'propertyValue' => array( 'Foo' )
+			'propertyCount'  => 1,
+			'propertyKeys'   => array( '_ASKFO' ),
+			'propertyValues' => array( 'Foo' )
 		);
 
-		$this->assertSemanticData( $instance->getContainer()->getSemanticData(), $expected );
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getContainer()->getSemanticData()
+		);
 
 	}
 

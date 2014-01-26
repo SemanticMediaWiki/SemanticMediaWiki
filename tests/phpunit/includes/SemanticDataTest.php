@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\Configuration\Configuration;
 use SMW\DataValueFactory;
 use SMW\SemanticData;
 use SMW\DIProperty;
@@ -97,10 +98,9 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 	public function testaddPropertyValue() {
 
 		$instance = $this->newInstance();
-		$instance->addPropertyValue( 'Foo', DITime::newFromTimestamp( 1272508903 ) );
+		$instance->addPropertyValue( 'FuyuQuy', DIWikiPage::doUnserialize( 'Foo#0#' ) );
 
-		// !!! THANKS for the GLOBAL dependency within addPropertyValue() !!!
-		$key = $GLOBALS['wgContLang']->getNsText( SMW_NS_PROPERTY ) . ':' . 'Foo';
+		$key = Configuration::getInstance()->get( 'wgContLang' )->getNsText( SMW_NS_PROPERTY ) . ':' . 'FuyuQuy';
 
 		foreach ( $instance->getProperties() as $property ) {
 
@@ -118,12 +118,13 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		}
 
 		$expected = array(
-			'propertyCount' => 1,
-			'propertyLabel' => array( $key ),
-			'propertyValue' => array( '2010-04-29T02:41:43' )
+			'propertyCount'  => 1,
+			'propertyLabels' => array( $key ),
+			'propertyValues' => array( 'Foo' )
 		);
 
-		$this->assertSemanticData( $instance, $expected );
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance );
 
 	}
 
@@ -420,7 +421,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		}
 
 		if ( $expected['error'] === 0 ) {
-			$this->assertSemanticData( $instance, $expected );
+			$semanticDataValidator = new SemanticDataValidator;
+			$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance );
 		} else {
 			$this->assertCount( $expected['error'], $instance->getErrors() );
 		}
@@ -468,8 +470,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 			array(
 				'error'         => 0,
 				'propertyCount' => 1,
-				'propertyLabel' => 'Foo',
-				'propertyValue' => 'Bar'
+				'propertyLabels' => 'Foo',
+				'propertyValues' => 'Bar'
 			)
 		);
 
@@ -482,8 +484,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 			array(
 				'error'         => 0,
 				'propertyCount' => 1,
-				'propertyLabel' => 'Foo',
-				'propertyValue' => 'Bar'
+				'propertyLabels' => 'Foo',
+				'propertyValues' => 'Bar'
 			)
 		);
 
@@ -496,8 +498,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 			array(
 				'error'         => 0,
 				'propertyCount' => 2,
-				'propertyLabel' => array( 'Foo', 'Lila' ),
-				'propertyValue' => array( 'Bar', 'Lula' )
+				'propertyLabels' => array( 'Foo', 'Lila' ),
+				'propertyValues' => array( 'Bar', 'Lula' )
 			)
 		);
 
@@ -521,8 +523,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 			array(
 				'error'         => 1,
 				'propertyCount' => 1,
-				'propertyLabel' => array( 'Foo' ),
-				'propertyValue' => array( 'Bar' )
+				'propertyLabels' => array( 'Foo' ),
+				'propertyValues' => array( 'Bar' )
 			)
 		);
 

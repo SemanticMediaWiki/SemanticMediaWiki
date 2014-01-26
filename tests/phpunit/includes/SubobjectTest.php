@@ -154,7 +154,9 @@ class SubobjectTest extends ParserTestCase {
 
 		$this->assertCount( $expected['errors'], $subobject->getErrors(), $info['msg'] );
 		$this->assertInstanceOf( '\SMW\SemanticData', $subobject->getSemanticData(), $info['msg'] );
-		$this->assertSemanticData( $subobject->getSemanticData(), $expected );
+
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $subobject->getSemanticData() );
 
 	}
 
@@ -183,7 +185,9 @@ class SubobjectTest extends ParserTestCase {
 
 		$this->assertCount( $expected['errors'], $subobject->getErrors() );
 		$this->assertInstanceOf( '\SMW\SemanticData', $subobject->getSemanticData() );
-		$this->assertSemanticData( $subobject->getSemanticData(), $expected );
+
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $subobject->getSemanticData() );
 
 	}
 
@@ -248,6 +252,7 @@ class SubobjectTest extends ParserTestCase {
 	 */
 	public function getDataProvider() {
 		$diPropertyError = new DIProperty( DIProperty::TYPE_ERROR );
+
 		return array(
 
 			// #0
@@ -259,9 +264,9 @@ class SubobjectTest extends ParserTestCase {
 				array(
 					'errors' => 0,
 					'identifier' => 'Bar',
-					'propertyCount' => 1,
-					'propertyLabel' => 'Foo',
-					'propertyValue' => 'Bar',
+					'propertyCount'  => 1,
+					'propertyLabels' => 'Foo',
+					'propertyValues' => 'Bar',
 				),
 				array( 'msg'  => 'Failed asserting conditions for a named identifier' )
 			),
@@ -275,9 +280,9 @@ class SubobjectTest extends ParserTestCase {
 				array(
 					'errors' => 0,
 					'identifier' => '_',
-					'propertyCount' => 1,
-					'propertyLabel' => 'FooBar',
-					'propertyValue' => 'Bar Foo',
+					'propertyCount'  => 1,
+					'propertyLabels' => 'FooBar',
+					'propertyValues' => 'Bar Foo',
 				),
 				array( 'msg'  => 'Failed asserting conditions for an anon identifier' )
 			),
@@ -291,9 +296,9 @@ class SubobjectTest extends ParserTestCase {
 				array(
 					'errors' => 0,
 					'identifier' => 'foo',
-					'propertyCount' => 1,
-					'propertyLabel' => array( 9001 ),
-					'propertyValue' => array( 1001 ),
+					'propertyCount'  => 1,
+					'propertyLabels' => array( 9001 ),
+					'propertyValues' => array( 1001 ),
 				),
 				array( 'msg'  => 'Failed asserting conditions' )
 			),
@@ -307,9 +312,9 @@ class SubobjectTest extends ParserTestCase {
 				array(
 					'errors' => 0,
 					'identifier' => 'foo bar',
-					'propertyCount' => 2,
-					'propertyLabel' => array( 1001, 'Foo' ),
-					'propertyValue' => array( 9001, 'Bar' ),
+					'propertyCount'  => 2,
+					'propertyLabels' => array( 1001, 'Foo' ),
+					'propertyValues' => array( 9001, 'Bar' ),
 				),
 				array( 'msg'  => 'Failed asserting conditions' )
 			),
@@ -323,9 +328,9 @@ class SubobjectTest extends ParserTestCase {
 				array(
 					'errors' => 1,
 					'identifier' => 'bar',
-					'propertyCount' => 0,
-					'propertyLabel' => '',
-					'propertyValue' => '',
+					'propertyCount'  => 0,
+					'propertyLabels' => '',
+					'propertyValues' => '',
 				),
 				array( 'msg'  => 'Failed asserting that a property with a leading underscore would produce an error' )
 			),
@@ -339,13 +344,12 @@ class SubobjectTest extends ParserTestCase {
 				array(
 					'errors' => 1,
 					'identifier' => 'bar',
-					'propertyCount' => 0,
-					'propertyLabel' => '',
-					'propertyValue' => '',
+					'propertyCount'  => 0,
+					'propertyLabels' => '',
+					'propertyValues' => '',
 				),
 				array( 'msg'  => 'Failed asserting that an inverse property would produce an error' )
 			),
-
 			// #6
 			array(
 				array(
@@ -355,9 +359,9 @@ class SubobjectTest extends ParserTestCase {
 				array(
 					'identifier' => 'bar',
 					'errors' => 1,
-					'propertyCount' => 1,
-					'propertyLabel' => array( $diPropertyError->getLabel() ),
-					'propertyValue' => 'Foo',
+					'propertyCount'  => 1,
+					'propertyLabels' => array( $diPropertyError->getLabel() ),
+					'propertyValues' => 'Foo',
 				),
 				array( 'msg'  => 'Failed asserting that an improper value for a _wpg property would add "Has improper value for"' )
 			)
@@ -389,9 +393,9 @@ class SubobjectTest extends ParserTestCase {
 				),
 				array(
 					'errors' => 0,
-					'propertyCount' => 1,
-					'propertyLabel' => 'TextExample',
-					'propertyValue' => '<a href="http://username@example.org/path">Example</a>',
+					'propertyCount'  => 1,
+					'propertyLabels' => 'TextExample',
+					'propertyValues' => '<a href="http://username@example.org/path">Example</a>',
 				)
 			),
 		);

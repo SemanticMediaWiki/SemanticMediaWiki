@@ -106,11 +106,13 @@ class ContentProcessorTemplateTransclusionTest extends ParserTestCase {
 			'Asserts getData() returning instance'
 		);
 
-		$this->assertSemanticData(
-			$parserData->getData(),
+		$semanticDataValidator = new SemanticDataValidator;
+
+		$semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			'Asserts the SemanticData container'
+			$parserData->getData()
 		);
+
 	}
 
 	/**
@@ -131,10 +133,10 @@ class ContentProcessorTemplateTransclusionTest extends ParserTestCase {
 			'[[Foo::{{Bam}}]]',
 			'?bar',
 			array(
-				'resultText'    => '[[:?bar|?bar]]',
-				'propertyCount' => 1,
-				'propertyLabel' => array( 'Foo' ),
-				'propertyValue' => array( '?bar' )
+				'resultText'     => '[[:?bar|?bar]]',
+				'propertyCount'  => 1,
+				'propertyLabels' => array( 'Foo' ),
+				'propertyValues' => array( '?bar' )
 			)
 		);
 

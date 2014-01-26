@@ -102,16 +102,18 @@ class MwFunctionHookIntegrationTest extends MwIntegrationTestCase {
 
 		$this->runExtensionSetup( $context );
 
+		$semanticDataValidator = new SemanticDataValidator;
+
 		$title    = Title::newFromText( __METHOD__ );
 		$wikiPage = new WikiPage( $title );
 
 		$dataItem = DIWikiPage::newFromTitle( $wikiPage->getTitle() );
 
 		$this->editPageAndFetchInfo( $wikiPage, __METHOD__ );
-		$this->assertSemanticDataIsNotEmpty( $store->getSemanticData( $dataItem ) );
+		$semanticDataValidator->assertThatSemanticDataIsNotEmpty( $store->getSemanticData( $dataItem ) );
 
 		$this->deletePage( $title );
-		$this->assertSemanticDataIsEmpty( $store->getSemanticData( $dataItem ) );
+		$semanticDataValidator->assertThatSemanticDataIsEmpty( $store->getSemanticData( $dataItem ) );
 
 	}
 
@@ -133,10 +135,11 @@ class MwFunctionHookIntegrationTest extends MwIntegrationTestCase {
 		$parserData = new ParserData( $wikiPage->getTitle(), $editInfo->output );
 
 		$expected = array(
-			'propertyKey' => array( '_SKEY', '_MDAT', 'Quuy' )
+			'propertyKeys' => array( '_SKEY', '_MDAT', 'Quuy' )
 		);
 
-		$this->assertPropertiesAreSet( $parserData->getData(), $expected );
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $parserData->getData() );
 
 		$this->deletePage( $title );
 
@@ -222,21 +225,6 @@ class MwFunctionHookIntegrationTest extends MwIntegrationTestCase {
 			null,
 			$user
 		);
-	}
-
-	protected function assertPropertiesAreSet( SemanticData $semanticData, array $expected ) {
-
-		foreach ( $semanticData->getProperties() as $property ) {
-
-			$this->assertInstanceOf( '\SMW\DIProperty', $property );
-
-			$this->assertContains(
-				$property->getKey(),
-				$expected['propertyKey'],
-				'Asserts that a specific property key is set'
-			);
-
-		}
 	}
 
 }

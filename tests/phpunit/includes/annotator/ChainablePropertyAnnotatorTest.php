@@ -28,9 +28,6 @@ use SMW\DIProperty;
  */
 class ChainablePropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return false;
 	}
@@ -68,11 +65,8 @@ class ChainablePropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$instance->addAnnotation();
 
-		$this->assertSemanticData(
-			$instance->getSemanticData(),
-			$expected,
-			'Asserts that addAnnotation() adds expected triples'
-		);
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
 
 	}
 
@@ -98,9 +92,9 @@ class ChainablePropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 3,
-				'propertyKey'   => array( '_INST', '_MDAT', '_SKEY' ),
-				'propertyValue' => array( 'Foo',  'Bar', '2010-04-29T02:41:43', 'Lala' ),
+				'propertyCount'  => 3,
+				'propertyKeys'   => array( '_INST', '_MDAT', '_SKEY' ),
+				'propertyValues' => array( 'Foo',  'Bar', '2010-04-29T02:41:43', 'Lala' ),
 			)
 		);
 

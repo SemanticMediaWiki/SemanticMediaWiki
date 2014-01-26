@@ -25,16 +25,11 @@ use ParserOutput;
  */
 class ShowParserFunctionTest extends ParserTestCase {
 
-	/**
-	 * @return string
-	 */
 	public function getClass() {
 		return '\SMW\ShowParserFunction';
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return ShowParserFunction
 	 */
 	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
@@ -64,8 +59,6 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ShowParserFunction::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -73,13 +66,9 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ShowParserFunction::parse
 	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testParse( array $params, array $expected ) {
 
@@ -95,7 +84,6 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ShowParserFunction::parse (Test $GLOBALS['smwgQEnabled'] = false)
 	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
@@ -112,13 +100,9 @@ class ShowParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @test ShowParserFunction::parse (Test generated query data)
 	 * @dataProvider queryDataProvider
 	 *
 	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected ) {
 
@@ -134,21 +118,17 @@ class ShowParserFunctionTest extends ParserTestCase {
 
 		// Check the returned instance
 		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
+		$semanticDataValidator = new SemanticDataValidator;
 
 		// Confirm subSemanticData objects for the SemanticData instance
 		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
 			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$this->assertSemanticData( $containerSemanticData, $expected );
+			$semanticDataValidator->assertThatPropertiesAreSet( $expected, $containerSemanticData );
 		}
 
 	}
 
 	/**
-	 * Provides data sample normally found in connection with the {{#show}}
-	 * parser function. The first array contains parametrized input value while
-	 * the second array contains expected return results for the instantiated
-	 * object.
-	 *
 	 * @return array
 	 */
 	public function queryDataProvider() {
@@ -166,9 +146,9 @@ class ShowParserFunctionTest extends ParserTestCase {
 			),
 			array(
 				'output' => '',
-				'propertyCount' => 4,
-				'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-				'propertyValue' => array( 'list', 0, 1, '[[:Foo]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+				'propertyValues' => array( 'list', 0, 1, '[[:Foo]]' )
 			)
 		);
 
@@ -185,9 +165,9 @@ class ShowParserFunctionTest extends ParserTestCase {
 			),
 			array(
 				'output' => 'no results',
-				'propertyCount' => 4,
-				'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-				'propertyValue' => array( 'list', 0, 1, '[[:Help:Bar]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+				'propertyValues' => array( 'list', 0, 1, '[[:Help:Bar]]' )
 			)
 		);
 
@@ -206,9 +186,9 @@ class ShowParserFunctionTest extends ParserTestCase {
 			),
 			array(
 				'output' => 'class="smwtticon warning"', // lazy content check for the error
-				'propertyCount' => 4,
-				'propertyKey' => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-				'propertyValue' => array( 'table', 0, 1, '[[:]]' )
+				'propertyCount'  => 4,
+				'propertyKeys'   => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
+				'propertyValues' => array( 'table', 0, 1, '[[:]]' )
 			)
 		);
 

@@ -61,35 +61,6 @@ abstract class MwIntegrationTestCase extends \MediaWikiTestCase {
 		$setup->run();
 	}
 
-	/**
-	 * Ensure that the SemanticData container is really empty and not filled
-	 * with a single "_SKEY" property
-	 */
-	protected function evaluateSemanticDataIsEmpty( SemanticData $semanticData ) {
-
-		$property = new DIProperty( '_SKEY' );
-
-		foreach( $semanticData->getPropertyValues( $property ) as $dataItem ) {
-			$semanticData->removePropertyObjectValue( $property, $dataItem );
-		}
-
-		return $semanticData->isEmpty();
-	}
-
-	protected function assertSemanticDataIsEmpty( SemanticData $semanticData ) {
-		$this->assertTrue(
-			$this->evaluateSemanticDataIsEmpty( $semanticData ),
-			'Asserts that the SemanticData container is empty'
-		);
-	}
-
-	protected function assertSemanticDataIsNotEmpty( SemanticData $semanticData ) {
-		$this->assertFalse(
-			$this->evaluateSemanticDataIsEmpty( $semanticData ),
-			'Asserts that the SemanticData container is not empty'
-		);
-	}
-
 	protected function getStore() {
 		$store = StoreFactory::getStore();
 
