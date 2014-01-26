@@ -24,13 +24,13 @@ use SMW\SerializerFactory;
 class SMWQueryResult {
 	/**
 	 * Array of SMWDIWikiPage objects that are the basis for this result
-	 * @var Array of SMWDIWikiPage
+	 * @var SMWDIWikiPage[]
 	 */
 	protected $mResults;
 
 	/**
 	 * Array of SMWPrintRequest objects, indexed by their natural hash keys
-	 * @var Array of SMWPrintRequest
+	 * @var SMWPrintRequest[]
 	 */
 	protected $mPrintRequests;
 
@@ -59,9 +59,9 @@ class SMWQueryResult {
 	 *
 	 * TODO: Update documentation
 	 *
-	 * @param array of SMWPrintRequest $printRequests
+	 * @param SMWPrintRequest[] $printRequests
 	 * @param SMWQuery $query
-	 * @param array of SMWDIWikiPage $results
+	 * @param SMWDIWikiPage[] $results
 	 * @param SMWStore $store
 	 * @param boolean $furtherRes
 	 */
@@ -87,7 +87,7 @@ class SMWQueryResult {
 	 * Return the next result row as an array of SMWResultArray objects, and
 	 * advance the internal pointer.
 	 *
-	 * @return array of SMWResultArray or false
+	 * @return SMWResultArray[]|false
 	 */
 	public function getNext() {
 		$page = current( $this->mResults );
@@ -117,7 +117,7 @@ class SMWQueryResult {
 	 * Return an array of SMWDIWikiPage objects that make up the
 	 * results stored in this object.
 	 *
-	 * @return array of SMWDIWikiPage
+	 * @return SMWDIWikiPage[]
 	 */
 	public function getResults() {
 		return $this->mResults;
@@ -268,7 +268,7 @@ class SMWQueryResult {
 	public function getLink() {
 		$params = array( trim( $this->mQuery->getQueryString() ) );
 
-		foreach ( $this->mQuery->getExtraPrintouts() as /* SMWPrintRequest */ $printout ) {
+		foreach ( $this->mQuery->getExtraPrintouts() as $printout ) {
 			$serialization = $printout->getSerialisation();
 
 			// TODO: this is a hack to get rid of the mainlabel param in case it was automatically added

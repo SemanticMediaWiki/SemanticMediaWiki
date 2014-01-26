@@ -43,6 +43,10 @@ class SMWQuery {
 	protected $m_querystring = false; // string (inline query) version (if fixed and known)
 	protected $m_inline; // query used inline? (required for finding right default parameters)
 	protected $m_concept; // query used in concept? (required for finding right default parameters)
+
+	/**
+	 * @var SMWPrintRequest[]
+	 */
 	protected $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
 	protected $m_mainlabel = ''; // Since 1.6
 
@@ -107,6 +111,9 @@ class SMWQuery {
 		}
 	}
 
+	/**
+	 * @return SMWPrintRequest[]
+	 */
 	public function getExtraPrintouts() {
 		return $this->m_extraprintouts;
 	}
