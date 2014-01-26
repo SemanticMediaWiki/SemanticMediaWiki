@@ -32,44 +32,32 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	/**
-	 * @since 1.9
+	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
 
-		$title = $this->newRedirectTargetFromText( $this->text );
+		$title = $this->createRedirectTargetFromText( $this->text );
 
-		if ( $title !== null ) {
+		if ( $title instanceOf Title ) {
 			$this->getSemanticData()->addPropertyObjectValue(
 				new DIProperty( '_REDI' ),
 				DIWikiPage::newFromTitle( $title, '__red' )
 			);
 		}
 
-		return $this;
 	}
 
-	/**
-	 * @note ContentHandler got introduced with MW 1.21
-	 *
-	 * @since 1.9
-	 *
-	 * @param  string $text
-	 *
-	 * @return Title|null
-	 */
-	protected function newRedirectTargetFromText( $text ) {
+	protected function createRedirectTargetFromText( $text ) {
 
-		$title = null;
-
-		if ( class_exists( 'ContentHandler' ) ) {
-			$title = ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
-		} else {
-			// @codeCoverageIgnoreStart
-			$title = Title::newFromRedirect( $text );
-			// @codeCoverageIgnoreEnd
+		if ( $this->hasContentHandler() ) {
+			return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
 		}
 
-		return $title;
+		return Title::newFromRedirect( $text );
+	}
+
+	protected function hasContentHandler() {
+		return class_exists( 'ContentHandler' );
 	}
 
 }
