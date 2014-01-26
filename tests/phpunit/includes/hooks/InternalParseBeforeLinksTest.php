@@ -100,11 +100,9 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 
 		// Re-read data from the Parser
 		$parserData = $this->newParserData( $parser->getTitle(), $parser->getOutput() );
-		$this->assertSemanticData(
-			$parserData->getData(),
-			$expected,
-			'asserts whether the container contains expected semantic triples'
-		);
+
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $parserData->getSemanticData() );
 
 	}
 
@@ -164,9 +162,9 @@ class InternalParseBeforeLinksTest extends ParserTestCase {
 					'resultText' => 'Lorem ipsum dolor sit &$% [[:Dictumst|寒い]]' .
 						' [[:Tincidunt semper|tincidunt semper]] facilisi {{volutpat}} Ut quis' .
 						' [[:9001|9001]] et Donec.',
-					'propertyCount' => 3,
-					'propertyLabel' => array( 'Foo', 'Bar', 'FooBar' ),
-					'propertyValue' => array( 'Dictumst', 'Tincidunt semper', '9001' )
+					'propertyCount'  => 3,
+					'propertyLabels' => array( 'Foo', 'Bar', 'FooBar' ),
+					'propertyValues' => array( 'Dictumst', 'Tincidunt semper', '9001' )
 				)
 		);
 

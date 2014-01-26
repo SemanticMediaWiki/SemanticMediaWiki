@@ -135,11 +135,8 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 				$editInfo->output
 			);
 
-			$this->assertSemanticData(
-				$parserData->getData(),
-				$expected,
-				"Asserts whether addSpecialProperties() adds the {$expected['propertyKey']} annotation"
-			);
+			$semanticDataValidator = new SemanticDataValidator;
+			$semanticDataValidator->assertThatPropertiesAreSet( $expected, $parserData->getSemanticData() );
 
 		}
 
@@ -213,9 +210,9 @@ class NewRevisionFromEditCompleteTest extends ParserTestCase {
 				)
 			),
 			array(
-				'propertyCount' => 1,
-				'propertyKey'   => '_MDAT',
-				'propertyValue' => array( '2010-04-29T02:41:43' ),
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_MDAT',
+				'propertyValues' => array( '2010-04-29T02:41:43' ),
 			)
 		);
 

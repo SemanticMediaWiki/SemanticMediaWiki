@@ -38,7 +38,7 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 
 		$expectedCategoryAsWikiValue = array(
 			'property' => new DIProperty( '_INST' ),
-			'propertyValue' => array(
+			'propertyValues' => array(
 				'Regression test'
 			)
 		);
@@ -59,7 +59,7 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 		$expectedDateValuesAsISO = array(
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
-			'propertyValue'  => array(
+			'propertyValues' => array(
 				'2010-01-04T19:00:00',
 				'2011-06-08',
 				'1980-01-01',
@@ -71,7 +71,7 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 		$expectedDateValuesAsMediaWiki = array(
 			'valueFormatter' => $this->setMediaWikiDateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
-			'propertyValue'  => array(
+			'propertyValues' => array(
 				'19:00, 4 January 2010',
 				'8 June 2011',
 				'1 January 1980',
@@ -83,7 +83,7 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 		$expectedDateValuesAsWikiValue = array(
 			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
-			'propertyValue'  => array(
+			'propertyValues' => array(
 				'4 January 2010 19:00:00',
 				'8 June 2011',
 				'1 January 1980',
@@ -95,7 +95,7 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 		$expectedCalendarSpecificDateValuesAsISO = array(
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
-			'propertyValue'  => array(
+			'propertyValues' => array(
 				'--301-12-28', // 1 January 300 BC
 				'--2147483647-01-01', // 2147483647 BC
 				'2000-02-24',
@@ -106,7 +106,7 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 		$expectedCalendarSpecificDateValuesAsWikiValue = array(
 			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
-			'propertyValue'  => array(
+			'propertyValues' => array(
 				'1 January 300 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
 				'24 February 2000',
@@ -117,7 +117,7 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 		$expectedCalendarSpecificDateValuesAsWikiValueWithGRCalendarModel = array(
 			'valueFormatter' => $this->setWikiValueDateWithGRCalendarModelValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
-			'propertyValue'  => array(
+			'propertyValues' => array(
 				'28 December 301 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
 				'24 February 2000',
@@ -128,7 +128,7 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 		$expectedCalendarSpecificDateValuesAsWikiValueWithJLCalendarModel = array(
 			'valueFormatter' => $this->setWikiValueDateWithJLCalendarModelValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
-			'propertyValue'  => array(
+			'propertyValues' => array(
 				'1 January 300 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
 				'11 February 2000',

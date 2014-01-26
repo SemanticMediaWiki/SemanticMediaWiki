@@ -89,6 +89,62 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 1.9.0.3
 	 *
+	 * @param integer $count
+	 * @param SemanticData $semanticData
+	 * @param string|null $msg
+	 */
+	public function assertThatSemanticDataHasPropertyCountOf( $count, SemanticData $semanticData, $msg = null ) {
+		$this->assertCount(
+			$count,
+			$semanticData->getProperties(),
+			$msg === null ? "Asserts expected property count of {$count}" : $msg
+		);
+	}
+
+	/**
+	 * @since 1.9.0.3
+	 *
+	 * @param array $expected
+	 * @param DIProperty $property
+	 */
+	public function assertThatPropertyHasCharacteristicAs( array $expected, DIProperty $property ) {
+
+		$runAssertThatPropertyHasCharacteristicAs = false;
+
+		if ( isset( $expected['property'] ) ) {
+			$this->assertPropertyIsSameAs( $expected['property'], $property );
+			$runAssertThatPropertyHasCharacteristicAs = true;
+		}
+
+		if ( isset( $expected['propertyKey'] ) ) {
+			$this->assertEquals( $expected['propertyKey'], $property->getKey() );
+			$runAssertThatPropertyHasCharacteristicAs = true;
+		}
+
+		if ( isset( $expected['propertyLabel'] ) ) {
+			var_dump( $expected['propertyLabel'], $property->getLabel() );
+			$this->assertEquals( $expected['propertyLabel'], $property->getLabel() );
+			$runAssertThatPropertyHasCharacteristicAs = true;
+		}
+
+		if ( isset( $expected['propertyTypeId'] ) ) {
+			$this->assertEquals( $expected['propertyTypeId'], $property->findPropertyTypeID() );
+			$runAssertThatPropertyHasCharacteristicAs = true;
+		}
+
+		// Solve issue with single/testsuite DB setup first
+		// $this->assertTrue( $runAssertThatPropertyHasCharacteristicAs, __METHOD__ );
+
+	}
+
+	/**
+	 * Assertion array should follow:
+	 * 'propertyCount'  => int
+	 * 'propertyLabels' => array() or 'propertyKeys' => array()
+	 * 'propertyValues' => array()
+	 *
+	 * @since 1.9.0.3
+	 *
 	 * @param array $expected
 	 * @param SemanticData $semanticData
 	 */
@@ -97,31 +153,41 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$runPropertiesAreSetAssert = false;
 		$properties = $semanticData->getProperties();
 
-		if ( isset( $expected['propertyCount'] ) ){
-			$this->assertPropertyCount( $expected['propertyCount'], $properties );
+		if ( isset( $expected['propertyCount'] ) ) {
+			$this->assertThatSemanticDataHasPropertyCountOf( $expected['propertyCount'], $semanticData );
 		}
 
 		foreach ( $properties as $property ) {
 
 			$this->assertInstanceOf( '\SMW\DIProperty', $property );
 
-			if ( isset( $expected['properties'] ) ){
+			if ( isset( $expected['properties'] ) ) {
 				$this->assertContainsProperty( $expected['properties'], $property );
 				$runPropertiesAreSetAssert = true;
 			}
 
-			if ( isset( $expected['property'] ) ){
-				$this->assertPropertyIsSame( $expected['property'], $property );
+			if ( isset( $expected['property'] ) ) {
+				$this->assertPropertyIsSameAs( $expected['property'], $property );
 				$runPropertiesAreSetAssert = true;
 			}
 
-			if ( isset( $expected['propertyKey'] ) ){
-				$this->assertPropertyHasKey( $expected['propertyKey'], $property );
+			if ( isset( $expected['propertyKeys'] ) ) {
+				$this->assertContainsPropertyKeys( $expected['propertyKeys'], $property );
 				$runPropertiesAreSetAssert = true;
 			}
 
-			if ( isset( $expected['propertyLabel']) ){
-				$this->assertPropertyHasLabel( $expected['propertyLabel'], $property );
+			if ( isset( $expected['propertyLabels'] ) ) {
+				$this->assertContainsPropertyLabels( $expected['propertyLabels'], $property );
+				$runPropertiesAreSetAssert = true;
+			}
+
+			if ( isset( $expected['propertyValues'] ) ) {
+				$this->assertThatPropertyValuesAreSet(
+					$expected,
+					$property,
+					$semanticData->getPropertyValues( $property )
+				);
+
 				$runPropertiesAreSetAssert = true;
 			}
 
@@ -149,13 +215,13 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 			switch ( $dataValue->getDataItem()->getDIType() ) {
 				case DataItem::TYPE_TIME:
-					$runPropertyValueAssert = $this->assertThatPropertyValueIsSet( $expected, $dataValue, 'getISO8601Date' );
+					$runPropertyValueAssert = $this->assertContainsPropertyValues( $expected, $dataValue, 'getISO8601Date' );
 					break;
 				case DataItem::TYPE_NUMBER:
-					$runPropertyValueAssert = $this->assertThatPropertyValueIsSet( $expected, $dataValue, 'getNumber' );
+					$runPropertyValueAssert = $this->assertContainsPropertyValues( $expected, $dataValue, 'getNumber' );
 					break;
 				default:
-					$runPropertyValueAssert = $this->assertThatPropertyValueIsSet( $expected, $dataValue, 'getWikiValue' );
+					$runPropertyValueAssert = $this->assertContainsPropertyValues( $expected, $dataValue, 'getWikiValue' );
 					break;
 			}
 
@@ -176,19 +242,19 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		return $semanticData->isEmpty();
 	}
 
-	private function assertPropertyHasKey( $key, DIProperty $property ) {
+	private function assertContainsPropertyKeys( $keys, DIProperty $property ) {
 		$this->assertContains(
 			$property->getKey(),
-			$key,
-			"Asserts that a {$key} property key is set"
+			$keys,
+			"Asserts that a property key is set"
 		);
 	}
 
-	private function assertPropertyHasLabel( $label, DIProperty $property ) {
+	private function assertContainsPropertyLabels( $labels, DIProperty $property ) {
 		$this->assertContains(
-			$property->getKey(),
-			$label,
-			"Asserts that a {$label} property label is set"
+			$property->getLabel(),
+			$labels,
+			"Asserts that a property label is set"
 		);
 	}
 
@@ -208,22 +274,14 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		// $this->assertTrue( $runContainsPropertyAssert, __METHOD__ );
 	}
 
-	private function assertPropertyIsSame( DIProperty $expectedproperty, DIProperty $property ) {
+	private function assertPropertyIsSameAs( DIProperty $expectedproperty, DIProperty $property ) {
 		$this->assertTrue(
 			$property->equals( $expectedproperty ),
 			'Asserts that two properties are equal'
 		);
 	}
 
-	private function assertPropertyCount( $count, array $properties ) {
-		$this->assertCount(
-			$count,
-			$properties,
-			"Asserts an expected property count of {$count}"
-		);
-	}
-
-	private function assertThatPropertyValueIsSet( $expected, $dataValue, $defaultFormatter, $formatterParameters = array() ) {
+	private function assertContainsPropertyValues( $expected, $dataValue, $defaultFormatter, $formatterParameters = array() ) {
 
 		$formatter = array( $dataValue, $defaultFormatter );
 
@@ -236,7 +294,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		$this->assertContains(
 			$value,
-			$expected['propertyValue'],
+			$expected['propertyValues'],
 			"Asserts that a property value of type {$dataValue->getTypeID()} is set"
 		);
 

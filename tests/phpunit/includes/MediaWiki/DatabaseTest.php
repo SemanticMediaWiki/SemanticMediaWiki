@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use SMW\Tests\MockDBConnectionProvider;
 use SMW\MediaWiki\Database;
-use SMW\DBConnectionProvider;
 
 /**
  * @covers \SMW\MediaWiki\Database
@@ -117,38 +117,6 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			array( 'sqlite' ),
 			array( 'postgres' )
 		);
-	}
-
-}
-
-class MockDBConnectionProvider extends \PHPUnit_Framework_TestCase implements DBConnectionProvider {
-
-	public function getConnection() {
-		return $this->createMockDBConnectionProvider()->getConnection();
-	}
-
-	public function releaseConnection() {}
-
-	public function getMockDatabase() {
-
-		if ( !isset( $this->database ) ) {
-			$this->database = $this->getMockBuilder( 'DatabaseMysql' )
-				->disableOriginalConstructor()
-				->getMock();
-		}
-
-		return $this->database;
-	}
-
-	protected function createMockDBConnectionProvider() {
-
-		$provider = $this->getMockForAbstractClass( '\SMW\DBConnectionProvider' );
-
-		$provider->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $this->getMockDatabase() ) );
-
-		return $provider;
 	}
 
 }

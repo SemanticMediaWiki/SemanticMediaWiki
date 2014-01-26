@@ -147,25 +147,29 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	}
 
 	/**
-	 * Updates the semantic data
-	 *
 	 * @since 1.9
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function setData( SemanticData $semanticData ) {
+	public function setSemanticData( SemanticData $semanticData ) {
 		$this->semanticData = $semanticData;
 	}
 
+	public function setData( SemanticData $semanticData ) {
+		$this->setSemanticData( $semanticData );
+	}
+
 	/**
-	 * Returns semanticData container
-	 *
 	 * @since 1.9
 	 *
 	 * @return SemanticData
 	 */
-	public function getData() {
+	public function getSemanticData() {
 		return $this->semanticData;
+	}
+
+	public function getData() {
+		return $this->getSemanticData();
 	}
 
 	/**

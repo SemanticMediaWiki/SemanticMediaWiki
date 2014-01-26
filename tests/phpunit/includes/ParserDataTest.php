@@ -204,11 +204,18 @@ class ParserDataTest extends ParserTestCase {
 
 		// Check the returned instance
 		if ( $errorCount === 0 ){
-			$expected['propertyCount'] = $propertyCount;
-			$expected['propertyLabel'] = $propertyName;
-			$expected['propertyValue'] = $value;
-			$this->assertInstanceOf( 'SMWSemanticData', $instance->getData() );
-			$this->assertSemanticData( $instance->getData(), $expected );
+			$expected['propertyCount']  = $propertyCount;
+			$expected['propertyLabels'] = $propertyName;
+			$expected['propertyValues'] = $value;
+			$this->assertInstanceOf( '\SMW\SemanticData', $instance->getData() );
+
+			$semanticDataValidator = new SemanticDataValidator;
+
+			$semanticDataValidator->assertThatPropertiesAreSet(
+				$expected,
+				$instance->getData()
+			);
+
 		} else {
 			$this->assertCount( $errorCount, $instance->getErrors() );
 		}
