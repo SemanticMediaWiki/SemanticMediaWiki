@@ -46,7 +46,7 @@
 
 {{FooTemplate|Foo=bar}}, {{FooSubobject|Qeey=bam}}, {{FooShow|Page=Foo-1-19-7}}, {{FooAsk|Query=[[Modification date::+]]}}
 
-[[Category:Foo]]</text>
+[[Category:Regression test]]</text>
     </revision>
   </page>
   <page>
