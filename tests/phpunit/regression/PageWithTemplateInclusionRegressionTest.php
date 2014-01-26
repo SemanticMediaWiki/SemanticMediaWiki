@@ -2,8 +2,7 @@
 
 namespace SMW\Test;
 
-use SMw\SemanticData;
-use SMW\ParserData;
+use SMW\DIProperty;
 
 use Title;
 
@@ -20,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class PageWithTemplateInclusionRegressionTest extends MwImporterTestBase {
+class PageWithTemplateInclusionRegressionTest extends MwRegressionTestCase {
 
 	public function getSourceFile() {
 		return __DIR__ . '/data/' . 'PageWithTemplateInclusionRegressionTest-Mw-1-19-7.xml';
@@ -39,23 +38,26 @@ class PageWithTemplateInclusionRegressionTest extends MwImporterTestBase {
 	public function assertDataImport() {
 
 		$expectedProperties = array(
-			'propertyKey' => array(
- 				'Foo',
- 				'Quux',
-				'_ASK',
-				'_LEDT',
-				'_MDAT',
-				'_SKEY',
-				'_SOBJ',
-				'_INST'
+			'properties' => array(
+				DIProperty::newFromUserLabel( 'Foo' ),
+				DIProperty::newFromUserLabel( 'Quux' ),
+				new DIProperty( '_ASK' ),
+				new DIProperty( '_MDAT' ),
+				new DIProperty( '_SKEY' ),
+				new DIProperty( '_SOBJ' ),
+				new DIProperty( '_INST' )
 			)
 		);
 
 		$title = Title::newFromText( 'Foo-1-19-7' );
+		$semanticDataValidator = new SemanticDataValidator;
 
-		$this->newSemanticDataAsserts()->assertThatPropertiesAreSet(
+		$semanticDataFinder = new ByPageSemanticDataFinder;
+		$semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );
+
+		$semanticDataValidator->assertThatPropertiesAreSet(
 			$expectedProperties,
-			$this->newSemanticDataFetcher()->setTitle( $title )->fetchFromOutput()
+			$semanticDataFinder->fetchFromOutput()
 		);
 	}
 

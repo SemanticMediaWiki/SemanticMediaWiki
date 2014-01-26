@@ -64,7 +64,7 @@ class MwImporter {
 		$source = ImportStreamSource::newFromFile( $this->file );
 
 		if ( !$source->isGood() ) {
-			throw new RuntimeException( 'Import contained errors ' . serialize( $source->errors ) );
+			throw new RuntimeException( 'Import returned with error(s) ' . serialize( $source->errors ) );
 		}
 
 		$importer = new WikiImporter( $source->value );

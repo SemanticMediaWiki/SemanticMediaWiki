@@ -2,12 +2,7 @@
 
 namespace SMW\Test;
 
-use SMW\DataValueFactory;
-use SMw\SemanticData;
-use SMW\ParserData;
-use SMW\StoreFactory;
-use SMW\DIWikiPage;
-use SMWDataItem as DataItem;
+use SMW\DIProperty;
 
 use Title;
 
@@ -24,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class DatePropertyRegressionTest extends MwImporterTestBase {
+class DatePropertyRegressionTest extends MwRegressionTestCase {
 
 	public function getSourceFile() {
 		return __DIR__ . '/data/' . 'DatePropertyRegressionTest-Mw-1-19-7.xml';
@@ -42,29 +37,28 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 	public function assertDataImport() {
 
 		$expectedCategoryAsWikiValue = array(
-			'propertyKey' => '_INST',
+			'property' => new DIProperty( '_INST' ),
 			'propertyValue' => array(
 				'Regression test'
 			)
 		);
 
-		$expectedProperties = array(
-			'propertyKey' => array(
-				'Has_date',
-				'Has_calendar_date',
-				'Has_query_date',
-				'_ASK',
-				'_LEDT',
-				'_MDAT',
-				'_SKEY',
-				'_SOBJ',
-				'_INST'
+		$expectedPropertiesFromImport = array(
+			'properties' => array(
+				DIProperty::newFromUserLabel( 'Has date' ),
+				DIProperty::newFromUserLabel( 'Has calendar date' ),
+				DIProperty::newFromUserLabel( 'Has query date' ),
+				new DIProperty( '_ASK' ),
+				new DIProperty( '_MDAT' ),
+				new DIProperty( '_SKEY' ),
+				new DIProperty( '_SOBJ' ),
+				new DIProperty( '_INST' )
 			)
 		);
 
 		$expectedDateValuesAsISO = array(
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
-			'propertyLabel'  => 'Has query date',
+			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
 			'propertyValue'  => array(
 				'2010-01-04T19:00:00',
 				'2011-06-08',
@@ -74,9 +68,33 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 			)
 		);
 
+		$expectedDateValuesAsMediaWiki = array(
+			'valueFormatter' => $this->setMediaWikiDateValueFormatter(),
+			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
+			'propertyValue'  => array(
+				'19:00, 4 January 2010',
+				'8 June 2011',
+				'1 January 1980',
+				'10:00, 11 February 2000',
+				'3 February 2000'
+			)
+		);
+
+		$expectedDateValuesAsWikiValue = array(
+			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
+			'property'       => DIProperty::newFromUserLabel( 'Has query date' ),
+			'propertyValue'  => array(
+				'4 January 2010 19:00:00',
+				'8 June 2011',
+				'1 January 1980',
+				'11 February 2000 10:00:00',
+				'3 February 2000'
+			)
+		);
+
 		$expectedCalendarSpecificDateValuesAsISO = array(
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
-			'propertyLabel'  => 'Has calendar date',
+			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValue'  => array(
 				'--301-12-28', // 1 January 300 BC
 				'--2147483647-01-01', // 2147483647 BC
@@ -87,7 +105,7 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 
 		$expectedCalendarSpecificDateValuesAsWikiValue = array(
 			'valueFormatter' => $this->setWikiValueDateValueFormatter(),
-			'propertyLabel'  => 'Has calendar date',
+			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValue'  => array(
 				'1 January 300 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
@@ -98,7 +116,7 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 
 		$expectedCalendarSpecificDateValuesAsWikiValueWithGRCalendarModel = array(
 			'valueFormatter' => $this->setWikiValueDateWithGRCalendarModelValueFormatter(),
-			'propertyLabel'  => 'Has calendar date',
+			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValue'  => array(
 				'28 December 301 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
@@ -109,7 +127,7 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 
 		$expectedCalendarSpecificDateValuesAsWikiValueWithJLCalendarModel = array(
 			'valueFormatter' => $this->setWikiValueDateWithJLCalendarModelValueFormatter(),
-			'propertyLabel'  => 'Has calendar date',
+			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValue'  => array(
 				'1 January 300 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
@@ -118,79 +136,51 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 			)
 		);
 
-		$expectedDateValuesAsMediaWiki = array(
-			'valueFormatter' => $this->setMediaWikiDateValueFormatter(),
-			'propertyLabel'  => 'Has query date',
-			'propertyValue'  => array(
-				'19:00, 4 January 2010',
-				'8 June 2011',
-				'1 January 1980',
-				'10:00, 11 February 2000',
-				'3 February 2000'
-			)
-		);
-
 		$title = Title::newFromText( 'DatePropertyRegressionTest' );
 
-		$semanticDataFetcher = $this->newSemanticDataFetcher()
-			->setTitle( $title )
-			->setStore( $this->getStore() );
+		$this->semanticDataValidator = new SemanticDataValidator;
 
-		$this->assertSemanticData(
-			$expectedCategoryAsWikiValue,
-			$expectedProperties,
-			$semanticDataFetcher->fetchFromOutput()
+		$this->semanticDataFinder = new ByPageSemanticDataFinder;
+		$this->semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );
+
+		$semanticDataBatches = array(
+			$this->semanticDataFinder->fetchFromOutput(),
+			$this->semanticDataFinder->fetchFromStore()
 		);
 
-		$this->assertSemanticData(
-			$expectedCategoryAsWikiValue,
-			$expectedProperties,
-			$semanticDataFetcher->fetchFromStore()
-		);
-
-		$this->assertThatDateValuesAreSet(
+		$expectedDateValuesBatches = array(
 			$expectedDateValuesAsISO,
-			$semanticDataFetcher->fetchFromOutput()
-		);
-
-		$this->assertThatDateValuesAreSet(
 			$expectedDateValuesAsMediaWiki,
-			$semanticDataFetcher->fetchFromOutput()
-		);
-
-		$this->assertThatDateValuesAreSet(
+			$expectedDateValuesAsWikiValue,
 			$expectedCalendarSpecificDateValuesAsISO,
-			$semanticDataFetcher->fetchFromStore()
-		);
-
-		$this->assertThatDateValuesAreSet(
 			$expectedCalendarSpecificDateValuesAsWikiValue,
-			$semanticDataFetcher->fetchFromOutput()
-		);
-
-		$this->assertThatDateValuesAreSet(
 			$expectedCalendarSpecificDateValuesAsWikiValueWithGRCalendarModel,
-			$semanticDataFetcher->fetchFromStore()
+			$expectedCalendarSpecificDateValuesAsWikiValueWithJLCalendarModel
 		);
 
-		$this->assertThatDateValuesAreSet(
-			$expectedCalendarSpecificDateValuesAsWikiValueWithJLCalendarModel,
-			$semanticDataFetcher->fetchFromOutput()
-		);
+		foreach ( $semanticDataBatches as $semanticData ) {
+			$this->semanticDataValidator->assertThatCategoriesAreSet( $expectedCategoryAsWikiValue, $semanticData );
+			$this->semanticDataValidator->assertThatPropertiesAreSet( $expectedPropertiesFromImport, $semanticData );
+			$this->assertBatchesOfDateValues( $expectedDateValuesBatches, $semanticData );
+		}
 
 	}
 
-	protected function assertSemanticData( $expectedCategories, $expectedProperties, $semanticData ) {
-		$this->newSemanticDataAsserts()->assertThatCategoriesAreSet( $expectedCategories, $semanticData );
-		$this->newSemanticDataAsserts()->assertThatPropertiesAreSet( $expectedProperties, $semanticData );
+	protected function assertBatchesOfDateValues( $assertionBatches, $semanticData ) {
+		foreach ( $assertionBatches as $singleAssertionBatch ) {
+			$this->assertThatDateValuesAreSet( $singleAssertionBatch, $semanticData );
+		}
 	}
 
 	protected function assertThatDateValuesAreSet( $expected, $semanticData ) {
 
+		$runDateValueAssert = false;
+
 		foreach ( $semanticData->getProperties() as $property ) {
 
-			if ( $property->findPropertyTypeID() === '_dat' && $expected['propertyLabel'] === $property->getLabel() ) {
-				$this->newSemanticDataAsserts()->assertThatPropertyValuesAreSet(
+			if ( $property->findPropertyTypeID() === '_dat' && $property->equals( $expected['property'] ) ) {
+				$runDateValueAssert = true;
+				$this->semanticDataValidator->assertThatPropertyValuesAreSet(
 					$expected,
 					$property,
 					$semanticData->getPropertyValues( $property )
@@ -198,6 +188,9 @@ class DatePropertyRegressionTest extends MwImporterTestBase {
 			}
 
 		}
+
+		// Solve issue with single/testsuite DB setup first
+		// $this->assertTrue( $runDateValueAssert, __METHOD__ );
 	}
 
 	protected function setWikiValueDateValueFormatter() {

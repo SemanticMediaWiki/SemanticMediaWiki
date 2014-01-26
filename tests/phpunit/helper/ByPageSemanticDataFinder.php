@@ -4,7 +4,6 @@ namespace SMW\Test;
 
 use SMW\Store;
 use SMW\ParserData;
-use SMW\DIWikiPage;
 
 use ParserOutput;
 use WikiPage;
@@ -24,17 +23,17 @@ use UnexpectedValueException;
  *
  * @author mwjames
  */
-class SemanticDataFetcher {
+class ByPageSemanticDataFinder {
 
 	protected $store = null;
 	protected $title = null;
 
 	/**
-	 * @param Store $store
-	 *
 	 * @since 1.9.0.3
 	 *
-	 * @return SemanticDataFetcher
+	 * @param Store $store
+	 *
+	 * @return PageDataFetcher
 	 */
 	public function setStore( Store $store ) {
 		$this->store = $store;
@@ -42,11 +41,11 @@ class SemanticDataFetcher {
 	}
 
 	/**
-	 * @param Title $title
-	 *
 	 * @since 1.9.0.3
 	 *
-	 * @return SemanticDataFetcher
+	 * @param Title $title
+	 *
+	 * @return PageDataFetcher
 	 */
 	public function setTitle( Title $title ) {
 		$this->title = $title;
@@ -54,31 +53,34 @@ class SemanticDataFetcher {
 	}
 
 	/**
-	 * @param Title $title
-	 *
 	 * @since 1.9.0.3
 	 *
 	 * @return SemanticData
 	 */
 	public function fetchFromStore() {
-		return $this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->getTitle() ) );
+		return $this->getStore()->getSemanticData( $this->getPageData()->getSubject() );
 	}
 
 	/**
-	 * @param Title $title
-	 *
 	 * @since 1.9.0.3
 	 *
 	 * @return SemanticData
 	 */
 	public function fetchFromOutput() {
-		$parserData = new ParserData( $this->getTitle(), $this->getOutput( $this->getTitle() ) );
-		return $parserData->getData();
+		return $this->getPageData()->getData();
 	}
 
-	protected function getOutput( Title $title ) {
+	protected function getPageData() {
+		return new ParserData( $this->getTitle(), $this->makeOutputFromPageRevision() );
+	}
 
-		$wikiPage = WikiPage::factory( $title );
+	protected function getPage() {
+		return WikiPage::factory( $this->getTitle() );
+	}
+
+	protected function makeOutputFromPageRevision() {
+
+		$wikiPage = $this->getPage();
 		$revision = $wikiPage->getRevision();
 
 		$parserOutput = $wikiPage->getParserOutput(
@@ -86,7 +88,11 @@ class SemanticDataFetcher {
 			$revision->getId()
 		);
 
-		return $parserOutput;
+		if ( $parserOutput instanceOf ParserOutput ) {
+			return $parserOutput;
+		}
+
+		throw new UnexpectedValueException( 'Expected a ParserOutput object' );
 	}
 
 	protected function getTitle() {
@@ -95,7 +101,7 @@ class SemanticDataFetcher {
 			return $this->title;
 		}
 
-		throw new UnexpectedValueException( 'Missing a title object' );
+		throw new UnexpectedValueException( 'Expected a Title object' );
 	}
 
 	protected function getStore() {
@@ -104,7 +110,7 @@ class SemanticDataFetcher {
 			return $this->store;
 		}
 
-		throw new UnexpectedValueException( 'Missing a store object' );
+		throw new UnexpectedValueException( 'Expected a Store object' );
 	}
 
 }

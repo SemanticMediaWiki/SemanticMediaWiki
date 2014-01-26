@@ -3,12 +3,13 @@
 namespace SMW\Test;
 
 use SMW\StoreFactory;
+use SMW\UpdateJob;
+
 use Title;
 
 /**
- * MwImporterTestBase being used mostly to run regression and integration tests
- * in order to verify components such as hooks or parser functions to work as
- * specified
+ * Mostly runs regression and integration tests to verify cross-functional
+ * interaction with MediaWiki
  *
  * @ingroup Test
  *
@@ -22,10 +23,14 @@ use Title;
  *
  * @author mwjames
  */
-abstract class MwImporterTestBase extends \MediaWikiTestCase {
+abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 
 	protected $enabledDB = false;
 	protected $expectedAssertions = 0;
+
+	public static function setUpBeforeClass() {
+ 	//	\MediaWikiPHPUnitCommand::$additionalOptions['use-normal-tables'] = true;
+	}
 
 	/**
 	 * @see MediaWikiTestCase::run
@@ -47,41 +52,35 @@ abstract class MwImporterTestBase extends \MediaWikiTestCase {
 	}
 
 	/**
-	 * Specifies the import source file
+	 * Specifies the source file
 	 *
 	 * @return string
 	 */
 	public abstract function getSourceFile();
 
 	/**
-	 * Specifies a pool of titles expected to be imported
+	 * Specifies a pool of titles that are expected to be imported
 	 *
 	 * @return array
 	 */
 	public abstract function acquirePoolOfTitles();
 
 	/**
-	 * Main assert method which is implemented by the subclass and contains all
-	 * individual asserts expected from the import to be passed
+	 * Main asserts are implemented by the subclass
 	 */
 	public abstract function assertDataImport();
 
+	public function testPoolOfTitlesAreNotKnownPriorImport() {
+		$this->assertTitleIsNotKnownBeforeImport( $this->acquirePoolOfTitles() );
+	}
+
 	/**
-	 * Main test for the data import, it is also the only test run in order
-	 * to avoid having to import content several times (which is costly time
-	 * and resource wise)
+	 * @note It is suggested not to add other "test..." unless you want to
+	 * re-import the data
 	 *
-	 * The test is designed that when one assert fails the whole test fails as
-	 * we are aiming to test an integration of a complete solution rather than
-	 * its individual parts
-	 *
-	 * It is suggested not to run other "test..." components unless you run a
-	 * re-import of content since each individual test will tear down imported
-	 * content
+	 * @depends testPoolOfTitlesAreNotKnownPriorImport
 	 */
 	public function testDataImport() {
-
-		$this->assertTitleIsNotKnownBeforeImport( $this->acquirePoolOfTitles() );
 
 		$importer = new MwImporter( $this->getSourceFile() );
 		$importer->setVerbose( true );
@@ -90,21 +89,16 @@ abstract class MwImporterTestBase extends \MediaWikiTestCase {
 
 		if ( !$result->isGood() ) {
 			$importer->reportFailedImport();
+
+			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
 		}
 
 		if ( $this->isEnabledDatabase() ) {
 			$this->assertTitleIsKnownAfterImport( $this->acquirePoolOfTitles() );
+			$this->runUpdateJobs( $this->acquirePoolOfTitles() );
 			$this->assertDataImport();
 		}
 
-	}
-
-	protected function newSemanticDataAsserts() {
-		return new SemanticDataAsserts;
-	}
-
-	protected function newSemanticDataFetcher() {
-		return new SemanticDataFetcher;
 	}
 
 	protected function getStore() {
@@ -130,13 +124,20 @@ abstract class MwImporterTestBase extends \MediaWikiTestCase {
 		$this->assertTitleExists( true, $titles );
 	}
 
-	private function assertTitleExists( $expected, $titles ) {
+	private function assertTitleExists( $isExpected, $titles ) {
 		foreach ( $titles as $title ) {
 			$this->assertEquals(
-				$expected,
+				$isExpected,
 				Title::newFromText( $title )->exists(),
 				__METHOD__ . "Assert title {$title}"
 			);
+		}
+	}
+
+	private function runUpdateJobs( $titles ) {
+		foreach ( $titles as $title ) {
+			$job = new UpdateJob( Title::newFromText( $title ) );
+			$job->run();
 		}
 	}
 
