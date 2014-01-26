@@ -7218,6 +7218,13 @@ A jelenlegi frissítés becsült előrehaladása:',
 	'smw_conceptarticlecount' => 'A koncepcióhoz tartozó $1 lap megjelenítése.', # Fuzzy
 );
 
+/** Armenian (Հայերեն)
+ * @author Xelgen
+ */
+$messages['hy'] = array(
+	'browse' => 'Կատեգորիաներ',
+);
+
 /** Interlingua (interlingua)
  * @author McDutchie
  * @author 아라
@@ -8910,6 +8917,7 @@ $1 문서로 돌아갑니다.',
 	'smw-sp-properties-cache-info' => '나열된 데이터는 [https://www.semantic-mediawiki.org/wiki/Caching 캐시]에서 검색되었고, $1에 마지막으로 업데이트했습니다.',
 	'smw-sp-properties-header-label' => '속성 목록',
 	'smw-sp-admin-settings-title' => '구성 설정',
+	'smw-sp-admin-settings-docu' => '시맨틱 미디어위키 환경과 관련된 모든 <code>기본 값</code>과 <code>로컬라이즈된 설정</code> 목록을 표시하세요. 각각의 설정에 대한 자세한 사항은 [https://semantic-mediawiki.org/wiki/Help:Configuration 설정] 도움말 문서를 참조하세요.',
 	'smw-sp-admin-settings-button' => '설정 목록 생성',
 );
 
@@ -10378,6 +10386,7 @@ $messages['niu'] = array(
 );
 
 /** Dutch (Nederlands)
+ * @author Arent
  * @author Hansmuller
  * @author Kghbln
  * @author McDutchie
@@ -10659,7 +10668,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, ik weet het zeker.',
 	'smw_smwadmin_support' => 'Ondersteuning krijgen',
 	'smw_smwadmin_supportdocu' => 'Een aantal bronnen kunnen u ondersteunen als u problemen ondervindt:',
-	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan de richlijnen in het bestand <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.', # Fuzzy
+	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan eerst de richtlijnen in het bestand <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_-_startpagina">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Problemen en suggesties kunt u rapporteren in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op het <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki gebruikersforum</a>.',
@@ -10700,9 +10709,12 @@ Geschatte voortgang van de huidige taak:",
 	'smw-pa-property-predefined-default' => '$1 is een vooraf gedefinieerde eigenschap is (ook bekend als [https://www.semantic-mediawiki.org/wiki/Help:Special_properties speciale eigenschap]). Het is een ingebouwde eigenschap, die wordt geleverd met aanvullende beheerdersrechten, maar net als elke andere door de [https://www.semantic-mediawiki.org/wiki/Property gebruiker gedefinieerde eigenschap] worden gebruikt.',
 	'smw-pa-property-predefined_ask' => '$1 is een vooraf gedefinieerde eigenschap is (ook bekend als [https://www.semantic-mediawiki.org/wiki/Help:Special_properties speciale eigenschap]) die koppelt naar het metadata [https://www.semantic-mediawiki.org/wiki/Subobject subobject] van een zoekopdracht. Het is een ingebouwde eigenschap, die wordt geleverd met aanvullende beheerdersrechten, maar net als elke andere door de [https://www.semantic-mediawiki.org/wiki/Property gebruiker gedefinieerde eigenschap] worden gebruikt.',
 	'smw-pa-property-predefined_asksi' => '$1 is een vooraf gedefinieerde eigenschap is (ook bekend als [https://www.semantic-mediawiki.org/wiki/Help:Special_properties speciale eigenschap]) die een aantal voorwaarden verzamelt die gebruikt worden in een zoekopdracht. Het is een ingebouwde eigenschap, die wordt geleverd met aanvullende beheerdersrechten, maar net als elke andere door de [https://www.semantic-mediawiki.org/wiki/Property gebruiker gedefinieerde eigenschap] worden gebruikt.',
-	'smw-sp-properties-docu' => "Op deze pagina worden [https://www.semantic-mediawiki.org/wiki/Property eigenschappen] die beschikbaar zijn, en als gefilterd, alleen gebruikersgedefinieerde eigenschappen die overeenkomen met de voorwaarde. Voor een gedifferentieerde weergave, zie de pagina's [[Special:UnusedProperties|ongebruikte eigenschappen]] of [[Special:WantedProperties|gewenste eigenschappen]].", # Fuzzy
+	'smw-sp-properties-docu' => "Op deze pagina worden [https://www.semantic-mediawiki.org/wiki/Property eigenschappen] getoond die beschikbaar zijn, en als gefilterd, alleen gebruikergedefinieerde eigenschappen die overeenkomen met de voorwaarden. Voor een gedifferentieerde weergave, zie de pagina's [[Special:UnusedProperties|ongebruikte eigenschappen]] of [[Special:WantedProperties|gewenste eigenschappen]].",
 	'smw-sp-properties-cache-info' => 'Deze gegevens zijn overgenomen uit een [https://www.semantic-mediawiki.org/wiki/Caching cache] en zijn voor het laatst bijgewerkt op $1.',
 	'smw-sp-properties-header-label' => 'Lijst met eigenschappen',
+	'smw-sp-admin-settings-title' => 'Configuratie-instellingen',
+	'smw-sp-admin-settings-docu' => 'Geeft een lijst van alle <code>default</code> en <code>localized settings</code> die relevant zijn voor de Semantic MediaWiki omgeving. Raadpleeg de help-pagina [https://semantic-mediawiki.org/wiki/Help:Configuration configuratie] voor meer informatie over afzonderlijke instellingen.',
+	'smw-sp-admin-settings-button' => 'Genereren van de lijst met instellingen',
 );
 
 /** Norwegian Nynorsk (norsk nynorsk)
@@ -13380,11 +13392,11 @@ $messages['sr-ec'] = array(
 	'smw_querytoolarge' => 'Следеће услове упита није могуће разматрати због рестрикција викија за дужину и обим упита: $1.',
 	'smw_notemplategiven' => 'Понудите вредност за параметар ”шаблон”, како би овај формат упита дао резултат.',
 	'smw_type_header' => 'Особине типа "$1"',
-	'smw_typearticlecount' => 'Приказ $1 {{PLURAL:$1|1=особине|особина}} за овај тип.', # Fuzzy
+	'smw_typearticlecount' => 'Приказ $1 {{PLURAL:$1|особине|особина}} за овај тип.',
 	'smw_attribute_header' => 'Странице које користе особину "$1"',
-	'smw_attributearticlecount' => 'Приказ $1 {{PLURAL:$1|1=странице|страница}} које користе ову особину.', # Fuzzy
+	'smw_attributearticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које користе ову особину.',
 	'smw_subproperty_header' => 'Подособине',
-	'smw_subpropertyarticlecount' => 'Ова особина садржи следећу/е $1 {{PLURAL:$1|1=подособину|подособине}}:', # Fuzzy
+	'smw_subpropertyarticlecount' => 'Ова особина садржи {{PLURAL:$1|следећу $1 подособину|следеће $1 подособине}}:',
 	'specialpages-group-smw_group' => 'Семантички Медијавики',
 	'exportrdf' => 'Извези странице у RDF',
 	'smw_exportrdf_docu' => 'Ова страница омогућава преузимање података с неке странице у формату RDF.
@@ -13408,7 +13420,7 @@ $messages['sr-ec'] = array(
 	'smw_unusedproperty_template' => '$1 типа $2',
 	'wantedproperties' => 'Тражене особине',
 	'smw_wantedproperties_docu' => 'Следеће особине се користе на викију, али још увек немају своју страницу са описом.',
-	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|1=употреба|употреба}})', # Fuzzy
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|употреба|употреба}})', # Fuzzy
 	'smw_purge' => 'Освежи',
 	'types' => 'Типови',
 	'smw_types_docu' => 'Ово је списак свих врста података који могу да се додељују својствима.',
@@ -13522,7 +13534,7 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'Помоћ за непосредне упите',
 	'smw_unknowntype' => 'Тип овог својства је погрешан.',
 	'smw_concept_header' => 'Странице концепта "$1"',
-	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|1=странице|страница}} које припадају том концепту.', # Fuzzy
+	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.',
 );
 
 /** Serbian (Latin script) (srpski (latinica)‎)
@@ -13601,11 +13613,11 @@ Rezultati mogu biti neočekivani.',
 	'smw_querytoolarge' => 'Sledeće uslove upita nije moguće razmatrati zbog restrikcija vikija za dužinu i obim upita: $1.',
 	'smw_notemplategiven' => 'Ponudite vrednost za parametar ”šablon”, kako bi ovaj format upita dao rezultat.',
 	'smw_type_header' => 'Osobine tipa "$1"',
-	'smw_typearticlecount' => 'Prikaz $1 {{PLURAL:$1|1=osobine|osobina}} za ovaj tip.', # Fuzzy
+	'smw_typearticlecount' => 'Prikaz $1 {{PLURAL:$1|osobine|osobina}} za ovaj tip.',
 	'smw_attribute_header' => 'Stranice koje koriste osobinu "$1"',
-	'smw_attributearticlecount' => 'Prikaz $1 {{PLURAL:$1|1=stranice|stranica}} koje koriste ovu osobinu.', # Fuzzy
+	'smw_attributearticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje koriste ovu osobinu.',
 	'smw_subproperty_header' => 'Podosobine',
-	'smw_subpropertyarticlecount' => 'Ova osobina sadrži sledeću/e $1 {{PLURAL:$1|1=podosobinu|podosobine}}:', # Fuzzy
+	'smw_subpropertyarticlecount' => 'Ova osobina sadrži {{PLURAL:$1|sledeću $1 podosobinu|sledeće $1 podosobine}}:',
 	'specialpages-group-smw_group' => 'Semantički Medijaviki',
 	'exportrdf' => 'Izvezi stranice u RDF',
 	'smw_exportrdf_docu' => 'Ova stranica omogućava preuzimanje podataka s neke stranice u formatu RDF.
@@ -13629,7 +13641,7 @@ Generiše RDF koji je moguće pregledati.',
 	'smw_unusedproperty_template' => '$1 tipa $2',
 	'wantedproperties' => 'Tražene osobine',
 	'smw_wantedproperties_docu' => 'Sledeće osobine se koriste na vikiju, ali još uvek nemaju svoju stranicu sa opisom.',
-	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|1=upotreba|upotreba}})', # Fuzzy
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|upotreba|upotreba}})', # Fuzzy
 	'smw_purge' => 'Osveži',
 	'types' => 'Tipovi',
 	'smw_types_docu' => 'Ovo je spisak svih vrsta podataka koji mogu da se dodeljuju svojstvima.',
@@ -13743,7 +13755,7 @@ Procena napredovanja trenutnog ažuriranja:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za neposredne upite',
 	'smw_unknowntype' => 'Tip ovog svojstva je pogrešan.',
 	'smw_concept_header' => 'Stranice koncepta "$1"',
-	'smw_conceptarticlecount' => 'Prikaz $1 {{PLURAL:$1|1=stranice|stranica}} koje pripadaju tom konceptu.', # Fuzzy
+	'smw_conceptarticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje pripadaju tom konceptu.',
 );
 
 /** Swedish (svenska)
