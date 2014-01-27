@@ -177,7 +177,7 @@ class StoreTest extends \MediaWikiTestCase {
 			return;
 		}
 
-		$store = \SMW\StoreFactory::getStore();
+		$store = StoreFactory::getStore();
 		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
@@ -185,7 +185,7 @@ class StoreTest extends \MediaWikiTestCase {
 			$this->assertEquals( 2, sizeof( $row ) );
 
 			$this->assertInstanceOf(
-				'\DIProperty',
+				'\SMW\DIProperty',
 				$row[0],
 				"Result should be instance of DIProperty."
 			);
@@ -193,13 +193,13 @@ class StoreTest extends \MediaWikiTestCase {
 	}
 
 	public function testGetUnusedPropertiesSpecial() {
-		$store = \SMW\StoreFactory::getStore();
+		$store = StoreFactory::getStore();
 		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\ResultCollector', $result );
 		foreach( $result->getResults() as $row ) {
 			$this->assertInstanceOf(
-				'\DIProperty',
+				'\SMW\DIProperty',
 				$row,
 				"Result should be instance of DIProperty."
 			);

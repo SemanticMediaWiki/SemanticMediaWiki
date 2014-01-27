@@ -25,12 +25,8 @@ use Title;
  */
 abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 
-	protected $enabledDB = false;
+	protected $databaseIsUsable = false;
 	protected $expectedAssertions = 0;
-
-	public static function setUpBeforeClass() {
- 	//	\MediaWikiPHPUnitCommand::$additionalOptions['use-normal-tables'] = true;
-	}
 
 	/**
 	 * @see MediaWikiTestCase::run
@@ -43,7 +39,7 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 	function run( \PHPUnit_Framework_TestResult $result = null ) {
 
 		if ( method_exists( $this, 'teardownTestDB' ) ) {
-			$this->enabledDB = true;
+			$this->databaseIsUsable = true;
 			$this->teardownTestDB();
 			$this->setCliArg( 'use-normal-tables', true );
 		}
@@ -82,38 +78,28 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 	 */
 	public function testDataImport() {
 
-		$importer = new MwImporter( $this->getSourceFile() );
-		$importer->setVerbose( true );
-
-		$result = $importer->run();
-
-		if ( !$result->isGood() ) {
-			$importer->reportFailedImport();
-
-			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
-		}
-
-		if ( $this->isEnabledDatabase() ) {
-			$this->assertTitleIsKnownAfterImport( $this->acquirePoolOfTitles() );
-			$this->runUpdateJobs( $this->acquirePoolOfTitles() );
-			$this->assertDataImport();
-		}
-
-	}
-
-	protected function getStore() {
-		return StoreFactory::getStore();
-	}
-
-	protected function isEnabledDatabase() {
-
-		if ( !$this->enabledDB ) {
+		if ( !$this->databaseIsUsable ) {
 			$this->markTestSkipped(
 				'DB setup did not satisfy the test requirements (probably MW 1.19/1.20)'
 			);
 		}
 
-		return true;
+		$importer = new MwImporter( $this->getSourceFile() );
+		$importer->setVerbose( true );
+
+		if ( !$importer->run() ) {
+			$importer->reportFailedImport();
+			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
+		}
+
+		$this->assertTitleIsKnownAfterImport( $this->acquirePoolOfTitles() );
+		$this->runUpdateJobs( $this->acquirePoolOfTitles() );
+		$this->assertDataImport();
+
+	}
+
+	protected function getStore() {
+		return StoreFactory::getStore();
 	}
 
 	private function assertTitleIsNotKnownBeforeImport( $titles ) {

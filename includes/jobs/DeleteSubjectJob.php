@@ -60,7 +60,7 @@ class DeleteSubjectJob extends JobBase {
 		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) &&
 			$this->hasParameter( 'asDeferredJob' ) &&
 			$this->getParameter( 'asDeferredJob' ) ) {
-			$this->instertAsDeferredJobWithSemanticData()->push();
+			$this->insertAsDeferredJobWithSemanticData()->push();
 			return $this->deleteSubject();
 		}
 
@@ -97,7 +97,7 @@ class DeleteSubjectJob extends JobBase {
 		return true;
 	}
 
-	protected function instertAsDeferredJobWithSemanticData() {
+	protected function insertAsDeferredJobWithSemanticData() {
 
 		$this->addSerializedSemanticData();
 

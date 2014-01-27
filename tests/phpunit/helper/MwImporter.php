@@ -31,11 +31,6 @@ class MwImporter {
 
 	public function __construct( $file = null ) {
 		$this->file = $file;
-
-		if ( !is_readable( $this->file ) ) {
-			throw new RuntimeException( "Source file {$this->file} is not accessible" );
-		}
-
 	}
 
 	/**
@@ -54,14 +49,14 @@ class MwImporter {
 
 	/**
 	 * @throws RuntimeException
-	 * @return Status
+	 * @return boolean
 	 */
 	public function run() {
 
 		$this->unregisterUploadsource();
 		$start = microtime( true );
 
-		$source = ImportStreamSource::newFromFile( $this->file );
+		$source = ImportStreamSource::newFromFile( $this->assertThatFileIsReadable( $this->file ) );
 
 		if ( !$source->isGood() ) {
 			throw new RuntimeException( 'Import returned with error(s) ' . serialize( $source->errors ) );
@@ -89,7 +84,7 @@ class MwImporter {
 		$this->result = $reporter->close();
 		$this->importTime = microtime( true ) - $start;
 
-		return $this->result;
+		return $this->result->isGood();
 	}
 
 	/**
@@ -124,6 +119,17 @@ class MwImporter {
 		}
 
 		return $this->requestContext;
+	}
+
+	private function assertThatFileIsReadable( $file ) {
+
+		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $file );
+
+		if ( is_readable( $file ) ) {
+			return $file;
+		}
+
+		throw new RuntimeException( "Source file {$file} is not accessible" );
 	}
 
 	/**

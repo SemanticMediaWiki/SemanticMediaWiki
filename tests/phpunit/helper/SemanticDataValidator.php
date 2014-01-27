@@ -97,7 +97,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$this->assertCount(
 			$count,
 			$semanticData->getProperties(),
-			$msg === null ? "Asserts expected property count of {$count}" : $msg
+			$msg === null ? "Asserts property count of {$count}" : $msg
 		);
 	}
 
@@ -107,33 +107,47 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param array $expected
 	 * @param DIProperty $property
 	 */
-	public function assertThatPropertyHasCharacteristicAs( array $expected, DIProperty $property ) {
+	public function assertThatPropertyHasCharacteristicsAs( array $expected, DIProperty $property ) {
 
-		$runAssertThatPropertyHasCharacteristicAs = false;
+		$runAssertThatPropertyHasCharacteristicsAs = false;
 
 		if ( isset( $expected['property'] ) ) {
 			$this->assertPropertyIsSameAs( $expected['property'], $property );
-			$runAssertThatPropertyHasCharacteristicAs = true;
+			$runAssertThatPropertyHasCharacteristicsAs = true;
 		}
 
 		if ( isset( $expected['propertyKey'] ) ) {
-			$this->assertEquals( $expected['propertyKey'], $property->getKey() );
-			$runAssertThatPropertyHasCharacteristicAs = true;
+			$this->assertEquals(
+				$expected['propertyKey'],
+				$property->getKey(),
+				__METHOD__ . " asserts property key for {$property->getLabel()}"
+			);
+
+			$runAssertThatPropertyHasCharacteristicsAs = true;
 		}
 
 		if ( isset( $expected['propertyLabel'] ) ) {
 			var_dump( $expected['propertyLabel'], $property->getLabel() );
-			$this->assertEquals( $expected['propertyLabel'], $property->getLabel() );
-			$runAssertThatPropertyHasCharacteristicAs = true;
+			$this->assertEquals(
+				$expected['propertyLabel'],
+				$property->getLabel(),
+				__METHOD__ . " asserts property label for '{$property->getKey()}'"
+			);
+
+			$runAssertThatPropertyHasCharacteristicsAs = true;
 		}
 
 		if ( isset( $expected['propertyTypeId'] ) ) {
-			$this->assertEquals( $expected['propertyTypeId'], $property->findPropertyTypeID() );
-			$runAssertThatPropertyHasCharacteristicAs = true;
+			$this->assertEquals(
+				$expected['propertyTypeId'],
+				$property->findPropertyTypeID(),
+				__METHOD__ . " asserts property typeId for '{$property->getKey()}'"
+			);
+
+			$runAssertThatPropertyHasCharacteristicsAs = true;
 		}
 
-		// Solve issue with single/testsuite DB setup first
-		// $this->assertTrue( $runAssertThatPropertyHasCharacteristicAs, __METHOD__ );
+		$this->assertTrue( $runAssertThatPropertyHasCharacteristicsAs, __METHOD__ );
 
 	}
 
@@ -246,7 +260,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$this->assertContains(
 			$property->getKey(),
 			$keys,
-			"Asserts that a property key is set"
+			__METHOD__ . " asserts property key for '{$property->getLabel()}' with ({$this->formatAsString( $keys )})"
 		);
 	}
 
@@ -254,7 +268,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$this->assertContains(
 			$property->getLabel(),
 			$labels,
-			"Asserts that a property label is set"
+			__METHOD__ . " asserts property label for '{$property->getKey()}' with ({$this->formatAsString( $labels )})"
 		);
 	}
 
@@ -277,11 +291,15 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	private function assertPropertyIsSameAs( DIProperty $expectedproperty, DIProperty $property ) {
 		$this->assertTrue(
 			$property->equals( $expectedproperty ),
-			'Asserts that two properties are equal'
+			__METHOD__ . ' asserts that two properties are equal'
 		);
 	}
 
 	private function assertContainsPropertyValues( $expected, $dataValue, $defaultFormatter, $formatterParameters = array() ) {
+
+		if ( !isset( $expected['propertyValues'] ) ) {
+			throw new RuntimeException( "Expected a 'propertyValues' array index" );
+		}
 
 		$formatter = array( $dataValue, $defaultFormatter );
 
@@ -295,10 +313,17 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$this->assertContains(
 			$value,
 			$expected['propertyValues'],
-			"Asserts that a property value of type {$dataValue->getTypeID()} is set"
+			__METHOD__ .
+			" for '{$dataValue->getProperty()->getLabel()}'" .
+			" as '{$dataValue->getTypeID()}' property value" .
+			" with ({$this->formatAsString( $expected['propertyValues'] )})"
 		);
 
 		return true;
+	}
+
+	private function formatAsString( $expected ) {
+		return is_array( $expected ) ? implode( ', ', $expected ) : $expected;
 	}
 
 }
