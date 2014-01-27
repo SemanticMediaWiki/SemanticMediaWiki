@@ -45,6 +45,9 @@ class MwFunctionHookIntegrationTest extends MwIntegrationTestCase {
 
 		$mockData = $mockBuilder->newObject( 'SemanticData', array(
 			'hasVisibleProperties' => false,
+			'getSubject'           => $mockBuilder->newObject( 'DIWikiPage' ),
+			'getProperties'        => array(),
+			'getSubSemanticData'   => array()
 		) );
 
 		$mockStore = $mockBuilder->newObject( 'Store', array(
