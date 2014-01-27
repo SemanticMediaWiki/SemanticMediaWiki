@@ -5,15 +5,13 @@ env:
 
 matrix:
   include:
-    - env: DBTYPE=mysql; MW=master; TYPE=coverage
+    - env: DBTYPE=mysql; MW=master; TYPE=composer; PHPUNIT=all
       php: 5.3
-    - env: DBTYPE=sqlite; MW=master; TYPE=composer
+    - env: DBTYPE=sqlite; MW=master; TYPE=composer; PHPUNIT=all
       php: 5.3
-    - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
+    - env: DBTYPE=mysql; MW=master; TYPE=composer; PHPUNIT=single
       php: 5.4
-    - env: DBTYPE=sqlite; MW=1.19.0
-      php: 5.5
-    - env: DBTYPE=postgres; MW=1.19.0
+    - env: DBTYPE=sqlite; MW=master; TYPE=composer; PHPUNIT=single
       php: 5.4
   exclude:
     - env: THENEEDFORTHIS=FAIL

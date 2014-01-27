@@ -97,7 +97,8 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => array(
 				'--301-12-28', // 1 January 300 BC
-				'--2147483647-01-01', // 2147483647 BC
+				'--14000000000-01-01', // 14000000000 BC
+				'--2147483647-01-01', // used on Win-OS as 14000000000 BC
 				'2000-02-24',
 				'1492-02-11'
 			)
@@ -108,7 +109,8 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => array(
 				'1 January 300 BC', // 1 January 300 BC
-				'2147483647 BC', // 2147483647 BC
+				'14000000000 BC', // 14000000000 BC
+				'2147483647 BC', // used on Win-OS as 14000000000 BC
 				'24 February 2000',
 				'2 February 1492'
 			)
@@ -119,7 +121,8 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => array(
 				'28 December 301 BC', // 1 January 300 BC
-				'2147483647 BC', // 2147483647 BC
+				'14000000000 BC', // 14000000000 BC
+				'2147483647 BC', // used on Win-OS as 14000000000 BC
 				'24 February 2000',
 				'11 February 1492'
 			)
@@ -130,7 +133,8 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => array(
 				'1 January 300 BC', // 1 January 300 BC
-				'2147483647 BC', // 2147483647 BC
+				'14000000000 BC', // 14000000000 BC
+				'2147483647 BC', // used on Win-OS as 14000000000 BC
 				'11 February 2000',
 				'2 February 1492'
 			)
@@ -147,6 +151,37 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 			$this->semanticDataFinder->fetchFromOutput(),
 			$this->semanticDataFinder->fetchFromStore()
 		);
+
+		// Demonstrate DB-Store setup issue
+		$expectedPreDefinedPropertyCharacteristics = array(
+			'property'       => new DIProperty( '_MDAT' ),
+			'propertyKey'    => '_MDAT',
+			'propertyTypeId' => '_dat',
+		);
+
+		$expectedUserDefinedPropertyCharacteristics = array(
+			'property'       => DIProperty::newFromUserLabel( 'Has date' ),
+			'propertyKey'    => 'Has_date',
+			'propertyTypeId' => '_dat',
+		);
+
+		foreach ( $this->semanticDataFinder->fetchFromStore()->getProperties() as $property ) {
+
+			if( $property->getKey() === $expectedPreDefinedPropertyCharacteristics['propertyKey'] ) {
+				$this->semanticDataValidator->assertThatPropertyHasCharacteristicsAs(
+					$expectedPreDefinedPropertyCharacteristics,
+					$property
+				);
+			}
+
+			if( $property->getKey() === $expectedUserDefinedPropertyCharacteristics['propertyKey'] ) {
+				$this->semanticDataValidator->assertThatPropertyHasCharacteristicsAs(
+					$expectedUserDefinedPropertyCharacteristics,
+					$property
+				);
+			}
+
+		}
 
 		$expectedDateValuesBatches = array(
 			$expectedDateValuesAsISO,
