@@ -71,6 +71,7 @@ class SMWLanguageFr extends SMWLanguage {
 		'_ASKFO'=> 'Format de requête',
 		'_ASKSI'=> 'Taille de la requête',
 		'_ASKDE'=> 'Profondeur de la requête',
+		'_ASKDU'=> 'Query duration', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

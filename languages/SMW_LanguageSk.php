@@ -70,6 +70,7 @@ class SMWLanguageSk extends SMWLanguage {
 		'_ASKFO'=> 'Formát požiadavky',
 		'_ASKSI'=> 'Veľkosť požiadavky',
 		'_ASKDE'=> 'Hĺbka požiadavky',
+		'_ASKDU'=> 'Query duration', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

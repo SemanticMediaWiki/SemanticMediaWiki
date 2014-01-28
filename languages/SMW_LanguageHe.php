@@ -70,6 +70,7 @@ class SMWLanguageHe extends SMWLanguage {
 		'_ASKFO'=> 'פורמט השאילתא',
 		'_ASKSI'=> 'גודל השאילתא',
 		'_ASKDE'=> 'עומק שאילתא',
+		'_ASKDU'=> 'Query duration', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

@@ -76,6 +76,7 @@ class SMWLanguageZh_cn extends SMWLanguage {
 		'_ASKFO'=> 'Query format', // TODO: translate
 		'_ASKSI'=> 'Query size', // TODO: translate
 		'_ASKDE'=> 'Query depth', // TODO: translate
+		'_ASKDU'=> 'Query duration', // TODO: translate
 	);
 
 

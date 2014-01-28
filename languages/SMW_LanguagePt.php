@@ -78,6 +78,7 @@ class SMWLanguagePt extends SMWLanguage {
 		'_ASKFO'=> 'Formato da consulta',
 		'_ASKSI'=> 'Tamanho da consulta',
 		'_ASKDE'=> 'Profundidade da consulta',
+		'_ASKDU'=> 'Query duration', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(

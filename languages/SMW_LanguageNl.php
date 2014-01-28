@@ -73,6 +73,7 @@ class SMWLanguageNl extends SMWLanguage {
 		'_ASKFO'=> 'Bevragingsopmaak',
 		'_ASKSI'=> 'Bevragingsgrootte',
 		'_ASKDE'=> 'Bevragingsdiepgang',
+		'_ASKDU'=> 'Query duration', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(
