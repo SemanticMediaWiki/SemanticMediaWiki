@@ -80,6 +80,7 @@ class SMWLanguageDe extends SMWLanguage {
 		'_ASKFO'=> 'Abfrageformat',
 		'_ASKSI'=> 'Abfragegröße',
 		'_ASKDE'=> 'Abfragetiefe',
+		'_ASKDU'=> 'Abfragedauer',
 	);
 
 	protected $m_SpecialPropertyAliases = array(
