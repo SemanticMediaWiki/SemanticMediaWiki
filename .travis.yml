@@ -17,6 +17,8 @@ matrix:
       php: 5.4
   exclude:
     - env: THENEEDFORTHIS=FAIL
+  allow_failures:
+    - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
 
 before_script: bash ./build/travis/before_script.sh
 
