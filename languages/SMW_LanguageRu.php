@@ -72,6 +72,7 @@ class SMWLanguageRu extends SMWLanguage {
 		'_ASKFO'=> 'Формат запроса',
 		'_ASKSI'=> 'Размер запроса',
 		'_ASKDE'=> 'Глубина запроса',
+		'_ASKDU'=> 'Query duration', // TODO: translate
 	);
 
 	protected $m_SpecialPropertyAliases = array(
