@@ -10,3 +10,5 @@
 
 * #118 Add a possibility to inject a Revision into the ContentParser
 * #119 Add a LinksUpdate integration test
+* #131 The Query Duration special propertyis now internationalized
+* #132 Added smoke test for the special language files
