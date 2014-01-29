@@ -66,13 +66,11 @@ class LanguagesIntegrityTest extends \PHPUnit_Framework_TestCase {
 			$targetLanguageInstance->getPropertyLabels()
 		);
 
-		if ( $result !== array() ) {
-			$this->markTestIncomplete(
-				'Test marked as incomplete for language ' . $langcode . ' due to ' . implode( ', ' , $result )
-			);
-		}
+		$this->assertTrue(
+			$result === array(),
+			"Asserts predfined property keys for the language pair EN - {$langcode} with {$this->formatAsString($result)}"
+		);
 
-		$this->assertTrue( true );
 	}
 
 	/**
@@ -84,28 +82,13 @@ class LanguagesIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		for ( $i=1; $i <= 12; $i++ ) {
 
-			$label = call_user_func_array( array( new $class, 'getMonthLabel' ), array( $i ) );
-			$month = call_user_func_array( array( new $class, 'findMonth' ), array( $label ) );
+			$label = call_user_func( array( new $class, 'getMonthLabel' ), $i );
+			$month = call_user_func( array( new $class, 'findMonth' ), $label );
 
 			$this->assertInternalType( 'string', $label );
 			$this->assertEquals( $i, $month );
 		}
 
-	}
-
-	/**
-	 * @note Language files are not resolved by the Composer classmap
-	 */
-	protected function loadLanguageFileAndConstructClass( $langcode ) {
-
-		$lang = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
-		$file = Configuration::getInstance()->get( 'smwgIP' ) . '/' . 'languages' . '/' . $lang . '.php';
-
-		if ( file_exists( $file ) ) {
-			include_once( $file );
-		}
-
-		return 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
 	}
 
 	public function languageCodeProvider() {
@@ -123,6 +106,25 @@ class LanguagesIntegrityTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		return $provider;
+	}
+
+	/**
+	 * @note Language files are not resolved by the Composer classmap
+	 */
+	private function loadLanguageFileAndConstructClass( $langcode ) {
+
+		$lang = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
+		$file = Configuration::getInstance()->get( 'smwgIP' ) . '/' . 'languages' . '/' . $lang . '.php';
+
+		if ( file_exists( $file ) ) {
+			include_once( $file );
+		}
+
+		return 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
+	}
+
+	private function formatAsString( $expected ) {
+		return is_array( $expected ) ? implode( ', ', $expected ) : $expected;
 	}
 
 }
