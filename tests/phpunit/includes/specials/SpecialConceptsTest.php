@@ -6,16 +6,7 @@ use SMW\SpecialConcepts;
 use SMW\DIWikiPage;
 use SMWDataItem;
 
-/**
- * Tests for the SpecialConcepts class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
+use Title;
 
 /**
  * @covers SMW\SpecialConcepts
@@ -24,48 +15,33 @@ use SMWDataItem;
  *
  * @group SMW
  * @group SMWExtension
+ * @group SpecialPage
+ * @group medium
+ *
+ * @licence GNU GPL v2+
+ * @since 1.9
+ *
+ * @author mwjames
  */
 class SpecialConceptsTest extends SpecialPageTestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\SpecialConcepts';
 	}
 
 	/**
-	 * Helper method that returns a SpecialConcepts object
-	 *
-	 * @since 1.9
-	 *
-	 * @param $result
-	 *
 	 * @return SpecialConcepts
 	 */
 	protected function getInstance() {
 		return new SpecialConcepts();
 	}
 
-	/**
-	 * @test SpecialConcepts::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
 	}
 
-	/**
-	 * @test SpecialConcepts::execute
-	 *
-	 * @since 1.9
-	 */
 	public function testExecute() {
 
-		$this->getInstance();
 		$this->execute();
 
 		$matches = array(
@@ -77,11 +53,9 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 	}
 
 	/**
-	 * @test SpecialConcepts::getHtml
-	 *
-	 * @since 1.9
+	 * @depends testExecute
 	 */
-	public function testGetHtml() {
+	public function testGetHtmlForAnEmptySubject() {
 
 		$instance = $this->getInstance();
 
@@ -89,13 +63,32 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 			'tag' => 'span',
 			'attributes' => array( 'class' => 'smw-sp-concept-empty' )
 		);
-		$this->assertTag( $matches, $instance->getHtml( array(), 0, 0, 0 ) );
+
+		$this->assertTag(
+			$matches,
+			$instance->getHtml( array(), 0, 0, 0 )
+		);
+
+	}
+
+	/**
+	 * @depends testGetHtmlForAnEmptySubject
+	 */
+	public function testGetHtmlForSingleSubject() {
+
+		$subject  = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$instance = $this->getInstance();
 
 		$matches = array(
 			'tag' => 'span',
 			'attributes' => array( 'class' => 'smw-sp-concept-count' )
 		);
-		$this->assertTag( $matches, $instance->getHtml( array( $this->newSubject() ), 1, 1, 1 ) );
+
+		$this->assertTag(
+			$matches,
+			$instance->getHtml( array( $subject ), 1, 1, 1 )
+		);
 
 	}
+
 }
