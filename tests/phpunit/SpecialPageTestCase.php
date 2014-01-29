@@ -58,7 +58,7 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 		$response = $request->response();
 
 		$page = $this->getInstance();
-		$page->setContext( $this->createRequestContext(
+		$page->setContext( $this->makeRequestContext(
 			$request,
 			$user,
 			$this->getTitle( $page )
@@ -107,7 +107,7 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @return RequestContext
 	 */
-	protected function createRequestContext( WebRequest $request, $user, $title ) {
+	private function makeRequestContext( WebRequest $request, $user, $title ) {
 
 		$context = new RequestContext();
 		$context->setRequest( $request );
@@ -129,7 +129,7 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return Title
 	 */
-	protected function getTitle( SpecialPage $page ) {
+	private function getTitle( SpecialPage $page ) {
 		return method_exists( $page, 'getPageTitle') ? $page->getPageTitle() : $page->getTitle();
 	}
 
