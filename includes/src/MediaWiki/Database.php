@@ -3,8 +3,11 @@
 namespace SMW\MediaWiki;
 
 use SMW\DBConnectionProvider;
+
+use DBError;
 use ResultWrapper;
 use UnexpectedValueException;
+use RuntimeException;
 
 /**
  * This adapter class covers MW DB specific operations. Changes to the
@@ -20,19 +23,48 @@ use UnexpectedValueException;
  */
 class Database {
 
-	protected $dbConnection;
+	/** @var DatabaseBase */
+	protected $readDBConnection = null;
+	protected $writeDBConnection = null;
 
-	public function __construct( DBConnectionProvider $dbConnection ) {
-		$this->dbConnection = $dbConnection;
+	public function __construct( DBConnectionProvider $readDBConnection, DBConnectionProvider $writeDBConnection = null ) {
+		$this->readDBConnection = $readDBConnection;
+		$this->writeDBConnection = $writeDBConnection;
 	}
 
 	/**
-	 * @since 1.9.0.2
+	 * @since 1.9.0.3
 	 *
 	 * @return DatabaseBase
 	 */
-	public function getDB() {
-		return $this->dbConnection->getConnection();
+	public function aquireReadConnection() {
+		return $this->readDBConnection->getConnection();
+	}
+
+	/**
+	 * @since 1.9.0.3
+	 *
+	 * @return DatabaseBase
+	 * @throws RuntimeException
+	 */
+	public function aquireWriteConnection() {
+
+		if ( $this->writeDBConnection instanceof DBConnectionProvider ) {
+			return $this->writeDBConnection->getConnection();
+		}
+
+		throw new RuntimeException( 'Expected a DBConnectionProvider instance' );
+	}
+
+	/**
+	 * @see DatabaseBase::getType
+	 *
+	 * @since 1.9.0.3
+	 *
+	 * @return string
+	 */
+	public function getType() {
+		return $this->aquireReadConnection()->getType();
 	}
 
 	/**
@@ -46,11 +78,11 @@ class Database {
 	 */
 	public function tableName( $tableName ) {
 
-		if ( $this->getDB()->getType() == 'sqlite' ) {
+		if ( $this->getType() == 'sqlite' ) {
 			return $tableName;
 		}
 
-		return $this->getDB()->tableName( $tableName );
+		return $this->aquireReadConnection()->tableName( $tableName );
 	}
 
 	/**
@@ -63,7 +95,7 @@ class Database {
 	 * @return string
 	 */
 	public function addQuotes( $value ) {
-		return $this->getDB()->addQuotes( $value );
+		return $this->aquireReadConnection()->addQuotes( $value );
 	}
 
 	/**
@@ -76,7 +108,7 @@ class Database {
 	 * @return string
 	 */
 	public function fetchObject( $res ) {
-		return $this->getDB()->fetchObject( $res );
+		return $this->aquireReadConnection()->fetchObject( $res );
 	}
 
 	/**
@@ -89,7 +121,7 @@ class Database {
 	 * @return integer
 	 */
 	public function numRows( $results ) {
-		return $this->getDB()->numRows( $results );
+		return $this->aquireReadConnection()->numRows( $results );
 	}
 
 	/**
@@ -100,7 +132,7 @@ class Database {
 	 * @param ResultWrapper $res
 	 */
 	public function freeResult( $res ) {
-		$this->getDB()->freeResult( $res );
+		$this->aquireReadConnection()->freeResult( $res );
 	}
 
 	/**
@@ -118,13 +150,17 @@ class Database {
 	 */
 	public function select( $tableName, $fields, $conditions = '', $fname, array $options = array() ) {
 
-		$results = $this->getDB()->select(
-			$tableName,
-			$fields,
-			$conditions,
-			$fname,
-			$options
-		);
+		try {
+			$results = $this->aquireReadConnection()->select(
+				$tableName,
+				$fields,
+				$conditions,
+				$fname,
+				$options
+			);
+		} catch  ( DBError $e ) {
+			throw new UnexpectedValueException( $e->getMessage() . "\n" . $e->getTraceAsString() );
+		}
 
 		if ( $results instanceof ResultWrapper ) {
 			return $results;
@@ -151,7 +187,7 @@ class Database {
 	 * @throws MWException
 	 */
 	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
-		return $this->getDB()->query( $sql, $fname, $ignoreException );
+		return $this->aquireReadConnection()->query( $sql, $fname, $ignoreException );
 	}
 
 	/**
@@ -162,7 +198,7 @@ class Database {
 	 * @return int
 	 */
 	function affectedRows() {
-		return $this->getDB()->affectedRows();
+		return $this->aquireReadConnection()->affectedRows();
 	}
 
 	/**
@@ -175,7 +211,7 @@ class Database {
 	 * @return array
 	 */
 	public function makeSelectOptions( $options ) {
-		return $this->getDB()->makeSelectOptions( $options );
+		return $this->aquireReadConnection()->makeSelectOptions( $options );
 	}
 
 }
