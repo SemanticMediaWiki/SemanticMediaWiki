@@ -1,13 +1,14 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki;
 
-use SMW\LazyDBConnectionProvider;
+use SMW\MediaWiki\LazyDBConnectionProvider;
 
 use DatabaseBase;
+use ReflectionClass;
 
 /**
- * @covers \SMW\LazyDBConnectionProvider
+ * @covers \SMW\MediaWiki\LazyDBConnectionProvider
  *
  * @ingroup Test
  *
@@ -19,34 +20,20 @@ use DatabaseBase;
  *
  * @author mwjames
  */
-class LazyDBConnectionProviderTest extends SemanticMediaWikiTestCase {
+class LazyDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
-		return '\SMW\LazyDBConnectionProvider';
+		return '\SMW\MediaWiki\LazyDBConnectionProvider';
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return LazyDBConnectionProvider
-	 */
 	private function newInstance( $connectionId = DB_SLAVE, $groups = array(), $wiki = false ) {
 		return new LazyDBConnectionProvider( $connectionId, $groups, $wiki );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testGetAndReleaseConnection() {
 
 		$instance   = $this->newInstance( DB_SLAVE );
@@ -56,22 +43,19 @@ class LazyDBConnectionProviderTest extends SemanticMediaWikiTestCase {
 
 		$this->assertTrue(
 			$instance->getConnection() === $connection,
-			'Asserts that getConnection() yields the same instance'
+			'Asserts that getConnection yields the same instance'
 		);
 
 		$instance->releaseConnection();
 
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testGetConnectionOutOfBoundsException() {
+	public function testGetConnectionThrowsException() {
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->setExpectedException( 'RuntimeException' );
 
 		$instance  = $this->newInstance();
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( $this->getClass() );
 
 		$connection = $reflector->getProperty( 'connection' );
 		$connection->setAccessible( true );

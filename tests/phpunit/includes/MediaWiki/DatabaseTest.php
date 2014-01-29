@@ -28,6 +28,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf( $this->getClass(), new Database( new MockDBConnectionProvider ) );
 	}
 
+	public function testAquireConnection() {
+
+		$instance = new Database( new MockDBConnectionProvider, new MockDBConnectionProvider );
+
+		$this->assertInstanceOf( 'DatabaseBase', $instance->aquireReadConnection() );
+		$this->assertInstanceOf( 'DatabaseBase', $instance->aquireWriteConnection() );
+	}
+
 	public function testNumRowsMethod() {
 
 		$connectionProvider = new MockDBConnectionProvider();
@@ -108,6 +116,15 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Database( new MockDBConnectionProvider );
 		$this->assertInstanceOf( 'ResultWrapper', $instance->select( 'Foo', 'Bar', '', __METHOD__ ) );
+
+	}
+
+	public function testMissingWriteConnectionThrowsException() {
+
+		$this->setExpectedException( 'RuntimeException' );
+
+		$instance = new Database( new MockDBConnectionProvider );
+		$this->assertInstanceOf( 'ResultWrapper', $instance->aquireWriteConnection() );
 
 	}
 

@@ -1,14 +1,13 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki;
+
+use SMW\DBConnectionProvider;
 
 use DatabaseBase;
-use OutOfBoundsException;
+use RuntimeException;
 
 /**
- * Lazy database connection provider.
- * The connection is fetched when needed using the id provided in the constructor.
- *
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
@@ -49,6 +48,7 @@ class LazyDBConnectionProvider implements DBConnectionProvider {
 	 * @since 1.9
 	 *
 	 * @return DatabaseBase
+	 * @throws RuntimeException
 	 */
 	public function getConnection() {
 
@@ -56,11 +56,11 @@ class LazyDBConnectionProvider implements DBConnectionProvider {
 			$this->connection = wfGetLB( $this->wiki )->getConnection( $this->connectionId, $this->groups, $this->wiki );
 		}
 
-		if ( !$this->isConnection( $this->connection ) ) {
-			throw new OutOfBoundsException( 'Is not a DatabaseBase instance');
+		if ( $this->isConnection( $this->connection ) ) {
+			return $this->connection;
 		}
 
-		return $this->connection;
+		throw new RuntimeException( 'Expected a DatabaseBase instance' );
 	}
 
 	/**
@@ -74,11 +74,6 @@ class LazyDBConnectionProvider implements DBConnectionProvider {
 		}
 	}
 
-	/**
-	 * @since  1.9
-	 *
-	 * @return boolean
-	 */
 	protected function isConnection( $connection ) {
 		return $connection instanceof DatabaseBase;
 	}

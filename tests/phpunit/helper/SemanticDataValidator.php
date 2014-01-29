@@ -127,7 +127,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		}
 
 		if ( isset( $expected['propertyLabel'] ) ) {
-			var_dump( $expected['propertyLabel'], $property->getLabel() );
 			$this->assertEquals(
 				$expected['propertyLabel'],
 				$property->getLabel(),

@@ -9,7 +9,7 @@ use SMW\DataTypeRegistry;
 use SMW\Settings;
 use SMW\SQLStore\TableDefinition;
 use SMW\MediaWiki\Database;
-use SMW\LazyDBConnectionProvider as DBConnectionProvider;
+use SMW\MediaWiki\LazyDBConnectionProvider as DBConnectionProvider;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
@@ -869,7 +869,10 @@ class SMWSQLStore3 extends SMWStore {
 	public function getDatabase() {
 
 		if ( $this->database === null ) {
-			$this->database = new Database( new DBConnectionProvider( DB_SLAVE ) );
+			$this->database = new Database(
+				new DBConnectionProvider( DB_SLAVE ),
+				new DBConnectionProvider( DB_MASTER )
+			);
 		}
 
 		return $this->database;
