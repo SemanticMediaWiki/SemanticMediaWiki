@@ -69,15 +69,19 @@ class SMWLanguageNl extends SMWLanguage {
 		'_LIST' => 'Heeft velden',
 		'_SOBJ' => 'Heeft subobject',
 		'_ASK'  => 'Heeft bevraging',
-		'_ASKST'=> 'Bevragingsstring',
-		'_ASKFO'=> 'Bevragingsopmaak',
-		'_ASKSI'=> 'Bevragingsgrootte',
-		'_ASKDE'=> 'Bevragingsdiepgang',
-		'_ASKDU'=> 'Query duration', // TODO: translate
+		'_ASKST'=> 'Zoekstring',
+		'_ASKFO'=> 'Zoekopdracht-opmaak',
+		'_ASKSI'=> 'Zoekopdracht-omvang',
+		'_ASKDE'=> 'Zoekdiepte',
+		'_ASKDU'=> 'Zoekduur'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-		'Weergave-eenheid' => '_UNIT'
+		'Weergave-eenheid'   => '_UNIT',
+		'Bevragingsstring'   => '_ASKST',
+		'Bevragingsopmaak'   => '_ASKFO',
+		'Bevragingsgrootte'  => '_ASKSI',
+		'Bevragingsdiepgang' => '_ASKDE'
 	);
 
 	protected $m_Namespaces = array(
