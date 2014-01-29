@@ -2,14 +2,14 @@
 
 namespace SMW\Test;
 
+use RequestContext;
+use Language;
 use SpecialPage;
 use FauxRequest;
 use WebRequest;
 use OutputPage;
 
 /**
- * Class contains methods to access SpecialPages
- *
  * @ingroup Test
  *
  * @group SMW
@@ -21,12 +21,28 @@ use OutputPage;
  *
  * @author mwjames
  */
-abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
+abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
+
+	protected $obLevel;
+
+	protected function setUp() {
+		parent::setUp();
+		$this->obLevel = ob_get_level();
+	}
+
+	protected function tearDown() {
+
+		$obLevel = ob_get_level();
+
+		while ( ob_get_level() > $this->obLevel ) {
+			ob_end_clean();
+		}
+
+		parent::tearDown();
+	}
 
 	/**
-	 * Returns a new instance of the special page under test.
-	 *
-	 * @return \SpecialPage
+	 * @return SpecialPage
 	 */
 	protected abstract function getInstance();
 
@@ -34,7 +50,7 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 	 * Borrowed from \Wikibase\Test\SpecialPageTestBase
 	 *
 	 * @param string      $sub The subpage parameter to call the page with
-	 * @param \WebRequest $request Web request that may contain URL parameters, etc
+	 * @param WebRequest $request Web request that may contain URL parameters, etc
 	 */
 	protected function execute( $sub = '', WebRequest $request = null, $user = null ) {
 
@@ -42,7 +58,11 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 		$response = $request->response();
 
 		$page = $this->getInstance();
-		$page->setContext( $this->getContext( $request, $user, $this->getTitle( $page ) ) );
+		$page->setContext( $this->createRequestContext(
+			$request,
+			$user,
+			$this->getTitle( $page )
+		) );
 
 		$out = $page->getOutput();
 
@@ -87,19 +107,19 @@ abstract class SpecialPageTestCase extends SemanticMediaWikiTestCase {
 	/**
 	 * @return RequestContext
 	 */
-	protected function getContext( $request, $user, $title ) {
+	protected function createRequestContext( WebRequest $request, $user, $title ) {
 
-		$context  = $this->newContext( $request );
+		$context = new RequestContext();
+		$context->setRequest( $request );
 
 		$out = new OutputPage( $context );
 		$out->setTitle( $title );
 
 		$context->setOutput( $out );
-		$context->setLanguage( $this->getLanguage() );
+		$context->setLanguage( Language::factory( 'en' ) );
 
-		if ( $user !== null ) {
-			$context->setUser( $user );
-		}
+		$user = $user === null ? new MockSuperUser() : $user;
+		$context->setUser( $user );
 
 		return $context;
 	}
