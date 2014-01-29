@@ -71,11 +71,11 @@ class SMWLanguageFr extends SMWLanguage {
 		'_ASKFO'=> 'Format de requête',
 		'_ASKSI'=> 'Taille de la requête',
 		'_ASKDE'=> 'Profondeur de la requête',
-		'_ASKDU'=> 'Query duration', // TODO: translate
+		'_ASKDU'=> 'Durée de la requête'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-		'Unité de mesure'   => '_UNIT',
+		'Unité de mesure' => '_UNIT'
 	);
 
 	protected $m_Namespaces = array(
