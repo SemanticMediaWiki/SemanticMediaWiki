@@ -26,7 +26,7 @@ function installSMW {
 	if [ "$TYPE" == "composer" ]
 	then
 		installSmwIntoMwWithComposer
-	elif [ "$TYPE" == "relbuild" ]
+	elif [ "$TYPE" == "relbuild" ] && [ "$TRAVIS_BRANCH" == "master" ]
 	then
 		installSmwAsTarballLikeBuild
 	else
@@ -36,6 +36,8 @@ function installSMW {
 
 # Run Composer installation from the MW root directory
 function installSmwIntoMwWithComposer {
+	echo -e "Running MW root composer install build on $TRAVIS_BRANCH \n"
+
 	composer require mediawiki/semantic-media-wiki "dev-master"
 
 	cd extensions
@@ -57,15 +59,20 @@ function installSmwIntoMwWithComposer {
 	composer dump-autoload
 }
 
-# This will likely not get the submitted version.
+# Running tarball build only on the master branch to detect other issues before it is merged
+# because the tarball build will not contain the latests submitted version.
 # We do however want to ensure noticing any breakage of this process before we prepare a release.
 function installSmwAsTarballLikeBuild {
+	echo -e "Running tarball build on $TRAVIS_BRANCH \n"
+	
 	cd extensions
 	composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki dev-master -s dev --prefer-dist --no-dev
 	cd ..
 }
 
 function installSmwByRunningComposerInstallInIt {
+	echo -e "Running composer install build on $TRAVIS_BRANCH \n"
+
 	cd extensions
 	cp -r $originalDirectory SemanticMediaWiki
 	cd SemanticMediaWiki
