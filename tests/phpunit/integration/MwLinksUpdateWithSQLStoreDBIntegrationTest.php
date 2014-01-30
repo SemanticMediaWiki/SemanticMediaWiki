@@ -21,6 +21,7 @@ use UnexpectedValueException;
  *
  * @group SMW
  * @group SMWExtension
+ * @group Integration
  * @group Database
  * @group medium
  *
@@ -116,7 +117,6 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 			4,
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) ),
 			'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists'
-
 		);
 
 	}

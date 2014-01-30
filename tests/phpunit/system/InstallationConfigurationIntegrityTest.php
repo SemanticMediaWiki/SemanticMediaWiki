@@ -2,34 +2,31 @@
 
 namespace SMW\Test;
 
+use SMW\Configuration\Configuration;
 use SMW\Settings;
 
 /**
- * Sanity checks after the installation
- *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ * @group SystemTest
  *
  * @licence GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class InstallationSettingsTest extends \PHPUnit_Framework_TestCase {
+class InstallationConfigurationIntegrityTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @since 1.9
-	 */
 	public function testSemanticMediaWikiScriptPath() {
 
-		$wgScriptPath   = $GLOBALS['wgScriptPath'];
+		$wgScriptPath   = Configuration::getInstance()->get( 'wgScriptPath' );
 		$smwgScriptPath = Settings::newFromGlobals()->get( 'smwgScriptPath' );
 		$expectedPath   = $wgScriptPath . '/extensions/SemanticMediaWiki';
 
 		$this->assertTrue(
-			$GLOBALS['smwgScriptPath'] === Settings::newFromGlobals()->get( 'smwgScriptPath' ),
+			Configuration::getInstance()->get( 'smwgScriptPath' ) === Settings::newFromGlobals()->get( 'smwgScriptPath' ),
 			"Asserts that smwgScriptPath contains the expected patch"
 		);
 
@@ -41,19 +38,16 @@ class InstallationSettingsTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testNamespaceSettingOnExampleIfSet() {
 
 		$expected = 'http://example.org/id/';
 
-		if ( $GLOBALS['smwgNamespace'] !== $expected ) {
+		if ( Configuration::getInstance()->get( 'smwgNamespace' ) !== $expected ) {
 			$this->markTestSkipped( "Skip test due to missing {$expected} setting" );
 		}
 
 		$this->assertTrue(
-			$GLOBALS['smwgNamespace'] === Settings::newFromGlobals()->get( 'smwgNamespace' ),
+			Configuration::getInstance()->get( 'smwgNamespace' ) === Settings::newFromGlobals()->get( 'smwgNamespace' ),
 			"Asserts that smwgNamespace contains the expected {$expected}"
 		);
 
@@ -61,8 +55,6 @@ class InstallationSettingsTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider smwgNamespacesWithSemanticLinksProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testNamespacesWithSemanticLinksOnTravisCustomNamespace( $type, $container ) {
 
@@ -71,9 +63,10 @@ class InstallationSettingsTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$namespace = NS_TRAVIS;
+		$extraNamespaces = Configuration::getInstance()->get( 'wgExtraNamespaces' );
 
 		$this->assertTrue(
-			isset( $GLOBALS['wgExtraNamespaces'][$namespace] ),
+			isset( $extraNamespaces[$namespace] ),
 			"Asserts that wgExtraNamespaces contains the expected {$namespace} NS"
 		);
 
@@ -102,7 +95,7 @@ class InstallationSettingsTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			'GLOBALS',
-			$GLOBALS['smwgNamespacesWithSemanticLinks']
+			Configuration::getInstance()->get( 'smwgNamespacesWithSemanticLinks' )
 		);
 
 		$provider[] = array(
