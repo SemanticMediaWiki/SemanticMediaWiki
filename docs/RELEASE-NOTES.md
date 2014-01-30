@@ -12,3 +12,4 @@
 * #119 Add a LinksUpdate integration test
 * #131 The Query Duration special propertyis now internationalized
 * #132 Added smoke test for the special language files
+* #142 Change language code for Norwegian (Bokmål variant) from "no" to "nb" for L10n for datatypes, special properties, etc.
