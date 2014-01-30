@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\Configuration\Configuration;
+use RuntimeException;
 
 /**
  * @covers \SMWLanguage
@@ -11,13 +12,14 @@ use SMW\Configuration\Configuration;
  *
  * @group SMW
  * @group SMWExtension
+ * @group SystemTest
  *
  * @licence GNU GPL v2+
  * @since 1.9.0.3
  *
  * @author mwjames
  */
-class LanguagesIntegrityTest extends \PHPUnit_Framework_TestCase {
+class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider languageCodeProvider
@@ -27,8 +29,8 @@ class LanguagesIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider languageCodeProvider
 	 * @depends testLanguageIsAvailable
+	 * @dataProvider languageCodeProvider
 	 */
 	public function testCommonInterfaceMethods( $langcode ) {
 
@@ -51,8 +53,8 @@ class LanguagesIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider languageCodeProvider
 	 * @depends testCommonInterfaceMethods
+	 * @dataProvider languageCodeProvider
 	 */
 	public function testComparePredefinedPropertyLabels( $langcode ) {
 
@@ -118,9 +120,10 @@ class LanguagesIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		if ( file_exists( $file ) ) {
 			include_once( $file );
+			return 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
 		}
 
-		return 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
+		throw new RuntimeException( "Expected {$file} to be accessible" );
 	}
 
 	private function formatAsString( $expected ) {
