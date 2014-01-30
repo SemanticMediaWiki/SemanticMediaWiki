@@ -14,7 +14,7 @@ global $smwgIP;
 include_once( $smwgIP . 'languages/SMW_Language.php' );
 
 /**
- * Norwegian language labels for important SMW labels (namespaces, datatypes,...).
+ * Norwegian (Bokmål variant) language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author Kirill Miazine km\@krot.org
  * @author Even Thorbergsen
