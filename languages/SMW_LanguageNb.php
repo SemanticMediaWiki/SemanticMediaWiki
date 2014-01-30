@@ -17,6 +17,7 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
  * Norwegian language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author Kirill Miazine km\@krot.org
+ * @author Even Thorbergsen
  * @ingroup SMWLanguage
  * @ingroup Language
  */
@@ -68,18 +69,18 @@ class SMWLanguageNo extends SMWLanguage {
 		'_SERV' => 'Tilbyr tjeneste',
 		'_PVAL' => 'Tillater verdi',
 		'_MDAT' => 'Endringsdato',
-		'_CDAT' => 'Creation date', // TODO: translate
-		'_NEWP' => 'Is a new page', // TODO: translate
-		'_LEDT' => 'Last editor is', // TODO: translate
+		'_CDAT' => 'Opprettelsesdato',
+		'_NEWP' => 'Er en ny side',
+		'_LEDT' => 'Siste redaktør er',
 		'_ERRP' => 'Feilaktig verdi for',
-		'_LIST' => 'Has fields', // TODO: translate
-		'_SOBJ' => 'Has subobject', // TODO: translate
-		'_ASK'  => 'Has query', // TODO: translate
-		'_ASKST'=> 'Query string', // TODO: translate
-		'_ASKFO'=> 'Query format', // TODO: translate
-		'_ASKSI'=> 'Query size', // TODO: translate
-		'_ASKDE'=> 'Query depth', // TODO: translate
-		'_ASKDU'=> 'Query duration', // TODO: translate
+		'_LIST' => 'Har feltene',
+		'_SOBJ' => 'Har underobjekt',
+		'_ASK'  => 'Har spørring',
+		'_ASKST'=> 'Spørringsstreng',
+		'_ASKFO'=> 'Spørringsformat',
+		'_ASKSI'=> 'Spørringsstørrelse',
+		'_ASKDE'=> 'Spørringsdybde',
+		'_ASKDU'=> 'Spørringsvarighet'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
