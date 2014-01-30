@@ -99,7 +99,7 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 
 		$languageCodes = array(
 			'En', 'Ar', 'Arz', 'Ca', 'De', 'Es', 'Fi',
-			'Fr', 'He', 'Id', 'It', 'Nl', 'No', 'Pl',
+			'Fr', 'He', 'Id', 'It', 'Nb', 'Nl', 'Pl',
 			'Pt', 'Ru', 'Sk', 'Zh-cn', 'Zh-tw'
 		);
 
