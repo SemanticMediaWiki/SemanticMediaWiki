@@ -5,7 +5,6 @@ namespace SMW\Test;
 use ImportStreamSource;
 use ImportReporter;
 use WikiImporter;
-use MWException;
 use RequestContext;
 
 use RuntimeException;
@@ -74,17 +73,18 @@ class MwImporter {
 
 		$reporter->setContext( $this->acquireRequestContext() );
 		$reporter->open();
+		$this->exception = false;
 
 		try {
 			$importer->doImport();
-		} catch ( MWException $e ) {
+		} catch ( \Exception $e ) {
 			$this->exception = $e;
 		}
 
 		$this->result = $reporter->close();
 		$this->importTime = microtime( true ) - $start;
 
-		return $this->result->isGood();
+		return $this->result->isGood() && !$this->exception;
 	}
 
 	/**
@@ -99,8 +99,8 @@ class MwImporter {
 		}
 
 		throw new RuntimeException(
-			'Import failed with ' . '#' .
-			$exceptionAsString . '#' .
+			'Import failed with ' . "\n" .
+			$exceptionAsString . "\n" .
 			$this->result->getWikiText()
 		);
 	}

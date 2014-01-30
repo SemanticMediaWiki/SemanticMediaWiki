@@ -208,7 +208,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		// Solve issue with single/testsuite DB setup first
 		// $this->assertTrue( $runPropertiesAreSetAssert, __METHOD__ );
-
+		return $runPropertiesAreSetAssert;
 	}
 
 	/**
@@ -242,6 +242,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		// Solve issue with single/testsuite DB setup first
 		// $this->assertTrue( $runPropertyValueAssert, __METHOD__ );
+		return $runPropertyValueAssert;
 	}
 
 	private function assertThatSemanticDataIsIndeedEmpty( SemanticData $semanticData ) {
@@ -313,8 +314,8 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			$value,
 			$expected['propertyValues'],
 			__METHOD__ .
-			" for '{$dataValue->getProperty()->getLabel()}'" .
-			" as '{$dataValue->getTypeID()}' property value" .
+			" for '{$dataValue->getProperty()->getKey()}'" .
+			" as '{$dataValue->getTypeID()}'" .
 			" with ({$this->formatAsString( $expected['propertyValues'] )})"
 		);
 
