@@ -21,7 +21,7 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
  * @ingroup SMWLanguage
  * @ingroup Language
  */
-class SMWLanguageNo extends SMWLanguage {
+class SMWLanguageNb extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
 		'_wpg' => 'Side', // name of page datatype
