@@ -5,6 +5,7 @@
 * #80  Fixed issue with running the system tests on a MySQL based setup
 * #110 Fixed type mismatch issue in the cahcing code of SQLStore3
 * #121 (Bug 60336) Fix sortkey issue for multibyte characters in ListResultPrinter
+* #146 Fix 1.9.0.2 regression in resource paths that caused the SMW badge and JS+CSS to not be loaded on some wikis
 
 ### Internal enhancements
 
@@ -12,4 +13,4 @@
 * #119 Add a LinksUpdate integration test
 * #131 The Query Duration special propertyis now internationalized
 * #132 Added smoke test for the special language files
-* #142 Change language code for Norwegian (Bokmål variant) from "no" to "nb" for L10n for datatypes, special properties, etc.
+* #142 Changed the language code for Norwegian (Bokmål variant) from "no" to "nb" for L10n for datatypes, special properties, etc.
