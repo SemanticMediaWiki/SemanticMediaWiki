@@ -33,7 +33,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetInstance() {
-
 		$instance = DataTypeRegistry::getInstance();
 
 		$this->assertInstanceOf( $this->getClass(), $instance );
@@ -49,14 +48,12 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			DataTypeRegistry::getInstance() !== $instance,
 			'Asserts that instance has been reset'
 		);
-
 	}
 
 	/**
 	 * @since 1.9
 	 */
 	public function testRegisterDatatype() {
-
 		$this->assertNull(
 			DataTypeRegistry::getInstance()->getDataTypeClassById( '_foo' ),
 			'Asserts that prior registration getDataTypeClassById() returns null'
@@ -92,14 +89,12 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			DataTypeRegistry::getInstance()->getDataItemId( 'FooBar' ),
 			'Asserts TYPE_NOTYPE is returned for non-registered type'
 		);
-
 	}
 
 	/**
 	 * @since 1.9
 	 */
 	public function testRegisterDatatypeIdAndAlias() {
-
 		$this->assertEmpty(
 			DataTypeRegistry::getInstance()->findTypeId( 'FooBar' ),
 			'Asserts that findTypeID returns empty label'
@@ -112,14 +107,12 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			DataTypeRegistry::getInstance()->findTypeId( 'FooBar' ),
 			'Asserts that findTypeID returns the registered alias label'
 		);
-
 	}
 
 	/**
 	 * @since 1.9.0.2
 	 */
 	public function testTypeIdAndLabelAsLanguageIndependantInvocation() {
-
 		$instance = new DataTypeRegistry(
 			array( '_wpg' => 'Page' ),
 			array( 'URI'  => '_uri' )
@@ -136,8 +129,46 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			$instance->getKnownTypeLabels(),
 			'Asserts that getKnownTypeLabels returns an array'
 		);
+	}
 
+	public function testLookupByLabelIsCaseInsensitive() {
+		$caseVariants = array(
+			'page',
+			'Page',
+			'PAGE',
+			'pAgE',
+		);
 
+		foreach ( $caseVariants as $caseVariant ) {
+			$this->assertRegistryFindsIdForLabels( $caseVariant, $caseVariants );
+			$this->assertRegistryFindsIdForAliases( $caseVariant, $caseVariants );
+		}
+	}
+
+	protected function assertRegistryFindsIdForLabels( $inputLabel, array $equivalentLabels ) {
+		$id = '_wpg';
+
+		$registry = new DataTypeRegistry(
+			array(),
+			array( $inputLabel => $id )
+		);
+
+		foreach ( $equivalentLabels as $caseVariant ) {
+			$this->assertEquals( $id, $registry->findTypeId( $caseVariant ) );
+		}
+	}
+
+	protected function assertRegistryFindsIdForAliases( $inputLabel, array $equivalentLabels ) {
+		$id = '_wpg';
+
+		$registry = new DataTypeRegistry(
+			array( $id => $inputLabel ),
+			array()
+		);
+
+		foreach ( $equivalentLabels as $caseVariant ) {
+			$this->assertEquals( $id, $registry->findTypeId( $caseVariant ) );
+		}
 	}
 
 }
