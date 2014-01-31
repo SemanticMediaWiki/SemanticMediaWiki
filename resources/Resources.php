@@ -16,7 +16,7 @@ namespace SMW;
 
 $moduleTemplate = array(
 	'localBasePath' => __DIR__,
-	'remoteExtPath' => '..' . substr( __DIR__, strlen( $GLOBALS['IP'] ) ),
+	'remoteExtPath' => end( ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR , __DIR__, 2 ) ) ) . '/resources/',
 	'group' => 'ext.smw'
 );
 
