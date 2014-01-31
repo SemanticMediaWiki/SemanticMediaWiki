@@ -1,5 +1,8 @@
 <?php
 
+use ParamProcessor\Definition\StringParam;
+use ParamProcessor\IParam;
+
 /**
  * Definition for the format parameter.
  * 
