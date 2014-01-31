@@ -110,12 +110,55 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
+	public function testQuerySQLite() {
+
+		$resultWrapper = $this->getMockBuilder( 'ResultWrapper' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionProvider = new MockDBConnectionProvider();
+		$database = $connectionProvider->getMockDatabase();
+
+		$database->expects( $this->once() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'sqlite' ) );
+
+		$database->expects( $this->once() )
+			->method( 'query' )
+			->with( $this->equalTo( 'TEMP' ) )
+			->will( $this->returnValue( $resultWrapper ) );
+
+		$instance = new Database( $connectionProvider );
+		$this->assertInstanceOf( 'ResultWrapper', $instance->query( 'TEMPORARY' ) );
+
+	}
+
 	public function testSelectThrowsException() {
 
-		$this->setExpectedException( 'UnexpectedValueException' );
+		$this->setExpectedException( 'RuntimeException' );
 
 		$instance = new Database( new MockDBConnectionProvider );
 		$this->assertInstanceOf( 'ResultWrapper', $instance->select( 'Foo', 'Bar', '', __METHOD__ ) );
+
+	}
+
+	public function testQueryThrowsException() {
+
+		$this->setExpectedException( 'RuntimeException' );
+
+		$DBError = $this->getMockBuilder( 'DBError' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connectionProvider = new MockDBConnectionProvider();
+		$database = $connectionProvider->getMockDatabase();
+
+		$database->expects( $this->once() )
+			->method( 'query' )
+			->will( $this->throwException( $DBError ) );
+
+		$instance = new Database( $connectionProvider );
+		$this->assertInstanceOf( 'ResultWrapper', $instance->query( 'Foo', __METHOD__ ) );
 
 	}
 

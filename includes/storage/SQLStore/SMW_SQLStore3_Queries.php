@@ -1165,9 +1165,12 @@ throw new MWException("Debug -- this code might be dead.");
 	 */
 	protected function cleanUp() {
 		global $wgDBtype;
+
+		$db = $this->m_store->getDatabase();
+
 		if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
 			foreach ( $this->m_querylog as $table => $log ) {
-				$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? "DROP TABLE IF EXISTS ":"DROP TEMPORARY TABLE " ) . $this->m_dbs->tableName( $table ), 'SMW::getQueryResult' );
+				$db->query( ( ( $wgDBtype == 'postgres' ) ? "DROP TABLE IF EXISTS ":"DROP TEMPORARY TABLE " ) . $db->tableName( $table ), 'SMW::getQueryResult' );
 			}
 		}
 	}

@@ -159,17 +159,20 @@ class Database {
 				$options
 			);
 		} catch  ( DBError $e ) {
-			throw new UnexpectedValueException( $e->getMessage() . "\n" . $e->getTraceAsString() );
+			throw new RuntimeException (
+				$e->getMessage() . "\n" .
+				$e->getTraceAsString()
+			);
 		}
 
 		if ( $results instanceof ResultWrapper ) {
 			return $results;
 		}
 
-		throw new UnexpectedValueException(
-			'Expected a ResultWrapper instance as query result for ' .
-			$tableName . '#' .
-			$fields . '#' .
+		throw new UnexpectedValueException (
+			'Expected a ResultWrapper for ' . "\n" .
+			$tableName . "\n" .
+			$fields . "\n" .
 			$conditions
 		);
 	}
@@ -184,10 +187,31 @@ class Database {
 	 * @param $ignoreException
 	 *
 	 * @return ResultWrapper
-	 * @throws MWException
+	 * @throws RuntimeException
 	 */
 	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
-		return $this->aquireReadConnection()->query( $sql, $fname, $ignoreException );
+
+		if ( $this->getType() == 'sqlite' ) {
+			$sql = str_replace( 'IGNORE', '', $sql );
+			$sql = str_replace( 'TEMPORARY', 'TEMP', $sql );
+			$sql = str_replace( 'ENGINE=MEMORY', '', $sql );
+			$sql = str_replace( 'DROP TEMP', 'DROP', $sql );
+		}
+
+		try {
+			$results = $this->aquireReadConnection()->query(
+				$sql,
+				$fname,
+				$ignoreException
+			);
+		} catch ( DBError $e ) {
+			throw new RuntimeException (
+				$e->getMessage() . "\n" .
+				$e->getTraceAsString()
+			);
+		}
+
+		return $results;
 	}
 
 	/**

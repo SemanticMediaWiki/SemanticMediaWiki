@@ -55,15 +55,19 @@ class SetParserFunction {
 	 */
 	public function parse( ArrayFormatter $parameters ) {
 
-		// Add dataValues
+		$subject = $this->parserData->getSemanticData()->getSubject();
+
 		foreach ( $parameters->toArray() as $property => $values ){
 			foreach ( $values as $value ) {
-				$this->parserData->addDataValue(
-					DataValueFactory::getInstance()->newPropertyValue(
+
+				$dataValue = DataValueFactory::getInstance()->newPropertyValue(
 						$property,
-						$value
-					)
-				);
+						$value,
+						false,
+						$subject
+					);
+
+				$this->parserData->addDataValue( $dataValue );
 			}
 		}
 

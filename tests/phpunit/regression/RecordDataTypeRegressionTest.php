@@ -68,11 +68,18 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 			)
 		);
 
+		$property = DIProperty::newFromUserLabel( 'Has record type for single test' );
+		$valueString = 'ForSingleTestAsPage;ForSingleTestAsText;3333';
+
+		if ( $property->findPropertyTypeID() === '_rec' ) {
+			$valueString = 'ForSingleTestAsPage; ForSingleTestAsText; 3,333';
+		}
+
 		$expectedRecordTypeValuesAsWikiValue = array(
-			'property'       => DIProperty::newFromUserLabel( 'Has record type for single test' ),
-			'propertyValues' => array(
-				'ForSingleTestAsPage; ForSingleTestAsText; 3,333',
-			)
+			'subject'        => DIWikiPage::newFromTitle( $title ),
+			'record'         => $property,
+			'property'       => $property,
+			'propertyValues' => array( $valueString, '?; ?; ?' )
 		);
 
 		$expectedRecordPageFieldValuesAsWikiValue = array(
@@ -138,6 +145,7 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 			$this->assertThatSemanticDataValuesAreSet( $expectedRecordTypeValuesAsWikiValue, $semanticData );
 		}
 
+		$this->assertThatRecordValuesAreSet( $expectedRecordTypeValuesAsWikiValue );
 		$this->assertThatRecordValuesAreSet( $expectedRecordPageFieldValuesAsWikiValue );
 		$this->assertThatRecordValuesAreSet( $expectedRecordTextFieldValuesAsWikiValue );
 		$this->assertThatRecordValuesAreSet( $expectedRecordNumberFieldValuesAsNumber );
@@ -161,6 +169,7 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 
 		}
 
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runValueAssert, __METHOD__ );
 	}
 
@@ -187,6 +196,7 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 			$values
 		);
 
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runValueAssert, __METHOD__ );
 	}
 

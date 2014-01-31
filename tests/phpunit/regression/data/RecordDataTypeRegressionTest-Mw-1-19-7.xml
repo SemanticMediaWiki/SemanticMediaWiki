@@ -193,7 +193,7 @@
         <id>1</id>
       </contributor>
       <text xml:space="preserve" bytes="1704">== Synopsis ==
-A regression test for the record type. Semantic MediaWiki provides a record type representing other property values that consist of a short list of values of other datatypes. For more information about this data type, see See also [https://semantic-mediawiki.org/wiki/Help:Type_Record Help:Type Record].
+A regression test for the record type. Semantic MediaWiki provides a record type representing other property values that consist of a short list of values of other datatypes. For more information about this data type, see [https://semantic-mediawiki.org/wiki/Help:Type_Record Help:Type Record].
 
 [[Property:Has record type]], [[Property:Has record page field]], [[Property:Has record text field]], [[Property:Has record number field]]
 

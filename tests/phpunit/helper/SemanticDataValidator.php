@@ -82,7 +82,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		}
 
-		// Solve issue with single/testsuite DB setup first
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runCategoryInstanceAssert, __METHOD__ );
 	}
 
@@ -206,8 +206,9 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		}
 
-		// Solve issue with single/testsuite DB setup first
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runPropertiesAreSetAssert, __METHOD__ );
+
 		return $runPropertiesAreSetAssert;
 	}
 
@@ -240,8 +241,9 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		}
 
-		// Solve issue with single/testsuite DB setup first
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runPropertyValueAssert, __METHOD__ );
+
 		return $runPropertyValueAssert;
 	}
 
@@ -284,7 +286,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			}
 		}
 
-		// Solve issue with single/testsuite DB setup first
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runContainsPropertyAssert, __METHOD__ );
 	}
 
