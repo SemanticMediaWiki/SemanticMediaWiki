@@ -11,6 +11,7 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ * @group RegressionTest
  * @group Database
  * @group medium
  *
@@ -19,15 +20,15 @@ use Title;
  *
  * @author mwjames
  */
-class DatePropertyRegressionTest extends MwRegressionTestCase {
+class TimeDataTypeRegressionTest extends MwRegressionTestCase {
 
 	public function getSourceFile() {
-		return __DIR__ . '/data/' . 'DatePropertyRegressionTest-Mw-1-19-7.xml';
+		return __DIR__ . '/data/' . 'TimeDataTypeRegressionTest-Mw-1-19-7.xml';
 	}
 
 	public function acquirePoolOfTitles() {
 		return array(
-			'DatePropertyRegressionTest',
+			'TimeDataTypeRegressionTest',
 			'Property:Has query date',
 			'Property:Has calendar date',
 			'Property:Has date'
@@ -35,6 +36,10 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 	}
 
 	public function assertDataImport() {
+
+		$title = Title::newFromText( 'TimeDataTypeRegressionTest' );
+
+		$this->assertTrue( $title->exists() );
 
 		$expectedCategoryAsWikiValue = array(
 			'property' => new DIProperty( '_INST' ),
@@ -135,8 +140,6 @@ class DatePropertyRegressionTest extends MwRegressionTestCase {
 				'2 February 1492'
 			)
 		);
-
-		$title = Title::newFromText( 'DatePropertyRegressionTest' );
 
 		$this->semanticDataValidator = new SemanticDataValidator;
 
