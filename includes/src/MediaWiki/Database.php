@@ -196,6 +196,7 @@ class Database {
 			$sql = str_replace( 'TEMPORARY', 'TEMP', $sql );
 			$sql = str_replace( 'ENGINE=MEMORY', '', $sql );
 			$sql = str_replace( 'DROP TEMP', 'DROP', $sql );
+			$sql = str_replace( 'TRUNCATE TABLE', 'DELETE FROM', $sql );
 		}
 
 		try {
