@@ -5,7 +5,8 @@
 * #80  Fixed issue with running the system tests on a MySQL based setup
 * #110 Fixed type mismatch issue in the cahcing code of SQLStore3
 * #121 (Bug 60336) Fix sortkey issue for multibyte characters in ListResultPrinter
-* #146 Fix 1.9.0.2 regression in resource paths that caused the SMW badge and JS+CSS to not be loaded on some wikis
+* #145 Fixed PHP strict standards notice in SMWParamFormat::formatValue
+* #146 Fixed 1.9.0.2 regression in resource paths that caused the SMW badge and JS+CSS to not be loaded on some wikis
 
 ### Internal enhancements
 
