@@ -82,7 +82,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		}
 
-		// Solve issue with single/testsuite DB setup first
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runCategoryInstanceAssert, __METHOD__ );
 	}
 
@@ -206,9 +206,10 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		}
 
-		// Solve issue with single/testsuite DB setup first
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runPropertiesAreSetAssert, __METHOD__ );
 
+		return $runPropertiesAreSetAssert;
 	}
 
 	/**
@@ -240,8 +241,10 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		}
 
-		// Solve issue with single/testsuite DB setup first
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runPropertyValueAssert, __METHOD__ );
+
+		return $runPropertyValueAssert;
 	}
 
 	private function assertThatSemanticDataIsIndeedEmpty( SemanticData $semanticData ) {
@@ -283,7 +286,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			}
 		}
 
-		// Solve issue with single/testsuite DB setup first
+		// Issue #124 needs to be resolved first
 		// $this->assertTrue( $runContainsPropertyAssert, __METHOD__ );
 	}
 
@@ -313,8 +316,8 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			$value,
 			$expected['propertyValues'],
 			__METHOD__ .
-			" for '{$dataValue->getProperty()->getLabel()}'" .
-			" as '{$dataValue->getTypeID()}' property value" .
+			" for '{$dataValue->getProperty()->getKey()}'" .
+			" as '{$dataValue->getTypeID()}'" .
 			" with ({$this->formatAsString( $expected['propertyValues'] )})"
 		);
 

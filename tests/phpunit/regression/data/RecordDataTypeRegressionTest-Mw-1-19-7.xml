@@ -1,0 +1,246 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="en-gb">
+  <siteinfo>
+    <sitename>MW-19</sitename>
+    <base>http://localhost:8080/w/index.php/Main_Page</base>
+    <generator>MediaWiki 1.19.7</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">MW-19</namespace>
+      <namespace key="5" case="first-letter">MW-19 talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="104" case="first-letter">Type</namespace>
+      <namespace key="105" case="first-letter">Type talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+      <namespace key="160" case="first-letter">Foo</namespace>
+      <namespace key="161" case="first-letter">Foo talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Property:Has record number field</title>
+    <ns>102</ns>
+    <id>426</id>
+      <sha1>r586wcwca63cjsed7r02w5qwgav0ewt</sha1>
+    <revision>
+      <id>1020</id>
+      <timestamp>2014-01-30T08:47:44Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="61">[[Has type::Number]] [[Category:Record type regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has record page field</title>
+    <ns>102</ns>
+    <id>422</id>
+      <sha1>ioqobky2da020lawbedjfj0oh97llmj</sha1>
+    <revision>
+      <id>1021</id>
+      <timestamp>2014-01-30T08:48:02Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="59">[[Has type::Page]] [[Category:Record type regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has record text field</title>
+    <ns>102</ns>
+    <id>423</id>
+      <sha1>ibdxt3wbzj6g3d5mx3c3khfa8nudyha</sha1>
+    <revision>
+      <id>1022</id>
+      <timestamp>2014-01-30T08:48:11Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="59">[[Has type::Text]] [[Category:Record type regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has record type</title>
+    <ns>102</ns>
+    <id>425</id>
+      <sha1>2r74yeu1070rnprktpe8gnq4ocur15f</sha1>
+    <revision>
+      <id>1023</id>
+      <timestamp>2014-01-30T08:48:23Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="145">[[Has type::Record]] [[Has fields::Has record page field;Has record text field;Has record number field]] [[Category:Record type regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has record type for single test</title>
+    <ns>102</ns>
+    <id>430</id>
+      <sha1>2r74yeu1070rnprktpe8gnq4ocur15f</sha1>
+    <revision>
+      <id>1027</id>
+      <timestamp>2014-01-30T09:36:54Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::Record]] [[Has fields::Has record page field;Has record text field;Has record number field]] [[Category:Record type regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="145">[[Has type::Record]] [[Has fields::Has record page field;Has record text field;Has record number field]] [[Category:Record type regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>RecordDataTypePage</title>
+    <ns>0</ns>
+    <id>428</id>
+      <sha1>anal6w4vsow54hlzfut4s13c93jdtkl</sha1>
+    <revision>
+      <id>1015</id>
+      <timestamp>2014-01-30T08:42:57Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>/* Usage */</comment>
+      <text xml:space="preserve" bytes="491">== Usage ==
+=== In-text annotation ===
+[[Has record type::FooPage;FooText;9001]], [[Has record type::QyuPage;?;9001]]
+
+=== Silent annotation using #set ===
+{{#set:
+ |[Has record type=RecordDataTypePage;BarText;1009
+}}
+{{#set:
+ |[Has record type=BooPage;?;1009
+}}
+
+=== Silent annotation using #subobject ===
+{{#subobject:
+ |[Has record type=QyuPageOnSubobject;?;9999
+}}
+{{#subobject:
+ |[Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
+}}
+
+[[Category:Record type regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>RecordDataTypeRegressionTest/WithSubpage</title>
+    <ns>0</ns>
+    <id>427</id>
+      <sha1>anal6w4vsow54hlzfut4s13c93jdtkl</sha1>
+    <revision>
+      <id>1017</id>
+      <timestamp>2014-01-30T08:43:30Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="491">== Usage ==
+=== In-text annotation ===
+[[Has record type::FooPage;FooText;9001]], [[Has record type::QyuPage;?;9001]]
+
+=== Silent annotation using #set ===
+{{#set:
+ |[Has record type=RecordDataTypePage;BarText;1009
+}}
+{{#set:
+ |[Has record type=BooPage;?;1009
+}}
+
+=== Silent annotation using #subobject ===
+{{#subobject:
+ |[Has record type=QyuPageOnSubobject;?;9999
+}}
+{{#subobject:
+ |[Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
+}}
+
+[[Category:Record type regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>RecordDataTypeRegressionTest</title>
+    <ns>0</ns>
+    <id>421</id>
+      <sha1>2ugdgp4h7m7pl11hzr02ba008voodsx</sha1>
+    <revision>
+      <id>1029</id>
+      <timestamp>2014-01-30T12:20:54Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="1704">== Synopsis ==
+A regression test for the record type. Semantic MediaWiki provides a record type representing other property values that consist of a short list of values of other datatypes. For more information about this data type, see [https://semantic-mediawiki.org/wiki/Help:Type_Record Help:Type Record].
+
+[[Property:Has record type]], [[Property:Has record page field]], [[Property:Has record text field]], [[Property:Has record number field]]
+
+[[RecordDataTypeRegressionTest/WithSubpage]], [[RecordDataTypePage]]
+
+== Usage ==
+=== In-text annotation ===
+[[Has record type for single test::ForSingleTestAsPage;ForSingleTestAsText;3333]] [[Has record type::FooPage;FooText;9001]], [[Has record type::QyuPage;?;9001]]
+
+=== Silent annotation using #set ===
+{{#set:
+ |[Has record type=RecordDataTypePage;BarText;1009
+}}
+{{#set:
+ |[Has record type=BooPage;?;1009
+}}
+
+=== Silent annotation using #subobject ===
+{{#subobject:
+ |[Has record type=QyuPageOnSubobject;?;9999
+}}
+{{#subobject:
+ |[Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
+}}
+
+== Queries ==
+=== Simple query to search for specific value ===
+{{#ask: [[Has record page field::QyuPage]] OR [[Has record page field::QyuPageOnSubobject]]
+ |?#=Internal record page (as subobject)
+ |format=broadtable
+}}
+
+=== Wildcard search with compound listing ===
+{{#ask: [[Has record type::+]]
+ |?Has record type
+ |format=broadtable
+}}
+
+=== Wildcard search with individual field listing ===
+{{#ask: [[Has record page field::+]]
+ |?Has record page field
+ |?Has record text field
+ |?Has record number field
+ |format=broadtable
+}}
+
+[[Category:Regression test]] [[Category:Data type regression test]] [[Category:Record type regression test]]</text>
+    </revision>
+  </page>
+</mediawiki>
