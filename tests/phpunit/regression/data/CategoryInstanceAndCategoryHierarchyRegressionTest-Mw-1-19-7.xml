@@ -1,0 +1,175 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="en-gb">
+  <siteinfo>
+    <sitename>MW-19</sitename>
+    <base>http://localhost:8080/w/index.php/Main_Page</base>
+    <generator>MediaWiki 1.19.7</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">MW-19</namespace>
+      <namespace key="5" case="first-letter">MW-19 talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="104" case="first-letter">Type</namespace>
+      <namespace key="105" case="first-letter">Type talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+      <namespace key="160" case="first-letter">Foo</namespace>
+      <namespace key="161" case="first-letter">Foo talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Category:Regression test</title>
+    <ns>14</ns>
+    <id>420</id>
+      <sha1>4s17yzvoj5kq6dzdmgnw7t1ukpr4tkz</sha1>
+    <revision>
+      <id>1035</id>
+      <timestamp>2014-01-31T07:30:44Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <minor/>
+      <comment>1 revision</comment>
+      <text xml:space="preserve" bytes="24">Regression test category</text>
+    </revision>
+  </page>
+  <page>
+    <title>Category:Regression test category</title>
+    <ns>14</ns>
+    <id>436</id>
+      <sha1>jbu6rw2ii5g9p96hghe03cxv0jpz5cn</sha1>
+    <revision>
+      <id>1052</id>
+      <timestamp>2014-01-31T07:38:13Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Category:Regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="28">[[Category:Regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Category:Regression test sub category</title>
+    <ns>14</ns>
+    <id>431</id>
+      <sha1>03rwhvehzgfof9pek6jnnrneqoy2iwm</sha1>
+    <revision>
+      <id>1051</id>
+      <timestamp>2014-01-31T07:37:41Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="37">[[Category:Regression test category]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Category:Regression test sub sub category</title>
+    <ns>14</ns>
+    <id>432</id>
+      <sha1>4gttxr4kimh7dg13xhqx5fq85922n4g</sha1>
+    <revision>
+      <id>1039</id>
+      <timestamp>2014-01-31T07:30:45Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <minor/>
+      <comment>1 revision</comment>
+      <text xml:space="preserve" bytes="41">[[Category:Regression test sub category]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>CategoryInstanceAndCategoryHierarchyRegressionTest/WithSubpage</title>
+    <ns>0</ns>
+    <id>434</id>
+      <sha1>lyd8hlp26so4fwzfqr2lofdz3n6wihy</sha1>
+    <revision>
+      <id>1047</id>
+      <timestamp>2014-01-31T07:32:12Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <minor/>
+      <comment>Tester moved page [[CategoryAndCategoryHierarchyRegressionTest/WithSubpage]] to [[CategoryInstanceAndCategoryHierarchyRegressionTest/WithSubpage]] without leaving a redirect</comment>
+      <text xml:space="preserve" bytes="79">[[Category:Regression test sub category]] [[Category:Category regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>CategoryInstanceAndCategoryHierarchyRegressionTest/WithSubpage/WithSubSubpage</title>
+    <ns>0</ns>
+    <id>435</id>
+      <sha1>55b8se56m3zu8twdemk2m5ii2o7p34w</sha1>
+    <revision>
+      <id>1048</id>
+      <timestamp>2014-01-31T07:32:24Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <minor/>
+      <comment>Tester moved page [[CategoryAndCategoryHierarchyRegressionTest/WithSubpage/WithSubSubpage]] to [[CategoryInstanceAndCategoryHierarchyRegressionTest/WithSubpage/WithSubSubpage]] without leaving a redirect</comment>
+      <text xml:space="preserve" bytes="83">[[Category:Regression test sub sub category]] [[Category:Category regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>CategoryInstanceAndCategoryHierarchyRegressionTest</title>
+    <ns>0</ns>
+    <id>433</id>
+      <sha1>koevx105y5kuodft74oom7bfisa2w5r</sha1>
+    <revision>
+      <id>1055</id>
+      <timestamp>2014-01-31T07:39:55Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="1002">== Synopsis ==
+A regression test for category, sub-category and category hierarchies. A category hierarchy is specified as a collection of subordinate categories into a superordinate category. [https://semantic-mediawiki.org/wiki/Help:Special_property_Subcategory_of Subcategory of] classifies subordinate categories.
+
+== Usage ==
+[[:Category:Regression test]], [[:Category:Regression test category]], [[:Category:Regression test sub category]], [[:Category:Regression test sub sub category]]
+
+== Queries ==
+=== Search for specific a specific category ===
+{{#ask: [[Category:Regression test category]]
+ |?Category
+ |format=broadtable
+}}
+
+=== Wildcard search on 'Subcategory of' ===
+{{#ask: [[Subcategory of::+]]
+ |?Subcategory of
+ |format=broadtable
+}}
+
+=== Search for specific 'Subcategory of' ===
+{{#ask: [[Subcategory of::Regression test sub category]]
+ |?Subcategory of
+ |format=broadtable
+}}
+
+[[Category:Regression test]] [[Category:Regression test category]] [[Category:Category regression test]]</text>
+    </revision>
+  </page>
+</mediawiki>
