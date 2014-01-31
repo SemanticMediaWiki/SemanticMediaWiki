@@ -61,8 +61,8 @@ class SMWLanguageNb extends SMWLanguage {
 		// always start upper-case
 		'_TYPE' => 'Har type',
 		'_URI'  => 'Ekvivalent URI',
-		'_SUBP' => 'Underkategori av',
-		'_SUBC' => 'Subcategory of', // TODO: translate
+		'_SUBP' => 'Underegenskap av',
+		'_SUBC' => 'Underkategori av',
 		'_UNIT' => 'Visningsenhet',
 		'_IMPO' => 'Importert fra',
 		'_CONV' => 'Svarer til',
