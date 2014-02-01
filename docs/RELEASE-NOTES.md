@@ -8,6 +8,7 @@
 * #144 (Bug 60284) Fixed record data type issue in #set/#subobject
 * #145 Fixed PHP strict standards notice in SMWParamFormat::formatValue
 * #146 Fixed 1.9.0.2 regression in resource paths that caused the SMW badge and JS+CSS to not be loaded on some wikis
+* #151 (Bug 50155) Fixed issue with category hierarchies on SQLite
 
 ### Internal enhancements
 
@@ -19,3 +20,4 @@
 * #142 Changed the language code for Norwegian (Bokmål variant) from "no" to "nb" for L10n for datatypes, special properties, etc.
 * #144 Fixed several issues on SQLite when runing ask queries
 * #144 Added a record data type regression test
+* #151 Added a category hierarchy regression test
