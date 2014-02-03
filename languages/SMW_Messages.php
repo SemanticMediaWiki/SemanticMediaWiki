@@ -12891,11 +12891,13 @@ $messages['ru'] = array(
 	'right-smw-admin' => 'Доступ к администрированию (Semantic MediaWiki)',
 	'group-smwadministrator' => 'Администраторы Semantic MediaWiki',
 	'group-smwadministrator-member' => '{{GENDER:$1|администратор (SMW)}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:Администраторы_SMW',
 	'action-smw-admin' => 'доступ к задачам администратора Semantic MediaWiki',
 	'smw-sp-properties-docu' => 'Эта служебная страница показывает доступные [https://www.semantic-mediawiki.org/wiki/Property свойства], после фильтрации которых отображаются только совпавшие определённые пользователем свойства. Для дифференцированного представления, см. служебные страницы со списком [[Special:UnusedProperties|неиспользованных свойств]] или [[Special:WantedProperties|требуемых свойств]].',
 	'smw-sp-properties-cache-info' => 'Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.',
 	'smw-sp-properties-header-label' => 'Список свойств',
 	'smw-sp-admin-settings-title' => 'Параметры конфигурации',
+	'smw-sp-admin-settings-docu' => 'Отображает список всех настроек <code>по-умолчанию</code> и <code>локализованных настроек</code>, которые имеют отношение к окружению Semantic MediaWiki. За сведениями об отдельных параметров обратитесь к странице помощи по [https://semantic-mediawiki.org/wiki/Help:Configuration конфигурации].',
 	'smw-sp-admin-settings-button' => 'Создать список настроек',
 );
 
