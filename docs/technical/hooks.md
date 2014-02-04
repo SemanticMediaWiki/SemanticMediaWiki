@@ -1,4 +1,4 @@
-This file contains details about event handlers (also known as [Hooks][hooks]) provided by Semantic MediaWiki to enable users to extent and integrate custom specific solutions. Implementing a hook should be made in consideration of the expected performance impact for a front-end (additional DB read/write etc.) and/or back-end (prolonged job backlog etc.) process.
+This document contains details about event handlers (also known as [Hooks][hooks]) provided by Semantic MediaWiki to enable users to extent and integrate custom specific solutions. Implementing a hook should be made in consideration of the expected performance impact for a front-end (additional DB read/write etc.) and/or back-end (prolonged job backlog etc.) process.
 
 ### SMW::Factbox::showContent
 <code>SMW::Factbox::showContent</code>(since SMW 1.9 resides in <code>\SMW\Factbox</code>) enables to replace or amend text elements shown in the Factbox. Information can be added or redacted but only existing data for an entity (page) is provided which means this hook can not be used to alter the SemanticData container itself.
