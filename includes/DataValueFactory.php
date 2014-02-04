@@ -221,8 +221,8 @@ class DataValueFactory {
 	 *
 	 * @since  1.9
 	 */
-	public static  function findTypeID( $label, $useAlias = true ) {
-		return DataTypeRegistry::getInstance()->findTypeId( $label, $useAlias );
+	public static  function findTypeID( $label ) {
+		return DataTypeRegistry::getInstance()->findTypeId( $label );
 	}
 
 	/**

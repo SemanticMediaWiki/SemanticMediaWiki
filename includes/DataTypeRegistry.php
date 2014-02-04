@@ -27,36 +27,44 @@ class DataTypeRegistry {
 	/**
 	 * Array of type labels indexed by type ids. Used for datatype resolution.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	private $typeLabels;
+	private $typeLabels = array();
 
 	/**
 	 * Array of ids indexed by type aliases. Used for datatype resolution.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	private $typeAliases;
+	private $typeAliases = array();
 
 	/**
 	 * Array of class names for creating new SMWDataValue, indexed by type
 	 * id.
 	 *
-	 * @var array of string
+	 * @var string[]
 	 */
 	private $typeClasses;
 
 	/**
 	 * Array of data item classes, indexed by type id.
 	 *
-	 * @var array of integer
+	 * @var integer[]
 	 */
 	private $typeDataItemIds;
 
 	/**
+	 * Lookup map that allows finding a datatype id given a label or alias.
+	 * All labels and aliases (ie array keys) are stored lower case.
+	 *
+	 * @var string[]
+	 */
+	private $typeByLabelOrAliasLookup = array();
+
+	/**
 	 * Array of default types to use for making datavalues for dataitems.
 	 *
-	 * @var array of string
+	 * @var string[]
 	 */
 	private $defaultDataItemTypeIds = array(
 		DataItem::TYPE_BLOB => '_txt', // Text type
@@ -69,21 +77,11 @@ class DataTypeRegistry {
 		DataItem::TYPE_GEO => '_geo', // Geographical coordinates
 		DataItem::TYPE_CONCEPT => '__con', // Special concept page type
 		DataItem::TYPE_PROPERTY => '__pro', // Property type
+
 		// If either of the following two occurs, we want to see a PHP error:
 		//DataItem::TYPE_NOTYPE => '',
 		//DataItem::TYPE_ERROR => '',
 	);
-
-	/**
-	 * @since 1.9.0.2
-	 *
-	 * @param array $typeLabels
-	 * @param array $typeAliases
-	 */
-	public function __construct( array $typeLabels, array $typeAliases ) {
-		$this->typeLabels = $typeLabels;
-		$this->typeAliases = $typeAliases;
-	}
 
 	/**
 	 * Returns a DataTypeRegistry instance
@@ -117,6 +115,22 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since 1.9.0.2
+	 *
+	 * @param array $typeLabels
+	 * @param array $typeAliases
+	 */
+	public function __construct( array $typeLabels, array $typeAliases ) {
+		foreach ( $typeLabels as $typeId => $typeLabel ) {
+			$this->registerTypeLabel( $typeId, $typeLabel );
+		}
+
+		foreach ( $typeAliases as $typeAlias => $typeId ) {
+			$this->registerDataTypeAlias( $typeId, $typeAlias );
+		}
+	}
+
+	/**
 	 * Get the preferred data item ID for a given type. The ID defines the
 	 * appropriate data item class for processing data of this type. See
 	 * DataItem for possible values.
@@ -129,7 +143,6 @@ class DataTypeRegistry {
 	 * @return integer data item ID
 	 */
 	public function getDataItemId( $typeId ) {
-
 		if ( isset( $this->typeDataItemIds[ $typeId ] ) ) {
 			return $this->typeDataItemIds[ $typeId ];
 		}
@@ -147,14 +160,21 @@ class DataTypeRegistry {
 	 * @param $label mixed string label or false for types that cannot be accessed by users
 	 */
 	public function registerDataType( $id, $className, $dataItemId, $label = false ) {
-
 		$this->typeClasses[$id] = $className;
 		$this->typeDataItemIds[$id] = $dataItemId;
 
-		if ( $label != false ) {
-			$this->typeLabels[$id] = $label;
+		if ( $label !== false ) {
+			$this->registerTypeLabel( $id, $label );
 		}
+	}
 
+	private function registerTypeLabel( $typeId, $typeLabel ) {
+		$this->typeLabels[$typeId] = $typeLabel;
+		$this->addTextToIdLookupMap( $typeId, $typeLabel );
+	}
+
+	private function addTextToIdLookupMap( $dataTypeId, $text ) {
+		$this->typeByLabelOrAliasLookup[strtolower($text)] = $dataTypeId;
 	}
 
 	/**
@@ -163,33 +183,30 @@ class DataTypeRegistry {
 	 * registerDataType(). This function should be called from within the hook
 	 * 'smwInitDatatypes'.
 	 *
-	 * @param string $id
-	 * @param string $label
+	 * @param string $typeId
+	 * @param string $typeAlias
 	 */
-	public function registerDataTypeAlias( $id, $label ) {
-		$this->typeAliases[ $label ] = $id;
+	public function registerDataTypeAlias( $typeId, $typeAlias ) {
+		$this->typeAliases[$typeAlias] = $typeId;
+		$this->addTextToIdLookupMap( $typeId, $typeAlias );
 	}
 
 	/**
 	 * Look up the ID that identifies the datatype of the given label
 	 * internally. This id is used for all internal operations. If the
-	 * label does not bleong to a known type, the empty string is returned.
+	 * label does not belong to a known type, the empty string is returned.
 	 *
-	 * This method may or may not take aliases into account, depeding on
-	 * the parameter $useAlias.
+	 * The lookup is case insensitive.
 	 *
 	 * @param string $label
-	 * @param boolean $useAlias
+	 *
 	 * @return string
 	 */
-	public function findTypeId( $label, $useAlias = true ) {
+	public function findTypeId( $label ) {
+		$label = strtolower( $label );
 
-		$id = array_search( $label, $this->typeLabels );
-
-		if ( $id !== false ) {
-			return $id;
-		} elseif ( ( $useAlias ) && isset( $this->typeAliases[ $label ] ) ) {
-			return $this->typeAliases[ $label ];
+		if ( isset( $this->typeByLabelOrAliasLookup[$label] ) ) {
+			return $this->typeByLabelOrAliasLookup[$label];
 		}
 
 		return '';
@@ -199,13 +216,14 @@ class DataTypeRegistry {
 	 * Get the translated user label for a given internal ID. If the ID does
 	 * not have a label associated with it in the current language, the
 	 * empty string is returned. This is the case both for internal type ids
-	 * and for invalid (unkown) type ids, so this method cannot be used to
+	 * and for invalid (unknown) type ids, so this method cannot be used to
 	 * distinguish the two.
 	 *
 	 * @param string $id
+	 *
+	 * @return string
 	 */
 	public function findTypeLabel( $id ) {
-
 		if ( isset( $this->typeLabels[ $id ] ) ) {
 			return $this->typeLabels[ $id ];
 		}
@@ -233,6 +251,8 @@ class DataTypeRegistry {
 	 *
 	 * @since 1.9
 	 *
+	 * @param string $diType
+	 *
 	 * @return integer
 	 */
 	public function getDefaultDataItemTypeId( $diType ) {
@@ -244,12 +264,11 @@ class DataTypeRegistry {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $id string type ID for which this datatype is registered
+	 * @param string $typeId
 	 *
-	 * @return string/null
+	 * @return string|null
 	 */
 	public function getDataTypeClassById( $typeId ) {
-
 		if ( $this->hasDataTypeClassById( $typeId ) ) {
 			return $this->typeClasses[ $typeId ];
 		}
@@ -262,7 +281,7 @@ class DataTypeRegistry {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $id string type ID for which this datatype is registered
+	 * @param string $typeId
 	 *
 	 * @return boolean
 	 */
@@ -276,10 +295,9 @@ class DataTypeRegistry {
 	 * factory.
 	 */
 	protected function initDatatypes() {
-
 		// Setup built-in datatypes.
 		// NOTE: all ids must start with underscores, where two underscores indicate
-		// truly internal (non user-acessible types). All others should also get a
+		// truly internal (non user-acceptable types). All others should also get a
 		// translation in the language files, or they won't be available for users.
 		$this->typeClasses = array(
 			'_txt'  => 'SMWStringValue', // Text type
@@ -336,7 +354,7 @@ class DataTypeRegistry {
 			'_geo'  => DataItem::TYPE_GEO, // Geographical coordinates
 			'_gpo'  => DataItem::TYPE_BLOB, // Geographical polygon
 			'_qty'  => DataItem::TYPE_NUMBER, // Type for numbers with units of measurement
-			// Special types are not avaialble directly for users (and have no local language name):
+			// Special types are not available directly for users (and have no local language name):
 			'__typ' => DataItem::TYPE_URI, // Special type page type
 			'__pls' => DataItem::TYPE_BLOB, // Special type list for decalring _rec properties
 			'__con' => DataItem::TYPE_CONCEPT, // Special concept page type
@@ -358,7 +376,6 @@ class DataTypeRegistry {
 
 		// Since 1.9
 		wfRunHooks( 'SMW::DataType::initTypes' );
-
 	}
 
 }
