@@ -47,7 +47,7 @@ class UpdateDispatcherJob extends JobBase {
 	 *
 	 * @since 1.9
 	 *
-	 * @return PropertySubjectsUpdateDispatcherJob
+	 * @return UpdateDispatcherJob
 	 */
 	public function disable() {
 		$this->enabled = false;
@@ -71,9 +71,9 @@ class UpdateDispatcherJob extends JobBase {
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->dispatchUpdateForProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->push();
-		} else {
-			$this->dispatchUpdateForSubject( DIWikiPage::newFromTitle( $this->getTitle() ) )->push();
 		}
+
+		$this->dispatchUpdateForSubject( DIWikiPage::newFromTitle( $this->getTitle() ) )->push();
 
 		Profiler::Out( __METHOD__, true );
 		return true;
@@ -92,6 +92,18 @@ class UpdateDispatcherJob extends JobBase {
 	}
 
 	/**
+	 * @see Job::insert
+	 *
+	 * @since 1.9
+	 * @codeCoverageIgnore
+	 */
+	public function insert() {
+		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+			parent::insert();
+		}
+	}
+
+	/**
 	 * @since 1.9.0.1
 	 *
 	 * @param DIWikiPage $subject
@@ -102,10 +114,7 @@ class UpdateDispatcherJob extends JobBase {
 		$this->addUpdateJobsForProperties( $this->store->getProperties( $subject ) );
 		$this->addUpdateJobsForProperties( $this->store->getInProperties( $subject ) );
 
-		if ( $this->hasParameter( 'semanticData' ) ) {
-			$semanticData = SerializerFactory::deserialize( $this->getParameter( 'semanticData' ) );
-			$this->addUpdateJobsForProperties( $semanticData->getProperties() );
-		}
+		$this->addUpdateJobsFromSerializedData();
 
 		Profiler::Out( __METHOD__, true );
 		return $this;
@@ -130,6 +139,7 @@ class UpdateDispatcherJob extends JobBase {
 		wfRunHooks( 'SMW::Dispatcher::updateJobs', array( &$this->jobs, $property ) );
 
 		$this->addUpdateJobsForPropertyWithTypeError();
+		$this->addUpdateJobsFromSerializedData();
 
 		Profiler::Out( __METHOD__, true );
 		return $this;
@@ -139,7 +149,7 @@ class UpdateDispatcherJob extends JobBase {
 		foreach ( $properties as $property ) {
 
 			if ( $property->isUserDefined() ) {
-				$this->addUpdateJobs( $this->store->getAllPropertySubjects( $property ) );
+				$this->addUniqueUpdateJobs( $this->store->getAllPropertySubjects( $property ) );
 			}
 
 		}
@@ -151,59 +161,28 @@ class UpdateDispatcherJob extends JobBase {
 			DIWikiPage::newFromTitle( $this->getTitle() )
 		);
 
-		$this->addUpdateJobs( $subjects );
+		$this->addUniqueUpdateJobs( $subjects );
 	}
 
-	/**
-	 * Helper method to iterate over an array of DIWikiPage and return and
-	 * array of UpdateJobs
-	 *
-	 * Check whether a job with the same getPrefixedDBkey string (prefixed title,
-	 * with underscores and any interwiki and namespace prefixes) is already
-	 * registered and if so don't insert a new job. This is particular important
-	 * for pages that include a large amount of subobjects where the same Title
-	 * and ParserOutput object is used (subobjects are included using the same
-	 * WikiPage which means the resulting ParserOutput object is the same)
-	 *
-	 * @since 1.9
-	 *
-	 * @param DIWikiPage[] $subjects
-	 */
-	protected function addUpdateJobs( array $subjects = array() ) {
+	protected function addUpdateJobsFromSerializedData() {
+		if ( $this->hasParameter( 'semanticData' ) ) {
+			$this->addUpdateJobsForProperties(
+				SerializerFactory::deserialize( $this->getParameter( 'semanticData' ) )->getProperties()
+			);
+		}
+	}
+
+	protected function addUniqueUpdateJobs( array $subjects = array() ) {
 
 		foreach ( $subjects as $subject ) {
 
-			$duplicate = false;
-			$title     = $subject->getTitle();
+			$title = $subject->getTitle();
 
 			if ( $title instanceof Title ) {
-
-				// Avoid duplicates by comparing the title DBkey
-				foreach ( $this->jobs as $job ) {
-					if ( $job->getTitle()->getPrefixedDBkey() === $title->getPrefixedDBkey() ){
-						$duplicate = true;
-						break;
-					}
-				}
-
-				if ( !$duplicate ) {
-					$this->jobs[] = new UpdateJob( $title );
-				}
+				$this->jobs[$title->getPrefixedDBkey()] = new UpdateJob( $title );
 			}
 		}
 
-	}
-
-	/**
-	 * @see Job::insert
-	 *
-	 * @since 1.9
-	 * @codeCoverageIgnore
-	 */
-	public function insert() {
-		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
-			parent::insert();
-		}
 	}
 
 }
