@@ -93,7 +93,7 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 		}
 
 		$this->assertTitleIsKnownAfterImport( $this->acquirePoolOfTitles() );
-		$this->runUpdateJobs( $this->acquirePoolOfTitles() );
+		$this->scheduleUpdateJobs( $this->acquirePoolOfTitles() );
 		$this->assertDataImport();
 
 	}
@@ -112,19 +112,34 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 
 	private function assertTitleExists( $isExpected, $titles ) {
 		foreach ( $titles as $title ) {
+			$title = $this->makeTitle( $title );
+
 			$this->assertEquals(
 				$isExpected,
-				Title::newFromText( $title )->exists(),
+				$title->exists(),
 				__METHOD__ . "Assert title {$title}"
 			);
 		}
 	}
 
-	private function runUpdateJobs( $titles ) {
+	private function scheduleUpdateJobs( $titles ) {
 		foreach ( $titles as $title ) {
-			$job = new UpdateJob( Title::newFromText( $title ) );
+			$job = new UpdateJob( $this->makeTitle( $title ) );
 			$job->run();
 		}
+	}
+
+	private function makeTitle( $title ) {
+
+		if ( $title instanceof Title ) {
+			return $title;
+		}
+
+		if ( is_array( $title ) ) {
+			return Title::newFromText( $title[0], $title[1] );
+		}
+
+		return Title::newFromText( $title );
 	}
 
 }

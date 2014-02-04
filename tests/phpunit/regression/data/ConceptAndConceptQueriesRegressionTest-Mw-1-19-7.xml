@@ -1,0 +1,407 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="en-gb">
+  <siteinfo>
+    <sitename>MW-19</sitename>
+    <base>http://localhost:8080/w/index.php/Main_Page</base>
+    <generator>MediaWiki 1.19.7</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">MW-19</namespace>
+      <namespace key="5" case="first-letter">MW-19 talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="104" case="first-letter">Type</namespace>
+      <namespace key="105" case="first-letter">Type talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+      <namespace key="160" case="first-letter">Foo</namespace>
+      <namespace key="161" case="first-letter">Foo talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Property:Has concept</title>
+    <ns>102</ns>
+    <id>462</id>
+      <sha1>mnq60bqym7xlcjmx8g971k2m05rnlir</sha1>
+    <revision>
+      <id>1210</id>
+      <timestamp>2014-02-04T13:41:32Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::Page]] [[Category:Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="55">[[Has type::Page]] [[Category:Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has conceptA</title>
+    <ns>102</ns>
+    <id>447</id>
+      <sha1>mnq60bqym7xlcjmx8g971k2m05rnlir</sha1>
+    <revision>
+      <id>1201</id>
+      <timestamp>2014-02-04T13:37:42Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <minor/>
+      <comment>Tester moved page [[Property:Has concept]] to [[Property:Has conceptA]] without leaving a redirect</comment>
+      <text xml:space="preserve" bytes="55">[[Has type::Page]] [[Category:Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has conceptB</title>
+    <ns>102</ns>
+    <id>458</id>
+      <sha1>mnq60bqym7xlcjmx8g971k2m05rnlir</sha1>
+    <revision>
+      <id>1202</id>
+      <timestamp>2014-02-04T13:38:01Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::Page]] [[Category:Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="55">[[Has type::Page]] [[Category:Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptRegressionTestWithProperty-A</title>
+    <ns>0</ns>
+    <id>449</id>
+      <sha1>jodsi97m3evts8tefntfg2f2p40dp4e</sha1>
+    <revision>
+      <id>1200</id>
+      <timestamp>2014-02-04T13:37:31Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="77">[[Has conceptA::ConceptRegressionTest]] [[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptRegressionTestWithProperty-B</title>
+    <ns>0</ns>
+    <id>450</id>
+      <sha1>qjprrfc17t02p210c5shdcfl6n6q457</sha1>
+    <revision>
+      <id>1207</id>
+      <timestamp>2014-02-04T13:40:24Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="77">[[Has conceptB::ConceptRegressionTest]] [[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptRegressionTestWithCategory-A</title>
+    <ns>0</ns>
+    <id>453</id>
+      <sha1>3uezlr1ppclu5hc5kmni6xvanvvsmtn</sha1>
+    <revision>
+      <id>1191</id>
+      <timestamp>2014-02-04T13:30:08Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="72">[[Category:ConceptRegressionTestA]] [[Category:Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptRegressionTestWithCategory-B</title>
+    <ns>0</ns>
+    <id>454</id>
+      <sha1>ex7f9mp21tiyfumt3xrr5dfegvof45f</sha1>
+    <revision>
+      <id>1188</id>
+      <timestamp>2014-02-04T13:29:13Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Category:ConceptRegressionTestB]] [[Category:Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="72">[[Category:ConceptRegressionTestB]] [[Category:Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptRegressionTestWithCategory-AA</title>
+    <ns>0</ns>
+    <id>455</id>
+      <sha1>3uezlr1ppclu5hc5kmni6xvanvvsmtn</sha1>
+    <revision>
+      <id>1192</id>
+      <timestamp>2014-02-04T13:30:22Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Category:ConceptRegressionTestA]] [[Category:Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="72">[[Category:ConceptRegressionTestA]] [[Category:Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptRegressionTestWithProperty-BB</title>
+    <ns>0</ns>
+    <id>460</id>
+      <sha1>qjprrfc17t02p210c5shdcfl6n6q457</sha1>
+    <revision>
+      <id>1208</id>
+      <timestamp>2014-02-04T13:40:39Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has conceptB::ConceptRegressionTest]] [[Category: Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="77">[[Has conceptB::ConceptRegressionTest]] [[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptRegressionTestWithProperty-C</title>
+    <ns>0</ns>
+    <id>461</id>
+      <sha1>howsfmanqw18o5w15r6vjtclys4k1q3</sha1>
+    <revision>
+      <id>1209</id>
+      <timestamp>2014-02-04T13:41:14Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has concept::ConceptRegressionTest-C]] [[Category: Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="78">[[Has concept::ConceptRegressionTest-C]] [[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptRegressionTestWithProperty-D</title>
+    <ns>0</ns>
+    <id>465</id>
+      <sha1>tf8qukxes143jimclh0xyzg8d3t6g8n</sha1>
+    <revision>
+      <id>1216</id>
+      <timestamp>2014-02-04T13:51:20Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has concept::ConceptRegressionTest-CombinedPropertyAndConcept]] [[Category: Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="103">[[Has concept::ConceptRegressionTest-CombinedPropertyAndConcept]] [[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Concept:RegressionTestWithPropertyA</title>
+    <ns>108</ns>
+    <id>448</id>
+      <sha1>fwzcamraekrn2dfcfllj99ukf3bkjn5</sha1>
+    <revision>
+      <id>1204</id>
+      <timestamp>2014-02-04T13:38:52Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="135">{{#concept: [[Has conceptA::ConceptRegressionTest]]
+ |Regression test with property selection
+}}
+
+[[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Concept:RegressionTestWithPropertyB</title>
+    <ns>108</ns>
+    <id>459</id>
+      <sha1>i98ojmmdnjzw02tf4galgo8vo97gsim</sha1>
+    <revision>
+      <id>1205</id>
+      <timestamp>2014-02-04T13:39:11Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;{{#concept: [[Has conceptB::ConceptRegressionTest]]  |Regression test with property selection }}  [[Category: Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="135">{{#concept: [[Has conceptB::ConceptRegressionTest]]
+ |Regression test with property selection
+}}
+
+[[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Concept:RegressionTestWithCategoryA</title>
+    <ns>108</ns>
+    <id>452</id>
+      <sha1>ihurkwcwlt69pock4lx2i2dcor64jy3</sha1>
+    <revision>
+      <id>1190</id>
+      <timestamp>2014-02-04T13:30:00Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="131">{{#concept: [[Category:ConceptRegressionTestA]]
+ |Regression test with property selection
+}}
+
+[[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Concept:RegressionTestWithCategoryB</title>
+    <ns>108</ns>
+    <id>456</id>
+      <sha1>04fh3xol533r2zqbni6jc3jd3o3bebj</sha1>
+    <revision>
+      <id>1194</id>
+      <timestamp>2014-02-04T13:32:25Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;{{#concept: [[Category:ConceptRegressionTestB]]  |Regression test with property selection }}  [[Category: Concept regression test]]&quot;</comment>
+      <text xml:space="preserve" bytes="131">{{#concept: [[Category:ConceptRegressionTestB]]
+ |Regression test with property selection
+}}
+
+[[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Concept:RegressionTestWithCategoryDisjunction</title>
+    <ns>108</ns>
+    <id>457</id>
+      <sha1>6dw8sg3bwgyuqajp24r3wjn63t0o37z</sha1>
+    <revision>
+      <id>1197</id>
+      <timestamp>2014-02-04T13:34:22Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="170">{{#concept: [[Category:ConceptRegressionTestA]] OR [[Category:ConceptRegressionTestB]]
+ |Regression test with property selection
+}}
+
+[[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Concept:RegressionTestWithPropertyDisjunction</title>
+    <ns>108</ns>
+    <id>463</id>
+      <sha1>i74nxrs8bjzwx5mkvamvd7iuk63pswy</sha1>
+    <revision>
+      <id>1212</id>
+      <timestamp>2014-02-04T13:44:09Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;{{#concept: [[Has conceptA::ConceptRegressionTest]] OR [[Has conceptB::ConceptRegressionTest]] OR [[Has concept::ConceptRegressionTest-C]]  |Regression test with property sele...&quot;</comment>
+      <text xml:space="preserve" bytes="222">{{#concept: [[Has conceptA::ConceptRegressionTest]] OR [[Has conceptB::ConceptRegressionTest]] OR [[Has concept::ConceptRegressionTest-C]]
+ |Regression test with property selection
+}}
+
+[[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Concept:RegressionTestWithConceptDisjunction</title>
+    <ns>108</ns>
+    <id>464</id>
+      <sha1>jrevk7nii9z0gz1nozybtj8mwkkth4z</sha1>
+    <revision>
+      <id>1215</id>
+      <timestamp>2014-02-04T13:49:08Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;{{#concept: [[Concept:RegressionTestWithCategoryDisjunction]] OR [[Concept:RegressionTestWithPropertyDisjunction]]  |Regression test with property selection }}  [[Category: Co...&quot;</comment>
+      <text xml:space="preserve" bytes="198">{{#concept: [[Concept:RegressionTestWithCategoryDisjunction]] OR [[Concept:RegressionTestWithPropertyDisjunction]]
+ |Regression test with property selection
+}}
+
+[[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Concept:RegressionTestWithConceptAndPropertyDisjunction</title>
+    <ns>108</ns>
+    <id>466</id>
+      <sha1>qu001jtm1xodorumptuk351fcy8xz2w</sha1>
+    <revision>
+      <id>1217</id>
+      <timestamp>2014-02-04T13:52:31Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;{{#concept: [[Concept:RegressionTestWithConceptDisjunction]] OR [[Has concept::ConceptRegressionTest-CombinedPropertyAndConcept]]  |Regression test with property selection }} ...&quot;</comment>
+      <text xml:space="preserve" bytes="213">{{#concept: [[Concept:RegressionTestWithConceptDisjunction]] OR [[Has concept::ConceptRegressionTest-CombinedPropertyAndConcept]]
+ |Regression test with property selection
+}}
+
+[[Category: Concept regression test]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>ConceptAndConceptQueriesRegressionTest</title>
+    <ns>0</ns>
+    <id>446</id>
+      <sha1>4yl62758lrc01io1aztiar3nxrmubvm</sha1>
+    <revision>
+      <id>1234</id>
+      <timestamp>2014-02-04T19:56:42Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="1214">== Synopsis ==
+A regression test for concepts. A [https://semantic-mediawiki.org/wiki/Help:Concepts concept] is special form of a stored query that contains pages of that query and can be viewed as &quot;dynamic category&quot; (i.e. as collections of pages that are not created manually).
+
+== Usage ==
+* [[Concept:RegressionTestWithPropertyA]], [[Concept:RegressionTestWithPropertyB]], [[Property:Has concept]], [[Property:Has conceptA]], [[Property:Has conceptB]]
+* [[Concept:RegressionTestWithCategoryA]], [[Concept:RegressionTestWithCategoryB]]
+* [[Concept:RegressionTestWithCategoryDisjunction]], [[Concept:RegressionTestWithPropertyDisjunction]], [[Concept:RegressionTestWithConceptDisjunction]], [[Concept:RegressionTestWithConceptAndPropertyDisjunction]]
+
+== Queries ==
+=== Simple concept query ===
+{{#ask: [[Concept:RegressionTestWithPropertyA]]
+ |?#
+ |format=broadtable
+}}
+
+{{#ask: [[Concept:RegressionTestWithPropertyB]]
+ |?#
+ |format=broadtable
+}}
+=== Simple concept query with a disjunction === 
+{{#ask: [[Concept:RegressionTestWithConceptAndPropertyDisjunction]] OR [[Concept:RegressionTestWithCategoryDisjunction]] 
+ |?#
+ |format=broadtable
+}}
+
+[[Category:Regression test]] [[Category:Concept regression test]]</text>
+    </revision>
+  </page>
+</mediawiki>
