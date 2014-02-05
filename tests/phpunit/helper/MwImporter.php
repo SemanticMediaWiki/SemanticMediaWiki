@@ -55,7 +55,9 @@ class MwImporter {
 		$this->unregisterUploadsource();
 		$start = microtime( true );
 
-		$source = ImportStreamSource::newFromFile( $this->assertThatFileIsReadable( $this->file ) );
+		$source = ImportStreamSource::newFromFile(
+			$this->assertThatFileIsReadableOrThrowException( $this->file )
+		);
 
 		if ( !$source->isGood() ) {
 			throw new RuntimeException( 'Import returned with error(s) ' . serialize( $source->errors ) );
@@ -109,7 +111,7 @@ class MwImporter {
 	 * @return integer
 	 */
 	public function getImportTimeAsSeconds() {
-		return round( $this->importTime , 7 );
+		return round( $this->importTime, 7 );
 	}
 
 	protected function acquireRequestContext() {
@@ -121,7 +123,7 @@ class MwImporter {
 		return $this->requestContext;
 	}
 
-	private function assertThatFileIsReadable( $file ) {
+	private function assertThatFileIsReadableOrThrowException( $file ) {
 
 		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $file );
 

@@ -56,6 +56,23 @@ class UpdateJob extends JobBase {
 	}
 
 	/**
+	 * @see Job::insert
+	 *
+	 * This actually files the job. This is prevented if the configuration of SMW
+	 * disables jobs.
+	 *
+	 * @note Any method that inserts jobs with Job::batchInsert or otherwise must
+	 * implement this check individually. The below is not called in these cases.
+	 *
+	 * @codeCoverageIgnore
+	 */
+	public function insert() {
+		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+			parent::insert();
+		}
+	}
+
+	/**
 	 * @return boolean
 	 */
 	private function runUpdate() {
@@ -118,23 +135,6 @@ class UpdateJob extends JobBase {
 
 		Profiler::Out( __METHOD__ . '-update' );
 		return true;
-	}
-
-	/**
-	 * @see Job::insert
-	 *
-	 * This actually files the job. This is prevented if the configuration of SMW
-	 * disables jobs.
-	 *
-	 * @note Any method that inserts jobs with Job::batchInsert or otherwise must
-	 * implement this check individually. The below is not called in these cases.
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public function insert() {
-		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
-			parent::insert();
-		}
 	}
 
 }

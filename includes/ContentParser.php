@@ -121,7 +121,7 @@ class ContentParser {
 		$this->parserOutput = $this->parser->parse(
 			$text,
 			$this->getTitle(),
-			$this->newParserOptions()
+			$this->makeParserOptions()
 		);
 
 		Profiler::Out( __METHOD__ );
@@ -168,7 +168,7 @@ class ContentParser {
 			$this->parserOutput = $this->parser->parse(
 				$this->getRevision()->getText(),
 				$this->getTitle(),
-				$this->newParserOptions(),
+				$this->makeParserOptions(),
 				true,
 				true,
 				$this->getRevision()->getID()
@@ -186,7 +186,7 @@ class ContentParser {
 		return class_exists( 'ContentHandler' );
 	}
 
-	protected function newParserOptions() {
+	protected function makeParserOptions() {
 
 		$user = null;
 
@@ -202,7 +202,7 @@ class ContentParser {
 		if ( $this->revision instanceOf Revision ) {
 			return $this->revision;
 		}
-		
+
 		// Revision::READ_NORMAL is not specified in MW 1.19
 		if ( defined( 'Revision::READ_NORMAL' ) ) {
 			$this->revision = Revision::newFromTitle( $this->getTitle(), false, Revision::READ_NORMAL );
