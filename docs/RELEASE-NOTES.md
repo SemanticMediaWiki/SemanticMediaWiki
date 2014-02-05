@@ -18,7 +18,7 @@
 * #119 Added a LinksUpdate integration test
 * #131 The Query Duration special propertyis now internationalized
 * #132 Added smoke test for the special language files
-* #142 Changed the language code for Norwegian (Bokmål variant) from "no" to "nb" for L10n for datatypes, special properties, etc.
+* #142 Changed the Norwegian language code (Bokmål variant) from "no" to "nb" for L10n for datatypes, special properties, etc.
 * #144 Add regression test for the record data type
 * #144 Added a record data type regression test
 * #151 Added a category hierarchy regression test
