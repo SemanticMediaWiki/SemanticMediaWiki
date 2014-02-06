@@ -78,6 +78,8 @@ class SMWLanguageEn extends SMWLanguage {
 		'_ASKSI'=> 'Query size',
 		'_ASKDE'=> 'Query depth',
 		'_ASKDU'=> 'Query duration',
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

@@ -92,6 +92,8 @@ abstract class SMWLanguage {
 		'Has query size'    => '_ASKSI',
 		'Has query depth'   => '_ASKDE',
 		'Has query duration' => '_ASKDU',
+		'Has media type'     => '_MEDIA',
+		'Has mime type'      => '_MIME',
 	);
 
 	public function __construct() {

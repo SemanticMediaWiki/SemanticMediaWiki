@@ -79,6 +79,8 @@ class SMWLanguagePt extends SMWLanguage {
 		'_ASKSI'=> 'Tamanho da consulta',
 		'_ASKDE'=> 'Profundidade da consulta',
 		'_ASKDU'=> 'Query duration', // TODO: translate
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

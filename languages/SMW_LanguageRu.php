@@ -72,7 +72,9 @@ class SMWLanguageRu extends SMWLanguage {
 		'_ASKFO'=> 'Формат запроса',
 		'_ASKSI'=> 'Размер запроса',
 		'_ASKDE'=> 'Глубина запроса',
-		'_ASKDU'=> 'Длительность запроса'
+		'_ASKDU'=> 'Длительность запроса',
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

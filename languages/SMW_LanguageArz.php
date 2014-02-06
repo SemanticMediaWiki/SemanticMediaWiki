@@ -71,6 +71,8 @@ class SMWLanguageArz extends SMWLanguage {
 		'_ASKSI'=> 'Query size', // TODO: translate
 		'_ASKDE'=> 'Query depth', // TODO: translate
 		'_ASKDU'=> 'Query duration', // TODO: translate
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

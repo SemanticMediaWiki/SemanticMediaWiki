@@ -50,4 +50,29 @@ interface PageInfoProvider {
 	 */
 	public function getLastEditor();
 
+	/**
+	 * @since 1.9.0.4
+	 *
+	 * @return boolean
+	 */
+	public function isFilePage();
+
+	/**
+	 * @see File::getMediaType
+	 *
+	 * @since 1.9.0.4
+	 *
+	 * @return string|null
+	 */
+	public function getMediaType();
+
+	/**
+	 * @see File::getMimeType
+	 *
+	 * @since 1.9.0.4
+	 *
+	 * @return string|null
+	 */
+	public function getMimeType();
+
 }

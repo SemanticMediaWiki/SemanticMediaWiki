@@ -81,6 +81,8 @@ class SMWLanguageDe extends SMWLanguage {
 		'_ASKSI'=> 'Abfragegröße',
 		'_ASKDE'=> 'Abfragetiefe',
 		'_ASKDU'=> 'Abfragedauer',
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

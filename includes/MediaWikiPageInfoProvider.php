@@ -70,7 +70,7 @@ class MediaWikiPageInfoProvider implements PageInfoProvider {
 	 * @return boolean
 	 */
 	public function isNewPage() {
-		return $this->revision->getParentId() !== '';
+		return $this->revision ? $this->revision->getParentId() !== '' : null;
 	}
 
 	/**
@@ -79,7 +79,34 @@ class MediaWikiPageInfoProvider implements PageInfoProvider {
 	 * @return Title
 	 */
 	public function getLastEditor() {
-		return $this->user->getUserPage();
+		return $this->user ? $this->user->getUserPage() : null;
+	}
+
+	/**
+	 * @since 1.9.0.4
+	 *
+	 * @return boolean
+	 */
+	public function isFilePage() {
+		return $this->wikiPage instanceof \WikiFilePage;
+	}
+
+	/**
+	 * @since 1.9.0.4
+	 *
+	 * @return string|null
+	 */
+	public function getMediaType() {
+		return $this->isFilePage() ? $this->wikiPage->getFile()->getMediaType() : null;
+	}
+
+	/**
+	 * @since 1.9.0.4
+	 *
+	 * @return string|null
+	 */
+	public function getMimeType() {
+		return $this->isFilePage() ? $this->wikiPage->getFile()->getMimeType() : null;
 	}
 
 }
