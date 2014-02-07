@@ -14,6 +14,7 @@
 * #148 Fixed regresion that made data type labels case sensitive
 * #151 (Bug 50155) Fixed issue with category hierarchies on SQLite
 * #164 (Bug 19487) Fixed update of predefined properties when uploading a file
+* #170 Fixed special propery "Is an new page" (``_NEWP``) 1.9.0 regression. Note: Run SMW_refreshData.php to amend falsely set values.
 
 ### Internal enhancements
 
