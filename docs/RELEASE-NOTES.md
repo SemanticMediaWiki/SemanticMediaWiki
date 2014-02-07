@@ -1,7 +1,8 @@
-# Semantic MediaWiki 1.9.0.3
+# Semantic MediaWiki 1.9.1
 
 ### New features
-* #162 Possibility to create `_MEDIA` and `_MIME` property annotation when uploading a file (this feature can only be used with appropriate  [$smwgPageSpecialProperties](https://www.semantic-mediawiki.org/wiki/Help:$smwgPageSpecialProperties) settings and the run of the update.php script)
+
+* #162 Added possibility to create `_MEDIA` [(special property "Media type")](https://semantic-mediawiki.org/wiki/Help:Special_property_Media_type) and `_MIME` [(special property "MIME type")](https://semantic-mediawiki.org/wiki/Help:Special_property_MIME_type) property annotation when uploading a file (This feature can only be used with appropriate  [`$smwgPageSpecialProperties`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPageSpecialProperties) settings and the run of the "update.php" script.)
 
 ### Bug fixes
 
@@ -14,15 +15,15 @@
 * #148 Fixed regresion that made data type labels case sensitive
 * #151 (Bug 50155) Fixed issue with category hierarchies on SQLite
 * #164 (Bug 19487) Fixed update of predefined properties when uploading a file
-* #170 Fixed special propery "Is an new page" (``_NEWP``) 1.9.0 regression. Note: Run SMW_refreshData.php to amend falsely set values.
+* #170 Fixed 1.9.0 regression of [special propery "Is an new page"](https://semantic-mediawiki.org/wiki/Help:Special_property_Is_a_new_page) (`_NEWP`) (Run ["SMW_refreshData.php"](https://semantic-mediawiki.org/wiki/Help:SMW_refreshData.php) to amend falsely set values.)
 
 ### Internal enhancements
 
 * #112 Added a date data type regression test
 * #118 Added a possibility to inject a Revision into the ContentParser
 * #119 Added a LinksUpdate integration test
-* #131 The Query Duration special propertyis now internationalized
+* #131 Added internationalization support for special property "Query duration"
 * #132 Added smoke test for the special language files
-* #142 Changed the Norwegian language code (Bokmål variant) from "no" to "nb" for L10n for datatypes, special properties, etc.
+* #142 Changed the Norwegian language code (Bokmål variant) from "no" to "nb" for L10n of datatypes, special properties, etc.
 * #144 Added a record data type regression test
 * #151 Added a category hierarchy regression test
