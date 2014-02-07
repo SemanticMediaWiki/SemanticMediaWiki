@@ -63,14 +63,23 @@ class MediaWikiPageInfoProvider implements PageInfoProvider {
 	}
 
 	/**
-	 * @note Using isNewPage() is expensice due to access to the database
+	 * @note Using isNewPage() is expensive due to access to the database
 	 *
 	 * @since 1.9
 	 *
 	 * @return boolean
 	 */
 	public function isNewPage() {
-		return $this->revision ? $this->revision->getParentId() !== '' : null;
+
+		if ( $this->isFilePage() ) {
+			return isset( $this->wikiPage->smwFileReUploadStatus ) ? !$this->wikiPage->smwFileReUploadStatus : false;
+		}
+
+		if ( $this->revision ) {
+			return $this->revision->getParentId() === null;
+		}
+
+		return $this->wikiPage->getRevision()->getParentId() === null;
 	}
 
 	/**

@@ -3,6 +3,7 @@
 namespace SMW;
 
 use WikiFilePage;
+use ParserOutput;
 use File;
 
 /**
@@ -13,7 +14,7 @@ use File;
  * @ingroup FunctionHook
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.4
+ * @since 1.9.0.3
  *
  * @author mwjames
  */
@@ -23,42 +24,42 @@ class FileUpload extends FunctionHook {
 	protected $file = null;
 
 	/**
-	 * @since  1.9.0.4
+	 * @since  1.9.0.3
 	 *
 	 * @param File $file
 	 */
-	public function __construct( File $file ) {
+	public function __construct( File $file, $reupload = false ) {
 		$this->file = $file;
+		$this->reupload = $reupload;
 	}
 
 	/**
 	 * @see FunctionHook::process
 	 *
-	 * @since 1.9.0.4
+	 * @since 1.9.0.3
 	 *
 	 * @return true
 	 */
 	public function process() {
+		return $this->performUpdate();
+	}
 
-		$title = $this->file->getTitle();
+	protected function performUpdate() {
 
-		$wikiPage = new WikiFilePage( $title );
-		$wikiPage->setFile( $this->file );
-
-		$contentParser = $this->withContext()->getDependencyBuilder()->newObject( 'ContentParser', array(
-			'Title' => $title
-		) );
-
-		$contentParser->parse();
-
+		/**
+		 * @var ParserData $parserData
+		 */
 		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $title,
-			'ParserOutput' => $contentParser->getOutput()
+			'Title'        => $this->file->getTitle(),
+			'ParserOutput' => $this->makeParserOutput()
 		) );
 
+		/**
+		 * @var PredefinedPropertyAnnotator $propertyAnnotator
+		 */
 		$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'PredefinedPropertyAnnotator', array(
 			'SemanticData' => $parserData->getSemanticData(),
-			'WikiPage' => $wikiPage
+			'WikiPage'     => $this->makeFilePage()
 		) );
 
 		$propertyAnnotator->attach( $parserData )->addAnnotation();
@@ -66,6 +67,30 @@ class FileUpload extends FunctionHook {
 		$parserData->updateStore();
 
 		return true;
+	}
+
+	protected function makeParserOutput() {
+
+		/**
+		 * @var ContentParser $contentParser
+		 */
+		$contentParser = $this->withContext()->getDependencyBuilder()->newObject( 'ContentParser', array(
+			'Title' => $this->file->getTitle()
+		) );
+
+		$contentParser->parse();
+
+		return $contentParser->getOutput();
+	}
+
+	protected function makeFilePage() {
+
+		$wikiPage = new WikiFilePage( $this->file->getTitle() );
+		$wikiPage->setFile( $this->file );
+
+		$wikiPage->smwFileReUploadStatus = $this->reupload;
+
+		return $wikiPage;
 	}
 
 }

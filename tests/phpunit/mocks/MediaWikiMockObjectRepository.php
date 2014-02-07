@@ -109,6 +109,50 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	}
 
 	/**
+	 * @since 1.9.0.3
+	 *
+	 * @return WikiFilePage
+	 */
+	public function WikiFilePage() {
+
+		$wikiPage = $this->getMockBuilder( 'WikiFilePage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
+
+			$wikiPage->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $wikiPage;
+	}
+
+	/**
+	 * @since 1.9.0.3
+	 *
+	 * @return File
+	 */
+	public function File() {
+
+		$wikiPage = $this->getMockBuilder( 'File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		foreach ( $this->builder->getInvokedMethods() as $method ) {
+
+			$wikiPage->expects( $this->any() )
+				->method( $method )
+				->will( $this->builder->setCallback( $method ) );
+
+		}
+
+		return $wikiPage;
+	}
+
+	/**
 	 * @since 1.9
 	 *
 	 * @return Revision

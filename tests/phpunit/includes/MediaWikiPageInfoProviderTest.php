@@ -19,16 +19,11 @@ use SMW\MediaWikiPageInfoProvider;
  */
 class MediaWikiPageInfoProviderTest extends SemanticMediaWikiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\MediaWikiPageInfoProvider';
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return MediaWikiPageInfoProvider
 	 */
 	private function newInstance( $wikiPage = null, $revision = null, $user = null ) {
@@ -37,43 +32,40 @@ class MediaWikiPageInfoProviderTest extends SemanticMediaWikiTestCase {
 			$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage' );
 		}
 
-		if ( $revision === null ) {
-			$revision = $this->newMockBuilder()->newObject( 'Revision' );
-		}
-
-		if ( $user === null ) {
-			$user = $this->newMockBuilder()->newObject( 'User' );
-		}
-
 		return new MediaWikiPageInfoProvider( $wikiPage, $revision, $user );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
+	 * @depends testCanConstruct
 	 * @dataProvider instanceDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testMethodAccess( array $setup, $expected ) {
+	public function testMethodAccess( array $parameters, $expected ) {
 
-		$method = $setup['method'];
+		$mockWikiPage = $parameters['wikiPage'];
+
+		if ( is_array( $mockWikiPage ) ) {
+			$mockWikiPage = $this->newMockBuilder()->newObject( 'WikiPage', $parameters['wikiPage'] );
+		}
+
+		$mockRevision = $this->newMockBuilder()->newObject( 'Revision', $parameters['revision'] );
+		$mockUser = $this->newMockBuilder()->newObject( 'User', $parameters['user'] );
 
 		$instance = $this->newInstance(
-			$this->newMockBuilder()->newObject( 'WikiPage', $setup['wikiPage'] ),
-			$this->newMockBuilder()->newObject( 'Revision', $setup['revision'] ),
-			$this->newMockBuilder()->newObject( 'User', $setup['user'] )
+			$mockWikiPage,
+			$parameters['revision'] ? $mockRevision : null,
+			$parameters['user'] ? $mockUser : null
 		);
+
+		$method = $parameters['method'];
 
 		$this->assertEquals(
 			$expected['result'],
 			$instance->{ $method }(),
-			"Asserts that {$method} returns an expected result"
+			"Asserts that {$method} is accessible"
 		);
 
 	}
@@ -85,7 +77,7 @@ class MediaWikiPageInfoProviderTest extends SemanticMediaWikiTestCase {
 
 		$provider = array();
 
-		// TYPE_MODIFICATION_DATE
+		// #0 TYPE_MODIFICATION_DATE
 		$provider[] = array(
 			array(
 				'wikiPage' => array( 'getTimestamp' => 1272508903 ),
@@ -98,7 +90,7 @@ class MediaWikiPageInfoProviderTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		// TYPE_CREATION_DATE
+		// #1 TYPE_CREATION_DATE
 		$revision = $this->newMockBuilder()->newObject( 'Revision', array(
 			'getTimestamp' => 1272508903
 		) );
@@ -125,7 +117,7 @@ class MediaWikiPageInfoProviderTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		// TYPE_NEW_PAGE
+		// #2 TYPE_NEW_PAGE
 		$provider[] = array(
 			array(
 				'wikiPage' => array(),
@@ -134,11 +126,211 @@ class MediaWikiPageInfoProviderTest extends SemanticMediaWikiTestCase {
 				'method'   => 'isNewPage'
 			),
 			array(
+				'result' => false
+			)
+		);
+
+		// #3
+		$provider[] = array(
+			array(
+				'wikiPage' => array(),
+				'revision' => array( 'getParentId' => null ),
+				'user'     => array(),
+				'method'   => 'isNewPage'
+			),
+			array(
 				'result' => true
 			)
 		);
 
-		// TYPE_LAST_EDITOR
+		// #4
+		$mockRevisionWithNullParent = $this->newMockBuilder()->newObject( 'Revision', array(
+			'getParentId' => null,
+		) );
+
+		$provider[] = array(
+			array(
+				'wikiPage' => array( 'getRevision' => $mockRevisionWithNullParent ),
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'isNewPage'
+			),
+			array(
+				'result' => true
+			)
+		);
+
+		// #5
+		$mockRevision = $this->newMockBuilder()->newObject( 'Revision', array(
+			'getParentId' => 1009,
+		) );
+
+		$provider[] = array(
+			array(
+				'wikiPage' => array( 'getRevision' => $mockRevision ),
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'isNewPage'
+			),
+			array(
+				'result' => false
+			)
+		);
+
+		// #6
+		$mockWikiFilePage = $this->newMockBuilder()->newObject( 'WikiFilePage', array(
+			'isFilePage' => true
+		) );
+
+		$provider[] = array(
+			array(
+				'wikiPage' => $mockWikiFilePage,
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'isNewPage'
+			),
+			array(
+				'result' => false
+			)
+		);
+
+		// #7
+		$mockWikiFilePageWithStatusProperty = $this->newMockBuilder()->newObject( 'WikiFilePage', array(
+			'isFilePage' => true
+		) );
+
+		$mockWikiFilePageWithStatusProperty->smwFileReUploadStatus = false;
+
+		$provider[] = array(
+			array(
+				'wikiPage' => $mockWikiFilePageWithStatusProperty,
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'isNewPage'
+			),
+			array(
+				'result' => true
+			)
+		);
+
+		// #8
+		$mockWikiFilePageWithStatusProperty = $this->newMockBuilder()->newObject( 'WikiFilePage', array(
+			'isFilePage' => true
+		) );
+
+		$mockWikiFilePageWithStatusProperty->smwFileReUploadStatus = true;
+
+		$provider[] = array(
+			array(
+				'wikiPage' => $mockWikiFilePageWithStatusProperty,
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'isNewPage'
+			),
+			array(
+				'result' => false
+			)
+		);
+
+		// #9
+		$mockWikiFilePage = $this->newMockBuilder()->newObject( 'WikiFilePage', array(
+			'isFilePage' => true,
+			'getFile'    => $this->newMockBuilder()->newObject( 'File', array( 'getMediaType' => 'FooMedia' ) )
+		) );
+
+		$provider[] = array(
+			array(
+				'wikiPage' => $mockWikiFilePage,
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'getMediaType'
+			),
+			array(
+				'result' => 'FooMedia'
+			)
+		);
+
+		// #10
+		$mockWikiFilePage = $this->newMockBuilder()->newObject( 'WikiFilePage', array(
+			'isFilePage' => true,
+			'getFile'    => $this->newMockBuilder()->newObject( 'File' )
+		) );
+
+		$provider[] = array(
+			array(
+				'wikiPage' => $mockWikiFilePage,
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'getMediaType'
+			),
+			array(
+				'result' => null
+			)
+		);
+
+		// #11
+		$mockWikiFilePage = $this->newMockBuilder()->newObject( 'WikiFilePage', array(
+			'isFilePage' => true,
+			'getFile'    => $this->newMockBuilder()->newObject( 'File', array( 'getMimeType' => 'FooMime' ) )
+		) );
+
+		$provider[] = array(
+			array(
+				'wikiPage' => $mockWikiFilePage,
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'getMimeType'
+			),
+			array(
+				'result' => 'FooMime'
+			)
+		);
+
+		// #12
+		$mockWikiFilePage = $this->newMockBuilder()->newObject( 'WikiFilePage', array(
+			'isFilePage' => true,
+			'getFile'    => $this->newMockBuilder()->newObject( 'File' )
+		) );
+
+		$provider[] = array(
+			array(
+				'wikiPage' => $mockWikiFilePage,
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'getMimeType'
+			),
+			array(
+				'result' => null
+			)
+		);
+
+		// #13
+		$provider[] = array(
+			array(
+				'wikiPage' => array(),
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'getMimeType'
+			),
+			array(
+				'result' => null
+			)
+		);
+
+		// #14
+		$provider[] = array(
+			array(
+				'wikiPage' => array(),
+				'revision' => array(),
+				'user'     => array(),
+				'method'   => 'getMediaType'
+			),
+			array(
+				'result' => null
+			)
+		);
+
+		// #15 TYPE_LAST_EDITOR
 		$userPage = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey'         => 'Lula',
 			'getNamespace'     => NS_USER,

@@ -234,6 +234,9 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 				case DataItem::TYPE_NUMBER:
 					$runPropertyValueAssert = $this->assertContainsPropertyValues( $expected, $dataValue, 'getNumber' );
 					break;
+				case DataItem::TYPE_BOOLEAN:
+					$runPropertyValueAssert = $this->assertContainsPropertyValues( $expected, $dataValue, 'getBoolean' );
+					break;
 				default:
 					$runPropertyValueAssert = $this->assertContainsPropertyValues( $expected, $dataValue, 'getWikiValue' );
 					break;

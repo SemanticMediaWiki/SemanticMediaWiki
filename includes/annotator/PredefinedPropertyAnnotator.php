@@ -88,7 +88,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 				$dataItem = DITime::newFromTimestamp( $this->pageInfo->getCreationDate() );
 				break;
 			case DIProperty::TYPE_NEW_PAGE :
-				$dataItem = $this->pageInfo->isNewPage() ? new DIBoolean( $this->pageInfo->isNewPage() ) : null;
+				$dataItem = new DIBoolean( $this->pageInfo->isNewPage() );
 				break;
 			case DIProperty::TYPE_LAST_EDITOR :
 				$dataItem = $this->pageInfo->getLastEditor() ? DIWikiPage::newFromTitle( $this->pageInfo->getLastEditor() ) : null;
