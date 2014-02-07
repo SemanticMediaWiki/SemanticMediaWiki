@@ -199,24 +199,7 @@ class Factbox {
 			return '';
 		}
 
-		return $this->isValidDataRequest() ? $this->createTable( $semanticData ) : $this->msgForNotSupportedDataRequest();
-	}
-
-	/**
-	 * 'oldid' indicates a request to display historial data
-	 * Historical data can not be displayed with the current implementation
-	 * @see #167
-	 */
-	protected function isValidDataRequest() {
-		return $this->context->getRequest()->getInt( 'oldid' ) === '' || $this->context->getRequest()->getInt( 'oldid' ) === 0;
-	}
-
-	protected function msgForNotSupportedDataRequest() {
-		return Html::rawElement( 'div',
-			array(
-				'class' => 'smwfact'
-			), 'Historical data can not be displayed in a Factbox'
-		);
+		return $this->createTable( $semanticData );
 	}
 
 	/**

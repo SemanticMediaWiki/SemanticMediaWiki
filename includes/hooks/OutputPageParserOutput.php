@@ -59,7 +59,8 @@ class OutputPageParserOutput extends FunctionHook {
 
 		$title = $this->outputPage->getTitle();
 
-		if ( $title->isSpecialPage() || $title->isRedirect() ||
+		if ( $title->isSpecialPage() ||
+			$title->isRedirect() ||
 			!$this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() ) ) {
 			return false;
 		}
@@ -73,8 +74,6 @@ class OutputPageParserOutput extends FunctionHook {
 
 	protected function performUpdate() {
 
-		$parserOutput = $this->parserOutput;
-
 		/**
 		 * @var FactboxCache $factboxCache
 		 */
@@ -82,7 +81,7 @@ class OutputPageParserOutput extends FunctionHook {
 			'OutputPage' => $this->outputPage
 		) );
 
-		$factboxCache->process( $parserOutput );
+		$factboxCache->process( $this->makeParserOutput() );
 
 		// @Legacy code
 		// Not sure why this was ever needed but to monitor any
@@ -93,4 +92,25 @@ class OutputPageParserOutput extends FunctionHook {
 		return true;
 	}
 
+	protected function makeParserOutput() {
+
+		if ( $this->outputPage->getContext()->getRequest()->getInt( 'oldid' ) ) {
+
+			$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
+				'Title'        => $this->outputPage->getTitle(),
+				'ParserOutput' => $this->parserOutput
+			) );
+
+			$contentProcessor = $this->withContext()->getDependencyBuilder()->newObject( 'ContentProcessor', array(
+				'ParserData' => $parserData
+			) );
+
+			$text = $this->parserOutput->getText();
+			$contentProcessor->parse( $text );
+
+			return $parserData->getOutput();
+		}
+
+		return $this->parserOutput;
+	}
 }

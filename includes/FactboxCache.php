@@ -64,7 +64,7 @@ class FactboxCache extends DependencyInjector {
 		$resultMapper = $this->newResultMapper( $title->getArticleID() );
 		$content      = $resultMapper->fetchFromCache();
 
-		if ( $this->assertThatCacheIsAvailable( $revId, $content ) ) {
+		if ( $this->cacheIsAvailableFor( $revId, $content ) ) {
 
 			$this->isCached = true;
 			$this->outputPage->mSMWFactboxText = $content['text'];
@@ -226,7 +226,7 @@ class FactboxCache extends DependencyInjector {
 		return $text;
 	}
 
-	protected function assertThatCacheIsAvailable( $revId, $content ) {
+	protected function cacheIsAvailableFor( $revId, $content ) {
 
 		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
 
