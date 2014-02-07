@@ -73,7 +73,9 @@ class SMWLanguageNl extends SMWLanguage {
 		'_ASKFO'=> 'Zoekopdracht-opmaak',
 		'_ASKSI'=> 'Zoekopdracht-omvang',
 		'_ASKDE'=> 'Zoekdiepte',
-		'_ASKDU'=> 'Zoekduur'
+		'_ASKDU'=> 'Zoekduur',
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

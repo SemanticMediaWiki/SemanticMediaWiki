@@ -46,6 +46,11 @@ class DIProperty extends SMWDataItem {
 	// Property "has query"
 	const TYPE_ASKQUERY = '_ASK';
 
+	// Property "has media type"
+	const TYPE_MEDIA = '_MEDIA';
+	// Property "has mime type"
+	const TYPE_MIME = '_MIME';
+
 	/**
 	 * Array for assigning types to predefined properties. Each
 	 * property is associated with an array with the following
@@ -416,6 +421,8 @@ class DIProperty extends SMWDataItem {
 				'_ASKSI' =>  array( '_num', true ), // "has query size"
 				'_ASKDE' =>  array( '_num', true ), // "has query depth"
 				'_ASKDU' =>  array( '_num', true ), // "has query duration"
+				self::TYPE_MEDIA => array( '_txt', true ), // "has media type"
+				self::TYPE_MIME  => array( '_txt', true ), // "has mime type"
 			);
 
 		foreach ( $datatypeLabels as $typeid => $label ) {

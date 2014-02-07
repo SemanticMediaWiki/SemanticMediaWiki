@@ -80,7 +80,9 @@ class SMWLanguageNb extends SMWLanguage {
 		'_ASKFO'=> 'Spørringsformat',
 		'_ASKSI'=> 'Spørringsstørrelse',
 		'_ASKDE'=> 'Spørringsdybde',
-		'_ASKDU'=> 'Spørringsvarighet'
+		'_ASKDU'=> 'Spørringsvarighet',
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

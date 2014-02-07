@@ -160,7 +160,7 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	protected static $special_tables = array(
 		// page metadata tables
-		'_MDAT', '_CDAT', '_NEWP', '_LEDT',
+		'_MDAT', '_CDAT', '_NEWP', '_LEDT', '_MIME', '_MEDIA',
 		// property declarations
 		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV',
 		// query statistics (very frequently used)

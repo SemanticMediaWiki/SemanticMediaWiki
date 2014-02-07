@@ -71,6 +71,8 @@ class SMWLanguageSk extends SMWLanguage {
 		'_ASKSI'=> 'Veľkosť požiadavky',
 		'_ASKDE'=> 'Hĺbka požiadavky',
 		'_ASKDU'=> 'Query duration', // TODO: translate
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(

@@ -71,6 +71,8 @@ class SMWLanguageHe extends SMWLanguage {
 		'_ASKSI'=> 'גודל השאילתא',
 		'_ASKDE'=> 'עומק שאילתא',
 		'_ASKDU'=> 'Query duration', // TODO: translate
+		'_MEDIA'=> 'Media type',
+		'_MIME' => 'Mime type'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
