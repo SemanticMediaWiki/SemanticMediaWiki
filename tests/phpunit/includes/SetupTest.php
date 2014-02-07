@@ -193,6 +193,10 @@ class SetupTest extends SemanticMediaWikiTestCase {
 
 		$parserOptions = $this->newMockBuilder()->newObject( 'ParserOptions' );
 
+		$file = $this->newMockBuilder()->newObject( 'File', array(
+			'getTitle' => null
+		) );
+
 		$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage', array(
 			'prepareContentForEdit' => $editInfo,
 			'prepareTextForEdit'    => $editInfo,
@@ -246,6 +250,9 @@ class SetupTest extends SemanticMediaWikiTestCase {
 				break;
 			case 'SpecialStatsAddExtra':
 				$result = $this->callObject( $object, array( &$emptyArray ) );
+				break;
+			case 'FileUpload':
+				$result = $this->callObject( $object, array( $file, $empty ) );
 				break;
 			case 'ParserFirstCallInit':
 
@@ -477,7 +484,8 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'LinksUpdateConstructed',
 			'SpecialStatsAddExtra',
 			'BaseTemplateToolbox',
-			'CanonicalNamespaces'
+			'CanonicalNamespaces',
+			'FileUpload'
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );

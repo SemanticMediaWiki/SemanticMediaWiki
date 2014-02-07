@@ -22,15 +22,17 @@ class FileUpload extends FunctionHook {
 
 	/** @var File */
 	protected $file = null;
+	protected $fileReUploadStatus = false;
 
 	/**
 	 * @since  1.9.0.3
 	 *
 	 * @param File $file
+	 * @param boolean $fileReUploadStatus
 	 */
-	public function __construct( File $file, $reupload = false ) {
+	public function __construct( File $file, $fileReUploadStatus = false ) {
 		$this->file = $file;
-		$this->reupload = $reupload;
+		$this->fileReUploadStatus = $fileReUploadStatus;
 	}
 
 	/**
@@ -41,7 +43,7 @@ class FileUpload extends FunctionHook {
 	 * @return true
 	 */
 	public function process() {
-		return $this->performUpdate();
+		return $this->file->getTitle() ? $this->performUpdate() : true;
 	}
 
 	protected function performUpdate() {
@@ -88,7 +90,7 @@ class FileUpload extends FunctionHook {
 		$wikiPage = new WikiFilePage( $this->file->getTitle() );
 		$wikiPage->setFile( $this->file );
 
-		$wikiPage->smwFileReUploadStatus = $this->reupload;
+		$wikiPage->smwFileReUploadStatus = $this->fileReUploadStatus;
 
 		return $wikiPage;
 	}
