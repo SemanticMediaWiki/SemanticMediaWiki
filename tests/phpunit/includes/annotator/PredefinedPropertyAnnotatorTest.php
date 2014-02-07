@@ -7,6 +7,9 @@ use SMW\NullPropertyAnnotator;
 use SMW\EmptyContext;
 use SMW\SemanticData;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+
+use Title;
 
 /**
  * @covers \SMW\PredefinedPropertyAnnotator
@@ -24,29 +27,17 @@ use SMW\DIProperty;
  */
 class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\PredefinedPropertyAnnotator';
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return Observer
-	 */
 	private function newObserver() {
-
 		return $this->newMockBuilder()->newObject( 'FakeObserver', array(
-			'updateOutput' => array( $this, 'updateOutputCallback' )
+			'updateOutput' => array( $this, 'updateOutputCallbackToVerifyThatObserverIsReachable' )
 		) );
-
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return PredefinedPropertyAnnotator
 	 */
 	private function newInstance( $semanticData = null, $settings = array(), $pageInfo = array() ) {
@@ -67,27 +58,32 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
+	public function testCanConstruct() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
+	 * @depends testCanConstruct
 	 * @dataProvider specialPropertiesDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testAddSpecialPropertiesOnMockObserver( array $setup, array $expected ) {
+	public function testAddSpecialPropertiesOnMockObserver( array $parameters, array $expected ) {
 
-		$semanticData = new SemanticData( $setup['subject'] );
+		$semanticData = new SemanticData( $parameters['subject'] );
 
-		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['pageInfo'] );
+		$instance = $this->newInstance(
+			$semanticData,
+			$parameters['settings'],
+			$parameters['pageInfo']
+		);
+
 		$instance->attach( $this->newObserver() )->addAnnotation();
 
 		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
+
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
 
 		$this->assertEquals(
 			$instance->verifyCallback,
@@ -97,16 +93,8 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 	}
 
-	/**
-	 * Verify that the Observer is reachable
-	 *
-	 * @since 1.9
-	 */
-	public function updateOutputCallback( $instance ) {
-
+	public function updateOutputCallbackToVerifyThatObserverIsReachable( $instance ) {
 		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getSemanticData() );
-		$this->assertInstanceOf( '\SMW\ContextResource', $instance->withContext() );
-
 		return $instance->verifyCallback = 'updateOutputCallback';
 	}
 
@@ -120,7 +108,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		// Unknown
 		$provider[] = array(
 			array(
-				'subject'  => $this->newSubject( $this->newTitle() ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'UNKNOWN' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( 'Lala', '_Lula', '-Lila', '' )
 				),
@@ -134,7 +122,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		// TYPE_MODIFICATION_DATE
 		$provider[] = array(
 			array(
-				'subject'  => $this->newSubject( $this->newTitle() ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withModificationDate' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE )
 				),
@@ -150,7 +138,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		// TYPE_CREATION_DATE
 		$provider[] = array(
 			array(
-				'subject'  => $this->newSubject( $this->newTitle() ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withCreationDate' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_CREATION_DATE )
 				),
@@ -166,7 +154,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		// TYPE_NEW_PAGE
 		$provider[] = array(
 			array(
-				'subject'  => $this->newSubject( $this->newTitle() ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'NEW_PAGE_isNew' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_NEW_PAGE )
 				),
@@ -179,6 +167,21 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'NEW_PAGE_isNotNew' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_NEW_PAGE )
+				),
+				'pageInfo' => array( 'isNewPage' => false )
+			),
+			array(
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_NEWP',
+				'propertyValues' => array( false ),
+			)
+		);
+
 		// TYPE_LAST_EDITOR
 		$userPage = $this->newMockBuilder()->newObject( 'Title', array(
 			'getDBkey'         => 'Lula',
@@ -187,7 +190,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$provider[] = array(
 			array(
-				'subject'  => $this->newSubject( $this->newTitle() ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withLastEditor' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( DIProperty::TYPE_LAST_EDITOR )
 				),
@@ -203,7 +206,7 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		// Combined entries
 		$provider[] = array(
 			array(
-				'subject'  => $this->newSubject( $this->newTitle() ),
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withCombinedEntries' ) ),
 				'settings' => array(
 					'smwgPageSpecialProperties' => array( '_MDAT', '_LEDT' )
 				),
@@ -216,6 +219,76 @@ class PredefinedPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 				'propertyCount'  => 2,
 				'propertyKeys'   => array( '_MDAT', '_LEDT' ),
 				'propertyValues' => array( '2010-04-29T02:41:43', 'User:Lula' ),
+			)
+		);
+
+		// TYPE_MEDIA
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withMediaAsFilePage' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MEDIA )
+				),
+				'pageInfo' => array(
+					'isFilePage'   => true,
+					'getMediaType' => 'FooMedia'
+				)
+			),
+			array(
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_MEDIA',
+				'propertyValues' => array( 'FooMedia' ),
+			)
+		);
+
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withMediaNotAsFilePage' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MEDIA )
+				),
+				'pageInfo' => array(
+					'isFilePage'   => false,
+					'getMediaType' => 'FooMedia'
+				)
+			),
+			array(
+				'propertyCount'  => 0
+			)
+		);
+
+		// TYPE_MIME
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withMimeAsFilePage' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MIME )
+				),
+				'pageInfo' => array(
+					'isFilePage'   => true,
+					'getMimeType' => 'FooMime'
+				)
+			),
+			array(
+				'propertyCount'  => 1,
+				'propertyKeys'   => '_MIME',
+				'propertyValues' => array( 'FooMime' ),
+			)
+		);
+
+		$provider[] = array(
+			array(
+				'subject'  => DIWikiPage::newFromTitle( Title::newFromText( 'withMimeNotAsFilePage' ) ),
+				'settings' => array(
+					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MIME )
+				),
+				'pageInfo' => array(
+					'isFilePage'   => false,
+					'getMimeType' => 'FooMime'
+				)
+			),
+			array(
+				'propertyCount'  => 0
 			)
 		);
 

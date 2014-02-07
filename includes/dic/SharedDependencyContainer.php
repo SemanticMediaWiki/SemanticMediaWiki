@@ -400,8 +400,8 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 
 			$valueProvider = new MediaWikiPageInfoProvider(
 				$builder->getArgument( 'WikiPage' ),
-				$builder->getArgument( 'Revision' ),
-				$builder->getArgument( 'User' )
+				$builder->hasArgument( 'Revision' ) ? $builder->getArgument( 'Revision' ) : null,
+				$builder->hasArgument( 'User' ) ? $builder->getArgument( 'User' ) : null
 			);
 
 			return new PredefinedPropertyAnnotator( $annotator, $valueProvider );

@@ -269,6 +269,10 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 			->method( 'getErrors' )
 			->will( $this->returnValue( $this->builder->setValue( 'getErrors', array() ) ) );
 
+		$contentParser->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $this->builder->setValue( 'getRevision', null ) ) );
+
 		return $contentParser;
 	}
 
