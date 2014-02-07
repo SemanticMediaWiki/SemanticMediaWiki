@@ -199,7 +199,24 @@ class Factbox {
 			return '';
 		}
 
-		return $this->createTable( $semanticData );
+		return $this->isValidDataRequest() ? $this->createTable( $semanticData ) : $this->msgForNotSupportedDataRequest();
+	}
+
+	/**
+	 * 'oldid' indicates a request to display historial data
+	 * Historical data can not be displayed with the current implementation
+	 * @see #167
+	 */
+	protected function isValidDataRequest() {
+		return $this->context->getRequest()->getInt( 'oldid' ) === '' || $this->context->getRequest()->getInt( 'oldid' ) === 0;
+	}
+
+	protected function msgForNotSupportedDataRequest() {
+		return Html::rawElement( 'div',
+			array(
+				'class' => 'smwfact'
+			), 'Historical data can not be displayed in a Factbox'
+		);
 	}
 
 	/**
@@ -238,11 +255,6 @@ class Factbox {
 	 */
 	protected function createTable( SemanticData $semanticData ) {
 		Profiler::In( __METHOD__ );
-
-		// 'oldid' indicates a request to display historial data has been made
-		if ( $this->context->getRequest()->getCheck( 'oldid' ) ) {
-			return Html::rawElement( 'div', array( 'class' => 'smwfact' ), 'Historical data can not be displayed in a Factbox' );
-		}
 
 		$this->tableFormatter = new TableFormatter();
 		$text = '';

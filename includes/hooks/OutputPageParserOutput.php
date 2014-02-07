@@ -52,28 +52,28 @@ class OutputPageParserOutput extends FunctionHook {
 	 * @return true
 	 */
 	public function process() {
-		return $this->isValid( $this->outputPage->getTitle() ) ? $this->performUpdate() : true;
+		return $this->canPerformUpdate() ? $this->performUpdate() : true;
 	}
 
-	/**
-	 * Whether the current Title is valid object for continued processing
-	 *
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
-	protected function isValid( Title $title ) {
-		return !$title->isSpecialPage() &&
-			!$title->isRedirect() &&
-			$this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() );
+	protected function canPerformUpdate() {
+
+		$title = $this->outputPage->getTitle();
+
+		if ( $title->isSpecialPage() || $title->isRedirect() ||
+			!$this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() ) ) {
+			return false;
+		}
+
+		if ( isset( $this->outputPage->mSMWFactboxText ) && $this->outputPage->getContext()->getRequest()->getCheck( 'wpPreview' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
 	protected function performUpdate() {
+
+		$parserOutput = $this->parserOutput;
 
 		/**
 		 * @var FactboxCache $factboxCache
@@ -82,7 +82,7 @@ class OutputPageParserOutput extends FunctionHook {
 			'OutputPage' => $this->outputPage
 		) );
 
-		$factboxCache->process( $this->parserOutput );
+		$factboxCache->process( $parserOutput );
 
 		// @Legacy code
 		// Not sure why this was ever needed but to monitor any
