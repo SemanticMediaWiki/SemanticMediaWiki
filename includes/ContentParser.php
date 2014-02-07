@@ -137,24 +137,22 @@ class ContentParser {
 	protected function fetchFromContent() {
 		Profiler::In( __METHOD__ );
 
-		if ( $this->getRevision() !== null ) {
-
-			$content = $this->getRevision()->getContent( Revision::RAW );
-
-			if ( !$content ) {
-				$content = $this->getRevision()->getContentHandler()->makeEmptyContent();
-			}
-
-			$this->parserOutput = $content->getParserOutput(
-				$this->getTitle(),
-				$this->getRevision()->getId(),
-				null,
-				true
-			);
-
-		} else {
-			$this->errors = array( __METHOD__ . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" );
+		if ( $this->getRevision() === null ) {
+			return $this->msgForNullRevision();
 		}
+
+		$content = $this->getRevision()->getContent( Revision::RAW );
+
+		if ( !$content ) {
+			$content = $this->getRevision()->getContentHandler()->makeEmptyContent();
+		}
+
+		$this->parserOutput = $content->getParserOutput(
+			$this->getTitle(),
+			$this->getRevision()->getId(),
+			null,
+			true
+		);
 
 		Profiler::Out( __METHOD__ );
 		return $this;
@@ -163,20 +161,18 @@ class ContentParser {
 	protected function fetchFromParser() {
 		Profiler::In( __METHOD__ );
 
-		if ( $this->getRevision() !== null ) {
-
-			$this->parserOutput = $this->parser->parse(
-				$this->getRevision()->getText(),
-				$this->getTitle(),
-				$this->makeParserOptions(),
-				true,
-				true,
-				$this->getRevision()->getID()
-			);
-
-		} else {
-			$this->errors = array( __METHOD__ . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" );
+		if ( $this->getRevision() === null ) {
+			return $this->msgForNullRevision();
 		}
+
+		$this->parserOutput = $this->parser->parse(
+			$this->getRevision()->getText(),
+			$this->getTitle(),
+			$this->makeParserOptions(),
+			true,
+			true,
+			$this->getRevision()->getID()
+		);
 
 		Profiler::Out( __METHOD__ );
 		return $this;
@@ -184,6 +180,11 @@ class ContentParser {
 
 	protected function hasContentHandler() {
 		return class_exists( 'ContentHandler' );
+	}
+
+	protected function msgForNullRevision( $fname = __METHOD__ ) {
+		$this->errors = array( $fname . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" );
+		return $this;
 	}
 
 	protected function makeParserOptions() {
