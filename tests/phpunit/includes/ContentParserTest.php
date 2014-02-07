@@ -33,7 +33,7 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 	private function newInstance( Title $title = null, $parser = null ) {
 
 		if ( $title === null ) {
-			$title = $this->newTitle();
+			$title = Title::newFromText( __METHOD__ );
 		}
 
 		return new ContentParser( $title, $parser );
@@ -43,17 +43,22 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
+	/**
+	 * @depends testCanConstruct
+	 */
 	public function testCanParseOnInstance() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance()->parse() );
 	}
 
+	/**
+	 * @depends testCanParseOnInstance
+	 */
 	public function testRunParseOnText() {
 
 		$text     = 'Foo-1-' . __METHOD__;
 		$expected = '<p>' . $text . "\n" . '</p>';
 
 		$this->assertParserOutput( $expected, $this->newInstance()->parse( $text ) );
-
 	}
 
 	/**
@@ -77,13 +82,7 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 
 		$instance->setRevision( $setup['revision'] );
 
-		$this->assertInstanceOf( $this->getClass(), $instance->parse() );
-
-		if ( $expected['error'] ) {
-			$this->assertError( $instance );
-		} else {
-			$this->assertParserOutput( $expected['text'], $instance );
-		}
+		$this->assertInstanceAfterParse( $expected, $instance->parse() );
 
 	}
 
@@ -101,37 +100,27 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 		}
 
 		$this->testRunParseOnTitle( $setup, $expected, true );
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function assertError( $instance ) {
+	protected function assertInstanceAfterParse( $expected, $instance ) {
 
-		$this->assertInternalType(
-			'array',
-			$instance->getErrors(),
-			'Asserts that getErrors() returns an array'
-		);
+		$this->assertInstanceOf( $this->getClass(), $instance );
 
-		$this->assertNotEmpty(
-			$instance->getErrors(),
-			'Asserts that getErrors() is not empty'
-		);
+		if ( $expected['error'] ) {
+			return $this->assertError( $instance );
+		}
 
+		$this->assertParserOutput( $expected['text'], $instance );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function assertParserOutput( $text, $instance ) {
+	protected function assertError( $instance ) {
+		$this->assertInternalType( 'array', $instance->getErrors() );
+		$this->assertNotEmpty( $instance->getErrors() );
+	}
 
-		$this->assertInstanceOf(
-			'ParserOutput',
-			$instance->getOutput(),
-			'Asserts the expected ParserOutput instance'
-		);
+	protected function assertParserOutput( $text, $instance ) {
+
+		$this->assertInstanceOf( 'ParserOutput', $instance->getOutput() );
 
 		if ( $text !== '' ) {
 
@@ -143,11 +132,7 @@ class ContentParserTest extends SemanticMediaWikiTestCase {
 
 		}
 
-		$this->assertEmpty(
-			$instance->getOutput()->getText(),
-			'Asserts that getText() returns empty'
-		);
-
+		$this->assertEmpty( $instance->getOutput()->getText() );
 	}
 
 	/**
