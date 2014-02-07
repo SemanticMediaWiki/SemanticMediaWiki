@@ -17,6 +17,7 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
  * Russian language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author Dmitry Khoroshev cnit\@uniyar.ac.ru
+ * @author Yury Katkov
  * @ingroup SMWLanguage
  * @ingroup Language
  */
@@ -73,8 +74,8 @@ class SMWLanguageRu extends SMWLanguage {
 		'_ASKSI'=> 'Размер запроса',
 		'_ASKDE'=> 'Глубина запроса',
 		'_ASKDU'=> 'Длительность запроса',
-		'_MEDIA'=> 'Media type',
-		'_MIME' => 'Mime type'
+		'_MEDIA'=> 'Тип медиа',
+		'_MIME' => 'MIME-тип'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
