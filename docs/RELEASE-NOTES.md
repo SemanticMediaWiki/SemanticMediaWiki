@@ -3,7 +3,8 @@
 ### New features
 
 * #162 Added possibility to create `_MEDIA` [(special property "Media type")](https://semantic-mediawiki.org/wiki/Help:Special_property_Media_type) and `_MIME` [(special property "MIME type")](https://semantic-mediawiki.org/wiki/Help:Special_property_MIME_type) property annotation when uploading a file (This feature can only be used with appropriate  [`$smwgPageSpecialProperties`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPageSpecialProperties) settings and the run of the "update.php" script.)
-* #173 Factbox has been extended in order to display "historical" data when used by `action=history`
+* #173 Extended the [factbox](https://semantic-mediawiki.org/wiki/Factbox#The_factbox) in order to display "historical" data when used by `action=history`
+* #180 Added furhter CSS classes for improved customization of special page ["Ask"](https://semantic-mediawiki.org/wiki/Help:Special:Ask) 
 
 ### Bug fixes
 
