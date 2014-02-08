@@ -459,7 +459,7 @@ final class Setup implements ContextAware {
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
 		 *
-		 * @since 1.9.0.3
+		 * @since 1.9.1
 		 */
 		$this->globals['wgHooks']['FileUpload'][] = function ( $file, $reupload ) use ( $functionHook ) {
 			return $functionHook->register( new FileUpload( $file, $reupload ) )->process();

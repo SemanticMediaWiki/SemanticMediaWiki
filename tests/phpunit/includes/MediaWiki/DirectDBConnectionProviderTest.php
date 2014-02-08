@@ -13,7 +13,7 @@ use SMW\MediaWiki\DirectDBConnectionProvider;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 1.9.0.3
+ * @since 1.9.1
  *
  * @author mwjames
  */

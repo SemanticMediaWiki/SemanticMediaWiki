@@ -57,7 +57,7 @@ class ContentParser {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return ContentParser
 	 */

@@ -51,7 +51,7 @@ interface PageInfoProvider {
 	public function getLastEditor();
 
 	/**
-	 * @since 1.9.0.4
+	 * @since 1.9.1
 	 *
 	 * @return boolean
 	 */
@@ -60,7 +60,7 @@ interface PageInfoProvider {
 	/**
 	 * @see File::getMediaType
 	 *
-	 * @since 1.9.0.4
+	 * @since 1.9.1
 	 *
 	 * @return string|null
 	 */
@@ -69,7 +69,7 @@ interface PageInfoProvider {
 	/**
 	 * @see File::getMimeType
 	 *
-	 * @since 1.9.0.4
+	 * @since 1.9.1
 	 *
 	 * @return string|null
 	 */

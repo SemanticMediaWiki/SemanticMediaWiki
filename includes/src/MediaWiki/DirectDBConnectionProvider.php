@@ -11,7 +11,7 @@ use RuntimeException;
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.3
+ * @since 1.9.1
  *
  * @author mwjames
  */
@@ -21,7 +21,7 @@ class DirectDBConnectionProvider implements DBConnectionProvider {
 	protected $connection = null;
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param DatabaseBase $connection
 	 *
@@ -35,7 +35,7 @@ class DirectDBConnectionProvider implements DBConnectionProvider {
 	/**
 	 * @see DBConnectionProvider::getConnection
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return DatabaseBase
 	 * @throws RuntimeException
@@ -52,7 +52,7 @@ class DirectDBConnectionProvider implements DBConnectionProvider {
 	/**
 	 * @see DBConnectionProvider::releaseConnection
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 */
 	public function releaseConnection() {}
 

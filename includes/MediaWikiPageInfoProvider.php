@@ -92,7 +92,7 @@ class MediaWikiPageInfoProvider implements PageInfoProvider {
 	}
 
 	/**
-	 * @since 1.9.0.4
+	 * @since 1.9.1
 	 *
 	 * @return boolean
 	 */
@@ -101,7 +101,7 @@ class MediaWikiPageInfoProvider implements PageInfoProvider {
 	}
 
 	/**
-	 * @since 1.9.0.4
+	 * @since 1.9.1
 	 *
 	 * @return string|null
 	 */
@@ -110,7 +110,7 @@ class MediaWikiPageInfoProvider implements PageInfoProvider {
 	}
 
 	/**
-	 * @since 1.9.0.4
+	 * @since 1.9.1
 	 *
 	 * @return string|null
 	 */

@@ -33,7 +33,7 @@ class Database {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return DatabaseBase
 	 */
@@ -42,7 +42,7 @@ class Database {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return DatabaseBase
 	 * @throws RuntimeException
@@ -59,7 +59,7 @@ class Database {
 	/**
 	 * @see DatabaseBase::getType
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return string
 	 */
@@ -101,7 +101,7 @@ class Database {
 	/**
 	 * @see DatabaseBase::fetchObject
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param ResultWrapper $res
 	 *
@@ -180,7 +180,7 @@ class Database {
 	/**
 	 * @see DatabaseBase::query
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param string $sql
 	 * @param $fname
@@ -218,7 +218,7 @@ class Database {
 	/**
 	 * @see DatabaseBase::affectedRows
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return int
 	 */
@@ -229,7 +229,7 @@ class Database {
 	/**
 	 * @see DatabaseBase::makeSelectOptions
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param array $options
 	 *
