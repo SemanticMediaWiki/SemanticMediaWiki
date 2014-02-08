@@ -4,6 +4,9 @@ namespace SMW\Test;
 
 use SMW\OutputPageParserOutput;
 use SMW\ExtensionContext;
+use SMW\Settings;
+
+use ParserOutput;
 
 /**
  * @covers \SMW\OutputPageParserOutput
@@ -72,11 +75,13 @@ class OutputPageParserOutputTest extends ParserTestCase {
 	 */
 	public function testProcess( $setup, $expected ) {
 
-		$settings = $this->newSettings( array(
+		$settings = Settings::newFromArray( array(
 			'smwgNamespacesWithSemanticLinks' => $setup['smwgNamespacesWithSemanticLinks'],
 			'smwgShowFactbox'                 => SMW_FACTBOX_NONEMPTY,
 			'smwgFactboxUseCache'             => true,
-			'smwgCacheType'                   => 'hash'
+			'smwgCacheType'                   => 'hash',
+			'smwgLinksInValues'               => false,
+			'smwgInlineErrors'                => true,
 		) );
 
 		$outputPage   = $setup['outputPage'];
@@ -164,15 +169,6 @@ class OutputPageParserOutputTest extends ParserTestCase {
 			'getProperties'        => array( $mockDIProperty )
 		) );
 
-		$parserOutput = $this->newParserOutput();
-
-		// Inject mock data directly into the parserOutput
-		if ( method_exists( $parserOutput, 'setExtensionData' ) ) {
-			$parserOutput->setExtensionData( 'smwdata', $mockSemanticData );
-		} else {
-			$parserOutput->mSMWData = $mockSemanticData;
-		}
-
 		$provider = array();
 
 		// #0 Simple factbox build, returning content
@@ -180,7 +176,7 @@ class OutputPageParserOutputTest extends ParserTestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'outputPage'   => $mockOutputPage,
-				'parserOutput' => $parserOutput,
+				'parserOutput' => $this->makeParserOutput( $mockSemanticData ),
 			),
 			array(
 				'text'         => $mockTitle->getDBKey()
@@ -201,7 +197,7 @@ class OutputPageParserOutputTest extends ParserTestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
 				'outputPage'   => $mockOutputPage,
-				'parserOutput' => $parserOutput,
+				'parserOutput' => $this->makeParserOutput( $mockSemanticData ),
 			),
 			array(
 				'text'         => ''
@@ -223,14 +219,14 @@ class OutputPageParserOutputTest extends ParserTestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'outputPage'   => $mockOutputPage,
-				'parserOutput' => $parserOutput,
+				'parserOutput' => $this->makeParserOutput( $mockSemanticData ),
 			),
 			array(
 				'text'         => ''
 			)
 		);
 
-		// #2 Redirect, no return value expected
+		// #3 Redirect, no return value expected
 		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
 			'getPageLanguage' => $this->getLanguage(),
 			'isRedirect'      => true
@@ -245,13 +241,49 @@ class OutputPageParserOutputTest extends ParserTestCase {
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'outputPage'   => $mockOutputPage,
-				'parserOutput' => $parserOutput,
+				'parserOutput' => $this->makeParserOutput( $mockSemanticData ),
 			),
 			array(
 				'text'         => ''
 			)
 		);
 
+		// #4 Oldid
+		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
+			'getPageLanguage' => $this->getLanguage(),
+		) );
+
+		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
+			'getTitle'   => $mockTitle,
+			'getContext' => $this->newContext( array( 'oldid' => 9001 ) )
+		) );
+
+		$provider[] = array(
+			array(
+				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+				'outputPage'   => $mockOutputPage,
+				'parserOutput' => $this->makeParserOutput( $mockSemanticData ),
+			),
+			array(
+				'text'         => $mockSubject->getDBKey()
+			)
+		);
+
 		return $provider;
 	}
+
+	protected function makeParserOutput( $data ) {
+
+		$parserOutput = new ParserOutput();
+
+		if ( method_exists( $parserOutput, 'setExtensionData' ) ) {
+			$parserOutput->setExtensionData( 'smwdata', $data );
+		} else {
+			$parserOutput->mSMWData = $data;
+		}
+
+		return $parserOutput;
+	}
+
+
 }

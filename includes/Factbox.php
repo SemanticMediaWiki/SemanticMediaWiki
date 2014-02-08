@@ -239,11 +239,6 @@ class Factbox {
 	protected function createTable( SemanticData $semanticData ) {
 		Profiler::In( __METHOD__ );
 
-		// 'oldid' indicates a request to display historial data has been made
-		if ( $this->context->getRequest()->getCheck( 'oldid' ) ) {
-			return Html::rawElement( 'div', array( 'class' => 'smwfact' ), 'Historical data can not be displayed in a Factbox' );
-		}
-
 		$this->tableFormatter = new TableFormatter();
 		$text = '';
 

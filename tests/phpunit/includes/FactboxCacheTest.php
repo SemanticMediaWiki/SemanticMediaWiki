@@ -193,7 +193,7 @@ class FactboxCacheTest extends ParserTestCase {
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $mockOutputPage,
 				'store'           => $mockStore,
-				'parserOutput'    => $this->setupParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-0' ) )
+				'parserOutput'    => $this->makeParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-0' ) )
 			),
 			array(
 				'text'            => $mockTitle->getDBKey()
@@ -216,10 +216,10 @@ class FactboxCacheTest extends ParserTestCase {
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $mockOutputPage,
 				'store'           => $mockStore,
-				'parserOutput'    => $this->setupParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-1' ) )
+				'parserOutput'    => $this->makeParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-1' ) )
 			),
 			array(
-				'text'            => 'Historical data'
+				'text'            => $mockTitle->getDBKey()
 			)
 		);
 
@@ -239,7 +239,7 @@ class FactboxCacheTest extends ParserTestCase {
 				'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
 				'outputPage'      => $mockOutputPage,
 				'store'           => $mockStore,
-				'parserOutput'    => $this->setupParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-2' ) )
+				'parserOutput'    => $this->makeParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-2' ) )
 			),
 			array(
 				'text'            => null
@@ -270,7 +270,7 @@ class FactboxCacheTest extends ParserTestCase {
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $mockOutputPage,
 				'store'           => $mockStore,
-				'parserOutput'    => $this->setupParserOutput( null ),
+				'parserOutput'    => $this->makeParserOutput( null ),
 			),
 			array(
 				'text'            => null
@@ -293,7 +293,7 @@ class FactboxCacheTest extends ParserTestCase {
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $mockOutputPage,
 				'store'           => $mockStore,
-				'parserOutput'    => $this->setupParserOutput( null ),
+				'parserOutput'    => $this->makeParserOutput( null ),
 			),
 			array(
 				'text'            => ''
@@ -316,7 +316,7 @@ class FactboxCacheTest extends ParserTestCase {
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
 				'outputPage'      => $mockOutputPage,
 				'store'           => $mockStore,
-				'parserOutput'    => $this->setupParserOutput( null ),
+				'parserOutput'    => $this->makeParserOutput( null ),
 			),
 			array(
 				'text'            => ''
@@ -356,7 +356,7 @@ class FactboxCacheTest extends ParserTestCase {
 	/**
 	 * @return ParserOutput
 	 */
-	protected function setupParserOutput( $semanticData ) {
+	protected function makeParserOutput( $semanticData ) {
 
 		$parserOutput = $this->newParserOutput();
 

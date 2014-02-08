@@ -64,7 +64,7 @@ class FactboxCache extends DependencyInjector {
 		$resultMapper = $this->newResultMapper( $title->getArticleID() );
 		$content      = $resultMapper->fetchFromCache();
 
-		if ( $revId !== 0 && isset( $content['revId'] ) && ( $content['revId'] === $revId ) && $content['text'] !== null ) {
+		if ( $this->cacheIsAvailableFor( $revId, $content ) ) {
 
 			$this->isCached = true;
 			$this->outputPage->mSMWFactboxText = $content['text'];
@@ -226,4 +226,22 @@ class FactboxCache extends DependencyInjector {
 		return $text;
 	}
 
+	protected function cacheIsAvailableFor( $revId, $content ) {
+
+		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
+
+		if ( $settings->get( 'smwgShowFactbox' ) === SMW_FACTBOX_HIDDEN ) {
+			return false;
+		}
+
+		if ( $this->outputPage->getContext()->getRequest()->getVal( 'action' ) === 'edit' ) {
+			return false;
+		}
+
+		if ( $revId !== 0 && isset( $content['revId'] ) && ( $content['revId'] === $revId ) && $content['text'] !== null ) {
+			return true;
+		}
+
+		return false;
+	}
 }
