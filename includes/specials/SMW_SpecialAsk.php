@@ -343,10 +343,10 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			$result .= Html::hidden( 'title', $title->getPrefixedDBKey() );
 
 			// Table for main query and printouts.
-			$result .= '<table style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->text() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->text() . "<br />\n" .
+			$result .= '<table class="smw-ask-query" style="width: 100%;"><tr><th>' . wfMessage( 'smw_ask_queryhead' )->text() . "</th>\n<th>" . wfMessage( 'smw_ask_printhead' )->text() . "<br />\n" .
 				'<span style="font-weight: normal;">' . wfMessage( 'smw_ask_printdesc' )->text() . '</span>' . "</th></tr>\n" .
-				'<tr><td style="padding-right: 7px;"><textarea name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
-				'<td style="padding-left: 7px;"><textarea id = "add_property" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
+				'<tr><td style="padding-left: 0px;"><textarea class="smw-ask-query-condition" name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
+				'<td style="padding-left: 7px;"><textarea id="add_property" class="smw-ask-query-printout" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
 
 			// Format selection
 			$result .= self::getFormatSelection ( $this->m_params );
@@ -444,13 +444,14 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			}
 		}
 
-		$result .= '<br /><span style=vertical-align:middle;">' . wfMessage( 'smw_ask_format_as' )->text() . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
+		$result .= '<br /><span class="smw-ask-query-format" style=vertical-align:middle;">' . wfMessage( 'smw_ask_format_as' )->text() . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
 			Html::openElement(
 				'select',
 				array(
-					 'id' => 'formatSelector',
-					 'name' => 'p[format]',
-					 'data-url' => $url,
+					'class' => 'smw-ask-query-format-selector',
+					'id' => 'formatSelector',
+					'name' => 'p[format]',
+					'data-url' => $url,
 				)
 			) . "\n" .
 			'	<option value="broadtable"' . ( $params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .

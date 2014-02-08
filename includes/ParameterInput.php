@@ -157,7 +157,8 @@ class ParameterInput {
 			$this->getValueToUse(),
 			'text',
 			array(
-				'size' => 6
+				'size' => 6,
+				'style' => "width: 95%;",
 			)
 		);
 	}
@@ -175,7 +176,8 @@ class ParameterInput {
 			$this->getValueToUse(),
 			'text',
 			array(
-				'size' => 32
+				'size'  => 20,
+				'style' => "width: 95%;",
 			)
 		);
 	}
