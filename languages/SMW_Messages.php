@@ -11422,7 +11422,7 @@ Podaj zarówno stronę, jak i właściwość.',
 	'smw_result_next' => 'Następne',
 	'smw_result_results' => 'Wyniki',
 	'smw_result_noresults' => 'Niestety, brak wyników.',
-	'smwadmin' => 'Funkcje administracyjne dla Semantic MediaWiki',
+	'smwadmin' => 'Funkcje administracyjne dla Semantycznej MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'Silnik przestrzeni dyskowej został pomyślnie ustawiony.',
 	'smw_smwadmin_return' => 'Powrót do $1',
 	'smw_smwadmin_updatestarted' => 'Uruchomiono nowy proces aktualizacji danych semantycznych.
