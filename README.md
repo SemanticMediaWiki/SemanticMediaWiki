@@ -20,7 +20,10 @@ allowing other systems to use this data seamlessly.
 For details and further links, see [the SMW wiki](https://semantic-mediawiki.org).
 
 ## Installation
-The easiest way to install Semantic MediaWiki is by using [Composer](http://getcomposer.org/). It is recommended to read the [installation instructions](docs/INSTALL.md) together with the available [upgrade guide](https://www.semantic-mediawiki.org/wiki/Help:Installation).
+
+The easiest way to install Semantic MediaWiki is by using [Composer](http://getcomposer.org/).
+It is recommended to read the [installation instructions](docs/INSTALL.md) together with
+the available [upgrade guide](https://www.semantic-mediawiki.org/wiki/Help:Installation).
 
 ## Documentation
 
