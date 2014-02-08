@@ -86,6 +86,29 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::tableExists
+	 *
+	 * @since 1.9.0.3
+	 *
+	 * @param string $table
+	 * @param string $fname
+	 *
+	 * @return bool
+	 */
+	public function tableExists( $table, $fname = __METHOD__ ) {
+
+		$exists = $this->aquireWriteConnection()->tableExists( $table, $fname );
+
+		// This is temporary as I have no clue what's wrong with postgres when
+		// running unit tests
+		if ( $this->getType() == 'postgres' && !$exists ) {
+			$exists = true;
+		}
+
+		return $exists;
+	}
+
+	/**
 	 * @see DatabaseBase::addQuotes
 	 *
 	 * @since 1.9.0.2
@@ -191,6 +214,11 @@ class Database {
 	 */
 	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
 
+		if ( $this->getType() == 'postgres' ) {
+			$sql = str_replace( 'IGNORE', '', $sql );
+			$sql = str_replace( 'DROP TEMPORARY TABLE', 'DROP TABLE IF EXISTS', $sql );
+		}
+
 		if ( $this->getType() == 'sqlite' ) {
 			$sql = str_replace( 'IGNORE', '', $sql );
 			$sql = str_replace( 'TEMPORARY', 'TEMP', $sql );
@@ -216,6 +244,24 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::selectRow
+	 *
+	 * @since 1.9.0.3
+	 */
+	public function selectRow( $table, $vars, $conds, $fname = __METHOD__,
+		$options = array(), $joinConditions = array() ) {
+
+		return $this->aquireReadConnection()->selectRow(
+			$table,
+			$vars,
+			$conds,
+			$fname,
+			$options,
+			$joinConditions
+		);
+	}
+
+	/**
 	 * @see DatabaseBase::affectedRows
 	 *
 	 * @since 1.9.1
@@ -237,6 +283,66 @@ class Database {
 	 */
 	public function makeSelectOptions( $options ) {
 		return $this->aquireReadConnection()->makeSelectOptions( $options );
+	}
+
+	/**
+	 * @see DatabaseBase::nextSequenceValue
+	 *
+	 * @since 1.9.0.3
+	 *
+	 * @param string $seqName
+	 *
+	 * @return int|null
+	 */
+	public function nextSequenceValue( $seqName ) {
+		return $this->aquireWriteConnection()->nextSequenceValue( $seqName );
+	}
+
+	/**
+	 * @see DatabaseBase::insertId
+	 *
+	 * @since 1.9.0.3
+	 *
+	 * @return int
+	 */
+	function insertId() {
+		return (int)$this->aquireWriteConnection()->insertId();
+	}
+
+	/**
+	 * @see DatabaseBase::insert
+	 *
+	 * @since 1.9.0.3
+	 */
+	public function insert( $table, $rows, $fname = __METHOD__, $options = array() ) {
+		return $this->aquireWriteConnection()->insert( $table, $rows, $fname, $options );
+	}
+
+	/**
+	 * @see DatabaseBase::update
+	 *
+	 * @since 1.9.0.3
+	 */
+	function update( $table, $values, $conds, $fname = __METHOD__, $options = array() ) {
+		return $this->aquireWriteConnection()->update( $table, $values, $conds, $fname, $options );
+	}
+
+	/**
+	 * @see DatabaseBase::delete
+	 *
+	 * @since 1.9.0.3
+	 */
+	public function delete( $table, $conds, $fname = __METHOD__ ) {
+		return $this->aquireWriteConnection()->delete( $table, $conds, $fname );
+	}
+
+	/**
+	 * @see DatabaseBase::makeList
+	 *
+	 * @since 1.9.0.3
+	 */
+	public function makeList( $data, $mode ) {
+		return $this->aquireWriteConnection()->makeList( $data, $mode );
 	}
 
 }

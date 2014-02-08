@@ -110,7 +110,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
-	public function testQuerySQLite() {
+	public function testQueryOnSQLite() {
 
 		$resultWrapper = $this->getMockBuilder( 'ResultWrapper' )
 			->disableOriginalConstructor()
@@ -119,7 +119,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$connectionProvider = new MockDBConnectionProvider();
 		$database = $connectionProvider->getMockDatabase();
 
-		$database->expects( $this->once() )
+		$database->expects( $this->any() )
 			->method( 'getType' )
 			->will( $this->returnValue( 'sqlite' ) );
 
