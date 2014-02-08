@@ -330,3 +330,12 @@ span.smwb-ivalue {
 	display:inline-block;
 	padding: 0px !important;
 }
+
+/* @since 1.9.1 */
+table.smw-ask-query .smw-ask-query-condition {
+	width: 100%;
+}
+
+table.smw-ask-query .smw-ask-query-printout {
+	width: 100%;
+}
