@@ -81,16 +81,18 @@ class SMWLanguageDe extends SMWLanguage {
 		'_ASKSI'=> 'Abfragegröße',
 		'_ASKDE'=> 'Abfragetiefe',
 		'_ASKDU'=> 'Abfragedauer',
-		'_MEDIA'=> 'Media type',
-		'_MIME' => 'Mime type'
+		'_MEDIA'=> 'Medientyp',
+		'_MIME' => 'MIME-Typ'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
 		'Hat Datentyp'		=> '_TYPE',
 		'Hat erlaubten Wert'	=> '_PVAL',
 		'Hat Einheiten' 	=> '_UNIT',
+		'Hat Medientyp'         => '_MEDIA',
+		'Hat MIME-Typ'          => '_MIME',
 		'Ausgabeeinheit'	=> '_UNIT',
-		'Gleichwertige URI von' => '_URI',
+		'Gleichwertige URI von' => '_URI'
 	);
 
 	protected $m_Namespaces = array(
