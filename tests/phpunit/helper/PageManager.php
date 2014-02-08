@@ -12,7 +12,7 @@ use UnexpectedValueException;
  * @group SMWExtension
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.3
+ * @since 1.9.1
  */
 class PageCreator {
 
@@ -20,7 +20,7 @@ class PageCreator {
 	protected $page = null;
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return WikiPage
 	 * @throws UnexpectedValueException
@@ -35,7 +35,7 @@ class PageCreator {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return PageCreator
 	 */
@@ -50,7 +50,7 @@ class PageCreator {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return PageCreator
 	 */

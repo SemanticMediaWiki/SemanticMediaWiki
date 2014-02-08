@@ -109,7 +109,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return WikiFilePage
 	 */
@@ -131,7 +131,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return File
 	 */

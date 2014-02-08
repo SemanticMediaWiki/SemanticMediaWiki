@@ -18,14 +18,14 @@ use RuntimeException;
  * @group SMWExtension
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.3
+ * @since 1.9.1
  *
  * @author mwjames
  */
 class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param SemanticData $semanticData
 	 */
@@ -37,7 +37,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param SemanticData $semanticData
 	 */
@@ -49,7 +49,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param array $expected
 	 * @param SemanticData $semanticData
@@ -87,7 +87,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param integer $count
 	 * @param SemanticData $semanticData
@@ -102,7 +102,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param array $expected
 	 * @param DIProperty $property
@@ -156,7 +156,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * 'propertyLabels' => array() or 'propertyKeys' => array()
 	 * 'propertyValues' => array()
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param array $expected
 	 * @param SemanticData $semanticData
@@ -213,7 +213,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param array $expected
 	 * @param DIProperty $property,

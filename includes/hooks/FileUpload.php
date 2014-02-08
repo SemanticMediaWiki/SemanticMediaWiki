@@ -14,7 +14,7 @@ use File;
  * @ingroup FunctionHook
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.3
+ * @since 1.9.1
  *
  * @author mwjames
  */
@@ -25,7 +25,7 @@ class FileUpload extends FunctionHook {
 	protected $fileReUploadStatus = false;
 
 	/**
-	 * @since  1.9.0.3
+	 * @since  1.9.1
 	 *
 	 * @param File $file
 	 * @param boolean $fileReUploadStatus
@@ -38,7 +38,7 @@ class FileUpload extends FunctionHook {
 	/**
 	 * @see FunctionHook::process
 	 *
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return true
 	 */

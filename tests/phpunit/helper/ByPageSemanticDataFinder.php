@@ -19,7 +19,7 @@ use UnexpectedValueException;
  * @group SMWExtension
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.3
+ * @since 1.9.1
  *
  * @author mwjames
  */
@@ -29,7 +29,7 @@ class ByPageSemanticDataFinder {
 	protected $title = null;
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param Store $store
 	 *
@@ -41,7 +41,7 @@ class ByPageSemanticDataFinder {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param Title $title
 	 *
@@ -53,7 +53,7 @@ class ByPageSemanticDataFinder {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return SemanticData
 	 */
@@ -62,7 +62,7 @@ class ByPageSemanticDataFinder {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return SemanticData
 	 */

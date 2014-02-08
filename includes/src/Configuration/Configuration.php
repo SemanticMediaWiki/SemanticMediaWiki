@@ -8,7 +8,7 @@ use InvalidArgumentException;
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.3
+ * @since 1.9.1
  *
  * @author mwjames
  */
@@ -21,7 +21,7 @@ class Configuration {
 	protected $container = null;
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @return Configuration
 	 */
@@ -35,14 +35,14 @@ class Configuration {
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 */
 	public static function clear() {
 		self::$instance = null;
 	}
 
 	/**
-	 * @since 1.9.0.3
+	 * @since 1.9.1
 	 *
 	 * @param string $key
 	 *
