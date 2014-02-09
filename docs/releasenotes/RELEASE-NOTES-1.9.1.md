@@ -4,8 +4,7 @@ Released February 9th, 2014.
 
 ### New features
 
-* #162 Added possibility to create `_MEDIA` [(special property "Media type")]
-(https://semantic-mediawiki.org/wiki/Help:Special_property_Media_type) and `_MIME`
+* #162 Added possibility to create `_MEDIA` [(special property "Media type")](https://semantic-mediawiki.org/wiki/Help:Special_property_Media_type) and `_MIME`
 [(special property "MIME type")](https://semantic-mediawiki.org/wiki/Help:Special_property_MIME_type)
 property annotation when uploading a file (This feature can only be used with appropriate
 [`$smwgPageSpecialProperties`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPageSpecialProperties)
@@ -28,8 +27,7 @@ not be loaded on some wikis
 * #151 (Bug 50155) Fixed issue with category hierarchies on SQLite
 * #164 (Bug 19487) Fixed update of predefined properties when uploading a file
 * #166 Fixed Factbox display issue during preview and edit mode
-* #170 Fixed 1.9.0 regression of [special property "Is a new page"
-(https://semantic-mediawiki.org/wiki/Help:Special_property_Is_a_new_page) (`_NEWP`)
+* #170 Fixed 1.9.0 regression of [special property "Is a new page"](https://semantic-mediawiki.org/wiki/Help:Special_property_Is_a_new_page) (`_NEWP`)
 (Run ["SMW_refreshData.php"](https://semantic-mediawiki.org/wiki/Help:SMW_refreshData.php)
 to amend falsely set values.)
 
