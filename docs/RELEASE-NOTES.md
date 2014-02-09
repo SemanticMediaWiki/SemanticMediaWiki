@@ -4,8 +4,7 @@ Released February 9th, 2014.
 
 ### New features
 
-* #162 Added possibility to create `_MEDIA` [(special property "Media type")]
-(https://semantic-mediawiki.org/wiki/Help:Special_property_Media_type) and `_MIME`
+* #162 Added possibility to create `_MEDIA` [(special property "Media type")](https://semantic-mediawiki.org/wiki/Help:Special_property_Media_type) and `_MIME`
 [(special property "MIME type")](https://semantic-mediawiki.org/wiki/Help:Special_property_MIME_type)
 property annotation when uploading a file (This feature can only be used with appropriate
 [`$smwgPageSpecialProperties`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPageSpecialProperties)
