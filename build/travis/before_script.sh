@@ -100,6 +100,9 @@ function configureLocalSettings {
 	echo 'ini_set("display_errors", 1);' >> LocalSettings.php
 	echo '$wgShowExceptionDetails = true;' >> LocalSettings.php
 	echo '$wgDevelopmentWarnings = true;' >> LocalSettings.php
+	echo 'wgShowSQLErrors = true;' >> LocalSettings.php
+	echo 'wgDebugDumpSql = true;' >> LocalSettings.php
+	echo 'wgShowDBErrorBacktrace = true;' >> LocalSettings.php
 	echo "putenv( 'MW_INSTALL_PATH=$(pwd)' );" >> LocalSettings.php
 }
 
