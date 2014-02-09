@@ -150,7 +150,7 @@ Now using Composer, install Semantic MediaWiki.
 
 If you do not have a composer.json file yet, copy the composer-example.json file to composer.json. If you are using the Extension Installer extension, the file to copy will be named example.json, rather than composer-example.json. When this is done, run:
     
-    php composer.phar require mediawiki/semantic-media-wiki "1.9.*,>=1.9.0.1"
+    php composer.phar require mediawiki/semantic-media-wiki "~1.9.1"
 
 ##### Step 4
 
