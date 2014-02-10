@@ -72,8 +72,8 @@ class SMWLanguageEs extends SMWLanguage {
 		'_ASKSI'=> 'Tamaño de consulta',
 		'_ASKDE'=> 'Profundidad de consulta',
 		'_ASKDU'=> 'Duración de consulta',
-		'_MEDIA'=> 'Media type',
-		'_MIME' => 'Mime type'
+		'_MEDIA'=> 'Tipo Media',
+		'_MIME' => 'Tipo MIME'
 	);
 
 	protected $m_SpecialPropertyAliases = array(
