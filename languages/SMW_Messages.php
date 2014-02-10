@@ -12164,8 +12164,8 @@ Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça
 	'smw_emptystring' => 'Cadeias de caracteres vazias não são aceitas.',
 	'smw_notinenum' => '"$1" não está na lista de valores possíveis ($2) para esta propriedade.',
 	'smw_noboolean' => '"$1" não é reconhecido como um valor Booleano (verdadeiro/falso).',
-	'smw_true_words' => 'verdadeiro,v,sim,s',
-	'smw_false_words' => 'falso,f,não,nao,n',
+	'smw_true_words' => 'verdadeiro,v,sim,s,true,t,yes,y',
+	'smw_false_words' => 'falso,f,não,nao,n,false,no',
 	'smw_nofloat' => '"$1" não é um número.',
 	'smw_infinite' => 'Números tão grandes como "$1" não são suportados.',
 	'smw_unitnotallowed' => '"$1" não está declarado como unidade de medida válida para esta propriedade.',
@@ -12392,6 +12392,10 @@ Progresso estimado da atualização corrente:',
 	'smw-sp-properties-docu' => 'Esta página exibe as [https://www.semantic-mediawiki.org/wiki/Property propriedades] que estão disponíveis e, quando filtradas, somente as propriedades definidas por usuários que correspondem à condição serão exibidas. Para uma visualização diferenciada, veja a página especial [[Special:UnusedProperties|propriedades não utilizadas]] ou [[Special:WantedProperties|propriedades desejadas]].',
 	'smw-sp-properties-cache-info' => 'Os dados listados foram extraídos do [https://www.semantic-mediawiki.org/wiki/Caching cache] e atualizados pela última vez em $1.',
 	'smw-sp-properties-header-label' => 'Lista de propriedades',
+	'smw-sp-admin-settings-title' => 'Configurações',
+	'smw-sp-admin-settings-docu' => 'Exibe uma lista contendo todos as configurações <code>padrão</code> e <code>locais</code> que são relevantes ao ambiente do Semantic MediaWiki.
+Para detalhes sobre configurações individuais, por favor, consulte a [https://semantic-mediawiki.org/wiki/Help:Configuration página de ajuda sobre configuração].',
+	'smw-sp-admin-settings-button' => 'Gerar lista de configurações',
 );
 
 /** Quechua (Runa Simi)
