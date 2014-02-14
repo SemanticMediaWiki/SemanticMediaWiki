@@ -4506,7 +4506,7 @@ Si el problema persiste después de pasado algún tiempo, solicita al administra
 	'smw_true_words' => 'verdadero,t,si,s,true',
 	'smw_false_words' => 'falso,f,no,n,false',
 	'smw_nofloat' => '"$1" no es un número.',
-	'smw_infinite' => 'números tan largos como $1 no son soportados.',
+	'smw_infinite' => 'No se admiten números del tamaño de «$1».',
 	'smw_unitnotallowed' => '"$1" no está declarada como una unidad de medida válida para esta propiedad.',
 	'smw_nounitsdeclared' => 'No hyi unidades de medida declaradas para esta propiedad.',
 	'smw_novalues' => 'No se ha especificado valores.',
