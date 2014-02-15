@@ -2993,7 +2993,7 @@ $messages['ce'] = array(
 	'smw_result_noresults' => 'Бехк ма биллалаш, хӀума ца карийна.',
 	'smw_smwadmin_db' => 'Хааман база дӏахӏоттор а керла яккхар а',
 	'smw_smwadmin_datarefresh' => 'Хаам меттахӏоттор а керла баккхар а',
-	'smw_smwadmin_datarefreshbutton' => 'Хаам керла баккха дӏадоладе',
+	'smw_smwadmin_datarefreshbutton' => 'Доладе хаамаш карлабахар',
 	'smw-paramdesc-category-delim' => 'ДӀасакъастораг',
 	'smw-ui-tooltip-title-info' => 'Хаам',
 	'smw-ui-tooltip-title-warning' => 'ГӀалат',
@@ -4506,7 +4506,7 @@ Si el problema persiste después de pasado algún tiempo, solicita al administra
 	'smw_true_words' => 'verdadero,t,si,s,true',
 	'smw_false_words' => 'falso,f,no,n,false',
 	'smw_nofloat' => '"$1" no es un número.',
-	'smw_infinite' => 'números tan largos como $1 no son soportados.',
+	'smw_infinite' => 'No se admiten números del tamaño de «$1».',
 	'smw_unitnotallowed' => '"$1" no está declarada como una unidad de medida válida para esta propiedad.',
 	'smw_nounitsdeclared' => 'No hyi unidades de medida declaradas para esta propiedad.',
 	'smw_novalues' => 'No se ha especificado valores.',
@@ -12164,8 +12164,8 @@ Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça
 	'smw_emptystring' => 'Cadeias de caracteres vazias não são aceitas.',
 	'smw_notinenum' => '"$1" não está na lista de valores possíveis ($2) para esta propriedade.',
 	'smw_noboolean' => '"$1" não é reconhecido como um valor Booleano (verdadeiro/falso).',
-	'smw_true_words' => 'verdadeiro,v,sim,s',
-	'smw_false_words' => 'falso,f,não,nao,n',
+	'smw_true_words' => 'verdadeiro,v,sim,s,true,t,yes,y',
+	'smw_false_words' => 'falso,f,não,nao,n,false,no',
 	'smw_nofloat' => '"$1" não é um número.',
 	'smw_infinite' => 'Números tão grandes como "$1" não são suportados.',
 	'smw_unitnotallowed' => '"$1" não está declarado como unidade de medida válida para esta propriedade.',
@@ -12392,6 +12392,10 @@ Progresso estimado da atualização corrente:',
 	'smw-sp-properties-docu' => 'Esta página exibe as [https://www.semantic-mediawiki.org/wiki/Property propriedades] que estão disponíveis e, quando filtradas, somente as propriedades definidas por usuários que correspondem à condição serão exibidas. Para uma visualização diferenciada, veja a página especial [[Special:UnusedProperties|propriedades não utilizadas]] ou [[Special:WantedProperties|propriedades desejadas]].',
 	'smw-sp-properties-cache-info' => 'Os dados listados foram extraídos do [https://www.semantic-mediawiki.org/wiki/Caching cache] e atualizados pela última vez em $1.',
 	'smw-sp-properties-header-label' => 'Lista de propriedades',
+	'smw-sp-admin-settings-title' => 'Configurações',
+	'smw-sp-admin-settings-docu' => 'Exibe uma lista contendo todos as configurações <code>padrão</code> e <code>locais</code> que são relevantes ao ambiente do Semantic MediaWiki.
+Para detalhes sobre configurações individuais, por favor, consulte a [https://semantic-mediawiki.org/wiki/Help:Configuration página de ajuda sobre configuração].',
+	'smw-sp-admin-settings-button' => 'Gerar lista de configurações',
 );
 
 /** Quechua (Runa Simi)
@@ -12873,6 +12877,7 @@ $messages['ru'] = array(
 	'smw-info-par-icon' => 'Значок для отображения («информация» или «предупреждение»).',
 	'prefs-smw' => 'Семантическая МедиаВики',
 	'prefs-ask-options' => 'Параметры семантического поиска',
+	'smw-prefs-intro-text' => 'Настройки ниже представлены к [https://semantic-mediawiki.org/ Семантической MediaWiki] (или связанными с ней расширениям) для того, чтобы включить отдельные настройки по выбранным функциям. Для получения дополнительной информации, пожалуйста, посмотрите в [https://semantic-mediawiki.org/wiki/Help:User_preferences раздел справки].',
 	'smw-prefs-ask-options-tooltip-display' => 'Отображать параметр «текст» в виде всплывающей подсказки',
 	'smw-prefs-ask-options-collapsed-default' => 'Включить панель параметров свёрнутой по умолчанию',
 	'smw-ui-tooltip-title-property' => 'Свойство',
@@ -15498,10 +15503,10 @@ $messages['zh-cn'] = array(
 $messages['zh-hans'] = array(
 	'smw-desc' => "让你的wiki更可及——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
 	'smw_viewasrdf' => 'RDF源',
-	'smw_finallistconjunct' => '和',
-	'smw_factbox_head' => '关于 $1 的信息',
-	'smw_isspecprop' => '此属性为维基中特殊属性',
-	'smw_concept_description' => '概念"$1"的描述',
+	'smw_finallistconjunct' => '，和',
+	'smw_factbox_head' => '关于“$1”的信息',
+	'smw_isspecprop' => '此属性为维基中特殊属性。',
+	'smw_concept_description' => '概念“$1”的描述',
 	'smw_no_concept_namespace' => '概念只能在Concept:名字空间中定义。',
 	'smw_multiple_concepts' => '一个概念页面只能有一个概念定义。',
 	'smw_concept_cache_miss' => '因为维基设置需要概念"$1"在离线时计算，此概念现在无法使用。
@@ -15625,6 +15630,9 @@ $messages['zh-hans'] = array(
 	'smw_propertyhardlyused' => '此属性在本维基中不常使用。',
 	'smw-property-name-invalid' => '属性$1不能使用（无效的属性名称）。',
 	'smw-sp-property-searchform' => '显示包含...的属性：',
+	'concepts' => '概念',
+	'smw-sp-concept-header' => '概念列表',
+	'smw-sp-concept-empty' => '没有找到概念。',
 	'unusedproperties' => '未使用特性',
 	'smw_unusedproperties_docu' => '以下属性在本维基中存在但未被使用。',
 	'smw_unusedproperty_template' => '类型为$2的属性$1',
@@ -15638,6 +15646,9 @@ $messages['zh-hans'] = array(
 	'semanticstatistics' => '语义统计',
 	'smw_semstats_text' => "此维基包含 '''$1''' 个属性{{PLURAL:$1|值|值}}，源自 '''$2''' 个[[Special:Properties|{{PLURAL:$2|属性|不同属性}}]]。'''$3''' 个{{PLURAL:$3|属性有|属性有}}自己的页，并且预期的数据类型被指定为 '''$4'''。某些已经存在的属性也许是[[Special:UnusedProperties|无用属性]]。缺乏页的属性可以在[[Special:WantedProperties|需要的属性列表]]中找到。",
 	'smw-statistics' => '语义统计',
+	'smw-statistics-property-instance' => '$1个属性值（总计）',
+	'smw-statistics-property-total' => '[[Special:Properties|$1个属性]]（总计）',
+	'smw-statistics-property-total-legacy' => '$1个属性（总计）',
 	'smw-statistics-query-size' => '查询大小',
 	'smw_uri_doc' => 'URI 分析器实现[$1 W3C httpRange-14 标记查找]。它将处理那些没有网站内容的页。',
 	'ask' => '语义搜索',
@@ -15771,6 +15782,7 @@ $messages['zh-hans'] = array(
 	'grouppage-smwadministrator' => '{{ns:project}}:SMW管理员',
 	'action-smw-admin' => '连接Semantic MediaWiki管理员工作组',
 	'smw-sp-properties-header-label' => '属性列表',
+	'smw-sp-admin-settings-title' => '配置设置',
 );
 
 /** Traditional Chinese (中文（繁體）‎)
@@ -15780,6 +15792,7 @@ $messages['zh-hans'] = array(
  * @author Gzdavidwong
  * @author Justincheng12345
  * @author Littletung
+ * @author Liuxinyu970226
  * @author Mark85296341
  * @author Oapbtommy
  * @author Sheepy
@@ -15818,6 +15831,7 @@ $messages['zh-hant'] = array(
 	'smw_printername_template' => '模板',
 	'smw_printername_rdf' => '導出為RDF',
 	'smw_printername_category' => '類別',
+	'validator-type-class-SMWParamSource' => '文本',
 	'smw-paramdesc-limit' => '返回結果最大數目',
 	'smw-paramdesc-offset' => '第一個結果的偏移量',
 	'smw-paramdesc-headers' => '顯示頭/屬性名稱',
@@ -15852,8 +15866,12 @@ $messages['zh-hant'] = array(
 	'smw-paramdesc-searchlabel' => '繼續搜索文本',
 	'smw-paramdesc-named_args' => '請指定傳遞給該模板的變量',
 	'smw-paramdesc-export' => '導出選項',
+	'smw-paramdesc-jsonsyntax' => '將使用的JSON語法',
+	'smw-printername-feed' => 'RSS和Atom訂閱',
+	'smw-paramdesc-feedtype' => '訂閱類型',
 	'smw-paramdesc-feedtitle' => '源標題文字',
 	'smw-paramdesc-feeddescription' => '源描述文字',
+	'smw-label-feed-description' => '$1 $2訂閱',
 	'smw_iq_disabled' => '此 wiki 的語義查詢已被停用',
 	'smw_iq_moreresults' => '更多結果',
 	'smw_parseerror' => '輸入的值無法理解。',
@@ -15945,6 +15963,7 @@ $messages['zh-hant'] = array(
 	'smw_ask_show_embed' => '顯示嵌入代碼',
 	'smw_ask_hide_embed' => '隱藏嵌入的代碼',
 	'smw_ask_embed_instr' => '使用以下代碼將查詢嵌入維基頁面。',
+	'smw-ask-delete' => '[刪除]',
 	'smw-ask-sorting' => '排序',
 	'searchbyproperty' => '按屬性查詢',
 	'smw_sbv_docu' => '搜尋所有已設定屬性和值的頁面。',
@@ -15999,8 +16018,7 @@ $messages['zh-hant'] = array(
 以下功能可幫助你正確設定資料庫。
 這個步驟所做的修改不會影響 MediaWiki 資料庫的其他部分，如果需要，可以方便地撤銷所做的修改。
 這個定射功能可多次執行，不會造成任何危害。但是只需在安裝或升級時執行一次即可。',
-	'smw_smwadmin_permissionswarn' => '如果操作因 SQL 錯誤而失敗，可能是維基的資歷庫用戶（檢查 LocalSettings.php）沒有相應權限。
-你可以向該用戶賦予建立和刪除表格的權限，或臨時將資料庫根用戶的登入資訊輸入 LocalSettings.php。你也可以使用維護腳本<code>SMW_setup.php</code>，這個腳本可以使用 AdminSettings.php 中的資訊。', # Fuzzy
+	'smw_smwadmin_permissionswarn' => '如果操作因SQL錯誤而失敗，可能是維基的資歷庫用戶（檢查您的LocalSettings.php）沒有相應權限。你可以向該用戶賦予建立和刪除表格的權限，或臨時將資料庫根用戶的登入資訊輸入LocalSettings.php，或使用維護腳本<code>SMW_setup.php</code>，這個腳本可以使用 AdminSettings.php 中的資訊。',
 	'smw_smwadmin_dbbutton' => '初始化或升級表格',
 	'smw_smwadmin_announce' => '發布 wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki 提供一個網路服務，用於公告新的語意維基網站。
@@ -16022,7 +16040,7 @@ $messages['zh-hant'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => '是的，我確認。',
 	'smw_smwadmin_support' => '獲得協助',
 	'smw_smwadmin_supportdocu' => '遇到問題時，可以使用以下資源獲得幫助：',
-	'smw_smwadmin_installfile' => '如果安裝遇到問題，請先仔細閱讀<a href=「http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL 文件</a>中的指引。',
+	'smw_smwadmin_installfile' => '如果安裝遇到問題，請先仔細閱讀<a href=「http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL 文件</a>中的指引。', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki的完整用戶文檔請查閱 <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
 	'smw_smwadmin_mediazilla' => '臭蟲可到<a href="https://bugzilla.wikimedia.org/">Bugzilla</a>報告。',
 	'smw_smwadmin_questions' => '如果有問題或建議，可加入<a href= 「http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user」>Semantic MediaWiki 用戶論壇</a>參與討論。',
@@ -16036,6 +16054,9 @@ $messages['zh-hant'] = array(
 	'smw-paramdesc-category-userparam' => '傳遞給模板的參數',
 	'smw-info-par-message' => '顯示的信息。',
 	'smw-info-par-icon' => '顯示的圖標，“信息”或“警告”。',
+	'prefs-smw' => '語義MediaWiki',
+	'prefs-ask-options' => '語義搜尋選項',
+	'smw-ui-tooltip-title-property' => '屬性',
 	'smw-ui-tooltip-title-quantity' => '數量',
 	'smw-ui-tooltip-title-info' => '資訊',
 	'smw-ui-tooltip-title-service' => '服務連結',
@@ -16047,6 +16068,11 @@ $messages['zh-hant'] = array(
 	'smw_unknowntype' => '此定義的屬性類型不被支援',
 	'smw_concept_header' => '概念「$1」的頁面',
 	'smw_conceptarticlecount' => '顯示屬於此概念的 $1 {{PLURAL:$1|page|頁面}}。', # Fuzzy
+	'group-smwadministrator' => '語義MediaWiki管理員',
+	'group-smwadministrator-member' => '{{GENDER:$1|管理員（SMW）}}',
+	'grouppage-smwadministrator' => '{{ns:project}}:SMW管理員',
+	'smw-sp-properties-header-label' => '屬性列表',
+	'smw-sp-admin-settings-title' => '配置設定',
 );
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
