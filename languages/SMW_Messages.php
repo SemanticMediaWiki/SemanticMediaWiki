@@ -432,6 +432,9 @@ Estimated progress of current update:',
 	'smw-sp-admin-settings-title' => 'Configuration settings',
 	'smw-sp-admin-settings-docu' => 'Displays a list of all <code>default</code> and <code>localized settings</code> that are relevant to the Semantic MediaWiki environment. For details on individual settings, please consult the [https://semantic-mediawiki.org/wiki/Help:Configuration configuration] help page.',
 	'smw-sp-admin-settings-button' => 'Generate settings list',
+	'smw-sp-admin-idlookup-title' => 'ObjectId lookup',
+	'smw-sp-admin-idlookup-docu' => 'Displays details about an internal object Id that represents individual entities (wikipage, subobject etc.) in Semantic MediaWiki.',
+	'smw-sp-admin-idlookup-objectid' => 'Object Id:',
 
 );
 
@@ -1024,6 +1027,9 @@ Preceded by the heading {{msg-mw|Smw-sp-admin-settings-title}}.',
 
 Preceded by introduction:
 * {{msg-mw|Smw-sp-admin-settings-docu}}',
+	'smw-sp-admin-idlookup-title' => 'A header title',
+	'smw-sp-admin-idlookup-docu' => 'Introductory text for the objectId lookup section in [[Special:SMWAdmin]]',
+	'smw-sp-admin-idlookup-objectid' => 'A label',
 );
 
 /** Afrikaans (Afrikaans)

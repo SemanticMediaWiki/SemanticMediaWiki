@@ -39,14 +39,12 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 
 		$this->setExpectedException( 'PermissionsError' );
 		$this->execute( '', null, new User );
-
 	}
 
 	public function testExecute() {
 
 		$this->execute( '', null, new MockSuperUser );
 		$this->assertInternalType( 'string', $this->getText() );
-
 	}
 
 	/**
@@ -56,7 +54,49 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 
 		$this->execute( '', new FauxRequest( array( 'action' => 'listsettings' ) ), new MockSuperUser );
 		$this->assertInternalType( 'string', $this->getText() );
+	}
 
+	/**
+	 * @depends testExecute
+	 */
+	public function testExecuteOnIdLookup() {
+
+		$fakeIdTableClass = new FakeClass;
+		$fakeIdTableClass->getIdTable = function() { return 'fake_foo_table'; };
+
+		$selectRow = new \stdClass;
+		$selectRow->smw_title = 'Queey';
+
+		$database = $this->getMockBuilder( 'SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->once() )
+			->method( 'selectRow' )
+			->with( $this->equalTo( 'fake_foo_table' ) )
+			->will( $this->returnValue( $selectRow ) );
+
+		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $database ) );
+
+		$store->expects( $this->once() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $fakeIdTableClass ) );
+
+		$this->setStore( $store );
+		$this->execute( '', new FauxRequest(
+			array(
+				'action' => 'idlookup',
+				'objectId' => '9999'
+			) ), new MockSuperUser
+		);
+
+		$this->assertInternalType( 'string', $this->getText() );
 	}
 
 }

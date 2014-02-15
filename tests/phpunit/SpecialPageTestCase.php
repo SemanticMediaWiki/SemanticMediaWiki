@@ -24,6 +24,7 @@ use OutputPage;
 abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 
 	protected $obLevel;
+	protected $store = null;
 
 	protected function setUp() {
 		parent::setUp();
@@ -46,6 +47,10 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected abstract function getInstance();
 
+	protected function setStore( $store ) {
+		$this->store = $store;
+	}
+
 	/**
 	 * Borrowed from \Wikibase\Test\SpecialPageTestBase
 	 *
@@ -58,6 +63,11 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 		$response = $request->response();
 
 		$page = $this->getInstance();
+
+		if ( $this->store !== null ) {
+			$page->setStore( $this->store );
+		}
+
 		$page->setContext( $this->makeRequestContext(
 			$request,
 			$user,
