@@ -1138,6 +1138,7 @@ $messages['an'] = array(
  * @author OsamaK
  * @author Ouda
  * @author أحمد
+ * @author الهميان
  * @author روخو
  */
 $messages['ar'] = array(
@@ -1196,6 +1197,7 @@ $messages['ar'] = array(
 	'smw-paramdesc-csv-sep' => 'الفاصلة المُستَخدَمة',
 	'smw-paramdesc-dsv-separator' => 'الفاصلة المُستَخدَمة',
 	'smw-paramdesc-dsv-filename' => 'اسم ملف DSV',
+	'smw-paramdesc-filename' => 'الاسم للملف المستخرج',
 	'smw-smwdoc-description' => 'يعرض جدولا يضمّ كل المعامِلات التي يمكن استخدامها مع صيغة النتائج المختارة مع قيمها المبدئية و وصفها.',
 	'smw-smwdoc-par-format' => 'صيغة النتائج التي تُعرض تفاصيل معامِلاتها.',
 	'smw-smwdoc-par-parameters' => 'أي المعاملات تُعرَض. "specific" تعني الخاصة بالصيغة المختارة و "base" تعني المشتركة بين كل الصيغ و "all" تعني كلّها.',
@@ -1273,9 +1275,11 @@ $messages['ar'] = array(
 	'smw_propertylackstype' => 'لم يحدد نوع لهذه الخصيصة (افتُرِضَ النوع $1 مؤقتا).',
 	'smw_propertyhardlyused' => 'هذه الخصيصة تكاد لا تُستخدم في الويكي!',
 	'smw-property-name-invalid' => 'الخصيصة $1 لا يمكن استخدامها (اسم الخصيصة غير صحيح).',
+	'smw-sp-property-searchform' => 'عرض الخصائص التي تحتوي على:',
+	'smw-sp-property-searchform-inputinfo' => 'الإدخال حساس لحالة الأحرف، وعندما تستخدم للتصفية، يتم عرض الخصائص التي تتطابق مع الشرط فقط.',
 	'concepts' => 'المفاهيم',
 	'smw-sp-concept-docu' => 'يمكن عدّ [https://www.semantic-mediawiki.org/wiki/Help:Concepts المفهوم] تصنيفا ديناميًّا، أي تعدادا لمجموعة من الصفحات لم يُنشّأ يدويا، بل تُولّده ميدياويكي الدلالية من وصف استعلام مُعطى.',
-	'smw-sp-concept-header' => 'قائمة المفاهيم',
+	'smw-sp-concept-header' => 'قائمة مفاهيم',
 	'smw-sp-concept-count' => '{{PLURAL:$1|المفهوم|المفهومان|$1 المفاهيم}} التالية {{PLURAL:$1|مسرود|مسرودان|مسرودة}}',
 	'smw-sp-concept-empty' => 'لا توجد مفاهيم.',
 	'unusedproperties' => 'خصائص غير مستخدمة',
@@ -1437,6 +1441,7 @@ $messages['ar'] = array(
 	'smw_unknowntype' => 'نوع هذه الخصيصة غير مدعوم.',
 	'smw_concept_header' => 'صفحات المفهوم "$1"',
 	'smw_conceptarticlecount' => 'عرض {{PLURAL:$1||صفحة واحدة تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحة تنتمي}} إلى هذا المفهوم.', # Fuzzy
+	'smw-sp-properties-header-label' => 'قائمة خصائص',
 );
 
 /** Aramaic (ܐܪܡܝܐ)
