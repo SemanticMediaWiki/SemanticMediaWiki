@@ -3551,8 +3551,8 @@ Zurück zur Seite  $1.',
 Die folgende Funktion gewährleistet, dass die Datenbank richtig eingerichtet ist.
 Die Datenbankänderungen, die in diesem Schritt durchgeführt werden, beeinträchtigen den Rest der MediaWiki-Datenbank nicht. Sie können, sofern dies gewünscht ist, leicht rückgängig gemacht werden.
 Diese Einrichtungsfunktion kann mehrere Male ausgeführt werden, ohne Schaden zu verursachen. Sie braucht allerdings nur einmal, während der Installation oder Aktualisierung von Semantic MediaWiki, durchgeführt werden.',
-	'smw_smwadmin_permissionswarn' => 'Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei <code>LocalSettings.php</code>), über keine ausreichenden Rechte verfügt.
-Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei <code>LocalSettings.php</code> einzutragen, oder aber das Wartungsskript <code>SMW_setup.php</code> zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.',
+	'smw_smwadmin_permissionswarn' => 'Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei „LocalSettings.php“), über keine ausreichenden Rechte verfügt.
+Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datenbanktabellen einzuräumen, den Datenbankadministrator zeitweilig in die Datei „LocalSettings.php“ einzutragen, oder aber das Wartungsskript „SMW_setup.php“ zu nutzen, das von einem Servernutzer mit Administrationsberechtigung ausgeführt werden kann.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualisieren',
 	'smw_smwadmin_announce' => 'Wiki bekannt geben',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
