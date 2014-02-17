@@ -45,30 +45,31 @@ class ParserAfterTidy extends FunctionHook {
 	 * @return true
 	 */
 	public function process() {
-		return !$this->parser->getTitle()->isSpecialPage() ? $this->performUpdate( $this->parser->getTitle() ) : true;
+		return $this->canPerformUpdate() ? $this->performUpdate() : true;
 	}
 
-	/**
-	 * @note Article purge: In case an article was manually purged/moved
-	 * the store is updated as well and for all other cases LinksUpdateConstructed
-	 * will handle the store update
-	 *
-	 * @note Store update: For NS_FILE ParserAfterTidy is initiated several
-	 * times and somewhere in-between an empty ParserOuput object is
-	 * returned which would cause the existing output properties being overridden
-	 * therefore purge refresh for NS_FILE is not supported
-	 *
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
-	protected function performUpdate( Title $title ) {
+	protected function canPerformUpdate() {
+
+		if ( $this->parser->getTitle()->isSpecialPage() ) {
+			return false;
+		}
+
+		if ( $this->parser->getOutput()->getProperty( 'smw-semanticdata-status' ) ||
+			$this->parser->getOutput()->getCategoryLinks() ||
+			$this->parser->getDefaultSort() ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	protected function performUpdate() {
 
 		/**
 		 * @var ParserData $parserData
 		 */
 		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $title,
+			'Title'        => $this->parser->getTitle(),
 			'ParserOutput' => $this->parser->getOutput()
 		) );
 
@@ -83,14 +84,24 @@ class ParserAfterTidy extends FunctionHook {
 
 		$propertyAnnotator->attach( $parserData )->addAnnotation();
 
+		return $this->performStoreUpdateOnPurge( $parserData );
+	}
+
+	/**
+	 * @note Article purge: In case an article was manually purged/moved
+	 * the store is updated as well; for all other cases LinksUpdateConstructed
+	 * will handle the store update
+	 */
+	protected function performStoreUpdateOnPurge( $parserData ) {
+
 		/**
 		 * @var CacheHandler $cache
 		 */
 		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
 
-		$cache->setKey( ArticlePurge::newCacheId( $title->getArticleID() ) );
+		$cache->setKey( ArticlePurge::newCacheId( $this->parser->getTitle()->getArticleID() ) );
 
-		if( $cache->get() && !$title->inNamespace( NS_FILE ) ) {
+		if( $cache->get() ) {
 			$cache->delete();
 			$parserData->updateStore();
 		}

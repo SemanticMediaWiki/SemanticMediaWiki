@@ -178,10 +178,6 @@ class ContentParser {
 		return $this;
 	}
 
-	protected function hasContentHandler() {
-		return class_exists( 'ContentHandler' );
-	}
-
 	protected function msgForNullRevision( $fname = __METHOD__ ) {
 		$this->errors = array( $fname . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" );
 		return $this;
@@ -212,6 +208,10 @@ class ContentParser {
 		}
 
 		return $this->revision;
+	}
+
+	protected function hasContentHandler() {
+		return defined( 'CONTENT_MODEL_WIKITEXT' );
 	}
 
 }
