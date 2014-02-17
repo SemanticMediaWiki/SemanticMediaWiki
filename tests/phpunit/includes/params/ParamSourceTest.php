@@ -25,10 +25,6 @@ class ParamSourceTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			$this->getClass(),
 			new SMWParamSource( 'Foo',  'Bar' )
@@ -40,28 +36,9 @@ class ParamSourceTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFormatWithUnknownSource() {
 
-		$param = $this->getMockBuilder( '\ParamProcessor\IParam' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'setValue', 'getValue' ) )
-			->getMock();
+		list( $param, $definitions ) = $this->buildMockParamAndDefinitions( 'foo' );
 
-		$param->expects( $this->any() )
-			->method( 'getValue' )
-			->will( $this->returnValue( 'foo' ) );
-
-		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$paramDefinition->expects( $this->any() )
-			->method( 'getAllowedValues' )
-			->will( $this->returnValue( array( 'foo' ) ) );
-
-		$definitions = array(
-			'source' => $paramDefinition
-		);
-
-		$instance = new SMWParamSource( 'Foo',  'Bar' );
+		$instance = new SMWParamSource( 'Foo', 'Bar' );
 		$instance->format( $param, $definitions, array() );
 
 		$this->assertTrue( true );
@@ -73,9 +50,21 @@ class ParamSourceTest extends \PHPUnit_Framework_TestCase {
 	public function testFormatWithKnownSource() {
 
 		$source = $GLOBALS['smwgQuerySources'];
+
 		$GLOBALS['smwgQuerySources'] = array(
 			'wiki' => '\stdClass'
 		);
+
+		list( $param, $definitions ) = $this->buildMockParamAndDefinitions( 'wiki' );
+
+		$instance = new SMWParamSource( 'Foo', 'Bar' );
+		$instance->format( $param, $definitions, array() );
+
+		$this->assertTrue( true );
+		$GLOBALS['smwgQuerySources'] = $source;
+	}
+
+	protected function buildMockParamAndDefinitions( $value ) {
 
 		$param = $this->getMockBuilder( '\ParamProcessor\IParam' )
 			->disableOriginalConstructor()
@@ -84,7 +73,7 @@ class ParamSourceTest extends \PHPUnit_Framework_TestCase {
 
 		$param->expects( $this->any() )
 			->method( 'getValue' )
-			->will( $this->returnValue( 'wiki' ) );
+			->will( $this->returnValue( $value ) );
 
 		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
 			->disableOriginalConstructor()
@@ -92,17 +81,13 @@ class ParamSourceTest extends \PHPUnit_Framework_TestCase {
 
 		$paramDefinition->expects( $this->any() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( array( 'wiki' ) ) );
+			->will( $this->returnValue( array( $value ) ) );
 
 		$definitions = array(
 			'source' => $paramDefinition
 		);
 
-		$instance = new SMWParamSource( 'Foo',  'Bar' );
-		$instance->format( $param, $definitions, array() );
-
-		$this->assertTrue( true );
-		$GLOBALS['smwgQuerySources'] = $source;
+		return array( $param, $definitions );
 	}
 
 }
