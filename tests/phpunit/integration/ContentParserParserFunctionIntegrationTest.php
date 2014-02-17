@@ -24,7 +24,7 @@ use Parser;
  *
  * @author mwjames
  */
-class ParserFunctionIntegrationTest extends SemanticMediaWikiTestCase {
+class ContentParserParserFunctionIntegrationTest extends SemanticMediaWikiTestCase {
 
 	/** @var array */
 	private $parserHook = array();

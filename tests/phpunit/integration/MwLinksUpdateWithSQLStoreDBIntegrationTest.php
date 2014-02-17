@@ -203,16 +203,16 @@ class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
 			),
 			'afterAlterationRevId' => array(
 				'poBefore'  => array(
-					'count' => 1,
-					'msg'   => 'Asserts property _SKEY exists only before the update'
+					'count' => 0,
+					'msg'   => 'Asserts no property exists before the update'
 				),
 				'storeBefore' => array(
 					'count'   => 4,
 					'msg'     => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT from the previous state as no update has been made yet'
 				),
 				'poAfter'    => array(
-					'count'  => 2,
-					'msg'    => 'Asserts property _SKEY, _MDAT exists after the update'
+					'count'  => 1,
+					'msg'    => 'Asserts property _MDAT exists after the update'
 				),
 				'storeAfter' => array(
 					'count'  => 2,

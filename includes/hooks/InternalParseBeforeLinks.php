@@ -103,6 +103,11 @@ class InternalParseBeforeLinks extends FunctionHook {
 
 		$contentProcessor->parse( $this->text );
 
+		$this->parser->getOutput()->setProperty(
+			'smw-semanticdata-status',
+			$parserData->getSemanticData()->getProperties() !== array()
+		);
+
 		return true;
 	}
 

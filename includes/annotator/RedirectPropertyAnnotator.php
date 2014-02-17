@@ -57,7 +57,7 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function hasContentHandler() {
-		return class_exists( 'ContentHandler' );
+		return defined( 'CONTENT_MODEL_WIKITEXT' );
 	}
 
 }

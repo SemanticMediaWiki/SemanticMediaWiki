@@ -20,9 +20,6 @@ use SMW\ExtensionContext;
  */
 class ParserAfterTidyTest extends ParserTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\ParserAfterTidy';
 	}
@@ -82,6 +79,7 @@ class ParserAfterTidyTest extends ParserTestCase {
 	public function testProcess( $setup, $expected ) {
 
 		$parser = $this->newParser( $setup['title'], $this->getUser() );
+		$parser->getOutput()->setProperty( 'smw-semanticdata-status', $setup['data-status'] );
 		$text   = '';
 
 		$instance = $this->newInstance( $parser, $text );
@@ -126,6 +124,7 @@ class ParserAfterTidyTest extends ParserTestCase {
 		$parser = $this->newParser( $title, $this->getUser() );
 		$parser->getOutput()->addCategory( 'Foo', 'Foo' );
 		$parser->getOutput()->addCategory( 'Bar', 'Bar' );
+		$parser->getOutput()->setProperty( 'smw-semanticdata-status', true );
 
 		// Expected semantic data
 		$expected = array(
@@ -178,7 +177,8 @@ class ParserAfterTidyTest extends ParserTestCase {
 		$provider[] = array(
 			array(
 				'title'    => $title,
-				'cache'    => true
+				'cache'    => true,
+				'data-status' => true
 			),
 			array(
 				'observer' => 'runStoreUpdater'
@@ -193,7 +193,8 @@ class ParserAfterTidyTest extends ParserTestCase {
 		$provider[] = array(
 			array(
 				'title'    => $title,
-				'cache'    => false
+				'cache'    => false,
+				'data-status' => true
 			),
 			array(
 				'observer' => null
@@ -208,7 +209,8 @@ class ParserAfterTidyTest extends ParserTestCase {
 		$provider[] = array(
 			array(
 				'title'    => $title,
-				'cache'    => false
+				'cache'    => false,
+				'data-status' => true
 			),
 			array(
 				'observer' => null
@@ -224,10 +226,11 @@ class ParserAfterTidyTest extends ParserTestCase {
 		$provider[] = array(
 			array(
 				'title'    => $title,
-				'cache'    => true
+				'cache'    => true,
+				'data-status' => true
 			),
 			array(
-				'observer' => null
+				'observer' => 'runStoreUpdater'
 			)
 		);
 
