@@ -55,8 +55,10 @@ $magicWords['arz'] = array(
 	'show' => array( 0, 'عرض' ),
 	'info' => array( 0, 'معلومات' ),
 	'concept' => array( 0, 'مبدأ' ),
+	'subobject' => array( 0, 'كائن_فرعى' ),
+	'smwdoc' => array( 0, 'توثيق_سمو' ),
 	'set' => array( 0, 'مجموعة' ),
-	'set_recurring_event' => array( 0, 'ضبط_حدث_جاري' ),
+	'set_recurring_event' => array( 0, 'ضبط_حدث_جارى' ),
 	'declare' => array( 0, 'إعلان' ),
 	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقيقة__' ),
 	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__' ),
@@ -344,8 +346,23 @@ $magicWords['tt-cyrl'] = array(
 	'info' => array( 0, 'мәгълүмат' ),
 );
 
+/** Vietnamese (Tiếng Việt) */
+$magicWords['vi'] = array(
+	'ask' => array( 0, 'hỏi' ),
+	'show' => array( 0, 'hiển_thị' ),
+);
+
 /** Simplified Chinese (中文（简体）‎) */
 $magicWords['zh-hans'] = array(
 	'ask' => array( 0, '问' ),
 	'show' => array( 0, '显示' ),
+	'info' => array( 0, '信息' ),
+	'subobject' => array( 0, '子对象' ),
+	'smwdoc' => array( 0, 'smw文档' ),
+	'set' => array( 0, '设置' ),
+);
+
+/** Traditional Chinese (中文（繁體）‎) */
+$magicWords['zh-hant'] = array(
+	'set' => array( 0, '設定' ),
 );
