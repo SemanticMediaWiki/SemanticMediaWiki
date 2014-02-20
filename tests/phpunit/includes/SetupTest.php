@@ -344,15 +344,12 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	public function testRegisterParamDefinitions() {
 
 		$setup['wgParamDefinitions']['smwformat'] = '';
-		$setup['wgParamDefinitions']['smwsource'] = '';
 
 		$this->assertEmpty( $setup['wgParamDefinitions']['smwformat'] );
-		$this->assertEmpty( $setup['wgParamDefinitions']['smwsource'] );
 
 		$this->newInstance( $setup )->run();
 
 		$this->assertNotEmpty( $setup['wgParamDefinitions']['smwformat'] );
-		$this->assertNotEmpty( $setup['wgParamDefinitions']['smwsource'] );
 
 	}
 
