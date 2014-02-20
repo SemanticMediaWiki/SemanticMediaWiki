@@ -30,6 +30,8 @@ $specialPageAliases['en'] = array(
 /** Afrikaans (Afrikaans) */
 $specialPageAliases['af'] = array(
 	'Ask' => array( 'Vra' ),
+	'Properties' => array( 'Eienskappe' ),
+	'Concepts' => array( 'Konsepte' ),
 	'Types' => array( 'Tipes' ),
 );
 
@@ -68,11 +70,12 @@ $specialPageAliases['arz'] = array(
 	'ExportRDF' => array( 'تصدير_RDF' ),
 	'PageProperty' => array( 'خاصية_الصفحه' ),
 	'Properties' => array( 'خصايص' ),
+	'Concepts' => array( 'مبادئ' ),
 	'SMWAdmin' => array( 'ادارى_SMW' ),
 	'SearchByProperty' => array( 'دوّر_بالخاصيه' ),
-	'SemanticStatistics' => array( 'إحصائيات_Semantic' ),
+	'SemanticStatistics' => array( 'إحصائيات_سيمانتيك' ),
 	'Types' => array( 'انواع' ),
-	'URIResolver' => array( 'URI_Resolver' ),
+	'URIResolver' => array( 'محلل_يو_ار_اى' ),
 	'UnusedProperties' => array( 'خصايص_مش_مستعمله' ),
 	'WantedProperties' => array( 'خصايص_مطلوبه' ),
 );
@@ -446,8 +449,8 @@ $specialPageAliases['lb'] = array(
 	'SearchByProperty' => array( 'No_Eegeschaft_sichen' ),
 	'SemanticStatistics' => array( 'Semantesch_Statistiken' ),
 	'Types' => array( 'Datentypen' ),
-	'UnusedProperties' => array( 'Netbenotzten_Eegeschaften' ),
-	'WantedProperties' => array( 'Gewënschten_Eegeschaften' ),
+	'UnusedProperties' => array( 'Netbenotzt_Eegeschaften' ),
+	'WantedProperties' => array( 'Gewënscht_Eegeschaften' ),
 );
 
 /** lumbaart (lumbaart) */
@@ -508,10 +511,12 @@ $specialPageAliases['nb'] = array(
 	'ExportRDF' => array( 'Eksporter_RDF' ),
 	'PageProperty' => array( 'Sideegenskaper' ),
 	'Properties' => array( 'Egenskaper' ),
+	'Concepts' => array( 'Konsepter' ),
 	'SMWAdmin' => array( 'SMW-administrasjon' ),
 	'SearchByProperty' => array( 'Søk_etter_egenskap' ),
 	'SemanticStatistics' => array( 'Semantisk_statistikk' ),
 	'Types' => array( 'Typer' ),
+	'URIResolver' => array( 'URI-løser' ),
 	'UnusedProperties' => array( 'Ubrukte_egenskaper' ),
 	'WantedProperties' => array( 'Ønskede_egenskaper' ),
 );
@@ -761,6 +766,7 @@ $specialPageAliases['vi'] = array(
 	'SearchByProperty' => array( 'Tìm_theo_thuộc_tính' ),
 	'SemanticStatistics' => array( 'Thống_kê_ngữ_nghĩa' ),
 	'Types' => array( 'Kiểu' ),
+	'URIResolver' => array( 'Bộ_giải_URI' ),
 	'UnusedProperties' => array( 'Thuộc_tính_không_dùng' ),
 	'WantedProperties' => array( 'Thuộc_tính_cần_thiết' ),
 );
@@ -772,7 +778,8 @@ $specialPageAliases['zh-hans'] = array(
 	'ExportRDF' => array( '导出RDF' ),
 	'PageProperty' => array( '页面属性' ),
 	'Properties' => array( '属性' ),
-	'SMWAdmin' => array( 'MWA管理' ),
+	'Concepts' => array( '概念' ),
+	'SMWAdmin' => array( 'SMW管理' ),
 	'SearchByProperty' => array( '按属性搜索' ),
 	'SemanticStatistics' => array( '语义统计' ),
 	'Types' => array( '类型' ),
@@ -785,4 +792,5 @@ $specialPageAliases['zh-hans'] = array(
 $specialPageAliases['zh-hant'] = array(
 	'Ask' => array( '問' ),
 	'Browse' => array( '瀏覽' ),
+	'SMWAdmin' => array( 'SMW管理員' ),
 );
