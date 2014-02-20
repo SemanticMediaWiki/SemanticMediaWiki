@@ -495,7 +495,7 @@ class SMWQueryProcessor {
 	public static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
-		$res = $params['source']->getValue()->getQueryResult( $query );
+		$res = self::getStoreFromParams( $params )->getQueryResult( $query );
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) ||
 			( $query->querymode == SMWQuery::MODE_NONE ) ) {
@@ -527,6 +527,11 @@ class SMWQueryProcessor {
 
 			return $result;
 		}
+	}
+
+	private static function getStoreFromParams( array $params ) {
+		$source = $params['source']->getValue();
+		return $source !== '' ? new $GLOBALS['smwgQuerySources'][$source]() : \SMW\StoreFactory::getStore();
 	}
 
 	/**
@@ -582,10 +587,7 @@ class SMWQueryProcessor {
 		// TODO $params['format']->setToLower( true );
 		// TODO $allowedFormats
 
-		$params['source'] = array(
-			'type' => 'smwsource',
-			'default' => 'default',
-		);
+		$params['source'] = self::getSourceParam();
 
 		$params['limit'] = array(
 			'type' => 'integer',
@@ -653,6 +655,15 @@ class SMWQueryProcessor {
 		}
 
 		return ParamDefinition::getCleanDefinitions( $params );
+	}
+
+	private static function getSourceParam() {
+		$sourceValues = array_keys( $GLOBALS['smwgQuerySources'] );
+
+		return array(
+			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
+			'values' => $sourceValues,
+		);
 	}
 
 	/**
