@@ -169,6 +169,11 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring === '' );
 	}
 
+	private function getStoreFromParams( array $params ) {
+		$source = $params['source']->getValue();
+		return $source !== '' ? new $GLOBALS['smwgQuerySources'][$source]() : \SMW\StoreFactory::getStore();
+	}
+
 	/**
 	 * TODO: document
 	 */
@@ -235,7 +240,7 @@ class SMWAskPage extends SMWQuerySpecialPage {
 			 */
 
 			// Determine query results
-			$res = $params['source']->getValue()->getQueryResult( $queryobj );
+			$res = $this->getStoreFromParams( $params )->getQueryResult( $queryobj );
 
 			// Try to be smart for rss/ical if no description/title is given and we have a concept query:
 			if ( $this->m_params['format'] == 'rss' ) {

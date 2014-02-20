@@ -256,15 +256,9 @@ final class Setup implements ContextAware {
 	 * @since 1.9
 	 */
 	protected function registerParamDefinitions() {
-
 		$this->globals['wgParamDefinitions']['smwformat'] = array(
 			'definition'=> 'SMWParamFormat',
 		);
-
-		$this->globals['wgParamDefinitions']['smwsource'] = array(
-			'definition' => 'SMWParamSource',
-		);
-
 	}
 
 	/**
