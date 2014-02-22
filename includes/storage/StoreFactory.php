@@ -55,10 +55,12 @@ class StoreFactory {
 	 */
 	public static function getStore( $store = null ) {
 
-		$store = $store === null ? Settings::newFromGlobals()->get( 'smwgDefaultStore' ) : $store;
+		$configuration = Settings::newFromGlobals();
+		$store = $store === null ? $configuration->get( 'smwgDefaultStore' ) : $store;
 
 		if ( !isset( self::$instance[$store] ) ) {
 			self::$instance[$store] = self::newInstance( $store );
+			self::$instance[$store]->setConfiguration( $configuration );
 		}
 
 		return self::$instance[$store];

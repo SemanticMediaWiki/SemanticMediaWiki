@@ -158,9 +158,11 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.8
 	 * @var array
 	 */
-	protected static $special_tables = array(
-		// page metadata tables
+	protected static $customizableSpecialProperties = array(
 		'_MDAT', '_CDAT', '_NEWP', '_LEDT', '_MIME', '_MEDIA',
+	);
+
+	protected static $fixedSpecialProperties = array(
 		// property declarations
 		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV',
 		// query statistics (very frequently used)
@@ -176,7 +178,7 @@ class SMWSQLStore3 extends SMWStore {
 		// Concepts
 		'_CONC',
 		// Semantic forms properties:
-		'_SF_DF', '_SF_AF',
+		'_SF_DF', '_SF_AF', // FIXME if this is desired by SF than it should set up $smwgFixedProperties
 	);
 
 	/**
@@ -812,10 +814,22 @@ class SMWSQLStore3 extends SMWStore {
 			return self::$prop_tables;
 		}
 
+		$enabledSpecialProperties = self::$fixedSpecialProperties;
+		$customizableSpecialProperties = array_flip( self::$customizableSpecialProperties );
+
+		$customFixedProperties = self::$configuration->get( 'smwgFixedProperties' );
+		$customSpecialProperties = self::$configuration->get( 'smwgPageSpecialProperties' );
+
+		foreach ( $customSpecialProperties as $property ) {
+			if ( isset( $customizableSpecialProperties[$property] ) ) {
+				$enabledSpecialProperties[] = $property;
+			}
+		}
+
 		$definitionBuilder = new PropertyTableDefinitionBuilder(
 			self::$di_type_tables,
-			self::$special_tables,
-			Settings::newFromGlobals()->get( 'smwgFixedProperties' )
+			$enabledSpecialProperties,
+			$customFixedProperties
 		);
 
 		$definitionBuilder->runBuilder();
@@ -846,6 +860,15 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function getStatisticsTable() {
 		return self::PROPERTY_STATISTICS_TABLE;
+	}
+
+	/**
+	 * Resets internal objects
+	 *
+	 * @since 1.9.1.1
+	 */
+	public function clear() {
+		self::$prop_tables = null;
 	}
 
 	/**
