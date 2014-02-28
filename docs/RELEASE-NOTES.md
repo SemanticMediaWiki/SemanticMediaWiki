@@ -1,6 +1,6 @@
 # Semantic MediaWiki 1.9.1.1
 
-THIS IS NOT A RELEASE YET
+Released February 28th, 2014.
 
 ### Bug fixes
 
