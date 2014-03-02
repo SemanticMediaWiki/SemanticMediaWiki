@@ -42,6 +42,7 @@ $specialPageAliases['ar'] = array(
 	'ExportRDF' => array( 'تصدير_آر_دي_إف' ),
 	'PageProperty' => array( 'خاصية_الصفحة' ),
 	'Properties' => array( 'خصائص' ),
+	'Concepts' => array( 'مبادئ' ),
 	'SMWAdmin' => array( 'إداري_سمو', 'إداري_ميدياويكي_دلالية' ),
 	'SearchByProperty' => array( 'بحث_بواسطة_الخاصية' ),
 	'SemanticStatistics' => array( 'إحصاءات_سيمانتيك' ),
