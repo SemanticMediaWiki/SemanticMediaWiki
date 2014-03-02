@@ -10,7 +10,7 @@ matrix:
     - env: DBTYPE=sqlite; MW=master; TYPE=composer
       php: 5.3
     - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
-      php: 5.4
+      php: 5.6
     - env: DBTYPE=sqlite; MW=1.19.0
       php: 5.5
     - env: DBTYPE=postgres; MW=1.19.0
