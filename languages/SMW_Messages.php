@@ -358,7 +358,7 @@ Estimated progress of current update:',
 	'smw_smwadmin_supportdocu' => 'Various resources might help you in case of problems:',
 	'smw_smwadmin_installfile' => 'If you experience problems with your installation, start by checking the guidelines in the <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL file</a>.',
 	'smw_smwadmin_smwhomepage' => 'The complete user documentation to Semantic MediaWiki is at <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Bugs can be reported to <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_mediazilla' => 'Bugs can be reported to <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
 	'smw_smwadmin_questions' => 'If you have further questions or suggestions, join the discussion on <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 
 	// Messages for Admin Links page
@@ -3040,6 +3040,7 @@ $messages['cs'] = array(
 	'smw_isspecprop' => 'Tato vlastnost je speciální vlastnost na této wiki.',
 	'smw_concept_description' => 'Popis pojmu „$1”',
 	'smw_no_concept_namespace' => 'Pojmy je možné definovat pouze na stránkách ve jmenném prostoru Concept:',
+
 	'smw_multiple_concepts' => 'Každá stránka konceptu může mít jen jednu definici.',
 	'smw_concept_cache_miss' => 'Koncept „$1” není možné momentálně použít, protože konfigurace wiki vyžaduje, aby se vypočítal až dodatečně. Pokud problém přetrvává delší dobu, požádejte správce, aby tento koncept zpřístupnil.',
 	'smw_noinvannot' => 'Inverzním vlastnostem nelze přiřazovat hodnoty.',
