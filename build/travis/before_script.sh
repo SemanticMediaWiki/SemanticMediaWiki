@@ -1,5 +1,31 @@
 #! /bin/bash
 
+function startWebsever {
+
+	if [ "$TYPE" == "phantomjs" ]
+	then
+
+		echo $(pwd)
+
+		# Create a symbolic link between the MediaWiki directory and Apache’s document root
+		sudo ln -s $(pwd) /var/www
+
+		echo "Starting webserver setup"
+
+		# Installing a Web Server
+		# @see http://knpuniversity.com/screencast/question-answer-day/travis-ci
+		sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-mysql php5-curl
+
+		# VirtualHost
+		sudo sed -i -e "s,/var/www,$(pwd),g" /etc/apache2/sites-available/default
+		sudo service apache2 restart
+
+		# give server some time to start
+		sleep 5
+	fi
+
+}
+
 ## Fetching MediaWiki installation base
 function installMediaWiki {
 
@@ -64,7 +90,7 @@ function installSmwIntoMwWithComposer {
 # We do however want to ensure noticing any breakage of this process before we prepare a release.
 function installSmwAsTarballLikeBuild {
 	echo -e "Running tarball build on $TRAVIS_BRANCH \n"
-	
+
 	cd extensions
 	composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki dev-master -s dev --prefer-dist --no-dev
 	cd ..
@@ -95,6 +121,9 @@ function configureLocalSettings {
 	echo '$smwgNamespacesWithSemanticLinks = array( NS_MAIN => true, NS_IMAGE => true, NS_TRAVIS => true );' >> LocalSettings.php
 	echo '$smwgNamespace = "http://example.org/id/";' >> LocalSettings.php
 
+	# Qunit
+	echo '$wgEnableJavaScriptTest = true;' >> LocalSettings.php
+
 	# Error reporting
 	echo 'error_reporting(E_ALL| E_STRICT);' >> LocalSettings.php
 	echo 'ini_set("display_errors", 1);' >> LocalSettings.php
@@ -115,5 +144,7 @@ cd ..
 installMediaWiki
 installSMW
 configureLocalSettings
+
+startWebsever
 
 php maintenance/update.php --quick
