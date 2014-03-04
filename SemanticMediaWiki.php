@@ -38,7 +38,7 @@ if ( !defined( 'Validator_VERSION' ) && is_readable( __DIR__ . '/vendor/autoload
 
 // Only initialize the extension when all dependencies are present.
 if ( !defined( 'Validator_VERSION' ) ) {
-	throw new Exception( 'You need to have https://www.mediawiki.org/wiki/Extension:ParamProcessor installed in order to use SMW' );
+	throw new Exception( 'You need to have https://www.mediawiki.org/wiki/Extension:Validator installed in order to use SMW' );
 }
 
 // Registration of the extension credits, see Special:Version.
