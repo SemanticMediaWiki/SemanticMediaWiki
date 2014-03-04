@@ -22,7 +22,7 @@ class SparqlStoreQueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockForAbstractClass( '\SMW\Store' );
+		$store = $this->getMockForAbstractClass( '\SMWSparqlStore' );
 
 		$this->assertInstanceOf(
 			'\SMWSparqlStoreQueryEngine',
@@ -30,9 +30,27 @@ class SparqlStoreQueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetCountQueryResultWithoutSparqlDatabaseConnection() {
+	public function testGetCountQueryResultWithMockSparqlDatabaseConnection() {
 
-		$store = $this->getMockForAbstractClass( '\SMW\Store' );
+		$sparqlResultWrapper = $this->getMockBuilder( '\SMWSparqlResultWrapper' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$sparqlDatabase->expects( $this->once() )
+			->method( 'selectCount' )
+			->will( $this->returnValue( $sparqlResultWrapper ) );
+
+		$store = $this->getMockBuilder( '\SMWSparqlStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getSparqlDatabase' )
+			->will( $this->returnValue( $sparqlDatabase ) );
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
@@ -59,7 +77,7 @@ class SparqlStoreQueryEngineTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SMWSparqlStoreQueryEngine( $store );
 
 		$this->assertInternalType(
-			'null',
+			'integer',
 			$instance->getCountQueryResult( $query )
 		);
 	}
