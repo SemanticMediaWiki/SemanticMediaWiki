@@ -360,6 +360,7 @@ $magicWords['zh-hans'] = array(
 	'subobject' => array( 0, '子对象' ),
 	'smwdoc' => array( 0, 'smw文档' ),
 	'set' => array( 0, '设置' ),
+	'declare' => array( 0, '宣布' ),
 );
 
 /** Traditional Chinese (中文（繁體）‎) */
