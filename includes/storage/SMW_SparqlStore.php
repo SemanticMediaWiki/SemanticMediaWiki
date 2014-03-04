@@ -39,6 +39,12 @@ class SMWSparqlStore extends SMWStore {
 	protected $baseStore;
 
 	/**
+	 * @var SMWSparqlDatabase
+	 * @since 1.9.2
+	 */
+	protected $sparqlDatabase = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.8
@@ -122,7 +128,7 @@ class SMWSparqlStore extends SMWStore {
 
 		$this->baseStore->changeTitle( $oldtitle, $newtitle, $pageid, $redirid ); // do this only here, so Imported from is not moved too early
 
-		$sparqlDatabase = smwfGetSparqlDatabase();
+		$sparqlDatabase = $this->getSparqlDatabase();
 		$sparqlDatabase->insertDelete( "?s ?p $newUri", "?s ?p $oldUri", "?s ?p $oldUri", $namespaces );
 		if ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) {
 			$sparqlDatabase->insertDelete( "?s $newUri ?o", "?s $oldUri ?o", "?s $oldUri ?o", $namespaces );
@@ -159,7 +165,7 @@ class SMWSparqlStore extends SMWStore {
 			$triples = $turtleSerializer->flushContent();
 			$prefixes = $turtleSerializer->flushSparqlPrefixes();
 
-			smwfGetSparqlDatabase()->insertData( $triples, $prefixes );
+			$this->getSparqlDatabase()->insertData( $triples, $prefixes );
 		}
 	}
 
@@ -309,7 +315,7 @@ class SMWSparqlStore extends SMWStore {
 		$rediUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_REDI' ) );
 		$skeyUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_SKEY' ) );
 
-		$sparqlResult = smwfGetSparqlDatabase()->select( '*',
+		$sparqlResult = $this->getSparqlDatabase()->select( '*',
 		                    "$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $rediUri ?r }",
 		                    array( 'LIMIT' => 1 ),
 		                    array( $expNsResource->getNamespaceId() => $expNsResource->getNamespace() ) );
@@ -352,9 +358,9 @@ class SMWSparqlStore extends SMWStore {
 		$masterPageProperty = SMWExporter::getSpecialNsResource( 'swivt', 'masterPage' );
 		$masterPagePropertyUri = SMWTurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
-		$success = smwfGetSparqlDatabase()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );
+		$success = $this->getSparqlDatabase()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );
 		if ( $success ) {
-			return smwfGetSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o", $extraNamespaces );
+			return $this->getSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o", $extraNamespaces );
 		} else {
 			return false;
 		}
@@ -435,7 +441,7 @@ class SMWSparqlStore extends SMWStore {
 	 */
 	public function drop( $verbose = true ) {
 		$this->baseStore->drop( $verbose );
-		smwfGetSparqlDatabase()->delete( "?s ?p ?o", "?s ?p ?o" );
+		$this->getSparqlDatabase()->delete( "?s ?p ?o", "?s ?p ?o" );
 	}
 
 	/**
@@ -446,5 +452,28 @@ class SMWSparqlStore extends SMWStore {
 		return $this->baseStore->refreshData( $index, $count, $namespaces, $usejobs );
 	}
 
-}
+	/**
+	 * @since  1.9.2
+	 *
+	 * @param SMWSparqlDatabase $sparqlDatabase
+	 */
+	public function setSparqlDatabase( SMWSparqlDatabase $sparqlDatabase ) {
+		$this->sparqlDatabase = $sparqlDatabase;
+		return $this;
+	}
 
+	/**
+	 * @since  1.9.2
+	 *
+	 * @return SMWSparqlDatabase
+	 */
+	public function getSparqlDatabase() {
+
+		if ( $this->sparqlDatabase === null ) {
+			$this->sparqlDatabase = smwfGetSparqlDatabase();
+		}
+
+		return $this->sparqlDatabase;
+	}
+
+}

@@ -285,7 +285,7 @@ class SMWSparqlStoreQueryEngine {
 			} else {
 				$condition = $this->getSparqlConditionString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
-				$askQueryResult = smwfGetSparqlDatabase()->ask( $condition, $namespaces );
+				$askQueryResult = $this->m_store->getSparqlDatabase()->ask( $condition, $namespaces );
 				return $askQueryResult->isBooleanTrue() ? 1 : 0;
 			}
 		} elseif ( $sparqlCondition instanceof SMWSparqlFalseCondition ) {
@@ -296,7 +296,7 @@ class SMWSparqlStoreQueryEngine {
 			$namespaces = $sparqlCondition->namespaces;
 			$options = $this->getSparqlOptions( $query, $sparqlCondition );
 			$options['DISTINCT'] = true;
-			$sparqlResultWrapper = smwfGetSparqlDatabase()->selectCount( '?' . self::RESULT_VARIABLE,
+			$sparqlResultWrapper = $this->m_store->getSparqlDatabase()->selectCount( '?' . self::RESULT_VARIABLE,
 			                                      $condition, $options, $namespaces );
 
 			if ( $sparqlResultWrapper->getErrorCode() == SMWSparqlResultWrapper::ERROR_NOERROR ) {
@@ -326,7 +326,7 @@ class SMWSparqlStoreQueryEngine {
 			} else {
 				$condition = $this->getSparqlConditionString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
-				$askQueryResult = smwfGetSparqlDatabase()->ask( $condition, $namespaces );
+				$askQueryResult = $this->m_store->getSparqlDatabase()->ask( $condition, $namespaces );
 				$results = $askQueryResult->isBooleanTrue() ? array( array ( $matchElement ) ) : array();
 			}
 			$sparqlResultWrapper = new SMWSparqlResultWrapper( array( self::RESULT_VARIABLE => 0 ), $results );
@@ -338,7 +338,7 @@ class SMWSparqlStoreQueryEngine {
 			$namespaces = $sparqlCondition->namespaces;
 			$options = $this->getSparqlOptions( $query, $sparqlCondition );
 			$options['DISTINCT'] = true;
-			$sparqlResultWrapper = smwfGetSparqlDatabase()->select( '?' . self::RESULT_VARIABLE,
+			$sparqlResultWrapper = $this->m_store->getSparqlDatabase()->select( '?' . self::RESULT_VARIABLE,
 			                         $condition, $options, $namespaces );
 		}
 
@@ -364,7 +364,7 @@ class SMWSparqlStoreQueryEngine {
 			} else {
 				$condition = $this->getSparqlConditionString( $sparqlCondition );
 				$namespaces = $sparqlCondition->namespaces;
-				$sparql = smwfGetSparqlDatabase()->getSparqlForAsk( $condition, $namespaces );
+				$sparql = $this->m_store->getSparqlDatabase()->getSparqlForAsk( $condition, $namespaces );
 			}
 		} elseif ( $sparqlCondition instanceof SMWSparqlFalseCondition ) {
 			$sparql = 'None (conditions can not be satisfied by anything).';
@@ -373,7 +373,7 @@ class SMWSparqlStoreQueryEngine {
 			$namespaces = $sparqlCondition->namespaces;
 			$options = $this->getSparqlOptions( $query, $sparqlCondition );
 			$options['DISTINCT'] = true;
-			$sparql = smwfGetSparqlDatabase()->getSparqlForSelect( '?' . self::RESULT_VARIABLE,
+			$sparql = $this->m_store->getSparqlDatabase()->getSparqlForSelect( '?' . self::RESULT_VARIABLE,
 			                         $condition, $options, $namespaces );
 		}
 		$sparql = str_replace( array( '[',':',' ' ), array( '&#x005B;', '&#x003A;', '&#x0020;' ), $sparql );
@@ -423,11 +423,11 @@ class SMWSparqlStoreQueryEngine {
 	 */
 	protected function getQueryResultFromSparqlResult( SMWSparqlResultWrapper $sparqlResultWrapper, SMWQuery $query ) {
 		$resultDataItems = array();
-		
+
 		foreach ( $sparqlResultWrapper as $resultRow ) {
 			if ( count( $resultRow ) > 0 ) {
 				$dataItem = SMWExporter::findDataItemForExpElement( $resultRow[0] );
-				
+
 				if ( !is_null( $dataItem ) ) {
 					$resultDataItems[] = $dataItem;
 				}
@@ -940,6 +940,7 @@ class SMWSparqlStoreQueryEngine {
 					// orderVariables MUST be set for $propkey -- or there is a bug; let it show!
 					$sparqlCondition->orderVariables[$propkey] = $auxSparqlCondition->orderVariables[$propkey];
 					$sparqlCondition->weakConditions[$sparqlCondition->orderVariables[$propkey]] = $auxSparqlCondition->getWeakConditionString() . $auxSparqlCondition->getCondition();
+					$sparqlCondition->namespaces = array_merge( $sparqlCondition->namespaces, $auxSparqlCondition->namespaces );
 				}
 			}
 		}
