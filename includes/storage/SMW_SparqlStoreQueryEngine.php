@@ -423,11 +423,11 @@ class SMWSparqlStoreQueryEngine {
 	 */
 	protected function getQueryResultFromSparqlResult( SMWSparqlResultWrapper $sparqlResultWrapper, SMWQuery $query ) {
 		$resultDataItems = array();
-		
+
 		foreach ( $sparqlResultWrapper as $resultRow ) {
 			if ( count( $resultRow ) > 0 ) {
 				$dataItem = SMWExporter::findDataItemForExpElement( $resultRow[0] );
-				
+
 				if ( !is_null( $dataItem ) ) {
 					$resultDataItems[] = $dataItem;
 				}
@@ -940,6 +940,7 @@ class SMWSparqlStoreQueryEngine {
 					// orderVariables MUST be set for $propkey -- or there is a bug; let it show!
 					$sparqlCondition->orderVariables[$propkey] = $auxSparqlCondition->orderVariables[$propkey];
 					$sparqlCondition->weakConditions[$sparqlCondition->orderVariables[$propkey]] = $auxSparqlCondition->getWeakConditionString() . $auxSparqlCondition->getCondition();
+					$sparqlCondition->namespaces = array_merge( $sparqlCondition->namespaces, $auxSparqlCondition->namespaces );
 				}
 			}
 		}
