@@ -1,11 +1,6 @@
-# Semantic MediaWiki 1.9.1.1
+# Semantic MediaWiki 1.9.1.2
 
-Released February 28th, 2014.
 
 ### Bug fixes
 
-* #183 Fixed 1.9.1 regression in resource paths that caused resouces not to load
-
-### Internal enhancements
-
-* #200 Improved the usage of "InternalParseBeforeLinks" to indicate whether semantic data have been processed or not
+* #215 (Bug 62150) Fixed malformed query order due to an unresolved prefix in SparqlQueryEngine
