@@ -160,7 +160,7 @@ class ListResultPrinter extends ResultPrinter {
 		$result .= $this->header;
 
 		if ( $this->mIntroTemplate !== '' ) {
-			$result .= "{{" . $this->mIntroTemplate . "}}";
+			$result .= "{{" . $this->mIntroTemplate . $this->addCommonTemplateParameters( $queryResult ) . "}}";
 		}
 
 		while ( $row = $queryResult->getNext() ) {
@@ -168,7 +168,7 @@ class ListResultPrinter extends ResultPrinter {
 		}
 
 		if ( $this->mOutroTemplate !== '' ) {
-			$result .= "{{" . $this->mOutroTemplate . "}}";
+			$result .= "{{" . $this->mOutroTemplate . $this->addCommonTemplateParameters( $queryResult ) . "}}";
 		}
 
 		// Make label for finding further results
@@ -271,7 +271,7 @@ class ListResultPrinter extends ResultPrinter {
 
 		if ( $this->mTemplate !== '' ) { // Build template code
 			$this->hasTemplates = true;
-			$content = $this->mTemplate . $this->getTemplateContent( $row );
+			$content = $this->mTemplate . $this->getTemplateContent( $row ) . $this->addCommonTemplateParameters( $res );
 			$result .= $this->getRowStart( $res ) . '{{' . $content . '}}';
 		} else { // Build simple list
 			$content = $this->getRowListContent( $row );
@@ -387,7 +387,7 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getTemplateContent( $row ){
-		$wikitext = $this->mUserParam ? "|userparam=$this->mUserParam" : '';
+		$wikitext = '';
 
 		foreach ( $row as $i => $field ) {
 			$wikitext .= '|' . ( $this->mNamedArgs ? '?' . $field->getPrintRequest()->getLabel() : $i + 1 ) . '=';
@@ -405,6 +405,11 @@ class ListResultPrinter extends ResultPrinter {
 
 		$wikitext .= "|#={$this->numRows}";
 		return $wikitext;
+	}
+
+	protected function addCommonTemplateParameters( $queryResult ) {
+		return ( $this->mUserParam ? "|userparam=$this->mUserParam" : '' ) .
+			"|swm-resultquerycondition=" . $queryResult->getQuery()->getQueryString();
 	}
 
 	/**
