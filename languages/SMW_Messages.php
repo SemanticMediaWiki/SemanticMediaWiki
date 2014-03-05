@@ -3655,7 +3655,7 @@ $messages['diq'] = array(
 	'types' => 'Babeti',
 	'semanticstatistics' => 'İstatistike fahm kerdeni',
 	'ask' => 'Fahmyayış cı geyrayış',
-	'smw_ask_defaultformat' => 'hesıbyaye',
+	'smw_ask_defaultformat' => 'hesabiyaye',
 	'searchbyproperty' => 'Xısusiyeti heta cıgeyrê',
 	'smw_sbv_value' => 'Qıymet:',
 	'smw_browselink' => 'Xısusiyetan bıvêne',
@@ -4779,6 +4779,7 @@ $messages['eu'] = array(
  * @author ZxxZxxZ
  */
 $messages['fa'] = array(
+	'smw-desc' => "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_viewasrdf' => 'خوراک RDF',
 	'smw_finallistconjunct' => '، و',
 	'smw_factbox_head' => 'عوامل درباره‌ٔ "$1"',
@@ -4788,7 +4789,9 @@ $messages['fa'] = array(
 	'smw_multiple_concepts' => 'هر صفحه مفهوم فقط می‌تواند شامل یک تعریف مفهوم باشد.',
 	'smw_concept_cache_miss' => 'مفهوم "$1" نمی‌تواند در حال حاضر استفاده شود، زیرا تنظیمات ویکی نیاز به محاسبه آن به‌صورت برون‌خط دارد.
 اگر این مشکل پس از مدتی از بین نرفت، از مدیر سایت بخواهید تا این مفهوم را در دسترس قرار دهد.',
+	'smw_noinvannot' => 'مقادیر نمی‌توانند برای خواص معکوس گماشته شوند.',
 	'version-semantic' => 'گستره‌های معنایی',
+	'smw_baduri' => 'یوآر‌ال‌های فرم "$1" مجاز نیستند.',
 	'smw_printername_count' => 'شمردن نتایج',
 	'smw_printername_csv' => 'صادرات سی‌اس‌وی',
 	'smw_printername_dsv' => 'صادرات دی‌اس‌وی',
@@ -4809,15 +4812,45 @@ $messages['fa'] = array(
 	'smw-paramdesc-headers' => 'نمایش نام‌های سرفصل‌ها/ خاصیت',
 	'smw-paramdesc-mainlabel' => 'جدول برای دادن نام صفحهٔ اصلی',
 	'smw-paramdesc-link' => 'نمایش مقادیر به عنوان لینک‌ها',
+	'smw-paramdesc-intro' => 'متن برای نمایش قبل از نتایج پرس‌و‌جو، اگر وجود داشته باشند',
+	'smw-paramdesc-outro' => 'متن برای نمایش پس از نتایج پرس‌و‌جو، اگر وجود داشته باشد',
+	'smw-paramdesc-default' => 'متن برای نمایش اگر هیچ نتایج پرس‌وجویی وجود نداشته باشد',
 	'smw-paramdesc-sep' => 'جدا کننده برای مقادیر',
+	'smw-paramdesc-showsep' => 'نمایش جدا کننده در بالای پوشه سی‌اس‌وی ("sep=<value>")',
+	'smw-paramdesc-distribution' => 'به جای نمایش همه مقادیر، میزان وقوع آنها را حساب کنید،این‌ها را نشان دهید.',
+	'smw-paramdesc-distributionsort' => 'نوع توزیع مقدار توسط حساب میزان وقوع.',
+	'smw-paramdesc-distributionlimit' => 'محدود کردن توزیع مقدار به حساب فقط برخی از مقادیر.',
+	'smw-paramdesc-template' => 'نام یک الگو با آنی که چاپ‌ها را نمایش می‌دهد',
+	'smw-paramdesc-columns' => 'تعداد ستون ها  در آنی که نتایج را نمایش می‌دهد (پیش‌فرض $1 است)',
+	'smw-paramdesc-userparam' => 'اگر یک الگو استفاده شده‌است، یک مقدار در هر تماس الگو عبور کرده',
+	'smw-paramdesc-introtemplate' => 'نام الگو برای نمایش قبل از نتایج پرس‌و‌جو، اگر وجود داشته باشد',
+	'smw-paramdesc-outrotemplate' => 'نام الگو برای نمایش پس از نتایج پرس‌و‌جو، اگر وجود داشته باشد',
+	'smw-paramdesc-embedformat' => 'برچسب های اچ‌تی‌ام‌ال برای تعریف سرفصل‌ها مورد استفاده قرار می‌گیرند',
 	'smw-paramdesc-embedonly' => 'هیچ سرفصلی نمایش داده نشد',
+	'smw-paramdesc-table-class' => 'کلاس سی‌اس‌اس اضافی برای تنظیم جدول',
+	'smw-paramdesc-rdfsyntax' => 'نحو آر‌دی‌اف مورد استفاده قرار می‌گیرد',
 	'smw-paramdesc-csv-sep' => 'جدا کننده برای استفاده',
 	'smw-paramdesc-dsv-separator' => 'جدا کننده برای استفاده',
 	'smw-paramdesc-dsv-filename' => 'نام برای پوشهٔ دی‌اس‌وی',
 	'smw-paramdesc-filename' => 'نام برای پوشهٔ خروجی',
+	'smw-smwdoc-description' => 'نمایش جدول همه پارامترهایی که می‌توانند برای فرمت نتیجه مشخص شده همراه با مقادیر پیش‌فرض و توصیفات، مورد استفاده قرار گیرد.',
+	'smw-smwdoc-par-format' => 'فرمت نتیجه برای نشان دادن مستندات پارامتر.',
+	'smw-smwdoc-par-parameters' => 'پارامترهایی برای نمایش دادن. "مشخص" برای آن افزوده شده‌ها توسط فرمت، "اساس" برای آن متغییرها در همه فرمت‌ها، و "همه" برای هر دو.',
+	'smw-paramdesc-sort' => 'خاصیت برای نوع سوال توسط',
+	'smw-paramdesc-order' => 'منظور از نوع پرس‌و‌جو',
+	'smw-paramdesc-searchlabel' => 'متن برای ادامه جستجو',
+	'smw-paramdesc-named_args' => 'نام بحث‌های عبور داده‌ شده به الگو',
 	'smw-paramdesc-export' => 'گزینهٔ صادرات',
+	'smw-paramdesc-prettyprint' => 'خروجی pretty-print که تورفتگی‌های اضافی و خط.ط جدید را نمایش می‌دهد',
+	'smw-paramdesc-source' => 'منبع سوال متناوب',
+	'smw-paramdesc-jsonsyntax' => 'نحو جی‌سون مورد استفاده قرار می‌گیرد',
+	'smw-printername-feed' => 'آر‌اس‌اس و مرورگر ای‌تم',
 	'smw-paramdesc-feedtype' => 'نوع اشتراک',
+	'smw-paramdesc-feedtitle' => 'متن به عنوان مرورگر مورد استفاده قرار می‌گیرد',
+	'smw-paramdesc-feeddescription' => 'متن به عنوان توصیف مرورگر مورد استفاده قرار می‌گیرد',
+	'smw-paramdesc-feedpagecontent' => 'محتوای صفحه با مرورگر نمایش داده می‌شود',
 	'smw-label-feed-description' => '$1 $2 خوراک',
+	'smw_iq_disabled' => 'سوالات معنایی برای این ویکی غیرفعال شده‌است.',
 	'smw_iq_moreresults' => '... نتایج بیشتر',
 	'smw_parseerror' => 'مقدار داده شده درک نشده‌بود.',
 	'smw_kiloseparator' => '،',
@@ -4832,12 +4865,36 @@ $messages['fa'] = array(
 	'smw_false_words' => 'غلط،اف،نه،ان',
 	'smw_nofloat' => '"$1" یک عدد نیست.',
 	'smw_infinite' => 'اعدادی که به اندازهٔ "$1" بزرگ‌اند، پشتیبانی نمی‌شوند.',
+	'smw_unitnotallowed' => '"$1" به عنوان یک واحد اندازه‌گیری معتبر برای این خاصیت اعلام نشده‌است.',
+	'smw_nounitsdeclared' => 'هیچ واحد اندازه‌گیری برای این خاصیت اعلام نشده‌.',
 	'smw_novalues' => 'هیچ مقداری تعیین نشده‌است.',
 	'smw_nodatetime' => 'تاریخ "$1" درک نشده بود.',
+	'smw_toomanyclosing' => 'آنها به نظر می‌رسند که حوادث بسیار زیاد "$1" در پرس‌وجو باشند.',
+	'smw_noclosingbrackets' => 'چند استفاده "<nowiki>[[</nowiki>" در پرس‌وجو خود با مطابقت بسته نبود"]]".',
+	'smw_misplacedsymbol' => 'نماد " $1 " در محلی که مفید نیست، مورد استفاده قرار گرفت.',
+	'smw_unexpectedpart' => 'قسمت " $1 " از پرس‌و‌جو فهمیده نشد.
+نتایج ممکن نیست مورد انتظار باشند.',
+	'smw_emptysubquery' => 'برخی از زیرسوال‌ها هیچگونه شرط معتبری ندارند.',
+	'smw_misplacedsubquery' => 'چند پرس‌وجو در یک مکانی که هیچ پرس‌وجویی مجاز نیست، استفاده شدند.',
+	'smw_valuesubquery' => 'زیرشوالات برای مقادیر خاصیت "$1" پشتیبانی نمی‌شوند.',
+	'smw_badqueryatom' => 'برخی از بخش‌ های "<nowiki>[[…]]</nowiki>" پرس‌و‌جو فهمیده نشدند.',
+	'smw_propvalueproblem' => 'مقدار خاصیت " $1 " فهمیده نشده.',
+	'smw_noqueryfeature' => 'چند ویژگی پرس‌وجو در این ویکی پشتیبانی نشدند و بخشی از پرس‌وجو کاهش یافت ($1).',
+	'smw_noconjunctions' => 'اتصالات در پرس‌وجو‌ها در این ویکی پشتیبانی نمی‌شود و بخشی از پرس‌وجو کاهش یافت ($1).',
+	'smw_nodisjunctions' => 'عدم اتصالات در  پرس‌وجو‌ها در این ویکی پشتیبانی نمی‌شوند و بخشی از پرس‌وجو کاهش یافت ($1).',
+	'smw_querytoolarge' => 'شرایط پرس‌وجو زیر به علت محدودیت‌های ویکی در اندازه پرس‌وجو یا عمق نتوانست در نظر گرفته شود: $1.',
+	'smw_notemplategiven' => 'ارائه یک مقدار برای پارامتر "الگو" برای این فرمت پرس‌وجو برای کار کردن',
+	'smw_db_sparqlqueryproblem' => 'نتیجه پرس‌وجو نتوانست از پایگاه اطلاعاتی اس‌پی‌ای‌آر‌کیو‌ال اخذ شود. ممکن است این خطا موقت باشد یا مشکلی در نرم‌افزار پایگاه اطلاعاتی نشان می‌دهد.',
+	'smw_db_sparqlqueryincomplete' => 'پاسخ به پرس‌و‌جو بیش از حد دشوار است و نافرجام ماند. برخی از نتایج می‌توانند از دست بروند. در صورت امکان سعی کنید به جای آن از پرس‌وجو ساده استفاده کنید.',
 	'smw_type_header' => 'ویژگی‌های نوع "$1"',
+	'smw_typearticlecount' => 'نمایش $1 {{PLURAL:$1|خاصیت|خواص}} با استفاده از این نوع.',
 	'smw_attribute_header' => 'صفحات با استفاده از ویژگی "$1"',
+	'smw_attributearticlecount' => 'نمایش $1 {{PLURAL:$1|صفحه|صفحات}} با استفاده از این خاصیت.',
 	'smw_subproperty_header' => 'زیرخصوصیت‌ها',
+	'smw_subpropertyarticlecount' => 'این خاصیت $1 {{PLURAL:$1|خاصیت|خواص}}زیر را دارد:',
 	'exportrdf' => 'برون‌بری صفحه‌ها به آردی‌اف',
+	'smw_exportrdf_docu' => 'این صفحه به شما برای بدست آوردن داده‌ها از صفحه در فرمت آر‌دی‌اف اجازه می‌دهد.
+برای انتقال صفحات، عناوین را در جعبه متن زیر وارد کنید، یک عنوان در هر خط.',
 	'smw_exportrdf_recursive' => 'تمام صفحه‌های مرتبط را به صورت بازگشتی برون‌بری کن.
 توجه کنید که نتیجه می‌تواند بزرگ شود!',
 	'smw_exportrdf_backlinks' => 'همچنین تمام صفحه‌هایی را که به صفحه‌های برون‌بری شده ارجاع دارند، برون‌بری کن.
@@ -4853,8 +4910,11 @@ $messages['fa'] = array(
 	'smw_propertyhardlyused' => 'این خصوصیت به ندرت در این ویکی استفاده شده‌است.',
 	'smw-property-name-invalid' => 'ویژگی $1 نمی‌تواند استفاده شود (نام ویژگی نامعتبر).',
 	'smw-sp-property-searchform' => 'نمایش دادن ویزگی‌هایی که شامل:',
+	'smw-sp-property-searchform-inputinfo' => 'این ورودی حساس است و هنگامی که برای فیلتر کردن استفاده می‌شود، فقط خواصی که با شرایط مطابقت دارند نمایش داده می‌شوند.',
 	'concepts' => 'مفاهیم',
+	'smw-sp-concept-docu' => '[https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] می‌تواند  به عنوان "دسته پویا" مشاهده شوند، یعنی به عنوان مجموعه‌ای از صفحاتی که به طور دستی ایجاد نمی‌شوند، اما آنهایی که توسط مدیاویکی معنایی از یک توصیف داده شده پرس‌وجو، محاسبه می‌شوند.',
 	'smw-sp-concept-header' => 'فهرست مفاهیم',
+	'smw-sp-concept-count' => '{{PLURAL:$1|مفهوم|$1 مفاهیم}} زیرفهرست شده‌{{PLURAL:$1|هست|هستند}}.',
 	'smw-sp-concept-empty' => 'هیچ مفهومی پیدا نشد.',
 	'unusedproperties' => 'خصوصیت‌های استفاده نشده',
 	'smw_unusedproperties_docu' => 'خصوصیت‌های زیر با وجود این‌که هیچ صفحه‌ای از آن‌ها استفاده نمی‌کند، وجود دارند.',
@@ -4867,6 +4927,10 @@ $messages['fa'] = array(
 	'smw_types_docu' => 'در زیر فهرستی از تمام انواع داده است که می‌تواند به ویژگی‌ها اختصاص داده‌شده‌باشد.',
 	'smw-special-types-no-such-type' => 'نوع اطلاعات داده شده  وجود ندارد.',
 	'semanticstatistics' => 'آمار معنایی',
+	'smw_semstats_text' => "این ویکی شامل خاصیت '''$1'''  {{PLURAL:$1|مقدار|مقادیر}} برای مجموع '''$2''' [[Special:Properties|{{PLURAL:$2|خاصیت|خواص مختلف}}]] است.
+'''$3''' {{PLURAL:$3|خاصیت دارد|خواص دارند}} خود یک صفحه دارند، و نوع اطلاعات مورد نطر برای '''$4''' آنها مشخص شده‌است.
+برخی از خواص موجود ممکن است [[Special:UnusedProperties|خواص استفاده نشده]]باشند.
+خواصی که هنوز فاقد صفحه هستند در [[Special:WantedProperties|فهرست خواص خواسته شده]] پیدا می‌شوند.",
 	'smw-statistics' => 'آمارهای معنایی',
 	'smw-statistics-property-instance' => 'ویژگی {{PLURAL:$1|مقدار|مقادیر}} (کل)',
 	'smw-statistics-property-total' => '[[Special:Properties|{{PLURAL:$1|ویژگی|ویژگی‌ها}}]] (کل)',
@@ -4877,7 +4941,10 @@ $messages['fa'] = array(
 	'smw-statistics-query-size' => 'اندازه سوال',
 	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|مفهوم|مفاهیم}}',
 	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|مفهوم|مفاهیم}}]]',
+	'smw-statistics-subobject-count' => '{{PLURAL:$1|موضوع|موضوع‌ها}}',
 	'smw-statistics-datatype-count' => '[[Special:Types|{{PLURAL:$1|نوع اطلاعات|انواع اطلاعات}}]]',
+	'smw_uri_doc' => 'برطرف‌کننده یوآر‌ال [$1 W3C TAG finding on httpRange-14] را پیاده می‌کند.
+از انسان‌هایی که به سمت وب‌سایت‌ها نمی‌روند مراقبت می‌کند.',
 	'ask' => 'جستجوی معنایی',
 	'smw_ask_sortby' => 'مرتب‌سازی با ستون (اختیاری)',
 	'smw_ask_ascorder' => 'صعودی',
@@ -4893,11 +4960,20 @@ $messages['fa'] = array(
 	'smw_ask_format_as' => 'فرمت به عنوان:',
 	'smw_ask_defaultformat' => 'پیش فرض',
 	'smw_ask_otheroptions' => 'گزینه‌های دیگر',
+	'smw-ask-otheroptions-info' => 'این بخش شامل گزینه‌هایی است که اظهارات چاپی را تغییر می‌دهد. توصیفات پارامتر می‌تواند توسط توقف در بالای آن‌ها مشاهده شوند.',
+	'smw-ask-otheroptions-collapsed-info' => 'لطفاً از نماد به علاوه برای مشاهده همه گزینه‌های در دسترس استفاده کنید',
 	'smw_ask_show_embed' => 'نمایش کد جاسازی',
 	'smw_ask_hide_embed' => 'پنهان کردن کد جاسازی',
+	'smw_ask_embed_instr' => 'برای جاسازی این سوال خطی در یک صفحه ویکی از کد زیر استفاده کنید.',
 	'smw-ask-delete' => '[حذف]',
 	'smw-ask-sorting' => 'دسته بندی',
+	'smw-ask-format-selection-help' => 'برای شرح مفصل، لطفاً صفحه راهنما $1 را مشاهده کنید.',
 	'searchbyproperty' => 'جستجو بر اساس ویژگی',
+	'smw_sbv_docu' => 'جستجو برای همه صفحاتی که یک خاصیت داده شده و مقدار دارند.',
+	'smw_sbv_novalue' => 'یک مقدار معتبر برای خاصیت وارد کید، یا همه مقادیر خاصیت را برای "$1" مشاهده کنید.',
+	'smw_sbv_displayresult' => 'فهرست همه صفحاتی که خاصیت "$1" با مقدار "$2" دارند',
+	'smw_sbv_displayresultfuzzy' => 'فهرست همه صفحاتی که خاصیت "$1" با مقدار "$2" دارند.
+از آنجایی که آنها فقط نتایج کمی دارند، همچنین تقریباً مقادیر نمایش داده می‌شوند.',
 	'smw_sbv_property' => 'ویژگی:',
 	'smw_sbv_value' => 'مقدار:',
 	'smw_sbv_submit' => 'پیدا کردن نتایج',
@@ -4912,6 +4988,8 @@ $messages['fa'] = array(
 	'smw_inverse_label_default' => '$1 از',
 	'smw_inverse_label_property' => 'برچسب خصوصیت برعکس',
 	'pageproperty' => 'جستجوی خصوصیت صفحه',
+	'smw_pp_docu' => 'جستجو برای همه مقادیر خاصیت در صفحه داده شده.
+صفحه و خاصیت، هر دو را وارد کنید.',
 	'smw_pp_from' => 'از صفحه',
 	'smw_pp_type' => 'ویژگی',
 	'smw_pp_submit' => 'ویژگی',
@@ -4920,16 +4998,53 @@ $messages['fa'] = array(
 	'smw_result_results' => 'نتایج',
 	'smw_result_noresults' => 'بدون نتیجه',
 	'smwadmin' => 'عملکردهای مدیریتی برای مدیاویکی معنایی',
+	'smw_smwadmin_setupsuccess' => 'موتور ذخیره‌سازی با موفقیت راه‌اندازی شد.',
 	'smw_smwadmin_return' => 'بازگشت به $1',
+	'smw_smwadmin_updatestarted' => 'فرآیند به روز‌ رسانی جدید برای تازه کردن داده‌های معنایی آغاز شده‌بود.
+تمام داده‌های ذخیره شده دوباره بازسازی خواهند‌شد یا جایی که نیاز است تعمیر می‌شوند.
+شما می توانید پیشرفت به روز رسانی را در این صفحه ویژه دنبال کنید.
+بازگشت به $1 .',
+	'smw_smwadmin_updatenotstarted' => 'در حال حاضر یک فرآیند به روز رسانی در‌حال اجرا است.
+نه ایجاد یکی دیگر.
+بازگشت به $1 .',
+	'smw_smwadmin_updatestopped' => 'تمام فرآیندهای به روز رسانی موجود متوقف شده‌اند.
+بازگشت به $1 .',
+	'smw_smwadmin_updatenotstopped' => 'برای جلوگیری از روند به روز رسانی درحال اجرا, شما باید جعبه بررسی را برای نشان دادن اینکه شما واقعا مطمئن هستید،فعال کنید.
+بازگشت به $1 .',
+	'smw_smwadmin_docu' => 'این صفحه مخصوص به شما  در طول نصب و ارتقاء <a href="https://semantic-mediawiki.org"> مدیاویکی معنایی </a> کمک می کند.
+برای پشتیبان گیری داده‌های ارزشمند قبل از اجرای عملیات اداری، به یاد دیشته باشید.',
 	'smw_smwadmin_db' => 'نصب پایگاه اطلاعات و ارتقاء',
+	'smw_smwadmin_dbdocu' => 'مدیاویکی معنایی به برخی از فرمت‌ها به پایگاه اطلاعاتی مدیاویکی برای ذخیره اطلاعات معنایی، نیاز دارد.
+عملکرد زیر تضمین می کند که پایگاه اطلاعاتی شما به درستی تنظیم شده‌است.
+تغییرات ایجاد شده در این مرحله بر روی بقیه پایگاه اطلاعاتب مدیاویکی تاثیر نمی‌گذارد، و اگر مایل باشید می‌تواند آن را به راحتی انجام ندهد.
+این تنظیم عملکرد می‌تواند چندین بار بدون انجام هر گونه آسیبی اجرا شود، اما تنها یک بار در نصب یا ارتقاء مورد نیاز است.',
+	'smw_smwadmin_permissionswarn' => 'اگر عملیات با خطاهای اس‌کیو‌ال با شکست مواجه شود، کاربر پایگاه اطلاعاتی استخدام شده توسط ویکی شما ا (LocalSettings.php خود را بررسی کنید) ممکن است مجوزهای کافی را نداشته باشد.
+یا به این کاربر مجوز اضافی برای ایجاد و حذف جداول اعطاء می‌شود، موقتاً ورود اساس پایگاه اطلاعاتی خود را در LocalSettings.php وارد کنید، یا از متن نگهداری <code>SMW_setup.php</code> استفاده کنید که می‌تواند از اعتبارنامه‌های یک سرپرست استفاده کند.',
 	'smw_smwadmin_dbbutton' => 'راه اندازی یا ارتقاء جدول‌ها',
 	'smw_smwadmin_announce' => 'اعلام کردن ویکی خود',
+	'smw_smwadmin_announcedocu' => 'مدیاویکی معنایی یک سرویس وب برای اعلام سایت‌های ویکی معنایی جدی دارد.
+این برای حفظ فهرست سایت‌های عمومی استفاده شده‌است که از مدیاویکی معنایی که عمدتاً برای کمک <a href="https://semantic-mediawiki.org/wiki/SMW_Project"> پروژه مدیاویکی معنایی</a> برای دریافت یک نمای کلی از استفاده های معمولی مدیاویکی معنایی، استفاده می‌کند.
+صفحه اصلی مدیاویکی معنایی را برای <a href="https://semantic-mediawiki.org/wiki/Registry"> کسب اطلاعات بیشتر درباره این سرویس</a> مشاهده کنید.',
+	'smw_smwadmin_announcebutton' => 'دکمه زیر را برای تأیید یوآر‌ال ویکی خود برای آن سرویس، فشار دهید.
+سرویس، ویکی‌هایی را که به طور عمومی در دسترس نیستند را ثبت‌نام نخواهد کرد، و فقط اطلاعات در دسترس به طور عمومی، ذخیره خواهند شد.',
 	'smw_smwadmin_datarefresh' => 'اصلاح اطلاعات و ارتقاء',
+	'smw_smwadmin_datarefreshdocu' => 'تمام داده‌های مدیاویکی معنایی مبتنی بر محتویات فعلی ویکی ممکن است بازیابی شوند.
+این می تواند برای تعمیر داده‌های شکسته  مفید باشد یا برای تازه کردن داده‌ها اگر فرمت داخلی به علت چند ارتقاء نرم‌افزار تغییر کرده‌باشد.
+به روز رسانی صفحه توسط صفحه اجرا می‌شود و بلافاصله تکمیل نخواهد‌شد.
+در زیر نشان می‌دهد که اگر به روز رسانی در حال انجام است و به شما برای شروع کردن با توقف به روز رسانی اجازه می‌دهد (مگر اینکه این ویژگی توسط سرپرست سایت غیرفعال شده‌بود).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>به روز رسانی در حال حاضر در حال انجام است.</strong>
+طبیعی است که پیشرفت به روز رسانی تنها زمانی آرام است که اطلاعات در تکه‌های کوچک هر زمان که کاربر به ویکی دسترسی پیدا می‌کند.
+برای سریع‌تر به پایان رساندن این به روز رسانی، شما می‌‌‌‌توانید متن نگهداری مدیاویکی <code>runJobs.php</code> (از گزینه <code>--maxjobs 1000</code> را برای محدود کردن تعداد به روز رسانی‌های انجام شده  در هر دسته را بخواهید).
+برآورد پیشرفت فعلی به روز رسانی:',
 	'smw_smwadmin_datarefreshbutton' => 'شروع کردن به روز رسانی اطلاعات',
 	'smw_smwadmin_datarefreshstop' => 'این به روز رسانی را متوقف کنید',
 	'smw_smwadmin_datarefreshstopconfirm' => 'بله، من مطمئن هستم.',
 	'smw_smwadmin_support' => 'پشتیبانی شدن',
 	'smw_smwadmin_supportdocu' => 'منابع گوناگونی که ممکن است به شما در رابطه با مشکلات کمک کند:',
+	'smw_smwadmin_installfile' => 'اگر شما تجربه مشکلات نصب را داشتید، با بررسی دستورالعمل‌ها در <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL file</a> شروع کنید.',
+	'smw_smwadmin_smwhomepage' => 'مستندات کامل کاربر برای مدیاویکی معنایی در <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b> است.',
+	'smw_smwadmin_mediazilla' => 'اشکالات می‌توانند به <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> گزارش شوند.',
+	'smw_smwadmin_questions' => 'اگر شما سوالات یا پیشنهادات بیشتری دارید، به گفتگو در<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a> بپیوندید.',
 	'smw_adminlinks_datastructure' => 'ساختار داده‌ها',
 	'smw_adminlinks_displayingdata' => 'نمایش داده‌ها',
 	'smw_adminlinks_inlinequerieshelp' => 'کمک سوالات در خط',
@@ -4942,6 +5057,9 @@ $messages['fa'] = array(
 	'smw-info-par-icon' => 'آیکون برای نشان داد، یا "اطلاعات" و یا "هشدار".',
 	'prefs-smw' => 'مدیاویکی معنایی',
 	'prefs-ask-options' => 'گزینه‌های جستجوی معنایی',
+	'smw-prefs-intro-text' => 'گزینه های زیر توسط [https://semantic-mediawiki.org/ Semantic MediaWiki] (یا فرمت‌های مرتبط) برای فعال کردن سفارشی‌سازی فردی در عملیات انتخاب شده، ارائه شدند. برای کسب اطلاعات بیشتر، لطفاً این[https://semantic-mediawiki.org/wiki/Help:User_preferences help section] را مشاهده کنید.',
+	'smw-prefs-ask-options-tooltip-display' => 'نمایش متن پارامتر به عنوان اطلاعات تول‌تیپ',
+	'smw-prefs-ask-options-collapsed-default' => 'فعال کردن جعبه گزینه برای ویران شدن توسط پیش‌فرض',
 	'smw-ui-tooltip-title-property' => 'ویژگی',
 	'smw-ui-tooltip-title-quantity' => 'کمیت',
 	'smw-ui-tooltip-title-info' => 'اطلاعات',
@@ -4952,15 +5070,23 @@ $messages['fa'] = array(
 	'smw-ui-tooltip-title-note' => 'یادداشت',
 	'smw-ui-tooltip-title-legend' => 'افسانه',
 	'smw_unknowntype' => 'نوع اين ويژگي نامعتبر است',
+	'smw-concept-cache-text' => 'مفهوم، مجموع $1 {{PLURAL:$1|صفحه|صفحات}} را دارد، و آخرین به روز رسانی $2 بود.',
 	'smw_concept_header' => 'صفحه‌های مفهوم "$1"',
 	'smw_conceptarticlecount' => 'نمایش زیر $1 {{PLURAL:$1|صفحه|صفحات}}.',
+	'smw-qp-aggregatable-empty-data' => 'اطلاعات قابل جمع‌آوری شدن درخواست شده به علت چند معیار انتخاب ناکافی نتوانستند نمایش داده شوند.',
 	'right-smw-admin' => 'دسترسی به وظایف مدیریت (مدیاویکی معنایی)',
 	'group-smwadministrator' => 'سرپرستان معنایی مدیاویکی',
 	'group-smwadministrator-member' => '{{GENDER:$1|سرپرست (اس‌ام‌دبلیو)}}',
 	'grouppage-smwadministrator' => '{{ns:project}}:اس‌ام‌دبلیو_سرپرستان',
 	'action-smw-admin' => 'دسترسی به وظایف ادارهٔ معنایی مدیاویکی',
+	'smw-pa-property-predefined-default' => '$1 یک خاصیت از پیش تعریف شده است (همچنین به عنوان [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] شناخته شده‌است). این خاصیت ساخته شده‌ای است که همراه با امتیازات اجرایی اضافی است اما فقط شبیه هر [https://www.semantic-mediawiki.org/wiki/Property user-defined property] دیگری می‌توانند استفاده شوند.',
+	'smw-pa-property-predefined_ask' => '$1 یک خاصیت از پیش تعریف شده است (همچنین به عنوان [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] شناخته شده‌است) که به فراداده [https://www.semantic-mediawiki.org/wiki/Subobject subobject] یک سوال لینک می‌شود.این خاصیت ساخته شده‌ای است که همراه با امتیازات اجرایی اضافی است اما فقط شبیه هر [https://www.semantic-mediawiki.org/wiki/Property user-defined property] دیگری می‌توانند استفاده شوند.',
+	'smw-pa-property-predefined_asksi' => '$1 یک خاصیت از پیش تعریف شده است (همچنین به عنوان [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] شناخته شده‌است) که تعداد شرایط مورد استفاده در یک سوال را جمع می‌کند.این خاصیت ساخته شده‌ای است که همراه با امتیازات اجرایی اضافی است اما فقط شبیه هر [https://www.semantic-mediawiki.org/wiki/Property user-defined property] دیگری می‌توانند استفاده شوند.',
+	'smw-sp-properties-docu' => 'این صفحه نشان می‌دهد [https://www.semantic-mediawiki.org/wiki/خاصیت خواص] که در دسترس هستند و هنگامی که فیلتر شده، تنها خواص تعریف شده کاربر است که منطبق با شرایط، نمایش داده می‌شود. برای یک نمای متفاوت، صفحه ویژه [[Special:UnusedProperties|unused properties]] یا [[Special:WantedProperties|wanted properties]] را مشاهده کنید.',
+	'smw-sp-properties-cache-info' => 'داده‌های فهرست شده از [https://www.semantic-mediawiki.org/wiki/Caching cache] بازیابی شده‌اند، و آخرین به روز شده بودند $1.',
 	'smw-sp-properties-header-label' => 'فهرست ویژگی‌ها',
 	'smw-sp-admin-settings-title' => 'تنظیمات پیکربندی',
+	'smw-sp-admin-settings-docu' => 'نمایش فهرست همه <code>default</code> و <code>localized settings</code> که به محیط مدیاویکی معنایی مربوط هستند. برای اطلاعات در  تنظیمات فردی، لطفاً به صفحه راهنما [https://semantic-mediawiki.org/wiki/Help:Configuration configuration] مراجعه کنید.',
 	'smw-sp-admin-settings-button' => 'ایجاد فهرست تنظیمات',
 );
 
@@ -6319,6 +6445,8 @@ $messages['he'] = array(
 	'smw-paramdesc-searchlabel' => 'טקסט עבור המשך החיפוש',
 	'smw-paramdesc-named_args' => 'שמות הפרמטרים שיועברו לתבנית',
 	'smw-paramdesc-export' => 'אפשרות ייצוא',
+	'smw-printername-feed' => 'הזנת Atom ו-RSS',
+	'smw-paramdesc-feedtype' => 'סוג הזנה',
 	'smw_iq_disabled' => 'שאילתות סמנטיות בוטלו באתר ויקי זה.',
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
 	'smw_parseerror' => 'הערך הניתן אינו ניתן לפענוח.',
@@ -6377,6 +6505,9 @@ $messages['he'] = array(
 	'smw_propertylackspage' => 'פרטי כל המאפיינים אמורים להופיע בדף!',
 	'smw_propertylackstype' => 'לא צוין סוג עבור מאפיין זה (בינתיים נעשה שימוש בסוג $1).',
 	'smw_propertyhardlyused' => 'בקושי נעשה שימוש במאפיין זה בוויקי!',
+	'concepts' => 'רעיונות',
+	'smw-sp-concept-header' => 'רשימת רעיונות',
+	'smw-sp-concept-empty' => 'לא נמצאו רעיונות.',
 	'unusedproperties' => 'מאפיינים שאינם בשימוש',
 	'smw_unusedproperties_docu' => 'המאפיינים הבאים קיימים למרות ששום דף אחר אינו משתמש בהם.',
 	'smw_unusedproperty_template' => '$1 מסוג $2',
@@ -6394,6 +6525,8 @@ $messages['he'] = array(
 	'smw-statistics' => 'סטטיסטיקה סמנטית',
 	'smw-statistics-query-inline' => '{{PLURAL:$1|שאילתה|שאילתות}}',
 	'smw-statistics-query-size' => 'גודל השאילתה',
+	'smw-statistics-concept-count-legacy' => '{{PLURAL:$1|רעיון|רעיונות}}',
+	'smw-statistics-concept-count' => '[[Special:Concepts|{{PLURAL:$1|רעיון|רעיונות}}]]',
 	'smw_uri_doc' => 'פותרן כתובות מיישם את [$1 חיפוש W3C TAG ב־httpRange-14]. הוא דואג לכך שאנשים לא יהפכו לאתרי אינטרנט.',
 	'ask' => 'חיפוש סמנטי',
 	'smw_ask_sortby' => 'מיון לפי טור (אופציונאלי)',
@@ -9047,9 +9180,10 @@ $messages['krc'] = array(
 
 /** Krio (Krio)
  * @author Jose77
+ * @author Protostar
  */
 $messages['kri'] = array(
-	'smw_browse_go' => 'Go to am',
+	'smw_browse_go' => 'Go',
 );
 
 /** Kinaray-a (Kinaray-a)
