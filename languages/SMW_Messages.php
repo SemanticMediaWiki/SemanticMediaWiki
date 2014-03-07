@@ -9743,7 +9743,7 @@ $messages['mk'] = array(
 	'smw_concept_description' => 'Опис на концептот „$1“',
 	'smw_no_concept_namespace' => 'Концептите можат да се определуваат само на страници во именскиот простор „Концепт:“ („Concept:“).',
 	'smw_multiple_concepts' => 'Секоја концептна страница може да има само по една одредба на концепт.',
-	'smw_concept_cache_miss' => 'Концептот „$1“ во моментов не може да се користи, бидејќи местењата на викито бараат тој да се пресмета вон интернет.
+	'smw_concept_cache_miss' => 'Концептот „$1“ во моментов не може да се користи, бидејќи местењата на викито бараат тој да се пресмета вонсемрежно.
 Ако проблемот не исчезне по извесно време, побарајте од вашиот администратор да го овозможи тој концепт.',
 	'smw_noinvannot' => 'На обратните својства не можат да им се назначуваат вредности.',
 	'version-semantic' => 'Семантички додатоци',
@@ -9990,9 +9990,9 @@ $messages['mk'] = array(
 Доделете му доволно дозволи на корисникот за да може да создава и брише табели, привремено внесете го најавниот корен (root) на вашата база на податоци во LocalSettings.php, или пак употребете ја скриптата за одржување <code>SMW_setup.php</code> која може да ги користи акердитивите за пристап од корисник на SysOp.',
 	'smw_smwadmin_dbbutton' => 'Започни или поднови табели',
 	'smw_smwadmin_announce' => 'Објавете го вашето вики',
-	'smw_smwadmin_announcedocu' => 'Семантички МедијаВики има мрежна служба за соопштување на нови семантички вики-страници.
-Ова се користи за одржување на список на јавни мрежни места кои го користат Семантички МедијаВики, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project?uselang=mk">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Семантички МедијаВики.
-Погледајте го мрежното место на Семантички МедијаВики за <a href="http://semantic-mediawiki.org/wiki/Registry?uselang=mk">повеќе информации за оваа служба</a>.',
+	'smw_smwadmin_announcedocu' => 'Семантички МедијаВики има семрежна служба за соопштување на нови семантички вики-страници.
+Ова се користи за одржување на список на јавни семрежни места кои го користат Семантички МедијаВики, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project?uselang=mk">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Семантички МедијаВики.
+Погледајте го семрежното место на Семантички МедијаВики за <a href="http://semantic-mediawiki.org/wiki/Registry?uselang=mk">повеќе информации за оваа служба</a>.',
 	'smw_smwadmin_announcebutton' => 'Притиснете го следново копче за да ја испратите URL-адресата на вашето вики во таа служба.
 Службата нема да регистрира викија што не се јавно достапни, и ќе складира само достапни информации.',
 	'smw_smwadmin_datarefresh' => 'Поправка и поднова на податоци',
@@ -13605,6 +13605,13 @@ Pred izvajanje administrativnih dejanj ustvarite varnostno kopijo uporabnih poda
 	'smw_adminlinks_datastructure' => 'Zgradba podatkov',
 	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
 	'smw_concept_header' => 'Strani zasnove »$1«',
+);
+
+/** Albanian (shqip)
+ * @author GretaDoci
+ */
+$messages['sq'] = array(
+	'smw_smwadmin_mediazilla' => 'Bugs mund të raportohet për të <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/çështjet">GitHub</a>.',
 );
 
 /** Serbian (Cyrillic script) (српски (ћирилица)‎)
