@@ -5009,8 +5009,8 @@ $messages['fa'] = array(
 بازگشت به $1 .',
 	'smw_smwadmin_updatestopped' => 'تمام فرآیندهای به روز رسانی موجود متوقف شده‌اند.
 بازگشت به $1 .',
-	'smw_smwadmin_updatenotstopped' => 'برای جلوگیری از روند به روز رسانی درحال اجرا, شما باید جعبه بررسی را برای نشان دادن اینکه شما واقعا مطمئن هستید،فعال کنید.
-بازگشت به $1 .',
+	'smw_smwadmin_updatenotstopped' => 'برای جلوگیری از روند به‌روزرسانی در حال اجرا، شما باید جعبه بررسی را برای نشان دادن اینکه شما واقعاً مطمئن هستید، فعال کنید.
+بازگشت به $1.',
 	'smw_smwadmin_docu' => 'این صفحه مخصوص به شما  در طول نصب و ارتقاء <a href="https://semantic-mediawiki.org"> مدیاویکی معنایی </a> کمک می کند.
 برای پشتیبان گیری داده‌های ارزشمند قبل از اجرای عملیات اداری، به یاد دیشته باشید.',
 	'smw_smwadmin_db' => 'نصب پایگاه اطلاعات و ارتقاء',
@@ -15198,7 +15198,7 @@ $messages['uk'] = array(
 	'smw_smwadmin_supportdocu' => 'Є різні ресурси, що можуть стати в пригоді у разі виникнення проблем:',
 	'smw_smwadmin_installfile' => 'Якщо у вас виникли проблеми із встановленням, насамперед подивіться поради у <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">файлі INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Повна довідка із користування Semantic MediaWiki знаходиться на сайті <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Повідомлення про помилки відсилайте через <a href="https://bugzilla.wikimedia.org/">Баґзиллу</a>.',
+	'smw_smwadmin_mediazilla' => 'Повідомлення про помилки відсилайте через  <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">Ґітгаб</a>.',
 	'smw_smwadmin_questions' => 'Якщо у вас є додаткові запитання чи побажання, приєднуйтесь до обговорень на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форумі з користування Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Структура даних',
 	'smw_adminlinks_displayingdata' => 'Відображення даних',
