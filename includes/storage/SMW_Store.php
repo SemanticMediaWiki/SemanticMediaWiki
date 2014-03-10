@@ -33,6 +33,16 @@ use Title;
  */
 abstract class Store {
 
+	/**
+	 * FIXME THIS SHOULD NOT BE STATIC
+	 *
+	 * getPropertyTables is used all over the Store in a static manner
+	 * but its needs needs access to the configuration therefore once
+	 * all static calls are removed, turn this into a normal protected
+	 * variable
+	 */
+	protected static $configuration = null;
+
 ///// Reading methods /////
 
 	/**
@@ -443,6 +453,13 @@ abstract class Store {
 	 */
 	public function getParserTestTables() {
 		return array();
+	}
+
+	/**
+	 * @since 1.9.1.1
+	 */
+	public function setConfiguration( Settings $configuration ) {
+		self::$configuration = $configuration;
 	}
 
 }
