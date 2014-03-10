@@ -21,6 +21,7 @@ matrix:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
     - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
+    - env: DBTYPE=postgres; MW=1.22.3
 
 before_script: bash ./build/travis/before_script.sh
 
