@@ -1,6 +1,8 @@
 <?php
 
 use SMW\Settings;
+use SMW\StoreFactory;
+use SMW\Store;
 
 /**
  * @defgroup SMWSpecialPage
@@ -20,8 +22,19 @@ use SMW\Settings;
  */
 class SMWAdmin extends SpecialPage {
 
+	protected $store = null;
+
 	public function __construct() {
 		parent::__construct( 'SMWAdmin', 'smw-admin' );
+		$this->store = StoreFactory::getStore();
+	}
+
+	public function setStore( Store $store ) {
+		$this->store = $store;
+	}
+
+	public function getStore() {
+		return $this->store;
 	}
 
 	public function execute( $par ) {
@@ -56,6 +69,8 @@ class SMWAdmin extends SpecialPage {
 		switch ( $this->getRequest()->getText( 'action' ) ) {
 			case 'listsettings':
 				return $this->actionListSettings();
+			case 'idlookup':
+				return $this->actionIdLookup( $this->getRequest()->getVal( 'objectId' ) );
 			case 'updatetables':
 				return $this->actionUpdateTables();
 			case 'refreshstore':
@@ -99,6 +114,7 @@ class SMWAdmin extends SpecialPage {
 		}
 
 		$html .= $this->getSettingsSection();
+		$html .= $this->getIdLookupSection();
 		$html .= $this->getAnnounceSection();
 		$html .= $this->getSupportSection();
 
@@ -133,6 +149,22 @@ class SMWAdmin extends SpecialPage {
 			'<li>' . wfMessage( 'smw_smwadmin_mediazilla' )->text() . "</li>\n" .
 			'<li>' . wfMessage( 'smw_smwadmin_questions' )->text() . "</li>\n" .
 			"</ul>\n";
+	}
+
+	protected function getIdLookupSection() {
+
+		return '<br />' .
+			Html::element( 'h2', array(), $this->msg( 'smw-sp-admin-idlookup-title' )->text() ) . "\n" .
+			Html::element( 'p', array(), $this->msg( 'smw-sp-admin-idlookup-docu' )->text() ) . "\n" .
+			Xml::tags( 'form', array(
+				'method' => 'get',
+				'action' => $GLOBALS['wgScript']
+			),
+			Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
+				Html::hidden( 'action', 'idlookup' ) .
+				Xml::inputLabel( $this->msg( 'smw-sp-admin-idlookup-objectid' )->text(), 'objectId', 'objectId', 20, null ) . ' ' .
+				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() )
+			);
 	}
 
 	protected function actionUpdateTables() {
@@ -183,6 +215,29 @@ class SMWAdmin extends SpecialPage {
 	protected function actionListSettings() {
 		$this->printRawOutput( function( $instance ) {
 			print '<pre>' . $instance->encodeJson( Settings::newFromGlobals()->toArray() ) . '</pre>';
+		} );
+	}
+
+	protected function actionIdLookup( $objectId ) {
+		$objectId = (int)$objectId;
+
+		$this->printRawOutput( function( $instance ) use ( $objectId ) {
+
+			$tableName = $instance->getStore()->getObjectIds()->getIdTable();
+
+			$row = $instance->getStore()->getDatabase()->selectRow(
+					$tableName,
+					array(
+						'smw_title',
+						'smw_namespace',
+						'smw_iw',
+						'smw_subobject'
+					),
+					'smw_id=' . $objectId,
+					__METHOD__
+			);
+
+			print '<pre>' . $instance->encodeJson( array( $objectId, $row ) ) . '</pre>';
 		} );
 	}
 
