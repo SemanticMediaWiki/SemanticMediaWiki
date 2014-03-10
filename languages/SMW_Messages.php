@@ -6585,9 +6585,15 @@ $messages['he'] = array(
 כל הנתונים המאוחסנים ייבנו מחדש או יתוקנו היכן שיש צורך.
 תוכלו לעקוב אחר תהליך העדכון בדף מיוחד זה.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'יש כבר תהליך עדכון פעיל.
-לא ייווצר עוד אחד.', # Fuzzy
-	'smw_smwadmin_updatestopped' => 'כל תהליכי העדכון הקיימים נעצרו.', # Fuzzy
-	'smw_smwadmin_updatenotstopped' => 'כדי לעצור תהליך עדכון פעיל, עליכם לסמן את תיבת הסימון כדי לציין שאתם בטוחים בכך.', # Fuzzy
+לא ייווצר עוד אחד.
+
+חזרה אל $1.',
+	'smw_smwadmin_updatestopped' => 'כל תהליכי העדכון הקיימים נעצרו.
+
+לחזור אל $1',
+	'smw_smwadmin_updatenotstopped' => 'כדי לעצור תהליך עדכון פעיל, עליכם לסמן את תיבת הסימון כדי לציין שאתם בטוחים בכך.
+
+חזרה אל $1.',
 	'smw_smwadmin_docu' => 'דף מיוחד זה יעזור לכם במהלך ההתקנה והשדרוג של <a href="http://semantic-mediawiki.org">מדיה־ויקי הסמנטית</a>.
 זִכרו לגבות את הנתונים החיוניים לכם בטרם הפעלת התכונות הניהוליות.',
 	'smw_smwadmin_db' => 'התקנה ושדרוג של בסיס הנתונים',
@@ -6620,7 +6626,7 @@ $messages['he'] = array(
 	'smw_smwadmin_supportdocu' => 'מגוון משאבים עומדים לרשותכם במקרה של תקלה:',
 	'smw_smwadmin_installfile' => 'אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות בקובץ <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב<a href="https://bugzilla.wikimedia.org/">באגזילה של מדיה־ויקי</a>.', # Fuzzy
+	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב־<a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
 	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">פורום המשתמשים של Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'מבנה הנתונים',
 	'smw_adminlinks_displayingdata' => 'הצגת נתונים',
