@@ -409,7 +409,7 @@ class ListResultPrinter extends ResultPrinter {
 
 	protected function addCommonTemplateParameters( $queryResult ) {
 		return ( $this->mUserParam ? "|userparam=$this->mUserParam" : '' ) .
-			"|swm-resultquerycondition=" . $queryResult->getQuery()->getQueryString();
+			"|smw-resultquerycondition=" . $queryResult->getQuery()->getQueryString();
 	}
 
 	/**
