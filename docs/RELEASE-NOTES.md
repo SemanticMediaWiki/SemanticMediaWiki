@@ -4,7 +4,7 @@
 ### New features
 
 * #199 Added [object-Id lookup][id-lookup] via SMWAdmin
-* #217 Extended ListResultPrinter to make `{{{userparam}}}` available to intro and outro templates and introduce `{{{smw-resultquerycondition}}}` parameter to access the source query condition within a template
+* #217 Extended ListResultPrinter to make `{{{userparam}}}` available to intro and outro templates and introduce `{{{smw-resultquerycondition}}}`, `{{{smw-resultquerylimit}}}`, and `{{{smw-resultqueryoffset}}}` parameters to access query details within a template
 
 ### Bug fixes
 
