@@ -409,7 +409,9 @@ class ListResultPrinter extends ResultPrinter {
 
 	protected function addCommonTemplateParameters( $queryResult ) {
 		return ( $this->mUserParam ? "|userparam=$this->mUserParam" : '' ) .
-			"|smw-resultquerycondition=" . $queryResult->getQuery()->getQueryString();
+			"|smw-resultquerycondition=" . $queryResult->getQuery()->getQueryString() .
+			"|smw-resultquerylimit=" . $queryResult->getQuery()->getLimit() .
+			"|smw-resultqueryoffset=" . $queryResult->getQuery()->getOffset();
 	}
 
 	/**
