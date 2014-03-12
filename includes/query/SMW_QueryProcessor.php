@@ -530,8 +530,15 @@ class SMWQueryProcessor {
 	}
 
 	private static function getStoreFromParams( array $params ) {
-		$source = $params['source']->getValue();
-		return $source !== '' ? new $GLOBALS['smwgQuerySources'][$source]() : \SMW\StoreFactory::getStore();
+
+		$storeId = null;
+		$source  = $params['source']->getValue();
+
+		if ( $source !== '' ) {
+			$storeId = $GLOBALS['smwgQuerySources'][$source];
+		}
+
+		return \SMW\StoreFactory::getStore( $storeId );
 	}
 
 	/**
@@ -658,7 +665,7 @@ class SMWQueryProcessor {
 	}
 
 	private static function getSourceParam() {
-		$sourceValues = array_keys( $GLOBALS['smwgQuerySources'] );
+		$sourceValues = is_array( $GLOBALS['smwgQuerySources'] ) ? array_keys( $GLOBALS['smwgQuerySources'] ) : array();
 
 		return array(
 			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',

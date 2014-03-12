@@ -170,8 +170,15 @@ class SMWAskPage extends SMWQuerySpecialPage {
 	}
 
 	private function getStoreFromParams( array $params ) {
-		$source = $params['source']->getValue();
-		return $source !== '' ? new $GLOBALS['smwgQuerySources'][$source]() : \SMW\StoreFactory::getStore();
+
+		$storeId = null;
+		$source  = $params['source']->getValue();
+
+		if ( $source !== '' ) {
+			$storeId = $GLOBALS['smwgQuerySources'][$source];
+		}
+
+		return \SMW\StoreFactory::getStore( $storeId );
 	}
 
 	/**
