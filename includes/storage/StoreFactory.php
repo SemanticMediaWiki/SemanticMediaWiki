@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use RuntimeException;
+
 /**
  * Factory method that handles store instantiation
  *
@@ -34,6 +36,10 @@ class StoreFactory {
 	 * @throws InvalidStoreException
 	 */
 	public static function newInstance( $store ) {
+
+		if ( !class_exists( $store ) ) {
+			throw new RuntimeException( "Expected a {$store} class" );
+		}
 
 		$instance = new $store;
 

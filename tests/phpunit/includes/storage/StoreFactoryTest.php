@@ -18,18 +18,8 @@ use SMW\Settings;
  *
  * @author mwjames
  */
-class StoreFactoryTest extends SemanticMediaWikiTestCase {
+class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\StoreFactory';
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testGetStore() {
 
 		$settings = Settings::newFromGlobals();
@@ -38,55 +28,58 @@ class StoreFactoryTest extends SemanticMediaWikiTestCase {
 		$instance = StoreFactory::getStore();
 		$this->assertInstanceOf( $settings->get( 'smwgDefaultStore' ), $instance );
 
-		// Static instance
-		$this->assertTrue( StoreFactory::getStore() === $instance );
+		$this->assertSame(
+			StoreFactory::getStore(),
+			$instance
+		);
 
 		// Reset static instance
 		StoreFactory::clear();
-		$this->assertTrue( StoreFactory::getStore() !== $instance );
+
+		$this->assertNotSame(
+			StoreFactory::getStore(),
+			$instance
+		);
 
 		// Inject default store
 		$defaulStore = $settings->get( 'smwgDefaultStore' );
 		$instance = StoreFactory::getStore( $defaulStore );
 		$this->assertInstanceOf( $defaulStore, $instance );
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testNewInstance() {
 
 		$settings = Settings::newFromGlobals();
 
-		// Circumvent the static instance
 		$defaulStore = $settings->get( 'smwgDefaultStore' );
 		$instance = StoreFactory::newInstance( $defaulStore );
 		$this->assertInstanceOf( $defaulStore, $instance );
 
-		// Non-static instance
-		$this->assertTrue( StoreFactory::newInstance( $defaulStore ) !== $instance );
-
+		$this->assertNotSame(
+			StoreFactory::newInstance( $defaulStore ),
+			$instance
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testStoreInstanceException() {
 		$this->setExpectedException( '\SMW\InvalidStoreException' );
-		$instance = StoreFactory::newInstance( $this->getClass() );
+		StoreFactory::newInstance( '\SMW\StoreFactory' );
+	}
+
+	public function testStoreWithInvalidClassThrowsException() {
+		$this->setExpectedException( 'RuntimeException' );
+		StoreFactory::newInstance( 'foo' );
 	}
 
 	/**
 	 * smwfGetStore is deprecated but due to its dependency do a quick check here
 	 *
 	 * FIXME Delete this test in 1.11
-	 *
-	 * @since 1.9
 	 */
 	public function testSmwfGetStore() {
 		$store = smwfGetStore();
 		$this->assertInstanceOf( 'SMWStore', $store );
 		$this->assertInstanceOf( 'SMW\Store', $store );
 	}
+
 }
