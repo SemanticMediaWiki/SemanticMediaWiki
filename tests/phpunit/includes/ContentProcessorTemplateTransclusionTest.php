@@ -4,6 +4,8 @@ namespace SMW\Test;
 
 use SMW\ContentProcessor;
 use SMW\ExtensionContext;
+use SMW\Settings;
+use SMW\ParserData;
 
 use Title;
 use ParserOutput;
@@ -19,26 +21,16 @@ use ParserOutput;
  *
  * @author mwjames
  */
-class ContentProcessorTemplateTransclusionTest extends ParserTestCase {
+class ContentProcessorTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\ContentProcessor';
-	}
-
-	/**
-	 * @since  1.9
-	 *
-	 * @return ContentProcessor
-	 */
-	private function newInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
+	private function acquireInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
 
 		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
+		$context->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'Settings', Settings::newFromArray( $settings ) );
 
-		$parserData = $this->newParserData( $title, $parserOutput );
+		$parserData = new ParserData( $title, $parserOutput );
 
 		return new ContentProcessor( $parserData, $context );
 	}
@@ -49,12 +41,6 @@ class ContentProcessorTemplateTransclusionTest extends ParserTestCase {
 	 * process in order to access a Template
 	 *
 	 * @note Part of the routine has been taken from MW's ExtraParserTest
-	 *
-	 * @since 1.9
-	 *
-	 * @param $title
-	 * @param $text
-	 * @param $return
 	 *
 	 * @return text
 	 */
@@ -80,14 +66,12 @@ class ContentProcessorTemplateTransclusionTest extends ParserTestCase {
 
 	/**
 	 * @dataProvider templateDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testPreprocessTemplateAndParse( $namespace, array $settings, $text, $tmplValue, array $expected ) {
 
-		$parserOutput = $this->newParserOutput();
-		$title        = $this->newTitle( $namespace );
-		$instance     = $this->newInstance( $title, $parserOutput, $settings );
+		$parserOutput = new ParserOutput();
+		$title        = Title::newFromText( __METHOD__, $namespace );
+		$instance     = $this->acquireInstance( $title, $parserOutput, $settings );
 		$outputText   = $this->runTemplateTransclusion( $title, $text, $tmplValue );
 
 		$instance->parse( $outputText );
@@ -98,26 +82,21 @@ class ContentProcessorTemplateTransclusionTest extends ParserTestCase {
 			'Asserts that the text compares to the expected output'
 		);
 
-		$parserData = $this->newParserData( $title, $parserOutput );
+		$parserData = new ParserData( $title, $parserOutput );
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
-			$parserData->getData(),
-			'Asserts getData() returning instance'
+			$parserData->getSemanticData()
 		);
 
 		$semanticDataValidator = new SemanticDataValidator;
 
 		$semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$parserData->getData()
+			$parserData->getSemanticData()
 		);
-
 	}
 
-	/**
-	 * @return array
-	 */
 	public function templateDataProvider() {
 
 		$provider = array();

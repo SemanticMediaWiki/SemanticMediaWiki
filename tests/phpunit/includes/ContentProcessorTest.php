@@ -4,6 +4,9 @@ namespace SMW\Test;
 
 use SMW\ContentProcessor;
 use SMW\ExtensionContext;
+use SMW\Settings;
+use SMW\ParserData;
+use SMW\DIProperty;
 
 use Title;
 use ParserOutput;
@@ -20,160 +23,111 @@ use ReflectionClass;
  *
  * @author mwjames
  */
-class ContentProcessorTest extends ParserTestCase {
-
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\ContentProcessor';
-	}
-
-	/**
-	 * @since  1.9
-	 *
-	 * @return ContentProcessor
-	 */
-	private function newInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
-
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
-
-		$parserData = $this->newParserData( $title, $parserOutput );
-
-		return new ContentProcessor( $parserData, $context );
-	}
+class ContentProcessorTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider textDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testConstructor( $namespace ) {
-		$instance = $this->newInstance( $this->newTitle( $namespace ), $this->newParserOutput() );
-		$this->assertInstanceOf( $this->getClass(), $instance );
+	public function testCanConstruct( $namespace ) {
+
+		$title = Title::newFromText( __METHOD__, $namespace );
+
+		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\ContentProcessor',
+			$this->acquireInstance( $title, $parserOutput )
+		);
 	}
 
 	/**
 	 * @dataProvider magicWordDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testStripMagicWords( $namespace, $text, array $expected ) {
+	public function testStripMagicWordsOnReflection( $namespace, $text, array $expected ) {
 
-		$parserOutput = $this->newParserOutput();
-		$title        = $this->newTitle( $namespace );
-		$instance     = $this->newInstance( $title, $parserOutput );
+		$parserOutput = new ParserOutput();
+		$title        = Title::newFromText( __METHOD__, $namespace );
+		$instance     = $this->acquireInstance( $title, $parserOutput );
 
-		// Make protected method accessible
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\ContentProcessor' );
 		$method    = $reflector->getMethod( 'stripMagicWords' );
 		$method->setAccessible( true );
 
 		$result = $method->invoke( $instance, array( &$text ) );
 
-		// Check return values
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( $expected, $result );
 
-		// Check values against ParserData/ParserOutput object
-		$parserData = $this->newParserData( $title, $parserOutput );
+		$parserData = new ParserData( $title, $parserOutput );
 
-		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
-			$this->assertEquals( $expected, $parserData->getOutput()->getExtensionData( 'smwmagicwords' ) );
-		} else {
-			$this->assertEquals( $expected, $parserData->getOutput()->mSMWMagicWords );
-		}
+		$this->assertMagicWords( $expected, $parserData->getOutput() );
 	}
 
 	/**
 	 * @dataProvider textDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testParse( $namespace, array $settings, $text, array $expected ) {
+	public function testTextParse( $namespace, array $settings, $text, array $expected ) {
 
-		$parserOutput = $this->newParserOutput();
-		$title        = $this->newTitle( $namespace );
-		$instance     = $this->newInstance( $title, $parserOutput, $settings );
+		$parserOutput = new ParserOutput();
+		$title        = Title::newFromText( __METHOD__, $namespace );
+		$instance     = $this->acquireInstance( $title, $parserOutput, $settings );
 
-		// Text parsing
 		$instance->parse( $text );
 
-		// Check transformed text
 		$this->assertContains( $expected['resultText'], $text );
 
-		// Re-read data from stored parserOutput
-		$parserData = $this->newParserData( $title, $parserOutput );
-
-		// Check the returned instance
-		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
+		$parserData = new ParserData( $title, $parserOutput );
 
 		$semanticDataValidator = new SemanticDataValidator;
 
 		$semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$parserData->getData()
+			$parserData->getSemanticData()
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testRedirect() {
+	public function testRedirectParse() {
 
 		$namespace = NS_MAIN;
 		$text      = '#REDIRECT [[:Lala]]';
 
-		// Create text processor instance
-		$parserOutput = $this->newParserOutput();
-		$title        = $this->newTitle( $namespace );
-
-		$settings = $this->newSettings( array(
+		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
 			'smwgLinksInValues' => false,
 			'smwgInlineErrors'  => true,
-		) );
+		);
 
-		$parserData = $this->newParserData( $title, $parserOutput );
+		$parserOutput = new ParserOutput();
+		$title        = Title::newFromText( __METHOD__, $namespace );
+		$instance     = $this->acquireInstance( $title, $parserOutput, $settings );
 
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
-
-		$instance = new ContentProcessor( $parserData, $context );
 		$instance->parse( $text );
 
-		// Build expected results from a successful setRedirect execution
-		$expected['propertyCount'] = 1;
-		$expected['propertyKey']   = '_REDI';
-		$expected['propertyValue'] = ':Lala';
+		$expected['propertyCount']  = 1;
+		$expected['property']       = new DIProperty( '_REDI' );
+		$expected['propertyValues'] = ':Lala';
 
-		// Check the returned instance
-		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
+		$parserData = new ParserData( $title, $parserOutput );
 
 		$semanticDataValidator = new SemanticDataValidator;
 
 		$semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$parserData->getData()
+			$parserData->getSemanticData()
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testProcess() {
+	public function testProcessOnReflection() {
 
-		$parserOutput = $this->newParserOutput();
-		$title        = $this->newTitle();
-		$instance     = $this->newInstance( $title, $parserOutput );
+		$parserOutput = new ParserOutput();
+		$title        = Title::newFromText( __METHOD__ );
+		$instance     = $this->acquireInstance( $title, $parserOutput );
 
-		// Make protected methods accessible
-		$reflection = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\ContentProcessor' );
 
-		$method = $reflection->getMethod( 'process' );
+		$method = $reflector->getMethod( 'process' );
 		$method->setAccessible( true );
 
 		$result = $method->invoke( $instance, array() );
@@ -189,13 +143,6 @@ class ContentProcessorTest extends ParserTestCase {
 		$this->assertEmpty( $result );
 	}
 
-	/**
-	 * Provides text sample, following namespace, the settings to be used,
-	 * text string, and expected result array with {result text, property count,
-	 * property label, and property value}
-	 *
-	 * @return array
-	 */
 	public function textDataProvider() {
 
 		$provider = array();
@@ -379,6 +326,29 @@ class ContentProcessorTest extends ParserTestCase {
 				array( 'SMW_SHOWFACTBOX' )
 			),
 		);
+	}
+
+	protected function assertMagicWords( $expected, $parserOutput ) {
+
+		// MW 1.21 dependency
+		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
+			return $this->assertEquals( $expected, $parserOutput->getExtensionData( 'smwmagicwords' ) );
+		}
+
+		return $this->assertEquals( $expected, $parserOutput->mSMWMagicWords );
+	}
+
+	/**
+	 * @return ContentProcessor
+	 */
+	private function acquireInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
+
+		$context = new ExtensionContext();
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', Settings::newFromArray( $settings ) );
+
+		$parserData = new ParserData( $title, $parserOutput );
+
+		return new ContentProcessor( $parserData, $context );
 	}
 
 }
