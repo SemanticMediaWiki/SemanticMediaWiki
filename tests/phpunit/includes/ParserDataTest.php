@@ -4,8 +4,9 @@ namespace SMW\Test;
 
 use SMW\ObservableSubjectDispatcher;
 use SMW\DataValueFactory;
-use SMw\SemanticData;
+use SMW\SemanticData;
 use SMW\ParserData;
+use SMW\DIWikiPage;
 
 use ParserOutput;
 use Title;
@@ -23,161 +24,129 @@ use Title;
  *
  * @author mwjames
  */
-class ParserDataTest extends ParserTestCase {
+class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\ParserData';
+	public function testCanConstruct() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( -1 ) );
+
+		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\ParserData',
+			new ParserData( $title, $parserOutput )
+		);
 	}
 
-	/**
-	 * @since  1.9
-	 *
-	 * @return ParserData
-	 */
-	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
-
-		if ( $title === null ) {
-			$title = $this->newTitle();
-		}
-
-		if ( $parserOutput === null ) {
-			$parserOutput = $this->newParserOutput();
-		}
-
-		return new ParserData( $title, $parserOutput );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testInitialDataIsEmpty() {
-		$this->assertTrue( $this->newInstance()->getData()->isEmpty() );
+		$instance = $this->acquireInstance();
+		$this->assertTrue( $instance->getSemanticData()->isEmpty() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testUpdateStatus() {
 
-		$instance = $this->newInstance();
-
+		$instance = $this->acquireInstance();
 		$this->assertTrue( $instance->getUpdateStatus() );
 
 		$instance->disableUpdateJobs();
-
 		$this->assertFalse( $instance->getUpdateStatus() );
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testGetTitleAndDIWikiPageAndParserOutput() {
+	public function testGetterInstances() {
 
-		$instance = $this->newInstance();
+		$instance = $this->acquireInstance();
 
 		$this->assertInstanceOf( 'Title', $instance->getTitle() );
 		$this->assertInstanceOf( 'ParserOutput', $instance->getOutput() );
 		$this->assertInstanceOf( '\SMW\DIWikiPage', $instance->getSubject() );
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testAddAndClearData() {
+	public function testAddDataVlaueAndClear() {
 
-		$instance = $this->newInstance();
+		$instance = $this->acquireInstance();
 
 		$this->assertTrue(
-			$instance->getData()->isEmpty(),
+			$instance->getSemanticData()->isEmpty(),
 			'Asserts that the initial container is empty'
 		);
 
-		$instance->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$instance->addDataValue(
+			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
+		);
 
 		$this->assertFalse(
-			$instance->getData()->isEmpty(),
+			$instance->getSemanticData()->isEmpty(),
 			'Asserts that the container is longer empty'
 		);
 
 		$instance->clearData();
 
 		$this->assertTrue(
-			$instance->getData()->isEmpty(),
+			$instance->getSemanticData()->isEmpty(),
 			'Asserts that clearData() yields an empty container'
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testAddAndUpdateOutput() {
+	public function testAddDataValueAndUpdateOutput() {
 
-		$instance = $this->newInstance();
+		$instance = $this->acquireInstance();
 
-		$instance->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$instance->addDataValue(
+			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
+		);
 
 		$this->assertFalse(
-			$instance->getData()->isEmpty(),
+			$instance->getSemanticData()->isEmpty(),
 			'Asserts that the container is no longer empty'
 		);
 
 		$instance->updateOutput();
 
-		$newInstance = $this->newInstance( null, $instance->getOutput() );
+		$acquireInstance = $this->acquireInstance( null, $instance->getOutput() );
 
 		$this->assertTrue(
-			$instance->getData()->getHash() === $newInstance->getData()->getHash(),
+			$instance->getSemanticData()->getHash() === $acquireInstance->getSemanticData()->getHash(),
 			'Asserts that updateOutput() yielded an update, resulting with an identical hash in both containers'
 		);
-
 	}
 
+	public function testSetGetSemanticData() {
 
-	/**
-	 * @since 1.9
-	 */
-	public function testSetGetData() {
-
-		$instance = $this->newInstance();
+		$instance = $this->acquireInstance();
 
 		$this->assertTrue(
-			$instance->getData()->isEmpty(),
+			$instance->getSemanticData()->isEmpty(),
 			'Asserts that the container is empty'
 		);
 
-		$data = new SemanticData( $this->newSubject() );
-		$data->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$semanticData = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
-		$instance->setData( $data );
+		$semanticData->addDataValue(
+			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
+		);
+
+		$instance->setSemanticData( $semanticData );
 
 		$this->assertFalse(
-			$instance->getData()->isEmpty(),
+			$instance->getSemanticData()->isEmpty(),
 			'Asserts that the container is no longer empty'
 		);
 
 		$this->assertTrue(
-			$data->getHash() === $instance->getData()->getHash(),
+			$semanticData->getHash() === $instance->getSemanticData()->getHash(),
 			'Asserts that both containers are identical'
 		);
-
 	}
 
-	/**
-	 * @return array
-	 */
+
 	public function getPropertyValueDataProvider() {
 		return array(
 			array( 'Foo'  , 'Bar', 0, 1 ),
@@ -188,12 +157,10 @@ class ParserDataTest extends ParserTestCase {
 
 	/**
 	 * @dataProvider getPropertyValueDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testAddDataValue( $propertyName, $value, $errorCount, $propertyCount ) {
 
-		$instance = $this->newInstance();
+		$instance = $this->acquireInstance();
 
 		$instance->addDataValue(
 			DataValueFactory::getInstance()->newPropertyValue(
@@ -202,18 +169,17 @@ class ParserDataTest extends ParserTestCase {
 			)
 		);
 
-		// Check the returned instance
 		if ( $errorCount === 0 ){
 			$expected['propertyCount']  = $propertyCount;
 			$expected['propertyLabels'] = $propertyName;
 			$expected['propertyValues'] = $value;
-			$this->assertInstanceOf( '\SMW\SemanticData', $instance->getData() );
+			$this->assertInstanceOf( '\SMW\SemanticData', $instance->getSemanticData() );
 
 			$semanticDataValidator = new SemanticDataValidator;
 
 			$semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
-				$instance->getData()
+				$instance->getSemanticData()
 			);
 
 		} else {
@@ -221,25 +187,40 @@ class ParserDataTest extends ParserTestCase {
 		}
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testUpdateStore() {
 
 		$notifier     = 'runStoreUpdater';
-		$title        = $this->newTitle();
-		$parserOutput = $this->newParserOutput();
+		$title        = Title::newFromText( __METHOD__ );
+		$parserOutput = new ParserOutput();
 
-		$instance = $this->newInstance( $title, $parserOutput );
+		$instance = $this->acquireInstance( $title, $parserOutput );
 		$observer = new MockUpdateObserver();
 
 		$instance->registerDispatcher( new ObservableSubjectDispatcher( $observer ) );
 
 		$this->assertTrue( $instance->updateStore() );
 
-		// Verify that the Observer was notified
-		$this->assertEquals( $notifier, $observer->getNotifier() );
+		$this->assertEquals(
+			$notifier,
+			$observer->getNotifier(),
+			'Asserts that the Observer was notified'
+		);
+	}
 
+	/**
+	 * @return ParserData
+	 */
+	private function acquireInstance( Title $title = null, ParserOutput $parserOutput = null ) {
+
+		if ( $title === null ) {
+			$title = Title::newFromText( __METHOD__ );
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = new ParserOutput();
+		}
+
+		return new ParserData( $title, $parserOutput );
 	}
 
 }
