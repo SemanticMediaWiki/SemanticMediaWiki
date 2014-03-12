@@ -47,6 +47,11 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 		parent::run( $result );
 	}
 
+	protected function tearDown() {
+		parent::tearDown();
+		$this->cleanCloneTablesAfterTestRun();
+	}
+
 	/**
 	 * Specifies the source file
 	 *
@@ -95,7 +100,6 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 		$this->assertTitleIsKnownAfterImport( $this->acquirePoolOfTitles() );
 		$this->runUpdateJobs( $this->acquirePoolOfTitles() );
 		$this->assertDataImport();
-
 	}
 
 	protected function getStore() {
@@ -124,6 +128,19 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 		foreach ( $titles as $title ) {
 			$job = new UpdateJob( Title::newFromText( $title ) );
 			$job->run();
+		}
+	}
+
+	private function cleanCloneTablesAfterTestRun() {
+
+		if ( !$this->databaseIsUsable ) {
+			return;
+		}
+
+		$tables = self::listTables( $this->db );
+
+		foreach ( $tables as $table ) {
+			$this->db->dropTable( $table, __METHOD__ );
 		}
 	}
 
