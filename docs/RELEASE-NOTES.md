@@ -8,7 +8,7 @@
 
 ### Bug fixes
 
-* #213 Fixed undefined index in connection with `$smwgQuerySources`
+* #203 Fixed undefined index in connection with `$smwgQuerySources`
 * #215 (Bug 62150) Fixed malformed query order due to an unresolved prefix in SparqlQueryEngine
 
 ### Internal enhancements
