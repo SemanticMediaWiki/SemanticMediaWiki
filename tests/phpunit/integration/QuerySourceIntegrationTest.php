@@ -68,7 +68,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'source=foo'
 		);
 
-		$this->setupStore( 'foo', 'SMW\Test\FakeQueryStore', 1 );
+		$this->setupStore( 'foo', 1 );
 
 		$this->assertInternalType(
 			'string',
@@ -87,7 +87,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'source=bar'
 		);
 
-		$this->setupStore( 'bar', 'SMW\Test\NonExistentQueryStore' );
+		$this->setupStore( 'bar' );
 
 		$this->assertInternalType(
 			'string',
@@ -130,7 +130,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$count = $this->setupStore( 'foo', 'SMW\Test\FakeQueryStore', 1 )
+		$count = $this->setupStore( 'foo', 1 )
 			->getQueryResult( $query )
 			->getCount();
 
@@ -145,14 +145,16 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$count = $this->setupStore( 'bar', 'SMW\Test\NonExistentQueryStore' )
+		$count = $this->setupStore( 'bar' )
 			->getQueryResult( $query )
 			->getCount();
 
 		$this->assertInternalType( 'integer', $count );
 	}
 
-	protected function setupStore( $source, $storeId = null, $expectedToRun = 0 ) {
+	protected function setupStore( $source, $expectedToRun = 0 ) {
+
+		$storeId = isset( $GLOBALS['smwgQuerySources'][$source] ) ? $GLOBALS['smwgQuerySources'][$source] : null;
 
 		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
 			->disableOriginalConstructor()
