@@ -16,7 +16,7 @@ use Title;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 1.9.1.2
+ * @since 1.9.2
  *
  * @author mwjames
  */

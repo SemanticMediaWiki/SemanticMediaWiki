@@ -40,7 +40,7 @@ class SMWSparqlStore extends SMWStore {
 
 	/**
 	 * @var SMWSparqlDatabase
-	 * @since 1.9.1.2
+	 * @since 1.9.2
 	 */
 	protected $sparqlDatabase = null;
 
@@ -457,7 +457,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @since  1.9.1.2
+	 * @since  1.9.2
 	 *
 	 * @param SMWSparqlDatabase $sparqlDatabase
 	 */
@@ -467,7 +467,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @since  1.9.1.2
+	 * @since  1.9.2
 	 *
 	 * @return SMWSparqlDatabase
 	 */
