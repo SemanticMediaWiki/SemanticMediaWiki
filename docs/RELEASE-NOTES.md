@@ -8,11 +8,13 @@
 
 ### Bug fixes
 
+* #213 Fixed undefined index in connection with `$smwgQuerySources`
 * #215 (Bug 62150) Fixed malformed query order due to an unresolved prefix in SparqlQueryEngine
 
 ### Internal enhancements
 
 * #195 Improved SQLStore3::getPropertyTables in order to use correct customizing
+* #207 Removed SMWParamSource
 * #218 Extended SparqlStore to inject a SparqlDatabase (improves testablity) together with additional test coverage
 
 
