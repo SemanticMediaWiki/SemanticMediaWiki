@@ -11345,7 +11345,7 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_smwadmin_supportdocu' => 'De ressorsas divèrsas vos poiriàn ajudar en cas de problèmas :',
 	'smw_smwadmin_installfile' => 'S\'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">fichièr INSTALL</a>.', # Fuzzy
 	'smw_smwadmin_smwhomepage' => 'La documentacion completa de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Los bògs pòdon èsser someses sus <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
+	'smw_smwadmin_mediazilla' => 'Los bugs pòdon èsser someses sus <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
 	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum dels utilizaires de Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Estructura de las donadas',
 	'smw_adminlinks_displayingdata' => 'Afichatge de las donadas',
