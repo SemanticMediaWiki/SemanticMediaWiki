@@ -12587,6 +12587,13 @@ $messages['rif'] = array(
 	'smw_browse_go' => 'Raḥ ɣa',
 );
 
+/** Romansh (rumantsch)
+ * @author Kazu89
+ */
+$messages['rm'] = array(
+	'smw-ui-tooltip-title-legend' => 'Legenda',
+);
+
 /** Romanian (română)
  * @author AdiJapan
  * @author Firilacroco
