@@ -1,15 +1,16 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\ExtensionContext;
-use SMW\UpdateJob;
+use SMW\Settings;
 
 use Title;
 
 /**
- * @covers \SMW\UpdateJob
- * @covers \SMW\JobBase
+ * @covers \SMW\MediaWiki\Jobs\UpdateJob
+ * @covers \SMW\MediaWiki\Jobs\JobBase
  *
  * @ingroup Test
  *
@@ -21,32 +22,158 @@ use Title;
  *
  * @author mwjames
  */
-class UpdateJobTest extends ParserTestCase {
+class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\UpdateJob';
+	public function testCanConstruct() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Jobs\UpdateJob',
+			new UpdateJob( $title )
+		);
+
+		// FIXME Delete SMWUpdateJob assertion after all
+		// references to SMWUpdateJob have been removed
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Jobs\UpdateJob',
+			new \SMWUpdateJob( $title )
+		);
+	}
+
+	public function testDefaultContext() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new UpdateJob( $title );
+
+		$this->assertInstanceOf(
+			'\SMW\ContextResource',
+			$instance->withContext()
+		);
+	}
+
+	public function testJobWithMissingParserOutput() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$this->assertFalse(
+			$this->acquireInstance( $title )->run(),
+			'Asserts to return false due to a missing ParserOutput object'
+		);
+	}
+
+	public function testJobWithInvalidTitle() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( false ) );
+
+		$instance  = $this->acquireInstance( $title );
+
+		$instance->withContext()
+			->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'ContentParser', null );
+
+		$this->assertTrue( $instance->run() );
+	}
+
+	public function testJobWithNoRevisionAvailable() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentParser->expects( $this->once() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( null ) );
+
+		$instance  = $this->acquireInstance( $title );
+
+		$instance->withContext()
+			->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'ContentParser', $contentParser );
+
+		$this->assertFalse( $instance->run() );
+	}
+
+	public function testJobWithValidRevision() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getDBkey' )
+			->will( $this->returnValue( __METHOD__ ) );
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( 0 ) );
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentParser->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( new \ParserOutput ) );
+
+		$instance  = $this->acquireInstance( $title );
+
+		$instance->withContext()
+			->getDependencyBuilder()
+			->getContainer()
+			->registerObject( 'ContentParser', $contentParser );
+
+		$this->assertTrue( $instance->run() );
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return UpdateJob
 	 */
-	private function newInstance( Title $title = null ) {
+	private function acquireInstance( Title $title = null ) {
 
 		if ( $title === null ) {
-			$title = $this->newTitle();
+			$title = Title::newFromText( __METHOD__ );
 		}
 
-		$settings = $this->newSettings( array(
+		$settings = Settings::newFromArray( array(
 			'smwgCacheType'        => 'hash',
 			'smwgEnableUpdateJobs' => false // false in order to avoid having jobs being inserted
 		) );
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
+		$mockStore = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 
 		$context   = new ExtensionContext();
 
@@ -56,130 +183,9 @@ class UpdateJobTest extends ParserTestCase {
 
 		$instance = new UpdateJob( $title );
 		$instance->invokeContext( $context );
+		$instance->setJobQueueEnabledState( false );
 
 		return $instance;
-	}
-
-	/**
-	 * FIXME Delete SMWUpdateJob assertion after all references to
-	 * SMWUpdateJob have been removed
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-		$this->assertInstanceOf( $this->getClass(), new \SMWUpdateJob( $this->newTitle() ) );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testDefaultContext() {
-		$instance = new UpdateJob( $this->newTitle() );
-		$this->assertInstanceOf( '\SMW\ContextResource', $instance->withContext() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testRun() {
-
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'exists' => true
-		) );
-
-		$this->assertFalse(
-			$this->newInstance( $title )->run(),
-			'Asserts that the run() returns false due to a missing ParserOutput object'
-		);
-
-	}
-
-	/**
-	 * @dataProvider titleWikiPageDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testRunOnMockObjects( $setup, $expected ) {
-
-		$instance  = $this->newInstance( $setup['title'] );
-
-		$instance->withContext()
-			->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'ContentParser', $setup['contentParser'] );
-
-		$this->assertEquals(
-			$expected['result'],
-			$instance->run(),
-			'Asserts run() in terms of the available ContentParser object'
-		);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function titleWikiPageDataProvider() {
-
-		$provider = array();
-
-		// #0 Title does not exists, deleteSubject() is being executed
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'getDBkey' => 'Lila',
-			'exists'   => false
-		) );
-
-		$provider[] = array(
-			array(
-				'title'         => $title,
-				'contentParser' => null
-			),
-			array(
-				'result'        => true
-			)
-		);
-
-		// #1 No revision, no further activities
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'getDBkey' => 'Lala',
-			'exists'   => true
-		) );
-
-		$contentParser = $this->newMockBuilder()->newObject( 'ContentParser', array(
-			'getOutput' => null
-		) );
-
-		$provider[] = array(
-			array(
-				'title'         => $title,
-				'contentParser' => $contentParser
-			),
-			array(
-				'result'        => false
-			)
-		);
-
-		// #2 Valid revision and parserOuput
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'getDBkey' => 'Lula',
-			'exists'   => true
-		) );
-
-		$contentParser = $this->newMockBuilder()->newObject( 'ContentParser', array(
-			'getOutput' => $this->newMockBuilder()->newObject( 'ParserOutput' )
-		) );
-
-		$provider[] = array(
-			array(
-				'title'         => $title,
-				'contentParser' => $contentParser
-			),
-			array(
-				'result'        => true
-			)
-		);
-
-		return $provider;
 	}
 
 }

@@ -1,16 +1,18 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Jobs\DeleteSubjectJob;
 use SMW\ExtensionContext;
-use SMW\DeleteSubjectJob;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\Settings;
 
 use Title;
+use ReflectionClass;
 
 /**
- * @covers \SMW\DeleteSubjectJob
+ * @covers \SMW\MediaWiki\Jobs\DeleteSubjectJob
  *
  * @ingroup Test
  *
@@ -22,107 +24,63 @@ use Title;
  *
  * @author mwjames
  */
-class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
+class DeleteSubjectJobTest extends \PHPUnit_Framework_TestCase {
 
 	/* @var boolean */
 	protected $deleteSubjectWasCalled = false;
 
 	/* @var Title|null */
-	protected $titleToBeDeleted = null;
+	protected $titlePlannedToBeDeleted = null;
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return 'SMW\DeleteSubjectJob';
-	}
-
-	/**
-	 * @return DeleteSubjectJob
-	 */
-	protected function newInstance( Title $title = null, $settings = array() ) {
-
-		if ( $title === null ) {
-			$title = $this->newTitle();
-		}
-
-		$defaultSettings = array(
-			'smwgCacheType'        => 'hash',
-			'smwgEnableUpdateJobs' => false,
-			'smwgDeleteSubjectAsDeferredJob' => false,
-			'smwgDeleteSubjectWithAssociatesRefresh' => false
-		);
-
-		$settings  = $this->newSettings( array_merge( $defaultSettings, $settings ) );
-
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'deleteSubject'   => array( $this, 'mockStoreDeleteSubjectCallback' ),
-			'getSemanticData' => new SemanticData( DIWikiPage::newFromTitle( $title ) )
-		) );
-
-		$context   = new ExtensionContext();
-
-		$container = $context->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Store', $mockStore );
-		$container->registerObject( 'Settings', $settings );
-
-		$parameters = array(
-			'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
-			'withAssociates' => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
-		);
-
-		$instance = new DeleteSubjectJob( $title, $parameters );
-		$instance->invokeContext( $context );
-
-		return $instance;
-	}
-
-	/**
-	 * @since 1.9.0.1
-	 */
 	public function testCanConstruct() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Jobs\DeleteSubjectJob',
+			new DeleteSubjectJob( $title )
+		);
 	}
 
 	/**
-	 * @dataProvider settingsProvider
-	 *
-	 * @since 1.9.0.1
+	 * @dataProvider jobDefinitionProvider
 	 */
-	public function testExecuteOnMockStore( $setup, $expected ) {
+	public function testExecuteOnMockStore( $parameters, $expected ) {
 
-		$this->titleToBeDeleted = $setup['title'];
-		$instance = $this->newInstance( $setup['title'], $setup['settings'] );
+		$this->titlePlannedToBeDeleted = $parameters['title'];
 
-		$this->assertTrue( $instance->disable()->execute() );
-		$this->assertEquals( $expected['deleteSubjectWasCalled'], $this->deleteSubjectWasCalled );
+		$instance = $this->acquireInstance(
+			$parameters['title'],
+			$parameters['settings']
+		);
+
+		$this->assertTrue( $instance->execute() );
+
+		$this->assertEquals(
+			$expected['deleteSubjectWasCalled'],
+			$this->deleteSubjectWasCalled
+		);
+
 		$this->assertJobsAndJobCount( $expected['jobCount'], $instance );
 
 		unset( $this->deleteSubjectWasCalled );
-		unset( $this->titleToBeDeleted );
+		unset( $this->titlePlannedToBeDeleted );
 	}
 
-
-	/**
-	 * @see Store::deleteSubject
-	 *
-	 * @since 1.9.0.1
-	 */
 	public function mockStoreDeleteSubjectCallback( Title $title ) {
-		$this->deleteSubjectWasCalled = $this->titleToBeDeleted === $title;
+		$this->deleteSubjectWasCalled = $this->titlePlannedToBeDeleted === $title;
 	}
 
-	/**
-	 * @return array
-	 */
-	public function settingsProvider() {
+	public function jobDefinitionProvider() {
 
 		$provider = array();
 
 		#0
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle( NS_MAIN ),
+				'title'    => Title::newFromText( __METHOD__, NS_MAIN ),
 				'settings' => array(
 					'smwgEnableUpdateJobs' => true,
 					'smwgDeleteSubjectAsDeferredJob' => false,
@@ -138,7 +96,7 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		#1
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle( NS_MAIN ),
+				'title'    => Title::newFromText( __METHOD__, NS_MAIN ),
 				'settings' => array(
 					'smwgEnableUpdateJobs' => true,
 					'smwgDeleteSubjectAsDeferredJob' => true,
@@ -154,7 +112,7 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		#2
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle( NS_MAIN ),
+				'title'    => Title::newFromText( __METHOD__, NS_MAIN ),
 				'settings' => array(
 					'smwgEnableUpdateJobs' => false,
 					'smwgDeleteSubjectAsDeferredJob' => true,
@@ -170,7 +128,7 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 		#3
 		$provider[] = array(
 			array(
-				'title'    => $this->newTitle( NS_MAIN ),
+				'title'    => Title::newFromText( __METHOD__, NS_MAIN ),
 				'settings' => array(
 					'smwgEnableUpdateJobs' => false,
 					'smwgDeleteSubjectAsDeferredJob' => true,
@@ -188,37 +146,80 @@ class DeleteSubjectJobTest extends SemanticMediaWikiTestCase {
 
 	protected function assertJobsAndJobCount( $count, $instance ) {
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( 'SMW\MediaWiki\Jobs\DeleteSubjectJob' );
 		$jobs = $reflector->getProperty( 'jobs' );
 		$jobs->setAccessible( true );
 
-		$result = $jobs->getValue( $instance );
+		$actualJobs = $jobs->getValue( $instance );
 
-		$this->assertInternalType(
-			'array',
-			$result,
-			'Asserts that the job result property is of type array'
-		);
+		$this->assertInternalType( 'array', $actualJobs );
+		$this->assertCount( $count, $actualJobs );
 
-		$this->assertCount(
-			$count,
-			$result,
-			'Asserts the amount of available job entries'
-		);
-
-		foreach ( $result as $job ) {
-			$this->assertInstanceOf(
-				$this->getClass(),
-				$job,
-				"Asserts that the job instance is of type {$this->getClass()}"
-			);
-
+		foreach ( $actualJobs as $job ) {
+			$this->assertEquals( 'SMW\DeleteSubjectJob', $job->getType() );
 			$this->assertTrue( $job->hasParameter( 'withAssociates' ) );
 			$this->assertTrue( $job->hasParameter( 'asDeferredJob' ) );
 			$this->assertTrue( $job->hasParameter( 'semanticData' ) );
+		}
+	}
 
+	/**
+	 * @return DeleteSubjectJob
+	 */
+	private function acquireInstance( Title $title = null, $settings = array() ) {
+
+		if ( $title === null ) {
+			$title = Title::newFromText( __METHOD__ );
 		}
 
+		$defaultSettings = array(
+			'smwgCacheType'        => 'hash',
+			'smwgEnableUpdateJobs' => false,
+			'smwgDeleteSubjectAsDeferredJob' => false,
+			'smwgDeleteSubjectWithAssociatesRefresh' => false
+		);
+
+		$settings = Settings::newFromArray( array_merge( $defaultSettings, $settings ) );
+
+		$semanticData = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+
+		$mockStore = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'deleteSubject', 'getSemanticData', 'getProperties', 'getInProperties' ) )
+			->getMockForAbstractClass();
+
+		$mockStore->expects( $this->once() )
+			->method( 'deleteSubject' )
+			->will( $this->returnCallback( array( $this, 'mockStoreDeleteSubjectCallback' ) ) );
+
+		$mockStore->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$mockStore->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( array() ) );
+
+		$mockStore->expects( $this->any() )
+			->method( 'getInProperties' )
+			->will( $this->returnValue( array() ) );
+
+		$context = new ExtensionContext();
+
+		$container = $context->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Store', $mockStore );
+		$container->registerObject( 'Settings', $settings );
+
+		$parameters = array(
+			'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
+			'withAssociates' => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
+		);
+
+		$instance = new DeleteSubjectJob( $title, $parameters );
+		$instance->invokeContext( $context );
+		$instance->setJobQueueEnabledState( false );
+
+		return $instance;
 	}
 
 }

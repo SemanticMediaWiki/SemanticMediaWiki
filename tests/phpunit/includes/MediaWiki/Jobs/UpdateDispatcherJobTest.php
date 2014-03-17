@@ -1,18 +1,20 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\UpdateDispatcherJob;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\ExtensionContext;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SerializerFactory;
 use SMW\SemanticData;
+use SMW\Settings;
 
 use Title;
+use ReflectionClass;
 
 /**
- * @covers \SMW\UpdateDispatcherJob
+ * @covers \SMW\MediaWiki\Jobs\UpdateDispatcherJob
  *
  * @ingroup Test
  *
@@ -24,176 +26,105 @@ use Title;
  *
  * @author mwjames
  */
-class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
+class UpdateDispatcherJobTest extends \PHPUnit_Framework_TestCase {
 
 	/** @var DIProperty */
-	protected $property;
+	protected $expectedProperty;
 
 	/** @var DIWikiPage[] */
-	protected $subjects;
+	protected $expectedSubjects;
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\UpdateDispatcherJob';
+	public function testCanConstruct() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
+			new UpdateDispatcherJob( $title )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return UpdateDispatcherJob
-	 */
-	private function newInstance( Title $title = null, $properties = array(), $parameters = array() ) {
-
-		if ( $title === null ) {
-			$title = $this->newTitle();
-		}
-
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'getAllPropertySubjects' => array( $this, 'mockStoreAllPropertySubjectsCallback' ),
-			'getPropertySubjects'    => array(),
-			'getProperties'          => $properties,
-			'getInProperties'        => $properties
-		) );
-
-		$settings = $this->newSettings( array(
-			'smwgCacheType'        => 'hash',
-			'smwgEnableUpdateJobs' => false
-		) );
-
-		$context   = new ExtensionContext();
-
-		$container = $context->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Store', $mockStore );
-		$container->registerObject( 'Settings', $settings );
-
-		$instance = new UpdateDispatcherJob( $title, $parameters );
-		$instance->invokeContext( $context );
-
-		return $instance;
+	public function testPushToJobQueue() {
+		$this->assertNull( $this->acquireInstance()->pushToJobQueue() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
+	public function testJobRunOnMainNamespace() {
 
-	/**
-	 * Just verify that the push method is accessible without inserting any real job
-	 *
-	 * @since 1.9
-	 */
-	public function testPush() {
-		$this->assertNull( $this->newInstance()->push() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testRunOnDB() {
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$this->assertTrue(
-			$this->newInstance( $this->newTitle( SMW_NS_PROPERTY ) )->disable()->run(),
-			'assert that run() always returns true'
+			$this->acquireInstance( $title )->run()
 		);
+	}
+
+	public function testJobRunOnPropertyNamespace() {
+
+		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
 		$this->assertTrue(
-			$this->newInstance( $this->newTitle( NS_MAIN ) )->disable()->run(),
-			'assert that run() always returns true'
+			$this->acquireInstance( $title )->run()
 		);
-
 	}
 
 	/**
 	 * @dataProvider subjectDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testRunJobOnMockWithOutParameters( $setup, $expected ) {
-		$this->runJobTestOnMock( $setup, $expected, array() );
+
+		$this->expectedProperty = $setup['property'];
+		$this->expectedSubjects = $setup['subjects'];
+
+		$instance = $this->acquireInstance(
+			$setup['title'],
+			$setup['properties']
+		);
+
+		$instance->run();
+		$this->assertJobsAndJobCount( $expected['count'], $instance );
 	}
 
 	/**
 	 * @dataProvider subjectDataProvider
-	 *
-	 * @since 1.9.0.2
 	 */
 	public function testRunJobOnMockWithParameters( $setup, $expected ) {
 
-		$parameters = array(
-			'semanticData' => SerializerFactory::serialize(
+		$semanticData = SerializerFactory::serialize(
 			new SemanticData( DIWikiPage::newFromTitle( $setup['title'] )
-		) ) );
+		) );
 
-		$this->runJobTestOnMock( $setup, $expected, $parameters );
-	}
+		$additionalJobQueueParameters = array(
+			'semanticData' => $semanticData
+		);
 
-	/**
-	 * @since 1.9
-	 */
-	protected function runJobTestOnMock( $setup, $expected, $parameters = array() ) {
+		$this->expectedProperty = $setup['property'];
+		$this->expectedSubjects = $setup['subjects'];
 
-		// Set-up expected property to be accessible in the mock callback
-		$this->property = $setup['property'];
+		$instance = $this->acquireInstance(
+			$setup['title'],
+			$setup['properties'],
+			$additionalJobQueueParameters
+		);
 
-		// Set-up expected "raw" subjects to be returned (plus duplicate)
-		$this->subjects = $setup['subjects'];
-
-		$instance = $this->newInstance( $setup['title'], $setup['properties'] );
-
-		// For tests disable distribution of jobs into the "real" JobQueue
-		$instance->disable()->run();
-
+		$instance->run();
 		$this->assertJobsAndJobCount( $expected['count'], $instance );
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function assertJobsAndJobCount( $count, $instance ) {
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\MediaWiki\Jobs\UpdateDispatcherJob' );
 		$jobs = $reflector->getProperty( 'jobs' );
 		$jobs->setAccessible( true );
 
 		$result = $jobs->getValue( $instance );
 
-		$this->assertInternalType(
-			'array',
-			$result,
-			'asserts that the job result property is of type array'
-		);
-
-		$this->assertCount(
-			$count,
-			$result,
-			'asserts the amount of available job entries'
-		);
+		$this->assertInternalType( 'array', $result );
+		$this->assertCount( $count, $result );
 
 		foreach ( $result as $job ) {
-			$this->assertInstanceOf(
-				'SMW\UpdateJob',
-				$job,
-				'asserts that the job instance is of type \SMW\UpdateJob'
-			);
+			$this->assertEquals( 'SMW\UpdateJob', $job->getType() );
 		}
-
-	}
-
-	/**
-	 * Returns an array of DIWikiPage objects if the expected property
-	 * and the argument property are identical
-	 *
-	 * @see Store::getAllPropertySubjects
-	 *
-	 * @return DIWikiPage[]
-	 */
-	public function mockStoreAllPropertySubjectsCallback( DIProperty $property, $requestoptions = null ) {
-		return $this->property == $property ? $this->subjects : array();
 	}
 
 	/**
@@ -203,17 +134,18 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 
 		$provider = array();
 
-		$duplicate = $this->newSubject();
+		$duplicate = $this->makeSubjectFromText( 'Foo' );
+
 		$subjects = array(
 			$duplicate,
-			$this->newSubject(),
-			$this->newSubject(),
+			$this->makeSubjectFromText( 'Bar' ),
+			$this->makeSubjectFromText( 'Baz' ),
 			$duplicate,
-			$this->newSubject()
+			$this->makeSubjectFromText( 'Yon' )
 		);
 
 		$count = count( $subjects ) - 1; // eliminate duplicate count
-		$title = $this->newTitle( SMW_NS_PROPERTY );
+		$title =  Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
 		$provider[] = array(
@@ -228,7 +160,7 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$title = $this->newTitle( NS_MAIN );
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
 		$provider[] = array(
@@ -245,4 +177,73 @@ class UpdateDispatcherJobTest extends SemanticMediaWikiTestCase {
 
 		return $provider;
 	}
+
+	/**
+	 * @return UpdateDispatcherJob
+	 */
+	private function acquireInstance( Title $title = null, $properties = array(), $parameters = array() ) {
+
+		if ( $title === null ) {
+			$title = Title::newFromText( __METHOD__ );
+		}
+
+		$mockStore = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array(
+				'getAllPropertySubjects',
+				'getProperties',
+				'getInProperties',
+				'getPropertySubjects' ) )
+			->getMockForAbstractClass();
+
+		$mockStore->expects( $this->any() )
+			->method( 'getAllPropertySubjects' )
+			->will( $this->returnCallback( array( $this, 'mockStoreAllPropertySubjectsCallback' ) ) );
+
+		$mockStore->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( $properties ) );
+
+		$mockStore->expects( $this->any() )
+			->method( 'getInProperties' )
+			->will( $this->returnValue( $properties ) );
+
+		$mockStore->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( array() ) );
+
+		$settings = Settings::newFromArray( array(
+			'smwgCacheType'        => 'hash',
+			'smwgEnableUpdateJobs' => false
+		) );
+
+		$context   = new ExtensionContext();
+
+		$container = $context->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Store', $mockStore );
+		$container->registerObject( 'Settings', $settings );
+
+		$instance = new UpdateDispatcherJob( $title, $parameters );
+		$instance->invokeContext( $context );
+		$instance->setJobQueueEnabledState( false );
+
+		return $instance;
+	}
+
+	/**
+	 * Returns an array of DIWikiPage objects if the expected property
+	 * and the argument property are identical
+	 *
+	 * @see Store::getAllPropertySubjects
+	 *
+	 * @return DIWikiPage[]
+	 */
+	public function mockStoreAllPropertySubjectsCallback( DIProperty $property, $requestoptions = null ) {
+		return $this->expectedProperty == $property ? $this->expectedSubjects : array();
+	}
+
+	protected function makeSubjectFromText( $text ) {
+		return DIWikiPage::newFromTitle( Title::newFromText( $text ) );
+	}
+
 }

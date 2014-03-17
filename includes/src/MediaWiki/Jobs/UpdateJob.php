@@ -1,6 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Jobs;
+
+use SMW\FactboxCache;
+use SMW\Profiler;
 
 use ParserOutput;
 use LinkCache;

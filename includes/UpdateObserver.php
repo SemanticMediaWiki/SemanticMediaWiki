@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+
 /**
  * Observer for independent update transactions
  *

@@ -152,14 +152,14 @@ final class Setup implements ContextAware {
 	 */
 	protected function registerJobClasses() {
 
-		$this->globals['wgJobClasses']['SMW\UpdateJob']  = 'SMW\UpdateJob';
-		$this->globals['wgJobClasses']['SMW\RefreshJob'] = 'SMW\RefreshJob';
-		$this->globals['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\UpdateDispatcherJob';
-		$this->globals['wgJobClasses']['SMW\DeleteSubjectJob'] = 'SMW\DeleteSubjectJob';
+		$this->globals['wgJobClasses']['SMW\UpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';
+		$this->globals['wgJobClasses']['SMW\RefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
+		$this->globals['wgJobClasses']['SMW\UpdateDispatcherJob'] = 'SMW\MediaWiki\Jobs\UpdateDispatcherJob';
+		$this->globals['wgJobClasses']['SMW\DeleteSubjectJob'] = 'SMW\MediaWiki\Jobs\DeleteSubjectJob';
 
 		// Legacy definition to be removed with 1.10
-		$this->globals['wgJobClasses']['SMWUpdateJob']  = 'SMW\UpdateJob';
-		$this->globals['wgJobClasses']['SMWRefreshJob'] = 'SMW\RefreshJob';
+		$this->globals['wgJobClasses']['SMWUpdateJob']  = 'SMW\MediaWiki\Jobs\UpdateJob';
+		$this->globals['wgJobClasses']['SMWRefreshJob'] = 'SMW\MediaWiki\Jobs\RefreshJob';
 
 	}
 
@@ -394,7 +394,7 @@ final class Setup implements ContextAware {
 		 */
 		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $settings, $context ) {
 
-			$deleteSubject = new DeleteSubjectJob( $wikiPage->getTitle(), array(
+			$deleteSubject = new \SMW\MediaWiki\Jobs\DeleteSubjectJob( $wikiPage->getTitle(), array(
 				'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
 				'withAssociates' => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
 			) );

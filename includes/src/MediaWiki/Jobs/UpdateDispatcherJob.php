@@ -1,6 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Jobs;
+
+use SMW\SerializerFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Profiler;
 
 use Title;
 use Job;
@@ -20,12 +25,6 @@ use Job;
  */
 class UpdateDispatcherJob extends JobBase {
 
-	/** @var Job */
-	protected $jobs = array();
-
-	/** @var boolean */
-	protected $enabled = true;
-
 	/** @var Store */
 	protected $store = null;
 
@@ -39,19 +38,6 @@ class UpdateDispatcherJob extends JobBase {
 	public function __construct( Title $title, $params = array(), $id = 0 ) {
 		parent::__construct( 'SMW\UpdateDispatcherJob', $title, $params, $id );
 		$this->removeDuplicates = true;
-	}
-
-	/**
-	 * Disables ability to insert jobs into the
-	 * JobQueue
-	 *
-	 * @since 1.9
-	 *
-	 * @return UpdateDispatcherJob
-	 */
-	public function disable() {
-		$this->enabled = false;
-		return $this;
 	}
 
 	/**
@@ -70,25 +56,13 @@ class UpdateDispatcherJob extends JobBase {
 		$this->store = $this->withContext()->getStore();
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->dispatchUpdateForProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->push();
+			$this->dispatchUpdateForProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->pushToJobQueue();
 		}
 
-		$this->dispatchUpdateForSubject( DIWikiPage::newFromTitle( $this->getTitle() ) )->push();
+		$this->dispatchUpdateForSubject( DIWikiPage::newFromTitle( $this->getTitle() ) )->pushToJobQueue();
 
 		Profiler::Out( __METHOD__, true );
 		return true;
-	}
-
-	/**
-	 * Insert batch jobs
-	 *
-	 * @note Job::batchInsert was deprecated in MW 1.21
-	 * JobQueueGroup::singleton()->push( $job );
-	 *
-	 * @since 1.9
-	 */
-	public function push() {
-		$this->enabled ? Job::batchInsert( $this->jobs ) : null;
 	}
 
 	/**
@@ -182,7 +156,6 @@ class UpdateDispatcherJob extends JobBase {
 				$this->jobs[$title->getPrefixedDBkey()] = new UpdateJob( $title );
 			}
 		}
-
 	}
 
 }

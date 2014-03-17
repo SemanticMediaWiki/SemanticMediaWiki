@@ -2,8 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\StoreFactory;
-use SMW\UpdateJob;
 
 use Title;
 

@@ -1,15 +1,14 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\EmptyContext;
-use SMW\RefreshJob;
 
 use Title;
 
 /**
- * @covers \SMW\RefreshJob
- * @covers \SMW\JobBase
+ * @covers \SMW\MediaWiki\Jobs\RefreshJob
  *
  * @ingroup Test
  *
@@ -21,67 +20,49 @@ use Title;
  *
  * @author mwjames
  */
-class RefreshJobTest extends SemanticMediaWikiTestCase {
+class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 	/** @var integer */
 	protected $controlRefreshDataIndex;
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\RefreshJob';
-	}
+	public function testCanConstruct() {
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return RefreshJob
-	 */
-	private function newInstance( $store = null, $parameters = array() ) {
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		if ( $store === null ) {
-			$store = $this->newMockBuilder()->newObject( 'Store' );
-		}
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Jobs\RefreshJob',
+			new RefreshJob( $title )
+		);
 
-		$context   = new EmptyContext();
-		$container = $context->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Store', $store );
-
-		$instance = new RefreshJob( $this->newTitle(), $parameters );
-		$instance->invokeContext( $context );
-
-		return $instance;
-	}
-
-	/**
-	 * FIXME Delete SMWRefreshJob assertion after all references to
-	 * SMWRefreshJob have been removed
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-		$this->assertInstanceOf( $this->getClass(), new \SMWRefreshJob( $this->newTitle() ) );
+		// FIXME Delete SMWRefreshJob assertion after all
+		// references to SMWRefreshJob have been removed
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Jobs\RefreshJob',
+			new \SMWRefreshJob( $title )
+		);
 	}
 
 	/**
 	 * @dataProvider parameterDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testRunOnMockStore( $parameter, $expected ) {
+	public function testRunJobOnMockStore( $parameter, $expected ) {
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'refreshData' => array( $this, 'refreshDataCallback' )
-		) );
+		$expectedToRun = $expected['spos'] === null ? $this->never() : $this->once();
 
-		$instance = $this->newInstance( $mockStore, $parameter );
+		$mockStore = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'refreshData' ) )
+			->getMockForAbstractClass();
 
-		$this->assertTrue(
-			$instance->disable()->run(),
-			'Asserts that the run() returns true'
-		);
+		$mockStore->expects( $expectedToRun )
+			->method( 'refreshData' )
+			->will( $this->returnCallback( array( $this, 'refreshDataCallback' ) ) );
+
+		$instance = $this->acquireInstance( $mockStore, $parameter );
+
+		$this->assertTrue( $instance->run() );
 
 		$this->assertEquals(
 			$expected['progress'],
@@ -96,7 +77,6 @@ class RefreshJobTest extends SemanticMediaWikiTestCase {
 		);
 
 		unset( $this->controlRefreshDataIndex );
-
 	}
 
 	/**
@@ -172,6 +152,30 @@ class RefreshJobTest extends SemanticMediaWikiTestCase {
 	 */
 	public function refreshDataCallback( &$index, $count, $namespaces ) {
 		$this->controlRefreshDataIndex = $index;
+	}
+
+	/**
+	 * @return RefreshJob
+	 */
+	private function acquireInstance( $store = null, $parameters = array() ) {
+
+		$title = Title::newFromText( __METHOD__ );
+
+		if ( $store === null ) {
+			$store = $this->getMockBuilder( '\SMW\Store' )
+				->disableOriginalConstructor()
+				->getMockForAbstractClass();
+		}
+
+		$context   = new EmptyContext();
+		$container = $context->getDependencyBuilder()->getContainer();
+		$container->registerObject( 'Store', $store );
+
+		$instance = new RefreshJob( $title, $parameters );
+		$instance->invokeContext( $context );
+		$instance->setJobQueueEnabledState( false );
+
+		return $instance;
 	}
 
 }
