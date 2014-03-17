@@ -5369,6 +5369,7 @@ Nykyisen päivityksen arvioitu eteneminen:',
  * @author Tititou36
  * @author Urhixidur
  * @author Verdy p
+ * @author Wuzhenwei
  * @author Wyz
  * @author Zetud
  * @author 아라
@@ -11311,8 +11312,12 @@ Totas las donadas estocadas seràn reconstruchas o quitament reparadas se necess
 Podètz seguir la progression de la mesa a jorn sus aquesta pagina especiala.', # Fuzzy
 	'smw_smwadmin_updatenotstarted' => 'Un processús de mesa a jorn ja es en cors d’execucion.
 Ne creetz pas un autre.', # Fuzzy
-	'smw_smwadmin_updatestopped' => 'Totes los processús de mesa a jorn son estats arrestats.', # Fuzzy
-	'smw_smwadmin_updatenotstopped' => 'Per arrestar lo processús en cors de mesa a jorn, vos cal marcar la casa per indicar que ne sètz vertadièrament segur(a).', # Fuzzy
+	'smw_smwadmin_updatestopped' => 'Totes los processús de mesa a jorn son estats arrestats.
+
+Retorn a $1 .',
+	'smw_smwadmin_updatenotstopped' => 'Per arrestar lo processús en cors de mesa a jorn, vos cal marcar la casa per indicar que ne sètz vertadièrament segur(a).
+
+Tornar a $1 .',
 	'smw_smwadmin_docu' => 'Aquesta pagina especiala vos ajuda pendent l’installacion e la mesa a nivèl de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Doblidetz pas de salvar las donadas abans las foncions d’administracion del site.',
 	'smw_smwadmin_db' => 'Installacion e mesa a nivèl de la banca de donadas',
@@ -11352,7 +11357,7 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda sus las requèstas',
 	'smw-createproperty-isproperty' => 'Aquò es una proprietat del tipe $1.',
 	'smw-createproperty-allowedvals' => '{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :',
-	'smw_unknowntype' => 'Lo tipe de donadas "$1" pas suportat es estat tornat a l\'atribut.', # Fuzzy
+	'smw_unknowntype' => "Lo tipe d'aquesta proprietat es invalid",
 	'smw_concept_header' => 'Paginas del concèpte « $1 »',
 	'smw_conceptarticlecount' => 'Afichar çaijós $1 {{PLURAL:$1|pagina|paginas}}.',
 );
