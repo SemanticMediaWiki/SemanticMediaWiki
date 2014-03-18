@@ -1,6 +1,6 @@
 <?php
 
-use SMW\UpdateJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
