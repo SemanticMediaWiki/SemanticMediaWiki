@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- * @ingroup SMWStore
- * @since 1.8
- */
+
+use SMW\UpdateJob;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
@@ -802,13 +799,21 @@ class SMWSQLStore3Writers {
 		} // note that this means $old_tid != $new_tid in all cases below
 
 		// *** Make relevant changes in property tables (don't write the new redirect yet) ***//
-
+		$jobs = array();
 		$db = wfGetDB( DB_MASTER ); // now we need to write something
 
 		if ( ( $old_tid == 0 ) && ( $sid != 0 ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) { // new redirect
 			// $smwgQEqualitySupport requires us to change all tables' page references from $sid to $new_tid.
 			// Since references must not be 0, we don't have to do this is $sid == 0.
 			$this->store->changeSMWPageID( $sid, $new_tid, $subject_ns, $curtarget_ns, false, true );
+
+			$jobs = $this->makeUpdateJobsForNewRedirect(
+				$subject_t,
+				$subject_ns,
+				$curtarget_t,
+				$curtarget_ns
+			);
+
 		} elseif ( $old_tid != 0 ) { // existing redirect is changed or deleted
 			$db->delete( 'smw_fpt_redi',
 				array( 's_title' => $subject_t, 's_namespace' => $subject_ns ), __METHOD__ );
@@ -817,7 +822,6 @@ class SMWSQLStore3Writers {
 			if ( $smwgEnableUpdateJobs && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
 				// entries that refer to old target may in fact refer to subject,
 				// but we don't know which: schedule affected pages for update
-				$jobs = array();
 
 				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
 					if ( $proptable->getName() == 'smw_fpt_redi' ) {
@@ -862,9 +866,12 @@ class SMWSQLStore3Writers {
 
 				/// NOTE: we do not update the concept cache here; this remains an offline task
 
-				/// NOTE: this only happens if $smwgEnableUpdateJobs was true above:
-				Job::batchInsert( $jobs );
 			}
+		}
+
+		/// NOTE: this only happens if $smwgEnableUpdateJobs is true
+		if ( $smwgEnableUpdateJobs ) {
+			Job::batchInsert( $jobs );
 		}
 
 		// *** Finally, write the new redirect data ***//
@@ -918,6 +925,21 @@ class SMWSQLStore3Writers {
 		);
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
+	}
+
+	private function makeUpdateJobsForNewRedirect( $subjectDBKey, $subjectNS, $targetDBKey, $targetNS ) {
+
+		$jobs = array();
+
+		$title = Title::makeTitleSafe( $subjectNS, $subjectDBKey );
+		$jobs[] = new UpdateJob( $title );
+
+		if ( $targetDBKey !== '' && $targetNS !== -1 ) {
+			$title = Title::makeTitleSafe( $targetNS, $targetDBKey );
+			$jobs[] = new UpdateJob( $title );
+		}
+
+		return $jobs;
 	}
 
 }
