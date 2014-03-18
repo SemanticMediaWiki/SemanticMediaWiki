@@ -1,6 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Jobs;
+
+use SMW\DIWikiPage;
+use SMW\SerializerFactory;
 
 use Title;
 use Job;
@@ -17,12 +20,6 @@ use Job;
  */
 class DeleteSubjectJob extends JobBase {
 
-	/** @var Job */
-	protected $jobs = array();
-
-	/** @var boolean */
-	protected $enabledJob = true;
-
 	/**
 	 * @since  1.9.0.1
 	 *
@@ -32,16 +29,6 @@ class DeleteSubjectJob extends JobBase {
 	public function __construct( Title $title, $params = array() ) {
 		parent::__construct( 'SMW\DeleteSubjectJob', $title, $params );
 		$this->removeDuplicates = true;
-	}
-
-	/**
-	 * Disables ability to insert jobs into the JobQueue
-	 *
-	 * @since  1.9.0.1
-	 */
-	public function disable() {
-		$this->enabledJob = false;
-		return $this;
 	}
 
 	/**
@@ -60,7 +47,7 @@ class DeleteSubjectJob extends JobBase {
 		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) &&
 			$this->hasParameter( 'asDeferredJob' ) &&
 			$this->getParameter( 'asDeferredJob' ) ) {
-			$this->insertAsDeferredJobWithSemanticData()->push();
+			$this->insertAsDeferredJobWithSemanticData()->pushToJobQueue();
 			return $this->deleteSubject();
 		}
 
@@ -75,18 +62,13 @@ class DeleteSubjectJob extends JobBase {
 	public function run() {
 
 		if ( $this->hasParameter( 'withAssociates' ) && $this->getParameter( 'withAssociates' ) ) {
-			$this->runUpdateDispatcherJob();
+			$this->initUpdateDispatcherJob();
 		}
 
 		return $this->deleteSubject();
 	}
 
-	protected function push() {
-		$this->enabledJob ? Job::batchInsert( $this->jobs ) : null;
-		return true;
-	}
-
-	protected function runUpdateDispatcherJob() {
+	protected function initUpdateDispatcherJob() {
 		$dispatcher = new UpdateDispatcherJob( $this->getTitle(), $this->params );
 		$dispatcher->invokeContext( $this->withContext() );
 		$dispatcher->run();
@@ -99,14 +81,14 @@ class DeleteSubjectJob extends JobBase {
 
 	protected function insertAsDeferredJobWithSemanticData() {
 
-		$this->addSerializedSemanticData();
+		$this->params['semanticData'] = $this->fetchSerializedSemanticData();
 
 		$this->jobs[] = new self( $this->getTitle(), $this->params );
 		return $this;
 	}
 
-	protected function addSerializedSemanticData() {
-		$this->params['semanticData'] = SerializerFactory::serialize(
+	protected function fetchSerializedSemanticData() {
+		return SerializerFactory::serialize(
 			$this->withContext()->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->getTitle() ) )
 		);
 	}

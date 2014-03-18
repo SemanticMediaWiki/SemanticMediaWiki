@@ -1,5 +1,6 @@
 <?php
 
+use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\Settings;
 use SMW\StoreFactory;
 use SMW\Store;
@@ -189,7 +190,7 @@ class SMWAdmin extends SpecialPage {
 
 			if ( $sure == 'yes' ) {
 				if ( is_null( $refreshjob ) ) { // careful, there might be race conditions here
-					$newjob = new \SMW\RefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
+					$newjob = new RefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
 					$newjob->insert();
 					$this->getOutput()->addHTML( '<p>' . wfMessage( 'smw_smwadmin_updatestarted', '<a href="' . htmlspecialchars( $title->getFullURL() ) . '">Special:SMWAdmin</a>' )->text() . '</p>' );
 				} else {

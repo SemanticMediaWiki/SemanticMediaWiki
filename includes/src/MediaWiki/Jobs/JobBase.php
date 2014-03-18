@@ -1,13 +1,16 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Jobs;
+
+use SMW\ContextResource;
+use SMW\ExtensionContext;
+use SMW\ContextAware;
+use SMW\ContextInjector;
 
 use Job;
 use Title;
 
 /**
- * Job base class
- *
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
@@ -19,6 +22,45 @@ abstract class JobBase extends Job implements ContextAware, ContextInjector {
 
 	/** @var ContextResource */
 	protected $context = null;
+
+	/** @var boolean */
+	protected $enabledJobQueue = true;
+
+	/** @var Job */
+	protected $jobs = array();
+
+	/**
+	 * Whether to insert jobs into the JobQueue is enabled or not
+	 *
+	 * @since 1.9
+	 *
+	 * @param boolean|true $enableJobQueue
+	 *
+	 * @return JobBase
+	 */
+	public function setJobQueueEnabledState( $enableJobQueue = true ) {
+		$this->enabledJobQueue = (bool)$enableJobQueue;
+		return $this;
+	}
+
+	/**
+	 * @note Job::batchInsert was deprecated in MW 1.21
+	 * JobQueueGroup::singleton()->push( $job );
+	 *
+	 * @since 1.9
+	 */
+	public function pushToJobQueue() {
+		$this->enabledJobQueue ? Job::batchInsert( $this->jobs ) : null;
+	}
+
+	/**
+	 * @note Job::getType was introduced with MW 1.21
+	 *
+	 * @return string
+	 */
+	public function getType() {
+		return $this->command;
+	}
 
 	/**
 	 * @since 1.9

@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Jobs;
+
+use SMW\Profiler;
 
 /**
  * RefreshJob iterates over all page ids of the wiki, to perform an update
@@ -20,9 +22,6 @@ namespace SMW;
  * @author mwjames
  */
 class RefreshJob extends JobBase {
-
-	/** $var boolean */
-	protected $enabled = true;
 
 	/**
 	 * Constructor. The parameters optionally specified in the second
@@ -66,34 +65,17 @@ class RefreshJob extends JobBase {
 	}
 
 	/**
-	 * Disables ability to insert jobs into the JobQueue and is normally only
-	 * executed when running unit tests
-	 *
-	 * @since 1.9
-	 *
-	 * @return RefreshJob
-	 */
-	public function disable() {
-		$this->enabled = false;
-		return $this;
-	}
-
-	/**
 	 * @see Job::insert
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-		if ( $this->enabled ) {
+		if ( $this->enabledJobQueue ) {
 			parent::insert();
 		}
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @param $spos start index
-	 *
-	 * @return boolean success
 	 */
 	protected function refreshData( $spos ) {
 		Profiler::In();
@@ -125,19 +107,11 @@ class RefreshJob extends JobBase {
 		return true;
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function createNextJob( array $parameters ) {
 		$nextjob = new self( $this->getTitle(), $parameters );
-		$nextjob->insert();
+		$nextjob->setJobQueueEnabledState( $this->enabledJobQueue )->insert();
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return array|false
-	 */
 	protected function getNamespace( $run ) {
 		return ( ( $this->getParameter( 'rc' ) > 1 ) && ( $run == 1 ) ) ? array( SMW_NS_PROPERTY, SMW_NS_TYPE ) : false;
 	}
