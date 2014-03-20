@@ -8241,7 +8241,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_smwadmin_supportdocu' => "Diverse risorse potrebbero esserti d'aiuto in caso di problemi:",
 	'smw_smwadmin_installfile' => 'Se hai problemi con la tua installazione, inizia a verificare le linee guida nel <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">file INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'La documentazione completa per l\'utente di Semantic MediaWiki si trova in <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Gli errori/bachi possono essere segnalati in <a href="https://bugzilla.wikimedia.org/">bugzilla</a>.',
+	'smw_smwadmin_mediazilla' => 'Gli errori/bachi possono essere segnalati su <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
 	'smw_smwadmin_questions' => 'Se hai altre domande o suggerimenti, unisciti alle discussioni sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum degli utenti di Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struttura dei dati',
 	'smw_adminlinks_displayingdata' => 'Visualizzazione dati',
@@ -13150,6 +13150,8 @@ $messages['scn'] = array(
  */
 $messages['sco'] = array(
 	'smw_smwadmin_mediazilla' => 'Bugs can be reported til <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
+	'smw-sp-admin-idlookup-title' => 'ObjectId luikup',
+	'smw-sp-admin-idlookup-docu' => 'Displeys details aneat aen internal object Id that represents indeevidual entities (wikipage, subobject etc.) in Semantic MediaWiki.',
 );
 
 /** Serbo-Croatian (srpskohrvatski / српскохрватски)
@@ -15885,6 +15887,7 @@ $messages['zh-hans'] = array(
 	'smw-statistics-property-total' => '[[Special:Properties|$1个属性]]（总计）',
 	'smw-statistics-property-total-legacy' => '$1个属性（总计）',
 	'smw-statistics-query-size' => '查询大小',
+	'smw-statistics-subobject-count' => '$1個子項目',
 	'smw_uri_doc' => 'URI 分析器实现[$1 W3C httpRange-14 标记查找]。它将处理那些没有网站内容的页。',
 	'ask' => '语义搜索',
 	'smw_ask_sortby' => '按列排序（可选）',

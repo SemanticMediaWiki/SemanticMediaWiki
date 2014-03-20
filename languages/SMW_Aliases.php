@@ -793,5 +793,6 @@ $specialPageAliases['zh-hans'] = array(
 $specialPageAliases['zh-hant'] = array(
 	'Ask' => array( '問' ),
 	'Browse' => array( '瀏覽' ),
+	'Properties' => array( '屬性' ),
 	'SMWAdmin' => array( 'SMW管理員' ),
 );
