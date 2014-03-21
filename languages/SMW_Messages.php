@@ -2045,6 +2045,7 @@ Progresu estimáu del anovamientu actual:",
 
 /** Azerbaijani (azərbaycanca)
  * @author Cekli829
+ * @author Wertuose
  */
 $messages['az'] = array(
 	'smw_finallistconjunct' => ', və',
@@ -2053,6 +2054,7 @@ $messages['az'] = array(
 	'smw_printername_table' => 'Cədvəl',
 	'smw_printername_template' => 'Şablon',
 	'smw_result_results' => 'Nəticələr',
+	'smw_smwadmin_mediazilla' => 'Səhvlər haqda bildirişi  <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a> saytında yerləşdirmək olar.',
 );
 
 /** South Azerbaijani (تورکجه)
@@ -9732,6 +9734,7 @@ $messages['lv'] = array(
 	'smw-ui-tooltip-title-event' => 'Notikums',
 	'smw-ui-tooltip-title-note' => 'Piezīme',
 	'smw-ui-tooltip-title-legend' => 'Apzīmējumi',
+	'smw-sp-admin-idlookup-objectid' => 'Objekta Id:',
 );
 
 /** Malagasy (Malagasy)
@@ -14419,6 +14422,8 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw-pa-property-predefined-default' => "$1 är en fördefinierad egenskap (även ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]''). Det är en inbyggd egenskap med en särskild betydelse, men användas precis som en vanlig [https://www.semantic-mediawiki.org/wiki/Property användardefinierad egenskap].",
 	'smw-sp-properties-header-label' => 'Lista med egenskaper',
 	'smw-sp-admin-settings-title' => 'Konfigurationsinställningar',
+	'smw-sp-admin-idlookup-title' => 'Kolla upp objekt-ID',
+	'smw-sp-admin-idlookup-objectid' => 'Objekt-ID:',
 );
 
 /** Tamil (தமிழ்)
