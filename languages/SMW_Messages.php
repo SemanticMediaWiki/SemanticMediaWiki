@@ -6665,6 +6665,7 @@ $messages['he'] = array(
 
 /** Hindi (हिन्दी)
  * @author Kaustubh
+ * @author Wikiuser13
  */
 $messages['hi'] = array(
 	'smw_viewasrdf' => 'RDF फ़ीड',
@@ -6680,6 +6681,8 @@ $messages['hi'] = array(
 	'smw_unusedproperty_template' => '$2 प्रकारके $1',
 	'wantedproperties' => 'चाहिये होनेवाले गुणधर्म',
 	'smw-createproperty-isproperty' => 'यह $1 प्रकार का गुणधर्म हैं।',
+	'smw-sp-admin-idlookup-title' => 'ऑबजेक्टआईडी लुकअप',
+	'smw-sp-admin-idlookup-objectid' => 'ऑब्जेक्ट आईडी:',
 );
 
 /** Hiligaynon (Ilonggo)
@@ -12267,6 +12270,7 @@ Progresso estimado da atualização em curso:",
 );
 
 /** Brazilian Portuguese (português do Brasil)
+ * @author Amgauna
  * @author Eduardo.mps
  * @author GKnedo
  * @author Giro720
@@ -12596,6 +12600,9 @@ Progresso estimado da atualização corrente:',
 	'smw-sp-admin-settings-docu' => 'Exibe uma lista contendo todos as configurações <code>padrão</code> e <code>locais</code> que são relevantes ao ambiente do Semantic MediaWiki.
 Para detalhes sobre configurações individuais, por favor, consulte a [https://semantic-mediawiki.org/wiki/Help:Configuration página de ajuda sobre configuração].',
 	'smw-sp-admin-settings-button' => 'Gerar lista de configurações',
+	'smw-sp-admin-idlookup-title' => 'Consulta ao ID do objeto',
+	'smw-sp-admin-idlookup-docu' => 'Exibe detalhes internos sobre um ID de objeto que representa entidades individuais (página wiki, subobjeto, etc.) no Semantic MediaWiki.',
+	'smw-sp-admin-idlookup-objectid' => 'ID do objeto:',
 );
 
 /** Quechua (Runa Simi)
