@@ -14,8 +14,9 @@
 ### Internal enhancements
 
 * #195 Improved SQLStore3::getPropertyTables in order to use correct customizing
+* #204 Added update job for new redirects
 * #207 Removed SMWParamSource
 * #218 Extended SparqlStore to inject a SparqlDatabase (improves testablity) together with additional test coverage
-
+* #227 Moved all job related classes into the `SMW\MediaWiki\Jobs\` namespace
 
 [id-lookup]: https://www.semantic-mediawiki.org/wiki/Help:Object_ID_lookup
