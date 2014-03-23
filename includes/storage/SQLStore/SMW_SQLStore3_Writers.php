@@ -225,7 +225,7 @@ class SMWSQLStore3Writers {
 		$updates = array();
 
 		$subject = $data->getSubject();
-		$propertyTables = SMWSQLStore3::getPropertyTables();
+		$propertyTables = $this->store->getPropertyTables();
 
 		foreach ( $data->getProperties() as $property ) {
 			$tableId = SMWSQLStore3::findPropertyTableID( $property );
@@ -393,7 +393,9 @@ class SMWSQLStore3Writers {
 		$newHashes = array();
 
 		$newData = $this->preparePropertyTableInserts( $sid, $data, $dbr );
-		foreach ( SMWSQLStore3::getPropertyTables() as $propertyTable ) {
+		$propertyTables = $this->store->getPropertyTables();
+
+		foreach ( $propertyTables as $propertyTable ) {
 			if ( !$propertyTable->usesIdSubject() ) { // ignore; only affects redirects anyway
 				continue;
 			}
@@ -476,7 +478,7 @@ class SMWSQLStore3Writers {
 	protected function writePropertyTableUpdates( $sid, array $tablesInsertRows, array $tablesDeleteRows, array $newHashes, DatabaseBase $dbw ) {
 		$propertyUseIncrements = array();
 
-		$propertyTables = SMWSQLStore3::getPropertyTables();
+		$propertyTables = $this->store->getPropertyTables();
 
 		foreach ( $tablesInsertRows as $tableName => $insertRows ) {
 			// Note: by construction, the inserts and deletes have the same table keys.
@@ -582,7 +584,9 @@ class SMWSQLStore3Writers {
 		$this->store->m_semdata[$sid] = SMWSql3StubSemanticData::newFromSemanticData( $semanticData, $this->store );
 		// This is everything one can know:
 		$this->store->m_sdstate[$sid] = array();
-		foreach ( SMWSQLStore3::getPropertyTables() as $tableId => $tableDeclaration ) {
+		$propertyTables = $this->store->getPropertyTables();
+
+		foreach ( $propertyTables as $tableId => $tableDeclaration ) {
 			$this->store->m_sdstate[$sid][$tableId] = true;
 		}
 	}
@@ -822,8 +826,9 @@ class SMWSQLStore3Writers {
 			if ( $smwgEnableUpdateJobs && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
 				// entries that refer to old target may in fact refer to subject,
 				// but we don't know which: schedule affected pages for update
+				$propertyTables = $this->store->getPropertyTables();
 
-				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+				foreach ( $propertyTables as $proptable ) {
 					if ( $proptable->getName() == 'smw_fpt_redi' ) {
 						continue; // can safely be skipped
 					}
