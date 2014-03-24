@@ -12025,6 +12025,7 @@ $messages['ps'] = array(
 /** Portuguese (português)
  * @author Crazymadlover
  * @author Hamilton Abreu
+ * @author Imperadeiro98
  * @author Lijealso
  * @author Luckas
  * @author Luckas Blade
@@ -12267,7 +12268,7 @@ Progresso estimado da atualização em curso:",
 	'smw-prefs-ask-options-collapsed-default' => 'Por padrão, recolher a caixa de opção',
 	'smw_unknowntype' => 'Foi definido para a propriedade o tipo não suportado “$1”.', # Fuzzy
 	'smw_concept_header' => 'Páginas do conceito "$1"',
-	'smw_conceptarticlecount' => 'A apresentar {{PLURAL:$1|uma página pertencente|$1 páginas pertencentes}} ao conceito.', # Fuzzy
+	'smw_conceptarticlecount' => 'Apresentando $1 {{PLURAL:$1|página|páginas}} abaixo.',
 );
 
 /** Brazilian Portuguese (português do Brasil)
@@ -13653,7 +13654,7 @@ Pred izvajanje administrativnih dejanj ustvarite varnostno kopijo uporabnih poda
 	'smw_smwadmin_datarefreshstop' => 'Ustavi to posodobitev',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, prepričan sem.',
 	'smw_smwadmin_smwhomepage' => 'Celotna uporabniška dokumentacija za Semantic MediaWiki je na razpolago na naslovu <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Hrošče lahko prijavite na <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
+	'smw_smwadmin_mediazilla' => 'Hrošče lahko prijavite na <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHubu</a>.',
 	'smw_adminlinks_datastructure' => 'Zgradba podatkov',
 	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
 	'smw_concept_header' => 'Strani zasnove »$1«',
@@ -15751,7 +15752,7 @@ $messages['zh-cn'] = array(
  * @author 아라
  */
 $messages['zh-hans'] = array(
-	'smw-desc' => "让你的wiki更可及——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
+	'smw-desc' => "让您更亲近wiki——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
 	'smw_viewasrdf' => 'RDF源',
 	'smw_finallistconjunct' => '，和',
 	'smw_factbox_head' => '关于“$1”的信息',
@@ -15789,6 +15790,7 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-outro' => '查询结果后显示的文字',
 	'smw-paramdesc-default' => '查询结果为空时显示的文字',
 	'smw-paramdesc-sep' => '值的分隔符',
+	'smw-paramdesc-showsep' => '在CSV文件顶部显示分隔符（“sep=<value>”）',
 	'smw-paramdesc-distribution' => '不是显示所有值，而是计算并显示出现的次数。',
 	'smw-paramdesc-distributionsort' => '按出现次数排序值的分布。',
 	'smw-paramdesc-distributionlimit' => '将值的分布限制在某些值的计数。',
@@ -15899,8 +15901,10 @@ $messages['zh-hans'] = array(
 	'smw-statistics-property-instance' => '$1个属性值（总计）',
 	'smw-statistics-property-total' => '[[Special:Properties|$1个属性]]（总计）',
 	'smw-statistics-property-total-legacy' => '$1个属性（总计）',
+	'smw-statistics-query-inline' => '$1个查询',
 	'smw-statistics-query-size' => '查询大小',
 	'smw-statistics-subobject-count' => '$1個子項目',
+	'smw-statistics-datatype-count' => '[[Special:Types|$1个数据类型]]',
 	'smw_uri_doc' => 'URI 分析器实现[$1 W3C httpRange-14 标记查找]。它将处理那些没有网站内容的页。',
 	'ask' => '语义搜索',
 	'smw_ask_sortby' => '按列排序（可选）',
@@ -16034,6 +16038,8 @@ $messages['zh-hans'] = array(
 	'action-smw-admin' => '连接Semantic MediaWiki管理员工作组',
 	'smw-sp-properties-header-label' => '属性列表',
 	'smw-sp-admin-settings-title' => '配置设置',
+	'smw-sp-admin-idlookup-title' => '查找对象',
+	'smw-sp-admin-idlookup-objectid' => '对象ID：',
 );
 
 /** Traditional Chinese (中文（繁體）‎)
