@@ -2038,10 +2038,14 @@ Progresu estimáu del anovamientu actual:",
 	'smw-sp-admin-settings-title' => 'Axustes de configuración',
 	'smw-sp-admin-settings-docu' => "Amuesa la llista de tolos axustes <code>predeterminaos</code> y <code>llocalizaos</code> que tan rellacionaos col entornu de MediaWiki Semántica. Pa los detalles de los axustes individuales, consulte la páxina d'ayuda de la [https://semantic-mediawiki.org/wiki/Help:Configuration configuración].",
 	'smw-sp-admin-settings-button' => "Xenerar la llista d'axustes",
+	'smw-sp-admin-idlookup-title' => "Gueta d'ObjectId",
+	'smw-sp-admin-idlookup-docu' => "Ver detalles tocante a una Id interna d'oxetu que representa entidaes individuales (páxina wiki, suboxetu etc.) en Semantic MediaWiki.",
+	'smw-sp-admin-idlookup-objectid' => "Id d'oxetu:",
 );
 
 /** Azerbaijani (azərbaycanca)
  * @author Cekli829
+ * @author Wertuose
  */
 $messages['az'] = array(
 	'smw_finallistconjunct' => ', və',
@@ -2050,6 +2054,7 @@ $messages['az'] = array(
 	'smw_printername_table' => 'Cədvəl',
 	'smw_printername_template' => 'Şablon',
 	'smw_result_results' => 'Nəticələr',
+	'smw_smwadmin_mediazilla' => 'Səhvlər haqda bildirişi  <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a> saytında yerləşdirmək olar.',
 );
 
 /** South Azerbaijani (تورکجه)
@@ -3014,6 +3019,8 @@ $messages['ce'] = array(
 	'smw-ui-tooltip-title-warning' => 'ГӀалат',
 	'smw-ui-tooltip-title-note' => 'Билгалдаккхар',
 	'group-smwadministrator' => 'Куьйгалхой Semantic MediaWiki',
+	'smw-sp-admin-idlookup-title' => 'Лахар ObjectId',
+	'smw-sp-admin-idlookup-objectid' => 'Цуна Id:',
 );
 
 /** Chamorro (Chamoru)
@@ -4817,7 +4824,7 @@ $messages['fa'] = array(
 	'smw-paramdesc-offset' => 'تعدیل اولین نتیجه',
 	'smw-paramdesc-headers' => 'نمایش نام‌های سرفصل‌ها/ خاصیت',
 	'smw-paramdesc-mainlabel' => 'جدول برای دادن نام صفحهٔ اصلی',
-	'smw-paramdesc-link' => 'نمایش مقادیر به عنوان لینک‌ها',
+	'smw-paramdesc-link' => 'نمایش مقادیر به‌عنوان پیوندها',
 	'smw-paramdesc-intro' => 'متن برای نمایش قبل از نتایج پرس‌و‌جو، اگر وجود داشته باشند',
 	'smw-paramdesc-outro' => 'متن برای نمایش پس از نتایج پرس‌و‌جو، اگر وجود داشته باشد',
 	'smw-paramdesc-default' => 'متن برای نمایش اگر هیچ نتایج پرس‌وجویی وجود نداشته باشد',
@@ -4969,7 +4976,7 @@ $messages['fa'] = array(
 	'smw-ask-otheroptions-info' => 'این بخش شامل گزینه‌هایی است که اظهارات چاپی را تغییر می‌دهد. توصیفات پارامتر می‌تواند توسط توقف در بالای آن‌ها مشاهده شوند.',
 	'smw-ask-otheroptions-collapsed-info' => 'لطفاً از نماد به علاوه برای مشاهده همه گزینه‌های در دسترس استفاده کنید',
 	'smw_ask_show_embed' => 'نمایش کد جاسازی',
-	'smw_ask_hide_embed' => 'پنهان کردن کد جاسازی',
+	'smw_ask_hide_embed' => 'پنهان‌کردن کد جاسازی',
 	'smw_ask_embed_instr' => 'برای جاسازی این سوال خطی در یک صفحه ویکی از کد زیر استفاده کنید.',
 	'smw-ask-delete' => '[حذف]',
 	'smw-ask-sorting' => 'دسته بندی',
@@ -5086,7 +5093,7 @@ $messages['fa'] = array(
 	'grouppage-smwadministrator' => '{{ns:project}}:اس‌ام‌دبلیو_سرپرستان',
 	'action-smw-admin' => 'دسترسی به وظایف ادارهٔ معنایی مدیاویکی',
 	'smw-pa-property-predefined-default' => '$1 یک خاصیت از پیش تعریف شده است (همچنین به عنوان [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] شناخته شده‌است). این خاصیت ساخته شده‌ای است که همراه با امتیازات اجرایی اضافی است اما فقط شبیه هر [https://www.semantic-mediawiki.org/wiki/Property user-defined property] دیگری می‌توانند استفاده شوند.',
-	'smw-pa-property-predefined_ask' => '$1 یک خاصیت از پیش تعریف شده است (همچنین به عنوان [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] شناخته شده‌است) که به فراداده [https://www.semantic-mediawiki.org/wiki/Subobject subobject] یک سوال لینک می‌شود.این خاصیت ساخته شده‌ای است که همراه با امتیازات اجرایی اضافی است اما فقط شبیه هر [https://www.semantic-mediawiki.org/wiki/Property user-defined property] دیگری می‌توانند استفاده شوند.',
+	'smw-pa-property-predefined_ask' => '$1 یک خاصیت از پیش تعریف شده است (همچنین به عنوان [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] شناخته شده‌است) که به فراداده [https://www.semantic-mediawiki.org/wiki/Subobject subobject] یک سوال پیوند می‌شود.این خاصیت ساخته شده‌ای است که همراه با امتیازات اجرایی اضافی است اما فقط شبیه هر [https://www.semantic-mediawiki.org/wiki/Property user-defined property] دیگری می‌توانند استفاده شوند.',
 	'smw-pa-property-predefined_asksi' => '$1 یک خاصیت از پیش تعریف شده است (همچنین به عنوان [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property] شناخته شده‌است) که تعداد شرایط مورد استفاده در یک سوال را جمع می‌کند.این خاصیت ساخته شده‌ای است که همراه با امتیازات اجرایی اضافی است اما فقط شبیه هر [https://www.semantic-mediawiki.org/wiki/Property user-defined property] دیگری می‌توانند استفاده شوند.',
 	'smw-sp-properties-docu' => 'این صفحه نشان می‌دهد [https://www.semantic-mediawiki.org/wiki/خاصیت خواص] که در دسترس هستند و هنگامی که فیلتر شده، تنها خواص تعریف شده کاربر است که منطبق با شرایط، نمایش داده می‌شود. برای یک نمای متفاوت، صفحه ویژه [[Special:UnusedProperties|unused properties]] یا [[Special:WantedProperties|wanted properties]] را مشاهده کنید.',
 	'smw-sp-properties-cache-info' => 'داده‌های فهرست شده از [https://www.semantic-mediawiki.org/wiki/Caching cache] بازیابی شده‌اند، و آخرین به روز شده بودند $1.',
@@ -5691,6 +5698,9 @@ Progression estimée de la mise à jour actuelle :',
 	'smw-sp-admin-settings-title' => 'Paramètres de configuration',
 	'smw-sp-admin-settings-docu' => 'Affiche une liste de tous les <code>paramètres par défaut</code> et <code>paramètres localisés</code> qui se rapportent à l’environnement Médiawiki Sémantique. Pour le détail des paramètres individuels, veuillez consulter la page d’aide de [https://semantic-mediawiki.org/wiki/Help:Configuration configuration].',
 	'smw-sp-admin-settings-button' => 'Générer la liste des paramètres',
+	'smw-sp-admin-idlookup-title' => 'recherche d’ObjectId',
+	'smw-sp-admin-idlookup-docu' => 'Affiche les détails sur un ID d’objet interne qui représente des entités individuelles (page wiki, sous-objet, etc.) dans MédiaWiki Sémantique.',
+	'smw-sp-admin-idlookup-objectid' => 'Id d’objet :',
 );
 
 /** Franco-Provençal (arpetan)
@@ -6655,6 +6665,7 @@ $messages['he'] = array(
 
 /** Hindi (हिन्दी)
  * @author Kaustubh
+ * @author Wikiuser13
  */
 $messages['hi'] = array(
 	'smw_viewasrdf' => 'RDF फ़ीड',
@@ -6670,6 +6681,8 @@ $messages['hi'] = array(
 	'smw_unusedproperty_template' => '$2 प्रकारके $1',
 	'wantedproperties' => 'चाहिये होनेवाले गुणधर्म',
 	'smw-createproperty-isproperty' => 'यह $1 प्रकार का गुणधर्म हैं।',
+	'smw-sp-admin-idlookup-title' => 'ऑबजेक्टआईडी लुकअप',
+	'smw-sp-admin-idlookup-objectid' => 'ऑब्जेक्ट आईडी:',
 );
 
 /** Hiligaynon (Ilonggo)
@@ -7202,6 +7215,7 @@ Trochowany staw aktualneje aktualizacije:',
 	'smw-sp-properties-header-label' => 'Lisćina kajkosćow',
 	'smw-sp-admin-settings-title' => 'Konfiguraciske nastajenja',
 	'smw-sp-admin-settings-button' => 'Lisćinu nastajenjow wutworić',
+	'smw-sp-admin-idlookup-objectid' => 'ID objekta:',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -8233,7 +8247,7 @@ Progresso stimato dell'aggiornamento in corso:",
 	'smw_smwadmin_supportdocu' => "Diverse risorse potrebbero esserti d'aiuto in caso di problemi:",
 	'smw_smwadmin_installfile' => 'Se hai problemi con la tua installazione, inizia a verificare le linee guida nel <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">file INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'La documentazione completa per l\'utente di Semantic MediaWiki si trova in <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Gli errori/bachi possono essere segnalati in <a href="https://bugzilla.wikimedia.org/">bugzilla</a>.',
+	'smw_smwadmin_mediazilla' => 'Gli errori/bachi possono essere segnalati su <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
 	'smw_smwadmin_questions' => 'Se hai altre domande o suggerimenti, unisciti alle discussioni sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum degli utenti di Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struttura dei dati',
 	'smw_adminlinks_displayingdata' => 'Visualizzazione dati',
@@ -8562,6 +8576,7 @@ Semantic MediaWiki のホームページで<a href="https://semantic-mediawiki.o
 	'action-smw-admin' => 'Semantic MediaWiki 管理作業へのアクセス',
 	'smw-sp-properties-header-label' => 'プロパティ一覧',
 	'smw-sp-admin-settings-button' => '設定の一覧を生成',
+	'smw-sp-admin-idlookup-objectid' => 'オブジェクト ID:',
 );
 
 /** Lojban (Lojban)
@@ -9723,6 +9738,7 @@ $messages['lv'] = array(
 	'smw-ui-tooltip-title-event' => 'Notikums',
 	'smw-ui-tooltip-title-note' => 'Piezīme',
 	'smw-ui-tooltip-title-legend' => 'Apzīmējumi',
+	'smw-sp-admin-idlookup-objectid' => 'Objekta Id:',
 );
 
 /** Malagasy (Malagasy)
@@ -10069,6 +10085,9 @@ $messages['mk'] = array(
 	'smw-sp-admin-settings-title' => 'Нагодувања за поставките',
 	'smw-sp-admin-settings-docu' => 'Прикажува список на сите <code>стандардни</code> и <code>локализирани поставки</code> што се однесуваат на дадената околина во Семантички МедијВики. Повеќе за поединечните поставки ќе најдете на страницата за [https://semantic-mediawiki.org/wiki/Help:Configuration помош со поставки].',
 	'smw-sp-admin-settings-button' => 'Создај список на поставки',
+	'smw-sp-admin-idlookup-title' => 'Проверка на објектна назнака',
+	'smw-sp-admin-idlookup-docu' => 'Прикажува подробности за внатрешата објектна назнака што претставува поединечни единици (викистраница, подобјект и тн.) во Семантички МедијаВики.',
+	'smw-sp-admin-idlookup-objectid' => 'Објектна назнака:',
 );
 
 /** Malayalam (മലയാളം)
@@ -10940,7 +10959,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_supportdocu' => 'Een aantal bronnen kunnen u ondersteunen als u problemen ondervindt:',
 	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan eerst de richtlijnen in het bestand <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation">INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_-_startpagina">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Problemen en suggesties kunt u rapporteren in <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
+	'smw_smwadmin_mediazilla' => 'Problemen en suggesties kunt u rapporteren op <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
 	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op het <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki gebruikersforum</a>.',
 	'smw_adminlinks_datastructure' => 'Gegevensstructuur',
 	'smw_adminlinks_displayingdata' => 'Gegevens weergeven',
@@ -12006,6 +12025,7 @@ $messages['ps'] = array(
 /** Portuguese (português)
  * @author Crazymadlover
  * @author Hamilton Abreu
+ * @author Imperadeiro98
  * @author Lijealso
  * @author Luckas
  * @author Luckas Blade
@@ -12248,10 +12268,11 @@ Progresso estimado da atualização em curso:",
 	'smw-prefs-ask-options-collapsed-default' => 'Por padrão, recolher a caixa de opção',
 	'smw_unknowntype' => 'Foi definido para a propriedade o tipo não suportado “$1”.', # Fuzzy
 	'smw_concept_header' => 'Páginas do conceito "$1"',
-	'smw_conceptarticlecount' => 'A apresentar {{PLURAL:$1|uma página pertencente|$1 páginas pertencentes}} ao conceito.', # Fuzzy
+	'smw_conceptarticlecount' => 'Apresentando $1 {{PLURAL:$1|página|páginas}} abaixo.',
 );
 
 /** Brazilian Portuguese (português do Brasil)
+ * @author Amgauna
  * @author Eduardo.mps
  * @author GKnedo
  * @author Giro720
@@ -12581,6 +12602,9 @@ Progresso estimado da atualização corrente:',
 	'smw-sp-admin-settings-docu' => 'Exibe uma lista contendo todos as configurações <code>padrão</code> e <code>locais</code> que são relevantes ao ambiente do Semantic MediaWiki.
 Para detalhes sobre configurações individuais, por favor, consulte a [https://semantic-mediawiki.org/wiki/Help:Configuration página de ajuda sobre configuração].',
 	'smw-sp-admin-settings-button' => 'Gerar lista de configurações',
+	'smw-sp-admin-idlookup-title' => 'Consulta ao ID do objeto',
+	'smw-sp-admin-idlookup-docu' => 'Exibe detalhes internos sobre um ID de objeto que representa entidades individuais (página wiki, subobjeto, etc.) no Semantic MediaWiki.',
+	'smw-sp-admin-idlookup-objectid' => 'ID do objeto:',
 );
 
 /** Quechua (Runa Simi)
@@ -13109,6 +13133,9 @@ $messages['ru'] = array(
 	'smw-sp-admin-settings-title' => 'Параметры конфигурации',
 	'smw-sp-admin-settings-docu' => 'Отображает список всех настроек <code>по-умолчанию</code> и <code>локализованных настроек</code>, которые имеют отношение к окружению Semantic MediaWiki. За сведениями об отдельных параметров обратитесь к странице помощи по [https://semantic-mediawiki.org/wiki/Help:Configuration конфигурации].',
 	'smw-sp-admin-settings-button' => 'Создать список настроек',
+	'smw-sp-admin-idlookup-title' => 'Поиск ObjectId',
+	'smw-sp-admin-idlookup-docu' => 'Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.',
+	'smw-sp-admin-idlookup-objectid' => 'Идентификатор объекта:',
 );
 
 /** Rusyn (русиньскый)
@@ -13135,6 +13162,8 @@ $messages['scn'] = array(
  */
 $messages['sco'] = array(
 	'smw_smwadmin_mediazilla' => 'Bugs can be reported til <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHub</a>.',
+	'smw-sp-admin-idlookup-title' => 'ObjectId luikup',
+	'smw-sp-admin-idlookup-docu' => 'Displeys details aneat aen internal object Id that represents indeevidual entities (wikipage, subobject etc.) in Semantic MediaWiki.',
 );
 
 /** Serbo-Croatian (srpskohrvatski / српскохрватски)
@@ -13625,7 +13654,7 @@ Pred izvajanje administrativnih dejanj ustvarite varnostno kopijo uporabnih poda
 	'smw_smwadmin_datarefreshstop' => 'Ustavi to posodobitev',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, prepričan sem.',
 	'smw_smwadmin_smwhomepage' => 'Celotna uporabniška dokumentacija za Semantic MediaWiki je na razpolago na naslovu <b><a href="https://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Hrošče lahko prijavite na <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
+	'smw_smwadmin_mediazilla' => 'Hrošče lahko prijavite na <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues">GitHubu</a>.',
 	'smw_adminlinks_datastructure' => 'Zgradba podatkov',
 	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
 	'smw_concept_header' => 'Strani zasnove »$1«',
@@ -14402,6 +14431,8 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw-pa-property-predefined-default' => "$1 är en fördefinierad egenskap (även ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]''). Det är en inbyggd egenskap med en särskild betydelse, men användas precis som en vanlig [https://www.semantic-mediawiki.org/wiki/Property användardefinierad egenskap].",
 	'smw-sp-properties-header-label' => 'Lista med egenskaper',
 	'smw-sp-admin-settings-title' => 'Konfigurationsinställningar',
+	'smw-sp-admin-idlookup-title' => 'Kolla upp objekt-ID',
+	'smw-sp-admin-idlookup-objectid' => 'Objekt-ID:',
 );
 
 /** Tamil (தமிழ்)
@@ -15267,6 +15298,9 @@ $messages['uk'] = array(
 	'smw-sp-admin-settings-title' => 'Параметри конфігурації',
 	'smw-sp-admin-settings-docu' => 'Відображає список всіх <code>default</code> і <code>localized settings</code> , які мають відношення до навколишнього середовища семантичного MediaWiki. За детальною інформацією про окремі параметри зверніться до сторінки довідки [https://semantic-mediawiki.org/wiki/Help:Configuration configuration].',
 	'smw-sp-admin-settings-button' => 'Створити список налаштувань',
+	'smw-sp-admin-idlookup-title' => 'Пошук ObjectId',
+	'smw-sp-admin-idlookup-docu' => "Відображає відомості про ідентифікатор внутрішнього об'єкта, який представляє окремі сутності (вікі-сторінку, підоб'єкт і т. д.) в Семантичній Медіавікі.",
+	'smw-sp-admin-idlookup-objectid' => "Код об'єкта:",
 );
 
 /** Urdu (اردو)
@@ -15718,12 +15752,12 @@ $messages['zh-cn'] = array(
  * @author 아라
  */
 $messages['zh-hans'] = array(
-	'smw-desc' => "让你的wiki更可及——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
+	'smw-desc' => "让您更亲近wiki——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
 	'smw_viewasrdf' => 'RDF源',
 	'smw_finallistconjunct' => '，和',
 	'smw_factbox_head' => '关于“$1”的信息',
 	'smw_isspecprop' => '此属性为维基中特殊属性。',
-	'smw_concept_description' => '概念“$1”的描述',
+	'smw_concept_description' => '概念“$1”的说明',
 	'smw_no_concept_namespace' => '概念只能在Concept:名字空间中定义。',
 	'smw_multiple_concepts' => '一个概念页面只能有一个概念定义。',
 	'smw_concept_cache_miss' => '因为维基设置需要概念"$1"在离线时计算，此概念现在无法使用。
@@ -15756,6 +15790,7 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-outro' => '查询结果后显示的文字',
 	'smw-paramdesc-default' => '查询结果为空时显示的文字',
 	'smw-paramdesc-sep' => '值的分隔符',
+	'smw-paramdesc-showsep' => '在CSV文件顶部显示分隔符（“sep=<value>”）',
 	'smw-paramdesc-distribution' => '不是显示所有值，而是计算并显示出现的次数。',
 	'smw-paramdesc-distributionsort' => '按出现次数排序值的分布。',
 	'smw-paramdesc-distributionlimit' => '将值的分布限制在某些值的计数。',
@@ -15772,7 +15807,7 @@ $messages['zh-hans'] = array(
 	'smw-paramdesc-dsv-separator' => '要使用的分隔符',
 	'smw-paramdesc-dsv-filename' => 'DSV文件名称',
 	'smw-paramdesc-filename' => '输出文件的名称',
-	'smw-smwdoc-description' => '显示所有参数的表，它们可以与默认值和描述一起用于指定的结果格式。',
+	'smw-smwdoc-description' => '显示可以用于指定结果格式的所有参数以及默认值和说明的表格。',
 	'smw-smwdoc-par-format' => '显示参数文档的结果格式。',
 	'smw-smwdoc-par-parameters' => '要显示哪些参数。"specific"（专用）表示该格式所添加那些的，"base"（基础）表示所有格式当中可用的那些，而"all"（全部）表示两种情况具有。',
 	'smw-paramdesc-sort' => '排序查询的属性',
@@ -15785,7 +15820,7 @@ $messages['zh-hans'] = array(
 	'smw-printername-feed' => 'RSS和Atom订阅',
 	'smw-paramdesc-feedtype' => '订阅类型',
 	'smw-paramdesc-feedtitle' => '源标题文字',
-	'smw-paramdesc-feeddescription' => '源描述文字',
+	'smw-paramdesc-feeddescription' => '要用作feed的说明的文字',
 	'smw-label-feed-description' => '$1 $2订阅',
 	'smw_iq_disabled' => '此维基的语义查询已禁用',
 	'smw_iq_moreresults' => '更多结果',
@@ -15842,7 +15877,7 @@ $messages['zh-hans'] = array(
 	'smw_properties_docu' => '本维基使用以下属性。',
 	'smw_property_template' => '$2类型的$1（$3次使用）',
 	'smw_property_template_notype' => '$1（$2）',
-	'smw_propertylackspage' => '所有属性均应有一个页面描述！',
+	'smw_propertylackspage' => '所有属性应该被页面描述！',
 	'smw_propertylackstype' => '此属性未指定类型（目前默认为类型$1）',
 	'smw_propertyhardlyused' => '此属性在本维基中不常使用。',
 	'smw-property-name-invalid' => '属性$1不能使用（无效的属性名称）。',
@@ -15854,7 +15889,7 @@ $messages['zh-hans'] = array(
 	'smw_unusedproperties_docu' => '以下属性在本维基中存在但未被使用。',
 	'smw_unusedproperty_template' => '类型为$2的属性$1',
 	'wantedproperties' => '需要的属性',
-	'smw_wantedproperties_docu' => '以下属性已在本维基中使用，但是尚未创建描述页面。',
+	'smw_wantedproperties_docu' => '以下属性在本wiki使用，但是还没有描述它们的页面。',
 	'smw_wantedproperty_template' => '$1（$2{{PLURAL:$2|次使用}}）',
 	'smw_purge' => '刷新',
 	'types' => '类型',
@@ -15866,7 +15901,10 @@ $messages['zh-hans'] = array(
 	'smw-statistics-property-instance' => '$1个属性值（总计）',
 	'smw-statistics-property-total' => '[[Special:Properties|$1个属性]]（总计）',
 	'smw-statistics-property-total-legacy' => '$1个属性（总计）',
+	'smw-statistics-query-inline' => '$1个查询',
 	'smw-statistics-query-size' => '查询大小',
+	'smw-statistics-subobject-count' => '$1個子項目',
+	'smw-statistics-datatype-count' => '[[Special:Types|$1个数据类型]]',
 	'smw_uri_doc' => 'URI 分析器实现[$1 W3C httpRange-14 标记查找]。它将处理那些没有网站内容的页。',
 	'ask' => '语义搜索',
 	'smw_ask_sortby' => '按列排序（可选）',
@@ -16000,6 +16038,8 @@ $messages['zh-hans'] = array(
 	'action-smw-admin' => '连接Semantic MediaWiki管理员工作组',
 	'smw-sp-properties-header-label' => '属性列表',
 	'smw-sp-admin-settings-title' => '配置设置',
+	'smw-sp-admin-idlookup-title' => '查找对象',
+	'smw-sp-admin-idlookup-objectid' => '对象ID：',
 );
 
 /** Traditional Chinese (中文（繁體）‎)
