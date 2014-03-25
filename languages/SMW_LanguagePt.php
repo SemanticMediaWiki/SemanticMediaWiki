@@ -61,6 +61,7 @@ class SMWLanguagePt extends SMWLanguage {
 		'_URI'  => 'URI equivalente ',
 		'_SUBP' => 'Subpropriedade de',
 		'_SUBC' => 'Subcategoria de',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Unidades de exibição',
 		'_IMPO' => 'Importada de',
 		'_CONV' => 'Corresponde a',

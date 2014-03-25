@@ -53,6 +53,7 @@ class SMWLanguageAr extends SMWLanguage {
 		'_URI'   => 'معرف الموارد الموحد معادلة',
 		'_SUBP' => 'الخاصية الفرعية ل',
 		'_SUBC' => 'تصنيف فرعي من',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'عرض الوحدات',
 		'_IMPO' => 'المستوردة من',
 		'_CONV' => 'يقابل',

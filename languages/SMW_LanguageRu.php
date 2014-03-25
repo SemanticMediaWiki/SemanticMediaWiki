@@ -56,6 +56,7 @@ class SMWLanguageRu extends SMWLanguage {
 		'_URI'  => 'Эквивалентный URI',
 		'_SUBP' => 'Подчиненное свойству',
 		'_SUBC' => 'Вложенная категория',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Отображаемые единицы',
 		'_IMPO' => 'Импортировано из',
 		'_CONV' => 'Относится к',

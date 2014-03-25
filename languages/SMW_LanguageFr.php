@@ -54,6 +54,7 @@ class SMWLanguageFr extends SMWLanguage {
 		'_URI'  => 'URI équivalente',
 		'_SUBP' => 'Sous-propriété de',
 		'_SUBC' => 'Sous-catégorie de',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Unités de mesure',
 		'_IMPO' => 'Importé de',
 		'_CONV' => 'Correspond à',

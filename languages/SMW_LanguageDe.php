@@ -63,6 +63,7 @@ class SMWLanguageDe extends SMWLanguage {
 		'_URI'  => 'Gleichwertige URI',
 		'_SUBP' => 'Unterattribut von',
 		'_SUBC' => 'Unterkategorie von',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Einheiten',
 		'_IMPO' => 'Importiert aus',
 		'_CONV' => 'Entspricht',

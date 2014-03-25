@@ -74,6 +74,7 @@ abstract class SMWLanguage {
 		'Equivalent URI'    => '_URI',
 		'Subproperty of'    => '_SUBP',
 		'Subcategory of'    => '_SUBC',
+		'Category'          => '_INST',
 		'Display units'     => '_UNIT',
 		'Imported from'     => '_IMPO',
 		'Corresponds to'    => '_CONV',

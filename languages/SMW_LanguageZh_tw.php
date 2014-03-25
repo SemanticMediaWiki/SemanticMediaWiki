@@ -57,6 +57,7 @@ class SMWLanguageZh_tw extends SMWLanguage {
 		'_URI'  => '對應的URI',	// 'Equivalent URI',
 		'_SUBP' => '所屬的子性質',	// 'Subproperty of',
 		'_SUBC' => 'Subcategory of', // TODO: translate
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => '顯示單位',      // Display unit
 		'_IMPO' => '輸入來源',     // Imported from
 		'_CONV' => '符合於',  // Corresponds to

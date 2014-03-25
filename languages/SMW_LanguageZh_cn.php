@@ -59,6 +59,7 @@ class SMWLanguageZh_cn extends SMWLanguage {
 		'_URI'  => '对应的URI',	// 'Equivalent URI',
 		'_SUBP' => '所属的子性质',	// 'Subproperty of',
 		'_SUBC' => 'Subcategory of', // TODO: translate
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => '显示单位',      // Display unit
 		'_IMPO' => '输入来源',     // Imported from
 		'_CONV' => '符合于',  // Corresponds to

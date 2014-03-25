@@ -53,6 +53,7 @@ class SMWLanguageHe extends SMWLanguage {
 		'_URI'  => 'מזהה יחודי תואם',
 		'_SUBP' => 'רכוש כפוף ל',
 		'_SUBC' => 'תת קטגוריה של',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'יחידות מידה',
 		'_IMPO' => 'יובא מ',
 		'_CONV' => 'מתורגם ל',
