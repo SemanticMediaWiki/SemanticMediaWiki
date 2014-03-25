@@ -4,6 +4,7 @@ namespace SMW\Test;
 
 use SMW\Store;
 use SMW\ParserData;
+use SMW\SemanticData;
 
 use ParserOutput;
 use WikiPage;
@@ -53,6 +54,32 @@ class ByPageSemanticDataFinder {
 	}
 
 	/**
+	 * @since 1.9.2
+	 *
+	 * @return SemanticData
+	 */
+	public function fetchIncomingDataFromStore() {
+
+		$requestOptions = new \SMWRequestOptions();
+		$requestOptions->sort = true;
+
+		$subject = $this->getPageData()->getSubject();
+		$semanticData = new SemanticData( $subject );
+
+		$incomingProperties = $this->getStore()->getInProperties( $subject, $requestOptions );
+
+		foreach ( $incomingProperties as $property ) {
+			$values = $this->getStore()->getPropertySubjects( $property, null );
+
+			foreach ( $values as $value ) {
+				$semanticData->addPropertyObjectValue( $property, $value );
+			}
+		}
+
+		return $semanticData;
+	}
+
+	/**
 	 * @since 1.9.1
 	 *
 	 * @return SemanticData
@@ -82,6 +109,10 @@ class ByPageSemanticDataFinder {
 
 		$wikiPage = $this->getPage();
 		$revision = $wikiPage->getRevision();
+
+		if ( $revision === null ) {
+			return new UnexpectedValueException( 'Expected a valid Revision' );
+		}
 
 		$parserOutput = $wikiPage->getParserOutput(
 			$wikiPage->makeParserOptions( User::newFromId( $revision->getUser() ) ),
