@@ -26,6 +26,9 @@
  * --page=<pagelist> will refresh only the pages of the given names, with | used as a separator.
  *              Example: --page="Page 1|Page 2" refreshes Page 1 and Page 2
  *              Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --page is given.
+ * --query=<query> will refresh only the pages returned by the given query
+ *              Example: --query='[[Category:SomeCategory]]'
+ *              Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --query is given.
  * -f           Fully delete all content instead of just refreshing relevant entries. This will also
  *              rebuild the whole storage structure. May leave the wiki temporarily incomplete.
  * --server=<server> The protocol and server name to as base URLs, e.g.
@@ -38,7 +41,7 @@
  * @ingroup SMWMaintenance
  */
 
-$optionsWithArgs = array( 'd', 's', 'e', 'n', 'b', 'startidfile', 'server', 'page' ); // -d <delay>, -s <startid>, -e <endid>, -n <numids>, --startidfile <startidfile> -b <backend>
+$optionsWithArgs = array( 'd', 's', 'e', 'n', 'b', 'startidfile', 'server', 'page', 'query' ); // -d <delay>, -s <startid>, -e <endid>, -n <numids>,  -b <backend>, --startidfile <startidfile>,
 
 require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
@@ -95,6 +98,26 @@ if ( array_key_exists( 'b', $options ) ) {
 	print "\nSelected storage $smwgDefaultStore for update!\n\n";
 }
 
+if ( isset( $options[ 'query' ] ) ) {
+
+	// get number of pages and fix query limit
+	$query         = SMWQueryProcessor::createQuery( $options[ 'query' ], SMWQueryProcessor::getProcessedParams( array( 'format' => 'count' ) ) );
+	$numberOfPages = \SMW\StoreFactory::getStore()->getQueryResult( $query );
+
+	$smwgQMaxLimit = (int)$numberOfPages;
+	$query->setLimit( $smwgQMaxLimit, false );
+
+	// get pages and add them to the pages explicitly listed in the 'page' parameter
+	$query          = SMWQueryProcessor::createQuery( $options[ 'query' ], SMWQueryProcessor::getProcessedParams( array() ) );
+	$pagesFromQuery = \SMW\StoreFactory::getStore()->getQueryResult( $query )->getResults();
+
+	if ( $pages === false ) {
+		$pages = $pagesFromQuery;
+	} else {
+		$pages = array_merge( (array)$pages, $pagesFromQuery );
+	}
+}
+
 $verbose = array_key_exists( 'v', $options );
 
 $filterarray = array();
@@ -130,7 +153,7 @@ if (  array_key_exists( 'f', $options ) ) {
 
 $linkCache = LinkCache::singleton();
 $num_files = 0;
-if ( $pages == false ) {
+if ( $pages === false ) {
 	print "Refreshing all semantic data in the database!\n---\n" .
 	" Some versions of PHP suffer from memory leaks in long-running scripts.\n" .
 	" If your machine gets very slow after many pages (typically more than\n" .
@@ -141,6 +164,8 @@ if ( $pages == false ) {
 
 	$id = $start;
 	while ( ( ( !$end ) || ( $id <= $end ) ) && ( $id > 0 ) ) {
+		$num_files++;
+
 		if ( $verbose ) {
 			print "($num_files) Processing ID " . $id . " ...\n";
 		}
@@ -150,7 +175,7 @@ if ( $pages == false ) {
 		if ( $delay !== false ) {
 			usleep( $delay );
 		}
-		$num_files++;
+
 		if ( $num_files % 100 === 0 ) { // every 100 pages only
 			$linkCache->clear(); // avoid memory leaks
 		}
@@ -164,18 +189,29 @@ if ( $pages == false ) {
 	print "Refreshing specified pages!\n\n";
 
 	foreach ( $pages as $page ) {
-		if ( $verbose ) {
-			print "($num_files) Processing page " . $page . " ...\n";
-		}
-
-		$title = Title::newFromText( $page );
-
-		if ( !is_null( $title ) ) {
-			$updatejob = new SMWUpdateJob( $title );
-			$updatejob->run();
-		}
 
 		$num_files++;
+
+		if ( is_a( $page, '\SMW\DIWikiPage' ) ) {
+			$title = $page->getTitle();
+		} else {
+			$title = Title::newFromText( $page );
+		}
+
+		if ( $verbose ) {
+			print "($num_files) Processing page " . $title->getPrefixedDBkey() . " ...\n";
+		}
+
+		if ( !is_null( $title ) ) {
+			$updatejob = new \SMW\MediaWiki\Jobs\UpdateJob( $title );
+			$updatejob->run();
+
+			if ( $delay !== false ) {
+				usleep( $delay );
+			}
+
+		}
+
 	}
 
 	print "$num_files pages refreshed.\n";
