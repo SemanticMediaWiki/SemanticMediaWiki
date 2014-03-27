@@ -795,4 +795,5 @@ $specialPageAliases['zh-hant'] = array(
 	'Browse' => array( '瀏覽' ),
 	'Properties' => array( '屬性' ),
 	'SMWAdmin' => array( 'SMW管理員' ),
+	'SemanticStatistics' => array( 'Semantic統計' ),
 );
