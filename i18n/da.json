@@ -1,0 +1,9 @@
+{
+    "@metadata": {
+        "authors": [
+            "Christian List"
+        ]
+    },
+    "validator-type-class-SMWParamSource": "tekst",
+    "smw-ui-tooltip-title-legend": "Forklaring"
+}
