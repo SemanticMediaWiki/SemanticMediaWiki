@@ -1,7 +1,7 @@
 filter:
     excluded_paths:
         - 'vendor/*'
-        - 'tests/*'
+
 tools:
     php_mess_detector:
         config:
