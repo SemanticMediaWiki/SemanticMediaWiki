@@ -7,7 +7,9 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MessageReporter;
 use SMW\Settings;
 use SMW\Store;
+use SMW\DIWikiPage;
 
+use SMWQueryProcessor;
 use Title;
 use LinkCache;
 
@@ -37,6 +39,7 @@ class DataRebuilder {
 	protected $verbose = false;
 	protected $useIds = false;
 	protected $startIdFile = false;
+	protected $query = false;
 
 	/**
 	 * @since 1.9.2
@@ -110,6 +113,11 @@ class DataRebuilder {
 		if ( array_key_exists( 'f', $options ) ) {
 			$this->fullDelete = true;
 		}
+
+		if ( array_key_exists( 'query', $options ) ) {
+			$this->query = $options['query'];
+		}
+
 	}
 
 	/**
@@ -127,7 +135,7 @@ class DataRebuilder {
 			$this->performFullDelete();
 		}
 
-		if ( $this->pages ) {
+		if ( $this->pages || $this->query ) {
 			return $this->rebuildSelectedPages( $num_files );
 		}
 
@@ -138,20 +146,25 @@ class DataRebuilder {
 
 		$this->reporter->reportMessage( "Refreshing specified pages!\n\n" );
 
-		foreach ( $this->pages as $page ) {
+		$pagesFromQuery = $this->getPagesFromQuery();
+		$selectedPages = $this->pages ? array_merge( (array)$this->pages, $pagesFromQuery ) : $pagesFromQuery;
 
-			if ( $this->verbose ) {
-				$this->reporter->reportMessage( "($num_files) Processing page " . $page . " ...\n" );
-			}
+		foreach ( $selectedPages as $page ) {
 
-			$title = Title::newFromText( $page );
+			$num_files++;
+
+			$title = $this->makeTitle( $page );
 
 			if ( $title !== null ) {
+
+				if ( $this->verbose ) {
+					$this->reporter->reportMessage( "($num_files) Processing page " . $title->getPrefixedDBkey() . " ...\n" );
+				}
+
 				$updatejob = new UpdateJob( $title );
 				$updatejob->run();
 			}
 
-			$num_files++;
 		}
 
 		$this->reporter->reportMessage( "$num_files pages refreshed.\n" );
@@ -177,6 +190,8 @@ class DataRebuilder {
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
+			$num_files++;
+
 			if ( $this->verbose ) {
 				$this->reporter->reportMessage( "($num_files) Processing ID " . $id . " ...\n" );
 			}
@@ -186,8 +201,6 @@ class DataRebuilder {
 			if ( $this->delay !== false ) {
 				usleep( $this->delay );
 			}
-
-			$num_files++;
 
 			if ( $num_files % 100 === 0 ) { // every 100 pages only
 				$linkCache->clear(); // avoid memory leaks
@@ -247,6 +260,36 @@ class DataRebuilder {
 		if ( $this->canWriteToIdFile ) {
 			file_put_contents( $this->startIdFile, "$id" );
 		}
+	}
+
+	protected function getPagesFromQuery() {
+
+		// get number of pages and fix query limit
+		$query = SMWQueryProcessor::createQuery(
+			$this->query,
+			SMWQueryProcessor::getProcessedParams( array( 'format' => 'count' ) )
+		);
+
+		$numberOfPages = (int)$this->store->getQueryResult( $query );
+
+		// get pages and add them to the pages explicitly listed in the 'page' parameter
+		$query = SMWQueryProcessor::createQuery(
+			$this->query,
+			SMWQueryProcessor::getProcessedParams( array() )
+		);
+
+		$query->setLimit( $numberOfPages, false );
+
+		return $this->store->getQueryResult( $query )->getResults();
+	}
+
+	protected function makeTitle ( $page ) {
+
+		if ( $page instanceof DIWikiPage ) {
+			return $page->getTitle();
+		}
+
+		return Title::newFromText( $page );
 	}
 
 }

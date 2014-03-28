@@ -80,6 +80,7 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 't', 'Will refresh only type pages (and other explicitly named namespaces)', false );
 		$this->addOption( 'page', '<pagelist> Will refresh only the pages of the given names, with | used as a separator. Example: --page "Page 1|Page 2" refreshes Page 1 and Page 2 Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --page is given.', false, true );
 		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. This is sometimes necessary because server name detection may fail in command line scripts.', false, true );
+		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
 
 		$this->addOption( 'quiet', 'Do not give any output', false );
 	}
