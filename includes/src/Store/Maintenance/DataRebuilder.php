@@ -278,7 +278,14 @@ class DataRebuilder {
 			SMWQueryProcessor::getProcessedParams( array() )
 		);
 
+		// FIXME SMWQuery setLimit
+		// Manipulating GLOBAL state as below is not a good design practice and
+		// should be avoided at all cost but since we rely on SMWQuery class we
+		// need to introduce a hack
+		$beforeMaxLimitManipulation = $GLOBALS['smwgQMaxLimit'];
+		$GLOBALS['smwgQMaxLimit'] = $numberOfPages;
 		$query->setLimit( $numberOfPages, false );
+		$GLOBALS['smwgQMaxLimit'] = $beforeMaxLimitManipulation;
 
 		return $this->store->getQueryResult( $query )->getResults();
 	}
