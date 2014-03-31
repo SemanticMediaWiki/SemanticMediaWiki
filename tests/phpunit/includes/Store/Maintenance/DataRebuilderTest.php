@@ -132,6 +132,39 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @depends testCanConstruct
 	 */
+	public function testRebuildAllWithStopRangeOption() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'refreshData' ) )
+			->getMockForAbstractClass();
+
+		$store->expects( $this->exactly( 6 ) )
+			->method( 'refreshData' )
+			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
+
+		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'reportMessage' ) )
+			->getMock();
+
+		$instance = new DataRebuilder(
+			$store,
+			$messagereporter
+		);
+
+		$instance->setParameters( array(
+			's' => 2,
+			'n' => 5,
+			'verbose' => false
+		) );
+
+		$this->assertTrue( $instance->rebuild() );
+	}
+
+	/**
+	 * @depends testCanConstruct
+	 */
 	public function testRebuildSelectedPagesWithQueryOption() {
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
