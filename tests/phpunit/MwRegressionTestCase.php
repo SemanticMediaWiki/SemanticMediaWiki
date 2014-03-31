@@ -100,6 +100,7 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 		$this->assertTitleIsKnownAfterImport( $this->acquirePoolOfTitles() );
 		$this->runUpdateJobs( $this->acquirePoolOfTitles() );
 		$this->assertDataImport();
+		$this->deletePoolOfTitles( $this->acquirePoolOfTitles() );
 	}
 
 	protected function getStore() {
@@ -128,6 +129,14 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 		foreach ( $titles as $title ) {
 			$job = new UpdateJob( Title::newFromText( $title ) );
 			$job->run();
+		}
+	}
+
+	private function deletePoolOfTitles( $titles ) {
+		$pageDeleter = new PageDeleter();
+
+		foreach ( $titles as $title ) {
+			$pageDeleter->deletePage( Title::newFromText( $title ) );
 		}
 	}
 
