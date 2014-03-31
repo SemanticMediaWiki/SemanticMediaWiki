@@ -95,8 +95,6 @@ class RebuildData extends \Maintenance {
 			return false;
 		}
 
-		$this->mQuiet = $this->hasOption( 'quiet' );
-
 		$reporter = new ObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 

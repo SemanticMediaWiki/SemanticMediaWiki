@@ -127,7 +127,7 @@ class DataRebuilder {
 	 */
 	public function rebuild() {
 
-		$this->reporter->reportMessage( "\nSelected storage " . get_class( $this->store ) . " for update!\n\n" );
+		$this->reportMessage( "\nSelected storage " . get_class( $this->store ) . " for update!\n\n" );
 
 		$num_files = 0;
 
@@ -144,22 +144,20 @@ class DataRebuilder {
 
 	protected function rebuildSelectedPages( $num_files ) {
 
-		$this->reporter->reportMessage( "Refreshing specified pages!\n\n" );
+		$this->reportMessage( "Refreshing specified pages!\n\n" );
 
-		$pagesFromQuery = $this->getPagesFromQuery();
-		$selectedPages = $this->pages ? array_merge( (array)$this->pages, $pagesFromQuery ) : $pagesFromQuery;
+		$selectedPages = $this->query ? $this->getPagesFromQuery() : array();
+		$selectedPages = $this->pages ? array_merge( (array)$this->pages, $selectedPages ) : $selectedPages;
 
 		foreach ( $selectedPages as $page ) {
 
 			$num_files++;
 
-			$title = $this->makeTitle( $page );
+			$title = $this->makeTitleOf( $page );
 
 			if ( $title !== null ) {
 
-				if ( $this->verbose ) {
-					$this->reporter->reportMessage( "($num_files) Processing page " . $title->getPrefixedDBkey() . " ...\n" );
-				}
+				$this->reportMessage( "($num_files) Processing page " . $title->getPrefixedDBkey() . " ...\n", $this->verbose );
 
 				$updatejob = new UpdateJob( $title );
 				$updatejob->run();
@@ -167,7 +165,7 @@ class DataRebuilder {
 
 		}
 
-		$this->reporter->reportMessage( "$num_files pages refreshed.\n" );
+		$this->reportMessage( "$num_files pages refreshed.\n" );
 
 		return true;
 	}
@@ -176,7 +174,7 @@ class DataRebuilder {
 
 		$linkCache = LinkCache::singleton();
 
-		$this->reporter->reportMessage( "Refreshing all semantic data in the database!\n---\n" .
+		$this->reportMessage( "Refreshing all semantic data in the database!\n---\n" .
 			" Some versions of PHP suffer from memory leaks in long-running scripts.\n" .
 			" If your machine gets very slow after many pages (typically more than\n" .
 			" 1000) were refreshed, please abort with CTRL-C and resume this script\n" .
@@ -184,7 +182,7 @@ class DataRebuilder {
 			" page ids during refresh). Continue this until all pages were refreshed.\n---\n"
 		);
 
-		$this->reporter->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : 'last ID' ) . " ...\n" );
+		$this->reportMessage( "Processing all IDs from $this->start to " . ( $this->end ? "$this->end" : 'last ID' ) . " ...\n" );
 
 		$id = $this->start;
 
@@ -192,9 +190,7 @@ class DataRebuilder {
 
 			$num_files++;
 
-			if ( $this->verbose ) {
-				$this->reporter->reportMessage( "($num_files) Processing ID " . $id . " ...\n" );
-			}
+			$this->reportMessage( "($num_files) Processing ID " . $id . " ...\n", $this->verbose );
 
 			$this->store->refreshData( $id, 1, $this->filter, false );
 
@@ -208,14 +204,14 @@ class DataRebuilder {
 		}
 
 		$this->writeIdToFile( $id );
-		$this->reporter->reportMessage( "$num_files IDs refreshed.\n" );
+		$this->reportMessage( "$num_files IDs refreshed.\n" );
 
 		return true;
 	}
 
 	protected function performFullDelete() {
 
-		$this->reporter->reportMessage( "\n Deleting all stored data completely and rebuilding it again later!\n" .
+		$this->reportMessage( "\n Deleting all stored data completely and rebuilding it again later!\n" .
 			" Semantic data in the wiki might be incomplete for some time while this operation runs.\n\n" .
 			" NOTE: It is usually necessary to run this script ONE MORE TIME after this operation,\n" .
 			" since some properties' types are not stored yet in the first run.\n" .
@@ -223,13 +219,15 @@ class DataRebuilder {
 		);
 
 		if ( $this->useIds ) {
-			$this->reporter->reportMessage( " WARNING: -s or -e are used, so some pages will not be refreshed at all!\n" .
+			$this->reportMessage( " WARNING: -s or -e are used, so some pages will not be refreshed at all!\n" .
 				" Data for those pages will only be available again when they have been\n" .
 				" refreshed as well!\n\n"
 			);
 		}
 
-		$this->reporter->reportMessage( ' Abort with control-c in the next five seconds ...  ' );
+		$obLevel = ob_get_level();
+
+		$this->reportMessage( ' Abort with control-c in the next five seconds ...  ' );
 		wfCountDown( 6 );
 
 		$this->store->drop( $this->verbose );
@@ -238,11 +236,12 @@ class DataRebuilder {
 
 		$this->store->setupStore( $this->verbose );
 
-		while ( ob_get_level() > 0 ) { // be sure to have some buffer, otherwise some PHPs complain
+		// Be sure to have some buffer, otherwise some PHPs complain
+		while ( ob_get_level() > $obLevel ) {
 			ob_end_flush();
 		}
 
-		$this->reporter->reportMessage( "\nAll storage structures have been deleted and recreated.\n\n" );
+		$this->reportMessage( "\nAll storage structures have been deleted and recreated.\n\n" );
 
 		return true;
 	}
@@ -290,13 +289,23 @@ class DataRebuilder {
 		return $this->store->getQueryResult( $query )->getResults();
 	}
 
-	protected function makeTitle ( $page ) {
+	protected function makeTitleOf( $page ) {
 
 		if ( $page instanceof DIWikiPage ) {
 			return $page->getTitle();
 		}
 
+		if ( $page instanceof Title ) {
+			return $page;
+		}
+
 		return Title::newFromText( $page );
+	}
+
+	protected function reportMessage( $message, $output = true ) {
+		if ( $output ) {
+			$this->reporter->reportMessage( $message );
+		}
 	}
 
 }
