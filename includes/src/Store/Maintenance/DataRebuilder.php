@@ -87,7 +87,7 @@ class DataRebuilder {
 		if ( array_key_exists( 'e', $options ) ) {
 			$this->end = intval( $options['e'] );
 		} elseif ( array_key_exists( 'n', $options ) ) {
-			$this->end = $start + intval( $options['n'] );
+			$this->end = $this->start + intval( $options['n'] );
 		}
 
 		$this->useIds = array_key_exists( 's', $options ) || array_key_exists( 'e', $options );
