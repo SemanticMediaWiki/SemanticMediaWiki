@@ -20,6 +20,7 @@
 * #226 Added ExecutionTimeTestListener to report long running tests
 * #227 Moved all job related classes into the `SMW\MediaWiki\Jobs\` namespace
 * #234 Added a redirects regression test
+* #248 Added support for the new MediaWiki i18n JSON system
 
 [id-lookup]: https://www.semantic-mediawiki.org/wiki/Help:Object_ID_lookup
 [217]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/217
