@@ -467,7 +467,6 @@ final class Setup implements ContextAware {
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
 		$this->globals['wgHooks']['SkinTemplateNavigation'][] = 'SMWHooks::onSkinTemplateNavigation';
-		$this->globals['wgHooks']['UnitTestsList'][] = 'SMWHooks::registerUnitTests';
 		$this->globals['wgHooks']['ResourceLoaderTestModules'][] = 'SMWHooks::registerQUnitTests';
 		$this->globals['wgHooks']['GetPreferences'][] = 'SMWHooks::onGetPreferences';
 		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = 'SMWHooks::onTitleIsAlwaysKnown';

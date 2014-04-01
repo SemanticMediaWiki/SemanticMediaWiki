@@ -261,31 +261,6 @@ final class SMWHooks {
 	}
 
 	/**
-	* Hook to add PHPUnit test cases.
-	* @see https://www.mediawiki.org/wiki/Manual:Hooks/UnitTestsList
-	*
-	* @since 1.8
-	 *
-	* @param array $files
-	*
-	* @return boolean
-	*/
-	public static function registerUnitTests( array &$files ) {
-		$directoryIterator = new RecursiveDirectoryIterator( __DIR__ . '/tests/phpunit/' );
-
-		/**
-		 * @var SplFileInfo $fileInfo
-		 */
-		foreach ( new RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
-			if ( substr( $fileInfo->getFilename(), -8 ) === 'Test.php' ) {
-				$files[] = $fileInfo->getPathname();
-			}
-		}
-
-		return true;
-	}
-
-	/**
 	 * Add new JavaScript/QUnit testing modules
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
 	 *
