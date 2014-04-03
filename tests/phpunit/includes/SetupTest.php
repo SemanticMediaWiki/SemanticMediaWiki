@@ -451,7 +451,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'PageSchemasRegisterHandlers',
 			'ArticleFromTitle',
 			'SkinTemplateNavigation',
-			'UnitTestsList',
 			'ResourceLoaderTestModules',
 			'ResourceLoaderGetConfigVars',
 			'GetPreferences',
