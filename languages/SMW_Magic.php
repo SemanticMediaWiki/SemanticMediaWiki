@@ -361,6 +361,7 @@ $magicWords['zh-hans'] = array(
 	'subobject' => array( 0, '子对象' ),
 	'smwdoc' => array( 0, 'smw文档' ),
 	'set' => array( 0, '设置' ),
+	'set_recurring_event' => array( 0, '设置循环活动' ),
 	'declare' => array( 0, '宣布' ),
 );
 
