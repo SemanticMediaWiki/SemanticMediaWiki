@@ -264,6 +264,8 @@ EOT;
 			$type = substr( $type, 0, $keypos );
 		}
 
+		$type = strtoupper( $type );
+
 		if ( !array_key_exists( $name, $currentFields ) ) {
 			self::reportProgress( "   ... creating field $name ... ", $reportTo );
 
@@ -279,14 +281,16 @@ EOT;
 			}
 
 			$notnullposold = strpos( $currentFields[$name], ' NOT NULL' );
-			$typeold = ( $notnullposold > 0 ) ? substr( $currentFields[$name], 0, $notnullposold ) : $currentFields[$name];
+			$typeold  = strtoupper( ( $notnullposold > 0 ) ? substr( $currentFields[$name], 0, $notnullposold ) : $currentFields[$name] );
 
 			if ( $typeold != $type ) {
-				$db->query( "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $name . "\" ENGINE " . $type, __METHOD__ );
+				$sql = "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $name . "\" TYPE " . $type;
+				$db->query( $sql, __METHOD__ );
 			}
 
 			if ( $notnullposold != $notnullposnew ) {
-				$db->query( "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET' : 'DROP' ) . " NOT NULL", __METHOD__ );
+				$sql = "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET' : 'DROP' ) . " NOT NULL";
+				$db->query( $sql, __METHOD__ );
 			}
 
 			self::reportProgress( "done.\n", $reportTo );
