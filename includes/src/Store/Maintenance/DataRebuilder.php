@@ -3,6 +3,7 @@
 namespace SMW\Store\Maintenance;
 
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\MwTitleLookup;
 
 use SMW\MessageReporter;
 use SMW\Settings;
@@ -14,6 +15,11 @@ use Title;
 use LinkCache;
 
 /**
+ * Is part of the `rebuildData.php` maintenance script to rebuild existing data
+ * for the store
+ *
+ * @note This is an internal class and should not be used outside of smw-core
+ *
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
@@ -34,7 +40,7 @@ class DataRebuilder {
 	protected $canWriteToIdFile = false;
 	protected $start = 1;
 	protected $end = false;
-	protected $filter = false;
+	protected $filters = false;
 	protected $fullDelete = false;
 	protected $verbose = false;
 	protected $useIds = false;
@@ -94,21 +100,7 @@ class DataRebuilder {
 
 		$this->verbose = array_key_exists( 'v', $options );
 
-		$filterarray = array();
-
-		if ( array_key_exists( 'c', $options ) ) {
-			$filterarray[] = NS_CATEGORY;
-		}
-
-		if ( array_key_exists( 'p', $options ) ) {
-			$filterarray[] = SMW_NS_PROPERTY;
-		}
-
-		if ( array_key_exists( 't', $options ) ) {
-			$filterarray[] = SMW_NS_TYPE;
-		}
-
-		$this->filter = count( $filterarray ) > 0 ? $filterarray : false;
+		$this->filters = $this->describeFiltersFromOptions( $options );
 
 		if ( array_key_exists( 'f', $options ) ) {
 			$this->fullDelete = true;
@@ -135,7 +127,7 @@ class DataRebuilder {
 			$this->performFullDelete();
 		}
 
-		if ( $this->pages || $this->query ) {
+		if ( $this->pages || $this->query || $this->filters ) {
 			return $this->rebuildSelectedPages( $num_files );
 		}
 
@@ -146,10 +138,11 @@ class DataRebuilder {
 
 		$this->reportMessage( "Refreshing specified pages!\n\n" );
 
-		$selectedPages = $this->query ? $this->getPagesFromQuery() : array();
-		$selectedPages = $this->pages ? array_merge( (array)$this->pages, $selectedPages ) : $selectedPages;
+		$pages = $this->query ? $this->getPagesFromQuery() : array();
+		$pages = $this->pages ? array_merge( (array)$this->pages, $pages ) : $pages;
+		$pages = $this->filters ? array_merge( $pages, $this->getPagesFromFilters() ) : $pages;
 
-		foreach ( $selectedPages as $page ) {
+		foreach ( $pages as $page ) {
 
 			$num_files++;
 
@@ -192,7 +185,7 @@ class DataRebuilder {
 
 			$this->reportMessage( "($num_files) Processing ID " . $id . " ...\n", $this->verbose );
 
-			$this->store->refreshData( $id, 1, $this->filter, false );
+			$this->store->refreshData( $id, 1, false, false );
 
 			if ( $this->delay !== false ) {
 				usleep( $this->delay );
@@ -261,6 +254,25 @@ class DataRebuilder {
 		}
 	}
 
+	protected function describeFiltersFromOptions( $options ) {
+
+		$filtersarray = array();
+
+		if ( array_key_exists( 'c', $options ) ) {
+			$filtersarray[] = NS_CATEGORY;
+		}
+
+		if ( array_key_exists( 'p', $options ) ) {
+			$filtersarray[] = SMW_NS_PROPERTY;
+		}
+
+		if ( array_key_exists( 't', $options ) ) {
+			$filtersarray[] = SMW_NS_TYPE;
+		}
+
+		return $filtersarray !== array() ? $filtersarray : false;
+	}
+
 	protected function getPagesFromQuery() {
 
 		// get number of pages and fix query limit
@@ -287,6 +299,19 @@ class DataRebuilder {
 		$GLOBALS['smwgQMaxLimit'] = $beforeMaxLimitManipulation;
 
 		return $this->store->getQueryResult( $query )->getResults();
+	}
+
+	protected function getPagesFromFilters() {
+
+		$pages = array();
+
+		$titleLookup = new MwTitleLookup( $this->store->getDatabase() );
+
+		foreach ( $this->filters as $namespace ) {
+			$pages = array_merge( $pages, $titleLookup->byNamespace( $namespace )->selectAll() );
+		}
+
+		return $pages;
 	}
 
 	protected function makeTitleOf( $page ) {
