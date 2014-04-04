@@ -25,7 +25,7 @@
 * #227 Moved all job related classes into the `SMW\MediaWiki\Jobs\` namespace
 * #234 Added a redirects regression test
 * #236 Removed wfGetDB from SMWSQLStore3Writers::deleteSubject 
-* #244 Refactored `SMW_refreshData.php` to `rebuildData.php` to provide basic test coverage
+* #244, #253 Refactored `SMW_refreshData.php` to `rebuildData.php` to provide basic test coverage
 * #248 Added support for the new MediaWiki i18n JSON system
 * #262 Improved SQLStore upgrading for Postgres
 
