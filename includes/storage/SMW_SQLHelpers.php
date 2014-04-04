@@ -342,7 +342,7 @@ EOT;
 	public static function setupIndex( $rawTableName, array $indexes, $db, $reportTo = null ) {
 		global $wgDBtype;
 
-		$tableName = $db->tableName( $rawTableName );
+		$tableName = $wgDBtype == 'postgres' ? $db->tableName( $rawTableName, 'raw' ) : $db->tableName( $rawTableName );
 
 		self::reportProgress( "Checking index structures for table $tableName ...\n", $reportTo );
 
@@ -403,7 +403,7 @@ EOT;
 		if ( $wgDBtype == 'postgres' ) { // postgresql
 			$sql = "SELECT  i.relname AS indexname,"
 				. " pg_get_indexdef(i.oid) AS indexdef, "
-				. " replace(substring(pg_get_indexdef(i.oid) from '\\\\((.*)\\\\)'),' ','') AS indexcolumns"
+				. " replace(substring(pg_get_indexdef(i.oid) from E'\\\\((.*)\\\\)'), ' ' , '') AS indexcolumns"
 				. " FROM pg_index x"
 				. " JOIN pg_class c ON c.oid = x.indrelid"
 				. " JOIN pg_class i ON i.oid = x.indexrelid"
@@ -497,8 +497,7 @@ EOT;
 		self::reportProgress( "   ... creating new index $columns ...", $reportTo );
 		if ( $wgDBtype == 'postgres' ) { // postgresql
 			if ( $db->indexInfo( $tableName, $indexName ) === false ) {
-				$emptyIndexName = ''; // bug 42659
-				$db->query( "CREATE $type $emptyIndexName ON $tableName USING btree($columns)", __METHOD__ );
+				$db->query( "CREATE $type $indexName ON $tableName ($columns)", __METHOD__ );
 			}
 		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
 			$db->query( "CREATE $type $indexName ON $tableName ($columns)", __METHOD__ );
