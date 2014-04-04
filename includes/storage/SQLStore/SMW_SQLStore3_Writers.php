@@ -1,6 +1,8 @@
 <?php
 
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\SemanticData;
+use SMW\DIWikiPage;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
@@ -41,20 +43,37 @@ class SMWSQLStore3Writers {
 	 * @see SMWStore::deleteSubject
 	 *
 	 * @since 1.8
-	 * @param Title $subject
+	 * @param Title $title
 	 */
-	public function deleteSubject( Title $subject ) {
-		wfProfileIn( 'SMWSQLStore3::deleteSubject (SMW)' );
-		wfRunHooks( 'SMWSQLStore3::deleteSubjectBefore', array( $this->store, $subject ) );
+	public function deleteSubject( Title $title ) {
+		wfProfileIn( __METHOD__ );
+		wfRunHooks( 'SMWSQLStore3::deleteSubjectBefore', array( $this->store, $title ) );
 
-		$emptySemanticData = new SMWSemanticData( SMWDIWikiPage::newFromTitle( $subject ) );
+		$emptySemanticData = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 		$this->doDataUpdate( $emptySemanticData );
 
-		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
-			$db = wfGetDB( DB_MASTER );
-			$id = $this->store->smwIds->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), '', false );
-			$db->delete( 'smw_fpt_conc', array( 's_id' => $id ), 'SMW::deleteSubject::Conc' );
-			$db->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $id ), 'SMW::deleteSubject::Conccache' );
+		if ( $title->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
+			$db = $this->store->getDatabase();
+
+			$id = $this->store->getObjectIds()->getSMWPageID(
+				$title->getDBkey(),
+				$title->getNamespace(),
+				$title->getInterwiki(),
+				'',
+				false
+			);
+
+			$db->delete(
+				'smw_fpt_conc',
+				array( 's_id' => $id ),
+				'SMW::deleteSubject::Conc'
+			);
+
+			$db->delete(
+				SMWSQLStore3::CONCEPT_CACHE_TABLE,
+				array( 'o_id' => $id ),
+				'SMW::deleteSubject::Conccache'
+			);
 		}
 
 		// 1.9.0.1
@@ -63,9 +82,9 @@ class SMWSQLStore3Writers {
 
 		///TODO: Possibly delete ID here (at least for non-properties/categories, if not used in any place in rels2)
 
-		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $subject ) );
+		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
 
-		wfProfileOut( 'SMWSQLStore3::deleteSubject (SMW)' );
+		wfProfileOut( __METHOD__ );
 	}
 
 	/**
@@ -142,7 +161,7 @@ class SMWSQLStore3Writers {
 		}
 
 		// Always make an ID; this also writes sortkey and namespace data
-		$sid = $this->store->smwIds->makeSMWPageID(
+		$sid = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
 			$subject->getInterwiki(),
@@ -225,7 +244,7 @@ class SMWSQLStore3Writers {
 		$updates = array();
 
 		$subject = $data->getSubject();
-		$propertyTables = SMWSQLStore3::getPropertyTables();
+		$propertyTables = $this->store->getPropertyTables();
 
 		foreach ( $data->getProperties() as $property ) {
 			$tableId = SMWSQLStore3::findPropertyTableID( $property );
@@ -389,11 +408,13 @@ class SMWSQLStore3Writers {
 		$tablesDeleteRows = array();
 		$tablesInsertRows = array();
 
-		$oldHashes = $this->store->smwIds->getPropertyTableHashes( $sid );
+		$oldHashes = $this->store->getObjectIds()->getPropertyTableHashes( $sid );
 		$newHashes = array();
 
 		$newData = $this->preparePropertyTableInserts( $sid, $data, $dbr );
-		foreach ( SMWSQLStore3::getPropertyTables() as $propertyTable ) {
+		$propertyTables = $this->store->getPropertyTables();
+
+		foreach ( $propertyTables as $propertyTable ) {
 			if ( !$propertyTable->usesIdSubject() ) { // ignore; only affects redirects anyway
 				continue;
 			}
@@ -476,7 +497,7 @@ class SMWSQLStore3Writers {
 	protected function writePropertyTableUpdates( $sid, array $tablesInsertRows, array $tablesDeleteRows, array $newHashes, DatabaseBase $dbw ) {
 		$propertyUseIncrements = array();
 
-		$propertyTables = SMWSQLStore3::getPropertyTables();
+		$propertyTables = $this->store->getPropertyTables();
 
 		foreach ( $tablesInsertRows as $tableName => $insertRows ) {
 			// Note: by construction, the inserts and deletes have the same table keys.
@@ -582,7 +603,9 @@ class SMWSQLStore3Writers {
 		$this->store->m_semdata[$sid] = SMWSql3StubSemanticData::newFromSemanticData( $semanticData, $this->store );
 		// This is everything one can know:
 		$this->store->m_sdstate[$sid] = array();
-		foreach ( SMWSQLStore3::getPropertyTables() as $tableId => $tableDeclaration ) {
+		$propertyTables = $this->store->getPropertyTables();
+
+		foreach ( $propertyTables as $tableId => $tableDeclaration ) {
 			$this->store->m_sdstate[$sid][$tableId] = true;
 		}
 	}
@@ -784,9 +807,10 @@ class SMWSQLStore3Writers {
 		// *** First get id of subject, old redirect target, and current (new) redirect target ***//
 
 		$sid_sort = '';
-		$sid = $this->store->smwIds->getSMWPageIDandSort( $subject_t, $subject_ns, '', '', $sid_sort, false ); // find real id of subject, if any
+
+		$sid = $this->store->getObjectIds()->getSMWPageIDandSort( $subject_t, $subject_ns, '', '', $sid_sort, false ); // find real id of subject, if any
 		/// NOTE: $sid can be 0 here; this is useful to know since it means that fewer table updates are needed
-		$new_tid = $curtarget_t ? ( $this->store->smwIds->makeSMWPageID( $curtarget_t, $curtarget_ns, '', '', false ) ) : 0; // real id of new target, if given
+		$new_tid = $curtarget_t ? ( $this->store->getObjectIds()->makeSMWPageID( $curtarget_t, $curtarget_ns, '', '', false ) ) : 0; // real id of new target, if given
 
 		$db = wfGetDB( DB_SLAVE );
 		$row = $db->selectRow( array( 'smw_fpt_redi' ), 'o_id',
@@ -822,8 +846,9 @@ class SMWSQLStore3Writers {
 			if ( $smwgEnableUpdateJobs && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
 				// entries that refer to old target may in fact refer to subject,
 				// but we don't know which: schedule affected pages for update
+				$propertyTables = $this->store->getPropertyTables();
 
-				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+				foreach ( $propertyTables as $proptable ) {
 					if ( $proptable->getName() == 'smw_fpt_redi' ) {
 						continue; // can safely be skipped
 					}
@@ -887,13 +912,13 @@ class SMWSQLStore3Writers {
 			if ( ( $old_tid == 0 ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) {
 				// mark subject as redirect (if it was no redirect before)
 				if ( $sid == 0 ) { // every redirect page must have an ID
-					$sid = $this->store->smwIds->makeSMWPageID( $subject_t, $subject_ns,
+					$sid = $this->store->getObjectIds()->makeSMWPageID( $subject_t, $subject_ns,
 						SMW_SQL3_SMWREDIIW, '', false );
 				} else {
 					$db->update( SMWSql3SmwIds::tableName, array( 'smw_iw' => SMW_SQL3_SMWREDIIW ),
 						array( 'smw_id' => $sid ), __METHOD__ );
-					$this->store->smwIds->setCache( $subject_t, $subject_ns, '', '', 0, '' );
-					$this->store->smwIds->setCache( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', $sid, $sid_sort );
+					$this->store->getObjectIds()->setCache( $subject_t, $subject_ns, '', '', 0, '' );
+					$this->store->getObjectIds()->setCache( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', $sid, $sid_sort );
 				}
 			}
 
@@ -906,8 +931,8 @@ class SMWSQLStore3Writers {
 			// This shows that $sid != 0 here.
 			if ( $smwgQEqualitySupport != SMW_EQ_NONE ) { // mark subject as non-redirect
 				$db->update( SMWSql3SmwIds::tableName, array( 'smw_iw' => '' ), array( 'smw_id' => $sid ), __METHOD__ );
-				$this->store->smwIds->setCache( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', 0, '' );
-				$this->store->smwIds->setCache( $subject_t, $subject_ns, '', '', $sid, $sid_sort );
+				$this->store->getObjectIds()->setCache( $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW, '', 0, '' );
+				$this->store->getObjectIds()->setCache( $subject_t, $subject_ns, '', '', $sid, $sid_sort );
 			}
 		}
 
@@ -920,7 +945,7 @@ class SMWSQLStore3Writers {
 
 		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db );
 		$statsTable->addToUsageCount(
-			$this->store->smwIds->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
+			$this->store->getObjectIds()->getSMWPropertyID( new SMWDIProperty( '_REDI' ) ),
 			$count
 		);
 
