@@ -55,9 +55,25 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableHashes' )
 			->will( $this->returnValue( array() ) );
 
+		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$database->expects( $this->once() )
+			->method( 'select' )
+			->will( $this->returnValue( array() ) );
+
+		$database->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
+		$database->expects( $this->any() )
+			->method( 'aquireWriteConnection' )
+			->will( $this->returnValue( $databaseBase ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -67,11 +83,13 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
+		$parentStore->expects( $this->any() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $database ) );
+
 		$parentStore::staticExpects( $this->exactly( 4 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
-
-		$parentStore->setDatabase( $database );
 
 		$instance = new SMWSQLStore3Writers( $parentStore );
 		$instance->deleteSubject( $title );
@@ -95,9 +113,25 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 				false )
 			->will( $this->returnValue( 0 ) );
 
+		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$database->expects( $this->once() )
+			->method( 'select' )
+			->will( $this->returnValue( array() ) );
+
+		$database->expects( $this->atLeastOnce() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
+		$database->expects( $this->any() )
+			->method( 'aquireWriteConnection' )
+			->will( $this->returnValue( $databaseBase ) );
 
 		$database->expects( $this->exactly( 2 ) )
 			->method( 'delete' )
