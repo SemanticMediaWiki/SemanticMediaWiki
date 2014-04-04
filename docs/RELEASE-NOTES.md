@@ -26,6 +26,7 @@
 * #234 Added a redirects regression test
 * #244 Refactored `SMW_refreshData.php` to `rebuildData.php` to provide basic test coverage
 * #248 Added support for the new MediaWiki i18n JSON system
+* #262 Improved SQLStore upgrading for Postgres
 
 [id-lookup]: https://www.semantic-mediawiki.org/wiki/Help:Object_ID_lookup
 [217]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/217
