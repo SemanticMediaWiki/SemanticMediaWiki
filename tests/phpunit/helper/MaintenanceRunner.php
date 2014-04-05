@@ -25,6 +25,7 @@ class MaintenanceRunner {
 	protected $maintenanceClass = null;
 	protected $options = array();
 	protected $output = null;
+	protected $quiet = false;
 
 	/**
 	 * @since 1.9.2
@@ -44,7 +45,7 @@ class MaintenanceRunner {
 	 * @return MaintenanceRunner
 	 */
 	public function setOptions( array $options ) {
-		$this->options = array_merge( $this->options, $options );
+		$this->options = $options;
 		return $this;
 	}
 
@@ -54,7 +55,7 @@ class MaintenanceRunner {
 	 * @return MaintenanceRunner
 	 */
 	public function setQuiet() {
-		$this->options = array_merge( $this->options, array( 'quiet' => true ) );
+		$this->quiet = true;
 		return $this;
 	}
 
@@ -77,7 +78,10 @@ class MaintenanceRunner {
 			throw new DomainException( "Expected a Maintenance instance" );
 		}
 
-		$maintenance->loadParamsAndArgs( $this->maintenanceClass, $this->options );
+		$maintenance->loadParamsAndArgs(
+			$this->maintenanceClass,
+			array_merge( $this->options, array( 'quiet' => $this->quiet ) )
+		);
 
 		ob_start();
 		$result = $maintenance->execute();
