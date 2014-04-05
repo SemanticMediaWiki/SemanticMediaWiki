@@ -24,9 +24,10 @@
 * #226 Added ExecutionTimeTestListener to report long running tests
 * #227 Moved all job related classes into the `SMW\MediaWiki\Jobs\` namespace
 * #234 Added a redirects regression test
-* #236 Removed wfGetDB from SMWSQLStore3Writers::deleteSubject 
+* #236, #265 Removed wfGetDB from SMWSQLStore3Writers and improved test coverage
 * #244, #253 Refactored `SMW_refreshData.php` to `rebuildData.php` to provide basic test coverage
 * #248 Added support for the new MediaWiki i18n JSON system
+* #256 Improved data selection for DataRebuilder filters
 * #262 Improved SQLStore upgrading for Postgres
 
 [id-lookup]: https://www.semantic-mediawiki.org/wiki/Help:Object_ID_lookup
