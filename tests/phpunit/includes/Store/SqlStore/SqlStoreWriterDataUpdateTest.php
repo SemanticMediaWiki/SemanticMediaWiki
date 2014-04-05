@@ -3,6 +3,8 @@
 namespace SMW\Tests\Store\SqlStore;
 
 use \SMWSQLStore3Writers;
+use SMW\SemanticData;
+use SMW\DIWikiPage;
 
 use Title;
 
@@ -22,7 +24,7 @@ use Title;
  *
  * @author mwjames
  */
-class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
+class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -36,9 +38,14 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testDeleteSubjectForMainNamespace() {
+	public function testDoDataUpdateForMainNamespaceWithoutSubobject() {
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->setConstructorArgs( array( DIWikiPage::newFromTitle( $title ) ) )
+			->setMethods( null )
+			->getMock();
 
 		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
@@ -80,39 +87,46 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parentStore->expects( $this->exactly( 3 ) )
+		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
-		$parentStore->expects( $this->any() )
+		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
-		$parentStore::staticExpects( $this->exactly( 4 ) )
+		$parentStore::staticExpects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
 		$instance = new SMWSQLStore3Writers( $parentStore );
-		$instance->deleteSubject( $title );
+		$instance->doDataUpdate( $semanticData );
 	}
 
-	public function testDeleteSubjectForConceptNamespace() {
+	public function testDoDataUpdateForConceptNamespaceWithoutSubobject() {
 
 		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->setConstructorArgs( array( DIWikiPage::newFromTitle( $title ) ) )
+			->setMethods( null )
+			->getMock();
 
 		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$objectIdGenerator->expects( $this->once() )
-			->method( 'getSMWPageID' )
-			->with(
-				$this->equalTo( $title->getDBkey() ),
-				$this->equalTo( $title->getNamespace() ),
-				$this->equalTo( $title->getInterwiki() ),
-				'',
-				false )
+			->method( 'getSMWPageIDandSort' )
 			->will( $this->returnValue( 0 ) );
+
+		$objectIdGenerator->expects( $this->once() )
+			->method( 'makeSMWPageID' )
+			->will( $this->returnValue( 0 ) );
+
+		$objectIdGenerator->expects( $this->once() )
+			->method( 'getPropertyTableHashes' )
+			->will( $this->returnValue( array() ) );
 
 		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
@@ -134,30 +148,77 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'aquireWriteConnection' )
 			->will( $this->returnValue( $databaseBase ) );
 
-		$database->expects( $this->exactly( 2 ) )
-			->method( 'delete' )
-			->will( $this->returnValue( true ) );
+		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $objectIdGenerator ) );
+
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $database ) );
+
+		$parentStore::staticExpects( $this->atLeastOnce() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array() ) );
+
+		$instance = new SMWSQLStore3Writers( $parentStore );
+		$instance->doDataUpdate( $semanticData );
+	}
+
+	public function testDoDataUpdateForMainNamespaceWithRedirect() {
+
+		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->setConstructorArgs( array( DIWikiPage::newFromTitle( $title ) ) )
+			->setMethods( array( 'getPropertyValues' ) )
+			->getMock();
+
+		$semanticData->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( DIWikiPage::newFromTitle( $title ) ) ) );
+
+		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$objectIdGenerator->expects( $this->once() )
+			->method( 'getSMWPageIDandSort' )
+			->will( $this->returnValue( 0 ) );
+
+		$objectIdGenerator->expects( $this->once() )
+			->method( 'makeSMWPageID' )
+			->will( $this->returnValue( 0 ) );
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->once() )
+			->method( 'select' )
+			->will( $this->returnValue( array() ) );
+
+		$database->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parentStore->expects( $this->any() )
-			->method( 'getDatabase' )
-			->will( $this->returnValue( $database ) );
-
-		$parentStore->expects( $this->exactly( 4 ) )
+		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
-		$parentStore::staticExpects( $this->exactly( 4 ) )
-			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
-
-		$parentStore->setDatabase( $database );
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $database ) );
 
 		$instance = new SMWSQLStore3Writers( $parentStore );
-		$instance->deleteSubject( $title );
+		$instance->doDataUpdate( $semanticData );
 	}
 
 }

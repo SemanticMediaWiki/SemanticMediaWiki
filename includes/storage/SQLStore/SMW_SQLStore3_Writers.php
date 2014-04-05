@@ -136,8 +136,6 @@ class SMWSQLStore3Writers {
 	protected function doFlatDataUpdate( SMWSemanticData $data ) {
 		$subject = $data->getSubject();
 
-		$db = $this->store->getDatabase();
-
 		// Take care of redirects
 		$redirects = $data->getPropertyValues( new SMWDIProperty( '_REDI' ) );
 
@@ -267,7 +265,7 @@ class SMWSQLStore3Writers {
 
 		foreach ( $data->getProperties() as $property ) {
 
-			$tableId = SMWSQLStore3::findPropertyTableID( $property );
+			$tableId = $this->store->findPropertyTableID( $property );
 			if ( is_null( $tableId ) ) { // not stored in a property table, e.g., sortkeys
 				continue;
 			}
