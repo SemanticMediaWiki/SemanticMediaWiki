@@ -11,7 +11,8 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
- * @group RegressionTest
+ * @group semantic-mediawiki-regression
+ * @group mediawiki-database
  * @group Database
  * @group medium
  *
