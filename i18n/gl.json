@@ -284,5 +284,8 @@
     "smw-sp-properties-header-label": "Lista de propiedades",
     "smw-sp-admin-settings-title": "Opcións de configuración",
     "smw-sp-admin-settings-docu": "Mostra unha lista de todos os <code>parámetros predeterminados</code> e <code>localizados</code> relevantes para o contorno de Semantic MediaWiki. Para obter os detalles de configuración individuais, consulte a páxina de axuda sobre a [https://semantic-mediawiki.org/wiki/Help:Configuration configuración].",
-    "smw-sp-admin-settings-button": "Xerar a lista de opcións"
+    "smw-sp-admin-settings-button": "Xerar a lista de opcións",
+    "smw-sp-admin-idlookup-title": "Pescuda do identificador de obxecto",
+    "smw-sp-admin-idlookup-docu": "Mostra os detalles dun identificador de obxecto interno que representa entidades individuais (páxina wiki, subobxecto etc.) en Semantic MediaWiki.",
+    "smw-sp-admin-idlookup-objectid": "Identificador de obxecto:"
 }

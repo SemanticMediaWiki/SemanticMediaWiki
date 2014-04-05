@@ -145,7 +145,7 @@
     "smw-statistics-subobject-count": "{{PLURAL:$1|Podobiekt|Podobiekty}}",
     "smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Typ danych|Typy danych}}]]",
     "smw_uri_doc": "Resolver URI implementuje [$1 W3C TAG finding on httpRange-14]. Dzięki temu ludzie nie zamieniają się w strony WWW.",
-    "ask": "Szukanie semantyczne",
+    "ask": "Wyszukiwanie semantyczne",
     "smw_ask_sortby": "Sortuj według kolumny (opcjonalnie)",
     "smw_ask_ascorder": "Rosnąco",
     "smw_ask_descorder": "Malejąco",
@@ -167,8 +167,8 @@
     "smw-ask-delete": "[Usuń]",
     "smw-ask-sorting": "Sortowanie",
     "smw-ask-format-selection-help": "Aby uzyskać szczegółowy opis, odwiedź $1 stronę pomocy.",
-    "searchbyproperty": "Szukaj po atrybucie",
-    "smw_sbv_docu": "Szukanie wszystkich stron, które mają dany atrybut i wartość.",
+    "searchbyproperty": "Wyszukiwanie po atrybucie",
+    "smw_sbv_docu": "Wyszukiwanie wszystkich stron, które mają dany atrybut i wartość.",
     "smw_sbv_novalue": "Wpisz wartość, lub zobacz wszystkie wartości atrybutów dla $1.",
     "smw_sbv_displayresult": "Lista wszystkich stron, które mają atrybut $1 z wartością $2.",
     "smw_sbv_displayresultfuzzy": "Lista wszystkich stron, które posiadają właściwość „$1” o wartości „$2”.\nPonieważ znaleziono tylko kilka wyników, pokazano również wyniki podobne.",
@@ -248,5 +248,6 @@
     "grouppage-smwadministrator": "{{ns:project}}:Administratorzy Semantycznej MediaWiki",
     "action-smw-admin": "dostęp do zarządzania semantycznej MediaWiki",
     "smw-sp-properties-cache-info": "Wymienione dane zostały pobrane z [https://www.semantic-mediawiki.org/wiki/Caching cache] i były ostatnio aktualizowane $1.",
-    "smw-sp-properties-header-label": "Lista właściwości"
+    "smw-sp-properties-header-label": "Lista właściwości",
+    "smw-sp-admin-settings-title": "Ustawienia konfiguracji"
 }

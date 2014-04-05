@@ -124,6 +124,7 @@ final class Setup implements ContextAware {
 
 		$smwgIP = $this->settings->get( 'smwgIP' );
 
+		$this->globals['wgMessagesDirs']['SemanticMediaWiki'] = $smwgIP . 'i18n';
 		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php';
 		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $smwgIP . 'languages/SMW_Aliases.php';
 		$this->globals['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $smwgIP . 'languages/SMW_Magic.php';

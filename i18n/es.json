@@ -102,7 +102,7 @@
     "smw_noboolean": "\"$1\" no es reconocido como un valor booleano (verdadero/falso).",
     "smw_true_words": "verdadero,t,si,s,true",
     "smw_false_words": "falso,f,no,n,false",
-    "smw_nofloat": "\"$1\" no es un número.",
+    "smw_nofloat": "«$1» no es un número.",
     "smw_infinite": "No se admiten números del tamaño de «$1».",
     "smw_unitnotallowed": "\"$1\" no está declarada como una unidad de medida válida para esta propiedad.",
     "smw_nounitsdeclared": "No hyi unidades de medida declaradas para esta propiedad.",

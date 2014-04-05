@@ -95,7 +95,7 @@
     "smw_smwadmin_datarefreshstop": "Halti ĉi tiun ĝisdatigon",
     "smw_smwadmin_datarefreshstopconfirm": "Jes, mi certas.",
     "smw_smwadmin_support": "Teni subtenon",
-    "smw_smwadmin_mediazilla": "Cimoj povas esti raportitaj al <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
+    "smw_smwadmin_mediazilla": "Cimoj povas esti raportitaj al \u003Ca href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\"\u003EGitHub\u003C/a\u003E.",
     "smw_adminlinks_datastructure": "Datumstrukturo",
     "smw-createproperty-isproperty": "Ĉi tiu estas atributo de speco $1.",
     "smw-createproperty-allowedvals": "La {{PLURAL:$1|permesita valoro por ĉi tiu atributo|permesitaj valoroj por ĉi tiuj atributoj}} estas:",
