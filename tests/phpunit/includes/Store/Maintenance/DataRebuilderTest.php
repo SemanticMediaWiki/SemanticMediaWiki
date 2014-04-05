@@ -13,6 +13,8 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-unit
+ * @group mediawiki-databaseless
  *
  * @license GNU GPL v2+
  * @since 1.9.2
@@ -207,6 +209,95 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setParameters( array(
 			'query' => '[[Category:Foo]]'
+		) );
+
+		$this->assertTrue( $instance->rebuild() );
+	}
+
+	public function testRebuildSelectedPagesWithCategoryNamespaceFilter() {
+
+		$row = new \stdClass;
+		$row->cat_title = 'Foo';
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->any() )
+			->method( 'select' )
+			->with( $this->stringContains( 'category' ),
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->anything() )
+			->will( $this->returnValue( array( $row ) ) );
+
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getDatabase' ) )
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $database ) );
+
+		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'reportMessage' ) )
+			->getMock();
+
+		$instance = new DataRebuilder(
+			$store,
+			$messagereporter
+		);
+
+		$instance->setParameters( array(
+			'c' => true
+		) );
+
+		$this->assertTrue( $instance->rebuild() );
+	}
+
+	public function testRebuildSelectedPagesWithPropertyNamespaceFilter() {
+
+		$row = new \stdClass;
+		$row->page_namespace = SMW_NS_PROPERTY;
+		$row->page_title = 'Bar';
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->any() )
+			->method( 'select' )
+			->with( $this->anything(),
+				$this->anything(),
+				$this->equalTo( array( 'page_namespace' => SMW_NS_PROPERTY ) ),
+				$this->anything(),
+				$this->anything() )
+			->will( $this->returnValue( array( $row ) ) );
+
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getDatabase' ) )
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $database ) );
+
+		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'reportMessage' ) )
+			->getMock();
+
+		$instance = new DataRebuilder(
+			$store,
+			$messagereporter
+		);
+
+		$instance->setParameters( array(
+			'p' => true
 		) );
 
 		$this->assertTrue( $instance->rebuild() );
