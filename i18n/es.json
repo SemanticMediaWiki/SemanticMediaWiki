@@ -114,7 +114,7 @@
     "smw_unexpectedpart": "La parte \"$1\" de la consulta no fue entendida.\nLos resultados podrían no ser como esperabas.",
     "smw_emptysubquery": "Alguna subconsulta no tiene condición válida.",
     "smw_misplacedsubquery": "Alguna subconsulta fue usada en un lugar donde las subconsultas no están permitidas.",
-    "smw_valuesubquery": "Subconsultas no soportadas para valores de propiedad \"$1\".",
+    "smw_valuesubquery": "Los valores de la propiedad «$1» no admiten las subconsultas.",
     "smw_badqueryatom": "Alguna parte \"<nowiki>[[…]]</nowiki>\" de la interrogante no fue entendida.",
     "smw_propvalueproblem": "El valor de propiedad \"$1\" no fue entendida.",
     "smw_noqueryfeature": "Alguna característica de la consulta no tiene soporte en esta wiki, y parte de ella se ha eliminado ($1).",
@@ -143,6 +143,9 @@
     "smw_propertylackspage": "Todas las propiedades deberían ser descritas por una página!",
     "smw_propertylackstype": "Ningún tipo fue especificada para esta propiedad (asumiendo tipo $1 por ahora).",
     "smw_propertyhardlyused": "Esta propiedad es dificilmente usada dentro del wiki!",
+    "concepts": "Conceptos",
+    "smw-sp-concept-header": "Lista de conceptos",
+    "smw-sp-concept-empty": "No se encontró ningún concepto.",
     "unusedproperties": "Propiedades no usadas",
     "smw_unusedproperties_docu": "Las siguientes propiedades existen a pesar que ninguna otra página haga uso de ellas.",
     "smw_unusedproperty_template": "$1 de tipo $2",
@@ -152,8 +155,10 @@
     "smw_purge": "Actualizar",
     "types": "Tipos de datos",
     "smw_types_docu": "Lo siguiente es una lista de todos los tipos de datos que pueden ser asignados a las propiedades.",
+    "smw-special-types-no-such-type": "El tipo de datos especificado no existe",
     "semanticstatistics": "Estadísticas de semántica",
     "smw_semstats_text": "Esta wiki contiene '''$1''' {{PLURAL:$1|valor de propiedad|valores de propiedades}} sobre un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propiedad|propiedades diferentes}}]].\n'''$3''' {{PLURAL:$3|propiedad tiene|propiedades tienen}} su propia página, y el tipo de datos previstos se ha especificado para '''$4''' de ellas.\nAlgunas de las propiedades existentes pueden estar [[Special:UnusedProperties|sin uso]].\nLas propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|lista de propiedades requeridas]].",
+    "smw-statistics": "Estadísticas de semántica",
     "smw_uri_doc": "El traductor de URI implementa [$1 W3C TAG finding on httpRange-14].\nEsto se preocupa de cosas que los humanos no lo hacen en los sitios web..",
     "ask": "Búsqueda semántica",
     "smw_ask_sortby": "Ordenar por columna",
@@ -257,5 +262,6 @@
     "smw-ui-tooltip-title-note": "Nota",
     "smw_unknowntype": "El tipo de esta propiedad no es válido",
     "smw_concept_header": "Páginas de concepto \"$1\"",
-    "smw_conceptarticlecount": "Mostrando $1 {{PLURAL:$1|página|páginas}} pertenecientes al concepto."
+    "smw_conceptarticlecount": "Mostrando $1 {{PLURAL:$1|página|páginas}} pertenecientes al concepto.",
+    "smw-sp-properties-header-label": "Lista de propiedades"
 }
