@@ -82,7 +82,7 @@ class SimplePropertyStatisticsRebuilder implements PropertyStatisticsRebuilder {
 		}
 
 		$propCount = $res->numRows();
-		$dbw->freeResult( $res );
+		$store->getDatabase()->freeResult( $res );
 		$this->reporter->reportMessage( "\nUpdated statistics for $propCount Properties.\n" );
 	}
 
