@@ -798,4 +798,6 @@ $specialPageAliases['zh-hant'] = array(
 	'Properties' => array( '屬性' ),
 	'SMWAdmin' => array( 'SMW管理員' ),
 	'SemanticStatistics' => array( 'Semantic統計' ),
+	'Types' => array( '類型' ),
+	'URIResolver' => array( 'URI分離器' ),
 );
