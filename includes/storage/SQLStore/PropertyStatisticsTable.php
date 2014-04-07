@@ -1,6 +1,10 @@
 <?php
 
 namespace SMW\SQLStore;
+
+use SMW\Store\PropertyStatisticsStore;
+use SMW\Store;
+
 use DatabaseBase;
 use MWException;
 
@@ -16,7 +20,10 @@ use MWException;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Nischay Nahata
  */
-class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
+class PropertyStatisticsTable implements PropertyStatisticsStore {
+
+	/** @var Store */
+	protected $store = null;
 
 	/**
 	 * @since 1.9
@@ -35,14 +42,14 @@ class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
+	 * @param Store $store
 	 * @param string $table
-	 * @param DatabaseBase $dbw used for both writing and reading
 	 */
-	public function __construct( $table, DatabaseBase $dbw ) {
+	public function __construct( Store $store, $table ) {
 		assert( is_string( $table ) );
 
+		$this->store = $store;
 		$this->table = $table;
-		$this->dbConnection = $dbw;
 	}
 
 	/**
@@ -69,10 +76,10 @@ class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
 			return true;
 		}
 
-		return $this->dbConnection->update(
+		return $this->store->getDatabase()->update(
 			$this->table,
 			array(
-				'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->dbConnection->addQuotes( abs( $value ) ),
+				'usage_count = usage_count ' . ( $value > 0 ? '+ ' : '- ' ) . $this->store->getDatabase()->addQuotes( abs( $value ) ),
 			),
 			array(
 				'p_id' => $propertyId
@@ -121,7 +128,7 @@ class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
 			throw new MWException( 'The property id to add must be a positive integer' );
 		}
 
-		return $this->dbConnection->update(
+		return $this->store->getDatabase()->update(
 			$this->table,
 			array(
 				'usage_count' => $value,
@@ -153,7 +160,7 @@ class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
 			throw new MWException( 'The property id to add must be a positive integer' );
 		}
 
-		return $this->dbConnection->insert(
+		return $this->store->getDatabase()->insert(
 			$this->table,
 			array(
 				'usage_count' => $value,
@@ -177,7 +184,7 @@ class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
 			return array();
 		}
 
-		$propertyStatistics = $this->dbConnection->select(
+		$propertyStatistics = $this->store->getDatabase()->select(
 			$this->table,
 			array(
 				'usage_count',
@@ -209,7 +216,7 @@ class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
 	 * @return boolean Success indicator
 	 */
 	public function deleteAll() {
-		return $this->dbConnection->delete(
+		return $this->store->getDatabase()->delete(
 			$this->table,
 			'*',
 			__METHOD__

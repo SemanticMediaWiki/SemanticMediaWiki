@@ -18,11 +18,9 @@ interface PropertyStatisticsRebuilder {
 	/**
 	 * @since 1.9
 	 *
+	 * @param Store $store
 	 * @param PropertyStatisticsStore $propStatsStore
-	 * @param \DatabaseBase $dbw
-	 *
-	 * TODO: pass in store instead of DatabaseBase
 	 */
-	public function rebuild( PropertyStatisticsStore $propStatsStore, \DatabaseBase $dbw );
+	public function rebuild( Store $store, PropertyStatisticsStore $propStatsStore );
 
 }
