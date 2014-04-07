@@ -1,9 +1,13 @@
 <?php
 
 namespace SMW\SQLStore;
-use MWException;
-use SMW\MessageReporter;
+
 use SMW\Store\PropertyStatisticsStore;
+use SMW\Store\PropertyStatisticsRebuilder;
+use SMW\Store;
+use SMW\MessageReporter;
+
+use MWException;
 
 /**
  * Simple implementation of PropertyStatisticsRebuilder.
@@ -16,7 +20,7 @@ use SMW\Store\PropertyStatisticsStore;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Nischay Nahata
  */
-class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatisticsRebuilder {
+class SimplePropertyStatisticsRebuilder implements PropertyStatisticsRebuilder {
 
 	/**
 	 * @since 1.9
@@ -37,19 +41,16 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 	}
 
 	/**
-	 * @see PropertyStatisticsRebuilder::rebuild
+	 * {@inheritDoc}
 	 *
 	 * @since 1.9
-	 *
-	 * @param PropertyStatisticsStore $propStatsStore
-	 * @param \DatabaseBase $dbw
 	 */
-	public function rebuild( PropertyStatisticsStore $propStatsStore, \DatabaseBase $dbw ) {
+	public function rebuild( Store $store, PropertyStatisticsStore $propStatsStore ) {
 		$this->reporter->reportMessage( "Updating property statistics. This may take a while.\n" );
 
 		$propStatsStore->deleteAll();
 
-		$res = $dbw->select(
+		$res = $store->getDatabase()->select(
 			\SMWSql3SmwIds::tableName,
 			array( 'smw_id', 'smw_title' ),
 			array( 'smw_namespace' => SMW_NS_PROPERTY  ),
@@ -60,14 +61,14 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 			$this->reporter->reportMessage( '.' );
 
 			$usageCount = 0;
-			foreach ( \SMWSQLStore3::getPropertyTables() as $propertyTable ) {
+			foreach ( $store->getPropertyTables() as $propertyTable ) {
 
 				if ( $propertyTable->isFixedPropertyTable() && $propertyTable->getFixedProperty() !== $row->smw_title ) {
 					// This table cannot store values for this property
 					continue;
 				}
 
-				$propRow = $dbw->selectRow(
+				$propRow = $store->getDatabase()->selectRow(
 					$propertyTable->getName(),
 					'Count(*) as count',
 					$propertyTable->isFixedPropertyTable() ? array() : array( 'p_id' => $row->smw_id ),
@@ -81,7 +82,7 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 		}
 
 		$propCount = $res->numRows();
-		$dbw->freeResult( $res );
+		$store->getDatabase()->freeResult( $res );
 		$this->reporter->reportMessage( "\nUpdated statistics for $propCount Properties.\n" );
 	}
 

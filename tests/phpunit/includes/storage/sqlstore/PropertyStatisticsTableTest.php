@@ -1,19 +1,22 @@
 <?php
 
 namespace SMW\Test\SQLStore;
+
 use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\StoreFactory;
+
 /**
- * Tests for the SMW\ObservableMessageReporter class.
+ * @covers \SMW\SQLStore\PropertyStatisticsTable
  *
  * @file
  * @since 1.9
  *
  * @ingroup SMW
  * @ingroup Test
- * @covers \SMW\SQLStore\PropertyStatisticsTable
  *
  * @group SMW
  * @group SMWExtension
+ * @group mediawiki-database
  * @group Database
  *
  * @licence GNU GPL v2+
@@ -33,11 +36,14 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	}
 
 	public function testDeleteAll() {
-		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
+
+		$store = StoreFactory::getStore();
+
+		if ( !( $store instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 
-		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
+		$statsTable = new PropertyStatisticsTable( $store , \SMWSQLStore3::PROPERTY_STATISTICS_TABLE );
 
 		$this->assertTrue( $statsTable->deleteAll() !== false );
 		$this->assertTrue( $statsTable->deleteAll() !== false );
@@ -67,11 +73,11 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	protected $statsTable = null;
 
 	/**
-	 * @return \SMW\Store\PropertyStatisticsStore
+	 * @return PropertyStatisticsStore
 	 */
-	protected function getTable() {
+	protected function getTable( $store ) {
 		if ( $this->statsTable === null ) {
-			$this->statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
+			$this->statsTable = new PropertyStatisticsTable( $store, \SMWSQLStore3::PROPERTY_STATISTICS_TABLE );
 			$this->assertTrue( $this->statsTable->deleteAll() !== false );
 		}
 
@@ -85,11 +91,14 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	 * @param int $usageCount
 	 */
 	public function testInsertUsageCount( $propId, $usageCount ) {
-		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
+
+		$store = StoreFactory::getStore();
+
+		if ( !( $store instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 
-		$table = $this->getTable();
+		$table = $this->getTable( $store );
 
 		$this->assertTrue( $table->insertUsageCount( $propId, $usageCount ) );
 
@@ -109,11 +118,14 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	}
 
 	public function testAddToUsageCounts() {
-		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
+
+		$store = StoreFactory::getStore();
+
+		if ( !( $store instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 
-		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
+		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( $store, \SMWSQLStore3::PROPERTY_STATISTICS_TABLE );
 		$this->assertTrue( $statsTable->deleteAll() !== false );
 
 		$counts = array(

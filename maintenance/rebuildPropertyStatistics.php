@@ -2,6 +2,11 @@
 
 namespace SMW\Maintenance;
 
+use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
+use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\ObservableMessageReporter;
+use SMW\StoreFactory;
+
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
 require_once $basePath . '/maintenance/Maintenance.php';
@@ -36,20 +41,20 @@ class RebuildPropertyStatistics extends \Maintenance {
 			exit;
 		}
 
-		$dbw = wfGetDB( DB_MASTER );
+		$store = StoreFactory::getStore();
 
-		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable(
-			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE,
-			$dbw
+		$statsTable = new PropertyStatisticsTable(
+			$store,
+			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
 		);
 
 		// Need to instantiate an extra object here since we cannot make this class itself
 		// into a MessageReporter since the maintenance script does not load the interface in time.
-		$reporter = new \SMW\ObservableMessageReporter();
+		$reporter = new ObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
-		$statusRebuilder = new \SMW\SQLStore\SimplePropertyStatisticsRebuilder( $reporter );
-		$statusRebuilder->rebuild( $statsTable, $dbw );
+		$statusRebuilder = new SimplePropertyStatisticsRebuilder( $reporter );
+		$statusRebuilder->rebuild( $store, $statsTable );
 	}
 
 	/**

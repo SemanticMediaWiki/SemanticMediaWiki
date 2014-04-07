@@ -56,10 +56,6 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableHashes' )
 			->will( $this->returnValue( array() ) );
 
-		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -71,10 +67,6 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->once() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
-
-		$database->expects( $this->any() )
-			->method( 'aquireWriteConnection' )
-			->will( $this->returnValue( $databaseBase ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
