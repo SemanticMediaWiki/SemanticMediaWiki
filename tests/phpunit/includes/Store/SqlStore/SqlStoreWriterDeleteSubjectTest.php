@@ -73,7 +73,7 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$database->expects( $this->any() )
-			->method( 'aquireWriteConnection' )
+			->method( 'acquireWriteConnection' )
 			->will( $this->returnValue( $databaseBase ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
@@ -131,7 +131,7 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$database->expects( $this->any() )
-			->method( 'aquireWriteConnection' )
+			->method( 'acquireWriteConnection' )
 			->will( $this->returnValue( $databaseBase ) );
 
 		$database->expects( $this->exactly( 2 ) )

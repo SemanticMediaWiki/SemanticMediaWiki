@@ -37,7 +37,7 @@ class Database {
 	 *
 	 * @return DatabaseBase
 	 */
-	public function aquireReadConnection() {
+	public function acquireReadConnection() {
 		return $this->readDBConnection->getConnection();
 	}
 
@@ -47,7 +47,7 @@ class Database {
 	 * @return DatabaseBase
 	 * @throws RuntimeException
 	 */
-	public function aquireWriteConnection() {
+	public function acquireWriteConnection() {
 
 		if ( $this->writeDBConnection instanceof DBConnectionProvider ) {
 			return $this->writeDBConnection->getConnection();
@@ -64,7 +64,7 @@ class Database {
 	 * @return string
 	 */
 	public function getType() {
-		return $this->aquireReadConnection()->getType();
+		return $this->acquireReadConnection()->getType();
 	}
 
 	/**
@@ -82,7 +82,7 @@ class Database {
 			return $tableName;
 		}
 
-		return $this->aquireReadConnection()->tableName( $tableName );
+		return $this->acquireReadConnection()->tableName( $tableName );
 	}
 
 	/**
@@ -95,7 +95,7 @@ class Database {
 	 * @return string
 	 */
 	public function addQuotes( $value ) {
-		return $this->aquireReadConnection()->addQuotes( $value );
+		return $this->acquireReadConnection()->addQuotes( $value );
 	}
 
 	/**
@@ -108,7 +108,7 @@ class Database {
 	 * @return string
 	 */
 	public function fetchObject( $res ) {
-		return $this->aquireReadConnection()->fetchObject( $res );
+		return $this->acquireReadConnection()->fetchObject( $res );
 	}
 
 	/**
@@ -121,7 +121,7 @@ class Database {
 	 * @return integer
 	 */
 	public function numRows( $results ) {
-		return $this->aquireReadConnection()->numRows( $results );
+		return $this->acquireReadConnection()->numRows( $results );
 	}
 
 	/**
@@ -132,7 +132,7 @@ class Database {
 	 * @param ResultWrapper $res
 	 */
 	public function freeResult( $res ) {
-		$this->aquireReadConnection()->freeResult( $res );
+		$this->acquireReadConnection()->freeResult( $res );
 	}
 
 	/**
@@ -151,7 +151,7 @@ class Database {
 	public function select( $tableName, $fields, $conditions = '', $fname, array $options = array() ) {
 
 		try {
-			$results = $this->aquireReadConnection()->select(
+			$results = $this->acquireReadConnection()->select(
 				$tableName,
 				$fields,
 				$conditions,
@@ -205,7 +205,7 @@ class Database {
 		}
 
 		try {
-			$results = $this->aquireReadConnection()->query(
+			$results = $this->acquireReadConnection()->query(
 				$sql,
 				$fname,
 				$ignoreException
@@ -228,7 +228,7 @@ class Database {
 	public function selectRow( $table, $vars, $conds, $fname = __METHOD__,
 		$options = array(), $joinConditions = array() ) {
 
-		return $this->aquireReadConnection()->selectRow(
+		return $this->acquireReadConnection()->selectRow(
 			$table,
 			$vars,
 			$conds,
@@ -246,7 +246,7 @@ class Database {
 	 * @return int
 	 */
 	function affectedRows() {
-		return $this->aquireReadConnection()->affectedRows();
+		return $this->acquireReadConnection()->affectedRows();
 	}
 
 	/**
@@ -259,7 +259,7 @@ class Database {
 	 * @return array
 	 */
 	public function makeSelectOptions( $options ) {
-		return $this->aquireReadConnection()->makeSelectOptions( $options );
+		return $this->acquireReadConnection()->makeSelectOptions( $options );
 	}
 
 	/**
@@ -272,7 +272,7 @@ class Database {
 	 * @return int|null
 	 */
 	public function nextSequenceValue( $seqName ) {
-		return $this->aquireWriteConnection()->nextSequenceValue( $seqName );
+		return $this->acquireWriteConnection()->nextSequenceValue( $seqName );
 	}
 
 	/**
@@ -283,7 +283,7 @@ class Database {
 	 * @return int
 	 */
 	function insertId() {
-		return (int)$this->aquireWriteConnection()->insertId();
+		return (int)$this->acquireWriteConnection()->insertId();
 	}
 
 	/**
@@ -292,7 +292,7 @@ class Database {
 	 * @since 1.9.1
 	 */
 	public function insert( $table, $rows, $fname = __METHOD__, $options = array() ) {
-		return $this->aquireWriteConnection()->insert( $table, $rows, $fname, $options );
+		return $this->acquireWriteConnection()->insert( $table, $rows, $fname, $options );
 	}
 
 	/**
@@ -301,7 +301,7 @@ class Database {
 	 * @since 1.9.1
 	 */
 	function update( $table, $values, $conds, $fname = __METHOD__, $options = array() ) {
-		return $this->aquireWriteConnection()->update( $table, $values, $conds, $fname, $options );
+		return $this->acquireWriteConnection()->update( $table, $values, $conds, $fname, $options );
 	}
 
 	/**
@@ -310,7 +310,7 @@ class Database {
 	 * @since 1.9.1
 	 */
 	public function delete( $table, $conds, $fname = __METHOD__ ) {
-		return $this->aquireWriteConnection()->delete( $table, $conds, $fname );
+		return $this->acquireWriteConnection()->delete( $table, $conds, $fname );
 	}
 
 	/**
@@ -319,7 +319,7 @@ class Database {
 	 * @since 1.9.1
 	 */
 	public function makeList( $data, $mode ) {
-		return $this->aquireWriteConnection()->makeList( $data, $mode );
+		return $this->acquireWriteConnection()->makeList( $data, $mode );
 	}
 
 	/**
@@ -333,7 +333,7 @@ class Database {
 	 * @return bool
 	 */
 	public function tableExists( $table, $fname = __METHOD__ ) {
-		return $this->aquireWriteConnection()->tableExists( $table, $fname );
+		return $this->acquireWriteConnection()->tableExists( $table, $fname );
 	}
 
 }

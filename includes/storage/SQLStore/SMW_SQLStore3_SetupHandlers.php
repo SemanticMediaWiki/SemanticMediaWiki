@@ -36,7 +36,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$this->reportProgress( "Setting up standard database configuration for SMW ...\n\n", $verbose );
 		$this->reportProgress( "Selected storage engine is \"SMWSQLStore3\" (or an extension thereof)\n\n", $verbose );
 
-		$db = $this->store->getDatabase()->aquireWriteConnection();
+		$db = $this->store->getDatabase()->acquireWriteConnection();
 
 		$this->setupTables( $verbose, $db );
 		$this->setupPredefinedProperties( $verbose, $db );

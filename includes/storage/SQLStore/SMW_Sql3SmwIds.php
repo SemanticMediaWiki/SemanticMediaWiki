@@ -468,7 +468,7 @@ class SMWSql3SmwIds {
 
 			// Properties also need to be in the property statistics table
 			if( $namespace == SMW_NS_PROPERTY ) {
-				$statsStore = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db->aquireWriteConnection() );
+				$statsStore = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db->acquireWriteConnection() );
 				$statsStore->insertUsageCount( $id, 0 );
 			}
 
