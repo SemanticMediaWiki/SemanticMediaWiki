@@ -1,7 +1,6 @@
 <?php
 
 namespace SMW\Store;
-use MWException;
 
 /**
  * Interface for PropertyStatisticsStore rebuilders.
@@ -19,10 +18,7 @@ interface PropertyStatisticsRebuilder {
 	 * @since 1.9
 	 *
 	 * @param PropertyStatisticsStore $propStatsStore
-	 * @param \DatabaseBase $dbw
-	 *
-	 * TODO: pass in store instead of DatabaseBase
 	 */
-	public function rebuild( PropertyStatisticsStore $propStatsStore, \DatabaseBase $dbw );
+	public function rebuild( PropertyStatisticsStore $propStatsStore );
 
 }

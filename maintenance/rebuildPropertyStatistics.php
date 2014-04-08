@@ -2,6 +2,9 @@
 
 namespace SMW\Maintenance;
 
+use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
+use SMW\StoreFactory;
+
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
 require_once $basePath . '/maintenance/Maintenance.php';
@@ -36,6 +39,8 @@ class RebuildPropertyStatistics extends \Maintenance {
 			exit;
 		}
 
+		$store = StoreFactory::getStore();
+
 		$dbw = wfGetDB( DB_MASTER );
 
 		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable(
@@ -48,8 +53,8 @@ class RebuildPropertyStatistics extends \Maintenance {
 		$reporter = new \SMW\ObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
-		$statusRebuilder = new \SMW\SQLStore\SimplePropertyStatisticsRebuilder( $reporter );
-		$statusRebuilder->rebuild( $statsTable, $dbw );
+		$statusRebuilder = new SimplePropertyStatisticsRebuilder( $store, $reporter );
+		$statusRebuilder->rebuild( $statsTable );
 	}
 
 	/**
