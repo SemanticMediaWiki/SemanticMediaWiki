@@ -1,5 +1,6 @@
 <?php
 
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MessageReporter;
 
 /**
@@ -154,7 +155,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	protected function setupPropertyTables( array $dbtypes, $db, SMWSQLStore3SetupHandlers $reportTo = null ) {
 		$addedCustomTypeSignatures = false;
 
-		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			$diHandler = $this->store->getDataItemHandlerForDIType( $proptable->getDiType() );
 
 			// Prepare indexes. By default, property-value tables
@@ -287,7 +288,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 		$dbw = wfGetDB( DB_MASTER );
 		$tables = array( SMWSql3SmwIds::tableName, SMWSQLStore3::CONCEPT_CACHE_TABLE, SMWSQLStore3::PROPERTY_STATISTICS_TABLE );
 
-		foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			$tables[] = $proptable->getName();
 		}
 
@@ -373,11 +374,11 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 				$title = Title::makeTitleSafe( $row->smw_namespace, $titleKey );
 
 				if ( $title !== null && !$title->exists() ) {
-					$updatejobs[] = new SMWUpdateJob( $title );
+					$updatejobs[] = new UpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED ) { // remove outdated internal object references
 				$dbw = wfGetDB( DB_MASTER );
-				foreach ( SMWSQLStore3::getPropertyTables() as $proptable ) {
+				foreach ( $this->store->getPropertyTables() as $proptable ) {
 					if ( $proptable->usesIdSubject() ) {
 						$dbw->delete( $proptable->getName(), array( 's_id' => $row->smw_id ), __METHOD__ );
 					}

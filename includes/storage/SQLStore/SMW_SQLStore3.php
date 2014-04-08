@@ -717,16 +717,16 @@ class SMWSQLStore3 extends SMWStore {
 	 * @param SMWDIProperty $diProperty
 	 * @return string
 	 */
-	public static function findPropertyTableID( SMWDIProperty $diProperty ) {
+	public function findPropertyTableID( SMWDIProperty $diProperty ) {
 		$propertyKey = $diProperty->getKey();
 
 		// This is needed to initialize the $fixedPropertyTableIds field
-		self::getPropertyTables();
+		$this->getPropertyTables();
 
 		if ( array_key_exists( $propertyKey, self::$fixedPropertyTableIds ) ) {
 			return self::$fixedPropertyTableIds[$propertyKey];
 		} else {
-			return self::findTypeTableId( $diProperty->findPropertyTypeID() );
+			return $this->findTypeTableId( $diProperty->findPropertyTypeID() );
 		}
 	}
 
@@ -758,7 +758,7 @@ class SMWSQLStore3 extends SMWStore {
 		$db = wfGetDB( DB_MASTER );
 
 		// Change all id entries in property tables:
-		foreach ( self::getPropertyTables() as $proptable ) {
+		foreach ( $this->getPropertyTables() as $proptable ) {
 			if ( $sdata && $proptable->usesIdSubject() ) {
 				$db->update( $proptable->getName(), array( 's_id' => $newid ), array( 's_id' => $oldid ), __METHOD__ );
 			}
@@ -807,7 +807,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @since 1.8
 	 * @return TableDefinition[]
 	 */
-	public static function getPropertyTables() {
+	public function getPropertyTables() {
 
 		// Definitions are kept static to prevent them from being initialised twice
 		if ( isset( self::$prop_tables ) ) {

@@ -95,7 +95,7 @@ class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
-		$parentStore::staticExpects( $this->atLeastOnce() )
+		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
@@ -160,7 +160,7 @@ class SqlStoreWriterDataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
-		$parentStore::staticExpects( $this->atLeastOnce() )
+		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 

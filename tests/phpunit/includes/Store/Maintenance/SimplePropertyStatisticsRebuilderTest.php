@@ -78,7 +78,7 @@ class SimplePropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
-		$store::staticExpects( $this->atLeastOnce() )
+		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array(
 				$this->getNonFixedPropertyTable( $arbitraryPropertyTableName ) )

@@ -671,13 +671,13 @@ class SMWSQLStore3QueryEngine {
 
 		$property = $description->getProperty();
 
-		$tableid = SMWSQLStore3::findPropertyTableID( $property );
+		$tableid = $this->m_store->findPropertyTableID( $property );
 		if ( $tableid === '' ) { // Give up
 			$query->type = SMWSQLStore3Query::Q_NOQUERY;
 			return;
 		}
 
-		$proptables = SMWSQLStore3::getPropertyTables();
+		$proptables = $this->m_store->getPropertyTables();
 		$proptable = $proptables[$tableid];
 		if ( !$proptable->usesIdSubject() ) {
 			// no queries with such tables
