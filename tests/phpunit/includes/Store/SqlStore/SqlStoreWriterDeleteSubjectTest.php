@@ -88,7 +88,7 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
-		$parentStore::staticExpects( $this->exactly( 4 ) )
+		$parentStore->expects( $this->exactly( 4 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
@@ -150,7 +150,7 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
-		$parentStore::staticExpects( $this->exactly( 4 ) )
+		$parentStore->expects( $this->exactly( 4 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
