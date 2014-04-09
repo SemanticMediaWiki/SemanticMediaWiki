@@ -336,4 +336,13 @@ class Database {
 		return $this->acquireWriteConnection()->tableExists( $table, $fname );
 	}
 
+	/**
+	 * @see DatabaseBase::selectField
+	 *
+	 * @since 1.9.2
+	 */
+	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = array() ) {
+		return $this->aquireReadConnection()->selectField( $table, $fieldName, $conditions, $fname, $options );
+	}
+
 }
