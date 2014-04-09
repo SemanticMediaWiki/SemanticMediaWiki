@@ -322,18 +322,25 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->expects( $this->at( 0 ) )
 			->method( 'makeTitleOf' )
 			->with( $this->equalTo( 'Main page' ) )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
+			->will( $this->returnValue( Title::newFromText( 'Main page' ) ) );
 
 		$instance->expects( $this->at( 1 ) )
 			->method( 'makeTitleOf' )
 			->with( $this->equalTo( 'Some other page' ) )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
+			->will( $this->returnValue( Title::newFromText( 'Some other page' ) ) );
+
+		$instance->expects( $this->at( 2 ) )
+			->method( 'makeTitleOf' )
+			->with( $this->equalTo( 'Main page' ) )
+			->will( $this->returnValue( Title::newFromText( 'Main page' ) ) );
 
 		$instance->setParameters( array(
-			'page'  => 'Main page|Some other page'
+			'page'  => 'Main page|Some other page|Main page'
 		) );
 
 		$this->assertTrue( $instance->rebuild() );
+
+		$this->assertEquals( 2, $instance->getRebuildCount() );
 	}
 
 	/**

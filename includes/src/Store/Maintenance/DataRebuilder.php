@@ -35,6 +35,8 @@ class DataRebuilder {
 	/** @var Store */
 	protected $store;
 
+	protected $rebuildCount = 0;
+
 	protected $delay = false;
 	protected $pages = false;
 	protected $canWriteToIdFile = false;
@@ -121,20 +123,27 @@ class DataRebuilder {
 
 		$this->reportMessage( "\nSelected storage " . get_class( $this->store ) . " for update!\n\n" );
 
-		$num_files = 0;
-
 		if ( $this->fullDelete ) {
 			$this->performFullDelete();
 		}
 
 		if ( $this->pages || $this->query || $this->filters ) {
-			return $this->rebuildSelectedPages( $num_files );
+			return $this->rebuildSelectedPages();
 		}
 
-		return $this->rebuildAll( $num_files );
+		return $this->rebuildAll();
 	}
 
-	protected function rebuildSelectedPages( $num_files ) {
+	/**
+	 * @since 1.9.2
+	 *
+	 * @return int
+	 */
+	public function getRebuildCount() {
+		return $this->rebuildCount;
+	}
+
+	protected function rebuildSelectedPages() {
 
 		$this->reportMessage( "Refreshing specified pages!\n\n" );
 
@@ -142,28 +151,32 @@ class DataRebuilder {
 		$pages = $this->pages ? array_merge( (array)$this->pages, $pages ) : $pages;
 		$pages = $this->filters ? array_merge( $pages, $this->getPagesFromFilters() ) : $pages;
 
-		foreach ( $pages as $page ) {
+		$titleCache = array();
 
-			$num_files++;
+		foreach ( $pages as $page ) {
 
 			$title = $this->makeTitleOf( $page );
 
-			if ( $title !== null ) {
+			if ( $title !== null && !isset( $titleCache[ $title->getDBKey() ] ) ) {
 
-				$this->reportMessage( "($num_files) Processing page " . $title->getPrefixedDBkey() . " ...\n", $this->verbose );
+				$this->rebuildCount++;
+
+				$this->reportMessage( "($this->rebuildCount) Processing page " . $title->getPrefixedDBkey() . " ...\n", $this->verbose );
 
 				$updatejob = new UpdateJob( $title );
 				$updatejob->run();
+
+				$titleCache[ $title->getDBKey() ] = true;
 			}
 
 		}
 
-		$this->reportMessage( "$num_files pages refreshed.\n" );
+		$this->reportMessage( "$this->rebuildCount pages refreshed.\n" );
 
 		return true;
 	}
 
-	protected function rebuildAll( $num_files ) {
+	protected function rebuildAll() {
 
 		$linkCache = LinkCache::singleton();
 
@@ -181,9 +194,9 @@ class DataRebuilder {
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
-			$num_files++;
+			$this->rebuildCount++;
 
-			$this->reportMessage( "($num_files) Processing ID " . $id . " ...\n", $this->verbose );
+			$this->reportMessage( "($this->rebuildCount) Processing ID " . $id . " ...\n", $this->verbose );
 
 			$this->store->refreshData( $id, 1, false, false );
 
@@ -191,13 +204,13 @@ class DataRebuilder {
 				usleep( $this->delay );
 			}
 
-			if ( $num_files % 100 === 0 ) { // every 100 pages only
+			if ( $this->rebuildCount % 100 === 0 ) { // every 100 pages only
 				$linkCache->clear(); // avoid memory leaks
 			}
 		}
 
 		$this->writeIdToFile( $id );
-		$this->reportMessage( "$num_files IDs refreshed.\n" );
+		$this->reportMessage( "$this->rebuildCount IDs refreshed.\n" );
 
 		return true;
 	}
