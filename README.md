@@ -21,7 +21,7 @@ For details and further links, see [the SMW wiki](https://semantic-mediawiki.org
 
 ## Requirements
 
-- PHP 5.3 or later
+- PHP 5.3.2 or later
 - MediaWiki 1.19 or later
 - When using MySQL 5 or later or when using SQLite 3 or later (a list of supported platforms and versions can be found [here](/docs/INSTALL.md##platform-compatibility))
 
