@@ -4,7 +4,7 @@
 ### New features
 
 * #199 Added [object-Id lookup][id-lookup] via SMWAdmin
-* #217 Extended ListResultPrinter to make `{{{userparam}}}` available to intro and outro templates and introduce [additional parameters][217]
+* #217 Extended ListResultPrinter to make `userparam` parameter available to intro and outro templates and introduce [additional parameters][217]
 * #243 Added `--query` parameter to the `SMW_refreshData.php` maintenance script (see #244)
 
 ### Bug fixes
