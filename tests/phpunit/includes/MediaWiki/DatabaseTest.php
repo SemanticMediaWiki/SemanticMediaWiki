@@ -110,6 +110,21 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
+	public function testSelectFieldMethod() {
+
+		$connectionProvider = new MockDBConnectionProvider();
+		$database = $connectionProvider->getMockDatabase();
+
+		$database->expects( $this->once() )
+			->method( 'selectField' )
+			->with( $this->equalTo( 'Foo' ) )
+			->will( $this->returnValue( 'Bar' ) );
+
+		$instance = new Database( $connectionProvider );
+
+		$this->assertEquals( 'Bar', $instance->selectField( 'Foo', 'Bar', '', __METHOD__, array() ) );
+	}
+
 	public function testQueryOnSQLite() {
 
 		$resultWrapper = $this->getMockBuilder( 'ResultWrapper' )

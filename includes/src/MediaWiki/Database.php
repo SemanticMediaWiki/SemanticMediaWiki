@@ -342,7 +342,7 @@ class Database {
 	 * @since 1.9.2
 	 */
 	public function selectField( $table, $fieldName, $conditions = '', $fname = __METHOD__, $options = array() ) {
-		return $this->aquireReadConnection()->selectField( $table, $fieldName, $conditions, $fname, $options );
+		return $this->acquireReadConnection()->selectField( $table, $fieldName, $conditions, $fname, $options );
 	}
 
 }
