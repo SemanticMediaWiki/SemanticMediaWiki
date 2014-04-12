@@ -149,6 +149,44 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertArrayOfTitles( $instance->byNamespace( NS_MAIN )->selectAll() );
 	}
 
+	public function testSelectMaxIdForMainNamespace() {
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->once() )
+			->method( 'selectField' )
+			->with( $this->equalTo( 'page' ),
+				$this->anything(),
+				$this->anything(),
+				$this->anything() )
+			->will( $this->returnValue( 9999 ) );
+
+		$instance = new MwTitleLookup( $database );
+
+		$this->assertEquals( 9999, $instance->byNamespace( NS_MAIN )->selectMaxId() );
+	}
+
+	public function testSelectMaxIdForCategoryNamespace() {
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->once() )
+			->method( 'selectField' )
+			->with( $this->equalTo( 'category' ),
+				$this->anything(),
+				$this->anything(),
+				$this->anything() )
+			->will( $this->returnValue( 1111 ) );
+
+		$instance = new MwTitleLookup( $database );
+
+		$this->assertEquals( 1111, $instance->byNamespace( NS_CATEGORY )->selectMaxId() );
+	}
+
 	public function testSelectAllOnMissingNamespaceThrowsException() {
 
 		$this->setExpectedException( 'UnexpectedValueException' );

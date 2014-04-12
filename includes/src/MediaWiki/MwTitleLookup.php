@@ -118,6 +118,29 @@ class MwTitleLookup {
 		return $this->makeTitlesFromSelection( $res );
 	}
 
+	/**
+	 * @since 1.9.2
+	 *
+	 * @return int
+	 */
+	public function selectMaxId() {
+
+		if ( $this->namespace === NS_CATEGORY ) {
+			$tableName = 'category';
+			$var = 'MAX(cat_id)';
+		} else {
+			$tableName = 'page';
+			$var = 'MAX(page_id)';
+		}
+
+		return (int)$this->database->selectField(
+			$tableName,
+			$var,
+			false,
+			__METHOD__
+		);
+	}
+
 	protected function makeTitlesFromSelection( $res ) {
 
 		$pages = array();
