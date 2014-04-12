@@ -4,7 +4,7 @@
 ### New features
 
 * #199 Added [object-Id lookup][id-lookup] via SMWAdmin
-* #217 Extended ListResultPrinter to make `{{{userparam}}}` available to intro and outro templates and introduce [additional parameters][217] to be available
+* #217 Extended ListResultPrinter to make `{{{userparam}}}` available to intro and outro templates and introduce [additional parameters][217]
 * #243 Added `--query` parameter to the `SMW_refreshData.php` maintenance script (see #244)
 
 ### Bug fixes
@@ -13,22 +13,24 @@
 * #215 (Bug 62150) Fixed malformed query order due to an unresolved prefix in SparqlQueryEngine
 
 ### Deprecated 
+* #187 Use of `SMW_conceptCache.php` is deprecated and replaced by `rebuildConceptCache.php`
 * #244 Use of `SMW_refreshData.php` is deprecated and replaced by `rebuildData.php`
 
 ### Internal enhancements
 
-* #195 Improved SQLStore3::getPropertyTables in order to use correct customizing
+* #195 Improvement of handling configuration settings in getPropertyTables
 * #204 Added update job for new redirects
 * #207 Removed SMWParamSource and added a `$smwgQuerySources` integration test
-* #218 Extended SparqlStore to inject a SparqlDatabase (improves testablity) together with additional test coverage
+* #218 Extended SparqlStore to inject a SparqlDatabase to enable basic test coverage
 * #226 Added ExecutionTimeTestListener to report long running tests
 * #227 Moved all job related classes into the `SMW\MediaWiki\Jobs\` namespace
-* #234 Added a redirects regression test
-* #236, #265 Removed wfGetDB from SMWSQLStore3Writers and improved test coverage
-* #244, #253 Refactored `SMW_refreshData.php` to `rebuildData.php` to provide basic test coverage
+* #234 Added redirects regression test
+* #236, #265 Removed wfGetDB from SMWSQLStore3Writers and extended test coverage
+* #244, #253, #256, #267, #268 Refactored and migrate `SMW_refreshData.php` to `rebuildData.php`
 * #248 Added support for the new MediaWiki i18n JSON system
 * #256 Improved data selection for DataRebuilder filters
 * #262 Improved SQLStore upgrading for Postgres
+* #270 Removed SQLStore3::getPropertyTables as static caller
 
 [id-lookup]: https://www.semantic-mediawiki.org/wiki/Help:Object_ID_lookup
 [217]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/217
