@@ -14,7 +14,8 @@
             "Xiaomingyan",
             "Yanmiao liu",
             "Yfdyh000",
-            "아라"
+            "아라",
+            "Hudafu"
         ]
     },
     "smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -27,7 +28,7 @@
     "smw_multiple_concepts": "一个概念页面只能有一个概念定义。",
     "smw_concept_cache_miss": "因为维基设置需要概念\"$1\"在离线时计算，此概念现在无法使用。\n如果这个问题在一段时间后仍未解决，请向网站管理员请求令该概念可用。",
     "smw_noinvannot": "不能为逆属性指定值。",
-    "version-semantic": "语义扩展",
+    "version-semantic": "语义扩展程序",
     "smw_baduri": "不允许\"$1\"形式的URI",
     "smw_dsv_link": "DSV",
     "smw_printername_count": "计数结果",
