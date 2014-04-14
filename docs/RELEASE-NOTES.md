@@ -3,9 +3,9 @@
 
 ### New features
 
-* #199 Added [object-Id lookup][id-lookup] via SMWAdmin
-* #217 Extended ListResultPrinter to make `userparam` parameter available to intro and outro templates and introduce [additional parameters][217]
-* #243 Added `--query` parameter to the `SMW_refreshData.php` maintenance script (see #244)
+* #199 Added [object-Id lookup][id-lookup] to SMWAdmin
+* #217 Extended ListResultPrinter to make `userparam` parameter available to intro and outro templates and introduced [additional parameters][217]
+* #243 Added `--query` parameter to the `SMW_refreshData.php` maintenance script
 
 ### Bug fixes
 
@@ -13,8 +13,9 @@
 * #215 (Bug 62150) Fixed malformed query order due to an unresolved prefix in SparqlQueryEngine
 
 ### Deprecated 
-* #187 Use of `SMW_conceptCache.php` is deprecated and replaced by `rebuildConceptCache.php`
-* #244 Use of `SMW_refreshData.php` is deprecated and replaced by `rebuildData.php`
+
+* #187 Use of `SMW_conceptCache.php` has been deprecated in favour of `rebuildConceptCache.php`
+* #244 Use of `SMW_refreshData.php` has been deprecated in favour of `rebuildData.php`
 
 ### Internal enhancements
 
