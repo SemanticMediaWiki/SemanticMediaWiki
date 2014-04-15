@@ -323,6 +323,7 @@ class SMWSQLStore3Writers {
 			$insertValues = end( $insertData['smw_fpt_conc'] );
 		} else {
 			$insertValues = array(
+				's_id'          => $sid,
 				'concept_txt'   => '',
 				'concept_docu'  => '',
 				'concept_features' => 0,
