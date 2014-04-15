@@ -11,6 +11,7 @@
 
 * #203 Fixed undefined index in connection with `$smwgQuerySources`
 * #215 (Bug 62150) Fixed malformed query order due to an unresolved prefix in SparqlQueryEngine
+* #272 Fixed ConceptCache
 
 ### Deprecated 
 
