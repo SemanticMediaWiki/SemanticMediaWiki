@@ -2,7 +2,9 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\XmlImportRunner;
+use SMW\Tests\Util\PageDeleter;
+use SMW\Tests\Util\XmlImportRunner;
+
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\StoreFactory;
 

@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\SemanticDataValidator;
+
 use SMW\DataValueFactory;
 use SMW\HashIdGenerator;
 use SMW\DIProperty;

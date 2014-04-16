@@ -2,6 +2,9 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\Mock\MockUpdateObserver;
+
 use SMW\ObservableSubjectDispatcher;
 use SMW\DataValueFactory;
 use SMW\SemanticData;

@@ -1,10 +1,13 @@
 <?php
 
-namespace SMW\Tests\Integration\Store;
+namespace SMW\Tests\Integration;
+
+use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\Mock\MockSuperUser;
+use SMW\Tests\Util\Mock\MockObjectBuilder;
+use SMW\Tests\Util\Mock\CoreMockObjectRepository;
 
 use SMW\Test\MwIntegrationTestCase;
-use SMW\Test\SemanticDataValidator;
-use SMW\Test\MockSuperUser;
 
 use SMW\NewRevisionFromEditComplete;
 use SMW\OutputPageParserOutput;
@@ -47,7 +50,7 @@ class MwFunctionHookIntegrationTest extends MwIntegrationTestCase {
 		$context->getSettings()->set( 'smwgCacheType', 'hash' );
 		$context->getSettings()->set( 'smwgAutoRefreshOnPurge', true );
 
-		$mockBuilder = new \SMW\Test\MockObjectBuilder( new \SMW\Test\CoreMockObjectRepository() );
+		$mockBuilder = new MockObjectBuilder( new CoreMockObjectRepository() );
 
 		$mockData = $mockBuilder->newObject( 'SemanticData', array(
 			'hasVisibleProperties' => false,

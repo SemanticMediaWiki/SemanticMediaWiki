@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Util;
 
 use Title;
 use UnexpectedValueException;
@@ -69,15 +69,6 @@ class PageCreator {
 		}
 
 		return $this;
-	}
-
-}
-
-class PageDeleter {
-
-	public function deletePage( Title $title ) {
-		$page = new \WikiPage( $title );
-		$page->doDeleteArticle( 'SMW system test: delete page' );
 	}
 
 }

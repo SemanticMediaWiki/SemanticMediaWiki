@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\Store;
 
+use SMW\Tests\Util\SemanticDataValidator;
 use SMW\Test\MwIntegrationTestCase;
-use SMW\Test\SemanticDataValidator;
 
 use SMW\ExtensionContext;
 use SMW\SemanticData;

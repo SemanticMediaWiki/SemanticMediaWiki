@@ -2,6 +2,9 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\PageCreator;
+use SMW\Tests\Util\PageDeleter;
+
 use SMW\StoreFactory;
 use SMW\SemanticData;
 use SMW\DIWikiPage;

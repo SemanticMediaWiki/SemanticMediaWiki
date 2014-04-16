@@ -2,6 +2,11 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockSuperUser;
+use SMW\Tests\Util\Mock\MockObjectBuilder;
+use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+use SMW\Tests\Util\Mock\MediaWikiMockObjectRepository;
+
 use SMW\SimpleDependencyBuilder;
 use SMW\DependencyContainer;
 use SMW\DataValueFactory;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Util\Mock;
 
 use SMWDataItem;
 use SMWPrintRequest;

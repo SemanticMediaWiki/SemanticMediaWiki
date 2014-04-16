@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Util;
 
 use SMW\Store;
 use SMW\ParserData;

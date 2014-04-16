@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Util\Mock;
 
 use SMWQueryResult;
 use SMWSQLStore3;

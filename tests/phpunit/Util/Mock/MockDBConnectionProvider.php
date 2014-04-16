@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Util\Mock;
 
 use SMW\DBConnectionProvider;
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\Tests\MockDBConnectionProvider;
+use SMW\Tests\Util\Mock\MockDBConnectionProvider;
 use SMW\MediaWiki\Database;
 
 use SMW\DIProperty;
