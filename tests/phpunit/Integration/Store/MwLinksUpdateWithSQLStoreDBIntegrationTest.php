@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\Store;
 
+use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\PageCreator;
 use SMW\Test\MwIntegrationTestCase;
-use SMW\Test\SemanticDataValidator;
-use SMW\Test\PageCreator;
 
 use SMW\ExtensionContext;
 use SMW\ParserData;

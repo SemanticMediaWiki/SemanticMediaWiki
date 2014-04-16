@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\Tests\MockDBConnectionProvider;
+use SMW\Tests\Util\Mock\MockDBConnectionProvider;
 use SMW\MediaWiki\Database;
 
 /**

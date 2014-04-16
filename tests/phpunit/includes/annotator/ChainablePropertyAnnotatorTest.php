@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\SemanticDataValidator;
+
 use SMW\PredefinedPropertyAnnotator;
 use SMW\CategoryPropertyAnnotator;
 use SMW\SortKeyPropertyAnnotator;

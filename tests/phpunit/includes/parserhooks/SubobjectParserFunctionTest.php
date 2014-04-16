@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\SemanticDataValidator;
+
 use SMW\SubobjectParserFunction;
 use SMW\Subobject;
 use SMW\ParserParameterFormatter;

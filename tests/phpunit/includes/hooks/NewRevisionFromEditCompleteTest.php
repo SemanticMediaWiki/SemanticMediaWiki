@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\SemanticDataValidator;
+
 use SMW\NewRevisionFromEditComplete;
 use SMW\ExtensionContext;
 use SMW\DIProperty;

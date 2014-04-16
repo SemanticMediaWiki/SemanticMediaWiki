@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockUpdateObserver;
+
 use SMW\PropertyTypeComparator;
 use SMW\ObservableSubjectDispatcher;
 use SMW\DIProperty;

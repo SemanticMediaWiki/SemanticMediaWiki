@@ -8,43 +8,44 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'MediaWiki is not available for the test environment' );
 }
 
-include_once 'ClassMapGenerator.php';
-
-function registerClassLoader( $path, $message ) {
-	print( $message );
+function registerAutoloaderPath( $identifier, $path ) {
+	print( "\nUsing the {$identifier} vendor autoloader ...\n" );
 	return require $path;
 }
 
-function registerClassMap( $loader, $path ) {
-
-	if ( !is_readable( $path ) ) {
-		die( 'Path is not accessible' );
-	}
-
-	$loader->addClassMap( ClassMapGenerator::createMap( $path ) );
-}
-
-function useTestLoader() {
+function runTestAutoLoader() {
 
 	$mwVendorPath = __DIR__ . '/../../../vendor/autoload.php';
 	$localVendorPath = __DIR__ . '/../vendor/autoload.php';
 
 	if ( is_readable( $localVendorPath ) ) {
-		$loader = registerClassLoader( $localVendorPath, "\Using the local vendor class loader ...\n" );
+		$autoLoader = registerAutoloaderPath( 'local', $localVendorPath );
 	} elseif ( is_readable( $mwVendorPath ) ) {
-		$loader = registerClassLoader( $mwVendorPath, "\nUsing the MediaWiki vendor class loader ...\n" );
+		$autoLoader = registerAutoloaderPath( 'MediaWiki', $mwVendorPath );
 	}
 
-	if ( !$loader instanceof \Composer\Autoload\ClassLoader ) {
+	if ( !$autoLoader instanceof \Composer\Autoload\ClassLoader ) {
 		return false;
 	}
 
-	registerClassMap( $loader, __DIR__ . '/phpunit' );
-	registerClassMap( $loader, __DIR__ . '/../maintenance' );
+	$autoLoader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
+
+	// FIXME
+	$autoLoader->addClassMap( array(
+		'SMW\Tests\DataItemTest'                    => __DIR__ . '/phpunit/includes/dataitems/DataItemTest.php',
+		'SMW\Maintenance\RebuildConceptCache'       => __DIR__ . '/../maintenance/rebuildConceptCache.php',
+		'SMW\Maintenance\RebuildData'               => __DIR__ . '/../maintenance/rebuildData.php',
+		'SMW\Maintenance\RebuildPropertyStatistics' => __DIR__ . '/../maintenance/rebuildPropertyStatistics.php'
+	) );
+
+	$autoLoader->addPsr4( 'SMW\\Tests\\Integration\\', __DIR__ . '/phpunit/Integration' );
+	$autoLoader->addPsr4( 'SMW\\Tests\\Regression\\', __DIR__ . '/phpunit/Regression' );
+	$autoLoader->addPsr4( 'SMW\\Tests\\System\\', __DIR__ . '/phpunit/System' );
+	$autoLoader->addPsr4( 'SMW\\Tests\\Util\\', __DIR__ . '/phpunit/Util' );
 
 	return true;
 }
 
-if ( !useTestLoader() ) {
-	die( 'Required test class loader was not accessible' );
+if ( !runTestAutoLoader() ) {
+	die( 'The required test autoloader was not accessible' );
 }

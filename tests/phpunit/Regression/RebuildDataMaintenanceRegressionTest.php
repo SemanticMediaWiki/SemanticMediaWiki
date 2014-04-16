@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Regression;
 
-use SMW\Test\SemanticDataValidator;
-use SMW\Test\ByPageSemanticDataFinder;
+use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\ByPageSemanticDataFinder;
+use SMW\Tests\Util\MaintenanceRunner;
 use SMW\Test\MwRegressionTestCase;
-use SMW\Test\MaintenanceRunner;
 
 use SMW\DIProperty;
 

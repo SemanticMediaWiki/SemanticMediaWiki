@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Parser;
 
-use SMW\Test\SemanticDataValidator;
+use SMW\Tests\Util\SemanticDataValidator;
 use SMW\ContentParser;
 use SMW\ParserData;
 

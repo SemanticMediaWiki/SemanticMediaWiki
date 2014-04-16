@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Util\Mock;
 
 /**
  * Interface describing a MockObjectRepository object

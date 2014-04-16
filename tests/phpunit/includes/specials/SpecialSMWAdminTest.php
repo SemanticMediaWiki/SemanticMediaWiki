@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockSuperUser;
+
 use SMWAdmin;
 use FauxRequest;
 use User;
@@ -61,8 +63,14 @@ class SpecialSMWAdminTest extends SpecialPageTestCase {
 	 */
 	public function testExecuteOnIdLookup() {
 
-		$fakeIdTableClass = new FakeClass;
-		$fakeIdTableClass->getIdTable = function() { return 'fake_foo_table'; };
+		$fakeIdTableClass = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getIdTable' ) )
+			->getMock();
+
+		$fakeIdTableClass->expects( $this->atLeastOnce() )
+			->method( 'getIdTable' )
+			->will( $this->returnValue( 'fake_foo_table' ) );
 
 		$selectRow = new \stdClass;
 		$selectRow->smw_title = 'Queey';

@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Regression;
 
-use SMW\Test\PageCreator;
+use SMW\Tests\Util\MaintenanceRunner;
+use SMW\Tests\Util\PageCreator;
 use SMW\Test\MwRegressionTestCase;
-use SMW\Test\MaintenanceRunner;
 
 use Title;
 

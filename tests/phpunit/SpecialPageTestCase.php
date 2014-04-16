@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockSuperUser;
+
 use RequestContext;
 use Language;
 use SpecialPage;

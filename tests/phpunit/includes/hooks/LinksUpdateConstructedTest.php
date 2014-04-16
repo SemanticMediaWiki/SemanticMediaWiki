@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockUpdateObserver;
+
 use SMW\LinksUpdateConstructed;
 use SMW\ExtensionContext;
 

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Regression;
 
+use SMW\Tests\Util\MaintenanceRunner;
 use SMW\Test\MwRegressionTestCase;
-use SMW\Test\MaintenanceRunner;
 
 /**
  * @ingroup Test

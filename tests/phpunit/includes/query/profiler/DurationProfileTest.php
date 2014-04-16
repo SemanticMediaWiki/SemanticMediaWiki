@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\SemanticDataValidator;
+
 use SMW\Query\Profiler\DurationProfile;
 use SMW\Query\Profiler\NullProfile;
 use SMW\HashIdGenerator;

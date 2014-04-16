@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Regression;
 
-use SMW\Test\SemanticDataValidator;
-use SMW\Test\ByPageSemanticDataFinder;
-use SMW\Test\JobQueueRunner;
-use SMW\Test\PageCreator;
+use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\ByPageSemanticDataFinder;
+use SMW\Tests\Util\JobQueueRunner;
+use SMW\Tests\Util\PageCreator;
 use SMW\Test\MwRegressionTestCase;
 
 use SMW\DIWikiPage;

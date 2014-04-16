@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\SemanticDataValidator;
+
 use SMW\CategoryPropertyAnnotator;
 use SMW\NullPropertyAnnotator;
 use SMW\EmptyContext;

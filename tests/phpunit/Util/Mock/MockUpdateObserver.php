@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Util\Mock;
 
 use \SMW\UpdateObserver;
 use \SMW\TitleAccess;
