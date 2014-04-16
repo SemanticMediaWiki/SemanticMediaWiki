@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration\Parser;
 
+use SMW\Test\SemanticDataValidator;
 use SMW\ContentParser;
 use SMW\ParserData;
 
@@ -13,6 +14,8 @@ use Parser;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-databaseless
  * @group medium
  *
  * @license GNU GPL v2+

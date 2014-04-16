@@ -1,9 +1,12 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration;
 
 use SMW\BaseTemplateToolbox;
 use SMW\ExtensionContext;
+use SMW\Settings;
+
+use Title;
 
 /**
  * @covers \SMW\BaseTemplateToolbox
@@ -13,20 +16,15 @@ use SMW\ExtensionContext;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-databaseless
  *
  * @licence GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class EncodingIntegrationTest extends SemanticMediaWikiTestCase {
-
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return false;
-	}
+class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider baseTemplateToolboxDataProvider
@@ -38,7 +36,7 @@ class EncodingIntegrationTest extends SemanticMediaWikiTestCase {
 		$toolbox  = '';
 
 		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $setup['settings'] ) );
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', Settings::newFromArray( $setup['settings'] ) );
 
 		$instance = new BaseTemplateToolbox( $setup['skinTemplate'], $toolbox );
 		$instance->invokeContext( $context );
@@ -50,7 +48,6 @@ class EncodingIntegrationTest extends SemanticMediaWikiTestCase {
 			$toolbox['smw-browse']['href'],
 			'Asserts that process() returns an encoded URL'
 		);
-
 	}
 
 	/**
@@ -77,14 +74,25 @@ class EncodingIntegrationTest extends SemanticMediaWikiTestCase {
 			'smwgToolboxBrowseLink'           => true
 		);
 
-		$mockSkin = $this->newMockBuilder()->newObject( 'Skin', array(
-			'getTitle'   => $this->newTitle( NS_MAIN, $text ),
-			'getContext' => $this->newContext()
-		) );
+		$mockSkin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$mockSkinTemplate = $this->newMockBuilder()->newObject( 'SkinTemplate', array(
-			'getSkin'  => $mockSkin,
-		) );
+		$mockSkin->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( Title::newFromText( $text, NS_MAIN ) ) );
+
+		$mockSkin->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
+
+		$mockSkinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mockSkinTemplate->expects( $this->atLeastOnce() )
+			->method( 'getSkin' )
+			->will( $this->returnValue( $mockSkin ) );
 
 		$mockSkinTemplate->data['isarticle'] = true;
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\XmlImportRunner;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\StoreFactory;
 
@@ -89,11 +90,11 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 			);
 		}
 
-		$importer = new MwImporter( $this->getSourceFile() );
-		$importer->setVerbose( true );
+		$importRunner = new XmlImportRunner( $this->getSourceFile() );
+		$importRunner->setVerbose( true );
 
-		if ( !$importer->run() ) {
-			$importer->reportFailedImport();
+		if ( !$importRunner->run() ) {
+			$importRunner->reportFailedImport();
 			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
 		}
 

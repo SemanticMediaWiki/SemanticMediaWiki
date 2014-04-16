@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration;
+
+use SMW\Test\SemanticDataValidator;
 
 use SMW\Query\Profiler\DescriptionProfile;
 use SMW\Query\Profiler\FormatProfile;
@@ -10,6 +12,8 @@ use SMW\Subobject;
 
 use SMWQueryProcessor;
 
+use Title;
+
 /**
  * @covers \SMWQueryProcessor
  *
@@ -17,23 +21,16 @@ use SMWQueryProcessor;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-databaseless
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTestCase {
+class ProfileAnnotatorQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
-	public function getClass() {
-		return false;
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
 	private function runQueryProcessor( array $rawParams ) {
 		return SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
@@ -43,13 +40,10 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTes
 		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	private function newInstance( $rawparams, $description, $format ) {
 
 		$instance = new NullProfile(
-			new Subobject( $this->newTitle() ),
+			new Subobject( Title::newFromText( __METHOD__ ) ),
 			new HashIdGenerator( $rawparams )
 		);
 
@@ -61,8 +55,6 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTes
 
 	/**
 	 * @dataProvider queryDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testCreateProfile( array $rawparams, array $expected ) {
 
@@ -83,9 +75,6 @@ class ProfileAnnotatorQueryProcessorIntegrationTest extends SemanticMediaWikiTes
 
 	}
 
-	/**
-	 * @return array
-	 */
 	public function queryDataProvider() {
 
 		$provider = array();
