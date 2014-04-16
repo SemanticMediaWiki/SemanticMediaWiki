@@ -50,10 +50,13 @@ class RebuildConceptCacheMaintenanceRegressionTest extends MwRegressionTestCase 
 
 	public function assertDataImport() {
 
-		$this->createConcept( 'Lorem ipsum concept' );
+		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
 
 		$maintenanceRunner = new MaintenanceRunner( 'SMW\Maintenance\RebuildConceptCache' );
 		$maintenanceRunner->setQuiet();
+
+		$maintenanceRunner->setOptions( array( 'status' => true ) )->run();
+		$this->assertConceptCacheStatus( $conceptPage );
 
 		$maintenanceRunner->setOptions( array( 'create' => true ) )->run();
 		$maintenanceRunner->setOptions( array( 'delete' => true ) )->run();
@@ -63,12 +66,19 @@ class RebuildConceptCacheMaintenanceRegressionTest extends MwRegressionTestCase 
 		$maintenanceRunner->setOptions( array( 'delete' => true, 'concept' => 'Lorem ipsum concept' ) )->run();
 	}
 
-	protected function createConcept( $name ) {
+	protected function assertConceptCacheStatus( $conceptPage ) {
+
+		$concept = $this->getStore()->getConceptCacheStatus( $conceptPage->getTitle() );
+
+		$this->assertInstanceOf( 'SMW\DIConcept', $concept );
+	}
+
+	protected function createConceptPage( $name, $condition ) {
 
 		$pageCreator = new PageCreator();
 		$pageCreator
 			->createPage( Title::newFromText( $name, SMW_NS_CONCEPT ) )
-			->doEdit( "{{#concept: [[Modification date::+]] }}" );
+			->doEdit( "{{#concept: {$condition} }}" );
 
 		return $pageCreator->getPage();
 	}
