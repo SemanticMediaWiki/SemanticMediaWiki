@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use ImportStreamSource;
 use ImportReporter;
@@ -20,7 +20,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class MwImporter {
+class XmlImportRunner {
 
 	protected $file = null;
 	protected $requestContext = null;

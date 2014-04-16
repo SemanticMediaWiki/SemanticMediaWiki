@@ -1,6 +1,10 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration\Store;
+
+use SMW\Test\MwIntegrationTestCase;
+use SMW\Test\SemanticDataValidator;
+use SMW\Test\PageCreator;
 
 use SMW\ExtensionContext;
 use SMW\ParserData;
@@ -21,7 +25,8 @@ use UnexpectedValueException;
  *
  * @group SMW
  * @group SMWExtension
- * @group Integration
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-database
  * @group Database
  * @group medium
  *

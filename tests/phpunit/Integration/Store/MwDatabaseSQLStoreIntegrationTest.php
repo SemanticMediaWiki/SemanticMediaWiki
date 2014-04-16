@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration\Store;
 
+use SMW\Test\MwIntegrationTestCase;
 use SMW\ExtensionContext;
 
 use WikiPage;
@@ -14,6 +15,8 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-database
  * @group Database
  * @group medium
  *

@@ -1,6 +1,9 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration\Store;
+
+use SMW\Test\MwIntegrationTestCase;
+use SMW\Test\SemanticDataValidator;
 
 use SMW\ExtensionContext;
 use SMW\SemanticData;
@@ -16,6 +19,8 @@ use Job;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-database
  * @group Database
  * @group medium
  *

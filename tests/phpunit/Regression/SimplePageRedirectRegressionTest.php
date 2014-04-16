@@ -1,6 +1,12 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Regression;
+
+use SMW\Test\SemanticDataValidator;
+use SMW\Test\ByPageSemanticDataFinder;
+use SMW\Test\JobQueueRunner;
+use SMW\Test\PageCreator;
+use SMW\Test\MwRegressionTestCase;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;

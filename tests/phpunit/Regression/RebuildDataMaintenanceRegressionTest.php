@@ -6,6 +6,7 @@ use SMW\Test\SemanticDataValidator;
 use SMW\Test\ByPageSemanticDataFinder;
 use SMW\Test\MwRegressionTestCase;
 use SMW\Test\MaintenanceRunner;
+
 use SMW\DIProperty;
 
 use Title;

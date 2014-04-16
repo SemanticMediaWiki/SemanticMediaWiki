@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration\Parser;
 
 use SMW\ExtensionContext;
 use SMW\ContentParser;
@@ -17,6 +17,8 @@ use Parser;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-databaseless
  * @group medium
  *
  * @license GNU GPL v2+
@@ -24,54 +26,25 @@ use Parser;
  *
  * @author mwjames
  */
-class ContentParserParserFunctionIntegrationTest extends SemanticMediaWikiTestCase {
+class ContentParserParserFunctionIntegrationTest extends \PHPUnit_Framework_TestCase {
 
-	/** @var array */
+	// This is to ensure that the original value is cached since we are unable
+	// to inject the setting during testing
 	private $parserHook = array();
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return false;
-	}
-
-	/**
-	 * @return 1.9
-	 */
 	protected function setUp() {
-		$this->removeParserHookRegistrationBeforeTest();
-	}
-
-	/**
-	 * @return 1.9
-	 */
-	protected function tearDown() {
-		$this->restoreParserHookRegistrationAfterTest();
-	}
-
-	/**
-	 * In order for the test not being influenced by an exisiting setup
-	 * registration we remove the configuration from the GLOBALS temporary
-	 * and enable to assign hook definitions freely during testing
-	 *
-	 * @return 1.9
-	 */
-	protected function removeParserHookRegistrationBeforeTest() {
 		$this->parserHook = $GLOBALS['wgHooks']['ParserFirstCallInit'];
 		$GLOBALS['wgHooks']['ParserFirstCallInit'] = array();
+
+		parent::setUp();
 	}
 
-	/**
-	 * @return 1.9
-	 */
-	protected function restoreParserHookRegistrationAfterTest() {
+	protected function tearDown() {
+		parent::tearDown();
 		$GLOBALS['wgHooks']['ParserFirstCallInit'] = $this->parserHook;
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return ExtensionContext
 	 */
 	private function newExtensionContext( $smwgQEnabled ) {
@@ -80,19 +53,23 @@ class ContentParserParserFunctionIntegrationTest extends SemanticMediaWikiTestCa
 		$context->getSettings()->set( 'smwgCacheType', CACHE_NONE );
 		$context->getSettings()->set( 'smwgQEnabled', $smwgQEnabled );
 
-		$context->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $store );
 
 		return $context;
 	}
 
 	/**
-	 * @since 1.9
-	 *
 	 * @return ContentParser
 	 */
 	private function newContentParser( $smwgQEnabled = true ) {
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$registration = array(
 			'wgExtensionAssetsPath' => false,
@@ -100,10 +77,10 @@ class ContentParserParserFunctionIntegrationTest extends SemanticMediaWikiTestCa
 			'wgScriptPath' => '/Foo',
 			'wgServer'     => 'http://example.org',
 			'wgVersion'    => '1.21',
-			'wgLang'       => $this->newMockBuilder()->newObject( 'Language' )
+			'wgLang'       => $language
 		);
 
-		$title = $this->newTitle();
+		$title = Title::newFromText( __METHOD__ );
 
 		$setup = new Setup( $registration, 'Foo', $this->newExtensionContext( $smwgQEnabled ) );
 		$setup->run();
@@ -119,8 +96,6 @@ class ContentParserParserFunctionIntegrationTest extends SemanticMediaWikiTestCa
 
 	/**
 	 * @dataProvider textDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testParseWithParserFunctionEnabled( $text ) {
 
@@ -132,8 +107,6 @@ class ContentParserParserFunctionIntegrationTest extends SemanticMediaWikiTestCa
 
 	/**
 	 * @dataProvider textDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testParseWithParserFunctionDisabled( $text ) {
 
@@ -143,9 +116,6 @@ class ContentParserParserFunctionIntegrationTest extends SemanticMediaWikiTestCa
 		$this->assertInstanceAfterParse( $instance );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function assertInstanceAfterParse( $instance ) {
 
 		$this->assertInstanceOf(
@@ -159,7 +129,6 @@ class ContentParserParserFunctionIntegrationTest extends SemanticMediaWikiTestCa
 			$instance->getOutput()->getText(),
 			'Asserts that getText() is returning a string'
 		);
-
 	}
 
 	/**

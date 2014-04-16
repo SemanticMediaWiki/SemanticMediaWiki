@@ -1,6 +1,10 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration\Store;
+
+use SMW\Test\MwIntegrationTestCase;
+use SMW\Test\SemanticDataValidator;
+use SMW\Test\MockSuperUser;
 
 use SMW\NewRevisionFromEditComplete;
 use SMW\OutputPageParserOutput;
@@ -23,6 +27,8 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-database
  * @group Database
  * @group medium
  *
@@ -41,7 +47,7 @@ class MwFunctionHookIntegrationTest extends MwIntegrationTestCase {
 		$context->getSettings()->set( 'smwgCacheType', 'hash' );
 		$context->getSettings()->set( 'smwgAutoRefreshOnPurge', true );
 
-		$mockBuilder = new MockObjectBuilder( new CoreMockObjectRepository() );
+		$mockBuilder = new \SMW\Test\MockObjectBuilder( new \SMW\Test\CoreMockObjectRepository() );
 
 		$mockData = $mockBuilder->newObject( 'SemanticData', array(
 			'hasVisibleProperties' => false,

@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration;
+
+use SMW\Test\MwIntegrationTestCase;
 
 use SMW\NamespaceManager;
 use SMW\ExtensionContext;
@@ -15,17 +17,16 @@ use MWNamespace;
  *
  * @group SMW
  * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-database
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class MwNamespaceIntegrationTest extends MwIntegrationTestCase {
 
-	/**
-	 * @since  1.9.0.2
-	 */
 	public function testRunNamespaceManagerWithNoConstantsDefined() {
 
 		$default = array(
@@ -50,16 +51,9 @@ class MwNamespaceIntegrationTest extends MwIntegrationTestCase {
 			->method( 'assertConstantIsDefined' )
 			->will( $this->returnValue( false ) );
 
-		$this->assertTrue(
-			$instance->run(),
-			'Asserts that run() always returns true'
-		);
-
+		$this->assertTrue( $instance->run() );
 	}
 
-	/**
-	 * @since  1.9
-	 */
 	public function testCanonicalNames() {
 
 		$this->runExtensionSetup( new ExtensionContext );
@@ -75,11 +69,10 @@ class MwNamespaceIntegrationTest extends MwIntegrationTestCase {
 
 			$mwNamespace = MWNamespace::getCanonicalName( $idx );
 
-			if ( $mwNamespace ) {
+			if ( $mwNamespace && isset( $names[$idx] ) ) {
 				$this->assertEquals( $mwNamespace, $names[$idx] );
 				$count++;
 			}
-
 		}
 
 		$this->assertCount(
@@ -87,7 +80,6 @@ class MwNamespaceIntegrationTest extends MwIntegrationTestCase {
 			$names,
 			"Asserts that expected amount of cannonical names have been verified"
 		);
-
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\System;
 
 use SMW\Configuration\Configuration;
 
@@ -13,7 +13,8 @@ use ResourceLoaderContext;
  *
  * @group SMW
  * @group SMWExtension
- * @group SystemTest
+ * @group semantic-mediawiki-system
+ * @group mediawiki-databaseless
  *
  * @licence GNU GPL v2+
  * @since 1.9

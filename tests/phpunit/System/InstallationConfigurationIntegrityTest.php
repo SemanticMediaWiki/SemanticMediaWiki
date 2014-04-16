@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\System;
 
 use SMW\Configuration\Configuration;
 use SMW\Settings;
@@ -10,7 +10,8 @@ use SMW\Settings;
  *
  * @group SMW
  * @group SMWExtension
- * @group SystemTest
+ * @group semantic-mediawiki-system
+ * @group mediawiki-databaseless
  *
  * @licence GNU GPL v2+
  * @since 1.9
@@ -105,6 +106,5 @@ class InstallationConfigurationIntegrityTest extends \PHPUnit_Framework_TestCase
 
 		return $provider;
 	}
-
 
 }

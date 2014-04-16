@@ -1,18 +1,17 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration;
 
 use SMW\StoreFactory;
 
-use SMWSQLStore3;
-use SMWQuery;
+use SMWQueryProcessor;
 
 /**
  * @group SMW
  * @group SMWExtension
  * @group medium
- * @group SqlStore
- * @group IntegrationTest
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-databaseless
  *
  * @license GNU GPL v2+
  * @since   1.9.2
@@ -179,36 +178,19 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	protected function makeQueryResultFromRawParameters( $rawParams ) {
 
-		list( $query, $params ) = \SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		list( $query, $params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
-			\SMWQueryProcessor::INLINE_QUERY,
+			SMWQueryProcessor::INLINE_QUERY,
 			false
 		);
 
-		return \SMWQueryProcessor::getResultFromQuery(
+		return SMWQueryProcessor::getResultFromQuery(
 			$query,
 			$params,
 			SMW_OUTPUT_WIKI,
-			\SMWQueryProcessor::INLINE_QUERY
+			SMWQueryProcessor::INLINE_QUERY
 		);
 	}
 
-}
-
-/**
- * FIXME One would wish to have a FakeStore but instead SMWSQLStore3 is used in
- * order to avoid to implement all abstract methods specified by SMW\Store
- */
-class FakeQueryStore extends SMWSQLStore3 {
-
-	protected $queryResult;
-
-	public function setQueryResult( \SMWQueryResult $queryResult ) {
-		$this->queryResult = $queryResult;
-	}
-
-	public function getQueryResult( SMWQuery $query ) {
-		return $this->queryResult;
-	}
 }
