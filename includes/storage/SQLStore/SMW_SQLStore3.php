@@ -466,15 +466,32 @@ class SMWSQLStore3 extends SMWStore {
 	public function getConceptCacheStatus( $concept ) {
 		wfProfileIn( 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
 
-		$db = wfGetDB( DB_SLAVE );
-		$cid = $this->smwIds->getSMWPageID( $concept->getDBkey(), $concept->getNamespace(), '', '', false );
+		$db = $this->getDatabase();
 
-		$row = $db->selectRow( 'smw_fpt_conc',
-		         array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ),
-		         array( 's_id' => $cid ), 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
+		$cid = $this->smwIds->getSMWPageID(
+			$concept->getDBkey(),
+			$concept->getNamespace(),
+			'',
+			'',
+			false
+		);
+
+		$row = $db->selectRow(
+			'smw_fpt_conc',
+			array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ),
+			array( 's_id' => $cid ),
+			__METHOD__
+		);
 
 		if ( $row !== false ) {
-			$dataItem = new SMW\DIConcept( $concept, null, $row->concept_features, $row->concept_size, $row->concept_depth );
+
+			$dataItem = new SMW\DIConcept(
+				$concept,
+				null,
+				$row->concept_features,
+				$row->concept_size,
+				$row->concept_depth
+			);
 
 			if ( $row->cache_date ) {
 				$dataItem->setCacheStatus( 'full' );

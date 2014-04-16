@@ -115,6 +115,8 @@ class SMWSQLStore3QueryEngine {
 
 		$fname = 'SMW::refreshConceptCache';
 
+		$db = $this->m_store->getDatabase();
+
 		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
 		$cid_c = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 
@@ -123,7 +125,11 @@ class SMWSQLStore3QueryEngine {
 			return $this->m_errors;
 		}
 
-		$values = $this->m_store->getPropertyValues( SMWDIWikiPage::newFromTitle( $concept ), new SMWDIProperty( '_CONC' ) );
+		$values = $this->m_store->getPropertyValues(
+			SMWDIWikiPage::newFromTitle( $concept ),
+			new SMWDIProperty( '_CONC' )
+		);
+
 		$di = end( $values );
 		$desctxt = ( $di !== false ) ? $di->getConceptQuery() : false;
 		$this->m_errors = array();
@@ -153,8 +159,13 @@ class SMWSQLStore3QueryEngine {
 			}
 
 			// Update database:
-			$this->m_dbs->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $cid ), $fname );
-			$smw_conccache = $this->m_dbs->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
+			$db->delete(
+				SMWSQLStore3::CONCEPT_CACHE_TABLE,
+				array( 'o_id' => $cid ),
+				__METHOD__
+			);
+
+			$smw_conccache = $db->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
 
 			if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 				$where = $qobj->where . ( $qobj->where ? ' AND ' : '' ) .
@@ -165,22 +176,36 @@ class SMWSQLStore3QueryEngine {
 				$where = $qobj->where;
 			}
 
-			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
+			$db->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
 				"INTO $smw_conccache" .
 				" SELECT DISTINCT {$qobj->joinfield} AS s_id, $cid AS o_id FROM " .
-				$this->m_dbs->tableName( $qobj->jointable ) . " AS {$qobj->alias}" .
+				$db->tableName( $qobj->jointable ) . " AS {$qobj->alias}" .
 				$qobj->from .
 				( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
 				$fname );
 
-			$this->m_dbs->update( 'smw_fpt_conc',
-				array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ),
-				array( 's_id' => $cid ), $fname );
+			$db->update(
+				'smw_fpt_conc',
+				array( 'cache_date' => strtotime( "now" ), 'cache_count' => $db->affectedRows() ),
+				array( 's_id' => $cid ),
+				__METHOD__
+			);
+
 		} else { // no concept found; just delete old data if there is any
-			$this->m_dbs->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $cid ), $fname );
-			$this->m_dbs->update( 'smw_fpt_conc',
+
+			$db->delete(
+				SMWSQLStore3::CONCEPT_CACHE_TABLE,
+				array( 'o_id' => $cid ),
+				__METHOD__
+			);
+
+			$db->update(
+				'smw_fpt_conc',
 				array( 'cache_date' => null, 'cache_count' => null ),
-				array( 's_id' => $cid ), $fname );
+				array( 's_id' => $cid ),
+				__METHOD__
+			);
+
 			$this->m_errors[] = "No concept description found.";
 		}
 
@@ -195,9 +220,29 @@ class SMWSQLStore3QueryEngine {
 	 * @param $concept Title
 	 */
 	public function deleteConceptCache( $concept ) {
-		$cid = $this->m_store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
-		$this->m_dbs->delete( SMWSQLStore3::CONCEPT_CACHE_TABLE, array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
-		$this->m_dbs->update( 'smw_fpt_conc', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
+
+		$db = $this->m_store->getDatabase();
+
+		$cid = $this->m_store->smwIds->getSMWPageID(
+			$concept->getDBkey(),
+			SMW_NS_CONCEPT,
+			'',
+			'',
+			false
+		);
+
+		$db->delete(
+			SMWSQLStore3::CONCEPT_CACHE_TABLE,
+			array( 'o_id' => $cid ),
+			__METHOD__
+		);
+
+		$db->update(
+			'smw_fpt_conc',
+			array( 'cache_date' => null, 'cache_count' => null ),
+			array( 's_id' => $cid ),
+			__METHOD__
+		);
 	}
 
 	/**
