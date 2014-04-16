@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "Servien"
-        ]
-    },
-    "smw_ask_descorder": "Aoflopend",
-    "browse": "Wiki bekieken",
-    "smw_browselink": "Eigenschappen bekieken"
+	"@metadata": {
+		"authors": [
+			"Servien"
+		]
+	},
+	"smw_ask_descorder": "Aoflopend",
+	"browse": "Wiki bekieken",
+	"smw_browselink": "Eigenschappen bekieken"
 }

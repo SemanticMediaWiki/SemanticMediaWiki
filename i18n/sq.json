@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "GretaDoci"
-        ]
-    },
-    "smw_smwadmin_mediazilla": "Bugs mund të raportohet për të \u003Ca href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/çështjet\"\u003EGitHub\u003C/a\u003E."
+	"@metadata": {
+		"authors": [
+			"GretaDoci"
+		]
+	},
+	"smw_smwadmin_mediazilla": "Bugs mund të raportohet për të <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/çështjet\">GitHub</a>."
 }

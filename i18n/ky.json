@@ -1,19 +1,19 @@
 {
-    "@metadata": {
-        "authors": [
-            "Growingup"
-        ]
-    },
-    "smw_purge": "Жаңыртуу",
-    "types": "Түрлөр",
-    "smw_ask_queryhead": "Суроо",
-    "smw-ask-delete": "[Өчүрүү]",
-    "smw_sbv_value": "Чоңдук:",
-    "smw_result_prev": "Мурунку",
-    "smw_result_next": "Кийинки",
-    "smw-ui-tooltip-title-property": "Өзгөчөлүк",
-    "smw-ui-tooltip-title-quantity": "Сан",
-    "smw-ui-tooltip-title-info": "Маалымат",
-    "smw-ui-tooltip-title-warning": "Ката",
-    "smw-ui-tooltip-title-parameter": "Параметр"
+	"@metadata": {
+		"authors": [
+			"Growingup"
+		]
+	},
+	"smw_purge": "Жаңыртуу",
+	"types": "Түрлөр",
+	"smw_ask_queryhead": "Суроо",
+	"smw-ask-delete": "[Өчүрүү]",
+	"smw_sbv_value": "Чоңдук:",
+	"smw_result_prev": "Мурунку",
+	"smw_result_next": "Кийинки",
+	"smw-ui-tooltip-title-property": "Өзгөчөлүк",
+	"smw-ui-tooltip-title-quantity": "Сан",
+	"smw-ui-tooltip-title-info": "Маалымат",
+	"smw-ui-tooltip-title-warning": "Ката",
+	"smw-ui-tooltip-title-parameter": "Параметр"
 }

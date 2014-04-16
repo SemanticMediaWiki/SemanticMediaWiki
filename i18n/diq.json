@@ -1,35 +1,35 @@
 {
-    "@metadata": {
-        "authors": [
-            "Erdemaslancan",
-            "Marmase",
-            "Mirzali"
-        ]
-    },
-    "smw_finallistconjunct": ", u",
-    "smw_printername_csv": "CSV Teberdayış",
-    "smw_printername_dsv": "DSV Teberdayış",
-    "smw_printername_json": "JSON teberdayış",
-    "smw_printername_table": "Tablo",
-    "smw_printername_template": "Şablon",
-    "smw_printername_rdf": "RDF teberdayış",
-    "smw_printername_category": "Kategoriye",
-    "smw-paramdesc-export": "Weçenegê teberdayışi",
-    "smw_true_words": "raştay,r,eya,e",
-    "smw_false_words": "zuray,z,nê,n",
-    "specialpages-group-smw_group": "Fahm kerdışê MediaWiki",
-    "exportrdf": "Pela ahûlnê RDF",
-    "properties": "Xısusiyey",
-    "unusedproperties": "Xısusiyetê ke nê xebtênê",
-    "wantedproperties": "Xısusiyetê ke waştênê",
-    "smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|vıraştene|vıraştene}})",
-    "smw_purge": "Newe ke",
-    "types": "Babeti",
-    "semanticstatistics": "İstatistike fahm kerdeni",
-    "ask": "Fahmyayış cı geyrayış",
-    "smw_ask_defaultformat": "hesabiyaye",
-    "searchbyproperty": "Xısusiyeti heta cıgeyrê",
-    "smw_sbv_value": "Qıymet:",
-    "smw_browselink": "Xısusiyetan bıvêne",
-    "smw_browse_go": "Şo"
+	"@metadata": {
+		"authors": [
+			"Erdemaslancan",
+			"Marmase",
+			"Mirzali"
+		]
+	},
+	"smw_finallistconjunct": ", u",
+	"smw_printername_csv": "CSV Teberdayış",
+	"smw_printername_dsv": "DSV Teberdayış",
+	"smw_printername_json": "JSON teberdayış",
+	"smw_printername_table": "Tablo",
+	"smw_printername_template": "Şablon",
+	"smw_printername_rdf": "RDF teberdayış",
+	"smw_printername_category": "Kategoriye",
+	"smw-paramdesc-export": "Weçenegê teberdayışi",
+	"smw_true_words": "raştay,r,eya,e",
+	"smw_false_words": "zuray,z,nê,n",
+	"specialpages-group-smw_group": "Fahm kerdışê MediaWiki",
+	"exportrdf": "Pela ahûlnê RDF",
+	"properties": "Xısusiyey",
+	"unusedproperties": "Xısusiyetê ke nê xebtênê",
+	"wantedproperties": "Xısusiyetê ke waştênê",
+	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|vıraştene|vıraştene}})",
+	"smw_purge": "Newe ke",
+	"types": "Babeti",
+	"semanticstatistics": "İstatistike fahm kerdeni",
+	"ask": "Fahmyayış cı geyrayış",
+	"smw_ask_defaultformat": "hesabiyaye",
+	"searchbyproperty": "Xısusiyeti heta cıgeyrê",
+	"smw_sbv_value": "Qıymet:",
+	"smw_browselink": "Xısusiyetan bıvêne",
+	"smw_browse_go": "Şo"
 }

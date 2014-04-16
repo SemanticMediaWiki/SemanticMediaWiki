@@ -1,23 +1,23 @@
 {
-    "@metadata": {
-        "authors": [
-            "Kaustubh",
-            "Wikiuser13"
-        ]
-    },
-    "smw_viewasrdf": "RDF फ़ीड",
-    "smw_finallistconjunct": ", और",
-    "smw_factbox_head": "$1 के बारेमें फ़ैक्ट्स",
-    "smw_iq_moreresults": "… आगे के रिज़ल्ट",
-    "smw_true_words": "सही,t,हां,y",
-    "smw_false_words": "गलत,f,ना,n",
-    "smw_nofloat": "“$1” यह संख्या नहीं हैं।",
-    "smw_type_header": "“$1” प्रकारके गुणधर्म",
-    "properties": "गुणधर्म",
-    "unusedproperties": "इस्तेमाल न किये हुए गुणधर्म",
-    "smw_unusedproperty_template": "$2 प्रकारके $1",
-    "wantedproperties": "चाहिये होनेवाले गुणधर्म",
-    "smw-createproperty-isproperty": "यह $1 प्रकार का गुणधर्म हैं।",
-    "smw-sp-admin-idlookup-title": "ऑबजेक्टआईडी लुकअप",
-    "smw-sp-admin-idlookup-objectid": "ऑब्जेक्ट आईडी:"
+	"@metadata": {
+		"authors": [
+			"Kaustubh",
+			"Wikiuser13"
+		]
+	},
+	"smw_viewasrdf": "RDF फ़ीड",
+	"smw_finallistconjunct": ", और",
+	"smw_factbox_head": "$1 के बारेमें फ़ैक्ट्स",
+	"smw_iq_moreresults": "… आगे के रिज़ल्ट",
+	"smw_true_words": "सही,t,हां,y",
+	"smw_false_words": "गलत,f,ना,n",
+	"smw_nofloat": "“$1” यह संख्या नहीं हैं।",
+	"smw_type_header": "“$1” प्रकारके गुणधर्म",
+	"properties": "गुणधर्म",
+	"unusedproperties": "इस्तेमाल न किये हुए गुणधर्म",
+	"smw_unusedproperty_template": "$2 प्रकारके $1",
+	"wantedproperties": "चाहिये होनेवाले गुणधर्म",
+	"smw-createproperty-isproperty": "यह $1 प्रकार का गुणधर्म हैं।",
+	"smw-sp-admin-idlookup-title": "ऑबजेक्टआईडी लुकअप",
+	"smw-sp-admin-idlookup-objectid": "ऑब्जेक्ट आईडी:"
 }

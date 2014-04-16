@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Ibrahim"
-        ]
-    },
-    "smw_sbv_value": "Қимат",
-    "smw-createproperty-isproperty": "Ин як вижагӣ аз навъи $1 аст."
+	"@metadata": {
+		"authors": [
+			"Ibrahim"
+		]
+	},
+	"smw_sbv_value": "Қимат:",
+	"smw-createproperty-isproperty": "Ин як вижагӣ аз навъи $1 аст."
 }
