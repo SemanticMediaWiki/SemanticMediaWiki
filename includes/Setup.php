@@ -270,7 +270,7 @@ final class Setup implements ContextAware {
 	protected function registerFooterIcon() {
 		$this->globals['wgFooterIcons']['poweredby']['semanticmediawiki'] = array(
 			'src' => $this->globals['wgScriptPath'] . '/extensions/'
-				. end( ( explode( DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR , __DIR__, 2 ) ) )
+				. end( ( explode( '/extensions/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__), 2 ) ) )
 				. '/../resources/images/smw_button.png',
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',
