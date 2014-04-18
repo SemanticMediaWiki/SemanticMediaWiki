@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Тест"
-        ]
-    },
-    "smw_printername_template": "Шаблон",
-    "types": "Тыпы"
+	"@metadata": {
+		"authors": [
+			"Тест"
+		]
+	},
+	"smw_printername_template": "Шаблон",
+	"types": "Тыпы"
 }

@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "Manuae"
-        ]
-    },
-    "smw_true_words": "woah,w,ja,j",
-    "smw_false_words": "falsch,f,nä,n",
-    "smw_smwadmin_datarefreshstopconfirm": "Ja, isch bin ma sischa"
+	"@metadata": {
+		"authors": [
+			"Manuae"
+		]
+	},
+	"smw_true_words": "woah,w,ja,j",
+	"smw_false_words": "falsch,f,nä,n",
+	"smw_smwadmin_datarefreshstopconfirm": "Ja, isch bin ma sischa"
 }

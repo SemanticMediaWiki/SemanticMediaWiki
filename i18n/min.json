@@ -1,11 +1,11 @@
 {
-    "@metadata": {
-        "authors": [
-            "Iwan Novirion",
-            "Naval Scene"
-        ]
-    },
-    "smw_propertylackspage": "Sado properti musti dideskripsikan jo suatu laman!",
-    "smw_purge": "Pabaharui",
-    "smw_browse_go": "Tuju"
+	"@metadata": {
+		"authors": [
+			"Iwan Novirion",
+			"Naval Scene"
+		]
+	},
+	"smw_propertylackspage": "Sado properti musti dideskripsikan jo suatu laman!",
+	"smw_purge": "Pabaharui",
+	"smw_browse_go": "Tuju"
 }

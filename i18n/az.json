@@ -1,15 +1,15 @@
 {
-    "@metadata": {
-        "authors": [
-            "Cekli829",
-            "Wertuose"
-        ]
-    },
-    "smw_finallistconjunct": ", və",
-    "smw_dsv_link": "DSV",
-    "smw_printername_list": "Siyahı",
-    "smw_printername_table": "Cədvəl",
-    "smw_printername_template": "Şablon",
-    "smw_result_results": "Nəticələr",
-    "smw_smwadmin_mediazilla": "Səhvlər haqda bildirişi  \u003Ca href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\"\u003EGitHub\u003C/a\u003E saytında yerləşdirmək olar."
+	"@metadata": {
+		"authors": [
+			"Cekli829",
+			"Wertuose"
+		]
+	},
+	"smw_finallistconjunct": ", və",
+	"smw_dsv_link": "DSV",
+	"smw_printername_list": "Siyahı",
+	"smw_printername_table": "Cədvəl",
+	"smw_printername_template": "Şablon",
+	"smw_result_results": "Nəticələr",
+	"smw_smwadmin_mediazilla": "Səhvlər haqda bildirişi  <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> saytında yerləşdirmək olar."
 }

@@ -1,29 +1,29 @@
 {
-    "@metadata": {
-        "authors": [
-            "Avjoska",
-            "Pikne"
-        ]
-    },
-    "smw_finallistconjunct": " ja",
-    "smw_factbox_head": "Fakte lehekülje \"$1\" kohta",
-    "smw_printername_list": "Loend",
-    "smw_printername_table": "Tabel",
-    "smw_printername_template": "Mall",
-    "smw_printername_category": "Kategooria",
-    "validator-type-class-SMWParamSource": "tekst",
-    "smw-paramdesc-embedonly": "Näita ilma pealkirjadeta",
-    "smw-paramdesc-feedtype": "Vootüüp",
-    "smw_true_words": "tõene,t,jah,j",
-    "smw_false_words": "väär,v,ei,e",
-    "smw_nofloat": "\"$1\" pole number.",
-    "smw_purge": "Värskenda",
-    "smw-ask-delete": "[Kustuta]",
-    "smw_sbv_submit": "Otsi tulemusi",
-    "smw_browse_go": "Mine",
-    "smw_result_prev": "Eelmine",
-    "smw_result_next": "Järgmine",
-    "smw_smwadmin_datarefreshstopconfirm": "Jah, ma olen kindel.",
-    "smw-ui-tooltip-title-warning": "Viga",
-    "smw-ui-tooltip-title-event": "Sündmus"
+	"@metadata": {
+		"authors": [
+			"Avjoska",
+			"Pikne"
+		]
+	},
+	"smw_finallistconjunct": " ja",
+	"smw_factbox_head": "Fakte lehekülje \"$1\" kohta",
+	"smw_printername_list": "Loend",
+	"smw_printername_table": "Tabel",
+	"smw_printername_template": "Mall",
+	"smw_printername_category": "Kategooria",
+	"validator-type-class-SMWParamSource": "tekst",
+	"smw-paramdesc-embedonly": "Näita ilma pealkirjadeta",
+	"smw-paramdesc-feedtype": "Vootüüp",
+	"smw_true_words": "tõene,t,jah,j",
+	"smw_false_words": "väär,v,ei,e",
+	"smw_nofloat": "\"$1\" pole number.",
+	"smw_purge": "Värskenda",
+	"smw-ask-delete": "[Kustuta]",
+	"smw_sbv_submit": "Otsi tulemusi",
+	"smw_browse_go": "Mine",
+	"smw_result_prev": "Eelmine",
+	"smw_result_next": "Järgmine",
+	"smw_smwadmin_datarefreshstopconfirm": "Jah, ma olen kindel.",
+	"smw-ui-tooltip-title-warning": "Viga",
+	"smw-ui-tooltip-title-event": "Sündmus"
 }

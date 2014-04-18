@@ -1,26 +1,26 @@
 {
-    "@metadata": {
-        "authors": [
-            "Crazymadlover",
-            "Omnipaedista"
-        ]
-    },
-    "smw_finallistconjunct": ", καὶ",
-    "smw_printername_template": "Πρότυπον",
-    "smw_nofloat": "Τὸ \"$1\" οὐκ ἔστιν ἀριθμός.",
-    "smw_exportrdf_submit": "Ἐξάγειν",
-    "properties": "Ἰδιότητες",
-    "types": "Τύποι",
-    "smw_ask_queryhead": "Πεῦσις",
-    "smw_ask_format_as": "Μορφοποιεῖν ὡς:",
-    "smw_ask_defaultformat": "προκαθωρισμένη",
-    "smw_sbv_property": "Ἰδιότης:",
-    "smw_sbv_value": "Τιμή:",
-    "smw_browselink": "Ἲδιότηται πλοηγήσεως",
-    "smw_browse_go": "Ἱέναι",
-    "smw_inverse_label_default": "$1 τοῦ",
-    "smw_pp_type": "Ἰδιότης",
-    "smw_result_prev": "Προηγουμέναι",
-    "smw_result_next": "Ἑπόμεναι",
-    "smw_result_noresults": "Οὐδὲν ἀποτέλεσμα."
+	"@metadata": {
+		"authors": [
+			"Crazymadlover",
+			"Omnipaedista"
+		]
+	},
+	"smw_finallistconjunct": ", καὶ",
+	"smw_printername_template": "Πρότυπον",
+	"smw_nofloat": "Τὸ \"$1\" οὐκ ἔστιν ἀριθμός.",
+	"smw_exportrdf_submit": "Ἐξάγειν",
+	"properties": "Ἰδιότητες",
+	"types": "Τύποι",
+	"smw_ask_queryhead": "Πεῦσις",
+	"smw_ask_format_as": "Μορφοποιεῖν ὡς:",
+	"smw_ask_defaultformat": "προκαθωρισμένη",
+	"smw_sbv_property": "Ἰδιότης:",
+	"smw_sbv_value": "Τιμή:",
+	"smw_browselink": "Ἲδιότηται πλοηγήσεως",
+	"smw_browse_go": "Ἱέναι",
+	"smw_inverse_label_default": "$1 τοῦ",
+	"smw_pp_type": "Ἰδιότης",
+	"smw_result_prev": "Προηγουμέναι",
+	"smw_result_next": "Ἑπόμεναι",
+	"smw_result_noresults": "Οὐδὲν ἀποτέλεσμα."
 }

@@ -1,17 +1,17 @@
 {
-    "@metadata": {
-        "authors": [
-            "CoderSI",
-            "Sociologist"
-        ]
-    },
-    "specialpages-group-smw_group": "Ma'noviy MediaWiki",
-    "smw_purge": "Yangilash",
-    "smw_browselink": "Xossalarni koʻrish",
-    "smw-info-par-message": "Tasvirlash uchun xabar",
-    "prefs-smw": "Ma'noviy MediaWiki",
-    "prefs-ask-options": "Maʼnoviy qidiruv moslamalari",
-    "smw-prefs-ask-options-tooltip-display": "«Matn» koʻrsatkichini paydo boʻladigan yordamchi sifatida aks ettirish",
-    "smw-prefs-ask-options-collapsed-default": "Boshlang'ich holatga yig'ilgan turishi uchun tanlov maydoniga ruxsatlilikni yoqish",
-    "smw_unknowntype": "Ushbu xossaning tipi noto'g'ri"
+	"@metadata": {
+		"authors": [
+			"CoderSI",
+			"Sociologist"
+		]
+	},
+	"specialpages-group-smw_group": "Semantic MediaWiki",
+	"smw_purge": "Yangilash",
+	"smw_browselink": "Xossalarni koʻrish",
+	"smw-info-par-message": "Tasvirlash uchun xabar",
+	"prefs-smw": "Semantik MediaWiki",
+	"prefs-ask-options": "Maʼnoviy qidiruv moslamalari",
+	"smw-prefs-ask-options-tooltip-display": "«Matn» koʻrsatkichini paydo boʻladigan yordamchi sifatida aks ettirish",
+	"smw-prefs-ask-options-collapsed-default": "Boshlang'ich holatga yig'ilgan turishi uchun tanlov maydoniga ruxsatlilikni yoqish",
+	"smw_unknowntype": "Ushbu xossaning tipi noto'g'ri"
 }
