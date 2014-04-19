@@ -109,9 +109,19 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/**
-	 * @since 1.9.0.2
-	 */
+	public function testGetDefaultDataItemTypeIdForValidDataItemType() {
+		$this->assertInternalType(
+			'string',
+			DataTypeRegistry::getInstance()->getDefaultDataItemTypeId( 1 )
+		);
+	}
+
+	public function testGetDefaultDataItemTypeIdForInvalidDataItemType() {
+		$this->assertNull(
+			DataTypeRegistry::getInstance()->getDefaultDataItemTypeId( 9999 )
+		);
+	}
+
 	public function testTypeIdAndLabelAsLanguageIndependantInvocation() {
 		$instance = new DataTypeRegistry(
 			array( '_wpg' => 'Page' ),
