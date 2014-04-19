@@ -253,10 +253,15 @@ class DataTypeRegistry {
 	 *
 	 * @param string $diType
 	 *
-	 * @return integer
+	 * @return string|null
 	 */
 	public function getDefaultDataItemTypeId( $diType ) {
-		return $this->defaultDataItemTypeIds[ $diType ];
+
+		if ( isset( $this->defaultDataItemTypeIds[ $diType ] ) ) {
+			return $this->defaultDataItemTypeIds[ $diType ];
+		}
+
+		return null;
 	}
 
 	/**
