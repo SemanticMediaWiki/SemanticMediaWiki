@@ -4,8 +4,8 @@ Released April 18th, 2014.
 
 ### New features
 
-* #199 Added [object-Id lookup][id-lookup] to SMWAdmin
-* #217 Extended ListResultPrinter to make `userparam` parameter available to intro and outro templates and introduced [additional parameters][217]
+* #199 Added [object-Id lookup](https://www.semantic-mediawiki.org/wiki/Help:Object_ID_lookup) to SMWAdmin
+* #217 Extended ListResultPrinter to make `userparam` parameter available to intro and outro templates and introduced [additional parameters](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/217)
 * #243 Added `--query` parameter to the `SMW_refreshData.php` maintenance script
 
 ### Bug fixes
@@ -35,6 +35,3 @@ Released April 18th, 2014.
 * #256 Improved data selection for DataRebuilder filters
 * #262 Improved SQLStore upgrading for Postgres
 * #270 Removed SQLStore3::getPropertyTables as static caller
-
-[id-lookup]: https://www.semantic-mediawiki.org/wiki/Help:Object_ID_lookup
-[217]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/217
