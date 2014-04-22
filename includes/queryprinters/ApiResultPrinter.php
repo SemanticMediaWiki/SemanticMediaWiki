@@ -66,7 +66,7 @@ abstract class ApiResultPrinter extends ResultPrinter {
 			Html::element(
 				'p',
 				array( 'class' => 'text' ),
-				$this->msg( 'livepreview-loading' )->inContentLanguage()->text()
+				$this->msg( 'smw-livepreview-loading' )->inContentLanguage()->text()
 			)
 		);
 	}

@@ -309,5 +309,6 @@
 	"smw-sp-admin-settings-button": "A button text.\n\nPreceded by introduction:\n* {{msg-mw|Smw-sp-admin-settings-docu}}",
 	"smw-sp-admin-idlookup-title": "A header title",
 	"smw-sp-admin-idlookup-docu": "Introductory text for the objectId lookup section in [[Special:SMWAdmin]]",
-	"smw-sp-admin-idlookup-objectid": "A label"
+	"smw-sp-admin-idlookup-objectid": "A label",
+	"smw-livepreview-loading": "{{Identical|Loading}}Message displayed while data is loading."
 }
