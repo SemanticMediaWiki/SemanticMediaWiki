@@ -33,11 +33,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		return '\SMW\SQLStore\WantedPropertiesCollector';
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return WantedPropertiesCollector
-	 */
 	private function newInstance( $store = null, $property = 'Foo', $count = 1, $cacheEnabled = false ) {
 
 		if ( $store === null ) {
@@ -63,16 +58,10 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		return new WantedPropertiesCollector( $store, $connection, $settings );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testConstructor() {
 		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testGetResultsOnSQLStore() {
 
 		$store = StoreFactory::getStore( 'SMWSQLStore3' );
@@ -91,9 +80,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testIsFixedPropertyTableOnSQLMockStore() {
 
 		$tableDefinition = $this->newMockBuilder()->newObject( 'SQLStoreTableDefinition', array(
@@ -122,8 +108,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 
 	/**
 	 * @dataProvider getCacheNonCacheDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testCacheNoCacheOnSQLStore( array $test, array $expected, array $info ) {
 
@@ -151,9 +135,6 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		$this->assertEquals( $test['cacheEnabled'], $instance->isCached() );
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getCacheNonCacheDataProvider() {
 		$propertyA = $this->newRandomString();
 		$propertyB = $this->newRandomString();
@@ -191,4 +172,55 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 			)
 		);
 	}
+
+	public function testUnknownPredefinedPropertyThrowsExceptionToReturnErrorDataItem() {
+
+		$tableDefinition = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'isFixedPropertyTable', 'getName' ) )
+			->getMock();
+
+		$tableDefinition->expects( $this->once() )
+			->method( 'isFixedPropertyTable' )
+			->will( $this->returnValue( false ) );
+
+		$tableDefinition->expects( $this->once() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'Bar' ) );
+
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->setMethods( array( 'getPropertyTables', 'findTypeTableId' ) )
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
+
+		$store::staticExpects( $this->atLeastOnce() )
+			->method( 'findTypeTableId' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$row = new \stdClass();
+		$row->smw_title = '_UnknownPredefinedProperty';
+		$row->count = 0;
+
+		$dbConnection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'select' ) )
+			->getMockForAbstractClass();
+
+		$dbConnection->expects( $this->once() )
+			->method( 'select' )
+			->will( $this->returnValue( array( $row ) ) );
+
+		$settings = Settings::newFromArray( array(
+			'smwgPDefaultType' => 'Foo'
+		) );
+
+		$instance = new WantedPropertiesCollector( $store, $dbConnection, $settings );
+		$results = $instance->runCollector();
+
+		$this->assertInternalType( 'array', $results );
+		$this->assertInstanceOf( 'SMWDIError', $results[0][0] );
+	}
+
 }

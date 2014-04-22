@@ -4,14 +4,17 @@ namespace SMW\SQLStore;
 
 use SMW\Store\CacheableResultCollector;
 
+use SMW\InvalidPropertyException;
 use SMW\SimpleDictionary;
 use SMW\DIProperty;
 use SMW\Profiler;
 use SMW\Settings;
 use SMW\Store;
 
-use DatabaseBase;
+use SMWDIError;
 
+use DatabaseBase;
+use Message;
 /**
  * Collects wanted properties from a store entity
  *
@@ -124,7 +127,14 @@ class WantedPropertiesCollector extends CacheableResultCollector {
 		$result = array();
 
 		foreach ( $res as $row ) {
-			$result[] = array( new DIProperty( $row->smw_title ), $row->count );
+
+			try {
+				$property = new DIProperty( $row->smw_title );
+			} catch ( InvalidPropertyException $e ) {
+				$property = new SMWDIError( new Message( 'smw_noproperty', array( $row->smw_title ) ) );
+			}
+
+			$result[] = array( $property, $row->count );
 		}
 
 		Profiler::Out( __METHOD__ );
