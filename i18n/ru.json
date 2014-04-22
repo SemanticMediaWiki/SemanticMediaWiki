@@ -11,7 +11,8 @@
 			"QuestPC",
 			"Van de Bugger",
 			"Александр Сигачёв",
-			"아라"
+			"아라",
+			"Meshkov.a"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -296,5 +297,6 @@
 	"smw-sp-admin-settings-button": "Создать список настроек",
 	"smw-sp-admin-idlookup-title": "Поиск ObjectId",
 	"smw-sp-admin-idlookup-docu": "Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.",
-	"smw-sp-admin-idlookup-objectid": "Идентификатор объекта:"
+	"smw-sp-admin-idlookup-objectid": "Идентификатор объекта:",
+	"smw-livepreview-loading": "Загрузка…"
 }

@@ -234,5 +234,6 @@
 	"group-smwadministrator": "Amministratori Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|amministratore|amministratrice|amministratore/trice}} Semantic MediaWiki",
 	"grouppage-smwadministrator": "{{ns:project}}:Amministratori Semantic MediaWiki",
-	"smw-sp-properties-header-label": "Elenco delle proprietà"
+	"smw-sp-properties-header-label": "Elenco delle proprietà",
+	"smw-livepreview-loading": "Caricamento in corso..."
 }

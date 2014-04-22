@@ -314,5 +314,6 @@
 	"smw-sp-admin-settings-button": "Générer la liste des paramètres",
 	"smw-sp-admin-idlookup-title": "recherche d’ObjectId",
 	"smw-sp-admin-idlookup-docu": "Affiche les détails sur un ID d’objet interne qui représente des entités individuelles (page wiki, sous-objet, etc.) dans MédiaWiki Sémantique.",
-	"smw-sp-admin-idlookup-objectid": "Id d’objet :"
+	"smw-sp-admin-idlookup-objectid": "Id d’objet :",
+	"smw-livepreview-loading": "Chargement en cours…"
 }

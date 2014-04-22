@@ -287,5 +287,6 @@
 	"smw-sp-admin-settings-button": "설정 목록 생성",
 	"smw-sp-admin-idlookup-title": "개체Id 조회",
 	"smw-sp-admin-idlookup-docu": "시맨틱 미디어위키에 개별 개체(위키문서, 하위개체 등)를 나타내는 안쪽 개체 Id에 대한 자세한 정보를 보여줍니다.",
-	"smw-sp-admin-idlookup-objectid": "개체 Id:"
+	"smw-sp-admin-idlookup-objectid": "개체 Id:",
+	"smw-livepreview-loading": "불러오는 중..."
 }

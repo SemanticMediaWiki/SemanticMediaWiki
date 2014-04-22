@@ -293,5 +293,6 @@
 	"smw-sp-admin-settings-button": "Создај список на поставки",
 	"smw-sp-admin-idlookup-title": "Проверка на објектна назнака",
 	"smw-sp-admin-idlookup-docu": "Прикажува подробности за внатрешата објектна назнака што претставува поединечни единици (викистраница, подобјект и тн.) во Семантички МедијаВики.",
-	"smw-sp-admin-idlookup-objectid": "Објектна назнака:"
+	"smw-sp-admin-idlookup-objectid": "Објектна назнака:",
+	"smw-livepreview-loading": "Вчитувам..."
 }

@@ -14,7 +14,8 @@
 			"Rafael Vargas",
 			"Waldir",
 			"555",
-			"Cainamarques"
+			"Cainamarques",
+			"Agripinoduarte"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -297,5 +298,6 @@
 	"smw-sp-admin-settings-button": "Gerar lista de configurações",
 	"smw-sp-admin-idlookup-title": "Consulta ao ID do objeto",
 	"smw-sp-admin-idlookup-docu": "Exibe detalhes sobre um ID de objeto interno que representa entidades individuais (página wiki, subobjeto, etc.) no Semantic MediaWiki.",
-	"smw-sp-admin-idlookup-objectid": "ID do objeto:"
+	"smw-sp-admin-idlookup-objectid": "ID do objeto:",
+	"smw-livepreview-loading": "Carregando..."
 }
