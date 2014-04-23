@@ -246,6 +246,11 @@ class DataTypeRegistry {
 		return $this->typeLabels;
 	}
 
+	/**
+	 * @since 1.9.3
+	 *
+	 * @return array
+	 */
 	public function getKnownTypeAliases() {
 		return $this->typeAliases;
 	}
