@@ -57,8 +57,8 @@ The most important files are linked below.
 [![Facebook](https://semantic-mediawiki.org/w/images/thumb/7/77/677166248.png/30px-677166248.png)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
 [![Google+](https://semantic-mediawiki.org/w/images/a/ae/30px-Google%2B.png)](https://plus.google.com/115301028320198614441/posts)
 
-Many people have contributed to SMW.  A list of people who have made contributions in the past can be found [here][contributors] or [on the SMW wiki]
-(https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
+Many people have contributed to SMW. A list of people who have made contributions in the past can be found [here][contributors] or [on the SMW wiki]
+(https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors). The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md) provides information on the different ways available to do so.
 
 If you have remarks, questions, or suggestions, please send them to semediawiki-users@lists.sourceforge.net. You can subscribe to this list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
 
