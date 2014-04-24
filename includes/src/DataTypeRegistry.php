@@ -246,6 +246,10 @@ class DataTypeRegistry {
 		return $this->typeLabels;
 	}
 
+	public function getKnownTypeAliases() {
+		return $this->typeAliases;
+	}
+
 	/**
 	 * Returns a default DataItemId
 	 *
