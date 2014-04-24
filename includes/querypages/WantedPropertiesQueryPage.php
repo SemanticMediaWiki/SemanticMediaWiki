@@ -83,7 +83,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 		// custom predefined (fixed) properties are mixed within the result
 		// (did not use their own fixedProperty table and therefore were
 		// selected as well e.g _SF_PDF etc.)
-		if ( $result[0]->isUserDefined() ) {
+		if ( $result[0] instanceof DIProperty && $result[0]->isUserDefined() ) {
 			$proplink = $this->getLinker()->link(
 				$result[0]->getDiWikiPage()->getTitle(),
 				htmlspecialchars( $result[0]->getLabel() ),

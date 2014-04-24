@@ -3,6 +3,8 @@
 namespace SMW\Test;
 
 use SMW\WantedPropertiesQueryPage;
+use SMW\Settings;
+
 use SMWDataItem;
 
 /**
@@ -123,4 +125,24 @@ class WantedPropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 		$this->assertEquals( $expected, $instance->getResults( null ) );
 
 	}
+
+	public function testFormatResultOnNonUserDefinedProperty() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$setttings = Settings::newFromArray( array() );
+
+		$instance = new WantedPropertiesQueryPage( $store, $setttings );
+		$result = $instance->formatResult( $skin, array( 'foo', 0 ) );
+
+		$this->assertInternalType( 'string', $result );
+		$this->assertEmpty( $result );
+	}
+
 }
