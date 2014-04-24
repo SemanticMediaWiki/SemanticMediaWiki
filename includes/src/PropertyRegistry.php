@@ -240,13 +240,20 @@ class PropertyRegistry {
 	 *
 	 * @return string
 	 */
-	public function getPredefinedPropertyTypeId( $id ) {
+	public function getDataTypeId( $id ) {
 
 		if ( $this->isKnownProperty( $id ) ) {
 			return $this->propertyTypes[$id][0];
 		}
 
 		return '';
+	}
+
+	/**
+	 * @deprecated since 1.9.3 use getDataTypeId instead
+	 */
+	public function getPredefinedPropertyTypeId( $id ) {
+		return $this->getDataTypeId( $id );
 	}
 
 	/**

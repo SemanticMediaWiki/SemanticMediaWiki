@@ -20,6 +20,12 @@ use SMWDataItem as DataItem;
  */
 class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
+	protected function tearDown() {
+		DataTypeRegistry::clear();
+
+		parent::tearDown();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
