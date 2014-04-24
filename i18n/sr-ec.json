@@ -183,5 +183,6 @@
 	"smw_adminlinks_inlinequerieshelp": "Помоћ за непосредне упите",
 	"smw_unknowntype": "Тип овог својства је погрешан.",
 	"smw_concept_header": "Странице концепта \"$1\"",
-	"smw_conceptarticlecount": "Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту."
+	"smw_conceptarticlecount": "Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.",
+	"smw-livepreview-loading": "Учитавам…"
 }
