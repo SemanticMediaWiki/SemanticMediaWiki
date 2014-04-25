@@ -86,6 +86,7 @@ class RebuildDataMaintenanceRegressionTest extends MwRegressionTestCase {
 		$this->assertRunWithFullDeleteOption( $expectedSomeProperties );
 		$this->assertRunWithIdRangeOption( $expectedSomeProperties );
 		$this->assertRunWithCategoryOption( $expectedSomeProperties );
+		$this->assertRunWithSparqlStore( $expectedSomeProperties );
 	}
 
 	protected function assertRunWithoutOptions( $expectedSomeProperties ) {
@@ -113,6 +114,15 @@ class RebuildDataMaintenanceRegressionTest extends MwRegressionTestCase {
 		$this->assertThatPropertiesAreSet(
 			$expectedSomeProperties,
 			$this->maintenanceRunner->setOptions( array( 'c' => true ) )->run()
+		);
+	}
+
+	protected function assertRunWithSparqlStore( $expectedSomeProperties ) {
+		$this->assertThatPropertiesAreSet(
+			$expectedSomeProperties,
+			$this->maintenanceRunner->setOptions( array(
+				'p' => true,
+				'b' => 'SMWSparqlStore' ) )->run()
 		);
 	}
 
