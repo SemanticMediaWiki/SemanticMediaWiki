@@ -480,4 +480,13 @@ class SMWSparqlStore extends SMWStore {
 		return $this->sparqlDatabase;
 	}
 
+	/**
+	 * @since  1.9.3
+	 *
+	 * @return Database
+	 */
+	public function getDatabase() {
+		return $this->baseStore->getDatabase();
+	}
+
 }
