@@ -1,0 +1,13 @@
+{
+	"@metadata": [
+		"This file contains meta information for a test fixture"
+	],
+	"_wpg": {
+		"id": "_wpg",
+		"label": "smw-datatype-label-wpg",
+		"alias": "smw-datatype-alias-wpg",
+		"default": [
+			"Page"
+		]
+	}
+}
