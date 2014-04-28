@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Store\SqlStore;
 
-use \SMWSQLStore3Writers;
+use SMW\Store\StoreConfig;
+
+use SMWSQLStore3Writers;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 
@@ -92,6 +94,10 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getConfiguration' )
+			->will( $this->returnValue( new StoreConfig() ) );
+
 		$instance = new SMWSQLStore3Writers( $parentStore );
 
 		$instance->changeTitle(
@@ -161,6 +167,10 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
+
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getConfiguration' )
+			->will( $this->returnValue( new StoreConfig() ) );
 
 		$instance = new SMWSQLStore3Writers( $parentStore );
 

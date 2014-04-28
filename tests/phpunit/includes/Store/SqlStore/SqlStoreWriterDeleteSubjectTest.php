@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Store\SqlStore;
 
-use \SMWSQLStore3Writers;
+use SMW\Store\StoreConfig;
+
+use SMWSQLStore3Writers;
 
 use Title;
 
@@ -92,6 +94,10 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
 
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getConfiguration' )
+			->will( $this->returnValue( new StoreConfig() ) );
+
 		$instance = new SMWSQLStore3Writers( $parentStore );
 		$instance->deleteSubject( $title );
 	}
@@ -153,6 +159,10 @@ class SqlStoreWriterDeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 		$parentStore->expects( $this->exactly( 4 ) )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array() ) );
+
+		$parentStore->expects( $this->atLeastOnce() )
+			->method( 'getConfiguration' )
+			->will( $this->returnValue( new StoreConfig() ) );
 
 		$parentStore->setDatabase( $database );
 

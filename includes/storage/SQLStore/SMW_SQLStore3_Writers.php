@@ -690,9 +690,9 @@ class SMWSQLStore3Writers {
 	 * @param integer $redirid
 	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-		global $smwgQEqualitySupport;
 		wfProfileIn( "SMWSQLStore3::changeTitle (SMW)" );
 
+		$smwgQEqualitySupport = $this->store->getConfiguration()->get( 'smwgQEqualitySupport' );
 		$db = $this->store->getDatabase();
 
 		// get IDs but do not resolve redirects:
@@ -910,7 +910,9 @@ class SMWSQLStore3Writers {
 	 * @return integer the new canonical ID of the subject
 	 */
 	protected function updateRedirects( $subject_t, $subject_ns, $curtarget_t = '', $curtarget_ns = -1 ) {
-		global $smwgQEqualitySupport, $smwgEnableUpdateJobs;
+
+		$smwgQEqualitySupport = $this->store->getConfiguration()->get( 'smwgQEqualitySupport' );
+		$smwgEnableUpdateJobs = $this->store->getConfiguration()->get( 'smwgEnableUpdateJobs' );
 
 		$count = 0; //track count changes for redi property
 		$db = $this->store->getDatabase();
@@ -1042,7 +1044,6 @@ class SMWSQLStore3Writers {
 			}
 		}
 
-		/// NOTE: this only happens if $smwgEnableUpdateJobs is true
 		if ( $smwgEnableUpdateJobs ) {
 			Job::batchInsert( $jobs );
 		}

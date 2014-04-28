@@ -98,14 +98,10 @@ class RebuildData extends \Maintenance {
 		$reporter = new ObservableMessageReporter();
 		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
 
-		$settings = Settings::newFromGlobals();
+		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
 
 		// Do not fork additional update jobs while running this script
-		$settings->set( 'smwgEnableUpdateJobs', false );
-		$GLOBALS['smwgEnableUpdateJobs'] = false; // Some Store classes still rely on GLOBALS
-
-		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
-		$store->setConfiguration( $settings );
+		$store->getConfiguration()->set( 'smwgEnableUpdateJobs', false );
 
 		$dataRebuilder = new DataRebuilder( $store, $reporter );
 		$dataRebuilder->setParameters( $this->mOptions );
