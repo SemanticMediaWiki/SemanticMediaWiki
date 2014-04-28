@@ -287,7 +287,7 @@
 	"smw-ui-tooltip-title-parameter": "A label that is displayed on the info tooltip.\n{{Identical|Parameter}}",
 	"smw-ui-tooltip-title-event": "A label that is displayed on the info tooltip.\n{{Identical|Event}}",
 	"smw-ui-tooltip-title-note": "A label that is displayed on the info tooltip.\n{{Identical|Note}}",
-	"smw-ui-tooltip-title-legend": "{{doc-smw-ui-label|legend}}\n{{Identical|Legend}}",
+	"smw-ui-tooltip-title-legend": "This is the name of a label.\n{{Identical|Legend}}",
 	"smw_unknowntype": "Error message shown for properties that have a type unknown to the system",
 	"smw-concept-cache-text": "This is the message displays information about the cache status.\n\nParameters:\n* $1 - number of pages\n* $2 - date (localized, without time)",
 	"smw_concept_header": "This is the header on a page in namespace \"Concept\". Parameters:\n* $1 holds the name of the respective concept.",
