@@ -306,5 +306,6 @@
 	"smw-sp-admin-settings-button": "Liste erstellen",
 	"smw-sp-admin-idlookup-title": "Informationen zu Objektkennungen ermitteln",
 	"smw-sp-admin-idlookup-docu": "Gibt Informationen zu internen Objektkennungen aus, die jeweils ein semantisches Informationsobjekt (Wikiseite, Subobjekt, usw.) repräsentieren.",
-	"smw-sp-admin-idlookup-objectid": "Objektkennung:"
+	"smw-sp-admin-idlookup-objectid": "Objektkennung:",
+	"smw-livepreview-loading": "Lade …"
 }

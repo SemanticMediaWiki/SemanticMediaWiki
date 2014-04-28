@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Nayvik"
+			"Nayvik",
+			"VASANTH S.N."
 		]
 	},
 	"smw_finallistconjunct": ", ಮತ್ತು",
 	"smw_printername_template": "ಟೆಂಪ್ಲೇಟು",
-	"smw_browse_go": "ಹೋಗು"
+	"smw_browse_go": "ಹೋಗು",
+	"smw-livepreview-loading": "ತುಂಬಿಸಲಾಗುತ್ತಿದೆ...."
 }

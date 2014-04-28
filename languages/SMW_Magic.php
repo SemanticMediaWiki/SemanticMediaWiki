@@ -363,6 +363,8 @@ $magicWords['zh-hans'] = array(
 	'set' => array( 0, '设置' ),
 	'set_recurring_event' => array( 0, '设置循环活动' ),
 	'declare' => array( 0, '宣布' ),
+	'SMW_NOFACTBOX' => array( 0, '__无实际内容框__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__显示实际内容框__' ),
 );
 
 /** Traditional Chinese (中文（繁體）‎) */

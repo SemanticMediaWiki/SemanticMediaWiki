@@ -281,5 +281,6 @@
 	"smw-sp-admin-settings-title": "配置设置",
 	"smw-sp-admin-settings-button": "生成设置列表",
 	"smw-sp-admin-idlookup-title": "查找对象",
-	"smw-sp-admin-idlookup-objectid": "对象ID："
+	"smw-sp-admin-idlookup-objectid": "对象ID：",
+	"smw-livepreview-loading": "正在载入..."
 }

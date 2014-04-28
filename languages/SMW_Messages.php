@@ -11,21 +11,25 @@
  * This shim maintains compatibility back to MediaWiki 1.17.
  */
 $messages = array();
-$GLOBALS['wgHooks']['LocalisationCacheRecache'][] = function ( $cache, $code, &$cachedData ) {
-	$codeSequence = array_merge( array( $code ), $cachedData['fallbackSequence'] );
-	foreach ( $codeSequence as $csCode ) {
-		$fileName = __DIR__ . "/../i18n/$csCode.json";
-		if ( is_readable( $fileName ) ) {
-			$data = FormatJson::decode( file_get_contents( $fileName ), true );
-			foreach ( array_keys( $data ) as $key ) {
-				if ( $key === '' || $key[0] === '@' ) {
-					unset( $data[$key] );
+if ( !function_exists( 'wfJsonI18nShim6c24b13cb81a6610' ) ) {
+	function wfJsonI18nShim6c24b13cb81a6610( $cache, $code, &$cachedData ) {
+		$codeSequence = array_merge( array( $code ), $cachedData['fallbackSequence'] );
+		foreach ( $codeSequence as $csCode ) {
+			$fileName = dirname( __FILE__ ) . "/../i18n/$csCode.json";
+			if ( is_readable( $fileName ) ) {
+				$data = FormatJson::decode( file_get_contents( $fileName ), true );
+				foreach ( array_keys( $data ) as $key ) {
+					if ( $key === '' || $key[0] === '@' ) {
+						unset( $data[$key] );
+					}
 				}
+				$cachedData['messages'] = array_merge( $data, $cachedData['messages'] );
 			}
-			$cachedData['messages'] = array_merge( $data, $cachedData['messages'] );
-		}
 
-		$cachedData['deps'][] = new FileDependency( $fileName );
+			$cachedData['deps'][] = new FileDependency( $fileName );
+		}
+		return true;
 	}
-	return true;
-};
+
+	$GLOBALS['wgHooks']['LocalisationCacheRecache'][] = 'wfJsonI18nShim6c24b13cb81a6610';
+}
