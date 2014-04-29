@@ -138,10 +138,9 @@ class MessageCacheTest extends \PHPUnit_Framework_TestCase {
 			$instance->AsText()->get( 'smw-desc' )
 		);
 
-		$this->assertCount(
-			1,
-			$cache->get( $instance->getCacheId() )['messages']
-		);
+		$cachedResults = $cache->get( $instance->getCacheId() );
+
+		$this->assertCount( 1, $cachedResults['messages'] );
 	}
 
 	public function testGetTextByContentLanguageOnUrlBasedI18NExampleWithDifferentFormatting() {
@@ -161,10 +160,9 @@ class MessageCacheTest extends \PHPUnit_Framework_TestCase {
 			$instance->AsParsed()->get( 'smw-desc' )
 		);
 
-		$this->assertCount(
-			3,
-			$cache->get( $instance->getCacheId() )['messages']
-		);
+		$cachedResults = $cache->get( $instance->getCacheId() );
+
+		$this->assertCount( 3, $cachedResults['messages'] );
 	}
 
 	public function testGetTextByContextOnUrlBasedI18NExample() {
