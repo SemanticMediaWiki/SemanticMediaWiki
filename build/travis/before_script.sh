@@ -1,5 +1,16 @@
 #! /bin/bash
 
+## PHPUnit sources need to be present otherwise the MW testrunner will complain
+## about it
+function installPHPUnitWithComposer {
+	if [ "$TRAVIS_PHP_VERSION" = "hhvm" ]
+	then
+		composer require 'phpunit/phpunit=4.0.*' --prefer-source
+	else
+		composer require 'phpunit/phpunit=3.7.*' --prefer-source
+	fi
+}
+
 ## Fetching MediaWiki installation base
 function installMediaWiki {
 
@@ -38,8 +49,7 @@ function installSMW {
 function installSmwIntoMwWithComposer {
 	echo -e "Running MW root composer install build on $TRAVIS_BRANCH \n"
 
-	## Temporary measure to fetch phphunit
-	composer require 'phpunit/phpunit=3.7.*' --prefer-source
+	installPHPUnitWithComposer
 	composer require mediawiki/semantic-media-wiki "dev-master" --prefer-source --dev
 
 	cd extensions
@@ -68,6 +78,7 @@ function installSmwAsTarballLikeBuild {
 	echo -e "Running tarball build on $TRAVIS_BRANCH \n"
 	
 	cd extensions
+	installPHPUnitWithComposer
 	composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki dev-master -s dev --prefer-dist --no-dev
 	cd ..
 }
@@ -78,7 +89,10 @@ function installSmwByRunningComposerInstallInIt {
 	cd extensions
 	cp -r $originalDirectory SemanticMediaWiki
 	cd SemanticMediaWiki
+
+	installPHPUnitWithComposer
 	composer install --prefer-source
+
 	cd ../..
 }
 
