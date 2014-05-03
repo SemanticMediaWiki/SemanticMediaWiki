@@ -49,6 +49,12 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	public function addIncompleteTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
 
 	/**
+	 * @see PHPUnit_Framework_TestListener::addRiskyTest
+	 * @since 4.0.0
+	 */
+	public function addRiskyTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
+
+	/**
 	 * @see PHPUnit_Framework_TestListener::addSkippedTest
 	 */
 	public function addSkippedTest( PHPUnit_Framework_Test $test, Exception $e, $time ) {}
