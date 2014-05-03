@@ -52,10 +52,6 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSMWPageID' )
 			->will( $this->returnValue( 5 ) );
 
-		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -71,10 +67,6 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( false ) );
-
-		$database->expects( $this->any() )
-			->method( 'acquireWriteConnection' )
-			->will( $this->returnValue( $databaseBase ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -122,10 +114,6 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSMWPropertyID' )
 			->will( $this->returnValue( 88 ) );
 
-		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -141,10 +129,6 @@ class SqlStoreWriterChangeTitleTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( $row ) );
-
-		$database->expects( $this->any() )
-			->method( 'acquireWriteConnection' )
-			->will( $this->returnValue( $databaseBase ) );
 
 		$parentStore = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()

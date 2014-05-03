@@ -1,5 +1,7 @@
 <?php
 
+use SMW\SQLStore\PropertyStatisticsTable;
+
 /**
  * @file
  * @ingroup SMWStore
@@ -467,8 +469,13 @@ class SMWSql3SmwIds {
 			$id = $db->insertId();
 
 			// Properties also need to be in the property statistics table
-			if( $namespace == SMW_NS_PROPERTY ) {
-				$statsStore = new \SMW\SQLStore\PropertyStatisticsTable( SMWSQLStore3::PROPERTY_STATISTICS_TABLE, $db->acquireWriteConnection() );
+			if( $namespace === SMW_NS_PROPERTY ) {
+
+				$statsStore = new PropertyStatisticsTable(
+					$db,
+					SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+				);
+
 				$statsStore->insertUsageCount( $id, 0 );
 			}
 

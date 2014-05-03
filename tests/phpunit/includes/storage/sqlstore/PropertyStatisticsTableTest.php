@@ -1,7 +1,10 @@
 <?php
 
 namespace SMW\Test\SQLStore;
+
 use SMW\SQLStore\PropertyStatisticsTable;
+use SMW\StoreFactory;
+
 /**
  * Tests for the SMW\ObservableMessageReporter class.
  *
@@ -21,6 +24,8 @@ use SMW\SQLStore\PropertyStatisticsTable;
  */
 class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 
+	protected $statsTable = null;
+
 	/**
 	 * On the Windows platform pow( 2 , 31 ) returns with
 	 * "MWException: The value to add must be a positive integer" therefore
@@ -32,12 +37,19 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 		return strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN';
 	}
 
+	public function getStore() {
+		return StoreFactory::getStore();
+	}
+
 	public function testDeleteAll() {
-		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
+		if ( !( $this->getStore() instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 
-		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
+		$statsTable = new PropertyStatisticsTable(
+			$this->getStore()->getDatabase(),
+			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		);
 
 		$this->assertTrue( $statsTable->deleteAll() !== false );
 		$this->assertTrue( $statsTable->deleteAll() !== false );
@@ -64,14 +76,17 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 		return $usageCounts;
 	}
 
-	protected $statsTable = null;
-
 	/**
 	 * @return \SMW\Store\PropertyStatisticsStore
 	 */
 	protected function getTable() {
 		if ( $this->statsTable === null ) {
-			$this->statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
+
+			$this->statsTable = new PropertyStatisticsTable(
+				$this->getStore()->getDatabase(),
+				\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+			);
+
 			$this->assertTrue( $this->statsTable->deleteAll() !== false );
 		}
 
@@ -85,7 +100,7 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	 * @param int $usageCount
 	 */
 	public function testInsertUsageCount( $propId, $usageCount ) {
-		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
+		if ( !( $this->getStore() instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 
@@ -109,11 +124,15 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	}
 
 	public function testAddToUsageCounts() {
-		if ( !( \SMW\StoreFactory::getStore() instanceof \SMWSQLStore3 ) ) {
+		if ( !( $this->getStore() instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
 		}
 
-		$statsTable = new \SMW\SQLStore\PropertyStatisticsTable( \SMWSQLStore3::PROPERTY_STATISTICS_TABLE, wfGetDB( DB_MASTER ) );
+		$statsTable = new PropertyStatisticsTable(
+			$this->getStore()->getDatabase(),
+			\SMWSQLStore3::PROPERTY_STATISTICS_TABLE
+		);
+
 		$this->assertTrue( $statsTable->deleteAll() !== false );
 
 		$counts = array(
