@@ -8,3 +8,7 @@ Not a release yet.
 * #282 Catch exception in Special:WantedProperties for unknown predefined properties
 * #289 Add [``CONTRIBUTING.md``](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md) for better contributor guidance
 * #291 Fix Call to undefined method SMWSparqlStore::getDatabase 
+
+### Internal enhancements
+
+* #278 Changed the SMW\SQLStore\PropertyStatisticsTable interface 
