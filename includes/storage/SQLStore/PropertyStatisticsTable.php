@@ -1,7 +1,10 @@
 <?php
 
 namespace SMW\SQLStore;
-use DatabaseBase;
+
+use SMW\Store\PropertyStatisticsStore;
+use SMW\MediaWiki\Database;
+
 use MWException;
 
 /**
@@ -16,7 +19,7 @@ use MWException;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Nischay Nahata
  */
-class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
+class PropertyStatisticsTable implements PropertyStatisticsStore {
 
 	/**
 	 * @since 1.9
@@ -35,14 +38,14 @@ class PropertyStatisticsTable implements \SMW\Store\PropertyStatisticsStore {
 	 *
 	 * @since 1.9
 	 *
+	 * @param Database $dbConnection
 	 * @param string $table
-	 * @param DatabaseBase $dbw used for both writing and reading
 	 */
-	public function __construct( $table, DatabaseBase $dbw ) {
+	public function __construct( Database $dbConnection, $table ) {
 		assert( is_string( $table ) );
 
+		$this->dbConnection = $dbConnection;
 		$this->table = $table;
-		$this->dbConnection = $dbw;
 	}
 
 	/**

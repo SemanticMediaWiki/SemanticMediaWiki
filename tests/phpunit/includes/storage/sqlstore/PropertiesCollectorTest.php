@@ -9,6 +9,7 @@ use SMW\Test\SemanticMediaWikiTestCase;
 use SMW\MessageFormatter;
 use SMW\StoreFactory;
 use SMW\DIProperty;
+use SMW\Settings;
 
 use SMWStringCondition;
 use SMWRequestOptions;
@@ -42,12 +43,7 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @return Database
 	 */
-	private function getMockDBConnection( $smwTitle = 'Foo', $usageCount = 1 ) {
-
-		// Id is randomized, not publicly exposed and only internally
-		// shared between PropertyStatisticsTable::getUsageCounts and
-		// $this->store->getObjectIds()->getIdTable()
-		$smwId = rand();
+	private function getMockDBConnection( $smwTitle = 'Foo', $smwId, $usageCount = 1 ) {
 
 		$result = array(
 			'smw_title'   => $smwTitle,
@@ -56,11 +52,18 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 			'usage_count' => (string)$usageCount // PropertyStatisticsTable assert ctype_digit
 		);
 
-		$connection = $this->newMockBuilder()->newObject( 'DatabaseBase', array(
-			'select' => new FakeResultWrapper( array( (object)$result ) )
-		) );
+		$resultWrapper = new FakeResultWrapper( array( (object)$result ) );
 
-		return $connection;
+		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'select' ) )
+			->getMockForAbstractClass();
+
+		$databaseBase->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( $resultWrapper ) );
+
+		return $databaseBase;
 	}
 
 	/**
@@ -70,16 +73,50 @@ class PropertiesCollectorTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newInstance( $smwTitle = 'Foo', $usageCount = 1, $cacheEnabled = false ) {
 
-		$mockStore  = $this->newMockBuilder()->newObject( 'Store' );
-		$connection = $this->getMockDBConnection( $smwTitle, $usageCount );
+		$id = 9999;
 
-		$settings = $this->newSettings( array(
+		$row = new \stdClass;
+		$row->p_id = (string)$id; // PropertyStatisticsTable assert ctype_digit
+		$row->usage_count = (string)$usageCount; // PropertyStatisticsTable assert ctype_digit
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getIdTable' ) )
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getIdTable' )
+			->will( $this->returnValue( 'foo' ) );
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( array( $row ) ) );
+
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getDatabase', 'getObjectIds' ) )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $database ) );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$connection = $this->getMockDBConnection( $smwTitle, $id, $usageCount );
+
+		$settings = Settings::newFromArray( array(
 			'smwgCacheType'             => 'hash',
 			'smwgPropertiesCache'       => $cacheEnabled,
 			'smwgPropertiesCacheExpiry' => 360,
 		) );
 
-		return new PropertiesCollector( $mockStore, $connection, $settings );
+		return new PropertiesCollector( $store, $connection, $settings );
 	}
 
 	/**

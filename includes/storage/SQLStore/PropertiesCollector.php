@@ -138,7 +138,11 @@ class PropertiesCollector extends CacheableResultCollector {
 			$propertyIds[] = (int)$row->smw_id;
 		}
 
-		$statsTable = new PropertyStatisticsTable( $this->store->getStatisticsTable(), $this->dbConnection );
+		$statsTable = new PropertyStatisticsTable(
+			$this->store->getDatabase(),
+			$this->store->getStatisticsTable()
+		);
+
 		$usageCounts = $statsTable->getUsageCounts( $propertyIds );
 
 		foreach ( $res as $row ) {
