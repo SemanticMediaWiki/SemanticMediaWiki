@@ -79,8 +79,11 @@ function installSmwAsTarballLikeBuild {
 	
 	cd extensions
 	composer create-project mediawiki/semantic-media-wiki SemanticMediaWiki dev-master -s dev --prefer-dist --no-dev
+	
+	cd SemanticMediaWiki
 	installPHPUnitWithComposer
-	cd ..
+
+	cd ../..
 }
 
 function installSmwByRunningComposerInstallInIt {
