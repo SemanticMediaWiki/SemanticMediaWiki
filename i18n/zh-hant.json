@@ -15,7 +15,8 @@
 			"Simon Shek",
 			"StephDC",
 			"Wrightbus",
-			"아라"
+			"아라",
+			"Cwlin0416"
 		]
 	},
 	"smw-desc": "讓你的維基更可及——對機器與人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 網上文檔]）",
@@ -239,7 +240,7 @@
 	"smw-paramdesc-category-userparam": "傳遞給模板的參數",
 	"smw-info-par-message": "顯示的信息。",
 	"smw-info-par-icon": "顯示的圖標，“信息”或“警告”。",
-	"prefs-smw": "語義MediaWiki",
+	"prefs-smw": "語義 MediaWiki",
 	"prefs-ask-options": "語義搜尋選項",
 	"smw-ui-tooltip-title-property": "屬性",
 	"smw-ui-tooltip-title-quantity": "數量",
@@ -257,5 +258,6 @@
 	"group-smwadministrator-member": "{{GENDER:$1|管理員（SMW）}}",
 	"grouppage-smwadministrator": "{{ns:project}}:SMW管理員",
 	"smw-sp-properties-header-label": "屬性列表",
-	"smw-sp-admin-settings-title": "配置設定"
+	"smw-sp-admin-settings-title": "配置設定",
+	"smw-livepreview-loading": "正在載入…"
 }
