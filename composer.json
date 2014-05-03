@@ -41,6 +41,9 @@
 		"composer/installers": "1.*,>=1.0.1",
 		"mediawiki/validator": "1.*,>=1.0.1"
 	},
+	"require-dev": {
+		"phpunit/phpunit": "~3.7"
+	},
 	"replace": {
 		"mediawiki/semantic-mediawiki": "*"
 	},

@@ -38,7 +38,7 @@ function installSMW {
 function installSmwIntoMwWithComposer {
 	echo -e "Running MW root composer install build on $TRAVIS_BRANCH \n"
 
-	composer require mediawiki/semantic-media-wiki "dev-master" --prefer-source
+	composer require mediawiki/semantic-media-wiki "dev-master" --prefer-source --dev
 
 	cd extensions
 	cd SemanticMediaWiki
