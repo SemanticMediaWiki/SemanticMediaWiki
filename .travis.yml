@@ -8,20 +8,20 @@ matrix:
     - env: DBTYPE=mysql; MW=master; TYPE=coverage
       php: 5.3
     - env: DBTYPE=sqlite; MW=master; TYPE=composer
-      php: 5.3
-    - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild; INFO=SEGFAULT
       php: 5.6
-    - env: DBTYPE=sqlite; MW=1.19.0; INFO=SEGFAULT
+    - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
+      php: 5.4
+    - env: DBTYPE=sqlite; MW=1.22.6;
       php: 5.5
     - env: DBTYPE=postgres; MW=1.19.0
       php: 5.4
+    - env: DBTYPE=sqlite; MW=master
+      php: hhvm
   exclude:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
-    # Since the build update, http://blog.travis-ci.com/2014-04-28-upcoming-build-environment-updates/
-    # those fail with a segfault before install and testing
-    - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild; INFO=SEGFAULT
-    - env: DBTYPE=sqlite; MW=1.19.0; INFO=SEGFAULT
+    - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
+    - php: hhvm
 
 before_script: bash ./build/travis/before_script.sh
 
