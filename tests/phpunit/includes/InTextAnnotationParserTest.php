@@ -1,10 +1,13 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\Tests\Util\SemanticDataValidator;
 
-use SMW\ContentProcessor;
+use SMW\DIC\ObjectFactory;
+use SMW\MediaWiki\MagicWordFinder;
+
+use SMW\InTextAnnotationParser;
 use SMW\ExtensionContext;
 use SMW\Settings;
 use SMW\ParserData;
@@ -15,56 +18,75 @@ use ParserOutput;
 use ReflectionClass;
 
 /**
- * @covers \SMW\ContentProcessor
+ * @covers \SMW\InTextAnnotationParser
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ContentProcessorTest extends \PHPUnit_Framework_TestCase {
+class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
+
+	protected function setUp() {
+		parent::setUp();
+		ObjectFactory::getInstance()->invokeContext( new ExtensionContext() );
+	}
+
+	protected function tearDown() {
+		ObjectFactory::clear();
+		parent::tearDown();
+	}
 
 	/**
 	 * @dataProvider textDataProvider
 	 */
 	public function testCanConstruct( $namespace ) {
 
-		$title = Title::newFromText( __METHOD__, $namespace );
-
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$magicWordFinder = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title = Title::newFromText( __METHOD__, $namespace );
+
 		$this->assertInstanceOf(
-			'\SMW\ContentProcessor',
-			$this->acquireInstance( $title, $parserOutput )
+			'\SMW\InTextAnnotationParser',
+			new InTextAnnotationParser(
+				new ParserData( $title, $parserOutput ),
+				$magicWordFinder
+			)
 		);
 	}
 
 	/**
 	 * @dataProvider magicWordDataProvider
 	 */
-	public function testStripMagicWordsOnReflection( $namespace, $text, array $expected ) {
+	public function testStripMagicWords( $namespace, $text, array $expected ) {
 
-		$parserOutput = new ParserOutput();
-		$title        = Title::newFromText( __METHOD__, $namespace );
-		$instance     = $this->acquireInstance( $title, $parserOutput );
+		$parserData = new ParserData(
+			Title::newFromText( __METHOD__, $namespace ),
+			new ParserOutput()
+		);
 
-		$reflector = new ReflectionClass( '\SMW\ContentProcessor' );
-		$method    = $reflector->getMethod( 'stripMagicWords' );
-		$method->setAccessible( true );
+		$magicWordFinder = new MagicWordFinder( $parserData->getOutput() );
 
-		$result = $method->invoke( $instance, array( &$text ) );
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			$magicWordFinder
+		);
 
-		$this->assertInternalType( 'array', $result );
-		$this->assertEquals( $expected, $result );
+		$instance->parse( $text );
 
-		$parserData = new ParserData( $title, $parserOutput );
-
-		$this->assertMagicWords( $expected, $parserData->getOutput() );
+		$this->assertEquals(
+			$expected,
+			$magicWordFinder->getMagicWords()
+		);
 	}
 
 	/**
@@ -72,17 +94,29 @@ class ContentProcessorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTextParse( $namespace, array $settings, $text, array $expected ) {
 
-		$parserOutput = new ParserOutput();
-		$title        = Title::newFromText( __METHOD__, $namespace );
-		$instance     = $this->acquireInstance( $title, $parserOutput, $settings );
+		$parserData = new ParserData(
+			Title::newFromText( __METHOD__, $namespace ),
+			new ParserOutput()
+		);
+
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			new MagicWordFinder()
+		);
+
+		ObjectFactory::getInstance()->registerObject(
+			'Settings',
+			Settings::newFromArray( $settings )
+		);
 
 		$instance->parse( $text );
 
-		$this->assertContains( $expected['resultText'], $text );
+		$this->assertContains(
+			$expected['resultText'],
+			$text
+		);
 
-		$parserData = new ParserData( $title, $parserOutput );
-
-		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator = new SemanticDataValidator();
 
 		$semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -90,10 +124,16 @@ class ContentProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRedirectParse() {
+	public function testRedirectAnnotation() {
 
 		$namespace = NS_MAIN;
 		$text      = '#REDIRECT [[:Lala]]';
+
+		$expected = array(
+			'propertyCount'  => 1,
+			'property'       => new DIProperty( '_REDI' ),
+			'propertyValues' => ':Lala'
+		);
 
 		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( $namespace => true ),
@@ -101,19 +141,26 @@ class ContentProcessorTest extends \PHPUnit_Framework_TestCase {
 			'smwgInlineErrors'  => true,
 		);
 
-		$parserOutput = new ParserOutput();
-		$title        = Title::newFromText( __METHOD__, $namespace );
-		$instance     = $this->acquireInstance( $title, $parserOutput, $settings );
+		$parserData = new ParserData(
+			Title::newFromText( __METHOD__, $namespace ),
+			new ParserOutput()
+		);
+
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			new MagicWordFinder()
+		);
+
+		$instance->setRedirectTarget( Title::newFromRedirect( $text ) );
+
+		ObjectFactory::getInstance()->registerObject(
+			'Settings',
+			Settings::newFromArray( $settings )
+		);
 
 		$instance->parse( $text );
 
-		$expected['propertyCount']  = 1;
-		$expected['property']       = new DIProperty( '_REDI' );
-		$expected['propertyValues'] = ':Lala';
-
-		$parserData = new ParserData( $title, $parserOutput );
-
-		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator = new SemanticDataValidator();
 
 		$semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -123,11 +170,17 @@ class ContentProcessorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcessOnReflection() {
 
-		$parserOutput = new ParserOutput();
-		$title        = Title::newFromText( __METHOD__ );
-		$instance     = $this->acquireInstance( $title, $parserOutput );
+		$parserData = new ParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
 
-		$reflector = new ReflectionClass( '\SMW\ContentProcessor' );
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			new MagicWordFinder()
+		);
+
+		$reflector = new ReflectionClass( '\SMW\InTextAnnotationParser' );
 
 		$method = $reflector->getMethod( 'process' );
 		$method->setAccessible( true );
@@ -283,7 +336,6 @@ class ContentProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		// #6 Bug 54967
-		// see also ParserTextProcessorTemplateTransclusionTest
 		$provider[] = array(
 			NS_MAIN,
 			array(
@@ -307,50 +359,37 @@ class ContentProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function magicWordDataProvider() {
-		return array(
-			// #0 __NOFACTBOX__
-			array(
-				NS_MAIN,
-				'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
-				' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
-				' __NOFACTBOX__ ',
-				array( 'SMW_NOFACTBOX' )
-			),
 
-			// #1 __SHOWFACTBOX__
-			array(
-				NS_HELP,
-				'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
-				' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
-				' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
-				' __SHOWFACTBOX__',
-				array( 'SMW_SHOWFACTBOX' )
-			),
+		$provider = array();
+
+		// #0 __NOFACTBOX__
+		$provider[] = array(
+			NS_MAIN,
+			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __NOFACTBOX__',
+			array( 'SMW_NOFACTBOX' )
 		);
-	}
 
-	protected function assertMagicWords( $expected, $parserOutput ) {
+		// #1 __SHOWFACTBOX__
+		$provider[] = array(
+			NS_HELP,
+			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __SHOWFACTBOX__',
+			array( 'SMW_SHOWFACTBOX' )
+		);
 
-		// MW 1.21 dependency
-		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
-			return $this->assertEquals( $expected, $parserOutput->getExtensionData( 'smwmagicwords' ) );
-		}
+		// #2 __NOFACTBOX__, __SHOWFACTBOX__
+		$provider[] = array(
+			NS_HELP,
+			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __NOFACTBOX__ __SHOWFACTBOX__',
+			array( 'SMW_NOFACTBOX' )
+		);
 
-		return $this->assertEquals( $expected, $parserOutput->mSMWMagicWords );
-	}
-
-	/**
-	 * @return ContentProcessor
-	 */
-	private function acquireInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
-
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', Settings::newFromArray( $settings ) );
-
-		$parserData = new ParserData( $title, $parserOutput );
-
-		return new ContentProcessor( $parserData, $context );
+		// #3 __SHOWFACTBOX__, __NOFACTBOX__
+		$provider[] = array(
+			NS_HELP,
+			'Lorem ipsum dolor [[Foo::dictumst cursus]] facilisi __SHOWFACTBOX__ __NOFACTBOX__',
+			array( 'SMW_NOFACTBOX' )
+		);
+		return $provider;
 	}
 
 }

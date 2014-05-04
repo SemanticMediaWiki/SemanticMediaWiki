@@ -1,10 +1,12 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\Tests\Util\SemanticDataValidator;
 
-use SMW\ContentProcessor;
+use SMW\DIC\ObjectFactory;
+
+use SMW\InTextAnnotationParser;
 use SMW\ExtensionContext;
 use SMW\Settings;
 use SMW\ParserData;
@@ -13,29 +15,17 @@ use Title;
 use ParserOutput;
 
 /**
- * @covers \SMW\ContentProcessor
+ * @covers \SMW\InTextAnnotationParser
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ContentProcessorTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
-
-	private function acquireInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
-
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'Settings', Settings::newFromArray( $settings ) );
-
-		$parserData = new ParserData( $title, $parserOutput );
-
-		return new ContentProcessor( $parserData, $context );
-	}
+class InTextAnnotationParserForTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * Helper method for processing a template transclusion by simulating template
@@ -73,22 +63,24 @@ class ContentProcessorTemplateTransclusionTest extends \PHPUnit_Framework_TestCa
 
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__, $namespace );
-		$instance     = $this->acquireInstance( $title, $parserOutput, $settings );
-		$outputText   = $this->runTemplateTransclusion( $title, $text, $tmplValue );
+
+		ObjectFactory::getInstance()->invokeContext( new ExtensionContext() );
+
+		ObjectFactory::getInstance()->registerObject(
+			'Settings',
+			Settings::newFromArray( $settings )
+		);
+
+		$parserData = new ParserData( $title, $parserOutput );
+
+		$instance   = ObjectFactory::getInstance()->newInTextAnnotationParser( $parserData );
+		$outputText = $this->runTemplateTransclusion( $title, $text, $tmplValue );
 
 		$instance->parse( $outputText );
 
 		$this->assertContains(
 			$expected['resultText'],
-			$outputText,
-			'Asserts that the text compares to the expected output'
-		);
-
-		$parserData = new ParserData( $title, $parserOutput );
-
-		$this->assertInstanceOf(
-			'\SMW\SemanticData',
-			$parserData->getSemanticData()
+			$outputText
 		);
 
 		$semanticDataValidator = new SemanticDataValidator;
