@@ -50,6 +50,7 @@
 	"smw-paramdesc-distributionsort": "Sort the value distribution by occurrence count.",
 	"smw-paramdesc-distributionlimit": "Limit the value distribution to the count of only some values.",
 	"smw-paramdesc-template": "The name of a template with which to display the printouts",
+	"smw-paramdesc-namedargs": "Whether the template takes in names (i.e., property labels) for its arguments",
 	"smw-paramdesc-columns": "The number of columns in which to display results (default is $1)",
 	"smw-paramdesc-userparam": "A value passed into each template call, if a template is used",
 	"smw-paramdesc-introtemplate": "The name of a template to display before the query results, if there are any",
