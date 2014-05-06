@@ -2,33 +2,29 @@
 
 namespace SMW;
 
-use ContentHandler;
 use Title;
 
 /**
- * Handling redirect annotation
- *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/** @var string */
-	protected $text;
+	protected $redirectTarget;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param string $text
+	 * @param Title|null $redirectTarget
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, $text ) {
+	public function __construct( PropertyAnnotator $propertyAnnotator, Title $redirectTarget = null ) {
 		parent::__construct( $propertyAnnotator );
-		$this->text = $text;
+		$this->redirectTarget = $redirectTarget;
 	}
 
 	/**
@@ -36,28 +32,14 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	protected function addPropertyValues() {
 
-		$title = $this->createRedirectTargetFromText( $this->text );
-
-		if ( $title instanceOf Title ) {
-			$this->getSemanticData()->addPropertyObjectValue(
-				new DIProperty( '_REDI' ),
-				DIWikiPage::newFromTitle( $title, '__red' )
-			);
+		if ( $this->redirectTarget === null ) {
+			return null;
 		}
 
-	}
-
-	protected function createRedirectTargetFromText( $text ) {
-
-		if ( $this->hasContentHandler() ) {
-			return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
-		}
-
-		return Title::newFromRedirect( $text );
-	}
-
-	protected function hasContentHandler() {
-		return defined( 'CONTENT_MODEL_WIKITEXT' );
+		$this->getSemanticData()->addPropertyObjectValue(
+			new DIProperty( '_REDI' ),
+			DIWikiPage::newFromTitle( $this->redirectTarget, '__red' )
+		);
 	}
 
 }

@@ -2,7 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\ContentProcessor;
+use SMW\DIC\ObjectFactory;
+use SMW\MediaWiki\MagicWordFinder;
+
+use SMW\InTextAnnotationParser;
 use SMW\ParserData;
 use SMW\Settings;
 use SMW\ExtensionContext;
@@ -53,29 +56,37 @@ class FactboxMagicWordsTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testMagicWordsFromParserOutputExtension( $text, array $expected ) {
 
-		$title        = $this->newTitle();
+		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
-		$settings     = $this->newSettings( array(
+
+		$settings = array(
 			'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
 			'smwgLinksInValues' => false,
 			'smwgInlineErrors'  => true,
-			)
 		);
 
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
+		ObjectFactory::getInstance()->invokeContext( new ExtensionContext() );
+
+		ObjectFactory::getInstance()->registerObject(
+			'Settings',
+			Settings::newFromArray( $settings )
+		);
 
 		$parserData = new ParserData( $title, $parserOutput );
 
-		$contentProcessor = new ContentProcessor( $parserData, $context );
-		$contentProcessor->parse( $text );
+		$magicWordFinder = new MagicWordFinder( $parserOutput );
+
+		$inTextAnnotationParser = new InTextAnnotationParser(
+			$parserData,
+			$magicWordFinder
+		);
+
+		$inTextAnnotationParser->parse( $text );
 
 		$this->assertEquals(
 			$expected['magicWords'],
-			$this->getMagicwords( $parserOutput ),
-			'Asserts that ContentProcessor return added expected MagicWords to the ParserOutput'
+			$magicWordFinder->getMagicWords()
 		);
-
 	}
 
 	/**
@@ -183,18 +194,6 @@ class FactboxMagicWordsTest extends SemanticMediaWikiTestCase {
 		);
 
 		return $provider;
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function getMagicwords( $parserOutput ) {
-
-		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
-			return $parserOutput->getExtensionData( 'smwmagicwords' );
-		}
-
-		return $parserOutput->mSMWMagicWords;
 	}
 
 }

@@ -142,12 +142,6 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$provider[] = array( 'ContentProcessor', array( '\SMW\ContentProcessor' => array(
-				'ParserData'  => $this->newMockBuilder()->newObject( 'ParserData' )
-				)
-			)
-		);
-
 		$provider[] = array( 'Factbox', array( '\SMW\Factbox' => array(
 				'Title'          => $this->newMockBuilder()->newObject( 'Title' ),
 				'ParserOutput'   => $this->newMockBuilder()->newObject( 'ParserOutput' ),
@@ -186,7 +180,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 
 		$provider[] = array( 'RedirectPropertyAnnotator', array( '\SMW\PropertyAnnotator' => array(
 				'SemanticData'  => $this->newMockBuilder()->newObject( 'SemanticData' ),
-				'Text' => 'Foo'
+				'Title' => $this->newMockBuilder()->newObject( 'Title' )
 				)
 			)
 		);

@@ -2,11 +2,17 @@
 
 namespace SMW;
 
+use SMW\DIC\ObjectFactory;
+use SMW\MediaWiki\MagicWordFinder;
+
+use SMW\ParserData;
+use SMW\NamespaceExaminer;
+use SMW\DataValueFactory;
+
 use SMWOutputs;
 
 use MagicWord;
 use Title;
-use Html;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are
@@ -18,17 +24,17 @@ use Html;
  * @note Settings involve smwgNamespacesWithSemanticLinks, smwgLinksInValues,
  * smwgInlineErrors
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Markus Krötzsch
  * @author Denny Vrandecic
  * @author mwjames
  */
-class ContentProcessor implements ContextAware {
+class InTextAnnotationParser {
 
 	/** @var ContextResource */
-	protected $context = null;
+	protected $magicWordFinder = null;
 
 	/** @var Settings */
 	protected $settings = null;
@@ -37,7 +43,10 @@ class ContentProcessor implements ContextAware {
 	protected $parserData;
 
 	/** @var boolean */
-	protected $isEnabled;
+	protected $isEnabledNamespace;
+
+	/** @var Title|null */
+	protected $redirectTarget = null;
 
 	/**
 	 * Internal state for switching SMW link annotations off/on during parsing
@@ -50,22 +59,23 @@ class ContentProcessor implements ContextAware {
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param ContextResource $context
+	 * @param MagicWordFinder $magicWordFinder
 	 */
-	public function __construct( ParserData $parserData, ContextResource $context ) {
+	public function __construct( ParserData $parserData, MagicWordFinder $magicWordFinder ) {
 		$this->parserData = $parserData;
-		$this->context = $context;
+		$this->magicWordFinder = $magicWordFinder->setOutput( $parserData->getOutput() );
 	}
 
 	/**
-	 * @see ContextAware::withContext
+	 * @since 1.9.3s
 	 *
-	 * @since 1.9
+	 * @param Title|null $redirectTarget
 	 *
-	 * @return ContextResource
+	 * @return self
 	 */
-	public function withContext() {
-		return $this->context;
+	public function setRedirectTarget( $redirectTarget ) {
+		$this->redirectTarget = $redirectTarget;
+		return $this;
 	}
 
 	/**
@@ -77,58 +87,44 @@ class ContentProcessor implements ContextAware {
 	 * @param string &$text
 	 */
 	public function parse( &$text ) {
-		$title = $this->parserData->getTitle();
-		$this->settings = $this->withContext()->getSettings();
 
-		// Strip magic words from text body
+		$title = $this->parserData->getTitle();
+		$this->settings = ObjectFactory::getInstance()->getSettings();
+
 		$this->stripMagicWords( $text );
 
-		// Attest if semantic data should be processed
-		$this->isEnabled = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
+		$this->isEnabledNamespace = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
 
-		$this->isRedirect( $text );
+		$this->addRedirectTargetAnnotation();
 
 		// Parse links to extract semantic properties
 		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
+
 		$text = preg_replace_callback(
 			$this->getRegexpPattern( $linksInValues ),
 			$linksInValues ? 'self::process' : 'self::preprocess',
 			$text
 		);
 
-		// Update ParserOutput
 		$this->parserData->getOutput()->addModules( $this->getModules()  );
 		$this->parserData->updateOutput();
+
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	protected function isRedirect( $text ) {
+	protected function addRedirectTargetAnnotation() {
 
-		if ( $this->isEnabled ) {
+		if ( $this->isEnabledNamespace && $this->redirectTarget !== null ) {
 
-			/**
-			 * @var PropertyAnnotator $propertyAnnotator
-			 */
-			$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'RedirectPropertyAnnotator', array(
-				'SemanticData' => $this->parserData->getData(),
-				'Text'         => $text
-			) );
+			$propertyAnnotator = ObjectFactory::getInstance()->newRedirectPropertyAnnotator(
+				$this->parserData->getData(),
+				$this->redirectTarget
+			);
 
 			$propertyAnnotator->addAnnotation();
 		}
-
 	}
 
-	/**
-	 * Returns required resource modules
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
 	protected function getModules() {
 		return array(
 			'ext.smw.style',
@@ -146,12 +142,6 @@ class ContentProcessor implements ContextAware {
 	 * this may lead to PHP crashes (!) when very long texts are
 	 * used as values. This is due to limitations in the library PCRE that
 	 * PHP uses for pattern matching.
-	 *
-	 * @since 1.9
-	 *
-	 * @param boolean $linksInValues
-	 *
-	 * @return string
 	 */
 	protected function getRegexpPattern( $linksInValues ) {
 		if ( $linksInValues ) {
@@ -284,7 +274,7 @@ class ContentProcessor implements ContextAware {
 				$subject
 			);
 
-			if ( $this->isEnabled && $this->isAnnotation ) {
+			if ( $this->isEnabledNamespace && $this->isAnnotation ) {
 				$this->parserData->addDataValue( $dataValue );
 			}
 		}
@@ -294,7 +284,7 @@ class ContentProcessor implements ContextAware {
 
 		// If necessary add an error text
 		if ( ( $this->settings->get( 'smwgInlineErrors' ) &&
-			$this->isEnabled && $this->isAnnotation ) &&
+			$this->isEnabledNamespace && $this->isAnnotation ) &&
 			( !$dataValue->isValid() ) ) {
 			$result .= $dataValue->getErrorText();
 		}
@@ -303,41 +293,17 @@ class ContentProcessor implements ContextAware {
 		return $result;
 	}
 
-	/**
-	 * Remove relevant SMW magic words from the given text and return
-	 * an array of the names of all discovered magic words. Moreover,
-	 * store this array in the current parser output, using the variable
-	 * mSMWMagicWords and for MW 1.21+ 'smwmagicwords'
-	 *
-	 * @since 1.9
-	 *
-	 * @param &$text
-	 *
-	 * @return array
-	 */
 	protected function stripMagicWords( &$text ) {
+
 		$words = array();
-		$mw = MagicWord::get( 'SMW_NOFACTBOX' );
 
-		if ( $mw->matchAndRemove( $text ) ) {
-			$words[] = 'SMW_NOFACTBOX';
+		foreach ( array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' ) as $magicWord ) {
+			$words = $words + $this->magicWordFinder->matchAndRemove( $magicWord, $text );
 		}
 
-		$mw = MagicWord::get( 'SMW_SHOWFACTBOX' );
-
-		if ( $mw->matchAndRemove( $text ) ) {
-			$words[] = 'SMW_SHOWFACTBOX';
-		}
-
-		// Store values into the mSMWMagicWords property
-		if ( method_exists( $this->parserData->getOutput(), 'setExtensionData' ) ) {
-			$this->parserData->getOutput()->setExtensionData( 'smwmagicwords', $words );
-		} else {
-			// @codeCoverageIgnoreStart
-			$this->parserData->getOutput()->mSMWMagicWords = $words;
-			// @codeCoverageIgnoreEnd
-		}
+		$this->magicWordFinder->setMagicWords( $words );
 
 		return $words;
 	}
+
 }

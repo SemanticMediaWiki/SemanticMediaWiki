@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\DIC\ObjectFactory;
+
 use SMWInfolink;
 use SMWOutputs;
 
@@ -127,17 +129,11 @@ class Factbox {
 	 */
 	protected function getMagicWords() {
 
-		$parserOutput = $this->parserData->getOutput();
+		$smwMagicWords = ObjectFactory::getInstance()
+			->newMagicWordFinder( $this->parserData->getOutput() )
+			->getMagicWords();
 
-		// Prior MW 1.21 mSMWMagicWords is used (see SMW\ParserTextProcessor)
-		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
-			$smwMagicWords = $parserOutput->getExtensionData( 'smwmagicwords' );
-			$mws = $smwMagicWords === null ? array() : $smwMagicWords;
-		} else {
-			// @codeCoverageIgnoreStart
-			$mws = isset( $parserOutput->mSMWMagicWords ) ? $parserOutput->mSMWMagicWords : array();
-			// @codeCoverageIgnoreEnd
-		}
+		$mws = $smwMagicWords === null ? array() : $smwMagicWords;
 
 		if ( in_array( 'SMW_SHOWFACTBOX', $mws ) ) {
 			$showfactbox = SMW_FACTBOX_NONEMPTY;
