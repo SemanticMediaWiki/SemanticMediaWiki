@@ -40,6 +40,7 @@ class UpdateJob extends JobBase {
 	 */
 	function __construct( Title $title ) {
 		parent::__construct( 'SMW\UpdateJob', $title );
+		$this->removeDuplicates = true;
 	}
 
 	/**
