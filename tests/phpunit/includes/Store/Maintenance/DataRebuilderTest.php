@@ -331,16 +331,21 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->at( 2 ) )
 			->method( 'makeTitleOf' )
+			->with( $this->equalTo( 'Help:Main page' ) )
+			->will( $this->returnValue( Title::newFromText( 'Main page', NS_HELP ) ) );
+
+		$instance->expects( $this->at( 3 ) )
+			->method( 'makeTitleOf' )
 			->with( $this->equalTo( 'Main page' ) )
 			->will( $this->returnValue( Title::newFromText( 'Main page' ) ) );
 
 		$instance->setParameters( array(
-			'page'  => 'Main page|Some other page|Main page'
+			'page'  => 'Main page|Some other page|Help:Main page|Main page'
 		) );
 
 		$this->assertTrue( $instance->rebuild() );
 
-		$this->assertEquals( 2, $instance->getRebuildCount() );
+		$this->assertEquals( 3, $instance->getRebuildCount() );
 	}
 
 	/**

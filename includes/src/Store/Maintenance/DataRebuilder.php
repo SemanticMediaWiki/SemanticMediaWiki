@@ -157,7 +157,7 @@ class DataRebuilder {
 
 			$title = $this->makeTitleOf( $page );
 
-			if ( $title !== null && !isset( $titleCache[ $title->getDBKey() ] ) ) {
+			if ( $title !== null && !isset( $titleCache[ $title->getPrefixedDBkey() ] ) ) {
 
 				$this->rebuildCount++;
 
@@ -166,9 +166,8 @@ class DataRebuilder {
 				$updatejob = new UpdateJob( $title );
 				$updatejob->run();
 
-				$titleCache[ $title->getDBKey() ] = true;
+				$titleCache[ $title->getPrefixedDBkey() ] = true;
 			}
-
 		}
 
 		$this->reportMessage( "$this->rebuildCount pages refreshed.\n" );
