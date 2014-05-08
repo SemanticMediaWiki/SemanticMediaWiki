@@ -26,7 +26,7 @@ use ReflectionClass;
  * @group SMW
  * @group SMWExtension
  */
-abstract class QueryPrinterTestCase extends SemanticMediaWikiTestCase {
+abstract class QueryPrinterTestCase extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * Helper method sets result printer parameters
@@ -58,4 +58,14 @@ abstract class QueryPrinterTestCase extends SemanticMediaWikiTestCase {
 		return $instance;
 
 	}
+
+	protected function arrayWrap( array $elements ) {
+		return array_map(
+			function ( $element ) {
+				return array( $element );
+			},
+			$elements
+		);
+	}
+
 }

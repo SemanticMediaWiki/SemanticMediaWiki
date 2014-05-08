@@ -2,8 +2,13 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockObjectBuilder;
+use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+
 use SMW\CsvResultPrinter;
 use SMWDataItem;
+
+use ReflectionClass;
 
 /**
  * Tests for the CsvResultPrinter class
@@ -25,6 +30,15 @@ use SMWDataItem;
  * @group SMWExtension
  */
 class CsvResultPrinterTest extends QueryPrinterTestCase {
+
+	protected $mockBuilder;
+
+	protected function setUp(){
+		parent::setUp();
+
+		$this->mockBuilder = new MockObjectBuilder();
+		$this->mockBuilder->registerRepository( new CoreMockObjectRepository() );
+	}
 
 	/**
 	 * Returns the name of the class to be tested
@@ -63,7 +77,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 		$filename = 'FooQueey';
 		$instance = $this->newInstance( array( 'filename' => $filename ) );
 
-		$this->assertEquals( $filename, $instance->getFileName( $this->newMockBuilder()->newObject( 'QueryResult' ) ) );
+		$this->assertEquals( $filename, $instance->getFileName( $this->mockBuilder->newObject( 'QueryResult' ) ) );
 	}
 
 	/**
@@ -75,7 +89,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 	public function testGetResultText(  $setup, $expected  ) {
 
 		$instance  = $this->newInstance( $setup['parameters'] );
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\CsvResultPrinter' );
 
 		$property = $reflector->getProperty( 'fullParams' );
 		$property->setAccessible( true );
@@ -146,23 +160,26 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 	 */
 	private function buildMockQueryResult( $setup ) {
 
+		$mockBuilder = new MockObjectBuilder();
+		$mockBuilder->registerRepository( new CoreMockObjectRepository() );
+
 		$printRequests = array();
 		$resultArray   = array();
 
 		foreach ( $setup as $value ) {
 
-			$printRequest = $this->newMockBuilder()->newObject( 'PrintRequest', array(
+			$printRequest = $mockBuilder->newObject( 'PrintRequest', array(
 				'getText'  => $value['printRequest'],
 				'getLabel' => $value['printRequest']
 			) );
 
 			$printRequests[] = $printRequest;
 
-			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
+			$dataItem = $mockBuilder->newObject( 'DataItem', array(
 				'getDIType'  => SMWDataItem::TYPE_WIKIPAGE,
 			) );
 
-			$dataValue = $this->newMockBuilder()->newObject( 'DataValue', array(
+			$dataValue = $mockBuilder->newObject( 'DataValue', array(
 				'DataValueType'    => 'SMWWikiPageValue',
 				'getTypeID'        => '_wpg',
 				'getShortWikiText' => $value['dataValue'],
@@ -170,7 +187,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 				'getDataItem'      => $dataItem
 			) );
 
-			$resultArray[] = $this->newMockBuilder()->newObject( 'ResultArray', array(
+			$resultArray[] = $mockBuilder->newObject( 'ResultArray', array(
 				'getText'          => $value['printRequest'],
 				'getPrintRequest'  => $printRequest,
 				'getNextDataValue' => $dataValue,
@@ -179,7 +196,7 @@ class CsvResultPrinterTest extends QueryPrinterTestCase {
 
 		}
 
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
+		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
 			'getPrintRequests'  => $printRequests,
 			'getNext'           => $resultArray,
 			'getLink'           => new \SMWInfolink( true, 'Lala' , 'Lula' ),
