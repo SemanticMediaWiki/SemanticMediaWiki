@@ -4,6 +4,8 @@ namespace SMW\Test;
 
 use SMW\FeedResultPrinter;
 
+use ReflectionClass;
+
 /**
  * Tests for the FeedResultPrinter class
  *
@@ -62,7 +64,7 @@ class FeedResultPrinterTest extends QueryPrinterTestCase {
 
 		$instance = $this->newInstance();
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\FeedResultPrinter' );
 		$method = $reflector->getMethod( 'feedItemDescription' );
 		$method->setAccessible( true );
 

@@ -2,8 +2,13 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockObjectBuilder;
+use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+
 use SMW\JsonResultPrinter;
 use SMW\ResultPrinter;
+
+use ReflectionClass;
 
 /**
  * @covers \SMW\JsonResultPrinter
@@ -20,6 +25,15 @@ use SMW\ResultPrinter;
  * @author mwjames
  */
 class JsonResultPrinterTest extends QueryPrinterTestCase {
+
+	protected $mockBuilder;
+
+	protected function setUp(){
+		parent::setUp();
+
+		$this->mockBuilder = new MockObjectBuilder();
+		$this->mockBuilder->registerRepository( new CoreMockObjectRepository() );
+	}
 
 	/**
 	 * @return string|false
@@ -51,7 +65,7 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 
 		$this->assertEquals(
 			'application/json',
-			$this->newInstance()->getMimeType( $this->newMockBuilder()->newObject( 'QueryResult' ) ),
+			$this->newInstance()->getMimeType( $this->mockBuilder->newObject( 'QueryResult' ) ),
 			'Asserts that getMimeType() yields an expected result'
 		);
 
@@ -68,7 +82,7 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getFileName( $this->newMockBuilder()->newObject( 'QueryResult' ) ),
+			$instance->getFileName( $this->mockBuilder->newObject( 'QueryResult' ) ),
 			'Asserts that getFileName() yields an expected result');
 	}
 
@@ -92,19 +106,19 @@ class JsonResultPrinterTest extends QueryPrinterTestCase {
 	public function testGetResultText() {
 
 		$result = array(
-			'lala' => $this->newRandomString(),
-			'lula' => $this->newRandomString()
+			'lala' => __METHOD__,
+			'lula' => 999388383838
 		);
 
 		$expected = array_merge( $result, array( 'rows' => count( $result ) ) );
 
 		$instance = $this->newInstance( array( 'prettyprint' => false ) );
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\JsonResultPrinter' );
 		$getResultText = $reflector->getMethod( 'getResultText' );
 		$getResultText->setAccessible( true );
 
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
+		$queryResult = $this->mockBuilder->newObject( 'QueryResult', array(
 			'serializeToArray' => $result,
 			'getCount'         => count( $result )
 		) );

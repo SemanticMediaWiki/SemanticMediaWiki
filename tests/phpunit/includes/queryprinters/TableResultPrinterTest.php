@@ -2,7 +2,14 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockObjectBuilder;
+use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+
 use SMW\TableResultPrinter;
+use SMW\DIWikiPage;
+
+use ReflectionClass;
+use Title;
 
 /**
  * Tests for the TableResultPrinter class
@@ -64,7 +71,7 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 	public function testGetResultText(  $setup, $expected  ) {
 
 		$instance  = $this->newInstance( $setup['parameters'] );
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\TableResultPrinter' );
 
 		$property = $reflector->getProperty( 'fullParams' );
 		$property->setAccessible( true );
@@ -98,6 +105,9 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 	 */
 	public function standardTableDataProvider() {
 
+		$mockBuilder = new MockObjectBuilder();
+		$mockBuilder->registerRepository( new CoreMockObjectRepository() );
+
 		$provider = array();
 
 		$labels = array(
@@ -109,29 +119,29 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 
 		$printRequests = array();
 
-		$printRequests['pr-1'] = $this->newMockBuilder()->newObject( 'PrintRequest', array(
+		$printRequests['pr-1'] = $mockBuilder->newObject( 'PrintRequest', array(
 			'getText' => $labels['pr-1']
 		) );
 
-		$printRequests['pr-2'] = $this->newMockBuilder()->newObject( 'PrintRequest', array(
+		$printRequests['pr-2'] = $mockBuilder->newObject( 'PrintRequest', array(
 			'getText' => $labels['pr-2']
 		) );
 
 		$datItems = array();
 
-		$datItems['ra-1'] = $this->newSubject( $this->newTitle( NS_MAIN, $labels['ra-1'] ) );
-		$datItems['ra-2'] = $this->newMockBuilder()->newObject( 'DataItem', array( 'getSortKey' => $labels['ra-2'] ) );
+		$datItems['ra-1'] = DIWikiPage::newFromTitle( Title::newFromText( $labels['ra-1'], NS_MAIN ) );
+		$datItems['ra-2'] = $mockBuilder->newObject( 'DataItem', array( 'getSortKey' => $labels['ra-2'] ) );
 
 		$dataValues = array();
 
-		$dataValues['ra-1'] = $this->newMockBuilder()->newObject( 'DataValue', array(
+		$dataValues['ra-1'] = $mockBuilder->newObject( 'DataValue', array(
 			'DataValueType'    => 'SMWWikiPageValue',
 			'getTypeID'        => '_wpg',
 			'getShortText'     => $labels['ra-1'],
 			'getDataItem'      => $datItems['ra-1']
 		) );
 
-		$dataValues['ra-2'] = $this->newMockBuilder()->newObject( 'DataValue', array(
+		$dataValues['ra-2'] = $mockBuilder->newObject( 'DataValue', array(
 			'DataValueType'    => 'SMWNumberValue',
 			'getTypeID'        => '_num',
 			'getShortText'     => $labels['ra-2'],
@@ -140,19 +150,19 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 
 		$resultArray = array();
 
-		$resultArray['ra-1'] = $this->newMockBuilder()->newObject( 'ResultArray', array(
+		$resultArray['ra-1'] = $mockBuilder->newObject( 'ResultArray', array(
 			'getText'          => $labels['ra-1'],
 			'getPrintRequest'  => $printRequests['pr-1'],
 			'getNextDataValue' => $dataValues['ra-1'],
 		) );
 
-		$resultArray['ra-2'] = $this->newMockBuilder()->newObject( 'ResultArray', array(
+		$resultArray['ra-2'] = $mockBuilder->newObject( 'ResultArray', array(
 			'getText'          => $labels['ra-2'],
 			'getPrintRequest'  => $printRequests['pr-2'],
 			'getNextDataValue' => $dataValues['ra-2'],
 		) );
 
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
+		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
 			'getPrintRequests'  => array( $printRequests['pr-1'], $printRequests['pr-2'] ),
 			'getNext'           => array( $resultArray['ra-1'], $resultArray['ra-2'] ),
 			'getLink'           => new \SMWInfolink( true, 'Lala' , 'Lula' ),

@@ -2,8 +2,13 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockObjectBuilder;
+use SMW\Tests\Util\Mock\CoreMockObjectRepository;
+
 use SMWDataItem;
 use SMWDINumber;
+
+use ReflectionClass;
 
 /**
  * Tests for the AggregatablePrinter class
@@ -55,7 +60,7 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 		$instance    = $this->newInstance( $setup['parameters'] );
 		$queryResult = $setup['queryResult'];
 
-		$reflection = $this->newReflector();
+		$reflection = new ReflectionClass( '\SMW\AggregatablePrinter' );
 		$method = $reflection->getMethod( 'getResultText' );
 		$method->setAccessible( true );
 
@@ -79,7 +84,7 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 		$expected = array();
 		$keys = array( 'test', 'foo', 'bar' );
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\AggregatablePrinter' );
 		$method = $reflector->getMethod( 'addNumbersForDataItem' );
 		$method->setAccessible( true );
 
@@ -116,7 +121,7 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 
 		$instance  = $this->newInstance( $setup['parameters'] );
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\AggregatablePrinter' );
 		$method = $reflector->getMethod( 'getNumericResults' );
 		$method->setAccessible( true );
 
@@ -141,13 +146,15 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	 */
 	public function errorMessageProvider() {
 
+		$mockBuilder = new MockObjectBuilder();
+		$mockBuilder->registerRepository( new CoreMockObjectRepository() );
+
 		$message = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
 
 		$provider = array();
 
-		// #0
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
-			'getErrors' => array( $message )
+		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
+			'getErrors'  => array( $message )
 		) );
 
 		$provider[] = array(
@@ -230,31 +237,34 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 	 */
 	private function buildMockQueryResult( $setup ) {
 
+		$mockBuilder = new MockObjectBuilder();
+		$mockBuilder->registerRepository( new CoreMockObjectRepository() );
+
 		$printRequests = array();
 		$resultArray   = array();
 
 		foreach ( $setup as $value ) {
 
-			$printRequest = $this->newMockBuilder()->newObject( 'PrintRequest', array(
+			$printRequest = $mockBuilder->newObject( 'PrintRequest', array(
 				'getText'  => $value['printRequest'],
 				'getLabel' => $value['printRequest']
 			) );
 
 			$printRequests[] = $printRequest;
 
-			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', array(
+			$dataItem = $mockBuilder->newObject( 'DataItem', array(
 				'getDIType' => SMWDataItem::TYPE_NUMBER,
 				'getNumber' => $value['number']
 			) );
 
-			$dataValue = $this->newMockBuilder()->newObject( 'DataValue', array(
+			$dataValue = $mockBuilder->newObject( 'DataValue', array(
 				'DataValueType'    => 'SMWNumberValue',
 				'getTypeID'        => '_num',
 				'getShortWikiText' => $value['dataValue'],
 				'getDataItem'      => $dataItem
 			) );
 
-			$resultArray[] = $this->newMockBuilder()->newObject( 'ResultArray', array(
+			$resultArray[] = $mockBuilder->newObject( 'ResultArray', array(
 				'getText'          => $value['printRequest'],
 				'getPrintRequest'  => $printRequest,
 				'getNextDataValue' => $dataValue,
@@ -263,7 +273,7 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 
 		}
 
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
+		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
 			'getPrintRequests'  => $printRequests,
 			'getNext'           => $resultArray,
 			'getLink'           => new \SMWInfolink( true, 'Lala' , 'Lula' ),

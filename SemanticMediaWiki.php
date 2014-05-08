@@ -97,6 +97,15 @@ $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgI
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiNamespaces'] = $GLOBALS['smwgIP'] . 'languages/SemanticMediaWiki.namespaces.php';
 
 /**
+ * @since 1.9.3
+ *
+ * TEMPORARY FIX until an appropriate testLoader is provided for third-party
+ * extensions that rely on some test classes to be present
+ */
+$GLOBALS['wgAutoloadClasses']['SMW\Test\QueryPrinterTestCase']   = __DIR__ . '/tests/phpunit/QueryPrinterTestCase.php';
+$GLOBALS['wgAutoloadClasses']['SMW\Test\QueryPrinterRegistryTestCase']   = __DIR__ . '/tests/phpunit/QueryPrinterRegistryTestCase.php';
+
+/**
  * Setup and initialization
  *
  * @note $wgExtensionFunctions variable is an array that stores
