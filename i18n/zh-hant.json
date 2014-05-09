@@ -143,7 +143,7 @@
 	"concepts": "概念",
 	"smw-sp-concept-header": "概念清單",
 	"unusedproperties": "未使用的屬性",
-	"smw_unusedproperties_docu": "以下屬性在本 wiki 中存在但未被使用。",
+	"smw_unusedproperties_docu": "以下屬性存在但未被使用。",
 	"smw_unusedproperty_template": "類型為 $2 的屬性 $1",
 	"wantedproperties": "需要的屬性",
 	"smw_wantedproperties_docu": "以下屬性已在本 wiki 中使用，但是尚未建立描述頁面。",
