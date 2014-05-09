@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMW\Tests\Util\PageDeleter;
 use SMW\Tests\Util\XmlImportRunner;
 
@@ -26,33 +28,21 @@ use Title;
  *
  * @author mwjames
  */
-abstract class MwRegressionTestCase extends \MediaWikiTestCase {
+abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 
-	protected $databaseIsUsable = false;
 	protected $expectedAssertions = 0;
 
 	/**
-	 * @see MediaWikiTestCase::run
-	 *
-	 * Only where teardownTestDB is available (excludes 1.19/1.20 or you need to
-	 * run phpunit ... --use-normal-tables) we are able to rebuild the DB (in
-	 * order to exclude temporary table usage) otherwise some tests will fail with
-	 * "Error: 1137 Can't reopen table" on MySQL (see Issue #80)
+	 * @see MwDBaseUnitTestCase::run
 	 */
-	function run( \PHPUnit_Framework_TestResult $result = null ) {
+	public function run( \PHPUnit_Framework_TestResult $result = null ) {
 
-		if ( method_exists( $this, 'teardownTestDB' ) ) {
-			$this->databaseIsUsable = true;
-			$this->teardownTestDB();
-			$this->setCliArg( 'use-normal-tables', true );
-		}
+		// Runnning regression tests on postgres will return with something like
+		// "pg_query(): Query failed: ERROR:  ... DatabasePostgres.php on line 254"
+		// therefore we exclude postgres from this test suite
+		$this->markDatabaseToBeExcludedFromTest( 'postgres' );
 
 		parent::run( $result );
-	}
-
-	protected function tearDown() {
-		parent::tearDown();
-		$this->cleanCloneTablesAfterTestRun();
 	}
 
 	/**
@@ -86,9 +76,9 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 	 */
 	public function testDataImport() {
 
-		if ( !$this->databaseIsUsable ) {
+		if ( !$this->isUsableUnitTestDatabase() ) {
 			$this->markTestSkipped(
-				'DB setup did not satisfy the test requirements (probably MW 1.19/1.20)'
+				'Database setup did not satisfy the test requirements'
 			);
 		}
 
@@ -106,8 +96,11 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 		$this->deletePoolOfTitles( $this->acquirePoolOfTitles() );
 	}
 
-	protected function getStore() {
-		return StoreFactory::getStore();
+	protected function runUpdateJobs( $titles ) {
+		foreach ( $titles as $title ) {
+			$job = new UpdateJob( Title::newFromText( $title ) );
+			$job->run();
+		}
 	}
 
 	private function assertTitleIsNotKnownBeforeImport( $titles ) {
@@ -128,31 +121,11 @@ abstract class MwRegressionTestCase extends \MediaWikiTestCase {
 		}
 	}
 
-	private function runUpdateJobs( $titles ) {
-		foreach ( $titles as $title ) {
-			$job = new UpdateJob( Title::newFromText( $title ) );
-			$job->run();
-		}
-	}
-
 	private function deletePoolOfTitles( $titles ) {
 		$pageDeleter = new PageDeleter();
 
 		foreach ( $titles as $title ) {
 			$pageDeleter->deletePage( Title::newFromText( $title ) );
-		}
-	}
-
-	private function cleanCloneTablesAfterTestRun() {
-
-		if ( !$this->databaseIsUsable ) {
-			return;
-		}
-
-		$tables = self::listTables( $this->db );
-
-		foreach ( $tables as $table ) {
-			$this->db->dropTable( $table, __METHOD__ );
 		}
 	}
 

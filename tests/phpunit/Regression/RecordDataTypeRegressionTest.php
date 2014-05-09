@@ -183,12 +183,12 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 		$runValueAssert = false;
 		$values = array();
 
-		$countainer = $this->getStore()->getPropertyValues(
+		$container = $this->getStore()->getPropertyValues(
 			$expected['subject'],
 			$expected['record']
 		);
 
-		foreach ( $countainer as $record ) {
+		foreach ( $container as $record ) {
 			$values = array_merge(
 				$values,
 				$this->getStore()->getPropertyValues( $record, $expected['property'] )

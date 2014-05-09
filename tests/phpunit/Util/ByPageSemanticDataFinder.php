@@ -111,7 +111,7 @@ class ByPageSemanticDataFinder {
 		$revision = $wikiPage->getRevision();
 
 		if ( $revision === null ) {
-			return new UnexpectedValueException( 'Expected a valid Revision' );
+			throw new UnexpectedValueException( 'Expected a valid Revision' );
 		}
 
 		$parserOutput = $wikiPage->getParserOutput(
