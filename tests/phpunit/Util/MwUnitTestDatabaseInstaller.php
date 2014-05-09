@@ -42,7 +42,7 @@ class MwUnitTestDatabaseInstaller {
 		'postgres'
 	);
 
-	private $dbSetup = false;
+	private static $dbSetup = false;
 
 	/**
 	 * @since 1.9.3
@@ -180,7 +180,7 @@ class MwUnitTestDatabaseInstaller {
 
 	protected function setupUnitTestDatabase() {
 
-		if ( $this->dbSetup ) {
+		if ( self::$dbSetup ) {
 			return true;
 		}
 
@@ -190,9 +190,14 @@ class MwUnitTestDatabaseInstaller {
 
 		$this->createTestDatabase();
 		$this->store->setup( false );
-	//	$this->initMediaWikiCoreDBData();
+//		$this->initMediaWikiCoreDBData();
 
-		$this->dbSetup = true;
+		$this->createPageWithText(
+			Title::newFromText( 'SMWUTpage' ),
+			'SMW unit test'
+		);
+
+		self::$dbSetup = true;
 	}
 
 	protected function destroyUnitTestDatabase() {
@@ -202,7 +207,7 @@ class MwUnitTestDatabaseInstaller {
 		}
 
 		$this->cloneDatabase->destroy( true );
-		$this->dbSetup = false;
+		self::$dbSetup = false;
 	}
 
 	private function createTestDatabase() {

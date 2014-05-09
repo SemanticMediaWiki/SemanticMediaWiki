@@ -20,10 +20,11 @@ use Title;
  *
  * @group SMW
  * @group SMWExtension
- * @group Database
+ * @group semantic-mediawiki-regression
+ * @group mediawiki-database
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.1
  *
  * @author mwjames
@@ -40,7 +41,7 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 		// Runnning regression tests on postgres will return with something like
 		// "pg_query(): Query failed: ERROR:  ... DatabasePostgres.php on line 254"
 		// therefore we exclude postgres from this test suite
-		$this->markDatabaseToBeExcludedFromTest( 'postgres' );
+		$this->removeDatabaseFromTest( 'postgres' );
 
 		parent::run( $result );
 	}

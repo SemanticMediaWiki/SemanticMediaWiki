@@ -34,6 +34,8 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		$this->useSameUnitTestDatabaseInstance();
+
 		$context = new ExtensionContext();
 
 		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $this->getStore() );
@@ -69,7 +71,6 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 		$this->assertJobRun( 'SMW\UpdateJob' );
 
 		$this->deletePage( $associate['title'] );
-
 	}
 
 	/**

@@ -13,8 +13,7 @@ use RuntimeException;
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki
- * @grpup mediawiki-database
- * @group Database
+ * @group mediawiki-database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -24,7 +23,10 @@ use RuntimeException;
  */
 abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
+	/* @var MwUnitTestDatabaseInstaller */
 	protected $mwUnitTestDatabaseInstaller = null;
+
+	protected $destroyTestDatabaseInstance = true;
 	protected $isUsableUnitTestDatabase = true;
 	protected $databaseToBeExcluded = null;
 
@@ -45,13 +47,25 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		parent::run( $result );
 
-		if ( $this->isUsableUnitTestDatabase ) {
+		if ( $this->isUsableUnitTestDatabase && $this->destroyTestDatabaseInstance ) {
 			$this->mwUnitTestDatabaseInstaller->tearDown();
 		}
 	}
 
-	protected function markDatabaseToBeExcludedFromTest( $databaseToBeExcluded ) {
+	protected function removeDatabaseFromTest( $databaseToBeExcluded ) {
 		$this->databaseToBeExcluded = $databaseToBeExcluded;
+	}
+
+	/**
+	 * By default, each test will create a new DB environment to ensure that
+	 * only conditions of that particular test are controlled
+	 *
+	 * It might be that tests within a suite depend on each other therefore
+	 * using this option allows to suspend the removal (with its tables) of the
+	 * DB instance
+	 */
+	protected function useSameUnitTestDatabaseInstance() {
+		$this->destroyTestDatabaseInstance = false;
 	}
 
 	protected function getStore() {
