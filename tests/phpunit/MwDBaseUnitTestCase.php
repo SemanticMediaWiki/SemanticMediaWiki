@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\MwUnitTestDatabaseInstaller;
+use SMW\Tests\Util\MwDatabaseTableBuilder;
 use SMW\StoreFactory;
 
 use RuntimeException;
@@ -23,49 +23,45 @@ use RuntimeException;
  */
 abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
-	/* @var MwUnitTestDatabaseInstaller */
-	protected $mwUnitTestDatabaseInstaller = null;
+	/* @var MwDatabaseTableBuilder */
+	protected $mwDatabaseTableBuilder = null;
 
-	protected $destroyTestDatabaseInstance = true;
+	protected $destroyDatabaseTables = false;
 	protected $isUsableUnitTestDatabase = true;
 	protected $databaseToBeExcluded = null;
 
 	/**
 	 * It is assumed that each test that makes use of the TestCase is requesting
 	 * a "real" DB connection
+	 *
+	 * By default, the database tables are being re-used but it is possible to
+	 * request a trear down so that the next test can rebuild the tables from
+	 * scratch
 	 */
 	public function run( \PHPUnit_Framework_TestResult $result = null ) {
 
-		$this->mwUnitTestDatabaseInstaller = new MwUnitTestDatabaseInstaller( $this->getStore() );
-		$this->mwUnitTestDatabaseInstaller->removeSupportedDatabase( $this->databaseToBeExcluded );
+		$this->mwDatabaseTableBuilder = MwDatabaseTableBuilder::getInstance( $this->getStore() );
+		$this->mwDatabaseTableBuilder->removeAvailableDatabaseType( $this->databaseToBeExcluded );
 
 		try {
-			$this->mwUnitTestDatabaseInstaller->setup();
+			$this->mwDatabaseTableBuilder->doBuild();
 		} catch ( RuntimeException $e ) {
 			$this->isUsableUnitTestDatabase = false;
 		}
 
 		parent::run( $result );
 
-		if ( $this->isUsableUnitTestDatabase && $this->destroyTestDatabaseInstance ) {
-			$this->mwUnitTestDatabaseInstaller->tearDown();
+		if ( $this->isUsableUnitTestDatabase && $this->destroyDatabaseTables ) {
+			$this->mwDatabaseTableBuilder->doDestroy();
 		}
 	}
 
-	protected function removeDatabaseFromTest( $databaseToBeExcluded ) {
+	protected function removeDatabaseTypeFromTest( $databaseToBeExcluded ) {
 		$this->databaseToBeExcluded = $databaseToBeExcluded;
 	}
 
-	/**
-	 * By default, each test will create a new DB environment to ensure that
-	 * only conditions of that particular test are controlled
-	 *
-	 * It might be that tests within a suite depend on each other therefore
-	 * using this option allows to suspend the removal (with its tables) of the
-	 * DB instance
-	 */
-	protected function useSameUnitTestDatabaseInstance() {
-		$this->destroyTestDatabaseInstance = false;
+	protected function destroyDatabaseTablesOnEachRun() {
+		$this->destroyDatabaseTables = true;
 	}
 
 	protected function getStore() {
@@ -73,7 +69,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function getDBConnection() {
-		return $this->mwUnitTestDatabaseInstaller->getDBConnection();
+		return $this->mwDatabaseTableBuilder->getDBConnection();
 	}
 
 	protected function isUsableUnitTestDatabase() {

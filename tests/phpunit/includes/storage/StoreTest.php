@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMW\StoreFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -24,7 +26,7 @@ use SMWRequestOptions;
  *
  * @author Nischay Nahata
  */
-class StoreTest extends \MediaWikiTestCase {
+class StoreTest extends MwDBaseUnitTestCase {
 
 ///// Reading methods /////
 

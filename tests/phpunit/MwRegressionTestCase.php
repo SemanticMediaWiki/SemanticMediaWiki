@@ -38,10 +38,12 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 	 */
 	public function run( \PHPUnit_Framework_TestResult $result = null ) {
 
+		$this->destroyDatabaseTablesOnEachRun();
+
 		// Runnning regression tests on postgres will return with something like
 		// "pg_query(): Query failed: ERROR:  ... DatabasePostgres.php on line 254"
 		// therefore we exclude postgres from this test suite
-		$this->removeDatabaseFromTest( 'postgres' );
+		$this->removeDatabaseTypeFromTest( 'postgres' );
 
 		parent::run( $result );
 	}
@@ -79,7 +81,7 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 
 		if ( !$this->isUsableUnitTestDatabase() ) {
 			$this->markTestSkipped(
-				'Database setup did not satisfy the test requirements'
+				'Database setup did not meet the test requirements'
 			);
 		}
 
@@ -93,6 +95,7 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 
 		$this->assertTitleIsKnownAfterImport( $this->acquirePoolOfTitles() );
 		$this->runUpdateJobs( $this->acquirePoolOfTitles() );
+
 		$this->assertDataImport();
 		$this->deletePoolOfTitles( $this->acquirePoolOfTitles() );
 	}

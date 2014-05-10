@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMWHooks;
 use User;
 use Title;
@@ -30,7 +32,7 @@ use LinksUpdate;
  * accessing the production database.
  * @group Database
  */
-class HooksTest extends \MediaWikiTestCase {
+class HooksTest extends MwDBaseUnitTestCase {
 
 	/**
 	 * Helper method that returns a normalized path

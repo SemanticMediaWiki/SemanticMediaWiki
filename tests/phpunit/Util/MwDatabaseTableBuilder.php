@@ -2,13 +2,11 @@
 
 namespace SMW\Tests\Util;
 
-use SMW\Tests\Util\PageCreator;
+use SMW\DBConnectionProvider;
 use SMW\Store;
 
 use ObjectCache;
 use HashBagOStuff;
-use DatabaseBase;
-use User;
 use Title;
 
 use RuntimeException;
@@ -22,41 +20,43 @@ use CloneDatabase;
  *
  * @author mwjames
  */
-class MwUnitTestDatabaseInstaller {
+class MwDatabaseTableBuilder {
 
-	private static $UTDB_PREFIX = null;
-	private static $MWDB_PREFIX = null;
+	/* @var MwDatabaseTableBuilder */
+	private static $instance = null;
 
 	/* @var Store */
 	protected $store = null;
 
-	/* @var DatabaseBase */
-	protected $dbConnection = null;
+	/* @var DBConnectionProvider */
+	protected $dbConnectionProvider = null;
 
 	/* @var CloneDatabase */
 	protected $cloneDatabase = null;
 
-	protected $supportedDatabase = array(
+	protected $defaultDatabaseTypes = array(
 		'mysql',
 		'sqlite',
 		'postgres'
 	);
 
-	private static $dbSetup = false;
+	protected $availableDatabaseTypes = array();
+
+	private static $UTDB_PREFIX = null;
+	private static $MWDB_PREFIX = null;
+
+	private $dbSetup = false;
 
 	/**
 	 * @since 1.9.3
 	 *
 	 * @param Store $store
-	 * @param DatabaseBase|null $dbConnection
+	 * @param DBConnectionProvider $dbConnectionProvider
 	 */
-	public function __construct( Store $store, DatabaseBase $dbConnection = null ) {
+	public function __construct( Store $store, DBConnectionProvider $dbConnectionProvider ) {
 		$this->store = $store;
-		$this->dbConnection = $dbConnection;
-
-		if ( $this->dbConnection === null ) {
-			$this->dbConnection = wfGetDB( DB_MASTER );
-		}
+		$this->dbConnectionProvider = $dbConnectionProvider;
+		$this->availableDatabaseTypes = $this->defaultDatabaseTypes;
 
 		self::$UTDB_PREFIX = 'sunittest_';
 		self::$MWDB_PREFIX = $GLOBALS['wgDBprefix'];
@@ -72,19 +72,40 @@ class MwUnitTestDatabaseInstaller {
 	/**
 	 * @since 1.9.3
 	 *
-	 * @param string|array|null $database
+	 * @param Store $store
+	 *
+	 * @return self
 	 */
-	public function removeSupportedDatabase( $database = null ) {
-		$this->supportedDatabase = array_diff( $this->supportedDatabase, (array)$database );
+	public static function getInstance( Store $store ) {
+
+		if ( self::$instance === null ) {
+			self::$instance = new self( $store, new MwDBConnectionProvider() );
+		}
+
+		return self::$instance;
 	}
 
 	/**
 	 * @since 1.9.3
+	 *
+	 * @param string|null $databaseType
+	 *
+	 * @return self
 	 */
-	public function setup() {
+	public function removeAvailableDatabaseType( $databaseType = null ) {
+		$this->availableDatabaseTypes = array_diff( $this->defaultDatabaseTypes, (array)$databaseType );
+		return $this;
+	}
 
-		if ( !$this->isSupportedDatabase() ) {
-			throw new RuntimeException( 'Requested DB type is not enabled for the installer' );
+	/**
+	 * @since 1.9.3
+	 *
+	 * @throws RuntimeException
+	 */
+	public function doBuild() {
+
+		if ( !$this->isAvailableDatabaseType() ) {
+			throw new RuntimeException( 'Requested DB type is not available through this installer' );
 		}
 
 		ObjectCache::$instances[CACHE_DB] = new HashBagOStuff();
@@ -96,16 +117,16 @@ class MwUnitTestDatabaseInstaller {
 		$GLOBALS['wgLanguageConverterCacheType'] = CACHE_NONE;
 		$GLOBALS['wgUseDatabaseMessages'] = false;
 
-		$this->setupUnitTestDatabase();
-		$this->cleanOpenDBTransactions();
+		$this->setupDatabaseTables();
+		$this->rollbackOpenDatabaseTransactions();
 	}
 
 	/**
 	 * @since 1.9.3
 	 */
-	public function tearDown() {
-		$this->destroyUnitTestDatabase();
-		$this->cleanOpenDBTransactions();
+	public function doDestroy() {
+		$this->destroyDatabaseTables();
+		$this->rollbackOpenDatabaseTransactions();
 	}
 
 	/**
@@ -120,27 +141,16 @@ class MwUnitTestDatabaseInstaller {
 	/**
 	 * @since  1.9.3
 	 *
-	 * @param DatabaseBase $dbConnection
-	 */
-	public function setDBConnection( DatabaseBase $dbConnection ) {
-		$this->dbConnection = $dbConnection;
-	}
-
-	/**
-	 * @since  1.9.3
-	 *
 	 * @return DatabaseBase
 	 */
 	public function getDBConnection() {
-		return $this->dbConnection;
+		return $this->dbConnectionProvider->getConnection();
 	}
 
 	/**
 	 * @see MediaWikiTestCase::listTables
-	 *
-	 * @return array
 	 */
-	public function generateListOfTables() {
+	protected function generateListOfTables() {
 
 		$dbConnection = $this->getDBConnection();
 
@@ -178,9 +188,9 @@ class MwUnitTestDatabaseInstaller {
 		return $tables;
 	}
 
-	protected function setupUnitTestDatabase() {
+	private function setupDatabaseTables() {
 
-		if ( self::$dbSetup ) {
+		if ( $this->dbSetup ) {
 			return true;
 		}
 
@@ -188,29 +198,14 @@ class MwUnitTestDatabaseInstaller {
 			throw new RuntimeException( 'The database prefix is already set to "' . $this->getDBPrefix() . '"' );
 		}
 
-		$this->createTestDatabase();
+		$this->cloneDatabaseTables();
 		$this->store->setup( false );
-//		$this->initMediaWikiCoreDBData();
+		$this->createDummyPage();
 
-		$this->createPageWithText(
-			Title::newFromText( 'SMWUTpage' ),
-			'SMW unit test'
-		);
-
-		self::$dbSetup = true;
+		$this->dbSetup = true;
 	}
 
-	protected function destroyUnitTestDatabase() {
-
-		if ( !$this->cloneDatabase instanceof CloneDatabase ) {
-			return null;
-		}
-
-		$this->cloneDatabase->destroy( true );
-		self::$dbSetup = false;
-	}
-
-	private function createTestDatabase() {
+	private function cloneDatabaseTables() {
 
 		// MW's DatabaseSqlite does some magic on its own therefore
 		// we force our way
@@ -233,41 +228,26 @@ class MwUnitTestDatabaseInstaller {
 		$this->cloneDatabase->cloneTableStructure();
 	}
 
-	/**
-	 * @see MediaWikiTestCase::addCoreDBData
-	 */
-	private function initMediaWikiCoreDBData() {
-
-		User::resetIdByNameCache();
-
-		$user = User::newFromName( 'UTSysop' );
-
-		if ( $user->idForName() == 0 ) {
-			$user->addToDatabase();
-			$user->setPassword( 'UTSysopPassword' );
-
-			$user->addGroup( 'sysop' );
-			$user->addGroup( 'bureaucrat' );
-			$user->saveSettings();
-		}
-
-		$this->createPageWithText(
-			Title::newFromText( 'UTPage' ),
-			'SMW unit test'
-		);
-	}
-
-	protected function createPageWithText( Title $title, $text ) {
+	private function createDummyPage() {
 
 		$pageCreator = new PageCreator();
 		$pageCreator
-			->createPage( $title )
-			->doEdit( $text );
-
-		return $pageCreator->getPage();
+			->createPage( Title::newFromText( 'SMWUTDummyPage' )  )
+			->doEdit( 'SMW dummy page' );
 	}
 
-	private function cleanOpenDBTransactions() {
+	private function destroyDatabaseTables() {
+
+		if ( !$this->cloneDatabase instanceof CloneDatabase ) {
+			throw new RuntimeException( 'CloneDatabase instance is missing, unable to destory the database tables' );
+		}
+
+		$this->cloneDatabase->destroy( true );
+		$this->availableDatabaseTypes = $this->defaultDatabaseTypes;
+		$this->dbSetup = false;
+	}
+
+	private function rollbackOpenDatabaseTransactions() {
 
 		if ( $this->getDBConnection() ) {
 
@@ -291,8 +271,8 @@ class MwUnitTestDatabaseInstaller {
 		return strpos( $table, 'searchindex' ) === false;
 	}
 
-	private function isSupportedDatabase() {
-		return in_array( $this->getDBConnection()->getType(), $this->supportedDatabase );
+	private function isAvailableDatabaseType() {
+		return in_array( $this->getDBConnection()->getType(), $this->availableDatabaseTypes );
 	}
 
 }

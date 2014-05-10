@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMWDataItem;
 
 /**
@@ -20,7 +22,7 @@ use SMWDataItem;
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class DataItemTest extends \MediaWikiTestCase {
+abstract class DataItemTest extends MwDBaseUnitTestCase {
 
 	/**
 	 * Returns the name of the \SMW\DataItem deriving class this test tests.

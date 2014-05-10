@@ -80,8 +80,6 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 		$this->executeJobQueueRunner( 'SMW\UpdateJob' );
 
-		$this->semanticDataValidator = new SemanticDataValidator;
-
 		$semanticDataFinder = new ByPageSemanticDataFinder;
 		$semanticDataFinder->setTitle( $main )->setStore( $this->getStore() );
 
@@ -90,20 +88,10 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			$semanticDataFinder->fetchFromStore()
 		);
 
+		$this->assertThatCategoriesAreSet( $expectedCategoryAsWikiValue, $semanticDataBatches );
+		$this->assertThatPropertiesAreSet( $expectedSomeProperties, $semanticDataBatches );
+
 		$incomingSemanticData = $semanticDataFinder->fetchIncomingDataFromStore();
-
-		foreach ( $semanticDataBatches as $semanticData ) {
-
-			$this->semanticDataValidator->assertThatCategoriesAreSet(
-				$expectedCategoryAsWikiValue,
-				$semanticData
-			);
-
-			$this->semanticDataValidator->assertThatPropertiesAreSet(
-				$expectedSomeProperties,
-				$semanticData
-			);
-		}
 
 		// Due to a ContentHandler issue in MW 1.23 the assert should not check
 		// for empty, for now we use empty in order to monitor the issue
@@ -117,7 +105,33 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 		//	);
 	}
 
+	protected function assertThatCategoriesAreSet( $expectedCategoryAsWikiValue, $semanticDataBatches ) {
+
+		$semanticDataValidator = new SemanticDataValidator();
+
+		foreach ( $semanticDataBatches as $semanticData ) {
+			$semanticDataValidator->assertThatCategoriesAreSet(
+				$expectedCategoryAsWikiValue,
+				$semanticData
+			);
+		}
+	}
+
+	protected function assertThatPropertiesAreSet( $expectedSomeProperties, $semanticDataBatches ) {
+
+		$semanticDataValidator = new SemanticDataValidator();
+
+		foreach ( $semanticDataBatches as $semanticData ) {
+			$semanticDataValidator->assertThatPropertiesAreSet(
+				$expectedSomeProperties,
+				$semanticData
+			);
+		}
+	}
+
 	protected function assertThatSemanticDataValuesForPropertyAreSet( $expected, $semanticData ) {
+
+		$semanticDataValidator = new SemanticDataValidator();
 
 		$runValueAssert = false;
 
@@ -125,13 +139,12 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 			if ( $property->equals( $expected['property'] ) ) {
 				$runValueAssert = true;
-				$this->semanticDataValidator->assertThatPropertyValuesAreSet(
+				$semanticDataValidator->assertThatPropertyValuesAreSet(
 					$expected,
 					$property,
 					$semanticData->getPropertyValues( $property )
 				);
 			}
-
 		}
 
 		// Issue #124 needs to be resolved first

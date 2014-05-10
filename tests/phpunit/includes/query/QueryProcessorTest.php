@@ -7,6 +7,8 @@
  */
 
 namespace SMW\Test;
+
+use SMW\Tests\MwDBaseUnitTestCase;
 use SMWQueryProcessor;
 
 /**
@@ -23,7 +25,7 @@ use SMWQueryProcessor;
  *
  * @author Nischay Nahata
  */
-class SMWQueryProcessorTest extends\ MediaWikiTestCase {
+class SMWQueryProcessorTest extends MwDBaseUnitTestCase {
 
 	public function createQueryDataProvider() {
 		return array(
