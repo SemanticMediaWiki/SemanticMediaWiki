@@ -277,7 +277,7 @@
 	"smw-concept-cache-text": "The concept has a total of $1 {{PLURAL:$1|page|pages}}, and was last updated $2.",
 	"smw_concept_header": "Pages of concept \"$1\"",
 	"smw_conceptarticlecount": "Showing below $1 {{PLURAL:$1|page|pages}}.",
-	"smw-qp-aggregatable-empty-data": "Requested aggregatable data could not be displayed due to some insufficient selection criteria.",
+	"smw-qp-empty-data": "Requested data could not be displayed due to some insufficient selection criteria.",
 	"right-smw-admin": "Access administration tasks (Semantic MediaWiki)",
 	"group-smwadministrator": "Semantic MediaWiki administrators",
 	"group-smwadministrator-member": "{{GENDER:$1|administrator (SMW)}}",

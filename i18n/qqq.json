@@ -292,7 +292,7 @@
 	"smw-concept-cache-text": "This is the message displays information about the cache status.\n\nParameters:\n* $1 - number of pages\n* $2 - date (localized, without time)",
 	"smw_concept_header": "This is the header on a page in namespace \"Concept\". Parameters:\n* $1 holds the name of the respective concept.",
 	"smw_conceptarticlecount": "This is the introductory message below the header on pages in namespace \"Concept\". Parameters:\n* $1 holds the number of pages displayed in the current view.",
-	"smw-qp-aggregatable-empty-data": "An error message shown for insufficient data.",
+	"smw-qp-empty-data": "An error message shown for insufficient data.",
 	"right-smw-admin": "{{doc-right|smw-admin}}",
 	"group-smwadministrator": "{{doc-group|smwadministrator|group}}",
 	"group-smwadministrator-member": "{{doc-group|smwadministrator|member}}",
