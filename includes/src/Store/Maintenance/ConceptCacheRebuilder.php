@@ -3,7 +3,9 @@
 namespace SMW\Store\Maintenance;
 
 use SMW\MediaWiki\MwTitleLookup;
-use SMW\MessageReporter;
+use SMW\Reporter\MessageReporter;
+use SMW\Reporter\NullMessageReporter;
+
 use SMW\Settings;
 use SMW\Store;
 use SMW\DIConcept;
@@ -18,7 +20,7 @@ use Title;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.2
  *
  * @author mwjames
@@ -47,12 +49,16 @@ class ConceptCacheRebuilder {
 	 *
 	 * @param Store $store
 	 * @param Settings $settings
-	 * @param MessageReporter $reporter
+	 * @param MessageReporter|null $reporter
 	 */
-	public function __construct( Store $store, Settings $settings, MessageReporter $reporter ) {
+	public function __construct( Store $store, Settings $settings, MessageReporter $reporter = null ) {
 		$this->store = $store;
 		$this->settings = $settings;
 		$this->reporter = $reporter;
+
+		if ( $this->reporter === null ) {
+			$this->reporter = new NullMessageReporter();
+		}
 	}
 
 	/**

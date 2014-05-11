@@ -7,7 +7,7 @@ use SMW\Store\Maintenance\DataRebuilder;
 use Title;
 
 /**
- * @covers \SMW\Store\Maintenance\DataRebuilder
+ * @uses \SMW\Store\Maintenance\DataRebuilder
  *
  * @ingroup Test
  *
@@ -47,13 +47,9 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockForAbstractClass( '\SMW\Store' );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\Store\Maintenance\DataRebuilder',
-			new DataRebuilder( $store, $messagereporter )
+			new DataRebuilder( $store, null )
 		);
 	}
 
@@ -71,15 +67,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'refreshData' )
 			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage' ) )
-			->getMock();
-
-		$instance = new DataRebuilder(
-			$store,
-			$messagereporter
-		);
+		$instance = new DataRebuilder( $store, null );
 
 		// Needs an end otherwise phpunit is caught up in an infinite loop
 		$instance->setParameters( array(
@@ -112,15 +100,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$store::staticExpects( $this->once() )
 			->method( 'setupStore' );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage' ) )
-			->getMock();
-
-		$instance = new DataRebuilder(
-			$store,
-			$messagereporter
-		);
+		$instance = new DataRebuilder( $store, null );
 
 		$instance->setParameters( array(
 			'e' => 1,
@@ -145,15 +125,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'refreshData' )
 			->will( $this->returnCallback( array( $this, 'refreshDataOnMockCallback' ) ) );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage' ) )
-			->getMock();
-
-		$instance = new DataRebuilder(
-			$store,
-			$messagereporter
-		);
+		$instance = new DataRebuilder( $store, null );
 
 		$instance->setParameters( array(
 			's' => 2,
@@ -197,15 +169,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage' ) )
-			->getMock();
-
-		$instance = new DataRebuilder(
-			$store,
-			$messagereporter
-		);
+		$instance = new DataRebuilder( $store, null );
 
 		$instance->setParameters( array(
 			'query' => '[[Category:Foo]]'
@@ -241,15 +205,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage' ) )
-			->getMock();
-
-		$instance = new DataRebuilder(
-			$store,
-			$messagereporter
-		);
+		$instance = new DataRebuilder( $store, null );
 
 		$instance->setParameters( array(
 			'c' => true
@@ -286,15 +242,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage' ) )
-			->getMock();
-
-		$instance = new DataRebuilder(
-			$store,
-			$messagereporter
-		);
+		$instance = new DataRebuilder( $store, null );
 
 		$instance->setParameters( array(
 			'p' => true
@@ -309,13 +257,8 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage' ) )
-			->getMock();
-
 		$instance = $this->getMockBuilder( '\SMW\Store\Maintenance\DataRebuilder' )
-			->setConstructorArgs( array( $store, $messagereporter ) )
+			->setConstructorArgs( array( $store, null ) )
 			->setMethods( array( 'makeTitleOf' ) )
 			->getMock();
 

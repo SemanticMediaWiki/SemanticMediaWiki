@@ -4,7 +4,7 @@ namespace SMW\Maintenance;
 
 use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
 use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\ObservableMessageReporter;
+use SMW\Reporter\ObservableMessageReporter;
 use SMW\StoreFactory;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';

@@ -7,7 +7,7 @@ use SMW\SQLStore\SimplePropertyStatisticsRebuilder;
 use FakeResultWrapper;
 
 /**
- * @covers \SMW\SQLStore\SimplePropertyStatisticsRebuilder
+ * @uses \SMW\SQLStore\SimplePropertyStatisticsRebuilder
  *
  * @ingroup Test
  *
@@ -27,13 +27,9 @@ class SimplePropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase 
 
 		$store = $this->getMockForAbstractClass( '\SMW\Store' );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\SimplePropertyStatisticsRebuilder',
-			new SimplePropertyStatisticsRebuilder( $store, $messagereporter )
+			new SimplePropertyStatisticsRebuilder( $store, null )
 		);
 	}
 
@@ -84,14 +80,9 @@ class SimplePropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase 
 				$this->getNonFixedPropertyTable( $arbitraryPropertyTableName ) )
 			) );
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage' ) )
-			->getMock();
-
 		$instance = new SimplePropertyStatisticsRebuilder(
 			$store,
-			$messagereporter
+			null
 		);
 
 		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )

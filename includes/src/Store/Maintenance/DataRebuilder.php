@@ -5,7 +5,9 @@ namespace SMW\Store\Maintenance;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\MwTitleLookup;
 
-use SMW\MessageReporter;
+use SMW\Reporter\MessageReporter;
+use SMW\Reporter\NullMessageReporter;
+
 use SMW\Settings;
 use SMW\Store;
 use SMW\DIWikiPage;
@@ -53,11 +55,15 @@ class DataRebuilder {
 	 * @since 1.9.2
 	 *
 	 * @param Store $store
-	 * @param MessageReporter $reporter
+	 * @param MessageReporter|null $reporter
 	 */
-	public function __construct( Store $store, MessageReporter $reporter ) {
+	public function __construct( Store $store, MessageReporter $reporter = null ) {
 		$this->store = $store;
 		$this->reporter = $reporter;
+
+		if ( $this->reporter === null ) {
+			$this->reporter = new NullMessageReporter();
+		}
 	}
 
 	/**

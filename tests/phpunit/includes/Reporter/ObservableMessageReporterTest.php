@@ -1,35 +1,24 @@
 <?php
 
-namespace SMW\Test;
-use SMW\ObservableMessageReporter;
-use SMW\MessageReporter;
+namespace SMW\Tests\Reporter;
+
+use SMW\Reporter\ObservableMessageReporter;
+use SMW\Reporter\MessageReporter;
 
 /**
- * Tests for the SMW\ObservableMessageReporter class.
+ * @covers \SMW\Reporter\ObservableMessageReporter
  *
- * @file
- * @since 1.9
- *
- * @ingroup SMW
  * @ingroup Test
- * @covers \SMW\ObservableMessageReporter
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since 1.9
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ObservableMessageReporterTest extends MessageReporterTest {
-
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\ObservableMessageReporter';
-	}
+class ObservableMessageReporterTest extends MessageReporterTestCase {
 
 	/**
 	 * @return MessageReporter[]
@@ -121,68 +110,6 @@ class ObservableMessageReporterTest extends MessageReporterTest {
 		$reporter->reportMessage( $message );
 
 		$this->assertEquals( 4, $callCount );
-	}
-
-}
-
-/**
- * Tests for the SMW\MessageReporter class.
- *
- * @file
- * @since 1.9
- *
- * @ingroup SMW
- * @ingroup Test
- *
- * @group SMW
- * @group SMWExtension
- * @group SMWQueries
- *
- * @licence GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-abstract class MessageReporterTest extends SemanticMediaWikiTestCase {
-
-	/**
-	 * @return MessageReporter[]
-	 */
-	public abstract function getInstances();
-
-	/**
-	 * Message provider, includes edge cases and random tests
-	 *
-	 * @return array
-	 */
-	public function reportMessageProvider() {
-		$messages = array();
-
-		$messages[] = '';
-		$messages[] = '  ';
-
-		foreach ( array_merge( range( 1, 100 ), array( 1000, 10000 ) ) as $length ) {
-			$string = array();
-
-			for ( $position = 0; $position < $length; $position++ ) {
-				$string[] = chr( mt_rand( 32, 126 ) );
-			}
-
-			$messages[] = implode( '', $string );
-		}
-
-		return $this->arrayWrap( $messages );
-	}
-
-	/**
-	 * @dataProvider reportMessageProvider
-	 *
-	 * @param string $message
-	 */
-	public function testReportMessage( $message ) {
-		foreach ( $this->getInstances() as $reporter ) {
-			$reporter->reportMessage( $message );
-			$reporter->reportMessage( $message );
-			$this->assertTrue( true );
-		}
 	}
 
 }

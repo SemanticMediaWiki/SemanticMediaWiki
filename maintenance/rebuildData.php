@@ -3,7 +3,7 @@
 namespace SMW\Maintenance;
 
 use SMW\Store\Maintenance\DataRebuilder;
-use SMW\ObservableMessageReporter;
+use SMW\Reporter\ObservableMessageReporter;
 use SMW\StoreFactory;
 use SMW\Settings;
 

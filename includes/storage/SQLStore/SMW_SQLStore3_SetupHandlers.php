@@ -1,7 +1,7 @@
 <?php
 
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MessageReporter;
+use SMW\Reporter\MessageReporter;
 
 /**
  * @file
