@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMW\Tests\Util\PageCreator;
 use SMW\Tests\Util\PageDeleter;
 
@@ -30,33 +32,26 @@ use UnexpectedValueException;
  *
  * @author mwjames
  */
-abstract class MwIntegrationTestCase extends \MediaWikiTestCase {
-
-	/** @var array */
-	private $hooks = array();
-
-	protected function setUp() {
-		$this->removeFunctionHookRegistrationFromGlobal();
-		parent::setUp();
-	}
-
-	protected function tearDown() {
-		parent::tearDown();
-		$this->restoreFuntionHookRegistrationToGlobal();
-	}
+abstract class MwIntegrationTestCase extends MwDBaseUnitTestCase {
 
 	/**
 	 * In order for the test not being influenced by an exisiting setup
 	 * registration we temporary remove from the GLOBALS configuration
 	 * in order to enable hook and context assignment freely during testing
 	 */
-	protected function removeFunctionHookRegistrationFromGlobal() {
-		$this->hooks = $GLOBALS['wgHooks'];
+	private $wgHooks = array();
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->wgHooks = $GLOBALS['wgHooks'];
 		$GLOBALS['wgHooks'] = array();
 	}
 
-	protected function restoreFuntionHookRegistrationToGlobal() {
-		$GLOBALS['wgHooks'] = $this->hooks;
+	protected function tearDown() {
+		$GLOBALS['wgHooks'] = $this->wgHooks;
+
+		parent::tearDown();
 	}
 
 	protected function runExtensionSetup( $context, $directory = 'Foo' ) {

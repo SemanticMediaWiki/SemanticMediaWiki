@@ -2,6 +2,8 @@
 
 namespace SMW\Test\SQLStore;
 
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\StoreFactory;
 
@@ -22,7 +24,7 @@ use SMW\StoreFactory;
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class PropertyStatisticsTableTest extends \MediaWikiTestCase {
+class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 
 	protected $statsTable = null;
 
@@ -35,10 +37,6 @@ class PropertyStatisticsTableTest extends \MediaWikiTestCase {
 	 */
 	private function isWinOS() {
 		return strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN';
-	}
-
-	public function getStore() {
-		return StoreFactory::getStore();
 	}
 
 	public function testDeleteAll() {

@@ -29,6 +29,7 @@ function runTestAutoLoader() {
 	}
 
 	$autoLoader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
+	$autoLoader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
 
 	// FIXME
 	$autoLoader->addClassMap( array(
@@ -37,11 +38,6 @@ function runTestAutoLoader() {
 		'SMW\Maintenance\RebuildData'               => __DIR__ . '/../maintenance/rebuildData.php',
 		'SMW\Maintenance\RebuildPropertyStatistics' => __DIR__ . '/../maintenance/rebuildPropertyStatistics.php'
 	) );
-
-	$autoLoader->addPsr4( 'SMW\\Tests\\Integration\\', __DIR__ . '/phpunit/Integration' );
-	$autoLoader->addPsr4( 'SMW\\Tests\\Regression\\', __DIR__ . '/phpunit/Regression' );
-	$autoLoader->addPsr4( 'SMW\\Tests\\System\\', __DIR__ . '/phpunit/System' );
-	$autoLoader->addPsr4( 'SMW\\Tests\\Util\\', __DIR__ . '/phpunit/Util' );
 
 	return true;
 }

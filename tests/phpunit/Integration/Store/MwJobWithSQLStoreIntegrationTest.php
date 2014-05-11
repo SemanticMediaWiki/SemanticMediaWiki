@@ -69,7 +69,6 @@ class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
 		$this->assertJobRun( 'SMW\UpdateJob' );
 
 		$this->deletePage( $associate['title'] );
-
 	}
 
 	/**
