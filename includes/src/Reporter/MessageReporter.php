@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW;
+namespace SMW\Reporter;
 
 /**
  * Interface for objects that can report messages
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

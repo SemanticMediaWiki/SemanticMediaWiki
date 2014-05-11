@@ -8,20 +8,17 @@ use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\StoreFactory;
 
 /**
- * Tests for the SMW\ObservableMessageReporter class.
+ * @uses \SMW\SQLStore\PropertyStatisticsTable
  *
- * @file
- * @since 1.9
- *
- * @ingroup SMW
  * @ingroup Test
- * @covers \SMW\SQLStore\PropertyStatisticsTable
  *
  * @group SMW
  * @group SMWExtension
  * @group Database
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since 1.9
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {

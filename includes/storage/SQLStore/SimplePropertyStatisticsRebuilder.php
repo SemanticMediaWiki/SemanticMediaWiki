@@ -3,7 +3,9 @@
 namespace SMW\SQLStore;
 
 use SMW\Store\PropertyStatisticsStore;
-use SMW\MessageReporter;
+use SMW\Reporter\MessageReporter;
+use SMW\Reporter\NullMessageReporter;
+
 use SMW\Store;
 
 use MWException;
@@ -35,11 +37,15 @@ class SimplePropertyStatisticsRebuilder implements \SMW\Store\PropertyStatistics
 	 * @since 1.9
 	 *
 	 * @param Store $store
-	 * @param MessageReporter $reporter
+	 * @param MessageReporter|null $reporter
 	 */
-	public function __construct( Store $store, MessageReporter $reporter ) {
+	public function __construct( Store $store, MessageReporter $reporter = null ) {
 		$this->store = $store;
 		$this->reporter = $reporter;
+
+		if ( $this->reporter === null ) {
+			$this->reporter = new NullMessageReporter();
+		}
 	}
 
 	/**

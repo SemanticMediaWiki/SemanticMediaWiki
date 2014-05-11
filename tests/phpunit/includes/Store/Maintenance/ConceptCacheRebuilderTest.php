@@ -6,7 +6,7 @@ use SMW\Store\Maintenance\ConceptCacheRebuilder;
 use SMW\DIConcept;
 
 /**
- * @covers \SMW\Store\Maintenance\ConceptCacheRebuilder
+ * @uses \SMW\Store\Maintenance\ConceptCacheRebuilder
  *
  * @ingroup Test
  *
@@ -30,13 +30,9 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\Store\Maintenance\ConceptCacheRebuilder',
-			new ConceptCacheRebuilder( $store, $settings, $messagereporter )
+			new ConceptCacheRebuilder( $store, $settings )
 		);
 	}
 
@@ -51,14 +47,9 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new ConceptCacheRebuilder(
 			$store,
-			$settings,
-			$messagereporter
+			$settings
 		);
 
 		$this->assertFalse( $instance->rebuild() );
@@ -216,15 +207,9 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messagereporter = $this->getMockBuilder( '\SMW\Messagereporter' )
-			->disableOriginalConstructor()
-			->setMethods( array( 'reportMessage') )
-			->getMock();
-
 		$instance = new ConceptCacheRebuilder(
 			$store,
-			$settings,
-			$messagereporter
+			$settings
 		);
 
 		$instance->setParameters( array(

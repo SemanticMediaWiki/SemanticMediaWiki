@@ -1,17 +1,16 @@
 <?php
 
-namespace SMW;
+namespace SMW\Reporter;
 
 /**
  * Message reporter that reports messages by passing them along to all
  * registered handlers.
  *
- * @since 1.9
- *
- * @file
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
+ * @since 1.9
+ *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ObservableMessageReporter implements MessageReporter {
