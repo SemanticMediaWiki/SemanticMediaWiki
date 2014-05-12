@@ -270,7 +270,6 @@
 	"smw-concept-cache-text": "개념은 총 {{PLURAL:$1|문서}} $1개가 있으며, $2에 마지막으로 업데이트했습니다.",
 	"smw_concept_header": "\"$1\" 개념의 문서",
 	"smw_conceptarticlecount": "아래에 {{PLURAL:$1|문서}} $1개를 보여줍니다.",
-	"smw-qp-aggregatable-empty-data": "요청한 집계할 수 있는 데이터가 일부 충분하지 않은 선택 조건에 따라 보여줄 수 없습니다.",
 	"right-smw-admin": "관리 작업에 접근 (시맨틱 미디어위키)",
 	"group-smwadministrator": "시맨틱 미디어위키 관리자",
 	"group-smwadministrator-member": "{{GENDER:$1|관리자 (SMW)}}",

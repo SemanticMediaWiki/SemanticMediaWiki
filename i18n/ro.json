@@ -5,7 +5,8 @@
 			"Firilacroco",
 			"KlaudiuMihaila",
 			"Minisarm",
-			"Stelistcristi"
+			"Stelistcristi",
+			"Ion"
 		]
 	},
 	"smw-desc": "Wikiul dumneavoastră devine mai accesibil — pentru mașini ''și'' oameni ([https://semantic-mediawiki.org/wiki/Help:User_manual documentație on-line])",
@@ -122,5 +123,7 @@
 	"smw-ui-tooltip-title-event": "Eveniment",
 	"smw-ui-tooltip-title-note": "Notă",
 	"smw_unknowntype": "Tipul acestei proprietăți este invalid",
-	"smw_concept_header": "Pagini ale conceptului „$1”"
+	"smw_concept_header": "Pagini ale conceptului „$1”",
+	"smw-qp-empty-data": "Imposibil de afişat datele solicitate ca urmare a unor criterii de selecţie insuficiente.",
+	"smw-livepreview-loading": "Încărcare…"
 }

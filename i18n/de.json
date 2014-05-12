@@ -289,7 +289,7 @@
 	"smw-concept-cache-text": "Das Konzept enthält {{PLURAL:$1|eine Seite|$1 Seiten}} und wurde letztmalig am $2 aktualisiert.",
 	"smw_concept_header": "Seiten mit dem Konzept „$1“",
 	"smw_conceptarticlecount": "Unten {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt.",
-	"smw-qp-aggregatable-empty-data": "Aufgrund von mangelhaften Auswahlkriterien können die angeforderten aggregierbaren Daten nicht angezeigt werden.",
+	"smw-qp-empty-data": "Die angeforderten Daten konnten aufgrund einiger unzureichender Auswahlkriterien nicht angezeigt werden.",
 	"right-smw-admin": "Semantic MediaWiki administrieren",
 	"group-smwadministrator": "SMW-Administratoren",
 	"group-smwadministrator-member": "{{GENDER:$1|SMW-Administrator|SMW-Administratorin}}",

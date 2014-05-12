@@ -281,7 +281,6 @@
 	"smw-concept-cache-text": "O conceito possui um total de $1 {{PLURAL:$1|página|páginas}} e foi atualizado pela última vez em $2.",
 	"smw_concept_header": "Páginas do conceito \"$1\"",
 	"smw_conceptarticlecount": "Exibindo {{PLURAL:$1|uma página|$1 páginas}}.",
-	"smw-qp-aggregatable-empty-data": "Os dados agregados requisitados não foram exibidos devido a algum critério de seleção insuficiente.",
 	"right-smw-admin": "Acessar as tarefas de administração (Semantic MediaWiki)",
 	"group-smwadministrator": "Administradores do Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|administrador (SMW)|administradora (SMW)}}",
