@@ -54,6 +54,7 @@
 	"smw_attributearticlecount": "Prikazujem $1 {{PLURAL:$1|stran|strani}} ki uporabljajo to lastnost.",
 	"smw_subproperty_header": "Podlastnosti",
 	"smw_subpropertyarticlecount": "Ta lastnost ima {{PLURAL:$1|naslednjo $1 podlastnost|naslednji $1 podlastnosti|naslednje $1 podlastnosti|naslednjih $1 podlastnosti}}:",
+	"specialpages-group-smw_group": "Semantični MediaWiki",
 	"exportrdf": "Izvoz strani v RDF",
 	"smw_exportrdf_docu": "Ta stran vam omogoča, da dobite podatke iz strani v formatu RDF.\nZa izvoz strani vpišite njihove naslove v spodnjem oknu, po en naslov na vrstico.",
 	"smw_exportrdf_recursive": "Rekurzivno izvozite vse povezane strani.\nUpoštevajte, da lahko velik rezultat!",
@@ -126,5 +127,7 @@
 	"smw_smwadmin_mediazilla": "Hrošče lahko prijavite na <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHubu</a>.",
 	"smw_adminlinks_datastructure": "Zgradba podatkov",
 	"smw_adminlinks_displayingdata": "Prikaz podatkov",
-	"smw_concept_header": "Strani zasnove »$1«"
+	"prefs-smw": "Semantični MediaWiki",
+	"smw_concept_header": "Strani zasnove »$1«",
+	"smw-livepreview-loading": "Nalaganje ..."
 }
