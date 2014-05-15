@@ -62,7 +62,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 
 		if ( $data === array() ) {
 			$queryResult->addErrors( array(
-				$this->msg( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text()
+				$this->msg( 'smw-qp-empty-data' )->inContentLanguage()->text()
 			) );
 			return '';
 		} else {
