@@ -13,7 +13,8 @@
 			"Vuh",
 			"Woytecr",
 			"Łukasz Bolikowski",
-			"아라"
+			"아라",
+			"Vengir"
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
@@ -249,6 +250,7 @@
 	"smw_unknowntype": "Typ atrybutu jest nieprawidłowy.",
 	"smw_concept_header": "Strony koncepcji „$1”",
 	"smw_conceptarticlecount": "{{PLURAL:$1|Wyświetlona jest jedna strona należąca|Wyświetlone zostały $1 strony należące|Wyświetlonych zostało $1 stron należących}} do tej koncepcji.",
+	"smw-qp-empty-data": "Żądane dane nie mogły zostać wyświetlone ze względu na niewystarczające kryteria wyboru.",
 	"right-smw-admin": "Dostęp do zarządzania (Semantyczna MediaWiki)",
 	"group-smwadministrator": "Administratorzy SMW",
 	"group-smwadministrator-member": "{{GENDER:$1|administrator SMW|administratorka SMW}}",
@@ -256,5 +258,6 @@
 	"action-smw-admin": "dostęp do zarządzania semantycznej MediaWiki",
 	"smw-sp-properties-cache-info": "Wymienione dane zostały pobrane z [https://www.semantic-mediawiki.org/wiki/Caching cache] i były ostatnio aktualizowane $1.",
 	"smw-sp-properties-header-label": "Lista właściwości",
-	"smw-sp-admin-settings-title": "Ustawienia konfiguracji"
+	"smw-sp-admin-settings-title": "Ustawienia konfiguracji",
+	"smw-livepreview-loading": "Trwa ładowanie…"
 }
