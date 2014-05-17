@@ -17,3 +17,4 @@ Not a release yet.
 * #303 Adjusted `SMW\MediaWiki\Hooks\InternalParseBeforeLinks` to cope with changes in MW 1.23/MW 1.24 (bug 62856)
 * #310 Fixed autoloading for `SMW\Test\QueryPrinterRegistryTestCase`
 * #311 Removed `MediaWikiTestCase` dependency
+* #315 Updated jquery.qTip2 from v2.0.0 to v2.2.0 (Mar 17 2014)
