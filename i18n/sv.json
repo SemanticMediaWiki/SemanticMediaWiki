@@ -281,11 +281,13 @@
 	"smw-concept-cache-text": "Det här konceptet beskriver {{PLURAL:$1|en sida|$1 sidor}}, och uppdaterades senast $2.",
 	"smw_concept_header": "Sidor som hör till konceptet \"$1\"",
 	"smw_conceptarticlecount": "Visar {{PLURAL:$1|en sida|$1 sidor}}",
+	"smw-qp-empty-data": "Önskad data kunde inte visas på grund av att vissa urvalskriterier är otillräckliga.",
 	"group-smwadministrator": "Semantic MediaWiki-administratörer",
 	"group-smwadministrator-member": "{{GENDER:$1|administratör (SMW)}}",
 	"smw-pa-property-predefined-default": "$1 är en fördefinierad egenskap (även ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]''). Det är en inbyggd egenskap med en särskild betydelse, men användas precis som en vanlig [https://www.semantic-mediawiki.org/wiki/Property användardefinierad egenskap].",
 	"smw-sp-properties-header-label": "Lista med egenskaper",
 	"smw-sp-admin-settings-title": "Konfigurationsinställningar",
 	"smw-sp-admin-idlookup-title": "Kolla upp objekt-ID",
-	"smw-sp-admin-idlookup-objectid": "Objekt-ID:"
+	"smw-sp-admin-idlookup-objectid": "Objekt-ID:",
+	"smw-livepreview-loading": "Laddar…"
 }
