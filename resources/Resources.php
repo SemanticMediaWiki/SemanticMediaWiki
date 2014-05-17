@@ -27,13 +27,15 @@ return array(
 		'dependencies' => 'jquery.async',
 	),
 
-	// Common styles independent from JavaScript
-	// MW 1.22 loading this as 'dependencies' => 'ext.smw.tooltip.styles'
-	// was not a choice as it showed flashy hiccups
+	// Resource is loaded at the top otherwise the stylesheet will only
+	// become active after all content is loaded with icons appearing with a
+	// delay due to missing stylesheet definitions at the time of the display
 	'ext.smw.style' => $moduleTemplate + array(
 		'styles' => array(
-			'smw/util/ext.smw.util.tooltip.css',
 			'smw/ext.smw.css'
+		),
+		'dependencies' => array(
+			'ext.smw.tooltip.styles'
 		),
 		'position' => 'top'
 	),
@@ -105,14 +107,24 @@ return array(
 	),
 
 	// Tooltip qtip2 resources
+	'ext.jquery.qtip.styles' => $moduleTemplate + array(
+		'styles' => 'jquery/jquery.qtip.css'
+	),
+
+	// Tooltip qtip2 resources
 	'ext.jquery.qtip' => $moduleTemplate + array(
 		'scripts' => 'jquery/jquery.qtip.js',
-		'styles' => 'jquery/jquery.qtip.css',
+		'dependencies' => array(
+			'ext.jquery.qtip.styles'
+		)
 	),
 
 	// Tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + array(
 		'styles' => 'smw/util/ext.smw.util.tooltip.css',
+		'dependencies' => array(
+			'ext.jquery.qtip.styles'
+		)
 	),
 
 	// Tooltip
@@ -133,16 +145,14 @@ return array(
 			'smw-ui-tooltip-title-event',
 		)
 	),
-	// Resource is loaded at the top otherwise the stylesheet will only
-	// become active after all content is loaded with icons appearing with a
-	// delay due to missing stylesheet definitions at the time of the display
+
 	'ext.smw.tooltips' => $moduleTemplate + array(
 		'dependencies' => array(
 			'ext.smw.style',
 			'ext.smw.tooltip'
-		),
-		'position' => 'top'
+		)
 	),
+
 	// Autocomplete resources
 	'ext.smw.autocomplete' => $moduleTemplate + array(
 		'scripts' => 'smw/util/ext.smw.util.autocomplete.js',
@@ -163,15 +173,16 @@ return array(
 		),
 		'position' => 'top'
 	),
+
 	// Facts and browse
 	'ext.smw.browse' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.browse.js',
 		'dependencies' => array(
 			'ext.smw.style',
 			'ext.smw.autocomplete'
-		),
-		'position' => 'top'
+		)
 	),
+
 	// Special:SearchByProperty
 	'ext.smw.property' => $moduleTemplate + array(
 		'scripts' => 'smw/special/ext.smw.special.property.js',
