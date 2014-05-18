@@ -15,7 +15,8 @@
 			"Yanmiao liu",
 			"Yfdyh000",
 			"아라",
-			"Hudafu"
+			"Hudafu",
+			"Stieizc"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -274,6 +275,7 @@
 	"smw_unknowntype": "这种属性的类型不受支持",
 	"smw_concept_header": "概念\"$1\"的页面",
 	"smw_conceptarticlecount": "显示属于此概念的$1个页面。",
+	"smw-qp-empty-data": "选择标准不充分，请求数据无法显示。",
 	"right-smw-admin": "连接管理员工作组（Semantic MediaWiki）",
 	"group-smwadministrator": "Semantic MediaWiki管理员",
 	"group-smwadministrator-member": "{{GENDER:$1|管理员（SMW）}}",

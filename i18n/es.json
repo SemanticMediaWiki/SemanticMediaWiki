@@ -15,7 +15,8 @@
 			"Sanbec",
 			"Tifinaghes",
 			"Translationista",
-			"아라"
+			"아라",
+			"Wifidel"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -263,5 +264,7 @@
 	"smw_unknowntype": "El tipo de esta propiedad no es válido",
 	"smw_concept_header": "Páginas de concepto \"$1\"",
 	"smw_conceptarticlecount": "Mostrando $1 {{PLURAL:$1|página|páginas}} pertenecientes al concepto.",
-	"smw-sp-properties-header-label": "Lista de propiedades"
+	"smw-qp-empty-data": "Los datos solicitados podrían no mostrarse, debido a algunos criterios de selección insuficientes.",
+	"smw-sp-properties-header-label": "Lista de propiedades",
+	"smw-livepreview-loading": "Cargando…"
 }
