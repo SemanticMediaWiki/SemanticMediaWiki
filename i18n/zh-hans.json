@@ -145,6 +145,7 @@
 	"smw-property-name-invalid": "属性$1不能使用（无效的属性名称）。",
 	"smw-sp-property-searchform": "显示包含...的属性：",
 	"concepts": "概念",
+	"smw-sp-concept-docu": "[https://www.semantic-mediawiki.org/wiki/Help:Concepts 概念]可作为“动态分类”查看，就是作为不是手动创建，而是由Semantic MediaWiki从指定查询的说明生成的页面收集。",
 	"smw-sp-concept-header": "概念列表",
 	"smw-sp-concept-count": "以下$1个概念已被列出。",
 	"smw-sp-concept-empty": "没有找到概念。",
