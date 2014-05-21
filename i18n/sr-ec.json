@@ -181,6 +181,7 @@
 	"smw_adminlinks_datastructure": "Структура података",
 	"smw_adminlinks_displayingdata": "Приказивање података",
 	"smw_adminlinks_inlinequerieshelp": "Помоћ за непосредне упите",
+	"prefs-smw": "Семантички Медијавики",
 	"smw_unknowntype": "Тип овог својства је погрешан.",
 	"smw_concept_header": "Странице концепта \"$1\"",
 	"smw_conceptarticlecount": "Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.",
