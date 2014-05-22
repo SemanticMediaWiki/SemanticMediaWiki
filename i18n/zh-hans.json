@@ -87,6 +87,7 @@
 	"smw-paramdesc-feedtype": "订阅类型",
 	"smw-paramdesc-feedtitle": "源标题文字",
 	"smw-paramdesc-feeddescription": "要用作feed的说明的文字",
+	"smw-paramdesc-feedpagecontent": "要通过订阅显示的页面内容",
 	"smw-label-feed-description": "$1 $2订阅",
 	"smw_iq_disabled": "此维基的语义查询已禁用",
 	"smw_iq_moreresults": "更多结果",

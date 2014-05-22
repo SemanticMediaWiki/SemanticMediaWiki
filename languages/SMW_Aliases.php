@@ -784,7 +784,7 @@ $specialPageAliases['zh-hans'] = array(
 	'SearchByProperty' => array( '按属性搜索' ),
 	'SemanticStatistics' => array( '语义统计' ),
 	'Types' => array( '类型' ),
-	'URIResolver' => array( 'URL分解器' ),
+	'URIResolver' => array( 'URI分解器' ),
 	'UnusedProperties' => array( '未使用属性' ),
 	'WantedProperties' => array( '缺乏属性' ),
 );
