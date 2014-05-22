@@ -9,7 +9,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 }
 
 function registerAutoloaderPath( $identifier, $path ) {
-	print( "\nUsing the {$identifier} vendor autoloader ...\n" );
+	print( "\nUsing the {$identifier} vendor autoloader ...\n\n" );
 	return require $path;
 }
 

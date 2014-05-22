@@ -26,9 +26,11 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	/* @var MwDatabaseTableBuilder */
 	protected $mwDatabaseTableBuilder = null;
 
-	protected $destroyDatabaseTables = false;
-	protected $isUsableUnitTestDatabase = true;
+	/* @var array|null */
 	protected $databaseToBeExcluded = null;
+
+	protected $destroyDatabaseTablesOnEachRun = false;
+	protected $isUsableUnitTestDatabase = true;
 
 	/**
 	 * It is assumed that each test that makes use of the TestCase is requesting
@@ -51,7 +53,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		parent::run( $result );
 
-		if ( $this->isUsableUnitTestDatabase && $this->destroyDatabaseTables ) {
+		if ( $this->isUsableUnitTestDatabase && $this->destroyDatabaseTablesOnEachRun ) {
 			$this->mwDatabaseTableBuilder->doDestroy();
 		}
 	}
@@ -61,7 +63,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function destroyDatabaseTablesOnEachRun() {
-		$this->destroyDatabaseTables = true;
+		$this->destroyDatabaseTablesOnEachRun = true;
 	}
 
 	protected function getStore() {
@@ -74,6 +76,14 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 	protected function isUsableUnitTestDatabase() {
 		return $this->isUsableUnitTestDatabase;
+	}
+
+	protected function checkIfDatabaseCanBeUsedOtherwiseSkipTest() {
+		if ( !$this->isUsableUnitTestDatabase ) {
+			$this->markTestSkipped(
+				"Required database type is not available or is excluded"
+			);
+		}
 	}
 
 }
