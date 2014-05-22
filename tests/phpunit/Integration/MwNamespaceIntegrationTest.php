@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Test\MwIntegrationTestCase;
+use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
 
 use SMW\NamespaceManager;
 use SMW\ExtensionContext;
@@ -25,7 +25,7 @@ use MWNamespace;
  *
  * @author mwjames
  */
-class MwNamespaceIntegrationTest extends MwIntegrationTestCase {
+class MwNamespaceIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 
 	public function testRunNamespaceManagerWithNoConstantsDefined() {
 

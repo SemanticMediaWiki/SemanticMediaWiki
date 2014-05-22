@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\Store;
 
 use SMW\Tests\Util\SemanticDataValidator;
-use SMW\Test\MwIntegrationTestCase;
+use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
 
 use SMW\ExtensionContext;
 use SMW\SemanticData;
@@ -21,15 +21,14 @@ use Job;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
- * @group Database
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.0.1
  *
  * @author mwjames
  */
-class MwJobWithSQLStoreIntegrationTest extends MwIntegrationTestCase {
+class MwJobWithSQLStoreIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 
 	protected function setUp() {
 		parent::setUp();

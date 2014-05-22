@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Store;
 
-use SMW\Test\MwIntegrationTestCase;
+use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
 use SMW\ExtensionContext;
 
 use WikiPage;
@@ -17,15 +17,14 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
- * @group Database
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class MwDatabaseSQLStoreIntegrationTest extends MwIntegrationTestCase {
+class MwDatabaseSQLStoreIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 
 	/* @var Title */
 	protected $title;

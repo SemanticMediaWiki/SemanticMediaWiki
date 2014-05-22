@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\Store;
 
 use SMW\Tests\Util\SemanticDataValidator;
 use SMW\Tests\Util\PageCreator;
-use SMW\Test\MwIntegrationTestCase;
+use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
 
 use SMW\ExtensionContext;
 use SMW\ParserData;
@@ -27,15 +27,14 @@ use UnexpectedValueException;
  * @group SMWExtension
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
- * @group Database
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.1
  *
  * @author mwjames
  */
-class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwIntegrationTestCase {
+class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 
 	/** @var Title */
 	protected $title = null;
