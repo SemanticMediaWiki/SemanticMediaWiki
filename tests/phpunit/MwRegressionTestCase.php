@@ -31,22 +31,14 @@ use Title;
  */
 abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 
-	protected $expectedAssertions = 0;
-
 	/**
-	 * @see MwDBaseUnitTestCase::run
+	 * Runnning regression tests on postgres will return with something like
+	 * "pg_query(): Query failed: ERROR:  ... DatabasePostgres.php on line 254"
+	 * therefore we exclude postgres from this test suite
 	 */
-	public function run( \PHPUnit_Framework_TestResult $result = null ) {
+	protected $databaseToBeExcluded = array( 'postgres' );
 
-		$this->destroyDatabaseTablesOnEachRun();
-
-		// Runnning regression tests on postgres will return with something like
-		// "pg_query(): Query failed: ERROR:  ... DatabasePostgres.php on line 254"
-		// therefore we exclude postgres from this test suite
-		$this->removeDatabaseTypeFromTest( 'postgres' );
-
-		parent::run( $result );
-	}
+	protected $destroyDatabaseTablesOnEachRun = true;
 
 	/**
 	 * Specifies the source file
@@ -79,11 +71,7 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 	 */
 	public function testDataImport() {
 
-		if ( !$this->isUsableUnitTestDatabase() ) {
-			$this->markTestSkipped(
-				'Database setup did not meet the test requirements'
-			);
-		}
+		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
 
 		$importRunner = new XmlImportRunner( $this->getSourceFile() );
 		$importRunner->setVerbose( true );
