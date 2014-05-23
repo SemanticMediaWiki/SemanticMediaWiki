@@ -34,6 +34,39 @@
     </namespaces>
   </siteinfo>
   <page>
+    <title>Category:Regression test</title>
+    <ns>14</ns>
+    <id>420</id>
+      <sha1>4s17yzvoj5kq6dzdmgnw7t1ukpr4tkz</sha1>
+    <revision>
+      <id>1035</id>
+      <timestamp>2014-01-31T07:30:44Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <minor/>
+      <comment>1 revision</comment>
+      <text xml:space="preserve" bytes="24">Regression test category</text>
+    </revision>
+  </page>
+  <page>
+    <title>Category:Simple redirect test</title>
+    <ns>14</ns>
+    <id>429</id>
+      <sha1>iegvvlibf0prco1vgdvofg9se788l1c</sha1>
+    <revision>
+      <id>1016</id>
+      <timestamp>2014-01-30T08:43:10Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;..&quot;</comment>
+      <text xml:space="preserve" bytes="2">..</text>
+    </revision>
+  </page>
+  <page>
     <title>Property:Has regression test</title>
     <ns>102</ns>
     <id>487</id>

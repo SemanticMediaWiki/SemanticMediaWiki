@@ -23,7 +23,7 @@ use Title;
  * @group Database
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.2
  *
  * @author mwjames
@@ -64,7 +64,7 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			'property' => new DIProperty( '_REDI' ),
 			'propertyValues' => array(
 				'ToBeSimplePageRedirect',
-				'NewTargetPageRedirectRegressionTest'
+				'NewPageRedirectRegressionTest'
 			)
 		);
 
@@ -73,7 +73,7 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			'SimplePageRedirectRegressionTest'
 		);
 
-		$this->movePageToTargetWithRedirect(
+		$this->movePageToTargetRedirect(
 			$newRedirectPage,
 			'NewTargetPageRedirectRegressionTest'
 		);
@@ -88,21 +88,31 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			$semanticDataFinder->fetchFromStore()
 		);
 
-		$this->assertThatCategoriesAreSet( $expectedCategoryAsWikiValue, $semanticDataBatches );
-		$this->assertThatPropertiesAreSet( $expectedSomeProperties, $semanticDataBatches );
+		$this->assertThatCategoriesAreSet(
+			$expectedCategoryAsWikiValue,
+			$semanticDataBatches
+		);
+
+		$this->assertThatPropertiesAreSet(
+			$expectedSomeProperties,
+			$semanticDataBatches
+		);
 
 		$incomingSemanticData = $semanticDataFinder->fetchIncomingDataFromStore();
 
-		// Due to a ContentHandler issue in MW 1.23 the assert should not check
-		// for empty, for now we use empty in order to monitor the issue
-		// @see #212 and bug 62856
-		$this->assertEmpty( $incomingSemanticData->getPropertyValues( new DIProperty( '_REDI' ) ) );
+		// When running sqlite the database select returns an empty result which
+		// is probably due to some DB-prefix issues in the MW's DatabaseSqlite
+		// implementation and for non-sqlite see #212 / bug 62856
+		if ( $incomingSemanticData->getProperties() === array() ) {
+			$this->markTestSkipped(
+				"Skip test because either of sqlite or MW-{$GLOBALS['wgVersion']} / bug 62856"
+			);
+		}
 
-		// Same issue as above
-		//	$this->assertThatSemanticDataValuesForPropertyAreSet(
-		//		$expectedRedirectAsWikiValue,
-		//		$incomingSemanticData
-		//	);
+		$this->assertThatSemanticDataValuesForPropertyAreSet(
+			$expectedRedirectAsWikiValue,
+			$incomingSemanticData
+		);
 	}
 
 	protected function assertThatCategoriesAreSet( $expectedCategoryAsWikiValue, $semanticDataBatches ) {
@@ -138,6 +148,7 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 		foreach ( $semanticData->getProperties() as $property ) {
 
 			if ( $property->equals( $expected['property'] ) ) {
+
 				$runValueAssert = true;
 				$semanticDataValidator->assertThatPropertyValuesAreSet(
 					$expected,
@@ -147,8 +158,7 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			}
 		}
 
-		// Issue #124 needs to be resolved first
-		// $this->assertTrue( $runValueAssert, __METHOD__ );
+		$this->assertTrue( $runValueAssert, __METHOD__ );
 	}
 
 	protected function createPageWithRedirectFor( $source, $target ) {
@@ -161,7 +171,7 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 		return $pageCreator->getPage();
 	}
 
-	protected function movePageToTargetWithRedirect( $page, $target ) {
+	protected function movePageToTargetRedirect( $page, $target ) {
 
 		$moveToTargetTitle = Title::newFromText( $target );
 
