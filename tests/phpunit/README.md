@@ -1,4 +1,10 @@
-[PHPUnit][phpunit] provides the necessary environment to execute the in the subsequent directories provided unit tests together with the following base elements. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw].
+[PHPUnit][phpunit] provides the necessary environment to execute the in the subsequent directories provided unit tests together with the following base elements. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw-testing].
+
+Tests can be by executed by either running the `mw-phpunit-runner.php` script or [`phpunit`][mw-testing] together with the PHPUnit configuration file found in the root directory.
+
+```sh
+php mw-phpunit-runner.php [options]
+```
 
 ### Test types
 
@@ -8,9 +14,9 @@
 
 ### Test cases
 
-We discourage the usage of `MediaWikiTestCase` as this binds the test environment setup and execution to tight to MediaWiki. Generally it is best to use `PHPUnit_Framework_TestCase` and in case a MW database connection is required it is suggested to use `SMW\Tests\MwDBaseUnitTestCase` instead.
+The use of `MediaWikiTestCase` is discouraged as its binds tests and the test environment to MediaWiki. Generally it is best to use `PHPUnit_Framework_TestCase` and in case where a MW database connection is required `MwDBaseUnitTestCase` should be used instead.
 
-* `MwIntegrationTestCase` used for testing MediaWiki integration
+* `MwDBSQLStoreIntegrationTestCase` specifically used for testing MediaWiki/SQLStore/DB integration
 * `MwRegressionTestCase` used for regression testing together with XML data import
 * `QueryPrinterTestCase` base class for all query and result printers
 * `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
@@ -25,6 +31,6 @@ We discourage the usage of `MediaWikiTestCase` as this binds the test environmen
 * [Writing testable code](https://semantic-mediawiki.org/wiki/Help:Writing_testable_code)
 * [Code coverage in a nutshell](https://semantic-mediawiki.org/wiki/Help:Code_coverage_in_a_nutshell)
 
-[phpunit]: http://phpunit.de/manual/3.7/en/index.html
+[phpunit]: http://phpunit.de/manual/4.1/en/index.html
 [smw]: https://www.semantic-mediawiki.org/wiki/PHPUnit_tests
-[mw]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing
+[mw-testing]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing

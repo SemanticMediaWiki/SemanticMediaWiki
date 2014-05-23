@@ -30,7 +30,7 @@ use Title;
  *
  * @author mwjames
  */
-class PageEmbeddedParserFunctionForQueryResultLookupDBIntegrationTest extends MwDBaseUnitTestCase {
+class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	/**
 	 * FIXME SQLStore QueryEngine is in shambles when it comes to unit testability
@@ -57,18 +57,18 @@ class PageEmbeddedParserFunctionForQueryResultLookupDBIntegrationTest extends Mw
 		$pageCreator = new PageCreator();
 
 		$pageCreator
-			->createPage( Title::newFromText( 'Has test', SMW_NS_PROPERTY ) )
+			->createPage( Title::newFromText( 'Has subobject parser function test', SMW_NS_PROPERTY ) )
 			->doEdit( '[[Has type::Page]]' );
 
-		$property = DIProperty::newFromUserLabel( 'Has test' );
+		$property = DIProperty::newFromUserLabel( 'Has subobject parser function test' );
 
 		$pageCreator
 			->createPage( $this->title )
 			->doEdit(
-				'{{#subobject:|Has test=WXYZ|@sortkey=B}}' .
-				'{{#subobject:|Has test=ABCD|@sortkey=A}}' .
-				'{{#subobject:|Has test=ABCD|@sortkey=A}}' .
-				'{{#subobject:|Has test=ABCD|@sortkey=C}}' );
+				'{{#subobject:|Has subobject parser function test=WXYZ|@sortkey=B}}' .
+				'{{#subobject:|Has subobject parser function test=ABCD|@sortkey=A}}' .
+				'{{#subobject:|Has subobject parser function test=ABCD|@sortkey=A}}' .
+				'{{#subobject:|Has subobject parser function test=ABCD|@sortkey=C}}' );
 
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( $property );

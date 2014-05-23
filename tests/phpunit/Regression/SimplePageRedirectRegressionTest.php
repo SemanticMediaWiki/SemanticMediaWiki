@@ -175,7 +175,7 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 	protected function executeJobQueueRunner( $type = null ) {
 		$jobQueueRunner = new JobQueueRunner( $type );
-		$jobQueueRunner->execute();
+		$jobQueueRunner->run();
 
 		return $jobQueueRunner;
 	}

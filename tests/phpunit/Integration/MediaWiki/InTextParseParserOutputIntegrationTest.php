@@ -1,8 +1,10 @@
 <?php
 
-namespace SMW\Tests\Integration\Parser;
+namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\ParserFactory;
+
 use SMW\ContentParser;
 use SMW\ParserData;
 
@@ -10,7 +12,7 @@ use Title;
 use Parser;
 
 /**
- * @covers \SMW\ContentParser
+ * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
@@ -23,18 +25,26 @@ use Parser;
  *
  * @author mwjames
  */
-class ContentParserFunctionHookIntegrationTest extends \PHPUnit_Framework_TestCase {
+class InTextParseParserOutputIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider textDataProvider
 	 */
 	public function testTextParse( $parameters, $expected ) {
 
-		$instance = new ContentParser( $parameters['title'], new Parser() );
+		$instance = new ContentParser(
+			$parameters['title'],
+			ParserFactory::newFromTitle( $parameters['title'] )
+		);
+
 		$instance->parse( $parameters['text'] );
 
 		$this->assertInstanceAfterParse( $instance );
-		$this->assertSemanticDataAfterParse( $instance, $expected );
+
+		$this->assertSemanticDataAfterParse(
+			$instance,
+			$expected
+		);
 	}
 
 	protected function assertInstanceAfterParse( $instance ) {

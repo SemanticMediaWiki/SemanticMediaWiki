@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Util;
 
+use SMW\DBConnectionProvider;
+
 use Job;
 
 /**
@@ -12,36 +14,42 @@ use Job;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.2
  */
 class JobQueueRunner {
 
 	protected $type = null;
 	protected $status = array();
-	protected $dbConnection = null;
+	protected $dbConnectionProvider = null;
 
 	/**
 	 * @since 1.9.2
 	 *
-	 * @return string $type
+	 * @param string|null $type
+	 * @param DBConnectionProvider|null $dbConnectionProvider
 	 */
-	public function __construct( $type = null ) {
+	public function __construct( $type = null, DBConnectionProvider $dbConnectionProvider = null ) {
 		$this->type = $type;
+		$this->dbConnectionProvider = $dbConnectionProvider;
+
+		if ( $this->dbConnectionProvider === null ) {
+			$this->dbConnectionProvider = new MwDBConnectionProvider();
+		}
 	}
 
 	/**
 	 * @since 1.9.2
 	 */
-	public function execute() {
+	public function run() {
 
 		$conds = '';
 
 		if ( $this->type !== null ) {
-			$conds = "job_cmd = " . $this->getDatabase()->addQuotes( $this->type );
+			$conds = "job_cmd = " . $this->dbConnectionProvider->getConnection()->addQuotes( $this->type );
 		}
 
-		while ( $this->getDatabase()->selectField( 'job', 'job_id', $conds, __METHOD__ ) ) {
+		while ( $this->dbConnectionProvider->getConnection()->selectField( 'job', 'job_id', $conds, __METHOD__ ) ) {
 			$offset = 0;
 
 			$job = $this->type === null ? Job::pop( $offset ) : Job::pop_type( $this->type );
@@ -60,21 +68,30 @@ class JobQueueRunner {
 	}
 
 	/**
+	 * @since  1.9.3
+	 */
+	public function deleteAllJobs() {
+
+		$conditions = '*';
+
+		if ( $this->type !== null ) {
+			$conditions = "job_cmd = " . $this->dbConnectionProvider->getConnection()->addQuotes( $this->type );
+		}
+
+		$this->dbConnectionProvider->getConnection()->delete(
+			'job',
+			$conditions,
+			__METHOD__
+		);
+	}
+
+	/**
 	 * @since 1.9.2
 	 *
 	 * @return array
 	 */
 	public function getStatus() {
 		return $this->status;
-	}
-
-	protected function getDatabase() {
-
-		if ( $this->dbConnection === null ) {
-			$this->dbConnection = wfGetDB( DB_MASTER );
-		}
-
-		return $this->dbConnection;
 	}
 
 }

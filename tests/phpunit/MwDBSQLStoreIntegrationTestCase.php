@@ -1,25 +1,16 @@
 <?php
 
-namespace SMW\Test;
-
-use SMW\Tests\MwDBaseUnitTestCase;
+namespace SMW\Tests;
 
 use SMW\Tests\Util\PageCreator;
 use SMW\Tests\Util\PageDeleter;
 
-use SMW\StoreFactory;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\Setup;
 
 use Title;
 use UnexpectedValueException;
 
 /**
- * This TestCase should only be used in case a real Database integration with
- * MediaWiki is under test
- *
  * @ingroup Test
  *
  * @group SMW
@@ -32,7 +23,7 @@ use UnexpectedValueException;
  *
  * @author mwjames
  */
-abstract class MwIntegrationTestCase extends MwDBaseUnitTestCase {
+abstract class MwDBSQLStoreIntegrationTestCase extends MwDBaseUnitTestCase {
 
 	/**
 	 * In order for the test not being influenced by an exisiting setup
@@ -60,7 +51,8 @@ abstract class MwIntegrationTestCase extends MwDBaseUnitTestCase {
 	}
 
 	protected function getStore() {
-		$store = StoreFactory::getStore();
+
+		$store = parent::getStore();
 
 		if ( !( $store instanceof \SMWSQLStore3 ) ) {
 			$this->markTestSkipped( 'Test only applicable for SMWSQLStore3' );

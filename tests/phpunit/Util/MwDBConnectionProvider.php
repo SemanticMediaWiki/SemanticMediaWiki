@@ -18,22 +18,15 @@ class MwDBConnectionProvider implements DBConnectionProvider {
 	/* @var DatabaseBase */
 	protected $dbConnection = null;
 
+	protected $connectionId;
+
 	/**
 	 * @since 1.9.3
 	 *
-	 * @param DatabaseBase|null $dbConnection
+	 * @param int $connectionId
 	 */
-	public function __construct( DatabaseBase $dbConnection = null ) {
-		$this->dbConnection = $dbConnection;
-	}
-
-	/**
-	 * @since  1.9.3
-	 *
-	 * @param DatabaseBase $dbConnection
-	 */
-	public function setConnection( DatabaseBase $dbConnection ) {
-		$this->dbConnection = $dbConnection;
+	public function __construct( $connectionId = DB_MASTER ) {
+		$this->connectionId = $connectionId;
 	}
 
 	/**
@@ -44,7 +37,7 @@ class MwDBConnectionProvider implements DBConnectionProvider {
 	public function getConnection() {
 
 		if ( $this->dbConnection === null ) {
-			$this->dbConnection = wfGetDB( DB_MASTER );
+			$this->dbConnection = wfGetDB( $this->connectionId );
 		}
 
 		return $this->dbConnection;
