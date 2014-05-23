@@ -168,12 +168,7 @@ class MwDatabaseTableBuilder {
 			__METHOD__
 		);
 
-		if ( $dbConnection->getType() === 'mysql' ) {
-
-			// MW 1.19
-			if ( !method_exists( $dbConnection, 'listViews' ) ) {
-				throw new RuntimeException( 'DatabaseBase listViews is not available (MW 1.19/1.20)' );
-			}
+		if ( $dbConnection->getType() === 'mysql' && method_exists( $dbConnection, 'listViews' ) ) {
 
 			# bug 43571: cannot clone VIEWs under MySQL
 			$views = $dbConnection->listViews(
