@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\Store;
+namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
 use SMW\ExtensionContext;
@@ -9,8 +9,6 @@ use WikiPage;
 use Title;
 
 /**
- * @covers \SMW\Store
- *
  * @ingroup Test
  *
  * @group SMW
@@ -24,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class MwDatabaseSQLStoreIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
+class RefreshSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 
 	/* @var Title */
 	protected $title;

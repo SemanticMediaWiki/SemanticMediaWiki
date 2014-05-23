@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration;
+namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
 
@@ -11,8 +11,6 @@ use SMW\Settings;
 use MWNamespace;
 
 /**
- * @covers \SMW\NamespaceManager
- *
  * @ingroup Test
  *
  * @group SMW
@@ -25,7 +23,7 @@ use MWNamespace;
  *
  * @author mwjames
  */
-class MwNamespaceIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
+class NamespaceRegistrationDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 
 	public function testRunNamespaceManagerWithNoConstantsDefined() {
 

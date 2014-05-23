@@ -71,4 +71,29 @@ class PageCreator {
 		return $this;
 	}
 
+	/**
+	 * @since 1.9.3
+	 */
+	public function getEditInfo() {
+
+		if ( class_exists( 'WikitextContent' ) ) {
+
+			$content = $this->getPage()->getRevision()->getContent();
+			$format  = $content->getContentHandler()->getDefaultFormat();
+
+			return $this->getPage()->prepareContentForEdit(
+				$content,
+				null,
+				null,
+				$format
+			);
+		}
+
+		return $this->getPage()->prepareTextForEdit(
+			$this->getPage()->getRevision()->getRawText(),
+			null,
+			null
+		);
+	}
+
 }

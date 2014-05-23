@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\Store;
+namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\Util\SemanticDataValidator;
 use SMW\Tests\Util\PageCreator;
@@ -34,7 +34,7 @@ use UnexpectedValueException;
  *
  * @author mwjames
  */
-class MwLinksUpdateWithSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
+class LinksUpdateSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 
 	/** @var Title */
 	protected $title = null;

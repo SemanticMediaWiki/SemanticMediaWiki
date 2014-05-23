@@ -148,6 +148,15 @@ class MwDatabaseTableBuilder {
 	}
 
 	/**
+	 * @since  1.9.3
+	 *
+	 * @return DBConnectionProvider
+	 */
+	public function getDBConnectionProvider() {
+		return $this->dbConnectionProvider;
+	}
+
+	/**
 	 * @see MediaWikiTestCase::listTables
 	 */
 	protected function generateListOfTables() {
