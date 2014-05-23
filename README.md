@@ -72,7 +72,7 @@ If you want to contribute work to the project please subscribe to the developers
 
 ### Tests
 
-This extension provides unit and integration tests that are normally run by a [continues integration platform][travis] but tests can also manually be executed using the `mw-phpunit-runner.php` script (responsible to load necessary MediaWiki dependencies) or [`phpunit`][mw-testing] together with the PHPUnit configuration file found in the root directory.
+This extension provides unit and integration tests that are normally run by a [continues integration platform][travis] but tests can also manually be executed using the `mw-phpunit-runner.php` script or [`phpunit`][mw-testing] together with the PHPUnit configuration file found in the root directory.
 
 ```sh
 php mw-phpunit-runner.php [options]
