@@ -15,7 +15,8 @@
 			"Sanbec",
 			"Tifinaghes",
 			"Translationista",
-			"아라"
+			"아라",
+			"Wifidel"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -159,6 +160,7 @@
 	"semanticstatistics": "Estadísticas de semántica",
 	"smw_semstats_text": "Esta wiki contiene '''$1''' {{PLURAL:$1|valor de propiedad|valores de propiedades}} sobre un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propiedad|propiedades diferentes}}]].\n'''$3''' {{PLURAL:$3|propiedad tiene|propiedades tienen}} su propia página, y el tipo de datos previstos se ha especificado para '''$4''' de ellas.\nAlgunas de las propiedades existentes pueden estar [[Special:UnusedProperties|sin uso]].\nLas propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|lista de propiedades requeridas]].",
 	"smw-statistics": "Estadísticas de semántica",
+	"smw-statistics-query-size": "Tamaño de la consulta",
 	"smw_uri_doc": "El traductor de URI implementa [$1 W3C TAG finding on httpRange-14].\nEsto se preocupa de cosas que los humanos no lo hacen en los sitios web..",
 	"ask": "Búsqueda semántica",
 	"smw_ask_sortby": "Ordenar por columna",
@@ -263,5 +265,7 @@
 	"smw_unknowntype": "El tipo de esta propiedad no es válido",
 	"smw_concept_header": "Páginas de concepto \"$1\"",
 	"smw_conceptarticlecount": "Mostrando $1 {{PLURAL:$1|página|páginas}} pertenecientes al concepto.",
-	"smw-sp-properties-header-label": "Lista de propiedades"
+	"smw-qp-empty-data": "Los datos solicitados podrían no mostrarse, debido a algunos criterios de selección insuficientes.",
+	"smw-sp-properties-header-label": "Lista de propiedades",
+	"smw-livepreview-loading": "Cargando…"
 }

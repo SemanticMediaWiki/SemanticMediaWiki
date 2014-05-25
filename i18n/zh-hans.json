@@ -15,7 +15,8 @@
 			"Yanmiao liu",
 			"Yfdyh000",
 			"아라",
-			"Hudafu"
+			"Hudafu",
+			"Stieizc"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -86,6 +87,7 @@
 	"smw-paramdesc-feedtype": "订阅类型",
 	"smw-paramdesc-feedtitle": "源标题文字",
 	"smw-paramdesc-feeddescription": "要用作feed的说明的文字",
+	"smw-paramdesc-feedpagecontent": "要通过订阅显示的页面内容",
 	"smw-label-feed-description": "$1 $2订阅",
 	"smw_iq_disabled": "此维基的语义查询已禁用",
 	"smw_iq_moreresults": "更多结果",
@@ -144,6 +146,7 @@
 	"smw-property-name-invalid": "属性$1不能使用（无效的属性名称）。",
 	"smw-sp-property-searchform": "显示包含...的属性：",
 	"concepts": "概念",
+	"smw-sp-concept-docu": "[https://www.semantic-mediawiki.org/wiki/Help:Concepts 概念]可作为“动态分类”查看，就是作为不是手动创建，而是由Semantic MediaWiki从指定查询的说明生成的页面收集。",
 	"smw-sp-concept-header": "概念列表",
 	"smw-sp-concept-count": "以下$1个概念已被列出。",
 	"smw-sp-concept-empty": "没有找到概念。",
@@ -274,6 +277,7 @@
 	"smw_unknowntype": "这种属性的类型不受支持",
 	"smw_concept_header": "概念\"$1\"的页面",
 	"smw_conceptarticlecount": "显示属于此概念的$1个页面。",
+	"smw-qp-empty-data": "选择标准不充分，请求数据无法显示。",
 	"right-smw-admin": "连接管理员工作组（Semantic MediaWiki）",
 	"group-smwadministrator": "Semantic MediaWiki管理员",
 	"group-smwadministrator-member": "{{GENDER:$1|管理员（SMW）}}",

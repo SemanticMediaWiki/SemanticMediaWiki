@@ -784,7 +784,7 @@ $specialPageAliases['zh-hans'] = array(
 	'SearchByProperty' => array( '按属性搜索' ),
 	'SemanticStatistics' => array( '语义统计' ),
 	'Types' => array( '类型' ),
-	'URIResolver' => array( 'URL分解器' ),
+	'URIResolver' => array( 'URI分解器' ),
 	'UnusedProperties' => array( '未使用属性' ),
 	'WantedProperties' => array( '缺乏属性' ),
 );
@@ -797,7 +797,10 @@ $specialPageAliases['zh-hant'] = array(
 	'PageProperty' => array( '頁面屬性' ),
 	'Properties' => array( '屬性' ),
 	'SMWAdmin' => array( 'SMW管理員' ),
+	'SearchByProperty' => array( '依屬性搜尋' ),
 	'SemanticStatistics' => array( 'Semantic統計' ),
 	'Types' => array( '類型' ),
 	'URIResolver' => array( 'URI分離器' ),
+	'UnusedProperties' => array( '無使用屬性' ),
+	'WantedProperties' => array( '需求屬性' ),
 );

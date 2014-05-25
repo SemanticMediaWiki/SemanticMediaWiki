@@ -267,7 +267,7 @@
 	"smw-concept-cache-text": "El conceptu tien {{PLURAL:$1|una páxina|un total de $1 páxines}}, y l'últimu anovamientu foi el $2.",
 	"smw_concept_header": "Páxines del conceptu \"$1\"",
 	"smw_conceptarticlecount": "Abaxo {{PLURAL:$1|s'amuesa $1 páxina|s'amuesen $1 páxines}}.",
-	"smw-qp-aggregatable-empty-data": "Los datos agregables solicitaos nun se pudieron amosar por unos criterios de seleición insuficientes.",
+	"smw-qp-empty-data": "Los datos solicitaos nun se pudieron amosar por unos criterios de seleición insuficientes.",
 	"right-smw-admin": "Entrar nes xeres alministratives (Semantic MediaWiki)",
 	"group-smwadministrator": "Alministradores de Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|alministrador|alministradora}} (SMW)",
@@ -284,5 +284,6 @@
 	"smw-sp-admin-settings-button": "Xenerar la llista d'axustes",
 	"smw-sp-admin-idlookup-title": "Gueta d'ObjectId",
 	"smw-sp-admin-idlookup-docu": "Ver detalles tocante a una Id interna d'oxetu que representa entidaes individuales (páxina wiki, suboxetu etc.) en Semantic MediaWiki.",
-	"smw-sp-admin-idlookup-objectid": "Id d'oxetu:"
+	"smw-sp-admin-idlookup-objectid": "Id d'oxetu:",
+	"smw-livepreview-loading": "Cargando..."
 }

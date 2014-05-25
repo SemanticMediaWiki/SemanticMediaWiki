@@ -79,7 +79,7 @@
 	"uriresolver": "Bộ giải URI",
 	"properties": "Thuộc tính",
 	"smw_properties_docu": "Các thuộc tính được dùng trong wiki.",
-	"smw_property_template": "$1 thuộc loại $2 ($3)",
+	"smw_property_template": "$1 thuộc loại $2 (sử dụng $3 lần)",
 	"smw_propertylackspage": "Tất cả các thuộc tính nên được mô tả bằng một trang!",
 	"smw_propertylackstype": "Không có loại này được chỉ định cho thuộc tính này (từ giờ giả thiết loại $1).",
 	"smw_propertyhardlyused": "Thuộc tính này khó sử dụng trong wiki!",
@@ -151,5 +151,6 @@
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Giá trị|Các giá trị}} cho phép của thuộc tính này là:",
 	"prefs-smw": "MediaWiki Ngữ nghĩa",
 	"smw_unknowntype": "Kiểu của thuộc tính này không hợp lệ.",
-	"smw_concept_header": "Trang về khái niệm “$1”"
+	"smw_concept_header": "Trang về khái niệm “$1”",
+	"smw-livepreview-loading": "Đang tải…"
 }
