@@ -18,6 +18,8 @@ use Parser;
  */
 class SubobjectParserFunction {
 
+	const PARAM_SORTKEY = '@sortkey';
+
 	/** @var ParserData */
 	protected $parserData;
 
@@ -59,53 +61,44 @@ class SubobjectParserFunction {
 	}
 
 	/**
-	 * Generates an Id in accordance to the available settings
+	 * Parse parameters and return results to the ParserOutput object
 	 *
 	 * @since 1.9
 	 *
-	 * @param ArrayFormatter $parameters
+	 * @param ArrayFormatter $params
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	protected function getId( ArrayFormatter $parameters ) {
+	public function parse( ArrayFormatter $parameters ) {
 
-		$isAnonymous = in_array( $parameters->getFirst(), array( null, '' ,'-' ) );
+		$this->addSubobjectValues( $parameters );
 
-		if ( $this->objectReference || $isAnonymous ) {
-			$id = $this->subobject->generateId( new HashIdGenerator( $parameters->toArray(), '_' ) );
-		} else {
-			$id = $parameters->getFirst();
-		}
+		$this->parserData->getSemanticData()->addPropertyObjectValue(
+			$this->subobject->getProperty(),
+			$this->subobject->getContainer()
+		);
 
-		$this->objectReference = $this->objectReference && !$isAnonymous;
+		$this->parserData->updateOutput();
 
-		return $id;
+		return $this->msgFormatter
+			->addFromArray( $this->subobject->getErrors() )
+			->addFromArray( $this->parserData->getErrors() )
+			->addFromArray( $parameters->getErrors() )
+			->getHtml();
 	}
 
-	/**
-	 * Add values to the subobject instance
-	 *
-	 * @since 1.9
-	 *
-	 * @param ArrayFormatter $parameters
-	 */
 	protected function addSubobjectValues( ArrayFormatter $parameters ) {
 
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
-		// Initialize semantic container for a given identifier
-		$this->subobject->setSemanticData( $this->getId( $parameters ) );
+		$this->subobject->setSemanticData( $this->createSubobjectId( $parameters ) );
 
-		// Add object reference as additional parameter if enabled
-		if ( $this->objectReference ) {
-			$parameters->addParameter(
-				$parameters->getFirst(),
-				$this->parserData->getTitle()->getPrefixedText()
-			);
-		}
+		foreach ( $this->transformParametersToArray( $parameters ) as $property => $values ) {
 
-		// Add property / values to the subobject instance
-		foreach ( $parameters->toArray() as $property => $values ){
+			if ( $property === self::PARAM_SORTKEY ) {
+				$property = DIProperty::TYPE_SORTKEY;
+			}
+
 			foreach ( $values as $value ) {
 
 				$dataValue = DataValueFactory::getInstance()->newPropertyValue(
@@ -120,33 +113,29 @@ class SubobjectParserFunction {
 		}
 	}
 
-	/**
-	 * Parse parameters and return results to the ParserOutput object
-	 *
-	 * @since 1.9
-	 *
-	 * @param ArrayFormatter $params
-	 *
-	 * @return string|null
-	 */
-	public function parse( ArrayFormatter $parameters ) {
+	protected function createSubobjectId( ArrayFormatter $parameters ) {
 
-		// Add values to the instantiated subobject
-		$this->addSubobjectValues( $parameters );
+		$isAnonymous = in_array( $parameters->getFirst(), array( null, '' ,'-' ) );
 
-		// Store subobject to the semantic data instance
-		$this->parserData->getData()->addPropertyObjectValue(
-			$this->subobject->getProperty(),
-			$this->subobject->getContainer()
-		);
+		$this->objectReference = $this->objectReference && !$isAnonymous;
 
-		// Update ParserOutput
-		$this->parserData->updateOutput();
+		if ( $this->objectReference || $isAnonymous ) {
+			return $this->subobject->generateId( new HashIdGenerator( $parameters->toArray(), '_' ) );
+		}
 
-		return $this->msgFormatter->addFromArray( $this->subobject->getErrors() )
-			->addFromArray( $this->parserData->getErrors() )
-			->addFromArray( $parameters->getErrors() )
-			->getHtml();
+		return $parameters->getFirst();
+	}
+
+	protected function transformParametersToArray( ArrayFormatter $parameters ) {
+
+		if ( $this->objectReference ) {
+			$parameters->addParameter(
+				$parameters->getFirst(),
+				$this->parserData->getTitle()->getPrefixedText()
+			);
+		}
+
+		return $parameters->toArray();
 	}
 
 }
