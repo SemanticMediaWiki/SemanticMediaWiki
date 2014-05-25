@@ -10,13 +10,11 @@ use Title;
 use InvalidArgumentException;
 
 /**
- * Provides a subobject
- *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -25,9 +23,6 @@ class Subobject {
 
 	/** @var Title */
 	 protected $title;
-
-	/** @var string */
-	 protected $identifier;
 
 	/** @var SMWContainerSemanticData */
 	 protected $semanticData;
@@ -63,7 +58,7 @@ class Subobject {
 	 * @return string
 	 */
 	public function getId() {
-		return $this->identifier;
+		return $this->getSemanticData()->getSubject()->getSubobjectName();
 	}
 
 	/**
@@ -102,22 +97,18 @@ class Subobject {
 	}
 
 	/**
-	 * Initializes the semantic data container for a given identifier
-	 * and its invoked subject
-	 *
-	 * @since 1.9
+	 * @since 1.9.3
 	 *
 	 * @param string $identifier
 	 *
+	 * @return self
 	 * @throws InvalidArgumentException
 	 */
-	public function setSemanticData( $identifier ) {
+	public function setEmptySemanticDataForId( $identifier ) {
 
 		if ( $identifier === '' ) {
-			throw new InvalidArgumentException( 'The identifier is empty' );
+			throw new InvalidArgumentException( 'Expected a valid (non-empty) indentifier' );
 		}
-
-		$this->identifier = $identifier;
 
 		$subWikiPage = new DIWikiPage(
 			$this->title->getDBkey(),
@@ -128,6 +119,14 @@ class Subobject {
 
 		$this->semanticData = new SMWContainerSemanticData( $subWikiPage );
 
+		return $this;
+	}
+
+	/**
+	 * @deprecated since 1.9.3
+	 */
+	public function setSemanticData( $identifier ) {
+		$this->setEmptySemanticDataForId( $identifier );
 	}
 
 	/**
@@ -169,17 +168,6 @@ class Subobject {
 	}
 
 	/**
-	 * Adds a data value object to the semantic data container
-	 *
-	 * @par Example:
-	 * @code
-	 *  $dataValue = DataValueFactory::getInstance()->newPropertyValue( $userProperty, $userValue )
-	 *
-	 *  $subobject = new Subobject( 'Foo' );
-	 *  $subobject->setSemanticData( 'Bar' );
-	 *  $subobject->addDataValue( $dataValue )
-	 * @endcode
-	 *
 	 * @since 1.9
 	 *
 	 * @param DataValue $dataValue

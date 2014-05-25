@@ -23,7 +23,7 @@ use ParserOutput;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -97,11 +97,9 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 	}
 
 	/**
-	 * @dataProvider getObjectReferenceDataProvider
-	 *
-	 * @since 1.9
+	 * @dataProvider firstElementDataProvider
 	 */
-	public function testObjectReference( $isEnabled, array $params, array $expected, array $info ) {
+	public function testFirstElementAsProperty( $isEnabled, array $params, array $expected, array $info ) {
 
 		$parserOutput = $this->newParserOutput();
 		$title        = $this->newTitle();
@@ -109,7 +107,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 
 		// Initialize and parse
 		$instance = $this->newInstance( $subobject, $parserOutput );
-		$instance->setObjectReference( $isEnabled );
+		$instance->setFirstElementAsProperty( $isEnabled );
 		$instance->parse( $this->getParserParameterFormatter( $params ) );
 
 		// If it is enabled only check for the first character {0} that should
@@ -314,12 +312,7 @@ class SubobjectParserFunctionTest extends ParserTestCase {
 		);
 	}
 
-	/**
-	 * Subject reference data provider
-	 *
-	 * @return array
-	 */
-	public function getObjectReferenceDataProvider() {
+	public function firstElementDataProvider() {
 		return array(
 
 			// #0
