@@ -11,23 +11,17 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the RecurringEventsParserFunction class.
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\RecurringEventsParserFunction
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
+ * @author mwjames
  */
 class RecurringEventsParserFunctionTest extends ParserTestCase {
 

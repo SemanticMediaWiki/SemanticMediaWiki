@@ -9,22 +9,14 @@ use Parser;
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
  *
- * @file
- *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
-
-/**
- * Class that provides the {{#set_recurring_event}} parser function
- *
- * @ingroup ParserFunction
- */
 class RecurringEventsParserFunction extends SubobjectParserFunction {
 
-	/** @var MessageFormatter */
+	/** @var Settings */
 	protected $settings;
 
 	/** @var RecurringEvents */
@@ -35,16 +27,16 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 *
 	 * @param ParserData $parserData
 	 * @param Subobject $subobject
-	 * @param MessageFormatter $msgFormatter
+	 * @param MessageFormatter $messageFormatter
 	 * @param Settings $settings
 	 */
 	public function __construct(
 		ParserData $parserData,
 		Subobject $subobject,
-		MessageFormatter $msgFormatter,
+		MessageFormatter $messageFormatter,
 		Settings $settings
 	) {
-		parent::__construct ( $parserData, $subobject, $msgFormatter );
+		parent::__construct ( $parserData, $subobject, $messageFormatter );
 		$this->settings = $settings;
 	}
 
@@ -59,11 +51,12 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 * @return string|null
 	 */
 	public function parse( ArrayFormatter $parameters ) {
-		$this->setObjectReference( true );
+
+		$this->setFirstElementAsProperty( true );
 
 		// Get recurring events
 		$this->events = new RecurringEvents( $parameters->toArray(), $this->settings );
-		$this->msgFormatter->addFromArray( $this->events->getErrors() );
+		$this->messageFormatter->addFromArray( $this->events->getErrors() );
 
 		foreach ( $this->events->getDates() as $date_str ) {
 
@@ -74,25 +67,24 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 			// Add the date string as individual property / value parameter
 			$parameters->addParameter( $this->events->getProperty(), $date_str );
 
-			// Register object values
 			// @see SubobjectParserFunction::addSubobjectValues
-			$this->addSubobjectValues( $parameters );
+			$this->addDataValuesToSubobject( $parameters );
 
 			//  Each new $parameters set will add an additional subobject
 			//  to the instance
-			$this->parserData->getData()->addPropertyObjectValue(
+			$this->parserData->getSemanticData()->addPropertyObjectValue(
 				$this->subobject->getProperty(),
 				$this->subobject->getContainer()
 			);
 
 			// Collect errors that occurred during processing
-			$this->msgFormatter->addFromArray( $this->subobject->getErrors() );
+			$this->messageFormatter->addFromArray( $this->subobject->getErrors() );
 		}
 
 		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->msgFormatter->getHtml();
+		return $this->messageFormatter->getHtml();
 	}
 
 	/**

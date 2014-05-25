@@ -9,9 +9,7 @@ use Parser;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
  *
- * @ingroup ParserFunction
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -27,42 +25,37 @@ class SubobjectParserFunction {
 	protected $subobject;
 
 	/** @var MessageFormatter */
-	protected $msgFormatter;
+	protected $messageFormatter;
 
 	/** @var boolean */
-	protected $objectReference = false;
+	protected $firstElementAsProperty = false;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
 	 * @param Subobject $subobject
-	 * @param MessageFormatter $msgFormatter
+	 * @param MessageFormatter $messageFormatter
 	 */
-	public function __construct( ParserData $parserData, Subobject $subobject, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, Subobject $subobject, MessageFormatter $messageFormatter ) {
 		$this->parserData = $parserData;
 		$this->subobject = $subobject;
-		$this->msgFormatter = $msgFormatter;
+		$this->messageFormatter = $messageFormatter;
 	}
 
 	/**
-	 * Enables/disables to create an object reference pointing to the original
-	 * subject
-	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $objectReference
+	 * @param boolean $firstElementAsProperty
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function setObjectReference( $objectReference ) {
-		$this->objectReference = $objectReference;
+	public function setFirstElementAsProperty( $firstElementAsProperty = true ) {
+		$this->firstElementAsProperty = (bool)$firstElementAsProperty;
 		return $this;
 	}
 
 	/**
-	 * Parse parameters and return results to the ParserOutput object
-	 *
 	 * @since 1.9
 	 *
 	 * @param ArrayFormatter $params
@@ -71,7 +64,7 @@ class SubobjectParserFunction {
 	 */
 	public function parse( ArrayFormatter $parameters ) {
 
-		$this->addSubobjectValues( $parameters );
+		$this->addDataValuesToSubobject( $parameters );
 
 		$this->parserData->getSemanticData()->addPropertyObjectValue(
 			$this->subobject->getProperty(),
@@ -80,18 +73,18 @@ class SubobjectParserFunction {
 
 		$this->parserData->updateOutput();
 
-		return $this->msgFormatter
+		return $this->messageFormatter
 			->addFromArray( $this->subobject->getErrors() )
 			->addFromArray( $this->parserData->getErrors() )
 			->addFromArray( $parameters->getErrors() )
 			->getHtml();
 	}
 
-	protected function addSubobjectValues( ArrayFormatter $parameters ) {
+	protected function addDataValuesToSubobject( ArrayFormatter $parameters ) {
 
 		$subject = $this->parserData->getSemanticData()->getSubject();
 
-		$this->subobject->setSemanticData( $this->createSubobjectId( $parameters ) );
+		$this->subobject->setEmptySemanticDataForId( $this->createSubobjectId( $parameters ) );
 
 		foreach ( $this->transformParametersToArray( $parameters ) as $property => $values ) {
 
@@ -117,9 +110,9 @@ class SubobjectParserFunction {
 
 		$isAnonymous = in_array( $parameters->getFirst(), array( null, '' ,'-' ) );
 
-		$this->objectReference = $this->objectReference && !$isAnonymous;
+		$this->firstElementAsProperty = $this->firstElementAsProperty && !$isAnonymous;
 
-		if ( $this->objectReference || $isAnonymous ) {
+		if ( $this->firstElementAsProperty || $isAnonymous ) {
 			return $this->subobject->generateId( new HashIdGenerator( $parameters->toArray(), '_' ) );
 		}
 
@@ -128,7 +121,7 @@ class SubobjectParserFunction {
 
 	protected function transformParametersToArray( ArrayFormatter $parameters ) {
 
-		if ( $this->objectReference ) {
+		if ( $this->firstElementAsProperty ) {
 			$parameters->addParameter(
 				$parameters->getFirst(),
 				$this->parserData->getTitle()->getPrefixedText()
