@@ -2,6 +2,10 @@
 
 Not a release yet.
 
+### New features
+
+* #225 Added sorting annotation in subobjects using the `@sortkey` identifier 
+
 ### Bug fixes
 
 * #279 Fixed undefined index in `DataTypeRegistry::getDefaultDataItemTypeId`
