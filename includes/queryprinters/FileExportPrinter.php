@@ -49,7 +49,9 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 		$fileName = $this->getFileName( $queryResult );
 
 		if ( $fileName !== false ) {
-			header( "content-disposition: attachment; filename=$fileName" );
+			$utf8Name = rawurlencode( $fileName );
+			$fileName = iconv( "UTF-8", "ASCII//TRANSLIT", $fileName );
+			header( "content-disposition: attachment; filename=\"$fileName\"; filename*=UTF-8''$utf8Name;" );
 		}
 
 		echo $result;
