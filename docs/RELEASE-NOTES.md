@@ -14,6 +14,7 @@ Not a release yet.
 * #291 Fixed call to undefined method in `SMWSparqlStore::getDatabase` 
 * #308 Fixed caching issue in `SMW\Store\Maintenance\DataRebuilder` for duplicate title objects
 * #312 Fixed fatal error in `SMWCategoryResultPrinter` for when a mainlabel is hidden 
+* #322 Fixed file names containing spaces or non-ASCII characters for for downloadable result formats (csv, excel)
 
 ### Internal enhancements
 
