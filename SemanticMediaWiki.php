@@ -53,7 +53,8 @@ $GLOBALS['wgExtensionCredits']['semantic'][] = array(
 		'[https://semantic-mediawiki.org/wiki/Contributors ...]'
 		),
 	'url' => 'https://semantic-mediawiki.org',
-	'descriptionmsg' => 'smw-desc'
+	'descriptionmsg' => 'smw-desc',
+	'license-name'   => 'GPL-2.0+'
 );
 
 // Compatibility aliases for classes that got moved into the SMW namespace in 1.9.
