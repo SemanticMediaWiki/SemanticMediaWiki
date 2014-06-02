@@ -704,9 +704,9 @@ class SMWSQLStore3 extends SMWStore {
 	 * @param string $typeid
 	 * @return string
 	 */
-	public static function findTypeTableId( $typeid ) {
+	public function findTypeTableId( $typeid ) {
 		$dataItemId = DataTypeRegistry::getInstance()->getDataItemId( $typeid );
-		return self::findDiTypeTableId( $dataItemId );
+		return $this->findDiTypeTableId( $dataItemId );
 	}
 
 	/**
@@ -718,7 +718,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * @param integer $dataItemId
 	 * @return string
 	 */
-	public static function findDiTypeTableId( $dataItemId ) {
+	public function findDiTypeTableId( $dataItemId ) {
 		if ( array_key_exists( $dataItemId, self::$di_type_tables ) ) {
 			return self::$di_type_tables[$dataItemId];
 		} else {

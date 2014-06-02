@@ -38,7 +38,7 @@ class NamespaceRegistrationDBIntegrationTest extends MwDBSQLStoreIntegrationTest
 		$smwBasePath = __DIR__ . '../../../..';
 
 		$instance = $this->getMock( '\SMW\NamespaceManager',
-			array( 'assertConstantIsDefined' ),
+			array( 'isDefinedConstant' ),
 			array(
 				&$default,
 				$smwBasePath
@@ -46,7 +46,7 @@ class NamespaceRegistrationDBIntegrationTest extends MwDBSQLStoreIntegrationTest
 		);
 
 		$instance->expects( $this->any() )
-			->method( 'assertConstantIsDefined' )
+			->method( 'isDefinedConstant' )
 			->will( $this->returnValue( false ) );
 
 		$this->assertTrue( $instance->run() );

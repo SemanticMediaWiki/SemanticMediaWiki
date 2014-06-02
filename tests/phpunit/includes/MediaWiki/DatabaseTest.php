@@ -13,7 +13,7 @@ use SMW\MediaWiki\Database;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.0.2
  *
  * @author mwjames
@@ -150,19 +150,27 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSelectThrowsException() {
 
+		$instance = new Database( new MockDBConnectionProvider );
+
 		$this->setExpectedException( 'RuntimeException' );
 
-		$instance = new Database( new MockDBConnectionProvider );
-		$this->assertInstanceOf( 'ResultWrapper', $instance->select( 'Foo', 'Bar', '', __METHOD__ ) );
-
+		$this->assertInstanceOf(
+			'ResultWrapper',
+			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
+		);
 	}
 
 	public function testQueryThrowsException() {
 
-		$this->setExpectedException( 'RuntimeException' );
+		// FIXME MW 1.19/1.21
+		if ( version_compare( $GLOBALS['wgVersion'], '1.22', '<' ) ) {
+			$this->markTestSkipped(
+				"MW 1.22 or higher is required for the test (see DBError)"
+			);
+		}
 
 		$DBError = $this->getMockBuilder( 'DBError' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( array( null, 'foo' ) )
 			->getMock();
 
 		$connectionProvider = new MockDBConnectionProvider();
@@ -173,8 +181,13 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->throwException( $DBError ) );
 
 		$instance = new Database( $connectionProvider );
-		$this->assertInstanceOf( 'ResultWrapper', $instance->query( 'Foo', __METHOD__ ) );
 
+		$this->setExpectedException( 'RuntimeException' );
+
+		$this->assertInstanceOf(
+			'ResultWrapper',
+			$instance->query( 'Foo', __METHOD__ )
+		);
 	}
 
 	public function testMissingWriteConnectionThrowsException() {

@@ -3,9 +3,7 @@
 namespace SMW;
 
 /**
- * Namespace setup and registration
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -14,15 +12,16 @@ namespace SMW;
 class NamespaceManager {
 
 	/** @var array */
-	protected $globals;
+	protected $globalVars;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param array &$globals
+	 * @param array &$globalVars
+	 * @param string|null &directory
 	 */
-	public function __construct( &$globals, $directory ) {
-		$this->globals =& $globals;
+	public function __construct( &$globalVars, $directory = null ) {
+		$this->globalVars =& $globalVars;
 		$this->directory = $directory;
 	}
 
@@ -31,12 +30,12 @@ class NamespaceManager {
 	 */
 	public function run() {
 
-		if ( !$this->assertConstantIsDefined( 'SMW_NS_PROPERTY' ) ) {
-			$this->initCustomNamespace( $this->globals );
+		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
+			$this->initCustomNamespace( $this->globalVars );
 		}
 
-		if ( empty( $this->globals['smwgContLang'] ) ) {
-			$this->initContentLanguage( $this->globals['wgLanguageCode'] );
+		if ( empty( $this->globalVars['smwgContLang'] ) ) {
+			$this->initContentLanguage( $this->globalVars['wgLanguageCode'] );
 		}
 
 		$this->addNamespaceSettings();
@@ -45,8 +44,6 @@ class NamespaceManager {
 	}
 
 	/**
-	 * Returns canonical names
-	 *
 	 * @see Hooks:CanonicalNamespaces
 	 *
 	 * @since 1.9
@@ -99,43 +96,42 @@ class NamespaceManager {
 	 *
 	 * @since 1.9
 	 *
-	 * @param array $globals
+	 * @param array $globalVars
 	 */
-	public static function initCustomNamespace( &$globals ) {
+	public static function initCustomNamespace( &$globalVars ) {
 
-		if ( !isset( $globals['smwgNamespaceIndex'] ) ) {
-			$globals['smwgNamespaceIndex'] = 100;
+		$instance = new self( $globalVars );
+
+		if ( !isset( $globalVars['smwgNamespaceIndex'] ) ) {
+			$globalVars['smwgNamespaceIndex'] = 100;
 		}
 
-		foreach ( self::buildNamespaceIndex( $globals['smwgNamespaceIndex'] ) as $ns => $index ) {
-			if ( !self::assertConstantIsDefined( $ns ) ) {
+		foreach ( $instance->buildNamespaceIndex( $globalVars['smwgNamespaceIndex'] ) as $ns => $index ) {
+			if ( !$instance->isDefinedConstant( $ns ) ) {
 				define( $ns, $index );
 			};
 		}
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function addNamespaceSettings() {
 
-		$this->assertIsArrayOrSetDefault( 'wgExtraNamespaces' );
-		$this->assertIsArrayOrSetDefault( 'wgNamespaceAliases' );
+		$this->isValidConfigurationOrSetDefault( 'wgExtraNamespaces', array() );
+		$this->isValidConfigurationOrSetDefault( 'wgNamespaceAliases', array() );
 
 		/**
 		 * @var SMWLanguage $smwgContLang
 		 */
-		$this->globals['wgExtraNamespaces'] = $this->globals['wgExtraNamespaces'] + $this->globals['smwgContLang']->getNamespaces();
-		$this->globals['wgNamespaceAliases'] = $this->globals['wgNamespaceAliases'] + $this->globals['smwgContLang']->getNamespaceAliases();
+		$this->globalVars['wgExtraNamespaces'] = $this->globalVars['wgExtraNamespaces'] + $this->globalVars['smwgContLang']->getNamespaces();
+		$this->globalVars['wgNamespaceAliases'] = $this->globalVars['wgNamespaceAliases'] + $this->globalVars['smwgContLang']->getNamespaceAliases();
 
 		// Support subpages only for talk pages by default
-		$this->globals['wgNamespacesWithSubpages'] = $this->globals['wgNamespacesWithSubpages'] + array(
+		$this->globalVars['wgNamespacesWithSubpages'] = $this->globalVars['wgNamespacesWithSubpages'] + array(
 			SMW_NS_PROPERTY_TALK => true,
 			SMW_NS_TYPE_TALK => true
 		);
 
 		// not modified for Semantic MediaWiki
-		/* $this->globals['wgNamespacesToBeSearchedDefault'] = array(
+		/* $this->globalVars['wgNamespacesToBeSearchedDefault'] = array(
 			NS_MAIN           => true,
 			);
 		*/
@@ -155,9 +151,9 @@ class NamespaceManager {
 
 		// Combine default values with values specified in other places
 		// (LocalSettings etc.)
-		$this->globals['smwgNamespacesWithSemanticLinks'] = array_replace(
+		$this->globalVars['smwgNamespacesWithSemanticLinks'] = array_replace(
 			$smwNamespacesSettings,
-			$this->globals['smwgNamespacesWithSemanticLinks']
+			$this->globalVars['smwgNamespacesWithSemanticLinks']
 		);
 
 	}
@@ -174,50 +170,38 @@ class NamespaceManager {
 		Profiler::In();
 
 		$this->setLanguage( $langcode );
-		$this->assertValidLanguageOrSetFallback( 'en' );
+		$this->isValidLanguageClassOrSetFallback( $this->globalVars['smwContLangClass'], 'en' );
 
-		$this->globals['smwgContLang'] = new $this->globals['smwContLangClass'];
+		$this->globalVars['smwgContLang'] = new $this->globalVars['smwContLangClass'];
 
 		Profiler::Out();
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function setLanguage( $langcode ) {
 
-		$this->globals['smwContLangFile'] = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
-		$this->globals['smwContLangClass'] = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
+		$this->globalVars['smwContLangFile'] = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
+		$this->globalVars['smwContLangClass'] = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
 
-		$file = $this->directory . '/' . 'languages' . '/' . $this->globals['smwContLangFile'] . '.php';
+		$file = $this->directory . '/' . 'languages' . '/' . $this->globalVars['smwContLangFile'] . '.php';
 
 		if ( file_exists( $file ) ) {
 			include_once( $file );
 		}
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	protected function assertIsArrayOrSetDefault( $element ) {
-		if ( !isset( $this->globals[$element] ) || !is_array( $this->globals[$element] ) ) {
-			$this->globals[$element] = array();
+	protected function isValidConfigurationOrSetDefault( $element, $default ) {
+		if ( !isset( $this->globalVars[$element] ) || !is_array( $this->globalVars[$element] ) ) {
+			$this->globalVars[$element] = $default;
 		}
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	protected function assertValidLanguageOrSetFallback( $fallbackLanguageCode ) {
-		if ( !class_exists( $this->globals['smwContLangClass'] ) ) {
+	protected function isValidLanguageClassOrSetFallback( $langClass, $fallbackLanguageCode ) {
+		if ( !class_exists( $langClass ) ) {
 			$this->setLanguage( $fallbackLanguageCode );
 		}
 	}
 
-	/**
-	 * @since 1.9.0.2
-	 */
-	protected static function assertConstantIsDefined( $constant ) {
+	protected function isDefinedConstant( $constant ) {
 		return defined( $constant );
 	}
 
