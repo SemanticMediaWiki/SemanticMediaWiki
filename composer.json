@@ -56,8 +56,7 @@
 		"classmap": [
 			"SemanticMediaWiki.hooks.php",
 			"includes/",
-			"languages/SMW_Language.php",
-			"tests/ClassAutoLoader.php"
+			"languages/SMW_Language.php"
 		]
 	}
 }
