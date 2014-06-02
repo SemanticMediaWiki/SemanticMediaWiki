@@ -195,7 +195,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( array( 'Foo' => $tableDefinition ) ) );
 
-		$store::staticExpects( $this->atLeastOnce() )
+		$store->expects( $this->atLeastOnce() )
 			->method( 'findTypeTableId' )
 			->will( $this->returnValue( 'Foo' ) );
 

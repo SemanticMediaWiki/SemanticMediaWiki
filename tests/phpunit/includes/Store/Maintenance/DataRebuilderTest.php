@@ -86,8 +86,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->setMethods( array(
 				'refreshData',
-				'drop',
-				'setupStore' ) )
+				'drop' ) )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -96,9 +95,6 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'drop' );
-
-		$store::staticExpects( $this->once() )
-			->method( 'setupStore' );
 
 		$instance = new DataRebuilder( $store, null );
 
