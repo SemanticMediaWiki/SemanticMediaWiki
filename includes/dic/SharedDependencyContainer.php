@@ -81,6 +81,20 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'QueryProfiler' => $this->QueryProfiler(),
 
 			/**
+			 * ContentProcessor object definition
+			 *
+			 * @since  1.9
+			 *
+			 * @return ContentProcessor
+			 */
+			'ContentProcessor' => function ( DependencyBuilder $builder ) {
+				return new ContentProcessor(
+					$builder->getArgument( 'ParserData' ),
+					$builder->newObject( 'ExtensionContext' )
+				);
+			},
+
+			/**
 			 * ContentParser object definition
 			 *
 			 * @since  1.9
@@ -408,7 +422,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 
 			return new RedirectPropertyAnnotator(
 				$annotator,
-				$builder->getArgument( 'Title' )
+				$builder->getArgument( 'Text' )
 			);
 		};
 	}

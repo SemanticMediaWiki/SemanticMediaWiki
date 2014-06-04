@@ -20,30 +20,39 @@ use Title;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @licence GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
+
+	public function getClass() {
+		return '\SMW\RedirectPropertyAnnotator';
+	}
+
+	/**
+	 * @return RedirectPropertyAnnotator
+	 */
+	private function newInstance( $semanticData = null, $text = '' ) {
+
+		if ( $semanticData === null ) {
+			$semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
+				->disableOriginalConstructor()
+				->getMock();
+		}
+
+		$context  = new EmptyContext();
+
+		return new RedirectPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData, $context ),
+			$text
+		);
+
+	}
 
 	public function testCanConstruct() {
-
-		$semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title = $this->getMockBuilder( 'Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertInstanceOf(
-			'\SMW\RedirectPropertyAnnotator',
-			new RedirectPropertyAnnotator(
-				new NullPropertyAnnotator( $semanticData, new EmptyContext() ),
-				$title
-			)
-		);
+		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
 	}
 
 	/**
@@ -55,19 +64,40 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
 		);
 
-		$instance = new RedirectPropertyAnnotator(
-			new NullPropertyAnnotator( $semanticData, new EmptyContext() ),
-			Title::newFromRedirect( $parameter['text'] )
+		$instance = $this->newInstance( $semanticData, $parameter['text'] );
+		$instance->addAnnotation();
+
+		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
+
+	}
+
+	/**
+	 * @dataProvider redirectsDataProvider
+	 */
+	public function testAddAnnotationWithDisabledContentHandler( $parameter, $expected ) {
+
+		$semanticData = new SemanticData(
+			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
 		);
+
+		$instance = $this->getMock( $this->getClass(),
+			array( 'hasContentHandler' ),
+			array(
+				new NullPropertyAnnotator( $semanticData, new EmptyContext() ),
+				$parameter['text']
+			)
+		);
+
+		$instance->expects( $this->any() )
+			->method( 'hasContentHandler' )
+			->will( $this->returnValue( false ) );
 
 		$instance->addAnnotation();
 
 		$semanticDataValidator = new SemanticDataValidator;
+		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
 
-		$semanticDataValidator->assertThatPropertiesAreSet(
-			$expected,
-			$instance->getSemanticData()
-		);
 	}
 
 	/**

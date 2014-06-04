@@ -2,9 +2,6 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
-use SMW\DIC\ObjectFactory;
-
 /**
  * Extension setup and registration
  *
@@ -295,8 +292,6 @@ final class Setup implements ContextAware {
 		$context  = $this->withContext();
 		$functionHook = $context->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
 
-		ObjectFactory::getInstance()->invokeContext( $context );
-
 		/**
 		 * Hook: Called by BaseTemplate when building the toolbox array and
 		 * returning it for the skin to output.
@@ -351,11 +346,8 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = function ( &$parser, &$text ) {
-
-			$internalParseBeforeLinks = new InternalParseBeforeLinks( $parser, $text );
-
-			return $internalParseBeforeLinks->process();
+		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = function ( &$parser, &$text ) use ( $functionHook ) {
+			return $functionHook->register( new InternalParseBeforeLinks( $parser, $text ) )->process();
 		};
 
 		/**
