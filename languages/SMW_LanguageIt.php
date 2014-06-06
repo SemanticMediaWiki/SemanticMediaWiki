@@ -56,6 +56,7 @@ class SMWLanguageIt extends SMWLanguage {
 		'_URI'   => 'URI equivalente', // 'Equivalent URI',
 		'_SUBP' => 'Sottoproprietà di', // 'Subproperty of',
 		'_SUBC' => 'Subcategory of', // TODO: translate
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Visualizza unità',
 		'_IMPO' => 'Importato da', // 'Imported from',
 		'_CONV' => 'Corrisponde a ', // 'Corresponds to',

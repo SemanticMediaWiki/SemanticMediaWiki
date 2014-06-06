@@ -50,6 +50,7 @@ class SMWLanguageFi extends SMWLanguage {
 		'_URI'  => 'Yhtäpitävä URI',
 		'_SUBP' => 'Yläominaisuus',
 		'_SUBC' => 'Yläluokka',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Tulostusyksikkö',
 		'_IMPO' => 'Tuotu sanastosta',
 		'_CONV' => 'Vastaa määrää',

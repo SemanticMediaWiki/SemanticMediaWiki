@@ -53,6 +53,7 @@ class SMWLanguageSk extends SMWLanguage {
 		'_URI'  => 'Ekvivalent URI',
 		'_SUBP' => 'Je podatribútom',
 		'_SUBC' => 'Je podkategóriou',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Zobrazovacie jednotky',
 		'_IMPO' => 'Importovaný z',
 		'_CONV' => 'Zodpovedá',

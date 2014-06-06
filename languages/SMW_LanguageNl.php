@@ -56,6 +56,7 @@ class SMWLanguageNl extends SMWLanguage {
 		'_URI'  => 'Equivalent URI',
 		'_SUBP' => 'Subeigenschap van',
 		'_SUBC' => 'Subcategorie van',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Weergaveeenheden',
 		'_IMPO' => 'Geïmporteerd uit',
 		'_CONV' => 'Komt overeen met',

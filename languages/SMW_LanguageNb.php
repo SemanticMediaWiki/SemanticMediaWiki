@@ -63,6 +63,7 @@ class SMWLanguageNb extends SMWLanguage {
 		'_URI'  => 'Ekvivalent URI',
 		'_SUBP' => 'Underkategori av',
 		'_SUBC' => 'Subcategory of', // TODO: translate
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Visningsenhet',
 		'_IMPO' => 'Importert fra',
 		'_CONV' => 'Svarer til',

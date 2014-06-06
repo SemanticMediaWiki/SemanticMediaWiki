@@ -58,6 +58,7 @@ class SMWLanguageCa extends SMWLanguage {
 		'_URI'  => 'URI equivalent',
 		'_SUBP' => 'Subpropietat de',
 		'_SUBC' => 'Subcategoria de',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Unitats de mesura',
 		'_IMPO' => 'Importat de',
 		'_CONV' => 'Correspon a',

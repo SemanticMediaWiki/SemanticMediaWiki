@@ -54,6 +54,7 @@ class SMWLanguageId extends SMWLanguage {
 		'_URI'  => 'URI ekuivalen',
 		'_SUBP' => 'Subproperti dari',
 		'_SUBC' => 'Subkategori dari',
+		'_INST' => 'Category', // TODO: translate
 		'_UNIT' => 'Unit tampilan',
 		'_IMPO' => 'Diimpor dari',
 		'_CONV' => 'Berhubungan dengan',

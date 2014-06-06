@@ -60,6 +60,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'_URI'  => 'Equivalent URI',
 		'_SUBP' => 'Subproperty of',
 		'_SUBC' => 'Subcategory of',
+		'_INST' => 'Category',
 		'_UNIT' => 'Display units',
 		'_IMPO' => 'Imported from',
 		'_CONV' => 'Corresponds to',
