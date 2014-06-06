@@ -19,7 +19,6 @@ Not a release yet.
 ### Internal enhancements
 
 * #278 Changed the `SMW\SQLStore\PropertyStatisticsTable` interface 
-* #303 Adjusted `SMW\MediaWiki\Hooks\InternalParseBeforeLinks` to cope with changes in MW 1.23/MW 1.24 (bug 62856)
 * #307 Added `removeDuplicates` option to `SMW\MediaWiki\Jobs\UpdateJob`
 * #310 Fixed autoloading for `SMW\Test\QueryPrinterRegistryTestCase`
 * #311 Removed `MediaWikiTestCase` dependency
