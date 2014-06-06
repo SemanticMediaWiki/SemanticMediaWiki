@@ -247,6 +247,15 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since 1.9.3
+	 *
+	 * @return array
+	 */
+	public function getKnownTypeAliases() {
+		return $this->typeAliases;
+	}
+
+	/**
 	 * Returns a default DataItemId
 	 *
 	 * @since 1.9
