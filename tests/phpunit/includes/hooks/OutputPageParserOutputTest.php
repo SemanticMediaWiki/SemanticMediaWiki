@@ -2,8 +2,6 @@
 
 namespace SMW\Test;
 
-use SMW\DIC\ObjectFactory;
-
 use SMW\OutputPageParserOutput;
 use SMW\ExtensionContext;
 use SMW\Settings;
@@ -25,16 +23,6 @@ use ParserOutput;
  * @author mwjames
  */
 class OutputPageParserOutputTest extends ParserTestCase {
-
-	protected function setUp() {
-		parent::setUp();
-	}
-
-	protected function tearDown() {
-		ObjectFactory::clear();
-
-		parent::tearDown();
-	}
 
 	/**
 	 * @return string|false
@@ -101,8 +89,6 @@ class OutputPageParserOutputTest extends ParserTestCase {
 
 		$instance = $this->newInstance( $outputPage, $parserOutput );
 		$instance->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
-
-		ObjectFactory::getInstance()->invokeContext( $instance->withContext() );
 
 		// Verify that for the invoked objects no previsous content is cached
 		$factboxCache = $instance->withContext()->getDependencyBuilder()->newObject( 'FactboxCache', array(

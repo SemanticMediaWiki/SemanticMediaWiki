@@ -2,17 +2,11 @@
 
 namespace SMW;
 
-use SMW\DIC\ObjectFactory;
-use SMW\MediaWiki\MagicWordFinder;
-
-use SMW\ParserData;
-use SMW\NamespaceExaminer;
-use SMW\DataValueFactory;
-
 use SMWOutputs;
 
 use MagicWord;
 use Title;
+use Html;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are
@@ -24,17 +18,17 @@ use Title;
  * @note Settings involve smwgNamespacesWithSemanticLinks, smwgLinksInValues,
  * smwgInlineErrors
  *
- * @license GNU GPL v2+
+ * @licence GNU GPL v2+
  * @since 1.9
  *
  * @author Markus Krötzsch
  * @author Denny Vrandecic
  * @author mwjames
  */
-class InTextAnnotationParser {
+class ContentProcessor implements ContextAware {
 
 	/** @var ContextResource */
-	protected $magicWordFinder = null;
+	protected $context = null;
 
 	/** @var Settings */
 	protected $settings = null;
@@ -43,10 +37,7 @@ class InTextAnnotationParser {
 	protected $parserData;
 
 	/** @var boolean */
-	protected $isEnabledNamespace;
-
-	/** @var Title|null */
-	protected $redirectTarget = null;
+	protected $isEnabled;
 
 	/**
 	 * Internal state for switching SMW link annotations off/on during parsing
@@ -59,23 +50,22 @@ class InTextAnnotationParser {
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param MagicWordFinder $magicWordFinder
+	 * @param ContextResource $context
 	 */
-	public function __construct( ParserData $parserData, MagicWordFinder $magicWordFinder ) {
+	public function __construct( ParserData $parserData, ContextResource $context ) {
 		$this->parserData = $parserData;
-		$this->magicWordFinder = $magicWordFinder->setOutput( $parserData->getOutput() );
+		$this->context = $context;
 	}
 
 	/**
-	 * @since 1.9.3s
+	 * @see ContextAware::withContext
 	 *
-	 * @param Title|null $redirectTarget
+	 * @since 1.9
 	 *
-	 * @return self
+	 * @return ContextResource
 	 */
-	public function setRedirectTarget( $redirectTarget ) {
-		$this->redirectTarget = $redirectTarget;
-		return $this;
+	public function withContext() {
+		return $this->context;
 	}
 
 	/**
@@ -87,44 +77,58 @@ class InTextAnnotationParser {
 	 * @param string &$text
 	 */
 	public function parse( &$text ) {
-
 		$title = $this->parserData->getTitle();
-		$this->settings = ObjectFactory::getInstance()->getSettings();
+		$this->settings = $this->withContext()->getSettings();
 
+		// Strip magic words from text body
 		$this->stripMagicWords( $text );
 
-		$this->isEnabledNamespace = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
+		// Attest if semantic data should be processed
+		$this->isEnabled = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
 
-		$this->addRedirectTargetAnnotation();
+		$this->isRedirect( $text );
 
 		// Parse links to extract semantic properties
 		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
-
 		$text = preg_replace_callback(
 			$this->getRegexpPattern( $linksInValues ),
 			$linksInValues ? 'self::process' : 'self::preprocess',
 			$text
 		);
 
+		// Update ParserOutput
 		$this->parserData->getOutput()->addModules( $this->getModules()  );
 		$this->parserData->updateOutput();
-
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
 
-	protected function addRedirectTargetAnnotation() {
+	/**
+	 * @since 1.9
+	 */
+	protected function isRedirect( $text ) {
 
-		if ( $this->isEnabledNamespace && $this->redirectTarget !== null ) {
+		if ( $this->isEnabled ) {
 
-			$propertyAnnotator = ObjectFactory::getInstance()->newRedirectPropertyAnnotator(
-				$this->parserData->getData(),
-				$this->redirectTarget
-			);
+			/**
+			 * @var PropertyAnnotator $propertyAnnotator
+			 */
+			$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'RedirectPropertyAnnotator', array(
+				'SemanticData' => $this->parserData->getData(),
+				'Text'         => $text
+			) );
 
 			$propertyAnnotator->addAnnotation();
 		}
+
 	}
 
+	/**
+	 * Returns required resource modules
+	 *
+	 * @since 1.9
+	 *
+	 * @return array
+	 */
 	protected function getModules() {
 		return array(
 			'ext.smw.style',
@@ -142,6 +146,12 @@ class InTextAnnotationParser {
 	 * this may lead to PHP crashes (!) when very long texts are
 	 * used as values. This is due to limitations in the library PCRE that
 	 * PHP uses for pattern matching.
+	 *
+	 * @since 1.9
+	 *
+	 * @param boolean $linksInValues
+	 *
+	 * @return string
 	 */
 	protected function getRegexpPattern( $linksInValues ) {
 		if ( $linksInValues ) {
@@ -274,7 +284,7 @@ class InTextAnnotationParser {
 				$subject
 			);
 
-			if ( $this->isEnabledNamespace && $this->isAnnotation ) {
+			if ( $this->isEnabled && $this->isAnnotation ) {
 				$this->parserData->addDataValue( $dataValue );
 			}
 		}
@@ -284,7 +294,7 @@ class InTextAnnotationParser {
 
 		// If necessary add an error text
 		if ( ( $this->settings->get( 'smwgInlineErrors' ) &&
-			$this->isEnabledNamespace && $this->isAnnotation ) &&
+			$this->isEnabled && $this->isAnnotation ) &&
 			( !$dataValue->isValid() ) ) {
 			$result .= $dataValue->getErrorText();
 		}
@@ -293,17 +303,41 @@ class InTextAnnotationParser {
 		return $result;
 	}
 
+	/**
+	 * Remove relevant SMW magic words from the given text and return
+	 * an array of the names of all discovered magic words. Moreover,
+	 * store this array in the current parser output, using the variable
+	 * mSMWMagicWords and for MW 1.21+ 'smwmagicwords'
+	 *
+	 * @since 1.9
+	 *
+	 * @param &$text
+	 *
+	 * @return array
+	 */
 	protected function stripMagicWords( &$text ) {
-
 		$words = array();
+		$mw = MagicWord::get( 'SMW_NOFACTBOX' );
 
-		foreach ( array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' ) as $magicWord ) {
-			$words = $words + $this->magicWordFinder->matchAndRemove( $magicWord, $text );
+		if ( $mw->matchAndRemove( $text ) ) {
+			$words[] = 'SMW_NOFACTBOX';
 		}
 
-		$this->magicWordFinder->setMagicWords( $words );
+		$mw = MagicWord::get( 'SMW_SHOWFACTBOX' );
+
+		if ( $mw->matchAndRemove( $text ) ) {
+			$words[] = 'SMW_SHOWFACTBOX';
+		}
+
+		// Store values into the mSMWMagicWords property
+		if ( method_exists( $this->parserData->getOutput(), 'setExtensionData' ) ) {
+			$this->parserData->getOutput()->setExtensionData( 'smwmagicwords', $words );
+		} else {
+			// @codeCoverageIgnoreStart
+			$this->parserData->getOutput()->mSMWMagicWords = $words;
+			// @codeCoverageIgnoreEnd
+		}
 
 		return $words;
 	}
-
 }

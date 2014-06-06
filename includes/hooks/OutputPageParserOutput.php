@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use SMW\DIC\ObjectFactory;
-
 use ParserOutput;
 use OutputPage;
 use Title;
@@ -103,15 +101,16 @@ class OutputPageParserOutput extends FunctionHook {
 				'ParserOutput' => $this->parserOutput
 			) );
 
-			$text = $this->parserOutput->getText();
+			$contentProcessor = $this->withContext()->getDependencyBuilder()->newObject( 'ContentProcessor', array(
+				'ParserData' => $parserData
+			) );
 
-			$inTextAnnotationParser = ObjectFactory::getInstance()->newInTextAnnotationParser( $parserData );
-			$inTextAnnotationParser->parse( $text );
+			$text = $this->parserOutput->getText();
+			$contentProcessor->parse( $text );
 
 			return $parserData->getOutput();
 		}
 
 		return $this->parserOutput;
 	}
-
 }
