@@ -1,0 +1,48 @@
+{
+	"@metadata": [
+		"This file contains localization reference details of data types used in Semantic MediaWiki.",
+		"Translations are added using MediaWiki's i18n system.",
+		"https://www.semantic-mediawiki.org/Help:Localization"
+	],
+	"_wpg": {
+		"id": "_wpg",
+		"label": "smw-datatype-label-wpg",
+		"alias": "smw-datatype-alias-wpg",
+		"default": [
+			"Page"
+		]
+	},
+	"_txt": {
+		"id": "_txt",
+		"label": "smw-datatype-label-txt",
+		"alias": "smw-datatype-alias-txt",
+		"default": [
+			"Text",
+			"String"
+		]
+	},
+	"_uri": {
+		"id": "_uri",
+		"label": "smw-datatype-label-uri",
+		"alias": "smw-datatype-alias-uri",
+		"default": [
+			"URL"
+		]
+	},
+	"_cod": {
+		"id": "_cod",
+		"label": "smw-datatype-label-cod",
+		"alias": "smw-datatype-alias-cod",
+		"default": [
+			"Code"
+		]
+	},
+	"_boo": {
+		"id": "_boo",
+		"label": "smw-datatype-label-boo",
+		"alias": "smw-datatype-alias-boo",
+		"default": [
+			"Boolean"
+		]
+	}
+}
