@@ -2,8 +2,8 @@
 
 namespace SMW\Test\SQLStore;
 
+use SMW\Store\StoreConfig;
 use SMWSQLStore3;
-use SMW\Settings;
 
 /**
  * @covers \SMWSQLStore3
@@ -23,27 +23,33 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	/** @var array */
 	protected $defaultPropertyTableCount = 0;
 
-	public function getClass() {
-		return '\SMWSQLStore3';
+	/** @var StoreConfig */
+	protected $instance = null;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->instance = new SMWSQLStore3();
+
+		$storeConfig = new StoreConfig();
+		$storeConfig->set( 'smwgFixedProperties', array() );
+		$storeConfig->set( 'smwgPageSpecialProperties', array() );
+
+		$this->instance->setConfiguration( $storeConfig );
+
+		$this->defaultPropertyTableCount = count( $this->instance->getPropertyTables() );
+		$this->instance->clear();
 	}
 
-	private function acquireInstance() {
-		$instance = new SMWSQLStore3();
+	protected function tearDown() {
+		$this->instance->clear();
 
-		$instance->setConfiguration( Settings::newFromArray( array(
-			'smwgFixedProperties' => array(),
-			'smwgPageSpecialProperties' => array()
-		) ) );
-
-		$this->defaultPropertyTableCount = count( $instance->getPropertyTables() );
-		$instance->clear();
-
-		return $instance;
+		parent::tearDown();
 	}
+
 
 	public function testCanConstruct() {
-		$instance = $this->acquireInstance();
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf( '\SMWSQLStore3', $this->instance );
 	}
 
 	/**
@@ -51,16 +57,9 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetPropertyTables() {
 
-		$instance = $this->acquireInstance();
+		$this->assertInternalType( 'array', $this->instance->getPropertyTables() );
 
-		$instance->setConfiguration( Settings::newFromArray( array(
-			'smwgFixedProperties' => array(),
-			'smwgPageSpecialProperties' => array()
-		) ) );
-
-		$this->assertInternalType( 'array', $instance->getPropertyTables() );
-
-		foreach ( $instance->getPropertyTables() as $tid => $propTable ) {
+		foreach ( $this->instance->getPropertyTables() as $tid => $propTable ) {
 			$this->assertInstanceOf( '\SMW\SQLStore\TableDefinition', $propTable );
 		}
 	}
@@ -70,15 +69,9 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPropertyTablesValidCustomizableProperty() {
 
-		$instance = $this->acquireInstance();
+		$this->instance->getConfiguration()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
 
-		$instance->setConfiguration( Settings::newFromArray( array(
-			'smwgFixedProperties' => array(),
-			'smwgPageSpecialProperties' => array( '_MDAT' )
-		) ) );
-
-		$this->assertCount( $this->defaultPropertyTableCount + 1, $instance->getPropertyTables() );
-		$instance->clear();
+		$this->assertCount( $this->defaultPropertyTableCount + 1, $this->instance->getPropertyTables() );
 	}
 
 	/**
@@ -86,15 +79,9 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPropertyTablesWithInvalidCustomizableProperty() {
 
-		$instance = $this->acquireInstance();
+		$this->instance->getConfiguration()->set( 'smwgPageSpecialProperties', array( '_MDAT', 'Foo' ) );
 
-		$instance->setConfiguration( Settings::newFromArray( array(
-			'smwgFixedProperties' => array(),
-			'smwgPageSpecialProperties' => array( '_MDAT', 'Foo' )
-		) ) );
-
-		$this->assertCount( $this->defaultPropertyTableCount + 1, $instance->getPropertyTables() );
-		$instance->clear();
+		$this->assertCount( $this->defaultPropertyTableCount + 1, $this->instance->getPropertyTables() );
 	}
 
 	/**
@@ -102,24 +89,18 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPropertyTablesWithValidCustomizableProperties() {
 
-		$instance = $this->acquireInstance();
+		$this->instance->getConfiguration()->set( 'smwgPageSpecialProperties', array( '_MDAT', '_MEDIA' ) );
 
-		$instance->setConfiguration( Settings::newFromArray( array(
-			'smwgFixedProperties' => array(),
-			'smwgPageSpecialProperties' => array( '_MDAT', '_MEDIA' )
-		) ) );
-
-		$this->assertCount( $this->defaultPropertyTableCount + 2, $instance->getPropertyTables() );
-		$instance->clear();
+		$this->assertCount( $this->defaultPropertyTableCount + 2, $this->instance->getPropertyTables() );
 	}
 
 	public function testGetStatisticsTable() {
-		$this->assertInternalType( 'string', $this->acquireInstance()->getStatisticsTable() );
+		$this->assertInternalType( 'string', $this->instance->getStatisticsTable() );
 	}
 
 	public function testGetObjectIds() {
-		$this->assertInternalType( 'object', $this->acquireInstance()->getObjectIds() );
-		$this->assertInternalType( 'string', $this->acquireInstance()->getObjectIds()->getIdTable() );
+		$this->assertInternalType( 'object', $this->instance->getObjectIds() );
+		$this->assertInternalType( 'string', $this->instance->getObjectIds()->getIdTable() );
 	}
 
 }

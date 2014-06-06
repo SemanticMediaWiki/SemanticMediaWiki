@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Store\StoreConfig;
+
 use HTMLFileCache;
 use SMWDataItem;
 use SMWDIProperty;
@@ -34,14 +36,9 @@ use Title;
 abstract class Store {
 
 	/**
-	 * FIXME THIS SHOULD NOT BE STATIC
-	 *
-	 * getPropertyTables is used all over the Store in a static manner
-	 * but its needs needs access to the configuration therefore once
-	 * all static calls are removed, turn this into a normal protected
-	 * variable
+	 * @var StoreConfig
 	 */
-	protected static $configuration = null;
+	protected $configuration = null;
 
 ///// Reading methods /////
 
@@ -456,10 +453,17 @@ abstract class Store {
 	}
 
 	/**
-	 * @since 1.9.1.1
+	 * @since 1.9.3
 	 */
-	public function setConfiguration( Settings $configuration ) {
-		self::$configuration = $configuration;
+	public function setConfiguration( StoreConfig $configuration ) {
+		$this->configuration = $configuration;
+	}
+
+	/**
+	 * @since 1.9.3
+	 */
+	public function getConfiguration() {
+		return $this->configuration;
 	}
 
 }

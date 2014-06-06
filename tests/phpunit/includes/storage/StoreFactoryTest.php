@@ -3,7 +3,6 @@
 namespace SMW\Test;
 
 use SMW\StoreFactory;
-use SMW\Settings;
 
 /**
  * @covers \SMW\StoreFactory
@@ -13,62 +12,60 @@ use SMW\Settings;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
-	public function testGetStore() {
+	protected function tearDown() {
+		StoreFactory::clear();
 
-		$settings = Settings::newFromGlobals();
+		parent::tearDown();
+	}
 
-		// Default is handled by the method itself
+	public function testGetDefaultStore() {
+
 		$instance = StoreFactory::getStore();
-		$this->assertInstanceOf( $settings->get( 'smwgDefaultStore' ), $instance );
+
+		$this->assertInstanceOf(
+			$instance->getConfiguration()->get( 'smwgDefaultStore' ),
+			$instance
+		);
 
 		$this->assertSame(
 			StoreFactory::getStore(),
 			$instance
 		);
 
-		// Reset static instance
 		StoreFactory::clear();
 
 		$this->assertNotSame(
 			StoreFactory::getStore(),
 			$instance
 		);
-
-		// Inject default store
-		$defaulStore = $settings->get( 'smwgDefaultStore' );
-		$instance = StoreFactory::getStore( $defaulStore );
-		$this->assertInstanceOf( $defaulStore, $instance );
 	}
 
-	public function testNewInstance() {
+	public function testDifferentStoreIdInstanceInvocation() {
 
-		$settings = Settings::newFromGlobals();
-
-		$defaulStore = $settings->get( 'smwgDefaultStore' );
-		$instance = StoreFactory::newInstance( $defaulStore );
-		$this->assertInstanceOf( $defaulStore, $instance );
+		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSQLStore3' ) );
+		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMWSparqlStore' ) );
 
 		$this->assertNotSame(
-			StoreFactory::newInstance( $defaulStore ),
-			$instance
+			StoreFactory::getStore( '\SMWSQLStore3' ),
+			StoreFactory::getStore( '\SMWSparqlStore' )
 		);
 	}
 
 	public function testStoreInstanceException() {
 		$this->setExpectedException( '\SMW\InvalidStoreException' );
-		StoreFactory::newInstance( '\SMW\StoreFactory' );
+		StoreFactory::getStore( '\SMW\StoreFactory' );
 	}
 
 	public function testStoreWithInvalidClassThrowsException() {
 		$this->setExpectedException( 'RuntimeException' );
-		StoreFactory::newInstance( 'foo' );
+		StoreFactory::getStore( 'foo' );
 	}
 
 	/**
@@ -78,6 +75,7 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testSmwfGetStore() {
 		$store = smwfGetStore();
+
 		$this->assertInstanceOf( 'SMWStore', $store );
 		$this->assertInstanceOf( 'SMW\Store', $store );
 	}

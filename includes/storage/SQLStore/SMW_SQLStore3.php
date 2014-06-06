@@ -834,10 +834,7 @@ class SMWSQLStore3 extends SMWStore {
 		$enabledSpecialProperties = self::$fixedSpecialProperties;
 		$customizableSpecialProperties = array_flip( self::$customizableSpecialProperties );
 
-		$customFixedProperties = self::$configuration->get( 'smwgFixedProperties' );
-		$customSpecialProperties = self::$configuration->get( 'smwgPageSpecialProperties' );
-
-		foreach ( $customSpecialProperties as $property ) {
+		foreach ( $this->getConfiguration()->get( 'smwgPageSpecialProperties' ) as $property ) {
 			if ( isset( $customizableSpecialProperties[$property] ) ) {
 				$enabledSpecialProperties[] = $property;
 			}
@@ -846,7 +843,7 @@ class SMWSQLStore3 extends SMWStore {
 		$definitionBuilder = new PropertyTableDefinitionBuilder(
 			self::$di_type_tables,
 			$enabledSpecialProperties,
-			$customFixedProperties
+			$this->getConfiguration()->get( 'smwgFixedProperties' )
 		);
 
 		$definitionBuilder->runBuilder();

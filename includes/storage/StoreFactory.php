@@ -2,40 +2,70 @@
 
 namespace SMW;
 
+use SMW\Store\StoreConfig;
+
 use RuntimeException;
 
 /**
- * Factory method that handles store instantiation
+ * Factory method that returns an instance of the default store, or an
+ * alternative store
  *
- * @file
+ * @ingroup Factory
+ * @ingroup Store
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
-
-/**
- * Factory method that handles store instantiation
- *
- * @ingroup Store
- */
 class StoreFactory {
 
 	/** @var Store[] */
 	private static $instance = array();
 
+	/** @var string */
+	private static $defaultStore = null;
+
 	/**
-	 * Returns a new store instance
-	 *
 	 * @since 1.9
 	 *
-	 * @param string $store
+	 * @param string|null $store
 	 *
 	 * @return Store
+	 * @throws RuntimeException
 	 * @throws InvalidStoreException
 	 */
-	public static function newInstance( $store ) {
+	public static function getStore( $store = null ) {
+
+		if ( self::$defaultStore === null ) {
+			self::$defaultStore = self::newDefaultStoreConfig()->get( 'smwgDefaultStore' );
+		}
+
+		if ( $store === null ) {
+			$store = self::$defaultStore;
+		}
+
+		if ( !isset( self::$instance[ $store ] ) ) {
+			self::$instance[ $store ] = self::newInstance( $store );
+			self::$instance[ $store ]->setConfiguration( self::newDefaultStoreConfig() );
+		}
+
+		return self::$instance[ $store ];
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public static function clear() {
+		self::$instance = array();
+		self::$defaultStore = null;
+	}
+
+	private static function newDefaultStoreConfig() {
+		return new StoreConfig();
+	}
+
+	private static function newInstance( $store ) {
 
 		if ( !class_exists( $store ) ) {
 			throw new RuntimeException( "Expected a {$store} class" );
@@ -50,34 +80,4 @@ class StoreFactory {
 		return $instance;
 	}
 
-	/**
-	 * Returns an instance of the default store, or an alternative store
-	 *
-	 * @since 1.9
-	 *
-	 * @param string|null $store
-	 *
-	 * @return Store
-	 */
-	public static function getStore( $store = null ) {
-
-		$configuration = Settings::newFromGlobals();
-		$store = $store === null ? $configuration->get( 'smwgDefaultStore' ) : $store;
-
-		if ( !isset( self::$instance[$store] ) ) {
-			self::$instance[$store] = self::newInstance( $store );
-			self::$instance[$store]->setConfiguration( $configuration );
-		}
-
-		return self::$instance[$store];
-	}
-
-	/**
-	 * Reset instance
-	 *
-	 * @since 1.9
-	 */
-	public static function clear() {
-		self::$instance = array();
-	}
 }
