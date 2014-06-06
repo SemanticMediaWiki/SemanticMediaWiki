@@ -5,7 +5,7 @@ if ( php_sapi_name() !== 'cli' ) {
 }
 
 if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'MediaWiki is not available for the test environment' );
+	die( 'MediaWiki is required for the test environment' );
 }
 
 function registerAutoloaderPath( $identifier, $path ) {
@@ -28,17 +28,8 @@ function runTestAutoLoader() {
 		return false;
 	}
 
-	$autoLoader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
-	$autoLoader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
-
-	// FIXME
-	$autoLoader->addClassMap( array(
-		'SMW\Tests\DataItemTest'                     => __DIR__ . '/phpunit/includes/dataitems/DataItemTest.php',
-		'SMW\Tests\Reporter\MessageReporterTestCase' => __DIR__ . '/phpunit/includes/Reporter/MessageReporterTestCase.php',
-		'SMW\Maintenance\RebuildConceptCache'        => __DIR__ . '/../maintenance/rebuildConceptCache.php',
-		'SMW\Maintenance\RebuildData'                => __DIR__ . '/../maintenance/rebuildData.php',
-		'SMW\Maintenance\RebuildPropertyStatistics'  => __DIR__ . '/../maintenance/rebuildPropertyStatistics.php'
-	) );
+	$classAutoLoader = new \SMW\Tests\ClassAutoLoader( $autoLoader );
+	$classAutoLoader->addClassesToRunFullTest();
 
 	return true;
 }
