@@ -181,7 +181,9 @@
 	"smw_adminlinks_datastructure": "Struktura podataka",
 	"smw_adminlinks_displayingdata": "Prikazivanje podataka",
 	"smw_adminlinks_inlinequerieshelp": "Pomoć za neposredne upite",
+	"prefs-smw": "Semantički Medijaviki",
 	"smw_unknowntype": "Tip ovog svojstva je pogrešan.",
 	"smw_concept_header": "Stranice koncepta \"$1\"",
-	"smw_conceptarticlecount": "Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje pripadaju tom konceptu."
+	"smw_conceptarticlecount": "Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje pripadaju tom konceptu.",
+	"smw-livepreview-loading": "Učitavam…"
 }
