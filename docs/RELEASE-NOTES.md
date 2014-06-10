@@ -23,4 +23,4 @@ Not a release yet.
 * #310 Fixed autoloading for `SMW\Test\QueryPrinterRegistryTestCase`
 * #311 Removed `MediaWikiTestCase` dependency
 * #315 Updated jquery.qTip2 from v2.0.0 to v2.2.0 (Mar 17 2014)
-* #329 Added the number of pages and percentage done to report messages when rebuilding selected pages
+* #332 Added the number of pages and percentage done to report messages when rebuilding selected pages
