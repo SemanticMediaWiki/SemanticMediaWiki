@@ -38,6 +38,8 @@ require_once $basePath . '/maintenance/Maintenance.php';
  * --page=<pagelist> will refresh only the pages of the given names, with | used as a separator.
  *              Example: --page="Page 1|Page 2" refreshes Page 1 and Page 2
  *              Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --page is given.
+ * --query=<query> Will refresh only pages returned by a given query.
+ *              Example: --query='[[Category:SomeCategory]]'
  * -f           Fully delete all content instead of just refreshing relevant entries. This will also
  *              rebuild the whole storage structure. May leave the wiki temporarily incomplete.
  * --server=<server> The protocol and server name to as base URLs, e.g.
