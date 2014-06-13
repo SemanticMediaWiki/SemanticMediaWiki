@@ -20,22 +20,13 @@ use SMWDataItem as DataItem;
  */
 class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\DataTypeRegistry';
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testGetInstance() {
 		$instance = DataTypeRegistry::getInstance();
 
-		$this->assertInstanceOf( $this->getClass(), $instance );
+		$this->assertInstanceOf(
+			'\SMW\DataTypeRegistry',
+			$instance
+		);
 
 		$this->assertTrue(
 			DataTypeRegistry::getInstance() === $instance,
@@ -101,6 +92,10 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		DataTypeRegistry::getInstance()->registerDataTypeAlias( '_foo', 'FooBar' );
+
+		$this->assertTrue(
+			DataTypeRegistry::getInstance()->isKnownTypeId( '_foo' )
+		);
 
 		$this->assertEquals(
 			'_foo',
