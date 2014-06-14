@@ -10,7 +10,6 @@ Not a release yet.
 
 * #279 Fixed undefined index in `DataTypeRegistry::getDefaultDataItemTypeId`
 * #282 Output a message instead of an exception in `Special:WantedProperties` for unknown predefined properties
-* #289 Added [``CONTRIBUTING.md``](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md) for better contributor guidance
 * #291 Fixed call to undefined method in `SMWSparqlStore::getDatabase` 
 * #308 Fixed caching issue in `SMW\Store\Maintenance\DataRebuilder` for duplicate title objects
 * #312 Fixed fatal error in `SMWCategoryResultPrinter` for when a mainlabel is hidden 
@@ -19,6 +18,7 @@ Not a release yet.
 ### Internal enhancements
 
 * #278 Changed the `SMW\SQLStore\PropertyStatisticsTable` interface 
+* #289 Added [``CONTRIBUTING.md``](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md) for better contributor guidance
 * #307 Added `removeDuplicates` option to `SMW\MediaWiki\Jobs\UpdateJob`
 * #310 Fixed autoloading for `SMW\Test\QueryPrinterRegistryTestCase`
 * #311 Removed `MediaWikiTestCase` dependency
