@@ -156,6 +156,7 @@ class DataRebuilder {
 		$pages = $this->query ? $this->getPagesFromQuery() : array();
 		$pages = $this->pages ? array_merge( (array)$this->pages, $pages ) : $pages;
 		$pages = $this->filters ? array_merge( $pages, $this->getPagesFromFilters() ) : $pages;
+		$numPages = count( $pages );
 
 		$titleCache = array();
 
@@ -166,8 +167,9 @@ class DataRebuilder {
 			if ( $title !== null && !isset( $titleCache[ $title->getPrefixedDBkey() ] ) ) {
 
 				$this->rebuildCount++;
+				$percentage = round( $this->rebuildCount / $numPages * 100 );
 
-				$this->reportMessage( "($this->rebuildCount) Processing page " . $title->getPrefixedDBkey() . " ...\n", $this->verbose );
+				$this->reportMessage( "($this->rebuildCount/$numPages $percentage%) Processing page " . $title->getPrefixedDBkey() . " ...\n", $this->verbose );
 
 				$updatejob = new UpdateJob( $title );
 				$updatejob->run();
