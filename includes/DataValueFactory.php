@@ -156,7 +156,7 @@ class DataValueFactory {
 	 *
 	 * @return SMWDataValue
 	 */
-	public static function newPropertyValue( $propertyName, $valueString,
+	public function newPropertyValue( $propertyName, $valueString,
 		$caption = false, DIWikiPage $contextPage = null ) {
 
 		Profiler::In( __METHOD__, true );

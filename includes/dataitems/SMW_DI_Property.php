@@ -7,6 +7,9 @@ use SMWDIUri;
 use SMWDIWikiPage;
 use SMWLanguage;
 
+use InvalidArgumentException;
+use RuntimeException;
+
 /**
  * This class implements Property data items.
  *
@@ -217,6 +220,31 @@ class DIProperty extends SMWDataItem {
 		} catch ( DataItemException $e ) {
 			return null;
 		}
+	}
+
+	/**
+	 * @since  1.9.3
+	 *
+	 * @return self
+	 * @throws RuntimeException
+	 * @throws InvalidArgumentException
+	 */
+	public function setPropertyTypeId( $propertyTypeId ) {
+
+		if ( !DataTypeRegistry::getInstance()->isKnownTypeId( $propertyTypeId ) ) {
+			throw new RuntimeException( "{$propertyTypeId} is an unknown type id" );
+		}
+
+		if ( $this->isUserDefined() && $this->m_proptypeid === null ) {
+			$this->m_proptypeid = $propertyTypeId;
+			return $this;
+		}
+
+		if ( !$this->isUserDefined() && $propertyTypeId === self::getPredefinedPropertyTypeId( $this->m_key ) ) {
+			return $this;
+		}
+
+		throw new InvalidArgumentException( 'Property type can not be altered for a predefined object' );
 	}
 
 	/**

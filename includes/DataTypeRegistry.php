@@ -151,6 +151,16 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since  1.9.3
+	 *
+	 * @param string
+	 * @return boolean
+	 */
+	public function isKnownTypeId( $typeId ) {
+		return isset( $this->typeDataItemIds[ $typeId ] );
+	}
+
+	/**
 	 * A function for registering/overwriting datatypes for SMW. Should be
 	 * called from within the hook 'smwInitDatatypes'.
 	 *

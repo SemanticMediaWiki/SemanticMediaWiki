@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use SMW\DIProperty;
+
 /**
  * @covers \SMW\DIProperty
  * @covers SMWDataItem
@@ -53,6 +55,38 @@ class DIPropertyTest extends DataItemTest {
 			array( true ),
 			array( array() ),
 		);
+	}
+
+	public function testSetPropertyTypeIdOnUserDefinedProperty() {
+
+		$property = new DIProperty( 'SomeBlobProperty' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$this->assertEquals( '_txt', $property->findPropertyTypeID() );
+	}
+
+	public function testSetPropertyTypeIdOnPredefinedProperty() {
+
+		$property = new DIProperty( '_MDAT' );
+		$property->setPropertyTypeId( '_dat' );
+
+		$this->assertEquals( '_dat', $property->findPropertyTypeID() );
+	}
+
+	public function testSetUnknownPropertyTypeIdThrowsException() {
+
+		$property = new DIProperty( 'SomeUnknownTypeIdProperty' );
+
+		$this->setExpectedException( 'RuntimeException' );
+		$property->setPropertyTypeId( '_unknownTypeId' );
+	}
+
+	public function testSetPropertyTypeIdOnPredefinedPropertyThrowsException() {
+
+		$property = new DIProperty( '_MDAT' );
+
+		$this->setExpectedException( 'InvalidArgumentException' );
+		$property->setPropertyTypeId( '_txt' );
 	}
 
 }
