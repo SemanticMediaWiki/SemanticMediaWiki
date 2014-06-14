@@ -6,7 +6,9 @@
 			"පසිඳු කාවින්ද"
 		]
 	},
+	"smw_exportrdf_submit": "Esporta",
 	"smw_purge": "Aġġorna",
 	"smw_browse_go": "Mur",
-	"smw_result_prev": "Ta' qabel"
+	"smw_result_prev": "Ta' qabel",
+	"smw-livepreview-loading": "Tniżżil fil-progress…"
 }
