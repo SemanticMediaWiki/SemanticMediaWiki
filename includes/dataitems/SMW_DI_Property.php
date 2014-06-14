@@ -9,6 +9,8 @@ use SMWLanguage;
 
 use InvalidArgumentException;
 use RuntimeException;
+use SMW\InvalidPropertyException;
+use SMW\InvalidPredefinedPropertyException;
 
 /**
  * This class implements Property data items.
@@ -68,38 +70,38 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @var array
 	 */
-	static protected $m_prop_types;
+	static private $m_prop_types;
 
 	/**
 	 * Array with entries "property id" => "property label"
 	 * @var array
 	 */
-	static protected $m_prop_labels;
+	static private $m_prop_labels;
 
 	/**
 	 * Array with entries "property alias" => "property id"
 	 * @var array
 	 */
-	static protected $m_prop_aliases;
+	static private $m_prop_aliases;
 
 	/**
 	 * Either an internal SMW property key (starting with "_") or the DB
 	 * key of a property page in the wiki.
 	 * @var string
 	 */
-	protected $m_key;
+	private $m_key;
 
 	/**
 	 * Whether to take the inverse of this property or not.
 	 * @var boolean
 	 */
-	protected $m_inverse;
+	private $m_inverse;
 
 	/**
 	 * Cache for property type ID.
 	 * @var string
 	 */
-	protected $m_proptypeid;
+	private $m_proptypeid;
 
 	/**
 	 * Initialise a property. This constructor checks that keys of
@@ -113,13 +115,13 @@ class DIProperty extends SMWDataItem {
 	 */
 	public function __construct( $key, $inverse = false ) {
 		if ( ( $key === '' ) || ( $key{0} == '-' ) ) {
-			throw new \SMW\InvalidPropertyException( "Illegal property key \"$key\"." );
+			throw new InvalidPropertyException( "Illegal property key \"$key\"." );
 		}
 
 		if ( $key{0} == '_' ) {
 			self::initPropertyRegistration();
 			if ( !array_key_exists( $key, self::$m_prop_types ) ) {
-				throw new \SMW\InvalidPredefinedPropertyException( "There is no predefined property with \"$key\"." );
+				throw new InvalidPredefinedPropertyException( "There is no predefined property with \"$key\"." );
 			}
 		}
 
@@ -400,7 +402,7 @@ class DIProperty extends SMWDataItem {
 	 * Set up predefined properties, including their label, aliases, and
 	 * typing information.
 	 */
-	static protected function initPropertyRegistration() {
+	static private function initPropertyRegistration() {
 		if ( is_array( self::$m_prop_types ) ) {
 			return; // init happened before
 		}
