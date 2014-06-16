@@ -280,16 +280,18 @@ $specialPageAliases['hi'] = array(
 
 /** Upper Sorbian (hornjoserbsce) */
 $specialPageAliases['hsb'] = array(
-	'Ask' => array( 'Semantiske pytanje' ),
+	'Ask' => array( 'Semantiske_pytanje' ),
 	'Browse' => array( 'Přepytać' ),
-	'ExportRDF' => array( 'RDF eksportować' ),
-	'PageProperty' => array( 'Kajkosć strony' ),
+	'ExportRDF' => array( 'RDF_eksportować' ),
+	'PageProperty' => array( 'Kajkosć_strony' ),
 	'Properties' => array( 'Kajkosće' ),
-	'SearchByProperty' => array( 'Pytanje po kajkosći' ),
-	'SemanticStatistics' => array( 'Semantiska statistika' ),
-	'Types' => array( 'Datowe typy' ),
-	'UnusedProperties' => array( 'Njewužiwane kajkosće' ),
-	'WantedProperties' => array( 'Falowace kajkosće' ),
+	'Concepts' => array( 'Koncepty' ),
+	'SMWAdmin' => array( 'SMW-administracija' ),
+	'SearchByProperty' => array( 'Pytanje_po_kajkosći' ),
+	'SemanticStatistics' => array( 'Semantiska_statistika' ),
+	'Types' => array( 'Datowe_typy' ),
+	'UnusedProperties' => array( 'Njewužiwane_kajkosće' ),
+	'WantedProperties' => array( 'Falowace_kajkosće' ),
 );
 
 /** Haitian (Kreyòl ayisyen) */
