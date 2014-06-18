@@ -263,6 +263,7 @@
 	"smw-info-par-icon": "显示的图标，“信息”或“警告”。",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-ask-options": "语义搜索选项",
+	"smw-prefs-intro-text": "以下选项由[https://semantic-mediawiki.org/ 语义MediaWiki]（或相关拓展）提供，以启用选定的定制功能。更多信息，请参见[https://semantic-mediawiki.org/wiki/Help:User_preferences 帮助部分]。",
 	"smw-prefs-ask-options-tooltip-display": "显示参数文本为信息提示",
 	"smw-prefs-ask-options-collapsed-default": "启用选项框以按默认方式折叠",
 	"smw-ui-tooltip-title-property": "属性",
