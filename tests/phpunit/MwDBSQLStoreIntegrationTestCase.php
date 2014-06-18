@@ -25,11 +25,6 @@ use UnexpectedValueException;
  */
 abstract class MwDBSQLStoreIntegrationTestCase extends MwDBaseUnitTestCase {
 
-	/**
-	 * In order for the test not being influenced by an exisiting setup
-	 * registration we temporary remove from the GLOBALS configuration
-	 * in order to enable hook and context assignment freely during testing
-	 */
 	private $wgHooks = array();
 
 	protected function setUp() {
@@ -48,17 +43,6 @@ abstract class MwDBSQLStoreIntegrationTestCase extends MwDBaseUnitTestCase {
 	protected function runExtensionSetup( $context, $directory = 'Foo' ) {
 		$setup = new Setup( $GLOBALS, $directory, $context );
 		$setup->run();
-	}
-
-	protected function getStore() {
-
-		$store = parent::getStore();
-
-		if ( !( $store instanceof \SMWSQLStore3 ) ) {
-			$this->markTestSkipped( 'Test only applicable for SMWSQLStore3' );
-		}
-
-		return $store;
 	}
 
 	protected function createPage( Title $title, $editContent = '' ) {

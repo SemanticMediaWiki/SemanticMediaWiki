@@ -235,6 +235,11 @@ class StoreTest extends MwDBaseUnitTestCase {
 	public function testSetGetDatabase() {
 
 		$store = StoreFactory::getStore();
+
+		if ( !( $store instanceof \SMWSQLStore3 ) ) {
+			$this->markTestSkipped( 'Test is only available for SMWSQLStore3' );
+		}
+
 		$database = $store->getDatabase();
 
 		$this->assertInstanceOf( '\SMW\MediaWiki\Database', $database );
