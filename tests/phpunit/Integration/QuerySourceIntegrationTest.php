@@ -23,6 +23,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 	protected $smwgQuerySources = array();
 
 	protected function setUp() {
+		parent::setUp();
 
 		$this->smwgQuerySources = $GLOBALS['smwgQuerySources'];
 
@@ -30,15 +31,13 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'foo' => 'SMW\Tests\Util\Mock\FakeQueryStore',
 			'bar' => 'SMW\Test\NonExistentQueryStore'
 		);
-
-		parent::setUp();
 	}
 
 	protected function tearDown() {
-		parent::tearDown();
-
 		StoreFactory::clear();
 		$GLOBALS['smwgQuerySources'] = $this->smwgQuerySources;
+
+		parent::tearDown();
 	}
 
 	public function testQueryProcessorWithDefaultSource() {
@@ -115,6 +114,10 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getDescription' )
 			->will( $this->returnValue( $description ) );
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getOffset' )
+			->will( $this->returnValue( 0 ) );
 
 		$count = $this->setupStore( 'default' )
 			->getQueryResult( $query )
