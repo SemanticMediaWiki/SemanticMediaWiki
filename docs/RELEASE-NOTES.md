@@ -14,6 +14,7 @@ Not a release yet.
 * #308 Fixed caching issue in `SMW\Store\Maintenance\DataRebuilder` for duplicate title objects
 * #312 Fixed fatal error in `SMWCategoryResultPrinter` for when a mainlabel is hidden 
 * #322 Fixed file names containing spaces or non-ASCII characters for for downloadable result formats (csv, excel)
+* #338 Fixed exception in `SMWSparqlResultParser` for an invalid datatype (bug 62218)
 
 ### Internal enhancements
 
@@ -24,3 +25,4 @@ Not a release yet.
 * #311 Removed `MediaWikiTestCase` dependency
 * #315 Updated jquery.qTip2 from v2.0.0 to v2.2.0 (Mar 17 2014)
 * #332 Added the number of pages and percentage done to report messages when rebuilding selected pages
+* #337 Added [Jena Fuseki](http://jena.apache.org/) (1.0.2) as service on Travis to run `SMWSparqlStore` tests
