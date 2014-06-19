@@ -112,7 +112,7 @@ class SMWSparqlResultParser {
 			if ( array_key_exists( 'datatype', $attributes ) ) {
 				$this->m_xml_datatype = $attributes['datatype'];
 			} else {
-				$this->m_xml_datatype = false;
+				$this->m_xml_datatype = '';
 			}
 			/// TODO handle xml:lang attributes here as well?
 		} elseif ( ( $tagName == 'variable' ) && ( $prevTag == 'head' ) ) {
