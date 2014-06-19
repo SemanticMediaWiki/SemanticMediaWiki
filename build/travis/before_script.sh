@@ -32,6 +32,26 @@ function installMediaWiki {
 
 }
 
+## Jena Fuseki
+function installJenaFusekiAsService {
+
+	if [ "$FUSEKI" != "" ]
+	then
+		wget https://www.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
+		tar -zxf jena-fuseki-$FUSEKI-distribution.tar.gz
+		mv jena-fuseki-$FUSEKI fuseki
+
+		cd fuseki
+
+		## Start fuseki in-memory as background
+		bash fuseki-server --update --mem /db &>/dev/null &
+
+		cd ..
+
+	fi
+
+}
+
 ## Run SemanticMediaWiki dependency install
 function installSMW {
 	if [ "$TYPE" == "composer" ]
@@ -114,6 +134,16 @@ function configureLocalSettings {
 	echo '$smwgNamespacesWithSemanticLinks = array( NS_MAIN => true, NS_IMAGE => true, NS_TRAVIS => true );' >> LocalSettings.php
 	echo '$smwgNamespace = "http://example.org/id/";' >> LocalSettings.php
 
+	if [ "$FUSEKI" != "" ]
+	then
+		echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
+		echo '$smwgSparqlQueryEndpoint = "http://localhost:3030/db/query";' >> LocalSettings.php
+		echo '$smwgSparqlUpdateEndpoint = "http://localhost:3030/db/update";' >> LocalSettings.php
+		echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
+	else
+		echo '$smwgDefaultStore = "SMWSQLStore3";' >> LocalSettings.php
+	fi
+
 	# Error reporting
 	echo 'error_reporting(E_ALL| E_STRICT);' >> LocalSettings.php
 	echo 'ini_set("display_errors", 1);' >> LocalSettings.php
@@ -123,6 +153,7 @@ function configureLocalSettings {
 	echo '$wgDebugDumpSql = false;' >> LocalSettings.php
 	echo '$wgShowDBErrorBacktrace = true;' >> LocalSettings.php
 	echo "putenv( 'MW_INSTALL_PATH=$(pwd)' );" >> LocalSettings.php
+
 }
 
 set -x
@@ -131,6 +162,7 @@ originalDirectory=$(pwd)
 
 cd ..
 
+installJenaFusekiAsService
 installMediaWiki
 installSMW
 configureLocalSettings

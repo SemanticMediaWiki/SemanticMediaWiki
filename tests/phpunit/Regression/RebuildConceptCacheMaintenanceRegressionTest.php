@@ -50,6 +50,10 @@ class RebuildConceptCacheMaintenanceRegressionTest extends MwRegressionTestCase 
 
 	public function assertDataImport() {
 
+		if ( $this->getStore() instanceof \SMWSparqlStore ) {
+			$this->markTestSkipped( "Can't be tested because of undefined method SMWSparqlStore::getConceptCacheStatus" );
+		}
+
 		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
 
 		$maintenanceRunner = new MaintenanceRunner( 'SMW\Maintenance\RebuildConceptCache' );
