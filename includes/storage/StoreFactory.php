@@ -5,37 +5,82 @@ namespace SMW;
 use RuntimeException;
 
 /**
- * Factory method that handles store instantiation
+ * Factory method that returns an instance of the default store, or an
+ * alternative store
  *
- * @file
+ * @ingroup Factory
+ * @ingroup Store
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
-
-/**
- * Factory method that handles store instantiation
- *
- * @ingroup Store
- */
 class StoreFactory {
 
 	/** @var Store[] */
 	private static $instance = array();
 
+	/** @var string */
+	private static $defaultStore = null;
+
 	/**
-	 * Returns a new store instance
-	 *
 	 * @since 1.9
 	 *
-	 * @param string $store
+	 * @param string|null $store
 	 *
 	 * @return Store
+	 * @throws RuntimeException
 	 * @throws InvalidStoreException
 	 */
-	public static function newInstance( $store ) {
+	public static function getStore( $store = null ) {
+
+		if ( self::$defaultStore === null ) {
+			self::$defaultStore = self::getConfiguration()->get( 'smwgDefaultStore' );
+		}
+
+		if ( $store === null ) {
+			$store = self::$defaultStore;
+		}
+
+		if ( !isset( self::$instance[ $store ] ) ) {
+			self::$instance[ $store ] = self::newInstance( $store );
+			self::$instance[ $store ]->setConfiguration( self::getConfiguration() );
+		}
+
+		return self::$instance[ $store ];
+	}
+
+	/**
+	 * @note This method should not be used in production code and is mostly
+	 * provided to inject instances during unit testing
+	 *
+	 * @since 1.9.3
+	 *
+	 * @param Store $instance
+	 */
+	public static function setDefaultStoreForUnitTest( Store $instance ) {
+
+		if ( self::$defaultStore === null ) {
+			self::$defaultStore = self::getConfiguration()->get( 'smwgDefaultStore' );
+		}
+
+		self::$instance[ self::$defaultStore ] = $instance;
+	}
+
+	/**
+	 * @since 1.9
+	 */
+	public static function clear() {
+		self::$instance = array();
+		self::$defaultStore = null;
+	}
+
+	private static function getConfiguration() {
+		return Settings::newFromGlobals();
+	}
+
+	private static function newInstance( $store ) {
 
 		if ( !class_exists( $store ) ) {
 			throw new RuntimeException( "Expected a {$store} class" );
@@ -50,34 +95,4 @@ class StoreFactory {
 		return $instance;
 	}
 
-	/**
-	 * Returns an instance of the default store, or an alternative store
-	 *
-	 * @since 1.9
-	 *
-	 * @param string|null $store
-	 *
-	 * @return Store
-	 */
-	public static function getStore( $store = null ) {
-
-		$configuration = Settings::newFromGlobals();
-		$store = $store === null ? $configuration->get( 'smwgDefaultStore' ) : $store;
-
-		if ( !isset( self::$instance[$store] ) ) {
-			self::$instance[$store] = self::newInstance( $store );
-			self::$instance[$store]->setConfiguration( $configuration );
-		}
-
-		return self::$instance[$store];
-	}
-
-	/**
-	 * Reset instance
-	 *
-	 * @since 1.9
-	 */
-	public static function clear() {
-		self::$instance = array();
-	}
 }

@@ -10,30 +10,24 @@ use SMW\Api\Info;
  *
  * @group SMW
  * @group SMWExtension
- * @group API
+ * @group semantic-mediawiki-api
+ * @group mediawiki-api
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class InfoTest extends ApiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\Api\Info';
 	}
 
 	/**
 	 * @dataProvider typeDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testExecuteOnSQLStore( $queryParameters, $expectedType ) {
-
-		$this->runOnlyOnSQLStore();
+	public function testExecuteOnStore( $queryParameters, $expectedType ) {
 
 		$result = $this->doApiRequest( array(
 				'action' => 'smwinfo',
@@ -46,16 +40,10 @@ class InfoTest extends ApiTestCase {
 		} else {
 			$this->assertInternalType( 'array', $result['info'][$queryParameters] );
 		}
-
 	}
 
 	/**
 	 * @dataProvider countDataProvider
-	 *
-	 * Test against a mock store to ensure that methods are executed
-	 * regardless whether a "real" Store is available or not
-	 *
-	 * @since 1.9
 	 */
 	public function testExecuteOnMockStore( $test, $type, $expected ) {
 
@@ -87,13 +75,12 @@ class InfoTest extends ApiTestCase {
 				'info' => 'Foo'
 		) );
 
-		$this->assertInternalType( 'array', $data['warnings'] );
-
+		$this->assertInternalType(
+			'array',
+			$data['warnings']
+		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function countDataProvider() {
 		return array(
 			array( array( 'QUERYFORMATS' => array( 'table' => 3 ) ), 'formatcount', array( 'table' => 3 ) ),
@@ -108,9 +95,6 @@ class InfoTest extends ApiTestCase {
 		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function typeDataProvider() {
 		return array(
 			array( 'proppagecount',     'integer' ),

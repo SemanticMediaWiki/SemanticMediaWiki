@@ -12,32 +12,24 @@ use SMW\DIWikiPage;
  *
  * @group SMW
  * @group SMWExtension
- * @group API
+ * @group semantic-mediawiki-api
+ * @group mediawiki-api
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class BrowseBySubjectTest extends ApiTestCase {
 
-	/**
-	 * @return string|false
-	 */
 	public function getClass() {
 		return '\SMW\Api\BrowseBySubject';
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	private function newSemanticData( $text ) {
 		return $data = new SemanticData( DIWikiPage::newFromTitle( $this->newTitle( NS_MAIN, $text ) ) );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testInvokeContext() {
 
 		$instance = new BrowseBySubject( $this->getApiMain( array( 'subject' => 'Foo' ) ), 'browsebysubject' );
@@ -47,35 +39,28 @@ class BrowseBySubjectTest extends ApiTestCase {
 
 		$instance->invokeContext( $instance->withContext() );
 		$this->assertTrue( $context === $instance->withContext() );
-
 	}
 
 	/**
 	 * @dataProvider subjectDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testExecuteOnSQLStore( $setup ) {
-
-		$this->runOnlyOnSQLStore();
+	public function testExecuteOnStore( $setup ) {
 
 		$result = $this->doApiRequest( array(
 			'action'  => 'browsebysubject',
 			'subject' => $setup['subject']
 		) );
 
-		$this->assertStructuralIntegrity( $setup, $result );
-
+		$this->assertStructuralIntegrity(
+			$setup,
+			$result
+		);
 	}
 
 	/**
 	 * @dataProvider invalidTitleDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testInvalidTitleExecuteOnSQLStore( $setup ) {
-
-		$this->runOnlyOnSQLStore();
+	public function testInvalidTitleExecuteOnStore( $setup ) {
 
 		$this->setExpectedException( 'Exception' );
 
@@ -84,8 +69,10 @@ class BrowseBySubjectTest extends ApiTestCase {
 			'subject' => $setup['subject']
 		) );
 
-		$this->assertStructuralIntegrity( $setup, $result );
-
+		$this->assertStructuralIntegrity(
+			$setup,
+			$result
+		);
 	}
 
 	/**
@@ -116,13 +103,12 @@ class BrowseBySubjectTest extends ApiTestCase {
 			$this->assertTrue( true );
 		};
 
-		$this->assertStructuralIntegrity( $setup, $instance->getResultData() );
-
+		$this->assertStructuralIntegrity(
+			$setup,
+			$instance->getResultData()
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function assertStructuralIntegrity( $setup, $result ) {
 
 		$this->assertInternalArrayStructure( $setup, $result, 'hasError',   'array',  function( $r ) { return $r['error']; } );
@@ -130,7 +116,6 @@ class BrowseBySubjectTest extends ApiTestCase {
 		$this->assertInternalArrayStructure( $setup, $result, 'hasSubject', 'string', function( $r ) { return $r['query']['subject']; } );
 		$this->assertInternalArrayStructure( $setup, $result, 'hasData',    'array',  function( $r ) { return $r['query']['data']; } );
 		$this->assertInternalArrayStructure( $setup, $result, 'hasSobj',    'array',  function( $r ) { return $r['query']['sobj']; } );
-
 	}
 
 	protected function assertInternalArrayStructure( $setup, $result, $field, $internalType, $definition ) {
@@ -139,9 +124,6 @@ class BrowseBySubjectTest extends ApiTestCase {
 		}
 	}
 
-	/**
-	 * @return array
-	 */
 	public function subjectDataProvider() {
 
 		$provider = array();
@@ -158,9 +140,6 @@ class BrowseBySubjectTest extends ApiTestCase {
 		return $provider;
 	}
 
-	/**
-	 * @return array
-	 */
 	public function redirectDataProvider() {
 
 		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
@@ -205,9 +184,6 @@ class BrowseBySubjectTest extends ApiTestCase {
 		return $provider;
 	}
 
-	/**
-	 * @return array
-	 */
 	public function invalidTitleDataProvider() {
 
 		$provider = array();
