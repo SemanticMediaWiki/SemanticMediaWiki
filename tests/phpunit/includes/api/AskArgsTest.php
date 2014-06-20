@@ -10,35 +10,24 @@ use SMW\Api\AskArgs;
  *
  * @group SMW
  * @group SMWExtension
- * @group API
+ * @group semantic-mediawiki-api
+ * @group mediawiki-api
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class AskArgsTest extends ApiTestCase {
 
-	/**
-	 * @return string
-	 */
 	public function getClass() {
 		return '\SMW\Api\AskArgs';
 	}
 
 	/**
 	 * @dataProvider queryDataProvider
-	 *
-	 * This test only verifies if either an error result or
-	 * a "normal" query result array is returned. The test makes
-	 * only an assymptions about a predefinied property
-	 * "Modification date" printrequests
-	 *
-	 * @since 1.9
 	 */
-	public function testExecuteOnSQLStore( array $query, array $expected ) {
-
-		$this->runOnlyOnSQLStore();
+	public function testExecuteOnStore( array $query, array $expected ) {
 
 		$results = $this->doApiRequest( array(
 			'action'     => 'askargs',
@@ -50,11 +39,13 @@ class AskArgsTest extends ApiTestCase {
 		$this->assertInternalType( 'array', $results );
 
 		if ( isset( $expected['error'] ) ) {
-			$this->assertArrayHasKey( 'error', $results );
-		} else {
-			$this->assertEquals( $expected, $results['query']['printrequests'] );
+			return $this->assertArrayHasKey( 'error', $results );
 		}
 
+		$this->assertEquals(
+			$expected,
+			$results['query']['printrequests']
+		);
 	}
 
 	/**

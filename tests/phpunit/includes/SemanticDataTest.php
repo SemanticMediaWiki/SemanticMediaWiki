@@ -1,9 +1,11 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\MwDBaseUnitTestCase;
 
+use SMW\StoreFactory;
 use SMW\Configuration\Configuration;
 use SMW\DataValueFactory;
 use SMW\SemanticData;
@@ -23,101 +25,73 @@ use Title;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SemanticDataTest extends SemanticMediaWikiTestCase {
+class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\SemanticData';
+	protected function setUp() {
+		parent::setUp();
+
+		// DIProperty::findPropertyTypeID is called during the test
+		// which itself will access the store and to avoid unnecessary
+		// DB reads inject a mock
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		StoreFactory::setDefaultStoreForUnitTest( $store );
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return Subobject
-	 */
-	private function newSubobject( Title $title, $property = 'Quuy', $value = 'Xeer' ) {
-
-		$subobject = new Subobject( $title );
-		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( $property, $value ) );
-
-		return $subobject;
+	protected function tearDown() {
+		StoreFactory::clear();
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return SemanticData
-	 */
-	private function newInstance( Title $title = null ) {
-
-		if ( $title === null ) {
-			$title = $this->newTitle();
-		}
-
-		return new SemanticData( DIWikiPage::newFromTitle( $title ) );
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-		$this->assertInstanceOf( 'SMWSemanticData', $this->newInstance() );
+
+		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
+
+		$this->assertInstanceOf(
+			'\SMW\SemanticData',
+			$instance
+		);
+
+		$this->assertInstanceOf(
+			'SMWSemanticData',
+			$instance
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testGetPropertyValues() {
 
-		$instance = $this->newInstance();
+		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
-		$this->assertInstanceOf( 'SMW\DIWikiPage', $instance->getSubject() );
-
-		$this->assertTrue(
-			$instance->getPropertyValues( new DIProperty( 'Foo', true ) ) === array() ,
-			'Asserts that an inverse Property returns an empty array'
+		$this->assertInstanceOf(
+			'SMW\DIWikiPage',
+			$instance->getSubject()
 		);
 
-		$this->assertTrue(
-			$instance->getPropertyValues( new DIProperty( 'Foo' ) ) === array() ,
-			'Asserts that an unknown Property returns an empty array'
+		$this->assertEmpty(
+			$instance->getPropertyValues( new DIProperty( 'Foo', true ) )
 		);
 
+		$this->assertEmpty(
+			$instance->getPropertyValues( new DIProperty( 'Foo' ) )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testaddPropertyValue() {
+	public function testAddPropertyValue() {
 
-		$instance = $this->newInstance();
-		$instance->addPropertyValue( 'FuyuQuy', DIWikiPage::doUnserialize( 'Foo#0#' ) );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
-		$key = Configuration::getInstance()->get( 'wgContLang' )->getNsText( SMW_NS_PROPERTY ) . ':' . 'FuyuQuy';
+		$instance->addPropertyValue(
+			'addPropertyValue',
+			DIWikiPage::doUnserialize( 'Foo#0#' )
+		);
 
-		foreach ( $instance->getProperties() as $property ) {
-
-			$this->assertInstanceOf(
-				'\SMW\DIProperty',
-				$property,
-				'Asserts that a DIProperty instance is returned'
-			);
-
-			$this->assertEquals(
-				$key,
-				$property->getKey() ,
-				'Asserts that both keys are equal'
-			);
-		}
+		$key = Configuration::getInstance()->get( 'wgContLang' )->getNsText( SMW_NS_PROPERTY ) . ':' . 'addPropertyValue';
 
 		$expected = array(
 			'propertyCount'  => 1,
@@ -125,90 +99,85 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 			'propertyValues' => array( 'Foo' )
 		);
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance );
+		$semanticDataValidator = new SemanticDataValidator();
 
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testGetHash() {
 
-		$title = $this->newTitle();
-		$instance = $this->newInstance( $title );
-		$instance->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$title = Title::newFromText( __METHOD__ );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+
+		$instance->addDataValue(
+			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
+		);
 
 		$subobject = $this->newSubobject( $title );
-		$instance->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
+
+		$instance->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
 
 		$this->assertInternalType(
 			'string',
-			$instance->getHash() ,
-			'Asserts that getHash() return a string'
+			$instance->getHash()
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testGetSubSemanticData() {
 
-		$title = $this->newTitle();
-		$instance = $this->newInstance( $title );
+		$title = Title::newFromText( __METHOD__ );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
 		// Adds only a subobject reference to the container
 		$subobject = $this->newSubobject( $title );
-		$instance->addPropertyObjectValue( $subobject->getProperty(), $subobject->getSemanticData()->getSubject() );
+
+		$instance->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getSemanticData()->getSubject()
+		);
 
 		$this->assertNotInstanceOf(
 			'SMWContainerSemanticData',
-			$instance->getSubSemanticData() ,
-			'Asserts that getSubSemanticData() does not return a SMWContainerSemanticData instance'
+			$instance->getSubSemanticData()
 		);
 
 		// Adds a complete container
-		$instance->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
+		$instance->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
 
 		foreach ( $instance->getSubSemanticData() as $subSemanticData ) {
 
 			$this->assertInstanceOf(
 				'SMWContainerSemanticData',
-				$subSemanticData,
-				'Asserts that getSubSemanticData() returns a SMWContainerSemanticData instance'
+				$subSemanticData
 			);
-
 		}
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testImportDataFromWithDifferentSubjectMWException() {
-
-		$this->setExpectedException( 'MWException' );
-		$this->newInstance()->importDataFrom( $this->newInstance() );
-
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testAddAndRemoveSubSemanticData() {
 
-		$title = $this->newTitle();
-		$instance = $this->newInstance( $title );
+		$title = Title::newFromText( __METHOD__ );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
 		// Adds only a subobject reference to the container
 		$subobject = $this->newSubobject( $title );
-		$instance->addPropertyObjectValue( $subobject->getProperty(), $subobject->getSemanticData()->getSubject() );
+
+		$instance->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getSemanticData()->getSubject()
+		);
 
 		$this->assertNotInstanceOf(
 			'SMWContainerSemanticData',
-			$instance->getSubSemanticData() ,
-			'Asserts that getSubSemanticData() does not return a SMWContainerSemanticData instance'
+			$instance->getSubSemanticData()
 		);
 
 		$instance->addSubSemanticData( $subobject->getSemanticData() );
@@ -217,217 +186,168 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 
 			$this->assertInstanceOf(
 				'SMWContainerSemanticData',
-				$subSemanticData,
-				'Asserts that getSubSemanticData() returns a SMWContainerSemanticData instance'
+				$subSemanticData
 			);
 
 			$this->assertEquals(
 				$subSemanticData,
-				$subobject->getSemanticData(),
-				'Asserts that both SemanticData containers are equal'
+				$subobject->getSemanticData()
 			);
-
 		}
 
 		$instance->removeSubSemanticData( $subobject->getSemanticData() );
 
 		$this->assertNotInstanceOf(
 			'SMWContainerSemanticData',
-			$instance->getSubSemanticData() ,
-			'Asserts that getSubSemanticData() does not return a SMWContainerSemanticData instance'
+			$instance->getSubSemanticData()
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testAddSubSemanticDataWithOutSubobjectNameMWException() {
+	public function testAddSubSemanticDataWithOutSubobjectNameThrowsException() {
+
+		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
 		$this->setExpectedException( 'MWException' );
-		$this->newInstance()->addSubSemanticData( $this->newInstance() );
 
+		$instance->addSubSemanticData(
+			new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( 'addSubSemanticData' ) ) )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testAddSubSemanticDataWithDifferentKeyMWException() {
+	public function testAddSubSemanticDataWithDifferentSubSemanticDataIdThrowsException() {
+
+		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
 		$this->setExpectedException( 'MWException' );
-		$this->newInstance()->addSubSemanticData(
-			$this->newSubobject( $this->newTitle() )->getSemanticData()
-		);
 
+		$instance->addSubSemanticData(
+			$this->newSubobject( Title::newFromText( 'addSubSemanticData' ) )->getSemanticData()
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
+	public function testImportDataFromWithDifferentSubjectThrowsException() {
+
+		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
+
+		$this->setExpectedException( 'MWException' );
+
+		$instance->importDataFrom(
+			new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( 'importDataFrom' ) ) )
+		);
+	}
+
 	public function testHasAndFindSubSemanticData() {
 
-		$title = $this->newTitle();
-		$instance = $this->newInstance( $title );
+		$title = Title::newFromText( __METHOD__ );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
 		$subobject = $this->newSubobject( $title );
 		$subobjectName = $subobject->getSemanticData()->getSubject()->getSubobjectName();
 
-		$this->assertFalse(
-			$instance->hasSubSemanticData() ,
-			'Asserts that hasSubSemanticData() returns false'
-		);
-
-		$this->assertEmpty(
-			$instance->findSubSemanticData( $subobjectName ),
-			'Asserts that findSubSemanticData() returns empty'
-		);
+		$this->assertFalse(	$instance->hasSubSemanticData() );
+		$this->assertEmpty(	$instance->findSubSemanticData( $subobjectName ));
 
 		// Adds only a subobject reference to the container
-		$instance->addPropertyObjectValue( $subobject->getProperty(), $subobject->getSemanticData()->getSubject() );
-
-		$this->assertFalse(
-			$instance->hasSubSemanticData( $subobjectName ),
-			'Asserts that hasSubSemanticData() returns false'
+		$instance->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getSemanticData()->getSubject()
 		);
 
-		$this->assertEmpty(
-			$instance->findSubSemanticData( $subobjectName ),
-			'Asserts that findSubSemanticData() returns empty'
-		);
+		$this->assertFalse( $instance->hasSubSemanticData( $subobjectName ) );
+		$this->assertEmpty( $instance->findSubSemanticData( $subobjectName ) );
 
 		$instance->addSubSemanticData( $subobject->getSemanticData() );
 
-		$this->assertTrue(
-			$instance->hasSubSemanticData( $subobjectName ),
-			'Asserts that hasSubSemanticData() returns true'
-		);
-
-		$this->assertNotEmpty(
-			$instance->findSubSemanticData( $subobjectName ),
-			'Asserts that findSubSemanticData() returns not empty'
-		);
+		$this->assertTrue( $instance->hasSubSemanticData( $subobjectName ) );
+		$this->assertNotEmpty($instance->findSubSemanticData( $subobjectName ) );
 
 		$this->assertInstanceOf(
 			'SMWContainerSemanticData',
-			$instance->findSubSemanticData( $subobjectName ),
-			'Asserts that findSubSemanticData() does return a SMWContainerSemanticData instance'
+			$instance->findSubSemanticData( $subobjectName )
 		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testHasSubSemanticDataOnNonStringSubobjectName() {
+	public function testSubSemanticDataOnNonStringSubobjectName() {
 
-		$this->assertFalse(
-			$this->newInstance()->hasSubSemanticData( new \stdClass ),
-			'Asserts that hasSubSemanticData() returns false'
-		);
+		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
+		$this->assertFalse( $instance->hasSubSemanticData( new \stdClass ) );
+		$this->assertEmpty( $instance->findSubSemanticData( new \stdClass ) );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testFindSubSemanticDataOnNonStringSubobjectName() {
-
-		$this->assertEmpty(
-			$this->newInstance()->findSubSemanticData( new \stdClass ),
-			'Asserts that findSubSemanticData() returns an empty array'
-		);
-
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testVisibility() {
 
-		$title = $this->newTitle();
-		$instance = $this->newInstance( $title );
-		$instance->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$title = Title::newFromText( __METHOD__ );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
-		$this->assertTrue(
-			$instance->hasVisibleProperties() ,
-			'Asserts that hasVisibleProperties() returns true'
+		$instance->addDataValue(
+			DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' )
 		);
+
+		$this->assertTrue( $instance->hasVisibleProperties() );
 
 		$subobject = $this->newSubobject( $title );
-		$instance->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 
-		$this->assertTrue(
-			$instance->hasVisibleSpecialProperties() ,
-			'Asserts that hasVisibleSpecialProperties() returns true'
+		$instance->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
 		);
 
+		$this->assertTrue( $instance->hasVisibleSpecialProperties() );
 	}
 
 	/**
 	 * @dataProvider removePropertyObjectProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testRemovePropertyObjectValue( $title, $property, $dataItem ) {
 
-		$instance = $this->newInstance( $title );
-		$instance->addPropertyObjectValue( $property, $dataItem );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
-		$this->assertFalse(
-			$instance->isEmpty() ,
-			'Asserts that isEmpty() returns false'
-		);
+		$instance->addPropertyObjectValue( $property, $dataItem );
+		$this->assertFalse( $instance->isEmpty() );
 
 		$instance->removePropertyObjectValue( $property, $dataItem );
-
-		$this->assertTrue(
-			$instance->isEmpty() ,
-			'Asserts that isEmpty() returns true'
-		);
-
+		$this->assertTrue( $instance->isEmpty() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testClear() {
 
-		$instance = $this->newInstance();
-		$instance->addPropertyObjectValue( new DIProperty( '_MDAT'), DITime::newFromTimestamp( 1272508903 ) );
+		$title = Title::newFromText( __METHOD__ );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
-		$this->assertFalse(
-			$instance->isEmpty() ,
-			'Asserts that isEmpty() returns false'
+		$instance->addPropertyObjectValue(
+			new DIProperty( '_MDAT' ),
+			DITime::newFromTimestamp( 1272508903 )
 		);
+
+		$this->assertFalse( $instance->isEmpty() );
 
 		$instance->clear();
-
-		$this->assertTrue(
-			$instance->isEmpty() ,
-			'Asserts that isEmpty() returns true'
-		);
-
+		$this->assertTrue( $instance->isEmpty() );
 	}
 
 	/**
 	 * @dataProvider dataValueDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testAddDataValue( $dataValues, $expected ) {
+	public function testAddDataValues( $dataValues, $expected ) {
 
-		$instance = $this->newInstance();
+		$title = Title::newFromText( __METHOD__ );
+		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
 
 		foreach ( $dataValues as $dataValue ) {
 			$instance->addDataValue( $dataValue );
 		}
 
-		if ( $expected['error'] === 0 ) {
-			$semanticDataValidator = new SemanticDataValidator;
-			$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance );
-		} else {
-			$this->assertCount( $expected['error'], $instance->getErrors() );
+		if ( $expected['error'] > 0 ) {
+			return $this->assertCount( $expected['error'], $instance->getErrors() );
 		}
+
+		$semanticDataValidator = new SemanticDataValidator();
+
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance
+		);
 	}
 
 	/**
@@ -437,8 +357,8 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 
 		$provider = array();
 
-		$title = $this->newTitle();
-		$subobject = $this->newSubobject( $title );
+		$title = Title::newFromText( __METHOD__ );
+		$subobject = $this->newSubobject( $title, __METHOD__, '999' );
 
 		// #0
 		$provider[] = array(
@@ -554,6 +474,18 @@ class SemanticDataTest extends SemanticMediaWikiTestCase {
 		);
 
 		return $provider;
+	}
+
+	private function newSubobject( Title $title, $property = 'Quuy', $value = 'Xeer' ) {
+
+		$subobject = new Subobject( $title );
+		$subobject->setEmptySemanticDataForId( 'Foo' );
+
+		$subobject->addDataValue(
+			DataValueFactory::getInstance()->newPropertyValue( $property, $value )
+		);
+
+		return $subobject;
 	}
 
 }

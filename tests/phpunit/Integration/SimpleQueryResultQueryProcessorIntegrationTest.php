@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Integration;
 
+use SMW\StoreFactory;
 use SMWQueryProcessor;
 
 /**
@@ -13,25 +14,32 @@ use SMWQueryProcessor;
  * @license GNU GPL v2+
  * @author mwjames
  */
-class QueryResultTest extends SemanticMediaWikiTestCase {
+class SimpleQueryResultQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string
+	 * @dataProvider queryDataProvider
 	 */
-	public function getClass() {
-		return '\SMWQueryResult';
+	public function testCanConstructor( array $test ) {
+
+		$this->assertInstanceOf(
+			'\SMWQueryResult',
+			$this->getQueryResultFor( $test['query'] )
+		);
 	}
 
 	/**
-	 * Helper method that returns a QueryResult object
-	 *
-	 * @since 1.9
+	 * @dataProvider queryDataProvider
 	 */
-	private function newQueryResultOnSQLStore( $queryString ) {
+	public function testToArray( array $test, array $expected ) {
 
-		$this->runOnlyOnSQLStore();
+		$instance = $this->getQueryResultFor( $test['query'] );
+		$results  = $instance->toArray();
+
+		$this->assertEquals( $expected[0], $results['printrequests'][0] );
+		$this->assertEquals( $expected[1], $results['printrequests'][1] );
+	}
+
+	private function getQueryResultFor( $queryString ) {
 
 		list( $query, $formattedParams ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
 			$queryString,
@@ -40,36 +48,9 @@ class QueryResultTest extends SemanticMediaWikiTestCase {
 			false
 		);
 
-		return \SMW\StoreFactory::getStore()->getQueryResult( $query );
+		return StoreFactory::getStore()->getQueryResult( $query );
 	}
 
-	/**
-	 * @dataProvider queryDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor( array $test ) {
-		$this->assertInstanceOf( $this->getClass(), $this->newQueryResultOnSQLStore( $test['query'] ) );
-	}
-
-	/**
-	 * @dataProvider queryDataProvider
-	 *
-	 * @since  1.9
-	 */
-	public function testToArray( array $test, array $expected ) {
-
-		$instance = $this->newQueryResultOnSQLStore( $test['query'] );
-		$results  = $instance->toArray();
-
-		//  Compare array structure
-		$this->assertEquals( $expected[0], $results['printrequests'][0] );
-		$this->assertEquals( $expected[1], $results['printrequests'][1] );
-	}
-
-	/**
-	 * @return array
-	 */
 	public function queryDataProvider() {
 
 		$provider = array();

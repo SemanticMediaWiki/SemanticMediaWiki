@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
+
+use SMW\Tests\Util\ParserFactory;
 
 use SMW\ConceptParserFunction;
 use SMW\MessageFormatter;
@@ -10,162 +12,87 @@ use Title;
 use ParserOutput;
 
 /**
- * Tests for the ConceptParserFunction class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
  * @covers \SMW\ConceptParserFunction
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
+ * @group medium
+ *
+ * @license GNU GPL v2+
+ * @since   1.9
+ *
+ * @author mwjames
  */
-class ConceptParserFunctionTest extends ParserTestCase {
+class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\ConceptParserFunction';
-	}
+	public function testCanConstruct() {
 
-	/**
-	 * Helper method that returns a instance
-	 *
-	 * @return ConceptParserFunction
-	 */
-	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
-
-		if ( $title === null ) {
-			$title = $this->newTitle( SMW_NS_CONCEPT );
-		}
-
-		if ( $parserOutput === null ) {
-			$parserOutput = $this->newParserOutput();
-		}
-
-		return new ConceptParserFunction(
-			$this->newParserData( $title, $parserOutput ),
-			new MessageFormatter( $title->getPageLanguage() )
+		$this->assertInstanceOf(
+			'\SMW\ConceptParserFunction',
+			$this->newInstance()
 		);
 	}
 
 	/**
-	 * Helper method that returns a text
-	 *
-	 * @return string
-	 */
-	private function getMessageText( Title $title, $error ) {
-		$message = new MessageFormatter( $title->getPageLanguage() );
-		return $message->addFromKey( $error )->getHtml();
-	}
-
-	/**
-	 * @test ConceptParserFunction::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @test ConceptParserFunction::parse (Test error on wrong namespace)
 	 * @dataProvider namespaceDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $namespace
 	 */
 	public function testErrorOnNamespace( $namespace ) {
 
-		$title = $this->newTitle( $namespace );
-		$instance = $this->newInstance( $title, $this->newParserOutput() );
+		$title = Title::newFromText( __METHOD__, $namespace );
+
+		$instance = $this->newInstance( $title, new ParserOutput() );
 
 		$this->assertEquals(
 			$this->getMessageText( $title, 'smw_no_concept_namespace' ),
-			$instance->parse( array() ),
-			'asserts that an error is raised due to a wrong namespace'
+			$instance->parse( array() )
 		);
-
 	}
 
 	/**
-	 * @test ConceptParserFunction::parse (Test error on double {{#concept}} use)
-	 * @dataProvider queryDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $params
+	 * @dataProvider queryParameterProvider
 	 */
 	public function testErrorOnDoubleParse( array $params ) {
 
-		$title = $this->newTitle( SMW_NS_CONCEPT );
+		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
 
-		$instance = $this->newInstance( $title, $this->newParserOutput() );
+		$instance = $this->newInstance( $title, new ParserOutput() );
  		$instance->parse( $params );
 
-		// First call
 		$instance->parse( $params );
 
 		$this->assertEquals(
 			$this->getMessageText( $title, 'smw_multiple_concepts' ),
-			$instance->parse( $params ),
-			'assert that the second call raises an error'
+			$instance->parse( $params )
 		);
 	}
 
 	/**
-	 * @test ConceptParserFunction::parse
-	 * @dataProvider queryDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param $params
-	 * @param $expected
+	 * @dataProvider queryParameterProvider
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$parserOutput =  $this->newParserOutput();
-		$title = $this->newTitle( SMW_NS_CONCEPT );
+		$parserOutput =  new ParserOutput();
+		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
 
-		// Initialize and parse
 		$instance = $this->newInstance( $title, $parserOutput );
 		$instance->parse( $params );
 
-		// Re-read data from stored parserOutput
-		$parserData = $this->newParserData( $title, $parserOutput );
-
-		// Check the returned instance
-		$this->assertInstanceOf(
-			'\SMW\SemanticData',
-			$parserData->getData(),
-			'assert that the returning instance if of type SemanticData'
-		);
+		$parserData = new ParserData( $title, $parserOutput );
 
 		$this->assertCount(
 			$expected['propertyCount'],
-			$parserData->getData()->getProperties(),
-			'asserts the expected amount of properties available through getProperties()'
+			$parserData->getSemanticData()->getProperties()
 		);
 
 		// Confirm concept property
-		foreach ( $parserData->getData()->getProperties() as $key => $diproperty ){
+		foreach ( $parserData->getSemanticData()->getProperties() as $key => $diproperty ){
 			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
 			$this->assertEquals( '_CONC' , $diproperty->getKey() );
 
 			// Confirm concept property values
-			foreach ( $parserData->getData()->getPropertyValues( $diproperty ) as $dataItem ){
+			foreach ( $parserData->getSemanticData()->getPropertyValues( $diproperty ) as $dataItem ){
 				$this->assertEquals( $expected['conceptQuery'], $dataItem->getConceptQuery() );
 				$this->assertEquals( $expected['conceptDocu'], $dataItem->getDocumentation() );
 				$this->assertEquals( $expected['conceptSize'], $dataItem->getSize() );
@@ -174,31 +101,20 @@ class ConceptParserFunctionTest extends ParserTestCase {
 		}
 	}
 
-	/**
-	 * @test ConceptParserFunction::render
-	 *
-	 * @since 1.9
-	 */
 	public function testStaticRender() {
 
-		$parser = $this->newParser( $this->newTitle(), $this->newMockUser() );
-		$result = ConceptParserFunction::render( $parser );
+		$parser = ParserFactory::newFromTitle( Title::newFromText( __METHOD__ ) );
 
 		$this->assertInternalType(
 			'string',
-			$result,
-			'asserts that the returning result is always of type string'
+			ConceptParserFunction::render( $parser )
 		);
 	}
 
 	/**
-	 * Provides data sample, the first array contains parametrized input
-	 * value while the second array contains expected return results for the
-	 * instantiated object.
-	 *
 	 * @return array
 	 */
-	public function queryDataProvider() {
+	public function queryParameterProvider() {
 
 		$provider = array();
 
@@ -241,7 +157,7 @@ class ConceptParserFunctionTest extends ParserTestCase {
 		// #2 (includes Parser object)
 		$provider[] = array(
 			array(
-				$this->newParser( $this->newTitle(), $this->newMockUser() ),
+				ParserFactory::newFromTitle( Title::newFromText( __METHOD__ ) ),
 				'[[Modification date::+]]',
 				'Foooooooo'
 			),
@@ -269,6 +185,27 @@ class ConceptParserFunctionTest extends ParserTestCase {
 			array( NS_MAIN ),
 			array( NS_HELP )
 		);
+	}
+
+	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
+
+		if ( $title === null ) {
+			$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
+		}
+
+		if ( $parserOutput === null ) {
+			$parserOutput = new ParserOutput();
+		}
+
+		return new ConceptParserFunction(
+			new ParserData( $title, $parserOutput ),
+			new MessageFormatter( $title->getPageLanguage() )
+		);
+	}
+
+	private function getMessageText( Title $title, $error ) {
+		$message = new MessageFormatter( $title->getPageLanguage() );
+		return $message->addFromKey( $error )->getHtml();
 	}
 
 }
