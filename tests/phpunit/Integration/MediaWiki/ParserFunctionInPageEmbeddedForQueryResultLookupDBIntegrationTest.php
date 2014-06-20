@@ -39,20 +39,83 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 	 */
 	protected $databaseToBeExcluded = array( 'sqlite' );
 
-	protected $title = null;
+	protected $titles = array();
 
 	protected function tearDown() {
 		$pageDeleter= new PageDeleter();
-		$pageDeleter->deletePage( $this->title );
+
+		foreach ( $this->titles as $title ) {
+			$pageDeleter->deletePage( $title );
+		}
 
 		parent::tearDown();
 	}
 
-	public function testCreatePageWithSubobjectParserFunctionForQueryResultLookup() {
+	public function testCreatePageWithSetParserFunctionForQueryResultLookup() {
 
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
 
-		$this->title = Title::newFromText( 'CreatePageWithSubobjectParserFunction' );
+		$this->titles[] = Title::newFromText( 'CreatePageWithSetParserFunction-1' );
+		$this->titles[] = Title::newFromText( 'CreatePageWithSetParserFunction-2' );
+
+		$pageCreator = new PageCreator();
+
+		$pageCreator
+			->createPage( Title::newFromText( 'Has set parser function test', SMW_NS_PROPERTY ) )
+			->doEdit( '[[Has type::Page]]' );
+
+		$property = DIProperty::newFromUserLabel( 'Has set parser function test' );
+
+		$pageCreator
+			->createPage( $this->titles[0] )
+			->doEdit( '{{#set:|Has set parser function test=Foo}}' );
+
+		$pageCreator
+			->createPage( $this->titles[1] )
+			->doEdit( '{{#set:|Has set parser function test=Bar}}' );
+
+		$propertyValue = new PropertyValue( '__pro' );
+		$propertyValue->setDataItem( $property );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$description->addPrintRequest(
+			new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue )
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_COUNT;
+
+		$this->assertEquals(
+			2,
+			$this->getStore()->getQueryResult( $query )
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$this->assertCount(
+			2,
+			$this->getStore()->getQueryResult( $query )->getResults()
+		);
+	}
+
+	public function testCreatePageWithSubobjectParserFunctionForQueryResultLookup() {
+
+		if ( $this->getStore() instanceof \SMWSparqlStore ) {
+			$this->markTestSkipped( "SMWSparqlStore currently does not support subobjects" );
+		}
+
+		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
+
+		$this->titles[] = Title::newFromText( 'CreatePageWithSubobjectParserFunction' );
 
 		$pageCreator = new PageCreator();
 
@@ -63,7 +126,7 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 		$property = DIProperty::newFromUserLabel( 'Has subobject parser function test' );
 
 		$pageCreator
-			->createPage( $this->title )
+			->createPage( $this->titles[0] )
 			->doEdit(
 				'{{#subobject:|Has subobject parser function test=WXYZ|@sortkey=B}}' .
 				'{{#subobject:|Has subobject parser function test=ABCD|@sortkey=A}}' .
