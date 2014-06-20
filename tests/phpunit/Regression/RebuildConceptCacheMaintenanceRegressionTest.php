@@ -25,6 +25,11 @@ use Title;
  */
 class RebuildConceptCacheMaintenanceRegressionTest extends MwRegressionTestCase {
 
+	/**
+	 * FIXME SMWSparqlStore::getConceptCacheStatus doesn't exist
+	 */
+	protected $storeToBeExcluded = array( 'SMWSparqlStore' );
+
 	public function getSourceFile() {
 		return __DIR__ . '/data/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml';
 	}
@@ -49,10 +54,6 @@ class RebuildConceptCacheMaintenanceRegressionTest extends MwRegressionTestCase 
 	}
 
 	public function assertDataImport() {
-
-		if ( $this->getStore() instanceof \SMWSparqlStore ) {
-			$this->markTestSkipped( "SMWSparqlStore currently does not support getConceptCacheStatus" );
-		}
 
 		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
 
