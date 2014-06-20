@@ -72,6 +72,7 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 	public function testDataImport() {
 
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
+		$this->checkIfStoreCanBeUsedOtherwiseSkipTest();
 
 		$importRunner = new XmlImportRunner( $this->getSourceFile() );
 		$importRunner->setVerbose( true );

@@ -37,9 +37,6 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 	}
 
 	public function testDeleteAll() {
-		if ( !( $this->getStore() instanceof \SMWSQLStore3 ) ) {
-			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
-		}
 
 		$statsTable = new PropertyStatisticsTable(
 			$this->getStore()->getDatabase(),
@@ -95,9 +92,6 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 	 * @param int $usageCount
 	 */
 	public function testInsertUsageCount( $propId, $usageCount ) {
-		if ( !( $this->getStore() instanceof \SMWSQLStore3 ) ) {
-			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
-		}
 
 		$table = $this->getTable();
 
@@ -119,9 +113,6 @@ class PropertyStatisticsTableTest extends MwDBaseUnitTestCase {
 	}
 
 	public function testAddToUsageCounts() {
-		if ( !( $this->getStore() instanceof \SMWSQLStore3 ) ) {
-			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
-		}
 
 		$statsTable = new PropertyStatisticsTable(
 			$this->getStore()->getDatabase(),

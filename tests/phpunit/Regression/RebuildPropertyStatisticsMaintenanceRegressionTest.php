@@ -22,6 +22,11 @@ use SMW\Test\MwRegressionTestCase;
  */
 class RebuildPropertyStatisticsMaintenanceRegressionTest extends MwRegressionTestCase {
 
+	/**
+	 * FIXME SMWSparqlStore::getPropertyTables doesn't exist
+	 */
+	protected $storeToBeExcluded = array( 'SMWSparqlStore' );
+
 	public function getSourceFile() {
 		return __DIR__ . '/data/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml';
 	}

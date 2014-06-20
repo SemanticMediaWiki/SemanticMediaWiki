@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW\Test\SQLStore;
+namespace SMW\Tests\SQLStore;
 
+use SMW\StoreFactory;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -18,84 +19,84 @@ use Title;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.0.2
  *
  * @author mwjames
  */
-class Sql3StubSemanticDataTest extends \SMW\Test\SemanticMediaWikiTestCase {
+class Sql3StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return 'SMWSql3StubSemanticData';
+	/** @var Store */
+	private $store;
+
+	protected function setUp() {
+		$this->store = StoreFactory::getStore();
 	}
 
-	/**
-	 * @return SMWSql3StubSemanticData
-	 */
-	protected function newInstance( SemanticData $semanticData = null ) {
-
-		if ( $semanticData === null ) {
-			$semanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
-				'getSubject' => $this->newMockBuilder()->newObject( 'DIWikiPage' )
-			) );
-		}
-
-		return SMWSql3StubSemanticData::newFromSemanticData( $semanticData, $this->getStore() );
-	}
-
-	/**
-	 * @since 1.9.0.2
-	 */
 	public function testCanConstruct() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->once() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) ) );
+
+		$this->assertInstanceOf(
+			'\SMWSql3StubSemanticData',
+			SMWSql3StubSemanticData::newFromSemanticData( $semanticData, $store )
+		);
 	}
 
-	/**
-	 * @since 1.9.0.2
-	 */
 	public function testGetPropertyValues() {
 
-		$instance = $this->newInstance( new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( 'Foo' ) ) ) );
+		if ( !$this->store instanceOf \SMWSQLStore3 ) {
+			$this->markTestSkipped( "Requires a SMWSQLStore3 instance" );
+		}
 
-		$this->assertInstanceOf( 'SMW\DIWikiPage', $instance->getSubject() );
-
-		$this->assertTrue(
-			$instance->getPropertyValues( new DIProperty( 'Foo', true ) ) === array() ,
-			'Asserts that an inverse Property returns an empty array'
+		$instance = SMWSql3StubSemanticData::newFromSemanticData(
+			new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) ),
+			$this->store
 		);
 
-		$this->assertTrue(
-			$instance->getPropertyValues( new DIProperty( 'Foo' ) ) === array() ,
-			'Asserts that an unknown Property returns an empty array'
+		$this->assertInstanceOf(
+			'SMW\DIWikiPage',
+			$instance->getSubject()
 		);
 
+		$this->assertEmpty(
+			$instance->getPropertyValues( new DIProperty( 'unknownInverseProperty', true ) )
+		);
+
+		$this->assertEmpty(
+			$instance->getPropertyValues( new DIProperty( 'unknownProperty' ) )
+		);
 	}
 
 	/**
 	 * @dataProvider removePropertyObjectProvider
-	 *
-	 * @since 1.9.0.2
 	 */
 	public function testRemovePropertyObjectValue( $title, $property, $dataItem ) {
 
-		$instance = $this->newInstance( new SemanticData( DIWikiPage::newFromTitle( $title ) ) );
-		$instance->addPropertyObjectValue( $property, $dataItem );
+		if ( !$this->store instanceOf \SMWSQLStore3 ) {
+			$this->markTestSkipped( "Requires a SMWSQLStore3 instance" );
+		}
 
-		$this->assertFalse(
-			$instance->isEmpty() ,
-			'Asserts that isEmpty() returns false'
+		$instance = SMWSql3StubSemanticData::newFromSemanticData(
+			new SemanticData( DIWikiPage::newFromTitle( $title ) ),
+			$this->store
 		);
+
+		$instance->addPropertyObjectValue( $property, $dataItem );
+		$this->assertFalse( $instance->isEmpty() );
 
 		$instance->removePropertyObjectValue( $property, $dataItem );
-
-		$this->assertTrue(
-			$instance->isEmpty() ,
-			'Asserts that isEmpty() returns true'
-		);
-
+		$this->assertTrue( $instance->isEmpty() );
 	}
 
 	/**
@@ -110,7 +111,7 @@ class Sql3StubSemanticDataTest extends \SMW\Test\SemanticMediaWikiTestCase {
 		// #0
 		$provider[] = array(
 			$title,
-			new DIProperty( '_MDAT'),
+			new DIProperty( '_MDAT' ),
 			DITime::newFromTimestamp( 1272508903 )
 		);
 

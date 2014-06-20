@@ -29,6 +29,9 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	/* @var array|null */
 	protected $databaseToBeExcluded = null;
 
+	/* @var array */
+	protected $storeToBeExcluded = array();
+
 	protected $destroyDatabaseTablesOnEachRun = false;
 	protected $isUsableUnitTestDatabase = true;
 
@@ -83,9 +86,21 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function checkIfDatabaseCanBeUsedOtherwiseSkipTest() {
+
 		if ( !$this->isUsableUnitTestDatabase ) {
 			$this->markTestSkipped(
-				"Required database type is not available or is excluded"
+				"Database type is not available or was excluded"
+			);
+		}
+	}
+
+	protected function checkIfStoreCanBeUsedOtherwiseSkipTest() {
+
+		$store = get_class( $this->getStore() );
+
+		if ( in_array( $store, $this->storeToBeExcluded ) ) {
+			$this->markTestSkipped(
+				"{$store} was excluded"
 			);
 		}
 	}
