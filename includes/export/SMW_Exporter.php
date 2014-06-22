@@ -41,22 +41,46 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create exportable data from a given semantic data record.
-	 *
+	* Extract and prepare for export, properties from the subject of the given SMWSemanticData object.
 	 * @param $semdata SMWSemanticData
+	 * @param $createNewContainer boolean - Set to true to create a new SMWDIWikiPage to hold the properties
 	 * @return SMWExpData
-	 */
-	static public function makeExportData( SMWSemanticData $semdata ) {
-		self::initBaseURIs();
+	*/
+	static protected function makeExportDataForSemanticData(SMWSemanticData $semdata, $createNewContainer=false) {
 		$subject = $semdata->getSubject();
 		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
 			$types = $semdata->getPropertyValues( new SMWDIProperty( '_TYPE' ) );
 		} else {
 			$types = array();
 		}
-		$result = self::makeExportDataForSubject( $subject, end( $types ) );
+		$result = self::makeExportDataForSubject( $createNewContainer ? SMWDIWikiPage::newFromTitle( $subject->getTitle() ) : $subject, end( $types ) );
 		foreach ( $semdata->getProperties() as $property ) {
-			self::addPropertyValues( $property, $semdata->getPropertyValues( $property ), $result, $subject );
+			// for subobjects makeExportDataForSubject() computes the sortkey
+			if ($subject->getSubObjectName() !== '' && $property->getKey() == '_SKEY') {
+			   continue;
+			}
+			self::addPropertyValues( $property, $semdata->getPropertyValues( $property ), $result );
+		}
+		return $result;
+	}
+
+	/**
+	 * Create exportable data from a given semantic data record.
+	 *
+	 * @param $semdata SMWSemanticData
+	 * @return ARRAY of SMWExpData
+	 */
+	static public function makeExportData( SMWSemanticData $semdata ) {
+		self::initBaseURIs();
+		$result = array();
+
+    		// Add main page properties attached to the data record's own subject
+    		$result[] = self::makeExportDataForSemanticData($semdata, false);
+
+    		// Now get semantic data from any subobjects present and prepare them for export 
+		foreach( $semdata->getSubSemanticData() as $subObjectData ) { //an array of SMWSemanticData objects
+			// each of these will get its own SMWDIWikiPage to hold the subobject properties
+			$result[] = self::makeExportDataForSemanticData( $subObjectData, true );
 		}
 		return $result;
 	}
@@ -85,10 +109,12 @@ class SMWExporter {
 			$masterPage = new SMWDIWikiPage( $diWikiPage->getDBkey(), $diWikiPage->getNamespace(), $diWikiPage->getInterwiki() );
 			$masterExpElement = self::getDataItemExpElement( $masterPage );
 			$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'masterPage' ), $masterExpElement );
-			// Add a sortkey: subobjects do not get this during parsing (they are no pages),
-			// but it is needed to query for them (e.g., to get a defined order for result pages)
+
+			// Subobjects exported to RDF need a sort key if the Sparql server is the primary property store. Otherwise they are not retrieved during #ask queries.
+			// The sort key produced here looks like "host page# xxxx", i.e. with a space in the middle.;
 			$subObjectLabel = $diWikiPage->getDBkey() . '#' . $diWikiPage->getSubobjectName();
-			$sortkey = new SMWExpLiteral( str_replace( '_', ' ', $subObjectLabel ) );
+			// The sort key references the datatype
+			$sortkey = self::getDataItemExpElement( new SMWDIBlob( str_replace( '_', ' ', $subObjectLabel )));
 			$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $sortkey );
 		} else {
 			$pageTitle = str_replace( '_', ' ', $diWikiPage->getDBkey() );
@@ -131,7 +157,7 @@ class SMWExporter {
 				if ( $addStubData ) {
 					// Add a default sort key; for pages that exist in the wiki,
 					// this is set during parsing
-					$defaultSortkey = new SMWExpLiteral( str_replace( '_', ' ', $diWikiPage->getDBkey() ) );
+					$defaultSortkey = self::getDataItemExpElement( new SMWDIBlob( str_replace( '_', ' ', $diWikiPage->getDBkey() )));
 					$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
 				}
 			}
@@ -325,15 +351,17 @@ class SMWExporter {
 			$wikiNamespace = self::getNamespaceUri( 'wiki' );
 			if ( strpos( $uri, $wikiNamespace ) === 0 ) {
 				$localName = substr( $uri, strlen( $wikiNamespace ) );
-				$dbKey = rawurldecode( self::decodeURI( $localName ) );
-
-				$parts = explode( '-23', $dbKey, 2 );
+				$dbKeyRaw = rawurldecode( self::decodeURI( $localName ) );
+				# We split the decoded URI to isolate the subobject name
+				$parts = explode( '#', $dbKeyRaw, 2 ); 
+				$dbKey = $parts[0]; # always
 				if ( count( $parts ) == 2 ) {
 					$subobjectname = $parts[1];
 				} else {
 					$subobjectname = '';
 				}
 
+				# Explode key again to look for namespace prefixes
 				$parts = explode( ':', $dbKey, 2 );
 				if ( count( $parts ) == 1 ) {
 					$dataItem = new SMWDIWikiPage( $dbKey, NS_MAIN, '', $subobjectname );
