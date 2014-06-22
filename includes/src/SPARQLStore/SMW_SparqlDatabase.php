@@ -172,8 +172,9 @@ class SMWSparqlDatabase {
 		curl_setopt( $this->m_curlhandle, CURLOPT_FORBID_REUSE, false );
 		curl_setopt( $this->m_curlhandle, CURLOPT_FRESH_CONNECT, false );
 		curl_setopt( $this->m_curlhandle, CURLOPT_RETURNTRANSFER, true ); // put result into variable
-		curl_setopt( $this->m_curlhandle, CURLOPT_CONNECTTIMEOUT, 10 ); // timeout in seconds
 		curl_setopt( $this->m_curlhandle, CURLOPT_FAILONERROR, true );
+
+		$this->setConnectionTimeoutInSeconds( 10 );
 	}
 
 	/**
@@ -202,6 +203,7 @@ class SMWSparqlDatabase {
 		if ( $endpointType == self::EP_TYPE_QUERY ) {
 			curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 			curl_setopt( $this->m_curlhandle, CURLOPT_NOBODY, true );
+			curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		} elseif ( $endpointType == self::EP_TYPE_UPDATE ) {
 			if ( $this->m_updateEndpoint === '' ) {
 				return false;
@@ -368,7 +370,7 @@ class SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
-		return smwfGetSparqlDatabase()->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o", $extraNamespaces );
+		return $this->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o", $extraNamespaces );
 	}
 
 	/**
@@ -602,6 +604,18 @@ class SMWSparqlDatabase {
 		} else {
 			throw new Exception( "Failed to communicate with SPARQL store.\n Endpoint: " . $endpoint . "\n Curl error: '" . curl_error( $this->m_curlhandle ) . "' ($error)" );
 		}
+	}
+
+	/**
+	 * @since  1.9.3
+	 *
+	 * @param integer $timeout
+	 *
+	 * @return SMWSparqlDatabase
+	 */
+	public function setConnectionTimeoutInSeconds( $timeout = 10 ) {
+		curl_setopt( $this->m_curlhandle, CURLOPT_CONNECTTIMEOUT, $timeout );
+		return $this;
 	}
 
 }

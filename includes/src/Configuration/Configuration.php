@@ -57,6 +57,21 @@ class Configuration {
 		throw new InvalidArgumentException( 'Configuration key is unkown' );
 	}
 
+	/**
+	 * @since 1.9.3
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function set( $key, $value ) {
+
+		if ( is_string( $key ) ) {
+			$this->container[ $key ] = $value;
+		}
+
+		return $this;
+	}
+
 	protected function setContainer( $container ) {
 		$this->container = $container;
 		return $this;

@@ -26,7 +26,23 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 * `SemanticMediaWikiTestCase` derives from <code>PHPUnit_Framework_TestCase</code> and adds some convenient functions
 * `ApiTestCase` derives from `SemanticMediaWikiTestCase` and provides a framework for unit tests that directly require access to the MediaWiki Api interface
 
-### Miscellaneous
+## Integration testing
+
+### Fuseki integration
+
+When running integration tests with [Jena Fuseki][fuseki] it is suggested that the `in-memory` option is used to avoid potential loss of production data during test execution.
+
+```
+fuseki-server --update --port=3030 --mem /db
+```
+```
+$smwgSparqlDatabaseConnector = 'Fuseki';
+$smwgSparqlQueryEndpoint = 'http://localhost:3030/db/query';
+$smwgSparqlUpdateEndpoint = 'http://localhost:3030/db/update';
+$smwgSparqlDataEndpoint = '';
+```
+
+## Miscellaneous
 * [Using mocks during a test](mocks/README.md)
 * [Writing testable code](https://semantic-mediawiki.org/wiki/Help:Writing_testable_code)
 * [Code coverage in a nutshell](https://semantic-mediawiki.org/wiki/Help:Code_coverage_in_a_nutshell)
@@ -34,3 +50,4 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 [phpunit]: http://phpunit.de/manual/4.1/en/index.html
 [smw]: https://www.semantic-mediawiki.org/wiki/PHPUnit_tests
 [mw-testing]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing
+[fuseki]: https://jena.apache.org/

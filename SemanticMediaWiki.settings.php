@@ -69,6 +69,33 @@ $GLOBALS['smwgSparqlDataEndpoint'] = 'http://localhost:8080/data/';
 $GLOBALS['smwgSparqlDefaultGraph'] = '';
 ##
 
+##
+# SparqlDBConnectionProvider
+#
+# Identifies a database connector that ought to be used together with the
+# SPARQLStore
+#
+# List of standard connectors ($smwgSparqlDatabase will have no effect)
+# - 'fuseki'
+# - 'virtuoso'
+# - '4store'
+# - 'default'
+#
+# With 1.9.3 it is suggested to assign the necessary connector to
+# $smwgSparqlDatabaseConnector in order to avoid arbitrary class assignments in
+# $smwgSparqlDatabase (which can change in future releases without further notice).
+#
+# In case $smwgSparqlDatabaseConnector = 'custom' is maintained, $smwgSparqlDatabase
+# is expected to contain a custom class connector where $smwgSparqlDatabase is only
+# to be sued for when a custom database connector is necessary.
+#
+# $smwgSparqlDatabaseConnector = 'custom' is set as legacy setting to allow for
+# existing (prior 1.9.3) customizing to work without changes.
+#
+# @since 1.9.3
+##
+$GLOBALS['smwgSparqlDatabaseConnector'] = 'custom';
+
 ###
 # Setting this option to true before including this file to enable the old
 # Type: namespace that SMW used up to version 1.5.*. This should only be

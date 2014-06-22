@@ -23,7 +23,6 @@ matrix:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
     - env: DBTYPE=mysql; MW=1.19.0; TYPE=relbuild
-    - env: DBTYPE=mysql; MW=1.23.0; FUSEKI=1.0.2
     - php: hhvm
 
 before_script: bash ./build/travis/before_script.sh

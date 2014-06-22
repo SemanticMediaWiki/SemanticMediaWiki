@@ -137,7 +137,7 @@ function configureLocalSettings {
 	if [ "$FUSEKI" != "" ]
 	then
 		echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
-		echo '$smwgSparqlDatabase = "SMW\SPARQLStore\FusekiHttpDatabaseConnector";' >> LocalSettings.php
+		echo '$smwgSparqlDatabaseConnector = "Fuseki";' >> LocalSettings.php
 		echo '$smwgSparqlQueryEndpoint = "http://localhost:3030/db/query";' >> LocalSettings.php
 		echo '$smwgSparqlUpdateEndpoint = "http://localhost:3030/db/update";' >> LocalSettings.php
 		echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
