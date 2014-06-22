@@ -29,6 +29,11 @@ use Title;
  */
 class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
+	/**
+	 * FIXME
+	 */
+	protected $storesToBeExcluded = array( 'SMWSparqlStore' );
+
 	public function getSourceFile() {
 		return __DIR__ . '/data/' . 'SimplePageRedirectRegressionTest-Mw-1-19-7.xml';
 	}

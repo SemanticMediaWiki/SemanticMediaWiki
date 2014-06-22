@@ -20,12 +20,17 @@ use Title;
  * @group Database
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.1
  *
  * @author mwjames
  */
 class TimeDataTypeRegressionTest extends MwRegressionTestCase {
+
+	/**
+	 * FIXME
+	 */
+	protected $storesToBeExcluded = array( 'SMWSparqlStore' );
 
 	public function getSourceFile() {
 		return __DIR__ . '/data/' . 'TimeDataTypeRegressionTest-Mw-1-19-7.xml';

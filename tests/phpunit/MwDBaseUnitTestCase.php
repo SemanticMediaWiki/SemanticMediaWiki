@@ -29,11 +29,18 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	/* @var array|null */
 	protected $databaseToBeExcluded = null;
 
-	/* @var array */
-	protected $storeToBeExcluded = array();
+	/* @var array|null */
+	protected $storesToBeExcluded = null;
 
 	protected $destroyDatabaseTablesOnEachRun = false;
 	protected $isUsableUnitTestDatabase = true;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
+		$this->checkIfStoreCanBeUsedOtherwiseSkipTest();
+	}
 
 	/**
 	 * It is assumed that each test that makes use of the TestCase is requesting
@@ -73,6 +80,10 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		return StoreFactory::getStore();
 	}
 
+	protected function setStoresToBeExcluded( array $storesToBeExcluded ) {
+		return $this->storesToBeExcluded = $storesToBeExcluded;
+	}
+
 //	protected function getDBConnection() {
 //		return $this->mwDatabaseTableBuilder->getDBConnection();
 //	}
@@ -89,7 +100,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		if ( !$this->isUsableUnitTestDatabase ) {
 			$this->markTestSkipped(
-				"Database type is not available or was excluded"
+				"Database is not available or was excluded"
 			);
 		}
 	}
@@ -98,7 +109,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		$store = get_class( $this->getStore() );
 
-		if ( in_array( $store, $this->storeToBeExcluded ) ) {
+		if ( in_array( $store, (array)$this->storesToBeExcluded ) ) {
 			$this->markTestSkipped(
 				"{$store} was excluded"
 			);

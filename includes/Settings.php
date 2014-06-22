@@ -48,6 +48,7 @@ class Settings extends SimpleDictionary {
 			'smwgScriptPath' => $GLOBALS['smwgScriptPath'],
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
+			'smwgSparqlDatabaseConnector' => $GLOBALS['smwgSparqlDatabaseConnector'],
 			'smwgSparqlDatabase' => $GLOBALS['smwgSparqlDatabase'],
 			'smwgSparqlQueryEndpoint' => $GLOBALS['smwgSparqlQueryEndpoint'],
 			'smwgSparqlUpdateEndpoint' => $GLOBALS['smwgSparqlUpdateEndpoint'],

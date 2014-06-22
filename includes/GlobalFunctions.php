@@ -1,6 +1,7 @@
 <?php
 
 use SMW\NamespaceManager;
+use SMW\SPARQLStore\SparqlDBConnectionProvider;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -231,13 +232,13 @@ function &smwfGetStore() {
  * @return SMWSparqlDatabase or null
  */
 function &smwfGetSparqlDatabase() {
-	global $smwgSparqlDatabase, $smwgSparqlDefaultGraph, $smwgSparqlQueryEndpoint,
-		$smwgSparqlUpdateEndpoint, $smwgSparqlDataEndpoint, $smwgSparqlDatabaseMaster;
-	if ( !isset( $smwgSparqlDatabaseMaster ) ) {
-		$smwgSparqlDatabaseMaster = new $smwgSparqlDatabase( $smwgSparqlDefaultGraph,
-			$smwgSparqlQueryEndpoint, $smwgSparqlUpdateEndpoint, $smwgSparqlDataEndpoint );
+
+	if ( !isset( $GLOBALS['smwgSparqlDatabaseMaster'] ) ) {
+		$connectionProvider = new SparqlDBConnectionProvider();
+		$GLOBALS['smwgSparqlDatabaseMaster'] = $connectionProvider->getConnection();
 	}
-	return $smwgSparqlDatabaseMaster;
+
+	return $GLOBALS['smwgSparqlDatabaseMaster'];
 }
 
 /**
