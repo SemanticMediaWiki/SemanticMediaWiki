@@ -4,7 +4,8 @@ Not a release yet.
 
 ### New features
 
-* #225 Added sorting annotation in subobjects using the `@sortkey` identifier 
+* #225 Added sorting annotation in subobjects using the `@sortkey` identifier
+* #342 Added `SparqlDBConnectionProvider` and `$smwgSparqlDatabaseConnector` as setting to avoid arbitrary class assignments in `$smwgSparqlDatabase`
 
 ### Bug fixes
 
