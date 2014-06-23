@@ -95,6 +95,14 @@ class DIWikiPage extends SMWDataItem {
 		return $this->m_dbkey;
 	}
 
+	public function getFormattedSortKey() {
+	       $formatted_sort_key = $this->getDBkey();
+	       if ( $this->getSubobjectName() != '' ) {
+	       	  $formatted_sort_key = $formatted_sort_key . "#" . $this->getSubobjectName();
+	       }
+	       return str_replace( '_', ' ', $formatted_sort_key );
+	}
+
 	/**
 	 * Create a MediaWiki Title object for this DIWikiPage. The result
 	 * can be null if an error occurred.
