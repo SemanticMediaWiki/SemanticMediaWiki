@@ -28,3 +28,4 @@ Not a release yet.
 * #332 Added the number of pages and percentage done to report messages when rebuilding selected pages
 * #337 Added [Jena Fuseki](http://jena.apache.org/) (1.0.2) as service on Travis to run `SMWSparqlStore` tests
 * #339 Added `FusekiHttpDatabaseConnector` to support Jena Fuseki 1.0.2+
+* #349 Added `hhvm-nightly` as service to run tests on HHVM 3.2+
