@@ -1,8 +1,7 @@
 #! /bin/bash
+set -ex
 
-set -x
-
-originalDirectory=$(pwd)
+BASE_PATH=$(pwd)
 
 if [ "$TYPE" == "coverage" ]
 then
@@ -11,5 +10,5 @@ then
 	# php vendor/bin/coveralls -v
 
 	wget https://scrutinizer-ci.com/ocular.phar
-	php ocular.phar code-coverage:upload --format=php-clover $originalDirectory/build/coverage.clover
+	php ocular.phar code-coverage:upload --format=php-clover $BASE_PATH/build/coverage.clover
 fi
