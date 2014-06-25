@@ -9,7 +9,7 @@ Tests are being used to verify that an expected behaviour occurs within specifie
 
 [PHPUnit][phpunit] provides the necessary environment to execute unit tests within PHP. Information about how to work with PHPunit can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
 
-Tests can be by executed by either running the `mw-phpunit-runner.php` script or [`phpunit`][mw-phpunit-testing] together with the PHPUnit configuration file found in the root directory.
+Tests can be executed by either running the `mw-phpunit-runner.php` script or [`phpunit`][mw-phpunit-testing] together with the PHPUnit configuration file found in the root directory.
 
 ```sh
 php mw-phpunit-runner.php [options]
