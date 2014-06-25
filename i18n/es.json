@@ -16,7 +16,8 @@
 			"Tifinaghes",
 			"Translationista",
 			"아라",
-			"Wifidel"
+			"Wifidel",
+			"Macofe"
 		]
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -236,7 +237,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "Sí, estoy seguro.",
 	"smw_smwadmin_support": "Obteniendo ayuda",
 	"smw_smwadmin_supportdocu": "Varios recursos podrían ayudarlo en caso de problemas:",
-	"smw_smwadmin_installfile": "Si experimentas problemas con tu instalación, comienza revisando las líneas guía en el <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">archivo de INSTALACION</a>.",
+	"smw_smwadmin_installfile": "Si experimentas problemas con tu instalación, comienza revisando las líneas guía en el <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">archivo INSTALL</a>.",
 	"smw_smwadmin_smwhomepage": "La documentación de usuario completa a Semantic MediaWiki está en <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Los defectos pueden ser reportados a <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw_smwadmin_questions": "Si tienes preguntas o sugerencias adicionales, únete a la discusión en <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Foro de usuarios de Semantic MediaWiki\n</a>.",
