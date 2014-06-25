@@ -1,5 +1,5 @@
 
-Tests are being used to verify that an expected behaviour occurs within specified parameters and sets boundaries (hence the tests requirements) in which a test result is accepted or rejected.
+Tests are being used to verify that an expected behaviour occurs within specified parameters and sets boundaries (hence the test requirements) in which a test result is accepted or rejected.
 
 - Unit test mostly used for testing technical specifications of a unit, module, or class.
 - Integration test combines multiple components and verifies its interplay between those modules
