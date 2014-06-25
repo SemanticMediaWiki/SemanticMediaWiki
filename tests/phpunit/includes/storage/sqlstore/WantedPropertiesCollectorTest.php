@@ -72,7 +72,7 @@ class WantedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 
 		$instance = $this->newInstance( $store, $property, $count );
 		$instance->setRequestOptions(
-			new SMWRequestOptions( $property, SMWRequestOptions::STRCOND_PRE )
+			new SMWRequestOptions( $property, \SMWStringCondition::STRCOND_PRE )
 		);
 
 		$this->assertEquals( $expected, $instance->getResults() );

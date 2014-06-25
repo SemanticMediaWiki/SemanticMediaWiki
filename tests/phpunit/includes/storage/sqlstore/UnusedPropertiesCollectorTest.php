@@ -76,7 +76,7 @@ class UnusedPropertiesCollectorTest extends \SMW\Test\SemanticMediaWikiTestCase 
 		$expected = array( new DIProperty( $property ) );
 
 		$instance = $this->newInstance( $property );
-		$requestOptions = new SMWRequestOptions( $property, SMWRequestOptions::STRCOND_PRE );
+		$requestOptions = new SMWRequestOptions( $property, \SMWStringCondition::STRCOND_PRE );
 		$requestOptions->limit = 1;
 
 		$instance->setRequestOptions( $requestOptions );

@@ -162,23 +162,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryThrowsException() {
 
-		// FIXME MW 1.19/1.21
-		if ( version_compare( $GLOBALS['wgVersion'], '1.22', '<' ) ) {
-			$this->markTestSkipped(
-				"MW 1.22 or higher is required for the test (see DBError)"
-			);
-		}
-
-		$DBError = $this->getMockBuilder( 'DBError' )
-			->setConstructorArgs( array( null, 'foo' ) )
-			->getMock();
-
 		$connectionProvider = new MockDBConnectionProvider();
 		$database = $connectionProvider->getMockDatabase();
 
+		$databaseException = new \DBError( $database, 'foo' );
+
 		$database->expects( $this->once() )
 			->method( 'query' )
-			->will( $this->throwException( $DBError ) );
+			->will( $this->throwException( $databaseException ) );
 
 		$instance = new Database( $connectionProvider );
 
