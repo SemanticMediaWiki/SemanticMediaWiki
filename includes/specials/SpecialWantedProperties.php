@@ -47,7 +47,7 @@ class SpecialWantedProperties extends SpecialPage {
 		$page = new WantedPropertiesQueryPage( $this->getStore(), $this->getSettings() );
 		$page->setContext( $this->getContext() );
 
-		list( $limit, $offset ) = wfCheckLimits();
+		list( $limit, $offset ) = $this->getLimitOffset();
 		$page->doQuery( $offset, $limit );
 
 		// Ensure locally collected output data is pushed to the output!
@@ -55,6 +55,18 @@ class SpecialWantedProperties extends SpecialPage {
 		SMWOutputs::commitToOutputPage( $out );
 
 		Profiler::Out( __METHOD__ );
+	}
+
+	/**
+	 * FIXME MW 1.24 wfCheckLimits was deprecated in MediaWiki 1.24
+	 */
+	private function getLimitOffset() {
+
+		if ( method_exists( $this->getRequest(), 'getLimitOffset' ) ) {
+			return $this->getRequest()->getLimitOffset();
+		}
+
+		return wfCheckLimits();
 	}
 
 }
