@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use ParamProcessor\ParamDefinition;
 use Parser;
 use SMWQueryProcessor;
 
@@ -179,12 +180,12 @@ class DocumentationParserFunction extends \ParserHook {
 	 *
 	 * @since 1.6
 	 *
-	 * @param \IParamDefinition $parameter
+	 * @param ParamDefinition $parameter
 	 * @param boolean $hasAliases
 	 *
 	 * @return string
 	 */
-	protected function getDescriptionRow( \IParamDefinition $parameter, $hasAliases ) {
+	protected function getDescriptionRow( ParamDefinition $parameter, $hasAliases ) {
 		if ( $hasAliases ) {
 			$aliases = $parameter->getAliases();
 			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : '-';
@@ -220,7 +221,7 @@ EOT;
 	 */
 	protected function getFormatParameters( $format ) {
 		if ( array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
-			return \ParamDefinition::getCleanDefinitions(
+			return ParamDefinition::getCleanDefinitions(
 				SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
 			);
 		}

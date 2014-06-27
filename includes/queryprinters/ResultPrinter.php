@@ -1,6 +1,7 @@
 <?php
 
 namespace SMW;
+use ParamProcessor\ParamDefinition;
 use SMWIResultPrinter, SMWQueryResult, SMWQuery;
 use ParserOptions, Sanitizer, DummyLinker, SMWInfolink, Title;
 
@@ -586,7 +587,7 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 	 *
 	 * @since 1.5
 	 *
-	 * @return array of IParamDefinition|array
+	 * @return array
 	 */
 	public function getParameters() {
 		return array();
@@ -597,9 +598,9 @@ abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter
 	 *
 	 * @since 1.8
 	 *
-	 * @param $definitions array of IParamDefinition
+	 * @param ParamDefinition[] $definitions
 	 *
-	 * @return array of IParamDefinition|array
+	 * @return array
 	 */
 	public function getParamDefinitions( array $definitions ) {
 		return array_merge( $definitions, $this->getParameters() );

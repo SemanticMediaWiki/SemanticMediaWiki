@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use ParamProcessor\ParamDefinition;
 use SMW\ResultPrinter;
 use SMWQueryProcessor;
 
@@ -80,7 +81,7 @@ class ResultPrintersTest extends QueryPrinterTestCase {
 	public function testGetParamDefinitions( ResultPrinter $printer ) {
 		$params = $printer->getParamDefinitions( SMWQueryProcessor::getParameters() );
 
-		$params = \ParamDefinition::getCleanDefinitions( $params );
+		$params = ParamDefinition::getCleanDefinitions( $params );
 
 		$this->assertInternalType( 'array', $params );
 	}
