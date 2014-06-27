@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\MediaWiki;
+namespace SMW\Tests\Integration\SQLStore;
 
 use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
 use SMW\ExtensionContext;

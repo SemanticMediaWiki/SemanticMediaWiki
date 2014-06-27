@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Store\SqlStore;
+namespace SMW\Tests\SQLStore;
 
 use \SMWSQLStore3Writers;
 use SMW\SemanticData;
