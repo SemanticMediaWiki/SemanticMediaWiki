@@ -590,6 +590,7 @@ $specialPageAliases['pl'] = array(
 	'ExportRDF' => array( 'EksportRDF' ),
 	'PageProperty' => array( 'WłasnośćStrony' ),
 	'Properties' => array( 'Własności' ),
+	'Concepts' => array( 'Koncepty' ),
 	'SMWAdmin' => array( 'AdminSMW' ),
 	'SearchByProperty' => array( 'SzukanieWgWłasności' ),
 	'SemanticStatistics' => array( 'StatystykiSemantyczne' ),
