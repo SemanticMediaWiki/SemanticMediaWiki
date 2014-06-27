@@ -1,5 +1,7 @@
 Semantic MediaWiki 1.8 is a stable release.
 
+Released December 2nd, 2012.
+
 === Compatibility changes ===
 
 * Changed minimum MediaWiki version from 1.16 to 1.17.
