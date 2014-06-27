@@ -1,18 +1,14 @@
 <?php
-/**
- * 4Store specific adjustments for SMWSparqlDatabase
- *
- * @file
- * @ingroup SMWSparql
- *
- * @author Markus Krötzsch
- */
+
+use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
 
 /**
  * Specific modifications of the SPARQL database implementation for 4Store.
  *
+ * @ingroup Sparql
+ *
+ * @license GNU GPL v2+
  * @since 1.6
- * @ingroup SMWSparql
  *
  * @author Markus Krötzsch
  */

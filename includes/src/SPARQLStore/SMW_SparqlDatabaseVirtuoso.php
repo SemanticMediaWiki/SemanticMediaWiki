@@ -1,15 +1,10 @@
 <?php
-/**
- * Virtuoso specific adjustments for SMWSparqlDatabase
- *
- * @file
- * @ingroup SMWSparql
- *
- * @author Markus Krötzsch
- */
 
+use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
 
 /**
+ * Virtuoso specific adjustments for SparqlDatabase
+ *
  * Specific modifications of the SPARQL database implementation for Virtuoso.
  * In particular, Virtuoso does not support SPARQL Update but only the non-standard
  * SPARUL protocol that requires different syntax for update queries.
@@ -36,10 +31,12 @@
  *   unusual/complex input data (e.g., using special characters in strings);
  *   errors will occur when trying to store such values on a page.
  * - Virtuoso stumbles over XSD dates with negative years, even if they have
- *   only four digits as per ISO. Trying to store such data will cause errors. 
+ *   only four digits as per ISO. Trying to store such data will cause errors.
  *
+ * @ingroup Sparql
+ *
+ * @license GNU GPL v2+
  * @since 1.7.1
- * @ingroup SMWSparql
  *
  * @author Markus Krötzsch
  */

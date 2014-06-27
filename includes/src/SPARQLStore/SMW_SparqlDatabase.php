@@ -1,102 +1,16 @@
 <?php
-/**
- * Base classes for SMW's binding to SPARQL stores.
- *
- * @file
- * @ingroup SMWSparql
- *
- * @author Markus Krötzsch
- */
 
-/**
- * This group contains all parts of SMW that relate to communication with
- * storage backends and clients via SPARQL.
- *
- * @defgroup SMWSparql SWMSparql
- * @ingroup SMW
- */
-
-/**
- * Class to escalate SPARQL query errors to the interface. We only do this for
- * malformed queries, permission issues, etc. Connection problems are usually
- * ignored so as to keep the wiki running even if the SPARQL backend is down.
- *
- * @since 1.6
- *
- * @ingroup SMWSparql
- */
-class SMWSparqlDatabaseError extends Exception {
-
-	/// Error code: malformed query
-	const ERROR_MALFORMED      = 1;
-	/// Error code: service refused to handle the request
-	const ERROR_REFUSED        = 2;
-	/// Error code: the query required a graph that does not exist
-	const ERROR_GRAPH_NOEXISTS = 3;
-	/// Error code: some existing graph should not exist to run this query
-	const ERROR_GRAPH_EXISTS   = 4;
-	/// Error code: unknown error
-	const ERROR_OTHER          = 5;
-	/// Error code: required service not known
-	const ERROR_NOSERVICE      = 6;
-
-	/**
-	 * SPARQL query that caused the problem.
-	 * @var string
-	 */
-	public $queryText;
-	/**
-	 * Error code
-	 * @var integer
-	 */
-	public $errorCode;
-
-	/**
-	 * Constructor that creates an error message based on the given data.
-	 *
-	 * @param $errorCode integer error code as defined in this class
-	 * @param $queryText string with the original SPARQL query/update
-	 * @param $endpoint string URL of the endpoint
-	 * @param $httpCode mixed integer HTTP error code or some string to print there
-	 */
-	function __construct( $errorCode, $queryText, $endpoint, $httpCode = '<not given>' ) {
-		switch ( $errorCode ) {
-			case self::ERROR_MALFORMED:
-				$errorName = 'Malformed query';
-			break;
-			case self::ERROR_REFUSED:
-				$errorName = 'Query refused';
-			break;
-			case self::ERROR_GRAPH_NOEXISTS:
-				$errorName = 'Graph not existing';
-			break;
-			case self::ERROR_GRAPH_EXISTS:
-				$errorName = 'Graph already exists';
-			break;
-			case self::ERROR_OTHER: default:
-				$errorName = 'Unkown error';
-			break;
-			case self::ERROR_NOSERVICE: default:
-				$errorName = 'Required service has not been defined';
-			break;
-		}
-		$message = "A SPARQL query error has occurred\n" .
-		  "Query: $queryText\n" .
-		  "Error: $errorName\n" .
-		  "Endpoint: $endpoint\n" .
-		  "HTTP response code: $httpCode\n";
-
-		parent::__construct( $message );
-		$this->errorCode = $errorCode;
-		$this->queryText = $queryText;
-	}
-
-}
+use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
+use SMW\SPARQLStore\BadHttpResponseMapper;
+use SMW\CurlRequest;
 
 /**
  * Basic database connector for exchanging data via SPARQL.
  *
- * @ingroup SMWSparql
+ * @ingroup Sparql
+ *
+ * @license GNU GPL v2+
+ * @since 1.6
  *
  * @author Markus Krötzsch
  */
@@ -150,6 +64,16 @@ class SMWSparqlDatabase {
 	protected $m_curlhandle;
 
 	/**
+	 * @var HttpRequest
+	 */
+	private $httpRequest;
+
+	/**
+	 * @var BadHttpResponseMapper
+	 */
+	private $badHttpResponseMapper;
+
+	/**
 	 * Constructor.
 	 *
 	 * Normally, you should call smwfGetSparqlDatabase() to obtain a
@@ -169,6 +93,10 @@ class SMWSparqlDatabase {
 		$this->m_updateEndpoint = $updateEndpoint;
 		$this->m_dataEndpoint = $dataEndpoint;
 		$this->m_curlhandle = curl_init();
+
+		// FIXME Use appropriate class instead of curl_*; inject the object
+		$this->httpRequest = new CurlRequest( $this->m_curlhandle );
+
 		curl_setopt( $this->m_curlhandle, CURLOPT_FORBID_REUSE, false );
 		curl_setopt( $this->m_curlhandle, CURLOPT_FRESH_CONNECT, false );
 		curl_setopt( $this->m_curlhandle, CURLOPT_RETURNTRANSFER, true ); // put result into variable
@@ -560,50 +488,30 @@ class SMWSparqlDatabase {
 		$prefixString = '';
 		$prefixIntro = $forSparql ? 'PREFIX ' : '@prefix ';
 		$prefixOutro = $forSparql ? "\n" : " .\n";
+
 		foreach ( array( 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ) as $shortname ) {
 			$prefixString .= "{$prefixIntro}{$shortname}: <" . SMWExporter::getNamespaceUri( $shortname ) . ">$prefixOutro";
 			unset( $extraNamespaces[$shortname] ); // avoid double declaration
 		}
+
 		foreach ( $extraNamespaces as $shortname => $uri ) {
 			$prefixString .= "{$prefixIntro}{$shortname}: <$uri>$prefixOutro";
 		}
+
 		return $prefixString;
 	}
 
 	/**
-	 * Decide what to make of the errors reported by the Curl handler.
-	 * Either throw a suitable exception or fall through if the error
-	 * should be handled gracefully. It is attempted to throw exceptions
-	 * for all errors that can generally be prevented by proper coding or
-	 * configuration (e.g. query syntax errors), and to be silent on all
-	 * errors that might be caused by network issues or temporary
-	 * overloading of the server. In this case, calling methods rather
-	 * return something that helps to make the best out of the situation.
-	 *
 	 * @param $endpoint string URL of endpoint that was used
 	 * @param $sparql string query that caused the problem
 	 */
 	protected function throwSparqlErrors( $endpoint, $sparql ) {
-		$error = curl_errno( $this->m_curlhandle );
-		if ( $error == 22 ) { // 22 == CURLE_HTTP_RETURNED_ERROR, but this constant is not defined in PHP, it seems
-			$httpCode = curl_getinfo( $this->m_curlhandle, CURLINFO_HTTP_CODE );
-			/// TODO We are guessing the meaning of HTTP codes here -- the SPARQL 1.1 spec does not yet provide this information for updates (April 15 2011)
-			if ( $httpCode == 400 ) { // malformed query
-				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_MALFORMED, $sparql, $endpoint, $httpCode );
-			} elseif ( $httpCode == 500 ) { // query refused; maybe fail gracefully here (depending on how stores use this)
-				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_REFUSED, $sparql, $endpoint, $httpCode );
-			} elseif ( $httpCode == 404 ) {
-				return; // endpoint not found, maybe down; fail gracefully
-			} else {
-				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_OTHER, $sparql, $endpoint, $httpCode );
-			}
-		} elseif ( $error == CURLE_COULDNT_CONNECT ) {
-			return; // fail gracefully if backend is down
-		} elseif ( $error == 52 ) { // 52 == CURLE_GOT_NOTHING, but this constant is not defined in PHP, it seems
-			return; // happens when 4Store crashes, do not bother the wiki
-		} else {
-			throw new Exception( "Failed to communicate with SPARQL store.\n Endpoint: " . $endpoint . "\n Curl error: '" . curl_error( $this->m_curlhandle ) . "' ($error)" );
+
+		if ( $this->badHttpResponseMapper === null ) {
+			$this->badHttpResponseMapper = new BadHttpResponseMapper( $this->httpRequest );
 		}
+
+		$this->badHttpResponseMapper->mapResponseToHttpRequest( $endpoint, $sparql );
 	}
 
 	/**
@@ -611,7 +519,7 @@ class SMWSparqlDatabase {
 	 *
 	 * @param integer $timeout
 	 *
-	 * @return SMWSparqlDatabase
+	 * @return SparqlDatabase
 	 */
 	public function setConnectionTimeoutInSeconds( $timeout = 10 ) {
 		curl_setopt( $this->m_curlhandle, CURLOPT_CONNECTTIMEOUT, $timeout );

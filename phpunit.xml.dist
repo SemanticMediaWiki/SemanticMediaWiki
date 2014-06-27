@@ -11,7 +11,8 @@
          stopOnFailure="false"
          stopOnIncomplete="false"
          stopOnSkipped="false"
-         strict="true"
+         strict="false"
+         beStrictAboutTestsThatDoNotTestAnything="true"
          verbose="true">
     <listeners>
         <listener file="tests/phpunit/ExecutionTimeTestListener.php" class="SMW\Test\ExecutionTimeTestListener">

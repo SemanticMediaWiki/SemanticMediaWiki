@@ -53,8 +53,6 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 	public function testCreatePageWithSetParserFunctionForQueryResultLookup() {
 
-		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
-
 		$this->titles[] = Title::newFromText( 'CreatePageWithSetParserFunction-1' );
 		$this->titles[] = Title::newFromText( 'CreatePageWithSetParserFunction-2' );
 
