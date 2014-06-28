@@ -29,3 +29,4 @@ Not a release yet.
 * #337 Added [Jena Fuseki](http://jena.apache.org/) (1.0.2) as service on Travis to run `SMWSparqlStore` tests
 * #339 Added `FusekiHttpDatabaseConnector` to support Jena Fuseki 1.0.2+
 * #349 Added `hhvm-nightly` as service to run tests on HHVM 3.2+
+* #360 Refactored `SparlStore` to move redirect handling into its own `RedirectLookup` component to improve testability  
