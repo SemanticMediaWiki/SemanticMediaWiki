@@ -1,5 +1,7 @@
 <?php
 
+use SMW\SPARQLStore\RedirectLookup;
+
 /**
  * SPARQL implementation of SMW's storage abstraction layer.
  *
@@ -238,8 +240,10 @@ class SMWSparqlStore extends SMWStore {
 	 */
 	protected function expandUpdateExpResource( SMWExpResource $expResource, array &$auxiliaryExpData ) {
 		$exists = true;
+
 		if ( $expResource instanceof SMWExpNsResource ) {
-			$elementTarget = $this->getSparqlRedirectTarget( $expResource, $exists );
+			$redirectLookup = new RedirectLookup( $this->getSparqlDatabase() );
+			$elementTarget = $redirectLookup->findRedirectTargetResource( $expResource, $exists );
 		} else {
 			$elementTarget = $expResource;
 		}
@@ -291,57 +295,6 @@ class SMWSparqlStore extends SMWStore {
 		}
 
 		return $newExpData;
-	}
-
-	/**
-	 * Find the redirect target of an SMWExpNsResource.
-	 * Returns an SMWExpNsResource object the input redirects to,
-	 * the input itself if there is no redirect (or it cannot be
-	 * used for making a resource with a prefix).
-	 *
-	 * @since 1.6
-	 * @param $expNsResource string URI to check
-	 * @param $exists boolean that is set to true if $expNsResource is in the
-	 * store; always false for blank nodes; always true for subobjects
-	 * @return SMWExpNsResource
-	 */
-	protected function getSparqlRedirectTarget( SMWExpNsResource $expNsResource, &$exists ) {
-		if ( $expNsResource->isBlankNode() ) {
-			$exists = false;
-			return $expNsResource;
-		} elseif ( ( $expNsResource->getDataItem() instanceof SMWDIWikiPage ) &&
-			   $expNsResource->getDataItem()->getSubobjectName() !== '' ) {
-			$exists = true;
-			return $expNsResource;
-		}
-
-		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expNsResource );
-		$rediUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_REDI' ) );
-		$skeyUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_SKEY' ) );
-
-		$sparqlResult = $this->getSparqlDatabase()->select( '*',
-		                    "$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $rediUri ?r }",
-		                    array( 'LIMIT' => 1 ),
-		                    array( $expNsResource->getNamespaceId() => $expNsResource->getNamespace() ) );
-
-		$firstRow = $sparqlResult->current();
-		if ( $firstRow === false ) {
-			$exists = false;
-			return $expNsResource;
-		} elseif ( count( $firstRow ) > 1 && !is_null( $firstRow[1] ) ) {
-			$exists = true;
-			$rediTargetElement = $firstRow[1];
-			$rediTargetUri = $rediTargetElement->getUri();
-			$wikiNamespace = SMWExporter::getNamespaceUri( 'wiki' );
-			if ( strpos( $rediTargetUri, $wikiNamespace ) === 0 ) {
-				return new SMWExpNsResource( substr( $rediTargetUri, 0, strlen( $wikiNamespace ) ) , $wikiNamespace, 'wiki' );
-			} else {
-				return $expNsResource;
-			}
-		} else {
-			$exists = true;
-			return $expNsResource;
-		}
 	}
 
 	/**
