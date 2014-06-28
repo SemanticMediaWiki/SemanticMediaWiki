@@ -183,9 +183,9 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param $definitions array of IParamDefinition
+	 * @param ParamDefinition[] $definitions
 	 *
-	 * @return IParamDefinition[]|array
+	 * @return array
 	 */
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );

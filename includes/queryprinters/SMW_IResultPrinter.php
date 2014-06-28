@@ -93,9 +93,9 @@ interface SMWIResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param $definitions array of IParamDefinition
+	 * @param ParamDefinition[] $definitions
 	 *
-	 * @return array of IParamDefinition|array
+	 * @return array
 	 */
 	public function getParamDefinitions( array $definitions );
 

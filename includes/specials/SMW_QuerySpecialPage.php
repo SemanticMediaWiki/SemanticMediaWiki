@@ -1,5 +1,6 @@
 <?php
 
+use ParamProcessor\ParamDefinition;
 use SMW\ParameterInput;
 
 /**
@@ -121,12 +122,12 @@ abstract class SMWQuerySpecialPage extends SpecialPage {
 	 *
 	 * @since 1.8
 	 *
-	 * @param IParamDefinition $definition
+	 * @param ParamDefinition $definition
 	 * @param mixed $currentValue
 	 *
 	 * @return string
 	 */
-	protected function showFormatOption( IParamDefinition $definition, $currentValue ) {
+	protected function showFormatOption( ParamDefinition $definition, $currentValue ) {
 		// Init
 		$description = '';
 

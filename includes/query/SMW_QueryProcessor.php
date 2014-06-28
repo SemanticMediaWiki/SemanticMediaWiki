@@ -2,6 +2,7 @@
 
 use ParamProcessor\Processor;
 use ParamProcessor\Options;
+use ParamProcessor\ParamDefinition;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
