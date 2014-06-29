@@ -143,7 +143,7 @@
 	"concepts": "Concepts",
 	"smw-sp-concept-docu": "A [https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] can be viewed as \"dynamic category\", i.e. as a collection of pages that are not created manually, but that are computed by Semantic MediaWiki from a description of a given query.",
 	"smw-sp-concept-header": "List of concepts",
-	"smw-sp-concept-count": "The following {{PLURAL:$1|concept|$1 concepts}} {{PLURAL:$1|is|are}} being listed.",
+	"smw-sp-concept-count": "The following {{PLURAL:$1|concept is|$1 concepts are}} being listed.",
 	"smw-sp-concept-empty": "No concept was found.",
 	"unusedproperties": "Unused properties",
 	"smw_unusedproperties_docu": "The following properties exist although no other page makes use of them.",
