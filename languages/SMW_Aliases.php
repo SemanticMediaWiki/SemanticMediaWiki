@@ -273,6 +273,12 @@ $specialPageAliases['gsw'] = array(
 	'WantedProperties' => array( 'Gwinschti_Attribut' ),
 );
 
+/** Hebrew (עברית) */
+$specialPageAliases['he'] = array(
+	'UnusedProperties' => array( 'מאפיינים_שאינם_בשימוש' ),
+	'WantedProperties' => array( 'מאפיינים_מבוקשים' ),
+);
+
 /** Hindi (हिन्दी) */
 $specialPageAliases['hi'] = array(
 	'Ask' => array( 'पूछो' ),

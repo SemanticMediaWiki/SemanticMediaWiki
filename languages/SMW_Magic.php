@@ -269,6 +269,7 @@ $magicWords['pl'] = array(
 	'ask' => array( 0, 'pytanie' ),
 	'show' => array( 0, 'pokaż' ),
 	'info' => array( 0, 'informacja' ),
+	'concept' => array( 0, 'koncept' ),
 	'set' => array( 0, 'ustaw' ),
 	'declare' => array( 0, 'zadeklaruj' ),
 );
