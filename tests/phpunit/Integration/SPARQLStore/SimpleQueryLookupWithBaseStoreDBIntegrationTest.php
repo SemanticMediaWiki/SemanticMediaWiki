@@ -22,8 +22,6 @@ use SMWThingDescription as ThingDescription;
 use Title;
 
 /**
- * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector
- *
  * @ingroup Test
  *
  * @group SMW
@@ -39,51 +37,36 @@ use Title;
  *
  * @author mwjames
  */
-class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase {
+class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	/** @var SparqlDBConnectionProvider */
-	private $connectionProvider;
-
-	/** @var DIWikiPage */
+	private $sparqlDatabase;
 	private $subject;
-
-	/** @var DataValueFactory */
 	private $dataValueFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->connectionProvider = new SparqlDBConnectionProvider( 'Fuseki' );
+		if ( !$this->getStore() instanceOf \SMWSparqlStore ) {
+			$this->markTestSkipped( "Requires a SMWSparqlStore instance" );
+		}
+
+		$this->sparqlDatabase = $this->getStore()->getSparqlDatabase();
+
+		if ( !$this->sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
+			$this->markTestSkipped( "Can't connect to the SparlDatabase" );
+		}
+
 		$this->subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
-	public function testCanConnect() {
-
-		$connection = $this->connectionProvider->getConnection();
-
-		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\FusekiHttpDatabaseConnector',
-			$connection
-		);
-
-		$connection->setConnectionTimeoutInSeconds( 5 );
-
-		if ( !$connection->ping() ) {
-			$this->markTestSkipped( 'Fuseki is not accessible' );
-		}
-	}
-
-	/**
-	 * @depends testCanConnect
-	 */
 	public function testQueryPropertyBeforeAfterDataRemoval() {
 
 		$property = new DIProperty( 'SomePagePropertyBeforeAfter' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$this->assertEmpty(
-			$this->getQueryResultForProperty( $property )->getResults()
+			$this->queryResultsForProperty( $property )->getResults()
 		);
 
 		$dataItem = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
@@ -94,25 +77,22 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 			$this->dataValueFactory->newDataItemValue( $dataItem, $property )
 		);
 
-		$this->assertDataItemEquals(
+		$this->assertThatDataItemIsSet(
 			$dataItem,
-			$this->getQueryResultForProperty( $property )
+			$this->queryResultsForProperty( $property )
 		);
 
 		$this->assertNotEmpty(
-			$this->getQueryResultForProperty( $property )->getResults()
+			$this->queryResultsForProperty( $property )->getResults()
 		);
 
 		$this->getStore()->clearData( $this->subject );
 
 		$this->assertEmpty(
-			$this->getQueryResultForProperty( $property )->getResults()
+			$this->queryResultsForProperty( $property )->getResults()
 		);
 	}
 
-	/**
-	 * @depends testCanConnect
-	 */
 	public function testQueryUserDefinedBlobProperty() {
 
 		$property = new DIProperty( 'SomeBlobProperty' );
@@ -126,15 +106,12 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 			$this->dataValueFactory->newDataItemValue( $dataItem, $property )
 		);
 
-		$this->assertDataItemEquals(
+		$this->assertThatDataItemIsSet(
 			$dataItem,
-			$this->getQueryResultForProperty( $property )
+			$this->queryResultsForProperty( $property )
 		);
 	}
 
-	/**
-	 * @depends testCanConnect
-	 */
 	public function testQueryUserDefinedNumericProperty() {
 
 		$property = new DIProperty( 'SomeNumericProperty' );
@@ -148,15 +125,12 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 			$this->dataValueFactory->newDataItemValue( $dataItem, $property )
 		);
 
-		$this->assertDataItemEquals(
+		$this->assertThatDataItemIsSet(
 			$dataItem,
-			$this->getQueryResultForProperty( $property )
+			$this->queryResultsForProperty( $property )
 		);
 	}
 
-	/**
-	 * @depends testCanConnect
-	 */
 	public function testQueryUserDefinedQuantityProperty() {
 
 		$property = new DIProperty( 'SomeQuantityProperty' );
@@ -175,15 +149,12 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 			$dataValue
 		);
 
-		$this->assertDataItemEquals(
+		$this->assertThatDataItemIsSet(
 			$dataValue->getDataItem(),
-			$this->getQueryResultForProperty( $property )
+			$this->queryResultsForProperty( $property )
 		);
 	}
 
-	/**
-	 * @depends testCanConnect
-	 */
 	public function testQueryUserDefinedTemperatureProperty() {
 
 		$property = new DIProperty( 'SomeTemperatureProperty' );
@@ -197,15 +168,12 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 			$dataValue
 		);
 
-		$this->assertDataItemEquals(
+		$this->assertThatDataItemIsSet(
 			$dataValue->getDataItem(),
-			$this->getQueryResultForProperty( $property )
+			$this->queryResultsForProperty( $property )
 		);
 	}
 
-	/**
-	 * @depends testCanConnect
-	 */
 	public function testQueryCategory() {
 
 		$property = new DIProperty( '_INST' );
@@ -218,15 +186,13 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 			$dataValue
 		);
 
-		$this->assertDataItemEquals(
+		$this->assertThatDataItemIsSet(
 			$dataValue->getDataItem(),
-			$this->getQueryResultForProperty( $property )
+			$this->queryResultsForProperty( $property )
 		);
 	}
 
 	private function addConversionValuesToProperty( DIProperty $property, array $conversionValues ) {
-
-		$this->getStore()->setSparqlDatabase( $this->connectionProvider->getConnection() );
 
 		$semanticData = new SemanticData( $property->getDiWikiPage() );
 
@@ -241,8 +207,6 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 
 	private function addTripleToStore( $subject, $property, $dataValue ) {
 
-		$this->getStore()->setSparqlDatabase( $this->connectionProvider->getConnection() );
-
 		$semanticData = new SemanticData( $subject );
 		$semanticData->addDataValue( $dataValue );
 
@@ -254,7 +218,7 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 		);
 	}
 
-	private function getQueryResultForProperty( $property ) {
+	private function queryResultsForProperty( $property ) {
 
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( $property );
@@ -279,7 +243,7 @@ class FusekiDatabaseSimpleQueryLookupIntegrationTest extends MwDBaseUnitTestCase
 		return $this->getStore()->getQueryResult( $query );
 	}
 
-	private function assertDataItemEquals( $expectedDataItem, $queryResult ) {
+	private function assertThatDataItemIsSet( $expectedDataItem, $queryResult ) {
 
 		while ( $resultArray = $queryResult->getNext() ) {
 			foreach ( $resultArray as $result ) {

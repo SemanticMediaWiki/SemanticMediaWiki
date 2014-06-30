@@ -1,6 +1,9 @@
 <?php
 
 use SMW\SPARQLStore\RedirectLookup;
+use SMW\SPARQLStore\TurtleTriplesBuilder;
+
+use SMW\SemanticData;
 
 /**
  * SPARQL implementation of SMW's storage abstraction layer.
@@ -150,151 +153,42 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
+	 * Update the Sparql back-end.
+	 *
+	 * This method can be called independently to force an update of the Sparql
+	 * database. In general it is suggested to use updateData to carry out a
+	 * synchronized update of the base and Sparql store.
+	 *
+	 * @since 1.9.3
+	 *
+	 * @param SemanticData $semanticData
+	 */
+	public function doSparqlDataUpdate( SemanticData $semanticData ) {
+
+		$turtleTriplesBuilder = new TurtleTriplesBuilder(
+			$semanticData,
+			new RedirectLookup( $this->getSparqlDatabase() )
+		);
+
+		if ( $turtleTriplesBuilder->hasTriplesForUpdate() ) {
+
+			$subjectResource = SMWExporter::getDataItemExpElement( $semanticData->getSubject() );
+			$this->deleteSparqlData( $subjectResource );
+
+			$this->getSparqlDatabase()->insertData(
+				$turtleTriplesBuilder->getTriples(),
+				$turtleTriplesBuilder->getPrefixes()
+			);
+		}
+	}
+
+	/**
 	 * @see SMWStore::doDataUpdate()
 	 * @since 1.6
 	 */
-	protected function doDataUpdate( SMWSemanticData $data ) {
-		$this->baseStore->doDataUpdate( $data );
-
-		$expDataArray = $this->prepareUpdateExpData( $data );
-
-		if ( count( $expDataArray ) > 0 ) {
-			$subjectResource = SMWExporter::getDataItemExpElement( $data->getSubject() );
-			$this->deleteSparqlData( $subjectResource );
-
-			$turtleSerializer = new SMWTurtleSerializer( true );
-			$turtleSerializer->startSerialization();
-			foreach ( $expDataArray as $expData ) {
-				$turtleSerializer->serializeExpData( $expData );
-			}
-			$turtleSerializer->finishSerialization();
-			$triples = $turtleSerializer->flushContent();
-			$prefixes = $turtleSerializer->flushSparqlPrefixes();
-
-			$this->getSparqlDatabase()->insertData( $triples, $prefixes );
-		}
-	}
-
-	/**
-	 * Prepare an array of SMWExpData elements that should be written to
-	 * the SPARQL store. The result is empty if no updates should be done.
-	 * Note that this is different from writing an SMWExpData element that
-	 * has no content.
-	 * Otherwise, the first SMWExpData object in the array is a translation
-	 * of the given input data, but with redirects resolved. Further
-	 * SMWExpData objects might be included in the resulting list to
-	 * capture necessary stub declarations for objects that do not have
-	 * any data in the RDF store yet.
-	 *
-	 * @since 1.6
-	 * @param $data SMWSemanticData object containing the update data
-	 * @return array of SMWExpData
-	 */
-	protected function prepareUpdateExpData( SMWSemanticData $data ) {
-		$expData = SMWExporter::makeExportData( $data );
-		$result = array();
-		$newExpData = $this->expandUpdateExpData( $expData, $result, false );
-		array_unshift( $result, $newExpData );
-		return $result;
-	}
-
-	/**
-	 * Find a normalized representation of the given SMWExpElement that can
-	 * be used in an update of the stored data. Normalization uses
-	 * redirects. The type of the ExpElement might change, especially into
-	 * SMWExpData in order to store auxiliary properties.
-	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
-	 * This auxiliary data is collected in a call-by-ref array.
-	 *
-	 * @since 1.6
-	 * @param $expElement SMWExpElement object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
-	 * @return SMWExpElement
-	 */
-	protected function expandUpdateExpElement( SMWExpElement $expElement, array &$auxiliaryExpData ) {
-		if ( $expElement instanceof SMWExpResource ) {
-			$elementTarget = $this->expandUpdateExpResource( $expElement, $auxiliaryExpData );
-		} elseif ( $expElement instanceof SMWExpData ) {
-			$elementTarget = $this->expandUpdateExpData( $expElement, $auxiliaryExpData, true );
-		} else {
-			$elementTarget = $expElement;
-		}
-
-		return $elementTarget;
-	}
-
-	/**
-	 * Find a normalized representation of the given SMWExpResource that can
-	 * be used in an update of the stored data. Normalization uses
-	 * redirects. The type of the ExpElement might change, especially into
-	 * SMWExpData in order to store auxiliary properties.
-	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
-	 * This auxiliary data is collected in a call-by-ref array.
-	 *
-	 * @since 1.6
-	 * @param $expResource SMWExpResource object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
-	 * @return SMWExpElement
-	 */
-	protected function expandUpdateExpResource( SMWExpResource $expResource, array &$auxiliaryExpData ) {
-		$exists = true;
-
-		if ( $expResource instanceof SMWExpNsResource ) {
-			$redirectLookup = new RedirectLookup( $this->getSparqlDatabase() );
-			$elementTarget = $redirectLookup->findRedirectTargetResource( $expResource, $exists );
-		} else {
-			$elementTarget = $expResource;
-		}
-
-		if ( !$exists && ( $elementTarget->getDataItem() instanceof SMWDIWikiPage ) ) {
-			$diWikiPage = $elementTarget->getDataItem();
-			$hash = $diWikiPage->getHash();
-			if ( !array_key_exists( $hash, $auxiliaryExpData ) ) {
-				$auxiliaryExpData[$hash] = SMWExporter::makeExportDataForSubject( $diWikiPage, null, true );
-			}
-		}
-
-		return $elementTarget;
-	}
-
-	/**
-	 * Find a normalized representation of the given SMWExpData that can
-	 * be used in an update of the stored data. Normalization uses
-	 * redirects.
-	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
-	 * This auxiliary data is collected in a call-by-ref array.
-	 *
-	 * @since 1.6
-	 * @param $expData SMWExpData object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
-	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
-	 * @return SMWExpData
-	 */
-	protected function expandUpdateExpData( SMWExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
-		$subjectExpResource = $expData->getSubject();
-		if ( $expandSubject ) {
-			$expandedExpElement = $this->expandUpdateExpElement( $subjectExpResource, $auxiliaryExpData );
-			if ( $expandedExpElement instanceof SMWExpData ) {
-				$newExpData = $expandedExpElement;
-			} else { // instanceof SMWExpResource
-				$newExpData = new SMWExpData( $subjectExpResource );
-			}
-		} else {
-			$newExpData = new SMWExpData( $subjectExpResource );
-		}
-
-		foreach ( $expData->getProperties() as $propertyResource ) {
-			$propertyTarget = $this->expandUpdateExpElement( $propertyResource, $auxiliaryExpData );
-			foreach ( $expData->getValues( $propertyResource ) as $expElement ) {
-				$elementTarget = $this->expandUpdateExpElement( $expElement, $auxiliaryExpData );
-				$newExpData->addPropertyObjectValue( $propertyTarget, $elementTarget );
-			}
-		}
-
-		return $newExpData;
+	protected function doDataUpdate( SemanticData $semanticData ) {
+		$this->baseStore->doDataUpdate( $semanticData );
+		$this->doSparqlDataUpdate( $semanticData );
 	}
 
 	/**

@@ -1,9 +1,13 @@
 <?php
 
-namespace SMW\Tests\Store\SparqlStore;
+namespace SMW\Tests\SPARQLStore\SparqlStore;
 
-use SMWSparqlStore;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
+
+use SMWSparqlStore as SparqlStore;
+use SMWExporter as Exporter;
+use SMWTurtleSerializer as TurtleSerializer;
 
 use Title;
 
@@ -25,7 +29,7 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			'\SMWSparqlStore',
-			new SMWSparqlStore()
+			new SparqlStore()
 		);
 	}
 
@@ -46,7 +50,7 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $subject ) )
 			->will( $this->returnValue( $semanticData ) );
 
-		$instance = new SMWSparqlStore( $baseStore );
+		$instance = new SparqlStore( $baseStore );
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
@@ -57,9 +61,9 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 	public function testDeleteSubjectOnMockBaseStore() {
 
 		$title = Title::newFromText( 'DeleteSubjectOnMockBaseStore' );
-		$expResource = \SMWExporter::getDataItemExpElement( DIWikiPage::newFromTitle( $title ) );
 
-		$resourceUri = \SMWTurtleSerializer::getTurtleNameForExpElement( $expResource );
+		$expResource = Exporter::getDataItemExpElement( DIWikiPage::newFromTitle( $title ) );
+		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
 		$extraNamespaces = array(
 			$expResource->getNamespaceId() => $expResource->getNamespace()
@@ -90,10 +94,39 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $extraNamespaces ) )
 			->will( $this->returnValue( true ) );
 
-		$instance = new SMWSparqlStore( $baseStore );
+		$instance = new SparqlStore( $baseStore );
 		$instance->setSparqlDatabase( $sparqlDatabase );
 
 		$instance->deleteSubject( $title );
+	}
+
+	public function testDoSparqlDataUpdateOnMockBaseStore() {
+
+		$semanticData = new SemanticData( new DIWikiPage( 'Foo', NS_MAIN, '' ) );
+
+		$sparqlResultWrapper = $this->getMockBuilder( '\SMWSparqlResultWrapper' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$baseStore = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$sparqlDatabase->expects( $this->atLeastOnce() )
+			->method( 'select' )
+			->will( $this->returnValue( $sparqlResultWrapper ) );
+
+		$sparqlDatabase->expects( $this->once() )
+			->method( 'insertData' );
+
+		$instance = new SparqlStore( $baseStore );
+		$instance->setSparqlDatabase( $sparqlDatabase );
+
+		$instance->doSparqlDataUpdate( $semanticData );
 	}
 
 }
