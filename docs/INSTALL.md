@@ -22,6 +22,12 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.3">SMW 1.9.3</a></th>
+		<td>Stable release</td>
+		<td>2014-06-30</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.3">1.9.3</a></td>
+	</tr>
+	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
 		<td>Stable release</td>
 		<td>2014-04-18</td>
@@ -64,7 +70,14 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th>Validator</th>
 	</tr>
 	<tr>
-		<th>SMW 1.9.x</th>
+		<th>SMW 1.9.3</th>
+		<td>5.3.2 - 5.6.x</td>
+		<td>1.19 - 1.23</td>
+		<td>Required</td>
+		<td>2.x (handled by Composer)</td>
+	</tr>
+	<tr>
+		<th>SMW 1.9.1, SMW 1.9.2</th>
 		<td>5.3.2 - 5.6.x</td>
 		<td>1.19 - 1.23</td>
 		<td>Required</td>
