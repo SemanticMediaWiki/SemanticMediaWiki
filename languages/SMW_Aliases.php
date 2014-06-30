@@ -273,6 +273,12 @@ $specialPageAliases['gsw'] = array(
 	'WantedProperties' => array( 'Gwinschti_Attribut' ),
 );
 
+/** Hebrew (עברית) */
+$specialPageAliases['he'] = array(
+	'UnusedProperties' => array( 'מאפיינים_שאינם_בשימוש' ),
+	'WantedProperties' => array( 'מאפיינים_מבוקשים' ),
+);
+
 /** Hindi (हिन्दी) */
 $specialPageAliases['hi'] = array(
 	'Ask' => array( 'पूछो' ),
@@ -590,6 +596,7 @@ $specialPageAliases['pl'] = array(
 	'ExportRDF' => array( 'EksportRDF' ),
 	'PageProperty' => array( 'WłasnośćStrony' ),
 	'Properties' => array( 'Własności' ),
+	'Concepts' => array( 'Koncepty' ),
 	'SMWAdmin' => array( 'AdminSMW' ),
 	'SearchByProperty' => array( 'SzukanieWgWłasności' ),
 	'SemanticStatistics' => array( 'StatystykiSemantyczne' ),

@@ -267,7 +267,7 @@
 	"smw-ui-tooltip-title-legend": "Leyenda",
 	"smw_unknowntype": "El tipo de esta propiedad no es válido",
 	"smw_concept_header": "Páginas de concepto \"$1\"",
-	"smw_conceptarticlecount": "Mostrando $1 {{PLURAL:$1|página|páginas}} pertenecientes al concepto.",
+	"smw_conceptarticlecount": "Mostrando abajo $1 {{PLURAL:$1|página|páginas}}.",
 	"smw-qp-empty-data": "Los datos solicitados podrían no mostrarse, debido a algunos criterios de selección insuficientes.",
 	"smw-sp-properties-header-label": "Lista de propiedades",
 	"smw-livepreview-loading": "Cargando…"
