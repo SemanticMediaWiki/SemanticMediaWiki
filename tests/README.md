@@ -1,5 +1,5 @@
 
-Tests are being used to verify that an expected behaviour occurs within specified parameters and sets boundaries (hence the test requirements) in which a test result is accepted or rejected.
+Tests are developed and used to verify that an expected behaviour does occur within specified boundaries where a set of parameters define the requirements in which results are accepted or rejected.
 
 - Unit test mostly used for testing technical specifications of a unit, module, or class.
 - Integration test combines multiple components and verifies its interplay between those modules
@@ -31,13 +31,15 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 
 ## Integration testing
 
+### SPARQL integration
+
 Additional services can be enabled on Travis-CI to expand the test environment, available at present:
 
 - `FUSEKI`: Jena Fuskei 1.0.2 is integrated and testable
 - `FOURSTORE`: 4Store is installable but not testable due to [issue #110](https://github.com/garlik/4store/issues/110)
 - `VIRTUOSO`: Virtuoso-opensource-6.1 is installable but has not been tested
 
-### Fuseki integration
+#### Jena Fuseki
 
 When running integration tests with [Jena Fuseki][fuseki] it is suggested that the `in-memory` option is used to avoid potential loss of production data during test execution.
 
