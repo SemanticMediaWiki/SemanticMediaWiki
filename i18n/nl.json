@@ -278,7 +278,6 @@
 	"smw-concept-cache-text": "Het concept heeft in totaal $1 pagina{{PLURAL:$1||'s}} en is voor het laatst bijgewerkt op $2.",
 	"smw_concept_header": "Pagina's met het concept \"$1\"",
 	"smw_conceptarticlecount": "Hieronder {{PLURAL:$1|wordt $1 pagina|worden $1 pagina's}} weergegeven.",
-	"smw-qp-aggregatable-empty-data": "De opgevraagde samen te voegen gegevens kunnen niet weergegeven worden vanwege onvoldoende selectiecriteria.",
 	"right-smw-admin": "Semantic MediaWiki beheren",
 	"group-smwadministrator": "Beheerders voor Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|beheerder (SMW)}}",
@@ -291,6 +290,7 @@
 	"smw-sp-properties-cache-info": "Deze gegevens zijn overgenomen uit een [https://www.semantic-mediawiki.org/wiki/Caching cache] en zijn voor het laatst bijgewerkt op $1.",
 	"smw-sp-properties-header-label": "Lijst met eigenschappen",
 	"smw-sp-admin-settings-title": "Configuratie-instellingen",
-	"smw-sp-admin-settings-docu": "Geeft een lijst van alle <code>default</code> en <code>localized settings</code> die relevant zijn voor de Semantic MediaWiki omgeving. Raadpleeg de help-pagina [https://semantic-mediawiki.org/wiki/Help:Configuration configuratie] voor meer informatie over afzonderlijke instellingen.",
-	"smw-sp-admin-settings-button": "Genereren van de lijst met instellingen"
+	"smw-sp-admin-settings-docu": "Geeft een lijst van alle default en localized settings die relevant zijn voor de Semantic MediaWiki omgeving. Raadpleeg de help-pagina [https://semantic-mediawiki.org/wiki/Help:Configuration configuratie] voor meer informatie over afzonderlijke instellingen.",
+	"smw-sp-admin-settings-button": "Genereren van de lijst met instellingen",
+	"smw-livepreview-loading": "Bezig met laden…"
 }

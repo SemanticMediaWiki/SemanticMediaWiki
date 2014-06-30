@@ -294,7 +294,7 @@
 	"smw-sp-properties-cache-info": "Перечисленные данные были получены из [https://www.semantic-mediawiki.org/wiki/Caching кэша] и были последний раз обновлены $1.",
 	"smw-sp-properties-header-label": "Список свойств",
 	"smw-sp-admin-settings-title": "Параметры конфигурации",
-	"smw-sp-admin-settings-docu": "Отображает список всех настроек <code>по-умолчанию</code> и <code>локализованных настроек</code>, которые имеют отношение к окружению Semantic MediaWiki. За сведениями об отдельных параметров обратитесь к странице помощи по [https://semantic-mediawiki.org/wiki/Help:Configuration конфигурации].",
+	"smw-sp-admin-settings-docu": "Отображает список всех настроек по-умолчанию и локализованных настроек, которые имеют отношение к окружению Semantic MediaWiki. За сведениями об отдельных параметров обратитесь к странице помощи по [https://semantic-mediawiki.org/wiki/Help:Configuration конфигурации].",
 	"smw-sp-admin-settings-button": "Создать список настроек",
 	"smw-sp-admin-idlookup-title": "Поиск ObjectId",
 	"smw-sp-admin-idlookup-docu": "Отображает сведения об идентификаторе внутреннего объекта, который представляет отдельные сущности (вики-страницу, подобъект и т.д.) в Семантической МедиаВики.",

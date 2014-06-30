@@ -271,7 +271,6 @@
 	"smw-concept-cache-text": "Dette konseptet beskriver {{PLURAL:$1|en side|$1 sider}}, og ble sist oppdatert $2.",
 	"smw_concept_header": "Sider av konseptet «$1»",
 	"smw_conceptarticlecount": "Viser nedenfor {{PLURAL:$1|én side|$1 sider}}.",
-	"smw-qp-aggregatable-empty-data": "Angitte gruppe av data kunne ikke vises pga. mangler i utvalgskriteriene.",
 	"right-smw-admin": "Administrasjonsoppgaver for tilgang (Semantic MediaWiki)",
 	"group-smwadministrator": "Administratorer for Semantic MediaWiki",
 	"grouppage-smwadministrator": "{{ns:project}}:SMW_administratorer",
@@ -283,6 +282,7 @@
 	"smw-sp-properties-cache-info": "Dataene i listen er blitt hentet fra [https://www.semantic-mediawiki.org/wiki/Caching et mellomlager], og ble sist oppdatert $1.",
 	"smw-sp-properties-header-label": "Liste av egenskaper",
 	"smw-sp-admin-settings-title": "Konfigurasjonsinnstillinger",
-	"smw-sp-admin-settings-docu": "Viser en liste av <code>standard</code> og <code>lokaliserte innstillinger</code> som er relevant for omgivelsene til Semantic MediaWiki. For detaljer om individuelle innstillinger, vennligst slå opp på [https://semantic-mediawiki.org/wiki/Help:Configuration configuration] hjelpesiden.",
-	"smw-sp-admin-settings-button": "Generer innstillingslisten"
+	"smw-sp-admin-settings-docu": "Viser en liste av standard og lokaliserte innstillinger som er relevant for omgivelsene til Semantic MediaWiki. For detaljer om individuelle innstillinger, vennligst slå opp på [https://semantic-mediawiki.org/wiki/Help:Configuration configuration] hjelpesiden.",
+	"smw-sp-admin-settings-button": "Generer innstillingslisten",
+	"smw-livepreview-loading": "Laster…"
 }

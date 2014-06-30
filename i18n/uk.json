@@ -273,7 +273,6 @@
 	"smw-concept-cache-text": "Поняття має $1 {{PLURAL:$1|сторінку|сторінки|сторінок}}, і востаннє було оновлено $2.",
 	"smw_concept_header": "Сторінки, що належать до концепції «$1»",
 	"smw_conceptarticlecount": "{{PLURAL:$1|1=Показана|Показані}} нижче $1 {{PLURAL:$1|сторінка|сторінки|сторінок}}.",
-	"smw-qp-aggregatable-empty-data": "Запитані накопичені дані не можуть відображатися через деякий недостатній критерій відбору.",
 	"right-smw-admin": "Доступ до завдань адміністрування (семантичне Медіавікі)",
 	"group-smwadministrator": "Адміністратори семантичної Медіавікі",
 	"group-smwadministrator-member": "{{GENDER:$1|адміністратор (СМВ)|адміністраторка (СМВ)}}",
@@ -286,9 +285,10 @@
 	"smw-sp-properties-cache-info": "Перераховані дані отримані з [https://www.semantic-mediawiki.org/wiki/Caching кеш], і востаннє оновлені $1.",
 	"smw-sp-properties-header-label": "Список властивостей",
 	"smw-sp-admin-settings-title": "Параметри конфігурації",
-	"smw-sp-admin-settings-docu": "Відображає список всіх <code>default</code> і <code>localized settings</code> , які мають відношення до навколишнього середовища семантичного MediaWiki. За детальною інформацією про окремі параметри зверніться до сторінки довідки [https://semantic-mediawiki.org/wiki/Help:Configuration configuration].",
+	"smw-sp-admin-settings-docu": "Відображає список всіх default і localized settings , які мають відношення до навколишнього середовища семантичного MediaWiki. За детальною інформацією про окремі параметри зверніться до сторінки довідки [https://semantic-mediawiki.org/wiki/Help:Configuration configuration].",
 	"smw-sp-admin-settings-button": "Створити список налаштувань",
 	"smw-sp-admin-idlookup-title": "Пошук ObjectId",
 	"smw-sp-admin-idlookup-docu": "Відображає відомості про ідентифікатор внутрішнього об'єкта, який представляє окремі сутності (вікі-сторінку, підоб'єкт і т. д.) в Семантичній Медіавікі.",
-	"smw-sp-admin-idlookup-objectid": "Код об'єкта:"
+	"smw-sp-admin-idlookup-objectid": "Код об'єкта:",
+	"smw-livepreview-loading": "Завантаження…"
 }

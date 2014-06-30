@@ -289,7 +289,7 @@
 	"smw-sp-properties-cache-info": "Наведените податоци се преземени од [https://www.semantic-mediawiki.org/wiki/Caching?uselang=mk меѓускладот], a последен пат изменети на $1.",
 	"smw-sp-properties-header-label": "Список на својства",
 	"smw-sp-admin-settings-title": "Нагодувања за поставките",
-	"smw-sp-admin-settings-docu": "Прикажува список на сите <code>стандардни</code> и <code>локализирани поставки</code> што се однесуваат на дадената околина во Семантички МедијВики. Повеќе за поединечните поставки ќе најдете на страницата за [https://semantic-mediawiki.org/wiki/Help:Configuration помош со поставки].",
+	"smw-sp-admin-settings-docu": "Прикажува список на сите стандардни и локализирани поставки што се однесуваат на дадената околина во Семантички МедијВики. Повеќе за поединечните поставки ќе најдете на страницата за [https://semantic-mediawiki.org/wiki/Help:Configuration помош со поставки].",
 	"smw-sp-admin-settings-button": "Создај список на поставки",
 	"smw-sp-admin-idlookup-title": "Проверка на објектна назнака",
 	"smw-sp-admin-idlookup-docu": "Прикажува подробности за внатрешата објектна назнака што претставува поединечни единици (викистраница, подобјект и тн.) во Семантички МедијаВики.",
