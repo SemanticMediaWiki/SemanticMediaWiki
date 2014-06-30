@@ -40,4 +40,4 @@ function addArguments( $args ) {
 $mw = isReadablePath( __DIR__ . "/../../../tests/phpunit/phpunit.php" );
 $config = isReadablePath( __DIR__ . "/../phpunit.xml.dist" );
 
-passthru( "php {$mw} -c {$config} " . implode( ' ', addArguments( $GLOBALS['argv'] ) ) );
+return passthru( "php {$mw} -c {$config} " . implode( ' ', addArguments( $GLOBALS['argv'] ) ) );
