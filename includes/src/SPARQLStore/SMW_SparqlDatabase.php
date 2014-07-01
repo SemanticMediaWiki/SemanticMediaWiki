@@ -3,6 +3,7 @@
 use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
 use SMW\SPARQLStore\BadHttpResponseMapper;
 use SMW\CurlRequest;
+use SMW\HttpRequest;
 
 /**
  * Basic database connector for exchanging data via SPARQL.
@@ -56,17 +57,12 @@ class SMWSparqlDatabase {
 	protected $m_defaultGraph;
 
 	/**
-	 * The curl handle we use for communicating. We reuse the same handle
-	 * throughout as this safes some initialization effort.
+	 * @note Handles the curl handle and is reused throughout the instance to
+	 * safe some initialization effort
 	 *
-	 * @var resource
-	 */
-	protected $m_curlhandle;
-
-	/**
 	 * @var HttpRequest
 	 */
-	private $httpRequest;
+	protected $httpRequest;
 
 	/**
 	 * @var BadHttpResponseMapper
@@ -74,11 +70,8 @@ class SMWSparqlDatabase {
 	private $badHttpResponseMapper;
 
 	/**
-	 * Constructor.
-	 *
-	 * Normally, you should call smwfGetSparqlDatabase() to obtain a
-	 * suitable instance of a SPARQL database handler rather than
-	 * constructing one directly.
+	 * It is suggested to use SparqlDBConnectionProvider to create an
+	 * instance.
 	 *
 	 * @param $graph string of URI of the default graph to store data to;
 	 * can be the empty string to omit this information in all requests
@@ -92,15 +85,13 @@ class SMWSparqlDatabase {
 		$this->m_queryEndpoint = $queryEndpoint;
 		$this->m_updateEndpoint = $updateEndpoint;
 		$this->m_dataEndpoint = $dataEndpoint;
-		$this->m_curlhandle = curl_init();
 
-		// FIXME Use appropriate class instead of curl_*; inject the object
-		$this->httpRequest = new CurlRequest( $this->m_curlhandle );
+		$this->httpRequest = new CurlRequest( curl_init() );
 
-		curl_setopt( $this->m_curlhandle, CURLOPT_FORBID_REUSE, false );
-		curl_setopt( $this->m_curlhandle, CURLOPT_FRESH_CONNECT, false );
-		curl_setopt( $this->m_curlhandle, CURLOPT_RETURNTRANSFER, true ); // put result into variable
-		curl_setopt( $this->m_curlhandle, CURLOPT_FAILONERROR, true );
+		$this->httpRequest->setOption( CURLOPT_FORBID_REUSE, false );
+		$this->httpRequest->setOption( CURLOPT_FRESH_CONNECT, false );
+		$this->httpRequest->setOption( CURLOPT_RETURNTRANSFER, true ); // put result into variable
+		$this->httpRequest->setOption( CURLOPT_FAILONERROR, true );
 
 		$this->setConnectionTimeoutInSeconds( 10 );
 	}
@@ -119,41 +110,49 @@ class SMWSparqlDatabase {
 	/**
 	 * Check if the database can be contacted.
 	 *
-	 * @param $pingQueryEndpoint boolean true if the query endpoint should
-	 * be pinged, false if the update enpoint should be pinged
-	 * @return boolean to indicate success
 	 * @todo SPARQL endpoints sometimes return errors if no (valid) query
 	 * is posted. The current implementation tries to catch this, but this
 	 * might not be entirely correct. Especially, the SPARQL 1.1 HTTP error
 	 * codes for Update are not defined yet (April 15 2011).
+	 *
+	 * @param $pingQueryEndpoint boolean true if the query endpoint should be
+	 * pinged, false if the update endpoint should be pinged
+	 *
+	 * @return boolean to indicate success
 	 */
 	public function ping( $endpointType = self::EP_TYPE_QUERY ){
 		if ( $endpointType == self::EP_TYPE_QUERY ) {
-			curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
-			curl_setopt( $this->m_curlhandle, CURLOPT_NOBODY, true );
-			curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+			$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
+			$this->httpRequest->setOption( CURLOPT_NOBODY, true );
+			$this->httpRequest->setOption( CURLOPT_POST, true );
 		} elseif ( $endpointType == self::EP_TYPE_UPDATE ) {
+
 			if ( $this->m_updateEndpoint === '' ) {
 				return false;
 			}
-			curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_updateEndpoint );
-			curl_setopt( $this->m_curlhandle, CURLOPT_NOBODY, false ); // 4Store gives 404 instead of 500 with CURLOPT_NOBODY
+
+			$this->httpRequest->setOption( CURLOPT_URL, $this->m_updateEndpoint );
+			$this->httpRequest->setOption( CURLOPT_NOBODY, false ); // 4Store gives 404 instead of 500 with CURLOPT_NOBODY
+
 		} else { // ( $endpointType == self::EP_TYPE_DATA )
+
 			if ( $this->m_dataEndpoint === '' ) {
 				return false;
-			} else { // try an empty POST
-				return $this->doHttpPost( '' );
 			}
+
+			// try an empty POST
+			return $this->doHttpPost( '' );
 		}
 
-		curl_exec( $this->m_curlhandle );
+		$this->httpRequest->execute();
 
-		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			return true;
-		} else {
-			$httpCode = curl_getinfo( $this->m_curlhandle, CURLINFO_HTTP_CODE );
-			return ( ( $httpCode == 500 ) || ( $httpCode == 400 ) ); // valid HTTP responses from a complaining SPARQL endpoint that is alive and kicking
 		}
+
+		// valid HTTP responses from a complaining SPARQL endpoint that is alive and kicking
+		$httpCode = $this->httpRequest->getInfo( CURLINFO_HTTP_CODE );
+		return ( ( $httpCode == 500 ) || ( $httpCode == 400 ) );
 	}
 
 	/**
@@ -166,11 +165,11 @@ class SMWSparqlDatabase {
 	 * @param $where string WHERE part of the query, without surrounding { }
 	 * @param $options array (associative) of options, e.g. array( 'LIMIT' => '10' )
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function select( $vars, $where, $options = array(), $extraNamespaces = array() ) {
-		$sparql = $this->getSparqlForSelect( $vars, $where, $options, $extraNamespaces );
-		return $this->doQuery( $sparql );
+		return $this->doQuery( $this->getSparqlForSelect( $vars, $where, $options, $extraNamespaces ) );
 	}
 
 	/**
@@ -181,28 +180,37 @@ class SMWSparqlDatabase {
 	 *
 	 * @param $where string WHERE part of the query, without surrounding { }
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return string SPARQL query
 	 */
 	public function getSparqlForSelect( $vars, $where, $options = array(), $extraNamespaces = array() ) {
+
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
+
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
 			$sparql .= 'DISTINCT ';
 		}
+
 		if ( is_array( $vars ) ) {
 			$sparql .= implode( ',', $vars );
 		} else {
 			$sparql .= $vars;
 		}
+
 		$sparql .= " WHERE {\n" . $where . "\n}";
+
 		if ( array_key_exists( 'ORDER BY', $options ) ) {
 			$sparql .= "\nORDER BY " . $options['ORDER BY'];
 		}
+
 		if ( array_key_exists( 'OFFSET', $options ) ) {
 			$sparql .= "\nOFFSET " . $options['OFFSET'];
 		}
+
 		if ( array_key_exists( 'LIMIT', $options ) ) {
 			$sparql .= "\nLIMIT " . $options['LIMIT'];
 		}
+
 		return $sparql;
 	}
 
@@ -214,11 +222,11 @@ class SMWSparqlDatabase {
 	 *
 	 * @param $where string WHERE part of the query, without surrounding { }
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function ask( $where, $extraNamespaces = array() ) {
-		$sparql = $this->getSparqlForAsk( $where, $extraNamespaces );
-		return $this->doQuery( $sparql );
+		return $this->doQuery( $this->getSparqlForAsk( $where, $extraNamespaces ) );
 	}
 
 	/**
@@ -229,6 +237,7 @@ class SMWSparqlDatabase {
 	 *
 	 * @param $where string WHERE part of the query, without surrounding { }
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return string SPARQL query
 	 */
 	public function getSparqlForAsk( $where, $extraNamespaces = array() ) {
@@ -245,17 +254,23 @@ class SMWSparqlDatabase {
 	 * @param $where string WHERE part of the query, without surrounding { }
 	 * @param $options array (associative) of options, e.g. array('LIMIT' => '10')
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function selectCount( $variable, $where, $options = array(), $extraNamespaces = array() ) {
+
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT (COUNT(';
+
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
 			$sparql .= 'DISTINCT ';
 		}
+
 		$sparql .= $variable . ") AS ?count) WHERE {\n" . $where . "\n}";
+
 		if ( array_key_exists( 'OFFSET', $options ) ) {
 			$sparql .= "\nOFFSET " . $options['OFFSET'];
 		}
+
 		if ( array_key_exists( 'LIMIT', $options ) ) {
 			$sparql .= "\nLIMIT " . $options['LIMIT'];
 		}
@@ -272,12 +287,15 @@ class SMWSparqlDatabase {
 	 * @param $deletePattern string CONSTRUCT pattern of tripples to delete
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
+
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			( ( $this->m_defaultGraph !== '' )? "WITH <{$this->m_defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } WHERE { $where }";
+
 		return $this->doUpdate( $sparql );
 	}
 
@@ -295,6 +313,7 @@ class SMWSparqlDatabase {
 	 * @param $propertyName string Turtle name of marking property
 	 * @param $objectName string Turtle name of marking object/value
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
@@ -311,12 +330,15 @@ class SMWSparqlDatabase {
 	 * @param $deletePattern string CONSTRUCT pattern of tripples to delete
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
+
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			( ( $this->m_defaultGraph !== '' )? "WITH <{$this->m_defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } INSERT { $insertPattern } WHERE { $where }";
+
 		return $this->doUpdate( $sparql );
 	}
 
@@ -328,20 +350,23 @@ class SMWSparqlDatabase {
 	 *
 	 * @param $triples string of triples to insert
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = array() ) {
+
 		if ( $this->m_dataEndpoint !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
-		} else {
-			$sparql = self::getPrefixString( $extraNamespaces, true ) .
-				"INSERT DATA  " .
-				( ( $this->m_defaultGraph !== '' )? " { GRAPH <{$this->m_defaultGraph}> " : '' ) .
-				"{ $triples } " .
-				( ( $this->m_defaultGraph !== '' )? " } " : '' ) ;
-			return $this->doUpdate( $sparql );
 		}
+
+		$sparql = self::getPrefixString( $extraNamespaces, true ) .
+			"INSERT DATA  " .
+			( ( $this->m_defaultGraph !== '' )? " { GRAPH <{$this->m_defaultGraph}> " : '' ) .
+			"{ $triples } " .
+			( ( $this->m_defaultGraph !== '' )? " } " : '' ) ;
+
+		return $this->doUpdate( $sparql );
 	}
 
 	/**
@@ -352,6 +377,7 @@ class SMWSparqlDatabase {
 	 *
 	 * @param $triples string of triples to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = array() ) {
@@ -374,27 +400,40 @@ class SMWSparqlDatabase {
 	 * request. Queries should not include additional graph information.
 	 *
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
+	 *
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function doQuery( $sparql ) {
-		//debug_zval_dump( $sparql );
-		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
-		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ));
-		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+
+		if ( $this->m_queryEndpoint === '' ) {
+			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+		}
+
+		$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ) );
+		$this->httpRequest->setOption( CURLOPT_POST, true );
+
 		$parameterString = "query=" . urlencode( $sparql ) .
 			( ( $this->m_defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
-		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
-		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=UTF-8'));
 
-		$xmlResult = curl_exec( $this->m_curlhandle );
+		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=UTF-8') );
 
-		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+		$xmlResult = $this->httpRequest->execute();
+
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			$xmlParser = new SMWSparqlResultParser();
 			return $xmlParser->makeResultFromXml( $xmlResult );
-		} else {
-			$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
-			return new SMWSparqlResultWrapper( array(), array(), array(), SMWSparqlResultWrapper::ERROR_UNREACHABLE );
 		}
+
+		$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
+
+		return new SparqlResultWrapper(
+			array(),
+			array(),
+			array(),
+			SparqlResultWrapper::ERROR_UNREACHABLE
+		);
 	}
 
 	/**
@@ -410,26 +449,31 @@ class SMWSparqlDatabase {
 	 * the graph information in the queries that they build.
 	 *
 	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
+	 *
 	 * @return boolean
 	 */
 	public function doUpdate( $sparql ) {
+
 		if ( $this->m_updateEndpoint === '' ) {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
-		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_updateEndpoint );
-		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+
+		$this->httpRequest->setOption( CURLOPT_URL, $this->m_updateEndpoint );
+		$this->httpRequest->setOption( CURLOPT_POST, true );
+
 		$parameterString = "update=" . urlencode( $sparql );
-		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
-		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=UTF-8'));
 
-		curl_exec( $this->m_curlhandle );
+		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-www-form-urlencoded;charset=UTF-8' ) );
 
-		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+		$this->httpRequest->execute();
+
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			return true;
-		} else {
-			$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
-			return false;
 		}
+
+		$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+		return false;
 	}
 
 	/**
@@ -449,32 +493,37 @@ class SMWSparqlDatabase {
 	 * that may be implemented in a special database handler.
 	 *
 	 * @param $payload string Turtle serialization of data to send
-	 * @return SMWSparqlResultWrapper
+	 *
+	 * @return boolean
 	 */
 	public function doHttpPost( $payload ) {
+
 		if ( $this->m_dataEndpoint === '' ) {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
-		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint .
+
+		$this->httpRequest->setOption( CURLOPT_URL, $this->m_dataEndpoint .
 			( ( $this->m_defaultGraph !== '' )? '?graph=' . urlencode( $this->m_defaultGraph ) : '?default' ) );
-		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		// POST as file (fails in 4Store)
 		$payloadFile = tmpfile();
 		fwrite( $payloadFile, $payload );
 		fseek( $payloadFile, 0 );
-		curl_setopt( $this->m_curlhandle, CURLOPT_INFILE, $payloadFile );
-		curl_setopt( $this->m_curlhandle, CURLOPT_INFILESIZE, strlen( $payload ) );
-		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-turtle' ) );
 
-		curl_exec( $this->m_curlhandle );
+		$this->httpRequest->setOption( CURLOPT_INFILE, $payloadFile );
+		$this->httpRequest->setOption( CURLOPT_INFILESIZE, strlen( $payload ) );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-turtle' ) );
 
-		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+		$this->httpRequest->execute();
+
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			return true;
-		} else { ///TODO The error reporting based on SPARQL (Update) is not adequate for the HTTP POST protocol
-			$this->throwSparqlErrors( $this->m_dataEndpoint, $payload );
-			return false;
 		}
+
+		// TODO The error reporting based on SPARQL (Update) is not adequate for the HTTP POST protocol
+		$this->throwSparqlErrors( $this->m_dataEndpoint, $payload );
+		return false;
 	}
 
 	/**
@@ -483,6 +532,8 @@ class SMWSparqlDatabase {
 	 *
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 * @param $forSparql boolean true to use SPARQL prefix syntax, false to use Turtle prefix syntax
+	 *
+	 * @return string
 	 */
 	public static function getPrefixString( $extraNamespaces = array(), $forSparql = true ) {
 		$prefixString = '';
@@ -522,7 +573,19 @@ class SMWSparqlDatabase {
 	 * @return SparqlDatabase
 	 */
 	public function setConnectionTimeoutInSeconds( $timeout = 10 ) {
-		curl_setopt( $this->m_curlhandle, CURLOPT_CONNECTTIMEOUT, $timeout );
+		$this->httpRequest->setOption( CURLOPT_CONNECTTIMEOUT, $timeout );
+		return $this;
+	}
+
+	/**
+	 * @since  1.9.3
+	 *
+	 * @param HttpRequest $httpRequest
+	 *
+	 * @return SparqlDatabase
+	 */
+	public function setHttpRequest( HttpRequest $httpRequest ) {
+		$this->httpRequest = $httpRequest;
 		return $this;
 	}
 

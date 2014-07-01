@@ -30,16 +30,23 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function doQuery( $sparql ) {
-		//$result = parent::doQuery( $sparql );
-		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
-		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ));
-		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+
+		if ( $this->m_queryEndpoint === '' ) {
+			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+		}
+
+		$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ));
+		$this->httpRequest->setOption( CURLOPT_POST, true );
+
 		$parameterString = "query=" . urlencode( $sparql ) . "&restricted=1" .
 			( ( $this->m_defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' );
-		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
-		$xmlResult = curl_exec( $this->m_curlhandle );
 
-		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+
+		$xmlResult = $this->httpRequest->execute();
+
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			$xmlParser = new SMWSparqlResultParser();
 			$result = $xmlParser->makeResultFromXml( $xmlResult );
 		} else {
@@ -53,6 +60,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 				$result->setErrorCode( SMWSparqlResultWrapper::ERROR_INCOMPLETE );
 			} //else debug_zval_dump($comment);
 		}
+
 		return $result;
 	}
 
@@ -69,12 +77,14 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
 		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", array(), $extraNamespaces );
 		$success = ( $affectedObjects->getErrorCode() == SMWSparqlResultWrapper::ERROR_NOERROR );
+
 		foreach ( $affectedObjects as $expElements ) {
 			if ( count( $expElements ) > 0 ) {
 				$turtleName = SMWTurtleSerializer::getTurtleNameForExpElement( reset( $expElements ) );
 				$success = $this->delete( "$turtleName ?p ?o", "$turtleName ?p ?o", $extraNamespaces ) && $success;
 			}
 		}
+
 		return $success;
 	}
 
@@ -90,27 +100,62 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	 * are not given in the specification.
 	 *
 	 * @param $payload string Turtle serialization of data to send
-	 * @return SMWSparqlResultWrapper
+	 *
+	 * @return boolean
 	 */
 	public function doHttpPost( $payload ) {
+
 		if ( $this->m_dataEndpoint === '' ) {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
-		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );
-		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+
+		$this->httpRequest->setOption( CURLOPT_URL, $this->m_dataEndpoint );
+		$this->httpRequest->setOption( CURLOPT_POST, true );
+
 		$parameterString = "data=" . urlencode( $payload ) . '&graph=' .
 			( ( $this->m_defaultGraph !== '' )? urlencode( $this->m_defaultGraph ) : 'default' ) .
 			'&mime-type=application/x-turtle';
-		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 
-		curl_exec( $this->m_curlhandle );
+		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+		$this->httpRequest->execute();
 
-		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			return true;
-		} else { ///TODO The error reporting based on SPARQL (Update) is not adequate for the HTTP POST protocol
-			$this->throwSparqlErrors( $this->m_dataEndpoint, $payload );
-			return false;
 		}
+
+		$this->throwSparqlErrors( $this->m_dataEndpoint, $payload );
+		return false;
+	}
+
+	/**
+	 * @see SparqlDatabase::doUpdate
+	 *
+	 * @note 4store 1.1.4 breaks on update if charset is set in the Content-Type header
+	 *
+	 * @since 1.9.3
+	 */
+	public function doUpdate( $sparql ) {
+
+		if ( $this->m_updateEndpoint === '' ) {
+			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+		}
+
+		$this->httpRequest->setOption( CURLOPT_URL, $this->m_updateEndpoint );
+		$this->httpRequest->setOption( CURLOPT_POST, true );
+
+		$parameterString = "update=" . urlencode( $sparql );
+
+		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded' ) );
+
+		$this->httpRequest->execute();
+
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
+			return true;
+		}
+
+		$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+		return false;
 	}
 
 }

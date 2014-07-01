@@ -54,9 +54,11 @@ class SMWSparqlDatabaseVirtuoso extends SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
+
 		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE" .
 			( ( $this->m_defaultGraph !== '' )? " FROM <{$this->m_defaultGraph}> " : '' ) .
 			"{ $deletePattern } WHERE { $where }";
+
 		return $this->doUpdate( $sparql );
 	}
 
@@ -73,9 +75,11 @@ class SMWSparqlDatabaseVirtuoso extends SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
+
 		$sparql = self::getPrefixString( $extraNamespaces ) . "MODIFY" .
 			( ( $this->m_defaultGraph !== '' )? " GRAPH <{$this->m_defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } INSERT { $insertPattern } WHERE { $where }";
+
 		return $this->doUpdate( $sparql );
 	}
 
@@ -90,16 +94,18 @@ class SMWSparqlDatabaseVirtuoso extends SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = array() ) {
+
 		if ( $this->m_dataEndpoint !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
-		} else {
-			$sparql = self::getPrefixString( $extraNamespaces, true ) .
-				"INSERT DATA " .
-				( ( $this->m_defaultGraph !== '' )? "INTO GRAPH <{$this->m_defaultGraph}> " : '' ) .
-				"{ $triples }";
-			return $this->doUpdate( $sparql );
 		}
+
+		$sparql = self::getPrefixString( $extraNamespaces, true ) .
+			"INSERT DATA " .
+			( ( $this->m_defaultGraph !== '' )? "INTO GRAPH <{$this->m_defaultGraph}> " : '' ) .
+			"{ $triples }";
+
+		return $this->doUpdate( $sparql );
 	}
 
 	/**
@@ -113,13 +119,14 @@ class SMWSparqlDatabaseVirtuoso extends SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = array() ) {
+
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			"DELETE DATA " .
 			( ( $this->m_defaultGraph !== '' )? "FROM GRAPH <{$this->m_defaultGraph}> " : '' ) .
 			"{ $triples }";
+
 		return $this->doUpdate( $sparql );
 	}
-
 
 	/**
 	 * Execute a SPARQL update and return a boolean to indicate if the
@@ -132,22 +139,25 @@ class SMWSparqlDatabaseVirtuoso extends SMWSparqlDatabase {
 	 * @return boolean
 	 */
 	public function doUpdate( $sparql ) {
+
 		if ( $this->m_updateEndpoint === '' ) {
 			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
-		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_updateEndpoint );
-		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+
+		$this->httpRequest->setOption( CURLOPT_URL, $this->m_updateEndpoint );
+		$this->httpRequest->setOption( CURLOPT_POST, true );
+
 		$parameterString = "query=" . urlencode( $sparql );
-		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 
-		curl_exec( $this->m_curlhandle );
+		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+		$this->httpRequest->execute();
 
-		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			return true;
-		} else {
-			$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
-			return false;
 		}
+
+		$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+		return false;
 	}
 
 }

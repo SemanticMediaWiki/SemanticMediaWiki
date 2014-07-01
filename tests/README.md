@@ -31,22 +31,20 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 
 ## Integration testing
 
-### SPARQL integration
-
 Additional services can be enabled on Travis-CI to expand the test environment, available at present:
 
 - `FUSEKI`: Jena Fuskei 1.0.2 is integrated and testable
 - `FOURSTORE`: 4Store is installable but not testable due to [issue #110](https://github.com/garlik/4store/issues/110)
 - `VIRTUOSO`: Virtuoso-opensource-6.1 is installable but has not been tested
 
-#### Jena Fuseki
+### Jena Fuseki integration
 
 When running integration tests with [Jena Fuseki][fuseki] it is suggested that the `in-memory` option is used to avoid potential loss of production data during test execution.
 
-```
+```sh
 fuseki-server --update --port=3030 --mem /db
 ```
-```
+```php
 $smwgSparqlDatabaseConnector = 'Fuseki';
 $smwgSparqlQueryEndpoint = 'http://localhost:3030/db/query';
 $smwgSparqlUpdateEndpoint = 'http://localhost:3030/db/update';
@@ -55,14 +53,32 @@ $smwgSparqlDataEndpoint = '';
 
 Fuseki supports [TDB Dynamic Datasets][fuseki-dataset] (in SPARQL known as [RDF dataset][sparql-dataset]) which are currently not considered for testing but can be enabled using the following settings.
 
-```
+```sh
 fuseki-server --update --port=3030 --memTDB --set tdb:unionDefaultGraph=true /db
 ```
-```
+```php
 $smwgSparqlDatabaseConnector = 'Fuseki';
 $smwgSparqlQueryEndpoint = 'http://localhost:3030/db/query';
 $smwgSparqlUpdateEndpoint = 'http://localhost:3030/db/update';
 $smwgSparqlDataEndpoint = '';
+$smwgSparqlDefaultGraph = 'http://example.org/mydefaultgraphname';
+```
+### 4Store integration
+
+Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite.
+
+```sh
+apt-get install 4store
+4s-backend-setup smw
+4s-backend smw
+4s-httpd -p 8088 smw
+```
+
+```php
+$smwgSparqlDatabaseConnector = '4store';
+$smwgSparqlQueryEndpoint = 'http://localhost:8088/sparql/';
+$smwgSparqlUpdateEndpoint = 'http://localhost:8088/update/';
+$smwgSparqlDataEndpoint = 'http://localhost:8088/data/';
 $smwgSparqlDefaultGraph = 'http://example.org/mydefaultgraphname';
 ```
 
