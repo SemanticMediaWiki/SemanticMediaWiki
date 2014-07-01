@@ -3,6 +3,9 @@
 namespace SMW\Tests\SPARQLStore;
 
 /**
+ * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector
+ * @covers \SMWSparqlDatabase4Store
+ * @covers \SMWSparqlDatabaseVirtuoso
  * @covers \SMWSparqlDatabase
  *
  * @ingroup Test
@@ -15,18 +18,25 @@ namespace SMW\Tests\SPARQLStore;
  *
  * @author mwjames
  */
-class ForcedConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
+class DatabaseConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	private $defaultGraph;
+
+	private $databaseConnectors = array(
+		'SMWSparqlDatabase',
+		'\SMW\SPARQLStore\FusekiHttpDatabaseConnector',
+		'SMWSparqlDatabase4Store',
+		'SMWSparqlDatabaseVirtuoso'
+	);
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->defaultGraph = 'http://example.org/mydefaultgraphname';
+		$this->defaultGraph = 'http://foo/myDefaultGraph';
 	}
 
 	/**
-	 * @dataProvider httpConnectorNameProvider
+	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testCanConstruct( $httpConnector ) {
 
@@ -37,7 +47,21 @@ class ForcedConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider httpConnectorNameProvider
+	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
+	 */
+	public function testDoQueryForEmptyQueryEndpointThrowsException( $httpConnector ) {
+
+		$instance = new $httpConnector(
+			$this->defaultGraph,
+			''
+		);
+
+		$this->setExpectedException( '\SMW\SPARQLStore\BadHttpDatabaseResponseException' );
+		$instance->doQuery( '' );
+	}
+
+	/**
+	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoUpdateForEmptyUpdateEndpointThrowsException( $httpConnector ) {
 
@@ -52,7 +76,7 @@ class ForcedConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider httpConnectorNameProvider
+	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoHttpPostForEmptyDataEndpointThrowsException( $httpConnector ) {
 
@@ -68,7 +92,7 @@ class ForcedConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider httpConnectorNameProvider
+	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoHttpPostForUnreachableDataEndpointThrowsException( $httpConnector ) {
 
@@ -83,14 +107,11 @@ class ForcedConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 		$instance->doHttpPost( '' );
 	}
 
-	public function httpConnectorNameProvider() {
+	public function httpDatabaseConnectorInstanceNameProvider() {
 
-		$provider = array(
-			array( 'SMWSparqlDatabase' ),
-			array( '\SMW\SPARQLStore\FusekiHttpDatabaseConnector' ),
-			array( 'SMWSparqlDatabase4Store' ),
-			array( 'SMWSparqlDatabaseVirtuoso' )
-		);
+		foreach ( $this->databaseConnectors as $databaseConnector ) {
+			$provider[] = array( $databaseConnector );
+		}
 
 		return $provider;
 	}

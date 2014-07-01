@@ -2,6 +2,7 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
 use SMWSparqlDatabase as SparqlDatabase;
 use SMWSparqlResultParser as SparqlResultParser;
 use SMWSparqlResultWrapper as SparqlResultWrapper;
@@ -20,17 +21,24 @@ class FusekiHttpDatabaseConnector extends SparqlDatabase {
 	 * @see SparqlDatabase::doQuery
 	 */
 	public function doQuery( $sparql ) {
-		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
-		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ));
-		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+
+		if ( $this->m_queryEndpoint === '' ) {
+			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+		}
+
+		$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Accept: application/sparql-results+xml,application/xml;q=0.8' ) );
+		$this->httpRequest->setOption( CURLOPT_POST, true );
+
 		$parameterString = "query=" . urlencode( $sparql ) .
 			( ( $this->m_defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $this->m_defaultGraph ) : '' ) . '&output=xml';
-		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
-		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=UTF-8'));
 
-		$xmlResult = curl_exec( $this->m_curlhandle );
+		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded;charset=UTF-8') );
 
-		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+		$xmlResult = $this->httpRequest->execute();
+
+		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			$xmlParser = new SparqlResultParser();
 			return $xmlParser->makeResultFromXml( $xmlResult );
 		}
