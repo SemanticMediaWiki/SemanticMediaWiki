@@ -119,6 +119,7 @@
 	"smw_propertylackspage": "Todas as propriedades devem ser descritas por uma página!",
 	"smw_propertylackstype": "Não foi especificado nenhum tipo para esta propriedade (a assumir o tipo $1 por agora).",
 	"smw_propertyhardlyused": "Esta propriedade é muito pouco usada nesta wiki!",
+	"smw-sp-concept-count": "{{PLURAL:$1|O seguinte conceito está a ser incluído|Os $1 conceitos seguintes estão a ser incluídos}} na lista.",
 	"unusedproperties": "Propriedades não usadas",
 	"smw_unusedproperties_docu": "As seguintes propriedade existem apesar de nenhuma página as usar.",
 	"smw_unusedproperty_template": "$1 do tipo $2",
