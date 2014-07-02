@@ -3,12 +3,11 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\Tests\Util\FakeQueryResultProvider;
-use SMW\SPARQLStore\FusekiHttpDatabaseConnector;
 
 /**
  * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector
- * @covers \SMWSparqlDatabase4Store
- * @covers \SMWSparqlDatabaseVirtuoso
+ * @covers \SMW\SPARQLStore\FourstoreHttpDatabaseConnector
+ * @covers \SMW\SPARQLStore\VirtuosoHttpDatabaseConnector
  * @covers \SMWSparqlDatabase
  *
  * @ingroup Test
@@ -27,6 +26,10 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 	private $databaseConnectors = array(
 		'SMWSparqlDatabase',
 		'\SMW\SPARQLStore\FusekiHttpDatabaseConnector',
+		'\SMW\SPARQLStore\FourstoreHttpDatabaseConnector',
+		'\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector',
+
+		// Legacy and should be removed once obsolete
 		'SMWSparqlDatabase4Store',
 		'SMWSparqlDatabaseVirtuoso'
 	);
@@ -108,7 +111,7 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 	 *
 	 * @see http://www.w3.org/TR/sparql11-http-rdf-update/#http-post
 	 */
-	public function testInsertToDataPointOnMockedHttpRequest( $httpDatabaseConnector ) {
+	public function testInsertViaHttpPostToDataPointOnMockedHttpRequest( $httpDatabaseConnector ) {
 
 		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
 			->disableOriginalConstructor()
@@ -132,6 +135,7 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 
 	public function httpDatabaseConnectorInstanceNameForAskProvider() {
 
+		$provider = array();
 		$encodedDefaultGraph = urlencode( 'http://foo/myDefaultGraph' );
 
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
@@ -141,6 +145,7 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 					$expectedPostField = '&default-graph-uri=' . $encodedDefaultGraph . '&output=xml';
 					break;
 				case 'SMWSparqlDatabase4Store':
+				case '\SMW\SPARQLStore\FourstoreHttpDatabaseConnector':
 					$expectedPostField = "&restricted=1" . '&default-graph-uri=' . $encodedDefaultGraph;
 					break;
 				default:
@@ -156,10 +161,13 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 
 	public function httpDatabaseConnectorInstanceNameForDeleteProvider() {
 
+		$provider = array();
+
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
 
 			switch ( $databaseConnector ) {
 				case 'SMWSparqlDatabaseVirtuoso':
+				case '\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector':
 					$expectedPostField = 'query=';
 					break;
 				default:
@@ -174,6 +182,8 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 	}
 
 	public function httpDatabaseConnectorInstanceNameForInsertProvider() {
+
+		$provider = array();
 
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
 			$provider[] = array( $databaseConnector );

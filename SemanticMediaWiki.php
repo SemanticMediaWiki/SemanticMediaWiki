@@ -74,6 +74,9 @@ class_alias( 'SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );
 class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
 class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
 
+class_alias( 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector', 'SMWSparqlDatabase4Store' );
+class_alias( 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector', 'SMWSparqlDatabaseVirtuoso' );
+
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 1.11
 define( 'SEMANTIC_EXTENSION_TYPE', true );

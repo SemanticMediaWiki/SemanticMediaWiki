@@ -101,6 +101,12 @@ class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SparqlDBConnectionProvider( 'virtuoso' );
 
 		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector',
+			$instance->getConnection()
+		);
+
+		// Legacy
+		$this->assertInstanceOf(
 			'\SMWSparqlDatabaseVirtuoso',
 			$instance->getConnection()
 		);
@@ -110,6 +116,12 @@ class SparqlDBConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SparqlDBConnectionProvider( '4STORE' );
 
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\FourstoreHttpDatabaseConnector',
+			$instance->getConnection()
+		);
+
+		// Legacy
 		$this->assertInstanceOf(
 			'\SMWSparqlDatabase4Store',
 			$instance->getConnection()

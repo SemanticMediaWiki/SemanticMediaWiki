@@ -1,6 +1,8 @@
 <?php
 
-use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
+namespace SMW\SPARQLStore;
+
+use SMWSparqlDatabase as SparqlDatabase;
 
 /**
  * Virtuoso specific adjustments for SparqlDatabase
@@ -40,7 +42,7 @@ use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
  *
  * @author Markus Krötzsch
  */
-class SMWSparqlDatabaseVirtuoso extends SMWSparqlDatabase {
+class VirtuosoHttpDatabaseConnector extends SparqlDatabase {
 
 	/**
 	 * DELETE wrapper.
@@ -141,7 +143,7 @@ class SMWSparqlDatabaseVirtuoso extends SMWSparqlDatabase {
 	public function doUpdate( $sparql ) {
 
 		if ( $this->m_updateEndpoint === '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_updateEndpoint );

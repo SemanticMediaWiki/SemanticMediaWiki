@@ -14,6 +14,9 @@ use SMW\DataValueFactory;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
+use SMWDataValue as DataValue;
+use SMWDataItem as DataItem;
 use SMWSomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
@@ -37,7 +40,7 @@ use Title;
  *
  * @author mwjames
  */
-class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTestCase {
+class QueryResultLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $sparqlDatabase;
 	private $subject;
@@ -66,7 +69,7 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 		$property->setPropertyTypeId( '_wpg' );
 
 		$this->assertEmpty(
-			$this->queryResultsForProperty( $property )->getResults()
+			$this->getQueryResultForProperty( $property )->getResults()
 		);
 
 		$dataItem = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
@@ -79,17 +82,17 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 
 		$this->assertThatDataItemIsSet(
 			$dataItem,
-			$this->queryResultsForProperty( $property )
+			$this->getQueryResultForProperty( $property )
 		);
 
 		$this->assertNotEmpty(
-			$this->queryResultsForProperty( $property )->getResults()
+			$this->getQueryResultForProperty( $property )->getResults()
 		);
 
 		$this->getStore()->clearData( $this->subject );
 
 		$this->assertEmpty(
-			$this->queryResultsForProperty( $property )->getResults()
+			$this->getQueryResultForProperty( $property )->getResults()
 		);
 	}
 
@@ -108,7 +111,7 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 
 		$this->assertThatDataItemIsSet(
 			$dataItem,
-			$this->queryResultsForProperty( $property )
+			$this->getQueryResultForProperty( $property )
 		);
 	}
 
@@ -127,7 +130,7 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 
 		$this->assertThatDataItemIsSet(
 			$dataItem,
-			$this->queryResultsForProperty( $property )
+			$this->getQueryResultForProperty( $property )
 		);
 	}
 
@@ -151,7 +154,7 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 
 		$this->assertThatDataItemIsSet(
 			$dataValue->getDataItem(),
-			$this->queryResultsForProperty( $property )
+			$this->getQueryResultForProperty( $property )
 		);
 	}
 
@@ -168,9 +171,46 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 			$dataValue
 		);
 
-		$this->assertThatDataItemIsSet(
-			$dataValue->getDataItem(),
-			$this->queryResultsForProperty( $property )
+		$this->assertThatDataValueIsComparable(
+			$dataValue,
+			$this->getQueryResultForProperty( $property )
+		);
+	}
+
+	public function testQueryUserDefinedDateProperty() {
+
+		$property = new DIProperty( 'SomeDateProperty' );
+		$property->setPropertyTypeId( '_dat' );
+
+		$dataValue = $this->dataValueFactory->newPropertyObjectValue( $property, '1 January 1970' );
+
+		$this->addTripleToStore(
+			$this->subject,
+			$property,
+			$dataValue
+		);
+
+		$this->assertThatDataValueIsComparable(
+			$dataValue,
+			$this->getQueryResultForProperty( $property )
+		);
+	}
+
+	public function testQueryUserDefinedPropertyForInvalidValueAssignment() {
+
+		$property = new DIProperty( 'SomePropertyWithInvalidValueAssignment' );
+		$property->setPropertyTypeId( '_tem' );
+
+		$dataValue = $this->dataValueFactory->newPropertyObjectValue( $property, '1 Jan 1970' );
+
+		$semanticData = new SemanticData( $this->subject );
+		$semanticData->addDataValue( $dataValue );
+
+		$this->getStore()->updateData( $semanticData );
+
+		$this->assertEquals(
+			0,
+			$this->getQueryResultForProperty( $property )->getCount()
 		);
 	}
 
@@ -188,7 +228,7 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 
 		$this->assertThatDataItemIsSet(
 			$dataValue->getDataItem(),
-			$this->queryResultsForProperty( $property )
+			$this->getQueryResultForProperty( $property )
 		);
 	}
 
@@ -205,7 +245,7 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 		$this->getStore()->updateData( $semanticData );
 	}
 
-	private function addTripleToStore( $subject, $property, $dataValue ) {
+	private function addTripleToStore( DIWikiPage $subject, DIProperty $property, DataValue $dataValue ) {
 
 		$semanticData = new SemanticData( $subject );
 		$semanticData->addDataValue( $dataValue );
@@ -218,7 +258,7 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 		);
 	}
 
-	private function queryResultsForProperty( $property ) {
+	private function getQueryResultForProperty( DIProperty $property ) {
 
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( $property );
@@ -243,12 +283,27 @@ class SimpleQueryLookupWithoutBaseStoreDBIntegrationTest extends MwDBaseUnitTest
 		return $this->getStore()->getQueryResult( $query );
 	}
 
-	private function assertThatDataItemIsSet( $expectedDataItem, $queryResult ) {
+	private function assertThatDataItemIsSet( DataItem $expectedDataItem, QueryResult $queryResult ) {
+
+		$this->assertEmpty( $queryResult->getErrors() );
 
 		while ( $resultArray = $queryResult->getNext() ) {
 			foreach ( $resultArray as $result ) {
-				while ( ( $di = $result->getNextDataItem() ) !== false ) {
-					$this->assertEquals( $expectedDataItem, $di );
+				while ( ( $dataItem = $result->getNextDataItem() ) !== false ) {
+					$this->assertEquals( $expectedDataItem, $dataItem );
+				}
+			}
+		}
+	}
+
+	private function assertThatDataValueIsComparable( DataValue $expectedDataValue, QueryResult $queryResult ) {
+
+		$this->assertEmpty( $queryResult->getErrors() );
+
+		while ( $resultArray = $queryResult->getNext() ) {
+			foreach ( $resultArray as $result ) {
+				while ( ( $dataValue = $result->getNextDataValue() ) !== false ) {
+					$this->assertEquals( $expectedDataValue->getWikiValue(), $dataValue->getWikiValue() );
 				}
 			}
 		}

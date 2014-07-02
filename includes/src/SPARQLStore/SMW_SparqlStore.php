@@ -4,6 +4,9 @@ use SMW\SPARQLStore\RedirectLookup;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
 
 use SMW\SemanticData;
+use SMW\DIWikiPage;
+
+use SMWDataItem as DataItem;
 
 /**
  * SPARQL implementation of SMW's storage abstraction layer.
@@ -115,9 +118,7 @@ class SMWSparqlStore extends SMWStore {
 	 * @since 1.6
 	 */
 	public function deleteSubject( Title $subject ) {
-		$dataItem = SMWDIWikiPage::newFromTitle( $subject );
-		$expResource = SMWExporter::getDataItemExpElement( $dataItem );
-		$this->deleteSparqlData( $expResource );
+		$this->doSparqlDataDelete( DIWikiPage::newFromTitle( $subject ) );
 		$this->baseStore->deleteSubject( $subject );
 	}
 
@@ -170,16 +171,16 @@ class SMWSparqlStore extends SMWStore {
 			new RedirectLookup( $this->getSparqlDatabase() )
 		);
 
-		if ( $turtleTriplesBuilder->hasTriplesForUpdate() ) {
-
-			$subjectResource = SMWExporter::getDataItemExpElement( $semanticData->getSubject() );
-			$this->deleteSparqlData( $subjectResource );
-
-			$this->getSparqlDatabase()->insertData(
-				$turtleTriplesBuilder->getTriples(),
-				$turtleTriplesBuilder->getPrefixes()
-			);
+		if ( !$turtleTriplesBuilder->hasTriplesForUpdate() ) {
+			return;
 		}
+
+		$this->doSparqlDataDelete( $semanticData->getSubject() );
+
+		$this->getSparqlDatabase()->insertData(
+			$turtleTriplesBuilder->getTriples(),
+			$turtleTriplesBuilder->getPrefixes()
+		);
 	}
 
 	/**
@@ -192,31 +193,37 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * Delete from the SPARQL database all data that is associated with the
-	 * given resource.
+	 * Delete a dataitem from the Sparql back-end together with all data that is
+	 * associated resources
 	 *
-	 * @since 1.6
-	 * @param $expResource SMWExpResource
-	 * @return boolean success
+	 * @since 1.9.3
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return boolean
 	 */
-	protected function deleteSparqlData( SMWExpResource $expResource ) {
+	public function doSparqlDataDelete( DataItem $dataItem ) {
+
+		$extraNamespaces = array();
+
+		$expResource = SMWExporter::getDataItemExpElement( $dataItem );
 		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expResource );
+
 		if ( $expResource instanceof SMWExpNsResource ) {
 			$extraNamespaces = array( $expResource->getNamespaceId() => $expResource->getNamespace() );
-		} else {
-			$extraNamespaces = array();
 		}
+
 		$masterPageProperty = SMWExporter::getSpecialNsResource( 'swivt', 'masterPage' );
 		$masterPagePropertyUri = SMWTurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
 		$success = $this->getSparqlDatabase()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );
+
 		if ( $success ) {
 			return $this->getSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o", $extraNamespaces );
-		} else {
-			return false;
 		}
-	}
 
+		return false;
+	}
 
 	/**
 	 * @see SMWStore::getQueryResult()
@@ -244,7 +251,6 @@ class SMWSparqlStore extends SMWStore {
 			return $queryEngine->getInstanceQueryResult( $query );
 		}
 	}
-
 
 	/**
 	 * @see SMWStore::getPropertiesSpecial()

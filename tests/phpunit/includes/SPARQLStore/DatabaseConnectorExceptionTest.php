@@ -4,8 +4,8 @@ namespace SMW\Tests\SPARQLStore;
 
 /**
  * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector
- * @covers \SMWSparqlDatabase4Store
- * @covers \SMWSparqlDatabaseVirtuoso
+ * @covers \SMW\SPARQLStore\FourstoreHttpDatabaseConnector
+ * @covers \SMW\SPARQLStore\VirtuosoHttpDatabaseConnector
  * @covers \SMWSparqlDatabase
  *
  * @ingroup Test
@@ -25,6 +25,10 @@ class DatabaseConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 	private $databaseConnectors = array(
 		'SMWSparqlDatabase',
 		'\SMW\SPARQLStore\FusekiHttpDatabaseConnector',
+		'\SMW\SPARQLStore\FourstoreHttpDatabaseConnector',
+		'\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector',
+
+		// Legacy and should be removed once obsolete
 		'SMWSparqlDatabase4Store',
 		'SMWSparqlDatabaseVirtuoso'
 	);
@@ -108,6 +112,8 @@ class DatabaseConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function httpDatabaseConnectorInstanceNameProvider() {
+
+		$provider = array();
 
 		foreach ( $this->databaseConnectors as $databaseConnector ) {
 			$provider[] = array( $databaseConnector );
