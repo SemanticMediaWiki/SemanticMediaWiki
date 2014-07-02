@@ -25,8 +25,8 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	private $connectorIdToClass = array(
 		'default'   => 'SMWSparqlDatabase',
 		'fuseki'    => 'SMW\SPARQLStore\FusekiHttpDatabaseConnector',
-		'virtuoso'  => 'SMWSparqlDatabaseVirtuoso',
-		'4store'    => 'SMWSparqlDatabase4Store',
+		'virtuoso'  => 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector',
+		'4store'    => 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector',
 	);
 
 	/**

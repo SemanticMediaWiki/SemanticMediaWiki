@@ -14,7 +14,7 @@ use SMWQueryProcessor;
  * @license GNU GPL v2+
  * @author mwjames
  */
-class SimpleQueryResultQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
+class QueryResultQueryProcessorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider queryDataProvider

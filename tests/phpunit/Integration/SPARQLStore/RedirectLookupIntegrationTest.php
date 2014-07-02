@@ -4,8 +4,10 @@ namespace SMW\Tests\Integration\SPARQLStore;
 
 use SMW\SPARQLStore\RedirectLookup;
 use SMW\DIWikiPage;
-
+use SMW\DIProperty;
 use SMW\StoreFactory;
+use SMW\DataValueFactory;
+use SMW\SemanticData;
 
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
@@ -26,16 +28,17 @@ use SMWExporter as Exporter;
 class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $sparqlDatabase;
+	private $store;
 
 	protected function setUp() {
 
-		$store = StoreFactory::getStore();
+		$this->store = StoreFactory::getStore();
 
-		if ( !$store instanceOf \SMWSparqlStore ) {
+		if ( !$this->store instanceOf \SMWSparqlStore ) {
 			$this->markTestSkipped( "Requires a SMWSparqlStore instance" );
 		}
 
-		$this->sparqlDatabase = $store->getSparqlDatabase();
+		$this->sparqlDatabase = $this->store->getSparqlDatabase();
 
 		if ( !$this->sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
 			$this->markTestSkipped( "Can't connect to the SparlDatabase" );
@@ -45,7 +48,7 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider resourceProvider
 	 */
-	public function testRedirectTragetLookupOnRealConnection( $expNsResource ) {
+	public function testRedirectTragetLookupForNonExistingEntry( $expNsResource ) {
 
 		$instance = new RedirectLookup( $this->sparqlDatabase );
 		$exists = null;
@@ -58,6 +61,32 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $exists );
 	}
 
+	public function testRedirectTragetLookupForExistingEntry() {
+
+		$property = new DIProperty( 'RedirectLookupForExistingEntry' );
+
+		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN, '' ) );
+		$semanticData->addDataValue( DataValueFactory::getInstance()->newPropertyObjectValue( $property, 'Bar' ) );
+
+		$this->store->doSparqlDataUpdate( $semanticData );
+
+		$expNsResource = new ExpNsResource(
+			'RedirectLookupForExistingEntry',
+			Exporter::getNamespaceUri( 'property' ),
+			'property'
+		);
+
+		$instance = new RedirectLookup( $this->sparqlDatabase );
+		$exists = null;
+
+		$this->assertSame(
+			$expNsResource,
+			$instance->findRedirectTargetResource( $expNsResource, $exists )
+		);
+
+		$this->assertTrue( $exists );
+	}
+
 	public function resourceProvider() {
 
 		$provider[] = array(
@@ -66,10 +95,10 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = array(
 			new ExpNsResource(
-				'Foo',
+				'FooRedirectLookup',
 				Exporter::getNamespaceUri( 'property' ),
 				'property',
-				new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '' )
+				new DIWikiPage( 'FooRedirectLookup', SMW_NS_PROPERTY, '' )
 			)
 		);
 

@@ -1,6 +1,11 @@
 <?php
 
-use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
+namespace SMW\SPARQLStore;
+
+use SMWSparqlDatabase as SparqlDatabase;
+use SMWSparqlResultParser as SparqlResultParser;
+use SMWSparqlResultWrapper as SparqlResultWrapper;
+use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * Specific modifications of the SPARQL database implementation for 4Store.
@@ -12,10 +17,10 @@ use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
  *
  * @author Markus Krötzsch
  */
-class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
+class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 
 	/**
-	 * Execute a SPARQL query and return an SMWSparqlResultWrapper object
+	 * Execute a SPARQL query and return an SparqlResultWrapper object
 	 * that contains the results. Compared to SMWSparqlDatabase::doQuery(),
 	 * this also supports the parameter "restricted=1" which 4Store provides
 	 * to enforce strict resource bounds on query answering. The method also
@@ -27,12 +32,12 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	 * limit settings of your 4Store server.
 	 *
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
-	 * @return SMWSparqlResultWrapper
+	 * @return SparqlResultWrapper
 	 */
 	public function doQuery( $sparql ) {
 
 		if ( $this->m_queryEndpoint === '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
@@ -47,17 +52,17 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 		$xmlResult = $this->httpRequest->execute();
 
 		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
-			$xmlParser = new SMWSparqlResultParser();
+			$xmlParser = new SparqlResultParser();
 			$result = $xmlParser->makeResultFromXml( $xmlResult );
 		} else {
 			$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
-			$result = new SMWSparqlResultWrapper( array(), array(), array(), SMWSparqlResultWrapper::ERROR_UNREACHABLE );
+			$result = new SparqlResultWrapper( array(), array(), array(), SparqlResultWrapper::ERROR_UNREACHABLE );
 		}
 
 		foreach ( $result->getComments() as $comment ) {
 			if ( strpos( $comment, 'warning: hit complexity limit' ) === 0 ||
 			     strpos( $comment, 'some results have been dropped' ) === 0 ) {
-				$result->setErrorCode( SMWSparqlResultWrapper::ERROR_INCOMPLETE );
+				$result->setErrorCode( SparqlResultWrapper::ERROR_INCOMPLETE );
 			} //else debug_zval_dump($comment);
 		}
 
@@ -76,11 +81,11 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
 		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", array(), $extraNamespaces );
-		$success = ( $affectedObjects->getErrorCode() == SMWSparqlResultWrapper::ERROR_NOERROR );
+		$success = ( $affectedObjects->getErrorCode() == SparqlResultWrapper::ERROR_NOERROR );
 
 		foreach ( $affectedObjects as $expElements ) {
 			if ( count( $expElements ) > 0 ) {
-				$turtleName = SMWTurtleSerializer::getTurtleNameForExpElement( reset( $expElements ) );
+				$turtleName = TurtleSerializer::getTurtleNameForExpElement( reset( $expElements ) );
 				$success = $this->delete( "$turtleName ?p ?o", "$turtleName ?p ?o", $extraNamespaces ) && $success;
 			}
 		}
@@ -106,7 +111,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	public function doHttpPost( $payload ) {
 
 		if ( $this->m_dataEndpoint === '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_dataEndpoint );
@@ -137,7 +142,7 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	public function doUpdate( $sparql ) {
 
 		if ( $this->m_updateEndpoint === '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_updateEndpoint );
