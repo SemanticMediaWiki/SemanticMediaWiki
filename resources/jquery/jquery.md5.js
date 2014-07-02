@@ -1,5 +1,5 @@
 /*
- * JavaScript MD5 1.0
+ * JavaScript MD5 1.1.0
  * https://github.com/blueimp/JavaScript-MD5
  *
  * Copyright 2011, Sebastian Tschan
@@ -64,7 +64,7 @@
     */
     function binl_md5(x, len) {
         /* append padding */
-        x[len >> 5] |= 0x80 << ((len) % 32);
+        x[len >> 5] |= 0x80 << (len % 32);
         x[(((len + 64) >>> 9) << 4) + 14] = len;
 
         var i, olda, oldb, oldc, oldd,
@@ -272,3 +272,4 @@
         $.md5 = md5;
     }
 }(this));
+
