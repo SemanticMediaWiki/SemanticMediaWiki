@@ -35,29 +35,21 @@ class BrowseBySubject extends Base {
 		$params = $this->extractRequestParams();
 
 		$serialized = SerializerFactory::serialize(
-			$this->getSemanticData( $this->getSubject( $params['subject'] ) )
+			$this->withContext()->getStore()->getSemanticData( $this->newSubjectFromText( $params['subject'] ) )
 		);
 
-		$this->getResult()->addValue( null, 'query', $this->runFormatter( $serialized ) );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	protected function getSubject( $text ) {
-		return DIWikiPage::newFromTitle(
-			$this->assertValidTitle( Title::newFromText( $text ) )
+		$this->getResult()->addValue(
+			null,
+			'query',
+			$this->runFormatter( $serialized )
 		);
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @param Title|null $title
-	 *
-	 * @return Title
-	 */
-	protected function assertValidTitle( $title ) {
+	protected function newSubjectFromText( $text ) {
+		return DIWikiPage::newFromTitle( $this->constructValidTitle( Title::newFromText( $text ) ) );
+	}
+
+	protected function constructValidTitle( $title ) {
 
 		if ( $title instanceOf Title && $title->isRedirect() ) {
 
@@ -65,7 +57,7 @@ class BrowseBySubject extends Base {
 				'Title' => $title
 			) );
 
-			$title = $this->assertValidTitle( $page->getRedirectTarget() );
+			$title = $this->constructValidTitle( $page->getRedirectTarget() );
 		}
 
 		if ( $title instanceof Title && $title->isValidRedirectTarget() ) {
@@ -75,47 +67,6 @@ class BrowseBySubject extends Base {
 		$this->dieUsageMsg( array( 'invalidtitle', $title ) );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	protected function getSemanticData( DIWikiPage $subject ) {
-
-		$store = $this->withContext()->getStore();
-		$semanticData = $store->getSemanticData( $subject );
-
-		foreach ( $semanticData->getProperties() as $property ) {
-			if ( $property->getKey() === DIProperty::TYPE_SUBOBJECT || $property->getKey() === DIProperty::TYPE_ASKQUERY ) {
-				$this->addSubSemanticData( $store, $property, $semanticData );
-			}
-		}
-
-		return $semanticData;
-	}
-
-	/**
-	 * @note In case where the original SemanticData container does not include
-	 * subobjects, this method will add them to ensure a "complete object" for
-	 * all available entities that belong to this subject (excluding incoming
-	 * properties)
-	 *
-	 * @note If the subobject already exists within the current SemanticData
-	 * instance it will not be imported again (this avoids calling the Store
-	 * repeatedly)
-	 *
-	 * @since 1.9
-	 */
-	protected function addSubSemanticData( $store, $property, &$semanticData ) {
-
-		foreach ( $semanticData->getPropertyValues( $property ) as $value ) {
-			if ( $value instanceOf DIWikiPage && !$semanticData->hasSubSemanticData( $value->getSubobjectName() ) ) {
-				$semanticData->addSubSemanticData( $store->getSemanticData( $value ) );
-			}
-		}
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	protected function runFormatter( $serialized ) {
 
 		$this->addIndexTags( $serialized );
@@ -132,9 +83,6 @@ class BrowseBySubject extends Base {
 		return $serialized;
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function addIndexTags( &$serialized ) {
 
 		if ( isset( $serialized['data'] ) && is_array( $serialized['data'] ) ) {
@@ -147,7 +95,6 @@ class BrowseBySubject extends Base {
 				}
 			}
 		}
-
 	}
 
 	/**
