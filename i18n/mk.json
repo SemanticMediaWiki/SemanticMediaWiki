@@ -149,7 +149,7 @@
 	"smw_unusedproperties_docu": "Следниве својства постојат, но ниедна друга страница не ги користи.",
 	"smw_unusedproperty_template": "$1 од типот $2",
 	"wantedproperties": "Потребни својства",
-	"smw_wantedproperties_docu": "Следниве својства се користат во викито, но сè уште немаат своја страница за опис.",
+	"smw_wantedproperties_docu": "Следниве својства се користат во викито, но сè уште немаат своја описна страница.",
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|употреба|употреби}})",
 	"smw_purge": "Превчитај",
 	"types": "Типови",
