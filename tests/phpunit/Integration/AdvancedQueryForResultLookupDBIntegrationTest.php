@@ -73,10 +73,6 @@ class AdvancedQueryForResultLookupDBIntegrationTest extends MwDBaseUnitTestCase 
 	 */
 	public function testQueryToCompareEqualNumericPropertyValuesAssignedToSingleSubject() {
 
-		if ( $this->getStore() instanceof \SMWSparqlStore ) {
-			$this->markTestSkipped( "SMWSparqlStore currently does not support subobjects" );
-		}
-
 		/**
 		 * Arrange
 		 */
@@ -142,10 +138,6 @@ class AdvancedQueryForResultLookupDBIntegrationTest extends MwDBaseUnitTestCase 
 	 * }}
 	 */
 	public function testQueryToCompareEqualNumericPropertyValuesAssignedToDifferentSubject() {
-
-		if ( $this->getStore() instanceof \SMWSparqlStore ) {
-			$this->markTestSkipped( "SMWSparqlStore currently does not support subobjects" );
-		}
 
 		/**
 		 * Arrange

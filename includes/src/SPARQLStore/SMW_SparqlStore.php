@@ -170,6 +170,25 @@ class SMWSparqlStore extends SMWStore {
 	 */
 	public function doSparqlDataUpdate( SemanticData $semanticData ) {
 
+		$this->doSparqlFlatDataUpdate( $semanticData );
+
+		// Update data about our subobjects
+		$subSemanticData = $semanticData->getSubSemanticData();
+		foreach( $subSemanticData as $subObjectData ) {
+			 $this->doSparqlFlatDataUpdate( $subObjectData );
+		}
+	}
+
+	/**
+	 * Update the Sparql back-end, without taking any
+	 * subobject data into account.
+	 *
+	 * @since 1.9.3
+	 *
+	 * @param SemanticData $semanticData
+	 */
+	private function doSparqlFlatDataUpdate( SemanticData $semanticData ) {
+
 		$turtleTriplesBuilder = new TurtleTriplesBuilder(
 			$semanticData,
 			new RedirectLookup( $this->getSparqlDatabase() )

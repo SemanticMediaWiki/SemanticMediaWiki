@@ -10,13 +10,14 @@ use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\StoreFactory;
 use SMW\DataValueFactory;
+use SMW\Subobject;
 
 use SMWValueDescription as ValueDescription;
 use SMWSomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMWThingDescription as ThingDescription;
-
+use SMWDINumber as DINumber;
 use SMWQuery as Query;
 
 /**
@@ -119,8 +120,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 	}
 
 	public function testWhenUpdatingSemanticData_AllAssociatedSubobjetcsGetRemovedFromGraph() {
-
-		$this->markTestSkipped( "SMWSparqlStore currently does not support subobjects" );
 
 		/**
 		 * Arrange

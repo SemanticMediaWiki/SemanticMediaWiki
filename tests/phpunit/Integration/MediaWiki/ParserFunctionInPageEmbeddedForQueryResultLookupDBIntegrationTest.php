@@ -109,10 +109,6 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 	public function testCreatePageWithSubobjectParserFunctionForQueryResultLookup() {
 
-		if ( $this->getStore() instanceof \SMWSparqlStore ) {
-			$this->markTestSkipped( "SMWSparqlStore currently does not support subobjects" );
-		}
-
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
 
 		$this->titles[] = Title::newFromText( 'CreatePageWithSubobjectParserFunction' );
