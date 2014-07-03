@@ -1,0 +1,84 @@
+<?php
+
+namespace SMW\Tests\Integration\SQLStore;
+
+use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Util\PageCreator;
+use SMW\Tests\Util\PageDeleter;
+use SMW\Tests\Util\SemanticDataValidator;
+
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+
+use Title;
+
+/**
+ * @ingroup Test
+ *
+ * @group SMW
+ * @group SMWExtension
+ * @group semantic-mediawiki-integration
+ * @group mediawiki-database
+ * @group medium
+ *
+ * @license GNU GPL v2+
+ * @since 1.9.3
+ *
+ * @author mwjames
+ */
+class SubSemanticDataDBIntegrationTest extends MwDBaseUnitTestCase {
+
+	private $title;
+
+	protected function tearDown() {
+		$pageDeleter= new PageDeleter();
+
+		$pageDeleter->deletePage( $this->title );
+
+		parent::tearDown();
+	}
+
+	public function testCreatePageWithSubobject() {
+
+		$this->title = Title::newFromText( __METHOD__ );
+
+		$pageCreator = new PageCreator();
+
+		$pageCreator
+			->createPage( $this->title )
+			->doEdit(
+				'{{#subobject:namedSubobject|AA=Test1|@sortkey=Z}}' .
+				'{{#subobject:|BB=Test2|@sortkey=Z}}' );
+
+		$semanticData = $this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) );
+
+		$this->assertInstanceOf(
+			'SMW\SemanticData',
+			$semanticData->findSubSemanticData( 'namedSubobject' )
+		);
+
+		$expected = array(
+			'propertyCount'  => 2,
+			'properties' => array(
+				new DIProperty( 'AA' ),
+				new DIProperty( 'BB' ),
+				new DIProperty( '_SKEY' )
+			),
+			'propertyValues' => array(
+				'Test1',
+				'Test2',
+				'Z'
+			)
+		);
+
+		$semanticDataValidator = new SemanticDataValidator();
+
+		foreach ( $semanticData->getSubSemanticData() as $subSemanticData ) {
+			$semanticDataValidator->assertThatPropertiesAreSet(
+				$expected,
+				$subSemanticData
+			);
+		}
+	}
+
+}

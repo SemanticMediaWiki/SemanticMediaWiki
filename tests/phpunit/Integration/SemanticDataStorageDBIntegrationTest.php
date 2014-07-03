@@ -3,11 +3,12 @@
 namespace SMW\Tests\Integration;
 
 use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\Util\SemanticDataValidator;
+
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
 use SMW\DataValueFactory;
-use SMW\StoreFactory;
 use SMW\Subobject;
 
 use SMWDIBlob as DIBlob;
@@ -28,15 +29,6 @@ use Title;
  */
 class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	/** Store */
-	protected $store = null;
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->store = StoreFactory::getStore();
-	}
-
 	public function testAddUserDefinedPagePropertyAsObjectToSemanticDataForStorage() {
 
 		$property = new DIProperty( 'SomePageProperty' );
@@ -49,11 +41,11 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 			new DIWikiPage( 'SomePropertyPageValue', NS_MAIN, '' )
 		);
 
-		$this->store->updateData( $semanticData );
+		$this->getStore()->updateData( $semanticData );
 
 		$this->assertArrayHasKey(
 			$property->getKey(),
-			$this->store->getSemanticData( $subject )->getProperties()
+			$this->getStore()->getSemanticData( $subject )->getProperties()
 		);
 	}
 
@@ -70,11 +62,11 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 			new DIBlob( 'SomePropertyBlobValue' )
 		);
 
-		$this->store->updateData( $semanticData );
+		$this->getStore()->updateData( $semanticData );
 
 		$this->assertArrayHasKey(
 			$property->getKey(),
-			$this->store->getSemanticData( $subject )->getProperties()
+			$this->getStore()->getSemanticData( $subject )->getProperties()
 		);
 	}
 
@@ -94,11 +86,11 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$semanticData->addDataValue( $dataValue );
 
-		$this->store->updateData( $semanticData );
+		$this->getStore()->updateData( $semanticData );
 
 		$this->assertArrayHasKey(
 			$propertyAsString,
-			$this->store->getSemanticData( $subject )->getProperties()
+			$this->getStore()->getSemanticData( $subject )->getProperties()
 		);
 	}
 
@@ -119,27 +111,23 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 			$subobject->getContainer()
 		);
 
-		$this->store->updateData( $semanticData );
+		$this->getStore()->updateData( $semanticData );
 
-		$this->assertArrayHasKey(
-			$subobject->getProperty()->getKey(),
-			$this->store->getSemanticData( $subject )->getProperties()
+		$expected = array(
+			'propertyCount'  => 2,
+			'properties' => array(
+				new DIProperty( 'Foo' ),
+				new DIProperty( '_SKEY' )
+			),
+			'propertyValues' => array( 'Bar', __METHOD__ )
 		);
 
-		foreach ( $this->store->getSemanticData( $subject )->getPropertyValues( $subobject->getProperty() ) as $subobject ) {
+		$semanticDataValidator = new SemanticDataValidator();
 
-			$this->assertEquals(
-				'SomeSubobject',
-				$subobject->getSubobjectName()
-			);
-
-			$subobjectSemanticData = $this->store->getSemanticData( $subobject );
-
-			$this->assertArrayHasKey(
-				'Foo',
-				$subobjectSemanticData->getProperties()
-			);
-		}
+		$semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$this->getStore()->getSemanticData( $subject )->findSubSemanticData( 'SomeSubobject' )
+		);
 	}
 
 }

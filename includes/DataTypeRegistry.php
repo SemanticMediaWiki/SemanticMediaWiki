@@ -338,6 +338,7 @@ class DataTypeRegistry {
 			'__con' => 'SMWConceptValue', // Special concept page type
 			'__sps' => 'SMWStringValue', // Special string type
 			'__spu' => 'SMWURIValue', // Special uri type
+			'__sob' => 'SMWWikiPageValue', // Special subobject type
 			'__sup' => 'SMWWikiPageValue', // Special subproperty type
 			'__suc' => 'SMWWikiPageValue', // Special subcategory type
 			'__spf' => 'SMWWikiPageValue', // Special Form page type for Semantic Forms
@@ -375,6 +376,7 @@ class DataTypeRegistry {
 			'__con' => DataItem::TYPE_CONCEPT, // Special concept page type
 			'__sps' => DataItem::TYPE_BLOB, // Special string type
 			'__spu' => DataItem::TYPE_URI, // Special uri type
+			'__sob' => DataItem::TYPE_WIKIPAGE, // Special subobject type
 			'__sup' => DataItem::TYPE_WIKIPAGE, // Special subproperty type
 			'__suc' => DataItem::TYPE_WIKIPAGE, // Special subcategory type
 			'__spf' => DataItem::TYPE_WIKIPAGE, // Special Form page type for Semantic Forms
