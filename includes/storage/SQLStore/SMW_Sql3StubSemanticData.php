@@ -2,6 +2,7 @@
 
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 /**
  * This class provides a subclass of SMWSemanticData that can store
@@ -46,6 +47,13 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @var SMWDIWikiPage
 	 */
 	protected $mSubject;
+
+	/**
+	 * Whether SubSemanticData have been requested and added
+	 *
+	 * @var boolean
+	 */
+	private $subSemanticDataInitialized = false;
 
 	/**
 	 * Constructor.
@@ -136,6 +144,51 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 		}
 
 		return parent::getPropertyValues( $property );
+	}
+
+	/**
+	 * @see SemanticData::getSubSemanticData
+	 *
+	 * @note SubSemanticData are added only on request to avoid unnecessary DB
+	 * transactions
+	 *
+	 * @since 1.9.3
+	 */
+	public function getSubSemanticData() {
+
+		if ( $this->subSemanticDataInitialized ) {
+			return parent::getSubSemanticData();
+		}
+
+		$this->subSemanticDataInitialized = true;
+
+		foreach ( $this->getProperties() as $property ) {
+
+			if ( $property->findPropertyTypeID() !== '__sob' ) {
+				continue;
+			}
+
+			$this->addSubSemanticDataToInternalCache( $property );
+		}
+
+		return parent::getSubSemanticData();
+	}
+
+	/**
+	 * @see SemanticData::hasSubSemanticData
+	 *
+	 * @note This method will initialize SubSemanticData first if it wasn't done
+	 * yet to ensure data consistency
+	 *
+	 * @since 1.9.3
+	 */
+	public function hasSubSemanticData( $subobjectName = null ) {
+
+		if ( !$this->subSemanticDataInitialized ) {
+			$this->getSubSemanticData();
+		}
+
+		return parent::hasSubSemanticData( $subobjectName );
 	}
 
 	/**
@@ -256,6 +309,15 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 				}
 			} else {
 				$this->mHasVisibleProps = true;
+			}
+		}
+	}
+
+	private function addSubSemanticDataToInternalCache( DIProperty $property ) {
+
+		foreach ( $this->getPropertyValues( $property ) as $value ) {
+			if ( $value instanceOf DIWikiPage && !$this->hasSubSemanticData( $value->getSubobjectName() ) ) {
+				$this->addSubSemanticData( $this->store->getSemanticData( $value ) );
 			}
 		}
 	}

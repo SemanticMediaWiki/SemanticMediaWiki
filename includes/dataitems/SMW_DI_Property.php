@@ -444,8 +444,8 @@ class DIProperty extends SMWDataItem {
 				self::TYPE_SORTKEY =>  array( '__key', false ), // sort key of a page
 				'_SF_DF' => array( '__spf', true ), // Semantic Form's default form property
 				'_SF_AF' => array( '__spf', true ),  // Semantic Form's alternate form property
-				self::TYPE_SUBOBJECT =>  array( '_wpg', true ), // "has subobject"
-				self::TYPE_ASKQUERY  =>  array( '_wpg', false ), // "has query"
+				self::TYPE_SUBOBJECT =>  array( '__sob', true ), // "has subobject"
+				self::TYPE_ASKQUERY  =>  array( '__sob', false ), // "has query"
 				'_ASKST' =>  array( '_cod', true ), // "has query string"
 				'_ASKFO' =>  array( '_txt', true ), // "has query format"
 				'_ASKSI' =>  array( '_num', true ), // "has query size"
