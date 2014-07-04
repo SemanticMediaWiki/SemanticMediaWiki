@@ -1,0 +1,149 @@
+<?php
+
+namespace SMW\Tests\Util;
+
+use SMWDataValue as DataValue;
+use SMWDataItem as DataItem;
+use SMWQueryResult as QueryResult;
+
+use Closure;
+use RuntimeException;
+
+/**
+ * @license GNU GPL v2+
+ * @since   1.9.3
+ *
+ * @author mwjames
+ */
+class QueryResultValidator extends \PHPUnit_Framework_Assert {
+
+	private $dataValueValidationMethod = null;
+
+	/**
+	 * @since 1.9.3
+	 *
+	 * @param  mixed $expected
+	 * @param  QueryResult $queryResult
+	 *
+	 * @throws RuntimeException
+	 */
+	public function assertThatQueryResultContains( $expected, QueryResult $queryResult ) {
+
+		if ( $expected instanceOf DataValue ) {
+			return $this->assertThatDataValueIsSet( $expected, $queryResult );
+		}
+
+		if ( $expected instanceOf DataItem ) {
+			return $this->assertThatDataItemIsSet( $expected, $queryResult );
+		}
+
+		throw new RuntimeException( "Expected object is unknown or not registered" );
+	}
+
+	/**
+	 * @since 1.9.3
+	 *
+	 * @param  DataValue $expectedDataValue
+	 * @param  QueryResult $queryResult
+	 */
+	public function assertThatDataValueIsSet( DataValue $expectedDataValue, QueryResult $queryResult ) {
+
+		if ( $this->dataValueValidationMethod === null ) {
+			$this->useWikiValueForDataValueValidation();
+		}
+
+		$assertThatDataValueIsSet = false;
+		$this->assertEmpty( $queryResult->getErrors() );
+
+		while ( $resultArray = $queryResult->getNext() ) {
+			foreach ( $resultArray as $result ) {
+				while ( ( $dataValue = $result->getNextDataValue() ) !== false ) {
+					if ( call_user_func_array( $this->dataValueValidationMethod, array( $expectedDataValue, $dataValue ) ) ) {
+						$assertThatDataValueIsSet = true;
+					}
+				}
+			}
+		}
+
+		$this->assertTrue( $assertThatDataValueIsSet, 'Assert that the expected DataValue is set' );
+	}
+
+	/**
+	 * @since 1.9.3
+	 *
+	 * @param  DataItem $expectedDataItem
+	 * @param  QueryResult $queryResult
+	 */
+	public function assertThatDataItemIsSet( DataItem $expectedDataItem, QueryResult $queryResult ) {
+
+		$assertThatDataItemIsSet = false;
+		$this->assertEmpty( $queryResult->getErrors() );
+
+		while ( $resultArray = $queryResult->getNext() ) {
+			foreach ( $resultArray as $result ) {
+				while ( ( $dataItem = $result->getNextDataItem() ) !== false ) {
+					$this->assertEquals( $expectedDataItem, $dataItem );
+					$assertThatDataItemIsSet = true;
+				}
+			}
+		}
+
+		$this->assertTrue( $assertThatDataItemIsSet, 'Assert that the expected DataItem is set'  );
+	}
+
+	/**
+	 * @since 1.9.3
+	 *
+	 * @param  mixed $expected
+	 * @param  QueryResult $queryResult
+	 */
+	public function assertThatQueryResultHasSubjects( array $expectedSubjects, QueryResult $queryResult ) {
+
+		$expectedToCount = count( $expectedSubjects );
+		$actualComparedToCount = 0;
+
+		$assertThatQueryResultHasSubjects = false;
+
+		$this->assertEmpty( $queryResult->getErrors() );
+
+		foreach ( $queryResult->getResults() as $resultSubject ) {
+			foreach ( $expectedSubjects as $expectedSubject ) {
+
+				if ( $expectedSubject->equals( $resultSubject ) ) {
+					$actualComparedToCount++;
+					$assertThatQueryResultHasSubjects = true;
+				}
+			}
+		}
+
+		$this->assertTrue( $assertThatQueryResultHasSubjects, 'Assert that a subject is set' );
+		$this->assertEquals( $expectedToCount, $actualComparedToCount, 'Assert that all listed subjects are set' );
+	}
+
+	/**
+	 * @since 1.9.3
+	 *
+	 * @param  Closure $validationMethod
+	 *
+	 * @return QueryResultValidator
+	 */
+	public function registerCustomMethodForDataValueValidation( Closure $validationMethod ) {
+		$this->dataValueValidationMethod = $validationMethod;
+		return $this;
+	}
+
+	/**
+	 * @since 1.9.3
+	 *
+	 * @return QueryResultValidator
+	 */
+	public function useWikiValueForDataValueValidation() {
+
+		$this->dataValueValidationMethod = function( DataValue $expectedDataValue, DataValue $dataValue ) {
+			return $expectedDataValue->getWikiValue() === $dataValue->getWikiValue();
+		};
+
+		return $this;
+	}
+
+}

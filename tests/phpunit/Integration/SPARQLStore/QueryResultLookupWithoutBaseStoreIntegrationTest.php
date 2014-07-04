@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
+use SMW\Tests\Util\QueryResultValidator;
+use SMW\Tests\Util\SemanticDataFactory;
+
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -33,6 +36,9 @@ use SMWQuery as Query;
 class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $store = null;
+	private $queryResultValidator;
+	private $semanticDataFactory;
+	private $dataValueFactory;
 
 	protected function setUp() {
 
@@ -47,36 +53,42 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		if ( !$sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
 			$this->markTestSkipped( "Can't connect to the SparlDatabase" );
 		}
+
+		$this->queryResultValidator = new QueryResultValidator();
+		$this->semanticDataFactory = new SemanticDataFactory();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
 	public function testQuerySubjectAfterSparqlDataUpdate() {
 
-		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '' );
-		$semanticData = new SemanticData( $subject );
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$this->store->doSparqlDataUpdate( $semanticData );
 
 		$query = new Query(
-			new ValueDescription( $subject ),
+			new ValueDescription( $semanticData->getSubject() ),
 			false,
 			false
 		);
 
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$this->assertThatResultsContain(
-			$subject,
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			array( $semanticData->getSubject() ),
 			$this->store->getQueryResult( $query )
 		);
 	}
 
 	public function testZeroQueryResultAfterSparqlDataDelete() {
 
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
 		$property = new DIProperty( __METHOD__ );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN, '' ) );
-		$semanticData->addDataValue( DataValueFactory::getInstance()->newPropertyObjectValue( $property, 'Bar' ) );
+		$semanticData->addDataValue(
+			$this->dataValueFactory->newPropertyObjectValue( $property, 'Bar' )
+		);
 
 		$this->store->doSparqlDataUpdate( $semanticData );
 
@@ -104,15 +116,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 			0,
 			$this->store->getQueryResult( $query )->getCount()
 		);
-	}
-
-	private function assertThatResultsContain( $expectedSubject, $queryResult ) {
-
-		$this->assertEquals( 1, $queryResult->getCount() );
-
-		foreach ( $queryResult->getResults() as $result ) {
-			$this->assertEquals( $expectedSubject, $result );
-		}
 	}
 
 }
