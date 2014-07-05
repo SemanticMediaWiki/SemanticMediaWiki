@@ -1,6 +1,17 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
+
+use SMW\DIWikiPage;
+
+use SMWDataItem as DataItem;
+use SMWDINumber as DINumber;
+use SMWDIBlob as DIBlob;
+use SMWDIBoolean as DIBoolean;
+use SMWDIConcept as DIConcept;
+
+use SMWExporter as Exporter;
+use SMWExpResource as ExpResource;
 
 /**
  * @covers \SMWExporter
@@ -10,48 +21,62 @@ namespace SMW\Test;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SMWExporterTest extends CompatibilityTestCase {
-
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMWExporter';
-	}
+class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider dataItemExpElementProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testGetDataItemExpElement( \SMWDataItem $dataItem, $instance ) {
+	public function testGetDataItemExpElement( DataItem $dataItem, $instance ) {
 
-		if ( $instance !== null ) {
-			$this->assertInstanceOf( $instance, \SMWExporter::getDataItemExpElement( $dataItem ) );
+		if ( $instance === null ) {
+			return $this->assertNull( Exporter::getDataItemExpElement( $dataItem ) );
 		}
 
-		$this->assertTrue( true );
+		$this->assertInstanceOf( $instance, Exporter::getDataItemExpElement( $dataItem ) );
 	}
 
 	/**
-	 * @since return
+	 * @dataProvider uriDataItemProvider
+	 * #378
 	 */
+	public function testFindDataItemForExpElement( $uri, $expectedDataItem ) {
+
+		$uri = Exporter::getNamespaceUri( 'wiki' ) . $uri;
+
+		$this->assertEquals(
+			$expectedDataItem,
+			Exporter::findDataItemForExpElement( new ExpResource( $uri ) )
+		);
+	}
+
 	public function dataItemExpElementProvider() {
 
-		$provider = array();
-
 		// #0 (bug 56643)
-		$provider[] = array( new \SMWDINumber( 9001 ),  'SMWExpElement' );
+		$provider[] = array( new DINumber( 9001 ),  'SMWExpElement' );
 
-		$provider[] = array( new \SMWDIBlob( 'foo' ),   'SMWExpElement' );
-		$provider[] = array( new \SMWDIBoolean( true ), 'SMWExpElement' );
+		$provider[] = array( new DIBlob( 'foo' ),   'SMWExpElement' );
+		$provider[] = array( new DIBoolean( true ), 'SMWExpElement' );
 
-		$provider[] = array( new \SMWDIConcept( 'Foo', '', '', '', '' ), null );
+		$provider[] = array( new DIConcept( 'Foo', '', '', '', '' ), null );
+
+		return $provider;
+	}
+
+	public function uriDataItemProvider() {
+
+		$provider[] = array( 'Foo',              new DIWikiPage( 'Foo', NS_MAIN, '', '' ) );
+		$provider[] = array( 'Foo#Bar',          new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) );
+		$provider[] = array( 'Foo#Bar#Oooo',     new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar#Oooo' ) );
+		$provider[] = array( 'Property:Foo',     new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ) );
+		$provider[] = array( 'Concept:Foo',      new DIWikiPage( 'Foo', SMW_NS_CONCEPT, '', '' ) );
+		$provider[] = array( 'Unknown:Foo',      new DIWikiPage( 'Unknown:Foo', NS_MAIN, '', '' ) );
+		$provider[] = array( 'Unknown:Foo#Bar',  new DIWikiPage( 'Unknown:Foo', NS_MAIN, '', 'Bar' ) );
+		$provider[] = array( 'Property:Foo#Bar', new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', 'Bar' ) );
 
 		return $provider;
 	}
