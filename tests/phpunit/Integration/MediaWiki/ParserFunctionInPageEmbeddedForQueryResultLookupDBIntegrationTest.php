@@ -92,9 +92,11 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 		$query->querymode = Query::MODE_COUNT;
 
+		$result = $this->getStore()->getQueryResult( $query );
+
 		$this->assertEquals(
 			2,
-			$this->getStore()->getQueryResult( $query )
+			$result instanceOf \SMWQueryResult ? $result->getCountValue() : $result
 		);
 
 		$query->querymode = Query::MODE_INSTANCES;
@@ -151,9 +153,11 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 		$query->querymode = Query::MODE_COUNT;
 
+		$result = $this->getStore()->getQueryResult( $query );
+
 		$this->assertEquals(
 			3,
-			$this->getStore()->getQueryResult( $query )
+			$result instanceOf \SMWQueryResult ? $result->getCountValue() : $result
 		);
 
 		$query->querymode = Query::MODE_INSTANCES;
