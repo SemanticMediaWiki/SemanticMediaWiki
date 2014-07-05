@@ -1,5 +1,9 @@
 <?php
 
+use SMW\SPARQLStore\QueryEngine\QueryEngine;
+use SMW\SPARQLStore\QueryEngine\SparqlConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\SparqlResultConverter;
+
 use SMW\SPARQLStore\RedirectLookup;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
 
@@ -240,16 +244,21 @@ class SMWSparqlStore extends SMWStore {
 
 		if ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this, true );
-		} elseif ( $query->querymode == SMWQuery::MODE_DEBUG ) {
-			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
+		}
+
+		$queryEngine = new QueryEngine(
+			$this->getSparqlDatabase(),
+			new SparqlConditionBuilder(),
+			new SparqlResultConverter( $this )
+		);
+
+		if ( $query->querymode == SMWQuery::MODE_DEBUG ) {
 			return $queryEngine->getDebugQueryResult( $query );
 		} elseif ( $query->querymode == SMWQuery::MODE_COUNT ) {
-			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
 			return $queryEngine->getCountQueryResult( $query );
-		} else {
-			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
-			return $queryEngine->getInstanceQueryResult( $query );
 		}
+
+		return $queryEngine->getInstanceQueryResult( $query );
 	}
 
 	/**
@@ -298,7 +307,7 @@ class SMWSparqlStore extends SMWStore {
 	 */
 	public function drop( $verbose = true ) {
 		$this->baseStore->drop( $verbose );
-		$this->getSparqlDatabase()->delete( "?s ?p ?o", "?s ?p ?o" );
+		$this->getSparqlDatabase()->deleteAll();
 	}
 
 	/**

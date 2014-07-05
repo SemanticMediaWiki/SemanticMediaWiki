@@ -5,6 +5,8 @@ use SMW\SPARQLStore\BadHttpResponseMapper;
 use SMW\CurlRequest;
 use SMW\HttpRequest;
 
+use SMWSparqlResultWrapper as SparqlResultWrapper;
+
 /**
  * Basic database connector for exchanging data via SPARQL.
  *
@@ -318,6 +320,15 @@ class SMWSparqlDatabase {
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
 		return $this->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o", $extraNamespaces );
+	}
+
+	/**
+	 * Convenience method for deleting all triples of the entire store
+	 *
+	 * @return boolean
+	 */
+	public function deleteAll() {
+		return $this->delete( "?s ?p ?o", "?s ?p ?o" );
 	}
 
 	/**
