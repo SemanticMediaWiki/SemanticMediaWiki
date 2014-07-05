@@ -310,7 +310,7 @@
 	"smw-sp-properties-cache-info": "Les données listées ont été récupérées depuis [https://www.semantic-mediawiki.org/wiki/Caching le cache], et ont été mises à jour le $1.",
 	"smw-sp-properties-header-label": "Liste des propriétés",
 	"smw-sp-admin-settings-title": "Paramètres de configuration",
-	"smw-sp-admin-settings-docu": "Affiche une liste de tous les <code>paramètres par défaut</code> et <code>paramètres localisés</code> qui se rapportent à l’environnement Médiawiki Sémantique. Pour le détail des paramètres individuels, veuillez consulter la page d’aide de [https://semantic-mediawiki.org/wiki/Help:Configuration configuration].",
+	"smw-sp-admin-settings-docu": "Affiche une liste de tous les paramètres par défaut et paramètres localisés qui se rapportent à l’environnement Médiawiki Sémantique. Pour le détail des paramètres individuels, veuillez consulter la page d’aide de [https://semantic-mediawiki.org/wiki/Help:Configuration configuration].",
 	"smw-sp-admin-settings-button": "Générer la liste des paramètres",
 	"smw-sp-admin-idlookup-title": "recherche d’ObjectId",
 	"smw-sp-admin-idlookup-docu": "Affiche les détails sur un ID d’objet interne qui représente des entités individuelles (page wiki, sous-objet, etc.) dans MédiaWiki Sémantique.",

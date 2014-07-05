@@ -280,7 +280,7 @@
 	"smw-sp-properties-cache-info": "Los datos de la llista recuperaronse de la [https://www.semantic-mediawiki.org/wiki/Caching cache], y anovaronse por última vez el $1.",
 	"smw-sp-properties-header-label": "Llista de propiedaes",
 	"smw-sp-admin-settings-title": "Axustes de configuración",
-	"smw-sp-admin-settings-docu": "Amuesa la llista de tolos axustes <code>predeterminaos</code> y <code>llocalizaos</code> que tan rellacionaos col entornu de MediaWiki Semántica. Pa los detalles de los axustes individuales, consulte la páxina d'ayuda de la [https://semantic-mediawiki.org/wiki/Help:Configuration configuración].",
+	"smw-sp-admin-settings-docu": "Amuesa la llista de tolos axustes predeterminaos y llocalizaos que tan rellacionaos col entornu de MediaWiki Semántica. Pa los detalles de los axustes individuales, consulte la páxina d'ayuda de la [https://semantic-mediawiki.org/wiki/Help:Configuration configuración].",
 	"smw-sp-admin-settings-button": "Xenerar la llista d'axustes",
 	"smw-sp-admin-idlookup-title": "Gueta d'ObjectId",
 	"smw-sp-admin-idlookup-docu": "Ver detalles tocante a una Id interna d'oxetu que representa entidaes individuales (páxina wiki, suboxetu etc.) en Semantic MediaWiki.",

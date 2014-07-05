@@ -272,7 +272,6 @@
 	"smw-concept-cache-text": "مفهوم، مجموع $1 {{PLURAL:$1|صفحه|صفحات}} را دارد، و آخرین به روز رسانی $2 بود.",
 	"smw_concept_header": "صفحه‌های مفهوم \"$1\"",
 	"smw_conceptarticlecount": "نمایش زیر $1 {{PLURAL:$1|صفحه|صفحات}}.",
-	"smw-qp-aggregatable-empty-data": "اطلاعات قابل جمع‌آوری شدن درخواست شده به علت چند معیار انتخاب ناکافی نتوانستند نمایش داده شوند.",
 	"right-smw-admin": "دسترسی به وظایف مدیریت (مدیاویکی معنایی)",
 	"group-smwadministrator": "سرپرستان معنایی مدیاویکی",
 	"group-smwadministrator-member": "{{GENDER:$1|سرپرست (اس‌ام‌دبلیو)}}",
@@ -285,6 +284,7 @@
 	"smw-sp-properties-cache-info": "داده‌های فهرست شده از [https://www.semantic-mediawiki.org/wiki/Caching cache] بازیابی شده‌اند، و آخرین به روز شده بودند $1.",
 	"smw-sp-properties-header-label": "فهرست ویژگی‌ها",
 	"smw-sp-admin-settings-title": "تنظیمات پیکربندی",
-	"smw-sp-admin-settings-docu": "نمایش فهرست همه <code>default</code> و <code>localized settings</code> که به محیط مدیاویکی معنایی مربوط هستند. برای اطلاعات در  تنظیمات فردی، لطفاً به صفحه راهنما [https://semantic-mediawiki.org/wiki/Help:Configuration configuration] مراجعه کنید.",
-	"smw-sp-admin-settings-button": "ایجاد فهرست تنظیمات"
+	"smw-sp-admin-settings-docu": "نمایش فهرست همه default و localized settings که به محیط مدیاویکی معنایی مربوط هستند. برای اطلاعات در  تنظیمات فردی، لطفاً به صفحه راهنما [https://semantic-mediawiki.org/wiki/Help:Configuration configuration] مراجعه کنید.",
+	"smw-sp-admin-settings-button": "ایجاد فهرست تنظیمات",
+	"smw-livepreview-loading": "در حال بارگیری…"
 }
