@@ -15,7 +15,8 @@
 			"Waldir",
 			"555",
 			"Cainamarques",
-			"Agripinoduarte"
+			"Agripinoduarte",
+			"Smmvinicius"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -294,7 +295,7 @@
 	"smw-sp-properties-cache-info": "Os dados listados foram extraídos do [https://www.semantic-mediawiki.org/wiki/Caching cache] e atualizados pela última vez em $1.",
 	"smw-sp-properties-header-label": "Lista de propriedades",
 	"smw-sp-admin-settings-title": "Configurações",
-	"smw-sp-admin-settings-docu": "Exibe uma lista contendo todos as configurações padrão e locais que são relevantes ao ambiente do Semantic MediaWiki.\nPara detalhes sobre configurações individuais, por favor, consulte a [https://semantic-mediawiki.org/wiki/Help:Configuration página de ajuda sobre configuração].",
+	"smw-sp-admin-settings-docu": "Exibe uma lista contendo todas as configurações padrão e locais que são relevantes ao ambiente do Semantic MediaWiki.\nPara detalhes sobre configurações individuais, por favor, consulte a [https://semantic-mediawiki.org/wiki/Help:Configuration página de ajuda sobre configuração].",
 	"smw-sp-admin-settings-button": "Gerar lista de configurações",
 	"smw-sp-admin-idlookup-title": "Consulta ao ID do objeto",
 	"smw-sp-admin-idlookup-docu": "Exibe detalhes sobre um ID de objeto interno que representa entidades individuais (página wiki, subobjeto, etc.) no Semantic MediaWiki.",

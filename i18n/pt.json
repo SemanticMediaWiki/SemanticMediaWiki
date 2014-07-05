@@ -216,5 +216,6 @@
 	"smw_unknowntype": "Foi definido para a propriedade o tipo não suportado “$1”.",
 	"smw_concept_header": "Páginas do conceito \"$1\"",
 	"smw_conceptarticlecount": "Apresentando $1 {{PLURAL:$1|página|páginas}} abaixo.",
+	"smw-sp-admin-settings-docu": "Mostra uma lista de todas as configurações, por padrão e localizadas, que são relevantes para o ambiente semântico da MediaWiki. Para mais detalhes sobre as configurações individuais, consulte a página de ajuda de [https://semantic-mediawiki.org/wiki/Help:Configuration configuração].",
 	"smw-livepreview-loading": "A carregar…"
 }
