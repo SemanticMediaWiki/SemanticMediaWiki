@@ -59,7 +59,7 @@ class SMWExportController {
 	 * to standard output.
 	 */
 	protected $outputfile;
-	
+
 	/**
 	 * Constructor.
 	 * @param SMWSerializer $serializer defining the object used for syntactic
@@ -72,7 +72,7 @@ class SMWExportController {
 		$this->outputfile = null;
 		$this->add_backlinks = $enable_backlinks;
 	}
-	
+
 	/**
 	 * Enable or disable inclusion of backlinks into the output.
 	 * @param boolean $enable
@@ -86,7 +86,7 @@ class SMWExportController {
 	 * Returns true if initialization was successful (this means that the
 	 * optional output file is writable).
 	 * @param string $outfilename URL of the file that output should be written
-	 * to, or empty string for writting to the standard output. 
+	 * to, or empty string for writting to the standard output.
 	 */
 	protected function prepareSerialization( $outfilename = '' ) {
 		$this->serializer->clear();
@@ -107,7 +107,7 @@ class SMWExportController {
 	 * level of pages, i.e. it serialises parts of SMW content and implements
 	 * features like recursive export or backlinks that are available for this
 	 * type of data.
-	 * 
+	 *
 	 * The recursion depth means the following. Depth of 1 or above means
 	 * the object is serialised with all property values, and referenced
 	 * objects are serialised with depth reduced by 1. Depth 0 means that only
@@ -150,7 +150,7 @@ class SMWExportController {
 					$this->queuePage( $valueResource->getDataItem(), $subrecdepth );
 				}
 			}
-			
+
 			// Add backlinks:
 			// Note: Backlinks are different from recursive serialisations, since
 			// stub declarations (recdepth==0) still need to have the property that
@@ -158,20 +158,20 @@ class SMWExportController {
 			// recdepth 0 cannot be put into the main queue but must be done right
 			// away. They also might be required many times, if they link back to
 			// many different objects in many ways (we cannot consider them "Done"
-			// if they were serialised at recdepth 0 only).  
+			// if they were serialised at recdepth 0 only).
 			if ( $this->add_backlinks ) {
 				wfProfileIn( "RDF::PrintPages::GetBacklinks" );
 				$inprops = \SMW\StoreFactory::getStore()->getInProperties( $diWikiPage );
-				
+
 				foreach ( $inprops as $inprop ) {
 					$propWikiPage = $inprop->getDiWikiPage();
-					
+
 					if ( !is_null( $propWikiPage ) ) {
 						$this->queuePage( $propWikiPage, 0 ); // no real recursion along properties
 					}
-					
+
 					$inSubs = \SMW\StoreFactory::getStore()->getPropertySubjects( $inprop, $diWikiPage );
-					
+
 					foreach ( $inSubs as $inSub ) {
 						if ( !$this->isPageDone( $inSub, $subrecdepth ) ) {
 							$semdata = $this->getSemanticData( $inSub, true );
@@ -181,13 +181,13 @@ class SMWExportController {
 						}
 					}
 				}
-	
+
 				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) { // also print elements of categories
 					$options = new SMWRequestOptions();
 					$options->limit = 100; // Categories can be large, always use limit
 					$instances = \SMW\StoreFactory::getStore()->getPropertySubjects( new SMWDIProperty( '_INST' ), $diWikiPage, $options );
 					$pinst = new SMWDIProperty( '_INST' );
-	
+
 					foreach ( $instances as $instance ) {
 						if ( !array_key_exists( $instance->getHash(), $this->element_done ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
@@ -201,11 +201,11 @@ class SMWExportController {
 					$desc->addPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, '' ) );
 					$query = new SMWQuery( $desc );
 					$query->setLimit( 100 );
-	
+
 					$res = \SMW\StoreFactory::getStore()->getQueryResult( $query );
 					$resarray = $res->getNext();
 					$pinst = new SMWDIProperty( '_INST' );
-	
+
 					while ( $resarray !== false ) {
 						$instance = end( $resarray )->getNextDataItem();
 
@@ -215,10 +215,10 @@ class SMWExportController {
 							$data = SMWExporter::makeExportData( $semdata );
 							$this->serializer->serializeExpData( $data );
 						}
-	
+
 						$resarray = $res->getNext();
 					}
-				}	
+				}
 				wfProfileOut( "RDF::PrintPages::GetBacklinks" );
 			}
 		}
@@ -274,7 +274,7 @@ class SMWExportController {
 	 */
 	protected function isHashDone( $hash, $recdepth ) {
 		return ( ( array_key_exists( $hash, $this->element_done ) ) &&
-		         ( ( $this->element_done[$hash] == -1 ) || 
+		         ( ( $this->element_done[$hash] == -1 ) ||
 		           ( ( $recdepth != -1 ) && ( $this->element_done[$hash] >= $recdepth ) ) ) );
 	}
 
@@ -302,7 +302,7 @@ class SMWExportController {
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Send to the output what has been serialized so far. The flush might
 	 * be deferred until later unless $force is true.
@@ -313,19 +313,21 @@ class SMWExportController {
 		} elseif ( !is_null( $this->outputfile ) ) {
 			fwrite( $this->outputfile, $this->serializer->flushContent() );
 		} else {
+			ob_start();
 			print $this->serializer->flushContent();
 			// Ship data in small chunks (even though browsers often do not display anything
 			// before the file is complete -- this might be due to syntax highlighting features
 			// for app/xml). You may want to sleep(1) here for debugging this.
 			ob_flush();
 			flush();
+			ob_get_clean();
 		}
 	}
 
 	/**
 	 * This function prints all selected pages, specified as an array of page
 	 * names (strings with namespace identifiers).
-	 * 
+	 *
 	 * @param array $pages list of page names to export
 	 * @param integer $recursion determines how pages are exported recursively:
 	 * "0" means that referenced resources are only declared briefly, "1" means
@@ -378,28 +380,56 @@ class SMWExportController {
 		wfProfileOut( "RDF::PrintPages" );
 	}
 
-	
 	/**
-	 * This function exports the semantic data for all pages within the wiki,
-	 * and for all elements that are referred to in the exported data.
+	 * Exports semantic data for all pages within the wiki and for all elements
+	 * that are referred to a file resource
+	 *
+	 * @since  1.9.3
 	 *
 	 * @param string $outfile the output file URI, or false if printing to stdout
 	 * @param mixed $ns_restriction namespace restriction, see fitsNsRestriction()
 	 * @param integer $delay number of microseconds for which to sleep during
 	 * export to reduce server load in long-running operations
-	 * @param integer $delayeach number of pages to process between two sleeps 
+	 * @param integer $delayeach number of pages to process between two sleeps
 	 */
-	public function printAll( $outfile, $ns_restriction = false, $delay, $delayeach ) {
+	public function printAllToFile( $outfile, $ns_restriction = false, $delay, $delayeach ) {
+
+		if ( !$this->prepareSerialization( $outfile ) ) {
+			return;
+		}
+
+		$this->printAll( $ns_restriction, $delay, $delayeach );
+	}
+
+	/**
+	 * Exports semantic data for all pages within the wiki and for all elements
+	 * that are referred to the stdout
+	 *
+	 * @since  1.9.3
+	 *
+	 * @param mixed $ns_restriction namespace restriction, see fitsNsRestriction()
+	 * @param integer $delay number of microseconds for which to sleep during
+	 * export to reduce server load in long-running operations
+	 * @param integer $delayeach number of pages to process between two sleeps
+	 */
+	public function printAllToOutput( $ns_restriction = false, $delay, $delayeach ) {
+		$this->prepareSerialization();
+		$this->printAll( $ns_restriction, $delay, $delayeach );
+	}
+
+	/**
+	 * @since 1.9.3 made protected; use printAllToFile or printAllToOutput
+	 */
+	protected function printAll( $ns_restriction = false, $delay, $delayeach ) {
 		$linkCache = LinkCache::singleton();
 		$db = wfGetDB( DB_SLAVE );
 
 		$this->delay_flush = 10;
-		if ( !$this->prepareSerialization( $outfile ) ) return;
 
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
 
-		$end = $db->selectField( 'page', 'max(page_id)', false, $outfile );
+		$end = $db->selectField( 'page', 'max(page_id)', false, __METHOD__ );
 		$a_count = 0; $d_count = 0; // DEBUG
 		$delaycount = $delayeach;
 
@@ -436,7 +466,7 @@ class SMWExportController {
 			$this->flush();
 			$linkCache->clear();
 		}
-		
+
 		$this->serializer->finishSerialization();
 		$this->flush( true );
 	}
@@ -460,7 +490,7 @@ class SMWExportController {
 
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
-		
+
 		$query = '';
 		foreach ( $smwgNamespacesWithSemanticLinks as $ns => $enabled ) {
 			if ( $enabled ) {
@@ -518,7 +548,7 @@ class SMWExportController {
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 
-		// assemble export data: 
+		// assemble export data:
 		$data = new SMWExpData( new SMWExpResource( '&wiki;#wiki' ) );
 		$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'swivt', 'Wikisite' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $ed );
@@ -534,12 +564,12 @@ class SMWExportController {
 		$ed = new SMWExpData( new SMWExpLiteral( $wgLanguageCode, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'langCode' ), $ed );
 		$mainpage = Title::newMainPage();
-		
+
 		if ( !is_null( $mainpage ) ) {
 			$ed = new SMWExpData( new SMWExpResource( $mainpage->getFullURL() ) );
 			$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'mainPage' ), $ed );
 		}
-		
+
 		// statistical information
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::pages(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'pageCount' ), $ed );
@@ -559,7 +589,7 @@ class SMWExportController {
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
 		$this->serializer->serializeExpData( $data );
-		
+
 		// link to list of existing pages:
 		if ( strpos( SMWExporter::expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
 			$nexturl = SMWExporter::expandURI( '&export;?offset=0' );
@@ -578,7 +608,7 @@ class SMWExportController {
 
 		wfProfileOut( "RDF::PrintWikiInfo" );
 	}
-	
+
 	/**
 	 * This function checks whether some article fits into a given namespace
 	 * restriction. Restrictions are encoded as follows: a non-negative number
@@ -594,5 +624,5 @@ class SMWExportController {
 		if ( $res >= 0 ) return ( $res == $ns );
 		return ( ( $res != NS_CATEGORY ) && ( $res != SMW_NS_PROPERTY ) && ( $res != SMW_NS_TYPE ) );
 	}
-	
+
 }
