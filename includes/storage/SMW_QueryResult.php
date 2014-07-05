@@ -54,6 +54,12 @@ class SMWQueryResult {
 	protected $mStore;
 
 	/**
+	 * Holds a value that belongs to a count query result
+	 * @var integer|null
+	 */
+	private $countValue;
+
+	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
 	 *
@@ -147,7 +153,7 @@ class SMWQueryResult {
 	/**
 	 * Return array of print requests (needed for printout since they contain
 	 * property labels).
-	 * 
+	 *
 	 * @return SMWPrintRequest[]
 	 */
 	public function getPrintRequests() {
@@ -171,6 +177,24 @@ class SMWQueryResult {
 	 */
 	public function hasFurtherResults() {
 		return $this->mFurtherResults;
+	}
+
+	/**
+	 * @since  2.0
+	 *
+	 * @param integer $countValue
+	 */
+	public function setCountValue( $countValue ) {
+		$this->countValue = (int)$countValue;
+	}
+
+	/**
+	 * @since  2.0
+	 *
+	 * @return integer|null
+	 */
+	public function getCountValue() {
+		return $this->countValue;
 	}
 
 	/**

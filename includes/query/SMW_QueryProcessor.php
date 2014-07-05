@@ -510,6 +510,11 @@ class SMWQueryProcessor {
 
 			return $result;
 		} else { // result for counting or debugging is just a string or number
+
+			if ( $res instanceof SMWQueryResult ) {
+				$res = $res->getCountValue();
+			}
+
 			if ( is_numeric( $res ) ) {
 				$res = strval( $res );
 			}
