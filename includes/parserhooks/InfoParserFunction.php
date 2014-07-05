@@ -8,19 +8,10 @@ use SMWOutputs;
 /**
  * Class that provides the {{#info}} parser function
  *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.5.3
+ * @ingroup ParserFunction
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
- */
-
-/**
- * Class that provides the {{#info}} parser function
- *
- * @ingroup ParserFunction
  */
 class InfoParserFunction extends \ParserHook {
 

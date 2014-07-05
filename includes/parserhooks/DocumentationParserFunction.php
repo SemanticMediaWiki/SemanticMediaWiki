@@ -7,21 +7,12 @@ use Parser;
 use SMWQueryProcessor;
 
 /**
- * Class that provides the {{#smwdoc}} parser function
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.6
- *
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
  * Class that provides the {{#smwdoc}} parser function, which displays parameter
  * documentation for a specified result format.
  *
  * @ingroup ParserFunction
+ *
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class DocumentationParserFunction extends \ParserHook {
 
