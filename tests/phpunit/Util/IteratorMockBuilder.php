@@ -48,9 +48,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @since  2.0
 	 *
-	 * @param array $items
-	 *
-	 * @return Iterator
+	 * @return PHPUnit_Framework_MockObject_MockObject
 	 * @throws RuntimeException
 	 */
 	public function getMockForIterator(){
