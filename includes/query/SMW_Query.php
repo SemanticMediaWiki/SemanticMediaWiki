@@ -178,6 +178,20 @@ class SMWQuery {
 	}
 
 	/**
+	 * @note Sets an unbound limit that is independent from GLOBAL settings
+	 *
+	 * @since 2.0
+	 *
+	 * @param integer $limit
+	 *
+	 * @return Query
+	 */
+	public function setUnboundLimit( $limit ) {
+		$this->m_limit = (int)$limit;
+		return $this;
+	}
+
+	/**
 	 * Apply structural restrictions to the current description.
 	 */
 	public function applyRestrictions() {
