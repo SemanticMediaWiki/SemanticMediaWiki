@@ -20,6 +20,8 @@ Not a release yet.
 * #338 Fixed exception in `SMWSparqlResultParser` for an invalid datatype (bug 62218)
 * #379 Modernized `dumpRDF.php` while deprecating the use of `SMW_dumpRDFphp` (bug 35679)
 * #385 Fixed '#' encoding for subobjects in `SMWExporter::findDataItemForExpElement` 
+* #377 Fixed RDF export for sub objects (bug 48708)
+* #378 Fixed subobject compatibility with RDF stores (bug 48361)
 
 ### Internal enhancements
 
