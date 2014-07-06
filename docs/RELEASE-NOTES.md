@@ -18,6 +18,7 @@ Not a release yet.
 * #312 Fixed fatal error in `SMWCategoryResultPrinter` for when a mainlabel is hidden 
 * #322 Fixed file names containing spaces or non-ASCII characters for for downloadable result formats (csv, excel)
 * #338 Fixed exception in `SMWSparqlResultParser` for an invalid datatype (bug 62218)
+* #379 Modernized `dumpRDF.php` while deprecating the use of `SMW_dumpRDFphp` (bug 35679)
 
 ### Internal enhancements
 
@@ -32,5 +33,6 @@ Not a release yet.
 * #349 Added `hhvm-nightly` as service to run tests on HHVM 3.2+
 * #360 Refactored `SparqlStore` to move redirect handling into its own `RedirectLookup` component to improve testability  
 * #360 Added `TurtleTriplesBuilder` to aid testability of the `SparqlStore`
-* #366 Added lazy load of SubSemanticData in `Sql3StubSemanticData` 
-* #371 Changed SPARQL implemenation class names (legacy names are kept as alias)
+* #366 Added lazy load of SubSemanticData to `Sql3StubSemanticData` 
+* #371, #379, #375, #383 Modernized `SPARQLStore` implemenation
+* #382 Extended `QueryResult` object to enable to return `format=count` result information
