@@ -132,7 +132,7 @@ class SMWURIValue extends SMWDataValue {
 					$this->m_wikitext = $value;
 				}
 
-				$check = method_exists( 'Sanitizer', 'validateEmail' ) ? Sanitizer::validateEmail( $value ) : self::validateEmail( $value );
+				$check = Sanitizer::validateEmail( $value );
 				if ( !$check ) {
 					/// TODO: introduce error-message for "bad" email
 					$this->addError( wfMessage( 'smw_baduri', $value )->inContentLanguage()->text() );
@@ -280,35 +280,6 @@ class SMWURIValue extends SMWDataValue {
 		} else { // note: use "noprotocol" to avoid accidental use in an MW link, see getURL()
 			return new SMWDIUri( 'noprotocol', 'x', '', '', $this->m_typeid );
 		}
-	}
-
-	/**
-	 * This is a copy of
-	 * @see Sanitizer::validateEmail
-	 * which was introduced in MW 1.18, and is thus used for compatibility with earlier versions.
-	 */
-	public static function validateEmail( $addr ) {
-		$result = null;
-		if ( !wfRunHooks( 'isValidEmailAddr', array( $addr, &$result ) ) ) {
-			return $result;
-		}
-
-		// Please note strings below are enclosed in brackets [], this make the
-		// hyphen "-" a range indicator. Hence it is double backslashed below.
-		// See bug 26948
-		$rfc5322_atext   = "a-z0-9!#$%&'*+\\-\/=?^_`{|}~" ;
-		$rfc1034_ldh_str = "a-z0-9\\-" ;
-
-		$HTML5_email_regexp = "/
-		^                      # start of string
-		[$rfc5322_atext\\.]+    # user part which is liberal :p
-		@                      # 'apostrophe'
-		[$rfc1034_ldh_str]+       # First domain part
-		(\\.[$rfc1034_ldh_str]+)*  # Following part prefixed with a dot
-		$                      # End of string
-		/ix" ; // case Insensitive, eXtended
-
-		return (bool) preg_match( $HTML5_email_regexp, $addr );
 	}
 
 	/**

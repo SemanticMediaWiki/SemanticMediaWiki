@@ -68,7 +68,6 @@ Subsequent hooks should be renamed to follow a common naming practice that help 
 
 * <code>\SMW\DIProperty</code>, smwInitProperties (SMW::DataItem::initProperties)
 * <code>\SMW\DataValueFactory</code>, smwInitDatatypes (SMW::DataValue::initDataTypes)
-* <code>SMWURIValue</code>, isValidEmailAddr
 * <code>SMWExportController</code>, smwAddToRDFExport
 * <code>SMWParamFormat</code>, SMWResultFormat
 * <code>\SMW\Store</code>, SMWStore::updateDataBefore (SMW::Store::updateDataBefore)
