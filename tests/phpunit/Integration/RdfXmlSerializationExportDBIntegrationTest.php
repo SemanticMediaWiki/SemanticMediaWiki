@@ -69,8 +69,6 @@ class RdfXmlSerializationExportDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testPrintRdfXmlForPageWithSubobjectPropertyAnnotation() {
 
-		$this->markTestSkipped( "RDF export for subobjects is currently not supported" );
-
 		$pageCreator = new PageCreator();
 
 		$pageCreator
