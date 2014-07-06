@@ -18,10 +18,10 @@ Not a release yet.
 * #312 Fixed fatal error in `SMWCategoryResultPrinter` for when a mainlabel is hidden 
 * #322 Fixed file names containing spaces or non-ASCII characters for for downloadable result formats (csv, excel)
 * #338 Fixed exception in `SMWSparqlResultParser` for an invalid datatype (bug 62218)
+* #377 Fixed RDF export for subobjects (bug 48708)
+* #378 Fixed subobject import to RDF stores (bug 48361)
 * #379 Modernized `dumpRDF.php` while deprecating the use of `SMW_dumpRDFphp` (bug 35679)
 * #385 Fixed '#' encoding for subobjects in `SMWExporter::findDataItemForExpElement` 
-* #377 Fixed RDF export for sub objects (bug 48708)
-* #378 Fixed subobject compatibility with RDF stores (bug 48361)
 
 ### Internal enhancements
 
