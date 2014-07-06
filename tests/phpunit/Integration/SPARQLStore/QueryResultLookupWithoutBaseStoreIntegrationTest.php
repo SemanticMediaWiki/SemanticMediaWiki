@@ -118,4 +118,71 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		);
 	}
 
+	public function testCompleteRemovalOfAllAccociatesObjectsReferencedBySemanticDataContainerIncludingAllSubobjects() {
+
+		$this->markTestSkipped( "SMWSparqlStore currently does not support subobjects" );
+
+		/**
+		 * Arrange
+		 */
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
+		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
+		$subobject->setEmptySemanticDataForId( 'SubobjectToTestReferenceAfterUpdate' );
+
+		$property = new DIProperty( 'SomeNumericPropertyToCompareReference' );
+		$property->setPropertyTypeId( '_num' );
+
+		$dataItem = new DINumber( 99999 );
+
+		$subobject->addDataValue(
+			$this->dataValueFactory->newDataItemValue( $dataItem, $property )
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
+
+		/**
+		 * Act
+		 */
+		$this->store->doSparqlDataUpdate( $semanticData );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( $dataItem, null, SMW_CMP_EQ )
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		/**
+		 * Assert
+		 */
+		$this->assertSame(
+			1,
+			$this->store->getQueryResult( $query )->getCount()
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$subobject->getSemanticData()->getSubject(),
+			$this->store->getQueryResult( $query )
+		);
+
+		$this->store->doSparqlDataUpdate(
+			$this->semanticDataFactory->newEmptySemanticData( __METHOD__ )
+		);
+
+		$this->assertSame(
+			0,
+			$this->store->getQueryResult( $query )->getCount()
+		);
+	}
+
 }

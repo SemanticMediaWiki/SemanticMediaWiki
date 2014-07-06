@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Util;
 
+use SMW\DIWikiPage;
+
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
 use SMWQueryResult as QueryResult;
@@ -11,7 +13,7 @@ use RuntimeException;
 
 /**
  * @license GNU GPL v2+
- * @since   1.9.3
+ * @since   2.0
  *
  * @author mwjames
  */
@@ -65,7 +67,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 			}
 		}
 
-		$this->assertTrue( $assertThatDataValueIsSet, 'Assert that the expected DataValue is set' );
+		$this->assertTrue( $assertThatDataValueIsSet, 'Asserts that the expected DataValue is set' );
 	}
 
 	/**
@@ -88,7 +90,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 			}
 		}
 
-		$this->assertTrue( $assertThatDataItemIsSet, 'Assert that the expected DataItem is set'  );
+		$this->assertTrue( $assertThatDataItemIsSet, 'Asserts that the expected DataItem is set'  );
 	}
 
 	/**
@@ -97,9 +99,10 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param  mixed $expected
 	 * @param  QueryResult $queryResult
 	 */
-	public function assertThatQueryResultHasSubjects( array $expectedSubjects, QueryResult $queryResult ) {
+	public function assertThatQueryResultHasSubjects( $expectedSubjects, QueryResult $queryResult ) {
 
-		$expectedToCount = count( $expectedSubjects );
+		$expectedSubjects = is_array( $expectedSubjects ) ? $expectedSubjects : array( $expectedSubjects );
+		$expectedToCount  = count( $expectedSubjects );
 		$actualComparedToCount = 0;
 
 		$assertThatQueryResultHasSubjects = false;
@@ -109,15 +112,15 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 		foreach ( $queryResult->getResults() as $resultSubject ) {
 			foreach ( $expectedSubjects as $expectedSubject ) {
 
-				if ( $expectedSubject->equals( $resultSubject ) ) {
+				if ( $expectedSubject instanceOf DIWikiPage && $expectedSubject->equals( $resultSubject ) ) {
 					$actualComparedToCount++;
 					$assertThatQueryResultHasSubjects = true;
 				}
 			}
 		}
 
-		$this->assertTrue( $assertThatQueryResultHasSubjects, 'Assert that a subject is set' );
-		$this->assertEquals( $expectedToCount, $actualComparedToCount, 'Assert that all listed subjects are set' );
+		$this->assertTrue( $assertThatQueryResultHasSubjects, 'Asserts that a subject is set' );
+		$this->assertEquals( $expectedToCount, $actualComparedToCount, 'Asserts that all listed subjects are set' );
 	}
 
 	/**
