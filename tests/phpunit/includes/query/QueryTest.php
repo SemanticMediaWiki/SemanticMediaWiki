@@ -19,6 +19,16 @@ use SMWQuery as Query;
  */
 class QueryTest extends \PHPUnit_Framework_TestCase {
 
+	private $smwgQMaxLimit;
+	private $smwgQMaxInlineLimit;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->smwgQMaxLimit = $GLOBALS['smwgQMaxLimit'];
+		$this->smwgQMaxInlineLimit = $GLOBALS['smwgQMaxInlineLimit'];
+	}
+
 	public function testCanConstruct() {
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
@@ -29,29 +39,16 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSetGetLimitForInlineQueryWhereUpperboundIsRestrictedByGLOBALRequirements() {
+	public function testSetGetLimitForLowerbound() {
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
 		$instance = new Query( $description, true, false );
 
-		$upperboundLimit = 999999999;
 		$lowerboundLimit = 1;
 
-		$smwgQMaxLimit = $GLOBALS['smwgQMaxLimit'];
-		$smwgQMaxInlineLimit = $GLOBALS['smwgQMaxInlineLimit'];
-
-		$this->assertLessThan( $upperboundLimit, $smwgQMaxLimit );
-		$this->assertLessThan( $upperboundLimit, $smwgQMaxInlineLimit );
-
-		$this->assertGreaterThan( $lowerboundLimit, $smwgQMaxLimit );
-		$this->assertGreaterThan( $lowerboundLimit, $smwgQMaxInlineLimit );
-
-		$instance->setLimit( $upperboundLimit, true );
-		$this->assertEquals( $smwgQMaxInlineLimit, $instance->getLimit() );
-
-		$instance->setLimit( $upperboundLimit, false );
-		$this->assertEquals( $smwgQMaxLimit, $instance->getLimit() );
+		$this->assertGreaterThan( $lowerboundLimit, $this->smwgQMaxLimit );
+		$this->assertGreaterThan( $lowerboundLimit, $this->smwgQMaxInlineLimit );
 
 		$instance->setLimit( $lowerboundLimit, true );
 		$this->assertEquals( $lowerboundLimit, $instance->getLimit() );
@@ -60,20 +57,37 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( $lowerboundLimit, $instance->getLimit() );
 	}
 
-	public function testSetGetLimitForInlineQueryWhereUnboundLimitIsUnrestricted() {
+	public function testSetGetLimitForUpperboundWhereLimitIsRestrictedByGLOBALRequirements() {
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
 		$instance = new Query( $description, true, false );
 
 		$upperboundLimit = 999999999;
-		$lowerboundLimit = 1;
+
+		$this->assertLessThan( $upperboundLimit, $this->smwgQMaxLimit );
+		$this->assertLessThan( $upperboundLimit, $this->smwgQMaxInlineLimit );
+
+		$instance->setLimit( $upperboundLimit, true );
+		$this->assertEquals( $this->smwgQMaxInlineLimit, $instance->getLimit() );
+
+		$instance->setLimit( $upperboundLimit, false );
+		$this->assertEquals( $this->smwgQMaxLimit, $instance->getLimit() );
+	}
+
+	public function testSetGetLimitForUpperboundWhereLimitIsUnrestricted() {
+
+		$description = $this->getMockForAbstractClass( '\SMWDescription' );
+
+		$instance = new Query( $description, true, false );
+
+		$upperboundLimit = 999999999;
+
+		$this->assertLessThan( $upperboundLimit, $this->smwgQMaxLimit );
+		$this->assertLessThan( $upperboundLimit, $this->smwgQMaxInlineLimit );
 
 		$instance->setUnboundLimit( $upperboundLimit );
 		$this->assertEquals( $upperboundLimit, $instance->getLimit() );
-
-		$instance->setUnboundLimit( $lowerboundLimit );
-		$this->assertEquals( $lowerboundLimit, $instance->getLimit() );
 	}
 
 }
