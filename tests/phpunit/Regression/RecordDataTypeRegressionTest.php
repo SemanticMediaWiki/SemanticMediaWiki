@@ -131,8 +131,7 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 		$semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );
 
 		$semanticDataBatches = array(
-			$semanticDataFinder->fetchFromOutput(),
-			$semanticDataFinder->fetchFromStore()
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $title ) ),
 		);
 
 		foreach ( $semanticDataBatches as $semanticData ) {
