@@ -19,6 +19,7 @@ Not a release yet.
 * #322 Fixed file names containing spaces or non-ASCII characters for for downloadable result formats (csv, excel)
 * #338 Fixed exception in `SMWSparqlResultParser` for an invalid datatype (bug 62218)
 * #379 Modernized `dumpRDF.php` while deprecating the use of `SMW_dumpRDFphp` (bug 35679)
+* #385 Fixed '#' encoding for subobjects in `SMWExporter::findDataItemForExpElement` 
 
 ### Internal enhancements
 
