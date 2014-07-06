@@ -323,12 +323,14 @@ class SMWExporter {
 		if ( $expElement instanceof SMWExpResource ) {
 			$uri = $expElement->getUri();
 			$wikiNamespace = self::getNamespaceUri( 'wiki' );
+
 			if ( strpos( $uri, $wikiNamespace ) === 0 ) {
 				$localName = substr( $uri, strlen( $wikiNamespace ) );
 				$dbKey = rawurldecode( self::decodeURI( $localName ) );
 
-				$parts = explode( '-23', $dbKey, 2 );
+				$parts = explode( '#', $dbKey, 2 );
 				if ( count( $parts ) == 2 ) {
+					$dbKey = $parts[0];
 					$subobjectname = $parts[1];
 				} else {
 					$subobjectname = '';
