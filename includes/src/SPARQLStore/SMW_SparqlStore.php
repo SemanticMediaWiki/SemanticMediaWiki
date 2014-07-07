@@ -164,7 +164,7 @@ class SMWSparqlStore extends SMWStore {
 	 * database. In general it is suggested to use updateData to carry out a
 	 * synchronized update of the base and Sparql store.
 	 *
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param SemanticData $semanticData
 	 */
@@ -172,18 +172,13 @@ class SMWSparqlStore extends SMWStore {
 
 		$this->doSparqlFlatDataUpdate( $semanticData );
 
-		// Update data about our subobjects
-		$subSemanticData = $semanticData->getSubSemanticData();
-		foreach( $subSemanticData as $subObjectData ) {
-			 $this->doSparqlFlatDataUpdate( $subObjectData );
+		foreach( $semanticData->getSubSemanticData() as $subSemanticData ) {
+			 $this->doSparqlFlatDataUpdate( $subSemanticData );
 		}
 	}
 
 	/**
-	 * Update the Sparql back-end, without taking any
-	 * subobject data into account.
-	 *
-	 * @since 1.9.3
+	 * Update the Sparql back-end, without taking any subobject data into account.
 	 *
 	 * @param SemanticData $semanticData
 	 */

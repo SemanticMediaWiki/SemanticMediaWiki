@@ -176,7 +176,6 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-/* #374 Causes SMW_Exp_Element.php: $lexicalForm needs to be a string
 	public function testQueryForSingleNamespace() {
 
 		$description = new NamespaceDescription( NS_HELP );
@@ -190,8 +189,10 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$condition
 		);
 
+		$this->assertSame( 12, NS_HELP );
+
 		$expectedConditionString = $this->stringBuilder
-			->addString( "{ ?result rdf:type wiki:Foo . }" )->addNewLine()
+			->addString( '{ ?result swivt:wikiNamespace "12"^^xsd:integer . }' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -199,7 +200,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->convertConditionToString( $condition )
 		);
 	}
-*/
+
 	public function testQueryForPropertyConjunction () {
 
 		$conjunction = new Conjunction( array(

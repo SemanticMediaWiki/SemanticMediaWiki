@@ -470,7 +470,7 @@ class SparqlConditionBuilder {
 	 */
 	protected function buildNamespaceCondition( NamespaceDescription $description, $joinVariable, $orderByProperty ) {
 		$nspropExpElement = Exporter::getSpecialNsResource( 'swivt', 'wikiNamespace' );
-		$nsExpElement = new ExpLiteral( $description->getNamespace(), 'http://www.w3.org/2001/XMLSchema#integer' );
+		$nsExpElement = new ExpLiteral( strval( $description->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
 		$nsName = TurtleSerializer::getTurtleNameForExpElement( $nsExpElement );
 		$condition = "{ ?$joinVariable " . $nspropExpElement->getQName() . " $nsName . }\n";
 
