@@ -17,6 +17,8 @@ use SMWSomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMWThingDescription as ThingDescription;
+use SMWNamespaceDescription as NamespaceDescription;
+
 use SMWDINumber as DINumber;
 use SMWQuery as Query;
 
@@ -46,13 +48,13 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		$this->store = StoreFactory::getStore();
 
 		if ( !$this->store instanceOf \SMWSparqlStore ) {
-			$this->markTestSkipped( "Requires a SMWSparqlStore instance" );
+			$this->markTestSkipped( "Requires a SPARQLStore instance" );
 		}
 
 		$sparqlDatabase = $this->store->getSparqlDatabase();
 
 		if ( !$sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
-			$this->markTestSkipped( "Can't connect to the SparlDatabase" );
+			$this->markTestSkipped( "Can't connect to the SPARQL database" );
 		}
 
 		$this->queryResultValidator = new QueryResultValidator();
@@ -60,7 +62,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
-	public function testQuerySubjectAfterSparqlDataUpdate() {
+	public function testQuerySubjects_afterUpdatingSemanticData() {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
@@ -75,12 +77,12 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		$query->querymode = Query::MODE_INSTANCES;
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			array( $semanticData->getSubject() ),
+			$semanticData->getSubject(),
 			$this->store->getQueryResult( $query )
 		);
 	}
 
-	public function testZeroQueryResultAfterSparqlDataDelete() {
+	public function testQueryZeroResults_afterSubjectRemoval() {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
@@ -111,7 +113,9 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 			$this->store->getQueryResult( $query )->getCount()
 		);
 
-		$this->assertTrue( $this->store->doSparqlDataDelete( $semanticData->getSubject() ) );
+		$this->assertTrue(
+			$this->store->doSparqlDataDelete( $semanticData->getSubject() )
+		);
 
 		$this->assertEquals(
 			0,
@@ -119,11 +123,51 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		);
 	}
 
-	public function testWhenUpdatingSemanticData_AllAssociatedSubobjetcsGetRemovedFromGraph() {
+	/**
+	 * @see http://semantic-mediawiki.org/wiki/Help:Selecting_pages#Restricting_results_to_a_namespace
+	 */
+	public function testQuerySubjects_onNamspaceRestrictedCondition() {
 
-		/**
-		 * Arrange
-		 */
+		$subjectInHelpNamespace = new DIWikiPage( __METHOD__, NS_HELP, '' );
+
+		$semanticData = $this->semanticDataFactory
+			->setSubject( $subjectInHelpNamespace )
+			->newEmptySemanticData();
+
+		$property = new DIProperty( 'SomePageTypePropertyForNamespaceAnnotation' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$semanticData->addDataValue(
+			$this->dataValueFactory->newPropertyObjectValue( $property, 'Bar' )
+		);
+
+		$this->store->doSparqlDataUpdate( $semanticData );
+
+		$query = new Query(
+			new NamespaceDescription( NS_HELP ),
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$subjectInHelpNamespace,
+			$this->store->getQueryResult( $query )
+		);
+
+		$this->assertTrue(
+			$this->store->doSparqlDataDelete( $semanticData->getSubject() )
+		);
+
+		$this->assertSame(
+			0,
+			$this->store->getQueryResult( $query )->getCount()
+		);
+	}
+
+	public function testQuerySubobjects_afterUpdatingWithEmptyContainerAllAssociatedEntitiesGetRemovedFromGraph() {
+
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
@@ -143,9 +187,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 			$subobject->getContainer()
 		);
 
-		/**
-		 * Act
-		 */
 		$this->store->doSparqlDataUpdate( $semanticData );
 
 		$description = new SomeProperty(
@@ -161,9 +202,6 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 
 		$query->querymode = Query::MODE_INSTANCES;
 
-		/**
-		 * Assert
-		 */
 		$this->assertSame(
 			1,
 			$this->store->getQueryResult( $query )->getCount()
