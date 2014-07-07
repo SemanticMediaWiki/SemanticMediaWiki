@@ -154,7 +154,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testQueryForSingleCategory() {
 
 		$description = new ClassDescription(
-			new DIWikiPage( 'Foo', NS_MAIN, '' )
+			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
 		$instance = new SparqlConditionBuilder();
@@ -167,7 +167,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedConditionString = $this->stringBuilder
-			->addString( "{ ?result rdf:type wiki:Foo . }" )->addNewLine()
+			->addString( "{ ?result rdf:type wiki:Category-3AFoo . }" )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
