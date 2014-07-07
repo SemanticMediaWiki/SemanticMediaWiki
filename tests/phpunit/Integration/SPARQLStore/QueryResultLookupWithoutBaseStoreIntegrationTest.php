@@ -118,7 +118,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		);
 	}
 
-	public function testCompleteRemovalOfAllAccociatesObjectsReferencedBySemanticDataContainerIncludingAllSubobjects() {
+	public function testWhenUpdatingSemanticData_AllAssociatedSubobjetcsGetRemovedFromGraph() {
 
 		$this->markTestSkipped( "SMWSparqlStore currently does not support subobjects" );
 
