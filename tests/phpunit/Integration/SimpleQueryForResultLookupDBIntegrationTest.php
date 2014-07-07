@@ -20,6 +20,7 @@ use SMWSomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMWThingDescription as ThingDescription;
+use SMWClassDescription as ClassDescription;
 
 use Title;
 
@@ -218,9 +219,7 @@ class SimpleQueryForResultLookupDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
-	public function testQueryCategory() {
-
-		$this->markTestSkipped( "Category query needs to be fixed" );
+	public function testQuerySubjects_onCategoryCondition() {
 
 		$property = new DIProperty( '_INST' );
 
@@ -232,9 +231,14 @@ class SimpleQueryForResultLookupDBIntegrationTest extends MwDBaseUnitTestCase {
 			$dataValue
 		);
 
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$this->subject,
+			$this->searchForResultsThatCompareEqualToClassOf( 'SomeCategory' )
+		);
+
 		$this->queryResultValidator->assertThatQueryResultContains(
-			$dataValue->getDataItem(),
-			$this->searchForResultsThatCompareEqualToOnlySingularPropertyOf( $property )
+			$dataValue,
+			$this->searchForResultsThatCompareEqualToClassOf( 'SomeCategory' )
 		);
 	}
 
@@ -272,6 +276,30 @@ class SimpleQueryForResultLookupDBIntegrationTest extends MwDBaseUnitTestCase {
 		$description = new SomeProperty(
 			$property,
 			new ThingDescription()
+		);
+
+		$description->addPrintRequest(
+			new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue )
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		return $this->getStore()->getQueryResult( $query );
+	}
+
+	private function searchForResultsThatCompareEqualToClassOf( $categoryName ) {
+
+		$propertyValue = new PropertyValue( '__pro' );
+		$propertyValue->setDataItem( new DIProperty( '_INST' ) );
+
+		$description = new ClassDescription(
+			new DIWikiPage( $categoryName, NS_CATEGORY, '' )
 		);
 
 		$description->addPrintRequest(
