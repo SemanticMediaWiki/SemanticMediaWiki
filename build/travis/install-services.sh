@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+BASE_PATH=$(pwd)
 
 if [ "$FOURSTORE" != "" ] || [ "$VIRTUOSO" != "" ]
 then
@@ -54,4 +55,6 @@ then
 	sudo apt-get install -qq virtuoso-opensource
 	echo "RUN=yes" | sudo tee -a /etc/default/virtuoso-opensource-$VIRTUOSO
 	sudo service virtuoso-opensource-$VIRTUOSO start
+
+	isql-vt 1111 dba dba $BASE_PATH/build/travis/virtuoso-sparql-permission.sql
 fi

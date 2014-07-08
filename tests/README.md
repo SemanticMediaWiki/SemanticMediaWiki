@@ -33,9 +33,9 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 
 Additional services can be enabled on Travis-CI to expand the test environment, available at present:
 
-- `FUSEKI`: Jena Fuskei 1.0.2 is integrated and testable
-- `FOURSTORE`: 4Store is installable but not testable due to [issue #110](https://github.com/garlik/4store/issues/110)
-- `VIRTUOSO`: Virtuoso-opensource-6.1 is installable but has not been tested
+- `FUSEKI`: Jena Fuskei 1.0.2 is integrated
+- `VIRTUOSO`: Virtuoso-opensource-6.1 is integrated
+- `FOURSTORE`: 4Store is installable but not executable due to [issue #110](https://github.com/garlik/4store/issues/110)
 
 ### Jena Fuseki integration
 
@@ -61,17 +61,30 @@ $smwgSparqlDatabaseConnector = 'Fuseki';
 $smwgSparqlQueryEndpoint = 'http://localhost:3030/db/query';
 $smwgSparqlUpdateEndpoint = 'http://localhost:3030/db/update';
 $smwgSparqlDataEndpoint = '';
-$smwgSparqlDefaultGraph = 'http://example.org/mydefaultgraphname';
+$smwgSparqlDefaultGraph = 'http://example.org/myFusekiGraph';
 ```
+### Virtuoso integration
+
+Virtuoso-opensource 6.1
+
+```sh
+sudo apt-get install virtuoso-opensource
+```
+
+```php
+$smwgSparqlDatabaseConnector = 'Virtuoso';
+$smwgSparqlQueryEndpoint = 'http://localhost:8890/sparql';
+$smwgSparqlUpdateEndpoint = 'http://localhost:8890/sparql';
+$smwgSparqlDataEndpoint = '';
+$smwgSparqlDefaultGraph = 'http://example.org/myVirtuosoGraph';
+```
+
 ### 4Store integration
 
 Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite.
 
 ```sh
 apt-get install 4store
-4s-backend-setup smw
-4s-backend smw
-4s-httpd -p 8088 smw
 ```
 
 ```php
@@ -79,7 +92,7 @@ $smwgSparqlDatabaseConnector = '4store';
 $smwgSparqlQueryEndpoint = 'http://localhost:8088/sparql/';
 $smwgSparqlUpdateEndpoint = 'http://localhost:8088/update/';
 $smwgSparqlDataEndpoint = 'http://localhost:8088/data/';
-$smwgSparqlDefaultGraph = 'http://example.org/mydefaultgraphname';
+$smwgSparqlDefaultGraph = 'http://example.org/myFourstoreGraph';
 ```
 
 # QUnit

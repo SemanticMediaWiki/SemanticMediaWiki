@@ -37,10 +37,10 @@ elif [ "$VIRTUOSO" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
 	echo '$smwgSparqlDatabaseConnector = "Virtuoso";' >> LocalSettings.php
-	echo '$smwgSparqlQueryEndpoint = "http://localhost:8890/sparql/";' >> LocalSettings.php
-	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8890/sparql/";' >> LocalSettings.php
+	echo '$smwgSparqlQueryEndpoint = "http://localhost:8890/sparql";' >> LocalSettings.php
+	echo '$smwgSparqlUpdateEndpoint = "http://localhost:8890/sparql";' >> LocalSettings.php
 	echo '$smwgSparqlDataEndpoint = "";' >> LocalSettings.php
-	echo '$smwgSparqlDefaultGraph = "http://example.org/mydefaultgraphname";' >> LocalSettings.php
+	echo '$smwgSparqlDefaultGraph = "http://example.org/travisGraph";' >> LocalSettings.php
 else
 	echo '$smwgDefaultStore = "SMWSQLStore3";' >> LocalSettings.php
 fi
