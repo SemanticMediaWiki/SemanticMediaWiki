@@ -2,6 +2,8 @@
 
 use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
 use SMW\SPARQLStore\BadHttpResponseMapper;
+use SMW\SPARQLStore\QueryEngine\RawResultParser;
+
 use SMW\CurlRequest;
 use SMW\HttpRequest;
 
@@ -433,8 +435,8 @@ class SMWSparqlDatabase {
 		$xmlResult = $this->httpRequest->execute();
 
 		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
-			$xmlParser = new SMWSparqlResultParser();
-			return $xmlParser->makeResultFromXml( $xmlResult );
+			$rawResultParser = new RawResultParser();
+			return $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
 		}
 
 		$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );

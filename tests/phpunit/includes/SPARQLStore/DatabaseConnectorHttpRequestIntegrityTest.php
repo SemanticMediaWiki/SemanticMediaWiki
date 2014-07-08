@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\Tests\Util\FakeQueryResultProvider;
+use SMW\Tests\Util\FakeRawResultProvider;
 
 /**
  * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector
@@ -41,7 +41,7 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 	 */
 	public function testAskToQueryEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
 
-		$queryResultXmlProvider = new FakeQueryResultProvider();
+		$rawResultProvider = new FakeRawResultProvider();
 
 		$httpRequest = $this->getMockBuilder( '\SMW\HttpRequest' )
 			->disableOriginalConstructor()
@@ -56,7 +56,7 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 
 		$httpRequest->expects( $this->once() )
 			->method( 'execute' )
-			->will( $this->returnValue( $queryResultXmlProvider->getEmptySparqlResultXml() ) );
+			->will( $this->returnValue( $rawResultProvider->getEmptySparqlResultXml() ) );
 
 		$instance = new $httpDatabaseConnector(
 			'http://foo/myDefaultGraph',
