@@ -14,6 +14,8 @@ matrix:
       php: 5.4
     - env: DB=mysql; MW=1.23.0; FUSEKI=1.0.2
       php: 5.4
+    - env: DB=mysql; MW=1.23.0; VIRTUOSO=6.1
+      php: 5.4
     - env: DB=sqlite; MW=1.22.6;
       php: 5.5
     - env: DB=postgres; MW=1.19.0;
