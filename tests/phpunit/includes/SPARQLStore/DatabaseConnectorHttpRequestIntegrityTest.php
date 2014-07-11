@@ -65,12 +65,15 @@ class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestC
 
 		$instance->setHttpRequest( $httpRequest );
 
-		$resultWrapper = $instance->ask(
+		$federateResultList = $instance->ask(
 			'?x foaf:name "Foo"',
 			array( 'foaf' => 'http://xmlns.com/foaf/0.1/>' )
 		);
 
-		$this->assertInstanceOf( '\SMWSparqlResultWrapper', $resultWrapper );
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\FederateResultList',
+			$federateResultList
+		);
 	}
 
 	/**

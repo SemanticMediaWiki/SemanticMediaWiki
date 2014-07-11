@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Util;
+namespace SMW\Tests\Util\Mock;
 
 use RuntimeException;
 
@@ -13,7 +13,9 @@ use RuntimeException;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
+ *
+ * @author mwjames
  */
 class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 
@@ -88,7 +90,7 @@ class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return integer
 	 */

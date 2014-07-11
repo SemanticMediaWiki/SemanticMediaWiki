@@ -5,8 +5,6 @@ namespace SMW\SPARQLStore\QueryEngine;
 use SMWExpResource as ExpResource;
 use SMWExpLiteral as ExpLiteral;
 
-use SMWSparqlResultWrapper as SparqlResultWrapper;
-
 use RuntimeException;
 
 /**
@@ -89,12 +87,12 @@ class RawResultParser {
 	}
 
 	/**
-	 * Parse the given XML result and return an SparqlResultWrapper for
+	 * Parse the given XML result and return an FederateResultList for
 	 * the contained data.
 	 *
 	 * @param string $xmlResultData
 	 *
-	 * @return SparqlResultWrapper
+	 * @return FederateResultList
 	 */
 	public function parseXmlToInternalResultFormat( $xmlResultData ) {
 
@@ -108,7 +106,7 @@ class RawResultParser {
 			throw new RuntimeException( "Parser error: " . $this->getLastError() );
 		}
 
-		return new SparqlResultWrapper(
+		return new FederateResultList(
 			$this->header,
 			$this->data,
 			$this->comments
