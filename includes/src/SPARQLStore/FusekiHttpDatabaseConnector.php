@@ -3,8 +3,9 @@
 namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
+use SMW\SPARQLStore\QueryEngine\RawResultParser;
+
 use SMWSparqlDatabase as SparqlDatabase;
-use SMWSparqlResultParser as SparqlResultParser;
 use SMWSparqlResultWrapper as SparqlResultWrapper;
 
 /**
@@ -39,8 +40,8 @@ class FusekiHttpDatabaseConnector extends SparqlDatabase {
 		$xmlResult = $this->httpRequest->execute();
 
 		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
-			$xmlParser = new SparqlResultParser();
-			return $xmlParser->makeResultFromXml( $xmlResult );
+			$rawResultParser = new RawResultParser();
+			return $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
 		}
 
 		$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );

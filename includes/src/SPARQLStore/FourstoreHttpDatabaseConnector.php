@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\SPARQLStore\QueryEngine\RawResultParser;
+
 use SMWSparqlDatabase as SparqlDatabase;
 use SMWSparqlResultParser as SparqlResultParser;
 use SMWSparqlResultWrapper as SparqlResultWrapper;
@@ -52,8 +54,8 @@ class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 		$xmlResult = $this->httpRequest->execute();
 
 		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
-			$xmlParser = new SparqlResultParser();
-			$result = $xmlParser->makeResultFromXml( $xmlResult );
+			$rawResultParser = new RawResultParser();
+			$result = $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
 		} else {
 			$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
 			$result = new SparqlResultWrapper( array(), array(), array(), SparqlResultWrapper::ERROR_UNREACHABLE );

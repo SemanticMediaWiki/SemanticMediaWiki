@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+	<head>
+		<variable name="result"/>
+	</head>
+	<results>
+		<result>
+			<binding name="result"><literal datatype="http://www.w3.org/2001/XMLSchema#string">Foo</literal></binding>
+		</result>
+	</results>
+</sparql>
