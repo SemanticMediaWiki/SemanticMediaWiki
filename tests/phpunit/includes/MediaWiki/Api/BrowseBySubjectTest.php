@@ -85,7 +85,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
-		$title = MockTitle::getMock( $this );
+		$title = MockTitle::buildMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )
@@ -117,7 +117,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInValidTitleRedirectThrowsException() {
 
-		$title = MockTitle::getMock( $this );
+		$title = MockTitle::buildMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )

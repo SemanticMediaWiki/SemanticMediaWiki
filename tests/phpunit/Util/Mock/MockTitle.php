@@ -13,42 +13,46 @@ namespace SMW\Tests\Util\Mock;
  *
  * @author mwjames
  */
-class MockTitle {
+class MockTitle extends \PHPUnit_Framework_TestCase {
 
-	public static function getMock( \PHPUnit_Framework_TestCase $testCase, $text = __METHOD__ ) {
+	public static function buildMock( $text = __METHOD__ ) {
+
+		$instance = new self();
 
 		$contentModel = class_exists( 'ContentHandler' ) ? CONTENT_MODEL_WIKITEXT : null;
 
-		$title = $testCase->getMockBuilder( 'Title' )
+		$title = $instance->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $testCase->any() )
+		$title->expects( $instance->any() )
 			->method( 'getDBkey' )
-			->will( $testCase->returnValue( str_replace( ' ', '_', $text ) ) );
+			->will( $instance->returnValue( str_replace( ' ', '_', $text ) ) );
 
-		$title->expects( $testCase->any() )
+		$title->expects( $instance->any() )
 			->method( 'getContentModel' )
-			->will( $testCase->returnValue( $contentModel ) );
+			->will( $instance->returnValue( $contentModel ) );
 
 		return $title;
 	}
 
-	public static function getMockForMainNamespace( \PHPUnit_Framework_TestCase $testCase, $text = __METHOD__ ) {
+	public static function buildMockForMainNamespace( $text = __METHOD__ ) {
 
-		$title = self::getMock( $testCase, $text );
+		$instance = new self();
 
-		$title->expects( $testCase->any() )
+		$title = $instance->buildMock( $text );
+
+		$title->expects( $instance->any() )
 			->method( 'getNamespace' )
-			->will( $testCase->returnValue( NS_MAIN ) );
+			->will( $instance->returnValue( NS_MAIN ) );
 
-		$title->expects( $testCase->any() )
+		$title->expects( $instance->any() )
 			->method( 'getArticleID' )
-			->will( $testCase->returnValue( 9001 ) );
+			->will( $instance->returnValue( 9001 ) );
 
-		$title->expects( $testCase->any() )
+		$title->expects( $instance->any() )
 			->method( 'isSpecialPage' )
-			->will( $testCase->returnValue( false ) );
+			->will( $instance->returnValue( false ) );
 
 		return $title;
 	}
