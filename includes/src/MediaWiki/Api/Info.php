@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW\Api;
+namespace SMW\MediaWiki\Api;
+
+use SMW\Application;
 
 use ApiBase;
 
@@ -10,12 +12,12 @@ use ApiBase;
  *
  * @ingroup Api
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.6
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class Info extends Base {
+class Info extends ApiBase {
 
 	/**
 	 * @see ApiBase::execute
@@ -36,7 +38,7 @@ class Info extends Base {
 			|| in_array( 'subobjectcount', $requestedInfo )
 			|| in_array( 'declaredpropcount', $requestedInfo ) ) {
 
-			$semanticStats = $this->withContext()->getStore()->getStatistics();
+			$semanticStats = Application::getInstance()->getStore()->getStatistics();
 
 			$map = array(
 				'propcount' => 'PROPUSES',

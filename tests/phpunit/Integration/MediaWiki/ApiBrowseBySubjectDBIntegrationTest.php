@@ -6,7 +6,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\MwApiFactory;
 use SMW\Tests\Util\SemanticDataFactory;
 
-use SMW\Api\BrowseBySubject;
+use SMW\MediaWiki\Api\BrowseBySubject;
 
 use SMW\SemanticData;
 use SMW\DIWikiPage;

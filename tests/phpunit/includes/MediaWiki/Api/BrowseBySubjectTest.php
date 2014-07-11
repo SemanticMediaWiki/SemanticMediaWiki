@@ -6,15 +6,13 @@ use SMW\Tests\Util\MwApiFactory;
 use SMW\Tests\Util\SemanticDataFactory;
 use SMW\Tests\Util\Mock\MockTitle;
 
-use SMW\Api\BrowseBySubject;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
+use SMW\MediaWiki\Api\BrowseBySubject;
+use SMW\Application;
 
-use ReflectionClass;
 use Title;
 
 /**
- * @covers \SMW\Api\BrowseBySubject
+ * @covers \SMW\MediaWiki\Api\BrowseBySubject
  *
  * @group SMW
  * @group SMWExtension
@@ -30,12 +28,20 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 	private $apiFactory;
 	private $semanticDataFactory;
+	private $application;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
 		$this->semanticDataFactory = new SemanticDataFactory();
+		$this->application = Application::getInstance();
+	}
+
+	protected function tearDown() {
+		Application::clear();
+
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -45,7 +51,10 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 			'browsebysubject'
 		);
 
-		$this->assertInstanceOf( 'SMW\Api\BrowseBySubject', $instance );
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Api\BrowseBySubject',
+			$instance
+		);
 	}
 
 	public function testExecuteOnValidSubject() {
@@ -85,83 +94,37 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
-		$title = MockTitle::buildMock();
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
-
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+		$titleCreator = $this->getMockBuilder( '\SMW\MediaWiki\TitleCreator' )
+			->setMethods( array( 'getTitle', 'findRedirect' ) )
 			->getMock();
 
-		$wikiPage->expects( $this->atLeastOnce() )
-			->method( 'getRedirectTarget' )
+		$titleCreator->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
 			->will( $this->returnValue( Title::newFromText( 'Ooooooo' ) ) );
 
-		$parameters = array(
-			'store'      => $store,
-			'wikiPage'   => $wikiPage,
-			'title'      => $title
-		);
+		$titleCreator->expects( $this->atLeastOnce() )
+			->method( 'findRedirect' )
+			->will( $this->returnValue( $titleCreator ) );
+
+		$this->application->registerObject( 'Store', $store );
+		$this->application->registerObject( 'TitleCreator', $titleCreator );
 
 		$expectedResultToContainArrayKeys = array( 'subject'  => true, 'result' => true );
-
-		$result = $this->reflectOnInstanceToMockRedirect( $parameters );
-
-		$this->assertToContainArrayKeys(
-			$expectedResultToContainArrayKeys,
-			$result
-		);
-	}
-
-	public function testInValidTitleRedirectThrowsException() {
-
-		$title = MockTitle::buildMock();
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
-
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$wikiPage->expects( $this->atLeastOnce() )
-			->method( 'getRedirectTarget' )
-			->will( $this->returnValue( null ) );
-
-		$parameters = array(
-			'store'      => null,
-			'wikiPage'   => $wikiPage,
-			'title'      => $title
-		);
-
-		$this->setExpectedException( 'UsageException' );
-
-		$this->reflectOnInstanceToMockRedirect( $parameters );
-	}
-
-	public function reflectOnInstanceToMockRedirect( $setup ) {
 
 		$instance = new BrowseBySubject(
 			$this->apiFactory->newApiMain( array('subject' => 'Foo' ) ),
 			'browsebysubject'
 		);
 
-		$container = $instance->withContext()->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Store', $setup['store'] );
-		$container->registerObject( 'WikiPage', $setup['wikiPage'] );
-
-		$reflector = new ReflectionClass( 'SMW\Api\BrowseBySubject' );
-		$constructValidTitle = $reflector->getMethod( 'constructValidTitle' );
-		$constructValidTitle->setAccessible( true );
-
-		$constructValidTitle->invoke( $instance, $setup['title'] );
 		$instance->getMain()->getResult()->setRawMode();
 		$instance->execute();
 
-		return $instance->getResultData();
+		$result = $instance->getResultData();
+
+		$this->assertToContainArrayKeys(
+			$expectedResultToContainArrayKeys,
+			$result
+		);
 	}
 
 	public function assertToContainArrayKeys( $setup, $result ) {

@@ -1,24 +1,27 @@
 <?php
 
-namespace SMW\Api;
+namespace SMW\MediaWiki\Api;
 
-use SMW\ApiQueryResultFormatter;
+use SMW\Application;
+
 use SMWQueryProcessor;
 use SMWQueryResult;
 use SMWQuery;
+
+use ApiBase;
 
 /**
  * Base for API modules that query SMW
  *
  * @ingroup Api
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
-abstract class Query extends Base {
+abstract class Query extends ApiBase {
 
 	/**
 	 * Returns a query object for the provided query string and list of printouts.
@@ -54,7 +57,7 @@ abstract class Query extends Base {
 	 * @return SMWQueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		 return $this->withContext()->getStore()->getQueryResult( $query );
+		 return Application::getInstance()->getStore()->getQueryResult( $query );
 	}
 
 	/**
@@ -70,7 +73,7 @@ abstract class Query extends Base {
 
 		$resultFormatter = new ApiQueryResultFormatter( $queryResult );
 		$resultFormatter->setIsRawMode( $result->getIsRawMode() );
-		$resultFormatter->runFormatter();
+		$resultFormatter->doFormat();
 
 		if ( $resultFormatter->getContinueOffset() ) {
 			$result->disableSizeCheck();
@@ -78,7 +81,11 @@ abstract class Query extends Base {
 			$result->enableSizeCheck();
 		}
 
-		$result->addValue( null, $resultFormatter->getType(), $resultFormatter->getResult() );
+		$result->addValue(
+			null,
+			$resultFormatter->getType(),
+			$resultFormatter->getResult()
+		);
 	}
 
 }

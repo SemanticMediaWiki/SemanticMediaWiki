@@ -139,10 +139,10 @@ final class Setup implements ContextAware {
 	 */
 	protected function registerWebApi() {
 
-		$this->globals['wgAPIModules']['smwinfo'] = '\SMW\Api\Info';
-		$this->globals['wgAPIModules']['ask']     = '\SMW\Api\Ask';
-		$this->globals['wgAPIModules']['askargs'] = '\SMW\Api\AskArgs';
-		$this->globals['wgAPIModules']['browsebysubject']  = '\SMW\Api\BrowseBySubject';
+		$this->globals['wgAPIModules']['smwinfo'] = '\SMW\MediaWiki\Api\Info';
+		$this->globals['wgAPIModules']['ask']     = '\SMW\MediaWiki\Api\Ask';
+		$this->globals['wgAPIModules']['askargs'] = '\SMW\MediaWiki\Api\AskArgs';
+		$this->globals['wgAPIModules']['browsebysubject']  = '\SMW\MediaWiki\Api\BrowseBySubject';
 
 	}
 

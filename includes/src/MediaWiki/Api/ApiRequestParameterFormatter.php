@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Api;
+
+use SMW\SimpleDictionary;
 
 use SMWPropertyValue;
 use SMWPrintRequest;
@@ -8,17 +10,21 @@ use SMWPrintRequest;
 /**
  * This class handles Api related request parameter formatting
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 final class ApiRequestParameterFormatter {
 
-	/** @var array */
+	/**
+	 * @var array
+	 */
 	protected $requestParameters = array();
 
-	/** @var ObjectDictionary */
+	/**
+	 * @var ObjectDictionary
+	 */
 	protected $results = null;
 
 	/**

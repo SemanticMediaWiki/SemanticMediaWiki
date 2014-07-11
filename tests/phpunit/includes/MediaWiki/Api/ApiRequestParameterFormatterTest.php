@@ -1,66 +1,35 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\ApiRequestParameterFormatter;
+use SMW\MediaWiki\Api\ApiRequestParameterFormatter;
 
 use SMWQueryResult;
 
 /**
- * @covers \SMW\ApiRequestParameterFormatter
+ * @covers \SMW\MediaWiki\Api\ApiRequestParameterFormatter
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
+class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\ApiRequestParameterFormatter';
-	}
+	public function testCanConstruct() {
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return SMWPrintRequest
-	 */
-	private function newPrintRequest( $printout ) {
-		return new \SMWPrintRequest(
-			\SMWPrintRequest::PRINT_PROP,
-			$printout,
-			\SMWPropertyValue::makeUserProperty( $printout )
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Api\ApiRequestParameterFormatter',
+			new ApiRequestParameterFormatter( array() )
 		);
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return ApiRequestParameterFormatter
-	 */
-	private function newInstance( array $parameters ) {
-		return new ApiRequestParameterFormatter( $parameters );
-	}
+	public function testGetAskArgsApiForEmptyParameter() {
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance( array() ) );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testGetAskArgsApiParameterEmpty() {
-
-		$nstance = $this->newInstance( array() );
+		$nstance = new ApiRequestParameterFormatter( array() );
 
 		$this->assertEmpty( $nstance->getAskArgsApiParameter( 'conditions' ) );
 		$this->assertEmpty( $nstance->getAskArgsApiParameter( 'parameters' ) );
@@ -69,34 +38,29 @@ class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
 
 	/**
 	 * @dataProvider requestArgsApiParametersDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testGetAskArgsApiParameter( $test, $type, $expected ) {
+	public function testGetAskArgsApiParameter( $parameters, $type, $expected ) {
 
-		$nstance = $this->newInstance( $test );
+		$nstance = new ApiRequestParameterFormatter( $parameters );
 
-		$this->assertEquals( $expected, $nstance->getAskArgsApiParameter( $type ) );
+		$this->assertEquals(
+			$expected,
+			$nstance->getAskArgsApiParameter( $type )
+		);
 	}
 
 	/**
 	 * @dataProvider requestAskApiParametersDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testGetAskApiParameters( $test, $expected ) {
+	public function testGetAskApiParameters( $parameters, $expected ) {
 
-		$result = $this->newInstance( $test )->getAskApiParameters();
+		$instance = new ApiRequestParameterFormatter( $parameters );
+		$result = $instance->getAskApiParameters();
 
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( $expected, $result );
 	}
 
-	/**
-	 * AskArgsApi data provider
-	 *
-	 * @return array
-	 */
 	public function requestArgsApiParametersDataProvider() {
 		return array(
 			array( array( 'conditions' => array( 'Lala' ) ),         'conditions', '[[Lala]]' ),
@@ -109,11 +73,6 @@ class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
 		);
 	}
 
-	/**
-	 * AskApi data provider
-	 *
-	 * @return array
-	 */
 	public function requestAskApiParametersDataProvider() {
 		return array(
 			array( array(),  array() ),
@@ -122,4 +81,13 @@ class ApiRequestParameterFormatterTest extends SemanticMediaWikiTestCase {
 			array( array( 'query' => '[[Modification date::+]]|?Modification date|sort=desc' ),  array( '[[Modification date::+]]', '?Modification date', 'sort=desc' ) ),
 		);
 	}
+
+	private function newPrintRequest( $printout ) {
+		return new \SMWPrintRequest(
+			\SMWPrintRequest::PRINT_PROP,
+			$printout,
+			\SMWPropertyValue::makeUserProperty( $printout )
+		);
+	}
+
 }
