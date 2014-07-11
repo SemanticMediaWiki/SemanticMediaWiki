@@ -19,6 +19,7 @@
 	"smw-sp-property-searchform": "Гайта хӀумнаш чулацам болу:",
 	"concepts": "Концепташ",
 	"smw-sp-concept-header": "Концептийн могӀам",
+	"smw-sp-concept-count": "МогӀам чохь ю {{PLURAL:$1|концепт|$1 концепташ}}",
 	"smw-sp-concept-empty": "Концепташ цакарий.",
 	"unusedproperties": "Лелош йоцу хӀумнаш",
 	"smw_unusedproperties_docu": "ХӀара хӀумнаш билгалйина, амма уьш цхьам агӀонгахь лелош яц.",
