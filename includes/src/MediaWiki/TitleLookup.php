@@ -12,12 +12,12 @@ use UnexpectedValueException;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.2
  *
  * @author mwjames
  */
-class MwTitleLookup {
+class TitleLookup {
 
 	/** @var Database */
 	protected $database = null;

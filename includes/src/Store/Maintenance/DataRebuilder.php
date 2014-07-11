@@ -3,7 +3,7 @@
 namespace SMW\Store\Maintenance;
 
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\MwTitleLookup;
+use SMW\MediaWiki\TitleLookup;
 
 use SMW\Reporter\MessageReporter;
 use SMW\Reporter\NullMessageReporter;
@@ -31,25 +31,29 @@ use LinkCache;
  */
 class DataRebuilder {
 
-	/** @var MessageReporter */
-	protected $reporter;
+	/**
+	 * @var Store
+	 */
+	private $store;
 
-	/** @var Store */
-	protected $store;
+	/**
+	 * @var MessageReporter
+	 */
+	private $reporter;
 
-	protected $rebuildCount = 0;
+	private $rebuildCount = 0;
 
-	protected $delay = false;
-	protected $pages = false;
-	protected $canWriteToIdFile = false;
-	protected $start = 1;
-	protected $end = false;
-	protected $filters = false;
-	protected $fullDelete = false;
-	protected $verbose = false;
-	protected $useIds = false;
-	protected $startIdFile = false;
-	protected $query = false;
+	private $delay = false;
+	private $pages = false;
+	private $canWriteToIdFile = false;
+	private $start = 1;
+	private $end = false;
+	private $filters = false;
+	private $fullDelete = false;
+	private $verbose = false;
+	private $useIds = false;
+	private $startIdFile = false;
+	private $query = false;
 
 	/**
 	 * @since 1.9.2
@@ -318,7 +322,7 @@ class DataRebuilder {
 
 		$pages = array();
 
-		$titleLookup = new MwTitleLookup( $this->store->getDatabase() );
+		$titleLookup = new TitleLookup( $this->store->getDatabase() );
 
 		foreach ( $this->filters as $namespace ) {
 			$pages = array_merge( $pages, $titleLookup->byNamespace( $namespace )->selectAll() );

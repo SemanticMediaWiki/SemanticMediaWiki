@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\MediaWiki\MwTitleLookup;
+use SMW\MediaWiki\TitleLookup;
 
 use Title;
 
 /**
- * @covers \SMW\MediaWiki\MwTitleLookup
+ * @covers \SMW\MediaWiki\TitleLookup
  *
  * @ingroup Test
  *
@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
+class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -30,8 +30,8 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MwTitleLookup',
-			new MwTitleLookup( $database )
+			'\SMW\MediaWiki\TitleLookup',
+			new TitleLookup( $database )
 		);
 	}
 
@@ -53,7 +53,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles( $instance->byNamespace( NS_CATEGORY )->selectAll() );
 	}
@@ -77,7 +77,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles( $instance->byNamespace( NS_MAIN )->selectAll() );
 	}
@@ -100,7 +100,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles( $instance->byNamespace( NS_CATEGORY )->selectByIdRange( 1, 5 ) );
 	}
@@ -124,7 +124,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( array( $row ) ) );
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles( $instance->byNamespace( NS_MAIN )->selectByIdRange( 6, 10 ) );
 	}
@@ -144,7 +144,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( false ) );
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 
 		$this->assertArrayOfTitles( $instance->byNamespace( NS_MAIN )->selectAll() );
 	}
@@ -163,7 +163,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( 9999 ) );
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 
 		$this->assertEquals( 9999, $instance->byNamespace( NS_MAIN )->selectMaxId() );
 	}
@@ -182,7 +182,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( 1111 ) );
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 
 		$this->assertEquals( 1111, $instance->byNamespace( NS_CATEGORY )->selectMaxId() );
 	}
@@ -195,7 +195,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 		$instance->selectAll();
 	}
 
@@ -207,7 +207,7 @@ class MwTitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new MwTitleLookup( $database );
+		$instance = new TitleLookup( $database );
 		$instance->selectByIdRange( 1, 5 );
 	}
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Store\Maintenance;
 
-use SMW\MediaWiki\MwTitleLookup;
+use SMW\MediaWiki\TitleLookup;
 use SMW\Reporter\MessageReporter;
 use SMW\Reporter\NullMessageReporter;
 
@@ -230,7 +230,7 @@ class ConceptCacheRebuilder {
 
 	protected function acquireMultipleConcepts() {
 
-		$titleLookup = new MwTitleLookup( $this->store->getDatabase() );
+		$titleLookup = new TitleLookup( $this->store->getDatabase() );
 		$titleLookup->byNamespace( SMW_NS_CONCEPT );
 
 		if ( $this->endId == 0 && $this->startId == 0 ) {
