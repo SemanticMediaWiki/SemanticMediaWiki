@@ -4,7 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\Tests\Util\StringBuilder;
 
-use SMW\SPARQLStore\QueryEngine\SparqlConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
@@ -20,7 +20,7 @@ use SMWClassDescription as ClassDescription;
 use SMWNamespaceDescription as NamespaceDescription;
 
 /**
- * @covers \SMW\SPARQLStore\QueryEngine\SparqlConditionBuilder
+ * @covers \SMW\SPARQLStore\QueryEngine\QueryConditionBuilder
  *
  * @ingroup Test
  *
@@ -34,7 +34,7 @@ use SMWNamespaceDescription as NamespaceDescription;
  *
  * @author mwjames
  */
-class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $StringBuilder;
 
@@ -47,8 +47,8 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\SparqlConditionBuilder',
-			new SparqlConditionBuilder()
+			'\SMW\SPARQLStore\QueryEngine\QueryConditionBuilder',
+			new QueryConditionBuilder()
 		);
 	}
 
@@ -61,7 +61,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ThingDescription()
 		);
 
-		$instance = new SparqlConditionBuilder();
+		$instance = new QueryConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -80,7 +80,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new ValueDescription( new DIBlob( 'SomePropertyValue' ), new DIProperty( 'Foo' ) );
 
-		$instance = new SparqlConditionBuilder();
+		$instance = new QueryConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -108,7 +108,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ) )
 		);
 
-		$instance = new SparqlConditionBuilder();
+		$instance = new QueryConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -131,7 +131,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), null, SMW_CMP_LEQ )
 		);
 
-		$instance = new SparqlConditionBuilder();
+		$instance = new QueryConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -157,7 +157,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
-		$instance = new SparqlConditionBuilder();
+		$instance = new QueryConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -180,7 +180,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new NamespaceDescription( NS_HELP );
 
-		$instance = new SparqlConditionBuilder();
+		$instance = new QueryConditionBuilder();
 
 		$condition = $instance->buildCondition( $description );
 
@@ -208,7 +208,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() ),
 		) );
 
-		$instance = new SparqlConditionBuilder();
+		$instance = new QueryConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 
@@ -235,7 +235,7 @@ class SparqlConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() )
 		) );
 
-		$instance = new SparqlConditionBuilder();
+		$instance = new QueryConditionBuilder();
 
 		$condition = $instance->buildCondition( $conjunction );
 

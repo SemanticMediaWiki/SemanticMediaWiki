@@ -30,7 +30,7 @@ class MockedQueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$sparqlConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\SparqlConditionBuilder' )
+		$queryConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\QueryConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +40,7 @@ class MockedQueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\QueryEngine',
-			new QueryEngine( $connection, $sparqlConditionBuilder, $resultListConverter )
+			new QueryEngine( $connection, $queryConditionBuilder, $resultListConverter )
 		);
 	}
 
@@ -64,21 +64,21 @@ class MockedQueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$sparqlConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\SparqlConditionBuilder' )
+		$queryConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\QueryConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$sparqlConditionBuilder->expects( $this->atLeastOnce() )
+		$queryConditionBuilder->expects( $this->atLeastOnce() )
 			->method( 'setSortKeys' )
-			->will( $this->returnValue( $sparqlConditionBuilder ) );
+			->will( $this->returnValue( $queryConditionBuilder ) );
 
-		$sparqlConditionBuilder->expects( $this->once() )
+		$queryConditionBuilder->expects( $this->once() )
 			->method( 'buildCondition' )
 			->will( $this->returnValue( $condition ) );
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $sparqlConditionBuilder, new ResultListConverter( $store ) );
+		$instance = new QueryEngine( $connection, $queryConditionBuilder, new ResultListConverter( $store ) );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',

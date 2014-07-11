@@ -1,7 +1,7 @@
 <?php
 
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
-use SMW\SPARQLStore\QueryEngine\SparqlConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ResultListConverter;
 
 use SMW\SPARQLStore\RedirectLookup;
@@ -262,7 +262,7 @@ class SMWSparqlStore extends SMWStore {
 
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
-			new SparqlConditionBuilder(),
+			new QueryConditionBuilder(),
 			new ResultListConverter( $this )
 		);
 
