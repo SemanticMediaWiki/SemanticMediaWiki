@@ -1,8 +1,7 @@
 <?php
 
-namespace SMW\Api;
+namespace SMW\MediaWiki\Api;
 
-use SMW\ApiRequestParameterFormatter;
 use SMWQueryProcessor;
 
 use ApiBase;
@@ -12,7 +11,7 @@ use ApiBase;
  *
  * @ingroup Api
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.6.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

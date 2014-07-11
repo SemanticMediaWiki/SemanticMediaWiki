@@ -1,12 +1,14 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Api\Info;
+use SMW\Tests\Util\MwApiFactory;
+
+use SMW\Application;
+use SMW\MediaWiki\Api\Info;
 
 /**
- * @covers \SMW\Api\Info
- * @covers \SMW\Api\Base
+ * @covers \SMW\MediaWiki\Api\Info
  *
  * @group SMW
  * @group SMWExtension
@@ -18,10 +20,35 @@ use SMW\Api\Info;
  *
  * @author mwjames
  */
-class InfoTest extends ApiTestCase {
+class InfoTest extends \PHPUnit_Framework_TestCase {
 
-	public function getClass() {
-		return '\SMW\Api\Info';
+	private $apiFactory;
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->apiFactory = new MwApiFactory();
+		$this->application = Application::getInstance();
+	}
+
+	protected function tearDown() {
+		Application::clear();
+
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+
+		$instance = new Info(
+			$this->apiFactory->newApiMain( array() ),
+			'smwinfo'
+		);
+
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Api\Info',
+			$instance
+		);
 	}
 
 	/**
@@ -29,35 +56,49 @@ class InfoTest extends ApiTestCase {
 	 */
 	public function testExecuteOnStore( $queryParameters, $expectedType ) {
 
-		$result = $this->doApiRequest( array(
+		$result = $this->apiFactory->doApiRequest( array(
 				'action' => 'smwinfo',
 				'info' => $queryParameters
 		) );
 
-		// Info array should return with either 0 or > 0 for integers
 		if ( $expectedType === 'integer' ) {
-			$this->assertGreaterThanOrEqual( 0, $result['info'][$queryParameters] );
-		} else {
-			$this->assertInternalType( 'array', $result['info'][$queryParameters] );
+			return $this->assertGreaterThanOrEqual( 0, $result['info'][$queryParameters] );
 		}
+
+		$this->assertInternalType(
+			'array',
+			$result['info'][$queryParameters]
+		);
 	}
 
 	/**
 	 * @dataProvider countDataProvider
 	 */
-	public function testExecuteOnMockStore( $test, $type, $expected ) {
+	public function testExecuteOnMockStore( $statistics, $type, $expected ) {
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'getStatistics' => $test
-		) );
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 
-		$api = new Info( $this->getApiMain( array( 'info' => $type ) ), 'smwinfo' );
-		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
-		$api->execute();
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getStatistics' )
+			->will( $this->returnValue( $statistics ) );
 
-		$result = $api->getResultData();
+		$this->application->registerObject( 'Store', $store );
 
-		$this->assertEquals( $expected, $result['info'][ $type ] );
+		$instance = new Info(
+			$this->apiFactory->newApiMain( array( 'info' => $type ) ),
+			'smwinfo'
+		);
+
+		$instance->execute();
+
+		$result = $instance->getResultData();
+
+		$this->assertEquals(
+			$expected,
+			$result['info'][ $type ]
+		);
 	}
 
 	/**
@@ -70,7 +111,7 @@ class InfoTest extends ApiTestCase {
 	 */
 	public function testUnknownQueryParameter() {
 
-		$data = $this->doApiRequest( array(
+		$data = $this->apiFactory->doApiRequest( array(
 				'action' => 'smwinfo',
 				'info' => 'Foo'
 		) );

@@ -27,7 +27,6 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 ### Obsolete
 * `ParserTestCase` derives from SemanticMediaWikiTestCase
 * `SemanticMediaWikiTestCase` derives from <code>PHPUnit_Framework_TestCase</code> and adds some convenient functions
-* `ApiTestCase` derives from `SemanticMediaWikiTestCase` and provides a framework for unit tests that directly require access to the MediaWiki Api interface
 
 ## Integration testing
 

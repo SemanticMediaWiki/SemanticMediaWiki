@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Api;
 
 use InvalidArgumentException;
 use SMWQueryResult;
@@ -10,20 +10,26 @@ use SMWQueryResult;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-final class ApiQueryResultFormatter {
+class ApiQueryResultFormatter {
 
-	/** @var Integer|boolean */
+	/**
+	 * @var Integer|boolean
+	 */
 	protected $continueOffset = false;
 
-	/** @var String */
+	/**
+	 * @var String
+	 */
 	protected $type;
 
-	/** @var Boolean */
+	/**
+	 * @var Boolean
+	 */
 	protected $isRawMode = false;
 
 	/**
@@ -87,7 +93,7 @@ final class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 */
-	public function runFormatter() {
+	public function doFormat() {
 
 		if ( $this->queryResult->getErrors() !== array() ) {
 			$this->result = $this->formatErrors( $this->queryResult->getErrors() );

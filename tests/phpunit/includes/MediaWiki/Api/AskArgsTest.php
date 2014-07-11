@@ -1,12 +1,14 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Api\AskArgs;
+use SMW\Tests\Util\MwApiFactory;
+
+use SMW\MediaWiki\Api\AskArgs;
+use SMW\Application;
 
 /**
- * @covers \SMW\Api\AskArgs
- * @covers \SMW\Api\Base
+ * @covers \SMW\MediaWiki\Api\AskArgs
  *
  * @group SMW
  * @group SMWExtension
@@ -18,10 +20,35 @@ use SMW\Api\AskArgs;
  *
  * @author mwjames
  */
-class AskArgsTest extends ApiTestCase {
+class AskArgsTest extends \PHPUnit_Framework_TestCase  {
 
-	public function getClass() {
-		return '\SMW\Api\AskArgs';
+	private $apiFactory;
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->apiFactory = new MwApiFactory();
+		$this->application = Application::getInstance();
+	}
+
+	protected function tearDown() {
+		Application::clear();
+
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+
+		$instance = new AskArgs(
+			$this->apiFactory->newApiMain( array() ),
+			'askargs'
+		);
+
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Api\AskArgs',
+			$instance
+		);
 	}
 
 	/**
@@ -29,7 +56,7 @@ class AskArgsTest extends ApiTestCase {
 	 */
 	public function testExecuteOnStore( array $query, array $expected ) {
 
-		$results = $this->doApiRequest( array(
+		$results = $this->apiFactory->doApiRequest( array(
 			'action'     => 'askargs',
 			'conditions' => $query['conditions'],
 			'printouts'  => $query['printouts'],
@@ -48,12 +75,6 @@ class AskArgsTest extends ApiTestCase {
 		);
 	}
 
-	/**
-	 * Test against a mock store to ensure that methods are executed
-	 * regardless whether a "real" Store is available or not
-	 *
-	 * @since 1.9
-	 */
 	public function testExecuteOnMockStore() {
 
 		$requestParameters = array(
@@ -75,26 +96,29 @@ class AskArgsTest extends ApiTestCase {
 			)
 		);
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'getQueryResult' => array( $this, 'mockStoreQueryResultCallback' )
-		) );
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 
-		$api = new AskArgs( $this->getApiMain( $requestParameters ), 'askargs' );
-		$api->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Store', $mockStore );
-		$api->execute();
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getQueryResult' )
+			->will( $this->returnCallback( array( $this, 'mockStoreQueryResultCallback' ) ) );
 
-		$result = $api->getResultData();
+		$this->application->registerObject( 'Store', $store );
+
+		$instance = new AskArgs(
+			$this->apiFactory->newApiMain( $requestParameters ),
+			'askargs'
+		);
+
+		$instance->execute();
+
+		$result = $instance->getResultData();
 
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( $expected, $result );
 	}
 
-	/**
-	 * Use a callback injection to control the return value of the
-	 * induced mock object
-	 *
-	 * @return SMWQueryResult
-	 */
 	public function mockStoreQueryResultCallback( $query ) {
 
 		$result = '';
@@ -111,18 +135,25 @@ class AskArgsTest extends ApiTestCase {
 			);
 		}
 
-		return $this->newMockBuilder()->newObject( 'QueryResult', array(
-			'toArray'           => $result,
-			'hasFurtherResults' => true
-		) );
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
 
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'toArray' )
+			->will( $this->returnValue( $result ) );
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'hasFurtherResults' )
+			->will( $this->returnValue( true ) );
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
+
+		return $queryResult;
 	}
 
-	/**
-	 * Provides a query array and its expected printrequest array
-	 *
-	 * @return array
-	 */
 	public function queryDataProvider() {
 		return array(
 

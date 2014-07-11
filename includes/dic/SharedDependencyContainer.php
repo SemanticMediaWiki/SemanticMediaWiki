@@ -2,6 +2,9 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\PageCreator;
+
 /**
  * Extends the BaseDependencyContainer to provide general purpose dependency
  * object definitions
@@ -166,6 +169,15 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 */
 			'WikiPage' => function ( DependencyBuilder $builder ) {
 				return \WikiPage::factory( $builder->getArgument( 'Title' ) );
+			},
+
+			/**
+			 * @since  2.0
+			 *
+			 * @return TitleCreator
+			 */
+			'TitleCreator' => function ( DependencyBuilder $builder ) {
+				return new TitleCreator( new PageCreator() );
 			},
 
 			/**

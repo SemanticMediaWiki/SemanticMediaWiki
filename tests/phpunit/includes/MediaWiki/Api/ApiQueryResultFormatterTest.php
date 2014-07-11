@@ -1,121 +1,123 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\ApiQueryResultFormatter;
+use SMW\MediaWiki\Api\ApiQueryResultFormatter;
 
 use SMWQueryResult;
 
+use ReflectionClass;
+
 /**
- * @covers \SMW\ApiQueryResultFormatter
+ * @covers \SMW\MediaWiki\Api\ApiQueryResultFormatter
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
+class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\ApiQueryResultFormatter';
+	public function testCanConstruct() {
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Api\ApiQueryResultFormatter',
+			new ApiQueryResultFormatter( $queryResult )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return ApiQueryResultFormatter
-	 */
-	private function newInstance( SMWQueryResult $queryResult = null ) {
-
-		if ( $queryResult === null ) {
-			$queryResult = $this->newMockBuilder()->newObject( 'QueryResult' );
-		}
-
-		return new ApiQueryResultFormatter( $queryResult );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testSetIndexedTagNameException() {
 
-		$this->SetExpectedException( 'InvalidArgumentException' );
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$instance = $this->newInstance();
+		$instance = new ApiQueryResultFormatter( $queryResult );
 		$instance->setIsRawMode( true );
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\MediaWiki\Api\ApiQueryResultFormatter' );
 		$method = $reflector->getMethod( 'setIndexedTagName' );
 		$method->setAccessible( true );
 
-		$this->assertTrue( $method->invoke( $instance, array(), null ) );
+		$this->setExpectedException( 'InvalidArgumentException' );
 
+		$this->assertTrue( $method->invoke( $instance, array(), null ) );
 	}
 
 	/**
 	 * @dataProvider resultDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testResultFormat( array $test, array $expected ) {
+	public function testResultFormat( array $parameters, array $expected ) {
 
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
-			'toArray'           => $test['result'],
-			'getErrors'         => array(),
-			'hasFurtherResults' => $test['furtherResults']
-		) );
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$instance = $this->newInstance( $queryResult );
-		$instance->setIsRawMode( $test['rawMode'] );
-		$instance->runFormatter();
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'toArray' )
+			->will( $this->returnValue( $parameters['result'] ) );
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( array() ) );
+
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'hasFurtherResults' )
+			->will( $this->returnValue( $parameters['furtherResults'] ) );
+
+		$instance = new ApiQueryResultFormatter( $queryResult );
+
+		$instance->setIsRawMode( $parameters['rawMode'] );
+		$instance->doFormat();
 
 		$this->assertEquals( 'query', $instance->getType() );
-		$this->assertEquals( $expected['result'], $instance->getResult() );
-		$this->assertEquals( $expected['continueOffset'], $instance->getContinueOffset() );
 
+		$this->assertEquals(
+			$expected['result'],
+			$instance->getResult()
+		);
+
+		$this->assertEquals(
+			$expected['continueOffset'],
+			$instance->getContinueOffset()
+		);
 	}
 
 	/**
 	 * @dataProvider errorDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testErrorFormat( array $test, array $expected ) {
+	public function testErrorFormat( array $parameters, array $expected ) {
 
-		$queryResult = $this->newMockBuilder()->newObject( 'QueryResult', array(
-			'toArray'           => array(),
-			'getErrors'         => $test['errors'],
-			'hasFurtherResults' => false
-		) );
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$instance = $this->newInstance( $queryResult );
+		$queryResult->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( $parameters['errors'] ) );
 
-		$instance->setIsRawMode( $test['rawMode'] );
-		$instance->runFormatter();
+		$instance = new ApiQueryResultFormatter( $queryResult );
+
+		$instance->setIsRawMode( $parameters['rawMode'] );
+		$instance->doFormat();
 
 		$this->assertEquals( 'error', $instance->getType() );
-		$this->assertEquals( $expected, $instance->getResult() );
 
+		$this->assertEquals(
+			$expected,
+			$instance->getResult()
+		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function resultDataProvider() {
 
 		$result = array(
@@ -310,9 +312,6 @@ class ApiQueryResultFormatterTest extends SemanticMediaWikiTestCase {
 		return $provider;
 	}
 
-	/**
-	 * @return array
-	 */
 	public function errorDataProvider() {
 
 		$errors = array( 'Foo', 'Bar' );

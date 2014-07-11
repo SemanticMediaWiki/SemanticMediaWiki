@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW\Api;
+namespace SMW\MediaWiki\Api;
 
-use SMW\SerializerFactory;
+use SMW\Application;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -10,7 +10,7 @@ use Title;
 use ApiBase;
 
 /**
- * Api module to browse a subject
+ * Browse a subject api module
  *
  * @note Browsing of a subobject subject is limited to its "parent" subject,
  * meaning that a request for a "Foo#_ed5a9979db6609b32733eda3fb747d21" subject
@@ -20,12 +20,17 @@ use ApiBase;
  *
  * @ingroup Api
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class BrowseBySubject extends Base {
+class BrowseBySubject extends ApiBase {
+
+	/**
+	 * @var Title
+	 */
+	private $title;
 
 	/**
 	 * @see ApiBase::execute
@@ -34,40 +39,24 @@ class BrowseBySubject extends Base {
 
 		$params = $this->extractRequestParams();
 
-		$serialized = SerializerFactory::serialize(
-			$this->withContext()->getStore()->getSemanticData( $this->newSubjectFromText( $params['subject'] ) )
-		);
+		$application = Application::getInstance();
+
+		try {
+			$this->title = $application->newTitleCreator()->createFromText( $params['subject'] )->findRedirect()->getTitle();
+		} catch ( \Exception $e ) {
+			$this->dieUsageMsg( array( 'invalidtitle', $this->title ) );
+		}
+
+		$semanticData = $application->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) );
 
 		$this->getResult()->addValue(
 			null,
 			'query',
-			$this->runFormatter( $serialized )
+			$this->doFormat( $application->newSerializerFactory()->serialize( $semanticData ) )
 		);
 	}
 
-	protected function newSubjectFromText( $text ) {
-		return DIWikiPage::newFromTitle( $this->constructValidTitle( Title::newFromText( $text ) ) );
-	}
-
-	protected function constructValidTitle( $title ) {
-
-		if ( $title instanceOf Title && $title->isRedirect() ) {
-
-			$page = $this->withContext()->getDependencyBuilder()->newObject( 'WikiPage', array(
-				'Title' => $title
-			) );
-
-			$title = $this->constructValidTitle( $page->getRedirectTarget() );
-		}
-
-		if ( $title instanceof Title && $title->isValidRedirectTarget() ) {
-			return $title;
-		}
-
-		$this->dieUsageMsg( array( 'invalidtitle', $title ) );
-	}
-
-	protected function runFormatter( $serialized ) {
+	protected function doFormat( $serialized ) {
 
 		$this->addIndexTags( $serialized );
 
