@@ -2,7 +2,7 @@
 
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\SparqlConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\SparqlResultConverter;
+use SMW\SPARQLStore\QueryEngine\ResultListConverter;
 
 use SMW\SPARQLStore\RedirectLookup;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
@@ -263,7 +263,7 @@ class SMWSparqlStore extends SMWStore {
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
 			new SparqlConditionBuilder(),
-			new SparqlResultConverter( $this )
+			new ResultListConverter( $this )
 		);
 
 		if ( $query->querymode == SMWQuery::MODE_DEBUG ) {

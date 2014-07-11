@@ -176,15 +176,15 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
 	}
 
-	private function createMockSparqlDatabaseFor( $resultWrapperReturnValue ) {
+	private function createMockSparqlDatabaseFor( $listReturnValue ) {
 
-		$sparqlResultWrapper = $this->getMockBuilder( '\SMWSparqlResultWrapper' )
+		$federateResultList = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$sparqlResultWrapper->expects( $this->once() )
+		$federateResultList->expects( $this->once() )
 			->method( 'current' )
-			->will( $this->returnValue( $resultWrapperReturnValue ) );
+			->will( $this->returnValue( $listReturnValue ) );
 
 		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
 			->disableOriginalConstructor()
@@ -192,7 +192,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $sparqlResultWrapper ) );
+			->will( $this->returnValue( $federateResultList ) );
 
 		return $sparqlDatabase;
 	}

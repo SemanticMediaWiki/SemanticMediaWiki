@@ -1,12 +1,9 @@
 <?php
-/**
- * Class for representing SPARQL query results.
- * 
- * @file
- * @ingroup SMWSparql
- * 
- * @author Markus Krötzsch
- */
+
+namespace SMW\SPARQLStore\QueryEngine;
+
+use SMWExpLiteral as ExpLiteral;
+use Iterator;
 
 /**
  * Class for accessing SPARQL query results in a unified form. The data is
@@ -14,11 +11,14 @@
  * Rows should always have the same number of columns, but the datatype of the
  * cells in each column may not be uniform throughout the result.
  *
+ * @ingroup Sparql
+ *
+ * @license GNU GPL v2+
  * @since 1.6
  *
- * @ingroup SMWSparql
+ * @author Markus Krötzsch
  */
-class SMWSparqlResultWrapper implements Iterator {
+class FederateResultList implements Iterator {
 
 	/// Error code: no errors occurred.
 	const ERROR_NOERROR     = 0;
@@ -31,7 +31,7 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * Associative array mapping SPARQL variable names to column indices.
 	 * @var array of integer
 	 */
-	protected $m_header;
+	protected $header;
 
 	/**
 	 * List of result rows. Individual entries can be null if a cell in the
@@ -39,20 +39,20 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * node).
 	 * @var array of array of (SMWExpElement or null)
 	 */
-	protected $m_data;
+	protected $data;
 
 	/**
 	 * List of comment strings found in the XML file (without surrounding
 	 * markup, i.e. the actual string only).
 	 * @var array of string
 	 */
-	protected $m_comments;
+	protected $comments;
 
 	/**
 	 * Error code.
 	 * @var integer
 	 */
-	protected $m_errorCode;
+	protected $errorCode;
 
 	/**
 	 * Initialise a result set from a result string in SPARQL XML format.
@@ -63,11 +63,11 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @param $errorCode integer an error code
 	 */
 	public function __construct( array $header, array $data, array $comments = array(), $errorCode = self::ERROR_NOERROR ) {
-		$this->m_header    = $header;
-		$this->m_data      = $data;
-		$this->m_comments  = $comments;
-		$this->m_errorCode = $errorCode;
-		reset( $this->m_data );
+		$this->header    = $header;
+		$this->data      = $data;
+		$this->comments  = $comments;
+		$this->errorCode = $errorCode;
+		reset( $this->data );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @return interger number of result rows
 	 */
 	public function numRows() {
-		return count( $this->m_data );
+		return count( $this->data );
 	}
 
 	/**
@@ -86,32 +86,32 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @return integer error code
 	 */
 	public function getErrorCode() {
-		return $this->m_errorCode;
+		return $this->errorCode;
 	}
 
 	/**
 	 * Set the error code of this result set. This is used for allowing
 	 * callers to add additional errors discovered only later on. It does
-	 * not allow removing existing errors, since it will not accept 
+	 * not allow removing existing errors, since it will not accept
 	 * SMWSparqlResultWrapper::ERROR_NOERROR as a parameter.
 	 *
 	 * @param $errorCode integer error code
 	 */
 	public function setErrorCode( $errorCode ) {
 		if ( $errorCode != self::ERROR_NOERROR ) {
-			$this->m_errorCode = $errorCode;
+			$this->errorCode = $errorCode;
 		}
 	}
 
 	/**
 	 * Return a list of comment strings found in the SPARQL result. Comments
 	 * are used by some RDF stores to provide additional information or
-	 * warnings that can thus be accessed. 
+	 * warnings that can thus be accessed.
 	 *
 	 * @return array of string
 	 */
 	public function getComments() {
-		return $this->m_comments;
+		return $this->comments;
 	}
 
 	/**
@@ -123,10 +123,10 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @return boolean
 	 */
 	public function isBooleanTrue() {
-		if ( count( $this->m_data ) == 1 ) {
-			$row = reset( $this->m_data );
+		if ( count( $this->data ) == 1 ) {
+			$row = reset( $this->data );
 			$expElement = reset( $row );
-			if ( ( count( $row ) == 1 ) && ( $expElement instanceof SMWExpLiteral ) &&
+			if ( ( count( $row ) == 1 ) && ( $expElement instanceof ExpLiteral ) &&
 			     ( $expElement->getLexicalForm() == 'true' ) &&
 			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#boolean' ) ) {
 				return true;
@@ -144,10 +144,10 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @return integer
 	 */
 	public function getNumericValue() {
-		if ( count( $this->m_data ) == 1 ) {
-			$row = reset( $this->m_data );
+		if ( count( $this->data ) == 1 ) {
+			$row = reset( $this->data );
 			$expElement = reset( $row );
-			if ( ( count( $row ) == 1 ) && ( $expElement instanceof SMWExpLiteral ) &&
+			if ( ( count( $row ) == 1 ) && ( $expElement instanceof ExpLiteral ) &&
 			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#integer' ) ) {
 				return (int)$expElement->getLexicalForm();
 			}
@@ -159,7 +159,7 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * Reset iterator to position 0. Standard method of Iterator.
 	 */
 	public function rewind() {
-		reset( $this->m_data );
+		reset( $this->data );
 	}
 
 	/**
@@ -168,7 +168,7 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
 	public function current() {
-		return current( $this->m_data );
+		return current( $this->data );
 	}
 
 	/**
@@ -178,7 +178,7 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
 	public function next() {
-		return next( $this->m_data );
+		return next( $this->data );
 	}
 
 	/**
@@ -188,7 +188,7 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @return array of (SMWExpElement or null), or false at end of data
 	 */
 	public function key() {
-		return key( $this->m_data );
+		return key( $this->data );
 	}
 
 	/**
@@ -198,7 +198,7 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * @return boolean
 	 */
 	public function valid() {
-		return ( current( $this->m_data ) !== false );
+		return ( current( $this->data ) !== false );
 	}
 
 }

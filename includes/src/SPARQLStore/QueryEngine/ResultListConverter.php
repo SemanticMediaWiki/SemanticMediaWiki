@@ -4,13 +4,12 @@ namespace SMW\SPARQLStore\QueryEngine;
 
 use SMW\Store;
 
-use SMWSparqlResultWrapper as SparqlResultWrapper;
 use SMWExporter as Exporter;
 use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
 
 /**
- * Convert SPARQL SparqlResultWrapper object to an QueryResult object
+ * Convert SPARQL FederateResultList object to an QueryResult object
  *
  * @ingroup Store
  *
@@ -19,7 +18,7 @@ use SMWQuery as Query;
  *
  * @author Markus Krötzsch
  */
-class SparqlResultConverter {
+class ResultListConverter {
 
 	/**
 	 * @var Store
@@ -40,21 +39,21 @@ class SparqlResultConverter {
 	 * result wrapper must have an according format (one result column that
 	 * contains URIs of wiki pages).
 	 *
-	 * @param SparqlResultWrapper $sparqlResultWrapper
+	 * @param FederateResultList $federateResultList
 	 * @param Query $query QueryResults hold a reference to original query
 	 *
 	 * @return QueryResult
 	 */
-	public function convertToQueryResult( SparqlResultWrapper $sparqlResultWrapper, Query $query ) {
+	public function convertToQueryResult( FederateResultList $federateResultList, Query $query ) {
 
 		if ( $query->querymode === Query::MODE_COUNT ) {
-			return $this->makeQueryResultForCount( $sparqlResultWrapper, $query );
+			return $this->makeQueryResultForCount( $federateResultList, $query );
 		}
 
-		return $this->makeQueryResultForInstance( $sparqlResultWrapper,$query );
+		return $this->makeQueryResultForInstance( $federateResultList,$query );
 	}
 
-	private function makeQueryResultForCount( SparqlResultWrapper $sparqlResultWrapper, Query $query ) {
+	private function makeQueryResultForCount( FederateResultList $federateResultList, Query $query ) {
 
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
@@ -64,8 +63,8 @@ class SparqlResultConverter {
 			false
 		);
 
-		if ( $sparqlResultWrapper->getErrorCode() === SparqlResultWrapper::ERROR_NOERROR ) {
-			$queryResult->setCountValue( $sparqlResultWrapper->getNumericValue() );
+		if ( $federateResultList->getErrorCode() === FederateResultList::ERROR_NOERROR ) {
+			$queryResult->setCountValue( $federateResultList->getNumericValue() );
 		} else {
 			$queryResult->addErrors( array( wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguage()->text() ) );
 		}
@@ -73,11 +72,11 @@ class SparqlResultConverter {
 		return $queryResult;
 	}
 
-	private function makeQueryResultForInstance( SparqlResultWrapper $sparqlResultWrapper, Query $query ) {
+	private function makeQueryResultForInstance( FederateResultList $federateResultList, Query $query ) {
 
 		$resultDataItems = array();
 
-		foreach ( $sparqlResultWrapper as $resultRow ) {
+		foreach ( $federateResultList as $resultRow ) {
 			if ( count( $resultRow ) > 0 ) {
 				$dataItem = Exporter::findDataItemForExpElement( $resultRow[0] );
 
@@ -87,7 +86,7 @@ class SparqlResultConverter {
 			}
 		}
 
-		if ( $sparqlResultWrapper->numRows() > $query->getLimit() ) {
+		if ( $federateResultList->numRows() > $query->getLimit() ) {
 			array_pop( $resultDataItems );
 			$hasFurtherResults = true;
 		} else {
@@ -102,9 +101,9 @@ class SparqlResultConverter {
 			$hasFurtherResults
 		);
 
-		switch ( $sparqlResultWrapper->getErrorCode() ) {
-			case SparqlResultWrapper::ERROR_NOERROR: break;
-			case SparqlResultWrapper::ERROR_INCOMPLETE:
+		switch ( $federateResultList->getErrorCode() ) {
+			case FederateResultList::ERROR_NOERROR: break;
+			case FederateResultList::ERROR_INCOMPLETE:
 				$result->addErrors( array( wfMessage( 'smw_db_sparqlqueryincomplete' )->inContentLanguage()->text() ) );
 			break;
 			default:

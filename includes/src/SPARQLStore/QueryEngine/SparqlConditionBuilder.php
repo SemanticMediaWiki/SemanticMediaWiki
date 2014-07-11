@@ -16,7 +16,6 @@ use SMW\DIWikiPage;
 
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
-use SMWSparqlResultWrapper as ResultWrapper;
 use SMWDescription as Description;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;

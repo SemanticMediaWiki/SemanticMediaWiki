@@ -104,7 +104,7 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = new SemanticData( new DIWikiPage( 'Foo', NS_MAIN, '' ) );
 
-		$sparqlResultWrapper = $this->getMockBuilder( '\SMWSparqlResultWrapper' )
+		$listReturnValue = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -118,7 +118,7 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$sparqlDatabase->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $sparqlResultWrapper ) );
+			->will( $this->returnValue( $listReturnValue ) );
 
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'insertData' );

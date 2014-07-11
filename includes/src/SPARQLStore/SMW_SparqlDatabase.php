@@ -3,11 +3,10 @@
 use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
 use SMW\SPARQLStore\BadHttpResponseMapper;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
+use SMW\SPARQLStore\QueryEngine\FederateResultList;
 
 use SMW\CurlRequest;
 use SMW\HttpRequest;
-
-use SMWSparqlResultWrapper as SparqlResultWrapper;
 
 /**
  * Basic database connector for exchanging data via SPARQL.
@@ -170,7 +169,7 @@ class SMWSparqlDatabase {
 	 * @param $options array (associative) of options, e.g. array( 'LIMIT' => '10' )
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return SMWSparqlResultWrapper
+	 * @return SMWFederateResultList
 	 */
 	public function select( $vars, $where, $options = array(), $extraNamespaces = array() ) {
 		return $this->doQuery( $this->getSparqlForSelect( $vars, $where, $options, $extraNamespaces ) );
@@ -227,7 +226,7 @@ class SMWSparqlDatabase {
 	 * @param $where string WHERE part of the query, without surrounding { }
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return SMWSparqlResultWrapper
+	 * @return SMWFederateResultList
 	 */
 	public function ask( $where, $extraNamespaces = array() ) {
 		return $this->doQuery( $this->getSparqlForAsk( $where, $extraNamespaces ) );
@@ -259,7 +258,7 @@ class SMWSparqlDatabase {
 	 * @param $options array (associative) of options, e.g. array('LIMIT' => '10')
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return SMWSparqlResultWrapper
+	 * @return SMWFederateResultList
 	 */
 	public function selectCount( $variable, $where, $options = array(), $extraNamespaces = array() ) {
 
@@ -403,7 +402,7 @@ class SMWSparqlDatabase {
 
 
 	/**
-	 * Execute a SPARQL query and return an SMWSparqlResultWrapper object
+	 * Execute a SPARQL query and return an SMWFederateResultList object
 	 * that contains the results. The method throws exceptions based on
 	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
 	 * method does not throw anything, then an empty result with an error
@@ -414,7 +413,7 @@ class SMWSparqlDatabase {
 	 *
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
 	 *
-	 * @return SMWSparqlResultWrapper
+	 * @return SMWFederateResultList
 	 */
 	public function doQuery( $sparql ) {
 
@@ -441,11 +440,11 @@ class SMWSparqlDatabase {
 
 		$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
 
-		return new SparqlResultWrapper(
+		return new FederateResultList(
 			array(),
 			array(),
 			array(),
-			SparqlResultWrapper::ERROR_UNREACHABLE
+			FederateResultList::ERROR_UNREACHABLE
 		);
 	}
 

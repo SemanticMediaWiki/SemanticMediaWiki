@@ -3,10 +3,10 @@
 namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
+use SMW\SPARQLStore\QueryEngine\FederateResultList;
 
 use SMWSparqlDatabase as SparqlDatabase;
 use SMWSparqlResultParser as SparqlResultParser;
-use SMWSparqlResultWrapper as SparqlResultWrapper;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
@@ -22,7 +22,7 @@ use SMWTurtleSerializer as TurtleSerializer;
 class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 
 	/**
-	 * Execute a SPARQL query and return an SparqlResultWrapper object
+	 * Execute a SPARQL query and return an FederateResultList object
 	 * that contains the results. Compared to SMWSparqlDatabase::doQuery(),
 	 * this also supports the parameter "restricted=1" which 4Store provides
 	 * to enforce strict resource bounds on query answering. The method also
@@ -34,7 +34,7 @@ class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 	 * limit settings of your 4Store server.
 	 *
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
-	 * @return SparqlResultWrapper
+	 * @return FederateResultList
 	 */
 	public function doQuery( $sparql ) {
 
@@ -58,13 +58,13 @@ class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 			$result = $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
 		} else {
 			$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
-			$result = new SparqlResultWrapper( array(), array(), array(), SparqlResultWrapper::ERROR_UNREACHABLE );
+			$result = new FederateResultList( array(), array(), array(), FederateResultList::ERROR_UNREACHABLE );
 		}
 
 		foreach ( $result->getComments() as $comment ) {
 			if ( strpos( $comment, 'warning: hit complexity limit' ) === 0 ||
 			     strpos( $comment, 'some results have been dropped' ) === 0 ) {
-				$result->setErrorCode( SparqlResultWrapper::ERROR_INCOMPLETE );
+				$result->setErrorCode( FederateResultList::ERROR_INCOMPLETE );
 			} //else debug_zval_dump($comment);
 		}
 
@@ -83,7 +83,7 @@ class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
 		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", array(), $extraNamespaces );
-		$success = ( $affectedObjects->getErrorCode() == SparqlResultWrapper::ERROR_NOERROR );
+		$success = ( $affectedObjects->getErrorCode() == FederateResultList::ERROR_NOERROR );
 
 		foreach ( $affectedObjects as $expElements ) {
 			if ( count( $expElements ) > 0 ) {

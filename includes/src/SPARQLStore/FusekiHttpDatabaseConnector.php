@@ -2,11 +2,11 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
+use SMW\SPARQLStore\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
+use SMW\SPARQLStore\QueryEngine\FederateResultList;
 
 use SMWSparqlDatabase as SparqlDatabase;
-use SMWSparqlResultWrapper as SparqlResultWrapper;
 
 /**
  * @see https://jena.apache.org/documentation/serving_data/index.html
@@ -24,7 +24,7 @@ class FusekiHttpDatabaseConnector extends SparqlDatabase {
 	public function doQuery( $sparql ) {
 
 		if ( $this->m_queryEndpoint === '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
@@ -46,11 +46,11 @@ class FusekiHttpDatabaseConnector extends SparqlDatabase {
 
 		$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
 
-		return new SparqlResultWrapper(
+		return new FederateResultList(
 			array(),
 			array(),
 			array(),
-			SparqlResultWrapper::ERROR_UNREACHABLE
+			FederateResultList::ERROR_UNREACHABLE
 		);
 	}
 
