@@ -33,10 +33,11 @@ Not a release yet.
 * #311 Removed `MediaWikiTestCase` dependency
 * #315 Updated jquery.qTip2 from v2.0.0 to v2.2.0 (Mar 17 2014)
 * #332 Added the number of pages and percentage done to report messages when rebuilding selected pages
-* #337 Added [Jena Fuseki](http://jena.apache.org/) (1.0.2) as service to Travis-CI in order automated `SPARQLStore` tests
+* #337 Added [Jena Fuseki](http://jena.apache.org/) (1.0.2) as service to Travis-CI  to support automated `SPARQLStore` tests
 * #349 Added `hhvm-nightly` as service to run tests on HHVM 3.2+
 * #360 Refactored `SparqlStore` to move redirect handling into its own `RedirectLookup` component to improve testability  
 * #360 Added `TurtleTriplesBuilder` to aid testability of the `SPARQLStore`
 * #366 Added lazy load of SubSemanticData to `Sql3StubSemanticData` 
-* #371, #379, #375, #383 Modernized `SPARQLStore` implemenation
+* #371, #379, #375, #383, #392, #393, #395, #402 Modernized `SPARQLStore` implemenation
 * #382 Extended interface to support `format=count` information in `QueryResult`
+* #394 Added [Virtuoso opensource 6.1](https://github.com/openlink/virtuoso-opensource) as service to Travis-CI to support automated `SPARQLStore` tests
