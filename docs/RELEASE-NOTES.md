@@ -1,4 +1,4 @@
-# Semantic MediaWiki 1.9.3
+# Semantic MediaWiki 2.0
 
 Not a release yet.
 
