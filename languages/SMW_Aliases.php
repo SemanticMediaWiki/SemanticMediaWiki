@@ -275,6 +275,17 @@ $specialPageAliases['gsw'] = array(
 
 /** Hebrew (עברית) */
 $specialPageAliases['he'] = array(
+	'Ask' => array( 'שאלה' ),
+	'Browse' => array( 'עיון' ),
+	'ExportRDF' => array( 'ייצור_RDF' ),
+	'PageProperty' => array( 'מאפיין_דף' ),
+	'Properties' => array( 'מאפיינים' ),
+	'Concepts' => array( 'רעיונות' ),
+	'SMWAdmin' => array( 'ניהול_SMW' ),
+	'SearchByProperty' => array( 'חיפוש_לפי_שאילתה' ),
+	'SemanticStatistics' => array( 'סטטיסטיקות_סמנטיות' ),
+	'Types' => array( 'סוגים' ),
+	'URIResolver' => array( 'פותר_URI' ),
 	'UnusedProperties' => array( 'מאפיינים_שאינם_בשימוש' ),
 	'WantedProperties' => array( 'מאפיינים_מבוקשים' ),
 );
