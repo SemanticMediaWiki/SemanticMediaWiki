@@ -248,17 +248,6 @@ class SMWSparqlStore extends SMWStore {
 	 * @since 1.6
 	 */
 	public function getQueryResult( SMWQuery $query ) {
-		global $smwgIgnoreQueryErrors;
-
-		if ( ( !$smwgIgnoreQueryErrors || $query->getDescription() instanceof SMWThingDescription ) &&
-		     $query->querymode != SMWQuery::MODE_DEBUG &&
-		     count( $query->getErrors() ) > 0 ) {
-			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this, false );
-		}
-
-		if ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
-			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this, true );
-		}
 
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
@@ -266,13 +255,11 @@ class SMWSparqlStore extends SMWStore {
 			new ResultListConverter( $this )
 		);
 
-		if ( $query->querymode == SMWQuery::MODE_DEBUG ) {
-			return $queryEngine->getDebugQueryResult( $query );
-		} elseif ( $query->querymode == SMWQuery::MODE_COUNT ) {
-			return $queryEngine->getCountQueryResult( $query );
-		}
-
-		return $queryEngine->getInstanceQueryResult( $query );
+		return $queryEngine
+			->setIgnoreQueryErrors( $GLOBALS['smwgIgnoreQueryErrors'] )
+			->setSortingSupport( $GLOBALS['smwgQSortingSupport'] )
+			->setRandomSortingSupport( $GLOBALS['smwgQRandSortingSupport'] )
+			->getQueryResult( $query );
 	}
 
 	/**

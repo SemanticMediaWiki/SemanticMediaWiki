@@ -36,7 +36,7 @@ use SMWNamespaceDescription as NamespaceDescription;
  */
 class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
-	private $StringBuilder;
+	private $stringBuilder;
 
 	protected function setUp() {
 		parent::setUp();
@@ -78,7 +78,10 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryForSinglePropertyWithValue() {
 
-		$description = new ValueDescription( new DIBlob( 'SomePropertyValue' ), new DIProperty( 'Foo' ) );
+		$description = new ValueDescription(
+			new DIBlob( 'SomePropertyValue' ),
+			new DIProperty( 'Foo' )
+		);
 
 		$instance = new QueryConditionBuilder();
 

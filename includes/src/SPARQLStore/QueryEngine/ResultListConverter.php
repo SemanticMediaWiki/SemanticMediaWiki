@@ -17,6 +17,7 @@ use SMWQuery as Query;
  * @since 2.0
  *
  * @author Markus Krötzsch
+ * @author mwjames
  */
 class ResultListConverter {
 
@@ -26,12 +27,30 @@ class ResultListConverter {
 	private $store;
 
 	/**
-	 * @since  1.9.3
+	 * @since 2.0
 	 *
 	 * @param Store $store
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
+	}
+
+	/**
+	 * @since  2.0
+	 *
+	 * @param Query $query QueryResults hold a reference to original query
+	 * @param boolean $hasFurtherResults
+	 *
+	 * @return QueryResult
+	 */
+	public function newEmptyQueryResult( Query $query , $hasFurtherResults = false ) {
+		return new QueryResult(
+			$query->getDescription()->getPrintrequests(),
+			$query,
+			array(),
+			$this->store,
+			$hasFurtherResults
+		);
 	}
 
 	/**

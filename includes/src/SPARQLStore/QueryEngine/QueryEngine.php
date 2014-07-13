@@ -7,11 +7,12 @@ use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\FederateResultList;
 
-use SMW\Store;
+use SMW\QueryOutputFormatter;
 
 use SMWSparqlDatabase as SparqlDatabase;
 use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
+use SMWThingDescription as ThingDescription;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
@@ -20,9 +21,10 @@ use SMWQuery as Query;
  * @ingroup Store
  *
  * @license GNU GPL v2+
- * @since 1.6 (updated in 1.9.3)
+ * @since 2.0
  *
  * @author Markus Krötzsch
+ * @author mwjames
  */
 class QueryEngine {
 
@@ -52,6 +54,21 @@ class QueryEngine {
 	private $sortkeys;
 
 	/**
+	 * @var boolean
+	 */
+	private $ignoreQueryErrors = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $sortingSupport = true;
+
+	/**
+	 * @var boolean
+	 */
+	private $randomSortingSupport = true;
+
+	/**
 	 * @since  1.9.3
 	 *
 	 * @param SparqlDatabase $connection
@@ -64,6 +81,64 @@ class QueryEngine {
 		$this->resultListConverter = $resultListConverter;
 
 		$this->queryConditionBuilder->setResultVariable( self::RESULT_VARIABLE );
+	}
+
+	/**
+	 * @since  2.0
+	 *
+	 * @param boolean $ignoreQueryErrors
+	 */
+	public function setIgnoreQueryErrors( $ignoreQueryErrors ) {
+		$this->ignoreQueryErrors = $ignoreQueryErrors;
+		return $this;
+	}
+
+	/**
+	 * @since  2.0
+	 *
+	 * @param boolean $sortingSupport
+	 */
+	public function setSortingSupport( $sortingSupport ) {
+		$this->sortingSupport = $sortingSupport;
+		return $this;
+	}
+
+	/**
+	 * @since  2.0
+	 *
+	 * @param boolean $randomSortingSupport
+	 */
+	public function setRandomSortingSupport( $randomSortingSupport ) {
+		$this->randomSortingSupport = $randomSortingSupport;
+		return $this;
+	}
+
+	/**
+	 * @since  2.0
+	 * @param  Query $query
+	 *
+	 * @return QueryResult|string
+	 */
+	public function getQueryResult( Query $query ) {
+
+		if ( ( !$this->ignoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
+		     $query->querymode != Query::MODE_DEBUG &&
+		     count( $query->getErrors() ) > 0 ) {
+			return $this->resultListConverter->newEmptyQueryResult( $query, false );
+		}
+
+		// don't query, but return something to the printer
+		if ( $query->querymode == Query::MODE_NONE ) {
+			return $this->resultListConverter->newEmptyQueryResult( $query, true );
+		}
+
+		if ( $query->querymode == Query::MODE_DEBUG ) {
+			return $this->getDebugQueryResult( $query );
+		} elseif ( $query->querymode == Query::MODE_COUNT ) {
+			return $this->getCountQueryResult( $query );
+		}
+
+		return $this->getInstanceQueryResult( $query );
 	}
 
 	/**
@@ -210,7 +285,7 @@ class QueryEngine {
 		$sparql = str_replace( array( '[',':',' ' ), array( '&#x005B;', '&#x003A;', '&#x0020;' ), $sparql );
 		$entries['SPARQL Query'] = "<pre>$sparql</pre>";
 
-		return Store::formatDebugOutput( 'SMWSparqlStore', $entries, $query );
+		return QueryOutputFormatter::formatDebugOutput( 'SMWSparqlStore', $entries, $query );
 	}
 
 	/**
@@ -222,19 +297,18 @@ class QueryEngine {
 	 * @return array
 	 */
 	protected function getOptions( Query $query, Condition $sparqlCondition ) {
-		global $smwgQSortingSupport, $smwgQRandSortingSupport;
 
 		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
-		if ( $smwgQSortingSupport ) {
+		if ( $this->sortingSupport ) {
 
 			$orderByString = '';
 
 			foreach ( $this->sortkeys as $propkey => $order ) {
 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) {
 					$orderByString .= "$order(?" . $sparqlCondition->orderVariables[$propkey] . ") ";
-				} elseif ( ( $order == 'RANDOM' ) && $smwgQRandSortingSupport ) {
+				} elseif ( ( $order == 'RANDOM' ) && $this->randomSortingSupport ) {
 					// not supported in SPARQL; might be possible via function calls in some stores
 				}
 			}

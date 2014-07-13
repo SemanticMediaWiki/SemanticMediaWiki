@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DataTypeRegistry;
+use SMW\QueryOutputFormatter;
 
 /**
  * Class for representing a single (sub)query description. Simple data
@@ -403,7 +404,7 @@ class SMWSQLStore3QueryEngine {
 			$entries['Auxilliary Tables Used'] = 'No auxilliary tables used.';
 		}
 
-		return SMWStore::formatDebugOutput( 'SMWSQLStore3', $entries, $query );
+		return QueryOutputFormatter::formatDebugOutput( 'SMWSQLStore3', $entries, $query );
 	}
 
 	/**
