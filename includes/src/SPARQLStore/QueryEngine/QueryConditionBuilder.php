@@ -36,12 +36,11 @@ use SMWThingDescription as ThingDescription;
  * @ingroup SMWStore
  *
  * @license GNU GPL v2+
- * @since 1.6
- * @since 2.0 moved to own componnent
+ * @since 2.0
  *
  * @author Markus Krötzsch
  */
-class SparqlConditionBuilder {
+class QueryConditionBuilder {
 
 	/**
 	 * Counter used to generate globally fresh variables.
