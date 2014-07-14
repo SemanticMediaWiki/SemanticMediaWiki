@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
 
+use SMW\Application;
 use LinksUpdate;
 
 /**
@@ -11,14 +12,16 @@ use LinksUpdate;
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class LinksUpdateConstructed extends FunctionHook {
+class LinksUpdateConstructed {
 
-	/** @var LinksUpdate */
+	/**
+	 * @var LinksUpdate
+	 */
 	protected $linksUpdate = null;
 
 	/**
@@ -31,8 +34,6 @@ class LinksUpdateConstructed extends FunctionHook {
 	}
 
 	/**
-	 * @see FunctionHook::process
-	 *
 	 * @since 1.9
 	 *
 	 * @return true
@@ -42,10 +43,10 @@ class LinksUpdateConstructed extends FunctionHook {
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $this->linksUpdate->getTitle(),
-			'ParserOutput' => $this->linksUpdate->getParserOutput()
-		) );
+		$parserData = Application::getInstance()->newParserData(
+			$this->linksUpdate->getTitle(),
+			$this->linksUpdate->getParserOutput()
+		);
 
 		$parserData->updateStore();
 

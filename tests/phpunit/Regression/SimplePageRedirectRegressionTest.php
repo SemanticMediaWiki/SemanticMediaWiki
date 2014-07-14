@@ -3,7 +3,7 @@
 namespace SMW\Tests\Regression;
 
 use SMW\Tests\Util\SemanticDataValidator;
-use SMW\Tests\Util\ByPageSemanticDataFinder;
+use SMW\Tests\Util\InSemanticDataFetcher;
 use SMW\Tests\Util\JobQueueRunner;
 use SMW\Tests\Util\PageCreator;
 use SMW\Test\MwRegressionTestCase;
@@ -84,12 +84,8 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 		$this->executeJobQueueRunner( 'SMW\UpdateJob' );
 
-		$semanticDataFinder = new ByPageSemanticDataFinder;
-		$semanticDataFinder->setTitle( $main )->setStore( $this->getStore() );
-
 		$semanticDataBatches = array(
-			$semanticDataFinder->fetchFromOutput(),
-			$semanticDataFinder->fetchFromStore()
+			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $main ) ),
 		);
 
 		$this->assertThatCategoriesAreSet(
@@ -102,12 +98,13 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			$semanticDataBatches
 		);
 
-		$incomingSemanticData = $semanticDataFinder->fetchIncomingDataFromStore();
+		$inSemanticDataFetcher = new InSemanticDataFetcher( $this->getStore() );
+		$inSemanticData = $inSemanticDataFetcher->getSemanticData( DIWikiPage::newFromTitle( $main ) );
 
 		// When running sqlite, the database select returns an empty result which
 		// is probably due to some DB-prefix issues in MW's DatabaseBaseSqlite
 		// implementation and for non-sqlite see #212 / bug 62856
-		if ( $incomingSemanticData->getProperties() === array() ) {
+		if ( $inSemanticData->getProperties() === array() ) {
 			$this->markTestSkipped(
 				"Skipping test either because of sqlite or MW-{$GLOBALS['wgVersion']} / bug 62856"
 			);
@@ -115,7 +112,7 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 		$this->assertThatSemanticDataValuesForPropertyAreSet(
 			$expectedRedirectAsWikiValue,
-			$incomingSemanticData
+			$inSemanticData
 		);
 	}
 
