@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\Tests\Util\MwDatabaseTableBuilder;
 use SMW\StoreFactory;
+use SMW\Application;
 
 use RuntimeException;
 
@@ -40,6 +41,14 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
 		$this->checkIfStoreCanBeUsedOtherwiseSkipTest();
+
+		Application::getInstance()->registerObject( 'Store', $this->getStore() );
+	}
+
+	protected function tearDown() {
+		Application::clear();
+
+		parent::tearDown();
 	}
 
 	/**

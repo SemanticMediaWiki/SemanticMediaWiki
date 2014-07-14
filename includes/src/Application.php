@@ -4,6 +4,9 @@ namespace SMW;
 
 use SMW\MediaWiki\Jobs\JobFactory;
 
+use ParserOutput;
+use Title;
+
 /**
  * Application instances access for internal and external use
  *
@@ -108,6 +111,18 @@ class Application {
 	 */
 	public function newTitleCreator() {
 		return $this->builder->newObject( 'TitleCreator' );
+	}
+
+	/**
+	 * @since 2.0
+	 *
+	 * @return ParserData
+	 */
+	public function newParserData( Title $title, ParserOutput $parserOutput ) {
+		return $this->builder->newObject( 'ParserData', array(
+			'Title'        => $title,
+			'ParserOutput' => $parserOutput
+		) );
 	}
 
 	private static function registerBuilder( DependencyBuilder $builder = null ) {

@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
+
 /**
  * Extension setup and registration
  *
@@ -412,8 +414,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['LinksUpdateConstructed'][] = function ( $linksUpdate ) use ( $functionHook ) {
-			return $functionHook->register( new LinksUpdateConstructed( $linksUpdate ) )->process();
+		$this->globals['wgHooks']['LinksUpdateConstructed'][] = function ( $linksUpdate ) {
+			$linksUpdateConstructed = new LinksUpdateConstructed( $linksUpdate );
+			return $linksUpdateConstructed->process();
 		};
 
 		/**
