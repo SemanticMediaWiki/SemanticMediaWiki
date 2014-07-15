@@ -1,6 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\Annotator;
+
+use SMW\DIProperty;
+use SMW\PropertyAnnotator;
 
 use SMWDIBlob as DIBlob;
 
@@ -9,15 +12,17 @@ use SMWDIBlob as DIBlob;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
+class SortkeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/** @var string */
-	protected $defaultSort;
+	/**
+	 * @var string
+	 */
+	private $defaultSort;
 
 	/**
 	 * @since 1.9
@@ -30,9 +35,6 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->defaultSort = $defaultSort;
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function addPropertyValues() {
 
 		$sortkey = $this->defaultSort ? $this->defaultSort : str_replace( '_', ' ', $this->getSemanticData()->getSubject()->getDBkey() );
@@ -41,8 +43,6 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 			new DIProperty( DIProperty::TYPE_SORTKEY ),
 			new DIBlob( $sortkey )
 		);
-
-		$this->setState( 'updateOutput' );
 	}
 
 }

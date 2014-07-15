@@ -1,20 +1,24 @@
 <?php
 
-namespace SMW;
+namespace SMW\Annotator;
+
+use SMW\PropertyAnnotator;
 
 /**
  * Decorator that contains the reference to the invoked PropertyAnnotator
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-abstract class PropertyAnnotatorDecorator extends ObservableSubject implements PropertyAnnotator, ContextAware {
+abstract class PropertyAnnotatorDecorator implements PropertyAnnotator {
 
-	/** @var PropertyAnnotator */
+	/**
+	 * @var PropertyAnnotator
+	 */
 	protected $propertyAnnotator;
 
 	/**
@@ -24,17 +28,6 @@ abstract class PropertyAnnotatorDecorator extends ObservableSubject implements P
 	 */
 	public function __construct( PropertyAnnotator $propertyAnnotator ) {
 		$this->propertyAnnotator = $propertyAnnotator;
-	}
-
-	/**
-	 * @see ContextAware::withContext
-	 *
-	 * @since 1.9
-	 *
-	 * @return ContextResource
-	 */
-	public function withContext() {
-		return $this->propertyAnnotator->withContext();
 	}
 
 	/**

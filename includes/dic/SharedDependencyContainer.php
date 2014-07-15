@@ -181,6 +181,15 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			},
 
 			/**
+			 * @since  2.0
+			 *
+			 * @return PageCreator
+			 */
+			'PageCreator' => function ( DependencyBuilder $builder ) {
+				return new PageCreator();
+			},
+
+			/**
 			 * MessageFormatter object definition
 			 *
 			 * @since  1.9
@@ -363,9 +372,8 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	 */
 	protected function NullPropertyAnnotator() {
 		return function ( DependencyBuilder $builder ) {
-			return new NullPropertyAnnotator(
-				$builder->getArgument( 'SemanticData' ),
-				$builder->newObject( 'ExtensionContext' )
+			return new \SMW\Annotator\NullPropertyAnnotator(
+				$builder->getArgument( 'SemanticData' )
 			);
 		};
 	}
@@ -383,14 +391,14 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
 
 			if ( $builder->hasArgument( 'DefaultSort' ) ) {
-				$annotator = new SortKeyPropertyAnnotator(
+				$annotator = new \SMW\Annotator\SortkeyPropertyAnnotator(
 					$annotator,
 					$builder->getArgument( 'DefaultSort' )
 				);
 			}
 
 			if ( $builder->hasArgument( 'CategoryLinks' ) ) {
-				$annotator = new CategoryPropertyAnnotator(
+				$annotator = new \SMW\Annotator\CategoryPropertyAnnotator(
 					$annotator,
 					$builder->getArgument( 'CategoryLinks' )
 				);
@@ -416,7 +424,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 				$builder->hasArgument( 'User' ) ? $builder->getArgument( 'User' ) : null
 			);
 
-			return new PredefinedPropertyAnnotator( $annotator, $valueProvider );
+			return new \SMW\Annotator\PredefinedPropertyAnnotator( $annotator, $valueProvider );
 		};
 	}
 
@@ -432,7 +440,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 
 			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
 
-			return new RedirectPropertyAnnotator(
+			return new \SMW\Annotator\RedirectPropertyAnnotator(
 				$annotator,
 				$builder->getArgument( 'Text' )
 			);

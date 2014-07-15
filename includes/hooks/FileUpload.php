@@ -64,7 +64,8 @@ class FileUpload extends FunctionHook {
 			'WikiPage'     => $this->makeFilePage()
 		) );
 
-		$propertyAnnotator->attach( $parserData )->addAnnotation();
+		$propertyAnnotator->addAnnotation();
+		$parserData->updateOutput();
 
 		$parserData->updateStore();
 

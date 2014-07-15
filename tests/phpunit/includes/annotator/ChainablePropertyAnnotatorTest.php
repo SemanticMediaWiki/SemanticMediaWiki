@@ -3,78 +3,94 @@
 namespace SMW\Test;
 
 use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\SemanticDataFactory;
 
-use SMW\PredefinedPropertyAnnotator;
-use SMW\CategoryPropertyAnnotator;
-use SMW\SortKeyPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
+use SMW\Annotator\PredefinedPropertyAnnotator;
+use SMW\Annotator\CategoryPropertyAnnotator;
+use SMW\Annotator\SortkeyPropertyAnnotator;
+use SMW\Annotator\NullPropertyAnnotator;
 use SMW\DIProperty;
+use SMW\Settings;
+use SMW\Application;
 
 /**
- * @covers \SMW\PredefinedPropertyAnnotator
- * @covers \SMW\CategoryPropertyAnnotator
- * @covers \SMW\SortKeyPropertyAnnotator
+ * @covers \SMW\Annotator\PredefinedPropertyAnnotator
+ * @covers \SMW\Annotator\CategoryPropertyAnnotator
+ * @covers \SMW\Annotator\SortkeyPropertyAnnotator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ChainablePropertyAnnotatorTest extends SemanticMediaWikiTestCase {
+class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
-	public function getClass() {
-		return false;
+	private $semanticDataFactory;
+	private $semanticDataValidator;
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataFactory = new SemanticDataFactory();
+		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->application = Application::getInstance();
+	}
+
+	protected function tearDown() {
+		$this->application->clear();
+
+		parent::tearDown();
 	}
 
 	/**
 	 * @dataProvider annotationDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testChainableDecoratorAnnotation( array $setup, array $expected ) {
+	public function testChainableDecoratorAnnotation( array $parameters, array $expected ) {
 
-		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( $this->newTitle( $setup['namespace'] ) )
+		$pageInfoProvider = $this->getMockBuilder( '\SMW\PageInfoProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageInfoProvider->expects( $this->atLeastOnce() )
+			->method( 'getModificationDate' )
+			->will( $this->returnValue( $parameters['modificationDate'] ) );
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
+		$this->application->registerObject(
+			'Settings',
+			Settings::newFromArray( $parameters['settings'] )
 		);
 
-		$settings = $this->newSettings( $setup['settings'] );
-
-		$context  = new EmptyContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
-
 		$instance = new CategoryPropertyAnnotator(
-			new NullPropertyAnnotator( $semanticData, $context ),
-			$setup['categories']
+			new NullPropertyAnnotator( $semanticData ),
+			$parameters['categories']
 		);
 
 		$instance = new SortKeyPropertyAnnotator(
 			$instance,
-			$setup['sortkey']
+			$parameters['sortkey']
 		);
 
 		$instance = new PredefinedPropertyAnnotator(
 			$instance,
-			$this->newMockBuilder()->newObject( 'PageInfoProvider', $setup['pageInfo'] )
+			$pageInfoProvider
 		);
 
 		$instance->addAnnotation();
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
-
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function annotationDataProvider() {
 
 		$provider = array();
@@ -82,8 +98,7 @@ class ChainablePropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		// #0
 		$provider[] = array(
 			array(
-				'pageInfo' => array( 'getModificationDate' => 1272508903 ),
-				'namespace'  => NS_MAIN,
+				'modificationDate' => 1272508903,
 				'categories' => array( 'Foo', 'Bar' ),
 				'sortkey'    => 'Lala',
 				'settings'   => array(

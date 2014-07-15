@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\Annotator\PropertyAnnotatorFactory;
 
 use ParserOutput;
 use Title;
@@ -111,6 +112,15 @@ class Application {
 	 */
 	public function newTitleCreator() {
 		return $this->builder->newObject( 'TitleCreator' );
+	}
+
+	/**
+	 * @since 2.0
+	 *
+	 * @return PageCreator
+	 */
+	public function newPageCreator() {
+		return $this->builder->newObject( 'PageCreator' );
 	}
 
 	/**

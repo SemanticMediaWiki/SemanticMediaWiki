@@ -1,25 +1,32 @@
 <?php
 
-namespace SMW;
+namespace SMW\Annotator;
 
-use Wikipage;
+use SMW\PropertyAnnotator;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Application;
 
 /**
  * Handling category annotation
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/** @var array */
+	/**
+	 * @var array
+	 */
 	protected $categories;
 
-	/** @var array|null */
+	/**
+	 * @var array|null
+	 */
 	protected $hiddenCategories = null;
 
 	/**
@@ -33,12 +40,9 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->categories = $categories;
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function addPropertyValues() {
 
-		$settings  = $this->withContext()->getSettings();
+		$settings  = Application::getInstance()->getSettings();
 		$namespace = $this->getSemanticData()->getSubject()->getNamespace();
 
 		foreach ( $this->categories as $catname ) {
@@ -61,23 +65,12 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 				);
 			}
 		}
-
-		$this->setState( 'updateOutput' );
 	}
 
-	/**
-	 * Whether a category is specified as hidden
-	 *
-	 * @since 1.9
-	 *
-	 * @param  $catName
-	 *
-	 * @return boolean
-	 */
 	protected function isHiddenCategory( $catName ) {
 
 		if ( $this->hiddenCategories === null ) {
-			$wikipage = Wikipage::factory( $this->getSemanticData()->getSubject()->getTitle() );
+			$wikipage = Application::getInstance()->newPageCreator()->createPage( $this->getSemanticData()->getSubject()->getTitle() );
 			$this->hiddenCategories = $wikipage->getHiddenCategories();
 		}
 
