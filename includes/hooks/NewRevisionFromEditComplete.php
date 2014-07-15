@@ -125,7 +125,8 @@ class NewRevisionFromEditComplete extends FunctionHook {
 			'User'     => $this->user
 		) );
 
-		$propertyAnnotator->attach( $parserData )->addAnnotation();
+		$propertyAnnotator->addAnnotation();
+		$parserData->updateOutput();
 
 		return true;
 	}

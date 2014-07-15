@@ -1,6 +1,10 @@
 <?php
 
-namespace SMW;
+namespace SMW\Annotator;
+
+use SMW\PropertyAnnotator;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 use ContentHandler;
 use Title;
@@ -10,14 +14,16 @@ use Title;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $text;
 
 	/**
@@ -44,7 +50,6 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 				DIWikiPage::newFromTitle( $title, '__red' )
 			);
 		}
-
 	}
 
 	protected function createRedirectTargetFromText( $text ) {

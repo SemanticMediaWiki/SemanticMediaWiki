@@ -1,207 +1,181 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Annotator;
 
 use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\SemanticDataFactory;
+use SMW\Tests\Util\Mock\MockTitle;
 
-use SMW\CategoryPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
+use SMW\Annotator\CategoryPropertyAnnotator;
+use SMW\Annotator\NullPropertyAnnotator;
 use SMW\DIWikiPage;
+use SMW\Application;
+use SMW\Settings;
+use SMW\ParserData;
+
+use ParserOutput;
 
 /**
- * @covers \SMW\CategoryPropertyAnnotator
- * @covers \SMW\PropertyAnnotatorDecorator
+ * @covers \SMW\Annotator\CategoryPropertyAnnotator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
+class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\CategoryPropertyAnnotator';
+	private $semanticDataFactory;
+	private $semanticDataValidator;
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataFactory = new SemanticDataFactory();
+		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->application = Application::getInstance();
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return Observer
-	 */
-	private function newObserver() {
+	protected function tearDown() {
+		$this->application->clear();
 
-		return $this->newMockBuilder()->newObject( 'FakeObserver', array(
-			'updateOutput' => array( $this, 'updateOutputCallback' )
-		) );
-
+		parent::tearDown();
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return CategoryPropertyAnnotator
-	 */
-	private function newInstance( $semanticData = null, $settings = array(), $categories = array() ) {
+	public function testCanConstruct() {
 
-		if ( $semanticData === null ) {
-			$semanticData = $this->newMockBuilder()->newObject( 'SemanticData' );
-		}
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$settings = $this->newSettings( $settings );
-
-		$context  = new EmptyContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
-
-		return new CategoryPropertyAnnotator(
-			new NullPropertyAnnotator( $semanticData, $context ),
-			$categories
+		$instance = new CategoryPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			array()
 		);
 
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+		$this->assertInstanceOf(
+			'\SMW\Annotator\CategoryPropertyAnnotator',
+			$instance
+		);
 	}
 
 	/**
 	 * @dataProvider categoriesDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testAddCategoriesWithOutObserver( array $setup, array $expected ) {
+	public function testAddCategoriesAnnotation( array $parameters, array $expected ) {
 
-		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( $this->newTitle( $setup['namespace'] ) )
+		$semanticData = $this->semanticDataFactory
+			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
+			->newEmptySemanticData();
+
+		$this->application->registerObject(
+			'Settings',
+			Settings::newFromArray( $parameters['settings'] )
 		);
 
-		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['categories'] );
+		$instance = new CategoryPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			$parameters['categories']
+		);
+
 		$instance->addAnnotation();
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
-
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
 	}
 
 	/**
 	 * @dataProvider categoriesDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testAddCategoriesOnMockObserver( array $setup, array $expected ) {
+	public function testAddCategoriesWithParserDataUpdate( array $parameters, array $expected ) {
 
-		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( $this->newTitle( $setup['namespace'] ) )
+		$semanticData = $this->semanticDataFactory
+			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
+			->newEmptySemanticData();
+
+		$title        = $semanticData->getSubject()->getTitle();
+		$parserOutput = new ParserOutput();
+		$parserData   = new ParserData( $title, $parserOutput );
+
+		$this->application->registerObject(
+			'Settings',
+			Settings::newFromArray( $parameters['settings'] )
 		);
 
-		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['categories'] );
-		$instance->attach( $this->newObserver() )->addAnnotation();
-
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
-
-		$this->assertEquals(
-			$instance->verifyObserverWasCalled,
-			'updateOutputCallback',
-			'Asserts that the invoked Observer was notified'
+		$instance = new CategoryPropertyAnnotator(
+			new NullPropertyAnnotator( $parserData->getSemanticData() ),
+			$parameters['categories']
 		);
 
-	}
+		$instance->addAnnotation();
+		$parserData->updateOutput();
 
-	/**
-	 * @dataProvider categoriesDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testAddCategoriesParserDataObserverIntegration( array $setup, array $expected ) {
+		$parserDataAfterAnnotation = new ParserData( $title, $parserOutput );
 
-		$title        = $this->newTitle( $setup['namespace'] );
-		$parserOutput = new \ParserOutput();
-		$parserData   = new \SMW\ParserData( $title, $parserOutput );
-
-		$instance = $this->newInstance( $parserData->getData(), $setup['settings'], $setup['categories'] );
-		$instance->attach( $parserData )->addAnnotation();
-
-		$recreateParserDataFromOutput = new \SMW\ParserData( $title, $parserOutput );
-
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $recreateParserDataFromOutput->getData() );
-
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserDataAfterAnnotation->getSemanticData()
+		);
 	}
 
 	/**
 	 * @dataProvider hiddenCategoriesDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testAddCategoriesWithHiddenCategories( array $setup, array $expected ) {
+	public function testAddCategoriesWithHiddenCategories( array $parameters, array $expected ) {
 
-		$semanticData = new SemanticData(
-			$this->newSubject( $this->newTitle( $setup['namespace'] ) )
+		$expectedPageLookup = $parameters['settings']['smwgShowHiddenCategories'] ? $this->never() : $this->atLeastOnce();
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $expectedPageLookup )
+			->method( 'getHiddenCategories' )
+			->will( $this->returnValue( $parameters['hidCategories'] ) );
+
+		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageCreator->expects( $expectedPageLookup )
+			->method( 'createPage' )
+			->will( $this->returnValue( $wikiPage ) );
+
+		$semanticData = $this->semanticDataFactory
+			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
+			->newEmptySemanticData();
+
+		$this->application->registerObject(
+			'Settings',
+			Settings::newFromArray( $parameters['settings'] )
 		);
 
-		$instance = $this->newInstance( $semanticData, $setup['settings'], $setup['categories'] );
-		$reflector = $this->newReflector();
+		$this->application->registerObject(
+			'PageCreator',
+			$pageCreator
+		);
 
-		$hiddenCategories = $reflector->getProperty( 'hiddenCategories' );
-		$hiddenCategories->setAccessible( true );
-		$hiddenCategories->setValue( $instance, $setup['hidCategories'] );
+		$instance = new CategoryPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			$parameters['categories']
+		);
 
 		$instance->addAnnotation();
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $semanticData );
-
-	}
-
-	/**
-	 * @since 1.9.0.2
-	 */
-	public function testPublicizeHiddenCategorieUsingWikiPagefactory() {
-
-		$semanticData = new SemanticData(
-			$this->newSubject( $this->newTitle() )
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$semanticData
 		);
-
-		$instance = $this->newInstance( $semanticData );
-		$reflector = $this->newReflector();
-
-		$isHiddenCategory = $reflector->getMethod( 'isHiddenCategory' );
-		$isHiddenCategory->setAccessible( true );
-
-		$this->assertFalse(
-			$isHiddenCategory->invoke( $instance, 'Foo' ),
-			'Asserts that false is returned for non-existing hidden categories'
-		);
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function updateOutputCallback( $instance ) {
-
-		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getSemanticData() );
-		$this->assertInstanceOf( '\SMW\ContextResource', $instance->withContext() );
-
-		return $instance->verifyObserverWasCalled = 'updateOutputCallback';
-	}
-
-	/**
-	 * @return array
-	 */
 	public function categoriesDataProvider() {
 
 		$provider = array();
@@ -252,10 +226,15 @@ class CategoryPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$provider = array();
 
-		$hidCategory = $this->newMockBuilder()->newObject( 'Title', array(
-			'getNamespace' => NS_CATEGORY,
-			'getText'      => 'Bar'
-		) );
+		$hidCategory = MockTitle::buildMock( __METHOD__ );
+
+		$hidCategory->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_CATEGORY ) );
+
+		$hidCategory->expects( $this->any() )
+			->method( 'getText' )
+			->will( $this->returnValue( 'Bar' ) );
 
 		// #0 Standard category, show hidden category
 		$provider[] = array(

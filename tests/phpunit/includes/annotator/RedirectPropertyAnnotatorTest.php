@@ -1,75 +1,77 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Annotator;
 
 use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\SemanticDataFactory;
 
-use SMW\RedirectPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-
-use Title;
+use SMW\Annotator\RedirectPropertyAnnotator;
+use SMW\Annotator\NullPropertyAnnotator;
 
 /**
- * @covers \SMW\RedirectPropertyAnnotator
+ * @covers \SMW\Annotator\RedirectPropertyAnnotator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
+class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
-	public function getClass() {
-		return '\SMW\RedirectPropertyAnnotator';
+	private $semanticDataFactory;
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataFactory = new SemanticDataFactory();
+		$this->semanticDataValidator = new SemanticDataValidator();
 	}
 
-	/**
-	 * @return RedirectPropertyAnnotator
-	 */
-	private function newInstance( $semanticData = null, $text = '' ) {
-
-		if ( $semanticData === null ) {
-			$semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
-				->disableOriginalConstructor()
-				->getMock();
-		}
-
-		$context  = new EmptyContext();
-
-		return new RedirectPropertyAnnotator(
-			new NullPropertyAnnotator( $semanticData, $context ),
-			$text
-		);
-
+	protected function tearDown() {
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new RedirectPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			'Foo'
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Annotator\RedirectPropertyAnnotator',
+			$instance
+		);
 	}
 
 	/**
 	 * @dataProvider redirectsDataProvider
 	 */
-	public function testAddAnnotationWithOutObserver( array $parameter, array $expected ) {
+	public function testAddAnnotation( array $parameter, array $expected ) {
 
-		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
+		$instance = new RedirectPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			$parameter['text']
 		);
 
-		$instance = $this->newInstance( $semanticData, $parameter['text'] );
 		$instance->addAnnotation();
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
-
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
 	}
 
 	/**
@@ -77,14 +79,12 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testAddAnnotationWithDisabledContentHandler( $parameter, $expected ) {
 
-		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
-		);
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$instance = $this->getMock( $this->getClass(),
+		$instance = $this->getMock( '\SMW\Annotator\RedirectPropertyAnnotator',
 			array( 'hasContentHandler' ),
 			array(
-				new NullPropertyAnnotator( $semanticData, new EmptyContext() ),
+				new NullPropertyAnnotator( $semanticData ),
 				$parameter['text']
 			)
 		);
@@ -95,14 +95,14 @@ class RedirectPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 
 		$instance->addAnnotation();
 
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
+		$instance->addAnnotation();
 
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function redirectsDataProvider() {
 
 		// #0 Free text

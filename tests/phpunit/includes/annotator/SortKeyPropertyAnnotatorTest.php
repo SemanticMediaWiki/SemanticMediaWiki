@@ -1,74 +1,54 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Annotator;
 
 use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\SemanticDataFactory;
 
-use SMW\SortKeyPropertyAnnotator;
-use SMW\NullPropertyAnnotator;
-use SMW\EmptyContext;
-use SMW\SemanticData;
+use SMW\Annotator\SortkeyPropertyAnnotator;
+use SMW\Annotator\NullPropertyAnnotator;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SortKeyPropertyAnnotator
- * @covers \SMW\PropertyAnnotatorDecorator
+ * @covers \SMW\Annotator\SortkeyPropertyAnnotator
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SortKeyPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
+class SortkeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\SortKeyPropertyAnnotator';
+	private $semanticDataFactory;
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataFactory = new SemanticDataFactory();
+		$this->semanticDataValidator = new SemanticDataValidator();
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return Observer
-	 */
-	private function newObserver() {
+	public function testCanConstruct() {
 
-		return $this->newMockBuilder()->newObject( 'FakeObserver', array(
-			'updateOutput' => array( $this, 'updateOutputCallback' )
-		) );
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
 
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @return SortKeyPropertyAnnotator
-	 */
-	private function newInstance( $semanticData = null, $sortkey = null ) {
-
-		if ( $semanticData === null ) {
-			$semanticData = $this->newMockBuilder()->newObject( 'SemanticData' );
-		}
-
-		return new SortKeyPropertyAnnotator(
-			new NullPropertyAnnotator( $semanticData, new EmptyContext() ),
-			$sortkey
+		$instance = new SortkeyPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			'Foo'
 		);
 
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+		$this->assertInstanceOf(
+			'\SMW\Annotator\SortkeyPropertyAnnotator',
+			$instance
+		);
 	}
 
 	/**
@@ -76,40 +56,23 @@ class SortKeyPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 	 *
 	 * @since 1.9
 	 */
-	public function testAddDefaultSortOnMockObserver( array $setup, array $expected ) {
+	public function testAddDefaultSortOnMockObserver( array $parameters, array $expected ) {
 
-		$semanticData = new SemanticData( DIWikiPage::newFromTitle( $setup['title'] ) );
+		$semanticData = $this->semanticDataFactory->setTitle( $parameters['title'] )->newEmptySemanticData();
 
-		$instance = $this->newInstance( $semanticData, $setup['sort'] );
-		$instance->attach( $this->newObserver() )->addAnnotation();
-
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $instance->getSemanticData() );
-
-		$this->assertEquals(
-			$instance->verifyCallback,
-			'updateOutputCallback',
-			'Asserts that the invoked Observer was notified'
+		$instance = new SortkeyPropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData ),
+			$parameters['sort']
 		);
 
+		$instance->addAnnotation();
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
 	}
 
-	/**
-	 * Verify that the Observer is reachable
-	 *
-	 * @since 1.9
-	 */
-	public function updateOutputCallback( $instance ) {
-
-		$this->assertInstanceOf( '\SMW\SemanticData', $instance->getSemanticData() );
-		$this->assertInstanceOf( '\SMW\ContextResource', $instance->withContext() );
-
-		return $instance->verifyCallback = 'updateOutputCallback';
-	}
-
-	/**
-	 * @return array
-	 */
 	public function defaultSortDataProvider() {
 
 		$provider = array();
@@ -117,7 +80,7 @@ class SortKeyPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		// Sort entry
 		$provider[] = array(
 			array(
-				'title' => $this->newTitle(),
+				'title' => 'Foo',
 				'sort'  => 'Lala'
 			),
 			array(
@@ -128,16 +91,15 @@ class SortKeyPropertyAnnotatorTest extends SemanticMediaWikiTestCase {
 		);
 
 		// Empty
-		$title = $this->newTitle();
 		$provider[] = array(
 			array(
-				'title' => $title,
+				'title' => 'Bar',
 				'sort'  => ''
 			),
 			array(
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SKEY',
-				'propertyValues' => array( $title->getDBkey() ),
+				'propertyValues' => array( 'Bar' ),
 			)
 		);
 

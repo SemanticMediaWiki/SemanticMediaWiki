@@ -82,7 +82,8 @@ class ParserAfterTidy extends FunctionHook {
 			'DefaultSort'   => $this->parser->getDefaultSort()
 		) );
 
-		$propertyAnnotator->attach( $parserData )->addAnnotation();
+		$propertyAnnotator->addAnnotation();
+		$parserData->updateOutput();
 
 		return $this->performStoreUpdateOnPurge( $parserData );
 	}

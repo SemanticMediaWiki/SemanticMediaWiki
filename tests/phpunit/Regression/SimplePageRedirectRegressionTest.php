@@ -6,6 +6,7 @@ use SMW\Tests\Util\SemanticDataValidator;
 use SMW\Tests\Util\InSemanticDataFetcher;
 use SMW\Tests\Util\JobQueueRunner;
 use SMW\Tests\Util\PageCreator;
+use SMW\Tests\Util\PageRefresher;
 use SMW\Test\MwRegressionTestCase;
 
 use SMW\DIWikiPage;
@@ -82,7 +83,8 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			'NewTargetPageRedirectRegressionTest'
 		);
 
-		$this->executeJobQueueRunner( 'SMW\UpdateJob' );
+		$pageRefresher = new PageRefresher( $this->getStore() );
+		$pageRefresher->doRefresh( $main );
 
 		$semanticDataBatches = array(
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $main ) ),
@@ -182,13 +184,6 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			'create redirect',
 			true
 		);
-	}
-
-	protected function executeJobQueueRunner( $type = null ) {
-		$jobQueueRunner = new JobQueueRunner( $type );
-		$jobQueueRunner->run();
-
-		return $jobQueueRunner;
 	}
 
 }

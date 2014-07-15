@@ -1,6 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\Annotator;
+
+use SMW\Application;
+use SMW\PropertyAnnotator;
+use SMW\PageInfoProvider;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
@@ -12,15 +18,17 @@ use SMWDITime as DITime;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
-	/** @var PageInfoProvider */
-	protected $pageInfo;
+	/**
+	 * @var PageInfoProvider
+	 */
+	private $pageInfo;
 
 	/**
 	 * @since 1.9
@@ -33,17 +41,14 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->pageInfo = $pageInfo;
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	protected function addPropertyValues() {
 
-		$predefinedProperties = $this->withContext()->getSettings()->get( 'smwgPageSpecialProperties' );
+		$predefinedProperties = Application::getInstance()->getSettings()->get( 'smwgPageSpecialProperties' );
 		$cachedProperties = array();
 
 		foreach ( $predefinedProperties as $propertyId ) {
 
-			if ( $this->assertRegisteredPropertyId( $propertyId, $cachedProperties ) ) {
+			if ( $this->isRegisteredPropertyId( $propertyId, $cachedProperties ) ) {
 				continue;
 			}
 
@@ -61,21 +66,13 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 				$this->getSemanticData()->addPropertyObjectValue( $propertyDI, $dataItem );
 			}
 		}
-
-		$this->setState( 'updateOutput' );
 	}
 
-	/**
-	 * @since  1.9
-	 */
-	protected function assertRegisteredPropertyId( $propertyId, $cachedProperties ) {
+	protected function isRegisteredPropertyId( $propertyId, $cachedProperties ) {
 		return ( DIProperty::getPredefinedPropertyTypeId( $propertyId ) === '' ) ||
 			array_key_exists( $propertyId, $cachedProperties );
 	}
 
-	/**
-	 * @since  1.9
-	 */
 	protected function createDataItemByPropertyId( $propertyId ) {
 
 		$dataItem = null;
