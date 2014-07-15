@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki;
+
+use SMW\PageInfo;
 
 use WikiPage;
 use Revision;
@@ -12,21 +14,27 @@ use User;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class MediaWikiPageInfoProvider implements PageInfoProvider {
+class PageInfoProvider implements PageInfo {
 
-	/** @var WikiPage */
-	protected $wikiPage = null;
+	/**
+	 * @var WikiPage
+	 */
+	private $wikiPage = null;
 
-	/** @var Revision */
-	protected $revision = null;
+	/**
+	 * @var Revision
+	 */
+	private $revision = null;
 
-	/** @var User */
-	protected $user = null;
+	/**
+	 * @var User
+	 */
+	private $user = null;
 
 	/**
 	 * @since 1.9

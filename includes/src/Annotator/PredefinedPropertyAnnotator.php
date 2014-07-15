@@ -4,7 +4,7 @@ namespace SMW\Annotator;
 
 use SMW\Application;
 use SMW\PropertyAnnotator;
-use SMW\PageInfoProvider;
+use SMW\PageInfo;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
@@ -26,7 +26,7 @@ use SMWDITime as DITime;
 class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var PageInfoProvider
+	 * @var PageInfo
 	 */
 	private $pageInfo;
 
@@ -34,9 +34,9 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @since 1.9
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param PageInfoProvider $pageInfo
+	 * @param PageInfo $pageInfo
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, PageInfoProvider $pageInfo ) {
+	public function __construct( PropertyAnnotator $propertyAnnotator, PageInfo $pageInfo ) {
 		parent::__construct( $propertyAnnotator );
 		$this->pageInfo = $pageInfo;
 	}
