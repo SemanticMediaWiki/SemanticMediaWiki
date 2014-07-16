@@ -2,6 +2,11 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\MagicWordFinder;
+use SMW\MediaWiki\RedirectTargetFinder;
+
+use SMW\Application;
+
 use SMWOutputs;
 
 use MagicWord;
@@ -18,26 +23,39 @@ use Html;
  * @note Settings involve smwgNamespacesWithSemanticLinks, smwgLinksInValues,
  * smwgInlineErrors
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Markus Krötzsch
  * @author Denny Vrandecic
  * @author mwjames
  */
-class ContentProcessor implements ContextAware {
+class InTextAnnotationParser {
 
-	/** @var ContextResource */
-	protected $context = null;
-
-	/** @var Settings */
-	protected $settings = null;
-
-	/** @var ParserData */
+	/**
+	 * @var ParserData
+	 */
 	protected $parserData;
 
-	/** @var boolean */
-	protected $isEnabled;
+	/**
+	 * @var MagicWordFinder
+	 */
+	protected $magicWordFinder;
+
+	/**
+	 * @var RedirectTargetFinder
+	 */
+	protected $redirectTargetFinder;
+
+	/**
+	 * @var Settings
+	 */
+	protected $settings = null;
+
+	/**
+	 * @var boolean
+	 */
+	protected $isEnabledNamespace;
 
 	/**
 	 * Internal state for switching SMW link annotations off/on during parsing
@@ -50,22 +68,13 @@ class ContentProcessor implements ContextAware {
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param ContextResource $context
+	 * @param MagicWordFinder $magicWordFinder
+	 * @param RedirectTargetFinder $redirectTargetFinder
 	 */
-	public function __construct( ParserData $parserData, ContextResource $context ) {
+	public function __construct( ParserData $parserData, MagicWordFinder $magicWordFinder, RedirectTargetFinder $redirectTargetFinder ) {
 		$this->parserData = $parserData;
-		$this->context = $context;
-	}
-
-	/**
-	 * @see ContextAware::withContext
-	 *
-	 * @since 1.9
-	 *
-	 * @return ContextResource
-	 */
-	public function withContext() {
-		return $this->context;
+		$this->magicWordFinder = $magicWordFinder;
+		$this->redirectTargetFinder = $redirectTargetFinder;
 	}
 
 	/**
@@ -77,18 +86,16 @@ class ContentProcessor implements ContextAware {
 	 * @param string &$text
 	 */
 	public function parse( &$text ) {
-		$title = $this->parserData->getTitle();
-		$this->settings = $this->withContext()->getSettings();
 
-		// Strip magic words from text body
+		$title = $this->parserData->getTitle();
+		$this->settings = Application::getInstance()->getSettings();
+
+		$this->magicWordFinder->setOutput( $this->parserData->getOutput() );
 		$this->stripMagicWords( $text );
 
-		// Attest if semantic data should be processed
-		$this->isEnabled = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
+		$this->isEnabledNamespace = NamespaceExaminer::newFromArray( $this->settings->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
+		$this->findRedirectTarget( $text );
 
-		$this->isRedirect( $text );
-
-		// Parse links to extract semantic properties
 		$linksInValues = $this->settings->get( 'smwgLinksInValues' );
 		$text = preg_replace_callback(
 			$this->getRegexpPattern( $linksInValues ),
@@ -96,30 +103,23 @@ class ContentProcessor implements ContextAware {
 			$text
 		);
 
-		// Update ParserOutput
 		$this->parserData->getOutput()->addModules( $this->getModules()  );
 		$this->parserData->updateOutput();
+
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	protected function isRedirect( $text ) {
+	protected function findRedirectTarget( $text ) {
 
-		if ( $this->isEnabled ) {
+		if ( $this->isEnabledNamespace ) {
 
-			/**
-			 * @var PropertyAnnotator $propertyAnnotator
-			 */
-			$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'RedirectPropertyAnnotator', array(
-				'SemanticData' => $this->parserData->getData(),
-				'Text'         => $text
-			) );
+			$propertyAnnotator = Application::getInstance()->newPropertyAnnotatorFactory()->newRedirectPropertyAnnotator(
+				$this->parserData->getSemanticData(),
+				$this->redirectTargetFinder->findTarget( $text )
+			);
 
 			$propertyAnnotator->addAnnotation();
 		}
-
 	}
 
 	/**
@@ -284,7 +284,7 @@ class ContentProcessor implements ContextAware {
 				$subject
 			);
 
-			if ( $this->isEnabled && $this->isAnnotation ) {
+			if ( $this->isEnabledNamespace && $this->isAnnotation ) {
 				$this->parserData->addDataValue( $dataValue );
 			}
 		}
@@ -294,7 +294,7 @@ class ContentProcessor implements ContextAware {
 
 		// If necessary add an error text
 		if ( ( $this->settings->get( 'smwgInlineErrors' ) &&
-			$this->isEnabled && $this->isAnnotation ) &&
+			$this->isEnabledNamespace && $this->isAnnotation ) &&
 			( !$dataValue->isValid() ) ) {
 			$result .= $dataValue->getErrorText();
 		}
@@ -303,41 +303,17 @@ class ContentProcessor implements ContextAware {
 		return $result;
 	}
 
-	/**
-	 * Remove relevant SMW magic words from the given text and return
-	 * an array of the names of all discovered magic words. Moreover,
-	 * store this array in the current parser output, using the variable
-	 * mSMWMagicWords and for MW 1.21+ 'smwmagicwords'
-	 *
-	 * @since 1.9
-	 *
-	 * @param &$text
-	 *
-	 * @return array
-	 */
 	protected function stripMagicWords( &$text ) {
+
 		$words = array();
-		$mw = MagicWord::get( 'SMW_NOFACTBOX' );
 
-		if ( $mw->matchAndRemove( $text ) ) {
-			$words[] = 'SMW_NOFACTBOX';
+		foreach ( array( 'SMW_NOFACTBOX', 'SMW_SHOWFACTBOX' ) as $magicWord ) {
+			$words = $words + $this->magicWordFinder->matchAndRemove( $magicWord, $text );
 		}
 
-		$mw = MagicWord::get( 'SMW_SHOWFACTBOX' );
-
-		if ( $mw->matchAndRemove( $text ) ) {
-			$words[] = 'SMW_SHOWFACTBOX';
-		}
-
-		// Store values into the mSMWMagicWords property
-		if ( method_exists( $this->parserData->getOutput(), 'setExtensionData' ) ) {
-			$this->parserData->getOutput()->setExtensionData( 'smwmagicwords', $words );
-		} else {
-			// @codeCoverageIgnoreStart
-			$this->parserData->getOutput()->mSMWMagicWords = $words;
-			// @codeCoverageIgnoreEnd
-		}
+		$this->magicWordFinder->setMagicWords( $words );
 
 		return $words;
 	}
+
 }

@@ -2,6 +2,10 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\MagicWordFinder;
+use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\Application;
+
 use Parser;
 use Title;
 
@@ -26,10 +30,14 @@ use Title;
  */
 class InternalParseBeforeLinks extends FunctionHook {
 
-	/** @var Parser */
+	/**
+	 * @var Parser
+	 */
 	protected $parser = null;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $text;
 
 	/**
@@ -65,7 +73,7 @@ class InternalParseBeforeLinks extends FunctionHook {
 			return true;
 		}
 
-		$isEnabledSpecialPage = $this->withContext()->getSettings()->get( 'smwgEnabledSpecialPage' );
+		$isEnabledSpecialPage = Application::getInstance()->getSettings()->get( 'smwgEnabledSpecialPage' );
 
 		foreach ( $isEnabledSpecialPage as $specialPage ) {
 			if ( $this->parser->getTitle()->isSpecial( $specialPage ) ) {
@@ -89,19 +97,13 @@ class InternalParseBeforeLinks extends FunctionHook {
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $this->parser->getTitle(),
-			'ParserOutput' => $this->parser->getOutput()
-		) );
+		$parserData = Application::getInstance()->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
+		);
 
-		/**
-		 * @var ContentProcessor $contentProcessor
-		 */
-		$contentProcessor = $this->withContext()->getDependencyBuilder()->newObject( 'ContentProcessor', array(
-			'ParserData' => $parserData
-		) );
-
-		$contentProcessor->parse( $this->text );
+		$inTextAnnotationParser = Application::getInstance()->newInTextAnnotationParser( $parserData );
+		$inTextAnnotationParser->parse( $this->text );
 
 		$this->parser->getOutput()->setProperty(
 			'smw-semanticdata-status',

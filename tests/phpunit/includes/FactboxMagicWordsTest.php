@@ -5,8 +5,8 @@ namespace SMW\Test;
 use SMW\ContentProcessor;
 use SMW\ParserData;
 use SMW\Settings;
-use SMW\ExtensionContext;
 use SMW\Factbox;
+use SMW\Application;
 
 use ParserOutput;
 use Title;
@@ -19,7 +19,7 @@ use Title;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -55,27 +55,26 @@ class FactboxMagicWordsTest extends SemanticMediaWikiTestCase {
 
 		$title        = $this->newTitle();
 		$parserOutput = new ParserOutput();
-		$settings     = $this->newSettings( array(
+		$settings     = Settings::newFromArray( array(
 			'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
 			'smwgLinksInValues' => false,
 			'smwgInlineErrors'  => true,
 			)
 		);
 
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
+		Application::getInstance()->registerObject( 'Settings', $settings );
 
 		$parserData = new ParserData( $title, $parserOutput );
 
-		$contentProcessor = new ContentProcessor( $parserData, $context );
-		$contentProcessor->parse( $text );
+		$inTextAnnotationParser = Application::getInstance()->newInTextAnnotationParser( $parserData );
+		$inTextAnnotationParser->parse( $text );
 
 		$this->assertEquals(
 			$expected['magicWords'],
-			$this->getMagicwords( $parserOutput ),
-			'Asserts that ContentProcessor return added expected MagicWords to the ParserOutput'
+			$this->getMagicwords( $parserOutput )
 		);
 
+		Application::clear();
 	}
 
 	/**

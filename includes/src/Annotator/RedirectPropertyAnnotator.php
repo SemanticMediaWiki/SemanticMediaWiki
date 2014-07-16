@@ -2,6 +2,7 @@
 
 namespace SMW\Annotator;
 
+use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\PropertyAnnotator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -22,19 +23,19 @@ use Title;
 class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var string
+	 * @var RedirectTargetFinder
 	 */
-	protected $text;
+	private $redirectTargetFinder;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param string $text
+	 * @param RedirectTargetFinder $redirectTargetFinder
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, $text ) {
+	public function __construct( PropertyAnnotator $propertyAnnotator, RedirectTargetFinder $redirectTargetFinder ) {
 		parent::__construct( $propertyAnnotator );
-		$this->text = $text;
+		$this->redirectTargetFinder = $redirectTargetFinder;
 	}
 
 	/**
@@ -42,27 +43,14 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	protected function addPropertyValues() {
 
-		$title = $this->createRedirectTargetFromText( $this->text );
-
-		if ( $title instanceOf Title ) {
-			$this->getSemanticData()->addPropertyObjectValue(
-				new DIProperty( '_REDI' ),
-				DIWikiPage::newFromTitle( $title, '__red' )
-			);
-		}
-	}
-
-	protected function createRedirectTargetFromText( $text ) {
-
-		if ( $this->hasContentHandler() ) {
-			return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
+		if ( !$this->redirectTargetFinder->hasTarget() ) {
+			return;
 		}
 
-		return Title::newFromRedirect( $text );
-	}
-
-	protected function hasContentHandler() {
-		return defined( 'CONTENT_MODEL_WIKITEXT' );
+		$this->getSemanticData()->addPropertyObjectValue(
+			new DIProperty( '_REDI' ),
+			DIWikiPage::newFromTitle( $this->redirectTargetFinder->getTarget(), '__red' )
+		);
 	}
 
 }

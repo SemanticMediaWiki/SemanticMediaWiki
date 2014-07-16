@@ -4,37 +4,44 @@ namespace SMW\Test;
 
 use SMW\Tests\Util\SemanticDataValidator;
 
-use SMW\ContentProcessor;
-use SMW\ExtensionContext;
+use SMW\InTextAnnotationParser;
+use SMW\MediaWiki\MagicWordFinder;
+use SMW\MediaWiki\RedirectTargetFinder;
+
 use SMW\Settings;
 use SMW\ParserData;
+use SMW\Application;
 
 use Title;
 use ParserOutput;
 
 /**
- * @covers \SMW\ContentProcessor
+ * @covers \SMW\InTextAnnotationParser
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ContentProcessorTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
+class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
 
-	private function acquireInstance( Title $title, ParserOutput $parserOutput, array $settings = array() ) {
+	private $semanticDataValidator;
+	private $application;
 
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'Settings', Settings::newFromArray( $settings ) );
+	protected function setUp() {
+		parent::setUp();
 
-		$parserData = new ParserData( $title, $parserOutput );
+		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->application = Application::getInstance();
+	}
 
-		return new ContentProcessor( $parserData, $context );
+	protected function tearDown() {
+		$this->application->clear();
+
+		parent::tearDown();
 	}
 
 	/**
@@ -73,15 +80,27 @@ class ContentProcessorTemplateTransclusionTest extends \PHPUnit_Framework_TestCa
 
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__, $namespace );
-		$instance     = $this->acquireInstance( $title, $parserOutput, $settings );
+
 		$outputText   = $this->runTemplateTransclusion( $title, $text, $tmplValue );
+
+		$this->application->registerObject(
+			'Settings',
+			Settings::newFromArray( $settings )
+		);
+
+		$parserData = new ParserData( $title, $parserOutput );
+
+		$instance = new InTextAnnotationParser(
+			$parserData,
+			new MagicWordFinder(),
+			new RedirectTargetFinder()
+		);
 
 		$instance->parse( $outputText );
 
 		$this->assertContains(
 			$expected['resultText'],
-			$outputText,
-			'Asserts that the text compares to the expected output'
+			$outputText
 		);
 
 		$parserData = new ParserData( $title, $parserOutput );
@@ -91,9 +110,7 @@ class ContentProcessorTemplateTransclusionTest extends \PHPUnit_Framework_TestCa
 			$parserData->getSemanticData()
 		);
 
-		$semanticDataValidator = new SemanticDataValidator;
-
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$parserData->getSemanticData()
 		);
