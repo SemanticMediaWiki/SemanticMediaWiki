@@ -80,22 +80,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'NullPropertyAnnotator'   => $this->NullPropertyAnnotator(),
 			'CommonPropertyAnnotator' => $this->CommonPropertyAnnotator(),
 			'PredefinedPropertyAnnotator' => $this->PredefinedPropertyAnnotator(),
-			'RedirectPropertyAnnotator'   => $this->RedirectPropertyAnnotator(),
 			'QueryProfiler' => $this->QueryProfiler(),
-
-			/**
-			 * ContentProcessor object definition
-			 *
-			 * @since  1.9
-			 *
-			 * @return ContentProcessor
-			 */
-			'ContentProcessor' => function ( DependencyBuilder $builder ) {
-				return new ContentProcessor(
-					$builder->getArgument( 'ParserData' ),
-					$builder->newObject( 'ExtensionContext' )
-				);
-			},
 
 			/**
 			 * ContentParser object definition
@@ -425,25 +410,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			);
 
 			return new \SMW\Annotator\PredefinedPropertyAnnotator( $annotator, $valueProvider );
-		};
-	}
-
-	/**
-	 * RedirectPropertyAnnotator object definition
-	 *
-	 * @since  1.9
-	 *
-	 * @return RedirectPropertyAnnotator
-	 */
-	protected function RedirectPropertyAnnotator() {
-		return function ( DependencyBuilder $builder ) {
-
-			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
-
-			return new \SMW\Annotator\RedirectPropertyAnnotator(
-				$annotator,
-				$builder->getArgument( 'Text' )
-			);
 		};
 	}
 

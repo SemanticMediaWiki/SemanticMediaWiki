@@ -96,17 +96,15 @@ class OutputPageParserOutput extends FunctionHook {
 
 		if ( $this->outputPage->getContext()->getRequest()->getInt( 'oldid' ) ) {
 
-			$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
-				'Title'        => $this->outputPage->getTitle(),
-				'ParserOutput' => $this->parserOutput
-			) );
-
-			$contentProcessor = $this->withContext()->getDependencyBuilder()->newObject( 'ContentProcessor', array(
-				'ParserData' => $parserData
-			) );
-
 			$text = $this->parserOutput->getText();
-			$contentProcessor->parse( $text );
+
+			$parserData = Application::getInstance()->newParserData(
+				$this->outputPage->getTitle(),
+				$this->parserOutput
+			);
+
+			$inTextAnnotationParser = Application::getInstance()->newInTextAnnotationParser( $parserData );
+			$inTextAnnotationParser->parse( $text );
 
 			return $parserData->getOutput();
 		}

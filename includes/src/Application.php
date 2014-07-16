@@ -4,6 +4,8 @@ namespace SMW;
 
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\Annotator\PropertyAnnotatorFactory;
+use SMW\MediaWiki\MagicWordFinder;
+use SMW\MediaWiki\RedirectTargetFinder;
 
 use ParserOutput;
 use Title;
@@ -81,6 +83,15 @@ class Application {
 	/**
 	 * @since 2.0
 	 *
+	 * @return PropertyAnnotatorFactory
+	 */
+	public function newPropertyAnnotatorFactory() {
+		return new PropertyAnnotatorFactory();
+	}
+
+	/**
+	 * @since 2.0
+	 *
 	 * @return JobFactory
 	 */
 	public function newJobFactory() {
@@ -121,6 +132,19 @@ class Application {
 	 */
 	public function newPageCreator() {
 		return $this->builder->newObject( 'PageCreator' );
+	}
+
+	/**
+	 * @since 2.0
+	 *
+	 * @return InTextAnnotationParser
+	 */
+	public function newInTextAnnotationParser( ParserData $parserData ) {
+		return new InTextAnnotationParser(
+			$parserData,
+			new MagicWordFinder(),
+			new RedirectTargetFinder()
+		);
 	}
 
 	/**

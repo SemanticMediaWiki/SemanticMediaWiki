@@ -75,4 +75,32 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPageCreator() {
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\PageCreator',
+			Application::getInstance()->newPageCreator()
+		);
+	}
+
+	public function testCanConstructPropertyAnnotatorFactory() {
+
+		$this->assertInstanceOf(
+			'\SMW\Annotator\PropertyAnnotatorFactory',
+			Application::getInstance()->newPropertyAnnotatorFactory()
+		);
+	}
+
+	public function testCanConstructInTextAnnotationParser() {
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\InTextAnnotationParser',
+			Application::getInstance()->newInTextAnnotationParser( $parserData )
+		);
+	}
+
 }

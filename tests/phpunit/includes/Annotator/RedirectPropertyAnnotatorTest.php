@@ -7,6 +7,7 @@ use SMW\Tests\Util\SemanticDataFactory;
 
 use SMW\Annotator\RedirectPropertyAnnotator;
 use SMW\Annotator\NullPropertyAnnotator;
+use SMW\MediaWiki\RedirectTargetFinder;
 
 /**
  * @covers \SMW\Annotator\RedirectPropertyAnnotator
@@ -43,9 +44,13 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$redirectTargetFinder = $this->getMockBuilder( '\SMW\MediaWiki\RedirectTargetFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new RedirectPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			'Foo'
+			$redirectTargetFinder
 		);
 
 		$this->assertInstanceOf(
@@ -61,39 +66,12 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
+		$redirectTargetFinder = new RedirectTargetFinder();
+
 		$instance = new RedirectPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			$parameter['text']
+			$redirectTargetFinder->findTarget( $parameter['text'] )
 		);
-
-		$instance->addAnnotation();
-
-		$this->semanticDataValidator->assertThatPropertiesAreSet(
-			$expected,
-			$instance->getSemanticData()
-		);
-	}
-
-	/**
-	 * @dataProvider redirectsDataProvider
-	 */
-	public function testAddAnnotationWithDisabledContentHandler( $parameter, $expected ) {
-
-		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
-
-		$instance = $this->getMock( '\SMW\Annotator\RedirectPropertyAnnotator',
-			array( 'hasContentHandler' ),
-			array(
-				new NullPropertyAnnotator( $semanticData ),
-				$parameter['text']
-			)
-		);
-
-		$instance->expects( $this->any() )
-			->method( 'hasContentHandler' )
-			->will( $this->returnValue( false ) );
-
-		$instance->addAnnotation();
 
 		$instance->addAnnotation();
 
