@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Annotator;
 
 use SMW\Tests\Util\SemanticDataValidator;
 use SMW\Tests\Util\SemanticDataFactory;
@@ -53,7 +53,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testChainableDecoratorAnnotation( array $parameters, array $expected ) {
 
-		$pageInfoProvider = $this->getMockBuilder( '\SMW\PageInfoProvider' )
+		$pageInfoProvider = $this->getMockBuilder( '\SMW\PageInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 

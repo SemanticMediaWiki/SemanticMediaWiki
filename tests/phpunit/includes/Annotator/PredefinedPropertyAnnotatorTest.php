@@ -54,13 +54,13 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$pageInfoProvider = $this->getMockBuilder( '\SMW\PageInfoProvider' )
+		$pageInfo = $this->getMockBuilder( '\SMW\PageInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new PredefinedPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			$pageInfoProvider
+			$pageInfo
 		);
 
 		$this->assertInstanceOf(
@@ -78,12 +78,12 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->setSubject( $parameters['subject'] )
 			->newEmptySemanticData();
 
-		$pageInfoProvider = $this->getMockBuilder( '\SMW\PageInfoProvider' )
+		$pageInfo = $this->getMockBuilder( '\SMW\PageInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		foreach ( $parameters['pageInfo'] as $method => $returnValue ) {
-			$pageInfoProvider->expects( $this->any() )
+			$pageInfo->expects( $this->any() )
 				->method( $method )
 				->will( $this->returnValue( $returnValue ) );
 		}
@@ -95,7 +95,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PredefinedPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			$pageInfoProvider
+			$pageInfo
 		);
 
 		$instance->addAnnotation();

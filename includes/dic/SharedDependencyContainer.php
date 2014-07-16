@@ -418,7 +418,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 
 			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
 
-			$valueProvider = new MediaWikiPageInfoProvider(
+			$valueProvider = new \SMW\MediaWiki\PageInfoProvider(
 				$builder->getArgument( 'WikiPage' ),
 				$builder->hasArgument( 'Revision' ) ? $builder->getArgument( 'Revision' ) : null,
 				$builder->hasArgument( 'User' ) ? $builder->getArgument( 'User' ) : null
