@@ -7,6 +7,7 @@ use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\TitleMoveComplete;
 use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use SMW\MediaWiki\Hooks\ArticleDelete;
+use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 
 /**
  * Extension setup and registration
@@ -439,7 +440,8 @@ final class Setup implements ContextAware {
 		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = function ( &$extraStats ) use ( $functionHook, $globals ) {
-			return $functionHook->register( new SpecialStatsAddExtra( $extraStats, $globals['wgVersion'], $globals['wgLang'] ) )->process();
+			$specialStatsAddExtra = new SpecialStatsAddExtra( $extraStats, $globals['wgVersion'], $globals['wgLang'] );
+			return $specialStatsAddExtra->process();
 		};
 
 		/**

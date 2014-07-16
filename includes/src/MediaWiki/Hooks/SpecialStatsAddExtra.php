@@ -1,33 +1,44 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
+
+use SMW\Application;
+use SMW\DataTypeRegistry;
 
 use Language;
 
 /**
-* Add extra statistic at the end of Special:Statistics
-*
-* @see http://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
+ * Add extra statistic at the end of Special:Statistics
+ *
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SpecialStatsAddExtra extends FunctionHook {
+class SpecialStatsAddExtra {
 
-	/** @var array */
+	/**
+	 * @var array
+	 */
 	protected $extraStats = null;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $version = null;
 
-	/** @var Language */
+	/**
+	 * @var Language
+	 */
 	protected $userLanguage;
 
-	/** @var string[] */
+	/**
+	 * @var string[]
+	 */
 	protected $legacyMessageMapper = array(
 		'PROPUSES'   => 'smw-statistics-property-instance',
 		'USEDPROPS'  => 'smw-statistics-property-total-legacy',
@@ -38,7 +49,9 @@ class SpecialStatsAddExtra extends FunctionHook {
 		'CONCEPTS'   => 'smw-statistics-concept-count-legacy'
 	);
 
-	/** @var string[] */
+	/**
+	 * @var string[]
+	 */
 	protected $messageMapper = array(
 		'PROPUSES'   => 'smw-statistics-property-instance',
 		'USEDPROPS'  => 'smw-statistics-property-total',
@@ -63,8 +76,6 @@ class SpecialStatsAddExtra extends FunctionHook {
 	}
 
 	/**
-	 * @see FunctionHook::process
-	 *
 	 * @since 1.9
 	 *
 	 * @return true
@@ -80,7 +91,7 @@ class SpecialStatsAddExtra extends FunctionHook {
 	 */
 	protected function copyStatistics() {
 
-		$statistics = $this->withContext()->getStore()->getStatistics();
+		$statistics = Application::getInstance()->getStore()->getStatistics();
 
 		$this->extraStats['smw-statistics'] = array();
 
@@ -107,7 +118,7 @@ class SpecialStatsAddExtra extends FunctionHook {
 	 */
 	protected function copyLegacyStatistics() {
 
-		$statistics = $this->withContext()->getStore()->getStatistics();
+		$statistics = Application::getInstance()->getStore()->getStatistics();
 
 		foreach ( $this->legacyMessageMapper as $key => $message ) {
 
