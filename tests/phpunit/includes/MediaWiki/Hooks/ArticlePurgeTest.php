@@ -1,84 +1,63 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\ArticlePurge;
-use SMW\ExtensionContext;
+use SMW\Tests\Util\Mock\MockTitle;
+
+use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\Settings;
+use SMW\FactboxCache;
+use SMW\Application;
 
 use WikiPage;
 
 /**
- * @covers \SMW\ArticlePurge
+ * @covers \SMW\MediaWiki\Hooks\ArticlePurge
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ArticlePurgeTest extends SemanticMediaWikiTestCase {
+class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\ArticlePurge';
-	}
+	public function testCanConstruct() {
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return ArticlePurge
-	 */
-	private function newInstance( WikiPage $wikiPage = null, $settings = array() ) {
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		if ( $wikiPage === null ) {
-			$wikiPage = $this->newMockBuilder()->newObject( 'WikiPage' );
-		}
-
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $this->newSettings( $settings ) );
-
-		$instance = new ArticlePurge( $wikiPage );
-		$instance->invokeContext( $context );
-
-		return $instance;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Hooks\ArticlePurge',
+			new ArticlePurge( $wikiPage )
+		);
 	}
 
 	/**
 	 * @dataProvider titleDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testProcess( $setup, $expected ) {
 
 		$wikiPage = new WikiPage( $setup['title'] );
 		$pageId   = $wikiPage->getTitle()->getArticleID();
 
-		$settings = array(
+		Application::getInstance()->registerObject( 'Settings', Settings::newFromArray( array(
 			'smwgCacheType'                  => 'hash',
 			'smwgAutoRefreshOnPurge'         => $setup['smwgAutoRefreshOnPurge'],
 			'smwgFactboxCacheRefreshOnPurge' => $setup['smwgFactboxCacheRefreshOnPurge']
-		);
+		) ) );
 
-		$instance = $this->newInstance( $wikiPage, $settings );
-		$cache = $instance->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$instance = new ArticlePurge( $wikiPage );
+		$cache = Application::getInstance()->getCache();
 
-		$id = \SMW\FactboxCache::newCacheId( $pageId );
+		$id = FactboxCache::newCacheId( $pageId );
 	//	$cache->setKey( $id )->set( true );
 
-		// Pre-process check
 		$this->assertEquals(
 			$expected['autorefreshPreProcess'],
 			$cache->setKey( $instance->newCacheId( $pageId ) )->get(),
@@ -118,20 +97,20 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 			$cache->setCacheEnabled( true )->setKey( $id )->get(),
 			'Asserts the factbox cache status after processing'
 		);
-
 	}
 
-	/**
-	 * @return array
-	 */
 	public function titleDataProvider() {
 
-		$provider = array();
+		$validIdTitle =  MockTitle::buildMock( 'validIdTitle' );
 
-		// #0 Id = cache
+		$validIdTitle->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 9999 ) );
+
+		#0 Id = cache
 		$provider[] = array(
 			array(
-				'title'  => $this->newMockBuilder()->newObject( 'Title' ),
+				'title'  => $validIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
 				'smwgFactboxCacheRefreshOnPurge' => true
 			),
@@ -143,10 +122,10 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		// #1 Disabled setting
+		#1 Disabled setting
 		$provider[] = array(
 			array(
-				'title'  => $this->newMockBuilder()->newObject( 'Title' ),
+				'title'  => MockTitle::buildMock( 'DisbaledSettings' ),
 				'smwgAutoRefreshOnPurge'         => false,
 				'smwgFactboxCacheRefreshOnPurge' => false
 			),
@@ -159,13 +138,15 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 		);
 
 		// #2 No Id
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'getArticleID' => 0
-		) );
+		$nullIdTitle =  MockTitle::buildMock( 'NullId' );
+
+		$nullIdTitle->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 0 ) );
 
 		$provider[] = array(
 			array(
-				'title'  => $title,
+				'title'  => $nullIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
 				'smwgFactboxCacheRefreshOnPurge' => true
 			),
@@ -177,14 +158,10 @@ class ArticlePurgeTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		// #3 No Id
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'getArticleID' => 0
-		) );
-
+		#3 No Id
 		$provider[] = array(
 			array(
-				'title'  => $title,
+				'title'  => $nullIdTitle,
 				'smwgAutoRefreshOnPurge'         => true,
 				'smwgFactboxCacheRefreshOnPurge' => false
 			),

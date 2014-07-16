@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\BaseTemplateToolbox;
-use SMW\ExtensionContext;
+use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
+use SMW\Application;
 use SMW\Settings;
 
 use Title;
 
 /**
- * @covers \SMW\BaseTemplateToolbox
+ * @covers \SMW\MediaWiki\Hooks\BaseTemplateToolbox
  * @covers \SMWInfolink
  *
  * @ingroup Test
@@ -19,7 +19,7 @@ use Title;
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -28,31 +28,28 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider baseTemplateToolboxDataProvider
-	 *
-	 * @since  1.9
 	 */
 	public function testBaseTemplateToolboxURLEncoding( $setup, $expected ) {
 
 		$toolbox  = '';
 
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', Settings::newFromArray( $setup['settings'] ) );
+		Application::getInstance()->registerObject(
+			'Settings',
+			Settings::newFromArray( $setup['settings'] )
+		);
 
 		$instance = new BaseTemplateToolbox( $setup['skinTemplate'], $toolbox );
-		$instance->invokeContext( $context );
 
 		$instance->process();
 
 		$this->assertContains(
 			$expected,
-			$toolbox['smw-browse']['href'],
-			'Asserts that process() returns an encoded URL'
+			$toolbox['smw-browse']['href']
 		);
+
+		Application::clear();
 	}
 
-	/**
-	 * @return array
-	 */
 	public function baseTemplateToolboxDataProvider() {
 
 		$provider = array();
@@ -64,9 +61,6 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 		return $provider;
 	}
 
-	/**
-	 * @return array
-	 */
 	private function newBaseTemplateToolboxSetup( $text ) {
 
 		$settings = array(
@@ -74,29 +68,33 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'smwgToolboxBrowseLink'           => true
 		);
 
-		$mockSkin = $this->getMockBuilder( '\Skin' )
+		$message = $this->getMockBuilder( '\Message' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$mockSkin->expects( $this->atLeastOnce() )
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( Title::newFromText( $text, NS_MAIN ) ) );
 
-		$mockSkin->expects( $this->atLeastOnce() )
-			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'msg' )
+			->will( $this->returnValue( $message ) );
 
-		$mockSkinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$mockSkinTemplate->expects( $this->atLeastOnce() )
+		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getSkin' )
-			->will( $this->returnValue( $mockSkin ) );
+			->will( $this->returnValue( $skin ) );
 
-		$mockSkinTemplate->data['isarticle'] = true;
+		$skinTemplate->data['isarticle'] = true;
 
-		return array( 'settings' => $settings, 'skinTemplate' => $mockSkinTemplate );
+		return array( 'settings' => $settings, 'skinTemplate' => $skinTemplate );
 	}
 
 }

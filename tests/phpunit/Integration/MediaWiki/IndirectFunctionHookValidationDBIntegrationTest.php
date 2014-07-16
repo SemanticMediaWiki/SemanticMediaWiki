@@ -9,7 +9,7 @@ use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
 
 use SMW\ExtensionContext;
 use SMW\SemanticData;
-use SMW\ArticlePurge;
+use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\ParserData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;

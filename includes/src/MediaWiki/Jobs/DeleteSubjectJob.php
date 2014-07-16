@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use SMW\DIWikiPage;
 use SMW\SerializerFactory;
+use SMW\Application;
 
 use Title;
 use Job;
@@ -14,14 +15,14 @@ use Job;
  * @ingroup SMW
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.1
+ * @since 1.9.1
  *
  * @author mwjames
  */
 class DeleteSubjectJob extends JobBase {
 
 	/**
-	 * @since  1.9.0.1
+	 * @since  1.9.1
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
@@ -38,13 +39,13 @@ class DeleteSubjectJob extends JobBase {
 	 * deletion from an update process (prioritization between subject deletion
 	 * and data refresh process)
 	 *
-	 * @since  1.9.0.1
+	 * @since  1.9.1
 	 *
 	 * @return boolean
 	 */
 	public function execute() {
 
-		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) &&
+		if ( Application::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) &&
 			$this->hasParameter( 'asDeferredJob' ) &&
 			$this->getParameter( 'asDeferredJob' ) ) {
 			$this->insertAsDeferredJobWithSemanticData()->pushToJobQueue();
@@ -57,7 +58,7 @@ class DeleteSubjectJob extends JobBase {
 	/**
 	 * @see Job::run
 	 *
-	 * @since  1.9.0.1
+	 * @since  1.9.1
 	 */
 	public function run() {
 
@@ -69,13 +70,14 @@ class DeleteSubjectJob extends JobBase {
 	}
 
 	protected function initUpdateDispatcherJob() {
-		$dispatcher = new UpdateDispatcherJob( $this->getTitle(), $this->params );
-		$dispatcher->invokeContext( $this->withContext() );
-		$dispatcher->run();
+		Application::getInstance()
+			->newJobFactory()
+			->newUpdateDispatcherJob( $this->getTitle(), $this->params )
+			->run();
 	}
 
 	protected function deleteSubject() {
-		$this->withContext()->getStore()->deleteSubject( $this->getTitle() );
+		Application::getInstance()->getStore()->deleteSubject( $this->getTitle() );
 		return true;
 	}
 
@@ -88,8 +90,8 @@ class DeleteSubjectJob extends JobBase {
 	}
 
 	protected function fetchSerializedSemanticData() {
-		return SerializerFactory::serialize(
-			$this->withContext()->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->getTitle() ) )
+		return Application::getInstance()->newSerializerFactory()->serialize(
+			Application::getInstance()->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->getTitle() ) )
 		);
 	}
 

@@ -25,4 +25,16 @@ class JobFactory {
 		return new UpdateJob( $title );
 	}
 
+	/**
+	 * @since 2.0
+	 *
+	 * @param Title $title
+	 * @param array $parameters
+	 *
+	 * @return UpdateDispatcherJob
+	 */
+	public function newUpdateDispatcherJob( Title $title, array $parameters = array() ) {
+		return new UpdateDispatcherJob( $title, $parameters );
+	}
+
 }

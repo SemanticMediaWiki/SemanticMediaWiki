@@ -5,6 +5,8 @@ namespace SMW\Test;
 use SMW\Tests\Util\Mock\MockUpdateObserver;
 use SMW\Tests\Util\SemanticDataValidator;
 
+use SMW\MediaWiki\Hooks\ArticlePurge;
+
 use SMW\ParserAfterTidy;
 use SMW\ExtensionContext;
 
@@ -40,7 +42,7 @@ class ParserAfterTidyTest extends ParserTestCase {
 
 		$cacheHandler->expects( $this->any() )
 			->method( 'setKey' )
-			->with( $this->equalTo( \SMW\ArticlePurge::newCacheId( $id ) ) );
+			->with( $this->equalTo( ArticlePurge::newCacheId( $id ) ) );
 
 		$cacheHandler->expects( $this->any() )
 			->method( 'get' )

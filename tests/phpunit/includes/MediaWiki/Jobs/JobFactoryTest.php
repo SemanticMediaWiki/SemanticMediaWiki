@@ -39,4 +39,14 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testUpdateDispatcherJob() {
+
+		$instance = new JobFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob',
+			$instance->newUpdateDispatcherJob( Title::newFromText( __METHOD__ ) )
+		);
+	}
+
 }

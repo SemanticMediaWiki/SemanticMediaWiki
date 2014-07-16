@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
+
+use SMW\Application;
 
 /**
  * TitleMoveComplete occurs whenever a request to move an article
@@ -13,26 +15,36 @@ namespace SMW;
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class TitleMoveComplete extends FunctionHook {
+class TitleMoveComplete {
 
-	/** @var Title */
+	/**
+	 * @var Title
+	 */
 	protected $oldTitle = null;
 
-	/** @var Title */
+	/**
+	 * @var Title
+	 */
 	protected $newTitle = null;
 
-	/** @var Use */
+	/**
+	 * @var User
+	 */
 	protected $user = null;
 
-	/** @var integer */
+	/**
+	 * @var integer
+	 */
 	protected $oldId;
 
-	/** @var integer */
+	/**
+	 * @var integer
+	 */
 	protected $newId;
 
 	/**
@@ -53,8 +65,6 @@ class TitleMoveComplete extends FunctionHook {
 	}
 
 	/**
-	 * @see FunctionHook::process
-	 *
 	 * @since 1.9
 	 *
 	 * @return true
@@ -64,12 +74,12 @@ class TitleMoveComplete extends FunctionHook {
 		/**
 		 * @var Settings $settings
 		 */
-		$settings = $this->withContext()->getSettings();
+		$settings = Application::getInstance()->getSettings();
 
 		/**
 		 * @var CacheHandler $cache
 		 */
-		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = Application::getInstance()->getCache();
 
 		$cache->setCacheEnabled( $this->newId > 0 )
 			->setKey( ArticlePurge::newCacheId( $this->newId ) )
@@ -79,9 +89,12 @@ class TitleMoveComplete extends FunctionHook {
 			->setKey( ArticlePurge::newCacheId( $this->oldId ) )
 			->set( $settings->get( 'smwgAutoRefreshOnPageMove' ) );
 
-		$this->withContext()
-			->getStore()
-			->changeTitle( $this->oldTitle, $this->newTitle, $this->oldId, $this->newId );
+		Application::getInstance()->getStore()->changeTitle(
+			$this->oldTitle,
+			$this->newTitle,
+			$this->oldId,
+			$this->newId
+		);
 
 		return true;
 	}
