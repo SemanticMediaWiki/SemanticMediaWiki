@@ -1,6 +1,10 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
+
+use SMW\FactboxCache;
+use SMW\Application;
+use SMW\CacheIdGenerator;
 
 use WikiPage;
 
@@ -14,28 +18,28 @@ use WikiPage;
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ArticlePurge extends FunctionHook {
+class ArticlePurge {
 
-	/** @var WikiPage */
+	/**
+	 * @var WikiPage
+	 */
 	protected $wikiPage = null;
 
 	/**
 	 * @since  1.9
 	 *
-	 * @param WikiPage $wikiPage article being purged
+	 * @param WikiPage $wikiPage
 	 */
 	public function __construct( WikiPage &$wikiPage ) {
 		$this->wikiPage = $wikiPage;
 	}
 
 	/**
-	 * Returns a CacheIdGenerator object
-	 *
 	 * @since 1.9
 	 *
 	 * @return CacheIdGenerator
@@ -58,12 +62,12 @@ class ArticlePurge extends FunctionHook {
 		/**
 		 * @var Settings $settings
 		 */
-		$settings = $this->withContext()->getSettings();
+		$settings = Application::getInstance()->getSettings();
 
 		/**
 		 * @var CacheHandler $cache
 		 */
-		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = Application::getInstance()->getCache();
 
 		$cache->setCacheEnabled( $pageId > 0 )
 			->setKey( $this->newCacheId( $pageId ) )

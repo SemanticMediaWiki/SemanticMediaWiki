@@ -61,6 +61,8 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	public function run( \PHPUnit_Framework_TestResult $result = null ) {
 
+		$this->getStore()->clear();
+
 		$this->mwDatabaseTableBuilder = MwDatabaseTableBuilder::getInstance( $this->getStore() );
 		$this->mwDatabaseTableBuilder->removeAvailableDatabaseType( $this->databaseToBeExcluded );
 

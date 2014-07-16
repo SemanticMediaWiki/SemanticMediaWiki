@@ -3,6 +3,10 @@
 namespace SMW;
 
 use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
+use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\MediaWiki\Hooks\TitleMoveComplete;
+use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
+use SMW\MediaWiki\Hooks\ArticleDelete;
 
 /**
  * Extension setup and registration
@@ -114,6 +118,7 @@ final class Setup implements ContextAware {
 	 */
 	protected function registerSettings( Settings $settings ) {
 		$this->withContext()->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
+		Application::getInstance()->registerObject( 'Settings', $settings );
 		return $settings;
 	}
 
@@ -303,7 +308,8 @@ final class Setup implements ContextAware {
 		 * @since  1.9
 		 */
 		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) use ( $functionHook ) {
-			return $functionHook->register( new BaseTemplateToolbox( $skinTemplate, $toolbox ) )->process();
+			$baseTemplateToolbox = new BaseTemplateToolbox( $skinTemplate, $toolbox );
+			return $baseTemplateToolbox->process();
 		};
 
 		/**
@@ -372,8 +378,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['TitleMoveComplete'][] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) use ( $functionHook ) {
-			return $functionHook->register( new TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) )->process();
+		$this->globals['wgHooks']['TitleMoveComplete'][] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
+			$titleMoveComplete = new TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId );
+			return $titleMoveComplete->process();
 		};
 
 		/**
@@ -383,8 +390,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['ArticlePurge'][] = function ( &$wikiPage ) use ( $functionHook ) {
-			return $functionHook->register( new ArticlePurge( $wikiPage ) )->process();
+		$this->globals['wgHooks']['ArticlePurge'][] = function ( &$wikiPage ) {
+			$articlePurge = new ArticlePurge( $wikiPage );
+			return $articlePurge->process();
 		};
 
 		/**
@@ -395,16 +403,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) use ( $settings, $context ) {
-
-			$deleteSubject = new \SMW\MediaWiki\Jobs\DeleteSubjectJob( $wikiPage->getTitle(), array(
-				'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
-				'withAssociates' => $settings->get( 'smwgDeleteSubjectWithAssociatesRefresh' )
-			) );
-
-			$deleteSubject->invokeContext( $context );
-
-			return $deleteSubject->execute();
+		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) {
+			$articleDelete = new ArticleDelete( $wikiPage, $user, $reason, $error );
+			return $articleDelete->process();
 		};
 
 		/**

@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\Hooks\ArticlePurge;
+
 use Parser;
 use Title;
 

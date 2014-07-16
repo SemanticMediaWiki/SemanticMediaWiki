@@ -352,4 +352,11 @@ class SMWSparqlStore extends SMWStore {
 		return $this->baseStore->getDatabase();
 	}
 
+	/**
+	 * @since 2.0
+	 */
+	public function clear() {
+		$this->baseStore->clear();
+	}
+
 }

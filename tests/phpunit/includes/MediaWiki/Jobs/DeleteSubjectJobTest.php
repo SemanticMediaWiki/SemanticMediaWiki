@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\DeleteSubjectJob;
-use SMW\ExtensionContext;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Settings;
+use SMW\Application;
 
 use Title;
 use ReflectionClass;
@@ -20,7 +20,7 @@ use ReflectionClass;
  * @group SMWExtension
  *
  * @licence GNU GPL v2+
- * @since 1.9.0.1
+ * @since 1.9.1
  *
  * @author mwjames
  */
@@ -204,11 +204,8 @@ class DeleteSubjectJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getInProperties' )
 			->will( $this->returnValue( array() ) );
 
-		$context = new ExtensionContext();
-
-		$container = $context->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Store', $mockStore );
-		$container->registerObject( 'Settings', $settings );
+		Application::getInstance()->registerObject( 'Store', $mockStore );
+		Application::getInstance()->registerObject( 'Settings', $settings );
 
 		$parameters = array(
 			'asDeferredJob'  => $settings->get( 'smwgDeleteSubjectAsDeferredJob' ),
@@ -216,7 +213,6 @@ class DeleteSubjectJobTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new DeleteSubjectJob( $title, $parameters );
-		$instance->invokeContext( $context );
 		$instance->setJobQueueEnabledState( false );
 
 		return $instance;

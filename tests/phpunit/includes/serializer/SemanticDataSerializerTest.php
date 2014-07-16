@@ -1,13 +1,17 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Serializers;
 
 use SMW\Serializers\SemanticDataSerializer;
+
+use SMW\Tests\Util\SemanticDataFactory;
 
 use SMW\DataValueFactory;
 use SMw\SemanticData;
 use SMW\DIWikiPage;
 use SMW\Subobject;
+
+use Title;
 
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer
@@ -17,110 +21,93 @@ use SMW\Subobject;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SemanticDataSerializerTest extends SemanticMediaWikiTestCase {
+class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return 'SMW\Serializers\SemanticDataSerializer';
+	private $dataValueFactory;
+	private $semanticDataFactory;
+
+	public function testCanConstructor() {
+
+		$this->assertInstanceOf(
+			'\SMW\Serializers\SemanticDataSerializer',
+			new SemanticDataSerializer()
+		);
 	}
 
-	/**
-	 * Helper method that returns a SemanticDataSerializer object
-	 *
-	 * @since 1.9
-	 */
-	private function newSerializerInstance() {
-		return new SemanticDataSerializer();
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newSerializerInstance() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testSerializerOutOfBoundsException() {
+	public function testInvalidSerializerObjectThrowsException() {
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 
-		$instance = $this->newSerializerInstance();
+		$instance = new SemanticDataSerializer();
 		$instance->serialize( 'Foo' );
-
 	}
 
 	/**
 	 * @dataProvider semanticDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testSerializerDeserializerRountrip( $data ) {
 
-		$serialized = $this->newSerializerInstance()->serialize( $data );
+		$instance = new SemanticDataSerializer();
 
 		$this->assertInternalType(
 			'array',
-			$serialized,
-			'Asserts that serialize() returns an array'
+			$instance->serialize( $data )
 		);
-
 	}
 
-	/**
-	 * @return array
-	 */
 	public function semanticDataProvider() {
 
-		$provider = array();
-		$title = $this->newTitle( NS_MAIN, 'Foo' );
+		$this->semanticDataFactory = new SemanticDataFactory();
+		$this->dataValueFactory = DataValueFactory::getInstance();
 
-		// #0 Empty container
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$title = Title::newFromText( 'Foo' );
+
+		#0 Empty container
+		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$provider[] = array( $foo );
 
-		// #1 Single entry
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		#1 Single entry
+		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 		$provider[] = array( $foo );
 
 		// #2 Single + single subobject entry
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has subobjects', 'Bam' ) );
 
-		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
+		$foo->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
 
 		$provider[] = array( $foo );
 
-		// #3 Multiple entries
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
-		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Bar' ) );
-		$foo->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has queez', 'Xeey' ) );
+		#3 Multiple entries
+		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Bar' ) );
+		$foo->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has queez', 'Xeey' ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
-		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has subobjects', 'Bam' ) );
-		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has subobjects', 'Bam' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
 
 		$subobject->setSemanticData( 'Bar' );
-		$subobject->addDataValue( DataValueFactory::getInstance()->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
+		$subobject->addDataValue( $this->dataValueFactory->newPropertyValue( 'Has fooQuex', 'Fuz' ) );
 
-		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
+		$foo->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
 
 		$provider[] = array( $foo );
 

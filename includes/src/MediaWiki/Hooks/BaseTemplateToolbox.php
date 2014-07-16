@@ -1,8 +1,13 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
+
+use SMW\Application;
+use SMW\NamespaceExaminer;
 
 use SMWInfolink as Infolink;
+
+use SpecialPage;
 use Title;
 
 /**
@@ -18,12 +23,22 @@ use Title;
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class BaseTemplateToolbox extends FunctionHook {
+class BaseTemplateToolbox {
+
+	/**
+	 * @var SkinTemplate
+	 */
+	private $skinTemplate;
+
+	/**
+	 * @var array
+	 */
+	private $toolbox;
 
 	/**
 	 * @since 1.9
@@ -37,38 +52,26 @@ class BaseTemplateToolbox extends FunctionHook {
 	}
 
 	/**
-	 * @see FunctionHook::process
-	 *
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
-	public function process() {
-		return $this->isValid( $this->skinTemplate->getSkin()->getTitle() ) ? $this->performUpdate() : true;
-	}
-
-	/**
 	 * @since 1.9
 	 *
 	 * @return boolean
 	 */
-	protected function isValid( Title $title ) {
+	public function process() {
+		return $this->canPerformUpdate( $this->skinTemplate->getSkin()->getTitle() ) ? $this->performUpdate() : true;
+	}
+
+	protected function canPerformUpdate( Title $title ) {
 		return !$title->isSpecialPage() &&
-			$this->withContext()->getDependencyBuilder()->newObject( 'Settings' )->get( 'smwgToolboxBrowseLink' ) &&
-			$this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() ) &&
+			Application::getInstance()->getSettings()->get( 'smwgToolboxBrowseLink' ) &&
+			$this->isEnabledNamespace( $title ) &&
 			$this->skinTemplate->data['isarticle'];
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
 	protected function performUpdate() {
 
 		$this->toolbox['smw-browse'] = array(
-			'text' => $this->skinTemplate->getSkin()->getContext()->msg( 'smw_browselink' )->text(),
-			'href' => \SpecialPage::getTitleFor( 'Browse', $this->encodeTitle() )->getLocalUrl(),
+			'text' => $this->skinTemplate->getSkin()->msg( 'smw_browselink' )->text(),
+			'href' => SpecialPage::getTitleFor( 'Browse', $this->encodePrefixedDBkey() )->getLocalUrl(),
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'smw-browse'
 		);
@@ -76,11 +79,13 @@ class BaseTemplateToolbox extends FunctionHook {
 		return true;
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	private function encodeTitle() {
+	private function encodePrefixedDBkey() {
 		return Infolink::encodeParameters( array( $this->skinTemplate->getSkin()->getTitle()->getPrefixedDBkey() ), true );
+	}
+
+	private function isEnabledNamespace( Title $title ) {
+		return NamespaceExaminer::newFromArray(
+			Application::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

@@ -137,6 +137,15 @@ class Application {
 	/**
 	 * @since 2.0
 	 *
+	 * @return CacheHandler
+	 */
+	public function getCache() {
+		return $this->builder->newObject( 'CacheHandler' );;
+	}
+
+	/**
+	 * @since 2.0
+	 *
 	 * @return InTextAnnotationParser
 	 */
 	public function newInTextAnnotationParser( ParserData $parserData ) {
