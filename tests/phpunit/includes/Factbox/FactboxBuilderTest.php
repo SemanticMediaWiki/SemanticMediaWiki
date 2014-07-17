@@ -29,7 +29,7 @@ class FactboxBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructFaxtboxCache() {
+	public function testCanConstructFactboxCache() {
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
