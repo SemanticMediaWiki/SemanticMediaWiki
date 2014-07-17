@@ -8,6 +8,7 @@ use SMW\MediaWiki\Hooks\TitleMoveComplete;
 use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
+use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 
 /**
  * Extension setup and registration
@@ -355,8 +356,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = function ( &$parser, &$text ) use ( $functionHook ) {
-			return $functionHook->register( new InternalParseBeforeLinks( $parser, $text ) )->process();
+		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = function ( &$parser, &$text ) {
+			$internalParseBeforeLinks = new InternalParseBeforeLinks( $parser, $text );
+			return $internalParseBeforeLinks->process();
 		};
 
 		/**

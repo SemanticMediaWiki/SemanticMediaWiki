@@ -1,9 +1,7 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\MagicWordFinder;
-use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Application;
 
 use Parser;
@@ -23,12 +21,12 @@ use Title;
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class InternalParseBeforeLinks extends FunctionHook {
+class InternalParseBeforeLinks {
 
 	/**
 	 * @var Parser
@@ -52,8 +50,6 @@ class InternalParseBeforeLinks extends FunctionHook {
 	}
 
 	/**
-	 * @see FunctionHook::process
-	 *
 	 * @since 1.9
 	 *
 	 * @return true
@@ -62,11 +58,6 @@ class InternalParseBeforeLinks extends FunctionHook {
 		return $this->canPerformUpdate() ? $this->performUpdate() : true;
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
 	protected function canPerformUpdate() {
 
 		if ( !$this->parser->getTitle()->isSpecialPage() ) {
@@ -84,14 +75,6 @@ class InternalParseBeforeLinks extends FunctionHook {
 		return false;
 	}
 
-	/**
-	 * Performs [[link::syntax]] parsing and adding of property annotations
-	 * to the ParserOutput
-	 *
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
 	protected function performUpdate() {
 
 		/**
@@ -102,6 +85,12 @@ class InternalParseBeforeLinks extends FunctionHook {
 			$this->parser->getOutput()
 		);
 
+		/**
+		 * Performs [[link::syntax]] parsing and adding of property annotations
+		 * to the ParserOutput
+		 *
+		 * @var InTextAnnotationParser
+		 */
 		$inTextAnnotationParser = Application::getInstance()->newInTextAnnotationParser( $parserData );
 		$inTextAnnotationParser->parse( $this->text );
 

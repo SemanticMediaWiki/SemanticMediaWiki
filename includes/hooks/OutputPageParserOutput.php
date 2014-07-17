@@ -27,11 +27,15 @@ use SMWOutputs;
  */
 class OutputPageParserOutput extends FunctionHook {
 
-	/** @var OutputPage */
+	/**
+	 * @var OutputPage
+	 */
 	protected $outputPage = null;
 
-	/** @var ParserOutput */
-	protected $skin = null;
+	/**
+	 * @var ParserOutput
+	 */
+	protected $parserOutput = null;
 
 	/**
 	 * @since  1.9
@@ -61,7 +65,7 @@ class OutputPageParserOutput extends FunctionHook {
 
 		if ( $title->isSpecialPage() ||
 			$title->isRedirect() ||
-			!$this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $title->getNamespace() ) ) {
+			!$this->isEnabledNamespace( $title ) ) {
 			return false;
 		}
 
@@ -74,25 +78,13 @@ class OutputPageParserOutput extends FunctionHook {
 
 	protected function performUpdate() {
 
-		/**
-		 * @var FactboxCache $factboxCache
-		 */
-		$factboxCache = $this->withContext()->getDependencyBuilder()->newObject( 'FactboxCache', array(
-			'OutputPage' => $this->outputPage
-		) );
-
-		$factboxCache->process( $this->makeParserOutput() );
-
-		// @Legacy code
-		// Not sure why this was ever needed but to monitor any
-		// deviations we'll keep this as note in case it
-		// is needed but tests didn't show it is needed
-		// SMWOutputs::commitToOutputPage( $this->outputPage );
+		$factboxCache = Application::getInstance()->newFactboxBuilder()->newFactboxCache( $this->outputPage );
+		$factboxCache->process( $this->getParserOutput() );
 
 		return true;
 	}
 
-	protected function makeParserOutput() {
+	protected function getParserOutput() {
 
 		if ( $this->outputPage->getContext()->getRequest()->getInt( 'oldid' ) ) {
 
@@ -111,4 +103,11 @@ class OutputPageParserOutput extends FunctionHook {
 
 		return $this->parserOutput;
 	}
+
+	private function isEnabledNamespace( Title $title ) {
+		return NamespaceExaminer::newFromArray(
+			Application::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace()
+		);
+	}
+
 }

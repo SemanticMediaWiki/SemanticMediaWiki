@@ -6,6 +6,7 @@ use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\Annotator\PropertyAnnotatorFactory;
 use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\Factbox\FactboxBuilder;
 
 use ParserOutput;
 use Title;
@@ -83,6 +84,16 @@ class Application {
 	/**
 	 * @since 2.0
 	 *
+	 * @return FactboxBuilder
+	 */
+	public function newFactboxBuilder() {
+		return new FactboxBuilder();
+	}
+
+
+	/**
+	 * @since 2.0
+	 *
 	 * @return PropertyAnnotatorFactory
 	 */
 	public function newPropertyAnnotatorFactory() {
@@ -140,7 +151,7 @@ class Application {
 	 * @return CacheHandler
 	 */
 	public function getCache() {
-		return $this->builder->newObject( 'CacheHandler' );;
+		return $this->builder->newObject( 'CacheHandler' );
 	}
 
 	/**
@@ -165,6 +176,17 @@ class Application {
 		return $this->builder->newObject( 'ParserData', array(
 			'Title'        => $title,
 			'ParserOutput' => $parserOutput
+		) );
+	}
+
+	/**
+	 * @since 2.0
+	 *
+	 * @return ContentParser
+	 */
+	public function newContentParser( Title $title ) {
+		return $this->builder->newObject( 'ContentParser', array(
+			'Title' => $title
 		) );
 	}
 

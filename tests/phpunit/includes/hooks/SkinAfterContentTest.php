@@ -2,8 +2,11 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\Mock\MockTitle;
+
 use SMW\SkinAfterContent;
-use SMW\ExtensionContext;
+use SMW\Application;
+use SMW\Settings;
 
 /**
  * @covers \SMW\SkinAfterContent
@@ -13,153 +16,194 @@ use SMW\ExtensionContext;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SkinAfterContentTest extends SemanticMediaWikiTestCase {
+class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\SkinAfterContent';
-	}
+	private $application;
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return SkinAfterContent
-	 */
-	private function newInstance( &$data = '', $skin = null ) {
+	protected function setUp() {
+		parent::setUp();
 
-		$settings = $this->newSettings( array(
+		$this->application = Application::getInstance();
+
+		$settings = Settings::newFromArray( array(
 			'smwgFactboxUseCache' => true,
 			'smwgCacheType'       => 'hash'
 		) );
 
-		if ( $skin === null ) {
-			$skin = $this->newMockBuilder()->newObject( 'Skin' );
-		}
-
-		$context = new ExtensionContext();
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Settings', $settings );
-
-		$instance = new SkinAfterContent( $data, $skin );
-		$instance->invokeContext( $context );
-
-		return $instance;
+		$this->application->registerObject( 'Settings', $settings );
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+	protected function tearDown() {
+		$this->application->clear();
+
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+
+		$data = '';
+
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\SkinAfterContent',
+			new SkinAfterContent( $data, $skin )
+		);
 	}
 
 	/**
 	 * @dataProvider outputDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testProcessFactboxPresenterIntegration( $setup, $expected ) {
+	public function testProcessFactboxPresenterIntegration( $parameters, $expected ) {
 
 		$data = '';
-		$instance = $this->newInstance( $data, $setup['skin'] );
+
+		$instance = new SkinAfterContent( $data, $parameters['skin'] );
 
 		// Inject fake content into the FactboxPresenter
-		if ( isset( $setup['title'] ) ) {
+		if ( isset( $parameters['title'] ) ) {
 
-			$factboxCache = $instance->withContext()->getDependencyBuilder()->newObject( 'FactboxCache', array(
-				'OutputPage' => $setup['skin']->getOutput()
-			) );
+			$factboxCache = $this->application
+				->newFactboxBuilder()
+				->newFactboxCache( $parameters['skin']->getOutput() );
 
-			$resultMapper = $factboxCache->newResultMapper( $setup['title']->getArticleID() );
+			$resultMapper = $factboxCache->newResultMapper( $parameters['title']->getArticleID() );
 			$resultMapper->recache( array(
 				'revId' => null,
-				'text'  => $setup['text']
+				'text'  => $parameters['text']
 			) );
-
 		}
 
-		$this->assertTrue(
-			$instance->process(),
-			'Asserts that process() always returns true'
-		);
+		$this->assertTrue( $instance->process() );
 
 		$this->assertEquals(
 			$expected['text'],
-			$data,
-			'Asserts that data contains expected text alteration'
+			$data
 		);
-
 	}
 
-	/**
-	 * @return array
-	 */
 	public function outputDataProvider() {
 
-		$provider = array();
-
-		// #0 Retrive content from outputPage property
 		$text = __METHOD__ . 'text-0';
 
-		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle' => $this->newMockBuilder()->newObject( 'Title' )
-		) );
+		#0 Retrive content from outputPage property
+		$title = MockTitle::buildMock( __METHOD__ . 'from-property' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 10001 ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$outputPage->mSMWFactboxText = $text;
 
-		$skin = $this->newMockBuilder()->newObject( 'Skin', array(
-			'getTitle'   => null,
-			'getOutput'  => $outputPage,
-			'getContext' => $this->newContext()
-		) );
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( null ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $outputPage ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
 
 		$provider[] = array(
 			array( 'skin' => $skin ),
 			array( 'text' => $text )
 		);
 
-		// #1 Retrive content from cache
-		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle' => $this->newMockBuilder()->newObject( 'Title' )
-		) );
+		#1 Retrive content from cache
+		$title = MockTitle::buildMock( __METHOD__ . 'from-cache' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 10002 ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$text = __METHOD__ . 'text-1';
 
-		$skin = $this->newMockBuilder()->newObject( 'Skin', array(
-			'getTitle'   => $outputPage->getTitle(),
-			'getOutput'  => $outputPage,
-			'getContext' => $this->newContext()
-		) );
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $outputPage ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
 
 		$provider[] = array(
 			array( 'skin' => $skin, 'text' => $text, 'title' => $outputPage->getTitle() ),
 			array( 'text' => $text )
 		);
 
+
 		// #2 Special page
 		$text  = __METHOD__ . 'text-2';
 
-		$title = $this->newMockBuilder()->newObject( 'Title', array(
-			'isSpecialPage' => true
-		) );
+		$title = MockTitle::buildMock( __METHOD__ . 'specialpage' );
 
-		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle' => $title
-		) );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( true ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$outputPage->mSMWFactboxText = $text;
 
-		$skin = $this->newMockBuilder()->newObject( 'Skin', array(
-			'getTitle'   => $outputPage->getTitle(),
-			'getOutput'  => $outputPage,
-			'getContext' => $this->newContext()
-		) );
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $outputPage ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
 
 		$provider[] = array(
 			array( 'skin' => $skin, 'text' => $text ),
@@ -169,17 +213,40 @@ class SkinAfterContentTest extends SemanticMediaWikiTestCase {
 		// #3 "edit" request
 		$text   = __METHOD__ . 'text-3';
 
-		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle' => $this->newMockBuilder()->newObject( 'Title' )
-		) );
+		$title = MockTitle::buildMock( __METHOD__ . 'edit-request' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 10003 ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$outputPage->mSMWFactboxText = $text;
 
-		$skin = $this->newMockBuilder()->newObject( 'Skin', array(
-			'getTitle'   => $outputPage->getTitle(),
-			'getOutput'  => $outputPage,
-			'getContext' => $this->newContext( array( 'action' => 'edit' ) )
-		) );
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $outputPage ) );
+
+		$context = new \RequestContext( );
+		$context->setRequest( new \FauxRequest( array( 'action' => 'edit' ), true ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $context ) );
 
 		$provider[] = array(
 			array( 'skin' => $skin, 'text' => $text ),

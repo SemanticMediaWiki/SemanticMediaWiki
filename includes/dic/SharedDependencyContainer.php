@@ -104,25 +104,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 				return new ObservableSubjectDispatcher( $builder->newObject( 'UpdateObserver' ) );
 			},
 
-			'Factbox' => function ( DependencyBuilder $builder ) {
-				return new Factbox(
-					$builder->newObject( 'Store' ),
-					$builder->newObject( 'ParserData' ),
-					$builder->newObject( 'Settings' ),
-					$builder->newObject( 'RequestContext' )
-				);
-			},
-
-			'FactboxCache' => function ( DependencyBuilder $builder ) {
-
-				$outputPage = $builder->getArgument( 'OutputPage' );
-
-				$instance = new FactboxCache( $outputPage );
-				$instance->setDependencyBuilder( $builder );
-
-				return $instance;
-			},
-
 			/**
 			 * RequestContext object definition
 			 *
