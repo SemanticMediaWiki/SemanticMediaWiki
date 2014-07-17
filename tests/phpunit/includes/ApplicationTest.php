@@ -91,6 +91,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructFactboxBuilder() {
+
+		$this->assertInstanceOf(
+			'SMW\Factbox\FactboxBuilder',
+			Application::getInstance()->newFactboxBuilder()
+		);
+	}
+
 	public function testCanConstructInTextAnnotationParser() {
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
@@ -100,6 +108,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\InTextAnnotationParser',
 			Application::getInstance()->newInTextAnnotationParser( $parserData )
+		);
+	}
+
+	public function testCanConstructContentParser() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\ContentParser',
+			Application::getInstance()->newContentParser( $title )
 		);
 	}
 

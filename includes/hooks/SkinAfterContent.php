@@ -17,17 +17,21 @@ use Skin;
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class SkinAfterContent extends FunctionHook {
 
-	/** @var OutputPage */
+	/**
+	 * @var string
+	 */
 	protected $data = null;
 
-	/** @var ParserOutput */
+	/**
+	 * @var Skin
+	 */
 	protected $skin = null;
 
 	/**
@@ -42,30 +46,13 @@ class SkinAfterContent extends FunctionHook {
 	}
 
 	/**
-	 * @see FunctionHook::process
-	 *
 	 * @since 1.9
 	 *
 	 * @return true
 	 */
 	public function process() {
-		return $this->performUpdate( $this->skin->getOutput() );
-	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
-	protected function performUpdate( OutputPage $outputPage ) {
-
-		/**
-		 * @var FactboxCache $factboxCache
-		 */
-		$factboxCache = $this->withContext()->getDependencyBuilder()->newObject( 'FactboxCache', array(
-			'OutputPage' => $outputPage
-		) );
-
+		$factboxCache = Application::getInstance()->newFactboxBuilder()->newFactboxCache( $this->skin->getOutput() );
 		$this->data .= $factboxCache->retrieveContent();
 
 		return true;

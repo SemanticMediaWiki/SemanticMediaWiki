@@ -15,17 +15,21 @@ use Html;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class FactboxCache extends DependencyInjector {
+class FactboxCache {
 
-	/** @var OutputPage */
+	/**
+	 * @var OutputPage
+	 */
 	protected $outputPage = null;
 
-	/** @var boolean */
+	/**
+	 * @var boolean
+	 */
 	protected $isCached = false;
 
 	/**
@@ -150,10 +154,7 @@ class FactboxCache extends DependencyInjector {
 	 */
 	public function newResultMapper( $pageId ) {
 
-		/**
-		 * @var Settings $settings
-		 */
-		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
+		$settings = Application::getInstance()->getSettings();
 
 		return new CacheableResultMapper( new SimpleDictionary( array(
 			'id'      => $pageId,
@@ -195,32 +196,19 @@ class FactboxCache extends DependencyInjector {
 	protected function rebuild( Title $title, ParserOutput $parserOutput, $requestContext ) {
 
 		$text = null;
+		$application = Application::getInstance();
 
-		/**
-		 * @var RequestContext
-		 */
-		$this->getDependencyBuilder()->getContainer()->registerObject( 'RequestContext', $requestContext );
-
-		/**
-		 * @var Factbox $factbox
-		 */
-		$factbox = $this->getDependencyBuilder()->newObject( 'Factbox', array(
-			'Title'          => $title,
-			'ParserOutput'   => $parserOutput
-		) );
+		$factbox = $application->newFactboxBuilder()->newFactbox(
+			$application->newParserData( $title, $parserOutput ),
+			$requestContext
+		);
 
 		if ( $factbox->doBuild()->isVisible() ) {
 
-			/**
-			 * @var ContentParser $contentParser
-			 */
-			$contentParser = $this->getDependencyBuilder()->newObject( 'ContentParser', array(
-				'Title' => $title
-			) );
-
+			$contentParser = $application->newContentParser( $title );
 			$contentParser->parse( $factbox->getContent() );
-			$text = $contentParser->getOutput()->getText();
 
+			$text = $contentParser->getOutput()->getText();
 		}
 
 		return $text;
@@ -228,9 +216,7 @@ class FactboxCache extends DependencyInjector {
 
 	protected function cacheIsAvailableFor( $revId, $content ) {
 
-		$settings = $this->getDependencyBuilder()->newObject( 'Settings' );
-
-		if ( $settings->get( 'smwgShowFactbox' ) === SMW_FACTBOX_HIDDEN ) {
+		if ( Application::getInstance()->getSettings()->get( 'smwgShowFactbox' ) === SMW_FACTBOX_HIDDEN ) {
 			return false;
 		}
 
@@ -244,4 +230,5 @@ class FactboxCache extends DependencyInjector {
 
 		return false;
 	}
+
 }

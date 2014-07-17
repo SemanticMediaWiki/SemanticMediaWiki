@@ -2,8 +2,16 @@
 
 namespace SMW\Test;
 
-use SMW\SharedDependencyContainer;
+use SMW\Tests\Util\Mock\MockTitle;
+
 use SMW\FactboxCache;
+use SMW\Application;
+use SMW\Settings;
+use SMW\DIWikiPage;
+use SMW\DIProperty;
+
+use Language;
+use ParserOutput;
 
 /**
  * @covers \SMW\FactboxCache
@@ -14,96 +22,101 @@ use SMW\FactboxCache;
  * @group SMWExtension
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class FactboxCacheTest extends ParserTestCase {
+class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\FactboxCache';
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->application = Application::getInstance();
+
+		$settings = Settings::newFromArray( array(
+			'smwgFactboxUseCache' => true,
+			'smwgCacheType'       => 'hash',
+			'smwgLinksInValues'   => false,
+			'smwgInlineErrors'    => true
+		) );
+
+		$this->application->registerObject( 'Settings', $settings );
+
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return FactboxCache
-	 */
-	private function newInstance( &$outputPage = null ) {
+	protected function tearDown() {
+		$this->application->clear();
 
-		if ( $outputPage === null ) {
-			$outputPage = $this->newMockBuilder()->newObject( 'OutputPage' );
-		}
-
-		$container = new SharedDependencyContainer();
-		$container->registerObject( 'Settings', $this->newSettings() );
-		$container->registerObject( 'Store', $this->newMockBuilder()->newObject( 'Store' ) );
-
-		$instance = new FactboxCache( $outputPage );
-		$instance->setDependencyBuilder( $this->newDependencyBuilder( $container ) );
-
-		return $instance;
+		parent::tearDown();
 	}
 
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+	public function testCanConstruct() {
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\FactboxCache',
+			new FactboxCache( $outputPage )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function testNewCacheId() {
-		$this->assertInstanceOf( '\SMW\CacheIdGenerator', FactboxCache::newCacheId( 9001 ) );
+
+		$this->assertInstanceOf(
+			'\SMW\CacheIdGenerator',
+			FactboxCache::newCacheId( 9001 )
+		);
 	}
 
 	/**
 	 * @dataProvider outputDataProvider
-	 *
-	 * @since 1.9
 	 */
-	public function testProcessAndRetrieveContentOnMock( $setup, $expected ) {
+	public function testProcessAndRetrieveContent( $parameters, $expected ) {
 
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => $setup['smwgNamespacesWithSemanticLinks'],
-			'smwgShowFactbox'     => $setup['smwgShowFactbox'],
-			'smwgFactboxUseCache' => true,
-			'smwgCacheType'       => 'hash'
+		$this->application->getSettings()->set(
+			'smwgNamespacesWithSemanticLinks',
+			$parameters['smwgNamespacesWithSemanticLinks']
 		);
 
-		$outputPage = $setup['outputPage'];
-		$instance   = $this->newInstance( $outputPage );
-
-		$container = $instance->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Settings', $this->newSettings( $settings ) );
-		$container->registerObject( 'Store', $setup['store'] );
-
-		$this->assertEmpty(
-			$instance->retrieveContent(),
-			'Asserts that no previous content was cached'
+		$this->application->getSettings()->set(
+			'smwgShowFactbox',
+			$parameters['smwgShowFactbox']
 		);
 
-		$instance->process( $setup['parserOutput'] );
+		$this->application->registerObject( 'Store', $parameters['store'] );
+
+		$outputPage = $parameters['outputPage'];
+
+		$instance = new FactboxCache( $outputPage );
+
+		$this->assertEmpty( $instance->retrieveContent() );
+
+		$instance->process( $parameters['parserOutput'] );
 		$result = $outputPage->mSMWFactboxText;
 
-		$this->assertPreProcess( $expected, $result, $outputPage, $instance );
+		$this->assertPreProcess(
+			$expected,
+			$result,
+			$outputPage,
+			$instance
+		);
 
 		// Re-run on the same instance
-		$instance->process( $setup['parserOutput'] );
+		$instance->process( $parameters['parserOutput'] );
 
-		$this->assertPostProcess( $expected, $result, $outputPage, $instance );
-
+		$this->assertPostProcess(
+			$expected,
+			$result,
+			$outputPage,
+			$instance
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function assertPreProcess( $expected, $result, $outputPage, $instance ) {
 
 		if ( $expected['text'] ) {
@@ -129,14 +142,9 @@ class FactboxCacheTest extends ParserTestCase {
 				$result,
 				'Asserts that the result is null'
 			);
-
 		}
-
 	}
 
-	/**
-	 * @since 1.9
-	 */
 	public function assertPostProcess( $expected, $result, $outputPage, $instance ) {
 
 		$this->assertEquals(
@@ -163,113 +171,229 @@ class FactboxCacheTest extends ParserTestCase {
 				$instance->isCached(),
 				'Asserts that isCached() returns false'
 			);
-
 		}
-
 	}
 
-	/**
-	 * @return array
-	 */
 	public function outputDataProvider() {
 
-		$provider = array();
+		$language = Language::factory( 'en' );
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store' );
+		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-subject' );
 
-		// #0 Factbox build, being visible
-		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
-			'getPageLanguage' => $this->getLanguage(),
-		) );
+		$subject = DIWikiPage::newFromTitle( $title );
 
-		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle'   => $mockTitle,
-			'getContext' => $this->newContext()
-		) );
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'hasVisibleProperties' )
+			->will( $this->returnValue( true ) );
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( array( DIWikiPage::newFromTitle( $title ) ) ) );
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( array( new DIProperty(  __METHOD__ . 'property' ) ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		#0 Factbox build, being visible
+		$title = MockTitle::buildMock( __METHOD__ . 'title-being-visible' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getPageLanguage' )
+			->will( $this->returnValue( $language ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 10001 ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 10001 ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
 
 		$provider[] = array(
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
-				'outputPage'      => $mockOutputPage,
-				'store'           => $mockStore,
-				'parserOutput'    => $this->makeParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-0' ) )
+				'outputPage'      => $outputPage,
+				'store'           => $store,
+				'parserOutput'    => $this->makeParserOutput( $semanticData )
 			),
 			array(
-				'text'            => $mockTitle->getDBKey()
+				'text'            => $subject->getDBKey()
 			)
 		);
 
-		// #1 Factbox build, being visible, using WebRequest oldid
-		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
-			'getPageLanguage' => $this->getLanguage(),
-		) );
+		#1 Factbox build, being visible, using WebRequest oldid
+		$title = MockTitle::buildMock( __METHOD__ . 'title-with-oldid' );
 
-		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle'   => $mockTitle,
-			'getContext' => $this->newContext( array( 'oldid' => 9001 ) )
-		) );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getPageLanguage' )
+			->will( $this->returnValue( $language ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 10002 ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 10002 ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$context = new \RequestContext( );
+		$context->setRequest( new \FauxRequest( array( 'oldid' => 9001 ), true ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $context ) );
 
 		$provider[] = array(
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
-				'outputPage'      => $mockOutputPage,
-				'store'           => $mockStore,
-				'parserOutput'    => $this->makeParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-1' ) )
+				'outputPage'      => $outputPage,
+				'store'           => $store,
+				'parserOutput'    => $this->makeParserOutput( $semanticData )
 			),
 			array(
-				'text'            => $mockTitle->getDBKey()
+				'text'            => $subject->getDBKey()
 			)
 		);
 
-		// #2 Factbox is expected not to be visible
-		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
-			'getPageLanguage' => $this->getLanguage()
-		) );
+		#2 Factbox is expected not to be visible
+		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
 
-		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle'   => $mockTitle,
-			'getContext' => $this->newContext()
-		) );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getPageLanguage' )
+			->will( $this->returnValue( $language ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 10003 ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 10003 ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
 
 		$provider[] = array(
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
 				'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
-				'outputPage'      => $mockOutputPage,
-				'store'           => $mockStore,
-				'parserOutput'    => $this->makeParserOutput( $this->setupSematicData( $mockOutputPage, 'Queeey-2' ) )
+				'outputPage'      => $outputPage,
+				'store'           => $store,
+				'parserOutput'    => $this->makeParserOutput( $semanticData )
 			),
 			array(
 				'text'            => null
 			)
 		);
 
-		// #3 No semantic data
-		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
-			'getPageLanguage' => $this->getLanguage(),
-		) );
+		#3 No semantic data
+		$title = MockTitle::buildMock( __METHOD__ . 'title-empty-semanticdata' );
 
-		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle'   => $mockTitle,
-			'getContext' => $this->newContext()
-		) );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
 
-		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
-			'isEmpty' => true
-		) );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getPageLanguage' )
+			->will( $this->returnValue( $language ) );
 
-		$mockStore = $this->newMockBuilder()->newObject( 'Store', array(
-			'getSemanticData' => $mockSemanticData
-		) );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 10004 ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 10004 ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'isEmpty' )
+			->will( $this->returnValue( true ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
 
 		$provider[] = array(
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
-				'outputPage'      => $mockOutputPage,
-				'store'           => $mockStore,
+				'outputPage'      => $outputPage,
+				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),
 			),
 			array(
@@ -278,21 +402,34 @@ class FactboxCacheTest extends ParserTestCase {
 		);
 
 		// #4 SpecialPage
-		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
-			'isSpecialPage' => true,
-		) );
+		$title = MockTitle::buildMock( __METHOD__ . 'title-specialpage' );
 
-		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle'   => $mockTitle,
-			'getContext' => $this->newContext()
-		) );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( true ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
 
 		$provider[] = array(
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
-				'outputPage'      => $mockOutputPage,
-				'store'           => $mockStore,
+				'outputPage'      => $outputPage,
+				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),
 			),
 			array(
@@ -301,21 +438,34 @@ class FactboxCacheTest extends ParserTestCase {
 		);
 
 		// #5 isDeleted
-		$mockTitle = $this->newMockBuilder()->newObject( 'Title', array(
-			'isDeleted' => true,
-		) );
+		$title = MockTitle::buildMock( __METHOD__ . 'title-isDeleted' );
 
-		$mockOutputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
-			'getTitle'   => $mockTitle,
-			'getContext' => $this->newContext()
-		) );
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'isDeleted' )
+			->will( $this->returnValue( true ) );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( new \RequestContext() ) );
 
 		$provider[] = array(
 			array(
 				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
 				'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY,
-				'outputPage'      => $mockOutputPage,
-				'store'           => $mockStore,
+				'outputPage'      => $outputPage,
+				'store'           => $store,
 				'parserOutput'    => $this->makeParserOutput( null ),
 			),
 			array(
@@ -326,39 +476,9 @@ class FactboxCacheTest extends ParserTestCase {
 		return $provider;
 	}
 
-	/**
-	 * @return SemanticData
-	 */
-	protected function setupSematicData( $outputPage, $label ) {
-
-		$mockSubject = $this->newMockBuilder()->newObject( 'DIWikiPage', array(
-			'getTitle' => $outputPage->getTitle(),
-			'getDBkey' => $outputPage->getTitle()->getDBkey()
-		) );
-
-		$mockDIProperty = $this->newMockBuilder()->newObject( 'DIProperty', array(
-			'isUserDefined' => true,
-			'isShown'       => true,
-			'getLabel'      => $label
-		) );
-
-		$mockSemanticData = $this->newMockBuilder()->newObject( 'SemanticData', array(
-			'hasVisibleProperties' => true,
-			'isEmpty'              => false,
-			'getSubject'           => $mockSubject,
-			'getPropertyValues'    => array( $mockSubject ),
-			'getProperties'        => array( $mockDIProperty )
-		) );
-
-		return $mockSemanticData;
-	}
-
-	/**
-	 * @return ParserOutput
-	 */
 	protected function makeParserOutput( $semanticData ) {
 
-		$parserOutput = $this->newParserOutput();
+		$parserOutput = new ParserOutput();
 
 		if ( method_exists( $parserOutput, 'setExtensionData' ) ) {
 			$parserOutput->setExtensionData( 'smwdata', $semanticData );
