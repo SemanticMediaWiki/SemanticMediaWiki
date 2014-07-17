@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\Tests\Util\Mock\MockTitle;
 
-use SMW\OutputPageParserOutput;
+use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 
 use SMW\Settings;
 use SMW\Application;
@@ -15,7 +15,7 @@ use ParserOutput;
 use Language;
 
 /**
- * @covers \SMW\OutputPageParserOutput
+ * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput
  *
  * @ingroup Test
  *
@@ -65,7 +65,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\OutputPageParserOutput',
+			'\SMW\MediaWiki\Hooks\OutputPageParserOutput',
 			new OutputPageParserOutput( $outputPage, $parserOutput )
 		);
 	}

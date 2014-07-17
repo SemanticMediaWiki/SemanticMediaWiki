@@ -1,6 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
+
+use SMW\Application;
+use SMW\NamespaceExaminer;
 
 use ParserOutput;
 use OutputPage;
@@ -20,12 +23,12 @@ use SMWOutputs;
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class OutputPageParserOutput extends FunctionHook {
+class OutputPageParserOutput {
 
 	/**
 	 * @var OutputPage

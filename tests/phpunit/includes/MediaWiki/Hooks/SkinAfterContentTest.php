@@ -1,15 +1,15 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\Tests\Util\Mock\MockTitle;
 
-use SMW\SkinAfterContent;
+use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\Application;
 use SMW\Settings;
 
 /**
- * @covers \SMW\SkinAfterContent
+ * @covers \SMW\MediaWiki\Hooks\SkinAfterContent
  *
  * @ingroup Test
  *
@@ -53,7 +53,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SkinAfterContent',
+			'\SMW\MediaWiki\Hooks\SkinAfterContent',
 			new SkinAfterContent( $data, $skin )
 		);
 	}

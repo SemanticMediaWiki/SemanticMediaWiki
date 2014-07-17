@@ -1,6 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
+
+use SMW\Application;
 
 use OutputPage;
 use Title;
@@ -22,7 +24,7 @@ use Skin;
  *
  * @author mwjames
  */
-class SkinAfterContent extends FunctionHook {
+class SkinAfterContent {
 
 	/**
 	 * @var string

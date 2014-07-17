@@ -9,6 +9,9 @@ use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
+use SMW\MediaWiki\Hooks\SkinAfterContent;
+use SMW\MediaWiki\Hooks\OutputPageParserOutput;
+use SMW\MediaWiki\Hooks\BeforePageDisplay;
 
 /**
  * Extension setup and registration
@@ -322,8 +325,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since  1.9
 		 */
-		$this->globals['wgHooks']['SkinAfterContent'][] = function ( &$data, $skin = null ) use ( $functionHook ) {
-			return $functionHook->register( new SkinAfterContent( $data, $skin ) )->process();
+		$this->globals['wgHooks']['SkinAfterContent'][] = function ( &$data, $skin = null ) {
+			$skinAfterContent = new SkinAfterContent( $data, $skin );
+			return $skinAfterContent->process();
 		};
 
 		/**
@@ -333,8 +337,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since  1.9
 		 */
-		$this->globals['wgHooks']['OutputPageParserOutput'][] = function ( &$outputPage, $parserOutput ) use ( $functionHook ) {
-			return $functionHook->register( new OutputPageParserOutput( $outputPage, $parserOutput ) )->process();
+		$this->globals['wgHooks']['OutputPageParserOutput'][] = function ( &$outputPage, $parserOutput ) {
+			$outputPageParserOutput = new OutputPageParserOutput( $outputPage, $parserOutput );
+			return $outputPageParserOutput->process();
 		};
 
 		/**
@@ -344,8 +349,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['BeforePageDisplay'][] = function ( &$outputPage, &$skin ) use ( $functionHook ) {
-			return $functionHook->register( new BeforePageDisplay( $outputPage, $skin ) )->process();
+		$this->globals['wgHooks']['BeforePageDisplay'][] = function ( &$outputPage, &$skin ) {
+			$beforePageDisplay = new BeforePageDisplay( $outputPage, $skin );
+			return $beforePageDisplay->process();
 		};
 
 		/**

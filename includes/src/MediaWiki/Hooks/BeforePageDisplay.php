@@ -1,30 +1,35 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
 
 use OutputPage;
 use Skin;
 use Title;
+use SpecialPage;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
  * output page, e.g. adding of CSS or JavaScript
  *
- * @see http://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class BeforePageDisplay extends FunctionHook {
+class BeforePageDisplay {
 
-	/** @var OutputPage */
+	/**
+	 * @var OutputPage
+	 */
 	protected $outputPage = null;
 
-	/** @var Skin */
+	/**
+	 * @var Skin
+	 */
 	protected $skin = null;
 
 	/**
@@ -39,11 +44,9 @@ class BeforePageDisplay extends FunctionHook {
 	}
 
 	/**
-	 * @see HookBase::process
-	 *
 	 * @since 1.9
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public function process() {
 
@@ -57,7 +60,7 @@ class BeforePageDisplay extends FunctionHook {
 			$linkarr['rel']   = 'ExportRDF';
 			$linkarr['type']  = 'application/rdf+xml';
 			$linkarr['title'] = $title->getPrefixedText();
-			$linkarr['href']  = \SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
+			$linkarr['href']  = SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
 			$this->outputPage->addLink( $linkarr );
 		}
 
