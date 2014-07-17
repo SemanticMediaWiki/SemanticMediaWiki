@@ -38,4 +38,14 @@ class PageCreatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCreateFilePage() {
+
+		$instance = new PageCreator();
+
+		$this->assertInstanceOf(
+			'\WikiFilePage',
+			 $instance->createFilePage( MockTitle::buildMock( __METHOD__ ) )
+		);
+	}
+
 }
