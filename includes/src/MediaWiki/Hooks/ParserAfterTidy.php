@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\Application;
 
 use Parser;
 use Title;
@@ -15,18 +15,22 @@ use Title;
  *
  * @ingroup FunctionHook
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ParserAfterTidy extends FunctionHook {
+class ParserAfterTidy {
 
-	/** @var Parser */
-	protected $parser = null;
+	/**
+	 * @var Parser
+	 */
+	private $parser = null;
 
-	/** @var string */
-	protected $text;
+	/**
+	 * @var string
+	 */
+	private $text;
 
 	/**
 	 * @since  1.9
@@ -36,12 +40,10 @@ class ParserAfterTidy extends FunctionHook {
 	 */
 	public function __construct( Parser &$parser, &$text ) {
 		$this->parser = $parser;
-		$this->text = $text;
+		$this->text =& $text;
 	}
 
 	/**
-	 * @see FunctionHook::process
-	 *
 	 * @since 1.9
 	 *
 	 * @return true
@@ -67,27 +69,28 @@ class ParserAfterTidy extends FunctionHook {
 
 	protected function performUpdate() {
 
-		/**
-		 * @var ParserData $parserData
-		 */
-		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $this->parser->getTitle(),
-			'ParserOutput' => $this->parser->getOutput()
-		) );
+		$this->application = Application::getInstance();
 
-		/**
-		 * @var PropertyAnnotator $propertyAnnotator
-		 */
-		$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'CommonPropertyAnnotator', array(
-			'SemanticData'  => $parserData->getData(),
-			'CategoryLinks' => $this->parser->getOutput()->getCategoryLinks(),
-			'DefaultSort'   => $this->parser->getDefaultSort()
-		) );
+		$parserData = $this->application
+			->newParserData( $this->parser->getTitle(), $this->parser->getOutput() );
+
+		$propertyAnnotator = $this->application
+			->newPropertyAnnotatorFactory()
+			->newSortkeyPropertyAnnotator( $parserData->getSemanticData(), $this->parser->getDefaultSort() );
 
 		$propertyAnnotator->addAnnotation();
+
+		$propertyAnnotator = $this->application
+			->newPropertyAnnotatorFactory()
+			->newCategoryPropertyAnnotator( $parserData->getSemanticData(), $this->parser->getOutput()->getCategoryLinks() );
+
+		$propertyAnnotator->addAnnotation();
+
 		$parserData->updateOutput();
 
-		return $this->performStoreUpdateOnPurge( $parserData );
+ 		$this->forceManualUpdateDueToPagePurge( $parserData );
+
+		return true;
 	}
 
 	/**
@@ -95,12 +98,9 @@ class ParserAfterTidy extends FunctionHook {
 	 * the store is updated as well; for all other cases LinksUpdateConstructed
 	 * will handle the store update
 	 */
-	protected function performStoreUpdateOnPurge( $parserData ) {
+	protected function forceManualUpdateDueToPagePurge( $parserData ) {
 
-		/**
-		 * @var CacheHandler $cache
-		 */
-		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = $this->application->getCache();
 
 		$cache->setKey( ArticlePurge::newCacheId( $this->parser->getTitle()->getArticleID() ) );
 
