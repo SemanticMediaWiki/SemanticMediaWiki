@@ -12,6 +12,7 @@ use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
+use SMW\MediaWiki\Hooks\FileUpload;
 
 /**
  * Extension setup and registration
@@ -471,7 +472,8 @@ final class Setup implements ContextAware {
 		 * @since 1.9.1
 		 */
 		$this->globals['wgHooks']['FileUpload'][] = function ( $file, $reupload ) use ( $functionHook ) {
-			return $functionHook->register( new FileUpload( $file, $reupload ) )->process();
+			$fileUpload = new FileUpload( $file, $reupload );
+			return $fileUpload->process();
 		};
 
 		// Old-style registration

@@ -123,9 +123,15 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		#1 Disabled setting
+		$validIdTitle =  MockTitle::buildMock( 'Disabled' );
+
+		$validIdTitle->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 9099 ) );
+
 		$provider[] = array(
 			array(
-				'title'  => MockTitle::buildMock( 'DisbaledSettings' ),
+				'title'  => $validIdTitle,
 				'smwgAutoRefreshOnPurge'         => false,
 				'smwgFactboxCacheRefreshOnPurge' => false
 			),

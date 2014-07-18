@@ -164,7 +164,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 10001 ) );
+			->will( $this->returnValue( 9098 ) );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()

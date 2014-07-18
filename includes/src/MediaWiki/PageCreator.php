@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use WikiPage;
+use WikiFilePage;
 use Title;
 
 /**
@@ -22,6 +23,17 @@ class PageCreator {
 	 */
 	public function createPage( Title $title ) {
 		return WikiPage::factory( $title );
+	}
+
+	/**
+	 * @since  2.0
+	 *
+	 * @param  Title $title
+	 *
+	 * @return WikiFilePage
+	 */
+	public function createFilePage( Title $title ) {
+		return new WikiFilePage( $title );
 	}
 
 }

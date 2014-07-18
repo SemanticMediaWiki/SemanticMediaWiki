@@ -29,6 +29,34 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewPageInfoProvider() {
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\PageInfoProvider',
+			$instance->newPageInfoProvider( $wikiPage )
+		);
+	}
+
+	public function testNewNullPropertyAnnotator() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Annotator\NullPropertyAnnotator',
+			$instance->newNullPropertyAnnotator( $semanticData )
+		);
+	}
+
 	public function testNewRedirectPropertyAnnotator() {
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -44,6 +72,24 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Annotator\RedirectPropertyAnnotator',
 			$instance->newRedirectPropertyAnnotator( $semanticData, $redirectTargetFinder )
+		);
+	}
+
+	public function testNewPredefinedPropertyAnnotator() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageInfo = $this->getMockBuilder( '\SMW\PageInfo' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Annotator\PredefinedPropertyAnnotator',
+			$instance->newPredefinedPropertyAnnotator( $semanticData, $pageInfo )
 		);
 	}
 
