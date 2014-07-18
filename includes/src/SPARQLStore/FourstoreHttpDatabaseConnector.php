@@ -5,7 +5,6 @@ namespace SMW\SPARQLStore;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
 use SMW\SPARQLStore\QueryEngine\FederateResultList;
 
-use SMWSparqlDatabase as SparqlDatabase;
 use SMWSparqlResultParser as SparqlResultParser;
 use SMWTurtleSerializer as TurtleSerializer;
 
@@ -19,11 +18,11 @@ use SMWTurtleSerializer as TurtleSerializer;
  *
  * @author Markus Krötzsch
  */
-class FourstoreHttpDatabaseConnector extends SparqlDatabase {
+class FourstoreHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 
 	/**
 	 * Execute a SPARQL query and return an FederateResultList object
-	 * that contains the results. Compared to SMWSparqlDatabase::doQuery(),
+	 * that contains the results. Compared to GenericHttpDatabaseConnector::doQuery(),
 	 * this also supports the parameter "restricted=1" which 4Store provides
 	 * to enforce strict resource bounds on query answering. The method also
 	 * checks if these bounds have been met, and records this in the query
@@ -57,7 +56,7 @@ class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 			$rawResultParser = new RawResultParser();
 			$result = $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
 		} else {
-			$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
+			$this->mapHttpRequestError( $this->m_queryEndpoint, $sparql );
 			$result = new FederateResultList( array(), array(), array(), FederateResultList::ERROR_UNREACHABLE );
 		}
 
@@ -99,7 +98,7 @@ class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 	 * Execute a HTTP-based SPARQL POST request according to
 	 * http://www.w3.org/2009/sparql/docs/http-rdf-update/.
 	 * The method throws exceptions based on
-	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
+	 * GenericHttpDatabaseConnector::mapHttpRequestError(). If errors occur and this
 	 * method does not throw anything, then an empty result with an error
 	 * code is returned.
 	 *
@@ -130,12 +129,12 @@ class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 			return true;
 		}
 
-		$this->throwSparqlErrors( $this->m_dataEndpoint, $payload );
+		$this->mapHttpRequestError( $this->m_dataEndpoint, $payload );
 		return false;
 	}
 
 	/**
-	 * @see SparqlDatabase::doUpdate
+	 * @see GenericHttpDatabaseConnector::doUpdate
 	 *
 	 * @note 4store 1.1.4 breaks on update if charset is set in the Content-Type header
 	 *
@@ -161,7 +160,7 @@ class FourstoreHttpDatabaseConnector extends SparqlDatabase {
 			return true;
 		}
 
-		$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+		$this->mapHttpRequestError( $this->m_updateEndpoint, $sparql );
 		return false;
 	}
 

@@ -8,7 +8,7 @@ use SMW\Tests\Util\FakeRawResultProvider;
  * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\FourstoreHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\VirtuosoHttpDatabaseConnector
- * @covers \SMWSparqlDatabase
+ * @covers \SMW\SPARQLStore\GenericHttpDatabaseConnector
  *
  * @ingroup Test
  *
@@ -24,14 +24,15 @@ use SMW\Tests\Util\FakeRawResultProvider;
 class DatabaseConnectorHttpRequestIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	private $databaseConnectors = array(
-		'SMWSparqlDatabase',
+		'\SMW\SPARQLStore\GenericHttpDatabaseConnector',
 		'\SMW\SPARQLStore\FusekiHttpDatabaseConnector',
 		'\SMW\SPARQLStore\FourstoreHttpDatabaseConnector',
 		'\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector',
 
 		// Legacy and should be removed once obsolete
 		'SMWSparqlDatabase4Store',
-		'SMWSparqlDatabaseVirtuoso'
+		'SMWSparqlDatabaseVirtuoso',
+		'SMWSparqlDatabase'
 	);
 
 	/**

@@ -1,18 +1,19 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\SparqlStore;
+namespace SMW\Tests\SPARQLStore;
+
+use SMW\SPARQLStore\SPARQLStore;
 
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 
-use SMWSparqlStore as SparqlStore;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 use Title;
 
 /**
- * @covers \SMWSparqlStore
+ * @covers \SMW\SPARQLStore\SPARQLStore
  *
  * @ingroup Test
  *
@@ -24,12 +25,19 @@ use Title;
  *
  * @author mwjames
  */
-class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
+class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
+
 		$this->assertInstanceOf(
-			'\SMWSparqlStore',
-			new SparqlStore()
+			'\SMW\SPARQLStore\SPARQLStore',
+			new SPARQLStore()
+		);
+
+		// Legacy
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\SPARQLStore',
+			new \SMWSPARQLStore()
 		);
 	}
 
@@ -50,7 +58,7 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $subject ) )
 			->will( $this->returnValue( $semanticData ) );
 
-		$instance = new SparqlStore( $baseStore );
+		$instance = new SPARQLStore( $baseStore );
 
 		$this->assertInstanceOf(
 			'\SMW\SemanticData',
@@ -94,7 +102,7 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $extraNamespaces ) )
 			->will( $this->returnValue( true ) );
 
-		$instance = new SparqlStore( $baseStore );
+		$instance = new SPARQLStore( $baseStore );
 		$instance->setSparqlDatabase( $sparqlDatabase );
 
 		$instance->deleteSubject( $title );
@@ -123,7 +131,7 @@ class SparqlStoreTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'insertData' );
 
-		$instance = new SparqlStore( $baseStore );
+		$instance = new SPARQLStore( $baseStore );
 		$instance->setSparqlDatabase( $sparqlDatabase );
 
 		$instance->doSparqlDataUpdate( $semanticData );

@@ -3,8 +3,8 @@
 namespace SMW\SPARQLStore;
 
 use SMW\DBConnectionProvider;
+use SMW\SPARQLStore\GenericHttpDatabaseConnector;
 
-use SMWSparqlDatabase as SparqlDatabase;
 use RuntimeException;
 
 /**
@@ -23,7 +23,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	 * @var array
 	 */
 	private $connectorIdToClass = array(
-		'default'   => 'SMWSparqlDatabase',
+		'default'   => 'SMW\SPARQLStore\GenericHttpDatabaseConnector',
 		'fuseki'    => 'SMW\SPARQLStore\FusekiHttpDatabaseConnector',
 		'virtuoso'  => 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector',
 		'4store'    => 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector',
@@ -161,7 +161,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	}
 
 	private function isSparqlDatabase( $connection ) {
-		return $connection instanceof SparqlDatabase;
+		return $connection instanceof GenericHttpDatabaseConnector;
 	}
 
 }

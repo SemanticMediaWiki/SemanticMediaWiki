@@ -30,11 +30,6 @@ use Title;
  */
 class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
-	/**
-	 * FIXME
-	 */
-	protected $storesToBeExcluded = array( 'SMWSparqlStore' );
-
 	public function getSourceFile() {
 		return __DIR__ . '/data/' . 'SimplePageRedirectRegressionTest-Mw-1-19-7.xml';
 	}
@@ -69,7 +64,8 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			'property' => new DIProperty( '_REDI' ),
 			'propertyValues' => array(
 				'ToBeSimplePageRedirect',
-				'NewPageRedirectRegressionTest'
+				'NewPageRedirectRegressionTest',
+				'NewTargetPageRedirectRegressionTest'
 			)
 		);
 
@@ -85,6 +81,9 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 		$pageRefresher = new PageRefresher( $this->getStore() );
 		$pageRefresher->doRefresh( $main );
+
+		$jobQueueRunner = new JobQueueRunner( 'SMW\UpdateJob' );
+		$jobQueueRunner->run();
 
 		$semanticDataBatches = array(
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $main ) ),

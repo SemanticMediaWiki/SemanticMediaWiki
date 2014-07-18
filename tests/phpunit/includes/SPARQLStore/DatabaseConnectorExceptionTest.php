@@ -6,7 +6,7 @@ namespace SMW\Tests\SPARQLStore;
  * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\FourstoreHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\VirtuosoHttpDatabaseConnector
- * @covers \SMWSparqlDatabase
+ * @covers \SMW\SPARQLStore\GenericHttpDatabaseConnector
  *
  * @ingroup Test
  *
@@ -23,14 +23,15 @@ class DatabaseConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 	private $defaultGraph;
 
 	private $databaseConnectors = array(
-		'SMWSparqlDatabase',
+		'\SMW\SPARQLStore\GenericHttpDatabaseConnector',
 		'\SMW\SPARQLStore\FusekiHttpDatabaseConnector',
 		'\SMW\SPARQLStore\FourstoreHttpDatabaseConnector',
 		'\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector',
 
 		// Legacy and should be removed once obsolete
 		'SMWSparqlDatabase4Store',
-		'SMWSparqlDatabaseVirtuoso'
+		'SMWSparqlDatabaseVirtuoso',
+		'SMWSparqlDatabase'
 	);
 
 	protected function setUp() {
@@ -45,7 +46,7 @@ class DatabaseConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct( $httpConnector ) {
 
 		$this->assertInstanceOf(
-			'\SMWSparqlDatabase',
+			'\SMW\SPARQLStore\GenericHttpDatabaseConnector',
 			new $httpConnector( $this->defaultGraph, '' )
 		);
 	}
