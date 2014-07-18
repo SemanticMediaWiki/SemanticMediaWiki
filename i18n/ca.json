@@ -274,6 +274,7 @@
 	"smw-concept-cache-text": "El concepte té un total {{PLURAL:$1|d'$1 pàgina|de $1 pàgines}} i es va actualitzar per darrera vegada el $2.",
 	"smw_concept_header": "Pàgines del concepte \"$1\"",
 	"smw_conceptarticlecount": "Es {{PLURAL:$1|mostra|mostren}} a continuació $1 {{PLURAL:$1|pàgina|pàgines}}.",
+	"smw-qp-empty-data": "No s'han pogut mostrar les dades sol·licitades per manca de criteris de selecció suficients.",
 	"right-smw-admin": "Accedeix a les tasques d'administració (Semantic MediaWiki)",
 	"group-smwadministrator": "Administradors de Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|administrador (SMW)|administratora (SMW)}}",
