@@ -216,51 +216,6 @@ final class SMWHooks {
 	}
 
 	/**
-	 * Register tables to be added to temporary tables for parser tests.
-	 *
-	 * @since 1.7.1
-	 *
-	 * @param array $tables
-	 *
-	 * @return boolean
-	 */
-	public static function onParserTestTables( array &$tables ) {
-		// @codeCoverageIgnoreStart
-		$tables = array_merge(
-			$tables,
-			\SMW\StoreFactory::getStore()->getParserTestTables()
-		);
-
-		return true;
-		// @codeCoverageIgnoreEnd
-	}
-
-	/**
-	 * Alter the structured navigation links in SkinTemplates.
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
-	 *
-	 * @since 1.8
-	 *
-	 * @param SkinTemplate $skinTemplate
-	 * @param array $links
-	 *
-	 * @return boolean
-	 */
-	public static function onSkinTemplateNavigation( SkinTemplate &$skinTemplate, array &$links ) {
-		// @codeCoverageIgnoreStart
-		if ( $skinTemplate->getUser()->isAllowed( 'purge' ) ) {
-			$links['actions']['purge'] = array(
-				'class' => false,
-				'text' => $skinTemplate->msg( 'smw_purge' )->text(),
-				'href' => $skinTemplate->getTitle()->getLocalUrl( array( 'action' => 'purge' ) )
-			);
-		}
-
-		return true;
-		// @codeCoverageIgnoreEnd
-	}
-
-	/**
 	 * Add new JavaScript/QUnit testing modules
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
 	 *
@@ -305,87 +260,6 @@ final class SMWHooks {
 			'localBasePath' => __DIR__,
 			'remoteExtPath' => '..' . substr( __DIR__, strlen( $GLOBALS['IP'] ) ),
 		);
-
-		return true;
-	}
-
-	/**
-	 * Hook: GetPreferences adds user preference
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
-	 *
-	 * @param User $user
-	 * @param array $preferences
-	 *
-	 * @return true
-	 */
-	public static function onGetPreferences( $user, &$preferences ) {
-
-		// Intro text
-		$preferences['smw-prefs-intro'] =
-			array(
-				'type' => 'info',
-				'label' => '&#160;',
-				'default' => Xml::tags( 'tr', array(),
-					Xml::tags( 'td', array( 'colspan' => 2 ),
-						wfMessage(  'smw-prefs-intro-text' )->parseAsBlock() ) ),
-				'section' => 'smw',
-				'raw' => 1,
-				'rawrow' => 1,
-			);
-
-		// Option to enable tooltip info
-		$preferences['smw-prefs-ask-options-tooltip-display'] = array(
-			'type' => 'toggle',
-			'label-message' => 'smw-prefs-ask-options-tooltip-display',
-			'section' => 'smw/ask-options',
-		);
-
-		// Preference to set option box be collapsed by default
-		$preferences['smw-prefs-ask-options-collapsed-default'] = array(
-			'type' => 'toggle',
-			'label-message' => 'smw-prefs-ask-options-collapsed-default',
-			'section' => 'smw/ask-options',
-		);
-
-		return true;
-	}
-
-	/**
-	 * Hook: ResourceLoaderGetConfigVars called right before
-	 * ResourceLoaderStartUpModule::getConfig and exports static configuration
-	 * variables to JavaScript. Things that depend on the current
-	 * page/request state should use MakeGlobalVariablesScript instead
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
-	 *
-	 * @since  1.9
-	 *
-	 * @param &$vars Array of variables to be added into the output of the startup module.
-	 *
-	 * @return true
-	 */
-	public static function onResourceLoaderGetConfigVars( &$vars ) {
-		$vars['smw-config'] = array(
-			'version' => SMW_VERSION,
-			'settings' => array(
-				'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
-				'smwgQMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
-			)
-		);
-
-		// Available semantic namespaces
-		foreach ( array_keys( $GLOBALS['smwgNamespacesWithSemanticLinks'] ) as $ns ) {
-			$name = MWNamespace::getCanonicalName( $ns );
-			$vars['smw-config']['settings']['namespace'][$name] = $ns;
-		}
-
-		foreach ( array_keys( $GLOBALS['smwgResultFormats'] ) as $format ) {
-			// Special formats "count" and "debug" currently not supported.
-			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
-				$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-				$vars['smw-config']['formats'][$format] = $printer->getName();
-			}
-		}
 
 		return true;
 	}

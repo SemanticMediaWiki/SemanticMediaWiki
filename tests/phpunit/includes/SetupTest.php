@@ -167,6 +167,14 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'isSpecialPage' => true
 		) );
 
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->any() )
+			->method( 'isAllowed' )
+			->will( $this->returnValue( false ) );
+
 		$parserOutput = $this->newMockBuilder()->newObject( 'ParserOutput' );
 
 		$outputPage = $this->newMockBuilder()->newObject( 'OutputPage', array(
@@ -187,9 +195,17 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'getOutput' => $outputPage
 		) );
 
-		$skinTemplate = $this->newMockBuilder()->newObject( 'SkinTemplate', array(
-			'getSkin' => $skin
-		) );
+		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skinTemplate->expects( $this->any() )
+			->method( 'getSkin' )
+			->will( $this->returnValue( $skin ) );
+
+		$skinTemplate->expects( $this->any() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
 
 		$parserOptions = $this->newMockBuilder()->newObject( 'ParserOptions' );
 
@@ -208,8 +224,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'getRawText' => 'Foo',
 			'getContent' => $this->newMockContent()
 		) );
-
-		$user = $this->newMockBuilder()->newObject( 'User' );
 
 		switch ( $hook ) {
 			case 'SkinAfterContent':
@@ -253,6 +267,15 @@ class SetupTest extends SemanticMediaWikiTestCase {
 				break;
 			case 'FileUpload':
 				$result = $this->callObject( $object, array( $file, $empty ) );
+				break;
+			case 'ResourceLoaderGetConfigVars':
+				$result = $this->callObject( $object, array( &$emptyArray ) );
+				break;
+			case 'GetPreferences':
+				$result = $this->callObject( $object, array( $user, &$emptyArray ) );
+				break;
+			case 'SkinTemplateNavigation':
+				$result = $this->callObject( $object, array( &$skinTemplate, &$emptyArray ) );
 				break;
 			case 'ParserFirstCallInit':
 
@@ -450,10 +473,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'AdminLinks',
 			'PageSchemasRegisterHandlers',
 			'ArticleFromTitle',
-			'SkinTemplateNavigation',
 			'ResourceLoaderTestModules',
-			'ResourceLoaderGetConfigVars',
-			'GetPreferences',
 			'TitleIsAlwaysKnown',
 			'BeforeDisplayNoArticleText',
 			'ExtensionTypes',
@@ -481,7 +501,10 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'SpecialStatsAddExtra',
 			'BaseTemplateToolbox',
 			'CanonicalNamespaces',
-			'FileUpload'
+			'FileUpload',
+			'ResourceLoaderGetConfigVars',
+			'GetPreferences',
+			'SkinTemplateNavigation',
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
