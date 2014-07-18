@@ -35,17 +35,6 @@ use LinksUpdate;
 class HooksTest extends MwDBaseUnitTestCase {
 
 	/**
-	 * Helper method that returns a normalized path
-	 *
-	 * @since 1.9
-	 *
-	 * @return string
-	 */
-	private function normalizePath( $path ) {
-		return str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
-	}
-
-	/**
 	 * Helper method that returns a random string
 	 *
 	 * @since 1.9
@@ -243,74 +232,6 @@ class HooksTest extends MwDBaseUnitTestCase {
 			$this->getArticleMock( $this->getTitle( 'Modification date', SMW_NS_PROPERTY ) )
 		), 'Failed asserting "false" for a predefined property' );
 
-	}
-
-	/*
-	 * @test SMWHooks::onArticleDelete
-	 *
-	 * @since 1.9
-	 *
-	public function testOnArticleDelete() {
-		if ( method_exists( 'WikiPage', 'doEditContent' ) ) {
-
-			$wikiPage = $this->newPage();
-			$user = $this->getUser();
-			$revision = $wikiPage->getRevision();
-			$reason = '';
-			$error = '';
-
-			$result = SMWHooks::onArticleDelete(
-				$wikiPage,
-				$user,
-				$reason,
-				$error
-			);
-
-			$this->assertTrue( $result );
-		} else {
-			$this->markTestSkipped(
-				'Skipped test due to missing method (probably MW 1.19 or lower).'
-			);
-		}
-	}*/
-
-	/**
-	 * @test SMWHooks::onSkinTemplateNavigation
-	 *
-	 * @since 1.9
-	 */
-	public function testOnSkinTemplateNavigation() {
-		$skinTemplate = new \SkinTemplate();
-		$skinTemplate->getContext()->setLanguage( \Language::factory( 'en' ) );
-		$links = array();
-
-		$result = SMWHooks::onSkinTemplateNavigation( $skinTemplate, $links );
-		$this->assertTrue( $result );
-	}
-
-
-	/**
-	 * @test SMWHooks::onResourceLoaderGetConfigVars
-	 *
-	 * @since 1.9
-	 */
-	public function testOnResourceLoaderGetConfigVars() {
-		$vars = array();
-
-		$result = SMWHooks::onResourceLoaderGetConfigVars( $vars );
-		$this->assertTrue( $result );
-	}
-
-	/**
-	 * @test SMWHooks::onGetPreferences
-	 *
-	 * @since 1.9
-	 */
-	public function testOnGetPreferences() {
-		$preferences = array();
-
-		$result = SMWHooks::onGetPreferences( $this->getUser(), $preferences );
-		$this->assertTrue( $result );
 	}
 
 }

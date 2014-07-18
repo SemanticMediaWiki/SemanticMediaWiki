@@ -30,4 +30,10 @@ Rendering the Factbox and updating the FactboxCache.
 #### TitleMoveComplete
 Update the Store after an article has been deleted.
 
+#### ResourceLoaderGetConfigVars
+
+#### GetPreferences
+
+#### SkinTemplateNavigation
+
 [hooks]: https://www.mediawiki.org/wiki/Hooks "Manual:Hooks"

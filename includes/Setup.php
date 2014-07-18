@@ -15,6 +15,9 @@ use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
+use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
+use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
 
 /**
  * Extension setup and registration
@@ -478,6 +481,21 @@ final class Setup implements ContextAware {
 			return $fileUpload->process();
 		};
 
+		$this->globals['wgHooks']['ResourceLoaderGetConfigVars'][] = function ( &$vars ) {
+			$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars( $vars );
+			return $resourceLoaderGetConfigVars->process();
+		};
+
+		$this->globals['wgHooks']['GetPreferences'][] = function ( $user, &$preferences ) {
+			$getPreferences = new GetPreferences( $user, $preferences );
+			return $getPreferences->process();
+		};
+
+		$this->globals['wgHooks']['SkinTemplateNavigation'][] = function ( &$skinTemplate, &$links ) {
+			$skinTemplateNavigation = new SkinTemplateNavigation( $skinTemplate, $links );
+			return $skinTemplateNavigation->process();
+		};
+
 		// Old-style registration
 
 		$this->globals['wgHooks']['LoadExtensionSchemaUpdates'][] = 'SMWHooks::onSchemaUpdate';
@@ -485,12 +503,9 @@ final class Setup implements ContextAware {
 		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
-		$this->globals['wgHooks']['SkinTemplateNavigation'][] = 'SMWHooks::onSkinTemplateNavigation';
 		$this->globals['wgHooks']['ResourceLoaderTestModules'][] = 'SMWHooks::registerQUnitTests';
-		$this->globals['wgHooks']['GetPreferences'][] = 'SMWHooks::onGetPreferences';
 		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = 'SMWHooks::onTitleIsAlwaysKnown';
 		$this->globals['wgHooks']['BeforeDisplayNoArticleText'][] = 'SMWHooks::onBeforeDisplayNoArticleText';
-		$this->globals['wgHooks']['ResourceLoaderGetConfigVars'][] = 'SMWHooks::onResourceLoaderGetConfigVars';
 		$this->globals['wgHooks']['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
 
 	}
