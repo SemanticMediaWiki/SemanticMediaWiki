@@ -13,6 +13,7 @@ use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\MediaWiki\Hooks\FileUpload;
+use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
 
 /**
  * Extension setup and registration
@@ -377,7 +378,8 @@ final class Setup implements ContextAware {
 		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['NewRevisionFromEditComplete'][] = function ( $wikiPage, $revision, $baseId, $user ) use ( $functionHook ) {
-			return $functionHook->register( new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) )->process();
+			$newRevisionFromEditComplete = new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user );
+			return $newRevisionFromEditComplete->process();
 		};
 
 		/**
