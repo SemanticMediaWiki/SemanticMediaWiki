@@ -23,6 +23,7 @@ Not a release yet.
 * #379 Modernized `dumpRDF.php` while deprecating the use of `SMW_dumpRDFphp` (bug 35679)
 * #385 Fixed '#' encoding for subobjects in `SMWExporter::findDataItemForExpElement` 
 * #387 Fixed `SPARQLStore` namespace query support (e.g `[[:+]]` ) 
+* #420 Extended `ContentParser` to mitigate issues caused by bug 62856 for MW 1.24+
 
 ### Internal enhancements
 
@@ -41,4 +42,4 @@ Not a release yet.
 * #371, #379, #375, #383, #392, #393, #395, #402, #403, #415 Modernized `SPARQLStore` implemenation
 * #382 Extended interface to support `format=count` information in `QueryResult`
 * #394 Added [Virtuoso opensource 6.1](https://github.com/openlink/virtuoso-opensource) as service to Travis-CI to support automated `SPARQLStore` tests
-* #398, #404, #407, #409, #410, #411, #412, #416, #417, #418, #419  namespace adjustements
+* #398, #404, #407, #409, #410, #411, #412, #416, #417, #418, #419, #421  namespace adjustements
