@@ -1,12 +1,14 @@
 <?php
 
-use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
-use SMW\SPARQLStore\BadHttpResponseMapper;
+namespace SMW\SPARQLStore;
+
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
 use SMW\SPARQLStore\QueryEngine\FederateResultList;
 
 use SMW\CurlRequest;
 use SMW\HttpRequest;
+
+use SMWExporter as Exporter;
 
 /**
  * Basic database connector for exchanging data via SPARQL.
@@ -18,7 +20,7 @@ use SMW\HttpRequest;
  *
  * @author Markus Krötzsch
  */
-class SMWSparqlDatabase {
+class GenericHttpDatabaseConnector {
 
 	/// Flag denoting endpoints being capable of querying
 	const EP_TYPE_QUERY = 1;
@@ -176,7 +178,7 @@ class SMWSparqlDatabase {
 	}
 
 	/**
-	 * Build the SPARQL query that is used by SMWSparqlDatabase::select().
+	 * Build the SPARQL query that is used by GenericHttpDatabaseConnector::select().
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
 	 * rdfs, property, xsd, so these do not have to be included in
 	 * $extraNamespaces.
@@ -233,7 +235,7 @@ class SMWSparqlDatabase {
 	}
 
 	/**
-	 * Build the SPARQL query that is used by SMWSparqlDatabase::ask().
+	 * Build the SPARQL query that is used by GenericHttpDatabaseConnector::ask().
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
 	 * rdfs, property, xsd, so these do not have to be included in
 	 * $extraNamespaces.
@@ -404,7 +406,7 @@ class SMWSparqlDatabase {
 	/**
 	 * Execute a SPARQL query and return an SMWFederateResultList object
 	 * that contains the results. The method throws exceptions based on
-	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
+	 * GenericHttpDatabaseConnector::mapHttpRequestError(). If errors occur and this
 	 * method does not throw anything, then an empty result with an error
 	 * code is returned.
 	 *
@@ -418,7 +420,7 @@ class SMWSparqlDatabase {
 	public function doQuery( $sparql ) {
 
 		if ( $this->m_queryEndpoint === '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_queryEndpoint );
@@ -438,7 +440,7 @@ class SMWSparqlDatabase {
 			return $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
 		}
 
-		$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
+		$this->mapHttpRequestError( $this->m_queryEndpoint, $sparql );
 
 		return new FederateResultList(
 			array(),
@@ -451,7 +453,7 @@ class SMWSparqlDatabase {
 	/**
 	 * Execute a SPARQL update and return a boolean to indicate if the
 	 * operations was successful. The method throws exceptions based on
-	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
+	 * GenericHttpDatabaseConnector::mapHttpRequestError(). If errors occur and this
 	 * method does not throw anything, then false is returned.
 	 *
 	 * @note When this is written, it is not clear if the update protocol
@@ -467,7 +469,7 @@ class SMWSparqlDatabase {
 	public function doUpdate( $sparql ) {
 
 		if ( $this->m_updateEndpoint === '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified' );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_updateEndpoint );
@@ -484,7 +486,7 @@ class SMWSparqlDatabase {
 			return true;
 		}
 
-		$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+		$this->mapHttpRequestError( $this->m_updateEndpoint, $sparql );
 		return false;
 	}
 
@@ -492,7 +494,7 @@ class SMWSparqlDatabase {
 	 * Execute a HTTP-based SPARQL POST request according to
 	 * http://www.w3.org/2009/sparql/docs/http-rdf-update/.
 	 * The method throws exceptions based on
-	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
+	 * GenericHttpDatabaseConnector::mapHttpRequestError(). If errors occur and this
 	 * method does not throw anything, then an empty result with an error
 	 * code is returned.
 	 *
@@ -511,7 +513,7 @@ class SMWSparqlDatabase {
 	public function doHttpPost( $payload ) {
 
 		if ( $this->m_dataEndpoint === '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->m_dataEndpoint .
@@ -534,7 +536,7 @@ class SMWSparqlDatabase {
 		}
 
 		// TODO The error reporting based on SPARQL (Update) is not adequate for the HTTP POST protocol
-		$this->throwSparqlErrors( $this->m_dataEndpoint, $payload );
+		$this->mapHttpRequestError( $this->m_dataEndpoint, $payload );
 		return false;
 	}
 
@@ -553,7 +555,7 @@ class SMWSparqlDatabase {
 		$prefixOutro = $forSparql ? "\n" : " .\n";
 
 		foreach ( array( 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ) as $shortname ) {
-			$prefixString .= "{$prefixIntro}{$shortname}: <" . SMWExporter::getNamespaceUri( $shortname ) . ">$prefixOutro";
+			$prefixString .= "{$prefixIntro}{$shortname}: <" . Exporter::getNamespaceUri( $shortname ) . ">$prefixOutro";
 			unset( $extraNamespaces[$shortname] ); // avoid double declaration
 		}
 
@@ -568,7 +570,7 @@ class SMWSparqlDatabase {
 	 * @param $endpoint string URL of endpoint that was used
 	 * @param $sparql string query that caused the problem
 	 */
-	protected function throwSparqlErrors( $endpoint, $sparql ) {
+	protected function mapHttpRequestError( $endpoint, $sparql ) {
 
 		if ( $this->badHttpResponseMapper === null ) {
 			$this->badHttpResponseMapper = new BadHttpResponseMapper( $this->httpRequest );

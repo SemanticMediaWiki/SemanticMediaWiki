@@ -25,11 +25,6 @@ use Title;
  */
 class RebuildConceptCacheMaintenanceRegressionTest extends MwRegressionTestCase {
 
-	/**
-	 * FIXME SMWSparqlStore::getConceptCacheStatus doesn't exist
-	 */
-	protected $storesToBeExcluded = array( 'SMWSparqlStore' );
-
 	public function getSourceFile() {
 		return __DIR__ . '/data/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml';
 	}

@@ -1,67 +1,69 @@
 <?php
 
+namespace SMW\SPARQLStore;
+
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\ResultListConverter;
 
-use SMW\SPARQLStore\RedirectLookup;
-use SMW\SPARQLStore\TurtleTriplesBuilder;
-
 use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\Store;
+use SMW\DIProperty;
 
 use SMWDataItem as DataItem;
+use SMWQuery as Query;
+use SMWExporter as Exporter;
+use SMWTurtleSerializer as TurtleSerializer;
+use SMWUpdateJob;
+use SMWExpNsResource as ExpNsResource;
 
-/**
- * SPARQL implementation of SMW's storage abstraction layer.
- *
- * @author Markus Krötzsch
- *
- * @file
- * @ingroup SMWStore
- */
+use Title;
 
 /**
  * Storage access class for using SMW's SPARQL database for keeping semantic
  * data. The store keeps an underlying base store running for completeness.
  * This might become optional in the future.
  *
+ * @ingroup Store
+ *
+ * @license GNU GPL v2+
  * @since 1.6
  *
- * @ingroup SMWStore
+ * @author Markus Krötzsch
  */
-class SMWSparqlStore extends SMWStore {
+class SPARQLStore extends Store {
 
 	/**
 	 * Class to be used as an underlying base store. This can be changed in
 	 * LocalSettings.php (after enableSemantics()) to use another base
 	 * store.
 	 *
-	 * @var string
 	 * @since 1.8
+	 * @var string
 	 */
 	static public $baseStoreClass = 'SMWSQLStore3';
 
 	/**
 	 * Underlying store to use for basic read operations.
 	 *
-	 * @var SMWStore
 	 * @since 1.8
+	 * @var Store
 	 */
 	protected $baseStore;
 
 	/**
-	 * @var SMWSparqlDatabase
 	 * @since 1.9.2
+	 * @var GenericHttpDatabaseConnector
 	 */
 	protected $sparqlDatabase = null;
 
 	/**
-	 * Constructor.
-	 *
 	 * @since 1.8
+	 *
+	 * @param  Store $baseStore
 	 */
-	public function __construct( SMWStore $baseStore = null ) {
+	public function __construct( Store $baseStore = null ) {
 		$this->baseStore = $baseStore;
 
 		if ( $this->baseStore === null ) {
@@ -70,55 +72,55 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::getSemanticData()
+	 * @see Store::getSemanticData()
 	 * @since 1.8
 	 */
-	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
+	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
 		return $this->baseStore->getSemanticData( $subject, $filter );
 	}
 
 	/**
-	 * @see SMWStore::getPropertyValues()
+	 * @see Store::getPropertyValues()
 	 * @since 1.8
 	 */
-	public function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null ) {
+	public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null ) {
 		return $this->baseStore->getPropertyValues( $subject, $property, $requestoptions);
 	}
 
 	/**
-	 * @see SMWStore::getPropertySubjects()
+	 * @see Store::getPropertySubjects()
 	 * @since 1.8
 	 */
-	public function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
+	public function getPropertySubjects( DIProperty $property, $value, $requestoptions = null ) {
 		return $this->baseStore->getPropertySubjects( $property, $value, $requestoptions );
 	}
 
 	/**
-	 * @see SMWStore::getAllPropertySubjects()
+	 * @see Store::getAllPropertySubjects()
 	 * @since 1.8
 	 */
-	public function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
+	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
 		return $this->baseStore->getAllPropertySubjects( $property, $requestoptions );
 	}
 
 	/**
-	 * @see SMWStore::getProperties()
+	 * @see Store::getProperties()
 	 * @since 1.8
 	 */
-	public function getProperties( SMWDIWikiPage $subject, $requestoptions = null ) {
+	public function getProperties( DIWikiPage $subject, $requestoptions = null ) {
 		return $this->baseStore->getProperties( $subject, $requestoptions );
 	}
 
 	/**
-	 * @see SMWStore::getInProperties()
+	 * @see Store::getInProperties()
 	 * @since 1.8
 	 */
-	public function getInProperties( SMWDataItem $object, $requestoptions = null ) {
+	public function getInProperties( DataItem $object, $requestoptions = null ) {
 		return $this->baseStore->getInProperties( $object, $requestoptions );
 	}
 
 	/**
-	 * @see SMWStore::deleteSubject()
+	 * @see Store::deleteSubject()
 	 * @since 1.6
 	 */
 	public function deleteSubject( Title $subject ) {
@@ -127,18 +129,18 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::changeTitle()
+	 * @see Store::changeTitle()
 	 * @since 1.6
 	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-		$oldWikiPage = SMWDIWikiPage::newFromTitle( $oldtitle );
-		$newWikiPage = SMWDIWikiPage::newFromTitle( $newtitle );
-		$oldExpResource = SMWExporter::getDataItemExpElement( $oldWikiPage );
-		$newExpResource = SMWExporter::getDataItemExpElement( $newWikiPage );
+		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
+		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
+		$oldExpResource = Exporter::getDataItemExpElement( $oldWikiPage );
+		$newExpResource = Exporter::getDataItemExpElement( $newWikiPage );
 		$namespaces = array( $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() );
 		$namespaces[$newExpResource->getNamespaceId()] = $newExpResource->getNamespace();
-		$oldUri = SMWTurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
-		$newUri = SMWTurtleSerializer::getTurtleNameForExpElement( $newExpResource );
+		$oldUri = TurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
+		$newUri = TurtleSerializer::getTurtleNameForExpElement( $newExpResource );
 
 		$this->baseStore->changeTitle( $oldtitle, $newtitle, $pageid, $redirid ); // do this only here, so Imported from is not moved too early
 
@@ -202,7 +204,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::doDataUpdate()
+	 * @see Store::doDataUpdate()
 	 * @since 1.6
 	 */
 	protected function doDataUpdate( SemanticData $semanticData ) {
@@ -224,15 +226,15 @@ class SMWSparqlStore extends SMWStore {
 
 		$extraNamespaces = array();
 
-		$expResource = SMWExporter::getDataItemExpElement( $dataItem );
-		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expResource );
+		$expResource = Exporter::getDataItemExpElement( $dataItem );
+		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
-		if ( $expResource instanceof SMWExpNsResource ) {
+		if ( $expResource instanceof ExpNsResource ) {
 			$extraNamespaces = array( $expResource->getNamespaceId() => $expResource->getNamespace() );
 		}
 
-		$masterPageProperty = SMWExporter::getSpecialNsResource( 'swivt', 'masterPage' );
-		$masterPagePropertyUri = SMWTurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
+		$masterPageProperty = Exporter::getSpecialNsResource( 'swivt', 'masterPage' );
+		$masterPagePropertyUri = TurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
 		$success = $this->getSparqlDatabase()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );
 
@@ -244,10 +246,10 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::getQueryResult()
+	 * @see Store::getQueryResult()
 	 * @since 1.6
 	 */
-	public function getQueryResult( SMWQuery $query ) {
+	public function getQueryResult( Query $query ) {
 
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
@@ -263,7 +265,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::getPropertiesSpecial()
+	 * @see Store::getPropertiesSpecial()
 	 * @since 1.8
 	 */
 	public function getPropertiesSpecial( $requestoptions = null ) {
@@ -271,7 +273,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::getUnusedPropertiesSpecial()
+	 * @see Store::getUnusedPropertiesSpecial()
 	 * @since 1.8
 	 */
 	public function getUnusedPropertiesSpecial( $requestoptions = null ) {
@@ -279,7 +281,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::getWantedPropertiesSpecial()
+	 * @see Store::getWantedPropertiesSpecial()
 	 * @since 1.8
 	 */
 	public function getWantedPropertiesSpecial( $requestoptions = null ) {
@@ -287,7 +289,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::getStatistics()
+	 * @see Store::getStatistics()
 	 * @since 1.8
 	 */
 	public function getStatistics() {
@@ -295,7 +297,31 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::setup()
+	 * @see Store::refreshConceptCache()
+	 * @since 1.8
+	 */
+	public function refreshConceptCache( Title $concept ) {
+		return $this->baseStore->refreshConceptCache( $concept );
+	}
+
+	/**
+	 * @see Store::deleteConceptCache()
+	 * @since 1.8
+	 */
+	public function deleteConceptCache( $concept ) {
+		return $this->baseStore->deleteConceptCache( $concept );
+	}
+
+	/**
+	 * @see Store::getConceptCacheStatus()
+	 * @since 1.8
+	 */
+	public function getConceptCacheStatus( $concept ) {
+		return $this->baseStore->getConceptCacheStatus( $concept );
+	}
+
+	/**
+	 * @see Store::setup()
 	 * @since 1.8
 	 */
 	public function setup( $verbose = true ) {
@@ -303,7 +329,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::drop()
+	 * @see Store::drop()
 	 * @since 1.6
 	 */
 	public function drop( $verbose = true ) {
@@ -312,7 +338,7 @@ class SMWSparqlStore extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::refreshData()
+	 * @see Store::refreshData()
 	 * @since 1.8
 	 */
 	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
@@ -322,17 +348,24 @@ class SMWSparqlStore extends SMWStore {
 	/**
 	 * @since  1.9.2
 	 *
-	 * @param SMWSparqlDatabase $sparqlDatabase
+	 * @param GenericHttpDatabaseConnector $sparqlDatabase
 	 */
-	public function setSparqlDatabase( SMWSparqlDatabase $sparqlDatabase ) {
+	public function setSparqlDatabase( GenericHttpDatabaseConnector $sparqlDatabase ) {
 		$this->sparqlDatabase = $sparqlDatabase;
 		return $this;
 	}
 
 	/**
+	 * @since 2.0
+	 */
+	public function getPropertyTables() {
+		return $this->baseStore->getPropertyTables();
+	}
+
+	/**
 	 * @since  1.9.2
 	 *
-	 * @return SMWSparqlDatabase
+	 * @return GenericHttpDatabaseConnector
 	 */
 	public function getSparqlDatabase() {
 

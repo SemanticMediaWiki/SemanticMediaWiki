@@ -6,8 +6,6 @@ use SMW\SPARQLStore\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
 use SMW\SPARQLStore\QueryEngine\FederateResultList;
 
-use SMWSparqlDatabase as SparqlDatabase;
-
 /**
  * @see https://jena.apache.org/documentation/serving_data/index.html
  *
@@ -16,10 +14,10 @@ use SMWSparqlDatabase as SparqlDatabase;
  *
  * @author mwjames
  */
-class FusekiHttpDatabaseConnector extends SparqlDatabase {
+class FusekiHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 
 	/**
-	 * @see SparqlDatabase::doQuery
+	 * @see GenericHttpDatabaseConnector::doQuery
 	 */
 	public function doQuery( $sparql ) {
 
@@ -44,7 +42,7 @@ class FusekiHttpDatabaseConnector extends SparqlDatabase {
 			return $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
 		}
 
-		$this->throwSparqlErrors( $this->m_queryEndpoint, $sparql );
+		$this->mapHttpRequestError( $this->m_queryEndpoint, $sparql );
 
 		return new FederateResultList(
 			array(),

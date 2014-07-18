@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration\SPARQLStore;
 use SMW\Tests\Util\QueryResultValidator;
 use SMW\Tests\Util\SemanticDataFactory;
 
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\SemanticData;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -47,7 +48,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 
 		$this->store = StoreFactory::getStore();
 
-		if ( !$this->store instanceOf \SMWSparqlStore ) {
+		if ( !$this->store instanceOf SPARQLStore ) {
 			$this->markTestSkipped( "Requires a SPARQLStore instance" );
 		}
 
@@ -56,6 +57,8 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		if ( !$sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
 			$this->markTestSkipped( "Can't connect to the SPARQL database" );
 		}
+
+		$sparqlDatabase->deleteAll();
 
 		$this->queryResultValidator = new QueryResultValidator();
 		$this->semanticDataFactory = new SemanticDataFactory();

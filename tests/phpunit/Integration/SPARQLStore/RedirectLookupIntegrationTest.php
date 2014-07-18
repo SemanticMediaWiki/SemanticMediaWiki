@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\SPARQLStore\RedirectLookup;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -34,8 +35,8 @@ class RedirectLookupIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = StoreFactory::getStore();
 
-		if ( !$this->store instanceOf \SMWSparqlStore ) {
-			$this->markTestSkipped( "Requires a SMWSparqlStore instance" );
+		if ( !$this->store instanceOf SPARQLStore ) {
+			$this->markTestSkipped( "Requires a SPARQLStore instance" );
 		}
 
 		$this->sparqlDatabase = $this->store->getSparqlDatabase();

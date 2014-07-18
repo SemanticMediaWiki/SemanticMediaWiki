@@ -2,10 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
-use SMWSparqlDatabase as SparqlDatabase;
-
 /**
- * Virtuoso specific adjustments for SparqlDatabase
+ * Virtuoso specific adjustments for GenericHttpDatabaseConnector
  *
  * Specific modifications of the SPARQL database implementation for Virtuoso.
  * In particular, Virtuoso does not support SPARQL Update but only the non-standard
@@ -42,7 +40,7 @@ use SMWSparqlDatabase as SparqlDatabase;
  *
  * @author Markus Krötzsch
  */
-class VirtuosoHttpDatabaseConnector extends SparqlDatabase {
+class VirtuosoHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 
 	/**
 	 * DELETE wrapper.
@@ -158,7 +156,7 @@ class VirtuosoHttpDatabaseConnector extends SparqlDatabase {
 			return true;
 		}
 
-		$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+		$this->mapHttpRequestError( $this->m_updateEndpoint, $sparql );
 		return false;
 	}
 

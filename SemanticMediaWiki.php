@@ -76,6 +76,8 @@ class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
 
 class_alias( 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector', 'SMWSparqlDatabase4Store' );
 class_alias( 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector', 'SMWSparqlDatabaseVirtuoso' );
+class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
+class_alias( 'SMW\SPARQLStore\GenericHttpDatabaseConnector', 'SMWSparqlDatabase' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 1.11

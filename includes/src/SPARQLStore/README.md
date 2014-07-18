@@ -2,23 +2,24 @@
 
 The following client database connectors are currently available:
 
-- [Jena Fuseki][fuseki] (`FusekiHttpDatabaseConnector`)
-- [Virtuoso][virtuoso] (`VirtuosoHttpDatabaseConnector`)
-- [4Store][4store] (`FourstoreHttpDatabaseConnector`)
+- Default using `GenericHttpDatabaseConnector`
+- [Jena Fuseki][fuseki] using `FusekiHttpDatabaseConnector`
+- [Virtuoso][virtuoso] using `VirtuosoHttpDatabaseConnector`
+- [4Store][4store] using `FourstoreHttpDatabaseConnector`
 
 ## SPARQLStore integration
 
-The SPARQLStore uses two components a base store (by default the existing `SQLStore`) that stores information about properties and value assignments as well as statistics and a client database connector. The client database connector is responsible for transforming a `ask` query into a `SPARQL` query and requesting the TDB to resolved the query by returning a list of subjects that meet the requirements.
+The `SPARQLStore` uses two components a base store (by default using the existing `SQLStore`) and a client database connector. The base store accumulates information about properties and value annotations as well as statistics while the database connector is responsible for transforming a `#ask` query into a `SPARQL` query and requesting data from the [TDB][tdb].
 
-- A `ask` query is transformed into a SPARQL condition using the `QueryConditionBuilder`
-- The client database connector is to resolve the condition into a `SPARQL` statement and send it to the client database
+- `#ask` query is transformed into an equivalent SPARQL condition using the `QueryConditionBuilder`
+- The client database connector resolves the condition into a `SPARQL` statement and makes a query request to the database
 - The client database (Fuseki etc. ) is expected to execute the query and return a list of results which are parsed using the `RawResultParser` and made available as `FederateResultList`
-- The `ResultListConverter` is to create a `QueryResult` object from the `FederateResultList`
-- In connection with a `ResultPrinter`, the `QueryResult` object will fetch all remaining data (for each printrequest ) from the base store
+- The `ResultListConverter` is to convert a `FederateResultList` into a `QueryResult` object
+- The `QueryResult` object will fetch all remaining data (for each printrequest ) from the base store which are to be used by a `ResultPrinter`
 
 ## Integration testing
 
-Information about the testing environment and installation details can be found [here](../../build/travis/install-services.sh).
+Information about the testing environment and installation details can be found in the `build/travis/install-services.sh`.
 
 ### Jena Fuseki integration
 
@@ -79,8 +80,13 @@ $smwgSparqlDataEndpoint = 'http://localhost:8088/data/';
 $smwgSparqlDefaultGraph = 'http://example.org/myFourstoreGraph';
 ```
 
+## Miscellaneous
+
+- [Large Triple Stores](http://www.w3.org/wiki/LargeTripleStores)
+
 [fuseki]: https://jena.apache.org/
 [fuseki-dataset]: https://jena.apache.org/documentation/tdb/dynamic_datasets.html
 [sparql-dataset]: https://www.w3.org/TR/sparql11-query/#specifyingDataset
 [virtuoso]: https://github.com/openlink/virtuoso-opensource
 [4store]: https://github.com/garlik/4store
+[tdb]: http://en.wikipedia.org/wiki/Triplestore
