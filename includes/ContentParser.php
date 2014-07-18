@@ -38,6 +38,11 @@ class ContentParser {
 	protected $errors = array();
 
 	/**
+	 * @var boolean
+	 */
+	private $enabledToUseContentHandler = true;
+
+	/**
 	 * @note Injecting new Parser() alone will not yield an expected result and
 	 * doing new Parser( $GLOBALS['wgParserConf'] brings no benefits therefore
 	 * we stick to the GLOBAL as fallback if no parser is injected.
@@ -64,6 +69,15 @@ class ContentParser {
 	public function setRevision( Revision $revision = null ) {
 		$this->revision = $revision;
 		return $this;
+	}
+
+	/**
+	 * @bug 62856 and #212
+	 *
+	 * @since 2.0
+	 */
+	public function forceToUseParser() {
+		$this->enabledToUseContentHandler = false;
 	}
 
 	/**
@@ -108,7 +122,7 @@ class ContentParser {
 			return $this->parseText( $text );
 		}
 
-		if ( $this->hasContentHandler() ) {
+		if ( $this->hasContentHandler() && $this->enabledToUseContentHandler ) {
 			return $this->fetchFromContent();
 		}
 

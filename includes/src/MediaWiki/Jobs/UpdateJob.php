@@ -103,6 +103,7 @@ class UpdateJob extends JobBase {
 			'Title' => $this->getTitle()
 		) );
 
+		$contentParser->forceToUseParser();
 		$contentParser->parse();
 
 		if ( !( $contentParser->getOutput() instanceof ParserOutput ) ) {
