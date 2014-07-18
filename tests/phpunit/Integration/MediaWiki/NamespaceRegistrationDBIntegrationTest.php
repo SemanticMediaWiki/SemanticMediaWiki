@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
+use SMW\Tests\Util\MwHooksHandler;
+use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\NamespaceManager;
-use SMW\ExtensionContext;
 
 use SMW\Settings;
 use MWNamespace;
@@ -23,9 +23,25 @@ use MWNamespace;
  *
  * @author mwjames
  */
-class NamespaceRegistrationDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
+class NamespaceRegistrationDBIntegrationTest extends MwDBaseUnitTestCase {
+
+	private $mwHooksHandler;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->mwHooksHandler = new MwHooksHandler();
+	}
+
+	public function tearDown() {
+		$this->mwHooksHandler->restoreListedHooks();
+
+		parent::tearDown();
+	}
 
 	public function testRunNamespaceManagerWithNoConstantsDefined() {
+
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$default = array(
 			'smwgNamespacesWithSemanticLinks' => array(),
@@ -54,7 +70,7 @@ class NamespaceRegistrationDBIntegrationTest extends MwDBSQLStoreIntegrationTest
 
 	public function testCanonicalNames() {
 
-		$this->runExtensionSetup( new ExtensionContext );
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$count = 0;
 		$index = NamespaceManager::buildNamespaceIndex( Settings::newFromGlobals()->get( 'smwgNamespaceIndex' ) );

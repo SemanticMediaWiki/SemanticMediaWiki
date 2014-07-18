@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Integration\SQLStore;
 
-use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
-use SMW\ExtensionContext;
+use SMW\Tests\Util\PageDeleter;
+use SMW\Tests\Util\PageCreator;
+use SMW\Tests\Util\MwHooksHandler;
+
+use SMW\Tests\MwDBaseUnitTestCase;
 
 use WikiPage;
 use Title;
@@ -22,33 +25,42 @@ use Title;
  *
  * @author mwjames
  */
-class RefreshSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
+class RefreshSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	/* @var Title */
-	protected $title;
+	private $title;
+	private $mwHooksHandler;
+	private $pageDeleter;
+	private $pageCreator;
 
 	protected function setUp() {
-		$this->runExtensionSetup( new ExtensionContext() );
 		parent::setUp();
+
+		$this->mwHooksHandler = new MwHooksHandler();
+		$this->pageDeleter = new PageDeleter();
+		$this->pageCreator = new PageCreator();
 	}
 
-	public function titleProvider() {
-		$provider = array();
+	public function tearDown() {
 
-		$provider[] = array( NS_MAIN, 'withInterWiki', 'foo' );
-		$provider[] = array( NS_MAIN, 'normalTite', '' );
-		$provider[] = array( NS_MAIN, 'useUpdateJobs', '' );
+		$this->mwHooksHandler->restoreListedHooks();
 
-		return $provider;
+		if ( $this->title !== null ) {
+			$this->pageDeleter->deletePage( $this->title );
+		}
+
+		parent::tearDown();
 	}
 
 	/**
 	 * @dataProvider titleProvider
 	 */
 	public function testAfterPageCreation_StoreHasDataToRefreshWithoutJobs( $ns, $name, $iw ) {
+
+		$this->mwHooksHandler->deregisterListedHooks();
+
 		$this->title = Title::makeTitle( $ns, $name, '', $iw );
 
-		$this->createPage( $this->title  );
+		$this->pageCreator->createPage( $this->title  );
 
 		$this->assertStoreHasDataToRefresh( false );
 	}
@@ -57,19 +69,14 @@ class RefreshSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testAfterPageCreation_StoreHasDataToRefreshWitJobs( $ns, $name, $iw ) {
+
+		$this->mwHooksHandler->deregisterListedHooks();
+
 		$this->title = Title::makeTitle( $ns, $name, '', $iw );
 
-		$this->createPage( $this->title );
+		$this->pageCreator->createPage( $this->title );
 
 		$this->assertStoreHasDataToRefresh( true );
-	}
-
-	public function tearDown() {
-		if ( $this->title !== null ) {
-			$this->deletePage( $this->title );
-		}
-
-		parent::tearDown();
 	}
 
 	protected function assertStoreHasDataToRefresh( $useJobs ) {
@@ -83,6 +90,16 @@ class RefreshSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
 		);
 
 		$this->assertGreaterThan( 0, $refreshProgress );
+	}
+
+	public function titleProvider() {
+		$provider = array();
+
+		$provider[] = array( NS_MAIN, 'withInterWiki', 'foo' );
+		$provider[] = array( NS_MAIN, 'normalTite', '' );
+		$provider[] = array( NS_MAIN, 'useUpdateJobs', '' );
+
+		return $provider;
 	}
 
 }
