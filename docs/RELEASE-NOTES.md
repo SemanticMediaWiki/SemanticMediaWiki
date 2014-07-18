@@ -38,6 +38,7 @@ Not a release yet.
 * #360 Refactored `SparqlStore` to move redirect handling into its own `RedirectLookup` component to improve testability  
 * #360 Added `TurtleTriplesBuilder` to aid testability of the `SPARQLStore`
 * #366 Added lazy load of SubSemanticData to `Sql3StubSemanticData` 
-* #371, #379, #375, #383, #392, #393, #395, #402 Modernized `SPARQLStore` implemenation
+* #371, #379, #375, #383, #392, #393, #395, #402, #403, #415 Modernized `SPARQLStore` implemenation
 * #382 Extended interface to support `format=count` information in `QueryResult`
 * #394 Added [Virtuoso opensource 6.1](https://github.com/openlink/virtuoso-opensource) as service to Travis-CI to support automated `SPARQLStore` tests
+* #398, #404, #407, #409, #410, #411, #412, #416, #417, #418, #419  namespace adjustements
