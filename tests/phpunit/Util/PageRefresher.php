@@ -55,6 +55,7 @@ class PageRefresher {
 		}
 
 		$contentParser = new ContentParser( $title );
+		$contentParser->forceToUseParser();
 
 		$parserData = Application::getInstance()->newParserData(
 			$title,
