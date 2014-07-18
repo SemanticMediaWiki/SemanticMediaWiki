@@ -295,5 +295,9 @@
 	"smw-sp-admin-idlookup-title": "ObjectId lookup",
 	"smw-sp-admin-idlookup-docu": "Displays details about an internal object Id that represents individual entities (wikipage, subobject etc.) in Semantic MediaWiki.",
 	"smw-sp-admin-idlookup-objectid": "Object Id:",
-	"smw-livepreview-loading": "Loading..."
+	"smw-livepreview-loading": "Loading...",
+	"smw-statistics-jobqueue": "JobQueue statistics",
+	"smw-statistics-jobqueue-update-count": "Update {{PLURAL:$1|job|jobs}}",
+	"smw-statistics-jobqueue-refresh-count": "Refresh {{PLURAL:$1|job|jobs}}",
+	"smw-statistics-jobqueue-delete-count": "Delete {{PLURAL:$1|job|jobs}}"
 }

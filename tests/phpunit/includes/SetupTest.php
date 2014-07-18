@@ -36,6 +36,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		$settings = $context->getSettings();
 		$settings->set( 'smwgCacheType', CACHE_NONE );
 		$settings->set( 'smwgEnableUpdateJobs', false );
+		$settings->set( 'smwgShowJobQueueStatistics', false );
 
 		$context->getDependencyBuilder()
 			->getContainer()

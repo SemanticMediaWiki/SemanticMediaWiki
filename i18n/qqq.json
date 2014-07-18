@@ -310,5 +310,9 @@
 	"smw-sp-admin-idlookup-title": "A header title",
 	"smw-sp-admin-idlookup-docu": "Introductory text for the objectId lookup section in [[Special:SMWAdmin]]",
 	"smw-sp-admin-idlookup-objectid": "A label",
-	"smw-livepreview-loading": "{{Identical|Loading}}Message displayed while data is loading."
+	"smw-livepreview-loading": "{{Identical|Loading}}Message displayed while data is loading.",
+	"smw-statistics-jobqueue": "Is a label that is displayed on the [[Special:Statistics|Statistics]] page.\n{{Identical|Semantic statistics}}",
+	"smw-statistics-jobqueue-update-count": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of values",
+	"smw-statistics-jobqueue-refresh-count": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of values",
+	"smw-statistics-jobqueue-delete-count": "Used as a label that is displayed on the [[Special:Statistics|Statistics]] page.\n\nParameters:\n* $1 - number of values"
 }

@@ -345,4 +345,13 @@ class Database {
 		return $this->acquireReadConnection()->selectField( $table, $fieldName, $conditions, $fname, $options );
 	}
 
+	/**
+	 * @see DatabaseBase::estimateRowCount
+	 *
+	 * @since 2.0
+	 */
+	public function estimateRowCount( $table, $vars = '*', $conditions = '', $fname = __METHOD__, $options = array() ) {
+		return $this->acquireReadConnection()->estimateRowCount( $table, $vars, $conditions, $fname, $options );
+	}
+
 }

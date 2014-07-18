@@ -748,3 +748,11 @@ $GLOBALS['smwgOnDeleteAction'] = array(
 	'smwgDeleteSubjectWithAssociatesRefresh' => false
 );
 ##
+
+###
+# Whether to show SMW specific JobQueue statistics on Special:Statistics
+#
+# @since 2.0
+##
+$GLOBALS['smwgShowJobQueueStatistics'] = true;
+##

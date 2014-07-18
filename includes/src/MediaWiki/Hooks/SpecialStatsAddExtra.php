@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use SMW\MediaWiki\JobQueueLookup;
+
 use SMW\Application;
 use SMW\DataTypeRegistry;
 
@@ -39,7 +41,7 @@ class SpecialStatsAddExtra {
 	/**
 	 * @var string[]
 	 */
-	protected $legacyMessageMapper = array(
+	private $legacyMessageMapper = array(
 		'PROPUSES'   => 'smw-statistics-property-instance',
 		'USEDPROPS'  => 'smw-statistics-property-total-legacy',
 		'OWNPAGE'    => 'smw-statistics-property-page',
@@ -52,7 +54,7 @@ class SpecialStatsAddExtra {
 	/**
 	 * @var string[]
 	 */
-	protected $messageMapper = array(
+	private $messageMapper = array(
 		'PROPUSES'   => 'smw-statistics-property-instance',
 		'USEDPROPS'  => 'smw-statistics-property-total',
 		'OWNPAGE'    => 'smw-statistics-property-page',
@@ -60,6 +62,15 @@ class SpecialStatsAddExtra {
 		'SUBOBJECTS' => 'smw-statistics-subobject-count',
 		'QUERY'      => 'smw-statistics-query-inline',
 		'CONCEPTS'   => 'smw-statistics-concept-count'
+	);
+
+	/**
+	 * @var string[]
+	 */
+	private $jobQueueMessageMapper = array(
+		'UPDATEJOB'   => 'smw-statistics-jobqueue-update-count',
+		'REFRESHJOB'  => 'smw-statistics-jobqueue-refresh-count',
+		'DELETEJOB'   => 'smw-statistics-jobqueue-delete-count'
 	);
 
 	/**
@@ -105,6 +116,10 @@ class SpecialStatsAddExtra {
 		$count = count( DataTypeRegistry::getInstance()->getKnownTypeLabels() );
 		$this->extraStats['smw-statistics']['smw-statistics-datatype-count'] = $count;
 
+		if ( Application::getInstance()->getSettings()->get( 'smwgShowJobQueueStatistics' ) ) {
+			$this->copyJobQueueStatistics();
+		}
+
 		return true;
 
 	}
@@ -128,6 +143,22 @@ class SpecialStatsAddExtra {
 		}
 
 		return true;
+	}
+
+	private function copyJobQueueStatistics() {
+
+		$this->extraStats['smw-statistics-jobqueue'] = array();
+
+		$jobQueueLookup = new JobQueueLookup( Application::getInstance()->getStore()->getDatabase() );
+
+		$statistics = $jobQueueLookup->getStatistics();
+
+		foreach ( $this->jobQueueMessageMapper as $key => $message ) {
+
+			if ( isset( $statistics[$key] ) ) {
+				$this->extraStats['smw-statistics-jobqueue'][ $message ] = $statistics[$key];
+			}
+		}
 	}
 
 }

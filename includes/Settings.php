@@ -126,7 +126,8 @@ class Settings extends SimpleDictionary {
 			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge'],
 			'smwgQueryProfiler' => $GLOBALS['smwgQueryProfiler'],
 			'smwgEnabledSpecialPage' => $GLOBALS['smwgEnabledSpecialPage'],
-			'smwgOnDeleteAction' => $GLOBALS['smwgOnDeleteAction']
+			'smwgOnDeleteAction' => $GLOBALS['smwgOnDeleteAction'],
+			'smwgShowJobQueueStatistics' => $GLOBALS['smwgShowJobQueueStatistics']
 		);
 
 		$settings = $settings + array(

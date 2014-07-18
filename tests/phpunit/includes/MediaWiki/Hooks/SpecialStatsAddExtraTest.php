@@ -45,7 +45,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider statisticsDataProvider
 	 */
-	public function testProcessForMockedStore( $setup, $expected ) {
+	public function testProcessOnMockedStore( $setup, $expected ) {
 
 		$formatNumReturnValue = isset( $setup['statistics']['PROPUSES'] ) ? $setup['statistics']['PROPUSES'] : '';
 
@@ -66,6 +66,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $setup['statistics'] ) );
 
 		Application::getInstance()->registerObject( 'Store', $store );
+		Application::getInstance()->getSettings()->set( 'smwgShowJobQueueStatistics', false );
 
 		$extraStats = $setup['extraStats'];
 		$version = $setup['version'];
@@ -86,6 +87,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		Application::getInstance()->registerObject( 'Store', StoreFactory::getStore() );
+		Application::getInstance()->getSettings()->set( 'smwgShowJobQueueStatistics', true );
 
 		$extraStats = array();
 		$version = '1.21';
@@ -100,6 +102,44 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(
 			$this->matchArray( $extraStats, 'smw-statistics-property-instance' )
 		);
+	}
+
+	public function testProcessJobQueueStatisticsOnMockedStore() {
+
+		$userLanguage = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$database->expects( $this->atLeastOnce() )
+			->method( 'estimateRowCount' )
+			->will( $this->returnValue( 9999 ) );
+
+		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $database ) );
+
+		Application::getInstance()->registerObject( 'Store', $store );
+		Application::getInstance()->getSettings()->set( 'smwgShowJobQueueStatistics', true );
+
+		$extraStats = array();
+		$version = '1.21';
+
+		$instance = new SpecialStatsAddExtra( $extraStats, $version, $userLanguage );
+
+		$this->assertTrue( $instance->process() );
+
+		$this->assertTrue( $this->matchArray(
+			$extraStats['smw-statistics-jobqueue'],
+			'smw-statistics-jobqueue-update-count'
+		) );
 	}
 
 	public function matchArray( array $matcher, $searchValue ) {
