@@ -5,14 +5,16 @@ namespace SMW\Tests\Integration\MediaWiki;
 use SMW\Tests\Util\SemanticDataValidator;
 use SMW\Tests\Util\PageCreator;
 use SMW\Tests\Util\PageDeleter;
-use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
+use SMW\Tests\Util\MwHooksHandler;
+use SMW\Tests\MwDBaseUnitTestCase;
 
-use SMW\ExtensionContext;
-use SMW\SemanticData;
 use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\SemanticData;
 use SMW\ParserData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Application;
+use SMW\Settings;
 
 use RequestContext;
 use WikiPage;
@@ -33,37 +35,43 @@ use Title;
  *
  * @author mwjames
  */
-class IndirectFunctionHookValidationDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
+class IndirectFunctionHookValidationDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	protected $title;
+	private $title;
+	private $semanticDataValidator;
+	private $application;
+	private $mwHooksHandler;
+	private $pageDeleter;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->application = Application::getInstance();
+		$this->mwHooksHandler = new MwHooksHandler();
+		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->pageDeleter = new PageDeleter();
+
+		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array( DIProperty::TYPE_MODIFICATION_DATE ) );
+		$this->application->getSettings()->set( 'smwgNamespacesWithSemanticLinks', array( NS_MAIN => true ) );
+		$this->application->getSettings()->set( 'smwgCacheType', 'hash' );
+		$this->application->getSettings()->set( 'smwgAutoRefreshOnPurge', true );
+		$this->application->getSettings()->set( 'smwgDeleteSubjectAsDeferredJob', false );
+		$this->application->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', false );
+	}
 
 	protected function tearDown() {
-		$pageDeleter = new PageDeleter();
-		$pageDeleter->deletePage( $this->title );
+		$this->application->clear();
+		$this->mwHooksHandler->restoreListedHooks();
+
+		$this->pageDeleter->deletePage( $this->title );
 
 		parent::tearDown();
 	}
 
-	protected function getContext() {
-
-		$context = new ExtensionContext();
-		$context->getSettings()->set( 'smwgPageSpecialProperties', array( DIProperty::TYPE_MODIFICATION_DATE ) );
-		$context->getSettings()->set( 'smwgNamespacesWithSemanticLinks', array( NS_MAIN => true ) );
-		$context->getSettings()->set( 'smwgCacheType', 'hash' );
-		$context->getSettings()->set( 'smwgAutoRefreshOnPurge', true );
-		$context->getSettings()->set( 'smwgDeleteSubjectAsDeferredJob', false );
-		$context->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', false );
-
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $this->getStore() );
-
-		return $context;
-	}
-
 	public function testPagePurge() {
 
-		$context = $this->getContext();
-
-		$this->runExtensionSetup( $context );
+		$this->mwHooksHandler->deregisterListedHooks();
+		$this->application->registerObject( 'CacheHandler', new \SMW\CacheHandler( new \HashBagOStuff() ) );
 
 		$this->title = Title::newFromText( __METHOD__ );
 
@@ -73,13 +81,15 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBSQLStoreIntegr
 			->createPage( $this->title )
 			->doEdit( '[[Has function hook test::page purge]]' );
 
+		$id = ArticlePurge::newCacheId( $this->title->getArticleID() );
+
 		$pageCreator
 			->getPage()
 			->doPurge();
 
-		$result = $context->getDependencyBuilder()
-			->newObject( 'CacheHandler' )
-			->setKey( ArticlePurge::newCacheId( $this->title->getArticleID() ) )
+		$result = Application::getInstance()
+			->getcache()
+			->setKey( $id )
 			->get();
 
 		$this->assertTrue( $result );
@@ -87,9 +97,7 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBSQLStoreIntegr
 
 	public function testPageDelete() {
 
-		$this->runExtensionSetup( $this->getContext() );
-
-		$semanticDataValidator = new SemanticDataValidator();
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->title = Title::newFromText( __METHOD__ );
 
@@ -99,20 +107,20 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBSQLStoreIntegr
 			->createPage( $this->title )
 			->doEdit( '[[Has function hook test::page delete]]' );
 
-		$semanticDataValidator->assertThatSemanticDataIsNotEmpty(
+		$this->semanticDataValidator->assertThatSemanticDataIsNotEmpty(
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )
 		);
 
-		$this->deletePage( $this->title );
+		$this->pageDeleter->deletePage( $this->title );
 
-		$semanticDataValidator->assertThatSemanticDataIsEmpty(
+		$this->semanticDataValidator->assertThatSemanticDataIsEmpty(
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )
 		);
 	}
 
 	public function testEditPageToGetNewRevision() {
 
-		$this->runExtensionSetup( $this->getContext() );
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->title = Title::newFromText( __METHOD__ );
 
@@ -138,9 +146,7 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBSQLStoreIntegr
 			'propertyKeys' => array( '_SKEY', '_MDAT', 'Has_function_hook_test' )
 		);
 
-		$semanticDataValidator = new SemanticDataValidator();
-
-		$semanticDataValidator->assertThatPropertiesAreSet(
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
 			$parserData->getSemanticData()
 		);
@@ -148,7 +154,7 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBSQLStoreIntegr
 
 	public function testOnOutputPageParserOutputeOnDatabase() {
 
-		$this->runExtensionSetup( $this->getContext() );
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->title = Title::newFromText( __METHOD__ );
 
@@ -178,7 +184,7 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBSQLStoreIntegr
 
 	public function testPageMove() {
 
-		$this->runExtensionSetup( $this->getContext() );
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->title = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );

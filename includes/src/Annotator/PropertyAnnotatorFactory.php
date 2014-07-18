@@ -74,4 +74,34 @@ class PropertyAnnotatorFactory {
 		);
 	}
 
+	/**
+	 * @since 2.0
+	 *
+	 * @param SemanticData $semanticData
+	 * @param string $sortkey
+	 *
+	 * @return SortkeyPropertyAnnotator
+	 */
+	public function newSortkeyPropertyAnnotator( SemanticData $semanticData, $sortkey ) {
+		return new SortkeyPropertyAnnotator(
+			$this->newNullPropertyAnnotator( $semanticData ),
+			$sortkey
+		);
+	}
+
+	/**
+	 * @since 2.0
+	 *
+	 * @param SemanticData $semanticData
+	 * @param array $categories
+	 *
+	 * @return CategoryPropertyAnnotator
+	 */
+	public function newCategoryPropertyAnnotator( SemanticData $semanticData, array $categories ) {
+		return new CategoryPropertyAnnotator(
+			$this->newNullPropertyAnnotator( $semanticData ),
+			$categories
+		);
+	}
+
 }

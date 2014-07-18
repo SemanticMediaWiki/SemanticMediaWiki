@@ -14,6 +14,7 @@ use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
+use SMW\MediaWiki\Hooks\ParserAfterTidy;
 
 /**
  * Extension setup and registration
@@ -303,8 +304,6 @@ final class Setup implements ContextAware {
 
 		$settings = $this->settings;
 		$globals  = $this->globals;
-		$context  = $this->withContext();
-		$functionHook = $context->getDependencyBuilder()->newObject( 'FunctionHookRegistry' );
 
 		/**
 		 * Hook: Called by BaseTemplate when building the toolbox array and
@@ -314,7 +313,7 @@ final class Setup implements ContextAware {
 		 *
 		 * @since  1.9
 		 */
-		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) use ( $functionHook ) {
+		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) {
 			$baseTemplateToolbox = new BaseTemplateToolbox( $skinTemplate, $toolbox );
 			return $baseTemplateToolbox->process();
 		};
@@ -377,7 +376,7 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['NewRevisionFromEditComplete'][] = function ( $wikiPage, $revision, $baseId, $user ) use ( $functionHook ) {
+		$this->globals['wgHooks']['NewRevisionFromEditComplete'][] = function ( $wikiPage, $revision, $baseId, $user ) {
 			$newRevisionFromEditComplete = new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user );
 			return $newRevisionFromEditComplete->process();
 		};
@@ -439,8 +438,9 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['ParserAfterTidy'][] = function ( &$parser, &$text ) use ( $functionHook ) {
-			return $functionHook->register( new ParserAfterTidy( $parser, $text ) )->process();
+		$this->globals['wgHooks']['ParserAfterTidy'][] = function ( &$parser, &$text ) {
+			$parserAfterTidy = new ParserAfterTidy( $parser, $text );
+			return $parserAfterTidy->process();
 		};
 
 		/**
@@ -450,7 +450,7 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9
 		 */
-		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = function ( &$extraStats ) use ( $functionHook, $globals ) {
+		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = function ( &$extraStats ) use ( $globals ) {
 			$specialStatsAddExtra = new SpecialStatsAddExtra( $extraStats, $globals['wgVersion'], $globals['wgLang'] );
 			return $specialStatsAddExtra->process();
 		};
@@ -473,7 +473,7 @@ final class Setup implements ContextAware {
 		 *
 		 * @since 1.9.1
 		 */
-		$this->globals['wgHooks']['FileUpload'][] = function ( $file, $reupload ) use ( $functionHook ) {
+		$this->globals['wgHooks']['FileUpload'][] = function ( $file, $reupload ) {
 			$fileUpload = new FileUpload( $file, $reupload );
 			return $fileUpload->process();
 		};

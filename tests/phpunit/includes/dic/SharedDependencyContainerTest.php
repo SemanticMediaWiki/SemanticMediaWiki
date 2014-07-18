@@ -136,8 +136,6 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$provider[] = array( 'FunctionHookRegistry',       array( '\SMW\FunctionHookRegistry'        => array() ) );
-
 		$provider[] = array( 'ContentParser', array( '\SMW\ContentParser' => array(
 				'Title'        => $this->newMockBuilder()->newObject( 'Title' )
 				)

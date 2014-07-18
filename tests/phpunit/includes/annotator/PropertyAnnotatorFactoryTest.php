@@ -93,4 +93,32 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewSortkeyPropertyAnnotator() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Annotator\SortkeyPropertyAnnotator',
+			$instance->newSortkeyPropertyAnnotator( $semanticData, 'Foo' )
+		);
+	}
+
+	public function testNewCategoryPropertyAnnotator() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Annotator\CategoryPropertyAnnotator',
+			$instance->newCategoryPropertyAnnotator( $semanticData, array() )
+		);
+	}
+
 }
