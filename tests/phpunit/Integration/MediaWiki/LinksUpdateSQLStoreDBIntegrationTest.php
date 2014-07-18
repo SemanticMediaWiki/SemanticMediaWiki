@@ -4,9 +4,11 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\Util\SemanticDataValidator;
 use SMW\Tests\Util\PageCreator;
-use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
+use SMW\Tests\Util\PageDeleter;
+use SMW\Tests\Util\MwHooksHandler;
+use SMW\Tests\MwDBaseUnitTestCase;
 
-use SMW\ExtensionContext;
+use SMW\Application;
 use SMW\ParserData;
 use SMW\DIWikiPage;
 use SMW\ContentParser;
@@ -34,23 +36,40 @@ use UnexpectedValueException;
  *
  * @author mwjames
  */
-class LinksUpdateSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
+class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	/** @var Title */
-	protected $title = null;
+	private $title = null;
+	private $application;
+	private $mwHooksHandler;
+	private $semanticDataValidator;
+	private $pageDeleter;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$context = new ExtensionContext();
-		$context->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+		$this->application = Application::getInstance();
+		$this->mwHooksHandler = new MwHooksHandler();
+		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->pageDeleter = new PageDeleter();
 
-		$this->runExtensionSetup( $context );
+		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
+	}
+
+	public function tearDown() {
+
+		$this->mwHooksHandler->restoreListedHooks();
+
+		if ( $this->title !== null ) {
+			$this->pageDeleter->deletePage( $this->title );
+		}
+
+		parent::tearDown();
 	}
 
 	public function testPageCreationAndRevisionHandlingBeforeLinksUpdate() {
 
-		$this->semanticDataValidator = new SemanticDataValidator;
+		$this->mwHooksHandler->deregisterListedHooks();
+
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
@@ -61,10 +80,8 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCa
 
 		$this->assertNotSame(
 			$beforeAlterationRevId,
-			$afterAlterationRevId,
-			'Asserts that the revId is different'
+			$afterAlterationRevId
 		);
-
 	}
 
 	/**
@@ -73,7 +90,8 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCa
 	 */
 	public function testLinksUpdateAndVerifyStoreUpdate( $expected ) {
 
-		$this->semanticDataValidator = new SemanticDataValidator;
+		$this->mwHooksHandler->deregisterListedHooks();
+
 		$this->title = Title::newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
@@ -88,7 +106,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCa
 			$expected['afterAlterationRevId'],
 			$afterAlterationRevId
 		);
-
 	}
 
 	protected function createSinglePageWithAnnotations() {
@@ -122,7 +139,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCa
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) ),
 			'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists'
 		);
-
 	}
 
 	protected function assertSemanticDataAfterContentAlteration() {
@@ -228,12 +244,4 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCa
 		return $provider;
 	}
 
-	protected function tearDown() {
-
-		if ( $this->title !== null ) {
-			$this->deletePage( $this->title );
-		}
-
-		parent::tearDown();
-	}
 }

@@ -6,10 +6,11 @@ use SMW\Tests\Util\SemanticDataValidator;
 use SMW\Tests\Util\PageCreator;
 use SMW\Tests\Util\PageDeleter;
 use SMW\Tests\Util\JobQueueRunner;
+use SMW\Tests\Util\MwHooksHandler;
 
-use SMW\Tests\MwDBSQLStoreIntegrationTestCase;
+use SMW\Tests\MwDBaseUnitTestCase;
 
-use SMW\ExtensionContext;
+use SMW\Application;
 use SMW\SemanticData;
 use SMW\StoreFactory;
 use SMW\DIWikiPage;
@@ -32,24 +33,35 @@ use Job;
  *
  * @author mwjames
  */
-class JobQueueSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase {
+class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	protected $job = null;
+	private $job = null;
+	private $application;
+	private $mwHooksHandler;
+	private $semanticDataValidator;
+	private $PageDeleter;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$context = new ExtensionContext();
+		$this->application = Application::getInstance();
+		$this->mwHooksHandler = new MwHooksHandler();
+		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->pageDeleter = new PageDeleter();
 
-		$context->getDependencyBuilder()->getContainer()->registerObject( 'Store', $this->getStore() );
-		$context->getSettings()->set( 'smwgDeleteSubjectAsDeferredJob', true );
-		$context->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', true );
-		$context->getSettings()->set( 'smwgEnableUpdateJobs', true );
-
-		$this->runExtensionSetup( $context );
+		$this->application->getSettings()->set( 'smwgDeleteSubjectAsDeferredJob', true );
+		$this->application->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', true );
+		$this->application->getSettings()->set( 'smwgEnableUpdateJobs', true );
 
 		$jobQueueRunner = new JobQueueRunner( null, $this->getDBConnectionProvider() );
 		$jobQueueRunner->deleteAllJobs();
+	}
+
+	protected function tearDown() {
+		$this->application->clear();
+		$this->mwHooksHandler->restoreListedHooks();
+
+		parent::tearDown();
 	}
 
 	/**
@@ -57,11 +69,11 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase 
 	 */
 	public function testPageDeleteTriggersDeleteSubjectJob( $source, $associate ) {
 
-		$semanticDataValidator = new SemanticDataValidator();
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$subject = DIWikiPage::newFromTitle( $source['title'] );
 
-		$semanticDataValidator->assertThatSemanticDataIsEmpty(
+		$this->semanticDataValidator->assertThatSemanticDataIsEmpty(
 			$this->getStore()->getSemanticData( $subject )
 		);
 
@@ -75,13 +87,13 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase 
 			->createPage( $associate['title'] )
 			->doEdit( $associate['edit'] );
 
-		$semanticDataValidator->assertThatSemanticDataIsNotEmpty(
+		$this->semanticDataValidator->assertThatSemanticDataIsNotEmpty(
 			$this->getStore()->getSemanticData( $subject )
 		);
 
-		$this->deletePage( $source['title'] );
+		$this->pageDeleter->deletePage( $source['title'] );
 
-		$semanticDataValidator->assertThatSemanticDataIsEmpty(
+		$this->semanticDataValidator->assertThatSemanticDataIsEmpty(
 			$this->getStore()->getSemanticData( $subject )
 		);
 
@@ -91,10 +103,12 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase 
 			$this->assertTrue( $this->job->hasParameter( $parameter ) );
 		}
 
-		$this->deletePage( $associate['title'] );
+		$this->pageDeleter->deletePage( $associate['title'] );
 	}
 
 	public function testPageMoveTriggersUpdateJob() {
+
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
@@ -117,10 +131,12 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase 
 			array( $oldTitle->getPrefixedText(), $newTitle->getPrefixedText() )
 		);
 
-		$this->deletePage( $oldTitle );
+		$this->pageDeleter->deletePage( $oldTitle );
 	}
 
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
+
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$index = 1; //pass-by-reference
 
@@ -133,6 +149,8 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBSQLStoreIntegrationTestCase 
 	 * @dataProvider jobFactoryProvider
 	 */
 	public function testJobFactory( $jobName, $type ) {
+
+		$this->mwHooksHandler->deregisterListedHooks();
 
 		$job = Job::factory(
 			$jobName,
