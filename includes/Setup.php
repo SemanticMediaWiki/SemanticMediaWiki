@@ -20,6 +20,7 @@ use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
 use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
 use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
+use SMW\MediaWiki\Hooks\ExtensionTypes;
 
 /**
  * Extension setup and registration
@@ -523,6 +524,14 @@ final class Setup implements ContextAware {
 			return $resourceLoaderTestModules->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
+		 */
+		$this->globals['wgHooks']['ExtensionTypes'][] = function ( &$extensionTypes ) {
+			$extensionTypes = new ExtensionTypes( $extensionTypes );
+			return $extensionTypes->process();
+		};
+
 		// Old-style registration
 
 		$this->globals['wgHooks']['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
@@ -531,7 +540,6 @@ final class Setup implements ContextAware {
 		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
 		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = 'SMWHooks::onTitleIsAlwaysKnown';
 		$this->globals['wgHooks']['BeforeDisplayNoArticleText'][] = 'SMWHooks::onBeforeDisplayNoArticleText';
-		$this->globals['wgHooks']['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
 
 	}
 
