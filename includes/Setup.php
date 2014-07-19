@@ -552,7 +552,6 @@ final class Setup implements ContextAware {
 
 		// Old-style registration
 
-		$this->globals['wgHooks']['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
 		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
@@ -606,12 +605,16 @@ final class Setup implements ContextAware {
 				return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
 			} );
 
+			$parser->setFunctionHook( 'concept', array( 'SMW\ConceptParserFunction', 'render' ) );
+			$parser->setFunctionHook( 'set', array( 'SMW\SetParserFunction', 'render' ) );
+			$parser->setFunctionHook( 'set_recurring_event', array( 'SMW\RecurringEventsParserFunction', 'render' ) );
+			$parser->setFunctionHook( 'declare', array( 'SMW\DeclareParserFunction', 'render' ), SFH_OBJECT_ARGS );
+
 			return true;
 		};
 
 		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMW\DocumentationParserFunction::staticInit';
 		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMW\InfoParserFunction::staticInit';
-		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMWHooks::onParserFirstCallInit';
 
 	}
 

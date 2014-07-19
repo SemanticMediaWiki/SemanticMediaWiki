@@ -136,7 +136,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		// 4 because of having hooks registered without using a callback, after
 		// all parser hooks being registered using a callback this can be
 		// reduced to 1
-		$this->assertArrayHookEntry( $hook, $setup, 4 );
+		$this->assertArrayHookEntry( $hook, $setup, 3 );
 
 		// Verify that registered closures are executable
 		$result = $this->executeHookOnMock( $hook, $setup['wgHooks'][$hook][0] );
@@ -492,7 +492,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	public function functionHooksProvider() {
 
 		$hooks = array(
-			'ParserTestTables',
 			'AdminLinks',
 			'PageSchemasRegisterHandlers',
 			'ArticleFromTitle',
