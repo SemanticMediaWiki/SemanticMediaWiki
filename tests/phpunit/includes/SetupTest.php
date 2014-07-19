@@ -225,6 +225,10 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'getContent' => $this->newMockContent()
 		) );
 
+		$databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
 		switch ( $hook ) {
 			case 'SkinAfterContent':
 				$result = $this->callObject( $object, array( &$empty, $skin ) );
@@ -276,6 +280,9 @@ class SetupTest extends SemanticMediaWikiTestCase {
 				break;
 			case 'SkinTemplateNavigation':
 				$result = $this->callObject( $object, array( &$skinTemplate, &$emptyArray ) );
+				break;
+			case 'LoadExtensionSchemaUpdates':
+				$result = $this->callObject( $object, array( $databaseUpdater ) );
 				break;
 			case 'ParserFirstCallInit':
 
@@ -468,7 +475,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	public function functionHooksProvider() {
 
 		$hooks = array(
-			'LoadExtensionSchemaUpdates',
 			'ParserTestTables',
 			'AdminLinks',
 			'PageSchemasRegisterHandlers',
@@ -505,6 +511,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'ResourceLoaderGetConfigVars',
 			'GetPreferences',
 			'SkinTemplateNavigation',
+			'LoadExtensionSchemaUpdates',
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );

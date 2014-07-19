@@ -15,24 +15,6 @@
 final class SMWHooks {
 
 	/**
-	 * Schema update to set up the needed database tables.
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
-	 *
-	 * @since 1.7
-	 *
-	 * @param DatabaseUpdater $updater|null
-	 *
-	 * @return boolean
-	 */
-	public static function onSchemaUpdate( DatabaseUpdater $updater = null ) {
-		// @codeCoverageIgnoreStart
-		$updater->addExtensionUpdate( array( 'SMWStore::setupStore' ) );
-
-		return true;
-		// @codeCoverageIgnoreEnd
-	}
-
-	/**
 	 * TODO
 	 *
 	 * @since 1.7
