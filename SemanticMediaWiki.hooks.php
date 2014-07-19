@@ -126,42 +126,6 @@ final class SMWHooks {
 	}
 
 	/**
-	 * Hook: Allows overriding default behaviour for determining if a page exists.
-	 *
-	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
-	 *
-	 * @since 1.9
-	 *
-	 * @param Title $title Title object that is being checked
-	 * @param Boolean|null $result whether MediaWiki currently thinks this page is known
-	 *
-	 * @return boolean
-	 */
-	public static function onTitleIsAlwaysKnown( Title $title, &$result ) {
-
-		// Two possible ways of going forward:
-		//
-		// The FIRST seen here is to use the hook to override the known status
-		// for predefined properties in order to avoid any edit link
-		// which makes no-sense for predefined properties
-		//
-		// The SECOND approach is to inject SMWWikiPageValue with a setLinkOptions setter
-		// that enables to set the custom options 'known' for each invoked linker during
-		// getShortHTMLText
-		// $linker->link( $this->getTitle(), $caption, $customAttributes, $customQuery, $customOptions )
-		//
-		// @see also HooksTest::testOnTitleIsAlwaysKnown
-
-		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
-			if ( !SMWDIProperty::newFromUserLabel( $title->getText() )->isUserDefined() ) {
-				$result = true;
-			}
-		}
-
-		return true;
-	}
-
-	/**
 	 * This hook registers parser functions and hooks to the given parser. It is
 	 * called during SMW initialisation. Note that parser hooks are something different
 	 * than MW hooks in general, which explains the two-level registration.
@@ -180,22 +144,5 @@ final class SMWHooks {
 
 		return true;
 	}
-
-	/**
-	 * Adds the 'semantic' extension type to the type list.
-	 *
-	 * @since 1.7.1
-	 *
-	 * @param $aExtensionTypes Array
-	 *
-	 * @return boolean
-	 */
-	public static function addSemanticExtensionType( array &$aExtensionTypes ) {
-		// @codeCoverageIgnoreStart
-		$aExtensionTypes = array_merge( array( 'semantic' => wfMessage( 'version-semantic' )->text() ), $aExtensionTypes );
-		return true;
-		// @codeCoverageIgnoreEnd
-	}
-
 
 }

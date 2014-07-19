@@ -21,6 +21,7 @@ use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
 use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
 use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
 use SMW\MediaWiki\Hooks\ExtensionTypes;
+use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 
 /**
  * Extension setup and registration
@@ -532,13 +533,20 @@ final class Setup implements ContextAware {
 			return $extensionTypes->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
+		 */
+		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = function ( $title, &$result  ) {
+			$titleIsAlwaysKnown = new TitleIsAlwaysKnown( $title, $result );
+			return $titleIsAlwaysKnown->process();
+		};
+
 		// Old-style registration
 
 		$this->globals['wgHooks']['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
 		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
-		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = 'SMWHooks::onTitleIsAlwaysKnown';
 		$this->globals['wgHooks']['BeforeDisplayNoArticleText'][] = 'SMWHooks::onBeforeDisplayNoArticleText';
 
 	}

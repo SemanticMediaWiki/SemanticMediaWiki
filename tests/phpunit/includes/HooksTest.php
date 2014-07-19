@@ -179,36 +179,6 @@ class HooksTest extends MwDBaseUnitTestCase {
 		$this->assertTrue( $result );
 	}
 
-	/**
-	 * @test SMWHooks::onTitleIsAlwaysKnown
-	 *
-	 * @since 1.9
-	 */
-	public function testOnTitleIsAlwaysKnown() {
-		$result = '';
-
-		// Random Title
-		$this->assertTrue( SMWHooks::onTitleIsAlwaysKnown(
-			$this->getTitle( '', NS_MAIN ), $result ),
-			'Failed asserting "true" for a random NS_MAIN title object'
-		);
-		$this->assertEmpty( $result, 'Failed asserting an empty result object' );
-
-		// Random user-defined property
-		$this->assertTrue( SMWHooks::onTitleIsAlwaysKnown(
-			$this->getTitle( '', SMW_NS_PROPERTY ), $result ),
-			'Failed asserting "true" for a random SMW_NS_PROPERTY title object'
-		);
-		$this->assertEmpty( $result, 'Failed asserting an empty result object' );
-
-		// Predefined property
-		$this->assertTrue( SMWHooks::onTitleIsAlwaysKnown(
-			$this->getTitle( 'Modification date', SMW_NS_PROPERTY ), $result ),
-			'Failed asserting "true" for a predefined property'
-		);
-		$this->assertTrue( $result, 'Failed asserting that the result object is returning true' );
-
-	}
 
 	/**
 	 * @test SMWHooks::onBeforeDisplayNoArticleText
