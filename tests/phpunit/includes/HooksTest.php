@@ -167,16 +167,4 @@ class HooksTest extends MwDBaseUnitTestCase {
 		$this->assertTrue( $result );
 	}
 
-	/**
-	 * @test SMWHooks::onParserFirstCallInit
-	 *
-	 * @since 1.9
-	 */
-	public function testOnParserFirstCallInit() {
-		$parser = $this->getParser();
-		$result = SMWHooks::onParserFirstCallInit( $parser );
-
-		$this->assertTrue( $result );
-	}
-
 }

@@ -103,46 +103,4 @@ final class SMWHooks {
 		return true;
 	}
 
-	/**
-	 * Hook: Before displaying noarticletext or noarticletext-nopermission messages.
-	 *
-	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/BeforeDisplayNoArticleText
-	 *
-	 * @since 1.9
-	 *
-	 * @param $article Article
-	 *
-	 * @return boolean
-	 */
-	public static function onBeforeDisplayNoArticleText( $article ) {
-
-		// Avoid having "noarticletext" info being generated for predefined
-		// properties as we are going to display an introductory text
-		if ( $article->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
-			return SMWDIProperty::newFromUserLabel( $article->getTitle()->getText() )->isUserDefined();
-		}
-
-		return true;
-	}
-
-	/**
-	 * This hook registers parser functions and hooks to the given parser. It is
-	 * called during SMW initialisation. Note that parser hooks are something different
-	 * than MW hooks in general, which explains the two-level registration.
-	 *
-	 * @since 1.7
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return boolean
-	 */
-	public static function onParserFirstCallInit( Parser &$parser ) {
-		$parser->setFunctionHook( 'concept', array( 'SMW\ConceptParserFunction', 'render' ) );
-		$parser->setFunctionHook( 'set', array( 'SMW\SetParserFunction', 'render' ) );
-		$parser->setFunctionHook( 'set_recurring_event', array( 'SMW\RecurringEventsParserFunction', 'render' ) );
-		$parser->setFunctionHook( 'declare', array( 'SMW\DeclareParserFunction', 'render' ), SFH_OBJECT_ARGS );
-
-		return true;
-	}
-
 }
