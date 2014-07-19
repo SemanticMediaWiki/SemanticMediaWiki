@@ -2,54 +2,41 @@
 
 namespace SMW\Test;
 
-use SMWCategoryResultPrinter;
+use SMW\CategoryResultPrinter;
 
 /**
- * Tests for the SMWCategoryResultPrinter class
+ * @covers \SMW\CategoryResultPrinter
  *
- * @file
+ * @group SMW
+ * @group SMWExtension
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
-
-/**
- * @covers \SMWCategoryResultPrinter
- *
- * @ingroup QueryPrinterTest
- *
- * @group SMW
- * @group SMWExtension
- */
 class CategoryResultPrinterTest extends QueryPrinterTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMWCategoryResultPrinter';
+		return '\SMW\CategoryResultPrinter';
 	}
 
 	/**
-	 * Helper method that returns a SMWCategoryResultPrinter object
-	 *
-	 * @return SMWCategoryResultPrinter
+	 * @return CategoryResultPrinter
 	 */
 	private function getInstance( $parameters = array() ) {
-		return $this->setParameters( new SMWCategoryResultPrinter( 'category' ), $parameters );
+		return $this->setParameters( new CategoryResultPrinter( 'category' ), $parameters );
 	}
 
-	/**
-	 * @test SMWCategoryResultPrinter::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+	public function testCanConstruct() {
+
+		$this->assertInstanceOf(
+			'\SMW\CategoryResultPrinter',
+			$this->getInstance()
+		);
 	}
 
 }

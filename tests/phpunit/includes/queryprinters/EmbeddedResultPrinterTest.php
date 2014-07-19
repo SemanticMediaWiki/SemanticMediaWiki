@@ -2,54 +2,41 @@
 
 namespace SMW\Test;
 
-use SMWEmbeddedResultPrinter;
+use SMW\EmbeddedResultPrinter;
 
 /**
- * Tests for the SMWEmbeddedResultPrinter class
+ * @covers \SMW\EmbeddedResultPrinter
  *
- * @file
+ * @group SMW
+ * @group SMWExtension
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
-
-/**
- * @covers \SMWEmbeddedResultPrinter
- *
- * @ingroup QueryPrinterTest
- *
- * @group SMW
- * @group SMWExtension
- */
 class EmbeddedResultPrinterTest extends QueryPrinterTestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
 	 * @return string|false
 	 */
 	public function getClass() {
-		return '\SMWEmbeddedResultPrinter';
+		return '\SMW\EmbeddedResultPrinter';
 	}
 
 	/**
-	 * Helper method that returns a SMWEmbeddedResultPrinter object
-	 *
 	 * @return SMWEmbeddedResultPrinter
 	 */
 	private function getInstance( $parameters = array() ) {
-		return $this->setParameters( new SMWEmbeddedResultPrinter( 'embedded' ), $parameters );
+		return $this->setParameters( new EmbeddedResultPrinter( 'embedded' ), $parameters );
 	}
 
-	/**
-	 * @test SMWEmbeddedResultPrinter::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+	public function testcanConstruct() {
+
+		$this->assertInstanceOf(
+			'\SMW\EmbeddedResultPrinter',
+			$this->getInstance()
+		);
 	}
 
 }

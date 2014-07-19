@@ -5,20 +5,12 @@ namespace SMW;
 use SMWQueryResult;
 
 /**
- * Base for export result printers.
- *
- * @since 1.8
- *
- * @file
- *
- * @license GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
  * Base class for file export result printers
  *
- * @ingroup QueryPrinter
+ * @since 1.8
+ * @license GNU GPL v2+
+ *
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter {
 

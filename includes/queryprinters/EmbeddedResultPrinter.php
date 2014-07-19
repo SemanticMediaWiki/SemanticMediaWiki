@@ -1,38 +1,42 @@
 <?php
-/**
- * Print query results by embeddings them into pages.
- * @author Markus Krötzsch
- * @file
- * @ingroup SMWQuery
- */
+
+namespace SMW;
+
+use SMWQueryResult;
+
+use Title;
 
 /**
  * Printer for embedded data.
+ *
  * Embeds in the page output the contents of the pages in the query result set.
  * Printouts are ignored: it only matters which pages were returned by the query.
  * The optional "titlestyle" formatting parameter can be used to apply a format to
  * the headings for the page titles. If "titlestyle" is not specified, a <h1> tag is
  * used.
+ *
+ * @license GNU GPL v2+
+ * @since 1.7
+ *
  * @author Fernando Correia
  * @author Markus Krötzsch
- * @ingroup SMWQuery
  */
-class SMWEmbeddedResultPrinter extends SMWResultPrinter {
+class EmbeddedResultPrinter extends ResultPrinter {
 
 	protected $m_showhead;
 	protected $m_embedformat;
 
 	/**
 	 * @see SMWResultPrinter::handleParameters
-	 * 
+	 *
 	 * @since 1.7
-	 * 
+	 *
 	 * @param array $params
 	 * @param $outputmode
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
-		
+
 		$this->m_showhead = !$params['embedonly'];
 		$this->m_embedformat = $params['embedformat'];
 	}
@@ -76,8 +80,8 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 		// Print all result rows:
 		foreach ( $res->getResults() as $diWikiPage ) {
-			if ( $diWikiPage instanceof SMWDIWikiPage  ) { // ensure that we deal with title-likes
-				$dvWikiPage = \SMW\DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null );
+			if ( $diWikiPage instanceof DIWikiPage  ) { // ensure that we deal with title-likes
+				$dvWikiPage = DataValueFactory::getInstance()->newDataItemValue( $diWikiPage, null );
 				$result .= $embstart;
 
 				if ( $this->m_showhead ) {

@@ -1,11 +1,11 @@
 <?php
 
 namespace SMW;
+
 use MWException;
-use SMWIResultPrinter;
 
 /**
- * Factory for "result formats", ie classes implementing SMWIResultPrinter.
+ * Factory for "result formats", ie classes implementing QueryResultPrinter.
  *
  * @since 1.9
  *
@@ -49,7 +49,7 @@ final class FormatFactory {
 	//protected function __construct() {} // TODO: enable when tests can deal w/ it
 
 	/**
-	 * Format registry. Format names pointing to their associated SMWIResultPrinter implementing classes.
+	 * Format registry. Format names pointing to their associated QueryResultPrinter implementing classes.
 	 *
 	 * @since 1.9
 	 *
@@ -148,7 +148,7 @@ final class FormatFactory {
 	 *
 	 * @param string $formatName
 	 *
-	 * @return SMWIResultPrinter
+	 * @return QueryResultPrinter
 	 */
 	public function getPrinter( $formatName ) {
 		$class = $this->getPrinterClass( $formatName );
@@ -156,7 +156,7 @@ final class FormatFactory {
 	}
 
 	/**
-	 * Returns the SMWIResultPrinter implementing class that is the printer for the provided format.
+	 * Returns the QueryResultPrinter implementing class that is the printer for the provided format.
 	 *
 	 * @since 1.9
 	 *

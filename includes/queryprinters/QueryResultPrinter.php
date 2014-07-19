@@ -1,24 +1,26 @@
 <?php
 
+namespace SMW;
+
+use SMWQueryResult as QueryResult;
+
 /**
  * Interface for SMW result printers.
  *
+ * @license GNU GPL v2+
  * @since 1.8
  *
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Markus Krötzsch
  */
-interface SMWIResultPrinter {
+interface QueryResultPrinter {
 
 	// Constructor restriction:
 	// Needs to have exactly one required argument $formatName.
 	// Is allowed to have additional optional arguments.
 
 	/**
-	 * Main entry point: takes an SMWQueryResult and parameters given as key-value-pairs in an array,
+	 * Main entry point: takes an QueryResult and parameters given as key-value-pairs in an array,
 	 * and returns the serialised version of the results, formatted as HTML or Wiki or whatever is
 	 * specified. Normally this is not overwritten by subclasses.
 	 *
@@ -42,13 +44,13 @@ interface SMWIResultPrinter {
 	 * variable SMWResultPrinter::$maxRecursionDepth (in LocalSettings.php, after enableSemantics()).
 	 * Do this at your own risk.
 	 *
-	 * @param $results SMWQueryResult
+	 * @param $results QueryResult
 	 * @param $fullParams array
 	 * @param $outputMode integer
 	 *
 	 * @return string
 	 */
-	public function getResult( SMWQueryResult $results, array $fullParams, $outputMode );
+	public function getResult( QueryResult $results, array $fullParams, $outputMode );
 
 	/**
 	 * This function determines the query mode that is to be used for this printer in

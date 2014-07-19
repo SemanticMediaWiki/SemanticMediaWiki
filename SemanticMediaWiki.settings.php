@@ -377,16 +377,16 @@ $GLOBALS['smwgResultFormats'] = array(
 	'ol'         => 'SMW\ListResultPrinter',
 	'ul'         => 'SMW\ListResultPrinter',
 	'broadtable' => 'SMW\TableResultPrinter',
-	'category'   => 'SMWCategoryResultPrinter',
-	'embedded'   => 'SMWEmbeddedResultPrinter',
+	'category'   => 'SMW\CategoryResultPrinter',
+	'embedded'   => 'SMW\EmbeddedResultPrinter',
 	'template'   => 'SMW\ListResultPrinter',
 	'count'      => 'SMW\ListResultPrinter',
 	'debug'      => 'SMW\ListResultPrinter',
 	'feed'       => 'SMW\FeedResultPrinter',
 	'csv'        => 'SMW\CsvResultPrinter',
-	'dsv'        => 'SMWDSVResultPrinter',
+	'dsv'        => 'SMW\DsvResultPrinter',
 	'json'       => 'SMW\JsonResultPrinter',
-	'rdf'        => 'SMWRDFResultPrinter'
+	'rdf'        => 'SMW\RdfResultPrinter'
 );
 ##
 
