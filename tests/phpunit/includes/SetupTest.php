@@ -63,8 +63,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'wgServer'          => 'http://example.org',
 			'wgVersion'         => '1.21',
 			'wgLanguageCode'    => 'en',
-			'wgLang'            => $language,
-			'IP'                => 'Foo'
+			'wgLang'            => $language
 		);
 
 		$config  = array_merge( $default, $config );
@@ -136,7 +135,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		// 4 because of having hooks registered without using a callback, after
 		// all parser hooks being registered using a callback this can be
 		// reduced to 1
-		$this->assertArrayHookEntry( $hook, $setup, 3 );
+		$this->assertArrayHookEntry( $hook, $setup, 4 );
 
 		// Verify that registered closures are executable
 		$result = $this->executeHookOnMock( $hook, $setup['wgHooks'][$hook][0] );
@@ -208,14 +207,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			->method( 'getUser' )
 			->will( $this->returnValue( $user ) );
 
-		$databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$resourceLoader = $this->getMockBuilder( '\ResourceLoader' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$parserOptions = $this->newMockBuilder()->newObject( 'ParserOptions' );
 
 		$file = $this->newMockBuilder()->newObject( 'File', array(
@@ -285,24 +276,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 				break;
 			case 'SkinTemplateNavigation':
 				$result = $this->callObject( $object, array( &$skinTemplate, &$emptyArray ) );
-				break;
-			case 'LoadExtensionSchemaUpdates':
-				$result = $this->callObject( $object, array( $databaseUpdater ) );
-				break;
-			case 'ArticleFromTitle':
-				$result = $this->callObject( $object, array( &$title, &$wikiPage ) );
-				break;
-			case 'ResourceLoaderTestModules':
-				$result = $this->callObject( $object, array( &$emptyArray, &$resourceLoader ) );
-				break;
-			case 'ExtensionTypes':
-				$result = $this->callObject( $object, array( &$emptyArray ) );
-				break;
-			case 'TitleIsAlwaysKnown':
-				$result = $this->callObject( $object, array( $title, &$empty ) );
-				break;
-			case 'BeforeDisplayNoArticleText':
-				$result = $this->callObject( $object, array( $wikiPage ) );
 				break;
 			case 'ParserFirstCallInit':
 
@@ -495,8 +468,15 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	public function functionHooksProvider() {
 
 		$hooks = array(
+			'LoadExtensionSchemaUpdates',
+			'ParserTestTables',
 			'AdminLinks',
 			'PageSchemasRegisterHandlers',
+			'ArticleFromTitle',
+			'ResourceLoaderTestModules',
+			'TitleIsAlwaysKnown',
+			'BeforeDisplayNoArticleText',
+			'ExtensionTypes',
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
@@ -525,12 +505,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'ResourceLoaderGetConfigVars',
 			'GetPreferences',
 			'SkinTemplateNavigation',
-			'LoadExtensionSchemaUpdates',
-			'ArticleFromTitle',
-			'ResourceLoaderTestModules',
-			'ExtensionTypes',
-			'TitleIsAlwaysKnown',
-			'BeforeDisplayNoArticleText',
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );

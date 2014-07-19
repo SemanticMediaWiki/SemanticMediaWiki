@@ -15,6 +15,24 @@
 final class SMWHooks {
 
 	/**
+	 * Schema update to set up the needed database tables.
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
+	 *
+	 * @since 1.7
+	 *
+	 * @param DatabaseUpdater $updater|null
+	 *
+	 * @return boolean
+	 */
+	public static function onSchemaUpdate( DatabaseUpdater $updater = null ) {
+		// @codeCoverageIgnoreStart
+		$updater->addExtensionUpdate( array( 'SMWStore::setupStore' ) );
+
+		return true;
+		// @codeCoverageIgnoreEnd
+	}
+
+	/**
 	 * TODO
 	 *
 	 * @since 1.7
@@ -79,6 +97,171 @@ final class SMWHooks {
 
 		return true;
 		// @codeCoverageIgnoreEnd
+	}
+
+
+	/**
+	 * Register special classes for displaying semantic content on Property and
+	 * Concept pages.
+	 *
+	 * @since 1.7
+	 *
+	 * @param $title Title
+	 * @param $article Article or null
+	 *
+	 * @return boolean
+	 */
+	public static function onArticleFromTitle( Title &$title, /* Article */ &$article ) {
+		if ( $title->getNamespace() == SMW_NS_PROPERTY ) {
+			$article = new SMWPropertyPage( $title );
+		} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
+			$article = new SMW\ConceptPage( $title );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Hook: Before displaying noarticletext or noarticletext-nopermission messages.
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/BeforeDisplayNoArticleText
+	 *
+	 * @since 1.9
+	 *
+	 * @param $article Article
+	 *
+	 * @return boolean
+	 */
+	public static function onBeforeDisplayNoArticleText( $article ) {
+
+		// Avoid having "noarticletext" info being generated for predefined
+		// properties as we are going to display an introductory text
+		if ( $article->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
+			return SMWDIProperty::newFromUserLabel( $article->getTitle()->getText() )->isUserDefined();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Hook: Allows overriding default behaviour for determining if a page exists.
+	 *
+	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
+	 *
+	 * @since 1.9
+	 *
+	 * @param Title $title Title object that is being checked
+	 * @param Boolean|null $result whether MediaWiki currently thinks this page is known
+	 *
+	 * @return boolean
+	 */
+	public static function onTitleIsAlwaysKnown( Title $title, &$result ) {
+
+		// Two possible ways of going forward:
+		//
+		// The FIRST seen here is to use the hook to override the known status
+		// for predefined properties in order to avoid any edit link
+		// which makes no-sense for predefined properties
+		//
+		// The SECOND approach is to inject SMWWikiPageValue with a setLinkOptions setter
+		// that enables to set the custom options 'known' for each invoked linker during
+		// getShortHTMLText
+		// $linker->link( $this->getTitle(), $caption, $customAttributes, $customQuery, $customOptions )
+		//
+		// @see also HooksTest::testOnTitleIsAlwaysKnown
+
+		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
+			if ( !SMWDIProperty::newFromUserLabel( $title->getText() )->isUserDefined() ) {
+				$result = true;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * This hook registers parser functions and hooks to the given parser. It is
+	 * called during SMW initialisation. Note that parser hooks are something different
+	 * than MW hooks in general, which explains the two-level registration.
+	 *
+	 * @since 1.7
+	 *
+	 * @param Parser $parser
+	 *
+	 * @return boolean
+	 */
+	public static function onParserFirstCallInit( Parser &$parser ) {
+		$parser->setFunctionHook( 'concept', array( 'SMW\ConceptParserFunction', 'render' ) );
+		$parser->setFunctionHook( 'set', array( 'SMW\SetParserFunction', 'render' ) );
+		$parser->setFunctionHook( 'set_recurring_event', array( 'SMW\RecurringEventsParserFunction', 'render' ) );
+		$parser->setFunctionHook( 'declare', array( 'SMW\DeclareParserFunction', 'render' ), SFH_OBJECT_ARGS );
+
+		return true;
+	}
+
+	/**
+	 * Adds the 'semantic' extension type to the type list.
+	 *
+	 * @since 1.7.1
+	 *
+	 * @param $aExtensionTypes Array
+	 *
+	 * @return boolean
+	 */
+	public static function addSemanticExtensionType( array &$aExtensionTypes ) {
+		// @codeCoverageIgnoreStart
+		$aExtensionTypes = array_merge( array( 'semantic' => wfMessage( 'version-semantic' )->text() ), $aExtensionTypes );
+		return true;
+		// @codeCoverageIgnoreEnd
+	}
+
+	/**
+	 * Add new JavaScript/QUnit testing modules
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
+	 *
+	 * @since 1.9
+	 *
+	 * @param  array $testModules array of JavaScript testing modules
+	 * @param  ResourceLoader $resourceLoader object
+	 *
+	 * @return boolean
+	 */
+	public static function registerQUnitTests( array &$testModules, ResourceLoader &$resourceLoader ) {
+		$testModules['qunit']['ext.smw.tests'] = array(
+			'scripts' => array(
+				'tests/qunit/smw/ext.smw.test.js',
+				'tests/qunit/smw/util/ext.smw.util.tooltip.test.js',
+
+				// dataItem tests
+				'tests/qunit/smw/data/ext.smw.dataItem.wikiPage.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.uri.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.time.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.property.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.unknown.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.number.test.js',
+				'tests/qunit/smw/data/ext.smw.dataItem.text.test.js',
+
+				// dataValues
+				'tests/qunit/smw/data/ext.smw.dataValue.quantity.test.js',
+
+				// Api / Query
+				'tests/qunit/smw/data/ext.smw.data.test.js',
+				'tests/qunit/smw/api/ext.smw.api.test.js',
+				'tests/qunit/smw/query/ext.smw.query.test.js',
+			),
+			'dependencies' => array(
+				'ext.smw',
+				'ext.smw.tooltip',
+				'ext.smw.query',
+				'ext.smw.data',
+				'ext.smw.api'
+			),
+			'position' => 'top',
+			'localBasePath' => __DIR__,
+			'remoteExtPath' => '..' . substr( __DIR__, strlen( $GLOBALS['IP'] ) ),
+		);
+
+		return true;
 	}
 
 }
