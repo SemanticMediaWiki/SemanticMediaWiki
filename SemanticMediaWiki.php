@@ -77,6 +77,7 @@ class_alias( 'SMW\EmbeddedResultPrinter', 'SMWEmbeddedResultPrinter' );
 class_alias( 'SMW\RdfResultPrinter', 'SMWRDFResultPrinter' );
 class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
 class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
+class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
 
 class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
 

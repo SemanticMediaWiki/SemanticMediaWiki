@@ -128,8 +128,3 @@ abstract class RawResultPrinter extends ResultPrinter {
 		return $this->getHtml( $data );
 	}
 }
-
-/**
- * @deprecated since 2.0
- */
-class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
