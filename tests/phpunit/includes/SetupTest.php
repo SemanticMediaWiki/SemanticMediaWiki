@@ -298,6 +298,9 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			case 'TitleIsAlwaysKnown':
 				$result = $this->callObject( $object, array( $title, &$empty ) );
 				break;
+			case 'BeforeDisplayNoArticleText':
+				$result = $this->callObject( $object, array( $wikiPage ) );
+				break;
 			case 'ParserFirstCallInit':
 
 				// ParserFirstCallInit itself contains closures for
@@ -493,7 +496,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'AdminLinks',
 			'PageSchemasRegisterHandlers',
 			'ArticleFromTitle',
-			'BeforeDisplayNoArticleText',
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
@@ -526,6 +528,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'ResourceLoaderTestModules',
 			'ExtensionTypes',
 			'TitleIsAlwaysKnown',
+			'BeforeDisplayNoArticleText',
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
