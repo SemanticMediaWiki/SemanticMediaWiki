@@ -19,6 +19,7 @@ use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
 use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
+use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
 
 /**
  * Extension setup and registration
@@ -308,6 +309,8 @@ final class Setup implements ContextAware {
 
 		$settings = $this->settings;
 		$globals  = $this->globals;
+		$basePath = $this->directory;
+		$installPath = $this->globals['IP'];
 
 		/**
 		 * Hook: Called by BaseTemplate when building the toolbox array and
@@ -505,13 +508,27 @@ final class Setup implements ContextAware {
 			return $extensionSchemaUpdates->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
+		 */
+		$this->globals['wgHooks']['ResourceLoaderTestModules'][] = function ( &$testModules, &$resourceLoader ) use ( $basePath, $installPath ) {
+
+			$resourceLoaderTestModules = new ResourceLoaderTestModules(
+				$resourceLoader,
+				$testModules,
+				$basePath,
+				$installPath
+			);
+
+			return $resourceLoaderTestModules->process();
+		};
+
 		// Old-style registration
 
 		$this->globals['wgHooks']['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
 		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
-		$this->globals['wgHooks']['ResourceLoaderTestModules'][] = 'SMWHooks::registerQUnitTests';
 		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = 'SMWHooks::onTitleIsAlwaysKnown';
 		$this->globals['wgHooks']['BeforeDisplayNoArticleText'][] = 'SMWHooks::onBeforeDisplayNoArticleText';
 		$this->globals['wgHooks']['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';

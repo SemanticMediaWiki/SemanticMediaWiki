@@ -63,7 +63,8 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'wgServer'          => 'http://example.org',
 			'wgVersion'         => '1.21',
 			'wgLanguageCode'    => 'en',
-			'wgLang'            => $language
+			'wgLang'            => $language,
+			'IP'                => 'Foo'
 		);
 
 		$config  = array_merge( $default, $config );
@@ -229,6 +230,10 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$resourceLoader = $this->getMockBuilder( '\ResourceLoader' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		switch ( $hook ) {
 			case 'SkinAfterContent':
 				$result = $this->callObject( $object, array( &$empty, $skin ) );
@@ -283,6 +288,9 @@ class SetupTest extends SemanticMediaWikiTestCase {
 				break;
 			case 'LoadExtensionSchemaUpdates':
 				$result = $this->callObject( $object, array( $databaseUpdater ) );
+				break;
+			case 'ResourceLoaderTestModules':
+				$result = $this->callObject( $object, array( &$emptyArray, &$resourceLoader ) );
 				break;
 			case 'ParserFirstCallInit':
 
@@ -479,7 +487,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'AdminLinks',
 			'PageSchemasRegisterHandlers',
 			'ArticleFromTitle',
-			'ResourceLoaderTestModules',
 			'TitleIsAlwaysKnown',
 			'BeforeDisplayNoArticleText',
 			'ExtensionTypes',
@@ -512,6 +519,7 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'GetPreferences',
 			'SkinTemplateNavigation',
 			'LoadExtensionSchemaUpdates',
+			'ResourceLoaderTestModules',
 		);
 
 		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
