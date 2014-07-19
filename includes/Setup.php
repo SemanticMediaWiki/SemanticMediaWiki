@@ -18,12 +18,6 @@ use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
-use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
-use SMW\MediaWiki\Hooks\ArticleFromTitle;
-use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
-use SMW\MediaWiki\Hooks\ExtensionTypes;
-use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
-use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 
 /**
  * Extension setup and registration
@@ -302,6 +296,8 @@ final class Setup implements ContextAware {
 	}
 
 	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:$this->globals['wgHooks']
+	 *
 	 * @note $this->globals['wgHooks'] contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
 	 *
@@ -311,11 +307,14 @@ final class Setup implements ContextAware {
 
 		$settings = $this->settings;
 		$globals  = $this->globals;
-		$basePath = $this->directory;
-		$installPath = $this->globals['IP'];
 
 		/**
+		 * Hook: Called by BaseTemplate when building the toolbox array and
+		 * returning it for the skin to output.
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
+		 *
+		 * @since  1.9
 		 */
 		$this->globals['wgHooks']['BaseTemplateToolbox'][] = function ( $skinTemplate, &$toolbox ) {
 			$baseTemplateToolbox = new BaseTemplateToolbox( $skinTemplate, $toolbox );
@@ -323,7 +322,12 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: Allows extensions to add text after the page content and article
+		 * metadata.
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
+		 *
+		 * @since  1.9
 		 */
 		$this->globals['wgHooks']['SkinAfterContent'][] = function ( &$data, $skin = null ) {
 			$skinAfterContent = new SkinAfterContent( $data, $skin );
@@ -331,7 +335,11 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: Called after parse, before the HTML is added to the output
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/OutputPageParserOutput
+		 *
+		 * @since  1.9
 		 */
 		$this->globals['wgHooks']['OutputPageParserOutput'][] = function ( &$outputPage, $parserOutput ) {
 			$outputPageParserOutput = new OutputPageParserOutput( $outputPage, $parserOutput );
@@ -339,7 +347,11 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: Add changes to the output page, e.g. adding of CSS or JavaScript
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['BeforePageDisplay'][] = function ( &$outputPage, &$skin ) {
 			$beforePageDisplay = new BeforePageDisplay( $outputPage, $skin );
@@ -347,7 +359,12 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: InternalParseBeforeLinks is used to process the expanded wiki
+		 * code after <nowiki>, HTML-comments, and templates have been treated.
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['InternalParseBeforeLinks'][] = function ( &$parser, &$text ) {
 			$internalParseBeforeLinks = new InternalParseBeforeLinks( $parser, $text );
@@ -355,7 +372,12 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: NewRevisionFromEditComplete called when a revision was inserted
+		 * due to an edit
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['NewRevisionFromEditComplete'][] = function ( $wikiPage, $revision, $baseId, $user ) {
 			$newRevisionFromEditComplete = new NewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user );
@@ -363,7 +385,12 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: TitleMoveComplete occurs whenever a request to move an article
+		 * is completed
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['TitleMoveComplete'][] = function ( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
 			$titleMoveComplete = new TitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId );
@@ -371,7 +398,11 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: ArticlePurge executes before running "&action=purge"
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['ArticlePurge'][] = function ( &$wikiPage ) {
 			$articlePurge = new ArticlePurge( $wikiPage );
@@ -379,7 +410,12 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: ArticleDelete occurs whenever the software receives a request
+		 * to delete an article
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['ArticleDelete'][] = function ( &$wikiPage, &$user, &$reason, &$error ) {
 			$articleDelete = new ArticleDelete( $wikiPage, $user, $reason, $error );
@@ -387,7 +423,11 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['LinksUpdateConstructed'][] = function ( $linksUpdate ) {
 			$linksUpdateConstructed = new LinksUpdateConstructed( $linksUpdate );
@@ -395,7 +435,11 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: ParserAfterTidy to add some final processing to the fully-rendered page output
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['ParserAfterTidy'][] = function ( &$parser, &$text ) {
 			$parserAfterTidy = new ParserAfterTidy( $parser, $text );
@@ -403,7 +447,11 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: Add extra statistic at the end of Special:Statistics
+		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['SpecialStatsAddExtra'][] = function ( &$extraStats ) use ( $globals ) {
 			$specialStatsAddExtra = new SpecialStatsAddExtra( $extraStats, $globals['wgVersion'], $globals['wgLang'] );
@@ -411,8 +459,12 @@ final class Setup implements ContextAware {
 		};
 
 		/**
+		 * Hook: For extensions adding their own namespaces or altering the defaults
+		 *
 		 * @Bug 34383
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
+		 *
+		 * @since 1.9
 		 */
 		$this->globals['wgHooks']['CanonicalNamespaces'][] = function ( &$list ) {
 			$list = $list + NamespaceManager::getCanonicalNames();
@@ -421,95 +473,41 @@ final class Setup implements ContextAware {
 
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
+		 *
+		 * @since 1.9.1
 		 */
 		$this->globals['wgHooks']['FileUpload'][] = function ( $file, $reupload ) {
 			$fileUpload = new FileUpload( $file, $reupload );
 			return $fileUpload->process();
 		};
 
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
-		 */
 		$this->globals['wgHooks']['ResourceLoaderGetConfigVars'][] = function ( &$vars ) {
 			$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars( $vars );
 			return $resourceLoaderGetConfigVars->process();
 		};
 
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
-		 */
 		$this->globals['wgHooks']['GetPreferences'][] = function ( $user, &$preferences ) {
 			$getPreferences = new GetPreferences( $user, $preferences );
 			return $getPreferences->process();
 		};
 
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
-		 */
 		$this->globals['wgHooks']['SkinTemplateNavigation'][] = function ( &$skinTemplate, &$links ) {
 			$skinTemplateNavigation = new SkinTemplateNavigation( $skinTemplate, $links );
 			return $skinTemplateNavigation->process();
 		};
 
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
-		 */
-		$this->globals['wgHooks']['LoadExtensionSchemaUpdates'][] = function ( $databaseUpdater ) {
-			$extensionSchemaUpdates = new ExtensionSchemaUpdates( $databaseUpdater );
-			return $extensionSchemaUpdates->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
-		 */
-		$this->globals['wgHooks']['ArticleFromTitle'][] = function ( &$title, &$article ) {
-			$articleFromTitle = new ArticleFromTitle( $title, $article );
-			return $articleFromTitle->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
-		 */
-		$this->globals['wgHooks']['ResourceLoaderTestModules'][] = function ( &$testModules, &$resourceLoader ) use ( $basePath, $installPath ) {
-
-			$resourceLoaderTestModules = new ResourceLoaderTestModules(
-				$resourceLoader,
-				$testModules,
-				$basePath,
-				$installPath
-			);
-
-			return $resourceLoaderTestModules->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
-		 */
-		$this->globals['wgHooks']['ExtensionTypes'][] = function ( &$extensionTypes ) {
-			$extensionTypes = new ExtensionTypes( $extensionTypes );
-			return $extensionTypes->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
-		 */
-		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = function ( $title, &$result  ) {
-			$titleIsAlwaysKnown = new TitleIsAlwaysKnown( $title, $result );
-			return $titleIsAlwaysKnown->process();
-		};
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforeDisplayNoArticleText
-		 */
-		$this->globals['wgHooks']['BeforeDisplayNoArticleText'][] = function ( $article  ) {
-			$beforeDisplayNoArticleText = new BeforeDisplayNoArticleText( $article );
-			return $beforeDisplayNoArticleText->process();
-		};
-
 		// Old-style registration
 
+		$this->globals['wgHooks']['LoadExtensionSchemaUpdates'][] = 'SMWHooks::onSchemaUpdate';
+		$this->globals['wgHooks']['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
 		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
+		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
+		$this->globals['wgHooks']['ResourceLoaderTestModules'][] = 'SMWHooks::registerQUnitTests';
+		$this->globals['wgHooks']['TitleIsAlwaysKnown'][] = 'SMWHooks::onTitleIsAlwaysKnown';
+		$this->globals['wgHooks']['BeforeDisplayNoArticleText'][] = 'SMWHooks::onBeforeDisplayNoArticleText';
+		$this->globals['wgHooks']['ExtensionTypes'][] = 'SMWHooks::addSemanticExtensionType';
+
 	}
 
 	/**
@@ -559,16 +557,12 @@ final class Setup implements ContextAware {
 				return $instance->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
 			} );
 
-			$parser->setFunctionHook( 'concept', array( 'SMW\ConceptParserFunction', 'render' ) );
-			$parser->setFunctionHook( 'set', array( 'SMW\SetParserFunction', 'render' ) );
-			$parser->setFunctionHook( 'set_recurring_event', array( 'SMW\RecurringEventsParserFunction', 'render' ) );
-			$parser->setFunctionHook( 'declare', array( 'SMW\DeclareParserFunction', 'render' ), SFH_OBJECT_ARGS );
-
 			return true;
 		};
 
 		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMW\DocumentationParserFunction::staticInit';
 		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMW\InfoParserFunction::staticInit';
+		$this->globals['wgHooks']['ParserFirstCallInit'][] = 'SMWHooks::onParserFirstCallInit';
 
 	}
 

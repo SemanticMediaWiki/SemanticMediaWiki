@@ -64,8 +64,7 @@ class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
 			'wgScriptPath' => '/Foo',
 			'wgServer'     => 'http://example.org',
 			'wgVersion'    => '1.21',
-			'wgLang'       => $language,
-			'IP'           => 'Foo'
+			'wgLang'       => $language
 		);
 
 		$title = Title::newFromText( __METHOD__ );
