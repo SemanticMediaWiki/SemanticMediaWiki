@@ -179,29 +179,4 @@ class HooksTest extends MwDBaseUnitTestCase {
 		$this->assertTrue( $result );
 	}
 
-
-	/**
-	 * @test SMWHooks::onBeforeDisplayNoArticleText
-	 *
-	 * @since 1.9
-	 */
-	public function testOnBeforeDisplayNoArticleText() {
-
-		// Random Title
-		$this->assertTrue( SMWHooks::onBeforeDisplayNoArticleText(
-			$this->getArticleMock( $this->getTitle( '', NS_MAIN ) )
-		), 'Failed asserting "true" for a random NS_MAIN title object' );
-
-		// Random user-defined property
-		$this->assertTrue( SMWHooks::onBeforeDisplayNoArticleText(
-			$this->getArticleMock( $this->getTitle( '', SMW_NS_PROPERTY ) )
-		), 'Failed asserting "true" for a random SMW_NS_PROPERTY title object' );
-
-		// Predefined property
-		$this->assertFalse( SMWHooks::onBeforeDisplayNoArticleText(
-			$this->getArticleMock( $this->getTitle( 'Modification date', SMW_NS_PROPERTY ) )
-		), 'Failed asserting "false" for a predefined property' );
-
-	}
-
 }
