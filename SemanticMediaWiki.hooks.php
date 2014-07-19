@@ -81,26 +81,4 @@ final class SMWHooks {
 		// @codeCoverageIgnoreEnd
 	}
 
-
-	/**
-	 * Register special classes for displaying semantic content on Property and
-	 * Concept pages.
-	 *
-	 * @since 1.7
-	 *
-	 * @param $title Title
-	 * @param $article Article or null
-	 *
-	 * @return boolean
-	 */
-	public static function onArticleFromTitle( Title &$title, /* Article */ &$article ) {
-		if ( $title->getNamespace() == SMW_NS_PROPERTY ) {
-			$article = new SMWPropertyPage( $title );
-		} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
-			$article = new SMW\ConceptPage( $title );
-		}
-
-		return true;
-	}
-
 }
