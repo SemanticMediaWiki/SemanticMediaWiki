@@ -18,6 +18,7 @@ use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
+use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
 
 /**
  * Extension setup and registration
@@ -496,9 +497,16 @@ final class Setup implements ContextAware {
 			return $skinTemplateNavigation->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
+		 */
+		$this->globals['wgHooks']['LoadExtensionSchemaUpdates'][] = function ( $databaseUpdater ) {
+			$extensionSchemaUpdates = new ExtensionSchemaUpdates( $databaseUpdater );
+			return $extensionSchemaUpdates->process();
+		};
+
 		// Old-style registration
 
-		$this->globals['wgHooks']['LoadExtensionSchemaUpdates'][] = 'SMWHooks::onSchemaUpdate';
 		$this->globals['wgHooks']['ParserTestTables'][]    = 'SMWHooks::onParserTestTables';
 		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
