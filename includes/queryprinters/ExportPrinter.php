@@ -5,22 +5,14 @@ namespace SMW;
 use SMWQueryResult;
 
 /**
- * Interface for SMW result printers.
- *
- * @since 1.8
- *
- * @file
- *
- * @license GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
  * Interface for SMW export related result printers
  *
- * @ingroup QueryPrinter
+ * @license GNU GPL v2+
+ * @since 1.8
+ *
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-interface ExportPrinter extends \SMWIResultPrinter {
+interface ExportPrinter extends QueryResultPrinter {
 
 	/**
 	 * Outputs the result as file.

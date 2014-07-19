@@ -1,23 +1,22 @@
 <?php
+
+namespace SMW;
+
+use SMWQueryResult;
+use SMWDataItem;
+
 /**
  * Print query results in alphabetic groups displayed in columns, a la the
  * standard Category pages and the default view in Semantic Drilldown.
  * Based on SMW_QP_List by Markus Krötzsch.
  *
+ * @ingroup SMWQuery
+ *
  * @author David Loomer
  * @author Yaron Koren
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- *
- * @file
- * @ingroup SMWQuery
  */
-
-/**
- * Print results in alphabetic groups displayed in columns.
- *
- * @ingroup SMWQuery
- */
-class SMWCategoryResultPrinter extends SMWResultPrinter {
+class CategoryResultPrinter extends ResultPrinter {
 
 	protected $mDelim;
 	protected $mTemplate;
@@ -42,8 +41,6 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
-		// Give grep a chance to find the usages:
-		// smw_printername_category
 		return wfMessage( 'smw_printername_' . $this->mFormat )->text();
 	}
 

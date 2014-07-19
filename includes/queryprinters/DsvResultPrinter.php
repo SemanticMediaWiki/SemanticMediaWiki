@@ -1,38 +1,41 @@
 <?php
 
+namespace SMW;
+
+use SMWQueryResult;
+use SMWQueryProcessor;
+use SMWQuery;
+use Sanitizer;
+
 /**
  * Result printer to print results in UNIX-style DSV (deliminter separated value) format.
- * 
- * @file SMW_QP_DSV.php
- * @ingroup SMWQuery
+ *
+ * @license GNU GPL v2+
  * @since 1.6
  *
- * @licence GNU GPL v3
- *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * Based on the SMWCsvResultPrinter class.
  */
-class SMWDSVResultPrinter extends SMWExportPrinter {
-	
+class DsvResultPrinter extends FileExportPrinter {
+
 	protected $separator = ':';
 	protected $fileName = 'result.dsv';
-	
+
 	/**
 	 * @see SMWResultPrinter::handleParameters
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @param array $params
 	 * @param $outputmode
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
-		
+
 		// Do not allow backspaces as delimiter, as they'll break stuff.
 		if ( trim( $params['separator'] ) != '\\' ) {
 			$this->separator = trim( $params['separator'] );
 		}
-		
+
 		$this->fileName = str_replace( ' ', '_', $params['filename'] );
 	}
 
@@ -78,75 +81,75 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 			return $this->getLinkToFile( $res, $outputMode );
 		}
 	}
-	
+
 	/**
 	 * Returns the query result in DSV.
-	 * 
+	 *
 	 * @since 1.6
-	 *  
+	 *
 	 * @param SMWQueryResult $res
-	 * 
+	 *
 	 * @return string
-	 */	
+	 */
 	protected function getResultFileContents( SMWQueryResult $queryResult ) {
 		$lines = array();
-		
+
 		if ( $this->mShowHeaders ) {
 			$headerItems = array();
-			
+
 			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
 				$headerItems[] = $printRequest->getLabel();
 			}
-			
+
 			$lines[] = $this->getDSVLine( $headerItems );
 		}
-		
+
 		// Loop over the result objects (pages).
 		while ( $row = $queryResult->getNext() ) {
 			$rowItems = array();
-			
+
 			/**
 			 * Loop over their fields (properties).
 			 * @var SMWResultArray $field
 			 */
 			foreach ( $row as $field ) {
 				$itemSegments = array();
-				
+
 				// Loop over all values for the property.
 				while ( ( $object = $field->getNextDataValue() ) !== false ) {
 					$itemSegments[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
-				} 
-				
+				}
+
 				// Join all values into a single string, separating them with comma's.
 				$rowItems[] = implode( ',', $itemSegments );
 			}
-			
+
 			$lines[] = $this->getDSVLine( $rowItems );
 		}
 
 		return implode( "\n", $lines );
 	}
-	
+
 	/**
 	 * Returns a single DSV line.
-	 * 
+	 *
 	 * @since 1.6
-	 *  
+	 *
 	 * @param array $fields
-	 * 
+	 *
 	 * @return string
-	 */		
+	 */
 	protected function getDSVLine( array $fields ) {
 		return implode( $this->separator, array_map( array( $this, 'encodeDSV' ), $fields ) );
 	}
-	
+
 	/**
 	 * Encodes a single DSV.
-	 * 
+	 *
 	 * @since 1.6
-	 *  
+	 *
 	 * @param string $value
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function encodeDSV( $value ) {
@@ -161,17 +164,17 @@ class SMWDSVResultPrinter extends SMWExportPrinter {
 			$value
 		);
 	}
-	
+
 	/**
 	 * Returns html for a link to a query that returns the DSV file.
-	 * 
+	 *
 	 * @since 1.6
-	 *  
+	 *
 	 * @param SMWQueryResult $res
 	 * @param $outputMode
-	 * 
+	 *
 	 * @return string
-	 */		
+	 */
 	protected function getLinkToFile( SMWQueryResult $res, $outputMode ) {
 		// yes, our code can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML );

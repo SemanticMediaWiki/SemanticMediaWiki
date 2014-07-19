@@ -1,26 +1,21 @@
 <?php
 
 namespace SMW;
-use SMWQueryResult, SMWOutputs;
-use Html, FormatJson;
+
+use SMWQueryResult;
+use SMWOutputs;
+use Html;
+use FormatJson;
 
 /**
- * Base class for result printers that use the Semantic MediaWiki Api
+ * Base class for result printers that use the serialized results
  *
  * @since 1.9
- *
- * @file
  *
  * @license GNU GPL v2 or later
  * @author mwjames
  */
-
-/**
- * Abstract class for query printers using the Semantic MediaWiki Api
- *
- * @ingroup QueryPrinter
- */
-abstract class ApiResultPrinter extends ResultPrinter {
+abstract class RawResultPrinter extends ResultPrinter {
 
 	/**
 	 * Returns html output.
@@ -57,7 +52,7 @@ abstract class ApiResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.9
 	 */
-	protected function loading() {
+	protected function createLoadingHtmlPlaceholder() {
 		$this->addResources( 'ext.smw.style' );
 
 		return Html::rawElement(
@@ -72,6 +67,13 @@ abstract class ApiResultPrinter extends ResultPrinter {
 	}
 
 	/**
+	 * @deprecated since 2.0
+	 */
+	protected function loading() {
+		return $this->createLoadingHtmlPlaceholder();
+	}
+
+	/**
 	 * Convenience method to encode output data
 	 *
 	 * @since 1.9
@@ -79,11 +81,20 @@ abstract class ApiResultPrinter extends ResultPrinter {
 	 * @param string $id
 	 * @param array $data
 	 */
-	protected function encode( $id, $data ) {
+	protected function encodeToJsonForId( $id, $data ) {
 		SMWOutputs::requireHeadItem(
 			$id,
 			$this->getSkin()->makeVariablesScript( array ( $id => FormatJson::encode( $data ) )
 		) );
+
+		return $this;
+	}
+
+	/**
+	 * @deprecated since 2.0
+	 */
+	protected function encode( $id, $data ) {
+		return $this->encodeToJsonForId( $id, $data );
 	}
 
 	/**
@@ -117,3 +128,8 @@ abstract class ApiResultPrinter extends ResultPrinter {
 		return $this->getHtml( $data );
 	}
 }
+
+/**
+ * @deprecated since 2.0
+ */
+class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );

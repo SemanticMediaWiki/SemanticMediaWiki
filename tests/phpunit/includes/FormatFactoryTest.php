@@ -4,25 +4,16 @@ namespace SMW\Test;
 use SMW\FormatFactory;
 
 /**
- * Tests for the SMW\FormatFactory class.
- *
- * @since 1.9
- *
- * @file
- * @ingroup Test
- *
- * @licence GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-
-/**
  * @covers \SMW\FormatFactory
- *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  * @group SMWQueries
+ *
+ * @license GNU GPL v2+
+ * @since 1.9
+ *
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class FormatFactoryTest extends CompatibilityTestCase {
 
@@ -112,7 +103,7 @@ class FormatFactoryTest extends CompatibilityTestCase {
 
 		foreach ( $factory->getFormats() as $format ) {
 			$printer = $factory->getPrinter( $format );
-			$this->assertInstanceOf( 'SMWIResultPrinter', $printer );
+			$this->assertInstanceOf( 'SMW\QueryResultPrinter', $printer );
 		}
 
 		// In case there are no formats PHPUnit would otherwise complain here.

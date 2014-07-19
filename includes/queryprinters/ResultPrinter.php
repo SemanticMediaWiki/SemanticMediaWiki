@@ -35,7 +35,7 @@ use ParserOptions, Sanitizer, DummyLinker, SMWInfolink, Title;
  *
  * @ingroup SMWQuery
  */
-abstract class ResultPrinter extends \ContextSource implements SMWIResultPrinter {
+abstract class ResultPrinter extends \ContextSource implements QueryResultPrinter {
 
 	/**
 	 * @deprecated Use $params instead. Will be removed in 1.10.

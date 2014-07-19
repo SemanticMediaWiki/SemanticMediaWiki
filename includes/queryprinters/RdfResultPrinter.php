@@ -1,21 +1,25 @@
 <?php
-/**
- * RDF export for SMW Queries
- * @file
- * @ingroup SMWQuery
- */
+
+namespace SMW;
+
+use SMWQueryResult;
+use SMWQuery;
+use SMWQueryProcessor;
+use SMWPrintRequest;
+use SMWExporter;
+use SMWTurtleSerializer;
+use SMWRDFXMLSerializer;
 
 /**
  * Printer class for generating RDF output
- * 
+ *
+ * @license GNU GPL v2+
  * @since 1.6
- * 
+ *
  * @author Markus Krötzsch
- * 
- * @ingroup SMWQuery
  */
-class SMWRDFResultPrinter extends SMWExportPrinter {
-	
+class RdfResultPrinter extends FileExportPrinter {
+
 	/**
 	 * The syntax to be used for export. May be 'rdfxml' or 'turtle'.
 	 */
@@ -23,9 +27,9 @@ class SMWRDFResultPrinter extends SMWExportPrinter {
 
 	/**
 	 * @see SMWResultPrinter::handleParameters
-	 * 
+	 *
 	 * @since 1.7
-	 * 
+	 *
 	 * @param array $params
 	 * @param $outputmode
 	 */
@@ -73,15 +77,15 @@ class SMWRDFResultPrinter extends SMWExportPrinter {
 			$serializer = $this->syntax == 'turtle' ? new SMWTurtleSerializer() : new SMWRDFXMLSerializer();
 			$serializer->startSerialization();
 			$serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
-			
+
 			while ( $row = $res->getNext() ) {
 				$subjectDi = reset( $row )->getResultSubject();
 				$data = SMWExporter::makeExportDataForSubject( $subjectDi );
-				
+
 				foreach ( $row as $resultarray ) {
 					$printreq = $resultarray->getPrintRequest();
 					$property = null;
-					
+
 					switch ( $printreq->getMode() ) {
 						case SMWPrintRequest::PRINT_PROP:
 							$property = $printreq->getData()->getDataItem();
@@ -96,20 +100,20 @@ class SMWRDFResultPrinter extends SMWExportPrinter {
 							// ignored here (object is always included in export)
 						break;
 					}
-					
+
 					if ( !is_null( $property ) ) {
 						SMWExporter::addPropertyValues( $property, $resultarray->getContent() , $data, $subjectDi );
-					}					
+					}
 				}
 				$serializer->serializeExpData( $data );
 			}
-			
+
 			$serializer->finishSerialization();
-			
+
 			return $serializer->flushContent();
 		} else { // just make link to feed
 			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
-			
+
 			return $this->getLink( $res, $outputmode )->getText( $outputmode, $this->mLinker );
 		}
 	}

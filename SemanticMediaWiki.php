@@ -71,7 +71,13 @@ class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );
 class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
 class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );
 class_alias( 'SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );
+class_alias( 'SMW\CategoryResultPrinter', 'SMWCategoryResultPrinter' );
+class_alias( 'SMW\DsvResultPrinter', 'SMWDSVResultPrinter' );
+class_alias( 'SMW\EmbeddedResultPrinter', 'SMWEmbeddedResultPrinter' );
+class_alias( 'SMW\RdfResultPrinter', 'SMWRDFResultPrinter' );
 class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
+class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
+
 class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
 
 class_alias( 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector', 'SMWSparqlDatabase4Store' );
