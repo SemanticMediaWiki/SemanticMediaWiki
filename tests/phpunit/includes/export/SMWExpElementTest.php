@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 /**
  * Tests for the SMWExpElement deriving classes.
@@ -17,16 +17,7 @@ namespace SMW\Test;
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWExpElementTest extends CompatibilityTestCase {
-
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMWExpElement';
-	}
+class SMWExpElementTest extends \PHPUnit_Framework_TestCase {
 
 	public function instanceProvider() {
 		$instances = array();
@@ -151,5 +142,29 @@ class SMWExpElementTest extends CompatibilityTestCase {
 		}
 	}
 
+	protected function arrayWrap( array $elements ) {
+		return array_map(
+			function ( $element ) {
+				return array( $element );
+			},
+			$elements
+		);
+	}
+
+	protected function assertTypeOrValue( $type, $actual, $value = false, $message = '' ) {
+		if ( $actual === $value ) {
+			$this->assertTrue( true, $message );
+		} else {
+			$this->assertType( $type, $actual, $message );
+		}
+	}
+
+	protected function assertType( $type, $actual, $message = '' ) {
+		if ( class_exists( $type ) || interface_exists( $type ) ) {
+			$this->assertInstanceOf( $type, $actual, $message );
+		} else {
+			$this->assertInternalType( $type, $actual, $message );
+		}
+	}
 
 }

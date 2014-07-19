@@ -1,6 +1,7 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
+
 use SMW\FormatFactory;
 
 /**
@@ -15,16 +16,7 @@ use SMW\FormatFactory;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class FormatFactoryTest extends CompatibilityTestCase {
-
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\FormatFactory';
-	}
+class FormatFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSingleton() {
 		$instance = FormatFactory::singleton();
@@ -226,4 +218,31 @@ class FormatFactoryTest extends CompatibilityTestCase {
 			array( 'Foo', array( 'Foo' => 9001 ) ),
 		);
 	}
+
+	protected function objectAssociativeSort( array &$array ) {
+		uasort(
+			$array,
+			function ( $a, $b ) {
+				return serialize( $a ) > serialize( $b ) ? 1 : -1;
+			}
+		);
+	}
+
+	protected function assertArrayEquals( array $expected, array $actual, $ordered = false, $named = false ) {
+		if ( !$ordered ) {
+			$this->objectAssociativeSort( $expected );
+			$this->objectAssociativeSort( $actual );
+		}
+
+		if ( !$named ) {
+			$expected = array_values( $expected );
+			$actual = array_values( $actual );
+		}
+
+		call_user_func_array(
+			array( $this, 'assertEquals' ),
+			array_merge( array( $expected, $actual ), array_slice( func_get_args(), 4 ) )
+		);
+	}
+
 }
