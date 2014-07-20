@@ -23,6 +23,7 @@ use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
 use SMW\MediaWiki\Hooks\ExtensionTypes;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
+use SMW\MediaWiki\Hooks\ArticleFromTitle;
 
 /**
  * Extension setup and registration
@@ -550,12 +551,18 @@ final class Setup implements ContextAware {
 			return $beforeDisplayNoArticleText->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
+		 */
+		$this->globals['wgHooks']['ArticleFromTitle'][] = function ( &$title, &$article ) {
+			$articleFromTitle = new ArticleFromTitle( $title, $article );
+			return $articleFromTitle->process();
+		};
+
 		// Old-style registration
 
 		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
 		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
-		$this->globals['wgHooks']['ArticleFromTitle'][] = 'SMWHooks::onArticleFromTitle';
-
 	}
 
 	/**
