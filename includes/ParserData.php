@@ -226,7 +226,10 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	 * @return boolean
 	 */
 	public function updateStore() {
-		$this->dispatcher->setState( 'runStoreUpdater' );
+
+		$updater = new StoreUpdater( $this->semanticData );
+		$updater->setUpdateJobsEnabledState( $this->getUpdateStatus() )->doUpdate();
+
 		return true;
 	}
 
