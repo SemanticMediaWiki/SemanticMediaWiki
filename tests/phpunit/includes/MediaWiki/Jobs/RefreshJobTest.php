@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\RefreshJob;
-use SMW\EmptyContext;
+use SMW\Application;
 
 use Title;
 
@@ -15,7 +15,7 @@ use Title;
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -24,6 +24,26 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 	/** @var integer */
 	protected $controlRefreshDataIndex;
+
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->application = Application::getInstance();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->application->registerObject( 'Store', $store );
+	}
+
+	protected function tearDown() {
+		$this->application->clear();
+
+		parent::tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -47,20 +67,25 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider parameterDataProvider
 	 */
-	public function testRunJobOnMockStore( $parameter, $expected ) {
+	public function testRunJobOnMockStore( $parameters, $expected ) {
+
+		$title = Title::newFromText( __METHOD__ );
 
 		$expectedToRun = $expected['spos'] === null ? $this->never() : $this->once();
 
-		$mockStore = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'refreshData' ) )
 			->getMockForAbstractClass();
 
-		$mockStore->expects( $expectedToRun )
+		$store->expects( $expectedToRun )
 			->method( 'refreshData' )
 			->will( $this->returnCallback( array( $this, 'refreshDataCallback' ) ) );
 
-		$instance = $this->acquireInstance( $mockStore, $parameter );
+		$this->application->registerObject( 'Store', $store );
+
+		$instance = new RefreshJob( $title, $parameters );
+		$instance->setJobQueueEnabledState( false );
 
 		$this->assertTrue( $instance->run() );
 
@@ -152,30 +177,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function refreshDataCallback( &$index, $count, $namespaces ) {
 		$this->controlRefreshDataIndex = $index;
-	}
-
-	/**
-	 * @return RefreshJob
-	 */
-	private function acquireInstance( $store = null, $parameters = array() ) {
-
-		$title = Title::newFromText( __METHOD__ );
-
-		if ( $store === null ) {
-			$store = $this->getMockBuilder( '\SMW\Store' )
-				->disableOriginalConstructor()
-				->getMockForAbstractClass();
-		}
-
-		$context   = new EmptyContext();
-		$container = $context->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Store', $store );
-
-		$instance = new RefreshJob( $title, $parameters );
-		$instance->invokeContext( $context );
-		$instance->setJobQueueEnabledState( false );
-
-		return $instance;
 	}
 
 }

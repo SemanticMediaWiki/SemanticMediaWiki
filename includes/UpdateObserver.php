@@ -92,7 +92,6 @@ class UpdateObserver extends BaseObserver implements ContextAware, ContextInject
 	public function runUpdateDispatcher( TitleAccess $subject ) {
 
 		$dispatcher = new UpdateDispatcherJob( $subject->getTitle() );
-		$dispatcher->invokeContext( $this->withContext() );
 		$dispatcher->run();
 
 		return true;

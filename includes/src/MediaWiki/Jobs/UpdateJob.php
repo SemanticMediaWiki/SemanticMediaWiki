@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use SMW\FactboxCache;
 use SMW\Profiler;
+use SMW\Application;
 
 use ParserOutput;
 use LinkCache;
@@ -24,7 +25,7 @@ use Title;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Daniel M. Herzig
@@ -53,7 +54,7 @@ class UpdateJob extends JobBase {
 
 		LinkCache::singleton()->clear();
 
-		$result = $this->runUpdate();
+		$result = $this->doUpdate();
 
 		Profiler::Out( __METHOD__ . '-run' );
 		return $result;
@@ -71,38 +72,23 @@ class UpdateJob extends JobBase {
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+		if ( Application::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}
 
-	/**
-	 * @return boolean
-	 */
-	private function runUpdate() {
-		return $this->getTitle()->exists() ? $this->runContentParser() : $this->clearData();
+	private function doUpdate() {
+		return $this->getTitle()->exists() ? $this->doParseContentForData() : $this->clearData();
 	}
 
-	/**
-	 * @return boolean
-	 */
 	private function clearData() {
-		$this->withContext()->getStore()->deleteSubject( $this->getTitle() );
+		Application::getInstance()->getStore()->deleteSubject( $this->getTitle() );
 		return true;
 	}
 
-	/**
-	 * @return boolean
-	 */
-	private function runContentParser() {
+	private function doParseContentForData() {
 
-		/**
-		 * @var ContentParser $contentParser
-		 */
-		$contentParser = $this->withContext()->getDependencyBuilder()->newObject( 'ContentParser', array(
-			'Title' => $this->getTitle()
-		) );
-
+		$contentParser = Application::getInstance()->newContentParser( $this->getTitle() );
 		$contentParser->forceToUseParser();
 		$contentParser->parse();
 
@@ -111,32 +97,24 @@ class UpdateJob extends JobBase {
 			return false;
 		}
 
-		return $this->runStoreUpdater( $contentParser->getOutput() );
+		return $this->updateStore( $contentParser->getOutput() );
 	}
 
-	/**
-	 * @param ParserOutput $parserOutput
-	 *
-	 * @return true
-	 */
-	private function runStoreUpdater( ParserOutput $parserOutput ) {
+	private function updateStore( ParserOutput $parserOutput ) {
 		Profiler::In( __METHOD__ . '-update' );
 
-		/**
-		 * @var CacheHandler $cache
-		 */
-		$cache = $this->withContext()->getDependencyBuilder()->newObject( 'CacheHandler' );
+		$cache = Application::getInstance()->getCache();
 		$cache->setKey( FactboxCache::newCacheId( $this->getTitle()->getArticleID() ) )->delete();
 
-		/**
-		 * @var ParserData $parserData
-		 */
-		$parserData = $this->withContext()->getDependencyBuilder()->newObject( 'ParserData', array(
-			'Title'        => $this->getTitle(),
-			'ParserOutput' => $parserOutput
-		) );
+		// TODO
+		// Rebuild the factbox
 
-		$parserData->disableUpdateJobs()->updateStore();
+		$parserData = Application::getInstance()->newParserData(
+			$this->getTitle(),
+			$parserOutput
+		);
+
+		$parserData->disableBackgroundUpdateJobs()->updateStore();
 
 		Profiler::Out( __METHOD__ . '-update' );
 		return true;
