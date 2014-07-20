@@ -558,11 +558,6 @@ final class Setup implements ContextAware {
 			$articleFromTitle = new ArticleFromTitle( $title, $article );
 			return $articleFromTitle->process();
 		};
-
-		// Old-style registration
-
-		$this->globals['wgHooks']['AdminLinks'][]          = 'SMWHooks::addToAdminLinks';
-		$this->globals['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWHooks::onPageSchemasRegistration';
 	}
 
 	/**
