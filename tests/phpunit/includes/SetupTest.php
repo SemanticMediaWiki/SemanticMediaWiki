@@ -98,15 +98,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @dataProvider functionHooksProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testRegisterFunctionHooksWithoutInitialization( $hook, $setup ) {
-		$this->assertArrayHookEntry( $hook, $setup, 1 );
-	}
-
-	/**
 	 * @dataProvider functionHookForInitializationProvider
 	 *
 	 * @since 1.9
@@ -487,19 +478,6 @@ class SetupTest extends SemanticMediaWikiTestCase {
 		);
 
 		return $this->buildDataProvider( 'wgExtensionMessagesFiles', $modules, '' );
-	}
-
-	/**
-	 * @return array
-	 */
-	public function functionHooksProvider() {
-
-		$hooks = array(
-			'AdminLinks',
-			'PageSchemasRegisterHandlers',
-		);
-
-		return $this->buildDataProvider( 'wgHooks', $hooks, array() );
 	}
 
 	/**
