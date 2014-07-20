@@ -3,26 +3,51 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\ExtensionContext;
 use SMW\Settings;
+use SMW\Application;
 
 use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateJob
- * @covers \SMW\MediaWiki\Jobs\JobBase
  *
  * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class UpdateJobTest extends \PHPUnit_Framework_TestCase {
+
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->application = Application::getInstance();
+
+		$settings = Settings::newFromArray( array(
+			'smwgCacheType'        => 'hash',
+			'smwgEnableUpdateJobs' => false
+		) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->application->registerObject( 'Store', $store );
+		$this->application->registerObject( 'Settings', $settings );
+	}
+
+	protected function tearDown() {
+		$this->application->clear();
+
+		parent::tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -43,20 +68,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testDefaultContext() {
-
-		$title = $this->getMockBuilder( 'Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new UpdateJob( $title );
-
-		$this->assertInstanceOf(
-			'\SMW\ContextResource',
-			$instance->withContext()
-		);
-	}
-
 	public function testJobWithMissingParserOutput() {
 
 		$title = $this->getMockBuilder( 'Title' )
@@ -67,10 +78,10 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
 
-		$this->assertFalse(
-			$this->acquireInstance( $title )->run(),
-			'Asserts to return false due to a missing ParserOutput object'
-		);
+		$instance = new UpdateJob( $title );
+		$instance->setJobQueueEnabledState( false );
+
+		$this->assertFalse(	$instance->run() );
 	}
 
 	public function testJobWithInvalidTitle() {
@@ -83,12 +94,10 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'exists' )
 			->will( $this->returnValue( false ) );
 
-		$instance  = $this->acquireInstance( $title );
+		$this->application->registerObject( 'ContentParser', null );
 
-		$instance->withContext()
-			->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'ContentParser', null );
+		$instance = new UpdateJob( $title );
+		$instance->setJobQueueEnabledState( false );
 
 		$this->assertTrue( $instance->run() );
 	}
@@ -111,12 +120,10 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( null ) );
 
-		$instance  = $this->acquireInstance( $title );
+		$this->application->registerObject( 'ContentParser', $contentParser );
 
-		$instance->withContext()
-			->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'ContentParser', $contentParser );
+		$instance = new UpdateJob( $title );
+		$instance->setJobQueueEnabledState( false );
 
 		$this->assertFalse( $instance->run() );
 	}
@@ -147,45 +154,22 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( new \ParserOutput ) );
 
-		$instance  = $this->acquireInstance( $title );
+		$this->application->registerObject( 'ContentParser', $contentParser );
 
-		$instance->withContext()
-			->getDependencyBuilder()
-			->getContainer()
-			->registerObject( 'ContentParser', $contentParser );
-
-		$this->assertTrue( $instance->run() );
-	}
-
-	/**
-	 * @return UpdateJob
-	 */
-	private function acquireInstance( Title $title = null ) {
-
-		if ( $title === null ) {
-			$title = Title::newFromText( __METHOD__ );
-		}
-
-		$settings = Settings::newFromArray( array(
-			'smwgCacheType'        => 'hash',
-			'smwgEnableUpdateJobs' => false // false in order to avoid having jobs being inserted
-		) );
-
-		$mockStore = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( array( 'updateData' ) )
 			->getMockForAbstractClass();
 
-		$context   = new ExtensionContext();
+		$store->expects( $this->once() )
+			->method( 'updateData' );
 
-		$container = $context->getDependencyBuilder()->getContainer();
-		$container->registerObject( 'Store', $mockStore );
-		$container->registerObject( 'Settings', $settings );
+		$this->application->registerObject( 'Store', $store );
 
 		$instance = new UpdateJob( $title );
-		$instance->invokeContext( $context );
 		$instance->setJobQueueEnabledState( false );
 
-		return $instance;
+		$this->assertTrue( $instance->run() );
 	}
 
 }

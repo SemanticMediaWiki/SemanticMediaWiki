@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\SerializerFactory;
+use SMW\Application;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Profiler;
@@ -18,7 +19,7 @@ use Job;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
@@ -53,7 +54,7 @@ class UpdateDispatcherJob extends JobBase {
 		/**
 		 * @var Store $store
 		 */
-		$this->store = $this->withContext()->getStore();
+		$this->store = Application::getInstance()->getStore();
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->dispatchUpdateForProperty( DIProperty::newFromUserLabel( $this->getTitle()->getText() ) )->pushToJobQueue();
@@ -72,7 +73,7 @@ class UpdateDispatcherJob extends JobBase {
 	 * @codeCoverageIgnore
 	 */
 	public function insert() {
-		if ( $this->withContext()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
+		if ( Application::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
 			parent::insert();
 		}
 	}
@@ -110,7 +111,7 @@ class UpdateDispatcherJob extends JobBase {
 		wfRunHooks( 'smwUpdatePropertySubjects', array( &$this->jobs ) );
 
 		// Hook since 1.9
-		wfRunHooks( 'SMW::Dispatcher::updateJobs', array( &$this->jobs, $property ) );
+		wfRunHooks( 'SMW::Job::updatePropertyJobs', array( &$this->jobs, $property ) );
 
 		$this->addUpdateJobsForPropertyWithTypeError();
 		$this->addUpdateJobsFromSerializedData();
@@ -141,7 +142,7 @@ class UpdateDispatcherJob extends JobBase {
 	protected function addUpdateJobsFromSerializedData() {
 		if ( $this->hasParameter( 'semanticData' ) ) {
 			$this->addUpdateJobsForProperties(
-				SerializerFactory::deserialize( $this->getParameter( 'semanticData' ) )->getProperties()
+				Application::getInstance()->newSerializerFactory()->deserialize( $this->getParameter( 'semanticData' ) )->getProperties()
 			);
 		}
 	}

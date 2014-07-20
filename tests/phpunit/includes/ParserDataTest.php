@@ -59,7 +59,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$instance = $this->acquireInstance();
 		$this->assertTrue( $instance->getUpdateStatus() );
 
-		$instance->disableUpdateJobs();
+		$instance->disableBackgroundUpdateJobs();
 		$this->assertFalse( $instance->getUpdateStatus() );
 	}
 

@@ -108,7 +108,7 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	 *
 	 * @since 1.9
 	 */
-	public function disableUpdateJobs() {
+	public function disableBackgroundUpdateJobs() {
 		$this->updateJobs = false;
 		return $this;
 	}

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\Profiler;
+use SMW\Application;
 
 /**
  * RefreshJob iterates over all page ids of the wiki, to perform an update
@@ -15,7 +16,7 @@ use SMW\Profiler;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -81,7 +82,7 @@ class RefreshJob extends JobBase {
 		Profiler::In();
 
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
-		$prog = $this->withContext()->getStore()->refreshData( $spos, 20, $this->getNamespace( $run ) );
+		$prog = Application::getInstance()->getStore()->refreshData( $spos, 20, $this->getNamespace( $run ) );
 
 		if ( $spos > 0 ) {
 

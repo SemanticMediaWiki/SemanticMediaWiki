@@ -2,31 +2,27 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\ContextResource;
-use SMW\ExtensionContext;
-use SMW\ContextAware;
-use SMW\ContextInjector;
-
 use Job;
 use Title;
 
 /**
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-abstract class JobBase extends Job implements ContextAware, ContextInjector {
+abstract class JobBase extends Job {
 
-	/** @var ContextResource */
-	protected $context = null;
-
-	/** @var boolean */
+	/**
+	 * @var boolean
+	 */
 	protected $enabledJobQueue = true;
 
-	/** @var Job */
+	/**
+	 * @var Job
+	 */
 	protected $jobs = array();
 
 	/**
@@ -63,37 +59,16 @@ abstract class JobBase extends Job implements ContextAware, ContextInjector {
 	}
 
 	/**
-	 * @since 1.9
+	 * @since  2.0
 	 *
-	 * @param ContextResource
+	 * @return integer
 	 */
-	public function invokeContext( ContextResource $context ) {
-		$this->context = $context;
+	public function getJobCount() {
+		return count( $this->jobs );
 	}
 
 	/**
-	 * @see ContextAware::withContext
-	 *
-	 * @since 1.9
-	 *
-	 * @return ContextResource
-	 */
-	public function withContext() {
-
-		// JobBase is a top-level class and to avoid a non-instantiated object
-		// a default builder is set as for when Jobs are triggered without
-		// injected context (during command line etc.)
-		if ( $this->context === null ) {
-			$this->context = new ExtensionContext();
-		}
-
-		return $this->context;
-	}
-
-	/**
-	 * Returns invoked Title object
-	 *
-	 * Apparently Job::getTitle() in MW 1.19 does not exist
+	 * @note Job::getTitle() in MW 1.19 does not exist
 	 *
 	 * @since  1.9
 	 *
