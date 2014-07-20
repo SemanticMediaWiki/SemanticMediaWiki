@@ -3,13 +3,13 @@
 namespace SMW\Test;
 
 use SMW\Tests\Util\SemanticDataValidator;
-use SMW\Tests\Util\Mock\MockUpdateObserver;
 
 use SMW\ObservableSubjectDispatcher;
 use SMW\DataValueFactory;
 use SMW\SemanticData;
 use SMW\ParserData;
 use SMW\DIWikiPage;
+use SMW\Application;
 
 use ParserOutput;
 use Title;
@@ -192,22 +192,24 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateStore() {
 
-		$notifier     = 'runStoreUpdater';
-		$title        = Title::newFromText( __METHOD__ );
-		$parserOutput = new ParserOutput();
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'updateData' ) )
+			->getMockForAbstractClass();
 
-		$instance = $this->acquireInstance( $title, $parserOutput );
-		$observer = new MockUpdateObserver();
+		$store->expects( $this->once() )
+			->method( 'updateData' );
 
-		$instance->registerDispatcher( new ObservableSubjectDispatcher( $observer ) );
+		Application::getInstance()->registerObject( 'Store', $store );
+
+		$instance = new ParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
 
 		$this->assertTrue( $instance->updateStore() );
 
-		$this->assertEquals(
-			$notifier,
-			$observer->getNotifier(),
-			'Asserts that the Observer was notified'
-		);
+		Application::clear();
 	}
 
 	/**

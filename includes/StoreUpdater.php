@@ -11,43 +11,38 @@ use User;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class StoreUpdater implements ContextAware {
-
-	/** @var SemanticData */
-	protected $semanticData;
-
-	/** @var ContextResource */
-	protected $context;
-
-	/** @var $updateJobs */
-	protected $updateJobs = null;
-
-	public function __construct( SemanticData $semanticData, ContextResource $context ) {
-		$this->semanticData = $semanticData;
-		$this->context      = $context;
-
-		$this->setUpdateJobs( $this->context->getSettings()->get( 'smwgEnableUpdateJobs' ) );
-	}
+class StoreUpdater {
 
 	/**
-	 * @see ContextAware::withContext
-	 *
-	 * @since 1.9
-	 *
-	 * @return ContextResource
+	 * @var SemanticData
 	 */
-	public function withContext() {
-		return $this->context;
+	private $semanticData;
+
+	/**
+	 * @var boolean|null
+	 */
+	private $updateJobsEnabledState = null;
+
+	/**
+	 * @var boolean|null
+	 */
+	private $processSemantics = null;
+
+	/**
+	 * @since  1.9
+	 *
+	 * @param SemanticData $semanticData
+	 */
+	public function __construct( SemanticData $semanticData ) {
+		$this->semanticData = $semanticData;
 	}
 
 	/**
-	 * Returns the subject
-	 *
 	 * @since 1.9
 	 *
 	 * @return DIWikiPage
@@ -57,18 +52,16 @@ class StoreUpdater implements ContextAware {
 	}
 
 	/**
-	 * Sets the update status
-	 *
 	 * @since 1.9
+	 *
+	 * @param boolean $status
 	 */
-	public function setUpdateJobs( $status ) {
-		$this->updateJobs = (bool)$status;
+	public function setUpdateJobsEnabledState( $status ) {
+		$this->updateJobsEnabledState = (bool)$status;
 		return $this;
 	}
 
 	/**
-	 * Updates the store with invoked semantic data
-	 *
 	 * This function takes care of storing the collected semantic data and
 	 * clearing out any outdated entries for the processed page. It assumes
 	 * that parsing has happened and that all relevant information are
@@ -85,7 +78,11 @@ class StoreUpdater implements ContextAware {
 	 *
 	 * @return boolean
 	 */
-	public function runUpdater() {
+	public function doUpdate() {
+		return $this->canPerformUpdate() ? $this->performUpdate() : false;
+	}
+
+	private function canPerformUpdate() {
 
 		$title = $this->getSubject()->getTitle();
 
@@ -94,99 +91,80 @@ class StoreUpdater implements ContextAware {
 			return false;
 		}
 
-		return $this->performUpdate( WikiPage::factory( $title ) );
+		return true;
 	}
 
 	/**
 	 * @note Make sure to have a valid revision (null means delete etc.) and
 	 * check if semantic data should be processed and displayed for a page in
 	 * the given namespace
-	 *
-	 * @since 1.9
-	 *
-	 * @param WikiPage $wikiPage
-	 *
-	 * @return boolean
 	 */
-	protected function performUpdate( WikiPage $wikiPage ) {
-
+	private function performUpdate() {
 		Profiler::In();
 
-		$revision = $wikiPage->getRevision();
+		$this->application = Application::getInstance();
 
-		$processSemantics = $revision !== null && $this->isValid( $wikiPage );
-
-		if ( $processSemantics ) {
-
-			$user = User::newFromId( $revision->getUser() );
-
-			$propertyAnnotator = $this->withContext()->getDependencyBuilder()->newObject( 'PredefinedPropertyAnnotator', array(
-				'SemanticData' => $this->semanticData,
-				'WikiPage' => $wikiPage,
-				'Revision' => $revision,
-				'User'     => $user
-			) );
-
-			$propertyAnnotator->addAnnotation();
-
-		} else {
-			// data found, but do all operations as if it was empty
-			$this->semanticData = new SemanticData( $this->getSubject() );
+		if ( $this->updateJobsEnabledState === null ) {
+			$this->setUpdateJobsEnabledState( $this->application->getSettings()->get( 'smwgEnableUpdateJobs' ) );
 		}
 
+		$title = $this->getSubject()->getTitle();
+		$wikiPage = $this->application->newPageCreator()->createPage( $title );
+		$revision = $wikiPage->getRevision();
+
+		$this->updateSemanticData( $title, $wikiPage, $revision );
+
 		Profiler::Out();
-		return $this->updateStore( $this->inspectPropertyType( $processSemantics ) );
+		return $this->doRealUpdate( $this->inspectPropertyType() );
+	}
+
+	private function updateSemanticData( Title $title, WikiPage $wikiPage, $revision ) {
+
+		$this->processSemantics = $revision !== null && $this->isEnabledNamespace( $title );
+
+		if ( !$this->processSemantics ) {
+			return $this->semanticData = new SemanticData( $this->getSubject() );
+		}
+
+		$pageInfoProvider = $this->application
+			->newPropertyAnnotatorFactory()
+			->newPageInfoProvider( $wikiPage, $revision, User::newFromId( $revision->getUser() ) );
+
+		$propertyAnnotator = $this->application
+			->newPropertyAnnotatorFactory()
+			->newPredefinedPropertyAnnotator( $this->semanticData, $pageInfoProvider );
+
+		$propertyAnnotator->addAnnotation();
 	}
 
 	/**
 	 * @note Comparison must happen *before* the storage update;
 	 * even finding uses of a property fails after its type changed.
-	 *
-	 * @since 1.9
-	 *
-	 * @return boolean
 	 */
-	protected function inspectPropertyType( $processSemantics ) {
+	private function inspectPropertyType() {
 
-		if ( $this->updateJobs ) {
-			$propertyTypeDiffFinder = new PropertyTypeDiffFinder( $this->withContext()->getStore(), $this->semanticData );
+		if ( $this->updateJobsEnabledState ) {
+			$propertyTypeDiffFinder = new PropertyTypeDiffFinder( $this->application->getStore(), $this->semanticData );
 			$propertyTypeDiffFinder->findDiff();
 		}
-
-		return $processSemantics;
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return boolean
-	 */
-	protected function updateStore( $processSemantics ) {
+	private function doRealUpdate() {
 
 		Profiler::In();
 
-		// Actually store semantic data, or at least clear it if needed
-		if ( $processSemantics ) {
-			$this->withContext()->getStore()->updateData( $this->semanticData );
+		if ( $this->processSemantics ) {
+			$this->application->getStore()->updateData( $this->semanticData );
 		} else {
-			$this->withContext()->getStore()->clearData( $this->semanticData->getSubject() );
+			$this->application->getStore()->clearData( $this->semanticData->getSubject() );
 		}
 
 		Profiler::Out();
 		return true;
 	}
 
-	/**
-	 * Returns whether the current WikiPage is valid
-	 *
-	 * @since 1.9
-	 *
-	 * @param WikiPage $wikiPage
-	 *
-	 * @return boolean
-	 */
-	protected function isValid( WikiPage $wikiPage ) {
-		return $this->withContext()->getDependencyBuilder()->newObject( 'NamespaceExaminer' )->isSemanticEnabled( $wikiPage->getTitle()->getNamespace() );
+	private function isEnabledNamespace( $title ) {
+		return NamespaceExaminer::newFromArray( $this->application->getSettings()->get( 'smwgNamespacesWithSemanticLinks' ) )->isSemanticEnabled( $title->getNamespace() );
 	}
 
 }

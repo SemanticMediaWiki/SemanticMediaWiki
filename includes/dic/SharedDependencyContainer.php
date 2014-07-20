@@ -76,7 +76,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 		return array(
 			'ParserData'        => $this->getParserData(),
 			'NamespaceExaminer' => $this->getNamespaceExaminer(),
-			'UpdateObserver'    => $this->getUpdateObserver(),
 			'NullPropertyAnnotator'   => $this->NullPropertyAnnotator(),
 			'CommonPropertyAnnotator' => $this->CommonPropertyAnnotator(),
 			'PredefinedPropertyAnnotator' => $this->PredefinedPropertyAnnotator(),
@@ -95,17 +94,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 */
 			'ContentParser' => function ( DependencyBuilder $builder ) {
 				return new ContentParser( $builder->getArgument( 'Title' ) );
-			},
-
-			/**
-			 * ObservableSubjectDispatcher object definition
-			 *
-			 * @since  1.9
-			 *
-			 * @return ObservableSubjectDispatcher
-			 */
-			'ObservableUpdateDispatcher' => function ( DependencyBuilder $builder ) {
-				return new ObservableSubjectDispatcher( $builder->newObject( 'UpdateObserver' ) );
 			},
 
 			/**
@@ -270,8 +258,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 				$builder->getArgument( 'ParserOutput' )
 			);
 
-			$instance->registerDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
-
 			return $instance;
 		};
 	}
@@ -286,21 +272,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	protected function getNamespaceExaminer() {
 		return function ( DependencyBuilder $builder ) {
 			return NamespaceExaminer::newFromArray( $builder->newObject( 'Settings' )->get( 'smwgNamespacesWithSemanticLinks' ) );
-		};
-	}
-
-	/**
-	 * UpdateObserver object definition
-	 *
-	 * @since  1.9
-	 *
-	 * @return UpdateObserver
-	 */
-	protected function getUpdateObserver() {
-		return function ( DependencyBuilder $builder ) {
-			$updateObserver = new UpdateObserver();
-			$updateObserver->invokeContext( $builder->newObject( 'ExtensionContext' ) );
-			return $updateObserver;
 		};
 	}
 
