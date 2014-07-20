@@ -122,6 +122,7 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 		$provider[] = array( 'RequestContext',             array( '\IContextSource'                  => array() ) );
 		$provider[] = array( 'TitleCreator',               array( '\SMW\Mediawiki\TitleCreator'      => array() ) );
 		$provider[] = array( 'PageCreator',                array( '\SMW\Mediawiki\PageCreator'       => array() ) );
+		$provider[] = array( 'JobFactory',                 array( '\SMW\Mediawiki\Jobs\JobFactory'   => array() ) );
 
 		$provider[] = array( 'RequestContext', array( '\IContextSource' => array(
 				'Title'    => $this->newMockBuilder()->newObject( 'Title' ),
@@ -161,12 +162,6 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 				'WikiPage' => $this->newMockBuilder()->newObject( 'WikiPage' ),
 				'Revision' => $this->newMockBuilder()->newObject( 'Revision' ),
 				'User'     => $this->newMockBuilder()->newObject( 'User' ),
-				)
-			)
-		);
-
-		$provider[] = array( 'PropertyTypeComparator', array( '\SMW\PropertyTypeComparator' => array(
-				'SemanticData' => $this->newMockBuilder()->newObject( 'SemanticData' )
 				)
 			)
 		);

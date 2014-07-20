@@ -7,40 +7,38 @@ namespace SMW;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  * @author Markus Krötzsch
  */
-class PropertyTypeComparator implements TitleAccess, DispatchableSubject {
+class PropertyTypeDiffFinder {
 
-	/** @var Store */
+	/**
+	 * @var Store
+	 */
 	protected $store;
 
-	/** @var SemanticData */
+	/**
+	 * @var SemanticData
+	 */
 	protected $semanticData;
 
-	/** @var Settings */
-	protected $settings;
-
-	/** @var ObservableDispatcher */
-	protected $dispatcher;
-
-	/** @var boolean */
-	protected $hasDisparity = false;
+	/**
+	 * @var boolean
+	 */
+	protected $hasDiff = false;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Store $store
 	 * @param SemanticData $semanticData
-	 * @param Settings $settings
 	 */
-	public function __construct( Store $store, SemanticData $semanticData, Settings $settings ) {
+	public function __construct( Store $store, SemanticData $semanticData ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
-		$this->settings = $settings;
 	}
 
 	/**
@@ -55,26 +53,14 @@ class PropertyTypeComparator implements TitleAccess, DispatchableSubject {
 	}
 
 	/**
-	 * @see DispatchableSubject::registerDispatcher
-	 *
-	 * @since 1.9
-	 *
-	 * @param ObservableDispatcher $dispatcher
-	 */
-	public function registerDispatcher( ObservableDispatcher $dispatcher ) {
-		$this->dispatcher = $dispatcher->setObservableSubject( $this );
-		return $this;
-	}
-
-	/**
 	 * Returns if a data disparity exists
 	 *
 	 * @since 1.9
 	 *
 	 * @return boolean
 	 */
-	public function hasDisparity() {
-		return $this->hasDisparity;
+	public function hasDiff() {
+		return $this->hasDiff;
 	}
 
 	/**
@@ -85,7 +71,7 @@ class PropertyTypeComparator implements TitleAccess, DispatchableSubject {
 	 *
 	 * @return PropertyTypeComparator
 	 */
-	public function runComparator() {
+	public function findDiff() {
 		Profiler::In( __METHOD__, true );
 
 		if ( $this->semanticData->getSubject()->getNamespace() === SMW_NS_PROPERTY ) {
@@ -124,7 +110,9 @@ class PropertyTypeComparator implements TitleAccess, DispatchableSubject {
 
 			// Compare values (in case of _PVAL (allowed values) for a
 			// property change must be processed again)
-			foreach ( $this->settings->get( 'smwgDeclarationProperties' ) as $prop ) {
+			$smwgDeclarationProperties = Application::getInstance()->getSettings()->get( 'smwgDeclarationProperties' );
+
+			foreach ( $smwgDeclarationProperties as $prop ) {
 				$dataItem = new DIProperty( $prop );
 				$oldValues = $this->store->getPropertyValues(
 					$this->semanticData->getSubject(),
@@ -136,7 +124,7 @@ class PropertyTypeComparator implements TitleAccess, DispatchableSubject {
 			}
 		}
 
-		$this->notifyDispatcher( $update );
+		$this->notifyUpdateDispatcher( $update );
 
 		Profiler::Out( __METHOD__, true );
 	}
@@ -157,22 +145,25 @@ class PropertyTypeComparator implements TitleAccess, DispatchableSubject {
 			$pconversion
 		);
 
-		$this->notifyDispatcher( !$this->isEqual( $oldfactors, $newfactors ) );
+		$this->notifyUpdateDispatcher( !$this->isEqual( $oldfactors, $newfactors ) );
 
 		Profiler::Out( __METHOD__, true );
 	}
 
 	/**
-	 * Adds a Dispatcher job to resolve a disparity asynchronously
-	 *
 	 * @since 1.9
 	 *
 	 * @param boolean $addJob
 	 */
-	protected function notifyDispatcher( $addJob = true ) {
-		if ( $addJob && !$this->hasDisparity ) {
-			$this->dispatcher->setState( 'runUpdateDispatcher' );
-			$this->hasDisparity = true;
+	protected function notifyUpdateDispatcher( $addJob = true ) {
+		if ( $addJob && !$this->hasDiff ) {
+
+			Application::getInstance()
+				->newJobFactory()
+				->newUpdateDispatcherJob( $this->semanticData->getSubject()->getTitle() )
+				->run();
+
+			$this->hasDiff = true;
 		}
 	}
 

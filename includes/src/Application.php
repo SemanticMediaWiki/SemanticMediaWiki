@@ -106,7 +106,7 @@ class Application {
 	 * @return JobFactory
 	 */
 	public function newJobFactory() {
-		return new JobFactory();
+		return  $this->builder->newObject( 'JobFactory' );
 	}
 
 	/**
