@@ -68,21 +68,6 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @dataProvider updateDispatcherDataProvider
-	 *
-	 * @since 1.9
-	 */
-	public function testUpdateDispatcherJob( $setup, $expected ) {
-
-		$instance = $this->newInstance( $setup['settings'] );
-
-		$this->assertTrue(
-			$instance->runUpdateDispatcher( $setup['title'] ),
-			'Asserts that runUpdateDispatcher always returns true'
-		);
-	}
-
-	/**
 	 * @dataProvider storeUpdaterDataProvider
 	 *
 	 * @since 1.9
@@ -127,79 +112,6 @@ class UpdateObserverTest extends SemanticMediaWikiTestCase {
 
 		return $provider;
 
-	}
-
-	/**
-	 * @note smwgEnableUpdateJobs is set false to avoid having a Job being
-	 * pushed into the "real" JobQueue
-	 *
-	 * @return array
-	 */
-	public function updateDispatcherDataProvider() {
-
-		$title = $this->newMockBuilder()->newObject( 'TitleAccess', array(
-			'getTitle' => $this->newTitle()
-		) );
-
-		$provider = array();
-
-		// #0
-		$provider[] = array(
-			array(
-				'settings' => array(
-					'smwgEnableUpdateJobs'       => false,
-					'smwgDeferredPropertyUpdate' => false
-				),
-				'title' => $title
-			),
-			array()
-		);
-
-		// #1
-		$provider[] = array(
-			array(
-				'settings' => array(
-					'smwgEnableUpdateJobs'       => false,
-					'smwgDeferredPropertyUpdate' => true
-				),
-				'title' => $title
-			),
-			array()
-		);
-
-		// #2
-		$title = $this->newMockBuilder()->newObject( 'TitleAccess', array(
-			'getTitle' => $this->newTitle( SMW_NS_PROPERTY )
-		) );
-
-		$provider[] = array(
-			array(
-				'settings' => array(
-					'smwgEnableUpdateJobs'       => false,
-					'smwgDeferredPropertyUpdate' => true
-				),
-				'title' => $title
-			),
-			array()
-		);
-
-		// #3
-		$title = $this->newMockBuilder()->newObject( 'TitleAccess', array(
-			'getTitle' => $this->newTitle( SMW_NS_PROPERTY )
-		) );
-
-		$provider[] = array(
-			array(
-				'settings' => array(
-					'smwgEnableUpdateJobs'       => false,
-					'smwgDeferredPropertyUpdate' => false
-				),
-				'title' => $title
-			),
-			array()
-		);
-
-		return $provider;
 	}
 
 }

@@ -110,6 +110,10 @@ class MwDatabaseTableBuilder {
 
 		ObjectCache::$instances[CACHE_DB] = new HashBagOStuff();
 
+		// Avoid Error while sending QUERY packet / SqlBagOStuff seen on MW 1.24
+		// https://s3.amazonaws.com/archive.travis-ci.org/jobs/30408638/log.txt
+		ObjectCache::$instances[CACHE_ANYTHING] = new HashBagOStuff();
+
 		$GLOBALS['wgDevelopmentWarnings'] = true;
 		$GLOBALS['wgMainCacheType'] = CACHE_NONE;
 		$GLOBALS['wgMessageCacheType'] = CACHE_NONE;

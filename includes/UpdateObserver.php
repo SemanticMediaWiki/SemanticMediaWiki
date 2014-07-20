@@ -69,32 +69,4 @@ class UpdateObserver extends BaseObserver implements ContextAware, ContextInject
 		return true;
 	}
 
-	/**
-	 * UpdateJob dispatching
-	 *
-	 * Normally by the time the job is execute the store has been updated and
-	 * data that belong to a property potentially are no longer are associate
-	 * with a subject.
-	 *
-	 * [1] Immediate dispatching influences the performance during page saving
-	 * since data that belongs to the property are loaded directly from the DB
-	 * which has direct impact about the response time of the page in question.
-	 *
-	 * [2] Deferred dispatching uses a different approach to recognize necessary
-	 * objects involved and deferres property/pageIds mapping to the JobQueue.
-	 * This makes it unnecessary to load data from the DB therefore decrease
-	 * performance degration during page update.
-	 *
-	 * @since 1.9
-	 *
-	 * @param TitleAccess $subject
-	 */
-	public function runUpdateDispatcher( TitleAccess $subject ) {
-
-		$dispatcher = new UpdateDispatcherJob( $subject->getTitle() );
-		$dispatcher->run();
-
-		return true;
-	}
-
 }

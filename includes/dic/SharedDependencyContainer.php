@@ -82,6 +82,10 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'PredefinedPropertyAnnotator' => $this->PredefinedPropertyAnnotator(),
 			'QueryProfiler' => $this->QueryProfiler(),
 
+			'JobFactory' => function ( DependencyBuilder $builder ) {
+				return new \SMW\MediaWiki\Jobs\JobFactory();
+			},
+
 			/**
 			 * ContentParser object definition
 			 *
@@ -246,24 +250,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 */
 			'ExtensionContext' => function ( DependencyBuilder $builder ) {
 				return new ExtensionContext( $builder );
-			},
-
-			/**
-			 * @since  1.9
-			 *
-			 * @return PropertyTypeComparator
-			 */
-			'PropertyTypeComparator' => function ( DependencyBuilder $builder ) {
-
-				$instance = new PropertyTypeComparator(
-					$builder->newObject( 'Store' ),
-					$builder->getArgument( 'SemanticData' ),
-					$builder->newObject( 'Settings' )
-				);
-
-				$instance->registerDispatcher( $builder->newObject( 'ObservableUpdateDispatcher' ) );
-
-				return $instance;
 			}
 
 		);

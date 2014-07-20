@@ -149,12 +149,8 @@ class StoreUpdater implements ContextAware {
 	protected function inspectPropertyType( $processSemantics ) {
 
 		if ( $this->updateJobs ) {
-
-			$propertyComparator = $this->withContext()->getDependencyBuilder()->newObject( 'PropertyTypeComparator', array(
-				'SemanticData' => $this->semanticData
-			) );
-
-			$propertyComparator->runComparator();
+			$propertyTypeDiffFinder = new PropertyTypeDiffFinder( $this->withContext()->getStore(), $this->semanticData );
+			$propertyTypeDiffFinder->findDiff();
 		}
 
 		return $processSemantics;
