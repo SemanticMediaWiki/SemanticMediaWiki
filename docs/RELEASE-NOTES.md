@@ -19,6 +19,10 @@ Not a release yet.
 * #377 Added RDF export for subobjects (bug 48708)
 * #378 Added subobject import to RDF stores (bug 48361)
 
+#### HHVM ready
+* #349 Added `hhvm-nightly` as service to run tests on HHVM 3.2+
+* All unit test pass except those that are blocked by [facebook/hhvm#2829](https://github.com/facebook/hhvm/issues/2829)
+
 ### Bug fixes
 
 * #279 Fixed undefined index in `DataTypeRegistry::getDefaultDataItemTypeId`
@@ -38,13 +42,25 @@ Not a release yet.
 ### Internal enhancements
 
 * #278 Changed the `PropertyStatisticsTable` interface 
-* #289 Added [``CONTRIBUTING.md``](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md) for better contributor guidance
+* #289 Added [`CONTRIBUTING.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md) for better contributor guidance
 * #307 Added `removeDuplicates` option to `UpdateJob`
 * #310 Fixed autoloading for `QueryPrinterRegistryTestCase`
 * #311 Removed `MediaWikiTestCase` dependency
 * #315 Updated jquery.qTip2 from v2.0.0 to v2.2.0 (Mar 17 2014)
 * #332 Added the number of pages and percentage done to report messages when rebuilding selected pages
-* #349 Added `hhvm-nightly` as service to run tests on HHVM 3.2+
 * #366 Added lazy load of SubSemanticData to `Sql3StubSemanticData` 
 * #382 Extended interface to support `format=count` information in `QueryResult`
+
+#### Namespace changes
+
 * #398, #404, #407, #409, #410, #411, #412, #416, #417, #418, #419, #421  namespace adjustments
+
+### Deprecated classes or scripts
+
+* `SMW_conceptCache.php`
+* `SMW_dumpRDF.php`
+* `SMW_refreshData.php`
+* `SMW_setup.php`
+* `SMWSparqlStore`
+* `SMWSparqlDatabase`
+* `SMWIResultPrinter`
