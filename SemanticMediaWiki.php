@@ -107,7 +107,6 @@ $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'i18n';
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'languages/SMW_Messages.php';
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $GLOBALS['smwgIP'] . 'languages/SMW_Aliases.php';
 $GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $GLOBALS['smwgIP'] . 'languages/SMW_Magic.php';
-$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiNamespaces'] = $GLOBALS['smwgIP'] . 'languages/SemanticMediaWiki.namespaces.php';
 
 /**
  * Setup and initialization
