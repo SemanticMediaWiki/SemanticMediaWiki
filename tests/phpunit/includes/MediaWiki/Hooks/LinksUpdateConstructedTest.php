@@ -2,8 +2,6 @@
 
 namespace SMW\Test\MediaWiki\Hooks;
 
-use SMW\Tests\Util\Mock\MockUpdateObserver;
-
 use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
 use SMW\Application;
 
