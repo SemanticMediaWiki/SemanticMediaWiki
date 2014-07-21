@@ -489,16 +489,25 @@ final class Setup implements ContextAware {
 			return $fileUpload->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
+		 */
 		$this->globals['wgHooks']['ResourceLoaderGetConfigVars'][] = function ( &$vars ) {
 			$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars( $vars );
 			return $resourceLoaderGetConfigVars->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
+		 */
 		$this->globals['wgHooks']['GetPreferences'][] = function ( $user, &$preferences ) {
 			$getPreferences = new GetPreferences( $user, $preferences );
 			return $getPreferences->process();
 		};
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
+		 */
 		$this->globals['wgHooks']['SkinTemplateNavigation'][] = function ( &$skinTemplate, &$links ) {
 			$skinTemplateNavigation = new SkinTemplateNavigation( $skinTemplate, $links );
 			return $skinTemplateNavigation->process();
@@ -530,8 +539,8 @@ final class Setup implements ContextAware {
 		/**
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
 		 */
-		$this->globals['wgHooks']['ExtensionTypes'][] = function ( &$extensionTypes ) {
-			$extensionTypes = new ExtensionTypes( $extensionTypes );
+		$this->globals['wgHooks']['ExtensionTypes'][] = function ( &$extTypes ) {
+			$extensionTypes = new ExtensionTypes( $extTypes );
 			return $extensionTypes->process();
 		};
 
