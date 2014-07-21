@@ -23,8 +23,7 @@ The `smwgSparqlDatabase` setting introduced in 1.6 has been deprecated in favour
 connectors).
 
 `SPARQLStore` has been converted to make use of a separate namespace together with improvements that
-allow for better testability and code readability (#360, #371, #379, #375, #383, #392, #393, #395,
-#402, #403, #415).
+allow for better testability and code readability (#360, #371, #379, #375, #383, #392, #393, #395, #402, #403, #415).
 
 The `SMWSparqlStore` and `SMWSparqlDatabase` class names are kept for legacy support but it is
 suggested to use the and settings parameter.
