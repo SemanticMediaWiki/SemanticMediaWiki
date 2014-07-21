@@ -45,7 +45,7 @@ class SMWRDFResultPrinter extends SMW\RdfResultPrinter {}
 
 class SMWListResultPrinter extends SMW\ListResultPrinter {}
 
-class SMWIResultPrinter extends SMW\QueryResultPrinter {}
+interface SMWIResultPrinter extends SMW\QueryResultPrinter {}
 
 class SMWSparqlDatabase4Store extends SMW\SPARQLStore\FourstoreHttpDatabaseConnector {}
 

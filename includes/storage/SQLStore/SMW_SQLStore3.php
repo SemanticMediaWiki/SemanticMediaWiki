@@ -10,6 +10,9 @@ use SMW\Settings;
 use SMW\SQLStore\TableDefinition;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\LazyDBConnectionProvider as DBConnectionProvider;
+use SMW\DIWikiPage;
+use SMW\DIProperty;
+use SMW\SemanticData;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
@@ -114,7 +117,7 @@ class SMWSQLStore3 extends SMWStore {
 	protected $diHandlers = array();
 
 	/**
-	 * Cache for SMWSemanticData objects, indexed by SMW ID.
+	 * Cache for SemanticData objects, indexed by SMW ID.
 	 *
 	 * @todo In the future, the cache should be managed by a helper class.
 	 *
@@ -125,7 +128,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	/**
 	 * Like SMWSQLStore3::m_semdata, but containing flags indicating
-	 * completeness of the SMWSemanticData objs.
+	 * completeness of the SemanticData objs.
 	 *
 	 * @since 1.8
 	 * @var array
@@ -277,23 +280,23 @@ class SMWSQLStore3 extends SMWStore {
 		return $this->reader;
 	}
 
-	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
+	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
 		return $this->getReader()->getSemanticData( $subject, $filter );
 	}
 
-	public function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null ) {
+	public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null ) {
 		return $this->getReader()->getPropertyValues( $subject, $property, $requestoptions );
 	}
 
-	public function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
+	public function getPropertySubjects( DIProperty $property, $value, $requestoptions = null ) {
 		return $this->getReader()->getPropertySubjects( $property, $value, $requestoptions );
 	}
 
-	public function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
+	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
 		return $this->getReader()->getAllPropertySubjects( $property, $requestoptions );
 	}
 
-	public function getProperties( SMWDIWikiPage $subject, $requestoptions = null ) {
+	public function getProperties( DIWikiPage $subject, $requestoptions = null ) {
 		return $this->getReader()->getProperties( $subject, $requestoptions );
 	}
 
@@ -316,7 +319,7 @@ class SMWSQLStore3 extends SMWStore {
 		return $this->getWriter()->deleteSubject( $subject );
 	}
 
-	protected function doDataUpdate( SMWSemanticData $data ) {
+	protected function doDataUpdate( SemanticData $data ) {
 		return $this->getWriter()->doDataUpdate( $data );
 	}
 
@@ -619,7 +622,7 @@ class SMWSQLStore3 extends SMWStore {
 		foreach ( $data as $item ) {
 			$ok = true; // keep datavalue only if this remains true
 
-			if ( $item instanceof SMWDIWikiPage ) {
+			if ( $item instanceof DIWikiPage ) {
 				$label = $this->getWikiPageSortKey( $item );
 				$value = $label;
 			} else {
@@ -731,10 +734,10 @@ class SMWSQLStore3 extends SMWStore {
 	 * values for the given property object.
 	 *
 	 * @since 1.8
-	 * @param SMWDIProperty $diProperty
+	 * @param DIProperty $diProperty
 	 * @return string
 	 */
-	public function findPropertyTableID( SMWDIProperty $diProperty ) {
+	public function findPropertyTableID( DIProperty $diProperty ) {
 		$propertyKey = $diProperty->getKey();
 
 		// This is needed to initialize the $fixedPropertyTableIds field
