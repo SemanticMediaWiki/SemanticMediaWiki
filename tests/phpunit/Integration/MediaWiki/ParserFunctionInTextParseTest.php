@@ -124,20 +124,29 @@ class ParserFunctionInTextParseTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = array();
 
-		// #0 AskParserFunction
+		#0 ask
 		$provider[] = array( '{{#ask: [[Modification date::+]]|limit=1}}' );
 
-		// #1 ShowParserFunction
+		#1 show
 		$provider[] = array( '{{#show: [[Foo]]|limit=1}}' );
 
-		// #2 SubobjectParserFunction
+		#2 subobject
 		$provider[] = array( '{{#subobject:|foo=bar|lila=lula,linda,luna|+sep=,}}' );
 
-		// #3 RecurringEventsParserFunction
+		#3 set
+		$provider[] = array( '{{#set:|foo=bar|lila=lula,linda,luna|+sep=,}}' );
+
+		#4 set_recurring_event
 		$provider[] = array( '{{#set_recurring_event:some more tests|property=has date|' .
 			'has title=Some recurring title|title2|has group=Events123|Events456|start=June 8, 2010|end=June 8, 2011|' .
 			'unit=week|period=1|limit=10|duration=7200|include=March 16, 2010;March 23, 2010|+sep=;|' .
 			'exclude=March 15, 2010;March 22, 2010|+sep=;}}' );
+
+		#5 declare
+		$provider[] = array( '{{#declare:population=pop}}' );
+
+		#6 concept
+		$provider[] = array( '{{#concept:[[Modification date::+]]|Foo}}' );
 
 		return $provider;
 	}
