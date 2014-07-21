@@ -1,12 +1,15 @@
-# Semantic MediaWiki 2.0
+# Semantic MediaWiki 2.0 RC1
 
-Not a release yet.
+First release candidate for SMW 2.0. Made available on 2014-07-21.
 
 ## New features
 
 ### SPARQLStore
 
-[SMW 1.6](http://semantic-mediawiki.org/wiki/SMW_1.6#Synchronizing_SMW_with_RDF_stores) introduced support for data synchronization with RDF back-ends. SMW 2.0 extends the existing implementation and adds an additional database connector for [Jena Fuseki](http://jena.apache.org/) 1.0.2 (#339). It also restores the support for `4Store` 1.1.4  (#370, bug 43708, bug 44700). Other fixes include:
+[SMW 1.6](http://semantic-mediawiki.org/wiki/SMW_1.6#Synchronizing_SMW_with_RDF_stores) introduced
+support for data synchronization with RDF back-ends. SMW 2.0 extends the existing implementation and
+adds an additional database connector for [Jena Fuseki](http://jena.apache.org/) 1.0.2 (#339). It
+also restores the support for `4Store` 1.1.4  (#370, bug 43708, bug 44700). Other fixes include:
 
 - #291 Fixed call to undefined method in `SPARQLStore`
 - #338 Fixed exception in `ResultParser` for an invalid datatype (bug 62218)
@@ -14,27 +17,49 @@ Not a release yet.
 - #387 Fixed `SPARQLStore` namespace query support (e.g `[[:+]]` )
 - #415 Fixed `SPARQLStore` usage for `rebuildConceptCache.php` and `rebuildPropertyStatistics.php`
 
-The `smwgSparqlDatabase` setting introduced in 1.6 has been deprecated in favour of [`$smwgSparqlDatabaseConnector`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabaseConnector) (#342) to avoid arbitrary class assignments in `$smwgSparqlDatabase` (now only used to assign custom connectors).
+The `smwgSparqlDatabase` setting introduced in 1.6 has been deprecated in favour of
+[`$smwgSparqlDatabaseConnector`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabaseConnector)
+(#342) to avoid arbitrary class assignments in `$smwgSparqlDatabase` (now only used to assign custom
+connectors).
 
-`SPARQLStore` has been converted to make use of a separate namespace together with improvements that allow for better testability and code readability (#360, #371, #379, #375, #383, #392, #393, #395, #402, #403, #415).
+`SPARQLStore` has been converted to make use of a separate namespace together with improvements that
+allow for better testability and code readability (#360, #371, #379, #375, #383, #392, #393, #395,
+#402, #403, #415).
 
-The `SMWSparqlStore` and `SMWSparqlDatabase` class names are kept for legacy support but it is suggested to use the and settings parameter.
+The `SMWSparqlStore` and `SMWSparqlDatabase` class names are kept for legacy support but it is
+suggested to use the and settings parameter.
 
-Unit and integration tests were given extra consideration so that any core change will also be tested against [Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1](https://github.com/openlink/virtuoso-opensource) (#394) to ensure that compatibility and functional parity are going hand in hand with the rest of SMW. (Unfortunately `4Store` currently does not run on the continues integration platform, for details see [garlik#110](https://github.com/garlik/4store/issues/110) but tests have been run successfully with a local `4store` instance).
+Unit and integration tests were given extra consideration so that any core change will also be
+tested against [Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1]
+(https://github.com/openlink/virtuoso-opensource) (#394) to ensure that compatibility and functional
+parity are going hand in hand with the rest of SMW. (Unfortunately `4Store` currently does not run
+on the continues integration platform, for details see [garlik#110]
+(https://github.com/garlik/4store/issues/110)but tests have been run successfully with a local
+`4store` instance).
 
-Details to the testing environment and its settings can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md)
+Details to the testing environment and its settings can be found [here]
+(https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md)
 
 ### RDF subobject support
 
-Previous releases came without RDF subobject support but this has been corrected in 2.0. The RDF subobject export (#377, bug 48708) and RDF store subobject synchronization (#378, bug 48361) are fixed and come with appropriate test coverage in order to make the `SQLStore` and the `SPARQLStore` equally supported.
+Previous releases came without RDF subobject support but this has been corrected in 2.0. The RDF
+subobject export (#377, bug 48708) and RDF store subobject synchronization (#378, bug 48361) are
+fixed and come with appropriate test coverage in order to make the `SQLStore` and the `SPARQLStore`
+equally supported.
 
-Subobject do now support a sort annotation by using the `@sortkey` identifier (#225) that stores an individual sortkey per subobject.
+Subobject do now support a sort annotation by using the `@sortkey` identifier (#225) that stores an
+individual sortkey per subobject.
 
 ### Continues integration
 
-Continues integration is now an integral part of SMW to predict the impact of changes in terms of expected behaviour and functionality. At the time of its release, SMW runs 2250+ tests which amounts for approximately 62% code coverage in total.
+Continues integration is now an integral part of SMW to predict the impact of changes in terms of
+expected behaviour and functionality. At the time of its release, SMW runs 2250+ tests which amounts
+for approximately 62% code coverage in total.
 
-The continues integration platform not only allows to run services such as those used for the `SPARQLStore` integration but also used to test against cutting edge environments such as [HHVM](http://hhvm.com/) (#349). SMW's test suite does successfully pass all its tests on HHVM except for those that are blocked by [facebook/hhvm#2829](https://github.com/facebook/hhvm/issues/2829).
+The continues integration platform not only allows to run services such as those used for the
+`SPARQLStore` integration but also used to test against cutting edge environments such as [HHVM]
+(http://hhvm.com/) (#349). SMW's test suite does successfully pass all its tests on HHVM except for
+those that are blocked by [facebook/hhvm#2829](https://github.com/facebook/hhvm/issues/2829).
 
 ### Bug fixes
 
@@ -54,7 +79,9 @@ The continues integration platform not only allows to run services such as those
 
 ## Internal enhancements (development)
 
-SMW 2.0 continues to convert its classes to use PHP namespaces in order to separate responsibilities (#398, #404, #407, #409, #410, #411, #412, #416, #417, #418, #419, #421) and to be able to support [PSR-4](http://www.php-fig.org/psr/psr-4/) in future.
+SMW 2.0 continues to convert its classes to use PHP namespaces in order to separate responsibilities
+(#398, #404, #407, #409, #410, #411, #412, #416, #417, #418, #419, #421) and to be able to support
+[PSR-4](http://www.php-fig.org/psr/psr-4/) in future.
 
 * All `job` related classes of been moved to `SMW\MediaWiki\Jobs`
 * All `hook` related classes of been moved to `SMW\MediaWiki\Hooks`
