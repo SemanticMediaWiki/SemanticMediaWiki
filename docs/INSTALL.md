@@ -16,7 +16,7 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 1.9.3.x</a></th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.0.x</a></th>
 		<td>Development version</td>
 		<td>-</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
@@ -64,6 +64,13 @@ found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
 		<th>Validator</th>
 	</tr>
 	<tr>
+		<th>SMW 2.x</th>
+		<td>5.3.2 - 5.6.x</td>
+		<td>1.19 - 1.23</td>
+		<td>Required</td>
+		<td>2.x (handled by Composer)</td>
+	</tr>
+	<tr>
 		<th>SMW 1.9.x</th>
 		<td>5.3.2 - 5.6.x</td>
 		<td>1.19 - 1.23</td>
@@ -98,6 +105,12 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 		<th>MySQL</th>
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
+	</tr>
+	<tr>
+		<th>SMW 2.x</th>
+		<td>Full support</td>
+		<td>Full support</td>
+		<td>Beta support</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
