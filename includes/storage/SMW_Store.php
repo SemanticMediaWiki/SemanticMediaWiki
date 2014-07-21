@@ -4,8 +4,6 @@ namespace SMW;
 
 use HTMLFileCache;
 use SMWDataItem;
-use SMWDIProperty;
-use SMWDIWikiPage;
 use SMWQuery;
 use SMWQueryResult;
 use SMWRequestOptions;
@@ -57,53 +55,50 @@ abstract class Store {
 	 * data than requested when a filter is used. Filtering just ensures
 	 * that only necessary requests are made, i.e. it improves performance.
 	 */
-	public abstract function getSemanticData( SMWDIWikiPage $subject, $filter = false );
+	public abstract function getSemanticData( DIWikiPage $subject, $filter = false );
 
 	/**
 	 * Get an array of all property values stored for the given subject and
-	 * property. The result is an array of SMWDataItem objects.
+	 * property. The result is an array of DataItem objects.
 	 *
 	 * If called with $subject == null, all values for the given property
 	 * are returned.
 	 *
 	 * @param $subject mixed SMWDIWikiPage or null
-	 * @param $property SMWDIProperty
+	 * @param $property DIProperty
 	 * @param $requestoptions SMWRequestOptions
 	 *
 	 * @return array of SMWDataItem
 	 */
-	public abstract function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null );
+	public abstract function getPropertyValues( $subject, DIProperty $property, $requestoptions = null );
 
 	/**
 	 * Get an array of all subjects that have the given value for the given
-	 * property. The result is an array of SMWDIWikiPage objects. If null
+	 * property. The result is an array of DIWikiPage objects. If null
 	 * is given as a value, all subjects having that property are returned.
 	 *
-	 * @param SMWDIProperty $property
-	 *
-	 *
-	 * @return array of SMWDIWikiPage
+	 * @return DIWikiPage[]
 	 */
-	public abstract function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null );
+	public abstract function getPropertySubjects( DIProperty $property, $value, $requestoptions = null );
 
 	/**
 	 * Get an array of all subjects that have some value for the given
-	 * property. The result is an array of SMWDIWikiPage objects.
+	 * property. The result is an array of DIWikiPage objects.
 	 *
-	 * @return array of SMWDIWikiPage
+	 * @return DIWikiPage[]
 	 */
-	public abstract function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null );
+	public abstract function getAllPropertySubjects( DIProperty $property, $requestoptions = null );
 
 	/**
 	 * Get an array of all properties for which the given subject has some
-	 * value. The result is an array of SMWDIProperty objects.
+	 * value. The result is an array of DIProperty objects.
 	 *
-	 * @param SMWDIWikiPage $subject denoting the subject
+	 * @param DIWikiPage $subject denoting the subject
 	 * @param SMWRequestOptions|null $requestOptions optionally defining further options
 	 *
 	 * @return SMWDataItem
 	 */
-	public abstract function getProperties( SMWDIWikiPage $subject, $requestOptions = null );
+	public abstract function getProperties( DIWikiPage $subject, $requestOptions = null );
 
 	/**
 	 * Get an array of all properties for which there is some subject that
@@ -120,11 +115,11 @@ abstract class Store {
 	 * the MediaWiki database entry about a Title objects sortkey. If no
 	 * sortkey is stored, the default sortkey (title string) is returned.
 	 *
-	 * @param $wikiPage SMWDIWikiPage to find the sortkey for
+	 * @param $wikiPage DIWikiPage to find the sortkey for
 	 * @return string sortkey
 	 */
-	public function getWikiPageSortKey( SMWDIWikiPage $wikiPage ) {
-		$sortkeyDataItems = $this->getPropertyValues( $wikiPage, new SMWDIProperty( '_SKEY' ) );
+	public function getWikiPageSortKey( DIWikiPage $wikiPage ) {
+		$sortkeyDataItems = $this->getPropertyValues( $wikiPage, new DIProperty( '_SKEY' ) );
 
 		if ( count( $sortkeyDataItems ) > 0 ) {
 			return end( $sortkeyDataItems )->getString();
@@ -134,8 +129,8 @@ abstract class Store {
 	}
 
 	/**
-	 * Convenience method to find the redirect target of an SMWDIWikiPage
-	 * or SMWDIProperty object. Returns a dataitem of the same type that
+	 * Convenience method to find the redirect target of a DIWikiPage
+	 * or DIProperty object. Returns a dataitem of the same type that
 	 * the input redirects to, or the input itself if there is no redirect.
 	 *
 	 * @param $dataItem SMWDataItem to find the redirect for.
@@ -150,13 +145,13 @@ abstract class Store {
 		} elseif ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
 			$wikipage = $dataItem;
 		} else {
-			throw new InvalidArgumentException( 'SMWStore::getRedirectTarget() expects an object of type SMWDIProperty or SMWDIWikiPage.' );
+			throw new InvalidArgumentException( 'SMWStore::getRedirectTarget() expects an object of type IProperty or SMWDIWikiPage.' );
 		}
 
-		$redirectDataItems = $this->getPropertyValues( $wikipage, new SMWDIProperty( '_REDI' ) );
+		$redirectDataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
 		if ( count( $redirectDataItems ) > 0 ) {
 			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
-				return new SMWDIProperty( end( $redirectDataItems )->getDBkey() );
+				return new DIProperty( end( $redirectDataItems )->getDBkey() );
 			} else {
 				return end( $redirectDataItems );
 			}
@@ -179,21 +174,21 @@ abstract class Store {
 
 	/**
 	 * Update the semantic data stored for some individual. The data is
-	 * given as a SMWSemanticData object, which contains all semantic data
+	 * given as a SemanticData object, which contains all semantic data
 	 * for one particular subject.
 	 *
-	 * @param SMWSemanticData $data
+	 * @param SemanticData $data
 	 */
-	protected abstract function doDataUpdate( SMWSemanticData $data );
+	protected abstract function doDataUpdate( SemanticData $data );
 
 	/**
 	 * Update the semantic data stored for some individual. The data is
-	 * given as a SMWSemanticData object, which contains all semantic data
+	 * given as a SemanticData object, which contains all semantic data
 	 * for one particular subject.
 	 *
-	 * @param $data SMWSemanticData
+	 * @param $data SemanticData
 	 */
-	public function updateData( SMWSemanticData $data ) {
+	public function updateData( SemanticData $data ) {
 		/**
 		 * @since 1.6
 		 */
@@ -226,9 +221,9 @@ abstract class Store {
 	/**
 	 * Clear all semantic data specified for some page.
 	 *
-	 * @param SMWDIWikiPage $di
+	 * @param DIWikiPage $di
 	 */
-	public function clearData( SMWDIWikiPage $di ) {
+	public function clearData( DIWikiPage $di ) {
 		$this->updateData( new SMWSemanticData( $di ) );
 	}
 
@@ -275,7 +270,7 @@ abstract class Store {
 	 *
 	 * @param SMWRequestOptions $requestoptions
 	 *
-	 * @return array of array( SMWDIProperty|SMWDIError, integer )
+	 * @return array of array( DIProperty|SMWDIError, integer )
 	 */
 	public abstract function getPropertiesSpecial( $requestoptions = null );
 
@@ -293,7 +288,7 @@ abstract class Store {
 	 *
 	 * @param SMWRequestOptions $requestoptions
 	 *
-	 * @return array of SMWDIProperty|SMWDIError
+	 * @return array of DIProperty|SMWDIError
 	 */
 	public abstract function getUnusedPropertiesSpecial( $requestoptions = null );
 
@@ -305,7 +300,7 @@ abstract class Store {
 	 *
 	 * @param SMWRequestOptions $requestoptions
 	 *
-	 * @return array of array( SMWDIProperty, int )
+	 * @return array of array( DIProperty, int )
 	 */
 	public abstract function getWantedPropertiesSpecial( $requestoptions = null );
 
