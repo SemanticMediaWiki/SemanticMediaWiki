@@ -105,23 +105,35 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 		<th>MySQL</th>
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
+		<th>Jena Fuseki</th>
+		<th>Virtuoso Opensource</th>
+		<th>4Store</th>
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
 		<td>Beta support</td>
+		<td>1.0.2 support</td>
+		<td>6.1 support</td>
+		<td>1.1.4 beta support</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
 		<td>Beta support</td>
+		<td>None</td>
+		<td>Experimental</td>
+		<td>Experimental</td>
 	</tr>
 	<tr>
 		<th>SMW 1.8.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
+		<td>Experimental</td>
+		<td>None</td>
+		<td>Experimental</td>
 		<td>Experimental</td>
 	</tr>
 	<tr>
@@ -129,6 +141,9 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 		<td>Full support</td>
 		<td>Experimental</td>
 		<td>None</td>
+		<td>None</td>
+		<td>Experimental</td>
+		<td>Experimental</td>
 	</tr>
 </table>
 
