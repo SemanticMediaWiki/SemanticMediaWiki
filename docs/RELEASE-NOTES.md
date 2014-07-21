@@ -45,6 +45,7 @@ The continues integration platform not only allows to run services such as those
 * #322 Fixed file names containing spaces or non-ASCII characters for for downloadable result formats (csv, excel)
 * #379 Modernized `dumpRDF.php` while deprecating the use of `SMW_dumpRDF.php` (bug 35679)
 * #425 Deprecated `SMW_setup.php` in favour of `setupStore.php`
+* #444 Fixed language namespace alias issue 
 
 #### Hot fixes for MediaWiki related bugs
 
