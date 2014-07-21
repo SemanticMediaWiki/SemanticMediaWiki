@@ -49,18 +49,7 @@ equally supported.
 Subobject do now support a sort annotation by using the `@sortkey` identifier (#225) that stores an
 individual sortkey per subobject.
 
-### Continues integration
-
-Continues integration is now an integral part of SMW to predict the impact of changes in terms of
-expected behaviour and functionality. At the time of its release, SMW runs 2250+ tests which amounts
-for approximately 62% code coverage in total.
-
-The continues integration platform not only allows to run services such as those used for the
-`SPARQLStore` integration but also used to test against cutting edge environments such as [HHVM]
-(http://hhvm.com/) (#349). SMW's test suite does successfully pass all its tests on HHVM except for
-those that are blocked by [facebook/hhvm#2829](https://github.com/facebook/hhvm/issues/2829).
-
-### Bug fixes
+## Bug fixes
 
 * #279 Fixed undefined index in `DataTypeRegistry::getDefaultDataItemTypeId`
 * #282 Output a message instead of an exception in `Special:WantedProperties` for unknown predefined properties
@@ -71,7 +60,7 @@ those that are blocked by [facebook/hhvm#2829](https://github.com/facebook/hhvm/
 * #425 Deprecated `SMW_setup.php` in favour of `setupStore.php`
 * #444 Fixed language namespace alias issue 
 
-#### Hot fixes for MediaWiki related bugs
+### Hot fixes for MediaWiki related bugs
 
 * #420 Extended `ContentParser` to mitigate issues caused by the 62856 bug in MW 1.24+
 * #405 Added a compatibility fix to mitigate issues caused by the `RefreshLinksJob` in MW 1.23+
@@ -112,3 +101,14 @@ Other internal enhancements or changes include:
 ### Removed classes or scripts
 
 * `SMWParseData`
+
+## Continues integration
+
+Continues integration is now an integral part of SMW to predict the impact of changes in terms of
+expected behaviour and functionality. At the time of its release, SMW runs 2250+ tests which amounts
+for approximately 62% code coverage in total.
+
+The continues integration platform not only allows to run services such as those used for the
+`SPARQLStore` integration but also used to test against cutting edge environments such as [HHVM]
+(http://hhvm.com/) (#349). SMW's test suite does successfully pass all its tests on HHVM except for
+those that are blocked by [facebook/hhvm#2829](https://github.com/facebook/hhvm/issues/2829).
