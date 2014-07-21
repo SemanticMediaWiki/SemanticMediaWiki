@@ -3,7 +3,6 @@
 namespace SMW;
 
 use Parser;
-use SMWParseData;
 use SMWOutputs;
 
 /**
@@ -38,6 +37,10 @@ class DeclareParserFunction {
 	 */
 	public static function render( Parser &$parser, \PPFrame $frame, array $args ) {
 		if ( $frame->isTemplate() ) {
+
+			$parserData = new ParserData( $parser->getTitle(), $parser->getOutput() );
+			$subject = $parserData->getSemanticData()->getSubject();
+
 			foreach ( $args as $arg )
 				if ( trim( $arg ) !== '' ) {
 					$expanded = trim( $frame->expand( $arg ) );
@@ -65,21 +68,45 @@ class DeclareParserFunction {
 
 							if ( count( $objects ) == 0 ) {
 								if ( trim( $valuestring ) !== '' ) {
-									SMWParseData::addProperty( $propertystring, $valuestring, false, $parser, true );
+									$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+										$propertystring,
+										$valuestring,
+										false,
+										$subject
+									);
+
+									$parserData->addDataValue( $dataValue );
 								}
 							} else {
 								foreach ( $objects as $object ) {
-									SMWParseData::addProperty( $propertystring, $object, false, $parser, true );
+									$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+										$propertystring,
+										$object,
+										false,
+										$subject
+									);
+
+									$parserData->addDataValue( $dataValue );
 								}
 							}
 						} elseif ( trim( $valuestring ) !== '' ) {
-								SMWParseData::addProperty( $propertystring, $valuestring, false, $parser, true );
+
+							$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+								$propertystring,
+								$valuestring,
+								false,
+								$subject
+							);
+
+							$parserData->addDataValue( $dataValue );
 						}
 
 						// $value = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $property->getDataItem(), $valuestring );
 						// if (!$value->isValid()) continue;
 					}
 				}
+
+				$parserData->updateOutput();
 		} else {
 			// @todo Save as metadata
 		}
