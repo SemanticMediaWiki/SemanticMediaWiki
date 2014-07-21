@@ -94,57 +94,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 	/**
 	 * @since 1.9
 	 *
-	 * @return Observer
-	 */
-	public function FakeObserver() {
-
-		// Observer is an obstract class therefore create a FakeObserver
-		// that can include different methods from different observers
-
-		$methods = $this->builder->getInvokedMethods();
-
-		$observer = $this->getMockBuilder( 'SMW\BaseObserver' )
-			->setMethods( $methods )
-			->getMock();
-
-		foreach ( $methods as $method ) {
-
-			$observer->expects( $this->any() )
-				->method( $method )
-				->will( $this->builder->setCallback( $method ) );
-
-		}
-
-		return $observer;
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @return ObservableSubject
-	 */
-	public function FakeObservableSubject() {
-
-		$methods = $this->builder->getInvokedMethods();
-
-		$observer = $this->getMockBuilder( 'SMW\ObservableSubject' )
-			->setMethods( $methods )
-			->getMock();
-
-		foreach ( $methods as $method ) {
-
-			$observer->expects( $this->any() )
-				->method( $method )
-				->will( $this->builder->setCallback( $method ) );
-
-		}
-
-		return $observer;
-	}
-
-	/**
-	 * @since 1.9
-	 *
 	 * @return DependencyObject
 	 */
 	public function DependencyObject() {
@@ -528,22 +477,6 @@ class CoreMockObjectRepository extends \PHPUnit_Framework_TestCase implements Mo
 			->will( $this->returnValue( $this->builder->setValue( 'getErrors' ) ) );
 
 		return $errors;
-	}
-
-	/**
-	 * @since 1.9
-	 *
-	 * @return TitleAccess
-	 */
-	public function TitleAccess() {
-
-		$titleAccess = $this->getMockForAbstractClass( '\SMW\TitleAccess' );
-
-		$titleAccess->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->builder->setValue( 'getTitle' ) ) );
-
-		return $titleAccess;
 	}
 
 	/**

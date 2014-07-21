@@ -6,7 +6,6 @@ use SMWDataValue as DataValue;
 
 use Title;
 use ParserOutput;
-use MWException;
 
 /**
  * Handling semantic data exchange with a ParserOutput object
@@ -16,31 +15,38 @@ use MWException;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  * @author Markus Krötzsch
  */
-class ParserData extends BaseObserver implements DispatchableSubject {
+class ParserData {
 
-	/** @var Title */
-	protected $title;
+	/**
+	 * @var Title
+	 */
+	private $title;
 
-	/** @var ParserOutput */
-	protected $parserOutput;
+	/**
+	 * @var ParserOutput
+	 */
+	private $parserOutput;
 
-	/** @var SemanticData */
-	protected $semanticData;
+	/**
+	 * @var SemanticData
+	 */
+	private $semanticData;
 
-	/** @var ObservableDispatcher */
-	protected $dispatcher;
+	/**
+	 * @var array
+	 */
+	private $errors = array();
 
-	/** @var array */
-	protected $errors = array();
-
-	/** @var $updateJobs */
-	protected $updateJobs = true;
+	/**
+	 * @var $updateJobs
+	 */
+	private $updateJobs = true;
 
 	/**
 	 * @since 1.9
@@ -52,12 +58,10 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 		$this->title = $title;
 		$this->parserOutput = $parserOutput;
 
-		$this->setup();
+		$this->initData();
 	}
 
 	/**
-	 * Returns Title object
-	 *
 	 * @since 1.9
 	 *
 	 * @return Title
@@ -67,8 +71,6 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	}
 
 	/**
-	 * Returns DIWikiPage object
-	 *
 	 * @since 1.9
 	 *
 	 * @return DIWikiPage
@@ -78,28 +80,12 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	}
 
 	/**
-	 * Returns the ParserOutput object
-	 *
 	 * @since 1.9
 	 *
 	 * @return ParserOutput
 	 */
 	public function getOutput() {
 		return $this->parserOutput;
-	}
-
-	/**
-	 * @see DispatchableSubject::registerDispatcher
-	 *
-	 * An ObservableDispatcher to deploy state changes to an Observer
-	 *
-	 * @since 1.9
-	 *
-	 * @param ObservableDispatcher $dispatcher
-	 */
-	public function registerDispatcher( ObservableDispatcher $dispatcher ) {
-		$this->dispatcher = $dispatcher->setObservableSubject( $this );
-		return $this;
 	}
 
 	/**
@@ -136,8 +122,6 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	}
 
 	/**
-	 * Collect errors
-	 *
 	 * @since  1.9
 	 *
 	 * @return array
@@ -184,20 +168,15 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	/**
 	 * Update ParserOutput with processed semantic data
 	 *
-	 * @note MW 1.21+ is using setExtensionData()
-	 *
 	 * @since 1.9
 	 */
 	public function updateOutput(){
 
-		if ( method_exists( $this->parserOutput, 'setExtensionData' ) ) {
+		if ( $this->hasExtensionData() ) {
 			$this->parserOutput->setExtensionData( 'smwdata', $this->semanticData );
 		} else {
-			// @codeCoverageIgnoreStart
 			$this->parserOutput->mSMWData = $this->semanticData;
-			// @codeCoverageIgnoreEnd
 		}
-
 	}
 
 	/**
@@ -239,19 +218,24 @@ class ParserData extends BaseObserver implements DispatchableSubject {
 	 *
 	 * @since 1.9
 	 */
-	protected function setup() {
+	protected function initData() {
 
-		if ( method_exists( $this->parserOutput, 'getExtensionData' ) ) {
+		if ( $this->hasExtensionData() ) {
 			$this->semanticData = $this->parserOutput->getExtensionData( 'smwdata' );
 		} else {
-			// @codeCoverageIgnoreStart
 			$this->semanticData = isset( $this->parserOutput->mSMWData ) ? $this->parserOutput->mSMWData : null;
-			// @codeCoverageIgnoreEnd
 		}
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {
 			$this->clearData();
 		}
+	}
+
+	/**
+	 * FIXME Remove when MW 1.21 becomes mandatory
+	 */
+	protected function hasExtensionData() {
+		return method_exists( $this->parserOutput, 'getExtensionData' );
 	}
 
 }
