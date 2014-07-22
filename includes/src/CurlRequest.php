@@ -4,7 +4,7 @@ namespace SMW;
 
 /**
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author mwjames
  */
@@ -13,7 +13,7 @@ class CurlRequest implements HttpRequest {
 	private $handle = null;
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param $handle
 	 */
@@ -22,7 +22,7 @@ class CurlRequest implements HttpRequest {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param $name
 	 * @param $value
@@ -35,7 +35,7 @@ class CurlRequest implements HttpRequest {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param $name
 	 *
@@ -46,7 +46,7 @@ class CurlRequest implements HttpRequest {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return string
 	 */
@@ -55,7 +55,7 @@ class CurlRequest implements HttpRequest {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return integer
 	 */
@@ -64,7 +64,7 @@ class CurlRequest implements HttpRequest {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return mixed
 	 */

@@ -22,7 +22,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	private $dataValueValidationMethod = null;
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param  mixed $expected
 	 * @param  QueryResult $queryResult
@@ -43,7 +43,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param  DataValue $expectedDataValue
 	 * @param  QueryResult $queryResult
@@ -71,7 +71,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param  DataItem $expectedDataItem
 	 * @param  QueryResult $queryResult
@@ -94,7 +94,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param  mixed $expected
 	 * @param  QueryResult $queryResult
@@ -124,7 +124,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param  Closure $validationMethod
 	 *
@@ -136,7 +136,7 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @return QueryResultValidator
 	 */

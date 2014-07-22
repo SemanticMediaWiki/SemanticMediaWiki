@@ -10,7 +10,7 @@ use SMW\SPARQLStore\QueryEngine\FederateResultList;
  * @see https://jena.apache.org/documentation/serving_data/index.html
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author mwjames
  */

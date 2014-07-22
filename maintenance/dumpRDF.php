@@ -31,7 +31,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  * @ingroup SMWMaintenance
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author Markus Krötzsch
  * @author mwjames

@@ -389,7 +389,7 @@ class SMWExportController {
 	 * Exports semantic data for all pages within the wiki and for all elements
 	 * that are referred to a file resource
 	 *
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param string $outfile the output file URI, or false if printing to stdout
 	 * @param mixed $ns_restriction namespace restriction, see fitsNsRestriction()
@@ -410,7 +410,7 @@ class SMWExportController {
 	 * Exports semantic data for all pages within the wiki and for all elements
 	 * that are referred to the stdout
 	 *
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param mixed $ns_restriction namespace restriction, see fitsNsRestriction()
 	 * @param integer $delay number of microseconds for which to sleep during
@@ -423,7 +423,7 @@ class SMWExportController {
 	}
 
 	/**
-	 * @since 1.9.3 made protected; use printAllToFile or printAllToOutput
+	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
 	protected function printAll( $ns_restriction = false, $delay, $delayeach ) {
 		$linkCache = LinkCache::singleton();

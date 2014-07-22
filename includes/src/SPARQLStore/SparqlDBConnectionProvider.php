@@ -11,7 +11,7 @@ use RuntimeException;
  * @ingroup SMW
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author mwjames
  */
@@ -60,7 +60,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	private $dataEndpoint = null;
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param string|null $connectorId
 	 * @param string|null $defaultGraph
@@ -84,7 +84,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	/**
 	 * @see DBConnectionProvider::getConnection
 	 *
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @return SparqlDatabase
 	 * @throws RuntimeException
@@ -101,7 +101,7 @@ class SparqlDBConnectionProvider implements DBConnectionProvider {
 	/**
 	 * @see DBConnectionProvider::releaseConnection
 	 *
-	 * @since 1.9.3
+	 * @since 2.0
 	 */
 	public function releaseConnection() {
 		$this->connection = null;

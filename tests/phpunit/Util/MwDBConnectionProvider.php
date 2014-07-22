@@ -9,7 +9,7 @@ use DatabaseBase;
  * @ingroup Test
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author mwjames
  */
@@ -21,7 +21,7 @@ class MwDBConnectionProvider implements DBConnectionProvider {
 	protected $connectionId;
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param int $connectionId
 	 */
@@ -30,7 +30,7 @@ class MwDBConnectionProvider implements DBConnectionProvider {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return DatabaseBase
 	 */

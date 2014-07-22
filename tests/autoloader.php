@@ -35,7 +35,7 @@ $autoloader = require $path;
  * Available to third-party extensions therefore any change should be made with
  * care
  *
- * @since  1.9.3
+ * @since  2.0
  */
 $autoloader->addPsr4( 'SMW\\Tests\\Util\\', __DIR__ . '/phpunit/Util' );
 

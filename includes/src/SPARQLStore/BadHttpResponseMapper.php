@@ -13,7 +13,7 @@ use Exception;
  * @ingroup Sparql
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author Markus Krötzsch
  * @author mwjames
@@ -23,7 +23,7 @@ class BadHttpResponseMapper {
 	private $httpRequest = null;
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param HttpRequest $httpRequest
 	 */
@@ -39,7 +39,7 @@ class BadHttpResponseMapper {
 	 * network issues or temporary overloading of the server. In this case, calling
 	 * methods rather return something that helps to make the best out of the situation.
 	 *
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param HttpRequest $httpRequest
 	 * @param $endpoint string URL of endpoint that was used

@@ -16,7 +16,7 @@ use CloneDatabase;
  * @ingroup Test
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author mwjames
  */
@@ -48,7 +48,7 @@ class MwDatabaseTableBuilder {
 	private $dbSetup = false;
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param Store $store
 	 * @param DBConnectionProvider $dbConnectionProvider
@@ -70,7 +70,7 @@ class MwDatabaseTableBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param Store $store
 	 *
@@ -86,7 +86,7 @@ class MwDatabaseTableBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param string|null $databaseType
 	 *
@@ -98,7 +98,7 @@ class MwDatabaseTableBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @throws RuntimeException
 	 */
@@ -126,7 +126,7 @@ class MwDatabaseTableBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 */
 	public function doDestroy() {
 		$this->destroyDatabaseTables();
@@ -134,7 +134,7 @@ class MwDatabaseTableBuilder {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return string
 	 */
@@ -143,7 +143,7 @@ class MwDatabaseTableBuilder {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return DatabaseBase
 	 */
@@ -152,7 +152,7 @@ class MwDatabaseTableBuilder {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return DBConnectionProvider
 	 */

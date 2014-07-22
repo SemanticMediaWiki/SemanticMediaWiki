@@ -16,7 +16,7 @@ use RuntimeException;
  * @ingroup Sparql
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author Markus Krötzsch
  * @author mwjames
@@ -29,7 +29,7 @@ class RedirectLookup {
 	private $sparqlDatabase = null;
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param SparqlDatabase $sparqlDatabase
 	 */

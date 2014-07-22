@@ -138,7 +138,7 @@ class FourstoreHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 	 *
 	 * @note 4store 1.1.4 breaks on update if charset is set in the Content-Type header
 	 *
-	 * @since 1.9.3
+	 * @since 2.0
 	 */
 	public function doUpdate( $sparql ) {
 
