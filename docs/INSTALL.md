@@ -1,151 +1,12 @@
-# SMW installation
+# Installation guide (brief)
 
-These are the installation and configuration instructions for [Semantic MediaWiki](../README.md).
-
-This is a brief version of the installation instructions, containing only the core steps. More
+This is a brief installation and configuration guide for [Semantic MediaWiki](../README.md) that
+only contains the core steps. More
 verbose installation instructions with additional explanation and upgrading instructions can be
-found [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:Installation).
+found [here](https://semantic-mediawiki.org/wiki/Help:Installation).
 
-## Versions
+A list of supported databases and other compatibility information is described by the [compatibility matrix](COMPATIBILITY.md).
 
-<table>
-	<tr>
-		<th></th>
-		<th>Status</th>
-		<th>Release date</th>
-		<th>Git branch</th>
-	</tr>
-	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.0.x</a></th>
-		<td>Development version</td>
-		<td>-</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
-	</tr>
-	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
-		<td>Stable release</td>
-		<td>2014-04-18</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.2">1.9.2</a></td>
-	</tr>
-	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.1">SMW 1.9.1</a></th>
-		<td>Legacy release</td>
-		<td>2014-02-09</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.1">1.9.1</a></td>
-	</tr>
-	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.0">SMW 1.9.0</a></th>
-		<td>Legacy release</td>
-		<td>2014-01-03</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9">1.9</a></td>
-	</tr>
-	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.8.0">SMW 1.8.x</a></th>
-		<td>Legacy release</td>
-		<td>2012-12-02</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.8.x">1.8.x</a></td>
-	</tr>
-	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.7.1">SMW 1.7.1</a></th>
-		<td>Legacy release</td>
-		<td>2012-03-05</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.7.1">1.7.1</a></td>
-	</tr>
-</table>
-
-### Platform compatibility
-
-<table>
-	<tr>
-		<th></th>
-		<th>PHP</th>
-		<th>MediaWiki</th>
-		<th>Composer</th>
-		<th>Validator</th>
-	</tr>
-	<tr>
-		<th>SMW 2.x</th>
-		<td>5.3.2 - 5.6.x</td>
-		<td>1.19 - 1.23</td>
-		<td>Required</td>
-		<td>2.x (handled by Composer)</td>
-	</tr>
-	<tr>
-		<th>SMW 1.9.x</th>
-		<td>5.3.2 - 5.6.x</td>
-		<td>1.19 - 1.23</td>
-		<td>Required</td>
-		<td>1.0.x (handled by Composer)</td>
-	</tr>
-	<tr>
-		<th>SMW 1.8.x</th>
-		<td>5.2.0 - 5.5.x</td>
-		<td>1.17 - 1.22</td>
-		<td>Not supported</td>
-		<td>0.5.1</td>
-	</tr>
-	<tr>
-		<th>SMW 1.7.1</th>
-		<td>5.2.0 - 5.4.x</td>
-		<td>1.16 - 1.19</td>
-		<td>Not supported</td>
-		<td>0.4.13 or 0.4.14</td>
-	</tr>
-</table>
-
-
-The PHP and MediaWiki version ranges listed are those in which SMW is known to work. It might also
-work with more recent versions of PHP and MediaWiki, though this is not guaranteed.
-
-### Database support
-
-<table>
-	<tr>
-		<th></th>
-		<th>MySQL</th>
-		<th>SQLite</th>
-		<th>PostgreSQL</th>
-		<th>Jena Fuseki</th>
-		<th>Virtuoso Opensource</th>
-		<th>4Store</th>
-	</tr>
-	<tr>
-		<th>SMW 2.x</th>
-		<td>Full support</td>
-		<td>Full support</td>
-		<td>Beta support</td>
-		<td>1.0.2 support</td>
-		<td>6.1 support</td>
-		<td>1.1.4 beta support</td>
-	</tr>
-	<tr>
-		<th>SMW 1.9.x</th>
-		<td>Full support</td>
-		<td>Full support</td>
-		<td>Beta support</td>
-		<td>None</td>
-		<td>Experimental</td>
-		<td>Experimental</td>
-	</tr>
-	<tr>
-		<th>SMW 1.8.x</th>
-		<td>Full support</td>
-		<td>Full support</td>
-		<td>Experimental</td>
-		<td>None</td>
-		<td>Experimental</td>
-		<td>Experimental</td>
-	</tr>
-	<tr>
-		<th>SMW 1.7.1</th>
-		<td>Full support</td>
-		<td>Experimental</td>
-		<td>None</td>
-		<td>None</td>
-		<td>Experimental</td>
-		<td>Experimental</td>
-	</tr>
-</table>
 
 ## Download and installation
 
@@ -184,11 +45,13 @@ Now using Composer, install Semantic MediaWiki.
 
 If you do not have a composer.json file yet, copy the composer-example.json file to composer.json. If you are using the Extension Installer extension, the file to copy will be named example.json, rather than composer-example.json. When this is done, run:
     
-    php composer.phar require mediawiki/semantic-media-wiki "~1.9.1"
+    php composer.phar require mediawiki/semantic-media-wiki:@dev
+
+<sup>@dev</sup> refers to the latest development version while selecting an appropriate version is at your discretion.
 
 ##### Step 4
 
-Run the MediaWiki update script. The location of this script is maintenance/update.php. It can be run as follows:
+Run the MediaWiki [update script](https://www.mediawiki.org/wiki/Manual:Update.php). The location of this script is maintenance/update.php. It can be run as follows:
 
     php maintenance/update.php
 
