@@ -580,7 +580,7 @@ class GenericHttpDatabaseConnector {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param integer $timeout
 	 *
@@ -592,7 +592,7 @@ class GenericHttpDatabaseConnector {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param HttpRequest $httpRequest
 	 *

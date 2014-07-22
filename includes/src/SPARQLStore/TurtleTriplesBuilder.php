@@ -16,7 +16,7 @@ use SMWExpNsResource;
  * @ingroup Sparql
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author Markus Krötzsch
  * @author mwjames
@@ -49,7 +49,7 @@ class TurtleTriplesBuilder {
 	private $hasTriplesForUpdate = null;
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param SemanticData $semanticData
 	 * @param RedirectLookup $redirectLookup
@@ -60,7 +60,7 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @return TurtleTriplesBuilder
 	 */
@@ -69,7 +69,7 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @return string
 	 */
@@ -83,7 +83,7 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @return array
 	 */
@@ -97,7 +97,7 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @return boolean
 	 */

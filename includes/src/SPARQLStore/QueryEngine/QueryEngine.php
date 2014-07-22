@@ -69,7 +69,7 @@ class QueryEngine {
 	private $randomSortingSupport = true;
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param SparqlDatabase $connection
 	 * @param QueryConditionBuilder $queryConditionBuilder

@@ -152,7 +152,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @note SubSemanticData are added only on request to avoid unnecessary DB
 	 * transactions
 	 *
-	 * @since 1.9.3
+	 * @since 2.0
 	 */
 	public function getSubSemanticData() {
 
@@ -180,7 +180,7 @@ class SMWSql3StubSemanticData extends SMWSemanticData {
 	 * @note This method will initialize SubSemanticData first if it wasn't done
 	 * yet to ensure data consistency
 	 *
-	 * @since 1.9.3
+	 * @since 2.0
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
 

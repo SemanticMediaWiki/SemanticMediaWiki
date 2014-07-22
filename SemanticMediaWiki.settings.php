@@ -81,7 +81,7 @@ $GLOBALS['smwgSparqlDefaultGraph'] = '';
 # - '4store'
 # - 'default'
 #
-# With 1.9.3 it is suggested to assign the necessary connector to
+# With 2.0 it is suggested to assign the necessary connector to
 # $smwgSparqlDatabaseConnector in order to avoid arbitrary class assignments in
 # $smwgSparqlDatabase (which can change in future releases without further notice).
 #
@@ -90,9 +90,9 @@ $GLOBALS['smwgSparqlDefaultGraph'] = '';
 # to be sued for when a custom database connector is necessary.
 #
 # $smwgSparqlDatabaseConnector = 'custom' is set as legacy setting to allow for
-# existing (prior 1.9.3) customizing to work without changes.
+# existing (prior 2.0) customizing to work without changes.
 #
-# @since 1.9.3
+# @since 2.0
 ##
 $GLOBALS['smwgSparqlDatabaseConnector'] = 'custom';
 

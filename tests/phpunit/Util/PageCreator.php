@@ -72,7 +72,7 @@ class PageCreator {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 */
 	public function getEditInfo() {
 

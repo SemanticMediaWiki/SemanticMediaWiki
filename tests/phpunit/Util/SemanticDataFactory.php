@@ -11,7 +11,7 @@ use RuntimeException;
 
 /**
  * @license GNU GPL v2+
- * @since   1.9.3
+ * @since   2.0
  *
  * @author mwjames
  */
@@ -20,7 +20,7 @@ class SemanticDataFactory {
 	private $subject = null;
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param Title|string $title
 	 */
@@ -38,7 +38,7 @@ class SemanticDataFactory {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param DIWikiPage $subject
 	 */
@@ -48,7 +48,7 @@ class SemanticDataFactory {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param string $title
 	 *
@@ -69,7 +69,7 @@ class SemanticDataFactory {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 */
 	public function null() {
 		$this->subject = null;

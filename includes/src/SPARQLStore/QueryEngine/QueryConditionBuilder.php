@@ -61,7 +61,7 @@ class QueryConditionBuilder {
 	private $resultVariable = 'result';
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param string $resultVariable
 	 */
@@ -71,7 +71,7 @@ class QueryConditionBuilder {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param array $sortkeys
 	 */

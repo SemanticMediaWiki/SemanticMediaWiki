@@ -97,7 +97,7 @@ class Subobject {
 	}
 
 	/**
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param string $identifier
 	 *
@@ -123,7 +123,7 @@ class Subobject {
 	}
 
 	/**
-	 * @deprecated since 1.9.3
+	 * @deprecated since 2.0
 	 */
 	public function setSemanticData( $identifier ) {
 		$this->setEmptySemanticDataForId( $identifier );

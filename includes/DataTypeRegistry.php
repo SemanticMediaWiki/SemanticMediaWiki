@@ -151,7 +151,7 @@ class DataTypeRegistry {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @param string
 	 * @return boolean

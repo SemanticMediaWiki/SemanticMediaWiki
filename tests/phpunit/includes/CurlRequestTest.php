@@ -13,7 +13,7 @@ use SMW\CurlRequest;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author mwjames
  */

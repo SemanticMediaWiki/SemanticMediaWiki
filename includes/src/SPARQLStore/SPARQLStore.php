@@ -216,7 +216,7 @@ class SPARQLStore extends Store {
 	 * Delete a dataitem from the Sparql back-end together with all data that is
 	 * associated resources
 	 *
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param DataItem $dataItem
 	 *
@@ -377,7 +377,7 @@ class SPARQLStore extends Store {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 *
 	 * @return Database
 	 */

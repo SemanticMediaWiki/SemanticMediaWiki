@@ -33,7 +33,7 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  *
  * @author mwjames
  */

@@ -9,14 +9,14 @@ namespace SMW\Tests\Util;
  * @group SMWExtension
  *
  * @license GNU GPL v2+
- * @since 1.9.3
+ * @since 2.0
  */
 class StringBuilder {
 
 	private $string = '';
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 */
 	public function addnewLine() {
 		$this->string = $this->string . "\n";
@@ -24,7 +24,7 @@ class StringBuilder {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 */
 	public function addString( $string ) {
 		$this->string = $this->string . $string;
@@ -32,7 +32,7 @@ class StringBuilder {
 	}
 
 	/**
-	 * @since  1.9.3
+	 * @since  2.0
 	 */
 	public function getString() {
 		return $this->string;

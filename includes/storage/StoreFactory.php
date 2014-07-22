@@ -55,7 +55,7 @@ class StoreFactory {
 	 * @note This method should not be used in production code and is mostly
 	 * provided to inject instances during unit testing
 	 *
-	 * @since 1.9.3
+	 * @since 2.0
 	 *
 	 * @param Store $instance
 	 */
