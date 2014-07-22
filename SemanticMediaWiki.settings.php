@@ -748,3 +748,16 @@ $GLOBALS['smwgOnDeleteAction'] = array(
 	'smwgDeleteSubjectWithAssociatesRefresh' => false
 );
 ##
+
+###
+# Search engine to fall back to in case SMWSearch is used as custom search
+# engine but is unable to interpret the search term as an SMW query
+#
+# Leave as null to select the default search engine for the selected database
+# type (e.g. SearchMySQL, SearchPostgres or SearchOracle), or set to a class
+# name to override to a custom search engine.
+#
+# @since 2.1
+##
+$GLOBALS['smwgFallbackSearchType'] = null;
+##
