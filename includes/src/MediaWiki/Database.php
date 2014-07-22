@@ -205,7 +205,7 @@ class Database {
 		}
 
 		try {
-			$results = $this->acquireReadConnection()->query(
+			$results = $this->acquireWriteConnection()->query(
 				$sql,
 				$fname,
 				$ignoreException

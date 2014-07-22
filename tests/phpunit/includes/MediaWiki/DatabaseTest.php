@@ -131,21 +131,27 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionProvider = new MockDBConnectionProvider();
-		$database = $connectionProvider->getMockDatabase();
+		$readConnection = new MockDBConnectionProvider();
+		$read = $readConnection->getMockDatabase();
 
-		$database->expects( $this->any() )
+		$read->expects( $this->any() )
 			->method( 'getType' )
 			->will( $this->returnValue( 'sqlite' ) );
 
-		$database->expects( $this->once() )
+		$writeConnection = new MockDBConnectionProvider();
+		$write = $writeConnection->getMockDatabase();
+
+		$write->expects( $this->once() )
 			->method( 'query' )
 			->with( $this->equalTo( 'TEMP' ) )
 			->will( $this->returnValue( $resultWrapper ) );
 
-		$instance = new Database( $connectionProvider );
-		$this->assertInstanceOf( 'ResultWrapper', $instance->query( 'TEMPORARY' ) );
+		$instance = new Database( $readConnection, $writeConnection );
 
+		$this->assertInstanceOf(
+			'ResultWrapper',
+			$instance->query( 'TEMPORARY' )
+		);
 	}
 
 	public function testSelectThrowsException() {
