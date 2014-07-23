@@ -32,7 +32,7 @@ Unit and integration tests were given extra consideration so that any core chang
 tested against [Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1]
 (https://github.com/openlink/virtuoso-opensource) (#394) to ensure that compatibility and functional
 parity are going hand in hand with the rest of SMW. (Unfortunately `4Store` currently does not run
-on the continues integration platform, for details see [garlik#110]
+on the continuous integration platform, for details see [garlik#110]
 (https://github.com/garlik/4store/issues/110)but tests have been run successfully with a local
 `4store` instance).
 
@@ -58,7 +58,7 @@ individual sortkey per subobject.
 * #322 Fixed file names containing spaces or non-ASCII characters for for downloadable result formats (csv, excel)
 * #379 Modernized `dumpRDF.php` while deprecating the use of `SMW_dumpRDF.php` (bug 35679)
 * #425 Deprecated `SMW_setup.php` in favour of `setupStore.php`
-* #444 Fixed language namespace alias issue 
+* #444 Fixed language namespace alias issue
 
 ### Hot fixes for MediaWiki related bugs
 
@@ -102,13 +102,13 @@ Other internal enhancements or changes include:
 
 * `SMWParseData`
 
-## Continues integration
+## Continuous integration
 
-Continues integration is now an integral part of SMW to predict the impact of changes in terms of
+Continuous integration is now an integral part of SMW to predict the impact of changes in terms of
 expected behaviour and functionality. At the time of its release, SMW runs 2250+ tests which amounts
 for approximately 62% code coverage in total.
 
-The continues integration platform not only allows to run services such as those used for the
+The continuous integration platform not only allows to run services such as those used for the
 `SPARQLStore` integration but also used to test against cutting edge environments such as [HHVM]
 (http://hhvm.com/) (#349). SMW's test suite does successfully pass all its tests on HHVM except for
 those that are blocked by [facebook/hhvm#2829](https://github.com/facebook/hhvm/issues/2829).
