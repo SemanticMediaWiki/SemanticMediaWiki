@@ -144,6 +144,7 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 <sup>*3</sup> [4store](https://github.com/garlik/4store)
 
 ### Notes
+
 - `Full support` refers to where all unit tests have generally passed and is recommended for production use (for the version listed)
 - `Beta support` refers to where the software has been tested but is not completely integrated in the CI environment (only confirmed by manual or local testing)
 - `Experimental` refers to where the software showed general functionality but did not pass all unit tests and is therefore not recommended for production

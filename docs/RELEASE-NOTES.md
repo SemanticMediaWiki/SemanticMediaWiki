@@ -1,6 +1,6 @@
-# Semantic MediaWiki 2.0 RC2
+# Semantic MediaWiki 2.0 RC3
 
-Second release candidate for SMW 2.0. Made available on 2014-07-21.
+Third release candidate for SMW 2.0. Made available on 2014-07-23.
 
 ## New features
 
