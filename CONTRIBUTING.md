@@ -3,7 +3,7 @@ There are different ways to make a contribution to [Semantic MediaWiki][smw] (SM
 ### Report bugs
 
 * You may help us by reporting bugs and feature requests via the [issue tracker][smw-issues]. See the help page on [reporting bugs (environment, reproducing)][smw-bugs1] as well as on [identifying bugs (stack-trace)][smw-bugs2] for information on how to do this best. Please remember to always provide information about your environment as well as a stack-trace.
-* You may help us to do [pre-release testing][smw-testing] by joinging the [team of testers][smw-testers] on GitHub.
+* You may help us to do [pre-release testing][smw-testing] by joining the [team of testers][smw-testers] on GitHub.
 
 ### Improve documentation
 
