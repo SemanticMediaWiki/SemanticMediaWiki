@@ -1,7 +1,7 @@
-### Versions
-
 For a full list of changes in each release, see the [release notes](releasenotes/). For instructions
 on how to install the latest version of SMW, see the [installation instructions](INSTALL.md).
+
+### Recent releases
 
 <table>
 	<tr>
