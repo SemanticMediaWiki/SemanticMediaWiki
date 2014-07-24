@@ -152,13 +152,7 @@ SPARQL stores:
 		<td>Beta support</td>
 	</tr>
 	<tr>
-		<th>SMW 1.8.x</th>
-		<td>None</td>
-		<td>Experimental</td>
-		<td>Experimental</td>
-	</tr>
-	<tr>
-		<th>SMW 1.7.1</th>
+		<th>SMW &lt; 1.9</th>
 		<td>None</td>
 		<td>Experimental</td>
 		<td>Experimental</td>
