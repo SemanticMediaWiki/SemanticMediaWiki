@@ -243,6 +243,7 @@ class DIProperty extends SMWDataItem {
 		}
 
 		if ( !$this->isUserDefined() && $propertyTypeId === self::getPredefinedPropertyTypeId( $this->m_key ) ) {
+			$this->m_proptypeid = $propertyTypeId;
 			return $this;
 		}
 

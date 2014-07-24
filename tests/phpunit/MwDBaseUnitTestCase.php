@@ -95,9 +95,9 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		return $this->storesToBeExcluded = $storesToBeExcluded;
 	}
 
-//	protected function getDBConnection() {
-//		return $this->mwDatabaseTableBuilder->getDBConnection();
-//	}
+	protected function getDBConnection() {
+		return $this->mwDatabaseTableBuilder->getDBConnection();
+	}
 
 	protected function getDBConnectionProvider() {
 		return $this->mwDatabaseTableBuilder->getDBConnectionProvider();

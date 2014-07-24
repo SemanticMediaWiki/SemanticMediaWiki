@@ -314,7 +314,7 @@ class SMWQueryParser {
 		$inverse = false;
 
 		foreach ( $propertynames as $name ) {
-			if ( $typeid != '_wpg' ) { // non-final property in chain was no wikipage: not allowed
+			if ( $typeid !== '_wpg' && $typeid !== '__sob' ) { // non-final property in chain was no wikipage: not allowed
 				$this->m_errors[] = wfMessage(
 					'smw_valuesubquery',
 					$name
