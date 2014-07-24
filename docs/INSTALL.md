@@ -5,8 +5,8 @@ only contains the core steps. More
 verbose installation instructions with additional explanation and upgrading instructions can be
 found [here](https://semantic-mediawiki.org/wiki/Help:Installation).
 
-A list of supported PHP versions, MediaWiki versions and databases can be found in the
-[compatibility matrix](COMPATIBILITY.md).
+A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
+in the [compatibility matrix](COMPATIBILITY.md).
 
 
 ## Download and installation
