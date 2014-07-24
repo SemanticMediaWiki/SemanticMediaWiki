@@ -98,7 +98,7 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInversPropertyDescription() {
+	public function testInversePropertyDescription() {
 
 		$description = new SomeProperty(
 			DIProperty::newFromUserLabel( 'Has foo', true )->setPropertyTypeId( '_wpg' ),
