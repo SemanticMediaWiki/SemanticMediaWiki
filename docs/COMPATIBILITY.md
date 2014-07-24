@@ -98,7 +98,7 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 - `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
 - `Experimental` means there is some preliminary support which is still much too immature for use in production
 
-Primary databases:
+SQL databases:
 
 <table>
 	<tr>
@@ -133,7 +133,7 @@ Primary databases:
 	</tr>
 </table>
 
-SPARQL stores:
+Triple store databases:
 
 <table>
 	<tr>
