@@ -91,32 +91,29 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 
 ### Database support
 
+- `Full support` means that all functionality has been verified to work and that it can be used in production
+- `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
+- `Experimental` means there is some preliminary support which is still much too immature for use in production
+
+Primary databases:
+
 <table>
 	<tr>
 		<th></th>
 		<th>MySQL</th>
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
-		<th>Fuseki<sup>*1</sup></th>
-		<th>Virtuoso<sup>*2</sup></th>
-		<th>4store<sup>*3</sup></th>
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
 		<td>Beta support</td>
-		<td>1.0.2 support</td>
-		<td>6.1 support</td>
-		<td>1.1.4 beta support</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
 		<td>Full support</td>
 		<td>Full support</td>
-		<td>Beta support</td>
-		<td>None</td>
-		<td>Beta support</td>
 		<td>Beta support</td>
 	</tr>
 	<tr>
@@ -124,27 +121,46 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 		<td>Full support</td>
 		<td>Full support</td>
 		<td>Experimental</td>
-		<td>None</td>
-		<td>Experimental</td>
-		<td>Experimental</td>
 	</tr>
 	<tr>
 		<th>SMW 1.7.1</th>
 		<td>Full support</td>
 		<td>Experimental</td>
 		<td>None</td>
+	</tr>
+</table>
+
+SPARQL stores:
+
+<table>
+	<tr>
+		<th></th>
+		<th><a href="https://jena.apache.org/">Jena Fuseki</a></th>
+		<th><a href="https://github.com/openlink/virtuoso-opensource">Virtuoso Opensource</a></th>
+		<th><a href="https://github.com/garlik/4store">4store</a></th>
+	</tr>
+	<tr>
+		<th>SMW 2.x</th>
+		<td>1.0.2 support</td>
+		<td>6.1 support</td>
+		<td>1.1.4 beta support</td>
+	</tr>
+	<tr>
+		<th>SMW 1.9.x</th>
+		<td>None</td>
+		<td>Beta support</td>
+		<td>Beta support</td>
+	</tr>
+	<tr>
+		<th>SMW 1.8.x</th>
+		<td>None</td>
+		<td>Experimental</td>
+		<td>Experimental</td>
+	</tr>
+	<tr>
+		<th>SMW 1.7.1</th>
 		<td>None</td>
 		<td>Experimental</td>
 		<td>Experimental</td>
 	</tr>
 </table>
-
-<sup>*1</sup> [Jena Fuseki](https://jena.apache.org/)
-<sup>*2</sup> [Virtuoso Opensource](https://github.com/openlink/virtuoso-opensource)
-<sup>*3</sup> [4store](https://github.com/garlik/4store)
-
-### Notes
-
-- `Full support` means that all functionality has been verified to work and that it can be used in production
-- `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
-- `Experimental` means there is some preliminary support which is still much too immature for use in production
