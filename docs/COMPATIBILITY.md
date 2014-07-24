@@ -144,9 +144,9 @@ SPARQL stores:
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
-		<td>1.0.2 support</td>
-		<td>6.1 support</td>
-		<td>1.1.4 beta support</td>
+		<td>Full support (for 1.0.2)</td>
+		<td>Full support (for 6.1)</td>
+		<td>Beta support (for 1.1.4)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
