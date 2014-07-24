@@ -66,13 +66,15 @@ class LinksUpdateConstructed {
 
 	/**
 	 * #347 showed that an external process (e.g. RefreshLinksJob) can inject a
-	 * ParserOutput without SemanticData which forces the Store updater to create
-	 * an empty container and clear all existing data. To ensure that for a Title
-	 * and its current revision are really "empty" (e.g. delete action initiated
-	 * by a human) content is re-parsed
+	 * ParserOutput without/cleared SemanticData which forces the Store updater
+	 * to create an empty container that will clear all existing data.
+	 * 
+	 * To ensure that for a Title and its current revision an empty ParserOutput
+	 * object is really meant to be "empty" (e.g. delete action initiated by a
+	 * human) the content is re-parsed in order to fetch the newest available data
 	 *
 	 * @note Parsing is expensive but it is more expensive to loose data or to
-	 * expect that MW adheres the object contract
+	 * expect that an external process adheres the object contract
 	 */
 	private function refetchSemanticData() {
 		wfDebug( __METHOD__ . ' Empty SemanticData / re-parsing: ' . $this->linksUpdate->getTitle()->getPrefixedDBkey() . "\n" );
