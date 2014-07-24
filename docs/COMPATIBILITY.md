@@ -145,6 +145,6 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 
 ### Notes
 
-- `Full support` refers to where all unit tests have generally passed and is recommended for production use (for the version listed)
-- `Beta support` refers to where the software has been tested but is not completely integrated in the CI environment (only confirmed by manual or local testing)
-- `Experimental` refers to where the software showed general functionality but did not pass all unit tests and is therefore not recommended for production
+- `Full support` means that all functionality has been verified to work and that it can be used in production
+- `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
+- `Experimental` means there is some preliminary support which is still much too immature for use in production
