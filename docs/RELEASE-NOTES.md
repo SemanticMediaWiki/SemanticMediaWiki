@@ -87,6 +87,8 @@ Other internal enhancements or changes include:
 * #332 Added the number of pages and percentage done to report messages when rebuilding selected pages
 * #366 Added lazy load of SubSemanticData to `Sql3StubSemanticData`
 * #382 Extended interface to support `format=count` information in `QueryResult`
+* #453 Added [`COMPATIBILITY.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md) for better user guidance
+
 
 ### Deprecated classes or scripts
 
