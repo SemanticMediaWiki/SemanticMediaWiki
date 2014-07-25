@@ -12,7 +12,7 @@ use Title;
  *
  * @since 1.6
  * @ingroup SMWDataItems
- * 
+ *
  * @author Markus Krötzsch
  */
 class DIWikiPage extends SMWDataItem {
@@ -52,13 +52,13 @@ class DIWikiPage extends SMWDataItem {
 	 * @param string $interwiki
 	 * @param string $subobjectname
 	 */
-	public function __construct( $dbkey, $namespace, $interwiki, $subobjectname = '' ) {
+	public function __construct( $dbkey, $namespace, $interwiki = '', $subobjectname = '' ) {
 		// Check if the provided value holds an integer
 		// (it can be of type string or float as well, as long as the value is an int)
 		if ( !ctype_digit( ltrim( (string)$namespace, '-' ) ) ) {
 			throw new DataItemException( "Given namespace '$namespace' is not an integer." );
 		}
-		
+
 		$this->m_dbkey = $dbkey;
 		$this->m_namespace = (int)$namespace; // really make this an integer
 		$this->m_interwiki = $interwiki;
@@ -141,7 +141,7 @@ class DIWikiPage extends SMWDataItem {
 			return new self( $parts[0], intval( $parts[1] ), $parts[2], $parts[3] );
 		} else {
 			throw new DataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
-		} 
+		}
 	}
 
 	/**
