@@ -70,8 +70,12 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$condition
 		);
 
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
+			->getString();
+
 		$this->assertEquals(
-			"?result property:Foo ?v1 " . ".\n",
+			$expectedConditionString,
 			$instance->convertConditionToString( $condition )
 		);
 	}
@@ -120,11 +124,16 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$condition
 		);
 
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:Foo "SomePropertyBlobValue" .'  )->addNewLine()
+			->getString();
+
 		$this->assertEquals(
-			'?result property:Foo "SomePropertyBlobValue" ' . ".\n",
+			$expectedConditionString,
 			$instance->convertConditionToString( $condition )
 		);
 	}
+
 	public function testQueryForSinglePropertyWithValueComparator() {
 
 		$property = new DIProperty( 'Foo' );
