@@ -381,9 +381,8 @@ class QueryConditionBuilder {
 		}
 
 		//*** Build the condition ***//
-		$diType = DataTypeRegistry::getInstance()->getDataItemId( $diProperty->findPropertyTypeID() );
-		// for types that use helper properties in encoding values, refer to this helper property:
-		if ( Exporter::hasHelperExpElement( $diType ) ) {
+		// Use helper properties in encoding values, refer to this helper property:
+		if ( Exporter::hasHelperExpElement( $diProperty ) ) {
 			$propertyExpElement = Exporter::getResourceElementForProperty( $diNonInverseProperty, true );
 		} else {
 			$propertyExpElement = Exporter::getResourceElementForProperty( $diNonInverseProperty );

@@ -246,6 +246,11 @@ class SMWExporter {
 						$expData->addPropertyObjectValue( $pe, $ed );
 						$peUri = self::getSpecialPropertyResource( '_URI' );
 						$expData->addPropertyObjectValue( $peUri, $ed );
+					} elseif ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property )  ) {
+						$expData->addPropertyObjectValue(
+							self::getResourceElementForWikiPage( $property->getDiWikiPage(), 'aux' ),
+							$ed
+						);
 					} else {
 						$expData->addPropertyObjectValue( $pe, $ed );
 					}
@@ -473,6 +478,8 @@ class SMWExporter {
 				return self::getSpecialNsResource( 'swivt', 'wikiPageSortKey' );
 			case '_TYPE':
 				return self::getSpecialNsResource( 'swivt', 'type' );
+			case '_IMPO':
+				return self::getSpecialNsResource( 'swivt', 'specialImportedFrom' );
 			default:
 				return self::getSpecialNsResource( 'swivt', 'specialProperty' . $propertyKey );
 		}
@@ -689,11 +696,12 @@ class SMWExporter {
 	 * Check whether the values of a given type of dataitem have helper
 	 * values in the sense of SMWExporter::getDataItemHelperExpElement().
 	 *
-	 * @param $dataItemType integer type ID of dataitem (see SMWDataItem)
+	 * @param DIProperty $property
+	 *
 	 * @return boolean
 	 */
-	static public function hasHelperExpElement( $dataItemType ) {
-		return ( $dataItemType == SMWDataItem::TYPE_TIME );
+	static public function hasHelperExpElement( DIProperty $property ) {
+		return ( $property->findPropertyTypeID() === '_dat' ) || ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 
 	static protected function hasSpecialPropertyResource( DIProperty $property ) {
