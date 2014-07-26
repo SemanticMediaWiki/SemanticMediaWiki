@@ -5,14 +5,18 @@ namespace SMW\Tests\Integration\MediaWiki;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\PageCreator;
 use SMW\Tests\Util\PageDeleter;
+use SMW\Tests\Util\QueryResultValidator;
 
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 
+use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
 use SMWSomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMWThingDescription as ThingDescription;
+use SMWValueDescription as ValueDescription;
 
 use Title;
 
@@ -40,6 +44,16 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 	protected $databaseToBeExcluded = array( 'sqlite' );
 
 	protected $titles = array();
+
+	private $queryResultValidator;
+	private $queryParser;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->queryResultValidator = new QueryResultValidator();
+		$this->queryParser = new QueryParser();
+	}
 
 	protected function tearDown() {
 		$pageDeleter= new PageDeleter();
@@ -109,8 +123,6 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 	public function testCreatePageWithSubobjectParserFunctionForQueryResultLookup() {
 
-		$this->checkIfDatabaseCanBeUsedOtherwiseSkipTest();
-
 		$this->titles[] = Title::newFromText( 'CreatePageWithSubobjectParserFunction' );
 
 		$pageCreator = new PageCreator();
@@ -161,6 +173,96 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 		$this->assertCount(
 			3,
 			$this->getStore()->getQueryResult( $query )->getResults()
+		);
+	}
+
+	public function testCreatePageWithPropertyChainQueryResultLookup() {
+
+		$pageCreator = new PageCreator();
+
+		$this->titles[] = Title::newFromText( 'Dreamland' );
+
+		$pageCreator
+			->createPage( $this->titles[0] )
+			->doEdit( '{{#set:|Located in=Fairyland}}' );
+
+		$this->titles[] = Title::newFromText( 'Fairyland' );
+
+		$pageCreator
+			->createPage( $this->titles[1] )
+			->doEdit( '{{#set:|Member of=Wonderland}}' );
+
+		$description = $this->queryParser->getQueryDescription(
+			'[[Located in.Member of::Wonderland]]'
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_COUNT;
+
+		$result = $this->getStore()->getQueryResult( $query );
+
+		$this->assertEquals(
+			1,
+			$result instanceOf \SMWQueryResult ? $result->getCountValue() : $result
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			new DIWikiPage( 'Dreamland', NS_MAIN, '' ),
+			$this->getStore()->getQueryResult( $query )
+		);
+	}
+
+	public function testCreatePageWithSubobjectPropertyChainQueryResultLookup() {
+
+		if ( !$this->getStore() instanceOf \SMWSQLStore3 ) {
+			$this->markTestSkipped( "Property chain sub-queries with subobjects are currently only supported by the SQLStore" );
+		}
+
+		$pageCreator = new PageCreator();
+
+		$this->titles[] = Title::newFromText( 'Dreamland' );
+
+		$pageCreator
+			->createPage( $this->titles[0] )
+			->doEdit( '{{#set:|Located in=Fairyland}}' );
+
+		$this->titles[] = Title::newFromText( 'Fairyland' );
+
+		$pageCreator
+			->createPage( $this->titles[1] )
+			->doEdit( '{{#subobject:|Member of=Wonderland}}' );
+
+		$description = $this->queryParser->getQueryDescription(
+			'[[Located in.Has subobject.Member of::Wonderland]]'
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_COUNT;
+
+		$result = $this->getStore()->getQueryResult( $query );
+
+		$this->assertEquals(
+			1,
+			$result instanceOf \SMWQueryResult ? $result->getCountValue() : $result
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			new DIWikiPage( 'Dreamland', NS_MAIN, '' ),
+			$this->getStore()->getQueryResult( $query )
 		);
 	}
 
