@@ -2,9 +2,16 @@
 
 Third release candidate for SMW 2.0. Made available on 2014-07-23.
 
-## New features
+## Compatibility changes
 
-### SPARQLStore
+Semantic MediaWiki 2.0 is compatible with MediaWiki 1.19 up to MediaWiki 1.23, and possibly later
+versions. Support for both MediaWiki 1.23 and MediaWiki 1.24 was improved compared to SMW 1.9.
+
+PHP compatibility remains the same as in SMW 1.9: all versions from PHP 5.3.2 to PHP 6.x.
+
+For a full overview, see our [compatibility matrix](COMPATIBILITY.md).
+
+## Improved SPARQLStore support
 
 [SMW 1.6](http://semantic-mediawiki.org/wiki/SMW_1.6#Synchronizing_SMW_with_RDF_stores) introduced
 support for data synchronization with RDF back-ends. SMW 2.0 extends the existing implementation and
@@ -40,7 +47,7 @@ on the continuous integration platform, for details see [garlik#110]
 Details to the testing environment and its settings can be found [here]
 (https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md)
 
-### RDF subobject support
+## Improved RDF subobject support
 
 Previous releases came without RDF subobject support but this has been corrected in 2.0. The RDF
 subobject export (#377, bug 48708) and RDF store subobject synchronization (#378, bug 48361) are
@@ -50,7 +57,19 @@ equally supported.
 Subobject do now support a sort annotation by using the `@sortkey` identifier (#225) that stores an
 individual sortkey per subobject.
 
-## Bug fixes
+## Quality and stability improvements
+
+A great deal of effort has been put into ensuring both existing and new features work well.
+Not just at present, but also in future releases. And not just with MySQL and one version of
+MediaWiki, but on all platforms we support. This dedication to quality has resulted in many
+bugs being discovered and fixed, and makes future regressions much less likely.
+
+Continuous integration is now an integral part of the development process behind SMW. As of
+the 2.0 release, SMW has over 2200 automated tests, which cover two thirds of the codebase.
+These tests are run automatically for every change made to the code, on machines with different
+databases, different versions of PHP, different SPARQL stores and different versions of MediaWiki.
+
+## Notable bug fixes
 
 * #279 Fixed undefined index in `DataTypeRegistry::getDefaultDataItemTypeId`
 * #282 Output a message instead of an exception in `Special:WantedProperties` for unknown predefined properties
@@ -60,13 +79,10 @@ individual sortkey per subobject.
 * #379 Modernized `dumpRDF.php` while deprecating the use of `SMW_dumpRDF.php` (bug 35679)
 * #425 Deprecated `SMW_setup.php` in favour of `setupStore.php`
 * #444 Fixed language namespace alias issue
-
-### Hot fixes for MediaWiki related bugs
-
 * #420 Extended `ContentParser` to mitigate issues caused by the 62856 bug in MW 1.24+
 * #405 Added a compatibility fix to mitigate issues caused by the `RefreshLinksJob` in MW 1.23+
 
-## Internal enhancements (development)
+## Behind the scenes
 
 SMW 2.0 continues to convert its classes to use PHP namespaces in order to separate responsibilities
 (#398, #404, #407, #409, #410, #411, #412, #416, #417, #418, #419, #421) and to be able to support
@@ -90,7 +106,6 @@ Other internal enhancements or changes include:
 * #382 Extended interface to support `format=count` information in `QueryResult`
 * #453 Added [`COMPATIBILITY.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md) for better user guidance
 
-
 ### Deprecated classes or scripts
 
 * `SMW_conceptCache.php`
@@ -104,14 +119,3 @@ Other internal enhancements or changes include:
 ### Removed classes or scripts
 
 * `SMWParseData`
-
-## Continuous integration
-
-Continuous integration is now an integral part of SMW to predict the impact of changes in terms of
-expected behaviour and functionality. At the time of its release, SMW runs 2250+ tests which amounts
-for approximately 62% code coverage in total.
-
-The continuous integration platform not only allows to run services such as those used for the
-`SPARQLStore` integration but also used to test against cutting edge environments such as [HHVM]
-(http://hhvm.com/) (#349). SMW's test suite does successfully pass all its tests on HHVM except for
-those that are blocked by [facebook/hhvm#2829](https://github.com/facebook/hhvm/issues/2829).
