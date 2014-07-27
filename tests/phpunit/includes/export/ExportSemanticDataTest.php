@@ -15,6 +15,8 @@ use SMWExpNsResource as ExpNsResource;
 use SMWExpResource as ExpResource;
 
 /**
+ * @covers \SMWExporter
+ *
  * @ingroup Test
  *
  * @group SMW
@@ -252,6 +254,55 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
 			Exporter::getSpecialNsResource( 'rdfs', 'subClassOf' ),
+			$exportData
+		);
+	}
+
+	public function testExportSubobject() {
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
+		$subobject = new Subobject( $semanticData->getSubject()->getTitle() );
+		$subobject->setEmptySemanticDataforId( 'Foo' );
+
+		$semanticData->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
+
+		$exportData = Exporter::makeExportData( $semanticData );
+
+		$expectedProperty = new ExpNsResource(
+			$this->transformPropertyLabelToAuxiliary( $subobject->getProperty() ),
+			Exporter::getNamespaceUri( 'property' ),
+			'property',
+			new DIWikiPage( 'Has_subobject', SMW_NS_PROPERTY )
+		);
+
+		$this->assertTrue(
+			Exporter::hasHelperExpElement( $subobject->getProperty() )
+		);
+
+		$this->assertCount(
+			1,
+			$exportData->getValues( $expectedProperty )
+		);
+
+		$this->exportDataValidator->assertThatExportDataContainsProperty(
+			$expectedProperty,
+			$exportData
+		);
+
+		$expectedResource = new ExpNsResource(
+			Exporter::getEncodedPageName( $subobject->getSemanticData()->getSubject() ) . '-23' . 'Foo',
+			Exporter::getNamespaceUri( 'wiki' ),
+			'wiki',
+			$subobject->getSemanticData()->getSubject()
+		);
+
+		$this->exportDataValidator->assertThatExportDataContainsResource(
+			$expectedResource,
+			$expectedProperty,
 			$exportData
 		);
 	}

@@ -270,4 +270,32 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSingleSubobjectBuildAsAuxiliaryProperty() {
+
+		$property = new DIProperty( '_SOBJ' );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:Has_subobject-23aux ?v1 .' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
 }

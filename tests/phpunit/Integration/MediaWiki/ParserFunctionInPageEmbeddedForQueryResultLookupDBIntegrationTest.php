@@ -221,10 +221,6 @@ class ParserFunctionInPageEmbeddedForQueryResultLookupDBIntegrationTest extends 
 
 	public function testCreatePageWithSubobjectPropertyChainQueryResultLookup() {
 
-		if ( !$this->getStore() instanceOf \SMWSQLStore3 ) {
-			$this->markTestSkipped( "Property chain sub-queries with subobjects are currently only supported by the SQLStore" );
-		}
-
 		$pageCreator = new PageCreator();
 
 		$this->titles[] = Title::newFromText( 'Dreamland' );

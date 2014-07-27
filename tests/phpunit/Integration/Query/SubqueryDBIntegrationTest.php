@@ -158,10 +158,6 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	 */
 	public function testSubqueryForCombinedSubobjectPropertyChainThatComparesEqualToValue() {
 
-		if ( !$this->getStore() instanceOf \SMWSQLStore3 ) {
-			$this->markTestSkipped( "Property chain sub-queries with subobjects are currently only supported by the SQLStore" );
-		}
-
 		/**
 		 * Page ...-dreamland annotated with [[LocatedIn::BananaWonderland]]
 		 */
@@ -248,10 +244,6 @@ class SubqueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	 * {{#ask: [[LocatedIn.Has subobject.MemberOf::+]] }}
 	 */
 	public function testSubqueryForCombinedSubobjectPropertyChainForWilcardSearch() {
-
-		if ( !$this->getStore() instanceOf \SMWSQLStore3 ) {
-			$this->markTestSkipped( "Property chain sub-queries with subobjects are currently only supported by the SQLStore" );
-		}
 
 		/**
 		 * Page ...-dreamland annotated with [[LocatedIn::BananaWonderland]]
