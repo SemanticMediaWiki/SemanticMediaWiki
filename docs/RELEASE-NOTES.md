@@ -16,6 +16,7 @@ also restores the support for `4Store` 1.1.4  (#370, bug 43708, bug 44700). Othe
 - #385 Fixed '#' encoding for subobjects in `SMWExporter::findDataItemForExpElement` to enable `SPARQLStore` result display
 - #387 Fixed `SPARQLStore` namespace query support (e.g `[[:+]]` )
 - #415 Fixed `SPARQLStore` usage for `rebuildConceptCache.php` and `rebuildPropertyStatistics.php`
+- #460 Fixed `SPARQLStore` subobject subqueries and pre-defined property queries support
 
 The `smwgSparqlDatabase` setting introduced in 1.6 has been deprecated in favour of
 [`$smwgSparqlDatabaseConnector`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabaseConnector)
