@@ -219,7 +219,7 @@
 	"smw_smwadmin_dbbutton": "初始化或升級表格",
 	"smw_smwadmin_announce": "發布 wiki",
 	"smw_smwadmin_announcedocu": "Semantic Mediawiki 提供一個網路服務，用於公告新的語意維基網站。\n這個服務用於維護一個使用 Semantic MediaWiki 的公共網站列表，主要用於幫助<a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">Semantic MediaWiki 項目</a>了解 Semantic MediaWiki 的典型使用的概貌。\n<a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">關於此服務的更多資訊</a>請檢視 Semantic MediaWiki 首頁。",
-	"smw_smwadmin_announcebutton": "按下以下按鈕以將你的 wiki 網址提交給該服務。\n這個服務只儲存公眾訪問資訊，不對公眾無法訪問的維基進行註冊，",
+	"smw_smwadmin_announcebutton": "按下以下按鈕以將你的 wiki 網址提交給該服務。\n這個服務只儲存公眾存取資訊，不對公眾無法存取的 wiki 進行註冊。",
 	"smw_smwadmin_datarefresh": "資料修復和升級",
 	"smw_smwadmin_datarefreshdocu": "可以基於維基先有內容對所有 Semantic MediaWki 數據進行重置。\n這個功能對修復損壞的數據，或者在軟體升級，內部格式改變時更新資料非常有用。\n更新時逐頁面執行的，需要一段時間。\n下方將顯示更新是否正在進行，並允許你開始或終止更新。（此功能可以被網站管理員禁用）",
 	"smw_smwadmin_datarefreshprogress": "<strong>有一個更新正在進行。</strong>\n更新進程可能會很慢，因為該進程僅在用戶訪問維基時小塊地更新數據。\n可以使用 MediaWiki 維護腳本<code>runJobs.php</code>（使用選項 <code>--maxjobs 1000</code> 限制每批更新數目）來加快更新完成速度。\n目前更新的估計進度：",
