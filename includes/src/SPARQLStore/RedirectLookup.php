@@ -107,7 +107,7 @@ class RedirectLookup {
 		$wikiNamespace = Exporter::getNamespaceUri( 'wiki' );
 
 		if ( strpos( $rediTargetUri, $wikiNamespace ) === 0 ) {
-			return new ExpNsResource( substr( $rediTargetUri, 0, strlen( $wikiNamespace ) ), $wikiNamespace, 'wiki' );
+			return new ExpNsResource( substr( $rediTargetUri, strlen( $wikiNamespace ) ), $wikiNamespace, 'wiki' );
 		}
 
 		return $expNsResource;
