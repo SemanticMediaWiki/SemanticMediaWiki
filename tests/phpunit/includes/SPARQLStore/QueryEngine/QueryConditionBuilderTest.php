@@ -136,13 +136,14 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testQueryForSinglePropertyWithValueComparator() {
+	public function testQueryForSinglePageTypePropertyWithValueComparator() {
 
 		$property = new DIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), null, SMW_CMP_LEQ )
+			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LEQ )
 		);
 
 		$instance = new QueryConditionBuilder();
@@ -156,7 +157,38 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:Foo ?v1 .' )->addNewLine()
-			->addString( 'FILTER( ?v1 <= "SomePropertyBlobValue" )' )->addNewLine()
+			->addString( 'FILTER( ?v1sk <= "SomePropertyPageValue" )' )->addNewLine()
+			->addString( '?v1 swivt:wikiPageSortKey ?v1sk .' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	public function testQueryForSingleBlobTypePropertyWithNotLikeComparator() {
+
+		$property = new DIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), null, SMW_CMP_NLKE )
+		);
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( 'FILTER( !regex( ?v1, "^SomePropertyBlobValue$", "s") )' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -393,6 +425,128 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:Has_subobject-23aux ?v1 .' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	/**
+	 * '[[HasSomeProperty::Foo||Bar]]'
+	 */
+	public function testSubqueryDisjunction() {
+
+		$property = new DIProperty( 'HasSomeProperty' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$disjunction = new Disjunction( array(
+			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
+			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+		) );
+
+		$description = new SomeProperty(
+			$property,
+			$disjunction
+		);
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:HasSomeProperty ?v1 .' )->addNewLine()
+			->addString( 'FILTER( ?v1 = wiki:Foo || ?v1 = wiki:Bar )' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	/**
+	 * '[[Born in::<q>[[Category:City]] [[Located in::Outback]]</q>]]'
+	 */
+	public function testNestedPropertyConjunction() {
+
+		$property = DIProperty::newFromUserLabel( 'Born in' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$conjunction = new Conjunction( array(
+			new ClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
+			new SomeProperty(
+				DIProperty::newFromUserLabel( 'Located in' ),
+				new ValueDescription(
+					new DIWikiPage( 'Outback', NS_MAIN ),
+					DIProperty::newFromUserLabel( 'Located in' ) )
+				)
+			)
+		);
+
+		$description = new SomeProperty(
+			$property,
+			$conjunction
+		);
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:Born_in ?v1 .' )->addNewLine()
+			->addString( '{ ' )
+			->addString( '{ ?v1 rdf:type wiki:Category-3ACity . }' )->addNewLine()
+			->addString( '?v1 property:Located_in wiki:Outback .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	/**
+	 * '[[LocatedIn.MemberOf::Wonderland]]'
+	 */
+	public function testPropertyChain() {
+
+		$description = new SomeProperty(
+			DIProperty::newFromUserLabel( 'LocatedIn' ),
+			new SomeProperty(
+				DIProperty::newFromUserLabel( 'MemberOf' ),
+				new ValueDescription(
+					new DIWikiPage( 'Wonderland', NS_MAIN, '' ),
+					DIProperty::newFromUserLabel( 'MemberOf' ), SMW_CMP_EQ
+				)
+			)
+		);
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:LocatedIn ?v1 .' )->addNewLine()
+			->addString( '{ ?v1 property:MemberOf wiki:Wonderland .' )->addNewLine()
+			->addString( '}' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
