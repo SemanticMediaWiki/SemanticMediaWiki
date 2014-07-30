@@ -65,7 +65,7 @@ MediaWiki, but on all platforms we support. This dedication to quality has resul
 bugs being discovered and fixed, and makes future regressions much less likely.
 
 Continuous integration is now an integral part of the development process behind SMW. As of
-the 2.0 release, SMW has over 2200 automated tests, which cover two thirds of the codebase.
+the 2.0 release, SMW has over 2300 automated tests, which cover two thirds of the codebase.
 These tests are run automatically for every change made to the code, on machines with different
 databases, different versions of PHP, different SPARQL stores and different versions of MediaWiki.
 
