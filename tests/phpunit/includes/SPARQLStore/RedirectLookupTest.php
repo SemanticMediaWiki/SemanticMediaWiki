@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\RedirectLookup;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 
 use SMWExpNsResource as ExpNsResource;
 use SMWExpLiteral as ExpLiteral;
@@ -136,11 +137,13 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRedirectTragetForDBLookupWithMultipleEntriesForcesNewResource() {
 
+		$propertyPage = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
+
 		$resource = new ExpNsResource(
 			'Foo',
 			Exporter::getNamespaceUri( 'property' ),
 			'property',
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '' )
+			$propertyPage
 		);
 
 		$sparqlDatabase = $this->createMockSparqlDatabaseFor( array( $resource, $resource ) );
@@ -151,14 +154,26 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 		$exists = null;
 
+		$targetResource = $instance->findRedirectTargetResource( $expNsResource, $exists );
+
 		$this->assertNotSame(
 			$expNsResource,
-			$instance->findRedirectTargetResource( $expNsResource, $exists )
+			$targetResource
+		);
+
+		$expectedResource = new ExpNsResource(
+			Exporter::getInstance()->getEncodedPageName( $propertyPage ),
+			Exporter::getNamespaceUri( 'wiki' ),
+			'wiki'
+		);
+
+		$this->assertEquals(
+			$expectedResource,
+			$targetResource
 		);
 
 		$this->assertTrue( $exists );
 	}
-
 
 	public function testRedirectTragetForDBLookupWithForNonMultipleResourceEntryThrowsException() {
 
