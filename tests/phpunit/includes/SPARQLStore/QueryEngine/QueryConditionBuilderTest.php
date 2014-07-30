@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 
 use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
+use SMWDITime as DITime;
 use SMWValueDescription as ValueDescription;
 use SMWSomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
@@ -334,6 +335,36 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result property:Bar ?v2 .' )->addNewLine()
 			->addString( 'FILTER( !regex( ?v2, "^BB.$", "s") )' )->addNewLine()
 			->addString( '}' )
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	public function testSingleDatePropertyWithGreaterEqualConstraint() {
+
+		$property = new DIProperty( 'SomeDateProperty' );
+		$property->setPropertyTypeId( '_dat' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new DITime( 1, 1970, 01, 01, 1, 1 ), null, SMW_CMP_GEQ )
+		);
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:SomeDateProperty-23aux ?v1 .' )->addNewLine()
+			->addString( 'FILTER( ?v1 >= "2440587.5423611"^^xsd:double )' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
