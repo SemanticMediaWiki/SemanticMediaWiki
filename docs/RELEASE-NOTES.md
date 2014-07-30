@@ -25,7 +25,8 @@ also restores the support for `4Store` 1.1.4  (#370, bug 43708, bug 44700). Othe
 - #415 Fixed `SPARQLStore` usage for `rebuildConceptCache.php` and `rebuildPropertyStatistics.php`
 - #460 Fixed `SPARQLStore` subobject subqueries and pre-defined property queries support
 
-The `smwgSparqlDatabase` setting introduced in 1.6 has been deprecated in favour of
+The [`smwgSparqlDatabase`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabase) setting
+introduced in 1.6 has been deprecated in favour of
 [`$smwgSparqlDatabaseConnector`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabaseConnector)
 (#342) to avoid arbitrary class assignments in `$smwgSparqlDatabase` (now only used to assign custom
 connectors).
@@ -34,18 +35,19 @@ connectors).
 allow for better testability and code readability (#360, #371, #379, #375, #383, #392, #393, #395, #402, #403, #415).
 
 The `SMWSparqlStore` and `SMWSparqlDatabase` class names are kept for legacy support but it is
-suggested to use the and settings parameter.
+suggested to use the new settings parameter.
 
-Unit and integration tests were given extra consideration so that any core change will also be
-tested against [Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1]
+Unit and integration tests were given extra focus together with a continuous integraton of  [Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1]
 (https://github.com/openlink/virtuoso-opensource) (#394) to ensure that compatibility and functional
 parity are going hand in hand with the rest of SMW. (Unfortunately `4Store` currently does not run
 on the continuous integration platform, for details see [garlik#110]
 (https://github.com/garlik/4store/issues/110)but tests have been run successfully with a local
 `4store` instance).
 
-Details to the testing environment and its settings can be found [here]
-(https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md)
+At this moment, the only RDF store to be tested and to support [SPARQL 1.1](http://www.w3.org/TR/sparql11-query/)
+is `Jena Fuseki` therefore other stores may not support all `query features`. For details to
+the testing environment and its configuration, see the [readme]
+(https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md) file.
 
 ## Improved RDF subobject support
 
@@ -102,7 +104,7 @@ Other internal enhancements or changes include:
 * #311 Removed `MediaWikiTestCase` dependency
 * #315 Updated jquery.qTip2 from v2.0.0 to v2.2.0 (Mar 17 2014)
 * #332 Added the number of pages and percentage done to report messages when rebuilding selected pages
-* #366 Added lazy load of SubSemanticData to `Sql3StubSemanticData`
+* #366 Extended `Sql3StubSemanticData` to load suobjects on request and introduced a `__sob` datatype for subobjects
 * #382 Extended interface to support `format=count` information in `QueryResult`
 * #453 Added [`COMPATIBILITY.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md) for better user guidance
 
