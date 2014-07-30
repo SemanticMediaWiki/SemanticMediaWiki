@@ -120,7 +120,7 @@
 	"smw_badqueryatom": "Alguna parte \"<nowiki>[[…]]</nowiki>\" de la interrogante no fue entendida.",
 	"smw_propvalueproblem": "El valor de propiedad \"$1\" no fue entendida.",
 	"smw_noqueryfeature": "Alguna característica de la consulta no tiene soporte en esta wiki, y parte de ella se ha eliminado ($1).",
-	"smw_noconjunctions": "Las conjunciones no tienen soporte en esta wiki: parte de la consulta se ha eliminado ($1).",
+	"smw_noconjunctions": "No se admiten las conjunciones en este wiki, y por ello se ha eliminado parte de la consulta ($1).",
 	"smw_nodisjunctions": "Las disjunciones en consultas no tienen soporte en esta wiki: parte de la consulta se ha eliminado ($1).",
 	"smw_querytoolarge": "Las siguientes condiciones de consulta no podrían ser consideradas debido a las restricciones de los wikia en tamaño o profundidad de consultas: $1.",
 	"smw_notemplategiven": "Proveer un valor para el parámetro \"plantilla\" para este formato de consulta para funcionar.",
