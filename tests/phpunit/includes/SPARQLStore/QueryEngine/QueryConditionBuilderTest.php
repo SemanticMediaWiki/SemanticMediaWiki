@@ -8,6 +8,7 @@ use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 
+use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
 use SMWValueDescription as ValueDescription;
 use SMWSomeProperty as SomeProperty;
@@ -213,11 +214,13 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testQueryForPropertyConjunction () {
+	public function testQueryForPropertyConjunction() {
 
 		$conjunction = new Conjunction( array(
-			new SomeProperty( new DIProperty( 'Foo' ), new ValueDescription( new DIBlob( 'SomePropertyValue' ) ) ),
-			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() ),
+			new SomeProperty(
+				new DIProperty( 'Foo' ), new ValueDescription( new DIBlob( 'SomePropertyValue' ) ) ),
+			new SomeProperty(
+				new DIProperty( 'Bar' ), new ThingDescription() ),
 		) );
 
 		$instance = new QueryConditionBuilder();
@@ -240,7 +243,40 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testQueryForPropertyDisjunction () {
+	public function testQueryForPropertyConjunctionWithGreaterLessEqualFilter() {
+
+		$conjunction = new Conjunction( array(
+			new SomeProperty(
+				new DIProperty( 'Foo' ),
+				new ValueDescription( new DINumber( 1 ), null, SMW_CMP_GEQ ) ),
+			new SomeProperty(
+				new DIProperty( 'Bar' ),
+				new ValueDescription( new DINumber( 9 ), null, SMW_CMP_LEQ ) ),
+		) );
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->buildCondition( $conjunction );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( 'FILTER( ?v1 >= "1"^^xsd:double )' )->addNewLine()
+			->addString( '?result property:Bar ?v2 .' )->addNewLine()
+			->addString( 'FILTER( ?v2 <= "9"^^xsd:double )' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	public function testQueryForPropertyDisjunction() {
 
 		$conjunction = new Disjunction( array(
 			new SomeProperty( new DIProperty( 'Foo' ), new ThingDescription() ),
@@ -261,6 +297,42 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result property:Foo ?v1 .' )->addNewLine()
 			->addString( '} UNION {' )->addNewLine()
 			->addString( '?result property:Bar ?v2 .' )->addNewLine()
+			->addString( '}' )
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	public function testQueryForPropertyDisjunctionWithLikeNotLikeFilter() {
+
+		$conjunction = new Disjunction( array(
+			new SomeProperty(
+				new DIProperty( 'Foo' ),
+				new ValueDescription( new DIBlob( "AA*" ), null, SMW_CMP_LIKE ) ),
+			new SomeProperty(
+				new DIProperty( 'Bar' ),
+				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE )  )
+		) );
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->buildCondition( $conjunction );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '{' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( 'FILTER( regex( ?v1, "^AA.*$", "s") )' )->addNewLine()
+			->addString( '} UNION {' )->addNewLine()
+			->addString( '?result property:Bar ?v2 .' )->addNewLine()
+			->addString( 'FILTER( !regex( ?v2, "^BB.$", "s") )' )->addNewLine()
 			->addString( '}' )
 			->getString();
 

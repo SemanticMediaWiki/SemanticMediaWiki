@@ -119,8 +119,10 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 			}
 		}
 
-		$this->assertTrue( $assertThatQueryResultHasSubjects, 'Asserts that a subject is set' );
-		$this->assertEquals( $expectedToCount, $actualComparedToCount, 'Asserts that all listed subjects are set' );
+		if ( $expectedToCount > 0 ) {
+			$this->assertTrue( $assertThatQueryResultHasSubjects, 'Asserts that a subject is set' );
+			$this->assertEquals( $expectedToCount, $actualComparedToCount, 'Asserts that all listed subjects are set' );
+		}
 	}
 
 	/**
