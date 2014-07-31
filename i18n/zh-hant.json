@@ -93,7 +93,7 @@
 	"smw_iq_moreresults": "更多結果",
 	"smw_parseerror": "輸入的值無法理解。",
 	"smw_notitle": "「$1」不得被用做此 wiki 的頁面名稱。",
-	"smw_noproperty": "\"$1\"不能用作此維基中的一個屬性名稱。",
+	"smw_noproperty": "\"$1\"不能用作此 wiki 中的一個屬性名稱。",
 	"smw_wrong_namespace": "此處只允許名子空間「$1」中的頁面。",
 	"smw_manytypes": "此屬性定義了一種以上類型。",
 	"smw_emptystring": "不接受空字元串。",
