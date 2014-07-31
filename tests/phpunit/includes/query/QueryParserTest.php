@@ -257,4 +257,52 @@ class QueryParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSubqueryDisjunction() {
+
+		$property = new DIProperty( 'HasSomeProperty' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$disjunction = new Disjunction( array(
+			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
+			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+		) );
+
+		$description = new SomeProperty(
+			$property,
+			$disjunction
+		);
+
+		$this->assertEquals(
+			$description,
+			$this->queryParser->getQueryDescription( '[[HasSomeProperty::Foo||Bar]]' )
+		);
+	}
+
+	public function testNestedPropertyConjunction() {
+
+		$property = DIProperty::newFromUserLabel( 'Born in' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$conjunction = new Conjunction( array(
+			new ClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
+			new SomeProperty(
+				DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ),
+				new ValueDescription(
+					new DIWikiPage( 'Outback', NS_MAIN ),
+					DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ) )
+				)
+			)
+		);
+
+		$description = new SomeProperty(
+			$property,
+			$conjunction
+		);
+
+		$this->assertEquals(
+			$description,
+			$this->queryParser->getQueryDescription( '[[born in::<q>[[Category:City]] [[located in::Outback]]</q>]]' )
+		);
+	}
+
 }

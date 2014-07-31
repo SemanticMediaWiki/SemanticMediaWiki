@@ -9,19 +9,12 @@ use SMW\Tests\Util\QueryResultValidator;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
-use SMW\DataValueFactory;
-use SMW\Subobject;
 
 use SMWQueryParser as QueryParser;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
 use SMWSomeProperty as SomeProperty;
-use SMWPrintRequest as PrintRequest;
-use SMWPropertyValue as PropertyValue;
 use SMWThingDescription as ThingDescription;
 use SMWValueDescription as ValueDescription;
 use SMWConjunction as Conjunction;
@@ -49,14 +42,12 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;
-	private $dataValueFactory;
 	private $queryResultValidator;
 	private $queryParser;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->queryResultValidator = new QueryResultValidator();
 		$this->queryParser = new QueryParser();
@@ -85,9 +76,12 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			->setTitle( __METHOD__ . '-neverland' )
 			->newEmptySemanticData();
 
-		$semanticDataOfNeverland->addDataValue(
-			$this->newDataValueForPagePropertyValue( 'LocatedIn', 'BananaWonderland' )
+		$semanticDataOfNeverland->addPropertyObjectValue(
+			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
+			new DIWikiPage( 'BananaWonderland', NS_MAIN )
 		);
+
+		$this->getStore()->updateData( $semanticDataOfNeverland );
 
 		/**
 		 * Page ...-dreamland annotated with [[Category:HappyPlaces]] [[LocatedIn::BananaWonderland]]
@@ -96,13 +90,17 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			->setTitle( __METHOD__ . '-dreamland' )
 			->newEmptySemanticData();
 
-		$semanticDataOfDreamland->addDataValue(
-			$this->newDataValueForPagePropertyValue( 'LocatedIn', 'BananaWonderland' )
+		$semanticDataOfDreamland->addPropertyObjectValue(
+			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
+			new DIWikiPage( 'BananaWonderland', NS_MAIN )
 		);
 
-		$semanticDataOfDreamland->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_INST' ), 'HappyPlaces' )
+		$semanticDataOfDreamland->addPropertyObjectValue(
+			new DIProperty( '_INST' ),
+			new DIWikiPage( 'HappyPlaces', NS_CATEGORY )
 		);
+
+		$this->getStore()->updateData( $semanticDataOfDreamland );
 
 		/**
 		 * Page BananaWonderland annotated with [[MemberOf::Wonderland]]
@@ -111,13 +109,12 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			->setTitle( 'BananaWonderland' )
 			->newEmptySemanticData();
 
-		$semanticDataOfWonderland->addDataValue(
-			$this->newDataValueForPagePropertyValue( 'MemberOf', 'Wonderland' )
+		$semanticDataOfWonderland->addPropertyObjectValue(
+			DIProperty::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ),
+			new DIWikiPage( 'Wonderland', NS_MAIN )
 		);
 
-		$this->getStore()->updateData( $semanticDataOfDreamland );
 		$this->getStore()->updateData( $semanticDataOfWonderland );
-		$this->getStore()->updateData( $semanticDataOfNeverland );
 
 		$someProperty = new SomeProperty(
 			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
@@ -179,16 +176,86 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
-	private function newDataValueForPagePropertyValue( $property, $value ) {
+	public function testNestedPropertyConjunction() {
 
-		$property = new DIProperty( $property );
+		$property = DIProperty::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$dataItem = new DIWikiPage( $value, NS_MAIN, '' );
+		/**
+		 * Page annotated with [[Born in::Nomansland]]
+		 */
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ . 'PageOughtToBeSelected' );
 
-		return $this->dataValueFactory->newDataItemValue(
-			$dataItem,
-			$property
+		$semanticData->addPropertyObjectValue(
+			$property,
+			new DIWikiPage( 'Nomansland', NS_MAIN )
+		);
+
+		$expectedSubjects = $semanticData->getSubject();
+		$this->subjectsToBeCleared[] = $semanticData->getSubject();
+
+		$this->getStore()->updateData( $semanticData );
+
+		/**
+		 * Page annotated with [[Category:City]] [[Located in::Outback]]
+		 */
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( 'Nomansland' );
+
+		$semanticData->addPropertyObjectValue(
+			DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ),
+			new DIWikiPage( 'Outback', NS_MAIN )
+		);
+
+		$semanticData->addPropertyObjectValue(
+			new DIProperty( '_INST' ),
+			new DIWikiPage( 'City', NS_CATEGORY )
+		);
+
+		$this->subjectsToBeCleared[] = $semanticData->getSubject();
+		$this->getStore()->updateData( $semanticData );
+
+		/**
+		 * Query with [[Born in::<q>[[Category:City]] [[Located in::Outback]]</q>]]
+		 */
+		$conjunction = new Conjunction( array(
+			new ClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
+			new SomeProperty(
+				DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ),
+				new ValueDescription(
+					new DIWikiPage( 'Outback', NS_MAIN ),
+					DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ) )
+				)
+			)
+		);
+
+		$description = new SomeProperty(
+			$property,
+			$conjunction
+		);
+
+		$this->assertEquals(
+			$description,
+			$this->queryParser->getQueryDescription( '[[Born in::<q>[[Category:City]] [[Located in::Outback]]</q>]]' )
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$queryResult = $this->getStore()->getQueryResult( $query );
+
+		$this->assertEquals(
+			1,
+			$queryResult->getCount()
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$expectedSubjects,
+			$queryResult
 		);
 	}
 

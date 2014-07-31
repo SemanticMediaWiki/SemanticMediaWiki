@@ -9,18 +9,12 @@ use SMW\Tests\Util\QueryResultValidator;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\SemanticData;
-use SMW\DataValueFactory;
-use SMW\Subobject;
 
 use SMWQueryParser as QueryParser;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
 use SMWSomeProperty as SomeProperty;
-use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 use SMWThingDescription as ThingDescription;
 use SMWValueDescription as ValueDescription;
@@ -45,18 +39,19 @@ use SMWClassDescription as ClassDescription;
  */
 class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	protected $databaseToBeExcluded = array( 'sqlite' );
+	/**
+	 * Issues with postgres + disjunction, for details see #454
+	 */
+	protected $databaseToBeExcluded = array( 'sqlite', 'postgres' );
 
 	private $subjectsToBeCleared = array();
 	private $semanticDataFactory;
-	private $dataValueFactory;
 	private $queryResultValidator;
 	private $queryParser;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->queryResultValidator = new QueryResultValidator();
 		$this->queryParser = new QueryParser();
@@ -78,10 +73,6 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	 */
 	public function testDisjunctionSubqueryForPageTypePropertyChainThatComparesEqualToValue() {
 
-		if ( $this->getDBConnection()->getType() == 'postgres' ) {
-			$this->markTestSkipped( "Issue with postgres + Disjunction, for details see #454" );
-		}
-
 		/**
 		 * Page ...-dangerland annotated with [[Category:WickedPlaces]]
 		 */
@@ -89,9 +80,13 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			->setTitle( __METHOD__ . '-dangerland' )
 			->newEmptySemanticData();
 
-		$semanticDataOfDangerland->addDataValue(
-			$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_INST' ), 'WickedPlaces' )
+		$semanticDataOfDangerland->addPropertyObjectValue(
+			new DIProperty( '_INST' ),
+			new DIWikiPage( 'WickedPlaces', NS_CATEGORY )
 		);
+
+		$this->subjectsToBeCleared[] = $semanticDataOfDangerland->getSubject();
+		$this->getStore()->updateData( $semanticDataOfDangerland );
 
 		/**
 		 * Page ...-dreamland annotated with [[LocatedIn::BananaWonderland]]
@@ -100,9 +95,13 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			->setTitle( __METHOD__ . '-dreamland' )
 			->newEmptySemanticData();
 
-		$semanticDataOfDreamland->addDataValue(
-			$this->newDataValueForPagePropertyValue( 'LocatedIn', 'BananaWonderland' )
+		$semanticDataOfDreamland->addPropertyObjectValue(
+			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
+			new DIWikiPage( 'BananaWonderland', NS_MAIN )
 		);
+
+		$this->subjectsToBeCleared[] = $semanticDataOfDreamland->getSubject();
+		$this->getStore()->updateData( $semanticDataOfDreamland );
 
 		/**
 		 * Page BananaWonderland annotated with [[MemberOf::Wonderland]]
@@ -111,14 +110,17 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			->setTitle( 'BananaWonderland' )
 			->newEmptySemanticData();
 
-		$semanticDataOfWonderland->addDataValue(
-			$this->newDataValueForPagePropertyValue( 'MemberOf', 'Wonderland' )
+		$semanticDataOfWonderland->addPropertyObjectValue(
+			DIProperty::newFromUserLabel( 'MemberOf' )->setPropertyTypeId( '_wpg' ),
+			new DIWikiPage( 'Wonderland', NS_MAIN )
 		);
 
-		$this->getStore()->updateData( $semanticDataOfDreamland );
+		$this->subjectsToBeCleared[] = $semanticDataOfWonderland->getSubject();
 		$this->getStore()->updateData( $semanticDataOfWonderland );
-		$this->getStore()->updateData( $semanticDataOfDangerland );
 
+		/**
+		 * Query with [[Category:WickedPlaces]] OR [[LocatedIn.MemberOf::Wonderland]]
+		 */
 		$someProperty = new SomeProperty(
 			DIProperty::newFromUserLabel( 'LocatedIn' )->setPropertyTypeId( '_wpg' ),
 			new SomeProperty(
@@ -172,24 +174,79 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$expectedSubjects,
 			$queryResult
 		);
-
-		$this->subjectsToBeCleared = array(
-			$semanticDataOfWonderland->getSubject(),
-			$semanticDataOfDreamland->getSubject(),
-			$semanticDataOfDangerland->getSubject()
-		);
 	}
 
-	private function newDataValueForPagePropertyValue( $property, $value ) {
+	public function testSubqueryDisjunction() {
 
-		$property = new DIProperty( $property );
+		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$dataItem = new DIWikiPage( $value, NS_MAIN, '' );
+		/**
+		 * Page annotated with [[HasSomeProperty:Foo]]
+		 */
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ . '1' );
 
-		return $this->dataValueFactory->newDataItemValue(
-			$dataItem,
-			$property
+		$semanticData->addPropertyObjectValue(
+			$property,
+			new DIWikiPage( 'Foo', NS_MAIN )
+		);
+
+		$expectedSubjects[] = $semanticData->getSubject();
+		$this->subjectsToBeCleared[] = $semanticData->getSubject();
+
+		$this->getStore()->updateData( $semanticData );
+
+		/**
+		 * Page annotated with [[HasSomeProperty:Bar]]
+		 */
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ . '2' );
+
+		$semanticData->addPropertyObjectValue(
+			$property,
+			new DIWikiPage( 'Bar', NS_MAIN )
+		);
+
+		$expectedSubjects[] = $semanticData->getSubject();
+		$this->subjectsToBeCleared[] = $semanticData->getSubject();
+
+		$this->getStore()->updateData( $semanticData );
+
+		/**
+		 * Query with [[HasSomeProperty::Foo||Bar]]
+		 */
+		$disjunction = new Disjunction( array(
+			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
+			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+		) );
+
+		$description = new SomeProperty(
+			$property,
+			$disjunction
+		);
+
+		$query = new Query(
+			$description,
+			false,
+			false
+		);
+
+		$this->assertEquals(
+			$description,
+			$this->queryParser->getQueryDescription( '[[HasSomeProperty::Foo||Bar]]' )
+		);
+
+		$query->querymode = Query::MODE_INSTANCES;
+
+		$queryResult = $this->getStore()->getQueryResult( $query );
+
+		$this->assertEquals(
+			2,
+			$queryResult->getCount()
+		);
+
+		$this->queryResultValidator->assertThatQueryResultHasSubjects(
+			$expectedSubjects,
+			$queryResult
 		);
 	}
 
