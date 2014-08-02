@@ -13,10 +13,13 @@ For a full overview, see our [compatibility matrix](COMPATIBILITY.md).
 
 ## Improved SPARQLStore support
 
-[SMW 1.6](http://semantic-mediawiki.org/wiki/SMW_1.6#Synchronizing_SMW_with_RDF_stores) introduced
-support for data synchronization with RDF back-ends. SMW 2.0 extends the existing implementation and
-adds an additional database connector for [Jena Fuseki](http://jena.apache.org/) 1.0.2 (#339). It
-also restores the support for `4Store` 1.1.4  (#370, bug 43708, bug 44700).
+[Semantic MediaWiki 1.6](http://semantic-mediawiki.org/wiki/SMW_1.6#Synchronizing_SMW_with_RDF_stores)
+introduced support for data synchronization with RDF back-ends. SMW 2.0 makes this functionality a
+first class citizen through many enhancements and stability improvements.
+
+* New and full support for [Jena Fuseki](http://jena.apache.org/) 1.0
+* Enhanced and full support for [Virtuoso](https://github.com/openlink/virtuoso-opensource) 6.1
+* Enhanced support for [4store](https://github.com/garlik/4store) 1.1
 
 The [`smwgSparqlDatabase`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabase) setting
 introduced in 1.6 has been deprecated in favour of
@@ -30,7 +33,8 @@ allow for better testability and code readability (#360, #371, #379, #375, #383,
 The `SMWSparqlStore` and `SMWSparqlDatabase` class names are kept for legacy support but it is
 suggested to use the new settings parameter.
 
-Unit and integration tests were given extra focus together with a continuous integraton of  [Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1]
+Unit and integration tests were given extra focus together with a continuous integration of
+[Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1]
 (https://github.com/openlink/virtuoso-opensource) (#394) to ensure that compatibility and functional
 parity are going hand in hand with the rest of SMW. (Unfortunately `4Store` currently does not run
 on the continuous integration platform, for details see [garlik#110]
@@ -77,14 +81,14 @@ databases, different versions of PHP, different SPARQL stores and different vers
 * #420 Extended `ContentParser` to mitigate issues caused by the 62856 bug in MW 1.24+
 * #405 Added a compatibility fix to mitigate issues caused by the `RefreshLinksJob` in MW 1.23+
 
-#### SPARQLStore
+### SPARQLStore
 
 - #291 Fixed call to undefined method in `SPARQLStore`
 - #338 Fixed exception in `ResultParser` for an invalid datatype (bug 62218)
 - #385 Fixed '#' encoding for subobjects in `SMWExporter::findDataItemForExpElement` to enable `SPARQLStore` result display
 - #387 Fixed `SPARQLStore` namespace query support (e.g `[[:+]]` )
 - #415 Fixed `SPARQLStore` usage for `rebuildConceptCache.php` and `rebuildPropertyStatistics.php`
-- #460 Fixed `SPARQLStore` subobject subqueries and pre-defined property queries support
+- #460 Fixed `SPARQLStore` subobject sub query and pre-defined property query support
 
 ## Behind the scenes
 
