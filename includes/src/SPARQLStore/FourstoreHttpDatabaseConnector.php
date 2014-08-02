@@ -2,6 +2,7 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
 use SMW\SPARQLStore\QueryEngine\FederateResultSet;
 

@@ -61,7 +61,7 @@ class DatabaseConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 			''
 		);
 
-		$this->setExpectedException( '\SMW\SPARQLStore\BadHttpDatabaseResponseException' );
+		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException' );
 		$instance->doQuery( '' );
 	}
 
@@ -76,7 +76,7 @@ class DatabaseConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 			''
 		);
 
-		$this->setExpectedException( '\SMW\SPARQLStore\BadHttpDatabaseResponseException' );
+		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException' );
 		$instance->doUpdate( '' );
 	}
 
@@ -92,7 +92,7 @@ class DatabaseConnectorExceptionTest extends \PHPUnit_Framework_TestCase {
 			''
 		);
 
-		$this->setExpectedException( '\SMW\SPARQLStore\BadHttpDatabaseResponseException' );
+		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException' );
 		$instance->doHttpPost( '' );
 	}
 

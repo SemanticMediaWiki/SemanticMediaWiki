@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
+
 /**
  * Virtuoso specific adjustments for GenericHttpDatabaseConnector
  *

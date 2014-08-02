@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore;
+namespace SMW\Tests\SPARQLStore\Exception;
 
-use SMW\SPARQLStore\BadHttpDatabaseResponseException;
+use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 
 /**
- * @covers \SMW\SPARQLStore\BadHttpDatabaseResponseException
+ * @covers \SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException
  *
  * @ingroup Test
  *
@@ -22,7 +22,7 @@ class BadHttpDatabaseResponseExceptionTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\BadHttpDatabaseResponseException',
+			'\SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException',
 			new BadHttpDatabaseResponseException( 'Foo', 'Bar', 'Que' )
 		);
 	}
