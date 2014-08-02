@@ -16,14 +16,7 @@ For a full overview, see our [compatibility matrix](COMPATIBILITY.md).
 [SMW 1.6](http://semantic-mediawiki.org/wiki/SMW_1.6#Synchronizing_SMW_with_RDF_stores) introduced
 support for data synchronization with RDF back-ends. SMW 2.0 extends the existing implementation and
 adds an additional database connector for [Jena Fuseki](http://jena.apache.org/) 1.0.2 (#339). It
-also restores the support for `4Store` 1.1.4  (#370, bug 43708, bug 44700). Other fixes include:
-
-- #291 Fixed call to undefined method in `SPARQLStore`
-- #338 Fixed exception in `ResultParser` for an invalid datatype (bug 62218)
-- #385 Fixed '#' encoding for subobjects in `SMWExporter::findDataItemForExpElement` to enable `SPARQLStore` result display
-- #387 Fixed `SPARQLStore` namespace query support (e.g `[[:+]]` )
-- #415 Fixed `SPARQLStore` usage for `rebuildConceptCache.php` and `rebuildPropertyStatistics.php`
-- #460 Fixed `SPARQLStore` subobject subqueries and pre-defined property queries support
+also restores the support for `4Store` 1.1.4  (#370, bug 43708, bug 44700).
 
 The [`smwgSparqlDatabase`](https://semantic-mediawiki.org/wiki/Help:$smwgSparqlDatabase) setting
 introduced in 1.6 has been deprecated in favour of
@@ -83,6 +76,15 @@ databases, different versions of PHP, different SPARQL stores and different vers
 * #444 Fixed language namespace alias issue
 * #420 Extended `ContentParser` to mitigate issues caused by the 62856 bug in MW 1.24+
 * #405 Added a compatibility fix to mitigate issues caused by the `RefreshLinksJob` in MW 1.23+
+
+#### SPARQLStore
+
+- #291 Fixed call to undefined method in `SPARQLStore`
+- #338 Fixed exception in `ResultParser` for an invalid datatype (bug 62218)
+- #385 Fixed '#' encoding for subobjects in `SMWExporter::findDataItemForExpElement` to enable `SPARQLStore` result display
+- #387 Fixed `SPARQLStore` namespace query support (e.g `[[:+]]` )
+- #415 Fixed `SPARQLStore` usage for `rebuildConceptCache.php` and `rebuildPropertyStatistics.php`
+- #460 Fixed `SPARQLStore` subobject subqueries and pre-defined property queries support
 
 ## Behind the scenes
 
