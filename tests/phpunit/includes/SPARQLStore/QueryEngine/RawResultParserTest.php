@@ -37,7 +37,7 @@ class RawResultParserTest extends \PHPUnit_Framework_TestCase {
 	public function testXmlParse( $rawXmlResult, $expectedResultRowItemInstance ) {
 
 		$instance = new RawResultParser();
-		$resultFormat = $instance->parseXmlToInternalResultFormat( $rawXmlResult );
+		$resultFormat = $instance->parse( $rawXmlResult );
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\FederateResultList',
@@ -57,7 +57,7 @@ class RawResultParserTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RawResultParser();
 
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->parseXmlToInternalResultFormat( $rawResultProvider->getInvalidSparqlResultXml() );
+		$instance->parse( $rawResultProvider->getInvalidSparqlResultXml() );
 	}
 
 	protected function assertResultFormat( $expectedResultRowItemInstance, $results ) {
@@ -131,6 +131,18 @@ class RawResultParserTest extends \PHPUnit_Framework_TestCase {
 				new ExpResource( 'http://example.org/id/Bar' ),
 				new ExpLiteral( 'Quux', 'http://www.w3.org/2001/XMLSchema#string' )
 			)
+		);
+
+		#7 #450
+		$provider[] = array(
+			false,
+			null
+		);
+
+		#8 #450
+		$provider[] = array(
+			'false',
+			null
 		);
 
 		return $provider;

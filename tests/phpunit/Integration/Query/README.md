@@ -1,0 +1,1 @@
+- `NullQueryResultTest::testNullQueryResult` to test `[[Some_string_to_query]]` (Virtuoso would return a `false` string as raw result)
