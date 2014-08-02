@@ -54,7 +54,7 @@ class FourstoreHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 
 		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			$rawResultParser = new RawResultParser();
-			$result = $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
+			$result = $rawResultParser->parse( $xmlResult );
 		} else {
 			$this->mapHttpRequestError( $this->m_queryEndpoint, $sparql );
 			$result = new FederateResultList( array(), array(), array(), FederateResultList::ERROR_UNREACHABLE );

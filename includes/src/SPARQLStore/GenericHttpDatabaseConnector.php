@@ -437,7 +437,7 @@ class GenericHttpDatabaseConnector {
 
 		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
 			$rawResultParser = new RawResultParser();
-			return $rawResultParser->parseXmlToInternalResultFormat( $xmlResult );
+			return $rawResultParser->parse( $xmlResult );
 		}
 
 		$this->mapHttpRequestError( $this->m_queryEndpoint, $sparql );

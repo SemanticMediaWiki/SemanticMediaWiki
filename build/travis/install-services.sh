@@ -11,7 +11,7 @@ fi
 if [ "$FUSEKI" != "" ]
 then
 
-	wget https://www.apache.org/dist/jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
+	wget http://ftp.fau.de/apache//jena/binaries/jena-fuseki-$FUSEKI-distribution.tar.gz
 	tar -zxf jena-fuseki-$FUSEKI-distribution.tar.gz
 	mv jena-fuseki-$FUSEKI fuseki
 

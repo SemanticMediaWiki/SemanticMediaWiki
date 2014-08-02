@@ -90,30 +90,25 @@ class RawResultParser {
 	 * Parse the given XML result and return an FederateResultList for
 	 * the contained data.
 	 *
-	 * @param string $xmlResultData
+	 * @param string $rawData
 	 *
 	 * @return FederateResultList
 	 */
-	public function parseXmlToInternalResultFormat( $xmlResultData ) {
+	public function parse( $rawResult ) {
 
 		$this->xmlOpenTags = array();
 		$this->header = array();
 		$this->data = array();
 		$this->comments = array();
 
-		if ( !$this->parse( $xmlResultData ) ) {
-			// XmlResultParserException
-			throw new RuntimeException( "Parser error: " . $this->getLastError() );
+		if ( $rawResult == 'false' || is_bool( $rawResult ) || $this->parseXml( $rawResult ) ) {
+			return new FederateResultList( $this->header, $this->data, $this->comments );
 		}
 
-		return new FederateResultList(
-			$this->header,
-			$this->data,
-			$this->comments
-		);
+		throw new RuntimeException( "Parser error: " . $this->getLastError() );
 	}
 
-	private function parse( $xmlResultData ) {
+	private function parseXml( $xmlResultData ) {
 		return xml_parse( $this->parser, $xmlResultData , true );
 	}
 
