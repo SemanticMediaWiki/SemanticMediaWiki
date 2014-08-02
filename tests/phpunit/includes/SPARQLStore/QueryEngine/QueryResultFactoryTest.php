@@ -4,13 +4,13 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\Tests\Util\Mock\IteratorMockBuilder;
 
-use SMW\SPARQLStore\QueryEngine\ResultListConverter;
+use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 
 /**
- * @covers \SMW\SPARQLStore\QueryEngine\ResultListConverter
+ * @covers \SMW\SPARQLStore\QueryEngine\QueryResultFactory
  *
  * @ingroup Test
  *
@@ -23,7 +23,7 @@ use SMWQueryResult as QueryResult;
  *
  * @author mwjames
  */
-class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
+class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -32,8 +32,8 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\ResultListConverter',
-			new ResultListConverter( $store )
+			'\SMW\SPARQLStore\QueryEngine\QueryResultFactory',
+			new QueryResultFactory( $store )
 		);
 	}
 
@@ -61,16 +61,16 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_COUNT;
 
-		$instance = new ResultListConverter( $store );
+		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->convertToQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 
 		$this->assertQueryResultErrorCodeForCountValue(
 			$errorCode,
-			$instance->convertToQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 	}
 
@@ -98,16 +98,16 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$instance = new ResultListConverter( $store );
+		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->convertToQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 
 		$this->assertQueryResultErrorCode(
 			$errorCode,
-			$instance->convertToQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 	}
 
@@ -141,16 +141,16 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$instance = new ResultListConverter( $store );
+		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->convertToQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 
 		$this->assertQueryResultErrorCode(
 			$errorCode,
-			$instance->convertToQueryResult( $federateResultSet, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 	}
 

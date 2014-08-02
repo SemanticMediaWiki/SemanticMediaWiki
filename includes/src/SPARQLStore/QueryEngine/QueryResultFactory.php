@@ -19,7 +19,7 @@ use SMWQuery as Query;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class ResultListConverter {
+class QueryResultFactory {
 
 	/**
 	 * @var Store
@@ -63,7 +63,7 @@ class ResultListConverter {
 	 *
 	 * @return QueryResult
 	 */
-	public function convertToQueryResult( FederateResultSet $federateResultSet, Query $query ) {
+	public function newQueryResult( FederateResultSet $federateResultSet, Query $query ) {
 
 		if ( $query->querymode === Query::MODE_COUNT ) {
 			return $this->makeQueryResultForCount( $federateResultSet, $query );

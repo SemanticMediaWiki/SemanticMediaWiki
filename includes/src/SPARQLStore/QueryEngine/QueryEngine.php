@@ -42,9 +42,9 @@ class QueryEngine {
 	private $queryConditionBuilder;
 
 	/**
-	 * @var ResultListConverter
+	 * @var QueryResultFactory
 	 */
-	private $resultListConverter;
+	private $queryResultFactory;
 
 	/**
 	 * Copy of the SMWQuery sortkeys array to be used while building the
@@ -73,12 +73,12 @@ class QueryEngine {
 	 *
 	 * @param SparqlDatabase $connection
 	 * @param QueryConditionBuilder $queryConditionBuilder
-	 * @param ResultListConverter $resultListConverter
+	 * @param QueryResultFactory $queryResultFactory
 	 */
-	public function __construct( SparqlDatabase $connection, QueryConditionBuilder $queryConditionBuilder, ResultListConverter $resultListConverter ) {
+	public function __construct( SparqlDatabase $connection, QueryConditionBuilder $queryConditionBuilder, QueryResultFactory $queryResultFactory ) {
 		$this->connection = $connection;
 		$this->queryConditionBuilder = $queryConditionBuilder;
-		$this->resultListConverter = $resultListConverter;
+		$this->queryResultFactory = $queryResultFactory;
 
 		$this->queryConditionBuilder->setResultVariable( self::RESULT_VARIABLE );
 	}
@@ -124,12 +124,12 @@ class QueryEngine {
 		if ( ( !$this->ignoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
-			return $this->resultListConverter->newEmptyQueryResult( $query, false );
+			return $this->queryResultFactory->newEmptyQueryResult( $query, false );
 		}
 
 		// don't query, but return something to the printer
 		if ( $query->querymode == Query::MODE_NONE ) {
-			return $this->resultListConverter->newEmptyQueryResult( $query, true );
+			return $this->queryResultFactory->newEmptyQueryResult( $query, true );
 		}
 
 		if ( $query->querymode == Query::MODE_DEBUG ) {
@@ -188,7 +188,7 @@ class QueryEngine {
 			$namespaces
 		);
 
-		return $this->resultListConverter->convertToQueryResult( $federateResultSet, $query );
+		return $this->queryResultFactory->newQueryResult( $federateResultSet, $query );
 	}
 
 	/**
@@ -237,7 +237,7 @@ class QueryEngine {
 			);
 		}
 
-		return $this->resultListConverter->convertToQueryResult( $federateResultSet, $query );
+		return $this->queryResultFactory->newQueryResult( $federateResultSet, $query );
 	}
 
 	/**

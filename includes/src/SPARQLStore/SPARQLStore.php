@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\ResultListConverter;
+use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 
 use SMW\SemanticData;
 use SMW\DIWikiPage;
@@ -254,7 +254,7 @@ class SPARQLStore extends Store {
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
 			new QueryConditionBuilder(),
-			new ResultListConverter( $this )
+			new QueryResultFactory( $this )
 		);
 
 		return $queryEngine
