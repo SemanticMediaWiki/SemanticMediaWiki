@@ -87,12 +87,12 @@ class RawResultParser {
 	}
 
 	/**
-	 * Parse the given XML result and return an FederateResultList for
+	 * Parse the given XML result and return an FederateResultSet for
 	 * the contained data.
 	 *
 	 * @param string $rawData
 	 *
-	 * @return FederateResultList
+	 * @return FederateResultSet
 	 */
 	public function parse( $rawResult ) {
 
@@ -102,7 +102,7 @@ class RawResultParser {
 		$this->comments = array();
 
 		if ( $rawResult == 'false' || is_bool( $rawResult ) || $this->parseXml( $rawResult ) ) {
-			return new FederateResultList( $this->header, $this->data, $this->comments );
+			return new FederateResultSet( $this->header, $this->data, $this->comments );
 		}
 
 		throw new RuntimeException( "Parser error: " . $this->getLastError() );

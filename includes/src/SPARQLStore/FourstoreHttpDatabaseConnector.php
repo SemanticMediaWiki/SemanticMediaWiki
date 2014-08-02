@@ -3,7 +3,7 @@
 namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
-use SMW\SPARQLStore\QueryEngine\FederateResultList;
+use SMW\SPARQLStore\QueryEngine\FederateResultSet;
 
 use SMWSparqlResultParser as SparqlResultParser;
 use SMWTurtleSerializer as TurtleSerializer;
@@ -21,7 +21,7 @@ use SMWTurtleSerializer as TurtleSerializer;
 class FourstoreHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 
 	/**
-	 * Execute a SPARQL query and return an FederateResultList object
+	 * Execute a SPARQL query and return an FederateResultSet object
 	 * that contains the results. Compared to GenericHttpDatabaseConnector::doQuery(),
 	 * this also supports the parameter "restricted=1" which 4Store provides
 	 * to enforce strict resource bounds on query answering. The method also
@@ -33,7 +33,7 @@ class FourstoreHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 	 * limit settings of your 4Store server.
 	 *
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
-	 * @return FederateResultList
+	 * @return FederateResultSet
 	 */
 	public function doQuery( $sparql ) {
 
@@ -57,13 +57,13 @@ class FourstoreHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 			$result = $rawResultParser->parse( $xmlResult );
 		} else {
 			$this->mapHttpRequestError( $this->m_queryEndpoint, $sparql );
-			$result = new FederateResultList( array(), array(), array(), FederateResultList::ERROR_UNREACHABLE );
+			$result = new FederateResultSet( array(), array(), array(), FederateResultSet::ERROR_UNREACHABLE );
 		}
 
 		foreach ( $result->getComments() as $comment ) {
 			if ( strpos( $comment, 'warning: hit complexity limit' ) === 0 ||
 			     strpos( $comment, 'some results have been dropped' ) === 0 ) {
-				$result->setErrorCode( FederateResultList::ERROR_INCOMPLETE );
+				$result->setErrorCode( FederateResultSet::ERROR_INCOMPLETE );
 			} //else debug_zval_dump($comment);
 		}
 
@@ -82,7 +82,7 @@ class FourstoreHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
 		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", array(), $extraNamespaces );
-		$success = ( $affectedObjects->getErrorCode() == FederateResultList::ERROR_NOERROR );
+		$success = ( $affectedObjects->getErrorCode() == FederateResultSet::ERROR_NOERROR );
 
 		foreach ( $affectedObjects as $expElements ) {
 			if ( count( $expElements ) > 0 ) {

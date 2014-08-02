@@ -13,8 +13,8 @@ The `SPARQLStore` uses two components a base store (by default using the existin
 
 - `#ask` query is transformed into an equivalent SPARQL condition using the `QueryConditionBuilder`
 - The client database connector resolves the condition into a `SPARQL` statement and makes a query request to the database
-- The client database (Fuseki etc. ) is expected to execute the query and return a list of results which are parsed using the `RawResultParser` and made available as `FederateResultList`
-- The `ResultListConverter` is to convert a `FederateResultList` into a `QueryResult` object
+- The client database (Fuseki etc. ) is expected to execute the query and return a list of results which are parsed using the `RawResultParser` and made available as `FederateResultSet`
+- The `ResultListConverter` is to convert a `FederateResultSet` into a `QueryResult` object
 - The `QueryResult` object will fetch all remaining data (for each printrequest ) from the base store which are to be used by a `ResultPrinter`
 
 ## Integration testing

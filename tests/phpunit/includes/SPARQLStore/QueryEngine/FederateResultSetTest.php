@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\SPARQLStore\QueryEngine\FederateResultList;
+use SMW\SPARQLStore\QueryEngine\FederateResultSet;
 
 use SMWExpLiteral as ExpLiteral;
 
 /**
- * @covers \SMW\SPARQLStore\QueryEngine\FederateResultList
+ * @covers \SMW\SPARQLStore\QueryEngine\FederateResultSet
  *
  * @ingroup Test
  *
@@ -19,24 +19,24 @@ use SMWExpLiteral as ExpLiteral;
  *
  * @author mwjames
  */
-class FederateResultListTest extends \PHPUnit_Framework_TestCase {
+class FederateResultSetTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\FederateResultList',
-			new FederateResultList( array(), array() )
+			'\SMW\SPARQLStore\QueryEngine\FederateResultSet',
+			new FederateResultSet( array(), array() )
 		);
 
 		$this->assertInstanceOf(
 			'\Iterator',
-			new FederateResultList( array(), array() )
+			new FederateResultSet( array(), array() )
 		);
 	}
 
 	public function testIsBooleanTrue() {
 
-		$instance = new FederateResultList(
+		$instance = new FederateResultSet(
 			array(),
 			array( array( new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' ) ) )
 		);
@@ -47,7 +47,7 @@ class FederateResultListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIsBooleanNotTrue() {
 
-		$instance = new FederateResultList(
+		$instance = new FederateResultSet(
 			array(),
 			array()
 		);
@@ -57,7 +57,7 @@ class FederateResultListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetNumericValue() {
 
-		$instance = new FederateResultList(
+		$instance = new FederateResultSet(
 			array(),
 			array( array( new ExpLiteral( '2', 'http://www.w3.org/2001/XMLSchema#integer' ) ) )
 		);
@@ -68,7 +68,7 @@ class FederateResultListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetZeroNumericValue() {
 
-		$instance = new FederateResultList(
+		$instance = new FederateResultSet(
 			array(),
 			array()
 		);
@@ -78,15 +78,15 @@ class FederateResultListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSetGetErrorCode() {
 
-		$instance = new FederateResultList(
+		$instance = new FederateResultSet(
 			array(),
 			array()
 		);
 
-		$instance->setErrorCode( FederateResultList::ERROR_INCOMPLETE );
+		$instance->setErrorCode( FederateResultSet::ERROR_INCOMPLETE );
 
 		$this->assertEquals(
-			FederateResultList::ERROR_INCOMPLETE,
+			FederateResultSet::ERROR_INCOMPLETE,
 			$instance->getErrorCode()
 		);
 	}
@@ -103,7 +103,7 @@ class FederateResultListTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance = new FederateResultList(
+		$instance = new FederateResultSet(
 			array(),
 			array( $rawList[0], $rawList[1] )
 		);
@@ -115,7 +115,7 @@ class FederateResultListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetComments() {
 
-		$instance = new FederateResultList(
+		$instance = new FederateResultSet(
 			array(),
 			array(),
 			array( 'Foo' )

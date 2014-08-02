@@ -40,7 +40,7 @@ class RawResultParserTest extends \PHPUnit_Framework_TestCase {
 		$resultFormat = $instance->parse( $rawXmlResult );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\FederateResultList',
+			'\SMW\SPARQLStore\QueryEngine\FederateResultSet',
 			$resultFormat
 		);
 

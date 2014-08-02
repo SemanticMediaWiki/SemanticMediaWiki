@@ -151,7 +151,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSuccessCountQueryResultForMockedCompostion() {
 
-		$federateResultList = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
+		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -161,7 +161,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'selectCount' )
-			->will( $this->returnValue( $federateResultList ) );
+			->will( $this->returnValue( $federateResultSet ) );
 
 		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
 

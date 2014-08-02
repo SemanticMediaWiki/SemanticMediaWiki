@@ -87,14 +87,14 @@ class RedirectLookup {
 		$rediUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getSpecialPropertyResource( '_REDI' ) );
 		$skeyUri = TurtleSerializer::getTurtleNameForExpElement( Exporter::getSpecialPropertyResource( '_SKEY' ) );
 
-		$federateResultList = $this->sparqlDatabase->select(
+		$federateResultSet = $this->sparqlDatabase->select(
 			'*',
 			"$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $rediUri ?r }",
 			array( 'LIMIT' => 1 ),
 			array( $expNsResource->getNamespaceId() => $expNsResource->getNamespace() )
 		);
 
-		return $federateResultList->current();
+		return $federateResultSet->current();
 	}
 
 	private function getResourceForTargetElement( ExpNsResource $expNsResource, $rediTargetElement ) {

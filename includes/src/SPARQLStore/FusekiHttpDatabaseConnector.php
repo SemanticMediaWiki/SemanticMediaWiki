@@ -4,7 +4,7 @@ namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
-use SMW\SPARQLStore\QueryEngine\FederateResultList;
+use SMW\SPARQLStore\QueryEngine\FederateResultSet;
 
 /**
  * @see https://jena.apache.org/documentation/serving_data/index.html
@@ -44,11 +44,11 @@ class FusekiHttpDatabaseConnector extends GenericHttpDatabaseConnector {
 
 		$this->mapHttpRequestError( $this->m_queryEndpoint, $sparql );
 
-		return new FederateResultList(
+		return new FederateResultSet(
 			array(),
 			array(),
 			array(),
-			FederateResultList::ERROR_UNREACHABLE
+			FederateResultSet::ERROR_UNREACHABLE
 		);
 	}
 

@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\SPARQLStore\QueryEngine\FederateResultList;
+use SMW\SPARQLStore\QueryEngine\FederateResultSet;
 
 use SMW\QueryOutputFormatter;
 
@@ -181,14 +181,14 @@ class QueryEngine {
 		$options = $this->getOptions( $query, $sparqlCondition );
 		$options['DISTINCT'] = true;
 
-		$federateResultList = $this->connection->selectCount(
+		$federateResultSet = $this->connection->selectCount(
 			'?' . self::RESULT_VARIABLE,
 			$condition,
 			$options,
 			$namespaces
 		);
 
-		return $this->resultListConverter->convertToQueryResult( $federateResultList, $query );
+		return $this->resultListConverter->convertToQueryResult( $federateResultSet, $query );
 	}
 
 	/**
@@ -218,10 +218,10 @@ class QueryEngine {
 				$results = $askQueryResult->isBooleanTrue() ? array( array ( $matchElement ) ) : array();
 			}
 
-			$federateResultList = new FederateResultList( array( self::RESULT_VARIABLE => 0 ), $results );
+			$federateResultSet = new FederateResultSet( array( self::RESULT_VARIABLE => 0 ), $results );
 
 		} elseif ( $sparqlCondition instanceof FalseCondition ) {
-			$federateResultList = new FederateResultList( array( self::RESULT_VARIABLE => 0 ), array() );
+			$federateResultSet = new FederateResultSet( array( self::RESULT_VARIABLE => 0 ), array() );
 		} else {
 			$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
@@ -229,7 +229,7 @@ class QueryEngine {
 			$options = $this->getOptions( $query, $sparqlCondition );
 			$options['DISTINCT'] = true;
 
-			$federateResultList = $this->connection->select(
+			$federateResultSet = $this->connection->select(
 				'?' . self::RESULT_VARIABLE,
 				$condition,
 				$options,
@@ -237,7 +237,7 @@ class QueryEngine {
 			);
 		}
 
-		return $this->resultListConverter->convertToQueryResult( $federateResultList, $query );
+		return $this->resultListConverter->convertToQueryResult( $federateResultSet, $query );
 	}
 
 	/**

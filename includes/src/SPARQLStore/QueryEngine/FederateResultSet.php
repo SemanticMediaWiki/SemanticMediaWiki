@@ -18,7 +18,7 @@ use Iterator;
  *
  * @author Markus Krötzsch
  */
-class FederateResultList implements Iterator {
+class FederateResultSet implements Iterator {
 
 	/// Error code: no errors occurred.
 	const ERROR_NOERROR     = 0;
