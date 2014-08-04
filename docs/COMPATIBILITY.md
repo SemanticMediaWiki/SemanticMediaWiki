@@ -11,14 +11,20 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.0.x</a></th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.1.x</a></th>
 		<td>Development version</td>
 		<td>-</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0</a></th>
 		<td>Stable release</td>
+		<td>2014-08-04</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.0">2.0</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
+		<td>Legacy release</td>
 		<td>2014-04-18</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/1.9.2">1.9.2</a></td>
 	</tr>
@@ -144,9 +150,9 @@ Triple store databases:
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
-		<td>Full support (for 1.0.2)</td>
+		<td>Full support (for 1.0)</td>
 		<td>Full support (for 6.1)</td>
-		<td>Beta support (for 1.1.4)</td>
+		<td>Beta support (for 1.1)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>

@@ -23,7 +23,10 @@ For details and further links, see [the SMW wiki](https://semantic-mediawiki.org
 
 - PHP 5.3.2 or later
 - MediaWiki 1.19 or later
-- When using MySQL 5 or later or when using SQLite 3 or later (a list of supported platforms and versions can be found [here](/docs/INSTALL.md##platform-compatibility))
+- MySQL 5+ or SQLite 3+
+
+A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
+in the [compatibility matrix](COMPATIBILITY.md).
 
 ## Installation
 
@@ -34,7 +37,7 @@ the available [upgrade guide][smw-installation].
 ```json
 {
 	"require": {
-		"mediawiki/semantic-media-wiki": "~1.9"
+		"mediawiki/semantic-media-wiki": "~2.0"
 	}
 }
 ```
@@ -57,12 +60,16 @@ The most important files are linked below.
 [![Facebook](https://semantic-mediawiki.org/w/images/thumb/7/77/677166248.png/30px-677166248.png)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
 [![Google+](https://semantic-mediawiki.org/w/images/a/ae/30px-Google%2B.png)](https://plus.google.com/115301028320198614441/posts)
 
-Many people have contributed to SMW. A list of people who have made contributions in the past can be found [here][contributors] or [on the SMW wiki]
-(https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors). The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md) provides information on the different ways available to do so.
+Many people have contributed to SMW. A list of people who have made contributions in the past can
+be found [here][contributors] or [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
+The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md)
+provides information on the different ways available to do so.
 
-If you have remarks, questions, or suggestions, please send them to semediawiki-users@lists.sourceforge.net. You can subscribe to this list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
+If you have remarks, questions, or suggestions, please send them to semediawiki-users@lists.sourceforge.net.
+You can subscribe to this list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
 
-If you want to contribute work to the project please subscribe to the developers mailing list and have a look at the contribution guildline.
+If you want to contribute work to the project please subscribe to the developers mailing list and
+have a look at the contribution guideline.
 
 * [File an issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues)
 * [Submit a pull request](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pulls)
@@ -72,7 +79,10 @@ If you want to contribute work to the project please subscribe to the developers
 
 ### Tests
 
-This extension provides unit and integration tests that are normally run by a [continues integration platform][travis] but tests can also manually be executed using the `mw-phpunit-runner.php` script or [`phpunit`][mw-testing] together with the PHPUnit configuration file found in the root directory.
+This extension provides unit and integration tests that are normally run by a
+[continues integration platform][travis] but tests can also manually be executed using the
+`mw-phpunit-runner.php` script or [`phpunit`][mw-testing] together with the PHPUnit configuration
+file found in the root directory.
 
 ```sh
 php mw-phpunit-runner.php [options]
