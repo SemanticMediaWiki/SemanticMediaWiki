@@ -11,12 +11,6 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.1.x</a></th>
-		<td>Development version</td>
-		<td>-</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
-	</tr>
-	<tr>
 		<th><a href="https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0</a></th>
 		<td>Stable release</td>
 		<td>2014-08-04</td>
