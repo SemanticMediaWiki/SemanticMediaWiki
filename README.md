@@ -26,7 +26,7 @@ For details and further links, see [the SMW wiki](https://semantic-mediawiki.org
 - MySQL 5+ or SQLite 3+
 
 A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
-in the [compatibility matrix](COMPATIBILITY.md).
+in the [compatibility matrix](docs/COMPATIBILITY.md).
 
 ## Installation
 
