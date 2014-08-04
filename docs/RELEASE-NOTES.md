@@ -9,7 +9,26 @@ versions. Support for both MediaWiki 1.23 and MediaWiki 1.24 was improved compar
 
 PHP compatibility remains the same as in SMW 1.9: all versions from PHP 5.3.2 to PHP 6.x.
 
+
 For a full overview, see our [compatibility matrix](COMPATIBILITY.md).
+
+## Quality and stability improvements
+
+A great deal of effort has been put into ensuring both existing and new features work well.
+Not just at present, but also in future releases. And not just with MySQL and one version of
+MediaWiki, but on all platforms we support. This dedication to quality has resulted in many
+bugs being discovered and fixed, and makes future regressions much less likely.
+
+Continuous integration is now an integral part of the development process behind SMW. As of
+the 2.0 release, SMW has over 2300 automated tests, which cover two thirds of the codebase.
+These tests are run automatically for every change made to the code, on machines with different
+databases, different versions of PHP, different SPARQL stores and different versions of MediaWiki.
+
+## Semantic Versioning
+
+As of the 2.0 release, Semantic MediaWiki adheres to the [Semantic Versioning standard]
+(http://semver.org/). This makes our version numbers more meaningful and makes it easier
+for administrators to determine if a new release is relevant to them.
 
 ## Improved SPARQLStore support
 
@@ -27,12 +46,6 @@ introduced in 1.6 has been deprecated in favour of
 (#342) to avoid arbitrary class assignments in `$smwgSparqlDatabase` (now only used to assign custom
 connectors).
 
-`SPARQLStore` has been converted to make use of a separate namespace together with improvements that
-allow for better testability and code readability (#360, #371, #379, #375, #383, #392, #393, #395, #402, #403, #415).
-
-The `SMWSparqlStore` and `SMWSparqlDatabase` class names are kept for legacy support but it is
-suggested to use the new settings parameter.
-
 Unit and integration tests were given extra focus together with a continuous integration of
 [Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1]
 (https://github.com/openlink/virtuoso-opensource) (#394) to ensure that compatibility and functional
@@ -46,27 +59,13 @@ is `Jena Fuseki` therefore other stores may not support all `query features`. Fo
 the testing environment and its configuration, see the [readme]
 (https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md) file.
 
-## Improved RDF subobject support
+## Improved subobject support
 
-Previous releases came without RDF subobject support but this has been corrected in 2.0. The RDF
-subobject export (#377, bug 48708) and RDF store subobject synchronization (#378, bug 48361) are
-fixed and come with appropriate test coverage in order to make the `SQLStore` and the `SPARQLStore`
-equally supported.
+Support for subobjects has been added to the RDF export. This new capability is used by the RDF
+store functionality to also synchronize subobjects.
 
-Subobject do now support a sort annotation by using the `@sortkey` identifier (#225) that stores an
-individual sortkey per subobject.
-
-## Quality and stability improvements
-
-A great deal of effort has been put into ensuring both existing and new features work well.
-Not just at present, but also in future releases. And not just with MySQL and one version of
-MediaWiki, but on all platforms we support. This dedication to quality has resulted in many
-bugs being discovered and fixed, and makes future regressions much less likely.
-
-Continuous integration is now an integral part of the development process behind SMW. As of
-the 2.0 release, SMW has over 2300 automated tests, which cover two thirds of the codebase.
-These tests are run automatically for every change made to the code, on machines with different
-databases, different versions of PHP, different SPARQL stores and different versions of MediaWiki.
+Subobjects now support sorting via the `@sortkey` annotation that stores an individual sortkey
+per subobject.
 
 ## Notable bug fixes
 
@@ -100,6 +99,7 @@ SMW 2.0 continues to convert its classes to use PHP namespaces in order to separ
 * All `hook` related classes of been moved to `SMW\MediaWiki\Hooks`
 * All `api` related classes of been moved to `SMW\MediaWiki\Api`
 * All `SPARQLStore` related classes now reside in `SMW\SPARQLStore`
+* `SMWSparqlStore` and `SMWSparqlDatabase` where moved into the `SMW\SPARQLStore` namespace
 
 Other internal enhancements or changes include:
 
@@ -114,7 +114,7 @@ Other internal enhancements or changes include:
 * #382 Extended interface to support `format=count` information in `QueryResult`
 * #453 Added [`COMPATIBILITY.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md) for better user guidance
 
-### Deprecated classes or scripts
+Deprecated classes or scripts:
 
 * `SMW_conceptCache.php`
 * `SMW_dumpRDF.php`
@@ -124,6 +124,6 @@ Other internal enhancements or changes include:
 * `SMWSparqlDatabase`
 * `SMWIResultPrinter`
 
-### Removed classes or scripts
+Removed classes or scripts:
 
 * `SMWParseData`

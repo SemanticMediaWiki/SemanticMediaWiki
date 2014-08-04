@@ -144,9 +144,9 @@ Triple store databases:
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
-		<td>Full support (for 1.0.2)</td>
+		<td>Full support (for 1.0)</td>
 		<td>Full support (for 6.1)</td>
-		<td>Beta support (for 1.1.4)</td>
+		<td>Beta support (for 1.1)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
