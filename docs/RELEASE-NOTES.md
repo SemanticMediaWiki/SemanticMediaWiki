@@ -26,9 +26,9 @@ databases, different versions of PHP, different SPARQL stores and different vers
 
 ## Semantic Versioning
 
-As of the 2.0 release, Semantic MediaWiki adheres to the [Semantic Versioning standard]
-(http://semver.org/). This makes our version numbers more meaningful and makes it easier
-for administrators to determine if a new release is relevant to them.
+As of the 2.0 release, Semantic MediaWiki adheres to the [Semantic Versioning standard](http://semver.org/).
+This makes our version numbers more meaningful and makes it easier for administrators to determine
+if a new release is relevant to them.
 
 ## Improved SPARQLStore support
 
@@ -47,17 +47,15 @@ introduced in 1.6 has been deprecated in favour of
 connectors).
 
 Unit and integration tests were given extra focus together with a continuous integration of
-[Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1]
-(https://github.com/openlink/virtuoso-opensource) (#394) to ensure that compatibility and functional
+[Jena Fuseki](http://jena.apache.org/) (1.0.2) (#337) and [Virtuoso opensource 6.1](https://github.com/openlink/virtuoso-opensource) (#394) to ensure that compatibility and functional
 parity are going hand in hand with the rest of SMW. (Unfortunately `4Store` currently does not run
-on the continuous integration platform, for details see [garlik#110]
-(https://github.com/garlik/4store/issues/110)but tests have been run successfully with a local
-`4store` instance).
+on the continuous integration platform, for details see [garlik#110](https://github.com/garlik/4store/issues/110)
+but tests have been run successfully with a local `4store` instance).
 
 At this moment, the only RDF store to be tested and to support [SPARQL 1.1](http://www.w3.org/TR/sparql11-query/)
 is `Jena Fuseki` therefore other stores may not support all `query features`. For details to
-the testing environment and its configuration, see the [readme]
-(https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md) file.
+the testing environment and its configuration, see the [README](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/includes/src/SPARQLStore/README.md)
+file.
 
 ## Improved subobject support
 
