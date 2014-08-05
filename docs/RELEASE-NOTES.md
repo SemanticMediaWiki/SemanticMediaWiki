@@ -7,7 +7,7 @@ Released August 4th, 2014.
 Semantic MediaWiki 2.0 is compatible with MediaWiki 1.19 up to MediaWiki 1.23, and possibly later
 versions. Support for both MediaWiki 1.23 and MediaWiki 1.24 was improved compared to SMW 1.9.
 
-PHP compatibility remains the same as in SMW 1.9: all versions from PHP 5.3.2 to PHP 6.x.
+PHP compatibility remains the same as in SMW 1.9: all versions from PHP 5.3.2 to PHP 5.6.x.
 
 
 For a full overview, see our [compatibility matrix](COMPATIBILITY.md).
@@ -60,10 +60,10 @@ file.
 ## Improved subobject support
 
 Support for subobjects has been added to the RDF export. This new capability is used by the RDF
-store functionality to also synchronize subobjects.
+store functionality to also synchronize subobjects. (#344)
 
 Subobjects now support sorting via the `@sortkey` annotation that stores an individual sortkey
-per subobject.
+per subobject. (#225)
 
 ## Notable bug fixes
 
