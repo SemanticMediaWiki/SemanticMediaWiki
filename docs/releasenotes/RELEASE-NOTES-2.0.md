@@ -10,7 +10,7 @@ versions. Support for both MediaWiki 1.23 and MediaWiki 1.24 was improved compar
 PHP compatibility remains the same as in SMW 1.9: all versions from PHP 5.3.2 to PHP 5.6.x.
 
 
-For a full overview, see our [compatibility matrix](COMPATIBILITY.md).
+For a full overview, see our [compatibility matrix](../COMPATIBILITY.md).
 
 ## Quality and stability improvements
 
