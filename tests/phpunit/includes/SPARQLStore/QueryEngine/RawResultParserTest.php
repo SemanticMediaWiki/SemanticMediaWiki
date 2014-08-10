@@ -56,7 +56,7 @@ class RawResultParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new RawResultParser();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->setExpectedException( '\SMW\SPARQLStore\Exception\XmlParserException' );
 		$instance->parse( $rawResultProvider->getInvalidSparqlResultXml() );
 	}
 

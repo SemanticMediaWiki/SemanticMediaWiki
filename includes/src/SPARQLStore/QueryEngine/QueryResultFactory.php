@@ -9,8 +9,6 @@ use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
 
 /**
- * Convert SPARQL FederateResultSet object to an QueryResult object
- *
  * @ingroup Store
  *
  * @license GNU GPL v2+

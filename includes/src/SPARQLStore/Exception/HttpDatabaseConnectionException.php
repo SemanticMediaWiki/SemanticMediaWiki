@@ -19,11 +19,8 @@ class HttpDatabaseConnectionException extends \Exception {
 	 * @param integer $errorCode
 	 * @param string $errorText
 	 */
-	function __construct( $endpoint, $errorCode, $errorText ) {
-
-		$message = "Failed to communicate to Endpoint: $endpoint\n" . "Curl error: $errorCode with $errorText\n";
-
-		parent::__construct( $message, $errorCode );
+	public function __construct( $endpoint, $errorCode, $errorText ) {
+		parent::__construct( "Failed to communicate to Endpoint: $endpoint\n" . "due to curl error: $errorCode ($errorText).\n" );
 	}
 
 }

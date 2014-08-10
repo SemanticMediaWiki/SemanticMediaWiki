@@ -38,7 +38,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider sparqlResultListErrorCodeProvider
+	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForCountQuery( $errorCode ) {
 
@@ -75,7 +75,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider sparqlResultListErrorCodeProvider
+	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForEmptyInstanceQuery( $errorCode ) {
 
@@ -112,7 +112,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider sparqlResultListErrorCodeProvider
+	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForInstanceQuery( $errorCode ) {
 
@@ -174,7 +174,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEmpty( $queryResult->getErrors() );
 	}
 
-	public function sparqlResultListErrorCodeProvider() {
+	public function errorCodeProvider() {
 
 		$provider = array(
 			array( 0 ),

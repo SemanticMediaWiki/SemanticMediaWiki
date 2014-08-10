@@ -2,10 +2,10 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
+use SMW\SPARQLStore\Exception\XmlParserException;
+
 use SMWExpResource as ExpResource;
 use SMWExpLiteral as ExpLiteral;
-
-use RuntimeException;
 
 /**
  * Class for parsing SPARQL results in XML format
@@ -93,6 +93,7 @@ class RawResultParser {
 	 * @param string $rawData
 	 *
 	 * @return FederateResultSet
+	 * @throws XmlParserException
 	 */
 	public function parse( $rawResult ) {
 
@@ -101,11 +102,20 @@ class RawResultParser {
 		$this->data = array();
 		$this->comments = array();
 
+		// #474 Virtuoso allows `false` to be a valid raw result
 		if ( $rawResult == 'false' || is_bool( $rawResult ) || $this->parseXml( $rawResult ) ) {
-			return new FederateResultSet( $this->header, $this->data, $this->comments );
+			return new FederateResultSet(
+				$this->header,
+				$this->data,
+				$this->comments
+			);
 		}
 
-		throw new RuntimeException( "Parser error: " . $this->getLastError() );
+		throw new XmlParserException(
+			$this->getLastError(),
+			$this->getLastLineNumber(),
+			$this->getLastColumnNumber()
+		);
 	}
 
 	private function parseXml( $xmlResultData ) {
@@ -114,6 +124,14 @@ class RawResultParser {
 
 	private function getLastError() {
 		return xml_error_string( xml_get_error_code( $this->parser ) );
+	}
+
+	private function getLastLineNumber() {
+		return xml_get_current_line_number( $this->parser );
+	}
+
+	private function getLastColumnNumber() {
+		return xml_get_current_column_number ( $this->parser );
 	}
 
 	private function handleDefault( $parser, $data ) {
