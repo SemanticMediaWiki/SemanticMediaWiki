@@ -60,7 +60,7 @@ class BadHttpResponseMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new BadHttpResponseMapper( $httpRequest );
 
-		$this->setExpectedException( '\Exception' );
+		$this->setExpectedException( '\SMW\SPARQLStore\Exception\HttpDatabaseConnectionException' );
 		$instance->mapResponseToHttpRequest( 'Foo', 'Bar' );
 	}
 

@@ -3,6 +3,8 @@
 namespace SMW\SPARQLStore;
 
 use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
+use SMW\SPARQLStore\Exception\HttpDatabaseConnectionException;
+
 use SMW\HttpRequest;
 
 use Exception;
@@ -62,7 +64,7 @@ class BadHttpResponseMapper {
 				return; // fail gracefully if backend is down
 		}
 
-		throw new Exception( "Failed to communicate with SPARQL store.\n Endpoint: " . $endpoint . "\n Curl error: '" . $this->httpRequest->getLastError() . "' ($error)" );
+		throw new HttpDatabaseConnectionException( $endpoint, $error, $this->httpRequest->getLastError() );
 	}
 
 	private function createResponseToHttpError( $httpCode, $endpoint, $sparql ) {
