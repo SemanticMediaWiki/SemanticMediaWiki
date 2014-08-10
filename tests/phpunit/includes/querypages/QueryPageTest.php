@@ -114,7 +114,10 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 		);
 
 		$this->assertInternalType( 'string', $result );
-		$this->assertTag( $matcher, $result );
+
+		// https://github.com/sebastianbergmann/phpunit/issues/1380
+		// $this->assertTag( $matcher, $result );
+		$this->assertContains( $search, $result );
 	}
 
 	/**
