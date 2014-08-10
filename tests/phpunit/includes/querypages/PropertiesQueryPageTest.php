@@ -317,8 +317,9 @@ class PropertiesQueryPageTest extends SemanticMediaWikiTestCase {
 			'attributes' => array( 'type' => 'submit' )
 		);
 
-		$this->assertTag( $matcher, $instance->getPageHeader() );
-
+		// https://github.com/sebastianbergmann/phpunit/issues/1380
+		// $this->assertTag( $matcher, $instance->getPageHeader() );
+		$this->assertContains( $propertySearch, $instance->getPageHeader() );
 	}
 
 }
