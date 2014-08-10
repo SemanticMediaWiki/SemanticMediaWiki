@@ -100,10 +100,6 @@ work with more recent versions of PHP and MediaWiki, though this is not guarante
 
 ### Database support
 
-- `Full support` means that all functionality has been verified to work and that it can be used in production
-- `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
-- `Experimental` means there is some preliminary support which is still much too immature for use in production
-
 SQL databases:
 
 <table>
@@ -150,9 +146,9 @@ Triple store databases:
 	</tr>
 	<tr>
 		<th>SMW 2.x</th>
-		<td>Full support (for 1.0)</td>
-		<td>Full support (for 6.1)</td>
-		<td>Beta support (for 1.1)</td>
+		<td>Full support (for 1.1.0)</td>
+		<td>Full support (for 6.1.4)</td>
+		<td>Beta support (for 1.1.4)</td>
 	</tr>
 	<tr>
 		<th>SMW 1.9.x</th>
@@ -167,3 +163,7 @@ Triple store databases:
 		<td>Experimental</td>
 	</tr>
 </table>
+
+- `Full support` means that all functionality has been verified to work and that it can be used in production
+- `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
+- `Experimental` means there is some preliminary support which is still much too immature for use in production
