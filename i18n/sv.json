@@ -16,7 +16,8 @@
 			"Rotsee",
 			"Sannab",
 			"WikiPhoenix",
-			"아라"
+			"아라",
+			"Lokal Profil"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -146,6 +147,7 @@
 	"smw_propertyhardlyused": "Denna egenskap används knappt i wikin!",
 	"smw-property-name-invalid": "Egenskapen $1 kan inte användas (ogiltigt egenskapsnamn).",
 	"smw-sp-property-searchform": "Visa egenskaper som innehåller:",
+	"smw-sp-property-searchform-inputinfo": "Indata är skiftlägeskänsligt och, när den används för filtrering, visas endast egenskaper som matchar villkoret.",
 	"concepts": "Begrepp",
 	"smw-sp-concept-docu": "Ett [https://www.semantic-mediawiki.org/wiki/Help:Concepts koncept] är ett slags ”dynamisk katagori”, det vill säga en samling sidor som skapas automatiskt utifrån en semantisk sökning",
 	"smw-sp-concept-header": "Lista över begrepp",
@@ -282,12 +284,22 @@
 	"smw_concept_header": "Sidor som hör till konceptet \"$1\"",
 	"smw_conceptarticlecount": "Visar {{PLURAL:$1|en sida|$1 sidor}}",
 	"smw-qp-empty-data": "Önskad data kunde inte visas på grund av att vissa urvalskriterier är otillräckliga.",
+	"right-smw-admin": "Tillgång till administrationsåtgärder (Semantisk MediaWiki)",
 	"group-smwadministrator": "Semantic MediaWiki-administratörer",
 	"group-smwadministrator-member": "{{GENDER:$1|administratör (SMW)}}",
-	"smw-pa-property-predefined-default": "$1 är en fördefinierad egenskap (även ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]''). Det är en inbyggd egenskap med en särskild betydelse, men användas precis som en vanlig [https://www.semantic-mediawiki.org/wiki/Property användardefinierad egenskap].",
+	"grouppage-smwadministrator": "{{ns:project}}:SMW_administratörer",
+	"action-smw-admin": "komma åt Semantisk MediaWikis administrationsåtgärder",
+	"smw-pa-property-predefined-default": "$1 är en fördefinierad egenskap (även känd som en [https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]).  Det är en inbyggd egenskap som kommer med ytterligare administrativa privilegier men kan användas precis som alla andra [https://www.semantic-mediawiki.org/wiki/Property användardefinierade egenskaper].",
+	"smw-pa-property-predefined_ask": "$1 är en fördefinierad egenskap (även känd som en [https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]) som länkar till metadata-[https://www.semantic-mediawiki.org/wiki/Subobject underobjektet] för en förfrågan. Det är en inbyggd egenskap som kommer med ytterligare administrativa privilegier men kan användas precis som alla andra [https://www.semantic-mediawiki.org/wiki/Property användardefinierade egenskaper].",
+	"smw-pa-property-predefined_asksi": "$1 är en fördefinierad egenskap (även känd som en [https://www.semantic-mediawiki.org/wiki/Help:Special_properties specialegenskap]) som samlar antalet villkor i en förfrågan. Det är en inbyggd egenskap som kommer med ytterligare administrativa privilegier men kan användas precis som alla andra [https://www.semantic-mediawiki.org/wiki/Property användardefinierade egenskaper].",
+	"smw-sp-properties-docu": "Denna sida visar  [https://www.semantic-mediawiki.org/wiki/Property egenskaper] som är tillgängliga och när filtrerad, visas endast användardefinierade egenskaper som matchar villkoret. För en differentierad vy, se specialsidan [[Special:UnusedProperties|oanvända egenskaper]] eller [[Special:WantedProperties|önskade egenskaper]].",
+	"smw-sp-properties-cache-info": "Listad data har hämtats från [https://www.semantic-mediawiki.org/wiki/Caching cache], och uppdaterades sist $1.",
 	"smw-sp-properties-header-label": "Lista med egenskaper",
 	"smw-sp-admin-settings-title": "Konfigurationsinställningar",
+	"smw-sp-admin-settings-docu": "Visar en lista över alla standard- och lokaliserade inställningar som är relevanta för Semantisk MediaWikis miljö. För detaljer om individuella inställningar, rådfråga hjälpsidan för [https://semantic-mediawiki.org/wiki/Help:Configuration konfiguration].",
+	"smw-sp-admin-settings-button": "Generera lista med inställningar",
 	"smw-sp-admin-idlookup-title": "Kolla upp objekt-ID",
+	"smw-sp-admin-idlookup-docu": "Visar detaljer om ett internt objekt-Id som representerar enskilda enheter (wikisida, underobjekt etc.) i Semantisk MediaWiki.",
 	"smw-sp-admin-idlookup-objectid": "Objekt-ID:",
 	"smw-livepreview-loading": "Laddar…"
 }
