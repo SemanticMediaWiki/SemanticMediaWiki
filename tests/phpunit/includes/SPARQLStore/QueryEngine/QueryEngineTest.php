@@ -3,7 +3,7 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
-use SMW\SPARQLStore\QueryEngine\ResultListConverter;
+use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 
 use SMW\DIProperty;
 
@@ -34,13 +34,13 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$resultListConverter = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ResultListConverter' )
+		$queryResultFactory = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\QueryResultFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\QueryEngine',
-			new QueryEngine( $connection, $queryConditionBuilder, $resultListConverter )
+			new QueryEngine( $connection, $queryConditionBuilder, $queryResultFactory )
 		);
 	}
 
@@ -60,7 +60,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $queryConditionBuilder, new ResultListConverter( $store ) );
+		$instance = new QueryEngine( $connection, $queryConditionBuilder, new QueryResultFactory( $store ) );
 		$instance->setIgnoreQueryErrors( false );
 
 		$query = new Query( $description );
@@ -92,7 +92,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $queryConditionBuilder, new ResultListConverter( $store ) );
+		$instance = new QueryEngine( $connection, $queryConditionBuilder, new QueryResultFactory( $store ) );
 
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_NONE;
@@ -127,13 +127,13 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'buildCondition' )
 			->will( $this->returnValue( $condition ) );
 
-		$resultListConverter = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ResultListConverter' )
+		$queryResultFactory = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\QueryResultFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $queryConditionBuilder, $resultListConverter );
+		$instance = new QueryEngine( $connection, $queryConditionBuilder, $queryResultFactory );
 
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_DEBUG;
@@ -151,7 +151,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSuccessCountQueryResultForMockedCompostion() {
 
-		$federateResultList = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
+		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -161,7 +161,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'selectCount' )
-			->will( $this->returnValue( $federateResultList ) );
+			->will( $this->returnValue( $federateResultSet ) );
 
 		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
 
@@ -183,7 +183,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMWDescription' );
 
-		$instance = new QueryEngine( $connection, $queryConditionBuilder, new ResultListConverter( $store ) );
+		$instance = new QueryEngine( $connection, $queryConditionBuilder, new QueryResultFactory( $store ) );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',

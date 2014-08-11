@@ -5,7 +5,7 @@ namespace SMW\SPARQLStore\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\SPARQLStore\QueryEngine\FederateResultList;
+use SMW\SPARQLStore\QueryEngine\FederateResultSet;
 
 use SMW\QueryOutputFormatter;
 
@@ -42,9 +42,9 @@ class QueryEngine {
 	private $queryConditionBuilder;
 
 	/**
-	 * @var ResultListConverter
+	 * @var QueryResultFactory
 	 */
-	private $resultListConverter;
+	private $queryResultFactory;
 
 	/**
 	 * Copy of the SMWQuery sortkeys array to be used while building the
@@ -73,12 +73,12 @@ class QueryEngine {
 	 *
 	 * @param SparqlDatabase $connection
 	 * @param QueryConditionBuilder $queryConditionBuilder
-	 * @param ResultListConverter $resultListConverter
+	 * @param QueryResultFactory $queryResultFactory
 	 */
-	public function __construct( SparqlDatabase $connection, QueryConditionBuilder $queryConditionBuilder, ResultListConverter $resultListConverter ) {
+	public function __construct( SparqlDatabase $connection, QueryConditionBuilder $queryConditionBuilder, QueryResultFactory $queryResultFactory ) {
 		$this->connection = $connection;
 		$this->queryConditionBuilder = $queryConditionBuilder;
-		$this->resultListConverter = $resultListConverter;
+		$this->queryResultFactory = $queryResultFactory;
 
 		$this->queryConditionBuilder->setResultVariable( self::RESULT_VARIABLE );
 	}
@@ -124,12 +124,12 @@ class QueryEngine {
 		if ( ( !$this->ignoreQueryErrors || $query->getDescription() instanceof ThingDescription ) &&
 		     $query->querymode != Query::MODE_DEBUG &&
 		     count( $query->getErrors() ) > 0 ) {
-			return $this->resultListConverter->newEmptyQueryResult( $query, false );
+			return $this->queryResultFactory->newEmptyQueryResult( $query, false );
 		}
 
 		// don't query, but return something to the printer
 		if ( $query->querymode == Query::MODE_NONE ) {
-			return $this->resultListConverter->newEmptyQueryResult( $query, true );
+			return $this->queryResultFactory->newEmptyQueryResult( $query, true );
 		}
 
 		if ( $query->querymode == Query::MODE_DEBUG ) {
@@ -181,14 +181,14 @@ class QueryEngine {
 		$options = $this->getOptions( $query, $sparqlCondition );
 		$options['DISTINCT'] = true;
 
-		$federateResultList = $this->connection->selectCount(
+		$federateResultSet = $this->connection->selectCount(
 			'?' . self::RESULT_VARIABLE,
 			$condition,
 			$options,
 			$namespaces
 		);
 
-		return $this->resultListConverter->convertToQueryResult( $federateResultList, $query );
+		return $this->queryResultFactory->newQueryResult( $federateResultSet, $query );
 	}
 
 	/**
@@ -218,10 +218,10 @@ class QueryEngine {
 				$results = $askQueryResult->isBooleanTrue() ? array( array ( $matchElement ) ) : array();
 			}
 
-			$federateResultList = new FederateResultList( array( self::RESULT_VARIABLE => 0 ), $results );
+			$federateResultSet = new FederateResultSet( array( self::RESULT_VARIABLE => 0 ), $results );
 
 		} elseif ( $sparqlCondition instanceof FalseCondition ) {
-			$federateResultList = new FederateResultList( array( self::RESULT_VARIABLE => 0 ), array() );
+			$federateResultSet = new FederateResultSet( array( self::RESULT_VARIABLE => 0 ), array() );
 		} else {
 			$condition = $this->queryConditionBuilder->convertConditionToString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
@@ -229,7 +229,7 @@ class QueryEngine {
 			$options = $this->getOptions( $query, $sparqlCondition );
 			$options['DISTINCT'] = true;
 
-			$federateResultList = $this->connection->select(
+			$federateResultSet = $this->connection->select(
 				'?' . self::RESULT_VARIABLE,
 				$condition,
 				$options,
@@ -237,7 +237,7 @@ class QueryEngine {
 			);
 		}
 
-		return $this->resultListConverter->convertToQueryResult( $federateResultList, $query );
+		return $this->queryResultFactory->newQueryResult( $federateResultSet, $query );
 	}
 
 	/**

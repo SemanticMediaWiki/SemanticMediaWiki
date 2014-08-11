@@ -112,7 +112,7 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData = new SemanticData( new DIWikiPage( 'Foo', NS_MAIN, '' ) );
 
-		$listReturnValue = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
+		$listReturnValue = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,8 +2,9 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
-use SMW\SPARQLStore\QueryEngine\FederateResultList;
+use SMW\SPARQLStore\QueryEngine\FederateResultSet;
 
 use SMW\CurlRequest;
 use SMW\HttpRequest;
@@ -171,7 +172,7 @@ class GenericHttpDatabaseConnector {
 	 * @param $options array (associative) of options, e.g. array( 'LIMIT' => '10' )
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return SMWFederateResultList
+	 * @return SMWFederateResultSet
 	 */
 	public function select( $vars, $where, $options = array(), $extraNamespaces = array() ) {
 		return $this->doQuery( $this->getSparqlForSelect( $vars, $where, $options, $extraNamespaces ) );
@@ -228,7 +229,7 @@ class GenericHttpDatabaseConnector {
 	 * @param $where string WHERE part of the query, without surrounding { }
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return SMWFederateResultList
+	 * @return SMWFederateResultSet
 	 */
 	public function ask( $where, $extraNamespaces = array() ) {
 		return $this->doQuery( $this->getSparqlForAsk( $where, $extraNamespaces ) );
@@ -260,7 +261,7 @@ class GenericHttpDatabaseConnector {
 	 * @param $options array (associative) of options, e.g. array('LIMIT' => '10')
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return SMWFederateResultList
+	 * @return SMWFederateResultSet
 	 */
 	public function selectCount( $variable, $where, $options = array(), $extraNamespaces = array() ) {
 
@@ -404,7 +405,7 @@ class GenericHttpDatabaseConnector {
 
 
 	/**
-	 * Execute a SPARQL query and return an SMWFederateResultList object
+	 * Execute a SPARQL query and return an SMWFederateResultSet object
 	 * that contains the results. The method throws exceptions based on
 	 * GenericHttpDatabaseConnector::mapHttpRequestError(). If errors occur and this
 	 * method does not throw anything, then an empty result with an error
@@ -415,7 +416,7 @@ class GenericHttpDatabaseConnector {
 	 *
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
 	 *
-	 * @return SMWFederateResultList
+	 * @return SMWFederateResultSet
 	 */
 	public function doQuery( $sparql ) {
 
@@ -442,11 +443,11 @@ class GenericHttpDatabaseConnector {
 
 		$this->mapHttpRequestError( $this->m_queryEndpoint, $sparql );
 
-		return new FederateResultList(
+		return new FederateResultSet(
 			array(),
 			array(),
 			array(),
-			FederateResultList::ERROR_UNREACHABLE
+			FederateResultSet::ERROR_UNREACHABLE
 		);
 	}
 

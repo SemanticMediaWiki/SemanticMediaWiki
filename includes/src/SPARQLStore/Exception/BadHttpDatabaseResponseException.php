@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SPARQLStore;
+namespace SMW\SPARQLStore\Exception;
 
 /**
  * Class to escalate SPARQL query errors to the interface. We only do this for

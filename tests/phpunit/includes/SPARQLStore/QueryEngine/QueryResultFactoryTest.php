@@ -4,13 +4,13 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\Tests\Util\Mock\IteratorMockBuilder;
 
-use SMW\SPARQLStore\QueryEngine\ResultListConverter;
+use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 
 /**
- * @covers \SMW\SPARQLStore\QueryEngine\ResultListConverter
+ * @covers \SMW\SPARQLStore\QueryEngine\QueryResultFactory
  *
  * @ingroup Test
  *
@@ -23,7 +23,7 @@ use SMWQueryResult as QueryResult;
  *
  * @author mwjames
  */
-class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
+class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -32,13 +32,13 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\ResultListConverter',
-			new ResultListConverter( $store )
+			'\SMW\SPARQLStore\QueryEngine\QueryResultFactory',
+			new QueryResultFactory( $store )
 		);
 	}
 
 	/**
-	 * @dataProvider sparqlResultListErrorCodeProvider
+	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForCountQuery( $errorCode ) {
 
@@ -46,11 +46,11 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$federateResultList = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
+		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$federateResultList->expects( $this->atLeastOnce() )
+		$federateResultSet->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
 			->will( $this->returnValue( $errorCode ) );
 
@@ -61,21 +61,21 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_COUNT;
 
-		$instance = new ResultListConverter( $store );
+		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->convertToQueryResult( $federateResultList, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 
 		$this->assertQueryResultErrorCodeForCountValue(
 			$errorCode,
-			$instance->convertToQueryResult( $federateResultList, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 	}
 
 	/**
-	 * @dataProvider sparqlResultListErrorCodeProvider
+	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForEmptyInstanceQuery( $errorCode ) {
 
@@ -83,11 +83,11 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$federateResultList = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
+		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$federateResultList->expects( $this->atLeastOnce() )
+		$federateResultSet->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
 			->will( $this->returnValue( $errorCode ) );
 
@@ -98,21 +98,21 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$instance = new ResultListConverter( $store );
+		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->convertToQueryResult( $federateResultList, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 
 		$this->assertQueryResultErrorCode(
 			$errorCode,
-			$instance->convertToQueryResult( $federateResultList, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 	}
 
 	/**
-	 * @dataProvider sparqlResultListErrorCodeProvider
+	 * @dataProvider errorCodeProvider
 	 */
 	public function testGetQueryResultObjectForInstanceQuery( $errorCode ) {
 
@@ -126,11 +126,11 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 
 		$iteratorMockBuilder = new IteratorMockBuilder();
 
-		$federateResultList = $iteratorMockBuilder->setClass( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
+		$federateResultSet = $iteratorMockBuilder->setClass( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
 			->with( array( array( $expElement ) ) )
 			->getMockForIterator();
 
-		$federateResultList->expects( $this->atLeastOnce() )
+		$federateResultSet->expects( $this->atLeastOnce() )
 			->method( 'getErrorCode' )
 			->will( $this->returnValue( $errorCode ) );
 
@@ -141,16 +141,16 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 		$query = new Query( $description );
 		$query->querymode = Query::MODE_INSTANCES;
 
-		$instance = new ResultListConverter( $store );
+		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->convertToQueryResult( $federateResultList, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 
 		$this->assertQueryResultErrorCode(
 			$errorCode,
-			$instance->convertToQueryResult( $federateResultList, $query )
+			$instance->newQueryResult( $federateResultSet, $query )
 		);
 	}
 
@@ -174,7 +174,7 @@ class ResultListConverterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEmpty( $queryResult->getErrors() );
 	}
 
-	public function sparqlResultListErrorCodeProvider() {
+	public function errorCodeProvider() {
 
 		$provider = array(
 			array( 0 ),

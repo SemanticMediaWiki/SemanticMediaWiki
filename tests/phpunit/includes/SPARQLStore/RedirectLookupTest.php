@@ -193,11 +193,11 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private function createMockSparqlDatabaseFor( $listReturnValue ) {
 
-		$federateResultList = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultList' )
+		$federateResultSet = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\FederateResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$federateResultList->expects( $this->once() )
+		$federateResultSet->expects( $this->once() )
 			->method( 'current' )
 			->will( $this->returnValue( $listReturnValue ) );
 
@@ -207,7 +207,7 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $federateResultList ) );
+			->will( $this->returnValue( $federateResultSet ) );
 
 		return $sparqlDatabase;
 	}

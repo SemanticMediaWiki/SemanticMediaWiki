@@ -2,7 +2,9 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\SPARQLStore\BadHttpDatabaseResponseException as SMWSparqlDatabaseError;
+use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
+use SMW\SPARQLStore\Exception\HttpDatabaseConnectionException;
+
 use SMW\HttpRequest;
 
 use Exception;
@@ -62,7 +64,7 @@ class BadHttpResponseMapper {
 				return; // fail gracefully if backend is down
 		}
 
-		throw new Exception( "Failed to communicate with SPARQL store.\n Endpoint: " . $endpoint . "\n Curl error: '" . $this->httpRequest->getLastError() . "' ($error)" );
+		throw new HttpDatabaseConnectionException( $endpoint, $error, $this->httpRequest->getLastError() );
 	}
 
 	private function createResponseToHttpError( $httpCode, $endpoint, $sparql ) {
@@ -70,14 +72,14 @@ class BadHttpResponseMapper {
 		/// TODO We are guessing the meaning of HTTP codes here -- the SPARQL 1.1 spec does not yet provide this information for updates (April 15 2011)
 
 		if ( $httpCode == 400 ) { // malformed query
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_MALFORMED, $sparql, $endpoint, $httpCode );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_MALFORMED, $sparql, $endpoint, $httpCode );
 		} elseif ( $httpCode == 500 ) { // query refused; maybe fail gracefully here (depending on how stores use this)
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_REFUSED, $sparql, $endpoint, $httpCode );
+			throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_REFUSED, $sparql, $endpoint, $httpCode );
 		} elseif ( $httpCode == 404 ) {
 			return; // endpoint not found, maybe down; fail gracefully
 		}
 
-		throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_OTHER, $sparql, $endpoint, $httpCode );
+		throw new BadHttpDatabaseResponseException( BadHttpDatabaseResponseException::ERROR_OTHER, $sparql, $endpoint, $httpCode );
 	}
 
 }
