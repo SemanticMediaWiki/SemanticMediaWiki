@@ -17,10 +17,10 @@ use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use SMWSomeProperty as SomeProperty;
-use SMWThingDescription as ThingDescription;
+use SMW\Query\Language\SomeProperty as SomeProperty;
+use SMW\Query\Language\ThingDescription as ThingDescription;
 use SMwConjunction as Conjunction;
-use SMWValueDescription as ValueDescription;
+use SMW\Query\Language\ValueDescription as ValueDescription;
 
 /**
  * @ingroup Test

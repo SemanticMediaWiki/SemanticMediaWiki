@@ -6,10 +6,10 @@ use SMW\DIWikiPage;
 use SMW\Application;
 
 use SMWQuery as Query;
-use SMWValueDescription as ValueDescription;
-use SMWConjunction as Conjunction;
-use SMWDisjunction as Disjunction;
-use SMWNamespaceDescription as NamespaceDescription;
+use SMW\Query\Language\ValueDescription as ValueDescription;
+use SMW\Query\Language\Conjunction as Conjunction;
+use SMW\Query\Language\Disjunction as Disjunction;
+use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
 
 /**
  * @ingroup Test

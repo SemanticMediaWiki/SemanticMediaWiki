@@ -446,9 +446,8 @@ class SMWQueryParser {
 				$list = array_slice( $list, 1 );
 			}
 			if ( ( count( $list ) == 2 ) && ( $list[1] == '+' ) ) { // try namespace restriction
-				global $wgContLang;
 
-				$idx = $wgContLang->getNsIndex( str_replace( ' ', '_', $list[0] ) );
+				$idx = \SMW\Localizer::getInstance()->getNamespaceIndexByName( $list[0] );
 
 				if ( $idx !== false ) {
 					$result = $this->addDescription( $result, new SMWNamespaceDescription( $idx ), false );

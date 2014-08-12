@@ -16,19 +16,19 @@ use SMW\DIWikiPage;
 
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
-use SMWDescription as Description;
+use SMW\Query\Language\Description as Description;
 use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 use SMWExpNsResource as ExpNsResource;
 use SMWExpLiteral as ExpLiteral;
-use SMWSomeProperty as SomeProperty;
-use SMWNamespaceDescription as NamespaceDescription;
-use SMWConjunction as Conjunction;
-use SMWDisjunction as Disjunction;
-use SMWClassDescription as ClassDescription;
-use SMWValueDescription as ValueDescription;
-use SMWConceptDescription as ConceptDescription;
-use SMWThingDescription as ThingDescription;
+use SMW\Query\Language\SomeProperty as SomeProperty;
+use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
+use SMW\Query\Language\Conjunction as Conjunction;
+use SMW\Query\Language\Disjunction as Disjunction;
+use SMW\Query\Language\ClassDescription as ClassDescription;
+use SMW\Query\Language\ValueDescription as ValueDescription;
+use SMW\Query\Language\ConceptDescription as ConceptDescription;
+use SMW\Query\Language\ThingDescription as ThingDescription;
 
 /**
  * Condition mapping from Query objects to SPARQL

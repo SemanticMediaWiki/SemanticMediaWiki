@@ -14,12 +14,12 @@ use SMWQueryParser as QueryParser;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWQuery as Query;
-use SMWSomeProperty as SomeProperty;
-use SMWThingDescription as ThingDescription;
-use SMWValueDescription as ValueDescription;
-use SMWConjunction as Conjunction;
-use SMWDisjunction as Disjunction;
-use SMWClassDescription as ClassDescription;
+use SMW\Query\Language\SomeProperty as SomeProperty;
+use SMW\Query\Language\ThingDescription as ThingDescription;
+use SMW\Query\Language\ValueDescription as ValueDescription;
+use SMW\Query\Language\Conjunction as Conjunction;
+use SMW\Query\Language\Disjunction as Disjunction;
+use SMW\Query\Language\ClassDescription as ClassDescription;
 
 /**
  * @ingroup Test

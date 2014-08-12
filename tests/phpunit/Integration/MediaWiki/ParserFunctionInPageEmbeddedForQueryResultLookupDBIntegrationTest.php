@@ -12,11 +12,11 @@ use SMW\DIWikiPage;
 
 use SMWQueryParser as QueryParser;
 use SMWQuery as Query;
-use SMWSomeProperty as SomeProperty;
+use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMWThingDescription as ThingDescription;
-use SMWValueDescription as ValueDescription;
+use SMW\Query\Language\ThingDescription as ThingDescription;
+use SMW\Query\Language\ValueDescription as ValueDescription;
 
 use Title;
 

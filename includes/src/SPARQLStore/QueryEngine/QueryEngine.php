@@ -12,7 +12,7 @@ use SMW\QueryOutputFormatter;
 use SMWSparqlDatabase as SparqlDatabase;
 use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
-use SMWThingDescription as ThingDescription;
+use SMW\Query\Language\ThingDescription as ThingDescription;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
