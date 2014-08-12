@@ -299,9 +299,7 @@ class SMWSQLStore3QueryEngine {
 		$this->m_sortkeys = $query->sortkeys;
 
 		// *** First compute abstract representation of the query (compilation) ***//
-		wfProfileIn( 'SMWSQLStore3Queries::compileMainQuery (SMW)' );
 		$qid = $this->compileQueries( $query->getDescription() ); // compile query, build query "plan"
-		wfProfileOut( 'SMWSQLStore3Queries::compileMainQuery (SMW)' );
 
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
 			$qid = SMWSQLStore3Query::$qnum;
@@ -339,9 +337,7 @@ class SMWSQLStore3QueryEngine {
 		}
 
 		// *** Now execute the computed query ***//
-		wfProfileIn( 'SMWSQLStore3Queries::executeMainQuery (SMW)' );
 		$this->executeQueries( $this->m_queries[$rootid] ); // execute query tree, resolve all dependencies
-		wfProfileOut( 'SMWSQLStore3Queries::executeMainQuery (SMW)' );
 
 		switch ( $query->querymode ) {
 			case SMWQuery::MODE_DEBUG:
@@ -417,12 +413,10 @@ class SMWSQLStore3QueryEngine {
 	 * @return integer
 	 */
 	protected function getCountQueryResult( SMWQuery $query, $rootid ) {
-		wfProfileIn( 'SMWSQLStore3Queries::getCountQueryResult (SMW)' );
 
 		$qobj = $this->m_queries[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
-			wfProfileOut( 'SMWSQLStore3Queries::getCountQueryResult (SMW)' );
 			return 0;
 		}
 
@@ -433,7 +427,6 @@ class SMWSQLStore3QueryEngine {
 		$count = $row->count;
 		$this->m_dbs->freeResult( $res );
 
-		wfProfileOut( 'SMWSQLStore3Queries::getCountQueryResult (SMW)' );
 
 		return $count;
 	}
@@ -461,12 +454,10 @@ class SMWSQLStore3QueryEngine {
 
 		$db = $this->m_store->getDatabase();
 
-		wfProfileIn( 'SMWSQLStore3Queries::getInstanceQueryResult (SMW)' );
 		$qobj = $this->m_queries[$rootid];
 
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			$result = new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
-			wfProfileOut( 'SMWSQLStore3Queries::getInstanceQueryResult (SMW)' );
 			return $result;
 		}
 
@@ -519,7 +510,6 @@ class SMWSQLStore3QueryEngine {
 		$db->freeResult( $res );
 		$result = new SMWQueryResult( $prs, $query, $qr, $this->m_store, ( $count > $query->getLimit() ) );
 
-		wfProfileOut( 'SMWSQLStore3Queries::getInstanceQueryResult (SMW)' );
 
 		return $result;
 	}
@@ -1044,7 +1034,6 @@ throw new MWException("Debug -- this code might be dead.");
 		global $wgDBtype, $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
 
 		$fname = "SMWSQLStore3Queries::executeQueries-hierarchy-{$query->type} (SMW)";
-		wfProfileIn( $fname );
 
 		$db = $this->m_store->getDatabase();
 
@@ -1052,7 +1041,6 @@ throw new MWException("Debug -- this code might be dead.");
 
 		if ( $depth <= 0 ) { // treat as value, no recursion
 			$query->type = SMWSQLStore3Query::Q_VALUE;
-			wfProfileOut( $fname );
 			return;
 		}
 
@@ -1074,7 +1062,6 @@ throw new MWException("Debug -- this code might be dead.");
 		if ( !$db->fetchObject( $res ) ) { // no subobjects, we are done!
 			$db->freeResult( $res );
 			$query->type = SMWSQLStore3Query::Q_VALUE;
-			wfProfileOut( $fname );
 			return;
 		}
 
@@ -1085,7 +1072,6 @@ throw new MWException("Debug -- this code might be dead.");
 		$query->joinfield = "$query->alias.id";
 
 		if ( $this->m_qmode == SMWQuery::MODE_DEBUG ) {
-			wfProfileOut( $fname );
 			return; // No real queries in debug mode.
 		}
 
@@ -1095,7 +1081,6 @@ throw new MWException("Debug -- this code might be dead.");
 			$db->query( "INSERT INTO $tablename (id) SELECT id" .
 								' FROM ' . $this->m_hierarchies[$values],
 								'SMW::executeHierarchyQuery' );
-			wfProfileOut( $fname );
 			return;
 		}
 
@@ -1134,7 +1119,6 @@ throw new MWException("Debug -- this code might be dead.");
 		$db->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_new' : 'DROP TEMPORARY TABLE smw_new' ), 'SMW::executeHierarchyQuery' );
 		$db->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_res' : 'DROP TEMPORARY TABLE smw_res' ), 'SMW::executeHierarchyQuery' );
 
-		wfProfileOut( $fname );
 	}
 
 	/**

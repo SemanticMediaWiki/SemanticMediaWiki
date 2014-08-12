@@ -25,7 +25,6 @@ class SMWURIResolver extends SpecialPage {
 	function execute( $query ) {
 		global $wgOut;
 		
-		wfProfileIn( 'SpecialURIResolver::execute (SMW)' );
 
 		if ( is_null( $query ) || trim( $query ) === '' ) {
 			if ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
@@ -54,6 +53,5 @@ class SMWURIResolver extends SpecialPage {
 			}
 		}
 		
-		wfProfileOut( 'SpecialURIResolver::execute (SMW)' );
 	}
 }

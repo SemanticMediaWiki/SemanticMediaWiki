@@ -47,7 +47,6 @@ class SMWSQLStore3Writers {
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
-		wfProfileIn( __METHOD__ );
 		wfRunHooks( 'SMWSQLStore3::deleteSubjectBefore', array( $this->store, $title ) );
 
 		$emptySemanticData = new SemanticData( DIWikiPage::newFromTitle( $title ) );
@@ -85,7 +84,6 @@ class SMWSQLStore3Writers {
 
 		wfRunHooks( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
 
-		wfProfileOut( __METHOD__ );
 	}
 
 	/**
@@ -95,7 +93,6 @@ class SMWSQLStore3Writers {
 	 * @param SMWSemanticData $data
 	 */
 	public function doDataUpdate( SMWSemanticData $data ) {
-		wfProfileIn( "SMWSQLStore3::updateData (SMW)" );
 		wfRunHooks( 'SMWSQLStore3::updateDataBefore', array( $this->store, $data ) );
 
 		// Update data about our main subject
@@ -123,7 +120,6 @@ class SMWSQLStore3Writers {
 
 		wfRunHooks( 'SMWSQLStore3::updateDataAfter', array( $this->store, $data ) );
 
-		wfProfileOut( "SMWSQLStore3::updateData (SMW)" );
 	}
 
 	/**
@@ -691,7 +687,6 @@ class SMWSQLStore3Writers {
 	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 		global $smwgQEqualitySupport;
-		wfProfileIn( "SMWSQLStore3::changeTitle (SMW)" );
 
 		$db = $this->store->getDatabase();
 
@@ -876,7 +871,6 @@ class SMWSQLStore3Writers {
 
 		}
 
-		wfProfileOut( "SMWSQLStore3::changeTitle (SMW)" );
 	}
 
 	/**

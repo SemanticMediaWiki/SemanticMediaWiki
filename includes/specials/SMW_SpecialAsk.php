@@ -41,7 +41,6 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		global $wgOut, $wgRequest, $smwgQEnabled;
 
 		$this->setHeaders();
-		wfProfileIn( 'doSpecialAsk (SMW)' );
 
 		if ( !$smwgQEnabled ) {
 			$wgOut->addHTML( '<br />' . wfMessage( 'smw_iq_disabled' )->text() );
@@ -59,7 +58,6 @@ class SMWAskPage extends SMWQuerySpecialPage {
 		}
 
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
-		wfProfileOut( 'doSpecialAsk (SMW)' );
 	}
 
 	/**

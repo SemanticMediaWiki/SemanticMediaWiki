@@ -130,7 +130,6 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return array
 	 */
 	public function getQueryFormatsCount() {
-		wfProfileIn( __METHOD__ );
 
 		$count = array();
 		$res = $this->dbConnection->select(
@@ -148,7 +147,6 @@ class StatisticsCollector extends CacheableResultCollector {
 			$count[$row->o_hash] = (int)$row->count;
 		}
 
-		wfProfileOut( __METHOD__ );
 		return $count;
 	}
 
@@ -158,7 +156,6 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	public function getPropertyPageCount() {
-		wfProfileIn( __METHOD__ );
 
 		$count = 0;
 		$count = $this->dbConnection->estimateRowCount(
@@ -167,7 +164,6 @@ class StatisticsCollector extends CacheableResultCollector {
 			array( 'page_namespace' => SMW_NS_PROPERTY )
 		);
 
-		wfProfileOut( __METHOD__ );
 		return (int)$count;
 	}
 
@@ -183,7 +179,6 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	public function getPropertyUsageCount() {
-		wfProfileIn( __METHOD__ );
 
 		$count = 0;
 		$row = $this->dbConnection->selectRow(
@@ -195,7 +190,6 @@ class StatisticsCollector extends CacheableResultCollector {
 
 		$count = $row ? $row->count : $count;
 
-		wfProfileOut( __METHOD__ );
 		return (int)$count;
 	}
 
@@ -205,7 +199,6 @@ class StatisticsCollector extends CacheableResultCollector {
 	 * @return number
 	 */
 	public function getUsedPropertiesCount() {
-		wfProfileIn( __METHOD__ );
 
 		$count = 0;
 		$row = $this->dbConnection->selectRow(
@@ -217,7 +210,6 @@ class StatisticsCollector extends CacheableResultCollector {
 
 		$count = $row ? $row->count : $count;
 
-		wfProfileOut( __METHOD__ );
 		return (int)$count;
 	}
 
@@ -232,7 +224,6 @@ class StatisticsCollector extends CacheableResultCollector {
 	 */
 	protected function count( $type ) {
 		$caller = wfGetCaller();
-		wfProfileIn( $caller );
 
 		$count = 0;
 		$res = $this->dbConnection->select(
@@ -243,7 +234,6 @@ class StatisticsCollector extends CacheableResultCollector {
 		);
 		$row = $this->dbConnection->fetchObject( $res );
 
-		wfProfileOut( $caller );
 		return (int)$row->count;
 	}
 

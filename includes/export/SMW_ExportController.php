@@ -165,7 +165,6 @@ class SMWExportController {
 			// many different objects in many ways (we cannot consider them "Done"
 			// if they were serialised at recdepth 0 only).
 			if ( $this->add_backlinks ) {
-				wfProfileIn( "RDF::PrintPages::GetBacklinks" );
 				$inprops = \SMW\StoreFactory::getStore()->getInProperties( $diWikiPage );
 
 				foreach ( $inprops as $inprop ) {
@@ -224,7 +223,6 @@ class SMWExportController {
 						$resarray = $res->getNext();
 					}
 				}
-				wfProfileOut( "RDF::PrintPages::GetBacklinks" );
 			}
 		}
 	}
@@ -345,7 +343,6 @@ class SMWExportController {
 	 * functionality. Is anybody using this?
 	 */
 	public function printPages( $pages, $recursion = 1, $revisiondate = false  ) {
-		wfProfileIn( "RDF::PrintPages" );
 
 		$linkCache = LinkCache::singleton();
 		$this->prepareSerialization();
@@ -382,7 +379,6 @@ class SMWExportController {
 		$this->serializer->finishSerialization();
 		$this->flush( true );
 
-		wfProfileOut( "RDF::PrintPages" );
 	}
 
 	/**
@@ -486,7 +482,6 @@ class SMWExportController {
 	 */
 	public function printPageList( $offset = 0, $limit = 30 ) {
 		global $smwgNamespacesWithSemanticLinks;
-		wfProfileIn( "RDF::PrintPageList" );
 
 		$db = wfGetDB( DB_SLAVE );
 		$this->prepareSerialization();
@@ -538,7 +533,6 @@ class SMWExportController {
 		$this->serializer->finishSerialization();
 		$this->flush( true );
 
-		wfProfileOut( "RDF::PrintPageList" );
 	}
 
 
@@ -546,7 +540,6 @@ class SMWExportController {
 	 * Print basic information about this site.
 	 */
 	public function printWikiInfo() {
-		wfProfileIn( "RDF::PrintWikiInfo" );
 
 		global $wgSitename, $wgLanguageCode;
 
@@ -611,7 +604,6 @@ class SMWExportController {
 		$this->serializer->finishSerialization();
 		$this->flush( true );
 
-		wfProfileOut( "RDF::PrintWikiInfo" );
 	}
 
 	/**

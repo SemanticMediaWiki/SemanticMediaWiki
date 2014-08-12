@@ -34,7 +34,6 @@ class SMWSQLStore3Readers {
 	 * @since 1.8
 	 */
 	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
-		wfProfileIn( "SMWSQLStore3::getSemanticData (SMW)" );
 
 		// *** Find out if this subject exists ***//
 		$sortkey = '';
@@ -47,7 +46,6 @@ class SMWSQLStore3Readers {
 		if ( $sid == 0 ) {
 			// We consider redirects for getting $sid,
 			// so $sid == 0 also means "no redirects".
-			wfProfileOut( "SMWSQLStore3::getSemanticData (SMW)" );
 			return new SMWSemanticData( $subject );
 		}
 
@@ -78,7 +76,6 @@ class SMWSQLStore3Readers {
 		$this->store->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( '', $sortkey ) );
 		self::$in_getSemanticData--;
 
-		wfProfileOut( "SMWSQLStore3::getSemanticData (SMW)" );
 
 		return $this->store->m_semdata[$sid];
 	}
@@ -152,7 +149,6 @@ class SMWSQLStore3Readers {
 	 * @return array of SMWDataItem
 	 */
 	public function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null ) {
-		wfProfileIn( "SMWSQLStore3::getPropertyValues (SMW)" );
 
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = new SMWDIProperty( $property->getKey(), false );
@@ -180,7 +176,6 @@ class SMWSQLStore3Readers {
 			$tableid =  $this->store->findPropertyTableID( $property );
 
 			if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
-				wfProfileOut( "SMWSQLStore3::getPropertyValues (SMW)" );
 				return array();
 			}
 
@@ -201,7 +196,6 @@ class SMWSQLStore3Readers {
 			}
 		}
 
-		wfProfileOut( "SMWSQLStore3::getPropertyValues (SMW)" );
 
 		return $result;
 	}
@@ -254,7 +248,6 @@ class SMWSQLStore3Readers {
 			( is_null( $object ) && ( !$issubject || !$proptable->usesIdSubject() ) ) )
 			return array();
 
-		wfProfileIn( "SMWSQLStore3::fetchSemanticData-" . $proptable->getName() .  " (SMW)" );
 		$result = array();
 		$db = $this->store->getDatabase();
 
@@ -349,7 +342,6 @@ class SMWSQLStore3Readers {
 		}
 
 		$db->freeResult( $res );
-		wfProfileOut( "SMWSQLStore3::fetchSemanticData-" . $proptable->getName() .  " (SMW)" );
 
 		return $result;
 	}
@@ -368,12 +360,10 @@ class SMWSQLStore3Readers {
 	 */
 	public function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
-		wfProfileIn( "SMWSQLStore3::getPropertySubjects (SMW)" );
 
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = new SMWDIProperty( $property->getKey(), false );
 			$result = $this->getPropertyValues( $value, $noninverse, $requestoptions );
-			wfProfileOut( "SMWSQLStore3::getPropertySubjects (SMW)" );
 			return $result;
 		}
 
@@ -383,7 +373,6 @@ class SMWSQLStore3Readers {
 		$tableid =  $this->store->findPropertyTableID( $property );
 
 		if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
-			wfProfileOut( "SMWSQLStoreLight::getPropertySubjects (SMW)" );
 			return array();
 		}
 
@@ -424,7 +413,6 @@ class SMWSQLStore3Readers {
 		}
 
 		$db->freeResult( $res );
-		wfProfileOut( "SMWSQLStore3::getPropertySubjects (SMW)" );
 
 		return $result;
 	}
@@ -498,9 +486,7 @@ class SMWSQLStore3Readers {
 	 * @return array of SMWDIWikiPage
 	 */
 	public function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
-		wfProfileIn( "SMWSQLStore3::getAllPropertySubjects (SMW)" );
 		$result = $this->getPropertySubjects( $property, null, $requestoptions );
-		wfProfileOut( "SMWSQLStore3::getAllPropertySubjects (SMW)" );
 
 		return $result;
 	}
@@ -514,7 +500,6 @@ class SMWSQLStore3Readers {
 	 * @return SMWDataItem[]
 	 */
 	public function getProperties( SMWDIWikiPage $subject, $requestOptions = null ) {
-		wfProfileIn( "SMWSQLStore3::getProperties (SMW)" );
 		$sid = $this->store->smwIds->getSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
@@ -523,7 +508,6 @@ class SMWSQLStore3Readers {
 		);
 
 		if ( $sid == 0 ) { // no id, no page, no properties
-			wfProfileOut( "SMWSQLStore3::getProperties (SMW)" );
 			return array();
 		}
 
@@ -584,7 +568,6 @@ class SMWSQLStore3Readers {
 		// apply options to overall result
 		$result = $this->store->applyRequestOptions( $result, $requestOptions );
 
-		wfProfileOut( "SMWSQLStore3::getProperties (SMW)" );
 
 		return $result;
 	}
@@ -601,7 +584,6 @@ class SMWSQLStore3Readers {
 	 * @return array of SMWWikiPageValue
 	 */
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
-		wfProfileIn( "SMWSQLStore3::getInProperties (SMW)" );
 
 		$db = $this->store->getDatabase();
 		$result = array();
@@ -652,7 +634,6 @@ class SMWSQLStore3Readers {
 		}
 
 		$result = $this->store->applyRequestOptions( $result, $requestoptions ); // apply options to overall result
-		wfProfileOut( "SMWSQLStore3::getInProperties (SMW)" );
 
 		return $result;
 	}

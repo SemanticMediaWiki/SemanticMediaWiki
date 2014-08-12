@@ -46,7 +46,6 @@ class PropertyTableDefinitionBuilder {
 	 * @since 1.9
 	 */
 	public function runBuilder() {
-		wfProfileIn( __METHOD__ );
 
 		$this->getDITypes( $this->diTypes );
 		$this->getSpecialProperties( $this->specialProperties );
@@ -56,7 +55,6 @@ class PropertyTableDefinitionBuilder {
 
 		$this->getFixedPropertyTableIds( $this->propertyTables );
 
-		wfProfileOut( __METHOD__ );
 	}
 
 	/**

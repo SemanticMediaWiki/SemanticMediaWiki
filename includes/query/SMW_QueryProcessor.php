@@ -469,12 +469,10 @@ class SMWQueryProcessor {
 	 * #ask function parameters.
 	 */
 	static public function getResultFromQueryString( $queryString, array $params, $extraPrintouts, $outputMode, $context = self::INLINE_QUERY ) {
-		wfProfileIn( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
 		$query  = self::createQuery( $queryString, $params, $context, '', $extraPrintouts );
 		$result = self::getResultFromQuery( $query, $params, $outputMode, $context );
 
-		wfProfileOut( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
 		return $result;
 	}
@@ -494,19 +492,15 @@ class SMWQueryProcessor {
 	 * @return string
 	 */
 	public static function getResultFromQuery( SMWQuery $query, array $params, $outputMode, $context ) {
-		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
 		$res = self::getStoreFromParams( $params )->getQueryResult( $query );
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) ||
 			( $query->querymode == SMWQuery::MODE_NONE ) ) {
-			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 
 			$printer = self::getResultPrinter( $params['format']->getValue(), $context );
 			$result = $printer->getResult( $res, $params, $outputMode );
 
-			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
-			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
 			return $result;
 		} else { // result for counting or debugging is just a string or number
@@ -529,7 +523,6 @@ class SMWQueryProcessor {
 				$result = smwfEncodeMessages( $query->getErrors() );
 			}
 
-			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
 			return $result;
 		}

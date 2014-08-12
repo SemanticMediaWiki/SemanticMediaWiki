@@ -65,7 +65,6 @@ class SMWQueryParser {
 	 * @return SMWDescription
 	 */
 	public function getQueryDescription( $queryString ) {
-		wfProfileIn( 'SMWQueryParser::getQueryDescription (SMW)' );
 
 		$this->m_errors = array();
 		$this->m_curstring = $queryString;
@@ -81,7 +80,6 @@ class SMWQueryParser {
 			$result = new SMWThingDescription();
 		}
 
-		wfProfileOut( 'SMWQueryParser::getQueryDescription (SMW)' );
 
 		return $result;
 	}

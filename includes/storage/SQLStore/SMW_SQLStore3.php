@@ -338,11 +338,9 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return SMWQueryResult|string|integer depends on $query->querymode
 	 */
 	public function getQueryResult( SMWQuery $query ) {
-		wfProfileIn( 'SMWSQLStore3::getQueryResult (SMW)' );
 
 		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_SLAVE ) );
 		$result = $qe->getQueryResult( $query );
-		wfProfileOut( 'SMWSQLStore3::getQueryResult (SMW)' );
 
 		return $result;
 	}
@@ -426,12 +424,10 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
-		wfProfileIn( 'SMWSQLStore3::refreshConceptCache (SMW)' );
 
 		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_MASTER ) );
 		$result = $qe->refreshConceptCache( $concept );
 
-		wfProfileOut( 'SMWSQLStore3::refreshConceptCache (SMW)' );
 
 		return $result;
 	}
@@ -443,12 +439,10 @@ class SMWSQLStore3 extends SMWStore {
 	 * @param Title $concept
 	 */
 	public function deleteConceptCache( $concept ) {
-		wfProfileIn( 'SMWSQLStore3::deleteConceptCache (SMW)' );
 
 		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_MASTER ) );
 		$result = $qe->deleteConceptCache( $concept );
 
-		wfProfileOut( 'SMWSQLStore3::deleteConceptCache (SMW)' );
 
 		return $result;
 	}
@@ -467,7 +461,6 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return SMW\DIConcept|null
 	 */
 	public function getConceptCacheStatus( $concept ) {
-		wfProfileIn( 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
 
 		$db = $this->getDatabase();
 
@@ -508,7 +501,6 @@ class SMWSQLStore3 extends SMWStore {
 			$result = null;
 		}
 
-		wfProfileOut( 'SMWSQLStore3::getConceptCacheStatus (SMW)' );
 
 		return $result;
 	}
@@ -604,10 +596,8 @@ class SMWSQLStore3 extends SMWStore {
 	 * @return SMWDataItem[]
 	 */
 	public function applyRequestOptions( array $data, SMWRequestOptions $requestoptions = null ) {
-		wfProfileIn( "SMWSQLStore3::applyRequestOptions (SMW)" );
 
 		if ( ( count( $data ) == 0 ) || is_null( $requestoptions ) ) {
-			wfProfileOut( "SMWSQLStore3::applyRequestOptions (SMW)" );
 			return $data;
 		}
 
@@ -693,7 +683,6 @@ class SMWSQLStore3 extends SMWStore {
 			$result = array_slice( $result, $requestoptions->offset );
 		}
 
-		wfProfileOut( "SMWSQLStore3::applyRequestOptions (SMW)" );
 
 		return $result;
 	}

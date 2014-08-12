@@ -216,7 +216,6 @@ class InTextAnnotationParser {
 	 * @return string
 	 */
 	protected function process( array $semanticLink ) {
-		wfProfileIn( __METHOD__ );
 
 		if ( array_key_exists( 1, $semanticLink ) ) {
 			$property = $semanticLink[1];
@@ -231,7 +230,6 @@ class InTextAnnotationParser {
 		}
 
 		if ( $value === '' ) { // silently ignore empty values
-			wfProfileOut( __METHOD__ );
 			return '';
 		}
 
@@ -244,7 +242,6 @@ class InTextAnnotationParser {
 					$this->isAnnotation = false;
 					break;
 			}
-			wfProfileOut( __METHOD__ );
 			return '';
 		}
 
@@ -257,7 +254,6 @@ class InTextAnnotationParser {
 		// Extract annotations and create tooltip.
 		$properties = preg_split( '/:[=:]/u', $property );
 
-		wfProfileOut( __METHOD__ );
 		return $this->addPropertyValue( $properties, $value, $valueCaption );
 	}
 
@@ -271,7 +267,6 @@ class InTextAnnotationParser {
 	 * @return string
 	 */
 	protected function addPropertyValue( array $properties, $value, $valueCaption ) {
-		wfProfileIn( __METHOD__ );
 
 		$subject = $this->parserData->getData()->getSubject();
 
@@ -299,7 +294,6 @@ class InTextAnnotationParser {
 			$result .= $dataValue->getErrorText();
 		}
 
-		wfProfileOut( __METHOD__ );
 		return $result;
 	}
 

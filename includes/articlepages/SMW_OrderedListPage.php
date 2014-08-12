@@ -74,7 +74,6 @@ abstract class SMWOrderedListPage extends Article {
 	protected function showList() {
 		global $wgOut, $wgRequest;
 
-		wfProfileIn( __METHOD__ . ' (SMW)' );
 
 		$this->from = $wgRequest->getVal( 'from', '' );
 		$this->until = $wgRequest->getVal( 'until', '' );
@@ -84,7 +83,6 @@ abstract class SMWOrderedListPage extends Article {
 			SMWOutputs::commitToOutputPage( $wgOut );
 		}
 
-		wfProfileOut( __METHOD__ . ' (SMW)' );
 	}
 
 	/**
