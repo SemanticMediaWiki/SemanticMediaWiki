@@ -3,11 +3,10 @@
 namespace SMW\Annotator;
 
 use SMW\Application;
-use SMW\PropertyAnnotator;
-use SMW\PageInfo;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-
+use SMW\PageInfo;
+use SMW\PropertyAnnotator;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;

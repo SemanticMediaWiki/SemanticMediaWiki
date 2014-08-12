@@ -2,8 +2,8 @@
 
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\Settings;
-use SMW\StoreFactory;
 use SMW\Store;
+use SMW\StoreFactory;
 
 /**
  * @defgroup SMWSpecialPage

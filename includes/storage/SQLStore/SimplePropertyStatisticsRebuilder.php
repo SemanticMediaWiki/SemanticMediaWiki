@@ -2,13 +2,11 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Store\PropertyStatisticsStore;
+use MWException;
 use SMW\Reporter\MessageReporter;
 use SMW\Reporter\NullMessageReporter;
-
 use SMW\Store;
-
-use MWException;
+use SMW\Store\PropertyStatisticsStore;
 
 /**
  * Simple implementation of PropertyStatisticsRebuilder.

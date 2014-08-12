@@ -2,15 +2,13 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\DIWikiPage;
-
-use SMWSparqlDatabase as SparqlDatabase;
-use SMWExpNsResource as ExpNsResource;
-use SMWExpResource as ExpResource;
-use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
-
 use RuntimeException;
+use SMW\DIWikiPage;
+use SMWExpNsResource as ExpNsResource;
+use SMWExporter as Exporter;
+use SMWExpResource as ExpResource;
+use SMWSparqlDatabase as SparqlDatabase;
+use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @ingroup Sparql

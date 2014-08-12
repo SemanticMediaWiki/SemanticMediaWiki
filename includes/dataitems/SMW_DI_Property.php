@@ -2,15 +2,14 @@
 
 namespace SMW;
 
+use InvalidArgumentException;
+use RuntimeException;
+use SMW\InvalidPredefinedPropertyException;
+use SMW\InvalidPropertyException;
 use SMWDataItem;
 use SMWDIUri;
 use SMWDIWikiPage;
 use SMWLanguage;
-
-use InvalidArgumentException;
-use RuntimeException;
-use SMW\InvalidPropertyException;
-use SMW\InvalidPredefinedPropertyException;
 
 /**
  * This class implements Property data items.

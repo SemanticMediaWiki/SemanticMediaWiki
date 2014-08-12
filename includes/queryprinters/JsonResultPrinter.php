@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMWQueryResult;
-use SMWQueryProcessor;
-use SMWQuery;
 use FormatJSON;
+use SMWQuery;
+use SMWQueryProcessor;
+use SMWQueryResult;
 
 /**
  * Print links to JSON files representing query results.

@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMWQueryResult;
-use SMWQueryProcessor;
-use SMWQuery;
 use Sanitizer;
+use SMWQuery;
+use SMWQueryProcessor;
+use SMWQueryResult;
 
 /**
  * Result printer to print results in UNIX-style DSV (deliminter separated value) format.

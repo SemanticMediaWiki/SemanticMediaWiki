@@ -2,13 +2,13 @@
 
 namespace SMW;
 
-use SMWQueryResult;
+use SMWExporter;
+use SMWPrintRequest;
 use SMWQuery;
 use SMWQueryProcessor;
-use SMWPrintRequest;
-use SMWExporter;
-use SMWTurtleSerializer;
+use SMWQueryResult;
 use SMWRDFXMLSerializer;
+use SMWTurtleSerializer;
 
 /**
  * Printer class for generating RDF output

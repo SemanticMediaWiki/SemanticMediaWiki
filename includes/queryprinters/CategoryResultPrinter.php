@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMWQueryResult;
 use SMWDataItem;
+use SMWQueryResult;
 
 /**
  * Print query results in alphabetic groups displayed in columns, a la the

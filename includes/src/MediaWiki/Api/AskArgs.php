@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMWPropertyValue;
-use SMWPrintRequest;
-
 use ApiBase;
+use SMWPrintRequest;
+use SMWPropertyValue;
 
 /**
  * API module to query SMW by providing a query specified as

@@ -2,13 +2,12 @@
 
 namespace SMW\Serializers;
 
+use OutOfBoundsException;
 use SMW\DataValueFactory;
 use SMWDataItem as DataItem;
 use SMWPrintRequest;
-use SMWResultArray;
 use SMWQueryResult as QueryResult;
-
-use OutOfBoundsException;
+use SMWResultArray;
 use Title;
 
 /**

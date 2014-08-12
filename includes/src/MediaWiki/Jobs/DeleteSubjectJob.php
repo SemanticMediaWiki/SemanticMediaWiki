@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use Job;
+use SMW\Application;
 use SMW\DIWikiPage;
 use SMW\SerializerFactory;
-use SMW\Application;
-
 use Title;
-use Job;
 
 /**
  * Handle subject removal directly or as deferred job

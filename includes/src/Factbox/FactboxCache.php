@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use ParserOutput;
-use OutputPage;
-use Title;
 use Html;
+use OutputPage;
+use ParserOutput;
+use Title;
 
 /**
  * Factbox output caching

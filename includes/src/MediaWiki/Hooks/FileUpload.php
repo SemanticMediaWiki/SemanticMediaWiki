@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
-
 use File;
+use SMW\Application;
 
 /**
  * Fires when a local file upload occurs

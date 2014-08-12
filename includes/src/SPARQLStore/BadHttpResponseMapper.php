@@ -2,12 +2,10 @@
 
 namespace SMW\SPARQLStore;
 
+use Exception;
+use SMW\HttpRequest;
 use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 use SMW\SPARQLStore\Exception\HttpDatabaseConnectionException;
-
-use SMW\HttpRequest;
-
-use Exception;
 
 /**
  * Post-processing for a bad inbound responses

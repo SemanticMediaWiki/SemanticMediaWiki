@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use ObjectCache;
 use BagOStuff;
+use ObjectCache;
 
 /**
  * Encapsulate access to MW's BagOStuff class

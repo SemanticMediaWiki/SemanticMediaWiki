@@ -2,10 +2,10 @@
 
 namespace SMW;
 
-use SMWQueryProcessor;
-use SMWQueryResult;
 use Sanitizer;
 use SMWQuery;
+use SMWQueryProcessor;
+use SMWQueryResult;
 
 /**
  * CSV export for SMW Queries

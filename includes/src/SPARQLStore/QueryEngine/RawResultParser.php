@@ -3,9 +3,8 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\Exception\XmlParserException;
-
-use SMWExpResource as ExpResource;
 use SMWExpLiteral as ExpLiteral;
+use SMWExpResource as ExpResource;
 
 /**
  * Class for parsing SPARQL results in XML format

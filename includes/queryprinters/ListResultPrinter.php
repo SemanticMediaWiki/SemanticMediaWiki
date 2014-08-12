@@ -2,12 +2,11 @@
 
 namespace SMW;
 
-use SMWQueryResult;
-use SMWDataItem;
-use SMWResultArray;
-
-use Sanitizer;
 use Html;
+use Sanitizer;
+use SMWDataItem;
+use SMWQueryResult;
+use SMWResultArray;
 
 /**
  * Print query results in lists.

@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\EditInfoProvider;
-use SMW\Application;
-
 use ParserOutput;
+use SMW\Application;
+use SMW\MediaWiki\EditInfoProvider;
 use Title;
 
 /**

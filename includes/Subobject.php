@@ -2,12 +2,11 @@
 
 namespace SMW;
 
-use SMWContainerSemanticData;
-use SMWDIContainer;
-use SMWDataValue;
-
-use Title;
 use InvalidArgumentException;
+use SMWContainerSemanticData;
+use SMWDataValue;
+use SMWDIContainer;
+use Title;
 
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject

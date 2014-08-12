@@ -1,8 +1,16 @@
 <?php
 
 namespace SMW;
-use SMWQueryResult, SMWQuery, SMWQueryProcessor, SMWDIWikipage;
-use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
+use FeedItem;
+use ParserOptions;
+use Sanitizer;
+use SMWDIWikipage;
+use SMWQuery;
+use SMWQueryProcessor;
+use SMWQueryResult;
+use TextContent;
+use Title;
+use WikiPage;
 
 /**
  * Result printer that exports query results as RSS/Atom feed

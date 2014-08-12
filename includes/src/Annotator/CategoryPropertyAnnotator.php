@@ -2,10 +2,10 @@
 
 namespace SMW\Annotator;
 
-use SMW\PropertyAnnotator;
+use SMW\Application;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Application;
+use SMW\PropertyAnnotator;
 
 /**
  * Handling category annotation

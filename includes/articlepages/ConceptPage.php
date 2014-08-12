@@ -3,8 +3,8 @@
 namespace SMW;
 
 use Html;
-use SMWPageLister;
 use SMWConceptDescription;
+use SMWPageLister;
 
 /**
  * Special handling for relation/attribute description pages.

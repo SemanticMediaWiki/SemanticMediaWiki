@@ -2,14 +2,12 @@
 
 namespace SMW\Store;
 
-use SMW\CacheableResultMapper;
-use SMW\ResultCollector;
-use SMW\DIProperty;
-use SMW\Settings;
-
-use SMWRequestOptions;
-use InvalidArgumentException;
 use MWTimestamp;
+use SMW\CacheableResultMapper;
+use SMW\DIProperty;
+use SMW\ResultCollector;
+use SMW\Settings;
+use SMWRequestOptions;
 
 /**
  * Base class thats represents a cacheable ResultCollector

@@ -1,8 +1,8 @@
 <?php
 
-use ParamProcessor\Processor;
 use ParamProcessor\Options;
 use ParamProcessor\ParamDefinition;
+use ParamProcessor\Processor;
 
 /**
  * This file contains a static class for accessing functions to generate and execute

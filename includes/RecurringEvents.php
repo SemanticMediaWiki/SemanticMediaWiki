@@ -3,7 +3,6 @@
 namespace SMW;
 
 use Message;
-
 use SMWDITime;
 use SMWTimeValue;
 

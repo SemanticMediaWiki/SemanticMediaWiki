@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use InvalidArgumentException;
 use MWTimestamp;
 
 /**
