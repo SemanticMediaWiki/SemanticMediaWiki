@@ -49,7 +49,7 @@ class ConceptPage extends \SMWOrderedListPage {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
 
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
-			$store = \SMW\StoreFactory::getStore();
+			$store = StoreFactory::getStore();
 			$concept = $store->getConceptCacheStatus( $this->getDataItem() );
 			$description = new SMWConceptDescription( $this->getDataItem() );
 			$query = SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
