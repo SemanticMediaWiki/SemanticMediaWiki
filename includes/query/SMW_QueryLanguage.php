@@ -11,7 +11,6 @@
  * 
  * @since 1.5.3
  * 
- * @file SMW_QueryLanguage.php
  * @ingroup SMW
  * 
  * @author Jeroen De Dauw

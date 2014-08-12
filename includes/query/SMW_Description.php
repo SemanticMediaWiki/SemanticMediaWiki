@@ -3,7 +3,6 @@
  * This file contains basic classes for representing (query) descriptions in
  * the SMW API.
  *
- * @file
  * @ingroup SMWQuery
  *
  * @author Markus Krötzsch

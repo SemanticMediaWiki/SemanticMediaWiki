@@ -4,7 +4,6 @@
  * This special page for MediaWiki implements a customisable form for
  * executing queries outside of articles.
  *
- * @file SMW_SpecialAsk.php
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  *

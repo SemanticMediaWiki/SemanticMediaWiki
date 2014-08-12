@@ -20,7 +20,6 @@
  * that creates SMW outputs that may require head items must afterwards clear the temporal store by
  * writing its contents to the according output.
  *
- * @file SMW_Ouputs.php
  * @ingroup SMW
  *
  * @author Markus Krötzsch

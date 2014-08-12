@@ -14,7 +14,6 @@ use SMW\SerializerFactory;
  * only are interested in the actual list of pages.
  *
  *
- * @file SMW_QueryResult.php
  * @ingroup SMWQuery
  *
  * @licence GNU GPL v2 or later

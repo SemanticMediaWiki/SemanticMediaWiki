@@ -4,7 +4,6 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Reporter\MessageReporter;
 
 /**
- * @file
  * @ingroup SMWStore
  * @since 1.8
  */

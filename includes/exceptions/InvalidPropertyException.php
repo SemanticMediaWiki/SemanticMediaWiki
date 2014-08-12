@@ -5,7 +5,6 @@ namespace SMW;
 /**
  * Exception for an invalid property
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

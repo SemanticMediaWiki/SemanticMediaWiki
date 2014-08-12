@@ -11,7 +11,6 @@ use SMW\ParameterInput;
  *
  * @since 1.8
  *
- * @file
  * @ingroup SMW
  *
  * @licence GNU GPL v2+

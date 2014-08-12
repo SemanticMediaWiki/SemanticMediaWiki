@@ -5,7 +5,6 @@
  * i.e. basically an array of SMWDataItems with some additional parameters.
  * The content of the array is fetched on demand only.
  * 
- * @file SMW_ResultArray.php
  * @ingroup SMWQuery
  * 
  * @author Markus Krötzsch

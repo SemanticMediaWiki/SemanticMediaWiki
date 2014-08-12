@@ -1,6 +1,5 @@
 <?php
 /**
- * @file
  * @author Nischay Nahata
  * @author Markus Kroetzsch
  * @ingroup SMWDataItemsHandlers

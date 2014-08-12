@@ -8,7 +8,6 @@ use OutOfBoundsException;
 /**
  * Interface specifying access to a DependencyBuilder
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

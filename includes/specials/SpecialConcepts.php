@@ -11,7 +11,6 @@ use Html;
 /**
  * Special page that lists available concepts
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

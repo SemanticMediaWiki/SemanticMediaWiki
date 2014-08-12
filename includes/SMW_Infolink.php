@@ -5,7 +5,6 @@
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  *
- * @file
  * @ingroup SMW
  */
 

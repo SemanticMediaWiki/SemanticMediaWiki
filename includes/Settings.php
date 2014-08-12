@@ -7,7 +7,6 @@ namespace SMW;
  *
  * @note Initial idea has been borrowed from EducationProgram Extension/Jeroen De Dauw
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

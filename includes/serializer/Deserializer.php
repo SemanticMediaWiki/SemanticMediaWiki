@@ -7,7 +7,6 @@ namespace SMW\Deserializers;
  *
  * @since 1.0
  *
- * @file
  * @ingroup Serialization
  *
  * @licence GNU GPL v2+

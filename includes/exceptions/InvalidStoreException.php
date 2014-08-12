@@ -7,7 +7,6 @@ use MWException;
 /**
  * Exception for an invalid store instance
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

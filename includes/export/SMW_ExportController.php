@@ -4,7 +4,6 @@
  * File holding the SMWExportController class that provides basic functions for
  * exporting pages to RDF and OWL.
  *
- * @file SMW_ExportController.php
  * @ingroup SMW
  *
  * @author Markus Krötzsch

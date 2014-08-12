@@ -4,7 +4,6 @@
  *
  * @author Markus Krötzsch
  *
- * @file
  * @ingroup SMWDataValues
  */
 

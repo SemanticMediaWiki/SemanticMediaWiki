@@ -3,7 +3,6 @@
 use SMW\SQLStore\PropertyStatisticsTable;
 
 /**
- * @file
  * @ingroup SMWStore
  * @since 1.8
  * @author Markus Krötzsch

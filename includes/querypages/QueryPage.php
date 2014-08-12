@@ -12,7 +12,6 @@ use Xml;
  * An abstract query page base class that supports array-based
  * data retrieval instead of the SQL-based access used by MW.
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   ??

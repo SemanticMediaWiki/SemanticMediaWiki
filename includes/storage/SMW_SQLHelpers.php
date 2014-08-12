@@ -8,7 +8,6 @@
  * @author Marcel Gsteiger
  * @author Jeroen De Dauw
  *
- * @file SMW_SQLHelpers.php
  * @ingroup SMWStore
  */
 class SMWSQLHelpers {

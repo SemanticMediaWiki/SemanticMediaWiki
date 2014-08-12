@@ -7,7 +7,6 @@ use SMW\DataItemException;
  *
  * @since 1.6
  *
- * @file SMW_DI_GeoCoord.php
  * @ingroup SemanticMaps
  *
  * @licence GNU GPL v3

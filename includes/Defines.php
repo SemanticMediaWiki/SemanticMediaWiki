@@ -2,7 +2,6 @@
 /**
  * Constants relevant to Semantic MediaWiki
  *
- * @file
  */
 
 /**

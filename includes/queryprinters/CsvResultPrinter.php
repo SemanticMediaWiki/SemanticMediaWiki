@@ -12,7 +12,6 @@ use SMWQuery;
  *
  * @since 1.9
  *
- * @file
  *
  * @license GNU GPL v2+
  * @author Nathan R. Yergler

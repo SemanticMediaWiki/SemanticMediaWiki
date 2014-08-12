@@ -5,7 +5,6 @@ namespace SMW;
 /**
  * Factory class handling parameter formatting instances
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9
