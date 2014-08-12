@@ -5,7 +5,6 @@ namespace SMW;
 /**
  * Generating a Hash Id
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

@@ -8,7 +8,6 @@ use SMWOutputs;
  * Special page (Special:WantedProperties) for MediaWiki shows all
  * wanted properties
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

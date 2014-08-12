@@ -4,7 +4,6 @@
  * File holding the SMWTurtleSerializer class that provides basic functions for
  * serialising OWL data in Turtle syntax.
  *
- * @file SMW_Serializer.php
  * @ingroup SMW
  *
  * @author Markus Krötzsch

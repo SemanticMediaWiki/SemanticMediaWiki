@@ -9,7 +9,6 @@ use ParamProcessor\IParam;
  * @since 1.6.2
  * @deprecated since 1.9
  * 
- * @file
  * @ingroup SMW
  * @ingroup ParamDefinition
  * 

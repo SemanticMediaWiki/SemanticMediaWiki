@@ -5,7 +5,6 @@ namespace SMW;
 /**
  * Class handling parser parameter formatting
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

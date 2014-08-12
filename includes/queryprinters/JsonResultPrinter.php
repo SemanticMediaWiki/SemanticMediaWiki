@@ -14,7 +14,6 @@ use FormatJSON;
  *
  * @since 1.5.3
  *
- * @file
  *
  * @license GNU GPL v2 or later
  * @author mwjames

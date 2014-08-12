@@ -13,7 +13,6 @@ use SMWQueryProcessor;
 /**
  * Class that provides the {{#concept}} parser function
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

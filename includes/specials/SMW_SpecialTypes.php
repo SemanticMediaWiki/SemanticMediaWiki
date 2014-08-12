@@ -9,7 +9,6 @@ use SMW\DataValueFactory;
  * articles, and from metadata already some global variables managed by SMWTypeHandlerFactory,
  * and in Type: Wiki pages. This only reports on the Type: Wiki pages.
  *
- * @file SMW_SpecialTypes.php
  *
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage

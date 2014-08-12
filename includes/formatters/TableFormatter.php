@@ -7,7 +7,6 @@ use Html;
 /**
  * Class handling Html table formatting
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

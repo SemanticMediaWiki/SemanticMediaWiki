@@ -6,7 +6,6 @@
  *
  * @author Ankit Garg
  * @author Yaron Koren
- * @file SMW_PageSchemas.php
  * @ingroup SMW
  */
 

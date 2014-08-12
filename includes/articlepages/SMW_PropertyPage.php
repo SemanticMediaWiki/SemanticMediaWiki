@@ -5,7 +5,6 @@
  * property pages. Very similar to CategoryPage, but with different printout
  * that also displays values for each subject with the given property.
  *
- * @file SMW_PropertyPage.php
  * @ingroup SMW
  *
  * @author Markus Krötzsch

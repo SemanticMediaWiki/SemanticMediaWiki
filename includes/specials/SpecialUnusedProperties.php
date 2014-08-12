@@ -8,7 +8,6 @@ use SMWOutputs;
  * Special page (Special:UnusedProperties) for MediaWiki shows all
  * unused properties
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

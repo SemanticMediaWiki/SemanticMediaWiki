@@ -1,6 +1,5 @@
 <?php
 /**
- * @file
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  *

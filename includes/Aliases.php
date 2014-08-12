@@ -6,7 +6,6 @@
  *
  * @since 1.9
  *
- * @file
  * @ingroup SMW
  *
  * @licence GNU GPL v2+

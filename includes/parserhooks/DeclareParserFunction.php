@@ -10,7 +10,6 @@ use SMWOutputs;
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Argument_declaration_in_templates
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.5.3
