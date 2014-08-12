@@ -2,9 +2,9 @@
 
 namespace SMW\Query\Profiler;
 
-use SMW\Subobject;
-use SMW\IdGenerator;
 use SMW\DIProperty;
+use SMW\IdGenerator;
+use SMW\Subobject;
 
 /**
  * Provides access to the Null object for handling profiling data

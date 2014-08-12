@@ -2,15 +2,14 @@
 
 namespace SMW\Annotator;
 
+use Revision;
 use SMW\MediaWiki\PageInfoProvider;
 use SMw\MediaWiki\RedirectTargetFinder;
-use SMW\SemanticData;
 use SMW\PageInfo;
-
+use SMW\SemanticData;
 use Title;
-use WikiPage;
-use Revision;
 use User;
+use WikiPage;
 
 /**
  * @license GNU GPL v2+

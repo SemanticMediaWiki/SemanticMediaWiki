@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMW\Application;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-
-use Title;
 use ApiBase;
+use SMW\Application;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use Title;
 
 /**
  * Browse a subject api module

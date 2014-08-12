@@ -2,13 +2,12 @@
 
 namespace SMW;
 
-use Parser;
 use Html;
-use Title;
-
+use Parser;
 use SMWDIProperty;
 use SMWInfolink;
 use SMWQueryProcessor;
+use Title;
 
 /**
  * Class that provides the {{#concept}} parser function

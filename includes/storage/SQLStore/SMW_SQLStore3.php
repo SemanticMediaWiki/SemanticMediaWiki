@@ -1,18 +1,18 @@
 <?php
 
-use SMW\SQLStore\PropertyTableDefinitionBuilder;
-use SMW\SQLStore\WantedPropertiesCollector;
-use SMW\SQLStore\UnusedPropertiesCollector;
-use SMW\SQLStore\PropertiesCollector;
-use SMW\SQLStore\StatisticsCollector;
 use SMW\DataTypeRegistry;
-use SMW\Settings;
-use SMW\SQLStore\TableDefinition;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\LazyDBConnectionProvider as DBConnectionProvider;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\SemanticData;
+use SMW\Settings;
+use SMW\SQLStore\PropertiesCollector;
+use SMW\SQLStore\PropertyTableDefinitionBuilder;
+use SMW\SQLStore\StatisticsCollector;
+use SMW\SQLStore\TableDefinition;
+use SMW\SQLStore\UnusedPropertiesCollector;
+use SMW\SQLStore\WantedPropertiesCollector;
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.

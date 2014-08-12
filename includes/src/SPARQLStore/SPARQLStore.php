@@ -2,22 +2,19 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\SPARQLStore\QueryEngine\QueryEngine;
-use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
-use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
-
-use SMW\SemanticData;
-use SMW\DIWikiPage;
-use SMW\Store;
 use SMW\DIProperty;
-
+use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMW\SPARQLStore\QueryEngine\QueryConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\QueryEngine;
+use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
+use SMW\Store;
 use SMWDataItem as DataItem;
-use SMWQuery as Query;
+use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
+use SMWQuery as Query;
 use SMWTurtleSerializer as TurtleSerializer;
 use SMWUpdateJob;
-use SMWExpNsResource as ExpNsResource;
-
 use Title;
 
 /**

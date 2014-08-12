@@ -2,13 +2,12 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\Jobs\JobFactory;
+use ParserOutput;
 use SMW\Annotator\PropertyAnnotatorFactory;
+use SMW\Factbox\FactboxBuilder;
+use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
-use SMW\Factbox\FactboxBuilder;
-
-use ParserOutput;
 use Title;
 
 /**

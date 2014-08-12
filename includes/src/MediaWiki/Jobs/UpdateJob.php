@@ -2,12 +2,11 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use LinkCache;
+use ParserOutput;
+use SMW\Application;
 use SMW\FactboxCache;
 use SMW\Profiler;
-use SMW\Application;
-
-use ParserOutput;
-use LinkCache;
 use Title;
 
 /**

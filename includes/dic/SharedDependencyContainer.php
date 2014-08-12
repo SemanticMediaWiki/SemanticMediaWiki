@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\TitleCreator;
 
 /**
  * Extends the BaseDependencyContainer to provide general purpose dependency

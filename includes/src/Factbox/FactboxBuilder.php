@@ -2,13 +2,12 @@
 
 namespace SMW\Factbox;
 
-use SMW\FactboxCache;
-use SMW\Factbox;
-use SMW\ParserData;
-use SMW\Application;
-
-use OutputPage;
 use IContextSource;
+use OutputPage;
+use SMW\Application;
+use SMW\Factbox;
+use SMW\FactboxCache;
+use SMW\ParserData;
 
 /**
  * @license GNU GPL v2+

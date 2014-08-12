@@ -3,10 +3,9 @@
 namespace SMW\Query\Profiler;
 
 use SMW\DIProperty;
-
 use SMWDescription as QueryDescription;
-use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
+use SMWDINumber as DINumber;
 
 /**
  * Provides access to some QueryDescription profiling data

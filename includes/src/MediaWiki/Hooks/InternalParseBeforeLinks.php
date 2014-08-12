@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
-
 use Parser;
+use SMW\Application;
 use Title;
 
 /**

@@ -2,11 +2,10 @@
 
 namespace SMW\MediaWiki;
 
-use SMW\PageInfo;
-
-use WikiPage;
 use Revision;
+use SMW\PageInfo;
 use User;
+use WikiPage;
 
 /**
  * Provide access to MediaWiki objects relevant for the predefined property

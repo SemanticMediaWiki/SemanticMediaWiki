@@ -2,16 +2,13 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
+use SMW\QueryOutputFormatter;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\SPARQLStore\QueryEngine\FederateResultSet;
-
-use SMW\QueryOutputFormatter;
-
-use SMWSparqlDatabase as SparqlDatabase;
-use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
+use SMWSparqlDatabase as SparqlDatabase;
 use SMWThingDescription as ThingDescription;
 
 /**

@@ -2,11 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Application;
-
 use OutputPage;
-use Title;
 use Skin;
+use SMW\Application;
+use Title;
 
 /**
  * SkinAfterContent hook to add text after the page content and

@@ -2,13 +2,11 @@
 
 namespace SMW\MediaWiki\Api;
 
+use ApiBase;
 use SMW\Application;
-
+use SMWQuery;
 use SMWQueryProcessor;
 use SMWQueryResult;
-use SMWQuery;
-
-use ApiBase;
 
 /**
  * Base for API modules that query SMW

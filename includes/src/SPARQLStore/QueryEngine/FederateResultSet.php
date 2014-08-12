@@ -2,8 +2,8 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
-use SMWExpLiteral as ExpLiteral;
 use Iterator;
+use SMWExpLiteral as ExpLiteral;
 
 /**
  * Class for accessing SPARQL query results in a unified form. The data is

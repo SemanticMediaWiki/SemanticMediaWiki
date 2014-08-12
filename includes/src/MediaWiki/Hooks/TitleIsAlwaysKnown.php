@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
-
 use Title;
 
 /**

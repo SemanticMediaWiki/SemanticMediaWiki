@@ -4,8 +4,8 @@ namespace SMW\MediaWiki\Hooks;
 
 use OutputPage;
 use Skin;
-use Title;
 use SpecialPage;
+use Title;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the

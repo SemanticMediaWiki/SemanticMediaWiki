@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use WikiPage;
-use WikiFilePage;
 use Title;
+use WikiFilePage;
+use WikiPage;
 
 /**
  * @license GNU GPL v2+

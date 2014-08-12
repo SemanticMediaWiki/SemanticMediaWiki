@@ -2,33 +2,31 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
-use SMW\SPARQLStore\QueryEngine\Condition\Condition;
-use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
-
 use SMW\DataTypeRegistry;
-use SMW\Store;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWDescription as Description;
-use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
-use SMWExpNsResource as ExpNsResource;
-use SMWExpLiteral as ExpLiteral;
-use SMWSomeProperty as SomeProperty;
-use SMWNamespaceDescription as NamespaceDescription;
-use SMWConjunction as Conjunction;
-use SMWDisjunction as Disjunction;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
+use SMW\Store;
 use SMWClassDescription as ClassDescription;
-use SMWValueDescription as ValueDescription;
 use SMWConceptDescription as ConceptDescription;
+use SMWConjunction as Conjunction;
+use SMWDataItem as DataItem;
+use SMWDescription as Description;
+use SMWDIBlob as DIBlob;
+use SMWDisjunction as Disjunction;
+use SMWExpLiteral as ExpLiteral;
+use SMWExpNsResource as ExpNsResource;
+use SMWExporter as Exporter;
+use SMWNamespaceDescription as NamespaceDescription;
+use SMWSomeProperty as SomeProperty;
 use SMWThingDescription as ThingDescription;
+use SMWTurtleSerializer as TurtleSerializer;
+use SMWValueDescription as ValueDescription;
 
 /**
  * Condition mapping from Query objects to SPARQL

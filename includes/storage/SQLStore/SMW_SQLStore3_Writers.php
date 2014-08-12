@@ -1,9 +1,9 @@
 <?php
 
-use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\SemanticData;
+use SMW\SQLStore\PropertyStatisticsTable;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.

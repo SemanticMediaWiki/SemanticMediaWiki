@@ -2,28 +2,28 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
-use SMW\MediaWiki\Hooks\ArticlePurge;
-use SMW\MediaWiki\Hooks\TitleMoveComplete;
-use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use SMW\MediaWiki\Hooks\ArticleDelete;
-use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
-use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
-use SMW\MediaWiki\Hooks\SkinAfterContent;
-use SMW\MediaWiki\Hooks\OutputPageParserOutput;
+use SMW\MediaWiki\Hooks\ArticleFromTitle;
+use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
+use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
+use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
+use SMW\MediaWiki\Hooks\ExtensionTypes;
 use SMW\MediaWiki\Hooks\FileUpload;
+use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
+use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
+use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
-use SMW\MediaWiki\Hooks\GetPreferences;
-use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
-use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
 use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
-use SMW\MediaWiki\Hooks\ExtensionTypes;
+use SMW\MediaWiki\Hooks\SkinAfterContent;
+use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
+use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
-use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
-use SMW\MediaWiki\Hooks\ArticleFromTitle;
+use SMW\MediaWiki\Hooks\TitleMoveComplete;
 
 /**
  * Extension setup and registration

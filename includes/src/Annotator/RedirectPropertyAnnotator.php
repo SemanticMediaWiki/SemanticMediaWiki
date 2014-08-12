@@ -2,12 +2,11 @@
 
 namespace SMW\Annotator;
 
-use SMW\MediaWiki\RedirectTargetFinder;
-use SMW\PropertyAnnotator;
+use ContentHandler;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-
-use ContentHandler;
+use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\PropertyAnnotator;
 use Title;
 
 /**

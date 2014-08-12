@@ -2,10 +2,9 @@
 
 namespace SMW;
 
+use Html;
 use SMWRequestOptions;
 use SMWStringCondition;
-
-use Html;
 use Xml;
 
 /**

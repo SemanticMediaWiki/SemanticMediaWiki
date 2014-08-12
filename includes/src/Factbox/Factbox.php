@@ -2,14 +2,13 @@
 
 namespace SMW;
 
-use SMWInfolink;
-use SMWOutputs;
-
+use Html;
 use IContextSource;
 use ParserOutput;
 use Sanitizer;
+use SMWInfolink;
+use SMWOutputs;
 use Title;
-use Html;
 
 /**
  * Class handling the "Factbox" content rendering

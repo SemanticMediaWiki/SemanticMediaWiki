@@ -2,14 +2,13 @@
 
 namespace SMW;
 
-use SMW\Serializers\Serializer;
+use OutOfBoundsException;
 use SMW\Deserializers\Deserializer;
-use SMW\Serializers\SemanticDataSerializer;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\Serializers\QueryResultSerializer;
-
+use SMW\Serializers\SemanticDataSerializer;
+use SMW\Serializers\Serializer;
 use SMWQueryResult as QueryResult;
-use OutOfBoundsException;
 
 /**
  * Factory class for a serializable object
