@@ -196,8 +196,7 @@ class SMWResultArray {
 	protected function loadContent() {
 		if ( $this->mContent !== false ) return;
 		
-		wfProfileIn( 'SMWQueryResult::loadContent (SMW)' );
-		
+
 		switch ( $this->mPrintRequest->getMode() ) {
 			case SMWPrintRequest::PRINT_THIS: // NOTE: The limit is ignored here.
 				$this->mContent = array( $this->mResult );
@@ -264,7 +263,6 @@ class SMWResultArray {
 		
 		reset( $this->mContent );
 		
-		wfProfileOut( 'SMWQueryResult::loadContent (SMW)' );
 	}
 
 	/**

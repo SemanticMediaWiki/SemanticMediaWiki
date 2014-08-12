@@ -23,7 +23,6 @@ class SMWSpecialTypes extends SpecialPage {
 
 	public function execute( $param ) {
 		global $wgOut;
-		wfProfileIn( 'smwfDoSpecialTypes (SMW)' );
 
 		$params = SMWInfolink::decodeParameters( $param, false );
 		$typeLabel = reset( $params );
@@ -40,7 +39,6 @@ class SMWSpecialTypes extends SpecialPage {
 		$wgOut->addHTML( $html );
 		SMWOutputs::commitToOutputPage( $wgOut );
 
-		wfProfileOut( 'smwfDoSpecialTypes (SMW)' );
 	}
 
 	protected function getTypesList() {

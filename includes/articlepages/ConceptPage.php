@@ -46,7 +46,6 @@ class ConceptPage extends \SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getHtml() {
-		wfProfileIn( __METHOD__ . ' (SMW)' );
 
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
 			$store = StoreFactory::getStore();
@@ -88,7 +87,6 @@ class ConceptPage extends \SMWOrderedListPage {
 			$cacheInformation = '';
 		}
 
-		wfProfileOut( __METHOD__ . ' (SMW)' );
 
 		return  Html::element( 'br', array( 'id' => 'smwfootbr' ) ) .
 			Html::element( 'a', array( 'name' => 'SMWResults' ) , null ) .

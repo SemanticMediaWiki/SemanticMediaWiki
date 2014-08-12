@@ -29,12 +29,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getHtml() {
-		wfProfileIn( __METHOD__ . ' (SMW)' );
 
 		$list = $this->getSubpropertyList() . $this->getPropertyValueList();
 		$result = $this->getPredefinedPropertyIntro() . ( $list !== '' ? Html::element( 'br', array( 'id' => 'smwfootbr' ) ) . $list : '' );
 
-		wfProfileOut( __METHOD__ . ' (SMW)' );
 		return $result;
 	}
 

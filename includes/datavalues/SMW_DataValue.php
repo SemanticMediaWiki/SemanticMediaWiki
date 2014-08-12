@@ -144,7 +144,6 @@ abstract class SMWDataValue {
 	 * @param boolean $ignoreAllowedValues
 	 */
 	public function setUserValue( $value, $caption = false, $ignoreAllowedValues = false ) {
-		wfProfileIn( 'SMWDataValue::setUserValue (SMW)' );
 
 		$this->m_dataitem = null;
 		$this->mErrors = array(); // clear errors
@@ -170,7 +169,6 @@ abstract class SMWDataValue {
 			$this->checkAllowedValues();
 		}
 
-		wfProfileOut( 'SMWDataValue::setUserValue (SMW)' );
 	}
 
 	/**
