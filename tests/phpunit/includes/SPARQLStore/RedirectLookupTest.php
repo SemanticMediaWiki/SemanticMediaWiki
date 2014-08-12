@@ -102,6 +102,8 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase = $this->createMockSparqlDatabaseFor( array( $expLiteral ) );
 
 		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance->clear();
+
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
@@ -122,6 +124,8 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase = $this->createMockSparqlDatabaseFor( array( $expLiteral, null ) );
 
 		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance->clear();
+
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
@@ -149,6 +153,8 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase = $this->createMockSparqlDatabaseFor( array( $resource, $resource ) );
 
 		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance->clear();
+
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
@@ -182,6 +188,8 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$sparqlDatabase = $this->createMockSparqlDatabaseFor( array( $expLiteral, $expLiteral ) );
 
 		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance->clear();
+
 		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
@@ -189,6 +197,27 @@ class RedirectLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
+	}
+
+	public function testRedirectTargetWithCachedLookup() {
+
+		$sparqlDatabase = $this->createMockSparqlDatabaseFor( false );
+
+		$instance = new RedirectLookup( $sparqlDatabase );
+		$instance->clear();
+
+		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
+
+		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
+		$exists = null;
+
+		$instance->findRedirectTargetResource( $expNsResource, $exists );
+
+		// The second call to the same resource would if not cached raise an
+		// exception with the mock instance
+		$instance->findRedirectTargetResource( $expNsResource, $exists );
+
+		$this->assertFalse( $exists );
 	}
 
 	private function createMockSparqlDatabaseFor( $listReturnValue ) {
