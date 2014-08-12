@@ -64,7 +64,7 @@ class BadHttpDatabaseResponseException extends \Exception {
 			case self::ERROR_GRAPH_EXISTS:
 				$errorName = 'Graph already exists';
 				break;
-			case self::ERROR_NOSERVICE: default:
+			case self::ERROR_NOSERVICE:
 				$errorName = 'Required service has not been defined';
 				break;
 			default:
