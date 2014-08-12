@@ -67,9 +67,12 @@ class_alias( 'SMW\DIProperty', 'SMWDIProperty' );
 class_alias( 'SMW\Serializers\QueryResultSerializer', 'SMWDISerializer' );
 class_alias( 'SMW\DataValueFactory', 'SMWDataValueFactory' );
 class_alias( 'SMW\DataItemException', 'SMWDataItemException' );
+class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );
+class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
+
+// 2.0
 class_alias( 'SMW\FileExportPrinter', 'SMWExportPrinter' );
 class_alias( 'SMW\ResultPrinter', 'SMWResultPrinter' );
-class_alias( 'SMW\SQLStore\TableDefinition', 'SMWSQLStore3Table' );
 class_alias( 'SMW\AggregatablePrinter', 'SMWAggregatablePrinter' );
 class_alias( 'SMW\CategoryResultPrinter', 'SMWCategoryResultPrinter' );
 class_alias( 'SMW\DsvResultPrinter', 'SMWDSVResultPrinter' );
@@ -79,12 +82,22 @@ class_alias( 'SMW\ListResultPrinter', 'SMWListResultPrinter' );
 class_alias( 'SMW\QueryResultPrinter', 'SMWIResultPrinter' );
 class_alias( 'SMW\RawResultPrinter', 'SMW\ApiResultPrinter' );
 
-class_alias( 'SMW\DIConcept', 'SMWDIConcept' );
-
+// 2.0
 class_alias( 'SMW\SPARQLStore\FourstoreHttpDatabaseConnector', 'SMWSparqlDatabase4Store' );
 class_alias( 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector', 'SMWSparqlDatabaseVirtuoso' );
 class_alias( 'SMW\SPARQLStore\SPARQLStore', 'SMWSparqlStore' );
 class_alias( 'SMW\SPARQLStore\GenericHttpDatabaseConnector', 'SMWSparqlDatabase' );
+
+// 2.1
+class_alias( 'SMW\Query\Language\Description', 'SMWDescription' );
+class_alias( 'SMW\Query\Language\ThingDescription', 'SMWThingDescription' );
+class_alias( 'SMW\Query\Language\ClassDescription', 'SMWClassDescription' );
+class_alias( 'SMW\Query\Language\ConceptDescription', 'SMWConceptDescription' );
+class_alias( 'SMW\Query\Language\NamespaceDescription', 'SMWNamespaceDescription' );
+class_alias( 'SMW\Query\Language\ValueDescription', 'SMWValueDescription' );
+class_alias( 'SMW\Query\Language\Conjunction', 'SMWConjunction' );
+class_alias( 'SMW\Query\Language\Disjunction', 'SMWDisjunction' );
+class_alias( 'SMW\Query\Language\SomeProperty', 'SMWSomeProperty' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension credits.
 // @deprecated, removal in SMW 1.11

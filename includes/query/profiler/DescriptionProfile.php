@@ -4,7 +4,7 @@ namespace SMW\Query\Profiler;
 
 use SMW\DIProperty;
 
-use SMWDescription as QueryDescription;
+use SMW\Query\Language\Description as QueryDescription;
 use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
 

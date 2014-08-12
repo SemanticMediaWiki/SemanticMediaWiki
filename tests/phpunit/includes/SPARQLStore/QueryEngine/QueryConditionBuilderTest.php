@@ -11,15 +11,15 @@ use SMW\DIWikiPage;
 use SMWDINumber as DINumber;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
-use SMWValueDescription as ValueDescription;
-use SMWSomeProperty as SomeProperty;
+use SMW\Query\Language\ValueDescription as ValueDescription;
+use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMWThingDescription as ThingDescription;
-use SMWConjunction as Conjunction;
-use SMWDisjunction as Disjunction;
-use SMWClassDescription as ClassDescription;
-use SMWNamespaceDescription as NamespaceDescription;
+use SMW\Query\Language\ThingDescription as ThingDescription;
+use SMW\Query\Language\Conjunction as Conjunction;
+use SMW\Query\Language\Disjunction as Disjunction;
+use SMW\Query\Language\ClassDescription as ClassDescription;
+use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryConditionBuilder

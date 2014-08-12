@@ -11,7 +11,7 @@ use SMW\DIProperty;
 use SMW\DataValueFactory;
 
 use SMWQuery as Query;
-use SMWClassDescription as ClassDescription;
+use SMW\Query\Language\ClassDescription as ClassDescription;
 
 /**
  * @ingroup Test

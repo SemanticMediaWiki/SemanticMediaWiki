@@ -15,11 +15,11 @@ use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
-use SMWSomeProperty as SomeProperty;
+use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMWThingDescription as ThingDescription;
-use SMWClassDescription as ClassDescription;
+use SMW\Query\Language\ThingDescription as ThingDescription;
+use SMW\Query\Language\ClassDescription as ClassDescription;
 
 /**
  * @ingroup Test

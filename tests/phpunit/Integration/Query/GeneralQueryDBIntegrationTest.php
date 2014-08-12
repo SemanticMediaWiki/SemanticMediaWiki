@@ -12,10 +12,10 @@ use SMW\DataValueFactory;
 
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use SMWSomeProperty as SomeProperty;
+use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMWThingDescription as ThingDescription;
+use SMW\Query\Language\ThingDescription as ThingDescription;
 
 /**
  * @ingroup Test

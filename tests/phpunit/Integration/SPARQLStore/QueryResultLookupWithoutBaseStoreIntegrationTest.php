@@ -13,12 +13,12 @@ use SMW\StoreFactory;
 use SMW\DataValueFactory;
 use SMW\Subobject;
 
-use SMWValueDescription as ValueDescription;
-use SMWSomeProperty as SomeProperty;
+use SMW\Query\Language\ValueDescription as ValueDescription;
+use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMWThingDescription as ThingDescription;
-use SMWNamespaceDescription as NamespaceDescription;
+use SMW\Query\Language\ThingDescription as ThingDescription;
+use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
 
 use SMWDINumber as DINumber;
 use SMWQuery as Query;

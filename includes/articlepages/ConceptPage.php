@@ -2,9 +2,10 @@
 
 namespace SMW;
 
+use SMW\Query\Language\ConceptDescription;
+
 use Html;
 use SMWPageLister;
-use SMWConceptDescription;
 
 /**
  * Special handling for relation/attribute description pages.
@@ -51,7 +52,7 @@ class ConceptPage extends \SMWOrderedListPage {
 		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
 			$store = StoreFactory::getStore();
 			$concept = $store->getConceptCacheStatus( $this->getDataItem() );
-			$description = new SMWConceptDescription( $this->getDataItem() );
+			$description = new ConceptDescription( $this->getDataItem() );
 			$query = SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 			$queryResult = $store->getQueryResult( $query );
 
