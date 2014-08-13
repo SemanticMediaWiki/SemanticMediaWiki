@@ -14,7 +14,6 @@ use SMWTimeValue;
  *
  * @since 1.9
  *
- * @file
  * @ingroup SMW
  *
  * @author Yaron Koren

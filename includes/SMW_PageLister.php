@@ -10,7 +10,6 @@
  *
  * Some code adapted from CategoryPage.php
  * 
- * @file SMW_PageLister.php 
  * @ingroup SMW
  * 
  * @author Nikolas Iwan

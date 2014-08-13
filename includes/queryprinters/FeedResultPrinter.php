@@ -9,7 +9,6 @@ use Sanitizer, WikiPage, ParserOptions, FeedItem, TextContent, Title;
  *
  * @since 1.8
  *
- * @file
  *
  * @license GNU GPL v2 or later
  * @author mwjames

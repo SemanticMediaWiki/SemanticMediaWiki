@@ -5,7 +5,6 @@
  * without the need of changing code deep in
  * MediaWiki were no hook has ever seen light.
  *
- * @file
  * @ingroup SpecialPage
  *
  * @ingroup SMWSpecialPage

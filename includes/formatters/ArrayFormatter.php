@@ -5,7 +5,6 @@ namespace SMW;
 /**
  * Interface related to classes responsible for array formatting
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

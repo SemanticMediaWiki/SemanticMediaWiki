@@ -8,7 +8,6 @@ use SMWOutputs;
  * Special page (Special:Properties) for MediaWiki shows all
  * used properties
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

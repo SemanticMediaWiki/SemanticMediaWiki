@@ -4,7 +4,6 @@
  * File holding the SMWSerializer class that provides basic functions for
  * serialising data in OWL and RDF syntaxes. 
  *
- * @file SMW_Serializer.php
  * @ingroup SMW
  *
  * @author Markus Krötzsch

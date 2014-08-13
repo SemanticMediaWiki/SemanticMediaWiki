@@ -4,7 +4,6 @@
  *
  * @author Nischay Nahata
  *
- * @file
  * @ingroup SMWDataItemsHandlers
  */
 

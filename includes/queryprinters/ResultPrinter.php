@@ -10,7 +10,6 @@ use ParserOptions, Sanitizer, DummyLinker, SMWInfolink, Title;
  *
  * @since 1.9
  *
- * @file
  * @ingroup SMWQuery
  *
  * @licence GNU GPL v2 or later

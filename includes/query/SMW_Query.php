@@ -2,7 +2,6 @@
 /**
  * This file contains the class for representing queries in SMW, each
  * consisting of a query description and possible query parameters.
- * @file
  * @ingroup SMWQuery
  * @author Markus Krötzsch
  */

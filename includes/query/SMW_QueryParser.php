@@ -1,7 +1,6 @@
 <?php
 /**
  * This file contains a class for parsing inline query strings.
- * @file
  * @ingroup SMWQuery
  * @author Markus Krötzsch
  */

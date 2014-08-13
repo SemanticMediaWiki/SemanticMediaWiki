@@ -5,7 +5,6 @@ namespace SMW;
 /**
  * Encapsulates MediaWiki's profiling class
  *
- * @file
  *
  * @license GNU GPL v2+
  * @since   1.9

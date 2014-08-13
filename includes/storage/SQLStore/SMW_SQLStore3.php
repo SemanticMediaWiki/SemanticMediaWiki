@@ -23,7 +23,6 @@ use SMW\SemanticData;
  *
  * @since 1.8
  *
- * @file
  * @ingroup SMWStore
  */
 

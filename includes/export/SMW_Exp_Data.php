@@ -4,7 +4,6 @@
  * serialisation in OWL or RDF.
  *
  * @author Markus Krötzsch
- * @file
  * @ingroup SMW
  */
 

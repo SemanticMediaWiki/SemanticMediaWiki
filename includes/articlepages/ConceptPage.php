@@ -16,7 +16,6 @@ use SMWPageLister;
  *
  * @since 1.9
  *
- * @file
  * @ingroup SMW
  *
  * @license GNU GPL v2+

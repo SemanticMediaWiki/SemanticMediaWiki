@@ -11,7 +11,6 @@ use SMWDataItem;
  *
  * @since 1.9
  *
- * @file
  *
  * @license GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >

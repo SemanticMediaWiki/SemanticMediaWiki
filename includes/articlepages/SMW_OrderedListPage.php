@@ -5,7 +5,6 @@
  * article pages for Concept and Property pages. This is mainly parameter
  * handling and some very basic output control.
  *
- * @file SMW_OrderedListPage.php
  * @ingroup SMW
  *
  * @author Nikolas Iwan

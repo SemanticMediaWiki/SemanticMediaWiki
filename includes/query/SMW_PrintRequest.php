@@ -3,7 +3,6 @@
  * This file contains the class for defining "print requests", i.e. requests for output
  * informatoin to be included in query results.
  * 
- * @file
  * @ingroup SMWQuery
  * 
  * @author Markus Krötzsch
