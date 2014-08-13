@@ -15,7 +15,8 @@
 			"Łukasz Bolikowski",
 			"아라",
 			"Vengir",
-			"Alan ffm"
+			"Alan ffm",
+			"WTM"
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
@@ -227,7 +228,7 @@
 	"smw_smwadmin_supportdocu": "Różnorodne źródła informacji mogą okazać się przydatne jeśli wystąpią problemy:",
 	"smw_smwadmin_installfile": "Jeśli doświadczysz problemów z instalacją, zacznij od sprawdzenia wskazówek w <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">pliku INSTALL</a>.",
 	"smw_smwadmin_smwhomepage": "Kompletna dokumentacja Semantic MediaWiki znajduje się na stronie <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
-	"smw_smwadmin_mediazilla": "Błędy możesz zgłaszać w <a href=\"https://bugzilla.wikimedia.org/\">Bugzilli</a>.",
+	"smw_smwadmin_mediazilla": "Błędy możesz zgłaszać w <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw_smwadmin_questions": "Jeśli nadal masz pytania lub sugestie przyłącz się do dyskusji na <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">forum użytkowników Semantic MediaWiki</a>.",
 	"smw_adminlinks_datastructure": "Struktura danych",
 	"smw_adminlinks_displayingdata": "Pokaż dane",
@@ -251,7 +252,7 @@
 	"smw-ui-tooltip-title-legend": "Legenda",
 	"smw_unknowntype": "Typ atrybutu jest nieprawidłowy.",
 	"smw_concept_header": "Strony koncepcji „$1”",
-	"smw_conceptarticlecount": "{{PLURAL:$1|Wyświetlona jest jedna strona należąca|Wyświetlone zostały $1 strony należące|Wyświetlonych zostało $1 stron należących}} do tej koncepcji.",
+	"smw_conceptarticlecount": "{{PLURAL:$1|Wyświetlona jest jedna strona |Wyświetlone zostały $1 strony|Wyświetlonych zostało $1 stron}}.",
 	"smw-qp-empty-data": "Żądane dane nie mogły zostać wyświetlone ze względu na niewystarczające kryteria wyboru.",
 	"right-smw-admin": "Dostęp do zarządzania (Semantyczna MediaWiki)",
 	"group-smwadministrator": "Administratorzy SMW",

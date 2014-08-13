@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Anakmalaysia"
+			"Anakmalaysia",
+			"Pizza1016"
 		]
 	},
 	"smw-desc": "Meningkatkan kebolehcapaian wiki anda – baik untuk mesin mahupun manusia ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi])",
@@ -49,5 +50,6 @@
 	"smw_result_next": "Berikutnya",
 	"smw_result_results": "Hasil",
 	"smw_result_noresults": "Tiada hasil.",
-	"smwadmin": "Fungsi pentadbir untuk Semantic MediaWiki"
+	"smwadmin": "Fungsi penyelia untuk Semantic MediaWiki",
+	"smw-livepreview-loading": "Memuatkan..."
 }
