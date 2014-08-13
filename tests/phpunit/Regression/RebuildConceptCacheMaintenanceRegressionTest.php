@@ -9,7 +9,6 @@ use SMW\Test\MwRegressionTestCase;
 use Title;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

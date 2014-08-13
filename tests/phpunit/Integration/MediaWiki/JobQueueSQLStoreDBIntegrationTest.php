@@ -20,7 +20,6 @@ use Title;
 use Job;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

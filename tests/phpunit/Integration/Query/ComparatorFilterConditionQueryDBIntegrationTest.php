@@ -23,7 +23,6 @@ use SMwConjunction as Conjunction;
 use SMW\Query\Language\ValueDescription as ValueDescription;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -17,7 +17,6 @@ use SMWPropertyValue as PropertyValue;
 use SMW\Query\Language\ThingDescription as ThingDescription;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

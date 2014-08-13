@@ -16,7 +16,6 @@ use ParserOutput;
 /**
  * @covers \SMW\FactboxCache
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -18,7 +18,6 @@ use ParserOutput;
 /**
  * @covers \SMW\SubobjectParserFunction
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

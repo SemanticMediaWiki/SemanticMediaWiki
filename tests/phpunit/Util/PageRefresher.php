@@ -13,7 +13,6 @@ use WikiPage;
 use RuntimeException;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

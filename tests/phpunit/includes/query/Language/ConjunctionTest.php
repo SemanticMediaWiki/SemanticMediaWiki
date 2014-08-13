@@ -13,7 +13,6 @@ use SMW\Localizer;
 /**
  * @covers \SMW\Query\Language\Conjunction
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

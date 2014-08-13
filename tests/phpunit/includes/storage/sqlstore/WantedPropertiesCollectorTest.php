@@ -14,7 +14,6 @@ use FakeResultWrapper;
 /**
  * @covers \SMW\SQLStore\WantedPropertiesCollector
  *
- * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension

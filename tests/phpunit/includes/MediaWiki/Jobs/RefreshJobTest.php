@@ -10,7 +10,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Jobs\RefreshJob
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

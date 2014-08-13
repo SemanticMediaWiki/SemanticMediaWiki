@@ -7,7 +7,6 @@ use SMW\MediaWiki\Hooks\ArticleFromTitle;
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleFromTitle
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -10,7 +10,6 @@ use SMW\Tests\Util\FakeRawResultProvider;
  * @covers \SMW\SPARQLStore\VirtuosoHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\GenericHttpDatabaseConnector
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

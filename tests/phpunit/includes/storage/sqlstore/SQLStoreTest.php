@@ -8,7 +8,6 @@ use SMW\Settings;
 /**
  * @covers \SMWSQLStore3
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

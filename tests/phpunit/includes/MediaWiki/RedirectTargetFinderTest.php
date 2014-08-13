@@ -9,7 +9,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\RedirectTargetFinder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

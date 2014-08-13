@@ -16,7 +16,6 @@ namespace SMW\Test;
 /**
  * Base class for SMW\ResultPrinter tests
  *
- * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension

@@ -7,7 +7,6 @@ use SMW\MediaWiki\DirectDBConnectionProvider;
 /**
  * @covers \SMW\MediaWiki\DirectDBConnectionProvider
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

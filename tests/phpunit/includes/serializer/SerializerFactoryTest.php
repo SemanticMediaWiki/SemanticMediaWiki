@@ -9,7 +9,6 @@ use SMW\DIWikiPage;
 /**
  * @covers \SMW\SerializerFactory
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

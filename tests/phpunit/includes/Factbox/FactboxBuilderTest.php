@@ -9,7 +9,6 @@ use Title;
 /**
  * @covers \SMW\Factbox\FactboxBuilder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

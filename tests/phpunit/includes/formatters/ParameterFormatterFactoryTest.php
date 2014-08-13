@@ -18,7 +18,6 @@ use SMW\ParameterFormatterFactory;
 /**
  * @covers \SMW\ParameterFormatterFactory
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

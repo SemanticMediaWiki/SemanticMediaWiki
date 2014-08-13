@@ -8,7 +8,6 @@ use SMW\Tests\Util\Mock\MockTitle;
 /**
  * @covers \SMW\MediaWiki\TitleCreator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

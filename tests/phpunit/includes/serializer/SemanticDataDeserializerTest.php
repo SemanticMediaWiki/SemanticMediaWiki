@@ -7,7 +7,6 @@ use SMW\Deserializers\SemanticDataDeserializer;
 /**
  * @covers \SMW\Deserializers\SemanticDataDeserializer
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

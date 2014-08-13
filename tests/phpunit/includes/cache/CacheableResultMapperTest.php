@@ -8,7 +8,6 @@ use SMW\SimpleDictionary;
 /**
  * @covers \SMW\CacheableResultMapper
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

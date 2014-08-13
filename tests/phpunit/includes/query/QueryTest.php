@@ -7,7 +7,6 @@ use SMWQuery as Query;
 /**
  * @covers \SMWQuery
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

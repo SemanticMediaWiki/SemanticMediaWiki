@@ -14,7 +14,6 @@ use Title;
 /**
  * @covers \SMW\Query\Profiler\DurationProfile
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

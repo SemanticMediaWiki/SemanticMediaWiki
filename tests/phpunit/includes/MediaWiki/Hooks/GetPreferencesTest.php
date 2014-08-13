@@ -7,7 +7,6 @@ use SMW\MediaWiki\Hooks\GetPreferences;
 /**
  * @covers \SMW\MediaWiki\Hooks\GetPreferences
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

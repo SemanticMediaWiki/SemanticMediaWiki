@@ -27,7 +27,6 @@ use SMW\Query\Language\ValueDescription as ValueDescription;
 use SMW\Query\Language\ClassDescription as ClassDescription;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

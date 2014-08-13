@@ -14,7 +14,6 @@ use Title;
  * @covers \SMW\BaseDependencyContainer
  * @covers \SMW\DependencyInjector
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -28,7 +28,6 @@ use SMW\Query\Language\ValueDescription as ValueDescription;
 /**
  * @see http://semantic-mediawiki.org/wiki/Inverse_Properties
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

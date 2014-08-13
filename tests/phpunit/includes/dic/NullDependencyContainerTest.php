@@ -7,7 +7,6 @@ use SMW\NullDependencyContainer;
 /**
  * @covers \SMW\NullDependencyContainer
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

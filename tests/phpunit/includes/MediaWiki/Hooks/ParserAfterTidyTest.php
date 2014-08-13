@@ -17,7 +17,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\ParserAfterTidy
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

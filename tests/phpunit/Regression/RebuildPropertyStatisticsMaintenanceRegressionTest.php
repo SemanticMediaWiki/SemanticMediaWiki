@@ -6,7 +6,6 @@ use SMW\Tests\Util\MaintenanceRunner;
 use SMW\Test\MwRegressionTestCase;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -14,7 +14,6 @@ use Title;
 /**
  * @covers \SMWSql3StubSemanticData
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

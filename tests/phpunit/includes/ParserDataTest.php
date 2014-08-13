@@ -16,7 +16,6 @@ use Title;
 /**
  * @covers \SMW\ParserData
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

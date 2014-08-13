@@ -16,7 +16,6 @@ use Title;
  * Mostly runs regression and integration tests to verify cross-functional
  * interaction with MediaWiki
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

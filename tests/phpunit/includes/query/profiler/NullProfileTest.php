@@ -9,7 +9,6 @@ use SMW\Subobject;
 /**
  * @covers \SMW\Query\Profiler\NullProfile
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

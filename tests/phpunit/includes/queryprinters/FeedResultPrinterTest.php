@@ -20,7 +20,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\FeedResultPrinter
  *
- * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension

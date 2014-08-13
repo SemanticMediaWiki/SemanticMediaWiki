@@ -11,7 +11,6 @@ use SMW\Settings;
 use MWNamespace;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

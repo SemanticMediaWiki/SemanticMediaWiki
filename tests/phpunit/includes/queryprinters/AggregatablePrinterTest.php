@@ -24,7 +24,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\AggregatablePrinter
  *
- * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension

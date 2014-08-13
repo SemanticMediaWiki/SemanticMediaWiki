@@ -7,7 +7,6 @@ use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
 /**
  * @covers \SMW\MediaWiki\Hooks\SkinTemplateNavigation
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

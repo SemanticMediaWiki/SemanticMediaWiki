@@ -18,7 +18,6 @@ use SMW\ParserParameterFormatter;
 /**
  * @covers \SMW\ParserParameterFormatter
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

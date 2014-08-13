@@ -2,8 +2,6 @@
 /**
  * @file
  * @since 1.8
- * @ingroup SMW
- * @ingroup Test
  */
 
 namespace SMW\Test;
@@ -16,7 +14,6 @@ use SMWQueryProcessor;
  *
  * @since 1.8
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

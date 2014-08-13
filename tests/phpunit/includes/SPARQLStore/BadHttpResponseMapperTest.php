@@ -7,7 +7,6 @@ use SMW\SPARQLStore\BadHttpResponseMapper;
 /**
  * @covers \SMW\SPARQLStore\BadHttpResponseMapper
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

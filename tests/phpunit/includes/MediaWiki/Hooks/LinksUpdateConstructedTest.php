@@ -12,7 +12,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\LinksUpdateConstructed
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

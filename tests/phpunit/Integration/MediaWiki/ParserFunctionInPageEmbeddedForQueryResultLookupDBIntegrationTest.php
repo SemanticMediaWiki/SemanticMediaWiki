@@ -21,7 +21,6 @@ use SMW\Query\Language\ValueDescription as ValueDescription;
 use Title;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

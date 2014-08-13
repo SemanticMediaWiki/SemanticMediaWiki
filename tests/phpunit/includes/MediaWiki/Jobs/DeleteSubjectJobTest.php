@@ -14,7 +14,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\MediaWiki\Jobs\DeleteSubjectJob
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

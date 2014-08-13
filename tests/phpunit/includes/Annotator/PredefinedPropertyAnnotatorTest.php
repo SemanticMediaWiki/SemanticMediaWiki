@@ -18,7 +18,6 @@ use Title;
 /**
  * @covers \SMW\Annotator\PredefinedPropertyAnnotator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

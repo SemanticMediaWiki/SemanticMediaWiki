@@ -8,7 +8,6 @@ use SMWPrintRequest;
 /**
  * @codeCoverageIgnore
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

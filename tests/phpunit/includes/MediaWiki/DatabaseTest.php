@@ -8,7 +8,6 @@ use SMW\MediaWiki\Database;
 /**
  * @covers \SMW\MediaWiki\Database
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

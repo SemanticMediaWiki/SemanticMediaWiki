@@ -11,7 +11,6 @@ use SMWExpLiteral as ExpLiteral;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\RawResultParser
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

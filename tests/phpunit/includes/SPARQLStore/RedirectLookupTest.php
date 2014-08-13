@@ -14,7 +14,6 @@ use SMWExporter as Exporter;
 /**
  * @covers \SMW\SPARQLStore\RedirectLookup
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

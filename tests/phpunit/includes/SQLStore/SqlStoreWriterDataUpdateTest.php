@@ -11,7 +11,6 @@ use Title;
 /**
  * @covers \SMWSQLStore3Writers
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

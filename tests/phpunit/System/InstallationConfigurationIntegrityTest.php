@@ -6,7 +6,6 @@ use SMW\Configuration\Configuration;
 use SMW\Settings;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

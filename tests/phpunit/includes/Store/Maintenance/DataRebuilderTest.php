@@ -9,7 +9,6 @@ use Title;
 /**
  * @uses \SMW\Store\Maintenance\DataRebuilder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

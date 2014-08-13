@@ -10,7 +10,6 @@ use User;
  * @since 1.9
  *
  * @file
- * @ingroup Test
  *
  * @licence GNU GPL v2+
  */
@@ -19,7 +18,6 @@ use User;
  * Instantiate a SuperUser in order to be able to do everything.
  * Borrowed from Translate/EducationProgram extension :-)
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

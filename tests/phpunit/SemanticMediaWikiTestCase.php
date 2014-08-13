@@ -31,7 +31,6 @@ use SMWDataItem;
  *
  * Class contains general purpose methods
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -12,7 +12,6 @@ use SMW\Query\Language\Disjunction as Disjunction;
 use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

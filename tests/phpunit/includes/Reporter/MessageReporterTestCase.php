@@ -3,7 +3,6 @@
 namespace SMW\Tests\Reporter;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

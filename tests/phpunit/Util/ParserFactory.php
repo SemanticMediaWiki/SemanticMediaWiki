@@ -10,7 +10,6 @@ use Parser;
 use User;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

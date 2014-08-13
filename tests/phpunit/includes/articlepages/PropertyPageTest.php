@@ -18,7 +18,6 @@ use SMWPropertyPage;
 /**
  * @covers \SMWPropertyPage
  *
- * @ingroup Pages
  *
  * @group SMW
  * @group SMWExtension

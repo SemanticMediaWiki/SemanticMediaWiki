@@ -5,7 +5,6 @@ namespace SMW\Tests\Util\Mock;
 /**
  * @codeCoverageIgnore
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

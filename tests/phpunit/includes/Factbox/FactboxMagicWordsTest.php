@@ -14,7 +14,6 @@ use Title;
 /**
  * @covers \SMW\Factbox
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

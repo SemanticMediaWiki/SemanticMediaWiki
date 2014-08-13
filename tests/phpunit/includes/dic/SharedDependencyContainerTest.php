@@ -13,7 +13,6 @@ use SMW\DependencyContainer;
  * @covers \SMW\SimpleDependencyBuilder
  * @covers \SMW\BaseDependencyContainer
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

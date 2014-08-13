@@ -24,7 +24,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\CsvResultPrinter
  *
- * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension

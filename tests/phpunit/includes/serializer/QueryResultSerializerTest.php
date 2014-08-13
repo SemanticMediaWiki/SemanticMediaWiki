@@ -10,7 +10,6 @@ use SMWDataItem as DataItem;
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

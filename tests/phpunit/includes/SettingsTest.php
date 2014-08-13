@@ -7,7 +7,6 @@ use SMW\Settings;
 /**
  * @covers \SMW\Settings
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

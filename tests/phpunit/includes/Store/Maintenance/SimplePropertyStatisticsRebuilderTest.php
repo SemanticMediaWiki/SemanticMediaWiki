@@ -9,7 +9,6 @@ use FakeResultWrapper;
 /**
  * @uses \SMW\SQLStore\SimplePropertyStatisticsRebuilder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

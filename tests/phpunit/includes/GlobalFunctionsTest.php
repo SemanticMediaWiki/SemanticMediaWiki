@@ -8,8 +8,6 @@ namespace SMW\Test;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup Test
  *
  * @licence GNU GPL v2+
  * @author mwjames
@@ -18,7 +16,6 @@ namespace SMW\Test;
 /**
  * Tests for the GlobalFunctions
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

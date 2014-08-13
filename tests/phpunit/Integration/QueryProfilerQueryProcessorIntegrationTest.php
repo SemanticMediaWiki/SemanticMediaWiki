@@ -17,7 +17,6 @@ use Title;
 /**
  * @covers \SMWQueryProcessor
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

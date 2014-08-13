@@ -16,7 +16,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\InternalParseBeforeLinks
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

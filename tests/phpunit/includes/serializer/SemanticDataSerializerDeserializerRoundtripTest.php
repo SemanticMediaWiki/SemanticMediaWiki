@@ -14,7 +14,6 @@ use SMW\Subobject;
  * @covers \SMW\Deserializers\SemanticDataDeserializer
  * @covers \SMW\Serializers\SemanticDataSerializer
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

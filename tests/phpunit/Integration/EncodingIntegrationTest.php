@@ -12,7 +12,6 @@ use Title;
  * @covers \SMW\MediaWiki\Hooks\BaseTemplateToolbox
  * @covers \SMWInfolink
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

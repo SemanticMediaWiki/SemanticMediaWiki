@@ -9,7 +9,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\Configuration\Configuration
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

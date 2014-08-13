@@ -10,7 +10,6 @@ use SMW\StoreFactory;
 /**
  * @uses \SMW\SQLStore\PropertyStatisticsTable
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

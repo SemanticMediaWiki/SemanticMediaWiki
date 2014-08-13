@@ -9,7 +9,6 @@ use SMW\SemanticData;
 use SMWRequestOptions as RequestOptions;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

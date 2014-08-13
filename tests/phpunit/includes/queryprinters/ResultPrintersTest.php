@@ -20,7 +20,6 @@ use SMWQueryProcessor;
 /**
  * @covers \SMW\ResultPrinter
  *
- * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension

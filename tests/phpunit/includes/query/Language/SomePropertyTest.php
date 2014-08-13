@@ -14,7 +14,6 @@ use SMW\Localizer;
 /**
  * @covers \SMW\Query\Language\SomeProperty
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

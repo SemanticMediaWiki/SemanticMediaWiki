@@ -34,7 +34,6 @@ use Language;
  *
  * @note Test base was borrowed from the EducationProgram extension
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

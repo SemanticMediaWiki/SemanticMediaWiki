@@ -7,7 +7,6 @@ use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 /**
  * @covers \SMW\MediaWiki\Hooks\TitleIsAlwaysKnown
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

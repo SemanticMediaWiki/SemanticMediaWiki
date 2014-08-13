@@ -16,7 +16,6 @@ use Title;
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

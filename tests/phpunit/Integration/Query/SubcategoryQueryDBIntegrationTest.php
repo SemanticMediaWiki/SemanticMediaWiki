@@ -14,7 +14,6 @@ use SMWQuery as Query;
 use SMW\Query\Language\ClassDescription as ClassDescription;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

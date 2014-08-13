@@ -14,7 +14,6 @@ use WikiPage;
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticlePurge
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

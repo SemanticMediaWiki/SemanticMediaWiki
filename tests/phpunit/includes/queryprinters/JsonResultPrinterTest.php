@@ -13,8 +13,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\JsonResultPrinter
  *
- * @ingroup QueryPrinterTest
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

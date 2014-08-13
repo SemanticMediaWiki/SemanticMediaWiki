@@ -15,7 +15,6 @@ use SMW\Subobject;
 use SMW\SerializerFactory;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

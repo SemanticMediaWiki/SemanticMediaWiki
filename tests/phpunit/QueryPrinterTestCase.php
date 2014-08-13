@@ -20,8 +20,6 @@ use ReflectionClass;
 /**
  * Class contains methods to access data in connection with the QueryPrinter
  *
- * @ingroup Test
- * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension

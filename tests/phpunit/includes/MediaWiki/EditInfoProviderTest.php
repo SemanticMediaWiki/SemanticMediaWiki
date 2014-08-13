@@ -10,7 +10,6 @@ use ParserOutput;
 /**
  * @covers \SMW\MediaWiki\EditInfoProvider
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

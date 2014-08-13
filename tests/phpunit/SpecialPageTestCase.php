@@ -12,7 +12,6 @@ use WebRequest;
 use OutputPage;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

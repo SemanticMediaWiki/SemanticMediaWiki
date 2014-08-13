@@ -9,7 +9,6 @@ use ParserOutput;
 /**
  * @covers \SMW\MediaWiki\MagicWordFinder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

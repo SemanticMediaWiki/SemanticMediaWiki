@@ -25,7 +25,6 @@ use Title;
 /**
  * @covers \SMW\TableResultPrinter
  *
- * @ingroup QueryPrinterTest
  *
  * @group SMW
  * @group SMWExtension

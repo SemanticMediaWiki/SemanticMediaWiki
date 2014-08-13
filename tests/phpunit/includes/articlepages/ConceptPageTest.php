@@ -18,7 +18,6 @@ use SMW\ConceptPage;
 /**
  * @covers \SMW\ConceptPage
  *
- * @ingroup Pages
  *
  * @group SMW
  * @group SMWExtension

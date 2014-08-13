@@ -16,7 +16,6 @@ use Title;
 /**
  * @covers \SMW\Query\Profiler\DescriptionProfile
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

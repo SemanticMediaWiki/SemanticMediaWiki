@@ -24,7 +24,6 @@ use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryConditionBuilder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -7,7 +7,6 @@ use RuntimeException;
 /**
  * Convenience mock builder for Iterator classes
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

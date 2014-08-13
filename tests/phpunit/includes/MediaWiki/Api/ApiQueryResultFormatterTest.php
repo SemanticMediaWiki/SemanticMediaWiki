@@ -11,7 +11,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\MediaWiki\Api\ApiQueryResultFormatter
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

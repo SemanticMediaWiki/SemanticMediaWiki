@@ -7,7 +7,6 @@ use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 /**
  * @covers \SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

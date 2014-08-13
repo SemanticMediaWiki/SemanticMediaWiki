@@ -7,7 +7,6 @@ use SMW\DsvResultPrinter;
 /**
  * @covers \SMW\DsvResultPrinter
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

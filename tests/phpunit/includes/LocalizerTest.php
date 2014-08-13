@@ -9,7 +9,6 @@ use Language;
 /**
  * @covers \SMW\Localizer
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -12,7 +12,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\FileUpload
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

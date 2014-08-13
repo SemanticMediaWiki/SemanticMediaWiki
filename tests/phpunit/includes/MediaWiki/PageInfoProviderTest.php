@@ -8,7 +8,6 @@ use SMW\MediaWiki\PageInfoProvider;
 /**
  * @covers \SMW\MediaWiki\PageInfoProvider
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

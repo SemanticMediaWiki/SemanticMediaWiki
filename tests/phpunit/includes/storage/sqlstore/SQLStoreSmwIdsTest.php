@@ -11,7 +11,6 @@ use SMWSql3SmwIds;
 /**
  * @covers \SMWSql3SmwIds
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

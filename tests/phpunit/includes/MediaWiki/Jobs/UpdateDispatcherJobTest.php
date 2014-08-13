@@ -14,7 +14,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateDispatcherJob
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

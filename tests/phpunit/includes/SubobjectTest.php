@@ -16,7 +16,6 @@ use Title;
 /**
  * @covers \SMW\Subobject
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

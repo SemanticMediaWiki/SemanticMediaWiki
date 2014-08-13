@@ -17,7 +17,6 @@ use Language;
 /**
  * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

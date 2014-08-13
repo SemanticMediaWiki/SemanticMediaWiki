@@ -14,7 +14,6 @@ use SMW\Localizer;
 /**
  * @covers \SMW\Query\Language\Disjunction
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

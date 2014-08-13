@@ -7,7 +7,6 @@ use SMW\EmptyContext;
 /**
  * @covers \SMW\EmptyContext
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

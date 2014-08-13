@@ -14,7 +14,6 @@ use ParserOutput;
 /**
  * @covers \SMW\ConceptParserFunction
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

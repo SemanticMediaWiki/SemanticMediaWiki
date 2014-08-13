@@ -7,7 +7,6 @@ use SMW\CacheIdGenerator;
 /**
  * @covers \SMW\CacheIdGenerator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

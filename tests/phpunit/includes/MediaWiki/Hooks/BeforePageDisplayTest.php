@@ -12,7 +12,6 @@ use Language;
 /**
  * @covers \SMW\MediaWiki\Hooks\BeforePageDisplay
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

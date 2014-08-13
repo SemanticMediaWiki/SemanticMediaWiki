@@ -9,7 +9,6 @@ use Title;
 /**
  * @covers \SMW\Annotator\PropertyAnnotatorFactory
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -7,7 +7,6 @@ use SMW\ExtensionContext;
 /**
  * @covers \SMW\ExtensionContext
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

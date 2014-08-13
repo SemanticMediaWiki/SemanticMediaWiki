@@ -18,7 +18,6 @@ use SMW\InfoParserFunction;
 /**
  * @covers \SMW\InfoParserFunction
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

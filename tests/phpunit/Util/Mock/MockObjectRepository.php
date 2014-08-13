@@ -5,7 +5,6 @@ namespace SMW\Tests\Util\Mock;
 /**
  * Interface describing a MockObjectRepository object
  *
- * @ingroup Test
  *
  * @licence GNU GPL v2+
  * @since 1.9

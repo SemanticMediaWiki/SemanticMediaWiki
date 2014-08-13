@@ -11,7 +11,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateJob
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

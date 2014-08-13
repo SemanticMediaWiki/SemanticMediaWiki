@@ -14,7 +14,6 @@ use SMWDIProperty;
  * @since 1.9
  *
  * @file
- * @ingroup Test
  *
  * @licence GNU GPL v2+
  * @author mwjames
@@ -23,7 +22,6 @@ use SMWDIProperty;
 /**
  * Tests for the SMWDIHandlerWikiPage class
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

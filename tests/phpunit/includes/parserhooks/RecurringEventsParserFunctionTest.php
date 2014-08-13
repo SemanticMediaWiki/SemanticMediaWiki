@@ -16,7 +16,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\RecurringEventsParserFunction
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

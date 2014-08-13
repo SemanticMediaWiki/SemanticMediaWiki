@@ -12,7 +12,6 @@ use ParserOutput;
 use Title;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

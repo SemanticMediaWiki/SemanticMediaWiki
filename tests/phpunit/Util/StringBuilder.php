@@ -3,7 +3,6 @@
 namespace SMW\Tests\Util;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

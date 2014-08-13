@@ -16,7 +16,6 @@ use SMWDITime as DITime;
 use Title;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

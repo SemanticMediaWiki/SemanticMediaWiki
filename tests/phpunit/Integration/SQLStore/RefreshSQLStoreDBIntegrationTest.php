@@ -12,7 +12,6 @@ use WikiPage;
 use Title;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

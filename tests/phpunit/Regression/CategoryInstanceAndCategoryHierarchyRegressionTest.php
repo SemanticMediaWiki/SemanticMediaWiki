@@ -12,7 +12,6 @@ use SMW\DIProperty;
 use Title;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

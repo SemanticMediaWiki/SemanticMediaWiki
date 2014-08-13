@@ -12,7 +12,6 @@ use SMWDataItem;
  * @covers \SMW\PropertiesQueryPage
  * @covers \SMW\QueryPage
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

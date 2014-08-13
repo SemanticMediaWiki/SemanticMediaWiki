@@ -8,7 +8,6 @@ use SMW\Reporter\MessageReporter;
 /**
  * @covers \SMW\Reporter\ObservableMessageReporter
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

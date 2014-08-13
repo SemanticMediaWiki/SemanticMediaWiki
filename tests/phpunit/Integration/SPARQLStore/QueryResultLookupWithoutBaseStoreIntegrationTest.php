@@ -24,7 +24,6 @@ use SMWDINumber as DINumber;
 use SMWQuery as Query;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

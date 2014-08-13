@@ -20,7 +20,6 @@ use Title;
 /**
  * @covers \SMW\SemanticData
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

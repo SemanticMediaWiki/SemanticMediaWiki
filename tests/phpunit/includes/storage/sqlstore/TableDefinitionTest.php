@@ -21,7 +21,6 @@ use SMWDataItem;
 /**
  * @covers \SMW\SQLStore\TableDefinition
  *
- * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension

@@ -16,7 +16,6 @@ namespace SMW\Test;
 /**
  * @covers \SMW\QueryPage
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

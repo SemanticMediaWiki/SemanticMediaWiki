@@ -7,7 +7,6 @@ use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
 /**
  * @covers \SMW\MediaWiki\Hooks\ExtensionSchemaUpdates
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

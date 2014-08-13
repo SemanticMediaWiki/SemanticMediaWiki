@@ -8,7 +8,6 @@ namespace SMW\Tests\SPARQLStore;
  * @covers \SMW\SPARQLStore\VirtuosoHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\GenericHttpDatabaseConnector
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

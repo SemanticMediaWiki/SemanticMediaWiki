@@ -12,7 +12,6 @@ use SMW\DIWikiPage;
 /**
  * @covers \SMW\Annotator\SortkeyPropertyAnnotator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

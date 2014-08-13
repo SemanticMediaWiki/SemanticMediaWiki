@@ -7,7 +7,6 @@ use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 /**
  * @covers \SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -12,7 +12,6 @@ use SMW\Settings;
 /**
  * @covers \SMW\MediaWiki\Hooks\TitleMoveComplete
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

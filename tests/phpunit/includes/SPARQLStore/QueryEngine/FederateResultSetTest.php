@@ -9,7 +9,6 @@ use SMWExpLiteral as ExpLiteral;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\FederateResultSet
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

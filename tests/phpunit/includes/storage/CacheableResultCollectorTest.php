@@ -9,7 +9,6 @@ use SMWRequestOptions;
 /**
  * @covers \SMW\Store\CacheableResultCollector
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

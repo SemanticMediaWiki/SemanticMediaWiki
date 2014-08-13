@@ -20,7 +20,6 @@ use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
 /**
  * @covers \SMWQueryParser
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

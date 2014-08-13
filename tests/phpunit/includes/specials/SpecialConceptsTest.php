@@ -11,7 +11,6 @@ use Title;
 /**
  * @covers SMW\SpecialConcepts
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

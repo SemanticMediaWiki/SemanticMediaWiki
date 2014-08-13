@@ -11,7 +11,6 @@ use SMW\Settings;
 /**
  * @covers \SMW\MediaWiki\Hooks\SkinAfterContent
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

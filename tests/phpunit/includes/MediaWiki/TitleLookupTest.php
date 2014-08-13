@@ -9,7 +9,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\TitleLookup
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -13,7 +13,6 @@ use SMW\DIWikiPage;
 use Title;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

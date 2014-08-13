@@ -13,7 +13,6 @@ use Title;
 /**
  * @covers \SMW\PropertyTypeDiffFinder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

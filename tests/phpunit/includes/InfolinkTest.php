@@ -10,8 +10,6 @@ use SMWInfolink;
  * @since 1.9
  *
  * @file
- * @ingroup SMW
- * @ingroup Test
  *
  * @licence GNU GPL v2+
  * @author mwjames
@@ -21,7 +19,6 @@ use SMWInfolink;
  * Tests for the SMWInfolink class
  * @covers \SMWInfolink
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

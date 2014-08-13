@@ -9,7 +9,6 @@ use SMW\StoreFactory;
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialStatsAddExtra
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

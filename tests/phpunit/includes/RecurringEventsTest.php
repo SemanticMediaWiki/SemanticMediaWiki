@@ -8,7 +8,6 @@ use SMW\ParserParameterFormatter;
 /**
  * @covers \SMW\RecurringEvents
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

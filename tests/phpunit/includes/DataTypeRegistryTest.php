@@ -8,7 +8,6 @@ use SMWDataItem as DataItem;
 /**
  * @covers \SMW\DataTypeRegistry
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

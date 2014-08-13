@@ -7,7 +7,6 @@ use SMW\CurlRequest;
 /**
  * @covers \SMW\CurlRequest
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

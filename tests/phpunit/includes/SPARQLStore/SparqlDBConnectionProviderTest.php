@@ -8,7 +8,6 @@ use SMW\Configuration\Configuration;
 /**
  * @covers \SMW\SPARQLStore\SparqlDBConnectionProvider
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

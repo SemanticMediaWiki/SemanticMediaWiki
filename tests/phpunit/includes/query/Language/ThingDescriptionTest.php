@@ -7,7 +7,6 @@ use SMW\Query\Language\ThingDescription;
 /**
  * @covers \SMW\Query\Language\ThingDescription
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

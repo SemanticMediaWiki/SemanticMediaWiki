@@ -13,7 +13,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\BaseTemplateToolbox
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

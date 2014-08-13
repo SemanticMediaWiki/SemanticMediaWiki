@@ -9,7 +9,6 @@ use SMWDataItem as DataItem;
 /**
  * @covers \SMW\SQLStore\PropertyTableDefinitionBuilder
  *
- * @ingroup SQLStoreTest
  *
  * @group SMW
  * @group SMWExtension

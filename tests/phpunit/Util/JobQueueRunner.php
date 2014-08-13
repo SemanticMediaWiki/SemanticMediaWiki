@@ -9,7 +9,6 @@ use Job;
 /**
  * Partly copied from the MW 1.19 RunJobs maintenance script
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

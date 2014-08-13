@@ -7,7 +7,6 @@ use SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException;
 /**
  * @covers \SMW\SPARQLStore\Exception\BadHttpDatabaseResponseException
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

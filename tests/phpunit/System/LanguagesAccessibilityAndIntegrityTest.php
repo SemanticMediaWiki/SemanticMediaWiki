@@ -8,7 +8,6 @@ use RuntimeException;
 /**
  * @covers \SMWLanguage
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

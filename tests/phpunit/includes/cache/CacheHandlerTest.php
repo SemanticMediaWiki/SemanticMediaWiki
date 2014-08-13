@@ -10,7 +10,6 @@ use HashBagOStuff;
 /**
  * @covers \SMW\CacheHandler
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

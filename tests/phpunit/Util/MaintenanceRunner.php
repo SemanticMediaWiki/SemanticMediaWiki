@@ -10,7 +10,6 @@ use DomainException;
  * this class allows to execute script related classes that are equivalent to:
  * `php rebuildData.php --< myOptions >`
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

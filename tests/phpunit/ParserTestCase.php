@@ -28,7 +28,6 @@ use Parser;
 /**
  * Access methods in connection with the Parser or ParserOutput object
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

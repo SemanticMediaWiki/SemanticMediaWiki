@@ -12,7 +12,6 @@ use SMWExporter as Exporter;
 /**
  * @covers \SMW\SPARQLStore\TurtleTriplesBuilder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

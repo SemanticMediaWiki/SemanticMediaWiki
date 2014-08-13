@@ -14,7 +14,6 @@ use Parser;
 /**
  * @covers \SMW\ContentParser
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

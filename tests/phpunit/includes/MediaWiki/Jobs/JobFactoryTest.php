@@ -9,7 +9,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Jobs\JobFactory
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

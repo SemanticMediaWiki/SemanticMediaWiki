@@ -10,7 +10,6 @@ use RequestContext;
 use RuntimeException;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

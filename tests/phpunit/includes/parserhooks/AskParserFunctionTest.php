@@ -18,7 +18,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\AskParserFunction
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

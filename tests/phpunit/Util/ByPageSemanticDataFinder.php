@@ -14,7 +14,6 @@ use User;
 use UnexpectedValueException;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

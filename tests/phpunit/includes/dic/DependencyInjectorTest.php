@@ -7,7 +7,6 @@ use SMW\DependencyInjector;
 /**
  * @covers \SMW\DependencyInjector
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

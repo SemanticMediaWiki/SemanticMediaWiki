@@ -8,7 +8,6 @@ use SMW\SimpleDictionary;
  * @covers \SMW\SimpleDictionary
  * @covers \SMW\ObjectStorage
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -12,7 +12,6 @@ use SMWRDFXMLSerializer as RDFXMLSerializer;
 use Title;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

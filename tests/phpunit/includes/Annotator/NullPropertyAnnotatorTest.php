@@ -7,7 +7,6 @@ use SMW\Annotator\NullPropertyAnnotator;
 /**
  * @covers \SMW\Annotator\NullPropertyAnnotator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

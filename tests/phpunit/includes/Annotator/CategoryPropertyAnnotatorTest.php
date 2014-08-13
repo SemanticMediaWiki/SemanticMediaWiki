@@ -18,7 +18,6 @@ use ParserOutput;
 /**
  * @covers \SMW\Annotator\CategoryPropertyAnnotator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

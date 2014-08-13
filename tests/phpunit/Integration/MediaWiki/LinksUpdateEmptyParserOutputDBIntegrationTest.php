@@ -16,7 +16,6 @@ use LinksUpdate;
 use ParserOutput;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

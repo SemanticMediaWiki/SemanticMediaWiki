@@ -8,8 +8,6 @@ namespace SMW\Tests;
  * @file
  * @since 1.9
  *
- * @ingroup SMW
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

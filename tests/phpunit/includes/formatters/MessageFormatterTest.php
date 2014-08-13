@@ -20,7 +20,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\MessageFormatter
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

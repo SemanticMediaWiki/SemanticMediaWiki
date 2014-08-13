@@ -7,7 +7,6 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

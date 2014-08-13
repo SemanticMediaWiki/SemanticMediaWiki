@@ -14,7 +14,6 @@ use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -9,7 +9,6 @@ use Title;
 /**
  * @covers \SMW\Application
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

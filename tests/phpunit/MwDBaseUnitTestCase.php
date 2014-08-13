@@ -9,7 +9,6 @@ use SMW\Application;
 use RuntimeException;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -7,7 +7,6 @@ use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\FalseCondition
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

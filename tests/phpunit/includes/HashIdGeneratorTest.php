@@ -7,7 +7,6 @@ use SMW\HashIdGenerator;
 /**
  * @covers \SMW\HashIdGenerator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -18,7 +18,6 @@ use SMW\Highlighter;
 /**
  * @covers \SMW\Highlighter
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

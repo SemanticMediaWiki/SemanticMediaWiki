@@ -12,7 +12,6 @@ use SMWQueryResult as QueryResult;
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryResultFactory
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -13,7 +13,6 @@ use RuntimeException;
 use CloneDatabase;
 
 /**
- * @ingroup Test
  *
  * @license GNU GPL v2+
  * @since 2.0

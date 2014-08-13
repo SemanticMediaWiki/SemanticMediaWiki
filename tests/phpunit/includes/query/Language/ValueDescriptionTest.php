@@ -14,7 +14,6 @@ use SMWDINumber as DINumber;
 /**
  * @covers \SMW\Query\Language\ValueDescription
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

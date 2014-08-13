@@ -8,7 +8,6 @@ use SMW\DIConcept;
 /**
  * @uses \SMW\Store\Maintenance\ConceptCacheRebuilder
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

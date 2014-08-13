@@ -12,7 +12,6 @@ use SMW\MediaWiki\RedirectTargetFinder;
 /**
  * @covers \SMW\Annotator\RedirectPropertyAnnotator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

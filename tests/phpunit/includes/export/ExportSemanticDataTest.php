@@ -17,7 +17,6 @@ use SMWExpResource as ExpResource;
 /**
  * @covers \SMWExporter
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -18,7 +18,6 @@ use SMW\Application;
  * @covers \SMW\Annotator\CategoryPropertyAnnotator
  * @covers \SMW\Annotator\SortkeyPropertyAnnotator
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

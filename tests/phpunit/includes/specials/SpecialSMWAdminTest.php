@@ -11,7 +11,6 @@ use User;
 /**
  * @covers \SMWAdmin
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

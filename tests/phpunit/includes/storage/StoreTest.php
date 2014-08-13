@@ -17,7 +17,6 @@ use SMWRequestOptions;
  *
  * @since 1.8
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWStore

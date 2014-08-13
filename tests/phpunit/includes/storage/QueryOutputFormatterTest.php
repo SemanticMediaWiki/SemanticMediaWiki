@@ -9,7 +9,6 @@ use SMWQuery as Query;
 /**
  * @covers \SMW\QueryOutputFormatter
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

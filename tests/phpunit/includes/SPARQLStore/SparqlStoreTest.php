@@ -15,7 +15,6 @@ use Title;
 /**
  * @covers \SMW\SPARQLStore\SPARQLStore
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

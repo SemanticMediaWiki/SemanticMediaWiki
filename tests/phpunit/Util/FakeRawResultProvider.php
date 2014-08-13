@@ -5,7 +5,6 @@ namespace SMW\Tests\Util;
 use RuntimeException;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

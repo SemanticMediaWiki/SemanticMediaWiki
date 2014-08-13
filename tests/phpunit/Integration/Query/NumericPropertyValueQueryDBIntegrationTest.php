@@ -24,7 +24,6 @@ use SMW\Query\Language\ThingDescription as ThingDescription;
 use SMW\Query\Language\ValueDescription as ValueDescription;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

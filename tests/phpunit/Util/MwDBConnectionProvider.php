@@ -6,7 +6,6 @@ use SMW\DBConnectionProvider;
 use DatabaseBase;
 
 /**
- * @ingroup Test
  *
  * @license GNU GPL v2+
  * @since 2.0

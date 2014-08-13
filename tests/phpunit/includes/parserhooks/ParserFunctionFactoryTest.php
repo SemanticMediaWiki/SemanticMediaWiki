@@ -7,7 +7,6 @@ use SMW\ParserFunctionFactory;
 /**
  * @covers \SMW\ParserFunctionFactory
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

@@ -19,7 +19,6 @@ use SMW\Settings;
 /**
  * @covers \SMW\NamespaceExaminer
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

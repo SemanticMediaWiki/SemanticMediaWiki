@@ -9,7 +9,6 @@ use SMWPropertyValue;
 /**
  * @covers \SMW\DataValueFactory
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

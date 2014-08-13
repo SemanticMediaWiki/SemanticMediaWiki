@@ -5,7 +5,6 @@ namespace SMW\Tests\Util\Mock;
 use SMW\DBConnectionProvider;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

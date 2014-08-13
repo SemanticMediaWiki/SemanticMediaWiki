@@ -9,7 +9,6 @@ use ResourceLoaderModule;
 use ResourceLoaderContext;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

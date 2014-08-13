@@ -7,7 +7,6 @@ use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
 /**
  * @covers \SMW\MediaWiki\Hooks\ResourceLoaderTestModules
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

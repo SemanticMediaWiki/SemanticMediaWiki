@@ -17,7 +17,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\NewRevisionFromEditComplete
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

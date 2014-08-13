@@ -10,7 +10,6 @@ use ReflectionClass;
 /**
  * @covers \SMW\MediaWiki\LazyDBConnectionProvider
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

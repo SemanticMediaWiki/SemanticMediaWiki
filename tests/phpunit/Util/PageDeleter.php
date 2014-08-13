@@ -6,7 +6,6 @@ use Title;
 use WikiPage;
 
 /**
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension

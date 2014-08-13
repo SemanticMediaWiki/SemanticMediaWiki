@@ -14,7 +14,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleDelete
  *
- * @ingroup Test
  *
  * @group SMW
  * @group SMWExtension
