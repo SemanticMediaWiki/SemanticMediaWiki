@@ -113,8 +113,10 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 		$labels = array(
 			'pr-1' => 'PrintRequest-PageValue',
 			'pr-2' => 'PrintRequest-NumberValue',
+			'pr-3' => 'PrintRequest-ValueList',
 			'ra-1' => 'ResultArray-PageValue',
-			'ra-2' =>  9001
+			'ra-2' =>  9001,
+			'ra-3' => array( 'Foo', 'Bar', 'Baz' ),
 		);
 
 		$printRequests = array();
@@ -127,10 +129,20 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'getText' => $labels['pr-2']
 		) );
 
+		$printRequests['pr-3'] = $mockBuilder->newObject( 'PrintRequest', array(
+			'getText' => $labels['pr-3'],
+			'getParameter' => ', ',
+		) );
+
 		$datItems = array();
 
 		$datItems['ra-1'] = DIWikiPage::newFromTitle( Title::newFromText( $labels['ra-1'], NS_MAIN ) );
 		$datItems['ra-2'] = $mockBuilder->newObject( 'DataItem', array( 'getSortKey' => $labels['ra-2'] ) );
+
+		$datItems['ra-3'] = array();
+		foreach ( $labels['ra-3'] as $key => $label ) {
+			$datItems['ra-3'][ $key ] = $mockBuilder->newObject( 'DataItem', array( 'getSortKey' => $label ) );
+		}
 
 		$dataValues = array();
 
@@ -148,6 +160,16 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'getDataItem'      => $datItems['ra-2']
 		) );
 
+		$dataValues['ra-3'] = array();
+		foreach ( $labels['ra-3'] as $key => $label ) {
+			$dataValues['ra-3'][] = $mockBuilder->newObject( 'DataValue', array(
+				'DataValueType'    => 'SMWStringValue',
+				'getTypeID'        => '_txt',
+				'getShortText'     => $label,
+				'getDataItem'      => $datItems['ra-3'][ $key ]
+			) );
+		}
+
 		$resultArray = array();
 
 		$resultArray['ra-1'] = $mockBuilder->newObject( 'ResultArray', array(
@@ -162,9 +184,15 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'getNextDataValue' => $dataValues['ra-2'],
 		) );
 
+		$resultArray['ra-3'] = $mockBuilder->newObject( 'ResultArray', array(
+			'getText'          => implode( ', ', $labels['ra-3'] ),
+			'getPrintRequest'  => $printRequests['pr-3'],
+			'getNextDataValue' => $dataValues['ra-3'],
+		) );
+
 		$queryResult = $mockBuilder->newObject( 'QueryResult', array(
-			'getPrintRequests'  => array( $printRequests['pr-1'], $printRequests['pr-2'] ),
-			'getNext'           => array( $resultArray['ra-1'], $resultArray['ra-2'] ),
+			'getPrintRequests'  => array( $printRequests['pr-1'], $printRequests['pr-2'], $printRequests['pr-3'] ),
+			'getNext'           => array( $resultArray['ra-1'], $resultArray['ra-2'], $resultArray['ra-3'] ),
 			'getLink'           => new \SMWInfolink( true, 'Lala' , 'Lula' ),
 			'hasFurtherResults' => true
 		) );
@@ -183,12 +211,14 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'descendant' => array(
 				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
 				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array( 'class' => $labels['pr-2'] ),
+				'tag' => 'th', 'content' => $labels['pr-3'], 'attributes' => array( 'class' => $labels['pr-3'] ),
 			),
 			'descendant' => array(
 				'tag' => 'tr',
 				'child' => array(
 					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
-					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array( 'class' => $labels['pr-2'] )
+					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array( 'class' => $labels['pr-2'] ),
+					'tag' => 'td', 'content' => implode( ', ', $labels['ra-3']), 'attributes' => array( 'class' => $labels['pr-3'] ),
 				)
 			),
 			'descendant' => array(
@@ -224,12 +254,14 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'descendant' => array(
 				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
 				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array( 'class' => $labels['pr-2'] ),
+				'tag' => 'th', 'content' => $labels['pr-3'], 'attributes' => array( 'class' => $labels['pr-3'] ),
 			),
 			'descendant' => array(
 				'tag' => 'tr',
 				'child' => array(
 					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
-					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array( 'class' => $labels['pr-2'] )
+					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array( 'class' => $labels['pr-2'] ),
+					'tag' => 'td', 'content' => implode( ', ', $labels['ra-3']), 'attributes' => array( 'class' => $labels['pr-3'] ),
 				)
 			),
 			'descendant' => array(
@@ -265,12 +297,14 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'descendant' => array(
 				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array(),
 				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array(),
+				'tag' => 'th', 'content' => $labels['pr-3'], 'attributes' => array(),
 			),
 			'descendant' => array(
 				'tag' => 'tr',
 				'child' => array(
 					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array(),
-					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array()
+					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array(),
+					'tag' => 'td', 'content' => implode( ', ', $labels['ra-3'] ), 'attributes' => array(),
 				)
 			),
 			'descendant' => array(
