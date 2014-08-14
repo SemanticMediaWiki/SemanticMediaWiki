@@ -2,27 +2,35 @@
 
 namespace SMW\MediaWiki\Search;
 
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
+
 use Content;
 use DatabaseBase;
 use SMW\Application;
-use SMW\Settings;
 use SMWQuery;
+use SMWQueryResult as QueryResult;
+
 use Title;
+use SearchEngine;
+use RuntimeException;
 
 /**
- * Search engine that will try to find wiki pages by interpreting the search term as an SMW query.
+ * Search engine that will try to find wiki pages by interpreting the search
+ * term as an SMW query.
  *
  * If successful, the pages according to the query will be returned.
  * If not it falls back to the default search engine.
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since   2.1
  *
  * @author  Stephan Gambke
  */
-class Search extends \SearchEngine {
+class Search extends SearchEngine {
 
 	private $fallbackSearch = null;
 
@@ -32,27 +40,29 @@ class Search extends \SearchEngine {
 	private $queryCache = array();
 
 	/**
-	 * @param null|\SearchEngine $fallbackSearch
+	 * @param null|SearchEngine $fallbackSearch
 	 */
-	public function setFallbackSearchEngine( \SearchEngine $fallbackSearch = null ) {
+	public function setFallbackSearchEngine( SearchEngine $fallbackSearch = null ) {
 		$this->fallbackSearch = $fallbackSearch;
 	}
 
 	/**
-	 * @return \SearchEngine
+	 * @return SearchEngine
 	 */
 	public function getFallbackSearchEngine() {
 
 		if ( $this->fallbackSearch === null ) {
 
-			$class = $this->getSettings()->get( 'smwgFallbackSearchType' );
+			$class = Application::getInstance()->getSettings()->get( 'smwgFallbackSearchType' );
 
 			$dbr = $this->getDB();
 
 			if ( $class === null ) {
-
 				$class = $dbr->getSearchEngine();
+			}
 
+			if ( !class_exists( $class ) ) {
+				throw new RuntimeException( "$class does not exists" );
 			}
 
 			$this->fallbackSearch = new $class( $dbr );
@@ -79,25 +89,6 @@ class Search extends \SearchEngine {
 		}
 
 		return $this->database;
-	}
-
-	/**
-	 * @param \SMW\Settings $settings
-	 */
-	public function setSettings( Settings $settings ) {
-		$this->settings = $settings;
-	}
-
-	/**
-	 * @return Settings
-	 */
-	public function getSettings() {
-
-		if ( $this->settings === null ) {
-			$this->settings = Application::getInstance()->getSettings();
-		}
-
-		return $this->settings;
 	}
 
 	/**
@@ -138,7 +129,6 @@ class Search extends \SearchEngine {
 		$term = $f->replacePrefixes( $term );
 
 		return $fulltext ? $f->searchText( $term ) : $f->searchTitle( $term );
-
 	}
 
 	/**
@@ -159,13 +149,13 @@ class Search extends \SearchEngine {
 
 		if ( $query !== null ) {
 
-			$namespacesDisjunction = new \SMWDisjunction(
+			$namespacesDisjunction = new Disjunction(
 				array_map( function ( $ns ) {
-					return new \SMWNamespaceDescription( $ns );
+					return new NamespaceDescription( $ns );
 				}, $this->namespaces )
 			);
 
-			$description = new \SMWConjunction( array( $query->getDescription(), $namespacesDisjunction ) );
+			$description = new Conjunction( array( $query->getDescription(), $namespacesDisjunction ) );
 
 			$query->setDescription( $description );
 			$query->setOffset( $this->offset );
@@ -178,15 +168,13 @@ class Search extends \SearchEngine {
 			$query->querymode = SMWQuery::MODE_COUNT;
 			$query->setOffset( 0 );
 
-			$count = $store->getQueryResult( $query );
+			$queryResult = $store->getQueryResult( $query );
+			$count = $queryResult instanceof QueryResult ? $queryResult->getCountValue() : $queryResult;
 
 			return new SearchResultSet( $result, $count );
-
-		} else {
-
-			return $this->searchFallbackSearchEngine( $term, false );
 		}
 
+		return $this->searchFallbackSearchEngine( $term, false );
 	}
 
 	/**
@@ -202,9 +190,9 @@ class Search extends \SearchEngine {
 		if ( $this->getSearchQuery( $term ) !== null ) {
 			// No fulltext search for semantic queries
 			return null;
-		} else {
-			return $this->searchFallbackSearchEngine( $term, true );
 		}
+
+		return $this->searchFallbackSearchEngine( $term, true );
 	}
 
 	/**
@@ -277,14 +265,16 @@ class Search extends \SearchEngine {
 
 	/**
 	 * @param String $feature
-	 * @return array
+	 *
+	 * @return array|null
 	 */
 	public function getFeatureData( $feature ) {
+
 		if ( array_key_exists( $feature, $this->features ) ) {
 			return $this->features[ $feature ];
-		} else {
-			return null;
 		}
+
+		return null;
 	}
 
 	/**

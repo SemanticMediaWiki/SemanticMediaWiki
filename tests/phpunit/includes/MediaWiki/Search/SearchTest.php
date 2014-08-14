@@ -9,17 +9,21 @@ use SMWQuery;
 /**
  * @covers  \SMW\MediaWiki\Search\Search
  *
- * @ingroup Test
- *
  * @group   SMW
  * @group   SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since   2.1
  *
  * @author  Stephan Gambke
  */
 class SearchTest extends \PHPUnit_Framework_TestCase {
+
+	protected function tearDown() {
+		Application::clear();
+
+		parent::tearDown();
+	}
 
 	public function testCanConstruct() {
 
@@ -33,7 +37,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$search = new Search();
 		$this->assertInstanceOf( 'DatabaseBase', $search->getDB() );
-
 	}
 
 	public function testSetGetDB() {
@@ -46,30 +49,9 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search->setDB( $dbMock );
 
 		$this->assertEquals( $dbMock, $search->getDB() );
-
 	}
 
-	public function testGetSettings() {
-
-		$search = new Search();
-		$this->assertInstanceOf( '\SMW\Settings', $search->getSettings() );
-
-	}
-
-	public function testSetGetSettings() {
-
-		$settings = $this->getMockBuilder( '\SMW\Settings' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$search = new Search();
-		$search->setSettings( $settings );
-
-		$this->assertEquals( $settings, $search->getSettings() );
-
-	}
-
-	public function testGetFallbackSearchEngine() {
+	public function testGetDefaultFallbackSearchEngineForNullFallbackSearchType() {
 
 		$dbMock = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
@@ -80,21 +62,25 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSearchEngine' )
 			->will( $this->returnValue( 'SearchEngine' ) );
 
-
-		$settings = $this->getMockBuilder( '\SMW\Settings' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$settings->expects( $this->any() )
-			->method( 'get' )
-			->will( $this->returnValue( null ) );
-
+		Application::getInstance()->getSettings()->set( 'smwgFallbackSearchType', null );
 
 		$search = new Search();
 		$search->setDB( $dbMock );
-		$search->setSettings( $settings );
 
-		$this->assertInstanceOf( 'SearchEngine', $search->getFallbackSearchEngine() );
+		$this->assertInstanceOf(
+			'SearchEngine',
+			$search->getFallbackSearchEngine()
+		);
+	}
+
+	public function testInvalidFallbackSearchEngineThrowsException() {
+
+		Application::getInstance()->getSettings()->set( 'smwgFallbackSearchType', 'InvalidFallbackSearchEngine' );
+
+		$search = new Search();
+
+		$this->setExpectedException( 'RuntimeException' );
+		$search->getFallbackSearchEngine();
 	}
 
 	public function testSetGetFallbackSearchEngine() {
@@ -135,12 +121,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'searchTitle')
 			->will( $this->returnValueMap( array( array( $term, $searchResultSet ) ) ) );
 
-
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals( $searchResultSet, $search->searchTitle( $term) );
-
 	}
 
 	public function testSearchTitle_withEmptyQuery() {
@@ -173,7 +157,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals( $searchResultSet, $search->searchTitle( $term) );
-
 	}
 
 	public function testSearchTitle_withSemanticQuery() {
@@ -204,7 +187,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf( 'SMW\MediaWiki\Search\SearchResultSet', $result );
 		$this->assertEquals( 9001, $result->getTotalHits() );
-
 	}
 
 	public function testSearchText_withNonsemanticQuery() {
@@ -236,7 +218,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals( $searchResultSet, $search->searchText( $term ) );
-
 	}
 
 	public function testSearchText_withSemanticQuery() {
@@ -246,7 +227,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search = new Search();
 
 		$this->assertNull( $search->searchText( $term ) );
-
 	}
 
 	public function testSupports() {
