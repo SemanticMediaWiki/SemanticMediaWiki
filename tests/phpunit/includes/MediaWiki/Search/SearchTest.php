@@ -33,13 +33,17 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetDB() {
+	public function testGetDefaultDBConnection() {
 
 		$search = new Search();
-		$this->assertInstanceOf( 'DatabaseBase', $search->getDB() );
+
+		$this->assertInstanceOf(
+			'DatabaseBase',
+			$search->getDB()
+		);
 	}
 
-	public function testSetGetDB() {
+	public function testSetGetDBConnection() {
 
 		$dbMock = $this->getMockBuilder( 'DatabaseBase' )
 			->disableOriginalConstructor()
@@ -92,8 +96,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
-		$this->assertEquals( $searchEngine, $search->getFallbackSearchEngine() );
-
+		$this->assertEquals(
+			$searchEngine,
+			$search->getFallbackSearchEngine()
+		);
 	}
 
 	public function testSearchTitle_withNonsemanticQuery() {
@@ -104,7 +110,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-
 		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -124,7 +129,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
-		$this->assertEquals( $searchResultSet, $search->searchTitle( $term) );
+		$this->assertEquals(
+			$searchResultSet,
+			$search->searchTitle( $term )
+		);
 	}
 
 	public function testSearchTitle_withEmptyQuery() {
@@ -135,7 +143,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-
 		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -152,11 +159,13 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'searchTitle')
 			->will( $this->returnValueMap( array( array( $term, $searchResultSet ) ) ) );
 
-
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
-		$this->assertEquals( $searchResultSet, $search->searchTitle( $term) );
+		$this->assertEquals(
+			$searchResultSet,
+			$search->searchTitle( $term )
+		);
 	}
 
 	public function testSearchTitle_withSemanticQuery() {
@@ -180,13 +189,17 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$application = Application::getInstance()->registerObject( 'Store', $store );
 
 		$search = new Search();
-
 		$result = $search->searchTitle( $term);
 
-		$application->clear();
+		$this->assertInstanceOf(
+			'SMW\MediaWiki\Search\SearchResultSet',
+			$result
+		);
 
-		$this->assertInstanceOf( 'SMW\MediaWiki\Search\SearchResultSet', $result );
-		$this->assertEquals( 9001, $result->getTotalHits() );
+		$this->assertEquals(
+			9001,
+			$result->getTotalHits()
+		);
 	}
 
 	public function testSearchText_withNonsemanticQuery() {
@@ -196,7 +209,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
-
 
 		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
@@ -217,7 +229,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
-		$this->assertEquals( $searchResultSet, $search->searchText( $term ) );
+		$this->assertEquals(
+			$searchResultSet,
+			$search->searchText( $term )
+		);
 	}
 
 	public function testSearchText_withSemanticQuery() {
@@ -243,7 +258,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
-		$this->assertEquals( true, $search->supports( 'Some feature' ) );
+		$this->assertTrue( $search->supports( 'Some feature' ) );
 	}
 
 	public function testNormalizeText() {
@@ -260,14 +275,16 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
-		$this->assertEquals( 'Some normalized text', $search->normalizeText( 'Some text' ) );
+		$this->assertEquals(
+			'Some normalized text',
+			$search->normalizeText( 'Some text' )
+		);
 	}
 
 	public function testGetTextFromContent() {
 
 		if ( ! method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
 			$this->markTestSkipped( 'SearchEngine::getTextFromContent() is undefined. Probably not yet present in the tested MW version.' );
-			return;
 		}
 
 		$title = $this->getMockBuilder( 'Title' )
@@ -284,13 +301,18 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'getTextFromContent')
-			->with( $this->equalTo( $title ), $this->equalTo( $content ) )
+			->with(
+				$this->equalTo( $title ),
+				$this->equalTo( $content ) )
 			->will( $this->returnValueMap( array( array( $title, $content, 'text from content for title' ) ) ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
-		$this->assertEquals( 'text from content for title', $search->getTextFromContent( $title, $content ) );
+		$this->assertEquals(
+			'text from content for title',
+			$search->getTextFromContent( $title, $content )
+		);
 	}
 
 
@@ -298,7 +320,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		if ( ! method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
 			$this->markTestSkipped( 'SearchEngine::textAlreadyUpdatedForIndex() is undefined. Probably not yet present in the tested MW version.' );
-			return;
 		}
 
 		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
@@ -313,7 +334,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
 
-		$this->assertEquals( true, $search->textAlreadyUpdatedForIndex( 'Some text' ) );
+		$this->assertTrue( $search->textAlreadyUpdatedForIndex( 'Some text' ) );
 	}
 
 	public function testUpdate() {
@@ -324,7 +345,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'update')
-			->with( $this->equalTo( 42 ), $this->equalTo( 'Some title' ), $this->equalTo( 'Some text' ) );
+			->with(
+				$this->equalTo( 42 ),
+				$this->equalTo( 'Some title' ),
+				$this->equalTo( 'Some text' ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -340,7 +364,9 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'updateTitle')
-			->with( $this->equalTo( 42 ), $this->equalTo( 'Some title' ) );
+			->with(
+				$this->equalTo( 42 ),
+				$this->equalTo( 'Some title' ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -352,7 +378,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		if ( ! method_exists( 'SearchEngine', 'delete' ) ) {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
-			return;
 		}
 
 		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
@@ -361,7 +386,9 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'delete')
-			->with( $this->equalTo( 42 ), $this->equalTo( 'Some title' ) );
+			->with(
+				$this->equalTo( 42 ),
+				$this->equalTo( 'Some title' ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -373,7 +400,6 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		if ( ! method_exists( 'SearchEngine', 'delete' ) ) {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
-			return;
 		}
 
 		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
@@ -382,27 +408,40 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'setFeatureData')
-			->with( $this->equalTo( 'Some feature name' ), $this->equalTo( 'Some feature expression' ) );
+			->with(
+				$this->equalTo( 'Some feature name' ),
+				$this->equalTo( 'Some feature expression' ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
-
 		$search->setFeatureData( 'Some feature name', 'Some feature expression' );
 
-		$this->assertEquals( 'Some feature expression', $search->getFeatureData( 'Some feature name' ) );
+		$this->assertEquals(
+			'Some feature expression',
+			$search->getFeatureData( 'Some feature name' )
+		);
+
 		$this->assertNull( $search->getFeatureData( 'Some non-existent feature name' ) );
 	}
 
 	public function testReplacePrefixes() {
 
 		$search = new Search();
-		$this->assertEquals( 'Some query', $search->replacePrefixes( 'Some query' ) );
+
+		$this->assertEquals(
+			'Some query',
+			$search->replacePrefixes( 'Some query' )
+		);
 	}
 
 	public function testTransformSearchTerm() {
 
 		$search = new Search();
-		$this->assertEquals( 'Some query', $search->transformSearchTerm( 'Some query' ) );
+
+		$this->assertEquals(
+			'Some query',
+			$search->transformSearchTerm( 'Some query' )
+		);
 	}
 
 	public function testSetLimitOffset() {
@@ -413,7 +452,9 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'setLimitOffset')
-			->with( $this->equalTo( 9001 ), $this->equalTo( 42 ) );
+			->with(
+				$this->equalTo( 9001 ),
+				$this->equalTo( 42 ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -436,17 +477,18 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
-
 		$search->setNamespaces( array( 1, 2, 3, 5, 8 ) );
 
-		$this->assertEquals( array( 1, 2, 3, 5, 8 ), $search->namespaces );
+		$this->assertEquals(
+			array( 1, 2, 3, 5, 8 ),
+			$search->namespaces
+		);
 	}
 
 	public function testSetShowSuggestion() {
 
 		if ( ! method_exists( 'SearchEngine', 'setShowSuggestion' ) ) {
 			$this->markTestSkipped( 'SearchEngine::setShowSuggestion() is undefined. Probably not yet present in the tested MW version.' );
-			return;
 		}
 
 		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
@@ -459,10 +501,9 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
-
 		$search->setShowSuggestion( true );
 
-		$this->assertEquals( true, $search->getShowSuggestion() );
+		$this->assertTrue( $search->getShowSuggestion() );
 	}
 
 }
