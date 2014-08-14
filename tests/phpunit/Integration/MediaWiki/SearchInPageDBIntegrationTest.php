@@ -59,7 +59,7 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 	public function testSearchForGeographicCoordinateValueAsTerm() {
 
 		if ( !defined( 'SM_VERSION' ) ) {
-			$this->markTestSkipped( 'This test needs Semantic Maps to be available' );
+			$this->markTestSkipped( "Requires 'Geographic coordinate' to be a supported data type (see Semantic Maps)" );
 		}
 
 		$propertyPage = Title::newFromText( 'Has coordinates', SMW_NS_PROPERTY );

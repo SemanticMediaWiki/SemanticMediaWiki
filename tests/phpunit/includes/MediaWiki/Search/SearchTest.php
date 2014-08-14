@@ -186,10 +186,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				return $query->querymode === SMWQuery::MODE_COUNT ? 9001 : $queryResult;
 			} ) );
 
-		$application = Application::getInstance()->registerObject( 'Store', $store );
+		Application::getInstance()->registerObject( 'Store', $store );
 
 		$search = new Search();
-		$result = $search->searchTitle( $term);
+		$result = $search->searchTitle( $term );
 
 		$this->assertInstanceOf(
 			'SMW\MediaWiki\Search\SearchResultSet',
