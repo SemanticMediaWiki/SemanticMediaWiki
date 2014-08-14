@@ -2,7 +2,8 @@
 
 This is not a release yet.
 
-## Internal changes 
+## Internal changes
 
 * #350 Passes all unit tests on `HHVM` 3.3+
 * #486 Added support for `Jena Fuseki` 1.1.0
+* #450 Adds a search engine to allow semantic queries directly from MW's standard search
