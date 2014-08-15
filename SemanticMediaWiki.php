@@ -89,6 +89,7 @@ class_alias( 'SMW\SPARQLStore\VirtuosoHttpDatabaseConnector', 'SMWSparqlDatabase
 class_alias( 'SMW\SPARQLStore\GenericHttpDatabaseConnector', 'SMWSparqlDatabase' );
 
 // 2.1
+class_alias( 'SMWSQLStore3', 'SMW\SQLStore\SQLStore' );
 class_alias( 'SMW\Query\Language\Description', 'SMWDescription' );
 class_alias( 'SMW\Query\Language\ThingDescription', 'SMWThingDescription' );
 class_alias( 'SMW\Query\Language\ClassDescription', 'SMWClassDescription' );
