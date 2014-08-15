@@ -30,6 +30,8 @@ use SMW\Query\Language\ValueDescription as ValueDescription;
 use SMW\Query\Language\ConceptDescription as ConceptDescription;
 use SMW\Query\Language\ThingDescription as ThingDescription;
 
+use RuntimeException;
+
 /**
  * Condition mapping from Query objects to SPARQL
  *
@@ -626,6 +628,11 @@ class QueryConditionBuilder {
 	 */
 	protected function addMissingOrderByConditions( Condition &$sparqlCondition ) {
 		foreach ( $this->sortkeys as $propkey => $order ) {
+
+			if ( !is_string( $propkey ) ) {
+				throw new RuntimeException( "Expected a string value as sortkey" );
+			}
+
 			if ( !array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) { // Find missing property to sort by.
 
 				if ( $propkey === '' ) { // order by result page sortkey

@@ -81,6 +81,52 @@ class QueryConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testQueryForSinglePropertyWithSortkey() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$instance = new QueryConditionBuilder();
+
+		$condition = $instance->setSortKeys( array( 'Foo' => 'DESC' ) )->buildCondition( $description );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			$condition
+		);
+
+		$expectedConditionString = $this->stringBuilder
+			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
+			->addString( '{ ?v1 swivt:wikiPageSortKey ?v1sk .'  )->addNewLine()
+			->addString( '}'  )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$instance->convertConditionToString( $condition )
+		);
+	}
+
+	public function testQueryForSinglePropertyWithInvalidSortkeyThrowsException() {
+
+		$property = new DIProperty( 'Foo' );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$instance = new QueryConditionBuilder();
+		$instance->setSortKeys( array( 'Foo', 'ASC' ) );
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->buildCondition( $description );
+	}
+
 	public function testQueryForSinglePropertyWithValue() {
 
 		$description = new ValueDescription(

@@ -106,6 +106,41 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testInvalidSorkeyThrowsException() {
+
+		$connection = $this->getMockBuilder( '\SMWSparqlDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$condition = $this->getMockForAbstractClass( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' );
+
+		$queryConditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\QueryConditionBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryConditionBuilder->expects( $this->atLeastOnce() )
+			->method( 'setSortKeys' )
+			->will( $this->returnValue( $queryConditionBuilder ) );
+
+		$queryConditionBuilder->expects( $this->atLeastOnce() )
+			->method( 'buildCondition' )
+			->will( $this->returnValue( $condition ) );
+
+		$description = $this->getMockForAbstractClass( '\SMWDescription' );
+
+		$instance = new QueryEngine( $connection, $queryConditionBuilder, new QueryResultFactory( $store ) );
+
+		$query = new Query( $description );
+		$query->sortkeys = array( 'Foo', 'Bar' );
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->getQueryResult( $query );
+	}
+
 	public function testGetQueryResultWhereQueryModeIsDebug() {
 
 		$connection = $this->getMockBuilder( '\SMWSparqlDatabase' )

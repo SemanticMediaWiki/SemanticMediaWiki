@@ -14,6 +14,8 @@ use SMWQueryResult as QueryResult;
 use SMWQuery as Query;
 use SMW\Query\Language\ThingDescription as ThingDescription;
 
+use RuntimeException;
+
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
  * of these queries to obtain suitable QueryResult objects.
@@ -306,6 +308,11 @@ class QueryEngine {
 			$orderByString = '';
 
 			foreach ( $this->sortkeys as $propkey => $order ) {
+
+				if ( !is_string( $propkey ) ) {
+					throw new RuntimeException( "Expected a string value as sortkey" );
+				}
+
 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) {
 					$orderByString .= "$order(?" . $sparqlCondition->orderVariables[$propkey] . ") ";
 				} elseif ( ( $order == 'RANDOM' ) && $this->randomSortingSupport ) {

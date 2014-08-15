@@ -1134,6 +1134,11 @@ throw new MWException("Debug -- this code might be dead.");
 		$extraproperties = array();
 
 		foreach ( $this->m_sortkeys as $propkey => $order ) {
+
+			if ( !is_string( $propkey ) ) {
+				throw new RuntimeException( "Expected a string value as sortkey" );
+			}
+
 			if ( !array_key_exists( $propkey, $qobj->sortfields ) ) { // Find missing property to sort by.
 				if ( $propkey === '' ) { // Sort by first result column (page titles).
 					$qobj->sortfields[$propkey] = "$qobj->alias.smw_sortkey";
@@ -1178,6 +1183,11 @@ throw new MWException("Debug -- this code might be dead.");
 			$qobj = $this->m_queries[$rootid];
 
 			foreach ( $this->m_sortkeys as $propkey => $order ) {
+
+				if ( !is_string( $propkey ) ) {
+					throw new RuntimeException( "Expected a string value as sortkey" );
+				}
+
 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $qobj->sortfields ) ) { // Field was successfully added.
 					$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $qobj->sortfields[$propkey] . " $order ";
 				} elseif ( ( $order == 'RANDOM' ) && $smwgQRandSortingSupport ) {
