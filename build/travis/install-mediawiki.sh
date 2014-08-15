@@ -11,6 +11,10 @@ cd mw
 
 if [ "$DB" == "postgres" ]
 then
+  # See #458
+  sudo /etc/init.d/postgresql stop
+  sudo /etc/init.d/postgresql start
+
   psql -c 'create database its_a_mw;' -U postgres
   php maintenance/install.php --dbtype $DB --dbuser postgres --dbname its_a_mw --pass nyan TravisWiki admin --scriptpath /TravisWiki
 else
