@@ -22,7 +22,11 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 
 		$expected = is_array( $expected ) ? $expected : array( $expected );
 
-		$this->assertEquals( count( $expected ), count( $queryContainer ) );
+		$this->assertEquals(
+			count( $expected ),
+			count( $queryContainer ),
+			$this->formatMessage( 'container count', count( $expected ), count( $queryContainer ) )
+		);
 
 		foreach ( $queryContainer as $key => $container ) {
 			$this->assertInstanceOf(
@@ -45,6 +49,8 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 		$this->assertPublicProperty( $expected, $queryContainer, 'where' );
 		$this->assertPublicProperty( $expected, $queryContainer, 'components' );
 		$this->assertPublicProperty( $expected, $queryContainer, 'joinfield' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'alias' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'queryNumber' );
 	}
 
 	private function assertPublicProperty( $expected, QueryContainer $queryContainer, $property ) {

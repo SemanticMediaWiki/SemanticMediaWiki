@@ -61,14 +61,29 @@ class QueryContainer {
 	 */
 	const Q_PROP_HIERARCHY = 6;
 
+	/**
+	 * @var integer
+	 */
 	public $type = QueryContainer::Q_TABLE;
 
 	/**
 	 * @var string|array
 	 */
 	public $jointable = '';
+
+	/**
+	 * @var string|array
+	 */
 	public $joinfield = '';
+
+	/**
+	 * @var string
+	 */
 	public $from = '';
+
+	/**
+	 * @var string
+	 */
 	public $where = '';
 
 	/**

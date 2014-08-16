@@ -30,7 +30,7 @@ class DisjunctionConjunctionCompiler implements QueryCompiler {
 	private $errors = array();
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
@@ -39,7 +39,7 @@ class DisjunctionConjunctionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @return array
 	 */
@@ -48,7 +48,7 @@ class DisjunctionConjunctionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @return boolean
 	 */
@@ -57,7 +57,7 @@ class DisjunctionConjunctionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @param Description $description
 	 *

@@ -5,6 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 use SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler;
+use SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
@@ -86,6 +87,7 @@ class QueryBuilder {
 		$this->registerQueryCompiler( new DisjunctionConjunctionCompiler( $this ) );
 		$this->registerQueryCompiler( new NamespaceCompiler( $this ) );
 		$this->registerQueryCompiler( new ClassDescriptionCompiler( $this ) );
+		$this->registerQueryCompiler( new ValueDescriptionCompiler( $this ) );
 	}
 
 	/**
@@ -217,7 +219,7 @@ class QueryBuilder {
 		// Used only temporary until all comilers are registered
 		$hasNoCompiler = true;
 
-		if ( $description instanceof ClassDescription || $description instanceof NamespaceDescription || $description instanceof Conjunction || $description instanceof Disjunction ) {
+		if ( $description instanceof ClassDescription || $description instanceof NamespaceDescription || $description instanceof Conjunction || $description instanceof Disjunction || $description instanceof ValueDescription ) {
 			$hasNoCompiler = false;
 			$queryCompiler = $this->getQueryCompiler( $description );
 			$query = $queryCompiler->compileDescription( $description );
@@ -229,36 +231,6 @@ class QueryBuilder {
 
 		if ( $description instanceof SomeProperty ) {
 			$this->compileSomePropertyDescription( $query, $description );
-		} elseif ( $description instanceof ValueDescription ) { // Only type '_wpg' objects can appear on query level (essentially as nominal classes).
-			if ( $description->getDataItem() instanceof DIWikiPage ) {
-				if ( $description->getComparator() == SMW_CMP_EQ ) {
-					$query->type = QueryContainer::Q_VALUE;
-					$oid = $this->store->smwIds->getSMWPageID(
-						$description->getDataItem()->getDBkey(),
-						$description->getDataItem()->getNamespace(),
-						$description->getDataItem()->getInterwiki(),
-						$description->getDataItem()->getSubobjectName() );
-					$query->joinfield = array( $oid );
-				} else { // Join with SMW IDs table needed for other comparators (apply to title string).
-					$query->jointable = SMWSql3SmwIds::tableName;
-					$query->joinfield = "{$query->alias}.smw_id";
-					$value = $description->getDataItem()->getSortKey();
-
-					switch ( $description->getComparator() ) {
-						case SMW_CMP_LEQ: $comp = '<='; break;
-						case SMW_CMP_GEQ: $comp = '>='; break;
-						case SMW_CMP_LESS: $comp = '<'; break;
-						case SMW_CMP_GRTR: $comp = '>'; break;
-						case SMW_CMP_NEQ: $comp = '!='; break;
-						case SMW_CMP_LIKE: case SMW_CMP_NLKE:
-							$comp = ' LIKE ';
-							if ( $description->getComparator() == SMW_CMP_NLKE ) $comp = " NOT{$comp}";
-							$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
-						break;
-					}
-					$query->where = "{$query->alias}.smw_sortkey$comp" . $db->addQuotes( $value );
-				}
-			}
 		} elseif ( $description instanceof ConceptDescription ) { // fetch concept definition and insert it here
 			$cid = $this->store->smwIds->getSMWPageID( $description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '', '' );
 			// We bypass the storage interface here (which is legal as we control it, and safe if we are careful with changes ...)

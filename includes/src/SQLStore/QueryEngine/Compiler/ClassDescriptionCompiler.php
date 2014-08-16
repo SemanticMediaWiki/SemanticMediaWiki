@@ -31,7 +31,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 	private $errors = array();
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
@@ -40,7 +40,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @return array
 	 */
@@ -49,7 +49,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @return boolean
 	 */
@@ -58,7 +58,7 @@ class ClassDescriptionCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @param Description $description
 	 *

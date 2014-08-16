@@ -31,7 +31,7 @@ class NamespaceCompiler implements QueryCompiler {
 	private $errors = array();
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
@@ -40,7 +40,7 @@ class NamespaceCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @return array
 	 */
@@ -49,7 +49,7 @@ class NamespaceCompiler implements QueryCompiler {
 	}
 
 	/**
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @return boolean
 	 */
@@ -60,7 +60,7 @@ class NamespaceCompiler implements QueryCompiler {
 	/**
 	 * TODO: One instance of the SMW IDs table on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
 	 *
-	 * @since  2.1
+	 * @since 2.1
 	 *
 	 * @param Description $description
 	 *

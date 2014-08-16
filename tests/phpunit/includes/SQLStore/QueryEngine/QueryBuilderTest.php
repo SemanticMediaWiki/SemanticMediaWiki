@@ -9,6 +9,9 @@ use SMW\SQLStore\QueryEngine\QueryBuilder;
 
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\ClassDescription;
+
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QueryBuilder
@@ -112,6 +115,57 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryContainerValidator->assertThatContainerContains(
 			array( $expectedDisjunction, $expectedHelpNs, $expectedMainNs ),
+			$instance->getQueryContainer()
+		);
+	}
+
+	public function testClassDescription() {
+
+		$objectIds = $this->getMockBuilder( '\stdClass' )
+			->setMethods( array( 'getSMWPageID' ) )
+			->getMock();
+
+		$objectIds->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->will( $this->returnValue( 42 ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $connection ) );
+
+		$store->expects( $this->once() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $objectIds ) );
+
+		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
+
+		$instance = new QueryBuilder( $store );
+		$instance->buildQueryContainer( $description );
+
+		$expectedClass = new \stdClass;
+		$expectedClass->type = 1;
+		$expectedClass->alias = "t0";
+		$expectedClass->queryNumber = 0;
+
+		$expectedHierarchy = new \stdClass;
+		$expectedHierarchy->type = 5;
+		$expectedHierarchy->joinfield = array( 0 => 42 );
+		$expectedHierarchy->alias = "t1";
+		$expectedHierarchy->queryNumber = 1;
+
+		$this->assertEquals( 0, $instance->getLastContainerId() );
+		$this->assertEmpty( $instance->getErrors() );
+
+		$this->queryContainerValidator->assertThatContainerContains(
+			array( $expectedClass, $expectedHierarchy ),
 			$instance->getQueryContainer()
 		);
 	}
