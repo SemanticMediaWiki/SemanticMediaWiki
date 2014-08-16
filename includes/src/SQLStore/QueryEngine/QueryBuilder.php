@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler;
+use SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
@@ -80,6 +81,8 @@ class QueryBuilder {
 		$this->store = $store;
 
 		$this->setToInitialBuildState();
+
+		$this->registerQueryCompiler( new DisjunctionConjunctionCompiler( $this ) );
 		$this->registerQueryCompiler( new NamespaceCompiler( $this ) );
 	}
 
@@ -212,7 +215,7 @@ class QueryBuilder {
 		// Used only temporary until all comilers are registered
 		$hasNoCompiler = true;
 
-		if ( $description instanceof NamespaceDescription ) {
+		if ( $description instanceof NamespaceDescription || $description instanceof Conjunction || $description instanceof Disjunction ) {
 			$hasNoCompiler = false;
 			$queryCompiler = $this->getQueryCompiler( $description );
 			$query = $queryCompiler->compileDescription( $description );
@@ -224,21 +227,6 @@ class QueryBuilder {
 
 		if ( $description instanceof SomeProperty ) {
 			$this->compileSomePropertyDescription( $query, $description );
-		} elseif ( ( $description instanceof Conjunction ) ||
-				( $description instanceof Disjunction ) ) {
-			$query->type = ( $description instanceof Conjunction ) ? QueryContainer::Q_CONJUNCTION : QueryContainer::Q_DISJUNCTION;
-
-			foreach ( $description->getDescriptions() as $subdesc ) {
-				$sub = $this->compileQueries( $subdesc );
-				if ( $sub >= 0 ) {
-					$query->components[$sub] = true;
-				}
-			}
-
-			// All subconditions failed, drop this as well.
-			if ( count( $query->components ) == 0 ) {
-				$query->type = QueryContainer::Q_NOQUERY;
-			}
 		} elseif ( $description instanceof ClassDescription ) {
 			$cqid = QueryContainer::$qnum;
 			$cquery = new QueryContainer();

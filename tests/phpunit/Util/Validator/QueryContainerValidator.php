@@ -44,6 +44,7 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 
 		$typeCondition = true;
 		$whereCondition = true;
+		$componentsCondition = true;
 
 		if ( isset( $expected->type ) ) {
 			$typeCondition = $expected->type == $queryContainer->type;
@@ -53,8 +54,13 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 			$whereCondition = $expected->where == $queryContainer->where;
 		}
 
+		if ( isset( $expected->components ) ) {
+			$componentsCondition = $expected->components == $queryContainer->components;
+		}
+
 		$this->assertTrue( $typeCondition );
 		$this->assertTrue( $whereCondition );
+		$this->assertTrue( $componentsCondition );
 	}
 
 }
