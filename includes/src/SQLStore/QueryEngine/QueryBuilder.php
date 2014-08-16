@@ -4,6 +4,7 @@ namespace SMW\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\DisjunctionConjunctionCompiler;
+use SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler;
 
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
@@ -84,6 +85,7 @@ class QueryBuilder {
 
 		$this->registerQueryCompiler( new DisjunctionConjunctionCompiler( $this ) );
 		$this->registerQueryCompiler( new NamespaceCompiler( $this ) );
+		$this->registerQueryCompiler( new ClassDescriptionCompiler( $this ) );
 	}
 
 	/**
@@ -215,7 +217,7 @@ class QueryBuilder {
 		// Used only temporary until all comilers are registered
 		$hasNoCompiler = true;
 
-		if ( $description instanceof NamespaceDescription || $description instanceof Conjunction || $description instanceof Disjunction ) {
+		if ( $description instanceof ClassDescription || $description instanceof NamespaceDescription || $description instanceof Conjunction || $description instanceof Disjunction ) {
 			$hasNoCompiler = false;
 			$queryCompiler = $this->getQueryCompiler( $description );
 			$query = $queryCompiler->compileDescription( $description );
@@ -227,32 +229,6 @@ class QueryBuilder {
 
 		if ( $description instanceof SomeProperty ) {
 			$this->compileSomePropertyDescription( $query, $description );
-		} elseif ( $description instanceof ClassDescription ) {
-			$cqid = QueryContainer::$qnum;
-			$cquery = new QueryContainer();
-			$cquery->type = QueryContainer::Q_CLASS_HIERARCHY;
-			$cquery->joinfield = array();
-
-			foreach ( $description->getCategories() as $cat ) {
-				$cid = $this->store->smwIds->getSMWPageID( $cat->getDBkey(), NS_CATEGORY, $cat->getInterwiki(), '' );
-				if ( $cid != 0 ) {
-					$cquery->joinfield[] = $cid;
-				}
-			}
-
-			if ( count( $cquery->joinfield ) == 0 ) { // Empty result.
-				$query->type = QueryContainer::Q_VALUE;
-				$query->jointable = '';
-				$query->joinfield = '';
-			} else { // Instance query with disjunction of classes (categories)
-				$query->jointable = $db->tableName(
-					$this->store->findPropertyTableID(
-						new DIProperty( '_INST' ) ) );
-				$query->joinfield = "$query->alias.s_id";
-				$query->components[$cqid] = "$query->alias.o_id";
-				$this->addQueryContainerForId( $cqid, $cquery );
-			}
-
 		} elseif ( $description instanceof ValueDescription ) { // Only type '_wpg' objects can appear on query level (essentially as nominal classes).
 			if ( $description->getDataItem() instanceof DIWikiPage ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {

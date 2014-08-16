@@ -41,26 +41,30 @@ class QueryContainerValidator extends \PHPUnit_Framework_Assert {
 	 * @param  QueryContainer $queryContainer
 	 */
 	public function assertThatContainerHasProperties( $expected, QueryContainer $queryContainer ) {
+		$this->assertPublicProperty( $expected, $queryContainer, 'type' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'where' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'components' );
+		$this->assertPublicProperty( $expected, $queryContainer, 'joinfield' );
+	}
 
-		$typeCondition = true;
-		$whereCondition = true;
-		$componentsCondition = true;
+	private function assertPublicProperty( $expected, QueryContainer $queryContainer, $property ) {
 
-		if ( isset( $expected->type ) ) {
-			$typeCondition = $expected->type == $queryContainer->type;
+		if ( !isset( $expected->{$property} ) ) {
+			return null;
 		}
 
-		if ( isset( $expected->where ) ) {
-			$whereCondition = $expected->where == $queryContainer->where;
-		}
+		$this->assertTrue(
+			$expected->{$property} == $queryContainer->{$property},
+			$this->formatMessage( $property, $expected->{$property}, $queryContainer->{$property} )
+		);
+	}
 
-		if ( isset( $expected->components ) ) {
-			$componentsCondition = $expected->components == $queryContainer->components;
-		}
+	private function formatMessage( $id, $expected, $actual ) {
+		return "Asserts {$id} to be expected [ " . $this->formatAsString( $expected ) . ' ] vs. actual [ ' . $this->formatAsString( $actual ) .' ]';
+	}
 
-		$this->assertTrue( $typeCondition );
-		$this->assertTrue( $whereCondition );
-		$this->assertTrue( $componentsCondition );
+	private function formatAsString( $expected ) {
+		return is_array( $expected ) ? implode( ', ', $expected ) : $expected;
 	}
 
 }
