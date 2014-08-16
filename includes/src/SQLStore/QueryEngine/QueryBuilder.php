@@ -2,6 +2,9 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
+use SMW\SQLStore\QueryEngine\Compiler\NamespaceCompiler;
+
+use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\Conjunction;
@@ -22,7 +25,6 @@ use SMWDataItemHandler as DataItemHandler;
 
 use SMWQueryParser as QueryParser;
 use SMWDataItem as DataItem;
-use SMWDescription as Description;
 use SMWQuery as Query;
 use SMWSql3SmwIds;
 
@@ -33,6 +35,7 @@ use MWException;
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
+ * @author mwjames
  */
 class QueryBuilder {
 
@@ -40,6 +43,11 @@ class QueryBuilder {
 	 * @var Store
 	 */
 	private $store;
+
+	/**
+	 * @var QueryCompiler[]
+	 */
+	private $queryCompilers = array();
 
 	/**
 	 * Array of generated QueryContainer query descriptions (index => object).
@@ -70,6 +78,9 @@ class QueryBuilder {
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
+
+		$this->setToInitialBuildState();
+		$this->registerQueryCompiler( new NamespaceCompiler( $this ) );
 	}
 
 	/**
@@ -79,6 +90,15 @@ class QueryBuilder {
 	 */
 	public function getStore() {
 		return $this->store;
+	}
+
+	/**
+	 * @since  2.1
+	 *
+	 * @param QueryCompiler $queryCompiler
+	 */
+	public function registerQueryCompiler( QueryCompiler $queryCompiler ) {
+		$this->queryCompilers[] = $queryCompiler;
 	}
 
 	/**
@@ -188,14 +208,22 @@ class QueryBuilder {
 	 * @return integer
 	 */
 	public function compileQueries( Description $description ) {
-		$query = new QueryContainer();
-		$db = $this->store->getDatabase();
+
+		// Used only temporary until all comilers are registered
+		$hasNoCompiler = true;
+
+		if ( $description instanceof NamespaceDescription ) {
+			$hasNoCompiler = false;
+			$queryCompiler = $this->getQueryCompiler( $description );
+			$query = $queryCompiler->compileDescription( $description );
+			$this->errors = $queryCompiler->getErrors();
+		} else {
+			$query = new QueryContainer();
+			$db = $this->store->getDatabase();
+		}
 
 		if ( $description instanceof SomeProperty ) {
 			$this->compileSomePropertyDescription( $query, $description );
-		} elseif ( $description instanceof NamespaceDescription ) {
-			// TODO: One instance of the SMW IDs table on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
-			$this->buildQueryArtifactForNamespaceDescription( $query, $description );
 		} elseif ( ( $description instanceof Conjunction ) ||
 				( $description instanceof Disjunction ) ) {
 			$query->type = ( $description instanceof Conjunction ) ? QueryContainer::Q_CONJUNCTION : QueryContainer::Q_DISJUNCTION;
@@ -314,13 +342,24 @@ class QueryBuilder {
 					}
 				} // else: no cache, no description (this may happen); treat like empty concept
 			}
-		} else { // (e.g. ThingDescription)
+		} elseif ( $hasNoCompiler ) { // (e.g. ThingDescription)
 			$query->type = QueryContainer::Q_NOQUERY; // no condition
 		}
 
 		$this->registerQuery( $query );
 
 		return $this->lastContainerId = $query->type !== QueryContainer::Q_NOQUERY ? $query->queryNumber : -1;
+	}
+
+	protected function getQueryCompiler( Description $description ) {
+		foreach ( $this->queryCompilers as $queryCompiler ) {
+			if ( $queryCompiler->canCompileDescription( $description ) ) {
+				return $queryCompiler;
+			}
+		}
+
+		// throw new RuntimeException( "Description has no registered compiler" );
+		return null;
 	}
 
 	/**
@@ -536,12 +575,6 @@ class QueryBuilder {
 		if ( $where !== '' ) {
 			$query->where .= ( $query->where ? " $operator " : '' ) . "($where)";
 		}
-	}
-
-	private function buildQueryArtifactForNamespaceDescription( QueryContainer $query, NamespaceDescription $description ) {
-		$query->jointable = SMWSql3SmwIds::tableName;
-		$query->joinfield = "$query->alias.smw_id";
-		$query->where = "$query->alias.smw_namespace=" . $this->store->getDatabase()->addQuotes( $description->getNamespace() );
 	}
 
 }

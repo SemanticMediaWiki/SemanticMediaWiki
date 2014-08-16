@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use SMW\Tests\Util\Validator\QueryContainerValidator;
+
 use SMW\SQLStore\QueryEngine\QueryContainer;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
@@ -20,6 +22,14 @@ use SMW\Query\Language\NamespaceDescription;
  * @author mwjames
  */
 class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	private $queryContainerValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->queryContainerValidator = new QueryContainerValidator();
+	}
 
 	public function testCanConstruct() {
 
@@ -50,7 +60,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description = new NamespaceDescription( NS_HELP );
 
 		$instance = new QueryBuilder( $store );
-		$instance->setToInitialBuildState()->buildQueryContainer( $description );
+		$instance->buildQueryContainer( $description );
 
 		$expected = new \stdClass;
 		$expected->type = 1;
@@ -59,7 +69,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 0, $instance->getLastContainerId() );
 		$this->assertEmpty( $instance->getErrors() );
 
-		$this->assertOrderedQueryContainer(
+		$this->queryContainerValidator->assertThatContainerContains(
 			$expected,
 			$instance->getQueryContainer()
 		);
@@ -84,7 +94,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$description->addDescription( new NamespaceDescription( NS_MAIN ) );
 
 		$instance = new QueryBuilder( $store );
-		$instance->setToInitialBuildState()->buildQueryContainer( $description );
+		$instance->buildQueryContainer( $description );
 
 		$expectedDisjunction = new \stdClass;
 		$expectedDisjunction->type = 3;
@@ -100,44 +110,10 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 0, $instance->getLastContainerId() );
 		$this->assertEmpty( $instance->getErrors() );
 
-		$this->assertOrderedQueryContainer(
+		$this->queryContainerValidator->assertThatContainerContains(
 			array( $expectedDisjunction, $expectedHelpNs, $expectedMainNs ),
 			$instance->getQueryContainer()
 		);
-	}
-
-	// Move to QueryContainerValidator
-	private function assertOrderedQueryContainer( $expected, array $queryContainer ) {
-
-		$expected = is_array( $expected ) ? $expected : array( $expected );
-
-		$this->assertEquals( count( $expected ), count( $queryContainer ) );
-
-		foreach ( $queryContainer as $key => $container ) {
-			$this->assertInstanceOf(
-				'\SMW\SQLStore\QueryEngine\QueryContainer',
-				$container
-			);
-
-			$this->assertSingleQueryContainer( $expected[ $key ], $container );
-		}
-	}
-
-	private function assertSingleQueryContainer( $expected, $queryContainer ) {
-
-		$typeCondition = true;
-		$whereCondition = true;
-
-		if ( isset( $expected->type ) ) {
-			$typeCondition = $expected->type == $queryContainer->type;
-		}
-
-		if ( isset( $expected->where ) ) {
-			$whereCondition = $expected->where == $queryContainer->where;
-		}
-
-		$this->assertTrue( $typeCondition );
-		$this->assertTrue( $whereCondition );
 	}
 
 }
