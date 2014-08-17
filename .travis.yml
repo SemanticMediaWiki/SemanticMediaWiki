@@ -20,7 +20,7 @@ matrix:
       php: 5.5
     - env: DB=postgres; MW=1.19.0;
       php: 5.4
-    - env: DB=sqlite; MW=master;
+    - env: DB=sqlite; MW=master; PHPUNIT=4.1.*
       php: hhvm-nightly
   exclude:
     - env: THENEEDFORTHIS=FAIL
