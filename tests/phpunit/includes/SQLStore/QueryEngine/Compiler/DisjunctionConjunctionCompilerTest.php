@@ -65,7 +65,6 @@ class DisjunctionConjunctionCompilerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new DisjunctionConjunctionCompiler( new QueryBuilder( $store ) );
 
 		$this->assertTrue( $instance->canCompileDescription( $description ) );
-		$this->assertEmpty( $instance->getErrors() );
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,

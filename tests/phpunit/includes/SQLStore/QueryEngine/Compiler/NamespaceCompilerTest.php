@@ -68,7 +68,6 @@ class NamespaceCompilerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new NamespaceCompiler( $queryBuilder );
 
 		$this->assertTrue( $instance->canCompileDescription( $description ) );
-		$this->assertEmpty( $instance->getErrors() );
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,

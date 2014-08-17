@@ -4,16 +4,16 @@ namespace SMW\Tests\SQLStore\QueryEngine\Compiler;
 
 use SMW\Tests\Util\Validator\QueryContainerValidator;
 
-use SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler;
+use SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler;
 use SMW\SQLStore\QueryEngine\QueryBuilder;
 
-use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\ConceptDescription;
 
 use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler
+ * @covers \SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler
  *
  * @group SMW
  * @group SMWExtension
@@ -23,7 +23,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 
 	private $queryContainerValidator;
 
@@ -40,15 +40,15 @@ class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler',
-			new ValueDescriptionCompiler( $queryBuilder )
+			'\SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler',
+			new ConceptDescriptionCompiler( $queryBuilder )
 		);
 	}
 
 	/**
 	 * @dataProvider descriptionProvider
 	 */
-	public function testCompileDescription( $description, $expected ) {
+	public function testCompileDescription( $description, $concept, $expected ) {
 
 		$objectIds = $this->getMockBuilder( '\stdClass' )
 			->setMethods( array( 'getSMWPageID' ) )
@@ -66,6 +66,10 @@ class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addQuotes' )
 			->will( $this->returnArgument( 0 ) );
 
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( $concept ) );
+
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +82,7 @@ class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
-		$instance = new ValueDescriptionCompiler( new QueryBuilder( $store ) );
+		$instance = new ConceptDescriptionCompiler( new QueryBuilder( $store ) );
 
 		$this->assertTrue( $instance->canCompileDescription( $description ) );
 
@@ -90,57 +94,60 @@ class ValueDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 
 	public function descriptionProvider() {
 
-		#0 SMW_CMP_EQ
-		$description = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ );
-
-		$expected = new \stdClass;
-		$expected->type = 2;
-		$expected->alias = "t0";
-		$expected->joinfield = array( 42 );
-
-		$provider[] = array(
-			$description,
-			$expected
-		);
-
-		#1 SMW_CMP_LEQ
-		$description = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ );
+		#0 No concept
+		$concept = false;
+		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->alias = "t0";
-		$expected->joinfield = "t0.smw_id";
-		$expected->where = "t0.smw_sortkey<=Foo";
+		$expected->joinfield = '';
 
 		$provider[] = array(
 			$description,
+			$concept,
 			$expected
 		);
 
-		#2 SMW_CMP_LIKE
-		$description = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LIKE );
+		#1 Cached concept
+		$concept = new \stdClass;
+		$concept->concept_size = 1;
+		$concept->concept_features = 1;
+		$concept->concept_depth = 1;
+		$concept->cache_date = strtotime( "now" );
+
+		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->alias = "t0";
-		$expected->joinfield = "t0.smw_id";
-		$expected->where = "t0.smw_sortkey LIKE Foo";
+		$expected->joinfield = 't0.s_id';
+		$expected->where = 't0.o_id=42';
+		$expected->queryNumber = 0;
 
 		$provider[] = array(
 			$description,
+			$concept,
 			$expected
 		);
 
-		#3 not a DIWikiPage
-		$description = new ValueDescription( new DIBLob( 'Foo' ) );
+		#2 Non cached concept
+		$concept = new \stdClass;
+		$concept->concept_txt = "[[Category:Foo]]";
+		$concept->concept_size = 1;
+		$concept->concept_features = 1;
+		$concept->concept_depth = 1;
+		$concept->cache_date = false;
+
+		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
 
 		$expected = new \stdClass;
 		$expected->type = 1;
-		$expected->joinfield = "";
-		$expected->where = "";
+		$expected->joinfield = 't1.s_id';
+		$expected->components = array( 2 => 't1.o_id' );
+		$expected->queryNumber = 1;
 
 		$provider[] = array(
 			$description,
+			$concept,
 			$expected
 		);
 

@@ -76,7 +76,6 @@ class ClassDescriptionCompilerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ClassDescriptionCompiler( new QueryBuilder( $store ) );
 
 		$this->assertTrue( $instance->canCompileDescription( $description ) );
-		$this->assertEmpty( $instance->getErrors() );
 
 		$this->queryContainerValidator->assertThatContainerHasProperties(
 			$expected,

@@ -30,11 +30,4 @@ interface QueryCompiler {
 	 */
 	public function compileDescription( Description $description );
 
-	/**
-	 * @since 2.1
-	 *
-	 * @return array
-	 */
-	public function getErrors();
-
 }

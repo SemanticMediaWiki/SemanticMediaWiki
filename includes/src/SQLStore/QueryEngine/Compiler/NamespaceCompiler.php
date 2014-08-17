@@ -26,26 +26,12 @@ class NamespaceCompiler implements QueryCompiler {
 	private $queryBuilder;
 
 	/**
-	 * @var array
-	 */
-	private $errors = array();
-
-	/**
 	 * @since 2.1
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
 	public function __construct( QueryBuilder $queryBuilder ) {
 		$this->queryBuilder = $queryBuilder;
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return array
-	 */
-	public function getErrors() {
-		return $this->errors;
 	}
 
 	/**
