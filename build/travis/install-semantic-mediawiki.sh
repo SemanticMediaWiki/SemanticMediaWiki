@@ -7,9 +7,9 @@ MW_INSTALL_PATH=$BASE_PATH/../mw
 ## PHPUnit sources need to be present otherwise the MW testrunner will complain
 ## about it
 function installPHPUnitWithComposer {
-	if [ "$TRAVIS_PHP_VERSION" == "hhvm" ] || [ "$TRAVIS_PHP_VERSION" == "hhvm-nightly" ]
+	if [ "$PHPUNIT" != "" ]
 	then
-		composer require 'phpunit/phpunit=4.1.*' --prefer-source
+		composer require 'phpunit/phpunit='$PHPUNIT --prefer-source
 	else
 		composer require 'phpunit/phpunit=3.7.*' --prefer-source
 	fi
