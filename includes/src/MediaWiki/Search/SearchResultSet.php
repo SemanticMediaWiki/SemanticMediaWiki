@@ -65,4 +65,24 @@ class SearchResultSet extends \SearchResultSet {
 		return $this->count;
 	}
 
+	/**
+	 * Return an array of regular expression fragments for matching
+	 * the search terms as parsed by the engine in a text extract.
+	 *
+	 * This is a temporary hack for MW versions that can not cope
+	 * with no search term being returned (<1.24).
+	 *
+	 * @deprecated remove once min supported MW version has \SearchHighlighter::highlightNone()
+	 *
+	 * @return string[]
+	 */
+	public function termMatches() {
+
+		if ( method_exists( '\SearchHighlighter', 'highlightNone' ) ) {
+			return array();
+		}
+
+		// Will cause the highlighter to match every line start, thus returning the first few lines of found pages.
+		return array( '^' );
+	}
 }
