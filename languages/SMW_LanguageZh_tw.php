@@ -15,81 +15,83 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
 
 /**
  * Traditional Chinese language labels for important SMW labels (namespaces, datatypes,...).
+ * Manually reviewed and updated (August 18, 2014).
+ * Please contribute any corrections to the SMW project.
  *
- * @author 張致信 (Roc Michael roc.no1\@gmail.com)
+ * @author 張致信 (Roc Michael)
+ * @author 張林 (Lin Zhang)
  * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageZh_tw extends SMWLanguage {
 
 	protected $m_DatatypeLabels = array(
-		'_wpg' => '頁面',	// 'Page', // name of page datatype
-		'_txt' => '文字',	// 'Text',  // name of the text type
-		'_cod' => 'Code',  // name of the (source) code type //TODO: translate
-		'_boo' => '布林',	// 'Boolean',  // name of the boolean type
-		'_num' => '數字',	// 'Number',  // name for the datatype of numbers
-		'_geo' => '地理學的座標',	// 'Geographic coordinates', // name of the geocoord type
-		'_tem' => '溫度',	// 'Temperature',  // name of the temperature type
-		'_dat' => '日期',	// 'Date',  // name of the datetime (calendar) type
-		'_ema' => 'Email',	// 'Email',  // name of the email type
-		'_uri' => 'URL',	// 'URL',  // name of the URL type
-		'_anu' => 'URI的註解',	// 'Annotation URI'  // name of the annotation URI type (OWL annotation property)
-		'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
-		'_rec' => 'Record', // name of record data type //TODO: translate
-		'_qty' => 'Quantity', // name of the number type with units of measurement //TODO: translate
+		'_wpg' => '頁面型', // name of page type
+		'_txt' => '文字型', // name of the text type
+		'_cod' => '代碼型', // name of the (source) code type
+		'_boo' => '布爾型', // name of the boolean type
+		'_num' => '數值型', // name for the number type
+		'_geo' => '地理坐標型',	// name of the geocoord type
+		'_tem' => '溫度型', // name of the temperature type
+		'_dat' => '日期型', // name of the datetime type
+		'_ema' => '電子郵件地址型', // name of the email type
+		'_uri' => 'URL型', // name of the URL type
+		'_anu' => '注釋URI型', // name of the annotation URI type (OWL annotation property)
+		'_tel' => '電話號碼型',  // name of the telephone (URI) type
+		'_rec' => '記錄型', // name of record type
+		'_qty' => '數量型' // name of the number type with units of measurement
 	);
 
 	protected $m_DatatypeAliases = array(
-		'浮點數'       => '_num',	// '_num',
-		'整數'         => '_num' ,	// '_num',
-		 '列舉'        => '_txt',	// '_txt'
-		'字串'        => '_txt',		// old name of the string type
+		'浮點型'      => '_num',
+		'整數型'      => '_num',
+		'枚舉型'      => '_txt',
+		'字串型'      => '_txt', // old name of the string type
 		// SMW0.7 compatibility:
 		'Float'       => '_num',
 		'Integer'     => '_num',
 		'Enumeration' => '_txt',
-		'URI'         => '_uri',
+		'URI'         => '_uri'
 	);
 
 	protected $m_SpecialProperties = array(
-		// always start upper-case
-		'_TYPE' => '設有型態',	// 'Has type',
-		'_URI'  => '對應的URI',	// 'Equivalent URI',
-		'_SUBP' => '所屬的子性質',	// 'Subproperty of',
-		'_SUBC' => 'Subcategory of', // TODO: translate
-		'_UNIT' => '顯示單位',      // Display unit
-		'_IMPO' => '輸入來源',     // Imported from
-		'_CONV' => '符合於',  // Corresponds to
-		'_SERV' => '提供服務',      // Provides service
-		'_PVAL' => '允許值',      // Allows value
-		'_MDAT' => 'Modification date',  // TODO: translate
-		'_CDAT' => 'Creation date', // TODO: translate
-		'_NEWP' => 'Is a new page', // TODO: translate
-		'_LEDT' => 'Last editor is', // TODO: translate
-		'_ERRP' => 'Has improper value for', // TODO: translate
-		'_LIST' => 'Has fields', // TODO: translate
-		'_SOBJ' => 'Has subobject', // TODO: translate
-		'_ASK'  => 'Has query', // TODO: translate
-		'_ASKST'=> 'Query string', // TODO: translate
-		'_ASKFO'=> 'Query format', // TODO: translate
-		'_ASKSI'=> 'Query size', // TODO: translate
-		'_ASKDE'=> 'Query depth', // TODO: translate
-		'_ASKDU'=> 'Query duration', // TODO: translate
-		'_MEDIA'=> 'Media type',
-		'_MIME' => 'Mime type'
+		'_TYPE' => '具有類型', // Has type
+		'_URI'  => '等價URI', // Equivalent URI
+		'_SUBP' => '是……的子屬性', // Subproperty of (to be reviewed)
+		'_SUBC' => '是……的子分類', // Subcategory of (to be reviewed) 
+		'_UNIT' => '顯示單位', // Display unit
+		'_IMPO' => '導入自', // Imported from
+		'_CONV' => '對應於', // Corresponds to
+		'_SERV' => '提供服務', // Provides service
+		'_PVAL' => '允許取值', // Allows value
+		'_MDAT' => '修改日期', // Modification date 
+		'_CDAT' => '創建日期', // Creation date 
+		'_NEWP' => '是一個新頁面', // Is a new page 
+		'_LEDT' => '最後編者為', //Last editor is 
+		'_ERRP' => '具有……的不當取值', // Has improper value for (to be reviewed) 
+		'_LIST' => '具有欄位', // Has fields 
+		'_SOBJ' => '具有子對象', // Has subobject 
+		'_ASK'  => '具有查詢', // Has query 
+		'_ASKST'=> '查詢字串', // Query string 
+		'_ASKFO'=> '查詢格式', // Query format 
+		'_ASKSI'=> '查詢大小', // Query size 
+		'_ASKDE'=> '查詢深度', // Query depth 
+		'_ASKDU'=> '查詢持續時間', // Query duration
+		'_MEDIA'=> '媒體類型', // Media type
+		'_MIME' => 'MIME類型' // MIME type
 	);
 
 	protected $m_SpecialPropertyAliases = array(
-		'Display unit' => '_UNIT'
+		'顯示計量單位' => '_UNIT'
 	);
 
 	protected $m_Namespaces = array(
-		SMW_NS_PROPERTY       => '性質',	// 'Property',
-		SMW_NS_PROPERTY_TALK  => '性質討論',	// 'Property_talk',
-		SMW_NS_TYPE           => '型態',	// 'Type',
-		SMW_NS_TYPE_TALK      => '型態討論',	// 'Type_talk'
-		SMW_NS_CONCEPT        => '概念',	 // 'Concept'
-		SMW_NS_CONCEPT_TALK   => '概念討論',	// 'Concept_talk'
+		SMW_NS_PROPERTY       => '屬性',	// 'Property',
+		SMW_NS_PROPERTY_TALK  => '屬性討論',	// 'Property_talk',
+		SMW_NS_TYPE           => '類型',	// 'Type',
+		SMW_NS_TYPE_TALK      => '類型討論',	// 'Type_talk'
+		SMW_NS_CONCEPT        => '概念',	// 'Concept'
+		SMW_NS_CONCEPT_TALK   => '概念討論'	// 'Concept_talk'
 	);
 
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
@@ -97,8 +99,3 @@ class SMWLanguageZh_tw extends SMWLanguage {
 	protected $m_months = array( "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" );
 
 }
-
-
-
-
-
