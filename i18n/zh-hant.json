@@ -156,6 +156,7 @@
 	"semanticstatistics": "語意統計",
 	"smw_semstats_text": "此維基包含 '''$1''' 個屬性{{PLURAL:$1|值|值}}，源自 '''$2''' 個[[Special:Properties|{{PLURAL:$2|屬性|不同屬性}}]]。'''$3''' 個{{PLURAL:$3|屬性有|屬性有}}自己的頁，並且預期的數據類型被指定為 '''$4'''。某些已經存在的屬性也許是[[Special:UnusedProperties|無用屬性]]。缺乏頁的屬性可以在[[Special:WantedProperties|需要的屬性列表]]中找到。",
 	"smw-statistics": "Semantic 語義統計",
+	"smw-statistics-query-inline": "$1 條查詢",
 	"smw-statistics-query-size": "隊列長度",
 	"smw_uri_doc": "URI 分析器實現[$1 W3C httpRange-14 標記查找]。它將處理那些沒有網站內容的頁。",
 	"ask": "語意搜尋",
