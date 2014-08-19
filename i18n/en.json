@@ -57,6 +57,7 @@
 	"smw-paramdesc-embedformat": "The HTML tag used to define headings",
 	"smw-paramdesc-embedonly": "Display no headings",
 	"smw-paramdesc-table-class": "An additional CSS class to set for the table",
+	"smw-paramdesc-table-transpose": "Display table headers vertically and results horizontally",
 	"smw-paramdesc-rdfsyntax": "The RDF syntax to be used",
 	"smw-paramdesc-csv-sep": "The separator to use",
 	"smw-paramdesc-dsv-separator": "The separator to use",
