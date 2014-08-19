@@ -49,6 +49,11 @@ class TurtleTriplesBuilder {
 	private $hasTriplesForUpdate = null;
 
 	/**
+	 * @var array
+	 */
+	private static $dataItemExportCache = array();
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param SemanticData $semanticData
@@ -226,9 +231,11 @@ class TurtleTriplesBuilder {
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();
 
-			if ( !array_key_exists( $hash, $auxiliaryExpData ) ) {
-				$auxiliaryExpData[$hash] = SMWExporter::makeExportDataForSubject( $diWikiPage, null, true );
+			if ( !isset( self::$dataItemExportCache[ $hash ] ) ) {
+				self::$dataItemExportCache[ $hash ] = SMWExporter::getInstance()->makeExportDataForSubject( $diWikiPage, null, true );
 			}
+
+			$auxiliaryExpData[ $hash ] = self::$dataItemExportCache[ $hash ];
 		}
 
 		return $elementTarget;

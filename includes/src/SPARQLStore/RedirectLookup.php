@@ -29,12 +29,24 @@ class RedirectLookup {
 	private $sparqlDatabase = null;
 
 	/**
+	 * @var array
+	 */
+	private static $resourceUriTargetCache = array();
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param SparqlDatabase $sparqlDatabase
 	 */
 	public function __construct( SparqlDatabase $sparqlDatabase ) {
 		$this->sparqlDatabase = $sparqlDatabase;
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public function clear() {
+		self::$resourceUriTargetCache = array();
 	}
 
 	/**
@@ -67,7 +79,11 @@ class RedirectLookup {
 			return $expNsResource;
 		}
 
-		$firstRow = $this->lookupResourceUriTargetFromDatabase( $expNsResource );
+		if ( !isset( self::$resourceUriTargetCache[ $expNsResource->getUri() ] ) ) {
+			self::$resourceUriTargetCache[ $expNsResource->getUri() ] = $this->lookupResourceUriTargetFromDatabase( $expNsResource );
+		}
+
+		$firstRow = self::$resourceUriTargetCache[ $expNsResource->getUri() ];
 
 		if ( $firstRow === false ) {
 			$exists = false;
