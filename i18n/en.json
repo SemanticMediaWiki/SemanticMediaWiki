@@ -243,7 +243,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>An update is already in progress.</strong>\nIt is normal that the update progresses only slowly since it only refreshes data in small chunks each time a user accesses the wiki.\nTo finish this update more quickly, you can invoke the MediaWiki maintenance script <code>runJobs.php</code> (use the option <code>--maxjobs 1000</code> to restrict the number of updates done in one batch).\nEstimated progress of current update:",
 	"smw_smwadmin_datarefreshbutton": "Start updating data",
 	"smw_smwadmin_datarefreshstop": "Stop this update",
-	"smw_smwadmin_datarefreshstopconfirm": "Yes, I am sure.",
+	"smw_smwadmin_datarefreshstopconfirm": "Yes, I am {{GENDER:$1|sure}}.",
 	"smw_smwadmin_support": "Getting support",
 	"smw_smwadmin_supportdocu": "Various resources might help you in case of problems:",
 	"smw_smwadmin_installfile": "If you experience problems with your installation, start by checking the guidelines in the <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL file</a>.",
