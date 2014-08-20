@@ -8,6 +8,7 @@ use SMW\SQLStore\QueryEngine\Compiler\ClassDescriptionCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\ValueDescriptionCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\ConceptDescriptionCompiler;
 use SMW\SQLStore\QueryEngine\Compiler\SomePropertyCompiler;
+use SMW\SQLStore\QueryEngine\Compiler\ThingDescriptionCompiler;
 
 use SMW\Query\Language\Description;
 
@@ -195,14 +196,7 @@ class QueryBuilder {
 	 */
 	public function compileQueries( Description $description ) {
 
-		$queryCompiler = $this->getQueryCompiler( $description );
-
-		if ( $queryCompiler !== null ) {
-			$query = $queryCompiler->compileDescription( $description );
-		} else {
-			$query = new QueryContainer();
-			$query->type = QueryContainer::Q_NOQUERY; // no condition
-		}
+		$query = $this->getQueryCompiler( $description )->compileDescription( $description );
 
 		$this->registerQuery( $query );
 
@@ -218,15 +212,17 @@ class QueryBuilder {
 		$this->queryCompilers[] = $queryCompiler;
 	}
 
-	protected function getQueryCompiler( Description $description ) {
+	private function getQueryCompiler( Description $description ) {
+
 		foreach ( $this->queryCompilers as $queryCompiler ) {
 			if ( $queryCompiler->canCompileDescription( $description ) ) {
 				return $queryCompiler;
 			}
 		}
 
-		// throw new RuntimeException( "Description has no registered compiler" );
-		return null;
+		// Instead of throwing an exception we return a ThingDescriptionCompiler
+		// for all unregistered/unknown descriptions
+		return new ThingDescriptionCompiler( $this );
 	}
 
 	/**
@@ -234,7 +230,7 @@ class QueryBuilder {
 	 * valid. Also make sure that sortkey information is propagated down
 	 * from subqueries of this query.
 	 */
-	protected function registerQuery( QueryContainer $query ) {
+	private function registerQuery( QueryContainer $query ) {
 
 		if ( $query->type === QueryContainer::Q_NOQUERY ) {
 			return null;
