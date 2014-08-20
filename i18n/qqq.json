@@ -258,7 +258,7 @@
 	"smw_smwadmin_datarefreshprogress": "This is an information message on [[Special:SMWAdmin]].",
 	"smw_smwadmin_datarefreshbutton": "This is the name of the submit button on [[Special:SMWAdmin]] to trigger the respective process.",
 	"smw_smwadmin_datarefreshstop": "This is the name of the submit button on [[Special:SMWAdmin]] to abort the respective process.",
-	"smw_smwadmin_datarefreshstopconfirm": "This is the text next to the checkbox on [[Special:SMWAdmin]] reassuring that the respective process should indeed be cancelled.",
+	"smw_smwadmin_datarefreshstopconfirm": "This is the text next to the checkbox on [[Special:SMWAdmin]] reassuring that the respective process should indeed be cancelled.\nParameter:\n$1 - unused, or user who performed the action (to be used with GENDER)",
 	"smw_smwadmin_support": "This is a section header on [[Special:SMWAdmin]].",
 	"smw_smwadmin_supportdocu": "This is the introductory text on [[Special:SMWAdmin]] followed by a list of resources.",
 	"smw_smwadmin_installfile": "This text on [[Special:SMWAdmin]] describes a resource for help.\n\n{{doc-important|Do not alter or translate link targets!}}",
