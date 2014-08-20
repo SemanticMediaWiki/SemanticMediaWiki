@@ -796,7 +796,7 @@ $specialPageAliases['vi'] = array(
 
 /** Simplified Chinese (中文（简体）‎) */
 $specialPageAliases['zh-hans'] = array(
-	'Ask' => array( '问' ),
+	'Ask' => array( '询问' ),
 	'Browse' => array( '浏览' ),
 	'ExportRDF' => array( '导出RDF' ),
 	'PageProperty' => array( '页面属性' ),
@@ -808,19 +808,20 @@ $specialPageAliases['zh-hans'] = array(
 	'Types' => array( '类型' ),
 	'URIResolver' => array( 'URI分解器' ),
 	'UnusedProperties' => array( '未使用属性' ),
-	'WantedProperties' => array( '缺乏属性' ),
+	'WantedProperties' => array( '尚缺属性' ),
 );
 
 /** Traditional Chinese (中文（繁體）‎) */
 $specialPageAliases['zh-hant'] = array(
-	'Ask' => array( '問' ),
+	'Ask' => array( '詢問' ),
 	'Browse' => array( '瀏覽' ),
 	'ExportRDF' => array( '匯出RDF' ),
 	'PageProperty' => array( '頁面屬性' ),
 	'Properties' => array( '屬性' ),
+	'Concepts' => array( '概念' ),
 	'SMWAdmin' => array( 'SMW管理員' ),
 	'SearchByProperty' => array( '依屬性搜尋' ),
-	'SemanticStatistics' => array( 'Semantic統計' ),
+	'SemanticStatistics' => array( '语义統計' ),
 	'Types' => array( '類型' ),
 	'URIResolver' => array( 'URI分離器' ),
 	'UnusedProperties' => array( '無使用屬性' ),
