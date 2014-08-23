@@ -25,3 +25,6 @@ When using `git`, it is relatively easy to run tests and see if a change introdu
 - `benchmarkPageCopyThreshold` a value to specify how many pages should be copied and made available during a test
 - `benchmarkShowMemoryUsage` setting to display memory usage during a benchmark test
 - `benchmarkReuseDatasets` indicating whether to reuse existing datasets during a benchmark run or not (to be used for large datasets like `benchmarkPageCopyThreshold` > 500 )
+
+## See also 
+- [Benchmark HHVM 3.3 vs. Zend PHP 5.6](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/513)
