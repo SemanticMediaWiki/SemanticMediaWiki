@@ -10,7 +10,8 @@
 			"Saruman",
 			"Siebrand",
 			"Tjcool007",
-			"Wiki13"
+			"Wiki13",
+			"Sjoerddebruin"
 		]
 	},
 	"smw-desc": "Uw wiki toegankelijker maken - voor machines ''en'' mensen ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -63,6 +64,7 @@
 	"smw-paramdesc-embedformat": "Het HTML-label voor de koptekstdefinities",
 	"smw-paramdesc-embedonly": "Geen koppen weergeven",
 	"smw-paramdesc-table-class": "Een extra CSS-klasse om in te stellen voor de tabel",
+	"smw-paramdesc-table-transpose": "Tabelkoppen verticaal en resultaten horizontaal weergeven",
 	"smw-paramdesc-rdfsyntax": "De te gebruiken RDF-syntaxis",
 	"smw-paramdesc-csv-sep": "Het te gebruiken scheidingsteken",
 	"smw-paramdesc-dsv-separator": "Het te gebruiken scheidingsteken",

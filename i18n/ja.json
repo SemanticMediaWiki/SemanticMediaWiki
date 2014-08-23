@@ -10,7 +10,8 @@
 			"Shirayuki",
 			"Whym",
 			"青子守歌",
-			"아라"
+			"아라",
+			"Rxy"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -230,7 +231,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>更新が既に進行中です。</strong>\n利用者がウィキにアクセスするたびに少量の塊のデータを更新するのみであるため、更新がゆっくりとしか進まないのは正常な動作です。\nこの更新をより早く終えるには、MediaWiki のメンテナンス スクリプト <code>runJobs.php</code> を実行してください (1つのバッチで行われる更新の数を制限するには <code>--maxjobs 1000</code> オプションを使用してください)。\n現在の更新の推定進捗:",
 	"smw_smwadmin_datarefreshbutton": "データの更新を開始",
 	"smw_smwadmin_datarefreshstop": "この更新を停止",
-	"smw_smwadmin_datarefreshstopconfirm": "はい、もちろんです。",
+	"smw_smwadmin_datarefreshstopconfirm": "はい、{{GENDER:$1|もちろん}}です。",
 	"smw_smwadmin_support": "支援を得る",
 	"smw_smwadmin_supportdocu": "問題が発生したときにさまざまなリソースが助けとなるかもしれません:",
 	"smw_smwadmin_installfile": "インストールに問題を発見した場合、<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL ファイル</a>にある指針を確認することから始めてください。",
@@ -272,5 +273,6 @@
 	"action-smw-admin": "Semantic MediaWiki 管理作業へのアクセス",
 	"smw-sp-properties-header-label": "プロパティ一覧",
 	"smw-sp-admin-settings-button": "設定の一覧を生成",
-	"smw-sp-admin-idlookup-objectid": "オブジェクト ID:"
+	"smw-sp-admin-idlookup-objectid": "オブジェクト ID:",
+	"smw-livepreview-loading": "読み込み中..."
 }

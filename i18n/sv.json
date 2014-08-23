@@ -70,6 +70,7 @@
 	"smw-paramdesc-embedformat": "HTML-element för rubriker",
 	"smw-paramdesc-embedonly": "Visa inga rubriker",
 	"smw-paramdesc-table-class": "Ytterligare CSS-klass som ska användas för tabellen",
+	"smw-paramdesc-table-transpose": "Visa tabellrubriker vertikalt och resultat horisontellt",
 	"smw-paramdesc-rdfsyntax": "RDF-syntax som ska användas",
 	"smw-paramdesc-csv-sep": "Skiljetecken att använda",
 	"smw-paramdesc-dsv-separator": "Skiljetecken att använda",

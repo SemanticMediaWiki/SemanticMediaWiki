@@ -46,6 +46,7 @@
 	"smw-paramdesc-outrotemplate": "Den Numm vun enger Schabloun déi no de Resultater vun der Ufro gewise gëtt, wann et der gëtt",
 	"smw-paramdesc-embedformat": "Den HTML-Tag dee benotzt gëtt fir d'Iwwerschrëften ze definéieren",
 	"smw-paramdesc-embedonly": "Keng Iwwerschrëfte weisen",
+	"smw-paramdesc-table-transpose": "D'Iwwerschrëfte vun Tabelle vertikal an d'Resultater horizontal weisen",
 	"smw-paramdesc-rdfsyntax": "RDF-Syntax déi benotzt gi muss",
 	"smw-paramdesc-dsv-filename": "Den Numm fir den DSV-Fichier",
 	"smw-paramdesc-searchlabel": "Den Text fir mam Siche virunzefueren",
@@ -146,7 +147,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Eng Aktualisatioun ass schonn am Gaang.</strong>\nEt ass normal datt d'Aktualisatioun nëmme lues virugeet well Donnéeë nëmmen a klenge Päck aktualiséiert ginn an zwar ëmmer da wann ee Benotzer op dës Wiki zougräift.\nFir dës aktualisatioun méi séier fäerdeg ze maache, kann de MediaWiki Script <code>runJobs.php</code> (benotzt d'Optioun <code>--maxjobs 1000</code> fir d'Zuel vun den Aktualisatiounen déi beienee gemaach ginn ze limitéieren).\nGeschate Fortschrëtt vun der aktueller Aktualisatioun:",
 	"smw_smwadmin_datarefreshbutton": "Ufänken Daten z'aktualiséieren",
 	"smw_smwadmin_datarefreshstop": "Dësn Update stoppen",
-	"smw_smwadmin_datarefreshstopconfirm": "Jo, ech si sécher.",
+	"smw_smwadmin_datarefreshstopconfirm": "Jo, ech si {{GENDER:$1|sécher}}.",
 	"smw_smwadmin_support": "Ënnerstëtzung kréien",
 	"smw_smwadmin_supportdocu": "Verschidde Quellen kéinten Iech bei Problemer hëllefen:",
 	"smw_smwadmin_installfile": "Wann Dir Problemer bei der Installatioun hutt, da fänkt un andeem Dir d'Directiven am <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL Fichier</a> nokuckt.",
@@ -174,5 +175,6 @@
 	"smw-ui-tooltip-title-legend": "Erklärung",
 	"smw_concept_header": "Säite vum Konzept \"$1\"",
 	"smw_conceptarticlecount": "Déi $1 {{PLURAL:$1|Säit|Säite}} ginn hei drënner gewisen.",
-	"smw-sp-admin-settings-title": "Astellunge vun der Konfiguratioun"
+	"smw-sp-admin-settings-title": "Astellunge vun der Konfiguratioun",
+	"smw-livepreview-loading": "Lueden..."
 }
