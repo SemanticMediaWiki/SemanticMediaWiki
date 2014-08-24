@@ -1,12 +1,12 @@
 ## Benchmark tests
 
-Benchmark tests use PHPUnit as integration platform and not always the right tool to represent a performance yardstick (depends on different environmental parameters such as hardware and software constraints which are outside of the control of the test environment) but can identify performance regressions among newly introduced features.
+Benchmark tests use PHPUnit as integration platform and are not always the right tool to represent a performance yardstick (as it depends on environmental factors such as hardware and software constraints and might not be under the control of the test environment) but can identify performance regressions among newly introduced features.
 
 - `QueryEngineBenchmarkTest` to perform tests on different query conditions
 - `JobQueueBenchmarkTest` to gather data on update and refresh jobs
 - `RebuildDataBenchmarkTest` to gather data on the rebuild data script
 
-Benchmarks are not performed in isolation and use the `MediaWiki` infrastucture as integral part to determine the overall performance during execution.
+Benchmarks are not performed in isolation and run in concert with the `MediaWiki` infrastucture to determine the overall performance impact during execution.
 
 ### Use PHPUnit
 
@@ -27,4 +27,4 @@ When using `git`, it is relatively easy to run tests and see if a change introdu
 - `benchmarkReuseDatasets` indicating whether to reuse existing datasets during a benchmark run or not (to be used for large datasets like `benchmarkPageCopyThreshold` > 500 )
 
 ## See also 
-- [Benchmark HHVM 3.3 vs. Zend PHP 5.6](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/513)
+- Running Semantic MediaWiki related [Benchmark HHVM 3.3 vs. Zend PHP 5.6](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/513) tests
