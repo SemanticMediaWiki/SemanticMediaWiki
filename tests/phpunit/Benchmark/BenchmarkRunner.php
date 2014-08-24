@@ -28,12 +28,23 @@ class BenchmarkRunner {
 	 */
 	private $messages = array();
 
+	private $showMemoryUsage = false;
+
+	/**
+	 * @since 2.1
+	 */
+	public function __construct( $showMemoryUsage = false ) {
+		$this->showMemoryUsage = $showMemoryUsage;
+	}
+
 	/**
 	 * @since 2.1
 	 *
 	 * @param string $xmlFileSource
 	 */
 	public function doImportXmlDatasetFixture( $xmlFileSource ) {
+
+		$memoryBefore = memory_get_peak_usage( false );
 
 		$importRunner = new XmlImportRunner( $xmlFileSource );
 		$importRunner->setVerbose( true );
@@ -42,9 +53,16 @@ class BenchmarkRunner {
 			$importRunner->reportFailedImport();
 		}
 
+		$memoryAfter = memory_get_peak_usage( false );
+		$memoryDiff  = $memoryAfter - $memoryBefore;
+
 		$this->addMessage(
 			" |- " . $importRunner->getElapsedImportTimeInSeconds() . " (sec) elapsed XML import time"
 		);
+
+		if ( $this->showMemoryUsage ) {
+			$this->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
+		}
 	}
 
 	/**
@@ -67,9 +85,14 @@ class BenchmarkRunner {
 			$baseName = 'CopyOf' . $title->getText();
 		}
 
+		$memoryBefore = memory_get_peak_usage( false );
+
 		for ( $i = 0; $i < $pageCopyThreshold; $i++ ) {
 			$pageCreator->createPage( Title::newFromText( $baseName .'-' . $i ), $text );
 		}
+
+		$memoryAfter = memory_get_peak_usage( false );
+		$memoryDiff  = $memoryAfter - $memoryBefore;
 
 		$sum  = round( microtime( true ) - $start, 7 );
 		$mean = $sum / $pageCopyThreshold;
@@ -77,6 +100,10 @@ class BenchmarkRunner {
 		$this->addMessage(
 			" |- $mean (mean) $sum (total) (sec) for $i content copies of page '{$title->getText()}'"
 		);
+
+		if ( $this->showMemoryUsage ) {
+			$this->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
+		}
 	}
 
 	/**

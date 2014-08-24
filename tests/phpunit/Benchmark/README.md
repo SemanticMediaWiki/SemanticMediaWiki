@@ -2,15 +2,16 @@
 
 Benchmark tests use PHPUnit as integration platform and are not always the right tool to represent a performance yardstick (as it depends on environmental factors such as hardware and software constraints and might not be under the control of the test environment) but can identify performance regressions among newly introduced features.
 
-- `QueryEngineBenchmarkTest` to perform tests on different query conditions
+- `ImportPageCopyBenchmarkTest` to perform import and page copy benchmarks
 - `JobQueueBenchmarkTest` to gather data on update and refresh jobs
 - `RebuildDataBenchmarkTest` to gather data on the rebuild data script
+- `QueryEngineBenchmarkTest` to perform tests on different query conditions
 
 Benchmarks are not performed in isolation and run in concert with the `MediaWiki` infrastucture to determine the overall performance impact during execution.
 
 ### Use PHPUnit
 
-When running PHPUnit, use `--group semantic-mediawiki-benchmark` to indicate whether an annotated benchmark test is expected to perform an output.
+When running PHPUnit, use `--group semantic-mediawiki-benchmark` to indicate whether an annotated benchmark test is expected to perform an output and is run according to the the listed order of `phpunit.xml.dist`.
 
 ### Benchmark git changes
 
@@ -24,7 +25,7 @@ When using `git`, it is relatively easy to run tests and see if a change introdu
 - `benchmarkQueryOffset` a value to specify the query offset
 - `benchmarkPageCopyThreshold` a value to specify how many pages should be copied and made available during a test
 - `benchmarkShowMemoryUsage` setting to display memory usage during a benchmark test
-- `benchmarkReuseDatasets` indicating whether to reuse existing datasets during a benchmark run or not (to be used for large datasets like `benchmarkPageCopyThreshold` > 500 )
+- `benchmarkReuseDatasets` whether to reuse imported datasets (by `ImportPageCopyBenchmarkTest`) or not
 
-## See also 
+## See also
 - Running Semantic MediaWiki related [Benchmark HHVM 3.3 vs. Zend PHP 5.6](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/513) tests
