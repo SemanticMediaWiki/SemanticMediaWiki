@@ -420,13 +420,29 @@ class SMWSQLStore3QueryEngine {
 			return 0;
 		}
 
+		$db = $this->m_store->getDatabase();
+
 		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
-		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from, "COUNT(DISTINCT $qobj->alias.smw_id) AS count", $qobj->where, 'SMW::getQueryResult', $sql_options );
-		$row = $this->m_dbs->fetchObject( $res );
+
+		// Sqlite doesn't support COUNT DISTINCT on more than one column
+		if ( $db->getType() === 'mysql' ) {
+			$columns = "$qobj->alias.smw_title, $qobj->alias.smw_iw, $qobj->alias.smw_namespace, $qobj->alias.smw_subobject";
+		} else {
+			$columns = "$qobj->alias.smw_id";
+		}
+
+		$res = $db->select(
+			$db->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from,
+			"COUNT(DISTINCT $columns) AS count",
+			$qobj->where,
+			'SMW::getQueryResult',
+			$sql_options
+		);
+
+		$row = $db->fetchObject( $res );
 
 		$count = $row->count;
-		$this->m_dbs->freeResult( $res );
-
+		$db->freeResult( $res );
 
 		return $count;
 	}
@@ -472,6 +488,7 @@ class SMWSQLStore3QueryEngine {
 			$qobj->where, 'SMW::getQueryResult', $sql_options );
 
 		$qr = array();
+		$dataItemCache = array();
 		$count = 0; // the number of fetched results ( != number of valid results in array $qr)
 		$prs = $query->getDescription()->getPrintrequests();
 
@@ -494,8 +511,9 @@ class SMWSQLStore3QueryEngine {
 					wfDebugLog( __CLASS__, __METHOD__ . ': ' . $e->getMessage() );
 				}
 
-				if ( $dataItem instanceof SMWDIWikiPage ) {
+				if ( $dataItem instanceof SMWDIWikiPage && !isset( $dataItemCache[ $dataItem->getHash() ] ) ) {
 					$count++;
+					$dataItemCache[ $dataItem->getHash() ] = true;
 					$qr[] = $dataItem;
 					// These IDs are usually needed for displaying the page (esp. if more property values are displayed):
 					$this->m_store->smwIds->setCache( $row->t, $row->ns, $row->iw, $row->so, $row->id, $row->sortkey );
