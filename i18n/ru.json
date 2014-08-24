@@ -66,6 +66,7 @@
 	"smw-paramdesc-embedformat": "HTML-тег, используемый для обозначения заголовков",
 	"smw-paramdesc-embedonly": "Не отображать заголовки",
 	"smw-paramdesc-table-class": "Дополнительный класс CSS для таблиц",
+	"smw-paramdesc-table-transpose": "Отобразить заголовки таблицы по вертикали, а результаты — по горизонтали",
 	"smw-paramdesc-rdfsyntax": "Какой синтаксис RDF использовать",
 	"smw-paramdesc-csv-sep": "Использовать разделитель",
 	"smw-paramdesc-dsv-separator": "Использовать разделитель",

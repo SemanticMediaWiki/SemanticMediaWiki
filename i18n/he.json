@@ -60,6 +60,7 @@
 	"smw-paramdesc-embedformat": "תג ה־HTML המשמש להגדרת כותרות",
 	"smw-paramdesc-embedonly": "לא להציג כותרות",
 	"smw-paramdesc-table-class": "מחלקת CSS נוספת שתוחל על הטבלה",
+	"smw-paramdesc-table-transpose": "הצגת כותרות טבלה אנכית ותוצאות אופקית",
 	"smw-paramdesc-rdfsyntax": "באיזה תחביר RDF להשתמש",
 	"smw-paramdesc-csv-sep": "תו הפרדה",
 	"smw-paramdesc-dsv-separator": "באיזה תו הפרדה להשתמש",

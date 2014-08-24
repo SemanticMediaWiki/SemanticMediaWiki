@@ -58,6 +58,7 @@
 	"smw-paramdesc-embedformat": "HTML-ознаката која се користи за определување на наслови",
 	"smw-paramdesc-embedonly": "Не прикажувај наслови",
 	"smw-paramdesc-table-class": "Дополнителна CSS-класа за табелата",
+	"smw-paramdesc-table-transpose": "Прикажувај ги заглавијата на табелите вертикално, а резултатите хоризонтално",
 	"smw-paramdesc-rdfsyntax": "RDF-синтаксата што ќе се користи",
 	"smw-paramdesc-csv-sep": "Кој разделник да се користи",
 	"smw-paramdesc-dsv-separator": "Кој разделник да се користи",
