@@ -36,7 +36,10 @@
             <directory>tests/phpunit/System</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-benchmark">
-            <directory>tests/phpunit/Benchmark</directory>
+            <file>tests/phpunit/Benchmark/ImportPageCopyBenchmarkTest.php</file>
+            <file>tests/phpunit/Benchmark/JobQueueBenchmarkTest.php</file>
+            <file>tests/phpunit/Benchmark/RebuildDataBenchmarkTest.php</file>
+            <file>tests/phpunit/Benchmark/QueryEngineBenchmarkTest.php</file>
         </testsuite>
     </testsuites>
     <groups>
