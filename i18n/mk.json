@@ -242,7 +242,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Веќе е во тек една поднова.</strong>\nНормално е подновата да биде бавна, бидејќи податоците се обновуваат во мали делчиња секојпат кога корисникот ќе отиде на викито.\nЗа да ја убрзате подновата, можете да ја повикате скриптата за одржување на MediaWiki <code>runJobs.php</code> (користете ја можноста <code>--maxjobs 1000</code> за да го ограничите бројот на поднови во една партија).\nПроценет напредок на тековната поднова:",
 	"smw_smwadmin_datarefreshbutton": "Започни со подновување на податоци",
 	"smw_smwadmin_datarefreshstop": "Започни го ова подновување",
-	"smw_smwadmin_datarefreshstopconfirm": "Да, сигурен сум.",
+	"smw_smwadmin_datarefreshstopconfirm": "Да, {{GENDER:$1|сигурен|сигурна}} сум.",
 	"smw_smwadmin_support": "Како да добиете поддршка",
 	"smw_smwadmin_supportdocu": "Различни ресурси кои можат да ви помогнат во случај на проблеми:",
 	"smw_smwadmin_installfile": "Ако наидете на проблеми при воспоставката, најпрвин прочитајте ги напатствијата во <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">податотеката INSTALL</a>.",

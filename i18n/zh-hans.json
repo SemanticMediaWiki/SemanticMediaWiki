@@ -71,6 +71,7 @@
 	"smw-paramdesc-embedformat": "用于定义标题的HTML标签",
 	"smw-paramdesc-embedonly": "不显示标题",
 	"smw-paramdesc-table-class": "添加的设置表的CSS类",
+	"smw-paramdesc-table-transpose": "垂直方向显示表头，水平方向显示结果",
 	"smw-paramdesc-rdfsyntax": "所要使用的RDF语法",
 	"smw-paramdesc-csv-sep": "所要使用的分隔符",
 	"smw-paramdesc-dsv-separator": "所要使用的分隔符",

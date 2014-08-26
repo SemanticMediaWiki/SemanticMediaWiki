@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Wikitanvir"
+			"Wikitanvir",
+			"Aftab1995"
 		]
 	},
 	"smw_viewasrdf": "আরডিএফ ফিড",
@@ -29,5 +30,6 @@
 	"smw_result_noresults": "ফলাফল নেই।",
 	"smw_smwadmin_datarefreshbutton": "উপাত্ত হালনাগাদ শুরু",
 	"smw_smwadmin_datarefreshstop": "এই হালানাগাদ বন্ধ করুন",
-	"smw_smwadmin_datarefreshstopconfirm": "হ্যাঁ, আমি নিশ্চিত।"
+	"smw_smwadmin_datarefreshstopconfirm": "হ্যাঁ, আমি {{GENDER:$1|নিশ্চিত}}।",
+	"smw-livepreview-loading": "লোডিং..."
 }

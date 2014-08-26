@@ -45,5 +45,6 @@
 	"smw_result_next": "Slijedeće",
 	"smw_result_noresults": "Nema rezultata.",
 	"smw_smwadmin_return": "Natrag na $1",
-	"smw_smwadmin_datarefreshstopconfirm": "Da, siguran sam."
+	"smw_smwadmin_datarefreshstopconfirm": "Da, {{GENDER:$1|siguran|sigurna}} sam.",
+	"smw-livepreview-loading": "Punjenje…"
 }

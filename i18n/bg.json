@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"DCLXVI",
-			"පසිඳු කාවින්ද"
+			"පසිඳු කාවින්ද",
+			"StanProg"
 		]
 	},
 	"smw_viewasrdf": "RDF емисия",
@@ -24,7 +25,9 @@
 	"smw_exportrdf_submit": "Изнасяне",
 	"properties": "Свойства",
 	"smw_property_template": "$1 от типа $2 ($3)",
+	"unusedproperties": "Неизползвани свойства",
 	"smw_unusedproperty_template": "$1 от типа $2",
+	"wantedproperties": "Желани свойства",
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|използване|използвания}})",
 	"smw_purge": "Опресняване",
 	"types": "Типове",
@@ -42,7 +45,11 @@
 	"smw_ask_show_embed": "Показване на кода за вграждане",
 	"smw_ask_hide_embed": "Скриване на кода за вграждане",
 	"smw-ask-delete": "[Изтриване]",
+	"searchbyproperty": "Търсене по свойство",
+	"smw_sbv_docu": "Търсене на всички страници, които съдържат даденото свойство и стойност.",
+	"smw_sbv_property": "Свойство:",
 	"smw_sbv_value": "Стойност:",
+	"smw_sbv_submit": "Търсене",
 	"smw_browse_go": "Отваряне",
 	"smw_pp_from": "От страница",
 	"smw_result_prev": "Предишни",
@@ -55,5 +62,6 @@
 	"smw-ui-tooltip-title-parameter": "Параметър",
 	"smw-ui-tooltip-title-event": "Събитие",
 	"smw-ui-tooltip-title-note": "Бележка",
-	"smw-ui-tooltip-title-legend": "Легенда"
+	"smw-ui-tooltip-title-legend": "Легенда",
+	"smw-livepreview-loading": "Зарежда се…"
 }

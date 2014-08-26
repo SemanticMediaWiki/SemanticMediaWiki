@@ -8,7 +8,8 @@
 			"Sociologist",
 			"Solde",
 			"Toniher",
-			"아라"
+			"아라",
+			"Hiperpobla"
 		]
 	},
 	"smw-desc": "Fent el vostre wiki més accessible — per a les màquines «i també» per als humans ([https://semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
@@ -239,7 +240,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Ja hi ha una actualització en curs.</strong>\nÉs normal que l'actualització progressi només lentament perquè només refresca les dades en trossos petits cada vegada que l'usuari accedeix al wiki.\nPer a finalitzar l'actualització més ràpidament, podeu cridar l'script de manteniment del MediaWiki <code>runJobs.php</code> (empreu l'opció <code>--maxjobs 1000</code> per a restringir el nombre d'actualitzacions en un lot).\nProgrés estimat de l'actualització actual:",
 	"smw_smwadmin_datarefreshbutton": "Inicia l'actualització de dades",
 	"smw_smwadmin_datarefreshstop": "Atura l'actualització",
-	"smw_smwadmin_datarefreshstopconfirm": "Sí, n'estic segur.",
+	"smw_smwadmin_datarefreshstopconfirm": "Sí, sóc  {{GENDER:$1|sure}}.",
 	"smw_smwadmin_support": "Com obtenir assistència",
 	"smw_smwadmin_supportdocu": "Diferents recursos poden ajudar-vos en cas de problemes:",
 	"smw_smwadmin_installfile": "Si us trobeu amb problemes amb la vostra instal·lació, comenceu comprovant les instruccions del <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">fitxer INSTALL</a>.",
