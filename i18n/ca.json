@@ -61,6 +61,7 @@
 	"smw-paramdesc-embedformat": "L'etiqueta HTML que s'utilitza per a definir les capçaleres",
 	"smw-paramdesc-embedonly": "No mostris capçaleres",
 	"smw-paramdesc-table-class": "Una classe CSS addicional per definir per a la taula",
+	"smw-paramdesc-table-transpose": "Mostra les capçaleres de la taula verticalment i els resultats horitzontalment",
 	"smw-paramdesc-rdfsyntax": "La sintaxi RDF que s'utilitzarà",
 	"smw-paramdesc-csv-sep": "El separador que s'utilitzarà",
 	"smw-paramdesc-dsv-separator": "El separador que s'utilitzarà",
