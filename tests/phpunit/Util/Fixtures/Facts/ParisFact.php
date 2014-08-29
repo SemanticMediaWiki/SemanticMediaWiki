@@ -6,6 +6,7 @@ use SMW\Tests\Util\Fixtures\Properties\AreaProperty;
 use SMW\Tests\Util\Fixtures\Properties\TemperatureProperty;
 use SMW\Tests\Util\Fixtures\Properties\PopulationProperty;
 use SMW\Tests\Util\Fixtures\Properties\YearProperty;
+use SMW\Tests\Util\Fixtures\Properties\PopulationDensityProperty;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -18,7 +19,7 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class Berlin {
+class ParisFact {
 
 	/**
 	 * @var DataValueFactory
@@ -38,7 +39,7 @@ class Berlin {
 	 * @return DIWikiPage
 	 */
 	public function asSubject() {
-		return new DIWikiPage( 'Berlin', NS_MAIN );
+		return new DIWikiPage( 'Paris', NS_MAIN );
 	}
 
 	/**
@@ -48,13 +49,14 @@ class Berlin {
 	 *
 	 * @return DataValue
 	 */
-	public function getAreaDataValue() {
+	public function getAreaValue() {
 
 		$areaProperty = new AreaProperty();
 
 		return $this->dataValueFactory->newPropertyObjectValue(
 			$areaProperty->getProperty(),
-			'891.85 km²'
+			'105.40 km²',
+			'City of Paris'
 		);
 	}
 
@@ -65,13 +67,13 @@ class Berlin {
 	 *
 	 * @return DataValue
 	 */
-	public function getAverageHighTemperatureDataValue() {
+	public function getAverageHighTemperatureValue() {
 
 		$temperatureProperty = new TemperatureProperty();
 
 		return $this->dataValueFactory->newPropertyObjectValue(
 			$temperatureProperty->getProperty(),
-			'13.4 °C',
+			'16.0 °C',
 			'Average high temperature'
 		);
 	}
@@ -79,42 +81,60 @@ class Berlin {
 	/**
 	 * @since 2.1
 	 *
-	 * @see https://en.wikipedia.org/wiki/Berlin
+	 * @see https://en.wikipedia.org/wiki/Demographics_of_Paris
 	 *
 	 * @return DataValue
 	 */
-	public function getPopulationDataValue() {
+	public function getPopulationValue() {
 
 		$populationProperty = new PopulationProperty();
 
 		return $this->dataValueFactory->newPropertyObjectValue(
 			$populationProperty->getProperty(),
-			'3517424'
+			'2234105'
 		);
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @see https://en.wikipedia.org/wiki/Demographics_of_Berlin
+	 * @see https://en.wikipedia.org/wiki/Demographics_of_Paris
+	 *
+	 * @return DataValue
+	 */
+	public function getPopulationDensityValue() {
+
+		$populationDensityProperty = new PopulationDensityProperty();
+
+		return $this->dataValueFactory->newPropertyObjectValue(
+			$populationDensityProperty->getProperty(),
+			'20169;1 km²'
+		);
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @see https://en.wikipedia.org/wiki/Demographics_of_Paris
 	 *
 	 * @return Subobject
 	 */
-	public function getDemographicsForId( DIWikiPage $subject ) {
+	public function getDemographicsForTargetSubject( DIWikiPage $subject ) {
 
 		$subobject = new Subobject( $subject->getTitle() );
-		$subobject->setEmptySemanticDataforId( 'Demographics' );
+		$subobject->setEmptySemanticDataforId( 'Paris#Demographics' );
 
 		$yearProperty = new YearProperty();
 
 		$yearDataValue = $this->dataValueFactory->newPropertyObjectValue(
 			$yearProperty->getProperty(),
-			'2013'
+			'2009'
 		);
 
 		$subobject->addDataValue( $yearDataValue );
-		$subobject->addDataValue( $this->getAreaDataValue() );
-		$subobject->addDataValue( $this->getPopulationDataValue() );
+		$subobject->addDataValue( $this->getAreaValue() );
+		$subobject->addDataValue( $this->getPopulationValue() );
+		$subobject->addDataValue( $this->getPopulationDensityValue() );
 
 		return $subobject;
 	}
