@@ -2,18 +2,13 @@
 
 namespace SMW\Tests\Benchmark;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-
-use SMW\Tests\Util\PageDeleter;
 use SMW\Tests\Util\PageReader;
 use SMW\Tests\Util\PageCreator;
 
 use SMW\Tests\Util\XmlImportRunner;
-use SMW\Tests\Util\JobQueueRunner;
-
-use SMW\MediaWiki\Jobs\RefreshJob;
 
 use Title;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -24,10 +19,18 @@ use Title;
 class BenchmarkRunner {
 
 	/**
+	 * @var Benchmarker
+	 */
+	private $benchmarker = null;
+
+	/**
 	 * @var array
 	 */
 	private $messages = array();
 
+	/**
+	 * @var boolean
+	 */
 	private $showMemoryUsage = false;
 
 	/**
@@ -40,13 +43,31 @@ class BenchmarkRunner {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $xmlFileSource
+	 * @return string
 	 */
-	public function doImportXmlDatasetFixture( $xmlFileSource ) {
+	public function getDefaultDataset() {
+		return 'BaseLoremIpsumDataset.v1.xml';
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $dataset
+	 * @param string $location
+	 */
+	public function doImportDataset( $dataset, $location = '' ) {
+
+		if ( $dataset === '' ) {
+			throw new RuntimeException( 'Missing a dataset declaration' );
+		}
+
+		if ( $location === '' ) {
+			$location = __DIR__ . '/'. 'Fixtures' . '/';
+		}
 
 		$memoryBefore = memory_get_peak_usage( false );
 
-		$importRunner = new XmlImportRunner( $xmlFileSource );
+		$importRunner = new XmlImportRunner( $location . $dataset );
 		$importRunner->setVerbose( true );
 
 		if ( !$importRunner->run() ) {
@@ -70,40 +91,33 @@ class BenchmarkRunner {
 	 *
 	 * @param Title $title
 	 * @param integer $pageCopyThreshold
-	 * @param string $baseName
 	 */
-	public function copyPageContentFrom( Title $title, $pageCopyThreshold, $baseName = '' ) {
+	public function copyPageContent( Title $title, $pageCopyThreshold ) {
+		$this->createPageContentFrom( $title, $pageCopyThreshold, false );
+	}
 
-		$pageReader = new PageReader();
-		$text = $pageReader->getContentAsText( $title );
+	/**
+	 * @since 2.1
+	 *
+	 * @param Title $title
+	 * @param integer $pageEditThreshold
+	 */
+	public function editPageContent( Title $title, $pageEditThreshold ) {
+		$this->createPageContentFrom( $title, $pageEditThreshold, true );
+	}
 
-		$pageCreator = new PageCreator();
+	/**
+	 * @since 2.1
+	 *
+	 * @return Benchmarker
+	 */
+	public function getBenchmarker() {
 
-		$start = microtime( true );
-
-		if ( $baseName === '' ) {
-			$baseName = 'CopyOf' . $title->getText();
+		if ( $this->benchmarker === null ) {
+			$this->benchmarker = new Benchmarker();
 		}
 
-		$memoryBefore = memory_get_peak_usage( false );
-
-		for ( $i = 0; $i < $pageCopyThreshold; $i++ ) {
-			$pageCreator->createPage( Title::newFromText( $baseName .'-' . $i ), $text );
-		}
-
-		$memoryAfter = memory_get_peak_usage( false );
-		$memoryDiff  = $memoryAfter - $memoryBefore;
-
-		$sum  = round( microtime( true ) - $start, 7 );
-		$mean = $sum / $pageCopyThreshold;
-
-		$this->addMessage(
-			" |- $mean (mean) $sum (total) (sec) for $i content copies of page '{$title->getText()}'"
-		);
-
-		if ( $this->showMemoryUsage ) {
-			$this->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
-		}
+		return $this->benchmarker;
 	}
 
 	/**
@@ -129,8 +143,52 @@ class BenchmarkRunner {
 	 *
 	 * @return string
 	 */
+	public function getMediaWikiVersion() {
+		return $GLOBALS['wgVersion'];
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return string
+	 */
 	public function getQueryEngine() {
 		return "{$GLOBALS['smwgDefaultStore']}" . ( strpos( $GLOBALS['smwgDefaultStore'], 'SQL' ) ? '' : ' [ ' . $GLOBALS['smwgSparqlDatabaseConnector'] . ' ] ' );
+	}
+
+	private function createPageContentFrom( Title $title, $pageCopyThreshold, $useSamePage = false ) {
+
+		$this->getBenchmarker()->clear();
+
+		$pageReader = new PageReader();
+		$text = $pageReader->getContentAsText( $title );
+
+		$pageCreator = new PageCreator();
+
+		$baseName = $useSamePage ? 'CopyOf' . $title->getText() : $title->getText();
+		$memoryBefore = memory_get_peak_usage( false );
+
+		for ( $i = 0; $i < $pageCopyThreshold; $i++ ) {
+			$start = microtime( true );
+			$pageCreator->createPage( Title::newFromText( $baseName . ( $useSamePage ? '' : '-' . $i ) ), $text );
+			$this->getBenchmarker()->addBenchmarkPoint( microtime( true ) - $start );
+		}
+
+		$memoryAfter = memory_get_peak_usage( false );
+		$memoryDiff  = $memoryAfter - $memoryBefore;
+
+		$sum  = $this->getBenchmarker()->getSum();
+		$mean = $this->getBenchmarker()->getMean();
+		$sd   = $this->getBenchmarker()->getStandardDeviation();
+		$norm = $this->getBenchmarker()->getNormalizedValueBy( $pageCopyThreshold );
+
+		$this->addMessage(
+			" |- $norm (n) $mean (mean) $sum (total) $sd (sd) (sec) '{$title->getText()}' ($i copies) "
+		);
+
+		if ( $this->showMemoryUsage ) {
+			$this->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
+		}
 	}
 
 }

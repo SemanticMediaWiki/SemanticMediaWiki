@@ -273,8 +273,9 @@
         <username>Tester</username>
         <id>1</id>
       </contributor>
-      <text xml:space="preserve" bytes="979">[[Has text::Lorem ipsum dolor sit amet consectetuer Maecenas adipiscing Pellentesque id sem]]. [[Has page::Elit Aliquam urna interdum]] morbi faucibus id tellus ipsum semper wisi. [[Has page::Platea enim hendrerit]] pellentesque consectetuer scelerisque Sed est felis felis quis. Auctor Proin In dolor id et ipsum vel at vitae ut. Praesent elit convallis Praesent aliquet pellentesque vel dolor pellentesque lacinia vitae. At tortor lacus Sed In interdum pulvinar et.
+      <text xml:space="preserve" bytes="979">[[Has text::Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan tincidunt Sed adipiscing nec facilisis tortor Nunc Sed ipsum tellus.]] [[Has page::Turpis pellentesque]] id sociis pede ipsum Quisque. Eu sed sed porta Integer pulvinar accumsan leo in semper lobortis. Urna vel mattis [[Has page::Pellentesque ante]] iaculis tincidunt et consequat Aliquam dictum.
 
+* Has page: [[Has page::{{PAGENAME}}]]
 * Has number: [[Has number::1001]]
 * Has quantity: [[Has quantity::10.25 km²]]
 * Has date: [[Has date::1 Jan 2014]]
@@ -288,7 +289,22 @@
 * Has status: [[Has status::open]]
 * Has boolean: [[Has boolean::true]]
 
-{{#subobject:|Has wattage=42 hp|Has status=closed|Has number=1111|Has quantity=25 sqmi|Has date=January 4, 2010 7:00 pm|Has Url=http://example.org/some/|Has annotation uri=http://example.org/foaf.rdf|Has email=Lorem@example.org|Has temperature=100 °F|Has boolean=false}}
+{{#subobject:
+ |Has page={{PAGENAME}}
+ |Has number=1111
+ |Has quantity=25 sqmi
+ |Has date=January 4, 2010 7:00 pm
+ |Has Url=http://example.org/some/
+ |Has annotation uri=http://example.org/foaf.rdf
+ |Has email=Lorem@example.org
+ |Has temperature=100 °F
+ |Has wattage=42
+ |Has wattage=42 hp
+ |Has telephone number=+1-201-555-5555
+ |Has record=Lorem enim; closed
+ |Has status=closed
+ |Has boolean=false
+}}
 
 [[Category:Lorem ipsum]]</text>
     </revision>

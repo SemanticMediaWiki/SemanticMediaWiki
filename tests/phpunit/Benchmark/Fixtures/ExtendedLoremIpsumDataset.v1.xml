@@ -1,0 +1,162 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="en-gb">
+  <siteinfo>
+    <sitename>MW-19</sitename>
+    <base>http://localhost:8080/w/index.php/Main_Page</base>
+    <generator>MediaWiki 1.19.7</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">MW-19</namespace>
+      <namespace key="5" case="first-letter">MW-19 talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="104" case="first-letter">Type</namespace>
+      <namespace key="105" case="first-letter">Type talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+      <namespace key="160" case="first-letter">Foo</namespace>
+      <namespace key="161" case="first-letter">Foo talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Lorem donec</title>
+    <ns>0</ns>
+    <id>1490</id>
+      <sha1>94lztkh4kgb0mvjr87iyjfq4iv7ltlh</sha1>
+    <revision>
+      <id>1550</id>
+      <timestamp>2014-04-04T22:55:04Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="979">
+* Has page: [[Has page::{{PAGENAME}}]]
+* Has number: [[Has number::1001]]
+* Has quantity: [[Has quantity::10.25 km²]]
+* Has date: [[Has date::1 Jan 2014]]
+* Has Url: [[Has Url::http://loremipsum.org/]]
+* Has annotation uri: [[Has annotation uri::http://loremipsum.org/foaf.rdf]]
+* Has email: [[Has email::Lorem@ipsum.org]]
+* Has temperature: [[Has temperature::100 °C]]
+* Has wattage: [[Has wattage::9001]], [[Has wattage::9002 W]], [[Has wattage::10 kW]]
+* Has telephone number: [[Has telephone number::+1-201-555-0123]]
+* Has record: [[Has record::Lorem ipsum; closed]]
+* Has status: [[Has status::open]]
+* Has boolean: [[Has boolean::true]]
+
+[[Category:Lorem donec]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Lorem enim</title>
+    <ns>0</ns>
+    <id>1493</id>
+      <sha1>94lztkh4kgb0mvjr87iyjfq4iv7ltlh</sha1>
+    <revision>
+      <id>1558</id>
+      <timestamp>2014-04-04T22:55:04Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="979">
+{{#subobject:
+ |Has page={{PAGENAME}}
+ |Has number=1111
+ |Has quantity=25 sqmi
+ |Has date=January 4, 2010 7:00 pm
+ |Has Url=http://example.org/some/
+ |Has annotation uri=http://example.org/foaf.rdf
+ |Has email=Lorem@example.org
+ |Has temperature=100 °F
+ |Has wattage=42
+ |Has wattage=42 hp
+ |Has telephone number=+1-201-555-5555
+ |Has record=Lorem enim; closed
+ |Has status=closed
+ |Has boolean=false
+}}
+
+[[Category:Lorem enim]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Template:Laoreet tortor</title>
+    <ns>10</ns>
+    <id>1600</id>
+      <sha1>c68evl9y2r71xng73mzd5z4c2u72a8h</sha1>
+    <revision>
+      <id>1601</id>
+      <timestamp>2014-04-04T22:55:04Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="494">&lt;includeonly&gt;
+{{#set:
+ |Has page={{{Has page}}}
+ |Has number={{{Has number}}}
+ |Has quantity={{{Has quantity}}}
+ |Has date={{{Has date}}}
+ |Has Url={{{Has Url}}}
+ |Has annotation uri={{{Has annotation uri}}}
+ |Has email={{{Has email}}}
+ |Has temperature={{{Has temperature}}}
+ |Has wattage={{{Has wattage}}}
+ |Has telephone number={{{Has telephone number}}}
+ |Has record={{{Has record}}}
+ |Has status={{{Has status}}}
+ |Has boolean={{{Has boolean}}}
+}}
+[[Category:Laoreet tortor]]&lt;/includeonly&gt;</text>
+    </revision>
+  </page>
+  <page>
+    <title>Lorem sit</title>
+    <ns>0</ns>
+    <id>1610</id>
+      <sha1>0rqia1jo6xts3vfzow5e2ulxapdo039</sha1>
+    <revision>
+      <id>1611</id>
+      <timestamp>2014-04-04T22:55:04Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="431">{{Laoreet tortor
+ |Has page={{PAGENAME}}
+ |Has number=1111
+ |Has quantity=25 sqmi
+ |Has date=January 4, 2010 7:00 pm
+ |Has Url=http://example.org/some/
+ |Has annotation uri=http://example.org/foaf.rdf
+ |Has email=Lorem@example.org
+ |Has temperature=100 °F
+ |Has wattage=42
+ |Has wattage=42 hp
+ |Has telephone number=+1-201-555-5555
+ |Has record=Lorem enim; closed
+ |Has status=closed
+ |Has boolean=false
+}}
+
+[[Category:lorem sit]]</text>
+    </revision>
+  </page>
+</mediawiki>
