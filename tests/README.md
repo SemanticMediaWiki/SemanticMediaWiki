@@ -27,7 +27,7 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 * `ParserTestCase` derives from SemanticMediaWikiTestCase
 * `SemanticMediaWikiTestCase` derives from <code>PHPUnit_Framework_TestCase</code> and adds some convenient functions
 
-## Integration testing
+## Integration tests
 
 Additional services can be enabled on Travis-CI to expand the test environment, available at present:
 
@@ -35,9 +35,13 @@ Additional services can be enabled on Travis-CI to expand the test environment, 
 - `VIRTUOSO`: Virtuoso-opensource-6.1 is integrated
 - `FOURSTORE`: 4Store is installable but not executable due to [issue #110](https://github.com/garlik/4store/issues/110)
 
-The test environment is described in [SPARQLStore integration testing](../includes/src/SPARQLStore/README.md).
+For details about the test environment see [SPARQLStore integration testing](../includes/src/SPARQLStore/README.md).
 
-# QUnit
+## Benchmark tests
+
+For details, see the Benchmark [readme](phpunit/Benchmark/README.md) document.
+
+# JavaScript (QUnit)
 
 Running qunit tests in connection with MediaWiki requires to execute [Special:JavaScriptTest][mw-qunit-testing]. QUnit tests are currently not executed on Travis (see [#136][issue-136]).
 

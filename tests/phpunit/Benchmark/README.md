@@ -3,9 +3,11 @@
 Benchmark tests use PHPUnit as integration platform and are not always the right tool to represent a performance yardstick (as it depends on environmental factors such as hardware and software constraints and might not be under the control of the test environment) but can identify performance regressions among newly introduced features.
 
 - `ImportPageCopyBenchmarkTest` to perform import and page copy benchmarks
-- `JobQueueBenchmarkTest` to gather data on update and refresh jobs
-- `RebuildDataBenchmarkTest` to gather data on the rebuild data script
-- `QueryEngineBenchmarkTest` to perform tests on different query conditions
+- `JobQueueBenchmarkTest` to gather data on the jobs
+- `MaintenanceBenchmarkTest` to gather data on the maintenance scripts
+- `StandardQueryEngineBenchmarkTest` to perform tests for different query conditions (ought to be executable on each store)
+- `ExtraQueryEngineBenchmarkTest` to perform tests for query conditions that might not be executable on each store
+- `PageEditBenchmarkTest` to perform edits for different (#set, #subobject, template) annotation methods
 
 Benchmarks are not performed in isolation and run in concert with the `MediaWiki` infrastucture to determine the overall performance impact during execution.
 
@@ -20,6 +22,7 @@ When using `git`, it is relatively easy to run tests and see if a change introdu
 ### Benchmark conditions
 
 `phpunit.xml.dist` can be used to adjust basic conditions of the benchmark environment. Available parameters are:
+
 - `benchmarkQueryRepetitionExecutionThreshold` a value that specifies how many repetitions should be made per query (is to increase the mean value computation accuracy)
 - `benchmarkQueryLimit` a value to specify the query limit
 - `benchmarkQueryOffset` a value to specify the query offset

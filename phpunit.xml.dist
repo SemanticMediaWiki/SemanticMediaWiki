@@ -38,8 +38,10 @@
         <testsuite name="semantic-mediawiki-benchmark">
             <file>tests/phpunit/Benchmark/ImportPageCopyBenchmarkTest.php</file>
             <file>tests/phpunit/Benchmark/JobQueueBenchmarkTest.php</file>
-            <file>tests/phpunit/Benchmark/RebuildDataBenchmarkTest.php</file>
-            <file>tests/phpunit/Benchmark/QueryEngineBenchmarkTest.php</file>
+            <file>tests/phpunit/Benchmark/MaintenanceBenchmarkTest.php</file>
+            <file>tests/phpunit/Benchmark/StandardQueryEngineBenchmarkTest.php</file>
+            <file>tests/phpunit/Benchmark/ExtendedQueryEngineBenchmarkTest.php</file>
+            <file>tests/phpunit/Benchmark/PageEditBenchmarkTest.php</file>
         </testsuite>
     </testsuites>
     <groups>
@@ -57,7 +59,7 @@
        <var name="benchmarkQueryLimit" value="500"/>
        <var name="benchmarkQueryOffset" value="0"/>
        <var name="benchmarkPageCopyThreshold" value="100"/>
-       <var name="benchmarkShowMemoryUsage" value="true"/>
+       <var name="benchmarkShowMemoryUsage" value="false"/>
        <var name="benchmarkReuseDatasets" value="true"/>
     </php>
 </phpunit>

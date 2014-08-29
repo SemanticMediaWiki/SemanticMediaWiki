@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class RebuildDataBenchmarkTest extends MwDBaseUnitTestCase {
+class MaintenanceBenchmarkTest extends MwDBaseUnitTestCase {
 
 	/**
 	 * @var array
@@ -64,52 +64,53 @@ class RebuildDataBenchmarkTest extends MwDBaseUnitTestCase {
 	 */
 	public function doBenchmark() {
 
-		$dataset = 'GenericLoremIpsumDataset.v1.xml';
+		$dataset = $this->benchmarkRunner->getDefaultDataset();
 		$datasetFixture = Title::newFromText( 'Lorem ipsum' );
 
-		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $GLOBALS['wgVersion'] . ', ' . $this->benchmarkRunner->getQueryEngine() );
+		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $this->benchmarkRunner->getMediaWikiVersion() . ', ' . $this->benchmarkRunner->getQueryEngine() );
 		$this->benchmarkRunner->addMessage( " |- repetitionExecutionThreshold: " . $this->repetitionExecutionThreshold );
 		$this->benchmarkRunner->addMessage( " |- pageCopyThreshold: " . $this->pageCopyThreshold );
 		$this->benchmarkRunner->addMessage( " |- showMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
 		$this->benchmarkRunner->addMessage( " |- reuseDatasets: " . var_export( $this->reuseDatasets, true ) );
 		$this->benchmarkRunner->addMessage( " |- fullDelete: " . var_export( $this->fullDelete, true ) );
 
-		if ( !$datasetFixture->exists() || !$this->reuseDatasets ) {
+		if ( !$this->reuseDatasets ) {
 			$this->benchmarkRunner->addMessage( "\n" . 'Data preparation benchmarks' );
-			$this->benchmarkRunner->doImportXmlDatasetFixture( __DIR__ . '/'. 'Fixtures' . '/' . $dataset );
-			$this->benchmarkRunner->copyPageContentFrom( $datasetFixture, $this->pageCopyThreshold );
+			$this->benchmarkRunner->doImportDataset( $dataset );
+			$this->benchmarkRunner->copyPageContent( $datasetFixture, $this->pageCopyThreshold );
 		}
 
 		$this->assertTrue( $datasetFixture->exists() );
 
 		$this->benchmarkRunner->addMessage( "\n" . 'RebuildData benchmarks' );
-		$this->createRebuildDataBenchmarks();
+		$this->createMaintenanceBenchmarks( 'SMW\Maintenance\RebuildData' );
 
 		$this->benchmarkRunner->printMessages();
 	}
 
-	private function createRebuildDataBenchmarks() {
+	private function createMaintenanceBenchmarks( $maintenanceScript ) {
 
-		$maintenanceRunner = new MaintenanceRunner( 'SMW\Maintenance\RebuildData' );
+		$maintenanceRunner = new MaintenanceRunner( $maintenanceScript );
 		$maintenanceRunner->setQuiet();
 		$maintenanceRunner->setOptions( array( 'f' => $this->fullDelete ) );
 
-		$repetitionTimeContainer = array();
+		$this->benchmarkRunner->getBenchmarker()->clear();
 		$memoryBefore = memory_get_peak_usage( false );
 
 		for ( $i = 0; $i < $this->repetitionExecutionThreshold; $i++ ) {
 			$start = microtime( true );
 			$maintenanceRunner->run();
-			$repetitionTimeContainer[] = round( microtime( true ) - $start, 7 );
+			$this->benchmarkRunner->getBenchmarker()->addBenchmarkPoint( microtime( true ) - $start );
 		}
 
 		$memoryAfter = memory_get_peak_usage( false );
 		$memoryDiff  = $memoryAfter - $memoryBefore;
 
-		$sum  = array_sum( $repetitionTimeContainer );
-		$mean = $sum / $this->repetitionExecutionThreshold;
+		$sum  = $this->benchmarkRunner->getBenchmarker()->getSum();
+		$mean = $this->benchmarkRunner->getBenchmarker()->getMean();
+		$norm = $this->benchmarkRunner->getBenchmarker()->getNormalizedValueBy( $this->pageCopyThreshold );
 
-		$this->benchmarkRunner->addMessage( " |- $mean (mean) $sum (total) (sec)" );
+		$this->benchmarkRunner->addMessage( " |- $maintenanceScript $norm (n) $mean (mean) $sum (total) (sec)" );
 
 		if ( $this->showMemoryUsage ) {
 			$this->benchmarkRunner->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );

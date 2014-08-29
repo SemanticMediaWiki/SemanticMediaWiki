@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class ImportPageCopyBenchmarkTest extends MwDBaseUnitTestCase {
+class PageEditBenchmarkTest extends MwDBaseUnitTestCase {
 
 	/**
 	 * @var array
@@ -32,7 +32,7 @@ class ImportPageCopyBenchmarkTest extends MwDBaseUnitTestCase {
 	 */
 	private $benchmarkRunner = null;
 
-	private	$pageCopyThreshold = 50;
+	private	$pageEditThreshold = 50;
 	private $showMemoryUsage = false;
 	private $reuseDatasets = true;
 
@@ -40,20 +40,11 @@ class ImportPageCopyBenchmarkTest extends MwDBaseUnitTestCase {
 		parent::setUp();
 
 		// Variable set using phpunit.xml
-		if ( isset( $GLOBALS['benchmarkPageCopyThreshold'] ) ) {
-			$this->pageCopyThreshold = $GLOBALS['benchmarkPageCopyThreshold'];
-		}
-
 		if ( isset( $GLOBALS['benchmarkShowMemoryUsage'] ) ) {
 			$this->showMemoryUsage = $GLOBALS['benchmarkShowMemoryUsage'];
 		}
 
-		if ( isset( $GLOBALS['benchmarkReuseDatasets'] ) ) {
-			$this->reuseDatasets = $GLOBALS['benchmarkReuseDatasets'];
-		}
-
 		$this->benchmarkRunner = new BenchmarkRunner( $this->showMemoryUsage );
-		//$this->getStore()->getSparqlDatabase()->deleteAll();
 	}
 
 	/**
@@ -61,20 +52,29 @@ class ImportPageCopyBenchmarkTest extends MwDBaseUnitTestCase {
 	 */
 	public function doBenchmark() {
 
-		$dataset = $this->benchmarkRunner->getDefaultDataset();
+		$dataset = 'ExtendedLoremIpsumDataset.v1.xml';
 
 		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $this->benchmarkRunner->getMediaWikiVersion() . ', ' . $this->benchmarkRunner->getQueryEngine() );
-		$this->benchmarkRunner->addMessage( " |- pageCopyThreshold: " . $this->pageCopyThreshold );
+		$this->benchmarkRunner->addMessage( " |- pageEditThreshold: " . $this->pageEditThreshold );
 		$this->benchmarkRunner->addMessage( " |- showMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
-		$this->benchmarkRunner->addMessage( " |- reuseDatasets: " . var_export( $this->reuseDatasets, true ) );
 
 		$this->benchmarkRunner->addMessage( "\n" . 'Dataset import benchmarks' );
 		$this->benchmarkRunner->doImportDataset( $dataset );
 
-		$datasetFixture = Title::newFromText( 'Lorem ipsum' );
-		$this->assertTrue( $datasetFixture->exists() );
+		$this->benchmarkRunner->addMessage( "\n" . 'Edit benchmarks (Lorem donec = [[::]]; Lorem enim = #subobject; Lorem sit = #set/template) ' );
 
-		$this->benchmarkRunner->copyPageContent( $datasetFixture, $this->pageCopyThreshold );
+		$datasetFixture = Title::newFromText( 'Lorem donec' );
+		$this->assertTrue( $datasetFixture->exists() );
+		$this->benchmarkRunner->editPageContent( $datasetFixture, $this->pageEditThreshold );
+
+		$datasetFixture = Title::newFromText( 'Lorem enim' );
+		$this->assertTrue( $datasetFixture->exists() );
+		$this->benchmarkRunner->editPageContent( $datasetFixture, $this->pageEditThreshold );
+
+		$datasetFixture = Title::newFromText( 'Lorem sit' );
+		$this->assertTrue( $datasetFixture->exists() );
+		$this->benchmarkRunner->editPageContent( $datasetFixture, $this->pageEditThreshold );
+
 		$this->benchmarkRunner->printMessages();
 	}
 

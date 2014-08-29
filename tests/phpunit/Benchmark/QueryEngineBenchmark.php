@@ -23,7 +23,7 @@ use Title;
  *
  * @author mwjames
  */
-class QueryEngineBenchmarkTest extends MwDBaseUnitTestCase {
+abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 
 	/**
 	 * @var array
@@ -53,11 +53,11 @@ class QueryEngineBenchmarkTest extends MwDBaseUnitTestCase {
 	private $reuseDatasets = true;
 
 	private $benchmarkSummaryContainer = array(
-		'count'     => array(),
-		'instance'  => array(),
-		'serialize' => array(),
-		'instance (n)'  => array(),
-		'serialize (n)' => array(),
+		'(t) count'     => array(),
+		'(t) instance'  => array(),
+		'(t) serialize' => array(),
+		'(n) instance'  => array(),
+		'(n) serialize' => array(),
 	);
 
 	protected function setUp() {
@@ -93,14 +93,19 @@ class QueryEngineBenchmarkTest extends MwDBaseUnitTestCase {
 	}
 
 	/**
+	 * @return array
+	 */
+	abstract public function getQuerySetProvider();
+
+	/**
 	 * @test
 	 */
 	public function doBenchmark() {
 
-		$dataset = 'GenericLoremIpsumDataset.v1.xml';
+		$dataset = $this->benchmarkRunner->getDefaultDataset();
 		$datasetFixture = Title::newFromText( 'Lorem ipsum' );
 
-		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $GLOBALS['wgVersion'] . ', ' . $this->benchmarkRunner->getQueryEngine() );
+		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $this->benchmarkRunner->getMediaWikiVersion() . ', ' . $this->benchmarkRunner->getQueryEngine() );
 		$this->benchmarkRunner->addMessage( " |- repetitionExecutionThreshold: " . $this->repetitionExecutionThreshold );
 		$this->benchmarkRunner->addMessage( " |- pageCopyThreshold: " . $this->pageCopyThreshold );
 		$this->benchmarkRunner->addMessage( " |- showMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
@@ -108,35 +113,21 @@ class QueryEngineBenchmarkTest extends MwDBaseUnitTestCase {
 		$this->benchmarkRunner->addMessage( " |- queryLimit: " . $this->queryLimit );
 		$this->benchmarkRunner->addMessage( " |- queryOffset: " . $this->queryOffset );
 
-		if ( !$datasetFixture->exists() || !$this->reuseDatasets ) {
+		if ( !$this->reuseDatasets ) {
 			$this->benchmarkRunner->addMessage( "\n" . 'Data preparation benchmarks' );
-			$this->benchmarkRunner->doImportXmlDatasetFixture( __DIR__ . '/'. 'Fixtures' . '/' . $dataset );
-			$this->benchmarkRunner->copyPageContentFrom( $datasetFixture, $this->pageCopyThreshold );
+			$this->benchmarkRunner->doImportDataset( $dataset );
+			$this->benchmarkRunner->copyPageContent( $datasetFixture, $this->pageCopyThreshold );
 		}
 
 		$this->assertTrue( $datasetFixture->exists() );
 
 		$this->benchmarkRunner->addMessage( "\n" . 'Query result benchmarks (C = count, I = instance, S = serialization)' );
-		$this->createQueryBenchmarks();
+		$this->createQueryBenchmarks( $this->getQuerySetProvider() );
 
 		$this->benchmarkRunner->printMessages();
 	}
 
-	private function createQueryBenchmarks() {
-
-		// $queryCondition, $printouts, $comments
-		$querySets = array(
-			array( '[[:+]]', array(), '' ),
-			array( '[[Category: Lorem ipsum]]', array(), '' ),
-			array( '[[Category: Lorem ipsum]] AND [[Property:+]]', array(), '' ),
-			array( '[[Has Url::+]]', array( 'Has Url' ), '(includes subobjects)' ),
-			array( '[[Has quantity::+]]', array( 'Has quantity' ), '(includes subobjects)' ),
-			array( '[[Has Url::+]][[Category: Lorem ipsum]]', array( 'Has Url' ), '(does not include subobjects)' ),
-			array( '[[Has number::1111]] AND [[Has quantity::25 sqmi]]', array( 'Has number', 'Has quantity' ), '(only subobjects)' ),
-			array( '[[Has number::1111]] OR [[Has quantity::25 sqmi]]', array( 'Has number', 'Has quantity' ), '(only subobjects)' ),
-			array( '[[Has date::1 Jan 2014]]', array( 'Has date' ), '(does not include subobjects)' ),
-			array( '[[Has text::~Lorem ipsum dolor*]]', array( 'Has text' ), '(does not include subobjects)' ),
-		);
+	private function createQueryBenchmarks( array $querySets ) {
 
 		foreach ( $querySets as $setNumber => $querySet ) {
 			$this->createCombinedQuerySetBenchmark( $setNumber, $querySet[0], $querySet[1], $querySet[2] );
@@ -144,11 +135,16 @@ class QueryEngineBenchmarkTest extends MwDBaseUnitTestCase {
 
 		$setCount = count( $querySets );
 
-		$this->benchmarkRunner->addMessage( "\n" . "Benchmark summary (mean for query sets of $setCount, n = normalized over the result count)" );
+		$this->benchmarkRunner->addMessage( "\n" . "Benchmark summary (for query sets of $setCount, t = total, n = normalized, sd = standard deviation)" );
 
 		foreach ( $this->benchmarkSummaryContainer as $key => $container ) {
-			$value = round( array_sum( $container ) / $setCount, 7 );
-			$this->benchmarkRunner->addMessage( " |- $value $key" );
+
+			$this->benchmarkRunner->getBenchmarker()->clear()->addBenchmarkPoints( $container );
+
+			$mean = $this->benchmarkRunner->getBenchmarker()->getMean();
+			$sd   = $this->benchmarkRunner->getBenchmarker()->getStandardDeviation();
+
+			$this->benchmarkRunner->addMessage( " |- $mean $key $sd (sd)" );
 		}
 	}
 
@@ -165,35 +161,38 @@ class QueryEngineBenchmarkTest extends MwDBaseUnitTestCase {
 
 	private function benchmarkQueryExecution( Query $query ) {
 
-		$repetitionTimeContainer = array();
+		$this->benchmarkRunner->getBenchmarker()->clear()->roundBy( 7 );
 		$memoryBefore = memory_get_peak_usage( false );
 
 		for ( $i = 0; $i < $this->repetitionExecutionThreshold; $i++ ) {
 			$start = microtime( true );
 			$queryResult = $this->getStore()->getQueryResult( $query );
-			$repetitionTimeContainer[] = round( microtime( true ) - $start, 7 );
+			$this->benchmarkRunner->getBenchmarker()->addBenchmarkPoint( microtime( true ) - $start );
 		}
 
 		$memoryAfter = memory_get_peak_usage( false );
 		$memoryDiff  = $memoryAfter - $memoryBefore;
 
-		$sum  = array_sum( $repetitionTimeContainer );
-		$mean = $sum / $this->repetitionExecutionThreshold;
+		$sum  = $this->benchmarkRunner->getBenchmarker()->getSum();
+		$mean = $this->benchmarkRunner->getBenchmarker()->getMean();
+		$sd   = $this->benchmarkRunner->getBenchmarker()->getStandardDeviation();
 
 		if ( $query->querymode === Query::MODE_COUNT ) {
 			$count = $queryResult instanceof QueryResult ? $queryResult->getCountValue() : $queryResult;
 			$columnCount = 0;
 			$mode  = 'C';
-			$this->benchmarkSummaryContainer['count'][] = $mean;
+			$norm = $this->benchmarkRunner->getBenchmarker()->getNormalizedValueBy( $count );
+			$this->benchmarkSummaryContainer['(t) count'][] = $mean;
 		} else {
 			$count = $queryResult->getCount();
 			$columnCount = $queryResult->getColumnCount();
 			$mode  = 'I';
-			$this->benchmarkSummaryContainer['instance'][] = $mean;
-			$this->benchmarkSummaryContainer['instance (n)'][] = $mean / $count;
+			$norm = $this->benchmarkRunner->getBenchmarker()->getNormalizedValueBy( $count );
+			$this->benchmarkSummaryContainer['(t) instance'][] = $mean;
+			$this->benchmarkSummaryContainer['(n) instance'][] = $norm;
 		}
 
-		$this->benchmarkRunner->addMessage( " $mode- $mean (mean) $sum (total) (sec) resultCount: $count columnCount: $columnCount" );
+		$this->benchmarkRunner->addMessage( " $mode- $mean (mean) $sum (total) $sd (sd) (sec) resultCount: $count columnCount: $columnCount" );
 
 		if ( $this->showMemoryUsage ) {
 			$this->benchmarkRunner->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
@@ -209,25 +208,27 @@ class QueryEngineBenchmarkTest extends MwDBaseUnitTestCase {
 			return;
 		}
 
-		$repetitionTimeContainer = array();
+		$this->benchmarkRunner->getBenchmarker()->clear();
 		$memoryBefore = memory_get_peak_usage( false );
 
 		for ( $i = 0; $i < $this->repetitionExecutionThreshold; $i++ ) {
 			$start = microtime( true );
 			$queryResult->toArray();
-			$repetitionTimeContainer[] = round( microtime( true ) - $start, 7 );
+			$this->benchmarkRunner->getBenchmarker()->addBenchmarkPoint( microtime( true ) - $start );
 		}
 
 		$memoryAfter = memory_get_peak_usage( false );
 		$memoryDiff  = $memoryAfter - $memoryBefore;
 
-		$sum  = array_sum( $repetitionTimeContainer );
-		$mean = $sum / $this->repetitionExecutionThreshold;
+		$sum  = $this->benchmarkRunner->getBenchmarker()->getSum();
+		$mean = $this->benchmarkRunner->getBenchmarker()->getMean();
+		$sd   = $this->benchmarkRunner->getBenchmarker()->getStandardDeviation();
+		$norm = $this->benchmarkRunner->getBenchmarker()->getNormalizedValueBy( $queryResult->getCount() );
 
-		$this->benchmarkSummaryContainer['serialize'][] = $mean;
-		$this->benchmarkSummaryContainer['serialize (n)'][] = $mean / $queryResult->getCount();
+		$this->benchmarkSummaryContainer['(t) serialize'][] = $mean;
+		$this->benchmarkSummaryContainer['(n) serialize'][] = $norm;
 
-		$this->benchmarkRunner->addMessage( " S-- $mean (mean) $sum (total) (sec)" );
+		$this->benchmarkRunner->addMessage( " S-- $mean (mean) $sum (total) $sd (sd) (sec)" );
 
 		if ( $this->showMemoryUsage ) {
 			$this->benchmarkRunner->addMessage( " +--- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );

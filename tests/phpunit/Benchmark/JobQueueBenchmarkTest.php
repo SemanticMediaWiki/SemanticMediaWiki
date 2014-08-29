@@ -64,19 +64,19 @@ class JobQueueBenchmarkTest extends MwDBaseUnitTestCase {
 	 */
 	public function doBenchmark() {
 
-		$dataset = 'GenericLoremIpsumDataset.v1.xml';
+		$dataset = $this->benchmarkRunner->getDefaultDataset();
 		$datasetFixture = Title::newFromText( 'Lorem ipsum' );
 
-		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $GLOBALS['wgVersion'] . ', ' . $this->benchmarkRunner->getQueryEngine() );
+		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $this->benchmarkRunner->getMediaWikiVersion() . ', ' . $this->benchmarkRunner->getQueryEngine() );
 		$this->benchmarkRunner->addMessage( " |- repetitionExecutionThreshold: " . $this->repetitionExecutionThreshold );
 		$this->benchmarkRunner->addMessage( " |- pageCopyThreshold: " . $this->pageCopyThreshold );
 		$this->benchmarkRunner->addMessage( " |- showMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
 		$this->benchmarkRunner->addMessage( " |- reuseDatasets: " . var_export( $this->reuseDatasets, true ) );
 
-		if ( !$datasetFixture->exists() || !$this->reuseDatasets ) {
+		if ( !$this->reuseDatasets ) {
 			$this->benchmarkRunner->addMessage( "\n" . 'Data preparation benchmarks' );
-			$this->benchmarkRunner->doImportXmlDatasetFixture( __DIR__ . '/'. 'Fixtures' . '/' . $dataset );
-			$this->benchmarkRunner->copyPageContentFrom( $datasetFixture, $this->pageCopyThreshold );
+			$this->benchmarkRunner->doImportDataset( $dataset );
+			$this->benchmarkRunner->copyPageContent( $datasetFixture, $this->pageCopyThreshold );
 		}
 
 		$this->assertTrue( $datasetFixture->exists() );
@@ -96,22 +96,23 @@ class JobQueueBenchmarkTest extends MwDBaseUnitTestCase {
 
 		$jobQueueRunner = new JobQueueRunner( $job );
 
-		$repetitionTimeContainer = array();
+		$this->benchmarkRunner->getBenchmarker()->clear();
 		$memoryBefore = memory_get_peak_usage( false );
 
 		for ( $i = 0; $i < $this->repetitionExecutionThreshold; $i++ ) {
 			$start = microtime( true );
 			$jobQueueRunner->run();
-			$repetitionTimeContainer[] = round( microtime( true ) - $start, 7 );
+			$this->benchmarkRunner->getBenchmarker()->addBenchmarkPoint( microtime( true ) - $start );
 		}
 
 		$memoryAfter = memory_get_peak_usage( false );
 		$memoryDiff  = $memoryAfter - $memoryBefore;
 
-		$sum  = array_sum( $repetitionTimeContainer );
-		$mean = $sum / $this->repetitionExecutionThreshold;
+		$sum  = $this->benchmarkRunner->getBenchmarker()->getSum();
+		$mean = $this->benchmarkRunner->getBenchmarker()->getMean();
+		$norm = $this->benchmarkRunner->getBenchmarker()->getNormalizedValueBy( $job === 'SMW\RefreshJob' ? 1 : $this->pageCopyThreshold );
 
-		$this->benchmarkRunner->addMessage( " |- $job $mean (mean) $sum (total) (sec)" );
+		$this->benchmarkRunner->addMessage( " |- $job $norm (n) $mean (mean) $sum (total) (sec)" );
 
 		if ( $this->showMemoryUsage ) {
 			$this->benchmarkRunner->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
