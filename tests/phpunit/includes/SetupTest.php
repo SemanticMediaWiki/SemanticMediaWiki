@@ -168,6 +168,18 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'isSpecialPage' => true
 		) );
 
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$requestContext = $this->getMockBuilder( '\RequestContext' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$requestContext->expects( $this->any() )
+			->method( 'getRequest' )
+			->will( $this->returnValue( $webRequest ) );
+
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -191,10 +203,21 @@ class SetupTest extends SemanticMediaWikiTestCase {
 			'getParserOutput' => $parserOutput
 		) );
 
-		$skin = $this->newMockBuilder()->newObject( 'Skin', array(
-			'getTitle'  => $title,
-			'getOutput' => $outputPage
-		) );
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$skin->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $outputPage ) );
+
+		$skin->expects( $this->any() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $requestContext ) );
 
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()

@@ -179,6 +179,10 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-subject' );
 
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -207,6 +211,10 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
 		#0 Factbox build, being visible
 		$title = MockTitle::buildMock( __METHOD__ . 'title-being-visible' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
@@ -251,6 +259,10 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 
 		#1 Factbox build, being visible, using WebRequest oldid
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-oldid' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
@@ -436,16 +448,16 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// #5 isDeleted
-		$title = MockTitle::buildMock( __METHOD__ . 'title-isDeleted' );
+		// #5 does not exist
+		$title = MockTitle::buildMock( __METHOD__ . 'title-not-exists' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
 		$title->expects( $this->atLeastOnce() )
-			->method( 'isDeleted' )
-			->will( $this->returnValue( true ) );
+			->method( 'exists' )
+			->will( $this->returnValue( false ) );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()

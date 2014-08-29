@@ -128,6 +128,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-subject' );
 
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -152,6 +156,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		#0 Simple factbox build, returning content
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-content' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
@@ -296,6 +304,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		// #4 Oldid
 		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-oldid' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPageLanguage' )
