@@ -2,14 +2,13 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use SMW\Tests\Util\FakeRawResultProvider;
+use SMW\Tests\Util\Fixtures\Results\FakeRawResultProvider;
 
 /**
  * @covers \SMW\SPARQLStore\FusekiHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\FourstoreHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\VirtuosoHttpDatabaseConnector
  * @covers \SMW\SPARQLStore\GenericHttpDatabaseConnector
- *
  *
  * @group SMW
  * @group SMWExtension
