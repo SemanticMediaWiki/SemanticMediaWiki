@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
-use SMW\Tests\Util\FakeRawResultProvider;
+use SMW\Tests\Util\Fixtures\Results\FakeRawResultProvider;
 use SMW\SPARQLStore\QueryEngine\RawResultParser;
 
 use SMWExpResource as ExpResource;
@@ -10,7 +10,6 @@ use SMWExpLiteral as ExpLiteral;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\RawResultParser
- *
  *
  * @group SMW
  * @group SMWExtension

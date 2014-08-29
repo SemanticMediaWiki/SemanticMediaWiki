@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Util;
+namespace SMW\Tests\Util\Fixtures\Results;
 
 use RuntimeException;
 
@@ -62,7 +62,7 @@ class FakeRawResultProvider {
 	}
 
 	private function getFixtureLocation() {
-		return __DIR__ . '/Fixtures/';
+		return __DIR__ . '/' . 'XML' . '/';
 	}
 
 	private function isReadableFile( $file ) {
