@@ -11,3 +11,4 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #486 Added support for `Jena Fuseki` 1.1.0
 * #487 Added an internal cache to improve `SPARQLStore` redirect lookup performance 
 * #512, #521 Added benchmark tests for different components such as jobqueue, maintenance script, queries etc.
+* #523 Enforces a non-display of the Factbox for a `delete action` and enable the Factbox display for an undeleted page
