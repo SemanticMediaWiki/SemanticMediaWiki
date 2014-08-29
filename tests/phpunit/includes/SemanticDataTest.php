@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\Validators\SemanticDataValidator;
 use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\StoreFactory;

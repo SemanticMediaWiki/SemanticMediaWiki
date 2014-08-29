@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\QueryResultValidator;
+use SMW\Tests\Util\Validators\QueryResultValidator;
 
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;

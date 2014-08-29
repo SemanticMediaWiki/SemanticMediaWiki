@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\Validators\SemanticDataValidator;
 
 use SMW\Query\Profiler\DescriptionProfile;
 use SMW\Query\Profiler\FormatProfile;

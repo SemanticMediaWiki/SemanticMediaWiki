@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Util;
+namespace SMW\Tests\Util\Validators;
 
 use SMW\DIWikiPage;
 
@@ -10,8 +10,6 @@ use SMWQueryResult as QueryResult;
 
 use SMWExpData as ExpData;
 use SMWExpResource as ExpResource;
-
-
 
 /**
  * @license GNU GPL v2+
