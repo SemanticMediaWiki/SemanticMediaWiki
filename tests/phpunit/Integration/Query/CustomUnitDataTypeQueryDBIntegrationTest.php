@@ -6,19 +6,19 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\SemanticDataFactory;
 use SMW\Tests\Util\QueryResultValidator;
 
+use SMW\Tests\Util\Fixtures\Properties\AreaProperty;
+use SMW\Tests\Util\Fixtures\Facts\Berlin;
+
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\SomeProperty;
+
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\DataValueFactory;
 
-use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
-use SMW\Query\Language\ThingDescription as ThingDescription;
 
 /**
  *
@@ -49,6 +49,9 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->queryResultValidator = new QueryResultValidator();
+
+		$areaProperty = new AreaProperty();
+		$this->getStore()->updateData( $areaProperty->getSemanticDataForConversionValues() );
 	}
 
 	protected function tearDown() {
@@ -62,22 +65,13 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testUserDefinedQuantityProperty() {
 
-		$property = new DIProperty( 'SomeQuantityProperty' );
-		$property->setPropertyTypeId( '_qty' );
+		$berlin = new Berlin();
 
-		$this->addConversionValuesToProperty(
-			$property,
-			array( '1 km', '1000 m' )
-		);
-
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
-			$property,
-			'100 km'
-		);
+		$areaDataValue = $berlin->getAreaDataValue();
+		$property = $areaDataValue->getProperty();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
-
-		$semanticData->addDataValue( $dataValue	);
+		$semanticData->addDataValue( $areaDataValue );
 
 		$this->getStore()->updateData( $semanticData );
 
@@ -109,7 +103,7 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
 		$this->queryResultValidator->assertThatQueryResultContains(
-			$dataValue,
+			$areaDataValue,
 			$queryResult
 		);
 
@@ -121,17 +115,13 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testUserDefinedTemperatureProperty() {
 
-		$property = new DIProperty( 'SomeTemperatureProperty' );
-		$property->setPropertyTypeId( '_tem' );
+		$berlin = new Berlin();
 
-		$dataValue = $this->dataValueFactory->newPropertyObjectValue(
-			$property,
-			'1 °C'
-		);
+		$temperatureDataValue = $berlin->getAverageHighTemperatureDataValue();
+		$property = $temperatureDataValue->getProperty();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
-
-		$semanticData->addDataValue( $dataValue	);
+		$semanticData->addDataValue( $temperatureDataValue );
 
 		$this->getStore()->updateData( $semanticData );
 
@@ -163,7 +153,7 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
 		$this->queryResultValidator->assertThatQueryResultContains(
-			$dataValue,
+			$temperatureDataValue,
 			$queryResult
 		);
 
@@ -171,19 +161,6 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$semanticData->getSubject(),
 			$property->getDiWikiPage()
 		);
-	}
-
-	private function addConversionValuesToProperty( DIProperty $property, array $conversionValues ) {
-
-		$semanticData = $this->semanticDataFactory->setSubject( $property->getDiWikiPage() )->newEmptySemanticData();
-
-		foreach( $conversionValues as $conversionValue ) {
-			$semanticData->addDataValue(
-				$this->dataValueFactory->newPropertyObjectValue( new DIProperty( '_CONV' ), $conversionValue )
-			);
-		}
-
-		$this->getStore()->updateData( $semanticData );
 	}
 
 }
