@@ -58,7 +58,7 @@
        <var name="benchmarkQueryRepetitionExecutionThreshold" value="5"/>
        <var name="benchmarkQueryLimit" value="500"/>
        <var name="benchmarkQueryOffset" value="0"/>
-       <var name="benchmarkPageCopyThreshold" value="100"/>
+       <var name="benchmarkPageCopyThreshold" value="1000"/>
        <var name="benchmarkShowMemoryUsage" value="false"/>
        <var name="benchmarkReuseDatasets" value="true"/>
     </php>

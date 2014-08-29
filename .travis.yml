@@ -22,6 +22,8 @@ matrix:
       php: 5.4
     - env: DB=sqlite; MW=master; PHPUNIT=4.1.*
       php: hhvm-nightly
+    - env: DB=mysql; MW=master; PHPUNIT=4.1.*; TYPE=benchmark
+      php: hhvm-nightly
   exclude:
     - env: THENEEDFORTHIS=FAIL
   allow_failures:
