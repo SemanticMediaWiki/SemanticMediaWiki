@@ -6,8 +6,8 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\SemanticDataFactory;
 use SMW\Tests\Util\Validators\QueryResultValidator;
 
-use SMW\Tests\Util\Fixtures\Properties\AreaProperty;
-use SMW\Tests\Util\Fixtures\Facts\Berlin;
+use SMW\Tests\Util\Fixtures\FixturesBuilder;
+use SMW\Tests\Util\Fixtures\Facts\BerlinFact;
 
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\SomeProperty;
@@ -21,7 +21,6 @@ use SMWPrintRequest as PrintRequest;
 use SMWPropertyValue as PropertyValue;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
@@ -50,8 +49,8 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->queryResultValidator = new QueryResultValidator();
 
-		$areaProperty = new AreaProperty();
-		$this->getStore()->updateData( $areaProperty->getSemanticDataForConversionValues() );
+		$fixturesBuilder = new FixturesBuilder();
+		$fixturesBuilder->updateFixtureDependencies( $this->getStore() );
 	}
 
 	protected function tearDown() {
@@ -65,26 +64,26 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testUserDefinedQuantityProperty() {
 
-		$berlin = new Berlin();
+		$berlinFact = new BerlinFact();
 
-		$areaDataValue = $berlin->getAreaDataValue();
-		$property = $areaDataValue->getProperty();
+		$areaValue = $berlinFact->getAreaValue();
+		$areaProperty = $areaValue->getProperty();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
-		$semanticData->addDataValue( $areaDataValue );
+		$semanticData->addDataValue( $areaValue );
 
 		$this->getStore()->updateData( $semanticData );
 
 		$this->assertArrayHasKey(
-			$property->getKey(),
+			$areaProperty->getKey(),
 			$this->getStore()->getSemanticData( $semanticData->getSubject() )->getProperties()
 		);
 
 		$propertyValue = new PropertyValue( '__pro' );
-		$propertyValue->setDataItem( $property );
+		$propertyValue->setDataItem( $areaProperty );
 
 		$description = new SomeProperty(
-			$property,
+			$areaProperty,
 			new ThingDescription()
 		);
 
@@ -103,38 +102,38 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
 		$this->queryResultValidator->assertThatQueryResultContains(
-			$areaDataValue,
+			$areaValue,
 			$queryResult
 		);
 
 		$this->subjectsToBeCleared = array(
 			$semanticData->getSubject(),
-			$property->getDiWikiPage()
+			$areaProperty->getDiWikiPage()
 		);
 	}
 
 	public function testUserDefinedTemperatureProperty() {
 
-		$berlin = new Berlin();
+		$berlinFact = new BerlinFact();
 
-		$temperatureDataValue = $berlin->getAverageHighTemperatureDataValue();
-		$property = $temperatureDataValue->getProperty();
+		$temperatureValue = $berlinFact->getAverageHighTemperatureValue();
+		$temperatureProperty = $temperatureValue->getProperty();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
-		$semanticData->addDataValue( $temperatureDataValue );
+		$semanticData->addDataValue( $temperatureValue );
 
 		$this->getStore()->updateData( $semanticData );
 
 		$this->assertArrayHasKey(
-			$property->getKey(),
+			$temperatureProperty->getKey(),
 			$this->getStore()->getSemanticData( $semanticData->getSubject() )->getProperties()
 		);
 
 		$propertyValue = new PropertyValue( '__pro' );
-		$propertyValue->setDataItem( $property );
+		$propertyValue->setDataItem( $temperatureProperty );
 
 		$description = new SomeProperty(
-			$property,
+			$temperatureProperty,
 			new ThingDescription()
 		);
 
@@ -153,13 +152,13 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
 		$this->queryResultValidator->assertThatQueryResultContains(
-			$temperatureDataValue,
+			$temperatureValue,
 			$queryResult
 		);
 
 		$this->subjectsToBeCleared = array(
 			$semanticData->getSubject(),
-			$property->getDiWikiPage()
+			$temperatureProperty->getDiWikiPage()
 		);
 	}
 
