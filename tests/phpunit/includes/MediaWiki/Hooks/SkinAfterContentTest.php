@@ -96,6 +96,10 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$title = MockTitle::buildMock( __METHOD__ . 'from-property' );
 
 		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 10001 ) );
 
@@ -132,6 +136,10 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
 		#1 Retrive content from cache
 		$title = MockTitle::buildMock( __METHOD__ . 'from-cache' );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
@@ -215,6 +223,10 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$title = MockTitle::buildMock( __METHOD__ . 'edit-request' );
 
 		$title->expects( $this->atLeastOnce() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 10003 ) );
 
@@ -250,6 +262,43 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			array( 'skin' => $skin, 'text' => $text ),
 			array( 'text' => $text )
+		);
+
+		// #4 "delete" request
+		$text   = __METHOD__ . 'text-4';
+
+		$title = MockTitle::buildMock( __METHOD__ . 'delete-request' );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $outputPage ) );
+
+		$context = new \RequestContext( );
+		$context->setRequest( new \FauxRequest( array( 'action' => 'delete' ), true ) );
+
+		$skin->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $context ) );
+
+		$provider[] = array(
+			array( 'skin' => $skin, 'text' => $text ),
+			array( 'text' => '' )
 		);
 
 		return $provider;

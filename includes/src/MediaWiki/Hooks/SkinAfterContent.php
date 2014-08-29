@@ -4,8 +4,6 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\Application;
 
-use OutputPage;
-use Title;
 use Skin;
 
 /**
@@ -13,11 +11,6 @@ use Skin;
  * article metadata
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
- *
- * @note This hook is used for inserting the Factbox text after the
- * article contents (including categories).
- *
- * @ingroup FunctionHook
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -53,6 +46,19 @@ class SkinAfterContent {
 	 * @return true
 	 */
 	public function process() {
+		return $this->canPerformUpdate() ? $this->performUpdate() : true;
+	}
+
+	private function canPerformUpdate() {
+
+		if ( $this->skin->getContext()->getRequest()->getVal( 'action' ) === 'delete' ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private function performUpdate() {
 
 		$factboxCache = Application::getInstance()->newFactboxBuilder()->newFactboxCache( $this->skin->getOutput() );
 		$this->data .= $factboxCache->retrieveContent();

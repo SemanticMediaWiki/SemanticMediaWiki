@@ -107,7 +107,7 @@ class FactboxCache {
 		$text = '';
 		$title = $this->outputPage->getTitle();
 
-		if ( $title instanceof Title && ( $title->isSpecialPage() || $title->isDeleted() ) ) {
+		if ( $title instanceof Title && ( $title->isSpecialPage() || !$title->exists() ) ) {
 			return $text;
 		}
 
