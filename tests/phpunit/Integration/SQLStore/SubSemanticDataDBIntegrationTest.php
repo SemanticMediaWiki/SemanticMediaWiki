@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\SQLStore;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\PageCreator;
 use SMW\Tests\Util\PageDeleter;
-use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\Validators\SemanticDataValidator;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;

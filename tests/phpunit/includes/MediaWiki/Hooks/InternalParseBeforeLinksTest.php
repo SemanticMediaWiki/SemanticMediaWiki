@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\Validators\SemanticDataValidator;
 use SMW\Tests\Util\ParserFactory;
 use SMW\Tests\Util\Mock\MockTitle;
 

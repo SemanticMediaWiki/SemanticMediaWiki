@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Regression;
 
-use SMW\Tests\Util\SemanticDataValidator;
+use SMW\Tests\Util\Validators\SemanticDataValidator;
 use SMW\Tests\Util\ByPageSemanticDataFinder;
 use SMW\Test\MwRegressionTestCase;
 

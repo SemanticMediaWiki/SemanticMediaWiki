@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Util;
+namespace SMW\Tests\Util\Validators;
 
 use SMW\DataValueFactory;
 use SMW\SemanticData;

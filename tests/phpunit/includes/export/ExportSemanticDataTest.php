@@ -3,7 +3,7 @@
 namespace SMW\Tests\Export;
 
 use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\ExportDataValidator;
+use SMW\Tests\Util\Validators\ExportDataValidator;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
