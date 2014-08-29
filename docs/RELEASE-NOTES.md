@@ -10,4 +10,4 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #350 Passes all unit tests on `HHVM` 3.3+
 * #486 Added support for `Jena Fuseki` 1.1.0
 * #487 Added an internal cache to improve `SPARQLStore` redirect lookup performance 
-* #512 Added benchmark tests for different components such as jobqueue, maintenance script, queries etc.
+* #512, #521 Added benchmark tests for different components such as jobqueue, maintenance script, queries etc.
