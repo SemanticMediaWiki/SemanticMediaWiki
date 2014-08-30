@@ -7,7 +7,8 @@
 			"Mjbmr",
 			"Momeni",
 			"Reza1615",
-			"ZxxZxxZ"
+			"ZxxZxxZ",
+			"Alirezaaa"
 		]
 	},
 	"smw-desc": "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -58,6 +59,7 @@
 	"smw-paramdesc-embedformat": "برچسب های اچ‌تی‌ام‌ال برای تعریف سرفصل‌ها مورد استفاده قرار می‌گیرند",
 	"smw-paramdesc-embedonly": "هیچ سرفصلی نمایش داده نشد",
 	"smw-paramdesc-table-class": "کلاس سی‌اس‌اس اضافی برای تنظیم جدول",
+	"smw-paramdesc-table-transpose": "عناوین جدول را عمودی و نتایج را افقی نشان بده",
 	"smw-paramdesc-rdfsyntax": "نحو آر‌دی‌اف مورد استفاده قرار می‌گیرد",
 	"smw-paramdesc-csv-sep": "جدا کننده برای استفاده",
 	"smw-paramdesc-dsv-separator": "جدا کننده برای استفاده",
@@ -121,6 +123,7 @@
 	"smw_attributearticlecount": "نمایش $1 {{PLURAL:$1|صفحه|صفحات}} با استفاده از این خاصیت.",
 	"smw_subproperty_header": "زیرخصوصیت‌ها",
 	"smw_subpropertyarticlecount": "این خاصیت $1 {{PLURAL:$1|خاصیت|خواص}}زیر را دارد:",
+	"specialpages-group-smw_group": "مدیاویکی معنایی",
 	"exportrdf": "برون‌بری صفحه‌ها به آردی‌اف",
 	"smw_exportrdf_docu": "این صفحه به شما برای بدست آوردن داده‌ها از صفحه در فرمت آر‌دی‌اف اجازه می‌دهد.\nبرای انتقال صفحات، عناوین را در جعبه متن زیر وارد کنید، یک عنوان در هر خط.",
 	"smw_exportrdf_recursive": "تمام صفحه‌های مرتبط را به صورت بازگشتی برون‌بری کن.\nتوجه کنید که نتیجه می‌تواند بزرگ شود!",
@@ -237,7 +240,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>به روز رسانی در حال حاضر در حال انجام است.</strong>\nطبیعی است که پیشرفت به روز رسانی تنها زمانی آرام است که اطلاعات در تکه‌های کوچک هر زمان که کاربر به ویکی دسترسی پیدا می‌کند.\nبرای سریع‌تر به پایان رساندن این به روز رسانی، شما می‌‌‌‌توانید متن نگهداری مدیاویکی <code>runJobs.php</code> (از گزینه <code>--maxjobs 1000</code> را برای محدود کردن تعداد به روز رسانی‌های انجام شده  در هر دسته را بخواهید).\nبرآورد پیشرفت فعلی به روز رسانی:",
 	"smw_smwadmin_datarefreshbutton": "شروع کردن به روز رسانی اطلاعات",
 	"smw_smwadmin_datarefreshstop": "این به روز رسانی را متوقف کنید",
-	"smw_smwadmin_datarefreshstopconfirm": "بله، من مطمئن هستم.",
+	"smw_smwadmin_datarefreshstopconfirm": "بله، من {{GENDER:$1|مطمئن هستم}}.",
 	"smw_smwadmin_support": "پشتیبانی شدن",
 	"smw_smwadmin_supportdocu": "منابع گوناگونی که ممکن است به شما در رابطه با مشکلات کمک کند:",
 	"smw_smwadmin_installfile": "اگر شما تجربه مشکلات نصب را داشتید، با بررسی دستورالعمل‌ها در <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL file</a> شروع کنید.",

@@ -8,10 +8,13 @@
 	"smw_finallistconjunct": "און",
 	"smw_printername_list": "ליסטע",
 	"smw_printername_category": "קאַטעגאָריע",
+	"smw-paramdesc-table-transpose": "ווײַזן טאבעלע קעפלעך ווערטיקאל און רעזולטאטן האריזאנט",
 	"smw_nodatetime": "די דאַטע \"$1\" איז נישט פֿארשטענדלעך.",
 	"smw_exportrdf_submit": "עקספארטירן",
 	"smw_sbv_value": "ווערט:",
 	"smw_browse_go": "גיין",
 	"smw_result_prev": "פֿריערדיקער",
-	"smw_result_results": "רעזולטאט"
+	"smw_result_results": "רעזולטאט",
+	"smw_smwadmin_datarefreshstopconfirm": "יא, כ'בין {{GENDER:$1|זיכער}}.",
+	"smw-livepreview-loading": "לאדנדיג…"
 }

@@ -226,7 +226,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>有一個更新正在進行。</strong>\n更新進程可能會很慢，因為該進程僅在用戶訪問維基時小塊地更新數據。\n可以使用 MediaWiki 維護腳本<code>runJobs.php</code>（使用選項 <code>--maxjobs 1000</code> 限制每批更新數目）來加快更新完成速度。\n目前更新的估計進度：",
 	"smw_smwadmin_datarefreshbutton": "開始更新資料",
 	"smw_smwadmin_datarefreshstop": "停止更新",
-	"smw_smwadmin_datarefreshstopconfirm": "是的，我確認。",
+	"smw_smwadmin_datarefreshstopconfirm": "是的，我{{GENDER:$1|確認}}。",
 	"smw_smwadmin_support": "獲得協助",
 	"smw_smwadmin_supportdocu": "遇到問題時，可以使用以下資源獲得幫助：",
 	"smw_smwadmin_installfile": "如果安裝遇到問題，請先仔細閱讀<a href=「http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL\">INSTALL 文件</a>中的指引。",

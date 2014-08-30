@@ -247,7 +247,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Обновление уже запущено.</strong>\nЭто нормально, что процесс обновления идёт достаточно медленно, поскольку он обновляет данные лишь небольшими порциями, когда пользователь обращается к вики.\nЧтобы закончить данное обновление быстрее, вы можете вызвать скрипт обслуживания MediaWiki <code>runJobs.php</code> (используйте настройку <code>- maxjobs 1000</code>, чтобы ограничить количество обновлений в одной партии).\nОриентировочный ход выполнения текущего обновления:",
 	"smw_smwadmin_datarefreshbutton": "Начать обновление данных",
 	"smw_smwadmin_datarefreshstop": "Остановить это обновление",
-	"smw_smwadmin_datarefreshstopconfirm": "Да, я уверен.",
+	"smw_smwadmin_datarefreshstopconfirm": "Да, я уверен{{GENDER:$1||а}}.",
 	"smw_smwadmin_support": "Получить поддержку",
 	"smw_smwadmin_supportdocu": "Различные ресурсы, которые могут помочь в случае проблем:",
 	"smw_smwadmin_installfile": "Если вы испытываете затруднения при установке, прочтите руководство в <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">файле INSTALL</a>.",

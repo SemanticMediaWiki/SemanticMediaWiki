@@ -1,8 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Chinneeb"
+			"Chinneeb",
+			"Wisdom"
 		]
 	},
-	"smw_browse_go": "Явах"
+	"smw-paramdesc-table-transpose": "table -ын толгойг босоогоор, үр дүнг хэвтээгээр",
+	"smw_browse_go": "Явах",
+	"smw_smwadmin_datarefreshstopconfirm": "Тийм, би {{GENDER:$1|итгэлтэй байна}}.",
+	"smw-livepreview-loading": "Уншиж байна..."
 }

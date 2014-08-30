@@ -240,7 +240,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>כבר מתבצע תהליך עדכון.</strong>\nמצב בו העדכון מתקדם לאט הוא מצב נורמלי, מאחר שהנתונים מתעדכנים בחלקים קטנים בכל פעם שמשתמש ניגש לוויקי.\nכדי לסיים את העדכון מהר יותר, תוכלו להפעיל את סקריפט התחזוקה <code>runJobs.php</code> (השתמשו באפשרות <code>--maxjobs 1000</code> כדי להגביל את מספר העדכונים שמתבצעים בבת אחת).\nהתקדמות משוערת של העדכון הנוכחי:",
 	"smw_smwadmin_datarefreshbutton": "התחלת עדכון הנתונים",
 	"smw_smwadmin_datarefreshstop": "עצירת עדכון זה",
-	"smw_smwadmin_datarefreshstopconfirm": "כן, אני רוצה לעשות את זה.",
+	"smw_smwadmin_datarefreshstopconfirm": "כן, אני {{GENDER:$1|בטוח|בטוחה}}.",
 	"smw_smwadmin_support": "קבלת תמיכה",
 	"smw_smwadmin_supportdocu": "מגוון משאבים עומדים לרשותכם במקרה של תקלה:",
 	"smw_smwadmin_installfile": "אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות ב<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">קובץ INSTALL</a>.",
