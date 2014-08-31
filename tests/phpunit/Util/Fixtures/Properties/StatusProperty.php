@@ -2,9 +2,10 @@
 
 namespace SMW\Tests\Util\Fixtures\Properties;
 
-use SMW\DataValueFactory;
 use SMW\SemanticData;
 use SMW\DIProperty;
+
+use SMWDIBlob as DIBlob;
 
 /**
  * @license GNU GPL v2+
@@ -12,7 +13,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class AreaProperty {
+class StatusProperty {
 
 	/**
 	 * @var DIProperty
@@ -20,22 +21,11 @@ class AreaProperty {
 	private $property = null;
 
 	/**
-	 * @var array
-	 */
-	private $conversionValues = array(
-		'1 km²',
-		'0.38610 sq mi',
-		'1000 m²',
-		'247.1054 acre',
-		'988.4215 rood'
-	);
-
-	/**
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = new DIProperty( 'Area' );
-		$this->property->setPropertyTypeId( '_qty' );
+		$this->property = DIProperty::newFromUserLabel( 'Status' );
+		$this->property->setPropertyTypeId( '_txt' );
 	}
 
 	/**
@@ -54,14 +44,17 @@ class AreaProperty {
 	 */
 	public function getDependencies() {
 
-		$dataValueFactory = DataValueFactory::getInstance();
 		$semanticData = new SemanticData( $this->property->getDiWikiPage() );
 
-		foreach( $this->conversionValues as $conversionValue ) {
-			$semanticData->addDataValue(
-				$dataValueFactory->newPropertyObjectValue( new DIProperty( '_CONV' ), $conversionValue )
-			);
-		}
+		$semanticData->addPropertyObjectValue(
+			new DIProperty( '_PVAL' ),
+			new DIBlob( 'open' )
+		);
+
+		$semanticData->addPropertyObjectValue(
+			new DIProperty( '_PVAL' ),
+			new DIBlob( 'closed' )
+		);
 
 		return $semanticData;
 	}

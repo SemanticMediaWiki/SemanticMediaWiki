@@ -23,9 +23,9 @@ The use of `MediaWikiTestCase` is discouraged as its binds tests and the test en
 * `QueryPrinterTestCase` base class for all query and result printers
 * `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
 
-### Obsolete
-* `ParserTestCase` derives from SemanticMediaWikiTestCase
-* `SemanticMediaWikiTestCase` derives from <code>PHPUnit_Framework_TestCase</code> and adds some convenient functions
+### Test fixtures
+
+When writing tests, it is suggested to use available [immutable fixtures][phpunit-fixtures] as baseline to create repeatable object instances during a test. Available fixtures can be found in `SMW\Tests\Fixtures\*`.
 
 ## Integration tests
 
@@ -55,3 +55,4 @@ Running qunit tests in connection with MediaWiki requires to execute [Special:Ja
 [mw-phpunit-testing]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing
 [mw-qunit-testing]: https://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing
 [issue-136]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/136
+[phpunit-fixtures]: http://phpunit.de/manual/current/en/fixtures.html
