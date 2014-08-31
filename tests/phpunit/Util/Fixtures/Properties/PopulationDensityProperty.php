@@ -42,7 +42,7 @@ class PopulationDensityProperty {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticDataForRecordFields() {
+	public function getDependencies() {
 
 		$semanticData = new SemanticData( $this->property->getDiWikiPage() );
 

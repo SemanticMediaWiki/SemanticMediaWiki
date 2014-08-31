@@ -6,8 +6,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\SemanticDataFactory;
 use SMW\Tests\Util\Validators\QueryResultValidator;
 
-use SMW\Tests\Util\Fixtures\FixturesBuilder;
-use SMW\Tests\Util\Fixtures\Facts\BerlinFact;
+use SMW\Tests\Util\Fixtures\FixturesProvider;
 
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\SomeProperty;
@@ -37,7 +36,8 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	protected $databaseToBeExcluded = array( 'sqlite' );
 
-	private $subjectsToBeCleared = array();
+	private $facts = array();
+
 	private $semanticDataFactory;
 	private $dataValueFactory;
 	private $queryResultValidator;
@@ -49,29 +49,29 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->queryResultValidator = new QueryResultValidator();
 
-		$fixturesBuilder = new FixturesBuilder();
-		$fixturesBuilder->updateFixtureDependencies( $this->getStore() );
+		$fixturesProvider = new FixturesProvider();
+		$fixturesProvider->setupDependencies( $this->getStore() );
+
+		$this->facts = $fixturesProvider->getListOfFactsheetInstances();
 	}
 
 	protected function tearDown() {
 
-		foreach ( $this->subjectsToBeCleared as $subject ) {
-			$this->getStore()->deleteSubject( $subject->getTitle() );
-		}
+		$fixturesProvider = new FixturesProvider();
+		$fixturesProvider->getCleaner()->purgeFacts( $this->facts );
 
 		parent::tearDown();
 	}
 
 	public function testUserDefinedQuantityProperty() {
 
-		$berlinFact = new BerlinFact();
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+		$this->facts['berlin']->setTargetSubject( $semanticData->getSubject() );
 
-		$areaValue = $berlinFact->getAreaValue();
+		$areaValue = $this->facts['berlin']->getAreaValue();
 		$areaProperty = $areaValue->getProperty();
 
-		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 		$semanticData->addDataValue( $areaValue );
-
 		$this->getStore()->updateData( $semanticData );
 
 		$this->assertArrayHasKey(
@@ -105,23 +105,17 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$areaValue,
 			$queryResult
 		);
-
-		$this->subjectsToBeCleared = array(
-			$semanticData->getSubject(),
-			$areaProperty->getDiWikiPage()
-		);
 	}
 
 	public function testUserDefinedTemperatureProperty() {
 
-		$berlinFact = new BerlinFact();
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+		$this->facts['paris']->setTargetSubject( $semanticData->getSubject() );
 
-		$temperatureValue = $berlinFact->getAverageHighTemperatureValue();
+		$temperatureValue = $this->facts['paris']->getAverageHighTemperatureValue();
 		$temperatureProperty = $temperatureValue->getProperty();
 
-		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 		$semanticData->addDataValue( $temperatureValue );
-
 		$this->getStore()->updateData( $semanticData );
 
 		$this->assertArrayHasKey(
@@ -154,11 +148,6 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->queryResultValidator->assertThatQueryResultContains(
 			$temperatureValue,
 			$queryResult
-		);
-
-		$this->subjectsToBeCleared = array(
-			$semanticData->getSubject(),
-			$temperatureProperty->getDiWikiPage()
 		);
 	}
 
