@@ -151,7 +151,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Una mesa a jorn es en cors d’execucion.</strong>\nEs normal qu’una mesa a jorn progresse lentament dempuèi que refresca unicament las donadas dins de troces pichons a cada còp qu’un utilizaire accedís al wiki.\nPer acabar aquesta mesa a jorn mai rapidament, podètz invocar l'escript de mantenença Mediawiki <code>runJobs.php</code> (utilizatz l’opcion <code>--maxjobs 1000</code> per restrénher lo nombre de las mesas a jorn per escript aviat).\nProgression estimada de la mesa a jorn actuala :",
 	"smw_smwadmin_datarefreshbutton": "Començar la mesa a jorn de las donadas",
 	"smw_smwadmin_datarefreshstop": "Arrestar aquesta mesa a jorn",
-	"smw_smwadmin_datarefreshstopconfirm": "Òc, ne soi segur(a).",
+	"smw_smwadmin_datarefreshstopconfirm": "Òc, ne soi {{GENDER:$1|segur|segura}}.",
 	"smw_smwadmin_support": "Obtencion d’un supòrt",
 	"smw_smwadmin_supportdocu": "De ressorsas divèrsas vos poiriàn ajudar en cas de problèmas :",
 	"smw_smwadmin_installfile": "S'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">fichièr INSTALL</a>.",
@@ -165,5 +165,6 @@
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|La valor autorizada per aquesta proprietat es|Las valors autorizadas per aquesta proprietat son}} :",
 	"smw_unknowntype": "Lo tipe d'aquesta proprietat es invalid",
 	"smw_concept_header": "Paginas del concèpte « $1 »",
-	"smw_conceptarticlecount": "Afichar çaijós $1 {{PLURAL:$1|pagina|paginas}}."
+	"smw_conceptarticlecount": "Afichar çaijós $1 {{PLURAL:$1|pagina|paginas}}.",
+	"smw-livepreview-loading": "Cargament…"
 }
