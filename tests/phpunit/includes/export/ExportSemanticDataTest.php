@@ -5,6 +5,8 @@ namespace SMW\Tests\Export;
 use SMW\Tests\Util\SemanticDataFactory;
 use SMW\Tests\Util\Validators\ExportDataValidator;
 
+use SMW\Tests\Util\Fixtures\FixturesProvider;
+
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\DataValueFactory;
@@ -31,6 +33,7 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataFactory;
 	private $dataValueFactory;
 	private $exportDataValidator;
+	private $fixturesProvider;
 
 	protected function setUp() {
 		parent::setUp();
@@ -38,6 +41,8 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->exportDataValidator = new ExportDataValidator();
+
+		$this->fixturesProvider = new FixturesProvider();
 	}
 
 	public function testExportRedirect() {
@@ -303,6 +308,35 @@ class ExportSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$expectedResource,
 			$expectedProperty,
 			$exportData
+		);
+	}
+
+	public function testExportSubSemanticData() {
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
+
+		$factsheet = $this->fixturesProvider->getFactsheet( 'berlin' );
+		$factsheet->setTargetSubject( $semanticData->getSubject() );
+
+		$demographicsSubobject = $factsheet->getDemographics();
+
+		$semanticData->addPropertyObjectValue(
+			$demographicsSubobject->getProperty(),
+			$demographicsSubobject->getContainer()
+		);
+
+		$exportData = Exporter::makeExportData(
+			$semanticData->findSubSemanticData( $demographicsSubobject->getId() )
+		);
+
+		$this->assertCount(
+			1,
+			$exportData->getValues( Exporter::getSpecialPropertyResource( '_SKEY' ) )
+		);
+
+		$this->assertCount(
+			1,
+			$exportData->getValues( Exporter::getSpecialNsResource( 'swivt', 'wikiNamespace' ) )
 		);
 	}
 
