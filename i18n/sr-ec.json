@@ -171,7 +171,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>Једно ажурирање је већ у току.</strong>\nНормално је да ажурирање напредује споро, пошто се само освежавају мали делови података сваки пут када корисник приступи викију.\nДа би се ово ажурирање брже завршило, можете покренути скрипту за одржавање Медијавикија <code>runJobs.php</code> (користите опцију <code>--maxjobs 1000</code> за ограничење броја ажурирања у једном пакету).\nПроцена напредовања тренутног ажурирања:",
 	"smw_smwadmin_datarefreshbutton": "Почни ажурирање података",
 	"smw_smwadmin_datarefreshstop": "Заустави ово ажурирање",
-	"smw_smwadmin_datarefreshstopconfirm": "Да, сигуран/-на сам",
+	"smw_smwadmin_datarefreshstopconfirm": "Да, {{GENDER:$1|сигуран|сигурна}} сам.",
 	"smw_smwadmin_support": "Добијање подршке",
 	"smw_smwadmin_supportdocu": "Постоји више места која могу помоћи у случају проблема:",
 	"smw_smwadmin_installfile": "Ако наиђете на проблем при инсталацији, најпре прочитајте смернице у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">датотеци INSTALL</a>.",
