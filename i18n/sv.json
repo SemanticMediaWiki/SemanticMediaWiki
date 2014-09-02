@@ -250,7 +250,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>En uppdatering pågår redan.</strong>\nDet är normalt att uppdateringen fortskrider långsamt, eftersom den endast uppdaterar data i små bitar åt gången varje gång en användare använder wikin.\nFör att avsluta uppdateringen snabbare, kan du köra MediaWiki-scriptet <code>runJobs.php</code> (använd valet <code>--maxjobs 1000</code>  för att begränsa antalet uppdateringar per körning).\nUppskattning av hur långt uppdateringen har kommit:",
 	"smw_smwadmin_datarefreshbutton": "Starta uppdatering av data",
 	"smw_smwadmin_datarefreshstop": "Stoppa denna uppdatering",
-	"smw_smwadmin_datarefreshstopconfirm": "Ja, jag är säker.",
+	"smw_smwadmin_datarefreshstopconfirm": "Ja, jag är {{GENDER:$1|säker}}.",
 	"smw_smwadmin_support": "Få support",
 	"smw_smwadmin_supportdocu": "Det finns flera ställen att få hjälp på, om du får problem:",
 	"smw_smwadmin_installfile": "Om du har problem med din installation, börja med att läsa instruktionerna i <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">installationsfilen</a>.",
