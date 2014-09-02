@@ -408,8 +408,8 @@ class SMWSQLStore3 extends SMWStore {
 		return $this->getSetupHandler()->drop( $verbose );
 	}
 
-	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
-		return $this->getSetupHandler()->refreshData( $index, $count, $namespaces, $usejobs );
+	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true, $verbose = false ) {
+		return $this->getSetupHandler()->refreshData( $index, $count, $namespaces, $usejobs, $verbose );
 	}
 
 

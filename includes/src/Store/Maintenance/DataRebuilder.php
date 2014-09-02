@@ -209,7 +209,7 @@ class DataRebuilder {
 
 			$this->reportMessage( "($this->rebuildCount) Processing ID " . $id . " ...\n", $this->verbose );
 
-			$this->store->refreshData( $id, 1, false, false );
+			$this->store->refreshData( $id, 1, false, false, $this->verbose );
 
 			if ( $this->delay !== false ) {
 				usleep( $this->delay );

@@ -315,7 +315,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 	 *
 	 * @return decimal between 0 and 1 to indicate the overall progress of the refreshing
 	 */
-	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
+	public function refreshData( &$index, $count, $namespaces = false, $usejobs = true, $verbose = false ) {
 		$updatejobs = array();
 		$emptyrange = true; // was nothing done in this run?
 
@@ -398,6 +398,7 @@ class SMWSQLStore3SetupHandlers implements MessageReporter {
 			Job::batchInsert( $updatejobs );
 		} else {
 			foreach ( $updatejobs as $job ) {
+				$this->reportProgress( ' |-' . $job->getTitle()->getPrefixedDBKey() . "\n", $verbose );
 				$job->run();
 			}
 		}
