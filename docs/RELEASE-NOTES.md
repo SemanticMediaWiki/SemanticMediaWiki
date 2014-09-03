@@ -5,6 +5,10 @@ This is not a release yet.
 ## Support for semantic queries in Special:Search
 This release adds support for semantic queries (#450, #496, #505) to be used directly from MediaWiki's standard search. By setting `$wgSearchType` to ["SMWSearch"](https://semantic-mediawiki.org/wiki/Help:SMWSearch), the search is activated and together with a related configuration parameter [``$smwgFallbackSearchType``](https://semantic-mediawiki.org/wiki/Help:$smwgFallbackSearchType) it is assured that a default search engine is being used in case "SMWSearch" returns no results.
 
+## Bug fixes 
+
+* #520 Fixes the `SPAPRQLStore` query selection for subobjects when using a namespace condition
+
 ## Internal changes
 
 * #350 Passes all unit tests on `HHVM` 3.3+
