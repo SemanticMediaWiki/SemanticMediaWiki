@@ -54,6 +54,7 @@
 	"smw-paramdesc-dsv-separator": "An dispartier d'ober gantañ",
 	"smw-paramdesc-dsv-filename": "Anv ar restr DSV",
 	"smw-paramdesc-searchlabel": "Testenn evit kenderc'hel an enklask",
+	"smw-paramdesc-jsonsyntax": "Ereadur JSON da implijout",
 	"smw_iq_disabled": "Diweredekaet eo bet ar goulennoù semantek evit ar wiki-mañ.",
 	"smw_iq_moreresults": "... disoc'hoù all",
 	"smw_parseerror": "An talvoud merket n'eo ket bet komprenet.",
@@ -95,6 +96,8 @@
 	"smw_property_template": "$1 eus ar seurt $2 ($3)",
 	"smw_propertylackspage": "An holl berzhioù a rank bezañ deskrivet gant ur bajenn !",
 	"smw_propertyhardlyused": "Ar perzh-mañ a vez implijet a-boan er wiki !",
+	"concepts": "Meizadoù",
+	"smw-sp-concept-header": "Roll ar meizadoù",
 	"unusedproperties": "Perzhioù dizimplij",
 	"smw_unusedproperties_docu": "Ar perzhioù-mañ zo anezho daoust ma ne vezont implijet gant pajenn all ebet.",
 	"smw_unusedproperty_template": "$1 eus ar seurt $2",
@@ -173,6 +176,7 @@
 	"smw-paramdesc-category-delim": "Ar bevenner",
 	"smw-info-par-message": "Kemennadenn da ziskwel.",
 	"smw-ui-tooltip-title-quantity": "Kementad",
+	"smw-ui-tooltip-title-info": "Titouroù",
 	"smw-ui-tooltip-title-warning": "Fazi",
 	"smw-ui-tooltip-title-parameter": "Arventenn",
 	"smw-ui-tooltip-title-event": "Darvoud",
@@ -180,5 +184,7 @@
 	"smw-ui-tooltip-title-legend": "Alc'hwez",
 	"smw_unknowntype": "Ar seurt roadennoù \"$1\" nann skoret a zo distroet d'an doareenn",
 	"smw_concept_header": "Pajennoù ar meizad « $1 »",
-	"smw_conceptarticlecount": "Diskouez {{PLURAL:$1|ar bajenn|ar $1 pajenn}} diazezet war ar meizad-se"
+	"smw_conceptarticlecount": "Diskouez {{PLURAL:$1|ar bajenn|ar $1 pajenn}} diazezet war ar meizad-se",
+	"smw-sp-admin-settings-title": "Arventennoù kefluniañ",
+	"smw-livepreview-loading": "O kargañ..."
 }
