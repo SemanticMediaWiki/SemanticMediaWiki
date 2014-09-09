@@ -125,7 +125,8 @@ class TableResultPrinter extends ResultPrinter {
 	 * @since 1.6.1
 	 *
 	 * @param SMWResultArray $resultArray
-	 * @param $outputmode
+	 * @param int $outputmode
+	 * @param string $columnClass
 	 *
 	 * @return string
 	 */
@@ -157,7 +158,8 @@ class TableResultPrinter extends ResultPrinter {
 			$content = $this->getCellContent(
 				$dataValues,
 				$outputmode,
-				$resultArray->getPrintRequest()->getMode() == SMWPrintRequest::PRINT_THIS
+				$resultArray->getPrintRequest()->getMode() == SMWPrintRequest::PRINT_THIS,
+				$resultArray->getPrintRequest()->getParameter( 'sep', '<br>' )
 			);
 		}
 
@@ -169,13 +171,14 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param array $dataValues
-	 * @param $outputmode
+	 * @param \SMWDataValue[] $dataValues
+	 * @param int $outputmode
 	 * @param boolean $isSubject
 	 *
+	 * @param string $separator
 	 * @return string
 	 */
-	protected function getCellContent( array /* of SMWDataValue */ $dataValues, $outputmode, $isSubject ) {
+	protected function getCellContent( array /* of SMWDataValue */ $dataValues, $outputmode, $isSubject, $separator ) {
 		$values = array();
 
 		foreach ( $dataValues as $dv ) {
@@ -183,7 +186,7 @@ class TableResultPrinter extends ResultPrinter {
 			$values[] = $value;
 		}
 
-		return implode( '<br />', $values );
+		return implode( $separator, $values );
 	}
 
 	/**

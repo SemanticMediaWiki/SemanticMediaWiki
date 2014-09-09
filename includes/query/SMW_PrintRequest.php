@@ -243,13 +243,13 @@ class SMWPrintRequest {
 
 	/**
 	 * Returns the value of a named parameter.
-	 * 
+	 *
 	 * @param $key string the name of the parameter key
-	 * 
-	 * @return string Value of the paramer, if set (else FALSE)
+	 * @param bool $default
+	 * @return string Value of the paramer, if set (else $default)
 	 */
-	public function getParameter( $key ) {
-		return array_key_exists( $key, $this->m_params ) ? $this->m_params[$key] : false;
+	public function getParameter( $key, $default = false ) {
+		return array_key_exists( $key, $this->m_params ) ? $this->m_params[$key] : $default;
 	}
 
 	/**
