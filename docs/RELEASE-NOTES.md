@@ -17,3 +17,4 @@ This release adds support for semantic queries (#450, #496, #505) to be used dir
 * #512, #521 Added benchmark tests for different components such as job-queue, maintenance script, queries etc.
 * #523 Enforces a non-display of the Factbox for a `delete action` and re-enable the Factbox for an undeleted page
 * #532 Added `UrlEncoder` to recognize all special characters when creating a manual link to `Special:Browse`
+* #534 Added a value hash to `SQLStore::fetchSemanticData` to ensure that only distinct values are displayed
