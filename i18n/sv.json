@@ -17,7 +17,8 @@
 			"Sannab",
 			"WikiPhoenix",
 			"아라",
-			"Lokal Profil"
+			"Lokal Profil",
+			"Freked"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -279,6 +280,7 @@
 	"smw-ui-tooltip-title-warning": "Fel",
 	"smw-ui-tooltip-title-parameter": "Parameter",
 	"smw-ui-tooltip-title-event": "Händelse",
+	"smw-ui-tooltip-title-note": "Anteckning",
 	"smw-ui-tooltip-title-legend": "Förklaring",
 	"smw_unknowntype": "Felaktig egenskapstyp",
 	"smw-concept-cache-text": "Det här konceptet beskriver {{PLURAL:$1|en sida|$1 sidor}}, och uppdaterades senast $2.",
