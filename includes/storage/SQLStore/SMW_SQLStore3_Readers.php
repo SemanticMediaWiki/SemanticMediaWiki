@@ -319,8 +319,12 @@ class SMWSQLStore3Readers {
 				) );
 
 		foreach ( $res as $row ) {
+
+			$valueHash = '';
+
 			if ( $issubject ) { // use joined or predefined property name
 				$propertykey = $proptable->isFixedPropertyTable() ? $proptable->getFixedProperty() : $row->prop;
+				$valueHash = $propertykey;
 			}
 
 			// Use enclosing array only for results with many values:
@@ -334,10 +338,13 @@ class SMWSQLStore3Readers {
 				$valuekeys = $row->v0;
 			}
 
+			// The valueHash prevents from inserting duplicate entries of the same content
+			$valueHash = $valuecount > 1 ? md5( $valueHash . implode( '#', $valuekeys ) ) : md5( $valueHash . $valuekeys );
+
 			// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
 			if ( $valuecount < 3 || implode( '', $fields ) != 'p' ||
 			     $valuekeys[2] === '' ||  $valuekeys[2]{0} != ':' ) {
-				$result[] = $issubject ? array( $propertykey, $valuekeys ) : $valuekeys;
+				$result[ $valueHash ] = $issubject ? array( $propertykey, $valuekeys ) : $valuekeys;
 			}
 		}
 
