@@ -1,4 +1,7 @@
 <?php
+
+use SMW\UrlEncoder;
+
 /**
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
@@ -54,30 +57,28 @@ class SMWSpecialBrowse extends SpecialPage {
 		$this->articletext = $wgRequest->getVal( 'article' );
 		// no GET parameters? Then try the URL
 		if ( is_null( $this->articletext ) ) {
-			$params = SMWInfolink::decodeParameters( $query, false );
-			reset( $params );
-			$this->articletext = current( $params );
+			$this->articletext = UrlEncoder::decode( $query );
 		}
-		
+
 		$this->subject = \SMW\DataValueFactory::getInstance()->newTypeIDValue( '_wpg', $this->articletext );
 		$offsettext = $wgRequest->getVal( 'offset' );
 		$this->offset = ( is_null( $offsettext ) ) ? 0 : intval( $offsettext );
-		
+
 		$dir = $wgRequest->getVal( 'dir' );
-		
+
 		if ( $smwgBrowseShowAll ) {
 			$this->showoutgoing = true;
 			$this->showincoming = true;
 		}
-		
+
 		if ( $dir === 'both' || $dir === 'in' ) {
 			$this->showincoming = true;
 		}
-		
+
 		if ( $dir === 'in' ) {
 			$this->showoutgoing = false;
 		}
-		
+
 		if ( $dir === 'out' ) {
 			$this->showincoming = false;
 		}
@@ -96,41 +97,41 @@ class SMWSpecialBrowse extends SpecialPage {
 		global $wgContLang, $wgOut;
 		$html = "\n";
 		$leftside = !( $wgContLang->isRTL() ); // For right to left languages, all is mirrored
-		
+
 		if ( $this->subject->isValid() ) {
 
 			$html .= $this->displayHead();
-			
+
 			if ( $this->showoutgoing ) {
 				$data = \SMW\StoreFactory::getStore()->getSemanticData( $this->subject->getDataItem() );
 				$html .= $this->displayData( $data, $leftside );
 				$html .= $this->displayCenter();
 			}
-			
+
 			if ( $this->showincoming ) {
 				list( $indata, $more ) = $this->getInData();
 				global $smwgBrowseShowInverse;
-				
+
 				if ( !$smwgBrowseShowInverse ) {
 					$leftside = !$leftside;
 				}
-				
+
 				$html .= $this->displayData( $indata, $leftside, true );
 				$html .= $this->displayBottom( $more );
 			}
 
 			$this->articletext = $this->subject->getWikiValue();
-			
+
 			// Add a bit space between the factbox and the query form
 			if ( !$this->including() ) {
 				$html .= "<p> &#160; </p>\n";
 			}
 		}
-		
+
 		if ( !$this->including() ) {
 			$html .= $this->queryForm();
 		}
-		
+
 		$wgOut->addHTML( $html );
 	}
 
@@ -171,14 +172,14 @@ class SMWSpecialBrowse extends SpecialPage {
 			$body  = "<td>\n";
 
 			$values = $data->getPropertyValues( $diProperty );
-			
+
 			if ( $incoming && ( count( $values ) >= SMWSpecialBrowse::$incomingvaluescount ) ) {
 				$moreIncoming = true;
 				array_pop( $values );
 			} else {
 				$moreIncoming = false;
 			}
-			
+
 			$first = true;
 			foreach ( $values as /* SMWDataItem */ $di ) {
 				if ( $first ) {
@@ -192,7 +193,7 @@ class SMWSpecialBrowse extends SpecialPage {
 				} else {
 					$dv = \SMW\DataValueFactory::getInstance()->newDataItemValue( $di, $diProperty );
 				}
-				
+
 				$body .= "<span class=\"{$ccsPrefix}value\">" .
 				         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>\n";
 			}
