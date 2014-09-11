@@ -17,7 +17,8 @@
 			"Sannab",
 			"WikiPhoenix",
 			"아라",
-			"Lokal Profil"
+			"Lokal Profil",
+			"Freked"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -250,7 +251,7 @@
 	"smw_smwadmin_datarefreshprogress": "<strong>En uppdatering pågår redan.</strong>\nDet är normalt att uppdateringen fortskrider långsamt, eftersom den endast uppdaterar data i små bitar åt gången varje gång en användare använder wikin.\nFör att avsluta uppdateringen snabbare, kan du köra MediaWiki-scriptet <code>runJobs.php</code> (använd valet <code>--maxjobs 1000</code>  för att begränsa antalet uppdateringar per körning).\nUppskattning av hur långt uppdateringen har kommit:",
 	"smw_smwadmin_datarefreshbutton": "Starta uppdatering av data",
 	"smw_smwadmin_datarefreshstop": "Stoppa denna uppdatering",
-	"smw_smwadmin_datarefreshstopconfirm": "Ja, jag är säker.",
+	"smw_smwadmin_datarefreshstopconfirm": "Ja, jag är {{GENDER:$1|säker}}.",
 	"smw_smwadmin_support": "Få support",
 	"smw_smwadmin_supportdocu": "Det finns flera ställen att få hjälp på, om du får problem:",
 	"smw_smwadmin_installfile": "Om du har problem med din installation, börja med att läsa instruktionerna i <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">installationsfilen</a>.",
@@ -279,6 +280,7 @@
 	"smw-ui-tooltip-title-warning": "Fel",
 	"smw-ui-tooltip-title-parameter": "Parameter",
 	"smw-ui-tooltip-title-event": "Händelse",
+	"smw-ui-tooltip-title-note": "Anteckning",
 	"smw-ui-tooltip-title-legend": "Förklaring",
 	"smw_unknowntype": "Felaktig egenskapstyp",
 	"smw-concept-cache-text": "Det här konceptet beskriver {{PLURAL:$1|en sida|$1 sidor}}, och uppdaterades senast $2.",
