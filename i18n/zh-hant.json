@@ -158,6 +158,7 @@
 	"smw-statistics": "Semantic 語義統計",
 	"smw-statistics-query-inline": "$1 條查詢",
 	"smw-statistics-query-size": "隊列長度",
+	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|概念}}]]",
 	"smw_uri_doc": "URI 分析器實現[$1 W3C httpRange-14 標記查找]。它將處理那些沒有網站內容的頁。",
 	"ask": "語意搜尋",
 	"smw_ask_sortby": "按列排序（可選）",
