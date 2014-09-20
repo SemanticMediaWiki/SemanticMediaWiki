@@ -2,6 +2,11 @@
 
 namespace SMW\Tests\Util;
 
+use SMW\MediaWiki\Hooks\HookRegistry;
+
+use Closure;
+use RuntimeException;
+
 /**
  * @license GNU GPL v2+
  * @since   1.9
@@ -10,9 +15,14 @@ namespace SMW\Tests\Util;
  */
 class MwHooksHandler {
 
+	/**
+	 * @var HookRegistry
+	 */
+	private $hookRegistry = null;
+
 	private $wgHooks = array();
 
-	private $listOfHooks = array(
+	private $listOfSmwHooks = array(
 		'SMWStore::updateDataBefore',
 		'smwInitProperties',
 		'SMW::SQLStore::updatePropertyTableDefinitions'
@@ -20,10 +30,17 @@ class MwHooksHandler {
 
 	/**
 	 * @since  2.0
+	 *
+	 * @return MwHooksHandler
 	 */
 	public function deregisterListedHooks() {
 
-		foreach ( $this->listOfHooks as $hook ) {
+		$listOfHooks = array_merge(
+			$this->listOfSmwHooks,
+			$this->getHookRegistry()->getListOfRegisteredFunctionHooks()
+		);
+
+		foreach ( $listOfHooks as $hook ) {
 
 			if ( !isset( $GLOBALS['wgHooks'][ $hook ] ) ) {
 				continue;
@@ -32,22 +49,68 @@ class MwHooksHandler {
 			$this->wgHooks[ $hook ] = $GLOBALS['wgHooks'][ $hook ];
 			$GLOBALS['wgHooks'][ $hook ] = array();
 		}
+
+		return $this;
 	}
 
 	/**
 	 * @since  2.0
+	 *
+	 * @return MwHooksHandler
 	 */
 	public function restoreListedHooks() {
 
-		foreach ( $this->listOfHooks as $hook ) {
-
-			if ( !isset( $this->wgHooks[ $hook ] ) ) {
-				continue;
-			}
-
-			$GLOBALS['wgHooks'][ $hook ] = $this->wgHooks[ $hook ];
+		foreach ( $this->wgHooks as $hook => $definition ) {
+			$GLOBALS['wgHooks'][ $hook ] = $definition;
 			unset( $this->wgHooks[ $hook ] );
 		}
+
+		return $this;
+	}
+
+	/**
+	 * @since  2.1
+	 *
+	 * @return MwHooksHandler
+	 */
+	public function registerHook( $name, Closure $function ) {
+
+		$listOfHooks = array_merge(
+			$this->listOfSmwHooks,
+			$this->getHookRegistry()->getListOfRegisteredFunctionHooks()
+		);
+
+		if ( !in_array( $name, $listOfHooks ) ) {
+			throw new RuntimeException( "$name is not listed as registrable hook" );
+		}
+
+		$GLOBALS['wgHooks'][ $name ][] = $function;
+
+		return $this;
+	}
+
+	/**
+	 * @since  2.1
+	 *
+	 * @return MwHooksHandler
+	 */
+	public function invokeHooksFromRegistry() {
+		$this->getHookRegistry()->register();
+		return $this;
+	}
+
+	/**
+	 * @since  2.1
+	 *
+	 * @return HookRegistry
+	 */
+	public function getHookRegistry() {
+
+		if ( $this->hookRegistry === null ) {
+			 $this->hookRegistry = new HookRegistry( $GLOBALS, '' );
+		}
+
+		return $this->hookRegistry;
 	}
 
 }

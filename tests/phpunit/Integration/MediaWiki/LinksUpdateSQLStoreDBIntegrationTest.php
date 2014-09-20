@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\Util\PageCreator;
 use SMW\Tests\Util\PageDeleter;
-use SMW\Tests\Util\MwHooksHandler;
+
 use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\Application;
@@ -46,11 +46,16 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
-		$this->mwHooksHandler = new MwHooksHandler();
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
+
+		$this->mwHooksHandler
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
 		$this->pageDeleter = new PageDeleter();
 
+		$this->application = Application::getInstance();
 		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
 	}
 
@@ -66,8 +71,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	public function testPageCreationAndRevisionHandlingBeforeLinksUpdate() {
-
-		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->title = Title::newFromText( __METHOD__ );
 
@@ -88,8 +91,6 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	 * @dataProvider propertyCountProvider
 	 */
 	public function testLinksUpdateAndVerifyStoreUpdate( $expected ) {
-
-		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->title = Title::newFromText( __METHOD__ );
 

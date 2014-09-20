@@ -2,18 +2,17 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\Util\ParserFactory;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\ConceptParserFunction;
 use SMW\MessageFormatter;
-use SMW\ParserData;
+use SMW\Application;
 
 use Title;
 use ParserOutput;
 
 /**
  * @covers \SMW\ConceptParserFunction
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -26,44 +25,116 @@ use ParserOutput;
  */
 class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
+	private $application;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->application = Application::getInstance();
+	}
+
+	protected function tearDown() {
+		$this->application->clear();
+
+		parent::tearDown();
+	}
+
 	public function testCanConstruct() {
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\ConceptParserFunction',
-			$this->newInstance()
+			new ConceptParserFunction( $parserData, $messageFormatter )
 		);
 	}
 
 	/**
 	 * @dataProvider namespaceDataProvider
 	 */
-	public function testErrorOnNamespace( $namespace ) {
+	public function testErrorForNonConceptNamespace( $namespace ) {
 
-		$title = Title::newFromText( __METHOD__, $namespace );
-
-		$instance = $this->newInstance( $title, new ParserOutput() );
-
-		$this->assertEquals(
-			$this->getMessageText( $title, 'smw_no_concept_namespace' ),
-			$instance->parse( array() )
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__, $namespace ),
+			new ParserOutput()
 		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter->expects( $this->once() )
+			->method( 'addFromKey' )
+			->with( $this->equalTo( 'smw_no_concept_namespace' ) )
+			->will( $this->returnSelf() );
+
+		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
+		$instance->parse( array() );
 	}
 
 	/**
 	 * @dataProvider queryParameterProvider
 	 */
-	public function testErrorOnDoubleParse( array $params ) {
+	public function testErrorForOnDoubleParse( array $params ) {
 
-		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
+			new ParserOutput()
+		);
 
-		$instance = $this->newInstance( $title, new ParserOutput() );
- 		$instance->parse( $params );
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter->expects( $this->any() )
+			->method( 'addFromArray' )
+			->will( $this->returnSelf() );
+
+		$messageFormatter->expects( $this->once() )
+			->method( 'addFromKey' )
+			->with( $this->equalTo( 'smw_multiple_concepts' ) )
+			->will( $this->returnSelf() );
+
+		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
 
 		$instance->parse( $params );
+		$instance->parse( $params );
+	}
+
+	public function testExistForFoundMessageFormatterEntry() {
+
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
+			new ParserOutput()
+		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter->expects( $this->any() )
+			->method( 'addFromArray' )
+			->will( $this->returnSelf() );
+
+		$messageFormatter->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$messageFormatter->expects( $this->once() )
+			->method( 'getHtml' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
 
 		$this->assertEquals(
-			$this->getMessageText( $title, 'smw_multiple_concepts' ),
-			$instance->parse( $params )
+			'Foo',
+			$instance->parse( array() )
 		);
 	}
 
@@ -72,26 +143,32 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$parserOutput =  new ParserOutput();
-		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
+			new ParserOutput()
+		);
 
-		$instance = $this->newInstance( $title, $parserOutput );
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter->expects( $this->any() )
+			->method( 'addFromArray' )
+			->will( $this->returnSelf() );
+
+		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
 		$instance->parse( $params );
-
-		$parserData = new ParserData( $title, $parserOutput );
 
 		$this->assertCount(
 			$expected['propertyCount'],
 			$parserData->getSemanticData()->getProperties()
 		);
 
-		// Confirm concept property
-		foreach ( $parserData->getSemanticData()->getProperties() as $key => $diproperty ){
-			$this->assertInstanceOf( 'SMWDIProperty', $diproperty );
-			$this->assertEquals( '_CONC' , $diproperty->getKey() );
+		foreach ( $parserData->getSemanticData()->getProperties() as $property ){
 
-			// Confirm concept property values
-			foreach ( $parserData->getSemanticData()->getPropertyValues( $diproperty ) as $dataItem ){
+			$this->assertEquals( '_CONC' , $property->getKey() );
+
+			foreach ( $parserData->getSemanticData()->getPropertyValues( $property ) as $dataItem ) {
 				$this->assertEquals( $expected['conceptQuery'], $dataItem->getConceptQuery() );
 				$this->assertEquals( $expected['conceptDocu'], $dataItem->getDocumentation() );
 				$this->assertEquals( $expected['conceptSize'], $dataItem->getSize() );
@@ -100,19 +177,6 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	public function testStaticRender() {
-
-		$parser = ParserFactory::newFromTitle( Title::newFromText( __METHOD__ ) );
-
-		$this->assertInternalType(
-			'string',
-			ConceptParserFunction::render( $parser )
-		);
-	}
-
-	/**
-	 * @return array
-	 */
 	public function queryParameterProvider() {
 
 		$provider = array();
@@ -154,9 +218,11 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		// #2 (includes Parser object)
+		$parser = UtilityFactory::getInstance()->newParserFactory()->newFromTitle( Title::newFromText( __METHOD__ ) );
+
 		$provider[] = array(
 			array(
-				ParserFactory::newFromTitle( Title::newFromText( __METHOD__ ) ),
+				$parser,
 				'[[Modification date::+]]',
 				'Foooooooo'
 			),
@@ -174,37 +240,11 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
-	/**
-	 * NameSpaceDataProvider
-	 *
-	 * @return array
-	 */
 	public function namespaceDataProvider() {
 		return array(
 			array( NS_MAIN ),
 			array( NS_HELP )
 		);
-	}
-
-	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
-
-		if ( $title === null ) {
-			$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
-		}
-
-		if ( $parserOutput === null ) {
-			$parserOutput = new ParserOutput();
-		}
-
-		return new ConceptParserFunction(
-			new ParserData( $title, $parserOutput ),
-			new MessageFormatter( $title->getPageLanguage() )
-		);
-	}
-
-	private function getMessageText( Title $title, $error ) {
-		$message = new MessageFormatter( $title->getPageLanguage() );
-		return $message->addFromKey( $error )->getHtml();
 	}
 
 }

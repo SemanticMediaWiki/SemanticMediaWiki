@@ -78,31 +78,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testStaticRender() {
-
-		$parser = $this->getMockBuilder( 'Parser' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$parser->expects( $this->exactly( 2 ) )
-			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
-
-		$parser->expects( $this->once() )
-			->method( 'getOutput' )
-			->will( $this->returnValue( new ParserOutput ) );
-
-		$parser->expects( $this->once() )
-			->method( 'getTargetLanguage' )
-			->will( $this->returnValue( \Language::factory( 'en' ) ) );
-
-		$result = RecurringEventsParserFunction::render( $parser );
-		$this->assertInternalType( 'string', $result );
-	}
-
-	/**
-	 * @return array
-	 */
 	public function recurringEventsDataProvider() {
 
 		$provider = array();

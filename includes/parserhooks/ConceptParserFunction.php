@@ -2,17 +2,15 @@
 
 namespace SMW;
 
+use SMWInfolink;
+use SMWQueryProcessor;
+
 use Parser;
 use Html;
 use Title;
 
-use SMWDIProperty;
-use SMWInfolink;
-use SMWQueryProcessor;
-
 /**
  * Class that provides the {{#concept}} parser function
- *
  *
  * @license GNU GPL v2+
  * @since   1.9
@@ -21,90 +19,27 @@ use SMWQueryProcessor;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-
-/**
- * Class that provides the {{#concept}} parser function
- *
- * @ingroup ParserFunction
- */
 class ConceptParserFunction {
 
-	/** @var ParserData */
-	protected $parserData;
+	/**
+	 * @var ParserData
+	 */
+	private $parserData;
 
-	/** @var MessageFormatter */
-	protected $msgFormatter;
+	/**
+	 * @var MessageFormatter
+	 */
+	private $messageFormatter;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param MessageFormatter $msgFormatter
+	 * @param MessageFormatter $messageFormatter
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
 		$this->parserData = $parserData;
-		$this->msgFormatter = $msgFormatter;
-	}
-
-	/**
-	 * Returns RDF link
-	 *
-	 * @since 1.9
-	 *
-	 * @param Title $title
-	 *
-	 * @return string
-	 */
-	protected function getRDFLink( Title $title ) {
-		return SMWInfolink::newInternalLink(
-			wfMessage( 'smw_viewasrdf' )->inContentLanguage()->text(),
-			$title->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink'
-		);
-	}
-
-	/**
-	 * Returns a concept information box as html
-	 *
-	 * @since 1.9
-	 *
-	 * @param Title $title
-	 * @param $queryString
-	 * @param $documentation
-	 *
-	 * @return string
-	 */
-	protected function getHtml( Title $title, $queryString, $documentation ) {
-		return Html::rawElement( 'div', array( 'class' => 'smwfact' ),
-			Html::rawElement( 'span', array( 'class' => 'smwfactboxhead' ),
-				wfMessage( 'smw_concept_description', $title->getText() )->inContentLanguage()->text() ) .
-			Html::rawElement( 'span', array( 'class' => 'smwrdflink' ), $this->getRDFLink( $title )->getWikiText() ) .
-			Html::element( 'br', array() ) .
-			Html::element( 'p', array(), $documentation ? $documentation : '' ) .
-			Html::rawElement( 'pre', array(), str_replace( '[', '&#x005B;', $queryString ) ) .
-			Html::element( 'br', array() )
-		);
-	}
-
-	/**
-	 * After some discussion IQueryProcessor/QueryProcessor is not being
-	 * used in 1.9 and instead rely on SMWQueryProcessor
-	 *
-	 * @todo Static class SMWQueryProcessor, please fixme
-	 */
-	private function initQueryProcessor( array $rawParams, $showMode = false ) {
-		list( $this->query, $this->params ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
-			$rawParams,
-			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
-			$showMode
-		);
-
-		$this->result = SMWQueryProcessor::getResultFromQuery(
-			$this->query,
-			$this->params,
-			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY
-		);
+		$this->messageFormatter = $messageFormatter;
 	}
 
 	/**
@@ -121,12 +56,12 @@ class ConceptParserFunction {
 		$this->parserData->getOutput()->addModules( 'ext.smw.style' );
 
 		$title = $this->parserData->getTitle();
-		$property = new SMWDIProperty( '_CONC' );
+		$property = new DIProperty( '_CONC' );
 
 		if ( !( $title->getNamespace() === SMW_NS_CONCEPT ) ) {
-			return $this->msgFormatter->addFromKey( 'smw_no_concept_namespace' )->getHtml();
-		} elseif ( count( $this->parserData->getData()->getPropertyValues( $property ) ) > 0 ) {
-			return $this->msgFormatter->addFromKey( 'smw_multiple_concepts' )->getHtml();
+			return $this->messageFormatter->addFromKey( 'smw_no_concept_namespace' )->getHtml();
+		} elseif ( count( $this->parserData->getSemanticData()->getPropertyValues( $property ) ) > 0 ) {
+			return $this->messageFormatter->addFromKey( 'smw_multiple_concepts' )->getHtml();
 		}
 
 		// Remove parser object from parameters array
@@ -140,46 +75,65 @@ class ConceptParserFunction {
 		// Use second parameter, if any as a description
 		$conceptDocu = array_shift( $rawParams );
 
-		// Query processor
-		$this->initQueryProcessor( array( $conceptQuery ) );
+		$query = $this->buildQuery( $conceptQuery );
 
-		$conceptQueryString = $this->query->getDescription()->getQueryString();
+		$conceptQueryString = $query->getDescription()->getQueryString();
 
-		// Store query data to the semantic data instance
-		$this->parserData->getData()->addPropertyObjectValue(
+		$this->parserData->getSemanticData()->addPropertyObjectValue(
 			$property,
 			new DIConcept(
 				$conceptQueryString,
 				$conceptDocu,
-				$this->query->getDescription()->getQueryFeatures(),
-				$this->query->getDescription()->getSize(),
-				$this->query->getDescription()->getDepth()
+				$query->getDescription()->getQueryFeatures(),
+				$query->getDescription()->getSize(),
+				$query->getDescription()->getDepth()
 			)
 		);
 
-		// Collect possible errors
-		$this->msgFormatter->addFromArray( $this->query->getErrors() )->addFromArray( $this->parserData->getErrors() );
+		$this->messageFormatter
+			->addFromArray( $query->getErrors() )
+			->addFromArray( $this->parserData->getErrors() );
 
-		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->msgFormatter->exists() ? $this->msgFormatter->getHtml() : $this->getHtml( $title, $conceptQueryString, $conceptDocu );
+		if ( $this->messageFormatter->exists() ) {
+			return $this->messageFormatter->getHtml();
+		}
+
+		return $this->buildConceptInfoBox( $title, $conceptQueryString, $conceptDocu );
 	}
 
-	/**
-	 * Parser::setFunctionHook {{#concept}} handler method
-	 *
-	 * @since 1.9
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return string
-	 */
-	public static function render( Parser &$parser ) {
-		$concept = new self(
-			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new MessageFormatter( $parser->getTargetLanguage() )
+	private function buildConceptInfoBox( Title $title, $queryString, $documentation ) {
+		return Html::rawElement( 'div', array( 'class' => 'smwfact' ),
+			Html::rawElement( 'span', array( 'class' => 'smwfactboxhead' ),
+				wfMessage( 'smw_concept_description', $title->getText() )->inContentLanguage()->text() ) .
+			Html::rawElement( 'span', array( 'class' => 'smwrdflink' ), $this->getRdfLink( $title )->getWikiText() ) .
+			Html::element( 'br', array() ) .
+			Html::element( 'p', array(), $documentation ? $documentation : '' ) .
+			Html::rawElement( 'pre', array(), str_replace( '[', '&#x005B;', $queryString ) ) .
+			Html::element( 'br', array() )
 		);
-		return $concept->parse( func_get_args() );
 	}
+
+	private function getRdfLink( Title $title ) {
+		return SMWInfolink::newInternalLink(
+			wfMessage( 'smw_viewasrdf' )->inContentLanguage()->text(),
+			$title->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink'
+		);
+	}
+
+	private function buildQuery( $conceptQueryString ) {
+
+ 		$rawParams = array( $conceptQueryString );
+
+		list( $query, $parameters ) = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+			$rawParams,
+			SMW_OUTPUT_WIKI,
+			SMWQueryProcessor::CONCEPT_DESC,
+			false
+		);
+
+		return $query;
+	}
+
 }

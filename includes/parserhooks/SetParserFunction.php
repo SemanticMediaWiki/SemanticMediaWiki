@@ -10,7 +10,6 @@ use Parser;
  * @see http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Silent_annotations_using_.23set
  * @see http://www.semantic-mediawiki.org/wiki/Help:Setting_values
  *
- *
  * @license GNU GPL v2+
  * @since   1.9
  *
@@ -18,34 +17,30 @@ use Parser;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-
-/**
- * Class that provides the {{#set}} parser function
- *
- * @ingroup ParserFunction
- */
 class SetParserFunction {
 
-	/** @var ParserDate */
-	protected $parserData;
+	/**
+	 * @var ParserDate
+	 */
+	private $parserData;
 
-	/** @var MessageFormatter */
-	protected $msgFormatter;
+	/**
+	 * @var MessageFormatter
+	 */
+	private $messageFormatter;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param MessageFormatter $msgFormatter
+	 * @param MessageFormatter $messageFormatter
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $msgFormatter ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
 		$this->parserData = $parserData;
-		$this->msgFormatter = $msgFormatter;
+		$this->messageFormatter = $messageFormatter;
 	}
 
 	/**
-	 * Parse parameters and store its results to the ParserOutput object
-	 *
 	 * @since  1.9
 	 *
 	 * @param ArrayFormatter $parameters
@@ -70,26 +65,12 @@ class SetParserFunction {
 			}
 		}
 
-		// Update ParserOutput
 		$this->parserData->updateOutput();
 
-		return $this->msgFormatter->addFromArray( $this->parserData->getErrors() )
+		return $this->messageFormatter
+			->addFromArray( $this->parserData->getErrors() )
 			->addFromArray( $parameters->getErrors() )
 			->getHtml();
 	}
 
-	/**
-	 * Parser::setFunctionHook {{#set}} handler method
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return string|null
-	 */
-	public static function render( Parser &$parser ) {
-		$set = new self(
-			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new MessageFormatter( $parser->getTargetLanguage() )
-		);
-		return $set->parse( ParameterFormatterFactory::newFromArray( func_get_args() ) );
-	}
 }

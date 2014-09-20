@@ -2,14 +2,10 @@
 
 namespace SMW\Test;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
-use SMW\ExtensionContext;
+use SMW\Application;
 use SMW\AskParserFunction;
-use SMW\MessageFormatter;
-use SMW\ParserData;
-use SMW\QueryData;
-use SMW\Settings;
 
 use Title;
 use ParserOutput;
@@ -18,170 +14,157 @@ use ReflectionClass;
 /**
  * @covers \SMW\AskParserFunction
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class AskParserFunctionTest extends ParserTestCase {
+class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMW\AskParserFunction';
+	private $application;
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
+		$this->application = Application::getInstance();
+		$this->application->getSettings()->set( 'smwgQueryDurationEnabled', false );
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return AskParserFunction
-	 */
-	private function newInstance( Title $title = null, ParserOutput $parserOutput = null, Settings $settings = null ) {
+	protected function tearDown() {
+		$this->application->clear();
 
-		if ( $title === null ) {
-			$title = $this->newTitle();
-		}
+		parent::tearDown();
+	}
 
-		if ( $parserOutput === null ) {
-			$parserOutput = $this->newParserOutput();
-		}
+	public function testCanConstruct() {
 
-		if ( $settings === null ) {
-			$settings = $this->newSettings( array(
-				'smwgQueryDurationEnabled' => false
-			) );
-		}
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$context = new ExtensionContext();
-		$container = $context->getDependencyBuilder()->getContainer();
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$container->registerObject( 'MessageFormatter', new MessageFormatter( $title->getPageLanguage() ) );
-		$container->registerObject( 'Settings', $settings );
-
-		return new AskParserFunction(
-			$this->newParserData( $title, $parserOutput ),
-			$context
+		$this->assertInstanceOf(
+			'\SMW\AskParserFunction',
+			new AskParserFunction( $parserData, $messageFormatter )
 		);
 	}
 
 	/**
-	 * @test AskParserFunction::__construct
-	 *
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @test AskParserFunction::parse
 	 * @dataProvider queryDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testParse( array $params, array $expected ) {
 
-		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
-		$result  = $instance->parse( $params );
-		$this->assertInternalType( 'string', $result );
-
-	}
-
-	/**
-	 * @test AskParserFunction::parse (Test ($GLOBALS['smwgQEnabled'] = false))
-	 *
-	 * @since 1.9
-	 */
-	public function testIsQueryDisabled() {
-
-		$title    = $this->newTitle();
-		$message  = new MessageFormatter( $title->getPageLanguage() );
-
-		$instance = $this->newInstance( $title , $this->newParserOutput() );
-
-		$this->assertEquals(
-			$message->addFromKey( 'smw_iq_disabled' )->getHtml(),
-			$instance->isQueryDisabled(),
-			'asserts a resutling disabled error message'
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
 		);
 
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->parse( $params )
+		);
 	}
 
-	/**
-	 * @test AskParserFunction::setShowMode
-	 *
-	 * @since 1.9
-	 */
+	public function testIsQueryDisabled() {
+
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter->expects( $this->any() )
+			->method( 'addFromKey' )
+			->will( $this->returnSelf() );
+
+		$messageFormatter->expects( $this->once() )
+			->method( 'getHtml' );
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		$instance->isQueryDisabled();
+	}
+
 	public function testSetShowMode() {
 
-		$instance = $this->newInstance();
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$reflector = $this->newReflector();
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new AskParserFunction( $parserData, $messageFormatter );
+
+		$reflector = new ReflectionClass( '\SMW\AskParserFunction' );
 		$showMode = $reflector->getProperty( 'showMode' );
 		$showMode->setAccessible( true );
 
-		$this->assertFalse(
-			 $showMode->getValue( $instance ),
-			'asserts that showMode is false by default'
-		);
-
+		$this->assertFalse( $showMode->getValue( $instance ) );
 		$instance->setShowMode( true );
 
-		$this->assertTrue(
-			$showMode->getValue( $instance ),
-			'asserts that showMode is true'
-		);
-
+		$this->assertTrue( $showMode->getValue( $instance ) );
 	}
 
 	/**
-	 * @test AskParserFunction::parse
 	 * @dataProvider queryDataProvider
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $params
-	 * @param array $expected
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected, array $settings ) {
 
-		$parserOutput = $this->newParserOutput();
-		$title        = $this->newTitle();
-
-		// Initialize and parse
-		$instance = $this->newInstance( $title, $parserOutput, $this->newSettings( $settings ) );
-		$instance->parse( $params );
-
-		// Get semantic data from the ParserOutput
-		$parserData = $this->newParserData( $title, $parserOutput );
-
-		// Check the returned instance
-		$this->assertInstanceOf( 'SMW\SemanticData', $parserData->getData() );
-		$semanticDataValidator = new SemanticDataValidator;
-
-		// Confirm subSemanticData objects for the SemanticData instance
-		foreach ( $parserData->getData()->getSubSemanticData() as $containerSemanticData ){
-			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
-			$semanticDataValidator->assertThatPropertiesAreSet( $expected, $containerSemanticData );
+		foreach ( $settings as $key => $value ) {
+			$this->application->getSettings()->set( $key, $value );
 		}
 
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		$instance->parse( $params );
+
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
+			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
+
+			$this->semanticDataValidator->assertThatPropertiesAreSet(
+				$expected,
+				$containerSemanticData
+			);
+		}
 	}
 
-	/**
-	 * Provides sample data usually found in {{#ask}} queries
-	 *
-	 * @return array
-	 */
 	public function queryDataProvider() {
 
 		$provider = array();

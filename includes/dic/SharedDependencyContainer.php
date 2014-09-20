@@ -79,7 +79,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			'NullPropertyAnnotator'   => $this->NullPropertyAnnotator(),
 			'CommonPropertyAnnotator' => $this->CommonPropertyAnnotator(),
 			'PredefinedPropertyAnnotator' => $this->PredefinedPropertyAnnotator(),
-			'QueryProfiler' => $this->QueryProfiler(),
 
 			'JobFactory' => function ( DependencyBuilder $builder ) {
 				return new \SMW\MediaWiki\Jobs\JobFactory();
@@ -156,77 +155,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			 */
 			'MessageFormatter' => function ( DependencyBuilder $builder ) {
 				return new MessageFormatter( $builder->getArgument( 'Language' ) );
-			},
-
-			/**
-			 * AskParserFunction object definition
-			 *
-			 * @since  1.9
-			 *
-			 * @return AskParserFunction
-			 */
-			'AskParserFunction' => function ( DependencyBuilder $builder ) {
-
-				$parser = $builder->getArgument( 'Parser' );
-				$builder->addArgument( 'Language', $parser->getTargetLanguage() );
-
-				$parserData = $builder->newObject( 'ParserData', array(
-					'Title'        => $parser->getTitle(),
-					'ParserOutput' => $parser->getOutput()
-				) );
-
-				$instance = new AskParserFunction( $parserData, $builder->newObject( 'ExtensionContext' ) );
-
-				return $instance;
-			},
-
-			/**
-			 * ShowParserFunction object definition
-			 *
-			 * @since  1.9
-			 *
-			 * @return ShowParserFunction
-			 */
-			'ShowParserFunction' => function ( DependencyBuilder $builder ) {
-
-				$parser = $builder->getArgument( 'Parser' );
-				$builder->addArgument( 'Language', $parser->getTargetLanguage() );
-
-				$parserData = $builder->newObject( 'ParserData', array(
-					'Title'        => $parser->getTitle(),
-					'ParserOutput' => $parser->getOutput()
-				) );
-
-				$instance = new ShowParserFunction( $parserData, $builder->newObject( 'ExtensionContext' ) );
-
-				return $instance;
-			},
-
-			/**
-			 * SubobjectParserFunction object definition
-			 *
-			 * @since  1.9
-			 *
-			 * @return SubobjectParserFunction
-			 */
-			'SubobjectParserFunction' => function ( DependencyBuilder $builder ) {
-
-				$parser = $builder->getArgument( 'Parser' );
-
-				$parserData = $builder->newObject( 'ParserData', array(
-					'Title'        => $parser->getTitle(),
-					'ParserOutput' => $parser->getOutput()
-				) );
-
-				$subobject = new Subobject( $parser->getTitle() );
-
-				$messageFormatter = $builder->newObject( 'MessageFormatter', array(
-					'Language' => $parser->getTargetLanguage()
-				) );
-
-				$instance = new SubobjectParserFunction( $parserData, $subobject, $messageFormatter );
-
-				return $instance;
 			},
 
 			/**
@@ -337,27 +265,6 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			);
 
 			return new \SMW\Annotator\PredefinedPropertyAnnotator( $annotator, $valueProvider );
-		};
-	}
-
-	/**
-	 * @since  1.9
-	 *
-	 * @return ProfileAnnotator
-	 */
-	protected function QueryProfiler() {
-		return function ( DependencyBuilder $builder ) {
-
-			$profiler = new \SMW\Query\Profiler\NullProfile(
-				new Subobject( $builder->getArgument( 'Title' ) ),
-				new HashIdGenerator( $builder->getArgument( 'QueryParameters' ) )
-			);
-
-			$profiler = new \SMW\Query\Profiler\DescriptionProfile( $profiler, $builder->getArgument( 'QueryDescription' ) );
-			$profiler = new \SMW\Query\Profiler\FormatProfile( $profiler, $builder->getArgument( 'QueryFormat' ) );
-			$profiler = new \SMW\Query\Profiler\DurationProfile( $profiler, $builder->getArgument( 'QueryDuration' ) );
-
-			return $profiler;
 		};
 	}
 

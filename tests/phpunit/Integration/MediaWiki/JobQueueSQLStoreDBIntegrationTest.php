@@ -2,11 +2,10 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\Util\PageCreator;
 use SMW\Tests\Util\PageDeleter;
 use SMW\Tests\Util\JobQueueRunner;
-use SMW\Tests\Util\MwHooksHandler;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 
@@ -20,7 +19,6 @@ use Title;
 use Job;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
@@ -38,19 +36,32 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $application;
 	private $mwHooksHandler;
 	private $semanticDataValidator;
-	private $PageDeleter;
+	private $pageDeleter;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->application = Application::getInstance();
-		$this->mwHooksHandler = new MwHooksHandler();
-		$this->semanticDataValidator = new SemanticDataValidator();
-		$this->pageDeleter = new PageDeleter();
+		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
 
-		$this->application->getSettings()->set( 'smwgDeleteSubjectAsDeferredJob', true );
-		$this->application->getSettings()->set( 'smwgDeleteSubjectWithAssociatesRefresh', true );
-		$this->application->getSettings()->set( 'smwgEnableUpdateJobs', true );
+		$this->mwHooksHandler
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
+		$this->application = Application::getInstance();
+
+		$settings = array(
+			'smwgEnableUpdateJobs' => true,
+			'smwgDeleteSubjectAsDeferredJob' => true,
+			'smwgDeleteSubjectWithAssociatesRefresh' => true
+		);
+
+		foreach ( $settings as $key => $value ) {
+			$this->application->getSettings()->set( $key, $value );
+		}
+
+		$this->pageDeleter = new PageDeleter();
 
 		$jobQueueRunner = new JobQueueRunner( null, $this->getDBConnectionProvider() );
 		$jobQueueRunner->deleteAllJobs();
@@ -67,8 +78,6 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testPageDeleteTriggersDeleteSubjectJob( $source, $associate ) {
-
-		$this->mwHooksHandler->deregisterListedHooks();
 
 		$subject = DIWikiPage::newFromTitle( $source['title'] );
 
@@ -107,8 +116,6 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testPageMoveTriggersUpdateJob() {
 
-		$this->mwHooksHandler->deregisterListedHooks();
-
 		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
 		$newTitle = Title::newFromText( __METHOD__ . '-new' );
 
@@ -135,12 +142,9 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testSQLStoreRefreshDataTriggersUpdateJob() {
 
-		$this->mwHooksHandler->deregisterListedHooks();
-
 		$index = 1; //pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true );
-
 		$this->assertJob( 'SMW\UpdateJob' );
 	}
 
@@ -148,8 +152,6 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	 * @dataProvider jobFactoryProvider
 	 */
 	public function testJobFactory( $jobName, $type ) {
-
-		$this->mwHooksHandler->deregisterListedHooks();
 
 		$job = Job::factory(
 			$jobName,

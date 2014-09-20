@@ -2,14 +2,15 @@
 
 namespace SMW;
 
+use SMWPropertyValue as PropertyValue;
+
 use Parser;
-use SMWOutputs;
+use PPFrame;
 
 /**
  * Class that provides the {{#declare}} parser function
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Argument_declaration_in_templates
- *
  *
  * @license GNU GPL v2+
  * @since   1.5.3
@@ -17,108 +18,104 @@ use SMWOutputs;
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-
-/**
- * Class that provides the {{#declare}} parser function
- *
- * @ingroup ParserFunction
- */
 class DeclareParserFunction {
 
 	/**
-	 * Method for handling the declare parser function.
+	 * @var ParserData
+	 */
+	private $parserData;
+
+	/**
+	 * @var DIWikiPage
+	 */
+	private $subject;
+
+	/**
+	 * @since 2.1
 	 *
-	 * @since 1.5.3
+	 * @param ParserData $parserData
+	 */
+	public function __construct( ParserData $parserData ) {
+		$this->parserData = $parserData;
+	}
+
+	/**
+	 * @since 2.1
 	 *
-	 * @param Parser $parser
-	 * @param \PPFrame $frame
+	 * @param PPFrame $frame
 	 * @param array $args
 	 */
-	public static function render( Parser &$parser, \PPFrame $frame, array $args ) {
-		if ( $frame->isTemplate() ) {
+	public function parse( PPFrame $frame, array $args ) {
 
-			$parserData = new ParserData( $parser->getTitle(), $parser->getOutput() );
-			$subject = $parserData->getSemanticData()->getSubject();
+		// @todo Save as metadata
+		if ( !$frame->isTemplate() ) {
+			return '';
+		}
 
-			foreach ( $args as $arg )
-				if ( trim( $arg ) !== '' ) {
-					$expanded = trim( $frame->expand( $arg ) );
-					$parts = explode( '=', $expanded, 2 );
+		$this->subject = $this->parserData->getSemanticData()->getSubject();
 
-					if ( count( $parts ) == 1 ) {
-						$propertystring = $expanded;
-						$argumentname = $expanded;
-					} else {
-						$propertystring = $parts[0];
-						$argumentname = $parts[1];
-					}
+		foreach ( $args as $arg ) {
+			if ( trim( $arg ) !== '' ) {
+				$expanded = trim( $frame->expand( $arg ) );
+				$parts = explode( '=', $expanded, 2 );
 
-					$property = \SMWPropertyValue::makeUserProperty( $propertystring );
-					$argument = $frame->getArgument( $argumentname );
-					$valuestring = $frame->expand( $argument );
-
-					if ( $property->isValid() ) {
-						$type = $property->getPropertyTypeID();
-
-						if ( $type == '_wpg' ) {
-							$matches = array();
-							preg_match_all( '/\[\[([^\[\]]*)\]\]/u', $valuestring, $matches );
-							$objects = $matches[1];
-
-							if ( count( $objects ) == 0 ) {
-								if ( trim( $valuestring ) !== '' ) {
-									$dataValue = DataValueFactory::getInstance()->newPropertyValue(
-										$propertystring,
-										$valuestring,
-										false,
-										$subject
-									);
-
-									$parserData->addDataValue( $dataValue );
-								}
-							} else {
-								foreach ( $objects as $object ) {
-									$dataValue = DataValueFactory::getInstance()->newPropertyValue(
-										$propertystring,
-										$object,
-										false,
-										$subject
-									);
-
-									$parserData->addDataValue( $dataValue );
-								}
-							}
-						} elseif ( trim( $valuestring ) !== '' ) {
-
-							$dataValue = DataValueFactory::getInstance()->newPropertyValue(
-								$propertystring,
-								$valuestring,
-								false,
-								$subject
-							);
-
-							$parserData->addDataValue( $dataValue );
-						}
-
-						// $value = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $property->getDataItem(), $valuestring );
-						// if (!$value->isValid()) continue;
-					}
+				if ( count( $parts ) == 1 ) {
+					$propertystring = $expanded;
+					$argumentname = $expanded;
+				} else {
+					$propertystring = $parts[0];
+					$argumentname = $parts[1];
 				}
 
-				$parserData->updateOutput();
-		} else {
-			// @todo Save as metadata
+				$propertyValue = PropertyValue::makeUserProperty( $propertystring );
+				$argument = $frame->getArgument( $argumentname );
+				$valuestring = $frame->expand( $argument );
+
+				if ( $propertyValue->isValid() ) {
+					$this->matchValueArgument( $propertyValue, $propertystring, $valuestring );
+				}
+			}
 		}
 
-		global $wgTitle;
-		if ( !is_null( $wgTitle ) && $wgTitle->isSpecialPage() ) {
-			global $wgOut;
-			SMWOutputs::commitToOutputPage( $wgOut );
-		}
-		else {
-			SMWOutputs::commitToParser( $parser );
-		}
+		$this->parserData->updateOutput();
 
 		return '';
 	}
+
+	private function matchValueArgument( PropertyValue $propertyValue, $propertystring, $valuestring ) {
+
+		if ( $propertyValue->getPropertyTypeID() === '_wpg' ) {
+			$matches = array();
+			preg_match_all( '/\[\[([^\[\]]*)\]\]/u', $valuestring, $matches );
+			$objects = $matches[1];
+
+			if ( count( $objects ) == 0 ) {
+				if ( trim( $valuestring ) !== '' ) {
+					$this->addDataValue( $propertystring, $valuestring );
+				}
+			} else {
+				foreach ( $objects as $object ) {
+					$this->addDataValue( $propertystring, $object );
+				}
+			}
+		} elseif ( trim( $valuestring ) !== '' ) {
+			$this->addDataValue( $propertystring, $valuestring );
+		}
+
+		// $value = \SMW\DataValueFactory::getInstance()->newPropertyObjectValue( $property->getDataItem(), $valuestring );
+		// if (!$value->isValid()) continue;
+	}
+
+	private function addDataValue( $property, $value ) {
+
+		$dataValue = DataValueFactory::getInstance()->newPropertyValue(
+			$property,
+			$value,
+			false,
+			$this->subject
+		);
+
+		$this->parserData->addDataValue( $dataValue );
+	}
+
 }

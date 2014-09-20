@@ -12,7 +12,7 @@ use SMWQueryProcessor;
  *
  * @ingroup ParserFunction
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -21,24 +21,30 @@ use SMWQueryProcessor;
  */
 class AskParserFunction {
 
-	/** @var ParserData */
-	protected $parserData;
+	/**
+	 * @var ParserData
+	 */
+	private $parserData;
 
-	/** @var ContextResource */
-	protected $context;
+	/**
+	 * @var MessageFormatter
+	 */
+	private $messageFormatter;
 
-	/** @var boolean */
-	protected $showMode = false;
+	/**
+	 * @var boolean
+	 */
+	private $showMode = false;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param ContextResource $context
+	 * @param MessageFormatter $messageFormatter
 	 */
-	public function __construct( ParserData $parserData, ContextResource $context ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
 		$this->parserData = $parserData;
-		$this->context = $context;
+		$this->messageFormatter = $messageFormatter;
 	}
 
 	/**
@@ -97,10 +103,7 @@ class AskParserFunction {
 	 * @return string|null
 	 */
 	public function isQueryDisabled() {
-		return $this->context->getDependencyBuilder()
-			->newObject( 'MessageFormatter' )
-			->addFromKey( 'smw_iq_disabled' )
-			->getHtml();
+		return $this->messageFormatter->addFromKey( 'smw_iq_disabled' )->getHtml();
 	}
 
 	/**
@@ -129,10 +132,9 @@ class AskParserFunction {
 			SMWQueryProcessor::INLINE_QUERY
 		);
 
-		if ( $this->context->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
+		if ( Application::getInstance()->getSettings()->get( 'smwgQueryDurationEnabled' ) ) {
 			$this->queryDuration = microtime( true ) - $start;
 		}
-
 	}
 
 	/**
@@ -140,21 +142,22 @@ class AskParserFunction {
 	 */
 	private function runQueryProfiler( array $rawParams ) {
 
-		$profiler = $this->context->getDependencyBuilder()->newObject( 'QueryProfiler', array(
-			'QueryDescription' => $this->query->getDescription(),
-			'QueryParameters'  => $rawParams,
-			'QueryFormat'      => $this->params['format']->getValue(),
-			'QueryDuration'    => $this->queryDuration,
-			'Title'            => $this->parserData->getTitle(),
-		) );
+		$queryProfilerFactory = Application::getInstance()->newQueryProfilerFactory();
+
+		$profiler = $queryProfilerFactory->newQueryProfiler(
+			$this->parserData->getTitle(),
+			$this->query->getDescription(),
+			$rawParams,
+			$this->params['format']->getValue(),
+			$this->queryDuration
+		);
 
 		$profiler->addAnnotation();
 
-		$this->parserData->getData()->addPropertyObjectValue(
+		$this->parserData->getSemanticData()->addPropertyObjectValue(
 			$profiler->getProperty(),
 			$profiler->getContainer()
 		);
-
 	}
 
 }

@@ -87,21 +87,4 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 		return $this->messageFormatter->getHtml();
 	}
 
-	/**
-	 * Parser::setFunctionHook {{#set_recurring_event}} handler method
-	 *
-	 * @param Parser $parser
-	 *
-	 * @return string|null
-	 */
-	public static function render( Parser &$parser ) {
-		$instance = new self(
-			new ParserData( $parser->getTitle(), $parser->getOutput() ),
-			new Subobject( $parser->getTitle() ),
-			new MessageFormatter( $parser->getTargetLanguage() ),
-			Settings::newFromGlobals()
-		);
-
-		return $instance->parse( new ParserParameterFormatter( func_get_args() ) );
-	}
 }

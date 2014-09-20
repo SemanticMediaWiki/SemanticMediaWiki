@@ -5,34 +5,27 @@ namespace SMW;
 use Parser;
 
 /**
- * Factory class for convenience parser function instantiation
- *
  * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
  *
- * @ingroup ParserFunction
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class ParserFunctionFactory implements ContextAware {
+class ParserFunctionFactory {
 
-	/** @var Parser */
+	/**
+	 * @var Parser
+	 */
 	protected $parser;
-
-	/** @var ContextResource */
-	protected $context = null;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Parser $parser
-	 * @param ContextResource|null $context
 	 */
-	public function __construct( Parser $parser, ContextResource $context = null ) {
+	public function __construct( Parser $parser ) {
 		$this->parser = $parser;
-		$this->context = $context;
 	}
 
 	/**
@@ -49,45 +42,173 @@ class ParserFunctionFactory implements ContextAware {
 	}
 
 	/**
-	 * @see ContextAware::withContext
-	 *
-	 * @since 1.9
-	 *
-	 * @return ContextResource
+	 * @deprecated since 2.1, use newSubobjectParserFunction
 	 */
-	public function withContext() {
-
-		if ( $this->context === null ) {
-			$this->context = new ExtensionContext();
-		}
-
-		return $this->context;
+	public function getSubobjectParser() {
+		return $this->newSubobjectParserFunction();
 	}
 
 	/**
-	 * Convenience instantiation of a SubobjectParserFunction object
+	 * @deprecated since 2.1, use newRecurringEventsParserFunction
+	 */
+	public function getRecurringEventsParser() {
+		return $this->newRecurringEventsParserFunction();
+	}
+
+	/**
+	 * @since 2.1
 	 *
-	 * @since 1.9
+	 * @return AskParserFunction
+	 */
+	public function newAskParserFunction() {
+
+		$parserData = Application::getInstance()->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
+		);
+
+		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+
+		$instance = new AskParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		return $instance;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return ShowParserFunction
+	 */
+	public function newShowParserFunction() {
+
+		$parserData = Application::getInstance()->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
+		);
+
+		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+
+		$instance = new ShowParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		return $instance;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return SetParserFunction
+	 */
+	public function newSetParserFunction() {
+
+		$parserData = Application::getInstance()->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
+		);
+
+		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+
+		$instance = new SetParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		return $instance;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return ConceptParserFunction
+	 */
+	public function newConceptParserFunction() {
+
+		$parserData = Application::getInstance()->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
+		);
+
+		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+
+		$instance = new ConceptParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		return $instance;
+	}
+
+	/**
+	 * @since 2.1
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function getSubobjectParser() {
-		return $this->withContext()->getDependencyBuilder()->newObject( 'SubobjectParserFunction', array( 'Parser' => $this->parser ) );
+	public function newSubobjectParserFunction() {
+
+		$parserData = Application::getInstance()->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
+		);
+
+		$subobject = new Subobject( $this->parser->getTitle() );
+		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+
+		$instance = new SubobjectParserFunction(
+			$parserData,
+			$subobject,
+			$messageFormatter
+		);
+
+		return $instance;
 	}
 
 	/**
-	 * Convenience instantiation of a RecurringEventsParserFunction object
-	 *
-	 * @since 1.9
+	 * @since 2.1
 	 *
 	 * @return RecurringEventsParserFunction
 	 */
-	public function getRecurringEventsParser() {
-		return new RecurringEventsParserFunction(
-			new ParserData( $this->parser->getTitle(), $this->parser->getOutput() ),
-			new Subobject( $this->parser->getTitle() ),
-			new MessageFormatter( $this->parser->getTargetLanguage() ),
-			Settings::newFromGlobals()
+	public function newRecurringEventsParserFunction() {
+
+		$parserData = Application::getInstance()->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
 		);
+
+		$subobject = new Subobject( $this->parser->getTitle() );
+		$messageFormatter = new MessageFormatter( $this->parser->getTargetLanguage() );
+
+		$instance = new RecurringEventsParserFunction(
+			$parserData,
+			$subobject,
+			$messageFormatter,
+			Application::getInstance()->getSettings()
+		);
+
+		return $instance;
 	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return DeclareParserFunction
+	 */
+	public function newDeclareParserFunction() {
+
+		$parserData = Application::getInstance()->newParserData(
+			$this->parser->getTitle(),
+			$this->parser->getOutput()
+		);
+
+		$instance = new DeclareParserFunction(
+			$parserData
+		);
+
+		return $instance;
+	}
+
 }

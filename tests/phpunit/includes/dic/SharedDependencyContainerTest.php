@@ -170,46 +170,13 @@ class SharedDependencyContainerTest extends SemanticMediaWikiTestCase {
 			)
 		);
 
-		$provider[] = array( 'QueryProfiler', array( '\SMW\Query\Profiler\ProfileAnnotator' => array(
-				'QueryDescription' => $this->newMockBuilder()->newObject( 'QueryDescription' ),
-				'QueryParameters'  => array( 'Foo' ),
-				'QueryFormat'      => 'Foo',
-				'QueryDuration'    => 0,
-				'Title'            => $this->newMockBuilder()->newObject( 'Title' ),
-				)
-			)
-		);
-
 		$provider[] = array( 'MessageFormatter', array( '\SMW\MessageFormatter' => array(
 				'Language' => $this->newMockBuilder()->newObject( 'Language' )
 				)
 			)
 		);
 
-		$parser = $this->newMockBuilder()->newObject( 'Parser', array(
-			'getTitle'          => $this->newMockBuilder()->newObject( 'Title' ),
-			'getOutput'         => $this->newMockBuilder()->newObject( 'ParserOutput' ),
-			'getTargetLanguage' => $this->newMockBuilder()->newObject( 'Language' )
-		) );
-
-		$provider[] = array( 'AskParserFunction', array( '\SMW\AskParserFunction' => array(
-				'Parser' => $parser
-				)
-			)
-		);
-
-		$provider[] = array( 'ShowParserFunction', array( '\SMW\ShowParserFunction' => array(
-				'Parser' => $parser
-				)
-			)
-		);
-
-		$provider[] = array( 'SubobjectParserFunction', array( '\SMW\SubobjectParserFunction' => array(
-				'Parser' => $parser
-				)
-			)
-		);
-
 		return $provider;
 	}
+
 }
