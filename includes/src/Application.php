@@ -7,8 +7,10 @@ use SMW\Annotator\PropertyAnnotatorFactory;
 use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Factbox\FactboxBuilder;
+use SMW\Query\Profiler\QueryProfilerFactory;
 
 use ParserOutput;
+use Parser;
 use Title;
 
 /**
@@ -90,7 +92,6 @@ class Application {
 		return new FactboxBuilder();
 	}
 
-
 	/**
 	 * @since 2.0
 	 *
@@ -107,6 +108,26 @@ class Application {
 	 */
 	public function newJobFactory() {
 		return  $this->builder->newObject( 'JobFactory' );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param Parser $parser
+	 *
+	 * @return ParserFunctionFactory
+	 */
+	public function newParserFunctionFactory( Parser $parser ) {
+		return new ParserFunctionFactory( $parser );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return QueryProfilerFactory
+	 */
+	public function newQueryProfilerFactory() {
+		return new QueryProfilerFactory();
 	}
 
 	/**

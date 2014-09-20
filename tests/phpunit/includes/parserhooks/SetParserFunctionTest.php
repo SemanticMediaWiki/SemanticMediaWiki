@@ -1,175 +1,187 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\SetParserFunction;
-use SMW\ParserData;
-use SMW\ParserParameterFormatter;
-use SMW\MessageFormatter;
+use SMW\ParameterFormatterFactory;
+use SMW\Application;
 
-use SMWDIWikiPage;
-use SMWDataItem;
 use Title;
 use ParserOutput;
 
 /**
  * @covers \SMW\SetParserFunction
  *
- *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
+class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
-class SetParserFunctionTest extends ParserTestCase {
+	private $application;
+	private $semanticDataValidator;
 
-	public function getClass() {
-		return '\SMW\SetParserFunction';
+	protected function setUp() {
+		parent::setUp();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
+		$this->application = Application::getInstance();
 	}
 
-	/**
-	 * @return  SetParserFunction
-	 */
-	private function newInstance( Title $title = null, ParserOutput $parserOutput = null ) {
+	protected function tearDown() {
+		$this->application->clear();
 
-		if ( $title === null ) {
-			$title = $this->newTitle();
-		}
+		parent::tearDown();
+	}
 
-		if ( $parserOutput === null ) {
-			$parserOutput = $this->newParserOutput();
-		}
+	public function testCanConstruct() {
 
-		return new SetParserFunction(
-			$this->newParserData( $title, $parserOutput ),
-			new MessageFormatter( $title->getPageLanguage() )
+		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\SetParserFunction',
+			new SetParserFunction( $parserData, $messageFormatter )
 		);
 	}
 
 	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @dataProvider getDataProvider
-	 *
-	 * @since 1.9
+	 * @dataProvider setParserProvider
 	 */
 	public function testParse( array $params, array $expected ) {
-		$instance = $this->newInstance( $this->newTitle(), $this->newParserOutput() );
-		$result = $instance->parse( $this->getParserParameterFormatter( $params ) );
 
-		$this->assertInternalType( 'string', $result );
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
+		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter->expects( $this->any() )
+			->method( 'addFromArray' )
+			->will( $this->returnSelf() );
+
+		$messageFormatter->expects( $this->once() )
+			->method( 'getHtml' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$instance = new SetParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->parse( ParameterFormatterFactory::newFromArray( $params ) )
+		);
 	}
 
 	/**
-	 * @dataProvider getDataProvider
-	 *
-	 * @since 1.9
+	 * @dataProvider setParserProvider
 	 */
 	public function testInstantiatedPropertyValues( array $params, array $expected ) {
 
-		$parserOutput = $this->newParserOutput();
-		$title        = $this->newTitle();
-
-		// Initialize and parse
-		$instance = $this->newInstance( $title, $parserOutput );
-		$instance->parse( $this->getParserParameterFormatter( $params ) );
-
-		// Re-read data from stored parserOutput
-		$parserData = $this->newParserData( $title, $parserOutput );
-
-		// Check the returned instance
-		$this->assertInstanceOf( '\SMW\SemanticData', $parserData->getData() );
-
-		$semanticDataValidator = new SemanticDataValidator;
-		$semanticDataValidator->assertThatPropertiesAreSet( $expected, $parserData->getSemanticData() );
-
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testStaticRender() {
-		$parser = $this->newParser( $this->newTitle(), $this->getUser() );
-		$result = SetParserFunction::render( $parser );
-		$this->assertInternalType( 'string', $result );
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getDataProvider() {
-		return array(
-
-			// #0 Single data set
-			// {{#set:
-			// |Foo=bar
-			// }}
-			array(
-				array( 'Foo=bar' ),
-				array(
-					'errors' => 0,
-					'propertyCount'  => 1,
-					'propertyLabels' => 'Foo',
-					'propertyValues' => 'Bar'
-				)
-			),
-
-			// #1 Empty data set
-			// {{#set:
-			// |Foo=
-			// }}
-			array(
-				array( 'Foo=' ),
-				array(
-					'errors' => 0,
-					'propertyCount'  => 0,
-					'propertyLabels' => '',
-					'propertyValues' => ''
-				)
-			),
-
-			// #2 Multiple data set
-			// {{#set:
-			// |BarFoo=9001
-			// |Foo=bar
-			// }}
-			array(
-				array( 'Foo=bar', 'BarFoo=9001' ),
-				array(
-					'errors' => 0,
-					'propertyCount'  => 2,
-					'propertyLabels' => array( 'Foo', 'BarFoo' ),
-					'propertyValues' => array( 'Bar', '9001' )
-				)
-			),
-
-			// #3 Multiple data set with an error record
-			// {{#set:
-			// |_Foo=9001 --> will raise an error
-			// |Foo=bar
-			// }}
-			array(
-				array( 'Foo=bar', '_Foo=9001' ),
-				array(
-					'errors' => 1,
-					'propertyCount'  => 1,
-					'propertyLabels' => array( 'Foo' ),
-					'propertyValues' => array( 'Bar' )
-				)
-			),
-
+		$parserData = $this->application->newParserData(
+			Title::newFromText( __METHOD__ ),
+			new ParserOutput()
 		);
+
+		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageFormatter->expects( $this->any() )
+			->method( 'addFromArray' )
+			->will( $this->returnSelf() );
+
+		$instance = new SetParserFunction(
+			$parserData,
+			$messageFormatter
+		);
+
+		$instance->parse( ParameterFormatterFactory::newFromArray( $params ) );
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$parserData->getSemanticData()
+		);
+	}
+
+	public function setParserProvider() {
+
+		// #0 Single data set
+		// {{#set:
+		// |Foo=bar
+		// }}
+		$provider[] = array(
+			array( 'Foo=bar' ),
+			array(
+				'errors' => 0,
+				'propertyCount'  => 1,
+				'propertyLabels' => 'Foo',
+				'propertyValues' => 'Bar'
+			)
+		);
+
+		// #1 Empty data set
+		// {{#set:
+		// |Foo=
+		// }}
+		$provider[] = array(
+			array( 'Foo=' ),
+			array(
+				'errors' => 0,
+				'propertyCount'  => 0,
+				'propertyLabels' => '',
+				'propertyValues' => ''
+			)
+		);
+
+		// #2 Multiple data set
+		// {{#set:
+		// |BarFoo=9001
+		// |Foo=bar
+		// }}
+		$provider[] = array(
+			array( 'Foo=bar', 'BarFoo=9001' ),
+			array(
+				'errors' => 0,
+				'propertyCount'  => 2,
+				'propertyLabels' => array( 'Foo', 'BarFoo' ),
+				'propertyValues' => array( 'Bar', '9001' )
+			)
+		);
+
+		// #3 Multiple data set with an error record
+		// {{#set:
+		// |_Foo=9001 --> will raise an error
+		// |Foo=bar
+		// }}
+		$provider[] = array(
+			array( 'Foo=bar', '_Foo=9001' ),
+			array(
+				'errors' => 1,
+				'propertyCount'  => 1,
+				'propertyLabels' => array( 'Foo' ),
+				'propertyValues' => array( 'Bar' )
+			)
+		);
+
+		return $provider;
 	}
 
 }

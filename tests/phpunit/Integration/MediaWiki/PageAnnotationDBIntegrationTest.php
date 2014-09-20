@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\Util\PageCreator;
-use SMW\Tests\Util\MwHooksHandler;
+
 use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\DataValueFactory;
@@ -16,7 +16,6 @@ use SMWDITime as DITime;
 use Title;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration
@@ -38,10 +37,16 @@ class PageAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
+
+		$this->mwHooksHandler
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
+
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
 		$this->application = Application::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->mwHooksHandler = new MwHooksHandler();
 	}
 
 	protected function tearDown() {
@@ -53,7 +58,6 @@ class PageAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testCreatePageWithDefaultSortAndModificationDate() {
 
-		$this->mwHooksHandler->deregisterListedHooks();
 		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array( '_MDAT' ) );
 
 		$title   = Title::newFromText( __METHOD__ );
@@ -83,7 +87,6 @@ class PageAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testCreatePageWithCategoryAndDefaultSort() {
 
-		$this->mwHooksHandler->deregisterListedHooks();
 		$this->application->getSettings()->set( 'smwgPageSpecialProperties', array() );
 
 		$title   = Title::newFromText( __METHOD__ );

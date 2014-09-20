@@ -5,28 +5,32 @@ namespace SMW;
 /**
  * Class that provides the {{#show}} parser function
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class ShowParserFunction {
 
-	/** @var ParserData */
-	protected $parserData;
+	/**
+	 * @var ParserData
+	 */
+	private $parserData;
 
-	/** @var ContextResource */
-	protected $context;
+	/**
+	 * @var MessageFormatter
+	 */
+	private $messageFormatter;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
-	 * @param ContextResource $context
+	 * @param MessageFormatter $messageFormatter
 	 */
-	public function __construct( ParserData $parserData, ContextResource $context ) {
+	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
 		$this->parserData = $parserData;
-		$this->context = $context;
+		$this->messageFormatter = $messageFormatter;
 	}
 
 	/**
@@ -44,7 +48,7 @@ class ShowParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $rawParams ) {
-		$ask = new AskParserFunction( $this->parserData, $this->context );
+		$ask = new AskParserFunction( $this->parserData, $this->messageFormatter );
 		return $ask->setShowMode( true )->parse( $rawParams );
 	}
 
@@ -57,10 +61,7 @@ class ShowParserFunction {
 	 * @return string|null
 	 */
 	public function isQueryDisabled() {
-		return $this->context->getDependencyBuilder()
-			->newObject( 'MessageFormatter' )
-			->addFromKey( 'smw_iq_disabled' )
-			->getHtml();
+		return $this->messageFormatter->addFromKey( 'smw_iq_disabled' )->getHtml();
 	}
 
 }
