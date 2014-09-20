@@ -5,6 +5,7 @@
 			"Papuass"
 		]
 	},
+	"smw_purge": "Atjaunināt",
 	"smw_sbv_value": "Vērtība:",
 	"smw_result_prev": "Iepriekšējie",
 	"smw_result_next": "Nākamie",
@@ -19,5 +20,6 @@
 	"smw-ui-tooltip-title-event": "Notikums",
 	"smw-ui-tooltip-title-note": "Piezīme",
 	"smw-ui-tooltip-title-legend": "Apzīmējumi",
-	"smw-sp-admin-idlookup-objectid": "Objekta Id:"
+	"smw-sp-admin-idlookup-objectid": "Objekta Id:",
+	"smw-livepreview-loading": "Ielādē…"
 }
