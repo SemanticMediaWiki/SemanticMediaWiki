@@ -60,6 +60,10 @@ class InternalParseBeforeLinks {
 
 	protected function canPerformUpdate() {
 
+		if ( $this->text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
+			return false;
+		}
+
 		if ( !$this->parser->getTitle()->isSpecialPage() ) {
 			return true;
 		}

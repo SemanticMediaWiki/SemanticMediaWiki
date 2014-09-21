@@ -2,8 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
-use SMW\Tests\Util\ParserFactory;
+use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\Util\Mock\MockTitle;
 
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
@@ -16,7 +15,6 @@ use Title;
 /**
  * @covers \SMW\MediaWiki\Hooks\InternalParseBeforeLinks
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -28,12 +26,14 @@ use Title;
 class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
+	private $parserFactory;
 	private $application;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+		$this->parserFactory = UtilityFactory::getInstance()->newParserFactory();
 		$this->application = Application::getInstance();
 	}
 
@@ -57,13 +57,63 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNonProcessForEmptyText() {
+
+		$text = '';
+
+		$parser = $this->getMockBuilder( 'Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->expects( $this->never() )
+			->method( 'getOptions' );
+
+		$instance = new InternalParseBeforeLinks(
+			$parser,
+			$text
+		);
+
+		$this->assertTrue( $instance->process() );
+	}
+
+	public function testNonProcessForInterfaceMessage() {
+
+		$text = 'Foo';
+
+		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOptions->expects( $this->once() )
+			->method( 'getInterfaceMessage' )
+			->will( $this->returnValue( true ) );
+
+		$parser = $this->getMockBuilder( 'Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->expects( $this->once() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( $parserOptions ) );
+
+		$parser->expects( $this->never() )
+			->method( 'getTitle' );
+
+		$instance = new InternalParseBeforeLinks(
+			$parser,
+			$text
+		);
+
+		$this->assertTrue( $instance->process() );
+	}
+
 	/**
 	 * @dataProvider titleProvider
 	 */
 	public function testProcess( $title ) {
 
-		$text   = '';
-		$parser = ParserFactory::newFromTitle( $title );
+		$text   = 'Foo';
+		$parser = $this->parserFactory->newFromTitle( $title );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -76,10 +126,10 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider textDataProvider
 	 */
-	public function testSemanticDataParserOuputUpdateIntegration( $parameters, $expected ) {
+	public function testTextChangeWithParserOuputUpdateIntegration( $parameters, $expected ) {
 
 		$text   = $parameters['text'];
-		$parser = ParserFactory::newFromTitle( $parameters['title'] );
+		$parser = $this->parserFactory->newFromTitle( $parameters['title'] );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -195,6 +245,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 				array(
 					'resultText' => '#REDIRECT [[Foo]]',
 					'propertyCount'  => 1,
+					'propertyKeys'   => array( '_REDI' ),
 					'propertyValues' => array( 'Foo' )
 				)
 		);
