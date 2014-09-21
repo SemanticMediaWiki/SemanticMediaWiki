@@ -1,6 +1,7 @@
 <?php
 
 use SMW\UrlEncoder;
+use SMW\DIProperty;
 
 /**
  * @ingroup SMWSpecialPage
@@ -246,7 +247,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
 		} elseif ( $incoming && $property->isVisible() ) {
 			$html .= "&#160;" . SMWInfolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $property->getDataItem()->getLabel(), 'smwsearch' )->getHTML( $linker );
-		} elseif ( $dataValue->getProperty()->getKey() !== '_INST' ) {
+		} elseif ( $dataValue->getProperty() instanceof DIProperty && $dataValue->getProperty()->getKey() !== '_INST' ) {
 			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $linker );
 		}
 
