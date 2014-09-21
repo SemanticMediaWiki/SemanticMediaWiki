@@ -2,20 +2,20 @@
 /**
  * This file contains the class for defining "print requests", i.e. requests for output
  * informatoin to be included in query results.
- * 
+ *
  * @ingroup SMWQuery
- * 
+ *
  * @author Markus Krötzsch
  */
 
 /**
  * Container class for request for printout, as used in queries to
  * obtain additional information for the retrieved results.
- * 
+ *
  * @ingroup SMWQuery
  */
 class SMWPrintRequest {
-	
+
 	/// Query mode to print all direct categories of the current element.
 	const PRINT_CATS = 0;
 	/// Query mode to print all property values of a certain attribute of the current element.
@@ -52,7 +52,6 @@ class SMWPrintRequest {
 		}
 
 		$this->m_mode = $mode;
-		$this->m_label = $label;
 		$this->m_data = $data;
 		$this->m_outputformat = $outputformat;
 
@@ -60,10 +59,7 @@ class SMWPrintRequest {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
 
-		if ( $this->m_data instanceof SMWDataValue ) {
-			// $this->m_data = clone $data; // we assume that the caller denotes the object ot us; else he needs provide us with a clone
-			$this->m_data->setCaption( $label );
-		}
+		$this->setLabel( $label );
 
 		if ( $params !== null ) {
 			$this->m_params = $params;
@@ -87,7 +83,7 @@ class SMWPrintRequest {
 		if ( is_null( $linker ) || ( $this->m_label === '' ) ) {
 			return htmlspecialchars( $this->m_label );
 		}
-		
+
 		switch ( $this->m_mode ) {
 			case self::PRINT_CATS:
 				return htmlspecialchars( $this->m_label ); // TODO: link to Special:Categories
@@ -145,7 +141,7 @@ class SMWPrintRequest {
 	/**
 	 * If this print request refers to some property, return the type id of this property.
 	 * Otherwise return '_wpg' since all other types of print request return wiki pages.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTypeID() {
@@ -165,22 +161,22 @@ class SMWPrintRequest {
 	 * print requests. The hash also includes the chosen label,
 	 * so it is possible to print the same date with different
 	 * labels.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getHash() {
 		if ( $this->m_hash === false ) {
 			$this->m_hash = $this->m_mode . ':' . $this->m_label . ':';
-			
+
 			if ( $this->m_data instanceof Title ) {
 				$this->m_hash .= $this->m_data->getPrefixedText() . ':';
 			} elseif ( $this->m_data instanceof SMWDataValue ) {
 				$this->m_hash .= $this->m_data->getHash() . ':';
 			}
-			
+
 			$this->m_hash .= $this->m_outputformat . ':' . implode( '|', $this->m_params );
 		}
-		
+
 		return $this->m_hash;
 	}
 
@@ -191,11 +187,11 @@ class SMWPrintRequest {
 	 */
 	public function getSerialisation( $showparams = false ) {
 		$parameters = '';
-		
+
 		if ( $showparams ) foreach ( $this->m_params as $key => $value ) {
 			$parameters .= "|+" . $key . "=" . $value;
 		}
-		
+
 		switch ( $this->m_mode ) {
 			case self::PRINT_CATS:
 				global $wgContLang;
@@ -209,14 +205,14 @@ class SMWPrintRequest {
 				if ( $this->m_mode == self::PRINT_CCAT ) {
 					$printname = $this->m_data->getPrefixedText();
 					$result = '?' . $printname;
-					
+
 					if ( $this->m_outputformat != 'x' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
 				} else {
 					$printname = $this->m_data->getWikiValue();
 					$result = '?' . $printname;
-					
+
 					if ( $this->m_outputformat !== '' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
@@ -227,25 +223,25 @@ class SMWPrintRequest {
 				return $result . $parameters;
 			case self::PRINT_THIS:
 				$result = '?';
-				
+
 				if ( $this->m_label !== '' ) {
 					$result .= '=' . $this->m_label;
 				}
-				
+
 				if ( $this->m_outputformat !== '' ) {
 					$result .= '#' . $this->m_outputformat;
 				}
-									
-				return $result . $parameters; 
+
+				return $result . $parameters;
 			default: return ''; // no current serialisation
 		}
 	}
 
 	/**
 	 * Returns the value of a named parameter.
-	 * 
+	 *
 	 * @param $key string the name of the parameter key
-	 * 
+	 *
 	 * @return string Value of the paramer, if set (else FALSE)
 	 */
 	public function getParameter( $key ) {
@@ -254,7 +250,7 @@ class SMWPrintRequest {
 
 	/**
 	 * Returns the array of parameters, where a string is mapped to a string.
-	 * 
+	 *
 	 * @return array Map of parameter names to values.
 	 */
 	public function getParameters() {
@@ -263,12 +259,28 @@ class SMWPrintRequest {
 
 	/**
 	 * Sets a print request parameter.
-	 * 
+	 *
 	 * @param $key string Name of the parameter
 	 * @param $value string Value for the parameter
 	 */
 	public function setParameter( $key, $value ) {
 		$this->m_params[$key] = $value;
 	}
-	
+
+	/**
+	 * @since  2.1
+	 *
+	 * @note $this->m_data = clone $data; // we assume that the caller denotes
+	 * the object ot us; else he needs provide us with a clone
+	 *
+	 * @param string $label
+	 */
+	public function setLabel( $label ) {
+		$this->m_label = $label;
+
+		if ( $this->m_data instanceof SMWDataValue ) {
+			$this->m_data->setCaption( $label );
+		}
+	}
+
 }
