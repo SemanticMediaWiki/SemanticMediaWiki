@@ -20,7 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
+class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
 	private $parserAfterTidyHook;
@@ -35,8 +35,8 @@ class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->mwHooksHandler->registerHook(
-			'ParserAfterTidy',
-			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'ParserAfterTidy' )
+			'InternalParseBeforeLinks',
+			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'InternalParseBeforeLinks' )
 		);
 	}
 
