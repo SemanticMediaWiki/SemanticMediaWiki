@@ -4,6 +4,7 @@ namespace SMW\Tests\Util;
 
 use SMW\Tests\Util\Validators\ValidatorFactory;
 use SMW\Tests\Util\Fixtures\FixturesFactory;
+use SMW\Tests\Util\Runners\RunnerFactory;
 
 /**
  * @license GNU GPL v2+
@@ -84,6 +85,42 @@ class UtilityFactory {
 	 */
 	public function newSemanticDataFactory() {
 		return new SemanticDataFactory();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return RunnerFactory
+	 */
+	public function newRunnerFactory() {
+		return new RunnerFactory();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return PageDeleter
+	 */
+	public function newPageDeleter() {
+		return new PageDeleter();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return PageRefresher
+	 */
+	public function newPageRefresher() {
+		return new PageRefresher();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return PageCreator
+	 */
+	public function newPageCreator() {
+		return new PageCreator();
 	}
 
 }

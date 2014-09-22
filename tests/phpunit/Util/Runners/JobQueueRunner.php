@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Util;
+namespace SMW\Tests\Util\Runners;
 
 use SMW\DBConnectionProvider;
+use SMW\Tests\Util\MwDBConnectionProvider;
 
 use Job;
 
 /**
  * Partly copied from the MW 1.19 RunJobs maintenance script
- *
  *
  * @group SMW
  * @group SMWExtension
@@ -35,6 +35,18 @@ class JobQueueRunner {
 		if ( $this->dbConnectionProvider === null ) {
 			$this->dbConnectionProvider = new MwDBConnectionProvider();
 		}
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param DBConnectionProvider $dbConnectionProvider
+	 *
+	 * @return JobQueueRunner
+	 */
+	public function setDBConnectionProvider( DBConnectionProvider $dbConnectionProvider ) {
+		$this->dbConnectionProvider = $dbConnectionProvider;
+		return $this;
 	}
 
 	/**

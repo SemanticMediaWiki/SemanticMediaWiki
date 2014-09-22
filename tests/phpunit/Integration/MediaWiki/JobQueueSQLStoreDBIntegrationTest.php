@@ -4,8 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\Tests\Util\UtilityFactory;
 use SMW\Tests\Util\PageCreator;
-use SMW\Tests\Util\PageDeleter;
-use SMW\Tests\Util\JobQueueRunner;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 
@@ -34,6 +32,8 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $job = null;
 	private $application;
+
+	private $runnerFactory;
 	private $mwHooksHandler;
 	private $semanticDataValidator;
 	private $pageDeleter;
@@ -61,10 +61,12 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->application->getSettings()->set( $key, $value );
 		}
 
-		$this->pageDeleter = new PageDeleter();
+		$this->pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 
-		$jobQueueRunner = new JobQueueRunner( null, $this->getDBConnectionProvider() );
-		$jobQueueRunner->deleteAllJobs();
+		$jobQueueRunner = UtilityFactory::getInstance()->newRunnerFactory()->newJobQueueRunner();
+		$jobQueueRunner
+			->setDBConnectionProvider( $this->getDBConnectionProvider() )
+			->deleteAllJobs();
 	}
 
 	protected function tearDown() {

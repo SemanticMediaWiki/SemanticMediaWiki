@@ -1,23 +1,20 @@
 <?php
 
-namespace SMW\Tests\Regression;
+namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Util\ByPageSemanticDataFinder;
-use SMW\Tests\Util\MaintenanceRunner;
-use SMW\Test\MwRegressionTestCase;
 
 use SMW\DIProperty;
 
 use Title;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-regression
+ * @group semantic-mediawiki-import
  * @group mediawiki-database
- * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -25,18 +22,44 @@ use Title;
  *
  * @author mwjames
  */
-class RebuildDataMaintenanceRegressionTest extends MwRegressionTestCase {
+class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 
-	protected $maintenanceRunner = null;
-	protected $semanticDataValidator = null;
-	protected $semanticDataFinder = null;
+	protected $databaseToBeExcluded = array( 'postgres' );
+	protected $destroyDatabaseTablesOnEachRun = true;
 
-	public function getSourceFile() {
-		return __DIR__ . '/data/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml';
+	private $importedTitles = array();
+	private $runnerFactory;
+	private $titleValidator;
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
+		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
+		$importRunner = $this->runnerFactory->newXmlImportRunner(
+			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'
+		);
+
+		if ( !$importRunner->setVerbose( true )->run() ) {
+			$importRunner->reportFailedImport();
+			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
+		}
 	}
 
-	public function acquirePoolOfTitles() {
-		return array(
+	protected function tearDown() {
+
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
+
+		parent::tearDown();
+	}
+
+	public function testRebuildData() {
+
+		 $this->importedTitles = array(
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
 			'Elit Aliquam urna interdum',
@@ -52,9 +75,8 @@ class RebuildDataMaintenanceRegressionTest extends MwRegressionTestCase {
 			'Property:Has temperature',
 			'Property:Has text'
 		);
-	}
 
-	public function assertDataImport() {
+		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$main = Title::newFromText( 'Lorem ipsum' );
 
@@ -73,10 +95,8 @@ class RebuildDataMaintenanceRegressionTest extends MwRegressionTestCase {
 			)
 		);
 
-		$this->maintenanceRunner = new MaintenanceRunner( 'SMW\Maintenance\RebuildData' );
+		$this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildData' );
 		$this->maintenanceRunner->setQuiet();
-
-		$this->semanticDataValidator = new SemanticDataValidator;
 
 		$this->semanticDataFinder = new ByPageSemanticDataFinder;
 		$this->semanticDataFinder->setTitle( $main )->setStore( $this->getStore() );

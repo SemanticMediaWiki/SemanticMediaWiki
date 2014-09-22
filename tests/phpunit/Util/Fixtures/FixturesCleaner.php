@@ -25,19 +25,7 @@ class FixturesCleaner {
 	public function purgeSubjects( array $subjects ) {
 
 		$pageDeleter = new PageDeleter();
-
-		foreach ( $subjects as $subject ) {
-
-			if ( $subject instanceOf DIWikiPage ) {
-				$subject = $subject->getTitle();
-			}
-
-			if ( !$subject instanceOf Title ) {
-				continue;
-			}
-
-			$pageDeleter->deletePage( $subject );
-		}
+		$pageDeleter->deletePoolOfPages( $subjects );
 
 		return $this;
 	}

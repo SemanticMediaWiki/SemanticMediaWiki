@@ -1,0 +1,270 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.6/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.6/ http://www.mediawiki.org/xml/export-0.6.xsd" version="0.6" xml:lang="en-gb">
+  <siteinfo>
+    <sitename>MW-19</sitename>
+    <base>http://localhost:8080/w/index.php/Main_Page</base>
+    <generator>MediaWiki 1.19.7</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">MW-19</namespace>
+      <namespace key="5" case="first-letter">MW-19 talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="104" case="first-letter">Type</namespace>
+      <namespace key="105" case="first-letter">Type talk</namespace>
+      <namespace key="108" case="first-letter">Concept</namespace>
+      <namespace key="109" case="first-letter">Concept talk</namespace>
+      <namespace key="160" case="first-letter">Foo</namespace>
+      <namespace key="161" case="first-letter">Foo talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Property:Has annotation uri</title>
+    <ns>102</ns>
+    <id>503</id>
+      <sha1>ifvt9xhpsfkv04ehcnhpw3i88s0fsb8</sha1>
+    <revision>
+      <id>1342</id>
+      <timestamp>2014-03-29T16:51:25Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="53">[[Has type::Annotation URI]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has boolean</title>
+    <ns>102</ns>
+    <id>502</id>
+      <sha1>l3b3eelfib1em61uurletnc4kb1xlzh</sha1>
+    <revision>
+      <id>1338</id>
+      <timestamp>2014-03-29T16:47:13Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::Boolean]] [[Category:Lorem ipsum]]&quot;</comment>
+      <text xml:space="preserve" bytes="46">[[Has type::Boolean]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has date</title>
+    <ns>102</ns>
+    <id>14</id>
+      <sha1>473nf5knraq99k8zsrg6z7o3812tu61</sha1>
+    <revision>
+      <id>1330</id>
+      <timestamp>2014-03-29T16:38:59Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="43">[[Has type::Date]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has email</title>
+    <ns>102</ns>
+    <id>500</id>
+      <sha1>9puenjhr9dntyg9obgtwhvaenn98rav</sha1>
+    <revision>
+      <id>1334</id>
+      <timestamp>2014-03-29T16:42:38Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::Email]] [[Category:Lorem ipsum]]&quot;</comment>
+      <text xml:space="preserve" bytes="44">[[Has type::Email]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has number</title>
+    <ns>102</ns>
+    <id>494</id>
+      <sha1>9fqf0pft61g8qqb8qtz1i5ayr1rmu30</sha1>
+    <revision>
+      <id>1321</id>
+      <timestamp>2014-03-29T16:30:26Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::Number]] [[Category:Lorem ipsum]]&quot;</comment>
+      <text xml:space="preserve" bytes="45">[[Has type::Number]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has page</title>
+    <ns>102</ns>
+    <id>489</id>
+      <sha1>4sq0eljhm3yty9cifkvel3mv646ag0y</sha1>
+    <revision>
+      <id>1319</id>
+      <timestamp>2014-03-29T16:29:46Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="43">[[Has type::Page]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has quantity</title>
+    <ns>102</ns>
+    <id>495</id>
+      <sha1>1ulyevjgdofvfrp7b6b17n7p0p6oy4w</sha1>
+    <revision>
+      <id>1323</id>
+      <timestamp>2014-03-29T16:34:24Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="219">[[Has type::Quantity]] [[Category:Lorem ipsum]]
+
+* [[Corresponds to::1 km²]]
+* [[Corresponds to::0.38610 sq mi]]   
+* [[Corresponds to::1000 m²]]
+* [[Corresponds to::247.1054 acre]]
+* [[Corresponds to::988.4215 rood]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has temperature</title>
+    <ns>102</ns>
+    <id>501</id>
+      <sha1>925639l5wc4pwdmufjgza10rstpb2oa</sha1>
+    <revision>
+      <id>1336</id>
+      <timestamp>2014-03-29T16:45:35Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::Temperature]] [[Category:Lorem ipsum]]&quot;</comment>
+      <text xml:space="preserve" bytes="50">[[Has type::Temperature]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has text</title>
+    <ns>102</ns>
+    <id>491</id>
+      <sha1>qi7oxp4101tdesdm3vavpgpfn1qe68u</sha1>
+    <revision>
+      <id>1320</id>
+      <timestamp>2014-03-29T16:30:07Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="43">[[Has type::Text]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Property:Has Url</title>
+    <ns>102</ns>
+    <id>499</id>
+      <sha1>1fw7q2wts7v11q1z6d31g89zorhco0i</sha1>
+    <revision>
+      <id>1332</id>
+      <timestamp>2014-03-29T16:40:28Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Has type::URL]] [[Category:Lorem ipsum]]&quot;</comment>
+      <text xml:space="preserve" bytes="42">[[Has type::URL]] [[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Lorem ipsum</title>
+    <ns>0</ns>
+    <id>493</id>
+      <sha1>94lztkh4kgb0mvjr87iyjfq4iv7ltlh</sha1>
+    <revision>
+      <id>1358</id>
+      <timestamp>2014-04-04T22:55:04Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="979">[[Has text::Lorem ipsum dolor sit amet consectetuer Maecenas adipiscing Pellentesque id sem]]. [[Has page::Elit Aliquam urna interdum]] morbi faucibus id tellus ipsum semper wisi. [[Has page::Platea enim hendrerit]] pellentesque consectetuer scelerisque Sed est felis felis quis. Auctor Proin In dolor id et ipsum vel at vitae ut. Praesent elit convallis Praesent aliquet pellentesque vel dolor pellentesque lacinia vitae. At tortor lacus Sed In interdum pulvinar et.
+
+[[Has number::1001]] [[Has quantity::10.25 km²]] [[Has date::1 Jan 2014]] [[Has Url::http://loremipsum.org/]] [[Has annotation uri::http://loremipsum.org/foaf.rdf]] [[Has email::Lorem@ipsum.org]] [[Has temperature::100 °C]] [[Has boolean::true]]
+
+{{#subobject:|Has number=1111|Has quantity=25 sqmi|Has date=January 4, 2010 7:00 pm|Has Url=http://example.org/some/|Has annotation uri=http://example.org/foaf.rdf|Has email=Lorem@example.org|Has temperature=100 °F|Has boolean=false}}
+
+[[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Platea enim hendrerit</title>
+    <ns>0</ns>
+    <id>498</id>
+      <sha1>4vp3ppszu168lv9f0tc9eaefvgbkv8a</sha1>
+    <revision>
+      <id>1327</id>
+      <timestamp>2014-03-29T16:36:22Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <comment>Created page with &quot;[[Category:Lorem ipsum]]&quot;</comment>
+      <text xml:space="preserve" bytes="24">[[Category:Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Elit Aliquam urna interdum</title>
+    <ns>0</ns>
+    <id>497</id>
+      <sha1>c5qjdsfni2zwsd95h59jiksolm1vjiv</sha1>
+    <revision>
+      <id>1361</id>
+      <timestamp>2014-04-04T23:00:14Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="945">[[Lorem ipsum]] dolor sit amet consectetuer Maecenas adipiscing Pellentesque id sem. [[Has text::Elit Aliquam urna interdum]] morbi faucibus id tellus ipsum semper wisi. [[Has page::Platea enim hendrerit]] pellentesque consectetuer scelerisque Sed est felis felis quis. Auctor Proin In dolor id et ipsum vel at vitae ut. Praesent elit convallis Praesent aliquet pellentesque vel dolor pellentesque lacinia vitae. At tortor lacus Sed In interdum pulvinar et.
+
+[[Has number::1001]] [[Has quantity::10.25 km²]] [[Has date::1 Jan 2014]] [[Has Url::http://loremipsum.org/]] [[Has annotation uri::http://loremipsum.org/foaf.rdf]] [[Has email::Lorem@ipsum.org]] [[Has temperature::100 °C]] [[Has boolean::true]]
+
+{{#set:|Has number=9999|Has quantity=0.25 m²|Has date=22 Jan 1714|Has Url=http://example.org/|Has annotation uri=http://example.org/foaf.rdf|Has email=Lorem@example.org|Has temperature=20 K|Has boolean=false}}
+
+[[Category: Lorem ipsum]]</text>
+    </revision>
+  </page>
+  <page>
+    <title>Category:Lorem ipsum</title>
+    <ns>14</ns>
+    <id>496</id>
+      <sha1>sir97j6uzt9ev2uyhaz1aj4i3spogih</sha1>
+    <revision>
+      <id>1355</id>
+      <timestamp>2014-04-04T22:29:18Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="17">[[Category:Main]]</text>
+    </revision>
+  </page>
+</mediawiki>

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Util;
+namespace SMW\Tests\Util\Runners;
 
 use RuntimeException;
 use DomainException;

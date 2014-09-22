@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Util;
+namespace SMW\Tests\Util\Runners;
 
 use ImportStreamSource;
 use ImportReporter;
@@ -10,7 +10,6 @@ use RequestContext;
 use RuntimeException;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -33,9 +32,12 @@ class XmlImportRunner {
 
 	/**
 	 * @param boolean $verbose
+	 *
+	 * @return XmlImportRunner
 	 */
 	public function setVerbose( $verbose = true ) {
 		$this->verbose = $verbose;
+		return $this;
 	}
 
 	/**

@@ -32,6 +32,15 @@ class ValidatorFactory {
 	/**
 	 * @since 2.1
 	 *
+	 * @return StringValidator
+	 */
+	public function newStringValidator() {
+		return new StringValidator();
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @return SemanticDataValidator
 	 */
 	public function newSemanticDataValidator() {
@@ -54,6 +63,15 @@ class ValidatorFactory {
 	 */
 	public function newExportDataValidator() {
 		return new ExportDataValidator();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return TitleValidator
+	 */
+	public function newTitleValidator() {
+		return new TitleValidator();
 	}
 
 }

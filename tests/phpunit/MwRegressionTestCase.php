@@ -5,9 +5,8 @@ namespace SMW\Test;
 use SMW\Tests\MwDBaseUnitTestCase;
 
 use SMW\Tests\Util\PageDeleter;
-use SMW\Tests\Util\XmlImportRunner;
+use SMW\Tests\Util\UtilityFactory;
 
-use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\StoreFactory;
 
 use Title;
@@ -70,7 +69,10 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 	 */
 	public function testDataImport() {
 
-		$importRunner = new XmlImportRunner( $this->getSourceFile() );
+		$this->pageRefresher = UtilityFactory::getInstance()->newPageRefresher();
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+
+		$importRunner = UtilityFactory::getInstance()->newRunnerFactory()->newXmlImportRunner( $this->getSourceFile() );
 		$importRunner->setVerbose( true );
 
 		if ( !$importRunner->run() ) {
@@ -82,14 +84,11 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 		$this->runUpdateJobs( $this->acquirePoolOfTitles() );
 
 		$this->assertDataImport();
-		$this->deletePoolOfTitles( $this->acquirePoolOfTitles() );
+		$pageDeleter->doDeletePoolOfPages( $this->acquirePoolOfTitles() );
 	}
 
 	protected function runUpdateJobs( $titles ) {
-		foreach ( $titles as $title ) {
-			$job = new UpdateJob( Title::newFromText( $title ) );
-			$job->run();
-		}
+		$this->pageRefresher->doRefreshPoolOfPages( $titles );
 	}
 
 	private function assertTitleIsNotKnownBeforeImport( $titles ) {
@@ -107,14 +106,6 @@ abstract class MwRegressionTestCase extends MwDBaseUnitTestCase {
 				Title::newFromText( $title )->exists(),
 				__METHOD__ . "Assert title {$title}"
 			);
-		}
-	}
-
-	private function deletePoolOfTitles( $titles ) {
-		$pageDeleter = new PageDeleter();
-
-		foreach ( $titles as $title ) {
-			$pageDeleter->deletePage( Title::newFromText( $title ) );
 		}
 	}
 
