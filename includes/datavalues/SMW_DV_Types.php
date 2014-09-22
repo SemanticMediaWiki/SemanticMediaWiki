@@ -52,8 +52,13 @@ class SMWTypesValue extends SMWDataValue {
 			}
 		}
 
-		$this->m_givenLabel = smwfNormalTitleText( $value );
-		$this->m_typeId = DataTypeRegistry::getInstance()->findTypeId( $this->m_givenLabel );
+		if ( $value{0} === '_' ) {
+			$this->m_typeId = $value;
+		} else {
+			$this->m_givenLabel = smwfNormalTitleText( $value );
+			$this->m_typeId = DataTypeRegistry::getInstance()->findTypeId( $this->m_givenLabel );
+		}
+
 		if ( $this->m_typeId === '' ) {
 			$this->addError( wfMessage( 'smw_unknowntype', $this->m_givenLabel )->inContentLanguage()->text() );
 			$this->m_realLabel = $this->m_givenLabel;
