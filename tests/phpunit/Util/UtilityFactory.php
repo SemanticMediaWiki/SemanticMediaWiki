@@ -3,6 +3,7 @@
 namespace SMW\Tests\Util;
 
 use SMW\Tests\Util\Validators\ValidatorFactory;
+use SMW\Tests\Util\Fixtures\FixturesFactory;
 
 /**
  * @license GNU GPL v2+
@@ -67,5 +68,22 @@ class UtilityFactory {
 		return new ParserFactory();
 	}
 
+	/**
+	 * @since 2.1
+	 *
+	 * @return FixturesFactory
+	 */
+	public function newFixturesFactory() {
+		return new FixturesFactory();
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return SemanticDataFactory
+	 */
+	public function newSemanticDataFactory() {
+		return new SemanticDataFactory();
+	}
 
 }

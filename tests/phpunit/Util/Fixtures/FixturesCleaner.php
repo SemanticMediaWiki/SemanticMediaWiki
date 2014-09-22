@@ -2,11 +2,6 @@
 
 namespace SMW\Tests\Util\Fixtures;
 
-use SMW\Tests\Util\Fixtures\Properties\AreaProperty;
-use SMW\Tests\Util\Fixtures\Properties\PopulationDensityProperty;
-use SMW\Tests\Util\Fixtures\Facts\BerlinFact;
-use SMW\Tests\Util\Fixtures\Facts\ParisFact;
-
 use SMW\Tests\Util\PageDeleter;
 
 use SMW\DIWikiPage;
@@ -24,6 +19,8 @@ class FixturesCleaner {
 	 * @since 2.1
 	 *
 	 * @param array $subjects
+	 *
+	 * @return FixturesCleaner
 	 */
 	public function purgeSubjects( array $subjects ) {
 
@@ -48,7 +45,19 @@ class FixturesCleaner {
 	/**
 	 * @since 2.1
 	 *
+	 * @return FixturesCleaner
+	 */
+	public function purgeAllKnownFacts() {
+		$fixturesProvider = new FixturesProvider();
+		return $this->purgeFacts( $fixturesProvider->getListOfFactsheetInstances() );
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @param array $facts
+	 *
+	 * @return FixturesCleaner
 	 */
 	public function purgeFacts( array $facts ) {
 

@@ -3,21 +3,17 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\QueryResultValidator;
-
-use SMW\Tests\Util\Fixtures\FixturesProvider;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\SomeProperty;
+use SMW\Query\PrintRequestFactory;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\DataValueFactory;
 
 use SMWQuery as Query;
-use SMWPrintRequest as PrintRequest;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @group SMW
@@ -36,29 +32,30 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	protected $databaseToBeExcluded = array( 'sqlite' );
 
-	private $facts = array();
-
+	private $fixturesProvider;
 	private $semanticDataFactory;
-	private $dataValueFactory;
 	private $queryResultValidator;
+
+	private $dataValueFactory;
+	private $printRequestFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->queryResultValidator = new QueryResultValidator();
+		$this->printRequestFactory = new PrintRequestFactory();
 
-		$fixturesProvider = new FixturesProvider();
-		$fixturesProvider->setupDependencies( $this->getStore() );
+		$this->semanticDataFactory  = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 
-		$this->facts = $fixturesProvider->getListOfFactsheetInstances();
+		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
+		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
 	protected function tearDown() {
 
-		$fixturesProvider = new FixturesProvider();
-		$fixturesProvider->getCleaner()->purgeFacts( $this->facts );
+		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
+		$fixturesCleaner->purgeAllKnownFacts();
 
 		parent::tearDown();
 	}
@@ -66,9 +63,11 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	public function testUserDefinedQuantityProperty() {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
-		$this->facts['berlin']->setTargetSubject( $semanticData->getSubject() );
 
-		$areaValue = $this->facts['berlin']->getAreaValue();
+		$factsheet = $this->fixturesProvider->getFactsheet( 'Berlin' );
+		$factsheet->setTargetSubject( $semanticData->getSubject() );
+
+		$areaValue = $factsheet->getAreaValue();
 		$areaProperty = $areaValue->getProperty();
 
 		$semanticData->addDataValue( $areaValue );
@@ -79,16 +78,16 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getSemanticData( $semanticData->getSubject() )->getProperties()
 		);
 
-		$propertyValue = new PropertyValue( '__pro' );
-		$propertyValue->setDataItem( $areaProperty );
-
+		/**
+		 * @query [[Area::+]]|?Area
+		 */
 		$description = new SomeProperty(
 			$areaProperty,
 			new ThingDescription()
 		);
 
 		$description->addPrintRequest(
-			new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue )
+			$this->printRequestFactory->newPropertyPrintRequest( $areaProperty )
 		);
 
 		$query = new Query(
@@ -110,9 +109,11 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	public function testUserDefinedTemperatureProperty() {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
-		$this->facts['paris']->setTargetSubject( $semanticData->getSubject() );
 
-		$temperatureValue = $this->facts['paris']->getAverageHighTemperatureValue();
+		$factsheet = $this->fixturesProvider->getFactsheet( 'Berlin' );
+		$factsheet->setTargetSubject( $semanticData->getSubject() );
+
+		$temperatureValue = $factsheet->getAverageHighTemperatureValue();
 		$temperatureProperty = $temperatureValue->getProperty();
 
 		$semanticData->addDataValue( $temperatureValue );
@@ -123,16 +124,16 @@ class CustomUnitDataTypeQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			$this->getStore()->getSemanticData( $semanticData->getSubject() )->getProperties()
 		);
 
-		$propertyValue = new PropertyValue( '__pro' );
-		$propertyValue->setDataItem( $temperatureProperty );
-
+		/**
+		 * @query [[Temperature::+]]|?Temperature
+		 */
 		$description = new SomeProperty(
 			$temperatureProperty,
 			new ThingDescription()
 		);
 
 		$description->addPrintRequest(
-			new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue )
+			$this->printRequestFactory->newPropertyPrintRequest( $temperatureProperty )
 		);
 
 		$query = new Query(

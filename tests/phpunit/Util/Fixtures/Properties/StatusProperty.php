@@ -13,12 +13,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class StatusProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class StatusProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -28,14 +23,6 @@ class StatusProperty {
 		$this->property->setPropertyTypeId( '_txt' );
 	}
 
-	/**
-	 * @since 2.1
-	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
-	}
 
 	/**
 	 * @since 2.1
@@ -44,7 +31,7 @@ class StatusProperty {
 	 */
 	public function getDependencies() {
 
-		$semanticData = new SemanticData( $this->property->getDiWikiPage() );
+		$semanticData = parent::getDependencies();
 
 		$semanticData->addPropertyObjectValue(
 			new DIProperty( '_PVAL' ),

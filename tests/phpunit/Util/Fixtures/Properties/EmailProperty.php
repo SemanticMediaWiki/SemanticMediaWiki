@@ -10,12 +10,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class EmailProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class EmailProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -23,15 +18,6 @@ class EmailProperty {
 	public function __construct() {
 		$this->property = DIProperty::newFromUserLabel( 'Email' );
 		$this->property->setPropertyTypeId( '_ema' );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
 	}
 
 }

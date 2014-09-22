@@ -11,12 +11,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class CapitalOfProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class CapitalOfProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -29,20 +24,11 @@ class CapitalOfProperty {
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
-	}
-
-	/**
-	 * @since 2.1
-	 *
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
 
-		$semanticData = new SemanticData( $this->property->getDiWikiPage() );
+		$semanticData = parent::getDependencies();
 
 		$locatedInProperty = new LocatedInProperty();
 

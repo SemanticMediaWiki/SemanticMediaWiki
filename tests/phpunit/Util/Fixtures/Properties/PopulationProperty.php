@@ -10,12 +10,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class PopulationProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class PopulationProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -23,15 +18,6 @@ class PopulationProperty {
 	public function __construct() {
 		$this->property = new DIProperty( 'Population' );
 		$this->property->setPropertyTypeId( '_num' );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
 	}
 
 }

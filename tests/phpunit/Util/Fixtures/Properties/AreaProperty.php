@@ -12,12 +12,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class AreaProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class AreaProperty extends FixtureProperty {
 
 	/**
 	 * @var array
@@ -41,25 +36,20 @@ class AreaProperty {
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
-	}
-
-	/**
-	 * @since 2.1
-	 *
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
 
+		$semanticData = parent::getDependencies();
+
 		$dataValueFactory = DataValueFactory::getInstance();
-		$semanticData = new SemanticData( $this->property->getDiWikiPage() );
 
 		foreach( $this->conversionValues as $conversionValue ) {
 			$semanticData->addDataValue(
-				$dataValueFactory->newPropertyObjectValue( new DIProperty( '_CONV' ), $conversionValue )
+				$dataValueFactory->newPropertyObjectValue(
+					new DIProperty( '_CONV' ),
+					$conversionValue
+				)
 			);
 		}
 

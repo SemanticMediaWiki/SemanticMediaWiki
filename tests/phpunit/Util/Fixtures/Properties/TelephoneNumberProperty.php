@@ -10,12 +10,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class TelephoneNumberProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class TelephoneNumberProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -23,15 +18,6 @@ class TelephoneNumberProperty {
 	public function __construct() {
 		$this->property = DIProperty::newFromUserLabel( 'Telephone number' );
 		$this->property->setPropertyTypeId( '_tel' );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
 	}
 
 }
