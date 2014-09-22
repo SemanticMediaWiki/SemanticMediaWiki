@@ -3,10 +3,7 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\SemanticDataFactory;
-use SMW\Tests\Util\Validators\QueryResultValidator;
-
-use SMW\Tests\Util\Fixtures\FixturesProvider;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\Conjunction;
@@ -32,26 +29,24 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	protected $databaseToBeExcluded = array( 'sqlite' );
 
-	private $facts = array();
+	private $fixturesProvider;
 	private $semanticDataFactory;
 	private $queryResultValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->semanticDataFactory = new SemanticDataFactory();
-		$this->queryResultValidator = new QueryResultValidator();
+		$this->semanticDataFactory  = UtilityFactory::getInstance()->newSemanticDataFactory();
+		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 
-		$fixturesProvider = new FixturesProvider();
-		$fixturesProvider->setupDependencies( $this->getStore() );
-
-		$this->facts = $fixturesProvider->getListOfFactsheetInstances();
+		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
+		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
 	protected function tearDown() {
 
-		$fixturesProvider = new FixturesProvider();
-		$fixturesProvider->getCleaner()->purgeFacts( $this->facts );
+		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
+		$fixturesCleaner->purgeAllKnownFacts();
 
 		parent::tearDown();
 	}
@@ -61,7 +56,7 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 		$expectedSubjects[] = $semanticData->getSubject();
 
-		$factsheet = $this->facts['berlin'];
+		$factsheet = $this->fixturesProvider->getFactsheet( 'Berlin' );
 		$factsheet->setTargetSubject( $semanticData->getSubject() );
 
 		$demographicsSubobject = $factsheet->getDemographics();
@@ -82,7 +77,9 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 			new ValueDescription( $populationValue->getDataItem(), null, SMW_CMP_EQ )
 		);
 
-		// [[Population::<distinctValueOfFactsheet>]][[:+]]
+		/**
+		 * @query [[Population::SomeDistinctPopulationValue]][[:+]]
+		 */
 		$description = new Conjunction();
 		$description->addDescription( $someProperty );
 		$description->addDescription( new NamespaceDescription( NS_MAIN ) );

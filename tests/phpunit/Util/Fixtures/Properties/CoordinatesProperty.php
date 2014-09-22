@@ -10,12 +10,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class CoordinatesProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class CoordinatesProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -23,15 +18,6 @@ class CoordinatesProperty {
 	public function __construct() {
 		$this->property = new DIProperty( 'Coordinates' );
 		$this->property->setPropertyTypeId( '_geo' );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
 	}
 
 }

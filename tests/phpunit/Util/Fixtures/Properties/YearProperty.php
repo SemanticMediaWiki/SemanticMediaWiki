@@ -10,12 +10,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class YearProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class YearProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -23,15 +18,6 @@ class YearProperty {
 	public function __construct() {
 		$this->property = new DIProperty( 'Year' );
 		$this->property->setPropertyTypeId( '_dat' );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
 	}
 
 }

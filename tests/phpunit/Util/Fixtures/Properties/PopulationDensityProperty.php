@@ -13,12 +13,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class PopulationDensityProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class PopulationDensityProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -31,20 +26,11 @@ class PopulationDensityProperty {
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
-	}
-
-	/**
-	 * @since 2.1
-	 *
 	 * @return SemanticData
 	 */
 	public function getDependencies() {
 
-		$semanticData = new SemanticData( $this->property->getDiWikiPage() );
+		$semanticData = parent::getDependencies();
 
 		$populationProperty = new PopulationProperty();
 		$areaProperty = new AreaProperty();

@@ -10,12 +10,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class DescriptionProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class DescriptionProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -23,15 +18,6 @@ class DescriptionProperty {
 	public function __construct() {
 		$this->property = new DIProperty( 'Description' );
 		$this->property->setPropertyTypeId( '_txt' );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
 	}
 
 }

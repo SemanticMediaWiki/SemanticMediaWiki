@@ -23,13 +23,19 @@ use RuntimeException;
  */
 abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
-	/* @var MwDatabaseTableBuilder */
+	/**
+	 * @var MwDatabaseTableBuilder
+	 */
 	protected $mwDatabaseTableBuilder = null;
 
-	/* @var array|null */
+	/**
+	 * @var array|null
+	 */
 	protected $databaseToBeExcluded = null;
 
-	/* @var array|null */
+	/**
+	 * @var array|null
+	 */
 	protected $storesToBeExcluded = null;
 
 	protected $destroyDatabaseTablesOnEachRun = false;
@@ -110,7 +116,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		if ( !$this->isUsableUnitTestDatabase ) {
 			$this->markTestSkipped(
-				"Database is not available or was excluded"
+				"Database was excluded and is expected not to support the test"
 			);
 		}
 	}
@@ -121,7 +127,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		if ( in_array( $store, (array)$this->storesToBeExcluded ) ) {
 			$this->markTestSkipped(
-				"{$store} was excluded"
+				"{$store} was excluded and is expected not to support the test"
 			);
 		}
 	}

@@ -10,12 +10,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class TemperatureProperty {
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property = null;
+class TemperatureProperty extends FixtureProperty {
 
 	/**
 	 * @since 2.1
@@ -23,15 +18,6 @@ class TemperatureProperty {
 	public function __construct() {
 		$this->property = new DIProperty( 'Temperature' );
 		$this->property->setPropertyTypeId( '_tem' );
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @return DIProperty
-	 */
-	public function getProperty() {
-		return $this->property;
 	}
 
 }
