@@ -33,7 +33,7 @@ abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 	/**
 	 * @var boolean
 	 */
-	protected $destroyDatabaseTablesOnEachRun = false;
+	protected $destroyDatabaseTablesAfterRun = false;
 
 	/**
 	 * @var BenchmarkRunner

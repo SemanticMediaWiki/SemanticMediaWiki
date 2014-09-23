@@ -28,7 +28,7 @@ use SMW\SerializerFactory;
  */
 class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 
-	protected $destroyDatabaseTablesOnEachRun = true;
+	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $apiFactory;
 	private $dataValueFactory;
