@@ -41,12 +41,12 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @var boolean
 	 */
-	protected $destroyDatabaseTablesOnEachRun = false;
+	protected $destroyDatabaseTablesBeforeRun = false;
 
 	/**
 	 * @var boolean
 	 */
-	protected $destroyDatabaseTablesBeforeRun = false;
+	protected $destroyDatabaseTablesAfterRun = false;
 
 	/**
 	 * @var boolean
@@ -93,15 +93,15 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		parent::run( $result );
 
-		$this->destroyDatabaseTables( $this->destroyDatabaseTablesOnEachRun );
+		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
 	}
 
 	protected function removeDatabaseTypeFromTest( $databaseToBeExcluded ) {
 		$this->databaseToBeExcluded = $databaseToBeExcluded;
 	}
 
-	protected function destroyDatabaseTablesOnEachRun() {
-		$this->destroyDatabaseTablesOnEachRun = true;
+	protected function destroyDatabaseTablesAfterRun() {
+		$this->destroyDatabaseTablesAfterRun = true;
 	}
 
 	protected function getStore() {

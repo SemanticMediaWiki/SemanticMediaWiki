@@ -27,7 +27,7 @@ use Title;
 class RedirectPageTest extends MwDBaseUnitTestCase {
 
 	protected $databaseToBeExcluded = array( 'postgres' );
-	protected $destroyDatabaseTablesOnEachRun = true;
+	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = array();
 	private $runnerFactory;
