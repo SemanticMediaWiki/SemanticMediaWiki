@@ -161,18 +161,18 @@
 
 === Silent annotation using #set ===
 {{#set:
- |[Has record type=RecordDataTypePage;BarText;1009
+ |Has record type=RecordDataTypePage;BarText;1009
 }}
 {{#set:
- |[Has record type=BooPage;?;1009
+ |Has record type=BooPage;?;1009
 }}
 
 === Silent annotation using #subobject ===
 {{#subobject:
- |[Has record type=QyuPageOnSubobject;?;9999
+ |Has record type=QyuPageOnSubobject;?;9999
 }}
 {{#subobject:
- |[Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
+ |Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
 }}
 
 [[Category:Record type regression test]]</text>
@@ -196,18 +196,18 @@
 
 === Silent annotation using #set ===
 {{#set:
- |[Has record type=RecordDataTypePage;BarText;1009
+ |Has record type=RecordDataTypePage;BarText;1009
 }}
 {{#set:
- |[Has record type=BooPage;?;1009
+ |Has record type=BooPage;?;1009
 }}
 
 === Silent annotation using #subobject ===
 {{#subobject:
- |[Has record type=QyuPageOnSubobject;?;9999
+ |Has record type=QyuPageOnSubobject;?;9999
 }}
 {{#subobject:
- |[Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
+ |Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
 }}
 
 [[Category:Record type regression test]]</text>
@@ -238,18 +238,18 @@ A regression test for the record type. Semantic MediaWiki provides a record type
 
 === Silent annotation using #set ===
 {{#set:
- |[Has record type=RecordDataTypePage;BarText;1009
+ |Has record type=RecordDataTypePage;BarText;1009
 }}
 {{#set:
- |[Has record type=BooPage;?;1009
+ |Has record type=BooPage;?;1009
 }}
 
 === Silent annotation using #subobject ===
 {{#subobject:
- |[Has record type=QyuPageOnSubobject;?;9999
+ |Has record type=QyuPageOnSubobject;?;9999
 }}
 {{#subobject:
- |[Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
+ |Has record type=XeuiPageOnSubobject;XeuiTextOnSubobject;1111
 }}
 
 == Queries ==

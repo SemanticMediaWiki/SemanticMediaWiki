@@ -51,6 +51,9 @@ class JobQueueSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->application = Application::getInstance();
 
+		// FIXME Because of SQLStore::Writer::changeTitle
+		$GLOBALS['smwgEnableUpdateJobs'] = true;
+
 		$settings = array(
 			'smwgEnableUpdateJobs' => true,
 			'smwgDeleteSubjectAsDeferredJob' => true,

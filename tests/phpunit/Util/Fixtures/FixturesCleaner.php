@@ -25,7 +25,7 @@ class FixturesCleaner {
 	public function purgeSubjects( array $subjects ) {
 
 		$pageDeleter = new PageDeleter();
-		$pageDeleter->deletePoolOfPages( $subjects );
+		$pageDeleter->doDeletePoolOfPages( $subjects );
 
 		return $this;
 	}

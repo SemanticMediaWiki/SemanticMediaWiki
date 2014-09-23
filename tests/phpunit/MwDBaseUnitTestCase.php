@@ -38,7 +38,19 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $storesToBeExcluded = null;
 
+	/**
+	 * @var boolean
+	 */
 	protected $destroyDatabaseTablesOnEachRun = false;
+
+	/**
+	 * @var boolean
+	 */
+	protected $destroyDatabaseTablesBeforeRun = false;
+
+	/**
+	 * @var boolean
+	 */
 	protected $isUsableUnitTestDatabase = true;
 
 	protected function setUp() {
@@ -71,6 +83,8 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		$this->mwDatabaseTableBuilder = MwDatabaseTableBuilder::getInstance( $this->getStore() );
 		$this->mwDatabaseTableBuilder->removeAvailableDatabaseType( $this->databaseToBeExcluded );
 
+		$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
+
 		try {
 			$this->mwDatabaseTableBuilder->doBuild();
 		} catch ( RuntimeException $e ) {
@@ -79,9 +93,7 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 
 		parent::run( $result );
 
-		if ( $this->isUsableUnitTestDatabase && $this->destroyDatabaseTablesOnEachRun ) {
-			$this->mwDatabaseTableBuilder->doDestroy();
-		}
+		$this->destroyDatabaseTables( $this->destroyDatabaseTablesOnEachRun );
 	}
 
 	protected function removeDatabaseTypeFromTest( $databaseToBeExcluded ) {
@@ -129,6 +141,17 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped(
 				"{$store} was excluded and is expected not to support the test"
 			);
+		}
+	}
+
+	private function destroyDatabaseTables( $destroyDatabaseTables ) {
+
+		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
+			try {
+				$this->mwDatabaseTableBuilder->doDestroy();
+			} catch ( \Exception $e ) {
+				// Do nothing because an instance was not available
+			}
 		}
 	}
 

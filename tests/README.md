@@ -21,13 +21,14 @@ php mw-phpunit-runner.php [options]
 
 The use of `MediaWikiTestCase` is discouraged as its binds tests and the test environment to MediaWiki. Generally it is best to use `PHPUnit_Framework_TestCase` and in case where a MW database connection is required `MwDBaseUnitTestCase` should be used instead.
 
-* `MwRegressionTestCase` used for regression testing together with XML data import
 * `QueryPrinterTestCase` base class for all query and result printers
 * `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
 
 ### Test fixtures
 
 When writing tests, it is suggested to use available [immutable fixtures][phpunit-fixtures] as baseline to create repeatable object instances during a test. Available fixtures can be found in `SMW\Tests\Fixtures\*`.
+
+Another possibility is to use MediaWiki's XML format to import fixtures (in form of content pages), for more details see `SMW\Tests\Integration\MediaWiki\Import\*`.
 
 ## Integration tests
 

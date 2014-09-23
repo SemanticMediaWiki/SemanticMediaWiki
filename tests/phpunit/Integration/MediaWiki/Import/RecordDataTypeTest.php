@@ -1,10 +1,11 @@
 <?php
 
-namespace SMW\Tests\Regression;
+namespace SMW\Tests\Integration\MediaWiki\Import;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMW\Tests\Util\ByPageSemanticDataFinder;
-use SMW\Test\MwRegressionTestCase;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -12,27 +13,56 @@ use SMW\DIProperty;
 use Title;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-regression
+ * @group semantic-mediawiki-import
  * @group mediawiki-database
  * @group Database
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9.1
  *
  * @author mwjames
  */
-class RecordDataTypeRegressionTest extends MwRegressionTestCase {
+class RecordDataTypeTest extends MwDBaseUnitTestCase {
 
-	public function getSourceFile() {
-		return __DIR__ . '/data/' . 'RecordDataTypeRegressionTest-Mw-1-19-7.xml';
+	protected $databaseToBeExcluded = array( 'postgres' );
+	protected $destroyDatabaseTablesOnEachRun = true;
+
+	private $importedTitles = array();
+	private $runnerFactory;
+	private $titleValidator;
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
+		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
+		$importRunner = $this->runnerFactory->newXmlImportRunner(
+			__DIR__ . '/'. 'Fixtures/' . 'RecordDataTypeTest-Mw-1-19-7.xml'
+		);
+
+		if ( !$importRunner->setVerbose( true )->run() ) {
+			$importRunner->reportFailedImport();
+			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
+		}
 	}
 
-	public function acquirePoolOfTitles() {
-		return array(
+	protected function tearDown() {
+
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
+
+		parent::tearDown();
+	}
+
+	public function testImportOfRecordValues() {
+
+		$this->importedTitles = array(
 			'Property:Has record number field',
 			'Property:Has record page field',
 			'Property:Has record text field',
@@ -42,9 +72,8 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 			'RecordDataTypeRegressionTest/WithSubpage',
 			'RecordDataTypeRegressionTest'
 		);
-	}
 
-	public function assertDataImport() {
+		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$title = Title::newFromText( 'RecordDataTypeRegressionTest' );
 
@@ -124,8 +153,6 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 			)
 		);
 
-		$this->semanticDataValidator = new SemanticDataValidator;
-
 		$semanticDataFinder = new ByPageSemanticDataFinder;
 		$semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );
 
@@ -152,7 +179,6 @@ class RecordDataTypeRegressionTest extends MwRegressionTestCase {
 		$this->assertThatRecordValuesAreSet( $expectedRecordPageFieldValuesAsWikiValue );
 		$this->assertThatRecordValuesAreSet( $expectedRecordTextFieldValuesAsWikiValue );
 		$this->assertThatRecordValuesAreSet( $expectedRecordNumberFieldValuesAsNumber );
-
 	}
 
 	protected function assertThatSemanticDataValuesAreSet( $expected, $semanticData ) {
