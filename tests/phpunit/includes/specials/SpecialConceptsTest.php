@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\UtilityFactory;
+
 use SMW\SpecialConcepts;
 use SMW\DIWikiPage;
 use SMWDataItem;
@@ -24,6 +26,14 @@ use Title;
  */
 class SpecialConceptsTest extends SpecialPageTestCase {
 
+	private $stringValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+	}
+
 	public function getClass() {
 		return '\SMW\SpecialConcepts';
 	}
@@ -43,12 +53,10 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 
 		$this->execute();
 
-		$matches = array(
-			'tag' => 'span',
-			'attributes' => array( 'class' => 'smw-sp-concept-docu' )
+		$this->stringValidator->assertThatStringContains(
+			'span class="smw-sp-concept-docu"',
+			$this->getText()
 		);
-
-		$this->assertTag( $matches, $this->getText() );
 	}
 
 	/**
@@ -58,16 +66,10 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 
 		$instance = $this->getInstance();
 
-		$matches = array(
-			'tag' => 'span',
-			'attributes' => array( 'class' => 'smw-sp-concept-empty' )
-		);
-
-		$this->assertTag(
-			$matches,
+		$this->stringValidator->assertThatStringContains(
+			'span class="smw-sp-concept-empty"',
 			$instance->getHtml( array(), 0, 0, 0 )
 		);
-
 	}
 
 	/**
@@ -78,16 +80,10 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 		$subject  = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
 		$instance = $this->getInstance();
 
-		$matches = array(
-			'tag' => 'span',
-			'attributes' => array( 'class' => 'smw-sp-concept-count' )
-		);
-
-		$this->assertTag(
-			$matches,
+		$this->stringValidator->assertThatStringContains(
+			'span class="smw-sp-concept-count"',
 			$instance->getHtml( array( $subject ), 1, 1, 1 )
 		);
-
 	}
 
 }

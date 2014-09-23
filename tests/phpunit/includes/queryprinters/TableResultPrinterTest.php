@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\UtilityFactory;
+
 use SMW\Tests\Util\Mock\MockObjectBuilder;
 use SMW\Tests\Util\Mock\CoreMockObjectRepository;
 
@@ -30,6 +32,14 @@ use Title;
  * @group SMWExtension
  */
 class TableResultPrinterTest extends QueryPrinterTestCase {
+
+	private $stringValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+	}
 
 	/**
 	 * Returns the name of the class to be tested
@@ -91,12 +101,10 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 			'assert that the result always returns a string'
 		);
 
-		$this->assertTag(
+		$this->stringValidator->assertThatStringContains(
 			$expected['matcher'],
-			$result,
-			'asserts that tags correspond with invoked matcher'
+			$result
 		);
-
 	}
 
 	/**
@@ -178,24 +186,16 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 		);
 
 		$matcher = array(
-			'tag' => 'table', 'attributes' => array( 'class' => $parameters['class'] ),
-			'descendant' => array(
-				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
-				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array( 'class' => $labels['pr-2'] ),
-			),
-			'descendant' => array(
-				'tag' => 'tr',
-				'child' => array(
-					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
-					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array( 'class' => $labels['pr-2'] )
-				)
-			),
-			'descendant' => array(
-				'tag' => 'tr', 'attributes' => array( 'class' => 'smwfooter' ),
-				'child' => array(
-					'tag' => 'td', 'attributes' => array( 'class' => 'sortbottom' ),
-				)
-			)
+			'<table class="tableClass">',
+			'<th class="PrintRequest-PageValue">PrintRequest-PageValue</th>',
+			'<th class="PrintRequest-NumberValue">PrintRequest-NumberValue</th>',
+			'<tr class="row-odd">',
+			'class="PrintRequest-PageValue smwtype_wpg">ResultArray-PageValue</td>',
+			'<td data-sort-value="9001"',
+			'class="PrintRequest-NumberValue smwtype_num">9001</td></tr>',
+			'<tr class="smwfooter row-even">',
+			'<td class="sortbottom">',
+			'<span class="smw-table-furtherresults">'
 		);
 
 		$provider[] = array(
@@ -219,24 +219,12 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 		);
 
 		$matcher = array(
-			'tag' => 'table', 'attributes' => array( 'class' => $parameters['class'], 'width' => '100%' ),
-			'descendant' => array(
-				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
-				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array( 'class' => $labels['pr-2'] ),
-			),
-			'descendant' => array(
-				'tag' => 'tr',
-				'child' => array(
-					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array( 'class' => $labels['pr-1'] ),
-					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array( 'class' => $labels['pr-2'] )
-				)
-			),
-			'descendant' => array(
-				'tag' => 'tr', 'attributes' => array( 'class' => 'smwfooter' ),
-				'child' => array(
-					'tag' => 'td', 'attributes' => array( 'class' => 'sortbottom' ),
-				)
-			)
+			'<table class="tableClass" width="100%">',
+			'<th class="PrintRequest-PageValue">PrintRequest-PageValue</th>',
+			'<th class="PrintRequest-NumberValue">PrintRequest-NumberValue</th>',
+			'<tr class="smwfooter row-odd">',
+			'<td class="sortbottom">',
+			'<span class="smw-broadtable-furtherresults">'
 		);
 
 		$provider[] = array(
@@ -260,24 +248,10 @@ class TableResultPrinterTest extends QueryPrinterTestCase {
 		);
 
 		$matcher = array(
-			'tag' => 'table', 'attributes' => array( 'class' => $parameters['class'] ),
-			'descendant' => array(
-				'tag' => 'th', 'content' => $labels['pr-1'], 'attributes' => array(),
-				'tag' => 'th', 'content' => $labels['pr-2'], 'attributes' => array(),
-			),
-			'descendant' => array(
-				'tag' => 'tr',
-				'child' => array(
-					'tag' => 'td', 'content' => $labels['ra-1'], 'attributes' => array(),
-					'tag' => 'td', 'content' => $labels['ra-2'], 'attributes' => array()
-				)
-			),
-			'descendant' => array(
-				'tag' => 'tr', 'attributes' => array( 'class' => 'smwfooter' ),
-				'child' => array(
-					'tag' => 'td', 'attributes' => array( 'class' => 'sortbottom' ),
-				)
-			)
+			'<table class="tableClass">',
+			'<tr class="smwfooter row-odd">',
+			'<td class="sortbottom">',
+			'<span class="smw-table-furtherresults">'
 		);
 
 		$provider[] = array(

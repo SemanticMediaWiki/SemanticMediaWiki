@@ -2,6 +2,7 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\UtilityFactory;
 use SMW\TableFormatter;
 
 use ReflectionClass;
@@ -25,6 +26,14 @@ use ReflectionClass;
  * @group SMWExtension
  */
 class TableFormatterTest extends SemanticMediaWikiTestCase {
+
+	private $stringValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+	}
 
 	/**
 	 * Returns the name of the class to be tested
@@ -68,8 +77,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance();
 		$instance->addHeaderItem( 'span', 'lala' );
 
-		$matcher = array( 'tag' => 'span', 'content' => 'lala' );
-		$this->assertTag( $matcher, $instance->getHeaderItems() );
+		$this->stringValidator->assertThatStringContains(
+			'<span>lala</span>',
+			$instance->getHeaderItems()
+		);
 	}
 
 	/**
@@ -89,8 +100,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 		$method = $reflection->getMethod( 'getTableHeader' );
 		$method->setAccessible( true );
 
-		$matcher = array( 'tag' => 'th', 'content' => 'lala' );
-		$this->assertTag( $matcher, $method->invoke( $instance ) );
+		$this->stringValidator->assertThatStringContains(
+			'<th>lala</th>',
+			$method->invoke( $instance )
+		);
 
 		// HTML context
 		$instance = $this->getInstance( true );
@@ -102,16 +115,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 		$method = $reflection->getMethod( 'getTableHeader' );
 		$method->setAccessible( true );
 
-		$matcher = array(
-			'tag' => 'thead',
-			'child' => array(
-				'tag' => 'th',
-				'content' => 'lila'
-			)
+		$this->stringValidator->assertThatStringContains(
+			'<thead><th>lila</th></thead>',
+			$method->invoke( $instance )
 		);
-
-		$this->assertTag( $matcher, $method->invoke( $instance ) );
-
 	}
 
 	/**
@@ -134,21 +141,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 		$method = $reflection->getMethod( 'getTableRows' );
 		$method->setAccessible( true );
 
-		$matcher = array(
-			'tag' => 'tr',
-			'attributes' => array( 'class' => 'foo row-odd' ),
-			'attributes' => array( 'class' => 'row-even' ),
-			'descendant' => array(
-				'tag' => 'td',
-				'content' => 'lala'
-			),
-			'descendant' => array(
-				'tag' => 'td',
-				'content' => 'lula'
-			)
+		$this->stringValidator->assertThatStringContains(
+			'<tr class="row-odd"><td class="foo">lala</td></tr><tr class="row-even"><td>lula</td></tr>',
+			$method->invoke( $instance )
 		);
-
-		$this->assertTag( $matcher, $method->invoke( $instance ) );
 
 		// HTML context
 		$instance = $this->getInstance( true );
@@ -159,22 +155,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 		$method = $reflection->getMethod( 'getTableRows' );
 		$method->setAccessible( true );
 
-		$matcher = array(
-			'tag' => 'tbody',
-			'descendant' => array(
-				'tag' => 'tr',
-				'attributes' => array(
-					'class' => 'row-odd'
-				),
-				'child' => array(
-					'tag' => 'td',
-					'content' => 'lila'
-				),
-			)
+		$this->stringValidator->assertThatStringContains(
+			'<tbody><tr class="row-odd"><td>lila</td></tr></tbody>',
+			$method->invoke( $instance )
 		);
-
-		$this->assertTag( $matcher, $method->invoke( $instance ) );
-
 	}
 
 	/**
@@ -190,20 +174,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 		$instance->addTableCell( 'lala', array( 'rel' => 'tuuu' ) )
 			->addTableRow( array( 'class' => 'foo' ) );
 
-		$matcher = array(
-			'tag' => 'table',
-			'descendant' => array(
-				'tag' => 'tr',
-				'attributes' => array( 'class' => 'foo row-odd' ),
-				'child' => array(
-					'tag' => 'td',
-					'content' => 'lala',
-					'attributes' => array( 'rel' => 'tuuu' )
-				)
-			)
+		$this->stringValidator->assertThatStringContains(
+			'<table><tr class="foo row-odd"><td rel="tuuu">lala</td></tr></table>',
+			$instance->getTable()
 		);
-
-		$this->assertTag( $matcher, $instance->getTable() );
 
 		// Head + row + cell
 		$instance = $this->getInstance();
@@ -211,20 +185,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 			->addTableCell( 'lala' )
 			->addTableRow();
 
-		$matcher = array(
-			'tag' => 'table',
-			'descendant' => array(
-				'tag' => 'th',
-				'child' => array( 'tag' => 'td', 'content' => 'lula' ),
-			),
-			'descendant' => array(
-				'tag' => 'tr',
-				'attributes' => array( 'class' => 'row-odd' ),
-				'child' => array( 'tag' => 'td', 'content' => 'lala' ),
-			)
+		$this->stringValidator->assertThatStringContains(
+			'<table><th>lula</th><tr class="row-odd"><td>lala</td></tr></table>',
+			$instance->getTable()
 		);
-
-		$this->assertTag( $matcher, $instance->getTable() );
 
 		// HTML context
 		$instance = $this->getInstance( true );
@@ -232,20 +196,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 			->addTableCell( 'lala' )
 			->addTableRow();
 
-		// Doing a lazy check here ...
-		$matcher = array(
-			'tag' => 'table',
-			'descendant' => array(
-				'tag' => 'thead',
-				'child' => array( 'content' => 'lula' )
-			),
-			'descendant' => array(
-				'tag' => 'tbody',
-				'child' => array( 'content' => 'lala' )
-			),
+		$this->stringValidator->assertThatStringContains(
+			'<table><thead><th>lula</th></thead><tbody><tr class="row-odd"><td>lala</td></tr></tbody></table>',
+			$instance->getTable()
 		);
-
-		$this->assertTag( $matcher, $instance->getTable() );
 	}
 
 	/**
@@ -276,40 +230,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 			->addTableCell( 'lula', array( 'rel' => 'tuuu' ) )->addTableCell( 'lila' )
 			->addTableRow();
 
-		$matcher = array(
-			'tag' => 'tr',
-			'attributes' => array( 'class' => 'row-odd' ),
-			'child' => array(
-				'tag' => 'th',
-				'content' => 'Foo'
-			),
-			'descendant' => array(
-				'tag' => 'td',
-				'content' => 'lala',
-				'attributes' => array( 'class' => 'foo' ),
-			),
-			'descendant' => array(
-				'tag' => 'td',
-				'content' => 'lula',
-				'attributes' => array( 'rel' => 'tuuu' )
-			),
-			'tag' => 'tr',
-			'attributes' => array( 'class' => 'row-even' ),
-			'child' => array(
-				'tag' => 'th',
-				'content' => 'Bar'
-			),
-			'descendant' => array(
-				'tag' => 'td',
-				'content' => ''
-			),
-			'descendant' => array(
-				'tag' => 'td',
-				'content' => 'lila'
-			),
+		$this->stringValidator->assertThatStringContains(
+			'<table><tr class="row-odd"><th>Foo</th><td class="foo">lala</td><td rel="tuuu">lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr></table>',
+			$instance->transpose( true )->getTable()
 		);
-
-		$this->assertTag( $matcher, $instance->transpose( true )->getTable() );
 
 		// HTML context
 		$instance = $this->getInstance( true );
@@ -319,43 +243,10 @@ class TableFormatterTest extends SemanticMediaWikiTestCase {
 			->addTableCell( 'lula' )->addTableCell( 'lila' )
 			->addTableRow();
 
-		$matcher = array(
-			'tag' => 'thead',
-			'tag' => 'tbody',
-			'child' => array(
-				'tag' => 'tr',
-				'attributes' => array( 'class' => 'row-odd' ),
-				'child' => array(
-					'tag' => 'th',
-					'content' => 'Foo'
-				),
-				'descendant' => array(
-					'tag' => 'td',
-					'content' => 'lala',
-					'attributes' => array( 'class' => 'foo' ),
-				),
-				'descendant' => array(
-					'tag' => 'td',
-					'content' => 'lula'
-				),
-				'tag' => 'tr',
-				'attributes' => array( 'class' => 'row-even' ),
-				'child' => array(
-					'tag' => 'th',
-					'content' => 'Bar'
-				),
-				'descendant' => array(
-					'tag' => 'td',
-					'content' => ''
-				),
-				'descendant' => array(
-					'tag' => 'td',
-					'content' => 'lila'
-				),
-			)
+		$this->stringValidator->assertThatStringContains(
+			'<table><thead></thead><tbody><tr class="row-odd"><th>Foo</th><td class="foo">lala</td><td>lula</td></tr><tr class="row-even"><th>Bar</th><td></td><td>lila</td></tr></tbody></table>',
+			$instance->transpose( true )->getTable()
 		);
-
-		$this->assertTag( $matcher, $instance->transpose( true )->getTable() );
-
 	}
+
 }
