@@ -5,7 +5,7 @@ namespace SMW\Tests\Benchmark;
 use SMW\Tests\Util\PageReader;
 use SMW\Tests\Util\PageCreator;
 
-use SMW\Tests\Util\XmlImportRunner;
+use SMW\Tests\Util\UtilityFactory;
 
 use Title;
 use RuntimeException;
@@ -67,7 +67,7 @@ class BenchmarkRunner {
 
 		$memoryBefore = memory_get_peak_usage( false );
 
-		$importRunner = new XmlImportRunner( $location . $dataset );
+		$importRunner = UtilityFactory::getInstance()->newRunnerFactory()->newXmlImportRunner( $location . $dataset );
 		$importRunner->setVerbose( true );
 
 		if ( !$importRunner->run() ) {

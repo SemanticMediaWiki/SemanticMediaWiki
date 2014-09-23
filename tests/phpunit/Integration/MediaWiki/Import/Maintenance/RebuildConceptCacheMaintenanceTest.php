@@ -1,0 +1,127 @@
+<?php
+
+namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
+
+use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
+
+use Title;
+
+/**
+ * @group SMW
+ * @group SMWExtension
+ * @group semantic-mediawiki-import
+ * @group mediawiki-database
+ * @group medium
+ *
+ * @license GNU GPL v2+
+ * @since 1.9.2
+ *
+ * @author mwjames
+ */
+class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
+
+	protected $databaseToBeExcluded = array( 'postgres' );
+	protected $destroyDatabaseTablesOnEachRun = true;
+
+	private $importedTitles = array();
+	private $runnerFactory;
+	private $titleValidator;
+	private $pageCreator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
+		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
+		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
+
+		$importRunner = $this->runnerFactory->newXmlImportRunner(
+			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'
+		);
+
+		if ( !$importRunner->setVerbose( true )->run() ) {
+			$importRunner->reportFailedImport();
+			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
+		}
+	}
+
+	protected function tearDown() {
+
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
+
+		parent::tearDown();
+	}
+
+	public function testRebuildConceptCache() {
+
+		$this->importedTitles = array(
+			'Category:Lorem ipsum',
+			'Lorem ipsum',
+			'Elit Aliquam urna interdum',
+			'Platea enim hendrerit',
+			'Property:Has Url',
+			'Property:Has annotation uri',
+			'Property:Has boolean',
+			'Property:Has date',
+			'Property:Has email',
+			'Property:Has number',
+			'Property:Has page',
+			'Property:Has quantity',
+			'Property:Has temperature',
+			'Property:Has text'
+		);
+
+		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
+
+		$conceptPage = $this->createConceptPage( 'Lorem ipsum concept', '[[Category:Lorem ipsum]]' );
+	 	$this->importedTitles[] = $conceptPage;
+
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildConceptCache' );
+		$maintenanceRunner->setQuiet();
+
+		$maintenanceRunner
+			->setOptions( array( 'status' => true ) )
+			->run();
+
+		$this->assertInstanceOf(
+			'SMW\DIConcept',
+			$this->getStore()->getConceptCacheStatus( $conceptPage->getTitle() )
+		);
+
+		$maintenanceRunner
+			->setOptions( array( 'create' => true ) )
+			->run();
+
+		$maintenanceRunner
+			->setOptions( array( 'delete' => true ) )
+			->run();
+
+		$maintenanceRunner
+			->setOptions( array( 'create' => true, 's' => 1 ) )
+			->run();
+
+		$maintenanceRunner
+			->setOptions( array( 'create' => true, 's' => 1, 'e' => 100 ) )
+			->run();
+
+		$maintenanceRunner
+			->setOptions( array( 'create' => true, 'update' => true, 'old' => 1 ) )
+			->run();
+
+		$maintenanceRunner
+			->setOptions( array( 'delete' => true, 'concept' => 'Lorem ipsum concept' ) )
+			->run();
+	}
+
+	protected function createConceptPage( $name, $condition ) {
+
+		$this->pageCreator
+			->createPage( Title::newFromText( $name, SMW_NS_CONCEPT ) )
+			->doEdit( "{{#concept: {$condition} }}" );
+
+		return $this->pageCreator->getPage();
+	}
+
+}

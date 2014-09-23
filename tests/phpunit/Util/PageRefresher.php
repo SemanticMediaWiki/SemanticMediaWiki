@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Util;
 
+use SMW\MediaWiki\Jobs\UpdateJob;
+
 use SMW\Store;
 use SMW\ContentParser;
 use SMW\Application;
@@ -23,20 +25,6 @@ use RuntimeException;
 class PageRefresher {
 
 	/**
-	 * @var Store
-	 */
-	private $store = null;
-
-	/**
-	 * @since 2.0
-	 *
-	 * @param Store $store
-	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
-	}
-
-	/**
 	 * @since 2.0
 	 *
 	 * @param mixed $title
@@ -50,7 +38,7 @@ class PageRefresher {
 		}
 
 		if ( !$title instanceOf Title ) {
-			throw new RuntimeException( 'Title instance is missing' );
+			throw new RuntimeException( 'Expected a title instance' );
 		}
 
 		$contentParser = new ContentParser( $title );
@@ -62,6 +50,46 @@ class PageRefresher {
 		);
 
 		$parserData->updateStore();
+
+		return $this;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param array $pages
+	 *
+	 * @return PageRefresher
+	 */
+	public function doRefreshPoolOfPages( array $pages ) {
+		foreach ( $pages as $page ) {
+			$this->doRefreshByUpdateJob( $page );
+		}
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param mixed $title
+	 *
+	 * @return PageRefresher
+	 */
+	public function doRefreshByUpdateJob( $title ) {
+
+		if ( $title instanceOf WikiPage || $title instanceOf DIWikiPage ) {
+			$title = $title->getTitle();
+		}
+
+		if ( is_string( $title ) ) {
+			$title = Title::newFromText( $title );
+		}
+
+		if ( !$title instanceOf Title ) {
+			throw new RuntimeException( 'Expected a title instance' );
+		}
+
+		$job = new UpdateJob( $title );
+		$job->run();
 
 		return $this;
 	}

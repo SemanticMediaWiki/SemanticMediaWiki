@@ -1,13 +1,11 @@
 <?php
 
-namespace SMW\Tests\Regression;
+namespace SMW\Tests\Integration\MediaWiki\Import;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMW\Tests\Util\InSemanticDataFetcher;
-use SMW\Tests\Util\JobQueueRunner;
-use SMW\Tests\Util\PageCreator;
-use SMW\Tests\Util\PageRefresher;
-use SMW\Test\MwRegressionTestCase;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -15,10 +13,9 @@ use SMW\DIProperty;
 use Title;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-regression
+ * @group semantic-mediawiki-import
  * @group mediawiki-database
  * @group medium
  *
@@ -27,20 +24,54 @@ use Title;
  *
  * @author mwjames
  */
-class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
+class RedirectPageTest extends MwDBaseUnitTestCase {
 
-	public function getSourceFile() {
-		return __DIR__ . '/data/' . 'SimplePageRedirectRegressionTest-Mw-1-19-7.xml';
+	protected $databaseToBeExcluded = array( 'postgres' );
+	protected $destroyDatabaseTablesOnEachRun = true;
+
+	private $importedTitles = array();
+	private $runnerFactory;
+	private $titleValidator;
+	private $semanticDataValidator;
+	private $pageRefresher;
+	private $pageCreator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
+		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
+		$this->pageRefresher = UtilityFactory::getInstance()->newPageRefresher();
+		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
+
+		$importRunner = $this->runnerFactory->newXmlImportRunner(
+			__DIR__ . '/'. 'Fixtures/' . 'RedirectPageTest-Mw-1-19-7.xml'
+		);
+
+		if ( !$importRunner->setVerbose( true )->run() ) {
+			$importRunner->reportFailedImport();
+			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
+		}
 	}
 
-	public function acquirePoolOfTitles() {
-		return array(
+	protected function tearDown() {
+
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
+
+		parent::tearDown();
+	}
+
+	public function testPageImportToCreateRedirect() {
+
+		$this->importedTitles = array(
 			'SimplePageRedirectRegressionTest',
 			'ToBeSimplePageRedirect'
 		);
-	}
 
-	public function assertDataImport() {
+		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$main = Title::newFromText( 'SimplePageRedirectRegressionTest' );
 
@@ -78,11 +109,11 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			'NewTargetPageRedirectRegressionTest'
 		);
 
-		$pageRefresher = new PageRefresher( $this->getStore() );
-		$pageRefresher->doRefresh( $main );
-
-		$jobQueueRunner = new JobQueueRunner( 'SMW\UpdateJob' );
-		$jobQueueRunner->run();
+		$this->pageRefresher->doRefreshPoolOfPages( array(
+			$main,
+			$newRedirectPage,
+			'NewTargetPageRedirectRegressionTest'
+		) );
 
 		$semanticDataBatches = array(
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $main ) ),
@@ -118,10 +149,8 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 	protected function assertThatCategoriesAreSet( $expectedCategoryAsWikiValue, $semanticDataBatches ) {
 
-		$semanticDataValidator = new SemanticDataValidator();
-
 		foreach ( $semanticDataBatches as $semanticData ) {
-			$semanticDataValidator->assertThatCategoriesAreSet(
+			$this->semanticDataValidator->assertThatCategoriesAreSet(
 				$expectedCategoryAsWikiValue,
 				$semanticData
 			);
@@ -130,10 +159,8 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 	protected function assertThatPropertiesAreSet( $expectedSomeProperties, $semanticDataBatches ) {
 
-		$semanticDataValidator = new SemanticDataValidator();
-
 		foreach ( $semanticDataBatches as $semanticData ) {
-			$semanticDataValidator->assertThatPropertiesAreSet(
+			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expectedSomeProperties,
 				$semanticData
 			);
@@ -142,8 +169,6 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 	protected function assertThatSemanticDataValuesForPropertyAreSet( $expected, $semanticData ) {
 
-		$semanticDataValidator = new SemanticDataValidator();
-
 		$runValueAssert = false;
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -151,7 +176,7 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 			if ( $property->equals( $expected['property'] ) ) {
 
 				$runValueAssert = true;
-				$semanticDataValidator->assertThatPropertyValuesAreSet(
+				$this->semanticDataValidator->assertThatPropertyValuesAreSet(
 					$expected,
 					$property,
 					$semanticData->getPropertyValues( $property )
@@ -164,12 +189,11 @@ class SimplePageRedirectRegressionTest extends MwRegressionTestCase {
 
 	protected function createPageWithRedirectFor( $source, $target ) {
 
-		$pageCreator = new PageCreator();
-		$pageCreator
+		$this->pageCreator
 			->createPage( Title::newFromText( $source ) )
 			->doEdit( "#REDIRECT [[{$target}]]" );
 
-		return $pageCreator->getPage();
+		return $this->pageCreator->getPage();
 	}
 
 	protected function movePageToTargetRedirect( $page, $target ) {

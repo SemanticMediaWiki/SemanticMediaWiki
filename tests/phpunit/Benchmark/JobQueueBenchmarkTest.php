@@ -3,7 +3,7 @@
 namespace SMW\Tests\Benchmark;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\JobQueueRunner;
+use SMW\Tests\Util\UtilityFactory;
 
 use SMW\MediaWiki\Jobs\RefreshJob;
 
@@ -34,6 +34,7 @@ class JobQueueBenchmarkTest extends MwDBaseUnitTestCase {
 	 * @var BenchmarkRunner
 	 */
 	private $benchmarkRunner = null;
+	private $runnerFactory;
 
 	private	$repetitionExecutionThreshold = 1;
 	private	$pageCopyThreshold = 50;
@@ -57,6 +58,7 @@ class JobQueueBenchmarkTest extends MwDBaseUnitTestCase {
 		}
 
 		$this->benchmarkRunner = new BenchmarkRunner();
+		$this->runnerFactory = UtilityFactory::getInstance()->newRunnerFactory();
 	}
 
 	/**
@@ -94,7 +96,7 @@ class JobQueueBenchmarkTest extends MwDBaseUnitTestCase {
 
 	private function createJobQueueBenchmarks( $job ) {
 
-		$jobQueueRunner = new JobQueueRunner( $job );
+		$jobQueueRunner = $this->runnerFactory->newJobQueueRunner( $job );
 
 		$this->benchmarkRunner->getBenchmarker()->clear();
 		$memoryBefore = memory_get_peak_usage( false );

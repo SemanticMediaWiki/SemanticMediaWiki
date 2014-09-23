@@ -3,7 +3,7 @@
 namespace SMW\Tests\Benchmark;
 
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Util\MaintenanceRunner;
+use SMW\Tests\Util\UtilityFactory;
 
 use Title;
 
@@ -32,6 +32,7 @@ class MaintenanceBenchmarkTest extends MwDBaseUnitTestCase {
 	 * @var BenchmarkRunner
 	 */
 	private $benchmarkRunner = null;
+	private $runnerFactory;
 
 	private	$repetitionExecutionThreshold = 1;
 	private	$pageCopyThreshold = 50;
@@ -57,6 +58,7 @@ class MaintenanceBenchmarkTest extends MwDBaseUnitTestCase {
 		$this->fullDelete = true;
 
 		$this->benchmarkRunner = new BenchmarkRunner();
+		$this->runnerFactory = UtilityFactory::getInstance()->newRunnerFactory();
 	}
 
 	/**
@@ -90,7 +92,7 @@ class MaintenanceBenchmarkTest extends MwDBaseUnitTestCase {
 
 	private function createMaintenanceBenchmarks( $maintenanceScript ) {
 
-		$maintenanceRunner = new MaintenanceRunner( $maintenanceScript );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( $maintenanceScript );
 		$maintenanceRunner->setQuiet();
 		$maintenanceRunner->setOptions( array( 'f' => $this->fullDelete ) );
 

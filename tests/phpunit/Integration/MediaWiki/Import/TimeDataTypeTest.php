@@ -1,22 +1,21 @@
 <?php
 
-namespace SMW\Tests\Regression;
+namespace SMW\Tests\Integration\MediaWiki\Import;
 
-use SMW\Tests\Util\Validators\SemanticDataValidator;
+use SMW\Tests\Util\UtilityFactory;
+use SMW\Tests\MwDBaseUnitTestCase;
+
 use SMW\Tests\Util\ByPageSemanticDataFinder;
-use SMW\Test\MwRegressionTestCase;
 
 use SMW\DIProperty;
 
 use Title;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
- * @group semantic-mediawiki-regression
+ * @group semantic-mediawiki-import
  * @group mediawiki-database
- * @group Database
  * @group medium
  *
  * @license GNU GPL v2+
@@ -24,31 +23,57 @@ use Title;
  *
  * @author mwjames
  */
-class TimeDataTypeRegressionTest extends MwRegressionTestCase {
+class TimeDataTypeTest extends MwDBaseUnitTestCase {
 
-	/**
-	 * FIXME
-	 */
-	protected $storesToBeExcluded = array( 'SMWSparqlStore' );
+	protected $databaseToBeExcluded = array( 'postgres' );
+	protected $destroyDatabaseTablesOnEachRun = true;
 
-	public function getSourceFile() {
-		return __DIR__ . '/data/' . 'TimeDataTypeRegressionTest-Mw-1-19-7.xml';
+	private $importedTitles = array();
+	private $runnerFactory;
+	private $titleValidator;
+	private $semanticDataValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' ) && is_a( $this->getStore()->getSparqlDatabase(), '\SMW\SPARQLStore\VirtuosoHttpDatabaseConnector' ) ) {
+			$this->markTestIncomplete( "Virtuoso will fail for '1 January 300 BC' with 'Virtuoso 22007 Error DT006: Cannot convert -0302-12-28Z to datetime : Incorrect month field length'" );
+		}
+
+		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
+		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
+		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();
+
+		$importRunner = $this->runnerFactory->newXmlImportRunner(
+			__DIR__ . '/'. 'Fixtures/' . 'TimeDataTypeTest-Mw-1-19-7.xml'
+		);
+
+		if ( !$importRunner->setVerbose( true )->run() ) {
+			$importRunner->reportFailedImport();
+			$this->markTestIncomplete( 'Test was marked as incomplete because the data import failed' );
+		}
 	}
 
-	public function acquirePoolOfTitles() {
-		return array(
+	protected function tearDown() {
+
+		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
+		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
+
+		parent::tearDown();
+	}
+
+	public function testImportOfDifferentDateWithAssortmentOfOutputConversion() {
+
+		$this->importedTitles = array(
 			'TimeDataTypeRegressionTest',
 			'Property:Has query date',
 			'Property:Has calendar date',
 			'Property:Has date'
 		);
-	}
 
-	public function assertDataImport() {
+		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$title = Title::newFromText( 'TimeDataTypeRegressionTest' );
-
-		$this->assertTrue( $title->exists() );
 
 		$expectedCategoryAsWikiValue = array(
 			'property' => new DIProperty( '_INST' ),
@@ -106,12 +131,16 @@ class TimeDataTypeRegressionTest extends MwRegressionTestCase {
 			)
 		);
 
+		// Note Windows vs Linux date conversion on PHP
+		// where 14000000000 BC is 2147483647 BC on Windows
+
 		$expectedCalendarSpecificDateValuesAsISO = array(
 			'valueFormatter' => $this->setISO8601DateValueFormatter(),
 			'property'       => DIProperty::newFromUserLabel( 'Has calendar date' ),
 			'propertyValues' => array(
 				'--301-12-28', // 1 January 300 BC
 				'--2147483647-01-01', // 2147483647 BC
+				'--14000000000-01-01',
 				'2000-02-24',
 				'1492-02-11'
 			)
@@ -123,6 +152,7 @@ class TimeDataTypeRegressionTest extends MwRegressionTestCase {
 			'propertyValues' => array(
 				'1 January 300 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
+				'14000000000 BC',
 				'24 February 2000',
 				'2 February 1492'
 			)
@@ -134,6 +164,7 @@ class TimeDataTypeRegressionTest extends MwRegressionTestCase {
 			'propertyValues' => array(
 				'28 December 301 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
+				'14000000000 BC',
 				'24 February 2000',
 				'11 February 1492'
 			)
@@ -145,12 +176,11 @@ class TimeDataTypeRegressionTest extends MwRegressionTestCase {
 			'propertyValues' => array(
 				'1 January 300 BC', // 1 January 300 BC
 				'2147483647 BC', // 2147483647 BC
+				'14000000000 BC',
 				'11 February 2000',
 				'2 February 1492'
 			)
 		);
-
-		$this->semanticDataValidator = new SemanticDataValidator;
 
 		$this->semanticDataFinder = new ByPageSemanticDataFinder;
 		$this->semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );

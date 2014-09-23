@@ -37,6 +37,8 @@ use UnexpectedValueException;
  */
 class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
+	protected $destroyDatabaseTablesBeforeRun = true;
+
 	private $title = null;
 	private $application;
 	private $mwHooksHandler;
