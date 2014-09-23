@@ -351,6 +351,9 @@ $magicWords['tt-cyrl'] = array(
 $magicWords['vi'] = array(
 	'ask' => array( 0, 'hỏi' ),
 	'show' => array( 0, 'hiển_thị' ),
+	'info' => array( 0, 'thông_tin' ),
+	'concept' => array( 0, 'khái_niệm' ),
+	'set' => array( 0, 'đặt' ),
 );
 
 /** Simplified Chinese (中文（简体）‎) */

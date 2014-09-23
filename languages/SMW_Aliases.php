@@ -473,7 +473,7 @@ $specialPageAliases['lb'] = array(
 	'WantedProperties' => array( 'Gewënscht_Eegeschaften' ),
 );
 
-/** lumbaart (lumbaart) */
+/** Lombard (lumbaart) */
 $specialPageAliases['lmo'] = array(
 	'Ask' => array( 'Ciama' ),
 );
@@ -770,7 +770,7 @@ $specialPageAliases['uk'] = array(
 	'Types' => array( 'Типи' ),
 );
 
-/** vèneto (vèneto) */
+/** Venetian (vèneto) */
 $specialPageAliases['vec'] = array(
 	'Browse' => array( 'Sfója' ),
 	'Properties' => array( 'Proprietà' ),

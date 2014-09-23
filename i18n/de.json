@@ -273,7 +273,7 @@
 	"smw-info-par-message": "Die anzuzeigende Nachricht",
 	"smw-info-par-icon": "Das anzuzeigende Symbol, entweder „Info“ (<code>info<code>) oder „Warnung“(<code>warning</code>)",
 	"prefs-smw": "Semantic MediaWiki",
-	"prefs-ask-options": "Optionen für die Semantische Suche",
+	"prefs-ask-options": "Optionen für die semantische Suche",
 	"smw-prefs-intro-text": "Die unten angegebenen Optionen werden von [https://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite Semantic MediaWiki] oder zugehörigen Programmerweiterungen bereitgestellt. Mit ihnen können verfügbare Funktionen individuellen Bedürfnissen angepasst werden. Weitere Informationen hierzu sind auf der Hilfeseite zu den [https://semantic-mediawiki.org/wiki/Help:Benutzereinstellungen Benutzereinstellungen] verfügbar.",
 	"smw-prefs-ask-options-tooltip-display": "Beschreibung der Ausgabeparameter als Tooltip anzeigen",
 	"smw-prefs-ask-options-collapsed-default": "Bereich mit den Ausgabeparametern standardmäßig einklappen",
