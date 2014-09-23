@@ -2,6 +2,8 @@
 
 namespace SMW\Test;
 
+use SMW\Tests\Util\UtilityFactory;
+
 use SMW\DataValueFactory;
 use SMW\TableFormatter;
 use SMW\ParserData;
@@ -25,6 +27,14 @@ use Title;
  * @author mwjames
  */
 class FactboxTest extends ParserTestCase {
+
+	private $stringValidator;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+	}
 
 	/**
 	 * @return string
@@ -353,9 +363,14 @@ class FactboxTest extends ParserTestCase {
 		// "smwfactboxhead"/"smwrdflink" is used for doing a lazy check on
 		// behalf of the invoked content
 		$header = $tableFormatter->getValue( $instance )->getHeaderItems();
-		$this->assertTag( array( 'class' => 'smwfactboxhead' ), $header );
-		$this->assertTag( array( 'class' => 'smwrdflink' ), $header );
 
+		$this->stringValidator->assertThatStringContains(
+			array(
+				'span class="swmfactboxheadbrowse"',
+				'span class="smwrdflink"'
+			),
+			$header
+		);
 	}
 
 	/**
@@ -393,11 +408,10 @@ class FactboxTest extends ParserTestCase {
 		$getTableContent->setAccessible( true );
 		$getTableContent->invoke( $instance, $mockSemanticData );
 
-		if ( $expected !== '' ) {
-			$this->assertTag( $expected, $tableFormatter->getValue( $instance )->getTable() );
-		} else {
-			$this->assertEmpty( $tableFormatter->getValue( $instance )->getTable() );
-		}
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$tableFormatter->getValue( $instance )->getTable()
+		);
 	}
 
 	/**
@@ -412,7 +426,7 @@ class FactboxTest extends ParserTestCase {
 				'isShown'       => true,
 				'isUserDefined' => true,
 			),
-			array( 'class' => 'smwprops' )
+			array( 'class="smwprops"' )
 		);
 
 		$provider[] = array(
@@ -428,7 +442,7 @@ class FactboxTest extends ParserTestCase {
 				'isShown'       => true,
 				'isUserDefined' => false,
 			),
-			array( 'class' => 'smwspecs' )
+			array( 'class="smwspecs"' )
 		);
 
 		$provider[] = array(

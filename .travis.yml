@@ -20,9 +20,9 @@ matrix:
       php: 5.5
     - env: DB=postgres; MW=1.19.0;
       php: 5.4
-    - env: DB=sqlite; MW=master; PHPUNIT=4.1.*
+    - env: DB=sqlite; MW=master; PHPUNIT=4.2.*
       php: hhvm-nightly
-    - env: DB=mysql; MW=master; PHPUNIT=4.1.*; TYPE=benchmark
+    - env: DB=mysql; MW=master; PHPUNIT=4.2.*; TYPE=benchmark
       php: hhvm-nightly
   exclude:
     - env: THENEEDFORTHIS=FAIL
