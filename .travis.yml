@@ -29,6 +29,7 @@ matrix:
   allow_failures:
     - env: DB=mysql; MW=1.19.0; TYPE=relbuild
     - env: DB=postgres; MW=1.19.0;
+    - php: hhvm-nightly
 
 install:
   - bash ./build/travis/install-services.sh
