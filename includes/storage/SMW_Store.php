@@ -390,7 +390,7 @@ abstract class Store {
 	 * @return boolean Success indicator
 	 */
 	public static function setupStore( $verbose = true ) {
-		$result = \SMW\StoreFactory::getStore()->setup( $verbose );
+		$result = StoreFactory::getStore()->setup( $verbose );
 		wfRunHooks( 'smwInitializeTables' );
 		return $result;
 	}

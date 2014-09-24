@@ -2,6 +2,9 @@
 
 namespace SMW;
 
+use SMW\Annotator\CategoryPropertyAnnotator;
+use SMW\Annotator\NullPropertyAnnotator;
+use SMW\Annotator\SortkeyPropertyAnnotator;
 use SMW\MediaWiki\TitleCreator;
 use SMW\MediaWiki\PageCreator;
 
@@ -212,7 +215,7 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 	 */
 	protected function NullPropertyAnnotator() {
 		return function ( DependencyBuilder $builder ) {
-			return new \SMW\Annotator\NullPropertyAnnotator(
+			return new NullPropertyAnnotator(
 				$builder->getArgument( 'SemanticData' )
 			);
 		};
@@ -231,14 +234,14 @@ class SharedDependencyContainer extends BaseDependencyContainer {
 			$annotator = $builder->newObject( 'NullPropertyAnnotator' );
 
 			if ( $builder->hasArgument( 'DefaultSort' ) ) {
-				$annotator = new \SMW\Annotator\SortkeyPropertyAnnotator(
+				$annotator = new SortkeyPropertyAnnotator(
 					$annotator,
 					$builder->getArgument( 'DefaultSort' )
 				);
 			}
 
 			if ( $builder->hasArgument( 'CategoryLinks' ) ) {
-				$annotator = new \SMW\Annotator\CategoryPropertyAnnotator(
+				$annotator = new CategoryPropertyAnnotator(
 					$annotator,
 					$builder->getArgument( 'CategoryLinks' )
 				);
