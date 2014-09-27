@@ -57,6 +57,15 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 *
+	 * @return Language
+	 */
+	public function getContentLanguage() {
+		return $this->contentLanguage;
+	}
+
+	/**
+	 * @since 2.1
+	 *
 	 * @param integer $namespaceId
 	 *
 	 * @return string

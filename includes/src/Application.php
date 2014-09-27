@@ -5,12 +5,15 @@ namespace SMW;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\Annotator\PropertyAnnotatorFactory;
 use SMW\MediaWiki\MagicWordFinder;
+use SMW\MediaWiki\HtmlFormBuilder;
+use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Factbox\FactboxBuilder;
 use SMW\Query\Profiler\QueryProfilerFactory;
 
 use ParserOutput;
 use Parser;
+use Language;
 use Title;
 
 /**
@@ -209,6 +212,25 @@ class Application {
 		return $this->builder->newObject( 'ContentParser', array(
 			'Title' => $title
 		) );
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param Title $title
+	 * @param Language|null $language
+	 *
+	 * @return HtmlFormBuilder
+	 */
+	public function newHtmlFormBuilder( Title $title, Language $language = null ) {
+
+		if ( $language === null ) {
+			$language = $title->getPageLanguage();
+		}
+
+		$messageBuilder = new MessageBuilder( $language );
+
+		return new HtmlFormBuilder( $title, $messageBuilder );
 	}
 
 	private static function registerBuilder( DependencyBuilder $builder = null ) {

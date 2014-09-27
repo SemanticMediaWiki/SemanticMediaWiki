@@ -147,4 +147,25 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructHtmlFormBuilder() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\HtmlFormBuilder',
+			$this->application->newHtmlFormBuilder( $title )
+		);
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\HtmlFormBuilder',
+			$this->application->newHtmlFormBuilder( $title, $language )
+		);
+	}
+
 }

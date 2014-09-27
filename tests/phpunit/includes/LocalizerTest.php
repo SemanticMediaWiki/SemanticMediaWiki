@@ -9,7 +9,6 @@ use Language;
 /**
  * @covers \SMW\Localizer
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -35,6 +34,27 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\Localizer',
 			Localizer::getInstance()
 		);
+	}
+
+	public function testGetContentLanguage() {
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Localizer( $language );
+
+		$this->assertSame(
+			$language,
+			$instance->getContentLanguage()
+		);
+
+		$this->assertSame(
+			$GLOBALS['wgContLang'],
+			Localizer::getInstance()->getContentLanguage()
+		);
+
+		Localizer::clear();
 	}
 
 	public function testNamespaceTextById() {
