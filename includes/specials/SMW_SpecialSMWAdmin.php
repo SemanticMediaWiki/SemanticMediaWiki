@@ -1,6 +1,8 @@
 <?php
 
 use SMW\MediaWiki\Jobs\RefreshJob;
+
+use SMW\Application;
 use SMW\Settings;
 use SMW\StoreFactory;
 use SMW\Store;
@@ -25,6 +27,16 @@ class SMWAdmin extends SpecialPage {
 
 	protected $store = null;
 
+	/**
+	 * @var MessageBuilder
+	 */
+	private $messageBuilder;
+
+	/**
+	 * @var HtmlFormBuilder
+	 */
+	private $htmlFormBuilder;
+
 	public function __construct() {
 		parent::__construct( 'SMWAdmin', 'smw-admin' );
 		$this->store = StoreFactory::getStore();
@@ -47,6 +59,16 @@ class SMWAdmin extends SpecialPage {
 		}
 
 		$this->setHeaders();
+
+		/**
+		 * @var HtmlFormBuilder
+		 */
+		$this->htmlFormBuilder = Application::getInstance()->newHtmlFormBuilder(
+			$this->getContext()->getTitle(),
+			$this->getLanguage()
+		);
+
+		$this->messageBuilder = $this->htmlFormBuilder->getMessageBuilder();
 
 		// FIXME Searching the job table needs to be fixed
 		//
@@ -80,92 +102,121 @@ class SMWAdmin extends SpecialPage {
 
 		/**** Normal output ****/
 
-		$html = '<p>' . wfMessage( 'smw_smwadmin_docu' )->text() . "</p>\n";
-		// creating tables and converting contents from older versions
-		$html .= '<form name="buildtables" action="" method="POST">' . "\n" .
-				'<input type="hidden" name="action" value="updatetables" />' . "\n";
-		$html .= '<br /><h2>' . wfMessage( 'smw_smwadmin_db' )->text() . "</h2>\n" .
-				'<p>' . wfMessage( 'smw_smwadmin_dbdocu' )->text() . "</p>\n";
-		$html .= '<p>' . wfMessage( 'smw_smwadmin_permissionswarn' )->text() . "</p>\n" .
-				'<input type="hidden" name="udsure" value="yes"/>' .
-				'<input type="submit" value="' . wfMessage( 'smw_smwadmin_dbbutton' )->text() . '"/></form>' . "\n";
+		$html = $this->htmlFormBuilder
+			->setName( 'buildtables' )
+			->setMethod( 'post' )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_docu' )->text() )
+			->addHiddenField( 'action', 'updatetables' )
+			->addHeader( 'h2', $this->messageBuilder->getMessage( 'smw_smwadmin_db' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_dbdocu' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_permissionswarn' )->text() )
+			->addHiddenField( 'udsure', 'yes' )
+			->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_dbbutton' )->text() )
+			->getForm();
 
-		$html .= '<br /><h2>' . wfMessage( 'smw_smwadmin_datarefresh' )->text() . "</h2>\n" .
-				'<p>' . wfMessage( 'smw_smwadmin_datarefreshdocu' )->text() . "</p>\n";
+		$html .= Html::element( 'br', array(), '' );
+
+		$this->htmlFormBuilder
+			->setName( 'refreshwiki' )
+			->setMethod( 'post' )
+			->addHiddenField( 'action', 'refreshstore' )
+			->addHeader( 'h2', $this->messageBuilder->getMessage( 'smw_smwadmin_datarefresh' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshdocu' )->text() );
+
 		if ( !is_null( $refreshjob ) ) {
 			$prog = $refreshjob->getProgress();
-			$html .= '<p>' . wfMessage( 'smw_smwadmin_datarefreshprogress' )->text() . "</p>\n" .
-			'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .
-				round( $prog * 300 ) . 'px; height: 20px; "> </div></div> &#160;' . round( $prog * 100, 4 ) . '%</p><br /><br />';
+
+			$progressBar = Html::rawElement(
+				'div',
+				array( 'style' => 'float: left; background: #DDDDDD; border: 1px solid grey; width: 300px;' ),
+				Html::rawElement( 'div', array( 'style' => 'background: #AAF; width: ' . round( $prog * 300 ) . 'px; height: 20px; ' ), '' )
+			);
+
+			$this->htmlFormBuilder
+				->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshprogress' )->text() )
+				->addParagraph( $progressBar . '&#160;' . round( $prog * 100, 4 ) . '%' )
+				->addLineBreak();
+
 			if ( $GLOBALS['smwgAdminRefreshStore'] ) {
-				$html .=
-				'<form name="refreshwiki" action="" method="POST">' .
-				'<input type="hidden" name="action" value="refreshstore" />' .
-				'<input type="submit" value="' . wfMessage( 'smw_smwadmin_datarefreshstop' )->escaped() . '" /> ' .
-				' <input type="checkbox" name="rfsure" value="stop"/> ' . wfMessage( 'smw_smwadmin_datarefreshstopconfirm' )->escaped() .
-				'</form>' . "\n";
+
+				$this->htmlFormBuilder
+					->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshstop' )->text() )
+					->addCheckbox(
+						$this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshstopconfirm' )->escaped(),
+						'rfsure',
+						'stop' );
 			}
+
 		} elseif ( $GLOBALS['smwgAdminRefreshStore'] ) {
-			$html .=
-				'<form name="refreshwiki" action="" method="POST">' .
-				'<input type="hidden" name="action" value="refreshstore" />' .
-				'<input type="hidden" name="rfsure" value="yes"/>' .
-				'<input type="submit" value="' . wfMessage( 'smw_smwadmin_datarefreshbutton' )->text() . '"/>' .
-				'</form>' . "\n";
+
+			$this->htmlFormBuilder
+				->addHiddenField( 'rfsure', 'yes' )
+				->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_datarefreshbutton' )->text() );
 		}
 
-		$html .= $this->getSettingsSection();
-		$html .= $this->getIdLookupSection();
-		$html .= $this->getAnnounceSection();
-		$html .= $this->getSupportSection();
+		$html .= $this->htmlFormBuilder->getForm() . Html::element( 'br', array(), '' );
+		$html .= $this->getSettingsSectionForm() . Html::element( 'br', array(), '' );
+		$html .= $this->getIdLookupSectionForm() . Html::element( 'br', array(), '' );
+		$html .= $this->getAnnounceSectionForm() . Html::element( 'br', array(), '' );
+		$html .= $this->getSupportSectionForm();
 
 		$this->getOutput()->addHTML( $html );
 	}
 
-	protected function getSettingsSection() {
-		return '<br /><h2>' . $this->msg( 'smw-sp-admin-settings-title' )->text() . "</h2>\n" .
-			'<p>' . $this->msg( 'smw-sp-admin-settings-docu' )->parse() . "</p>\n".
-			'<form name="listsettings" action="" method="POST">' .
-			'<input type="hidden" name="action" value="listsettings" />' .
-			'<input type="submit" value="' . $this->msg( 'smw-sp-admin-settings-button' )->text() . '"/>' .
-			'</form>' . "\n";
+	protected function getSettingsSectionForm() {
+		return $this->htmlFormBuilder
+			->setName( 'listsettings' )
+			->setMethod( 'post' )
+			->addHiddenField( 'action', 'listsettings' )
+			->addHeader( 'h2', $this->messageBuilder->getMessage( 'smw-sp-admin-settings-title' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw-sp-admin-settings-docu' )->parse() )
+			->addSubmitButton( $this->messageBuilder->getMessage( 'smw-sp-admin-settings-button' )->text() )
+			->getForm();
 	}
 
-	protected function getAnnounceSection() {
-		return '<br /><h2>' . wfMessage( 'smw_smwadmin_announce' )->text() . "</h2>\n" .
-			'<p>' . wfMessage( 'smw_smwadmin_announcedocu' )->text() . "</p>\n" .
-			'<p>' . wfMessage( 'smw_smwadmin_announcebutton' )->text() . "</p>\n" .
-			 '<form name="announcewiki" action="http://semantic-mediawiki.org/wiki/Special:SMWRegistry" method="GET">' .
-			 '<input type="hidden" name="url" value="' . $GLOBALS['wgServer'] . str_replace( '$1', '', $GLOBALS['wgArticlePath'] ) . '" />' .
-			 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
-			 '<input type="submit" value="' . wfMessage( 'smw_smwadmin_announce' )->text() . '"/></form>' . "\n";
+	protected function getAnnounceSectionForm() {
+		return $this->htmlFormBuilder
+			->setName( 'announce' )
+			->setMethod( 'get' )
+			->setActionUrl( 'http://semantic-mediawiki.org/wiki/Special:SMWRegistry' )
+			->addHiddenField( 'url', $GLOBALS['wgServer'] . str_replace( '$1', '', $GLOBALS['wgArticlePath'] ) )
+			->addHiddenField( 'return', 'Special:SMWAdmin' )
+			->addHeader( 'h2', $this->messageBuilder->getMessage('smw_smwadmin_announce' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_announcedocu' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_announcebutton' )->text() )
+			->addSubmitButton( $this->messageBuilder->getMessage( 'smw_smwadmin_announce' )->text() )
+			->getForm();
 	}
 
-	protected function getSupportSection() {
-		return '<br /><h2>' . wfMessage( 'smw_smwadmin_support' )->text() . "</h2>\n" .
-			'<p>' . wfMessage( 'smw_smwadmin_supportdocu' )->text() . "</p>\n" .
-			"<ul>\n" .
-			'<li>' . wfMessage( 'smw_smwadmin_installfile' )->text() . "</li>\n" .
-			'<li>' . wfMessage( 'smw_smwadmin_smwhomepage' )->text() . "</li>\n" .
-			'<li>' . wfMessage( 'smw_smwadmin_mediazilla' )->text() . "</li>\n" .
-			'<li>' . wfMessage( 'smw_smwadmin_questions' )->text() . "</li>\n" .
-			"</ul>\n";
+	protected function getSupportSectionForm() {
+		return $this->htmlFormBuilder
+			->setName( 'support' )
+			->addHeader( 'h2', $this->messageBuilder->getMessage('smw_smwadmin_support' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw_smwadmin_supportdocu' )->text() )
+			->addParagraph(
+				Html::rawElement( 'ul', array(),
+					Html::rawElement( 'li', array(), $this->messageBuilder->getMessage( 'smw_smwadmin_installfile' )->text() ) .
+					Html::rawElement( 'li', array(), $this->messageBuilder->getMessage( 'smw_smwadmin_smwhomepage' )->text() ) .
+					Html::rawElement( 'li', array(), $this->messageBuilder->getMessage( 'smw_smwadmin_mediazilla' )->text() ) .
+					Html::rawElement( 'li', array(), $this->messageBuilder->getMessage( 'smw_smwadmin_questions' )->text() )
+				) )
+			->getForm();
 	}
 
-	protected function getIdLookupSection() {
+	protected function getIdLookupSectionForm() {
 
-		return '<br />' .
-			Html::element( 'h2', array(), $this->msg( 'smw-sp-admin-idlookup-title' )->text() ) . "\n" .
-			Html::element( 'p', array(), $this->msg( 'smw-sp-admin-idlookup-docu' )->text() ) . "\n" .
-			Xml::tags( 'form', array(
-				'method' => 'get',
-				'action' => $GLOBALS['wgScript']
-			),
-			Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
-				Html::hidden( 'action', 'idlookup' ) .
-				Xml::inputLabel( $this->msg( 'smw-sp-admin-idlookup-objectid' )->text(), 'objectId', 'objectId', 20, null ) . ' ' .
-				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() )
-			);
+		return $this->htmlFormBuilder
+			->setName( 'idlookup' )
+			->setMethod( 'get' )
+			->addHiddenField( 'action', 'idlookup' )
+			->addHeader( 'h2', $this->messageBuilder->getMessage( 'smw-sp-admin-idlookup-title' )->text() )
+			->addParagraph( $this->messageBuilder->getMessage( 'smw-sp-admin-idlookup-docu' )->text() )
+			->addInputField(
+				$this->messageBuilder->getMessage( 'smw-sp-admin-idlookup-objectid' )->text(),
+				'objectId',
+				null )
+			->addSubmitButton( $this->messageBuilder->getMessage( 'allpagessubmit' )->text() )
+			->getForm();
 	}
 
 	protected function actionUpdateTables() {
