@@ -155,7 +155,7 @@ class SMWSQLStore3QueryEngine {
 			$this->executeQueries( $this->m_queries[$qid] ); // execute query tree, resolve all dependencies
 			$qobj = $this->m_queries[$qid];
 
-			if ( $qobj->joinfield === '' ) {
+			if ( $qobj->joinfield === '' || $qobj->jointable === '' ) {
 				return;
 			}
 
