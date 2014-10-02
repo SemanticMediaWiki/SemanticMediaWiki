@@ -353,9 +353,9 @@ $GLOBALS['smwgQConceptCaching'] = CONCEPT_CACHE_HARD; // Which concepts should b
 $GLOBALS['smwgQConceptMaxSize'] = 20; // Same as $smwgQMaxSize, but for concepts
 $GLOBALS['smwgQConceptMaxDepth'] = 8; // Same as $smwgQMaxDepth, but for concepts
 
-// Same as $smwgQFeatures but for concepts (note: using concepts in concepts is currently not supported!)
+// Same as $smwgQFeatures but for concepts
 $GLOBALS['smwgQConceptFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY |
-                        SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
+                        SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY | SMW_CONCEPT_QUERY;
 
 // Cache life time in minutes. If a concept cache exists but is older than
 // this, SMW tries to recompute it, and will only use the cache if this is not
