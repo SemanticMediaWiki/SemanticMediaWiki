@@ -141,6 +141,15 @@ abstract class SMWDataItem {
 	}
 
 	/**
+	 * @since 2.1
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->getSerialization();
+	}
+
+	/**
 	 * Create a data item of the given dataitem ID based on the the
 	 * provided serialization string and (optional) typeid.
 	 *
