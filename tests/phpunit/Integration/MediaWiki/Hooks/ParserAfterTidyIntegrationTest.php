@@ -34,7 +34,7 @@ class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->mwHooksHandler->registerHook(
+		$this->mwHooksHandler->register(
 			'ParserAfterTidy',
 			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'ParserAfterTidy' )
 		);

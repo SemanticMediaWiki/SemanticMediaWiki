@@ -246,10 +246,25 @@ class SPARQLStore extends Store {
 	}
 
 	/**
-	 * @see Store::getQueryResult()
+	 * @note Move hooks to the base class in 3.*
+	 *
+	 * @see Store::getQueryResult
 	 * @since 1.6
 	 */
 	public function getQueryResult( Query $query ) {
+
+		$result = null;
+
+		if ( wfRunHooks( 'SMW::Store::selectQueryResultBefore', array( $this, $query, &$result ) ) ) {
+			$result = $this->fetchQueryResult( $query );
+		}
+
+		wfRunHooks( 'SMW::Store::selectQueryResultAfter', array( $this, &$result ) );
+
+		return $result;
+	}
+
+	protected function fetchQueryResult( Query $query ) {
 
 		$queryEngine = new QueryEngine(
 			$this->getSparqlDatabase(),
@@ -257,11 +272,12 @@ class SPARQLStore extends Store {
 			new QueryResultFactory( $this )
 		);
 
-		return $queryEngine
+		$queryEngine
 			->setIgnoreQueryErrors( $GLOBALS['smwgIgnoreQueryErrors'] )
 			->setSortingSupport( $GLOBALS['smwgQSortingSupport'] )
-			->setRandomSortingSupport( $GLOBALS['smwgQRandSortingSupport'] )
-			->getQueryResult( $query );
+			->setRandomSortingSupport( $GLOBALS['smwgQRandSortingSupport'] );
+
+		return $queryEngine->getQueryResult( $query );
 	}
 
 	/**

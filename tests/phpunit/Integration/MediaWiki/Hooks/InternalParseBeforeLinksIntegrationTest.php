@@ -34,7 +34,7 @@ class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCas
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->mwHooksHandler->registerHook(
+		$this->mwHooksHandler->register(
 			'InternalParseBeforeLinks',
 			$this->mwHooksHandler->getHookRegistry()->getDefinition( 'InternalParseBeforeLinks' )
 		);
