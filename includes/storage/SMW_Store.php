@@ -242,6 +242,9 @@ abstract class Store {
 ///// Query answering /////
 
 	/**
+	 * @note Change the signature in 3.* to avoid for subclasses to manage the
+	 * hooks; keep the current signature to adhere semver for the 2.* branch
+	 *
 	 * Execute the provided query and return the result as an
 	 * SMWQueryResult if the query was a usual instance retrieval query. In
 	 * the case that the query asked for a plain string (querymode
@@ -253,6 +256,17 @@ abstract class Store {
 	 * @return SMWQueryResult
 	 */
 	public abstract function getQueryResult( SMWQuery $query );
+
+	/**
+	 * @note Change the signature to abstract for the 3.* branch
+	 *
+	 * @since  2.1
+	 *
+	 * @param SMWQuery $query
+	 *
+	 * @return SMWQueryResult
+	 */
+	protected function fetchQueryResult( SMWQuery $query ) {}
 
 ///// Special page functions /////
 

@@ -21,11 +21,14 @@ class MwHooksHandler {
 	private $hookRegistry = null;
 
 	private $wgHooks = array();
+	private $inTestRegisteredHooks = array();
 
 	private $listOfSmwHooks = array(
 		'SMWStore::updateDataBefore',
 		'smwInitProperties',
-		'SMW::SQLStore::updatePropertyTableDefinitions'
+		'SMW::SQLStore::updatePropertyTableDefinitions',
+		'SMW::Store::selectQueryResultBefore',
+		'SMW::Store::selectQueryResultAfter'
 	);
 
 	/**
@@ -60,6 +63,10 @@ class MwHooksHandler {
 	 */
 	public function restoreListedHooks() {
 
+		foreach ( $this->inTestRegisteredHooks as $hook ) {
+			unset( $GLOBALS['wgHooks'][ $hook ] );
+		}
+
 		foreach ( $this->wgHooks as $hook => $definition ) {
 			$GLOBALS['wgHooks'][ $hook ] = $definition;
 			unset( $this->wgHooks[ $hook ] );
@@ -73,7 +80,7 @@ class MwHooksHandler {
 	 *
 	 * @return MwHooksHandler
 	 */
-	public function registerHook( $name, Closure $function ) {
+	public function register( $name, Closure $callback ) {
 
 		$listOfHooks = array_merge(
 			$this->listOfSmwHooks,
@@ -84,7 +91,8 @@ class MwHooksHandler {
 			throw new RuntimeException( "$name is not listed as registrable hook" );
 		}
 
-		$GLOBALS['wgHooks'][ $name ][] = $function;
+		$this->inTestRegisteredHooks[] = $name;
+		$GLOBALS['wgHooks'][ $name ][] = $callback;
 
 		return $this;
 	}

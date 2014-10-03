@@ -330,7 +330,9 @@ class SMWSQLStore3 extends SMWStore {
 ///// Query answering /////
 
 	/**
-	 * @see SMWStore::getQueryResult
+	 * @note Move hooks to the base class in 3.*
+	 *
+	 * @see SMWStore::fetchQueryResult
 	 *
 	 * @since 1.8
 	 * @param SMWQuery $query
@@ -338,10 +340,20 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function getQueryResult( SMWQuery $query ) {
 
-		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_SLAVE ) );
-		$result = $qe->getQueryResult( $query );
+		$result = null;
+
+		if ( wfRunHooks( 'SMW::Store::selectQueryResultBefore', array( $this, $query, &$result ) ) ) {
+			$result = $this->fetchQueryResult( $query );
+		}
+
+		wfRunHooks( 'SMW::Store::selectQueryResultAfter', array( $this, &$result ) );
 
 		return $result;
+	}
+
+	protected function fetchQueryResult( SMWQuery $query ) {
+		$qe = new SMWSQLStore3QueryEngine( $this, wfGetDB( DB_SLAVE ) );
+		return $qe->getQueryResult( $query );
 	}
 
 ///// Special page functions /////
