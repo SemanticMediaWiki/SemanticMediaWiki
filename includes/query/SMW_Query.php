@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the class for representing queries in SMW, each
  * consisting of a query description and possible query parameters.
@@ -239,8 +240,11 @@ class SMWQuery {
 		// sufficient since most printer related parameters have to be sourced
 		// in the result printer class
 		$serialized['parameters'] = array(
-				'limit'  => $this->m_limit,
-				'offset' => $this->m_offset
+				'limit'     => $this->m_limit,
+				'offset'    => $this->m_offset,
+				'sortkeys'  => $this->sortkeys,
+				'mainlabel' => $this->m_mainlabel,
+				'querymode' => $this->querymode
 		);
 
 		foreach ( $this->m_extraprintouts as $printout ) {
@@ -251,6 +255,15 @@ class SMWQuery {
 		}
 
 		return $serialized;
+	}
+
+	/**
+	 * @since 2.1
+	 *
+	 * @return string
+	 */
+	public function getHash() {
+		return md5( json_encode( $this->toArray() ) );
 	}
 
 }
