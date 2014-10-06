@@ -221,7 +221,7 @@
 	"smw_result_prev": "Anterior",
 	"smw_result_next": "Següent",
 	"smw_result_results": "Resultats",
-	"smw_result_noresults": "Sense resultats.",
+	"smw_result_noresults": "No hi ha resultats.",
 	"smwadmin": "Funcions d'administració del Semantic MediaWiki",
 	"smw_smwadmin_setupsuccess": "El motor d'emmagatzematge s'ha configurat amb èxit.",
 	"smw_smwadmin_return": "Torna a $1",
