@@ -7,7 +7,6 @@ use SMWQuery as Query;
 /**
  * @covers \SMWQuery
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -30,7 +29,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$description = $this->getMockForAbstractClass( '\SMWDescription' );
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$this->assertInstanceOf(
 			'\SMWQuery',
@@ -40,53 +39,157 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSetGetLimitForLowerbound() {
 
-		$description = $this->getMockForAbstractClass( '\SMWDescription' );
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, true, false );
 
 		$lowerboundLimit = 1;
 
-		$this->assertGreaterThan( $lowerboundLimit, $this->smwgQMaxLimit );
-		$this->assertGreaterThan( $lowerboundLimit, $this->smwgQMaxInlineLimit );
+		$this->assertGreaterThan(
+			$lowerboundLimit,
+			$this->smwgQMaxLimit
+		);
+
+		$this->assertGreaterThan(
+			$lowerboundLimit,
+			$this->smwgQMaxInlineLimit
+		);
 
 		$instance->setLimit( $lowerboundLimit, true );
-		$this->assertEquals( $lowerboundLimit, $instance->getLimit() );
+
+		$this->assertEquals(
+			$lowerboundLimit,
+			$instance->getLimit()
+		);
 
 		$instance->setLimit( $lowerboundLimit, false );
-		$this->assertEquals( $lowerboundLimit, $instance->getLimit() );
+
+		$this->assertEquals(
+			$lowerboundLimit,
+			$instance->getLimit()
+		);
 	}
 
 	public function testSetGetLimitForUpperboundWhereLimitIsRestrictedByGLOBALRequirements() {
 
-		$description = $this->getMockForAbstractClass( '\SMWDescription' );
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, true, false );
 
 		$upperboundLimit = 999999999;
 
-		$this->assertLessThan( $upperboundLimit, $this->smwgQMaxLimit );
-		$this->assertLessThan( $upperboundLimit, $this->smwgQMaxInlineLimit );
+		$this->assertLessThan(
+			$upperboundLimit,
+			$this->smwgQMaxLimit
+		);
+
+		$this->assertLessThan(
+			$upperboundLimit,
+			$this->smwgQMaxInlineLimit
+		);
 
 		$instance->setLimit( $upperboundLimit, true );
-		$this->assertEquals( $this->smwgQMaxInlineLimit, $instance->getLimit() );
+
+		$this->assertEquals(
+			$this->smwgQMaxInlineLimit,
+			$instance->getLimit()
+		);
 
 		$instance->setLimit( $upperboundLimit, false );
-		$this->assertEquals( $this->smwgQMaxLimit, $instance->getLimit() );
+
+		$this->assertEquals(
+			$this->smwgQMaxLimit,
+			$instance->getLimit()
+		);
 	}
 
 	public function testSetGetLimitForUpperboundWhereLimitIsUnrestricted() {
 
-		$description = $this->getMockForAbstractClass( '\SMWDescription' );
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, true, false );
 
 		$upperboundLimit = 999999999;
 
-		$this->assertLessThan( $upperboundLimit, $this->smwgQMaxLimit );
-		$this->assertLessThan( $upperboundLimit, $this->smwgQMaxInlineLimit );
+		$this->assertLessThan(
+			$upperboundLimit,
+			$this->smwgQMaxLimit
+		);
+
+		$this->assertLessThan(
+			$upperboundLimit,
+			$this->smwgQMaxInlineLimit
+		);
 
 		$instance->setUnboundLimit( $upperboundLimit );
-		$this->assertEquals( $upperboundLimit, $instance->getLimit() );
+
+		$this->assertEquals(
+			$upperboundLimit,
+			$instance->getLimit()
+		);
+	}
+
+	public function testToArray() {
+
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+
+		$printRequest = $this->getMockBuilder( '\SMWPrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new Query( $description, true, false );
+		$instance->setExtraPrintouts( array( $printRequest ) );
+
+		$serialized = $instance->toArray();
+
+		$this->assertInternalType(
+			'array',
+			$serialized
+		);
+
+		$expected = array(
+			'conditions',
+			'parameters',
+			'printouts'
+		);
+
+		foreach ( $expected as $key ) {
+			$this->assertArrayHasKey( $key, $serialized );
+		}
+
+		$expectedParameters = array(
+			'limit',
+			'offset',
+			'mainlabel',
+			'sortkeys',
+			'querymode'
+		);
+
+		foreach ( $expectedParameters as $key ) {
+			$this->assertArrayHasKey( $key, $serialized['parameters'] );
+		}
+	}
+
+	public function testGetHash() {
+
+		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+
+		$instance = new Query( $description, true, false );
+		$instance->setLimit( 50 );
+
+		$hash = $instance->getHash();
+
+		$this->assertInternalType(
+			'string',
+			$hash
+		);
+
+		$instance->setLimit( 100 );
+
+		$this->assertNotEquals(
+			$hash,
+			$instance->getHash()
+		);
 	}
 
 }
