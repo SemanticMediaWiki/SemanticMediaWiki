@@ -29,24 +29,26 @@ class InMemoryCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InMemoryCache( 5 );
 
-		$instance->set( 'foo', array( 'foo' ) );
-		$instance->set( 42, null );
+		$instance->save( 'foo', array( 'foo' ) );
+		$instance->save( 42, null );
 
-		$this->assertTrue( $instance->has( 'foo' ) );
-		$this->assertTrue( $instance->has( 42 ) );
+		$this->assertTrue( $instance->contains( 'foo' ) );
+		$this->assertTrue( $instance->contains( 42 ) );
 
+		$stats = $instance->getStats();
 		$this->assertEquals(
 			2,
-			$instance->getCount()
+			$stats['count']
 		);
 
 		$instance->delete( 'foo' );
 
-		$this->assertFalse( $instance->has( 'foo' ) );
+		$this->assertFalse( $instance->contains( 'foo' ) );
 
+		$stats = $instance->getStats();
 		$this->assertEquals(
 			1,
-			$instance->getCount()
+			$stats['count']
 		);
 	}
 
@@ -54,64 +56,68 @@ class InMemoryCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new InMemoryCache( 5 );
 
-		$instance->set( 'foo', array( 'foo' ) );
-		$instance->set( 42, null );
+		$instance->save( 'foo', array( 'foo' ) );
+		$instance->save( 42, null );
 
+		$stats = $instance->getStats();
 		$this->assertEquals(
 			2,
-			$instance->getCount()
+			$stats['count']
 		);
 
 		$instance->reset();
 
+		$stats = $instance->getStats();
 		$this->assertEquals(
 			0,
-			$instance->getCount()
+			$stats['count']
 		);
 	}
 
-	public function testLeastRecentlyUsedShift() {
+	public function testLeastRecentlyUsedShiftForLimitedCacheSize() {
 
 		$instance = new InMemoryCache( 5 );
-		$instance->set( 'berlin', array( 'berlin' ) );
+		$instance->save( 'berlin', array( 'berlin' ) );
 
 		$this->assertEquals(
 			array( 'berlin' ),
-			$instance->get( 'berlin' )
+			$instance->fetch( 'berlin' )
 		);
 
 		foreach ( array( 'paris', 'london', '東京', '北京', 'new york' ) as $city ) {
-			$instance->set( $city, array( $city ) );
+			$instance->save( $city, array( $city ) );
 		}
 
 		// 'paris' was added and removes 'berlin' from the cache
-		$this->assertFalse( $instance->get( 'berlin' ) );
+		$this->assertFalse( $instance->fetch( 'berlin' ) );
 
+		$stats = $instance->getStats();
 		$this->assertEquals(
 			5,
-			$instance->getCount()
+			$stats['count']
 		);
 
 		// 'paris' moves to the top (last postion as most recently used) and
 		// 'london' becomes the next LRU candidate
 		$this->assertEquals(
 			array( 'paris' ),
-			$instance->get( 'paris' )
+			$instance->fetch( 'paris' )
 		);
 
-		$instance->set( 'rio', 'rio' );
-		$this->assertFalse( $instance->get( 'london' ) );
+		$instance->save( 'rio', 'rio' );
+		$this->assertFalse( $instance->fetch( 'london' ) );
 
 		// 東京 would be next LRU slot but setting it again will move it to MRU
 		// and push 北京 into the next LRU position
-		$instance->set( '東京', '東京' );
+		$instance->save( '東京', '東京' );
 
-		$instance->set( 'sidney', 'sidney' );
-		$this->assertFalse( $instance->get( '北京' ) );
+		$instance->save( 'sidney', 'sidney' );
+		$this->assertFalse( $instance->fetch( '北京' ) );
 
+		$stats = $instance->getStats();
 		$this->assertEquals(
 			5,
-			$instance->getCount()
+			$stats['count']
 		);
 	}
 

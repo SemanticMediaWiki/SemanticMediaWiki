@@ -3,7 +3,10 @@
 namespace SMW\Cache;
 
 /**
- * Interface for specifying access to a cache instance
+ * Specifying a common interface to access a cache instance
+ *
+ * @note The interface is made similar to Doctrine\Common\Cache and allows for a
+ * drop-in replacement at a later occasion
  *
  * @license GNU GPL v2+
  * @since 2.1
@@ -13,33 +16,37 @@ namespace SMW\Cache;
 interface Cache {
 
 	/**
+	 * Returns a cache item or false if no entry was found
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $id
+	 *
+	 * @return mixed|false
+	 */
+	public function fetch( $id );
+
+	/**
+	 * Whether an entry is available for the given id
+	 *
 	 * @since 2.1
 	 *
 	 * @param string $id
 	 *
 	 * @return boolean
 	 */
-	public function has( $id );
+	public function contains( $id );
 
 	/**
 	 * @since 2.1
 	 *
 	 * @param string $id
-	 *
-	 * @return mixed
-	 */
-	public function get( $id );
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param string $id
-	 * @param mixed $value
+	 * @param mixed $data
 	 * @param integer $ttl
 	 *
 	 * @return mixed
 	 */
-	public function set( $id, $value, $ttl );
+	public function save( $id, $data, $ttl = 0 );
 
 	/**
 	 * @since 2.1
@@ -51,13 +58,10 @@ interface Cache {
 	public function delete( $id );
 
 	/**
-	 * Whether the current instance can be safely used and allows an interaction
-	 * with a cache instance
-	 *
 	 * @since 2.1
 	 *
-	 * @return boolean
+	 * @return array|null
 	 */
-	public function isSafe();
+	public function getStats();
 
 }

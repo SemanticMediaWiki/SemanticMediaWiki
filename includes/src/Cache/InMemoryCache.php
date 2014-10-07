@@ -29,12 +29,12 @@ class InMemoryCache implements Cache {
 	/**
 	 * @var integer
 	 */
-	public $cacheHit = 0;
+	private $cacheHits = 0;
 
 	/**
 	 * @var integer
 	 */
-	public $cacheMiss = 0;
+	private $cacheMisses = 0;
 
 	/**
 	 * @since 2.1
@@ -42,35 +42,35 @@ class InMemoryCache implements Cache {
 	 * @param integer $maxCacheIds
 	 */
 	public function __construct( $maxCacheIds = 500 ) {
-		$this->maxCacheIds = $maxCacheIds;
+		$this->maxCacheIds = (int)$maxCacheIds;
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param mixed $id
+	 * @param string|integer $id
 	 *
 	 * @return boolean
 	 */
-	public function has( $id ) {
+	public function contains( $id ) {
 		return isset( $this->cache[ $id ] ) || array_key_exists( $id, $this->cache );
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param mixed $id
+	 * @param string|integer $id
 	 *
 	 * @return mixed|boolean
 	 */
-	public function get( $id ) {
+	public function fetch( $id ) {
 
-		if ( $this->has( $id ) ) {
-			$this->cacheHit++;
+		if ( $this->contains( $id ) ) {
+			$this->cacheHits++;
 			return $this->moveToMostRecentlyUsed( $id );
 		}
 
-		$this->cacheMiss++;
+		$this->cacheMisses++;
 		return false;
 	}
 
@@ -80,10 +80,10 @@ class InMemoryCache implements Cache {
 	 * @param mixed $id
 	 * @param mixed $value
 	 */
-	public function set( $id, $value, $ttl = 0 ) {
+	public function save( $id, $value, $ttl = 0 ) {
 		$this->count++;
 
-		if ( $this->has( $id ) ) {
+		if ( $this->contains( $id ) ) {
 			$this->count--;
 			$this->moveToMostRecentlyUsed( $id );
 		} elseif ( $this->count > $this->maxCacheIds ) {
@@ -104,7 +104,7 @@ class InMemoryCache implements Cache {
 	 */
 	public function delete( $id ) {
 
-		if ( $this->has( $id ) ) {
+		if ( $this->contains( $id ) ) {
 			$this->count--;
 			unset( $this->cache[ $id ] );
 			return true;
@@ -115,30 +115,26 @@ class InMemoryCache implements Cache {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return boolean
-	 */
-	public function isSafe() {
-		return true;
-	}
-
-	/**
-	 * @since 2.1
 	 */
 	public function reset() {
 		$this->cache = array();
 		$this->count = 0;
-		$this->cacheMiss = 0;
-		$this->cacheHit = 0;
+		$this->cacheMisses = 0;
+		$this->cacheHits = 0;
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return integer
+	 * @return array
 	 */
-	public function getCount() {
-		return $this->count;
+	public function getStats() {
+		return array(
+			'max'    => $this->maxCacheIds,
+			'count'  => $this->count,
+			'hits'   => $this->cacheHits,
+			'misses' => $this->cacheMisses
+		);
 	}
 
 	private function moveToMostRecentlyUsed( $id ) {
