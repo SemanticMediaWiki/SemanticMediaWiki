@@ -22,7 +22,7 @@
 	},
 	"smw-desc": "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([https://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
 	"smw_viewasrdf": "Ver como RDF",
-	"smw_finallistconjunct": ", ⴷ",
+	"smw_finallistconjunct": "y",
 	"smw_factbox_head": "Hechos relativos a $1 — Búsqueda de páginas similares con <span class=\"smwsearchicon\">+</span>.",
 	"smw_isspecprop": "Esta propiedad es una propiedad especial en este wiki.",
 	"smw_concept_description": "Descripción del concepto \"$1\"",
