@@ -78,11 +78,11 @@ class BenchmarkRunner {
 		$memoryDiff  = $memoryAfter - $memoryBefore;
 
 		$this->addMessage(
-			" |- " . $importRunner->getElapsedImportTimeInSeconds() . " (sec) elapsed XML import time"
+			"- XML Import: " . $importRunner->getElapsedImportTimeInSeconds() ." (sec)"
 		);
 
 		if ( $this->showMemoryUsage ) {
-			$this->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
+			$this->addMessage( "+- Memory: $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
 		}
 	}
 
@@ -183,11 +183,11 @@ class BenchmarkRunner {
 		$norm = $this->getBenchmarker()->getNormalizedValueBy( $pageCopyThreshold );
 
 		$this->addMessage(
-			" |- $norm (n) $mean (mean) $sum (total) $sd (sd) (sec) '{$title->getText()}' ($i copies) "
+			"- '{$title->getText()}': $norm (n) $mean (mean) $sum (total) $sd (sd) (sec)"
 		);
 
 		if ( $this->showMemoryUsage ) {
-			$this->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
+			$this->addMessage( "+- Memory: $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
 		}
 	}
 

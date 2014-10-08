@@ -159,4 +159,56 @@
 [[Category:lorem sit]]</text>
     </revision>
   </page>
+  <page>
+    <title>Lorem tempor</title>
+    <ns>0</ns>
+    <id>1620</id>
+      <sha1>0rqia1jo6xts3vfzow5e2ulxapdo039</sha1>
+    <revision>
+      <id>1621</id>
+      <timestamp>2014-04-04T22:55:04Z</timestamp>
+      <contributor>
+        <username>Tester</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="431">{{#ask: [[Category:Lorem sit]][[Has page::+]]
+ |?Has page
+ |?Has number
+ |?Has quantity
+ |?Has date
+ |?Has Url
+ |?Has annotation uri
+ |?Has email
+ |?Has temperature
+ |?Has wattage
+ |limit=50
+}}
+
+{{#ask: [[Category:Lorem tortor]][[Has number::+]]
+ |?Has page
+ |?Has number
+ |?Has quantity
+ |?Has date
+ |?Has Url
+ |?Has annotation uri
+ |?Has email
+ |?Has temperature
+ |?Has wattage
+ |limit=50
+}}
+
+{{#ask: [[Category:Lorem enim]][[Has date::+]]
+ |?Has page
+ |?Has number
+ |?Has quantity
+ |?Has date
+ |?Has Url
+ |?Has annotation uri
+ |?Has email
+ |?Has temperature
+ |?Has wattage
+ |limit=50
+}}</text>
+    </revision>
+  </page>
 </mediawiki>

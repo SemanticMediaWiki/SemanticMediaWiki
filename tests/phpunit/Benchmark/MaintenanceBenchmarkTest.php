@@ -69,12 +69,19 @@ class MaintenanceBenchmarkTest extends MwDBaseUnitTestCase {
 		$dataset = $this->benchmarkRunner->getDefaultDataset();
 		$datasetFixture = Title::newFromText( 'Lorem ipsum' );
 
-		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $this->benchmarkRunner->getMediaWikiVersion() . ', ' . $this->benchmarkRunner->getQueryEngine() );
-		$this->benchmarkRunner->addMessage( " |- repetitionExecutionThreshold: " . $this->repetitionExecutionThreshold );
-		$this->benchmarkRunner->addMessage( " |- pageCopyThreshold: " . $this->pageCopyThreshold );
-		$this->benchmarkRunner->addMessage( " |- showMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
-		$this->benchmarkRunner->addMessage( " |- reuseDatasets: " . var_export( $this->reuseDatasets, true ) );
-		$this->benchmarkRunner->addMessage( " |- fullDelete: " . var_export( $this->fullDelete, true ) );
+		$this->benchmarkRunner->addMessage( "\n" . '==========================================================================================' );
+		$this->benchmarkRunner->addMessage( 'RebuildData benchmarks' );
+		$this->benchmarkRunner->addMessage( '------------------------------------------------------------------------------------------' );
+		$this->benchmarkRunner->addMessage( "- Dataset: " . $dataset );
+		$this->benchmarkRunner->addMessage( "- MediaWiki: " . $this->benchmarkRunner->getMediaWikiVersion() );
+		$this->benchmarkRunner->addMessage( "- Store: " .  $this->benchmarkRunner->getQueryEngine() );
+		$this->benchmarkRunner->addMessage( "- ShowMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
+		$this->benchmarkRunner->addMessage( "- ReuseDatasets: " . var_export( $this->reuseDatasets, true ) );
+		$this->benchmarkRunner->addMessage( "- FullDelete: " . var_export( $this->fullDelete, true ) );
+		$this->benchmarkRunner->addMessage( "- PageCopyThreshold: " . $this->pageCopyThreshold );
+		$this->benchmarkRunner->addMessage( "- RepetitionExecutionThreshold: " . $this->repetitionExecutionThreshold );
+		$this->benchmarkRunner->addMessage( '------------------------------------------------------------------------------------------' );
+
 
 		if ( !$this->reuseDatasets ) {
 			$this->benchmarkRunner->addMessage( "\n" . 'Data preparation benchmarks' );
@@ -84,8 +91,8 @@ class MaintenanceBenchmarkTest extends MwDBaseUnitTestCase {
 
 		$this->assertTrue( $datasetFixture->exists() );
 
-		$this->benchmarkRunner->addMessage( "\n" . 'RebuildData benchmarks' );
 		$this->createMaintenanceBenchmarks( 'SMW\Maintenance\RebuildData' );
+		$this->benchmarkRunner->addMessage( '==========================================================================================' );
 
 		$this->benchmarkRunner->printMessages();
 	}
@@ -112,10 +119,10 @@ class MaintenanceBenchmarkTest extends MwDBaseUnitTestCase {
 		$mean = $this->benchmarkRunner->getBenchmarker()->getMean();
 		$norm = $this->benchmarkRunner->getBenchmarker()->getNormalizedValueBy( $this->pageCopyThreshold );
 
-		$this->benchmarkRunner->addMessage( " |- $maintenanceScript $norm (n) $mean (mean) $sum (total) (sec)" );
+		$this->benchmarkRunner->addMessage( "- $maintenanceScript: $norm (n) $mean (mean) $sum (total) (sec)" );
 
 		if ( $this->showMemoryUsage ) {
-			$this->benchmarkRunner->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
+			$this->benchmarkRunner->addMessage( "+- Memory: $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
 		}
 	}
 

@@ -105,13 +105,19 @@ abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 		$dataset = $this->benchmarkRunner->getDefaultDataset();
 		$datasetFixture = Title::newFromText( 'Lorem ipsum' );
 
-		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $this->benchmarkRunner->getMediaWikiVersion() . ', ' . $this->benchmarkRunner->getQueryEngine() );
-		$this->benchmarkRunner->addMessage( " |- repetitionExecutionThreshold: " . $this->repetitionExecutionThreshold );
-		$this->benchmarkRunner->addMessage( " |- pageCopyThreshold: " . $this->pageCopyThreshold );
-		$this->benchmarkRunner->addMessage( " |- showMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
-		$this->benchmarkRunner->addMessage( " |- reuseDatasets: " . var_export( $this->reuseDatasets, true ) );
-		$this->benchmarkRunner->addMessage( " |- queryLimit: " . $this->queryLimit );
-		$this->benchmarkRunner->addMessage( " |- queryOffset: " . $this->queryOffset );
+		$this->benchmarkRunner->addMessage( "\n" . '==========================================================================================' );
+		$this->benchmarkRunner->addMessage( 'Query result benchmarks (C = count, I = instance, S = serialization)' );
+		$this->benchmarkRunner->addMessage( '------------------------------------------------------------------------------------------' );
+		$this->benchmarkRunner->addMessage( "- Dataset: " . $dataset );
+		$this->benchmarkRunner->addMessage( "- MediaWiki: " . $this->benchmarkRunner->getMediaWikiVersion() );
+		$this->benchmarkRunner->addMessage( "- Store: " .  $this->benchmarkRunner->getQueryEngine() );
+		$this->benchmarkRunner->addMessage( "- ShowMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
+		$this->benchmarkRunner->addMessage( "- ReuseDatasets: " . var_export( $this->reuseDatasets, true ) );
+		$this->benchmarkRunner->addMessage( "- QueryLimit: " . $this->queryLimit );
+		$this->benchmarkRunner->addMessage( "- QueryOffset: " . $this->queryOffset );
+		$this->benchmarkRunner->addMessage( "- PageCopyThreshold: " . $this->pageCopyThreshold );
+		$this->benchmarkRunner->addMessage( "- RepetitionExecutionThreshold: " . $this->repetitionExecutionThreshold );
+		$this->benchmarkRunner->addMessage( '------------------------------------------------------------------------------------------' );
 
 		if ( !$this->reuseDatasets ) {
 			$this->benchmarkRunner->addMessage( "\n" . 'Data preparation benchmarks' );
@@ -121,8 +127,8 @@ abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 
 		$this->assertTrue( $datasetFixture->exists() );
 
-		$this->benchmarkRunner->addMessage( "\n" . 'Query result benchmarks (C = count, I = instance, S = serialization)' );
 		$this->createQueryBenchmarks( $this->getQuerySetProvider() );
+		$this->benchmarkRunner->addMessage( '==========================================================================================' );
 
 		$this->benchmarkRunner->printMessages();
 	}
@@ -135,7 +141,8 @@ abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 
 		$setCount = count( $querySets );
 
-		$this->benchmarkRunner->addMessage( "\n" . "Benchmark summary (for query sets of $setCount, t = total, n = normalized, sd = standard deviation)" );
+		$this->benchmarkRunner->addMessage( "Benchmark summary (for $setCount query sets, t = total, n = normalized, sd = standard deviation)" );
+		$this->benchmarkRunner->addMessage( '------------------------------------------------------------------------------------------' );
 
 		foreach ( $this->benchmarkSummaryContainer as $key => $container ) {
 
@@ -144,19 +151,21 @@ abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 			$mean = $this->benchmarkRunner->getBenchmarker()->getMean();
 			$sd   = $this->benchmarkRunner->getBenchmarker()->getStandardDeviation();
 
-			$this->benchmarkRunner->addMessage( " |- $mean $key $sd (sd)" );
+			$this->benchmarkRunner->addMessage( "- $mean $key $sd (sd)" );
 		}
 	}
 
 	private function createCombinedQuerySetBenchmark( $setNumber, $queryCondition, $printouts = array(), $comments = '' ) {
 
-		$this->benchmarkRunner->addMessage( "($setNumber) " . $queryCondition . ' ' . $comments );
+		$this->benchmarkRunner->addMessage( "- ($setNumber): " . $queryCondition . ' ' . $comments );
 
 		$query = $this->createQuery( $queryCondition, Query::MODE_COUNT );
 		$this->benchmarkQueryResultSerialization( $this->benchmarkQueryExecution( $query ) );
 
 		$query = $this->createQuery( $queryCondition, Query::MODE_INSTANCES, $printouts );
 		$this->benchmarkQueryResultSerialization( $this->benchmarkQueryExecution( $query ) );
+
+		$this->benchmarkRunner->addMessage( '------------------------------------------------------------------------------------------' );
 	}
 
 	private function benchmarkQueryExecution( Query $query ) {
@@ -192,10 +201,10 @@ abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 			$this->benchmarkSummaryContainer['(n) instance'][] = $norm;
 		}
 
-		$this->benchmarkRunner->addMessage( " $mode- $mean (mean) $sum (total) $sd (sd) (sec) resultCount: $count columnCount: $columnCount" );
+		$this->benchmarkRunner->addMessage( "- $mode: $mean (mean) $sum (total) $sd (sd) (sec) resultCount: $count columnCount: $columnCount" );
 
 		if ( $this->showMemoryUsage ) {
-			$this->benchmarkRunner->addMessage( " +-- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
+			$this->benchmarkRunner->addMessage( "+- Memory: $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
 		}
 
 		return $queryResult;
@@ -204,7 +213,7 @@ abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 	private function benchmarkQueryResultSerialization( $queryResult ) {
 
 		if ( !$queryResult instanceof QueryResult || $queryResult->getCount() == 0 ) {
-			$this->benchmarkRunner->addMessage( " S-- no serialization" );
+			$this->benchmarkRunner->addMessage( "- S: no serialization" );
 			return;
 		}
 
@@ -228,10 +237,10 @@ abstract class QueryEngineBenchmark extends MwDBaseUnitTestCase {
 		$this->benchmarkSummaryContainer['(t) serialize'][] = $mean;
 		$this->benchmarkSummaryContainer['(n) serialize'][] = $norm;
 
-		$this->benchmarkRunner->addMessage( " S-- $mean (mean) $sum (total) $sd (sd) (sec)" );
+		$this->benchmarkRunner->addMessage( "- S: $mean (mean) $sum (total) $sd (sd) (sec)" );
 
 		if ( $this->showMemoryUsage ) {
-			$this->benchmarkRunner->addMessage( " +--- $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
+			$this->benchmarkRunner->addMessage( "+- Memory: $memoryBefore (before) $memoryAfter (after) $memoryDiff (diff)" );
 		}
 	}
 
