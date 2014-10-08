@@ -63,18 +63,25 @@ class ImportPageCopyBenchmarkTest extends MwDBaseUnitTestCase {
 
 		$dataset = $this->benchmarkRunner->getDefaultDataset();
 
-		$this->benchmarkRunner->addMessage( "\n" . "Use $dataset on MW " . $this->benchmarkRunner->getMediaWikiVersion() . ', ' . $this->benchmarkRunner->getQueryEngine() );
-		$this->benchmarkRunner->addMessage( " |- pageCopyThreshold: " . $this->pageCopyThreshold );
-		$this->benchmarkRunner->addMessage( " |- showMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
-		$this->benchmarkRunner->addMessage( " |- reuseDatasets: " . var_export( $this->reuseDatasets, true ) );
+		$this->benchmarkRunner->addMessage( "\n" . '==========================================================================================' );
+		$this->benchmarkRunner->addMessage( 'Dataset import benchmarks' );
+		$this->benchmarkRunner->addMessage( '------------------------------------------------------------------------------------------' );
+		$this->benchmarkRunner->addMessage( "- Dataset: " . $dataset );
+		$this->benchmarkRunner->addMessage( "- MediaWiki: " . $this->benchmarkRunner->getMediaWikiVersion() );
+		$this->benchmarkRunner->addMessage( "- Store: " .  $this->benchmarkRunner->getQueryEngine() );
+		$this->benchmarkRunner->addMessage( "- ShowMemoryUsage: " . var_export( $this->showMemoryUsage, true ) );
+		$this->benchmarkRunner->addMessage( "- ReuseDatasets: " . var_export( $this->reuseDatasets, true ) );
+		$this->benchmarkRunner->addMessage( "- PageCopyThreshold: " . $this->pageCopyThreshold );
+		$this->benchmarkRunner->addMessage( '------------------------------------------------------------------------------------------' );
 
-		$this->benchmarkRunner->addMessage( "\n" . 'Dataset import benchmarks' );
 		$this->benchmarkRunner->doImportDataset( $dataset );
 
 		$datasetFixture = Title::newFromText( 'Lorem ipsum' );
 		$this->assertTrue( $datasetFixture->exists() );
 
 		$this->benchmarkRunner->copyPageContent( $datasetFixture, $this->pageCopyThreshold );
+		$this->benchmarkRunner->addMessage( '==========================================================================================' );
+
 		$this->benchmarkRunner->printMessages();
 	}
 
