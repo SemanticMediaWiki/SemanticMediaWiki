@@ -133,6 +133,7 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
+
 		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
 		$oldExpResource = Exporter::getDataItemExpElement( $oldWikiPage );
@@ -142,13 +143,21 @@ class SPARQLStore extends Store {
 		$oldUri = TurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
 		$newUri = TurtleSerializer::getTurtleNameForExpElement( $newExpResource );
 
-		$this->baseStore->changeTitle( $oldtitle, $newtitle, $pageid, $redirid ); // do this only here, so Imported from is not moved too early
+		// do this only here, so Imported from is not moved too early
+		$this->baseStore->changeTitle(
+			$oldtitle,
+			$newtitle,
+			$pageid,
+			$redirid
+		);
 
 		$sparqlDatabase = $this->getSparqlDatabase();
 		$sparqlDatabase->insertDelete( "?s ?p $newUri", "?s ?p $oldUri", "?s ?p $oldUri", $namespaces );
-		if ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) {
+
+		if ( $oldtitle->getNamespace() === SMW_NS_PROPERTY ) {
 			$sparqlDatabase->insertDelete( "?s $newUri ?o", "?s $oldUri ?o", "?s $oldUri ?o", $namespaces );
 		}
+
 		// Note that we cannot change oldUri to newUri in triple subjects,
 		// since some triples change due to the move. Use SMWUpdateJob.
 		$newUpdate = new SMWUpdateJob( $newtitle );
@@ -156,6 +165,11 @@ class SPARQLStore extends Store {
 		if ( $redirid != 0 ) { // update/create redirect page data
 			$oldUpdate = new SMWUpdateJob( $oldtitle );
 			$oldUpdate->run();
+		}
+
+		// #566 $redirid == 0 indicates a `move` not a redirect action
+		if ( $redirid == 0 ) {
+			$this->doSparqlDataDelete( $oldWikiPage );
 		}
 	}
 

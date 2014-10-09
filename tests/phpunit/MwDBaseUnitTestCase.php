@@ -112,6 +112,22 @@ abstract class MwDBaseUnitTestCase extends \PHPUnit_Framework_TestCase {
 		return $this->storesToBeExcluded = $storesToBeExcluded;
 	}
 
+	protected function skipTestForMediaWikiVersionLowerThan( $version ) {
+		if ( version_compare( $GLOBALS['wgVersion'], $version, '<' ) ) {
+			$this->markTestSkipped(
+				"This test is skipped for MediaWiki version {$GLOBALS['wgVersion']}"
+			);
+		}
+	}
+
+	protected function skipTestForDatabase( array $excludedDatabase ) {
+		if ( in_array( $this->getDBConnection()->getType(), $excludedDatabase ) ) {
+			$this->markTestSkipped(
+				"Database was excluded and is expected not to support this test"
+			);
+		}
+	}
+
 	protected function getDBConnection() {
 		return $this->mwDatabaseTableBuilder->getDBConnection();
 	}

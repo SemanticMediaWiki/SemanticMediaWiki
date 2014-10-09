@@ -15,7 +15,6 @@ use Title;
 /**
  * @covers \SMW\SPARQLStore\SPARQLStore
  *
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -134,6 +133,30 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->setSparqlDatabase( $sparqlDatabase );
 
 		$instance->doSparqlDataUpdate( $semanticData );
+	}
+
+	public function testCallToChangeTitleForCompletePageMove() {
+
+		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
+		$newTitle = Title::newFromText( __METHOD__ . '-new' );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'changeTitle' );
+
+		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+			->setConstructorArgs( array( $store ) )
+			->setMethods( array( 'doSparqlDataDelete', 'insertDelete' ) )
+			->getMock();
+
+		$instance->expects( $this->once() )
+			->method( 'doSparqlDataDelete' )
+			->with(	$this->equalTo( DIWikiPage::newFromTitle( $oldTitle ) ) );
+
+		$instance->changeTitle( $oldTitle, $newTitle, 42, 0 );
 	}
 
 }
