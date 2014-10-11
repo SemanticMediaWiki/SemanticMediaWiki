@@ -59,7 +59,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->once() )
+		$store->expects( $this->any() )
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
@@ -93,7 +93,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->once() )
+		$store->expects( $this->any() )
 			->method( 'getDatabase' )
 			->will( $this->returnValue( $database ) );
 
@@ -164,6 +164,42 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals( 9999, $result );
+	}
+
+	public function testGetDataItemForId() {
+
+		$row = new \stdClass;
+		$row->smw_title = 'Foo';
+		$row->smw_namespace = 0;
+		$row->smw_iw = '';
+		$row->smw_subobject ='';
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( array( 'smw_id' => 42 ) ) )
+			->will( $this->returnValue( $row ) );
+
+		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getDatabase' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds( $store );
+
+		$this->assertInstanceOf(
+			'\SMW\DIWikiPage',
+			$instance->getDataItemForId( 42 )
+		);
 	}
 
 	public function pageIdandSortProvider() {
