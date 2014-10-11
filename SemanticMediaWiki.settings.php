@@ -239,8 +239,11 @@ $GLOBALS['smwgBrowseShowAll'] = true;
 # Should the search by property special page display nearby results when there
 # are only a few results with the exact value? Switch this off if this page has
 # performance problems.
+#
+# @since 2.1 enabled default types, to disable the functionality either set the
+# variable to array() or false
 ##
-$GLOBALS['smwgSearchByPropertyFuzzy'] = true;
+$GLOBALS['smwgSearchByPropertyFuzzy'] = array( '_num', '_txt', '_dat' );
 ##
 
 ###

@@ -311,5 +311,9 @@
 	"smw-sp-admin-idlookup-title": "A header title",
 	"smw-sp-admin-idlookup-docu": "Introductory text for the objectId lookup section in [[Special:SMWAdmin]]",
 	"smw-sp-admin-idlookup-objectid": "A label",
-	"smw-livepreview-loading": "{{Identical|Loading}}Message displayed while data is loading."
+	"smw-livepreview-loading": "{{Identical|Loading}}Message displayed while data is loading.",
+	"smw-sp-searchbyproperty-description": "Extended description text for the [[Special:SearchByProperty]] page.",
+	"smw-sp-searchbyproperty-resultlist-header": "A header label",
+	"smw-sp-searchbyproperty-nonvaluequery": "A description for a query result without values.\n\nParameters:\n* $1 - Name of the property",
+	"smw-sp-searchbyproperty-valuequery": "A description for a query result with values.\n\nParameters:\n* $1 - Name of the property\n* $2 - Name of the value"
 }

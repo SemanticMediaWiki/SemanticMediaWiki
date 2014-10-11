@@ -83,6 +83,15 @@ class SMWStringValue extends SMWDataValue {
 		return $this->isValid() ? $this->m_dataitem->getString() : 'error';
 	}
 
+	public function getWikiValueForLengthOf( $length ) {
+
+		if ( mb_strlen( $this->getWikiValue() ) > $length ) {
+			return mb_substr( $this->getWikiValue(), 0, $length );
+		}
+
+		return $this->getWikiValue();
+	}
+
 	public function getInfolinks() {
 		if ( $this->m_typeid != '_cod' ) {
 			return parent::getInfolinks();

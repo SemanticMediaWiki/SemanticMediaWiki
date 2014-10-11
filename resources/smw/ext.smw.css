@@ -339,3 +339,21 @@ table.smw-ask-query .smw-ask-query-condition {
 table.smw-ask-query .smw-ask-query-printout {
 	width: 100%;
 }
+
+.smw-form-horizontalrule {
+	margin-bottom: 10px;
+}
+
+.smw-form-select, .smw-form-input {
+	padding: 1px 1px;
+}
+
+.smw-form-checkbox {
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+label.smw-form-checkbox {
+	vertical-align: middle;
+	cursor: pointer;
+}

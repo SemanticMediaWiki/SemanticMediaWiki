@@ -30,10 +30,9 @@ use Language;
  * @covers SMWAskPage
  * @covers SMWSpecialBrowse
  * @covers SMWAdmin
- * @covers SMWSearchByProperty
+ * @covers \SMW\MediaWiki\Specials\SpecialSearchByProperty
  *
  * @note Test base was borrowed from the EducationProgram extension
- *
  *
  * @group SMW
  * @group SMWExtension

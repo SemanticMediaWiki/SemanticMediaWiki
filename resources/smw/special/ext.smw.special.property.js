@@ -13,13 +13,14 @@
  * @author mwjames
  */
 
-( function( $, mw ) {
+( function( $ ) {
+	'use strict';
 
 	$( document ).ready( function() {
 
 		// Used in SMW_SpecialSearchByProperty.php
 		// Function is specified in ext.smw.autocomplete
-		$( '#property_box' ).smwAutocomplete();
+		$( '#smw-property-input' ).smwAutocomplete();
 
 	} );
-} )( jQuery, mediaWiki );
+} )( jQuery );

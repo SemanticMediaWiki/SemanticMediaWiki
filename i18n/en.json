@@ -296,5 +296,9 @@
 	"smw-sp-admin-idlookup-title": "ObjectId lookup",
 	"smw-sp-admin-idlookup-docu": "Displays details about an internal object Id that represents individual entities (wikipage, subobject etc.) in Semantic MediaWiki.",
 	"smw-sp-admin-idlookup-objectid": "Object Id:",
-	"smw-livepreview-loading": "Loading..."
+	"smw-livepreview-loading": "Loading...",
+	"smw-sp-searchbyproperty-description": "This page provides a simple [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces browsing interface] for finding entities described by a property and a named value. Other available search interfaces include the [[Special:PageProperty|page property search]], and the [[Special:Ask|ask query builder]].",
+	"smw-sp-searchbyproperty-resultlist-header": "List of results",
+	"smw-sp-searchbyproperty-nonvaluequery": "A list of values that have the property \"$1\" assigned.",
+	"smw-sp-searchbyproperty-valuequery": "A list of pages that have property \"$1\" with value \"$2\" annotated."
 }
