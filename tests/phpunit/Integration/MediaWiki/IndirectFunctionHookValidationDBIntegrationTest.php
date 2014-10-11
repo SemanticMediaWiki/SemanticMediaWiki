@@ -183,29 +183,4 @@ class IndirectFunctionHookValidationDBIntegrationTest extends MwDBaseUnitTestCas
 		}
 	}
 
-	public function testPageMove() {
-
-		$this->title = Title::newFromText( __METHOD__ . '-old' );
-		$newTitle = Title::newFromText( __METHOD__ . '-new' );
-
-		$this->assertNull(
-			WikiPage::factory( $newTitle )->getRevision()
-		);
-
-		$pageCreator = new PageCreator();
-
-		$pageCreator
-			->createPage( $this->title )
-			->doEdit( '[[Has function hook test::page move]]' );
-
-		$pageCreator
-			->getPage()
-			->getTitle()
-			->moveTo( $newTitle, false, 'test', true );
-
-		$this->assertNotNull(
-			WikiPage::factory( $newTitle )->getRevision()
-		);
-	}
-
 }
