@@ -204,7 +204,7 @@ final class Setup implements ContextAware {
 				'group' => 'smw_group'
 			),
 			'SearchByProperty' => array(
-				'page' => 'SMWSearchByProperty',
+				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty',
 				'group' => 'smw_group'
 			),
 			'SMWAdmin' => array(
